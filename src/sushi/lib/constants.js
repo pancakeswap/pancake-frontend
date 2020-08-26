@@ -79,7 +79,7 @@ export const supportedPools = [
       1: '0x6b3595068778dd592e39a122f4f5a5cf09c90fe2',
     },
     name: 'Sushi Party!',
-    symbol: 'SUSHI UNI-V2 LP',
+    symbol: 'SUSHI-ETH UNI-V2 LP',
     icon: '🍣',
   },
   {
@@ -93,7 +93,7 @@ export const supportedPools = [
       1: '0xdac17f958d2ee523a2206206994597c13d831ec7',
     },
     name: 'Tether Turtle',
-    symbol: 'USDT UNI-V2 LP',
+    symbol: 'USDT-ETH UNI-V2 LP',
     icon: '🐢',
   },
   {
@@ -107,7 +107,7 @@ export const supportedPools = [
       1: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48 ',
     },
     name: 'Circle Snail',
-    symbol: 'USDC UNI-V2 LP',
+    symbol: 'USDC-ETH UNI-V2 LP',
     icon: '🐌',
   },
   {
@@ -121,7 +121,7 @@ export const supportedPools = [
       1: '0x6b175474e89094c44da98b954eedeac495271d0f',
     },
     name: 'Donald DAI',
-    symbol: 'DAI UNI-V2 LP',
+    symbol: 'DAI-ETH UNI-V2 LP',
     icon: '🦆',
   },
   {
@@ -135,7 +135,7 @@ export const supportedPools = [
       1: '0x57ab1ec28d129707052df4df418d58a2d46d5f51',
     },
     name: 'Spartan Dollar',
-    symbol: 'SUSD UNI-V2 LP',
+    symbol: 'SUSD-ETH UNI-V2 LP',
     icon: '🦍',
   },
   {
@@ -149,7 +149,7 @@ export const supportedPools = [
       1: '0x04fa0d235c4abf4bcf4787af4cf447de572ef828 ',
     },
     name: 'Umami Squid',
-    symbol: 'UMA UNI-V2 LP',
+    symbol: 'UMA-ETH UNI-V2 LP',
     icon: '🦑',
   },
   {
@@ -163,7 +163,7 @@ export const supportedPools = [
       1: '0xba11d00c5f74255f56a5e366f4f77f5a186d7f55 ',
     },
     name: 'Band-osaurus',
-    symbol: 'BAND UNI-V2 LP',
+    symbol: 'BAND-ETH UNI-V2 LP',
     icon: '🦖',
   },
   {
@@ -177,7 +177,7 @@ export const supportedPools = [
       1: '0x514910771af9ca656af840dff83e8264ecf986ca ',
     },
     name: 'Toadie Marine',
-    symbol: 'LINK UNI-V2 LP',
+    symbol: 'LINK-ETH UNI-V2 LP',
     icon: '🐸',
   },
   {
@@ -191,7 +191,7 @@ export const supportedPools = [
       1: '0xd46ba6d942050d489dbd938a2c909a5d5039a161 ',
     },
     name: 'Ample Chicks',
-    symbol: 'AMPL UNI-V2 LP',
+    symbol: 'AMPL-ETH UNI-V2 LP',
     icon: '🐥',
   },
   {
@@ -205,7 +205,7 @@ export const supportedPools = [
       1: '0xc00e94cb662c3520282e6f5717214004a7f26888 ',
     },
     name: 'Compound Truffle',
-    symbol: 'COMP UNI-V2 LP',
+    symbol: 'COMP-ETH UNI-V2 LP',
     icon: '🍄',
   },
   {
@@ -219,7 +219,7 @@ export const supportedPools = [
       1: '0x80fb784b7ed66730e8b1dbd9820afd29931aab03',
     },
     name: 'Aave Boar',
-    symbol: 'LEND UNI-V2 LP',
+    symbol: 'LEND-ETH UNI-V2 LP',
     icon: '🐗',
   },
   {
@@ -233,7 +233,7 @@ export const supportedPools = [
       1: '0xc011a73ee8576fb46f5e1c5751ca3b9fe0af2a6f',
     },
     name: 'Synthetic Snake',
-    symbol: 'SNX UNI-V2 LP',
+    symbol: 'SNX-ETH UNI-V2 LP',
     icon: '🐍',
   },
   {
@@ -247,7 +247,7 @@ export const supportedPools = [
       1: '0x0bc529c00c6401aef6d220be8c6ea1667f6ad93e ',
     },
     name: 'YFI Whale',
-    symbol: 'YFI UNI-V2 LP',
+    symbol: 'YFI-ETH UNI-V2 LP',
     icon: '🐋',
   },
 ]
