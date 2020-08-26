@@ -74,7 +74,7 @@ const Balances: React.FC = () => {
 
   const block = useBlock()
   const chainId = ethereum ? parseInt(ethereum.chainId) : 0
-  const startBlock = 20504000
+  const startBlock = 10750000
   const farmStarted = ethereum && block >= startBlock
 
   useEffect(() => {
