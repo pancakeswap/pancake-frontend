@@ -47,6 +47,9 @@ export const contractAddresses = {
     42: '0x245A074cA9814fB46A21562bC70fAB92F8A3F779',
     1: '0xc2edad668740f1aa35e4d8f227fb8e17dca888cd',
   },
+  weth: {
+    1: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+  },
 }
 
 /*
@@ -80,6 +83,7 @@ export const supportedPools = [
     },
     name: 'Sushi Party!',
     symbol: 'SUSHI-ETH UNI-V2 LP',
+    tokenSymbol: 'SUSHI',
     icon: '🍣',
   },
   {
@@ -94,6 +98,7 @@ export const supportedPools = [
     },
     name: 'Tether Turtle',
     symbol: 'USDT-ETH UNI-V2 LP',
+    tokenSymbol: 'USDT',
     icon: '🐢',
   },
   {
@@ -104,10 +109,11 @@ export const supportedPools = [
     },
     tokenAddresses: {
       42: '0xf2c73AF42FbAC096FE8F591899C5fc8bCB13884B',
-      1: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48 ',
+      1: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
     },
     name: 'Circle Snail',
     symbol: 'USDC-ETH UNI-V2 LP',
+    tokenSymbol: 'USDC',
     icon: '🐌',
   },
   {
@@ -122,6 +128,7 @@ export const supportedPools = [
     },
     name: 'Donald DAI',
     symbol: 'DAI-ETH UNI-V2 LP',
+    tokenSymbol: 'DAI',
     icon: '🦆',
   },
   {
@@ -136,6 +143,7 @@ export const supportedPools = [
     },
     name: 'Spartan Dollar',
     symbol: 'SUSD-ETH UNI-V2 LP',
+    tokenSymbol: 'SUSD',
     icon: '🦍',
   },
   {
@@ -146,10 +154,11 @@ export const supportedPools = [
     },
     tokenAddresses: {
       42: '0xf2c73AF42FbAC096FE8F591899C5fc8bCB13884B',
-      1: '0x04fa0d235c4abf4bcf4787af4cf447de572ef828 ',
+      1: '0x04fa0d235c4abf4bcf4787af4cf447de572ef828',
     },
     name: 'Umami Squid',
     symbol: 'UMA-ETH UNI-V2 LP',
+    tokenSymbol: 'UMA',
     icon: '🦑',
   },
   {
@@ -160,10 +169,11 @@ export const supportedPools = [
     },
     tokenAddresses: {
       42: '0xf2c73AF42FbAC096FE8F591899C5fc8bCB13884B',
-      1: '0xba11d00c5f74255f56a5e366f4f77f5a186d7f55 ',
+      1: '0xba11d00c5f74255f56a5e366f4f77f5a186d7f55',
     },
     name: 'Band-osaurus',
     symbol: 'BAND-ETH UNI-V2 LP',
+    tokenSymbol: 'BAND',
     icon: '🦖',
   },
   {
@@ -174,10 +184,11 @@ export const supportedPools = [
     },
     tokenAddresses: {
       42: '0xf2c73AF42FbAC096FE8F591899C5fc8bCB13884B',
-      1: '0x514910771af9ca656af840dff83e8264ecf986ca ',
+      1: '0x514910771af9ca656af840dff83e8264ecf986ca',
     },
     name: 'Toadie Marine',
     symbol: 'LINK-ETH UNI-V2 LP',
+    tokenSymbol: 'LINK',
     icon: '🐸',
   },
   {
@@ -188,10 +199,11 @@ export const supportedPools = [
     },
     tokenAddresses: {
       42: '0xf2c73AF42FbAC096FE8F591899C5fc8bCB13884B',
-      1: '0xd46ba6d942050d489dbd938a2c909a5d5039a161 ',
+      1: '0xd46ba6d942050d489dbd938a2c909a5d5039a161',
     },
     name: 'Ample Chicks',
     symbol: 'AMPL-ETH UNI-V2 LP',
+    tokenSymbol: 'AMPL',
     icon: '🐥',
   },
   {
@@ -202,10 +214,11 @@ export const supportedPools = [
     },
     tokenAddresses: {
       42: '0xf2c73AF42FbAC096FE8F591899C5fc8bCB13884B',
-      1: '0xc00e94cb662c3520282e6f5717214004a7f26888 ',
+      1: '0xc00e94cb662c3520282e6f5717214004a7f26888',
     },
     name: 'Compound Truffle',
     symbol: 'COMP-ETH UNI-V2 LP',
+    tokenSymbol: 'COMP',
     icon: '🍄',
   },
   {
@@ -220,6 +233,7 @@ export const supportedPools = [
     },
     name: 'Aave Boar',
     symbol: 'LEND-ETH UNI-V2 LP',
+    tokenSymbol: 'LEND',
     icon: '🐗',
   },
   {
@@ -234,6 +248,7 @@ export const supportedPools = [
     },
     name: 'Synthetic Snake',
     symbol: 'SNX-ETH UNI-V2 LP',
+    tokenSymbol: 'SNX',
     icon: '🐍',
   },
   {
@@ -244,10 +259,11 @@ export const supportedPools = [
     },
     tokenAddresses: {
       42: '0xf2c73AF42FbAC096FE8F591899C5fc8bCB13884B',
-      1: '0x0bc529c00c6401aef6d220be8c6ea1667f6ad93e ',
+      1: '0x0bc529c00c6401aef6d220be8c6ea1667f6ad93e',
     },
     name: 'YFI Whale',
     symbol: 'YFI-ETH UNI-V2 LP',
+    tokenSymbol: 'YFI',
     icon: '🐋',
   },
 ]

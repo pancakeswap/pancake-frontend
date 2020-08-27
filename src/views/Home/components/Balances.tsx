@@ -16,6 +16,7 @@ import useUnharvested from '../../../hooks/useUnharvested'
 import useYam from '../../../hooks/useYam'
 import useBlock from '../../../hooks/useBlock'
 import useAllEarnings from '../../../hooks/useAllEarnings'
+import useAllStakedValue from '../../../hooks/useAllStakedValue'
 
 import { bnToDec } from '../../../utils'
 import { getBalanceNumber } from '../../../utils/formatBalance'
@@ -35,6 +36,28 @@ const PendingRewards: React.FC = () => {
     sumEarning += new BigNumber(earning)
       .div(new BigNumber(10).pow(18))
       .toNumber()
+  }
+
+  const [farms] = useFarms()
+  const allStakedValue = useAllStakedValue()
+
+  if (allStakedValue && allStakedValue.length) {
+    const sumWeth = farms.reduce(
+      (c, { id }, i) => c + (allStakedValue[i].totalWethValue.toNumber() || 0),
+      0,
+    )
+
+    console.log('Total ETH value LPs represent =', sumWeth, 'ETH')
+    console.log(
+      farms.map(({ tokenSymbol }, i) => {
+        console.log(
+          tokenSymbol,
+          allStakedValue[i].tokenAmount.toNumber(),
+          allStakedValue[i].totalWethValue.toNumber(),
+          'ETH',
+        )
+      }),
+    )
   }
 
   useEffect(() => {
@@ -73,7 +96,6 @@ const Balances: React.FC = () => {
   const { account, ethereum }: { account: any; ethereum: any } = useWallet()
 
   const block = useBlock()
-  const chainId = ethereum ? parseInt(ethereum.chainId) : 0
   const startBlock = 10750000
   const farmStarted = ethereum && block >= startBlock
 
@@ -130,9 +152,10 @@ const Balances: React.FC = () => {
         <Card>
           <CardContent>
             <Label text="# of blocks until rewards begin" />
+
             <Value
               decimals={0}
-              value={ethereum ? startBlock - block : 'Locked'}
+              value={ethereum ? (block > 0 ? startBlock - block : 0) : 'Locked'}
             />
           </CardContent>
           <Footnote>

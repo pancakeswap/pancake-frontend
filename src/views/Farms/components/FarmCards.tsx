@@ -18,17 +18,24 @@ import { Farm } from '../../../contexts/Farms'
 
 import { bnToDec } from '../../../utils'
 import { getEarned, getMasterChefContract } from '../../../sushi/utils'
+import useAllStakedValue, {
+  StakedValue,
+} from '../../../hooks/useAllStakedValue'
+
+interface FarmWithStakedValue extends Farm, StakedValue {}
 
 const FarmCards: React.FC = () => {
   const [farms] = useFarms()
   const { account } = useWallet()
-  const rows = farms.reduce<Farm[][]>(
-    (farmRows, farm) => {
+  const stakedValue = useAllStakedValue()
+  const rows = farms.reduce<FarmWithStakedValue[][]>(
+    (farmRows, farm, i) => {
+      const farmWithStakedValue = { ...farm, ...stakedValue[i] }
       const newFarmRows = [...farmRows]
       if (newFarmRows[newFarmRows.length - 1].length === 3) {
-        newFarmRows.push([farm])
+        newFarmRows.push([farmWithStakedValue])
       } else {
-        newFarmRows[newFarmRows.length - 1].push(farm)
+        newFarmRows[newFarmRows.length - 1].push(farmWithStakedValue)
       }
       return newFarmRows
     },
@@ -58,7 +65,7 @@ const FarmCards: React.FC = () => {
 }
 
 interface FarmCardProps {
-  farm: Farm
+  farm: FarmWithStakedValue
 }
 
 const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
@@ -100,7 +107,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
 
   return (
     <StyledCardWrapper>
-      {farm.id === 'SUSHI UNI-V2 LP' && <StyledCardAccent />}
+      {farm.tokenSymbol === 'SUSHI' && <StyledCardAccent />}
       <Card>
         <CardContent>
           <StyledContent>
@@ -111,13 +118,6 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
               <StyledDetail>Earn {farm.earnToken.toUpperCase()}</StyledDetail>
             </StyledDetails>
             <Spacer />
-            <StyledHarvestable>
-              {harvestable
-                ? `${numeral(harvestable).format(
-                    '0.00a',
-                  )} YAMs ready to harvest.`
-                : undefined}
-            </StyledHarvestable>
             <Button
               disabled={!poolActive}
               text={poolActive ? 'Select' : undefined}
@@ -130,6 +130,20 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
                 />
               )}
             </Button>
+            <StyledInsight>
+              <span>
+                {farm.tokenAmount
+                  ? (farm.tokenAmount.toNumber() || 0).toLocaleString('en-US')
+                  : '-'}{' '}
+                {farm.tokenSymbol}
+              </span>
+              <span>
+                {farm.wethAmount
+                  ? (farm.wethAmount.toNumber() || 0).toLocaleString('en-US')
+                  : '-'}{' '}
+                ETH
+              </span>
+            </StyledInsight>
           </StyledContent>
         </CardContent>
       </Card>
@@ -236,11 +250,20 @@ const StyledDetail = styled.div`
   color: ${(props) => props.theme.color.grey[500]};
 `
 
-const StyledHarvestable = styled.div`
-  color: ${(props) => props.theme.color.secondary.main};
-  font-size: 16px;
-  height: 48px;
+const StyledInsight = styled.div`
+  display: flex;
+  justify-content: space-between;
+  box-sizing: border-box;
+  border-radius: 8px;
+  background: #fffdfa;
+  color: #aa9584;
+  width: 100%;
+  margin-top: 12px;
+  line-height: 32px;
+  font-size: 13px;
+  border: 1px solid #e6dcd5;
   text-align: center;
+  padding: 0 12px;
 `
 
 export default FarmCards

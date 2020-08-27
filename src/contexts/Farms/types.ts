@@ -11,6 +11,7 @@ export interface Farm {
   earnTokenAddress: string
   icon: React.ReactNode
   id: string
+  tokenSymbol: string
 }
 
 export interface FarmsContext {

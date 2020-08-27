@@ -10,6 +10,8 @@ import {
 import UNIV2PairAbi from './abi/uni_v2_lp.json'
 import SushiAbi from './abi/sushi.json'
 import MasterChefAbi from './abi/masterchef.json'
+import ERC20Abi from './abi/erc20.json'
+import WETHAbi from './abi/weth.json'
 
 export class Contracts {
   constructor(provider, networkId, web3, options) {
@@ -23,12 +25,14 @@ export class Contracts {
 
     this.sushi = new this.web3.eth.Contract(SushiAbi)
     this.masterChef = new this.web3.eth.Contract(MasterChefAbi)
+    this.weth = new this.web3.eth.Contract(WETHAbi)
 
     this.pools = supportedPools.map((pool) =>
       Object.assign(pool, {
         lpAddress: pool.lpAddresses[networkId],
         tokenAddress: pool.tokenAddresses[networkId],
         lpContract: new this.web3.eth.Contract(UNIV2PairAbi),
+        tokenContract: new this.web3.eth.Contract(ERC20Abi),
       }),
     )
 
@@ -45,9 +49,13 @@ export class Contracts {
 
     setProvider(this.sushi, contractAddresses.sushi[networkId])
     setProvider(this.masterChef, contractAddresses.masterChef[networkId])
+    setProvider(this.weth, contractAddresses.weth[networkId])
 
-    this.pools.forEach(({ lpContract, lpAddress }) =>
-      setProvider(lpContract, lpAddress),
+    this.pools.forEach(
+      ({ lpContract, lpAddress, tokenContract, tokenAddress }) => {
+        setProvider(lpContract, lpAddress)
+        setProvider(tokenContract, tokenAddress)
+      },
     )
   }
 

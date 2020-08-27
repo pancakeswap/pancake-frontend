@@ -1,4 +1,6 @@
 import { ethers } from 'ethers'
+import { Contract } from 'web3-eth-contract'
+import ERC20Abi from './lib/abi/erc20.json'
 
 import BigNumber from 'bignumber.js'
 
@@ -20,6 +22,9 @@ export const getMasterChefAddress = (sushi) => {
 export const getSushiAddress = (sushi) => {
   return sushi && sushi.sushiAddress
 }
+export const getWethContract = (sushi) => {
+  return sushi && sushi.contracts && sushi.contracts.weth
+}
 
 export const getMasterChefContract = (sushi) => {
   return sushi && sushi.contracts && sushi.contracts.masterChef
@@ -31,7 +36,17 @@ export const getSushiContract = (sushi) => {
 export const getFarms = (sushi) => {
   return sushi
     ? sushi.contracts.pools.map(
-        ({ pid, name, symbol, icon, tokenAddress, lpAddress, lpContract }) => ({
+        ({
+          pid,
+          name,
+          symbol,
+          icon,
+          tokenAddress,
+          tokenSymbol,
+          tokenContract,
+          lpAddress,
+          lpContract,
+        }) => ({
           pid,
           id: symbol,
           name,
@@ -39,6 +54,8 @@ export const getFarms = (sushi) => {
           lpTokenAddress: lpAddress,
           lpContract,
           tokenAddress,
+          tokenSymbol,
+          tokenContract,
           earnToken: 'sushi',
           earnTokenAddress: sushi.contracts.sushi.options.address,
           icon,
@@ -49,6 +66,42 @@ export const getFarms = (sushi) => {
 
 export const getEarned = async (masterChefContract, pid, account) => {
   return masterChefContract.methods.pendingSushi(pid, account).call()
+}
+
+export const getTotalLPWethValue = async (
+  masterChefContract,
+  wethContract,
+  lpContract,
+  tokenContract,
+) => {
+  // Get balance of the token address
+  const tokenAmount = await tokenContract.methods
+    .balanceOf(lpContract.options.address)
+    .call()
+  const tokenDecimals = await tokenContract.methods.decimals().call()
+  // Get the share of lpContract that masterChefContract owns
+  const balance = await lpContract.methods
+    .balanceOf(masterChefContract.options.address)
+    .call()
+  // Convert that into the portion of total lpContract = p1
+  const totalSupply = await lpContract.methods.totalSupply().call()
+  // Get total weth value for the lpContract = w1
+  const lpContractWeth = await wethContract.methods
+    .balanceOf(lpContract.options.address)
+    .call()
+  // Return p1 * w1 * 2
+  const portionLp = new BigNumber(balance).div(new BigNumber(totalSupply))
+  const lpWethWorth = new BigNumber(lpContractWeth)
+  const totalLpWethValue = portionLp.times(lpWethWorth).times(new BigNumber(2))
+  return {
+    tokenAmount: new BigNumber(tokenAmount)
+      .times(portionLp)
+      .div(new BigNumber(10).pow(tokenDecimals)),
+    wethAmount: new BigNumber(lpContractWeth)
+      .times(portionLp)
+      .div(new BigNumber(10).pow(18)),
+    totalWethValue: totalLpWethValue.div(new BigNumber(10).pow(18)),
+  }
 }
 
 export const approve = async (lpContract, masterChefContract, account) => {
