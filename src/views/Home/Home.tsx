@@ -25,8 +25,8 @@ const Home: React.FC = () => {
       </Container>
       <Spacer size="lg" />
       <StyledInfo>
-        🏆<b>Pro Tip</b>: You can stake LP tokens NOW to earn SUSHI rewards
-        right from the start
+        🏆<b>Pro Tip</b>: SUSHI-ETH UNI-V2 LP token pool yields TWICE more token
+        rewards per block.
       </StyledInfo>
       <Spacer size="lg" />
       <div

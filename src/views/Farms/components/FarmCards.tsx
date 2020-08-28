@@ -13,6 +13,7 @@ import Spacer from '../../../components/Spacer'
 
 import useFarms from '../../../hooks/useFarms'
 import useYam from '../../../hooks/useYam'
+import BigNumber from 'bignumber.js'
 
 import { Farm } from '../../../contexts/Farms'
 
@@ -22,15 +23,43 @@ import useAllStakedValue, {
   StakedValue,
 } from '../../../hooks/useAllStakedValue'
 
-interface FarmWithStakedValue extends Farm, StakedValue {}
+interface FarmWithStakedValue extends Farm, StakedValue {
+  apy: BigNumber
+}
 
 const FarmCards: React.FC = () => {
   const [farms] = useFarms()
   const { account } = useWallet()
   const stakedValue = useAllStakedValue()
+
+  const sushiIndex = farms.findIndex(
+    ({ tokenSymbol }) => tokenSymbol === 'SUSHI',
+  )
+
+  const sushiPrice =
+    sushiIndex >= 0 && stakedValue[sushiIndex]
+      ? stakedValue[sushiIndex].tokenPriceInWeth
+      : new BigNumber(0)
+
+  const BLOCKS_PER_YEAR = new BigNumber(2336000)
+  const SUSHI_PER_BLOCK = new BigNumber(1000)
+  const SUSHI_PER_POOL_SHARE = SUSHI_PER_BLOCK.div(
+    new BigNumber(farms.length + 1),
+  )
+
   const rows = farms.reduce<FarmWithStakedValue[][]>(
     (farmRows, farm, i) => {
-      const farmWithStakedValue = { ...farm, ...stakedValue[i] }
+      const farmWithStakedValue = {
+        ...farm,
+        ...stakedValue[i],
+        apy: stakedValue[i]
+          ? sushiPrice
+              .times(SUSHI_PER_POOL_SHARE)
+              .times(BLOCKS_PER_YEAR)
+              .times(new BigNumber(i === sushiIndex ? 2 : 1))
+              .div(stakedValue[i].totalWethValue)
+          : null,
+      }
       const newFarmRows = [...farmRows]
       if (newFarmRows[newFarmRows.length - 1].length === 3) {
         newFarmRows.push([farmWithStakedValue])
@@ -131,7 +160,17 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
               )}
             </Button>
             <StyledInsight>
+              <span>APY</span>
               <span>
+                {farm.apy
+                  ? `${farm.apy
+                      .times(new BigNumber(100))
+                      .toNumber()
+                      .toLocaleString('en-US')
+                      .slice(0, -1)}%`
+                  : 'Loading ...'}
+              </span>
+              {/* <span>
                 {farm.tokenAmount
                   ? (farm.tokenAmount.toNumber() || 0).toLocaleString('en-US')
                   : '-'}{' '}
@@ -142,7 +181,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
                   ? (farm.wethAmount.toNumber() || 0).toLocaleString('en-US')
                   : '-'}{' '}
                 ETH
-              </span>
+              </span> */}
             </StyledInsight>
           </StyledContent>
         </CardContent>

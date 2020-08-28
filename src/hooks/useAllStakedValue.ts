@@ -18,6 +18,7 @@ export interface StakedValue {
   tokenAmount: BigNumber
   wethAmount: BigNumber
   totalWethValue: BigNumber
+  tokenPriceInWeth: BigNumber
 }
 
 const useAllStakedValue = () => {

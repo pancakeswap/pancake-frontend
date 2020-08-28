@@ -75,7 +75,7 @@ export const getTotalLPWethValue = async (
   tokenContract,
 ) => {
   // Get balance of the token address
-  const tokenAmount = await tokenContract.methods
+  const tokenAmountWholeLP = await tokenContract.methods
     .balanceOf(lpContract.options.address)
     .call()
   const tokenDecimals = await tokenContract.methods.decimals().call()
@@ -93,14 +93,19 @@ export const getTotalLPWethValue = async (
   const portionLp = new BigNumber(balance).div(new BigNumber(totalSupply))
   const lpWethWorth = new BigNumber(lpContractWeth)
   const totalLpWethValue = portionLp.times(lpWethWorth).times(new BigNumber(2))
+  // Calculate
+  const tokenAmount = new BigNumber(tokenAmountWholeLP)
+    .times(portionLp)
+    .div(new BigNumber(10).pow(tokenDecimals))
+
+  const wethAmount = new BigNumber(lpContractWeth)
+    .times(portionLp)
+    .div(new BigNumber(10).pow(18))
   return {
-    tokenAmount: new BigNumber(tokenAmount)
-      .times(portionLp)
-      .div(new BigNumber(10).pow(tokenDecimals)),
-    wethAmount: new BigNumber(lpContractWeth)
-      .times(portionLp)
-      .div(new BigNumber(10).pow(18)),
+    tokenAmount,
+    wethAmount,
     totalWethValue: totalLpWethValue.div(new BigNumber(10).pow(18)),
+    tokenPriceInWeth: wethAmount.div(tokenAmount),
   }
 }
 

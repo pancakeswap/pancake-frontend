@@ -46,18 +46,6 @@ const PendingRewards: React.FC = () => {
       (c, { id }, i) => c + (allStakedValue[i].totalWethValue.toNumber() || 0),
       0,
     )
-
-    console.log('Total ETH value LPs represent =', sumWeth, 'ETH')
-    console.log(
-      farms.map(({ tokenSymbol }, i) => {
-        console.log(
-          tokenSymbol,
-          allStakedValue[i].tokenAmount.toNumber(),
-          allStakedValue[i].totalWethValue.toNumber(),
-          'ETH',
-        )
-      }),
-    )
   }
 
   useEffect(() => {
@@ -95,10 +83,6 @@ const Balances: React.FC = () => {
   const sushiBalance = useTokenBalance(getSushiAddress(yam))
   const { account, ethereum }: { account: any; ethereum: any } = useWallet()
 
-  const block = useBlock()
-  const startBlock = 10750000
-  const farmStarted = ethereum && block >= startBlock
-
   useEffect(() => {
     async function fetchTotalSupply() {
       const supply = await getSushiSupply(yam)
@@ -135,35 +119,18 @@ const Balances: React.FC = () => {
       </Card>
       <Spacer />
 
-      {farmStarted ? (
-        <Card>
-          <CardContent>
-            <Label text="Total SUSHI Supply" />
-            <Value
-              value={totalSupply ? getBalanceNumber(totalSupply) : 'Locked'}
-            />
-          </CardContent>
-          <Footnote>
-            New rewards per block
-            <FootnoteValue>1,000 SUSHI</FootnoteValue>
-          </Footnote>
-        </Card>
-      ) : (
-        <Card>
-          <CardContent>
-            <Label text="# of blocks until rewards begin" />
-
-            <Value
-              decimals={0}
-              value={ethereum ? (block > 0 ? startBlock - block : 0) : 'Locked'}
-            />
-          </CardContent>
-          <Footnote>
-            SUSHI rewards start at block
-            <FootnoteValue>#{startBlock}</FootnoteValue>
-          </Footnote>
-        </Card>
-      )}
+      <Card>
+        <CardContent>
+          <Label text="Total SUSHI Supply" />
+          <Value
+            value={totalSupply ? getBalanceNumber(totalSupply) : 'Locked'}
+          />
+        </CardContent>
+        <Footnote>
+          New rewards per block
+          <FootnoteValue>1,000 SUSHI</FootnoteValue>
+        </Footnote>
+      </Card>
     </StyledWrapper>
   )
 }
