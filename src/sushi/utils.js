@@ -64,6 +64,14 @@ export const getFarms = (sushi) => {
     : []
 }
 
+export const getPoolWeight = async (masterChefContract, pid) => {
+  const { allocPoint } = await masterChefContract.methods.poolInfo(pid).call()
+  const totalAllocPoint = await masterChefContract.methods
+    .totalAllocPoint()
+    .call()
+  return new BigNumber(allocPoint).div(new BigNumber(totalAllocPoint))
+}
+
 export const getEarned = async (masterChefContract, pid, account) => {
   return masterChefContract.methods.pendingSushi(pid, account).call()
 }
@@ -73,6 +81,7 @@ export const getTotalLPWethValue = async (
   wethContract,
   lpContract,
   tokenContract,
+  pid,
 ) => {
   // Get balance of the token address
   const tokenAmountWholeLP = await tokenContract.methods
@@ -106,6 +115,7 @@ export const getTotalLPWethValue = async (
     wethAmount,
     totalWethValue: totalLpWethValue.div(new BigNumber(10).pow(18)),
     tokenPriceInWeth: wethAmount.div(tokenAmount),
+    poolWeight: await getPoolWeight(masterChefContract, pid),
   }
 }
 

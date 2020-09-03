@@ -19,6 +19,7 @@ export interface StakedValue {
   wethAmount: BigNumber
   totalWethValue: BigNumber
   tokenPriceInWeth: BigNumber
+  poolWeight: BigNumber
 }
 
 const useAllStakedValue = () => {
@@ -34,9 +35,11 @@ const useAllStakedValue = () => {
     const balances: Array<StakedValue> = await Promise.all(
       farms.map(
         ({
+          pid,
           lpContract,
           tokenContract,
         }: {
+          pid: number
           lpContract: Contract
           tokenContract: Contract
         }) =>
@@ -45,6 +48,7 @@ const useAllStakedValue = () => {
             wethContact,
             lpContract,
             tokenContract,
+            pid,
           ),
       ),
     )
