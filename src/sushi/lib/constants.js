@@ -266,4 +266,79 @@ export const supportedPools = [
     tokenSymbol: 'YFI',
     icon: '🐋',
   },
+  {
+    pid: 13,
+    lpAddresses: {
+      42: '0xb21f5d46e1756cfeb34496636d38f97dc8552415',
+      1: '0x8bd1661da98ebdd3bd080f0be4e6d9be8ce9858c',
+    },
+    tokenAddresses: {
+      42: '0xf2c73AF42FbAC096FE8F591899C5fc8bCB13884B',
+      1: '0x408e41876cccdc0f92210600ef50372656052a38',
+    },
+    name: 'REN Rhino',
+    symbol: 'REN-ETH UNI-V2 LP',
+    tokenSymbol: 'REN',
+    icon: '🦏',
+  },
+  {
+    pid: 14,
+    lpAddresses: {
+      42: '0xb21f5d46e1756cfeb34496636d38f97dc8552415',
+      1: '0xaad22f5543fcdaa694b68f94be177b561836ae57',
+    },
+    tokenAddresses: {
+      42: '0xf2c73AF42FbAC096FE8F591899C5fc8bCB13884B',
+      1: '0x68A118Ef45063051Eac49c7e647CE5Ace48a68a5',
+    },
+    name: 'BASED Bull',
+    symbol: 'BASE-sUSD UNI-V2 LP',
+    tokenSymbol: 'BASED',
+    icon: '🐂',
+  },
+  {
+    pid: 15,
+    lpAddresses: {
+      42: '0xb21f5d46e1756cfeb34496636d38f97dc8552415',
+      1: '0xcc3d1ecef1f9fd25599dbea2755019dc09db3c54',
+    },
+    tokenAddresses: {
+      42: '0xf2c73AF42FbAC096FE8F591899C5fc8bCB13884B',
+      1: '0x476c5E26a75bd202a9683ffD34359C0CC15be0fF',
+    },
+    name: 'SRM Shark',
+    symbol: 'SRM-ETH UNI-V2 LP',
+    tokenSymbol: 'SRM',
+    icon: '🦈',
+  },
+  {
+    pid: 16,
+    lpAddresses: {
+      42: '0xb21f5d46e1756cfeb34496636d38f97dc8552415',
+      1: '0xa5904961f61bae7c4dd8478077556c91bf291cfd',
+    },
+    tokenAddresses: {
+      42: '0xf2c73AF42FbAC096FE8F591899C5fc8bCB13884B',
+      1: '0xaba8cac6866b83ae4eec97dd07ed254282f6ad8a',
+    },
+    name: 'YAMv2 YAM',
+    symbol: 'YAMv2-ETH UNI-V2 LP',
+    tokenSymbol: 'YAMv2',
+    icon: '🍠',
+  },
+  {
+    pid: 17,
+    lpAddresses: {
+      42: '0xb21f5d46e1756cfeb34496636d38f97dc8552415',
+      1: '0x3da1313ae46132a397d90d95b1424a9a7e3e0fce',
+    },
+    tokenAddresses: {
+      42: '0xf2c73AF42FbAC096FE8F591899C5fc8bCB13884B',
+      1: '0xD533a949740bb3306d119CC777fa900bA034cd52',
+    },
+    name: 'CRV Crocodile',
+    symbol: 'CRV-ETH UNI-V2 LP',
+    tokenSymbol: 'CRV',
+    icon: '🐊',
+  },
 ]

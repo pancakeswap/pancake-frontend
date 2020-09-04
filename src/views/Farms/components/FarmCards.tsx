@@ -188,7 +188,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
 }
 
 const RainbowLight = keyframes`
-  
+
 	0% {
 		background-position: 0% 50%;
 	}
