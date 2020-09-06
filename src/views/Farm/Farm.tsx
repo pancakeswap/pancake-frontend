@@ -1,20 +1,15 @@
-import React, { useMemo, useEffect } from 'react'
-import styled from 'styled-components'
-
+import React, { useEffect, useMemo } from 'react'
 import { useParams } from 'react-router-dom'
+import styled from 'styled-components'
 import { useWallet } from 'use-wallet'
 import { provider } from 'web3-core'
-
-import Button from '../../components/Button'
 import PageHeader from '../../components/PageHeader'
 import Spacer from '../../components/Spacer'
-
-import useYam from '../../hooks/useYam'
 import useFarm from '../../hooks/useFarm'
 import useRedeem from '../../hooks/useRedeem'
-import { getContract } from '../../utils/erc20'
+import useSushi from '../../hooks/useSushi'
 import { getMasterChefContract } from '../../sushi/utils'
-
+import { getContract } from '../../utils/erc20'
 import Harvest from './components/Harvest'
 import Stake from './components/Stake'
 
@@ -42,14 +37,14 @@ const Farm: React.FC = () => {
     window.scrollTo(0, 0)
   }, [])
 
-  const yam = useYam()
+  const sushi = useSushi()
   const { ethereum } = useWallet()
 
   const lpContract = useMemo(() => {
     return getContract(ethereum as provider, lpTokenAddress)
   }, [ethereum, lpTokenAddress])
 
-  const { onRedeem } = useRedeem(getMasterChefContract(yam))
+  const { onRedeem } = useRedeem(getMasterChefContract(sushi))
 
   const lpTokenName = useMemo(() => {
     return lpToken.toUpperCase()

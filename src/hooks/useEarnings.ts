@@ -5,7 +5,7 @@ import BigNumber from 'bignumber.js'
 import { useWallet } from 'use-wallet'
 
 import { getEarned, getMasterChefContract } from '../sushi/utils'
-import useYam from './useYam'
+import useSushi from './useSushi'
 import useBlock from './useBlock'
 
 const useEarnings = (pid: number) => {
@@ -14,20 +14,20 @@ const useEarnings = (pid: number) => {
     account,
     ethereum,
   }: { account: string; ethereum: provider } = useWallet()
-  const yam = useYam()
-  const masterChefContract = getMasterChefContract(yam)
+  const sushi = useSushi()
+  const masterChefContract = getMasterChefContract(sushi)
   const block = useBlock()
 
   const fetchBalance = useCallback(async () => {
     const balance = await getEarned(masterChefContract, pid, account)
     setBalance(new BigNumber(balance))
-  }, [account, masterChefContract, yam])
+  }, [account, masterChefContract, sushi])
 
   useEffect(() => {
-    if (account && masterChefContract && yam) {
+    if (account && masterChefContract && sushi) {
       fetchBalance()
     }
-  }, [account, block, masterChefContract, setBalance, yam])
+  }, [account, block, masterChefContract, setBalance, sushi])
 
   return balance
 }

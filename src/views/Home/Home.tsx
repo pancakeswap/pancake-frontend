@@ -1,14 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
-
 import chef from '../../assets/img/chef.png'
-
 import Button from '../../components/Button'
 import Container from '../../components/Container'
 import Page from '../../components/Page'
 import PageHeader from '../../components/PageHeader'
 import Spacer from '../../components/Spacer'
-
 import Balances from './components/Balances'
 
 const Home: React.FC = () => {
@@ -23,6 +20,11 @@ const Home: React.FC = () => {
       <Container>
         <Balances />
       </Container>
+      <Spacer size="lg" />
+      <StyledInfo>
+        🏆<b>Pro Tip</b>: SUSHI-ETH UNI-V2 LP token pool yields TWICE more token
+        rewards per block.
+      </StyledInfo>
       <Spacer size="lg" />
       <div
         style={{

@@ -5,15 +5,15 @@ import BigNumber from 'bignumber.js'
 import { useWallet } from 'use-wallet'
 
 import { getEarned, getMasterChefContract, getFarms } from '../sushi/utils'
-import useYam from './useYam'
+import useSushi from './useSushi'
 import useBlock from './useBlock'
 
 const useAllEarnings = () => {
   const [balances, setBalance] = useState([] as Array<BigNumber>)
   const { account }: { account: string; ethereum: provider } = useWallet()
-  const yam = useYam()
-  const farms = getFarms(yam)
-  const masterChefContract = getMasterChefContract(yam)
+  const sushi = useSushi()
+  const farms = getFarms(sushi)
+  const masterChefContract = getMasterChefContract(sushi)
   const block = useBlock()
 
   const fetchAllBalances = useCallback(async () => {
@@ -23,13 +23,13 @@ const useAllEarnings = () => {
       ),
     )
     setBalance(balances)
-  }, [account, masterChefContract, yam])
+  }, [account, masterChefContract, sushi])
 
   useEffect(() => {
-    if (account && masterChefContract && yam) {
+    if (account && masterChefContract && sushi) {
       fetchAllBalances()
     }
-  }, [account, block, masterChefContract, setBalance, yam])
+  }, [account, block, masterChefContract, setBalance, sushi])
 
   return balances
 }

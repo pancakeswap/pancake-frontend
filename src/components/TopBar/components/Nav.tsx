@@ -1,6 +1,6 @@
 import React from 'react'
-import styled from 'styled-components'
 import { NavLink } from 'react-router-dom'
+import styled from 'styled-components'
 
 const Nav: React.FC = () => {
   return (
@@ -10,6 +10,9 @@ const Nav: React.FC = () => {
       </StyledLink>
       <StyledLink exact activeClassName="active" to="/farms">
         Menu
+      </StyledLink>
+      <StyledLink exact activeClassName="active" to="/staking">
+        Staking
       </StyledLink>
       <StyledAbsoluteLink
         href="https://medium.com/sushiswap/the-sushiswap-project-c4049ea9941e"

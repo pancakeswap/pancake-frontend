@@ -1,22 +1,14 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-
-import { Contract } from 'web3-eth-contract'
-
 import Button from '../../../components/Button'
 import Card from '../../../components/Card'
 import CardContent from '../../../components/CardContent'
 import CardIcon from '../../../components/CardIcon'
 import Label from '../../../components/Label'
 import Value from '../../../components/Value'
-
 import useEarnings from '../../../hooks/useEarnings'
 import useReward from '../../../hooks/useReward'
-
-import {
-  getDisplayBalance,
-  getBalanceNumber,
-} from '../../../utils/formatBalance'
+import { getBalanceNumber } from '../../../utils/formatBalance'
 
 interface HarvestProps {
   pid: number

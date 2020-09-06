@@ -1,5 +1,4 @@
 import { useCallback, useContext } from 'react'
-
 import { Context } from '../contexts/Modals'
 
 const useModal = (modal: React.ReactNode, key?: string) => {
@@ -7,11 +6,7 @@ const useModal = (modal: React.ReactNode, key?: string) => {
 
   const handlePresent = useCallback(() => {
     onPresent(modal, key)
-  }, [
-    key,
-    modal,
-    onPresent,
-  ])
+  }, [key, modal, onPresent])
 
   return [handlePresent, onDismiss]
 }

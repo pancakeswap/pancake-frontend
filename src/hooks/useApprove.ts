@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 
-import useYam from './useYam'
+import useSushi from './useSushi'
 import { useWallet } from 'use-wallet'
 import { provider } from 'web3-core'
 import { Contract } from 'web3-eth-contract'
@@ -9,8 +9,8 @@ import { approve, getMasterChefContract } from '../sushi/utils'
 
 const useApprove = (lpContract: Contract) => {
   const { account }: { account: string; ethereum: provider } = useWallet()
-  const yam = useYam()
-  const masterChefContract = getMasterChefContract(yam)
+  const sushi = useSushi()
+  const masterChefContract = getMasterChefContract(sushi)
 
   const handleApprove = useCallback(async () => {
     try {

@@ -2,23 +2,18 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
 import { UseWalletProvider } from 'use-wallet'
-
 import DisclaimerModal from './components/DisclaimerModal'
 import MobileMenu from './components/MobileMenu'
 import TopBar from './components/TopBar'
-
 import FarmsProvider from './contexts/Farms'
 import ModalsProvider from './contexts/Modals'
-import YamProvider from './contexts/YamProvider'
 import TransactionProvider from './contexts/Transactions'
-
+import SushiProvider from './contexts/SushiProvider'
 import useModal from './hooks/useModal'
-
-import FAQ from './views/FAQ'
+import theme from './theme'
 import Farms from './views/Farms'
 import Home from './views/Home'
-
-import theme from './theme'
+import Stake from './views/Stake'
 
 const App: React.FC = () => {
   const [mobileMenu, setMobileMenu] = useState(false)
@@ -43,8 +38,8 @@ const App: React.FC = () => {
           <Route path="/farms">
             <Farms />
           </Route>
-          <Route path="/faq">
-            <FAQ />
+          <Route path="/staking">
+            <Stake />
           </Route>
         </Switch>
       </Router>
@@ -61,18 +56,14 @@ const Providers: React.FC = ({ children }) => {
         connectors={{
           walletconnect: { rpcUrl: 'https://mainnet.eth.aragon.network/' },
         }}
-        // chainId={42}
-        // connectors={{
-        //   walletconnect: { rpcUrl: 'https://kovan.infura.io/' },
-        // }}
       >
-        <YamProvider>
+        <SushiProvider>
           <TransactionProvider>
             <FarmsProvider>
               <ModalsProvider>{children}</ModalsProvider>
             </FarmsProvider>
           </TransactionProvider>
-        </YamProvider>
+        </SushiProvider>
       </UseWalletProvider>
     </ThemeProvider>
   )

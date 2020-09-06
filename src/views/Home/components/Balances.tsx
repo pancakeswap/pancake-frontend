@@ -1,29 +1,21 @@
+import BigNumber from 'bignumber.js'
 import React, { useEffect, useState } from 'react'
+import CountUp from 'react-countup'
 import styled from 'styled-components'
-import numeral from 'numeral'
 import { useWallet } from 'use-wallet'
-
 import Card from '../../../components/Card'
 import CardContent from '../../../components/CardContent'
 import Label from '../../../components/Label'
 import Spacer from '../../../components/Spacer'
 import Value from '../../../components/Value'
-import YamIcon from '../../../components/YamIcon'
-
-import useFarms from '../../../hooks/useFarms'
-import useTokenBalance from '../../../hooks/useTokenBalance'
-import useUnharvested from '../../../hooks/useUnharvested'
-import useYam from '../../../hooks/useYam'
-import useBlock from '../../../hooks/useBlock'
+import SushiIcon from '../../../components/SushiIcon'
 import useAllEarnings from '../../../hooks/useAllEarnings'
 import useAllStakedValue from '../../../hooks/useAllStakedValue'
-
-import { bnToDec } from '../../../utils'
+import useFarms from '../../../hooks/useFarms'
+import useTokenBalance from '../../../hooks/useTokenBalance'
+import useSushi from '../../../hooks/useSushi'
+import { getSushiAddress, getSushiSupply } from '../../../sushi/utils'
 import { getBalanceNumber } from '../../../utils/formatBalance'
-import { getSushiSupply, getSushiContract } from '../../../sushi/utils'
-import { getSushiAddress } from '../../../sushi/utils'
-import BigNumber from 'bignumber.js'
-import CountUp from 'react-countup'
 
 const PendingRewards: React.FC = () => {
   const [start, setStart] = useState(0)
@@ -79,19 +71,19 @@ const PendingRewards: React.FC = () => {
 
 const Balances: React.FC = () => {
   const [totalSupply, setTotalSupply] = useState<BigNumber>()
-  const yam = useYam()
-  const sushiBalance = useTokenBalance(getSushiAddress(yam))
+  const sushi = useSushi()
+  const sushiBalance = useTokenBalance(getSushiAddress(sushi))
   const { account, ethereum }: { account: any; ethereum: any } = useWallet()
 
   useEffect(() => {
     async function fetchTotalSupply() {
-      const supply = await getSushiSupply(yam)
+      const supply = await getSushiSupply(sushi)
       setTotalSupply(supply)
     }
-    if (yam) {
+    if (sushi) {
       fetchTotalSupply()
     }
-  }, [yam, setTotalSupply])
+  }, [sushi, setTotalSupply])
 
   return (
     <StyledWrapper>
@@ -99,7 +91,7 @@ const Balances: React.FC = () => {
         <CardContent>
           <StyledBalances>
             <StyledBalance>
-              <YamIcon />
+              <SushiIcon />
               <Spacer />
               <div style={{ flex: 1 }}>
                 <Label text="Your SUSHI Balance" />

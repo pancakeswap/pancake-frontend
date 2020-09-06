@@ -1,27 +1,22 @@
-import React, { useCallback, useEffect, useState } from 'react'
-import styled, { keyframes } from 'styled-components'
+import BigNumber from 'bignumber.js'
+import React, { useEffect, useState } from 'react'
 import Countdown, { CountdownRenderProps } from 'react-countdown'
+import styled, { keyframes } from 'styled-components'
 import { useWallet } from 'use-wallet'
-import numeral from 'numeral'
-
 import Button from '../../../components/Button'
 import Card from '../../../components/Card'
 import CardContent from '../../../components/CardContent'
 import CardIcon from '../../../components/CardIcon'
 import Loader from '../../../components/Loader'
 import Spacer from '../../../components/Spacer'
-
-import useFarms from '../../../hooks/useFarms'
-import useYam from '../../../hooks/useYam'
-import BigNumber from 'bignumber.js'
-
 import { Farm } from '../../../contexts/Farms'
-
-import { bnToDec } from '../../../utils'
-import { getEarned, getMasterChefContract } from '../../../sushi/utils'
 import useAllStakedValue, {
   StakedValue,
 } from '../../../hooks/useAllStakedValue'
+import useFarms from '../../../hooks/useFarms'
+import useSushi from '../../../hooks/useSushi'
+import { getEarned, getMasterChefContract } from '../../../sushi/utils'
+import { bnToDec } from '../../../utils'
 
 interface FarmWithStakedValue extends Farm, StakedValue {
   apy: BigNumber
@@ -100,7 +95,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
 
   const { account } = useWallet()
   const { lpTokenAddress } = farm
-  const yam = useYam()
+  const sushi = useSushi()
 
   const renderer = (countdownProps: CountdownRenderProps) => {
     const { hours, minutes, seconds } = countdownProps
@@ -116,18 +111,18 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
 
   useEffect(() => {
     async function fetchEarned() {
-      if (yam) return
+      if (sushi) return
       const earned = await getEarned(
-        getMasterChefContract(yam),
+        getMasterChefContract(sushi),
         lpTokenAddress,
         account,
       )
       setHarvestable(bnToDec(earned))
     }
-    if (yam && account) {
+    if (sushi && account) {
       fetchEarned()
     }
-  }, [yam, lpTokenAddress, account, setHarvestable])
+  }, [sushi, lpTokenAddress, account, setHarvestable])
 
   const poolActive = true // startTime * 1000 - Date.now() <= 0
 
@@ -188,7 +183,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
 }
 
 const RainbowLight = keyframes`
-
+  
 	0% {
 		background-position: 0% 50%;
 	}

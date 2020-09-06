@@ -1,17 +1,15 @@
 import BigNumber from 'bignumber.js/bignumber'
-import Web3 from 'web3'
-import * as Types from './types.js'
+import ERC20Abi from './abi/erc20.json'
+import MasterChefAbi from './abi/masterchef.json'
+import SushiAbi from './abi/sushi.json'
+import UNIV2PairAbi from './abi/uni_v2_lp.json'
+import WETHAbi from './abi/weth.json'
 import {
-  SUBTRACT_GAS_LIMIT,
   contractAddresses,
+  SUBTRACT_GAS_LIMIT,
   supportedPools,
 } from './constants.js'
-
-import UNIV2PairAbi from './abi/uni_v2_lp.json'
-import SushiAbi from './abi/sushi.json'
-import MasterChefAbi from './abi/masterchef.json'
-import ERC20Abi from './abi/erc20.json'
-import WETHAbi from './abi/weth.json'
+import * as Types from './types.js'
 
 export class Contracts {
   constructor(provider, networkId, web3, options) {

@@ -1,15 +1,10 @@
 import React, { useCallback } from 'react'
 import styled from 'styled-components'
 import { useWallet } from 'use-wallet'
-import useYam from '../../../hooks/useYam'
-import { getSushiAddress } from '../../../sushi/utils'
-
 import useTokenBalance from '../../../hooks/useTokenBalance'
-import {
-  getDisplayBalance,
-  getBalanceNumber,
-} from '../../../utils/formatBalance'
-
+import useSushi from '../../../hooks/useSushi'
+import { getSushiAddress } from '../../../sushi/utils'
+import { getBalanceNumber } from '../../../utils/formatBalance'
 import Button from '../../Button'
 import CardIcon from '../../CardIcon'
 import Label from '../../Label'
@@ -17,7 +12,6 @@ import Modal, { ModalProps } from '../../Modal'
 import ModalActions from '../../ModalActions'
 import ModalContent from '../../ModalContent'
 import ModalTitle from '../../ModalTitle'
-import Separator from '../../Separator'
 import Spacer from '../../Spacer'
 import Value from '../../Value'
 
@@ -29,8 +23,8 @@ const AccountModal: React.FC<ModalProps> = ({ onDismiss }) => {
     reset()
   }, [onDismiss, reset])
 
-  const yam = useYam()
-  const sushiBalance = useTokenBalance(getSushiAddress(yam))
+  const sushi = useSushi()
+  const sushiBalance = useTokenBalance(getSushiAddress(sushi))
 
   return (
     <Modal>
