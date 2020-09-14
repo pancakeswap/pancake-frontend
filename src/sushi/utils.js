@@ -81,6 +81,7 @@ export const getTotalLPWethValue = async (
   pid,
 ) => {
   // Get balance of the token address
+  console.log(lpContract.options.address)
   const tokenAmountWholeLP = await tokenContract.methods
     .balanceOf(lpContract.options.address)
     .call()
@@ -123,10 +124,15 @@ export const approve = async (lpContract, masterChefContract, account) => {
 }
 
 export const getSushiSupply = async (sushi) => {
+  console.log(sushi.contracts)
+  console.log(sushi.contracts.sushi.methods)
+  console.log(sushi.contracts.sushi.methods.totalSupply())
   return new BigNumber(await sushi.contracts.sushi.methods.totalSupply().call())
 }
 
 export const stake = async (masterChefContract, pid, amount, account) => {
+  console.log(masterChefContract, pid, amount, account)
+
   return masterChefContract.methods
     .deposit(
       pid,
@@ -140,6 +146,7 @@ export const stake = async (masterChefContract, pid, amount, account) => {
 }
 
 export const unstake = async (masterChefContract, pid, amount, account) => {
+  console.log(masterChefContract, pid, amount, account)
   return masterChefContract.methods
     .withdraw(
       pid,
@@ -151,7 +158,9 @@ export const unstake = async (masterChefContract, pid, amount, account) => {
       return tx.transactionHash
     })
 }
+
 export const harvest = async (masterChefContract, pid, account) => {
+  console.log(masterChefContract, pid, account)
   return masterChefContract.methods
     .deposit(pid, '0')
     .send({ from: account })

@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import Container from '../Container'
+import Container from '../../components/Container'
 
 interface PageHeaderProps {
   icon: React.ReactNode
@@ -28,14 +28,15 @@ const StyledPageHeader = styled.div`
   flex-direction: column;
   padding-bottom: ${(props) => props.theme.spacing[6]}px;
   padding-top: ${(props) => props.theme.spacing[6]}px;
+  margin: 20px auto;
 `
 
 const StyledIcon = styled.div`
-  font-size: 180px;
-  height: 180px;
-  line-height: 180px;
+  font-size: 190px;
+  height: 190px;
+  line-height: 190px;
   text-align: center;
-  width: 180px;
+  width: 190px;
   img {
     width: 100%;
     height: 100%;
@@ -44,7 +45,7 @@ const StyledIcon = styled.div`
 
 const StyledTitle = styled.h1`
   font-family: 'monospace', sans-serif;
-  color: ${(props) => props.theme.color.grey[600]};
+  color: ${(props) => props.theme.color.blue[100]};
   font-size: 36px;
   font-weight: 700;
   margin: 0;

@@ -1,10 +1,14 @@
 body {
-  background: #fff8ee;
+  background: #f5f3f3;
   margin: 0;
   font-family: 'Noto Sans', sans-serif;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-image:url("./assets/img/BG1.png"),url("./assets/img/BG2.png");
+  background-repeat: no-repeat, no-repeat;
+  background-position-y:top, bottom;
+  background-position-x:right, left;
 }
 
 code {
