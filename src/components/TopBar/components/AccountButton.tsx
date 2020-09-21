@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import styled from 'styled-components'
 import { useWallet } from 'use-wallet'
 import useModal from '../../../hooks/useModal'
@@ -15,11 +15,12 @@ const AccountButton: React.FC<AccountButtonProps> = (props) => {
     'provider',
   )
 
-  const { account } = useWallet()
+  const { account, connect, status } = useWallet()
 
   const handleUnlockClick = useCallback(() => {
     onPresentWalletProviderModal()
   }, [onPresentWalletProviderModal])
+
 
   return (
     <StyledAccountButton>

@@ -19,6 +19,9 @@ export const getMasterChefAddress = (sushi) => {
 export const getSushiAddress = (sushi) => {
   return sushi && sushi.sushiAddress
 }
+export const getSyrupAddress = (sushi) => {
+  return sushi && sushi.syrupAddress
+}
 export const getWethContract = (sushi) => {
   return sushi && sushi.contracts && sushi.contracts.weth
 }
@@ -131,7 +134,18 @@ export const getSushiSupply = async (sushi) => {
 }
 
 export const stake = async (masterChefContract, pid, amount, account) => {
-  console.log(masterChefContract, pid, amount, account)
+  if(pid ===0) {
+    console.log('dd')
+    return masterChefContract.methods
+      .enterStaking(
+        new BigNumber(amount).times(new BigNumber(10).pow(18)).toString(),
+      )
+      .send({ from: account })
+      .on('transactionHash', (tx) => {
+        console.log(tx)
+        return tx.transactionHash
+      })
+  }
 
   return masterChefContract.methods
     .deposit(
@@ -146,7 +160,17 @@ export const stake = async (masterChefContract, pid, amount, account) => {
 }
 
 export const unstake = async (masterChefContract, pid, amount, account) => {
-  console.log(masterChefContract, pid, amount, account)
+  if(pid ===0) {
+    return masterChefContract.methods
+      .leaveStaking(
+        new BigNumber(amount).times(new BigNumber(10).pow(18)).toString(),
+      )
+      .send({ from: account })
+      .on('transactionHash', (tx) => {
+        console.log(tx)
+        return tx.transactionHash
+      })
+  }
   return masterChefContract.methods
     .withdraw(
       pid,
@@ -160,7 +184,15 @@ export const unstake = async (masterChefContract, pid, amount, account) => {
 }
 
 export const harvest = async (masterChefContract, pid, account) => {
-  console.log(masterChefContract, pid, account)
+  if(pid ===0) {
+    return masterChefContract.methods
+      .leaveStaking('0')
+      .send({ from: account })
+      .on('transactionHash', (tx) => {
+        console.log(tx)
+        return tx.transactionHash
+      })
+  }
   return masterChefContract.methods
     .deposit(pid, '0')
     .send({ from: account })

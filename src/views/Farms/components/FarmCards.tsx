@@ -1,5 +1,6 @@
+// @ts-nocheck
 import BigNumber from 'bignumber.js'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import Countdown, { CountdownRenderProps } from 'react-countdown'
 import styled, { keyframes } from 'styled-components'
 import { useWallet } from 'use-wallet'
@@ -17,6 +18,12 @@ import useFarms from '../../../hooks/useFarms'
 import useSushi from '../../../hooks/useSushi'
 import { getEarned, getMasterChefContract } from '../../../sushi/utils'
 import { bnToDec } from '../../../utils'
+import { forShowPools } from  '../../../sushi/lib/constants'
+
+import useModal from '../../../hooks/useModal'
+import AccountModal from '../../../components/TopBar/components/AccountModal.tsx'
+import WalletProviderModal from '../../../components/WalletProviderModal'
+
 
 interface FarmWithStakedValue extends Farm, StakedValue {
   apy: BigNumber
@@ -28,7 +35,7 @@ const FarmCards: React.FC = () => {
   const stakedValue = useAllStakedValue()
 
   const sushiIndex = farms.findIndex(
-    ({ tokenSymbol }) => tokenSymbol === 'SUSHI',
+    ({ tokenSymbol }) => tokenSymbol === 'CAKE',
   )
 
   const sushiPrice =
@@ -36,10 +43,23 @@ const FarmCards: React.FC = () => {
       ? stakedValue[sushiIndex].tokenPriceInWeth
       : new BigNumber(0)
 
-  const BLOCKS_PER_YEAR = new BigNumber(2336000)
-  const SUSHI_PER_BLOCK = new BigNumber(1000)
+  const BLOCKS_PER_YEAR = new BigNumber(10512000)
+  const SUSHI_PER_BLOCK = new BigNumber(40)
 
-  const rows = farms.reduce<FarmWithStakedValue[][]>(
+
+  const [onPresentAccountModal] = useModal(<AccountModal />)
+  const [onPresentWalletProviderModal] = useModal(
+    <WalletProviderModal />,
+    'provider',
+  )
+
+  const handleUnlockClick = useCallback(() => {
+    onPresentWalletProviderModal()
+  }, [onPresentWalletProviderModal])
+
+  const realFarms =farms.filter(farm => farm.pid !== 0)
+
+  const rows = realFarms.reduce<FarmWithStakedValue[][]>(
     (farmRows, farm, i) => {
       const farmWithStakedValue = {
         ...farm,
@@ -63,6 +83,7 @@ const FarmCards: React.FC = () => {
     [[]],
   )
 
+
   return (
     <StyledCards>
       {!!rows[0].length ? (
@@ -78,33 +99,92 @@ const FarmCards: React.FC = () => {
         ))
       ) : (
         <StyledLoadingWrapper>
-          <Loader text="Cooking the rice ..." />
+          <FContent>
+          {
+            forShowPools.map((pool, index) =>
+              <FCard key={index}>
+                <CardImage>
+                <img src={require(`../../../assets/img/category-${pool.tokenSymbol.toLocaleLowerCase()}.png`)} alt="" />
+                </CardImage>
+                <Lable><span>Deposit</span><span  className="right">{pool.symbol}</span></Lable>
+                <Lable><span>Earn</span><span  className="right">CAKE</span></Lable>
+                <Button onClick={handleUnlockClick} size="md" text="Unlock Wallet" />
+              </FCard>)
+          }
+          </FContent>
         </StyledLoadingWrapper>
       )}
     </StyledCards>
   )
 }
 
+const FContent= styled.div`
+  display: flex;
+  margin-bottom: 24px;
+  flex-wrap: wrap
+`
+
+const CardImage = styled.div`
+  text-align: center;
+`
+
+const Lable = styled.div`
+line-height: 1.5rem;
+color: #7645D9;
+  >span {
+    float: left;
+  }
+  .right {
+    float: right;
+    color: #452A7A;
+    font-weight: 900;
+  }
+`
+
+const FCard = styled.div`
+background: rgb(240, 233, 231);
+background: #FFFDFA;
+box-shadow: 0px 2px 10px rgba(171, 133, 115, 0.16);
+border-radius: 20px;
+height: 309px;
+padding: 20px;
+justify-content: center;
+flex-direction:column;
+justify-content:space-around;
+    display: flex;
+    width: 240px;
+    text-align: center;
+    margin: 6px;
+  img {
+    height: 80px;
+    width: 80px;
+  }
+
+`
+
 interface FarmCardProps {
   farm: FarmWithStakedValue
 }
 
 const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
-  const [startTime, setStartTime] = useState(0)
+  const [startTime, setStartTime] = useState(1600783200)
   const [harvestable, setHarvestable] = useState(0)
+
+  // setStartTime(1600695000)
 
   const { account } = useWallet()
   const { lpTokenAddress } = farm
   const sushi = useSushi()
 
   const renderer = (countdownProps: CountdownRenderProps) => {
-    const { hours, minutes, seconds } = countdownProps
+    const { days,  hours, minutes, seconds } = countdownProps
     const paddedSeconds = seconds < 10 ? `0${seconds}` : seconds
     const paddedMinutes = minutes < 10 ? `0${minutes}` : minutes
     const paddedHours = hours < 10 ? `0${hours}` : hours
+    const paddedDays = days < 10 ? `${days}` : days
     return (
       <span style={{ width: '100%' }}>
-        {paddedHours}:{paddedMinutes}:{paddedSeconds}
+        {paddedDays} days {paddedHours}:{paddedMinutes}:{paddedSeconds}
       </span>
     )
   }
@@ -129,16 +209,28 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
   return (
     <StyledCardWrapper>
       {farm.tokenSymbol === 'SUSHI' && <StyledCardAccent />}
-      <Card>
-        <CardContent>
+
           <StyledContent>
-            <CardIcon>{farm.icon}</CardIcon>
-            <StyledTitle>{farm.name}</StyledTitle>
-            <StyledDetails>
-              <StyledDetail>Deposit {farm.lpToken.toUpperCase()}</StyledDetail>
-              <StyledDetail>Earn {farm.earnToken.toUpperCase()}</StyledDetail>
-            </StyledDetails>
-            <Spacer />
+            <FCard>
+            <CardImage>
+              <img src={require(`../../../assets/img/category-${farm.tokenSymbol.toLocaleLowerCase()}.png`)} alt="" />
+            </CardImage>
+            <Lable><span>Deposit</span><span  className="right">{farm.lpToken.toUpperCase().replace("PANCAKE", "")}</span></Lable>
+            <Lable><span>Earn</span><span  className="right">CAKE</span></Lable>
+            <Lable>
+              <span>APY</span>
+              <span className="right">
+                {farm.apy
+                  ? `${farm.apy
+                      .times(new BigNumber(100))
+                      .toNumber()
+                      .toLocaleString('en-US')
+                      .slice(0, -1)}%`
+                  : 'Loading ...'}
+              </span>
+            </Lable>
+
+
             <Button
               disabled={!poolActive}
               text={poolActive ? 'Select' : undefined}
@@ -151,39 +243,15 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
                 />
               )}
             </Button>
-            <StyledInsight>
-              <span>APY</span>
-              <span>
-                {farm.apy
-                  ? `${farm.apy
-                      .times(new BigNumber(100))
-                      .toNumber()
-                      .toLocaleString('en-US')
-                      .slice(0, -1)}%`
-                  : 'Loading ...'}
-              </span>
-              {/* <span>
-                {farm.tokenAmount
-                  ? (farm.tokenAmount.toNumber() || 0).toLocaleString('en-US')
-                  : '-'}{' '}
-                {farm.tokenSymbol}
-              </span>
-              <span>
-                {farm.wethAmount
-                  ? (farm.wethAmount.toNumber() || 0).toLocaleString('en-US')
-                  : '-'}{' '}
-                ETH
-              </span> */}
-            </StyledInsight>
+            </FCard>
           </StyledContent>
-        </CardContent>
-      </Card>
+
     </StyledCardWrapper>
   )
 }
 
 const RainbowLight = keyframes`
-  
+
 	0% {
 		background-position: 0% 50%;
 	}

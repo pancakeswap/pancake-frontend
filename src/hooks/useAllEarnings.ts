@@ -7,6 +7,7 @@ import { useWallet } from 'use-wallet'
 import { getEarned, getMasterChefContract, getFarms } from '../sushi/utils'
 import useSushi from './useSushi'
 import useBlock from './useBlock'
+import useEarnings from './useEarnings';
 
 const useAllEarnings = () => {
   const [balances, setBalance] = useState([] as Array<BigNumber>)
@@ -18,10 +19,13 @@ const useAllEarnings = () => {
 
   const fetchAllBalances = useCallback(async () => {
     const balances: Array<BigNumber> = await Promise.all(
-      farms.map(({ pid }: { pid: number }) =>
-        getEarned(masterChefContract, pid, account),
+      farms.map(({ pid }: { pid: number }) =>{
+        console.log(getEarned(masterChefContract, pid, account))
+        return getEarned(masterChefContract, pid, account)
+      }
       ),
     )
+    console.log(balances)
     setBalance(balances)
   }, [account, masterChefContract, sushi])
 
@@ -30,6 +34,8 @@ const useAllEarnings = () => {
       fetchAllBalances()
     }
   }, [account, block, masterChefContract, setBalance, sushi])
+
+  console.log(farms, balances)
 
   return balances
 }

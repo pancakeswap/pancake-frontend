@@ -12,17 +12,19 @@ const CardIcon: React.FC<CardIconProps> = ({ children }) => (
 )
 
 const StyledCardIcon = styled.div`
-  background-color: ${props => props.theme.color.grey[200]};
-  font-size: 36px;
+  background-color: ${props => props.theme.color.grey[300]};
+  font-size: 56px;
   height: 80px;
-  width: 80px;
+  width: 150px;
   border-radius: 40px;
   align-items: center;
   display: flex;
   justify-content: center;
-  box-shadow: inset 4px 4px 8px ${props => props.theme.color.grey[300]},
-    inset -6px -6px 12px ${props => props.theme.color.grey[100]};
   margin: 0 auto ${props => props.theme.spacing[3]}px;
+  img {
+    height: 150px;
+    width: 150px;
+  }
 `
 
 export default CardIcon

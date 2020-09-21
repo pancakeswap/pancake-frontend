@@ -1,6 +1,5 @@
 import React from 'react'
 import styled from 'styled-components'
-import chef from '../../assets/img/chef.png'
 import Button from '../../components/Button'
 import Container from '../../components/Container'
 import Page from '../../components/Page'
@@ -11,9 +10,8 @@ import Balances from './components/Balances'
 const Home: React.FC = () => {
   return (
     <Page>
-      <PageHeader
-        icon={<img src={chef} height={120} />}
-      />
+      <Image src={require(`../../assets/img/BG1.png`)}/>
+      <Blank/>
       <Container>
         <Balances />
       </Container>
@@ -23,11 +21,23 @@ const Home: React.FC = () => {
           margin: '0 auto',
         }}
       >
-        <Button text="🔪 See the Menu" to="/farms" variant="secondary" />
+        <Button text="👩‍🍳 See the Kitchen" to="/farms" variant="secondary" />
       </div>
     </Page>
   )
 }
+
+const Image = styled.img`
+  position: absolute;
+  z-index: -3;
+  top: 10%;
+`
+
+const Blank = styled.div`
+  height: 260px;
+
+`
+
 
 const StyledInfo = styled.h3`
   color: ${(props) => props.theme.color.grey[500]};

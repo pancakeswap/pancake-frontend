@@ -4,20 +4,23 @@ import styled from 'styled-components'
 const Nav: React.FC = () => {
   return (
     <StyledNav>
-      <StyledLink
-        target="_blank"
-        href=""
-      >
+      <StyledLink target="_blank" href="https://t.me/PancakeSwap">
         Telegram
       </StyledLink>
-      <StyledLink target="_blank" href="">
+      <StyledLink target="_blank" href="https://medium.com/@pancakeswap">
         Blog
       </StyledLink>
-      <StyledLink target="_blank" href="">
+      <StyledLink target="_blank" href="https://github.com/pancakeswap">
         Github
       </StyledLink>
-      <StyledLink target="_blank" href="">
+      <StyledLink target="_blank" href="https://twitter.com/pancakeswap">
         Twitter
+      </StyledLink>
+      <StyledLink
+        href="http://docs.pancakeswap.finance"
+        target="_blank"
+      >
+        Docs
       </StyledLink>
     </StyledNav>
   )

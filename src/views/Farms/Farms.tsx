@@ -1,8 +1,7 @@
 import React from 'react'
 import { Route, Switch, useRouteMatch } from 'react-router-dom'
 import { useWallet } from 'use-wallet'
-
-import chef from '../../assets/img/chef.png'
+import styled from 'styled-components'
 
 import Button from '../../components/Button'
 import Page from '../../components/Page'
@@ -22,15 +21,13 @@ const Farms: React.FC = () => {
   return (
     <Switch>
       <Page>
-        {!!account ? (
+        {true ? (
           <>
             <Route exact path={path}>
-              <PageHeader
-                icon={<img src={chef} height="120" />}
-                subtitle="Earn SUSHI tokens by staking Uniswap V2 LP Tokens."
-                title="Select Your Favorite Dishes"
-              />
+              <Title>Stake FLIP tokens to stack CAKE</Title>
+
               <FarmCards />
+              <Image src={require(`../../assets/img/cakecat.png`)}/>
             </Route>
             <Route path={`${path}/:farmId`}>
               <Farm />
@@ -55,5 +52,17 @@ const Farms: React.FC = () => {
     </Switch>
   )
 }
+
+const Image = styled.img`
+`
+
+const Title= styled.div`
+  color:#7645D9;
+  font-size:29px;
+  width: 50vw;
+  text-align: center;
+  font-weight: 900;
+  margin: 50px;
+`
 
 export default Farms

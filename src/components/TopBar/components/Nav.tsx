@@ -5,11 +5,11 @@ import styled from 'styled-components'
 const Nav: React.FC = () => {
   return (
     <StyledNav>
-      <StyledLink exact activeClassName="active" to="/bsc-test">
-        BSC-TEST
+      <StyledLink exact activeClassName="active" to="/dashboard">
+        Dashboard
       </StyledLink>
       <StyledLink exact activeClassName="active" to="/farms">
-        Menu
+        Farm
       </StyledLink>
       <StyledLink exact activeClassName="active" to="/staking">
         Staking
@@ -17,16 +17,24 @@ const Nav: React.FC = () => {
 
       <StyledAbsoluteLink
         href="https://exchange.pancakeswap.finance"
-        target="_blank"
       >
         Exchange
       </StyledAbsoluteLink>
       <StyledAbsoluteLink
-        href="https://medium.com/sushiswap/the-sushiswap-project-c4049ea9941e"
+        href="http://docs.pancakeswap.finance"
         target="_blank"
       >
-        About
+        Docs
       </StyledAbsoluteLink>
+
+      <StyledLink exact activeClassName="active" to="/voting">
+        Voting
+      </StyledLink>
+      <StyledLink exact activeClassName="active" to="/lottery">
+        Lottery
+      </StyledLink>
+
+
     </StyledNav>
   )
 }
@@ -43,7 +51,7 @@ const StyledLink = styled(NavLink)`
   padding-right: ${(props) => props.theme.spacing[3]}px;
   text-decoration: none;
   &:hover {
-    color: ${(props) => props.theme.color.grey[500]};
+    color: #452A7A;
   }
   &.active {
     color: ${(props) => props.theme.color.primary.main};
@@ -61,7 +69,7 @@ const StyledAbsoluteLink = styled.a`
   padding-right: ${(props) => props.theme.spacing[3]}px;
   text-decoration: none;
   &:hover {
-    color: ${(props) => props.theme.color.grey[500]};
+    color: #452A7A;
   }
   &.active {
     color: ${(props) => props.theme.color.primary.main};

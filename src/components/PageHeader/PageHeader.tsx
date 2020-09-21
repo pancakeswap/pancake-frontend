@@ -35,7 +35,6 @@ const StyledIcon = styled.div`
   height: 180px;
   line-height: 180px;
   text-align: center;
-  width: 180px;
   img {
     width: 100%;
     height: 100%;
@@ -44,8 +43,9 @@ const StyledIcon = styled.div`
 
 const StyledTitle = styled.h1`
   font-family: 'monospace', sans-serif;
-  color: ${(props) => props.theme.color.grey[600]};
-  font-size: 36px;
+  line-height: 80px;
+  color: #7645D9;
+  font-size: 32px;
   font-weight: 700;
   margin: 0;
   margin-top: 10px;

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react'
 import styled from 'styled-components'
 import chef from '../../assets/img/chef.png'
@@ -9,34 +10,57 @@ import Spacer from '../../components/Spacer'
 
 
 const Coming: React.FC = () => {
+
+  const [currentTime, setCurrentTime] = React.useState(Date.parse(new Date())/1000);
+
+  const endTime = 1600783200
+  const seconds  = (endTime - currentTime) % 60
+  const minutes  = (endTime - currentTime) % 3600 / 60
+  const hours  = (endTime - currentTime) % (3600 * 24) / 3600
+  const days  = (endTime - currentTime) / (3600 * 24)
+
+
+  const tick = () => {
+    setCurrentTime(currentTime + 1)
+  };
+
+  React.useEffect(() => {
+    // 执行定时
+    let timerID = setInterval(() => tick(), 1000);
+    // 卸载组件时进行清理
+    return () => clearInterval(timerID);
+  });
+
   return (
     <Page>
       <PageHeader
-        icon={<img src={chef} height={120} />}
-        title="Coming Soon..."
+        icon={'🥞'}
+        title="CAKE will start flipping in"
       />
       <StyledInfo>
-        <Countdown>?</Countdown>D
-        <Countdown>?</Countdown>H
-        <Countdown>?</Countdown>M
-        <Countdown>?</Countdown>S
+        <Countdown>{parseInt(days ? days : '0')}</Countdown>D
+        <Countdown>{parseInt(hours)}</Countdown>H
+        <Countdown>{parseInt(minutes)}</Countdown>M
+        <Countdown>{seconds}</Countdown>S
       </StyledInfo>
     </Page>
   )
 }
 
 const StyledInfo = styled.div`
-    background: #F5F3F3;
-    box-shadow: -11px -11px 15px 0 rgba(255,255,255,0.50), 16px 10px 32px 2px rgba(202,194,194,0.42), inset -8px -9px 11px 0 rgba(255,255,255,0.21), inset 14px 7px 30px 0 rgba(204,183,183,0.08);
+    background: #FFFDFA;
+    box-shadow: 0px 2.2623px 11.3115px rgba(171, 133, 115, 0.16);
     border-radius: 50px;
     font-size: 25px;
-    color: #78D4E2;
+    color: #7645D9;
     font-weight: 900;
-    height: 140px;
-    padding: 0 40px;
+    height: 120px;
+    padding: 20px;
+    width: 600px;
+    text-align: center;
     padding-top: 200px;
     position: relative;
-    margin-top: -210px;
+    margin-top: -200px;
     z-index: -1;
 
   > b {
@@ -47,13 +71,14 @@ const StyledInfo = styled.div`
 const Countdown = styled.div`
   display: inline-block;
   width: 80px;
-  background: rgba(220,228,234,0.51);
+  background: linear-gradient(180deg, #54DADE 0%, #24C7D6 76.22%);
   border-radius: 12.8px;
   font-family: monospace;
-  font-size: 61.44px;
-  color: #2E575D;
+  font-size: 58px;
+  color: #452A7A;
   letter-spacing: 0;
   text-align: center;
+  margin-left: 10px;
   text-shadow: 0 2px 21px rgba(10,16,128,0.08);
 `
 

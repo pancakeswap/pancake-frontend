@@ -1,6 +1,7 @@
 import BigNumber from 'bignumber.js'
 import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
+import { useWallet } from 'use-wallet'
 import { Contract } from 'web3-eth-contract'
 import Button from '../../../components/Button'
 import Card from '../../../components/Card'
@@ -21,6 +22,9 @@ import { getBalanceNumber } from '../../../utils/formatBalance'
 import DepositModal from './DepositModal'
 import WithdrawModal from './WithdrawModal'
 
+import WalletProviderModal from '../../../components/WalletProviderModal'
+import AccountModal from '../../../components/TopBar/components/AccountModal'
+
 interface StakeProps {
   lpContract: Contract
   pid: number
@@ -29,6 +33,7 @@ interface StakeProps {
 
 const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName }) => {
   const [requestedApproval, setRequestedApproval] = useState(false)
+  const { account } = useWallet()
 
   const allowance = useAllowance(lpContract)
   const { onApprove } = useApprove(lpContract)
@@ -68,17 +73,31 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName }) => {
     }
   }, [onApprove, setRequestedApproval])
 
+  const [onPresentAccountModal] = useModal(<AccountModal />)
+  const [onPresentWalletProviderModal] = useModal(
+    <WalletProviderModal />,
+    'provider',
+  )
+  const handleUnlockClick = useCallback(() => {
+    onPresentWalletProviderModal()
+  }, [onPresentWalletProviderModal])
+
   return (
     <Card>
       <CardContent>
         <StyledCardContentInner>
           <StyledCardHeader>
-            <CardIcon>🧑🏿‍🚒</CardIcon>
+            <CardIcon>⛏🐰</CardIcon>
             <Value value={getBalanceNumber(stakedBalance)} />
             <Label text={`${tokenName} Tokens Staked`} />
           </StyledCardHeader>
           <StyledCardActions>
-            {!allowance.toNumber() ? (
+          <Button
+            disabled={true}
+            text="Coming"
+          />
+{/*            {!account &&  <Button onClick={handleUnlockClick} size="md" text="Unlock Wallet" />}
+            { account &&  (!allowance.toNumber() ? (
               <Button
                 disabled={requestedApproval}
                 onClick={handleApprove}
@@ -96,7 +115,7 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName }) => {
                   <AddIcon />
                 </IconButton>
               </>
-            )}
+            ))}*/}
           </StyledCardActions>
         </StyledCardContentInner>
       </CardContent>

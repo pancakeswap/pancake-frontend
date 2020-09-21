@@ -14,6 +14,8 @@ import useAllStakedValue from '../../../hooks/useAllStakedValue'
 import useFarms from '../../../hooks/useFarms'
 import useTokenBalance from '../../../hooks/useTokenBalance'
 import useSushi from '../../../hooks/useSushi'
+
+import Separator from '../../../components/Separator'
 import { getSushiAddress, getSushiSupply } from '../../../sushi/utils'
 import { getBalanceNumber } from '../../../utils/formatBalance'
 
@@ -46,7 +48,7 @@ const PendingRewards: React.FC = () => {
   }, [sumEarning])
 
   return (
-    <span
+    <StyledSpan
       style={{
         transform: `scale(${scale})`,
         transformOrigin: 'right bottom',
@@ -65,7 +67,7 @@ const PendingRewards: React.FC = () => {
         }}
         separator=","
       />
-    </span>
+    </StyledSpan>
   )
 }
 
@@ -90,11 +92,11 @@ const Balances: React.FC = () => {
       <Card>
         <CardContent>
           <StyledBalances>
+            <SLabel>Your CAKE Balance</SLabel>
             <StyledBalance>
               <SushiIcon />
               <Spacer />
               <div style={{ flex: 1 }}>
-                <Label text="Your CAKE Balance" />
                 <Value
                   value={!!account ? getBalanceNumber(sushiBalance) : 'Locked'}
                 />
@@ -102,6 +104,7 @@ const Balances: React.FC = () => {
             </StyledBalance>
           </StyledBalances>
         </CardContent>
+
         <Footnote>
           Pending harvest
           <FootnoteValue>
@@ -112,30 +115,46 @@ const Balances: React.FC = () => {
       <Spacer />
 
       <Card>
+      <StyledBalances>
         <CardContent>
-          <Label text="Total CAKE Supply" />
-          <Value
-            value={totalSupply ? getBalanceNumber(totalSupply) : 'Locked'}
-          />
+          <SLabel>Total CAKE Supply</SLabel>
+          <StyledBalance>
+            <Value
+              value={totalSupply ? getBalanceNumber(totalSupply) : 'Locked'}
+            />
+          </StyledBalance>
         </CardContent>
+        </StyledBalances>
+
+
         <Footnote>
           New rewards per block
-          <FootnoteValue>1,000 CAKE</FootnoteValue>
+          <FootnoteValue>40 CAKE</FootnoteValue>
         </Footnote>
       </Card>
     </StyledWrapper>
   )
 }
 
+const SLabel = styled.div`
+  line-height: 40px;
+  color: #7645D9;
+`
+
 const Footnote = styled.div`
   font-size: 14px;
-  padding: 8px 20px;
-  color: ${(props) => props.theme.color.grey[400]};
-  border-top: solid 1px ${(props) => props.theme.color.grey[300]};
+  padding: 0 20px;
+  line-height: 50px;
+  color: #7645D9;
+  border-top: solid 1px #7645d938;
+  padding: 0 2rem;
 `
 const FootnoteValue = styled.div`
   font-family: 'Roboto Mono', monospace;
   float: right;
+  height: 50px;
+  line-height: 50px;
+  color: #7645D9;
 `
 
 const StyledWrapper = styled.div`
@@ -150,12 +169,21 @@ const StyledWrapper = styled.div`
 
 const StyledBalances = styled.div`
   display: flex;
+  flex-direction: column;
+  padding: 0 1rem;
 `
 
 const StyledBalance = styled.div`
   align-items: center;
   display: flex;
   flex: 1;
+
+  line-height: 60px;
+`
+
+
+const StyledSpan  = styled.span`
+  color: #12AAB5;
 `
 
 export default Balances

@@ -2,6 +2,7 @@ import BigNumber from 'bignumber.js/bignumber'
 import ERC20Abi from './abi/erc20.json'
 import MasterChefAbi from './abi/masterchef.json'
 import SushiAbi from './abi/sushi.json'
+import SyrupAbi from './abi/syrup.json'
 import UNIV2PairAbi from './abi/uni_v2_lp.json'
 import WETHAbi from './abi/weth.json'
 import {
@@ -23,6 +24,7 @@ export class Contracts {
 
     this.sushi = new this.web3.eth.Contract(SushiAbi)
     this.masterChef = new this.web3.eth.Contract(MasterChefAbi)
+    this.syrup = new this.web3.eth.Contract(SyrupAbi)
     this.weth = new this.web3.eth.Contract(WETHAbi)
 
     this.pools = supportedPools.map((pool) =>
@@ -46,6 +48,7 @@ export class Contracts {
     }
 
     setProvider(this.sushi, contractAddresses.sushi[networkId])
+    setProvider(this.syrup, contractAddresses.syrup[networkId])
     setProvider(this.masterChef, contractAddresses.masterChef[networkId])
     setProvider(this.weth, contractAddresses.weth[networkId])
 
@@ -60,6 +63,7 @@ export class Contracts {
   setDefaultAccount(account) {
     this.sushi.options.from = account
     this.masterChef.options.from = account
+    this.syrup.options.from = account
   }
 
   async callContractFunction(method, options) {

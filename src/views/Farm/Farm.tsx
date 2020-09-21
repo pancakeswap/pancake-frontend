@@ -3,18 +3,24 @@ import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { useWallet } from 'use-wallet'
 import { provider } from 'web3-core'
+
 import PageHeader from '../../components/PageHeader'
 import Spacer from '../../components/Spacer'
+
 import useFarm from '../../hooks/useFarm'
 import useRedeem from '../../hooks/useRedeem'
 import useSushi from '../../hooks/useSushi'
+
 import { getMasterChefContract } from '../../sushi/utils'
 import { getContract } from '../../utils/erc20'
+
 import Harvest from './components/Harvest'
 import Stake from './components/Stake'
 
 const Farm: React.FC = () => {
   const { farmId } = useParams()
+
+  console.log(farmId)
   const {
     pid,
     lpToken,
@@ -23,6 +29,7 @@ const Farm: React.FC = () => {
     earnToken,
     name,
     icon,
+    tokenSymbol
   } = useFarm(farmId) || {
     pid: 0,
     lpToken: '',
@@ -31,6 +38,7 @@ const Farm: React.FC = () => {
     earnToken: '',
     name: '',
     icon: '',
+    tokenSymbol: ''
   }
 
   useEffect(() => {
@@ -54,13 +62,11 @@ const Farm: React.FC = () => {
     return earnToken.toUpperCase()
   }, [earnToken])
 
+
   return (
     <>
-      <PageHeader
-        icon={icon}
-        subtitle={`Deposit ${lpTokenName}  Tokens and earn ${earnTokenName}`}
-        title={name}
-      />
+      <Image src={require(`../../assets/img/category-${tokenSymbol.toLocaleLowerCase() || 'cake'}.png`)}/>
+      <Title>Stake FLIP tokens to stack CAKE</Title>
       <StyledFarm>
         <StyledCardsWrapper>
           <StyledCardWrapper>
@@ -77,14 +83,29 @@ const Farm: React.FC = () => {
         </StyledCardsWrapper>
         <Spacer size="lg" />
         <StyledInfo>
-          ⭐️ Every time you stake and unstake LP tokens, the contract will
-          automagically harvest SUSHI rewards for you!
+          ⭐️ Every time you stake and unstake FLIP tokens, the contract will
+          automagically harvest CAKE rewards for you!
         </StyledInfo>
         <Spacer size="lg" />
       </StyledFarm>
     </>
   )
 }
+
+const Image = styled.img`
+  width: 160px;
+  margin-top: 30px;
+`
+
+const Title= styled.div`
+  color:#7645D9;
+  font-size:29px;
+  width: 50vw;
+  text-align: center;
+  font-weight: 900;
+  margin: 50px;
+`
+
 
 const StyledFarm = styled.div`
   align-items: center;

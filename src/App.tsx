@@ -15,6 +15,8 @@ import Farms from './views/Farms'
 import Home from './views/Home'
 import Stake from './views/Stake'
 import Coming from './views/Coming'
+import Lottery from './views/Lottery'
+import Voting from './views/Voting'
 
 const App: React.FC = () => {
   const [mobileMenu, setMobileMenu] = useState(false)
@@ -36,7 +38,7 @@ const App: React.FC = () => {
           <Route path="/" exact>
             <Coming />
           </Route>
-          <Route path="/bsc-test" exact>
+          <Route path="/dashboard" exact>
             <Home />
           </Route>
           <Route path="/farms">
@@ -44,6 +46,12 @@ const App: React.FC = () => {
           </Route>
           <Route path="/staking">
             <Stake />
+          </Route>
+          <Route path="/lottery">
+            <Lottery />
+          </Route>
+          <Route path="/voting">
+            <Voting />
           </Route>
         </Switch>
       </Router>
@@ -56,9 +64,9 @@ const Providers: React.FC = ({ children }) => {
   return (
     <ThemeProvider theme={theme}>
       <UseWalletProvider
-        chainId={97}
+        chainId={5656}
         connectors={{
-          walletconnect: { rpcUrl: 'https://data-seed-prebsc-1-s1.binance.org:8545' },
+          walletconnect: { rpcUrl: 'https://bsc-dataseed.binance.org' }
         }}
       >
         <SushiProvider>

@@ -26,3 +26,4 @@ yarn-debug.log*
 yarn-error.log*
 
 # gitignore
+sftp-config.json

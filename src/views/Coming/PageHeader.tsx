@@ -28,13 +28,12 @@ const StyledPageHeader = styled.div`
   flex-direction: column;
   padding-bottom: ${(props) => props.theme.spacing[6]}px;
   padding-top: ${(props) => props.theme.spacing[6]}px;
-  margin: 20px auto;
+  margin-top: 160px;
 `
 
 const StyledIcon = styled.div`
-  font-size: 190px;
-  height: 190px;
-  line-height: 190px;
+  font-size: 60px;
+  line-height: 90px;
   text-align: center;
   width: 190px;
   img {
@@ -49,7 +48,6 @@ const StyledTitle = styled.h1`
   font-size: 36px;
   font-weight: 700;
   margin: 0;
-  margin-top: 10px;
   padding: 0;
 `
 
