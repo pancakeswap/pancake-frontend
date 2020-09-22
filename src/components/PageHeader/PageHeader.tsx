@@ -50,6 +50,9 @@ const StyledTitle = styled.h1`
   margin: 0;
   margin-top: 10px;
   padding: 0;
+  @media (max-width: 500px) {
+    display: none;
+  }
 `
 
 const StyledSubtitle = styled.h3`

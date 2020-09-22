@@ -35,7 +35,9 @@ const Image = styled.img`
 
 const Blank = styled.div`
   height: 260px;
-
+  @media (max-width: 500px) {
+    height: 60px;
+  }
 `
 
 

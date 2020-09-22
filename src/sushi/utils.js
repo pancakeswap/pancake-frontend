@@ -46,6 +46,7 @@ export const getFarms = (sushi) => {
           tokenContract,
           lpAddress,
           lpContract,
+          multiplier,
         }) => ({
           pid,
           id: symbol,
@@ -59,6 +60,7 @@ export const getFarms = (sushi) => {
           earnToken: 'sushi',
           earnTokenAddress: sushi.contracts.sushi.options.address,
           icon,
+          multiplier,
         }),
       )
     : []

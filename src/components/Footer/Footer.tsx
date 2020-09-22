@@ -15,6 +15,9 @@ const StyledFooter = styled.footer`
   align-items: center;
   display: flex;
   justify-content: center;
+  @media (max-width: 500px) {
+    display: none;
+  }
 `
 const StyledFooterInner = styled.div`
   align-items: center;

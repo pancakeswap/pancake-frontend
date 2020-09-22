@@ -11,7 +11,6 @@ const StyledCard = styled.div`
   flex: 1;
   box-shadow: 0px 2px 8px rgba(171, 133, 115, 0.21);
   border-radius: 20px;
-
   flex-direction: column;
 `
 

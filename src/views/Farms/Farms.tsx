@@ -2,6 +2,7 @@ import React from 'react'
 import { Route, Switch, useRouteMatch } from 'react-router-dom'
 import { useWallet } from 'use-wallet'
 import styled from 'styled-components'
+import { NavLink } from 'react-router-dom'
 
 import Button from '../../components/Button'
 import Page from '../../components/Page'
@@ -25,7 +26,9 @@ const Farms: React.FC = () => {
           <>
             <Route exact path={path}>
               <Title>Stake FLIP tokens to stack CAKE</Title>
-
+              <StyledLink exact activeClassName="active" to="/staking">
+                Staking
+              </StyledLink>
               <FarmCards />
               <Image src={require(`../../assets/img/cakecat.png`)}/>
             </Route>
@@ -52,8 +55,24 @@ const Farms: React.FC = () => {
     </Switch>
   )
 }
+const StyledLink = styled(NavLink)`
+  display: none;
+  @media (max-width: 400px) {
+    display: block;
+    background: #50d7dd;
+    border-radius: 5px;
+    line-height: 40px;
+    font-weight: 900;
+    padding: 0 20px;
+    margin-bottom: 30px;
+    color: #fff;
+  }
+`
 
 const Image = styled.img`
+  @media (max-width: 500px) {
+    width: 100vw;
+  }
 `
 
 const Title= styled.div`
@@ -63,6 +82,15 @@ const Title= styled.div`
   text-align: center;
   font-weight: 900;
   margin: 50px;
+`
+
+const Title2 = styled.div`
+  color:#27c7d5;
+  font-size:20px;
+  width: 50vw;
+  text-align: center;
+  position:  relative;
+  top: -40px;
 `
 
 export default Farms

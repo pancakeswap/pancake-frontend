@@ -108,7 +108,8 @@ const FarmCards: React.FC = () => {
                 <img src={require(`../../../assets/img/category-${pool.tokenSymbol.toLocaleLowerCase()}.png`)} alt="" />
                 </CardImage>
                 <Lable><span>Deposit</span><span  className="right">{pool.symbol}</span></Lable>
-                <Lable><span>Earn</span><span  className="right">CAKE</span></Lable>
+                <Lable><span>Earn</span><span  className="right">{pool.multiplier} CAKE</span></Lable>
+
                 <Button onClick={handleUnlockClick} size="md" text="Unlock Wallet" />
               </FCard>)
           }
@@ -122,7 +123,10 @@ const FarmCards: React.FC = () => {
 const FContent= styled.div`
   display: flex;
   margin-bottom: 24px;
-  flex-wrap: wrap
+  flex-wrap: wrap;
+  @media (max-width: 500px) {
+    justify-content: center;
+  }
 `
 
 const CardImage = styled.div`
@@ -143,22 +147,25 @@ color: #7645D9;
 `
 
 const FCard = styled.div`
-background: rgb(240, 233, 231);
-background: #FFFDFA;
-box-shadow: 0px 2px 10px rgba(171, 133, 115, 0.16);
-border-radius: 20px;
-height: 309px;
-padding: 20px;
-justify-content: center;
-flex-direction:column;
-justify-content:space-around;
-    display: flex;
-    width: 240px;
-    text-align: center;
-    margin: 6px;
+  background: rgb(240, 233, 231);
+  background: #FFFDFA;
+  box-shadow: 0px 2px 10px rgba(171, 133, 115, 0.16);
+  border-radius: 20px;
+  height: 309px;
+  padding: 20px;
+  justify-content: center;
+  flex-direction:column;
+  justify-content:space-around;
+  display: flex;
+  width: 240px;
+  text-align: center;
+  margin: 6px;
   img {
     height: 80px;
     width: 80px;
+  }
+  @media (max-width: 500px) {
+    margin: 10px;
   }
 
 `
@@ -217,7 +224,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
               <img src={require(`../../../assets/img/category-${farm.tokenSymbol.toLocaleLowerCase()}.png`)} alt="" />
             </CardImage>
             <Lable><span>Deposit</span><span  className="right">{farm.lpToken.toUpperCase().replace("PANCAKE", "")}</span></Lable>
-            <Lable><span>Earn</span><span  className="right">CAKE</span></Lable>
+            <Lable><span>Earn</span><span  className="right">{farm.multiplier} CAKE</span></Lable>
             <Lable>
               <span>APY</span>
               <span className="right">

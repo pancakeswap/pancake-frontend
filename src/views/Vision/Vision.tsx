@@ -7,6 +7,11 @@ import { getBalanceNumber } from '../../utils/formatBalance'
 const Farm: React.FC = () => {
 
   // eos-bnb
+  const cakeBalance = getBalanceNumber(useTokenBalance2('0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82', '0xA527a61703D82139F8a06Bc30097cC9CAA2df5A6'))
+  const bnbBalance8 = getBalanceNumber(useTokenBalance2('0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c', '0xA527a61703D82139F8a06Bc30097cC9CAA2df5A6'))
+
+
+  // eos-bnb
   const eosBalance = getBalanceNumber(useTokenBalance2('0x56b6fb708fc5732dec1afc8d8556423a2edccbd6', '0x981d2Ba1b298888408d342C39c2Ab92e8991691e'))
   const bnbBalance0 = getBalanceNumber(useTokenBalance2('0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c', '0x981d2Ba1b298888408d342C39c2Ab92e8991691e'))
   // link-bnb
@@ -16,8 +21,8 @@ const Farm: React.FC = () => {
   const bandBalance = getBalanceNumber(useTokenBalance2('0xad6caeb32cd2c308980a548bd0bc5aa4306c6c18', '0xc639187ef82271D8f517de6FEAE4FaF5b517533c'))
   const bnbBalance2 = getBalanceNumber(useTokenBalance2('0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c', '0xc639187ef82271D8f517de6FEAE4FaF5b517533c'))
   // burger-bnb
-  const burgerBalance = getBalanceNumber(useTokenBalance2('0xae9269f27437f0fcbc232d39ec814844a51d6b8f', '0x4cE6703ca7D76F3E65B884C957249035011866F2'))
-  const bnbBalance3 = getBalanceNumber(useTokenBalance2('0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c', '0x4cE6703ca7D76F3E65B884C957249035011866F2'))
+  const burgerBalance = getBalanceNumber(useTokenBalance2('0xae9269f27437f0fcbc232d39ec814844a51d6b8f', '0xd937FB9E6e47F3805981453BFB277a49FFfE04D7'))
+  const bnbBalance3 = getBalanceNumber(useTokenBalance2('0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c', '0xd937FB9E6e47F3805981453BFB277a49FFfE04D7'))
 
   // ada-bnb
   const adaBalance = getBalanceNumber(useTokenBalance2('0x3ee2200efb3400fabb9aacf31297cbdd1d435d47', '0xBA51D1AB95756ca4eaB8737eCD450cd8F05384cF'))
@@ -39,6 +44,11 @@ const Farm: React.FC = () => {
   return (
     <StyledFarm>
     Estimated total value: ${busdBalance/bnbBalance6 * totalBnb *2}<br/><br/>
+    CAKE/BNB Pair<br/>
+    CAKE:{cakeBalance}<br/>
+    BNB: {bnbBalance8}<br/>
+    <a href={`https://bscscan.com/address/0xA527a61703D82139F8a06Bc30097cC9CAA2df5A6`} target="_blank">link</a>
+    <br/><br/>
     EOS/BNB Pair<br/>
     EOS:{eosBalance}<br/>
     BNB: {bnbBalance0}<br/>
@@ -57,7 +67,7 @@ const Farm: React.FC = () => {
     BURGER/BNB Pair<br/>
     BURGER:{burgerBalance}<br/>
     BNB: {bnbBalance3}<br/>
-    <a href={`https://bscscan.com/address/0x4cE6703ca7D76F3E65B884C957249035011866F2`} target="_blank">link</a>
+    <a href={`https://bscscan.com/address/0xd937FB9E6e47F3805981453BFB277a49FFfE04D7`} target="_blank">link</a>
     <br/><br/>
     ADA/BNB Pair<br/>
     ADA:{adaBalance}<br/>

@@ -5,9 +5,6 @@ import styled from 'styled-components'
 const Nav: React.FC = () => {
   return (
     <StyledNav>
-      <StyledLink exact activeClassName="active" to="/dashboard">
-        Dashboard
-      </StyledLink>
       <StyledLink exact activeClassName="active" to="/farms">
         Farm
       </StyledLink>
@@ -17,6 +14,7 @@ const Nav: React.FC = () => {
 
       <StyledAbsoluteLink
         href="https://exchange.pancakeswap.finance"
+        target="_blank"
       >
         Exchange
       </StyledAbsoluteLink>
@@ -42,6 +40,9 @@ const Nav: React.FC = () => {
 const StyledNav = styled.nav`
   align-items: center;
   display: flex;
+  @media (max-width: 500px) {
+    display: none;
+  }
 `
 
 const StyledLink = styled(NavLink)`

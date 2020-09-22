@@ -92,6 +92,7 @@ const Farm: React.FC = () => {
   )
 }
 
+
 const Image = styled.img`
   width: 160px;
   margin-top: 30px;
@@ -143,5 +144,6 @@ const StyledInfo = styled.h3`
   padding: 0;
   text-align: center;
 `
+
 
 export default Farm

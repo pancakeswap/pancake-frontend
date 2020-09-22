@@ -14,7 +14,6 @@ import theme from './theme'
 import Farms from './views/Farms'
 import Home from './views/Home'
 import Stake from './views/Stake'
-import Coming from './views/Coming'
 import Lottery from './views/Lottery'
 import Voting from './views/Voting'
 import Vision from './views/Vision'
@@ -37,9 +36,6 @@ const App: React.FC = () => {
         <MobileMenu onDismiss={handleDismissMobileMenu} visible={mobileMenu} />
         <Switch>
           <Route path="/" exact>
-            <Coming />
-          </Route>
-          <Route path="/dashboard" exact>
             <Home />
           </Route>
           <Route path="/farms">

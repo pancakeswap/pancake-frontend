@@ -70,7 +70,7 @@ export const supportedPools = [
     name: 'Cake STAKING',
     symbol: 'CAKE',
     tokenSymbol: 'SYRUP',
-    icon: '🥞',
+    icon: '🥞'
   },
   {
     pid: 1,
@@ -86,6 +86,7 @@ export const supportedPools = [
     symbol: 'CAKE-BNB FLIP',
     tokenSymbol: 'CAKE',
     icon: '🥞',
+    multiplier: '20X'
   },
   {
     pid: 2,
@@ -101,6 +102,7 @@ export const supportedPools = [
     symbol: 'BUSD-BNB FLIP',
     tokenSymbol: 'BUSD',
     icon: '🥞',
+    multiplier: '10X'
   },
   {
     pid: 3,
@@ -115,6 +117,8 @@ export const supportedPools = [
     name: 'ADA GAME',
     symbol: 'ADA-BNB FLIP',
     tokenSymbol: 'ADA',
+    icon: '🥞',
+    multiplier: '5X'
   },
   {
     pid: 4,
@@ -129,6 +133,8 @@ export const supportedPools = [
     name: 'BAND GAME',
     symbol: 'BAND-BNB FLIP',
     tokenSymbol: 'BAND',
+    icon: '🥞',
+    multiplier: '5X'
   },
   {
     pid: 5,
@@ -143,6 +149,8 @@ export const supportedPools = [
     name: 'DOT GAME',
     symbol: 'DOT-BNB FLIP',
     tokenSymbol: 'DOT',
+    icon: '🥞',
+    multiplier: '5X'
   },
   {
     pid: 6,
@@ -157,6 +165,8 @@ export const supportedPools = [
     name: 'EOS GAME',
     symbol: 'EOS-BNB FLIP',
     tokenSymbol: 'EOS',
+    icon: '🥞',
+    multiplier: '5X'
   },
   {
     pid: 7,
@@ -171,6 +181,8 @@ export const supportedPools = [
     name: 'LINK GAME',
     symbol: 'LINK-BNB FLIP',
     tokenSymbol: 'LINK',
+    icon: '🥞',
+    multiplier: '5X'
   },
   {
     pid: 8,
@@ -184,6 +196,8 @@ export const supportedPools = [
     },
     symbol: 'BAKE-BNB Bakery LP',
     tokenSymbol: 'BAKE',
+    icon: '🥞',
+    multiplier: '1X'
   },
   {
     pid: 9,
@@ -197,6 +211,8 @@ export const supportedPools = [
     },
     symbol: 'BURGER-BNB FLIP',
     tokenSymbol: 'BURGER',
+    icon: '🥞',
+    multiplier: '1X'
   }
 ]
 
@@ -206,47 +222,56 @@ export const forShowPools = [
     name: 'Cake Party!',
     symbol: 'CAKE-BNB',
     tokenSymbol: 'CAKE',
+    multiplier: '20X'
   },
   {
     pid: 1,
     name: 'BURGER GAME',
     symbol: 'BUSD-BNB',
     tokenSymbol: 'BUSD',
+    multiplier: '10X'
   },
   {
     pid: 10,
     symbol: 'ADA-BNB',
     tokenSymbol: 'ADA',
+    multiplier: '5X'
   },
   {
     pid: 7,
     symbol: 'BAND-BNB',
     tokenSymbol: 'BAND',
+    multiplier: '5X'
   },
   {
     pid: 8,
     symbol: 'DOT-BNB',
     tokenSymbol: 'DOT',
+    multiplier: '5X'
   },
   {
     pid: 6,
     symbol: 'EOS-BNB',
     tokenSymbol: 'EOS',
+    multiplier: '5X'
   },
   {
     pid: 9,
     symbol: 'LINK-BNB',
     tokenSymbol: 'LINK',
+    multiplier: '5X'
   },
   {
     pid: 3,
     symbol: 'BAKE-BNB Bakery LP',
     tokenSymbol: 'BAKE',
+    multiplier: '1X'
   },
   {
     pid: 4,
     name: 'BURGER GAME',
     symbol: 'BURGER-BNB',
     tokenSymbol: 'BURGER',
+    multiplier: '1X'
   }
 ]
