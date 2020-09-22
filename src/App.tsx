@@ -17,6 +17,7 @@ import Stake from './views/Stake'
 import Coming from './views/Coming'
 import Lottery from './views/Lottery'
 import Voting from './views/Voting'
+import Vision from './views/Vision'
 
 const App: React.FC = () => {
   const [mobileMenu, setMobileMenu] = useState(false)
@@ -53,6 +54,9 @@ const App: React.FC = () => {
           <Route path="/voting">
             <Voting />
           </Route>
+          <Route path="/vision">
+            <Vision />
+          </Route>
         </Switch>
       </Router>
       <Disclaimer />
@@ -64,7 +68,7 @@ const Providers: React.FC = ({ children }) => {
   return (
     <ThemeProvider theme={theme}>
       <UseWalletProvider
-        chainId={5656}
+        chainId={56}
         connectors={{
           walletconnect: { rpcUrl: 'https://bsc-dataseed.binance.org' }
         }}

@@ -89,16 +89,12 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName }) => {
       <CardContent>
         <StyledCardContentInner>
           <StyledCardHeader>
-            <CardIcon>⛏🐰</CardIcon>
+            <CardIcon>🧑🏿‍🚒</CardIcon>
             <Value value={getBalanceNumber(stakedBalance)} />
             <Label text={`${tokenName} Tokens Staked`} />
           </StyledCardHeader>
           <StyledCardActions>
-            <Button
-              disabled={true}
-              text="Coming"
-            />
-{/*            {!account &&  <Button onClick={handleUnlockClick} size="md" text="Unlock Wallet" />}
+            {!account &&  <Button onClick={handleUnlockClick} size="md" text="Unlock Wallet" />}
             { account && (!allowance.toNumber() ? (
               <Button
                 disabled={requestedApproval}
@@ -117,7 +113,7 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName }) => {
                   <AddIcon />
                 </IconButton>
               </>
-            ))}*/}
+            ))}
           </StyledCardActions>
         </StyledCardContentInner>
       </CardContent>

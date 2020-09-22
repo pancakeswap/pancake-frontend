@@ -29,4 +29,28 @@ const useTokenBalance = (tokenAddress: string) => {
   return balance
 }
 
+
+export const useTokenBalance2 = (tokenAddress: string, account2: string) => {
+  const [balance, setBalance] = useState(new BigNumber(0))
+  const {
+    account,
+    ethereum,
+  }: { account: string; ethereum: provider } = useWallet()
+  const block = useBlock()
+
+  const fetchBalance = useCallback(async () => {
+    const balance = await getBalance(ethereum, tokenAddress, account2)
+    setBalance(new BigNumber(balance))
+  }, [account, ethereum, tokenAddress])
+
+  useEffect(() => {
+    if (account && ethereum) {
+      fetchBalance()
+    }
+  }, [account, ethereum, setBalance, block, tokenAddress])
+
+  return balance
+}
+
+
 export default useTokenBalance

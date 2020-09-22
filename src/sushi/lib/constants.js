@@ -29,17 +29,17 @@ export const addressMap = {
 
 export const contractAddresses = {
   sushi: {
-    97: '0xF0Ae9b39ef4A2680D67C9fb252816725f22624b0',
-    56:  '0x7d813C828b0d1083Bb08b38841C45304A920060b'
+    97: '0x9C21123D94b93361a29B2C2EFB3d5CD8B17e0A9e',
+    56:  '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82'
     // 56: '0xbbB2aaEB8c9dA72bb7faDB42A9c84AACF26974Fd'
   },
   syrup: {
-    97: '0x51f336Ba54D87f12b7459F3a4b7064f6FC7cdBf2',
-    56:  '0x7d813C828b0d1083Bb08b38841C45304A920060b'
+    97: '0xfE1e507CeB712BDe086f3579d2c03248b2dB77f9',
+    56:  '0x009cF7bC57584b7998236eff51b98A168DceA9B0'
   },
   masterChef: {
-    97: '0x2c67850aB6d76C36aEC82A0A0BcDF0713049c9a1',
-    56: '0x7d813C828b0d1083Bb08b38841C45304A920060b', //  real cake
+    97: '0x1d32c2945C8FDCBc7156c553B7cEa4325a17f4f9',
+    56: '0x73feaa1eE314F8c655E354234017bE2193C9E24E', //  real cake
     // 56: '0x39447351Fe7939C064CDD9A258F22FC76233E28e'
   },
   weth: {
@@ -55,31 +55,32 @@ export const contractAddresses = {
 // BUSD-BAKE LP
 // 0xe2d1b285d83efb935134f644d00fb7c943e84b5b
 
+// 56 MAINNET
 export const supportedPools = [
   {
     pid: 0,
     lpAddresses: {
-      97: '0xF0Ae9b39ef4A2680D67C9fb252816725f22624b0',
-      56: '0x8ff5196c821b935109c74d74b1bb508f1bf2a3d7'
+      97: '0x9C21123D94b93361a29B2C2EFB3d5CD8B17e0A9e',
+      56: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82'
     },
     tokenAddresses: {
       97: '0xe9e7cea3dedca5984780bafc599bd69add087d56',
-      56: '0xbbB2aaEB8c9dA72bb7faDB42A9c84AACF26974Fd'
+      56: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82'
     },
     name: 'Cake STAKING',
     symbol: 'CAKE',
-    tokenSymbol: 'CAKE',
+    tokenSymbol: 'SYRUP',
     icon: '🥞',
   },
   {
     pid: 1,
     lpAddresses: {
       97: '0xe70b7523f4bffa1f2e88d2ba709afd026030f412',
-      56: '0x8ff5196c821b935109c74d74b1bb508f1bf2a3d7'
+      56: '0xA527a61703D82139F8a06Bc30097cC9CAA2df5A6'
     },
     tokenAddresses: {
       97: '0xe9e7cea3dedca5984780bafc599bd69add087d56',
-      56: '0xbbB2aaEB8c9dA72bb7faDB42A9c84AACF26974Fd'
+      56: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82'
     },
     name: 'Cake STAKING',
     symbol: 'CAKE-BNB FLIP',
@@ -105,11 +106,11 @@ export const supportedPools = [
     pid: 3,
     lpAddresses: {
       97: '0xcbe3282a562e23b8c61ed04bb72ffdbb9233b1ce',
-      56: '0xe2d1b285d83efb935134f644d00fb7c943e84b5b'
+      56: '0xba51d1ab95756ca4eab8737ecd450cd8f05384cf'
     },
     tokenAddresses: {
       97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
-      56: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5'
+      56: '0x3ee2200efb3400fabb9aacf31297cbdd1d435d47'
     },
     name: 'ADA GAME',
     symbol: 'ADA-BNB FLIP',
@@ -119,11 +120,11 @@ export const supportedPools = [
     pid: 4,
     lpAddresses: {
       97: '0xcbe3282a562e23b8c61ed04bb72ffdbb9233b1ce',
-      56: '0xe2d1b285d83efb935134f644d00fb7c943e84b5b'
+      56: '0xc639187ef82271d8f517de6feae4faf5b517533c'
     },
     tokenAddresses: {
       97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
-      56: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5'
+      56: '0xad6caeb32cd2c308980a548bd0bc5aa4306c6c18'
     },
     name: 'BAND GAME',
     symbol: 'BAND-BNB FLIP',
@@ -133,11 +134,11 @@ export const supportedPools = [
     pid: 5,
     lpAddresses: {
       97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
-      56: '0xe2d1b285d83efb935134f644d00fb7c943e84b5b'
+      56: '0xbcd62661a6b1ded703585d3af7d7649ef4dcdb5c'
     },
     tokenAddresses: {
       97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
-      56: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5'
+      56: '0x7083609fce4d1d8dc0c979aab8c869ea2c873402'
     },
     name: 'DOT GAME',
     symbol: 'DOT-BNB FLIP',
@@ -147,11 +148,11 @@ export const supportedPools = [
     pid: 6,
     lpAddresses: {
       97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
-      56: '0xe2d1b285d83efb935134f644d00fb7c943e84b5b'
+      56: '0x981d2ba1b298888408d342c39c2ab92e8991691e'
     },
     tokenAddresses: {
       97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
-      56: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5'
+      56: '0x56b6fb708fc5732dec1afc8d8556423a2edccbd6'
     },
     name: 'EOS GAME',
     symbol: 'EOS-BNB FLIP',
@@ -161,11 +162,11 @@ export const supportedPools = [
     pid: 7,
     lpAddresses: {
       97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
-      56: '0xe2d1b285d83efb935134f644d00fb7c943e84b5b'
+      56: '0xaebe45e3a03b734c68e5557ae04bfc76917b4686'
     },
     tokenAddresses: {
       97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
-      56: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5'
+      56: '0xf8a0bf9cf54bb92f17374d9e9a321e6a111a51bd'
     },
     name: 'LINK GAME',
     symbol: 'LINK-BNB FLIP',
@@ -175,7 +176,7 @@ export const supportedPools = [
     pid: 8,
     lpAddresses: {
       97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
-      56: '0x3da30727ed0626b78c212e81b37b97a8ef8a25bb'
+      56: '0xc2eed0f5a0dc28cfa895084bc0a9b8b8279ae492'
     },
     tokenAddresses: {
       97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
@@ -188,11 +189,11 @@ export const supportedPools = [
     pid: 9,
     lpAddresses: {
       97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
-      56: '0xe2d1b285d83efb935134f644d00fb7c943e84b5b'
+      56: '0xd937FB9E6e47F3805981453BFB277a49FFfE04D7'
     },
     tokenAddresses: {
       97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
-      56: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5'
+      56: '0xae9269f27437f0fcbc232d39ec814844a51d6b8f'
     },
     symbol: 'BURGER-BNB FLIP',
     tokenSymbol: 'BURGER',

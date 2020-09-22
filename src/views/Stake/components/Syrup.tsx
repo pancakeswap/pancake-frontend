@@ -22,6 +22,7 @@ const Harvest: React.FC = () => {
   // const { onReward } = useReward(pid)
 
   const sushi = useSushi()
+
   const syrupBalance = useTokenBalance(getSyrupAddress(sushi))
 
   return (

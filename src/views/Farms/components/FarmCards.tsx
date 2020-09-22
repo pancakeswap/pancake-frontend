@@ -58,18 +58,19 @@ const FarmCards: React.FC = () => {
   }, [onPresentWalletProviderModal])
 
   const realFarms =farms.filter(farm => farm.pid !== 0)
+  const realStakedValue = stakedValue.slice(1)
 
   const rows = realFarms.reduce<FarmWithStakedValue[][]>(
     (farmRows, farm, i) => {
       const farmWithStakedValue = {
         ...farm,
-        ...stakedValue[i],
-        apy: stakedValue[i]
+        ...realStakedValue[i],
+        apy: realStakedValue[i]
           ? sushiPrice
               .times(SUSHI_PER_BLOCK)
               .times(BLOCKS_PER_YEAR)
-              .times(stakedValue[i].poolWeight)
-              .div(stakedValue[i].totalWethValue)
+              .times(realStakedValue[i].poolWeight)
+              .div(realStakedValue[i].totalWethValue)
           : null,
       }
       const newFarmRows = [...farmRows]
@@ -208,7 +209,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
 
   return (
     <StyledCardWrapper>
-      {farm.tokenSymbol === 'SUSHI' && <StyledCardAccent />}
+      {farm.tokenSymbol === 'CAKE' && <StyledCardAccent />}
 
           <StyledContent>
             <FCard>

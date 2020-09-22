@@ -44,9 +44,9 @@ const DisclaimerModal: React.FC<DisclaimerModal> = ({
     } else {
       return (
         <div>
-          <p>Attention SUSHI Uniswap LPs</p>
+          <p>Attention CAKE Uniswap LPs</p>
           <p>
-            The only Uniswap pool that is compatible with SUSHI is SUSHI/yCRV
+            The only Uniswap pool that is compatible with CAKE is CAKE/yCRV
             (Curve yPool tokens)
           </p>
           <p>Providing liquidity for other Uniswap pools is dangerous</p>
