@@ -18,6 +18,9 @@ import Lottery from './views/Lottery'
 import Voting from './views/Voting'
 import Vision from './views/Vision'
 
+// components
+import Web3ReactManager from './components/Web3ReactManager'
+
 const App: React.FC = () => {
   const [mobileMenu, setMobileMenu] = useState(false)
 
@@ -34,26 +37,28 @@ const App: React.FC = () => {
       <Router>
         <TopBar onPresentMobileMenu={handlePresentMobileMenu}/>
         <MobileMenu onDismiss={handleDismissMobileMenu} visible={mobileMenu} />
-        <Switch>
-          <Route path="/" exact>
-            <Home />
-          </Route>
-          <Route path="/farms">
-            <Farms />
-          </Route>
-          <Route path="/staking">
-            <Stake />
-          </Route>
-          <Route path="/lottery">
-            <Lottery />
-          </Route>
-          <Route path="/voting">
-            <Voting />
-          </Route>
-          <Route path="/vision">
-            <Vision />
-          </Route>
-        </Switch>
+        <Web3ReactManager>
+          <Switch>
+            <Route path="/" exact>
+              <Home />
+            </Route>
+            <Route path="/farms">
+              <Farms />
+            </Route>
+            <Route path="/staking">
+              <Stake />
+            </Route>
+            <Route path="/lottery">
+              <Lottery />
+            </Route>
+            <Route path="/voting">
+              <Voting />
+            </Route>
+            <Route path="/vision">
+              <Vision />
+            </Route>
+          </Switch>
+        </Web3ReactManager>
       </Router>
       <Disclaimer />
     </Providers>

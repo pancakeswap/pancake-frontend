@@ -16,7 +16,6 @@ import WalletCard from './components/WalletCard'
 
 const WalletProviderModal: React.FC<ModalProps> = ({ onDismiss }) => {
   const { account, connect,status } = useWallet()
-
   useEffect(() => {
     if (account) {
       onDismiss()
@@ -32,7 +31,10 @@ const WalletProviderModal: React.FC<ModalProps> = ({ onDismiss }) => {
           <StyledWalletCard>
             <WalletCard
               icon={<img src={metamaskLogo} style={{ height: 52 }} />}
-              onConnect={() => connect('injected')}
+              onConnect={() => {
+                connect('injected')
+                window.localStorage.setItem('accountStatus', '1')
+              }}
               title="Metamask"
             />
           </StyledWalletCard>
@@ -40,7 +42,10 @@ const WalletProviderModal: React.FC<ModalProps> = ({ onDismiss }) => {
           <StyledWalletCard>
             <WalletCard
               icon={<img src={walletConnectLogo} style={{ height: 44 }} />}
-              onConnect={() => connect('walletconnect')}
+              onConnect={() => {
+                connect('walletconnect')
+                window.localStorage.setItem('accountStatus', '1')
+              }}
               title="WalletConnect"
             />
           </StyledWalletCard>
