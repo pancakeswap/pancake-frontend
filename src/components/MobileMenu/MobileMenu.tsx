@@ -32,6 +32,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({onDismiss, visible}) => {
                         Staking
                     </StyledLink>
                     <a style={{
+                        paddingTop: "0.6em",
                         color: "white",
                         width: "100%",
                         fontSize: "24px",
@@ -46,7 +47,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({onDismiss, visible}) => {
                     </a>
                     <a
                         style={{
-                            paddingTop: "0.6em",
+                            paddingTop: "1em",
                             color: "white",
                             width: "100%",
                             fontSize: "24px",
