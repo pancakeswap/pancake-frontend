@@ -47,7 +47,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({onDismiss, visible}) => {
                     </a>
                     <a
                         style={{
-                            paddingTop: "1em",
+                            paddingTop: "1.2em",
                             color: "white",
                             width: "100%",
                             fontSize: "24px",
