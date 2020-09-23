@@ -1,12 +1,13 @@
-import React, { useEffect } from 'react'
+import React, {useEffect} from 'react'
 import styled from 'styled-components'
-import { useWallet } from 'use-wallet'
+import {useWallet} from 'use-wallet'
 
 import metamaskLogo from '../../assets/img/metamask-fox.svg'
 import walletConnectLogo from '../../assets/img/wallet-connect.svg'
+import trustwalletLogo from '../../assets/img/trustwallet.svg'
 
 import Button from '../Button'
-import Modal, { ModalProps } from '../Modal'
+import Modal, {ModalProps} from '../Modal'
 import ModalActions from '../ModalActions'
 import ModalContent from '../ModalContent'
 import ModalTitle from '../ModalTitle'
@@ -14,49 +15,51 @@ import Spacer from '../Spacer'
 
 import WalletCard from './components/WalletCard'
 
-const WalletProviderModal: React.FC<ModalProps> = ({ onDismiss }) => {
-  const { account, connect,status } = useWallet()
-  useEffect(() => {
-    if (account) {
-      onDismiss()
-    }
-  }, [account, onDismiss])
 
-  return (
-    <Modal>
-      <ModalTitle text="Select a wallet provider." />
+const WalletProviderModal: React.FC<ModalProps> = ({onDismiss}) => {
+    const {account, connect, status} = useWallet()
 
-      <ModalContent>
-        <StyledWalletsWrapper>
-          <StyledWalletCard>
-            <WalletCard
-              icon={<img src={metamaskLogo} style={{ height: 52 }} />}
-              onConnect={() => {
-                connect('injected')
-                window.localStorage.setItem('accountStatus', '1')
-              }}
-              title="Metamask"
-            />
-          </StyledWalletCard>
-          <Spacer size="sm" />
-          <StyledWalletCard>
-            <WalletCard
-              icon={<img src={walletConnectLogo} style={{ height: 44 }} />}
-              onConnect={() => {
-                connect('walletconnect')
-                window.localStorage.setItem('accountStatus', '1')
-              }}
-              title="WalletConnect"
-            />
-          </StyledWalletCard>
-        </StyledWalletsWrapper>
-      </ModalContent>
+    useEffect(() => {
+        if (account) {
+            onDismiss()
+        }
+    }, [account, onDismiss])
 
-      <ModalActions>
-        <Button text="Cancel" variant="secondary" onClick={onDismiss} />
-      </ModalActions>
-    </Modal>
-  )
+    return (
+        <Modal>
+            <ModalTitle text="Select a wallet provider."/>
+            <ModalContent>
+                <StyledWalletsWrapper>
+                    <StyledWalletCard>
+                        <WalletCard
+                            icon={<img src={metamaskLogo} style={{height: 52}}/>}
+                            onConnect={() => connect('injected')}
+                            title="Metamask"
+                        />
+                    </StyledWalletCard>
+                    <Spacer size="sm"/>
+                    <StyledWalletCard>
+                        <WalletCard
+                            icon={<img src={trustwalletLogo} style={{height: 52}}/>}
+                            onConnect={() => connect('injected')}
+                            title="Trust Wallet"
+                        />
+                    </StyledWalletCard>
+                    <Spacer size="sm"/>
+                    <StyledWalletCard>
+                        <WalletCard
+                            icon={<img src={walletConnectLogo} style={{height: 44}}/>}
+                            onConnect={() => connect('walletconnect')}
+                            title="WalletConnect"
+                        />
+                    </StyledWalletCard>
+                </StyledWalletsWrapper>
+            </ModalContent>
+            <ModalActions>
+                <Button text="Cancel" variant="secondary" onClick={onDismiss}/>
+            </ModalActions>
+        </Modal>
+    )
 }
 
 const StyledWalletsWrapper = styled.div`
