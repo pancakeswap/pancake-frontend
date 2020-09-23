@@ -1,43 +1,69 @@
 import React from 'react'
-import styled, { keyframes } from 'styled-components'
+import styled, {keyframes} from 'styled-components'
 
-import { NavLink } from 'react-router-dom'
+import {NavLink} from 'react-router-dom'
 
 interface MobileMenuProps {
-  onDismiss: () => void
-  visible?: boolean
+    onDismiss: () => void
+    visible?: boolean
 }
 
-const MobileMenu: React.FC<MobileMenuProps> = ({ onDismiss, visible }) => {
-  if (visible) {
-    return (
-      <StyledMobileMenuWrapper>
-        <StyledBackdrop onClick={onDismiss} />
-        <StyledMobileMenu>
-          <StyledLink exact activeClassName="active" to="/" onClick={onDismiss}>
-            Home
-          </StyledLink>
-          <StyledLink
-            exact
-            activeClassName="active"
-            to="/farms"
-            onClick={onDismiss}
-          >
-            Farms
-          </StyledLink>
-          <StyledLink
-            exact
-            activeClassName="active"
-            to="/staking"
-            onClick={onDismiss}
-          >
-            Staking
-          </StyledLink>
-        </StyledMobileMenu>
-      </StyledMobileMenuWrapper>
-    )
-  }
-  return null
+const MobileMenu: React.FC<MobileMenuProps> = ({onDismiss, visible}) => {
+    if (visible) {
+        return (
+            <StyledMobileMenuWrapper>
+                <StyledBackdrop onClick={onDismiss}/>
+                <StyledMobileMenu>
+                    <StyledLink exact activeClassName="active" to="/" onClick={onDismiss}>
+                        Home
+                    </StyledLink>
+                    <StyledLink
+                        exact
+                        activeClassName="active"
+                        to="/farms"
+                        onClick={onDismiss}>
+                        Farms
+                    </StyledLink>
+                    <StyledLink
+                        exact
+                        activeClassName="active"
+                        to="/staking"
+                        onClick={onDismiss}>
+                        Staking
+                    </StyledLink>
+                    <a style={{
+                        color: "white",
+                        width: "100%",
+                        fontSize: "24px",
+                        fontWeight: 700,
+                        boxSizing: "border-box",
+                        textAlign: "center",
+                        textDecoration: "none"
+                    }}
+                       href="https://exchange.pancakeswap.finance"
+                       onClick={onDismiss}>
+                        Exchange
+                    </a>
+                    <a
+                        style={{
+                            paddingTop: "0.6em",
+                            color: "white",
+                            width: "100%",
+                            fontSize: "24px",
+                            fontWeight: 700,
+                            boxSizing: "border-box",
+                            textAlign: "center",
+                            textDecoration: "none"
+                        }}
+                        href="http://docs.pancakeswap.finance"
+                        onClick={onDismiss}>
+                        Docs
+                    </a>
+                </StyledMobileMenu>
+            </StyledMobileMenuWrapper>
+        )
+    }
+    return null
 }
 
 const StyledBackdrop = styled.div`

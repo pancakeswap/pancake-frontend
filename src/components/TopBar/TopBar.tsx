@@ -39,7 +39,7 @@ const Menu = styled.div`
   text-decoration: underline;
   display: nones;
   display: none;
-  @media (max-width: 500px) {
+  @media (max-width: 850px) {
     display: block;
   }
 `
