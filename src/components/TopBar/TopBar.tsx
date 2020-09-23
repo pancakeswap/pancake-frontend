@@ -25,9 +25,24 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
           </StyledAccountButtonWrapper>
         </StyledTopBarInner>
       </Container>
+      <Menu onClick={onPresentMobileMenu}>Menu</Menu>
     </StyledTopBar>
   )
 }
+
+const Menu = styled.div`
+  margin: 0 auto;
+  width: 100px;
+  text-align: center;
+  color: #47d3db;
+  border-radius: 4px;
+  text-decoration: underline;
+  display: nones;
+  display: none;
+  @media (max-width: 500px) {
+    display: block;
+  }
+`
 
 const StyledLogoWrapper = styled.div`
   width: 260px;

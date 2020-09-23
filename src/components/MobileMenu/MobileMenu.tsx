@@ -85,7 +85,7 @@ const StyledMobileMenu = styled.div`
 
 const StyledLink = styled(NavLink)`
   box-sizing: border-box;
-  color: ${(props) => props.theme.color.grey[400]};
+  color: #fff;
   font-size: 24px;
   font-weight: 700;
   padding: ${(props) => props.theme.spacing[3]}px

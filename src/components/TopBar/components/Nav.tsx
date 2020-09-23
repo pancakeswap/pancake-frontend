@@ -4,38 +4,40 @@ import styled from 'styled-components'
 
 const Nav: React.FC = () => {
   return (
-    <StyledNav>
-      <StyledLink exact activeClassName="active" to="/farms">
-        Farm
-      </StyledLink>
-      <StyledLink exact activeClassName="active" to="/staking">
-        Staking
-      </StyledLink>
+    <>
+      <StyledNav>
+        <StyledLink exact activeClassName="active" to="/farms">
+          Farm
+        </StyledLink>
+        <StyledLink exact activeClassName="active" to="/staking">
+          Staking
+        </StyledLink>
 
-      <StyledAbsoluteLink
-        href="https://exchange.pancakeswap.finance"
-        target="_blank"
-      >
-        Exchange
-      </StyledAbsoluteLink>
-      <StyledAbsoluteLink
-        href="http://docs.pancakeswap.finance"
-        target="_blank"
-      >
-        Docs
-      </StyledAbsoluteLink>
+        <StyledAbsoluteLink
+          href="https://exchange.pancakeswap.finance"
+          target="_blank"
+        >
+          Exchange
+        </StyledAbsoluteLink>
+        <StyledAbsoluteLink
+          href="http://docs.pancakeswap.finance"
+          target="_blank"
+        >
+          Docs
+        </StyledAbsoluteLink>
 
-      <StyledLink exact activeClassName="active" to="/voting">
-        Voting
-      </StyledLink>
-      <StyledLink exact activeClassName="active" to="/lottery">
-        Lottery
-      </StyledLink>
+        <StyledLink exact activeClassName="active" to="/voting">
+          Voting
+        </StyledLink>
+        <StyledLink exact activeClassName="active" to="/lottery">
+          Lottery
+        </StyledLink>
 
-
-    </StyledNav>
+      </StyledNav>
+    </>
   )
 }
+
 
 const StyledNav = styled.nav`
   align-items: center;

@@ -8,6 +8,7 @@ import Button from '../../components/Button'
 import Page from '../../components/Page'
 import PageHeader from '../../components/PageHeader'
 import WalletProviderModal from '../../components/WalletProviderModal'
+import { useCakePrice } from '../../hooks/useTokenBalance'
 
 import useModal from '../../hooks/useModal'
 
@@ -19,6 +20,8 @@ const Farms: React.FC = () => {
   const { path } = useRouteMatch()
   const { account } = useWallet()
   const [onPresentWalletProviderModal] = useModal(<WalletProviderModal />)
+  const cakePrice = useCakePrice()
+
   return (
     <Switch>
       <Page>
@@ -26,6 +29,9 @@ const Farms: React.FC = () => {
           <>
             <Route exact path={path}>
               <Title>Stake FLIP tokens to stack CAKE</Title>
+              {account &&
+                <PriceTag>CAKE PRICE: ${cakePrice.toFixed(3)}</PriceTag>
+              }
               <StyledLink exact activeClassName="active" to="/staking">
                 Staking
               </StyledLink>
@@ -55,6 +61,15 @@ const Farms: React.FC = () => {
     </Switch>
   )
 }
+
+const PriceTag = styled.div`
+  position: relative;
+  font-size: 18px;
+  color: #4bd4dc;
+  FONT-WEIGHT: 600;
+  top: -30px;
+`
+
 const StyledLink = styled(NavLink)`
   display: none;
   @media (max-width: 400px) {
