@@ -2,6 +2,7 @@ import React from 'react'
 import styled, {keyframes} from 'styled-components'
 
 import {NavLink} from 'react-router-dom'
+import AccountLink from "../TopBar/components/AccountLink";
 
 interface MobileMenuProps {
     onDismiss: () => void
@@ -14,22 +15,23 @@ const MobileMenu: React.FC<MobileMenuProps> = ({onDismiss, visible}) => {
             <StyledMobileMenuWrapper>
                 <StyledBackdrop onClick={onDismiss}/>
                 <StyledMobileMenu>
+                    <Wrapper onClick={onDismiss}><AccountLink/></Wrapper>
                     <StyledLink exact activeClassName="active" to="/" onClick={onDismiss}>
-                        Home
+                        🏡 Home
                     </StyledLink>
                     <StyledLink
                         exact
                         activeClassName="active"
                         to="/farms"
                         onClick={onDismiss}>
-                        Farms
+                        👨‍🌾 Farms
                     </StyledLink>
                     <StyledLink
                         exact
                         activeClassName="active"
                         to="/staking"
                         onClick={onDismiss}>
-                        Staking
+                        🥩 Staking
                     </StyledLink>
                     <a style={{
                         paddingTop: "0.6em",
@@ -43,7 +45,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({onDismiss, visible}) => {
                     }}
                        href="https://exchange.pancakeswap.finance"
                        onClick={onDismiss}>
-                        Exchange
+                        🔄 Exchange
                     </a>
                     <a
                         style={{
@@ -58,7 +60,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({onDismiss, visible}) => {
                         }}
                         href="http://docs.pancakeswap.finance"
                         onClick={onDismiss}>
-                        Docs
+                        📄 Docs
                     </a>
                 </StyledMobileMenu>
             </StyledMobileMenuWrapper>
@@ -94,6 +96,21 @@ const slideIn = keyframes`
   100% {
     transform: translateX(-100%);
   }
+`
+
+const StyledAccountButtonWrapper = styled.div`
+  align-items: center;
+  display: flex;
+  justify-content: flex-end;
+  width: 156px;
+  @media (max-width: 400px) {
+    justify-content: center;
+    width: auto;
+  }
+`
+
+const Wrapper = styled.div`
+ margin-bottom: 2em;
 `
 
 const StyledMobileMenu = styled.div`
