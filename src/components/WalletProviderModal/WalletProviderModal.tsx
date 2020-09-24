@@ -82,6 +82,8 @@ const StyledWalletsWrapper = styled.div`
 
 const StyledWalletCard = styled.div`
   flex-basis: calc(50% - ${(props) => props.theme.spacing[2]}px);
+  padding-bottom: 0.2em;
+  padding-top: 0.2em;
 `
 
 export default WalletProviderModal
