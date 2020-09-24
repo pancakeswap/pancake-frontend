@@ -102,7 +102,7 @@ const Farm: React.FC = () => {
             <Spacer size="lg" />
             <StyledInfo>
               ⭐️ Every time you stake and unstake CAKE tokens, the contract will
-              automagically harvest CAKE rewards for you! {account}
+              automagically harvest CAKE rewards for you!
             </StyledInfo>
             <Spacer size="lg" />
           </StyledFarm>
