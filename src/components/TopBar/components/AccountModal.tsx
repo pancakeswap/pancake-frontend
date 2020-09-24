@@ -19,8 +19,9 @@ const AccountModal: React.FC<ModalProps> = ({onDismiss}) => {
     const {account, reset} = useWallet()
 
     const handleSignOutClick = useCallback(() => {
-        onDismiss!()
-        reset()
+      onDismiss!()
+      window.localStorage.removeItem('accountStatus')
+      reset()
     }, [onDismiss, reset])
 
     const sushi = useSushi()
