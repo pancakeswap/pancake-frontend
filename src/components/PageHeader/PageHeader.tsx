@@ -50,7 +50,7 @@ const StyledTitle = styled.h1`
   margin: 0;
   margin-top: 10px;
   padding: 0;
-  @media (max-width: 500px) {
+  @media (max-width: 850px) {
     display: none;
   }
 `

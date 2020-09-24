@@ -15,8 +15,7 @@ const Nav: React.FC = () => {
 
         <StyledAbsoluteLink
           href="https://exchange.pancakeswap.finance"
-          target="_blank"
-        >
+          target="_blank">
           Exchange
         </StyledAbsoluteLink>
         <StyledAbsoluteLink
@@ -42,7 +41,7 @@ const Nav: React.FC = () => {
 const StyledNav = styled.nav`
   align-items: center;
   display: flex;
-  @media (max-width: 500px) {
+  @media (max-width: 850px) {
     display: none;
   }
 `
