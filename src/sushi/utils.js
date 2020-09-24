@@ -132,7 +132,6 @@ export const getSushiSupply = async (sushi) => {
 
 export const stake = async (masterChefContract, pid, amount, account) => {
   if(pid ===0) {
-    console.log('dd')
     return masterChefContract.methods
       .enterStaking(
         new BigNumber(amount).times(new BigNumber(10).pow(18)).toString(),
