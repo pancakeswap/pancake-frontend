@@ -95,7 +95,7 @@ const StyledAccountMenuWrapper = styled.div`
   align-items: center;
   display: flex;
   justify-content: flex-end;
-  width: 156px;
+  width: 0;
   @media (max-width: 400px) {
     justify-content: center;
     width: auto;
