@@ -20,6 +20,7 @@ const AccountModal: React.FC<ModalProps> = ({ onDismiss }) => {
 
   const handleSignOutClick = useCallback(() => {
     onDismiss!()
+    window.localStorage.removeItem('accountStatus')
     reset()
   }, [onDismiss, reset])
 
