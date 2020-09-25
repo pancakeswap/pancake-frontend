@@ -34,7 +34,7 @@ const Image = styled.img`
 `
 
 const Blank = styled.div`
-  height: 260px;
+  height: 200px;
   @media (max-width: 500px) {
     height: 60px;
   }

@@ -12,7 +12,7 @@ import SushiIcon from '../../../components/SushiIcon'
 import useAllEarnings from '../../../hooks/useAllEarnings'
 import useAllStakedValue from '../../../hooks/useAllStakedValue'
 import useFarms from '../../../hooks/useFarms'
-import useTokenBalance from '../../../hooks/useTokenBalance'
+import useTokenBalance, { useBurnedBalance } from '../../../hooks/useTokenBalance'
 import useSushi from '../../../hooks/useSushi'
 
 import Separator from '../../../components/Separator'
@@ -75,6 +75,7 @@ const Balances: React.FC = () => {
   const [totalSupply, setTotalSupply] = useState<BigNumber>()
   const sushi = useSushi()
   const sushiBalance = useTokenBalance(getSushiAddress(sushi))
+  const burnedBalance = useBurnedBalance(getSushiAddress(sushi))
   const { account, ethereum }: { account: any; ethereum: any } = useWallet()
 
   useEffect(() => {
@@ -88,6 +89,7 @@ const Balances: React.FC = () => {
   }, [sushi, setTotalSupply])
 
   return (
+    <>
     <StyledWrapper>
       <Card>
         <CardContent>
@@ -115,29 +117,54 @@ const Balances: React.FC = () => {
       <Spacer />
 
       <Card>
-      <StyledBalances>
-        <CardContent>
-          <SLabel>Total CAKE Supply</SLabel>
-          <StyledBalance>
-            <Value
-              value={totalSupply ? getBalanceNumber(totalSupply) : 'Locked'}
-            />
-          </StyledBalance>
-        </CardContent>
+        <StyledBalances>
+          <CardContent>
+            <SLabel>Total CAKE Supply</SLabel>
+            <StyledBalance>
+              <Value
+                value={totalSupply ? getBalanceNumber(totalSupply) : 'Locked'}
+              />
+            </StyledBalance>
+          </CardContent>
         </StyledBalances>
-
-
         <Footnote>
           New rewards per block
           <FootnoteValue>40 CAKE</FootnoteValue>
         </Footnote>
       </Card>
     </StyledWrapper>
+
+    <RowCard>
+      <SLabel2>🔥 Total CAKE Burned from exsitence</SLabel2>
+      <Value
+        value={!!account ? getBalanceNumber(burnedBalance) : 'Locked'}
+        fontSize='20px'
+      />
+    </RowCard>
+    </>
   )
 }
 
+const RowCard = styled.div`
+  width: 100%;
+  box-shadow: 0px 2px 8px rgba(171,133,115,0.21);
+  border-radius: 20px;
+  background: #fff;
+  line-height: 60px;
+  padding: 0 25px;
+  box-sizing: border-box;
+  background: #FFFDFA;
+  margin-top: 20px;
+  display:flex;
+  justify-content: space-between;
+`
+
 const SLabel = styled.div`
   line-height: 40px;
+  color: #7645D9;
+`
+
+const SLabel2 = styled.div`
   color: #7645D9;
 `
 

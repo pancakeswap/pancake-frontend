@@ -6,9 +6,10 @@ import styled from 'styled-components'
 interface ValueProps {
   value: string | number
   decimals?: number
+  fontSize?: string | number
 }
 
-const Value: React.FC<ValueProps> = ({ value, decimals }) => {
+const Value: React.FC<ValueProps> = ({ value, decimals, fontSize='30px' }) => {
   const [start, updateStart] = useState(0)
   const [end, updateEnd] = useState(0)
 
@@ -20,7 +21,7 @@ const Value: React.FC<ValueProps> = ({ value, decimals }) => {
   }, [value])
 
   return (
-    <StyledValue>
+    <StyledValue style={{ 'fontSize': fontSize }}>
       {typeof value == 'string' ? (
         value
       ) : (
