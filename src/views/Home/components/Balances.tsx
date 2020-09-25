@@ -122,7 +122,7 @@ const Balances: React.FC = () => {
             <SLabel>Total CAKE Supply</SLabel>
             <StyledBalance>
               <Value
-                value={totalSupply ? getBalanceNumber(totalSupply) : 'Locked'}
+                value={totalSupply ? getBalanceNumber(totalSupply) - getBalanceNumber(burnedBalance) : 'Locked'}
               />
             </StyledBalance>
           </CardContent>
@@ -135,7 +135,7 @@ const Balances: React.FC = () => {
     </StyledWrapper>
 
     <RowCard>
-      <SLabel2>🔥 Total CAKE Burned from exsitence</SLabel2>
+      <SLabel2>🔥 Total CAKE burned since launch</SLabel2>
       <Value
         value={!!account ? getBalanceNumber(burnedBalance) : 'Locked'}
         fontSize='20px'
@@ -157,6 +157,12 @@ const RowCard = styled.div`
   margin-top: 20px;
   display:flex;
   justify-content: space-between;
+  @media (max-width: 500px) {
+    flex-direction: column;
+    line-height: 40px;
+    padding: 25px;
+    text-align: center;
+  }
 `
 
 const SLabel = styled.div`
@@ -166,6 +172,9 @@ const SLabel = styled.div`
 
 const SLabel2 = styled.div`
   color: #7645D9;
+  @media (max-width: 500px) {
+    line-height: 20px;
+  }
 `
 
 const Footnote = styled.div`

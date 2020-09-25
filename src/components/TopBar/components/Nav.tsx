@@ -24,10 +24,12 @@ const Nav: React.FC = () => {
         >
           Docs
         </StyledAbsoluteLink>
-
-        <StyledLink exact activeClassName="active" to="/voting">
+        <StyledAbsoluteLink
+          href="https://voting.pancakeswap.finance"
+          target="_blank"
+        >
           Voting
-        </StyledLink>
+        </StyledAbsoluteLink>
         <StyledLink exact activeClassName="active" to="/lottery">
           Lottery
         </StyledLink>
