@@ -17,7 +17,7 @@ const Nav: React.FC = () => {
         Twitter
       </StyledLink>
       <StyledLink
-        href="http://docs.pancakeswap.finance"
+        href="https://docs.pancakeswap.finance"
         target="_blank"
       >
         Docs

@@ -19,7 +19,7 @@ const Nav: React.FC = () => {
           Exchange
         </StyledAbsoluteLink>
         <StyledAbsoluteLink
-          href="http://docs.pancakeswap.finance"
+          href="https://docs.pancakeswap.finance"
           target="_blank"
         >
           Docs
