@@ -1,16 +1,18 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
+import { lightTheme, darkTheme } from './theme'
 import { UseWalletProvider } from 'use-wallet'
 import DisclaimerModal from './components/DisclaimerModal'
 import MobileMenu from './components/MobileMenu'
 import TopBar from './components/TopBar'
+import GlobalStyle from './components/GlobalStyle'
 import FarmsProvider from './contexts/Farms'
 import ModalsProvider from './contexts/Modals'
 import TransactionProvider from './contexts/Transactions'
 import SushiProvider from './contexts/SushiProvider'
 import useModal from './hooks/useModal'
-import theme from './theme'
+import useTheme from './hooks/useTheme'
 import Farms from './views/Farms'
 import Home from './views/Home'
 import Stake from './views/Stake'
@@ -23,6 +25,7 @@ import Syrup from './views/Syrup'
 import Web3ReactManager from './components/Web3ReactManager'
 
 const App: React.FC = () => {
+  const [isDark, setIsDark] = useTheme()
   const [mobileMenu, setMobileMenu] = useState(false)
 
   const handleDismissMobileMenu = useCallback(() => {
@@ -34,9 +37,14 @@ const App: React.FC = () => {
   }, [setMobileMenu])
 
   return (
-    <Providers>
+    <Providers isDark={isDark}>
       <Router>
-        <TopBar onPresentMobileMenu={handlePresentMobileMenu}/>
+        <GlobalStyle />
+        <TopBar
+          isDark={isDark}
+          toogleTheme={setIsDark}
+          onPresentMobileMenu={handlePresentMobileMenu}
+        />
         <MobileMenu onDismiss={handleDismissMobileMenu} visible={mobileMenu} />
         <Web3ReactManager>
           <Switch>
@@ -69,9 +77,9 @@ const App: React.FC = () => {
   )
 }
 
-const Providers: React.FC = ({ children }) => {
+const Providers: React.FC<{ isDark: boolean }> = ({ isDark, children }) => {
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
       <UseWalletProvider
         chainId={56}
         connectors={{
@@ -109,4 +117,4 @@ const Disclaimer: React.FC = () => {
   return <div />
 }
 
-export default App
+export default React.memo(App)

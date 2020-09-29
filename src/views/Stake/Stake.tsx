@@ -112,7 +112,7 @@ const Farm: React.FC = () => {
 }
 
 const Title= styled.div`
-  color:#7645D9;
+  color: ${(props) => props.theme.colors.blue[100]};
   font-size:20px;
   width: 50vw;
   text-align: center;
@@ -149,7 +149,7 @@ const StyledCardWrapper = styled.div`
 `
 
 const StyledInfo = styled.h3`
-  color: ${(props) => props.theme.color.grey[400]};
+  color: ${(props) => props.theme.colors.grey[400]};
   font-size: 16px;
   font-weight: 400;
   margin: 0;

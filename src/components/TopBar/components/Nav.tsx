@@ -51,7 +51,7 @@ const StyledNav = styled.nav`
 `
 
 const StyledLink = styled(NavLink)`
-  color: ${(props) => props.theme.color.grey[400]};
+  color: ${(props) => props.theme.colors.grey[400]};
   font-weight: 700;
   padding-left: ${(props) => props.theme.spacing[3]}px;
   padding-right: ${(props) => props.theme.spacing[3]}px;
@@ -60,7 +60,7 @@ const StyledLink = styled(NavLink)`
     color: #452A7A;
   }
   &.active {
-    color: ${(props) => props.theme.color.primary.main};
+    color: ${(props) => props.theme.colors.primary.main};
   }
   @media (max-width: 400px) {
     padding-left: ${(props) => props.theme.spacing[2]}px;
@@ -69,7 +69,7 @@ const StyledLink = styled(NavLink)`
 `
 
 const StyledAbsoluteLink = styled.a`
-  color: ${(props) => props.theme.color.grey[400]};
+  color: ${(props) => props.theme.colors.grey[400]};
   font-weight: 700;
   padding-left: ${(props) => props.theme.spacing[3]}px;
   padding-right: ${(props) => props.theme.spacing[3]}px;
@@ -78,7 +78,7 @@ const StyledAbsoluteLink = styled.a`
     color: #452A7A;
   }
   &.active {
-    color: ${(props) => props.theme.color.primary.main};
+    color: ${(props) => props.theme.colors.primary.main};
   }
   @media (max-width: 400px) {
     padding-left: ${(props) => props.theme.spacing[2]}px;

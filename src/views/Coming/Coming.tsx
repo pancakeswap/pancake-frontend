@@ -52,7 +52,7 @@ const StyledInfo = styled.div`
     box-shadow: 0px 2.2623px 11.3115px rgba(171, 133, 115, 0.16);
     border-radius: 50px;
     font-size: 25px;
-    color: #7645D9;
+    color: ${(props) => props.theme.colors.blue[100]};
     font-weight: 900;
     height: 120px;
     padding: 20px;
@@ -64,7 +64,7 @@ const StyledInfo = styled.div`
     z-index: -1;
 
   > b {
-    color: ${(props) => props.theme.color.grey[600]};
+    color: ${(props) => props.theme.colors.primary};
   }
 `
 
@@ -75,7 +75,7 @@ const Countdown = styled.div`
   border-radius: 12.8px;
   font-family: monospace;
   font-size: 58px;
-  color: #452A7A;
+  color: ${(props) => props.theme.colors.primary};
   letter-spacing: 0;
   text-align: center;
   margin-left: 10px;

@@ -44,7 +44,7 @@ const StyledIcon = styled.div`
 
 const StyledTitle = styled.h1`
   font-family: 'monospace', sans-serif;
-  color: ${(props) => props.theme.color.blue[100]};
+  color: ${(props) => props.theme.colors.blue[100]};
   font-size: 36px;
   font-weight: 700;
   margin: 0;
@@ -52,7 +52,7 @@ const StyledTitle = styled.h1`
 `
 
 const StyledSubtitle = styled.h3`
-  color: ${(props) => props.theme.color.grey[400]};
+  color: ${(props) => props.theme.colors.grey[400]};
   font-size: 18px;
   font-weight: 400;
   margin: 0;

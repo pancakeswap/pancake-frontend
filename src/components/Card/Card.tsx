@@ -4,10 +4,10 @@ import styled from 'styled-components'
 const Card: React.FC = ({ children }) => <StyledCard>{children}</StyledCard>
 
 const StyledCard = styled.div`
-  background: #FFFDFA;
+  background: ${(props) => props.theme.colors.cardBg};
   border-radius: 20px;
   display: flex;
-  color: #7645D9;
+  color: ${(props) => props.theme.colors.secondary};
   flex: 1;
   box-shadow: 0px 2px 8px rgba(171, 133, 115, 0.21);
   border-radius: 20px;

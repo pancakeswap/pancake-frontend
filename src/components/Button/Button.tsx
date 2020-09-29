@@ -24,18 +24,19 @@ const Button: React.FC<ButtonProps> = ({
   to,
   variant,
 }) => {
-  const { color, spacing } = useContext(ThemeContext)
+  const { colors, spacing } = useContext(ThemeContext)
+  const buttonColor = colors.bg
 
-  let buttonColor: string
-  switch (variant) {
-    case 'secondary':
-      buttonColor = '#fff'
-      break
-    case 'default':
-      buttonColor = '#fff'
-    default:
-      buttonColor = '#fff'
-  }
+  // let buttonColor: string
+  // switch (variant) {
+  //   case 'secondary':
+  //     buttonColor = '#fff'
+  //     break
+  //   case 'default':
+  //     buttonColor = '#fff'
+  //   default:
+  //     buttonColor = '#fff'
+  // }
 
   let boxShadow: string
   let buttonSize: number
@@ -112,7 +113,7 @@ const StyledButton = styled.button<StyledButtonProps>`
   pointer-events: ${props => !props.disabled ? undefined : 'none'};
   width: 100%;
   &:hover {
-    background-color: ${props => props.theme.color.grey[100]};
+    background-color: ${props => props.theme.colors.grey[100]};
   }
 `
 

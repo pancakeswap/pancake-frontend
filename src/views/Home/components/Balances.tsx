@@ -167,7 +167,7 @@ const RowCard = styled.div`
 
 const SLabel = styled.div`
   line-height: 40px;
-  color: #7645D9;
+  color: ${(props) => props.theme.colors.blue[100]};
 `
 
 const SLabel2 = styled.div`
@@ -181,7 +181,7 @@ const Footnote = styled.div`
   font-size: 14px;
   padding: 0 20px;
   line-height: 50px;
-  color: #7645D9;
+  color: ${(props) => props.theme.colors.blue[100]};
   border-top: solid 1px #7645d938;
   padding: 0 2rem;
 `
@@ -190,7 +190,7 @@ const FootnoteValue = styled.div`
   float: right;
   height: 50px;
   line-height: 50px;
-  color: #7645D9;
+  color: ${(props) => props.theme.colors.blue[100]};
 `
 
 const StyledWrapper = styled.div`

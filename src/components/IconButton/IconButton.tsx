@@ -28,13 +28,13 @@ interface StyledButtonProps {
 
 const StyledButton = styled.button<StyledButtonProps>`
   align-items: center;
-  background-color: ${(props) => props.theme.color.grey[200]};
+  background-color: ${(props) => props.theme.colors.grey[200]};
   border: 0;
   border-radius: 28px;
   color: ${(props) =>
     !props.disabled
       ? '#fff'
-      : props.theme.color.grey[400]};
+      : props.theme.colors.grey[400]};
   cursor: pointer;
   display: flex;
   font-weight: 700;
@@ -48,7 +48,7 @@ const StyledButton = styled.button<StyledButtonProps>`
   text-transform: uppercase;
   width: 56px;
   &:hover {
-    background-color: ${(props) => props.theme.color.grey[100]};
+    background-color: ${(props) => props.theme.colors.blue[100]};
   }
 `
 
