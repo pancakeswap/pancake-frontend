@@ -33,6 +33,13 @@ const MobileMenu: React.FC<MobileMenuProps> = ({onDismiss, visible}) => {
                         onClick={onDismiss}>
                         🥩 Staking
                     </StyledLink>
+                    <StyledLink
+                        exact
+                        activeClassName="active"
+                        to="/syrup"
+                        onClick={onDismiss}>
+                        🍯 SYRUP Pool
+                    </StyledLink>
                     <a style={{
                         paddingTop: "0.6em",
                         color: "white",

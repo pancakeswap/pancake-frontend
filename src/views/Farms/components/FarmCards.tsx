@@ -261,7 +261,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, stakedValue }) => {
               )}
             </Button>
             <StyledSpacer2 />
-            <Lable><span>Total Liquidity</span><span  className="right">{farm.lpToken !== 'BAKE-BNB Bakery LP' ? parseInt(totalValue).toLocaleString(): '-'}</span></Lable>
+            <Lable><span>Total Liquidity</span><span  className="right">{farm.lpToken !== 'BAKE-BNB Bakery LP' ? `$${parseInt(totalValue).toLocaleString()}`: '-'}</span></Lable>
             <Link href={`https://bscscan.com/address/${farm.lpTokenAddress}`} target="_blank">View on BscScan &gt;</Link>
             </FCard>
           </StyledContent>

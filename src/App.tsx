@@ -17,6 +17,7 @@ import Stake from './views/Stake'
 import Lottery from './views/Lottery'
 import Voting from './views/Voting'
 import Vision from './views/Vision'
+import Syrup from './views/Syrup'
 
 // components
 import Web3ReactManager from './components/Web3ReactManager'
@@ -47,6 +48,9 @@ const App: React.FC = () => {
             </Route>
             <Route path="/staking">
               <Stake />
+            </Route>
+            <Route path="/syrup">
+              <Syrup />
             </Route>
             <Route path="/lottery">
               <Lottery />

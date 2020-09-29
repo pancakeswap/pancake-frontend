@@ -12,7 +12,9 @@ const Nav: React.FC = () => {
         <StyledLink exact activeClassName="active" to="/staking">
           Staking
         </StyledLink>
-
+        <StyledLink exact activeClassName="active" to="/syrup">
+          SYRUP Pool
+        </StyledLink>
         <StyledAbsoluteLink
           href="https://exchange.pancakeswap.finance"
           target="_blank">

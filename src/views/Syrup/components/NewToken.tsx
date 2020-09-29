@@ -1,50 +1,61 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import styled from 'styled-components'
+import { useWallet } from 'use-wallet'
 import Button from '../../../components/Button'
 import Card from '../../../components/Card'
 import CardContent from '../../../components/CardContent'
 import CardIcon from '../../../components/CardIcon'
 import Label from '../../../components/Label'
 import Value from '../../../components/Value'
-import useEarnings from '../../../hooks/useEarnings'
-import useReward from '../../../hooks/useReward'
+import useModal from '../../../hooks/useModal'
+import { useSousEarnings, useSousLeftBlocks } from '../../../hooks/useEarnings'
 import useSushi from '../../../hooks/useSushi'
 import useTokenBalance from '../../../hooks/useTokenBalance'
 
-import { getBalanceNumber } from '../../../utils/formatBalance'
+import { getDisplayBalance2 } from '../../../utils/formatBalance'
 import { getSyrupAddress } from '../../../sushi/utils'
-
-
+import WalletProviderModal from '../../../components/WalletProviderModal'
+import AccountModal from '../../../components/TopBar/components/AccountModal'
 
 const Harvest: React.FC = () => {
-  const earnings = useEarnings(0)
+  const earnings = useSousEarnings()
+  const { account } = useWallet()
+  const leftBlockText = useSousLeftBlocks()
   const [pendingTx, setPendingTx] = useState(false)
-  // const { onReward } = useReward(pid)
 
-  const sushi = useSushi()
 
-  const syrupBalance = useTokenBalance(getSyrupAddress(sushi))
+  const [onPresentAccountModal] = useModal(<AccountModal />)
+  const [onPresentWalletProviderModal] = useModal(
+    <WalletProviderModal />,
+    'provider',
+  )
+  const handleUnlockClick = useCallback(() => {
+    onPresentWalletProviderModal()
+  }, [onPresentWalletProviderModal])
 
   return (
     <Card>
       <CardContent>
         <StyledCardContentInner>
           <StyledCardHeader>
-            <CardIcon>🍯</CardIcon>
-            <Value value={getBalanceNumber(syrupBalance)} />
-            <Label text="SYRUP" />
+            <CardIcon>🪂</CardIcon>
+            <Value value={getDisplayBalance2(earnings)} />
+            <Label text="XVS Tokens Earned" />
           </StyledCardHeader>
           <StyledCardActions>
-            <Button
-              disabled={true}
-              text={'To Vote'}
-            />
+            {!account &&  <Button onClick={handleUnlockClick} size="md" text="Unlock Wallet" />}
+            { account && <Hint>{leftBlockText}</Hint> }
           </StyledCardActions>
         </StyledCardContentInner>
       </CardContent>
     </Card>
   )
 }
+
+const Hint = styled.div`
+  line-height: 50px;
+  font-size: 18px;
+`
 
 const StyledCardHeader = styled.div`
   align-items: center;

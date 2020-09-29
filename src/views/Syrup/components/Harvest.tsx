@@ -1,4 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useWallet } from 'use-wallet'
+import { Contract } from 'web3-eth-contract'
+import BigNumber from 'bignumber.js'
+
 import styled from 'styled-components'
 import Button from '../../../components/Button'
 import Card from '../../../components/Card'
@@ -6,24 +10,15 @@ import CardContent from '../../../components/CardContent'
 import CardIcon from '../../../components/CardIcon'
 import Label from '../../../components/Label'
 import Value from '../../../components/Value'
-import useEarnings from '../../../hooks/useEarnings'
-import useReward from '../../../hooks/useReward'
-import useSushi from '../../../hooks/useSushi'
-import useTokenBalance from '../../../hooks/useTokenBalance'
-
 import { getBalanceNumber } from '../../../utils/formatBalance'
-import { getSyrupAddress } from '../../../sushi/utils'
 
+interface HarvestProps {
+  syrup: Contract
+}
 
+const Harvest: React.FC<HarvestProps> = ({ syrup }) => {
+  // const totalStaked = useSousStaked(syrup)
 
-const Harvest: React.FC = () => {
-  const earnings = useEarnings(0)
-  const [pendingTx, setPendingTx] = useState(false)
-  // const { onReward } = useReward(pid)
-
-  const sushi = useSushi()
-
-  const syrupBalance = useTokenBalance(getSyrupAddress(sushi))
 
   return (
     <Card>
@@ -31,14 +26,11 @@ const Harvest: React.FC = () => {
         <StyledCardContentInner>
           <StyledCardHeader>
             <CardIcon>🍯</CardIcon>
-            <Value value={getBalanceNumber(syrupBalance)} />
-            <Label text="SYRUP" />
+            <Value value={getBalanceNumber(new BigNumber(0))} />
+            <Label text="Total Syrup Staked" />
           </StyledCardHeader>
           <StyledCardActions>
-            <Button
-              disabled={true}
-              text={'To Vote'}
-            />
+
           </StyledCardActions>
         </StyledCardContentInner>
       </CardContent>
@@ -69,7 +61,6 @@ const StyledCardContentInner = styled.div`
   flex: 1;
   flex-direction: column;
   justify-content: space-between;
-  margin-right: 10px;
 `
 
 export default Harvest

@@ -75,6 +75,7 @@ export const useTokenBalance2 = (tokenAddress: string, account2: string) => {
   return balance
 }
 
+
 export const useBnbPrice = () => {
     const [price, setPrice] = useState(0)
     const {

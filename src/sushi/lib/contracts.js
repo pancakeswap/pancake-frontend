@@ -4,6 +4,7 @@ import MasterChefAbi from './abi/masterchef.json'
 import SushiAbi from './abi/sushi.json'
 import SyrupAbi from './abi/syrup.json'
 import UNIV2PairAbi from './abi/uni_v2_lp.json'
+import SousChefAbi from './abi/sousChef.json'
 import WETHAbi from './abi/weth.json'
 import {
   contractAddresses,
@@ -25,6 +26,7 @@ export class Contracts {
     this.sushi = new this.web3.eth.Contract(SushiAbi)
     this.masterChef = new this.web3.eth.Contract(MasterChefAbi)
     this.syrup = new this.web3.eth.Contract(SyrupAbi)
+    this.sousChef = new this.web3.eth.Contract(SousChefAbi)
     this.weth = new this.web3.eth.Contract(WETHAbi)
 
     this.pools = supportedPools.map((pool) =>
@@ -51,6 +53,7 @@ export class Contracts {
     setProvider(this.syrup, contractAddresses.syrup[networkId])
     setProvider(this.masterChef, contractAddresses.masterChef[networkId])
     setProvider(this.weth, contractAddresses.weth[networkId])
+    setProvider(this.sousChef, contractAddresses.sousChef[networkId])
 
     this.pools.forEach(
       ({ lpContract, lpAddress, tokenContract, tokenAddress }) => {
@@ -64,6 +67,7 @@ export class Contracts {
     this.sushi.options.from = account
     this.masterChef.options.from = account
     this.syrup.options.from = account
+    this.sousChef.options.from = account
   }
 
   async callContractFunction(method, options) {

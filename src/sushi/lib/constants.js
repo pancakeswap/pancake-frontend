@@ -42,6 +42,11 @@ export const contractAddresses = {
     56: '0x73feaa1eE314F8c655E354234017bE2193C9E24E', //  real cake
     // 56: '0x39447351Fe7939C064CDD9A258F22FC76233E28e'
   },
+  sousChef: {
+    97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
+    56: '0x6ab8463a4185b80905e05a9ff80a2d6b714b9e95', //  real cake
+    // 56: '0x39447351Fe7939C064CDD9A258F22FC76233E28e'
+  },
   weth: {
     97: '0xae13d989dac2f0debff460ac112a837c89baa7cd',
     56: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c'
@@ -197,7 +202,7 @@ export const supportedPools = [
     symbol: 'BAKE-BNB Bakery LP',
     tokenSymbol: 'BAKE',
     icon: '🥞',
-    multiplier: '1X'
+    multiplier: '0X'
   },
   {
     pid: 9,
@@ -211,6 +216,21 @@ export const supportedPools = [
     },
     symbol: 'BURGER-BNB FLIP',
     tokenSymbol: 'BURGER',
+    icon: '🥞',
+    multiplier: '1X'
+  },
+  {
+    pid: 10,
+    lpAddresses: {
+      97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
+      56: '0x3Da30727ed0626b78C212e81B37B97A8eF8A25bB'
+    },
+    tokenAddresses: {
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
+      56: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5'
+    },
+    symbol: 'BAKE-BNB FLIP',
+    tokenSymbol: 'BAKE',
     icon: '🥞',
     multiplier: '1X'
   }
@@ -265,13 +285,18 @@ export const forShowPools = [
     pid: 3,
     symbol: 'BAKE-BNB Bakery LP',
     tokenSymbol: 'BAKE',
-    multiplier: '1X'
+    multiplier: '0X'
   },
   {
     pid: 4,
-    name: 'BURGER GAME',
     symbol: 'BURGER-BNB',
     tokenSymbol: 'BURGER',
+    multiplier: '1X'
+  },
+  {
+    pid: 10,
+    symbol: 'BAKE-BNB',
+    tokenSymbol: 'BAKE',
     multiplier: '1X'
   }
 ]

@@ -16,6 +16,10 @@ const GAS_LIMIT = {
 export const getMasterChefAddress = (sushi) => {
   return sushi && sushi.masterChefAddress
 }
+export const getSousChefAddress = (sushi) => {
+  return sushi && sushi.sousChefAddress
+}
+
 export const getSushiAddress = (sushi) => {
   return sushi && sushi.sushiAddress
 }
@@ -31,6 +35,9 @@ export const getMasterChefContract = (sushi) => {
 }
 export const getSushiContract = (sushi) => {
   return sushi && sushi.contracts && sushi.contracts.sushi
+}
+export const getSousChefContract = (sushi) => {
+  return sushi && sushi.contracts && sushi.contracts.sousChef
 }
 
 export const getFarms = (sushi) => {
@@ -50,7 +57,6 @@ export const getFarms = (sushi) => {
         }) => ({
           pid,
           id: symbol,
-          name,
           lpToken: symbol,
           lpTokenAddress: lpAddress,
           lpContract,
@@ -76,6 +82,10 @@ export const getPoolWeight = async (masterChefContract, pid) => {
 
 export const getEarned = async (masterChefContract, pid, account) => {
   return masterChefContract.methods.pendingCake(pid, account).call()
+}
+
+export const getSousEarned = async (sousChefContract, account) => {
+  return sousChefContract.methods.pendingReward(account).call()
 }
 
 export const getTotalLPWethValue = async (
@@ -126,6 +136,12 @@ export const approve = async (lpContract, masterChefContract, account) => {
     .send({ from: account })
 }
 
+export const approveSous = async (syrup, sousChefContract, account) => {
+  return syrup.methods
+    .approve(sousChefContract.options.address, ethers.constants.MaxUint256)
+    .send({ from: account })
+}
+
 export const getSushiSupply = async (sushi) => {
   return new BigNumber(await sushi.contracts.sushi.methods.totalSupply().call())
 }
@@ -150,10 +166,22 @@ export const stake = async (masterChefContract, pid, amount, account) => {
     )
     .send({ from: account })
     .on('transactionHash', (tx) => {
-      console.log(tx)
       return tx.transactionHash
     })
 }
+
+export const sousStake = async (sousChefContract, amount, account) => {
+  console.log(sousChefContract)
+  return sousChefContract.methods
+    .deposit(
+      new BigNumber(amount).times(new BigNumber(10).pow(18)).toString(),
+    )
+    .send({ from: account })
+    .on('transactionHash', (tx) => {
+      return tx.transactionHash
+    })
+}
+
 
 export const unstake = async (masterChefContract, pid, amount, account) => {
   if(pid ===0) {
@@ -179,13 +207,24 @@ export const unstake = async (masterChefContract, pid, amount, account) => {
     })
 }
 
+export const sousUnstake = async (sousChefContract, amount, account) => {
+  return sousChefContract.methods
+    .withdraw(
+      new BigNumber(amount).times(new BigNumber(10).pow(18)).toString(),
+    )
+    .send({ from: account })
+    .on('transactionHash', (tx) => {
+      console.log(tx)
+      return tx.transactionHash
+    })
+}
+
 export const harvest = async (masterChefContract, pid, account) => {
   if(pid ===0) {
     return masterChefContract.methods
       .leaveStaking('0')
       .send({ from: account })
       .on('transactionHash', (tx) => {
-        console.log(tx)
         return tx.transactionHash
       })
   }
@@ -193,7 +232,6 @@ export const harvest = async (masterChefContract, pid, account) => {
     .deposit(pid, '0')
     .send({ from: account })
     .on('transactionHash', (tx) => {
-      console.log(tx)
       return tx.transactionHash
     })
 }
@@ -206,6 +244,38 @@ export const getStaked = async (masterChefContract, pid, account) => {
     return new BigNumber(amount)
   } catch {
     return new BigNumber(0)
+  }
+}
+
+export const getSousStaked = async (sousChefContract, account) => {
+  try {
+    const { amount } = await sousChefContract.methods
+      .userInfo(account)
+      .call()
+    return new BigNumber(amount)
+  } catch {
+    return new BigNumber(0)
+  }
+}
+
+export const getSousStartBlock = async (sousChefContract) => {
+  try {
+    const startBlock = await sousChefContract.methods
+      .startBlock()
+      .call()
+    return startBlock
+  } catch {
+    return 0
+  }
+}
+export const getSousEndBlock = async (sousChefContract) => {
+  try {
+    const endBlcok = await sousChefContract.methods
+      .bonusEndBlock()
+      .call()
+    return endBlcok
+  } catch {
+    return 0
   }
 }
 
