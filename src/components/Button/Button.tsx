@@ -100,7 +100,7 @@ const StyledButton = styled.button<StyledButtonProps>`
   background: ${props => !props.disabled ? 'linear-gradient(180deg, #54DADE 0%, #24C7D6 76.22%)' : `#ddd`};
   border: 0;
   border-radius: 12px;
-  color: ${props => !props.disabled ? props.color : `${props.color}55`};
+  color: ${props => !props.disabled ? props.color : `#acaaaf`};
   cursor: pointer;
   display: flex;
   font-size: ${props => props.fontSize}px;
