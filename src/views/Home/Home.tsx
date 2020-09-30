@@ -31,6 +31,9 @@ const Image = styled.img`
   position: absolute;
   z-index: -3;
   top: 10%;
+  @media (max-width: 500px) {
+    width: 100vw;
+  }
 `
 
 const Blank = styled.div`
