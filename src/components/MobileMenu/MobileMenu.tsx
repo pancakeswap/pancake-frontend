@@ -148,7 +148,7 @@ const StyledLink = styled(NavLink)`
     color: ${(props) => props.theme.colors.grey[500]};
   }
   &.active {
-    color: ${(props) => props.theme.colors.primary.main};
+    color: ${(props) => props.theme.colors.grey[600]};
   }
 `
 
