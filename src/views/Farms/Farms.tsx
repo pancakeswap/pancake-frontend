@@ -6,7 +6,6 @@ import { NavLink } from 'react-router-dom'
 
 import Button from '../../components/Button'
 import Page from '../../components/Page'
-import PageHeader from '../../components/PageHeader'
 import WalletProviderModal from '../../components/WalletProviderModal'
 import { useCakePrice } from '../../hooks/useTokenBalance'
 
@@ -66,7 +65,7 @@ const PriceTag = styled.div`
   position: relative;
   font-size: 18px;
   color: #4bd4dc;
-  FONT-WEIGHT: 600;
+  font-weight: 600;
   top: -30px;
 `
 
@@ -91,7 +90,7 @@ const Image = styled.img`
 `
 
 const Title= styled.div`
-  color:#7645D9;
+  color: ${(props) => props.theme.colors.secondary};
   font-size:29px;
   width: 50vw;
   text-align: center;

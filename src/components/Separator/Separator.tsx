@@ -11,11 +11,11 @@ interface SeparatorProps {
 
 const Separator: React.FC<SeparatorProps> = ({ orientation, stretch }) => {
 
-  const { color } = useContext(ThemeContext)
+  const { colors } = useContext(ThemeContext)
 
-  let boxShadow = `0 -1px 0px ${color.grey[300]}`
+  let boxShadow = `0 -1px 0px ${colors.grey[300]}`
   if (orientation === 'vertical') {
-    boxShadow = `-1px 0px 0px ${color.grey[300]}ff`
+    boxShadow = `-1px 0px 0px ${colors.grey[300]}ff`
   }
 
   const Content = useMemo(() => {
@@ -39,7 +39,7 @@ interface StyledSeparatorProps {
 }
 
 const StyledSeparator = styled.div<StyledSeparatorProps>`
-  background-color: ${props => props.theme.color.grey[100]};
+  background-color: ${props => props.theme.colors.grey[100]};
   box-shadow: ${props => props.boxShadow};
   height: ${props => props.orientation === 'vertical' ? '100%' : '1px'};
   width: ${props => props.orientation === 'vertical' ? '1px' : '100%'};

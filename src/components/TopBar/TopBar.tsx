@@ -6,12 +6,15 @@ import Logo from '../Logo'
 
 import AccountButton from './components/AccountButton'
 import Nav from './components/Nav'
+import ThemeSwitch from './components/ThemeSwitch'
 
 interface TopBarProps {
+    isDark: boolean
+    toogleTheme: (isDark: boolean) => void
     onPresentMobileMenu: () => void
 }
 
-const TopBar: React.FC<TopBarProps> = ({onPresentMobileMenu}) => {
+const TopBar: React.FC<TopBarProps> = ({ isDark, toogleTheme, onPresentMobileMenu}) => {
     return (
         <StyledTopBar>
             <Container size="lg">
@@ -19,7 +22,8 @@ const TopBar: React.FC<TopBarProps> = ({onPresentMobileMenu}) => {
                     <StyledLogoWrapper>
                         <Logo/>
                     </StyledLogoWrapper>
-                    <Nav/>
+                    <Nav />
+                    <ThemeSwitch isDark={isDark} toogleTheme={toogleTheme} />
                     <StyledAccountButtonWrapper>
                         <AccountButton/>
                     </StyledAccountButtonWrapper>
@@ -34,7 +38,7 @@ const TopBar: React.FC<TopBarProps> = ({onPresentMobileMenu}) => {
 
 const Menu = styled.div`
   margin: 0 auto;
-  width: 110px;
+  width: 82px;
   text-align: center;
   color: white;
   font-size: 17px;

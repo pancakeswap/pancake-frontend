@@ -8,7 +8,6 @@ export const green = {
 export const red = {
   100: '#FFFDFE',
   200: '#ffc2a8',
-  500: '#452A7A',
 }
 
 export const grey = {
@@ -17,7 +16,7 @@ export const grey = {
   300: '#FFFDFA',
   400: '#12AAB5',
   500: '#805e49',
-  600: '#452A7A',
+  600: '#452A7A', // dark primary
   800: '#2d1e12',
 }
 

@@ -77,7 +77,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({onDismiss, visible}) => {
 }
 
 const StyledBackdrop = styled.div`
-  background-color: ${(props) => props.theme.color.grey[600]}aa;
+  background-color: ${(props) => props.theme.colors.grey[600]}aa;
   position: absolute;
   top: 0;
   right: 0;
@@ -122,7 +122,7 @@ const Wrapper = styled.div`
 
 const StyledMobileMenu = styled.div`
   animation: ${slideIn} 0.3s forwards ease-out;
-  background-color: ${(props) => props.theme.color.grey[200]};
+  background-color: ${(props) => props.theme.colors.grey[200]};
   display: flex;
   flex: 1;
   flex-direction: column;
@@ -145,10 +145,10 @@ const StyledLink = styled(NavLink)`
   text-decoration: none;
   width: 100%;
   &:hover {
-    color: ${(props) => props.theme.color.grey[500]};
+    color: ${(props) => props.theme.colors.grey[500]};
   }
   &.active {
-    color: ${(props) => props.theme.color.primary.main};
+    color: ${(props) => props.theme.colors.primary.main};
   }
 `
 

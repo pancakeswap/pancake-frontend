@@ -41,7 +41,7 @@ const StyledSushi = styled.div`
 `
 
 const StyledText = styled.div`
-  color: ${(props) => props.theme.color.grey[400]};
+  color: ${(props) => props.theme.colors.grey[400]};
 `
 
 export default Loader

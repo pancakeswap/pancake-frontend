@@ -12,7 +12,7 @@ interface DialProps {
 }
 
 const Dial: React.FC<DialProps> = ({ children, color, disabled, size = 256, value }) => {
-  const { color: themeColor } = useContext(ThemeContext)
+  const { colors: themeColor } = useContext(ThemeContext)
   let pathColor = themeColor.secondary.main
   if (color === 'primary') {
     pathColor = themeColor.primary.main
@@ -50,7 +50,7 @@ const StyledDial = styled.div<StyledInnerProps>`
 
 const StyledInner = styled.div<StyledInnerProps>`
   align-items: center;
-  background-color: ${props => props.theme.color.grey[200]};
+  background-color: ${props => props.theme.colors.grey[200]};
   border-radius: ${props => props.size}px;
   display: flex;
   justify-content: center;
@@ -60,7 +60,7 @@ const StyledInner = styled.div<StyledInnerProps>`
 `
 
 const StyledOuter = styled.div`
-  background-color: ${props => props.theme.color.grey[300]};
+  background-color: ${props => props.theme.colors.grey[300]};
   border-radius: 10000px;
   position: absolute;
   top: 0; right: 0; bottom: 0; left: 0;

@@ -4,7 +4,7 @@ import { ThemeContext } from 'styled-components'
 import { IconProps } from '../Icon'
 
 const AddIcon: React.FC<IconProps> = ({ color, size = 24 }) => {
-  const { color: themeColor } = useContext(ThemeContext)
+  const { colors: themeColor } = useContext(ThemeContext)
   return (
     <svg
       height={size}

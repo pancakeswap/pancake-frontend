@@ -4,7 +4,7 @@ import { ThemeContext } from 'styled-components'
 import { IconProps } from '../Icon'
 
 const RemoveIcon: React.FC<IconProps> = ({ color, size = 18 }) => {
-  const { color: themeColor } = useContext(ThemeContext)
+  const { colors: themeColor } = useContext(ThemeContext)
   return (
     <svg
       viewBox="0 0 24 24"

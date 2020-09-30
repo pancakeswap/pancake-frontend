@@ -139,21 +139,20 @@ const CardImage = styled.div`
 
 const Lable = styled.div`
 line-height: 1.5rem;
-color: #7645D9;
+color: ${(props) => props.theme.colors.secondary};
   >span {
     float: left;
   }
   .right {
     float: right;
-    color: #452A7A;
+    color: ${(props) => props.theme.colors.primary};
     font-weight: 900;
   }
 `
 
 const FCard = styled.div`
   position: relative;
-  background: rgb(240, 233, 231);
-  background: #FFFDFA;
+  background: ${(props) => props.theme.colors.cardBg};
   box-shadow: 0px 2px 10px rgba(171, 133, 115, 0.16);
   border-radius: 20px;
   height: 309px;
@@ -273,8 +272,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, stakedValue }) => {
 
 const Link = styled.a`
   text-decoration: none;
-  font-weight: 900;
-  color: #8953ec;
+  color: ${(props) => props.theme.colors.secondary};
 `
 
 const RainbowLight = keyframes`
@@ -349,7 +347,7 @@ const StyledCardWrapper = styled.div`
 `
 
 const StyledTitle = styled.h4`
-  color: ${(props) => props.theme.color.grey[600]};
+  color: ${(props) => props.theme.colors.primary};
   font-size: 24px;
   font-weight: 700;
   margin: ${(props) => props.theme.spacing[2]}px 0 0;
@@ -367,9 +365,9 @@ const Multiplier = styled.div`
   position: absolute;
   line-height: 25px;
   padding: 0 12px;
-  background: #7645da;
+  background: ${(props) => props.theme.colors.blue[100]};
   border-radius: 10px;
-  color: #fff;
+  color: ${(props) => props.theme.colors.bg};
   font-weight: 900;
   left: 20px;
   top: 20px;
@@ -391,7 +389,7 @@ const StyledDetails = styled.div`
 `
 
 const StyledDetail = styled.div`
-  color: ${(props) => props.theme.color.grey[500]};
+  color: ${(props) => props.theme.colors.grey[500]};
 `
 
 const StyledInsight = styled.div`

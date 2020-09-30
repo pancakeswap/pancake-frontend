@@ -1,34 +1,9 @@
-import { black, green, grey, red, white, blue } from './colors'
+import lightTheme from './light'
+import darkTheme from './dark'
 
-const theme = {
-  borderRadius: 12,
-  breakpoints: {
-    mobile: 580,
-  },
-  color: {
-    black,
-    grey,
-    blue,
-    primary: {
-      light: red[200],
-      main: red[500],
-    },
-    secondary: {
-      main: green[500],
-    },
-    white,
-  },
-  siteWidth: 1200,
-  spacing: {
-    1: 4,
-    2: 8,
-    3: 16,
-    4: 24,
-    5: 32,
-    6: 48,
-    7: 64,
-  },
-  topBarSize: 72
+export type ThemeType = typeof lightTheme
+
+export {
+  lightTheme,
+  darkTheme,
 }
-
-export default theme
