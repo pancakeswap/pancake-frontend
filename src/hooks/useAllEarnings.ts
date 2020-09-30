@@ -35,8 +35,6 @@ const useAllEarnings = () => {
     }
   }, [account, block, masterChefContract, setBalance, sushi])
 
-  console.log(farms, balances)
-
   return balances
 }
 

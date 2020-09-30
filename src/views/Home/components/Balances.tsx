@@ -153,7 +153,8 @@ const RowCard = styled.div`
   line-height: 60px;
   padding: 0 25px;
   box-sizing: border-box;
-  background: #FFFDFA;
+  background: ${(props) => props.theme.colors.cardBg};
+
   margin-top: 20px;
   display:flex;
   justify-content: space-between;
