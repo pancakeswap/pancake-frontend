@@ -15,7 +15,7 @@ const Dial: React.FC<DialProps> = ({ children, color, disabled, size = 256, valu
   const { colors: themeColor } = useContext(ThemeContext)
   let pathColor = themeColor.secondary.main
   if (color === 'primary') {
-    pathColor = themeColor.primary.main
+    pathColor = themeColor.grey[600]
   }
 
   return (
