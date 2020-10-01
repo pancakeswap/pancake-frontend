@@ -141,12 +141,10 @@ const StyledCardsWrapper = styled.div`
 
 const StyledCardWrapper = styled.div`
   display: flex;
-  flex: 1;
-  flex-direction: column;
-  @media (max-width: 768px) {
-    width: 80%;
-  }
+  width: calc((900px - ${(props) => props.theme.spacing[4]}px * 2) / 3);
+  position: relative;
 `
+
 
 const StyledInfo = styled.h3`
   color: ${(props) => props.theme.colors.grey[400]};
@@ -156,5 +154,6 @@ const StyledInfo = styled.h3`
   padding: 0;
   text-align: center;
 `
+
 
 export default Farm
