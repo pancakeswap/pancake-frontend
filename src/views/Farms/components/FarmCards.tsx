@@ -62,19 +62,33 @@ const FarmCards: React.FC = () => {
 
   const realFarms =farms.filter(farm => farm.pid !== 0)
   const realStakedValue = stakedValue.slice(1)
+  const bnbPrice = useBnbPrice()
+  // console.log(bnbPrice)
 
   const rows = realFarms.reduce<FarmWithStakedValue[][]>(
     (farmRows, farm, i) => {
-      const farmWithStakedValue = {
-        ...farm,
-        ...realStakedValue[i],
-        apy: realStakedValue[i]
-          ? sushiPrice
+      let apy
+      if(farm.pid == 11) {
+        apy = realStakedValue[i] ? sushiPrice
               .times(SUSHI_PER_BLOCK)
               .times(BLOCKS_PER_YEAR)
               .times(realStakedValue[i].poolWeight)
-              .div(realStakedValue[i].totalWethValue)
-          : null
+              .div(realStakedValue[i].tokenAmount)
+              .div(2)
+              .times(bnbPrice) : null
+      }
+      else {
+        apy = realStakedValue[i] ? sushiPrice
+              .times(SUSHI_PER_BLOCK)
+              .times(BLOCKS_PER_YEAR)
+              .times(realStakedValue[i].poolWeight)
+              .div(realStakedValue[i].totalWethValue) : null
+
+      }
+      const farmWithStakedValue = {
+        ...farm,
+        ...realStakedValue[i],
+        apy: apy
       }
       const newFarmRows = [...farmRows]
       if (newFarmRows[newFarmRows.length - 1].length === 3) {
@@ -179,8 +193,12 @@ interface FarmCardProps {
 }
 
 const FarmCard: React.FC<FarmCardProps> = ({ farm, stakedValue }) => {
+  const totalValue1 = useTokenBalance2('0x55d398326f99059ff775485246999027b3197955', farm.lpTokenAddress) *2
+  let totalValue = useTokenBalance2('0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c', farm.lpTokenAddress) * useBnbPrice() *2
 
-  const totalValue = useTokenBalance2('0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c', farm.lpTokenAddress) * useBnbPrice() *2
+  if(farm.pid == 11) {
+    totalValue = totalValue1
+  }
 
   const [startTime, setStartTime] = useState(1600783200)
   const [harvestable, setHarvestable] = useState(0)

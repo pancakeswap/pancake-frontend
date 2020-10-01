@@ -17,7 +17,12 @@ import { getSyrupAddress } from '../../../sushi/utils'
 import WalletProviderModal from '../../../components/WalletProviderModal'
 import AccountModal from '../../../components/TopBar/components/AccountModal'
 
-const Harvest: React.FC = () => {
+interface TokenRewardProps {
+  tokenName: string
+}
+
+
+const TokenReward: React.FC<TokenRewardProps> = ({ tokenName }) => {
   const earnings = useSousEarnings()
   const { account } = useWallet()
   const leftBlockText = useSousLeftBlocks()
@@ -40,7 +45,7 @@ const Harvest: React.FC = () => {
           <StyledCardHeader>
             <CardIcon>🪂</CardIcon>
             <Value value={getDisplayBalance2(earnings)} />
-            <Label text="XVS Tokens Earned" />
+            <Label text={`${tokenName} Tokens Earned`} />
           </StyledCardHeader>
           <StyledCardActions>
             {!account &&  <Button onClick={handleUnlockClick} size="md" text="Unlock Wallet" />}
@@ -55,6 +60,9 @@ const Harvest: React.FC = () => {
 const Hint = styled.div`
   line-height: 50px;
   font-size: 18px;
+  @media (max-width: 550px) {
+    font-size: 14px;
+  }
 `
 
 const StyledCardHeader = styled.div`
@@ -83,4 +91,4 @@ const StyledCardContentInner = styled.div`
   margin-right: 10px;
 `
 
-export default Harvest
+export default TokenReward

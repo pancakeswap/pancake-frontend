@@ -26,6 +26,9 @@ export const getSushiAddress = (sushi) => {
 export const getSyrupAddress = (sushi) => {
   return sushi && sushi.syrupAddress
 }
+export const getSyrupContract = (sushi) => {
+  return sushi && sushi.contracts && sushi.contracts.syrup
+}
 export const getWethContract = (sushi) => {
   return sushi && sushi.contracts && sushi.contracts.weth
 }
@@ -36,8 +39,8 @@ export const getMasterChefContract = (sushi) => {
 export const getSushiContract = (sushi) => {
   return sushi && sushi.contracts && sushi.contracts.sushi
 }
-export const getSousChefContract = (sushi) => {
-  return sushi && sushi.contracts && sushi.contracts.sousChef
+export const getSousChefContract = (sushi, sousId = 0) => {
+  return sushi && sushi.contracts && sushi.contracts.sousChefs[sousId].sousContract
 }
 
 export const getFarms = (sushi) => {
@@ -72,6 +75,24 @@ export const getFarms = (sushi) => {
     : []
 }
 
+export const getPools = (sushi)  => {
+  return sushi
+    ? sushi.contracts.sousChefs.map(
+      ({
+        sousId,
+        sousContract,
+        contractAddress,
+        tokenName
+      }) => ({
+        sousId,
+        sousContract,
+        contractAddress,
+        tokenName
+      }),
+    )
+  : []
+}
+
 export const getPoolWeight = async (masterChefContract, pid) => {
   const { allocPoint } = await masterChefContract.methods.poolInfo(pid).call()
   const totalAllocPoint = await masterChefContract.methods
@@ -87,6 +108,14 @@ export const getEarned = async (masterChefContract, pid, account) => {
 export const getSousEarned = async (sousChefContract, account) => {
   return sousChefContract.methods.pendingReward(account).call()
 }
+
+export const getTotalStaked = async (sushi, sousChefContract) => {
+  const syrup = await getSyrupContract(sushi)
+  return syrup.methods
+    .balanceOf(sousChefContract.options.address)
+    .call()
+}
+
 
 export const getTotalLPWethValue = async (
   masterChefContract,

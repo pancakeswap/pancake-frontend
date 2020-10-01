@@ -10,56 +10,62 @@ import Spacer from '../../components/Spacer'
 import Page from '../../components/Page'
 import Button from '../../components/Button'
 import PageHeader from '../../components/PageHeader'
-import WalletProviderModal from '../../components/WalletProviderModal'
-
-import useModal from '../../hooks/useModal'
-
-import useSushi from '../../hooks/useSushi'
-import useFarm from '../../hooks/useFarm'
-import useRedeem from '../../hooks/useRedeem'
-
 import { getContract } from '../../utils/erc20'
-import { getMasterChefContract } from '../../sushi/utils'
+import useSushi from '../../hooks/useSushi'
+import { getPools } from '../../sushi/utils'
 
-// import Harvest from './components/Harvest'
+import Total from './components/Total'
 import NewToken from './components/NewToken'
 import Stake from './components/Stake'
 
-const Farm: React.FC = () => {
-  const { account } = useWallet()
+interface SyrupRowProps {
+  syrupAddress: string
+  sousId: number
+  tokenName: string
+}
 
-  const farmInfo = useFarm('CAKE') || {
-    pid: 0,
-    lpToken: '',
-    lpTokenAddress: '',
-    tokenAddress: '',
-    earnToken: '',
-    name: '',
-    icon: '',
-    tokenSymbol: ''
-  }
-
-  const {
-    pid,
-    lpToken,
-    lpTokenAddress,
-    tokenAddress,
-    earnToken,
-    name,
-    icon,
-    tokenSymbol
-  } = farmInfo;
-
-  useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
-
-  const sushi = useSushi()
+const SyrupRow: React.FC<SyrupRowProps> = ({syrupAddress, sousId, tokenName}) => {
   const { ethereum } = useWallet()
 
   const syrup = useMemo(() => {
     return getContract(ethereum as provider, '0x009cF7bC57584b7998236eff51b98A168DceA9B0')
   }, [ethereum])
+
+
+  return (
+    <StyledCardsWrapper>
+      <StyledCardWrapper>
+        <Total
+          syrup={syrup}
+          tokenName={'SYRUP'}
+          sousId={sousId}
+        />
+      </StyledCardWrapper>
+      <Spacer />
+      <StyledCardWrapper>
+        <Stake
+          syrup={syrup}
+          tokenName={'SYRUP'}
+          sousId={sousId}
+        />
+      </StyledCardWrapper>
+      <Spacer />
+      <StyledCardWrapper>
+        <NewToken tokenName={tokenName}/>
+      </StyledCardWrapper>
+    </StyledCardsWrapper>
+
+  )
+
+}
+
+const Farm: React.FC = () => {
+  const sushi = useSushi()
+  const pools = getPools(sushi)
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
 
   return (
     <Page>
@@ -71,20 +77,9 @@ const Farm: React.FC = () => {
           />
           <Spacer size="lg" />
           <StyledFarm>
-            <StyledCardsWrapper>
-
-              <StyledCardWrapper>
-                <Stake
-                  syrup={syrup}
-                  tokenName={'SYRUP'}
-                />
-              </StyledCardWrapper>
-              <Spacer />
-              <Spacer />
-              <StyledCardWrapper>
-                <NewToken />
-              </StyledCardWrapper>
-            </StyledCardsWrapper>
+            {pools.map(pool =>
+              <SyrupRow {...pool} />
+            )}
             <Spacer size="lg" />
             <StyledInfo>
               ⭐️ Stake your SYRUP to earn tokens of new projects,
@@ -119,7 +114,8 @@ const StyledFarm = styled.div`
 
 const StyledCardsWrapper = styled.div`
   display: flex;
-  width: 800px;
+  width: 1000px;
+  margin-bottom: 20px;
   @media (max-width: 768px) {
     width: 100%;
     flex-flow: column nowrap;

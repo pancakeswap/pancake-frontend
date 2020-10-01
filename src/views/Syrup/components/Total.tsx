@@ -11,14 +11,16 @@ import CardIcon from '../../../components/CardIcon'
 import Label from '../../../components/Label'
 import Value from '../../../components/Value'
 import { getBalanceNumber } from '../../../utils/formatBalance'
+import { useSousTotalStaked} from '../../../hooks/useStakedBalance'
 
 interface HarvestProps {
   syrup: Contract
+  tokenName: string
+  sousId: number
 }
 
-const Harvest: React.FC<HarvestProps> = ({ syrup }) => {
-  // const totalStaked = useSousStaked(syrup)
-
+const Harvest: React.FC<HarvestProps> = ({ syrup, tokenName, sousId }) => {
+  const totalStaked = useSousTotalStaked(sousId)
 
   return (
     <Card>
@@ -26,7 +28,7 @@ const Harvest: React.FC<HarvestProps> = ({ syrup }) => {
         <StyledCardContentInner>
           <StyledCardHeader>
             <CardIcon>🍯</CardIcon>
-            <Value value={getBalanceNumber(new BigNumber(0))} />
+            <Value value={getBalanceNumber(totalStaked)} />
             <Label text="Total Syrup Staked" />
           </StyledCardHeader>
           <StyledCardActions>

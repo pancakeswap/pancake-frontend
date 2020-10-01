@@ -10,6 +10,7 @@ import {
   contractAddresses,
   SUBTRACT_GAS_LIMIT,
   supportedPools,
+  sousChefTeam
 } from './constants.js'
 import * as Types from './types.js'
 
@@ -38,6 +39,13 @@ export class Contracts {
       }),
     )
 
+    this.sousChefs = sousChefTeam.map((pool) =>
+      Object.assign(pool, {
+        contractAddress: pool.contractAddress[networkId],
+        sousContract: new this.web3.eth.Contract(SousChefAbi),
+      }),
+    )
+
     this.setProvider(provider, networkId)
     this.setDefaultAccount(this.web3.eth.defaultAccount)
   }
@@ -59,6 +67,12 @@ export class Contracts {
       ({ lpContract, lpAddress, tokenContract, tokenAddress }) => {
         setProvider(lpContract, lpAddress)
         setProvider(tokenContract, tokenAddress)
+      },
+    )
+
+    this.sousChefs.forEach(
+      ({ contractAddress, sousContract }) => {
+        setProvider(sousContract, contractAddress)
       },
     )
   }

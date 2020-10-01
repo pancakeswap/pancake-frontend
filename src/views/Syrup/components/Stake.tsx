@@ -15,7 +15,7 @@ import { useSousAllowance } from '../../../hooks/useAllowance'
 import { useSousApprove } from '../../../hooks/useApprove'
 import useModal from '../../../hooks/useModal'
 import useStake, {useSousStake} from '../../../hooks/useStake'
-import {useSousStakedBalance} from '../../../hooks/useStakedBalance'
+import {useSousStakedBalance, useSousTotalStaked} from '../../../hooks/useStakedBalance'
 import useTokenBalance from '../../../hooks/useTokenBalance'
 import useUnstake, {useSousUnstake} from '../../../hooks/useUnstake'
 import { getBalanceNumber } from '../../../utils/formatBalance'
@@ -28,9 +28,10 @@ import AccountModal from '../../../components/TopBar/components/AccountModal'
 interface StakeProps {
   syrup: Contract
   tokenName: string
+  sousId: number
 }
 
-const Stake: React.FC<StakeProps> = ({ syrup, tokenName }) => {
+const Stake: React.FC<StakeProps> = ({ syrup, tokenName, sousId }) => {
   const [requestedApproval, setRequestedApproval] = useState(false)
   const { account } = useWallet()
 
@@ -38,10 +39,13 @@ const Stake: React.FC<StakeProps> = ({ syrup, tokenName }) => {
   const { onApprove } = useSousApprove(syrup)
 
   const tokenBalance = useTokenBalance(syrup.options.address)
-  const stakedBalance = useSousStakedBalance()
+  const stakedBalance = useSousStakedBalance(sousId)
+  const totalStaked = useSousTotalStaked(sousId)
 
   const { onStake } = useSousStake()
   const { onUnstake } = useSousUnstake()
+
+  console.log(totalStaked)
 
   const [onPresentDeposit] = useModal(
     <DepositModal
@@ -88,7 +92,7 @@ const Stake: React.FC<StakeProps> = ({ syrup, tokenName }) => {
           <StyledCardHeader>
             <CardIcon>🍯</CardIcon>
             <Value value={getBalanceNumber(stakedBalance)} />
-            <Label text={`${tokenName} Tokens Staked`} />
+            <Label text={`Your ${tokenName} Tokens Staked`} />
           </StyledCardHeader>
           <StyledCardActions>
             {!account &&  <Button onClick={handleUnlockClick} size="md" text="Unlock Wallet" />}

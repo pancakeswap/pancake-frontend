@@ -53,6 +53,17 @@ export const contractAddresses = {
   },
 }
 
+export const sousChefTeam = [
+  {
+    sousId: 0,
+    contractAddress: {
+      97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
+      56: '0x6ab8463a4185b80905e05a9ff80a2d6b714b9e95', //  real cake
+    },
+    tokenName: 'XVS'
+  },
+]
+
 // BUSD-BNB LP
 // 0x1b96b92314c44b159149f7e0303511fb2fc4774f
 // BAKE-BNB LP
@@ -190,21 +201,6 @@ export const supportedPools = [
     multiplier: '5X'
   },
   {
-    pid: 8,
-    lpAddresses: {
-      97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
-      56: '0xc2eed0f5a0dc28cfa895084bc0a9b8b8279ae492'
-    },
-    tokenAddresses: {
-      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
-      56: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5'
-    },
-    symbol: 'BAKE-BNB Bakery LP',
-    tokenSymbol: 'BAKE',
-    icon: '🥞',
-    multiplier: '0X'
-  },
-  {
     pid: 9,
     lpAddresses: {
       97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
@@ -233,7 +229,37 @@ export const supportedPools = [
     tokenSymbol: 'BAKE',
     icon: '🥞',
     multiplier: '1X'
-  }
+  },
+  {
+    pid: 11,
+    lpAddresses: {
+      97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
+      56: '0xc15fa3E22c912A276550F3E5FE3b0Deb87B55aCd'
+    },
+    tokenAddresses: {
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
+      56: '0x55d398326f99059ff775485246999027b3197955'
+    },
+    symbol: 'USDT-BUSD FLIP',
+    tokenSymbol: 'USDT',
+    icon: '🥞',
+    multiplier: '1X'
+  },
+  {
+    pid: 8,
+    lpAddresses: {
+      97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
+      56: '0xc2eed0f5a0dc28cfa895084bc0a9b8b8279ae492'
+    },
+    tokenAddresses: {
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
+      56: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5'
+    },
+    symbol: 'BAKE-BNB Bakery LP',
+    tokenSymbol: 'BAKE',
+    icon: '🥞',
+    multiplier: '0X'
+  },
 ]
 
 export const forShowPools = [
@@ -282,12 +308,6 @@ export const forShowPools = [
     multiplier: '5X'
   },
   {
-    pid: 3,
-    symbol: 'BAKE-BNB Bakery LP',
-    tokenSymbol: 'BAKE',
-    multiplier: '0X'
-  },
-  {
     pid: 4,
     symbol: 'BURGER-BNB',
     tokenSymbol: 'BURGER',
@@ -297,6 +317,12 @@ export const forShowPools = [
     pid: 10,
     symbol: 'BAKE-BNB',
     tokenSymbol: 'BAKE',
+    multiplier: '1X'
+  },
+  {
+    pid: 11,
+    symbol: 'USDT-BUSD',
+    tokenSymbol: 'USDT',
     multiplier: '1X'
   }
 ]

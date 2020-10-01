@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react'
 import BigNumber from 'bignumber.js'
 import { useWallet } from 'use-wallet'
 
-import { getStaked, getMasterChefContract, getSousChefContract, getSousStaked } from '../sushi/utils'
+import { getStaked, getMasterChefContract, getSousChefContract, getSousStaked, getTotalStaked } from '../sushi/utils'
 import useSushi from './useSushi'
 import useBlock from './useBlock'
 
@@ -28,11 +28,11 @@ const useStakedBalance = (pid: number) => {
   return balance
 }
 
-export const useSousStakedBalance = () =>{
+export const useSousStakedBalance = (sousId) =>{
    const [balance, setBalance] = useState(new BigNumber(0))
    const { account }: { account: string } = useWallet()
    const sushi = useSushi()
-   const sousChefContract = getSousChefContract(sushi)
+   const sousChefContract = getSousChefContract(sushi, sousId)
    const block = useBlock()
 
    const fetchBalance = useCallback(async () => {
@@ -47,7 +47,28 @@ export const useSousStakedBalance = () =>{
    }, [account, setBalance, block, sushi])
 
    return balance
+}
 
+export const useSousTotalStaked = (sousId) =>{
+   const [balance, setBalance] = useState(new BigNumber(0))
+   const { account }: { account: string } = useWallet()
+   const sushi = useSushi()
+   const sousChefContract = getSousChefContract(sushi, sousId)
+   const block = useBlock()
+
+   const fetchBalance = useCallback(async () => {
+     const balance = await getTotalStaked(sushi, sousChefContract)
+     console.log(balance)
+     setBalance(new BigNumber(balance))
+   }, [account, sushi])
+
+   useEffect(() => {
+     if (account && sushi) {
+       fetchBalance()
+     }
+   }, [account, setBalance, block, sushi])
+
+   return balance
 }
 
 export default useStakedBalance
