@@ -60,7 +60,7 @@ const StyledLink = styled(NavLink)`
     color: #452A7A;
   }
   &.active {
-    color: ${(props) => props.theme.colors.primary.main};
+    color: ${(props) => props.theme.colors.grey[600]};
   }
   @media (max-width: 400px) {
     padding-left: ${(props) => props.theme.spacing[2]}px;
@@ -78,7 +78,7 @@ const StyledAbsoluteLink = styled.a`
     color: #452A7A;
   }
   &.active {
-    color: ${(props) => props.theme.colors.primary.main};
+    color: ${(props) => props.theme.colors.grey[600]};
   }
   @media (max-width: 400px) {
     padding-left: ${(props) => props.theme.spacing[2]}px;
