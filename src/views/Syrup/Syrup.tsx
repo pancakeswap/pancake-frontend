@@ -1,106 +1,107 @@
-import React, { useEffect, useMemo } from 'react'
+import React, {useEffect, useMemo} from 'react'
 import styled from 'styled-components'
 import chef from '../../assets/img/syrup.png'
 
-import { useParams } from 'react-router-dom'
-import { useWallet } from 'use-wallet'
-import { provider } from 'web3-core'
+import {useParams} from 'react-router-dom'
+import {useWallet} from 'use-wallet'
+import {provider} from 'web3-core'
 
 import Spacer from '../../components/Spacer'
 import Page from '../../components/Page'
 import Button from '../../components/Button'
 import PageHeader from '../../components/PageHeader'
-import { getContract } from '../../utils/erc20'
+import {getContract} from '../../utils/erc20'
 import useSushi from '../../hooks/useSushi'
-import { getPools } from '../../sushi/utils'
+import {getPools} from '../../sushi/utils'
 
 import Total from './components/Total'
 import NewToken from './components/NewToken'
 import Stake from './components/Stake'
 
 interface SyrupRowProps {
-  syrupAddress: string
-  sousId: number
-  tokenName: string
+    syrupAddress: string
+    sousId: number
+    tokenName: string
 }
 
 const SyrupRow: React.FC<SyrupRowProps> = ({syrupAddress, sousId, tokenName}) => {
-  const { ethereum } = useWallet()
+    const {ethereum} = useWallet()
 
-  const syrup = useMemo(() => {
-    return getContract(ethereum as provider, '0x009cF7bC57584b7998236eff51b98A168DceA9B0')
-  }, [ethereum])
+    const syrup = useMemo(() => {
+        return getContract(ethereum as provider, '0x009cF7bC57584b7998236eff51b98A168DceA9B0')
+    }, [ethereum])
 
 
-  return (
-    <StyledCardsWrapper>
-      <StyledCardWrapper>
-        <Total
-          syrup={syrup}
-          tokenName={'SYRUP'}
-          sousId={sousId}
-        />
-      </StyledCardWrapper>
-      <Spacer />
-      <StyledCardWrapper>
-        <Stake
-          syrup={syrup}
-          tokenName={'SYRUP'}
-          sousId={sousId}
-        />
-      </StyledCardWrapper>
-      <Spacer />
-      <StyledCardWrapper>
-        <NewToken tokenName={tokenName}/>
-      </StyledCardWrapper>
-    </StyledCardsWrapper>
+    return (
+        <StyledCardsWrapper>
+            <StyledCardWrapper>
+                <Total
+                    syrup={syrup}
+                    tokenName={'SYRUP'}
+                    sousId={sousId}
+                />
+            </StyledCardWrapper>
+            <Spacer/>
+            <StyledCardWrapper>
+                <Stake
+                    syrup={syrup}
+                    tokenName={'SYRUP'}
+                    sousId={sousId}
+                />
+            </StyledCardWrapper>
+            <Spacer/>
+            <StyledCardWrapper>
+                <NewToken tokenName={tokenName}/>
+            </StyledCardWrapper>
+        </StyledCardsWrapper>
 
-  )
+    )
 
 }
 
 const Farm: React.FC = () => {
-  const sushi = useSushi()
-  const pools = getPools(sushi)
+    const sushi = useSushi()
+    const pools = getPools(sushi)
 
-  useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [])
 
-  return (
-    <Page>
-        <>
-          <PageHeader
-            icon={<img src={chef} height="90" />}
-            title="SYRUP POOL"
-            subtitle="The Sous Chef is cooking up a treat for all SYRUP holders 🤩"
-          />
-          <Spacer size="lg" />
-          <StyledFarm>
-            {pools.map(pool =>
-              <SyrupRow {...pool} />
-            )}
-            <Spacer size="lg" />
-            <StyledInfo>
-              ⭐️ Stake your SYRUP to earn tokens of new projects,
-            </StyledInfo>
-            <StyledInfo>
-              Rewards will be calculated per block and total rewards will be distributed automatically at the end of each project’s farming period.
-            </StyledInfo>
-            <Spacer size="lg" />
-          </StyledFarm>
-        </>
-    </Page>
-  )
+    return (
+        <Page>
+            <>
+                <PageHeader
+                    icon={<img src={chef} height="90"/>}
+                    title="SYRUP POOL"
+                    subtitle="The Sous Chef is cooking up a treat for all SYRUP holders 🤩"
+                />
+                <Spacer size="lg"/>
+                <StyledFarm>
+                    {pools.map(pool =>
+                        <SyrupRow {...pool} />
+                    )}
+                    <Spacer size="lg"/>
+                    <StyledInfo>
+                        ⭐️ Stake your SYRUP to earn tokens of new projects,
+                    </StyledInfo>
+                    <StyledInfo>
+                        Rewards will be calculated per block and total rewards will be distributed automatically at the
+                        end of each project’s farming period.
+                    </StyledInfo>
+                    <Spacer size="lg"/>
+                </StyledFarm>
+            </>
+        </Page>
+    )
 }
 
-const Title= styled.div`
-  color: #cdbaf5;
-  font-size: 15px;
+const Title = styled.div`
+  color: ${(props) => props.theme.colors.blue[100]};
+  font-size:20px;
   width: 50vw;
   text-align: center;
   font-weight: 900;
-  line-height: 1.5rem;
+  line-height:  2rem;
 `
 
 const StyledFarm = styled.div`
@@ -114,8 +115,7 @@ const StyledFarm = styled.div`
 
 const StyledCardsWrapper = styled.div`
   display: flex;
-  width: 1000px;
-  margin-bottom: 20px;
+  width: 800px;
   @media (max-width: 768px) {
     width: 100%;
     flex-flow: column nowrap;
@@ -125,11 +125,8 @@ const StyledCardsWrapper = styled.div`
 
 const StyledCardWrapper = styled.div`
   display: flex;
-  flex: 1;
-  flex-direction: column;
-  @media (max-width: 768px) {
-    width: 80%;
-  }
+  width: calc((900px - ${(props) => props.theme.spacing[4]}px * 2) / 3);
+  position: relative;
 `
 
 const StyledInfo = styled.h3`

@@ -69,7 +69,6 @@ export const useSousLeftBlocks = () => {
   const fetchBalance = useCallback(async () => {
     const start = await getSousStartBlock(sousChefContract)
     const end = await getSousEndBlock(sousChefContract)
-    console.log(start, end)
     let buttonText = ''
     if (!block) {
       buttonText= '-'

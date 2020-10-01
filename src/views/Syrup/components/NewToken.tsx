@@ -1,6 +1,6 @@
-import React, { useState, useCallback } from 'react'
+import React, {useState, useCallback} from 'react'
 import styled from 'styled-components'
-import { useWallet } from 'use-wallet'
+import {useWallet} from 'use-wallet'
 import Button from '../../../components/Button'
 import Card from '../../../components/Card'
 import CardContent from '../../../components/CardContent'
@@ -8,58 +8,59 @@ import CardIcon from '../../../components/CardIcon'
 import Label from '../../../components/Label'
 import Value from '../../../components/Value'
 import useModal from '../../../hooks/useModal'
-import { useSousEarnings, useSousLeftBlocks } from '../../../hooks/useEarnings'
+import {useSousEarnings, useSousLeftBlocks} from '../../../hooks/useEarnings'
 import useSushi from '../../../hooks/useSushi'
 import useTokenBalance from '../../../hooks/useTokenBalance'
 
-import { getDisplayBalance2 } from '../../../utils/formatBalance'
-import { getSyrupAddress } from '../../../sushi/utils'
+import {getDisplayBalance2} from '../../../utils/formatBalance'
+import {getSyrupAddress} from '../../../sushi/utils'
 import WalletProviderModal from '../../../components/WalletProviderModal'
 import AccountModal from '../../../components/TopBar/components/AccountModal'
 
 interface TokenRewardProps {
-  tokenName: string
+    tokenName: string
 }
 
 
-const TokenReward: React.FC<TokenRewardProps> = ({ tokenName }) => {
-  const earnings = useSousEarnings()
-  const { account } = useWallet()
-  const leftBlockText = useSousLeftBlocks()
-  const [pendingTx, setPendingTx] = useState(false)
+const TokenReward: React.FC<TokenRewardProps> = ({tokenName}) => {
+    const earnings = useSousEarnings()
+    const {account} = useWallet()
+    const leftBlockText = useSousLeftBlocks()
+    const [pendingTx, setPendingTx] = useState(false)
 
 
-  const [onPresentAccountModal] = useModal(<AccountModal />)
-  const [onPresentWalletProviderModal] = useModal(
-    <WalletProviderModal />,
-    'provider',
-  )
-  const handleUnlockClick = useCallback(() => {
-    onPresentWalletProviderModal()
-  }, [onPresentWalletProviderModal])
+    const [onPresentAccountModal] = useModal(<AccountModal/>)
+    const [onPresentWalletProviderModal] = useModal(
+        <WalletProviderModal/>,
+        'provider',
+    )
+    const handleUnlockClick = useCallback(() => {
+        onPresentWalletProviderModal()
+    }, [onPresentWalletProviderModal])
 
-  return (
-    <Card>
-      <CardContent>
-        <StyledCardContentInner>
-          <StyledCardHeader>
-            <CardIcon>🪂</CardIcon>
-            <Value value={getDisplayBalance2(earnings)} />
-            <Label text={`${tokenName} Tokens Earned`} />
-          </StyledCardHeader>
-          <StyledCardActions>
-            {!account &&  <Button onClick={handleUnlockClick} size="md" text="Unlock Wallet" />}
-            { account && <Hint>{leftBlockText}</Hint> }
-          </StyledCardActions>
-        </StyledCardContentInner>
-      </CardContent>
-    </Card>
-  )
+    return (
+        <Card>
+            <CardContent>
+                <StyledCardContentInner>
+                    <StyledCardHeader>
+                        <CardIcon>🪂</CardIcon>
+                        <Value value={getDisplayBalance2(earnings)}/>
+                        <Label text={`${tokenName} Tokens Earned`}/>
+                    </StyledCardHeader>
+                    <StyledCardActions>
+                        {!account && <Button onClick={handleUnlockClick} size="md" text="Unlock Wallet"/>}
+                        {account && <Hint>{leftBlockText}</Hint>}
+                    </StyledCardActions>
+                </StyledCardContentInner>
+            </CardContent>
+        </Card>
+    )
 }
 
 const Hint = styled.div`
-  line-height: 50px;
-  font-size: 18px;
+  text-align: center;
+  line-height: 40px;
+  font-size: 16px;
   @media (max-width: 550px) {
     font-size: 14px;
   }
