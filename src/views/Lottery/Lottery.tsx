@@ -14,15 +14,9 @@ import WalletProviderModal from '../../components/WalletProviderModal'
 import useModal from '../../hooks/useModal'
 
 import useSushi from '../../hooks/useSushi'
-import useFarm from '../../hooks/useFarm'
-import useRedeem from '../../hooks/useRedeem'
-import {getContract} from '../../utils/erc20'
-import {getMasterChefContract} from '../../sushi/utils'
-import Spacer from "../../components/Spacer";
-import Syrup from "../Stake/components/Syrup";
-import Harvest from "../Stake/components/Harvest";
-import Stake from "../Stake/components/Stake";
-import FarmCards from "../Farms/components/FarmCards";
+import Prize from "./components/prize";
+import Ticket from "./components/ticket";
+import Time from "./components/time";
 
 
 const Farm: React.FC = () => {
@@ -41,35 +35,32 @@ const Farm: React.FC = () => {
 
     const subtitleText = 'Spend CAKE to buy tickets, contributing to the lottery pot. Ticket purchases end approx. 30 minutes before lottery. Win prizes if 2, 3, or 4 of your ticket numbers match the winning numbers!'
 
-    // const lpContract = useMemo(() => {
-    //   return getContract(ethereum as provider, lpTokenAddress)
-    // }, [ethereum, lpTokenAddress])
-
-    // const { onRedeem } = useRedeem(getMasterChefContract(sushi))
-
-    // const lpTokenName = useMemo(() => {
-    //   return lpToken.toUpperCase()
-    // }, [lpToken])
-
-    // const earnTokenName = useMemo(() => {
-    //   return earnToken.toUpperCase()
-    // }, [earnToken])
-
     return (
         <Switch>
             <Page>
-                <Title style={{marginTop: '1.5em'}}>💰</Title>
-                <Title>WIN</Title>
+                <Title style={{marginTop: '0.5em'}}>
+                    💰
+                    <br/>
+                    WIN
+                </Title>
                 <Title2>{lotteryPrizeAmount} CAKE</Title2>
                 <Subtitle>{subtitleText}</Subtitle>
+                <StyledFarm>
+                    <StyledCardWrapper>
+                        <Prize/>
+                        <Ticket/>
+                    </StyledCardWrapper>
+                </StyledFarm>
+                <Time></Time>
             </Page>
         </Switch>
     )
+
 }
 
 const Title = styled.div`
   color: ${(props) => props.theme.colors.secondary};
-  font-size:36px;
+  font-size:56px;
   width: 50vw;
   text-align: center;
   font-weight: 1000;
@@ -78,7 +69,7 @@ const Title = styled.div`
 
 const Title2 = styled.div`
   color: ${(props) => props.theme.colors.primary};
-  font-size:36px;
+  font-size:56px;
   width: 50vw;
   text-align: center;
   font-weight: 1000;
@@ -91,6 +82,22 @@ const Subtitle = styled.div`
   text-align: center;
   font-weight: 600;
   margin-top: 0.8em;
+`
+// width: calc((900px - ${(props) => props.theme.spacing[4]}px * 2) / 3);
+const StyledCardWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  position: relative;
+`
+
+const StyledFarm = styled.div`
+  margin-top: 2.5em;      
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `
 
 export default Farm
