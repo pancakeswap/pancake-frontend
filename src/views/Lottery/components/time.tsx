@@ -49,7 +49,7 @@ const Time: React.FC = () => {
 
     return (
         <div>
-            <Title style={{marginTop: '1.5em'}}>⏳</Title>
+            <Title style={{marginTop: '2em'}}>⏳</Title>
             <Title>Approx. time left to buy tickets</Title>
             <Title2>{stateDeadlineTime}</Title2>
             <Title2>({stateDeadlineBlocks} blocks)</Title2>

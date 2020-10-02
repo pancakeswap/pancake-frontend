@@ -17,6 +17,7 @@ import useSushi from '../../hooks/useSushi'
 import Prize from "./components/prize";
 import Ticket from "./components/ticket";
 import Time from "./components/time";
+import Winning from "./components/winning";
 
 
 const Farm: React.FC = () => {
@@ -52,6 +53,7 @@ const Farm: React.FC = () => {
                     </StyledCardWrapper>
                 </StyledFarm>
                 <Time></Time>
+                <Winning></Winning>
             </Page>
         </Switch>
     )

@@ -59,7 +59,7 @@ const Ticket: React.FC = () => {
                     <StyledCardContentInner>
                         <StyledCardHeader>
                             <CardIcon>🎟</CardIcon>
-                            <Value value={0}/>
+                            <Value value={0} decimals={0}/>
                             <Label text={`Your total tickets for this round`}/>
                         </StyledCardHeader>
                         <StyledCardActions>
