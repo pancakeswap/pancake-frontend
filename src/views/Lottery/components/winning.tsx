@@ -43,9 +43,9 @@ const Winning: React.FC = () => {
                             <TicketNumberBox><CenteredText>1</CenteredText></TicketNumberBox>
                             <TicketNumberBox><CenteredText>1</CenteredText></TicketNumberBox>
                         </Row>
-                        <Row style={{marginTop: '-2.32em'}}>
+                        <Row style={{marginTop: '-2.3em'}}>
                             <RabbitBox>
-                                <CardImage>
+                                <CardImage style={{marginLeft: '-1.2em'}}>
                                     <img
                                         src={require(`../../../assets/img/sign bunny 1@2x.png`)}
                                         alt=""
@@ -54,7 +54,7 @@ const Winning: React.FC = () => {
                                 </CardImage>
                             </RabbitBox>
                             <RabbitBox>
-                                <CardImage>
+                                <CardImage style={{marginLeft: '-1.2em'}}>
                                     <img
                                         src={require(`../../../assets/img/sign bunny 2@2x.png`)}
                                         alt=""
@@ -63,7 +63,7 @@ const Winning: React.FC = () => {
                                 </CardImage>
                             </RabbitBox>
                             <RabbitBox>
-                                <CardImage>
+                                <CardImage style={{marginLeft: '-1.2em'}}>
                                     <img
                                         src={require(`../../../assets/img/sign bunny 3@2x.png`)}
                                         alt=""
@@ -72,7 +72,7 @@ const Winning: React.FC = () => {
                                 </CardImage>
                             </RabbitBox>
                             <RabbitBox>
-                                <CardImage>
+                                <CardImage style={{marginLeft: '-1.2em'}}>
                                     <img
                                         src={require(`../../../assets/img/sign bunny 4@2x.png`)}
                                         alt=""
