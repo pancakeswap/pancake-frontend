@@ -35,11 +35,11 @@ const useAllowance = (lpContract: Contract) => {
   return allowance
 }
 
-export const useSousAllowance = (lpContract: Contract) => {
+export const useSousAllowance = (lpContract: Contract, sousId) => {
   const [allowance, setAllowance] = useState(new BigNumber(0))
   const { account }: { account: string; ethereum: provider } = useWallet()
   const sushi = useSushi()
-  const sousChefContract = getSousChefContract(sushi)
+  const sousChefContract = getSousChefContract(sushi, sousId)
 
   const fetchAllowance = useCallback(async () => {
     const allowance = await getAllowance(

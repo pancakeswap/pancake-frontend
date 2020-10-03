@@ -25,14 +25,14 @@ const useStake = (pid: number) => {
   return { onStake: handleStake }
 }
 
-export const useSousStake = () => {
+export const useSousStake = (sousId) => {
   const { account } = useWallet()
   const sushi = useSushi()
 
   const handleStake = useCallback(
     async (amount: string) => {
       const txHash = await sousStake(
-        getSousChefContract(sushi),
+        getSousChefContract(sushi, sousId),
         amount,
         account,
       )

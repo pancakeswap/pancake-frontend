@@ -24,10 +24,10 @@ const useApprove = (lpContract: Contract) => {
   return { onApprove: handleApprove }
 }
 
-export const useSousApprove = (lpContract: Contract) => {
+export const useSousApprove = (lpContract: Contract, sousId) => {
   const { account }: { account: string; ethereum: provider } = useWallet()
   const sushi = useSushi()
-  const sousChefContract = getSousChefContract(sushi)
+  const sousChefContract = getSousChefContract(sushi, sousId)
 
   const handleApprove = useCallback(async () => {
     try {

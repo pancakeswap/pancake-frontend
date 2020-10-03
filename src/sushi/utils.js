@@ -1,5 +1,6 @@
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
+import {sousChefTeam} from './lib/constants'
 
 BigNumber.config({
   EXPONENTIAL_AT: 1000,
@@ -39,7 +40,7 @@ export const getMasterChefContract = (sushi) => {
 export const getSushiContract = (sushi) => {
   return sushi && sushi.contracts && sushi.contracts.sushi
 }
-export const getSousChefContract = (sushi, sousId = 0) => {
+export const getSousChefContract = (sushi, sousId) => {
   return sushi && sushi.contracts && sushi.contracts.sousChefs[sousId].sousContract
 }
 
@@ -76,21 +77,28 @@ export const getFarms = (sushi) => {
 }
 
 export const getPools = (sushi)  => {
-  return sushi
+  const pools = sushi
     ? sushi.contracts.sousChefs.map(
       ({
         sousId,
         sousContract,
         contractAddress,
-        tokenName
+        tokenName,
+        projectLink,
+        harvest
       }) => ({
         sousId,
         sousContract,
         contractAddress,
-        tokenName
+        tokenName,
+        projectLink,
+        harvest
       }),
     )
-  : []
+  : [];
+  if(pools.length ==0) return sousChefTeam;
+
+  return pools
 }
 
 export const getPoolWeight = async (masterChefContract, pid) => {
@@ -200,7 +208,6 @@ export const stake = async (masterChefContract, pid, amount, account) => {
 }
 
 export const sousStake = async (sousChefContract, amount, account) => {
-  console.log(sousChefContract)
   return sousChefContract.methods
     .deposit(
       new BigNumber(amount).times(new BigNumber(10).pow(18)).toString(),
@@ -265,6 +272,15 @@ export const harvest = async (masterChefContract, pid, account) => {
     })
 }
 
+export const soushHarvest = async (sousChefContract, account) => {
+  return sousChefContract.methods
+    .deposit('0')
+    .send({ from: account })
+    .on('transactionHash', (tx) => {
+      return tx.transactionHash
+    })
+}
+
 export const getStaked = async (masterChefContract, pid, account) => {
   try {
     const { amount } = await masterChefContract.methods
@@ -278,11 +294,13 @@ export const getStaked = async (masterChefContract, pid, account) => {
 
 export const getSousStaked = async (sousChefContract, account) => {
   try {
+    console.log(sousChefContract._address, await sousChefContract.methods.userInfo(account).call())
     const { amount } = await sousChefContract.methods
       .userInfo(account)
       .call()
     return new BigNumber(amount)
-  } catch {
+  } catch(err) {
+    console.log(err)
     return new BigNumber(0)
   }
 }

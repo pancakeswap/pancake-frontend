@@ -21,10 +21,10 @@ const useUnstake = (pid: number) => {
   return { onUnstake: handleUnstake }
 }
 
-export const useSousUnstake = () => {
+export const useSousUnstake = (sousId) => {
   const { account } = useWallet()
   const sushi = useSushi()
-  const sousChefContract = getSousChefContract(sushi)
+  const sousChefContract = getSousChefContract(sushi, sousId)
 
   const handleUnstake = useCallback(
     async (amount: string) => {

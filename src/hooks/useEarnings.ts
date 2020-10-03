@@ -32,14 +32,14 @@ const useEarnings = (pid: number) => {
   return balance
 }
 
-export const useSousEarnings = () => {
+export const useSousEarnings = (sousId) => {
   const [balance, setBalance] = useState(new BigNumber(0))
   const {
     account,
     ethereum,
   }: { account: string; ethereum: provider } = useWallet()
   const sushi = useSushi()
-  const sousChefContract = getSousChefContract(sushi)
+  const sousChefContract = getSousChefContract(sushi, sousId)
   const block = useBlock()
 
   const fetchBalance = useCallback(async () => {
@@ -56,14 +56,14 @@ export const useSousEarnings = () => {
   return balance
 }
 
-export const useSousLeftBlocks = () => {
+export const useSousLeftBlocks = (sousId) => {
   const [text, setText] = useState('')
   const {
     account,
     ethereum,
   }: { account: string; ethereum: provider } = useWallet()
   const sushi = useSushi()
-  const sousChefContract = getSousChefContract(sushi)
+  const sousChefContract = getSousChefContract(sushi, sousId)
   const block = useBlock()
 
   const fetchBalance = useCallback(async () => {
@@ -74,13 +74,13 @@ export const useSousLeftBlocks = () => {
       buttonText= '-'
     }
     else if (block < start) {
-      buttonText = `${(start - block).toLocaleString()} blocks until farming starts`
+      buttonText = `Farming starts in ${(start - block).toLocaleString()} Blocks`
     }
     else if(block > end) {
       buttonText = 'fnished'
     }
     else {
-      buttonText = `${(end - block).toLocaleString()} blocks until farming ends`
+      buttonText = `Farming ends in ${(end - block).toLocaleString()} Blocks`
     }
     setText(buttonText)
   }, [account, block, sousChefContract, sushi])

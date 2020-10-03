@@ -38,7 +38,7 @@ export const useSousStakedBalance = (sousId) =>{
    const fetchBalance = useCallback(async () => {
      const balance = await getSousStaked(sousChefContract, account)
      setBalance(new BigNumber(balance))
-   }, [account, sushi])
+   }, [account, sushi, sousChefContract])
 
    useEffect(() => {
      if (account && sushi) {
@@ -58,9 +58,8 @@ export const useSousTotalStaked = (sousId) =>{
 
    const fetchBalance = useCallback(async () => {
      const balance = await getTotalStaked(sushi, sousChefContract)
-     console.log(balance)
      setBalance(new BigNumber(balance))
-   }, [account, sushi])
+   }, [account, sushi, sousChefContract])
 
    useEffect(() => {
      if (account && sushi) {
