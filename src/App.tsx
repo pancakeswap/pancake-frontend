@@ -11,6 +11,7 @@ import FarmsProvider from './contexts/Farms'
 import ModalsProvider from './contexts/Modals'
 import TransactionProvider from './contexts/Transactions'
 import SushiProvider from './contexts/SushiProvider'
+import BscProvider from './contexts/BscProvider'
 import useModal from './hooks/useModal'
 import useTheme from './hooks/useTheme'
 import Farms from './views/Farms'
@@ -86,13 +87,15 @@ const Providers: React.FC<{ isDark: boolean }> = ({ isDark, children }) => {
           walletconnect: { rpcUrl: 'https://bsc-dataseed.binance.org' }
         }}
       >
-        <SushiProvider>
-          <TransactionProvider>
-            <FarmsProvider>
-              <ModalsProvider>{children}</ModalsProvider>
-            </FarmsProvider>
-          </TransactionProvider>
-        </SushiProvider>
+        <BscProvider>
+          <SushiProvider>
+            <TransactionProvider>
+              <FarmsProvider>
+                <ModalsProvider>{children}</ModalsProvider>
+              </FarmsProvider>
+            </TransactionProvider>
+          </SushiProvider>
+        </BscProvider>
       </UseWalletProvider>
     </ThemeProvider>
   )
