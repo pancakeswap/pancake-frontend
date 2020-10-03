@@ -12,11 +12,11 @@ import SushiIcon from '../../../components/SushiIcon'
 import useAllEarnings from '../../../hooks/useAllEarnings'
 import useAllStakedValue from '../../../hooks/useAllStakedValue'
 import useFarms from '../../../hooks/useFarms'
-import useTokenBalance, { useBurnedBalance } from '../../../hooks/useTokenBalance'
+import useTokenBalance, { useTotalSupply, useBurnedBalance } from '../../../hooks/useTokenBalance'
 import useSushi from '../../../hooks/useSushi'
 
 import Separator from '../../../components/Separator'
-import { getSushiAddress, getSushiSupply } from '../../../sushi/utils'
+import { getSushiAddress } from '../../../sushi/utils'
 import { getBalanceNumber } from '../../../utils/formatBalance'
 
 const PendingRewards: React.FC = () => {
@@ -72,21 +72,11 @@ const PendingRewards: React.FC = () => {
 }
 
 const Balances: React.FC = () => {
-  const [totalSupply, setTotalSupply] = useState<BigNumber>()
   const sushi = useSushi()
+  const totalSupply = useTotalSupply()
   const sushiBalance = useTokenBalance(getSushiAddress(sushi))
   const burnedBalance = useBurnedBalance(getSushiAddress(sushi))
   const { account, ethereum }: { account: any; ethereum: any } = useWallet()
-
-  useEffect(() => {
-    async function fetchTotalSupply() {
-      const supply = await getSushiSupply(sushi)
-      setTotalSupply(supply)
-    }
-    if (sushi) {
-      fetchTotalSupply()
-    }
-  }, [sushi, setTotalSupply])
 
   return (
     <>
