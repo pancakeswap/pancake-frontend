@@ -55,15 +55,6 @@ export const contractAddresses = {
 
 export const sousChefTeam = [
   {
-    sousId: 0,
-    contractAddress: {
-      97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
-      56: '0x6ab8463a4185b80905e05a9ff80a2d6b714b9e95', //  real cake
-    },
-    tokenName: 'XVS',
-    projectLink: 'https://venus.io/',
-  },
-  {
     sousId: 1,
     contractAddress: {
       97: '0xAfd61Dc94f11A70Ae110dC0E0F2061Af5633061A',
@@ -72,6 +63,15 @@ export const sousChefTeam = [
     tokenName: 'TWT',
     projectLink: 'https://trustwallet.com/',
     harvest: true
+  },
+  {
+    sousId: 0,
+    contractAddress: {
+      97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
+      56: '0x6ab8463a4185b80905e05a9ff80a2d6b714b9e95', //  real cake
+    },
+    tokenName: 'XVS',
+    projectLink: 'https://venus.io/',
   },
 ]
 
@@ -257,6 +257,21 @@ export const supportedPools = [
     multiplier: '1X'
   },
   {
+    pid: 12,
+    lpAddresses: {
+      97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
+      56: '0x610e7a287c27dfFcaC0F0a94f547Cc1B770cF483'
+    },
+    tokenAddresses: {
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
+      56: '0x4b0f1812e5df2a09796481ff14017e6005508003'
+    },
+    symbol: 'TWT-BNB FLP',
+    tokenSymbol: 'TWT',
+    icon: '🥞',
+    multiplier: '1X'
+  },
+  {
     pid: 8,
     lpAddresses: {
       97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
@@ -334,6 +349,12 @@ export const forShowPools = [
     pid: 11,
     symbol: 'USDT-BUSD',
     tokenSymbol: 'USDT',
+    multiplier: '1X'
+  },
+  {
+    pid: 12,
+    symbol: 'TWT-BNB',
+    tokenSymbol: 'TWT',
     multiplier: '1X'
   }
 ]

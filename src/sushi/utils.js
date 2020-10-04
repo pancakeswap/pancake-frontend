@@ -41,7 +41,7 @@ export const getSushiContract = (sushi) => {
   return sushi && sushi.contracts && sushi.contracts.sushi
 }
 export const getSousChefContract = (sushi, sousId) => {
-  return sushi && sushi.contracts && sushi.contracts.sousChefs[sousId].sousContract
+  return sushi && sushi.contracts && sushi.contracts.sousChefs.filter(chef => chef.sousId === sousId)[0]?.sousContract
 }
 
 export const getFarms = (sushi) => {

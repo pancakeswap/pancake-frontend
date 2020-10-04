@@ -100,7 +100,7 @@ const PoolCard: React.FC<HarvestProps> = ({ syrup, sousId, tokenName, projectLin
       <CardContent>
         <StyledCardContentInner>
           <StyledCardHeader>
-            <Title>{tokenName} Pool</Title>
+            <Title finished={leftBlockText==='finished'}>{tokenName} Pool</Title>
             <TokenLink href={projectLink} target="_blank">Project Site &gt; </TokenLink>
           </StyledCardHeader>
           <StyledCardContent>
@@ -137,7 +137,7 @@ const PoolCard: React.FC<HarvestProps> = ({ syrup, sousId, tokenName, projectLin
                   onClick={onPresentWithdraw}
                 />
                 <StyledActionSpacer />
-                <IconButton onClick={onPresentDeposit}>
+                <IconButton disabled={leftBlockText==='finished'} onClick={onPresentDeposit}>
                   <AddIcon/>
                 </IconButton>
               </>
@@ -174,9 +174,13 @@ const StyledCardContent = styled.div`
     padding: 15px;
   }
 `
+interface StyledButtonProps {
+  finished?: boolean
+}
 
-const Title = styled.div`
-  color: ${(props) => props.theme.colors.primary};
+
+const Title = styled.div<StyledButtonProps>`
+  color: ${(props) => (props.finished ? '#acaaaf' : props.theme.colors.primary)};
   font-size: 20px;
   font-weight: 900;
   line-height: 70px;

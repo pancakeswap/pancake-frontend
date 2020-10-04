@@ -77,7 +77,7 @@ export const useSousLeftBlocks = (sousId) => {
       buttonText = `Farming starts in ${(start - block).toLocaleString()} Blocks`
     }
     else if(block > end) {
-      buttonText = 'fnished'
+      buttonText = 'finished'
     }
     else {
       buttonText = `Farming ends in ${(end - block).toLocaleString()} Blocks`
