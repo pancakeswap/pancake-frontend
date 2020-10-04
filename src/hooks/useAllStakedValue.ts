@@ -15,6 +15,7 @@ import useSushi from './useSushi'
 import useBlock from './useBlock'
 
 export interface StakedValue {
+  tokenSymbol: string
   tokenAmount: BigNumber
   wethAmount: BigNumber
   totalWethValue: BigNumber
@@ -36,10 +37,12 @@ const useAllStakedValue = () => {
       farms.map(
         ({
           pid,
+          tokenSymbol,
           lpContract,
           tokenContract,
         }: {
           pid: number
+          tokenSymbol: string
           lpContract: Contract
           tokenContract: Contract
         }) =>
@@ -49,6 +52,7 @@ const useAllStakedValue = () => {
             lpContract,
             tokenContract,
             pid,
+            tokenSymbol
           ),
       ),
     )

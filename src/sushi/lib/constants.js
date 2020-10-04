@@ -62,7 +62,8 @@ export const sousChefTeam = [
     },
     tokenName: 'TWT',
     projectLink: 'https://trustwallet.com/',
-    harvest: true
+    harvest: true,
+    tokenPerBlock: "20"
   },
   {
     sousId: 0,
@@ -358,3 +359,5 @@ export const forShowPools = [
     multiplier: '1X'
   }
 ]
+
+export const BLOCKS_PER_YEAR = new BigNumber(10512000)

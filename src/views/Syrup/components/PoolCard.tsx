@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { useWallet } from 'use-wallet'
 import { Contract } from 'web3-eth-contract'
@@ -11,6 +11,7 @@ import IconButton from '../../../components/IconButton'
 import { AddIcon } from '../../../components/icons'
 import Label from '../../../components/Label'
 import Value from '../../../components/Value'
+import { BLOCKS_PER_YEAR } from  '../../../sushi/lib/constants'
 
 import { useSousAllowance } from '../../../hooks/useAllowance'
 import { useSousApprove } from '../../../hooks/useApprove'
@@ -38,9 +39,12 @@ interface HarvestProps {
   sousId: number
   projectLink: string
   harvest:  boolean
+  tokenPerBlock: string
+  cakePrice: BigNumber
+  tokenPrice: BigNumber
 }
 
-const PoolCard: React.FC<HarvestProps> = ({ syrup, sousId, tokenName, projectLink, harvest }) => {
+const PoolCard: React.FC<HarvestProps> = ({ syrup, sousId, tokenName, projectLink, harvest, cakePrice, tokenPrice, tokenPerBlock }) => {
   const [requestedApproval, setRequestedApproval] = useState(false)
   const { account } = useWallet()
   const allowance = useSousAllowance(syrup, sousId)
@@ -56,6 +60,13 @@ const PoolCard: React.FC<HarvestProps> = ({ syrup, sousId, tokenName, projectLin
 
   const [pendingTx, setPendingTx] = useState(false)
   const { onReward } = useSousReward(sousId)
+  const apy = useMemo(() => {
+    if (!harvest || cakePrice.isLessThanOrEqualTo(0)) return '-'
+    const a = tokenPrice.times(BLOCKS_PER_YEAR).times(tokenPerBlock)
+    const b = cakePrice.times(getBalanceNumber(totalStaked))
+    
+    return `${a.div(b).times(100).toFixed(2)}%`
+  }, [cakePrice, harvest, tokenPerBlock, tokenPrice, totalStaked])
 
   const [onPresentDeposit] = useModal(
     <DepositModal
@@ -145,9 +156,9 @@ const PoolCard: React.FC<HarvestProps> = ({ syrup, sousId, tokenName, projectLin
           </StyledCardActions>
 
           <StyledLabel text="🍯Your Stake" value={getBalanceNumber(stakedBalance)} />
-
           <StyledCardFooter>
             <p>
+              <div>APY:&nbsp;<SmallValue value={apy}/></div>
               Total SYRUP staked: <SmallValue value={getBalanceNumber(totalStaked)} /> <br/>
              {leftBlockText}
             </p>

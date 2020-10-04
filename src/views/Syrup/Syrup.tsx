@@ -1,4 +1,5 @@
 import React, {useEffect, useMemo} from 'react'
+import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import chef from '../../assets/img/syrup.png'
 
@@ -11,7 +12,9 @@ import Page from '../../components/Page'
 import Button from '../../components/Button'
 import PageHeader from '../../components/PageHeader'
 import {getContract} from '../../utils/erc20'
+import useFarms from '../../hooks/useFarms'
 import useSushi from '../../hooks/useSushi'
+import useAllStakedValue from '../../hooks/useAllStakedValue'
 import {getPools} from '../../sushi/utils'
 
 import PoolCard from './components/PoolCard'
@@ -24,11 +27,14 @@ interface SyrupRowProps {
   tokenName: string
   projectLink: string
   harvest: boolean
+  tokenPerBlock?: string
+  cakePrice: BigNumber
+  tokenPrice: BigNumber
 }
 
-const SyrupRow: React.FC<SyrupRowProps> = ({syrupAddress, sousId, tokenName, projectLink, harvest}) => {
+const SyrupRow: React.FC<SyrupRowProps> = ({syrupAddress, sousId, tokenName, projectLink, harvest, tokenPerBlock, cakePrice, tokenPrice}) => {
   const {ethereum} = useWallet()
-
+  
   const syrup = useMemo(() => {
     return getContract(ethereum as provider, '0x009cF7bC57584b7998236eff51b98A168DceA9B0')
   }, [ethereum])
@@ -38,6 +44,9 @@ const SyrupRow: React.FC<SyrupRowProps> = ({syrupAddress, sousId, tokenName, pro
     <StyledCardWrapper>
       <PoolCard
         syrup={syrup}
+        cakePrice={cakePrice}
+        tokenPrice={tokenPrice}
+        tokenPerBlock={tokenPerBlock}
         {...{sousId, tokenName, projectLink, harvest}}
       />
       <StyledSpacer />
@@ -48,7 +57,20 @@ const SyrupRow: React.FC<SyrupRowProps> = ({syrupAddress, sousId, tokenName, pro
 
 const Farm: React.FC = () => {
   const sushi = useSushi()
+  const stakedValue = useAllStakedValue()
   const pools = getPools(sushi) || sousChefTeam
+  const renderPools = useMemo(() => {
+    const stakedValueObj = stakedValue.reduce((a, b) => ({
+      ...a,
+      [b.tokenSymbol]: b
+    }), {})
+    
+    return pools.map(pool => ({
+      ...pool,
+      cakePrice: stakedValueObj['CAKE']?.tokenPriceInWeth || new BigNumber(0),
+      tokenPrice: stakedValueObj[pool.tokenName]?.tokenPriceInWeth || new BigNumber(0),
+    }))
+  }, [stakedValue, pools])
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -65,7 +87,7 @@ const Farm: React.FC = () => {
         <Spacer size="lg"/>
         <StyledFarm>
           <StyledCardsWrapper>
-            {pools.map((pool, index) =>
+            {renderPools.map((pool, index) =>
               <>
               <SyrupRow {...pool} />
               {(index%3 === 0 || index%3 === 1) && <StyledSpacer />}
