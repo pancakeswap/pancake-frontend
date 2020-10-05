@@ -14,7 +14,8 @@ import Prize from "./components/prize";
 import Ticket from "./components/ticket";
 import Time from "./components/time";
 import Winning from "./components/winning";
-
+import {useTotalRewards} from '../../hooks/useTickets'
+import { getBalanceNumber } from '../../utils/formatBalance'
 
 const Farm: React.FC = () => {
     const {account} = useWallet()
@@ -28,7 +29,7 @@ const Farm: React.FC = () => {
     const {ethereum} = useWallet()
     const {path} = useRouteMatch()
 
-    const lotteryPrizeAmount = '100,000,000'
+    const lotteryPrizeAmount = useTotalRewards()
 
     const subtitleText = 'Spend CAKE to buy tickets, contributing to the lottery pot. Ticket purchases end approx. 30 minutes before lottery. Win prizes if 2, 3, or 4 of your ticket numbers match the winning numbers!'
 
@@ -40,7 +41,7 @@ const Farm: React.FC = () => {
                     <br/>
                     WIN
                 </Title>
-                <Title2>{lotteryPrizeAmount} CAKE</Title2>
+                <Title2>{getBalanceNumber(lotteryPrizeAmount)} CAKE</Title2>
                 <Subtitle>{subtitleText}</Subtitle>
                 <StyledFarm>
                     <StyledCardWrapper>

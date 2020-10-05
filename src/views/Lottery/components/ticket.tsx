@@ -79,7 +79,7 @@ const Ticket: React.FC = () => {
                     <StyledCardContentInner>
                         <StyledCardHeader>
                             <CardIcon>🎟</CardIcon>
-                            <Value value={0} decimals={0}/>
+                            <Value value={tickets.length} decimals={0}/>
                             <Label text={`Your total tickets for this round`}/>
                         </StyledCardHeader>
                         <StyledCardActions>
@@ -100,7 +100,7 @@ const Ticket: React.FC = () => {
                     </StyledCardContentInner>
                 </CardContent>
             </Card>
-
+            {/*TODO: improve the style*/}
             <div>
               <p>your  tickets:</p>
               {tickets.map((numbers, index)=>

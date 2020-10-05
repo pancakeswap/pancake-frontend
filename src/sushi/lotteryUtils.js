@@ -42,3 +42,8 @@ export const getTickets = async (lotteryContract, ticketsContract, account) => {
   }
   return tickets
 }
+
+export const getTotalRewards = async (lotteryContract, account) =>{
+  const issueIdex = await lotteryContract.methods.issueIndex().call();
+  return lotteryContract.methods.getTotalRewards(issueIdex).call()
+}
