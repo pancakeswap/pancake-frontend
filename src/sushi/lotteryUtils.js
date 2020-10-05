@@ -1,0 +1,44 @@
+import BigNumber from 'bignumber.js'
+
+export const getLotteryContract = (sushi) => {
+  return sushi && sushi.contracts && sushi.contracts.lottery
+}
+
+export const getTicketsContract = (sushi) => {
+  return sushi && sushi.contracts && sushi.contracts.lotteryNft
+}
+
+export const buy = async (lotteryContract, amount, numbers, account) => {
+  const lotteryNumbers = [
+    new BigNumber(numbers[0]),
+    new BigNumber(numbers[1]),
+    new BigNumber(numbers[2]),
+    new BigNumber(numbers[3])
+  ];
+  return lotteryContract.methods
+    .buy(
+      new BigNumber(amount).times(new BigNumber(10).pow(18)).toString(),
+      lotteryNumbers
+    )
+    .send({ from: account })
+    .on('transactionHash', (tx) => {
+      return tx.transactionHash
+    })
+}
+
+export const getTickets = async (lotteryContract, ticketsContract, account) => {
+  let tickets = []
+  let i = 0
+  const issueIdex = await lotteryContract.methods.issueIndex().call();
+  while(1){
+    const tokenId = await ticketsContract.methods.tokenOfOwnerByIndex(account, i).call()
+    if(tokenId > 10000000000000000000000000000000000000000000) break
+    i++;
+    const ticketIssue = await ticketsContract.methods.getLotteryIssueIndex(tokenId).call()
+    if(ticketIssue == issueIdex) {
+      const numbers = await ticketsContract.methods.getLotteryNumbers(tokenId).call();
+      tickets.push(numbers)
+    }
+  }
+  return tickets
+}
