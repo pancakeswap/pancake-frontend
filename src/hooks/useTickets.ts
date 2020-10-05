@@ -1,6 +1,5 @@
 import { useCallback, useState, useEffect } from 'react'
 import { useWallet } from 'use-wallet'
-import { provider } from 'web3-core'
 
 import useSushi from './useSushi'
 import useBlock from './useBlock'
