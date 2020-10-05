@@ -1,14 +1,10 @@
 import React, {useEffect} from 'react'
 import styled from 'styled-components'
-import chef from '../../assets/img/cakecat.png'
 
 import {NavLink, Route, Switch, useParams, useRouteMatch} from 'react-router-dom'
 import {useWallet} from 'use-wallet'
-import {provider} from 'web3-core'
 
 import Page from '../../components/Page'
-import Button from '../../components/Button'
-import PageHeader from '../../components/PageHeader'
 import WalletProviderModal from '../../components/WalletProviderModal'
 
 import useModal from '../../hooks/useModal'
@@ -36,26 +32,41 @@ const Farm: React.FC = () => {
 
     const subtitleText = 'Spend CAKE to buy tickets, contributing to the lottery pot. Ticket purchases end approx. 30 minutes before lottery. Win prizes if 2, 3, or 4 of your ticket numbers match the winning numbers!'
 
+    // return (
+    //     <Switch>
+    //         <Page>
+    //             <Title style={{marginTop: '0.5em'}}>
+    //                 💰
+    //                 <br/>
+    //                 WIN
+    //             </Title>
+    //             <Title2>{lotteryPrizeAmount} CAKE</Title2>
+    //             <Subtitle>{subtitleText}</Subtitle>
+    //             <StyledFarm>
+    //                 <StyledCardWrapper>
+    //                     <Prize/>
+    //                     <Ticket/>
+    //                 </StyledCardWrapper>
+    //             </StyledFarm>
+    //             <Time></Time>
+    //             <Winning></Winning>
+    //         </Page>
+    //     </Switch>
+    // )
+
     return (
-        <Switch>
-            <Page>
-                <Title style={{marginTop: '0.5em'}}>
-                    💰
-                    <br/>
-                    WIN
-                </Title>
-                <Title2>{lotteryPrizeAmount} CAKE</Title2>
-                <Subtitle>{subtitleText}</Subtitle>
-                <StyledFarm>
-                    <StyledCardWrapper>
-                        <Prize/>
-                        <Ticket/>
-                    </StyledCardWrapper>
-                </StyledFarm>
-                <Time></Time>
-                <Winning></Winning>
-            </Page>
-        </Switch>
+        <StyledFarm>
+            <div>
+                |-----------------|<br/>
+                | COMING&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br/>
+                | SOON&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br/>
+                |-----------------|<br/>
+                (\__/) ||<br/>
+                (•ㅅ•) ||<br/>
+                / 　 づ<br/>
+
+            </div>
+        </StyledFarm>
     )
 
 }
