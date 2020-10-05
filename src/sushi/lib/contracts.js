@@ -5,6 +5,8 @@ import SushiAbi from './abi/sushi.json'
 import SyrupAbi from './abi/syrup.json'
 import UNIV2PairAbi from './abi/uni_v2_lp.json'
 import SousChefAbi from './abi/sousChef.json'
+import LotteryAbi from './abi/lottery.json'
+import LotteryNFTAbi from './abi/lotteryNft.json'
 import WETHAbi from './abi/weth.json'
 import {
   contractAddresses,
@@ -29,6 +31,8 @@ export class Contracts {
     this.syrup = new this.web3.eth.Contract(SyrupAbi)
     this.sousChef = new this.web3.eth.Contract(SousChefAbi)
     this.weth = new this.web3.eth.Contract(WETHAbi)
+    this.lottery = new this.web3.eth.Contract(LotteryAbi)
+    this.lotteryNft = new this.web3.eth.Contract(LotteryNFTAbi)
 
     this.pools = supportedPools.map((pool) =>
       Object.assign(pool, {
@@ -62,6 +66,8 @@ export class Contracts {
     setProvider(this.masterChef, contractAddresses.masterChef[networkId])
     setProvider(this.weth, contractAddresses.weth[networkId])
     setProvider(this.sousChef, contractAddresses.sousChef[networkId])
+    setProvider(this.lottery, contractAddresses.lottery[networkId])
+    setProvider(this.lotteryNft, contractAddresses.lotteryNFT[networkId])
 
     this.pools.forEach(
       ({ lpContract, lpAddress, tokenContract, tokenAddress }) => {
@@ -82,6 +88,8 @@ export class Contracts {
     this.masterChef.options.from = account
     this.syrup.options.from = account
     this.sousChef.options.from = account
+    this.lottery.options.from = account
+    this.lotteryNft.options.from = account
   }
 
   async callContractFunction(method, options) {

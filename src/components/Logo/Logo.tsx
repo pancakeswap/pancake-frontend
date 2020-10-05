@@ -1,13 +1,24 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
+import useTheme from '../../hooks/useTheme'
 import chef2 from '../../assets/img/chef2.png'
+import chef3 from '../../assets/img/chef3.png'
 
-const Logo: React.FC = () => {
+interface LogoProps {
+    isDark: boolean
+}
+
+const Logo: React.FC<LogoProps> = ({isDark}) => {
+
   return (
     <StyledLogo to="/">
-      <img src={chef2} height="32" style={{ marginTop: -4 }} />
-
+      {
+        isDark ?
+        <img src={chef3} height="32" style={{ marginTop: -4 }} />
+        :
+        <img src={chef2} height="32" style={{ marginTop: -4 }} />
+      }
     </StyledLogo>
   )
 }
@@ -24,7 +35,7 @@ const StyledLogo = styled(Link)`
 `
 
 const StyledText = styled.span`
-  color: ${(props) => props.theme.colors.primary}; 
+  color: ${(props) => props.theme.colors.primary};
   font-family: 'Reem Kufi', sans-serif;
   font-size: 20px;
   font-weight: 700;

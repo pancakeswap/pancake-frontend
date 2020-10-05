@@ -20,7 +20,7 @@ const TopBar: React.FC<TopBarProps> = ({ isDark, toogleTheme, onPresentMobileMen
             <Container size="lg">
                 <StyledTopBarInner>
                     <StyledLogoWrapper>
-                        <Logo/>
+                        <Logo isDark={isDark}/>
                     </StyledLogoWrapper>
                     <Nav />
                     <ThemeSwitch isDark={isDark} toogleTheme={toogleTheme} />

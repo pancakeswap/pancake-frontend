@@ -22,10 +22,6 @@ export const INTEGERS = {
   INTEREST_RATE_BASE: new BigNumber('1e18'),
 }
 
-export const addressMap = {
-  uniswapFactory: '0xc0a47dFe034B400B47bDaD5FecDa2621de6c4d95',
-  uniswapFactoryV2: '0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f',
-}
 
 export const contractAddresses = {
   sushi: {
@@ -45,12 +41,19 @@ export const contractAddresses = {
   sousChef: {
     97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
     56: '0x6ab8463a4185b80905e05a9ff80a2d6b714b9e95', //  real cake
-    // 56: '0x39447351Fe7939C064CDD9A258F22FC76233E28e'
   },
   weth: {
     97: '0xae13d989dac2f0debff460ac112a837c89baa7cd',
     56: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c'
   },
+  lottery: {
+    97: '0xCd1D9c9bD049C882A05353b7C646F423e1603Ce1',
+    56:  '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82'
+  },
+  lotteryNFT: {
+    97: '0x329Ca0d33261d6F3144Ae7540e44b5044dDeb1bd',
+    56:  '0x009cF7bC57584b7998236eff51b98A168DceA9B0'
+  }
 }
 
 export const sousChefTeam = [

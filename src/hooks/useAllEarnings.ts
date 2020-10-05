@@ -24,7 +24,6 @@ const useAllEarnings = () => {
       }
       ),
     )
-    console.log(balances)
     setBalance(balances)
   }, [account, masterChefContract, sushi])
 
