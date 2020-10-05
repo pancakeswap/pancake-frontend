@@ -125,7 +125,7 @@ const PoolCard: React.FC<HarvestProps> = ({ syrup, sousId, tokenName, projectLin
             }
             { account &&  (!allowance.toNumber() ? (
               <Button
-                disabled={requestedApproval}
+                disabled={leftBlockText==='finished' ||  requestedApproval}
                 onClick={handleApprove}
                 text={`Approve SYRUP`}
               />
