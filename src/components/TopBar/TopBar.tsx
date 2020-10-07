@@ -1,5 +1,5 @@
-import React from 'react'
-import styled from 'styled-components/macro'
+import React, { useContext } from 'react'
+import styled, { ThemeContext } from 'styled-components'
 
 import Container from '../Container'
 import Logo from '../Logo'
@@ -20,6 +20,9 @@ const TopBar: React.FC<TopBarProps> = ({
   toogleTheme,
   onPresentMobileMenu,
 }) => {
+  const { colors } = useContext(ThemeContext)
+  const buttonColor = colors.bg
+
   return (
     <StyledTopBar>
       <Container size="lg">
@@ -33,7 +36,9 @@ const TopBar: React.FC<TopBarProps> = ({
             <AccountButton />
           </StyledAccountButtonWrapper>
           <StyledAccountMenuWrapper>
-            <Menu onClick={onPresentMobileMenu}>Menu</Menu>
+            <Menu color={buttonColor} onClick={onPresentMobileMenu}>
+              Menu
+            </Menu>
           </StyledAccountMenuWrapper>
           <LanguageSelectMenu />
         </StyledTopBarInner>
@@ -46,7 +51,7 @@ const Menu = styled.div`
   margin: 0 auto;
   width: 82px;
   text-align: center;
-  color: white;
+  color: ${(props) => props.color};
   font-size: 17px;
   padding: 3px 3px 3px 3px;
   font-weight: 700;
