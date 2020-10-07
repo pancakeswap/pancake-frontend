@@ -1,5 +1,5 @@
 import React, { useRef, useContext } from 'react'
-import styled from 'styled-components'
+import styled, { ThemeContext } from 'styled-components'
 import { useOnClickOutside } from '../../../hooks/useOnClickOutside'
 import useToggle from '../../../hooks/useToggle'
 import {
@@ -8,7 +8,6 @@ import {
 } from '../../../contexts/Localisation/languageContext'
 import { allLanguages } from '../../../constants/localisation/languageCodes'
 import Button from '../../Button/Button'
-import Label from '../../Label/Label'
 
 const StyledMenu = styled.div`
   margin-left: 0.5rem;
@@ -39,7 +38,7 @@ const MenuFlyout = styled.span`
 const MenuItem = styled.div`
   flex: 1;
   padding: 0.25rem 0.5rem;
-  color: ${(props) => props.theme.colors.black};
+  color: ${(props) => props.color};
   :hover {
     color: #452a7a;
     cursor: pointer;
@@ -52,6 +51,7 @@ const MenuItem = styled.div`
 
 const StyledText = styled.span`
   padding: 0 0.5rem 0.25rem;
+  color: ${(props) => props.color};
   font-weight: 700;
   font-size: 14px;
 `
@@ -68,6 +68,9 @@ export default function Menu() {
   useOnClickOutside(node, open ? toggle : undefined)
 
   const { selectedLanguage, setSelectedLanguage } = useContext(LanguageContext)
+
+  const { colors } = useContext(ThemeContext)
+  const textColor = colors.bg
 
   const parseLanguageTextRendering = (languageCode: string) => {
     switch (languageCode) {
@@ -101,13 +104,14 @@ export default function Menu() {
       </Button>
       {open && (
         <MenuFlyout>
-          <StyledText>Language</StyledText>
+          <StyledText color={textColor}>Language</StyledText>
           <MenuItemsWrapper>
             {allLanguages.map((langObject) => {
               return (
                 <MenuItem
                   key={langObject.code}
                   onClick={() => handleLanguageSelect(langObject)}
+                  color={textColor}
                 >
                   {langObject.language}
                 </MenuItem>
