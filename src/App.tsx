@@ -15,7 +15,10 @@ import SushiProvider from './contexts/SushiProvider'
 import BscProvider from './contexts/BscProvider'
 import { EN } from './constants/localisation/languageCodes'
 import { allLanguages } from './constants/localisation/languageCodes'
-import { LanguageContext } from './contexts/Localisation/languageContext'
+import {
+  LanguageContext,
+  LanguageObject,
+} from './contexts/Localisation/languageContext'
 import { TranslationsContext } from './contexts/Localisation/translationsContext'
 import useModal from './hooks/useModal'
 import useTheme from './hooks/useTheme'
@@ -93,7 +96,77 @@ const App: React.FC = () => {
   }, [selectedLanguage])
 
   return (
-    <Providers isDark={isDark}>
+    <Providers
+      isDark={isDark}
+      selectedLanguage={selectedLanguage}
+      setSelectedLanguage={setSelectedLanguage}
+      translatedLanguage={translatedLanguage}
+      setTranslatedLanguage={setTranslatedLanguage}
+      translations={translations}
+      setTranslations={setTranslations}
+    >
+      <Router>
+        <GlobalStyle />
+        <TopBar
+          isDark={isDark}
+          toogleTheme={setIsDark}
+          onPresentMobileMenu={handlePresentMobileMenu}
+        />
+        <MobileMenu onDismiss={handleDismissMobileMenu} visible={mobileMenu} />
+        <Web3ReactManager>
+          <Switch>
+            <Route path="/" exact>
+              <Home />
+            </Route>
+            <Route path="/farms">
+              <Farms removed={false} />
+            </Route>
+            <Route path="/staking">
+              <Stake />
+            </Route>
+            <Route path="/syrup">
+              <Syrup />
+            </Route>
+            <Route path="/lottery">
+              <Lottery />
+            </Route>
+            <Route path="/voting">
+              <Voting />
+            </Route>
+            <Route path="/vision">
+              <Vision />
+            </Route>
+            <Route path="/removed">
+              <Farms removed={true} />
+            </Route>
+          </Switch>
+        </Web3ReactManager>
+      </Router>
+      <Disclaimer />
+    </Providers>
+  )
+}
+
+const Providers: React.FC<{
+  isDark: boolean
+  selectedLanguage: LanguageObject
+  setSelectedLanguage: React.Dispatch<React.SetStateAction<LanguageObject>>
+  translatedLanguage: LanguageObject
+  setTranslatedLanguage: React.Dispatch<React.SetStateAction<LanguageObject>>
+  translations: Array<any>
+  setTranslations: React.Dispatch<React.SetStateAction<Array<any>>>
+}> = ({
+  isDark,
+  selectedLanguage,
+  setSelectedLanguage,
+  translatedLanguage,
+  setTranslatedLanguage,
+  translations,
+  setTranslations,
+  children,
+}) => {
+  return (
+    <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
       <LanguageContext.Provider
         value={{
           selectedLanguage,
@@ -103,72 +176,24 @@ const App: React.FC = () => {
         }}
       >
         <TranslationsContext.Provider value={{ translations, setTranslations }}>
-          <Router>
-            <GlobalStyle />
-            <TopBar
-              isDark={isDark}
-              toogleTheme={setIsDark}
-              onPresentMobileMenu={handlePresentMobileMenu}
-            />
-            <MobileMenu
-              onDismiss={handleDismissMobileMenu}
-              visible={mobileMenu}
-            />
-            <Web3ReactManager>
-              <Switch>
-                <Route path="/" exact>
-                  <Home />
-                </Route>
-                <Route path="/farms">
-                  <Farms removed={false} />
-                </Route>
-                <Route path="/staking">
-                  <Stake />
-                </Route>
-                <Route path="/syrup">
-                  <Syrup />
-                </Route>
-                <Route path="/lottery">
-                  <Lottery />
-                </Route>
-                <Route path="/voting">
-                  <Voting />
-                </Route>
-                <Route path="/vision">
-                  <Vision />
-                </Route>
-                <Route path="/removed">
-                  <Farms removed={true} />
-                </Route>
-              </Switch>
-            </Web3ReactManager>
-          </Router>
-          <Disclaimer />
+          <UseWalletProvider
+            chainId={56}
+            connectors={{
+              walletconnect: { rpcUrl: 'https://bsc-dataseed.binance.org' },
+            }}
+          >
+            <BscProvider>
+              <SushiProvider>
+                <TransactionProvider>
+                  <FarmsProvider>
+                    <ModalsProvider>{children}</ModalsProvider>
+                  </FarmsProvider>
+                </TransactionProvider>
+              </SushiProvider>
+            </BscProvider>
+          </UseWalletProvider>
         </TranslationsContext.Provider>
       </LanguageContext.Provider>
-    </Providers>
-  )
-}
-
-const Providers: React.FC<{ isDark: boolean }> = ({ isDark, children }) => {
-  return (
-    <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
-      <UseWalletProvider
-        chainId={56}
-        connectors={{
-          walletconnect: { rpcUrl: 'https://bsc-dataseed.binance.org' },
-        }}
-      >
-        <BscProvider>
-          <SushiProvider>
-            <TransactionProvider>
-              <FarmsProvider>
-                <ModalsProvider>{children}</ModalsProvider>
-              </FarmsProvider>
-            </TransactionProvider>
-          </SushiProvider>
-        </BscProvider>
-      </UseWalletProvider>
     </ThemeProvider>
   )
 }
