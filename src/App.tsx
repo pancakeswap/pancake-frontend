@@ -81,9 +81,10 @@ const App: React.FC = () => {
         undefined,
         200,
       )
-      .then((translationApiResponse) =>
-        setTranslations(translationApiResponse.data),
-      )
+      .then((translationApiResponse) => {
+        // debugger
+        setTranslations(translationApiResponse.data)
+      })
       .then(() => setTranslatedLanguage(selectedLanguage))
       .catch((error) => console.error(error))
   }
