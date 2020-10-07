@@ -30,7 +30,11 @@ interface FarmWithStakedValue extends Farm, StakedValue {
   apy: BigNumber
 }
 
-const FarmCards: React.FC = () => {
+interface FarmCardsProps {
+  removed: boolean
+}
+
+const FarmCards: React.FC<FarmCardsProps> = ({removed}) => {
   const [farms] = useFarms()
   const { account } = useWallet()
   const stakedValue = useAllStakedValue()
@@ -60,7 +64,8 @@ const FarmCards: React.FC = () => {
     onPresentWalletProviderModal()
   }, [onPresentWalletProviderModal])
 
-  const realFarms =farms.filter(farm => farm.pid !== 0)
+  const realFarms =!removed ? farms.filter(farm => farm.pid !== 0 && farm.multiplier != '0X')
+                    : farms.filter(farm => farm.pid !== 0 && farm.multiplier == '0X')
   const realStakedValue = stakedValue.slice(1)
   const bnbPrice = useBnbPrice()
   // console.log(bnbPrice)
@@ -68,6 +73,9 @@ const FarmCards: React.FC = () => {
   const rows = realFarms.reduce<FarmWithStakedValue[][]>(
     (farmRows, farm, i) => {
       let apy
+      if(farm.pid==8) {
+        console.log(realStakedValue[i].poolWeight)
+      }
       if(farm.pid == 11) {
         apy = realStakedValue[i] ? sushiPrice
               .times(SUSHI_PER_BLOCK)
@@ -78,7 +86,7 @@ const FarmCards: React.FC = () => {
               .times(bnbPrice) : null
       }
       else {
-        apy = realStakedValue[i] ? sushiPrice
+        apy = realStakedValue[i]  && !removed ? sushiPrice
               .times(SUSHI_PER_BLOCK)
               .times(BLOCKS_PER_YEAR)
               .times(realStakedValue[i].poolWeight)
@@ -109,7 +117,7 @@ const FarmCards: React.FC = () => {
           <StyledRow key={i}>
             {farmRow.map((farm, j) => (
               <React.Fragment key={j}>
-                <FarmCard farm={farm} stakedValue={realStakedValue[j]}  />
+                <FarmCard farm={farm} stakedValue={realStakedValue[j]}  removed={removed}/>
                 {(j === 0 || j === 1) && <StyledSpacer />}
               </React.Fragment>
             ))}
@@ -190,9 +198,10 @@ const FCard = styled.div`
 
 interface FarmCardProps {
   farm: FarmWithStakedValue
+  removed: boolean
 }
 
-const FarmCard: React.FC<FarmCardProps> = ({ farm, stakedValue }) => {
+const FarmCard: React.FC<FarmCardProps> = ({ farm, stakedValue, removed }) => {
   const totalValue1 = useTokenBalance2('0x55d398326f99059ff775485246999027b3197955', farm.lpTokenAddress) *2
   let totalValue = useTokenBalance2('0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c', farm.lpTokenAddress) * useBnbPrice() *2
 
@@ -251,6 +260,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, stakedValue }) => {
             </CardImage>
             <Lable><span>Deposit</span><span  className="right">{farm.lpToken.toUpperCase().replace("PANCAKE", "")}</span></Lable>
             <Lable><span>Earn</span><span  className="right">CAKE</span></Lable>
+            { !removed &&
             <Lable>
               <span>APY</span>
               <span className="right">
@@ -263,6 +273,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, stakedValue }) => {
                   : 'Loading ...'}
               </span>
             </Lable>
+            }
 
 
             <Button

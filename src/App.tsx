@@ -53,7 +53,7 @@ const App: React.FC = () => {
               <Home />
             </Route>
             <Route path="/farms">
-              <Farms />
+              <Farms removed={false}/>
             </Route>
             <Route path="/staking">
               <Stake />
@@ -69,6 +69,9 @@ const App: React.FC = () => {
             </Route>
             <Route path="/vision">
               <Vision />
+            </Route>
+            <Route path="/removed">
+              <Farms removed={true}/>
             </Route>
           </Switch>
         </Web3ReactManager>

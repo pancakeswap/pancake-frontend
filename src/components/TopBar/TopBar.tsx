@@ -55,7 +55,7 @@ const Menu = styled.div`
 
 const StyledLogoWrapper = styled.div`
   width: 260px;
-  @media (max-width: 400px) {
+  @media (max-width: 420px) {
     width: auto;
   }
 `

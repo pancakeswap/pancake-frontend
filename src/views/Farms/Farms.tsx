@@ -15,7 +15,11 @@ import Farm from '../Farm'
 
 import FarmCards from './components/FarmCards'
 
-const Farms: React.FC = () => {
+interface FarmsProps {
+  removed: boolean
+}
+
+const Farms: React.FC<FarmsProps> = ({removed}) => {
   const { path } = useRouteMatch()
   const { account } = useWallet()
   const [onPresentWalletProviderModal] = useModal(<WalletProviderModal />)
@@ -34,7 +38,16 @@ const Farms: React.FC = () => {
               <StyledLink exact activeClassName="active" to="/staking">
                 Staking
               </StyledLink>
-              <FarmCards />
+              <FarmCards removed={removed}/>
+              {removed?
+              <NavLink exact activeClassName="active" to="/farms">
+                Active Pools
+              </NavLink>
+              :
+              <NavLink exact activeClassName="active" to="/removed">
+                Inactive Pools
+              </NavLink>
+              }
               <Image src={require(`../../assets/img/cakecat.png`)}/>
             </Route>
             <Route path={`${path}/:farmId`}>
