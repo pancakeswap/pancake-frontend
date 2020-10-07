@@ -66,7 +66,12 @@ const Menu = styled.div`
 const StyledLogoWrapper = styled.div`
   width: 260px;
   @media (max-width: 420px) {
-    width: auto;
+    width: 200px;
+
+    img {
+      width: 100%;
+      height: auto;
+    }
   }
 `
 
