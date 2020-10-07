@@ -8,6 +8,7 @@ import {
 } from '../../../contexts/Localisation/languageContext'
 import { allLanguages } from '../../../constants/localisation/languageCodes'
 import Button from '../../Button/Button'
+import Label from '../../Label/Label'
 
 const StyledMenu = styled.div`
   margin-left: 0.5rem;
@@ -50,8 +51,8 @@ const MenuItem = styled.div`
 `
 
 const StyledText = styled.span`
-  padding: 0 0.5rem;
-  font-weight: 500;
+  padding: 0 0.5rem 0.25rem;
+  font-weight: 700;
   font-size: 14px;
 `
 
