@@ -12,7 +12,7 @@ import Value from '../../../components/Value'
 
 import { useLotteryAllowance } from '../../../hooks/useAllowance'
 import { useLotteryApprove } from '../../../hooks/useApprove'
-import useTickets from '../../../hooks/useTickets'
+import useTickets, {useWinningNumbers} from '../../../hooks/useTickets'
 import useModal from '../../../hooks/useModal'
 import useStakedBalance from '../../../hooks/useStakedBalance'
 import useTokenBalance from '../../../hooks/useTokenBalance'
@@ -93,7 +93,7 @@ const Ticket: React.FC = () => {
                             ) : (
                               <>
                                 {/*TODO: add modal to select the numbers*/}
-                                <Button onClick={() => onBuy('3', [1,2,3,4])} size="md" text="Buy ticket"/>
+                                <Button disabled={requestedApproval} onClick={() => onBuy('3', [1,2,3,4])} size="md" text="Buy ticket"/>
                               </>
                             ))}
                         </StyledCardActions>

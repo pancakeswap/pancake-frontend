@@ -47,3 +47,12 @@ export const getTotalRewards = async (lotteryContract, account) =>{
   const issueIdex = await lotteryContract.methods.issueIndex().call();
   return lotteryContract.methods.getTotalRewards(issueIdex).call()
 }
+
+export const getWinningNumbers = async (lotteryContract, account) => {
+  const issueIdex = await lotteryContract.methods.issueIndex().call();
+  let numbers = []
+  for(let i = 0;i<4;i++) {
+    numbers.push((await lotteryContract.methods.winningNumbers(i).call()).toString())
+  }
+  return numbers
+}
