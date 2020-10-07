@@ -1,39 +1,45 @@
 import React from 'react'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 
 import Container from '../Container'
 import Logo from '../Logo'
 
 import AccountButton from './components/AccountButton'
+import LanguageSelectMenu from './components/LanguageSelectMenu'
 import Nav from './components/Nav'
 import ThemeSwitch from './components/ThemeSwitch'
 
 interface TopBarProps {
-    isDark: boolean
-    toogleTheme: (isDark: boolean) => void
-    onPresentMobileMenu: () => void
+  isDark: boolean
+  toogleTheme: (isDark: boolean) => void
+  onPresentMobileMenu: () => void
 }
 
-const TopBar: React.FC<TopBarProps> = ({ isDark, toogleTheme, onPresentMobileMenu}) => {
-    return (
-        <StyledTopBar>
-            <Container size="lg">
-                <StyledTopBarInner>
-                    <StyledLogoWrapper>
-                        <Logo isDark={isDark}/>
-                    </StyledLogoWrapper>
-                    <Nav />
-                    <ThemeSwitch isDark={isDark} toogleTheme={toogleTheme} />
-                    <StyledAccountButtonWrapper>
-                        <AccountButton/>
-                    </StyledAccountButtonWrapper>
-                    <StyledAccountMenuWrapper>
-                        <Menu onClick={onPresentMobileMenu}>Menu</Menu>
-                    </StyledAccountMenuWrapper>
-                </StyledTopBarInner>
-            </Container>
-        </StyledTopBar>
-    )
+const TopBar: React.FC<TopBarProps> = ({
+  isDark,
+  toogleTheme,
+  onPresentMobileMenu,
+}) => {
+  return (
+    <StyledTopBar>
+      <Container size="lg">
+        <StyledTopBarInner>
+          <StyledLogoWrapper>
+            <Logo isDark={isDark} />
+          </StyledLogoWrapper>
+          <Nav />
+          <ThemeSwitch isDark={isDark} toogleTheme={toogleTheme} />
+          <StyledAccountButtonWrapper>
+            <AccountButton />
+          </StyledAccountButtonWrapper>
+          <StyledAccountMenuWrapper>
+            <Menu onClick={onPresentMobileMenu}>Menu</Menu>
+          </StyledAccountMenuWrapper>
+          <LanguageSelectMenu />
+        </StyledTopBarInner>
+      </Container>
+    </StyledTopBar>
+  )
 }
 
 const Menu = styled.div`
@@ -46,7 +52,6 @@ const Menu = styled.div`
   font-weight: 700;
   background: #47d3db;
   border-radius: 20px;
-  display: nones;
   display: none;
   @media (max-width: 850px) {
     display: block;
@@ -93,16 +98,17 @@ const StyledAccountButtonWrapper = styled.div`
   }
 `
 const StyledAccountMenuWrapper = styled.div`
-  @media (mim-width: 850px) {
-    display: none;
-  }
   align-items: center;
   display: flex;
   justify-content: flex-end;
-  width: 0;
+  width: auto;
   @media (max-width: 400px) {
     justify-content: center;
-    width: auto;
+    width: 55px;
+  }
+
+  @media (min-width: 850px) {
+    display: none;
   }
 `
 

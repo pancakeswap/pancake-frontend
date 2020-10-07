@@ -4,13 +4,13 @@ import styled, { ThemeContext } from 'styled-components'
 import { Link } from 'react-router-dom'
 
 interface ButtonProps {
-  children?: React.ReactNode,
-  disabled?: boolean,
-  href?: string,
-  onClick?: () => void,
-  size?: 'sm' | 'md' | 'lg',
-  text?: string,
-  to?: string,
+  children?: React.ReactNode
+  disabled?: boolean
+  href?: string
+  onClick?: () => void
+  size?: 'sm' | 'md' | 'lg'
+  text?: string
+  to?: string
   variant?: 'default' | 'secondary' | 'tertiary'
 }
 
@@ -64,7 +64,11 @@ const Button: React.FC<ButtonProps> = ({
     if (to) {
       return <StyledLink to={to}>{text}</StyledLink>
     } else if (href) {
-      return <StyledExternalLink href={href} target="__blank">{text}</StyledExternalLink>
+      return (
+        <StyledExternalLink href={href} target="__blank">
+          {text}
+        </StyledExternalLink>
+      )
     } else {
       return text
     }
@@ -87,33 +91,36 @@ const Button: React.FC<ButtonProps> = ({
 }
 
 interface StyledButtonProps {
-  boxShadow: string,
-  color: string,
-  disabled?: boolean,
-  fontSize: number,
-  padding: number,
+  boxShadow: string
+  color: string
+  disabled?: boolean
+  fontSize: number
+  padding: number
   size: number
 }
 
 const StyledButton = styled.button<StyledButtonProps>`
   align-items: center;
-  background: ${props => !props.disabled ? 'linear-gradient(180deg, #54DADE 0%, #24C7D6 76.22%)' : `#ddd`};
+  background: ${(props) =>
+    !props.disabled
+      ? 'linear-gradient(180deg, #54DADE 0%, #24C7D6 76.22%)'
+      : `#ddd`};
   border: 0;
   border-radius: 12px;
-  color: ${props => !props.disabled ? props.color : `#acaaaf`};
+  color: ${(props) => (!props.disabled ? props.color : `#acaaaf`)};
   cursor: pointer;
   display: flex;
-  font-size: ${props => props.fontSize}px;
+  font-size: ${(props) => props.fontSize}px;
   font-weight: 700;
-  height: ${props => props.size}px;
+  height: ${(props) => props.size}px;
   justify-content: center;
   outline: none;
-  padding-left: ${props => props.padding}px;
-  padding-right: ${props => props.padding}px;
-  pointer-events: ${props => !props.disabled ? undefined : 'none'};
+  padding-left: ${(props) => props.padding}px;
+  padding-right: ${(props) => props.padding}px;
+  pointer-events: ${(props) => (!props.disabled ? undefined : 'none')};
   width: 100%;
   &:hover {
-    background-color: ${props => props.theme.colors.grey[100]};
+    background-color: ${(props) => props.theme.colors.grey[100]};
   }
 `
 
@@ -124,8 +131,8 @@ const StyledLink = styled(Link)`
   flex: 1;
   height: 56px;
   justify-content: center;
-  margin: 0 ${props => -props.theme.spacing[4]}px;
-  padding: 0 ${props => props.theme.spacing[4]}px;
+  margin: 0 ${(props) => -props.theme.spacing[4]}px;
+  padding: 0 ${(props) => props.theme.spacing[4]}px;
   text-decoration: none;
 `
 
@@ -136,8 +143,8 @@ const StyledExternalLink = styled.a`
   flex: 1;
   height: 56px;
   justify-content: center;
-  margin: 0 ${props => -props.theme.spacing[4]}px;
-  padding: 0 ${props => props.theme.spacing[4]}px;
+  margin: 0 ${(props) => -props.theme.spacing[4]}px;
+  padding: 0 ${(props) => props.theme.spacing[4]}px;
   text-decoration: none;
 `
 
