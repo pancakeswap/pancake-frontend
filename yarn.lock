@@ -1122,6 +1122,13 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
+"@crowdin/crowdin-api-client@^1.8.16":
+  version "1.8.16"
+  resolved "https://registry.yarnpkg.com/@crowdin/crowdin-api-client/-/crowdin-api-client-1.8.16.tgz#bc1f05cb97931d70fd9d685c4e9307fab5e2666d"
+  integrity sha512-Qc3bwB6/m+KaSPLYAW37VGz4k3irN38cq25K7KKLh/CUBIRrH3L7yaw/TYKJOaqIfx5lhAGY9N8tlV4SG+xUMQ==
+  dependencies:
+    axios "^0.19.0"
+
 "@csstools/convert-colors@^1.4.0":
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/@csstools/convert-colors/-/convert-colors-1.4.0.tgz#ad495dc41b12e75d588c6db8b9834f08fa131eb7"
@@ -2820,6 +2827,13 @@ axios@^0.18.0:
   dependencies:
     follow-redirects "1.5.10"
     is-buffer "^2.0.2"
+
+axios@^0.19.0:
+  version "0.19.2"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-0.19.2.tgz#3ea36c5d8818d0d5f8a8a97a6d36b86cdc00cb27"
+  integrity sha512-fjgm5MvRHLhx+osE2xoekY70AhARk3a6hkN+3Io1jc00jtquGvxYlKlsFUhmUET0V5te6CcZI7lcv2Ym61mjHA==
+  dependencies:
+    follow-redirects "1.5.10"
 
 axobject-query@^2.0.2:
   version "2.1.2"
