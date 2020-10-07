@@ -39,9 +39,9 @@ const MenuFlyout = styled.span`
 const MenuItem = styled.div`
   flex: 1;
   padding: 0.25rem 0.5rem;
-  color: ${({ theme }) => theme.colors.text2};
+  color: ${(props) => props.theme.colors.black};
   :hover {
-    color: ${({ theme }) => theme.colors.text1};
+    color: #452a7a;
     cursor: pointer;
     text-decoration: none;
   }
