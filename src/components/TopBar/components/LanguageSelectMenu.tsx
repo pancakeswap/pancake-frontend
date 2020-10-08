@@ -7,7 +7,8 @@ import {
   LanguageObject,
 } from '../../../contexts/Localisation/languageContext'
 import { allLanguages } from '../../../constants/localisation/languageCodes'
-import Button from '../../Button/Button'
+import LanguageSelectButton from './LanguageSelectButton'
+import { Globe } from 'react-feather'
 
 const StyledMenu = styled.div`
   margin-left: 0.5rem;
@@ -17,11 +18,20 @@ const StyledMenu = styled.div`
   position: relative;
   border: none;
   text-align: left;
+
+  svg {
+    height: 19px;
+    width: 19px;
+    margin-right: 0.2rem;
+  }
 `
 
 const MenuFlyout = styled.span`
   min-width: 8.125rem;
-  background-color: ${(props) => props.theme.colors.blue[100]};
+  background: ${(props) => props.theme.colors.cardBg};
+  color: #32cad7;
+  border: 2px solid #33cbd7;
+  border-radius: 12px;
   box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.01), 0px 4px 8px rgba(0, 0, 0, 0.04),
     0px 16px 24px rgba(0, 0, 0, 0.04), 0px 24px 32px rgba(0, 0, 0, 0.01);
   border-radius: 0.5rem;
@@ -38,14 +48,11 @@ const MenuFlyout = styled.span`
 const MenuItem = styled.div`
   flex: 1;
   padding: 0.25rem 0.5rem;
-  color: ${(props) => props.color};
+  color: #32cad7;
   :hover {
     color: #452a7a;
     cursor: pointer;
     text-decoration: none;
-  }
-  > svg {
-    margin-right: 8px;
   }
 `
 
@@ -70,7 +77,7 @@ export default function Menu() {
   const { selectedLanguage, setSelectedLanguage } = useContext(LanguageContext)
 
   const { colors } = useContext(ThemeContext)
-  const textColor = colors.bg
+  const textColor = ' #32cad7;'
 
   const parseLanguageTextRendering = (languageCode: string) => {
     switch (languageCode) {
@@ -97,11 +104,12 @@ export default function Menu() {
 
   return (
     <StyledMenu ref={node as any}>
-      <Button onClick={toggle} size={'sm'} variant={'tertiary'}>
+      <LanguageSelectButton onClick={toggle} size={'sm'} variant={'tertiary'}>
+        <Globe />
         {(selectedLanguage &&
           parseLanguageTextRendering(selectedLanguage.code)) ||
           'EN'}
-      </Button>
+      </LanguageSelectButton>
       {open && (
         <MenuFlyout>
           <StyledText color={textColor}>Language</StyledText>
