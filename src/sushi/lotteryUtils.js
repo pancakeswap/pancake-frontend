@@ -1,5 +1,30 @@
 import BigNumber from 'bignumber.js'
 
+export const MULTICALL = {
+  1: '0xeefba1e63905ef1d7acba5a8513c70307c1ce441',
+  56: '0x1ee38d535d541c55c9dae27b12edf090c608e6fb',
+  97: '0x67ADCB4dF3931b0C5Da724058ADC2174a9844412'
+}
+
+export async function multicall(network, provider, abi, calls, options) {
+  const multi = new Contract(MULTICALL[network], multicallAbi, provider);
+  const itf = new Interface(abi);
+  try {
+    const [, response] = await multi.aggregate(
+      calls.map(call => [
+        call[0].toLowerCase(),
+        itf.encodeFunctionData(call[1], call[2])
+      ]),
+      options || {}
+    );
+    return response.map((call, i) =>
+      itf.decodeFunctionResult(calls[i][1], call)
+    );
+  } catch (e) {
+    return Promise.reject();
+  }
+}
+
 export const getLotteryContract = (sushi) => {
   return sushi && sushi.contracts && sushi.contracts.lottery
 }
