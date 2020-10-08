@@ -42,6 +42,9 @@ const App: React.FC = () => {
 
   const apiKey = `${process.env.REACT_APP_CROWDIN_APIKEY}`
   const projectId = parseInt(`${process.env.REACT_APP_CROWDIN_PROJECTID}`)
+  const fileId = 6
+  // ^ this is the exhcange fileId - will need changing
+
   const credentials: Credentials = {
     token: apiKey,
   }
@@ -78,12 +81,15 @@ const App: React.FC = () => {
         projectId,
         selectedLanguage.code,
         undefined,
-        undefined,
+        fileId,
         200,
       )
       .then((translationApiResponse) => {
-        // debugger
-        setTranslations(translationApiResponse.data)
+        if (translationApiResponse.data.length < 1) {
+          setTranslations(['error'])
+        } else {
+          setTranslations(translationApiResponse.data)
+        }
       })
       .then(() => setTranslatedLanguage(selectedLanguage))
       .catch((error) => console.error(error))
