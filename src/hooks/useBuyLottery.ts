@@ -10,13 +10,17 @@ const useBuyLottery = () => {
 
   const handleBuy = useCallback(
     async (amount: string, numbers: Array<number>) => {
-      const txHash = await buy(
-        getLotteryContract(sushi),
-        amount,
-        numbers,
-        account,
-      )
-      console.log(txHash)
+      try {
+        const txHash = await buy(
+          getLotteryContract(sushi),
+          amount,
+          numbers,
+          account,
+        )
+        return txHash
+      } catch(e) {
+        return false
+      }
     },
     [account, sushi],
   )

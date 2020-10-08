@@ -12,7 +12,7 @@ import Value from '../../../components/Value'
 
 import { useLotteryAllowance } from '../../../hooks/useAllowance'
 import { useLotteryApprove } from '../../../hooks/useApprove'
-import useTickets, {useWinningNumbers} from '../../../hooks/useTickets'
+import useTickets, {useWinningNumbers, useTotalClaim} from '../../../hooks/useTickets'
 import useModal from '../../../hooks/useModal'
 import useStakedBalance from '../../../hooks/useStakedBalance'
 import useTokenBalance from '../../../hooks/useTokenBalance'
@@ -31,6 +31,7 @@ interface StakeProps {
 
 const Ticket: React.FC = () => {
     const [requestedApproval, setRequestedApproval] = useState(false)
+    const [requesteBuy, setRequestedBuy] = useState(false)
     const {account} = useWallet()
 
     const allowance = useLotteryAllowance()
@@ -49,6 +50,9 @@ const Ticket: React.FC = () => {
     // TEMP example
     const { onBuy } = useBuyLottery()
     const tickets = useTickets()
+    const winNumbers = useWinningNumbers()
+    const claimAmount = useTotalClaim()
+    console.log(claimAmount)
 
     const handleApprove = useCallback(async () => {
       try {
@@ -62,6 +66,19 @@ const Ticket: React.FC = () => {
         console.log(e)
       }
     }, [onApprove, setRequestedApproval])
+
+    const handleBuy = useCallback(async () => {
+      try {
+        setRequestedBuy(true)
+        const txHash = await onBuy('5', [3,5,1,4])
+        // user rejected tx or didn't go thru
+        if (txHash) {
+          setRequestedBuy(false)
+        }
+      } catch (e) {
+        console.log(e)
+      }
+    }, [onBuy, setRequestedBuy])
 
     const [onPresentAccountModal] = useModal(<AccountModal/>)
     const [onPresentWalletProviderModal] = useModal(
@@ -93,7 +110,7 @@ const Ticket: React.FC = () => {
                             ) : (
                               <>
                                 {/*TODO: add modal to select the numbers*/}
-                                <Button disabled={requestedApproval} onClick={() => onBuy('3', [1,2,3,4])} size="md" text="Buy ticket"/>
+                                <Button disabled={requesteBuy || winNumbers[0]!==0} onClick={handleBuy} size="md" text={requesteBuy ? 'Buying...': 'Buy ticket'}/>
                               </>
                             ))}
                         </StyledCardActions>

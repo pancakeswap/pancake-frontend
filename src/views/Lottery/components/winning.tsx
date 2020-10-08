@@ -5,7 +5,7 @@ import Card from '../../../components/Card'
 import CardContent from '../../../components/CardContent'
 import Label from '../../../components/Label'
 import useModal from '../../../hooks/useModal'
-import {useWinningNumbers} from '../../../hooks/useTickets'
+import {useWinningNumbers, useMatchingRewardLength} from '../../../hooks/useTickets'
 
 import WalletProviderModal from '../../../components/WalletProviderModal'
 import AccountModal from '../../../components/TopBar/components/AccountModal'
@@ -31,6 +31,10 @@ const Winning: React.FC = () => {
     const handleUnlockClick = useCallback(() => {
         onPresentWalletProviderModal()
     }, [onPresentWalletProviderModal])
+
+    const MatchedNumber4 = useMatchingRewardLength(4)
+    const MatchedNumber3 = useMatchingRewardLength(3)
+    const MatchedNumber2 = useMatchingRewardLength(2)
 
     return (
         <CardWrapper style={{marginTop: '4em'}}>
@@ -88,15 +92,15 @@ const Winning: React.FC = () => {
                         <Column>
                             <RowNoPadding>
                                 <CenteredTextWithPadding>Tickets matching 4 numbers:</CenteredTextWithPadding>
-                                <CenteredTextWithPadding><strong>2</strong></CenteredTextWithPadding>
+                                <CenteredTextWithPadding><strong>{MatchedNumber4}</strong></CenteredTextWithPadding>
                             </RowNoPadding>
                             <RowNoPadding>
                                 <CenteredTextWithPadding>Tickets matching 3 numbers:</CenteredTextWithPadding>
-                                <CenteredTextWithPadding><strong>5</strong></CenteredTextWithPadding>
+                                <CenteredTextWithPadding><strong>{MatchedNumber3}</strong></CenteredTextWithPadding>
                             </RowNoPadding>
                             <RowNoPadding>
                                 <CenteredTextWithPadding>Tickets matching 2 numbers:</CenteredTextWithPadding>
-                                <CenteredTextWithPadding><strong>12</strong></CenteredTextWithPadding>
+                                <CenteredTextWithPadding><strong>{MatchedNumber2}</strong></CenteredTextWithPadding>
                             </RowNoPadding>
                         </Column>
                         <Link href={`https://bscscan.com/address`} target="_blank">Export recent winning numbers</Link>

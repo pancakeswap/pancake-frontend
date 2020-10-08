@@ -20,6 +20,7 @@ import useTokenBalance from '../../../hooks/useTokenBalance'
 import useUnstake from '../../../hooks/useUnstake'
 import {getBalanceNumber} from '../../../utils/formatBalance'
 
+import {useTotalClaim} from '../../../hooks/useTickets'
 import WalletProviderModal from '../../../components/WalletProviderModal'
 import AccountModal from '../../../components/TopBar/components/AccountModal'
 
@@ -33,14 +34,7 @@ const Prize: React.FC = () => {
     const [requestedApproval, setRequestedApproval] = useState(false)
     const {account} = useWallet()
 
-    // const allowance = useAllowance(lpContract)
-    // const {onApprove} = useApprove(lpContract)
-    //
-    // const tokenBalance = useTokenBalance(lpContract.options.address)
-    // const stakedBalance = useStakedBalance(pid)
-    //
-    // const {onStake} = useStake(pid)
-    // const {onUnstake} = useUnstake(pid)
+    const claimAmount = useTotalClaim()
 
     const [onPresentAccountModal] = useModal(<AccountModal/>)
 
@@ -59,7 +53,7 @@ const Prize: React.FC = () => {
                     <StyledCardContentInner>
                         <StyledCardHeader>
                             <CardIcon>🎁</CardIcon>
-                            <Value value={0}/>
+                            <Value value={getBalanceNumber(claimAmount)}/>
                             <Label text={`CAKE prizes to be claimed!`}/>
                         </StyledCardHeader>
                         <StyledCardActions>
