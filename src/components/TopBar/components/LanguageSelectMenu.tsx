@@ -30,7 +30,7 @@ const MenuFlyout = styled.span`
   min-width: 8.125rem;
   background: ${(props) => props.theme.colors.cardBg};
   color: #32cad7;
-  border: 2px solid #33cbd7;
+  border: 2px solid ${(props) => props.color};
   border-radius: 12px;
   box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.01), 0px 4px 8px rgba(0, 0, 0, 0.04),
     0px 16px 24px rgba(0, 0, 0, 0.04), 0px 24px 32px rgba(0, 0, 0, 0.01);
@@ -48,7 +48,7 @@ const MenuFlyout = styled.span`
 const MenuItem = styled.div`
   flex: 1;
   padding: 0.25rem 0.5rem;
-  color: #32cad7;
+  color: ${(props) => props.color};
   :hover {
     color: #452a7a;
     cursor: pointer;
@@ -77,7 +77,7 @@ export default function Menu() {
   const { selectedLanguage, setSelectedLanguage } = useContext(LanguageContext)
 
   const { colors } = useContext(ThemeContext)
-  const textColor = ' #32cad7;'
+  const textColor = colors.ghost
 
   const parseLanguageTextRendering = (languageCode: string) => {
     switch (languageCode) {
