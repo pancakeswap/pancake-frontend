@@ -75,15 +75,19 @@ const StyledButton = styled.button<StyledButtonProps>`
   display: flex;
   font-size: ${(props) => props.fontSize}px;
   font-weight: 700;
-  height: ${(props) => props.size}px;
   justify-content: center;
   outline: none;
-  padding-left: ${(props) => props.padding}px;
-  padding-right: ${(props) => props.padding}px;
   pointer-events: ${(props) => (!props.disabled ? undefined : 'none')};
   width: 100%;
   /* &:hover {
     background-color: ${(props) => props.theme.colors.grey[600]};
   } */
+  padding: ${(props) => props.padding}px;
+  height: ${(props) => props.size}px;
+
+  @media (max-width: 500px) {
+    padding: 4px;
+    height: auto;
+  }
 `
 export default Button

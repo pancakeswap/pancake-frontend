@@ -24,6 +24,10 @@ const StyledMenu = styled.div`
     width: 19px;
     margin-right: 0.2rem;
   }
+
+  @media (max-width: 850px) {
+    margin-left: 0.2rem;
+  }
 `
 
 const MenuFlyout = styled.span`
