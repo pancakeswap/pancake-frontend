@@ -1,28 +1,19 @@
 import React, { useContext, useMemo } from 'react'
 import styled, { ThemeContext } from 'styled-components'
 
-import { Link } from 'react-router-dom'
-
 interface ButtonProps {
   children?: React.ReactNode
   disabled?: boolean
   href?: string
   onClick?: () => void
   size?: 'sm' | 'md' | 'lg'
-  text?: string
-  to?: string
-  variant?: 'default' | 'secondary' | 'tertiary'
 }
 
 const Button: React.FC<ButtonProps> = ({
   children,
   disabled,
-  href,
   onClick,
   size,
-  text,
-  to,
-  variant,
 }) => {
   const { colors, spacing } = useContext(ThemeContext)
   const buttonColor = colors.bg
@@ -49,20 +40,6 @@ const Button: React.FC<ButtonProps> = ({
       fontSize = 16
   }
 
-  const ButtonChild = useMemo(() => {
-    if (to) {
-      return <StyledLink to={to}>{text}</StyledLink>
-    } else if (href) {
-      return (
-        <StyledExternalLink href={href} target="__blank">
-          {text}
-        </StyledExternalLink>
-      )
-    } else {
-      return text
-    }
-  }, [href, text, to])
-
   return (
     <StyledButton
       boxShadow={boxShadow}
@@ -74,7 +51,6 @@ const Button: React.FC<ButtonProps> = ({
       size={buttonSize}
     >
       {children}
-      {ButtonChild}
     </StyledButton>
   )
 }
@@ -110,29 +86,4 @@ const StyledButton = styled.button<StyledButtonProps>`
     background-color: ${(props) => props.theme.colors.grey[600]};
   } */
 `
-
-const StyledLink = styled(Link)`
-  align-items: center;
-  color: inherit;
-  display: flex;
-  flex: 1;
-  height: 56px;
-  justify-content: center;
-  margin: 0 ${(props) => -props.theme.spacing[4]}px;
-  padding: 0 ${(props) => props.theme.spacing[4]}px;
-  text-decoration: none;
-`
-
-const StyledExternalLink = styled.a`
-  align-items: center;
-  color: inherit;
-  display: flex;
-  flex: 1;
-  height: 56px;
-  justify-content: center;
-  margin: 0 ${(props) => -props.theme.spacing[4]}px;
-  padding: 0 ${(props) => props.theme.spacing[4]}px;
-  text-decoration: none;
-`
-
 export default Button

@@ -104,7 +104,7 @@ export default function Menu() {
 
   return (
     <StyledMenu ref={node as any}>
-      <LanguageSelectButton onClick={toggle} size={'sm'} variant={'tertiary'}>
+      <LanguageSelectButton onClick={toggle} size={'sm'}>
         <Globe />
         {(selectedLanguage &&
           parseLanguageTextRendering(selectedLanguage.code)) ||
