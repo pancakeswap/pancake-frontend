@@ -7,7 +7,6 @@ import { NavLink } from 'react-router-dom'
 import Button from '../../components/Button'
 import Page from '../../components/Page'
 import WalletProviderModal from '../../components/WalletProviderModal'
-import { useCakePrice } from '../../hooks/useTokenBalance'
 
 import useModal from '../../hooks/useModal'
 
@@ -23,7 +22,6 @@ const Farms: React.FC<FarmsProps> = ({removed}) => {
   const { path } = useRouteMatch()
   const { account } = useWallet()
   const [onPresentWalletProviderModal] = useModal(<WalletProviderModal />)
-  const cakePrice = useCakePrice()
 
   return (
     <Switch>
@@ -32,9 +30,6 @@ const Farms: React.FC<FarmsProps> = ({removed}) => {
           <>
             <Route exact path={path}>
               <Title>Stake FLIP tokens to stack CAKE</Title>
-              {account &&
-                <PriceTag>CAKE PRICE: ${cakePrice.toFixed(3)}</PriceTag>
-              }
               <StyledLink exact activeClassName="active" to="/staking">
                 Staking
               </StyledLink>
