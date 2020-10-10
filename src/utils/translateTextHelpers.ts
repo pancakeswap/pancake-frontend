@@ -1,6 +1,15 @@
 import { useContext } from 'react'
 import { TranslationsContext } from '../contexts/Localisation/translationsContext'
 
+const variableRegex = /\%(.*?)\%/
+
+const replaceDynamicString = (foundTranslation: string, fallback: string) => {
+  const stringToReplace = variableRegex.exec(foundTranslation)[0]
+  const indexToReplace = foundTranslation.split(' ').indexOf(stringToReplace)
+  const fallbackValueAtIndex = fallback.split(' ')[indexToReplace]
+  return foundTranslation.replace(stringToReplace, fallbackValueAtIndex)
+}
+
 export const getTranslation = (
   translations: Array<any>,
   translationId: number,
@@ -10,7 +19,12 @@ export const getTranslation = (
     return translation.data.stringId === translationId
   })
   if (foundTranslation) {
-    return foundTranslation.data.text
+    const translatedString = foundTranslation.data.text
+    const includesVariable = translatedString.includes('%')
+    if (includesVariable) {
+      return replaceDynamicString(translatedString, fallback)
+    }
+    return translatedString
   } else {
     return fallback
   }
