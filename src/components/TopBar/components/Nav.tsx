@@ -22,11 +22,8 @@ const Nav: React.FC = () => {
         >
           <TranslatedText translationId={8}>Exchange</TranslatedText>
         </StyledAbsoluteLink>
-        <StyledAbsoluteLink
-          href="https://docs.pancakeswap.finance"
-          target="_blank"
-        >
-          <TranslatedText translationId={10}>Docs</TranslatedText>
+        <StyledAbsoluteLink href="https://pancakeswap.info" target="_blank">
+          Analytics
         </StyledAbsoluteLink>
         <StyledAbsoluteLink
           href="https://voting.pancakeswap.finance"

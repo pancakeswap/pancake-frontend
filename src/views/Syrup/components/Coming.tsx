@@ -55,6 +55,7 @@ const Coming: React.FC = () => {
 
           <StyledCardFooter>
             <p>
+              <div>APY:&nbsp;<SmallValue value='-' /></div>
               Total SYRUP staked: 0 <br/>
              Farming starts in ??? Blocks
             </p>
