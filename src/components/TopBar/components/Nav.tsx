@@ -8,19 +8,19 @@ const Nav: React.FC = () => {
     <>
       <StyledNav>
         <StyledLink exact activeClassName="active" to="/farms">
-          <TranslatedText translationId={2}>Farm</TranslatedText>
+          <TranslatedText translationId={278}>Farm</TranslatedText>
         </StyledLink>
         <StyledLink exact activeClassName="active" to="/staking">
-          <TranslatedText translationId={4}>Staking</TranslatedText>
+          <TranslatedText translationId={280}>Staking</TranslatedText>
         </StyledLink>
         <StyledLink exact activeClassName="active" to="/syrup">
-          <TranslatedText translationId={6}>SYRUP Pool</TranslatedText>
+          <TranslatedText translationId={282}>SYRUP Pool</TranslatedText>
         </StyledLink>
         <StyledAbsoluteLink
           href="https://exchange.pancakeswap.finance"
           target="_blank"
         >
-          <TranslatedText translationId={8}>Exchange</TranslatedText>
+          <TranslatedText translationId={284}>Exchange</TranslatedText>
         </StyledAbsoluteLink>
         <StyledAbsoluteLink href="https://pancakeswap.info" target="_blank">
           Analytics
@@ -29,10 +29,10 @@ const Nav: React.FC = () => {
           href="https://voting.pancakeswap.finance"
           target="_blank"
         >
-          <TranslatedText translationId={12}>Voting</TranslatedText>
+          <TranslatedText translationId={288}>Voting</TranslatedText>
         </StyledAbsoluteLink>
         <StyledLink exact activeClassName="active" to="/lottery">
-          <TranslatedText translationId={14}>Lottery</TranslatedText>
+          <TranslatedText translationId={290}>Lottery</TranslatedText>
         </StyledLink>
       </StyledNav>
     </>

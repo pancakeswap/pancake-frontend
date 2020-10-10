@@ -42,8 +42,7 @@ const App: React.FC = () => {
 
   const apiKey = `${process.env.REACT_APP_CROWDIN_APIKEY}`
   const projectId = parseInt(`${process.env.REACT_APP_CROWDIN_PROJECTID}`)
-  const fileId = 6
-  // ^ this is the exhcange fileId - will need changing
+  const fileId = 8
 
   const credentials: Credentials = {
     token: apiKey,
