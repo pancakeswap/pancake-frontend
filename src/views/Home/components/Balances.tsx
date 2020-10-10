@@ -111,7 +111,7 @@ const Balances: React.FC = () => {
           </CardContent>
 
           <Footnote>
-            Pending harvest
+            <TranslatedText translationId={300}>Pending harvest</TranslatedText>
             <FootnoteValue>
               <PendingRewards /> CAKE
             </FootnoteValue>
@@ -140,14 +140,18 @@ const Balances: React.FC = () => {
             </CardContent>
           </StyledBalances>
           <Footnote>
-            New rewards per block
+            <TranslatedText translationId={302}>
+              New rewards per block
+            </TranslatedText>
             <FootnoteValue>40 CAKE</FootnoteValue>
           </Footnote>
         </Card>
       </StyledWrapper>
 
       <RowCard>
-        <SLabel2>🔥 Total CAKE burned since launch</SLabel2>
+        <SLabel2>
+          🔥 {TranslateString(304, 'Total CAKE burned since launch')}
+        </SLabel2>
         <Value
           value={
             !!account
