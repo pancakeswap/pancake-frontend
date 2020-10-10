@@ -140,7 +140,7 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
                   />
                 </CardImage>
                 <Lable>
-                  <span>Deposit</span>
+                  <span>{TranslateString(316, 'Deposit')}</span>
                   <span className="right">{pool.symbol}</span>
                 </Lable>
                 <Lable>
@@ -287,7 +287,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, stakedValue, removed }) => {
             />
           </CardImage>
           <Lable>
-            <span>Deposit</span>
+            <span>{TranslateString(316, 'Deposit')}</span>
             <span className="right">
               {farm.lpToken.toUpperCase().replace('PANCAKE', '')}
             </span>
