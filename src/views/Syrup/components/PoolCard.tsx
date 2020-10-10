@@ -129,7 +129,7 @@ const PoolCard: React.FC<HarvestProps> = ({
           <StyledCardContent>
             <img src={require(`../../../assets/img/${tokenName}.png`)} alt="" />
             <Value value={getBalanceNumber(earnings)} />
-            <Label text={`${tokenName} earned`} />
+            <Label text={TranslateString(330, `${tokenName} earned`)} />
           </StyledCardContent>
 
           <StyledCardActions>

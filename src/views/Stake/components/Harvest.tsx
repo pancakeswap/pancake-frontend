@@ -9,6 +9,7 @@ import Value from '../../../components/Value'
 import useEarnings from '../../../hooks/useEarnings'
 import useReward from '../../../hooks/useReward'
 import { getBalanceNumber } from '../../../utils/formatBalance'
+import { TranslateString } from '../../../utils/translateTextHelpers'
 
 interface HarvestProps {
   pid: number
@@ -26,7 +27,7 @@ const Harvest: React.FC<HarvestProps> = ({ pid }) => {
           <StyledCardHeader>
             <CardIcon>🥞</CardIcon>
             <Value value={getBalanceNumber(earnings)} />
-            <Label text="CAKE Earned" />
+            <Label text={TranslateString(330, 'CAKE Earned')} />
           </StyledCardHeader>
           <StyledCardActions>
             <Button
