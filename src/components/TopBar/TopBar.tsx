@@ -1,62 +1,70 @@
-import React from 'react'
-import styled from 'styled-components'
+import React, { useContext } from 'react'
+import styled, { ThemeContext } from 'styled-components'
 
 import Container from '../Container'
 import Logo from '../Logo'
 
 import AccountButton from './components/AccountButton'
+import LanguageSelectMenu from './components/LanguageSelectMenu'
 import Nav from './components/Nav'
 import ThemeSwitch from './components/ThemeSwitch'
 
 interface TopBarProps {
-    isDark: boolean
-    toogleTheme: (isDark: boolean) => void
-    onPresentMobileMenu: () => void
+  isDark: boolean
+  toogleTheme: (isDark: boolean) => void
+  onPresentMobileMenu: () => void
 }
 
-const TopBar: React.FC<TopBarProps> = ({ isDark, toogleTheme, onPresentMobileMenu}) => {
-    return (
-        <StyledTopBar>
-            <Container size="lg">
-                <StyledTopBarInner>
-                    <StyledLogoWrapper>
-                        <Logo isDark={isDark}/>
-                    </StyledLogoWrapper>
-                    <Nav />
-                    <ThemeSwitch isDark={isDark} toogleTheme={toogleTheme} />
-                    <StyledAccountButtonWrapper>
-                        <AccountButton/>
-                    </StyledAccountButtonWrapper>
-                    <StyledAccountMenuWrapper>
-                        <Menu onClick={onPresentMobileMenu}>Menu</Menu>
-                    </StyledAccountMenuWrapper>
-                </StyledTopBarInner>
-            </Container>
-        </StyledTopBar>
-    )
-}
+const TopBar: React.FC<TopBarProps> = ({
+  isDark,
+  toogleTheme,
+  onPresentMobileMenu,
+}) => {
+  const { colors, spacing } = useContext(ThemeContext)
+  const buttonColor = colors.bg
+  let buttonSize: number
+  let buttonPadding: number
+  buttonPadding = spacing[2]
+  buttonSize = 36
 
-const Menu = styled.div`
-  margin: 0 auto;
-  width: 82px;
-  text-align: center;
-  color: white;
-  font-size: 17px;
-  padding: 3px 3px 3px 3px;
-  font-weight: 700;
-  background: #47d3db;
-  border-radius: 20px;
-  display: nones;
-  display: none;
-  @media (max-width: 850px) {
-    display: block;
-  }
-`
+  return (
+    <StyledTopBar>
+      <Container size="lg">
+        <StyledTopBarInner>
+          <StyledLogoWrapper>
+            <Logo isDark={isDark} />
+          </StyledLogoWrapper>
+          <Nav />
+          <ThemeSwitch isDark={isDark} toogleTheme={toogleTheme} />
+          <StyledAccountButtonWrapper>
+            <AccountButton />
+          </StyledAccountButtonWrapper>
+          <StyledAccountMenuWrapper>
+            <MenuButton
+              padding={buttonPadding}
+              size={buttonSize}
+              color={buttonColor}
+              onClick={onPresentMobileMenu}
+            >
+              Menu
+            </MenuButton>
+          </StyledAccountMenuWrapper>
+          <LanguageSelectMenu />
+        </StyledTopBarInner>
+      </Container>
+    </StyledTopBar>
+  )
+}
 
 const StyledLogoWrapper = styled.div`
   width: 260px;
   @media (max-width: 420px) {
-    width: auto;
+    width: 200px;
+
+    img {
+      width: 100%;
+      height: auto;
+    }
   }
 `
 
@@ -92,33 +100,33 @@ const StyledAccountButtonWrapper = styled.div`
     width: auto;
   }
 `
-const StyledAccountMenuWrapper = styled.div`
-  @media (mim-width: 850px) {
-    display: none;
-  }
-  align-items: center;
-  display: flex;
-  justify-content: flex-end;
-  width: 0;
-  @media (max-width: 400px) {
-    justify-content: center;
-    width: auto;
-  }
-`
+const StyledAccountMenuWrapper = styled.div``
 
-const StyledMenuButton = styled.button`
-  background: none;
-  border: 0;
-  margin: 0;
-  outline: 0;
-  padding: 0;
+interface MenuButtonProps {
+  padding: number
+  size: number
+}
+
+const MenuButton = styled.button<MenuButtonProps>`
+  text-align: center;
+  color: ${(props) => props.color};
+  font-size: 17px;
+  font-weight: 700;
+  background: #47d3db;
+  border-radius: 12px;
   display: none;
-  @media (max-width: 400px) {
-    align-items: center;
+  margin-left: 0.2rem;
+  padding: ${(props) => props.padding}px;
+  height: ${(props) => props.size}px;
+  outline: none;
+  border-width: 0;
+
+  @media (max-width: 850px) {
     display: flex;
-    height: 44px;
-    justify-content: center;
-    width: 44px;
+  }
+  @media (max-width: 450px) {
+    /* padding: 4px; */
+    height: auto;
   }
 `
 

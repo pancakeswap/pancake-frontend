@@ -12,12 +12,17 @@ import SushiIcon from '../../../components/SushiIcon'
 import useAllEarnings from '../../../hooks/useAllEarnings'
 import useAllStakedValue from '../../../hooks/useAllStakedValue'
 import useFarms from '../../../hooks/useFarms'
-import useTokenBalance, { useTotalSupply, useBurnedBalance } from '../../../hooks/useTokenBalance'
+import useTokenBalance, {
+  useTotalSupply,
+  useBurnedBalance,
+} from '../../../hooks/useTokenBalance'
 import useSushi from '../../../hooks/useSushi'
 
 import Separator from '../../../components/Separator'
 import { getSushiAddress } from '../../../sushi/utils'
 import { getBalanceNumber } from '../../../utils/formatBalance'
+import TranslatedText from '../../../components/TranslatedText/TranslatedText'
+import { TranslateString } from '../../../utils/translateTextHelpers'
 
 const PendingRewards: React.FC = () => {
   const [start, setStart] = useState(0)
@@ -80,64 +85,89 @@ const Balances: React.FC = () => {
 
   return (
     <>
-    <StyledWrapper>
-      <Card>
-        <CardContent>
-          <StyledBalances>
-            <SLabel>Your CAKE Balance</SLabel>
-            <StyledBalance>
-              <SushiIcon />
-              <Spacer />
-              <div style={{ flex: 1 }}>
-                <Value
-                  value={!!account ? getBalanceNumber(sushiBalance) : 'Locked'}
-                />
-              </div>
-            </StyledBalance>
-          </StyledBalances>
-        </CardContent>
-
-        <Footnote>
-          Pending harvest
-          <FootnoteValue>
-            <PendingRewards /> CAKE
-          </FootnoteValue>
-        </Footnote>
-      </Card>
-      <Spacer />
-
-      <Card>
-        <StyledBalances>
+      <StyledWrapper>
+        <Card>
           <CardContent>
-            <SLabel>Total CAKE Supply</SLabel>
-            <StyledBalance>
-              <Value
-                value={totalSupply ? getBalanceNumber(totalSupply) - getBalanceNumber(burnedBalance) : 'Locked'}
-              />
-            </StyledBalance>
+            <StyledBalances>
+              <SLabel>
+                <TranslatedText translationId={294}>
+                  Your CAKE Balance
+                </TranslatedText>
+              </SLabel>
+              <StyledBalance>
+                <SushiIcon />
+                <Spacer />
+                <div style={{ flex: 1 }}>
+                  <Value
+                    value={
+                      !!account
+                        ? getBalanceNumber(sushiBalance)
+                        : TranslateString(298, 'Locked')
+                    }
+                  />
+                </div>
+              </StyledBalance>
+            </StyledBalances>
           </CardContent>
-        </StyledBalances>
-        <Footnote>
-          New rewards per block
-          <FootnoteValue>40 CAKE</FootnoteValue>
-        </Footnote>
-      </Card>
-    </StyledWrapper>
 
-    <RowCard>
-      <SLabel2>🔥 Total CAKE burned since launch</SLabel2>
-      <Value
-        value={!!account ? getBalanceNumber(burnedBalance) : 'Locked'}
-        fontSize='20px'
-      />
-    </RowCard>
+          <Footnote>
+            <TranslatedText translationId={300}>Pending harvest</TranslatedText>
+            <FootnoteValue>
+              <PendingRewards /> CAKE
+            </FootnoteValue>
+          </Footnote>
+        </Card>
+        <Spacer />
+
+        <Card>
+          <StyledBalances>
+            <CardContent>
+              <SLabel>
+                <TranslatedText translationId={296}>
+                  Total CAKE Supply
+                </TranslatedText>
+              </SLabel>
+              <StyledBalance>
+                <Value
+                  value={
+                    totalSupply
+                      ? getBalanceNumber(totalSupply) -
+                        getBalanceNumber(burnedBalance)
+                      : TranslateString(298, 'Locked')
+                  }
+                />
+              </StyledBalance>
+            </CardContent>
+          </StyledBalances>
+          <Footnote>
+            <TranslatedText translationId={302}>
+              New rewards per block
+            </TranslatedText>
+            <FootnoteValue>40 CAKE</FootnoteValue>
+          </Footnote>
+        </Card>
+      </StyledWrapper>
+
+      <RowCard>
+        <SLabel2>
+          🔥 {TranslateString(304, 'Total CAKE burned since launch')}
+        </SLabel2>
+        <Value
+          value={
+            !!account
+              ? getBalanceNumber(burnedBalance)
+              : TranslateString(298, 'Locked')
+          }
+          fontSize="20px"
+        />
+      </RowCard>
     </>
   )
 }
 
 const RowCard = styled.div`
   width: 100%;
-  box-shadow: 0px 2px 8px rgba(171,133,115,0.21);
+  box-shadow: 0px 2px 8px rgba(171, 133, 115, 0.21);
   border-radius: 20px;
   background: #fff;
   line-height: 60px;
@@ -146,7 +176,7 @@ const RowCard = styled.div`
   background: ${(props) => props.theme.colors.cardBg};
 
   margin-top: 20px;
-  display:flex;
+  display: flex;
   justify-content: space-between;
   @media (max-width: 500px) {
     flex-direction: column;
@@ -162,7 +192,7 @@ const SLabel = styled.div`
 `
 
 const SLabel2 = styled.div`
-  color: #7645D9;
+  color: #7645d9;
   @media (max-width: 500px) {
     line-height: 20px;
   }
@@ -208,9 +238,8 @@ const StyledBalance = styled.div`
   line-height: 60px;
 `
 
-
-const StyledSpan  = styled.span`
-  color: #12AAB5;
+const StyledSpan = styled.span`
+  color: #12aab5;
 `
 
 export default Balances

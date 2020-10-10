@@ -24,6 +24,7 @@ import DepositModal from './DepositModal'
 import WithdrawModal from './WithdrawModal'
 import WalletProviderModal from '../../../components/WalletProviderModal'
 import AccountModal from '../../../components/TopBar/components/AccountModal'
+import { TranslateString } from '../../../utils/translateTextHelpers'
 
 interface StakeProps {
   lpContract: Contract
@@ -82,7 +83,6 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName }) => {
     onPresentWalletProviderModal()
   }, [onPresentWalletProviderModal])
 
-
   return (
     <Card>
       <CardContent>
@@ -90,29 +90,38 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName }) => {
           <StyledCardHeader>
             <CardIcon>⛏🐰</CardIcon>
             <Value value={getBalanceNumber(stakedBalance)} />
-            <Label text={`${tokenName} Tokens Staked`} />
+            <Label
+              text={`${tokenName} ${TranslateString(332, 'Tokens Staked')}`}
+            />
           </StyledCardHeader>
           <StyledCardActions>
-            {!account &&  <Button onClick={handleUnlockClick} size="md" text="Unlock Wallet" />}
-            { account && (!allowance.toNumber() ? (
+            {!account && (
               <Button
-                disabled={requestedApproval}
-                onClick={handleApprove}
-                text={`Approve ${tokenName}`}
+                onClick={handleUnlockClick}
+                size="md"
+                text={TranslateString(292, 'Unlock Wallet')}
               />
-            ) : (
-              <>
+            )}
+            {account &&
+              (!allowance.toNumber() ? (
                 <Button
-                  disabled={stakedBalance.eq(new BigNumber(0))}
-                  text="Unstake"
-                  onClick={onPresentWithdraw}
+                  disabled={requestedApproval}
+                  onClick={handleApprove}
+                  text={`Approve ${tokenName}`}
                 />
-                <StyledActionSpacer />
-                <IconButton onClick={onPresentDeposit}>
-                  <AddIcon />
-                </IconButton>
-              </>
-            ))}
+              ) : (
+                <>
+                  <Button
+                    disabled={stakedBalance.eq(new BigNumber(0))}
+                    text="Unstake"
+                    onClick={onPresentWithdraw}
+                  />
+                  <StyledActionSpacer />
+                  <IconButton onClick={onPresentDeposit}>
+                    <AddIcon />
+                  </IconButton>
+                </>
+              ))}
           </StyledCardActions>
         </StyledCardContentInner>
       </CardContent>

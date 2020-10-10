@@ -11,18 +11,21 @@ import IconButton from '../../../components/IconButton'
 import { AddIcon } from '../../../components/icons'
 import Label from '../../../components/Label'
 import Value from '../../../components/Value'
-import { BLOCKS_PER_YEAR } from  '../../../sushi/lib/constants'
+import { BLOCKS_PER_YEAR } from '../../../sushi/lib/constants'
 
 import { useSousAllowance } from '../../../hooks/useAllowance'
 import { useSousApprove } from '../../../hooks/useApprove'
-import {useSousEarnings, useSousLeftBlocks} from '../../../hooks/useEarnings'
+import { useSousEarnings, useSousLeftBlocks } from '../../../hooks/useEarnings'
 import useModal from '../../../hooks/useModal'
-import useStake, {useSousStake} from '../../../hooks/useStake'
-import {useSousStakedBalance, useSousTotalStaked} from '../../../hooks/useStakedBalance'
+import useStake, { useSousStake } from '../../../hooks/useStake'
+import {
+  useSousStakedBalance,
+  useSousTotalStaked,
+} from '../../../hooks/useStakedBalance'
 import useTokenBalance from '../../../hooks/useTokenBalance'
-import useUnstake, {useSousUnstake} from '../../../hooks/useUnstake'
+import useUnstake, { useSousUnstake } from '../../../hooks/useUnstake'
 import { getBalanceNumber } from '../../../utils/formatBalance'
-import {useSousReward} from '../../../hooks/useReward'
+import { useSousReward } from '../../../hooks/useReward'
 
 import SmallValue from './Value'
 import DepositModal from './DepositModal'
@@ -31,20 +34,29 @@ import CardContent from './CardContent'
 
 import WalletProviderModal from '../../../components/WalletProviderModal'
 import AccountModal from '../../../components/TopBar/components/AccountModal'
-
+import { TranslateString } from '../../../utils/translateTextHelpers'
 
 interface HarvestProps {
   syrup: Contract
   tokenName: string
   sousId: number
   projectLink: string
-  harvest:  boolean
+  harvest: boolean
   tokenPerBlock: string
   cakePrice: BigNumber
   tokenPrice: BigNumber
 }
 
-const PoolCard: React.FC<HarvestProps> = ({ syrup, sousId, tokenName, projectLink, harvest, cakePrice, tokenPrice, tokenPerBlock }) => {
+const PoolCard: React.FC<HarvestProps> = ({
+  syrup,
+  sousId,
+  tokenName,
+  projectLink,
+  harvest,
+  cakePrice,
+  tokenPrice,
+  tokenPerBlock,
+}) => {
   const [requestedApproval, setRequestedApproval] = useState(false)
   const { account } = useWallet()
   const allowance = useSousAllowance(syrup, sousId)
@@ -69,11 +81,7 @@ const PoolCard: React.FC<HarvestProps> = ({ syrup, sousId, tokenName, projectLin
   }, [cakePrice, harvest, tokenPerBlock, tokenPrice, totalStaked])
 
   const [onPresentDeposit] = useModal(
-    <DepositModal
-      max={tokenBalance}
-      onConfirm={onStake}
-      tokenName={'SYRUP'}
-    />,
+    <DepositModal max={tokenBalance} onConfirm={onStake} tokenName={'SYRUP'} />,
   )
 
   const [onPresentWithdraw] = useModal(
@@ -111,19 +119,28 @@ const PoolCard: React.FC<HarvestProps> = ({ syrup, sousId, tokenName, projectLin
       <CardContent>
         <StyledCardContentInner>
           <StyledCardHeader>
-            <Title finished={leftBlockText==='finished'}>{tokenName} Pool</Title>
-            <TokenLink href={projectLink} target="_blank">Project Site &gt; </TokenLink>
+            <Title finished={leftBlockText === 'finished'}>
+              {tokenName} {TranslateString(348, 'Pool')}
+            </Title>
+            <TokenLink href={projectLink} target="_blank">
+              Project Site &gt;{' '}
+            </TokenLink>
           </StyledCardHeader>
           <StyledCardContent>
             <img src={require(`../../../assets/img/${tokenName}.png`)} alt="" />
             <Value value={getBalanceNumber(earnings)} />
-            <Label text={`${tokenName} earned`} />
+            <Label text={TranslateString(330, `${tokenName} earned`)} />
           </StyledCardContent>
 
           <StyledCardActions>
-            {!account &&  <Button onClick={handleUnlockClick} size="md" text="Unlock Wallet" />}
-            {
-              account && harvest &&
+            {!account && (
+              <Button
+                onClick={handleUnlockClick}
+                size="md"
+                text={TranslateString(292, 'Unlock Wallet')}
+              />
+            )}
+            {account && harvest && (
               <HarvestButton
                 disabled={!earnings.toNumber() || pendingTx}
                 text={pendingTx ? 'Collecting' : 'Harvest'}
@@ -133,34 +150,45 @@ const PoolCard: React.FC<HarvestProps> = ({ syrup, sousId, tokenName, projectLin
                   setPendingTx(false)
                 }}
               />
-            }
-            { account &&  (!allowance.toNumber() ? (
-              <Button
-                disabled={leftBlockText==='finished' ||  requestedApproval}
-                onClick={handleApprove}
-                text={`Approve SYRUP`}
-              />
-            ) : (
-              <>
+            )}
+            {account &&
+              (!allowance.toNumber() ? (
                 <Button
-                  disabled={stakedBalance.eq(new BigNumber(0))}
-                  text="Unstake SYRUP"
-                  onClick={onPresentWithdraw}
+                  disabled={leftBlockText === 'finished' || requestedApproval}
+                  onClick={handleApprove}
+                  text={`Approve SYRUP`}
                 />
-                <StyledActionSpacer />
-                <IconButton disabled={leftBlockText==='finished'} onClick={onPresentDeposit}>
-                  <AddIcon/>
-                </IconButton>
-              </>
-            ))}
+              ) : (
+                <>
+                  <Button
+                    disabled={stakedBalance.eq(new BigNumber(0))}
+                    text="Unstake SYRUP"
+                    onClick={onPresentWithdraw}
+                  />
+                  <StyledActionSpacer />
+                  <IconButton
+                    disabled={leftBlockText === 'finished'}
+                    onClick={onPresentDeposit}
+                  >
+                    <AddIcon />
+                  </IconButton>
+                </>
+              ))}
           </StyledCardActions>
 
-          <StyledLabel text="🍯Your Stake" value={getBalanceNumber(stakedBalance)} />
+          <StyledLabel
+            text="🍯Your Stake"
+            value={getBalanceNumber(stakedBalance)}
+          />
           <StyledCardFooter>
             <p>
-              <div>APY:&nbsp;<SmallValue value={apy}/></div>
-              Total SYRUP staked: <SmallValue value={getBalanceNumber(totalStaked)} /> <br/>
-             {leftBlockText}
+              <div>
+                {TranslateString(352, 'APY')}:&nbsp;
+                <SmallValue value={apy} />
+              </div>
+              {TranslateString(364, 'Total SYRUP staked')}:{' '}
+              <SmallValue value={getBalanceNumber(totalStaked)} /> <br />
+              {leftBlockText}
             </p>
           </StyledCardFooter>
         </StyledCardContentInner>
@@ -178,7 +206,7 @@ const StyledCardFooter = styled.div`
 `
 
 const StyledCardContent = styled.div`
-  text-align:  center;
+  text-align: center;
   padding: 10px 20px;
   img {
     width: 60px;
@@ -189,9 +217,9 @@ interface StyledButtonProps {
   finished?: boolean
 }
 
-
 const Title = styled.div<StyledButtonProps>`
-  color: ${(props) => (props.finished ? '#acaaaf' : props.theme.colors.primary)};
+  color: ${(props) =>
+    props.finished ? '#acaaaf' : props.theme.colors.primary};
   font-size: 20px;
   font-weight: 900;
   line-height: 70px;
@@ -201,7 +229,7 @@ const TokenLink = styled.a`
   line-height: 70px;
   font-size: 14px;
   text-decoration: none;
-  color: #12AAB5;
+  color: #12aab5;
 `
 
 const StyledCardHeader = styled.div`
@@ -240,18 +268,16 @@ const StyledCardContentInner = styled.div`
   position: relative;
 `
 
-
 interface StyledLabelProps {
   value: number
   text: string
 }
 
 const StyledLabel: React.FC<StyledLabelProps> = ({ value, text }) => {
-
   return (
     <StyledValue>
       <p>{text}</p>
-      <SmallValue value={value}/>
+      <SmallValue value={value} />
     </StyledValue>
   )
 }
@@ -267,7 +293,6 @@ const StyledValue = styled.div`
   width: 100%;
   padding: 0 20px;
   box-sizing: border-box;
-
 `
 
 export default PoolCard

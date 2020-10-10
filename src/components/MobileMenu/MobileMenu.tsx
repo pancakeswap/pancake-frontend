@@ -3,6 +3,8 @@ import styled, { keyframes } from 'styled-components'
 
 import { NavLink } from 'react-router-dom'
 import AccountLink from '../TopBar/components/AccountLink'
+import { TranslateString } from '../../utils/translateTextHelpers'
+
 
 interface MobileMenuProps {
   onDismiss: () => void
@@ -43,7 +45,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ onDismiss, visible }) => {
             to="/syrup"
             onClick={onDismiss}
           >
-            🍯 SYRUP Pool
+            🍯 {TranslateString(282, 'SYRUP Pool')}
           </StyledLink>
           <a
             style={{

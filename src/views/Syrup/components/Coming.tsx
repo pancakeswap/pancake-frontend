@@ -13,12 +13,15 @@ import Value from '../../../components/Value'
 
 import { useSousAllowance } from '../../../hooks/useAllowance'
 import { useSousApprove } from '../../../hooks/useApprove'
-import {useSousEarnings, useSousLeftBlocks} from '../../../hooks/useEarnings'
+import { useSousEarnings, useSousLeftBlocks } from '../../../hooks/useEarnings'
 import useModal from '../../../hooks/useModal'
-import useStake, {useSousStake} from '../../../hooks/useStake'
-import {useSousStakedBalance, useSousTotalStaked} from '../../../hooks/useStakedBalance'
+import useStake, { useSousStake } from '../../../hooks/useStake'
+import {
+  useSousStakedBalance,
+  useSousTotalStaked,
+} from '../../../hooks/useStakedBalance'
 import useTokenBalance from '../../../hooks/useTokenBalance'
-import useUnstake, {useSousUnstake} from '../../../hooks/useUnstake'
+import useUnstake, { useSousUnstake } from '../../../hooks/useUnstake'
 import { getBalanceNumber } from '../../../utils/formatBalance'
 
 import SmallValue from './Value'
@@ -28,26 +31,26 @@ import CardContent from './CardContent'
 
 import WalletProviderModal from '../../../components/WalletProviderModal'
 import AccountModal from '../../../components/TopBar/components/AccountModal'
+import { TranslateString } from '../../../utils/translateTextHelpers'
 
 const Coming: React.FC = () => {
-
   return (
     <Card>
       <CardContent>
         <StyledCardContentInner>
           <StyledCardHeader>
-            <Title>Coming Soon 👀</Title>
+            <Title>{TranslateString(350, 'Coming Soon')} 👀</Title>
           </StyledCardHeader>
           <StyledCardContent>
             <CardIcon>⏳</CardIcon>
             <Value value={'???'} />
-            <Label text={`??? earned`} />
+            <Label text={TranslateString(330, '??? Earned')} />
           </StyledCardContent>
 
           <StyledCardActions>
             <Button
               disabled={true}
-              text={`Coming soon...`}
+              text={TranslateString(350, 'Coming Soon')}
             />
           </StyledCardActions>
 
@@ -55,9 +58,12 @@ const Coming: React.FC = () => {
 
           <StyledCardFooter>
             <p>
-              <div>APY:&nbsp;<SmallValue value='-' /></div>
-              Total SYRUP staked: 0 <br/>
-             Farming starts in ??? Blocks
+              <div>
+                {TranslateString(352, 'APY')}:&nbsp;
+                <SmallValue value="-" />
+              </div>
+              {TranslateString(364, 'Total SYRUP staked')}: 0 <br />
+              Farming starts in ??? Blocks
             </p>
           </StyledCardFooter>
         </StyledCardContentInner>
@@ -75,7 +81,7 @@ const StyledCardFooter = styled.div`
 `
 
 const StyledCardContent = styled.div`
-  text-align:  center;
+  text-align: center;
   padding: 10px 20px;
   img {
     width: 60px;
@@ -131,18 +137,16 @@ const StyledCardContentInner = styled.div`
   justify-content: space-between;
 `
 
-
 interface StyledLabelProps {
   value: number
   text: string
 }
 
 const StyledLabel: React.FC<StyledLabelProps> = ({ value, text }) => {
-
   return (
     <StyledValue>
       <p>{text}</p>
-      <SmallValue value={value}/>
+      <SmallValue value={value} />
     </StyledValue>
   )
 }
@@ -158,7 +162,6 @@ const StyledValue = styled.div`
   width: 100%;
   padding: 0 20px;
   box-sizing: border-box;
-
 `
 
 export default Coming
