@@ -20,7 +20,7 @@ import useAllStakedValue, {
 import { getEarned, getMasterChefContract } from '../../../sushi/utils'
 import { bnToDec } from '../../../utils'
 import { getBalanceNumber } from '../../../utils/formatBalance'
-import { forShowPools } from  '../../../sushi/lib/constants'
+import { forShowPools, BLOCKS_PER_YEAR } from  '../../../sushi/lib/constants'
 
 import useModal from '../../../hooks/useModal'
 import AccountModal from '../../../components/TopBar/components/AccountModal.tsx'
@@ -49,8 +49,6 @@ const FarmCards: React.FC<FarmCardsProps> = ({removed}) => {
       : new BigNumber(0)
 
   // console.log(sushiPrice, stakedValue)
-
-  const BLOCKS_PER_YEAR = new BigNumber(10512000)
   const SUSHI_PER_BLOCK = new BigNumber(40)
 
 
