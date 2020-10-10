@@ -16,6 +16,7 @@ import Time from "./components/time";
 import Winning from "./components/winning";
 import {useTotalRewards} from '../../hooks/useTickets'
 import { getBalanceNumber } from '../../utils/formatBalance'
+import PurchasedTickets from "./components/purchasedTickets";
 
 const Farm: React.FC = () => {
     const {account} = useWallet()
@@ -51,6 +52,7 @@ const Farm: React.FC = () => {
                 </StyledFarm>
                 <Time></Time>
                 <Winning></Winning>
+                <PurchasedTickets></PurchasedTickets>
             </Page>
         </Switch>
     )
