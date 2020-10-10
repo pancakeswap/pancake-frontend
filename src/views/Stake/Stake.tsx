@@ -105,8 +105,11 @@ const Farm: React.FC = () => {
           </StyledCardsWrapper>
           <Spacer size="lg" />
           <StyledInfo>
-            ⭐️ Every time you stake and unstake CAKE tokens, the contract will
-            automagically harvest CAKE rewards for you!
+            ⭐️{' '}
+            {TranslateString(
+              334,
+              'Every time you stake and unstake CAKE tokens, the contract will automagically harvest CAKE rewards for you!',
+            )}
           </StyledInfo>
           <Spacer size="lg" />
         </StyledFarm>

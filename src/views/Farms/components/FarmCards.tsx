@@ -298,7 +298,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, stakedValue, removed }) => {
           </Lable>
           {!removed && (
             <Lable>
-              <span>APY</span>
+              <span>{TranslateString(352, 'APY')}</span>
               <span className="right">
                 {farm.apy
                   ? `${farm.apy

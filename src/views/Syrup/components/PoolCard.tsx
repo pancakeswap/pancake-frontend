@@ -120,7 +120,7 @@ const PoolCard: React.FC<HarvestProps> = ({
         <StyledCardContentInner>
           <StyledCardHeader>
             <Title finished={leftBlockText === 'finished'}>
-              {tokenName} Pool
+              {tokenName} {TranslateString(348, 'Pool')}
             </Title>
             <TokenLink href={projectLink} target="_blank">
               Project Site &gt;{' '}
@@ -183,7 +183,7 @@ const PoolCard: React.FC<HarvestProps> = ({
           <StyledCardFooter>
             <p>
               <div>
-                APY:&nbsp;
+                {TranslateString(352, 'APY')}:&nbsp;
                 <SmallValue value={apy} />
               </div>
               Total SYRUP staked:{' '}

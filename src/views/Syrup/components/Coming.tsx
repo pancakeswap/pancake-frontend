@@ -39,7 +39,7 @@ const Coming: React.FC = () => {
       <CardContent>
         <StyledCardContentInner>
           <StyledCardHeader>
-            <Title>Coming Soon 👀</Title>
+            <Title>{TranslateString(350, 'Coming Soon')} 👀</Title>
           </StyledCardHeader>
           <StyledCardContent>
             <CardIcon>⏳</CardIcon>
@@ -48,7 +48,10 @@ const Coming: React.FC = () => {
           </StyledCardContent>
 
           <StyledCardActions>
-            <Button disabled={true} text={`Coming soon...`} />
+            <Button
+              disabled={true}
+              text={TranslateString(350, 'Coming Soon')}
+            />
           </StyledCardActions>
 
           <StyledLabel text="🍯Your Stake" value={0} />
@@ -56,7 +59,7 @@ const Coming: React.FC = () => {
           <StyledCardFooter>
             <p>
               <div>
-                APY:&nbsp;
+                {TranslateString(352, 'APY')}:&nbsp;
                 <SmallValue value="-" />
               </div>
               Total SYRUP staked: 0 <br />
