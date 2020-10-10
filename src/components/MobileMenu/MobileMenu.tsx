@@ -65,9 +65,9 @@ const MobileMenu: React.FC<MobileMenuProps> = ({onDismiss, visible}) => {
                             textAlign: "center",
                             textDecoration: "none"
                         }}
-                        href="https://docs.pancakeswap.finance"
+                        href="https://pancakeswap.info"
                         onClick={onDismiss}>
-                        📄 Docs
+                        📄 Analytics
                     </a>
                 </StyledMobileMenu>
             </StyledMobileMenuWrapper>

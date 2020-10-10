@@ -67,9 +67,6 @@ const App: React.FC = () => {
             <Route path="/voting">
               <Voting />
             </Route>
-            <Route path="/vision">
-              <Vision />
-            </Route>
             <Route path="/removed">
               <Farms removed={true}/>
             </Route>
