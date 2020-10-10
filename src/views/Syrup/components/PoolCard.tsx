@@ -64,7 +64,7 @@ const PoolCard: React.FC<HarvestProps> = ({ syrup, sousId, tokenName, projectLin
     if (!harvest || cakePrice.isLessThanOrEqualTo(0)) return '-'
     const a = tokenPrice.times(BLOCKS_PER_YEAR).times(tokenPerBlock)
     const b = cakePrice.times(getBalanceNumber(totalStaked))
-    
+
     return `${a.div(b).times(100).toFixed(2)}%`
   }, [cakePrice, harvest, tokenPerBlock, tokenPrice, totalStaked])
 

@@ -65,7 +65,8 @@ export const sousChefTeam = [
     },
     tokenName: 'ALPHA',
     projectLink: 'https://alphafinance.io/',
-    harvest: true
+    harvest: true,
+    tokenPerBlock: "20"
   },
   {
     sousId: 1,
@@ -297,6 +298,21 @@ export const supportedPools = [
     },
     symbol: 'BTCB-BNB FLP',
     tokenSymbol: 'BTC',
+    icon: '🥞',
+    multiplier: '1X'
+  },
+  {
+    pid: 16,
+    lpAddresses: {
+      97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
+      56: '0x4e0f3385d932F7179DeE045369286FFa6B03d887'
+    },
+    tokenAddresses: {
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
+      56: '0xa1faa113cbe53436df28ff0aee54275c13b40975'
+    },
+    symbol: 'ALPHA-BNB FLP',
+    tokenSymbol: 'ALPHA',
     icon: '🥞',
     multiplier: '1X'
   },
