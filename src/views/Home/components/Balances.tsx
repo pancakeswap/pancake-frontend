@@ -22,6 +22,7 @@ import Separator from '../../../components/Separator'
 import { getSushiAddress } from '../../../sushi/utils'
 import { getBalanceNumber } from '../../../utils/formatBalance'
 import TranslatedText from '../../../components/TranslatedText/TranslatedText'
+import { TranslateString } from '../../../utils/translateTextHelpers'
 
 const PendingRewards: React.FC = () => {
   const [start, setStart] = useState(0)
@@ -99,7 +100,9 @@ const Balances: React.FC = () => {
                 <div style={{ flex: 1 }}>
                   <Value
                     value={
-                      !!account ? getBalanceNumber(sushiBalance) : 'Locked'
+                      !!account
+                        ? getBalanceNumber(sushiBalance)
+                        : TranslateString(298, 'Locked')
                     }
                   />
                 </div>
@@ -119,14 +122,18 @@ const Balances: React.FC = () => {
         <Card>
           <StyledBalances>
             <CardContent>
-              <SLabel>Total CAKE Supply</SLabel>
+              <SLabel>
+                <TranslatedText translationId={296}>
+                  Total CAKE Supply
+                </TranslatedText>
+              </SLabel>
               <StyledBalance>
                 <Value
                   value={
                     totalSupply
                       ? getBalanceNumber(totalSupply) -
                         getBalanceNumber(burnedBalance)
-                      : 'Locked'
+                      : TranslateString(298, 'Locked')
                   }
                 />
               </StyledBalance>
@@ -142,7 +149,11 @@ const Balances: React.FC = () => {
       <RowCard>
         <SLabel2>🔥 Total CAKE burned since launch</SLabel2>
         <Value
-          value={!!account ? getBalanceNumber(burnedBalance) : 'Locked'}
+          value={
+            !!account
+              ? getBalanceNumber(burnedBalance)
+              : TranslateString(298, 'Locked')
+          }
           fontSize="20px"
         />
       </RowCard>
