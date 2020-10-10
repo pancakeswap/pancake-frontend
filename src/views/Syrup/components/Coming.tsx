@@ -62,7 +62,7 @@ const Coming: React.FC = () => {
                 {TranslateString(352, 'APY')}:&nbsp;
                 <SmallValue value="-" />
               </div>
-              Total SYRUP staked: 0 <br />
+              {TranslateString(364, 'Total SYRUP staked')}: 0 <br />
               Farming starts in ??? Blocks
             </p>
           </StyledCardFooter>

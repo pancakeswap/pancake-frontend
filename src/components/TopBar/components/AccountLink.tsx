@@ -29,7 +29,7 @@ const AccountLink: React.FC = (props) => {
     <StyledAccountButton>
       {account && (
         <PriceTag>
-          CAKE PRICE: <b>${cakePrice.toFixed(3)}</b>
+          {TranslateString(358, 'CAKE PRICE')}: <b>${cakePrice.toFixed(3)}</b>
         </PriceTag>
       )}
       {!account ? (
