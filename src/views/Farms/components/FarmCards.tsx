@@ -144,7 +144,7 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
                   <span className="right">{pool.symbol}</span>
                 </Lable>
                 <Lable>
-                  <span>Earn</span>
+                  <span>{TranslateString(318, 'Earn')}</span>
                   <span className="right">CAKE</span>
                 </Lable>
 
@@ -293,7 +293,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, stakedValue, removed }) => {
             </span>
           </Lable>
           <Lable>
-            <span>Earn</span>
+            <span>{TranslateString(318, 'Earn')}</span>
             <span className="right">CAKE</span>
           </Lable>
           {!removed && (
