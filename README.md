@@ -29,6 +29,10 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 
 ## Localisation
 
+**Note**
+
+In order for the Crowdin API queries to work - you will need `REACT_APP_CROWDIN_APIKEY` & `REACT_APP_CROWDIN_PROJECTID` env variables set in your root `.env.development.local` file - please contact a dev if you need these.
+
 ### Adding translations
 
 There are two methods for adding translations, both are valid, and it depends on the context in which you are trying to implement the translation as to which you should use.
