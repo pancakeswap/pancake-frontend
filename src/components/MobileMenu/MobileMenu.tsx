@@ -5,6 +5,7 @@ import { NavLink } from 'react-router-dom'
 import AccountLink from '../TopBar/components/AccountLink'
 import { TranslateString } from '../../utils/translateTextHelpers'
 
+
 interface MobileMenuProps {
   onDismiss: () => void
   visible?: boolean
@@ -73,10 +74,10 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ onDismiss, visible }) => {
               textAlign: 'center',
               textDecoration: 'none',
             }}
-            href="https://docs.pancakeswap.finance"
+            href="https://pancakeswap.info"
             onClick={onDismiss}
           >
-            📄 Docs
+            📈 Analytics
           </a>
         </StyledMobileMenu>
       </StyledMobileMenuWrapper>
