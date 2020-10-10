@@ -62,7 +62,6 @@ It takes in the `translationId` (found in Crowdin) as the first argument, and a 
 
 ```js
 import { TranslateString } from '../translateTextHelpers'
-
 ;<StyledLink>🍯 {TranslateString(282, 'SYRUP Pool')}</StyledLink>
 ```
 
@@ -70,7 +69,6 @@ import { TranslateString } from '../translateTextHelpers'
 
 ```js
 import { TranslateString } from '../translateTextHelpers'
-
 ;<Button text={`🔓 ${TranslateString(292, 'Unlock Wallet')}`} />
 ```
 
@@ -89,7 +87,7 @@ It takes in a `translationId` prop and whatever is passed as `{children}` is use
 </StyledLink>
 ```
 
-**Note:**
+### Variables
 
 The translation component can handle variables being passed in from Crowdin, with no code changes.
 
@@ -102,3 +100,5 @@ Code:
 ```js
 <Label text={TranslateString(330, 'CAKE Earned')} />
 ```
+
+---
