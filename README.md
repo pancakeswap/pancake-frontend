@@ -27,42 +27,78 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `yarn eject`
+## Localisation
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### Adding translations
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+There are two methods for adding translations, both are valid, and it depends on the context in which you are trying to implement the translation as to which you should use.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+1. Using `TranslateString` within `translateTextHelpers`
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+If you need to translate a string that exists within another string, i.e:
 
-## Learn More
+**a.**
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```js
+<span>
+  I need to translate this bit of the span. I don't need to translate this
+  second sentence.
+</span>
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Or, a string that is being passed into a component as props, i.e.:
 
-### Code Splitting
+**b.**
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+```js
+<Component label="This text need translated" />
+```
 
-### Analyzing the Bundle Size
+Then you should make use of the `TranslateString` method within `translateTextHelpers`.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+It takes in the `translationId` (found in Crowdin) as the first argument, and a string of fallback text as the second argument, which is rendered if the translation isn't found, i.e.:
 
-### Making a Progressive Web App
+**a.**
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+```js
+import { TranslateString } from '../translateTextHelpers'
 
-### Advanced Configuration
+;<StyledLink>🍯 {TranslateString(282, 'SYRUP Pool')}</StyledLink>
+```
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+**b.**
 
-### Deployment
+```js
+import { TranslateString } from '../translateTextHelpers'
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+;<Button text={`🔓 ${TranslateString(292, 'Unlock Wallet')}`} />
+```
 
-### `yarn build` fails to minify
+2. Using `TranslatedText` component
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+This is a simple abstraction of the `TranslateString` method, wrapping it within a React Component - this can be a visually simpler pattern, if you are wanting to translate standalone piece of text.
+
+It takes in a `translationId` prop and whatever is passed as `{children}` is used for the fallback, i.e.:
+
+```js
+<StyledLink to="/farms">
+    <TranslatedText translationId={278}>Farm</TranslatedText>
+</StyledLink>
+<StyledLink to="/staking">
+    <TranslatedText translationId={280}>Staking</TranslatedText>
+</StyledLink>
+```
+
+**Note:**
+
+The translation component can handle variables being passed in from Crowdin, with no code changes.
+
+It will only work if there is only **one** variable passed in, and if that variable within Crowdin is wrapped in **%** signs, i.e.:
+
+Translation in crowdin: `%asset% Earned` [link](https://crowdin.com/translate/pancakeswap/8/en-de#330)
+
+Code:
+
+```js
+<Label text={TranslateString(330, 'CAKE Earned')} />
+```
