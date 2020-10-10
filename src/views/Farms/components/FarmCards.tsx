@@ -326,7 +326,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, stakedValue, removed }) => {
           <StyledSpacer2 />
           {!removed && (
             <Lable>
-              <span>Total Liquidity</span>
+              <span>{TranslateString(23, 'Total Liquidity')}</span>
               <span className="right">
                 {farm.lpToken !== 'BAKE-BNB Bakery LP'
                   ? `$${parseInt(totalValue).toLocaleString()}`
@@ -338,7 +338,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, stakedValue, removed }) => {
             href={`https://bscscan.com/address/${farm.lpTokenAddress}`}
             target="_blank"
           >
-            View on BscScan &gt;
+            {TranslateString(356, 'View on BscScan')} &gt;
           </Link>
         </FCard>
       </StyledContent>
