@@ -58,10 +58,20 @@ export const contractAddresses = {
 
 export const sousChefTeam = [
   {
+    sousId: 2,
+    contractAddress: {
+      97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
+      56: '0x73c83bd1646991cBca3e6b83ca905542FE07C57A',
+    },
+    tokenName: 'ALPHA',
+    projectLink: 'https://alphafinance.io/',
+    harvest: true
+  },
+  {
     sousId: 1,
     contractAddress: {
       97: '0xAfd61Dc94f11A70Ae110dC0E0F2061Af5633061A',
-      56: '0xAfd61Dc94f11A70Ae110dC0E0F2061Af5633061A', //  real cake
+      56: '0xAfd61Dc94f11A70Ae110dC0E0F2061Af5633061A',
     },
     tokenName: 'TWT',
     projectLink: 'https://trustwallet.com/',
@@ -71,7 +81,7 @@ export const sousChefTeam = [
     sousId: 0,
     contractAddress: {
       97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
-      56: '0x6ab8463a4185b80905e05a9ff80a2d6b714b9e95', //  real cake
+      56: '0x6ab8463a4185b80905e05a9ff80a2d6b714b9e95',
     },
     tokenName: 'XVS',
     projectLink: 'https://venus.io/',

@@ -20,7 +20,6 @@ import Stake from './components/Stake'
 const Farm: React.FC = () => {
   const { farmId } = useParams()
 
-  console.log(farmId)
   const {
     pid,
     lpToken,
@@ -65,7 +64,7 @@ const Farm: React.FC = () => {
 
   return (
     <>
-      <Image src={require(`../../assets/img/category-${tokenSymbol.toLocaleLowerCase() || 'cake'}.png`)}/>
+      <Image src={require(`../../assets/img/category-${tokenSymbol || 'CAKE'}.png`)}/>
       <Title>Stake FLIP tokens to stack CAKE</Title>
       <StyledFarm>
         <StyledCardsWrapper>

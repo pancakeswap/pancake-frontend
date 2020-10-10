@@ -73,9 +73,9 @@ const FarmCards: React.FC<FarmCardsProps> = ({removed}) => {
   const rows = realFarms.reduce<FarmWithStakedValue[][]>(
     (farmRows, farm, i) => {
       let apy
-      if(farm.pid==8) {
-        console.log(realStakedValue[i].poolWeight)
-      }
+      // if(farm.pid==8) {
+      //   console.log(realStakedValue[i].poolWeight)
+      // }
       if(farm.pid == 11) {
         apy = realStakedValue[i] ? sushiPrice
               .times(SUSHI_PER_BLOCK)
@@ -131,7 +131,7 @@ const FarmCards: React.FC<FarmCardsProps> = ({removed}) => {
               <FCard key={index}>
                 <CardImage>
                 <Multiplier>{pool.multiplier}</Multiplier>
-                <img src={require(`../../../assets/img/category-${pool.tokenSymbol.toLocaleLowerCase()}.png`)} alt="" />
+                <img src={require(`../../../assets/img/category-${pool.tokenSymbol}.png`)} alt="" />
                 </CardImage>
                 <Lable><span>Deposit</span><span  className="right">{pool.symbol}</span></Lable>
                 <Lable><span>Earn</span><span  className="right">CAKE</span></Lable>
@@ -256,7 +256,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, stakedValue, removed }) => {
             <FCard>
             <CardImage>
               <Multiplier>{farm.multiplier}</Multiplier>
-              <img src={require(`../../../assets/img/category-${farm.tokenSymbol.toLocaleLowerCase()}.png`)} alt="" />
+              <img src={require(`../../../assets/img/category-${farm.tokenSymbol}.png`)} alt="" />
             </CardImage>
             <Lable><span>Deposit</span><span  className="right">{farm.lpToken.toUpperCase().replace("PANCAKE", "")}</span></Lable>
             <Lable><span>Earn</span><span  className="right">CAKE</span></Lable>
@@ -289,7 +289,9 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, stakedValue, removed }) => {
               )}
             </Button>
             <StyledSpacer2 />
+            {!removed &&
             <Lable><span>Total Liquidity</span><span  className="right">{farm.lpToken !== 'BAKE-BNB Bakery LP' ? `$${parseInt(totalValue).toLocaleString()}`: '-'}</span></Lable>
+            }
             <Link href={`https://bscscan.com/address/${farm.lpTokenAddress}`} target="_blank">View on BscScan &gt;</Link>
             </FCard>
           </StyledContent>
