@@ -15,7 +15,7 @@ import Ticket from "./components/ticket";
 import Time from "./components/time";
 import Winning from "./components/winning";
 import {useTotalRewards} from '../../hooks/useTickets'
-import { getBalanceNumber } from '../../utils/formatBalance'
+import {getBalanceNumber} from '../../utils/formatBalance'
 import PurchasedTickets from "./components/purchasedTickets";
 
 const Farm: React.FC = () => {
@@ -26,10 +26,6 @@ const Farm: React.FC = () => {
         window.scrollTo(0, 0)
     }, [])
 
-    const sushi = useSushi()
-    const {ethereum} = useWallet()
-    const {path} = useRouteMatch()
-
     const lotteryPrizeAmount = useTotalRewards()
 
     const subtitleText = 'Spend CAKE to buy tickets, contributing to the lottery pot. Ticket purchases end approx. 30 minutes before lottery. Win prizes if 2, 3, or 4 of your ticket numbers match the winning numbers!'
@@ -37,7 +33,7 @@ const Farm: React.FC = () => {
     return (
         <Switch>
             <Page>
-                <Title style={{marginTop: '0.5em'}}>
+                <Title>
                     💰
                     <br/>
                     WIN
@@ -80,6 +76,11 @@ const Title = styled.div`
   width: 50vw;
   text-align: center;
   font-weight: 1000;
+  margin-top:0.5em;
+  
+   @media (max-width: 600px) {
+     font-size:40px;
+   }
 `
 
 
@@ -89,6 +90,10 @@ const Title2 = styled.div`
   width: 50vw;
   text-align: center;
   font-weight: 1000;
+  
+   @media (max-width: 600px) {
+     font-size:38px;
+   }
 `
 
 const Subtitle = styled.div`
@@ -98,6 +103,11 @@ const Subtitle = styled.div`
   text-align: center;
   font-weight: 600;
   margin-top: 0.8em;
+  
+   @media (max-width: 600px) {
+     font-size:16px;
+     width: 80vw;
+   }
 `
 // width: calc((900px - ${(props) => props.theme.spacing[4]}px * 2) / 3);
 const StyledCardWrapper = styled.div`
