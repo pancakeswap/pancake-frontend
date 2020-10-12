@@ -27,7 +27,7 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-## Localisation
+# Localisation
 
 _In order for the Crowdin API queries to work - you will need `REACT_APP_CROWDIN_APIKEY` & `REACT_APP_CROWDIN_PROJECTID` env variables set in your root `.env.development.local` file - please contact a dev if you need these._
 
@@ -67,7 +67,7 @@ import { TranslateString } from '../translateTextHelpers'
 <Button text={`🔓 ${TranslateString(292, 'Unlock Wallet')}`} />
 ```
 
-2. Using `TranslatedText` component
+#### 2. Using `TranslatedText` component
 
 This is a simple abstraction of the `TranslateString` method, wrapping it within a React Component - this can be a visually simpler pattern, if you are wanting to translate standalone piece of text.
 
