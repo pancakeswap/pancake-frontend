@@ -29,19 +29,15 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 
 ## Localisation
 
-**Note**
-
-In order for the Crowdin API queries to work - you will need `REACT_APP_CROWDIN_APIKEY` & `REACT_APP_CROWDIN_PROJECTID` env variables set in your root `.env.development.local` file - please contact a dev if you need these.
+_In order for the Crowdin API queries to work - you will need `REACT_APP_CROWDIN_APIKEY` & `REACT_APP_CROWDIN_PROJECTID` env variables set in your root `.env.development.local` file - please contact a dev if you need these._
 
 ### Adding translations
 
 There are two methods for adding translations, both are valid, and it depends on the context in which you are trying to implement the translation as to which you should use.
 
-1. Using `TranslateString` within `translateTextHelpers`
+#### 1. Using `TranslateString` within `translateTextHelpers`
 
 If you need to translate a string that exists within another string, i.e:
-
-**a.**
 
 ```js
 <span>
@@ -52,28 +48,23 @@ If you need to translate a string that exists within another string, i.e:
 
 Or, a string that is being passed into a component as props, i.e.:
 
-**b.**
-
 ```js
 <Component label="This text need translated" />
 ```
 
 Then you should make use of the `TranslateString` method within `translateTextHelpers`.
 
-It takes in the `translationId` (found in Crowdin) as the first argument, and a string of fallback text as the second argument, which is rendered if the translation isn't found, i.e.:
+It takes in the `translationId` (found in Crowdin) as the first argument, and a string of fallback text as the second argument, which is rendered if the translation isn't found, 
 
-**a.**
 
 ```js
 import { TranslateString } from '../translateTextHelpers'
-;<StyledLink>🍯 {TranslateString(282, 'SYRUP Pool')}</StyledLink>
+<StyledLink>🍯 {TranslateString(282, 'SYRUP Pool')}</StyledLink>
 ```
 
-**b.**
-
 ```js
 import { TranslateString } from '../translateTextHelpers'
-;<Button text={`🔓 ${TranslateString(292, 'Unlock Wallet')}`} />
+<Button text={`🔓 ${TranslateString(292, 'Unlock Wallet')}`} />
 ```
 
 2. Using `TranslatedText` component
