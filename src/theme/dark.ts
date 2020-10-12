@@ -8,6 +8,6 @@ export default {
     cardBg: '#2b233f',
     primary: '#D7CBF1',
     secondary: '#9D6DFF',
-    inputBg: '#191326'
-  }
+    inputBg: '#191326',
+  },
 }

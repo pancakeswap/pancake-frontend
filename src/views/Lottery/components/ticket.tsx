@@ -1,148 +1,83 @@
 import BigNumber from 'bignumber.js'
-import React, {useCallback, useMemo, useState} from 'react'
+import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
-import {useWallet} from 'use-wallet'
-import {Contract} from 'web3-eth-contract'
+import { useWallet } from 'use-wallet'
+import { Contract } from 'web3-eth-contract'
 import Button from '../../../components/Button'
 import Card from '../../../components/Card'
 import CardContent from '../../../components/CardContent'
 import CardIcon from '../../../components/CardIcon'
+import IconButton from '../../../components/IconButton'
+import { AddIcon } from '../../../components/icons'
 import Label from '../../../components/Label'
 import Value from '../../../components/Value'
-
-import {useLotteryAllowance} from '../../../hooks/useAllowance'
-import {useLotteryApprove} from '../../../hooks/useApprove'
-import useTickets, {useWinningNumbers, useTotalClaim} from '../../../hooks/useTickets'
+import useAllowance from '../../../hooks/useAllowance'
+import useApprove from '../../../hooks/useApprove'
 import useModal from '../../../hooks/useModal'
+import useStake from '../../../hooks/useStake'
 import useStakedBalance from '../../../hooks/useStakedBalance'
 import useTokenBalance from '../../../hooks/useTokenBalance'
 import useUnstake from '../../../hooks/useUnstake'
-import {getBalanceNumber, getFullDisplayBalance} from '../../../utils/formatBalance'
-import useBuyLottery from '../../../hooks/useBuyLottery'
+import { getBalanceNumber } from '../../../utils/formatBalance'
 
 import WalletProviderModal from '../../../components/WalletProviderModal'
 import AccountModal from '../../../components/TopBar/components/AccountModal'
-import TokenInput from "../../../components/TokenInput";
-import Modal from "../../../components/Modal";
-import DepositModal from "../../Stake/components/DepositModal";
-import BuyModal from "./BuyModal";
-import {contractAddresses} from "../../../sushi/lib/constants";
-import IconButton from "../../../components/IconButton";
-import {AddIcon} from "../../../components/icons";
+import { TranslateString } from '../../../utils/translateTextHelpers'
+
+interface StakeProps {
+  lpContract: Contract
+  pid: number
+  tokenName: string
+}
 
 const Ticket: React.FC = () => {
-    const [requestedApproval, setRequestedApproval] = useState(false)
-    const [requesteBuy, setRequestedBuy] = useState(false)
-    const {account} = useWallet()
+  const [requestedApproval, setRequestedApproval] = useState(false)
+  const { account } = useWallet()
 
-    // const [val, setVal] = useState('')
+  // const allowance = useAllowance(lpContract)
+  // const {onApprove} = useApprove(lpContract)
+  //
+  // const tokenBalance = useTokenBalance(lpContract.options.address)
+  // const stakedBalance = useStakedBalance(pid)
+  //
+  // const {onStake} = useStake(pid)
+  // const {onUnstake} = useUnstake(pid)
 
-    const allowance = useLotteryAllowance()
-    const {onApprove} = useLotteryApprove()
+  const [onPresentAccountModal] = useModal(<AccountModal />)
 
+  const [onPresentWalletProviderModal] = useModal(
+    <WalletProviderModal />,
+    'provider',
+  )
+  const handleUnlockClick = useCallback(() => {
+    onPresentWalletProviderModal()
+  }, [onPresentWalletProviderModal])
 
-    const tokenBalance = useTokenBalance(contractAddresses.lottery["97"])
-    // const stakedBalance = useStakedBalance(pid)
-
-
-
-    // const {onStake} = useStake(pid)
-    // const {onUnstake} = useUnstake(pid)
-
-    // TODO:
-    // const [onPresentBuy] = useModal(
-    // )
-
-    // TEMP example
-    const {onBuy} = useBuyLottery()
-    const tickets = useTickets()
-    const winNumbers = useWinningNumbers()
-    const claimAmount = useTotalClaim()
-    console.log(claimAmount)
-
-    const [onPresentDeposit] = useModal(
-        <BuyModal
-            max={tokenBalance}
-            onConfirm={onBuy}
-            tokenName={'CAKE'}
-        />,
-    )
-
-    const handleApprove = useCallback(async () => {
-        try {
-            setRequestedApproval(true)
-            const txHash = await onApprove()
-            // user rejected tx or didn't go thru
-            if (!txHash) {
-                setRequestedApproval(false)
-            }
-        } catch (e) {
-            console.log(e)
-        }
-    }, [onApprove, setRequestedApproval])
-
-    const handleBuy = useCallback(async () => {
-        try {
-            setRequestedBuy(true)
-            const txHash = await onBuy('5', [3, 5, 1, 4])
-            // user rejected tx or didn't go thru
-            if (txHash) {
-                setRequestedBuy(false)
-            }
-        } catch (e) {
-            console.log(e)
-        }
-    }, [onBuy, setRequestedBuy])
-
-    const [onPresentAccountModal] = useModal(<AccountModal/>)
-    const [onPresentWalletProviderModal] = useModal(
-        <WalletProviderModal/>,
-        'provider',
-    )
-    const handleUnlockClick = useCallback(() => {
-        onPresentWalletProviderModal()
-    }, [onPresentWalletProviderModal])
-
-    return (
-        <div style={{margin: '5px', width: '400px'}}>
-            <Card>
-                <CardContent>
-                    <StyledCardContentInner>
-                        <StyledCardHeader>
-                            <CardIcon>🎟</CardIcon>
-                            <Value value={tickets.length} decimals={0}/>
-                            <Label text={`Your total tickets for this round`}/>
-                        </StyledCardHeader>
-                        <StyledCardActions>
-                            {!account && <Button onClick={handleUnlockClick} size="md" text="Unlock Wallet"/>}
-                            {account && (!allowance.toNumber() ? (
-                                <Button
-                                    disabled={requestedApproval}
-                                    onClick={handleApprove}
-                                    text={`Approve CAKE`}
-                                />
-                            ) : (
-                                <>
-                                    <Button size="md" text="Buy" onClick={onPresentDeposit}></Button>
-                                    {/*TODO: add modal to select the numbers*/}
-                                    {/*<Button disabled={requesteBuy || winNumbers[0]!==0} onClick={handleBuy} size="md" text={requesteBuy ? 'Buying...': 'Buy ticket'}/>*/}
-                                </>
-                            ))}
-                        </StyledCardActions>
-                    </StyledCardContentInner>
-                </CardContent>
-            </Card>
-            {/*/!*TODO: improve the style*!/*/}
-            {/*<div>*/}
-            {/*  <p>your  tickets:</p>*/}
-            {/*  {tickets.map((numbers, index)=>*/}
-            {/*    <div key={index}>*/}
-            {/*    {numbers.map((i,j)=><span  key={j}>{i} </span>)}*/}
-            {/*    </div>*/}
-            {/*  )}*/}
-            {/*</div>*/}
-        </div>
-    )
+  return (
+    <div style={{ margin: '5px', width: '400px' }}>
+      <Card>
+        <CardContent>
+          <StyledCardContentInner>
+            <StyledCardHeader>
+              <CardIcon>🎟</CardIcon>
+              <Value value={0} decimals={0} />
+              <Label text={`Your total tickets for this round`} />
+            </StyledCardHeader>
+            <StyledCardActions>
+              {!account && (
+                <Button
+                  onClick={handleUnlockClick}
+                  size="md"
+                  text={TranslateString(292, 'Unlock Wallet')}
+                />
+              )}
+              {account && <Button onClick={null} size="md" text="Buy ticket" />}
+            </StyledCardActions>
+          </StyledCardContentInner>
+        </CardContent>
+      </Card>
+    </div>
+  )
 }
 
 const StyledCardHeader = styled.div`

@@ -6,6 +6,9 @@ const Button = styled.div`
   width: 20px;
   height: 20px;
   cursor: pointer;
+  @media (max-width: 850px) {
+    margin-left: 0.1rem;
+  }
 `
 
 type IThemeProps = {
@@ -13,15 +16,13 @@ type IThemeProps = {
   toogleTheme: (isDark: boolean) => void
 }
 
-const ThemeSwitch: React.FC<IThemeProps> = ({ isDark, toogleTheme}) => {
+const ThemeSwitch: React.FC<IThemeProps> = ({ isDark, toogleTheme }) => {
   const handleClick = useCallback(() => {
     toogleTheme(!isDark)
   }, [isDark, toogleTheme])
 
   return (
-    <Button onClick={handleClick}>
-      {isDark ? <SunIcon /> : <MoonIcon />}
-    </Button>
+    <Button onClick={handleClick}>{isDark ? <SunIcon /> : <MoonIcon />}</Button>
   )
 }
 

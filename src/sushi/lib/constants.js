@@ -58,20 +58,32 @@ export const contractAddresses = {
 
 export const sousChefTeam = [
   {
+    sousId: 2,
+    contractAddress: {
+      97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
+      56: '0x73c83bd1646991cBca3e6b83ca905542FE07C57A',
+    },
+    tokenName: 'ALPHA',
+    projectLink: 'https://alphafinance.io/',
+    harvest: true,
+    tokenPerBlock: "20"
+  },
+  {
     sousId: 1,
     contractAddress: {
       97: '0xAfd61Dc94f11A70Ae110dC0E0F2061Af5633061A',
-      56: '0xAfd61Dc94f11A70Ae110dC0E0F2061Af5633061A', //  real cake
+      56: '0xAfd61Dc94f11A70Ae110dC0E0F2061Af5633061A',
     },
     tokenName: 'TWT',
     projectLink: 'https://trustwallet.com/',
-    harvest: true
+    harvest: true,
+    tokenPerBlock: "20"
   },
   {
     sousId: 0,
     contractAddress: {
       97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
-      56: '0x6ab8463a4185b80905e05a9ff80a2d6b714b9e95', //  real cake
+      56: '0x6ab8463a4185b80905e05a9ff80a2d6b714b9e95',
     },
     tokenName: 'XVS',
     projectLink: 'https://venus.io/',
@@ -215,36 +227,6 @@ export const supportedPools = [
     multiplier: '5X'
   },
   {
-    pid: 9,
-    lpAddresses: {
-      97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
-      56: '0xd937FB9E6e47F3805981453BFB277a49FFfE04D7'
-    },
-    tokenAddresses: {
-      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
-      56: '0xae9269f27437f0fcbc232d39ec814844a51d6b8f'
-    },
-    symbol: 'BURGER-BNB FLIP',
-    tokenSymbol: 'BURGER',
-    icon: '🥞',
-    multiplier: '1X'
-  },
-  {
-    pid: 10,
-    lpAddresses: {
-      97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
-      56: '0x3Da30727ed0626b78C212e81B37B97A8eF8A25bB'
-    },
-    tokenAddresses: {
-      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
-      56: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5'
-    },
-    symbol: 'BAKE-BNB FLIP',
-    tokenSymbol: 'BAKE',
-    icon: '🥞',
-    multiplier: '1X'
-  },
-  {
     pid: 11,
     lpAddresses: {
       97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
@@ -275,6 +257,66 @@ export const supportedPools = [
     multiplier: '1X'
   },
   {
+    pid: 13,
+    lpAddresses: {
+      97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
+      56: '0x41182c32F854dd97bA0e0B1816022e0aCB2fc0bb'
+    },
+    tokenAddresses: {
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
+      56: '0xcf6bb5389c92bdda8a3747ddb454cb7a64626c63'
+    },
+    symbol: 'XVS-BNB FLP',
+    tokenSymbol: 'XVS',
+    icon: '🥞',
+    multiplier: '1X'
+  },
+  {
+    pid: 14,
+    lpAddresses: {
+      97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
+      56: '0x70D8929d04b60Af4fb9B58713eBcf18765aDE422'
+    },
+    tokenAddresses: {
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
+      56: '0x2170ed0880ac9a755fd29b2688956bd959f933f8'
+    },
+    symbol: 'ETH-BNB FLP',
+    tokenSymbol: 'ETH',
+    icon: '🥞',
+    multiplier: '1X'
+  },
+  {
+    pid: 15,
+    lpAddresses: {
+      97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
+      56: '0x7561EEe90e24F3b348E1087A005F78B4c8453524'
+    },
+    tokenAddresses: {
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
+      56: '0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c'
+    },
+    symbol: 'BTCB-BNB FLP',
+    tokenSymbol: 'BTC',
+    icon: '🥞',
+    multiplier: '1X'
+  },
+  {
+    pid: 16,
+    lpAddresses: {
+      97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
+      56: '0x4e0f3385d932F7179DeE045369286FFa6B03d887'
+    },
+    tokenAddresses: {
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
+      56: '0xa1faa113cbe53436df28ff0aee54275c13b40975'
+    },
+    symbol: 'ALPHA-BNB FLP',
+    tokenSymbol: 'ALPHA',
+    icon: '🥞',
+    multiplier: '1X'
+  },
+  {
     pid: 8,
     lpAddresses: {
       97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
@@ -285,6 +327,36 @@ export const supportedPools = [
       56: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5'
     },
     symbol: 'BAKE-BNB Bakery LP',
+    tokenSymbol: 'BAKE',
+    icon: '🥞',
+    multiplier: '0X'
+  },
+  {
+    pid: 9,
+    lpAddresses: {
+      97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
+      56: '0xd937FB9E6e47F3805981453BFB277a49FFfE04D7'
+    },
+    tokenAddresses: {
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
+      56: '0xae9269f27437f0fcbc232d39ec814844a51d6b8f'
+    },
+    symbol: 'BURGER-BNB FLIP',
+    tokenSymbol: 'BURGER',
+    icon: '🥞',
+    multiplier: '0X'
+  },
+  {
+    pid: 10,
+    lpAddresses: {
+      97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
+      56: '0x3Da30727ed0626b78C212e81B37B97A8eF8A25bB'
+    },
+    tokenAddresses: {
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
+      56: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5'
+    },
+    symbol: 'BAKE-BNB FLIP',
     tokenSymbol: 'BAKE',
     icon: '🥞',
     multiplier: '0X'
@@ -337,15 +409,15 @@ export const forShowPools = [
     multiplier: '5X'
   },
   {
-    pid: 4,
-    symbol: 'BURGER-BNB',
-    tokenSymbol: 'BURGER',
+    pid: 14,
+    symbol: 'ETH-BNB',
+    tokenSymbol: 'ETH',
     multiplier: '1X'
   },
   {
-    pid: 10,
-    symbol: 'BAKE-BNB',
-    tokenSymbol: 'BAKE',
+    pid: 15,
+    symbol: 'BTCB-BNB',
+    tokenSymbol: 'BTC',
     multiplier: '1X'
   },
   {
@@ -359,5 +431,13 @@ export const forShowPools = [
     symbol: 'TWT-BNB',
     tokenSymbol: 'TWT',
     multiplier: '1X'
+  },
+  {
+    pid: 13,
+    symbol: 'XVS-BNB',
+    tokenSymbol: 'XVS',
+    multiplier: '1X'
   }
 ]
+
+export const BLOCKS_PER_YEAR = new BigNumber(10512000)

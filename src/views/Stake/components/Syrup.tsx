@@ -37,7 +37,7 @@ const Harvest: React.FC = () => {
           <StyledCardActions>
             <Button
               disabled={true}
-              text={'To Vote'}
+              text={'Vote'}
             />
           </StyledCardActions>
         </StyledCardContentInner>

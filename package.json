@@ -5,6 +5,7 @@
   "dependencies": {
     "@ethersproject/abi": "^5.0.7",
     "@ethersproject/contracts": "^5.0.5",
+    "@crowdin/crowdin-api-client": "^1.8.16",
     "@types/debounce": "^1.2.0",
     "@types/jest": "^26.0.9",
     "@types/node": "^14.0.27",
@@ -17,6 +18,7 @@
     "react-countdown": "^2.2.1",
     "react-countup": "^4.3.3",
     "react-dom": "^16.13.1",
+    "react-feather": "^2.0.8",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
     "styled-components": "^5.1.1",
@@ -29,6 +31,7 @@
     "build": "CI= GENERATE_SOURCEMAP=false react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
     "deploy": "yarn build && cp ./build/index.html ./build/200.html && surge ./build sushiswap.org"
   },
   "eslintConfig": {

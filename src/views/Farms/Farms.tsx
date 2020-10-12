@@ -7,19 +7,22 @@ import { NavLink } from 'react-router-dom'
 import Button from '../../components/Button'
 import Page from '../../components/Page'
 import WalletProviderModal from '../../components/WalletProviderModal'
-import { useCakePrice } from '../../hooks/useTokenBalance'
 
 import useModal from '../../hooks/useModal'
 
 import Farm from '../Farm'
 
 import FarmCards from './components/FarmCards'
+import { TranslateString } from '../../utils/translateTextHelpers'
 
-const Farms: React.FC = () => {
+interface FarmsProps {
+  removed: boolean
+}
+
+const Farms: React.FC<FarmsProps> = ({ removed }) => {
   const { path } = useRouteMatch()
   const { account } = useWallet()
   const [onPresentWalletProviderModal] = useModal(<WalletProviderModal />)
-  const cakePrice = useCakePrice()
 
   return (
     <Switch>
@@ -27,15 +30,23 @@ const Farms: React.FC = () => {
         {true ? (
           <>
             <Route exact path={path}>
-              <Title>Stake FLIP tokens to stack CAKE</Title>
-              {account &&
-                <PriceTag>CAKE PRICE: ${cakePrice.toFixed(3)}</PriceTag>
-              }
+              <Title>
+                {TranslateString(320, 'Stake FLIP tokens to stack CAKE')}
+              </Title>
               <StyledLink exact activeClassName="active" to="/staking">
                 Staking
               </StyledLink>
-              <FarmCards />
-              <Image src={require(`../../assets/img/cakecat.png`)}/>
+              <FarmCards removed={removed} />
+              {removed ? (
+                <NavLink exact activeClassName="active" to="/farms">
+                  Active Pools
+                </NavLink>
+              ) : (
+                <NavLink exact activeClassName="active" to="/removed">
+                  Inactive Pools
+                </NavLink>
+              )}
+              <Image src={require(`../../assets/img/cakecat.png`)} />
             </Route>
             <Route path={`${path}/:farmId`}>
               <Farm />
@@ -52,7 +63,7 @@ const Farms: React.FC = () => {
           >
             <Button
               onClick={onPresentWalletProviderModal}
-              text="🔓 Unlock Wallet"
+              text={`🔓 ${TranslateString(292, 'Unlock Wallet')}`}
             />
           </div>
         )}
@@ -89,9 +100,9 @@ const Image = styled.img`
   }
 `
 
-const Title= styled.div`
+const Title = styled.div`
   color: ${(props) => props.theme.colors.secondary};
-  font-size:29px;
+  font-size: 29px;
   width: 50vw;
   text-align: center;
   font-weight: 900;
@@ -99,11 +110,11 @@ const Title= styled.div`
 `
 
 const Title2 = styled.div`
-  color:#27c7d5;
-  font-size:20px;
+  color: #27c7d5;
+  font-size: 20px;
   width: 50vw;
   text-align: center;
-  position:  relative;
+  position: relative;
   top: -40px;
 `
 

@@ -82,6 +82,7 @@ export const getPools = (sushi)  => {
       ({
         sousId,
         sousContract,
+        tokenPerBlock,
         contractAddress,
         tokenName,
         projectLink,
@@ -89,6 +90,7 @@ export const getPools = (sushi)  => {
       }) => ({
         sousId,
         sousContract,
+        tokenPerBlock,
         contractAddress,
         tokenName,
         projectLink,
@@ -131,6 +133,7 @@ export const getTotalLPWethValue = async (
   lpContract,
   tokenContract,
   pid,
+  tokenSymbol
 ) => {
   const tokenAmountWholeLP = await tokenContract.methods
     .balanceOf(lpContract.options.address)
@@ -159,6 +162,7 @@ export const getTotalLPWethValue = async (
     .times(portionLp)
     .div(new BigNumber(10).pow(18))
   return {
+    tokenSymbol,
     tokenAmount,
     wethAmount,
     totalWethValue: totalLpWethValue.div(new BigNumber(10).pow(18)),

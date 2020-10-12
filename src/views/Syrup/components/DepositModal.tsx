@@ -6,6 +6,7 @@ import ModalActions from '../../../components/ModalActions'
 import ModalTitle from '../../../components/ModalTitle'
 import TokenInput from '../../../components/TokenInput'
 import { getFullDisplayBalance } from '../../../utils/formatBalance'
+import { TranslateString } from '../../../utils/translateTextHelpers'
 
 interface DepositModalProps extends ModalProps {
   max: BigNumber
@@ -39,7 +40,9 @@ const DepositModal: React.FC<DepositModalProps> = ({
 
   return (
     <Modal>
-      <ModalTitle text={`Deposit ${tokenName} Tokens`} />
+      <ModalTitle
+        text={`${TranslateString(316, 'Deposit')} ${tokenName} Tokens`}
+      />
       <TokenInput
         value={val}
         onSelectMax={handleSelectMax}

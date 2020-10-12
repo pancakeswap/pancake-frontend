@@ -2,7 +2,13 @@ import { black, green, grey, red, white, blue } from './colors'
 
 export default {
   colors: {
-    black, green, grey, red, white, blue
+    black,
+    green,
+    grey,
+    red,
+    white,
+    blue,
+    ghost: '#32cad7',
   },
   borderRadius: 12,
   breakpoints: {
@@ -18,5 +24,5 @@ export default {
     6: 48,
     7: 64,
   },
-  topBarSize: 72
+  topBarSize: 72,
 }

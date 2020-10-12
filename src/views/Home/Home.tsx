@@ -5,13 +5,14 @@ import Container from '../../components/Container'
 import Page from '../../components/Page'
 import PageHeader from '../../components/PageHeader'
 import Spacer from '../../components/Spacer'
+import { TranslateString } from '../../utils/translateTextHelpers'
 import Balances from './components/Balances'
 
 const Home: React.FC = () => {
   return (
     <Page>
-      <Image src={require(`../../assets/img/BG1.png`)}/>
-      <Blank/>
+      <Image src={require(`../../assets/img/BG1.png`)} />
+      <Blank />
       <Container>
         <Balances />
       </Container>
@@ -21,7 +22,11 @@ const Home: React.FC = () => {
           margin: '0 auto',
         }}
       >
-        <Button text="👩‍🍳 See the Kitchen" to="/farms" variant="secondary" />
+        <Button
+          text={`👩‍🍳 ${TranslateString(306, 'See the Kitchen')}`}
+          to="/farms"
+          variant="secondary"
+        />
       </div>
     </Page>
   )
@@ -42,7 +47,6 @@ const Blank = styled.div`
     height: 60px;
   }
 `
-
 
 const StyledInfo = styled.h3`
   color: ${(props) => props.theme.colors.primary};
