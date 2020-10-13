@@ -5,40 +5,52 @@ import useModal from '../../../hooks/useModal'
 import { useCakePrice } from '../../../hooks/useTokenBalance'
 import WalletProviderModal from '../../WalletProviderModal'
 import AccountModal from './AccountModal'
-import ButtonMenu from "../../Button/ButtonMenu";
+import ButtonMenu from '../../Button/ButtonMenu'
+import { TranslateString } from '../../../utils/translateTextHelpers'
 
 interface AccountButtonProps {}
 
 const AccountLink: React.FC = (props) => {
-    const [onPresentAccountModal] = useModal(<AccountModal />)
-    const [onPresentWalletProviderModal] = useModal(
-        <WalletProviderModal />,
-        'provider',
-    )
+  const [onPresentAccountModal] = useModal(<AccountModal />)
+  const [onPresentWalletProviderModal] = useModal(
+    <WalletProviderModal />,
+    'provider',
+  )
 
-    const { account, connect, status } = useWallet()
+  const { account, connect, status } = useWallet()
 
-    const cakePrice = useCakePrice()
+  const cakePrice = useCakePrice()
 
-    const handleUnlockClick = useCallback(() => {
-        onPresentWalletProviderModal()
-    }, [onPresentWalletProviderModal])
+  const handleUnlockClick = useCallback(() => {
+    onPresentWalletProviderModal()
+  }, [onPresentWalletProviderModal])
 
-
-    return (
-        <StyledAccountButton>
-            {account && <PriceTag>CAKE PRICE: <b>${cakePrice.toFixed(3)}</b></PriceTag>}
-            {!account ? (
-                <ButtonMenu onClick={handleUnlockClick} size="sm"  text="🔓 Unlock Wallet" />
-            ) : (
-                <ButtonMenu onClick={onPresentAccountModal} size="sm" text="🔒 My Wallet" />
-            )}
-        </StyledAccountButton>
-    )
+  return (
+    <StyledAccountButton>
+      {account && (
+        <PriceTag>
+          {TranslateString(358, 'CAKE PRICE')}: <b>${cakePrice.toFixed(3)}</b>
+        </PriceTag>
+      )}
+      {!account ? (
+        <ButtonMenu
+          onClick={handleUnlockClick}
+          size="sm"
+          text={`🔓 ${TranslateString(292, 'Unlock Wallet')}`}
+        />
+      ) : (
+        <ButtonMenu
+          onClick={onPresentAccountModal}
+          size="sm"
+          text="🔒 My Wallet"
+        />
+      )}
+    </StyledAccountButton>
+  )
 }
 const PriceTag = styled.div`
   font-size: 18px;
-  color: #7645D9;
+  color: #7645d9;
   font-weight: 100;
   width: 160px;
   text-align: center;
@@ -49,14 +61,13 @@ const PriceTag = styled.div`
   }
 `
 
-
 const StyledAccountButton = styled.div`
-background: none !important;
-border: none;
+  background: none !important;
+  border: none;
 `
 const StyledAccountButtonP = styled.div`
-background: none !important;
-border: none;
+  background: none !important;
+  border: none;
 `
 
 export default AccountLink

@@ -1,46 +1,36 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
+import TranslatedText from '../../TranslatedText/TranslatedText'
 
 const Nav: React.FC = () => {
   return (
     <>
       <StyledNav>
         <StyledLink exact activeClassName="active" to="/farms">
-          Farm
+          <TranslatedText translationId={278}>Farm</TranslatedText>
         </StyledLink>
         <StyledLink exact activeClassName="active" to="/staking">
-          Staking
+          <TranslatedText translationId={280}>Staking</TranslatedText>
         </StyledLink>
         <StyledLink exact activeClassName="active" to="/syrup">
-          SYRUP Pool
+          <TranslatedText translationId={282}>SYRUP Pool</TranslatedText>
         </StyledLink>
-        <StyledAbsoluteLink
-          href="https://exchange.pancakeswap.finance"
-          target="_blank">
-          Exchange
-        </StyledAbsoluteLink>
         <StyledAbsoluteLink
           href="https://pancakeswap.info"
-          target="_blank"
         >
+          <TranslatedText translationId={284}>Exchange</TranslatedText>
+        </StyledAbsoluteLink>
+        <StyledAbsoluteLink href="https://pancakeswap.info" target="_blank">
           Analytics
         </StyledAbsoluteLink>
-        <StyledAbsoluteLink
-          href="https://voting.pancakeswap.finance"
-          target="_blank"
-        >
-          Voting
-        </StyledAbsoluteLink>
         <StyledLink exact activeClassName="active" to="/lottery">
-          Lottery
+          <TranslatedText translationId={290}>Lottery</TranslatedText>
         </StyledLink>
-
       </StyledNav>
     </>
   )
 }
-
 
 const StyledNav = styled.nav`
   align-items: center;
@@ -56,8 +46,9 @@ const StyledLink = styled(NavLink)`
   padding-left: ${(props) => props.theme.spacing[3]}px;
   padding-right: ${(props) => props.theme.spacing[3]}px;
   text-decoration: none;
+  text-align: center;
   &:hover {
-    color: #452A7A;
+    color: #452a7a;
   }
   &.active {
     color: ${(props) => props.theme.colors.grey[600]};
@@ -74,8 +65,9 @@ const StyledAbsoluteLink = styled.a`
   padding-left: ${(props) => props.theme.spacing[3]}px;
   padding-right: ${(props) => props.theme.spacing[3]}px;
   text-decoration: none;
+  text-align: center;
   &:hover {
-    color: #452A7A;
+    color: #452a7a;
   }
   &.active {
     color: ${(props) => props.theme.colors.grey[600]};

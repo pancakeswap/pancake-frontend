@@ -1,79 +1,89 @@
 import React from 'react'
-import styled, {keyframes} from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 
-import {NavLink} from 'react-router-dom'
-import AccountLink from "../TopBar/components/AccountLink";
+import { NavLink } from 'react-router-dom'
+import AccountLink from '../TopBar/components/AccountLink'
+import { TranslateString } from '../../utils/translateTextHelpers'
+
 
 interface MobileMenuProps {
-    onDismiss: () => void
-    visible?: boolean
+  onDismiss: () => void
+  visible?: boolean
 }
 
-const MobileMenu: React.FC<MobileMenuProps> = ({onDismiss, visible}) => {
-    if (visible) {
-        return (
-            <StyledMobileMenuWrapper>
-                <StyledBackdrop onClick={onDismiss}/>
-                <StyledMobileMenu>
-                    <Wrapper onClick={onDismiss}><AccountLink/></Wrapper>
-                    <StyledLink exact activeClassName="active" to="/" onClick={onDismiss}>
-                        🏡 Home
-                    </StyledLink>
-                    <StyledLink
-                        exact
-                        activeClassName="active"
-                        to="/farms"
-                        onClick={onDismiss}>
-                        👨‍🌾 Farms
-                    </StyledLink>
-                    <StyledLink
-                        exact
-                        activeClassName="active"
-                        to="/staking"
-                        onClick={onDismiss}>
-                        🥩 Staking
-                    </StyledLink>
-                    <StyledLink
-                        exact
-                        activeClassName="active"
-                        to="/syrup"
-                        onClick={onDismiss}>
-                        🍯 SYRUP Pool
-                    </StyledLink>
-                    <a style={{
-                        paddingTop: "0.6em",
-                        color: "white",
-                        width: "100%",
-                        fontSize: "24px",
-                        fontWeight: 700,
-                        boxSizing: "border-box",
-                        textAlign: "center",
-                        textDecoration: "none"
-                    }}
-                       href="https://exchange.pancakeswap.finance"
-                       onClick={onDismiss}>
-                        🔄 Exchange
-                    </a>
-                    <a
-                        style={{
-                            paddingTop: "1.2em",
-                            color: "white",
-                            width: "100%",
-                            fontSize: "24px",
-                            fontWeight: 700,
-                            boxSizing: "border-box",
-                            textAlign: "center",
-                            textDecoration: "none"
-                        }}
-                        href="https://pancakeswap.info"
-                        onClick={onDismiss}>
-                        📄 Analytics
-                    </a>
-                </StyledMobileMenu>
-            </StyledMobileMenuWrapper>
-        )
-    }
-    return null
+const MobileMenu: React.FC<MobileMenuProps> = ({ onDismiss, visible }) => {
+  if (visible) {
+    return (
+      <StyledMobileMenuWrapper>
+        <StyledBackdrop onClick={onDismiss} />
+        <StyledMobileMenu>
+          <Wrapper onClick={onDismiss}>
+            <AccountLink />
+          </Wrapper>
+          <StyledLink exact activeClassName="active" to="/" onClick={onDismiss}>
+            🏡 Home
+          </StyledLink>
+          <StyledLink
+            exact
+            activeClassName="active"
+            to="/farms"
+            onClick={onDismiss}
+          >
+            👨‍🌾 Farms
+          </StyledLink>
+          <StyledLink
+            exact
+            activeClassName="active"
+            to="/staking"
+            onClick={onDismiss}
+          >
+            🥩 Staking
+          </StyledLink>
+          <StyledLink
+            exact
+            activeClassName="active"
+            to="/syrup"
+            onClick={onDismiss}
+          >
+            🍯 {TranslateString(282, 'SYRUP Pool')}
+          </StyledLink>
+          <a
+            style={{
+              paddingTop: '0.6em',
+              color: 'white',
+              width: '100%',
+              fontSize: '24px',
+              fontWeight: 700,
+              boxSizing: 'border-box',
+              textAlign: 'center',
+              textDecoration: 'none',
+            }}
+            href="https://exchange.pancakeswap.finance"
+            onClick={onDismiss}
+          >
+            🔄 Exchange
+          </a>
+          <a
+            style={{
+              paddingTop: '1.2em',
+              color: 'white',
+              width: '100%',
+              fontSize: '24px',
+              fontWeight: 700,
+              boxSizing: 'border-box',
+              textAlign: 'center',
+              textDecoration: 'none',
+            }}
+            href="https://pancakeswap.info"
+            onClick={onDismiss}
+          >
+            📈 Analytics
+          </a>
+        </StyledMobileMenu>
+      </StyledMobileMenuWrapper>
+    )
+  }
+  return null
 }
 
 const StyledBackdrop = styled.div`
@@ -117,7 +127,7 @@ const StyledAccountButtonWrapper = styled.div`
 `
 
 const Wrapper = styled.div`
- margin-bottom: 2em;
+  margin-bottom: 2em;
 `
 
 const StyledMobileMenu = styled.div`

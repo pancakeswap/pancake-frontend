@@ -13,6 +13,7 @@ import useSushi from '../../hooks/useSushi'
 
 import { getMasterChefContract } from '../../sushi/utils'
 import { getContract } from '../../utils/erc20'
+import { TranslateString } from '../../utils/translateTextHelpers'
 
 import Harvest from './components/Harvest'
 import Stake from './components/Stake'
@@ -28,7 +29,7 @@ const Farm: React.FC = () => {
     earnToken,
     name,
     icon,
-    tokenSymbol
+    tokenSymbol,
   } = useFarm(farmId) || {
     pid: 0,
     lpToken: '',
@@ -37,7 +38,7 @@ const Farm: React.FC = () => {
     earnToken: '',
     name: '',
     icon: '',
-    tokenSymbol: ''
+    tokenSymbol: '',
   }
 
   useEffect(() => {
@@ -61,11 +62,12 @@ const Farm: React.FC = () => {
     return earnToken.toUpperCase()
   }, [earnToken])
 
-
   return (
     <>
-      <Image src={require(`../../assets/img/category-${tokenSymbol || 'CAKE'}.png`)}/>
-      <Title>Stake FLIP tokens to stack CAKE</Title>
+      <Image
+        src={require(`../../assets/img/category-${tokenSymbol || 'CAKE'}.png`)}
+      />
+      <Title>{TranslateString(320, 'Stake FLIP tokens to stack CAKE')}</Title>
       <StyledFarm>
         <StyledCardsWrapper>
           <StyledCardWrapper>
@@ -91,21 +93,19 @@ const Farm: React.FC = () => {
   )
 }
 
-
 const Image = styled.img`
   width: 160px;
   margin-top: 30px;
 `
 
-const Title= styled.div`
+const Title = styled.div`
   color: ${(props) => props.theme.colors.secondary};
-  font-size:29px;
+  font-size: 29px;
   width: 50vw;
   text-align: center;
   font-weight: 900;
   margin: 50px;
 `
-
 
 const StyledFarm = styled.div`
   align-items: center;
@@ -143,6 +143,5 @@ const StyledInfo = styled.h3`
   padding: 0;
   text-align: center;
 `
-
 
 export default Farm

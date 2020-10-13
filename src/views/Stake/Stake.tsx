@@ -24,6 +24,7 @@ import { getMasterChefContract } from '../../sushi/utils'
 import Harvest from './components/Harvest'
 import Syrup from './components/Syrup'
 import Stake from './components/Stake'
+import { TranslateString } from '../../utils/translateTextHelpers'
 
 const Farm: React.FC = () => {
   const { account } = useWallet()
@@ -36,7 +37,7 @@ const Farm: React.FC = () => {
     earnToken: '',
     name: '',
     icon: '',
-    tokenSymbol: ''
+    tokenSymbol: '',
   }
 
   const {
@@ -47,8 +48,8 @@ const Farm: React.FC = () => {
     earnToken,
     name,
     icon,
-    tokenSymbol
-  } = farmInfo;
+    tokenSymbol,
+  } = farmInfo
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -72,52 +73,55 @@ const Farm: React.FC = () => {
   }, [earnToken])
   return (
     <Page>
-        <>
-          <PageHeader
-            icon={<img src={chef} height="90" />}
-            title="Stake Cake, get SYRUP."
-            subtitle="SYRUP holders proportionally split 25% of CAKE block emissions each day (10 CAKE per block), Rewards are distributed each block. SYRUP will also be used to for the PancakeSwap Lottery and general governance. "
-          />
-          <Title>1 CAKE = 1 SYRUP</Title>
-          <Title>You can swap back anytime</Title>
+      <>
+        <PageHeader
+          icon={<img src={chef} height="90" />}
+          title={TranslateString(322, 'Stake Cake, get SYRUP.')}
+          subtitle={'SYRUP holders proportionally split 25% of CAKE block emissions each day (10 CAKE per block), Rewards are distributed each block. SYRUP will also be used to for the PancakeSwap Lottery and general governance.'}
+        />
+        <Title>{TranslateString(326, '1 CAKE = 1 SYRUP')}</Title>
+        <Title>{TranslateString(328, 'You can swap back anytime')}</Title>
+        <Spacer size="lg" />
+        <StyledFarm>
+          <StyledCardsWrapper>
+            <StyledCardWrapper>
+              <Syrup />
+            </StyledCardWrapper>
+            <Spacer />
+            <StyledCardWrapper>
+              <Harvest pid={pid} />
+            </StyledCardWrapper>
+            <Spacer />
+            <StyledCardWrapper>
+              <Stake
+                lpContract={lpContract}
+                pid={pid}
+                tokenName={lpToken.toUpperCase()}
+              />
+            </StyledCardWrapper>
+          </StyledCardsWrapper>
           <Spacer size="lg" />
-          <StyledFarm>
-            <StyledCardsWrapper>
-              <StyledCardWrapper>
-                <Syrup />
-              </StyledCardWrapper>
-              <Spacer />
-              <StyledCardWrapper>
-                <Harvest pid={pid} />
-              </StyledCardWrapper>
-              <Spacer />
-              <StyledCardWrapper>
-                <Stake
-                  lpContract={lpContract}
-                  pid={pid}
-                  tokenName={lpToken.toUpperCase()}
-                />
-              </StyledCardWrapper>
-            </StyledCardsWrapper>
-            <Spacer size="lg" />
-            <StyledInfo>
-              ⭐️ Every time you stake and unstake CAKE tokens, the contract will
-              automagically harvest CAKE rewards for you!
-            </StyledInfo>
-            <Spacer size="lg" />
-          </StyledFarm>
-        </>
+          <StyledInfo>
+            ⭐️{' '}
+            {TranslateString(
+              334,
+              'Every time you stake and unstake CAKE tokens, the contract will automagically harvest CAKE rewards for you!',
+            )}
+          </StyledInfo>
+          <Spacer size="lg" />
+        </StyledFarm>
+      </>
     </Page>
   )
 }
 
-const Title= styled.div`
+const Title = styled.div`
   color: ${(props) => props.theme.colors.blue[100]};
-  font-size:20px;
+  font-size: 20px;
   width: 50vw;
   text-align: center;
   font-weight: 900;
-  line-height:  2rem;
+  line-height: 2rem;
 `
 
 const StyledFarm = styled.div`
@@ -145,7 +149,6 @@ const StyledCardWrapper = styled.div`
   position: relative;
 `
 
-
 const StyledInfo = styled.h3`
   color: ${(props) => props.theme.colors.grey[400]};
   font-size: 16px;
@@ -154,6 +157,5 @@ const StyledInfo = styled.h3`
   padding: 0;
   text-align: center;
 `
-
 
 export default Farm
