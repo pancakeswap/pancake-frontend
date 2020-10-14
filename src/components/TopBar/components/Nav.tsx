@@ -17,7 +17,7 @@ const Nav: React.FC = () => {
           <TranslatedText translationId={282}>SYRUP Pool</TranslatedText>
         </StyledLink>
         <StyledAbsoluteLink
-          href="https://pancakeswap.info"
+          href="https://exchange.pancakeswap.finance/"
         >
           <TranslatedText translationId={284}>Exchange</TranslatedText>
         </StyledAbsoluteLink>
