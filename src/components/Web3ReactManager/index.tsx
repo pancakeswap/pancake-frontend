@@ -6,7 +6,7 @@ export default function Web3ReactManager({ children }: { children: JSX.Element }
   useEffect(() => {
     if (window.localStorage.getItem('accountStatus')) {
       if (!account) {
-        connect('injected')
+        setTimeout(() =>connect('injected'), 0)
         window.localStorage.setItem('accountStatus', '1')
       }
     }
