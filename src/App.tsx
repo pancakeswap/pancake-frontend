@@ -183,9 +183,9 @@ const Providers: React.FC<{
       >
         <TranslationsContext.Provider value={{ translations, setTranslations }}>
           <UseWalletProvider
-            chainId={56}
+            chainId={parseInt(process.env.REACT_APP_CHAIN_ID)}
             connectors={{
-              walletconnect: { rpcUrl: 'https://bsc-dataseed.binance.org' },
+              walletconnect: { rpcUrl: process.env.REACT_APP_RPC_URL },
             }}
           >
             <BscProvider>
