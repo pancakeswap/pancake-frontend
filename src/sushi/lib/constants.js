@@ -144,7 +144,7 @@ export const supportedPools = [
     symbol: 'BUSD-BNB FLIP',
     tokenSymbol: 'BUSD',
     icon: '🥞',
-    multiplier: '10X'
+    multiplier: '8X'
   },
   {
     pid: 3,
@@ -160,7 +160,7 @@ export const supportedPools = [
     symbol: 'ADA-BNB FLIP',
     tokenSymbol: 'ADA',
     icon: '🥞',
-    multiplier: '5X'
+    multiplier: '3X'
   },
   {
     pid: 4,
@@ -176,7 +176,7 @@ export const supportedPools = [
     symbol: 'BAND-BNB FLIP',
     tokenSymbol: 'BAND',
     icon: '🥞',
-    multiplier: '5X'
+    multiplier: '3X'
   },
   {
     pid: 5,
@@ -192,7 +192,7 @@ export const supportedPools = [
     symbol: 'DOT-BNB FLIP',
     tokenSymbol: 'DOT',
     icon: '🥞',
-    multiplier: '5X'
+    multiplier: '3X'
   },
   {
     pid: 6,
@@ -208,7 +208,7 @@ export const supportedPools = [
     symbol: 'EOS-BNB FLIP',
     tokenSymbol: 'EOS',
     icon: '🥞',
-    multiplier: '5X'
+    multiplier: '3X'
   },
   {
     pid: 7,
@@ -224,7 +224,7 @@ export const supportedPools = [
     symbol: 'LINK-BNB FLIP',
     tokenSymbol: 'LINK',
     icon: '🥞',
-    multiplier: '5X'
+    multiplier: '3X'
   },
   {
     pid: 11,
@@ -284,7 +284,7 @@ export const supportedPools = [
     symbol: 'ETH-BNB FLP',
     tokenSymbol: 'ETH',
     icon: '🥞',
-    multiplier: '1X'
+    multiplier: '2X'
   },
   {
     pid: 15,
@@ -299,7 +299,7 @@ export const supportedPools = [
     symbol: 'BTCB-BNB FLP',
     tokenSymbol: 'BTC',
     icon: '🥞',
-    multiplier: '1X'
+    multiplier: '2X'
   },
   {
     pid: 16,
@@ -313,6 +313,111 @@ export const supportedPools = [
     },
     symbol: 'ALPHA-BNB FLP',
     tokenSymbol: 'ALPHA',
+    icon: '🥞',
+    multiplier: '1X'
+  },
+  {
+    pid: 17,
+    lpAddresses: {
+      97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
+      56: '0x20bcc3b8a0091ddac2d0bc30f68e6cbb97de59cd'
+    },
+    tokenAddresses: {
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
+      56: '0x55d398326f99059ff775485246999027b3197955'
+    },
+    symbol: 'USDT-BNB FLP',
+    tokenSymbol: 'USDT',
+    icon: '🥞',
+    multiplier: '2X'
+  },
+  {
+    pid: 18,
+    lpAddresses: {
+      97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
+      56: '0xc7b4b32a3be2cb6572a1c9959401f832ce47a6d2'
+    },
+    tokenAddresses: {
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
+      56: '0x1d2f0da169ceb9fc7b3144628db156f3f6c60dbe'
+    },
+    symbol: 'XRP-BNB FLP',
+    tokenSymbol: 'XRP',
+    icon: '🥞',
+    multiplier: '2X'
+  },
+  {
+    pid: 19,
+    lpAddresses: {
+      97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
+      56: '0x2333c77fc0b2875c11409cdcd3c75d42d402e834'
+    },
+    tokenAddresses: {
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
+      56: '0x0eb3a705fc54725037cc9e008bdede697f62f335'
+    },
+    symbol: 'ATOM-BNB FLP',
+    tokenSymbol: 'ATOM',
+    icon: '🥞',
+    multiplier: '2X'
+  },
+  {
+    pid: 20,
+    lpAddresses: {
+      97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
+      56: '0x574a978c2d0d36d707a05e459466c7a1054f1210'
+    },
+    tokenAddresses: {
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
+      56: '0x7f70642d88cf1c4a3a7abb072b53b929b653eda5'
+    },
+    symbol: 'YFII-BNB FLP',
+    tokenSymbol: 'YFII',
+    icon: '🥞',
+    multiplier: '1X'
+  },
+  {
+    pid: 21,
+    lpAddresses: {
+      97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
+      56: '0x56c77d59e82f33c712f919d09fceddf49660a829'
+    },
+    tokenAddresses: {
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
+      56: '0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3'
+    },
+    symbol: 'DAI-BNB FLP',
+    tokenSymbol: 'DAI',
+    icon: '🥞',
+    multiplier: '1X'
+  },
+  {
+    pid: 22,
+    lpAddresses: {
+      97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
+      56: '0x5acac332f0f49c8badc7afd0134ad19d3db972e6'
+    },
+    tokenAddresses: {
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
+      56: '0x16939ef78684453bfdfb47825f8a5f714f12623a'
+    },
+    symbol: 'XTZ-BNB FLP',
+    tokenSymbol: 'XTZ',
+    icon: '🥞',
+    multiplier: '1X'
+  },
+  {
+    pid: 23,
+    lpAddresses: {
+      97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
+      56: '0x54edd846db17f43b6e43296134ecd96284671e81'
+    },
+    tokenAddresses: {
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
+      56: '0x8ff795a6f4d97e7887c79bea79aba5cc76444adf'
+    },
+    symbol: 'BCH-BNB FLP',
+    tokenSymbol: 'BCH',
     icon: '🥞',
     multiplier: '1X'
   },
@@ -366,59 +471,45 @@ export const supportedPools = [
 export const forShowPools = [
   {
     pid: 0,
-    name: 'Cake Party!',
     symbol: 'CAKE-BNB',
     tokenSymbol: 'CAKE',
     multiplier: '20X'
   },
   {
     pid: 1,
-    name: 'BURGER GAME',
     symbol: 'BUSD-BNB',
     tokenSymbol: 'BUSD',
-    multiplier: '10X'
+    multiplier: '8X'
   },
   {
     pid: 10,
     symbol: 'ADA-BNB',
     tokenSymbol: 'ADA',
-    multiplier: '5X'
+    multiplier: '3X'
   },
   {
     pid: 7,
     symbol: 'BAND-BNB',
     tokenSymbol: 'BAND',
-    multiplier: '5X'
+    multiplier: '3X'
   },
   {
     pid: 8,
     symbol: 'DOT-BNB',
     tokenSymbol: 'DOT',
-    multiplier: '5X'
+    multiplier: '3X'
   },
   {
     pid: 6,
     symbol: 'EOS-BNB',
     tokenSymbol: 'EOS',
-    multiplier: '5X'
+    multiplier: '3X'
   },
   {
     pid: 9,
     symbol: 'LINK-BNB',
     tokenSymbol: 'LINK',
-    multiplier: '5X'
-  },
-  {
-    pid: 14,
-    symbol: 'ETH-BNB',
-    tokenSymbol: 'ETH',
-    multiplier: '1X'
-  },
-  {
-    pid: 15,
-    symbol: 'BTCB-BNB',
-    tokenSymbol: 'BTC',
-    multiplier: '1X'
+    multiplier: '3X'
   },
   {
     pid: 11,
@@ -436,6 +527,66 @@ export const forShowPools = [
     pid: 13,
     symbol: 'XVS-BNB',
     tokenSymbol: 'XVS',
+    multiplier: '1X'
+  },
+  {
+    pid: 14,
+    symbol: 'ETH-BNB',
+    tokenSymbol: 'ETH',
+    multiplier: '2X'
+  },
+  {
+    pid: 15,
+    symbol: 'BTCB-BNB',
+    tokenSymbol: 'BTC',
+    multiplier: '2X'
+  },
+  {
+    pid: 16,
+    symbol: 'ALPHA-BNB',
+    tokenSymbol: 'ALPHA',
+    multiplier: '1X'
+  },
+  {
+    pid: 17,
+    symbol: 'USDT-BNB',
+    tokenSymbol: 'USDT',
+    multiplier: '2X'
+  },
+  {
+    pid: 18,
+    symbol: 'XRP-BNB',
+    tokenSymbol: 'XRP',
+    multiplier: '2X'
+  },
+  {
+    pid: 19,
+    symbol: 'ATOM-BNB',
+    tokenSymbol: 'ATOM',
+    multiplier: '2X'
+  },
+  {
+    pid: 20,
+    symbol: 'YFII-BNB',
+    tokenSymbol: 'YFII',
+    multiplier: '1X'
+  },
+  {
+    pid: 21,
+    symbol: 'DAI-BNB',
+    tokenSymbol: 'DAI',
+    multiplier: '1X'
+  },
+  {
+    pid: 22,
+    symbol: 'XTZ-BNB',
+    tokenSymbol: 'XTZ',
+    multiplier: '1X'
+  },
+  {
+    pid: 23,
+    symbol: 'BCH-BNB',
+    tokenSymbol: 'BCH',
     multiplier: '1X'
   }
 ]

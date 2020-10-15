@@ -77,10 +77,7 @@ const Farm: React.FC = () => {
         <PageHeader
           icon={<img src={chef} height="90" />}
           title={TranslateString(322, 'Stake Cake, get SYRUP.')}
-          subtitle={TranslateString(
-            324,
-            'SYRUP holders proportionally split 25% of CAKE block emissions each day (10 CAKE per block), Rewards are distributed each block. SYRUP will also be used to for the PancakeSwap Lottery and general governance.',
-          )}
+          subtitle={'SYRUP holders proportionally split 25% of CAKE block emissions each day (10 CAKE per block), Rewards are distributed each block. SYRUP will also be used to for the PancakeSwap Lottery and general governance.'}
         />
         <Title>{TranslateString(326, '1 CAKE = 1 SYRUP')}</Title>
         <Title>{TranslateString(328, 'You can swap back anytime')}</Title>

@@ -19,6 +19,7 @@ import useAllStakedValue, {
 } from '../../../hooks/useAllStakedValue'
 import { getEarned, getMasterChefContract } from '../../../sushi/utils'
 import { bnToDec } from '../../../utils'
+import { TranslateString } from '../../../utils/translateTextHelpers'
 import { getBalanceNumber } from '../../../utils/formatBalance'
 import { forShowPools, BLOCKS_PER_YEAR } from '../../../sushi/lib/constants'
 

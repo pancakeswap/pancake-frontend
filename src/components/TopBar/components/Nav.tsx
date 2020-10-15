@@ -17,19 +17,12 @@ const Nav: React.FC = () => {
           <TranslatedText translationId={282}>SYRUP Pool</TranslatedText>
         </StyledLink>
         <StyledAbsoluteLink
-          href="https://exchange.pancakeswap.finance"
-          target="_blank"
+          href="https://pancakeswap.info"
         >
           <TranslatedText translationId={284}>Exchange</TranslatedText>
         </StyledAbsoluteLink>
         <StyledAbsoluteLink href="https://pancakeswap.info" target="_blank">
           Analytics
-        </StyledAbsoluteLink>
-        <StyledAbsoluteLink
-          href="https://voting.pancakeswap.finance"
-          target="_blank"
-        >
-          <TranslatedText translationId={288}>Voting</TranslatedText>
         </StyledAbsoluteLink>
         <StyledLink exact activeClassName="active" to="/lottery">
           <TranslatedText translationId={290}>Lottery</TranslatedText>

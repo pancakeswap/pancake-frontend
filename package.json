@@ -3,8 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@ethersproject/abi": "^5.0.7",
-    "@ethersproject/contracts": "^5.0.5",
     "@crowdin/crowdin-api-client": "^1.8.16",
     "@types/debounce": "^1.2.0",
     "@types/jest": "^26.0.9",
