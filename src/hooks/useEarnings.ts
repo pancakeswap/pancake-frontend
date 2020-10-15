@@ -12,7 +12,6 @@ const useEarnings = (pid: number) => {
   const [balance, setBalance] = useState(new BigNumber(0))
   const {
     account,
-    ethereum,
   }: { account: string; ethereum: provider } = useWallet()
   const sushi = useSushi()
   const masterChefContract = getMasterChefContract(sushi)
@@ -36,7 +35,6 @@ export const useSousEarnings = (sousId) => {
   const [balance, setBalance] = useState(new BigNumber(0))
   const {
     account,
-    ethereum,
   }: { account: string; ethereum: provider } = useWallet()
   const sushi = useSushi()
   const sousChefContract = getSousChefContract(sushi, sousId)
@@ -60,7 +58,6 @@ export const useSousLeftBlocks = (sousId) => {
   const [text, setText] = useState('')
   const {
     account,
-    ethereum,
   }: { account: string; ethereum: provider } = useWallet()
   const sushi = useSushi()
   const sousChefContract = getSousChefContract(sushi, sousId)

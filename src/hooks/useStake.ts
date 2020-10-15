@@ -31,7 +31,7 @@ export const useSousStake = (sousId) => {
 
   const handleStake = useCallback(
     async (amount: string) => {
-      const txHash = await sousStake(
+      await sousStake(
         getSousChefContract(sushi, sousId),
         amount,
         account,

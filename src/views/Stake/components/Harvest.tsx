@@ -58,11 +58,6 @@ const StyledCardActions = styled.div`
   width: 100%;
 `
 
-const StyledSpacer = styled.div`
-  height: ${(props) => props.theme.spacing[4]}px;
-  width: ${(props) => props.theme.spacing[4]}px;
-`
-
 const StyledCardContentInner = styled.div`
   align-items: center;
   display: flex;

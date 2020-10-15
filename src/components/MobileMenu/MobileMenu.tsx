@@ -115,17 +115,6 @@ const slideIn = keyframes`
   }
 `
 
-const StyledAccountButtonWrapper = styled.div`
-  align-items: center;
-  display: flex;
-  justify-content: flex-end;
-  width: 156px;
-  @media (max-width: 400px) {
-    justify-content: center;
-    width: auto;
-  }
-`
-
 const Wrapper = styled.div`
   margin-bottom: 2em;
 `

@@ -3,16 +3,13 @@ import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import chef from '../../assets/img/syrup.png'
 
-import { useParams } from 'react-router-dom'
 import { useWallet } from 'use-wallet'
 import { provider } from 'web3-core'
 
 import Spacer from '../../components/Spacer'
 import Page from '../../components/Page'
-import Button from '../../components/Button'
 import PageHeader from '../../components/PageHeader'
 import { getContract } from '../../utils/erc20'
-import useFarms from '../../hooks/useFarms'
 import useSushi from '../../hooks/useSushi'
 import useAllStakedValue from '../../hooks/useAllStakedValue'
 import { getPools } from '../../sushi/utils'
@@ -140,15 +137,6 @@ const Farm: React.FC = () => {
 const StyledSpacer = styled.div`
   height: ${(props) => props.theme.spacing[4]}px;
   width: ${(props) => props.theme.spacing[4]}px;
-`
-
-const Title = styled.div`
-  color: ${(props) => props.theme.colors.blue[100]};
-  font-size: 20px;
-  width: 50vw;
-  text-align: center;
-  font-weight: 900;
-  line-height: 2rem;
 `
 
 const StyledFarm = styled.div`

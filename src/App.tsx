@@ -27,7 +27,6 @@ import Home from './views/Home'
 import Stake from './views/Stake'
 import Lottery from './views/Lottery'
 import Voting from './views/Voting'
-import Vision from './views/Vision'
 import Syrup from './views/Syrup'
 
 // components
