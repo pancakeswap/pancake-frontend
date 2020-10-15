@@ -5,7 +5,8 @@ import { useWallet } from 'use-wallet'
 import { provider } from 'web3-core'
 import { Contract } from 'web3-eth-contract'
 
-import { approve, getMasterChefContract, getSousChefContract } from '../sushi/utils'
+import { getSushiContract, approve, getMasterChefContract, getSousChefContract } from '../sushi/utils'
+import { getLotteryContract } from '../sushi/lotteryUtils'
 
 const useApprove = (lpContract: Contract) => {
   const { account }: { account: string; ethereum: provider } = useWallet()
@@ -37,6 +38,24 @@ export const useSousApprove = (lpContract: Contract, sousId) => {
       return false
     }
   }, [account, lpContract, sousChefContract])
+
+  return { onApprove: handleApprove }
+}
+
+export const useLotteryApprove = () => {
+  const { account }: { account: string; ethereum: provider } = useWallet()
+  const sushi = useSushi()
+  const lotteryContract = getLotteryContract(sushi)
+  const cakeContract = getSushiContract(sushi)
+
+  const handleApprove = useCallback(async () => {
+    try {
+      const tx = await approve(cakeContract, lotteryContract, account)
+      return tx
+    } catch (e) {
+      return false
+    }
+  }, [account, cakeContract, lotteryContract])
 
   return { onApprove: handleApprove }
 }

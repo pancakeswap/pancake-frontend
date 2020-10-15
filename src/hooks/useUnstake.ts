@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback } from 'react'
 
 import useSushi from './useSushi'
