@@ -11,40 +11,13 @@ import IconButton from '../../../components/IconButton'
 import { AddIcon } from '../../../components/icons'
 import Label from '../../../components/Label'
 import Value from '../../../components/Value'
-import useAllowance from '../../../hooks/useAllowance'
-import useApprove from '../../../hooks/useApprove'
 import useModal from '../../../hooks/useModal'
-import useStake from '../../../hooks/useStake'
-import useStakedBalance from '../../../hooks/useStakedBalance'
-import useTokenBalance from '../../../hooks/useTokenBalance'
-import useUnstake from '../../../hooks/useUnstake'
-import { getBalanceNumber } from '../../../utils/formatBalance'
-
 import WalletProviderModal from '../../../components/WalletProviderModal'
-import AccountModal from '../../../components/TopBar/components/AccountModal'
 import { TranslateString } from '../../../utils/translateTextHelpers'
-
-interface StakeProps {
-  lpContract: Contract
-  pid: number
-  tokenName: string
-}
+import BuyModal from "./BuyModal";
 
 const Ticket: React.FC = () => {
-  const [requestedApproval, setRequestedApproval] = useState(false)
   const { account } = useWallet()
-
-  // const allowance = useAllowance(lpContract)
-  // const {onApprove} = useApprove(lpContract)
-  //
-  // const tokenBalance = useTokenBalance(lpContract.options.address)
-  // const stakedBalance = useStakedBalance(pid)
-  //
-  // const {onStake} = useStake(pid)
-  // const {onUnstake} = useUnstake(pid)
-
-  const [onPresentAccountModal] = useModal(<AccountModal />)
-
   const [onPresentWalletProviderModal] = useModal(
     <WalletProviderModal />,
     'provider',
@@ -52,6 +25,15 @@ const Ticket: React.FC = () => {
   const handleUnlockClick = useCallback(() => {
     onPresentWalletProviderModal()
   }, [onPresentWalletProviderModal])
+
+  const [onPresentBuy] = useModal(
+      <BuyModal
+          max={null}
+          onConfirm={null}
+          tokenName={'TICKET'}
+      />,
+  )
+
 
   return (
     <div style={{ margin: '5px', width: '400px' }}>
@@ -89,11 +71,6 @@ const StyledCardActions = styled.div`
   display: flex;
   justify-content: center;
   margin-top: ${(props) => props.theme.spacing[6]}px;
-  width: 100%;
-`
-
-const StyledActionSpacer = styled.div`
-  height: ${(props) => props.theme.spacing[4]}px;
   width: 100%;
 `
 
