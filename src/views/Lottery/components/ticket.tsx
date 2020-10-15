@@ -19,6 +19,8 @@ import {contractAddresses} from "../../../sushi/lib/constants";
 import useBuyLottery from "../../../hooks/useBuyLottery";
 import useTickets, {useTotalClaim, useWinningNumbers} from "../../../hooks/useTickets";
 import BuyModal from "./BuyModal";
+import MyTicketsModal from "./MyTicketsModal";
+import {Link} from "react-feather";
 
 interface StakeProps {
     lpContract: Contract
@@ -47,6 +49,11 @@ const Ticket: React.FC = () => {
             tokenName={'CAKE'}
         />,
     )
+
+    const [onPresentMyTickets] = useModal(
+        <MyTicketsModal/>,
+    )
+
     const [onPresentWalletProviderModal] = useModal(
         <WalletProviderModal/>,
         'provider',
@@ -107,6 +114,7 @@ const Ticket: React.FC = () => {
                                 </>
                             ))}
                         </StyledCardActions>
+                        <MyTicketsP onClick={onPresentMyTickets}>View your tickets</MyTicketsP>
                     </StyledCardContentInner>
                 </CardContent>
             </Card>
@@ -126,9 +134,9 @@ const StyledCardActions = styled.div`
   width: 100%;
 `
 
-const StyledActionSpacer = styled.div`
-  height: ${(props) => props.theme.spacing[4]}px;
-  width: 100%;
+const MyTicketsP = styled.div`
+  margin-top: 1em;
+  color: ${(props) => props.theme.colors.secondary};
 `
 
 const StyledCardContentInner = styled.div`
