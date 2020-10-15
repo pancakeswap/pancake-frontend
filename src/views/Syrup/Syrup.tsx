@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/accessible-emoji */
 import React, { useEffect, useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
@@ -92,7 +93,7 @@ const Farm: React.FC = () => {
     <Page>
       <>
         <PageHeader
-          icon={<img src={chef} height="90" />}
+          icon={<img src={chef} height="90" alt="SYRUP POOL icon" />}
           title={TranslateString(336, 'SYRUP POOL')}
           subtitle={`${TranslateString(
             338,

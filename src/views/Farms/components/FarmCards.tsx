@@ -54,8 +54,8 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
   }, [onPresentWalletProviderModal])
 
   const realFarms = !removed
-    ? farms.filter((farm) => farm.pid !== 0 && farm.multiplier != '0X')
-    : farms.filter((farm) => farm.pid !== 0 && farm.multiplier == '0X')
+    ? farms.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
+    : farms.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X')
   const realStakedValue = stakedValue.slice(1)
   const bnbPrice = useBnbPrice()
   // console.log(bnbPrice)
@@ -66,7 +66,7 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
       // if(farm.pid==8) {
       //   console.log(realStakedValue[i].poolWeight)
       // }
-      if (farm.pid == 11) {
+      if (farm.pid === 11) {
         apy = realStakedValue[i]
           ? sushiPrice
               .times(SUSHI_PER_BLOCK)

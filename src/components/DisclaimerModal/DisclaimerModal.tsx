@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/accessible-emoji */
 import React, { useCallback, useState, useMemo } from 'react'
 
 import Button from '../Button'

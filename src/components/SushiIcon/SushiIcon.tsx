@@ -7,6 +7,7 @@ interface SushiIconProps {
   v3?: boolean
 }
 
+/* eslint-disable jsx-a11y/accessible-emoji */
 const SushiIcon: React.FC<SushiIconProps> = ({ size = 36, v1, v2, v3 }) => (
   <span
     role="img"

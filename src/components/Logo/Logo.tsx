@@ -5,19 +5,18 @@ import chef2 from '../../assets/img/chef2.png'
 import chef3 from '../../assets/img/chef3.png'
 
 interface LogoProps {
-    isDark: boolean
+  isDark: boolean
 }
 
-const Logo: React.FC<LogoProps> = ({isDark}) => {
-
+const Logo: React.FC<LogoProps> = ({ isDark }) => {
   return (
     <StyledLogo to="/">
-      {
-        isDark ?
-        <img src={chef3} height="32" style={{ marginTop: -4 }} />
-        :
-        <img src={chef2} height="32" style={{ marginTop: -4 }} />
-      }
+      <img
+        src={isDark ? chef3 : chef2}
+        height="32"
+        style={{ marginTop: -4 }}
+        alt="PancakeSwap"
+      />
     </StyledLogo>
   )
 }

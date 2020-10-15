@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react'
 import CountUp from 'react-countup'
 
@@ -9,7 +10,11 @@ interface ValueProps {
   fontSize?: string | number
 }
 
-const Value: React.FC<ValueProps> = ({ value, decimals, fontSize='14px' }) => {
+const Value: React.FC<ValueProps> = ({
+  value,
+  decimals,
+  fontSize = '14px',
+}) => {
   const [start, updateStart] = useState(0)
   const [end, updateEnd] = useState(0)
 
@@ -21,7 +26,7 @@ const Value: React.FC<ValueProps> = ({ value, decimals, fontSize='14px' }) => {
   }, [value])
 
   return (
-    <StyledValue style={{ 'fontSize': fontSize }}>
+    <StyledValue style={{ fontSize: fontSize }}>
       {typeof value == 'string' ? (
         value
       ) : (

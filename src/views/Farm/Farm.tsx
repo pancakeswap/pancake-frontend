@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/accessible-emoji */
 import React, { useEffect, useMemo } from 'react'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
@@ -14,12 +15,7 @@ import Stake from './components/Stake'
 const Farm: React.FC = () => {
   const { farmId } = useParams()
 
-  const {
-    pid,
-    lpToken,
-    lpTokenAddress,
-    tokenSymbol,
-  } = useFarm(farmId) || {
+  const { pid, lpToken, lpTokenAddress, tokenSymbol } = useFarm(farmId) || {
     pid: 0,
     lpToken: '',
     lpTokenAddress: '',

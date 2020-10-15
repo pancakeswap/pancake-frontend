@@ -16,71 +16,94 @@ import Spacer from '../Spacer'
 
 import WalletCard from './components/WalletCard'
 
-
 const WalletProviderModal: React.FC<ModalProps> = ({ onDismiss }) => {
-    const { account, connect } = useWallet()
+  const { account, connect } = useWallet()
 
-    useEffect(() => {
-        if (account) {
-            onDismiss()
-        }
-    }, [account, onDismiss])
+  useEffect(() => {
+    if (account) {
+      onDismiss()
+    }
+  }, [account, onDismiss])
 
-    return (
-        <Modal>
-            <ModalTitle text="Select a wallet provider." />
-            <ModalContent>
-                <StyledWalletsWrapper>
-                    <StyledWalletCard>
-                        <WalletCard
-                            icon={<img src={metamaskLogo} style={{ height: 52 }} />}
-                            onConnect={() => {
-                                connect('injected')
-                                window.localStorage.setItem('accountStatus', '1')
-                            }}
-                            title="Metamask"
-                        />
-                    </StyledWalletCard>
-                    <Spacer size="sm" />
-                    <StyledWalletCard>
-                        <WalletCard
-                            icon={<img src={trustwalletLogo} style={{ height: 52 }} />}
-                            onConnect={() => {
-                                connect('injected')
-                                window.localStorage.setItem('accountStatus', '1')
-                            }}
-                            title="Trust Wallet"
-                        />
-                    </StyledWalletCard>
-                    <Spacer size="sm" />
-                    <StyledWalletCard>
-                        <WalletCard
-                            icon={<img src={tokenpocketLogo} style={{ height: 52 }} />}
-                            onConnect={() => {
-                                connect('injected')
-                                window.localStorage.setItem('accountStatus', '1')
-                            }}
-                            title="TokenPocket"
-                        />
-                    </StyledWalletCard>
-                    <Spacer size="sm" />
-                    <StyledWalletCard>
-                        <WalletCard
-                            icon={<img src={walletConnectLogo} style={{ height: 44 }} />}
-                            onConnect={() => {
-                                connect('walletconnect')
-                                window.localStorage.setItem('accountStatus', '1')
-                            }}
-                            title="WalletConnect"
-                        />
-                    </StyledWalletCard>
-                </StyledWalletsWrapper>
-            </ModalContent>
-            <ModalActions>
-                <Button text="Cancel" variant="secondary" onClick={onDismiss} />
-            </ModalActions>
-        </Modal>
-    )
+  return (
+    <Modal>
+      <ModalTitle text="Select a wallet provider." />
+      <ModalContent>
+        <StyledWalletsWrapper>
+          <StyledWalletCard>
+            <WalletCard
+              icon={
+                <img
+                  src={metamaskLogo}
+                  style={{ height: 52 }}
+                  alt="Metamask icon"
+                />
+              }
+              onConnect={() => {
+                connect('injected')
+                window.localStorage.setItem('accountStatus', '1')
+              }}
+              title="Metamask"
+            />
+          </StyledWalletCard>
+          <Spacer size="sm" />
+          <StyledWalletCard>
+            <WalletCard
+              icon={
+                <img
+                  src={trustwalletLogo}
+                  style={{ height: 52 }}
+                  alt="Trust Wallet icon"
+                />
+              }
+              onConnect={() => {
+                connect('injected')
+                window.localStorage.setItem('accountStatus', '1')
+              }}
+              title="Trust Wallet"
+            />
+          </StyledWalletCard>
+          <Spacer size="sm" />
+          <StyledWalletCard>
+            <WalletCard
+              icon={
+                <img
+                  src={tokenpocketLogo}
+                  style={{ height: 52 }}
+                  alt="TokenPocket icon"
+                />
+              }
+              onConnect={() => {
+                connect('injected')
+                window.localStorage.setItem('accountStatus', '1')
+              }}
+              title="TokenPocket"
+            />
+          </StyledWalletCard>
+          <Spacer size="sm" />
+          <StyledWalletCard>
+            <WalletCard
+              icon={
+                <img
+                  src={walletConnectLogo}
+                  style={{ height: 44 }}
+                  alt="WalletConnect icon"
+                />
+              }
+              onConnect={() => {
+                connect('walletconnect')
+                window.localStorage.setItem('accountStatus', '1')
+              }}
+              title="WalletConnect"
+            />
+          </StyledWalletCard>
+        </StyledWalletsWrapper>
+      </ModalContent>
+      <ModalActions>
+        <Button text="Cancel" variant="secondary" onClick={onDismiss} />
+      </ModalActions>
+    </Modal>
+  )
 }
 
 const StyledWalletsWrapper = styled.div`
