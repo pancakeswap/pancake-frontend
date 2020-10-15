@@ -27,11 +27,17 @@ import Home from './views/Home'
 import Stake from './views/Stake'
 import Lottery from './views/Lottery'
 import Voting from './views/Voting'
-import Vision from './views/Vision'
 import Syrup from './views/Syrup'
 
 // components
 import Web3ReactManager from './components/Web3ReactManager'
+
+const fileId = 8
+const apiKey = process.env.REACT_APP_CROWDIN_APIKEY
+const projectId = parseInt(process.env.REACT_APP_CROWDIN_PROJECTID)
+const credentials: Credentials = {
+  token: apiKey,
+}
 
 const App: React.FC = () => {
   const [isDark, setIsDark] = useTheme()
@@ -39,15 +45,6 @@ const App: React.FC = () => {
   const [selectedLanguage, setSelectedLanguage] = useState<any>(undefined)
   const [translatedLanguage, setTranslatedLanguage] = useState<any>(undefined)
   const [translations, setTranslations] = useState<Array<any>>([])
-
-  const apiKey = `${process.env.REACT_APP_CROWDIN_APIKEY}`
-  const projectId = parseInt(`${process.env.REACT_APP_CROWDIN_PROJECTID}`)
-  const fileId = 8
-
-  const credentials: Credentials = {
-    token: apiKey,
-  }
-
   const stringTranslationsApi = new StringTranslations(credentials)
 
   const handleDismissMobileMenu = useCallback(() => {

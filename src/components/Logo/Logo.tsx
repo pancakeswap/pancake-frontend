@@ -1,7 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import useTheme from '../../hooks/useTheme'
 import chef2 from '../../assets/img/chef2.png'
 import chef3 from '../../assets/img/chef3.png'
 
@@ -32,22 +31,6 @@ const StyledLogo = styled(Link)`
   min-width: 44px;
   padding: 0;
   text-decoration: none;
-`
-
-const StyledText = styled.span`
-  color: ${(props) => props.theme.colors.primary};
-  font-family: 'Reem Kufi', sans-serif;
-  font-size: 20px;
-  font-weight: 700;
-  letter-spacing: 0.03em;
-  margin-left: ${(props) => props.theme.spacing[2]}px;
-  @media (max-width: 400px) {
-    display: none;
-  }
-`
-
-const MasterChefText = styled.span`
-  font-family: 'Kaushan Script', sans-serif;
 `
 
 export default Logo

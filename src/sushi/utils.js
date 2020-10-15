@@ -1,18 +1,18 @@
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
-import {sousChefTeam} from './lib/constants'
+import { sousChefTeam } from './lib/constants'
 
 BigNumber.config({
   EXPONENTIAL_AT: 1000,
   DECIMAL_PLACES: 80,
 })
 
-const GAS_LIMIT = {
-  STAKING: {
-    DEFAULT: 200000,
-    SNX: 850000,
-  },
-}
+// const GAS_LIMIT = {
+//   STAKING: {
+//     DEFAULT: 200000,
+//     SNX: 850000,
+//   },
+// }
 
 export const getMasterChefAddress = (sushi) => {
   return sushi && sushi.masterChefAddress
@@ -41,7 +41,12 @@ export const getSushiContract = (sushi) => {
   return sushi && sushi.contracts && sushi.contracts.sushi
 }
 export const getSousChefContract = (sushi, sousId) => {
-  return sushi && sushi.contracts && sushi.contracts.sousChefs.filter(chef => chef.sousId === sousId)[0]?.sousContract
+  return (
+    sushi &&
+    sushi.contracts &&
+    sushi.contracts.sousChefs.filter((chef) => chef.sousId === sousId)[0]
+      ?.sousContract
+  )
 }
 
 export const getFarms = (sushi) => {
@@ -76,29 +81,29 @@ export const getFarms = (sushi) => {
     : []
 }
 
-export const getPools = (sushi)  => {
+export const getPools = (sushi) => {
   const pools = sushi
     ? sushi.contracts.sousChefs.map(
-      ({
-        sousId,
-        sousContract,
-        tokenPerBlock,
-        contractAddress,
-        tokenName,
-        projectLink,
-        harvest
-      }) => ({
-        sousId,
-        sousContract,
-        tokenPerBlock,
-        contractAddress,
-        tokenName,
-        projectLink,
-        harvest
-      }),
-    )
-  : [];
-  if(pools.length ==0) return sousChefTeam;
+        ({
+          sousId,
+          sousContract,
+          tokenPerBlock,
+          contractAddress,
+          tokenName,
+          projectLink,
+          harvest,
+        }) => ({
+          sousId,
+          sousContract,
+          tokenPerBlock,
+          contractAddress,
+          tokenName,
+          projectLink,
+          harvest,
+        }),
+      )
+    : []
+  if (pools.length === 0) return sousChefTeam
 
   return pools
 }
@@ -121,11 +126,8 @@ export const getSousEarned = async (sousChefContract, account) => {
 
 export const getTotalStaked = async (sushi, sousChefContract) => {
   const syrup = await getSyrupContract(sushi)
-  return syrup.methods
-    .balanceOf(sousChefContract.options.address)
-    .call()
+  return syrup.methods.balanceOf(sousChefContract.options.address).call()
 }
-
 
 export const getTotalLPWethValue = async (
   masterChefContract,
@@ -133,7 +135,7 @@ export const getTotalLPWethValue = async (
   lpContract,
   tokenContract,
   pid,
-  tokenSymbol
+  tokenSymbol,
 ) => {
   const tokenAmountWholeLP = await tokenContract.methods
     .balanceOf(lpContract.options.address)
@@ -188,7 +190,7 @@ export const getSushiSupply = async (sushi) => {
 }
 
 export const stake = async (masterChefContract, pid, amount, account) => {
-  if(pid ===0) {
+  if (pid === 0) {
     return masterChefContract.methods
       .enterStaking(
         new BigNumber(amount).times(new BigNumber(10).pow(18)).toString(),
@@ -213,18 +215,15 @@ export const stake = async (masterChefContract, pid, amount, account) => {
 
 export const sousStake = async (sousChefContract, amount, account) => {
   return sousChefContract.methods
-    .deposit(
-      new BigNumber(amount).times(new BigNumber(10).pow(18)).toString(),
-    )
+    .deposit(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
     .send({ from: account })
     .on('transactionHash', (tx) => {
       return tx.transactionHash
     })
 }
 
-
 export const unstake = async (masterChefContract, pid, amount, account) => {
-  if(pid ===0) {
+  if (pid === 0) {
     return masterChefContract.methods
       .leaveStaking(
         new BigNumber(amount).times(new BigNumber(10).pow(18)).toString(),
@@ -249,9 +248,7 @@ export const unstake = async (masterChefContract, pid, amount, account) => {
 
 export const sousUnstake = async (sousChefContract, amount, account) => {
   return sousChefContract.methods
-    .withdraw(
-      new BigNumber(amount).times(new BigNumber(10).pow(18)).toString(),
-    )
+    .withdraw(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
     .send({ from: account })
     .on('transactionHash', (tx) => {
       console.log(tx)
@@ -260,7 +257,7 @@ export const sousUnstake = async (sousChefContract, amount, account) => {
 }
 
 export const harvest = async (masterChefContract, pid, account) => {
-  if(pid ===0) {
+  if (pid === 0) {
     return masterChefContract.methods
       .leaveStaking('0')
       .send({ from: account })
@@ -298,12 +295,13 @@ export const getStaked = async (masterChefContract, pid, account) => {
 
 export const getSousStaked = async (sousChefContract, account) => {
   try {
-    console.log(sousChefContract._address, await sousChefContract.methods.userInfo(account).call())
-    const { amount } = await sousChefContract.methods
-      .userInfo(account)
-      .call()
+    console.log(
+      sousChefContract._address,
+      await sousChefContract.methods.userInfo(account).call(),
+    )
+    const { amount } = await sousChefContract.methods.userInfo(account).call()
     return new BigNumber(amount)
-  } catch(err) {
+  } catch (err) {
     console.log(err)
     return new BigNumber(0)
   }
@@ -311,9 +309,7 @@ export const getSousStaked = async (sousChefContract, account) => {
 
 export const getSousStartBlock = async (sousChefContract) => {
   try {
-    const startBlock = await sousChefContract.methods
-      .startBlock()
-      .call()
+    const startBlock = await sousChefContract.methods.startBlock().call()
     return startBlock
   } catch {
     return 0
@@ -321,9 +317,7 @@ export const getSousStartBlock = async (sousChefContract) => {
 }
 export const getSousEndBlock = async (sousChefContract) => {
   try {
-    const endBlcok = await sousChefContract.methods
-      .bonusEndBlock()
-      .call()
+    const endBlcok = await sousChefContract.methods.bonusEndBlock().call()
     return endBlcok
   } catch {
     return 0

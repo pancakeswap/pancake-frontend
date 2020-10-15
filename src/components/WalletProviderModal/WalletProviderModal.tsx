@@ -18,7 +18,7 @@ import WalletCard from './components/WalletCard'
 
 
 const WalletProviderModal: React.FC<ModalProps> = ({ onDismiss }) => {
-    const { account, connect, status } = useWallet()
+    const { account, connect } = useWallet()
 
     useEffect(() => {
         if (account) {

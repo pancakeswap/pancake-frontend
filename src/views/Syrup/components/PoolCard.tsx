@@ -6,7 +6,6 @@ import { Contract } from 'web3-eth-contract'
 import Button from '../../../components/Button'
 import HarvestButton from './HarvestButton'
 import Card from '../../../components/Card'
-import CardIcon from '../../../components/CardIcon'
 import IconButton from '../../../components/IconButton'
 import { AddIcon } from '../../../components/icons'
 import Label from '../../../components/Label'
@@ -17,13 +16,13 @@ import { useSousAllowance } from '../../../hooks/useAllowance'
 import { useSousApprove } from '../../../hooks/useApprove'
 import { useSousEarnings, useSousLeftBlocks } from '../../../hooks/useEarnings'
 import useModal from '../../../hooks/useModal'
-import useStake, { useSousStake } from '../../../hooks/useStake'
+import { useSousStake } from '../../../hooks/useStake'
 import {
   useSousStakedBalance,
   useSousTotalStaked,
 } from '../../../hooks/useStakedBalance'
 import useTokenBalance from '../../../hooks/useTokenBalance'
-import useUnstake, { useSousUnstake } from '../../../hooks/useUnstake'
+import { useSousUnstake } from '../../../hooks/useUnstake'
 import { getBalanceNumber } from '../../../utils/formatBalance'
 import { useSousReward } from '../../../hooks/useReward'
 
@@ -33,7 +32,6 @@ import WithdrawModal from './WithdrawModal'
 import CardContent from './CardContent'
 
 import WalletProviderModal from '../../../components/WalletProviderModal'
-import AccountModal from '../../../components/TopBar/components/AccountModal'
 import { TranslateString } from '../../../utils/translateTextHelpers'
 
 interface HarvestProps {
@@ -105,7 +103,6 @@ const PoolCard: React.FC<HarvestProps> = ({
     }
   }, [onApprove, setRequestedApproval])
 
-  const [onPresentAccountModal] = useModal(<AccountModal />)
   const [onPresentWalletProviderModal] = useModal(
     <WalletProviderModal />,
     'provider',
@@ -250,11 +247,6 @@ const StyledCardActions = styled.div`
 `
 
 const StyledActionSpacer = styled.div`
-  height: ${(props) => props.theme.spacing[4]}px;
-  width: ${(props) => props.theme.spacing[4]}px;
-`
-
-const StyledSpacer = styled.div`
   height: ${(props) => props.theme.spacing[4]}px;
   width: ${(props) => props.theme.spacing[4]}px;
 `
