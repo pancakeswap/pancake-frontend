@@ -54,7 +54,7 @@ const Ticket: React.FC = () => {
   }, [onPresentWalletProviderModal])
 
   return (
-    <div style={{ margin: '5px', width: '300px' }}>
+    <div style={{ margin: '5px', width: '400px' }}>
       <Card>
         <CardContent>
           <StyledCardContentInner>
