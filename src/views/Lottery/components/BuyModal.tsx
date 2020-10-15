@@ -4,7 +4,6 @@ import Button from '../../../components/Button'
 import Modal, {ModalProps} from '../../../components/Modal'
 import ModalActions from '../../../components/ModalActions'
 import ModalTitle from '../../../components/ModalTitle'
-import TokenInput from '../../../components/TokenInput'
 import {getFullDisplayBalance} from '../../../utils/formatBalance'
 import styled from "styled-components";
 import TicketInput from "../../../components/TicketInput";
