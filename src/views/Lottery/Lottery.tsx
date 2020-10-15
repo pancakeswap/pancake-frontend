@@ -16,6 +16,9 @@ import Time from "./components/time";
 import Winning from "./components/winning";
 import {useTotalRewards} from '../../hooks/useTickets'
 import { getBalanceNumber } from '../../utils/formatBalance'
+import useTickets from '../../hooks/useTickets'
+
+import PurchasedTickets from './components/purchasedTickets'
 
 const Farm: React.FC = () => {
     const {account} = useWallet()
@@ -28,6 +31,7 @@ const Farm: React.FC = () => {
     const sushi = useSushi()
     const {ethereum} = useWallet()
     const {path} = useRouteMatch()
+    const tickets = useTickets()
 
     const lotteryPrizeAmount = useTotalRewards()
 
@@ -51,6 +55,7 @@ const Farm: React.FC = () => {
                 </StyledFarm>
                 <Time></Time>
                 <Winning></Winning>
+                <PurchasedTickets myTicketNumbers={tickets}/>
             </Page>
         </Switch>
     )

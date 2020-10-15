@@ -1,7 +1,12 @@
 import BigNumber from 'bignumber.js'
 import { Interface } from '@ethersproject/abi';
 import { Contract } from '@ethersproject/contracts';
+import { formatUnits } from '@ethersproject/units';
+import { useWallet } from 'use-wallet'
+
 import { abi as multicallAbi } from './lib/abi/Multicall.json';
+import lotteryAbi from './lib/abi/lottery.json';
+import { contractAddresses } from './lib/constants';
 
 export const MULTICALL = {
   1: '0xeefba1e63905ef1d7acba5a8513c70307c1ce441',
@@ -10,22 +15,51 @@ export const MULTICALL = {
 }
 
 export async function multicall(network, provider, abi, calls, options) {
-  const multi = new Contract(MULTICALL[network], multicallAbi, provider);
-  const itf = new Interface(abi);
-  try {
-    const [, response] = await multi.aggregate(
-      calls.map(call => [
-        call[0].toLowerCase(),
-        itf.encodeFunctionData(call[1], call[2])
-      ]),
-      options || {}
-    );
-    return response.map((call, i) =>
-      itf.decodeFunctionResult(calls[i][1], call)
-    );
-  } catch (e) {
-    return Promise.reject();
-  }
+  console.log('4=6')
+  console.log(MULTICALL[network])
+  console.log(multicallAbi)
+  console.log(provider)
+  // const multi = new Contract(MULTICALL[network], multicallAbi, provider);
+  // console.log(multi)
+  // const itf = new Interface(abi);
+  // try {
+  //   console.log('4=7')
+  //   const [, response] = await multi.aggregate(
+  //     calls.map(call => [
+  //       call[0].toLowerCase(),
+  //       itf.encodeFunctionData(call[1], call[2])
+  //     ]),
+  //     options || {}
+  //   );
+  //   console.log(response)
+  //   return response.map((call, i) =>
+  //     itf.decodeFunctionResult(calls[i][1], call)
+  //   );
+  // } catch (e) {
+  //   console.error(e)
+  //   return Promise.reject();
+  // }
+}
+
+export const multiBuy = async (network, provider, ticketNumbers) => {
+  console.log('3')
+  const response = await multicall(
+    network,
+    provider,
+    lotteryAbi,
+    ticketNumbers.map((nm) => [
+      contractAddresses.lottery[network],
+      'buy',
+      [nm]
+    ])
+  )
+  console.log('4', response)
+  return Object.fromEntries(
+    response.map((value, i) => [
+      ticketNumbers[i],
+      parseFloat(formatUnits(value.toString(), 18))
+    ])
+  );
 }
 
 export const getLotteryContract = (sushi) => {

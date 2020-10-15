@@ -14,14 +14,17 @@ import { useLotteryAllowance } from '../../../hooks/useAllowance'
 import { useLotteryApprove } from '../../../hooks/useApprove'
 import useTickets, {useWinningNumbers, useTotalClaim} from '../../../hooks/useTickets'
 import useModal from '../../../hooks/useModal'
+import useSushi from '../../../hooks/useSushi'
+import {getSushiAddress} from '../../../sushi/utils'
 import useStakedBalance from '../../../hooks/useStakedBalance'
 import useTokenBalance from '../../../hooks/useTokenBalance'
 import useUnstake from '../../../hooks/useUnstake'
 import {getBalanceNumber} from '../../../utils/formatBalance'
-import useBuyLottery from '../../../hooks/useBuyLottery'
+import useBuyLottery, {useMultiBuyLottery} from '../../../hooks/useBuyLottery'
 
 import WalletProviderModal from '../../../components/WalletProviderModal'
 import AccountModal from '../../../components/TopBar/components/AccountModal'
+import BuyModal from './buyModal'
 
 interface StakeProps {
     lpContract: Contract
@@ -31,11 +34,14 @@ interface StakeProps {
 
 const Ticket: React.FC = () => {
     const [requestedApproval, setRequestedApproval] = useState(false)
-    const [requesteBuy, setRequestedBuy] = useState(false)
     const {account} = useWallet()
 
     const allowance = useLotteryAllowance()
     const {onApprove} = useLotteryApprove()
+
+    const sushi = useSushi()
+    const sushiBalance = useTokenBalance(getSushiAddress(sushi))
+
     //
     // const tokenBalance = useTokenBalance(lpContract.options.address)
     // const stakedBalance = useStakedBalance(pid)
@@ -48,11 +54,11 @@ const Ticket: React.FC = () => {
     // )
 
     // TEMP example
-    const { onBuy } = useBuyLottery()
     const tickets = useTickets()
     const winNumbers = useWinningNumbers()
     const claimAmount = useTotalClaim()
-    console.log(claimAmount)
+
+
 
     const handleApprove = useCallback(async () => {
       try {
@@ -67,18 +73,13 @@ const Ticket: React.FC = () => {
       }
     }, [onApprove, setRequestedApproval])
 
-    const handleBuy = useCallback(async () => {
-      try {
-        setRequestedBuy(true)
-        const txHash = await onBuy('5', [3,5,1,4])
-        // user rejected tx or didn't go thru
-        if (txHash) {
-          setRequestedBuy(false)
-        }
-      } catch (e) {
-        console.log(e)
-      }
-    }, [onBuy, setRequestedBuy])
+    const [onPresentBuy] = useModal(
+      <BuyModal
+        max={sushiBalance}
+        onConfirm={()=>{}}
+        tokenName={'sss'}
+      />,
+    )
 
     const [onPresentAccountModal] = useModal(<AccountModal/>)
     const [onPresentWalletProviderModal] = useModal(
@@ -109,23 +110,13 @@ const Ticket: React.FC = () => {
                               />
                             ) : (
                               <>
-                                {/*TODO: add modal to select the numbers*/}
-                                <Button disabled={requesteBuy || winNumbers[0]!==0} onClick={handleBuy} size="md" text={requesteBuy ? 'Buying...': 'Buy ticket'}/>
+                                <Button disabled={winNumbers[0]!==0} onClick={onPresentBuy} size="md" text={'Buy ticket'}/>
                               </>
                             ))}
                         </StyledCardActions>
                     </StyledCardContentInner>
                 </CardContent>
             </Card>
-            {/*TODO: improve the style*/}
-            <div>
-              <p>your  tickets:</p>
-              {tickets.map((numbers, index)=>
-                <div key={index}>
-                {numbers.map((i,j)=><span  key={j}>{i} </span>)}
-                </div>
-              )}
-            </div>
         </div>
     )
 }

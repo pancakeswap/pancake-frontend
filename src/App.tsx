@@ -82,9 +82,9 @@ const Providers: React.FC<{ isDark: boolean }> = ({ isDark, children }) => {
   return (
     <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
       <UseWalletProvider
-        chainId={56}
+        chainId={97}
         connectors={{
-          walletconnect: { rpcUrl: 'https://bsc-dataseed.binance.org' }
+          walletconnect: { rpcUrl: 'https://data-seed-prebsc-1-s1.binance.org:8545' }
         }}
       >
         <BscProvider>

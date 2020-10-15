@@ -58,7 +58,7 @@ const Prize: React.FC = () => {
                         </StyledCardHeader>
                         <StyledCardActions>
                             {!account && <Button onClick={handleUnlockClick} size="md" text="Unlock Wallet"/>}
-                            {account && <Button onClick={null} size="md" text="Claim prizes"/>}
+                            {account && <Button disabled={getBalanceNumber(claimAmount) == 0} onClick={null} size="md" text="Claim prizes"/>}
                         </StyledCardActions>
                     </StyledCardContentInner>
                 </CardContent>

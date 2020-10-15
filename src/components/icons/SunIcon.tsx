@@ -11,9 +11,9 @@ const SunIcon: React.FC<IconProps> = ({ size = 20 }) => {
       fill="none"
       color="#F5F3F3"
       stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      // stroke-width="2"
+      // stroke-linecap="round"
+      // stroke-linejoin="round"
     >
       <circle cx="12" cy="12" r="5"></circle>
       <line x1="12" y1="1" x2="12" y2="3"></line>
