@@ -35,7 +35,6 @@ const WalletProviderModal: React.FC<ModalProps> = ({ onDismiss }) => {
               icon={
                 <img
                   src={metamaskLogo}
-                  style={{ height: 52 }}
                   alt="Metamask icon"
                 />
               }
@@ -52,7 +51,6 @@ const WalletProviderModal: React.FC<ModalProps> = ({ onDismiss }) => {
               icon={
                 <img
                   src={trustwalletLogo}
-                  style={{ height: 52 }}
                   alt="Trust Wallet icon"
                 />
               }
@@ -69,7 +67,6 @@ const WalletProviderModal: React.FC<ModalProps> = ({ onDismiss }) => {
               icon={
                 <img
                   src={tokenpocketLogo}
-                  style={{ height: 52 }}
                   alt="TokenPocket icon"
                 />
               }
@@ -86,7 +83,6 @@ const WalletProviderModal: React.FC<ModalProps> = ({ onDismiss }) => {
               icon={
                 <img
                   src={walletConnectLogo}
-                  style={{ height: 44 }}
                   alt="WalletConnect icon"
                 />
               }
