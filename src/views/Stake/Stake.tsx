@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/accessible-emoji */
 import React, { useEffect, useMemo } from 'react'
 import styled from 'styled-components'
 import chef from '../../assets/img/cakecat.png'
@@ -25,11 +26,7 @@ const Farm: React.FC = () => {
     tokenSymbol: '',
   }
 
-  const {
-    pid,
-    lpToken,
-    lpTokenAddress,
-  } = farmInfo
+  const { pid, lpToken, lpTokenAddress } = farmInfo
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -45,9 +42,11 @@ const Farm: React.FC = () => {
     <Page>
       <>
         <PageHeader
-          icon={<img src={chef} height="90" />}
+          icon={<img src={chef} height="90" alt="Stake Cake, get SYRUP icon" />}
           title={TranslateString(322, 'Stake Cake, get SYRUP.')}
-          subtitle={'SYRUP holders proportionally split 25% of CAKE block emissions each day (10 CAKE per block), Rewards are distributed each block. SYRUP will also be used to for the PancakeSwap Lottery and general governance.'}
+          subtitle={
+            'SYRUP holders proportionally split 25% of CAKE block emissions each day (10 CAKE per block), Rewards are distributed each block. SYRUP will also be used to for the PancakeSwap Lottery and general governance.'
+          }
         />
         <Title>{TranslateString(326, '1 CAKE = 1 SYRUP')}</Title>
         <Title>{TranslateString(328, 'You can swap back anytime')}</Title>

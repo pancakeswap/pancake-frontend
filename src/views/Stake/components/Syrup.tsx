@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/accessible-emoji */
 import React from 'react'
 import styled from 'styled-components'
 import Button from '../../../components/Button'
@@ -11,8 +12,6 @@ import useTokenBalance from '../../../hooks/useTokenBalance'
 
 import { getBalanceNumber } from '../../../utils/formatBalance'
 import { getSyrupAddress } from '../../../sushi/utils'
-
-
 
 const Harvest: React.FC = () => {
   const sushi = useSushi()
@@ -29,10 +28,7 @@ const Harvest: React.FC = () => {
             <Label text="SYRUP" />
           </StyledCardHeader>
           <StyledCardActions>
-            <Button
-              disabled={true}
-              text={'Vote'}
-            />
+            <Button disabled={true} text={'Vote'} />
           </StyledCardActions>
         </StyledCardContentInner>
       </CardContent>

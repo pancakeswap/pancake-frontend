@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 import { TranslationsContext } from '../contexts/Localisation/translationsContext'
 
-const variableRegex = /\%(.*?)\%/
+const variableRegex = /%(.*?)%/
 
 const replaceDynamicString = (foundTranslation: string, fallback: string) => {
   const stringToReplace = variableRegex.exec(foundTranslation)[0]

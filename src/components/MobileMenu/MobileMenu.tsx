@@ -1,10 +1,10 @@
+/* eslint-disable jsx-a11y/accessible-emoji */
 import React from 'react'
 import styled, { keyframes } from 'styled-components'
 
 import { NavLink } from 'react-router-dom'
 import AccountLink from '../TopBar/components/AccountLink'
 import { TranslateString } from '../../utils/translateTextHelpers'
-
 
 interface MobileMenuProps {
   onDismiss: () => void
