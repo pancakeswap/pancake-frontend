@@ -1,5 +1,13 @@
 import styled from "styled-components";
 
-const Button = styled.button``;
+export interface Props {
+  variant?: 'primary';
+}
+
+const Button = styled.button<Props>``;
+
+Button.defaultProps = {
+  variant: 'primary',
+};
 
 export default Button;
