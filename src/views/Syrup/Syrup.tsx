@@ -104,10 +104,10 @@ const Farm: React.FC = () => {
         <StyledFarm>
           <StyledCardsWrapper>
             {renderPools.map((pool, index) => (
-              <>
+              <React.Fragment key={pool.tokenName}>
                 <SyrupRow {...pool} />
                 {(index % 3 === 0 || index % 3 === 1) && <StyledSpacer />}
-              </>
+              </React.Fragment>
             ))}
             <StyledCardWrapper>
               <Coming />
