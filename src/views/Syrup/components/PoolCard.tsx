@@ -184,7 +184,10 @@ const PoolCard: React.FC<HarvestProps> = ({
             <p>
               <div>
                 {TranslateString(352, 'APY')}:&nbsp;
-                <SmallValue value={apy} />
+                {
+                  leftBlockText === 'finished'? '-' : <SmallValue value={apy} />
+                }
+
               </div>
               {TranslateString(364, 'Total SYRUP staked')}:{' '}
               <SmallValue value={getBalanceNumber(totalStaked)} /> <br />

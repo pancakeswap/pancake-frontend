@@ -298,7 +298,6 @@ export const getStaked = async (masterChefContract, pid, account) => {
 
 export const getSousStaked = async (sousChefContract, account) => {
   try {
-    console.log(sousChefContract._address, await sousChefContract.methods.userInfo(account).call())
     const { amount } = await sousChefContract.methods
       .userInfo(account)
       .call()
