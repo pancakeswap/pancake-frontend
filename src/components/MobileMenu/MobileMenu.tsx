@@ -47,6 +47,14 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ onDismiss, visible }) => {
           >
             🍯 {TranslateString(282, 'SYRUP Pool')}
           </StyledLink>
+          <StyledLink
+            exact
+            activeClassName="active"
+            to="/lottery"
+            onClick={onDismiss}
+          >
+            🎟 Lottery
+          </StyledLink>
           <a
             style={{
               paddingTop: '0.6em',

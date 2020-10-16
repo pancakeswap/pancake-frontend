@@ -154,7 +154,7 @@ const PoolCard: React.FC<HarvestProps> = ({
             {account &&
               (!allowance.toNumber() && stakedBalance.toNumber() == 0 ? (
                 <Button
-                  disabled={leftBlockText === 'finished' || requestedApproval}
+                  disabled={leftBlockText==='finished' ||  requestedApproval}
                   onClick={handleApprove}
                   text={`Approve SYRUP`}
                 />

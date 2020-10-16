@@ -5,9 +5,10 @@ interface PurchasedTicketsProps {
   myTicketNumbers: Array<any>
 }
 
-const PurchasedTickets: React.FC<PurchasedTicketsProps> = ({  myTicketNumbers }) => {
-    const listItems = myTicketNumbers.map((number) =>
-        <p>{number}</p>
+const PurchasedTickets: React.FC<PurchasedTicketsProps> = ({ myTicketNumbers }) => {
+
+    const listItems = myTicketNumbers.map((number, index) =>
+        <p key={index}>{number}</p>
     );
 
     return (
@@ -28,9 +29,6 @@ const TicketsList = styled.div`
   max-height: 400px;
   color: ${props => props.theme.colors.primary};
 `
-
-export default PurchasedTickets
-
 const Title = styled.div`
   color: ${(props) => props.theme.colors.secondary};
   font-size:20px;
@@ -38,3 +36,5 @@ const Title = styled.div`
   font-weight: 600;
   margin-top: 1em;
 `
+
+export default PurchasedTickets

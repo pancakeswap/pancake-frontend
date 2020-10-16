@@ -9,6 +9,8 @@ import {getFullDisplayBalance} from '../../../utils/formatBalance'
 import styled from "styled-components";
 import TicketInput from "../../../components/TicketInput";
 
+import useBuyLottery, { useMultiBuyLottery } from '../../../hooks/useBuyLottery'
+
 interface BuyModalProps extends ModalProps {
     max: BigNumber
     onConfirm: (amount: string, numbers: Array<number>) => void
@@ -23,6 +25,7 @@ const BuyModal: React.FC<BuyModalProps> = ({
                                                }) => {
     const [val, setVal] = useState('')
     const [pendingTx, setPendingTx] = useState(false)
+    const [requesteBuy, setRequestedBuy] = useState(false)
 
     const fullBalance = useMemo(() => {
         return getFullDisplayBalance(max)
@@ -34,6 +37,22 @@ const BuyModal: React.FC<BuyModalProps> = ({
         },
         [setVal],
     )
+
+    const { onMultiBuy } = useMultiBuyLottery()
+
+    const handleBuy = useCallback(async () => {
+      try {
+        console.log('ddd')
+        setRequestedBuy(true)
+        const txHash = await onMultiBuy('5', [3,5,1,4])
+        // user rejected tx or didn't go thru
+        if (txHash) {
+          setRequestedBuy(false)
+        }
+      } catch (e) {
+        console.log(e)
+      }
+    }, [onMultiBuy, setRequestedBuy])
 
     const handleSelectMax = useCallback(() => {
         setVal(fullBalance)
@@ -67,9 +86,9 @@ const BuyModal: React.FC<BuyModalProps> = ({
                     text={pendingTx ? 'Pending Confirmation' : 'Confirm'}
                     onClick={async () => {
                         setPendingTx(true)
-                        await onConfirm(val, [1, 2, 3, 4])
+                        await handleBuy()
                         setPendingTx(false)
-                        onDismiss()
+                        {/*onDismiss()*/}
                     }}
                 />
             </ModalActions>

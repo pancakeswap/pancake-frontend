@@ -7,22 +7,25 @@ import Button from '../../../components/Button'
 import Card from '../../../components/Card'
 import CardContent from '../../../components/CardContent'
 import CardIcon from '../../../components/CardIcon'
-import IconButton from '../../../components/IconButton'
-import { AddIcon } from '../../../components/icons'
 import Label from '../../../components/Label'
 import Value from '../../../components/Value'
-import useAllowance from '../../../hooks/useAllowance'
-import useApprove from '../../../hooks/useApprove'
+
+import { useLotteryAllowance } from '../../../hooks/useAllowance'
+import { useLotteryApprove } from '../../../hooks/useApprove'
+import useTickets, {useWinningNumbers, useTotalClaim} from '../../../hooks/useTickets'
 import useModal from '../../../hooks/useModal'
-import useStake from '../../../hooks/useStake'
+import useSushi from '../../../hooks/useSushi'
+import {getSushiAddress} from '../../../sushi/utils'
 import useStakedBalance from '../../../hooks/useStakedBalance'
 import useTokenBalance from '../../../hooks/useTokenBalance'
 import useUnstake from '../../../hooks/useUnstake'
-import { getBalanceNumber } from '../../../utils/formatBalance'
+import {getBalanceNumber} from '../../../utils/formatBalance'
+import useBuyLottery, {useMultiBuyLottery} from '../../../hooks/useBuyLottery'
 
 import WalletProviderModal from '../../../components/WalletProviderModal'
 import AccountModal from '../../../components/TopBar/components/AccountModal'
-import { TranslateString } from '../../../utils/translateTextHelpers'
+import BuyModal from './buyModal'
+
 
 interface StakeProps {
   lpContract: Contract
@@ -34,50 +37,94 @@ const Ticket: React.FC = () => {
   const [requestedApproval, setRequestedApproval] = useState(false)
   const { account } = useWallet()
 
-  // const allowance = useAllowance(lpContract)
-  // const {onApprove} = useApprove(lpContract)
-  //
-  // const tokenBalance = useTokenBalance(lpContract.options.address)
-  // const stakedBalance = useStakedBalance(pid)
-  //
-  // const {onStake} = useStake(pid)
-  // const {onUnstake} = useUnstake(pid)
+    const allowance = useLotteryAllowance()
+    const {onApprove} = useLotteryApprove()
 
-  const [onPresentAccountModal] = useModal(<AccountModal />)
+    const sushi = useSushi()
+    const sushiBalance = useTokenBalance(getSushiAddress(sushi))
 
-  const [onPresentWalletProviderModal] = useModal(
-    <WalletProviderModal />,
-    'provider',
-  )
-  const handleUnlockClick = useCallback(() => {
-    onPresentWalletProviderModal()
-  }, [onPresentWalletProviderModal])
+    //
+    // const tokenBalance = useTokenBalance(lpContract.options.address)
+    // const stakedBalance = useStakedBalance(pid)
+    //
+    // const {onStake} = useStake(pid)
+    // const {onUnstake} = useUnstake(pid)
 
-  return (
-    <div style={{ margin: '5px', width: '300px' }}>
-      <Card>
-        <CardContent>
-          <StyledCardContentInner>
-            <StyledCardHeader>
-              <CardIcon>🎟</CardIcon>
-              <Value value={0} decimals={0} />
-              <Label text={`Your total tickets for this round`} />
-            </StyledCardHeader>
-            <StyledCardActions>
-              {!account && (
-                <Button
-                  onClick={handleUnlockClick}
-                  size="md"
-                  text={TranslateString(292, 'Unlock Wallet')}
-                />
-              )}
-              {account && <Button onClick={null} size="md" text="Buy ticket" />}
-            </StyledCardActions>
-          </StyledCardContentInner>
-        </CardContent>
-      </Card>
-    </div>
-  )
+    // TODO:
+    // const [onPresentBuy] = useModal(
+    // )
+
+    // TEMP example
+    const tickets = useTickets()
+    const winNumbers = useWinningNumbers()
+    const claimAmount = useTotalClaim()
+
+
+
+    const handleApprove = useCallback(async () => {
+      try {
+        setRequestedApproval(true)
+        const txHash = await onApprove()
+        // user rejected tx or didn't go thru
+        if (!txHash) {
+          setRequestedApproval(false)
+        }
+      } catch (e) {
+        console.log(e)
+      }
+    }, [onApprove, setRequestedApproval])
+
+    const [onPresentBuy] = useModal(
+      <BuyModal
+        max={sushiBalance}
+        onConfirm={()=>{}}
+        tokenName={'sss'}
+      />,
+    )
+
+    const [onPresentAccountModal] = useModal(<AccountModal/>)
+    const [onPresentWalletProviderModal] = useModal(
+        <WalletProviderModal/>,
+        'provider',
+    )
+    const handleUnlockClick = useCallback(() => {
+        onPresentWalletProviderModal()
+    }, [onPresentWalletProviderModal])
+
+    return (
+        <div style={{margin: '5px', width: '300px'}}>
+            <Card>
+                <CardContent>
+                    <StyledCardContentInner>
+                        <StyledCardHeader>
+                            <CardIcon>🎟</CardIcon>
+                            <Value value={tickets.length} decimals={0}/>
+                            <Label text={`Your total tickets for this round`}/>
+                        </StyledCardHeader>
+                        <StyledCardActions>
+                        <Button
+                          disabled={true}
+                          text={`Coming Soon`}
+                        />
+{/*                            {!account && <Button onClick={handleUnlockClick} size="md" text="Unlock Wallet"/>}
+                            { account && (!allowance.toNumber() ? (
+                              <Button
+                                disabled={requestedApproval}
+                                onClick={handleApprove}
+                                text={`Approve CAKE`}
+                              />
+                            ) : (
+                              <>
+                                <Button disabled={winNumbers[0]!==0} onClick={onPresentBuy} size="md" text={'Buy ticket'}/>
+                              </>
+                            ))}*/}
+                        </StyledCardActions>
+                    </StyledCardContentInner>
+                </CardContent>
+            </Card>
+        </div>
+    )
+
 }
 
 const StyledCardHeader = styled.div`
@@ -92,9 +139,9 @@ const StyledCardActions = styled.div`
   width: 100%;
 `
 
-const StyledActionSpacer = styled.div`
-  height: ${(props) => props.theme.spacing[4]}px;
-  width: 100%;
+const MyTicketsP = styled.div`
+  margin-top: 1em;
+  color: ${(props) => props.theme.colors.secondary};
 `
 
 const StyledCardContentInner = styled.div`
@@ -104,5 +151,4 @@ const StyledCardContentInner = styled.div`
   flex-direction: column;
   justify-content: space-between;
 `
-
 export default Ticket

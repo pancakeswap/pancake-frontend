@@ -20,6 +20,7 @@ import useTokenBalance from '../../../hooks/useTokenBalance'
 import useUnstake from '../../../hooks/useUnstake'
 import { getBalanceNumber } from '../../../utils/formatBalance'
 
+import {useTotalClaim} from '../../../hooks/useTickets'
 import WalletProviderModal from '../../../components/WalletProviderModal'
 import AccountModal from '../../../components/TopBar/components/AccountModal'
 import { TranslateString } from '../../../utils/translateTextHelpers'
@@ -42,6 +43,7 @@ const Prize: React.FC = () => {
   //
   // const {onStake} = useStake(pid)
   // const {onUnstake} = useUnstake(pid)
+  const claimAmount = useTotalClaim()
 
   const [onPresentAccountModal] = useModal(<AccountModal />)
 
@@ -53,34 +55,28 @@ const Prize: React.FC = () => {
     onPresentWalletProviderModal()
   }, [onPresentWalletProviderModal])
 
+
   return (
-    <div style={{ margin: '5px', width: '300px' }}>
-      <Card>
-        <CardContent>
-          <StyledCardContentInner>
-            <StyledCardHeader>
-              <CardIcon>🎁</CardIcon>
-              <Value value={0} />
-              <Label text={`CAKE prizes to be claimed!`} />
-            </StyledCardHeader>
-            <StyledCardActions>
-              {!account && (
-                <Button
-                  onClick={handleUnlockClick}
-                  size="md"
-                  text={TranslateString(292, 'Unlock Wallet')}
-                />
-              )}
-              {account && (
-                <Button onClick={null} size="md" text="Claim prizes" />
-              )}
-            </StyledCardActions>
-          </StyledCardContentInner>
-        </CardContent>
-      </Card>
-    </div>
+      <div style={{margin: '5px', width: '300px'}}>
+          <Card>
+              <CardContent>
+                  <StyledCardContentInner>
+                      <StyledCardHeader>
+                          <CardIcon>🎁</CardIcon>
+                          <Value value={getBalanceNumber(claimAmount)}/>
+                          <Label text={`CAKE prizes to be claimed!`}/>
+                      </StyledCardHeader>
+                      <StyledCardActions>
+                          {!account && <Button onClick={handleUnlockClick} size="md" text="Unlock Wallet"/>}
+                          {account && <Button disabled={getBalanceNumber(claimAmount) == 0} onClick={null} size="md" text="Claim prizes"/>}
+                      </StyledCardActions>
+                  </StyledCardContentInner>
+              </CardContent>
+          </Card>
+      </div>
   )
 }
+
 
 const StyledCardHeader = styled.div`
   align-items: center;
@@ -106,5 +102,7 @@ const StyledCardContentInner = styled.div`
   flex-direction: column;
   justify-content: space-between;
 `
+
+
 
 export default Prize

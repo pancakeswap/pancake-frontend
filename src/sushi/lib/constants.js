@@ -25,7 +25,7 @@ export const INTEGERS = {
 
 export const contractAddresses = {
   sushi: {
-    97: '0x9C21123D94b93361a29B2C2EFB3d5CD8B17e0A9e',
+    97: '0x43acC9A5E94905c7D31415EB410F3E666e5F1e9A',
     56:  '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82'
     // 56: '0xbbB2aaEB8c9dA72bb7faDB42A9c84AACF26974Fd'
   },
@@ -47,12 +47,16 @@ export const contractAddresses = {
     56: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c'
   },
   lottery: {
-    97: '0xCd1D9c9bD049C882A05353b7C646F423e1603Ce1',
+    97: '0x58096cB4D9fB098448Fc8F21FF8dea6D9Ca097D6',
     56:  '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82'
   },
   lotteryNFT: {
-    97: '0x329Ca0d33261d6F3144Ae7540e44b5044dDeb1bd',
+    97: '0x6691Aa11326338eb6fd63b1E424Ba0B637fb05C3',
     56:  '0x009cF7bC57584b7998236eff51b98A168DceA9B0'
+  },
+  mulltiCall: {
+    56: '0x1ee38d535d541c55c9dae27b12edf090c608e6fb',
+    97: '0x67ADCB4dF3931b0C5Da724058ADC2174a9844412'
   }
 }
 

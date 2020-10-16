@@ -8,6 +8,8 @@ import SousChefAbi from './abi/sousChef.json'
 import LotteryAbi from './abi/lottery.json'
 import LotteryNFTAbi from './abi/lotteryNft.json'
 import WETHAbi from './abi/weth.json'
+import MultiCallAbi from './abi/Multicall.json'
+
 import {
   contractAddresses,
   SUBTRACT_GAS_LIMIT,
@@ -33,6 +35,7 @@ export class Contracts {
     this.weth = new this.web3.eth.Contract(WETHAbi)
     this.lottery = new this.web3.eth.Contract(LotteryAbi)
     this.lotteryNft = new this.web3.eth.Contract(LotteryNFTAbi)
+    this.multicall = new this.web3.eth.Contract(MultiCallAbi)
 
     this.pools = supportedPools.map((pool) =>
       Object.assign(pool, {
@@ -68,6 +71,7 @@ export class Contracts {
     setProvider(this.sousChef, contractAddresses.sousChef[networkId])
     setProvider(this.lottery, contractAddresses.lottery[networkId])
     setProvider(this.lotteryNft, contractAddresses.lotteryNFT[networkId])
+    setProvider(this.multicall, contractAddresses.mulltiCall[networkId])
 
     this.pools.forEach(
       ({ lpContract, lpAddress, tokenContract, tokenAddress }) => {
@@ -90,6 +94,7 @@ export class Contracts {
     this.sousChef.options.from = account
     this.lottery.options.from = account
     this.lotteryNft.options.from = account
+    this.multicall.options.from = account
   }
 
   async callContractFunction(method, options) {

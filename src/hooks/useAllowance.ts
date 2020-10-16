@@ -7,7 +7,8 @@ import { provider } from 'web3-core'
 import { Contract } from 'web3-eth-contract'
 
 import { getAllowance } from '../utils/erc20'
-import { getMasterChefContract, getSousChefContract } from '../sushi/utils'
+import { getSushiContract, getMasterChefContract, getSousChefContract } from '../sushi/utils'
+import { getLotteryContract } from '../sushi/lotteryUtils'
 
 const useAllowance = (lpContract: Contract) => {
   const [allowance, setAllowance] = useState(new BigNumber(0))
@@ -57,6 +58,34 @@ export const useSousAllowance = (lpContract: Contract, sousId) => {
     let refreshInterval = setInterval(fetchAllowance, 10000)
     return () => clearInterval(refreshInterval)
   }, [account, sousChefContract, lpContract])
+
+  return allowance
+}
+
+
+export const useLotteryAllowance = () => {
+  const [allowance, setAllowance] = useState(new BigNumber(0))
+  const { account }: { account: string; ethereum: provider } = useWallet()
+  const sushi = useSushi()
+  const lotteryContract = getLotteryContract(sushi)
+  const cakeContract = getSushiContract(sushi)
+
+  const fetchAllowance = useCallback(async () => {
+    const allowance = await getAllowance(
+      cakeContract,
+      lotteryContract,
+      account,
+    )
+    setAllowance(new BigNumber(allowance))
+  }, [account, lotteryContract, cakeContract])
+
+  useEffect(() => {
+    if (account && cakeContract && cakeContract) {
+      fetchAllowance()
+    }
+    let refreshInterval = setInterval(fetchAllowance, 10000)
+    return () => clearInterval(refreshInterval)
+  }, [account, cakeContract, cakeContract])
 
   return allowance
 }
