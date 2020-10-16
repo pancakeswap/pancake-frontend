@@ -1,6 +1,5 @@
 import React from 'react'
 import { Route, Switch, useRouteMatch } from 'react-router-dom'
-import { useWallet } from 'use-wallet'
 import styled from 'styled-components'
 import { NavLink } from 'react-router-dom'
 
@@ -21,7 +20,6 @@ interface FarmsProps {
 
 const Farms: React.FC<FarmsProps> = ({ removed }) => {
   const { path } = useRouteMatch()
-  const { account } = useWallet()
   const [onPresentWalletProviderModal] = useModal(<WalletProviderModal />)
 
   return (
@@ -72,14 +70,6 @@ const Farms: React.FC<FarmsProps> = ({ removed }) => {
   )
 }
 
-const PriceTag = styled.div`
-  position: relative;
-  font-size: 18px;
-  color: #4bd4dc;
-  font-weight: 600;
-  top: -30px;
-`
-
 const StyledLink = styled(NavLink)`
   display: none;
   @media (max-width: 400px) {
@@ -107,15 +97,6 @@ const Title = styled.div`
   text-align: center;
   font-weight: 900;
   margin: 50px;
-`
-
-const Title2 = styled.div`
-  color: #27c7d5;
-  font-size: 20px;
-  width: 50vw;
-  text-align: center;
-  position: relative;
-  top: -40px;
 `
 
 export default Farms

@@ -51,7 +51,4 @@ const StyledModal = styled.div`
   width: 100%;
   min-height: 0;
 `
-
-const StyledModalContent = styled.div``
-
 export default Modal

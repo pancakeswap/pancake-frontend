@@ -78,14 +78,6 @@ const StyledTopBarInner = styled.div`
   max-width: ${(props) => props.theme.siteWidth}px;
   width: 100%;
 `
-const StyledNavWrapper = styled.div`
-  display: flex;
-  flex: 1;
-  justify-content: center;
-  @media (max-width: 400px) {
-    display: none;
-  }
-`
 
 const StyledAccountButtonWrapper = styled.div`
   @media (max-width: 850px) {

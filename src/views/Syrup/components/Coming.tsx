@@ -1,36 +1,14 @@
-import BigNumber from 'bignumber.js'
-import React, { useCallback, useState } from 'react'
+/* eslint-disable jsx-a11y/accessible-emoji */
+import React from 'react'
 import styled from 'styled-components'
-import { useWallet } from 'use-wallet'
-import { Contract } from 'web3-eth-contract'
 import Button from '../../../components/Button'
 import Card from '../../../components/Card'
 import CardIcon from '../../../components/CardIcon'
-import IconButton from '../../../components/IconButton'
-import { AddIcon } from '../../../components/icons'
 import Label from '../../../components/Label'
 import Value from '../../../components/Value'
 
-import { useSousAllowance } from '../../../hooks/useAllowance'
-import { useSousApprove } from '../../../hooks/useApprove'
-import { useSousEarnings, useSousLeftBlocks } from '../../../hooks/useEarnings'
-import useModal from '../../../hooks/useModal'
-import useStake, { useSousStake } from '../../../hooks/useStake'
-import {
-  useSousStakedBalance,
-  useSousTotalStaked,
-} from '../../../hooks/useStakedBalance'
-import useTokenBalance from '../../../hooks/useTokenBalance'
-import useUnstake, { useSousUnstake } from '../../../hooks/useUnstake'
-import { getBalanceNumber } from '../../../utils/formatBalance'
-
 import SmallValue from './Value'
-import DepositModal from './DepositModal'
-import WithdrawModal from './WithdrawModal'
 import CardContent from './CardContent'
-
-import WalletProviderModal from '../../../components/WalletProviderModal'
-import AccountModal from '../../../components/TopBar/components/AccountModal'
 import { TranslateString } from '../../../utils/translateTextHelpers'
 
 const Coming: React.FC = () => {
@@ -57,14 +35,14 @@ const Coming: React.FC = () => {
           <StyledLabel text="🍯Your Stake" value={0} />
 
           <StyledCardFooter>
-            <p>
+            <div>
               <div>
                 {TranslateString(352, 'APY')}:&nbsp;
                 <SmallValue value="-" />
               </div>
               {TranslateString(364, 'Total SYRUP staked')}: 0 <br />
               Farming starts in ??? Blocks
-            </p>
+            </div>
           </StyledCardFooter>
         </StyledCardContentInner>
       </CardContent>
@@ -96,12 +74,6 @@ const Title = styled.div`
   line-height: 70px;
 `
 
-const TokenLink = styled.a`
-  line-height: 70px;
-  font-size: 14px;
-  text-decoration: none;
-`
-
 const StyledCardHeader = styled.div`
   display: flex;
   justify-content: space-between;
@@ -117,16 +89,6 @@ const StyledCardActions = styled.div`
   width: 100%;
   padding: 10px 20px;
   box-sizing: border-box;
-`
-
-const StyledActionSpacer = styled.div`
-  height: ${(props) => props.theme.spacing[4]}px;
-  width: ${(props) => props.theme.spacing[4]}px;
-`
-
-const StyledSpacer = styled.div`
-  height: ${(props) => props.theme.spacing[4]}px;
-  width: ${(props) => props.theme.spacing[4]}px;
 `
 
 const StyledCardContentInner = styled.div`

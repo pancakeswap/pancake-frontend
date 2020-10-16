@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react'
+import React, { useCallback } from 'react'
 import styled from 'styled-components'
 import { useWallet } from 'use-wallet'
 import useModal from '../../../hooks/useModal'
@@ -17,7 +17,7 @@ const AccountLink: React.FC = (props) => {
     'provider',
   )
 
-  const { account, connect, status } = useWallet()
+  const { account } = useWallet()
 
   const cakePrice = useCakePrice()
 
@@ -62,10 +62,6 @@ const PriceTag = styled.div`
 `
 
 const StyledAccountButton = styled.div`
-  background: none !important;
-  border: none;
-`
-const StyledAccountButtonP = styled.div`
   background: none !important;
   border: none;
 `

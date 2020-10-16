@@ -1,17 +1,11 @@
+/* eslint-disable jsx-a11y/accessible-emoji */
 import React, { useEffect, useMemo } from 'react'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { useWallet } from 'use-wallet'
 import { provider } from 'web3-core'
-
-import PageHeader from '../../components/PageHeader'
 import Spacer from '../../components/Spacer'
-
 import useFarm from '../../hooks/useFarm'
-import useRedeem from '../../hooks/useRedeem'
-import useSushi from '../../hooks/useSushi'
-
-import { getMasterChefContract } from '../../sushi/utils'
 import { getContract } from '../../utils/erc20'
 import { TranslateString } from '../../utils/translateTextHelpers'
 
@@ -21,16 +15,7 @@ import Stake from './components/Stake'
 const Farm: React.FC = () => {
   const { farmId } = useParams()
 
-  const {
-    pid,
-    lpToken,
-    lpTokenAddress,
-    tokenAddress,
-    earnToken,
-    name,
-    icon,
-    tokenSymbol,
-  } = useFarm(farmId) || {
+  const { pid, lpToken, lpTokenAddress, tokenSymbol } = useFarm(farmId) || {
     pid: 0,
     lpToken: '',
     lpTokenAddress: '',
@@ -45,22 +30,11 @@ const Farm: React.FC = () => {
     window.scrollTo(0, 0)
   }, [])
 
-  const sushi = useSushi()
   const { ethereum } = useWallet()
 
   const lpContract = useMemo(() => {
     return getContract(ethereum as provider, lpTokenAddress)
   }, [ethereum, lpTokenAddress])
-
-  const { onRedeem } = useRedeem(getMasterChefContract(sushi))
-
-  const lpTokenName = useMemo(() => {
-    return lpToken.toUpperCase()
-  }, [lpToken])
-
-  const earnTokenName = useMemo(() => {
-    return earnToken.toUpperCase()
-  }, [earnToken])
 
   return (
     <>

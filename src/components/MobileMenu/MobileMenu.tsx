@@ -1,10 +1,10 @@
+/* eslint-disable jsx-a11y/accessible-emoji */
 import React from 'react'
 import styled, { keyframes } from 'styled-components'
 
 import { NavLink } from 'react-router-dom'
 import AccountLink from '../TopBar/components/AccountLink'
 import { TranslateString } from '../../utils/translateTextHelpers'
-
 
 interface MobileMenuProps {
   onDismiss: () => void
@@ -120,17 +120,6 @@ const slideIn = keyframes`
   }
   100% {
     transform: translateX(-100%);
-  }
-`
-
-const StyledAccountButtonWrapper = styled.div`
-  align-items: center;
-  display: flex;
-  justify-content: flex-end;
-  width: 156px;
-  @media (max-width: 400px) {
-    justify-content: center;
-    width: auto;
   }
 `
 

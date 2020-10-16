@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback } from 'react'
 
 import useSushi from './useSushi'
@@ -31,7 +32,7 @@ export const useSousStake = (sousId) => {
 
   const handleStake = useCallback(
     async (amount: string) => {
-      const txHash = await sousStake(
+      await sousStake(
         getSousChefContract(sushi, sousId),
         amount,
         account,

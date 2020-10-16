@@ -5,11 +5,6 @@ import Countdown, { CountdownRenderProps } from 'react-countdown'
 import styled, { keyframes } from 'styled-components'
 import { useWallet } from 'use-wallet'
 import Button from '../../../components/Button'
-import Card from '../../../components/Card'
-import CardContent from '../../../components/CardContent'
-import CardIcon from '../../../components/CardIcon'
-import Loader from '../../../components/Loader'
-import Spacer from '../../../components/Spacer'
 import { Farm } from '../../../contexts/Farms'
 import { useTokenBalance2, useBnbPrice } from '../../../hooks/useTokenBalance'
 import useFarms from '../../../hooks/useFarms'
@@ -20,11 +15,9 @@ import useAllStakedValue, {
 import { getEarned, getMasterChefContract } from '../../../sushi/utils'
 import { bnToDec } from '../../../utils'
 import { TranslateString } from '../../../utils/translateTextHelpers'
-import { getBalanceNumber } from '../../../utils/formatBalance'
 import { forShowPools, BLOCKS_PER_YEAR } from '../../../sushi/lib/constants'
 
 import useModal from '../../../hooks/useModal'
-import AccountModal from '../../../components/TopBar/components/AccountModal.tsx'
 import WalletProviderModal from '../../../components/WalletProviderModal'
 
 interface FarmWithStakedValue extends Farm, StakedValue {
@@ -37,7 +30,6 @@ interface FarmCardsProps {
 
 const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
   const [farms] = useFarms()
-  const { account } = useWallet()
   const stakedValue = useAllStakedValue()
 
   const sushiIndex = farms.findIndex(
@@ -52,7 +44,6 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
   // console.log(sushiPrice, stakedValue)
   const SUSHI_PER_BLOCK = new BigNumber(40)
 
-  const [onPresentAccountModal] = useModal(<AccountModal />)
   const [onPresentWalletProviderModal] = useModal(
     <WalletProviderModal />,
     'provider',
@@ -63,8 +54,8 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
   }, [onPresentWalletProviderModal])
 
   const realFarms = !removed
-    ? farms.filter((farm) => farm.pid !== 0 && farm.multiplier != '0X')
-    : farms.filter((farm) => farm.pid !== 0 && farm.multiplier == '0X')
+    ? farms.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
+    : farms.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X')
   const realStakedValue = stakedValue.slice(1)
   const bnbPrice = useBnbPrice()
   // console.log(bnbPrice)
@@ -75,7 +66,7 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
       // if(farm.pid==8) {
       //   console.log(realStakedValue[i].poolWeight)
       // }
-      if (farm.pid == 11) {
+      if (farm.pid === 11) {
         apy = realStakedValue[i]
           ? sushiPrice
               .times(SUSHI_PER_BLOCK)
@@ -231,12 +222,12 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, stakedValue, removed }) => {
     useBnbPrice() *
     2
 
-  if (farm.pid == 11) {
+  if (farm.pid === 11) {
     totalValue = totalValue1
   }
 
-  const [startTime, setStartTime] = useState(1600783200)
-  const [harvestable, setHarvestable] = useState(0)
+  const [startTime] = useState(1600783200)
+  const [, setHarvestable] = useState(0)
 
   // setStartTime(1600695000)
 
@@ -423,14 +414,6 @@ const StyledCardWrapper = styled.div`
   position: relative;
 `
 
-const StyledTitle = styled.h4`
-  color: ${(props) => props.theme.colors.primary};
-  font-size: 24px;
-  font-weight: 700;
-  margin: ${(props) => props.theme.spacing[2]}px 0 0;
-  padding: 0;
-`
-
 const StyledContent = styled.div`
   position: relative;
   align-items: center;
@@ -458,31 +441,6 @@ const StyledSpacer = styled.div`
 const StyledSpacer2 = styled.div`
   height: ${(props) => props.theme.spacing[1]}px;
   width: ${(props) => props.theme.spacing[1]}px;
-`
-
-const StyledDetails = styled.div`
-  margin-top: ${(props) => props.theme.spacing[2]}px;
-  text-align: center;
-`
-
-const StyledDetail = styled.div`
-  color: ${(props) => props.theme.colors.grey[500]};
-`
-
-const StyledInsight = styled.div`
-  display: flex;
-  justify-content: space-between;
-  box-sizing: border-box;
-  border-radius: 8px;
-  background: #fffdfa;
-  color: #aa9584;
-  width: 100%;
-  margin-top: 12px;
-  line-height: 32px;
-  font-size: 13px;
-  border: 1px solid #e6dcd5;
-  text-align: center;
-  padding: 0 12px;
 `
 
 export default FarmCards

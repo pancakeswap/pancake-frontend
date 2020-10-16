@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable jsx-a11y/accessible-emoji */
 import BigNumber from 'bignumber.js'
 import React, { useEffect, useState } from 'react'
 import CountUp from 'react-countup'
@@ -5,20 +7,16 @@ import styled from 'styled-components'
 import { useWallet } from 'use-wallet'
 import Card from '../../../components/Card'
 import CardContent from '../../../components/CardContent'
-import Label from '../../../components/Label'
 import Spacer from '../../../components/Spacer'
 import Value from '../../../components/Value'
 import SushiIcon from '../../../components/SushiIcon'
 import useAllEarnings from '../../../hooks/useAllEarnings'
-import useAllStakedValue from '../../../hooks/useAllStakedValue'
-import useFarms from '../../../hooks/useFarms'
 import useTokenBalance, {
   useTotalSupply,
   useBurnedBalance,
 } from '../../../hooks/useTokenBalance'
 import useSushi from '../../../hooks/useSushi'
 
-import Separator from '../../../components/Separator'
 import { getSushiAddress } from '../../../sushi/utils'
 import { getBalanceNumber } from '../../../utils/formatBalance'
 import TranslatedText from '../../../components/TranslatedText/TranslatedText'
@@ -35,16 +33,6 @@ const PendingRewards: React.FC = () => {
     sumEarning += new BigNumber(earning)
       .div(new BigNumber(10).pow(18))
       .toNumber()
-  }
-
-  const [farms] = useFarms()
-  const allStakedValue = useAllStakedValue()
-
-  if (allStakedValue && allStakedValue.length) {
-    const sumWeth = farms.reduce(
-      (c, { id }, i) => c + (allStakedValue[i].totalWethValue.toNumber() || 0),
-      0,
-    )
   }
 
   useEffect(() => {
@@ -81,7 +69,7 @@ const Balances: React.FC = () => {
   const totalSupply = useTotalSupply()
   const sushiBalance = useTokenBalance(getSushiAddress(sushi))
   const burnedBalance = useBurnedBalance(getSushiAddress(sushi))
-  const { account, ethereum }: { account: any; ethereum: any } = useWallet()
+  const { account }: { account: any; ethereum: any } = useWallet()
 
   return (
     <>

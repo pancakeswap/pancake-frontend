@@ -1,34 +1,20 @@
+/* eslint-disable jsx-a11y/accessible-emoji */
 import React, { useEffect, useMemo } from 'react'
 import styled from 'styled-components'
 import chef from '../../assets/img/cakecat.png'
-
-import { useParams } from 'react-router-dom'
 import { useWallet } from 'use-wallet'
 import { provider } from 'web3-core'
-
 import Spacer from '../../components/Spacer'
 import Page from '../../components/Page'
-import Button from '../../components/Button'
 import PageHeader from '../../components/PageHeader'
-import WalletProviderModal from '../../components/WalletProviderModal'
-
-import useModal from '../../hooks/useModal'
-
-import useSushi from '../../hooks/useSushi'
 import useFarm from '../../hooks/useFarm'
-import useRedeem from '../../hooks/useRedeem'
-
 import { getContract } from '../../utils/erc20'
-import { getMasterChefContract } from '../../sushi/utils'
-
 import Harvest from './components/Harvest'
 import Syrup from './components/Syrup'
 import Stake from './components/Stake'
 import { TranslateString } from '../../utils/translateTextHelpers'
 
 const Farm: React.FC = () => {
-  const { account } = useWallet()
-
   const farmInfo = useFarm('CAKE') || {
     pid: 0,
     lpToken: '',
@@ -40,44 +26,27 @@ const Farm: React.FC = () => {
     tokenSymbol: '',
   }
 
-  const {
-    pid,
-    lpToken,
-    lpTokenAddress,
-    tokenAddress,
-    earnToken,
-    name,
-    icon,
-    tokenSymbol,
-  } = farmInfo
+  const { pid, lpToken, lpTokenAddress } = farmInfo
 
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
 
-  const sushi = useSushi()
   const { ethereum } = useWallet()
 
   const lpContract = useMemo(() => {
     return getContract(ethereum as provider, lpTokenAddress)
   }, [ethereum, lpTokenAddress])
 
-  const { onRedeem } = useRedeem(getMasterChefContract(sushi))
-
-  const lpTokenName = useMemo(() => {
-    return lpToken.toUpperCase()
-  }, [lpToken])
-
-  const earnTokenName = useMemo(() => {
-    return earnToken.toUpperCase()
-  }, [earnToken])
   return (
     <Page>
       <>
         <PageHeader
-          icon={<img src={chef} height="90" />}
+          icon={<img src={chef} height="90" alt="Stake Cake, get SYRUP icon" />}
           title={TranslateString(322, 'Stake Cake, get SYRUP.')}
-          subtitle={'SYRUP holders proportionally split 25% of CAKE block emissions each day (10 CAKE per block), Rewards are distributed each block. SYRUP will also be used to for the PancakeSwap Lottery and general governance.'}
+          subtitle={
+            'SYRUP holders proportionally split 25% of CAKE block emissions each day (10 CAKE per block), Rewards are distributed each block. SYRUP will also be used to for the PancakeSwap Lottery and general governance.'
+          }
         />
         <Title>{TranslateString(326, '1 CAKE = 1 SYRUP')}</Title>
         <Title>{TranslateString(328, 'You can swap back anytime')}</Title>

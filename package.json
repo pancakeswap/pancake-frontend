@@ -31,6 +31,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
+    "format": "prettier --check 'src/**/*.{js,jsx,ts,tsx}'",
     "deploy": "yarn build && cp ./build/index.html ./build/200.html && surge ./build sushiswap.org"
   },
   "eslintConfig": {
@@ -53,10 +54,5 @@
     "@types/react-dom": "^16.9.8",
     "@types/react-router-dom": "^5.1.5",
     "@types/styled-components": "^5.1.2"
-  },
-  "prettier": {
-    "trailingComma": "all",
-    "semi": false,
-    "singleQuote": true
   }
 }

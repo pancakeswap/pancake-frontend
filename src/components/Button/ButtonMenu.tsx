@@ -32,7 +32,6 @@ const ButtonMenu: React.FC<ButtonProps> = ({
       buttonColor = '#fff'
       break
     case 'default':
-      buttonColor = '#fff'
     default:
       buttonColor = '#fff'
   }

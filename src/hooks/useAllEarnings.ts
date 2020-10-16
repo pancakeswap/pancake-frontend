@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback, useEffect, useState } from 'react'
 import { provider } from 'web3-core'
 
@@ -7,7 +8,6 @@ import { useWallet } from 'use-wallet'
 import { getEarned, getMasterChefContract, getFarms } from '../sushi/utils'
 import useSushi from './useSushi'
 import useBlock from './useBlock'
-import useEarnings from './useEarnings';
 
 const useAllEarnings = () => {
   const [balances, setBalance] = useState([] as Array<BigNumber>)
