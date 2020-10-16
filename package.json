@@ -30,6 +30,7 @@
     "@types/react": "^16.9.52",
     "@types/styled-components": "^5.1.4",
     "babel-eslint": "^10.1.0",
+    "babel-plugin-styled-components": "^1.11.1",
     "eslint": "7.2.0",
     "eslint-config-airbnb": "18.2.0",
     "eslint-config-prettier": "^6.12.0",
