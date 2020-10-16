@@ -1,0 +1,8 @@
+{
+  "name": "pancake-uikit",
+  "version": "0.0.1",
+  "description": "Set of UI components for pancake projects",
+  "main": "index.js",
+  "repository": "https://github.com/pancakeswap/pancake-uikit",
+  "license": "MIT"
+}
