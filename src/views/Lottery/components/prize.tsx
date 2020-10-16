@@ -67,6 +67,7 @@ const Prize: React.FC = () => {
     )
 }
 
+
 const StyledCardHeader = styled.div`
   align-items: center;
   display: flex;
@@ -91,5 +92,7 @@ const StyledCardContentInner = styled.div`
   flex-direction: column;
   justify-content: space-between;
 `
+
+
 
 export default Prize

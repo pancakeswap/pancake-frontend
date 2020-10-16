@@ -133,9 +133,9 @@ const StyledCardActions = styled.div`
   width: 100%;
 `
 
-const StyledActionSpacer = styled.div`
-  height: ${(props) => props.theme.spacing[4]}px;
-  width: 100%;
+const MyTicketsP = styled.div`
+  margin-top: 1em;
+  color: ${(props) => props.theme.colors.secondary};
 `
 
 const StyledCardContentInner = styled.div`
@@ -145,5 +145,4 @@ const StyledCardContentInner = styled.div`
   flex-direction: column;
   justify-content: space-between;
 `
-
 export default Ticket

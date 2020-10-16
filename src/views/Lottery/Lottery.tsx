@@ -77,12 +77,18 @@ const Farm: React.FC = () => {
 
 }
 
+
 const Title = styled.div`
   color: ${(props) => props.theme.colors.secondary};
   font-size:56px;
   width: 50vw;
   text-align: center;
   font-weight: 1000;
+  margin-top:0.5em;
+
+   @media (max-width: 600px) {
+     font-size:40px;
+   }
 `
 
 
@@ -92,6 +98,10 @@ const Title2 = styled.div`
   width: 50vw;
   text-align: center;
   font-weight: 1000;
+
+   @media (max-width: 600px) {
+     font-size:38px;
+   }
 `
 
 const Subtitle = styled.div`
@@ -101,6 +111,11 @@ const Subtitle = styled.div`
   text-align: center;
   font-weight: 600;
   margin-top: 0.8em;
+
+   @media (max-width: 600px) {
+     font-size:16px;
+     width: 80vw;
+   }
 `
 // width: calc((900px - ${(props) => props.theme.spacing[4]}px * 2) / 3);
 const StyledCardWrapper = styled.div`
