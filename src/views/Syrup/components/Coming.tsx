@@ -35,14 +35,14 @@ const Coming: React.FC = () => {
           <StyledLabel text="🍯Your Stake" value={0} />
 
           <StyledCardFooter>
-            <p>
+            <div>
               <div>
                 {TranslateString(352, 'APY')}:&nbsp;
                 <SmallValue value="-" />
               </div>
               {TranslateString(364, 'Total SYRUP staked')}: 0 <br />
               Farming starts in ??? Blocks
-            </p>
+            </div>
           </StyledCardFooter>
         </StyledCardContentInner>
       </CardContent>
