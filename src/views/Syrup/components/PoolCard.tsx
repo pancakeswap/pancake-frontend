@@ -123,7 +123,7 @@ const PoolCard: React.FC<HarvestProps> = ({ syrup, sousId, tokenName, projectLin
                 }}
               />
             }
-            { account &&  (!allowance.toNumber() ? (
+            { account &&  (!allowance.toNumber()  && getBalanceNumber(stakedBalance) == 0? (
               <Button
                 disabled={leftBlockText==='finished' ||  requestedApproval}
                 onClick={handleApprove}

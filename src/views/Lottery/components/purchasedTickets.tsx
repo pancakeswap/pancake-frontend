@@ -7,8 +7,8 @@ interface PurchasedTicketsProps {
 
 const PurchasedTickets: React.FC<PurchasedTicketsProps> = ({ myTicketNumbers }) => {
 
-    const listItems = myTicketNumbers.map((number) =>
-        <p>{number}</p>
+    const listItems = myTicketNumbers.map((number, index) =>
+        <p key={index}>{number}</p>
     );
 
     return (

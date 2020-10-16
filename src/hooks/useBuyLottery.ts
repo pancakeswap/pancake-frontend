@@ -29,28 +29,22 @@ const useBuyLottery = () => {
 }
 
 export const useMultiBuyLottery = () => {
-  const { account, ethereum }: { account: any, ethereum: any } = useWallet()
+  const { account } = useWallet()
+  const sushi = useSushi()
 
   const handleMultiBuy = useCallback(
     async (amount: string, numbers: Array<number>) => {
-      console.log('0')
-      if(ethereum) {
-        console.log('1')
-        const chainId = Number(ethereum.chainId)
-        try {
-          const txHash = await multiBuy(
-            chainId,
-            ethereum,
-            numbers,
-          )
-          return txHash
-        } catch(e) {
-          return false
-        }
+      try {
+        const txHash = await multiBuy(
+          sushi,
+          numbers
+        )
+        return txHash
+      } catch(e) {
+        return false
       }
-      return false
     },
-    [ethereum],
+    [account, sushi],
   )
 
   return { onMultiBuy: handleMultiBuy }

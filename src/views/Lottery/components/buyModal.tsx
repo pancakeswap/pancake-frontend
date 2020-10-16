@@ -8,7 +8,7 @@ import TokenInput from '../../../components/TokenInput'
 import {getFullDisplayBalance} from '../../../utils/formatBalance'
 import styled from "styled-components";
 import TicketInput from "../../../components/TicketInput";
-import { useMultiBuyLottery } from '../../../hooks/useBuyLottery'
+import useBuyLottery, { useMultiBuyLottery } from '../../../hooks/useBuyLottery'
 
 interface DepositModalProps extends ModalProps {
     max: BigNumber

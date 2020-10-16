@@ -1,65 +1,46 @@
 import BigNumber from 'bignumber.js'
+import abi from './lib/abi/lottery.json'
 import { Interface } from '@ethersproject/abi';
-import { Contract } from '@ethersproject/contracts';
-import { formatUnits } from '@ethersproject/units';
-import { useWallet } from 'use-wallet'
 
-import { abi as multicallAbi } from './lib/abi/Multicall.json';
-import lotteryAbi from './lib/abi/lottery.json';
-import { contractAddresses } from './lib/constants';
+export const multiBuy = async (sushi, ticketNumbers) => {
+  const multicall = sushi && sushi.contracts && sushi.contracts.multicall
+  console.log(multicall.methods)
+  console.log((await getLotteryContract(sushi))._address)
+  console.log((await getLotteryContract(sushi)).options.address)
+  const address = (await getLotteryContract(sushi)).options.address
+  const itf = new Interface(abi);
+  const calls=[
+    ['10',[1,2,3,5]],
+    ['10',[1,4,3,2]],
+    ['5',[2,1,4,3]]
+  ]
+  const numbers = [1,2,4,3]
+  const lotteryNumbers = [
+    new BigNumber(numbers[0]),
+    new BigNumber(numbers[1]),
+    new BigNumber(numbers[2]),
+    new BigNumber(numbers[3])
+  ];
+  console.log(lotteryNumbers)
+  try {
+    const calldata = calls.map(call => ([
+        address.toLowerCase(),
+        itf.encodeFunctionData('buy', ['10', ['2','3','4']])
+      ]));
 
-export const MULTICALL = {
-  1: '0xeefba1e63905ef1d7acba5a8513c70307c1ce441',
-  56: '0x1ee38d535d541c55c9dae27b12edf090c608e6fb',
-  97: '0x67ADCB4dF3931b0C5Da724058ADC2174a9844412'
-}
-
-export async function multicall(network, provider, abi, calls, options) {
-  console.log('4=6')
-  console.log(MULTICALL[network])
-  console.log(multicallAbi)
-  console.log(provider)
-  // const multi = new Contract(MULTICALL[network], multicallAbi, provider);
-  // console.log(multi)
-  // const itf = new Interface(abi);
-  // try {
-  //   console.log('4=7')
-  //   const [, response] = await multi.aggregate(
-  //     calls.map(call => [
-  //       call[0].toLowerCase(),
-  //       itf.encodeFunctionData(call[1], call[2])
-  //     ]),
-  //     options || {}
-  //   );
-  //   console.log(response)
-  //   return response.map((call, i) =>
-  //     itf.decodeFunctionResult(calls[i][1], call)
-  //   );
-  // } catch (e) {
-  //   console.error(e)
-  //   return Promise.reject();
-  // }
-}
-
-export const multiBuy = async (network, provider, ticketNumbers) => {
-  console.log('3')
-  const response = await multicall(
-    network,
-    provider,
-    lotteryAbi,
-    ticketNumbers.map((nm) => [
-      contractAddresses.lottery[network],
-      'buy',
-      [nm]
-    ])
-  )
-  console.log('4', response)
-  return Object.fromEntries(
-    response.map((value, i) => [
-      ticketNumbers[i],
-      parseFloat(formatUnits(value.toString(), 18))
-    ])
-  );
+    console.log(calldata)
+    const {returnData} = await multicall.methods.aggregate(calldata).call()
+    console.log(returnData)
+    const res =  returnData.map((call, i) =>
+      itf.decodeFunctionResult('buy', call)
+    );
+    console.log(res)
+  }
+  catch(err) {
+    console.log(err)
+  }
+  // const response = await multicall.methods
+  return []
 }
 
 export const getLotteryContract = (sushi) => {
