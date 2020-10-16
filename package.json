@@ -4,5 +4,15 @@
   "description": "Set of UI components for pancake projects",
   "main": "index.js",
   "repository": "https://github.com/pancakeswap/pancake-uikit",
-  "license": "MIT"
+  "license": "MIT",
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^11.0.0",
+    "@commitlint/config-conventional": "^11.0.0",
+    "husky": "^4.3.0"
+  }
 }
