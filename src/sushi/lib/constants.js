@@ -426,6 +426,36 @@ export const supportedPools = [
     multiplier: '1X'
   },
   {
+    pid: 24,
+    lpAddresses: {
+      97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
+      56: '0x68Ff2ca47D27db5Ac0b5c46587645835dD51D3C1'
+    },
+    tokenAddresses: {
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
+      56: '0x88f1a5ae2a3bf98aeaf342d26b30a79438c9142e'
+    },
+    symbol: 'YFI-BNB FLIP',
+    tokenSymbol: 'YFI',
+    icon: '🥞',
+    multiplier: '2X'
+  },
+  {
+    pid: 25,
+    lpAddresses: {
+      97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
+      56: '0x4269e7F43A63CEA1aD7707Be565a94a9189967E9'
+    },
+    tokenAddresses: {
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
+      56: '0xbf5140a22578168fd562dccf235e5d43a02ce9b1'
+    },
+    symbol: 'UNI-BNB FLIP',
+    tokenSymbol: 'UNI',
+    icon: '🥞',
+    multiplier: '2X'
+  },
+  {
     pid: 8,
     lpAddresses: {
       97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
@@ -592,6 +622,18 @@ export const forShowPools = [
     symbol: 'BCH-BNB',
     tokenSymbol: 'BCH',
     multiplier: '1X'
+  },
+  {
+    pid: 24,
+    symbol: 'YFI-BNB',
+    tokenSymbol: 'YFI',
+    multiplier: '2X'
+  },
+  {
+    pid: 25,
+    symbol: 'UNI-BNB',
+    tokenSymbol: 'UNI',
+    multiplier: '2X'
   }
 ]
 
