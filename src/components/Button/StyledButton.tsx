@@ -1,7 +1,7 @@
 import styled, { DefaultTheme } from "styled-components";
-import { Props, Variants } from "./types.d";
+import { ButtonProps, variants } from "./types";
 
-interface ThemedProps extends Props {
+interface ThemedProps extends ButtonProps {
   theme: DefaultTheme;
 }
 
@@ -11,12 +11,12 @@ const getBackground = ({ variant, disabled, theme }: ThemedProps) => {
   }
 
   switch (variant) {
-    case Variants.OUTLINE:
-    case Variants.TEXT:
+    case variants.OUTLINE:
+    case variants.TEXT:
       return "transparent";
-    case Variants.SECONDARY:
+    case variants.SECONDARY:
       return theme.colors.tertiary;
-    case Variants.PRIMARY:
+    case variants.PRIMARY:
     default:
       return theme.colors.primary;
   }
@@ -28,11 +28,11 @@ const getBorder = ({ variant, disabled, theme }: ThemedProps) => {
   }
 
   switch (variant) {
-    case Variants.OUTLINE:
+    case variants.OUTLINE:
       return `2px solid ${theme.colors.primary}`;
-    case Variants.PRIMARY:
-    case Variants.SECONDARY:
-    case Variants.TEXT:
+    case variants.PRIMARY:
+    case variants.SECONDARY:
+    case variants.TEXT:
     default:
       return 0;
   }
@@ -44,12 +44,12 @@ const getColor = ({ variant, disabled, theme }: ThemedProps) => {
   }
 
   switch (variant) {
-    case Variants.PRIMARY:
+    case variants.PRIMARY:
       return "#FFFFFF";
-    case Variants.TEXT:
+    case variants.TEXT:
       return theme.colors.text;
-    case Variants.OUTLINE:
-    case Variants.SECONDARY:
+    case variants.OUTLINE:
+    case variants.SECONDARY:
     default:
       return theme.colors.primary;
   }
@@ -63,7 +63,7 @@ export const EndIcon = styled.span`
   margin-left: 0.5em;
 `;
 
-const StyledButton = styled.button<Props>`
+const StyledButton = styled.button<ButtonProps>`
   align-items: center;
   background-color: ${getBackground};
   border: ${getBorder};

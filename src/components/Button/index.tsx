@@ -1,8 +1,8 @@
 import React from "react";
 import StyledButton, { StartIcon, EndIcon } from "./StyledButton";
-import { Props } from "./types.d";
+import { ButtonProps, variants, sizes } from "./types";
 
-const Button: React.FC<Props> = ({ startIcon, endIcon, children, ...props }) => {
+const Button: React.FC<ButtonProps> = ({ startIcon, endIcon, children, ...props }) => {
   return (
     <StyledButton {...props}>
       {startIcon && <StartIcon>{startIcon}</StartIcon>}
@@ -13,8 +13,8 @@ const Button: React.FC<Props> = ({ startIcon, endIcon, children, ...props }) => 
 };
 
 Button.defaultProps = {
-  variant: "primary",
-  size: "md",
+  variant: variants.PRIMARY,
+  size: sizes.MD,
 };
 
 export default Button;
