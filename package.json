@@ -11,7 +11,7 @@
   "repository": "https://github.com/pancakeswap/pancake-uikit",
   "license": "MIT",
   "scripts": {
-    "build": "rollup -c",
+    "build": "rollup -c && tsc -d --emitDeclarationOnly --declarationDir dist",
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
     "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx}'",
     "storybook": "start-storybook -p 6006",
@@ -54,6 +54,7 @@
     "react-is": "^16.13.1",
     "rollup": "^2.31.0",
     "styled-components": "^5.2.0",
+    "themeprovider-storybook": "^1.6.4",
     "ts-jest": "^26.4.1",
     "tslib": "^2.0.3",
     "typescript": "^4.0.3"

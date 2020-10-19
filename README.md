@@ -1,5 +1,13 @@
 # 🥞 Pancake UI Kit
 
+## Developing
+
+This project uses [Storybook](https://storybook.js.org/). To start development run
+
+```shell
+$ yarn storybook
+```
+
 ## Committing
 
 Commit messages follow [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) using [commitlint](https://commitlint.js.org/#/).
