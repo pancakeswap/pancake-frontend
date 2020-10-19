@@ -1,16 +1,13 @@
 import "styled-components";
 
-export type Pallete = {
-  iris: string;
-  peach: string;
-  onyx: string;
-  fuschia: string;
-  evergreen: string;
-  slate: string;
-  lightSlate: string;
-  dorian: string;
-  cloud: string;
-  white: string;
+export type Breakpoints = string[];
+
+export type MediaQueries = {
+  xs: string;
+  sm: string;
+  md: string;
+  lg: string;
+  xl: string;
 };
 
 declare module "styled-components" {
@@ -19,19 +16,22 @@ declare module "styled-components" {
       primary: string;
       secondary: string;
       tertiary: string;
+      success: string;
+      failure: string;
+      contrast: string;
+      input: string;
       background: string;
       text: string;
       textSubtle: string;
-      dark: string;
-      failure: string;
-      success: string;
-      accent: string;
-      light: string;
       card: {
         background: string;
         borderColor: string;
       };
-    } & Pallete;
+    };
+    scales: {
+      breakpoints: Breakpoints;
+      mediaQueries: MediaQueries;
+    };
     shadows: {
       level1: string;
     };
