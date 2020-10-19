@@ -27,6 +27,13 @@ declare module "styled-components" {
       success: string;
       accent: string;
       light: string;
+      card: {
+        background: string;
+        borderColor: string;
+      };
     } & Pallete;
+    shadows: {
+      level1: string;
+    };
   }
 }
