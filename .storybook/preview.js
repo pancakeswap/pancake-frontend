@@ -1,25 +1,12 @@
 import React from "react";
 import { withThemesProvider } from "themeprovider-storybook";
-import { createGlobalStyle } from "styled-components";
 import light from "../src/theme/light";
 import dark from "../src/theme/dark";
-
-const Global = createGlobalStyle`
-  html {
-    box-sizing: border-box;
-  }
-  *, *:before, *:after {
-    box-sizing: inherit;
-  }
-
-  body {
-    font-family: 'Kanit', sans-serif;
-  }
-`;
+import ResetCSS from "../src/ResetCSS";
 
 const globalDecorator = (StoryFn) => (
   <>
-    <Global />
+    <ResetCSS />
     <StoryFn />
   </>
 );
