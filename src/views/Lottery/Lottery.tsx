@@ -1,24 +1,17 @@
 import React, {useEffect} from 'react'
 import styled from 'styled-components'
-
-import {NavLink, Route, Switch, useParams, useRouteMatch} from 'react-router-dom'
 import {useWallet} from 'use-wallet'
-
 import Page from '../../components/Page'
 import WalletProviderModal from '../../components/WalletProviderModal'
-
 import useModal from '../../hooks/useModal'
-
 import useSushi from '../../hooks/useSushi'
 import Prize from "./components/prize";
 import Ticket from "./components/ticket";
-import Time from "./components/time";
 import Winning from "./components/winning";
 import {useTotalRewards} from '../../hooks/useTickets'
-import { getBalanceNumber } from '../../utils/formatBalance'
 import useTickets from '../../hooks/useTickets'
-
-import PurchasedTickets from './components/purchasedTickets'
+import Time from "./components/time";
+import {currentLotteryState, LotteryStates} from "../../lottery/types";
 
 const Farm: React.FC = () => {
     const {account} = useWallet()
@@ -30,51 +23,30 @@ const Farm: React.FC = () => {
 
     const sushi = useSushi()
     const {ethereum} = useWallet()
-    const {path} = useRouteMatch()
     const tickets = useTickets()
-
     const lotteryPrizeAmount = useTotalRewards()
-
+    const state = currentLotteryState();
     const subtitleText = 'Spend CAKE to buy tickets, contributing to the lottery pot. Ticket purchases end approx. 30 minutes before lottery. Win prizes if 2, 3, or 4 of your ticket numbers match the winning numbers and their positions! Good luck!'
 
     return (
-        <Switch>
-            <Page>
-                <Title style={{marginTop: '0.5em'}}>
-                    💰
-                    <br/>
-                    WIN
-                </Title>
-                <Title2>XXX,XXX CAKE</Title2>
-                <Subtitle>{subtitleText}</Subtitle>
-                <StyledFarm>
-                    <StyledCardWrapper>
-                        <Prize/>
-                        <Ticket/>
-                    </StyledCardWrapper>
-                </StyledFarm>
-{/*                <Time></Time>*/}
-                <Winning></Winning>
-                <PurchasedTickets myTicketNumbers={tickets}/>
-            </Page>
-        </Switch>
+        <Page>
+            <Title style={{marginTop: '0.5em'}}>
+                💰
+                <br/>
+                WIN
+            </Title>
+            <Title2>XXX,XXX CAKE</Title2>
+            <Subtitle>{subtitleText}</Subtitle>
+            <StyledFarm>
+                <StyledCardWrapper>
+                    {state === LotteryStates.WINNERS_ANNOUNCED && <Prize/>}
+                    <Ticket/>
+                </StyledCardWrapper>
+            </StyledFarm>
+            <Time></Time>
+            { state === LotteryStates.WINNERS_ANNOUNCED && <Winning></Winning>}
+        </Page>
     )
-
-    // return (
-    //     <StyledFarm>
-    //         <div>
-    //             |-----------------|<br/>
-    //             | COMING&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br/>
-    //             | SOON&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br/>
-    //             |-----------------|<br/>
-    //             (\__/) ||<br/>
-    //             (•ㅅ•) ||<br/>
-    //             / 　 づ<br/>
-
-    //         </div>
-    //     </StyledFarm>
-    // )
-
 }
 
 

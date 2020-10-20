@@ -3,16 +3,10 @@ import styled from 'styled-components'
 import {useWallet} from 'use-wallet'
 import Card from '../../../components/Card'
 import CardContent from '../../../components/CardContent'
-import Label from '../../../components/Label'
 import useModal from '../../../hooks/useModal'
 import {useWinningNumbers, useMatchingRewardLength} from '../../../hooks/useTickets'
-
 import WalletProviderModal from '../../../components/WalletProviderModal'
 import AccountModal from '../../../components/TopBar/components/AccountModal'
-import Button from "../../../components/Button";
-import ModalContent from "../../../components/ModalContent";
-
-
 
 const Winning: React.FC = () => {
     const [requestedApproval, setRequestedApproval] = useState(false)
@@ -47,9 +41,9 @@ const Winning: React.FC = () => {
                             {/*<Label text={'Lottery ending ' + ending}></Label>*/}
                         </StyledCardHeader>
                         <Row>
-                          {winNumbers.map((number, index) =>
-                            <TicketNumberBox key={index}><CenteredText>{number}</CenteredText></TicketNumberBox>
-                           )}
+                            {winNumbers.map((number, index) =>
+                                <TicketNumberBox key={index}><CenteredText>{number}</CenteredText></TicketNumberBox>
+                            )}
                         </Row>
                         <Row style={{marginTop: '-2.3em'}}>
                             <RabbitBox>
