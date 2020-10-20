@@ -7,7 +7,7 @@ export interface Props {
 }
 
 const Link = styled(Text).attrs({ as: "a", bold: true })<Props>`
-  color: ${({ theme }) => theme.colors.iris};
+  color: ${({ theme }) => theme.colors.primary};
   &:hover {
     text-decoration: underline;
   }
