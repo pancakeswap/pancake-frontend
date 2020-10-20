@@ -19,20 +19,20 @@ import useStakedBalance from '../../../hooks/useStakedBalance'
 import useTokenBalance from '../../../hooks/useTokenBalance'
 import useUnstake from '../../../hooks/useUnstake'
 import { getBalanceNumber } from '../../../utils/formatBalance'
+import {useMultiClaimLottery} from '../../../hooks/useBuyLottery'
 
 import {useTotalClaim} from '../../../hooks/useTickets'
 import WalletProviderModal from '../../../components/WalletProviderModal'
 import AccountModal from '../../../components/TopBar/components/AccountModal'
 import { TranslateString } from '../../../utils/translateTextHelpers'
 
-interface StakeProps {
-  lpContract: Contract
-  pid: number
-  tokenName: string
+interface PrizeProps {
+  status: boolean
 }
 
-const Prize: React.FC = () => {
+const Prize: React.FC<PrizeProps> = ({status}) => {
   const [requestedApproval, setRequestedApproval] = useState(false)
+  const [requesteClaim, setRequestedClaim] = useState(false)
   const { account } = useWallet()
 
   // const allowance = useAllowance(lpContract)
@@ -44,6 +44,21 @@ const Prize: React.FC = () => {
   // const {onStake} = useStake(pid)
   // const {onUnstake} = useUnstake(pid)
   const claimAmount = useTotalClaim()
+
+  const { onMultiClaim } = useMultiClaimLottery()
+
+  const handleClaim = useCallback(async () => {
+    try {
+      setRequestedClaim(true)
+      const txHash = await onMultiClaim()
+      // user rejected tx or didn't go thru
+      if (txHash) {
+        setRequestedClaim(false)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }, [onMultiClaim, setRequestedClaim])
 
   const [onPresentAccountModal] = useModal(<AccountModal />)
 
@@ -68,7 +83,7 @@ const Prize: React.FC = () => {
                       </StyledCardHeader>
                       <StyledCardActions>
                           {!account && <Button onClick={handleUnlockClick} size="md" text="Unlock Wallet"/>}
-                          {account && <Button disabled={getBalanceNumber(claimAmount) == 0} onClick={null} size="md" text="Claim prizes"/>}
+                          {account && <Button disabled={!status || getBalanceNumber(claimAmount) == 0 || requesteClaim} onClick={handleClaim} size="md" text="Claim prizes"/>}
                       </StyledCardActions>
                   </StyledCardContentInner>
               </CardContent>

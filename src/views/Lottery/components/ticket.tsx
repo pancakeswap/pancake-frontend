@@ -12,7 +12,7 @@ import Value from '../../../components/Value'
 
 import { useLotteryAllowance } from '../../../hooks/useAllowance'
 import { useLotteryApprove } from '../../../hooks/useApprove'
-import useTickets, {useWinningNumbers, useTotalClaim} from '../../../hooks/useTickets'
+import {useTicketsAmount, useWinningNumbers} from '../../../hooks/useTickets'
 import useModal from '../../../hooks/useModal'
 import useSushi from '../../../hooks/useSushi'
 import {getSushiAddress} from '../../../sushi/utils'
@@ -20,20 +20,18 @@ import useStakedBalance from '../../../hooks/useStakedBalance'
 import useTokenBalance from '../../../hooks/useTokenBalance'
 import useUnstake from '../../../hooks/useUnstake'
 import {getBalanceNumber} from '../../../utils/formatBalance'
-import useBuyLottery, {useMultiBuyLottery} from '../../../hooks/useBuyLottery'
 
 import WalletProviderModal from '../../../components/WalletProviderModal'
 import AccountModal from '../../../components/TopBar/components/AccountModal'
 import BuyModal from './buyModal'
 
 
-interface StakeProps {
-  lpContract: Contract
-  pid: number
-  tokenName: string
+interface TicketProps {
+  status?: boolean
+  myTicketNumbers: Array<any>
 }
 
-const Ticket: React.FC = () => {
+const Ticket: React.FC<TicketProps> = ({status,  myTicketNumbers}) => {
   const [requestedApproval, setRequestedApproval] = useState(false)
   const { account } = useWallet()
 
@@ -55,11 +53,8 @@ const Ticket: React.FC = () => {
     // )
 
     // TEMP example
-    const tickets = useTickets()
+    const ticketsLength = myTicketNumbers.length
     const winNumbers = useWinningNumbers()
-    const claimAmount = useTotalClaim()
-
-
 
     const handleApprove = useCallback(async () => {
       try {
@@ -98,27 +93,23 @@ const Ticket: React.FC = () => {
                     <StyledCardContentInner>
                         <StyledCardHeader>
                             <CardIcon>🎟</CardIcon>
-                            <Value value={tickets.length} decimals={0}/>
+                            <Value value={ticketsLength} decimals={0}/>
                             <Label text={`Your total tickets for this round`}/>
                         </StyledCardHeader>
                         <StyledCardActions>
-                        <Button
-                          disabled={true}
-                          text={`Coming Soon`}
-                        />
-{/*                            {!account && <Button onClick={handleUnlockClick} size="md" text="Unlock Wallet"/>}
-                            { account && (!allowance.toNumber() ? (
-                              <Button
-                                disabled={requestedApproval}
-                                onClick={handleApprove}
-                                text={`Approve CAKE`}
-                              />
-                            ) : (
-                              <>
-                                <Button disabled={winNumbers[0]!==0} onClick={onPresentBuy} size="md" text={'Buy ticket'}/>
-                              </>
-                            ))}*/}
-                        </StyledCardActions>
+                          {!account && <Button onClick={handleUnlockClick} size="md" text="Unlock Wallet"/>}
+                          { account && (!allowance.toNumber() ? (
+                            <Button
+                              disabled={requestedApproval}
+                              onClick={handleApprove}
+                              text={`Approve CAKE`}
+                            />
+                          ) : (
+                            <>
+                              <Button disabled={winNumbers[0]!==0 || status} onClick={onPresentBuy} size="md" text={'Buy ticket'}/>
+                            </>
+                          ))}
+                    </StyledCardActions>
                     </StyledCardContentInner>
                 </CardContent>
             </Card>

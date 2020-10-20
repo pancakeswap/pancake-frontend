@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useCallback, useState} from 'react'
 import styled from 'styled-components'
 
 import {NavLink, Route, Switch, useParams, useRouteMatch} from 'react-router-dom'
@@ -8,20 +8,20 @@ import Page from '../../components/Page'
 import WalletProviderModal from '../../components/WalletProviderModal'
 
 import useModal from '../../hooks/useModal'
-
 import useSushi from '../../hooks/useSushi'
+import useBlock from '../../hooks/useBlock'
 import Prize from "./components/prize";
 import Ticket from "./components/ticket";
 import Time from "./components/time";
 import Winning from "./components/winning";
-import {useTotalRewards} from '../../hooks/useTickets'
+import useTickets, {useTotalRewards} from '../../hooks/useTickets'
 import { getBalanceNumber } from '../../utils/formatBalance'
-import useTickets from '../../hooks/useTickets'
+import { getLotteryContract, getLotteryIssueIndex, getLotteryStatus } from '../../sushi/lotteryUtils'
 
 import PurchasedTickets from './components/purchasedTickets'
 
 const Farm: React.FC = () => {
-    const {account} = useWallet()
+    const {account, ethereum} = useWallet()
     const [onPresentWalletProviderModal] = useModal(<WalletProviderModal/>)
 
     useEffect(() => {
@@ -29,8 +29,29 @@ const Farm: React.FC = () => {
     }, [])
 
     const sushi = useSushi()
-    const {ethereum} = useWallet()
-    const {path} = useRouteMatch()
+    const block = useBlock()
+    const lotteryContract = getLotteryContract(sushi)
+
+    const [index, setIndex] = useState(0)
+    const [status, setStatus] = useState(true)
+
+    const fetchIndex = useCallback(async () => {
+      const issueIndex = await getLotteryIssueIndex(lotteryContract)
+      setIndex(issueIndex)
+    }, [lotteryContract])
+
+    const fetchStatus = useCallback(async () => {
+      const status = await getLotteryStatus(lotteryContract)
+      setStatus(status)
+    }, [lotteryContract])
+
+    useEffect(() => {
+      if (account && lotteryContract &&  sushi) {
+        fetchIndex()
+        fetchStatus()
+      }
+    }, [account, block, lotteryContract, sushi])
+
     const tickets = useTickets()
 
     const lotteryPrizeAmount = useTotalRewards()
@@ -40,17 +61,18 @@ const Farm: React.FC = () => {
     return (
         <Switch>
             <Page>
+                第{index}轮: {!status?'进行中':'兑奖等待下一轮'}
                 <Title style={{marginTop: '0.5em'}}>
                     💰
                     <br/>
                     WIN
                 </Title>
-                <Title2>XXX,XXX CAKE</Title2>
+                <Title2>{getBalanceNumber(lotteryPrizeAmount)} CAKE</Title2>
                 <Subtitle>{subtitleText}</Subtitle>
                 <StyledFarm>
                     <StyledCardWrapper>
-                        <Prize/>
-                        <Ticket/>
+                        <Prize status={status} />
+                        <Ticket status={status} myTicketNumbers={tickets} />
                     </StyledCardWrapper>
                 </StyledFarm>
 {/*                <Time></Time>*/}

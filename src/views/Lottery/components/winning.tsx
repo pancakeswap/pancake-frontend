@@ -103,7 +103,7 @@ const Winning: React.FC = () => {
                                 <CenteredTextWithPadding><strong>{MatchedNumber2}</strong></CenteredTextWithPadding>
                             </RowNoPadding>
                         </Column>
-                        <Link href={`https://bscscan.com/address`} target="_blank">Export recent winning numbers</Link>
+{/*                        <Link href={`https://bscscan.com/address`} target="_blank">Export recent winning numbers</Link>*/}
                     </StyledCardContentInner>
                 </CardContent>
             </Card>

@@ -8,12 +8,12 @@ interface PurchasedTicketsProps {
 const PurchasedTickets: React.FC<PurchasedTicketsProps> = ({ myTicketNumbers }) => {
 
     const listItems = myTicketNumbers.map((number, index) =>
-        <p key={index}>{number}</p>
+        <p key={index}>{number.toString()}</p>
     );
 
     return (
         <div>
-            <Title>My tickets</Title>
+            <Title>My tickets(Current Round)</Title>
             <TicketsList>
                 <h2>{listItems}</h2>
             </TicketsList>
