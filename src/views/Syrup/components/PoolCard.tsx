@@ -174,7 +174,7 @@ const PoolCard: React.FC<HarvestProps> = ({
           </StyledCardActions>
 
           <StyledLabel
-            text="🍯Your Stake"
+            text="🍯 Your Stake"
             value={getBalanceNumber(stakedBalance)}
           />
           <StyledCardFooter>
