@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
-import useI18n from '../../../hooks/useI18n'
 import { getBalanceNumber } from '../../../utils/formatBalance'
 import SmallValue from './Value'
 import CoreTag from './CoreTag'
@@ -11,10 +10,13 @@ interface Props {
   projectLink: string
   totalStaked: BigNumber
   blocksRemaining: number
+  isFinished: boolean
 }
 
-const StyledFooter = styled.div`
+const StyledFooter = styled.div<{ isFinished: boolean }>`
   border-top: 1px solid #e9eaeb;
+  color: ${({ isFinished, theme }) =>
+    theme.colors[isFinished ? 'textDisabled2' : 'primary2']};
   padding: 24px;
 `
 
@@ -67,15 +69,15 @@ const CardFooter: React.FC<Props> = ({
   projectLink,
   totalStaked,
   blocksRemaining,
+  isFinished,
 }) => {
   const [isOpen, setIsOpen] = useState(false)
-  const TranslateString = useI18n()
   const Icon = isOpen ? ChevronUp : ChevronDown
 
   const handleClick = () => setIsOpen(!isOpen)
 
   return (
-    <StyledFooter>
+    <StyledFooter isFinished={isFinished}>
       <Row>
         <FlexFull>
           <CoreTag />
@@ -95,14 +97,17 @@ const CardFooter: React.FC<Props> = ({
                 Total
               </Label>
             </FlexFull>
-            <SmallValue value={getBalanceNumber(totalStaked)} />
+            <SmallValue
+              isFinished={isFinished}
+              value={getBalanceNumber(totalStaked)}
+            />
           </Row>
           {blocksRemaining > 0 && (
             <Row>
               <FlexFull>
                 <Label>End:</Label>
               </FlexFull>
-              <SmallValue value={blocksRemaining} />
+              <SmallValue isFinished={isFinished} value={blocksRemaining} />
             </Row>
           )}
           <TokenLink href={projectLink} target="_blank">

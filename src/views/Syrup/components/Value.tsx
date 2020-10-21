@@ -8,12 +8,14 @@ interface ValueProps {
   value: string | number
   decimals?: number
   fontSize?: string | number
+  isFinished?: boolean
 }
 
 const Value: React.FC<ValueProps> = ({
   value,
   decimals,
   fontSize = '14px',
+  isFinished = false,
 }) => {
   const [start, updateStart] = useState(0)
   const [end, updateEnd] = useState(0)
@@ -26,7 +28,7 @@ const Value: React.FC<ValueProps> = ({
   }, [value])
 
   return (
-    <StyledValue style={{ fontSize: fontSize }}>
+    <StyledValue style={{ fontSize: fontSize }} isFinished={isFinished}>
       {typeof value == 'string' ? (
         value
       ) : (
@@ -44,8 +46,9 @@ const Value: React.FC<ValueProps> = ({
   )
 }
 
-const StyledValue = styled.span`
-  color: ${(props) => props.theme.colors.primary};
+const StyledValue = styled.span<{ isFinished: boolean }>`
+  color: ${({ isFinished, theme }) =>
+    theme.colors[isFinished ? 'textDisabled2' : 'primary2']};
   font-size: 14px;
   font-weight: 900;
   align-items: center;

@@ -113,7 +113,8 @@ const PoolCardv2: React.FC<HarvestProps> = ({
   }, [onPresentWalletProviderModal])
 
   return (
-    <StyledCard>
+    <StyledCard isFinished={isFinished}>
+      {isFinished && <PoolFinishedSash />}
       <div style={{ padding: '24px' }}>
         <CardTitle isFinished={isFinished}>
           {tokenName} {TranslateString(348, 'Pool')}
@@ -139,8 +140,11 @@ const PoolCardv2: React.FC<HarvestProps> = ({
             />
           )}
         </div>
-        <Balance value={getBalanceNumber(earnings)} />
-        <Label text={TranslateString(330, `${tokenName} earned`)} />
+        <Balance value={getBalanceNumber(earnings)} isFinished={isFinished} />
+        <Label
+          isFinished={isFinished}
+          text={TranslateString(330, `${tokenName} earned`)}
+        />
         <StyledCardActions>
           {!account && (
             <div style={{ flex: 1 }}>
@@ -176,7 +180,11 @@ const PoolCardv2: React.FC<HarvestProps> = ({
         </StyledCardActions>
         <StyledDetails>
           <div style={{ flex: 1 }}>{TranslateString(352, 'APY')}:</div>
-          {isFinished ? '-' : <SmallValue value={apy} />}
+          {isFinished ? (
+            '-'
+          ) : (
+            <SmallValue isFinished={isFinished} value={apy} />
+          )}
         </StyledDetails>
         <StyledDetails>
           <div style={{ flex: 1 }}>
@@ -185,26 +193,43 @@ const PoolCardv2: React.FC<HarvestProps> = ({
             </span>
             Your Stake:
           </div>
-          <SmallValue value={getBalanceNumber(stakedBalance)} />
+          <SmallValue
+            isFinished={isFinished}
+            value={getBalanceNumber(stakedBalance)}
+          />
         </StyledDetails>
       </div>
       <CardFooter
         projectLink={projectLink}
         totalStaked={totalStaked}
         blocksRemaining={blocksRemaining}
+        isFinished={isFinished}
       />
     </StyledCard>
   )
 }
 
-const StyledCard = styled.div`
-  background: ${(props) => props.theme.colors.cardBg};
+const PoolFinishedSash = styled.div`
+  background-image: url('/images/pool-finished-sash.svg');
+  background-position: top right;
+  background-repeat: not-repeat;
+  height: 135px;
+  position: absolute;
+  right: -24px;
+  top: -24px;
+  width: 135px;
+`
+
+const StyledCard = styled.div<{ isFinished: boolean }>`
+  background: ${(props) => props.theme.colors.card.background};
   border-radius: 32px;
   display: flex;
-  color: ${(props) => props.theme.colors.secondary};
+  color: ${({ isFinished, theme }) =>
+    theme.colors[isFinished ? 'textDisabled2' : 'secondary2']};
   box-shadow: 0px 2px 12px -8px rgba(25, 19, 38, 0.1),
     0px 1px 1px rgba(25, 19, 38, 0.05);
   flex-direction: column;
+  position: relative;
 `
 
 const StyledCardActions = styled.div`

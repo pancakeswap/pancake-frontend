@@ -8,12 +8,14 @@ interface BalanceProps {
   value: string | number
   decimals?: number
   fontSize?: string | number
+  isFinished: boolean
 }
 
 const Balance: React.FC<BalanceProps> = ({
   value,
   decimals,
   fontSize = '30px',
+  isFinished,
 }) => {
   const [start, updateStart] = useState(0)
   const [end, updateEnd] = useState(0)
@@ -26,7 +28,7 @@ const Balance: React.FC<BalanceProps> = ({
   }, [value])
 
   return (
-    <StyledBalance style={{ fontSize: fontSize }}>
+    <StyledBalance style={{ fontSize: fontSize }} isFinished={isFinished}>
       {typeof value == 'string' ? (
         value
       ) : (
@@ -44,8 +46,9 @@ const Balance: React.FC<BalanceProps> = ({
   )
 }
 
-const StyledBalance = styled.div`
-  color: ${(props) => props.theme.colors.primary};
+const StyledBalance = styled.div<{ isFinished: boolean }>`
+  color: ${({ isFinished, theme }) =>
+    theme.colors[isFinished ? 'textDisabled2' : 'primary2']};
   font-size: 40px;
   font-weight: 600;
 `

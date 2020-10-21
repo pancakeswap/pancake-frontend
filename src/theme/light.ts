@@ -13,5 +13,11 @@ export default {
     // Temporary new colors
     primaryv2: '#1FC7D4',
     secondary2: '#7645D9',
+    tertiary2: '#EFF4F5',
+    textDisabled2: '#BDC2C4',
+    card: {
+      background: '#FFFFFF',
+      borderColor: 'rgba(14, 14, 44, 0.05)',
+    },
   },
 }

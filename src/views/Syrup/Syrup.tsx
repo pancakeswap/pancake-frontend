@@ -29,7 +29,6 @@ interface SyrupRowProps {
 }
 
 const SyrupRow: React.FC<SyrupRowProps> = ({
-  syrupAddress,
   sousId,
   tokenName,
   projectLink,
@@ -172,10 +171,12 @@ const Page = styled.div`
 `
 
 const Pools = styled.div`
+  align-items: start;
   display: grid;
   grid-gap: 16px;
   grid-template-columns: 1fr;
-  margin-bottom: @media (min-width: 576px) {
+
+  @media (min-width: 576px) {
     grid-gap: 24px;
     grid-template-columns: 1fr 1fr;
   }
