@@ -28,6 +28,8 @@ import Balance from './Balance'
 import SmallValue from './Value'
 import DepositModal from './DepositModal'
 import WithdrawModal from './WithdrawModal'
+import CardTitle from './CardTitle'
+import CardTokenImg from './CardTokenImg'
 
 import WalletProviderModal from '../../../components/WalletProviderModal'
 import { TranslateString } from '../../../utils/translateTextHelpers'
@@ -113,16 +115,18 @@ const PoolCard: React.FC<HarvestProps> = ({
   return (
     <StyledCard>
       <StyledContent>
-        <StyledTitle isFinished={isFinished}>
+        <CardTitle isFinished={isFinished}>
           {tokenName} {TranslateString(348, 'Pool')}
-        </StyledTitle>
-        <StyledToken>
-          <StyledTokenImage>
-            <img
-              src={require(`../../../assets/img/${tokenName}.png`)}
+        </CardTitle>
+        <div
+          style={{ marginBottom: '8px', display: 'flex', alignItems: 'center' }}
+        >
+          <div style={{ flex: 1 }}>
+            <CardTokenImg
+              src={`/images/tokens/${tokenName}.png`}
               alt={tokenName}
             />
-          </StyledTokenImage>
+          </div>
           {account && harvest && (
             <HarvestButton
               disabled={!earnings.toNumber() || pendingTx}
@@ -134,7 +138,7 @@ const PoolCard: React.FC<HarvestProps> = ({
               }}
             />
           )}
-        </StyledToken>
+        </div>
         <Balance value={getBalanceNumber(earnings)} />
         <Label text={TranslateString(330, `${tokenName} earned`)} />
         <StyledCardActions>
@@ -203,36 +207,8 @@ const StyledCard = styled.div`
   flex-direction: column;
 `
 
-interface StyledTitleProps {
-  isFinished?: boolean
-}
-
 const StyledContent = styled.div`
   padding: 24px;
-`
-
-const StyledTitle = styled.div<StyledTitleProps>`
-  color: ${({ isFinished, theme }) =>
-    isFinished ? '#BDC2C4' : theme.colors.primary};
-  font-weight: 600;
-  font-size: 24px;
-  line-height: 1.1;
-  margin-bottom: 24px;
-`
-
-const StyledToken = styled.div`
-  align-items: center;
-  display: flex;
-  margin-bottom: 8px;
-`
-
-const StyledTokenImage = styled.div`
-  flex: 1;
-
-  & > img {
-    height: 64px;
-    width: 64px;
-  }
 `
 
 const StyledCardActions = styled.div`
