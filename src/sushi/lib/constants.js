@@ -482,6 +482,21 @@ export const supportedPools = [
     multiplier: '1X'
   },
   {
+    pid: 27,
+    lpAddresses: {
+      97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
+      56: '0x7a34bd64d18e44CfdE3ef4B81b87BAf3EB3315B6'
+    },
+    tokenAddresses: {
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
+      56: '0xa2b726b1145a4773f68593cf171187d8ebe4d495'
+    },
+    symbol: 'INJ-BNB FLIP',
+    tokenSymbol: 'INJ',
+    icon: '🥞',
+    multiplier: '2X'
+  },
+  {
     pid: 8,
     lpAddresses: {
       97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
@@ -666,6 +681,12 @@ export const forShowPools = [
     symbol: 'FIL-BNB',
     tokenSymbol: 'FIL',
     multiplier: '1X'
+  },
+  {
+    pid: 27,
+    symbol: 'INJ-BNB',
+    tokenSymbol: 'INJ',
+    multiplier: '2X'
   }
 ]
 
