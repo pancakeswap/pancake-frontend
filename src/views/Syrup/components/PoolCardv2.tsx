@@ -114,7 +114,7 @@ const PoolCard: React.FC<HarvestProps> = ({
 
   return (
     <StyledCard>
-      <StyledContent>
+      <div style={{ padding: '24px' }}>
         <CardTitle isFinished={isFinished}>
           {tokenName} {TranslateString(348, 'Pool')}
         </CardTitle>
@@ -143,23 +143,23 @@ const PoolCard: React.FC<HarvestProps> = ({
         <Label text={TranslateString(330, `${tokenName} earned`)} />
         <StyledCardActions>
           {!account && (
-            <StyledFlexFullWidth>
+            <div style={{ flex: 1 }}>
               <Button
                 onClick={handleUnlockClick}
                 size="md"
                 text={TranslateString(292, 'Unlock Wallet')}
               />
-            </StyledFlexFullWidth>
+            </div>
           )}
           {account &&
-            (!allowance.toNumber() && stakedBalance.toNumber() == 0 ? (
-              <StyledFlexFullWidth>
+            (!allowance.toNumber() && stakedBalance.toNumber() === 0 ? (
+              <div style={{ flex: 1 }}>
                 <Button
                   disabled={isFinished || requestedApproval}
                   onClick={handleApprove}
                   text={`Approve SYRUP`}
                 />
-              </StyledFlexFullWidth>
+              </div>
             ) : (
               <>
                 <Button
@@ -175,19 +175,19 @@ const PoolCard: React.FC<HarvestProps> = ({
             ))}
         </StyledCardActions>
         <StyledDetails>
-          <StyledDetailLabel>{TranslateString(352, 'APY')}:</StyledDetailLabel>
+          <div style={{ flex: 1 }}>{TranslateString(352, 'APY')}:</div>
           {isFinished ? '-' : <SmallValue value={apy} />}
         </StyledDetails>
         <StyledDetails>
-          <StyledDetailLabel>
+          <div style={{ flex: 1 }}>
             <span role="img" aria-label="syrup">
               🍯{' '}
             </span>
             {TranslateString(364, 'Your Stake')}:
-          </StyledDetailLabel>
+          </div>
           <SmallValue value={getBalanceNumber(stakedBalance)} />
         </StyledDetails>
-      </StyledContent>
+      </div>
       <CardFooter
         projectLink={projectLink}
         totalStaked={totalStaked}
@@ -207,10 +207,6 @@ const StyledCard = styled.div`
   flex-direction: column;
 `
 
-const StyledContent = styled.div`
-  padding: 24px;
-`
-
 const StyledCardActions = styled.div`
   display: flex;
   justify-content: center;
@@ -224,17 +220,9 @@ const StyledActionSpacer = styled.div`
   width: ${(props) => props.theme.spacing[4]}px;
 `
 
-const StyledFlexFullWidth = styled.div`
-  flex: 1;
-`
-
 const StyledDetails = styled.div`
   display: flex;
   font-size: 14px;
-`
-
-const StyledDetailLabel = styled.div`
-  flex: 1;
 `
 
 export default PoolCard
