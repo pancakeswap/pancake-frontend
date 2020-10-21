@@ -30,6 +30,9 @@ export const getTranslation = (
   }
 }
 
+// TODO: Replace instances where this is called directly with the "useI18n" hook.
+// Using this directly can lead to errors because "useContext" is not preserved between renders
+// @see https://reactjs.org/docs/hooks-rules.html
 export const TranslateString = (translationId: number, fallback: string) => {
   const { translations } = useContext(TranslationsContext)
   if (translations[0] === 'error') {

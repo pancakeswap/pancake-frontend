@@ -15,7 +15,7 @@ import useSushi from '../../hooks/useSushi'
 import useAllStakedValue from '../../hooks/useAllStakedValue'
 import { getPools } from '../../sushi/utils'
 
-import PoolCard from './components/PoolCard'
+import PoolCard from './components/PoolCardv2'
 import Coming from './components/Coming'
 import { sousChefTeam } from '../../sushi/lib/constants'
 import { TranslateString } from '../../utils/translateTextHelpers'
