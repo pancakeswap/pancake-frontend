@@ -92,7 +92,7 @@ const CardFooter: React.FC<Props> = ({
                 <span role="img" aria-label="syrup">
                   🍯{' '}
                 </span>
-                {TranslateString(364, 'Total')}:
+                Total
               </Label>
             </FlexFull>
             <SmallValue value={getBalanceNumber(totalStaked)} />

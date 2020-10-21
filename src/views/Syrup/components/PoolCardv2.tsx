@@ -46,7 +46,7 @@ interface HarvestProps {
   tokenPrice: BigNumber
 }
 
-const PoolCard: React.FC<HarvestProps> = ({
+const PoolCardv2: React.FC<HarvestProps> = ({
   syrup,
   sousId,
   tokenName,
@@ -183,7 +183,7 @@ const PoolCard: React.FC<HarvestProps> = ({
             <span role="img" aria-label="syrup">
               🍯{' '}
             </span>
-            {TranslateString(364, 'Your Stake')}:
+            Your Stake:
           </div>
           <SmallValue value={getBalanceNumber(stakedBalance)} />
         </StyledDetails>
@@ -225,4 +225,4 @@ const StyledDetails = styled.div`
   font-size: 14px;
 `
 
-export default PoolCard
+export default PoolCardv2
