@@ -8,7 +8,7 @@ export const sizes = {
 export const variants = {
   PRIMARY: "primary",
   SECONDARY: "secondary",
-  OUTLINE: "outline",
+  TERTIARY: "tertiary",
   TEXT: "text",
 } as const;
 
@@ -21,3 +21,18 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   startIcon?: ReactNode;
   endIcon?: ReactNode;
 }
+
+export type ButtonThemeVariant = {
+  background: string;
+  backgroundActive: string;
+  backgroundHover: string;
+  border: string | number;
+  borderColorHover: string;
+  boxShadow: string;
+  boxShadowActive: string;
+  color: string;
+};
+
+export type ButtonTheme = {
+  [key in Variants]: ButtonThemeVariant;
+};

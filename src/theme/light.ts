@@ -1,23 +1,14 @@
 import { DefaultTheme } from "styled-components";
 import mediaQueries, { breakpoints } from "./mediaQueries";
+import { light as lightButton } from "../components/Button/theme";
+import { light as lightCard } from "../components/Card/theme";
+import { lightColors } from "./colors";
 
 const lightTheme: DefaultTheme = {
-  colors: {
-    primary: "#1FC7D4",
-    secondary: "#7645D9",
-    tertiary: "#EFF4F5",
-    success: "#31D0AA",
-    failure: "#ED4B9E",
-    contrast: "#191326",
-    input: "#F4F2F7",
-    background: "#FAF9FA",
-    text: "#452A7A",
-    textSubtle: "#AEA0D6",
-    card: {
-      background: "#FFFFFF",
-      borderColor: "rgba(14, 14, 44, 0.05)",
-    },
-  },
+  isDark: false,
+  colors: lightColors,
+  button: lightButton,
+  card: lightCard,
   scales: {
     breakpoints,
     mediaQueries,

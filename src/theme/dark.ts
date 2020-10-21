@@ -1,23 +1,14 @@
 import { DefaultTheme } from "styled-components";
 import mediaQueries, { breakpoints } from "./mediaQueries";
+import { dark as darkButton } from "../components/Button/theme";
+import { dark as darkCard } from "../components/Card/theme";
+import { darkColors } from "./colors";
 
 const darkTheme: DefaultTheme = {
-  colors: {
-    primary: "#1FC7D4",
-    secondary: "#7645D9",
-    tertiary: "#293450",
-    success: "#31D0AA",
-    failure: "#ED4B9E",
-    contrast: "#FFFFFF",
-    input: "#151021",
-    background: "#191326",
-    text: "#ED4B9E",
-    textSubtle: "#ED4B9E",
-    card: {
-      background: "#2B223E",
-      borderColor: "rgba(14, 14, 44, 0.05)",
-    },
-  },
+  isDark: true,
+  button: darkButton,
+  colors: darkColors,
+  card: darkCard,
   scales: {
     breakpoints,
     mediaQueries,
