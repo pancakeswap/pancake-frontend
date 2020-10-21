@@ -62,15 +62,15 @@ export const contractAddresses = {
 
 export const sousChefTeam = [
   {
-    sousId: 2,
+    sousId: 3,
     contractAddress: {
-      97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
-      56: '0x73c83bd1646991cBca3e6b83ca905542FE07C57A',
+      97: '0xAfd61Dc94f11A70Ae110dC0E0F2061Af5633061A',
+      56: '0x92E8CeB7eAeD69fB6E4d9dA43F605D2610214E68',
     },
-    tokenName: 'ALPHA',
-    projectLink: 'https://alphafinance.io/',
+    tokenName: 'INJ',
+    projectLink: 'https://injectiveprotocol.com/',
     harvest: true,
-    tokenPerBlock: "20"
+    tokenPerBlock: "0.25"
   },
   {
     sousId: 1,
@@ -80,6 +80,17 @@ export const sousChefTeam = [
     },
     tokenName: 'TWT',
     projectLink: 'https://trustwallet.com/',
+    harvest: true,
+    tokenPerBlock: "20"
+  },
+  {
+    sousId: 2,
+    contractAddress: {
+      97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
+      56: '0x73c83bd1646991cBca3e6b83ca905542FE07C57A',
+    },
+    tokenName: 'ALPHA',
+    projectLink: 'https://alphafinance.io/',
     harvest: true,
     tokenPerBlock: "20"
   },
@@ -456,6 +467,21 @@ export const supportedPools = [
     multiplier: '2X'
   },
   {
+    pid: 26,
+    lpAddresses: {
+      97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
+      56: '0x35fe9787f0ebf2a200bac413d3030cf62d312774'
+    },
+    tokenAddresses: {
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
+      56: '0x0d8ce2a99bb6e3b7db580ed848240e4a0f9ae153'
+    },
+    symbol: 'FIL-BNB FLIP',
+    tokenSymbol: 'FIL',
+    icon: '🥞',
+    multiplier: '1X'
+  },
+  {
     pid: 8,
     lpAddresses: {
       97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
@@ -634,6 +660,12 @@ export const forShowPools = [
     symbol: 'UNI-BNB',
     tokenSymbol: 'UNI',
     multiplier: '2X'
+  },
+  {
+    pid: 26,
+    symbol: 'FIL-BNB',
+    tokenSymbol: 'FIL',
+    multiplier: '1X'
   }
 ]
 
