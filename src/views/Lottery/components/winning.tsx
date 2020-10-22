@@ -1,36 +1,14 @@
-import React, {useCallback, useState} from 'react'
+import React from 'react'
 import styled from 'styled-components'
-import {useWallet} from 'use-wallet'
 import Card from '../../../components/Card'
 import CardContent from '../../../components/CardContent'
-import Label from '../../../components/Label'
-import useModal from '../../../hooks/useModal'
 import {useWinningNumbers, useMatchingRewardLength} from '../../../hooks/useTickets'
-
-import WalletProviderModal from '../../../components/WalletProviderModal'
-import AccountModal from '../../../components/TopBar/components/AccountModal'
-import Button from "../../../components/Button";
-import ModalContent from "../../../components/ModalContent";
-
-
+import Label from "../../../components/Label";
 
 const Winning: React.FC = () => {
-    const [requestedApproval, setRequestedApproval] = useState(false)
-    const {account} = useWallet()
-
     const winNumbers = useWinningNumbers()
 
     const ending = '2020/05/03 00:00:00 UTC'
-
-    const [onPresentAccountModal] = useModal(<AccountModal/>)
-
-    const [onPresentWalletProviderModal] = useModal(
-        <WalletProviderModal/>,
-        'provider',
-    )
-    const handleUnlockClick = useCallback(() => {
-        onPresentWalletProviderModal()
-    }, [onPresentWalletProviderModal])
 
     const MatchedNumber4 = useMatchingRewardLength(4)
     const MatchedNumber3 = useMatchingRewardLength(3)
@@ -44,22 +22,28 @@ const Winning: React.FC = () => {
                         <StyledCardHeader>
                             <Title>Latest Winning Numbers</Title>
                             <br/>
-                            {/*<Label text={'Lottery ending ' + ending}></Label>*/}
+                            <Label text={'Lottery ending ' + ending}></Label>
                         </StyledCardHeader>
                         <Row>
-                          {winNumbers.map((number, index) =>
-                            <TicketNumberBox key={index}><CenteredText>{number}</CenteredText></TicketNumberBox>
-                           )}
+                            {winNumbers.map((number, index) =>
+                                <TicketNumberBox key={index}><CenteredText>{number}</CenteredText></TicketNumberBox>
+                            )}
                         </Row>
-                        <Row style={{marginTop: '-2.3em'}}>
+                        <RowSmall>
+                            {winNumbers.map((number, index) =>
+                                <TicketNumberBoxSmall
+                                    key={index}><CenteredText>{number}</CenteredText></TicketNumberBoxSmall>
+                            )}
+                        </RowSmall>
+                        <RabbitRow>
                             <RabbitBox>
-                                <CardImage style={{marginLeft: '-1.2em'}}>
+                                <CardImageFirst>
                                     <img
                                         src={require(`../../../assets/img/sign bunny 1@2x.png`)}
                                         alt=""
                                         width={100}
                                     />
-                                </CardImage>
+                                </CardImageFirst>
                             </RabbitBox>
                             <RabbitBox>
                                 <CardImage style={{marginLeft: '-1.2em'}}>
@@ -88,7 +72,45 @@ const Winning: React.FC = () => {
                                     />
                                 </CardImage>
                             </RabbitBox>
-                        </Row>
+                        </RabbitRow>
+                        <RabbitRowSmall>
+                            <RabbitBoxSmall>
+                                <CardImageFirst>
+                                    <img
+                                        src={require(`../../../assets/img/sign bunny 1@2x.png`)}
+                                        alt=""
+                                        width={60}
+                                    />
+                                </CardImageFirst>
+                            </RabbitBoxSmall>
+                            <RabbitBoxSmall>
+                                <CardImage style={{marginLeft: '-1.2em'}}>
+                                    <img
+                                        src={require(`../../../assets/img/sign bunny 2@2x.png`)}
+                                        alt=""
+                                        width={60}
+                                    />
+                                </CardImage>
+                            </RabbitBoxSmall>
+                            <RabbitBoxSmall>
+                                <CardImage style={{marginLeft: '-1.2em'}}>
+                                    <img
+                                        src={require(`../../../assets/img/sign bunny 3@2x.png`)}
+                                        alt=""
+                                        width={60}
+                                    />
+                                </CardImage>
+                            </RabbitBoxSmall>
+                            <RabbitBoxSmall>
+                                <CardImage style={{marginLeft: '-1.2em'}}>
+                                    <img
+                                        src={require(`../../../assets/img/sign bunny 4@2x.png`)}
+                                        alt=""
+                                        width={60}
+                                    />
+                                </CardImage>
+                            </RabbitBoxSmall>
+                        </RabbitRowSmall>
                         <Column>
                             <RowNoPadding>
                                 <CenteredTextWithPadding>Tickets matching 4 numbers:</CenteredTextWithPadding>
@@ -110,8 +132,6 @@ const Winning: React.FC = () => {
         </CardWrapper>
     )
 }
-
-
 const Link = styled.a`
   margin-top: 1em;
   text-decoration: none;
@@ -123,7 +143,7 @@ const Row = styled.div`
   align-items: center;
   display: flex;
   flex-direction: row;
-
+  
   @media (max-width: 768px) {
     display: none;
   }
@@ -134,7 +154,7 @@ const RowSmall = styled.div`
   align-items: center;
   display: flex;
   flex-direction: row;
-
+  
    @media (min-width: 768px) {
     display: none;
   }
@@ -145,7 +165,7 @@ const RabbitRow = styled.div`
   align-items: center;
   display: flex;
   flex-direction: row;
-
+  
    @media (max-width: 768px) {
     display: none;
   }
@@ -156,7 +176,7 @@ const RabbitRowSmall = styled.div`
   align-items: center;
   display: flex;
   flex-direction: row;
-
+  
    @media (min-width: 768px) {
     display: none;
   }
@@ -170,7 +190,7 @@ const CardImage = styled.div`
 const CardImageFirst = styled.div`
   text-align: center;
   margin-left:  -1.2em;
-
+  
   @media (max-width: 600) {
     margin-left:  -0.2em;;
   }
@@ -247,18 +267,6 @@ const StyledCardHeader = styled.div`
 `
 
 const CardWrapper = styled.div`
-`
-
-const StyledCardActions = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: ${(props) => props.theme.spacing[6]}px;
-  width: 100%;
-`
-
-const StyledActionSpacer = styled.div`
-  height: ${(props) => props.theme.spacing[4]}px;
-  width: 100%;
 `
 
 const Title = styled.div`

@@ -1,14 +1,14 @@
 import BigNumber from 'bignumber.js'
-import React, { useCallback, useState } from 'react'
+import React, {useCallback, useState} from 'react'
 import styled from 'styled-components'
-import { useWallet } from 'use-wallet'
-import { Contract } from 'web3-eth-contract'
+import {useWallet} from 'use-wallet'
+import {Contract} from 'web3-eth-contract'
 import Button from '../../../components/Button'
 import Card from '../../../components/Card'
 import CardContent from '../../../components/CardContent'
 import CardIcon from '../../../components/CardIcon'
 import IconButton from '../../../components/IconButton'
-import { AddIcon } from '../../../components/icons'
+import {AddIcon} from '../../../components/icons'
 import Label from '../../../components/Label'
 import Value from '../../../components/Value'
 import useAllowance from '../../../hooks/useAllowance'
@@ -18,63 +18,89 @@ import useStake from '../../../hooks/useStake'
 import useStakedBalance from '../../../hooks/useStakedBalance'
 import useTokenBalance from '../../../hooks/useTokenBalance'
 import useUnstake from '../../../hooks/useUnstake'
-import { getBalanceNumber } from '../../../utils/formatBalance'
+import {getBalanceNumber} from '../../../utils/formatBalance'
 
 import {useTotalClaim} from '../../../hooks/useTickets'
 import WalletProviderModal from '../../../components/WalletProviderModal'
 import AccountModal from '../../../components/TopBar/components/AccountModal'
-import { TranslateString } from '../../../utils/translateTextHelpers'
+import {TranslateString} from '../../../utils/translateTextHelpers'
+import {currentLotteryState, LotteryStates} from "../../../lottery/types";
 
 interface StakeProps {
-  lpContract: Contract
-  pid: number
-  tokenName: string
+    lpContract: Contract
+    pid: number
+    tokenName: string
 }
 
 const Prize: React.FC = () => {
-  const [requestedApproval, setRequestedApproval] = useState(false)
-  const { account } = useWallet()
+    const [requestedApproval, setRequestedApproval] = useState(false)
+    const {account} = useWallet()
 
-  // const allowance = useAllowance(lpContract)
-  // const {onApprove} = useApprove(lpContract)
-  //
-  // const tokenBalance = useTokenBalance(lpContract.options.address)
-  // const stakedBalance = useStakedBalance(pid)
-  //
-  // const {onStake} = useStake(pid)
-  // const {onUnstake} = useUnstake(pid)
-  const claimAmount = useTotalClaim()
+    // const allowance = useAllowance(lpContract)
+    // const {onApprove} = useApprove(lpContract)
+    //
+    // const tokenBalance = useTokenBalance(lpContract.options.address)
+    // const stakedBalance = useStakedBalance(pid)
+    //
+    // const {onStake} = useStake(pid)
+    // const {onUnstake} = useUnstake(pid)
+    const claimAmount = useTotalClaim()
+    const state = currentLotteryState();
 
-  const [onPresentAccountModal] = useModal(<AccountModal />)
+    const [onPresentAccountModal] = useModal(<AccountModal/>)
 
-  const [onPresentWalletProviderModal] = useModal(
-    <WalletProviderModal />,
-    'provider',
-  )
-  const handleUnlockClick = useCallback(() => {
-    onPresentWalletProviderModal()
-  }, [onPresentWalletProviderModal])
+    const [onPresentWalletProviderModal] = useModal(
+        <WalletProviderModal/>,
+        'provider',
+    )
+    const handleUnlockClick = useCallback(() => {
+        onPresentWalletProviderModal()
+    }, [onPresentWalletProviderModal])
 
 
-  return (
-      <div style={{margin: '5px', width: '300px'}}>
-          <Card>
-              <CardContent>
-                  <StyledCardContentInner>
-                      <StyledCardHeader>
-                          <CardIcon>🎁</CardIcon>
-                          <Value value={getBalanceNumber(claimAmount)}/>
-                          <Label text={`CAKE prizes to be claimed!`}/>
-                      </StyledCardHeader>
-                      <StyledCardActions>
-                          {!account && <Button onClick={handleUnlockClick} size="md" text="Unlock Wallet"/>}
-                          {account && <Button disabled={getBalanceNumber(claimAmount) == 0} onClick={null} size="md" text="Claim prizes"/>}
-                      </StyledCardActions>
-                  </StyledCardContentInner>
-              </CardContent>
-          </Card>
-      </div>
-  )
+    return (
+        <div style={{margin: '5px', width: '400px'}}>
+            <Card>
+                <CardContent>
+                    <StyledCardContentInner>
+                        <StyledCardHeader>
+                            <CardIcon>🎁</CardIcon>
+                            <Value value={getBalanceNumber(claimAmount)}/>
+                            <Label text={`CAKE prizes to be claimed!`}/>
+                        </StyledCardHeader>
+                        {
+                            state === LotteryStates.WINNERS_ANNOUNCED &&
+                            <StyledCardActions>
+                                {
+                                    !account &&
+                                    <Button onClick={handleUnlockClick} size="md" text="Unlock Wallet"/>
+                                }
+                                {
+                                    account &&
+                                    <Button disabled={getBalanceNumber(claimAmount) == 0}
+                                            onClick={null}
+                                            size="md"
+                                            text="Claim prizes"/>
+                                }
+                            </StyledCardActions>
+                        }
+                        {
+                            (state === LotteryStates.BUY_TICKETS_CLOSE || state === LotteryStates.BUY_TICKETS_OPEN) &&
+                            <StyledCardActions>
+                                <Button disabled={true}
+                                        onClick={null}
+                                        size="md"
+                                        text="Claim prizes after winners announcement"/>
+
+                            </StyledCardActions>
+                        }
+                    </StyledCardContentInner>
+                    <br></br>
+                    <br></br>
+                </CardContent>
+            </Card>
+        </div>
+    )
 }
 
 
@@ -102,7 +128,5 @@ const StyledCardContentInner = styled.div`
   flex-direction: column;
   justify-content: space-between;
 `
-
-
 
 export default Prize
