@@ -47,12 +47,12 @@ export const contractAddresses = {
     56: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c'
   },
   lottery: {
-    97: '0x5db4444c708e062c64c7Cc46bc7288E10A46817D',
-    56:  '0xa64D8176169Dd1572Ed54a5BD9F96D6635ebC73c'
+    97: '0x7023355207A0F9Aa0083e77BFb00179Ac4400E98',
+    56:  '0x648f0955aF9e101994eC9A457Ae4580700C36b3e'
   },
   lotteryNFT: {
-    97: '0x6fed1adF5337dE33A2fca8a8140598F87e508AF6',
-    56:  '0x009cF7bC57584b7998236eff51b98A168DceA9B0'
+    97: '0x4C543FAB989bD4281d79E0BD764DaE8EdB9C7dab',
+    56:  '0x9b15297bccAC6a49C0DDfE637308ca154D12eEDC'
   },
   mulltiCall: {
     56: '0x1ee38d535d541c55c9dae27b12edf090c608e6fb',
@@ -62,15 +62,15 @@ export const contractAddresses = {
 
 export const sousChefTeam = [
   {
-    sousId: 2,
+    sousId: 3,
     contractAddress: {
-      97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
-      56: '0x73c83bd1646991cBca3e6b83ca905542FE07C57A',
+      97: '0xAfd61Dc94f11A70Ae110dC0E0F2061Af5633061A',
+      56: '0x92E8CeB7eAeD69fB6E4d9dA43F605D2610214E68',
     },
-    tokenName: 'ALPHA',
-    projectLink: 'https://alphafinance.io/',
+    tokenName: 'INJ',
+    projectLink: 'https://injectiveprotocol.com/',
     harvest: true,
-    tokenPerBlock: "20"
+    tokenPerBlock: "0.25"
   },
   {
     sousId: 1,
@@ -80,6 +80,17 @@ export const sousChefTeam = [
     },
     tokenName: 'TWT',
     projectLink: 'https://trustwallet.com/',
+    harvest: true,
+    tokenPerBlock: "20"
+  },
+  {
+    sousId: 2,
+    contractAddress: {
+      97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
+      56: '0x73c83bd1646991cBca3e6b83ca905542FE07C57A',
+    },
+    tokenName: 'ALPHA',
+    projectLink: 'https://alphafinance.io/',
     harvest: true,
     tokenPerBlock: "20"
   },
@@ -456,6 +467,36 @@ export const supportedPools = [
     multiplier: '2X'
   },
   {
+    pid: 26,
+    lpAddresses: {
+      97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
+      56: '0x35fe9787f0ebf2a200bac413d3030cf62d312774'
+    },
+    tokenAddresses: {
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
+      56: '0x0d8ce2a99bb6e3b7db580ed848240e4a0f9ae153'
+    },
+    symbol: 'FIL-BNB FLIP',
+    tokenSymbol: 'FIL',
+    icon: '🥞',
+    multiplier: '1X'
+  },
+  {
+    pid: 27,
+    lpAddresses: {
+      97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
+      56: '0x7a34bd64d18e44CfdE3ef4B81b87BAf3EB3315B6'
+    },
+    tokenAddresses: {
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
+      56: '0xa2b726b1145a4773f68593cf171187d8ebe4d495'
+    },
+    symbol: 'INJ-BNB FLIP',
+    tokenSymbol: 'INJ',
+    icon: '🥞',
+    multiplier: '2X'
+  },
+  {
     pid: 8,
     lpAddresses: {
       97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
@@ -633,6 +674,18 @@ export const forShowPools = [
     pid: 25,
     symbol: 'UNI-BNB',
     tokenSymbol: 'UNI',
+    multiplier: '2X'
+  },
+  {
+    pid: 26,
+    symbol: 'FIL-BNB',
+    tokenSymbol: 'FIL',
+    multiplier: '1X'
+  },
+  {
+    pid: 27,
+    symbol: 'INJ-BNB',
+    tokenSymbol: 'INJ',
     multiplier: '2X'
   }
 ]

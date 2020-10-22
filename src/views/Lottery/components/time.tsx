@@ -1,58 +1,50 @@
-import BigNumber from 'bignumber.js'
+// @ts-nocheck
 import React, {useCallback, useState} from 'react'
 import styled from 'styled-components'
-import {useWallet} from 'use-wallet'
-import {Contract} from 'web3-eth-contract'
-import Button from '../../../components/Button'
-import Card from '../../../components/Card'
-import CardContent from '../../../components/CardContent'
-import CardIcon from '../../../components/CardIcon'
-import IconButton from '../../../components/IconButton'
-import {AddIcon} from '../../../components/icons'
-import Label from '../../../components/Label'
-import Value from '../../../components/Value'
-import useAllowance from '../../../hooks/useAllowance'
-import useApprove from '../../../hooks/useApprove'
-import useModal from '../../../hooks/useModal'
-import useStake from '../../../hooks/useStake'
-import useStakedBalance from '../../../hooks/useStakedBalance'
-import useTokenBalance from '../../../hooks/useTokenBalance'
-import useUnstake from '../../../hooks/useUnstake'
-import {getBalanceNumber} from '../../../utils/formatBalance'
+import {currentLotteryState, LotteryStates} from "../../../lottery/types";
 
-import WalletProviderModal from '../../../components/WalletProviderModal'
-import AccountModal from '../../../components/TopBar/components/AccountModal'
-import Page from "../../../components/Page";
-
-interface StakeProps {
-    lpContract: Contract
-    pid: number
-    tokenName: string
+interface TimePros {
+  state: boolean
 }
 
-const Time: React.FC = () => {
-    const [requestedApproval, setRequestedApproval] = useState(false)
-    const {account} = useWallet()
+const Time: React.FC<TimePros> = ({state}) => {
+    const [currentTime, setCurrentTime] = React.useState(Date.parse(new Date())/1000);
 
-    const [onPresentAccountModal] = useModal(<AccountModal/>)
+    const endTime = (parseInt(currentTime/3600) + 1) * 3600
+    const seconds  = (endTime - currentTime) % 60
+    const minutes  = (endTime - currentTime) % 3600 / 60
+    const hours  = (endTime - currentTime) % (3600 * 24) / 3600
+    const days  = (endTime - currentTime) / (3600 * 24)
 
-    const stateDeadlineTime = '22h, 30m, 10s'
-    const stateDeadlineBlocks = '1,301'
+    const stateDeadlineTime = `${parseInt(hours)}h, ${parseInt(minutes)}m`
 
-    const [onPresentWalletProviderModal] = useModal(
-        <WalletProviderModal/>,
-        'provider',
-    )
-    const handleUnlockClick = useCallback(() => {
-        onPresentWalletProviderModal()
-    }, [onPresentWalletProviderModal])
+    const tick = () => {
+      setCurrentTime(currentTime + 1)
+    };
+
+    React.useEffect(() => {
+      // 执行定时
+      let timerID = setInterval(() => tick(), 1000);
+      // 卸载组件时进行清理
+      return () => clearInterval(timerID);
+    });
 
     return (
-        <div>
-            <Title style={{marginTop: '2em'}}>⏳</Title>
-            <Title>Approx. time left to buy tickets</Title>
-            <Title2>{stateDeadlineTime}</Title2>
-            <Title2>({stateDeadlineBlocks} blocks)</Title2>
+        <div  style={{marginBottom: '1em'}}>
+            {  state === LotteryStates.BUY_TICKETS_OPEN &&
+                <div>
+                    <Title style={{marginTop: '2em'}}>⏳</Title>
+                    <Title>Approx. time left to buy tickets</Title>
+                    <Title2>{stateDeadlineTime}</Title2>
+                </div>
+            }
+            {  state === LotteryStates.WINNERS_ANNOUNCED &&
+            <div>
+                <Title style={{marginTop: '2em'}}>⏳</Title>
+                <Title>Approx. time before next lottery start</Title>
+                <Title2>{stateDeadlineTime}</Title2>
+            </div>
+            }
         </div>
     )
 }

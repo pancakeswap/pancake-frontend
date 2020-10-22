@@ -14,11 +14,12 @@ import Prize from "./components/prize";
 import Ticket from "./components/ticket";
 import Time from "./components/time";
 import Winning from "./components/winning";
-import useTickets, {useTotalRewards} from '../../hooks/useTickets'
 import { getBalanceNumber } from '../../utils/formatBalance'
+import {useTotalRewards} from '../../hooks/useTickets'
 import { getLotteryContract, getLotteryIssueIndex, getLotteryStatus } from '../../sushi/lotteryUtils'
 
 import PurchasedTickets from './components/purchasedTickets'
+import { LotteryStates} from "../../lottery/types";
 
 const Farm: React.FC = () => {
     const {account, ethereum} = useWallet()
@@ -33,7 +34,7 @@ const Farm: React.FC = () => {
     const lotteryContract = getLotteryContract(sushi)
 
     const [index, setIndex] = useState(0)
-    const [status, setStatus] = useState(true)
+    const [state, setStates] = useState(true)
 
     const fetchIndex = useCallback(async () => {
       const issueIndex = await getLotteryIssueIndex(lotteryContract)
@@ -41,8 +42,8 @@ const Farm: React.FC = () => {
     }, [lotteryContract])
 
     const fetchStatus = useCallback(async () => {
-      const status = await getLotteryStatus(lotteryContract)
-      setStatus(status)
+      const state = await getLotteryStatus(lotteryContract)
+      setStates(state)
     }, [lotteryContract])
 
     useEffect(() => {
@@ -52,8 +53,6 @@ const Farm: React.FC = () => {
       }
     }, [account, block, lotteryContract, sushi])
 
-    const tickets = useTickets()
-
     const lotteryPrizeAmount = useTotalRewards()
 
     const subtitleText = 'Spend CAKE to buy tickets, contributing to the lottery pot. Ticket purchases end approx. 30 minutes before lottery. Win prizes if 2, 3, or 4 of your ticket numbers match the winning numbers and their positions! Good luck!'
@@ -61,7 +60,7 @@ const Farm: React.FC = () => {
     return (
         <Switch>
             <Page>
-                第{index}轮: {!status?'进行中':'兑奖等待下一轮'}
+                第{index}轮: {!state?'进行中':'兑奖等待下一轮'}
                 <Title style={{marginTop: '0.5em'}}>
                     💰
                     <br/>
@@ -71,13 +70,12 @@ const Farm: React.FC = () => {
                 <Subtitle>{subtitleText}</Subtitle>
                 <StyledFarm>
                     <StyledCardWrapper>
-                        <Prize status={status} />
-                        <Ticket status={status} myTicketNumbers={tickets} />
+                      {state === LotteryStates.WINNERS_ANNOUNCED && <Prize state={state} />}
+                      {state === LotteryStates.BUY_TICKETS_OPEN && <Ticket state={state} />}
                     </StyledCardWrapper>
                 </StyledFarm>
-{/*                <Time></Time>*/}
+                <Time state={state}/>
                 <Winning></Winning>
-                <PurchasedTickets myTicketNumbers={tickets}/>
             </Page>
         </Switch>
     )

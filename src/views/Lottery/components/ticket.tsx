@@ -28,11 +28,10 @@ import MyTicketsModal from "./myTicketsModal";
 
 
 interface TicketProps {
-  status?: boolean
-  myTicketNumbers: Array<any>
+  state?: boolean
 }
 
-const Ticket: React.FC<TicketProps> = ({status,  myTicketNumbers}) => {
+const Ticket: React.FC<TicketProps> = ({state}) => {
   const [requestedApproval, setRequestedApproval] = useState(false)
   const { account } = useWallet()
 
@@ -47,7 +46,7 @@ const Ticket: React.FC<TicketProps> = ({status,  myTicketNumbers}) => {
         <MyTicketsModal myTicketNumbers={tickets}/>,
     )
 
-    const ticketsLength = myTicketNumbers.length
+    const ticketsLength = tickets.length
     const winNumbers = useWinningNumbers()
 
     const handleApprove = useCallback(async () => {
@@ -81,7 +80,7 @@ const Ticket: React.FC<TicketProps> = ({status,  myTicketNumbers}) => {
     }, [onPresentWalletProviderModal])
 
     return (
-        <div style={{margin: '5px', width: '300px'}}>
+        <div style={{margin: '5px', width: '400px'}}>
             <Card>
                 <CardContent>
                     <StyledCardContentInner>
@@ -100,11 +99,11 @@ const Ticket: React.FC<TicketProps> = ({status,  myTicketNumbers}) => {
                             />
                           ) : (
                             <>
-                              <Button disabled={winNumbers[0]!==0 || status} onClick={onPresentBuy} size="md" text={'Buy ticket'}/>
+                              <Button disabled={winNumbers[0]!==0 || state} onClick={onPresentBuy} size="md" text={'Buy ticket'}/>
                             </>
                           ))}
                     </StyledCardActions>
-                    <MyTicketsP onClick={onPresentMyTickets}>View your tickets</MyTicketsP>
+                    {account && <MyTicketsP onClick={onPresentMyTickets}>View your tickets</MyTicketsP>}
                     </StyledCardContentInner>
                 </CardContent>
             </Card>
@@ -127,6 +126,7 @@ const StyledCardActions = styled.div`
 `
 
 const MyTicketsP = styled.div`
+  cursor: pointer;
   margin-top: 1.35em;
   color: ${(props) => props.theme.colors.secondary};
 `

@@ -59,7 +59,7 @@ const BuyModal: React.FC<BuyModalProps> = ({
           Math.floor(Math.random() * maxNumber) + 1
         ]));
         console.log(numbers)
-        const txHash = await onMultiBuy('1', numbers)
+        const txHash = await onMultiBuy('10', numbers)
         // user rejected tx or didn't go thru
         if (txHash) {
           setRequestedBuy(false)
