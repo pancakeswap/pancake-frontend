@@ -7,7 +7,6 @@ export const ConfirmationType = {
 
 export const LotteryStates = {
     BUY_TICKETS_OPEN: false,
-    BUY_TICKETS_CLOSE: true,
     WINNERS_ANNOUNCED: true,
 }
 
