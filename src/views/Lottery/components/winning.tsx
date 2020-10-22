@@ -22,7 +22,6 @@ const Winning: React.FC = () => {
                         <StyledCardHeader>
                             <Title>Latest Winning Numbers</Title>
                             <br/>
-                            <Label text={'Lottery ending ' + ending}></Label>
                         </StyledCardHeader>
                         <Row>
                             {winNumbers.map((number, index) =>
