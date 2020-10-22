@@ -137,7 +137,7 @@ const Winning: React.FC<WinningProps> = ({state}) => {
                                 <CenteredTextWithPadding><strong>{MatchedNumber2}</strong></CenteredTextWithPadding>
                             </RowNoPadding>
                         </Column>
-                        <Link href={`https://api.pancakeswap.finance/api/v2/lotterys`} target="_blank">Export recent winning numbers</Link>
+                        <Link href={`https://api.pancakeswap.finance/api/v2/lottery`} target="_blank">Export recent winning numbers</Link>
                     </StyledCardContentInner>
                 </CardContent>
             </Card>
