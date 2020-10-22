@@ -67,7 +67,10 @@ const Coming: React.FC = () => {
         />
         <Balance>???</Balance>
         <Label>Create a pool for your token</Label>
-        <ApplyNowLink href="https://pancakeswap.finance/syrup" target="_blank">
+        <ApplyNowLink
+          href="https://docs.google.com/forms/d/e/1FAIpQLScGdT5rrVMr4WOWr08pvcroSeuIOtEJf1sVdQGVdcAOqryigQ/viewform"
+          target="_blank"
+        >
           Apply Now
         </ApplyNowLink>
         <DetailPlaceholder>
