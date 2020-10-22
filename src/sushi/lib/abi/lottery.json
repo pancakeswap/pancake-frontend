@@ -99,12 +99,31 @@
       },
       {
         "indexed": false,
-        "internalType": "uint256[]",
+        "internalType": "uint8[4]",
         "name": "winningNumbers",
-        "type": "uint256[]"
+        "type": "uint8[4]"
       }
     ],
     "name": "Drawing",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "MultiClaim",
     "type": "event"
   },
   {
@@ -180,12 +199,37 @@
         "type": "uint256"
       }
     ],
-    "name": "historyNumbers",
+    "name": "historyAmount",
     "outputs": [
       {
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "historyNumbers",
+    "outputs": [
+      {
+        "internalType": "uint8",
+        "name": "",
+        "type": "uint8"
       }
     ],
     "stateMutability": "view",
@@ -274,6 +318,26 @@
     "constant": true
   },
   {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "nullTicket",
+    "outputs": [
+      {
+        "internalType": "uint8",
+        "name": "",
+        "type": "uint8"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true
+  },
+  {
     "inputs": [],
     "name": "owner",
     "outputs": [
@@ -338,6 +402,31 @@
   {
     "inputs": [
       {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint64",
+        "name": "",
+        "type": "uint64"
+      }
+    ],
+    "name": "userBuyAmountSum",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true
+  },
+  {
+    "inputs": [
+      {
         "internalType": "address",
         "name": "",
         "type": "address"
@@ -371,9 +460,9 @@
     "name": "winningNumbers",
     "outputs": [
       {
-        "internalType": "uint256",
+        "internalType": "uint8",
         "name": "",
-        "type": "uint256"
+        "type": "uint8"
       }
     ],
     "stateMutability": "view",
@@ -397,8 +486,9 @@
         "type": "bool"
       }
     ],
-    "stateMutability": "nonpayable",
-    "type": "function"
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true
   },
   {
     "inputs": [
@@ -408,9 +498,9 @@
         "type": "uint256"
       },
       {
-        "internalType": "uint256[]",
+        "internalType": "uint8[4]",
         "name": "_numbers",
-        "type": "uint256[]"
+        "type": "uint8[4]"
       }
     ],
     "name": "buy",
@@ -426,9 +516,9 @@
         "type": "uint256"
       },
       {
-        "internalType": "uint256[][]",
+        "internalType": "uint8[4][]",
         "name": "_numbers",
-        "type": "uint256[][]"
+        "type": "uint8[4][]"
       }
     ],
     "name": "multiBuy",
@@ -439,15 +529,22 @@
   {
     "inputs": [
       {
-        "internalType": "uint256[]",
-        "name": "_tickets",
-        "type": "uint256[]"
+        "internalType": "uint8[4]",
+        "name": "number",
+        "type": "uint8[4]"
       }
     ],
-    "name": "multiClaim",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
+    "name": "generateNumberIndexKey",
+    "outputs": [
+      {
+        "internalType": "uint64[11]",
+        "name": "",
+        "type": "uint64[11]"
+      }
+    ],
+    "stateMutability": "pure",
+    "type": "function",
+    "constant": true
   },
   {
     "inputs": [],
@@ -455,6 +552,40 @@
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "calculateMatchingRewardAmount",
+    "outputs": [
+      {
+        "internalType": "uint256[4]",
+        "name": "",
+        "type": "uint256[4]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_issueIndex",
+        "type": "uint256"
+      }
+    ],
+    "name": "getTotalRewards",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true
   },
   {
     "inputs": [
@@ -515,26 +646,6 @@
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "_issueIndex",
-        "type": "uint256"
-      }
-    ],
-    "name": "getTotalRewards",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function",
-    "constant": true
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
         "name": "_tokenId",
         "type": "uint256"
       }
@@ -560,6 +671,19 @@
       }
     ],
     "name": "claimReward",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256[]",
+        "name": "_tickets",
+        "type": "uint256[]"
+      }
+    ],
+    "name": "multiClaim",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

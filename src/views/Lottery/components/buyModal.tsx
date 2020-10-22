@@ -49,6 +49,8 @@ const BuyModal: React.FC<BuyModalProps> = ({
       try {
         setRequestedBuy(true)
         const length = parseInt(val)
+
+        console.log(maxNumber)
         // @ts-ignore
         const numbers = Array.apply(null, { length }).map(() => ([
           Math.floor(Math.random() * maxNumber) + 1,
@@ -56,7 +58,8 @@ const BuyModal: React.FC<BuyModalProps> = ({
           Math.floor(Math.random() * maxNumber) + 1,
           Math.floor(Math.random() * maxNumber) + 1
         ]));
-        const txHash = await onMultiBuy('10', numbers)
+        console.log(numbers)
+        const txHash = await onMultiBuy('1', numbers)
         // user rejected tx or didn't go thru
         if (txHash) {
           setRequestedBuy(false)
@@ -64,7 +67,7 @@ const BuyModal: React.FC<BuyModalProps> = ({
       } catch (e) {
         console.log(e)
       }
-    }, [onMultiBuy, setRequestedBuy, val])
+    }, [onMultiBuy, setRequestedBuy, maxNumber, val])
 
     const handleSelectMax = useCallback(() => {
       if(Number(maxTickets) > 50) {

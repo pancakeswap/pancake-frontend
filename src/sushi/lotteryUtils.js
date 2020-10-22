@@ -7,7 +7,6 @@ export const multiCall = async (sushi, abi, calls) => {
   const multicall = sushi && sushi.contracts && sushi.contracts.multicall
   const itf = new Interface(abi);
   let res = [];
-  console.log(calls)
   if(calls.length > 100) {
     let i =0;
     while(i < calls.length/100) {
@@ -97,7 +96,6 @@ export const getTickets = async (sushi, lotteryContract, ticketsContract, accoun
   ]));
   const res = await multiCall(sushi, ticketAbi, calls1)
 
-  console.log(calls1, res)
   const tokenIds = res.map(id  =>id.toString())
 
   const calls2 = tokenIds.map((id) => ([
@@ -139,7 +137,6 @@ export const multiClaim = async (sushi, lotteryContract, ticketsContract, accoun
   const res = await multiCall(sushi, ticketAbi, calls1)
   const tokenIds = res.map(id  =>id.toString())
 
-  console.log(tokenIds)
 
   const calls2 = tokenIds.map((id) => ([
     ticketsContract.options.address,
@@ -148,7 +145,6 @@ export const multiClaim = async (sushi, lotteryContract, ticketsContract, accoun
   ]))
   const claimedStatus = await multiCall(sushi, ticketAbi, calls2)
 
-  console.log(claimedStatus)
   const unClaimedIds = tokenIds.filter((id,index) => !claimedStatus[index][0])
 
   const calls3 = unClaimedIds.map(id => ([
@@ -164,12 +160,13 @@ export const multiClaim = async (sushi, lotteryContract, ticketsContract, accoun
       finanltokenIds.push(unClaimedIds[i])
     }
   })
-  if(finanltokenIds.length>50) {
-    finanltokenIds= finanltokenIds.slice(0,50)
+
+  console.log(finanltokenIds.length)
+  if(finanltokenIds.length>200) {
+    finanltokenIds= finanltokenIds.slice(0,200)
   }
   // finanltokenIds.splice(0,5);
 
-  console.log(finanltokenIds)
   try {
     return lotteryContract.methods
       .multiClaim(
@@ -197,14 +194,12 @@ export const getTotalClaim  = async (sushi, lotteryContract, ticketsContract, ac
     ]));
     const res = await multiCall(sushi, ticketAbi, calls1)
     const tokenIds = res.map(id  =>id.toString())
-
     const calls2 = tokenIds.map((id) => ([
       ticketsContract.options.address,
       'getLotteryIssueIndex',
       [id]
     ]))
     const ticketIssues = await multiCall(sushi, ticketAbi, calls2)
-
     const calls3 = tokenIds.map((id) => ([
       ticketsContract.options.address,
       'getClaimStatus',
@@ -222,7 +217,7 @@ export const getTotalClaim  = async (sushi, lotteryContract, ticketsContract, ac
         finalTokenids.push(tokenIds[i])
       }
     })
-    console.log(finalTokenids)
+
     const calls4 = finalTokenids.map(id => ([
       lotteryContract.options.address,
       'getRewardView',

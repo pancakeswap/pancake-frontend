@@ -46,7 +46,7 @@ const SyrupRow: React.FC<SyrupRowProps> = ({
   const syrup = useMemo(() => {
     return getContract(
       ethereum as provider,
-      '0x009cF7bC57584b7998236eff51b98A168DceA9B0',
+      '0x43acC9A5E94905c7D31415EB410F3E666e5F1e9A',
     )
   }, [ethereum])
 
