@@ -80,7 +80,8 @@ const PoolCardv2: React.FC<HarvestProps> = ({
     return `${a.div(b).times(100).toFixed(2)}%`
   }, [cakePrice, harvest, tokenPerBlock, tokenPrice, totalStaked])
 
-  const isUnstaked = !allowance.toNumber() && stakedBalance.toNumber() === 0
+  const isUnstaked =
+    account && !allowance.toNumber() && stakedBalance.toNumber() === 0
   const isCardActive = isFinished && isUnstaked
 
   const [onPresentDeposit] = useModal(
