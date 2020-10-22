@@ -22,7 +22,7 @@ const Winning: React.FC = () => {
                         <StyledCardHeader>
                             <Title>Latest Winning Numbers</Title>
                             <br/>
-                            <Label text={'Lottery ending ' + ending}></Label>
+
                         </StyledCardHeader>
                         <Row>
                             {winNumbers.map((number, index) =>
@@ -143,7 +143,7 @@ const Row = styled.div`
   align-items: center;
   display: flex;
   flex-direction: row;
-  
+
   @media (max-width: 768px) {
     display: none;
   }
@@ -154,7 +154,7 @@ const RowSmall = styled.div`
   align-items: center;
   display: flex;
   flex-direction: row;
-  
+
    @media (min-width: 768px) {
     display: none;
   }
@@ -165,7 +165,7 @@ const RabbitRow = styled.div`
   align-items: center;
   display: flex;
   flex-direction: row;
-  
+
    @media (max-width: 768px) {
     display: none;
   }
@@ -176,7 +176,7 @@ const RabbitRowSmall = styled.div`
   align-items: center;
   display: flex;
   flex-direction: row;
-  
+
    @media (min-width: 768px) {
     display: none;
   }
@@ -190,7 +190,7 @@ const CardImage = styled.div`
 const CardImageFirst = styled.div`
   text-align: center;
   margin-left:  -1.2em;
-  
+
   @media (max-width: 600) {
     margin-left:  -0.2em;;
   }

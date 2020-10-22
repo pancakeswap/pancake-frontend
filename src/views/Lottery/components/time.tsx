@@ -1,38 +1,32 @@
+// @ts-nocheck
 import React, {useCallback, useState} from 'react'
 import styled from 'styled-components'
 import {currentLotteryState, LotteryStates} from "../../../lottery/types";
 
 const Time: React.FC = () => {
-    const stateDeadlineTime = '22h, 30m, 10s'
-    const stateDeadlineBlocks = '1,301'
+
+  const [currentTime, setCurrentTime] = React.useState(Date.parse(new Date())/1000);
+
+  const endTime = 1603458000
+  const seconds  = (endTime - currentTime) % 60
+  const minutes  = (endTime - currentTime) % 3600 / 60
+  const hours  = (endTime - currentTime) % (3600 * 24) / 3600
+  const days  = (endTime - currentTime) / (3600 * 24)
+
+
+  const tick = () => {
+    setCurrentTime(currentTime + 1)
+  };
+
+
+    const stateDeadlineTime = `${parseInt(days)}d, ${parseInt(hours)}h, ${parseInt(minutes)}m, ${parseInt(seconds)}s`
     const state = currentLotteryState();
 
     return (
         <div  style={{marginBottom: '1em'}}>
-            {  state === LotteryStates.BUY_TICKETS_OPEN &&
-                <div>
-                    <Title style={{marginTop: '2em'}}>⏳</Title>
-                    <Title>Approx. time left to buy tickets</Title>
-                    <Title2>{stateDeadlineTime}</Title2>
-                    <Title2>({stateDeadlineBlocks} blocks)</Title2>
-                </div>
-            }
-            {  state === LotteryStates.BUY_TICKETS_CLOSE &&
-            <div>
-                <Title style={{marginTop: '2em'}}>⏳</Title>
-                <Title>Approx. time before winners announcement</Title>
-                <Title2>{stateDeadlineTime}</Title2>
-                <Title2>({stateDeadlineBlocks} blocks)</Title2>
-            </div>
-            }
-            {  state === LotteryStates.WINNERS_ANNOUNCED &&
-            <div>
-                <Title style={{marginTop: '2em'}}>⏳</Title>
-                <Title>Approx. time before next lottery start</Title>
-                <Title2>{stateDeadlineTime}</Title2>
-                <Title2>({stateDeadlineBlocks} blocks)</Title2>
-            </div>
-            }
+            <Title style={{marginTop: '2em'}}>⏳</Title>
+            <Title>Approx. time before next lottery start</Title>
+            <Title2>{stateDeadlineTime}</Title2>
         </div>
     )
 }
