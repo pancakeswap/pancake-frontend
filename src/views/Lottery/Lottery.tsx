@@ -72,8 +72,8 @@ const Farm: React.FC = () => {
                 <Subtitle>{subtitleText}</Subtitle>
                 <StyledFarm>
                     <StyledCardWrapper>
-                      {state === LotteryStates.WINNERS_ANNOUNCED && <Prize state={state} />}
-                      {state === LotteryStates.BUY_TICKETS_OPEN && <Ticket state={state} />}
+                      <Prize state={state} />
+                      {(!account || state === LotteryStates.BUY_TICKETS_OPEN) && <Ticket state={state} />}
                     </StyledCardWrapper>
                 </StyledFarm>
                 <Time state={state}/>

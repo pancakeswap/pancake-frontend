@@ -63,7 +63,7 @@ const Prize: React.FC<PrizeProps> = ({state}) => {
 
 
   return (
-    <div style={{margin: '5px', width: '400px'}}>
+    <div style={{margin: '5px', width: '380px'}}>
         <Card>
             <CardContent>
                 <StyledCardContentInner>
@@ -72,34 +72,22 @@ const Prize: React.FC<PrizeProps> = ({state}) => {
                         <Value value={getBalanceNumber(claimAmount)}/>
                         <Label text={`CAKE prizes to be claimed!`}/>
                     </StyledCardHeader>
-                    {
-                        state === LotteryStates.WINNERS_ANNOUNCED &&
-                        <StyledCardActions>
-                            {
-                                !account &&
-                                <Button onClick={handleUnlockClick} size="md" text="Unlock Wallet"/>
-                            }
-                            {
-                                account &&
-                                <Button disabled={getBalanceNumber(claimAmount) == 0}
-                                        onClick={null}
-                                        size="md"
-                                        text="Claim prizes"/>
-                            }
-                        </StyledCardActions>
-                    }
-                    {
-                        (state === LotteryStates.BUY_TICKETS_OPEN) &&
-                        <StyledCardActions>
-                            <Button disabled={true}
+                    <StyledCardActions>
+                        {
+                            !account &&
+                            <Button onClick={handleUnlockClick} size="md" text="Unlock Wallet"/>
+                        }
+                        {
+                            account &&
+                            <Button disabled={getBalanceNumber(claimAmount) == 0}
                                     onClick={null}
                                     size="md"
-                                    text="Claim prizes after winners announcement"/>
-
-                        </StyledCardActions>
-                    }
-                    {account &&
+                                    text="Claim prizes"/>
+                        }
+                    </StyledCardActions>
+                    {account && state === LotteryStates.WINNERS_ANNOUNCED ?
                       <MyTicketsP onClick={onPresentMyTickets}>View your tickets</MyTicketsP>
+                      : <><br/><br/></>
                     }
                 </StyledCardContentInner>
             </CardContent>

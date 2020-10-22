@@ -90,7 +90,7 @@ const Ticket: React.FC<TicketProps> = ({state}) => {
     }, [onPresentWalletProviderModal])
 
     return (
-        <div style={{margin: '5px', width: '400px'}}>
+        <div style={{margin: '5px', width: '380px'}}>
             <Card>
                 <CardContent>
                     <StyledCardContentInner>
@@ -114,6 +114,9 @@ const Ticket: React.FC<TicketProps> = ({state}) => {
                           ))}
                     </StyledCardActions>
                     {account && ticketsLength > 0 && <MyTicketsP onClick={onPresentMyTickets}>View your tickets</MyTicketsP>}
+
+                    {ticketsLength === 0 && <br/>}
+                    {ticketsLength === 0 && <br/>}
                     </StyledCardContentInner>
                 </CardContent>
             </Card>

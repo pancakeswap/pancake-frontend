@@ -28,10 +28,10 @@ const Winning: React.FC<WinningProps> = ({state}) => {
                 <CardContent>
                     <StyledCardContentInner>
                         <StyledCardHeader>
-                            {account && state === LotteryStates.BUY_TICKETS_OPEN &&
+                            { (!account || (account && state === LotteryStates.BUY_TICKETS_OPEN)) &&
                                 <Title>Latest Winning Numbers</Title>
                             }
-                            {account && state === LotteryStates.WINNERS_ANNOUNCED &&
+                            { account && state === LotteryStates.WINNERS_ANNOUNCED &&
                                 <Title>🥳Winning Numbers This Round🥳</Title>
                             }
                             <br/>
