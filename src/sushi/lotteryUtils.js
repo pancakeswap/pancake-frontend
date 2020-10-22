@@ -256,9 +256,8 @@ export const getLotteryStatus = async (lotteryContract) =>{
 export const getMatchingRewardLength = async (lotteryContract, matchNumber, account) =>{
   const issueIdex = await lotteryContract.methods.issueIndex().call();
   try {
-    const amount = await lotteryContract.methods.getMatchingRewardAmount(issueIdex, matchNumber).call()
-    console.log('amount', amount)
-    return amount / 1e18;
+    const amount = await lotteryContract.methods.historyAmount(issueIdex, 5 - matchNumber).call()
+    return amount / 1e18 / 10;
   }
   catch(err) {
   }

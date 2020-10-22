@@ -8,10 +8,11 @@ import ModalContent from "../../../components/ModalContent";
 import {useWinningNumbers} from '../../../hooks/useTickets'
 
 interface MyTicketsModalProps extends ModalProps {
-  myTicketNumbers: Array<any>
+  myTicketNumbers: Array<any>,
+  from?: string
 }
 
-const MyTicketsModal: React.FC<MyTicketsModalProps> = ({ myTicketNumbers, onDismiss}) => {
+const MyTicketsModal: React.FC<MyTicketsModalProps> = ({ myTicketNumbers, onDismiss, from }) => {
 
     const winNumbers = useWinningNumbers()
 
@@ -29,7 +30,7 @@ const MyTicketsModal: React.FC<MyTicketsModalProps> = ({ myTicketNumbers, onDism
 
     const listItems = myTicketNumbers.map((number, index) =>
       {
-          if(rewardMatch(number[0])) {
+          if(rewardMatch(number[0]) && from !== 'buy') {
               return <RewardP key={index}>🤑🤑{number.toString()}🤑🤑</RewardP>
           }
           else {

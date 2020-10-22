@@ -44,7 +44,7 @@ const Ticket: React.FC<TicketProps> = ({state}) => {
 
     const tickets = useTickets()
     const [onPresentMyTickets] = useModal(
-        <MyTicketsModal myTicketNumbers={tickets}/>,
+        <MyTicketsModal myTicketNumbers={tickets} from={'buy'}/>,
     )
 
     const ticketsLength = tickets.length

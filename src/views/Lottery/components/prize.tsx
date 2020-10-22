@@ -80,7 +80,7 @@ const Prize: React.FC<PrizeProps> = ({state}) => {
                         {
                             account &&
                             <Button disabled={getBalanceNumber(claimAmount) == 0}
-                                    onClick={null}
+                                    onClick={handleClaim}
                                     size="md"
                                     text="Claim prizes"/>
                         }
