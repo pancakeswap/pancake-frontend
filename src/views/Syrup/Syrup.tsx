@@ -109,10 +109,14 @@ const Farm: React.FC = () => {
 }
 
 const Hero = styled.div`
+  align-items: center;
   color: ${({ theme }) => theme.colors.primary};
   display: grid;
   grid-gap: 32px;
   grid-template-columns: 1fr;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 250px;
   padding: 48px 0;
 
   h1 {
@@ -138,15 +142,17 @@ const Hero = styled.div`
     max-width: 100%;
   }
 
-  @media (min-width: 852px) {
+  @media (min-width: 576px) {
     grid-template-columns: 1fr 1fr;
+    margin: 0;
+    max-width: none;
   }
 `
 
 const Page = styled.div`
   margin-left: auto;
   margin-right: auto;
-  max-width: 1080px;
+  max-width: 904px;
   padding-bottom: 48px;
   padding-left: 16px;
   padding-right: 16px;
@@ -163,18 +169,31 @@ const Page = styled.div`
 `
 
 const Pools = styled.div`
-  align-items: start;
   display: grid;
+  grid-template-columns: repeat(8, 1fr);
   grid-gap: 16px;
-  grid-template-columns: 1fr;
 
   @media (min-width: 576px) {
+    grid-template-columns: repeat(8, 1fr);
     grid-gap: 24px;
-    grid-template-columns: 1fr 1fr;
   }
 
   @media (min-width: 852px) {
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: repeat(12, 1fr);
+    grid-gap: 24px;
+  }
+
+  @media (min-width: 968px) {
+    grid-template-columns: repeat(12, 1fr);
+    grid-gap: 32px;
+  }
+
+  & > div {
+    grid-column: 2 / 8;
+
+    @media (min-width: 576px) {
+      grid-column: span 4;
+    }
   }
 `
 
