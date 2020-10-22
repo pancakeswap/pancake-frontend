@@ -494,7 +494,7 @@ export const supportedPools = [
     symbol: 'INJ-BNB FLIP',
     tokenSymbol: 'INJ',
     icon: '🥞',
-    multiplier: '2X'
+    multiplier: '1X'
   },
   {
     pid: 8,
@@ -686,7 +686,7 @@ export const forShowPools = [
     pid: 27,
     symbol: 'INJ-BNB',
     tokenSymbol: 'INJ',
-    multiplier: '2X'
+    multiplier: '1X'
   }
 ]
 
