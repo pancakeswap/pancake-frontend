@@ -60,7 +60,9 @@ const Farm: React.FC = () => {
     return (
         <Switch>
             <Page>
-                第{index}轮: {!state?'进行中':'兑奖等待下一轮'}
+                {account &&
+                <Subtitle>Round {index}: {!state?'BUYING':'CLAIMING'}</Subtitle>
+                }
                 <Title style={{marginTop: '0.5em'}}>
                     💰
                     <br/>
