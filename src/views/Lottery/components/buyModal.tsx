@@ -77,6 +77,7 @@ const BuyModal: React.FC<BuyModalProps> = ({
                 <Tips>1 Ticket = 10 CAKE</Tips>
             </div>
             <div>
+                <Announce>Ticket purchases are final. Your CAKE cannot be returned to you after buying tickets.</Announce>
                 <Final>You will spend: {cakeCosts(val)} CAKE</Final>
             </div>
             <ModalActions>
@@ -111,4 +112,9 @@ const Final = styled.div`
   font-size: 20px;
   font-weight: 600;
   color: ${props => props.theme.colors.primary};
+`
+const Announce = styled.div`
+  margin-top: 1em;
+  margin-left: 0.4em;
+  color:  #ED4B9E;
 `
