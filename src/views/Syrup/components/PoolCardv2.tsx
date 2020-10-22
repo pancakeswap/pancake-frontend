@@ -30,6 +30,7 @@ import DepositModal from './DepositModal'
 import WithdrawModal from './WithdrawModal'
 import CardTitle from './CardTitle'
 import CardTokenImg from './CardTokenImg'
+import Card from './Card'
 
 import WalletProviderModal from '../../../components/WalletProviderModal'
 import { TranslateString } from '../../../utils/translateTextHelpers'
@@ -113,7 +114,7 @@ const PoolCardv2: React.FC<HarvestProps> = ({
   }, [onPresentWalletProviderModal])
 
   return (
-    <StyledCard isFinished={isFinished}>
+    <Card isFinished={isFinished}>
       {isFinished && <PoolFinishedSash />}
       <div style={{ padding: '24px' }}>
         <CardTitle isFinished={isFinished}>
@@ -205,7 +206,7 @@ const PoolCardv2: React.FC<HarvestProps> = ({
         blocksRemaining={blocksRemaining}
         isFinished={isFinished}
       />
-    </StyledCard>
+    </Card>
   )
 }
 
@@ -218,18 +219,6 @@ const PoolFinishedSash = styled.div`
   right: -24px;
   top: -24px;
   width: 135px;
-`
-
-const StyledCard = styled.div<{ isFinished: boolean }>`
-  background: ${(props) => props.theme.colors.card.background};
-  border-radius: 32px;
-  display: flex;
-  color: ${({ isFinished, theme }) =>
-    theme.colors[isFinished ? 'textDisabled2' : 'secondary2']};
-  box-shadow: 0px 2px 12px -8px rgba(25, 19, 38, 0.1),
-    0px 1px 1px rgba(25, 19, 38, 0.05);
-  flex-direction: column;
-  position: relative;
 `
 
 const StyledCardActions = styled.div`

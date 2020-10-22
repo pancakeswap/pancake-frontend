@@ -14,7 +14,7 @@ interface Props {
 }
 
 const StyledFooter = styled.div<{ isFinished: boolean }>`
-  border-top: 1px solid #e9eaeb;
+  border-top: 1px solid ${({ theme }) => theme.colors.border};
   color: ${({ isFinished, theme }) =>
     theme.colors[isFinished ? 'textDisabled2' : 'primary2']};
   padding: 24px;
@@ -24,7 +24,7 @@ const StyledDetailsButton = styled.button`
   align-items: center;
   background-color: transparent;
   border: 0;
-  color: ${(props) => props.theme.colors.primaryv2};
+  color: ${(props) => props.theme.colors.primary2};
   cursor: pointer;
   display: inline-flex;
   font-size: 16px;

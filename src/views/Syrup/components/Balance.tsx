@@ -48,7 +48,7 @@ const Balance: React.FC<BalanceProps> = ({
 
 const StyledBalance = styled.div<{ isFinished: boolean }>`
   color: ${({ isFinished, theme }) =>
-    theme.colors[isFinished ? 'textDisabled2' : 'primary2']};
+    theme.colors[isFinished ? 'textDisabled2' : 'text2']};
   font-size: 40px;
   font-weight: 600;
 `

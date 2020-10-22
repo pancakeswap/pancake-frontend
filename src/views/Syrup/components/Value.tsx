@@ -48,7 +48,7 @@ const Value: React.FC<ValueProps> = ({
 
 const StyledValue = styled.span<{ isFinished: boolean }>`
   color: ${({ isFinished, theme }) =>
-    theme.colors[isFinished ? 'textDisabled2' : 'primary2']};
+    theme.colors[isFinished ? 'textDisabled2' : 'text2']};
   font-size: 14px;
   font-weight: 900;
   align-items: center;
