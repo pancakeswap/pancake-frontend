@@ -56,7 +56,7 @@ const Coming: React.FC = () => {
     <Card>
       <div style={{ padding: '24px' }}>
         <CardTitle>
-          Your Project?{' '}
+          {TranslateString(414, 'Your Project?')}{' '}
           <span role="img" aria-label="eyes">
             👀
           </span>
@@ -66,12 +66,12 @@ const Coming: React.FC = () => {
           alt="Your project here"
         />
         <Balance>???</Balance>
-        <Label>Create a pool for your token</Label>
+        <Label>{TranslateString(416, 'Create a pool for your token')}</Label>
         <ApplyNowLink
           href="https://docs.google.com/forms/d/e/1FAIpQLScGdT5rrVMr4WOWr08pvcroSeuIOtEJf1sVdQGVdcAOqryigQ/viewform"
           target="_blank"
         >
-          Apply Now
+          {TranslateString(418, 'Apply Now')}
         </ApplyNowLink>
         <DetailPlaceholder>
           <div style={{ flex: 1 }}>{TranslateString(352, 'APY')}:</div>
@@ -82,7 +82,7 @@ const Coming: React.FC = () => {
             <span role="img" aria-label="syrup">
               🍯{' '}
             </span>
-            Your Stake:
+            {TranslateString(384, 'Your Stake')}:
           </div>
           <Value>??? Syrup</Value>
         </DetailPlaceholder>

@@ -85,21 +85,13 @@ const Farm: React.FC = () => {
 
   return (
     <Page>
-      {/* <PageHeader
-        icon={<img src={chef} height="90" alt="SYRUP POOL icon" />}
-        title={TranslateString(336, 'SYRUP POOL')}
-        subtitle={`${TranslateString(
-          338,
-          'The Sous Chef is cooking up a treat for all SYRUP holders',
-        )} 🤩`}
-      /> */}
       <Hero>
         <div>
           <h1>{TranslateString(336, 'SYRUP Pool')}</h1>
           <ul>
-            <li>Stake SYRUP to earn new tokens.</li>
-            <li>You can unstake at any time.</li>
-            <li>Rewards are calculated per block.</li>
+            <li>{TranslateString(402, 'Stake SYRUP to earn new tokens.')}</li>
+            <li>{TranslateString(404, 'You can unstake at any time.')}</li>
+            <li>{TranslateString(406, 'Rewards are calculated per block.')}</li>
           </ul>
         </div>
         <div>
@@ -107,7 +99,7 @@ const Farm: React.FC = () => {
         </div>
       </Hero>
       <Pools>
-        {renderPools.map((pool, index) => (
+        {renderPools.map((pool) => (
           <SyrupRow key={pool.tokenName} {...pool} />
         ))}
         <Coming />

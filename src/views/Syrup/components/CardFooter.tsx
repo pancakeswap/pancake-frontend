@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import { getBalanceNumber } from '../../../utils/formatBalance'
+import useI18n from '../../../hooks/useI18n'
 import SmallValue from './Value'
 import CoreTag from './CoreTag'
 import { ChevronDown, ChevronUp } from 'react-feather'
@@ -70,6 +71,7 @@ const CardFooter: React.FC<Props> = ({
   isFinished,
 }) => {
   const [isOpen, setIsOpen] = useState(false)
+  const TranslateString = useI18n()
   const Icon = isOpen ? ChevronUp : ChevronDown
 
   const handleClick = () => setIsOpen(!isOpen)
@@ -92,7 +94,7 @@ const CardFooter: React.FC<Props> = ({
                 <span role="img" aria-label="syrup">
                   🍯{' '}
                 </span>
-                Total
+                {TranslateString(408, 'Total')}
               </Label>
             </FlexFull>
             <SmallValue
@@ -103,13 +105,13 @@ const CardFooter: React.FC<Props> = ({
           {blocksRemaining > 0 && (
             <Row>
               <FlexFull>
-                <Label>End:</Label>
+                <Label>{TranslateString(410, 'End')}:</Label>
               </FlexFull>
               <SmallValue isFinished={isFinished} value={blocksRemaining} />
             </Row>
           )}
           <TokenLink href={projectLink} target="_blank">
-            View project site
+            {TranslateString(412, 'View project site')}
           </TokenLink>
         </Details>
       )}
