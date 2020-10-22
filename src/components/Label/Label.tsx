@@ -3,14 +3,17 @@ import styled from 'styled-components'
 
 interface LabelProps {
   text?: string
+  isFinished?: boolean
 }
 
-const Label: React.FC<LabelProps> = ({ text }) => (
-  <StyledLabel>{text}</StyledLabel>
+const Label: React.FC<LabelProps> = ({ text, isFinished = false }) => (
+  <StyledLabel isFinished={isFinished}>{text}</StyledLabel>
 )
 
-const StyledLabel = styled.div`
-  color: ${(props) => props.theme.colors.secondary};
+const StyledLabel = styled.div<{ isFinished: boolean }>`
+  color: ${({ isFinished, theme }) =>
+    theme.colors[isFinished ? 'textDisabled2' : 'primary2']};
+  font-size: 14px;
 `
 
 export default Label

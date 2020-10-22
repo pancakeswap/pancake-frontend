@@ -1,129 +1,97 @@
-/* eslint-disable jsx-a11y/accessible-emoji */
 import React from 'react'
 import styled from 'styled-components'
-import Button from '../../../components/Button'
-import Card from '../../../components/Card'
-import CardIcon from '../../../components/CardIcon'
-import Label from '../../../components/Label'
-import Value from '../../../components/Value'
+import useI18n from '../../../hooks/useI18n'
+import Card from './Card'
+import CardTitle from './CardTitle'
+import CardTokenImg from './CardTokenImg'
+import CommunityTag from './CommunityTag'
 
-import SmallValue from './Value'
-import CardContent from './CardContent'
-import { TranslateString } from '../../../utils/translateTextHelpers'
+const Balance = styled.div`
+  color: ${({ theme }) => theme.colors.text2};
+  font-size: 40px;
+  font-weight: 600;
+`
 
-const Coming: React.FC = () => {
-  return (
-    <Card>
-      <CardContent>
-        <StyledCardContentInner>
-          <StyledCardHeader>
-            <Title>{TranslateString(350, 'Coming Soon')} 👀</Title>
-          </StyledCardHeader>
-          <StyledCardContent>
-            <CardIcon>⏳</CardIcon>
-            <Value value={'???'} />
-            <Label text={TranslateString(330, '??? Earned')} />
-          </StyledCardContent>
+const Label = styled.div`
+  color: ${({ theme }) => theme.colors.textSubtle2};
+  font-size: 14px;
+  margin-bottom: 16px;
+`
 
-          <StyledCardActions>
-            <Button
-              disabled={true}
-              text={TranslateString(350, 'Coming Soon')}
-            />
-          </StyledCardActions>
+const ApplyNowLink = styled.a`
+  align-items: center;
+  background-color: transparent;
+  border: 2px solid ${({ theme }) => theme.colors.primary2};
+  border-radius: 16px;
+  color: ${({ theme }) => theme.colors.primary2};
+  display: flex;
+  font-size: 16px;
+  height: 48px;
+  justify-content: center;
+  margin: 16px 0;
+  text-decoration: none;
 
-          <StyledLabel text="🍯Your Stake" value={0} />
-
-          <StyledCardFooter>
-            <div>
-              <div>
-                {TranslateString(352, 'APY')}:&nbsp;
-                <SmallValue value="-" />
-              </div>
-              {TranslateString(364, 'Total SYRUP staked')}: 0 <br />
-              Farming starts in ??? Blocks
-            </div>
-          </StyledCardFooter>
-        </StyledCardContentInner>
-      </CardContent>
-    </Card>
-  )
-}
-
-const StyledCardFooter = styled.div`
-  border-top: 1px solid rgb(118 69 217 / 0.2);
-  width: 100%;
-  padding: 5px 20px;
-  box-sizing: border-box;
+  &:hover {
+    border-color: ${({ theme }) => theme.colors.primaryBright2};
+    color: ${({ theme }) => theme.colors.primaryBright2};
+  }
+`
+const DetailPlaceholder = styled.div`
+  display: flex;
+  font-size: 14px;
+`
+const Value = styled.div`
+  color: ${({ theme }) => theme.colors.text2};
   font-size: 14px;
 `
 
-const StyledCardContent = styled.div`
-  text-align: center;
-  padding: 10px 20px;
-  img {
-    width: 60px;
-    padding: 15px;
-  }
+const Footer = styled.div`
+  border-top: 1px solid ${({ theme }) => theme.colors.border};
+  padding: 24px;
 `
+const Coming: React.FC = () => {
+  const TranslateString = useI18n()
 
-const Title = styled.div`
-  color: ${(props) => props.theme.colors.primary};
-  font-size: 20px;
-  font-weight: 900;
-  line-height: 70px;
-`
-
-const StyledCardHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  padding: 0 20px;
-  box-sizing: border-box;
-  border-bottom: 1px solid rgb(118 69 217 / 0.2);
-`
-const StyledCardActions = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-  width: 100%;
-  padding: 10px 20px;
-  box-sizing: border-box;
-`
-
-const StyledCardContentInner = styled.div`
-  align-items: center;
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  justify-content: space-between;
-`
-
-interface StyledLabelProps {
-  value: number
-  text: string
-}
-
-const StyledLabel: React.FC<StyledLabelProps> = ({ value, text }) => {
   return (
-    <StyledValue>
-      <p>{text}</p>
-      <SmallValue value={value} />
-    </StyledValue>
+    <Card>
+      <div style={{ padding: '24px' }}>
+        <CardTitle>
+          {TranslateString(414, 'Your Project?')}{' '}
+          <span role="img" aria-label="eyes">
+            👀
+          </span>
+        </CardTitle>
+        <CardTokenImg
+          src={`/images/your-project-token.svg`}
+          alt="Your project here"
+        />
+        <Balance>???</Balance>
+        <Label>{TranslateString(416, 'Create a pool for your token')}</Label>
+        <ApplyNowLink
+          href="https://docs.google.com/forms/d/e/1FAIpQLScGdT5rrVMr4WOWr08pvcroSeuIOtEJf1sVdQGVdcAOqryigQ/viewform"
+          target="_blank"
+        >
+          {TranslateString(418, 'Apply Now')}
+        </ApplyNowLink>
+        <DetailPlaceholder>
+          <div style={{ flex: 1 }}>{TranslateString(352, 'APY')}:</div>
+          <Value>??</Value>
+        </DetailPlaceholder>
+        <DetailPlaceholder>
+          <div style={{ flex: 1 }}>
+            <span role="img" aria-label="syrup">
+              🍯{' '}
+            </span>
+            {TranslateString(384, 'Your Stake')}:
+          </div>
+          <Value>??? Syrup</Value>
+        </DetailPlaceholder>
+      </div>
+      <Footer>
+        <CommunityTag />
+      </Footer>
+    </Card>
   )
 }
-
-const StyledValue = styled.div`
-  font-family: 'Roboto Mono', monospace;
-  color: ${(props) => props.theme.colors.secondary};
-  font-size: 16px;
-  font-weight: 900;
-  display: flex;
-  justify-content: space-between;
-  line-height: 30px;
-  width: 100%;
-  padding: 0 20px;
-  box-sizing: border-box;
-`
 
 export default Coming
