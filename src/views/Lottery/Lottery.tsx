@@ -39,12 +39,12 @@ const Farm: React.FC = () => {
             <Subtitle>{subtitleText}</Subtitle>
             <StyledFarm>
                 <StyledCardWrapper>
-                    {state === LotteryStates.WINNERS_ANNOUNCED && <Prize/>}
+                    <Prize/>
                     <Ticket/>
                 </StyledCardWrapper>
             </StyledFarm>
             <Time></Time>
-            { state === LotteryStates.WINNERS_ANNOUNCED && <Winning></Winning>}
+            {state === LotteryStates.WINNERS_ANNOUNCED && <Winning></Winning>}
         </Page>
     )
 }
