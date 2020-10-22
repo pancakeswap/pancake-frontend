@@ -12,7 +12,7 @@ import Value from '../../../components/Value'
 
 import { useLotteryAllowance } from '../../../hooks/useAllowance'
 import { useLotteryApprove } from '../../../hooks/useApprove'
-import {useTicketsAmount, useWinningNumbers} from '../../../hooks/useTickets'
+import useTickets, { useWinningNumbers } from '../../../hooks/useTickets'
 import useModal from '../../../hooks/useModal'
 import useSushi from '../../../hooks/useSushi'
 import {getSushiAddress} from '../../../sushi/utils'
@@ -24,6 +24,7 @@ import {getBalanceNumber} from '../../../utils/formatBalance'
 import WalletProviderModal from '../../../components/WalletProviderModal'
 import AccountModal from '../../../components/TopBar/components/AccountModal'
 import BuyModal from './buyModal'
+import MyTicketsModal from "./myTicketsModal";
 
 
 interface TicketProps {
@@ -41,18 +42,11 @@ const Ticket: React.FC<TicketProps> = ({status,  myTicketNumbers}) => {
     const sushi = useSushi()
     const sushiBalance = useTokenBalance(getSushiAddress(sushi))
 
-    //
-    // const tokenBalance = useTokenBalance(lpContract.options.address)
-    // const stakedBalance = useStakedBalance(pid)
-    //
-    // const {onStake} = useStake(pid)
-    // const {onUnstake} = useUnstake(pid)
+    const tickets = useTickets()
+    const [onPresentMyTickets] = useModal(
+        <MyTicketsModal myTicketNumbers={tickets}/>,
+    )
 
-    // TODO:
-    // const [onPresentBuy] = useModal(
-    // )
-
-    // TEMP example
     const ticketsLength = myTicketNumbers.length
     const winNumbers = useWinningNumbers()
 
@@ -110,6 +104,7 @@ const Ticket: React.FC<TicketProps> = ({status,  myTicketNumbers}) => {
                             </>
                           ))}
                     </StyledCardActions>
+                    <MyTicketsP onClick={onPresentMyTickets}>View your tickets</MyTicketsP>
                     </StyledCardContentInner>
                 </CardContent>
             </Card>
@@ -117,6 +112,7 @@ const Ticket: React.FC<TicketProps> = ({status,  myTicketNumbers}) => {
     )
 
 }
+
 
 const StyledCardHeader = styled.div`
   align-items: center;
@@ -131,7 +127,7 @@ const StyledCardActions = styled.div`
 `
 
 const MyTicketsP = styled.div`
-  margin-top: 1em;
+  margin-top: 1.35em;
   color: ${(props) => props.theme.colors.secondary};
 `
 
@@ -142,4 +138,5 @@ const StyledCardContentInner = styled.div`
   flex-direction: column;
   justify-content: space-between;
 `
+
 export default Ticket
