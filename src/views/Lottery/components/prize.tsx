@@ -17,6 +17,7 @@ import WalletProviderModal from '../../../components/WalletProviderModal'
 import AccountModal from '../../../components/TopBar/components/AccountModal'
 import { TranslateString } from '../../../utils/translateTextHelpers'
 import { LotteryStates } from "../../../lottery/types";
+import Loading from "../../../components/Loading";
 
 import MyTicketsModal from "./myTicketsModal";
 
@@ -34,7 +35,7 @@ const Prize: React.FC<PrizeProps> = ({state}) => {
       <MyTicketsModal myTicketNumbers={tickets}/>,
   )
 
-  const claimAmount = useTotalClaim()
+  const {claimLoading, claimAmount} = useTotalClaim()
 
   const { onMultiClaim } = useMultiClaimLottery()
 
@@ -69,7 +70,8 @@ const Prize: React.FC<PrizeProps> = ({state}) => {
                 <StyledCardContentInner>
                     <StyledCardHeader>
                         <CardIcon>🎁</CardIcon>
-                        <Value value={getBalanceNumber(claimAmount)}/>
+                        {claimLoading && <Loading/>}
+                        {!claimLoading && <Value value={getBalanceNumber(claimAmount)}/>}
                         <Label text={`CAKE prizes to be claimed!`}/>
                     </StyledCardHeader>
                     <StyledCardActions>
@@ -79,7 +81,7 @@ const Prize: React.FC<PrizeProps> = ({state}) => {
                         }
                         {
                             account &&
-                            <Button disabled={getBalanceNumber(claimAmount) == 0}
+                            <Button disabled={getBalanceNumber(claimAmount) == 0 || requesteClaim}
                                     onClick={handleClaim}
                                     size="md"
                                     text="Claim prizes"/>

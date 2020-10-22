@@ -21,27 +21,25 @@ const MyTicketsModal: React.FC<MyTicketsModalProps> = ({ myTicketNumbers, onDism
         for (let i = winNumbers.length - 1; i >= 0; i--) {
           if(winNumbers[i] == number[i]) n++
         }
-        if(n>1) {
-          return true;
-        }
-        return false;
+        return n;
     }, [winNumbers])
 
 
-    const listItems = myTicketNumbers.map((number, index) =>
-      {
-          if(rewardMatch(number[0]) && from !== 'buy') {
-              return <RewardP key={index}>🤑🤑{number.toString()}🤑🤑</RewardP>
-          }
-          else {
-              return <p key={index}>{number.toString()}</p>
-          }
-      }
-    );
+    const listItems = myTicketNumbers.map((number, index) => {
+        if(rewardMatch(number[0]) > 1 && from !== 'buy') {
+            const emoji = new Array(rewardMatch(number[0]) + 1).join("🤑")
+            return (
+              <RewardP key={index}>{emoji}{number.toString()}{emoji}</RewardP>
+            )
+        }
+        else {
+            return <p key={index}>{number.toString()}</p>
+        }
+    });
 
     return (
         <Modal>
-            <ModalTitle text={`My Tickets`}/>
+            <ModalTitle text={`My Tickets (Total: ${myTicketNumbers.length})`}/>
             <ModalContent>
                 <div>
                     <TicketsList>

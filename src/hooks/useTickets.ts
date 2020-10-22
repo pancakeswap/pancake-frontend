@@ -74,6 +74,7 @@ export const useTotalRewards = () => {
 
 export const useTotalClaim = () => {
   const [claimAmount, setClaimAmount] = useState(new BigNumber(0))
+  const [claimLoading, setClaimLoading] = useState(false)
   const { account } = useWallet()
   const sushi = useSushi()
   const ticketsContract = getTicketsContract(sushi)
@@ -81,8 +82,10 @@ export const useTotalClaim = () => {
   const block = useBlock()
 
   const fetchBalance = useCallback(async () => {
+    setClaimLoading(true)
     const claim = await getTotalClaim(sushi, lotteryContract, ticketsContract, account)
     setClaimAmount(claim)
+    setClaimLoading(false)
   }, [account, lotteryContract, ticketsContract, block])
 
   useEffect(() => {
@@ -91,7 +94,7 @@ export const useTotalClaim = () => {
     }
   }, [account, block, lotteryContract, setClaimAmount, sushi])
 
-  return claimAmount
+  return {claimLoading, claimAmount}
 }
 
 export const useWinningNumbers = () => {

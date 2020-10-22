@@ -170,7 +170,7 @@ export const multiClaim = async (sushi, lotteryContract, ticketsContract, accoun
   try {
     return lotteryContract.methods
       .multiClaim(
-finanltokenIds
+        finanltokenIds
       )
       .send({ from: account })
       .on('transactionHash', (tx) => {
