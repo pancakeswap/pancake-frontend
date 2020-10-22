@@ -63,8 +63,6 @@ const TokenLink = styled.a`
   color: #12aab5;
 `
 
-// TODO: Fix "TranslateString" throwing error "React has detected a change in the order of Hooks"
-
 const CardFooter: React.FC<Props> = ({
   projectLink,
   totalStaked,
