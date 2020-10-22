@@ -16,7 +16,6 @@ import Spacer from '../Spacer'
 
 import WalletCard from './components/WalletCard'
 
-
 const WalletProviderModal: React.FC<ModalProps> = ({ onDismiss }) => {
     const { account, connect, status } = useWallet()
 
@@ -34,7 +33,6 @@ const WalletProviderModal: React.FC<ModalProps> = ({ onDismiss }) => {
                         <WalletCard
                             icon={<img src={metamaskLogo} style={{ height: 52 }} />}
                             onConnect={() => {
-                                console.log('ddd')
                                 connect('injected')
                                 window.localStorage.setItem('accountStatus', '1')
                             }}

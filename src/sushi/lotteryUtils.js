@@ -269,12 +269,18 @@ export const getWinningNumbers = async (lotteryContract, account) => {
   const issueIdex = await lotteryContract.methods.issueIndex().call();
   let numbers = []
   const drawed = await lotteryContract.methods.drawed().call()
-  console.log(drawed)
-  if(!drawed){
+  if(!drawed && issueIdex == 0){
     return [0,0,0,0]
   }
-  for(let i = 0;i<4;i++) {
-    numbers.push(+(await lotteryContract.methods.winningNumbers(i).call()).toString())
+  else if(!drawed){
+    for(let i = 0;i<4;i++) {
+      numbers.push(+(await lotteryContract.methods.historyNumbers(issueIdex-1, i).call()).toString())
+    }
+  }
+  else {
+    for(let i = 0;i<4;i++) {
+      numbers.push(+(await lotteryContract.methods.winningNumbers(i).call()).toString())
+    }
   }
   return numbers
 }

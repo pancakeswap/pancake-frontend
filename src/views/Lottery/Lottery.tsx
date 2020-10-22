@@ -77,7 +77,7 @@ const Farm: React.FC = () => {
                     </StyledCardWrapper>
                 </StyledFarm>
                 <Time state={state}/>
-                <Winning></Winning>
+                <Winning state={state} />
             </Page>
         </Switch>
     )

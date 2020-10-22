@@ -54,7 +54,7 @@ const StyledCardContent = styled.div`
 `
 
 const StyledCardTitle = styled.div`
-  color: black;
+  color: ${(props) => props.theme.colors.primary};
   font-size: 16px;
   font-weight: 800;
   line-height: 40px;

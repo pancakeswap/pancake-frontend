@@ -1,11 +1,19 @@
 import React from 'react'
 import styled from 'styled-components'
+import { useWallet } from 'use-wallet'
+
 import Card from '../../../components/Card'
 import CardContent from '../../../components/CardContent'
 import {useWinningNumbers, useMatchingRewardLength} from '../../../hooks/useTickets'
 import Label from "../../../components/Label";
+import { LotteryStates } from "../../../lottery/types";
 
-const Winning: React.FC = () => {
+interface WinningProps {
+  state?: boolean
+}
+
+const Winning: React.FC<WinningProps> = ({state}) => {
+    const { account } = useWallet()
     const winNumbers = useWinningNumbers()
 
     const ending = '2020/05/03 00:00:00 UTC'
@@ -20,7 +28,12 @@ const Winning: React.FC = () => {
                 <CardContent>
                     <StyledCardContentInner>
                         <StyledCardHeader>
-                            <Title>Latest Winning Numbers</Title>
+                            {account && state === LotteryStates.BUY_TICKETS_OPEN &&
+                                <Title>Latest Winning Numbers</Title>
+                            }
+                            {account && state === LotteryStates.WINNERS_ANNOUNCED &&
+                                <Title>🥳Winning Numbers This Round🥳</Title>
+                            }
                             <br/>
                         </StyledCardHeader>
                         <Row>
@@ -124,7 +137,7 @@ const Winning: React.FC = () => {
                                 <CenteredTextWithPadding><strong>{MatchedNumber2}</strong></CenteredTextWithPadding>
                             </RowNoPadding>
                         </Column>
-                        <Link href={`https://bscscan.com/address`} target="_blank">Export recent winning numbers</Link>
+                        <Link href={`https://api.pancakeswap.finance/api/v2/lotterys`} target="_blank">Export recent winning numbers</Link>
                     </StyledCardContentInner>
                 </CardContent>
             </Card>
