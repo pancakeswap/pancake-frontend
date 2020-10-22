@@ -2,7 +2,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
-import { Credentials, StringTranslations } from '@crowdin/crowdin-api-client'
+import { StringTranslations } from '@crowdin/crowdin-api-client'
 import { lightTheme, darkTheme } from './theme'
 import { UseWalletProvider } from 'use-wallet'
 import DisclaimerModal from './components/DisclaimerModal'
