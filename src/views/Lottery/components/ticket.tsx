@@ -25,6 +25,7 @@ import WalletProviderModal from '../../../components/WalletProviderModal'
 import AccountModal from '../../../components/TopBar/components/AccountModal'
 import BuyModal from './buyModal'
 import MyTicketsModal from "./myTicketsModal";
+import WarningModal from "./warningModal"
 
 
 interface TicketProps {
@@ -57,6 +58,7 @@ const Ticket: React.FC<TicketProps> = ({state}) => {
         if (!txHash) {
           setRequestedApproval(false)
         }
+        onPresentApprove()
       } catch (e) {
         console.log(e)
       }
@@ -66,9 +68,17 @@ const Ticket: React.FC<TicketProps> = ({state}) => {
       <BuyModal
         max={sushiBalance}
         onConfirm={()=>{}}
-        tokenName={'sss'}
+        tokenName={'CAKE'}
       />,
     )
+
+    const [onPresentApprove] = useModal(
+      <WarningModal
+        title={'Warning'}
+        text={'Lottery ticket purchases are final.Your CAKE will not be returned to you after you spend it to buy tickets.Tickets are only valid for one lottery draw, and will be burned after the draw.Buying tickets does not guarantee you will win anything. Please only participate once you understand the risks.'}
+      />,
+    )
+
 
     const [onPresentAccountModal] = useModal(<AccountModal/>)
     const [onPresentWalletProviderModal] = useModal(
@@ -99,11 +109,11 @@ const Ticket: React.FC<TicketProps> = ({state}) => {
                             />
                           ) : (
                             <>
-                              <Button disabled={winNumbers[0]!==0 || state} onClick={onPresentBuy} size="md" text={'Buy ticket'}/>
+                              <Button onClick={onPresentBuy} size="md" text={'Buy ticket'}/>
                             </>
                           ))}
                     </StyledCardActions>
-                    {account && <MyTicketsP onClick={onPresentMyTickets}>View your tickets</MyTicketsP>}
+                    {account && ticketsLength > 0 && <MyTicketsP onClick={onPresentMyTickets}>View your tickets</MyTicketsP>}
                     </StyledCardContentInner>
                 </CardContent>
             </Card>
