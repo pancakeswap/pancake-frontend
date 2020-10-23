@@ -82,7 +82,7 @@ const PoolCardv2: React.FC<HarvestProps> = ({
 
   const isUnstaked =
     account && !allowance.toNumber() && stakedBalance.toNumber() === 0
-  const isCardActive = isFinished && isUnstaked
+  const isCardActive = account && isFinished && isUnstaked
 
   const [onPresentDeposit] = useModal(
     <DepositModal max={tokenBalance} onConfirm={onStake} tokenName={'SYRUP'} />,

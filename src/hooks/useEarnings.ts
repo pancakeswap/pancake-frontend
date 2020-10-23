@@ -92,7 +92,7 @@ export const useSousLeftBlocks = (sousId) => {
       text: buttonText,
       farmStart: start - block,
       blocksRemaining,
-      isFinished: account && block > end,
+      isFinished: block > end,
     })
   }, [account, block, sousChefContract, sushi])
 
