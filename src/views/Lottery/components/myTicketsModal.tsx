@@ -50,7 +50,7 @@ const MyTicketsModal: React.FC<MyTicketsModalProps> = ({
     <Modal>
       <ModalTitle
         text={TranslateString(
-          436,
+          490,
           `My Tickets (Total: ${myTicketNumbers.length})`,
         )}
       />
