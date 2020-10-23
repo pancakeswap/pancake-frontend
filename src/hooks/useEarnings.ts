@@ -74,6 +74,7 @@ export const useSousLeftBlocks = (sousId) => {
     const start = await getSousStartBlock(sousChefContract)
     const end = await getSousEndBlock(sousChefContract)
     const blocksRemaining = end - block
+    const isFinished = block >= end
 
     let buttonText = ''
     if (!block) {
@@ -82,7 +83,7 @@ export const useSousLeftBlocks = (sousId) => {
       buttonText = `Farming starts in ${(
         start - block
       ).toLocaleString()} Blocks`
-    } else if (block > end) {
+    } else if (isFinished) {
       buttonText = 'finished'
     } else {
       buttonText = `Farming ends in ${blocksRemaining.toLocaleString()} Blocks`
@@ -92,7 +93,7 @@ export const useSousLeftBlocks = (sousId) => {
       text: buttonText,
       farmStart: start - block,
       blocksRemaining,
-      isFinished: block > end,
+      isFinished,
     })
   }, [account, block, sousChefContract, sushi])
 
