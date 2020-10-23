@@ -16,8 +16,6 @@ const Winning: React.FC<WinningProps> = ({state}) => {
     const { account } = useWallet()
     const winNumbers = useWinningNumbers()
 
-    const ending = '2020/05/03 00:00:00 UTC'
-
     const MatchedNumber4 = useMatchingRewardLength(4)
     const MatchedNumber3 = useMatchingRewardLength(3)
     const MatchedNumber2 = useMatchingRewardLength(2)
