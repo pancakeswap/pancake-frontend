@@ -24,6 +24,7 @@ const AccountModal: React.FC<ModalProps> = ({ onDismiss }) => {
     onDismiss!()
     window.localStorage.removeItem('accountStatus')
     reset()
+    window.location.reload()
   }, [onDismiss, reset])
 
   const sushi = useSushi()
