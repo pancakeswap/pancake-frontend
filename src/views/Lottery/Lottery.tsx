@@ -61,7 +61,7 @@ const Farm: React.FC = () => {
         <Switch>
             <Page>
                 {account &&
-                <Subtitle>Round {parseInt(index[0]) + 1} - {!state?'Phase 1 - Buy Tickets':'Phase 2 - Claim Winnings'}</Subtitle>
+                <Subtitle>{!state?'Phase 1 - Buy Tickets':'Phase 2 - Claim Winnings'}</Subtitle>
                 }
                 <Title style={{marginTop: '0.5em'}}>
                     💰

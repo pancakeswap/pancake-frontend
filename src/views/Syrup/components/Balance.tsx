@@ -4,18 +4,18 @@ import CountUp from 'react-countup'
 
 import styled from 'styled-components'
 
-interface ValueProps {
+interface BalanceProps {
   value: string | number
   decimals?: number
   fontSize?: string | number
-  isFinished?: boolean
+  isFinished: boolean
 }
 
-const Value: React.FC<ValueProps> = ({
+const Balance: React.FC<BalanceProps> = ({
   value,
   decimals,
-  fontSize = '14px',
-  isFinished = false,
+  fontSize = '30px',
+  isFinished,
 }) => {
   const [start, updateStart] = useState(0)
   const [end, updateEnd] = useState(0)
@@ -28,7 +28,7 @@ const Value: React.FC<ValueProps> = ({
   }, [value])
 
   return (
-    <StyledValue style={{ fontSize: fontSize }} isFinished={isFinished}>
+    <StyledBalance style={{ fontSize: fontSize }} isFinished={isFinished}>
       {typeof value == 'string' ? (
         value
       ) : (
@@ -42,17 +42,15 @@ const Value: React.FC<ValueProps> = ({
           separator=","
         />
       )}
-    </StyledValue>
+    </StyledBalance>
   )
 }
 
-const StyledValue = styled.span<{ isFinished: boolean }>`
+const StyledBalance = styled.div<{ isFinished: boolean }>`
   color: ${({ isFinished, theme }) =>
     theme.colors[isFinished ? 'textDisabled2' : 'text2']};
-  font-size: 14px;
-  font-weight: 900;
-  align-items: center;
-  display: inline-flex;
+  font-size: 40px;
+  font-weight: 600;
 `
 
-export default Value
+export default Balance
