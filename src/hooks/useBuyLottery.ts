@@ -59,7 +59,6 @@ export const useMultiBuyLottery = () => {
   const handleBuy = useCallback(
     async (amount: string, numbers: Array<any>) => {
       try {
-        console.log('dddd1111')
         const txHash = await multiBuy(
           getLotteryContract(sushi),
           amount,

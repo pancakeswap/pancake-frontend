@@ -1,27 +1,6 @@
 [
   {
-    "inputs": [
-      {
-        "internalType": "contract IERC20",
-        "name": "_cake",
-        "type": "address"
-      },
-      {
-        "internalType": "contract LotteryNFT",
-        "name": "_lottery",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_maxNumber",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "_adminAddress",
-        "type": "address"
-      }
-    ],
+    "inputs": [],
     "stateMutability": "nonpayable",
     "type": "constructor"
   },
@@ -192,6 +171,26 @@
     "constant": true
   },
   {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "allocation",
+    "outputs": [
+      {
+        "internalType": "uint8",
+        "name": "",
+        "type": "uint8"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true
+  },
+  {
     "inputs": [],
     "name": "cake",
     "outputs": [
@@ -327,9 +326,9 @@
     "name": "maxNumber",
     "outputs": [
       {
-        "internalType": "uint256",
+        "internalType": "uint8",
         "name": "",
-        "type": "uint256"
+        "type": "uint8"
       }
     ],
     "stateMutability": "view",
@@ -337,19 +336,13 @@
     "constant": true
   },
   {
-    "inputs": [
+    "inputs": [],
+    "name": "minPrice",
+    "outputs": [
       {
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
-      }
-    ],
-    "name": "nullTicket",
-    "outputs": [
-      {
-        "internalType": "uint8",
-        "name": "",
-        "type": "uint8"
       }
     ],
     "stateMutability": "view",
@@ -489,6 +482,58 @@
     "constant": true
   },
   {
+    "inputs": [
+      {
+        "internalType": "contract IERC20",
+        "name": "_cake",
+        "type": "address"
+      },
+      {
+        "internalType": "contract LotteryNFT",
+        "name": "_lottery",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_minPrice",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint8",
+        "name": "_maxNumber",
+        "type": "uint8"
+      },
+      {
+        "internalType": "address",
+        "name": "_owner",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_adminAddress",
+        "type": "address"
+      }
+    ],
+    "name": "initialize",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "drawed",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true
+  },
+  {
     "inputs": [],
     "name": "reset",
     "outputs": [],
@@ -503,24 +548,10 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "drawed",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "res",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function",
-    "constant": true
-  },
-  {
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "_amount",
+        "name": "_price",
         "type": "uint256"
       },
       {
@@ -595,20 +626,6 @@
       }
     ],
     "stateMutability": "pure",
-    "type": "function",
-    "constant": true
-  },
-  {
-    "inputs": [],
-    "name": "calculateMatchingRewardAmount",
-    "outputs": [
-      {
-        "internalType": "uint256[4]",
-        "name": "",
-        "type": "uint256[4]"
-      }
-    ],
-    "stateMutability": "view",
     "type": "function",
     "constant": true
   },
@@ -699,6 +716,32 @@
       }
     ],
     "name": "adminWithdraw",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_price",
+        "type": "uint256"
+      }
+    ],
+    "name": "setMinPrice",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint8",
+        "name": "_maxNumber",
+        "type": "uint8"
+      }
+    ],
+    "name": "setMaxNumber",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

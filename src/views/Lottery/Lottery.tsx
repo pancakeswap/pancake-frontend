@@ -55,7 +55,7 @@ const Farm: React.FC = () => {
 
     const lotteryPrizeAmount = useTotalRewards()
 
-    const subtitleText = 'Spend CAKE to buy tickets, contributing to the lottery pot. Ticket purchases end approx. 30 minutes before lottery. Win prizes if 2, 3, or 4 of your ticket numbers match the winning numbers and their positions! Good luck!'
+    const subtitleText = 'Spend CAKE to buy tickets, contributing to the lottery pot. Win prizes if 2, 3, or 4 of your ticket numbers match the winning numbers and their exact order! Good luck!'
 
     return (
         <Switch>
