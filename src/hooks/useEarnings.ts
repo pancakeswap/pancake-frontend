@@ -87,11 +87,12 @@ export const useSousLeftBlocks = (sousId) => {
     } else {
       buttonText = `Farming ends in ${blocksRemaining.toLocaleString()} Blocks`
     }
+
     setState({
       text: buttonText,
-      farmStart: block < start ? start - block : 0,
-      blocksRemaining: blocksRemaining > 0 ? blocksRemaining : 0,
-      isFinished: block > end,
+      farmStart: start - block,
+      blocksRemaining,
+      isFinished: account && block > end,
     })
   }, [account, block, sousChefContract, sushi])
 
