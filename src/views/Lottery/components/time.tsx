@@ -38,7 +38,7 @@ const Time: React.FC<TimePros> = ({ state }) => {
         <div>
           <Title style={{ marginTop: '2em' }}>⏳</Title>
           <Title>
-            {TranslateString(434, 'Approx. time left to buy tickets')}
+            {TranslateString(434, 'Approx. time until lottery draw')}
           </Title>
           <Title2>{stateDeadlineTime}</Title2>
         </div>

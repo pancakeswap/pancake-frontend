@@ -76,7 +76,7 @@ const Farm: React.FC = () => {
       <Page>
         {account && (
           <Subtitle>
-            {!state ? 'Phase 1 - Buy Tickets' : 'Phase 2 - Claim Winnings'}
+            {!state ? `#${index - 2} - Phase 1 - Buy Tickets` : `#${index - 2} - Phase 2 - Claim Winnings`}
           </Subtitle>
         )}
         <Title style={{ marginTop: '0.5em' }}>
