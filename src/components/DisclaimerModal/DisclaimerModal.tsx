@@ -7,6 +7,7 @@ import Modal, { ModalProps } from '..//Modal'
 import ModalActions from '..//ModalActions'
 import ModalContent from '../ModalContent'
 import ModalTitle from '../ModalTitle'
+import useI18n from '../../hooks/useI18n'
 
 interface DisclaimerModal extends ModalProps {
   onConfirm: () => void
@@ -17,7 +18,7 @@ const DisclaimerModal: React.FC<DisclaimerModal> = ({
   onDismiss,
 }) => {
   const [step, setStep] = useState('disclaimer')
-
+  const TranslateString = useI18n()
   const handleConfirm = useCallback(() => {
     onConfirm()
     onDismiss()
@@ -73,7 +74,7 @@ const DisclaimerModal: React.FC<DisclaimerModal> = ({
 
   return (
     <Modal>
-      <ModalTitle text={`Warning`} />
+      <ModalTitle text={TranslateString(466, 'Warning')} />
       <CardIcon>⚠️</CardIcon>
       <ModalContent>{modalContent}</ModalContent>
       <ModalActions>{button}</ModalActions>

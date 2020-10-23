@@ -5,6 +5,7 @@ import Modal, { ModalProps } from '../../../components/Modal'
 import ModalActions from '../../../components/ModalActions'
 import ModalTitle from '../../../components/ModalTitle'
 import TokenInput from '../../../components/TokenInput'
+import useI18n from '../../../hooks/useI18n'
 import { getFullDisplayBalance } from '../../../utils/formatBalance'
 
 interface WithdrawModalProps extends ModalProps {
@@ -21,7 +22,7 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({
 }) => {
   const [val, setVal] = useState('')
   const [pendingTx, setPendingTx] = useState(false)
-
+  const TranslateString = useI18n()
   const fullBalance = useMemo(() => {
     return getFullDisplayBalance(max)
   }, [max])
@@ -48,10 +49,18 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({
         symbol={tokenName}
       />
       <ModalActions>
-        <Button text="Cancel" variant="secondary" onClick={onDismiss} />
+        <Button
+          text={TranslateString(462, 'Cancel')}
+          variant="secondary"
+          onClick={onDismiss}
+        />
         <Button
           disabled={pendingTx}
-          text={pendingTx ? 'Pending Confirmation' : 'Confirm'}
+          text={
+            pendingTx
+              ? TranslateString(488, 'Pending Confirmation')
+              : TranslateString(464, 'Confirm')
+          }
           onClick={async () => {
             setPendingTx(true)
             await onConfirm(val)

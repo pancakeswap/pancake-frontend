@@ -1,108 +1,113 @@
-import BigNumber from 'bignumber.js'
-import React, {useCallback, useState} from 'react'
+import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
-import {useWallet} from 'use-wallet'
-import {Contract} from 'web3-eth-contract'
+import { useWallet } from 'use-wallet'
+
 import Button from '../../../components/Button'
 import Card from '../../../components/Card'
 import CardContent from '../../../components/CardContent'
 import CardIcon from '../../../components/CardIcon'
-import IconButton from '../../../components/IconButton'
-import {AddIcon} from '../../../components/icons'
 import Label from '../../../components/Label'
 import Value from '../../../components/Value'
-import useAllowance from '../../../hooks/useAllowance'
-import useApprove from '../../../hooks/useApprove'
 import useModal from '../../../hooks/useModal'
-import useStake from '../../../hooks/useStake'
-import useStakedBalance from '../../../hooks/useStakedBalance'
-import useTokenBalance from '../../../hooks/useTokenBalance'
-import useUnstake from '../../../hooks/useUnstake'
-import {getBalanceNumber} from '../../../utils/formatBalance'
+import { getBalanceNumber } from '../../../utils/formatBalance'
+import { useMultiClaimLottery } from '../../../hooks/useBuyLottery'
 
-import {useTotalClaim} from '../../../hooks/useTickets'
+import useTickets, { useTotalClaim } from '../../../hooks/useTickets'
 import WalletProviderModal from '../../../components/WalletProviderModal'
 import AccountModal from '../../../components/TopBar/components/AccountModal'
-import {TranslateString} from '../../../utils/translateTextHelpers'
-import {currentLotteryState, LotteryStates} from "../../../lottery/types";
+import { LotteryStates } from '../../../lottery/types'
+import Loading from '../../../components/Loading'
 
-interface StakeProps {
-    lpContract: Contract
-    pid: number
-    tokenName: string
+import MyTicketsModal from './myTicketsModal'
+import useI18n from '../../../hooks/useI18n'
+
+interface PrizeProps {
+  state: boolean
 }
 
-const Prize: React.FC = () => {
-    const [requestedApproval, setRequestedApproval] = useState(false)
-    const {account} = useWallet()
+const Prize: React.FC<PrizeProps> = ({ state }) => {
+  const [requestedApproval, setRequestedApproval] = useState(false)
+  const [requesteClaim, setRequestedClaim] = useState(false)
+  const { account } = useWallet()
+  const TranslateString = useI18n()
+  const tickets = useTickets()
+  const [onPresentMyTickets] = useModal(
+    <MyTicketsModal myTicketNumbers={tickets} />,
+  )
 
-    // const allowance = useAllowance(lpContract)
-    // const {onApprove} = useApprove(lpContract)
-    //
-    // const tokenBalance = useTokenBalance(lpContract.options.address)
-    // const stakedBalance = useStakedBalance(pid)
-    //
-    // const {onStake} = useStake(pid)
-    // const {onUnstake} = useUnstake(pid)
-    const claimAmount = useTotalClaim()
-    const state = currentLotteryState();
+  const { claimLoading, claimAmount } = useTotalClaim()
 
-    const [onPresentAccountModal] = useModal(<AccountModal/>)
+  const { onMultiClaim } = useMultiClaimLottery()
 
-    const [onPresentWalletProviderModal] = useModal(
-        <WalletProviderModal/>,
-        'provider',
-    )
-    const handleUnlockClick = useCallback(() => {
-        onPresentWalletProviderModal()
-    }, [onPresentWalletProviderModal])
+  const handleClaim = useCallback(async () => {
+    try {
+      setRequestedClaim(true)
+      const txHash = await onMultiClaim()
+      // user rejected tx or didn't go thru
+      if (txHash) {
+        setRequestedClaim(false)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }, [onMultiClaim, setRequestedClaim])
 
+  const [onPresentAccountModal] = useModal(<AccountModal />)
 
-    return (
-        <div style={{margin: '5px', width: '400px'}}>
-            <Card>
-                <CardContent>
-                    <StyledCardContentInner>
-                        <StyledCardHeader>
-                            <CardIcon>🎁</CardIcon>
-                            <Value value={getBalanceNumber(claimAmount)}/>
-                            <Label text={`CAKE prizes to be claimed!`}/>
-                        </StyledCardHeader>
-                        {
-                            state === LotteryStates.WINNERS_ANNOUNCED &&
-                            <StyledCardActions>
-                                {
-                                    !account &&
-                                    <Button onClick={handleUnlockClick} size="md" text="Unlock Wallet"/>
-                                }
-                                {
-                                    account &&
-                                    <Button disabled={getBalanceNumber(claimAmount) == 0}
-                                            onClick={null}
-                                            size="md"
-                                            text="Claim prizes"/>
-                                }
-                            </StyledCardActions>
-                        }
-                        {
-                            (state === LotteryStates.BUY_TICKETS_CLOSE || state === LotteryStates.BUY_TICKETS_OPEN) &&
-                            <StyledCardActions>
-                                <Button disabled={true}
-                                        onClick={null}
-                                        size="md"
-                                        text="Claim prizes after winners announcement"/>
+  const [onPresentWalletProviderModal] = useModal(
+    <WalletProviderModal />,
+    'provider',
+  )
+  const handleUnlockClick = useCallback(() => {
+    onPresentWalletProviderModal()
+  }, [onPresentWalletProviderModal])
 
-                            </StyledCardActions>
-                        }
-                    </StyledCardContentInner>
-                    <br></br>
-                    <br></br>
-                </CardContent>
-            </Card>
-        </div>
-    )
+  return (
+    <div style={{ margin: '5px', width: '380px' }}>
+      <Card>
+        <CardContent>
+          <StyledCardContentInner>
+            <StyledCardHeader>
+              <CardIcon>🎁</CardIcon>
+              {claimLoading && <Loading />}
+              {!claimLoading && <Value value={getBalanceNumber(claimAmount)} />}
+              <Label
+                text={TranslateString(482, 'CAKE prizes to be claimed!')}
+              />
+            </StyledCardHeader>
+            <StyledCardActions>
+              {!account && (
+                <Button
+                  onClick={handleUnlockClick}
+                  size="md"
+                  text={TranslateString(292, 'Unlock Wallet')}
+                />
+              )}
+              {account && (
+                <Button
+                  disabled={getBalanceNumber(claimAmount) == 0 || requesteClaim}
+                  onClick={handleClaim}
+                  size="md"
+                  text={TranslateString(480, 'Claim prizes')}
+                />
+              )}
+            </StyledCardActions>
+            {account && state === LotteryStates.WINNERS_ANNOUNCED ? (
+              <MyTicketsP onClick={onPresentMyTickets}>
+                View your tickets
+              </MyTicketsP>
+            ) : (
+              <>
+                <br />
+                <br />
+              </>
+            )}
+          </StyledCardContentInner>
+        </CardContent>
+      </Card>
+    </div>
+  )
 }
-
 
 const StyledCardHeader = styled.div`
   align-items: center;
@@ -127,6 +132,12 @@ const StyledCardContentInner = styled.div`
   flex: 1;
   flex-direction: column;
   justify-content: space-between;
+`
+
+const MyTicketsP = styled.div`
+  cursor: pointer;
+  margin-top: 1.35em;
+  color: ${(props) => props.theme.colors.secondary};
 `
 
 export default Prize

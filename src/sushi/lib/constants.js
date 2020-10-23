@@ -47,12 +47,12 @@ export const contractAddresses = {
     56: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c'
   },
   lottery: {
-    97: '0x58096cB4D9fB098448Fc8F21FF8dea6D9Ca097D6',
-    56:  '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82'
+    97: '0x99c2EcD51d52c036B00130d882Bc65f20Fdecf9f',
+    56:  '0x3C3f2049cc17C136a604bE23cF7E42745edf3b91'
   },
   lotteryNFT: {
-    97: '0x6691Aa11326338eb6fd63b1E424Ba0B637fb05C3',
-    56:  '0x009cF7bC57584b7998236eff51b98A168DceA9B0'
+    97: '0x8175c10383511b3a1C68f9dB222dc14A19CC950e',
+    56:  '0x5e74094Cd416f55179DBd0E45b1a8ED030e396A1'
   },
   mulltiCall: {
     56: '0x1ee38d535d541c55c9dae27b12edf090c608e6fb',

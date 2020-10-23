@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { useWallet } from 'use-wallet'
 import useTokenBalance from '../../../hooks/useTokenBalance'
 import useSushi from '../../../hooks/useSushi'
+import useI18n from '../../../hooks/useI18n'
 import { getSushiAddress } from '../../../sushi/utils'
 import { getBalanceNumber } from '../../../utils/formatBalance'
 import Button from '../../Button'
@@ -15,11 +16,10 @@ import ModalContent from '../../ModalContent'
 import ModalTitle from '../../ModalTitle'
 import Spacer from '../../Spacer'
 import Value from '../../Value'
-import { TranslateString } from '../../../utils/translateTextHelpers'
 
 const AccountModal: React.FC<ModalProps> = ({ onDismiss }) => {
   const { account, reset } = useWallet()
-
+  const TranslateString = useI18n()
   const handleSignOutClick = useCallback(() => {
     onDismiss!()
     window.localStorage.removeItem('accountStatus')
@@ -62,7 +62,7 @@ const AccountModal: React.FC<ModalProps> = ({ onDismiss }) => {
         />
       </ModalContent>
       <ModalActions>
-        <Button onClick={onDismiss} text="Cancel" />
+        <Button onClick={onDismiss} text={TranslateString(462, 'Cancel')} />
       </ModalActions>
     </Modal>
   )

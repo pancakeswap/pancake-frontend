@@ -1,46 +1,62 @@
 import BigNumber from 'bignumber.js'
-import abi from './lib/abi/lottery.json'
 import { Interface } from '@ethersproject/abi';
+import ticketAbi from './lib/abi/lotteryNft.json'
+import lotteryAbi from './lib/abi/lottery.json'
 
-export const multiBuy = async (sushi, ticketNumbers) => {
+export const multiCall = async (sushi, abi, calls) => {
   const multicall = sushi && sushi.contracts && sushi.contracts.multicall
-  console.log(multicall.methods)
-  console.log((await getLotteryContract(sushi))._address)
-  console.log((await getLotteryContract(sushi)).options.address)
-  const address = (await getLotteryContract(sushi)).options.address
   const itf = new Interface(abi);
-  const calls=[
-    ['10',[1,2,3,5]],
-    ['10',[1,4,3,2]],
-    ['5',[2,1,4,3]]
-  ]
-  const numbers = [1,2,4,3]
-  const lotteryNumbers = [
+  let res = [];
+  if(calls.length > 100) {
+    let i =0;
+    while(i < calls.length/100) {
+      const newCalls = calls.slice(i * 100, 100 * (i+1))
+      const calldata = newCalls.map(call => ([
+          call[0].toLowerCase(),
+          itf.encodeFunctionData(call[1], call[2])
+        ]));
+      const {returnData} = await multicall.methods.aggregate(calldata).call()
+      i++;
+      res =  res.concat(returnData.map((call, i) =>
+        itf.decodeFunctionResult(newCalls[i][1], call)
+      ));
+    }
+  }
+  else {
+    const calldata = calls.map(call => ([
+        call[0].toLowerCase(),
+        itf.encodeFunctionData(call[1], call[2])
+      ]));
+    const {returnData} = await multicall.methods.aggregate(calldata).call()
+    res =  returnData.map((call, i) =>
+      itf.decodeFunctionResult(calls[i][1], call)
+    );
+  }
+  return res;
+}
+
+export const multiBuy = async (lotteryContract, price, numbersList, account) => {
+  const lotteryNumbers = numbersList.map(numbers => ([
     new BigNumber(numbers[0]),
     new BigNumber(numbers[1]),
     new BigNumber(numbers[2]),
     new BigNumber(numbers[3])
-  ];
-  console.log(lotteryNumbers)
+  ]));
   try {
-    const calldata = calls.map(call => ([
-        address.toLowerCase(),
-        itf.encodeFunctionData('buy', ['10', ['2','3','4']])
-      ]));
-
-    console.log(calldata)
-    const {returnData} = await multicall.methods.aggregate(calldata).call()
-    console.log(returnData)
-    const res =  returnData.map((call, i) =>
-      itf.decodeFunctionResult('buy', call)
-    );
-    console.log(res)
+    return lotteryContract.methods
+      .multiBuy(
+        new BigNumber(price).times(new BigNumber(10).pow(18)).toString(),
+        numbersList
+      )
+      .send({ from: account })
+      .on('transactionHash', (tx) => {
+        return tx.transactionHash
+      })
   }
   catch(err) {
     console.log(err)
   }
-  // const response = await multicall.methods
-  return []
+
 }
 
 export const getLotteryContract = (sushi) => {
@@ -69,57 +85,201 @@ export const buy = async (lotteryContract, amount, numbers, account) => {
     })
 }
 
-export const getTickets = async (lotteryContract, ticketsContract, account) => {
-  let tickets = []
-  let i = 0
+export const getTickets = async (sushi, lotteryContract, ticketsContract, account) => {
   const issueIdex = await lotteryContract.methods.issueIndex().call();
-  while(1){
-    const tokenId = await ticketsContract.methods.tokenOfOwnerByIndex(account, i).call()
-    if(tokenId > 10000000000000000000000000000000000000000000) break
-    i++;
-    const ticketIssue = await ticketsContract.methods.getLotteryIssueIndex(tokenId).call()
-    if(ticketIssue == issueIdex) {
-      const numbers = await ticketsContract.methods.getLotteryNumbers(tokenId).call();
-      tickets.push(numbers)
+  const length = await getTicketsAmount(ticketsContract, account)
+
+  const calls1 =  Array.apply(null, { length }).map((a, i) => ([
+    ticketsContract.options.address,
+    'tokenOfOwnerByIndex',
+    [account, i]
+  ]));
+  const res = await multiCall(sushi, ticketAbi, calls1)
+
+  const tokenIds = res.map(id  =>id.toString())
+
+  const calls2 = tokenIds.map((id) => ([
+    ticketsContract.options.address,
+    'getLotteryIssueIndex',
+    [id]
+  ]))
+  const ticketIssues = await multiCall(sushi, ticketAbi, calls2)
+
+  let finalTokenids =  []
+  ticketIssues.forEach(async (ticketIssue, i)=> {
+    if(ticketIssue.toString() === issueIdex) {
+      finalTokenids.push(tokenIds[i])
     }
-  }
+  })
+  const calls3 = finalTokenids.map(id => ([
+    ticketsContract.options.address,
+    'getLotteryNumbers',
+    [id]
+  ]))
+  const tickets = await multiCall(sushi, ticketAbi, calls3)
+
+  const drawed = await getLotteryStatus(lotteryContract)
   return tickets
 }
 
-export const getTotalClaim  = async (lotteryContract, ticketsContract, account) => {
-  let claim = new BigNumber(0)
-  let i = 0
-  const issueIdex = await lotteryContract.methods.issueIndex().call();
-  while(1){
-    const tokenId = await ticketsContract.methods.tokenOfOwnerByIndex(account, i).call()
-    if(tokenId > 10000000000000000000000000000000000000000000) break
-    i++;
-    const ticketIssue = await ticketsContract.methods.getLotteryIssueIndex(tokenId).call()
-    if(ticketIssue == issueIdex) {
-      const rewards = await lotteryContract.methods.getRewardView(tokenId).call();
-      claim = BigNumber.sum(claim, rewards)
-    }
-  }
-  return claim
+export const getTicketsAmount = async (ticketsContract, account) => {
+  return ticketsContract.methods.balanceOf(account).call()
 }
 
+export const multiClaim = async (sushi, lotteryContract, ticketsContract, account) => {
+  const issueIdex = await lotteryContract.methods.issueIndex().call();
+  const length = await getTicketsAmount(ticketsContract, account)
+  const calls1 =  Array.apply(null, { length }).map((a, i) => ([
+    ticketsContract.options.address,
+    'tokenOfOwnerByIndex',
+    [account, i]
+  ]));
+  const res = await multiCall(sushi, ticketAbi, calls1)
+  const tokenIds = res.map(id  =>id.toString())
 
 
-export const getTotalRewards = async (lotteryContract, account) =>{
+  const calls2 = tokenIds.map((id) => ([
+    ticketsContract.options.address,
+    'getClaimStatus',
+    [id]
+  ]))
+  const claimedStatus = await multiCall(sushi, ticketAbi, calls2)
+
+  const unClaimedIds = tokenIds.filter((id,index) => !claimedStatus[index][0])
+
+  const calls3 = unClaimedIds.map(id => ([
+    lotteryContract.options.address,
+    'getRewardView',
+    [id]
+  ]))
+  const rewards = await multiCall(sushi, lotteryAbi, calls3)
+
+  let finanltokenIds = []
+  rewards.forEach((r, i) => {
+    if(r > 0) {
+      finanltokenIds.push(unClaimedIds[i])
+    }
+  })
+
+  console.log(finanltokenIds.length)
+  if(finanltokenIds.length>200) {
+    finanltokenIds= finanltokenIds.slice(0,200)
+  }
+  // finanltokenIds.splice(0,5);
+
+  try {
+    return lotteryContract.methods
+      .multiClaim(
+        finanltokenIds
+      )
+      .send({ from: account })
+      .on('transactionHash', (tx) => {
+        return tx.transactionHash
+      })
+  }
+  catch(err) {
+    console.log(err)
+  }
+
+}
+
+export const getTotalClaim  = async (sushi, lotteryContract, ticketsContract, account) => {
+  try {
+    const issueIdex = await lotteryContract.methods.issueIndex().call();
+    const length = await getTicketsAmount(ticketsContract, account)
+    const calls1 =  Array.apply(null, { length }).map((a, i) => ([
+      ticketsContract.options.address,
+      'tokenOfOwnerByIndex',
+      [account, i]
+    ]));
+    const res = await multiCall(sushi, ticketAbi, calls1)
+    const tokenIds = res.map(id  =>id.toString())
+    const calls2 = tokenIds.map((id) => ([
+      ticketsContract.options.address,
+      'getLotteryIssueIndex',
+      [id]
+    ]))
+    const ticketIssues = await multiCall(sushi, ticketAbi, calls2)
+    const calls3 = tokenIds.map((id) => ([
+      ticketsContract.options.address,
+      'getClaimStatus',
+      [id]
+    ]))
+    const claimedStatus = await multiCall(sushi, ticketAbi, calls3)
+
+    const drawed = await getLotteryStatus(lotteryContract)
+
+    let finalTokenids =  []
+    ticketIssues.forEach(async (ticketIssue, i)=> {
+      if(!drawed && ticketIssue.toString() === issueIdex) {
+      }
+      else if(!claimedStatus[i][0]) {
+        finalTokenids.push(tokenIds[i])
+      }
+    })
+
+    const calls4 = finalTokenids.map(id => ([
+      lotteryContract.options.address,
+      'getRewardView',
+      [id]
+    ]))
+    console.log('getRewardView')
+    const rewards = await multiCall(sushi, lotteryAbi, calls4)
+    const claim =  rewards.reduce((p,c)=>BigNumber.sum(p, c), BigNumber(0))
+
+    return  claim
+  }
+  catch(err) {
+    console.log(err)
+  }
+  return BigNumber(0)
+}
+
+export const getTotalRewards = async (lotteryContract) =>{
   const issueIdex = await lotteryContract.methods.issueIndex().call();
   return lotteryContract.methods.getTotalRewards(issueIdex).call()
 }
 
+export const getMax = async (lotteryContract) =>{
+  return lotteryContract.methods.maxNumber().call();
+}
+
+export const getLotteryIssueIndex = async (lotteryContract) =>{
+  const issueIndex = await lotteryContract.methods.issueIndex().call();
+  return issueIndex
+}
+
+export const getLotteryStatus = async (lotteryContract) =>{
+  return lotteryContract.methods.drawed().call()
+}
+
 export const getMatchingRewardLength = async (lotteryContract, matchNumber, account) =>{
   const issueIdex = await lotteryContract.methods.issueIndex().call();
-  return lotteryContract.methods.getMatchingRewardLength(issueIdex, matchNumber).call()
+  try {
+    const amount = await lotteryContract.methods.historyAmount(issueIdex, 5 - matchNumber).call()
+    return amount / 1e18 / 10;
+  }
+  catch(err) {
+  }
+  return 0;
 }
 
 export const getWinningNumbers = async (lotteryContract, account) => {
   const issueIdex = await lotteryContract.methods.issueIndex().call();
   let numbers = []
-  for(let i = 0;i<4;i++) {
-    numbers.push((await lotteryContract.methods.winningNumbers(i).call()).toString())
+  const drawed = await lotteryContract.methods.drawed().call()
+  if(!drawed && issueIdex == 0){
+    return [0,0,0,0]
+  }
+  else if(!drawed){
+    for(let i = 0;i<4;i++) {
+      numbers.push(+(await lotteryContract.methods.historyNumbers(issueIdex-1, i).call()).toString())
+    }
+  }
+  else {
+    for(let i = 0;i<4;i++) {
+      numbers.push(+(await lotteryContract.methods.winningNumbers(i).call()).toString())
+    }
   }
   return numbers
 }

@@ -6,9 +6,8 @@ export const ConfirmationType = {
 }
 
 export const LotteryStates = {
-    BUY_TICKETS_OPEN: 1,
-    BUY_TICKETS_CLOSE: 2,
-    WINNERS_ANNOUNCED: 3,
+    BUY_TICKETS_OPEN: false,
+    WINNERS_ANNOUNCED: true,
 }
 
 export function currentLotteryState() {

@@ -5,7 +5,7 @@ import BigNumber from 'bignumber.js'
 import useSushi from './useSushi'
 import useBlock from './useBlock'
 
-import { buy, getTotalRewards, getTotalClaim, getMatchingRewardLength, getWinningNumbers, getTicketsContract, getLotteryContract, getTickets } from '../sushi/lotteryUtils'
+import { buy, getTotalRewards, getTicketsAmount,  getTotalClaim, getMatchingRewardLength, getWinningNumbers, getTicketsContract, getLotteryContract, getTickets } from '../sushi/lotteryUtils'
 
 const useTickets = () => {
   const [tickets, setTickets] = useState([])
@@ -16,7 +16,7 @@ const useTickets = () => {
   const block = useBlock()
 
   const fetchBalance = useCallback(async () => {
-    const tickets = await getTickets(lotteryContract, ticketsContract, account)
+    const tickets = await getTickets(sushi, lotteryContract, ticketsContract, account)
     setTickets(tickets)
   }, [account, lotteryContract, ticketsContract, block])
 
@@ -29,6 +29,28 @@ const useTickets = () => {
   return tickets
 }
 
+export const useTicketsAmount = () => {
+  const [tickets, setTickets] = useState(0)
+  const { account } = useWallet()
+  const sushi = useSushi()
+  const ticketsContract = getTicketsContract(sushi)
+  const block = useBlock()
+
+  const fetchBalance = useCallback(async () => {
+    const tickets = await getTicketsAmount(ticketsContract, account)
+    console.log(tickets)
+    setTickets(tickets)
+  }, [account, ticketsContract, block])
+
+  useEffect(() => {
+    if (account && ticketsContract &&  sushi) {
+      fetchBalance()
+    }
+  }, [account, block, ticketsContract, setTickets, sushi])
+
+  return tickets
+}
+
 export const useTotalRewards = () => {
   const [rewards, setRewards] = useState(new BigNumber(0))
   const { account } = useWallet()
@@ -37,7 +59,7 @@ export const useTotalRewards = () => {
   const block = useBlock()
 
   const fetchBalance = useCallback(async () => {
-    const rewards = await getTotalRewards(lotteryContract, account)
+    const rewards = await getTotalRewards(lotteryContract)
     setRewards(new BigNumber(rewards))
   }, [account, lotteryContract, block])
 
@@ -52,6 +74,7 @@ export const useTotalRewards = () => {
 
 export const useTotalClaim = () => {
   const [claimAmount, setClaimAmount] = useState(new BigNumber(0))
+  const [claimLoading, setClaimLoading] = useState(false)
   const { account } = useWallet()
   const sushi = useSushi()
   const ticketsContract = getTicketsContract(sushi)
@@ -59,8 +82,10 @@ export const useTotalClaim = () => {
   const block = useBlock()
 
   const fetchBalance = useCallback(async () => {
-    const claim = await getTotalClaim(lotteryContract, ticketsContract, account)
+    setClaimLoading(true)
+    const claim = await getTotalClaim(sushi, lotteryContract, ticketsContract, account)
     setClaimAmount(claim)
+    setClaimLoading(false)
   }, [account, lotteryContract, ticketsContract, block])
 
   useEffect(() => {
@@ -69,7 +94,7 @@ export const useTotalClaim = () => {
     }
   }, [account, block, lotteryContract, setClaimAmount, sushi])
 
-  return claimAmount
+  return {claimLoading, claimAmount}
 }
 
 export const useWinningNumbers = () => {
@@ -113,6 +138,7 @@ export const useMatchingRewardLength = (numbers) => {
 
   return matchingNumbers
 }
+
 
 
 export default useTickets
