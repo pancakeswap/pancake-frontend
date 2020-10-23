@@ -62,6 +62,17 @@ export const contractAddresses = {
 
 export const sousChefTeam = [
   {
+    sousId: 4,
+    contractAddress: {
+      97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
+      56: '0xD32B30b151a6aDB2e0Fa573a37510C097DaBD2F3',
+    },
+    tokenName: 'SXP',
+    projectLink: 'https://swipe.io/',
+    harvest: true,
+    tokenPerBlock: "0.5"
+  },
+  {
     sousId: 3,
     contractAddress: {
       97: '0xAfd61Dc94f11A70Ae110dC0E0F2061Af5633061A',
@@ -497,6 +508,36 @@ export const supportedPools = [
     multiplier: '1X'
   },
   {
+    pid: 29,
+    lpAddresses: {
+      97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
+      56: '0x30479874f9320a62bce3bc0e315c920e1d73e278'
+    },
+    tokenAddresses: {
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
+      56: '0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d'
+    },
+    symbol: 'USDC-BNB FLIP',
+    tokenSymbol: 'USDC',
+    icon: '🥞',
+    multiplier: '1X'
+  },
+  {
+    pid: 30,
+    lpAddresses: {
+      97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
+      56: '0x752E713fB70E3FA1Ac08bCF34485F14A986956c4'
+    },
+    tokenAddresses: {
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
+      56: '0x47bead2563dcbf3bf2c9407fea4dc236faba485a'
+    },
+    symbol: 'SXP-BNB FLIP',
+    tokenSymbol: 'SXP',
+    icon: '🥞',
+    multiplier: '2X'
+  },
+  {
     pid: 8,
     lpAddresses: {
       97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
@@ -687,6 +728,18 @@ export const forShowPools = [
     symbol: 'INJ-BNB',
     tokenSymbol: 'INJ',
     multiplier: '1X'
+  },
+  {
+    pid: 29,
+    symbol: 'USDC-BNB',
+    tokenSymbol: 'USDC',
+    multiplier: '1X'
+  },
+  {
+    pid: 30,
+    symbol: 'SXP-BNB',
+    tokenSymbol: 'SXP',
+    multiplier: '2X'
   }
 ]
 

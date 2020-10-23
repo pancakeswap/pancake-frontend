@@ -61,7 +61,7 @@ const PoolCardv2: React.FC<HarvestProps> = ({
   const { account } = useWallet()
   const allowance = useSousAllowance(syrup, sousId)
   const { onApprove } = useSousApprove(syrup, sousId)
-  const { isFinished, blocksRemaining } = useSousLeftBlocks(sousId)
+  const { isFinished, farmStart, blocksRemaining } = useSousLeftBlocks(sousId)
   const tokenBalance = useTokenBalance(syrup.options.address)
   const stakedBalance = useSousStakedBalance(sousId)
   const totalStaked = useSousTotalStaked(sousId)
@@ -209,6 +209,7 @@ const PoolCardv2: React.FC<HarvestProps> = ({
         totalStaked={totalStaked}
         blocksRemaining={blocksRemaining}
         isFinished={isFinished}
+        farmStart={farmStart}
       />
     </Card>
   )

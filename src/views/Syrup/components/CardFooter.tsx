@@ -12,6 +12,7 @@ interface Props {
   totalStaked: BigNumber
   blocksRemaining: number
   isFinished: boolean
+  farmStart: number
 }
 
 const StyledFooter = styled.div<{ isFinished: boolean }>`
@@ -69,6 +70,7 @@ const CardFooter: React.FC<Props> = ({
   totalStaked,
   blocksRemaining,
   isFinished,
+  farmStart
 }) => {
   const [isOpen, setIsOpen] = useState(false)
   const TranslateString = useI18n()
@@ -102,7 +104,15 @@ const CardFooter: React.FC<Props> = ({
               value={getBalanceNumber(totalStaked)}
             />
           </Row>
-          {blocksRemaining > 0 && (
+          {farmStart >0 && (
+            <Row>
+              <FlexFull>
+                <Label>{TranslateString(410, 'Start')}:</Label>
+              </FlexFull>
+              <SmallValue isFinished={isFinished} value={farmStart} decimals={0}/>
+            </Row>
+          )}
+          {farmStart === 0 && blocksRemaining > 0 && (
             <Row>
               <FlexFull>
                 <Label>{TranslateString(410, 'End')}:</Label>
