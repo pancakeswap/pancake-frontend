@@ -84,7 +84,7 @@ const Farm: React.FC = () => {
           <br />
           {TranslateString(422, 'WIN')}
         </Title>
-        <Title2>{getBalanceNumber(lotteryPrizeAmount)} CAKE</Title2>
+        <Title2>{getBalanceNumber(lotteryPrizeAmount).toFixed(2)} CAKE</Title2>
         <Subtitle>{subtitleText}</Subtitle>
         <StyledFarm>
           <StyledCardWrapper>

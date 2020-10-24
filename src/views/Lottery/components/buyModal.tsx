@@ -52,8 +52,6 @@ const BuyModal: React.FC<BuyModalProps> = ({
     try {
       setRequestedBuy(true)
       const length = parseInt(val)
-
-      console.log(maxNumber)
       // @ts-ignore
       const numbers = Array.apply(null, { length }).map(() => [
         Math.floor(Math.random() * maxNumber) + 1,
