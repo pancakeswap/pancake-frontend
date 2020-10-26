@@ -1,6 +1,6 @@
 import { MediaQueries, Breakpoints } from "../styled.d";
 
-export const breakpoints: Breakpoints = ["370px", "512px", "755px", "968px", "1080px"];
+export const breakpoints: Breakpoints = ["370px", "576px", "852px", "968px", "1080px"];
 
 const mediaQueries: MediaQueries = {
   xs: `@media screen and (min-width: ${breakpoints[0]})`,
