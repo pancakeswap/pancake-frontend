@@ -4,6 +4,7 @@ import shadows from "./shadows";
 import { light as lightButton } from "../components/Button/theme";
 import { light as lightCard } from "../components/Card/theme";
 import { light as lightTag } from "../components/Tag/theme";
+import { light as lightToggle } from "../components/Toggle/theme";
 import { lightColors } from "./colors";
 
 const lightTheme: DefaultTheme = {
@@ -20,6 +21,7 @@ const lightTheme: DefaultTheme = {
     ...shadows,
   },
   tag: lightTag,
+  toggle: lightToggle,
 };
 
 export default lightTheme;

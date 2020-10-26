@@ -8,6 +8,7 @@ export * from "./components/Layouts";
 export { default as Tag } from "./components/Tag";
 export { default as Text } from "./components/Text";
 export { default as Link } from "./components/Link";
+export { default as Toggle } from "./components/Toggle";
 export { default as ResetCSS } from "./ResetCSS";
 
 export * from "./theme";

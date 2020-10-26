@@ -2,6 +2,7 @@ import "styled-components";
 import { ButtonTheme } from "./components/Button/types";
 import { CardTheme } from "./components/Card/types";
 import { TagTheme } from "./components/Tag/types";
+import { ToggleTheme } from "./components/Toggle/types";
 
 export type Breakpoints = string[];
 
@@ -18,6 +19,7 @@ export type Shadows = {
   active: string;
   success: string;
   warning: string;
+  focus: string;
 };
 
 export type Colors = {
@@ -44,6 +46,7 @@ declare module "styled-components" {
     button: ButtonTheme;
     card: CardTheme;
     tag: TagTheme;
+    toggle: ToggleTheme;
     scales: {
       breakpoints: Breakpoints;
       mediaQueries: MediaQueries;

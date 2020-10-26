@@ -4,6 +4,7 @@ import shadows from "./shadows";
 import { dark as darkButton } from "../components/Button/theme";
 import { dark as darkCard } from "../components/Card/theme";
 import { dark as darkTag } from "../components/Tag/theme";
+import { dark as darkToggle } from "../components/Toggle/theme";
 import { darkColors } from "./colors";
 
 const darkTheme: DefaultTheme = {
@@ -20,6 +21,7 @@ const darkTheme: DefaultTheme = {
     ...shadows,
   },
   tag: darkTag,
+  toggle: darkToggle,
 };
 
 export default darkTheme;
