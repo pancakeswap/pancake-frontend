@@ -1,6 +1,7 @@
 import "styled-components";
 import { ButtonTheme } from "./components/Button/types";
 import { CardTheme } from "./components/Card/types";
+import { TagTheme } from "./components/Tag/types";
 
 export type Breakpoints = string[];
 
@@ -35,6 +36,7 @@ declare module "styled-components" {
     colors: Colors;
     button: ButtonTheme;
     card: CardTheme;
+    tag: TagTheme;
     scales: {
       breakpoints: Breakpoints;
       mediaQueries: MediaQueries;
