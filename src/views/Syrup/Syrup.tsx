@@ -169,6 +169,7 @@ const Page = styled.div`
 `
 
 const Pools = styled.div`
+  align-items: start;
   display: grid;
   grid-template-columns: repeat(8, 1fr);
   grid-gap: 16px;
