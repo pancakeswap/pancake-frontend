@@ -12,6 +12,7 @@ import useModal from '../../hooks/useModal'
 import Farm from '../Farm'
 
 import FarmCards from './components/FarmCards'
+import HarvestAll from './components/HarvestAll'
 import { TranslateString } from '../../utils/translateTextHelpers'
 
 interface FarmsProps {
@@ -31,6 +32,7 @@ const Farms: React.FC<FarmsProps> = ({ removed }) => {
               <Title>
                 {TranslateString(320, 'Stake FLIP tokens to stack CAKE')}
               </Title>
+              <HarvestAll />
               <StyledLink exact activeClassName="active" to="/staking">
                 Staking
               </StyledLink>

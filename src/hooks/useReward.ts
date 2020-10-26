@@ -4,7 +4,12 @@ import { useCallback } from 'react'
 import useSushi from './useSushi'
 import { useWallet } from 'use-wallet'
 
-import { soushHarvest, harvest, getMasterChefContract, getSousChefContract } from '../sushi/utils'
+import {
+  soushHarvest,
+  harvest,
+  getMasterChefContract,
+  getSousChefContract,
+} from '../sushi/utils'
 
 const useReward = (pid: number) => {
   const { account } = useWallet()
@@ -15,6 +20,23 @@ const useReward = (pid: number) => {
     const txHash = await harvest(masterChefContract, pid, account)
     return txHash
   }, [account, pid, sushi])
+
+  return { onReward: handleReward }
+}
+
+export const useAllReward = (pidList: number[]) => {
+  const { account } = useWallet()
+  const sushi = useSushi()
+  const masterChefContract = getMasterChefContract(sushi)
+
+  const handleReward = useCallback(async () => {
+    const txHash = new Promise(() => {
+      pidList.forEach(async (pid) => {
+        await harvest(masterChefContract, pid, account)
+      })
+    })
+    return txHash
+  }, [account, pidList, sushi])
 
   return { onReward: handleReward }
 }
