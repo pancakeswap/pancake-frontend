@@ -65,5 +65,8 @@
     "react-dom": "^16.14.0",
     "styled-components": "^5.2.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@types/lodash": "^4.14.162",
+    "lodash": "^4.17.20"
+  }
 }
