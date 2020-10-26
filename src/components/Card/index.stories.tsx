@@ -20,10 +20,19 @@ export default {
 
 export const Default: React.FC = () => {
   return (
-    <>
+    <div style={{ padding: "32px", width: "500px" }}>
       <Row>
         <Card>Card</Card>
       </Row>
-    </>
+      <Row>
+        <Card isActive>Active Card</Card>
+      </Row>
+      <Row>
+        <Card isSuccess>Success Card</Card>
+      </Row>
+      <Row>
+        <Card isWarning>Warning Card</Card>
+      </Row>
+    </div>
   );
 };

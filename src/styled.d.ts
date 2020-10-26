@@ -13,6 +13,13 @@ export type MediaQueries = {
   xl: string;
 };
 
+export type Shadows = {
+  level1: string;
+  active: string;
+  success: string;
+  warning: string;
+};
+
 export type Colors = {
   primary: string;
   primaryBright: string;
@@ -41,8 +48,6 @@ declare module "styled-components" {
       breakpoints: Breakpoints;
       mediaQueries: MediaQueries;
     };
-    shadows: {
-      level1: string;
-    };
+    shadows: Shadows;
   }
 }
