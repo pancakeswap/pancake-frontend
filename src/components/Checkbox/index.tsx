@@ -29,12 +29,13 @@ const Checkbox = styled.input.attrs({ type: "checkbox" })`
     transform: rotate(-50deg);
     transition: border-color 0.2s ease-in-out;
   }
-  &:focus {
-    outline: none;
-  }
   &:disabled {
     cursor: default;
     opacity: 0.6;
+  }
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px ${({ theme }) => theme.colors.secondary};
   }
   &:checked {
     background-color: ${({ theme }) => theme.colors.success};

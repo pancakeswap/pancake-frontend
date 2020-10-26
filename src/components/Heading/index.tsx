@@ -19,6 +19,7 @@ const style = {
 
 const Heading = styled(Text).attrs({ bold: true })<Props>`
   ${({ size }) => style[size || sizes.MD]}
+  line-height: 1.1;
 `;
 
 Heading.defaultProps = {

@@ -22,7 +22,7 @@ const Text = styled.div<Props>`
   color: ${getColor};
   font-size: ${getFontSize};
   font-weight: ${({ bold }) => (bold ? 600 : 400)};
-  line-height: 1.4;
+  line-height: 1.5;
 `;
 
 export default Text;
