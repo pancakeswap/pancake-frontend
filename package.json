@@ -19,9 +19,9 @@
     "react-dom": "^16.13.1",
     "react-feather": "^2.0.8",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.1",
+    "react-scripts": "^4.0.0",
     "styled-components": "^5.1.1",
-    "typescript": "^3.9.7",
+    "typescript": "^4.0.5",
     "use-wallet": "^0.8.0",
     "web3": "^1.2.11"
   },
