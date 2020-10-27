@@ -1,27 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useCallback, useEffect, useState } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import { ThemeProvider } from 'styled-components'
 import { StringTranslations } from '@crowdin/crowdin-api-client'
 import { ResetCSS } from '@pancakeswap-libs/uikit'
 import GlobalStyle from './theme/Global'
-import { lightTheme, darkTheme } from './theme'
-import { UseWalletProvider } from 'use-wallet'
 import DisclaimerModal from './components/DisclaimerModal'
 import MobileMenu from './components/MobileMenu'
 import TopBar from './components/TopBar'
-import FarmsProvider from './contexts/Farms'
-import ModalsProvider from './contexts/Modals'
-import TransactionProvider from './contexts/Transactions'
-import SushiProvider from './contexts/SushiProvider'
-import BscProvider from './contexts/BscProvider'
 import { EN } from './constants/localisation/languageCodes'
 import { allLanguages } from './constants/localisation/languageCodes'
-import {
-  LanguageContext,
-  LanguageObject,
-} from './contexts/Localisation/languageContext'
-import { TranslationsContext } from './contexts/Localisation/translationsContext'
 import useModal from './hooks/useModal'
 import useTheme from './hooks/useTheme'
 import Farms from './views/Farms'
@@ -31,6 +18,7 @@ import Stake from './views/Stake'
 import Lottery from './views/Lottery'
 import Voting from './views/Voting'
 import Syrup2 from './views/CakeStaking'
+import Providers from './Providers'
 
 // components
 import Web3ReactManager from './components/Web3ReactManager'
@@ -153,57 +141,6 @@ const App: React.FC = () => {
       </Router>
       <Disclaimer />
     </Providers>
-  )
-}
-
-const Providers: React.FC<{
-  isDark: boolean
-  selectedLanguage: LanguageObject
-  setSelectedLanguage: React.Dispatch<React.SetStateAction<LanguageObject>>
-  translatedLanguage: LanguageObject
-  setTranslatedLanguage: React.Dispatch<React.SetStateAction<LanguageObject>>
-  translations: Array<any>
-  setTranslations: React.Dispatch<React.SetStateAction<Array<any>>>
-}> = ({
-  isDark,
-  selectedLanguage,
-  setSelectedLanguage,
-  translatedLanguage,
-  setTranslatedLanguage,
-  translations,
-  setTranslations,
-  children,
-}) => {
-  return (
-    <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
-      <LanguageContext.Provider
-        value={{
-          selectedLanguage,
-          setSelectedLanguage,
-          translatedLanguage,
-          setTranslatedLanguage,
-        }}
-      >
-        <TranslationsContext.Provider value={{ translations, setTranslations }}>
-          <UseWalletProvider
-            chainId={parseInt(process.env.REACT_APP_CHAIN_ID)}
-            connectors={{
-              walletconnect: { rpcUrl: process.env.REACT_APP_RPC_URL },
-            }}
-          >
-            <BscProvider>
-              <SushiProvider>
-                <TransactionProvider>
-                  <FarmsProvider>
-                    <ModalsProvider>{children}</ModalsProvider>
-                  </FarmsProvider>
-                </TransactionProvider>
-              </SushiProvider>
-            </BscProvider>
-          </UseWalletProvider>
-        </TranslationsContext.Provider>
-      </LanguageContext.Provider>
-    </ThemeProvider>
   )
 }
 
