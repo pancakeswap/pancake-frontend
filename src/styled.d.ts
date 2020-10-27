@@ -14,6 +14,8 @@ export type MediaQueries = {
   xl: string;
 };
 
+export type Spacing = number[];
+
 export type Shadows = {
   level1: string;
   active: string;
@@ -50,6 +52,7 @@ declare module "styled-components" {
     scales: {
       breakpoints: Breakpoints;
       mediaQueries: MediaQueries;
+      spacing: Spacing;
     };
     shadows: Shadows;
   }

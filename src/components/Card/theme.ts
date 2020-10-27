@@ -1,4 +1,4 @@
-import shadows from "../../theme/shadows";
+import { shadows } from "../../theme/base";
 import { CardTheme } from "./types";
 
 export const light: CardTheme = {
