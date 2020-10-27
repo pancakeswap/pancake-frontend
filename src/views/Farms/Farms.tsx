@@ -44,7 +44,7 @@ const Farms: React.FC<FarmsProps> = ({ removed }) => {
                   Inactive Pools
                 </NavLink>
               )}
-              <Image src={require(`../../assets/img/cakecat.png`)} />
+              <Image src="/images/cakecat.png" />
             </Route>
             <Route path={`${path}/:farmId`}>
               <Farm />

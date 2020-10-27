@@ -127,8 +127,8 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
                 <CardImage>
                   <Multiplier>{pool.multiplier}</Multiplier>
                   <img
-                    src={require(`../../../assets/img/category-${pool.tokenSymbol}.png`)}
-                    alt=""
+                    src={`/images/tokens/category-${pool.tokenSymbol}.png`}
+                    alt={pool.tokenSymbol}
                   />
                 </CardImage>
                 <Lable>
@@ -274,8 +274,8 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, stakedValue, removed }) => {
           <CardImage>
             <Multiplier>{farm.multiplier}</Multiplier>
             <img
-              src={require(`../../../assets/img/category-${farm.tokenSymbol}.png`)}
-              alt=""
+              src={`/images/tokens/category-${farm.tokenSymbol}.png`}
+              alt={farm.tokenSymbol}
             />
           </CardImage>
           <Lable>

@@ -58,76 +58,44 @@ const Winning: React.FC<WinningProps> = ({ state }) => {
             <RabbitRow>
               <RabbitBox>
                 <CardImageFirst>
-                  <img
-                    src={require(`../../../assets/img/sign bunny 1@2x.png`)}
-                    alt=""
-                    width={100}
-                  />
+                  <img src="/images/sign bunny 1@2x.png" alt="" width={100} />
                 </CardImageFirst>
               </RabbitBox>
               <RabbitBox>
                 <CardImage style={{ marginLeft: '-1.2em' }}>
-                  <img
-                    src={require(`../../../assets/img/sign bunny 2@2x.png`)}
-                    alt=""
-                    width={100}
-                  />
+                  <img src="/images/sign bunny 2@2x.png" alt="" width={100} />
                 </CardImage>
               </RabbitBox>
               <RabbitBox>
                 <CardImage style={{ marginLeft: '-1.2em' }}>
-                  <img
-                    src={require(`../../../assets/img/sign bunny 3@2x.png`)}
-                    alt=""
-                    width={100}
-                  />
+                  <img src="/images/sign bunny 3@2x.png" alt="" width={100} />
                 </CardImage>
               </RabbitBox>
               <RabbitBox>
                 <CardImage style={{ marginLeft: '-1.2em' }}>
-                  <img
-                    src={require(`../../../assets/img/sign bunny 4@2x.png`)}
-                    alt=""
-                    width={100}
-                  />
+                  <img src="/images/sign bunny 4@2x.png" alt="" width={100} />
                 </CardImage>
               </RabbitBox>
             </RabbitRow>
             <RabbitRowSmall>
               <RabbitBoxSmall>
                 <CardImageFirst>
-                  <img
-                    src={require(`../../../assets/img/sign bunny 1@2x.png`)}
-                    alt=""
-                    width={60}
-                  />
+                  <img src="/images/sign bunny 1@2x.png" alt="" width={60} />
                 </CardImageFirst>
               </RabbitBoxSmall>
               <RabbitBoxSmall>
                 <CardImage style={{ marginLeft: '-1.2em' }}>
-                  <img
-                    src={require(`../../../assets/img/sign bunny 2@2x.png`)}
-                    alt=""
-                    width={60}
-                  />
+                  <img src="/images/sign bunny 2@2x.png" alt="" width={60} />
                 </CardImage>
               </RabbitBoxSmall>
               <RabbitBoxSmall>
                 <CardImage style={{ marginLeft: '-1.2em' }}>
-                  <img
-                    src={require(`../../../assets/img/sign bunny 3@2x.png`)}
-                    alt=""
-                    width={60}
-                  />
+                  <img src="/images/sign bunny 3@2x.png" alt="" width={60} />
                 </CardImage>
               </RabbitBoxSmall>
               <RabbitBoxSmall>
                 <CardImage style={{ marginLeft: '-1.2em' }}>
-                  <img
-                    src={require(`../../../assets/img/sign bunny 4@2x.png`)}
-                    alt=""
-                    width={60}
-                  />
+                  <img src="/images/sign bunny 4@2x.png" alt="" width={60} />
                 </CardImage>
               </RabbitBoxSmall>
             </RabbitRowSmall>
