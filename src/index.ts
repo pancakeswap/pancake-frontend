@@ -5,9 +5,10 @@ export { default as Card } from "./components/Card";
 export { default as Checkbox } from "./components/Checkbox";
 export { default as Heading } from "./components/Heading";
 export * from "./components/Layouts";
+export { default as Link } from "./components/Link";
+export * from "./components/Svg";
 export { default as Tag } from "./components/Tag";
 export { default as Text } from "./components/Text";
-export { default as Link } from "./components/Link";
 export { default as Toggle } from "./components/Toggle";
 export { default as ResetCSS } from "./ResetCSS";
 
