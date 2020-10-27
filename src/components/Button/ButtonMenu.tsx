@@ -115,7 +115,7 @@ const StyledButton = styled.button<StyledButtonProps>`
   pointer-events: ${(props) => (!props.disabled ? undefined : 'none')};
   width: 100%;
   &:hover {
-    background-color: ${(props) => props.theme.colors.grey[100]};
+    background-color: ${(props) => props.theme.colors.primaryDark};
   }
 `
 

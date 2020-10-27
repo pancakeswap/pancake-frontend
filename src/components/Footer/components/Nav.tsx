@@ -30,12 +30,12 @@ const StyledNav = styled.nav`
 `
 
 const StyledLink = styled.a`
-  color: ${(props) => props.theme.colors.grey[400]};
+  color: #12aab5;
   padding-left: ${(props) => props.theme.spacing[3]}px;
   padding-right: ${(props) => props.theme.spacing[3]}px;
   text-decoration: none;
   &:hover {
-    color: ${(props) => props.theme.colors.grey[500]};
+    color: #805e49;
   }
 `
 

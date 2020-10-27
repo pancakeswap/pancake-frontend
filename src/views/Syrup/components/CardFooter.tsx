@@ -16,7 +16,7 @@ interface Props {
 }
 
 const StyledFooter = styled.div<{ isFinished: boolean }>`
-  border-top: 1px solid ${({ theme }) => theme.colors.border};
+  border-top: 1px solid ${({ theme }) => theme.colors.backgroundDisabled};
   color: ${({ isFinished, theme }) =>
     theme.colors[isFinished ? 'textDisabled2' : 'primary2']};
   padding: 24px;
@@ -26,7 +26,7 @@ const StyledDetailsButton = styled.button`
   align-items: center;
   background-color: transparent;
   border: 0;
-  color: ${(props) => props.theme.colors.primary2};
+  color: ${(props) => props.theme.colors.primary};
   cursor: pointer;
   display: inline-flex;
   font-size: 16px;
@@ -70,7 +70,7 @@ const CardFooter: React.FC<Props> = ({
   totalStaked,
   blocksRemaining,
   isFinished,
-  farmStart
+  farmStart,
 }) => {
   const [isOpen, setIsOpen] = useState(false)
   const TranslateString = useI18n()
@@ -104,12 +104,16 @@ const CardFooter: React.FC<Props> = ({
               value={getBalanceNumber(totalStaked)}
             />
           </Row>
-          {farmStart >0 && (
+          {farmStart > 0 && (
             <Row>
               <FlexFull>
                 <Label>{TranslateString(410, 'Start')}:</Label>
               </FlexFull>
-              <SmallValue isFinished={isFinished} value={farmStart} decimals={0}/>
+              <SmallValue
+                isFinished={isFinished}
+                value={farmStart}
+                decimals={0}
+              />
             </Row>
           )}
           {farmStart === 0 && blocksRemaining > 0 && (

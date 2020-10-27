@@ -1863,10 +1863,10 @@
   dependencies:
     mkdirp "^1.0.4"
 
-"@pancakeswap-libs/uikit@^0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@pancakeswap-libs/uikit/-/uikit-0.1.1.tgz#6eea84666d9a427fedf0acc45e9f02c41bac4c0c"
-  integrity sha512-DSUJ0r3q/Qs7nWcVpucTJkrO8q539ztM0QsyqTi6OCIkI+j0ES8anMGMi4zfNdtAEuM4vm4uerbuIYHzLKiJPg==
+"@pancakeswap-libs/uikit@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@pancakeswap-libs/uikit/-/uikit-0.1.2.tgz#904996c46a6640209d74ba9ed0b357cacfd6097d"
+  integrity sha512-Gi+GxTeIXB707umDL0RIPuWYp3jVpyN3P/BnhiAzd3ewTHI2lvSO0hEmdy8Etj2ek5CKGYdXfjhFaojxQ7NK3g==
   dependencies:
     "@types/lodash" "^4.14.162"
     lodash "^4.17.20"
@@ -2479,10 +2479,10 @@
   resolved "https://registry.yarnpkg.com/@types/stack-utils/-/stack-utils-2.0.0.tgz#7036640b4e21cc2f259ae826ce843d277dad8cff"
   integrity sha512-RJJrrySY7A8havqpGObOB4W92QXKJo63/jFLLgpvOtsGUqbQZ9Sbgl35KMm1DjC6j7AvmmU2bIno+3IyEaemaw==
 
-"@types/styled-components@^5.1.2":
-  version "5.1.2"
-  resolved "https://registry.yarnpkg.com/@types/styled-components/-/styled-components-5.1.2.tgz#652af475b4af917b355ea1c3068acae63d46455f"
-  integrity sha512-HNocYLfrsnNNm8NTS/W53OERSjRA8dx5Bn6wBd2rXXwt4Z3s+oqvY6/PbVt3e6sgtzI63GX//WiWiRhWur08qQ==
+"@types/styled-components@^5.1.4":
+  version "5.1.4"
+  resolved "https://registry.yarnpkg.com/@types/styled-components/-/styled-components-5.1.4.tgz#11f167dbde268635c66adc89b5a5db2e69d75384"
+  integrity sha512-78f5Zuy0v/LTQNOYfpH+CINHpchzMMmAt9amY2YNtSgsk1TmlKm8L2Wijss/mtTrsUAVTm2CdGB8VOM65vA8xg==
   dependencies:
     "@types/hoist-non-react-statics" "*"
     "@types/react" "*"

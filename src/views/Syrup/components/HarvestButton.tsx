@@ -25,7 +25,7 @@ const Button: React.FC<ButtonProps> = ({
   variant,
 }) => {
   const { colors, spacing } = useContext(ThemeContext)
-  const buttonColor = colors.bg
+  const buttonColor = colors.background
 
   let boxShadow: string
   let buttonSize: number
@@ -91,7 +91,7 @@ interface StyledButtonProps {
 const StyledButton = styled.button<StyledButtonProps>`
   align-items: center;
   background: ${(props) =>
-    !props.disabled ? props.theme.colors.cardBg : `#ddd`};
+    !props.disabled ? props.theme.card.background : `#ddd`};
   border: 0;
   border-radius: 12px;
   color: ${(props) => (!props.disabled ? `#32cad7` : `#acaaaf`)};

@@ -182,7 +182,7 @@ const Lable = styled.div`
 
 const FCard = styled.div`
   position: relative;
-  background: ${(props) => props.theme.colors.cardBg};
+  background: ${(props) => props.theme.card.background};
   box-shadow: 0px 2px 10px rgba(171, 133, 115, 0.16);
   border-radius: 20px;
   height: 309px;
@@ -425,9 +425,9 @@ const Multiplier = styled.div`
   position: absolute;
   line-height: 25px;
   padding: 0 12px;
-  background: ${(props) => props.theme.colors.blue[100]};
+  background: #25beca;
   border-radius: 10px;
-  color: ${(props) => props.theme.colors.bg};
+  color: ${(props) => props.theme.colors.background};
   font-weight: 900;
   left: 20px;
   top: 20px;

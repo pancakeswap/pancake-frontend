@@ -1,21 +1,17 @@
-
-import React, { useContext, useMemo } from 'react'
-import styled, { ThemeContext } from 'styled-components'
+import React, { useMemo } from 'react'
+import styled from 'styled-components'
 
 type SeparatorOrientation = 'horizontal' | 'vertical'
 
 interface SeparatorProps {
-  orientation?: SeparatorOrientation,
+  orientation?: SeparatorOrientation
   stretch?: boolean
 }
 
 const Separator: React.FC<SeparatorProps> = ({ orientation, stretch }) => {
-
-  const { colors } = useContext(ThemeContext)
-
-  let boxShadow = `0 -1px 0px ${colors.grey[300]}`
+  let boxShadow = `0 -1px 0px #FFFDFA`
   if (orientation === 'vertical') {
-    boxShadow = `-1px 0px 0px ${colors.grey[300]}ff`
+    boxShadow = `-1px 0px 0px #FFFDFAff`
   }
 
   const Content = useMemo(() => {
@@ -23,26 +19,22 @@ const Separator: React.FC<SeparatorProps> = ({ orientation, stretch }) => {
   }, [boxShadow, orientation])
 
   if (stretch) {
-    return (
-      <div style={{ alignSelf: 'stretch' }}>
-        {Content}
-      </div>
-    )
+    return <div style={{ alignSelf: 'stretch' }}>{Content}</div>
   }
 
   return Content
 }
 
 interface StyledSeparatorProps {
-  boxShadow: string,
+  boxShadow: string
   orientation?: SeparatorOrientation
 }
 
 const StyledSeparator = styled.div<StyledSeparatorProps>`
-  background-color: ${props => props.theme.colors.grey[100]};
-  box-shadow: ${props => props.boxShadow};
-  height: ${props => props.orientation === 'vertical' ? '100%' : '1px'};
-  width: ${props => props.orientation === 'vertical' ? '1px' : '100%'};
+  background-color: ${(props) => props.theme.colors.primaryDark};
+  box-shadow: ${(props) => props.boxShadow};
+  height: ${(props) => (props.orientation === 'vertical' ? '100%' : '1px')};
+  width: ${(props) => (props.orientation === 'vertical' ? '1px' : '100%')};
 `
 
 export default Separator
