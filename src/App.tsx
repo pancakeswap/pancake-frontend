@@ -3,12 +3,13 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
 import { StringTranslations } from '@crowdin/crowdin-api-client'
+import { ResetCSS } from '@pancakeswap-libs/uikit'
+import GlobalStyle from './theme/Global'
 import { lightTheme, darkTheme } from './theme'
 import { UseWalletProvider } from 'use-wallet'
 import DisclaimerModal from './components/DisclaimerModal'
 import MobileMenu from './components/MobileMenu'
 import TopBar from './components/TopBar'
-import GlobalStyle from './components/GlobalStyle'
 import FarmsProvider from './contexts/Farms'
 import ModalsProvider from './contexts/Modals'
 import TransactionProvider from './contexts/Transactions'
@@ -110,6 +111,7 @@ const App: React.FC = () => {
       setTranslations={setTranslations}
     >
       <Router>
+        <ResetCSS />
         <GlobalStyle />
         <TopBar
           isDark={isDark}
