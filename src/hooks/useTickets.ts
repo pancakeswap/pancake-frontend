@@ -79,7 +79,7 @@ export const useTotalClaim = () => {
   const sushi = useSushi()
   const ticketsContract = getTicketsContract(sushi)
   const lotteryContract = getLotteryContract(sushi)
-  const block = useBlock()
+  const block = useBlock()%10
 
   const fetchBalance = useCallback(async () => {
     setClaimLoading(true)

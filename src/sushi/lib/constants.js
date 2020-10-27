@@ -62,6 +62,16 @@ export const contractAddresses = {
 
 export const sousChefTeam = [
   {
+    sousId: 5,
+    contractAddress: {
+      97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
+      56: '0x3B9B74f48E89Ebd8b45a53444327013a2308A9BC',
+    },
+    tokenName: 'CTK',
+    projectLink: 'https://www.certik.foundation/',
+    tokenPerBlock: "0.5"
+  },
+  {
     sousId: 4,
     contractAddress: {
       97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',

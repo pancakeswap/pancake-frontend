@@ -22,9 +22,11 @@ import useUnstake from '../../../hooks/useUnstake'
 import { getBalanceNumber } from '../../../utils/formatBalance'
 import DepositModal from './DepositModal'
 import WithdrawModal from './WithdrawModal'
+import useSushi from '../../../hooks/useSushi'
 
 import WalletProviderModal from '../../../components/WalletProviderModal'
 import { TranslateString } from '../../../utils/translateTextHelpers'
+import { getSyrupAddress } from '../../../sushi/utils'
 
 interface StakeProps {
   lpContract: Contract
@@ -35,11 +37,14 @@ interface StakeProps {
 const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName }) => {
   const [requestedApproval, setRequestedApproval] = useState(false)
   const { account } = useWallet()
+  const sushi = useSushi()
 
   const allowance = useAllowance(lpContract)
   const { onApprove } = useApprove(lpContract)
 
   const tokenBalance = useTokenBalance(lpContract.options.address)
+  const syrupBalance = useTokenBalance(getSyrupAddress(sushi))
+
   const stakedBalance = useStakedBalance(pid)
 
   const { onStake } = useStake(pid)
@@ -55,7 +60,8 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName }) => {
 
   const [onPresentWithdraw] = useModal(
     <WithdrawModal
-      max={stakedBalance}
+      max={stakedBalance.gt(syrupBalance) ? syrupBalance : stakedBalance}
+      // max={parseInt(stakedBalance.toString()) > parseInt(syrupBalance.toString()) ? syrupBalance : stakedBalance}
       onConfirm={onUnstake}
       tokenName={tokenName}
     />,
