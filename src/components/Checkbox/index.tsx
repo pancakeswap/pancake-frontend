@@ -13,6 +13,7 @@ const Checkbox = styled.input.attrs({ type: "checkbox" })`
   border: 0;
   border-radius: 8px;
   background-color: ${({ theme }) => theme.colors.input};
+  box-shadow: inset 0px 2px 2px -1px rgba(74, 74, 104, 0.1);
 
   &:after {
     content: "";

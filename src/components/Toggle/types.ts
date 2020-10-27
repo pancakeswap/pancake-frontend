@@ -1,3 +1,3 @@
 export type ToggleTheme = {
-  background: string;
+  handleBackground: string;
 };
