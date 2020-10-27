@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/accessible-emoji */
 import React, { useEffect, useMemo } from 'react'
 import styled from 'styled-components'
-import chef from '../../assets/img/cakecat.png'
 import { useWallet } from 'use-wallet'
 import { provider } from 'web3-core'
 import Spacer from '../../components/Spacer'
@@ -42,7 +41,13 @@ const Farm: React.FC = () => {
     <Page>
       <>
         <PageHeader
-          icon={<img src={chef} height="90" alt="Stake Cake, get SYRUP icon" />}
+          icon={
+            <img
+              src="/images/cakecat.png"
+              height="90"
+              alt="Stake Cake, get SYRUP icon"
+            />
+          }
           title={TranslateString(322, 'Stake Cake, get SYRUP.')}
           subtitle={
             'SYRUP holders proportionally split 25% of CAKE block emissions each day (10 CAKE per block), Rewards are distributed each block.'

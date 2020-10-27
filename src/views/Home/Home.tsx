@@ -10,7 +10,7 @@ import Balances from './components/Balances'
 const Home: React.FC = () => {
   return (
     <Page>
-      <Image src={require(`../../assets/img/BG1.png`)} />
+      <Image src="/images/BG1.png" />
       <Blank />
       <Container>
         <Balances />

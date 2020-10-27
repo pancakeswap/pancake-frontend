@@ -1,4 +1,5 @@
-/* eslint-disable jsx-a11y/accessible-emoji */
+/* eslint-disable */
+// @ts-nocheck
 import React, { useEffect, useMemo } from 'react'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
@@ -39,7 +40,8 @@ const Farm: React.FC = () => {
   return (
     <>
       <Image
-        src={require(`../../assets/img/category-${tokenSymbol || 'CAKE'}.png`)}
+        src={`/images/tokens/category-${tokenSymbol || 'CAKE'}.png`}
+        alt={tokenSymbol}
       />
       <Title>{TranslateString(320, 'Stake FLIP tokens to stack CAKE')}</Title>
       <StyledFarm>

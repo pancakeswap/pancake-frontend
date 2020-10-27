@@ -1,8 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import chef2 from '../../assets/img/chef2.png'
-import chef3 from '../../assets/img/chef3.png'
 
 interface LogoProps {
   isDark: boolean
@@ -12,7 +10,7 @@ const Logo: React.FC<LogoProps> = ({ isDark }) => {
   return (
     <StyledLogo to="/">
       <img
-        src={isDark ? chef3 : chef2}
+        src={`/images/${isDark ? 'chef3' : 'chef2'}.png`}
         height="32"
         style={{ marginTop: -4 }}
         alt="PancakeSwap"

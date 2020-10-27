@@ -2,11 +2,8 @@
 import React, { useEffect, useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
-import chef from '../../assets/img/syrup.png'
-
 import { useWallet } from 'use-wallet'
 import { provider } from 'web3-core'
-
 import { getContract } from '../../utils/erc20'
 import useSushi from '../../hooks/useSushi'
 import useI18n from '../../hooks/useI18n'
@@ -95,7 +92,7 @@ const Farm: React.FC = () => {
           </ul>
         </div>
         <div>
-          <img src={chef} alt="SYRUP POOL icon" />
+          <img src="/images/syrup.png" alt="SYRUP POOL icon" />
         </div>
       </Hero>
       <Pools>
@@ -169,6 +166,7 @@ const Page = styled.div`
 `
 
 const Pools = styled.div`
+  align-items: start;
   display: grid;
   grid-template-columns: repeat(8, 1fr);
   grid-gap: 16px;
