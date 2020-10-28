@@ -10,8 +10,6 @@ const mediaQueries: MediaQueries = {
   xl: `@media screen and (min-width: ${breakpoints[4]})`,
 };
 
-const spacing: Spacing = [0, 4, 8, 16, 24, 32, 48, 64];
-
 export const shadows = {
   level1: "0px 2px 12px -8px rgba(25, 19, 38, 0.1), 0px 1px 1px rgba(25, 19, 38, 0.05)",
   active: "0px 0px 0px 1px #0098A1, 0px 0px 4px 8px rgba(31, 199, 212, 0.4)",
@@ -20,11 +18,19 @@ export const shadows = {
   focus: "0px 0px 0px 1px #7645D9, 0px 0px 0px 4px rgba(118, 69, 217, 0.6)",
 };
 
+const spacing: Spacing = [0, 4, 8, 16, 24, 32, 48, 64];
+
+const radii = {
+  default: "16px",
+  card: "32px",
+  circle: "50%",
+};
+
 export default {
-  scales: {
-    breakpoints,
-    mediaQueries,
-    spacing,
-  },
+  siteWidth: 1200,
+  breakpoints,
+  mediaQueries,
+  spacing,
   shadows,
+  radii,
 };

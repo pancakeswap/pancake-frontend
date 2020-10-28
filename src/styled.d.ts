@@ -49,11 +49,9 @@ declare module "styled-components" {
     card: CardTheme;
     tag: TagTheme;
     toggle: ToggleTheme;
-    scales: {
-      breakpoints: Breakpoints;
-      mediaQueries: MediaQueries;
-      spacing: Spacing;
-    };
+    breakpoints: Breakpoints;
+    mediaQueries: MediaQueries;
+    spacing: Spacing;
     shadows: Shadows;
   }
 }
