@@ -22,6 +22,7 @@ export type Shadows = {
   success: string;
   warning: string;
   focus: string;
+  inset: string;
 };
 
 export type Colors = {
