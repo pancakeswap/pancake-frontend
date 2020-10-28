@@ -23,6 +23,7 @@ interface SyrupRowProps {
   tokenPerBlock?: string
   cakePrice: BigNumber
   tokenPrice: BigNumber
+  contractAddress: string
 }
 
 const SyrupRow: React.FC<SyrupRowProps> = ({
@@ -33,9 +34,9 @@ const SyrupRow: React.FC<SyrupRowProps> = ({
   tokenPerBlock,
   cakePrice,
   tokenPrice,
+  contractAddress,
 }) => {
   const { ethereum } = useWallet()
-
   const syrup = useMemo(() => {
     return getContract(
       ethereum as provider,
@@ -49,6 +50,7 @@ const SyrupRow: React.FC<SyrupRowProps> = ({
       cakePrice={cakePrice}
       tokenPrice={tokenPrice}
       tokenPerBlock={tokenPerBlock}
+      contractAddress={contractAddress}
       {...{ sousId, tokenName, projectLink, harvest }}
     />
   )
