@@ -62,12 +62,23 @@ export const contractAddresses = {
 
 export const sousChefTeam = [
   {
+    sousId: 6,
+    contractAddress: {
+      97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
+      56: '0xF35d63Df93f32e025bce4A1B98dcEC1fe07AD892',
+    },
+    tokenName: 'CTK',
+    projectLink: 'https://www.certik.foundation/',
+    harvest: true,
+    tokenPerBlock: "0.5"
+  },
+  {
     sousId: 5,
     contractAddress: {
       97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
       56: '0x3B9B74f48E89Ebd8b45a53444327013a2308A9BC',
     },
-    tokenName: 'CTK',
+    tokenName: '[Old] CTK',
     projectLink: 'https://www.certik.foundation/',
     tokenPerBlock: "0.5"
   },
@@ -164,7 +175,7 @@ export const supportedPools = [
     symbol: 'CAKE-BNB FLIP',
     tokenSymbol: 'CAKE',
     icon: '🥞',
-    multiplier: '20X'
+    multiplier: '30X'
   },
   {
     pid: 2,
@@ -196,7 +207,7 @@ export const supportedPools = [
     symbol: 'ADA-BNB FLIP',
     tokenSymbol: 'ADA',
     icon: '🥞',
-    multiplier: '3X'
+    multiplier: '1X'
   },
   {
     pid: 4,
@@ -212,7 +223,7 @@ export const supportedPools = [
     symbol: 'BAND-BNB FLIP',
     tokenSymbol: 'BAND',
     icon: '🥞',
-    multiplier: '3X'
+    multiplier: '2X'
   },
   {
     pid: 5,
@@ -228,7 +239,7 @@ export const supportedPools = [
     symbol: 'DOT-BNB FLIP',
     tokenSymbol: 'DOT',
     icon: '🥞',
-    multiplier: '3X'
+    multiplier: '2X'
   },
   {
     pid: 6,
@@ -244,7 +255,7 @@ export const supportedPools = [
     symbol: 'EOS-BNB FLIP',
     tokenSymbol: 'EOS',
     icon: '🥞',
-    multiplier: '3X'
+    multiplier: '1X'
   },
   {
     pid: 7,
@@ -260,7 +271,7 @@ export const supportedPools = [
     symbol: 'LINK-BNB FLIP',
     tokenSymbol: 'LINK',
     icon: '🥞',
-    multiplier: '3X'
+    multiplier: '2X'
   },
   {
     pid: 11,
@@ -380,7 +391,7 @@ export const supportedPools = [
     symbol: 'XRP-BNB FLP',
     tokenSymbol: 'XRP',
     icon: '🥞',
-    multiplier: '2X'
+    multiplier: '1X'
   },
   {
     pid: 19,
@@ -395,7 +406,7 @@ export const supportedPools = [
     symbol: 'ATOM-BNB FLP',
     tokenSymbol: 'ATOM',
     icon: '🥞',
-    multiplier: '2X'
+    multiplier: '1X'
   },
   {
     pid: 20,
@@ -440,7 +451,7 @@ export const supportedPools = [
     symbol: 'XTZ-BNB FLP',
     tokenSymbol: 'XTZ',
     icon: '🥞',
-    multiplier: '1X'
+    multiplier: '0.5X'
   },
   {
     pid: 23,
@@ -455,7 +466,7 @@ export const supportedPools = [
     symbol: 'BCH-BNB FLP',
     tokenSymbol: 'BCH',
     icon: '🥞',
-    multiplier: '1X'
+    multiplier: '0.5X'
   },
   {
     pid: 24,
@@ -548,6 +559,21 @@ export const supportedPools = [
     multiplier: '2X'
   },
   {
+    pid: 32,
+    lpAddresses: {
+      97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
+      56: '0x7793870484647a7278907498ec504879d6971EAb'
+    },
+    tokenAddresses: {
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
+      56: '0xa8c2b8eec3d368c0253ad3dae65a5f2bbb89c929'
+    },
+    symbol: 'CTK-BNB FLIP',
+    tokenSymbol: 'CTK',
+    icon: '🥞',
+    multiplier: '2X'
+  },
+  {
     pid: 8,
     lpAddresses: {
       97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
@@ -599,7 +625,7 @@ export const forShowPools = [
     pid: 0,
     symbol: 'CAKE-BNB',
     tokenSymbol: 'CAKE',
-    multiplier: '20X'
+    multiplier: '30X'
   },
   {
     pid: 1,
@@ -611,31 +637,31 @@ export const forShowPools = [
     pid: 10,
     symbol: 'ADA-BNB',
     tokenSymbol: 'ADA',
-    multiplier: '3X'
+    multiplier: '1X'
   },
   {
     pid: 7,
     symbol: 'BAND-BNB',
     tokenSymbol: 'BAND',
-    multiplier: '3X'
+    multiplier: '2X'
   },
   {
     pid: 8,
     symbol: 'DOT-BNB',
     tokenSymbol: 'DOT',
-    multiplier: '3X'
+    multiplier: '2X'
   },
   {
     pid: 6,
     symbol: 'EOS-BNB',
     tokenSymbol: 'EOS',
-    multiplier: '3X'
+    multiplier: '1X'
   },
   {
     pid: 9,
     symbol: 'LINK-BNB',
     tokenSymbol: 'LINK',
-    multiplier: '3X'
+    multiplier: '2X'
   },
   {
     pid: 11,
@@ -683,13 +709,13 @@ export const forShowPools = [
     pid: 18,
     symbol: 'XRP-BNB',
     tokenSymbol: 'XRP',
-    multiplier: '2X'
+    multiplier: '1X'
   },
   {
     pid: 19,
     symbol: 'ATOM-BNB',
     tokenSymbol: 'ATOM',
-    multiplier: '2X'
+    multiplier: '1X'
   },
   {
     pid: 20,
@@ -707,13 +733,13 @@ export const forShowPools = [
     pid: 22,
     symbol: 'XTZ-BNB',
     tokenSymbol: 'XTZ',
-    multiplier: '1X'
+    multiplier: '0.5X'
   },
   {
     pid: 23,
     symbol: 'BCH-BNB',
     tokenSymbol: 'BCH',
-    multiplier: '1X'
+    multiplier: '0.5X'
   },
   {
     pid: 24,
@@ -749,6 +775,12 @@ export const forShowPools = [
     pid: 30,
     symbol: 'SXP-BNB',
     tokenSymbol: 'SXP',
+    multiplier: '2X'
+  },
+  {
+    pid: 32,
+    symbol: 'CTK-BNB',
+    tokenSymbol: 'CTK',
     multiplier: '2X'
   }
 ]

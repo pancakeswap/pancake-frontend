@@ -111,6 +111,8 @@ const PoolCard: React.FC<HarvestProps> = ({
     onPresentWalletProviderModal()
   }, [onPresentWalletProviderModal])
 
+  console.log('tokenName', tokenName)
+
   return (
     <Card>
       <CardContent>
@@ -125,7 +127,7 @@ const PoolCard: React.FC<HarvestProps> = ({
           </StyledCardHeader>
           <StyledCardContent>
             <img src={`images/tokens/${tokenName}.png`} alt="" />
-            <Value value={getBalanceNumber(earnings)} />
+            <Value value={tokenName === "CTK" ? getBalanceNumber(earnings, 6) : getBalanceNumber(earnings)} />
             <Label text={TranslateString(330, `${tokenName} earned`)} />
           </StyledCardContent>
 

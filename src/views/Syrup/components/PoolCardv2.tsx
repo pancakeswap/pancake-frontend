@@ -73,12 +73,15 @@ const PoolCardv2: React.FC<HarvestProps> = ({
   const [pendingTx, setPendingTx] = useState(false)
   const { onReward } = useSousReward(sousId)
   const apy = useMemo(() => {
+    // console.log()
     if (!harvest || cakePrice.isLessThanOrEqualTo(0)) return '-'
     const a = tokenPrice.times(BLOCKS_PER_YEAR).times(tokenPerBlock)
     const b = cakePrice.times(getBalanceNumber(totalStaked))
 
     return `${a.div(b).times(100).toFixed(2)}%`
   }, [cakePrice, harvest, tokenPerBlock, tokenPrice, totalStaked])
+
+  console.log(apy)
 
   const isUnstaked =
     account && !allowance.toNumber() && stakedBalance.toNumber() === 0
@@ -145,7 +148,7 @@ const PoolCardv2: React.FC<HarvestProps> = ({
             />
           )}
         </div>
-        <Balance value={getBalanceNumber(earnings)} isFinished={isFinished} />
+        <Balance value={tokenName === "CTK" ? getBalanceNumber(earnings, 6) : getBalanceNumber(earnings)} isFinished={isFinished} />
         <Label
           isFinished={isFinished}
           text={TranslateString(330, `${tokenName} earned`)}
