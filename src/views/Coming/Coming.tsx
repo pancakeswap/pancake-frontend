@@ -1,11 +1,8 @@
 // @ts-nocheck
 import React from 'react'
 import styled from 'styled-components'
-import Button from '../../components/Button'
-import Container from '../../components/Container'
 import Page from '../../components/Page'
 import PageHeader from './PageHeader'
-import Spacer from '../../components/Spacer'
 
 const Coming: React.FC = () => {
   const [currentTime, setCurrentTime] = React.useState(

@@ -1,19 +1,11 @@
 import React, { useEffect, useCallback, useState } from 'react'
 import styled from 'styled-components'
 
-import {
-  NavLink,
-  Route,
-  Switch,
-  useParams,
-  useRouteMatch,
-} from 'react-router-dom'
+import { Switch } from 'react-router-dom'
 import { useWallet } from 'use-wallet'
 
 import Page from '../../components/Page'
-import WalletProviderModal from '../../components/WalletProviderModal'
 
-import useModal from '../../hooks/useModal'
 import useSushi from '../../hooks/useSushi'
 import useBlock from '../../hooks/useBlock'
 import Prize from './components/prize'
@@ -28,13 +20,11 @@ import {
   getLotteryStatus,
 } from '../../sushi/lotteryUtils'
 
-import PurchasedTickets from './components/purchasedTickets'
 import { LotteryStates } from '../../lottery/types'
 import useI18n from '../../hooks/useI18n'
 
 const Farm: React.FC = () => {
-  const { account, ethereum } = useWallet()
-  const [onPresentWalletProviderModal] = useModal(<WalletProviderModal />)
+  const { account } = useWallet()
   const TranslateString = useI18n()
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -76,7 +66,9 @@ const Farm: React.FC = () => {
       <Page>
         {account && (
           <Subtitle>
-            {!state ? `#${index - 2} - Phase 1 - Buy Tickets` : `#${index - 2} - Phase 2 - Claim Winnings`}
+            {!state
+              ? `#${index - 2} - Phase 1 - Buy Tickets`
+              : `#${index - 2} - Phase 2 - Claim Winnings`}
           </Subtitle>
         )}
         <Title style={{ marginTop: '0.5em' }}>
@@ -99,21 +91,6 @@ const Farm: React.FC = () => {
       </Page>
     </Switch>
   )
-
-  // return (
-  //     <StyledFarm>
-  //         <div>
-  //             |-----------------|<br/>
-  //             | COMING&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br/>
-  //             | SOON&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br/>
-  //             |-----------------|<br/>
-  //             (\__/) ||<br/>
-  //             (•ㅅ•) ||<br/>
-  //             / 　 づ<br/>
-
-  //         </div>
-  //     </StyledFarm>
-  // )
 }
 
 const Title = styled.div`
@@ -154,7 +131,6 @@ const Subtitle = styled.div`
     width: 80vw;
   }
 `
-// width: calc((900px - ${(props) => props.theme.spacing[4]}px * 2) / 3);
 const StyledCardWrapper = styled.div`
   display: flex;
   width: 100%;

@@ -2,17 +2,14 @@ import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { useWallet } from 'use-wallet'
 
-import Button from '../Button'
 import Modal, { ModalProps } from '../Modal'
-import ModalActions from '../ModalActions'
 import ModalContent from '../ModalContent'
-import ModalTitle from '../ModalTitle'
 import Spacer from '../Spacer'
 
 import WalletCard from './components/WalletCard'
 
 const WalletProviderModal: React.FC<ModalProps> = ({ onDismiss }) => {
-  const { account, connect, status } = useWallet()
+  const { account, connect } = useWallet()
 
   useEffect(() => {
     if (account) {
