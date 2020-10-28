@@ -25,7 +25,7 @@ const Button: React.FC<ButtonProps> = ({
   variant,
 }) => {
   const { colors, spacing } = useContext(ThemeContext)
-  const buttonColor = colors.bg
+  const buttonColor = colors.background
 
   // let buttonColor: string
   // switch (variant) {
@@ -120,7 +120,7 @@ const StyledButton = styled.button<StyledButtonProps>`
   pointer-events: ${(props) => (!props.disabled ? undefined : 'none')};
   width: 100%;
   &:hover {
-    background-color: ${(props) => props.theme.colors.grey[100]};
+    background-color: #167e86;
   }
 `
 

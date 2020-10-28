@@ -147,7 +147,7 @@ const Tips = styled.div`
   margin-left: 0.4em;
   font-size: 14px;
   font-weight: 600;
-  color: ${(props) => props.theme.colors.grey[400]};
+  color: ${(props) => props.theme.colors.primary};
 `
 
 const Final = styled.div`

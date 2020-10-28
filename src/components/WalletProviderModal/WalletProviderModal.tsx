@@ -51,7 +51,6 @@ const WalletProviderModal: React.FC<ModalProps> = ({ onDismiss }) => {
                 />
               }
               onConnect={() => {
-                console.log('ddd')
                 connect('injected')
                 window.localStorage.setItem('accountStatus', '1')
               }}
@@ -118,7 +117,7 @@ const WalletProviderModal: React.FC<ModalProps> = ({ onDismiss }) => {
 const StyledWalletsWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
-  @media (max-width: ${(props) => props.theme.breakpoints.mobile}px) {
+  @media (max-width: ${(props) => props.theme.breakpoints[1]}) {
     flex-direction: column;
     flex-wrap: none;
   }

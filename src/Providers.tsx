@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react'
 import { ThemeProvider } from 'styled-components'
-import { lightTheme, darkTheme } from './theme'
+import { light, dark } from '@pancakeswap-libs/uikit'
 import { UseWalletProvider } from 'use-wallet'
 import FarmsProvider from './contexts/Farms'
 import ModalsProvider from './contexts/Modals'
@@ -33,7 +33,7 @@ const Providers: React.FC<{
   children,
 }) => {
   return (
-    <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
+    <ThemeProvider theme={isDark ? dark : light}>
       <LanguageContext.Provider
         value={{
           selectedLanguage,
