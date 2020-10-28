@@ -45,7 +45,18 @@ interface HarvestProps {
   tokenPerBlock: string
   cakePrice: BigNumber
   tokenPrice: BigNumber
+  contractAddress: string
 }
+
+/**
+ * Temporary code
+ *
+ * 1. Mark this pool as finished
+ * 2. Do not let people stake
+ *
+ * TODO - when all CAKE is unstaked we can remove this
+ */
+const CTXOLD = '0x3b9b74f48e89ebd8b45a53444327013a2308a9bc'
 
 const PoolCardv2: React.FC<HarvestProps> = ({
   syrup,
@@ -56,6 +67,7 @@ const PoolCardv2: React.FC<HarvestProps> = ({
   cakePrice,
   tokenPrice,
   tokenPerBlock,
+  contractAddress,
 }) => {
   const [requestedApproval, setRequestedApproval] = useState(false)
   const { account } = useWallet()
@@ -81,10 +93,13 @@ const PoolCardv2: React.FC<HarvestProps> = ({
     return `${a.div(b).times(100).toFixed(2)}%`
   }, [cakePrice, harvest, tokenPerBlock, tokenPrice, totalStaked])
 
-  console.log(apy)
-
+  const isOldCTXPool = contractAddress === CTXOLD
   const isUnstaked =
     account && !allowance.toNumber() && stakedBalance.toNumber() === 0
+
+  // TODO - Remove this when pool removed
+  const isReallyFinished = isFinished || isOldCTXPool
+
   const isCardActive = isFinished && isUnstaked
 
   const [onPresentDeposit] = useModal(
@@ -121,7 +136,7 @@ const PoolCardv2: React.FC<HarvestProps> = ({
   }, [onPresentWalletProviderModal])
 
   return (
-    <Card isActive={isCardActive} isFinished={isFinished}>
+    <Card isActive={isCardActive} isFinished={isReallyFinished}>
       {isFinished && <PoolFinishedSash />}
       <div style={{ padding: '24px' }}>
         <CardTitle isFinished={isFinished}>
@@ -180,9 +195,11 @@ const PoolCardv2: React.FC<HarvestProps> = ({
                   onClick={onPresentWithdraw}
                 />
                 <StyledActionSpacer />
-                <IconButton disabled={isFinished} onClick={onPresentDeposit}>
-                  <AddIcon />
-                </IconButton>
+                {!isOldCTXPool && (
+                  <IconButton disabled={isFinished} onClick={onPresentDeposit}>
+                    <AddIcon />
+                  </IconButton>
+                )}
               </>
             ))}
         </StyledCardActions>
