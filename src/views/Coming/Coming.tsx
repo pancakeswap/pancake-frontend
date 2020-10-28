@@ -47,7 +47,7 @@ const StyledInfo = styled.div`
   box-shadow: 0px 2.2623px 11.3115px rgba(171, 133, 115, 0.16);
   border-radius: 50px;
   font-size: 25px;
-  color: ${(props) => props.theme.colors.blue[100]};
+  color: #25beca;
   font-weight: 900;
   height: 120px;
   padding: 20px;

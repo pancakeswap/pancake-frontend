@@ -5,9 +5,9 @@ import Button from '../Button'
 import Input, { InputProps } from '../Input'
 
 interface TokenInputProps extends InputProps {
-  max: number | string,
-  symbol: string,
-  onSelectMax?: () => void,
+  max: number | string
+  symbol: string
+  onSelectMax?: () => void
 }
 
 const TokenInput: React.FC<TokenInputProps> = ({
@@ -19,9 +19,11 @@ const TokenInput: React.FC<TokenInputProps> = ({
 }) => {
   return (
     <StyledTokenInput>
-      <StyledMaxText>{max.toLocaleString()} {symbol} Available</StyledMaxText>
+      <StyledMaxText>
+        {max.toLocaleString()} {symbol} Available
+      </StyledMaxText>
       <Input
-        endAdornment={(
+        endAdornment={
           <StyledTokenAdornmentWrapper>
             <StyledTokenSymbol>{symbol}</StyledTokenSymbol>
             <StyledSpacer />
@@ -29,7 +31,7 @@ const TokenInput: React.FC<TokenInputProps> = ({
               <Button size="sm" text="Max" onClick={onSelectMax} />
             </div>
           </StyledTokenAdornmentWrapper>
-        )}
+        }
         onChange={onChange}
         placeholder="0"
         value={value}
@@ -44,12 +46,10 @@ const TokenInput: React.FC<TokenInputProps> = ({
             </div>
 */
 
-const StyledTokenInput = styled.div`
-
-`
+const StyledTokenInput = styled.div``
 
 const StyledSpacer = styled.div`
-  width: ${props => props.theme.spacing[3]}px;
+  width: ${(props) => props.theme.spacing[3]}px;
 `
 
 const StyledTokenAdornmentWrapper = styled.div`
@@ -59,7 +59,7 @@ const StyledTokenAdornmentWrapper = styled.div`
 
 const StyledMaxText = styled.div`
   align-items: center;
-  color: ${props => props.theme.colors.grey[400]};
+  color: ${(props) => props.theme.colors.primary};
   display: flex;
   font-size: 14px;
   font-weight: 700;

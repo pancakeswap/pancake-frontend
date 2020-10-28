@@ -7,13 +7,13 @@ import CardTokenImg from './CardTokenImg'
 import CommunityTag from './CommunityTag'
 
 const Balance = styled.div`
-  color: ${({ theme }) => theme.colors.text2};
+  color: ${({ theme }) => theme.colors.text};
   font-size: 40px;
   font-weight: 600;
 `
 
 const Label = styled.div`
-  color: ${({ theme }) => theme.colors.textSubtle2};
+  color: ${({ theme }) => theme.colors.textSubtle};
   font-size: 14px;
   margin-bottom: 16px;
 `
@@ -21,9 +21,9 @@ const Label = styled.div`
 const ApplyNowLink = styled.a`
   align-items: center;
   background-color: transparent;
-  border: 2px solid ${({ theme }) => theme.colors.primary2};
+  border: 2px solid ${({ theme }) => theme.colors.primary};
   border-radius: 16px;
-  color: ${({ theme }) => theme.colors.primary2};
+  color: ${({ theme }) => theme.colors.primary};
   display: flex;
   font-size: 16px;
   height: 48px;
@@ -32,8 +32,8 @@ const ApplyNowLink = styled.a`
   text-decoration: none;
 
   &:hover {
-    border-color: ${({ theme }) => theme.colors.primaryBright2};
-    color: ${({ theme }) => theme.colors.primaryBright2};
+    border-color: ${({ theme }) => theme.colors.primaryBright};
+    color: ${({ theme }) => theme.colors.primaryBright};
   }
 `
 const DetailPlaceholder = styled.div`
@@ -41,12 +41,12 @@ const DetailPlaceholder = styled.div`
   font-size: 14px;
 `
 const Value = styled.div`
-  color: ${({ theme }) => theme.colors.text2};
+  color: ${({ theme }) => theme.colors.text};
   font-size: 14px;
 `
 
 const Footer = styled.div`
-  border-top: 1px solid ${({ theme }) => theme.colors.border};
+  border-top: 1px solid ${({ theme }) => theme.colors.backgroundDisabled};
   padding: 24px;
 `
 const Coming: React.FC = () => {
