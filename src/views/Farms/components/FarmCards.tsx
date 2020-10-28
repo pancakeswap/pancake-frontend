@@ -228,12 +228,13 @@ const Label = styled.div`
 `
 
 const FCard = styled.div`
-  align-self: stretch;
-  background: ${(props) => props.theme.colors.cardBg};
+  position: relative;
+  background: ${(props) => props.theme.card.background};
+  box-shadow: 0px 2px 10px rgba(171, 133, 115, 0.16);
   border-radius: 32px;
-  box-shadow: 0px 2px 12px -8px rgba(25, 19, 38, 0.1),
-    0px 1px 1px rgba(25, 19, 38, 0.05);
-  display: flex;
+  height: 309px;
+  padding: 24px;
+  justify-content: center;
   flex-direction: column;
   justify-content: space-around;
   padding: 24px;
@@ -460,9 +461,9 @@ const StyledCardAccent = styled.div`
 const Multiplier = styled.div`
   line-height: 25px;
   padding: 0 8px;
-  background: ${(props) => props.theme.colors.blue[100]};
+  background: #25beca;
   border-radius: 8px;
-  color: ${(props) => props.theme.colors.bg};
+  color: ${(props) => props.theme.colors.background};
   font-weight: 900;
   margin-bottom: 8px;
   display: inline-block;

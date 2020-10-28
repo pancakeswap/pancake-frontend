@@ -34,21 +34,14 @@ const Farm: React.FC = () => {
   return (
     <StyledPage>
       <Header>
-        <Image
-          src={`/images/tokens/category-${tokenSymbol || 'CAKE'}.png`}
-          alt={tokenSymbol}
-        />
+        <Image src={`/images/tokens/category-${tokenSymbol || 'CAKE'}.png`} alt={tokenSymbol} />
         <Title>{TranslateString(320, 'Stake FLIP tokens to stack CAKE')}</Title>
         {isHardToken && <DualFarmDisclaimer />}
       </Header>
       <StyledFarm>
         <Grid>
           <Harvest pid={pid} />
-          <Stake
-            lpContract={lpContract}
-            pid={pid}
-            tokenName={lpToken.toUpperCase()}
-          />
+          <Stake lpContract={lpContract} pid={pid} tokenName={lpToken.toUpperCase()} />
         </Grid>
         {isHardToken ? (
           <DualFarmDisclaimer />
@@ -106,8 +99,12 @@ const Grid = styled.div`
   }
 `
 
-const StyledInfo = styled.p`
-  color: #1fc7d4;
+const StyledInfo = styled.h3`
+  color: ${(props) => props.theme.colors.primary};
+  font-size: 16px;
+  font-weight: 400;
+  margin: 0;
+  padding: 0;
   text-align: center;
 `
 
