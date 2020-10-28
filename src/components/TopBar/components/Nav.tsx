@@ -16,12 +16,13 @@ const Nav: React.FC = () => {
         <StyledLink exact activeClassName="active" to="/syrup">
           <TranslatedText translationId={282}>SYRUP Pool</TranslatedText>
         </StyledLink>
-        <StyledAbsoluteLink
-          href="https://exchange.pancakeswap.finance/"
-        >
+        <StyledAbsoluteLink href="https://exchange.pancakeswap.finance/">
           <TranslatedText translationId={284}>Exchange</TranslatedText>
         </StyledAbsoluteLink>
-        <StyledAbsoluteLink href="http://voting.pancakeswap.finance/" target="_blank">
+        <StyledAbsoluteLink
+          href="http://voting.pancakeswap.finance/"
+          target="_blank"
+        >
           Voting
         </StyledAbsoluteLink>
         <StyledAbsoluteLink href="https://pancakeswap.info" target="_blank">
@@ -44,7 +45,7 @@ const StyledNav = styled.nav`
 `
 
 const StyledLink = styled(NavLink)`
-  color: ${(props) => props.theme.colors.grey[400]};
+  color: ${(props) => props.theme.colors.primaryDark};
   font-weight: 700;
   padding-left: ${(props) => props.theme.spacing[3]}px;
   padding-right: ${(props) => props.theme.spacing[3]}px;
@@ -54,7 +55,7 @@ const StyledLink = styled(NavLink)`
     color: #452a7a;
   }
   &.active {
-    color: ${(props) => props.theme.colors.grey[600]};
+    color: ${(props) => props.theme.colors.secondary};
   }
   @media (max-width: 400px) {
     padding-left: ${(props) => props.theme.spacing[2]}px;
@@ -63,7 +64,7 @@ const StyledLink = styled(NavLink)`
 `
 
 const StyledAbsoluteLink = styled.a`
-  color: ${(props) => props.theme.colors.grey[400]};
+  color: ${(props) => props.theme.colors.primaryDark};
   font-weight: 700;
   padding-left: ${(props) => props.theme.spacing[3]}px;
   padding-right: ${(props) => props.theme.spacing[3]}px;
@@ -73,7 +74,7 @@ const StyledAbsoluteLink = styled.a`
     color: #452a7a;
   }
   &.active {
-    color: ${(props) => props.theme.colors.grey[600]};
+    color: ${(props) => props.theme.colors.secondary};
   }
   @media (max-width: 400px) {
     padding-left: ${(props) => props.theme.spacing[2]}px;

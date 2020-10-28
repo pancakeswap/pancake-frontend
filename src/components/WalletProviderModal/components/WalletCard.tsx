@@ -20,7 +20,7 @@ const WalletCard: React.FC<WalletCardProps> = ({ icon, onConnect, title }) => (
 )
 
 const StyledCardIcon = styled.div`
-  background: ${(props) => props.theme.colors.cardBg};
+  background: ${(props) => props.theme.card.background};
   font-size: 56px;
   height: 40px;
   width: 40px;
@@ -29,13 +29,13 @@ const StyledCardIcon = styled.div`
   display: flex;
   justify-content: center;
   img {
-    height: auto!important;
+    height: auto !important;
     width: 30px;
   }
 `
 
 const StyledCard = styled.div`
-  background: ${(props) => props.theme.colors.cardBg};
+  background: ${(props) => props.theme.card.background};
   border-radius: 20px;
   display: flex;
   color: ${(props) => props.theme.colors.secondary};
@@ -59,7 +59,6 @@ const StyledCardTitle = styled.div`
   font-weight: 800;
   line-height: 40px;
   padding: 0 20px;
-
 `
 
 export default WalletCard

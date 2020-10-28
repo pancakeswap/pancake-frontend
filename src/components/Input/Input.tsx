@@ -2,11 +2,11 @@ import React from 'react'
 import styled from 'styled-components'
 
 export interface InputProps {
-  endAdornment?: React.ReactNode,
-  onChange: (e: React.FormEvent<HTMLInputElement>) => void,
-  placeholder?: string,
-  startAdornment?: React.ReactNode,
-  value: string,
+  endAdornment?: React.ReactNode
+  onChange: (e: React.FormEvent<HTMLInputElement>) => void
+  placeholder?: string
+  startAdornment?: React.ReactNode
+  value: string
 }
 
 const Input: React.FC<InputProps> = ({
@@ -19,7 +19,11 @@ const Input: React.FC<InputProps> = ({
   return (
     <StyledInputWrapper>
       {!!startAdornment && startAdornment}
-      <StyledInput placeholder={placeholder} value={value} onChange={onChange} />
+      <StyledInput
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+      />
       {!!endAdornment && endAdornment}
     </StyledInputWrapper>
   )
@@ -27,11 +31,11 @@ const Input: React.FC<InputProps> = ({
 
 const StyledInputWrapper = styled.div`
   align-items: center;
-  background-color: ${props => props.theme.colors.inputBg};
-  border-radius: ${props => props.theme.borderRadius}px;
+  background-color: ${(props) => props.theme.colors.input};
+  border-radius: ${(props) => props.theme.radii.default};
   display: flex;
   height: 72px;
-  padding: 0 ${props => props.theme.spacing[3]}px;
+  padding: 0 ${(props) => props.theme.spacing[3]}px;
 `
 
 const StyledInput = styled.input`

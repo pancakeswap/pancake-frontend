@@ -27,7 +27,7 @@ const StyledDetailsButton = styled.button`
   align-items: center;
   background-color: transparent;
   border: 0;
-  color: ${(props) => props.theme.colors.primary2};
+  color: ${(props) => props.theme.colors.primary};
   cursor: pointer;
   display: inline-flex;
   font-size: 16px;

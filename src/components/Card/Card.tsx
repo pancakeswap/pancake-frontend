@@ -4,7 +4,7 @@ import styled from 'styled-components'
 const Card: React.FC = ({ children }) => <StyledCard>{children}</StyledCard>
 
 const StyledCard = styled.div`
-  background: ${(props) => props.theme.colors.cardBg};
+  background: ${(props) => props.theme.card.background};
   border-radius: 20px;
   display: flex;
   color: ${(props) => props.theme.colors.secondary};
