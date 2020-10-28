@@ -1,4 +1,4 @@
-import { MediaQueries, Breakpoints, Spacing } from "../styled.d";
+import { MediaQueries, Breakpoints, Spacing } from "./types";
 
 const breakpoints: Breakpoints = ["370px", "576px", "852px", "968px", "1080px"];
 

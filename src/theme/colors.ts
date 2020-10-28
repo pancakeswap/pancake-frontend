@@ -1,4 +1,4 @@
-import { Colors } from "../styled.d";
+import { Colors } from "./types";
 
 export const baseColors = {
   failure: "#ED4B9E",
