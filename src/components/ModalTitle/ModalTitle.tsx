@@ -6,18 +6,16 @@ interface ModalTitleProps {
 }
 
 const ModalTitle: React.FC<ModalTitleProps> = ({ text }) => (
-  <StyledModalTitle>
-    {text}
-  </StyledModalTitle>
+  <StyledModalTitle>{text}</StyledModalTitle>
 )
 
 const StyledModalTitle = styled.div`
   align-items: center;
-  color: ${props => props.theme.colors.primary};
+  color: ${(props) => props.theme.colors.primary};
   display: flex;
   font-size: 18px;
   font-weight: 700;
-  height: ${props => props.theme.topBarSize}px;
+  height: 72px;
   justify-content: center;
 `
 

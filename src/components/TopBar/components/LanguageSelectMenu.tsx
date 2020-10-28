@@ -32,7 +32,7 @@ const StyledMenu = styled.div`
 
 const MenuFlyout = styled.span`
   min-width: 8.125rem;
-  background: ${(props) => props.theme.colors.cardBg};
+  background: ${(props) => props.theme.card.background};
   color: #32cad7;
   border: 2px solid ${(props) => props.color};
   border-radius: 12px;
@@ -81,7 +81,7 @@ export default function Menu() {
   const { selectedLanguage, setSelectedLanguage } = useContext(LanguageContext)
 
   const { colors } = useContext(ThemeContext)
-  const textColor = colors.ghost
+  const textColor = colors.primaryBright
 
   const parseLanguageTextRendering = (languageCode: string) => {
     switch (languageCode) {

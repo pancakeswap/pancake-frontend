@@ -21,7 +21,7 @@ const TopBar: React.FC<TopBarProps> = ({
   onPresentMobileMenu,
 }) => {
   const { colors, spacing } = useContext(ThemeContext)
-  const buttonColor = colors.bg
+  const buttonColor = colors.background
   let buttonSize: number
   let buttonPadding: number
   buttonPadding = spacing[2]
@@ -73,7 +73,7 @@ const StyledTopBar = styled.div``
 const StyledTopBarInner = styled.div`
   align-items: center;
   display: flex;
-  height: ${(props) => props.theme.topBarSize}px;
+  height: 72px;
   justify-content: space-between;
   max-width: ${(props) => props.theme.siteWidth}px;
   width: 100%;

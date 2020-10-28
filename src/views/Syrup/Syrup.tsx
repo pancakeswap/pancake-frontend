@@ -120,7 +120,7 @@ const Hero = styled.div`
 
   h1 {
     font-size: 64px;
-    color: ${({ theme }) => theme.colors.secondary2};
+    color: ${({ theme }) => theme.colors.secondary};
     line-height: 1.1;
     margin: 0 0 32px 0;
   }
