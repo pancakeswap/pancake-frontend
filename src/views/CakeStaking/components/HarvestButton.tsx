@@ -22,7 +22,6 @@ const Button: React.FC<ButtonProps> = ({
   size,
   text,
   to,
-  variant,
 }) => {
   const { colors, spacing } = useContext(ThemeContext)
   const buttonColor = colors.background
@@ -30,7 +29,7 @@ const Button: React.FC<ButtonProps> = ({
   let boxShadow: string
   let buttonSize: number
   let buttonPadding: number
-  let fontSize: number
+  let fontSize: number1
   switch (size) {
     case 'sm':
       buttonPadding = spacing[3]
