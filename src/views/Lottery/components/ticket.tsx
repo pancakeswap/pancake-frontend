@@ -1,8 +1,6 @@
-import BigNumber from 'bignumber.js'
 import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { useWallet } from 'use-wallet'
-import { Contract } from 'web3-eth-contract'
 import Button from '../../../components/Button'
 import Card from '../../../components/Card'
 import CardContent from '../../../components/CardContent'
@@ -12,17 +10,13 @@ import Value from '../../../components/Value'
 
 import { useLotteryAllowance } from '../../../hooks/useAllowance'
 import { useLotteryApprove } from '../../../hooks/useApprove'
-import useTickets, { useWinningNumbers } from '../../../hooks/useTickets'
+import useTickets from '../../../hooks/useTickets'
 import useModal from '../../../hooks/useModal'
 import useSushi from '../../../hooks/useSushi'
 import { getSushiAddress } from '../../../sushi/utils'
-import useStakedBalance from '../../../hooks/useStakedBalance'
 import useTokenBalance from '../../../hooks/useTokenBalance'
-import useUnstake from '../../../hooks/useUnstake'
-import { getBalanceNumber } from '../../../utils/formatBalance'
 
 import WalletProviderModal from '../../../components/WalletProviderModal'
-import AccountModal from '../../../components/TopBar/components/AccountModal'
 import BuyModal from './buyModal'
 import MyTicketsModal from './myTicketsModal'
 import WarningModal from './warningModal'
@@ -48,7 +42,6 @@ const Ticket: React.FC<TicketProps> = ({ state }) => {
   )
 
   const ticketsLength = tickets.length
-  const winNumbers = useWinningNumbers()
 
   const handleApprove = useCallback(async () => {
     try {
@@ -89,7 +82,6 @@ const Ticket: React.FC<TicketProps> = ({ state }) => {
     />,
   )
 
-  const [onPresentAccountModal] = useModal(<AccountModal />)
   const [onPresentWalletProviderModal] = useModal(
     <WalletProviderModal />,
     'provider',
