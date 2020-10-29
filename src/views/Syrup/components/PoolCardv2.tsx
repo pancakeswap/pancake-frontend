@@ -45,7 +45,6 @@ interface HarvestProps {
   tokenPerBlock: string
   cakePrice: BigNumber
   tokenPrice: BigNumber
-  contractAddress: string
 }
 
 /**
@@ -56,7 +55,7 @@ interface HarvestProps {
  *
  * TODO - when all CAKE is unstaked we can remove this
  */
-const CTXOLD = '0x3b9b74f48e89ebd8b45a53444327013a2308a9bc'
+const CTXOLD = 5
 
 const PoolCardv2: React.FC<HarvestProps> = ({
   syrup,
@@ -67,7 +66,6 @@ const PoolCardv2: React.FC<HarvestProps> = ({
   cakePrice,
   tokenPrice,
   tokenPerBlock,
-  contractAddress,
 }) => {
   const [requestedApproval, setRequestedApproval] = useState(false)
   const { account } = useWallet()
@@ -93,14 +91,13 @@ const PoolCardv2: React.FC<HarvestProps> = ({
     return `${a.div(b).times(100).toFixed(2)}%`
   }, [cakePrice, harvest, tokenPerBlock, tokenPrice, totalStaked])
 
-  const isOldCTXPool = contractAddress === CTXOLD
   const isUnstaked =
     account && !allowance.toNumber() && stakedBalance.toNumber() === 0
 
   // TODO - Remove this when pool removed
+  const isOldCTXPool = sousId === CTXOLD
   const isReallyFinished = isFinished || isOldCTXPool
-
-  const isCardActive = isFinished && isUnstaked
+  const isCardActive = isReallyFinished && isUnstaked
 
   const [onPresentDeposit] = useModal(
     <DepositModal max={tokenBalance} onConfirm={onStake} tokenName={'SYRUP'} />,
@@ -137,9 +134,9 @@ const PoolCardv2: React.FC<HarvestProps> = ({
 
   return (
     <Card isActive={isCardActive} isFinished={isReallyFinished}>
-      {isFinished && <PoolFinishedSash />}
+      {isReallyFinished && <PoolFinishedSash />}
       <div style={{ padding: '24px' }}>
-        <CardTitle isFinished={isFinished}>
+        <CardTitle isFinished={isReallyFinished}>
           {tokenName} {TranslateString(348, 'Pool')}
         </CardTitle>
         <div
@@ -163,9 +160,16 @@ const PoolCardv2: React.FC<HarvestProps> = ({
             />
           )}
         </div>
-        <Balance value={tokenName === "CTK" ? getBalanceNumber(earnings, 6) : getBalanceNumber(earnings)} isFinished={isFinished} />
+        <Balance
+          value={
+            tokenName === 'CTK'
+              ? getBalanceNumber(earnings, 6)
+              : getBalanceNumber(earnings)
+          }
+          isFinished={isReallyFinished}
+        />
         <Label
-          isFinished={isFinished}
+          isFinished={isReallyFinished}
           text={TranslateString(330, `${tokenName} earned`)}
         />
         <StyledCardActions>
@@ -196,7 +200,10 @@ const PoolCardv2: React.FC<HarvestProps> = ({
                 />
                 <StyledActionSpacer />
                 {!isOldCTXPool && (
-                  <IconButton disabled={isFinished} onClick={onPresentDeposit}>
+                  <IconButton
+                    disabled={isReallyFinished}
+                    onClick={onPresentDeposit}
+                  >
                     <AddIcon />
                   </IconButton>
                 )}
@@ -208,7 +215,7 @@ const PoolCardv2: React.FC<HarvestProps> = ({
           {isFinished ? (
             '-'
           ) : (
-            <SmallValue isFinished={isFinished} value={apy} />
+            <SmallValue isFinished={isReallyFinished} value={apy} />
           )}
         </StyledDetails>
         <StyledDetails>
@@ -219,7 +226,7 @@ const PoolCardv2: React.FC<HarvestProps> = ({
             Your Stake:
           </div>
           <SmallValue
-            isFinished={isFinished}
+            isFinished={isReallyFinished}
             value={getBalanceNumber(stakedBalance)}
           />
         </StyledDetails>
@@ -228,7 +235,7 @@ const PoolCardv2: React.FC<HarvestProps> = ({
         projectLink={projectLink}
         totalStaked={totalStaked}
         blocksRemaining={blocksRemaining}
-        isFinished={isFinished}
+        isFinished={isReallyFinished}
         farmStart={farmStart}
       />
     </Card>
