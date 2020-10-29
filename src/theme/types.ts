@@ -15,6 +15,12 @@ export type MediaQueries = {
 
 export type Spacing = number[];
 
+export type Radii = {
+  default: string;
+  card: string;
+  circle: string;
+};
+
 export type Shadows = {
   level1: string;
   active: string;
@@ -53,4 +59,5 @@ export interface PancakeTheme {
   mediaQueries: MediaQueries;
   spacing: Spacing;
   shadows: Shadows;
+  radii: Radii;
 }
