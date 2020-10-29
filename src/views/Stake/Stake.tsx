@@ -50,7 +50,7 @@ const Farm: React.FC = () => {
           }
           title={TranslateString(322, 'Stake Cake, get SYRUP.')}
           subtitle={
-            'SYRUP holders proportionally split 25% of CAKE block emissions each day (10 CAKE per block), Rewards are distributed each block.'
+            'SYRUP holders proportionally split 40% of CAKE block emissions each day (10 CAKE per block), Rewards are distributed each block.'
           }
         />
         <Title>{TranslateString(326, '1 CAKE = 1 SYRUP')}</Title>
