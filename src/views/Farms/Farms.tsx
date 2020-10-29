@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { NavLink } from 'react-router-dom'
-import { TranslateString } from 'utils/translateTextHelpers'
+import useI18n from 'hooks/useI18n'
 import Page from 'components/Page'
 import FarmCards from './components/FarmCards'
 
@@ -10,6 +10,8 @@ interface FarmsProps {
 }
 
 const Farms: React.FC<FarmsProps> = ({ removed }) => {
+  const TranslateString = useI18n()
+
   return (
     <Page>
       <Title>{TranslateString(320, 'Stake FLIP tokens to stack CAKE')}</Title>

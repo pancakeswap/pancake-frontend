@@ -1,16 +1,17 @@
 import React, { useCallback } from 'react'
 import styled from 'styled-components'
 import { useWallet } from 'use-wallet'
+import { Button } from '@pancakeswap-libs/uikit'
 import useModal from '../../../hooks/useModal'
-import Button from '../../Button'
 import WalletProviderModal from '../../WalletProviderModal'
 import AccountModal from './AccountModal'
 import { useCakePrice } from '../../../hooks/useTokenBalance'
-import { TranslateString } from '../../../utils/translateTextHelpers'
+import useI18n from '../../../hooks/useI18n'
 
 interface AccountButtonProps {}
 
 const AccountButton: React.FC<AccountButtonProps> = (props) => {
+  const TranslateString = useI18n()
   const [onPresentAccountModal] = useModal(<AccountModal />)
   const [onPresentWalletProviderModal] = useModal(
     <WalletProviderModal />,
@@ -28,13 +29,13 @@ const AccountButton: React.FC<AccountButtonProps> = (props) => {
   return (
     <StyledAccountButton>
       {!account ? (
-        <Button
-          onClick={handleUnlockClick}
-          size="sm"
-          text={TranslateString(292, 'Unlock Wallet')}
-        />
+        <Button onClick={handleUnlockClick} size="sm">
+          {TranslateString(292, 'Unlock Wallet')}
+        </Button>
       ) : (
-        <Button onClick={onPresentAccountModal} size="sm" text="My Wallet" />
+        <Button onClick={onPresentAccountModal} size="sm">
+          {TranslateString(999, 'My Wallet')}
+        </Button>
       )}
       {account && (
         <PriceTag>

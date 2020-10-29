@@ -1,8 +1,7 @@
 import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { useWallet } from 'use-wallet'
-
-import Button from '../../../components/Button'
+import { Button } from '@pancakeswap-libs/uikit'
 import Card from '../../../components/Card'
 import CardContent from '../../../components/CardContent'
 import CardIcon from '../../../components/CardIcon'
@@ -11,12 +10,10 @@ import Value from '../../../components/Value'
 import useModal from '../../../hooks/useModal'
 import { getBalanceNumber } from '../../../utils/formatBalance'
 import { useMultiClaimLottery } from '../../../hooks/useBuyLottery'
-
 import useTickets, { useTotalClaim } from '../../../hooks/useTickets'
 import WalletProviderModal from '../../../components/WalletProviderModal'
 import { LotteryStates } from '../../../lottery/types'
 import Loading from '../../../components/Loading'
-
 import MyTicketsModal from './myTicketsModal'
 import useI18n from '../../../hooks/useI18n'
 
@@ -73,19 +70,18 @@ const Prize: React.FC<PrizeProps> = ({ state }) => {
             </StyledCardHeader>
             <StyledCardActions>
               {!account && (
-                <Button
-                  onClick={handleUnlockClick}
-                  size="md"
-                  text={TranslateString(292, 'Unlock Wallet')}
-                />
+                <Button onClick={handleUnlockClick}>
+                  {TranslateString(292, 'Unlock Wallet')}
+                </Button>
               )}
               {account && (
                 <Button
+                  fullWidth
                   disabled={getBalanceNumber(claimAmount) == 0 || requesteClaim}
                   onClick={handleClaim}
-                  size="md"
-                  text={TranslateString(480, 'Claim prizes')}
-                />
+                >
+                  {TranslateString(480, 'Claim prizes')}
+                </Button>
               )}
             </StyledCardActions>
             {account && state === LotteryStates.WINNERS_ANNOUNCED ? (

@@ -4,8 +4,6 @@ import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { useWallet } from 'use-wallet'
 import { Contract } from 'web3-eth-contract'
-import Button from 'components/Button'
-import IconButton from 'components/IconButton'
 import { AddIcon } from 'components/icons'
 import Label from 'components/Label'
 import useAllowance from 'hooks/useAllowance'
@@ -17,7 +15,6 @@ import useTokenBalance from 'hooks/useTokenBalance'
 import useUnstake from 'hooks/useUnstake'
 import { getBalanceNumber } from 'utils/formatBalance'
 import WalletProviderModal from 'components/WalletProviderModal'
-import { TranslateString } from 'utils/translateTextHelpers'
 import DepositModal from './DepositModal'
 import WithdrawModal from './WithdrawModal'
 import Card from './Card'
@@ -31,6 +28,7 @@ interface StakeProps {
 }
 
 const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName }) => {
+  const TranslateString = useI18n()
   const [requestedApproval, setRequestedApproval] = useState(false)
   const { account } = useWallet()
 
@@ -43,20 +41,10 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName }) => {
   const { onStake } = useStake(pid)
   const { onUnstake } = useUnstake(pid)
 
-  const [onPresentDeposit] = useModal(
-    <DepositModal
-      max={tokenBalance}
-      onConfirm={onStake}
-      tokenName={tokenName}
-    />,
-  )
+  const [onPresentDeposit] = useModal(<DepositModal max={tokenBalance} onConfirm={onStake} tokenName={tokenName} />)
 
   const [onPresentWithdraw] = useModal(
-    <WithdrawModal
-      max={stakedBalance}
-      onConfirm={onUnstake}
-      tokenName={tokenName}
-    />,
+    <WithdrawModal max={stakedBalance} onConfirm={onUnstake} tokenName={tokenName} />,
   )
 
   const handleApprove = useCallback(async () => {
@@ -72,10 +60,7 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName }) => {
     }
   }, [onApprove, setRequestedApproval])
 
-  const [onPresentWalletProviderModal] = useModal(
-    <WalletProviderModal />,
-    'provider',
-  )
+  const [onPresentWalletProviderModal] = useModal(<WalletProviderModal />, 'provider')
   const handleUnlockClick = useCallback(() => {
     onPresentWalletProviderModal()
   }, [onPresentWalletProviderModal])
@@ -90,32 +75,16 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName }) => {
             decimals={tokenName === 'HARD' ? 6 : undefined}
             fontSize="40px"
           />
-          <Label
-            text={`${tokenName} ${TranslateString(332, 'Tokens Staked')}`}
-          />
+          <Label text={`${tokenName} ${TranslateString(332, 'Tokens Staked')}`} />
         </StyledCardHeader>
         <StyledCardActions>
-          {!account && (
-            <Button
-              onClick={handleUnlockClick}
-              size="md"
-              text={TranslateString(292, 'Unlock Wallet')}
-            />
-          )}
+          {!account && <Button onClick={handleUnlockClick} size="md" text={TranslateString(292, 'Unlock Wallet')} />}
           {account &&
             (!allowance.toNumber() ? (
-              <Button
-                disabled={requestedApproval}
-                onClick={handleApprove}
-                text={`Approve ${tokenName}`}
-              />
+              <Button disabled={requestedApproval} onClick={handleApprove} text={`Approve ${tokenName}`} />
             ) : (
               <>
-                <Button
-                  disabled={stakedBalance.eq(new BigNumber(0))}
-                  text="Unstake"
-                  onClick={onPresentWithdraw}
-                />
+                <Button disabled={stakedBalance.eq(new BigNumber(0))} text="Unstake" onClick={onPresentWithdraw} />
                 <StyledActionSpacer />
                 <IconButton onClick={onPresentDeposit}>
                   <AddIcon />

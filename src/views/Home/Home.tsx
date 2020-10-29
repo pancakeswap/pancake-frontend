@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import Button from '../../components/Button'
+import { Button } from '@pancakeswap-libs/uikit'
+import { Link } from 'react-router-dom'
 import Container from '../../components/Container'
 import Page from '../../components/Page'
 import Spacer from '../../components/Spacer'
@@ -21,11 +22,11 @@ const Home: React.FC = () => {
           margin: '0 auto',
         }}
       >
-        <Button
-          text={`👩‍🍳 ${TranslateString(306, 'See the Kitchen')}`}
-          to="/farms"
-          variant="secondary"
-        />
+        <Button>
+          <Link to="/farms">
+            {`👩‍🍳 ${TranslateString(306, 'See the Kitchen')}`}
+          </Link>
+        </Button>
       </div>
     </Page>
   )
