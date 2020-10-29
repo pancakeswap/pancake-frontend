@@ -1,11 +1,10 @@
-import React, { useCallback } from 'react'
+import React from 'react'
 import Button from '../../../components/Button'
 import Modal, { ModalProps } from '../../../components/Modal'
 import ModalActions from '../../../components/ModalActions'
 import ModalTitle from '../../../components/ModalTitle'
 import styled from 'styled-components'
 import ModalContent from '../../../components/ModalContent'
-import { useWinningNumbers } from '../../../hooks/useTickets'
 import useI18n from '../../../hooks/useI18n'
 
 interface WarningModalProps extends ModalProps {
@@ -55,10 +54,6 @@ const WarningModal: React.FC<WarningModalProps> = ({
     </Modal>
   )
 }
-
-const RewardP = styled.div`
-  color: #ff8c28;
-`
 
 const TicketsList = styled.div`
   text-align: left;

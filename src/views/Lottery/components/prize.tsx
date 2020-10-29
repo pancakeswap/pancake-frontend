@@ -14,7 +14,6 @@ import { useMultiClaimLottery } from '../../../hooks/useBuyLottery'
 
 import useTickets, { useTotalClaim } from '../../../hooks/useTickets'
 import WalletProviderModal from '../../../components/WalletProviderModal'
-import AccountModal from '../../../components/TopBar/components/AccountModal'
 import { LotteryStates } from '../../../lottery/types'
 import Loading from '../../../components/Loading'
 
@@ -26,7 +25,6 @@ interface PrizeProps {
 }
 
 const Prize: React.FC<PrizeProps> = ({ state }) => {
-  const [requestedApproval, setRequestedApproval] = useState(false)
   const [requesteClaim, setRequestedClaim] = useState(false)
   const { account } = useWallet()
   const TranslateString = useI18n()
@@ -51,8 +49,6 @@ const Prize: React.FC<PrizeProps> = ({ state }) => {
       console.log(e)
     }
   }, [onMultiClaim, setRequestedClaim])
-
-  const [onPresentAccountModal] = useModal(<AccountModal />)
 
   const [onPresentWalletProviderModal] = useModal(
     <WalletProviderModal />,
@@ -118,11 +114,6 @@ const StyledCardActions = styled.div`
   display: flex;
   justify-content: center;
   margin-top: ${(props) => props.theme.spacing[6]}px;
-  width: 100%;
-`
-
-const StyledActionSpacer = styled.div`
-  height: ${(props) => props.theme.spacing[4]}px;
   width: 100%;
 `
 

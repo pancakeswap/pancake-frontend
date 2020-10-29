@@ -1,9 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import Button from '../../Button'
-import Spacer from '../../Spacer'
-
 interface WalletCardProps {
   icon: React.ReactNode
   onConnect: () => void
