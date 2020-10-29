@@ -131,7 +131,7 @@ const Balances: React.FC = () => {
             <TranslatedText translationId={302}>
               New rewards per block
             </TranslatedText>
-            <FootnoteValue>40 CAKE</FootnoteValue>
+            <FootnoteValue>25 CAKE</FootnoteValue>
           </Footnote>
         </Card>
       </StyledWrapper>
