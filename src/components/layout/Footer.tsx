@@ -5,6 +5,7 @@ import TranslatedText from 'components/TranslatedText'
 const StyledFooter = styled.div`
   align-items: center;
   display: flex;
+  height: 72px;
   justify-content: center;
 `
 

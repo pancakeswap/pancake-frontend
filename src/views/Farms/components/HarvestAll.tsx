@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/accessible-emoji */
 import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
-import Button from '../../../components/Button'
+import { Button } from '@pancakeswap-libs/uikit'
 import useSushi from '../../../hooks/useSushi'
 import Card from '../../../components/Card'
 import TranslatedText from '../../../components/TranslatedText/TranslatedText'
@@ -57,9 +57,10 @@ const HarvestAll: React.FC = () => {
               )}
               <Button
                 disabled={filteredList.length < 0 || pendingTx}
-                text={pendingTx ? 'Collecting CAKE' : 'Harvest All'}
                 onClick={harvestAllFarms}
-              />
+              >
+                {pendingTx ? 'Collecting CAKE' : 'Harvest All'}
+              </Button>
             </StyledColumn>
           </Card>
         </StyledContainer>
