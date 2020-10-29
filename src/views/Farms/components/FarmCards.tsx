@@ -158,6 +158,7 @@ const FContent = styled.div`
   display: flex;
   margin-bottom: 24px;
   flex-wrap: wrap;
+  justify-content: space-between;
   @media (max-width: 500px) {
     justify-content: center;
   }
@@ -185,6 +186,7 @@ const FCard = styled.div`
   background: ${(props) => props.theme.card.background};
   box-shadow: 0px 2px 10px rgba(171, 133, 115, 0.16);
   border-radius: 20px;
+  flex: 1 0 30%;
   height: 309px;
   padding: 20px;
   justify-content: center;
