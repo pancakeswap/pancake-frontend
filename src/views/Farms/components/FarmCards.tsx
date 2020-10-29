@@ -440,15 +440,9 @@ const StyledCardAccent = styled.div`
 
 const Multiplier = styled.div`
   line-height: 25px;
-<<<<<<< HEAD
   padding: 0 8px;
   background: #25beca;
   border-radius: 8px;
-=======
-  padding: 0 12px;
-  background: #25beca;
-  border-radius: 10px;
->>>>>>> rework: Integrate uikit theme (#43)
   color: ${(props) => props.theme.colors.background};
   font-weight: 900;
   margin-bottom: 8px;
