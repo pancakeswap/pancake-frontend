@@ -4,11 +4,10 @@ import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { useWallet } from 'use-wallet'
 import { Contract } from 'web3-eth-contract'
-import Button from '../../../components/Button'
+import { Button } from '@pancakeswap-libs/uikit'
 import Card from '../../../components/Card'
 import CardContent from '../../../components/CardContent'
 import CardIcon from '../../../components/CardIcon'
-import IconButton from '../../../components/IconButton'
 import { AddIcon } from '../../../components/icons'
 import Label from '../../../components/Label'
 import Value from '../../../components/Value'
@@ -19,13 +18,13 @@ import useStake from '../../../hooks/useStake'
 import useStakedBalance from '../../../hooks/useStakedBalance'
 import useTokenBalance from '../../../hooks/useTokenBalance'
 import useUnstake from '../../../hooks/useUnstake'
+import useI18n from '../../../hooks/useI18n'
 import { getBalanceNumber } from '../../../utils/formatBalance'
 import DepositModal from './DepositModal'
 import WithdrawModal from './WithdrawModal'
 import useSushi from '../../../hooks/useSushi'
 
 import WalletProviderModal from '../../../components/WalletProviderModal'
-import { TranslateString } from '../../../utils/translateTextHelpers'
 import { getSyrupAddress } from '../../../sushi/utils'
 
 interface StakeProps {
@@ -35,6 +34,7 @@ interface StakeProps {
 }
 
 const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName }) => {
+  const TranslateString = useI18n()
   const [requestedApproval, setRequestedApproval] = useState(false)
   const { account } = useWallet()
   const sushi = useSushi()
@@ -101,30 +101,32 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName }) => {
           </StyledCardHeader>
           <StyledCardActions>
             {!account && (
-              <Button
-                onClick={handleUnlockClick}
-                size="md"
-                text={TranslateString(292, 'Unlock Wallet')}
-              />
+              <Button fullWidth onClick={handleUnlockClick}>
+                {TranslateString(292, 'Unlock Wallet')}
+              </Button>
             )}
             {account &&
               (!allowance.toNumber() ? (
                 <Button
+                  fullWidth
                   disabled={requestedApproval}
                   onClick={handleApprove}
-                  text={`Approve ${tokenName}`}
-                />
+                >
+                  {`${TranslateString(999, 'Approve')} ${tokenName}`}
+                </Button>
               ) : (
                 <>
                   <Button
+                    fullWidth
                     disabled={stakedBalance.eq(new BigNumber(0))}
-                    text="Unstake"
                     onClick={onPresentWithdraw}
-                  />
+                  >
+                    {TranslateString(999, 'Unstake')}
+                  </Button>
                   <StyledActionSpacer />
-                  <IconButton onClick={onPresentDeposit}>
+                  <Button onClick={onPresentDeposit}>
                     <AddIcon />
-                  </IconButton>
+                  </Button>
                 </>
               ))}
           </StyledCardActions>

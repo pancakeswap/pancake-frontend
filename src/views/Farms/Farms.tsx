@@ -2,17 +2,10 @@ import React from 'react'
 import { Route, Switch, useRouteMatch } from 'react-router-dom'
 import styled from 'styled-components'
 import { NavLink } from 'react-router-dom'
-
-import Button from '../../components/Button'
 import Page from '../../components/Page'
-import WalletProviderModal from '../../components/WalletProviderModal'
-
-import useModal from '../../hooks/useModal'
-
 import Farm from '../Farm'
-
 import FarmCards from './components/FarmCards'
-import { TranslateString } from '../../utils/translateTextHelpers'
+import useI18n from '../../hooks/useI18n'
 
 interface FarmsProps {
   removed: boolean
@@ -20,51 +13,33 @@ interface FarmsProps {
 
 const Farms: React.FC<FarmsProps> = ({ removed }) => {
   const { path } = useRouteMatch()
-  const [onPresentWalletProviderModal] = useModal(<WalletProviderModal />)
+  const TranslateString = useI18n()
 
   return (
     <Switch>
       <Page>
-        {true ? (
-          <>
-            <Route exact path={path}>
-              <Title>
-                {TranslateString(320, 'Stake FLIP tokens to stack CAKE')}
-              </Title>
-              <StyledLink exact activeClassName="active" to="/staking">
-                Staking
-              </StyledLink>
-              <FarmCards removed={removed} />
-              {removed ? (
-                <NavLink exact activeClassName="active" to="/farms">
-                  Active Pools
-                </NavLink>
-              ) : (
-                <NavLink exact activeClassName="active" to="/removed">
-                  Inactive Pools
-                </NavLink>
-              )}
-              <Image src="/images/cakecat.png" />
-            </Route>
-            <Route path={`${path}/:farmId`}>
-              <Farm />
-            </Route>
-          </>
-        ) : (
-          <div
-            style={{
-              alignItems: 'center',
-              display: 'flex',
-              flex: 1,
-              justifyContent: 'center',
-            }}
-          >
-            <Button
-              onClick={onPresentWalletProviderModal}
-              text={`🔓 ${TranslateString(292, 'Unlock Wallet')}`}
-            />
-          </div>
-        )}
+        <Route exact path={path}>
+          <Title>
+            {TranslateString(320, 'Stake FLIP tokens to stack CAKE')}
+          </Title>
+          <StyledLink exact activeClassName="active" to="/staking">
+            {TranslateString(999, 'Staking')}
+          </StyledLink>
+          <FarmCards removed={removed} />
+          {removed ? (
+            <NavLink exact activeClassName="active" to="/farms">
+              {TranslateString(999, 'Active Pools')}
+            </NavLink>
+          ) : (
+            <NavLink exact activeClassName="active" to="/removed">
+              {TranslateString(999, 'Inactive Pools')}
+            </NavLink>
+          )}
+          <Image src="/images/cakecat.png" />
+        </Route>
+        <Route path={`${path}/:farmId`}>
+          <Farm />
+        </Route>
       </Page>
     </Switch>
   )
