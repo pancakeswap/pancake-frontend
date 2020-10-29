@@ -1863,10 +1863,10 @@
   dependencies:
     mkdirp "^1.0.4"
 
-"@pancakeswap-libs/uikit@^0.1.2":
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/@pancakeswap-libs/uikit/-/uikit-0.1.2.tgz#904996c46a6640209d74ba9ed0b357cacfd6097d"
-  integrity sha512-Gi+GxTeIXB707umDL0RIPuWYp3jVpyN3P/BnhiAzd3ewTHI2lvSO0hEmdy8Etj2ek5CKGYdXfjhFaojxQ7NK3g==
+"@pancakeswap-libs/uikit@^0.1.3":
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/@pancakeswap-libs/uikit/-/uikit-0.1.3.tgz#8bc94d335ea263efe520419b59b96a6bc1e35543"
+  integrity sha512-JRLYqLpUD0MwmVNaVGiLP9vV9szqF3E5Pxp5CSYpXvr01JqVvSdqSHpICwMfqfzffTgdNboOIfl0BDgg8ciOMw==
   dependencies:
     "@types/lodash" "^4.14.162"
     lodash "^4.17.20"
