@@ -15,7 +15,8 @@
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
     "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx}'",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "test": "echo \"Warning: no test implemented\" && exit 0"
   },
   "husky": {
     "hooks": {

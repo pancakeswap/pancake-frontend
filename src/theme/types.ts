@@ -42,6 +42,7 @@ export type Colors = {
 };
 
 export interface PancakeTheme {
+  siteWidth: number;
   isDark: boolean;
   colors: Colors;
   button: ButtonTheme;
