@@ -1,12 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useWallet } from 'use-wallet'
+import { Button } from '@pancakeswap-libs/uikit'
 import usePendingTransactions from '../../../hooks/usePendingTransactions'
-import Button from '../../Button'
 
-interface TxButtonProps {}
-
-const TxButton: React.FC<TxButtonProps> = () => {
+const TxButton: React.FC = () => {
   const { account } = useWallet()
   const pendingTransactions = usePendingTransactions()
   return (
@@ -14,10 +12,12 @@ const TxButton: React.FC<TxButtonProps> = () => {
       {!!account && !!pendingTransactions.length ? (
         <StyledTxButton>
           <Button
+            as="a"
             size="sm"
-            text={`${pendingTransactions.length} Transaction(s)`}
             href={`https://etherscan.io/address/${account}`}
-          />
+          >
+            {`${pendingTransactions.length} Transaction(s)`}
+          </Button>
         </StyledTxButton>
       ) : null}
     </>

@@ -2,12 +2,12 @@
 import React, { useCallback } from 'react'
 import styled from 'styled-components'
 import { useWallet } from 'use-wallet'
+import { Button } from '@pancakeswap-libs/uikit'
 import useTokenBalance from '../../../hooks/useTokenBalance'
 import useSushi from '../../../hooks/useSushi'
 import useI18n from '../../../hooks/useI18n'
 import { getSushiAddress } from '../../../sushi/utils'
 import { getBalanceNumber } from '../../../utils/formatBalance'
-import Button from '../../Button'
 import CardIcon from '../../CardIcon'
 import Label from '../../Label'
 import Modal, { ModalProps } from '../../Modal'
@@ -50,19 +50,21 @@ const AccountModal: React.FC<ModalProps> = ({ onDismiss }) => {
 
         <Spacer />
         <Button
+          as="a"
+          fullWidth
           href={`https://bscscan.com/address/${account}`}
-          text={TranslateString(356, 'View on BscScan')}
-          variant="secondary"
-        />
+        >
+          {TranslateString(356, 'View on BscScan')}
+        </Button>
         <Spacer />
-        <Button
-          onClick={handleSignOutClick}
-          text="Sign out"
-          variant="secondary"
-        />
+        <Button fullWidth onClick={handleSignOutClick}>
+          {TranslateString(999, 'Sign out')}
+        </Button>
       </ModalContent>
       <ModalActions>
-        <Button onClick={onDismiss} text={TranslateString(462, 'Cancel')} />
+        <Button fullWidth onClick={onDismiss}>
+          {TranslateString(462, 'Cancel')}
+        </Button>
       </ModalActions>
     </Modal>
   )

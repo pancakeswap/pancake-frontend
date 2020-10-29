@@ -4,19 +4,19 @@ import React, { useEffect, useState, useCallback } from 'react'
 import Countdown, { CountdownRenderProps } from 'react-countdown'
 import styled, { keyframes } from 'styled-components'
 import { useWallet } from 'use-wallet'
-import Button from '../../../components/Button'
+import { Button } from '@pancakeswap-libs/uikit'
+import { Link as RouterLink } from 'react-router-dom'
 import { Farm } from '../../../contexts/Farms'
 import { useTokenBalance2, useBnbPrice } from '../../../hooks/useTokenBalance'
 import useFarms from '../../../hooks/useFarms'
 import useSushi from '../../../hooks/useSushi'
+import useI18n from '../../../hooks/useI18n'
 import useAllStakedValue, {
   StakedValue,
 } from '../../../hooks/useAllStakedValue'
 import { getEarned, getMasterChefContract } from '../../../sushi/utils'
 import { bnToDec } from '../../../utils'
-import { TranslateString } from '../../../utils/translateTextHelpers'
 import { forShowPools, BLOCKS_PER_YEAR } from '../../../sushi/lib/constants'
-
 import useModal from '../../../hooks/useModal'
 import WalletProviderModal from '../../../components/WalletProviderModal'
 
@@ -29,6 +29,7 @@ interface FarmCardsProps {
 }
 
 const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
+  const TranslateString = useI18n()
   const [farms] = useFarms()
   const stakedValue = useAllStakedValue()
 
@@ -41,7 +42,6 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
       ? stakedValue[sushiIndex].tokenPriceInWeth
       : new BigNumber(0)
 
-  // console.log(sushiPrice, stakedValue)
   const SUSHI_PER_BLOCK = new BigNumber(40)
 
   const [onPresentWalletProviderModal] = useModal(
@@ -58,14 +58,10 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
     : farms.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X')
   const realStakedValue = stakedValue.slice(1)
   const bnbPrice = useBnbPrice()
-  // console.log(bnbPrice)
 
   const rows = realFarms.reduce<FarmWithStakedValue[][]>(
     (farmRows, farm, i) => {
       let apy
-      // if(farm.pid==8) {
-      //   console.log(realStakedValue[i].poolWeight)
-      // }
       if (farm.pid === 11) {
         apy = realStakedValue[i]
           ? sushiPrice
@@ -140,11 +136,9 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
                   <span className="right">CAKE</span>
                 </Lable>
 
-                <Button
-                  onClick={handleUnlockClick}
-                  size="md"
-                  text={TranslateString(292, 'Unlock Wallet')}
-                />
+                <Button onClick={handleUnlockClick}>
+                  {TranslateString(292, 'Unlock Wallet')}
+                </Button>
               </FCard>
             ))}
           </FContent>
@@ -193,7 +187,7 @@ const FCard = styled.div`
   flex-direction: column;
   justify-content: space-around;
   display: flex;
-  width: 240px;
+  width: 100%;
   text-align: center;
   margin: 6px;
   img {
@@ -230,8 +224,6 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, stakedValue, removed }) => {
 
   const [startTime] = useState(1600783200)
   const [, setHarvestable] = useState(0)
-
-  // setStartTime(1600695000)
 
   const { account } = useWallet()
   const { lpTokenAddress } = farm
@@ -305,18 +297,18 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, stakedValue, removed }) => {
             </Lable>
           )}
 
-          <Button
-            disabled={!poolActive}
-            text={poolActive ? 'Select' : undefined}
-            to={`/farms/${farm.id}`}
-          >
-            {!poolActive && (
-              <Countdown
-                date={new Date(startTime * 1000)}
-                renderer={renderer}
-              />
-            )}
-          </Button>
+          <RouterLink to={`/farms/${farm.id}`}>
+            <Button fullWidth disabled={!poolActive}>
+              {poolActive ? (
+                TranslateString(999, 'Select')
+              ) : (
+                <Countdown
+                  date={new Date(startTime * 1000)}
+                  renderer={renderer}
+                />
+              )}
+            </Button>
+          </RouterLink>
           <StyledSpacer2 />
           {!removed && (
             <Lable>
@@ -379,9 +371,9 @@ const StyledCardAccent = styled.div`
   filter: blur(6px);
   position: absolute;
   top: -2px;
-  right: -2px;
+  right: -4px;
   bottom: -2px;
-  left: -2px;
+  left: -4px;
   z-index: -1;
 `
 
@@ -417,6 +409,7 @@ const StyledCardWrapper = styled.div`
 `
 
 const StyledContent = styled.div`
+  width: 100%;
   position: relative;
   align-items: center;
   display: flex;

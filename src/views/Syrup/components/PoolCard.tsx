@@ -3,15 +3,13 @@ import React, { useCallback, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { useWallet } from 'use-wallet'
 import { Contract } from 'web3-eth-contract'
-import Button from '../../../components/Button'
+import { Button } from '@pancakeswap-libs/uikit'
 import HarvestButton from './HarvestButton'
 import Card from '../../../components/Card'
-import IconButton from '../../../components/IconButton'
 import { AddIcon } from '../../../components/icons'
 import Label from '../../../components/Label'
 import Value from '../../../components/Value'
 import { BLOCKS_PER_YEAR } from '../../../sushi/lib/constants'
-
 import { useSousAllowance } from '../../../hooks/useAllowance'
 import { useSousApprove } from '../../../hooks/useApprove'
 import { useSousEarnings, useSousLeftBlocks } from '../../../hooks/useEarnings'
@@ -25,14 +23,12 @@ import useTokenBalance from '../../../hooks/useTokenBalance'
 import { useSousUnstake } from '../../../hooks/useUnstake'
 import { getBalanceNumber } from '../../../utils/formatBalance'
 import { useSousReward } from '../../../hooks/useReward'
-
+import useI18n from '../../../hooks/useI18n'
 import SmallValue from './Value'
 import DepositModal from './DepositModal'
 import WithdrawModal from './WithdrawModal'
 import CardContent from './CardContent'
-
 import WalletProviderModal from '../../../components/WalletProviderModal'
-import { TranslateString } from '../../../utils/translateTextHelpers'
 
 interface HarvestProps {
   syrup: Contract
@@ -55,6 +51,7 @@ const PoolCard: React.FC<HarvestProps> = ({
   tokenPrice,
   tokenPerBlock,
 }) => {
+  const TranslateString = useI18n()
   const [requestedApproval, setRequestedApproval] = useState(false)
   const { account } = useWallet()
   const allowance = useSousAllowance(syrup, sousId)
@@ -131,11 +128,9 @@ const PoolCard: React.FC<HarvestProps> = ({
 
           <StyledCardActions>
             {!account && (
-              <Button
-                onClick={handleUnlockClick}
-                size="md"
-                text={TranslateString(292, 'Unlock Wallet')}
-              />
+              <Button onClick={handleUnlockClick}>
+                {TranslateString(292, 'Unlock Wallet')}
+              </Button>
             )}
             {account && harvest && (
               <HarvestButton
@@ -153,19 +148,21 @@ const PoolCard: React.FC<HarvestProps> = ({
                 <Button
                   disabled={isFinished || requestedApproval}
                   onClick={handleApprove}
-                  text={`Approve SYRUP`}
-                />
+                >
+                  {TranslateString(999, 'Approve SYRUP')}
+                </Button>
               ) : (
                 <>
                   <Button
                     disabled={stakedBalance.eq(new BigNumber(0))}
-                    text="Unstake SYRUP"
                     onClick={onPresentWithdraw}
-                  />
+                  >
+                    {TranslateString(999, 'Unstake SYRUP')}
+                  </Button>
                   <StyledActionSpacer />
-                  <IconButton disabled={isFinished} onClick={onPresentDeposit}>
+                  <Button disabled={isFinished} onClick={onPresentDeposit}>
                     <AddIcon />
-                  </IconButton>
+                  </Button>
                 </>
               ))}
           </StyledCardActions>

@@ -3,9 +3,8 @@ import React, { useCallback, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { useWallet } from 'use-wallet'
 import { Contract } from 'web3-eth-contract'
-import Button from '../../../components/Button'
+import { Button } from '@pancakeswap-libs/uikit'
 import HarvestButton from './HarvestButton'
-import IconButton from '../../../components/IconButton'
 import { AddIcon } from '../../../components/icons'
 import Label from '../../../components/Label'
 import { BLOCKS_PER_YEAR } from '../../../sushi/lib/constants'
@@ -23,6 +22,7 @@ import useTokenBalance from '../../../hooks/useTokenBalance'
 import { useSousUnstake } from '../../../hooks/useUnstake'
 import { getBalanceNumber } from '../../../utils/formatBalance'
 import { useSousReward } from '../../../hooks/useReward'
+import useI18n from '../../../hooks/useI18n'
 
 import Balance from './Balance'
 import SmallValue from './Value'
@@ -33,7 +33,6 @@ import CardTokenImg from './CardTokenImg'
 import Card from './Card'
 
 import WalletProviderModal from '../../../components/WalletProviderModal'
-import { TranslateString } from '../../../utils/translateTextHelpers'
 import CardFooter from './CardFooter'
 
 interface HarvestProps {
@@ -69,6 +68,7 @@ const PoolCardv2: React.FC<HarvestProps> = ({
   tokenPerBlock,
   contractAddress,
 }) => {
+  const TranslateString = useI18n()
   const [requestedApproval, setRequestedApproval] = useState(false)
   const { account } = useWallet()
   const allowance = useSousAllowance(syrup, sousId)
@@ -169,34 +169,35 @@ const PoolCardv2: React.FC<HarvestProps> = ({
         <StyledCardActions>
           {!account && (
             <div style={{ flex: 1 }}>
-              <Button
-                onClick={handleUnlockClick}
-                size="md"
-                text={TranslateString(292, 'Unlock Wallet')}
-              />
+              <Button fullWidth onClick={handleUnlockClick}>
+                {TranslateString(292, 'Unlock Wallet')}
+              </Button>
             </div>
           )}
           {account &&
             (isUnstaked ? (
               <div style={{ flex: 1 }}>
                 <Button
+                  fullWidth
                   disabled={isFinished || requestedApproval}
                   onClick={handleApprove}
-                  text={`Approve SYRUP`}
-                />
+                >
+                  {TranslateString(999, 'Approve SYRUP')}
+                </Button>
               </div>
             ) : (
               <>
                 <Button
                   disabled={stakedBalance.eq(new BigNumber(0))}
-                  text="Unstake SYRUP"
                   onClick={onPresentWithdraw}
-                />
+                >
+                  {TranslateString(999, 'Unstake SYRUP')}
+                </Button>
                 <StyledActionSpacer />
                 {!isOldCTXPool && (
-                  <IconButton disabled={isFinished} onClick={onPresentDeposit}>
+                  <Button disabled={isFinished} onClick={onPresentDeposit}>
                     <AddIcon />
-                  </IconButton>
+                  </Button>
                 )}
               </>
             ))}

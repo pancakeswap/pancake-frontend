@@ -5,10 +5,11 @@ import useModal from '../../../hooks/useModal'
 import { useCakePrice } from '../../../hooks/useTokenBalance'
 import WalletProviderModal from '../../WalletProviderModal'
 import AccountModal from './AccountModal'
-import ButtonMenu from '../../Button/ButtonMenu'
-import { TranslateString } from '../../../utils/translateTextHelpers'
+import ButtonMenu from './ButtonMenu'
+import useI18n from '../../../hooks/useI18n'
 
 const AccountLink: React.FC = (props) => {
+  const TranslateString = useI18n()
   const [onPresentAccountModal] = useModal(<AccountModal />)
   const [onPresentWalletProviderModal] = useModal(
     <WalletProviderModal />,
@@ -40,7 +41,7 @@ const AccountLink: React.FC = (props) => {
         <ButtonMenu
           onClick={onPresentAccountModal}
           size="sm"
-          text="🔒 My Wallet"
+          text={`🔒 ${TranslateString(999, 'My Wallet')}`}
         />
       )}
     </StyledAccountButton>
