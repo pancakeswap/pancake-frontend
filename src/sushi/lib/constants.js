@@ -571,7 +571,7 @@ export const supportedPools = [
     symbol: 'CTK-BNB FLIP',
     tokenSymbol: 'CTK',
     icon: '🥞',
-    multiplier: '2X'
+    multiplier: '1X'
   },
   {
     pid: 8,
@@ -781,7 +781,7 @@ export const forShowPools = [
     pid: 32,
     symbol: 'CTK-BNB',
     tokenSymbol: 'CTK',
-    multiplier: '2X'
+    multiplier: '1X'
   }
 ]
 
