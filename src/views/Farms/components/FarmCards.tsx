@@ -232,6 +232,7 @@ const FCard = styled.div`
   background: ${(props) => props.theme.card.background};
   box-shadow: 0px 2px 10px rgba(171, 133, 115, 0.16);
   border-radius: 32px;
+  flex: 1 0 30%;
   height: 309px;
   padding: 24px;
   justify-content: center;
