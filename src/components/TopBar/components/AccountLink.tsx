@@ -8,8 +8,6 @@ import AccountModal from './AccountModal'
 import ButtonMenu from '../../Button/ButtonMenu'
 import { TranslateString } from '../../../utils/translateTextHelpers'
 
-interface AccountButtonProps {}
-
 const AccountLink: React.FC = (props) => {
   const [onPresentAccountModal] = useModal(<AccountModal />)
   const [onPresentWalletProviderModal] = useModal(
