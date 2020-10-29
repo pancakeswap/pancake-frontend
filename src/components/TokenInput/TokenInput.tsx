@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-
-import Button from '../Button'
+import { Button } from '@pancakeswap-libs/uikit'
+import useI18n from '../../hooks/useI18n'
 import Input, { InputProps } from '../Input'
 
 interface TokenInputProps extends InputProps {
@@ -17,10 +17,11 @@ const TokenInput: React.FC<TokenInputProps> = ({
   onSelectMax,
   value,
 }) => {
+  const TranslateString = useI18n()
   return (
     <StyledTokenInput>
       <StyledMaxText>
-        {max.toLocaleString()} {symbol} Available
+        {max.toLocaleString()} {symbol} {TranslateString(999, 'Available')}
       </StyledMaxText>
       <Input
         endAdornment={
@@ -28,7 +29,9 @@ const TokenInput: React.FC<TokenInputProps> = ({
             <StyledTokenSymbol>{symbol}</StyledTokenSymbol>
             <StyledSpacer />
             <div>
-              <Button size="sm" text="Max" onClick={onSelectMax} />
+              <Button size="sm" onClick={onSelectMax}>
+                {TranslateString(452, 'Max')}
+              </Button>
             </div>
           </StyledTokenAdornmentWrapper>
         }
@@ -39,12 +42,6 @@ const TokenInput: React.FC<TokenInputProps> = ({
     </StyledTokenInput>
   )
 }
-
-/*
-            <div>
-              <Button size="sm" text="Max" />
-            </div>
-*/
 
 const StyledTokenInput = styled.div``
 

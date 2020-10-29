@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/accessible-emoji */
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import Button from '../../../components/Button'
+import { Button } from '@pancakeswap-libs/uikit'
 import Card from '../../../components/Card'
 import CardContent from '../../../components/CardContent'
 import CardIcon from '../../../components/CardIcon'
@@ -9,14 +9,15 @@ import Label from '../../../components/Label'
 import Value from '../../../components/Value'
 import useEarnings from '../../../hooks/useEarnings'
 import useReward from '../../../hooks/useReward'
+import useI18n from '../../../hooks/useI18n'
 import { getBalanceNumber } from '../../../utils/formatBalance'
-import { TranslateString } from '../../../utils/translateTextHelpers'
 
 interface HarvestProps {
   pid: number
 }
 
 const Harvest: React.FC<HarvestProps> = ({ pid }) => {
+  const TranslateString = useI18n()
   const earnings = useEarnings(pid)
   const [pendingTx, setPendingTx] = useState(false)
   const { onReward } = useReward(pid)
@@ -32,14 +33,18 @@ const Harvest: React.FC<HarvestProps> = ({ pid }) => {
           </StyledCardHeader>
           <StyledCardActions>
             <Button
+              fullWidth
               disabled={!earnings.toNumber() || pendingTx}
-              text={pendingTx ? 'Collecting CAKE' : 'Harvest'}
               onClick={async () => {
                 setPendingTx(true)
                 await onReward()
                 setPendingTx(false)
               }}
-            />
+            >
+              {pendingTx
+                ? TranslateString(999, 'Collecting CAKE')
+                : TranslateString(999, 'Harvest')}
+            </Button>
           </StyledCardActions>
         </StyledCardContentInner>
       </CardContent>
