@@ -7,7 +7,8 @@ import Button from "./index";
 const Row = styled.div`
   margin-bottom: 32px;
 
-  & > button + button {
+  & > button + button,
+  & > a + a {
     margin-left: 16px;
   }
 `;
@@ -52,6 +53,65 @@ export const Default: React.FC = () => {
         <Button variant="text" size="sm">
           Small
         </Button>
+      </Row>
+    </>
+  );
+};
+
+export const ButtonLink: React.FC = () => {
+  return (
+    <>
+      <Row>
+        <Button as="a">Primary</Button>
+        <Button as="a" disabled>
+          Disabled
+        </Button>
+        <Button as="a" size="sm">
+          Small
+        </Button>
+      </Row>
+      <Row>
+        <Button as="a" variant="secondary">
+          Secondary
+        </Button>
+        <Button as="a" variant="secondary" disabled>
+          Disabled
+        </Button>
+        <Button as="a" variant="secondary" size="sm">
+          Small
+        </Button>
+      </Row>
+      <Row>
+        <Button as="a" variant="tertiary">
+          Tertiary
+        </Button>
+        <Button as="a" variant="tertiary" disabled>
+          Disabled
+        </Button>
+        <Button as="a" variant="tertiary" size="sm">
+          Small
+        </Button>
+      </Row>
+      <Row>
+        <Button as="a" variant="text">
+          Text
+        </Button>
+        <Button as="a" variant="text" disabled>
+          Disabled
+        </Button>
+        <Button as="a" variant="text" size="sm">
+          Small
+        </Button>
+      </Row>
+    </>
+  );
+};
+
+export const WithProps: React.FC = () => {
+  return (
+    <>
+      <Row>
+        <Button fullWidth>Full size</Button>
       </Row>
     </>
   );

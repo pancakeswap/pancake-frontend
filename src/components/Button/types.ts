@@ -20,6 +20,9 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   size?: Sizes;
   startIcon?: ReactNode;
   endIcon?: ReactNode;
+  fullWidth?: boolean;
+  as?: "a" | "button";
+  href?: string;
 }
 
 export type ButtonThemeVariant = {
