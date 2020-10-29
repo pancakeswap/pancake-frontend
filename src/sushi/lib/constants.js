@@ -73,16 +73,6 @@ export const sousChefTeam = [
     tokenPerBlock: "0.5"
   },
   {
-    sousId: 5,
-    contractAddress: {
-      97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
-      56: '0x3B9B74f48E89Ebd8b45a53444327013a2308A9BC',
-    },
-    tokenName: '[Old] CTK',
-    projectLink: 'https://www.certik.foundation/',
-    tokenPerBlock: "0.5"
-  },
-  {
     sousId: 4,
     contractAddress: {
       97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
@@ -114,6 +104,16 @@ export const sousChefTeam = [
     projectLink: 'https://trustwallet.com/',
     harvest: true,
     tokenPerBlock: "20"
+  },
+  {
+    sousId: 5,
+    contractAddress: {
+      97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
+      56: '0x3B9B74f48E89Ebd8b45a53444327013a2308A9BC',
+    },
+    tokenName: '[Old] CTK',
+    projectLink: 'https://www.certik.foundation/',
+    tokenPerBlock: "0.5"
   },
   {
     sousId: 2,
