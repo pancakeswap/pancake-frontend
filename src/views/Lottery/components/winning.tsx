@@ -8,7 +8,6 @@ import {
   useWinningNumbers,
   useMatchingRewardLength,
 } from '../../../hooks/useTickets'
-import Label from '../../../components/Label'
 import { LotteryStates } from '../../../lottery/types'
 import useI18n from '../../../hooks/useI18n'
 

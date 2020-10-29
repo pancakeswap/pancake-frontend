@@ -1,8 +1,8 @@
 // @ts-nocheck
-import React, { useCallback, useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import useI18n from '../../../hooks/useI18n'
-import { currentLotteryState, LotteryStates } from '../../../lottery/types'
+import { LotteryStates } from '../../../lottery/types'
 
 interface TimePros {
   state: boolean
@@ -13,21 +13,11 @@ const Time: React.FC<TimePros> = ({ state }) => {
     Date.parse(new Date()) / 1000,
   )
   const TranslateString = useI18n()
-  let stateDeadlineTime = ''
-  if (state === LotteryStates.BUY_TICKETS_OPEN) {
-    const endTime = (parseInt(currentTime / 21600) + 1) * 21600 + 7200
-    const seconds = (endTime - currentTime) % 60
-    const minutes = ((endTime - currentTime) % 3600) / 60
-    const hours = (((endTime - currentTime) % (3600 * 24)) / 3600)%6
-    stateDeadlineTime = `${parseInt(hours)}h, ${parseInt(minutes)}m`
-  }
-  else {
-    const endTime = (parseInt(currentTime / 3600) + 1) * 3600
-    const seconds = (endTime - currentTime) % 60
-    const minutes = ((endTime - currentTime) % 3600) / 60
-    const hours = ((endTime - currentTime) % (3600 * 24)) / 3600
-    stateDeadlineTime = `${parseInt(hours)}h, ${parseInt(minutes)}m`
-  }
+  const endTime = (parseInt(currentTime / 3600) + 1) * 3600
+  const minutes = ((endTime - currentTime) % 3600) / 60
+  const hours = ((endTime - currentTime) % (3600 * 24)) / 3600
+
+  const stateDeadlineTime = `${parseInt(hours)}h, ${parseInt(minutes)}m`
 
   const tick = () => {
     setCurrentTime(currentTime + 1)
