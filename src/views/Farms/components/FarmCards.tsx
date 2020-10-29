@@ -4,22 +4,16 @@ import BigNumber from 'bignumber.js'
 import Countdown, { CountdownRenderProps } from 'react-countdown'
 import styled, { keyframes } from 'styled-components'
 import { useWallet } from 'use-wallet'
-import { CAKE_PER_BLOCK, HARD_REWARD_PER_BLOCK, CAKE_POOL_PID } from 'config'
+import { CAKE_PER_BLOCK, HARD_REWARD_PER_BLOCK, CAKE_POOL_PID, forShowPools } from 'config'
 import { COMMUNITY_FARMS } from 'sushi/lib/constants'
 import Button from 'components/Button'
 import { Farm } from 'contexts/Farms'
-import {
-  useTokenBalance2,
-  useBnbPrice,
-  useCakePrice,
-} from 'hooks/useTokenBalance'
+import { useTokenBalance2, useBnbPrice, useCakePrice } from 'hooks/useTokenBalance'
 import useFarms from 'hooks/useFarms'
 import useSushi from 'hooks/useSushi'
 import useAllStakedValue, { StakedValue } from 'hooks/useAllStakedValue'
 import { getEarned, getMasterChefContract } from 'sushi/utils'
 import { bnToDec } from 'utils'
-import { TranslateString } from 'utils/translateTextHelpers'
-import { forShowPools, BLOCKS_PER_YEAR } from 'sushi/lib/constants'
 import useModal from 'hooks/useModal'
 import WalletProviderModal from 'components/WalletProviderModal'
 import Page from 'components/layout/Page'
@@ -38,6 +32,7 @@ interface FarmCardsProps {
 }
 
 const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
+  const TranslateString = useI18n()
   const [farms] = useFarms()
   const stakedValue = useAllStakedValue()
   const stakedValueById = stakedValue.reduce((accum, value) => {
@@ -47,14 +42,9 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
     }
   }, {})
 
-  const cakePrice = stakedValueById[CAKE_POOL_PID]
-    ? stakedValueById[CAKE_POOL_PID].tokenPriceInWeth
-    : new BigNumber(0)
+  const cakePrice = stakedValueById[CAKE_POOL_PID] ? stakedValueById[CAKE_POOL_PID].tokenPriceInWeth : new BigNumber(0)
 
-  const [onPresentWalletProviderModal] = useModal(
-    <WalletProviderModal />,
-    'provider',
-  )
+  const [onPresentWalletProviderModal] = useModal(<WalletProviderModal />, 'provider')
 
   const handleUnlockClick = useCallback(() => {
     onPresentWalletProviderModal()
@@ -65,7 +55,7 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
     : farms.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X')
   const bnbPrice = useBnbPrice()
 
-  // temp fix 
+  // temp fix
   const staxBalance = useTokenBalance2(
     '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     '0x7cd05f8b960ba071fdf69c750c0e5a57c8366500',
@@ -86,8 +76,7 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
   const rows = realFarms.reduce<FarmWithStakedValue[][]>((accum, farm) => {
     const stakedValueItem = stakedValueById[farm.pid]
 
-    const cakeRewardPerBlock =
-      stakedValueItem && CAKE_PER_BLOCK.times(stakedValueItem.poolWeight)
+    const cakeRewardPerBlock = stakedValueItem && CAKE_PER_BLOCK.times(stakedValueItem.poolWeight)
 
     const calculateCommunityApy = (balance: BigNumber) => {
       if (!stakedValueItem) {
@@ -116,15 +105,11 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
       apy = calculateCommunityApy(nyaBalance)
     } else if (farm.tokenSymbol === 'bROOBEE') {
       apy = calculateCommunityApy(bROOBEEBalance)
-    }
-    else if (farm.tokenSymbol === 'HARD') {
+    } else if (farm.tokenSymbol === 'HARD') {
       // TODO: Refactor APY for dual farm
       const cakeApy =
         stakedValueItem &&
-        cakePrice
-          .times(cakeRewardPerBlock)
-          .times(BLOCKS_PER_YEAR)
-          .div(stakedValueItem.totalWethValue)
+        cakePrice.times(cakeRewardPerBlock).times(BLOCKS_PER_YEAR).div(stakedValueItem.totalWethValue)
       const hardApy =
         stakedValueItem &&
         stakedValueItem.tokenPriceInWeth
@@ -136,10 +121,7 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
     } else {
       apy =
         stakedValueItem && !removed
-          ? cakePrice
-              .times(cakeRewardPerBlock)
-              .times(BLOCKS_PER_YEAR)
-              .div(stakedValueItem.totalWethValue)
+          ? cakePrice.times(cakeRewardPerBlock).times(BLOCKS_PER_YEAR).div(stakedValueItem.totalWethValue)
           : null
     }
 
@@ -158,11 +140,7 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
       <Grid>
         {rows.length > 0
           ? rows.map((farm) => (
-              <FarmCard
-                farm={farm}
-                stakedValue={stakedValueById[farm.tokenSymbol]}
-                removed={removed}
-              />
+              <FarmCard farm={farm} stakedValue={stakedValueById[farm.tokenSymbol]} removed={removed} />
             ))
           : forShowPools.map((pool, index) => (
               <FCard key={index}>
@@ -173,17 +151,12 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
                       <Tag variant={pool.isCommunity ? 'pink' : 'purple'}>
                         {pool.isCommunity ? <CommunityIcon /> : <CoreIcon />}
                         <span style={{ marginLeft: '4px' }}>
-                          {pool.isCommunity
-                            ? TranslateString(999, 'Community')
-                            : TranslateString(999, 'Core')}
+                          {pool.isCommunity ? TranslateString(999, 'Community') : TranslateString(999, 'Core')}
                         </span>
                       </Tag>
                     </div>
                   </div>
-                  <img
-                    src={`/images/tokens/category-${pool.tokenSymbol}.png`}
-                    alt={pool.tokenSymbol}
-                  />
+                  <img src={`/images/tokens/category-${pool.tokenSymbol}.png`} alt={pool.tokenSymbol} />
                 </CardImage>
                 <Label>
                   <span>{TranslateString(316, 'Deposit')}</span>
@@ -193,13 +166,8 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
                   <span>{TranslateString(318, 'Earn')}</span>
                   <span className="right">CAKE</span>
                 </Label>
-                <Action>
-                  <Button
-                    onClick={handleUnlockClick}
-                    size="md"
-                    text={TranslateString(292, 'Unlock Wallet')}
-                  />
-                </Action>
+
+                <Button onClick={handleUnlockClick}>{TranslateString(292, 'Unlock Wallet')}</Button>
               </FCard>
             ))}
       </Grid>
@@ -238,8 +206,8 @@ const FCard = styled.div`
   justify-content: center;
   flex-direction: column;
   justify-content: space-around;
-  padding: 24px;
-  position: relative;
+  display: flex;
+  width: 100%;
   text-align: center;
 
   img {
@@ -256,27 +224,12 @@ interface FarmCardProps {
 
 const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
   const TranslateString = useI18n()
-  const totalValue1 =
-    useTokenBalance2(
-      '0x55d398326f99059ff775485246999027b3197955',
-      farm.lpTokenAddress,
-    ) * 2
+  const totalValue1 = useTokenBalance2('0x55d398326f99059ff775485246999027b3197955', farm.lpTokenAddress) * 2
   let totalValue =
-    useTokenBalance2(
-      '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
-      farm.lpTokenAddress,
-    ) *
-    useBnbPrice() *
-    2
+    useTokenBalance2('0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c', farm.lpTokenAddress) * useBnbPrice() * 2
 
   const cakePrice = useCakePrice()
-  let totalValue2 =
-    useTokenBalance2(
-      '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
-      farm.lpTokenAddress,
-    ) *
-    cakePrice *
-    2
+  let totalValue2 = useTokenBalance2('0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82', farm.lpTokenAddress) * cakePrice * 2
 
   if (farm.pid === 11) {
     totalValue = totalValue1
@@ -287,8 +240,6 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
 
   const [startTime] = useState(1600783200)
   const [, setHarvestable] = useState(0)
-
-  // setStartTime(1600695000)
 
   const { account } = useWallet()
   const { lpTokenAddress } = farm
@@ -310,11 +261,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
   useEffect(() => {
     async function fetchEarned() {
       if (sushi) return
-      const earned = await getEarned(
-        getMasterChefContract(sushi),
-        lpTokenAddress,
-        account,
-      )
+      const earned = await getEarned(getMasterChefContract(sushi), lpTokenAddress, account)
       setHarvestable(bnToDec(earned))
     }
     if (sushi && account) {
@@ -325,9 +272,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
   const poolActive = true // startTime * 1000 - Date.now() <= 0
   const isCommunityFarm = COMMUNITY_FARMS.includes(farm.tokenSymbol)
   const TokenIcon = isCommunityFarm ? CommunityIcon : CoreIcon
-  const tokenText = isCommunityFarm
-    ? TranslateString(999, 'Community')
-    : TranslateString(999, 'Core')
+  const tokenText = isCommunityFarm ? TranslateString(999, 'Community') : TranslateString(999, 'Core')
 
   return (
     <FCard>
@@ -342,63 +287,41 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
             </Tag>
           </div>
         </div>
-        <img
-          src={`/images/tokens/category-${farm.tokenSymbol}.png`}
-          alt={farm.tokenSymbol}
-        />
+        <img src={`/images/tokens/category-${farm.tokenSymbol}.png`} alt={farm.tokenSymbol} />
       </CardImage>
       <Label>
         <span>{TranslateString(316, 'Deposit')}</span>
-        <span className="right">
-          {farm.lpToken.toUpperCase().replace('PANCAKE', '')}
-        </span>
+        <span className="right">{farm.lpToken.toUpperCase().replace('PANCAKE', '')}</span>
       </Label>
       <Label>
         <span>{TranslateString(318, 'Earn')}</span>
-        <span className="right">
-          {farm.tokenSymbol === 'HARD' ? 'CAKE & HARD' : 'CAKE'}
-        </span>
+        <span className="right">{farm.tokenSymbol === 'HARD' ? 'CAKE & HARD' : 'CAKE'}</span>
       </Label>
       {!removed && (
         <Label>
           <span>{TranslateString(352, 'APY')}</span>
           <span className="right">
             {farm.apy
-              ? `${farm.apy
-                  .times(new BigNumber(100))
-                  .toNumber()
-                  .toLocaleString('en-US')
-                  .slice(0, -1)}%`
+              ? `${farm.apy.times(new BigNumber(100)).toNumber().toLocaleString('en-US').slice(0, -1)}%`
               : 'Loading ...'}
           </span>
         </Label>
       )}
       <Action>
-        <Button
-          disabled={!poolActive}
-          text={poolActive ? 'Select' : undefined}
-          to={`/farms/${farm.id}`}
-        >
-          {!poolActive && (
-            <Countdown date={new Date(startTime * 1000)} renderer={renderer} />
-          )}
+        <Button disabled={!poolActive} text={poolActive ? 'Select' : undefined} to={`/farms/${farm.id}`}>
+          {!poolActive && <Countdown date={new Date(startTime * 1000)} renderer={renderer} />}
         </Button>
       </Action>
       {!removed && (
         <Label>
           <span>{TranslateString(23, 'Total Liquidity')}</span>
           <span className="right">
-            {farm.lpToken !== 'BAKE-BNB Bakery LP'
-              ? `$${parseInt(totalValue).toLocaleString()}`
-              : '-'}
+            {farm.lpToken !== 'BAKE-BNB Bakery LP' ? `$${parseInt(totalValue).toLocaleString()}` : '-'}
           </span>
         </Label>
       )}
       <ViewMore>
-        <Link
-          href={`https://bscscan.com/address/${farm.lpTokenAddress}`}
-          target="_blank"
-        >
+        <Link href={`https://bscscan.com/address/${farm.lpTokenAddress}`} target="_blank">
           {TranslateString(356, 'View on BscScan')} &gt;
         </Link>
       </ViewMore>
@@ -453,9 +376,9 @@ const StyledCardAccent = styled.div`
   filter: blur(6px);
   position: absolute;
   top: -2px;
-  right: -2px;
+  right: -4px;
   bottom: -2px;
-  left: -2px;
+  left: -4px;
   z-index: -1;
 `
 

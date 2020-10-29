@@ -1,5 +1,5 @@
 import React from 'react'
-import Button from '../../../components/Button'
+import { Button } from '@pancakeswap-libs/uikit'
 import Modal, { ModalProps } from '../../../components/Modal'
 import ModalActions from '../../../components/ModalActions'
 import ModalTitle from '../../../components/ModalTitle'
@@ -7,16 +7,7 @@ import styled from 'styled-components'
 import ModalContent from '../../../components/ModalContent'
 import useI18n from '../../../hooks/useI18n'
 
-interface WarningModalProps extends ModalProps {
-  title: string
-  text?: string
-}
-
-const WarningModal: React.FC<WarningModalProps> = ({
-  title,
-  text,
-  onDismiss,
-}) => {
+const WarningModal: React.FC<ModalProps> = ({ onDismiss }) => {
   const TranslateString = useI18n()
 
   return (
@@ -45,11 +36,9 @@ const WarningModal: React.FC<WarningModalProps> = ({
         </div>
       </ModalContent>
       <ModalActions>
-        <Button
-          text={TranslateString(476, 'I understand')}
-          variant="secondary"
-          onClick={onDismiss}
-        />
+        <Button fullWidth onClick={onDismiss}>
+          {TranslateString(476, 'I understand')}
+        </Button>
       </ModalActions>
     </Modal>
   )

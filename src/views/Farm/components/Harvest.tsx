@@ -1,12 +1,12 @@
 /* eslint-disable jsx-a11y/accessible-emoji */
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import Button from 'components/Button'
+import { Button } from '@pancakeswap-libs/uikit'
 import Label from 'components/Label'
 import useEarnings from 'hooks/useEarnings'
 import useReward from 'hooks/useReward'
+import useI18n from 'hooks/useI18n'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { TranslateString } from 'utils/translateTextHelpers'
 import Card from './Card'
 import CardImage from './CardImage'
 import Value from './Value'
@@ -16,6 +16,7 @@ interface HarvestProps {
 }
 
 const Harvest: React.FC<HarvestProps> = ({ pid }) => {
+  const TranslateString = useI18n()
   const earnings = useEarnings(pid)
   const [pendingTx, setPendingTx] = useState(false)
   const { onReward } = useReward(pid)
@@ -31,13 +32,14 @@ const Harvest: React.FC<HarvestProps> = ({ pid }) => {
         <StyledCardActions>
           <Button
             disabled={!earnings.toNumber() || pendingTx}
-            text={pendingTx ? 'Collecting CAKE' : 'Harvest'}
             onClick={async () => {
               setPendingTx(true)
               await onReward()
               setPendingTx(false)
             }}
-          />
+          >
+            {pendingTx ? 'Collecting CAKE' : 'Harvest'}
+          </Button>
         </StyledCardActions>
       </StyledCardContentInner>
     </Card>

@@ -1,13 +1,12 @@
 import BigNumber from 'bignumber.js'
 import React, { useCallback, useMemo, useState } from 'react'
-import Button from '../../../components/Button'
+import { Button } from '@pancakeswap-libs/uikit'
 import Modal, { ModalProps } from '../../../components/Modal'
 import ModalActions from '../../../components/ModalActions'
 import ModalTitle from '../../../components/ModalTitle'
 import { getFullDisplayBalance } from '../../../utils/formatBalance'
 import styled from 'styled-components'
 import TicketInput from '../../../components/TicketInput'
-
 import { useMultiBuyLottery, useMaxNumber } from '../../../hooks/useBuyLottery'
 import useI18n from '../../../hooks/useI18n'
 
@@ -25,7 +24,7 @@ const BuyModal: React.FC<BuyModalProps> = ({
 }) => {
   const [val, setVal] = useState('1')
   const [pendingTx, setPendingTx] = useState(false)
-  const [requesteBuy, setRequestedBuy] = useState(false)
+  const [, setRequestedBuy] = useState(false)
   const TranslateString = useI18n()
   const fullBalance = useMemo(() => {
     return getFullDisplayBalance(max)
@@ -108,11 +107,9 @@ const BuyModal: React.FC<BuyModalProps> = ({
         </Final>
       </div>
       <ModalActions>
-        <Button
-          text={TranslateString(462, 'Cancel')}
-          variant="secondary"
-          onClick={onDismiss}
-        />
+        <Button variant="secondary" onClick={onDismiss}>
+          {TranslateString(462, 'Cancel')}
+        </Button>
         <Button
           disabled={
             pendingTx ||
@@ -120,18 +117,17 @@ const BuyModal: React.FC<BuyModalProps> = ({
             parseInt(val) > 50 ||
             parseInt(val) < 1
           }
-          text={
-            pendingTx
-              ? TranslateString(488, 'Pending Confirmation')
-              : TranslateString(464, 'Confirm')
-          }
           onClick={async () => {
             setPendingTx(true)
             await handleBuy()
             setPendingTx(false)
             onDismiss()
           }}
-        />
+        >
+          {pendingTx
+            ? TranslateString(488, 'Pending Confirmation')
+            : TranslateString(464, 'Confirm')}
+        </Button>
       </ModalActions>
     </Modal>
   )

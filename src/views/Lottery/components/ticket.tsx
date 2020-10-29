@@ -1,13 +1,12 @@
 import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { useWallet } from 'use-wallet'
-import Button from '../../../components/Button'
+import { Button } from '@pancakeswap-libs/uikit'
 import Card from '../../../components/Card'
 import CardContent from '../../../components/CardContent'
 import CardIcon from '../../../components/CardIcon'
 import Label from '../../../components/Label'
 import Value from '../../../components/Value'
-
 import { useLotteryAllowance } from '../../../hooks/useAllowance'
 import { useLotteryApprove } from '../../../hooks/useApprove'
 import useTickets from '../../../hooks/useTickets'
@@ -15,7 +14,6 @@ import useModal from '../../../hooks/useModal'
 import useSushi from '../../../hooks/useSushi'
 import { getSushiAddress } from '../../../sushi/utils'
 import useTokenBalance from '../../../hooks/useTokenBalance'
-
 import WalletProviderModal from '../../../components/WalletProviderModal'
 import BuyModal from './buyModal'
 import MyTicketsModal from './myTicketsModal'
@@ -61,26 +59,7 @@ const Ticket: React.FC<TicketProps> = ({ state }) => {
     <BuyModal max={sushiBalance} onConfirm={() => {}} tokenName={'CAKE'} />,
   )
 
-  const [onPresentApprove] = useModal(
-    <WarningModal
-      title={TranslateString(466, 'Warning')}
-      text={[
-        TranslateString(468, 'Lottery ticket purchases are final.'),
-        TranslateString(
-          470,
-          'Your CAKE will not be returned to you after you spend it to buy tickets.',
-        ),
-        TranslateString(
-          472,
-          'Tickets are only valid for one lottery draw, and will be burnedafter the draw.',
-        ),
-        TranslateString(
-          474,
-          'Buying tickets does not guarantee you will win anything. Please only participate once you understand the risks.',
-        ),
-      ].join(' ')}
-    />,
-  )
+  const [onPresentApprove] = useModal(<WarningModal />)
 
   const [onPresentWalletProviderModal] = useModal(
     <WalletProviderModal />,
@@ -104,26 +83,20 @@ const Ticket: React.FC<TicketProps> = ({ state }) => {
             </StyledCardHeader>
             <StyledCardActions>
               {!account && (
-                <Button
-                  onClick={handleUnlockClick}
-                  size="md"
-                  text="Unlock Wallet"
-                />
+                <Button fullWidth onClick={handleUnlockClick}>
+                  {TranslateString(999, 'Unlock Wallet')}
+                </Button>
               )}
               {account &&
                 (!allowance.toNumber() ? (
-                  <Button
-                    disabled={requestedApproval}
-                    onClick={handleApprove}
-                    text={TranslateString(998, 'Approve CAKE')}
-                  />
+                  <Button disabled={requestedApproval} onClick={handleApprove}>
+                    {TranslateString(998, 'Approve CAKE')}
+                  </Button>
                 ) : (
                   <>
-                    <Button
-                      onClick={onPresentBuy}
-                      size="md"
-                      text={TranslateString(430, 'Buy ticket')}
-                    />
+                    <Button fullWidth onClick={onPresentBuy}>
+                      {TranslateString(430, 'Buy ticket')}
+                    </Button>
                   </>
                 ))}
             </StyledCardActions>

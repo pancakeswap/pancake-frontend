@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import Button from '../../../components/Button'
+import { Button } from '@pancakeswap-libs/uikit'
 import Modal, { ModalProps } from '../../../components/Modal'
 import ModalActions from '../../../components/ModalActions'
 import ModalTitle from '../../../components/ModalTitle'
@@ -62,11 +62,9 @@ const MyTicketsModal: React.FC<MyTicketsModalProps> = ({
         </div>
       </ModalContent>
       <ModalActions>
-        <Button
-          text={TranslateString(438, 'Close')}
-          variant="secondary"
-          onClick={onDismiss}
-        />
+        <Button variant="secondary" onClick={onDismiss}>
+          {TranslateString(438, 'Close')}
+        </Button>
       </ModalActions>
     </Modal>
   )

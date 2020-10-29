@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js'
 import React, { useCallback, useMemo, useState } from 'react'
-import Button from '../../../components/Button'
+import { Button } from '@pancakeswap-libs/uikit'
 import Modal, { ModalProps } from '../../../components/Modal'
 import ModalActions from '../../../components/ModalActions'
 import ModalTitle from '../../../components/ModalTitle'
@@ -51,25 +51,22 @@ const DepositModal: React.FC<DepositModalProps> = ({
         symbol={tokenName}
       />
       <ModalActions>
-        <Button
-          text={TranslateString(462, 'Cancel')}
-          variant="secondary"
-          onClick={onDismiss}
-        />
+        <Button variant="secondary" onClick={onDismiss}>
+          {TranslateString(462, 'Cancel')}
+        </Button>
         <Button
           disabled={pendingTx}
-          text={
-            pendingTx
-              ? TranslateString(488, 'Pending Confirmation')
-              : TranslateString(464, 'Confirm')
-          }
           onClick={async () => {
             setPendingTx(true)
             await onConfirm(val)
             setPendingTx(false)
             onDismiss()
           }}
-        />
+        >
+          {pendingTx
+            ? TranslateString(488, 'Pending Confirmation')
+            : TranslateString(464, 'Confirm')}
+        </Button>
       </ModalActions>
     </Modal>
   )
