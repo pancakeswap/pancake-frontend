@@ -1,5 +1,13 @@
 # 🥞 Pancake UI Kit
 
+## Install
+
+`yarn add @pancakeswap-libs/uikit`
+
+## Documentation
+
+If you want to use components from the UIkit, check the [Storybook documentation](https://pancakeswap.github.io/pancake-uikit/)
+
 ## Developing
 
 This project uses [Storybook](https://storybook.js.org/). To start development run

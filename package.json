@@ -11,12 +11,13 @@
   "repository": "https://github.com/pancakeswap/pancake-uikit",
   "license": "MIT",
   "scripts": {
-    "build": "rollup -c && tsc -d --emitDeclarationOnly --declarationDir dist",
+    "build": "rm -rf ./dist && rollup -c && tsc -d --emitDeclarationOnly --declarationDir dist",
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
     "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx}'",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "test": "echo \"Warning: no test implemented\" && exit 0"
+    "test": "echo \"Warning: no test implemented\" && exit 0",
+    "release": "yarn build && np"
   },
   "husky": {
     "hooks": {
@@ -50,6 +51,7 @@
     "eslint-plugin-react-hooks": "4.0.0",
     "husky": "^4.3.0",
     "jest": "^26.5.3",
+    "np": "^6.5.0",
     "prettier": "^2.1.2",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
