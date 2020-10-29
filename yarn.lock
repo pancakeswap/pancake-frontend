@@ -1869,20 +1869,28 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> chore: Replace buttons by uikit (#52)
 =======
 >>>>>>> chore: Extract providers to a separate file (#42)
 =======
 >>>>>>> rework: Integrate uikit theme (#43)
+=======
+=======
+>>>>>>> chore: Replace buttons by uikit (#52)
+>>>>>>> chore: Replace buttons by uikit (#52)
 "@pancakeswap-libs/uikit@^0.1.7":
   version "0.1.7"
   resolved "https://registry.yarnpkg.com/@pancakeswap-libs/uikit/-/uikit-0.1.7.tgz#bc4b7e39a2f0fe7b5a8b0c77881a1d3b1bac4744"
   integrity sha512-5KrLAFAMad9Ne/J0AnW7ZQwL3x0Fz3Sdg/ORTvIj/8zj4oI0pZ+GdCGf0q0wP03CLuYLeliRcdK7Xu04zTwZ4Q==
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> chore: Extract providers to a separate file (#42)
+=======
+>>>>>>> chore: Replace buttons by uikit (#52)
 =======
 "@pancakeswap-libs/uikit@^0.1.1":
   version "0.1.1"
@@ -1900,6 +1908,7 @@
   integrity sha512-Gi+GxTeIXB707umDL0RIPuWYp3jVpyN3P/BnhiAzd3ewTHI2lvSO0hEmdy8Etj2ek5CKGYdXfjhFaojxQ7NK3g==
 >>>>>>> rework: Integrate uikit theme (#43)
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 "@pancakeswap-libs/uikit@^0.1.3":
   version "0.1.3"
@@ -1912,6 +1921,10 @@
 >>>>>>> chore: Extract providers to a separate file (#42)
 =======
 >>>>>>> rework: Integrate uikit theme (#43)
+=======
+=======
+>>>>>>> chore: Replace buttons by uikit (#52)
+>>>>>>> chore: Replace buttons by uikit (#52)
   dependencies:
     "@types/lodash" "^4.14.162"
     lodash "^4.17.20"
