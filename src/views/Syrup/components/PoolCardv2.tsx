@@ -183,7 +183,7 @@ const PoolCardv2: React.FC<HarvestProps> = ({
             </div>
           )}
           {account &&
-            (isUnstaked ? (
+            (isUnstaked && !isOldCTXPool ? (
               <div style={{ flex: 1 }}>
                 <Button
                   disabled={isFinished || requestedApproval}
@@ -212,7 +212,7 @@ const PoolCardv2: React.FC<HarvestProps> = ({
         </StyledCardActions>
         <StyledDetails>
           <div style={{ flex: 1 }}>{TranslateString(352, 'APY')}:</div>
-          {isFinished ? (
+          {isReallyFinished ? (
             '-'
           ) : (
             <SmallValue isFinished={isReallyFinished} value={apy} />
