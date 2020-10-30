@@ -91,13 +91,13 @@ const PoolCardv2: React.FC<HarvestProps> = ({
     return `${a.div(b).times(100).toFixed(2)}%`
   }, [cakePrice, harvest, tokenPerBlock, tokenPrice, totalStaked])
 
-  const isUnstaked =
+  const isStaked =
     account && allowance.toNumber() && stakedBalance.toNumber() > 0
 
   // TODO - Remove this when pool removed
   const isOldCTXPool = sousId === CTXOLD
   const isReallyFinished = isFinished || isOldCTXPool
-  const isCardActive = isReallyFinished && isUnstaked
+  const isCardActive = isReallyFinished && isStaked
 
   const [onPresentDeposit] = useModal(
     <DepositModal max={tokenBalance} onConfirm={onStake} tokenName={'SYRUP'} />,
@@ -183,7 +183,7 @@ const PoolCardv2: React.FC<HarvestProps> = ({
             </div>
           )}
           {account &&
-            (isUnstaked && !isOldCTXPool ? (
+            (!isStaked && !isOldCTXPool ? (
               <div style={{ flex: 1 }}>
                 <Button
                   disabled={isFinished || requestedApproval}
