@@ -63,6 +63,23 @@ const WalletProviderModal: React.FC<ModalProps> = ({ onDismiss }) => {
             <WalletCard
               icon={
                 <img
+                  src="/images/mathwallet.png"
+                  style={{ height: 52 }}
+                  alt="MathWallet logo"
+                />
+              }
+              onConnect={() => {
+                connect('injected')
+                window.localStorage.setItem('accountStatus', '1')
+              }}
+              title="MathWallet"
+            />
+          </StyledWalletCard>
+          <Spacer size="sm" />
+          <StyledWalletCard>
+            <WalletCard
+              icon={
+                <img
                   src="/images/tokenpocket.svg"
                   style={{ height: 52 }}
                   alt="token pocket logo"
