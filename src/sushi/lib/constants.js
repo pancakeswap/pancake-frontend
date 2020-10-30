@@ -556,7 +556,7 @@ export const supportedPools = [
     symbol: 'SXP-BNB FLIP',
     tokenSymbol: 'SXP',
     icon: '🥞',
-    multiplier: '2X'
+    multiplier: '1X'
   },
   {
     pid: 32,
@@ -775,7 +775,7 @@ export const forShowPools = [
     pid: 30,
     symbol: 'SXP-BNB',
     tokenSymbol: 'SXP',
-    multiplier: '2X'
+    multiplier: '1X'
   },
   {
     pid: 32,
