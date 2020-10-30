@@ -1,4 +1,5 @@
 import BigNumber from 'bignumber.js'
+import get from 'lodash/get'
 import { ethers } from 'ethers'
 import { sousChefTeam } from './lib/constants'
 
@@ -82,30 +83,7 @@ export const getFarms = (sushi) => {
 }
 
 export const getPools = (sushi) => {
-  const pools = sushi
-    ? sushi.contracts.sousChefs.map(
-        ({
-          sousId,
-          sousContract,
-          tokenPerBlock,
-          contractAddress,
-          tokenName,
-          projectLink,
-          harvest,
-        }) => ({
-          sousId,
-          sousContract,
-          tokenPerBlock,
-          contractAddress,
-          tokenName,
-          projectLink,
-          harvest,
-        }),
-      )
-    : []
-  if (pools.length === 0) return sousChefTeam
-
-  return pools
+  return get(sushi, 'contracts.sousChefs', sousChefTeam)
 }
 
 export const getPoolWeight = async (masterChefContract, pid) => {
@@ -295,9 +273,7 @@ export const getStaked = async (masterChefContract, pid, account) => {
 
 export const getSousStaked = async (sousChefContract, account) => {
   try {
-    const { amount } = await sousChefContract.methods
-      .userInfo(account)
-      .call()
+    const { amount } = await sousChefContract.methods.userInfo(account).call()
     return new BigNumber(amount)
   } catch (err) {
     console.log(err)
