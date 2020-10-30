@@ -92,7 +92,7 @@ const PoolCardv2: React.FC<HarvestProps> = ({
   }, [cakePrice, harvest, tokenPerBlock, tokenPrice, totalStaked])
 
   const isUnstaked =
-    account && !allowance.toNumber() && stakedBalance.toNumber() === 0
+    account && allowance.toNumber() && stakedBalance.toNumber() > 0
 
   // TODO - Remove this when pool removed
   const isOldCTXPool = sousId === CTXOLD
