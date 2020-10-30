@@ -56,31 +56,34 @@ const SyrupRow: React.FC<SyrupRowProps> = ({
 
 const Farm: React.FC = () => {
   const [state, setState] = useState({ isLoading: true, pools: [] })
-  const { ethereum } = useWallet()
+  const { account, ethereum } = useWallet()
   const sushi = useSushi()
   const TranslateString = useI18n()
   const stakedValue = useAllStakedValue()
   const pools = getPools(sushi) || sousChefTeam
+  const transformedPools = useMemo(() => {
+    const stakedValueObj = stakedValue.reduce(
+      (a, b) => ({
+        ...a,
+        [b.tokenSymbol]: b,
+      }),
+      {},
+    )
+
+    return pools.map((pool) => ({
+      ...pool,
+      cakePrice: stakedValueObj['CAKE']?.tokenPriceInWeth || new BigNumber(0),
+      tokenPrice:
+        stakedValueObj[pool.tokenName]?.tokenPriceInWeth || new BigNumber(0),
+    }))
+  }, [stakedValue, pools])
 
   useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
-
-  useEffect(() => {
-    const transformPools = async () => {
-      console.count('the office')
-      const stakedValueObj = stakedValue.reduce(
-        (a, b) => ({
-          ...a,
-          [b.tokenSymbol]: b,
-        }),
-        {},
-      )
-
+    const addBlockSnapshot = async () => {
       // For each pool get a snaphsot of to determine the state of
       // the pool, then sort
       const poolSnapshots = await Promise.all(
-        pools.map(async (pool) => {
+        transformedPools.map(async (pool) => {
           const blockSnapshot = await getSousBlockDataSnapshot(
             ethereum,
             sushi,
@@ -90,11 +93,6 @@ const Farm: React.FC = () => {
           return {
             ...pool,
             blockSnapshot,
-            cakePrice:
-              stakedValueObj['CAKE']?.tokenPriceInWeth || new BigNumber(0),
-            tokenPrice:
-              stakedValueObj[pool.tokenName]?.tokenPriceInWeth ||
-              new BigNumber(0),
           }
         }),
       )
@@ -105,10 +103,17 @@ const Farm: React.FC = () => {
       })
     }
 
-    if (ethereum && sushi) {
-      transformPools()
+    if (account && ethereum && sushi) {
+      addBlockSnapshot()
+    } else {
+      // For logged out users sort the pools by id. Good chance
+      // the newest ones are the most relevant
+      setState({
+        isLoading: false,
+        pools: orderBy(transformedPools, ['sousId'], ['desc']),
+      })
     }
-  }, [ethereum, sushi, stakedValue, pools, setState])
+  }, [account, ethereum, sushi, stakedValue, transformedPools, setState])
 
   return (
     <Page>
