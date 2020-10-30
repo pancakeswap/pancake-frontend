@@ -73,17 +73,6 @@ export const sousChefTeam = [
     tokenPerBlock: "0.5"
   },
   {
-    sousId: 4,
-    contractAddress: {
-      97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
-      56: '0xD32B30b151a6aDB2e0Fa573a37510C097DaBD2F3',
-    },
-    tokenName: 'SXP',
-    projectLink: 'https://swipe.io/',
-    harvest: true,
-    tokenPerBlock: "0.5"
-  },
-  {
     sousId: 3,
     contractAddress: {
       97: '0xAfd61Dc94f11A70Ae110dC0E0F2061Af5633061A',
@@ -104,6 +93,17 @@ export const sousChefTeam = [
     projectLink: 'https://trustwallet.com/',
     harvest: true,
     tokenPerBlock: "20"
+  },
+  {
+    sousId: 4,
+    contractAddress: {
+      97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
+      56: '0xD32B30b151a6aDB2e0Fa573a37510C097DaBD2F3',
+    },
+    tokenName: 'SXP',
+    projectLink: 'https://swipe.io/',
+    harvest: true,
+    tokenPerBlock: "0.5"
   },
   {
     sousId: 5,
