@@ -102,23 +102,26 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
   return (
     <Page>
       <Grid>
-        {rows.length > 0 ? (
-          rows.map((farm) => (
-            <FarmCard
-              farm={farm}
-              stakedValue={stakedValueById[farm.tokenSymbol]}
-              removed={removed}
-            />
-          ))
-        ) : (
-          <StyledLoadingWrapper>
-            {forShowPools.map((pool, index) => (
+        {rows.length > 0
+          ? rows.map((farm) => (
+              <FarmCard
+                farm={farm}
+                stakedValue={stakedValueById[farm.tokenSymbol]}
+                removed={removed}
+              />
+            ))
+          : forShowPools.map((pool, index) => (
               <FCard key={index}>
                 <CardImage>
-                  <Multiplier>
-                    {pool.multiplier}
-                    <Tag>Core</Tag>
-                  </Multiplier>
+                  <div>
+                    <Multiplier>{pool.multiplier}</Multiplier>
+                    <Tag>
+                      <CoreIcon />
+                      <span style={{ marginLeft: '4px' }}>
+                        {TranslateString(999, 'Core')}
+                      </span>
+                    </Tag>
+                  </div>
                   <img
                     src={`/images/tokens/category-${pool.tokenSymbol}.png`}
                     alt={pool.tokenSymbol}
@@ -132,16 +135,15 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
                   <span>{TranslateString(318, 'Earn')}</span>
                   <span className="right">CAKE</span>
                 </Label>
-
-                <Button
-                  onClick={handleUnlockClick}
-                  size="md"
-                  text={TranslateString(292, 'Unlock Wallet')}
-                />
+                <Action>
+                  <Button
+                    onClick={handleUnlockClick}
+                    size="md"
+                    text={TranslateString(292, 'Unlock Wallet')}
+                  />
+                </Action>
               </FCard>
             ))}
-          </StyledLoadingWrapper>
-        )}
       </Grid>
     </Page>
   )
