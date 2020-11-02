@@ -1,4 +1,5 @@
 import BigNumber from 'bignumber.js'
+import get from 'lodash/get'
 import { ethers } from 'ethers'
 import get from 'lodash/get'
 import { sousChefTeam } from './lib/constants'
@@ -229,7 +230,10 @@ export const unstake = async (masterChefContract, pid, amount, account) => {
 
 export const sousUnstake = async (sousChefContract, amount, account) => {
   // hard fix for old CTK
-  if (sousChefContract.options.address === '0x3B9B74f48E89Ebd8b45a53444327013a2308A9BC') {
+  if (
+    sousChefContract.options.address ===
+    '0x3B9B74f48E89Ebd8b45a53444327013a2308A9BC'
+  ) {
     return sousChefContract.methods
       .emergencyWithdraw()
       .send({ from: account })
@@ -295,9 +299,7 @@ export const getStaked = async (masterChefContract, pid, account) => {
 
 export const getSousStaked = async (sousChefContract, account) => {
   try {
-    const { amount } = await sousChefContract.methods
-      .userInfo(account)
-      .call()
+    const { amount } = await sousChefContract.methods.userInfo(account).call()
     return new BigNumber(amount)
   } catch (err) {
     console.log(err)
