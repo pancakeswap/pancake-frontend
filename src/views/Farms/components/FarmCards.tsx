@@ -32,7 +32,12 @@ interface FarmCardsProps {
 }
 
 const SUSHI_PER_BLOCK = new BigNumber(40)
-const COMMUNITY_FARMS = []
+
+// TODO: Use pids if possible
+const COMMUNITY_FARMS = [
+  '0xa1303e6199b319a891b79685f0537d289af1fc83',
+  '0x0da6ed8b13214ff28e9ca979dd37439e8a88f6c4',
+]
 
 const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
   const [farms] = useFarms()
@@ -62,7 +67,7 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
     ? farms.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
     : farms.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X')
   const bnbPrice = useBnbPrice()
-
+  console.log(realFarms)
   const rows = realFarms.reduce<FarmWithStakedValue[][]>((accum, farm) => {
     const stakedValueItem = stakedValueById[farm.tokenSymbol]
 
@@ -250,7 +255,9 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, stakedValue, removed }) => {
   }, [sushi, lpTokenAddress, account, setHarvestable])
 
   const poolActive = true // startTime * 1000 - Date.now() <= 0
-  const isCommunityFarm = COMMUNITY_FARMS.includes(farm.pid)
+  const isCommunityFarm = COMMUNITY_FARMS.includes(
+    farm.tokenAddress.toLocaleLowerCase(),
+  )
   const TokenIcon = isCommunityFarm ? CommunityIcon : CoreIcon
   const tokenText = isCommunityFarm
     ? TranslateString(999, 'Community')
