@@ -14,6 +14,8 @@ import getSousBlockDataSnapshot from 'utils/getSousBlockDataSnapshot'
 import { sousChefTeam } from 'sushi/lib/constants'
 import PoolCardv2 from './components/PoolCardv2'
 import Coming from './components/Coming'
+import Page from 'components/layout/Page'
+import Grid from 'components/layout/Grid'
 
 interface SyrupRowProps {
   syrupAddress: string
@@ -132,7 +134,7 @@ const Farm: React.FC = () => {
           <img src="/images/syrup.png" alt="SYRUP POOL icon" />
         </div>
       </Hero>
-      <Pools>
+      <Grid>
         {state.isLoading && <div>Loading...</div>}
         {!state.isLoading && (
           <>
@@ -142,7 +144,7 @@ const Farm: React.FC = () => {
             <Coming />
           </>
         )}
-      </Pools>
+      </Grid>
     </Page>
   )
 }
@@ -185,55 +187,6 @@ const Hero = styled.div`
     grid-template-columns: 1fr 1fr;
     margin: 0;
     max-width: none;
-  }
-`
-
-const Page = styled.div`
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 904px;
-  padding-bottom: 48px;
-  padding-left: 16px;
-  padding-right: 16px;
-
-  @media (min-width: 576px) {
-    padding-left: 24px;
-    padding-right: 24px;
-  }
-
-  @media (min-width: 968px) {
-    padding-left: 32px;
-    padding-right: 32px;
-  }
-`
-
-const Pools = styled.div`
-  align-items: start;
-  display: grid;
-  grid-template-columns: repeat(8, 1fr);
-  grid-gap: 16px;
-
-  @media (min-width: 576px) {
-    grid-template-columns: repeat(8, 1fr);
-    grid-gap: 24px;
-  }
-
-  @media (min-width: 852px) {
-    grid-template-columns: repeat(12, 1fr);
-    grid-gap: 24px;
-  }
-
-  @media (min-width: 968px) {
-    grid-template-columns: repeat(12, 1fr);
-    grid-gap: 32px;
-  }
-
-  & > div {
-    grid-column: 2 / 8;
-
-    @media (min-width: 576px) {
-      grid-column: span 4;
-    }
   }
 `
 
