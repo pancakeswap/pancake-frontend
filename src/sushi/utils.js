@@ -92,6 +92,7 @@ export const getPools = (sushi) => {
           tokenName,
           projectLink,
           harvest,
+          community,
         }) => ({
           sousId,
           sousContract,
@@ -100,6 +101,7 @@ export const getPools = (sushi) => {
           tokenName,
           projectLink,
           harvest,
+          community,
         }),
       )
     : []

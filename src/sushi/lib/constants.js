@@ -61,6 +61,18 @@ export const contractAddresses = {
 }
 
 export const sousChefTeam = [
+  // {
+  //   sousId: 7,
+  //   contractAddress: {
+  //     97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
+  //     56: '0x2368BAb38a79827F49FC768BF1b6d04226704d35',
+  //   },
+  //   tokenName: 'NAR',
+  //   projectLink: 'https://www.certik.foundation/',
+  //   harvest: true,
+  //   tokenPerBlock: "1",
+  //   community: true
+  // },
   {
     sousId: 6,
     contractAddress: {

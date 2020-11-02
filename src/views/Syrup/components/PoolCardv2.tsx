@@ -44,7 +44,8 @@ interface HarvestProps {
   harvest: boolean
   tokenPerBlock: string
   cakePrice: BigNumber
-  tokenPrice: BigNumber
+  tokenPrice: BigNumber,
+  community?: boolean
 }
 
 /**
@@ -66,6 +67,7 @@ const PoolCardv2: React.FC<HarvestProps> = ({
   cakePrice,
   tokenPrice,
   tokenPerBlock,
+  community
 }) => {
   const [requestedApproval, setRequestedApproval] = useState(false)
   const { account } = useWallet()
@@ -237,6 +239,7 @@ const PoolCardv2: React.FC<HarvestProps> = ({
         blocksRemaining={blocksRemaining}
         isFinished={isReallyFinished}
         farmStart={farmStart}
+        community={community}
       />
     </Card>
   )

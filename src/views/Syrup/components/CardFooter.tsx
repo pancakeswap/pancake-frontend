@@ -5,6 +5,7 @@ import { getBalanceNumber } from '../../../utils/formatBalance'
 import useI18n from '../../../hooks/useI18n'
 import SmallValue from './Value'
 import CoreTag from './CoreTag'
+import CommunityTag from './CommunityTag'
 import { ChevronDown, ChevronUp } from 'react-feather'
 
 interface Props {
@@ -12,7 +13,8 @@ interface Props {
   totalStaked: BigNumber
   blocksRemaining: number
   isFinished: boolean
-  farmStart: number
+  farmStart: number,
+  community?: boolean
 }
 
 const StyledFooter = styled.div<{ isFinished: boolean }>`
@@ -70,7 +72,8 @@ const CardFooter: React.FC<Props> = ({
   totalStaked,
   blocksRemaining,
   isFinished,
-  farmStart
+  farmStart,
+  community
 }) => {
   const [isOpen, setIsOpen] = useState(false)
   const TranslateString = useI18n()
@@ -82,7 +85,7 @@ const CardFooter: React.FC<Props> = ({
     <StyledFooter isFinished={isFinished}>
       <Row>
         <FlexFull>
-          <CoreTag />
+          { community ? <CommunityTag /> :  <CoreTag /> }
         </FlexFull>
         <StyledDetailsButton onClick={handleClick}>
           {isOpen ? 'Hide' : 'Details'} <Icon />
