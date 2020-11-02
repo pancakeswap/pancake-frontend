@@ -22,11 +22,40 @@ const getTagVariantProp = (prop: keyof TagThemeVariant) => ({ theme, variant = v
   return theme.tag[variant][prop];
 };
 
+const getBackgroundColor = (props: ThemedProps) => {
+  if (props.outline) {
+    return "transparent";
+  }
+
+  return getTagVariantProp("background")(props);
+};
+
+const getColor = (props: ThemedProps) => {
+  const { variant = variants.PURPLE, outline } = props;
+
+  if (outline) {
+    return props.theme.tag[variant].colorOutline;
+  }
+
+  return getTagVariantProp("color")(props);
+};
+
+const getBorder = (props: ThemedProps) => {
+  const { variant = variants.PURPLE, theme, outline } = props;
+
+  if (outline) {
+    return `2px solid ${theme.tag[variant].borderColorOutline}`;
+  }
+
+  return "none";
+};
+
 export const StyledTag = styled.div<ThemedProps>`
   align-items: center;
-  background-color: ${getTagVariantProp("background")};
+  background-color: ${getBackgroundColor};
+  border: ${getBorder};
   border-radius: 16px;
-  color: ${getTagVariantProp("color")};
+  color: ${getColor};
   display: inline-flex;
   font-size: 14px;
   font-weight: 400;

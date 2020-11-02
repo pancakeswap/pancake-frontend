@@ -62,6 +62,23 @@ export const Default: React.FC = () => {
           Start & End Icon
         </Tag>
       </Row>
+      <Row>
+        <Tag outline>Core</Tag>
+        <Tag variant="pink" outline>
+          Community
+        </Tag>
+      </Row>
+      <Row>
+        <Tag startIcon={<CommunityIcon />} outline>
+          Core
+        </Tag>
+        <Tag startIcon={<CoreIcon />} variant="pink" outline>
+          Community
+        </Tag>
+        <Tag startIcon={<CoreIcon />} endIcon={<CoreIcon />} variant="pink" outline>
+          Start & End Icon
+        </Tag>
+      </Row>
     </>
   );
 };

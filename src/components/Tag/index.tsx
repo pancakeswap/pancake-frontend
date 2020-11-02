@@ -12,6 +12,7 @@ const Tag: React.FC<TagProps> = ({ startIcon, endIcon, children, ...props }) => 
 
 Tag.defaultProps = {
   variant: variants.PURPLE,
+  outline: false,
 };
 
 export default Tag;

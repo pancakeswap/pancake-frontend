@@ -10,6 +10,8 @@ export type Variants = typeof variants[keyof typeof variants];
 export type TagThemeVariant = {
   background: string;
   color: string;
+  colorOutline: string;
+  borderColorOutline: string;
 };
 
 export type TagTheme = {
@@ -20,4 +22,5 @@ export interface TagProps {
   variant?: Variants;
   startIcon?: ReactNode;
   endIcon?: ReactNode;
+  outline?: boolean;
 }
