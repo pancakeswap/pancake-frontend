@@ -243,12 +243,20 @@ export const unstake = async (masterChefContract, pid, amount, account) => {
     )
     .send({ from: account })
     .on('transactionHash', (tx) => {
-      console.log(tx)
       return tx.transactionHash
     })
 }
 
 export const sousUnstake = async (sousChefContract, amount, account) => {
+  // hard fix for old CTK
+  if (sousChefContract.options.address === '0x3B9B74f48E89Ebd8b45a53444327013a2308A9BC') {
+    return sousChefContract.methods
+      .emergencyWithdraw()
+      .send({ from: account })
+      .on('transactionHash', (tx) => {
+        return tx.transactionHash
+      })
+  }
   return sousChefContract.methods
     .withdraw(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
     .send({ from: account })
