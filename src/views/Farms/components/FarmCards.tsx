@@ -37,6 +37,7 @@ const SUSHI_PER_BLOCK = new BigNumber(40)
 const COMMUNITY_FARMS = [
   '0xa1303e6199b319a891b79685f0537d289af1fc83',
   '0x0da6ed8b13214ff28e9ca979dd37439e8a88f6c4',
+  '0xbfa0841f7a90c4ce6643f651756ee340991f99d5',
 ]
 
 const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
