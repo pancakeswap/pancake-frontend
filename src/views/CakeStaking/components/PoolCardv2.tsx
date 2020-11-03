@@ -15,6 +15,7 @@ import { useSousApprove } from '../../../hooks/useApprove'
 import { useSousEarnings, useSousLeftBlocks } from '../../../hooks/useEarnings'
 import useModal from '../../../hooks/useModal'
 import { useSousStake } from '../../../hooks/useStake'
+import useSushi from '../../../hooks/useSushi'
 import {
   useSousStakedBalance,
   useSousTotalStaked,
@@ -23,6 +24,7 @@ import useTokenBalance from '../../../hooks/useTokenBalance'
 import { useSousUnstake } from '../../../hooks/useUnstake'
 import { getBalanceNumber } from '../../../utils/formatBalance'
 import { useSousReward } from '../../../hooks/useReward'
+import { getSyrupAddress } from '../../../sushi/utils'
 
 import Balance from './Balance'
 import SmallValue from './Value'
@@ -79,6 +81,9 @@ const PoolCardv2: React.FC<HarvestProps> = ({
   const totalStaked = useSousTotalStaked(sousId)
   const earnings = useSousEarnings(sousId)
 
+  const sushi = useSushi()
+  const syrupBalance = useTokenBalance(getSyrupAddress(sushi))
+
   const { onStake } = useSousStake(sousId)
   const { onUnstake } = useSousUnstake(sousId)
 
@@ -106,9 +111,11 @@ const PoolCardv2: React.FC<HarvestProps> = ({
     <DepositModal max={tokenBalance} onConfirm={onStake} tokenName={isOldSyrup ? 'SYRUP' : 'CAKE'} />,
   )
 
+  const max = sousId === 0 ? (stakedBalance.gt(syrupBalance) ? syrupBalance : stakedBalance) : stakedBalance
+
   const [onPresentWithdraw] = useModal(
     <WithdrawModal
-      max={stakedBalance}
+      max={max}
       onConfirm={onUnstake}
       tokenName={isOldSyrup ? 'SYRUP' : 'CAKE'}
     />,
@@ -199,9 +206,13 @@ const PoolCardv2: React.FC<HarvestProps> = ({
             ) : (
               <>
                 <Button
-                  disabled={stakedBalance.eq(new BigNumber(0))}
+                  disabled={stakedBalance.eq(new BigNumber(0)) || pendingTx}
                   text={isOldSyrup ? 'Unstake SYRUP' : 'Unstake CAKE'}
-                  onClick={onPresentWithdraw}
+                  onClick={isOldSyrup ? async () =>{
+                    setPendingTx(true)
+                    await onUnstake('0')
+                    setPendingTx(false)
+                  }: onPresentWithdraw}
                 />
                 <StyledActionSpacer />
                 {!isOldSyrup && (

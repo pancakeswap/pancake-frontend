@@ -97,6 +97,39 @@ export const sousChefTeam = [
     tokenPerBlock: "10",
   },
   {
+    sousId: 9,
+    contractAddress: {
+      97: '0xAfd61Dc94f11A70Ae110dC0E0F2061Af5633061A',
+      56: '0x21A9A53936E812Da06B7623802DEc9A1f94ED23a',
+    },
+    tokenName: 'CTK',
+    projectLink: 'https://www.certik.foundation/',
+    harvest: true,
+    tokenPerBlock: "0.5",
+  },
+  {
+    sousId: 8,
+    contractAddress: {
+      97: '0xAfd61Dc94f11A70Ae110dC0E0F2061Af5633061A',
+      56: '0xe7f9A439Aa7292719aC817798DDd1c4D35934aAF',
+    },
+    tokenName: 'TWT',
+    projectLink: 'https://trustwallet.com/',
+    harvest: true,
+    tokenPerBlock: "20",
+  },
+  {
+    sousId: 7,
+    contractAddress: {
+      97: '0xAfd61Dc94f11A70Ae110dC0E0F2061Af5633061A',
+      56: '0xcec2671C81a0Ecf7F8Ee796EFa6DBDc5Cb062693',
+    },
+    tokenName: 'INJ',
+    projectLink: 'https://injectiveprotocol.com/',
+    harvest: true,
+    tokenPerBlock: "0.25",
+  },
+  {
     sousId: 6,
     contractAddress: {
       97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',

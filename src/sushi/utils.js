@@ -246,6 +246,16 @@ export const sousUnstake = async (sousChefContract, amount, account) => {
     })
 }
 
+export const sousEmegencyUnstake = async (sousChefContract, amount, account) => {
+  return sousChefContract.methods
+    .emergencyWithdraw()
+    .send({ from: account })
+    .on('transactionHash', (tx) => {
+      console.log(tx)
+      return tx.transactionHash
+    })
+}
+
 export const harvest = async (masterChefContract, pid, account) => {
   if (pid === 0) {
     return masterChefContract.methods

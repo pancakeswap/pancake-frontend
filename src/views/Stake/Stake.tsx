@@ -48,13 +48,13 @@ const Farm: React.FC = () => {
               alt="Stake Cake, get SYRUP icon"
             />
           }
-          title={TranslateString(322, 'Stake Cake, get SYRUP.')}
+          title={'Stake CAKE, get CAKE.'}
           subtitle={
-            'SYRUP holders proportionally split 40% of CAKE block emissions each day (10 CAKE per block), Rewards are distributed each block.'
+            'This page was previously used for acquiring SYRUP.'
           }
         />
-        <Title>{TranslateString(326, '1 CAKE = 1 SYRUP')}</Title>
-        <Title>{TranslateString(328, 'You can swap back anytime')}</Title>
+        <Title>Since SYRUP has now been disabled, the page is only useful for removing your SYRUP before moving it to CAKE-based pools.</Title>
+        <Title>If you stake CAKE in the CAKE pool, it’ll also show up here.</Title>
         <Spacer size="lg" />
         <StyledFarm>
           <StyledCardsWrapper>

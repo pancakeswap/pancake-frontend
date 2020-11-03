@@ -12,16 +12,17 @@ const Warning: React.FC = () => {
       <StyledTag>
         <WarningTag />
       </StyledTag>
-      <Title>Urgent Action required</Title>
+      <Title>Action Required</Title>
       <p>
-        <b>Funds are safe.</b> Due to an exploit in the contract, SYRUP has been discontinued and SYRUP Pools will be migrated to new CAKE-based pools. In order to continue earning from the new pools, you must: 
+
+        SYRUP has been discontinued due to an issue discovered in the token contract. <b>All existing and future SYRUP Pools will be migrated to CAKE-based pools. </b>In order to continue earning from SYRUP pools, you need to:
         <br/>
-                1) Unstake from all <b>existing SYRUP pools</b>
+                1. Unstake from existing SYRUP pools
           <br/>
-        2) Unstake your SYRUP from <b>staking</b>
+        2. Redistribute your CAKE among the updated pools, which will use CAKE instead of SYRUP for staking.
+
         <br/>
-        3) Migrate to <b>new pools</b>, which will use CAKE instead of SYRUP for staking.
-        <br/>
+        3. Please ensure you have sufficient SYRUP when unstaking your CAKE.
         <br/>
 
         <a href="https://medium.com/@pancakeswap/urgent-action-required-changes-to-syrup-pools-70b98d7b2541" target="_blank">
