@@ -29,6 +29,7 @@ import Stake from './views/Stake'
 import Lottery from './views/Lottery'
 import Voting from './views/Voting'
 import Syrup from './views/Syrup'
+import Syrup2 from './views/CakeStaking'
 
 // components
 import Web3ReactManager from './components/Web3ReactManager'
@@ -128,13 +129,16 @@ const App: React.FC = () => {
               <Stake />
             </Route>
             <Route path="/syrup">
-              <Syrup />
+              <Syrup2 />
             </Route>
             <Route path="/lottery">
               <Lottery />
             </Route>
             <Route path="/voting">
               <Voting />
+            </Route>
+            <Route path="/staking2">
+              <Syrup2 />
             </Route>
             <Route path="/removed">
               <Farms removed={true} />

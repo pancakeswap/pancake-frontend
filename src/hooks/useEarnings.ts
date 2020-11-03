@@ -42,11 +42,17 @@ export const useSousEarnings = (sousId) => {
   const { account }: { account: string; ethereum: provider } = useWallet()
   const sushi = useSushi()
   const sousChefContract = getSousChefContract(sushi, sousId)
+  const masterChefContract = getMasterChefContract(sushi)
   const block = useBlock()
 
   const fetchBalance = useCallback(async () => {
-    const balance = await getSousEarned(sousChefContract, account)
-    setBalance(new BigNumber(balance))
+    if(sousId === 0) {
+      const balance = await getEarned(masterChefContract, '0', account)
+      setBalance(new BigNumber(balance))
+    }else {
+      const balance = await getSousEarned(sousChefContract, account)
+      setBalance(new BigNumber(balance))
+    }
   }, [account, block, sousChefContract, sushi])
 
   useEffect(() => {
@@ -91,7 +97,7 @@ export const useSousLeftBlocks = (sousId) => {
       text: buttonText,
       farmStart: block < start ? start - block : 0,
       blocksRemaining: blocksRemaining > 0 ? blocksRemaining : 0,
-      isFinished: block > end,
+      isFinished: sousId===0 ? false : block > end,
     })
   }, [account, block, sousChefContract, sushi])
 

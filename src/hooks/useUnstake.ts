@@ -26,11 +26,18 @@ export const useSousUnstake = (sousId) => {
   const { account } = useWallet()
   const sushi = useSushi()
   const sousChefContract = getSousChefContract(sushi, sousId)
+  const masterChefContract = getMasterChefContract(sushi)
 
   const handleUnstake = useCallback(
     async (amount: string) => {
-      const txHash = await sousUnstake(sousChefContract, amount, account)
-      console.log(txHash)
+      if(sousId === 0) {
+        const txHash = await unstake(masterChefContract, 0, amount, account)
+        console.log(txHash)
+      }
+      else {
+        const txHash = await sousUnstake(sousChefContract, amount, account)
+        console.log(txHash)
+      }
     },
     [account, sushi, sousChefContract],
   )

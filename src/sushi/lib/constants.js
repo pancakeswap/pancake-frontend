@@ -62,17 +62,40 @@ export const contractAddresses = {
 
 export const sousChefTeam = [
   // {
-  //   sousId: 7,
+  //   sousId: 9,
   //   contractAddress: {
   //     97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
-  //     56: '0x2368BAb38a79827F49FC768BF1b6d04226704d35',
+  //     56: '0xD24dF34BA6B458932c384B00e695dc06251bF599',
   //   },
-  //   tokenName: 'NAR',
-  //   projectLink: 'https://www.certik.foundation/',
+  //   tokenName: 'NYA',
+  //   projectLink: 'https://nyanswop.org/',
   //   harvest: true,
-  //   tokenPerBlock: "1",
+  //   tokenPerBlock: "10",
   //   community: true
   // },
+  // {
+  //   sousId: 8,
+  //   contractAddress: {
+  //     97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
+  //     56: '0xeBDd3765E494716C04D7cbb02eDF8f8972bEa7D0',
+  //   },
+  //   tokenName: 'STAX',
+  //   projectLink: 'http://stablexswap.com/',
+  //   harvest: true,
+  //   tokenPerBlock: "0.2",
+  //   community: true
+  // },
+  {
+    sousId: 0,
+    contractAddress: {
+      97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
+      56: '0x73feaa1eE314F8c655E354234017bE2193C9E24E',
+    },
+    tokenName: 'CAKE',
+    projectLink: 'http://pancakeswap.finance/',
+    harvest: true,
+    tokenPerBlock: "10",
+  },
   {
     sousId: 6,
     contractAddress: {
@@ -82,7 +105,7 @@ export const sousChefTeam = [
     tokenName: 'CTK',
     projectLink: 'https://www.certik.foundation/',
     harvest: true,
-    tokenPerBlock: "0.5"
+    tokenPerBlock: "0.5",
   },
   {
     sousId: 3,
@@ -93,7 +116,7 @@ export const sousChefTeam = [
     tokenName: 'INJ',
     projectLink: 'https://injectiveprotocol.com/',
     harvest: true,
-    tokenPerBlock: "0.25"
+    tokenPerBlock: "0.25",
   },
   {
     sousId: 1,
@@ -104,7 +127,7 @@ export const sousChefTeam = [
     tokenName: 'TWT',
     projectLink: 'https://trustwallet.com/',
     harvest: true,
-    tokenPerBlock: "20"
+    tokenPerBlock: "20",
   },
   {
     sousId: 4,
@@ -115,7 +138,7 @@ export const sousChefTeam = [
     tokenName: 'SXP',
     projectLink: 'https://swipe.io/',
     harvest: true,
-    tokenPerBlock: "0.5"
+    tokenPerBlock: "0.5",
   },
   {
     sousId: 5,
@@ -123,9 +146,9 @@ export const sousChefTeam = [
       97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
       56: '0x3B9B74f48E89Ebd8b45a53444327013a2308A9BC',
     },
-    tokenName: '[Old] CTK',
+    tokenName: 'CTK',
     projectLink: 'https://www.certik.foundation/',
-    tokenPerBlock: "0.5"
+    tokenPerBlock: "0.5",
   },
   {
     sousId: 2,
@@ -136,10 +159,10 @@ export const sousChefTeam = [
     tokenName: 'ALPHA',
     projectLink: 'https://alphafinance.io/',
     harvest: true,
-    tokenPerBlock: "20"
+    tokenPerBlock: "20",
   },
   {
-    sousId: 0,
+    sousId: -1,
     contractAddress: {
       97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
       56: '0x6ab8463a4185b80905e05a9ff80a2d6b714b9e95',

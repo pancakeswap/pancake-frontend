@@ -32,11 +32,21 @@ export const useSousStake = (sousId) => {
 
   const handleStake = useCallback(
     async (amount: string) => {
-      await sousStake(
-        getSousChefContract(sushi, sousId),
-        amount,
-        account,
-      )
+      if (sousId === 0) {
+        const txHash = await stake(
+          getMasterChefContract(sushi),
+          0,
+          amount,
+          account,
+        )
+      }
+      else {
+        await sousStake(
+          getSousChefContract(sushi, sousId),
+          amount,
+          account,
+        )
+      }
     },
     [account, sushi],
   )

@@ -1,5 +1,6 @@
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
+import get from 'lodash/get'
 import { sousChefTeam } from './lib/constants'
 
 BigNumber.config({
@@ -82,32 +83,7 @@ export const getFarms = (sushi) => {
 }
 
 export const getPools = (sushi) => {
-  const pools = sushi
-    ? sushi.contracts.sousChefs.map(
-        ({
-          sousId,
-          sousContract,
-          tokenPerBlock,
-          contractAddress,
-          tokenName,
-          projectLink,
-          harvest,
-          community,
-        }) => ({
-          sousId,
-          sousContract,
-          tokenPerBlock,
-          contractAddress,
-          tokenName,
-          projectLink,
-          harvest,
-          community,
-        }),
-      )
-    : []
-  if (pools.length === 0) return sousChefTeam
-
-  return pools
+  return get(sushi, 'contracts.sousChefs', sousChefTeam)
 }
 
 export const getPoolWeight = async (masterChefContract, pid) => {
@@ -128,7 +104,11 @@ export const getSousEarned = async (sousChefContract, account) => {
 
 export const getTotalStaked = async (sushi, sousChefContract) => {
   const syrup = await getSyrupContract(sushi)
-  return syrup.methods.balanceOf(sousChefContract.options.address).call()
+  const sushi2 = await getSushiContract(sushi)
+  const syrupBalance = await syrup.methods.balanceOf(sousChefContract.options.address).call()
+  const sushiBalance = await sushi2.methods.balanceOf(sousChefContract.options.address).call()
+  console.log(sushiBalance)
+  return syrupBalance>sushiBalance ? syrupBalance :sushiBalance
 }
 
 export const getTotalLPWethValue = async (
