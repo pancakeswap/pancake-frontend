@@ -7,7 +7,7 @@ import { useWallet } from 'use-wallet'
 import { COMMUNITY_FARMS } from 'sushi/lib/constants'
 import Button from 'components/Button'
 import { Farm } from 'contexts/Farms'
-import { useTokenBalance2, useBnbPrice } from 'hooks/useTokenBalance'
+import { useTokenBalance2, useBnbPrice, useCakePrice } from 'hooks/useTokenBalance'
 import useFarms from 'hooks/useFarms'
 import useSushi from 'hooks/useSushi'
 import useAllStakedValue, { StakedValue } from 'hooks/useAllStakedValue'
@@ -62,7 +62,6 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
     ? farms.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
     : farms.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X')
   const bnbPrice = useBnbPrice()
-  console.log(realFarms)
   const rows = realFarms.reduce<FarmWithStakedValue[][]>((accum, farm) => {
     const stakedValueItem = stakedValueById[farm.tokenSymbol]
 
@@ -108,6 +107,7 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
                 farm={farm}
                 stakedValue={stakedValueById[farm.tokenSymbol]}
                 removed={removed}
+                sushiPrice={sushiPrice}
               />
             ))
           : forShowPools.map((pool, index) => (
@@ -190,10 +190,13 @@ const FCard = styled.div`
 
 interface FarmCardProps {
   farm: FarmWithStakedValue
-  removed: boolean
+  removed: boolean,
+  sushiPrice?: number
 }
 
-const FarmCard: React.FC<FarmCardProps> = ({ farm, stakedValue, removed }) => {
+const cakepools = [34,35,36]
+
+const FarmCard: React.FC<FarmCardProps> = ({ farm, stakedValue, removed, sushiPrice }) => {
   const TranslateString = useI18n()
   const totalValue1 =
     useTokenBalance2(
@@ -208,8 +211,21 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, stakedValue, removed }) => {
     useBnbPrice() *
     2
 
+
+    const cakePrice = useCakePrice()
+  let totalValue2 =
+    useTokenBalance2(
+      '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
+      farm.lpTokenAddress,
+    ) *
+    cakePrice *
+    2
+
   if (farm.pid === 11) {
     totalValue = totalValue1
+  }
+  if(cakepools.includes(farm.pid)) {
+    totalValue = totalValue2
   }
 
   const [startTime] = useState(1600783200)
@@ -250,7 +266,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, stakedValue, removed }) => {
   }, [sushi, lpTokenAddress, account, setHarvestable])
 
   const poolActive = true // startTime * 1000 - Date.now() <= 0
-  const isCommunityFarm = COMMUNITY_FARMS.includes(farm.tokenName)
+  const isCommunityFarm = COMMUNITY_FARMS.includes(farm.tokenSymbol)
   const TokenIcon = isCommunityFarm ? CommunityIcon : CoreIcon
   const tokenText = isCommunityFarm
     ? TranslateString(999, 'Community')
