@@ -90,8 +90,10 @@ const PoolCardv2: React.FC<HarvestProps> = ({
 
   const [pendingTx, setPendingTx] = useState(false)
   const { onReward } = useSousReward(sousId)
+  const isCommunityFarm = COMMUNITY_FARMS.includes(tokenName)
+
   const apy = useMemo(() => {
-    if (!harvest || cakePrice.isLessThanOrEqualTo(0)) return '-'
+    if (!harvest || cakePrice.isLessThanOrEqualTo(0) || isCommunityFarm) return '-'
     const a = tokenPrice.times(BLOCKS_PER_YEAR).times(tokenPerBlock)
     const b = cakePrice.times(getBalanceNumber(totalStaked))
 
@@ -101,7 +103,6 @@ const PoolCardv2: React.FC<HarvestProps> = ({
   const isUnstaked =
     account && !allowance.toNumber() && stakedBalance.toNumber() === 0
 
-  const isCommunityFarm = COMMUNITY_FARMS.includes(tokenName)
   // TODO - Remove this when pool removed
   const isOldSyrup = SYRUPIDS.includes(sousId)
   const isReallyFinished = isFinished || isOldSyrup
