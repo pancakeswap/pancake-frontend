@@ -1,22 +1,10 @@
-import React, { useCallback } from 'react'
+import React from 'react'
 import styled from 'styled-components'
-import {
-  Heading,
-  Text,
-  BaseLayout,
-  Card,
-  Button,
-} from '@pancakeswap-libs/uikit'
-import { useWallet } from 'use-wallet'
+import { Heading, Text, BaseLayout } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
-import useFarm from 'hooks/useFarm'
-import useModal from 'hooks/useModal'
 import Page from 'components/layout/Page'
-import WalletProviderModal from 'components/WalletProviderModal'
 import Container from 'components/layout/Container'
-import CakeHarvestBalance from './components/CakeHarvestBalance'
-import CakeWalletBalance from './components/CakeWalletBalance'
-import HarvestAll from './components/HarvestAll'
+import FarmStakingCard from './components/FarmStakingCard'
 
 const Hero = styled(Container)`
   align-items: center;
@@ -60,59 +48,17 @@ const Cards = styled(BaseLayout)`
   }
 `
 
-const FarmStakingCard = styled(Card)`
-  background: url('/images/cake-bg.svg') no-repeat top right;
-`
-
-const CardTitle = styled(Heading).attrs({ size: 'lg' })`
-  margin-bottom: 24px;
-`
-
-const CardImage = styled.img`
-  margin-bottom: 16px;
-`
-
-const Label = styled.div`
-  color: ${({ theme }) => theme.colors.textSubtle};
-  font-size: 14px;
-`
-
-const Block = styled.div`
-  margin-bottom: 16px;
-`
-
-const Value = styled.div`
-  margin-bottom: 8px;
-`
-
-const Controls = styled.div`
-  display: grid;
-  grid-gap: 8px;
-  grid-template-columns: repeat(2, 1fr);
-  padding: 8px 0;
-`
-
 const Home: React.FC = () => {
-  const farmInfo = useFarm('CAKE')
   const TranslateString = useI18n()
-  const { account } = useWallet()
-  const [onPresentWalletProviderModal] = useModal(
-    <WalletProviderModal />,
-    'provider',
-  )
-
-  const handleUnlockClick = useCallback(() => {
-    onPresentWalletProviderModal()
-  }, [onPresentWalletProviderModal])
 
   return (
     <Page>
       <Hero>
         <div>
-          <Title as="h1">Pancake Swap</Title>
+          <Title as="h1">{TranslateString(999, 'Pancake Swap')}</Title>
           <Subtitle>
             {TranslateString(
-              9999,
+              999,
               'The #1 AMM and yield farm on Binance Smart Chain.',
             )}
           </Subtitle>
@@ -120,35 +66,7 @@ const Home: React.FC = () => {
       </Hero>
       <Container>
         <Cards>
-          <FarmStakingCard>
-            <CardTitle>{TranslateString(9999, 'Farms & Staking')}</CardTitle>
-            <CardImage src="/images/cake.svg" alt="cake logo" />
-            <Block>
-              <Value>
-                <CakeHarvestBalance />
-              </Value>
-              <Label>{TranslateString(9999, 'CAKE to Harvest')}</Label>
-            </Block>
-            <Block>
-              <Value>
-                <CakeWalletBalance />
-              </Value>
-              <Label>{TranslateString(9999, 'CAKE in Wallet')}</Label>
-            </Block>
-            {!account && (
-              <Button onClick={handleUnlockClick}>
-                {TranslateString(292, 'Unlock Wallet')}
-              </Button>
-            )}
-            {account && (
-              <Controls>
-                <HarvestAll />
-                <Button variant="secondary" fullWidth>
-                  Stake All
-                </Button>
-              </Controls>
-            )}
-          </FarmStakingCard>
+          <FarmStakingCard />
         </Cards>
       </Container>
     </Page>
