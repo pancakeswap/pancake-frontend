@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js'
-import { ethers } from 'ethers'
 import get from 'lodash/get'
+import { ethers } from 'ethers'
 import { sousChefTeam } from './lib/constants'
 
 BigNumber.config({
@@ -105,10 +105,14 @@ export const getSousEarned = async (sousChefContract, account) => {
 export const getTotalStaked = async (sushi, sousChefContract) => {
   const syrup = await getSyrupContract(sushi)
   const sushi2 = await getSushiContract(sushi)
-  const syrupBalance = await syrup.methods.balanceOf(sousChefContract.options.address).call()
-  const sushiBalance = await sushi2.methods.balanceOf(sousChefContract.options.address).call()
+  const syrupBalance = await syrup.methods
+    .balanceOf(sousChefContract.options.address)
+    .call()
+  const sushiBalance = await sushi2.methods
+    .balanceOf(sousChefContract.options.address)
+    .call()
   console.log(sushiBalance)
-  return syrupBalance>sushiBalance ? syrupBalance :sushiBalance
+  return syrupBalance > sushiBalance ? syrupBalance : sushiBalance
 }
 
 export const getTotalLPWethValue = async (
@@ -229,7 +233,10 @@ export const unstake = async (masterChefContract, pid, amount, account) => {
 
 export const sousUnstake = async (sousChefContract, amount, account) => {
   // hard fix for old CTK
-  if (sousChefContract.options.address === '0x3B9B74f48E89Ebd8b45a53444327013a2308A9BC') {
+  if (
+    sousChefContract.options.address ===
+    '0x3B9B74f48E89Ebd8b45a53444327013a2308A9BC'
+  ) {
     return sousChefContract.methods
       .emergencyWithdraw()
       .send({ from: account })
@@ -246,7 +253,11 @@ export const sousUnstake = async (sousChefContract, amount, account) => {
     })
 }
 
-export const sousEmegencyUnstake = async (sousChefContract, amount, account) => {
+export const sousEmegencyUnstake = async (
+  sousChefContract,
+  amount,
+  account,
+) => {
   return sousChefContract.methods
     .emergencyWithdraw()
     .send({ from: account })
@@ -295,9 +306,7 @@ export const getStaked = async (masterChefContract, pid, account) => {
 
 export const getSousStaked = async (sousChefContract, account) => {
   try {
-    const { amount } = await sousChefContract.methods
-      .userInfo(account)
-      .call()
+    const { amount } = await sousChefContract.methods.userInfo(account).call()
     return new BigNumber(amount)
   } catch (err) {
     console.log(err)

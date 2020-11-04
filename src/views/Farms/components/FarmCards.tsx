@@ -4,21 +4,25 @@ import React, { useEffect, useState, useCallback } from 'react'
 import Countdown, { CountdownRenderProps } from 'react-countdown'
 import styled, { keyframes } from 'styled-components'
 import { useWallet } from 'use-wallet'
-import Button from '../../../components/Button'
-import { Farm } from '../../../contexts/Farms'
-import { useTokenBalance2, useBnbPrice } from '../../../hooks/useTokenBalance'
-import useFarms from '../../../hooks/useFarms'
-import useSushi from '../../../hooks/useSushi'
-import useAllStakedValue, {
-  StakedValue,
-} from '../../../hooks/useAllStakedValue'
-import { getEarned, getMasterChefContract } from '../../../sushi/utils'
-import { bnToDec } from '../../../utils'
-import { TranslateString } from '../../../utils/translateTextHelpers'
-import { forShowPools, BLOCKS_PER_YEAR } from '../../../sushi/lib/constants'
-
-import useModal from '../../../hooks/useModal'
-import WalletProviderModal from '../../../components/WalletProviderModal'
+import { COMMUNITY_FARMS } from 'sushi/lib/constants'
+import Button from 'components/Button'
+import { Farm } from 'contexts/Farms'
+import { useTokenBalance2, useBnbPrice } from 'hooks/useTokenBalance'
+import useFarms from 'hooks/useFarms'
+import useSushi from 'hooks/useSushi'
+import useAllStakedValue, { StakedValue } from 'hooks/useAllStakedValue'
+import { getEarned, getMasterChefContract } from 'sushi/utils'
+import { bnToDec } from 'utils'
+import { TranslateString } from 'utils/translateTextHelpers'
+import { forShowPools, BLOCKS_PER_YEAR } from 'sushi/lib/constants'
+import useModal from 'hooks/useModal'
+import WalletProviderModal from 'components/WalletProviderModal'
+import Page from 'components/layout/Page'
+import Grid from 'components/layout/Grid'
+import CommunityIcon from 'components/icons/CommunityIcon'
+import CoreIcon from 'components/icons/CoreIcon'
+import Tag from './Tag'
+import useI18n from 'hooks/useI18n'
 
 interface FarmWithStakedValue extends Farm, StakedValue {
   apy: BigNumber
@@ -28,21 +32,22 @@ interface FarmCardsProps {
   removed: boolean
 }
 
+const SUSHI_PER_BLOCK = new BigNumber(40)
+
 const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
   const [farms] = useFarms()
   const stakedValue = useAllStakedValue()
 
-  const sushiIndex = farms.findIndex(
-    ({ tokenSymbol }) => tokenSymbol === 'CAKE',
-  )
+  const stakedValueById = stakedValue.reduce((accum, value) => {
+    return {
+      ...accum,
+      [value.tokenSymbol]: value,
+    }
+  }, {})
 
-  const sushiPrice =
-    sushiIndex >= 0 && stakedValue[sushiIndex]
-      ? stakedValue[sushiIndex].tokenPriceInWeth
-      : new BigNumber(0)
-
-  // console.log(sushiPrice, stakedValue)
-  const SUSHI_PER_BLOCK = new BigNumber(40)
+  const sushiPrice = stakedValueById['CAKE']
+    ? stakedValueById['CAKE'].tokenPriceInWeth
+    : new BigNumber(0)
 
   const [onPresentWalletProviderModal] = useModal(
     <WalletProviderModal />,
@@ -56,118 +61,102 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
   const realFarms = !removed
     ? farms.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
     : farms.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X')
-  const realStakedValue = stakedValue.slice(1)
   const bnbPrice = useBnbPrice()
-  // console.log(bnbPrice)
+  console.log(realFarms)
+  const rows = realFarms.reduce<FarmWithStakedValue[][]>((accum, farm) => {
+    const stakedValueItem = stakedValueById[farm.tokenSymbol]
 
-  const rows = realFarms.reduce<FarmWithStakedValue[][]>(
-    (farmRows, farm, i) => {
-      let apy
-      // if(farm.pid==8) {
-      //   console.log(realStakedValue[i].poolWeight)
-      // }
-      if (farm.pid === 11) {
-        apy = realStakedValue[i]
+    let apy
+
+    if (farm.pid === 11) {
+      apy = stakedValueItem
+        ? sushiPrice
+            .times(SUSHI_PER_BLOCK)
+            .times(BLOCKS_PER_YEAR)
+            .times(stakedValueItem.poolWeight)
+            .div(stakedValueItem.tokenAmount)
+            .div(2)
+            .times(bnbPrice)
+        : null
+    } else {
+      apy =
+        stakedValueItem && !removed
           ? sushiPrice
               .times(SUSHI_PER_BLOCK)
               .times(BLOCKS_PER_YEAR)
-              .times(realStakedValue[i].poolWeight)
-              .div(realStakedValue[i].tokenAmount)
-              .div(2)
-              .times(bnbPrice)
+              .times(stakedValueItem.poolWeight)
+              .div(stakedValueItem.totalWethValue)
           : null
-      } else {
-        apy =
-          realStakedValue[i] && !removed
-            ? sushiPrice
-                .times(SUSHI_PER_BLOCK)
-                .times(BLOCKS_PER_YEAR)
-                .times(realStakedValue[i].poolWeight)
-                .div(realStakedValue[i].totalWethValue)
-            : null
-      }
-      const farmWithStakedValue = {
+    }
+
+    return [
+      ...accum,
+      {
         ...farm,
-        ...realStakedValue[i],
+        ...stakedValueItem,
         apy: apy,
-      }
-      const newFarmRows = [...farmRows]
-      if (newFarmRows[newFarmRows.length - 1].length === 3) {
-        newFarmRows.push([farmWithStakedValue])
-      } else {
-        newFarmRows[newFarmRows.length - 1].push(farmWithStakedValue)
-      }
-      return newFarmRows
-    },
-    [[]],
-  )
+      },
+    ]
+  }, [])
 
   return (
-    <StyledCards>
-      {!!rows[0].length ? (
-        rows.map((farmRow, i) => (
-          <StyledRow key={i}>
-            {farmRow.map((farm, j) => (
-              <React.Fragment key={j}>
-                <FarmCard
-                  farm={farm}
-                  stakedValue={realStakedValue[j]}
-                  removed={removed}
-                />
-                {(j === 0 || j === 1) && <StyledSpacer />}
-              </React.Fragment>
-            ))}
-          </StyledRow>
-        ))
-      ) : (
-        <StyledLoadingWrapper>
-          <FContent>
-            {forShowPools.map((pool, index) => (
+    <Page>
+      <Grid>
+        {rows.length > 0
+          ? rows.map((farm) => (
+              <FarmCard
+                farm={farm}
+                stakedValue={stakedValueById[farm.tokenSymbol]}
+                removed={removed}
+              />
+            ))
+          : forShowPools.map((pool, index) => (
               <FCard key={index}>
                 <CardImage>
-                  <Multiplier>{pool.multiplier}</Multiplier>
+                  <div>
+                    <Multiplier>{pool.multiplier}</Multiplier>
+                    <Tag>
+                      <CoreIcon />
+                      <span style={{ marginLeft: '4px' }}>
+                        {TranslateString(999, 'Core')}
+                      </span>
+                    </Tag>
+                  </div>
                   <img
                     src={`/images/tokens/category-${pool.tokenSymbol}.png`}
                     alt={pool.tokenSymbol}
                   />
                 </CardImage>
-                <Lable>
+                <Label>
                   <span>{TranslateString(316, 'Deposit')}</span>
                   <span className="right">{pool.symbol}</span>
-                </Lable>
-                <Lable>
+                </Label>
+                <Label>
                   <span>{TranslateString(318, 'Earn')}</span>
                   <span className="right">CAKE</span>
-                </Lable>
-
-                <Button
-                  onClick={handleUnlockClick}
-                  size="md"
-                  text={TranslateString(292, 'Unlock Wallet')}
-                />
+                </Label>
+                <Action>
+                  <Button
+                    onClick={handleUnlockClick}
+                    size="md"
+                    text={TranslateString(292, 'Unlock Wallet')}
+                  />
+                </Action>
               </FCard>
             ))}
-          </FContent>
-        </StyledLoadingWrapper>
-      )}
-    </StyledCards>
+      </Grid>
+    </Page>
   )
 }
 
-const FContent = styled.div`
-  display: flex;
-  margin-bottom: 24px;
-  flex-wrap: wrap;
-  @media (max-width: 500px) {
-    justify-content: center;
-  }
-`
-
 const CardImage = styled.div`
+  display: flex;
+  justify-content: space-between;
   text-align: center;
+  margin-bottom: 16px;
 `
 
-const Lable = styled.div`
+const Label = styled.div`
   line-height: 1.5rem;
   color: ${(props) => props.theme.colors.secondary};
   > span {
@@ -181,25 +170,21 @@ const Lable = styled.div`
 `
 
 const FCard = styled.div`
-  position: relative;
+  align-self: stretch;
   background: ${(props) => props.theme.colors.cardBg};
-  box-shadow: 0px 2px 10px rgba(171, 133, 115, 0.16);
-  border-radius: 20px;
-  height: 309px;
-  padding: 20px;
-  justify-content: center;
+  border-radius: 32px;
+  box-shadow: 0px 2px 12px -8px rgba(25, 19, 38, 0.1),
+    0px 1px 1px rgba(25, 19, 38, 0.05);
+  display: flex;
   flex-direction: column;
   justify-content: space-around;
-  display: flex;
-  width: 240px;
+  padding: 24px;
+  position: relative;
   text-align: center;
-  margin: 6px;
+
   img {
     height: 80px;
     width: 80px;
-  }
-  @media (max-width: 500px) {
-    margin: 10px;
   }
 `
 
@@ -209,6 +194,7 @@ interface FarmCardProps {
 }
 
 const FarmCard: React.FC<FarmCardProps> = ({ farm, stakedValue, removed }) => {
+  const TranslateString = useI18n()
   const totalValue1 =
     useTokenBalance2(
       '0x55d398326f99059ff775485246999027b3197955',
@@ -264,79 +250,92 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, stakedValue, removed }) => {
   }, [sushi, lpTokenAddress, account, setHarvestable])
 
   const poolActive = true // startTime * 1000 - Date.now() <= 0
+  const isCommunityFarm = COMMUNITY_FARMS.includes(farm.tokenName)
+  const TokenIcon = isCommunityFarm ? CommunityIcon : CoreIcon
+  const tokenText = isCommunityFarm
+    ? TranslateString(999, 'Community')
+    : TranslateString(999, 'Core')
 
   return (
-    <StyledCardWrapper>
+    <FCard>
       {farm.tokenSymbol === 'CAKE' && <StyledCardAccent />}
-
-      <StyledContent>
-        <FCard>
-          <CardImage>
-            <Multiplier>{farm.multiplier}</Multiplier>
-            <img
-              src={`/images/tokens/category-${farm.tokenSymbol}.png`}
-              alt={farm.tokenSymbol}
-            />
-          </CardImage>
-          <Lable>
-            <span>{TranslateString(316, 'Deposit')}</span>
-            <span className="right">
-              {farm.lpToken.toUpperCase().replace('PANCAKE', '')}
-            </span>
-          </Lable>
-          <Lable>
-            <span>{TranslateString(318, 'Earn')}</span>
-            <span className="right">CAKE</span>
-          </Lable>
-          {!removed && (
-            <Lable>
-              <span>{TranslateString(352, 'APY')}</span>
-              <span className="right">
-                {farm.apy
-                  ? `${farm.apy
-                      .times(new BigNumber(100))
-                      .toNumber()
-                      .toLocaleString('en-US')
-                      .slice(0, -1)}%`
-                  : 'Loading ...'}
-              </span>
-            </Lable>
+      <CardImage>
+        <div>
+          <Multiplier>{farm.multiplier}</Multiplier>
+          <Tag>
+            <TokenIcon />
+            <span style={{ marginLeft: '4px' }}>{tokenText}</span>
+          </Tag>
+        </div>
+        <img
+          src={`/images/tokens/category-${farm.tokenSymbol}.png`}
+          alt={farm.tokenSymbol}
+        />
+      </CardImage>
+      <Label>
+        <span>{TranslateString(316, 'Deposit')}</span>
+        <span className="right">
+          {farm.lpToken.toUpperCase().replace('PANCAKE', '')}
+        </span>
+      </Label>
+      <Label>
+        <span>{TranslateString(318, 'Earn')}</span>
+        <span className="right">CAKE</span>
+      </Label>
+      {!removed && (
+        <Label>
+          <span>{TranslateString(352, 'APY')}</span>
+          <span className="right">
+            {farm.apy
+              ? `${farm.apy
+                  .times(new BigNumber(100))
+                  .toNumber()
+                  .toLocaleString('en-US')
+                  .slice(0, -1)}%`
+              : 'Loading ...'}
+          </span>
+        </Label>
+      )}
+      <Action>
+        <Button
+          disabled={!poolActive}
+          text={poolActive ? 'Select' : undefined}
+          to={`/farms/${farm.id}`}
+        >
+          {!poolActive && (
+            <Countdown date={new Date(startTime * 1000)} renderer={renderer} />
           )}
-
-          <Button
-            disabled={!poolActive}
-            text={poolActive ? 'Select' : undefined}
-            to={`/farms/${farm.id}`}
-          >
-            {!poolActive && (
-              <Countdown
-                date={new Date(startTime * 1000)}
-                renderer={renderer}
-              />
-            )}
-          </Button>
-          <StyledSpacer2 />
-          {!removed && (
-            <Lable>
-              <span>{TranslateString(23, 'Total Liquidity')}</span>
-              <span className="right">
-                {farm.lpToken !== 'BAKE-BNB Bakery LP'
-                  ? `$${parseInt(totalValue).toLocaleString()}`
-                  : '-'}
-              </span>
-            </Lable>
-          )}
-          <Link
-            href={`https://bscscan.com/address/${farm.lpTokenAddress}`}
-            target="_blank"
-          >
-            {TranslateString(356, 'View on BscScan')} &gt;
-          </Link>
-        </FCard>
-      </StyledContent>
-    </StyledCardWrapper>
+        </Button>
+      </Action>
+      {!removed && (
+        <Label>
+          <span>{TranslateString(23, 'Total Liquidity')}</span>
+          <span className="right">
+            {farm.lpToken !== 'BAKE-BNB Bakery LP'
+              ? `$${parseInt(totalValue).toLocaleString()}`
+              : '-'}
+          </span>
+        </Label>
+      )}
+      <ViewMore>
+        <Link
+          href={`https://bscscan.com/address/${farm.lpTokenAddress}`}
+          target="_blank"
+        >
+          {TranslateString(356, 'View on BscScan')} &gt;
+        </Link>
+      </ViewMore>
+    </FCard>
   )
 }
+
+const Action = styled.div`
+  padding: 16px 0;
+`
+
+const ViewMore = styled.div`
+  padding-top: 16px;
+`
 
 const Link = styled.a`
   text-decoration: none;
@@ -373,7 +372,7 @@ const StyledCardAccent = styled.div`
   );
   background-size: 300% 300%;
   animation: ${RainbowLight} 2s linear infinite;
-  border-radius: 12px;
+  border-radius: 16px;
   filter: blur(6px);
   position: absolute;
   top: -2px;
@@ -383,64 +382,14 @@ const StyledCardAccent = styled.div`
   z-index: -1;
 `
 
-const StyledCards = styled.div`
-  width: 900px;
-  @media (max-width: 768px) {
-    width: 100%;
-  }
-`
-
-const StyledLoadingWrapper = styled.div`
-  align-items: center;
-  display: flex;
-  flex: 1;
-  justify-content: center;
-`
-
-const StyledRow = styled.div`
-  display: flex;
-  margin-bottom: ${(props) => props.theme.spacing[4]}px;
-  flex-flow: row wrap;
-  @media (max-width: 768px) {
-    width: 100%;
-    flex-flow: column nowrap;
-    align-items: center;
-  }
-`
-
-const StyledCardWrapper = styled.div`
-  display: flex;
-  width: calc((900px - ${(props) => props.theme.spacing[4]}px * 2) / 3);
-  position: relative;
-`
-
-const StyledContent = styled.div`
-  position: relative;
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-`
-
 const Multiplier = styled.div`
-  position: absolute;
   line-height: 25px;
-  padding: 0 12px;
+  padding: 0 8px;
   background: ${(props) => props.theme.colors.blue[100]};
-  border-radius: 10px;
+  border-radius: 8px;
   color: ${(props) => props.theme.colors.bg};
   font-weight: 900;
-  left: 20px;
-  top: 20px;
-`
-
-const StyledSpacer = styled.div`
-  height: ${(props) => props.theme.spacing[4]}px;
-  width: ${(props) => props.theme.spacing[4]}px;
-`
-
-const StyledSpacer2 = styled.div`
-  height: ${(props) => props.theme.spacing[1]}px;
-  width: ${(props) => props.theme.spacing[1]}px;
+  margin-bottom: 8px;
 `
 
 export default FarmCards

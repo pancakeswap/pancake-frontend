@@ -1,28 +1,28 @@
+// @ts-nocheck
 import BigNumber from 'bignumber.js'
 import React, { useCallback, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { useWallet } from 'use-wallet'
 import { Contract } from 'web3-eth-contract'
-import Button from '../../../components/Button'
+import Button from 'components/Button'
 import HarvestButton from './HarvestButton'
-import IconButton from '../../../components/IconButton'
-import { AddIcon } from '../../../components/icons'
-import Label from '../../../components/Label'
-import { BLOCKS_PER_YEAR } from '../../../sushi/lib/constants'
-
-import { useSousAllowance } from '../../../hooks/useAllowance'
-import { useSousApprove } from '../../../hooks/useApprove'
-import { useSousEarnings, useSousLeftBlocks } from '../../../hooks/useEarnings'
-import useModal from '../../../hooks/useModal'
-import { useSousStake } from '../../../hooks/useStake'
+import IconButton from 'components/IconButton'
+import { AddIcon } from 'components/icons'
+import Label from 'components/Label'
+import { COMMUNITY_FARMS, BLOCKS_PER_YEAR } from 'sushi/lib/constants'
+import { useSousAllowance } from 'hooks/useAllowance'
+import { useSousApprove } from 'hooks/useApprove'
+import { useSousEarnings, useSousLeftBlocks } from 'hooks/useEarnings'
+import useModal from 'hooks/useModal'
+import { useSousStake } from 'hooks/useStake'
 import {
   useSousStakedBalance,
   useSousTotalStaked,
-} from '../../../hooks/useStakedBalance'
-import useTokenBalance from '../../../hooks/useTokenBalance'
-import { useSousUnstake } from '../../../hooks/useUnstake'
-import { getBalanceNumber } from '../../../utils/formatBalance'
-import { useSousReward } from '../../../hooks/useReward'
+} from 'hooks/useStakedBalance'
+import useTokenBalance from 'hooks/useTokenBalance'
+import { useSousUnstake } from 'hooks/useUnstake'
+import { getBalanceNumber } from 'utils/formatBalance'
+import { useSousReward } from 'hooks/useReward'
 
 import Balance from './Balance'
 import SmallValue from './Value'
@@ -44,7 +44,7 @@ interface HarvestProps {
   harvest: boolean
   tokenPerBlock: string
   cakePrice: BigNumber
-  tokenPrice: BigNumber,
+  tokenPrice: BigNumber
   community?: boolean
 }
 
@@ -67,7 +67,7 @@ const PoolCardv2: React.FC<HarvestProps> = ({
   cakePrice,
   tokenPrice,
   tokenPerBlock,
-  community
+  community,
 }) => {
   const [requestedApproval, setRequestedApproval] = useState(false)
   const { account } = useWallet()
@@ -96,6 +96,7 @@ const PoolCardv2: React.FC<HarvestProps> = ({
   const isUnstaked =
     account && !allowance.toNumber() && stakedBalance.toNumber() === 0
 
+  const isCommunityFarm = COMMUNITY_FARMS.includes(tokenName)
   // TODO - Remove this when pool removed
   const isOldCTXPool = sousId === CTXOLD
   const isReallyFinished = isFinished || isOldCTXPool
@@ -239,7 +240,7 @@ const PoolCardv2: React.FC<HarvestProps> = ({
         blocksRemaining={blocksRemaining}
         isFinished={isReallyFinished}
         farmStart={farmStart}
-        community={community}
+        community={isCommunityFarm}
       />
     </Card>
   )
