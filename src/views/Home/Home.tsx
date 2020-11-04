@@ -6,18 +6,20 @@ import Page from 'components/layout/Page'
 import Container from 'components/layout/Container'
 import FarmStakingCard from './components/FarmStakingCard'
 import LotteryCard from './components/LotteryCard'
+import CakeStats from './components/CakeStats'
 
-const Hero = styled(Container)`
+const Hero = styled.div`
   align-items: center;
   background-image: url('/images/pan-bg-mobile.svg');
   background-repeat: no-repeat;
   background-position: top center;
   display: flex;
   justify-content: center;
-  margin-top: 32px;
-  margin-bottom: 32px;
+  margin: 32px auto;
+  max-width: 904px;
   padding-top: 116px;
   text-align: center;
+
   ${({ theme }) => theme.mediaQueries.lg} {
     background-image: url('/images/pan-bg.svg'), url('/images/pan-bg2.svg');
     background-position: left center, right center;
@@ -31,9 +33,6 @@ const Title = styled(Heading)`
   color: ${({ theme }) => theme.colors.secondary};
   font-size: 40px;
   margin-bottom: ${({ theme }) => theme.spacing[4]}px;
-  ${({ theme }) => theme.mediaQueries.lg} {
-    font-size: 64px;
-  }
 `
 
 const Subtitle = styled(Text)`
@@ -42,9 +41,22 @@ const Subtitle = styled(Text)`
 
 const Cards = styled(BaseLayout)`
   align-items: start;
+  margin-bottom: 48px;
 
   & > div {
     grid-column: span 6;
+  }
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    & > div {
+      grid-column: span 8;
+    }
+  }
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    & > div {
+      grid-column: span 6;
+    }
   }
 `
 
@@ -69,6 +81,7 @@ const Home: React.FC = () => {
           <FarmStakingCard />
           <LotteryCard />
         </Cards>
+        <CakeStats />
       </Container>
     </Page>
   )

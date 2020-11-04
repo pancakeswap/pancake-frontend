@@ -23,6 +23,7 @@ const CardValue: React.FC<CardValueProps> = ({
     start: 0,
     end: value,
     duration: 1,
+    separator: ',',
     decimals:
       decimals !== undefined ? decimals : value < 0 ? 4 : value > 1e5 ? 0 : 3,
   })

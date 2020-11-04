@@ -17,6 +17,15 @@ const StyledLotteryCard = styled(Card)`
   background-image: url('/images/ticket-bg.svg');
   background-repeat: no-repeat;
   background-position: top right;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 344px;
+  width: 100%;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    margin: 0;
+    max-width: none;
+  }
 `
 const CardTitle = styled(Heading).attrs({ size: 'lg' })`
   margin-bottom: 24px;
