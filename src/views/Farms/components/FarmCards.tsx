@@ -77,7 +77,19 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
             .div(2)
             .times(bnbPrice)
         : null
-    } else {
+    }
+    else if(COMMUNITY_FARMS.includes(farm.tokenSymbol)) {
+      apy = stakedValueItem
+        ? sushiPrice
+            .times(SUSHI_PER_BLOCK)
+            .times(BLOCKS_PER_YEAR)
+            .times(stakedValueItem.poolWeight)
+            .div(stakedValueItem.tokenAmount)
+            .div(2)
+            .times(bnbPrice)
+        : null
+    }
+    else {
       apy =
         stakedValueItem && !removed
           ? sushiPrice
@@ -194,7 +206,6 @@ interface FarmCardProps {
   sushiPrice?: number
 }
 
-const cakepools = [34,35,36]
 
 const FarmCard: React.FC<FarmCardProps> = ({ farm, stakedValue, removed, sushiPrice }) => {
   const TranslateString = useI18n()
@@ -212,7 +223,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, stakedValue, removed, sushiPr
     2
 
 
-    const cakePrice = useCakePrice()
+  const cakePrice = useCakePrice()
   let totalValue2 =
     useTokenBalance2(
       '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
@@ -224,7 +235,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, stakedValue, removed, sushiPr
   if (farm.pid === 11) {
     totalValue = totalValue1
   }
-  if(cakepools.includes(farm.pid)) {
+  if(COMMUNITY_FARMS.includes(farm.tokenSymbol)) {
     totalValue = totalValue2
   }
 
