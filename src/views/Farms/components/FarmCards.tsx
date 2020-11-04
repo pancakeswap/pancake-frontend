@@ -62,6 +62,13 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
     ? farms.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
     : farms.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X')
   const bnbPrice = useBnbPrice()
+
+  // temp fix
+  const staxBalance = useTokenBalance2('0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82', '0x7cd05f8b960ba071fdf69c750c0e5a57c8366500')
+  const narBalance = useTokenBalance2('0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82', '0x745c4fd226e169d6da959283275a8e0ecdd7f312')
+  const nyaBalance = useTokenBalance2('0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82', '0x2730bf486d658838464a4ef077880998d944252d')
+
+
   const rows = realFarms.reduce<FarmWithStakedValue[][]>((accum, farm) => {
     const stakedValueItem = stakedValueById[farm.tokenSymbol]
 
@@ -78,15 +85,31 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
             .times(bnbPrice)
         : null
     }
-    else if(COMMUNITY_FARMS.includes(farm.tokenSymbol)) {
+    else if(farm.tokenSymbol === 'STAX') {
       apy = stakedValueItem
-        ? sushiPrice
-            .times(SUSHI_PER_BLOCK)
+        ? SUSHI_PER_BLOCK
             .times(BLOCKS_PER_YEAR)
             .times(stakedValueItem.poolWeight)
-            .div(stakedValueItem.tokenAmount)
+            .div(staxBalance)
             .div(2)
-            .times(bnbPrice)
+        : null
+    }
+    else if(farm.tokenSymbol === 'NAR') {
+      apy = stakedValueItem
+        ? SUSHI_PER_BLOCK
+            .times(BLOCKS_PER_YEAR)
+            .times(stakedValueItem.poolWeight)
+            .div(narBalance)
+            .div(2)
+        : null
+    }
+    else if(farm.tokenSymbol === 'NYA') {
+      apy = stakedValueItem
+        ? SUSHI_PER_BLOCK
+            .times(BLOCKS_PER_YEAR)
+            .times(stakedValueItem.poolWeight)
+            .div(nyaBalance)
+            .div(2)
         : null
     }
     else {
