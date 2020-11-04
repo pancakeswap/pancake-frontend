@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/accessible-emoji */
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import { useWallet } from 'use-wallet'
@@ -95,8 +95,6 @@ const SyrupRow: React.FC<SyrupRowProps> = ({
 }
 
 const Farm: React.FC = () => {
-  const [state, setState] = useState({ isLoading: true, pools: [] })
-  const { account, ethereum } = useWallet()
   const sushi = useSushi()
   const TranslateString = useI18n()
   const stakedValue = useAllStakedValue()
@@ -123,37 +121,8 @@ const Farm: React.FC = () => {
   }, [stakedValue, pools])
 
   useEffect(() => {
-    const addBlockSnapshot = async () => {
-      // For each pool get a snaphsot of to determine the state of
-      // the pool, then sort
-      const poolSnapshots = await Promise.all(
-        transformedPools.map(async (pool) => {
-          const blockSnapshot = await getSousBlockDataSnapshot(ethereum, sushi, pool.sousId)
-
-          return {
-            ...pool,
-            blockSnapshot,
-          }
-        }),
-      )
-
-      setState({
-        isLoading: false,
-        pools: orderBy(poolSnapshots, ['blockSnapshot.isFinished'], ['asc']),
-      })
-    }
-
-    if (account && ethereum && sushi) {
-      addBlockSnapshot()
-    } else {
-      // For logged out users sort the pools by id. Good chance
-      // the newest ones are the most relevant
-      setState({
-        isLoading: false,
-        pools: orderBy(transformedPools, ['sousId'], ['desc']),
-      })
-    }
-  }, [account, ethereum, sushi, stakedValue, transformedPools, setState])
+    window.scrollTo(0, 0)
+  }, [])
 
   return (
     <Page>
@@ -193,7 +162,7 @@ const Hero = styled.div`
   padding: 48px 0;
   h1 {
     font-size: 64px;
-    color: ${({ theme }) => theme.colors.secondary};
+    color: ${({ theme }) => theme.colors.secondary2};
     line-height: 1.1;
     margin: 0 0 32px 0;
   }

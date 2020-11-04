@@ -46,7 +46,7 @@ const Value = styled.div`
 `
 
 const Footer = styled.div`
-  border-top: 1px solid ${({ theme }) => theme.colors.backgroundDisabled};
+  border-top: 1px solid ${({ theme }) => (theme.isDark ? '#524B63' : '#E9EAEB')};
   padding: 24px;
 `
 const Coming: React.FC = () => {
@@ -61,10 +61,7 @@ const Coming: React.FC = () => {
             👀
           </span>
         </CardTitle>
-        <CardTokenImg
-          src={`/images/your-project-token.svg`}
-          alt="Your project here"
-        />
+        <CardTokenImg src={`/images/your-project-token.svg`} alt="Your project here" />
         <Balance>???</Balance>
         <Label>{TranslateString(416, 'Create a pool for your token')}</Label>
         <ApplyNowLink
