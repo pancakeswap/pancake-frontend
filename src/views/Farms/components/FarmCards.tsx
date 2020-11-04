@@ -240,12 +240,7 @@ interface FarmCardProps {
   sushiPrice?: number
 }
 
-const FarmCard: React.FC<FarmCardProps> = ({
-  farm,
-  stakedValue,
-  removed,
-  sushiPrice,
-}) => {
+const FarmCard: React.FC<FarmCardProps> = ({ farm, stakedValue, removed }) => {
   const TranslateString = useI18n()
   const totalValue1 =
     useTokenBalance2(
