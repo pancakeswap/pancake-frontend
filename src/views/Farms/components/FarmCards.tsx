@@ -4,6 +4,7 @@ import React, { useEffect, useState, useCallback } from 'react'
 import Countdown, { CountdownRenderProps } from 'react-countdown'
 import styled, { keyframes } from 'styled-components'
 import { useWallet } from 'use-wallet'
+import { COMMUNITY_FARMS } from 'sushi/lib/constants'
 import Button from 'components/Button'
 import { Farm } from 'contexts/Farms'
 import { useTokenBalance2, useBnbPrice } from 'hooks/useTokenBalance'
@@ -32,13 +33,6 @@ interface FarmCardsProps {
 }
 
 const SUSHI_PER_BLOCK = new BigNumber(40)
-
-// TODO: Use pids if possible
-const COMMUNITY_FARMS = [
-  '0xa1303e6199b319a891b79685f0537d289af1fc83',
-  '0x0da6ed8b13214ff28e9ca979dd37439e8a88f6c4',
-  '0xbfa0841f7a90c4ce6643f651756ee340991f99d5',
-]
 
 const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
   const [farms] = useFarms()
@@ -256,9 +250,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, stakedValue, removed }) => {
   }, [sushi, lpTokenAddress, account, setHarvestable])
 
   const poolActive = true // startTime * 1000 - Date.now() <= 0
-  const isCommunityFarm = COMMUNITY_FARMS.includes(
-    farm.tokenAddress.toLocaleLowerCase(),
-  )
+  const isCommunityFarm = COMMUNITY_FARMS.includes(farm.tokenName)
   const TokenIcon = isCommunityFarm ? CommunityIcon : CoreIcon
   const tokenText = isCommunityFarm
     ? TranslateString(999, 'Community')
