@@ -14,12 +14,7 @@ interface DepositModalProps extends ModalProps {
   tokenName?: string
 }
 
-const DepositModal: React.FC<DepositModalProps> = ({
-  max,
-  onConfirm,
-  onDismiss,
-  tokenName = '',
-}) => {
+const DepositModal: React.FC<DepositModalProps> = ({ max, onConfirm, onDismiss, tokenName = '' }) => {
   const [val, setVal] = useState('')
   const [pendingTx, setPendingTx] = useState(false)
   const TranslateString = useI18n()
@@ -40,9 +35,7 @@ const DepositModal: React.FC<DepositModalProps> = ({
 
   return (
     <Modal>
-      <ModalTitle
-        text={`${TranslateString(316, 'Deposit')} ${tokenName} Tokens`}
-      />
+      <ModalTitle text={`${TranslateString(316, 'Deposit')} ${tokenName} Tokens`} />
       <TokenInput
         value={val}
         onSelectMax={handleSelectMax}
@@ -64,9 +57,7 @@ const DepositModal: React.FC<DepositModalProps> = ({
             onDismiss()
           }}
         >
-          {pendingTx
-            ? TranslateString(488, 'Pending Confirmation')
-            : TranslateString(464, 'Confirm')}
+          {pendingTx ? TranslateString(488, 'Pending Confirmation') : TranslateString(464, 'Confirm')}
         </Button>
       </ModalActions>
     </Modal>
