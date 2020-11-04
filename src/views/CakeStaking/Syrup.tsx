@@ -180,7 +180,7 @@ const Hero = styled.div`
   padding: 48px 0;
   h1 {
     font-size: 64px;
-    color: ${({ theme }) => theme.colors.secondary};
+    color: ${({ theme }) => theme.colors.secondary2};
     line-height: 1.1;
     margin: 0 0 32px 0;
   }
