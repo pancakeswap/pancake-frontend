@@ -80,8 +80,8 @@ export const sousChefTeam = [
     tokenName: 'STAX',
     projectLink: 'http://stablexswap.com/',
     harvest: true,
-    tokenPerBlock: "0.2",
-    community: true
+    tokenPerBlock: '0.2',
+    community: true,
   },
   {
     sousId: 11,
@@ -92,8 +92,8 @@ export const sousChefTeam = [
     tokenName: 'NAR',
     projectLink: 'https://narwhalswap.org/',
     harvest: true,
-    tokenPerBlock: "1",
-    community: true
+    tokenPerBlock: '1',
+    community: true,
   },
   {
     sousId: 10,
@@ -104,8 +104,8 @@ export const sousChefTeam = [
     tokenName: 'NYA',
     projectLink: 'https://nyanswop.org/',
     harvest: true,
-    tokenPerBlock: "10",
-    community: true
+    tokenPerBlock: '10',
+    community: true,
   },
   {
     sousId: 9,
@@ -912,19 +912,22 @@ export const forShowPools = [
     symbol: 'STAX-CAKE',
     tokenSymbol: 'STAX',
     multiplier: '0.1X',
+    isCommunity: true,
   },
   {
     pid: 35,
     symbol: 'NAR-CAKE',
     tokenSymbol: 'NAR',
     multiplier: '0.1X',
+    isCommunity: true,
   },
   {
     pid: 36,
     symbol: 'NYA-CAKE',
     tokenSymbol: 'NYA',
     multiplier: '0.1X',
-  }
+    isCommunity: true,
+  },
 ]
 
 export const BLOCKS_PER_YEAR = new BigNumber(10512000)
