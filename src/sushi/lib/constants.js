@@ -653,6 +653,51 @@ export const supportedPools = [
     multiplier: '1X',
   },
   {
+    pid: 34,
+    lpAddresses: {
+      97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
+      56: '0x7cd05f8b960ba071fdf69c750c0e5a57c8366500',
+    },
+    tokenAddresses: {
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
+      56: '0x0Da6Ed8B13214Ff28e9Ca979Dd37439e8a88F6c4',
+    },
+    symbol: 'STAX-BNB FLIP',
+    tokenSymbol: 'STAX',
+    icon: '🥞',
+    multiplier: '0.1X',
+  },
+  {
+    pid: 35,
+    lpAddresses: {
+      97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
+      56: '0x745c4fd226e169d6da959283275a8e0ecdd7f312',
+    },
+    tokenAddresses: {
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
+      56: '0xa1303e6199b319a891b79685f0537d289af1fc83',
+    },
+    symbol: 'NAR-BNB FLIP',
+    tokenSymbol: 'NAR',
+    icon: '🥞',
+    multiplier: '0.1X',
+  },
+  {
+    pid: 36,
+    lpAddresses: {
+      97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
+      56: '0x2730bf486d658838464a4ef077880998d944252d',
+    },
+    tokenAddresses: {
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
+      56: '0xbfa0841f7a90c4ce6643f651756ee340991f99d5',
+    },
+    symbol: 'NYA-BNB FLIP',
+    tokenSymbol: 'NYA',
+    icon: '🥞',
+    multiplier: '0.1X',
+  },
+  {
     pid: 8,
     lpAddresses: {
       97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
@@ -862,6 +907,24 @@ export const forShowPools = [
     tokenSymbol: 'CTK',
     multiplier: '1X',
   },
+  {
+    pid: 34,
+    symbol: 'STAX-BNB',
+    tokenSymbol: 'STAX',
+    multiplier: '0.1X',
+  },
+  {
+    pid: 35,
+    symbol: 'NAR-BNB',
+    tokenSymbol: 'NAR',
+    multiplier: '0.1X',
+  },
+  {
+    pid: 36,
+    symbol: 'NYA-BNB',
+    tokenSymbol: 'NYA',
+    multiplier: '0.1X',
+  }
 ]
 
 export const BLOCKS_PER_YEAR = new BigNumber(10512000)
