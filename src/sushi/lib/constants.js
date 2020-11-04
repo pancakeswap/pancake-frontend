@@ -60,30 +60,6 @@ export const contractAddresses = {
 }
 
 export const sousChefTeam = [
-  // {
-  //   sousId: 9,
-  //   contractAddress: {
-  //     97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
-  //     56: '0xD24dF34BA6B458932c384B00e695dc06251bF599',
-  //   },
-  //   tokenName: 'NYA',
-  //   projectLink: 'https://nyanswop.org/',
-  //   harvest: true,
-  //   tokenPerBlock: "10",
-  //   community: true
-  // },
-  // {
-  //   sousId: 8,
-  //   contractAddress: {
-  //     97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
-  //     56: '0xeBDd3765E494716C04D7cbb02eDF8f8972bEa7D0',
-  //   },
-  //   tokenName: 'STAX',
-  //   projectLink: 'http://stablexswap.com/',
-  //   harvest: true,
-  //   tokenPerBlock: "0.2",
-  //   community: true
-  // },
   {
     sousId: 0,
     contractAddress: {
@@ -94,6 +70,42 @@ export const sousChefTeam = [
     projectLink: 'http://pancakeswap.finance/',
     harvest: true,
     tokenPerBlock: '10',
+  },
+  {
+    sousId: 12,
+    contractAddress: {
+      97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
+      56: '0xFF02241a2A1d2a7088A344309400E9fE74772815',
+    },
+    tokenName: 'STAX',
+    projectLink: 'http://stablexswap.com/',
+    harvest: true,
+    tokenPerBlock: "0.2",
+    community: true
+  },
+  {
+    sousId: 11,
+    contractAddress: {
+      97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
+      56: '0xDc938BA1967b06d666dA79A7B1E31a8697D1565E',
+    },
+    tokenName: 'NAR',
+    projectLink: 'https://narwhalswap.org/',
+    harvest: true,
+    tokenPerBlock: "1",
+    community: true
+  },
+  {
+    sousId: 10,
+    contractAddress: {
+      97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
+      56: '0x07a0A5B67136d40F4d7d95Bc8e0583bafD7A81b9',
+    },
+    tokenName: 'NYA',
+    projectLink: 'https://nyanswop.org/',
+    harvest: true,
+    tokenPerBlock: "10",
+    community: true
   },
   {
     sousId: 9,
