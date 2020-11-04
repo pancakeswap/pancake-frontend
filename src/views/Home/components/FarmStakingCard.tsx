@@ -2,9 +2,7 @@ import React, { useState, useCallback } from 'react'
 import styled from 'styled-components'
 import { Heading, Card, Button } from '@pancakeswap-libs/uikit'
 import { useWallet } from 'use-wallet'
-import { getFarms } from 'sushi/utils'
 import useI18n from 'hooks/useI18n'
-import useSushi from 'hooks/useSushi'
 import useModal from 'hooks/useModal'
 import { useAllReward } from 'hooks/useReward'
 import useFarmsWithBalance from 'hooks/useFarmsWithBalance'
@@ -35,6 +33,10 @@ const CardImage = styled.img`
 const Label = styled.div`
   color: ${({ theme }) => theme.colors.textSubtle};
   font-size: 14px;
+`
+
+const Actions = styled.div`
+  margin-top: 24px;
 `
 
 const FarmedStakingCard = () => {
@@ -79,21 +81,26 @@ const FarmedStakingCard = () => {
         </Value>
         <Label>{TranslateString(999, 'CAKE in Wallet')}</Label>
       </Block>
-      {account ? (
-        <Button
-          disabled={balancesWithValue.length <= 0 || pendingTx}
-          onClick={harvestAllFarms}
-          fullWidth
-        >
-          {pendingTx
-            ? TranslateString(999, 'Collecting CAKE')
-            : TranslateString(999, `Harvest all (${balancesWithValue.length})`)}
-        </Button>
-      ) : (
-        <Button fullWidth onClick={handleUnlockClick}>
-          {TranslateString(292, 'Unlock Wallet')}
-        </Button>
-      )}
+      <Actions>
+        {account ? (
+          <Button
+            disabled={balancesWithValue.length <= 0 || pendingTx}
+            onClick={harvestAllFarms}
+            fullWidth
+          >
+            {pendingTx
+              ? TranslateString(999, 'Collecting CAKE')
+              : TranslateString(
+                  999,
+                  `Harvest all (${balancesWithValue.length})`,
+                )}
+          </Button>
+        ) : (
+          <Button fullWidth onClick={handleUnlockClick}>
+            {TranslateString(292, 'Unlock Wallet')}
+          </Button>
+        )}
+      </Actions>
     </StyledFarmStakingCard>
   )
 }

@@ -5,6 +5,7 @@ import useI18n from 'hooks/useI18n'
 import Page from 'components/layout/Page'
 import Container from 'components/layout/Container'
 import FarmStakingCard from './components/FarmStakingCard'
+import LotteryCard from './components/LotteryCard'
 
 const Hero = styled(Container)`
   align-items: center;
@@ -40,11 +41,10 @@ const Subtitle = styled(Text)`
 `
 
 const Cards = styled(BaseLayout)`
+  align-items: start;
+
   & > div {
     grid-column: span 6;
-  }
-  ${({ theme }) => theme.mediaQueries.lg} {
-    font-size: 64px;
   }
 `
 
@@ -67,6 +67,7 @@ const Home: React.FC = () => {
       <Container>
         <Cards>
           <FarmStakingCard />
+          <LotteryCard />
         </Cards>
       </Container>
     </Page>
