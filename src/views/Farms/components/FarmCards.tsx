@@ -137,7 +137,7 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
       },
     ]
   }, [])
-  console.log('rows', rows)
+
   return (
     <Page>
       <Grid>
