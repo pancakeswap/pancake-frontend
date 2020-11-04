@@ -1,21 +1,18 @@
 /* eslint-disable jsx-a11y/accessible-emoji */
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import { useWallet } from 'use-wallet'
 import { provider } from 'web3-core'
-import orderBy from 'lodash/orderBy'
-import { getContract } from 'utils/erc20'
-import useSushi from 'hooks/useSushi'
-import useI18n from 'hooks/useI18n'
-import useAllStakedValue from 'hooks/useAllStakedValue'
-import { getPools } from 'sushi/utils'
-import getSousBlockDataSnapshot from 'utils/getSousBlockDataSnapshot'
-import { sousChefTeam } from 'sushi/lib/constants'
+import { getContract } from '../../utils/erc20'
+import useSushi from '../../hooks/useSushi'
+import useI18n from '../../hooks/useI18n'
+import useAllStakedValue from '../../hooks/useAllStakedValue'
+import { getPools } from '../../sushi/utils'
+
 import PoolCardv2 from './components/PoolCardv2'
 import Coming from './components/Coming'
-import Page from 'components/layout/Page'
-import Grid from 'components/layout/Grid'
+import { sousChefTeam } from '../../sushi/lib/constants'
 
 interface SyrupRowProps {
   syrupAddress: string
@@ -37,7 +34,7 @@ const SyrupRow: React.FC<SyrupRowProps> = ({
   tokenPerBlock,
   cakePrice,
   tokenPrice,
-  community
+  community,
 }) => {
   const { ethereum } = useWallet()
   const syrup = useMemo(() => {
@@ -59,13 +56,11 @@ const SyrupRow: React.FC<SyrupRowProps> = ({
 }
 
 const Farm: React.FC = () => {
-  const [state, setState] = useState({ isLoading: true, pools: [] })
-  const { account, ethereum } = useWallet()
   const sushi = useSushi()
   const TranslateString = useI18n()
   const stakedValue = useAllStakedValue()
   const pools = getPools(sushi) || sousChefTeam
-  const transformedPools = useMemo(() => {
+  const renderPools = useMemo(() => {
     const stakedValueObj = stakedValue.reduce(
       (a, b) => ({
         ...a,
@@ -83,41 +78,8 @@ const Farm: React.FC = () => {
   }, [stakedValue, pools])
 
   useEffect(() => {
-    const addBlockSnapshot = async () => {
-      // For each pool get a snaphsot of to determine the state of
-      // the pool, then sort
-      const poolSnapshots = await Promise.all(
-        transformedPools.map(async (pool) => {
-          const blockSnapshot = await getSousBlockDataSnapshot(
-            ethereum,
-            sushi,
-            pool.sousId,
-          )
-
-          return {
-            ...pool,
-            blockSnapshot,
-          }
-        }),
-      )
-
-      setState({
-        isLoading: false,
-        pools: orderBy(poolSnapshots, ['blockSnapshot.isFinished'], ['asc']),
-      })
-    }
-
-    if (account && ethereum && sushi) {
-      addBlockSnapshot()
-    } else {
-      // For logged out users sort the pools by id. Good chance
-      // the newest ones are the most relevant
-      setState({
-        isLoading: false,
-        pools: orderBy(transformedPools, ['sousId'], ['desc']),
-      })
-    }
-  }, [account, ethereum, sushi, stakedValue, transformedPools, setState])
+    window.scrollTo(0, 0)
+  }, [])
 
   return (
     <Page>
@@ -134,17 +96,12 @@ const Farm: React.FC = () => {
           <img src="/images/syrup.png" alt="SYRUP POOL icon" />
         </div>
       </Hero>
-      <Grid>
-        {state.isLoading && <div>Loading...</div>}
-        {!state.isLoading && (
-          <>
-            {state.pools.map((pool) => (
-              <SyrupRow key={pool.tokenName} {...pool} />
-            ))}
-            <Coming />
-          </>
-        )}
-      </Grid>
+      <Pools>
+        {renderPools.map((pool) => (
+          <SyrupRow key={pool.tokenName} {...pool} />
+        ))}
+        <Coming />
+      </Pools>
     </Page>
   )
 }
@@ -159,34 +116,71 @@ const Hero = styled.div`
   margin-right: auto;
   max-width: 250px;
   padding: 48px 0;
-
   h1 {
     font-size: 64px;
     color: ${({ theme }) => theme.colors.secondary2};
     line-height: 1.1;
     margin: 0 0 32px 0;
   }
-
   ul {
     margin: 0;
     padding: 0;
     list-style-type: none;
     font-size: 16px;
-
     li {
       margin-bottom: 4px;
     }
   }
-
   img {
     height: auto;
     max-width: 100%;
   }
-
   @media (min-width: 576px) {
     grid-template-columns: 1fr 1fr;
     margin: 0;
     max-width: none;
+  }
+`
+
+const Page = styled.div`
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 904px;
+  padding-bottom: 48px;
+  padding-left: 16px;
+  padding-right: 16px;
+  @media (min-width: 576px) {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+  @media (min-width: 968px) {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+`
+
+const Pools = styled.div`
+  align-items: start;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-gap: 16px;
+  @media (min-width: 576px) {
+    grid-template-columns: repeat(8, 1fr);
+    grid-gap: 24px;
+  }
+  @media (min-width: 852px) {
+    grid-template-columns: repeat(12, 1fr);
+    grid-gap: 24px;
+  }
+  @media (min-width: 968px) {
+    grid-template-columns: repeat(12, 1fr);
+    grid-gap: 32px;
+  }
+  & > div {
+    grid-column: 2 / 8;
+    @media (min-width: 576px) {
+      grid-column: span 4;
+    }
   }
 `
 

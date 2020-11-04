@@ -382,13 +382,6 @@ const StyledCardAccent = styled.div`
   z-index: -1;
 `
 
-const StyledLoadingWrapper = styled.div`
-  align-items: center;
-  display: flex;
-  flex: 1;
-  justify-content: center;
-`
-
 const Multiplier = styled.div`
   line-height: 25px;
   padding: 0 8px;
