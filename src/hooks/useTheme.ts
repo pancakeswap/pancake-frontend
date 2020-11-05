@@ -1,36 +1,23 @@
-import { useState, useCallback, useEffect } from 'react'
-import mediaObserve from '../utils/mediaObserve'
+import { useState, useEffect } from 'react'
+import { THEME_CACHE_KEY } from 'config'
 
-type ReturnType = [boolean, (isDark: boolean) => void]
-const CACHE_KEY = 'IS_DARK'
-
-function useTheme(): ReturnType {
-  const [matchDarkMode, setMatchDarkMode] = useState(false)
-  const [userDarkMode, setUserDarkMode] = useState(() => {
-    let cache
+const useTheme = () => {
+  const [isDark, setIsDark] = useState(() => {
     try {
-      cache = JSON.parse(localStorage.getItem(CACHE_KEY))
-    } catch(error){}
-    return cache
+      return JSON.parse(localStorage.getItem(THEME_CACHE_KEY))
+    } catch (error) {
+      return true
+    }
   })
-  const toogleTheme = useCallback(rs => {
-    try {
-      localStorage.setItem(CACHE_KEY, JSON.stringify(rs))
-    } catch(error){}
-    setUserDarkMode(rs)
-  }, [setUserDarkMode])
 
   useEffect(() => {
-    const unSubscribe = mediaObserve.subscribe(rs => {
-      setMatchDarkMode(rs.isDark)
-    });
+    try {
+      const themeSetting = isDark ? '1' : '0'
+      localStorage.setItem(THEME_CACHE_KEY, themeSetting)
+    } catch (error) {}
+  }, [isDark])
 
-    return unSubscribe;
-  }, [setMatchDarkMode])
-
-  const rtMode = userDarkMode === null ? matchDarkMode : userDarkMode
-
-  return [rtMode, toogleTheme]
+  return [isDark, setIsDark]
 }
 
 export default useTheme
