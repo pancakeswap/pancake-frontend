@@ -45,11 +45,10 @@ export const useSousReward = (sousId) => {
   const masterChefContract = getMasterChefContract(sushi)
 
   const handleReward = useCallback(async () => {
-    if(sousId === 0) {
+    if (sousId === 0) {
       const txHash = await harvest(masterChefContract, 0, account)
       return txHash
-    }
-    else {
+    } else {
       const txHash = await soushHarvest(sousChefContract, account)
       return txHash
     }

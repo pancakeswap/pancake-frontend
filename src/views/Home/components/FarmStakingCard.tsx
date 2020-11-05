@@ -56,8 +56,9 @@ const FarmedStakingCard = () => {
   const balancesWithValue = farmsWithBalance.filter(
     (balanceType) => balanceType.balance.toNumber() > 0,
   )
+
   const { onReward } = useAllReward(
-    farmsWithBalance.map((farmWithBalance) => farmWithBalance.pid),
+    balancesWithValue.map((farmWithBalance) => farmWithBalance.pid),
   )
   const [onPresentWalletProviderModal] = useModal(
     <WalletProviderModal />,
@@ -66,8 +67,13 @@ const FarmedStakingCard = () => {
 
   const harvestAllFarms = useCallback(async () => {
     setPendingTx(true)
-    await onReward()
-    setPendingTx(false)
+    try {
+      await onReward()
+    } catch (error) {
+      // TODO: find a way to handle when the user rejects transaction or it fails
+    } finally {
+      setPendingTx(false)
+    }
   }, [onReward])
 
   const handleUnlockClick = useCallback(() => {
