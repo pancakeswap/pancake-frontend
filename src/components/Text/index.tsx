@@ -1,6 +1,7 @@
 import styled, { DefaultTheme } from "styled-components";
+import { space, SpaceProps } from "styled-system";
 
-export interface Props {
+export interface Props extends SpaceProps {
   color?: string;
   fontSize?: string;
   bold?: boolean;
@@ -23,6 +24,7 @@ const Text = styled.div<Props>`
   font-size: ${getFontSize};
   font-weight: ${({ bold }) => (bold ? 600 : 400)};
   line-height: 1.5;
+  ${space}
 `;
 
 export default Text;

@@ -1,4 +1,5 @@
 import { ButtonHTMLAttributes, ReactNode } from "react";
+import { SpaceProps } from "styled-system";
 
 export const sizes = {
   SM: "sm",
@@ -15,7 +16,7 @@ export const variants = {
 export type Sizes = typeof sizes[keyof typeof sizes];
 export type Variants = typeof variants[keyof typeof variants];
 
-export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement>, SpaceProps {
   variant?: Variants;
   size?: Sizes;
   startIcon?: ReactNode;

@@ -1,4 +1,5 @@
 import styled, { DefaultTheme } from "styled-components";
+import { space } from "styled-system";
 import { ButtonProps, ButtonThemeVariant, variants } from "./types";
 
 interface ThemedProps extends ButtonProps {
@@ -60,6 +61,7 @@ const StyledButton = styled.button<ButtonProps>`
     color: ${({ theme }) => theme.colors.textDisabled};
     cursor: not-allowed;
   }
+  ${space}
 `;
 
 StyledButton.defaultProps = {
