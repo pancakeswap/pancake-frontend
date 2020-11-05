@@ -22,7 +22,6 @@ const Button: React.FC<ButtonProps> = ({
   size,
   text,
   to,
-  variant,
 }) => {
   const { colors, spacing } = useContext(ThemeContext)
   const buttonColor = colors.background
