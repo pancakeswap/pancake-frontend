@@ -7,7 +7,11 @@ import { useWallet } from 'use-wallet'
 import { COMMUNITY_FARMS } from 'sushi/lib/constants'
 import Button from 'components/Button'
 import { Farm } from 'contexts/Farms'
-import { useTokenBalance2, useBnbPrice, useCakePrice } from 'hooks/useTokenBalance'
+import {
+  useTokenBalance2,
+  useBnbPrice,
+  useCakePrice,
+} from 'hooks/useTokenBalance'
 import useFarms from 'hooks/useFarms'
 import useSushi from 'hooks/useSushi'
 import useAllStakedValue, { StakedValue } from 'hooks/useAllStakedValue'
@@ -64,10 +68,18 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
   const bnbPrice = useBnbPrice()
 
   // temp fix
-  const staxBalance = useTokenBalance2('0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82', '0x7cd05f8b960ba071fdf69c750c0e5a57c8366500')
-  const narBalance = useTokenBalance2('0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82', '0x745c4fd226e169d6da959283275a8e0ecdd7f312')
-  const nyaBalance = useTokenBalance2('0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82', '0x2730bf486d658838464a4ef077880998d944252d')
-
+  const staxBalance = useTokenBalance2(
+    '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
+    '0x7cd05f8b960ba071fdf69c750c0e5a57c8366500',
+  )
+  const narBalance = useTokenBalance2(
+    '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
+    '0x745c4fd226e169d6da959283275a8e0ecdd7f312',
+  )
+  const nyaBalance = useTokenBalance2(
+    '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
+    '0x2730bf486d658838464a4ef077880998d944252d',
+  )
 
   const rows = realFarms.reduce<FarmWithStakedValue[][]>((accum, farm) => {
     const stakedValueItem = stakedValueById[farm.tokenSymbol]
@@ -84,35 +96,28 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
             .div(2)
             .times(bnbPrice)
         : null
-    }
-    else if(farm.tokenSymbol === 'STAX') {
+    } else if (COMMUNITY_FARMS.includes(farm.tokenSymbol)) {
       apy = stakedValueItem
-        ? SUSHI_PER_BLOCK
-            .times(BLOCKS_PER_YEAR)
+        ? SUSHI_PER_BLOCK.times(BLOCKS_PER_YEAR)
             .times(stakedValueItem.poolWeight)
             .div(staxBalance)
             .div(2)
         : null
-    }
-    else if(farm.tokenSymbol === 'NAR') {
+    } else if (farm.tokenSymbol === 'NAR') {
       apy = stakedValueItem
-        ? SUSHI_PER_BLOCK
-            .times(BLOCKS_PER_YEAR)
+        ? SUSHI_PER_BLOCK.times(BLOCKS_PER_YEAR)
             .times(stakedValueItem.poolWeight)
             .div(narBalance)
             .div(2)
         : null
-    }
-    else if(farm.tokenSymbol === 'NYA') {
+    } else if (farm.tokenSymbol === 'NYA') {
       apy = stakedValueItem
-        ? SUSHI_PER_BLOCK
-            .times(BLOCKS_PER_YEAR)
+        ? SUSHI_PER_BLOCK.times(BLOCKS_PER_YEAR)
             .times(stakedValueItem.poolWeight)
             .div(nyaBalance)
             .div(2)
         : null
-    }
-    else {
+    } else {
       apy =
         stakedValueItem && !removed
           ? sushiPrice
@@ -148,14 +153,18 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
           : forShowPools.map((pool, index) => (
               <FCard key={index}>
                 <CardImage>
-                  <div>
+                  <div style={{ textAlign: 'left' }}>
                     <Multiplier>{pool.multiplier}</Multiplier>
-                    <Tag>
-                      <CoreIcon />
-                      <span style={{ marginLeft: '4px' }}>
-                        {TranslateString(999, 'Core')}
-                      </span>
-                    </Tag>
+                    <div>
+                      <Tag variant={pool.isCommunity ? 'pink' : 'purple'}>
+                        {pool.isCommunity ? <CommunityIcon /> : <CoreIcon />}
+                        <span style={{ marginLeft: '4px' }}>
+                          {pool.isCommunity
+                            ? TranslateString(999, 'Community')
+                            : TranslateString(999, 'Core')}
+                        </span>
+                      </Tag>
+                    </div>
                   </div>
                   <img
                     src={`/images/tokens/category-${pool.tokenSymbol}.png`}
@@ -225,12 +234,16 @@ const FCard = styled.div`
 
 interface FarmCardProps {
   farm: FarmWithStakedValue
-  removed: boolean,
+  removed: boolean
   sushiPrice?: number
 }
 
-
-const FarmCard: React.FC<FarmCardProps> = ({ farm, stakedValue, removed, sushiPrice }) => {
+const FarmCard: React.FC<FarmCardProps> = ({
+  farm,
+  stakedValue,
+  removed,
+  sushiPrice,
+}) => {
   const TranslateString = useI18n()
   const totalValue1 =
     useTokenBalance2(
@@ -245,7 +258,6 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, stakedValue, removed, sushiPr
     useBnbPrice() *
     2
 
-
   const cakePrice = useCakePrice()
   let totalValue2 =
     useTokenBalance2(
@@ -258,7 +270,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, stakedValue, removed, sushiPr
   if (farm.pid === 11) {
     totalValue = totalValue1
   }
-  if(COMMUNITY_FARMS.includes(farm.tokenSymbol)) {
+  if (COMMUNITY_FARMS.includes(farm.tokenSymbol)) {
     totalValue = totalValue2
   }
 
@@ -310,12 +322,14 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, stakedValue, removed, sushiPr
     <FCard>
       {farm.tokenSymbol === 'CAKE' && <StyledCardAccent />}
       <CardImage>
-        <div>
+        <div style={{ textAlign: 'left' }}>
           <Multiplier>{farm.multiplier}</Multiplier>
-          <Tag>
-            <TokenIcon />
-            <span style={{ marginLeft: '4px' }}>{tokenText}</span>
-          </Tag>
+          <div>
+            <Tag variant={isCommunityFarm ? 'pink' : 'purple'}>
+              <TokenIcon />
+              <span style={{ marginLeft: '4px' }}>{tokenText}</span>
+            </Tag>
+          </div>
         </div>
         <img
           src={`/images/tokens/category-${farm.tokenSymbol}.png`}
@@ -440,6 +454,7 @@ const Multiplier = styled.div`
   color: ${(props) => props.theme.colors.bg};
   font-weight: 900;
   margin-bottom: 8px;
+  display: inline-block;
 `
 
 export default FarmCards
