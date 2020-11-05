@@ -29,7 +29,7 @@ const Button: React.FC<ButtonProps> = ({
   let boxShadow: string
   let buttonSize: number
   let buttonPadding: number
-  let fontSize: number1
+  let fontSize: number
   switch (size) {
     case 'sm':
       buttonPadding = spacing[3]
