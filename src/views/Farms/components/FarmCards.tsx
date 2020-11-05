@@ -2,6 +2,7 @@
 import BigNumber from 'bignumber.js'
 import React, { useEffect, useState, useCallback } from 'react'
 import Countdown, { CountdownRenderProps } from 'react-countdown'
+import { Button } from '@pancakeswap-libs/uikit'
 import styled, { keyframes } from 'styled-components'
 import { useWallet } from 'use-wallet'
 import {
@@ -9,7 +10,6 @@ import {
   forShowPools,
   BLOCKS_PER_YEAR,
 } from 'sushi/lib/constants'
-import Button from 'components/Button'
 import { Farm } from 'contexts/Farms'
 import {
   useTokenBalance2,
@@ -356,11 +356,8 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, stakedValue, removed }) => {
         </Label>
       )}
       <Action>
-        <Button
-          disabled={!poolActive}
-          text={poolActive ? 'Select' : undefined}
-          to={`/farms/${farm.id}`}
-        >
+        <Button disabled={!poolActive} to={`/farms/${farm.id}`}>
+          {poolActive ? 'Select' : undefined}
           {!poolActive && (
             <Countdown date={new Date(startTime * 1000)} renderer={renderer} />
           )}
