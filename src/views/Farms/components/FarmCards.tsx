@@ -1,9 +1,10 @@
 // @ts-nocheck
-import BigNumber from 'bignumber.js'
 import React, { useEffect, useState, useCallback } from 'react'
+import BigNumber from 'bignumber.js'
 import Countdown, { CountdownRenderProps } from 'react-countdown'
 import styled, { keyframes } from 'styled-components'
 import { useWallet } from 'use-wallet'
+import { SUSHI_PER_BLOCK } from 'config'
 import { COMMUNITY_FARMS } from 'sushi/lib/constants'
 import Button from 'components/Button'
 import { Farm } from 'contexts/Farms'
@@ -35,8 +36,6 @@ interface FarmWithStakedValue extends Farm, StakedValue {
 interface FarmCardsProps {
   removed: boolean
 }
-
-const SUSHI_PER_BLOCK = new BigNumber(40)
 
 const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
   const [farms] = useFarms()
@@ -84,6 +83,17 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
   const rows = realFarms.reduce<FarmWithStakedValue[][]>((accum, farm) => {
     const stakedValueItem = stakedValueById[farm.tokenSymbol]
 
+    const calculateCommunityApy = (balance: BigNumber) => {
+      if (!stakedValueItem) {
+        return null
+      }
+
+      return SUSHI_PER_BLOCK.times(BLOCKS_PER_YEAR)
+        .times(stakedValueItem.poolWeight)
+        .div(balance)
+        .div(2)
+    }
+
     let apy
 
     if (farm.pid === 11) {
@@ -96,27 +106,12 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
             .div(2)
             .times(bnbPrice)
         : null
-    } else if (COMMUNITY_FARMS.includes(farm.tokenSymbol)) {
-      apy = stakedValueItem
-        ? SUSHI_PER_BLOCK.times(BLOCKS_PER_YEAR)
-            .times(stakedValueItem.poolWeight)
-            .div(staxBalance)
-            .div(2)
-        : null
+    } else if (farm.tokenSymbol === 'STAX') {
+      apy = calculateCommunityApy(staxBalance)
     } else if (farm.tokenSymbol === 'NAR') {
-      apy = stakedValueItem
-        ? SUSHI_PER_BLOCK.times(BLOCKS_PER_YEAR)
-            .times(stakedValueItem.poolWeight)
-            .div(narBalance)
-            .div(2)
-        : null
+      apy = calculateCommunityApy(narBalance)
     } else if (farm.tokenSymbol === 'NYA') {
-      apy = stakedValueItem
-        ? SUSHI_PER_BLOCK.times(BLOCKS_PER_YEAR)
-            .times(stakedValueItem.poolWeight)
-            .div(nyaBalance)
-            .div(2)
-        : null
+      apy = calculateCommunityApy(nyaBalance)
     } else {
       apy =
         stakedValueItem && !removed
