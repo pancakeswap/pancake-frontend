@@ -37,6 +37,41 @@ const useEarnings = (pid: number) => {
   return balance
 }
 
+interface BalanceType {
+  id: number
+  balance: BigNumber
+}
+
+export const useAllEarnings = (farmPids: []) => {
+  const [balances, setBalances] = useState<BalanceType[]>([])
+  const { account }: { account: string; ethereum: provider } = useWallet()
+  const sushi = useSushi()
+  const masterChefContract = getMasterChefContract(sushi)
+  const block = useBlock()
+
+  const fetchBalances = useCallback(async () => {
+    if (account && masterChefContract && sushi) {
+      const newList: Promise<BalanceType>[] = farmPids.map(async (farmPid) => {
+        const balance = await getEarned(masterChefContract, farmPid, account)
+
+        return {
+          id: farmPid,
+          balance: new BigNumber(balance),
+        }
+      })
+
+      const results = await Promise.all(newList)
+      setBalances(results)
+    }
+  }, [account, masterChefContract, sushi])
+
+  useEffect(() => {
+    fetchBalances()
+  }, [block])
+
+  return balances
+}
+
 export const useSousEarnings = (sousId) => {
   const [balance, setBalance] = useState(new BigNumber(0))
   const { account }: { account: string; ethereum: provider } = useWallet()

@@ -51,35 +51,7 @@ export const getSousChefContract = (sushi, sousId) => {
 }
 
 export const getFarms = (sushi) => {
-  return sushi
-    ? sushi.contracts.pools.map(
-        ({
-          pid,
-          name,
-          symbol,
-          icon,
-          tokenAddress,
-          tokenSymbol,
-          tokenContract,
-          lpAddress,
-          lpContract,
-          multiplier,
-        }) => ({
-          pid,
-          id: symbol,
-          lpToken: symbol,
-          lpTokenAddress: lpAddress,
-          lpContract,
-          tokenAddress,
-          tokenSymbol,
-          tokenContract,
-          earnToken: 'sushi',
-          earnTokenAddress: sushi.contracts.sushi.options.address,
-          icon,
-          multiplier,
-        }),
-      )
-    : []
+  return get(sushi, 'contracts.pools', [])
 }
 
 export const getPools = (sushi) => {
