@@ -2,6 +2,7 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import BigNumber from 'bignumber.js'
 import Countdown, { CountdownRenderProps } from 'react-countdown'
+import { Button } from '@pancakeswap-libs/uikit'
 import styled, { keyframes } from 'styled-components'
 import { useWallet } from 'use-wallet'
 import { CAKE_PER_BLOCK, HARD_REWARD_PER_BLOCK, CAKE_POOL_PID, forShowPools } from 'config'
@@ -308,7 +309,8 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
         </Label>
       )}
       <Action>
-        <Button disabled={!poolActive} text={poolActive ? 'Select' : undefined} to={`/farms/${farm.id}`}>
+        <Button disabled={!poolActive} to={`/farms/${farm.id}`}>
+          {poolActive ? 'Select' : undefined}
           {!poolActive && <Countdown date={new Date(startTime * 1000)} renderer={renderer} />}
         </Button>
       </Action>
