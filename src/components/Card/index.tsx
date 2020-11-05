@@ -33,6 +33,7 @@ const Card = styled.div<CardProps>`
   box-shadow: ${getBoxShadow};
   color: ${({ theme }) => theme.colors.text};
   padding: 24px;
+  margin: 2px;
 `;
 
 Card.defaultProps = {

@@ -1,5 +1,5 @@
 import React from "react";
-import { ModalProvider, Modal, useModal } from ".";
+import { Modal, useModal } from ".";
 import Button from "../../components/Button";
 import Heading from "../../components/Heading";
 
@@ -10,13 +10,13 @@ export default {
 };
 
 const CustomModal = ({ title }) => (
-  <Modal>
+  <Modal title="Title">
     <Heading>{title}</Heading>
     <Button>This button Does nothing</Button>
   </Modal>
 );
 
-const ModalConsumer = () => {
+export const Default: React.FC = () => {
   const [onPresent1] = useModal(<CustomModal title="Modal 1" />);
   const [onPresent2] = useModal(<CustomModal title="Modal 2" />);
   return (
@@ -24,13 +24,5 @@ const ModalConsumer = () => {
       <Button onClick={onPresent1}>Open modal 1</Button>
       <Button onClick={onPresent2}>Open modal 2</Button>
     </div>
-  );
-};
-
-export const Default: React.FC = () => {
-  return (
-    <ModalProvider>
-      <ModalConsumer />
-    </ModalProvider>
   );
 };

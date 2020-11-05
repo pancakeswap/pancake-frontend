@@ -2,6 +2,7 @@ import { ButtonTheme } from "../components/Button/types";
 import { CardTheme } from "../components/Card/types";
 import { TagTheme } from "../components/Tag/types";
 import { ToggleTheme } from "../components/Toggle/types";
+import { NavTheme } from "../widgets/Nav/types";
 
 export type Breakpoints = string[];
 
@@ -54,6 +55,7 @@ export interface PancakeTheme {
   button: ButtonTheme;
   card: CardTheme;
   tag: TagTheme;
+  nav: NavTheme;
   toggle: ToggleTheme;
   breakpoints: Breakpoints;
   mediaQueries: MediaQueries;

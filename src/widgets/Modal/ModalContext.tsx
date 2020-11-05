@@ -24,7 +24,7 @@ export const Context = createContext<ModalsContext>({
   onDismiss: () => null,
 });
 
-const Modals: React.FC = ({ children }) => {
+const ModalProvider: React.FC = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [modalNode, setModalNode] = useState<React.ReactNode>();
 
@@ -59,4 +59,4 @@ const Modals: React.FC = ({ children }) => {
   );
 };
 
-export default Modals;
+export default ModalProvider;

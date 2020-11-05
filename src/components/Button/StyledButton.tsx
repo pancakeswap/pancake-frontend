@@ -39,6 +39,7 @@ const StyledButton = styled.button<ButtonProps>`
   justify-content: center;
   outline: 0;
   padding: ${({ size }) => (size === "sm" ? "0 16px" : "0 24px")};
+  transition: background-color 0.2s;
 
   &:hover:not(:disabled):not(:active) {
     background-color: ${getButtonVariantProp("backgroundHover")};

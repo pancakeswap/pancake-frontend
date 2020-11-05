@@ -1,13 +1,12 @@
 import styled from "styled-components";
+import { AnchorHTMLAttributes } from "react";
 import Text from "../Text";
 
-export interface Props {
-  fontSize?: string;
-  href: string;
-}
-
-const Link = styled(Text).attrs({ as: "a", bold: true })<Props>`
+const Link = styled(Text).attrs({ as: "a", bold: true })<AnchorHTMLAttributes<HTMLAnchorElement>>`
+  display: flex;
+  align-items: center;
   color: ${({ theme }) => theme.colors.primary};
+  width: fit-content;
   &:hover {
     text-decoration: underline;
   }

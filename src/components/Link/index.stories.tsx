@@ -1,4 +1,5 @@
 import React from "react";
+import { PancakesIcon } from "../Svg";
 import Link from "./index";
 
 export default {
@@ -21,7 +22,15 @@ export default {
 export const Default: React.FC = () => {
   return (
     <div>
-      <Link href="/">Default</Link>
+      <div>
+        <Link href="/">Default</Link>
+      </div>
+      <div>
+        <Link href="/">
+          With icon
+          <PancakesIcon />
+        </Link>
+      </div>
     </div>
   );
 };

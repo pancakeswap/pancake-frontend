@@ -1,13 +1,9 @@
-import { SVGAttributes } from "react";
-import styled, { DefaultTheme } from "styled-components";
-import { space, SpaceProps } from "styled-system";
+import styled from "styled-components";
+import { space } from "styled-system";
 import getThemeValue from "../../util/getThemeValue";
+import SvgProps from "./types";
 
-export interface Props extends SVGAttributes<HTMLOrSVGElement>, SpaceProps {
-  theme: DefaultTheme;
-}
-
-const Svg = styled.svg.attrs({ xmlns: "http://www.w3.org/2000/svg" })<Props>`
+const Svg = styled.svg.attrs({ xmlns: "http://www.w3.org/2000/svg" })<SvgProps>`
   fill: ${({ theme, color }) => getThemeValue(`colors.${color}`, color)(theme)};
   ${space}
 `;
