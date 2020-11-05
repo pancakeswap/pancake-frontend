@@ -1,23 +1,11 @@
-import { useState, useEffect } from 'react'
-import { THEME_CACHE_KEY } from 'config'
+import { useContext } from 'react'
+import { ThemeContext as StyledThemeCopntext } from 'styled-components'
+import { ThemeContext } from 'contexts/ThemeContext'
 
 const useTheme = () => {
-  const [isDark, setIsDark] = useState(() => {
-    try {
-      return JSON.parse(localStorage.getItem(THEME_CACHE_KEY))
-    } catch (error) {
-      return true
-    }
-  })
-
-  useEffect(() => {
-    try {
-      const themeSetting = isDark ? '1' : '0'
-      localStorage.setItem(THEME_CACHE_KEY, themeSetting)
-    } catch (error) {}
-  }, [isDark])
-
-  return [isDark, setIsDark]
+  const { isDark, toggleTheme } = useContext(ThemeContext)
+  const theme = useContext(StyledThemeCopntext)
+  return { isDark, toggleTheme, theme }
 }
 
 export default useTheme
