@@ -72,6 +72,17 @@ export const sousChefTeam = [
     tokenPerBlock: '10',
   },
   {
+    sousId: 14,
+    contractAddress: {
+      97: '',
+      56: '0x90F995b9d46b32c4a1908A8c6D0122e392B3Be97',
+    },
+    tokenName: 'HARD',
+    projectLink: 'https://hard.kava.io',
+    harvest: true,
+    tokenPerBlock: '0.346',
+  },
+  {
     sousId: 12,
     contractAddress: {
       97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
