@@ -85,7 +85,11 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName }) => {
       <StyledCardContentInner>
         <StyledCardHeader>
           <CardImage src="/images/pancake-bnb-pan.svg" alt="cake bnb pan" />
-          <Value value={getBalanceNumber(stakedBalance)} fontSize="40px" />
+          <Value
+            value={getBalanceNumber(stakedBalance)}
+            decimals={tokenName === 'HARD' ? 6 : undefined}
+            fontSize="40px"
+          />
           <Label
             text={`${tokenName} ${TranslateString(332, 'Tokens Staked')}`}
           />
