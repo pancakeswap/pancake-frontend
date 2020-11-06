@@ -709,7 +709,7 @@ export const supportedPools = [
     multiplier: '0.1X',
   },
   {
-    pid: 36,
+    pid: 37,
     lpAddresses: {
       97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
       56: '0x9f40e8a2fcaa267a0c374b6c661e0b372264cc3d',
