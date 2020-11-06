@@ -939,6 +939,13 @@ export const forShowPools = [
     multiplier: '0.1X',
     isCommunity: true,
   },
+  {
+    pid: 37,
+    symbol: 'HARD-BNB',
+    tokenSymbol: 'HARD',
+    multiplier: '0.2X',
+    isCommunity: false,
+  },
 ]
 
 export const BLOCKS_PER_YEAR = new BigNumber(10512000)
