@@ -4,7 +4,7 @@ import BigNumber from 'bignumber.js'
 import Countdown, { CountdownRenderProps } from 'react-countdown'
 import styled, { keyframes } from 'styled-components'
 import { useWallet } from 'use-wallet'
-import { SUSHI_PER_BLOCK } from 'config'
+import { CAKE_PER_BLOCK } from 'config'
 import { COMMUNITY_FARMS } from 'sushi/lib/constants'
 import Button from 'components/Button'
 import { Farm } from 'contexts/Farms'
@@ -88,7 +88,7 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
         return null
       }
 
-      return SUSHI_PER_BLOCK.times(BLOCKS_PER_YEAR)
+      return CAKE_PER_BLOCK.times(BLOCKS_PER_YEAR)
         .times(stakedValueItem.poolWeight)
         .div(balance)
         .div(2)
@@ -99,7 +99,7 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
     if (farm.pid === 11) {
       apy = stakedValueItem
         ? sushiPrice
-            .times(SUSHI_PER_BLOCK)
+            .times(CAKE_PER_BLOCK)
             .times(BLOCKS_PER_YEAR)
             .times(stakedValueItem.poolWeight)
             .div(stakedValueItem.tokenAmount)
@@ -116,7 +116,7 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
       apy =
         stakedValueItem && !removed
           ? sushiPrice
-              .times(SUSHI_PER_BLOCK)
+              .times(CAKE_PER_BLOCK)
               .times(BLOCKS_PER_YEAR)
               .times(stakedValueItem.poolWeight)
               .div(stakedValueItem.totalWethValue)
