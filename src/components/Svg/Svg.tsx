@@ -3,7 +3,7 @@ import { space } from "styled-system";
 import getThemeValue from "../../util/getThemeValue";
 import SvgProps from "./types";
 
-const Svg = styled.svg.attrs({ xmlns: "http://www.w3.org/2000/svg" })<SvgProps>`
+const Svg = styled.svg<SvgProps>`
   fill: ${({ theme, color }) => getThemeValue(`colors.${color}`, color)(theme)};
   ${space}
 `;
@@ -11,6 +11,7 @@ const Svg = styled.svg.attrs({ xmlns: "http://www.w3.org/2000/svg" })<SvgProps>`
 Svg.defaultProps = {
   color: "text",
   width: "20px",
+  xmlns: "http://www.w3.org/2000/svg",
 };
 
 export default Svg;

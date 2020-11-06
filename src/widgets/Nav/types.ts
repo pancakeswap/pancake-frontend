@@ -5,7 +5,7 @@ export type NavTheme = {
 
 export interface ConnectCallbackType {
   key: "metamask" | "trustwallet" | "mathwallet" | "tokenpocket" | "walletconnect";
-  callback: () => void;
+  callback: () => null;
 }
 
 export interface NavProps {
