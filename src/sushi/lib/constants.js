@@ -943,7 +943,7 @@ export const forShowPools = [
     pid: 37,
     symbol: 'HARD-BNB',
     tokenSymbol: 'HARD',
-    multiplier: '0.2X',
+    multiplier: '2X',
     isCommunity: false,
   },
 ]
