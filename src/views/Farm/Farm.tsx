@@ -39,6 +39,7 @@ const Farm: React.FC = () => {
           alt={tokenSymbol}
         />
         <Title>{TranslateString(320, 'Stake FLIP tokens to stack CAKE')}</Title>
+        {tokenSymbol === 'HARD' && <DualFarmDisclaimer />}
       </Header>
       <StyledFarm>
         <Grid>
@@ -49,13 +50,16 @@ const Farm: React.FC = () => {
             tokenName={lpToken.toUpperCase()}
           />
         </Grid>
-        <DualFarmDisclaimer />
-        <StyledInfo>
-          {TranslateString(
-            999,
-            '⭐️ Every time you stake and unstake FLIP tokens, the contract will automagically harvest CAKE rewards for you!',
-          )}
-        </StyledInfo>
+        {tokenSymbol === 'HARD' ? (
+          <DualFarmDisclaimer />
+        ) : (
+          <StyledInfo>
+            {TranslateString(
+              999,
+              '⭐️ Every time you stake and unstake FLIP tokens, the contract will automagically harvest CAKE rewards for you!',
+            )}
+          </StyledInfo>
+        )}
       </StyledFarm>
     </StyledPage>
   )

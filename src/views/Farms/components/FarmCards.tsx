@@ -83,8 +83,7 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
   const rows = realFarms.reduce<FarmWithStakedValue[][]>((accum, farm) => {
     const stakedValueItem = stakedValueById[farm.tokenSymbol]
 
-    // numberofCAKEBlock
-    const cakeBlocks =
+    const cakeRewardPerBlock =
       stakedValueItem && CAKE_PER_BLOCK.times(stakedValueItem.poolWeight)
 
     const calculateCommunityApy = (balance: BigNumber) => {
@@ -92,7 +91,7 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
         return null
       }
 
-      return cakeBlocks.times(BLOCKS_PER_YEAR).div(balance).div(2)
+      return cakeRewardPerBlock.times(BLOCKS_PER_YEAR).div(balance).div(2)
     }
 
     let apy
@@ -100,7 +99,7 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
     if (farm.pid === 11) {
       apy = stakedValueItem
         ? cakePrice
-            .times(cakeBlocks)
+            .times(cakeRewardPerBlock)
             .times(BLOCKS_PER_YEAR)
             .div(stakedValueItem.tokenAmount)
             .div(2)
@@ -112,11 +111,21 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
       apy = calculateCommunityApy(narBalance)
     } else if (farm.tokenSymbol === 'NYA') {
       apy = calculateCommunityApy(nyaBalance)
+    } else if (1 === 0) {
+      // TODO: Refactor APY for dual farm
+      const cakeApy =
+        stakedValueItem &&
+        cakePrice
+          .times(cakeRewardPerBlock)
+          .times(BLOCKS_PER_YEAR)
+          .div(stakedValueItem.totalWethValue)
+
+      apy = cakeApy.times(cakePrice.div(stakedValueItem.totalWethValue))
     } else {
       apy =
         stakedValueItem && !removed
           ? cakePrice
-              .times(cakeBlocks)
+              .times(cakeRewardPerBlock)
               .times(BLOCKS_PER_YEAR)
               .div(stakedValueItem.totalWethValue)
           : null
