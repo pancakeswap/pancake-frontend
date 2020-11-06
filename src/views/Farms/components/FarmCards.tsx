@@ -347,11 +347,9 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
       </Label>
       <Label>
         <span>{TranslateString(318, 'Earn')}</span>
-        {farm.tokenSymbol === 'HARD' ? (
-          <span className="right">CAKE & HARD</span>
-        ) : (
-          <span className="right">CAKE</span>
-        )}
+        <span className="right">
+          {farm.tokenSymbol === 'HARD' ? 'CAKE & HARD' : 'CAKE'}
+        </span>
       </Label>
       {!removed && (
         <Label>
