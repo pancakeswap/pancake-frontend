@@ -126,7 +126,7 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
           .times(BLOCKS_PER_YEAR)
           .div(stakedValueItem.totalWethValue)
 
-      apy = cakeApy.add(hardApy)
+      apy = cakeApy && hardApy && cakeApy.plus(hardApy)
     } else {
       apy =
         stakedValueItem && !removed
