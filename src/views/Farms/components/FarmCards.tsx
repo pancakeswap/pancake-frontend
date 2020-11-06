@@ -4,7 +4,7 @@ import BigNumber from 'bignumber.js'
 import Countdown, { CountdownRenderProps } from 'react-countdown'
 import styled, { keyframes } from 'styled-components'
 import { useWallet } from 'use-wallet'
-import { SUSHI_PER_BLOCK } from 'config'
+import { CAKE_PER_BLOCK, HARD_REWARD_PER_BLOCK } from 'config'
 import { COMMUNITY_FARMS } from 'sushi/lib/constants'
 import Button from 'components/Button'
 import { Farm } from 'contexts/Farms'
@@ -48,7 +48,7 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
     }
   }, {})
 
-  const sushiPrice = stakedValueById['CAKE']
+  const cakePrice = stakedValueById['CAKE']
     ? stakedValueById['CAKE'].tokenPriceInWeth
     : new BigNumber(0)
 
@@ -83,25 +83,24 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
   const rows = realFarms.reduce<FarmWithStakedValue[][]>((accum, farm) => {
     const stakedValueItem = stakedValueById[farm.tokenSymbol]
 
+    const cakeRewardPerBlock =
+      stakedValueItem && CAKE_PER_BLOCK.times(stakedValueItem.poolWeight)
+
     const calculateCommunityApy = (balance: BigNumber) => {
       if (!stakedValueItem) {
         return null
       }
 
-      return SUSHI_PER_BLOCK.times(BLOCKS_PER_YEAR)
-        .times(stakedValueItem.poolWeight)
-        .div(balance)
-        .div(2)
+      return cakeRewardPerBlock.times(BLOCKS_PER_YEAR).div(balance).div(2)
     }
 
     let apy
 
     if (farm.pid === 11) {
       apy = stakedValueItem
-        ? sushiPrice
-            .times(SUSHI_PER_BLOCK)
+        ? cakePrice
+            .times(cakeRewardPerBlock)
             .times(BLOCKS_PER_YEAR)
-            .times(stakedValueItem.poolWeight)
             .div(stakedValueItem.tokenAmount)
             .div(2)
             .times(bnbPrice)
@@ -112,13 +111,28 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
       apy = calculateCommunityApy(narBalance)
     } else if (farm.tokenSymbol === 'NYA') {
       apy = calculateCommunityApy(nyaBalance)
+    } else if (farm.tokenSymbol === 'HARD') {
+      // TODO: Refactor APY for dual farm
+      const cakeApy =
+        stakedValueItem &&
+        cakePrice
+          .times(cakeRewardPerBlock)
+          .times(BLOCKS_PER_YEAR)
+          .div(stakedValueItem.totalWethValue)
+      const hardApy =
+        stakedValueItem &&
+        stakedValueItem.tokenPriceInWeth
+          .times(HARD_REWARD_PER_BLOCK)
+          .times(BLOCKS_PER_YEAR)
+          .div(stakedValueItem.totalWethValue)
+
+      apy = cakeApy && hardApy && cakeApy.plus(hardApy)
     } else {
       apy =
         stakedValueItem && !removed
-          ? sushiPrice
-              .times(SUSHI_PER_BLOCK)
+          ? cakePrice
+              .times(cakeRewardPerBlock)
               .times(BLOCKS_PER_YEAR)
-              .times(stakedValueItem.poolWeight)
               .div(stakedValueItem.totalWethValue)
           : null
     }
@@ -142,7 +156,6 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
                 farm={farm}
                 stakedValue={stakedValueById[farm.tokenSymbol]}
                 removed={removed}
-                sushiPrice={sushiPrice}
               />
             ))
           : forShowPools.map((pool, index) => (
@@ -230,15 +243,10 @@ const FCard = styled.div`
 interface FarmCardProps {
   farm: FarmWithStakedValue
   removed: boolean
-  sushiPrice?: number
+  cakePrice?: number
 }
 
-const FarmCard: React.FC<FarmCardProps> = ({
-  farm,
-  stakedValue,
-  removed,
-  sushiPrice,
-}) => {
+const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
   const TranslateString = useI18n()
   const totalValue1 =
     useTokenBalance2(
@@ -339,7 +347,9 @@ const FarmCard: React.FC<FarmCardProps> = ({
       </Label>
       <Label>
         <span>{TranslateString(318, 'Earn')}</span>
-        <span className="right">CAKE</span>
+        <span className="right">
+          {farm.tokenSymbol === 'HARD' ? 'CAKE & HARD' : 'CAKE'}
+        </span>
       </Label>
       {!removed && (
         <Label>

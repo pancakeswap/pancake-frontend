@@ -24,6 +24,7 @@ import { TranslationsContext } from './contexts/Localisation/translationsContext
 import useModal from './hooks/useModal'
 import useTheme from './hooks/useTheme'
 import Farms from './views/Farms'
+import Farm from './views/Farm'
 import Home from './views/Home'
 import Stake from './views/Stake'
 import Lottery from './views/Lottery'
@@ -121,8 +122,11 @@ const App: React.FC = () => {
             <Route path="/" exact>
               <Home />
             </Route>
-            <Route path="/farms">
+            <Route exact path="/farms">
               <Farms removed={false} />
+            </Route>
+            <Route path="/farms/:farmId">
+              <Farm />
             </Route>
             <Route path="/staking">
               <Stake />
