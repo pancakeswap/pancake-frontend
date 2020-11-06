@@ -1,20 +1,19 @@
-/* eslint-disable */
-// @ts-nocheck
-import React, { useEffect, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { useWallet } from 'use-wallet'
 import { provider } from 'web3-core'
-import Spacer from '../../components/Spacer'
-import useFarm from '../../hooks/useFarm'
-import { getContract } from '../../utils/erc20'
-import { TranslateString } from '../../utils/translateTextHelpers'
-
+import { getContract } from 'utils/erc20'
+import useFarm from 'hooks/useFarm'
+import useI18n from 'hooks/useI18n'
+import Page from 'components/layout/Page'
 import Harvest from './components/Harvest'
 import Stake from './components/Stake'
 
 const Farm: React.FC = () => {
-  const { farmId } = useParams()
+  const TranslateString = useI18n()
+  const { ethereum } = useWallet()
+  const { farmId } = useParams<{ farmId?: string }>()
 
   const { pid, lpToken, lpTokenAddress, tokenSymbol } = useFarm(farmId) || {
     pid: 0,
@@ -27,96 +26,81 @@ const Farm: React.FC = () => {
     tokenSymbol: '',
   }
 
-  useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
-
-  const { ethereum } = useWallet()
-
   const lpContract = useMemo(() => {
     return getContract(ethereum as provider, lpTokenAddress)
   }, [ethereum, lpTokenAddress])
 
   return (
-    <>
-      <Image
-        src={`/images/tokens/category-${tokenSymbol || 'CAKE'}.png`}
-        alt={tokenSymbol}
-      />
-      <Title>{TranslateString(320, 'Stake FLIP tokens to stack CAKE')}</Title>
+    <StyledPage>
+      <Header>
+        <Image
+          src={`/images/tokens/category-${tokenSymbol || 'CAKE'}.png`}
+          alt={tokenSymbol}
+        />
+        <Title>{TranslateString(320, 'Stake FLIP tokens to stack CAKE')}</Title>
+      </Header>
       <StyledFarm>
-        <StyledCardsWrapper>
-          <StyledCardWrapper>
-            <Harvest pid={pid} />
-          </StyledCardWrapper>
-          <Spacer />
-          <StyledCardWrapper>
-            <Stake
-              lpContract={lpContract}
-              pid={pid}
-              tokenName={lpToken.toUpperCase()}
-            />
-          </StyledCardWrapper>
-        </StyledCardsWrapper>
-        <Spacer size="lg" />
+        <Grid>
+          <Harvest pid={pid} />
+          <Stake
+            lpContract={lpContract}
+            pid={pid}
+            tokenName={lpToken.toUpperCase()}
+          />
+        </Grid>
         <StyledInfo>
-          ⭐️ Every time you stake and unstake FLIP tokens, the contract will
-          automagically harvest CAKE rewards for you!
+          {TranslateString(
+            999,
+            '⭐️ Every time you stake and unstake FLIP tokens, the contract will automagically harvest CAKE rewards for you!',
+          )}
         </StyledInfo>
-        <Spacer size="lg" />
       </StyledFarm>
-    </>
+    </StyledPage>
   )
 }
 
+const StyledPage = styled(Page)`
+  padding-bottom: 24px;
+  padding-top: 24px;
+
+  @media (min-width: 852px) {
+    padding-bottom: 48px;
+    padding-top: 48px;
+  }
+`
+
+const Header = styled.div`
+  text-align: center;
+`
+
 const Image = styled.img`
   width: 160px;
-  margin-top: 30px;
+  margin-bottom: 24px;
 `
 
 const Title = styled.div`
   color: ${(props) => props.theme.colors.secondary};
-  font-size: 29px;
-  width: 50vw;
-  text-align: center;
+  font-size: 24px;
   font-weight: 900;
-  margin: 50px;
+  margin-bottom: 24px;
 `
 
-const StyledFarm = styled.div`
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  @media (max-width: 768px) {
-    width: 100%;
+const StyledFarm = styled.div``
+
+const Grid = styled.div`
+  display: grid;
+  grid-gap: 24px;
+  grid-template-columns: minmax(auto, 344px);
+  justify-content: center;
+  padding: 32px 0;
+
+  @media (min-width: 852px) {
+    grid-template-columns: repeat(2, minmax(auto, 344px));
   }
 `
 
-const StyledCardsWrapper = styled.div`
-  display: flex;
-  width: 600px;
-  @media (max-width: 768px) {
-    width: 100%;
-    flex-flow: column nowrap;
-    align-items: center;
-  }
-`
-
-const StyledCardWrapper = styled.div`
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  @media (max-width: 768px) {
-    width: 80%;
-  }
-`
-
-const StyledInfo = styled.h3`
-  color: ${(props) => props.theme.colors.grey[400]};
-  font-size: 16px;
-  font-weight: 400;
-  margin: 0;
-  padding: 0;
+const StyledInfo = styled.p`
+  color: #1fc7d4;
   text-align: center;
 `
 
