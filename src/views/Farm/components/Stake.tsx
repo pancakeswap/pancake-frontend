@@ -5,11 +5,9 @@ import styled from 'styled-components'
 import { useWallet } from 'use-wallet'
 import { Contract } from 'web3-eth-contract'
 import Button from 'components/Button'
-import CardContent from 'components/CardContent'
 import IconButton from 'components/IconButton'
 import { AddIcon } from 'components/icons'
 import Label from 'components/Label'
-import Value from 'components/Value'
 import useAllowance from 'hooks/useAllowance'
 import useApprove from 'hooks/useApprove'
 import useModal from 'hooks/useModal'
@@ -23,6 +21,8 @@ import { TranslateString } from 'utils/translateTextHelpers'
 import DepositModal from './DepositModal'
 import WithdrawModal from './WithdrawModal'
 import Card from './Card'
+import CardImage from './CardImage'
+import Value from './Value'
 
 interface StakeProps {
   lpContract: Contract
@@ -84,13 +84,8 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName }) => {
     <Card>
       <StyledCardContentInner>
         <StyledCardHeader>
-          <img
-            src="/images/pancake-bnb-pan.svg"
-            alt="cake bnb pan"
-            height="48px"
-            width="48px"
-          />
-          <Value value={getBalanceNumber(stakedBalance)} />
+          <CardImage src="/images/pancake-bnb-pan.svg" alt="cake bnb pan" />
+          <Value value={getBalanceNumber(stakedBalance)} fontSize="40px" />
           <Label
             text={`${tokenName} ${TranslateString(332, 'Tokens Staked')}`}
           />

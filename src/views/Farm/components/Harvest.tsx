@@ -2,15 +2,14 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import Button from 'components/Button'
-import CardContent from 'components/CardContent'
-import CardIcon from 'components/CardIcon'
 import Label from 'components/Label'
-import Value from 'components/Value'
 import useEarnings from 'hooks/useEarnings'
 import useReward from 'hooks/useReward'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { TranslateString } from 'utils/translateTextHelpers'
 import Card from './Card'
+import CardImage from './CardImage'
+import Value from './Value'
 
 interface HarvestProps {
   pid: number
@@ -25,13 +24,8 @@ const Harvest: React.FC<HarvestProps> = ({ pid }) => {
     <Card>
       <StyledCardContentInner>
         <StyledCardHeader>
-          <img
-            src="/images/tokens/CAKE.png"
-            alt="cake"
-            height="48px"
-            width="48px"
-          />
-          <Value value={getBalanceNumber(earnings)} />
+          <CardImage src="/images/tokens/CAKE.png" alt="cake" />
+          <Value value={getBalanceNumber(earnings)} fontSize="40px" />
           <Label text={TranslateString(330, 'CAKE Earned')} />
         </StyledCardHeader>
         <StyledCardActions>
