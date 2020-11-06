@@ -111,7 +111,7 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
       apy = calculateCommunityApy(narBalance)
     } else if (farm.tokenSymbol === 'NYA') {
       apy = calculateCommunityApy(nyaBalance)
-    } else if (1 === 0) {
+    } else if (farm.tokenSymbol === 'HARD') {
       // TODO: Refactor APY for dual farm
       const cakeApy =
         stakedValueItem &&
@@ -120,7 +120,7 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
           .times(BLOCKS_PER_YEAR)
           .div(stakedValueItem.totalWethValue)
 
-      apy = cakeApy.times(cakePrice.div(stakedValueItem.totalWethValue))
+      apy = cakeApy.times(stakedValueItem.totalWethValue.div(cakePrice))
     } else {
       apy =
         stakedValueItem && !removed

@@ -26,7 +26,7 @@ const Farm: React.FC = () => {
     icon: '',
     tokenSymbol: '',
   }
-
+  const isHardToken = tokenSymbol === 'HARD'
   const lpContract = useMemo(() => {
     return getContract(ethereum as provider, lpTokenAddress)
   }, [ethereum, lpTokenAddress])
@@ -39,7 +39,7 @@ const Farm: React.FC = () => {
           alt={tokenSymbol}
         />
         <Title>{TranslateString(320, 'Stake FLIP tokens to stack CAKE')}</Title>
-        {tokenSymbol === 'HARD' && <DualFarmDisclaimer />}
+        {isHardToken && <DualFarmDisclaimer />}
       </Header>
       <StyledFarm>
         <Grid>
@@ -50,7 +50,7 @@ const Farm: React.FC = () => {
             tokenName={lpToken.toUpperCase()}
           />
         </Grid>
-        {tokenSymbol === 'HARD' ? (
+        {isHardToken ? (
           <DualFarmDisclaimer />
         ) : (
           <StyledInfo>
