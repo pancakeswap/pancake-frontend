@@ -48,7 +48,7 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
     }
   }, {})
 
-  const sushiPrice = stakedValueById['CAKE']
+  const cakePrice = stakedValueById['CAKE']
     ? stakedValueById['CAKE'].tokenPriceInWeth
     : new BigNumber(0)
 
@@ -83,25 +83,25 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
   const rows = realFarms.reduce<FarmWithStakedValue[][]>((accum, farm) => {
     const stakedValueItem = stakedValueById[farm.tokenSymbol]
 
+    // numberofCAKEBlock
+    const cakeBlocks =
+      stakedValueItem && CAKE_PER_BLOCK.times(stakedValueItem.poolWeight)
+
     const calculateCommunityApy = (balance: BigNumber) => {
       if (!stakedValueItem) {
         return null
       }
 
-      return CAKE_PER_BLOCK.times(BLOCKS_PER_YEAR)
-        .times(stakedValueItem.poolWeight)
-        .div(balance)
-        .div(2)
+      return cakeBlocks.times(BLOCKS_PER_YEAR).div(balance).div(2)
     }
 
     let apy
 
     if (farm.pid === 11) {
       apy = stakedValueItem
-        ? sushiPrice
-            .times(CAKE_PER_BLOCK)
+        ? cakePrice
+            .times(cakeBlocks)
             .times(BLOCKS_PER_YEAR)
-            .times(stakedValueItem.poolWeight)
             .div(stakedValueItem.tokenAmount)
             .div(2)
             .times(bnbPrice)
@@ -115,10 +115,9 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
     } else {
       apy =
         stakedValueItem && !removed
-          ? sushiPrice
-              .times(CAKE_PER_BLOCK)
+          ? cakePrice
+              .times(cakeBlocks)
               .times(BLOCKS_PER_YEAR)
-              .times(stakedValueItem.poolWeight)
               .div(stakedValueItem.totalWethValue)
           : null
     }
@@ -142,7 +141,6 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
                 farm={farm}
                 stakedValue={stakedValueById[farm.tokenSymbol]}
                 removed={removed}
-                sushiPrice={sushiPrice}
               />
             ))
           : forShowPools.map((pool, index) => (
@@ -230,15 +228,10 @@ const FCard = styled.div`
 interface FarmCardProps {
   farm: FarmWithStakedValue
   removed: boolean
-  sushiPrice?: number
+  cakePrice?: number
 }
 
-const FarmCard: React.FC<FarmCardProps> = ({
-  farm,
-  stakedValue,
-  removed,
-  sushiPrice,
-}) => {
+const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
   const TranslateString = useI18n()
   const totalValue1 =
     useTokenBalance2(

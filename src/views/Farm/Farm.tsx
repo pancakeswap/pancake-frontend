@@ -9,6 +9,7 @@ import useI18n from 'hooks/useI18n'
 import Page from 'components/layout/Page'
 import Harvest from './components/Harvest'
 import Stake from './components/Stake'
+import DualFarmDisclaimer from './components/DualFarmDisclaimer'
 
 const Farm: React.FC = () => {
   const TranslateString = useI18n()
@@ -48,6 +49,7 @@ const Farm: React.FC = () => {
             tokenName={lpToken.toUpperCase()}
           />
         </Grid>
+        <DualFarmDisclaimer />
         <StyledInfo>
           {TranslateString(
             999,
