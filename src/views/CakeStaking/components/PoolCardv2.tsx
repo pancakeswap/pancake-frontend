@@ -93,7 +93,8 @@ const PoolCardv2: React.FC<HarvestProps> = ({
   const isCommunityFarm = COMMUNITY_FARMS.includes(tokenName)
 
   const apy = useMemo(() => {
-    if (!harvest || cakePrice.isLessThanOrEqualTo(0) || isCommunityFarm) return '-'
+    if (!harvest || cakePrice.isLessThanOrEqualTo(0) || isCommunityFarm)
+      return '-'
     const a = tokenPrice.times(BLOCKS_PER_YEAR).times(tokenPerBlock)
     const b = cakePrice.times(getBalanceNumber(totalStaked))
 
@@ -180,10 +181,11 @@ const PoolCardv2: React.FC<HarvestProps> = ({
             />
           )}
         </div>
+        {/* Dirty fix. @TODO this need to be move to the config file */}
         {!isOldSyrup ? (
           <Balance
             value={
-              tokenName === 'CTK'
+              tokenName === 'CTK' || tokenName === 'HARD'
                 ? getBalanceNumber(earnings, 6)
                 : getBalanceNumber(earnings)
             }
