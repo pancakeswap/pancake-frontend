@@ -23,26 +23,29 @@ const Harvest: React.FC<HarvestProps> = ({ pid }) => {
 
   return (
     <Card>
-      <CardContent>
-        <StyledCardContentInner>
-          <StyledCardHeader>
-            <CardIcon>🥞</CardIcon>
-            <Value value={getBalanceNumber(earnings)} />
-            <Label text={TranslateString(330, 'CAKE Earned')} />
-          </StyledCardHeader>
-          <StyledCardActions>
-            <Button
-              disabled={!earnings.toNumber() || pendingTx}
-              text={pendingTx ? 'Collecting CAKE' : 'Harvest'}
-              onClick={async () => {
-                setPendingTx(true)
-                await onReward()
-                setPendingTx(false)
-              }}
-            />
-          </StyledCardActions>
-        </StyledCardContentInner>
-      </CardContent>
+      <StyledCardContentInner>
+        <StyledCardHeader>
+          <img
+            src="/images/tokens/CAKE.png"
+            alt="cake"
+            height="48px"
+            width="48px"
+          />
+          <Value value={getBalanceNumber(earnings)} />
+          <Label text={TranslateString(330, 'CAKE Earned')} />
+        </StyledCardHeader>
+        <StyledCardActions>
+          <Button
+            disabled={!earnings.toNumber() || pendingTx}
+            text={pendingTx ? 'Collecting CAKE' : 'Harvest'}
+            onClick={async () => {
+              setPendingTx(true)
+              await onReward()
+              setPendingTx(false)
+            }}
+          />
+        </StyledCardActions>
+      </StyledCardContentInner>
     </Card>
   )
 }

@@ -88,6 +88,7 @@ const Title = styled.div`
 const StyledFarm = styled.div``
 
 const Grid = styled.div`
+  align-items: start;
   display: grid;
   grid-gap: 24px;
   grid-template-columns: minmax(auto, 344px);
