@@ -746,7 +746,7 @@ export const supportedPools = [
       56: '0xe64f5cb844946c1f102bd25bbd87a5ab4ae89fbe',
     },
     name: 'ROOBEE STAKING',
-    symbol: 'ROOBEE-CAKE FLIP',
+    symbol: 'bROOBEE-CAKE FLIP',
     tokenSymbol: 'bROOBEE',
     icon: '🥞',
     multiplier: '0.2X',
@@ -991,7 +991,7 @@ export const forShowPools = [
   },
   {
     pid: 38,
-    symbol: 'ROOBEE-CAKE',
+    symbol: 'bROOBEE-CAKE',
     tokenSymbol: 'bROOBEE',
     multiplier: '0.2X',
     isCommunity: true,

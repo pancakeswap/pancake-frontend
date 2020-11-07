@@ -65,7 +65,7 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
     : farms.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X')
   const bnbPrice = useBnbPrice()
 
-  // temp fix
+  // temp fix 
   const staxBalance = useTokenBalance2(
     '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     '0x7cd05f8b960ba071fdf69c750c0e5a57c8366500',
@@ -77,6 +77,10 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
   const nyaBalance = useTokenBalance2(
     '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     '0x2730bf486d658838464a4ef077880998d944252d',
+  )
+  const bROOBEEBalance = useTokenBalance2(
+    '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
+    '0x970858016C963b780E06f7DCfdEf8e809919BcE8',
   )
 
   const rows = realFarms.reduce<FarmWithStakedValue[][]>((accum, farm) => {
@@ -110,7 +114,10 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
       apy = calculateCommunityApy(narBalance)
     } else if (farm.tokenSymbol === 'NYA') {
       apy = calculateCommunityApy(nyaBalance)
-    } else if (farm.tokenSymbol === 'HARD') {
+    } else if (farm.tokenSymbol === 'bROOBEE') {
+      apy = calculateCommunityApy(bROOBEEBalance)
+    }
+    else if (farm.tokenSymbol === 'HARD') {
       // TODO: Refactor APY for dual farm
       const cakeApy =
         stakedValueItem &&

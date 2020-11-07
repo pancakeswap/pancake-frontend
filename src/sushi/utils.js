@@ -111,7 +111,6 @@ export const getTotalStaked = async (sushi, sousChefContract) => {
   const sushiBalance = await sushi2.methods
     .balanceOf(sousChefContract.options.address)
     .call()
-  console.log(sushiBalance)
   return syrupBalance > sushiBalance ? syrupBalance : sushiBalance
 }
 
@@ -184,7 +183,6 @@ export const stake = async (masterChefContract, pid, amount, account) => {
       )
       .send({ from: account })
       .on('transactionHash', (tx) => {
-        console.log(tx)
         return tx.transactionHash
       })
   }
@@ -217,7 +215,6 @@ export const unstake = async (masterChefContract, pid, amount, account) => {
       )
       .send({ from: account })
       .on('transactionHash', (tx) => {
-        console.log(tx)
         return tx.transactionHash
       })
   }
@@ -249,7 +246,6 @@ export const sousUnstake = async (sousChefContract, amount, account) => {
     .withdraw(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
     .send({ from: account })
     .on('transactionHash', (tx) => {
-      console.log(tx)
       return tx.transactionHash
     })
 }
@@ -263,7 +259,6 @@ export const sousEmegencyUnstake = async (
     .emergencyWithdraw()
     .send({ from: account })
     .on('transactionHash', (tx) => {
-      console.log(tx)
       return tx.transactionHash
     })
 }
@@ -310,7 +305,7 @@ export const getSousStaked = async (sousChefContract, account) => {
     const { amount } = await sousChefContract.methods.userInfo(account).call()
     return new BigNumber(amount)
   } catch (err) {
-    console.log(err)
+    console.err(err)
     return new BigNumber(0)
   }
 }
@@ -339,7 +334,6 @@ export const redeem = async (masterChefContract, account) => {
       .exit()
       .send({ from: account })
       .on('transactionHash', (tx) => {
-        console.log(tx)
         return tx.transactionHash
       })
   } else {
