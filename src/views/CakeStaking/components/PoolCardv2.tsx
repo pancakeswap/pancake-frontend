@@ -10,7 +10,7 @@ import IconButton from 'components/IconButton'
 import { AddIcon } from 'components/icons'
 import Label from 'components/Label'
 import { useTokenBalance2 } from 'hooks/useTokenBalance'
-import { SUSHI_PER_BLOCK } from 'config'
+import { CAKE_PER_BLOCK } from 'config'
 
 import { useSousAllowance } from 'hooks/useAllowance'
 import { useSousApprove } from 'hooks/useApprove'
@@ -127,7 +127,7 @@ const PoolCardv2: React.FC<HarvestProps> = ({
         return null
       }
 
-      return `${SUSHI_PER_BLOCK.times(BLOCKS_PER_YEAR)
+      return `${CAKE_PER_BLOCK.times(BLOCKS_PER_YEAR)
         .times(stakedValueItem.poolWeight)
         .div(balance)
         .div(2)
