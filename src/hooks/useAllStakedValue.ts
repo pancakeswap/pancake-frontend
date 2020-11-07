@@ -30,7 +30,6 @@ const useAllStakedValue = () => {
   const sushi = useSushi()
   const farms = getFarms(sushi)
   const masterChefContract = getMasterChefContract(sushi)
-
   const wethContact = getWethContract(sushi)
   const block = useBlock()
 
@@ -54,7 +53,7 @@ const useAllStakedValue = () => {
             lpContract,
             tokenContract,
             pid,
-            tokenSymbol,
+            tokenSymbol
           ),
       ),
     )
