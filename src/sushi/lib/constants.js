@@ -61,6 +61,17 @@ export const contractAddresses = {
 
 export const sousChefTeam = [
   {
+    sousId: 0,
+    contractAddress: {
+      97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
+      56: '0x73feaa1eE314F8c655E354234017bE2193C9E24E',
+    },
+    tokenName: 'CAKE',
+    projectLink: 'http://pancakeswap.finance/',
+    harvest: true,
+    tokenPerBlock: '10',
+  },
+  {
     sousId: 13,
     contractAddress: {
       97: '',
@@ -71,17 +82,6 @@ export const sousChefTeam = [
     harvest: true,
     tokenPerBlock: '12.5',
     community: true,
-  },
-  {
-    sousId: 0,
-    contractAddress: {
-      97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
-      56: '0x73feaa1eE314F8c655E354234017bE2193C9E24E',
-    },
-    tokenName: 'CAKE',
-    projectLink: 'http://pancakeswap.finance/',
-    harvest: true,
-    tokenPerBlock: '10',
   },
   {
     sousId: 14,
@@ -261,21 +261,6 @@ export const supportedPools = [
     name: 'Cake STAKING',
     symbol: 'CAKE',
     tokenSymbol: 'SYRUP',
-    icon: '🥞',
-  },
-  {
-    pid: 38,
-    lpAddresses: {
-      97: '',
-      56: '0x970858016C963b780E06f7DCfdEf8e809919BcE8',
-    },
-    tokenAddresses: {
-      97: '',
-      56: '0xe64f5cb844946c1f102bd25bbd87a5ab4ae89fbe',
-    },
-    name: 'ROOBEE STAKING',
-    symbol: 'ROOBEE-CAKE FLIP',
-    tokenSymbol: 'bROOBEE',
     icon: '🥞',
   },
   {
@@ -751,6 +736,22 @@ export const supportedPools = [
     multiplier: '2X',
   },
   {
+    pid: 38,
+    lpAddresses: {
+      97: '',
+      56: '0x970858016C963b780E06f7DCfdEf8e809919BcE8',
+    },
+    tokenAddresses: {
+      97: '',
+      56: '0xe64f5cb844946c1f102bd25bbd87a5ab4ae89fbe',
+    },
+    name: 'ROOBEE STAKING',
+    symbol: 'ROOBEE-CAKE FLIP',
+    tokenSymbol: 'bROOBEE',
+    icon: '🥞',
+    multiplier: '0.2X',
+  },
+  {
     pid: 8,
     lpAddresses: {
       97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
@@ -803,12 +804,6 @@ export const forShowPools = [
     symbol: 'CAKE-BNB',
     tokenSymbol: 'CAKE',
     multiplier: '30X',
-  },
-  {
-    pid: 38,
-    symbol: 'ROOBEE-CAKE',
-    tokenSymbol: 'bROOBEE',
-    isCommunity: true,
   },
   {
     pid: 1,
@@ -993,6 +988,13 @@ export const forShowPools = [
     tokenSymbol: 'HARD',
     multiplier: '2X',
     isCommunity: false,
+  },
+  {
+    pid: 38,
+    symbol: 'ROOBEE-CAKE',
+    tokenSymbol: 'bROOBEE',
+    multiplier: '0.2X',
+    isCommunity: true,
   },
 ]
 
