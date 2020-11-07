@@ -149,6 +149,7 @@ export const getTotalLPWethValue = async (
     .times(portionLp)
     .div(new BigNumber(10).pow(18))
   return {
+    pid,
     tokenSymbol,
     tokenAmount,
     wethAmount,

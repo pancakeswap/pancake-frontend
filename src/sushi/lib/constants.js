@@ -72,6 +72,18 @@ export const sousChefTeam = [
     tokenPerBlock: '10',
   },
   {
+    sousId: 13,
+    contractAddress: {
+      97: '',
+      56: '0xdc8c45b7F3747Ca9CaAEB3fa5e0b5FCE9430646b',
+    },
+    tokenName: 'bROOBEE',
+    projectLink: 'https://roobee.io/',
+    harvest: true,
+    tokenPerBlock: '12.5',
+    community: true,
+  },
+  {
     sousId: 14,
     contractAddress: {
       97: '',
@@ -724,6 +736,22 @@ export const supportedPools = [
     multiplier: '2X',
   },
   {
+    pid: 38,
+    lpAddresses: {
+      97: '',
+      56: '0x970858016C963b780E06f7DCfdEf8e809919BcE8',
+    },
+    tokenAddresses: {
+      97: '',
+      56: '0xe64f5cb844946c1f102bd25bbd87a5ab4ae89fbe',
+    },
+    name: 'ROOBEE STAKING',
+    symbol: 'ROOBEE-CAKE FLIP',
+    tokenSymbol: 'bROOBEE',
+    icon: '🥞',
+    multiplier: '0.2X',
+  },
+  {
     pid: 8,
     lpAddresses: {
       97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
@@ -961,6 +989,13 @@ export const forShowPools = [
     multiplier: '2X',
     isCommunity: false,
   },
+  {
+    pid: 38,
+    symbol: 'ROOBEE-CAKE',
+    tokenSymbol: 'bROOBEE',
+    multiplier: '0.2X',
+    isCommunity: true,
+  },
 ]
 
 export const BLOCKS_PER_YEAR = new BigNumber(10512000)
@@ -968,4 +1003,4 @@ export const BLOCKS_PER_YEAR = new BigNumber(10512000)
 // This is a list of community pools. The token name is used because
 // there are 2 lists, one coming from the contract and a static one
 // TODO: Use pids if possible
-export const COMMUNITY_FARMS = ['NYA', 'STAX', 'NAR']
+export const COMMUNITY_FARMS = ['NYA', 'STAX', 'NAR', 'bROOBEE']
