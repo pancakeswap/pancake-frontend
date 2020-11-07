@@ -10,7 +10,6 @@ import useI18n from '../../hooks/useI18n'
 import useAllStakedValue from '../../hooks/useAllStakedValue'
 import { getPools } from '../../sushi/utils'
 
-
 import PoolCardv2 from './components/PoolCardv2'
 import Coming from './components/Coming'
 import SyrupWarning from './components/SyrupWarning'
@@ -26,6 +25,7 @@ interface SyrupRowProps {
   cakePrice: BigNumber
   tokenPrice: BigNumber
   community?: boolean
+  stakedValue: Array<any>
 }
 
 const SyrupRow: React.FC<SyrupRowProps> = ({
@@ -36,7 +36,8 @@ const SyrupRow: React.FC<SyrupRowProps> = ({
   tokenPerBlock,
   cakePrice,
   tokenPrice,
-  community
+  community,
+  stakedValue,
 }) => {
   const { ethereum } = useWallet()
   const syrup = useMemo(() => {
@@ -52,6 +53,7 @@ const SyrupRow: React.FC<SyrupRowProps> = ({
       cakePrice={cakePrice}
       tokenPrice={tokenPrice}
       tokenPerBlock={tokenPerBlock}
+      stakedValue={stakedValue}
       {...{ sousId, tokenName, projectLink, harvest, community }}
     />
   )
@@ -62,6 +64,7 @@ const Farm: React.FC = () => {
   const TranslateString = useI18n()
   const stakedValue = useAllStakedValue()
   const pools = getPools(sushi) || sousChefTeam
+
   const renderPools = useMemo(() => {
     const stakedValueObj = stakedValue.reduce(
       (a, b) => ({
@@ -101,7 +104,7 @@ const Farm: React.FC = () => {
       </Hero>
       <Pools>
         {renderPools.map((pool) => (
-          <SyrupRow key={pool.sousId} {...pool} />
+          <SyrupRow key={pool.sousId} stakedValue={stakedValue} {...pool} />
         ))}
         <Coming />
       </Pools>
