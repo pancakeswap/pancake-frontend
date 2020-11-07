@@ -10,7 +10,6 @@ import useI18n from '../../hooks/useI18n'
 import useAllStakedValue from '../../hooks/useAllStakedValue'
 import { getPools } from '../../sushi/utils'
 
-
 import PoolCardv2 from './components/PoolCardv2'
 import Coming from './components/Coming'
 import SyrupWarning from './components/SyrupWarning'
@@ -36,7 +35,7 @@ const SyrupRow: React.FC<SyrupRowProps> = ({
   tokenPerBlock,
   cakePrice,
   tokenPrice,
-  community
+  community,
 }) => {
   const { ethereum } = useWallet()
   const syrup = useMemo(() => {
