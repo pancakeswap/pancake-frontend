@@ -84,6 +84,17 @@ export const sousChefTeam = [
     tokenPerBlock: '10',
   },
   {
+    sousId: 14,
+    contractAddress: {
+      97: '',
+      56: '0x90F995b9d46b32c4a1908A8c6D0122e392B3Be97',
+    },
+    tokenName: 'HARD',
+    projectLink: 'https://hard.kava.io',
+    harvest: true,
+    tokenPerBlock: '0.346',
+  },
+  {
     sousId: 12,
     contractAddress: {
       97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
@@ -725,6 +736,21 @@ export const supportedPools = [
     multiplier: '0.1X',
   },
   {
+    pid: 37,
+    lpAddresses: {
+      97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
+      56: '0x9f40e8a2fcaa267a0c374b6c661e0b372264cc3d',
+    },
+    tokenAddresses: {
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
+      56: '0xf79037f6f6be66832de4e7516be52826bc3cbcc4',
+    },
+    symbol: 'HARD-BNB FLIP',
+    tokenSymbol: 'HARD',
+    icon: '🥞',
+    multiplier: '2X',
+  },
+  {
     pid: 8,
     lpAddresses: {
       97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
@@ -960,6 +986,13 @@ export const forShowPools = [
     tokenSymbol: 'NYA',
     multiplier: '0.1X',
     isCommunity: true,
+  },
+  {
+    pid: 37,
+    symbol: 'HARD-BNB',
+    tokenSymbol: 'HARD',
+    multiplier: '2X',
+    isCommunity: false,
   },
 ]
 
