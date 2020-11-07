@@ -4,7 +4,7 @@ import BigNumber from 'bignumber.js'
 import Countdown, { CountdownRenderProps } from 'react-countdown'
 import styled, { keyframes } from 'styled-components'
 import { useWallet } from 'use-wallet'
-import { CAKE_PER_BLOCK, HARD_REWARD_PER_BLOCK } from 'config'
+import { CAKE_PER_BLOCK, HARD_REWARD_PER_BLOCK, CAKE_POOL_PID } from 'config'
 import { COMMUNITY_FARMS } from 'sushi/lib/constants'
 import Button from 'components/Button'
 import { Farm } from 'contexts/Farms'
@@ -40,16 +40,15 @@ interface FarmCardsProps {
 const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
   const [farms] = useFarms()
   const stakedValue = useAllStakedValue()
-
   const stakedValueById = stakedValue.reduce((accum, value) => {
     return {
       ...accum,
-      [value.tokenSymbol]: value,
+      [value.pid]: value,
     }
   }, {})
 
-  const cakePrice = stakedValueById['CAKE']
-    ? stakedValueById['CAKE'].tokenPriceInWeth
+  const cakePrice = stakedValueById[CAKE_POOL_PID]
+    ? stakedValueById[CAKE_POOL_PID].tokenPriceInWeth
     : new BigNumber(0)
 
   const [onPresentWalletProviderModal] = useModal(
@@ -81,7 +80,7 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
   )
 
   const rows = realFarms.reduce<FarmWithStakedValue[][]>((accum, farm) => {
-    const stakedValueItem = stakedValueById[farm.tokenSymbol]
+    const stakedValueItem = stakedValueById[farm.pid]
 
     const cakeRewardPerBlock =
       stakedValueItem && CAKE_PER_BLOCK.times(stakedValueItem.poolWeight)
