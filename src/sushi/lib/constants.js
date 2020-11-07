@@ -253,7 +253,7 @@ export const supportedPools = [
     icon: '🥞',
   },
   {
-    pid: 37,
+    pid: 38,
     lpAddresses: {
       97: '',
       56: '0x970858016C963b780E06f7DCfdEf8e809919BcE8',
@@ -779,7 +779,7 @@ export const forShowPools = [
     multiplier: '30X',
   },
   {
-    pid: 37,
+    pid: 38,
     symbol: 'ROOBEE-CAKE',
     tokenSymbol: 'bROOBEE',
     isCommunity: true,
