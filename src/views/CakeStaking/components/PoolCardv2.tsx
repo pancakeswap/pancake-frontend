@@ -9,8 +9,6 @@ import HarvestButton from './HarvestButton'
 import IconButton from 'components/IconButton'
 import { AddIcon } from 'components/icons'
 import Label from 'components/Label'
-import { useTokenBalance2 } from 'hooks/useTokenBalance'
-import { SUSHI_PER_BLOCK } from 'config'
 
 import { useSousAllowance } from 'hooks/useAllowance'
 import { useSousApprove } from 'hooks/useApprove'
@@ -50,7 +48,6 @@ interface HarvestProps {
   cakePrice: BigNumber
   tokenPrice: BigNumber
   community?: boolean
-  stakedValue: Array<any>
 }
 
 /**
@@ -73,7 +70,6 @@ const PoolCardv2: React.FC<HarvestProps> = ({
   tokenPrice,
   tokenPerBlock,
   community,
-  stakedValue,
 }) => {
   const [requestedApproval, setRequestedApproval] = useState(false)
   const { account } = useWallet()
@@ -95,71 +91,14 @@ const PoolCardv2: React.FC<HarvestProps> = ({
   const { onReward } = useSousReward(sousId)
   const isCommunityFarm = COMMUNITY_FARMS.includes(tokenName)
 
-  // /!\ Shit code
-  // useTokenBalance2 and the calculateCommunityApy are part of temporary fix to display
-  // the APY of certain pools (afaik only community pools). The problem is, that the usual method
-  // to retrieve the balance of the LP contract give a value of 0 for these pools.
-  // So here, we apply the same fix than on the FarmCards.tsx components.
-  // This fix needs to be remove once we find a way to compute the APY with only function, for all the pools
-  const staxBalance = useTokenBalance2(
-    '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
-    '0x7cd05f8b960ba071fdf69c750c0e5a57c8366500',
-  )
-  const narBalance = useTokenBalance2(
-    '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
-    '0x745c4fd226e169d6da959283275a8e0ecdd7f312',
-  )
-  const nyaBalance = useTokenBalance2(
-    '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
-    '0x2730bf486d658838464a4ef077880998d944252d',
-  )
-
   const apy = useMemo(() => {
-    const calculateCommunityApy = (balance: BigNumber, tokenName: string) => {
-      const stakedValueById = stakedValue.reduce((accum, value) => {
-        return {
-          ...accum,
-          [value.tokenSymbol]: value,
-        }
-      }, {})
-      const stakedValueItem = stakedValueById[tokenName]
-      if (!stakedValueItem) {
-        return null
-      }
-
-      return `${SUSHI_PER_BLOCK.times(BLOCKS_PER_YEAR)
-        .times(stakedValueItem.poolWeight)
-        .div(balance)
-        .div(2)
-        .times(100)
-        .toFixed(2)}%`
-    }
-
     if (!harvest || cakePrice.isLessThanOrEqualTo(0)) return '-'
 
-    if (tokenName === 'STAX') {
-      return calculateCommunityApy(new BigNumber(staxBalance), tokenName)
-    } else if (tokenName === 'NAR') {
-      return calculateCommunityApy(new BigNumber(narBalance), tokenName)
-    } else if (tokenName === 'NYA') {
-      return calculateCommunityApy(new BigNumber(nyaBalance), tokenName)
-    }
     const a = tokenPrice.times(BLOCKS_PER_YEAR).times(tokenPerBlock)
     const b = cakePrice.times(getBalanceNumber(totalStaked))
 
     return `${a.div(b).times(100).toFixed(2)}%`
-  }, [
-    cakePrice,
-    harvest,
-    narBalance,
-    nyaBalance,
-    stakedValue,
-    staxBalance,
-    tokenName,
-    tokenPerBlock,
-    tokenPrice,
-    totalStaked,
-  ])
+  }, [cakePrice, harvest, tokenPerBlock, tokenPrice, totalStaked])
 
   const isUnstaked =
     account && !allowance.toNumber() && stakedBalance.toNumber() === 0
