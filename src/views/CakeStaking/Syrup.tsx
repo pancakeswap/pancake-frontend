@@ -47,6 +47,7 @@ interface SyrupRowProps {
   cakePrice: BigNumber
   tokenPrice: BigNumber
   isCommunity?: boolean
+  isFinished?: boolean
 }
 
 const SyrupRow: React.FC<SyrupRowProps> = ({
@@ -58,6 +59,7 @@ const SyrupRow: React.FC<SyrupRowProps> = ({
   cakePrice,
   tokenPrice,
   isCommunity,
+  isFinished,
 }) => {
   const { ethereum } = useWallet()
   const syrup = useMemo(() => {
@@ -90,7 +92,7 @@ const SyrupRow: React.FC<SyrupRowProps> = ({
       cakePrice={cakePrice}
       tokenPrice={price}
       tokenPerBlock={tokenPerBlock}
-      {...{ sousId, tokenName, projectLink, harvest, isCommunity }}
+      {...{ sousId, tokenName, projectLink, harvest, isCommunity, isFinished }}
     />
   )
 }
