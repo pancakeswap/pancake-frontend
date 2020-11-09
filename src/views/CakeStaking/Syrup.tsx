@@ -1,9 +1,10 @@
 /* eslint-disable jsx-a11y/accessible-emoji */
-import React, { useEffect, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import { useWallet } from 'use-wallet'
 import { provider } from 'web3-core'
+import orderBy from 'lodash/orderBy'
 import { getContract } from 'utils/erc20'
 import useSushi from 'hooks/useSushi'
 import useI18n from 'hooks/useI18n'
@@ -109,7 +110,7 @@ const Farm: React.FC = () => {
       {},
     )
 
-    return pools.map((pool) => {
+    const transformedPools = pools.map((pool) => {
       const cakePrice = stakedValueObj['CAKE']?.tokenPriceInWeth || new BigNumber(0)
       const tokenPrice = stakedValueObj[pool.tokenName]?.tokenPriceInWeth || new BigNumber(0)
       return {
@@ -118,6 +119,8 @@ const Farm: React.FC = () => {
         tokenPrice,
       }
     })
+
+    return orderBy(transformedPools, ['sortOrder', 'isFinished', 'isCommunity'], ['asc', 'asc', 'asc'])
   }, [stakedValue, pools])
 
   // Separate active pools from finished pools so we can inject the callout
