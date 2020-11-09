@@ -110,7 +110,7 @@ const Farm: React.FC = () => {
       {},
     )
 
-    const transformedPools = pools.map((pool) => {
+    return pools.map((pool) => {
       const cakePrice = stakedValueObj['CAKE']?.tokenPriceInWeth || new BigNumber(0)
       const tokenPrice = stakedValueObj[pool.tokenName]?.tokenPriceInWeth || new BigNumber(0)
       return {
@@ -119,8 +119,6 @@ const Farm: React.FC = () => {
         tokenPrice,
       }
     })
-
-    return orderBy(transformedPools, ['sortOrder', 'isFinished', 'isCommunity'], ['asc', 'asc', 'asc'])
   }, [stakedValue, pools])
 
   // Separate active pools from finished pools so we can inject the callout
@@ -158,11 +156,11 @@ const Farm: React.FC = () => {
         </div>
       </Hero>
       <Pools>
-        {openPools.map((pool) => (
+        {orderBy(openPools, ['sortOrder', 'isCommunity']).map((pool) => (
           <SyrupRow key={pool.sousId} {...pool} />
         ))}
         <Coming />
-        {finishedPools.map((pool) => (
+        {orderBy(finishedPools, ['sortOrder', 'isCommunity']).map((pool) => (
           <SyrupRow key={pool.sousId} {...pool} />
         ))}
       </Pools>
