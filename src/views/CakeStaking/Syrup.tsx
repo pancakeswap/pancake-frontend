@@ -1,9 +1,10 @@
 /* eslint-disable jsx-a11y/accessible-emoji */
-import React, { useEffect, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import { useWallet } from 'use-wallet'
 import { provider } from 'web3-core'
+import orderBy from 'lodash/orderBy'
 import { getContract } from 'utils/erc20'
 import useSushi from 'hooks/useSushi'
 import useI18n from 'hooks/useI18n'
@@ -46,6 +47,7 @@ interface SyrupRowProps {
   cakePrice: BigNumber
   tokenPrice: BigNumber
   isCommunity?: boolean
+  isFinished?: boolean
 }
 
 const SyrupRow: React.FC<SyrupRowProps> = ({
@@ -57,6 +59,7 @@ const SyrupRow: React.FC<SyrupRowProps> = ({
   cakePrice,
   tokenPrice,
   isCommunity,
+  isFinished,
 }) => {
   const { ethereum } = useWallet()
   const syrup = useMemo(() => {
@@ -89,7 +92,7 @@ const SyrupRow: React.FC<SyrupRowProps> = ({
       cakePrice={cakePrice}
       tokenPrice={price}
       tokenPerBlock={tokenPerBlock}
-      {...{ sousId, tokenName, projectLink, harvest, isCommunity }}
+      {...{ sousId, tokenName, projectLink, harvest, isCommunity, isFinished }}
     />
   )
 }
@@ -120,9 +123,23 @@ const Farm: React.FC = () => {
     })
   }, [stakedValue, pools])
 
-  useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
+  // Separate active pools from finished pools so we can inject the callout
+  const { openPools, finishedPools } = renderPools.reduce(
+    (accum, pool) => {
+      if (pool.isFinished) {
+        return {
+          ...accum,
+          finishedPools: [...accum.finishedPools, pool],
+        }
+      }
+
+      return {
+        ...accum,
+        openPools: [...accum.openPools, pool],
+      }
+    },
+    { openPools: [], finishedPools: [] },
+  )
 
   return (
     <Page>
@@ -141,10 +158,13 @@ const Farm: React.FC = () => {
         </div>
       </Hero>
       <Pools>
-        {renderPools.map((pool) => (
-          <SyrupRow key={pool.sousId} stakedValue={stakedValue} {...pool} />
+        {orderBy(openPools, ['sortOrder', 'isCommunity']).map((pool) => (
+          <SyrupRow key={pool.sousId} {...pool} />
         ))}
         <Coming />
+        {orderBy(finishedPools, ['sortOrder', 'isCommunity']).map((pool) => (
+          <SyrupRow key={pool.sousId} {...pool} />
+        ))}
       </Pools>
     </Page>
   )

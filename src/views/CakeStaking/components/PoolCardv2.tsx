@@ -45,6 +45,7 @@ interface HarvestProps {
   cakePrice: BigNumber
   tokenPrice: BigNumber
   isCommunity?: boolean
+  isFinished?: boolean
 }
 
 /**
@@ -67,12 +68,13 @@ const PoolCardv2: React.FC<HarvestProps> = ({
   tokenPrice,
   tokenPerBlock,
   isCommunity,
+  isFinished,
 }) => {
   const [requestedApproval, setRequestedApproval] = useState(false)
   const { account } = useWallet()
   const allowance = useSousAllowance(syrup, sousId)
   const { onApprove } = useSousApprove(syrup, sousId)
-  const { isFinished, farmStart, blocksRemaining } = useSousLeftBlocks(sousId)
+  const { isFinished: isCalculatedFinished, farmStart, blocksRemaining } = useSousLeftBlocks(sousId)
   const tokenBalance = useTokenBalance(syrup.options.address)
   const stakedBalance = useSousStakedBalance(sousId)
   const totalStaked = useSousTotalStaked(sousId)
@@ -100,7 +102,11 @@ const PoolCardv2: React.FC<HarvestProps> = ({
 
   // TODO - Remove this when pool removed
   const isOldSyrup = SYRUPIDS.includes(sousId)
-  const isReallyFinished = isFinished || isOldSyrup
+
+  // 1. isFinished - set manually in the list of pools
+  // 2. isCalculatedFinished - calculated based on current/ending block
+  // 3. isOldSyrup - Hot fix for corrupted pools
+  const isReallyFinished = isFinished || isCalculatedFinished || isOldSyrup
   const isCardActive = isReallyFinished && isUnstaked
 
   const [onPresentDeposit] = useModal(
