@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
-import { getBalanceNumber } from '../../../utils/formatBalance'
-import useI18n from '../../../hooks/useI18n'
+import { getBalanceNumber } from 'utils/formatBalance'
+import useI18n from 'hooks/useI18n'
 import SmallValue from './Value'
 import CoreTag from './CoreTag'
 import CommunityTag from './CommunityTag'
@@ -18,7 +18,7 @@ interface Props {
 }
 
 const StyledFooter = styled.div<{ isFinished: boolean }>`
-  border-top: 1px solid ${({ theme }) => theme.colors.border};
+  border-top: 1px solid ${({ theme }) => (theme.isDark ? '#524B63' : '#E9EAEB')};
   color: ${({ isFinished, theme }) => theme.colors[isFinished ? 'textDisabled2' : 'primary2']};
   padding: 24px;
 `
