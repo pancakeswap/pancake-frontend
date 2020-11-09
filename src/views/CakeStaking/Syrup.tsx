@@ -120,9 +120,23 @@ const Farm: React.FC = () => {
     })
   }, [stakedValue, pools])
 
-  useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
+  // Separate active pools from finished pools so we can inject the callout
+  const { openPools, finishedPools } = renderPools.reduce(
+    (accum, pool) => {
+      if (pool.isFinished) {
+        return {
+          ...accum,
+          finishedPools: [...accum.finishedPools, pool],
+        }
+      }
+
+      return {
+        ...accum,
+        openPools: [...accum.openPools, pool],
+      }
+    },
+    { openPools: [], finishedPools: [] },
+  )
 
   return (
     <Page>
@@ -141,10 +155,13 @@ const Farm: React.FC = () => {
         </div>
       </Hero>
       <Pools>
-        {renderPools.map((pool) => (
-          <SyrupRow key={pool.sousId} stakedValue={stakedValue} {...pool} />
+        {openPools.map((pool) => (
+          <SyrupRow key={pool.sousId} {...pool} />
         ))}
         <Coming />
+        {finishedPools.map((pool) => (
+          <SyrupRow key={pool.sousId} {...pool} />
+        ))}
       </Pools>
     </Page>
   )
