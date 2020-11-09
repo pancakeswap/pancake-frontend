@@ -13,14 +13,13 @@ interface Props {
   totalStaked: BigNumber
   blocksRemaining: number
   isFinished: boolean
-  farmStart: number,
-  community?: boolean
+  farmStart: number
+  isCommunity?: boolean
 }
 
 const StyledFooter = styled.div<{ isFinished: boolean }>`
   border-top: 1px solid ${({ theme }) => theme.colors.border};
-  color: ${({ isFinished, theme }) =>
-    theme.colors[isFinished ? 'textDisabled2' : 'primary2']};
+  color: ${({ isFinished, theme }) => theme.colors[isFinished ? 'textDisabled2' : 'primary2']};
   padding: 24px;
 `
 
@@ -73,7 +72,7 @@ const CardFooter: React.FC<Props> = ({
   blocksRemaining,
   isFinished,
   farmStart,
-  community
+  isCommunity,
 }) => {
   const [isOpen, setIsOpen] = useState(false)
   const TranslateString = useI18n()
@@ -84,9 +83,7 @@ const CardFooter: React.FC<Props> = ({
   return (
     <StyledFooter isFinished={isFinished}>
       <Row>
-        <FlexFull>
-          { community ? <CommunityTag /> :  <CoreTag /> }
-        </FlexFull>
+        <FlexFull>{isCommunity ? <CommunityTag /> : <CoreTag />}</FlexFull>
         <StyledDetailsButton onClick={handleClick}>
           {isOpen ? 'Hide' : 'Details'} <Icon />
         </StyledDetailsButton>
@@ -102,17 +99,14 @@ const CardFooter: React.FC<Props> = ({
                 {TranslateString(408, 'Total')}
               </Label>
             </FlexFull>
-            <SmallValue
-              isFinished={isFinished}
-              value={getBalanceNumber(totalStaked)}
-            />
+            <SmallValue isFinished={isFinished} value={getBalanceNumber(totalStaked)} />
           </Row>
-          {farmStart >0 && (
+          {farmStart > 0 && (
             <Row>
               <FlexFull>
                 <Label>{TranslateString(410, 'Start')}:</Label>
               </FlexFull>
-              <SmallValue isFinished={isFinished} value={farmStart} decimals={0}/>
+              <SmallValue isFinished={isFinished} value={farmStart} decimals={0} />
             </Row>
           )}
           {farmStart === 0 && blocksRemaining > 0 && (

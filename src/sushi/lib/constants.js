@@ -16,9 +16,7 @@ export const INTEGERS = {
   ONE: new BigNumber(1),
   ONES_31: new BigNumber('4294967295'), // 2**32-1
   ONES_127: new BigNumber('340282366920938463463374607431768211455'), // 2**128-1
-  ONES_255: new BigNumber(
-    '115792089237316195423570985008687907853269984665640564039457584007913129639935',
-  ), // 2**256-1
+  ONES_255: new BigNumber('115792089237316195423570985008687907853269984665640564039457584007913129639935'), // 2**256-1
   INTEREST_RATE_BASE: new BigNumber('1e18'),
 }
 
@@ -70,6 +68,9 @@ export const sousChefTeam = [
     projectLink: 'http://pancakeswap.finance/',
     harvest: true,
     tokenPerBlock: '10',
+    sortOrder: 1,
+    isCommunity: false,
+    isFinished: false,
   },
   {
     sousId: 13,
@@ -81,7 +82,9 @@ export const sousChefTeam = [
     projectLink: 'https://roobee.io/',
     harvest: true,
     tokenPerBlock: '12.5',
-    community: true,
+    sortOrder: 999,
+    isCommunity: true,
+    isFinished: false,
   },
   {
     sousId: 14,
@@ -93,6 +96,9 @@ export const sousChefTeam = [
     projectLink: 'https://hard.kava.io',
     harvest: true,
     tokenPerBlock: '0.346',
+    sortOrder: 999,
+    isCommunity: false,
+    isFinished: false,
   },
   {
     sousId: 12,
@@ -104,7 +110,9 @@ export const sousChefTeam = [
     projectLink: 'http://stablexswap.com/',
     harvest: true,
     tokenPerBlock: '0.2',
-    community: true,
+    sortOrder: 999,
+    isCommunity: true,
+    isFinished: false,
   },
   {
     sousId: 10,
@@ -115,8 +123,10 @@ export const sousChefTeam = [
     tokenName: 'NYA',
     projectLink: 'https://nyanswop.org/',
     harvest: true,
+    isCommunity: true,
+    sortOrder: 999,
     tokenPerBlock: '10',
-    community: true,
+    isFinished: false,
   },
   {
     sousId: 9,
@@ -128,6 +138,9 @@ export const sousChefTeam = [
     projectLink: 'https://www.certik.foundation/',
     harvest: true,
     tokenPerBlock: '0.5',
+    sortOrder: 999,
+    isFinished: false,
+    isCommunity: false,
   },
   {
     sousId: 11,
@@ -139,7 +152,9 @@ export const sousChefTeam = [
     projectLink: 'https://narwhalswap.org/',
     harvest: true,
     tokenPerBlock: '1',
-    community: true,
+    sortOrder: 999,
+    isCommunity: true,
+    isFinished: true,
   },
   {
     sousId: 8,
@@ -151,6 +166,9 @@ export const sousChefTeam = [
     projectLink: 'https://trustwallet.com/',
     harvest: true,
     tokenPerBlock: '20',
+    sortOrder: 999,
+    isCommunity: false,
+    isFinished: true,
   },
   {
     sousId: 7,
@@ -162,6 +180,9 @@ export const sousChefTeam = [
     projectLink: 'https://injectiveprotocol.com/',
     harvest: true,
     tokenPerBlock: '0.25',
+    sortOrder: 999,
+    isCommunity: false,
+    isFinished: true,
   },
   {
     sousId: 6,
@@ -173,6 +194,9 @@ export const sousChefTeam = [
     projectLink: 'https://www.certik.foundation/',
     harvest: true,
     tokenPerBlock: '0.5',
+    sortOrder: 999,
+    isCommunity: false,
+    isFinished: true,
   },
   {
     sousId: 3,
@@ -184,6 +208,9 @@ export const sousChefTeam = [
     projectLink: 'https://injectiveprotocol.com/',
     harvest: true,
     tokenPerBlock: '0.25',
+    sortOrder: 999,
+    isCommunity: false,
+    isFinished: true,
   },
   {
     sousId: 1,
@@ -195,6 +222,9 @@ export const sousChefTeam = [
     projectLink: 'https://trustwallet.com/',
     harvest: true,
     tokenPerBlock: '20',
+    sortOrder: 999,
+    isCommunity: false,
+    isFinished: true,
   },
   {
     sousId: 4,
@@ -206,6 +236,9 @@ export const sousChefTeam = [
     projectLink: 'https://swipe.io/',
     harvest: true,
     tokenPerBlock: '0.5',
+    sortOrder: 999,
+    isCommunity: false,
+    isFinished: true,
   },
   {
     sousId: 5,
@@ -216,6 +249,9 @@ export const sousChefTeam = [
     tokenName: 'CTK',
     projectLink: 'https://www.certik.foundation/',
     tokenPerBlock: '0.5',
+    sortOrder: 999,
+    isCommunity: false,
+    isFinished: true,
   },
   {
     sousId: 2,
@@ -227,6 +263,9 @@ export const sousChefTeam = [
     projectLink: 'https://alphafinance.io/',
     harvest: true,
     tokenPerBlock: '20',
+    sortOrder: 999,
+    isCommunity: false,
+    isFinished: true,
   },
   {
     sousId: -1,
@@ -236,6 +275,9 @@ export const sousChefTeam = [
     },
     tokenName: 'XVS',
     projectLink: 'https://venus.io/',
+    sortOrder: 999,
+    isCommunity: false,
+    isFinished: true,
   },
 ]
 
