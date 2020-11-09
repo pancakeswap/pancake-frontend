@@ -775,7 +775,7 @@ export const supportedPools = [
     symbol: 'HARD-BNB FLIP',
     tokenSymbol: 'HARD',
     icon: '🥞',
-    multiplier: '2X',
+    multiplier: '1X',
   },
   {
     pid: 38,
@@ -1028,7 +1028,7 @@ export const forShowPools = [
     pid: 37,
     symbol: 'HARD-BNB',
     tokenSymbol: 'HARD',
-    multiplier: '2X',
+    multiplier: '1X',
     isCommunity: false,
   },
   {
