@@ -2,6 +2,7 @@
 import BigNumber from 'bignumber.js'
 import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
+import { Button } from '@pancakeswap-libs/uikit'
 import { useWallet } from 'use-wallet'
 import { Contract } from 'web3-eth-contract'
 import { AddIcon } from 'components/icons'
@@ -13,6 +14,7 @@ import useStake from 'hooks/useStake'
 import useStakedBalance from 'hooks/useStakedBalance'
 import useTokenBalance from 'hooks/useTokenBalance'
 import useUnstake from 'hooks/useUnstake'
+import useI18n from 'hooks/useI18n'
 import { getBalanceNumber } from 'utils/formatBalance'
 import WalletProviderModal from 'components/WalletProviderModal'
 import DepositModal from './DepositModal'
@@ -82,17 +84,19 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName }) => {
           <Label text={`${tokenName} ${TranslateString(332, 'Tokens Staked')}`} />
         </StyledCardHeader>
         <StyledCardActions>
-          {!account && <Button onClick={handleUnlockClick} size="md" text={TranslateString(292, 'Unlock Wallet')} />}
+          {!account && <Button onClick={handleUnlockClick}>{TranslateString(292, 'Unlock Wallet')}</Button>}
           {account &&
             (!allowance.toNumber() ? (
-              <Button disabled={requestedApproval} onClick={handleApprove} text={`Approve ${tokenName}`} />
+              <Button disabled={requestedApproval} onClick={handleApprove}>{`Approve ${tokenName}`}</Button>
             ) : (
               <>
-                <Button disabled={stakedBalance.eq(new BigNumber(0))} text="Unstake" onClick={onPresentWithdraw} />
+                <Button disabled={stakedBalance.eq(new BigNumber(0))} onClick={onPresentWithdraw}>
+                  {TranslateString(999, 'Unstake')}
+                </Button>
                 <StyledActionSpacer />
-                <IconButton onClick={onPresentDeposit}>
+                <Button onClick={onPresentDeposit}>
                   <AddIcon />
-                </IconButton>
+                </Button>
               </>
             ))}
         </StyledCardActions>

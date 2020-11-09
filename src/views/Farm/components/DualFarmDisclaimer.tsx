@@ -4,11 +4,11 @@ import useI18n from 'hooks/useI18n'
 import { DUAL_FARM_ENDING_BLOCK } from 'config'
 
 const StyledDualFarmDisclaimer = styled.p`
-  color: ${({ theme }) => theme.colors.text2};
+  color: ${({ theme }) => theme.colors.text};
   text-align: center;
 `
 const BlockNumber = styled.span`
-  color: ${({ theme }) => theme.colors.primary2};
+  color: ${({ theme }) => theme.colors.primary};
   margin-left: 4px;
 `
 
