@@ -3,13 +3,12 @@ import React, { useCallback, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { useWallet } from 'use-wallet'
 import { Contract } from 'web3-eth-contract'
-import { COMMUNITY_FARMS } from 'sushi/lib/constants'
+import { COMMUNITY_FARMS, BLOCKS_PER_YEAR } from 'sushi/lib/constants'
 import Button from 'components/Button'
 import HarvestButton from './HarvestButton'
 import IconButton from 'components/IconButton'
 import { AddIcon } from 'components/icons'
 import Label from 'components/Label'
-import { BLOCKS_PER_YEAR } from 'sushi/lib/constants'
 
 import { useSousAllowance } from 'hooks/useAllowance'
 import { useSousApprove } from 'hooks/useApprove'
@@ -93,8 +92,8 @@ const PoolCardv2: React.FC<HarvestProps> = ({
   const isCommunityFarm = COMMUNITY_FARMS.includes(tokenName)
 
   const apy = useMemo(() => {
-    if (!harvest || cakePrice.isLessThanOrEqualTo(0) || isCommunityFarm)
-      return '-'
+    if (!harvest || cakePrice.isLessThanOrEqualTo(0)) return '-'
+
     const a = tokenPrice.times(BLOCKS_PER_YEAR).times(tokenPerBlock)
     const b = cakePrice.times(getBalanceNumber(totalStaked))
 

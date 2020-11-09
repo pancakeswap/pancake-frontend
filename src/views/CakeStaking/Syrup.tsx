@@ -8,12 +8,33 @@ import { getContract } from '../../utils/erc20'
 import useSushi from '../../hooks/useSushi'
 import useI18n from '../../hooks/useI18n'
 import useAllStakedValue from '../../hooks/useAllStakedValue'
+import { useTokenBalance2 } from 'hooks/useTokenBalance'
 import { getPools } from '../../sushi/utils'
 
 import PoolCardv2 from './components/PoolCardv2'
 import Coming from './components/Coming'
 import SyrupWarning from './components/SyrupWarning'
 import { sousChefTeam } from '../../sushi/lib/constants'
+
+const CAKE_ADDRESS = '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82'
+const COMMUNITY_ADDR = {
+  STAX: {
+    lp: '0x7cd05f8b960ba071fdf69c750c0e5a57c8366500',
+    token: '0x0Da6Ed8B13214Ff28e9Ca979Dd37439e8a88F6c4',
+  },
+  NAR: {
+    lp: '0x745c4fd226e169d6da959283275a8e0ecdd7f312',
+    token: '0xa1303e6199b319a891b79685f0537d289af1fc83',
+  },
+  NYA: {
+    lp: '0x2730bf486d658838464a4ef077880998d944252d',
+    token: '0xbfa0841f7a90c4ce6643f651756ee340991f99d5',
+  },
+  bROOBEE: {
+    lp: '0x970858016C963b780E06f7DCfdEf8e809919BcE8',
+    token: '0xe64f5cb844946c1f102bd25bbd87a5ab4ae89fbe',
+  },
+}
 
 interface SyrupRowProps {
   syrupAddress: string
@@ -39,17 +60,34 @@ const SyrupRow: React.FC<SyrupRowProps> = ({
 }) => {
   const { ethereum } = useWallet()
   const syrup = useMemo(() => {
-    return getContract(
-      ethereum as provider,
-      '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
-    )
+    return getContract(ethereum as provider, '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82')
   }, [ethereum])
+
+  // /!\ Dirty fix
+  // The community LP are all against CAKE instead of BNB. Thus, the usual function for price computation didn't work.
+  // This quick fix aim to properly compute the price of CAKE pools in order to get the correct APY.
+  // This fix will need to be cleaned, by using config files instead of the COMMUNITY_ADDR,
+  // and factorise the price computation logic.
+
+  const cakeBalanceOnLP = useTokenBalance2(CAKE_ADDRESS, COMMUNITY_ADDR[tokenName]?.lp)
+  const tokenBalanceOnLP = useTokenBalance2(COMMUNITY_ADDR[tokenName]?.token, COMMUNITY_ADDR[tokenName]?.lp)
+
+  const price = (() => {
+    if (community) {
+      if (cakeBalanceOnLP === 0 || tokenBalanceOnLP === 0) return new BigNumber(0)
+      const tokenBalanceOnLP_BN = new BigNumber(tokenBalanceOnLP)
+      const cakeBalanceOnLP_BN = new BigNumber(cakeBalanceOnLP)
+      const ratio = cakeBalanceOnLP_BN.div(tokenBalanceOnLP_BN)
+      return ratio.times(cakePrice)
+    }
+    return tokenPrice
+  })()
 
   return (
     <PoolCardv2
       syrup={syrup}
       cakePrice={cakePrice}
-      tokenPrice={tokenPrice}
+      tokenPrice={price}
       tokenPerBlock={tokenPerBlock}
       {...{ sousId, tokenName, projectLink, harvest, community }}
     />
@@ -61,6 +99,7 @@ const Farm: React.FC = () => {
   const TranslateString = useI18n()
   const stakedValue = useAllStakedValue()
   const pools = getPools(sushi) || sousChefTeam
+
   const renderPools = useMemo(() => {
     const stakedValueObj = stakedValue.reduce(
       (a, b) => ({
@@ -70,12 +109,15 @@ const Farm: React.FC = () => {
       {},
     )
 
-    return pools.map((pool) => ({
-      ...pool,
-      cakePrice: stakedValueObj['CAKE']?.tokenPriceInWeth || new BigNumber(0),
-      tokenPrice:
-        stakedValueObj[pool.tokenName]?.tokenPriceInWeth || new BigNumber(0),
-    }))
+    return pools.map((pool) => {
+      const cakePrice = stakedValueObj['CAKE']?.tokenPriceInWeth || new BigNumber(0)
+      const tokenPrice = stakedValueObj[pool.tokenName]?.tokenPriceInWeth || new BigNumber(0)
+      return {
+        ...pool,
+        cakePrice,
+        tokenPrice,
+      }
+    })
   }, [stakedValue, pools])
 
   useEffect(() => {
@@ -100,7 +142,7 @@ const Farm: React.FC = () => {
       </Hero>
       <Pools>
         {renderPools.map((pool) => (
-          <SyrupRow key={pool.sousId} {...pool} />
+          <SyrupRow key={pool.sousId} stakedValue={stakedValue} {...pool} />
         ))}
         <Coming />
       </Pools>

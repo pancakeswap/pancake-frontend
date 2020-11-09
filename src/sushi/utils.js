@@ -305,7 +305,7 @@ export const getSousStaked = async (sousChefContract, account) => {
     const { amount } = await sousChefContract.methods.userInfo(account).call()
     return new BigNumber(amount)
   } catch (err) {
-    console.err(err)
+    console.error(err)
     return new BigNumber(0)
   }
 }
