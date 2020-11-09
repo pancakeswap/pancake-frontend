@@ -107,18 +107,6 @@ export const sousChefTeam = [
     community: true,
   },
   {
-    sousId: 11,
-    contractAddress: {
-      97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
-      56: '0xDc938BA1967b06d666dA79A7B1E31a8697D1565E',
-    },
-    tokenName: 'NAR',
-    projectLink: 'https://narwhalswap.org/',
-    harvest: true,
-    tokenPerBlock: '1',
-    community: true,
-  },
-  {
     sousId: 10,
     contractAddress: {
       97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
@@ -140,6 +128,18 @@ export const sousChefTeam = [
     projectLink: 'https://www.certik.foundation/',
     harvest: true,
     tokenPerBlock: '0.5',
+  },
+  {
+    sousId: 11,
+    contractAddress: {
+      97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
+      56: '0xDc938BA1967b06d666dA79A7B1E31a8697D1565E',
+    },
+    tokenName: 'NAR',
+    projectLink: 'https://narwhalswap.org/',
+    harvest: true,
+    tokenPerBlock: '1',
+    community: true,
   },
   {
     sousId: 8,
