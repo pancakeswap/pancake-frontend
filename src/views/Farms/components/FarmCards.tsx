@@ -2,12 +2,11 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import BigNumber from 'bignumber.js'
 import Countdown, { CountdownRenderProps } from 'react-countdown'
-import { Button } from '@pancakeswap-libs/uikit'
 import styled, { keyframes } from 'styled-components'
 import { useWallet } from 'use-wallet'
-import { CAKE_PER_BLOCK, HARD_REWARD_PER_BLOCK, CAKE_POOL_PID, forShowPools } from 'config'
+import { Button } from '@pancakeswap-libs/uikit'
+import { CAKE_PER_BLOCK, HARD_REWARD_PER_BLOCK, CAKE_POOL_PID } from 'config'
 import { COMMUNITY_FARMS } from 'sushi/lib/constants'
-import Button from 'components/Button'
 import { Farm } from 'contexts/Farms'
 import { useTokenBalance2, useBnbPrice, useCakePrice } from 'hooks/useTokenBalance'
 import useFarms from 'hooks/useFarms'
@@ -15,6 +14,8 @@ import useSushi from 'hooks/useSushi'
 import useAllStakedValue, { StakedValue } from 'hooks/useAllStakedValue'
 import { getEarned, getMasterChefContract } from 'sushi/utils'
 import { bnToDec } from 'utils'
+import { TranslateString } from 'utils/translateTextHelpers'
+import { forShowPools, BLOCKS_PER_YEAR } from 'sushi/lib/constants'
 import useModal from 'hooks/useModal'
 import WalletProviderModal from 'components/WalletProviderModal'
 import Page from 'components/layout/Page'
@@ -33,7 +34,6 @@ interface FarmCardsProps {
 }
 
 const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
-  const TranslateString = useI18n()
   const [farms] = useFarms()
   const stakedValue = useAllStakedValue()
   const stakedValueById = stakedValue.reduce((accum, value) => {
@@ -167,8 +167,9 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
                   <span>{TranslateString(318, 'Earn')}</span>
                   <span className="right">CAKE</span>
                 </Label>
-
-                <Button onClick={handleUnlockClick}>{TranslateString(292, 'Unlock Wallet')}</Button>
+                <Action>
+                  <Button onClick={handleUnlockClick} size="md" text={TranslateString(292, 'Unlock Wallet')} />
+                </Action>
               </FCard>
             ))}
       </Grid>
@@ -197,20 +198,16 @@ const Label = styled.div`
 `
 
 const FCard = styled.div`
-  position: relative;
+  align-self: stretch;
   background: ${(props) => props.theme.card.background};
-  box-shadow: 0px 2px 10px rgba(171, 133, 115, 0.16);
   border-radius: 32px;
-  flex: 1 0 30%;
-  height: 309px;
-  padding: 24px;
-  justify-content: center;
+  box-shadow: 0px 2px 12px -8px rgba(25, 19, 38, 0.1), 0px 1px 1px rgba(25, 19, 38, 0.05);
+  display: flex;
   flex-direction: column;
   justify-content: space-around;
-  display: flex;
-  width: 100%;
+  padding: 24px;
+  position: relative;
   text-align: center;
-
   img {
     height: 80px;
     width: 80px;
@@ -241,6 +238,8 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
 
   const [startTime] = useState(1600783200)
   const [, setHarvestable] = useState(0)
+
+  // setStartTime(1600695000)
 
   const { account } = useWallet()
   const { lpTokenAddress } = farm
@@ -292,7 +291,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
       </CardImage>
       <Label>
         <span>{TranslateString(316, 'Deposit')}</span>
-        <span className="right">{farm.lpToken.toUpperCase().replace('PANCAKE', '')}</span>
+        <span className="right">{farm.lpToken && farm.lpToken.toUpperCase().replace('PANCAKE', '')}</span>
       </Label>
       <Label>
         <span>{TranslateString(318, 'Earn')}</span>
@@ -345,7 +344,6 @@ const Link = styled.a`
 `
 
 const RainbowLight = keyframes`
-
 	0% {
 		background-position: 0% 50%;
 	}
@@ -378,9 +376,9 @@ const StyledCardAccent = styled.div`
   filter: blur(6px);
   position: absolute;
   top: -2px;
-  right: -4px;
+  right: -2px;
   bottom: -2px;
-  left: -4px;
+  left: -2px;
   z-index: -1;
 `
 
