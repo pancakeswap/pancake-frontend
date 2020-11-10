@@ -43,20 +43,10 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName }) => {
   const { onStake } = useStake(pid)
   const { onUnstake } = useUnstake(pid)
 
-  const [onPresentDeposit] = useModal(
-    <DepositModal
-      max={tokenBalance}
-      onConfirm={onStake}
-      tokenName={tokenName}
-    />,
-  )
+  const [onPresentDeposit] = useModal(<DepositModal max={tokenBalance} onConfirm={onStake} tokenName={tokenName} />)
 
   const [onPresentWithdraw] = useModal(
-    <WithdrawModal
-      max={stakedBalance}
-      onConfirm={onUnstake}
-      tokenName={tokenName}
-    />,
+    <WithdrawModal max={stakedBalance} onConfirm={onUnstake} tokenName={tokenName} />,
   )
 
   const handleApprove = useCallback(async () => {
@@ -72,50 +62,35 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName }) => {
     }
   }, [onApprove, setRequestedApproval])
 
-  const [onPresentWalletProviderModal] = useModal(
-    <WalletProviderModal />,
-    'provider',
-  )
+  const [onPresentWalletProviderModal] = useModal(<WalletProviderModal />, 'provider')
   const handleUnlockClick = useCallback(() => {
     onPresentWalletProviderModal()
   }, [onPresentWalletProviderModal])
+
+  // We assume the token name is coin pair + flip e.g. CAKE-BNB FLIP, LINK-BNB FLIP,
+  // NAR-CAKE FLIP. The images should be cake-bnb.svg, link-bnb.svg, nar-cake.svg
+  const farmImage = tokenName.split(' ')[0].toLocaleLowerCase()
 
   return (
     <Card>
       <StyledCardContentInner>
         <StyledCardHeader>
-          <CardImage src="/images/pancake-bnb-pan.svg" alt="cake bnb pan" />
+          <CardImage src={`/images/farms/${farmImage}.svg`} alt={`${tokenName} logo`} />
           <Value
             value={getBalanceNumber(stakedBalance)}
             decimals={tokenName === 'HARD' ? 6 : undefined}
             fontSize="40px"
           />
-          <Label
-            text={`${tokenName} ${TranslateString(332, 'Tokens Staked')}`}
-          />
+          <Label text={`${tokenName} ${TranslateString(332, 'Tokens Staked')}`} />
         </StyledCardHeader>
         <StyledCardActions>
-          {!account && (
-            <Button
-              onClick={handleUnlockClick}
-              size="md"
-              text={TranslateString(292, 'Unlock Wallet')}
-            />
-          )}
+          {!account && <Button onClick={handleUnlockClick} size="md" text={TranslateString(292, 'Unlock Wallet')} />}
           {account &&
             (!allowance.toNumber() ? (
-              <Button
-                disabled={requestedApproval}
-                onClick={handleApprove}
-                text={`Approve ${tokenName}`}
-              />
+              <Button disabled={requestedApproval} onClick={handleApprove} text={`Approve ${tokenName}`} />
             ) : (
               <>
-                <Button
-                  disabled={stakedBalance.eq(new BigNumber(0))}
-                  text="Unstake"
-                  onClick={onPresentWithdraw}
-                />
+                <Button disabled={stakedBalance.eq(new BigNumber(0))} text="Unstake" onClick={onPresentWithdraw} />
                 <StyledActionSpacer />
                 <IconButton onClick={onPresentDeposit}>
                   <AddIcon />
