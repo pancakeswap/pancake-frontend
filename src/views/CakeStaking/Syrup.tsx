@@ -12,7 +12,7 @@ import useAllStakedValue from 'hooks/useAllStakedValue'
 import { useTokenBalance2 } from 'hooks/useTokenBalance'
 import { getPools } from 'sushi/utils'
 
-import PoolCardv2 from './components/PoolCardv2'
+import PoolCard from './components/PoolCard'
 import Coming from './components/Coming'
 import { sousChefTeam } from 'sushi/lib/constants'
 
@@ -86,7 +86,7 @@ const SyrupRow: React.FC<SyrupRowProps> = ({
   })()
 
   return (
-    <PoolCardv2
+    <PoolCard
       syrup={syrup}
       cakePrice={cakePrice}
       tokenPrice={price}
