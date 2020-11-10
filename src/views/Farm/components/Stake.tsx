@@ -68,7 +68,7 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName }) => {
   }, [onPresentWalletProviderModal])
 
   // We assume the token name is coin pair + flip e.g. CAKE-BNB FLIP, LINK-BNB FLIP,
-  // NAR-CAKE FLIP. The images should be cake-bnb.png, link-bnb.png, nar-cake.png
+  // NAR-CAKE FLIP. The images should be cake-bnb.svg, link-bnb.svg, nar-cake.svg
   const farmImage = tokenName.split(' ')[0].toLocaleLowerCase()
 
   return (
