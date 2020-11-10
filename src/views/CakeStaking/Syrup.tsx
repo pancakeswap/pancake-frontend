@@ -14,7 +14,6 @@ import { getPools } from 'sushi/utils'
 
 import PoolCardv2 from './components/PoolCardv2'
 import Coming from './components/Coming'
-import SyrupWarning from './components/SyrupWarning'
 import { sousChefTeam } from 'sushi/lib/constants'
 
 const CAKE_ADDRESS = '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82'
@@ -143,7 +142,6 @@ const Farm: React.FC = () => {
 
   return (
     <Page>
-      <SyrupWarning />
       <Hero>
         <div>
           <h1>Staking Pools</h1>
