@@ -47,7 +47,16 @@ const Farm: React.FC = () => {
         <PageHeader
           icon={<img src="/images/cakecat.png" height="90" alt="Stake Cake, get SYRUP icon" />}
           title={'Stake CAKE, get CAKE.'}
-          subtitle={'This page was previously used for acquiring SYRUP.'}
+          subtitle={
+            <StyledSubtitle>
+              <p>This page was previously used for acquiring SYRUP</p>
+              <p>
+                Since SYRUP has now been disabled, the page is only useful for removing your SYRUP before moving it to
+                CAKE-based pools.
+              </p>
+              <p>If you stake CAKE in the CAKE pool, it'll also show up here.</p>
+            </StyledSubtitle>
+          }
         />
         <Spacer size="lg" />
         <StyledFarm>
@@ -78,6 +87,13 @@ const Farm: React.FC = () => {
     </Page>
   )
 }
+
+const StyledSubtitle = styled.div`
+  p {
+    color: #ed4b9e;
+    margin: 0 0 8px;
+  }
+`
 
 const StyledFarm = styled.div`
   align-items: center;
