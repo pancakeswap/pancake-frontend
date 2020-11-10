@@ -70,13 +70,11 @@ const FarmedStakingCard = () => {
         setRequestedClaim(false)
       }
     } catch (e) {
-      console.log(e)
+      console.error(e)
     }
   }, [onMultiClaim, setRequestedClaim])
 
-  const [onPresentBuy] = useModal(
-    <BuyModal max={sushiBalance} onConfirm={() => {}} tokenName={'CAKE'} />,
-  )
+  const [onPresentBuy] = useModal(<BuyModal max={sushiBalance} onConfirm={() => {}} tokenName={'CAKE'} />)
 
   return (
     <StyledLotteryCard>
@@ -95,10 +93,7 @@ const FarmedStakingCard = () => {
         <Label>{TranslateString(999, 'Total jackpot this round')}</Label>
       </Block>
       <Actions>
-        <Button
-          disabled={getBalanceNumber(claimAmount) === 0 || requesteClaim}
-          onClick={handleClaim}
-        >
+        <Button disabled={getBalanceNumber(claimAmount) === 0 || requesteClaim} onClick={handleClaim}>
           {TranslateString(999, 'Collect Winnings')}
         </Button>
         <Button variant="secondary" onClick={onPresentBuy}>

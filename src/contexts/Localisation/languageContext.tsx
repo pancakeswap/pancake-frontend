@@ -63,12 +63,11 @@ const LanguageContextProvider = ({ children }) => {
           if (translationApiResponse.data.length < 1) {
             setTranslations(['error'])
           } else {
-            console.log(translationApiResponse)
             setTranslations(translationApiResponse.data)
           }
         })
         .then(() => setTranslatedLanguage(selectedLanguage))
-        .catch((error) => {
+        .catch(() => {
           setTranslations(['error'])
         })
     }
