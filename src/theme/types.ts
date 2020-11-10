@@ -48,6 +48,11 @@ export type Colors = {
   textSubtle: string;
 };
 
+export type ZIndices = {
+  dropdown: number;
+  modal: number;
+};
+
 export interface PancakeTheme {
   siteWidth: number;
   isDark: boolean;
@@ -62,4 +67,5 @@ export interface PancakeTheme {
   spacing: Spacing;
   shadows: Shadows;
   radii: Radii;
+  zIndices: ZIndices;
 }

@@ -27,6 +27,11 @@ const radii = {
   circle: "50%",
 };
 
+const zIndices = {
+  dropdown: 10,
+  modal: 100,
+};
+
 export default {
   siteWidth: 1200,
   breakpoints,
@@ -34,4 +39,5 @@ export default {
   spacing,
   shadows,
   radii,
+  zIndices,
 };

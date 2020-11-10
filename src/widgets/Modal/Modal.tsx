@@ -16,7 +16,7 @@ const StyledModal = styled.div`
   border: 1px solid rgba(14, 14, 44, 0.05);
   border-radius: 32px;
   width: 100%;
-  z-index: 11;
+  z-index: ${({ theme }) => theme.zIndices.modal};
   overflow-y: auto;
   ${({ theme }) => theme.mediaQueries.xs} {
     width: auto;

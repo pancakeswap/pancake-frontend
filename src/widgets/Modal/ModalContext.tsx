@@ -12,6 +12,7 @@ const ModalWrapper = styled.div`
   right: 0;
   bottom: 0;
   left: 0;
+  z-index: ${({ theme }) => theme.zIndices.modal - 1};
 `;
 
 interface ModalsContext {
