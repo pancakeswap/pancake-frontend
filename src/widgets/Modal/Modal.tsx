@@ -17,6 +17,7 @@ const StyledModal = styled.div`
   border-radius: 32px;
   width: 100%;
   z-index: 11;
+  overflow-y: auto;
   ${({ theme }) => theme.mediaQueries.xs} {
     width: auto;
     min-width: 360px;

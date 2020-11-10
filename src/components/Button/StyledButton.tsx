@@ -6,14 +6,6 @@ interface ThemedProps extends ButtonProps {
   theme: DefaultTheme;
 }
 
-export const StartIcon = styled.span`
-  margin-right: 0.5em;
-`;
-
-export const EndIcon = styled.span`
-  margin-left: 0.5em;
-`;
-
 const getButtonVariantProp = (prop: keyof ButtonThemeVariant) => ({
   theme,
   variant = variants.PRIMARY,

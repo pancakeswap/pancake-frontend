@@ -1,12 +1,18 @@
 import React from "react";
-import StyledButton, { StartIcon, EndIcon } from "./StyledButton";
+import StyledButton from "./StyledButton";
 import { ButtonProps, variants, sizes } from "./types";
 
 const Button: React.FC<ButtonProps> = ({ startIcon, endIcon, children, ...props }) => (
   <StyledButton {...props}>
-    {startIcon && <StartIcon>{startIcon}</StartIcon>}
+    {React.isValidElement(startIcon) &&
+      React.cloneElement(startIcon, {
+        mr: "0.5rem",
+      })}
     {children}
-    {endIcon && <EndIcon>{endIcon}</EndIcon>}
+    {React.isValidElement(endIcon) &&
+      React.cloneElement(endIcon, {
+        ml: "0.5rem",
+      })}
   </StyledButton>
 );
 

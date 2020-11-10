@@ -5,11 +5,21 @@ export type NavTheme = {
 
 export interface ConnectCallbackType {
   key: "metamask" | "trustwallet" | "mathwallet" | "tokenpocket" | "walletconnect";
-  callback: () => null;
+  callback: () => void;
+}
+
+export interface LangType {
+  code: string;
+  language: string;
 }
 
 export interface NavProps {
   account?: string;
   connectCallbacks: ConnectCallbackType[];
-  logout: () => null;
+  logout: () => void;
+  isDark: boolean;
+  toggleTheme: (isDark: boolean) => void;
+  currentLang: string;
+  langs: LangType[];
+  setLang: (lang: LangType) => void;
 }

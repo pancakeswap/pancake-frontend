@@ -13,6 +13,7 @@ export { default as ColorBox } from "./components/ColorBox";
 export { default as Toggle } from "./components/Toggle";
 export { default as ResetCSS } from "./ResetCSS";
 
+export { default as Footer } from "./widgets/Footer";
 export * from "./widgets/Modal";
 export { default as Nav } from "./widgets/Nav";
 

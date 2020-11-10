@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-/* eslint-disable import/no-unresolved */
-import { Meta } from "@storybook/react/types-6-0";
+import { LogoIcon } from "../Svg";
 import Button from "./index";
 
 const Row = styled.div`
@@ -17,7 +16,7 @@ export default {
   title: "Button",
   component: Button,
   argTypes: {},
-} as Meta;
+};
 
 export const Default: React.FC = () => {
   return (
@@ -109,34 +108,20 @@ export const ButtonLink: React.FC = () => {
 
 export const WithProps: React.FC = () => {
   return (
-    <>
-      <Row>
-        <Button fullWidth>Full size</Button>
-      </Row>
-    </>
+    <Row>
+      <Button fullWidth>Full size</Button>
+    </Row>
   );
 };
 
-const StartIcon = () => (
-  <span role="img" aria-label="cake" style={{ display: "inline-block", width: "100%", textAlign: "center" }}>
-    🥞
-  </span>
-);
-const EndIcon = () => (
-  <span role="img" aria-label="cake" style={{ display: "inline-block", width: "100%", textAlign: "center" }}>
-    🍳
-  </span>
-);
 export const WithIcon: React.FC = () => {
   return (
-    <>
-      <Row>
-        <Button startIcon={<StartIcon />}>Start Icon</Button>
-        <Button endIcon={<EndIcon />}>End Icon</Button>
-        <Button startIcon={<StartIcon />} endIcon={<EndIcon />}>
-          Start & End Icon
-        </Button>
-      </Row>
-    </>
+    <Row>
+      <Button startIcon={<LogoIcon />}>Start Icon</Button>
+      <Button endIcon={<LogoIcon />}>End Icon</Button>
+      <Button startIcon={<LogoIcon />} endIcon={<LogoIcon />}>
+        Start & End Icon
+      </Button>
+    </Row>
   );
 };

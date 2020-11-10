@@ -1,19 +1,23 @@
 import React from "react";
 import styled from "styled-components";
 import Link from "../../components/Link";
+import { CloseIcon } from "../../components/Svg";
+import Button from "../../components/Button";
+import Dropdown from "../../components/Dropdown";
+import Language from "./icons/Language";
 import UserBlock from "./UserBlock";
+import MobileOnlyButton from "./MobileOnlyButton";
 import config from "./config";
-import { ConnectCallbackType } from "./types";
+import Dark from "./icons/Dark";
+import Light from "./icons/Light";
+import { NavProps } from "./types";
 
-interface Props {
+interface Props extends NavProps {
   show: boolean;
-  account?: string;
   closeNav: () => void;
-  connectCallbacks: ConnectCallbackType[];
-  logout: () => void;
 }
 
-const PanelContainer = styled.div<{ show: boolean }>`
+const StyledPanel = styled.div<{ show: boolean }>`
   position: fixed;
   display: flex;
   flex-direction: column;
@@ -51,7 +55,7 @@ const StyledLink = styled(Link)`
   ${({ theme }) => theme.mediaQueries.md} {
     display: flex;
     align-items: center;
-    padding: 0 16px;
+    padding: 0 12px;
   }
 `;
 
@@ -60,15 +64,48 @@ const LinkBlock = styled.div`
   align-items: center;
   flex-direction: column;
   order: 2;
+  margin-bottom: 32px;
   ${({ theme }) => theme.mediaQueries.md} {
     order: 1;
+    margin-bottom: 0;
     flex-direction: row;
   }
 `;
 
-const Panel: React.FC<Props> = ({ show, account, closeNav, connectCallbacks, logout }) => {
+const ControlBlock = styled.div`
+  display: flex;
+  align-items: center;
+  order: 3;
+  margin-left: 40px;
+  ${({ theme }) => theme.mediaQueries.md} {
+    order: 2;
+    margin-left: 0;
+    flex-grow: 1;
+    justify-content: flex-end;
+  }
+`;
+
+const Panel: React.FC<Props> = ({
+  show,
+  account,
+  closeNav,
+  connectCallbacks,
+  logout,
+  isDark,
+  toggleTheme,
+  langs,
+  setLang,
+  currentLang,
+}) => {
   return (
-    <PanelContainer show={show}>
+    <StyledPanel show={show}>
+      <MobileOnlyButton
+        onClick={closeNav}
+        aria-label="Close the menu"
+        style={{ position: "absolute", top: "5px", right: "5px" }}
+      >
+        <CloseIcon />
+      </MobileOnlyButton>
       <LinkBlock>
         {config.nav.map((entry) => (
           <StyledLink key={entry.href} href={entry.href}>
@@ -76,8 +113,26 @@ const Panel: React.FC<Props> = ({ show, account, closeNav, connectCallbacks, log
           </StyledLink>
         ))}
       </LinkBlock>
+      <ControlBlock>
+        <Button size="sm" variant="text" onClick={() => toggleTheme(!isDark)}>
+          {isDark ? <Light color="primary" /> : <Dark color="primary" />}
+        </Button>
+        <Dropdown
+          target={
+            <Button startIcon={<Language color="primary" />} variant="text" size="sm" mr="4px">
+              {currentLang}
+            </Button>
+          }
+        >
+          {langs.map((lang) => (
+            <Button key={lang.code} variant="text" size="sm" onClick={() => setLang(lang)}>
+              {lang.language}
+            </Button>
+          ))}
+        </Dropdown>
+      </ControlBlock>
       <UserBlock account={account} closeNav={closeNav} connectCallbacks={connectCallbacks} logout={logout} />
-    </PanelContainer>
+    </StyledPanel>
   );
 };
 

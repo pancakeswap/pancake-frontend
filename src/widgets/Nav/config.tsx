@@ -7,24 +7,20 @@ import WalletConnect from "./icons/WalletConnect";
 export default {
   nav: [
     {
-      label: "Farm",
-      href: "/farm",
+      label: "Exchange",
+      href: "https://exchange.pancakeswap.finance",
     },
     {
-      label: "Staking",
-      href: "/staking",
+      label: "Liquidity",
+      href: "https://exchange.pancakeswap.finance/#/pool",
     },
     {
-      label: "Syrup",
+      label: "Farms",
+      href: "/farms",
+    },
+    {
+      label: "Pools",
       href: "/syrup",
-    },
-    {
-      label: "Trade",
-      href: "https://exchange.pancakeswap.finance/",
-    },
-    {
-      label: "Voting",
-      href: "https://voting.pancakeswap.finance/",
     },
     {
       label: "Lottery",
