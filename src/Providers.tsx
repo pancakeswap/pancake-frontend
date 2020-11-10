@@ -1,5 +1,6 @@
 import React from 'react'
 import { ModalProvider } from '@pancakeswap-libs/uikit'
+import ModalsProviderDeprecated from './contexts/Modals'
 import { UseWalletProvider } from 'use-wallet'
 import FarmsProvider from './contexts/Farms'
 import TransactionProvider from './contexts/Transactions'
@@ -22,7 +23,9 @@ const Providers: React.FC = ({ children }) => {
             <SushiProvider>
               <TransactionProvider>
                 <FarmsProvider>
-                  <ModalProvider>{children}</ModalProvider>
+                  <ModalProvider>
+                    <ModalsProviderDeprecated>{children}</ModalsProviderDeprecated>
+                  </ModalProvider>
                 </FarmsProvider>
               </TransactionProvider>
             </SushiProvider>
