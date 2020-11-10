@@ -14,6 +14,7 @@ export default {
     primary2: '#1FC7D4',
     primaryBright2: '#53DEE9',
     secondary2: '#7645D9',
+    failure2: '#ED4B9E',
     text2: '#452A7A',
     tertiary2: '#EFF4F5',
     textDisabled2: '#BDC2C4',

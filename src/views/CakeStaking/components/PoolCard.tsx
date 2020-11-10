@@ -9,7 +9,6 @@ import HarvestButton from './HarvestButton'
 import IconButton from 'components/IconButton'
 import { AddIcon } from 'components/icons'
 import Label from 'components/Label'
-
 import { useSousAllowance } from 'hooks/useAllowance'
 import { useSousApprove } from 'hooks/useApprove'
 import { useSousEarnings, useSousLeftBlocks } from 'hooks/useEarnings'
@@ -22,7 +21,6 @@ import { useSousUnstake } from 'hooks/useUnstake'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useSousReward } from 'hooks/useReward'
 import { getSyrupAddress } from 'sushi/utils'
-
 import Balance from './Balance'
 import SmallValue from './Value'
 import DepositModal from './DepositModal'
@@ -30,6 +28,7 @@ import WithdrawModal from './WithdrawModal'
 import CardTitle from './CardTitle'
 import CardTokenImg from './CardTokenImg'
 import Card from './Card'
+import OldSyrupTitle from './OldSyrupTitle'
 
 import WalletProviderModal from 'components/WalletProviderModal'
 import { TranslateString } from 'utils/translateTextHelpers'
@@ -98,7 +97,8 @@ const PoolCard: React.FC<HarvestProps> = ({
     return `${a.div(b).times(100).toFixed(2)}%`
   }, [cakePrice, harvest, tokenPerBlock, tokenPrice, totalStaked])
 
-  const isUnstaked = account && !allowance.toNumber() && stakedBalance.toNumber() === 0
+  const accountHasStakedBalance = account && stakedBalance.toNumber() > 0
+  const needsApproval = !accountHasStakedBalance && !allowance.toNumber()
 
   // TODO - Remove this when pool removed
   const isOldSyrup = SYRUPIDS.includes(sousId)
@@ -107,7 +107,7 @@ const PoolCard: React.FC<HarvestProps> = ({
   // 2. isCalculatedFinished - calculated based on current/ending block
   // 3. isOldSyrup - Hot fix for corrupted pools
   const isReallyFinished = isFinished || isCalculatedFinished || isOldSyrup
-  const isCardActive = isReallyFinished && isUnstaked
+  const isCardActive = isReallyFinished && accountHasStakedBalance
 
   const [onPresentDeposit] = useModal(
     <DepositModal max={tokenBalance} onConfirm={onStake} tokenName={isOldSyrup ? 'SYRUP' : 'CAKE'} />,
@@ -169,7 +169,7 @@ const PoolCard: React.FC<HarvestProps> = ({
             isFinished={isReallyFinished}
           />
         ) : (
-          <CardTitle isFinished={true}>UNSTAKE NOW</CardTitle>
+          <OldSyrupTitle hasBalance={accountHasStakedBalance} />
         )}
         <Label isFinished={isReallyFinished && sousId !== 0} text={TranslateString(330, `${tokenName} earned`)} />
         <StyledCardActions>
@@ -179,7 +179,7 @@ const PoolCard: React.FC<HarvestProps> = ({
             </div>
           )}
           {account &&
-            (isUnstaked && !isOldSyrup ? (
+            (needsApproval && !isOldSyrup ? (
               <div style={{ flex: 1 }}>
                 <Button
                   disabled={isFinished || requestedApproval}
