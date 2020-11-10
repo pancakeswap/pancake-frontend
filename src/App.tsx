@@ -1,6 +1,6 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import { ResetCSS } from '@pancakeswap-libs/uikit'
+import { ResetCSS, Footer } from '@pancakeswap-libs/uikit'
 import GlobalStyle from './style/Global'
 import Menu from './components/Menu'
 import Farms from './views/Farms'
@@ -47,11 +47,12 @@ const App: React.FC = () => {
               <Syrup2 />
             </Route>
             <Route path="/removed">
-              <Farms removed={true} />
+              <Farms removed />
             </Route>
           </Switch>
         </Web3ReactManager>
       </Router>
+      <Footer />
     </Providers>
   )
 }

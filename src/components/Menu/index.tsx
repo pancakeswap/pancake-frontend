@@ -26,7 +26,6 @@ const Menu = () => {
   const logout = useCallback(() => {
     window.localStorage.removeItem('accountStatus')
     reset()
-    return null
   }, [reset])
 
   const connectCallbacks: ConnectCallbackType[] = useMemo(
