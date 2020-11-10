@@ -75,7 +75,7 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName }) => {
     <Card>
       <StyledCardContentInner>
         <StyledCardHeader>
-          <CardImage src={`/images/tokens/${farmImage}.png`} alt="cake bnb pan" />
+          <CardImage src={`/images/farms/${farmImage}.svg`} alt={`${tokenName} logo`} />
           <Value
             value={getBalanceNumber(stakedBalance)}
             decimals={tokenName === 'HARD' ? 6 : undefined}
