@@ -11,6 +11,7 @@ import { getContract } from '../../utils/erc20'
 import Harvest from './components/Harvest'
 import Syrup from './components/Syrup'
 import Stake from './components/Stake'
+import SyrupWarning from './components/SyrupWarning'
 import { TranslateString } from '../../utils/translateTextHelpers'
 
 const Farm: React.FC = () => {
@@ -40,21 +41,14 @@ const Farm: React.FC = () => {
   return (
     <Page>
       <>
+        <div style={{ maxWidth: '800px', padding: '48px 16px 0' }}>
+          <SyrupWarning />
+        </div>
         <PageHeader
-          icon={
-            <img
-              src="/images/cakecat.png"
-              height="90"
-              alt="Stake Cake, get SYRUP icon"
-            />
-          }
+          icon={<img src="/images/cakecat.png" height="90" alt="Stake Cake, get SYRUP icon" />}
           title={'Stake CAKE, get CAKE.'}
-          subtitle={
-            'This page was previously used for acquiring SYRUP.'
-          }
+          subtitle={'This page was previously used for acquiring SYRUP.'}
         />
-        <Title>Since SYRUP has now been disabled, the page is only useful for removing your SYRUP before moving it to CAKE-based pools.</Title>
-        <Title>If you stake CAKE in the CAKE pool, it’ll also show up here.</Title>
         <Spacer size="lg" />
         <StyledFarm>
           <StyledCardsWrapper>
@@ -67,11 +61,7 @@ const Farm: React.FC = () => {
             </StyledCardWrapper>
             <Spacer />
             <StyledCardWrapper>
-              <Stake
-                lpContract={lpContract}
-                pid={pid}
-                tokenName={lpToken.toUpperCase()}
-              />
+              <Stake lpContract={lpContract} pid={pid} tokenName={lpToken.toUpperCase()} />
             </StyledCardWrapper>
           </StyledCardsWrapper>
           <Spacer size="lg" />
@@ -88,15 +78,6 @@ const Farm: React.FC = () => {
     </Page>
   )
 }
-
-const Title = styled.div`
-  color: ${(props) => props.theme.colors.blue[100]};
-  font-size: 20px;
-  width: 50vw;
-  text-align: center;
-  font-weight: 900;
-  line-height: 2rem;
-`
 
 const StyledFarm = styled.div`
   align-items: center;
