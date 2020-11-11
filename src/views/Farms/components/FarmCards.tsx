@@ -168,7 +168,9 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
                   <span className="right">CAKE</span>
                 </Label>
                 <Action>
-                  <Button onClick={handleUnlockClick} size="md" text={TranslateString(292, 'Unlock Wallet')} />
+                  <Button onClick={handleUnlockClick} size="md" fullWidth>
+                    {TranslateString(292, 'Unlock Wallet')}
+                  </Button>
                 </Action>
               </FCard>
             ))}
