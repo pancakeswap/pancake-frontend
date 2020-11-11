@@ -10,6 +10,7 @@ import { AddIcon } from 'components/icons'
 import Label from 'components/Label'
 import { useSousAllowance } from 'hooks/useAllowance'
 import { useSousApprove } from 'hooks/useApprove'
+import useI18n from 'hooks/useI18n'
 import { useSousEarnings, useSousLeftBlocks } from 'hooks/useEarnings'
 import useModal from 'hooks/useModal'
 import { useSousStake } from 'hooks/useStake'
@@ -19,7 +20,6 @@ import useTokenBalance from 'hooks/useTokenBalance'
 import { useSousUnstake } from 'hooks/useUnstake'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useSousReward } from 'hooks/useReward'
-import useI18n from 'hooks/useI18n'
 import { getSyrupAddress } from 'sushi/utils'
 import Balance from './Balance'
 import SmallValue from './Value'
@@ -78,7 +78,6 @@ const PoolCard: React.FC<HarvestProps> = ({
   const stakedBalance = useSousStakedBalance(sousId)
   const totalStaked = useSousTotalStaked(sousId)
   const earnings = useSousEarnings(sousId)
-
   const sushi = useSushi()
   const syrupBalance = useTokenBalance(getSyrupAddress(sushi))
 
@@ -175,9 +174,7 @@ const PoolCard: React.FC<HarvestProps> = ({
         <StyledCardActions>
           {!account && (
             <div style={{ flex: 1 }}>
-              <Button onClick={handleUnlockClick} size="md" fullWidth>
-                {TranslateString(292, 'Unlock Wallet')}
-              </Button>
+              <Button onClick={handleUnlockClick}>{TranslateString(292, 'Unlock Wallet')}</Button>
             </div>
           )}
           {account &&
