@@ -1,5 +1,6 @@
 import BigNumber from 'bignumber.js'
 import get from 'lodash/get'
+import memoize from 'lodash/memoize'
 import { ethers } from 'ethers'
 import { sousChefTeam } from './lib/constants'
 
@@ -45,10 +46,10 @@ export const getSousChefContract = (sushi, sousId) => {
   return sushi && sushi.contracts && sushi.contracts.sousChefs.filter((chef) => chef.sousId === sousId)[0]?.sousContract
 }
 
-export const getFarms = (sushi) => {
+export const getFarms = memoize((sushi) => {
   const pools = get(sushi, 'contracts.pools', [])
   return pools.map((pool) => ({ ...pool, id: pool.symbol, lpToken: pool.symbol, lpTokenAddress: pool.lpAddress }))
-}
+})
 
 export const getPools = (sushi) => {
   return get(sushi, 'contracts.sousChefs', sousChefTeam)
