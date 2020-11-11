@@ -1,7 +1,6 @@
 // @ts-nocheck
 import React, { useEffect, useState, useCallback } from 'react'
 import BigNumber from 'bignumber.js'
-import Countdown, { CountdownRenderProps } from 'react-countdown'
 import styled, { keyframes } from 'styled-components'
 import { useWallet } from 'use-wallet'
 import { Button } from '@pancakeswap-libs/uikit'
@@ -11,10 +10,10 @@ import { Farm } from 'contexts/Farms'
 import { useTokenBalance2, useBnbPrice, useCakePrice } from 'hooks/useTokenBalance'
 import useFarms from 'hooks/useFarms'
 import useSushi from 'hooks/useSushi'
+import useI18n from 'hooks/useI18n'
 import useAllStakedValue, { StakedValue } from 'hooks/useAllStakedValue'
 import { getEarned, getMasterChefContract } from 'sushi/utils'
 import { bnToDec } from 'utils'
-import { TranslateString } from 'utils/translateTextHelpers'
 import { forShowPools, BLOCKS_PER_YEAR } from 'sushi/lib/constants'
 import useModal from 'hooks/useModal'
 import WalletProviderModal from 'components/WalletProviderModal'
@@ -23,7 +22,6 @@ import Grid from 'components/layout/Grid'
 import CommunityIcon from 'components/icons/CommunityIcon'
 import CoreIcon from 'components/icons/CoreIcon'
 import Tag from './Tag'
-import useI18n from 'hooks/useI18n'
 
 interface FarmWithStakedValue extends Farm, StakedValue {
   apy: BigNumber
@@ -36,6 +34,7 @@ interface FarmCardsProps {
 const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
   const [farms] = useFarms()
   const stakedValue = useAllStakedValue()
+  const TranslateString = useI18n()
   const stakedValueById = stakedValue.reduce((accum, value) => {
     return {
       ...accum,
@@ -236,27 +235,11 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
     totalValue = totalValue2
   }
 
-  const [startTime] = useState(1600783200)
   const [, setHarvestable] = useState(0)
-
-  // setStartTime(1600695000)
 
   const { account } = useWallet()
   const { lpTokenAddress } = farm
   const sushi = useSushi()
-
-  const renderer = (countdownProps: CountdownRenderProps) => {
-    const { days, hours, minutes, seconds } = countdownProps
-    const paddedSeconds = seconds < 10 ? `0${seconds}` : seconds
-    const paddedMinutes = minutes < 10 ? `0${minutes}` : minutes
-    const paddedHours = hours < 10 ? `0${hours}` : hours
-    const paddedDays = days < 10 ? `${days}` : days
-    return (
-      <span style={{ width: '100%' }}>
-        {paddedDays} days {paddedHours}:{paddedMinutes}:{paddedSeconds}
-      </span>
-    )
-  }
 
   useEffect(() => {
     async function fetchEarned() {
@@ -269,7 +252,6 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
     }
   }, [sushi, lpTokenAddress, account, setHarvestable])
 
-  const poolActive = true // startTime * 1000 - Date.now() <= 0
   const isCommunityFarm = COMMUNITY_FARMS.includes(farm.tokenSymbol)
   const TokenIcon = isCommunityFarm ? CommunityIcon : CoreIcon
   const tokenText = isCommunityFarm ? TranslateString(999, 'Community') : TranslateString(999, 'Core')
@@ -308,10 +290,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
         </Label>
       )}
       <Action>
-        <Button disabled={!poolActive} to={`/farms/${farm.id}`}>
-          {poolActive ? 'Select' : undefined}
-          {!poolActive && <Countdown date={new Date(startTime * 1000)} renderer={renderer} />}
-        </Button>
+        <Button to={`/farms/${farm.id}`}>{TranslateString(999, 'Select')}</Button>
       </Action>
       {!removed && (
         <Label>
