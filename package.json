@@ -1,5 +1,5 @@
 {
-  "name": "yam",
+  "name": "pancake-frontend",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -10,13 +10,12 @@
     "@types/jest": "^26.0.9",
     "@types/node": "^14.0.27",
     "@types/react": "^16.9.46",
+    "@types/react-dom": "^16.9.8",
+    "@types/react-router-dom": "^5.1.5",
+    "@types/styled-components": "^5.1.4",
     "bignumber.js": "^9.0.0",
-    "debounce": "^1.2.0",
     "lodash": "^4.17.20",
-    "numeral": "^2.0.6",
     "react": "^16.13.1",
-    "react-circular-progressbar": "^2.0.3",
-    "react-countdown": "^2.2.1",
     "react-countup": "^4.3.3",
     "react-dom": "^16.13.1",
     "react-feather": "^2.0.8",
@@ -29,7 +28,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "CI= GENERATE_SOURCEMAP=false react-scripts build",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
@@ -52,9 +51,6 @@
     ]
   },
   "devDependencies": {
-    "@types/numeral": "0.0.28",
-    "@types/react-dom": "^16.9.8",
-    "@types/react-router-dom": "^5.1.5",
-    "@types/styled-components": "^5.1.4"
+    "prettier": "^2.1.2"
   }
 }
