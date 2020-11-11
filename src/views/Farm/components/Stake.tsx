@@ -2,19 +2,19 @@
 import BigNumber from 'bignumber.js'
 import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
-import { Button } from '@pancakeswap-libs/uikit'
 import { useWallet } from 'use-wallet'
 import { Contract } from 'web3-eth-contract'
+import { Button } from '@pancakeswap-libs/uikit'
 import { AddIcon } from 'components/icons'
 import Label from 'components/Label'
 import useAllowance from 'hooks/useAllowance'
 import useApprove from 'hooks/useApprove'
 import useModal from 'hooks/useModal'
 import useStake from 'hooks/useStake'
+import useI18n from 'hooks/useI18n'
 import useStakedBalance from 'hooks/useStakedBalance'
 import useTokenBalance from 'hooks/useTokenBalance'
 import useUnstake from 'hooks/useUnstake'
-import useI18n from 'hooks/useI18n'
 import { getBalanceNumber } from 'utils/formatBalance'
 import WalletProviderModal from 'components/WalletProviderModal'
 import DepositModal from './DepositModal'
@@ -30,8 +30,8 @@ interface StakeProps {
 }
 
 const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName }) => {
-  const TranslateString = useI18n()
   const [requestedApproval, setRequestedApproval] = useState(false)
+  const TranslateString = useI18n()
   const { account } = useWallet()
 
   const allowance = useAllowance(lpContract)
@@ -84,14 +84,18 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName }) => {
           <Label text={`${tokenName} ${TranslateString(332, 'Tokens Staked')}`} />
         </StyledCardHeader>
         <StyledCardActions>
-          {!account && <Button onClick={handleUnlockClick}>{TranslateString(292, 'Unlock Wallet')}</Button>}
+          {!account && (
+            <Button onClick={handleUnlockClick} size="md">
+              {TranslateString(292, 'Unlock Wallet')}
+            </Button>
+          )}
           {account &&
             (!allowance.toNumber() ? (
               <Button disabled={requestedApproval} onClick={handleApprove}>{`Approve ${tokenName}`}</Button>
             ) : (
               <>
                 <Button disabled={stakedBalance.eq(new BigNumber(0))} onClick={onPresentWithdraw}>
-                  {TranslateString(999, 'Unstake')}
+                  {TranslateString(292, 'Unstake')}
                 </Button>
                 <StyledActionSpacer />
                 <Button onClick={onPresentDeposit}>
