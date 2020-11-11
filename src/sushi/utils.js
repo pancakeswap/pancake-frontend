@@ -42,16 +42,12 @@ export const getSushiContract = (sushi) => {
   return sushi && sushi.contracts && sushi.contracts.sushi
 }
 export const getSousChefContract = (sushi, sousId) => {
-  return (
-    sushi &&
-    sushi.contracts &&
-    sushi.contracts.sousChefs.filter((chef) => chef.sousId === sousId)[0]
-      ?.sousContract
-  )
+  return sushi && sushi.contracts && sushi.contracts.sousChefs.filter((chef) => chef.sousId === sousId)[0]?.sousContract
 }
 
 export const getFarms = (sushi) => {
-  return get(sushi, 'contracts.pools', [])
+  const pools = get(sushi, 'contracts.pools', [])
+  return pools.map((pool) => ({ ...pool, id: pool.symbol, lpToken: pool.symbol, lpTokenAddress: pool.lpAddress }))
 }
 
 export const getPools = (sushi) => {
@@ -60,9 +56,7 @@ export const getPools = (sushi) => {
 
 export const getPoolWeight = async (masterChefContract, pid) => {
   const { allocPoint } = await masterChefContract.methods.poolInfo(pid).call()
-  const totalAllocPoint = await masterChefContract.methods
-    .totalAllocPoint()
-    .call()
+  const totalAllocPoint = await masterChefContract.methods.totalAllocPoint().call()
   return new BigNumber(allocPoint).div(new BigNumber(totalAllocPoint))
 }
 
@@ -77,12 +71,8 @@ export const getSousEarned = async (sousChefContract, account) => {
 export const getTotalStaked = async (sushi, sousChefContract) => {
   const syrup = await getSyrupContract(sushi)
   const sushi2 = await getSushiContract(sushi)
-  const syrupBalance = await syrup.methods
-    .balanceOf(sousChefContract.options.address)
-    .call()
-  const sushiBalance = await sushi2.methods
-    .balanceOf(sousChefContract.options.address)
-    .call()
+  const syrupBalance = await syrup.methods.balanceOf(sousChefContract.options.address).call()
+  const sushiBalance = await sushi2.methods.balanceOf(sousChefContract.options.address).call()
   return syrupBalance > sushiBalance ? syrupBalance : sushiBalance
 }
 
@@ -94,32 +84,22 @@ export const getTotalLPWethValue = async (
   pid,
   tokenSymbol,
 ) => {
-  const tokenAmountWholeLP = await tokenContract.methods
-    .balanceOf(lpContract.options.address)
-    .call()
+  const tokenAmountWholeLP = await tokenContract.methods.balanceOf(lpContract.options.address).call()
   const tokenDecimals = await tokenContract.methods.decimals().call()
   // Get the share of lpContract that masterChefContract owns
-  const balance = await lpContract.methods
-    .balanceOf(masterChefContract.options.address)
-    .call()
+  const balance = await lpContract.methods.balanceOf(masterChefContract.options.address).call()
   // Convert that into the portion of total lpContract = p1
   const totalSupply = await lpContract.methods.totalSupply().call()
   // Get total weth value for the lpContract = w1
-  const lpContractWeth = await wethContract.methods
-    .balanceOf(lpContract.options.address)
-    .call()
+  const lpContractWeth = await wethContract.methods.balanceOf(lpContract.options.address).call()
   // Return p1 * w1 * 2
   const portionLp = new BigNumber(balance).div(new BigNumber(totalSupply))
   const lpWethWorth = new BigNumber(lpContractWeth)
   const totalLpWethValue = portionLp.times(lpWethWorth).times(new BigNumber(2))
   // Calculate
-  const tokenAmount = new BigNumber(tokenAmountWholeLP)
-    .times(portionLp)
-    .div(new BigNumber(10).pow(tokenDecimals))
+  const tokenAmount = new BigNumber(tokenAmountWholeLP).times(portionLp).div(new BigNumber(10).pow(tokenDecimals))
 
-  const wethAmount = new BigNumber(lpContractWeth)
-    .times(portionLp)
-    .div(new BigNumber(10).pow(18))
+  const wethAmount = new BigNumber(lpContractWeth).times(portionLp).div(new BigNumber(10).pow(18))
   return {
     pid,
     tokenSymbol,
@@ -138,9 +118,7 @@ export const approve = async (lpContract, masterChefContract, account) => {
 }
 
 export const approveSous = async (syrup, sousChefContract, account) => {
-  return syrup.methods
-    .approve(sousChefContract.options.address, ethers.constants.MaxUint256)
-    .send({ from: account })
+  return syrup.methods.approve(sousChefContract.options.address, ethers.constants.MaxUint256).send({ from: account })
 }
 
 export const getSushiSupply = async (sushi) => {
@@ -150,9 +128,7 @@ export const getSushiSupply = async (sushi) => {
 export const stake = async (masterChefContract, pid, amount, account) => {
   if (pid === 0) {
     return masterChefContract.methods
-      .enterStaking(
-        new BigNumber(amount).times(new BigNumber(10).pow(18)).toString(),
-      )
+      .enterStaking(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
       .send({ from: account })
       .on('transactionHash', (tx) => {
         return tx.transactionHash
@@ -160,10 +136,7 @@ export const stake = async (masterChefContract, pid, amount, account) => {
   }
 
   return masterChefContract.methods
-    .deposit(
-      pid,
-      new BigNumber(amount).times(new BigNumber(10).pow(18)).toString(),
-    )
+    .deposit(pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
     .send({ from: account })
     .on('transactionHash', (tx) => {
       return tx.transactionHash
@@ -182,19 +155,14 @@ export const sousStake = async (sousChefContract, amount, account) => {
 export const unstake = async (masterChefContract, pid, amount, account) => {
   if (pid === 0) {
     return masterChefContract.methods
-      .leaveStaking(
-        new BigNumber(amount).times(new BigNumber(10).pow(18)).toString(),
-      )
+      .leaveStaking(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
       .send({ from: account })
       .on('transactionHash', (tx) => {
         return tx.transactionHash
       })
   }
   return masterChefContract.methods
-    .withdraw(
-      pid,
-      new BigNumber(amount).times(new BigNumber(10).pow(18)).toString(),
-    )
+    .withdraw(pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
     .send({ from: account })
     .on('transactionHash', (tx) => {
       return tx.transactionHash
@@ -203,10 +171,7 @@ export const unstake = async (masterChefContract, pid, amount, account) => {
 
 export const sousUnstake = async (sousChefContract, amount, account) => {
   // hard fix for old CTK
-  if (
-    sousChefContract.options.address ===
-    '0x3B9B74f48E89Ebd8b45a53444327013a2308A9BC'
-  ) {
+  if (sousChefContract.options.address === '0x3B9B74f48E89Ebd8b45a53444327013a2308A9BC') {
     return sousChefContract.methods
       .emergencyWithdraw()
       .send({ from: account })
@@ -222,11 +187,7 @@ export const sousUnstake = async (sousChefContract, amount, account) => {
     })
 }
 
-export const sousEmegencyUnstake = async (
-  sousChefContract,
-  amount,
-  account,
-) => {
+export const sousEmegencyUnstake = async (sousChefContract, amount, account) => {
   return sousChefContract.methods
     .emergencyWithdraw()
     .send({ from: account })
@@ -263,9 +224,7 @@ export const soushHarvest = async (sousChefContract, account) => {
 
 export const getStaked = async (masterChefContract, pid, account) => {
   try {
-    const { amount } = await masterChefContract.methods
-      .userInfo(pid, account)
-      .call()
+    const { amount } = await masterChefContract.methods.userInfo(pid, account).call()
     return new BigNumber(amount)
   } catch {
     return new BigNumber(0)
