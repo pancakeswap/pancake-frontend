@@ -16,7 +16,7 @@ const DropdownContent = styled.div`
   box-shadow: ${({ theme }) => theme.shadows.level1};
   padding: 16px;
   border-radius: 16px;
-  max-height: 250px;
+  max-height: 500px;
   overflow-y: auto;
   z-index: ${({ theme }) => theme.zIndices.modal};
 `;

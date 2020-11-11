@@ -1,5 +1,6 @@
 import React from "react";
 import noop from "lodash/noop";
+import { BrowserRouter } from "react-router-dom";
 import Nav from "./index";
 import { ConnectCallbackType, LangType } from "./types";
 
@@ -28,30 +29,34 @@ const langs: LangType[] = [
 
 export const Connected: React.FC = () => {
   return (
-    <Nav
-      account="0xbdda50183d817c3289f895a4472eb475967dc980"
-      connectCallbacks={connectCallbacks}
-      logout={noop}
-      isDark
-      toggleTheme={noop}
-      langs={langs}
-      setLang={noop}
-      currentLang="EN"
-    />
+    <BrowserRouter>
+      <Nav
+        account="0xbdda50183d817c3289f895a4472eb475967dc980"
+        connectCallbacks={connectCallbacks}
+        logout={noop}
+        isDark
+        toggleTheme={noop}
+        langs={langs}
+        setLang={noop}
+        currentLang="EN"
+      />
+    </BrowserRouter>
   );
 };
 
 export const NotConnected: React.FC = () => {
   return (
-    <Nav
-      account={null}
-      connectCallbacks={connectCallbacks}
-      logout={() => null}
-      isDark={false}
-      toggleTheme={() => null}
-      langs={langs}
-      setLang={() => null}
-      currentLang="EN"
-    />
+    <BrowserRouter>
+      <Nav
+        account={null}
+        connectCallbacks={connectCallbacks}
+        logout={() => null}
+        isDark={false}
+        toggleTheme={() => null}
+        langs={langs}
+        setLang={() => null}
+        currentLang="EN"
+      />
+    </BrowserRouter>
   );
 };

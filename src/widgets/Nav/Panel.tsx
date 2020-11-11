@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import Link from "../../components/Link";
+import { NavLink } from "react-router-dom";
 import { CloseIcon } from "../../components/Svg";
 import Button from "../../components/Button";
 import Dropdown from "../../components/Dropdown";
@@ -43,22 +43,6 @@ const StyledPanel = styled.div<{ show: boolean }>`
   }
 `;
 
-const StyledLink = styled(Link)`
-  width: 100%;
-  height: 100%;
-  padding: 8px 40px;
-  transition: background-color 0.2s;
-  :hover {
-    background-color: ${({ theme }) => theme.nav.hover};
-    text-decoration: none;
-  }
-  ${({ theme }) => theme.mediaQueries.md} {
-    display: flex;
-    align-items: center;
-    padding: 0 12px;
-  }
-`;
-
 const LinkBlock = styled.div`
   display: flex;
   align-items: center;
@@ -69,6 +53,23 @@ const LinkBlock = styled.div`
     order: 1;
     margin-bottom: 0;
     flex-direction: row;
+  }
+
+  a {
+    width: 100%;
+    height: 100%;
+    padding: 8px 40px;
+    font-weight: bold;
+    transition: background-color 0.2s;
+    color: ${({ theme }) => theme.colors.primary};
+    :hover {
+      background-color: ${({ theme }) => theme.nav.hover};
+    }
+    ${({ theme }) => theme.mediaQueries.md} {
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+    }
   }
 `;
 
@@ -107,11 +108,17 @@ const Panel: React.FC<Props> = ({
         <CloseIcon />
       </MobileOnlyButton>
       <LinkBlock>
-        {config.nav.map((entry) => (
-          <StyledLink key={entry.href} href={entry.href}>
-            {entry.label}
-          </StyledLink>
-        ))}
+        {config.nav.map((entry) =>
+          entry.href.startsWith("http") ? (
+            <a key={entry.href} href={entry.href}>
+              {entry.label}
+            </a>
+          ) : (
+            <NavLink key={entry.href} to={entry.href}>
+              {entry.label}
+            </NavLink>
+          )
+        )}
       </LinkBlock>
       <ControlBlock>
         <Button size="sm" variant="text" onClick={() => toggleTheme(!isDark)}>
