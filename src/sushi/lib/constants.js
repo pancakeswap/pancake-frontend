@@ -73,6 +73,20 @@ export const sousChefTeam = [
     isFinished: false,
   },
   {
+    sousId: 15,
+    contractAddress: {
+      97: '',
+      56: '0x9c4EBADa591FFeC4124A7785CAbCfb7068fED2fb',
+    },
+    tokenName: 'TWT',
+    projectLink: 'https://trustwallet.com/',
+    harvest: true,
+    tokenPerBlock: '5',
+    sortOrder: 2,
+    isCommunity: false,
+    isFinished: false,
+  },
+  {
     sousId: 13,
     contractAddress: {
       97: '',
@@ -445,7 +459,7 @@ export const supportedPools = [
     symbol: 'TWT-BNB FLP',
     tokenSymbol: 'TWT',
     icon: '🥞',
-    multiplier: '1X',
+    multiplier: '2X',
   },
   {
     pid: 13,
@@ -893,7 +907,7 @@ export const forShowPools = [
     pid: 12,
     symbol: 'TWT-BNB',
     tokenSymbol: 'TWT',
-    multiplier: '1X',
+    multiplier: '2X',
   },
   {
     pid: 13,
