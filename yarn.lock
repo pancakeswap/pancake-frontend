@@ -1693,7 +1693,7 @@
   dependencies:
     mkdirp "^1.0.4"
 
-"@pancakeswap-libs/uikit@^0.2.2":
+"@pancakeswap-libs/uikit@^0.2.1":
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/@pancakeswap-libs/uikit/-/uikit-0.2.2.tgz#1af5729cfe137d0a7416b09fb04b4a724b593877"
   integrity sha512-iMV8neqESBlkLmFz09U1jrJxlvuJncd0e4jEYD4RK8LfRUczNnv6FURlJrC8pSaYKNS3lb0Khcn01UzII79Rdw==
