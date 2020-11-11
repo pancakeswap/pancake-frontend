@@ -445,7 +445,7 @@ export const supportedPools = [
     symbol: 'TWT-BNB FLP',
     tokenSymbol: 'TWT',
     icon: '🥞',
-    multiplier: '1X',
+    multiplier: '2X',
   },
   {
     pid: 13,
@@ -893,7 +893,7 @@ export const forShowPools = [
     pid: 12,
     symbol: 'TWT-BNB',
     tokenSymbol: 'TWT',
-    multiplier: '1X',
+    multiplier: '2X',
   },
   {
     pid: 13,
