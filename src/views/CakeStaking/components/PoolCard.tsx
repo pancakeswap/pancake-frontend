@@ -3,13 +3,14 @@ import React, { useCallback, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { useWallet } from 'use-wallet'
 import { Contract } from 'web3-eth-contract'
-import { BLOCKS_PER_YEAR } from 'sushi/lib/constants'
 import { Button } from '@pancakeswap-libs/uikit'
+import { BLOCKS_PER_YEAR } from 'sushi/lib/constants'
 import HarvestButton from './HarvestButton'
 import { AddIcon } from 'components/icons'
 import Label from 'components/Label'
 import { useSousAllowance } from 'hooks/useAllowance'
 import { useSousApprove } from 'hooks/useApprove'
+import useI18n from 'hooks/useI18n'
 import { useSousEarnings, useSousLeftBlocks } from 'hooks/useEarnings'
 import useModal from 'hooks/useModal'
 import { useSousStake } from 'hooks/useStake'
@@ -19,7 +20,6 @@ import useTokenBalance from 'hooks/useTokenBalance'
 import { useSousUnstake } from 'hooks/useUnstake'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useSousReward } from 'hooks/useReward'
-import useI18n from 'hooks/useI18n'
 import { getSyrupAddress } from 'sushi/utils'
 import Balance from './Balance'
 import SmallValue from './Value'
@@ -29,7 +29,6 @@ import CardTitle from './CardTitle'
 import CardTokenImg from './CardTokenImg'
 import Card from './Card'
 import OldSyrupTitle from './OldSyrupTitle'
-
 import WalletProviderModal from 'components/WalletProviderModal'
 import CardFooter from './CardFooter'
 
@@ -79,7 +78,6 @@ const PoolCard: React.FC<HarvestProps> = ({
   const totalStaked = useSousTotalStaked(sousId)
   const earnings = useSousEarnings(sousId)
   const TranslateString = useI18n()
-
   const sushi = useSushi()
   const syrupBalance = useTokenBalance(getSyrupAddress(sushi))
 
@@ -176,9 +174,7 @@ const PoolCard: React.FC<HarvestProps> = ({
         <StyledCardActions>
           {!account && (
             <div style={{ flex: 1 }}>
-              <Button onClick={handleUnlockClick} size="md" fullWidth>
-                {TranslateString(292, 'Unlock Wallet')}
-              </Button>
+              <Button onClick={handleUnlockClick}>{TranslateString(292, 'Unlock Wallet')}</Button>
             </div>
           )}
           {account &&
