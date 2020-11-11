@@ -5,7 +5,7 @@ import Container from '../Container'
 
 interface PageHeaderProps {
   icon: React.ReactNode
-  subtitle?: string
+  subtitle?: React.ReactNode
   title?: string
 }
 
