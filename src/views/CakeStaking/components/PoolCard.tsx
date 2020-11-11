@@ -1,10 +1,10 @@
 import BigNumber from 'bignumber.js'
 import React, { useCallback, useMemo, useState } from 'react'
 import styled from 'styled-components'
-import { Button } from '@pancakeswap-libs/uikit'
 import { useWallet } from 'use-wallet'
 import { Contract } from 'web3-eth-contract'
 import { BLOCKS_PER_YEAR } from 'sushi/lib/constants'
+import { Button } from '@pancakeswap-libs/uikit'
 import HarvestButton from './HarvestButton'
 import { AddIcon } from 'components/icons'
 import Label from 'components/Label'
@@ -28,6 +28,8 @@ import WithdrawModal from './WithdrawModal'
 import CardTitle from './CardTitle'
 import CardTokenImg from './CardTokenImg'
 import Card from './Card'
+import OldSyrupTitle from './OldSyrupTitle'
+
 import WalletProviderModal from 'components/WalletProviderModal'
 import CardFooter from './CardFooter'
 
@@ -41,6 +43,7 @@ interface HarvestProps {
   cakePrice: BigNumber
   tokenPrice: BigNumber
   isCommunity?: boolean
+  isFinished?: boolean
 }
 
 /**
@@ -48,12 +51,13 @@ interface HarvestProps {
  *
  * 1. Mark this pool as finished
  * 2. Do not let people stake
+ * 3. Let people unstake
  *
  * TODO - when all CAKE is unstaked we can remove this
  */
 const SYRUPIDS = [5, 6, 3, 1]
 
-const PoolCardv2: React.FC<HarvestProps> = ({
+const PoolCard: React.FC<HarvestProps> = ({
   syrup,
   sousId,
   tokenName,
@@ -63,17 +67,18 @@ const PoolCardv2: React.FC<HarvestProps> = ({
   tokenPrice,
   tokenPerBlock,
   isCommunity,
+  isFinished,
 }) => {
-  const TranslateString = useI18n()
   const [requestedApproval, setRequestedApproval] = useState(false)
   const { account } = useWallet()
   const allowance = useSousAllowance(syrup, sousId)
   const { onApprove } = useSousApprove(syrup, sousId)
-  const { isFinished, farmStart, blocksRemaining } = useSousLeftBlocks(sousId)
+  const { isFinished: isCalculatedFinished, farmStart, blocksRemaining } = useSousLeftBlocks(sousId)
   const tokenBalance = useTokenBalance(syrup.options.address)
   const stakedBalance = useSousStakedBalance(sousId)
   const totalStaked = useSousTotalStaked(sousId)
   const earnings = useSousEarnings(sousId)
+  const TranslateString = useI18n()
 
   const sushi = useSushi()
   const syrupBalance = useTokenBalance(getSyrupAddress(sushi))
@@ -93,12 +98,17 @@ const PoolCardv2: React.FC<HarvestProps> = ({
     return `${a.div(b).times(100).toFixed(2)}%`
   }, [cakePrice, harvest, tokenPerBlock, tokenPrice, totalStaked])
 
-  const isUnstaked = account && !allowance.toNumber() && stakedBalance.toNumber() === 0
+  const accountHasStakedBalance = account && stakedBalance.toNumber() > 0
+  const needsApproval = !accountHasStakedBalance && !allowance.toNumber()
 
   // TODO - Remove this when pool removed
   const isOldSyrup = SYRUPIDS.includes(sousId)
-  const isReallyFinished = isFinished || isOldSyrup
-  const isCardActive = isReallyFinished && isUnstaked
+
+  // 1. isFinished - set manually in the list of pools
+  // 2. isCalculatedFinished - calculated based on current/ending block
+  // 3. isOldSyrup - Hot fix for corrupted pools
+  const isReallyFinished = isFinished || isCalculatedFinished || isOldSyrup
+  const isCardActive = isReallyFinished && accountHasStakedBalance
 
   const [onPresentDeposit] = useModal(
     <DepositModal max={tokenBalance} onConfirm={onStake} tokenName={isOldSyrup ? 'SYRUP' : 'CAKE'} />,
@@ -160,32 +170,43 @@ const PoolCardv2: React.FC<HarvestProps> = ({
             isFinished={isReallyFinished}
           />
         ) : (
-          <CardTitle isFinished={true}>UNSTAKE NOW</CardTitle>
+          <OldSyrupTitle hasBalance={accountHasStakedBalance} />
         )}
         <Label isFinished={isReallyFinished && sousId !== 0} text={TranslateString(330, `${tokenName} earned`)} />
         <StyledCardActions>
           {!account && (
             <div style={{ flex: 1 }}>
-              <Button fullWidth onClick={handleUnlockClick}>
+              <Button onClick={handleUnlockClick} size="md" fullWidth>
                 {TranslateString(292, 'Unlock Wallet')}
               </Button>
             </div>
           )}
           {account &&
-            (isUnstaked && !isOldSyrup ? (
+            (needsApproval && !isOldSyrup ? (
               <div style={{ flex: 1 }}>
-                <Button fullWidth disabled={isFinished || requestedApproval} onClick={handleApprove}>
-                  {TranslateString(999, 'Approve SYRUP')}
+                <Button disabled={isReallyFinished || requestedApproval} onClick={handleApprove}>
+                  {isOldSyrup ? 'Approve SYRUP' : 'Approve CAKE'}
                 </Button>
               </div>
             ) : (
               <>
-                <Button disabled={stakedBalance.eq(new BigNumber(0))} onClick={onPresentWithdraw}>
-                  {TranslateString(999, 'Unstake SYRUP')}
+                <Button
+                  disabled={stakedBalance.eq(new BigNumber(0)) || pendingTx}
+                  onClick={
+                    isOldSyrup
+                      ? async () => {
+                          setPendingTx(true)
+                          await onUnstake('0')
+                          setPendingTx(false)
+                        }
+                      : onPresentWithdraw
+                  }
+                >
+                  {isOldSyrup ? 'Unstake SYRUP' : 'Unstake CAKE'}
                 </Button>
                 <StyledActionSpacer />
                 {!isOldSyrup && (
-                  <Button disabled={isFinished} onClick={onPresentDeposit}>
+                  <Button disabled={isReallyFinished && sousId !== 0} onClick={onPresentDeposit}>
                     <AddIcon />
                   </Button>
                 )}
@@ -194,14 +215,14 @@ const PoolCardv2: React.FC<HarvestProps> = ({
         </StyledCardActions>
         <StyledDetails>
           <div style={{ flex: 1 }}>{TranslateString(352, 'APY')}:</div>
-          {isFinished || isOldSyrup ? '-' : <SmallValue isFinished={isReallyFinished} value={apy} />}
+          {isReallyFinished || isOldSyrup ? '-' : <SmallValue isFinished={isReallyFinished} value={apy} />}
         </StyledDetails>
         <StyledDetails>
           <div style={{ flex: 1 }}>
             <span role="img" aria-label="syrup">
               🍯{' '}
             </span>
-            Your Stake:
+            {TranslateString(999, 'Your Stake')}:
           </div>
           <SmallValue isFinished={isReallyFinished} value={getBalanceNumber(stakedBalance)} />
         </StyledDetails>
@@ -247,4 +268,4 @@ const StyledDetails = styled.div`
   font-size: 14px;
 `
 
-export default PoolCardv2
+export default PoolCard
