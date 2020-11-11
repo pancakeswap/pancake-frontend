@@ -25,7 +25,8 @@ const StyledButton = styled.button<ButtonProps>`
   font-family: inherit;
   font-size: 16px;
   font-weight: 600;
-  width: ${({ fullWidth }) => (fullWidth ? "100%" : "auto")};
+  /* max-content instead of auto for Safari fix */
+  width: ${({ fullWidth }) => (fullWidth ? "100%" : "max-content")};
   height: ${({ size }) => (size === "sm" ? "32px" : "48px")};
   letter-spacing: 0.03em;
   justify-content: center;

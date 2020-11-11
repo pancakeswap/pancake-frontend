@@ -21,7 +21,7 @@ export default [
   },
   {
     label: "Blog",
-    href: "https://pancakeswap.finance/stakin",
+    href: "https://pancakeswap.medium.com",
   },
   {
     label: "Telegram",

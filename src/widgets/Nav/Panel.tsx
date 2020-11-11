@@ -114,7 +114,7 @@ const Panel: React.FC<Props> = ({
               {entry.label}
             </a>
           ) : (
-            <NavLink key={entry.href} to={entry.href}>
+            <NavLink key={entry.href} to={entry.href} onClick={closeNav}>
               {entry.label}
             </NavLink>
           )
@@ -132,7 +132,14 @@ const Panel: React.FC<Props> = ({
           }
         >
           {langs.map((lang) => (
-            <Button key={lang.code} variant="text" size="sm" onClick={() => setLang(lang)}>
+            <Button
+              key={lang.code}
+              variant="text"
+              size="sm"
+              onClick={() => setLang(lang)}
+              // Safari specific fix
+              style={{ minHeight: "32px" }}
+            >
               {lang.language}
             </Button>
           ))}
