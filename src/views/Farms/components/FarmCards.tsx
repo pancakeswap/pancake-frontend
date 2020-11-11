@@ -4,6 +4,7 @@ import BigNumber from 'bignumber.js'
 import styled, { keyframes } from 'styled-components'
 import { useWallet } from 'use-wallet'
 import { Button } from '@pancakeswap-libs/uikit'
+import { Link as ReactRouterLink } from 'react-router-dom'
 import { CAKE_PER_BLOCK, HARD_REWARD_PER_BLOCK, CAKE_POOL_PID } from 'config'
 import { COMMUNITY_FARMS } from 'sushi/lib/constants'
 import { Farm } from 'contexts/Farms'
@@ -290,7 +291,9 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
         </Label>
       )}
       <Action>
-        <Button to={`/farms/${farm.id}`}>{TranslateString(999, 'Select')}</Button>
+        <Button as={ReactRouterLink} to={`/farms/${farm.id}`} fullWidth>
+          {TranslateString(999, 'Select')}
+        </Button>
       </Action>
       {!removed && (
         <Label>
