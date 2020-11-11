@@ -19,6 +19,7 @@ import useTokenBalance from 'hooks/useTokenBalance'
 import { useSousUnstake } from 'hooks/useUnstake'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useSousReward } from 'hooks/useReward'
+import useI18n from 'hooks/useI18n'
 import { getSyrupAddress } from 'sushi/utils'
 import Balance from './Balance'
 import SmallValue from './Value'
@@ -28,9 +29,7 @@ import CardTitle from './CardTitle'
 import CardTokenImg from './CardTokenImg'
 import Card from './Card'
 import OldSyrupTitle from './OldSyrupTitle'
-
 import WalletProviderModal from 'components/WalletProviderModal'
-import useI18n from 'hooks/useI18n'
 import CardFooter from './CardFooter'
 
 interface HarvestProps {
@@ -51,6 +50,7 @@ interface HarvestProps {
  *
  * 1. Mark this pool as finished
  * 2. Do not let people stake
+ * 3. Let people unstake
  *
  * TODO - when all CAKE is unstaked we can remove this
  */
@@ -175,13 +175,15 @@ const PoolCard: React.FC<HarvestProps> = ({
         <StyledCardActions>
           {!account && (
             <div style={{ flex: 1 }}>
-              <Button onClick={handleUnlockClick}>{TranslateString(292, 'Unlock Wallet')}</Button>
+              <Button onClick={handleUnlockClick} size="md" fullWidth>
+                {TranslateString(292, 'Unlock Wallet')}
+              </Button>
             </div>
           )}
           {account &&
             (needsApproval && !isOldSyrup ? (
               <div style={{ flex: 1 }}>
-                <Button disabled={isFinished || requestedApproval} onClick={handleApprove}>
+                <Button disabled={isReallyFinished || requestedApproval} onClick={handleApprove}>
                   {isOldSyrup ? 'Approve SYRUP' : 'Approve CAKE'}
                 </Button>
               </div>
@@ -212,14 +214,14 @@ const PoolCard: React.FC<HarvestProps> = ({
         </StyledCardActions>
         <StyledDetails>
           <div style={{ flex: 1 }}>{TranslateString(352, 'APY')}:</div>
-          {isFinished || isOldSyrup ? '-' : <SmallValue isFinished={isReallyFinished} value={apy} />}
+          {isReallyFinished || isOldSyrup ? '-' : <SmallValue isFinished={isReallyFinished} value={apy} />}
         </StyledDetails>
         <StyledDetails>
           <div style={{ flex: 1 }}>
             <span role="img" aria-label="syrup">
               🍯{' '}
             </span>
-            Your Stake:
+            {TranslateString(999, 'Your Stake')}:
           </div>
           <SmallValue isFinished={isReallyFinished} value={getBalanceNumber(stakedBalance)} />
         </StyledDetails>
