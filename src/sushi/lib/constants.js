@@ -139,7 +139,7 @@ export const sousChefTeam = [
     harvest: true,
     tokenPerBlock: '0.5',
     sortOrder: 999,
-    isFinished: false,
+    isFinished: true,
     isCommunity: false,
   },
   {
