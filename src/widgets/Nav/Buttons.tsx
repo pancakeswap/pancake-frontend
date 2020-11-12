@@ -3,16 +3,6 @@ import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 import Button from "../../components/Button";
 
-const MobileOnlyButton = styled(Button)`
-  ${({ theme }) => theme.mediaQueries.nav} {
-    display: none;
-  }
-`;
-MobileOnlyButton.defaultProps = {
-  variant: "text",
-  size: "sm",
-};
-
 const MenuButton = styled(Button)`
   padding: 0 8px;
   border-radius: 8px;
@@ -21,6 +11,12 @@ MenuButton.defaultProps = {
   variant: "text",
   size: "sm",
 };
+
+const MobileOnlyButton = styled(MenuButton)`
+  ${({ theme }) => theme.mediaQueries.nav} {
+    display: none;
+  }
+`;
 
 const MenuLink: React.FC<AnchorHTMLAttributes<HTMLAnchorElement>> = ({ href = "", children, ...props }) => {
   return href.startsWith("http") ? (

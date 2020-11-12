@@ -6,6 +6,7 @@ interface Props {
 }
 
 const DropdownContent = styled.div`
+  width: max-content;
   display: none;
   flex-direction: column;
   position: absolute;
@@ -21,7 +22,6 @@ const DropdownContent = styled.div`
 `;
 
 const Container = styled.div`
-  width: fit-content;
   position: relative;
   &:hover ${DropdownContent}, &:focus-within ${DropdownContent} {
     display: flex;

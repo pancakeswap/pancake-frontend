@@ -159,7 +159,7 @@ const Panel: React.FC<Props> = ({
               size="sm"
               onClick={() => setLang(lang)}
               // Safari specific fix
-              style={{ minHeight: "32px", width: "max-content" }}
+              style={{ minHeight: "32px", height: "auto" }}
             >
               {lang.language}
             </Button>
