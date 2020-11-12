@@ -26,9 +26,7 @@ const Prize: React.FC<PrizeProps> = ({ state }) => {
   const { account } = useWallet()
   const TranslateString = useI18n()
   const tickets = useTickets()
-  const [onPresentMyTickets] = useModal(
-    <MyTicketsModal myTicketNumbers={tickets} />,
-  )
+  const [onPresentMyTickets] = useModal(<MyTicketsModal myTicketNumbers={tickets} />)
 
   const { claimLoading, claimAmount } = useTotalClaim()
 
@@ -47,10 +45,7 @@ const Prize: React.FC<PrizeProps> = ({ state }) => {
     }
   }, [onMultiClaim, setRequestedClaim])
 
-  const [onPresentWalletProviderModal] = useModal(
-    <WalletProviderModal />,
-    'provider',
-  )
+  const [onPresentWalletProviderModal] = useModal(<WalletProviderModal />, 'provider')
   const handleUnlockClick = useCallback(() => {
     onPresentWalletProviderModal()
   }, [onPresentWalletProviderModal])
@@ -64,30 +59,22 @@ const Prize: React.FC<PrizeProps> = ({ state }) => {
               <CardIcon>🎁</CardIcon>
               {claimLoading && <Loading />}
               {!claimLoading && <Value value={getBalanceNumber(claimAmount)} />}
-              <Label
-                text={TranslateString(482, 'CAKE prizes to be claimed!')}
-              />
+              <Label text={TranslateString(482, 'CAKE prizes to be claimed!')} />
             </StyledCardHeader>
             <StyledCardActions>
               {!account && (
-                <Button onClick={handleUnlockClick}>
+                <Button fullWidth onClick={handleUnlockClick}>
                   {TranslateString(292, 'Unlock Wallet')}
                 </Button>
               )}
               {account && (
-                <Button
-                  fullWidth
-                  disabled={getBalanceNumber(claimAmount) == 0 || requesteClaim}
-                  onClick={handleClaim}
-                >
+                <Button fullWidth disabled={getBalanceNumber(claimAmount) == 0 || requesteClaim} onClick={handleClaim}>
                   {TranslateString(480, 'Claim prizes')}
                 </Button>
               )}
             </StyledCardActions>
             {account && state === LotteryStates.WINNERS_ANNOUNCED ? (
-              <MyTicketsP onClick={onPresentMyTickets}>
-                View your tickets
-              </MyTicketsP>
+              <MyTicketsP onClick={onPresentMyTickets}>View your tickets</MyTicketsP>
             ) : (
               <>
                 <br />

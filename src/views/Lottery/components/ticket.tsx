@@ -35,9 +35,7 @@ const Ticket: React.FC<TicketProps> = ({ state }) => {
   const sushiBalance = useTokenBalance(getSushiAddress(sushi))
 
   const tickets = useTickets()
-  const [onPresentMyTickets] = useModal(
-    <MyTicketsModal myTicketNumbers={tickets} from={'buy'} />,
-  )
+  const [onPresentMyTickets] = useModal(<MyTicketsModal myTicketNumbers={tickets} from={'buy'} />)
 
   const ticketsLength = tickets.length
 
@@ -55,16 +53,11 @@ const Ticket: React.FC<TicketProps> = ({ state }) => {
     }
   }, [onApprove, setRequestedApproval])
 
-  const [onPresentBuy] = useModal(
-    <BuyModal max={sushiBalance} onConfirm={() => {}} tokenName={'CAKE'} />,
-  )
+  const [onPresentBuy] = useModal(<BuyModal max={sushiBalance} onConfirm={() => {}} tokenName={'CAKE'} />)
 
   const [onPresentApprove] = useModal(<WarningModal />)
 
-  const [onPresentWalletProviderModal] = useModal(
-    <WalletProviderModal />,
-    'provider',
-  )
+  const [onPresentWalletProviderModal] = useModal(<WalletProviderModal />, 'provider')
   const handleUnlockClick = useCallback(() => {
     onPresentWalletProviderModal()
   }, [onPresentWalletProviderModal])
@@ -77,9 +70,7 @@ const Ticket: React.FC<TicketProps> = ({ state }) => {
             <StyledCardHeader>
               <CardIcon>🎟</CardIcon>
               <Value value={ticketsLength} decimals={0} />
-              <Label
-                text={TranslateString(428, 'Your total tickets for this round')}
-              />
+              <Label text={TranslateString(428, 'Your total tickets for this round')} />
             </StyledCardHeader>
             <StyledCardActions>
               {!account && (
@@ -89,7 +80,7 @@ const Ticket: React.FC<TicketProps> = ({ state }) => {
               )}
               {account &&
                 (!allowance.toNumber() ? (
-                  <Button disabled={requestedApproval} onClick={handleApprove}>
+                  <Button fullWidth disabled={requestedApproval} onClick={handleApprove}>
                     {TranslateString(998, 'Approve CAKE')}
                   </Button>
                 ) : (
@@ -101,9 +92,7 @@ const Ticket: React.FC<TicketProps> = ({ state }) => {
                 ))}
             </StyledCardActions>
             {account && ticketsLength > 0 && (
-              <MyTicketsP onClick={onPresentMyTickets}>
-                {TranslateString(432, 'View your tickets')}
-              </MyTicketsP>
+              <MyTicketsP onClick={onPresentMyTickets}>{TranslateString(432, 'View your tickets')}</MyTicketsP>
             )}
 
             {ticketsLength === 0 && <br />}

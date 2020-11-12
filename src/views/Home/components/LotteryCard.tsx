@@ -48,10 +48,11 @@ const Label = styled.div`
 `
 
 const Actions = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-gap: 8px;
+  display: flex;
   margin-top: 24px;
+  button {
+    flex: 1 0 50%;
+  }
 `
 
 const FarmedStakingCard = () => {
@@ -93,7 +94,11 @@ const FarmedStakingCard = () => {
         <Label>{TranslateString(999, 'Total jackpot this round')}</Label>
       </Block>
       <Actions>
-        <Button disabled={getBalanceNumber(claimAmount) === 0 || requesteClaim} onClick={handleClaim}>
+        <Button
+          disabled={getBalanceNumber(claimAmount) === 0 || requesteClaim}
+          onClick={handleClaim}
+          style={{ marginRight: '8px' }}
+        >
           {TranslateString(999, 'Collect Winnings')}
         </Button>
         <Button variant="secondary" onClick={onPresentBuy}>

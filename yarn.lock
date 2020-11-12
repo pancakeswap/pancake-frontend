@@ -1557,10 +1557,10 @@
   dependencies:
     mkdirp "^1.0.4"
 
-"@pancakeswap-libs/uikit@^0.2.1":
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/@pancakeswap-libs/uikit/-/uikit-0.2.1.tgz#a07ab4d57fc30d643f67619f4e5eefa1083d850c"
-  integrity sha512-ha9AEenPhfioeiFuedm1XRPNDTx7TRefvrsdqEHFKsVZUyowd5C5xKADkGp4HtRU691UrcfnxOfX4QqL3ecldw==
+"@pancakeswap-libs/uikit@^0.2.2":
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/@pancakeswap-libs/uikit/-/uikit-0.2.2.tgz#1af5729cfe137d0a7416b09fb04b4a724b593877"
+  integrity sha512-iMV8neqESBlkLmFz09U1jrJxlvuJncd0e4jEYD4RK8LfRUczNnv6FURlJrC8pSaYKNS3lb0Khcn01UzII79Rdw==
   dependencies:
     "@types/lodash" "^4.14.162"
     lodash "^4.17.20"

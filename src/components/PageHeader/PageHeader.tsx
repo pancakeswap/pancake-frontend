@@ -43,7 +43,7 @@ const StyledIcon = styled.div`
 const StyledTitle = styled.h1`
   font-family: 'monospace', sans-serif;
   line-height: 80px;
-  color: ##25beca;
+  color: #25beca;
   font-size: 32px;
   font-weight: 700;
   margin: 0;
