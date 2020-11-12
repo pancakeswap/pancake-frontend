@@ -4,6 +4,7 @@ import { useWallet } from 'use-wallet'
 import { allLanguages } from 'constants/localisation/languageCodes'
 import { LanguageContext } from 'contexts/Localisation/languageContext'
 import useTheme from 'hooks/useTheme'
+import { useCakePrice } from 'hooks/useTokenBalance'
 
 interface ConnectCallbackType {
   key: 'metamask' | 'trustwallet' | 'mathwallet' | 'tokenpocket' | 'walletconnect'
@@ -14,6 +15,7 @@ const Menu = () => {
   const { account, connect, reset } = useWallet()
   const { selectedLanguage, setSelectedLanguage } = useContext(LanguageContext)
   const { isDark, toggleTheme } = useTheme()
+  const cakePriceUsd = useCakePrice()
 
   const login = useCallback(
     (connectorId) => {
@@ -64,6 +66,7 @@ const Menu = () => {
       currentLang={selectedLanguage && selectedLanguage.code}
       langs={allLanguages}
       setLang={setSelectedLanguage}
+      cakePriceUsd={cakePriceUsd}
     />
   )
 }

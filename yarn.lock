@@ -1693,12 +1693,13 @@
   dependencies:
     mkdirp "^1.0.4"
 
-"@pancakeswap-libs/uikit@^0.2.1":
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/@pancakeswap-libs/uikit/-/uikit-0.2.2.tgz#1af5729cfe137d0a7416b09fb04b4a724b593877"
-  integrity sha512-iMV8neqESBlkLmFz09U1jrJxlvuJncd0e4jEYD4RK8LfRUczNnv6FURlJrC8pSaYKNS3lb0Khcn01UzII79Rdw==
+"@pancakeswap-libs/uikit@^0.2.5":
+  version "0.2.5"
+  resolved "https://registry.yarnpkg.com/@pancakeswap-libs/uikit/-/uikit-0.2.5.tgz#0802a1cc6c6cd2facad3987145c717b28bba9b36"
+  integrity sha512-ev5AhbdYa/TN/R4sNwT8Hq9oQIZBLWO567acQQyfWHQgxLxW10P+g/kYNsMCVMnrA9S30dPQPE/oUNL+rcAMxQ==
   dependencies:
     "@types/lodash" "^4.14.162"
+    "@types/styled-system" "^5.1.10"
     lodash "^4.17.20"
     styled-system "^5.1.5"
 
@@ -2326,6 +2327,13 @@
     "@types/hoist-non-react-statics" "*"
     "@types/react" "*"
     "@types/react-native" "*"
+    csstype "^3.0.2"
+
+"@types/styled-system@^5.1.10":
+  version "5.1.10"
+  resolved "https://registry.yarnpkg.com/@types/styled-system/-/styled-system-5.1.10.tgz#dcf5690dd837ca49b8de1f23cb99d510c7f4ecb3"
+  integrity sha512-OmVjC9OzyUckAgdavJBc+t5oCJrNXTlzWl9vo2x47leqpX1REq2qJC49SEtzbu1OnWSzcD68Uq3Aj8TeX+Kvtg==
+  dependencies:
     csstype "^3.0.2"
 
 "@types/tapable@*", "@types/tapable@^1.0.5":
