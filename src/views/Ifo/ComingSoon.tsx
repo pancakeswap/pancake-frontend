@@ -43,6 +43,26 @@ const Block = styled.div`
   margin-bottom 32px;
 `
 
+const MainImage = styled.img`
+  display: none;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    display: block;
+  }
+`
+
+const MobileImage = styled.img`
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 136px;
+  padding: 16px 0;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    display: none;
+  }
+`
+
 const ComingSoon = () => {
   const TranslateString = useI18n()
 
@@ -65,6 +85,7 @@ const ComingSoon = () => {
               )}
             </Text>
           </Block>
+          <MobileImage src="/images/ifo-bunny.svg" alt="ifo bunny" />
           <Block>
             <Subtitle>{TranslateString(999, 'Want to launch your own IFO?')}</Subtitle>
             <Text mb={3}>
@@ -84,7 +105,7 @@ const ComingSoon = () => {
           </Block>
         </div>
         <div>
-          <img src="/images/ifo-bunny.svg" alt="ifo bunny" />
+          <MainImage src="/images/ifo-bunny.svg" alt="ifo bunny" />
         </div>
       </Content>
     </Page>
