@@ -93,7 +93,6 @@ export const useTotalClaim = () => {
   const sushi = useSushi()
   const ticketsContract = getTicketsContract(sushi)
   const lotteryContract = getLotteryContract(sushi)
-  const block = useBlock()%10
 
   const fetchBalance = useCallback(async () => {
     setClaimLoading(true)
@@ -105,13 +104,13 @@ export const useTotalClaim = () => {
     )
     setClaimAmount(claim)
     setClaimLoading(false)
-  }, [account, lotteryContract, ticketsContract, block])
+  }, [account, lotteryContract, ticketsContract])
 
   useEffect(() => {
     if (account && lotteryContract && ticketsContract && sushi) {
       fetchBalance()
     }
-  }, [account, block, lotteryContract, setClaimAmount, sushi])
+  }, [account, lotteryContract, setClaimAmount, sushi])
 
   return { claimLoading, claimAmount }
 }
