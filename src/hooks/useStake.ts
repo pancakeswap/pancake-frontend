@@ -33,7 +33,7 @@ export const useSousStake = (sousId) => {
   const handleStake = useCallback(
     async (amount: string) => {
       if (sousId === 0) {
-        const txHash = await stake(
+        await stake(
           getMasterChefContract(sushi),
           0,
           amount,
