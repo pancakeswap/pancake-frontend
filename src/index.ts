@@ -11,6 +11,7 @@ export { default as Text } from "./components/Text";
 export { default as Link } from "./components/Link";
 export { default as ColorBox } from "./components/ColorBox";
 export { default as Toggle } from "./components/Toggle";
+export { default as Progress } from "./components/Progress";
 export { default as ResetCSS } from "./ResetCSS";
 
 export { default as Footer } from "./widgets/Footer";
