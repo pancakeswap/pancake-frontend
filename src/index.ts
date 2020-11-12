@@ -1,9 +1,9 @@
 export { default as Button } from "./components/Button";
 export { default as ButtonMenu } from "./components/ButtonMenu";
 export { default as ButtonMenuItem } from "./components/ButtonMenu/ButtonMenuItem";
-export { default as Card } from "./components/Card";
 export { default as Checkbox } from "./components/Checkbox";
 export { default as Heading } from "./components/Heading";
+export * from "./components/Card";
 export * from "./components/Layouts";
 export * from "./components/Svg";
 export { default as Tag } from "./components/Tag";

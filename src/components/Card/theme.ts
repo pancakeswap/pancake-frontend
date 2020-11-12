@@ -1,5 +1,12 @@
 import { shadows } from "../../theme/base";
-import { CardTheme } from "./types";
+
+export type CardTheme = {
+  background: string;
+  boxShadow: string;
+  boxShadowActive: string;
+  boxShadowSuccess: string;
+  boxShadowWarning: string;
+};
 
 export const light: CardTheme = {
   background: "#FFFFFF",
