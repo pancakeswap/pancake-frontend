@@ -4,10 +4,6 @@ export default [
     href: "https://voting.pancakeswap.finance",
   },
   {
-    label: "Analytics",
-    href: "https://pancakeswap.info",
-  },
-  {
     label: "Staking",
     href: "/staking",
   },

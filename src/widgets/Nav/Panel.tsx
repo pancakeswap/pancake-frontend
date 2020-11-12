@@ -1,14 +1,13 @@
 import React from "react";
 import styled from "styled-components";
-import { NavLink } from "react-router-dom";
-import { CloseIcon, LogoRoundIcon } from "../../components/Svg";
+import { CloseIcon, ChevronDownIcon } from "../../components/Svg";
 import Button from "../../components/Button";
-import Flex from "../../components/Flex";
-import Text from "../../components/Text";
 import Dropdown from "../../components/Dropdown";
+import MenuDropdwn from "./MenuDropdwn";
 import Language from "./icons/Language";
 import UserBlock from "./UserBlock";
-import { MobileOnlyButton, MenuButton } from "./Buttons";
+import PancakePrice from "./PancakePrice";
+import { MobileOnlyButton, MenuButton, MenuLink } from "./Buttons";
 import config from "./config";
 import Dark from "./icons/Dark";
 import Light from "./icons/Light";
@@ -57,9 +56,12 @@ const LinkBlock = styled.div`
     flex-direction: row;
   }
 
-  a {
+  .link {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
     width: 100%;
-    height: 100%;
+    min-height: 40px;
     padding: 8px 40px;
     font-weight: bold;
     transition: background-color 0.2s;
@@ -68,9 +70,8 @@ const LinkBlock = styled.div`
       background-color: ${({ theme }) => theme.nav.hover};
     }
     ${({ theme }) => theme.mediaQueries.nav} {
-      display: flex;
-      align-items: center;
-      padding: 0 12px;
+      height: 100%;
+      padding: 0 16px;
     }
   }
 `;
@@ -111,25 +112,35 @@ const Panel: React.FC<Props> = ({
         <CloseIcon />
       </MobileOnlyButton>
       <LinkBlock>
-        {config.nav.map((entry) =>
-          entry.href.startsWith("http") ? (
-            <a key={entry.href} href={entry.href}>
+        {config.nav.map((entry) => {
+          if (entry.items) {
+            return (
+              <MenuDropdwn
+                target={
+                  <div className="link" role="button">
+                    {entry.label}
+                    <ChevronDownIcon color="primary" />
+                  </div>
+                }
+              >
+                {entry.items.map((item) => (
+                  <MenuLink href={item.href} onClick={closeNav}>
+                    {item.label}
+                  </MenuLink>
+                ))}
+              </MenuDropdwn>
+            );
+          }
+
+          return (
+            <MenuLink href={entry.href} onClick={closeNav}>
               {entry.label}
-            </a>
-          ) : (
-            <NavLink key={entry.href} to={entry.href} onClick={closeNav}>
-              {entry.label}
-            </NavLink>
-          )
-        )}
+            </MenuLink>
+          );
+        })}
       </LinkBlock>
       <ControlBlock>
-        {cakePriceUsd && (
-          <Flex mr="4px">
-            <LogoRoundIcon mr="4px" />
-            <Text bold>{`$${cakePriceUsd.toFixed(3)}`}</Text>
-          </Flex>
-        )}
+        <PancakePrice cakePriceUsd={cakePriceUsd} />
         <MenuButton onClick={() => toggleTheme(!isDark)}>
           {isDark ? <Light color="primary" /> : <Dark color="primary" />}
         </MenuButton>
@@ -148,7 +159,7 @@ const Panel: React.FC<Props> = ({
               size="sm"
               onClick={() => setLang(lang)}
               // Safari specific fix
-              style={{ minHeight: "32px" }}
+              style={{ minHeight: "32px", width: "max-content" }}
             >
               {lang.language}
             </Button>

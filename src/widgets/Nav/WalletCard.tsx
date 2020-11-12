@@ -20,6 +20,7 @@ const WalletCard: React.FC<Props> = ({ connectCallback, onDismiss, mb }) => {
   const { title, icon: Icon } = walletConfig;
   return (
     <Button
+      fullWidth
       variant="tertiary"
       onClick={() => {
         connectCallback.callback();

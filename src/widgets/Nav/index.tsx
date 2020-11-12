@@ -20,7 +20,7 @@ const StyledNav = styled.nav`
 `;
 
 const StyledLink = styled.a`
-  margin-right: 8px;
+  margin-right: 16px;
 `;
 
 const Nav: React.FC<NavProps> = ({

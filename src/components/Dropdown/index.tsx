@@ -7,7 +7,6 @@ interface Props {
 
 const DropdownContent = styled.div`
   display: none;
-  width: max-content;
   flex-direction: column;
   position: absolute;
   left: 50%;
@@ -15,10 +14,10 @@ const DropdownContent = styled.div`
   background-color: ${({ theme }) => theme.nav.background};
   box-shadow: ${({ theme }) => theme.shadows.level1};
   padding: 16px;
-  border-radius: 16px;
   max-height: 500px;
   overflow-y: auto;
-  z-index: ${({ theme }) => theme.zIndices.modal};
+  z-index: ${({ theme }) => theme.zIndices.dropdown};
+  border-radius: ${({ theme }) => theme.radii.small};
 `;
 
 const Container = styled.div`

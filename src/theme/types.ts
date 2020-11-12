@@ -18,6 +18,7 @@ export type MediaQueries = {
 export type Spacing = number[];
 
 export type Radii = {
+  small: string;
   default: string;
   card: string;
   circle: string;
