@@ -39,6 +39,7 @@ export const Connected: React.FC = () => {
         langs={langs}
         setLang={noop}
         currentLang="EN"
+        cakePriceUsd={0.23158668932877668}
       />
     </BrowserRouter>
   );
@@ -56,6 +57,7 @@ export const NotConnected: React.FC = () => {
         langs={langs}
         setLang={() => null}
         currentLang="EN"
+        cakePriceUsd={0.23158668932877668}
       />
     </BrowserRouter>
   );

@@ -19,7 +19,7 @@ const Container = styled.div`
   order: 1;
   margin-bottom: 32px;
   margin-left: 40px;
-  ${({ theme }) => theme.mediaQueries.md} {
+  ${({ theme }) => theme.mediaQueries.nav} {
     order: 2;
     margin-bottom: 0;
     margin-left: 0;

@@ -1,12 +1,14 @@
 import React from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
-import { CloseIcon } from "../../components/Svg";
+import { CloseIcon, LogoRoundIcon } from "../../components/Svg";
 import Button from "../../components/Button";
+import Flex from "../../components/Flex";
+import Text from "../../components/Text";
 import Dropdown from "../../components/Dropdown";
 import Language from "./icons/Language";
 import UserBlock from "./UserBlock";
-import MobileOnlyButton from "./MobileOnlyButton";
+import { MobileOnlyButton, MenuButton } from "./Buttons";
 import config from "./config";
 import Dark from "./icons/Dark";
 import Light from "./icons/Light";
@@ -31,7 +33,7 @@ const StyledPanel = styled.div<{ show: boolean }>`
   overflow-y: auto;
   transition: right 0.4s;
   z-index: 11;
-  ${({ theme }) => theme.mediaQueries.md} {
+  ${({ theme }) => theme.mediaQueries.nav} {
     position: unset;
     max-width: unset;
     overflow-y: unset;
@@ -49,7 +51,7 @@ const LinkBlock = styled.div`
   flex-direction: column;
   order: 2;
   margin-bottom: 32px;
-  ${({ theme }) => theme.mediaQueries.md} {
+  ${({ theme }) => theme.mediaQueries.nav} {
     order: 1;
     margin-bottom: 0;
     flex-direction: row;
@@ -65,7 +67,7 @@ const LinkBlock = styled.div`
     :hover {
       background-color: ${({ theme }) => theme.nav.hover};
     }
-    ${({ theme }) => theme.mediaQueries.md} {
+    ${({ theme }) => theme.mediaQueries.nav} {
       display: flex;
       align-items: center;
       padding: 0 12px;
@@ -78,7 +80,7 @@ const ControlBlock = styled.div`
   align-items: center;
   order: 3;
   margin-left: 40px;
-  ${({ theme }) => theme.mediaQueries.md} {
+  ${({ theme }) => theme.mediaQueries.nav} {
     order: 2;
     margin-left: 0;
     flex-grow: 1;
@@ -97,6 +99,7 @@ const Panel: React.FC<Props> = ({
   langs,
   setLang,
   currentLang,
+  cakePriceUsd,
 }) => {
   return (
     <StyledPanel show={show}>
@@ -121,18 +124,25 @@ const Panel: React.FC<Props> = ({
         )}
       </LinkBlock>
       <ControlBlock>
-        <Button size="sm" variant="text" onClick={() => toggleTheme(!isDark)}>
+        {cakePriceUsd && (
+          <Flex mr="4px">
+            <LogoRoundIcon mr="4px" />
+            <Text bold>{`$${cakePriceUsd.toFixed(3)}`}</Text>
+          </Flex>
+        )}
+        <MenuButton onClick={() => toggleTheme(!isDark)}>
           {isDark ? <Light color="primary" /> : <Dark color="primary" />}
-        </Button>
+        </MenuButton>
         <Dropdown
           target={
-            <Button startIcon={<Language color="primary" />} variant="text" size="sm" mr="4px">
+            <MenuButton startIcon={<Language color="primary" />} mr="4px">
               {currentLang}
-            </Button>
+            </MenuButton>
           }
         >
           {langs.map((lang) => (
             <Button
+              fullWidth
               key={lang.code}
               variant="text"
               size="sm"

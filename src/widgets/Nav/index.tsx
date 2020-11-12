@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { HamburgerIcon } from "../../components/Svg";
 import Overlay from "../../components/Overlay";
 import Logo from "./icons/Logo";
-import MobileOnlyButton from "./MobileOnlyButton";
+import { MobileOnlyButton } from "./Buttons";
 import Panel from "./Panel";
 import { NavProps } from "./types";
 
@@ -14,7 +14,7 @@ const StyledNav = styled.nav`
   padding: 0 18px;
   height: 64px;
   background-color: ${({ theme }) => theme.nav.background};
-  ${({ theme }) => theme.mediaQueries.md} {
+  ${({ theme }) => theme.mediaQueries.nav} {
     justify-content: normal;
   }
 `;
@@ -32,6 +32,7 @@ const Nav: React.FC<NavProps> = ({
   langs,
   setLang,
   currentLang,
+  cakePriceUsd,
 }) => {
   const [isOpened, setIsOpened] = useState(false);
   return (
@@ -53,6 +54,7 @@ const Nav: React.FC<NavProps> = ({
         langs={langs}
         setLang={setLang}
         currentLang={currentLang}
+        cakePriceUsd={cakePriceUsd}
       />
       <Overlay show={isOpened} onClick={() => setIsOpened(false)} role="presentation" />
     </StyledNav>
