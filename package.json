@@ -1,40 +1,20 @@
 {
-  "name": "yam",
+  "name": "pancake-frontend",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "@crowdin/crowdin-api-client": "^1.8.16",
-    "@ethersproject/abi": "^5.0.7",
-    "@pancakeswap-libs/uikit": "^0.2.2",
-    "@types/debounce": "^1.2.0",
-    "@types/jest": "^26.0.9",
-    "@types/node": "^14.0.27",
-    "@types/react": "^16.9.46",
-    "bignumber.js": "^9.0.0",
-    "debounce": "^1.2.0",
-    "lodash": "^4.17.20",
-    "numeral": "^2.0.6",
-    "react": "^16.13.1",
-    "react-circular-progressbar": "^2.0.3",
-    "react-countdown": "^2.2.1",
-    "react-countup": "^4.3.3",
-    "react-dom": "^16.13.1",
-    "react-feather": "^2.0.8",
-    "react-router-dom": "^5.2.0",
-    "react-scripts": "^4.0.0",
-    "styled-components": "^5.1.1",
-    "typescript": "^4.0.5",
-    "use-wallet": "^0.8.0",
-    "web3": "^1.2.11"
-  },
   "scripts": {
     "start": "react-scripts start",
-    "build": "CI= GENERATE_SOURCEMAP=false react-scripts build",
+    "build": "CI=false react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
     "format": "prettier --check 'src/**/*.{js,jsx,ts,tsx}'",
     "deploy": "yarn build && cp ./build/index.html ./build/200.html && surge ./build sushiswap.org"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -51,10 +31,31 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {
-    "@types/numeral": "0.0.28",
+  "dependencies": {
+    "@crowdin/crowdin-api-client": "^1.8.16",
+    "@ethersproject/abi": "^5.0.7",
+    "@pancakeswap-libs/uikit": "^0.2.1",
+    "@types/react": "^16.9.46",
     "@types/react-dom": "^16.9.8",
     "@types/react-router-dom": "^5.1.5",
-    "@types/styled-components": "^5.1.4"
+    "@types/styled-components": "^5.1.4",
+    "bignumber.js": "^9.0.0",
+    "lodash": "^4.17.20",
+    "react": "^16.13.1",
+    "react-countup": "^4.3.3",
+    "react-dom": "^16.13.1",
+    "react-feather": "^2.0.8",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "^4.0.0",
+    "styled-components": "^5.1.1",
+    "typescript": "^4.0.5",
+    "use-wallet": "^0.8.0",
+    "web3": "^1.2.11"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^11.0.0",
+    "@commitlint/config-conventional": "^11.0.0",
+    "husky": "^4.3.0",
+    "prettier": "^2.1.2"
   }
 }
