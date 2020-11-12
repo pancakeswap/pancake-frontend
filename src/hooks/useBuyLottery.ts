@@ -90,7 +90,7 @@ export const useMaxNumber = () => {
     if (lotteryContract &&  sushi) {
       fetchMax()
     }
-  }, [lotteryContract, sushi])
+  }, [lotteryContract, sushi, fetchMax])
 
   return max
 }

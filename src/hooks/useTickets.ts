@@ -32,13 +32,13 @@ const useTickets = () => {
       account,
     )
     setTickets(tickets)
-  }, [account, lotteryContract, ticketsContract, block])
+  }, [account, lotteryContract, ticketsContract, block, sushi])
 
   useEffect(() => {
     if (account && lotteryContract && ticketsContract && sushi) {
       fetchBalance()
     }
-  }, [account, block, lotteryContract, setTickets, sushi])
+  }, [account, block, lotteryContract, setTickets, sushi, fetchBalance, ticketsContract])
 
   return tickets
 }
@@ -52,7 +52,6 @@ export const useTicketsAmount = () => {
 
   const fetchBalance = useCallback(async () => {
     const tickets = await getTicketsAmount(ticketsContract, account)
-    console.log(tickets)
     setTickets(tickets)
   }, [account, ticketsContract, block])
 
@@ -60,7 +59,7 @@ export const useTicketsAmount = () => {
     if (account && ticketsContract && sushi) {
       fetchBalance()
     }
-  }, [account, block, ticketsContract, setTickets, sushi])
+  }, [account, block, ticketsContract, setTickets, sushi, fetchBalance])
 
   return tickets
 }
@@ -81,7 +80,7 @@ export const useTotalRewards = () => {
     if (account && lotteryContract && sushi) {
       fetchBalance()
     }
-  }, [account, block, lotteryContract, setRewards, sushi])
+  }, [account, block, lotteryContract, setRewards, sushi, fetchBalance])
 
   return rewards
 }
@@ -93,7 +92,6 @@ export const useTotalClaim = () => {
   const sushi = useSushi()
   const ticketsContract = getTicketsContract(sushi)
   const lotteryContract = getLotteryContract(sushi)
-  const block = useBlock()%10
 
   const fetchBalance = useCallback(async () => {
     setClaimLoading(true)
@@ -105,13 +103,13 @@ export const useTotalClaim = () => {
     )
     setClaimAmount(claim)
     setClaimLoading(false)
-  }, [account, lotteryContract, ticketsContract, block])
+  }, [account, lotteryContract, ticketsContract, sushi])
 
   useEffect(() => {
     if (account && lotteryContract && ticketsContract && sushi) {
       fetchBalance()
     }
-  }, [account, block, lotteryContract, setClaimAmount, sushi])
+  }, [account, lotteryContract, setClaimAmount, sushi, ticketsContract, fetchBalance])
 
   return { claimLoading, claimAmount }
 }
