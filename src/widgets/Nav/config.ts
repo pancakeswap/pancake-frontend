@@ -28,4 +28,8 @@ export default [
     label: "Info",
     href: "https://pancakeswap.info",
   },
+  {
+    label: "IFO",
+    href: "/ifo",
+  },
 ];

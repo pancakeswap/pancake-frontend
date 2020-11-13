@@ -35,7 +35,7 @@ export const Connected: React.FC = () => {
         account="0xbdda50183d817c3289f895a4472eb475967dc980"
         connectCallbacks={connectCallbacks}
         logout={noop}
-        isDark
+        isDark={false}
         toggleTheme={noop}
         langs={langs}
         setLang={noop}
