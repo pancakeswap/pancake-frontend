@@ -71,7 +71,7 @@ const LinkBlock = styled.div`
     }
     ${({ theme }) => theme.mediaQueries.nav} {
       height: 100%;
-      padding: 0 16px;
+      padding: 0 12px;
     }
   }
 `;
@@ -116,6 +116,7 @@ const Panel: React.FC<Props> = ({
           if (entry.items) {
             return (
               <MenuDropdwn
+                key={entry.label}
                 target={
                   <div className="link" role="button">
                     {entry.label}
@@ -124,7 +125,7 @@ const Panel: React.FC<Props> = ({
                 }
               >
                 {entry.items.map((item) => (
-                  <MenuLink href={item.href} onClick={closeNav}>
+                  <MenuLink key={item.href} href={item.href} onClick={closeNav}>
                     {item.label}
                   </MenuLink>
                 ))}
@@ -133,7 +134,7 @@ const Panel: React.FC<Props> = ({
           }
 
           return (
-            <MenuLink href={entry.href} onClick={closeNav}>
+            <MenuLink key={entry.label} href={entry.href} onClick={closeNav}>
               {entry.label}
             </MenuLink>
           );

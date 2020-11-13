@@ -9,6 +9,7 @@ export { default as LogoIcon } from "./Icons/Logo";
 export { default as LogoRoundIcon } from "./Icons/LogoRound";
 export { default as OpenNewIcon } from "./Icons/OpenNew";
 export { default as PancakesIcon } from "./Icons/Pancakes";
+export { default as PancakeRoundIcon } from "./Icons/PancakeRound";
 export { default as RemoveIcon } from "./Icons/Remove";
 
 export { default as Svg } from "./Svg";
