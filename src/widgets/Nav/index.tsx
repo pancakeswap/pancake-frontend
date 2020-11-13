@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 import { HamburgerIcon } from "../../components/Svg";
 import Overlay from "../../components/Overlay";
 import Logo from "./icons/Logo";
@@ -19,10 +20,6 @@ const StyledNav = styled.nav`
   }
 `;
 
-const StyledLink = styled.a`
-  margin-right: 16px;
-`;
-
 const Nav: React.FC<NavProps> = ({
   account,
   connectCallbacks,
@@ -37,9 +34,9 @@ const Nav: React.FC<NavProps> = ({
   const [isOpened, setIsOpened] = useState(false);
   return (
     <StyledNav>
-      <StyledLink href="/" aria-label="Pancake home page">
+      <Link to="/" aria-label="Pancake home page" style={{ marginRight: "16px" }}>
         <Logo isDark={isDark} width="160px" height="100%" />
-      </StyledLink>
+      </Link>
       <MobileOnlyButton aria-label="Open mobile menu" onClick={() => setIsOpened((prevState) => !prevState)}>
         <HamburgerIcon />
       </MobileOnlyButton>
