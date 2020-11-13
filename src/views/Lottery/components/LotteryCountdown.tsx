@@ -17,7 +17,7 @@ const getDeadlineTime = (lotteryHasDrawn, currentTime): string => {
   return `${parseInt(hours)}h, ${parseInt(minutes)}m`
 }
 
-const Time: React.FC = () => {
+const LotteryCountdown: React.FC = () => {
   const [currentTime, setCurrentTime] = React.useState(Date.parse(new Date()) / 1000)
   const TranslateString = useI18n()
   const lotteryHasDrawn = useGetLotteryHasDrawn()
@@ -63,4 +63,4 @@ const Title2 = styled.div`
   font-weight: 1000;
 `
 
-export default Time
+export default LotteryCountdown

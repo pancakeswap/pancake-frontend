@@ -7,7 +7,7 @@ import useGetLotteryHasDrawn from 'hooks/useGetLotteryHasDrawn'
 import Card from 'components/Card'
 import CardContent from 'components/CardContent'
 
-const Winning: React.FC = () => {
+const WinningNumbers: React.FC = () => {
   const { account } = useWallet()
   const winNumbers = useWinningNumbers()
   const lotteryHasDrawn = useGetLotteryHasDrawn()
@@ -266,4 +266,4 @@ const StyledCardContentInner = styled.div`
   justify-content: space-between;
 `
 
-export default Winning
+export default WinningNumbers

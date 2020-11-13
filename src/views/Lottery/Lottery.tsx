@@ -9,10 +9,10 @@ import useSushi from 'hooks/useSushi'
 import { useTotalRewards } from 'hooks/useTickets'
 import useI18n from 'hooks/useI18n'
 import Page from 'components/Page'
-import Prize from './components/Prize'
-import Ticket from './components/Ticket'
-import Time from './components/Time'
-import Winning from './components/Winning'
+import PrizeCard from './components/PrizeCard'
+import TicketCard from './components/TicketCard'
+import LotteryCountdown from './components/LotteryCountdown'
+import WinningNumbers from './components/WinningNumbers'
 
 const Lottery: React.FC = () => {
   const { account } = useWallet()
@@ -57,12 +57,12 @@ const Lottery: React.FC = () => {
         <Subtitle>{subtitleText}</Subtitle>
         <StyledFarm>
           <StyledCardWrapper>
-            <Prize />
-            <Ticket />
+            <PrizeCard />
+            <TicketCard />
           </StyledCardWrapper>
         </StyledFarm>
-        <Time />
-        <Winning />
+        <LotteryCountdown />
+        <WinningNumbers />
       </Page>
     </Switch>
   )

@@ -1,19 +1,19 @@
 import React, { useCallback } from 'react'
 import { Button } from '@pancakeswap-libs/uikit'
+import Modal, { ModalProps } from 'components/Modal'
+import ModalActions from 'components/ModalActions'
+import ModalTitle from 'components/ModalTitle'
 import styled from 'styled-components'
-import Modal, { ModalProps } from '../../../components/Modal'
-import ModalActions from '../../../components/ModalActions'
-import ModalTitle from '../../../components/ModalTitle'
-import ModalContent from '../../../components/ModalContent'
-import { useWinningNumbers } from '../../../hooks/useTickets'
-import useI18n from '../../../hooks/useI18n'
+import ModalContent from 'components/ModalContent'
+import { useWinningNumbers } from 'hooks/useTickets'
+import useI18n from 'hooks/useI18n'
 
-interface MyTicketsModalProps extends ModalProps {
+interface UserTicketsModalProps extends ModalProps {
   myTicketNumbers: Array<any>
   from?: string
 }
 
-const MyTicketsModal: React.FC<MyTicketsModalProps> = ({ myTicketNumbers, onDismiss, from }) => {
+const UserTicketsModal: React.FC<UserTicketsModalProps> = ({ myTicketNumbers, onDismiss, from }) => {
   const winNumbers = useWinningNumbers()
   const TranslateString = useI18n()
   const rewardMatch = useCallback(
@@ -73,4 +73,4 @@ const TicketsList = styled.div`
   color: ${(props) => props.theme.colors.primary};
 `
 
-export default MyTicketsModal
+export default UserTicketsModal

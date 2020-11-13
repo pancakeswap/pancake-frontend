@@ -16,12 +16,12 @@ import useSushi from 'hooks/useSushi'
 import useTokenBalance from 'hooks/useTokenBalance'
 import { getSushiAddress } from 'sushi/utils'
 import WalletProviderModal from 'components/WalletProviderModal'
-import BuyModal from './buyModal'
-import MyTicketsModal from './myTicketsModal'
-import WarningModal from './warningModal'
+import BuyTicketModal from './BuyTicketModal'
+import MyTicketsModal from './UserTicketsModal'
+import WarningModal from './WarningModal'
 import useI18n from 'hooks/useI18n'
 
-const Ticket: React.FC = () => {
+const TicketCard: React.FC = () => {
   const [requestedApproval, setRequestedApproval] = useState(false)
   const { account } = useWallet()
   const TranslateString = useI18n()
@@ -132,4 +132,4 @@ const StyledCardContentInner = styled.div`
   justify-content: space-between;
 `
 
-export default Ticket
+export default TicketCard

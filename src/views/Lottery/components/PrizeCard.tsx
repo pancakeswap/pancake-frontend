@@ -14,15 +14,15 @@ import { useMultiClaimLottery } from 'hooks/useBuyLottery'
 import useTickets, { useTotalClaim } from 'hooks/useTickets'
 import WalletProviderModal from 'components/WalletProviderModal'
 import Loading from 'components/Loading'
-import MyTicketsModal from './myTicketsModal'
+import UserTicketsModal from './UserTicketsModal'
 import useI18n from 'hooks/useI18n'
 
-const Prize: React.FC = () => {
+const PrizeCard: React.FC = () => {
   const [requesteClaim, setRequestedClaim] = useState(false)
   const { account } = useWallet()
   const TranslateString = useI18n()
   const tickets = useTickets()
-  const [onPresentMyTickets] = useModal(<MyTicketsModal myTicketNumbers={tickets} />)
+  const [onPresentMyTickets] = useModal(<UserTicketsModal myTicketNumbers={tickets} />)
   const lotteryHasDrawn = useGetLotteryHasDrawn()
   const { claimLoading, claimAmount } = useTotalClaim()
 
@@ -110,4 +110,4 @@ const MyTicketsP = styled.div`
   color: ${(props) => props.theme.colors.secondary};
 `
 
-export default Prize
+export default PrizeCard
