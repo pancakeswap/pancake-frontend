@@ -84,8 +84,15 @@ const ComingSoon = () => {
           <Block>
             <Subtitle>{TranslateString(999, 'Coming Soon to PancakeSwap.')}</Subtitle>
             <Text mb={3}>
-              You’ll pay for the new tokens using CAKE-BNB LP tokens, which means you need to stake equal amounts of
-              CAKE and BNB in a <LiquidityLink to="/farms">liquidity pool</LiquidityLink> if you want to take part.
+              {TranslateString(
+                999,
+                'You’ll pay for the new tokens using CAKE-BNB LP tokens, which means you need to stake equal amounts of CAKE and BNB in a liquidity pool to take part.',
+              )}
+            </Text>
+            <Text mb={3}>
+              <LiquidityLink to="https://exchange.pancakeswap.finance/#/add/ETH/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82">
+                {TranslateString(999, 'Get CAKE-BNB LP >')}
+              </LiquidityLink>
             </Text>
             <Text mb={3}>
               The project gets the BNB, PancakeSwap burns the CAKE.
