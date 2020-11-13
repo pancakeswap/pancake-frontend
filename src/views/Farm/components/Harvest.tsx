@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/accessible-emoji */
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Button } from '@pancakeswap-libs/uikit'

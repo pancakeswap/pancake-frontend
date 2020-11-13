@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/accessible-emoji */
 import React from 'react'
 import styled from 'styled-components'
 import { Button } from '@pancakeswap-libs/uikit'
@@ -28,7 +27,7 @@ const Harvest: React.FC = () => {
             <Label text="SYRUP" />
           </StyledCardHeader>
           <StyledCardActions>
-            <Button fullWidth disabled={true}>
+            <Button fullWidth disabled>
               {TranslateString(999, 'Vote')}
             </Button>
           </StyledCardActions>

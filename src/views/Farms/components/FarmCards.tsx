@@ -6,7 +6,7 @@ import { useWallet } from 'use-wallet'
 import { Link as ReactRouterLink } from 'react-router-dom'
 import { Button } from '@pancakeswap-libs/uikit'
 import { CAKE_PER_BLOCK, HARD_REWARD_PER_BLOCK, CAKE_POOL_PID } from 'config'
-import { COMMUNITY_FARMS } from 'sushi/lib/constants'
+import { COMMUNITY_FARMS, forShowPools, BLOCKS_PER_YEAR } from 'sushi/lib/constants'
 import { Farm } from 'contexts/Farms'
 import { useTokenBalance2, useBnbPrice, useCakePrice } from 'hooks/useTokenBalance'
 import useFarms from 'hooks/useFarms'
@@ -15,7 +15,7 @@ import useI18n from 'hooks/useI18n'
 import useAllStakedValue, { StakedValue } from 'hooks/useAllStakedValue'
 import { getEarned, getMasterChefContract } from 'sushi/utils'
 import { bnToDec } from 'utils'
-import { forShowPools, BLOCKS_PER_YEAR } from 'sushi/lib/constants'
+
 import useModal from 'hooks/useModal'
 import WalletProviderModal from 'components/WalletProviderModal'
 import Page from 'components/layout/Page'
@@ -131,7 +131,7 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
       {
         ...farm,
         ...stakedValueItem,
-        apy: apy,
+        apy,
       },
     ]
   }, [])
@@ -143,8 +143,8 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
           ? rows.map((farm) => (
               <FarmCard farm={farm} stakedValue={stakedValueById[farm.tokenSymbol]} removed={removed} />
             ))
-          : forShowPools.map((pool, index) => (
-              <FCard key={index}>
+          : forShowPools.map((pool) => (
+              <FCard key={pool.pid + pool.symbol}>
                 <CardImage>
                   <div style={{ textAlign: 'left' }}>
                     <Multiplier>{pool.multiplier}</Multiplier>
@@ -229,7 +229,8 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
     useTokenBalance2('0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c', farm.lpTokenAddress) * useBnbPrice() * 2
 
   const cakePrice = useCakePrice()
-  let totalValue2 = useTokenBalance2('0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82', farm.lpTokenAddress) * cakePrice * 2
+  const totalValue2 =
+    useTokenBalance2('0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82', farm.lpTokenAddress) * cakePrice * 2
 
   if (farm.pid === 11) {
     totalValue = totalValue1

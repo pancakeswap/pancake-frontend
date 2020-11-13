@@ -41,7 +41,7 @@ const Prize: React.FC<PrizeProps> = ({ state }) => {
         setRequestedClaim(false)
       }
     } catch (e) {
-      console.log(e)
+      console.error(e)
     }
   }, [onMultiClaim, setRequestedClaim])
 

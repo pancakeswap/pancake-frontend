@@ -22,13 +22,14 @@ const Value: React.FC<ValueProps> = ({ value, decimals, fontSize = '14px' }) => 
   }, [value])
 
   return (
-    <StyledValue style={{ fontSize: fontSize }}>
-      {typeof value == 'string' ? (
+    <StyledValue style={{ fontSize }}>
+      {typeof value === 'string' ? (
         value
       ) : (
         <CountUp
           start={start}
           end={end}
+          // eslint-disable-next-line no-nested-ternary
           decimals={decimals !== undefined ? decimals : end < 0 ? 4 : end > 1e5 ? 0 : 3}
           duration={1}
           separator=","

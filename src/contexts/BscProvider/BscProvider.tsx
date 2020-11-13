@@ -16,13 +16,15 @@ const BscProvider: React.FC = ({ children }) => {
   const { ethereum }: { ethereum: provider } = useWallet()
 
   useEffect(() => {
-    if (!ethereum) return
-    const web3 = new Web3(ethereum)
+    let interval = null
+    if (ethereum) {
+      const web3 = new Web3(ethereum)
 
-    const interval = setInterval(async () => {
-      const latestBlockNumber = await web3.eth.getBlockNumber()
-      setBlock(latestBlockNumber)
-    }, 1000)
+      interval = setInterval(async () => {
+        const latestBlockNumber = await web3.eth.getBlockNumber()
+        setBlock(latestBlockNumber)
+      }, 1000)
+    }
 
     return () => clearInterval(interval)
   }, [ethereum])

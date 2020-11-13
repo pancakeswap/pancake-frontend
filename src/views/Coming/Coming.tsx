@@ -5,9 +5,7 @@ import Page from '../../components/Page'
 import PageHeader from './PageHeader'
 
 const Coming: React.FC = () => {
-  const [currentTime, setCurrentTime] = React.useState(
-    Date.parse(new Date()) / 1000,
-  )
+  const [currentTime, setCurrentTime] = React.useState(Date.parse(new Date()) / 1000)
 
   const endTime = 1600783200
   const seconds = (endTime - currentTime) % 60
@@ -21,19 +19,17 @@ const Coming: React.FC = () => {
 
   React.useEffect(() => {
     // 执行定时
-    let timerID = setInterval(() => tick(), 1000)
+    const timerID = setInterval(() => tick(), 1000)
     // 卸载组件时进行清理
     return () => clearInterval(timerID)
   })
 
   return (
     <Page>
-      <PageHeader icon={'🥞'} title="CAKE will start flipping in" />
+      <PageHeader icon="🥞" title="CAKE will start flipping in" />
       <StyledInfo>
-        <Countdown>{parseInt(days ? days : '0')}</Countdown>D
-        <Countdown>{parseInt(hours)}</Countdown>H
-        <Countdown>{parseInt(minutes)}</Countdown>M
-        <Countdown>{seconds}</Countdown>S
+        <Countdown>{parseInt(days || '0')}</Countdown>D<Countdown>{parseInt(hours)}</Countdown>H
+        <Countdown>{parseInt(minutes)}</Countdown>M<Countdown>{seconds}</Countdown>S
       </StyledInfo>
     </Page>
   )

@@ -10,11 +10,7 @@ interface ValueProps {
   fontSize?: string | number
 }
 
-const Value: React.FC<ValueProps> = ({
-  value,
-  decimals,
-  fontSize = '30px',
-}) => {
+const Value: React.FC<ValueProps> = ({ value, decimals, fontSize = '30px' }) => {
   const [start, updateStart] = useState(0)
   const [end, updateEnd] = useState(0)
 
@@ -26,14 +22,15 @@ const Value: React.FC<ValueProps> = ({
   }, [value])
 
   return (
-    <StyledValue style={{ fontSize: fontSize }}>
-      {typeof value == 'string' ? (
+    <StyledValue style={{ fontSize }}>
+      {typeof value === 'string' ? (
         value
       ) : (
         <CountUp
           start={start}
           end={end}
           decimals={
+            // eslint-disable-next-line no-nested-ternary
             decimals !== undefined ? decimals : end < 0 ? 4 : end > 1e5 ? 0 : 3
           }
           duration={1}

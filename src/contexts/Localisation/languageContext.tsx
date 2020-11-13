@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { StringTranslations } from '@crowdin/crowdin-api-client'
 import { TranslationsContext } from 'contexts/Localisation/translationsContext'
-import { allLanguages } from 'constants/localisation/languageCodes'
-import { EN } from 'constants/localisation/languageCodes'
+import { allLanguages, EN } from 'constants/localisation/languageCodes'
 
 const CACHE_KEY = 'pancakeSwapLanguage'
 
@@ -20,9 +19,9 @@ export interface LanguageState {
 
 const LanguageContext = React.createContext({
   selectedLanguage: { code: '', language: '' },
-  setSelectedLanguage: () => {},
+  setSelectedLanguage: () => undefined,
   translatedLanguage: { code: '', language: '' },
-  setTranslatedLanguage: () => {},
+  setTranslatedLanguage: () => undefined,
 } as LanguageState)
 
 const fileId = 8

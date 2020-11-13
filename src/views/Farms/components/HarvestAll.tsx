@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/accessible-emoji */
 import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { Button } from '@pancakeswap-libs/uikit'
@@ -28,7 +27,7 @@ const HarvestAll: React.FC = () => {
   const onlyNumbers = filteredList.map((number) => {
     return getBalanceNumber(number.balance)
   })
-  const totalCake = onlyNumbers.reduce(function (a, b) {
+  const totalCake = onlyNumbers.reduce((a, b) => {
     return a + b
   }, 0)
   const { onReward } = useAllReward(pidList)
@@ -46,19 +45,14 @@ const HarvestAll: React.FC = () => {
           <Card>
             <StyledColumn>
               <SLabel>
-                <TranslatedText translationId={300}>
-                  Pending harvest
-                </TranslatedText>
+                <TranslatedText translationId={300}>Pending harvest</TranslatedText>
               </SLabel>
               {filteredList.length > 0 && (
                 <ValueContainer>
                   <Value value={totalCake} />
                 </ValueContainer>
               )}
-              <Button
-                disabled={filteredList.length < 0 || pendingTx}
-                onClick={harvestAllFarms}
-              >
+              <Button disabled={filteredList.length < 0 || pendingTx} onClick={harvestAllFarms}>
                 {pendingTx ? 'Collecting CAKE' : 'Harvest All'}
               </Button>
             </StyledColumn>

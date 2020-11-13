@@ -3,10 +3,10 @@ import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import { getBalanceNumber } from 'utils/formatBalance'
 import useI18n from 'hooks/useI18n'
+import { ChevronDown, ChevronUp } from 'react-feather'
 import SmallValue from './Value'
 import CoreTag from './CoreTag'
 import CommunityTag from './CommunityTag'
-import { ChevronDown, ChevronUp } from 'react-feather'
 
 interface Props {
   projectLink: string

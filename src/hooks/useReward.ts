@@ -1,13 +1,7 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback } from 'react'
-import useSushi from './useSushi'
 import { useWallet } from 'use-wallet'
-import {
-  soushHarvest,
-  harvest,
-  getMasterChefContract,
-  getSousChefContract,
-} from '../sushi/utils'
+import useSushi from './useSushi'
+import { soushHarvest, harvest, getMasterChefContract, getSousChefContract } from '../sushi/utils'
 
 const useReward = (farmPid: number) => {
   const { account } = useWallet()
@@ -48,10 +42,9 @@ export const useSousReward = (sousId) => {
     if (sousId === 0) {
       const txHash = await harvest(masterChefContract, 0, account)
       return txHash
-    } else {
-      const txHash = await soushHarvest(sousChefContract, account)
-      return txHash
     }
+    const txHash = await soushHarvest(sousChefContract, account)
+    return txHash
   }, [account, sousId, sushi])
 
   return { onReward: handleReward }

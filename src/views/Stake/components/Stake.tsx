@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/accessible-emoji */
 import BigNumber from 'bignumber.js'
 import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
@@ -50,13 +49,7 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName }) => {
   const { onStake } = useStake(pid)
   const { onUnstake } = useUnstake(pid)
 
-  const [onPresentDeposit] = useModal(
-    <DepositModal
-      max={tokenBalance}
-      onConfirm={onStake}
-      tokenName={tokenName}
-    />,
-  )
+  const [onPresentDeposit] = useModal(<DepositModal max={tokenBalance} onConfirm={onStake} tokenName={tokenName} />)
 
   const [onPresentWithdraw] = useModal(
     <WithdrawModal
@@ -76,14 +69,11 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName }) => {
         setRequestedApproval(false)
       }
     } catch (e) {
-      console.log(e)
+      console.error(e)
     }
   }, [onApprove, setRequestedApproval])
 
-  const [onPresentWalletProviderModal] = useModal(
-    <WalletProviderModal />,
-    'provider',
-  )
+  const [onPresentWalletProviderModal] = useModal(<WalletProviderModal />, 'provider')
   const handleUnlockClick = useCallback(() => {
     onPresentWalletProviderModal()
   }, [onPresentWalletProviderModal])
@@ -95,9 +85,7 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName }) => {
           <StyledCardHeader>
             <CardIcon>⛏🐰</CardIcon>
             <Value value={getBalanceNumber(stakedBalance)} />
-            <Label
-              text={`${tokenName} ${TranslateString(332, 'Tokens Staked')}`}
-            />
+            <Label text={`${tokenName} ${TranslateString(332, 'Tokens Staked')}`} />
           </StyledCardHeader>
           <StyledCardActions>
             {!account && (
@@ -107,20 +95,12 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName }) => {
             )}
             {account &&
               (!allowance.toNumber() ? (
-                <Button
-                  fullWidth
-                  disabled={requestedApproval}
-                  onClick={handleApprove}
-                >
+                <Button fullWidth disabled={requestedApproval} onClick={handleApprove}>
                   {`${TranslateString(999, 'Approve')} ${tokenName}`}
                 </Button>
               ) : (
                 <>
-                  <Button
-                    fullWidth
-                    disabled={stakedBalance.eq(new BigNumber(0))}
-                    onClick={onPresentWithdraw}
-                  >
+                  <Button fullWidth disabled={stakedBalance.eq(new BigNumber(0))} onClick={onPresentWithdraw}>
                     {TranslateString(999, 'Unstake')}
                   </Button>
                   <StyledActionSpacer />

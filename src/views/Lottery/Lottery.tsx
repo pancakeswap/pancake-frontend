@@ -14,11 +14,7 @@ import Time from './components/time'
 import Winning from './components/winning'
 import { getBalanceNumber } from '../../utils/formatBalance'
 import { useTotalRewards } from '../../hooks/useTickets'
-import {
-  getLotteryContract,
-  getLotteryIssueIndex,
-  getLotteryStatus,
-} from '../../sushi/lotteryUtils'
+import { getLotteryContract, getLotteryIssueIndex, getLotteryStatus } from '../../sushi/lotteryUtils'
 
 import { LotteryStates } from '../../lottery/types'
 import useI18n from '../../hooks/useI18n'
@@ -66,9 +62,7 @@ const Farm: React.FC = () => {
       <Page>
         {account && (
           <Subtitle>
-            {!state
-              ? `#${index - 2} - Phase 1 - Buy Tickets`
-              : `#${index - 2} - Phase 2 - Claim Winnings`}
+            {!state ? `#${index - 2} - Phase 1 - Buy Tickets` : `#${index - 2} - Phase 2 - Claim Winnings`}
           </Subtitle>
         )}
         <Title style={{ marginTop: '0.5em' }}>
@@ -81,9 +75,7 @@ const Farm: React.FC = () => {
         <StyledFarm>
           <StyledCardWrapper>
             <Prize state={state} />
-            {(!account || state === LotteryStates.BUY_TICKETS_OPEN) && (
-              <Ticket state={state} />
-            )}
+            {(!account || state === LotteryStates.BUY_TICKETS_OPEN) && <Ticket />}
           </StyledCardWrapper>
         </StyledFarm>
         <Time state={state} />

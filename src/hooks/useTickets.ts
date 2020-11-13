@@ -25,12 +25,7 @@ const useTickets = () => {
   const block = useBlock()
 
   const fetchBalance = useCallback(async () => {
-    const tickets = await getTickets(
-      sushi,
-      lotteryContract,
-      ticketsContract,
-      account,
-    )
+    const tickets = await getTickets(sushi, lotteryContract, ticketsContract, account)
     setTickets(tickets)
   }, [account, lotteryContract, ticketsContract, block, sushi])
 
@@ -95,12 +90,7 @@ export const useTotalClaim = () => {
 
   const fetchBalance = useCallback(async () => {
     setClaimLoading(true)
-    const claim = await getTotalClaim(
-      sushi,
-      lotteryContract,
-      ticketsContract,
-      account,
-    )
+    const claim = await getTotalClaim(sushi, lotteryContract, ticketsContract, account)
     setClaimAmount(claim)
     setClaimLoading(false)
   }, [account, lotteryContract, ticketsContract, sushi])
@@ -122,7 +112,7 @@ export const useWinningNumbers = () => {
   const block = useBlock()
 
   const fetchBalance = useCallback(async () => {
-    const rewards = await getWinningNumbers(lotteryContract, account)
+    const rewards = await getWinningNumbers(lotteryContract)
     setWinningNumbers(rewards)
   }, [account, lotteryContract, block])
 
@@ -143,11 +133,7 @@ export const useMatchingRewardLength = (numbers) => {
   const block = useBlock()
 
   const fetchBalance = useCallback(async () => {
-    const matchedNumbaers = await getMatchingRewardLength(
-      lotteryContract,
-      numbers,
-      account,
-    )
+    const matchedNumbaers = await getMatchingRewardLength(lotteryContract, numbers)
     setMatchingNumbers(matchedNumbaers)
   }, [account, lotteryContract, block])
 

@@ -9,11 +9,10 @@ import LotteryAbi from './abi/lottery.json'
 import LotteryNFTAbi from './abi/lotteryNft.json'
 import WETHAbi from './abi/weth.json'
 import MultiCallAbi from './abi/Multicall.json'
+import { contractAddresses, SUBTRACT_GAS_LIMIT, supportedPools, sousChefTeam } from './constants'
+import * as Types from './types'
 
-import { contractAddresses, SUBTRACT_GAS_LIMIT, supportedPools, sousChefTeam } from './constants.js'
-import * as Types from './types.js'
-
-export class Contracts {
+export default class Contracts {
   constructor(provider, networkId, web3, options) {
     this.web3 = web3
     this.defaultConfirmations = options.defaultConfirmations
@@ -57,6 +56,7 @@ export class Contracts {
   setProvider(provider, networkId) {
     const setProvider = (contract, address) => {
       contract.setProvider(provider)
+      // eslint-disable-next-line no-param-reassign
       if (address) contract.options.address = address
       else console.error('Contract address not found in network', networkId)
     }
@@ -107,11 +107,11 @@ export class Contracts {
         txOptions.gas = this.defaultGas
       } else {
         try {
-          console.log('estimating gas')
           gasEstimate = await method.estimateGas(txOptions)
         } catch (error) {
           const data = method.encodeABI()
           const { from, value } = options
+          // eslint-disable-next-line no-underscore-dangle
           const to = method._parent._address
           error.transactionData = { from, value, data, to }
           throw error
@@ -123,7 +123,7 @@ export class Contracts {
       }
 
       if (confirmationType === Types.ConfirmationType.Simulate) {
-        let g = txOptions.gas
+        const g = txOptions.gas
         return { gasEstimate, g }
       }
     }
@@ -237,6 +237,7 @@ export class Contracts {
     }
   }
 
+  // eslint-disable-next-line class-methods-use-this
   async callConstantContractFunction(method, options) {
     const m2 = method
     const { blockNumber, ...txOptions } = options

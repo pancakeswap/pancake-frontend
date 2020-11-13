@@ -1,27 +1,22 @@
 import BigNumber from 'bignumber.js'
 import React, { useCallback, useMemo, useState } from 'react'
 import { Button } from '@pancakeswap-libs/uikit'
+import styled from 'styled-components'
 import Modal, { ModalProps } from '../../../components/Modal'
 import ModalActions from '../../../components/ModalActions'
 import ModalTitle from '../../../components/ModalTitle'
 import { getFullDisplayBalance } from '../../../utils/formatBalance'
-import styled from 'styled-components'
 import TicketInput from '../../../components/TicketInput'
 import { useMultiBuyLottery, useMaxNumber } from '../../../hooks/useBuyLottery'
 import useI18n from '../../../hooks/useI18n'
 
 interface BuyModalProps extends ModalProps {
   max: BigNumber
-  onConfirm: (amount: string, numbers: Array<number>) => void
+  onConfirm?: (amount: string, numbers: Array<number>) => void
   tokenName?: string
 }
 
-const BuyModal: React.FC<BuyModalProps> = ({
-  max,
-  onConfirm,
-  onDismiss,
-  tokenName = '',
-}) => {
+const BuyModal: React.FC<BuyModalProps> = ({ max, onDismiss }) => {
   const [val, setVal] = useState('1')
   const [pendingTx, setPendingTx] = useState(false)
   const [, setRequestedBuy] = useState(false)
@@ -54,14 +49,13 @@ const BuyModal: React.FC<BuyModalProps> = ({
         Math.floor(Math.random() * maxNumber) + 1,
         Math.floor(Math.random() * maxNumber) + 1,
       ])
-      console.log(numbers)
       const txHash = await onMultiBuy('10', numbers)
       // user rejected tx or didn't go thru
       if (txHash) {
         setRequestedBuy(false)
       }
     } catch (e) {
-      console.log(e)
+      console.error(e)
     }
   }, [onMultiBuy, setRequestedBuy, maxNumber, val])
 
@@ -78,21 +72,17 @@ const BuyModal: React.FC<BuyModalProps> = ({
   }
   return (
     <Modal>
-      <ModalTitle
-        text={TranslateString(450, 'Enter amount of tickets to buy')}
-      />
+      <ModalTitle text={TranslateString(450, 'Enter amount of tickets to buy')} />
       <TicketInput
         value={val}
         onSelectMax={handleSelectMax}
         onChange={handleChange}
         max={fullBalance}
-        symbol={'TICKET'}
-        availableSymbol={'CAKE'}
+        symbol="TICKET"
+        availableSymbol="CAKE"
       />
       <div>
-        <Tips>
-          {TranslateString(456, 'Your amount must be a multiple of 10 CAKE')}
-        </Tips>
+        <Tips>{TranslateString(456, 'Your amount must be a multiple of 10 CAKE')}</Tips>
         <Tips>{TranslateString(458, '1 Ticket = 10 CAKE')}</Tips>
       </div>
       <div>
@@ -102,21 +92,14 @@ const BuyModal: React.FC<BuyModalProps> = ({
             'Ticket purchases are final. Your CAKE cannot be returned to you after buying tickets.',
           )}
         </Announce>
-        <Final>
-          {TranslateString(460, `You will spend: ${cakeCosts(val)} CAKE`)}
-        </Final>
+        <Final>{TranslateString(460, `You will spend: ${cakeCosts(val)} CAKE`)}</Final>
       </div>
       <ModalActions>
         <Button variant="secondary" onClick={onDismiss}>
           {TranslateString(462, 'Cancel')}
         </Button>
         <Button
-          disabled={
-            pendingTx ||
-            parseInt(val) > Number(maxTickets) ||
-            parseInt(val) > 50 ||
-            parseInt(val) < 1
-          }
+          disabled={pendingTx || parseInt(val) > Number(maxTickets) || parseInt(val) > 50 || parseInt(val) < 1}
           onClick={async () => {
             setPendingTx(true)
             await handleBuy()
@@ -124,9 +107,7 @@ const BuyModal: React.FC<BuyModalProps> = ({
             onDismiss()
           }}
         >
-          {pendingTx
-            ? TranslateString(488, 'Pending Confirmation')
-            : TranslateString(464, 'Confirm')}
+          {pendingTx ? TranslateString(488, 'Pending Confirmation') : TranslateString(464, 'Confirm')}
         </Button>
       </ModalActions>
     </Modal>

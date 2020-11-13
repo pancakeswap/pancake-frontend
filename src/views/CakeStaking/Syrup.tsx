@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/accessible-emoji */
 import React, { useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
@@ -11,9 +10,9 @@ import useI18n from 'hooks/useI18n'
 import useAllStakedValue from 'hooks/useAllStakedValue'
 import { useTokenBalance2 } from 'hooks/useTokenBalance'
 import { getPools } from 'sushi/utils'
+import { sousChefTeam } from 'sushi/lib/constants'
 import PoolCard from './components/PoolCard'
 import Coming from './components/Coming'
-import { sousChefTeam } from 'sushi/lib/constants'
 
 const CAKE_ADDRESS = '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82'
 const COMMUNITY_ADDR = {
@@ -76,9 +75,9 @@ const SyrupRow: React.FC<SyrupRowProps> = ({
   const price = (() => {
     if (isCommunity) {
       if (cakeBalanceOnLP === 0 || tokenBalanceOnLP === 0) return new BigNumber(0)
-      const tokenBalanceOnLP_BN = new BigNumber(tokenBalanceOnLP)
-      const cakeBalanceOnLP_BN = new BigNumber(cakeBalanceOnLP)
-      const ratio = cakeBalanceOnLP_BN.div(tokenBalanceOnLP_BN)
+      const tokenBalanceOnLPNB = new BigNumber(tokenBalanceOnLP)
+      const cakeBalanceOnLPBN = new BigNumber(cakeBalanceOnLP)
+      const ratio = cakeBalanceOnLPBN.div(tokenBalanceOnLPNB)
       return ratio.times(cakePrice)
     }
     return tokenPrice
@@ -102,7 +101,7 @@ const Farm: React.FC = () => {
   const pools = getPools(sushi) || sousChefTeam
 
   const renderPools = useMemo(() => {
-    const stakedValueObj = stakedValue.reduce(
+    const stakedValueObj: any = stakedValue.reduce(
       (a, b) => ({
         ...a,
         [b.tokenSymbol]: b,
@@ -111,7 +110,7 @@ const Farm: React.FC = () => {
     )
 
     return pools.map((pool) => {
-      const cakePrice = stakedValueObj['CAKE']?.tokenPriceInWeth || new BigNumber(0)
+      const cakePrice = stakedValueObj.CAKE?.tokenPriceInWeth || new BigNumber(0)
       const tokenPrice = stakedValueObj[pool.tokenName]?.tokenPriceInWeth || new BigNumber(0)
       return {
         ...pool,
