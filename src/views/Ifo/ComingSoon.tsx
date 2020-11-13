@@ -95,9 +95,9 @@ const ComingSoon = () => {
               </LiquidityLink>
             </Text>
             <Text mb={3}>
-              The project gets the BNB, PancakeSwap burns the CAKE.
+              {TranslateString(999, 'The project gets the BNB, PancakeSwap burns the CAKE.')}
               <br />
-              <strong>You get the tokens.</strong>
+              <strong>{TranslateString(999, 'You get the tokens.')}</strong>
             </Text>
           </Block>
           <MobileImage src="/images/ifo-bunny.svg" alt="ifo bunny" />
