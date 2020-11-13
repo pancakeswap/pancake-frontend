@@ -18,7 +18,7 @@ import { getSushiAddress } from 'sushi/utils'
 import WalletProviderModal from 'components/WalletProviderModal'
 import BuyTicketModal from './BuyTicketModal'
 import MyTicketsModal from './UserTicketsModal'
-import WarningModal from './WarningModal'
+import PurchaseWarningModal from './PurchaseWarningModal'
 import useI18n from 'hooks/useI18n'
 
 const TicketCard: React.FC = () => {
@@ -52,7 +52,7 @@ const TicketCard: React.FC = () => {
 
   const [onPresentBuy] = useModal(<BuyModal max={sushiBalance} tokenName="CAKE" />)
 
-  const [onPresentApprove] = useModal(<WarningModal />)
+  const [onPresentApprove] = useModal(<PurchaseWarningModal />)
 
   const [onPresentWalletProviderModal] = useModal(<WalletProviderModal />, 'provider')
   const handleUnlockClick = useCallback(() => {
