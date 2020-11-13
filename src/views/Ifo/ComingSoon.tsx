@@ -2,7 +2,6 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Button, Heading, Text } from '@pancakeswap-libs/uikit'
-import { Link } from 'react-router-dom'
 import useI18n from 'hooks/useI18n'
 import Page from 'components/layout/Page'
 import Container from 'components/layout/Container'
@@ -64,7 +63,7 @@ const MobileImage = styled.img`
   }
 `
 
-const LiquidityLink = styled(Link)`
+const LiquidityLink = styled.a`
   color: ${({ theme }) => theme.colors.primary};
 `
 
@@ -90,7 +89,7 @@ const ComingSoon = () => {
               )}
             </Text>
             <Text mb={3}>
-              <LiquidityLink to="https://exchange.pancakeswap.finance/#/add/ETH/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82">
+              <LiquidityLink href="https://exchange.pancakeswap.finance/#/add/ETH/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82">
                 {TranslateString(999, 'Get CAKE-BNB LP >')}
               </LiquidityLink>
             </Text>
