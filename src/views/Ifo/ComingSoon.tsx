@@ -2,6 +2,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Button, Heading, Text } from '@pancakeswap-libs/uikit'
+import { Link } from 'react-router-dom'
 import useI18n from 'hooks/useI18n'
 import Page from 'components/layout/Page'
 import Container from 'components/layout/Container'
@@ -63,6 +64,10 @@ const MobileImage = styled.img`
   }
 `
 
+const LiquidityLink = styled(Link)`
+  color: ${({ theme }) => theme.colors.primary};
+`
+
 const ComingSoon = () => {
   const TranslateString = useI18n()
 
@@ -79,10 +84,9 @@ const ComingSoon = () => {
           <Block>
             <Subtitle>{TranslateString(999, 'Coming Soon to PancakeSwap.')}</Subtitle>
             <Text mb={3}>
-              {TranslateString(
-                999,
-                'Buy new tokens with CAKE and BNB. You’ll pay with CAKE-BNB LP tokens, which means you need to stake both in a liquidity pool if you want to take part. Some more explanatory text here.',
-              )}
+              Buy new tokens with CAKE and BNB. You’ll pay with CAKE-BNB LP tokens, which means you need to stake both
+              in a <LiquidityLink to="/farms">liquidity pool</LiquidityLink> if you want to take part. Some more
+              explanatory text here.
             </Text>
           </Block>
           <MobileImage src="/images/ifo-bunny.svg" alt="ifo bunny" />
