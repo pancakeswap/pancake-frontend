@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/accessible-emoji */
 import React, { useEffect, useMemo } from 'react'
 import styled from 'styled-components'
 import { useWallet } from 'use-wallet'
@@ -46,7 +45,7 @@ const Farm: React.FC = () => {
         </div>
         <PageHeader
           icon={<img src="/images/cakecat.png" height="90" alt="Stake Cake, get SYRUP icon" />}
-          title={'Stake CAKE, get CAKE.'}
+          title="Stake CAKE, get CAKE."
           subtitle={
             <StyledSubtitle>
               <p>This page was previously used for acquiring SYRUP</p>
@@ -54,7 +53,7 @@ const Farm: React.FC = () => {
                 Since SYRUP has now been disabled, the page is only useful for removing your SYRUP before moving it to
                 CAKE-based pools.
               </p>
-              <p>If you stake CAKE in the CAKE pool, it'll also show up here.</p>
+              <p>If you stake CAKE in the CAKE pool, it&apos;ll also show up here.</p>
             </StyledSubtitle>
           }
         />

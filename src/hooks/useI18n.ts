@@ -8,9 +8,11 @@ const useI18n = () => {
   return (translationId: number, fallback: string) => {
     if (translations[0] === 'error') {
       return fallback
-    } else if (translations.length > 0) {
+    }
+    if (translations.length > 0) {
       return getTranslation(translations, translationId, fallback)
     }
+    return fallback
   }
 }
 

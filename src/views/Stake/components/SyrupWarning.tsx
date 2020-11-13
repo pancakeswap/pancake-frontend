@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react'
 
 import styled from 'styled-components'
@@ -26,6 +25,7 @@ const Warning: React.FC = () => {
         <a
           href="https://medium.com/@pancakeswap/urgent-action-required-changes-to-syrup-pools-70b98d7b2541"
           target="_blank"
+          rel="noreferrer"
         >
           Read more
         </a>

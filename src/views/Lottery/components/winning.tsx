@@ -4,10 +4,7 @@ import { useWallet } from 'use-wallet'
 
 import Card from '../../../components/Card'
 import CardContent from '../../../components/CardContent'
-import {
-  useWinningNumbers,
-  useMatchingRewardLength,
-} from '../../../hooks/useTickets'
+import { useWinningNumbers, useMatchingRewardLength } from '../../../hooks/useTickets'
 import { LotteryStates } from '../../../lottery/types'
 import useI18n from '../../../hooks/useI18n'
 
@@ -29,27 +26,24 @@ const Winning: React.FC<WinningProps> = ({ state }) => {
         <CardContent>
           <StyledCardContentInner>
             <StyledCardHeader>
-              {(!account ||
-                (account && state === LotteryStates.BUY_TICKETS_OPEN)) && (
+              {(!account || (account && state === LotteryStates.BUY_TICKETS_OPEN)) && (
                 <Title>{TranslateString(440, 'Latest Winning Numbers')}</Title>
               )}
               {account && state === LotteryStates.WINNERS_ANNOUNCED && (
-                <Title>
-                  🥳{TranslateString(440, 'Winning Numbers This Round')}🥳
-                </Title>
+                <Title>🥳{TranslateString(440, 'Winning Numbers This Round')}🥳</Title>
               )}
               <br />
             </StyledCardHeader>
             <Row>
-              {winNumbers.map((number, index) => (
-                <TicketNumberBox key={index}>
+              {winNumbers.map((number) => (
+                <TicketNumberBox key={number}>
                   <CenteredText>{number}</CenteredText>
                 </TicketNumberBox>
               ))}
             </Row>
             <RowSmall>
-              {winNumbers.map((number, index) => (
-                <TicketNumberBoxSmall key={index}>
+              {winNumbers.map((number) => (
+                <TicketNumberBoxSmall key={number}>
                   <CenteredText>{number}</CenteredText>
                 </TicketNumberBoxSmall>
               ))}
@@ -100,34 +94,25 @@ const Winning: React.FC<WinningProps> = ({ state }) => {
             </RabbitRowSmall>
             <Column>
               <RowNoPadding>
-                <CenteredTextWithPadding>
-                  {TranslateString(442, 'Tickets matching 4 numbers:')}
-                </CenteredTextWithPadding>
+                <CenteredTextWithPadding>{TranslateString(442, 'Tickets matching 4 numbers:')}</CenteredTextWithPadding>
                 <CenteredTextWithPadding>
                   <strong>{MatchedNumber4}</strong>
                 </CenteredTextWithPadding>
               </RowNoPadding>
               <RowNoPadding>
-                <CenteredTextWithPadding>
-                  {TranslateString(444, 'Tickets matching 3 numbers:')}
-                </CenteredTextWithPadding>
+                <CenteredTextWithPadding>{TranslateString(444, 'Tickets matching 3 numbers:')}</CenteredTextWithPadding>
                 <CenteredTextWithPadding>
                   <strong>{MatchedNumber3}</strong>
                 </CenteredTextWithPadding>
               </RowNoPadding>
               <RowNoPadding>
-                <CenteredTextWithPadding>
-                  {TranslateString(446, 'Tickets matching 2 numbers:')}
-                </CenteredTextWithPadding>
+                <CenteredTextWithPadding>{TranslateString(446, 'Tickets matching 2 numbers:')}</CenteredTextWithPadding>
                 <CenteredTextWithPadding>
                   <strong>{MatchedNumber2}</strong>
                 </CenteredTextWithPadding>
               </RowNoPadding>
             </Column>
-            <Link
-              href={`https://api.pancakeswap.finance/api/v2/lottery`}
-              target="_blank"
-            >
+            <Link href="https://api.pancakeswap.finance/api/v2/lottery" target="_blank">
               {TranslateString(448, 'Export recent winning numbers')}
             </Link>
           </StyledCardContentInner>

@@ -9,13 +9,6 @@ BigNumber.config({
   DECIMAL_PLACES: 80,
 })
 
-// const GAS_LIMIT = {
-//   STAKING: {
-//     DEFAULT: 200000,
-//     SNX: 850000,
-//   },
-// }
-
 export const getMasterChefAddress = (sushi) => {
   return sushi && sushi.masterChefAddress
 }
@@ -260,7 +253,7 @@ export const getSousEndBlock = async (sousChefContract) => {
 }
 
 export const redeem = async (masterChefContract, account) => {
-  let now = new Date().getTime() / 1000
+  const now = new Date().getTime() / 1000
   if (now >= 1597172400) {
     return masterChefContract.methods
       .exit()
@@ -268,7 +261,8 @@ export const redeem = async (masterChefContract, account) => {
       .on('transactionHash', (tx) => {
         return tx.transactionHash
       })
-  } else {
-    alert('pool not active')
   }
+  // TODO Replace by a modal
+  // eslint-disable-next-line no-alert
+  return alert('pool not active')
 }

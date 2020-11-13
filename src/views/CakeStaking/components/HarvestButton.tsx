@@ -51,15 +51,15 @@ const Button: React.FC<ButtonProps> = ({
   const ButtonChild = useMemo(() => {
     if (to) {
       return <StyledLink to={to}>{text}</StyledLink>
-    } else if (href) {
+    } if (href) {
       return (
         <StyledExternalLink href={href} target="__blank">
           {text}
         </StyledExternalLink>
       )
-    } else {
+    } 
       return text
-    }
+    
   }, [href, text, to])
 
   return (

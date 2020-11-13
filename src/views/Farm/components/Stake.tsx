@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/accessible-emoji */
 import BigNumber from 'bignumber.js'
 import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
@@ -58,7 +57,7 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName }) => {
         setRequestedApproval(false)
       }
     } catch (e) {
-      console.log(e)
+      console.error(e)
     }
   }, [onApprove, setRequestedApproval])
 

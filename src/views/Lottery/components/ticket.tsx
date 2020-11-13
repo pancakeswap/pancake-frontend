@@ -20,11 +20,7 @@ import MyTicketsModal from './myTicketsModal'
 import WarningModal from './warningModal'
 import useI18n from '../../../hooks/useI18n'
 
-interface TicketProps {
-  state?: boolean
-}
-
-const Ticket: React.FC<TicketProps> = ({ state }) => {
+const Ticket: React.FC = () => {
   const [requestedApproval, setRequestedApproval] = useState(false)
   const { account } = useWallet()
   const TranslateString = useI18n()
@@ -35,7 +31,7 @@ const Ticket: React.FC<TicketProps> = ({ state }) => {
   const sushiBalance = useTokenBalance(getSushiAddress(sushi))
 
   const tickets = useTickets()
-  const [onPresentMyTickets] = useModal(<MyTicketsModal myTicketNumbers={tickets} from={'buy'} />)
+  const [onPresentMyTickets] = useModal(<MyTicketsModal myTicketNumbers={tickets} from="buy" />)
 
   const ticketsLength = tickets.length
 
@@ -49,11 +45,11 @@ const Ticket: React.FC<TicketProps> = ({ state }) => {
       }
       onPresentApprove()
     } catch (e) {
-      console.log(e)
+      console.error(e)
     }
   }, [onApprove, setRequestedApproval])
 
-  const [onPresentBuy] = useModal(<BuyModal max={sushiBalance} onConfirm={() => {}} tokenName={'CAKE'} />)
+  const [onPresentBuy] = useModal(<BuyModal max={sushiBalance} tokenName="CAKE" />)
 
   const [onPresentApprove] = useModal(<WarningModal />)
 

@@ -8,7 +8,7 @@ const useRedeem = (masterChefContract: Contract) => {
 
   const handleRedeem = useCallback(async () => {
     const txHash = await redeem(masterChefContract, account)
-    console.log(txHash)
+    console.info(txHash)
     return txHash
   }, [account, masterChefContract])
 

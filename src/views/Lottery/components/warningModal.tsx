@@ -1,9 +1,9 @@
 import React from 'react'
 import { Button } from '@pancakeswap-libs/uikit'
+import styled from 'styled-components'
 import Modal, { ModalProps } from '../../../components/Modal'
 import ModalActions from '../../../components/ModalActions'
 import ModalTitle from '../../../components/ModalTitle'
-import styled from 'styled-components'
 import ModalContent from '../../../components/ModalContent'
 import useI18n from '../../../hooks/useI18n'
 

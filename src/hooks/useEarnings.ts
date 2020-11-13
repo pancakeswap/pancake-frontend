@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback, useEffect, useState } from 'react'
 import { provider } from 'web3-core'
 
@@ -81,10 +80,10 @@ export const useSousEarnings = (sousId) => {
   const block = useBlock()
 
   const fetchBalance = useCallback(async () => {
-    if(sousId === 0) {
+    if (sousId === 0) {
       const balance = await getEarned(masterChefContract, '0', account)
       setBalance(new BigNumber(balance))
-    }else {
+    } else {
       const balance = await getSousEarned(sousChefContract, account)
       setBalance(new BigNumber(balance))
     }
@@ -120,9 +119,7 @@ export const useSousLeftBlocks = (sousId) => {
     if (!block) {
       buttonText = '-'
     } else if (block < start) {
-      buttonText = `Farming starts in ${(
-        start - block
-      ).toLocaleString()} Blocks`
+      buttonText = `Farming starts in ${(start - block).toLocaleString()} Blocks`
     } else if (block > end) {
       buttonText = 'finished'
     } else {
@@ -132,7 +129,7 @@ export const useSousLeftBlocks = (sousId) => {
       text: buttonText,
       farmStart: block < start ? start - block : 0,
       blocksRemaining: blocksRemaining > 0 ? blocksRemaining : 0,
-      isFinished: sousId===0 ? false : block > end,
+      isFinished: sousId === 0 ? false : block > end,
     })
   }, [account, block, sousChefContract, sushi])
 

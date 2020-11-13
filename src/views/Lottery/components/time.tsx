@@ -32,7 +32,7 @@ const Time: React.FC<TimePros> = ({ state }) => {
   }
 
   React.useEffect(() => {
-    let timerID = setInterval(() => tick(), 1000)
+    const timerID = setInterval(() => tick(), 1000)
     return () => clearInterval(timerID)
   })
 

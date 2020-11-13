@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react'
 import CountUp from 'react-countup'
 
@@ -11,12 +10,7 @@ interface BalanceProps {
   isFinished: boolean
 }
 
-const Balance: React.FC<BalanceProps> = ({
-  value,
-  decimals,
-  fontSize = '30px',
-  isFinished,
-}) => {
+const Balance: React.FC<BalanceProps> = ({ value, decimals, fontSize = '30px', isFinished }) => {
   const [start, updateStart] = useState(0)
   const [end, updateEnd] = useState(0)
 
@@ -28,16 +22,15 @@ const Balance: React.FC<BalanceProps> = ({
   }, [value])
 
   return (
-    <StyledBalance style={{ fontSize: fontSize }} isFinished={isFinished}>
-      {typeof value == 'string' ? (
+    <StyledBalance style={{ fontSize }} isFinished={isFinished}>
+      {typeof value === 'string' ? (
         value
       ) : (
         <CountUp
           start={start}
           end={end}
-          decimals={
-            decimals !== undefined ? decimals : end < 0 ? 4 : end > 1e5 ? 0 : 3
-          }
+          // eslint-disable-next-line no-nested-ternary
+          decimals={decimals !== undefined ? decimals : end < 0 ? 4 : end > 1e5 ? 0 : 3}
           duration={1}
           separator=","
         />
@@ -47,8 +40,7 @@ const Balance: React.FC<BalanceProps> = ({
 }
 
 const StyledBalance = styled.div<{ isFinished: boolean }>`
-  color: ${({ isFinished, theme }) =>
-    theme.colors[isFinished ? 'textDisabled2' : 'text2']};
+  color: ${({ isFinished, theme }) => theme.colors[isFinished ? 'textDisabled2' : 'text2']};
   font-size: 40px;
   font-weight: 600;
 `

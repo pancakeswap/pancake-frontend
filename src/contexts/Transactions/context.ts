@@ -8,5 +8,5 @@ interface TransactionsContext {
 
 export default createContext<TransactionsContext>({
   transactions: {},
-  onAddTransaction: (tx: Transaction) => {},
+  onAddTransaction: () => undefined,
 })

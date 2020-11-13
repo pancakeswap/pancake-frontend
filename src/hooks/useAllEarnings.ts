@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback, useEffect, useState } from 'react'
 import { provider } from 'web3-core'
 
@@ -19,10 +18,9 @@ const useAllEarnings = () => {
 
   const fetchAllBalances = useCallback(async () => {
     const balances: Array<BigNumber> = await Promise.all(
-      farms.map(({ pid }: { pid: number }) =>{
+      farms.map(({ pid }: { pid: number }) => {
         return getEarned(masterChefContract, pid, account)
-      }
-      ),
+      }),
     )
     setBalance(balances)
   }, [account, masterChefContract, sushi])

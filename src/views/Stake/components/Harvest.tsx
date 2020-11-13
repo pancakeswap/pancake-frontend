@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/accessible-emoji */
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Button } from '@pancakeswap-libs/uikit'
@@ -41,9 +40,7 @@ const Harvest: React.FC<HarvestProps> = ({ pid }) => {
                 setPendingTx(false)
               }}
             >
-              {pendingTx
-                ? TranslateString(999, 'Collecting CAKE')
-                : TranslateString(999, 'Harvest')}
+              {pendingTx ? TranslateString(999, 'Collecting CAKE') : TranslateString(999, 'Harvest')}
             </Button>
           </StyledCardActions>
         </StyledCardContentInner>

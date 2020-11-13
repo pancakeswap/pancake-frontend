@@ -1,7 +1,7 @@
 import React from 'react'
 import { ModalProvider } from '@pancakeswap-libs/uikit'
-import ModalsProviderDeprecated from './contexts/Modals'
 import { UseWalletProvider } from 'use-wallet'
+import ModalsProviderDeprecated from './contexts/Modals'
 import FarmsProvider from './contexts/Farms'
 import TransactionProvider from './contexts/Transactions'
 import SushiProvider from './contexts/SushiProvider'

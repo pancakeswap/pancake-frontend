@@ -8,7 +8,7 @@ const RemoveIcon: React.FC<IconProps> = ({ color, size = 18 }) => {
   return (
     <svg
       viewBox="0 0 24 24"
-      fill={color ? color : themeColor.primary}
+      fill={color || themeColor.primary}
       width={size * 0.75}
       height={size * 0.75}
     >

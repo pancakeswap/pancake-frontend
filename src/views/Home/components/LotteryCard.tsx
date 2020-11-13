@@ -75,7 +75,7 @@ const FarmedStakingCard = () => {
     }
   }, [onMultiClaim, setRequestedClaim])
 
-  const [onPresentBuy] = useModal(<BuyModal max={sushiBalance} onConfirm={() => {}} tokenName={'CAKE'} />)
+  const [onPresentBuy] = useModal(<BuyModal max={sushiBalance} tokenName="CAKE" />)
 
   return (
     <StyledLotteryCard>

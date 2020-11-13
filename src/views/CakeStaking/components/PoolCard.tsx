@@ -5,7 +5,6 @@ import { Button } from '@pancakeswap-libs/uikit'
 import { useWallet } from 'use-wallet'
 import { Contract } from 'web3-eth-contract'
 import { BLOCKS_PER_YEAR } from 'sushi/lib/constants'
-import HarvestButton from './HarvestButton'
 import { AddIcon } from 'components/icons'
 import Label from 'components/Label'
 import { useSousAllowance } from 'hooks/useAllowance'
@@ -21,6 +20,7 @@ import { useSousUnstake } from 'hooks/useUnstake'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useSousReward } from 'hooks/useReward'
 import { getSyrupAddress } from 'sushi/utils'
+import WalletProviderModal from 'components/WalletProviderModal'
 import Balance from './Balance'
 import SmallValue from './Value'
 import DepositModal from './DepositModal'
@@ -29,7 +29,7 @@ import CardTitle from './CardTitle'
 import CardTokenImg from './CardTokenImg'
 import Card from './Card'
 import OldSyrupTitle from './OldSyrupTitle'
-import WalletProviderModal from 'components/WalletProviderModal'
+import HarvestButton from './HarvestButton'
 import CardFooter from './CardFooter'
 
 interface HarvestProps {
@@ -112,6 +112,7 @@ const PoolCard: React.FC<HarvestProps> = ({
     <DepositModal max={tokenBalance} onConfirm={onStake} tokenName={isOldSyrup ? 'SYRUP' : 'CAKE'} />,
   )
 
+  // eslint-disable-next-line no-nested-ternary
   const max = sousId === 0 ? (stakedBalance.gt(syrupBalance) ? syrupBalance : stakedBalance) : stakedBalance
 
   const [onPresentWithdraw] = useModal(
@@ -127,7 +128,7 @@ const PoolCard: React.FC<HarvestProps> = ({
         setRequestedApproval(false)
       }
     } catch (e) {
-      console.log(e)
+      console.error(e)
     }
   }, [onApprove, setRequestedApproval])
 

@@ -1,9 +1,9 @@
 import { useCallback } from 'react'
 
-import useSushi from './useSushi'
 import { useWallet } from 'use-wallet'
 import { provider } from 'web3-core'
 import { Contract } from 'web3-eth-contract'
+import useSushi from './useSushi'
 
 import { getSushiContract, approve, getMasterChefContract, getSousChefContract } from '../sushi/utils'
 import { getLotteryContract } from '../sushi/lotteryUtils'

@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { createContext, useCallback, useState } from 'react'
 import styled from 'styled-components'
 
@@ -10,8 +9,8 @@ interface ModalsContext {
 }
 
 export const Context = createContext<ModalsContext>({
-  onPresent: () => {},
-  onDismiss: () => {},
+  onPresent: () => undefined,
+  onDismiss: () => undefined,
 })
 
 const Modals: React.FC = ({ children }) => {

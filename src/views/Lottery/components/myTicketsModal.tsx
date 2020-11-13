@@ -1,9 +1,9 @@
 import React, { useCallback } from 'react'
 import { Button } from '@pancakeswap-libs/uikit'
+import styled from 'styled-components'
 import Modal, { ModalProps } from '../../../components/Modal'
 import ModalActions from '../../../components/ModalActions'
 import ModalTitle from '../../../components/ModalTitle'
-import styled from 'styled-components'
 import ModalContent from '../../../components/ModalContent'
 import { useWinningNumbers } from '../../../hooks/useTickets'
 import useI18n from '../../../hooks/useI18n'
@@ -13,11 +13,7 @@ interface MyTicketsModalProps extends ModalProps {
   from?: string
 }
 
-const MyTicketsModal: React.FC<MyTicketsModalProps> = ({
-  myTicketNumbers,
-  onDismiss,
-  from,
-}) => {
+const MyTicketsModal: React.FC<MyTicketsModalProps> = ({ myTicketNumbers, onDismiss, from }) => {
   const winNumbers = useWinningNumbers()
   const TranslateString = useI18n()
   const rewardMatch = useCallback(
@@ -35,25 +31,21 @@ const MyTicketsModal: React.FC<MyTicketsModalProps> = ({
     if (rewardMatch(number[0]) > 1 && from !== 'buy') {
       const emoji = new Array(rewardMatch(number[0]) + 1).join('🤑')
       return (
+        // eslint-disable-next-line react/no-array-index-key
         <RewardP key={index}>
           {emoji}
           {number.toString()}
           {emoji}
         </RewardP>
       )
-    } else {
-      return <p key={index}>{number.toString()}</p>
     }
+    // eslint-disable-next-line react/no-array-index-key
+    return <p key={index}>{number.toString()}</p>
   })
 
   return (
     <Modal>
-      <ModalTitle
-        text={TranslateString(
-          490,
-          `My Tickets (Total: ${myTicketNumbers.length})`,
-        )}
-      />
+      <ModalTitle text={TranslateString(490, `My Tickets (Total: ${myTicketNumbers.length})`)} />
       <ModalContent>
         <div>
           <TicketsList>

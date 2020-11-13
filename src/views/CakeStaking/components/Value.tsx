@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react'
 import CountUp from 'react-countup'
 
@@ -11,12 +10,7 @@ interface ValueProps {
   isFinished?: boolean
 }
 
-const Value: React.FC<ValueProps> = ({
-  value,
-  decimals,
-  fontSize = '14px',
-  isFinished = false,
-}) => {
+const Value: React.FC<ValueProps> = ({ value, decimals, fontSize = '14px', isFinished = false }) => {
   const [start, updateStart] = useState(0)
   const [end, updateEnd] = useState(0)
 
@@ -28,16 +22,15 @@ const Value: React.FC<ValueProps> = ({
   }, [value])
 
   return (
-    <StyledValue style={{ fontSize: fontSize }} isFinished={isFinished}>
-      {typeof value == 'string' ? (
+    <StyledValue style={{ fontSize }} isFinished={isFinished}>
+      {typeof value === 'string' ? (
         value
       ) : (
         <CountUp
           start={start}
           end={end}
-          decimals={
-            decimals !== undefined ? decimals : end < 0 ? 4 : end > 1e5 ? 0 : 3
-          }
+          // eslint-disable-next-line no-nested-ternary
+          decimals={decimals !== undefined ? decimals : end < 0 ? 4 : end > 1e5 ? 0 : 3}
           duration={1}
           separator=","
         />
@@ -47,8 +40,7 @@ const Value: React.FC<ValueProps> = ({
 }
 
 const StyledValue = styled.span<{ isFinished: boolean }>`
-  color: ${({ isFinished, theme }) =>
-    theme.colors[isFinished ? 'textDisabled2' : 'text2']};
+  color: ${({ isFinished, theme }) => theme.colors[isFinished ? 'textDisabled2' : 'text2']};
   font-size: 14px;
   font-weight: 900;
   align-items: center;

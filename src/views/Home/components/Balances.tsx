@@ -1,5 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable jsx-a11y/accessible-emoji */
 import BigNumber from 'bignumber.js'
 import React, { useEffect, useState } from 'react'
 import CountUp from 'react-countup'
@@ -11,10 +9,7 @@ import Spacer from '../../../components/Spacer'
 import Value from '../../../components/Value'
 import SushiIcon from '../../../components/SushiIcon'
 import useAllEarnings from '../../../hooks/useAllEarnings'
-import useTokenBalance, {
-  useTotalSupply,
-  useBurnedBalance,
-} from '../../../hooks/useTokenBalance'
+import useTokenBalance, { useTotalSupply, useBurnedBalance } from '../../../hooks/useTokenBalance'
 import useSushi from '../../../hooks/useSushi'
 
 import { getSushiAddress } from '../../../sushi/utils'
@@ -29,10 +24,8 @@ const PendingRewards: React.FC = () => {
 
   const allEarnings = useAllEarnings()
   let sumEarning = 0
-  for (let earning of allEarnings) {
-    sumEarning += new BigNumber(earning)
-      .div(new BigNumber(10).pow(18))
-      .toNumber()
+  for (const earning of allEarnings) {
+    sumEarning += new BigNumber(earning).div(new BigNumber(10).pow(18)).toNumber()
   }
 
   useEffect(() => {
@@ -52,6 +45,7 @@ const PendingRewards: React.FC = () => {
       <CountUp
         start={start}
         end={end}
+        // eslint-disable-next-line no-nested-ternary
         decimals={end < 0 ? 4 : end > 1e5 ? 0 : 3}
         duration={1}
         onStart={() => {
@@ -78,21 +72,13 @@ const Balances: React.FC = () => {
           <CardContent>
             <StyledBalances>
               <SLabel>
-                <TranslatedText translationId={294}>
-                  Your CAKE Balance
-                </TranslatedText>
+                <TranslatedText translationId={294}>Your CAKE Balance</TranslatedText>
               </SLabel>
               <StyledBalance>
                 <SushiIcon />
                 <Spacer />
                 <div style={{ flex: 1 }}>
-                  <Value
-                    value={
-                      !!account
-                        ? getBalanceNumber(sushiBalance)
-                        : TranslateString(298, 'Locked')
-                    }
-                  />
+                  <Value value={account ? getBalanceNumber(sushiBalance) : TranslateString(298, 'Locked')} />
                 </div>
               </StyledBalance>
             </StyledBalances>
@@ -111,16 +97,13 @@ const Balances: React.FC = () => {
           <StyledBalances>
             <CardContent>
               <SLabel>
-                <TranslatedText translationId={296}>
-                  Total CAKE Supply
-                </TranslatedText>
+                <TranslatedText translationId={296}>Total CAKE Supply</TranslatedText>
               </SLabel>
               <StyledBalance>
                 <Value
                   value={
                     totalSupply
-                      ? getBalanceNumber(totalSupply) -
-                        getBalanceNumber(burnedBalance)
+                      ? getBalanceNumber(totalSupply) - getBalanceNumber(burnedBalance)
                       : TranslateString(298, 'Locked')
                   }
                 />
@@ -128,26 +111,15 @@ const Balances: React.FC = () => {
             </CardContent>
           </StyledBalances>
           <Footnote>
-            <TranslatedText translationId={302}>
-              New rewards per block
-            </TranslatedText>
+            <TranslatedText translationId={302}>New rewards per block</TranslatedText>
             <FootnoteValue>25 CAKE</FootnoteValue>
           </Footnote>
         </Card>
       </StyledWrapper>
 
       <RowCard>
-        <SLabel2>
-          🔥 {TranslateString(304, 'Total CAKE burned since launch')}
-        </SLabel2>
-        <Value
-          value={
-            !!account
-              ? getBalanceNumber(burnedBalance)
-              : TranslateString(298, 'Locked')
-          }
-          fontSize="20px"
-        />
+        <SLabel2>🔥 {TranslateString(304, 'Total CAKE burned since launch')}</SLabel2>
+        <Value value={account ? getBalanceNumber(burnedBalance) : TranslateString(298, 'Locked')} fontSize="20px" />
       </RowCard>
     </>
   )
