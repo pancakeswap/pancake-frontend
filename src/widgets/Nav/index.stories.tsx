@@ -1,8 +1,9 @@
 import React from "react";
 import noop from "lodash/noop";
 import { BrowserRouter } from "react-router-dom";
+import { ConnectCallbackType } from "../WalletModal/types";
 import Nav from "./index";
-import { ConnectCallbackType, LangType } from "./types";
+import { LangType } from "./types";
 
 export default {
   title: "Nav",

@@ -1,7 +1,7 @@
 import React from "react";
-import config from "./config";
 import Button from "../../components/Button";
 import Text from "../../components/Text";
+import config from "./config";
 import { ConnectCallbackType } from "./types";
 
 interface Props {
@@ -10,10 +10,8 @@ interface Props {
   mb: string;
 }
 
-const { wallets } = config;
-
 const WalletCard: React.FC<Props> = ({ connectCallback, onDismiss, mb }) => {
-  const walletConfig = wallets[connectCallback.key];
+  const walletConfig = config[connectCallback.key];
   if (!walletConfig) {
     return null;
   }

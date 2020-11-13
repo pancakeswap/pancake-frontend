@@ -112,7 +112,7 @@ const Panel: React.FC<Props> = ({
         <CloseIcon />
       </MobileOnlyButton>
       <LinkBlock>
-        {config.nav.map((entry) => {
+        {config.map((entry) => {
           if (entry.items) {
             return (
               <MenuDropdwn

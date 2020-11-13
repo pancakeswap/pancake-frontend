@@ -1,10 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import Button from "../../components/Button";
-import { useModal } from "../Modal";
-import ConnectModal from "./ConnectModal";
-import AccountModal from "./AccountModal";
-import { ConnectCallbackType } from "./types";
+import useWalletModal from "../WalletModal";
+import { ConnectCallbackType } from "../WalletModal/types";
 
 interface Props {
   account?: string;
@@ -27,8 +25,7 @@ const Container = styled.div`
 `;
 
 const UserBlock: React.FC<Props> = ({ account, closeNav, connectCallbacks, logout }) => {
-  const [onPresentConnectModal] = useModal(<ConnectModal connectCallbacks={connectCallbacks} />);
-  const [onPresentAccountModal] = useModal(<AccountModal account={account} logout={logout} />);
+  const { onPresentConnectModal, onPresentAccountModal } = useWalletModal(connectCallbacks, logout, account);
   const accountEllipsis = account ? `${account.substring(0, 4)}...${account.substring(account.length - 4)}` : null;
   return (
     <Container>

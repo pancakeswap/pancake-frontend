@@ -1,12 +1,9 @@
+import { ConnectCallbackType } from "../WalletModal/types";
+
 export type NavTheme = {
   background: string;
   hover: string;
 };
-
-export interface ConnectCallbackType {
-  key: "metamask" | "trustwallet" | "mathwallet" | "tokenpocket" | "walletconnect";
-  callback: () => void;
-}
 
 export interface LangType {
   code: string;

@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import { Modal } from "../Modal";
 import Link from "../../components/Link";
 import { HelpIcon } from "../../components/Svg";
+import { Modal } from "../Modal";
 import WalletCard from "./WalletCard";
 import { ConnectCallbackType } from "./types";
 
