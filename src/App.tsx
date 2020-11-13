@@ -10,6 +10,7 @@ import Stake from './views/Stake'
 import Lottery from './views/Lottery'
 import Voting from './views/Voting'
 import Syrup2 from './views/CakeStaking'
+import ComingSoon from './views/Ifo/ComingSoon'
 import Providers from './Providers'
 import Web3ReactManager from './components/Web3ReactManager'
 
@@ -48,6 +49,9 @@ const App: React.FC = () => {
             </Route>
             <Route path="/removed">
               <Farms removed />
+            </Route>
+            <Route path="/ifo">
+              <ComingSoon />
             </Route>
           </Switch>
         </Web3ReactManager>
