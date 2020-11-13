@@ -1693,10 +1693,10 @@
   dependencies:
     mkdirp "^1.0.4"
 
-"@pancakeswap-libs/uikit@^0.2.5":
-  version "0.2.5"
-  resolved "https://registry.yarnpkg.com/@pancakeswap-libs/uikit/-/uikit-0.2.5.tgz#0802a1cc6c6cd2facad3987145c717b28bba9b36"
-  integrity sha512-ev5AhbdYa/TN/R4sNwT8Hq9oQIZBLWO567acQQyfWHQgxLxW10P+g/kYNsMCVMnrA9S30dPQPE/oUNL+rcAMxQ==
+"@pancakeswap-libs/uikit@^0.2.6":
+  version "0.2.6"
+  resolved "https://registry.yarnpkg.com/@pancakeswap-libs/uikit/-/uikit-0.2.6.tgz#69f627c0f459c4e97ba2fc3eadc751691fffd4e0"
+  integrity sha512-b0UUXywPNobijp5THf8tZNIQpeg4VUvxHzTwQsxiU0Y+0/VCsBBwKOJWV06cYnvp9koxYhgogCBRmWizACqhqg==
   dependencies:
     "@types/lodash" "^4.14.162"
     "@types/styled-system" "^5.1.10"
