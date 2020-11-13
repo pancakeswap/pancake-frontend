@@ -76,7 +76,7 @@ const ComingSoon = () => {
       <Hero>
         <Container>
           <Title>{TranslateString(999, 'IFO: Initial Farm Offerings')}</Title>
-          <Blurb>{TranslateString(999, 'Buy brand new tokens with CAKE and BNB')}</Blurb>
+          <Blurb>{TranslateString(999, 'Buy new tokens with a brand new token sale model.')}</Blurb>
         </Container>
       </Hero>
       <Content>
@@ -84,9 +84,13 @@ const ComingSoon = () => {
           <Block>
             <Subtitle>{TranslateString(999, 'Coming Soon to PancakeSwap.')}</Subtitle>
             <Text mb={3}>
-              Buy new tokens with CAKE and BNB. You’ll pay with CAKE-BNB LP tokens, which means you need to stake both
-              in a <LiquidityLink to="/farms">liquidity pool</LiquidityLink> if you want to take part. Some more
-              explanatory text here.
+              You’ll pay for the new tokens using CAKE-BNB LP tokens, which means you need to stake equal amounts of
+              CAKE and BNB in a <LiquidityLink to="/farms">liquidity pool</LiquidityLink> if you want to take part.
+            </Text>
+            <Text mb={3}>
+              The project gets the BNB, PancakeSwap burns the CAKE.
+              <br />
+              <strong>You get the tokens.</strong>
             </Text>
           </Block>
           <MobileImage src="/images/ifo-bunny.svg" alt="ifo bunny" />
@@ -95,7 +99,7 @@ const ComingSoon = () => {
             <Text mb={3}>
               {TranslateString(
                 999,
-                'Launch your project with PancakeSwap, Binance Smart Chain’s most-used AMM project and liquidity provider, to bring your token directly to the most passionate community on BSC.',
+                'Launch your project with PancakeSwap, Binance Smart Chain’s most-used AMM project and liquidity provider, to bring your token directly to the most active and rapidly growing community on BSC.',
               )}
             </Text>
             <Button
