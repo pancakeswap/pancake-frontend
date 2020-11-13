@@ -2,11 +2,10 @@ import React, { useEffect, useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { Switch } from 'react-router-dom'
 import { useWallet } from 'use-wallet'
-import { getLotteryContract, getLotteryIssueIndex, getLotteryStatus } from 'sushi/lotteryUtils'
+import { getLotteryContract, getLotteryIssueIndex } from 'sushi/lotteryUtils'
 import { getBalanceNumber } from 'utils/formatBalance'
 import useGetLotteryHasDrawn from 'hooks/useGetLotteryHasDrawn'
 import useSushi from 'hooks/useSushi'
-import useBlock from 'hooks/useBlock'
 import { useTotalRewards } from 'hooks/useTickets'
 import useI18n from 'hooks/useI18n'
 import Page from 'components/Page'
@@ -20,9 +19,7 @@ const Lottery: React.FC = () => {
   const TranslateString = useI18n()
   const lotteryHasDrawn = useGetLotteryHasDrawn()
   const sushi = useSushi()
-  const block = useBlock()
   const lotteryContract = getLotteryContract(sushi)
-
   const [index, setIndex] = useState(0)
 
   const fetchIndex = useCallback(async () => {
@@ -30,17 +27,11 @@ const Lottery: React.FC = () => {
     setIndex(issueIndex)
   }, [lotteryContract])
 
-  const fetchStatus = useCallback(async () => {
-    const state = await getLotteryStatus(lotteryContract)
-    setStates(state)
-  }, [lotteryContract])
-
   useEffect(() => {
     if (account && lotteryContract && sushi) {
       fetchIndex()
-      fetchStatus()
     }
-  }, [account, block, lotteryContract, sushi])
+  }, [account, lotteryContract, sushi, fetchIndex])
 
   const lotteryPrizeAmount = useTotalRewards()
 
