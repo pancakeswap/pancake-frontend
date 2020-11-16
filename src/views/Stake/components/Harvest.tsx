@@ -40,7 +40,7 @@ const Harvest: React.FC<HarvestProps> = ({ pid }) => {
                 setPendingTx(false)
               }}
             >
-              {pendingTx ? TranslateString(999, 'Collecting CAKE') : TranslateString(999, 'Harvest')}
+              {pendingTx ? TranslateString(548, 'Collecting CAKE') : TranslateString(562, 'Harvest')}
             </Button>
           </StyledCardActions>
         </StyledCardContentInner>
