@@ -8,6 +8,9 @@ declare module 'styled-components' {
 }
 
 const GlobalStyle = createGlobalStyle`
+  * {
+    font-family: 'Kanit', sans-serif;
+  }
   body {
     background-color: ${({ theme }) => theme.colors.background};
     @media (max-width: 500px) {
