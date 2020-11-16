@@ -28,12 +28,7 @@ const BuyTicketModal: React.FC<BuyTicketModalProps> = ({ max, onDismiss }) => {
     return parseInt(getFullDisplayBalance(max.div(new BigNumber(10))))
   }, [max])
 
-  const handleChange = useCallback(
-    async (e: React.FormEvent<HTMLInputElement>) => {
-      await setVal(e.currentTarget.value)
-    },
-    [setVal, val],
-  )
+  const handleChange = (e: React.FormEvent<HTMLInputElement>) => setVal(e.currentTarget.value)
 
   const { onMultiBuy } = useMultiBuyLottery()
   const maxNumber = useMaxNumber()
@@ -64,7 +59,7 @@ const BuyTicketModal: React.FC<BuyTicketModalProps> = ({ max, onDismiss }) => {
     } else {
       setVal(maxTickets.toString())
     }
-  }, [fullBalance, setVal])
+  }, [maxTickets])
 
   const cakeCosts = (amount: string): number => {
     return +amount * 10
