@@ -10,14 +10,20 @@ import LotteryNFTAbi from './abi/lotteryNft.json'
 import WETHAbi from './abi/weth.json'
 import MultiCallAbi from './abi/Multicall.json'
 import { contractAddresses, SUBTRACT_GAS_LIMIT, supportedPools, sousChefTeam } from './constants'
-import * as Types from './types'
+
+const ConfirmationType = {
+  Hash: 0,
+  Confirmed: 1,
+  Both: 2,
+  Simulate: 3,
+}
 
 export default class Contracts {
   constructor(provider, networkId, web3, options) {
     this.web3 = web3
     this.defaultConfirmations = options.defaultConfirmations
     this.autoGasMultiplier = options.autoGasMultiplier || 1.5
-    this.confirmationType = options.confirmationType || Types.ConfirmationType.Confirmed
+    this.confirmationType = options.confirmationType || ConfirmationType.Confirmed
     this.defaultGas = options.defaultGas
     this.defaultGasPrice = options.defaultGasPrice
 
@@ -101,9 +107,9 @@ export default class Contracts {
       txOptions.gasPrice = this.defaultGasPrice
     }
 
-    if (confirmationType === Types.ConfirmationType.Simulate || !options.gas) {
+    if (confirmationType === ConfirmationType.Simulate || !options.gas) {
       let gasEstimate
-      if (this.defaultGas && confirmationType !== Types.ConfirmationType.Simulate) {
+      if (this.defaultGas && confirmationType !== ConfirmationType.Simulate) {
         txOptions.gas = this.defaultGas
       } else {
         try {
@@ -122,7 +128,7 @@ export default class Contracts {
         txOptions.gas = totalGas < this.blockGasLimit ? totalGas : this.blockGasLimit
       }
 
-      if (confirmationType === Types.ConfirmationType.Simulate) {
+      if (confirmationType === ConfirmationType.Simulate) {
         const g = txOptions.gas
         return { gasEstimate, g }
       }
@@ -147,14 +153,14 @@ export default class Contracts {
 
     const t = confirmationType !== undefined ? confirmationType : this.confirmationType
 
-    if (!Object.values(Types.ConfirmationType).includes(t)) {
+    if (!Object.values(ConfirmationType).includes(t)) {
       throw new Error(`Invalid confirmation type: ${t}`)
     }
 
     let hashPromise
     let confirmationPromise
 
-    if (t === Types.ConfirmationType.Hash || t === Types.ConfirmationType.Both) {
+    if (t === ConfirmationType.Hash || t === ConfirmationType.Both) {
       hashPromise = new Promise((resolve, reject) => {
         promi.on('error', (error) => {
           if (hashOutcome === OUTCOMES.INITIAL) {
@@ -169,7 +175,7 @@ export default class Contracts {
           if (hashOutcome === OUTCOMES.INITIAL) {
             hashOutcome = OUTCOMES.RESOLVED
             resolve(txHash)
-            if (t !== Types.ConfirmationType.Both) {
+            if (t !== ConfirmationType.Both) {
               const anyPromi = promi
               anyPromi.off()
             }
@@ -178,11 +184,11 @@ export default class Contracts {
       })
     }
 
-    if (t === Types.ConfirmationType.Confirmed || t === Types.ConfirmationType.Both) {
+    if (t === ConfirmationType.Confirmed || t === ConfirmationType.Both) {
       confirmationPromise = new Promise((resolve, reject) => {
         promi.on('error', (error) => {
           if (
-            (t === Types.ConfirmationType.Confirmed || hashOutcome === OUTCOMES.RESOLVED) &&
+            (t === ConfirmationType.Confirmed || hashOutcome === OUTCOMES.RESOLVED) &&
             confirmationOutcome === OUTCOMES.INITIAL
           ) {
             confirmationOutcome = OUTCOMES.REJECTED
@@ -215,7 +221,7 @@ export default class Contracts {
       })
     }
 
-    if (t === Types.ConfirmationType.Hash) {
+    if (t === ConfirmationType.Hash) {
       const transactionHash = await hashPromise
       if (this.notifier) {
         this.notifier.hash(transactionHash)
@@ -223,7 +229,7 @@ export default class Contracts {
       return { transactionHash }
     }
 
-    if (t === Types.ConfirmationType.Confirmed) {
+    if (t === ConfirmationType.Confirmed) {
       return confirmationPromise
     }
 

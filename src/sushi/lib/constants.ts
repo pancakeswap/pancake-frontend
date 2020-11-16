@@ -1,4 +1,5 @@
 import BigNumber from 'bignumber.js/bignumber'
+import { Ifo } from './types'
 
 export const SUBTRACT_GAS_LIMIT = 100000
 
@@ -1060,3 +1061,20 @@ export const BLOCKS_PER_YEAR = new BigNumber(10512000)
 // there are 2 lists, one coming from the contract and a static one
 // TODO: Use pids if possible
 export const COMMUNITY_FARMS = ['NYA', 'STAX', 'NAR', 'bROOBEE']
+
+export const ifos: Ifo[] = [
+  {
+    id: 'blink',
+    isActive: true,
+    status: 'coming_soon',
+    name: 'BLINk (BLINK)',
+    subTitle: 'Blink and it will be gone',
+    description: 'Project is a strong project, with a good team, solid roadmap, and probably will not be an exit scam.',
+    launchDate: 'Nov. 20',
+    launchTime: '3PM JST',
+    saleAmount: '300,000 BLINK',
+    raiseAmount: '$100,000,000',
+    cakeToBurn: '$500,000',
+    projectSiteUrl: 'https://pancakeswap.finance',
+  },
+]
