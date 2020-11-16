@@ -1,61 +1,29 @@
 import BigNumber from 'bignumber.js'
-import React, { useEffect, useState } from 'react'
-import CountUp from 'react-countup'
+import React from 'react'
 import styled from 'styled-components'
 import { useWallet } from 'use-wallet'
-import Card from '../../../components/Card'
-import CardContent from '../../../components/CardContent'
-import Spacer from '../../../components/Spacer'
-import Value from '../../../components/Value'
-import SushiIcon from '../../../components/SushiIcon'
-import useAllEarnings from '../../../hooks/useAllEarnings'
-import useTokenBalance, { useTotalSupply, useBurnedBalance } from '../../../hooks/useTokenBalance'
-import useSushi from '../../../hooks/useSushi'
-
-import { getSushiAddress } from '../../../sushi/utils'
-import { getBalanceNumber } from '../../../utils/formatBalance'
-import TranslatedText from '../../../components/TranslatedText/TranslatedText'
-import { TranslateString } from '../../../utils/translateTextHelpers'
+import Card from 'components/Card'
+import CardContent from 'components/CardContent'
+import Spacer from 'components/Spacer'
+import Value from 'components/Value'
+import SushiIcon from 'components/SushiIcon'
+import Balance from 'components/Balance'
+import useAllEarnings from 'hooks/useAllEarnings'
+import useTokenBalance, { useTotalSupply, useBurnedBalance } from 'hooks/useTokenBalance'
+import useSushi from 'hooks/useSushi'
+import { getSushiAddress } from 'sushi/utils'
+import { getBalanceNumber } from 'utils/formatBalance'
+import TranslatedText from 'components/TranslatedText/TranslatedText'
+import { TranslateString } from 'utils/translateTextHelpers'
 
 const PendingRewards: React.FC = () => {
-  const [start, setStart] = useState(0)
-  const [end, setEnd] = useState(0)
-  const [scale, setScale] = useState(1)
-
   const allEarnings = useAllEarnings()
   let sumEarning = 0
   for (const earning of allEarnings) {
     sumEarning += new BigNumber(earning).div(new BigNumber(10).pow(18)).toNumber()
   }
 
-  useEffect(() => {
-    setStart(end)
-    setEnd(sumEarning)
-  }, [sumEarning])
-
-  return (
-    <StyledSpan
-      style={{
-        transform: `scale(${scale})`,
-        transformOrigin: 'right bottom',
-        transition: 'transform 0.5s',
-        display: 'inline-block',
-      }}
-    >
-      <CountUp
-        start={start}
-        end={end}
-        // eslint-disable-next-line no-nested-ternary
-        decimals={end < 0 ? 4 : end > 1e5 ? 0 : 3}
-        duration={1}
-        onStart={() => {
-          setScale(1.25)
-          setTimeout(() => setScale(1), 600)
-        }}
-        separator=","
-      />
-    </StyledSpan>
-  )
+  return <Balance value={sumEarning} />
 }
 
 const Balances: React.FC = () => {
@@ -196,10 +164,6 @@ const StyledBalance = styled.div`
   flex: 1;
 
   line-height: 60px;
-`
-
-const StyledSpan = styled.span`
-  color: #12aab5;
 `
 
 export default Balances
