@@ -29,9 +29,8 @@ const StyledCard = styled.div<StyledCardProps>`
   border: ${({ theme }) => theme.card.boxShadow};
   border-radius: 32px;
   box-shadow: ${getBoxShadow};
-  color: ${({ theme }) => theme.colors.text};
+  color: ${({ theme, isDisabled }) => theme.colors[isDisabled ? "textDisabled" : "text"]};
   overflow: hidden;
-  padding: 24px;
   position: relative;
 `;
 
@@ -39,6 +38,7 @@ StyledCard.defaultProps = {
   isActive: false,
   isSuccess: false,
   isWarning: false,
+  isDisabled: false,
 };
 
 export default StyledCard;

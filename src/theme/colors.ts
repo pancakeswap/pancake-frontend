@@ -19,6 +19,7 @@ export const lightColors: Colors = {
   text: "#452A7A",
   textDisabled: "#BDC2C4",
   textSubtle: "#AEA0D6",
+  borderColor: "#E9EAEB",
 };
 
 export const darkColors: Colors = {
@@ -32,4 +33,5 @@ export const darkColors: Colors = {
   text: "#DBCDF9",
   textDisabled: "#302B38",
   textSubtle: "#A28BD4",
+  borderColor: "#524B63",
 };

@@ -1,3 +1,4 @@
+import { SpaceProps } from "styled-system";
 import { Colors } from "../../theme/types";
 
 export interface CardRibbonProps {
@@ -13,9 +14,10 @@ export type CardTheme = {
   boxShadowWarning: string;
 };
 
-export interface CardProps {
+export interface CardProps extends SpaceProps {
   isActive?: boolean;
   isSuccess?: boolean;
   isWarning?: boolean;
+  isDisabled?: boolean;
   ribbon?: React.ReactNode;
 }

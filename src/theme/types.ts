@@ -42,6 +42,7 @@ export type Colors = {
   text: string;
   textDisabled: string;
   textSubtle: string;
+  borderColor: string;
 };
 
 export type ZIndices = {
