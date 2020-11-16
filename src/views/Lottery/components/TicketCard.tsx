@@ -1,22 +1,21 @@
 import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { useWallet } from 'use-wallet'
-import { Button } from '@pancakeswap-libs/uikit'
+import { Button, useModal } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import Card from 'components/Card'
 import CardContent from 'components/CardContent'
 import CardIcon from 'components/CardIcon'
 import Label from 'components/Label'
 import Value from 'components/Value'
+import UnlockButton from 'components/UnlockButton'
 import useGetLotteryHasDrawn from 'hooks/useGetLotteryHasDrawn'
 import { useLotteryAllowance } from 'hooks/useAllowance'
 import { useLotteryApprove } from 'hooks/useApprove'
 import useTickets from 'hooks/useTickets'
-import useModal from 'hooks/useModal'
 import useSushi from 'hooks/useSushi'
 import useTokenBalance from 'hooks/useTokenBalance'
 import { getSushiAddress } from 'sushi/utils'
-import WalletProviderModal from 'components/WalletProviderModal'
 import BuyTicketModal from './BuyTicketModal'
 import MyTicketsModal from './UserTicketsModal'
 import PurchaseWarningModal from './PurchaseWarningModal'
@@ -54,11 +53,6 @@ const TicketCard: React.FC = () => {
 
   const [onPresentApprove] = useModal(<PurchaseWarningModal />)
 
-  const [onPresentWalletProviderModal] = useModal(<WalletProviderModal />, 'provider')
-  const handleUnlockClick = useCallback(() => {
-    onPresentWalletProviderModal()
-  }, [onPresentWalletProviderModal])
-
   // Hide this component if numbers have been drawn
   if (lotteryHasDrawn) {
     return null
@@ -75,11 +69,7 @@ const TicketCard: React.FC = () => {
               <Label text={TranslateString(428, 'Your total tickets for this round')} />
             </StyledCardHeader>
             <StyledCardActions>
-              {!account && (
-                <Button fullWidth onClick={handleUnlockClick}>
-                  {TranslateString(999, 'Unlock Wallet')}
-                </Button>
-              )}
+              {!account && <UnlockButton fullWidth />}
               {account &&
                 (!allowance.toNumber() ? (
                   <Button fullWidth disabled={requestedApproval} onClick={handleApprove}>

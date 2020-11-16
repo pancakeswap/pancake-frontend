@@ -1,20 +1,19 @@
 import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { useWallet } from 'use-wallet'
-import { Button } from '@pancakeswap-libs/uikit'
+import { Button, useModal } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import Card from 'components/Card'
 import CardContent from 'components/CardContent'
 import CardIcon from 'components/CardIcon'
 import Label from 'components/Label'
 import Value from 'components/Value'
-import useModal from 'hooks/useModal'
 import { getBalanceNumber } from 'utils/formatBalance'
 import useGetLotteryHasDrawn from 'hooks/useGetLotteryHasDrawn'
 import { useMultiClaimLottery } from 'hooks/useBuyLottery'
 import useTickets, { useTotalClaim } from 'hooks/useTickets'
-import WalletProviderModal from 'components/WalletProviderModal'
 import Loading from 'components/Loading'
+import UnlockButton from '../../../components/UnlockButton'
 import UserTicketsModal from './UserTicketsModal'
 
 const PrizeCard: React.FC = () => {
@@ -41,11 +40,6 @@ const PrizeCard: React.FC = () => {
     }
   }, [onMultiClaim, setRequestedClaim])
 
-  const [onPresentWalletProviderModal] = useModal(<WalletProviderModal />, 'provider')
-  const handleUnlockClick = useCallback(() => {
-    onPresentWalletProviderModal()
-  }, [onPresentWalletProviderModal])
-
   return (
     <div style={{ margin: '5px', width: '380px' }}>
       <Card>
@@ -58,11 +52,7 @@ const PrizeCard: React.FC = () => {
               <Label text={TranslateString(482, 'CAKE prizes to be claimed!')} />
             </StyledCardHeader>
             <StyledCardActions>
-              {!account && (
-                <Button fullWidth onClick={handleUnlockClick}>
-                  {TranslateString(292, 'Unlock Wallet')}
-                </Button>
-              )}
+              {!account && <UnlockButton fullWidth />}
               {account && (
                 <Button fullWidth disabled={getBalanceNumber(claimAmount) == 0 || requesteClaim} onClick={handleClaim}>
                   {TranslateString(480, 'Claim prizes')}

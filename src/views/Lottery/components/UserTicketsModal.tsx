@@ -1,16 +1,14 @@
 import React, { useCallback } from 'react'
-import { Button } from '@pancakeswap-libs/uikit'
-import Modal, { ModalProps } from 'components/Modal'
+import { Button, Modal } from '@pancakeswap-libs/uikit'
 import ModalActions from 'components/ModalActions'
-import ModalTitle from 'components/ModalTitle'
 import styled from 'styled-components'
-import ModalContent from 'components/ModalContent'
 import { useWinningNumbers } from 'hooks/useTickets'
 import useI18n from 'hooks/useI18n'
 
-interface UserTicketsModalProps extends ModalProps {
+interface UserTicketsModalProps {
   myTicketNumbers: Array<any>
   from?: string
+  onDismiss?: () => void
 }
 
 const UserTicketsModal: React.FC<UserTicketsModalProps> = ({ myTicketNumbers, onDismiss, from }) => {
@@ -44,15 +42,10 @@ const UserTicketsModal: React.FC<UserTicketsModalProps> = ({ myTicketNumbers, on
   })
 
   return (
-    <Modal>
-      <ModalTitle text={TranslateString(490, `My Tickets (Total: ${myTicketNumbers.length})`)} />
-      <ModalContent>
-        <div>
-          <TicketsList>
-            <h2>{listItems}</h2>
-          </TicketsList>
-        </div>
-      </ModalContent>
+    <Modal title={TranslateString(490, `My Tickets (Total: ${myTicketNumbers.length})`)} onDismiss={onDismiss}>
+      <TicketsList>
+        <h2>{listItems}</h2>
+      </TicketsList>
       <ModalActions>
         <Button variant="secondary" onClick={onDismiss}>
           {TranslateString(438, 'Close')}

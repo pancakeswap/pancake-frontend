@@ -3,19 +3,18 @@ import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { useWallet } from 'use-wallet'
 import { Contract } from 'web3-eth-contract'
-import { Button } from '@pancakeswap-libs/uikit'
+import { Button, useModal } from '@pancakeswap-libs/uikit'
 import { AddIcon } from 'components/icons'
 import Label from 'components/Label'
 import useAllowance from 'hooks/useAllowance'
 import useApprove from 'hooks/useApprove'
-import useModal from 'hooks/useModal'
 import useStake from 'hooks/useStake'
 import useI18n from 'hooks/useI18n'
 import useStakedBalance from 'hooks/useStakedBalance'
 import useTokenBalance from 'hooks/useTokenBalance'
 import useUnstake from 'hooks/useUnstake'
 import { getBalanceNumber } from 'utils/formatBalance'
-import WalletProviderModal from 'components/WalletProviderModal'
+import UnlockButton from 'components/UnlockButton'
 import DepositModal from './DepositModal'
 import WithdrawModal from './WithdrawModal'
 import Card from './Card'
@@ -61,11 +60,6 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName }) => {
     }
   }, [onApprove, setRequestedApproval])
 
-  const [onPresentWalletProviderModal] = useModal(<WalletProviderModal />, 'provider')
-  const handleUnlockClick = useCallback(() => {
-    onPresentWalletProviderModal()
-  }, [onPresentWalletProviderModal])
-
   // We assume the token name is coin pair + flip e.g. CAKE-BNB FLIP, LINK-BNB FLIP,
   // NAR-CAKE FLIP. The images should be cake-bnb.svg, link-bnb.svg, nar-cake.svg
   const farmImage = tokenName.split(' ')[0].toLocaleLowerCase()
@@ -83,11 +77,7 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName }) => {
           <Label text={`${tokenName} ${TranslateString(332, 'Tokens Staked')}`} />
         </StyledCardHeader>
         <StyledCardActions>
-          {!account && (
-            <Button onClick={handleUnlockClick} size="md">
-              {TranslateString(292, 'Unlock Wallet')}
-            </Button>
-          )}
+          {!account && <UnlockButton />}
           {account &&
             (!allowance.toNumber() ? (
               <Button disabled={requestedApproval} onClick={handleApprove}>{`Approve ${tokenName}`}</Button>

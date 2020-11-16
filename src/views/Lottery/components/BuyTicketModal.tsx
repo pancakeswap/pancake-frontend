@@ -1,18 +1,17 @@
 import BigNumber from 'bignumber.js'
 import React, { useCallback, useMemo, useState } from 'react'
-import { Button } from '@pancakeswap-libs/uikit'
-import Modal, { ModalProps } from 'components/Modal'
-import ModalActions from 'components/ModalActions'
-import ModalTitle from 'components/ModalTitle'
-import { getFullDisplayBalance } from 'utils/formatBalance'
 import styled from 'styled-components'
+import { Button, Modal } from '@pancakeswap-libs/uikit'
+import { getFullDisplayBalance } from 'utils/formatBalance'
 import TicketInput from 'components/TicketInput'
+import ModalActions from 'components/ModalActions'
 import { useMultiBuyLottery, useMaxNumber } from 'hooks/useBuyLottery'
 import useI18n from 'hooks/useI18n'
 
-interface BuyTicketModalProps extends ModalProps {
+interface BuyTicketModalProps {
   max: BigNumber
   onConfirm?: (amount: string, numbers: Array<number>) => void
+  onDismiss?: () => void
   tokenName?: string
 }
 
@@ -71,8 +70,7 @@ const BuyTicketModal: React.FC<BuyTicketModalProps> = ({ max, onDismiss }) => {
     return +amount * 10
   }
   return (
-    <Modal>
-      <ModalTitle text={TranslateString(450, 'Enter amount of tickets to buy')} />
+    <Modal title={TranslateString(450, 'Enter amount of tickets to buy')} onDismiss={onDismiss}>
       <TicketInput
         value={val}
         onSelectMax={handleSelectMax}

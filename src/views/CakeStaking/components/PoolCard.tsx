@@ -1,17 +1,17 @@
 import BigNumber from 'bignumber.js'
 import React, { useCallback, useMemo, useState } from 'react'
 import styled from 'styled-components'
-import { Button } from '@pancakeswap-libs/uikit'
+import { Button, useModal } from '@pancakeswap-libs/uikit'
 import { useWallet } from 'use-wallet'
 import { Contract } from 'web3-eth-contract'
 import { BLOCKS_PER_YEAR } from 'sushi/lib/constants'
+import UnlockButton from 'components/UnlockButton'
 import { AddIcon } from 'components/icons'
 import Label from 'components/Label'
 import { useSousAllowance } from 'hooks/useAllowance'
 import { useSousApprove } from 'hooks/useApprove'
 import useI18n from 'hooks/useI18n'
 import { useSousEarnings, useSousLeftBlocks } from 'hooks/useEarnings'
-import useModal from 'hooks/useModal'
 import { useSousStake } from 'hooks/useStake'
 import useSushi from 'hooks/useSushi'
 import { useSousStakedBalance, useSousTotalStaked } from 'hooks/useStakedBalance'
@@ -20,7 +20,6 @@ import { useSousUnstake } from 'hooks/useUnstake'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useSousReward } from 'hooks/useReward'
 import { getSyrupAddress } from 'sushi/utils'
-import WalletProviderModal from 'components/WalletProviderModal'
 import Balance from './Balance'
 import SmallValue from './Value'
 import DepositModal from './DepositModal'
@@ -132,11 +131,6 @@ const PoolCard: React.FC<HarvestProps> = ({
     }
   }, [onApprove, setRequestedApproval])
 
-  const [onPresentWalletProviderModal] = useModal(<WalletProviderModal />, 'provider')
-  const handleUnlockClick = useCallback(() => {
-    onPresentWalletProviderModal()
-  }, [onPresentWalletProviderModal])
-
   return (
     <Card isActive={isCardActive} isFinished={isReallyFinished && sousId !== 0}>
       {isReallyFinished && sousId !== 0 && <PoolFinishedSash />}
@@ -173,11 +167,7 @@ const PoolCard: React.FC<HarvestProps> = ({
         )}
         <Label isFinished={isReallyFinished && sousId !== 0} text={TranslateString(330, `${tokenName} earned`)} />
         <StyledCardActions>
-          {!account && (
-            <div style={{ flex: 1 }}>
-              <Button onClick={handleUnlockClick}>{TranslateString(292, 'Unlock Wallet')}</Button>
-            </div>
-          )}
+          {!account && <UnlockButton />}
           {account &&
             (needsApproval && !isOldSyrup ? (
               <div style={{ flex: 1 }}>
