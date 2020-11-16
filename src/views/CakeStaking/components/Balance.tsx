@@ -1,47 +1,29 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import CountUp from 'react-countup'
-
 import styled from 'styled-components'
 
 interface BalanceProps {
-  value: string | number
-  decimals?: number
-  fontSize?: string | number
+  value: number
   isFinished: boolean
 }
 
-const Balance: React.FC<BalanceProps> = ({ value, decimals, fontSize = '30px', isFinished }) => {
-  const [start, updateStart] = useState(0)
-  const [end, updateEnd] = useState(0)
+const Balance: React.FC<BalanceProps> = ({ value, isFinished }) => {
+  const previousValue = useRef(0)
 
   useEffect(() => {
-    if (typeof value === 'number') {
-      updateStart(end)
-      updateEnd(value)
-    }
+    previousValue.current = value
   }, [value])
 
   return (
-    <StyledBalance style={{ fontSize }} isFinished={isFinished}>
-      {typeof value === 'string' ? (
-        value
-      ) : (
-        <CountUp
-          start={start}
-          end={end}
-          // eslint-disable-next-line no-nested-ternary
-          decimals={decimals !== undefined ? decimals : end < 0 ? 4 : end > 1e5 ? 0 : 3}
-          duration={1}
-          separator=","
-        />
-      )}
+    <StyledBalance isFinished={isFinished}>
+      <CountUp start={previousValue.current} end={value} decimals={3} duration={1} separator="," />
     </StyledBalance>
   )
 }
 
 const StyledBalance = styled.div<{ isFinished: boolean }>`
-  color: ${({ isFinished, theme }) => theme.colors[isFinished ? 'textDisabled2' : 'text2']};
-  font-size: 40px;
+  color: ${({ isFinished, theme }) => theme.colors[isFinished ? 'textDisabled' : 'text']};
+  font-size: 30px;
   font-weight: 600;
 `
 
