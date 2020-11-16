@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react'
 import styled from 'styled-components'
-import { Heading, Card, Button } from '@pancakeswap-libs/uikit'
+import { Heading, Card, CardBody, Button } from '@pancakeswap-libs/uikit'
 import { useWallet } from 'use-wallet'
 import useI18n from 'hooks/useI18n'
 import useModal from 'hooks/useModal'
@@ -53,17 +53,10 @@ const FarmedStakingCard = () => {
   const { account } = useWallet()
   const TranslateString = useI18n()
   const farmsWithBalance = useFarmsWithBalance()
-  const balancesWithValue = farmsWithBalance.filter(
-    (balanceType) => balanceType.balance.toNumber() > 0,
-  )
+  const balancesWithValue = farmsWithBalance.filter((balanceType) => balanceType.balance.toNumber() > 0)
 
-  const { onReward } = useAllReward(
-    balancesWithValue.map((farmWithBalance) => farmWithBalance.pid),
-  )
-  const [onPresentWalletProviderModal] = useModal(
-    <WalletProviderModal />,
-    'provider',
-  )
+  const { onReward } = useAllReward(balancesWithValue.map((farmWithBalance) => farmWithBalance.pid))
+  const [onPresentWalletProviderModal] = useModal(<WalletProviderModal />, 'provider')
 
   const harvestAllFarms = useCallback(async () => {
     setPendingTx(true)
@@ -82,40 +75,35 @@ const FarmedStakingCard = () => {
 
   return (
     <StyledFarmStakingCard>
-      <CardTitle>{TranslateString(999, 'Farms & Staking')}</CardTitle>
-      <CardImage src="/images/cake.svg" alt="cake logo" />
-      <Block>
-        <Value>
-          <CakeHarvestBalance />
-        </Value>
-        <Label>{TranslateString(999, 'CAKE to Harvest')}</Label>
-      </Block>
-      <Block>
-        <Value>
-          <CakeWalletBalance />
-        </Value>
-        <Label>{TranslateString(999, 'CAKE in Wallet')}</Label>
-      </Block>
-      <Actions>
-        {account ? (
-          <Button
-            disabled={balancesWithValue.length <= 0 || pendingTx}
-            onClick={harvestAllFarms}
-            fullWidth
-          >
-            {pendingTx
-              ? TranslateString(999, 'Collecting CAKE')
-              : TranslateString(
-                  999,
-                  `Harvest all (${balancesWithValue.length})`,
-                )}
-          </Button>
-        ) : (
-          <Button fullWidth onClick={handleUnlockClick}>
-            {TranslateString(292, 'Unlock Wallet')}
-          </Button>
-        )}
-      </Actions>
+      <CardBody>
+        <CardTitle>{TranslateString(999, 'Farms & Staking')}</CardTitle>
+        <CardImage src="/images/cake.svg" alt="cake logo" />
+        <Block>
+          <Value>
+            <CakeHarvestBalance />
+          </Value>
+          <Label>{TranslateString(999, 'CAKE to Harvest')}</Label>
+        </Block>
+        <Block>
+          <Value>
+            <CakeWalletBalance />
+          </Value>
+          <Label>{TranslateString(999, 'CAKE in Wallet')}</Label>
+        </Block>
+        <Actions>
+          {account ? (
+            <Button disabled={balancesWithValue.length <= 0 || pendingTx} onClick={harvestAllFarms} fullWidth>
+              {pendingTx
+                ? TranslateString(999, 'Collecting CAKE')
+                : TranslateString(999, `Harvest all (${balancesWithValue.length})`)}
+            </Button>
+          ) : (
+            <Button fullWidth onClick={handleUnlockClick}>
+              {TranslateString(292, 'Unlock Wallet')}
+            </Button>
+          )}
+        </Actions>
+      </CardBody>
     </StyledFarmStakingCard>
   )
 }

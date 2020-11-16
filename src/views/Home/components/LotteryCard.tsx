@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react'
 import styled from 'styled-components'
-import { Heading, Card, Button } from '@pancakeswap-libs/uikit'
+import { Heading, Card, CardBody, Button } from '@pancakeswap-libs/uikit'
 import { getSushiAddress } from 'sushi/utils'
 import { getBalanceNumber } from 'utils/formatBalance'
 import useI18n from 'hooks/useI18n'
@@ -79,32 +79,34 @@ const FarmedStakingCard = () => {
 
   return (
     <StyledLotteryCard>
-      <CardTitle>{TranslateString(999, 'Your Lottery Winnings')}</CardTitle>
-      <CardImage src="/images/ticket.svg" alt="cake logo" />
-      <Block>
-        <Value>
-          <CakeWinnings />
-        </Value>
-        <Label>{TranslateString(999, 'CAKE to Collect')}</Label>
-      </Block>
-      <Block>
-        <Value>
-          <LotteryJackpot />
-        </Value>
-        <Label>{TranslateString(999, 'Total jackpot this round')}</Label>
-      </Block>
-      <Actions>
-        <Button
-          disabled={getBalanceNumber(claimAmount) === 0 || requesteClaim}
-          onClick={handleClaim}
-          style={{ marginRight: '8px' }}
-        >
-          {TranslateString(999, 'Collect Winnings')}
-        </Button>
-        <Button variant="secondary" onClick={onPresentBuy}>
-          {TranslateString(999, 'Buy Tickets')}
-        </Button>
-      </Actions>
+      <CardBody>
+        <CardTitle>{TranslateString(999, 'Your Lottery Winnings')}</CardTitle>
+        <CardImage src="/images/ticket.svg" alt="cake logo" />
+        <Block>
+          <Value>
+            <CakeWinnings />
+          </Value>
+          <Label>{TranslateString(999, 'CAKE to Collect')}</Label>
+        </Block>
+        <Block>
+          <Value>
+            <LotteryJackpot />
+          </Value>
+          <Label>{TranslateString(999, 'Total jackpot this round')}</Label>
+        </Block>
+        <Actions>
+          <Button
+            disabled={getBalanceNumber(claimAmount) === 0 || requesteClaim}
+            onClick={handleClaim}
+            style={{ marginRight: '8px' }}
+          >
+            {TranslateString(999, 'Collect Winnings')}
+          </Button>
+          <Button variant="secondary" onClick={onPresentBuy}>
+            {TranslateString(999, 'Buy Tickets')}
+          </Button>
+        </Actions>
+      </CardBody>
     </StyledLotteryCard>
   )
 }
