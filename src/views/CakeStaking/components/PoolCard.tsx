@@ -20,7 +20,7 @@ import { useSousUnstake } from 'hooks/useUnstake'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useSousReward } from 'hooks/useReward'
 import { getSyrupAddress } from 'sushi/utils'
-import Balance from './Balance'
+import Balance from 'components/Balance'
 import SmallValue from './Value'
 import DepositModal from './DepositModal'
 import WithdrawModal from './WithdrawModal'
@@ -160,7 +160,7 @@ const PoolCard: React.FC<HarvestProps> = ({
             value={
               tokenName === 'CTK' || tokenName === 'HARD' ? getBalanceNumber(earnings, 6) : getBalanceNumber(earnings)
             }
-            isFinished={isReallyFinished}
+            isDisabled={isReallyFinished}
           />
         ) : (
           <OldSyrupTitle hasBalance={accountHasStakedBalance} />
