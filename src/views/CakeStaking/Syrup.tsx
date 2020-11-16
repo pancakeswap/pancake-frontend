@@ -142,9 +142,9 @@ const Farm: React.FC = () => {
     <Page>
       <Hero>
         <div>
-          <h1>Staking Pools</h1>
+          <h1>{TranslateString(282, 'SYRUP Pool')}</h1>
           <ul>
-            <li>Stake CAKE to earn new tokens.</li>
+            <li>{TranslateString(580, 'Stake CAKE to earn new tokens.')}</li>
             <li>{TranslateString(404, 'You can unstake at any time.')}</li>
             <li>{TranslateString(406, 'Rewards are calculated per block.')}</li>
           </ul>

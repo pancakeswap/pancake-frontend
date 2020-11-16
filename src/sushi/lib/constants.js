@@ -126,7 +126,7 @@ export const sousChefTeam = [
     tokenPerBlock: '0.2',
     sortOrder: 999,
     isCommunity: true,
-    isFinished: false,
+    isFinished: true,
   },
   {
     sousId: 10,
