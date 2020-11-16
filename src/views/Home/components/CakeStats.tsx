@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, Heading, Text } from '@pancakeswap-libs/uikit'
+import { Card, CardBody, Heading, Text } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useTotalSupply, useBurnedBalance } from 'hooks/useTokenBalance'
@@ -35,25 +35,25 @@ const CakeStats = () => {
   const sushi = useSushi()
   const totalSupply = useTotalSupply()
   const burnedBalance = useBurnedBalance(getSushiAddress(sushi))
-  const cakeSupply = totalSupply
-    ? getBalanceNumber(totalSupply) - getBalanceNumber(burnedBalance)
-    : 0
+  const cakeSupply = totalSupply ? getBalanceNumber(totalSupply) - getBalanceNumber(burnedBalance) : 0
 
   return (
     <StyledCakeStats>
-      <Title>{TranslateString(999, 'Cake Stats')}</Title>
-      <Row>
-        <Text fontSize="14px">{TranslateString(999, 'Total CAKE Supply')}</Text>
-        {cakeSupply && <CardValue fontSize="14px" value={cakeSupply} />}
-      </Row>
-      <Row>
-        <Text fontSize="14px">{TranslateString(999, 'Total CAKE Burned')}</Text>
-        <CardValue fontSize="14px" value={getBalanceNumber(burnedBalance)} />
-      </Row>
-      <Row>
-        <Text fontSize="14px">{TranslateString(999, 'New CAKE/block')}</Text>
-        <CardValue fontSize="14px" decimals={0} value={25} />
-      </Row>
+      <CardBody>
+        <Title>{TranslateString(999, 'Cake Stats')}</Title>
+        <Row>
+          <Text fontSize="14px">{TranslateString(999, 'Total CAKE Supply')}</Text>
+          {cakeSupply && <CardValue fontSize="14px" value={cakeSupply} />}
+        </Row>
+        <Row>
+          <Text fontSize="14px">{TranslateString(999, 'Total CAKE Burned')}</Text>
+          <CardValue fontSize="14px" value={getBalanceNumber(burnedBalance)} />
+        </Row>
+        <Row>
+          <Text fontSize="14px">{TranslateString(999, 'New CAKE/block')}</Text>
+          <CardValue fontSize="14px" decimals={0} value={25} />
+        </Row>
+      </CardBody>
     </StyledCakeStats>
   )
 }
