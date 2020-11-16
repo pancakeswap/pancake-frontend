@@ -21,7 +21,6 @@ import { getBalanceNumber } from 'utils/formatBalance'
 import { useSousReward } from 'hooks/useReward'
 import { getSyrupAddress } from 'sushi/utils'
 import Balance from 'components/Balance'
-import SmallValue from './Value'
 import DepositModal from './DepositModal'
 import WithdrawModal from './WithdrawModal'
 import CardTitle from './CardTitle'
@@ -202,7 +201,11 @@ const PoolCard: React.FC<HarvestProps> = ({
         </StyledCardActions>
         <StyledDetails>
           <div style={{ flex: 1 }}>{TranslateString(352, 'APY')}:</div>
-          {isReallyFinished || isOldSyrup ? '-' : <SmallValue isFinished={isReallyFinished} value={apy} />}
+          {isReallyFinished || isOldSyrup ? (
+            '-'
+          ) : (
+            <Balance fontSize="14px" isDisabled={isReallyFinished} value={parseFloat(apy)} />
+          )}
         </StyledDetails>
         <StyledDetails>
           <div style={{ flex: 1 }}>
@@ -211,7 +214,7 @@ const PoolCard: React.FC<HarvestProps> = ({
             </span>
             {TranslateString(999, 'Your Stake')}:
           </div>
-          <SmallValue isFinished={isReallyFinished} value={getBalanceNumber(stakedBalance)} />
+          <Balance fontSize="14px" isDisabled={isReallyFinished} value={getBalanceNumber(stakedBalance)} />
         </StyledDetails>
       </div>
       <CardFooter
