@@ -61,7 +61,7 @@ const Coming: React.FC = () => {
             👀
           </span>
         </CardTitle>
-        <CardTokenImg src="/images/your-project-token.svg" alt="Your project here" />
+        <CardTokenImg src="/images/bunny-question.svg" alt="Your project here" />
         <Balance>???</Balance>
         <Label>{TranslateString(416, 'Create a pool for your token')}</Label>
         <ApplyNowLink
