@@ -1,28 +1,12 @@
 // @ts-nocheck
 import React from 'react'
 import styled from 'styled-components'
-import { Button, Heading, Text } from '@pancakeswap-libs/uikit'
+import { Button, Text } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import Page from 'components/layout/Page'
 import Container from 'components/layout/Container'
-
-const Hero = styled.div`
-  background-image: linear-gradient(180deg, #53dee9 0%, #1fc7d4 100%);
-  padding-bottom: 40px;
-  padding-top: 40px;
-  margin-bottom: 32px;
-`
-
-const Title = styled(Heading).attrs({ as: 'h1', size: 'xl' })`
-  color: ${({ theme }) => theme.colors.secondary};
-  margin-bottom: 24px;
-`
-
-const Blurb = styled(Text)`
-  color: #ffffff;
-  font-size: 20px;
-  font-weight: 600;
-`
+import Hero from './components/Hero'
+import Title from './components/Title'
 
 const Content = styled(Container)`
   display: grid;
@@ -32,11 +16,6 @@ const Content = styled(Container)`
   ${({ theme }) => theme.mediaQueries.md} {
     grid-template-columns: 1fr minmax(auto, 436px);
   }
-`
-
-const Subtitle = styled(Heading).attrs({ as: 'h2', size: 'lg' })`
-  color: ${({ theme }) => theme.colors.secondary};
-  margin-bottom: 16px;
 `
 
 const Block = styled.div`
@@ -72,16 +51,11 @@ const ComingSoon = () => {
 
   return (
     <Page>
-      <Hero>
-        <Container>
-          <Title>{TranslateString(500, 'IFO: Initial Farm Offerings')}</Title>
-          <Blurb>{TranslateString(502, 'Buy new tokens with a brand new token sale model.')}</Blurb>
-        </Container>
-      </Hero>
+      <Hero />
       <Content>
         <div>
           <Block>
-            <Subtitle>{TranslateString(999, 'Coming Soon to PancakeSwap.')}</Subtitle>
+            <Title as="h2">{TranslateString(999, 'Coming Soon to PancakeSwap.')}</Title>
             <Text mb={3}>
               {TranslateString(
                 504,
@@ -101,7 +75,7 @@ const ComingSoon = () => {
           </Block>
           <MobileImage src="/images/ifo-bunny.svg" alt="ifo bunny" />
           <Block>
-            <Subtitle>{TranslateString(512, 'Want to launch your own IFO?')}</Subtitle>
+            <Title as="h2">{TranslateString(512, 'Want to launch your own IFO?')}</Title>
             <Text mb={3}>
               {TranslateString(
                 514,

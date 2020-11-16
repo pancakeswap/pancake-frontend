@@ -13,8 +13,10 @@ const GlobalStyle = createGlobalStyle`
   }
   body {
     background-color: ${({ theme }) => theme.colors.background};
-    @media (max-width: 500px) {
-      height: 100vh;
+
+    img {
+      height: auto;
+      max-width: 100%;
     }
   }
 `

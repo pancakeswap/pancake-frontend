@@ -1,27 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Card, CardBody, CardRibbon } from '@pancakeswap-libs/uikit'
+import { Ifo, IfoStatus } from 'sushi/lib/types'
 import useI18n from 'hooks/useI18n'
 import IfoCardHeader from './IfoCardHeader'
 import IfoCardProgress from './IfoCardProgress'
 import IfoCardDescription from './IfoCardDescription'
 import IfoCardDetails from './IfoCardDetails'
-
-export type IfoStatus = 'coming_soon' | 'live' | undefined
-
-export type Ifo = {
-  id: string
-  status: IfoStatus
-  name: string
-  subTitle?: string
-  description?: string
-  launchDate: string
-  launchTime: string
-  saleAmount: string
-  raiseAmount: string
-  cakeToBurn: string
-  projectSiteUrl: string
-}
 
 export interface IfoCardProps {
   ifo: Ifo
@@ -31,6 +16,9 @@ const StyledIfoCard = styled(Card)<{ ifoId: string }>`
   background-image: ${({ ifoId }) => `url('/images/ifos/${ifoId}-bg.svg')`};
   background-repeat: no-repeat;
   padding-top: 112px;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 437px;
 `
 
 const getRibbonComponent = (status: IfoStatus, TranslateString: (translationId: number, fallback: string) => any) => {

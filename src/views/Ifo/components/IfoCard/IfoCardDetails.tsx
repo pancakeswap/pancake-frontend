@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Text } from '@pancakeswap-libs/uikit'
+import { Text, OpenNewIcon } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 
 export interface IfoCardDetailsProps {
@@ -34,9 +34,11 @@ const LaunchTimeValue = styled(Text)`
 `
 
 const ProjectLink = styled.div`
+  align-items: center;
   color: ${({ theme }) => theme.colors.primary};
+  display: flex;
   font-weight: 600;
-  text-align: center;
+  justify-content: center;
 `
 
 const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({
@@ -75,6 +77,7 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({
         <a href={projectSiteUrl} target="_blank" rel="noreferrer">
           {TranslateString(412, 'View project site')}
         </a>
+        <OpenNewIcon color="primary" ml="4px" />
       </ProjectLink>
     </>
   )
