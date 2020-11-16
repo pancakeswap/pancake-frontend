@@ -18,7 +18,7 @@ const StyledCardRibbon = styled.div<Partial<StyledCardRibbonProps>>`
   text-align: center;
   transform: translateX(30%) translateY(0%) rotate(45deg);
   transform-origin: top left;
-  width: 112px;
+  width: 96px;
 
   &:before,
   &:after {
@@ -43,7 +43,7 @@ const StyledCardRibbon = styled.div<Partial<StyledCardRibbonProps>>`
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    width: 112px;
+    width: 96px;
   }
 `;
 
