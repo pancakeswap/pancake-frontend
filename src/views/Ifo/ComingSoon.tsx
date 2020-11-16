@@ -74,8 +74,8 @@ const ComingSoon = () => {
     <Page>
       <Hero>
         <Container>
-          <Title>{TranslateString(999, 'IFO: Initial Farm Offerings')}</Title>
-          <Blurb>{TranslateString(999, 'Buy new tokens with a brand new token sale model.')}</Blurb>
+          <Title>{TranslateString(500, 'IFO: Initial Farm Offerings')}</Title>
+          <Blurb>{TranslateString(502, 'Buy new tokens with a brand new token sale model.')}</Blurb>
         </Container>
       </Hero>
       <Content>
@@ -84,27 +84,27 @@ const ComingSoon = () => {
             <Subtitle>{TranslateString(999, 'Coming Soon to PancakeSwap.')}</Subtitle>
             <Text mb={3}>
               {TranslateString(
-                999,
+                504,
                 'You’ll pay for the new tokens using CAKE-BNB LP tokens, which means you need to stake equal amounts of CAKE and BNB in a liquidity pool to take part.',
               )}
             </Text>
             <Text mb={3}>
               <LiquidityLink href="https://exchange.pancakeswap.finance/#/add/ETH/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82">
-                {TranslateString(999, 'Get CAKE-BNB LP >')}
+                {TranslateString(506, 'Get CAKE-BNB LP >')}
               </LiquidityLink>
             </Text>
             <Text mb={3}>
-              {TranslateString(999, 'The project gets the BNB, PancakeSwap burns the CAKE.')}
+              {TranslateString(508, 'The project gets the BNB, PancakeSwap burns the CAKE.')}
               <br />
-              <strong>{TranslateString(999, 'You get the tokens.')}</strong>
+              <strong>{TranslateString(510, 'You get the tokens.')}</strong>
             </Text>
           </Block>
           <MobileImage src="/images/ifo-bunny.svg" alt="ifo bunny" />
           <Block>
-            <Subtitle>{TranslateString(999, 'Want to launch your own IFO?')}</Subtitle>
+            <Subtitle>{TranslateString(512, 'Want to launch your own IFO?')}</Subtitle>
             <Text mb={3}>
               {TranslateString(
-                999,
+                514,
                 'Launch your project with PancakeSwap, Binance Smart Chain’s most-used AMM project and liquidity provider, to bring your token directly to the most active and rapidly growing community on BSC.',
               )}
             </Text>
@@ -114,7 +114,7 @@ const ComingSoon = () => {
               target="_blank"
               rel="noopener noreferrer"
             >
-              {TranslateString(999, 'Apply to launch')}
+              {TranslateString(516, 'Apply to launch')}
             </Button>
           </Block>
         </div>
