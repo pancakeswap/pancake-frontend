@@ -10,7 +10,7 @@ import Home from './views/Home'
 import Stake from './views/Stake'
 import Lottery from './views/Lottery'
 import Syrup2 from './views/CakeStaking'
-import ComingSoon from './views/Ifo/ComingSoon'
+import Ifo from './views/Ifo'
 
 const App: React.FC = () => {
   const { account, connect } = useWallet()
@@ -51,7 +51,7 @@ const App: React.FC = () => {
           <Farms removed />
         </Route>
         <Route path="/ifo">
-          <ComingSoon />
+          <Ifo />
         </Route>
       </Switch>
       <Footer />
