@@ -3,17 +3,22 @@ import CountUp from 'react-countup'
 import styled from 'styled-components'
 import { Text } from '@pancakeswap-libs/uikit'
 
-interface BalanceProps {
-  value: number
+interface TextProps {
   isDisabled?: boolean
   fontSize?: string
+  color?: string
 }
 
-const StyledText = styled(Text)<{ isDisabled: boolean }>`
-  color: ${({ isDisabled, theme }) => (isDisabled ? theme.colors.textDisabled : theme.colors.text)};
+interface BalanceProps extends TextProps {
+  value: number
+  decimals?: number
+}
+
+const StyledText = styled(Text)<TextProps>`
+  color: ${({ isDisabled, color, theme }) => (isDisabled ? theme.colors.textDisabled : color)};
 `
 
-const Balance: React.FC<BalanceProps> = ({ value, fontSize, isDisabled }) => {
+const Balance: React.FC<BalanceProps> = ({ value, fontSize, color, decimals, isDisabled }) => {
   const previousValue = useRef(0)
 
   useEffect(() => {
@@ -21,8 +26,8 @@ const Balance: React.FC<BalanceProps> = ({ value, fontSize, isDisabled }) => {
   }, [value])
 
   return (
-    <StyledText bold fontSize={fontSize} isDisabled={isDisabled}>
-      <CountUp start={previousValue.current} end={value} decimals={3} duration={1} separator="," />
+    <StyledText bold color={color} fontSize={fontSize} isDisabled={isDisabled}>
+      <CountUp start={previousValue.current} end={value} decimals={decimals} duration={1} separator="," />
     </StyledText>
   )
 }
@@ -30,6 +35,8 @@ const Balance: React.FC<BalanceProps> = ({ value, fontSize, isDisabled }) => {
 Balance.defaultProps = {
   fontSize: '32px',
   isDisabled: false,
+  color: 'text',
+  decimals: 3,
 }
 
 export default Balance

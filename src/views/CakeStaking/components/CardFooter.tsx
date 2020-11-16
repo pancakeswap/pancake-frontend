@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { getBalanceNumber } from 'utils/formatBalance'
 import useI18n from 'hooks/useI18n'
 import { ChevronDown, ChevronUp } from 'react-feather'
-import SmallValue from './Value'
+import Balance from 'components/Balance'
 import CoreTag from './CoreTag'
 import CommunityTag from './CommunityTag'
 
@@ -99,14 +99,14 @@ const CardFooter: React.FC<Props> = ({
                 {TranslateString(408, 'Total')}
               </Label>
             </FlexFull>
-            <SmallValue isFinished={isFinished} value={getBalanceNumber(totalStaked)} />
+            <Balance fontSize="14px" isDisabled={isFinished} value={getBalanceNumber(totalStaked)} />
           </Row>
           {farmStart > 0 && (
             <Row>
               <FlexFull>
                 <Label>{TranslateString(410, 'Start')}:</Label>
               </FlexFull>
-              <SmallValue isFinished={isFinished} value={farmStart} decimals={0} />
+              <Balance fontSize="14px" isDisabled={isFinished} value={farmStart} decimals={0} />
             </Row>
           )}
           {farmStart === 0 && blocksRemaining > 0 && (
@@ -114,7 +114,7 @@ const CardFooter: React.FC<Props> = ({
               <FlexFull>
                 <Label>{TranslateString(410, 'End')}:</Label>
               </FlexFull>
-              <SmallValue isFinished={isFinished} value={blocksRemaining} />
+              <Balance fontSize="14px" isDisabled={isFinished} value={blocksRemaining} />
             </Row>
           )}
           <TokenLink href={projectLink} target="_blank">
