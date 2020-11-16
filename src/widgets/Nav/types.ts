@@ -1,5 +1,3 @@
-import { ConnectCallbackType } from "../WalletModal/types";
-
 export type NavTheme = {
   background: string;
   hover: string;
@@ -12,7 +10,7 @@ export interface LangType {
 
 export interface NavProps {
   account?: string;
-  connectCallbacks: ConnectCallbackType[];
+  login: () => void;
   logout: () => void;
   isDark: boolean;
   toggleTheme: (isDark: boolean) => void;

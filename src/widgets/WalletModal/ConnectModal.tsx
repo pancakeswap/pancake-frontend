@@ -4,10 +4,10 @@ import Link from "../../components/Link";
 import { HelpIcon } from "../../components/Svg";
 import { Modal } from "../Modal";
 import WalletCard from "./WalletCard";
-import { ConnectCallbackType } from "./types";
+import config from "./config";
 
 interface Props {
-  connectCallbacks: ConnectCallbackType[];
+  login: () => void;
   onDismiss?: () => void;
 }
 
@@ -18,14 +18,15 @@ const HelpLink = styled(Link)`
   margin-top: 24px;
 `;
 
-const ConnectModal: React.FC<Props> = ({ connectCallbacks, onDismiss = () => null }) => (
+const ConnectModal: React.FC<Props> = ({ login, onDismiss = () => null }) => (
   <Modal title="Connect to a wallet" onDismiss={onDismiss}>
-    {connectCallbacks.map((connectCallback, index) => (
+    {config.map((entry, index) => (
       <WalletCard
-        key={connectCallback.key}
-        connectCallback={connectCallback}
+        key={entry.title}
+        login={login}
+        walletConfig={entry}
         onDismiss={onDismiss}
-        mb={index < connectCallbacks.length - 1 ? "8px" : "0"}
+        mb={index < config.length - 1 ? "8px" : "0"}
       />
     ))}
     <HelpLink

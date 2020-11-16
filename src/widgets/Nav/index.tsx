@@ -22,7 +22,7 @@ const StyledNav = styled.nav`
 
 const Nav: React.FC<NavProps> = ({
   account,
-  connectCallbacks,
+  login,
   logout,
   isDark,
   toggleTheme,
@@ -44,7 +44,7 @@ const Nav: React.FC<NavProps> = ({
         show={isOpened}
         account={account}
         closeNav={() => setIsOpened(false)}
-        connectCallbacks={connectCallbacks}
+        login={login}
         logout={logout}
         isDark={isDark}
         toggleTheme={toggleTheme}

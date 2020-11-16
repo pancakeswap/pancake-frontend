@@ -1,27 +1,30 @@
-import React from "react";
+import React, { FC } from "react";
 import Button from "../../components/Button";
 import Text from "../../components/Text";
-import config from "./config";
-import { ConnectCallbackType } from "./types";
+import SvgProps from "../../components/Svg/types";
+
+interface Config {
+  title: string;
+  icon: FC<SvgProps>;
+  connectorId: string;
+}
 
 interface Props {
-  connectCallback: ConnectCallbackType;
+  walletConfig: Config;
+  login: (id: string) => void;
   onDismiss: () => void;
   mb: string;
 }
 
-const WalletCard: React.FC<Props> = ({ connectCallback, onDismiss, mb }) => {
-  const walletConfig = config[connectCallback.key];
-  if (!walletConfig) {
-    return null;
-  }
+const WalletCard: React.FC<Props> = ({ login, walletConfig, onDismiss, mb }) => {
   const { title, icon: Icon } = walletConfig;
   return (
     <Button
       fullWidth
       variant="tertiary"
       onClick={() => {
-        connectCallback.callback();
+        login(walletConfig.connectorId);
+        window.localStorage.setItem("accountStatus", "1");
         onDismiss();
       }}
       style={{ justifyContent: "space-between" }}

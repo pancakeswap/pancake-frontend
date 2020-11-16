@@ -4,25 +4,30 @@ import TokenPocket from "./icons/TokenPocket";
 import TrustWallet from "./icons/TrustWallet";
 import WalletConnect from "./icons/WalletConnect";
 
-export default {
-  metamask: {
+export default [
+  {
     title: "Metamask",
     icon: Metamask,
+    connectorId: "injected",
   },
-  trustwallet: {
+  {
     title: "TrustWallet",
     icon: TrustWallet,
+    connectorId: "injected",
   },
-  mathwallet: {
+  {
     title: "MathWallet",
     icon: MathWallet,
+    connectorId: "injected",
   },
-  tokenpocket: {
+  {
     title: "TokenPocket",
     icon: TokenPocket,
+    connectorId: "injected",
   },
-  walletconnect: {
+  {
     title: "WalletConnect",
     icon: WalletConnect,
+    connectorId: "walletconnect",
   },
-};
+];

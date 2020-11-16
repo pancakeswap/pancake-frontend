@@ -93,7 +93,7 @@ const Panel: React.FC<Props> = ({
   show,
   account,
   closeNav,
-  connectCallbacks,
+  login,
   logout,
   isDark,
   toggleTheme,
@@ -167,7 +167,7 @@ const Panel: React.FC<Props> = ({
           ))}
         </Dropdown>
       </ControlBlock>
-      <UserBlock account={account} closeNav={closeNav} connectCallbacks={connectCallbacks} logout={logout} />
+      <UserBlock account={account} closeNav={closeNav} login={login} logout={logout} />
     </StyledPanel>
   );
 };

@@ -1,7 +1,6 @@
 import React from "react";
 import noop from "lodash/noop";
 import { BrowserRouter } from "react-router-dom";
-import { ConnectCallbackType } from "../WalletModal/types";
 import Nav from "./index";
 import { LangType } from "./types";
 
@@ -10,14 +9,6 @@ export default {
   component: Nav,
   argTypes: {},
 };
-
-const connectCallbacks: ConnectCallbackType[] = [
-  { key: "metamask", callback: noop },
-  { key: "trustwallet", callback: noop },
-  { key: "mathwallet", callback: noop },
-  { key: "tokenpocket", callback: noop },
-  { key: "walletconnect", callback: noop },
-];
 
 const langs: LangType[] = [
   { code: "en", language: "English" },
@@ -33,7 +24,7 @@ export const Connected: React.FC = () => {
     <BrowserRouter>
       <Nav
         account="0xbdda50183d817c3289f895a4472eb475967dc980"
-        connectCallbacks={connectCallbacks}
+        login={noop}
         logout={noop}
         isDark={false}
         toggleTheme={noop}
@@ -51,7 +42,7 @@ export const NotConnected: React.FC = () => {
     <BrowserRouter>
       <Nav
         account={null}
-        connectCallbacks={connectCallbacks}
+        login={noop}
         logout={() => null}
         isDark={false}
         toggleTheme={() => null}

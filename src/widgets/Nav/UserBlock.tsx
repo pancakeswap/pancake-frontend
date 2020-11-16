@@ -2,12 +2,11 @@ import React from "react";
 import styled from "styled-components";
 import Button from "../../components/Button";
 import useWalletModal from "../WalletModal";
-import { ConnectCallbackType } from "../WalletModal/types";
 
 interface Props {
   account?: string;
   closeNav: () => void;
-  connectCallbacks: ConnectCallbackType[];
+  login: () => void;
   logout: () => void;
 }
 
@@ -24,8 +23,8 @@ const Container = styled.div`
   }
 `;
 
-const UserBlock: React.FC<Props> = ({ account, closeNav, connectCallbacks, logout }) => {
-  const { onPresentConnectModal, onPresentAccountModal } = useWalletModal(connectCallbacks, logout, account);
+const UserBlock: React.FC<Props> = ({ account, closeNav, login, logout }) => {
+  const { onPresentConnectModal, onPresentAccountModal } = useWalletModal(login, logout, account);
   const accountEllipsis = account ? `${account.substring(0, 4)}...${account.substring(account.length - 4)}` : null;
   return (
     <Container>
