@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React, { useEffect, useState, useCallback } from 'react'
+import React, { useEffect, useState } from 'react'
 import BigNumber from 'bignumber.js'
 import styled, { keyframes } from 'styled-components'
 import { useWallet } from 'use-wallet'
@@ -15,9 +15,7 @@ import useI18n from 'hooks/useI18n'
 import useAllStakedValue, { StakedValue } from 'hooks/useAllStakedValue'
 import { getEarned, getMasterChefContract } from 'sushi/utils'
 import { bnToDec } from 'utils'
-
-import useModal from 'hooks/useModal'
-import WalletProviderModal from 'components/WalletProviderModal'
+import UnlockButton from 'components/UnlockButton'
 import Page from 'components/layout/Page'
 import Grid from 'components/layout/Grid'
 import CommunityIcon from 'components/icons/CommunityIcon'
@@ -44,12 +42,6 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
   }, {})
 
   const cakePrice = stakedValueById[CAKE_POOL_PID] ? stakedValueById[CAKE_POOL_PID].tokenPriceInWeth : new BigNumber(0)
-
-  const [onPresentWalletProviderModal] = useModal(<WalletProviderModal />, 'provider')
-
-  const handleUnlockClick = useCallback(() => {
-    onPresentWalletProviderModal()
-  }, [onPresentWalletProviderModal])
 
   const realFarms = !removed
     ? farms.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
@@ -168,9 +160,7 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
                   <span className="right">CAKE</span>
                 </Label>
                 <Action>
-                  <Button onClick={handleUnlockClick} size="md" fullWidth>
-                    {TranslateString(292, 'Unlock Wallet')}
-                  </Button>
+                  <UnlockButton fullWidth />
                 </Action>
               </FCard>
             ))}

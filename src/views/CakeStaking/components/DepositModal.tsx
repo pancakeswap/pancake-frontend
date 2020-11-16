@@ -1,16 +1,15 @@
 import BigNumber from 'bignumber.js'
 import React, { useCallback, useMemo, useState } from 'react'
-import { Button } from '@pancakeswap-libs/uikit'
-import Modal, { ModalProps } from '../../../components/Modal'
-import ModalActions from '../../../components/ModalActions'
-import ModalTitle from '../../../components/ModalTitle'
+import { Button, Modal } from '@pancakeswap-libs/uikit'
+import ModalActions from 'components/ModalActions'
 import TokenInput from '../../../components/TokenInput'
 import useI18n from '../../../hooks/useI18n'
 import { getFullDisplayBalance } from '../../../utils/formatBalance'
 
-interface DepositModalProps extends ModalProps {
+interface DepositModalProps {
   max: BigNumber
   onConfirm: (amount: string) => void
+  onDismiss?: () => void
   tokenName?: string
 }
 
@@ -34,8 +33,7 @@ const DepositModal: React.FC<DepositModalProps> = ({ max, onConfirm, onDismiss, 
   }, [fullBalance, setVal])
 
   return (
-    <Modal>
-      <ModalTitle text={`${TranslateString(316, 'Deposit')} ${tokenName} Tokens`} />
+    <Modal title={`${TranslateString(316, 'Deposit')} ${tokenName} Tokens`} onDismiss={onDismiss}>
       <TokenInput
         value={val}
         onSelectMax={handleSelectMax}

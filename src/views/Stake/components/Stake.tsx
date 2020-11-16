@@ -3,7 +3,7 @@ import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { useWallet } from 'use-wallet'
 import { Contract } from 'web3-eth-contract'
-import { Button } from '@pancakeswap-libs/uikit'
+import { Button, useModal } from '@pancakeswap-libs/uikit'
 import Card from '../../../components/Card'
 import CardContent from '../../../components/CardContent'
 import CardIcon from '../../../components/CardIcon'
@@ -12,7 +12,6 @@ import Label from '../../../components/Label'
 import Value from '../../../components/Value'
 import useAllowance from '../../../hooks/useAllowance'
 import useApprove from '../../../hooks/useApprove'
-import useModal from '../../../hooks/useModal'
 import useStake from '../../../hooks/useStake'
 import useStakedBalance from '../../../hooks/useStakedBalance'
 import useTokenBalance from '../../../hooks/useTokenBalance'
@@ -22,8 +21,7 @@ import { getBalanceNumber } from '../../../utils/formatBalance'
 import DepositModal from './DepositModal'
 import WithdrawModal from './WithdrawModal'
 import useSushi from '../../../hooks/useSushi'
-
-import WalletProviderModal from '../../../components/WalletProviderModal'
+import UnlockButton from '../../../components/UnlockButton'
 import { getSyrupAddress } from '../../../sushi/utils'
 
 interface StakeProps {
@@ -54,7 +52,6 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName }) => {
   const [onPresentWithdraw] = useModal(
     <WithdrawModal
       max={stakedBalance.gt(syrupBalance) ? syrupBalance : stakedBalance}
-      // max={parseInt(stakedBalance.toString()) > parseInt(syrupBalance.toString()) ? syrupBalance : stakedBalance}
       onConfirm={onUnstake}
       tokenName={tokenName}
     />,
@@ -73,11 +70,6 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName }) => {
     }
   }, [onApprove, setRequestedApproval])
 
-  const [onPresentWalletProviderModal] = useModal(<WalletProviderModal />, 'provider')
-  const handleUnlockClick = useCallback(() => {
-    onPresentWalletProviderModal()
-  }, [onPresentWalletProviderModal])
-
   return (
     <Card>
       <CardContent>
@@ -88,11 +80,7 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName }) => {
             <Label text={`${tokenName} ${TranslateString(332, 'Tokens Staked')}`} />
           </StyledCardHeader>
           <StyledCardActions>
-            {!account && (
-              <Button fullWidth onClick={handleUnlockClick}>
-                {TranslateString(292, 'Unlock Wallet')}
-              </Button>
-            )}
+            {!account && <UnlockButton fullWidth />}
             {account &&
               (!allowance.toNumber() ? (
                 <Button fullWidth disabled={requestedApproval} onClick={handleApprove}>

@@ -3,10 +3,9 @@ import styled from 'styled-components'
 import { Heading, Card, CardBody, Button } from '@pancakeswap-libs/uikit'
 import { useWallet } from 'use-wallet'
 import useI18n from 'hooks/useI18n'
-import useModal from 'hooks/useModal'
 import { useAllReward } from 'hooks/useReward'
 import useFarmsWithBalance from 'hooks/useFarmsWithBalance'
-import WalletProviderModal from 'components/WalletProviderModal'
+import UnlockButton from 'components/UnlockButton'
 import CakeHarvestBalance from './CakeHarvestBalance'
 import CakeWalletBalance from './CakeWalletBalance'
 
@@ -56,7 +55,6 @@ const FarmedStakingCard = () => {
   const balancesWithValue = farmsWithBalance.filter((balanceType) => balanceType.balance.toNumber() > 0)
 
   const { onReward } = useAllReward(balancesWithValue.map((farmWithBalance) => farmWithBalance.pid))
-  const [onPresentWalletProviderModal] = useModal(<WalletProviderModal />, 'provider')
 
   const harvestAllFarms = useCallback(async () => {
     setPendingTx(true)
@@ -68,10 +66,6 @@ const FarmedStakingCard = () => {
       setPendingTx(false)
     }
   }, [onReward])
-
-  const handleUnlockClick = useCallback(() => {
-    onPresentWalletProviderModal()
-  }, [onPresentWalletProviderModal])
 
   return (
     <StyledFarmStakingCard>
@@ -98,9 +92,7 @@ const FarmedStakingCard = () => {
                 : TranslateString(999, `Harvest all (${balancesWithValue.length})`)}
             </Button>
           ) : (
-            <Button fullWidth onClick={handleUnlockClick}>
-              {TranslateString(292, 'Unlock Wallet')}
-            </Button>
+            <UnlockButton fullWidth />
           )}
         </Actions>
       </CardBody>
