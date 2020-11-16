@@ -32,6 +32,8 @@ const TicketCard: React.FC = () => {
 
   const tickets = useTickets()
   const [onPresentMyTickets] = useModal(<MyTicketsModal myTicketNumbers={tickets} from="buy" />)
+  const [onPresentApprove] = useModal(<PurchaseWarningModal />)
+  const [onPresentBuy] = useModal(<BuyTicketModal max={sushiBalance} tokenName="CAKE" />)
 
   const ticketsLength = tickets.length
 
@@ -47,11 +49,7 @@ const TicketCard: React.FC = () => {
     } catch (e) {
       console.error(e)
     }
-  }, [onApprove, setRequestedApproval])
-
-  const [onPresentBuy] = useModal(<BuyTicketModal max={sushiBalance} tokenName="CAKE" />)
-
-  const [onPresentApprove] = useModal(<PurchaseWarningModal />)
+  }, [onApprove, onPresentApprove])
 
   // Hide this component if numbers have been drawn
   if (lotteryHasDrawn) {
