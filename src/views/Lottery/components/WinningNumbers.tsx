@@ -1,20 +1,16 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useWallet } from 'use-wallet'
+import { useWinningNumbers, useMatchingRewardLength } from 'hooks/useTickets'
+import useI18n from 'hooks/useI18n'
+import useGetLotteryHasDrawn from 'hooks/useGetLotteryHasDrawn'
+import Card from 'components/Card'
+import CardContent from 'components/CardContent'
 
-import Card from '../../../components/Card'
-import CardContent from '../../../components/CardContent'
-import { useWinningNumbers, useMatchingRewardLength } from '../../../hooks/useTickets'
-import { LotteryStates } from '../../../lottery/types'
-import useI18n from '../../../hooks/useI18n'
-
-interface WinningProps {
-  state?: boolean
-}
-
-const Winning: React.FC<WinningProps> = ({ state }) => {
+const WinningNumbers: React.FC = () => {
   const { account } = useWallet()
   const winNumbers = useWinningNumbers()
+  const lotteryHasDrawn = useGetLotteryHasDrawn()
   const MatchedNumber4 = useMatchingRewardLength(4)
   const MatchedNumber3 = useMatchingRewardLength(3)
   const MatchedNumber2 = useMatchingRewardLength(2)
@@ -26,12 +22,11 @@ const Winning: React.FC<WinningProps> = ({ state }) => {
         <CardContent>
           <StyledCardContentInner>
             <StyledCardHeader>
-              {(!account || (account && state === LotteryStates.BUY_TICKETS_OPEN)) && (
-                <Title>{TranslateString(440, 'Latest Winning Numbers')}</Title>
-              )}
-              {account && state === LotteryStates.WINNERS_ANNOUNCED && (
-                <Title>🥳{TranslateString(440, 'Winning Numbers This Round')}🥳</Title>
-              )}
+              <Title>
+                {account && lotteryHasDrawn
+                  ? `🥳${TranslateString(999, 'Winning Numbers This Round')}🥳`
+                  : TranslateString(999, 'Latest Winning Numbers')}
+              </Title>
               <br />
             </StyledCardHeader>
             <Row>
@@ -271,4 +266,4 @@ const StyledCardContentInner = styled.div`
   justify-content: space-between;
 `
 
-export default Winning
+export default WinningNumbers

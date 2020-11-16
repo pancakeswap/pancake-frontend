@@ -2,31 +2,32 @@ import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { useWallet } from 'use-wallet'
 import { Button } from '@pancakeswap-libs/uikit'
-import Card from '../../../components/Card'
-import CardContent from '../../../components/CardContent'
-import CardIcon from '../../../components/CardIcon'
-import Label from '../../../components/Label'
-import Value from '../../../components/Value'
-import { useLotteryAllowance } from '../../../hooks/useAllowance'
-import { useLotteryApprove } from '../../../hooks/useApprove'
-import useTickets from '../../../hooks/useTickets'
-import useModal from '../../../hooks/useModal'
-import useSushi from '../../../hooks/useSushi'
-import { getSushiAddress } from '../../../sushi/utils'
-import useTokenBalance from '../../../hooks/useTokenBalance'
-import WalletProviderModal from '../../../components/WalletProviderModal'
-import BuyModal from './buyModal'
-import MyTicketsModal from './myTicketsModal'
-import WarningModal from './warningModal'
-import useI18n from '../../../hooks/useI18n'
+import useI18n from 'hooks/useI18n'
+import Card from 'components/Card'
+import CardContent from 'components/CardContent'
+import CardIcon from 'components/CardIcon'
+import Label from 'components/Label'
+import Value from 'components/Value'
+import useGetLotteryHasDrawn from 'hooks/useGetLotteryHasDrawn'
+import { useLotteryAllowance } from 'hooks/useAllowance'
+import { useLotteryApprove } from 'hooks/useApprove'
+import useTickets from 'hooks/useTickets'
+import useModal from 'hooks/useModal'
+import useSushi from 'hooks/useSushi'
+import useTokenBalance from 'hooks/useTokenBalance'
+import { getSushiAddress } from 'sushi/utils'
+import WalletProviderModal from 'components/WalletProviderModal'
+import BuyTicketModal from './BuyTicketModal'
+import MyTicketsModal from './UserTicketsModal'
+import PurchaseWarningModal from './PurchaseWarningModal'
 
-const Ticket: React.FC = () => {
+const TicketCard: React.FC = () => {
   const [requestedApproval, setRequestedApproval] = useState(false)
   const { account } = useWallet()
   const TranslateString = useI18n()
   const allowance = useLotteryAllowance()
   const { onApprove } = useLotteryApprove()
-
+  const lotteryHasDrawn = useGetLotteryHasDrawn()
   const sushi = useSushi()
   const sushiBalance = useTokenBalance(getSushiAddress(sushi))
 
@@ -49,14 +50,19 @@ const Ticket: React.FC = () => {
     }
   }, [onApprove, setRequestedApproval])
 
-  const [onPresentBuy] = useModal(<BuyModal max={sushiBalance} tokenName="CAKE" />)
+  const [onPresentBuy] = useModal(<BuyTicketModal max={sushiBalance} tokenName="CAKE" />)
 
-  const [onPresentApprove] = useModal(<WarningModal />)
+  const [onPresentApprove] = useModal(<PurchaseWarningModal />)
 
   const [onPresentWalletProviderModal] = useModal(<WalletProviderModal />, 'provider')
   const handleUnlockClick = useCallback(() => {
     onPresentWalletProviderModal()
   }, [onPresentWalletProviderModal])
+
+  // Hide this component if numbers have been drawn
+  if (lotteryHasDrawn) {
+    return null
+  }
 
   return (
     <div style={{ margin: '5px', width: '380px' }}>
@@ -126,4 +132,4 @@ const StyledCardContentInner = styled.div`
   justify-content: space-between;
 `
 
-export default Ticket
+export default TicketCard

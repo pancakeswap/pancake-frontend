@@ -1,15 +1,11 @@
 // @ts-nocheck
 import React from 'react'
 import styled from 'styled-components'
-import useI18n from '../../../hooks/useI18n'
-import { LotteryStates } from '../../../lottery/types'
+import useI18n from 'hooks/useI18n'
+import useGetLotteryHasDrawn from 'hooks/useGetLotteryHasDrawn'
 
-interface TimePros {
-  state: boolean
-}
-
-const getDeadlineTime = (state, currentTime): string => {
-  if (state === LotteryStates.BUY_TICKETS_OPEN) {
+const getDeadlineTime = (lotteryHasDrawn, currentTime): string => {
+  if (!lotteryHasDrawn) {
     const endTime = (parseInt(currentTime / 21600) + 1) * 21600 + 7200
     const minutes = ((endTime - currentTime) % 3600) / 60
     const hours = (((endTime - currentTime) % (3600 * 24)) / 3600) % 6
@@ -21,11 +17,11 @@ const getDeadlineTime = (state, currentTime): string => {
   return `${parseInt(hours)}h, ${parseInt(minutes)}m`
 }
 
-const Time: React.FC<TimePros> = ({ state }) => {
+const LotteryCountdown: React.FC = () => {
   const [currentTime, setCurrentTime] = React.useState(Date.parse(new Date()) / 1000)
   const TranslateString = useI18n()
-
-  const stateDeadlineTime = getDeadlineTime(state, currentTime)
+  const lotteryHasDrawn = useGetLotteryHasDrawn()
+  const stateDeadlineTime = getDeadlineTime(lotteryHasDrawn, currentTime)
 
   const tick = () => {
     setCurrentTime(currentTime + 1)
@@ -38,20 +34,15 @@ const Time: React.FC<TimePros> = ({ state }) => {
 
   return (
     <div style={{ marginBottom: '1em' }}>
-      {state === LotteryStates.BUY_TICKETS_OPEN && (
-        <div>
-          <Title style={{ marginTop: '2em' }}>⏳</Title>
-          <Title>{TranslateString(434, 'Approx. time until lottery draw')}</Title>
-          <Title2>{stateDeadlineTime}</Title2>
-        </div>
-      )}
-      {state === LotteryStates.WINNERS_ANNOUNCED && (
-        <div>
-          <Title style={{ marginTop: '2em' }}>⏳</Title>
-          <Title>{TranslateString(999, 'Approx. time before next lottery start')}</Title>
-          <Title2>{stateDeadlineTime}</Title2>
-        </div>
-      )}
+      <div>
+        <Title style={{ marginTop: '2em' }}>⏳</Title>
+        <Title>
+          {lotteryHasDrawn
+            ? TranslateString(999, 'Approx. time before next lottery start')
+            : TranslateString(434, 'Approx. time until lottery draw')}
+        </Title>
+        <Title2>{stateDeadlineTime}</Title2>
+      </div>
     </div>
   )
 }
@@ -72,4 +63,4 @@ const Title2 = styled.div`
   font-weight: 1000;
 `
 
-export default Time
+export default LotteryCountdown

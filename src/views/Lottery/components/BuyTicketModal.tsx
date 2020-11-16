@@ -1,22 +1,22 @@
 import BigNumber from 'bignumber.js'
 import React, { useCallback, useMemo, useState } from 'react'
 import { Button } from '@pancakeswap-libs/uikit'
+import Modal, { ModalProps } from 'components/Modal'
+import ModalActions from 'components/ModalActions'
+import ModalTitle from 'components/ModalTitle'
+import { getFullDisplayBalance } from 'utils/formatBalance'
 import styled from 'styled-components'
-import Modal, { ModalProps } from '../../../components/Modal'
-import ModalActions from '../../../components/ModalActions'
-import ModalTitle from '../../../components/ModalTitle'
-import { getFullDisplayBalance } from '../../../utils/formatBalance'
-import TicketInput from '../../../components/TicketInput'
-import { useMultiBuyLottery, useMaxNumber } from '../../../hooks/useBuyLottery'
-import useI18n from '../../../hooks/useI18n'
+import TicketInput from 'components/TicketInput'
+import { useMultiBuyLottery, useMaxNumber } from 'hooks/useBuyLottery'
+import useI18n from 'hooks/useI18n'
 
-interface BuyModalProps extends ModalProps {
+interface BuyTicketModalProps extends ModalProps {
   max: BigNumber
   onConfirm?: (amount: string, numbers: Array<number>) => void
   tokenName?: string
 }
 
-const BuyModal: React.FC<BuyModalProps> = ({ max, onDismiss }) => {
+const BuyTicketModal: React.FC<BuyTicketModalProps> = ({ max, onDismiss }) => {
   const [val, setVal] = useState('1')
   const [pendingTx, setPendingTx] = useState(false)
   const [, setRequestedBuy] = useState(false)
@@ -114,7 +114,7 @@ const BuyModal: React.FC<BuyModalProps> = ({ max, onDismiss }) => {
   )
 }
 
-export default BuyModal
+export default BuyTicketModal
 
 const Tips = styled.div`
   margin-left: 0.4em;

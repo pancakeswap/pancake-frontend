@@ -1,11 +1,11 @@
 import React from 'react'
 import { Button } from '@pancakeswap-libs/uikit'
+import Modal, { ModalProps } from 'components/Modal'
+import ModalActions from 'components/ModalActions'
+import ModalTitle from 'components/ModalTitle'
 import styled from 'styled-components'
-import Modal, { ModalProps } from '../../../components/Modal'
-import ModalActions from '../../../components/ModalActions'
-import ModalTitle from '../../../components/ModalTitle'
-import ModalContent from '../../../components/ModalContent'
-import useI18n from '../../../hooks/useI18n'
+import ModalContent from 'components/ModalContent'
+import useI18n from 'hooks/useI18n'
 
 const WarningModal: React.FC<ModalProps> = ({ onDismiss }) => {
   const TranslateString = useI18n()
@@ -18,15 +18,9 @@ const WarningModal: React.FC<ModalProps> = ({ onDismiss }) => {
           <TicketsList>
             {TranslateString(468, 'Lottery ticket purchases are final.')}
             <br />
-            {TranslateString(
-              470,
-              'Your CAKE will not be returned to you after you spend it to buy tickets.',
-            )}
+            {TranslateString(470, 'Your CAKE will not be returned to you after you spend it to buy tickets.')}
             <br />
-            {TranslateString(
-              472,
-              'Tickets are only valid for one lottery draw, and will be burnedafter the draw.',
-            )}
+            {TranslateString(472, 'Tickets are only valid for one lottery draw, and will be burnedafter the draw.')}
             <br />
             {TranslateString(
               474,

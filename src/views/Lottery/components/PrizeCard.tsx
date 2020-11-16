@@ -2,32 +2,28 @@ import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { useWallet } from 'use-wallet'
 import { Button } from '@pancakeswap-libs/uikit'
-import Card from '../../../components/Card'
-import CardContent from '../../../components/CardContent'
-import CardIcon from '../../../components/CardIcon'
-import Label from '../../../components/Label'
-import Value from '../../../components/Value'
-import useModal from '../../../hooks/useModal'
-import { getBalanceNumber } from '../../../utils/formatBalance'
-import { useMultiClaimLottery } from '../../../hooks/useBuyLottery'
-import useTickets, { useTotalClaim } from '../../../hooks/useTickets'
-import WalletProviderModal from '../../../components/WalletProviderModal'
-import { LotteryStates } from '../../../lottery/types'
-import Loading from '../../../components/Loading'
-import MyTicketsModal from './myTicketsModal'
-import useI18n from '../../../hooks/useI18n'
+import useI18n from 'hooks/useI18n'
+import Card from 'components/Card'
+import CardContent from 'components/CardContent'
+import CardIcon from 'components/CardIcon'
+import Label from 'components/Label'
+import Value from 'components/Value'
+import useModal from 'hooks/useModal'
+import { getBalanceNumber } from 'utils/formatBalance'
+import useGetLotteryHasDrawn from 'hooks/useGetLotteryHasDrawn'
+import { useMultiClaimLottery } from 'hooks/useBuyLottery'
+import useTickets, { useTotalClaim } from 'hooks/useTickets'
+import WalletProviderModal from 'components/WalletProviderModal'
+import Loading from 'components/Loading'
+import UserTicketsModal from './UserTicketsModal'
 
-interface PrizeProps {
-  state: boolean
-}
-
-const Prize: React.FC<PrizeProps> = ({ state }) => {
+const PrizeCard: React.FC = () => {
   const [requesteClaim, setRequestedClaim] = useState(false)
   const { account } = useWallet()
   const TranslateString = useI18n()
   const tickets = useTickets()
-  const [onPresentMyTickets] = useModal(<MyTicketsModal myTicketNumbers={tickets} />)
-
+  const [onPresentMyTickets] = useModal(<UserTicketsModal myTicketNumbers={tickets} />)
+  const lotteryHasDrawn = useGetLotteryHasDrawn()
   const { claimLoading, claimAmount } = useTotalClaim()
 
   const { onMultiClaim } = useMultiClaimLottery()
@@ -73,7 +69,7 @@ const Prize: React.FC<PrizeProps> = ({ state }) => {
                 </Button>
               )}
             </StyledCardActions>
-            {account && state === LotteryStates.WINNERS_ANNOUNCED ? (
+            {account && lotteryHasDrawn ? (
               <MyTicketsP onClick={onPresentMyTickets}>View your tickets</MyTicketsP>
             ) : (
               <>
@@ -114,4 +110,4 @@ const MyTicketsP = styled.div`
   color: ${(props) => props.theme.colors.secondary};
 `
 
-export default Prize
+export default PrizeCard

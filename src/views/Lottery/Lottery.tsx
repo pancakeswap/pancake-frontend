@@ -1,54 +1,37 @@
 import React, { useEffect, useCallback, useState } from 'react'
 import styled from 'styled-components'
-
 import { Switch } from 'react-router-dom'
 import { useWallet } from 'use-wallet'
+import { getLotteryContract, getLotteryIssueIndex } from 'sushi/lotteryUtils'
+import { getBalanceNumber } from 'utils/formatBalance'
+import useGetLotteryHasDrawn from 'hooks/useGetLotteryHasDrawn'
+import useSushi from 'hooks/useSushi'
+import { useTotalRewards } from 'hooks/useTickets'
+import useI18n from 'hooks/useI18n'
+import Page from 'components/Page'
+import PrizeCard from './components/PrizeCard'
+import TicketCard from './components/TicketCard'
+import LotteryCountdown from './components/LotteryCountdown'
+import WinningNumbers from './components/WinningNumbers'
 
-import Page from '../../components/Page'
-
-import useSushi from '../../hooks/useSushi'
-import useBlock from '../../hooks/useBlock'
-import Prize from './components/prize'
-import Ticket from './components/ticket'
-import Time from './components/time'
-import Winning from './components/winning'
-import { getBalanceNumber } from '../../utils/formatBalance'
-import { useTotalRewards } from '../../hooks/useTickets'
-import { getLotteryContract, getLotteryIssueIndex, getLotteryStatus } from '../../sushi/lotteryUtils'
-
-import { LotteryStates } from '../../lottery/types'
-import useI18n from '../../hooks/useI18n'
-
-const Farm: React.FC = () => {
+const Lottery: React.FC = () => {
   const { account } = useWallet()
   const TranslateString = useI18n()
-  useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
-
+  const lotteryHasDrawn = useGetLotteryHasDrawn()
   const sushi = useSushi()
-  const block = useBlock()
   const lotteryContract = getLotteryContract(sushi)
-
   const [index, setIndex] = useState(0)
-  const [state, setStates] = useState(true)
 
   const fetchIndex = useCallback(async () => {
     const issueIndex = await getLotteryIssueIndex(lotteryContract)
     setIndex(issueIndex)
   }, [lotteryContract])
 
-  const fetchStatus = useCallback(async () => {
-    const state = await getLotteryStatus(lotteryContract)
-    setStates(state)
-  }, [lotteryContract])
-
   useEffect(() => {
     if (account && lotteryContract && sushi) {
       fetchIndex()
-      fetchStatus()
     }
-  }, [account, block, lotteryContract, sushi])
+  }, [account, lotteryContract, sushi, fetchIndex])
 
   const lotteryPrizeAmount = useTotalRewards()
 
@@ -62,7 +45,7 @@ const Farm: React.FC = () => {
       <Page>
         {account && (
           <Subtitle>
-            {!state ? `#${index - 2} - Phase 1 - Buy Tickets` : `#${index - 2} - Phase 2 - Claim Winnings`}
+            {!lotteryHasDrawn ? `#${index - 2} - Phase 1 - Buy Tickets` : `#${index - 2} - Phase 2 - Claim Winnings`}
           </Subtitle>
         )}
         <Title style={{ marginTop: '0.5em' }}>
@@ -74,12 +57,12 @@ const Farm: React.FC = () => {
         <Subtitle>{subtitleText}</Subtitle>
         <StyledFarm>
           <StyledCardWrapper>
-            <Prize state={state} />
-            {(!account || state === LotteryStates.BUY_TICKETS_OPEN) && <Ticket />}
+            <PrizeCard />
+            <TicketCard />
           </StyledCardWrapper>
         </StyledFarm>
-        <Time state={state} />
-        <Winning state={state} />
+        <LotteryCountdown />
+        <WinningNumbers />
       </Page>
     </Switch>
   )
@@ -139,4 +122,4 @@ const StyledFarm = styled.div`
   }
 `
 
-export default Farm
+export default Lottery

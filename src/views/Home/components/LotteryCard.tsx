@@ -6,10 +6,11 @@ import { getBalanceNumber } from 'utils/formatBalance'
 import useI18n from 'hooks/useI18n'
 import useSushi from 'hooks/useSushi'
 import useModal from 'hooks/useModal'
+import useGetLotteryHasDrawn from 'hooks/useGetLotteryHasDrawn'
 import useTokenBalance from 'hooks/useTokenBalance'
 import { useMultiClaimLottery } from 'hooks/useBuyLottery'
 import { useTotalClaim } from 'hooks/useTickets'
-import BuyModal from 'views/Lottery/components/buyModal'
+import BuyModal from 'views/Lottery/components/BuyTicketModal'
 import CakeWinnings from './CakeWinnings'
 import LotteryJackpot from './LotteryJackpot'
 
@@ -56,12 +57,14 @@ const Actions = styled.div`
 `
 
 const FarmedStakingCard = () => {
+  const lotteryHasDrawn = useGetLotteryHasDrawn()
   const [requesteClaim, setRequestedClaim] = useState(false)
   const TranslateString = useI18n()
   const { claimAmount } = useTotalClaim()
   const { onMultiClaim } = useMultiClaimLottery()
   const sushi = useSushi()
   const sushiBalance = useTokenBalance(getSushiAddress(sushi))
+
   const handleClaim = useCallback(async () => {
     try {
       setRequestedClaim(true)
@@ -102,7 +105,7 @@ const FarmedStakingCard = () => {
           >
             {TranslateString(999, 'Collect Winnings')}
           </Button>
-          <Button variant="secondary" onClick={onPresentBuy}>
+          <Button variant="secondary" onClick={onPresentBuy} disabled={lotteryHasDrawn}>
             {TranslateString(999, 'Buy Tickets')}
           </Button>
         </Actions>
