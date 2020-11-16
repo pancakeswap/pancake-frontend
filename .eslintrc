@@ -13,9 +13,9 @@
   },
   "extends": "@pancakeswap-libs/eslint-config-pancake",
   "rules": {
-    "no-console": ["error", { "allow": ["info", "warn", "error"] }],
+    "no-console": ["warn", { "allow": ["info", "warn", "error"] }],
     "no-plusplus": 0,
-    "prefer-destructuring": ["error", { "object": true, "array": false }],
+    "prefer-destructuring": ["warn", { "object": true, "array": false }],
     "@typescript-eslint/ban-ts-comment": 0,
     // Start temporary rules
     // These rules are here just to keep the lint error to 0 during the migration to the new rule set
