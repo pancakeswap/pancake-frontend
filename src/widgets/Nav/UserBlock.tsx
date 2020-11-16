@@ -2,11 +2,12 @@ import React from "react";
 import styled from "styled-components";
 import Button from "../../components/Button";
 import useWalletModal from "../WalletModal";
+import { Login } from "../WalletModal/types";
 
 interface Props {
   account?: string;
   closeNav: () => void;
-  login: () => void;
+  login: Login;
   logout: () => void;
 }
 

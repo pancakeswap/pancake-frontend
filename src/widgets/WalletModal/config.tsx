@@ -3,8 +3,9 @@ import MathWallet from "./icons/MathWallet";
 import TokenPocket from "./icons/TokenPocket";
 import TrustWallet from "./icons/TrustWallet";
 import WalletConnect from "./icons/WalletConnect";
+import { Config } from "./types";
 
-export default [
+const connectors: Config[] = [
   {
     title: "Metamask",
     icon: Metamask,
@@ -31,3 +32,6 @@ export default [
     connectorId: "walletconnect",
   },
 ];
+
+export default connectors;
+export const localStorageKey = "accountStatus";

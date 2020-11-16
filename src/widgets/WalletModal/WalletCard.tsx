@@ -1,17 +1,12 @@
-import React, { FC } from "react";
+import React from "react";
 import Button from "../../components/Button";
 import Text from "../../components/Text";
-import SvgProps from "../../components/Svg/types";
-
-interface Config {
-  title: string;
-  icon: FC<SvgProps>;
-  connectorId: string;
-}
+import { localStorageKey } from "./config";
+import { Login, Config } from "./types";
 
 interface Props {
   walletConfig: Config;
-  login: (id: string) => void;
+  login: Login;
   onDismiss: () => void;
   mb: string;
 }
@@ -24,7 +19,7 @@ const WalletCard: React.FC<Props> = ({ login, walletConfig, onDismiss, mb }) => 
       variant="tertiary"
       onClick={() => {
         login(walletConfig.connectorId);
-        window.localStorage.setItem("accountStatus", "1");
+        window.localStorage.setItem(localStorageKey, "1");
         onDismiss();
       }}
       style={{ justifyContent: "space-between" }}

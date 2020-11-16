@@ -5,6 +5,7 @@ import Link from "../../components/Link";
 import Flex from "../../components/Flex";
 import { OpenNewIcon } from "../../components/Svg";
 import { Modal } from "../Modal";
+import { localStorageKey } from "./config";
 
 interface Props {
   account?: string;
@@ -37,6 +38,7 @@ const AccountModal: React.FC<Props> = ({ account, logout, onDismiss = () => null
         variant="secondary"
         onClick={() => {
           logout();
+          window.localStorage.removeItem(localStorageKey);
           onDismiss();
         }}
       >

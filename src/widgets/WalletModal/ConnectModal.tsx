@@ -5,9 +5,10 @@ import { HelpIcon } from "../../components/Svg";
 import { Modal } from "../Modal";
 import WalletCard from "./WalletCard";
 import config from "./config";
+import { Login } from "./types";
 
 interface Props {
-  login: () => void;
+  login: Login;
   onDismiss?: () => void;
 }
 
