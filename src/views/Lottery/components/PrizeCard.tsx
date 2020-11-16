@@ -2,6 +2,7 @@ import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { useWallet } from 'use-wallet'
 import { Button } from '@pancakeswap-libs/uikit'
+import useI18n from 'hooks/useI18n'
 import Card from 'components/Card'
 import CardContent from 'components/CardContent'
 import CardIcon from 'components/CardIcon'
@@ -15,7 +16,6 @@ import useTickets, { useTotalClaim } from 'hooks/useTickets'
 import WalletProviderModal from 'components/WalletProviderModal'
 import Loading from 'components/Loading'
 import UserTicketsModal from './UserTicketsModal'
-import useI18n from 'hooks/useI18n'
 
 const PrizeCard: React.FC = () => {
   const [requesteClaim, setRequestedClaim] = useState(false)

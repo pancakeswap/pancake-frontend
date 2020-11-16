@@ -1,3 +1,4 @@
+/* eslint-disable */
 export const ConfirmationType = {
   Hash: 0,
   Confirmed: 1,

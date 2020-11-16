@@ -2,6 +2,7 @@ import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { useWallet } from 'use-wallet'
 import { Button } from '@pancakeswap-libs/uikit'
+import useI18n from 'hooks/useI18n'
 import Card from 'components/Card'
 import CardContent from 'components/CardContent'
 import CardIcon from 'components/CardIcon'
@@ -19,7 +20,6 @@ import WalletProviderModal from 'components/WalletProviderModal'
 import BuyTicketModal from './BuyTicketModal'
 import MyTicketsModal from './UserTicketsModal'
 import PurchaseWarningModal from './PurchaseWarningModal'
-import useI18n from 'hooks/useI18n'
 
 const TicketCard: React.FC = () => {
   const [requestedApproval, setRequestedApproval] = useState(false)
@@ -50,7 +50,7 @@ const TicketCard: React.FC = () => {
     }
   }, [onApprove, setRequestedApproval])
 
-  const [onPresentBuy] = useModal(<BuyModal max={sushiBalance} tokenName="CAKE" />)
+  const [onPresentBuy] = useModal(<BuyTicketModal max={sushiBalance} tokenName="CAKE" />)
 
   const [onPresentApprove] = useModal(<PurchaseWarningModal />)
 
