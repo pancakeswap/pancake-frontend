@@ -60,8 +60,8 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName }) => {
     }
   }, [onApprove, setRequestedApproval])
 
-  // We assume the token name is coin pair + flip e.g. CAKE-BNB FLIP, LINK-BNB FLIP,
-  // NAR-CAKE FLIP. The images should be cake-bnb.svg, link-bnb.svg, nar-cake.svg
+  // We assume the token name is coin pair + lp e.g. CAKE-BNB LP, LINK-BNB LP,
+  // NAR-CAKE LP. The images should be cake-bnb.svg, link-bnb.svg, nar-cake.svg
   const farmImage = tokenName.split(' ')[0].toLocaleLowerCase()
 
   return (
