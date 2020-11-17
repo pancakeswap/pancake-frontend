@@ -45,6 +45,7 @@ export const Default: React.FC = () => {
       <Text bold>Bold text</Text>
       <Text fontSize="24px">Custom fontsize</Text>
       <Text color="red">Custom color</Text>
+      <Text color="primary">Custom color from theme</Text>
     </div>
   );
 };

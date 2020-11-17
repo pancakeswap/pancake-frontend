@@ -1,5 +1,6 @@
 import styled, { DefaultTheme } from "styled-components";
 import { space, SpaceProps } from "styled-system";
+import getThemeValue from "../../util/getThemeValue";
 
 export interface Props extends SpaceProps {
   color?: string;
@@ -12,7 +13,7 @@ interface ThemedProps extends Props {
 }
 
 const getColor = ({ color, theme }: ThemedProps) => {
-  return color || theme.colors.text;
+  return getThemeValue(`colors.${color}`, color)(theme);
 };
 
 const getFontSize = ({ fontSize }: Props) => {
@@ -26,5 +27,9 @@ const Text = styled.div<Props>`
   line-height: 1.5;
   ${space}
 `;
+
+Text.defaultProps = {
+  color: "text",
+};
 
 export default Text;
