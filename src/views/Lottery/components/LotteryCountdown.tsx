@@ -38,7 +38,7 @@ const LotteryCountdown: React.FC = () => {
         <Title style={{ marginTop: '2em' }}>⏳</Title>
         <Title>
           {lotteryHasDrawn
-            ? TranslateString(999, 'Approx. time before next lottery start')
+            ? TranslateString(492, 'Approx. time before next lottery start')
             : TranslateString(434, 'Approx. time until lottery draw')}
         </Title>
         <Title2>{stateDeadlineTime}</Title2>
