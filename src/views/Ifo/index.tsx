@@ -9,10 +9,6 @@ import Hero from './components/Hero'
 import IfoCard from './components/IfoCard'
 import Title from './components/Title'
 
-const Bunny = styled.img`
-  margin-bottom: 16px;
-`
-
 const LaunchIfoCallout = styled(BaseLayout)`
   border-top: 2px solid ${({ theme }) => theme.colors.textSubtle};
   display: grid;
