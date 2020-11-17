@@ -22,7 +22,7 @@ const Harvest: React.FC = () => {
       <CardContent>
         <StyledCardContentInner>
           <StyledCardHeader>
-            <CardIcon>🍯</CardIcon>
+            <CardIcon>🥞</CardIcon>
             <Value value={getBalanceNumber(syrupBalance)} />
             <Label text="SYRUP" />
           </StyledCardHeader>
