@@ -1065,8 +1065,8 @@ export const COMMUNITY_FARMS = ['NYA', 'STAX', 'NAR', 'bROOBEE']
 export const ifos: Ifo[] = [
   {
     id: 'blink',
+    address: '0x80FFCb045fa5E5A4ce73d45C838540C9bc7b99cb',
     isActive: true,
-    status: 'coming_soon',
     name: 'BLINk (BLINK)',
     subTitle: 'Blink and it will be gone',
     description: 'Project is a strong project, with a good team, solid roadmap, and probably will not be an exit scam.',

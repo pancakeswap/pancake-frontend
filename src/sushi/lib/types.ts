@@ -3,7 +3,7 @@ export type IfoStatus = 'coming_soon' | 'live' | 'finished'
 export type Ifo = {
   id: string
   isActive: boolean
-  status: IfoStatus
+  address: string
   name: string
   subTitle?: string
   description?: string
