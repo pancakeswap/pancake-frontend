@@ -28,7 +28,7 @@ const Harvest: React.FC = () => {
           </StyledCardHeader>
           <StyledCardActions>
             <Button fullWidth disabled>
-              {TranslateString(999, 'Vote')}
+              {TranslateString(566, 'Vote')}
             </Button>
           </StyledCardActions>
         </StyledCardContentInner>
