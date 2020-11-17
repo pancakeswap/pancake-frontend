@@ -144,7 +144,7 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
                       <Tag variant={pool.isCommunity ? 'pink' : 'purple'}>
                         {pool.isCommunity ? <CommunityIcon /> : <CoreIcon />}
                         <span style={{ marginLeft: '4px' }}>
-                          {pool.isCommunity ? TranslateString(999, 'Community') : TranslateString(999, 'Core')}
+                          {pool.isCommunity ? TranslateString(520, 'Community') : TranslateString(522, 'Core')}
                         </span>
                       </Tag>
                     </div>
@@ -248,7 +248,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
 
   const isCommunityFarm = COMMUNITY_FARMS.includes(farm.tokenSymbol)
   const TokenIcon = isCommunityFarm ? CommunityIcon : CoreIcon
-  const tokenText = isCommunityFarm ? TranslateString(999, 'Community') : TranslateString(999, 'Core')
+  const tokenText = isCommunityFarm ? TranslateString(520, 'Community') : TranslateString(522, 'Core')
 
   return (
     <FCard>

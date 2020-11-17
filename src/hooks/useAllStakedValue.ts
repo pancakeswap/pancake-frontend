@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { provider } from 'web3-core'
 import BigNumber from 'bignumber.js'
 import { useWallet } from 'use-wallet'
@@ -26,31 +26,30 @@ const useAllStakedValue = () => {
   const wethContact = getWethContract(sushi)
   const block = useBlock()
 
-  const fetchAllStakedValue = useCallback(async () => {
-    const balances: Array<StakedValue> = await Promise.all(
-      farms.map(
-        ({
-          pid,
-          tokenSymbol,
-          lpContract,
-          tokenContract,
-        }: {
-          pid: number
-          tokenSymbol: string
-          lpContract: Contract
-          tokenContract: Contract
-        }) => getTotalLPWethValue(masterChefContract, wethContact, lpContract, tokenContract, pid, tokenSymbol),
-      ),
-    )
-
-    setBalance(balances)
-  }, [account, masterChefContract, sushi])
-
   useEffect(() => {
+    const fetchAllStakedValue = async () => {
+      const balances: Array<StakedValue> = await Promise.all(
+        farms.map(
+          ({
+            pid,
+            tokenSymbol,
+            lpContract,
+            tokenContract,
+          }: {
+            pid: number
+            tokenSymbol: string
+            lpContract: Contract
+            tokenContract: Contract
+          }) => getTotalLPWethValue(masterChefContract, wethContact, lpContract, tokenContract, pid, tokenSymbol),
+        ),
+      )
+      setBalance(balances)
+    }
+
     if (account && masterChefContract && sushi) {
       fetchAllStakedValue()
     }
-  }, [account, block, masterChefContract, setBalance, sushi])
+  }, [account, block, farms, masterChefContract, setBalance, sushi, wethContact])
 
   return balances
 }

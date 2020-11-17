@@ -32,7 +32,7 @@ export const useSousStake = (sousId) => {
         await sousStake(getSousChefContract(sushi, sousId), amount, account)
       }
     },
-    [account, sushi],
+    [account, sousId, sushi],
   )
 
   return { onStake: handleStake }

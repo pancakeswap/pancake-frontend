@@ -62,7 +62,7 @@ It takes in the `translationId` (found in Crowdin) as the first argument, and a 
 
 ```js
 import { TranslateString } from '../translateTextHelpers'
-<StyledLink>🍯 {TranslateString(282, 'SYRUP Pool')}</StyledLink>
+<StyledLink>🥞 {TranslateString(282, 'SYRUP Pool')}</StyledLink>
 ```
 
 ```js
