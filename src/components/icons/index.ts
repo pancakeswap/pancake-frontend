@@ -1,5 +1,0 @@
-export { default as AddIcon } from './AddIcon'
-export { default as MenuIcon } from './MenuIcon'
-export { default as RemoveIcon } from './RemoveIcon'
-export { default as SunIcon } from './SunIcon'
-export { default as MoonIcon } from './MoonIcon'

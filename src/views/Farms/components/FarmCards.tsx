@@ -4,7 +4,7 @@ import BigNumber from 'bignumber.js'
 import styled, { keyframes } from 'styled-components'
 import { useWallet } from 'use-wallet'
 import { Link as ReactRouterLink } from 'react-router-dom'
-import { Button } from '@pancakeswap-libs/uikit'
+import { Button, Flex } from '@pancakeswap-libs/uikit'
 import { CAKE_PER_BLOCK, HARD_REWARD_PER_BLOCK, CAKE_POOL_PID } from 'config'
 import { COMMUNITY_FARMS, forShowPools, BLOCKS_PER_YEAR } from 'sushi/lib/constants'
 import { Farm } from 'contexts/Farms'
@@ -18,9 +18,7 @@ import { bnToDec } from 'utils'
 import UnlockButton from 'components/UnlockButton'
 import Page from 'components/layout/Page'
 import Grid from 'components/layout/Grid'
-import CommunityIcon from 'components/icons/CommunityIcon'
-import CoreIcon from 'components/icons/CoreIcon'
-import Tag from './Tag'
+import { CommunityTag, CoreTag } from 'components/Tags'
 
 interface FarmWithStakedValue extends Farm, StakedValue {
   apy: BigNumber
@@ -138,17 +136,10 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
           : forShowPools.map((pool) => (
               <FCard key={pool.pid + pool.symbol}>
                 <CardImage>
-                  <div style={{ textAlign: 'left' }}>
+                  <Flex flexDirection="column" alignItems="flex-start">
                     <Multiplier>{pool.multiplier}</Multiplier>
-                    <div>
-                      <Tag variant={pool.isCommunity ? 'pink' : 'purple'}>
-                        {pool.isCommunity ? <CommunityIcon /> : <CoreIcon />}
-                        <span style={{ marginLeft: '4px' }}>
-                          {pool.isCommunity ? TranslateString(520, 'Community') : TranslateString(522, 'Core')}
-                        </span>
-                      </Tag>
-                    </div>
-                  </div>
+                    {pool.isCommunity ? <CommunityTag /> : <CoreTag />}
+                  </Flex>
                   <img src={`/images/tokens/category-${pool.tokenSymbol}.png`} alt={pool.tokenSymbol} />
                 </CardImage>
                 <Label>
@@ -247,22 +238,15 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
   }, [sushi, lpTokenAddress, account, setHarvestable])
 
   const isCommunityFarm = COMMUNITY_FARMS.includes(farm.tokenSymbol)
-  const TokenIcon = isCommunityFarm ? CommunityIcon : CoreIcon
-  const tokenText = isCommunityFarm ? TranslateString(520, 'Community') : TranslateString(522, 'Core')
 
   return (
     <FCard>
       {farm.tokenSymbol === 'CAKE' && <StyledCardAccent />}
       <CardImage>
-        <div style={{ textAlign: 'left' }}>
+        <Flex flexDirection="column" alignItems="flex-start">
           <Multiplier>{farm.multiplier}</Multiplier>
-          <div>
-            <Tag variant={isCommunityFarm ? 'pink' : 'purple'}>
-              <TokenIcon />
-              <span style={{ marginLeft: '4px' }}>{tokenText}</span>
-            </Tag>
-          </div>
-        </div>
+          {isCommunityFarm ? <CommunityTag /> : <CoreTag />}
+        </Flex>
         <img src={`/images/tokens/category-${farm.tokenSymbol}.png`} alt={farm.tokenSymbol} />
       </CardImage>
       <Label>

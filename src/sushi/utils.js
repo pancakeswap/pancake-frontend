@@ -9,13 +9,6 @@ BigNumber.config({
   DECIMAL_PLACES: 80,
 })
 
-export const getMasterChefAddress = (sushi) => {
-  return sushi && sushi.masterChefAddress
-}
-export const getSousChefAddress = (sushi) => {
-  return sushi && sushi.sousChefAddress
-}
-
 export const getSushiAddress = (sushi) => {
   return sushi && sushi.sushiAddress
 }
@@ -109,10 +102,6 @@ export const approve = async (lpContract, masterChefContract, account) => {
   return lpContract.methods
     .approve(masterChefContract.options.address, ethers.constants.MaxUint256)
     .send({ from: account })
-}
-
-export const approveSous = async (syrup, sousChefContract, account) => {
-  return syrup.methods.approve(sousChefContract.options.address, ethers.constants.MaxUint256).send({ from: account })
 }
 
 export const getSushiSupply = async (sushi) => {
@@ -250,19 +239,4 @@ export const getSousEndBlock = async (sousChefContract) => {
   } catch {
     return 0
   }
-}
-
-export const redeem = async (masterChefContract, account) => {
-  const now = new Date().getTime() / 1000
-  if (now >= 1597172400) {
-    return masterChefContract.methods
-      .exit()
-      .send({ from: account })
-      .on('transactionHash', (tx) => {
-        return tx.transactionHash
-      })
-  }
-  // TODO Replace by a modal
-  // eslint-disable-next-line no-alert
-  return alert('pool not active')
 }

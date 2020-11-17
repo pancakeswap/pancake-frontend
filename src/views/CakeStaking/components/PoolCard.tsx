@@ -1,12 +1,11 @@
 import BigNumber from 'bignumber.js'
 import React, { useCallback, useMemo, useState } from 'react'
 import styled from 'styled-components'
-import { Button, useModal } from '@pancakeswap-libs/uikit'
+import { Button, useModal, AddIcon } from '@pancakeswap-libs/uikit'
 import { useWallet } from 'use-wallet'
 import { Contract } from 'web3-eth-contract'
 import { BLOCKS_PER_YEAR } from 'sushi/lib/constants'
 import UnlockButton from 'components/UnlockButton'
-import { AddIcon } from 'components/icons'
 import Label from 'components/Label'
 import { useSousAllowance } from 'hooks/useAllowance'
 import { useSousApprove } from 'hooks/useApprove'
@@ -193,7 +192,7 @@ const PoolCard: React.FC<HarvestProps> = ({
                 <StyledActionSpacer />
                 {!isOldSyrup && (
                   <Button disabled={isReallyFinished && sousId !== 0} onClick={onPresentDeposit}>
-                    <AddIcon />
+                    <AddIcon color="background" />
                   </Button>
                 )}
               </>

@@ -5,8 +5,7 @@ import { getBalanceNumber } from 'utils/formatBalance'
 import useI18n from 'hooks/useI18n'
 import { ChevronDown, ChevronUp } from 'react-feather'
 import Balance from 'components/Balance'
-import CoreTag from './CoreTag'
-import CommunityTag from './CommunityTag'
+import { CommunityTag, CoreTag } from 'components/Tags'
 
 interface Props {
   projectLink: string

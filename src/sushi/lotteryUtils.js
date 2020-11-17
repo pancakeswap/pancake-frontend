@@ -45,21 +45,6 @@ export const getTicketsContract = (sushi) => {
   return sushi && sushi.contracts && sushi.contracts.lotteryNft
 }
 
-export const buy = async (lotteryContract, amount, numbers, account) => {
-  const lotteryNumbers = [
-    new BigNumber(numbers[0]),
-    new BigNumber(numbers[1]),
-    new BigNumber(numbers[2]),
-    new BigNumber(numbers[3]),
-  ]
-  return lotteryContract.methods
-    .buy(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString(), lotteryNumbers)
-    .send({ from: account })
-    .on('transactionHash', (tx) => {
-      return tx.transactionHash
-    })
-}
-
 export const getTickets = async (sushi, lotteryContract, ticketsContract, account) => {
   const issueIdex = await lotteryContract.methods.issueIndex().call()
   const length = await getTicketsAmount(ticketsContract, account)

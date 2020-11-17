@@ -1,10 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
-import useI18n from '../../../hooks/useI18n'
+import { CommunityTag } from 'components/Tags'
+import useI18n from 'hooks/useI18n'
 import Card from './Card'
 import CardTitle from './CardTitle'
 import CardTokenImg from './CardTokenImg'
-import CommunityTag from './CommunityTag'
 
 const Balance = styled.div`
   color: ${({ theme }) => theme.colors.text};
