@@ -1,5 +1,6 @@
 import React from "react";
-import styled from "styled-components";
+import Flex from "../Flex";
+import Text from "../Text";
 import Svg from "./Svg";
 
 export default {
@@ -7,11 +8,6 @@ export default {
   component: Svg,
   argTypes: {},
 };
-
-const Flex = styled.div`
-  display: flex;
-  align-items: center;
-`;
 
 export const Default: React.FC = () => {
   return (
@@ -40,13 +36,15 @@ const components = context.keys().reduce((accum, path) => {
 
 export const Icons: React.FC = () => {
   return (
-    <Flex>
+    <Flex justifyContent="center" alignItems="center" flexWrap="wrap">
       {Object.keys(components).map((file) => {
         const Icon = components[file].default;
         return (
-          <Flex key={file} style={{ flexDirection: "column", marginRight: "8px" }}>
+          <Flex key={file} flexDirection="column" alignItems="center" mr="16px" mb="16px">
             <Icon size="32px" />
-            <span>{file}</span>
+            <Text color="textSubtle" fontSize="12px">
+              {file}
+            </Text>
           </Flex>
         );
       })}

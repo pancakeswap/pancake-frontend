@@ -4,6 +4,7 @@ export { default as CheckmarkIcon } from "./Icons/Checkmark";
 export { default as ChevronDownIcon } from "./Icons/ChevronDown";
 export { default as ChevronUpIcon } from "./Icons/ChevronUp";
 export { default as CloseIcon } from "./Icons/Close";
+export { default as CommunityIcon } from "./Icons/Community";
 export { default as ErrorIcon } from "./Icons/Error";
 export { default as HamburgerIcon } from "./Icons/Hamburger";
 export { default as HelpIcon } from "./Icons/Help";
