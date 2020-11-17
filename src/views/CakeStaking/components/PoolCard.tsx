@@ -212,7 +212,7 @@ const PoolCard: React.FC<HarvestProps> = ({
             <span role="img" aria-label="syrup">
               🍯{' '}
             </span>
-            {TranslateString(999, 'Your Stake')}:
+            {TranslateString(384, 'Your Stake')}:
           </div>
           <Balance fontSize="14px" isDisabled={isReallyFinished} value={getBalanceNumber(stakedBalance)} />
         </StyledDetails>
