@@ -30,19 +30,13 @@ const WinningNumbers: React.FC = () => {
               <br />
             </StyledCardHeader>
             <Row>
-              {winNumbers.map((number) => (
-                <TicketNumberBox key={number}>
+              {winNumbers.map((number, index) => (
+                // eslint-disable-next-line react/no-array-index-key
+                <TicketNumberBox key={index}>
                   <CenteredText>{number}</CenteredText>
                 </TicketNumberBox>
               ))}
             </Row>
-            <RowSmall>
-              {winNumbers.map((number) => (
-                <TicketNumberBoxSmall key={number}>
-                  <CenteredText>{number}</CenteredText>
-                </TicketNumberBoxSmall>
-              ))}
-            </RowSmall>
             <RabbitRow>
               <RabbitBox>
                 <CardImageFirst>
@@ -127,21 +121,6 @@ const Row = styled.div`
   align-items: center;
   display: flex;
   flex-direction: row;
-
-  @media (max-width: 768px) {
-    display: none;
-  }
-`
-
-const RowSmall = styled.div`
-  margin-top: 1em;
-  align-items: center;
-  display: flex;
-  flex-direction: row;
-
-  @media (min-width: 768px) {
-    display: none;
-  }
 `
 
 const RabbitRow = styled.div`
@@ -209,23 +188,17 @@ const TicketNumberBox = styled.div`
   border-radius: 12px;
   background: linear-gradient(180deg, #54dade 0%, #24c7d6 76.22%);
   color: white;
-  font-size: 40px;
-  font-weight: 900;
-  margin: 20px;
-  margin-bottom: 7px;
-  width: 60px;
-`
-
-const TicketNumberBoxSmall = styled.div`
-  padding: 10px;
-  border-radius: 12px;
-  background: linear-gradient(180deg, #54dade 0%, #24c7d6 76.22%);
-  color: white;
   font-size: 20px;
   font-weight: 900;
   margin: 10px;
   margin-bottom: 7px;
   width: 40px;
+
+  @media (min-width: 768px) {
+    font-size: 40px;
+    margin: 20px;
+    width: 60px;
+  }
 `
 
 const RabbitBox = styled.div`
