@@ -84,12 +84,12 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName }) => {
             {account &&
               (!allowance.toNumber() ? (
                 <Button fullWidth disabled={requestedApproval} onClick={handleApprove}>
-                  {`${TranslateString(999, 'Approve')} ${tokenName}`}
+                  {`${TranslateString(564, 'Approve')} ${tokenName}`}
                 </Button>
               ) : (
                 <>
                   <Button fullWidth disabled={stakedBalance.eq(new BigNumber(0))} onClick={onPresentWithdraw}>
-                    {TranslateString(999, 'Unstake')}
+                    {TranslateString(588, 'Unstake')}
                   </Button>
                   <StyledActionSpacer />
                   <Button onClick={onPresentDeposit}>
