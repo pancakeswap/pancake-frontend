@@ -11,7 +11,7 @@ const useReward = (farmPid: number) => {
   const handleReward = useCallback(async () => {
     const txHash = await harvest(masterChefContract, farmPid, account)
     return txHash
-  }, [account, farmPid, sushi])
+  }, [account, farmPid, masterChefContract])
 
   return { onReward: handleReward }
 }
@@ -27,7 +27,7 @@ export const useAllReward = (farmPids: number[]) => {
     }, [])
 
     return Promise.all(harvestPromises)
-  }, [account, farmPids, sushi])
+  }, [account, farmPids, masterChefContract])
 
   return { onReward: handleReward }
 }
@@ -45,7 +45,7 @@ export const useSousReward = (sousId) => {
     }
     const txHash = await soushHarvest(sousChefContract, account)
     return txHash
-  }, [account, sousId, sushi])
+  }, [account, masterChefContract, sousChefContract, sousId])
 
   return { onReward: handleReward }
 }

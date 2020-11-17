@@ -15,7 +15,7 @@ const useUnstake = (pid: number) => {
       const txHash = await unstake(masterChefContract, pid, amount, account)
       console.info(txHash)
     },
-    [account, pid, sushi],
+    [account, masterChefContract, pid],
   )
 
   return { onUnstake: handleUnstake }
@@ -43,7 +43,7 @@ export const useSousUnstake = (sousId) => {
         console.info(txHash)
       }
     },
-    [account, sushi, sousChefContract, isOldSyrup],
+    [sousId, isOldSyrup, masterChefContract, account, sousChefContract],
   )
 
   return { onUnstake: handleUnstake }
