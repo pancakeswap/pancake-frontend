@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import BigNumber from 'bignumber.js'
 import { useWallet } from 'use-wallet'
 import { provider } from 'web3-core'
@@ -14,12 +14,12 @@ const useAllowance = (lpContract: Contract) => {
   const sushi = useSushi()
   const masterChefContract = getMasterChefContract(sushi)
 
-  const fetchAllowance = useCallback(async () => {
-    const allowance = await getAllowance(lpContract, masterChefContract, account)
-    setAllowance(new BigNumber(allowance))
-  }, [account, masterChefContract, lpContract])
-
   useEffect(() => {
+    const fetchAllowance = async () => {
+      const allowance = await getAllowance(lpContract, masterChefContract, account)
+      setAllowance(new BigNumber(allowance))
+    }
+
     if (account && masterChefContract && lpContract) {
       fetchAllowance()
     }
@@ -36,12 +36,12 @@ export const useSousAllowance = (lpContract: Contract, sousId) => {
   const sushi = useSushi()
   const sousChefContract = getSousChefContract(sushi, sousId)
 
-  const fetchAllowance = useCallback(async () => {
-    const allowance = await getAllowance(lpContract, sousChefContract, account)
-    setAllowance(new BigNumber(allowance))
-  }, [account, sousChefContract, lpContract])
-
   useEffect(() => {
+    const fetchAllowance = async () => {
+      const allowance = await getAllowance(lpContract, sousChefContract, account)
+      setAllowance(new BigNumber(allowance))
+    }
+
     if (account && sousChefContract && lpContract) {
       fetchAllowance()
     }
@@ -59,18 +59,18 @@ export const useLotteryAllowance = () => {
   const lotteryContract = getLotteryContract(sushi)
   const cakeContract = getSushiContract(sushi)
 
-  const fetchAllowance = useCallback(async () => {
-    const allowance = await getAllowance(cakeContract, lotteryContract, account)
-    setAllowance(new BigNumber(allowance))
-  }, [account, lotteryContract, cakeContract])
-
   useEffect(() => {
+    const fetchAllowance = async () => {
+      const allowance = await getAllowance(cakeContract, lotteryContract, account)
+      setAllowance(new BigNumber(allowance))
+    }
+
     if (account && cakeContract && cakeContract) {
       fetchAllowance()
     }
     const refreshInterval = setInterval(fetchAllowance, 10000)
     return () => clearInterval(refreshInterval)
-  }, [account, cakeContract, cakeContract])
+  }, [account, cakeContract, lotteryContract])
 
   return allowance
 }
