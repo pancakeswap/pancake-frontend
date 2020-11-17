@@ -24,8 +24,8 @@ const WinningNumbers: React.FC = () => {
             <StyledCardHeader>
               <Title>
                 {account && lotteryHasDrawn
-                  ? `🥳${TranslateString(999, 'Winning Numbers This Round')}🥳`
-                  : TranslateString(999, 'Latest Winning Numbers')}
+                  ? `🥳${TranslateString(570, 'Winning Numbers This Round')}🥳`
+                  : TranslateString(572, 'Latest Winning Numbers')}
               </Title>
               <br />
             </StyledCardHeader>

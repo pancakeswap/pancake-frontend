@@ -48,8 +48,8 @@ const Farm: React.FC = () => {
         ) : (
           <StyledInfo>
             {TranslateString(
-              999,
-              '⭐️ Every time you stake and unstake FLIP tokens, the contract will automagically harvest CAKE rewards for you!',
+              590,
+              '⭐️ Every time you stake and unstake LP tokens, the contract will automagically harvest CAKE rewards for you!',
             )}
           </StyledInfo>
         )}

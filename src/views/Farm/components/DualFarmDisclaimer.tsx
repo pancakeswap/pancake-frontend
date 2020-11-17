@@ -17,7 +17,7 @@ const DualFarmDisclaimer = () => {
 
   return (
     <StyledDualFarmDisclaimer>
-      {TranslateString(999, `HARD will be distributed weekly until block`)}
+      {TranslateString(518, `HARD will be distributed weekly until block`)}
       <BlockNumber>{DUAL_FARM_ENDING_BLOCK}</BlockNumber>
     </StyledDualFarmDisclaimer>
   )

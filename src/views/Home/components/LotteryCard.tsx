@@ -82,19 +82,19 @@ const FarmedStakingCard = () => {
   return (
     <StyledLotteryCard>
       <CardBody>
-        <CardTitle>{TranslateString(999, 'Your Lottery Winnings')}</CardTitle>
+        <CardTitle>{TranslateString(550, 'Your Lottery Winnings')}</CardTitle>
         <CardImage src="/images/ticket.svg" alt="cake logo" />
         <Block>
           <Value>
             <CakeWinnings />
           </Value>
-          <Label>{TranslateString(999, 'CAKE to Collect')}</Label>
+          <Label>{TranslateString(552, 'CAKE to Collect')}</Label>
         </Block>
         <Block>
           <Value>
             <LotteryJackpot />
           </Value>
-          <Label>{TranslateString(999, 'Total jackpot this round')}</Label>
+          <Label>{TranslateString(554, 'Total jackpot this round')}</Label>
         </Block>
         <Actions>
           <Button
@@ -102,10 +102,10 @@ const FarmedStakingCard = () => {
             onClick={handleClaim}
             style={{ marginRight: '8px' }}
           >
-            {TranslateString(999, 'Collect Winnings')}
+            {TranslateString(556, 'Collect Winnings')}
           </Button>
           <Button variant="secondary" onClick={onPresentBuy} disabled={lotteryHasDrawn}>
-            {TranslateString(999, 'Buy Tickets')}
+            {TranslateString(558, 'Buy Tickets')}
           </Button>
         </Actions>
       </CardBody>
