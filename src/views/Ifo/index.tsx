@@ -11,7 +11,6 @@ import Title from './components/Title'
 
 const Content = styled.div`
   border-bottom: 2px solid ${({ theme }) => theme.colors.textSubtle};
-  border-top: 2px solid ${({ theme }) => theme.colors.textSubtle};
   display: grid;
   grid-template-columns: 1fr;
   grid-gap: 32px;
@@ -55,7 +54,9 @@ const Ifo = () => {
       <Hero />
       <Container>
         <Content>
-          <IfoCard ifo={activeIfo} />
+          <div>
+            <IfoCard ifo={activeIfo} />
+          </div>
           <div>
             <Bunny src="/images/bunny-question.svg" alt="your ifo bunny" />
             <Title>{TranslateString(999, 'How to take part')}</Title>

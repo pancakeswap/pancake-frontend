@@ -1073,7 +1073,7 @@ export const ifos: Ifo[] = [
     launchDate: 'Nov. 20',
     launchTime: '3PM JST',
     saleAmount: '300,000 BLINK',
-    raiseAmount: '$100,000,000',
+    raiseAmount: '$1,000,000',
     cakeToBurn: '$500,000',
     projectSiteUrl: 'https://pancakeswap.finance',
   },

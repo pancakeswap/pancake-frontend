@@ -51,7 +51,7 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
   const Ribbon = getRibbonComponent(status, TranslateString)
 
   return (
-    <StyledIfoCard ifoId={id} ribbon={Ribbon}>
+    <StyledIfoCard ifoId={id} ribbon={Ribbon} isActive={status === 'live'}>
       <CardBody>
         <IfoCardHeader ifoId={id} name={name} subTitle={subTitle} />
         <IfoCardProgress />
