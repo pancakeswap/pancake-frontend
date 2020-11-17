@@ -1,3 +1,4 @@
+export { default as AddIcon } from "./Icons/Add";
 export { default as BlockIcon } from "./Icons/Block";
 export { default as CheckmarkIcon } from "./Icons/Checkmark";
 export { default as ChevronDownIcon } from "./Icons/ChevronDown";
@@ -12,5 +13,6 @@ export { default as OpenNewIcon } from "./Icons/OpenNew";
 export { default as PancakesIcon } from "./Icons/Pancakes";
 export { default as PancakeRoundIcon } from "./Icons/PancakeRound";
 export { default as RemoveIcon } from "./Icons/Remove";
+export { default as VerifiedIcon } from "./Icons/Verified";
 
 export { default as Svg } from "./Svg";
