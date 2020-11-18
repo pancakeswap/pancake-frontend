@@ -55,22 +55,22 @@ const Ifo = () => {
         </IfoCardWrapper>
         <LaunchIfoCallout>
           <div>
-            <Title as="h2">{TranslateString(999, 'How to take part')}</Title>
-            <Heading mb="16px">{TranslateString(999, 'Before Sale')}:</Heading>
+            <Title as="h2">{TranslateString(592, 'How to take part')}</Title>
+            <Heading mb="16px">{TranslateString(594, 'Before Sale')}:</Heading>
             <List>
-              <li>{TranslateString(999, 'Buy CAKE and BNB tokens')}</li>
-              <li>{TranslateString(999, 'Get CAKE-BNB LP tokens by adding CAKEand BNB liquidity')}</li>
+              <li>{TranslateString(596, 'Buy CAKE and BNB tokens')}</li>
+              <li>{TranslateString(598, 'Get CAKE-BNB LP tokens by adding CAKE and BNB liquidity')}</li>
             </List>
-            <Heading mb="16px">{TranslateString(999, 'During Sale')}:</Heading>
+            <Heading mb="16px">{TranslateString(600, 'During Sale')}:</Heading>
             <List>
               <li>
-                {TranslateString(999, 'While the sale is live, commit your CAKE-LP toeksn to buy the IFO tokens')}
+                {TranslateString(602, 'While the sale is live, commit your CAKE-LP tokens to buy the IFO tokens')}
               </li>
             </List>
-            <Heading mb="16px">{TranslateString(999, 'After Sale')}:</Heading>
+            <Heading mb="16px">{TranslateString(604, 'After Sale')}:</Heading>
             <List>
-              <li>{TranslateString(999, 'Claim the tokens you bought, along with any unspent funds.')}</li>
-              <li>{TranslateString(999, 'Done!')}</li>
+              <li>{TranslateString(606, 'Claim the tokens you bought, along with any unspent funds.')}</li>
+              <li>{TranslateString(608, 'Done!')}</li>
             </List>
             <Text as="div" pt="16px">
               <Button
@@ -78,7 +78,7 @@ const Ifo = () => {
                 variant="secondary"
                 href="https://docs.pancakeswap.finance/core-products/ifo-initial-farm-offering"
               >
-                {TranslateString(999, 'Read more')}
+                {TranslateString(610, 'Read more')}
               </Button>
             </Text>
           </div>
