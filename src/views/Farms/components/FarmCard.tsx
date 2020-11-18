@@ -5,7 +5,7 @@ import styled, { keyframes } from 'styled-components'
 import { useWallet } from 'use-wallet'
 import { Link as ReactRouterLink } from 'react-router-dom'
 import { Button, Flex } from '@pancakeswap-libs/uikit'
-import { communityFarms } from 'sushi/lib/constants'
+import { communityFarms, contractAddresses } from 'sushi/lib/constants'
 import { Farm } from 'contexts/Farms'
 import { useTokenBalance2, useBnbPriceUSD, useCakePriceUSD } from 'hooks/useTokenBalance'
 import useSushi from 'hooks/useSushi'
@@ -126,23 +126,25 @@ interface FarmCardProps {
   cakePrice?: number
 }
 
+const CAKE_TOKEN_ADDRESS = contractAddresses.sushi[56]
+const BUSD_TOKEN_ADDRESS = '0x55d398326f99059ff775485246999027b3197955'
+const WBNB_TOKEN_ADDRESS = contractAddresses.weth[56]
+
 const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
   const TranslateString = useI18n()
-  const totalValue1 = useTokenBalance2('0x55d398326f99059ff775485246999027b3197955', farm.lpTokenAddress) * 2
-  let totalValue =
-    useTokenBalance2('0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c', farm.lpTokenAddress) * useBnbPriceUSD() * 2
-
   const cakePrice = useCakePriceUSD()
-  const totalValue2 =
-    useTokenBalance2('0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82', farm.lpTokenAddress) * cakePrice * 2
+  const totalValueBUSDPool = useTokenBalance2(BUSD_TOKEN_ADDRESS, farm.lpTokenAddress) * 2
+  const totalValueCakePool = useTokenBalance2(CAKE_TOKEN_ADDRESS, farm.lpTokenAddress) * cakePrice * 2
+  const totalValueBNBPool = useTokenBalance2(WBNB_TOKEN_ADDRESS, farm.lpTokenAddress) * useBnbPriceUSD() * 2
 
   const isCommunityFarm = communityFarms.includes(farm.tokenSymbol)
 
+  let totalValue = totalValueBNBPool
   if (farm.pid === 11) {
-    totalValue = totalValue1
+    totalValue = totalValueBUSDPool
   }
-  if (isCommunityFarm) {
-    totalValue = totalValue2
+  if (isCommunityFarm && farm.pid !== 37) {
+    totalValue = totalValueCakePool
   }
 
   const [, setHarvestable] = useState(0)
