@@ -1065,7 +1065,7 @@ export const COMMUNITY_FARMS = ['NYA', 'STAX', 'NAR', 'bROOBEE']
 export const ifos: Ifo[] = [
   {
     id: 'blink',
-    address: '0x80FFCb045fa5E5A4ce73d45C838540C9bc7b99cb',
+    address: '0x4eFF3A0a82f624b617Aab7AF92777deEC521D820',
     isActive: true,
     name: 'BLINk (BLK)',
     subTitle: 'Online games on BSC',
