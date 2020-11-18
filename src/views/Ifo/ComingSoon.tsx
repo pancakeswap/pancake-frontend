@@ -1,28 +1,12 @@
 // @ts-nocheck
 import React from 'react'
 import styled from 'styled-components'
-import { Button, Heading, Text } from '@pancakeswap-libs/uikit'
+import { Button, Text } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import Page from 'components/layout/Page'
 import Container from 'components/layout/Container'
-
-const Hero = styled.div`
-  background-image: linear-gradient(180deg, #53dee9 0%, #1fc7d4 100%);
-  padding-bottom: 40px;
-  padding-top: 40px;
-  margin-bottom: 32px;
-`
-
-const Title = styled(Heading).attrs({ as: 'h1', size: 'xl' })`
-  color: ${({ theme }) => theme.colors.secondary};
-  margin-bottom: 24px;
-`
-
-const Blurb = styled(Text)`
-  color: #ffffff;
-  font-size: 20px;
-  font-weight: 600;
-`
+import Hero from './components/Hero'
+import Title from './components/Title'
 
 const Content = styled(Container)`
   display: grid;
@@ -32,11 +16,6 @@ const Content = styled(Container)`
   ${({ theme }) => theme.mediaQueries.md} {
     grid-template-columns: 1fr minmax(auto, 436px);
   }
-`
-
-const Subtitle = styled(Heading).attrs({ as: 'h2', size: 'lg' })`
-  color: ${({ theme }) => theme.colors.secondary};
-  margin-bottom: 16px;
 `
 
 const Block = styled.div`
@@ -72,39 +51,34 @@ const ComingSoon = () => {
 
   return (
     <Page>
-      <Hero>
-        <Container>
-          <Title>{TranslateString(999, 'IFO: Initial Farm Offerings')}</Title>
-          <Blurb>{TranslateString(999, 'Buy new tokens with a brand new token sale model.')}</Blurb>
-        </Container>
-      </Hero>
+      <Hero />
       <Content>
         <div>
           <Block>
-            <Subtitle>{TranslateString(999, 'Coming Soon to PancakeSwap.')}</Subtitle>
+            <Title as="h2">{TranslateString(999, 'Coming Soon to PancakeSwap.')}</Title>
             <Text mb={3}>
               {TranslateString(
-                999,
+                504,
                 'You’ll pay for the new tokens using CAKE-BNB LP tokens, which means you need to stake equal amounts of CAKE and BNB in a liquidity pool to take part.',
               )}
             </Text>
             <Text mb={3}>
               <LiquidityLink href="https://exchange.pancakeswap.finance/#/add/ETH/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82">
-                {TranslateString(999, 'Get CAKE-BNB LP >')}
+                {TranslateString(506, 'Get CAKE-BNB LP >')}
               </LiquidityLink>
             </Text>
             <Text mb={3}>
-              {TranslateString(999, 'The project gets the BNB, PancakeSwap burns the CAKE.')}
+              {TranslateString(508, 'The project gets the BNB, PancakeSwap burns the CAKE.')}
               <br />
-              <strong>{TranslateString(999, 'You get the tokens.')}</strong>
+              <strong>{TranslateString(510, 'You get the tokens.')}</strong>
             </Text>
           </Block>
           <MobileImage src="/images/ifo-bunny.svg" alt="ifo bunny" />
           <Block>
-            <Subtitle>{TranslateString(999, 'Want to launch your own IFO?')}</Subtitle>
+            <Title as="h2">{TranslateString(512, 'Want to launch your own IFO?')}</Title>
             <Text mb={3}>
               {TranslateString(
-                999,
+                514,
                 'Launch your project with PancakeSwap, Binance Smart Chain’s most-used AMM project and liquidity provider, to bring your token directly to the most active and rapidly growing community on BSC.',
               )}
             </Text>
@@ -114,7 +88,7 @@ const ComingSoon = () => {
               target="_blank"
               rel="noopener noreferrer"
             >
-              {TranslateString(999, 'Apply to launch')}
+              {TranslateString(516, 'Apply to launch')}
             </Button>
           </Block>
         </div>
