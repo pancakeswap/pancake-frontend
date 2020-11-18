@@ -5,8 +5,8 @@ import styled, { keyframes } from 'styled-components'
 import { useWallet } from 'use-wallet'
 import { Link as ReactRouterLink } from 'react-router-dom'
 import { Button, Flex } from '@pancakeswap-libs/uikit'
-import { CAKE_PER_BLOCK, HARD_REWARD_PER_BLOCK, CAKE_POOL_PID } from 'config'
-import { COMMUNITY_FARMS, forShowPools, BLOCKS_PER_YEAR } from 'sushi/lib/constants'
+import { BLOCKS_PER_YEAR, CAKE_PER_BLOCK, HARD_REWARD_PER_BLOCK, CAKE_POOL_PID } from 'config'
+import { communityFarms, farmsConfig } from 'sushi/lib/constants'
 import { Farm } from 'contexts/Farms'
 import { useTokenBalance2, useBnbPrice, useCakePrice } from 'hooks/useTokenBalance'
 import useFarms from 'hooks/useFarms'
@@ -133,28 +133,30 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
           ? rows.map((farm) => (
               <FarmCard farm={farm} stakedValue={stakedValueById[farm.tokenSymbol]} removed={removed} />
             ))
-          : forShowPools.map((pool) => (
-              <FCard key={pool.pid + pool.symbol}>
-                <CardImage>
-                  <Flex flexDirection="column" alignItems="flex-start">
-                    <Multiplier>{pool.multiplier}</Multiplier>
-                    {pool.isCommunity ? <CommunityTag /> : <CoreTag />}
-                  </Flex>
-                  <img src={`/images/tokens/category-${pool.tokenSymbol}.png`} alt={pool.tokenSymbol} />
-                </CardImage>
-                <Label>
-                  <span>{TranslateString(316, 'Deposit')}</span>
-                  <span className="right">{pool.symbol}</span>
-                </Label>
-                <Label>
-                  <span>{TranslateString(318, 'Earn')}</span>
-                  <span className="right">CAKE</span>
-                </Label>
-                <Action>
-                  <UnlockButton fullWidth />
-                </Action>
-              </FCard>
-            ))}
+          : farmsConfig
+              .filter((f) => f.pid !== 0)
+              .map((pool) => (
+                <FCard key={pool.pid + pool.symbol}>
+                  <CardImage>
+                    <Flex flexDirection="column" alignItems="flex-start">
+                      <Multiplier>{pool.multiplier}</Multiplier>
+                      {pool.isCommunity ? <CommunityTag /> : <CoreTag />}
+                    </Flex>
+                    <img src={`/images/tokens/category-${pool.tokenSymbol}.png`} alt={pool.tokenSymbol} />
+                  </CardImage>
+                  <Label>
+                    <span>{TranslateString(316, 'Deposit')}</span>
+                    <span className="right">{pool.symbol}</span>
+                  </Label>
+                  <Label>
+                    <span>{TranslateString(318, 'Earn')}</span>
+                    <span className="right">CAKE</span>
+                  </Label>
+                  <Action>
+                    <UnlockButton fullWidth />
+                  </Action>
+                </FCard>
+              ))}
       </Grid>
     </Page>
   )
@@ -213,10 +215,12 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
   const totalValue2 =
     useTokenBalance2('0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82', farm.lpTokenAddress) * cakePrice * 2
 
+  const isCommunityFarm = communityFarms.includes(farm.tokenSymbol)
+
   if (farm.pid === 11) {
     totalValue = totalValue1
   }
-  if (COMMUNITY_FARMS.includes(farm.tokenSymbol)) {
+  if (isCommunityFarm) {
     totalValue = totalValue2
   }
 
@@ -236,8 +240,6 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
       fetchEarned()
     }
   }, [sushi, lpTokenAddress, account, setHarvestable])
-
-  const isCommunityFarm = COMMUNITY_FARMS.includes(farm.tokenSymbol)
 
   return (
     <FCard>

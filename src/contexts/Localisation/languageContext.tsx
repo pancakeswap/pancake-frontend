@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { StringTranslations } from '@crowdin/crowdin-api-client'
 import { TranslationsContext } from 'contexts/Localisation/translationsContext'
-import { allLanguages, EN } from 'constants/localisation/languageCodes'
+import { allLanguages, EN } from 'config/localisation/languageCodes'
 
 const CACHE_KEY = 'pancakeSwapLanguage'
 
