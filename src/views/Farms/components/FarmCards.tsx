@@ -1,7 +1,7 @@
 // @ts-nocheck
 import React from 'react'
 import BigNumber from 'bignumber.js'
-import { BLOCKS_PER_YEAR, CAKE_PER_BLOCK, HARD_REWARD_PER_BLOCK, CAKE_POOL_PID } from 'config'
+import { BLOCKS_PER_YEAR, CAKE_PER_BLOCK, CAKE_POOL_PID } from 'config'
 import { farmsConfig } from 'sushi/lib/constants'
 import { Farm } from 'contexts/Farms'
 import { useTokenBalance2, useBnbPriceUSD } from 'hooks/useTokenBalance'
@@ -18,6 +18,8 @@ interface FarmWithStakedValue extends Farm, StakedValue {
 interface FarmCardsProps {
   removed: boolean
 }
+
+const getFarmConfig = (pid: number) => farmsConfig.find((f) => f.pid === pid)
 
 const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
   const [farms] = useFarms()
@@ -87,7 +89,9 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
       apy = calculateCommunityApy(nyaBalance)
     } else if (farm.tokenSymbol === 'bROOBEE') {
       apy = calculateCommunityApy(bROOBEEBalance)
-    } else if (farm.tokenSymbol === 'HARD') {
+    } else if (farm.tokenSymbol === 'HARD' || farm.tokenSymbol === 'UNFI') {
+      const config = getFarmConfig(farm.pid)
+
       // TODO: Refactor APY for dual farm
       const cakeApy =
         stakedValueItem &&
@@ -95,7 +99,7 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
       const hardApy =
         stakedValueItem &&
         stakedValueItem.tokenPriceInWeth
-          .times(HARD_REWARD_PER_BLOCK)
+          .times(config?.dual?.rewardPerBlock)
           .times(BLOCKS_PER_YEAR)
           .div(stakedValueItem.totalWethValue)
 

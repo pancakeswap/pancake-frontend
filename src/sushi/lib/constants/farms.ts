@@ -509,6 +509,23 @@ export default [
     isCommunity: true,
   },
   {
+    pid: 39,
+    lpAddresses: {
+      97: '',
+      56: '0xbEA35584b9a88107102ABEf0BDeE2c4FaE5D8c31',
+    },
+    tokenAddresses: {
+      97: '',
+      56: '0x728C5baC3C3e370E372Fc4671f9ef6916b814d8B',
+    },
+    name: 'UNFI STACKING',
+    symbol: 'UNFI-BNB LP',
+    tokenSymbol: 'UNFI',
+    icon: '🥞',
+    multiplier: '2X',
+    isCommunity: false,
+  },
+  {
     pid: 8,
     lpAddresses: {
       97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
