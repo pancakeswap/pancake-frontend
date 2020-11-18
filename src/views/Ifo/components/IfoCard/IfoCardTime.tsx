@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { IfoStatus } from 'sushi/lib/types'
+import { IfoStatus } from 'sushi/lib/constants/types'
 import getTimePeriods from 'utils/getTimePeriods'
 import useI18n from 'hooks/useI18n'
 

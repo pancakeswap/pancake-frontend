@@ -9,7 +9,8 @@ import LotteryAbi from './abi/lottery.json'
 import LotteryNFTAbi from './abi/lotteryNft.json'
 import WETHAbi from './abi/weth.json'
 import MultiCallAbi from './abi/Multicall.json'
-import { contractAddresses, SUBTRACT_GAS_LIMIT, supportedPools, sousChefTeam } from './constants'
+import { contractAddresses, farmsConfig, poolsConfig } from './constants'
+import { SUBTRACT_GAS_LIMIT } from '../../constants'
 
 const ConfirmationType = {
   Hash: 0,
@@ -36,7 +37,7 @@ export default class Contracts {
     this.lotteryNft = new this.web3.eth.Contract(LotteryNFTAbi)
     this.multicall = new this.web3.eth.Contract(MultiCallAbi)
 
-    this.pools = supportedPools.map((pool) =>
+    this.pools = farmsConfig.map((pool) =>
       Object.assign(pool, {
         lpAddress: pool.lpAddresses[networkId],
         tokenAddress: pool.tokenAddresses[networkId],
@@ -45,7 +46,7 @@ export default class Contracts {
       }),
     )
 
-    this.sousChefs = sousChefTeam.map((pool) =>
+    this.sousChefs = poolsConfig.map((pool) =>
       Object.assign(pool, {
         sortOrder: pool.sortOrder,
         isCommunity: pool.isCommunity,

@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Text, Heading, BaseLayout, Button } from '@pancakeswap-libs/uikit'
-import { ifos } from 'sushi/lib/constants'
+import { ifosConfig } from 'sushi/lib/constants'
 import useI18n from 'hooks/useI18n'
 import Page from 'components/layout/Page'
 import Container from 'components/layout/Container'
@@ -41,7 +41,7 @@ const List = styled.ul`
 /**
  * Note: currently there should be only 1 active IFO at a time
  */
-const activeIfo = ifos.find((ifo) => ifo.isActive)
+const activeIfo = ifosConfig.find((ifo) => ifo.isActive)
 
 const Ifo = () => {
   const TranslateString = useI18n()

@@ -10,7 +10,7 @@ import useI18n from 'hooks/useI18n'
 import useAllStakedValue from 'hooks/useAllStakedValue'
 import { useTokenBalance2 } from 'hooks/useTokenBalance'
 import { getPools } from 'sushi/utils'
-import { sousChefTeam } from 'sushi/lib/constants'
+import { poolsConfig } from 'sushi/lib/constants'
 import PoolCard from './components/PoolCard'
 import Coming from './components/Coming'
 
@@ -98,7 +98,7 @@ const Farm: React.FC = () => {
   const sushi = useSushi()
   const TranslateString = useI18n()
   const stakedValue = useAllStakedValue()
-  const pools = getPools(sushi) || sousChefTeam
+  const pools = getPools(sushi) || poolsConfig
 
   const renderPools = useMemo(() => {
     const stakedValueObj: any = stakedValue.reduce(

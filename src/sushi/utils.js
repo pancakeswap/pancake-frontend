@@ -2,7 +2,7 @@ import BigNumber from 'bignumber.js'
 import get from 'lodash/get'
 import memoize from 'lodash/memoize'
 import { ethers } from 'ethers'
-import { sousChefTeam } from './lib/constants'
+import { poolsConfig } from './lib/constants'
 
 BigNumber.config({
   EXPONENTIAL_AT: 1000,
@@ -38,7 +38,7 @@ export const getFarms = memoize((sushi) => {
 })
 
 export const getPools = (sushi) => {
-  return get(sushi, 'contracts.sousChefs', sousChefTeam)
+  return get(sushi, 'contracts.sousChefs', poolsConfig)
 }
 
 export const getPoolWeight = async (masterChefContract, pid) => {
