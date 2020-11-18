@@ -43,7 +43,7 @@ const IfoCardTime: React.FC<IfoCardTimeProps> = ({ isLoading, status, secondsUnt
 
   return (
     <Details>
-      <Countdown>{`${timeUntil.hours}h, ${timeUntil.minutes}m until ${suffix}`}</Countdown>
+      <Countdown>{`${timeUntil.days}d, ${timeUntil.hours}h, ${timeUntil.minutes}m until ${suffix}`}</Countdown>
       <Label>(blocks)</Label>
     </Details>
   )

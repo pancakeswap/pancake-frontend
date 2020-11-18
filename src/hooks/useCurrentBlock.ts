@@ -7,16 +7,18 @@ const useCurrentBlock = () => {
   const web3 = useWeb3()
 
   useEffect(() => {
-    const subscription = web3.eth.subscribe('newBlockHeaders', (error, result) => {
-      if (!error) {
-        if (result.number !== previousBlock.current) {
-          previousBlock.current = result.number
-          setBlock(result.number)
+    let interval = null
+    if (web3) {
+      interval = setInterval(async () => {
+        const blockNumber = await web3.eth.getBlockNumber()
+        if (blockNumber !== previousBlock.current) {
+          previousBlock.current = blockNumber
+          setBlock(blockNumber)
         }
-      }
-    })
+      }, 1000)
+    }
 
-    return () => subscription.unsubscribe()
+    return () => clearInterval(interval)
   }, [setBlock, web3, previousBlock])
 
   return block
