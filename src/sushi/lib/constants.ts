@@ -1075,6 +1075,6 @@ export const ifos: Ifo[] = [
     saleAmount: '100,000,000 BLINK',
     raiseAmount: '$1,000,000',
     cakeToBurn: '$500,000',
-    projectSiteUrl: 'https://pancakeswap.finance',
+    projectSiteUrl: 'https://blink.wink.org/',
   },
 ]
