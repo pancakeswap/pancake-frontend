@@ -5,7 +5,7 @@ import styled, { keyframes } from 'styled-components'
 import { useWallet } from 'use-wallet'
 import { Link as ReactRouterLink } from 'react-router-dom'
 import { Button, Flex } from '@pancakeswap-libs/uikit'
-import { CAKE_PER_BLOCK, HARD_REWARD_PER_BLOCK, CAKE_POOL_PID } from 'config'
+import { BLOCKS_PER_YEAR, CAKE_PER_BLOCK, HARD_REWARD_PER_BLOCK, CAKE_POOL_PID } from 'config'
 import { communityFarms, farmsConfig } from 'sushi/lib/constants'
 import { Farm } from 'contexts/Farms'
 import { useTokenBalance2, useBnbPrice, useCakePrice } from 'hooks/useTokenBalance'
@@ -19,7 +19,6 @@ import UnlockButton from 'components/UnlockButton'
 import Page from 'components/layout/Page'
 import Grid from 'components/layout/Grid'
 import { CommunityTag, CoreTag } from 'components/Tags'
-import { BLOCKS_PER_YEAR } from '../../../constants'
 
 interface FarmWithStakedValue extends Farm, StakedValue {
   apy: BigNumber

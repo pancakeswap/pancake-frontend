@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { Button, useModal, AddIcon } from '@pancakeswap-libs/uikit'
 import { useWallet } from 'use-wallet'
 import { Contract } from 'web3-eth-contract'
+import { BLOCKS_PER_YEAR } from 'config'
 import UnlockButton from 'components/UnlockButton'
 import Label from 'components/Label'
 import { useSousAllowance } from 'hooks/useAllowance'
@@ -27,7 +28,6 @@ import Card from './Card'
 import OldSyrupTitle from './OldSyrupTitle'
 import HarvestButton from './HarvestButton'
 import CardFooter from './CardFooter'
-import { BLOCKS_PER_YEAR } from '../../../constants'
 
 interface HarvestProps {
   syrup: Contract

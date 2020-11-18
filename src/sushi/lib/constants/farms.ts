@@ -14,7 +14,6 @@ export default [
     symbol: 'CAKE',
     tokenSymbol: 'SYRUP',
     icon: '🥞',
-    multiplier: '30X',
   },
   {
     pid: 1,

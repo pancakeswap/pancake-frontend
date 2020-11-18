@@ -10,7 +10,8 @@ import LotteryNFTAbi from './abi/lotteryNft.json'
 import WETHAbi from './abi/weth.json'
 import MultiCallAbi from './abi/Multicall.json'
 import { contractAddresses, farmsConfig, poolsConfig } from './constants'
-import { SUBTRACT_GAS_LIMIT } from '../../constants'
+
+const SUBTRACT_GAS_LIMIT = 100000
 
 const ConfirmationType = {
   Hash: 0,
