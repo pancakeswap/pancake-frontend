@@ -14,6 +14,19 @@ export default [
     isFinished: false,
   },
   {
+    sousId: 16,
+    contractAddress: {
+      97: '',
+      56: '0xFb1088Dae0f03C5123587d2babb3F307831E6367',
+    },
+    tokenName: 'UNFI',
+    projectLink: 'https://unifiprotocol.com',
+    harvest: true,
+    tokenPerBlock: '0.02893',
+    isCommunity: false,
+    isFinished: false,
+  },
+  {
     sousId: 15,
     contractAddress: {
       97: '',
