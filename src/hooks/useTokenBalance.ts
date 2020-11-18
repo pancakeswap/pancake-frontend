@@ -83,7 +83,7 @@ export const useTokenBalance2 = (tokenAddress: string, account2: string) => {
   return balance
 }
 
-export const useBnbPrice = () => {
+export const useBnbPriceUSD = () => {
   const [price, setPrice] = useState(0)
   const { account, ethereum }: { account: string; ethereum: provider } = useWallet()
   const block = useBlock()
@@ -111,7 +111,7 @@ export const useBnbPrice = () => {
   return price
 }
 
-export const useCakePrice = () => {
+export const useCakePriceUSD = () => {
   const [price, setPrice] = useState(0)
   const { account, ethereum }: { account: string; ethereum: provider } = useWallet()
   const block = useBlock()
