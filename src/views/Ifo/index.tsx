@@ -73,7 +73,13 @@ const Ifo = () => {
               <li>{TranslateString(999, 'Done!')}</li>
             </List>
             <Text as="div" pt="16px">
-              <Button variant="secondary">{TranslateString(999, 'Read more')}</Button>
+              <Button
+                as="a"
+                variant="secondary"
+                href="https://docs.pancakeswap.finance/core-products/ifo-initial-farm-offering"
+              >
+                {TranslateString(999, 'Read more')}
+              </Button>
             </Text>
           </div>
           <div>

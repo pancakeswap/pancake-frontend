@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Text, OpenNewIcon } from '@pancakeswap-libs/uikit'
+import { Text, OpenNewIcon, Link } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 
 export interface IfoCardDetailsProps {
@@ -26,13 +26,6 @@ const Display = styled(Text)`
   flex: 1;
 `
 
-const LaunchTimeValue = styled(Text)`
-  span {
-    color: ${({ theme }) => theme.colors.primary};
-    margin-left: 4px;
-  }
-`
-
 const ProjectLink = styled.div`
   align-items: center;
   color: ${({ theme }) => theme.colors.primary};
@@ -56,9 +49,18 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({
       <StyledIfoCardDetails>
         <Item>
           <Display>{TranslateString(999, 'Launch Time')}</Display>
-          <LaunchTimeValue>
-            {launchDate},<span>{launchTime}</span>
-          </LaunchTimeValue>
+          <Text>
+            {launchDate},
+            <Link
+              href="https://www.worldtimebuddy.com/event?lid=1880252&h=1880252&sts=26763360&sln=21-22&a=show&euid=505bcb85-76e9-e614-ad1d-0f6fe15ed548"
+              target="blank"
+              rel="noopener noreferrer"
+              ml="4px"
+              style={{ display: 'inline' }}
+            >
+              {launchTime}
+            </Link>
+          </Text>
         </Item>
         <Item>
           <Display>{TranslateString(999, 'For Sale')}</Display>
