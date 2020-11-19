@@ -8,7 +8,9 @@ import useGetLotteryHasDrawn from 'hooks/useGetLotteryHasDrawn'
 import useSushi from 'hooks/useSushi'
 import { useTotalRewards } from 'hooks/useTickets'
 import useI18n from 'hooks/useI18n'
-import Page from 'components/Page'
+import Page from 'components/layout/Page'
+import Container from '../../components/layout/Container'
+import Hero from './components/Hero'
 import PrizeCard from './components/PrizeCard'
 import TicketCard from './components/TicketCard'
 import LotteryCountdown from './components/LotteryCountdown'
@@ -43,26 +45,29 @@ const Lottery: React.FC = () => {
   return (
     <Switch>
       <Page>
-        {account && (
-          <Subtitle>
-            {!lotteryHasDrawn ? `#${index - 2} - Phase 1 - Buy Tickets` : `#${index - 2} - Phase 2 - Claim Winnings`}
-          </Subtitle>
-        )}
-        <Title style={{ marginTop: '0.5em' }}>
-          💰
-          <br />
-          {TranslateString(422, 'WIN')}
-        </Title>
-        <Title2>{getBalanceNumber(lotteryPrizeAmount).toFixed(2)} CAKE</Title2>
-        <Subtitle>{subtitleText}</Subtitle>
-        <StyledFarm>
-          <StyledCardWrapper>
-            <PrizeCard />
-            <TicketCard />
-          </StyledCardWrapper>
-        </StyledFarm>
-        <LotteryCountdown />
-        <WinningNumbers />
+        <Hero />
+        <Container>
+          {account && (
+            <Subtitle>
+              {!lotteryHasDrawn ? `#${index - 2} - Phase 1 - Buy Tickets` : `#${index - 2} - Phase 2 - Claim Winnings`}
+            </Subtitle>
+          )}
+          <Title style={{ marginTop: '0.5em' }}>
+            💰
+            <br />
+            {TranslateString(422, 'WIN')}
+          </Title>
+          <Title2>{getBalanceNumber(lotteryPrizeAmount).toFixed(2)} CAKE</Title2>
+          <Subtitle>{subtitleText}</Subtitle>
+          <StyledFarm>
+            <StyledCardWrapper>
+              <PrizeCard />
+              <TicketCard />
+            </StyledCardWrapper>
+          </StyledFarm>
+          <LotteryCountdown />
+          <WinningNumbers />
+        </Container>
       </Page>
     </Switch>
   )
