@@ -29,28 +29,33 @@ const StyledPrimaryText = styled(Text)`
   margin-right: 16px;
 `
 
-const getMinutes = (endTime, currentTime) => ((endTime - currentTime) % 3600) / 60
-const getHours = (endTime, currentTime) => ((endTime - currentTime) % (3600 * 24)) / 3600
+const getMinutes = (msTimeValue) => (msTimeValue % 3600) / 60
+const getHours = (msTimeValue) => (msTimeValue % (3600 * 24)) / 3600
+const hoursAndMinutesString = (hours, minutes) => `${parseInt(hours)}h, ${parseInt(minutes)}m`
 
 const getTicketSaleTime = (currentTime): string => {
   const endTime = (parseInt(currentTime / 3600) + 1) * 3600
-  const minutes = getMinutes(endTime, currentTime)
-  const hours = getHours(endTime, currentTime)
-  return `${parseInt(hours)}h, ${parseInt(minutes)}m`
+  const timeDifference = endTime - currentTime
+  const minutes = getMinutes(timeDifference)
+  const hours = getHours(timeDifference)
+  return hoursAndMinutesString(hours, minutes)
 }
 
 const getLotteryDrawTime = (currentTime): string => {
-  const endTime = (parseInt(currentTime / 21600) + 1) * 21600 + 7200
-  const minutes = getMinutes(endTime, currentTime)
-  const hours = getHours(endTime, currentTime)
-  return `${parseInt(hours)}h, ${parseInt(minutes)}m`
+  const timeDifference = (parseInt(currentTime / 21600) + 1) * 21600 + 7200
+  const minutes = getMinutes(timeDifference)
+  const hours = getHours(timeDifference)
+  return hoursAndMinutesString(hours, minutes)
 }
 
-const getLotteryDrawStep = () => {
+const getTicketSaleStep = () => ''
+
+const getLotteryDrawStep = (currentTime) => {
   const msBetweenLotteries = 21600000
+  const endTime = (parseInt(currentTime / 21600) + 1) * 21600 + 7200
+  const msUntilLotteryDraw = (endTime - currentTime) * 1000
+  return (msUntilLotteryDraw / msBetweenLotteries) * 100
 }
-
-const getTicketSaleStep = ''
 
 const Hero = () => {
   const [currentTime, setCurrentTime] = useState(Date.parse(new Date()) / 1000)
@@ -70,7 +75,7 @@ const Hero = () => {
 
   return (
     <ProgressWrapper>
-      <Progress step={10} />
+      <Progress step={getLotteryDrawStep(currentTime)} />
       <TopTextWrapper>
         <StyledPrimaryText fontSize="20px" bold>
           {ticketSaleNotYetStarted ? timeUntilTicketSale : timeUntilLotteryDraw}
