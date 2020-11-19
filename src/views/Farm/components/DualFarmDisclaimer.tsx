@@ -1,7 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
 import useI18n from 'hooks/useI18n'
-import { DUAL_FARM_ENDING_BLOCK } from 'config'
 
 const StyledDualFarmDisclaimer = styled.p`
   color: ${({ theme }) => theme.colors.text};
@@ -12,13 +11,14 @@ const BlockNumber = styled.span`
   margin-left: 4px;
 `
 
-const DualFarmDisclaimer = () => {
+const DualFarmDisclaimer: React.FC<{ tokenName: string; endBlock: number }> = ({ tokenName, endBlock }) => {
   const TranslateString = useI18n()
 
   return (
     <StyledDualFarmDisclaimer>
-      {TranslateString(518, `HARD will be distributed weekly until block`)}
-      <BlockNumber>{DUAL_FARM_ENDING_BLOCK}</BlockNumber>
+      {`${tokenName} `}
+      {TranslateString(518, `will be distributed weekly until block`)}
+      <BlockNumber>{endBlock}</BlockNumber>
     </StyledDualFarmDisclaimer>
   )
 }

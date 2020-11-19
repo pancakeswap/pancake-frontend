@@ -490,6 +490,11 @@ export default [
     icon: '🥞',
     multiplier: '1X',
     isCommunity: true,
+    dual: {
+      rewardPerBlock: 0.808,
+      earnLabel: 'CAKE & HARD',
+      endBlock: 2857600,
+    },
   },
   {
     pid: 38,
@@ -524,6 +529,11 @@ export default [
     icon: '🥞',
     multiplier: '2X',
     isCommunity: false,
+    dual: {
+      rewardPerBlock: 0.02893,
+      earnLabel: 'CAKE & UNFI',
+      endBlock: 3229250,
+    },
   },
   {
     pid: 8,

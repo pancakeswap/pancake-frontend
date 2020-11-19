@@ -9,6 +9,7 @@ import useFarms from 'hooks/useFarms'
 import useAllStakedValue, { StakedValue } from 'hooks/useAllStakedValue'
 import Page from 'components/layout/Page'
 import Grid from 'components/layout/Grid'
+import getFarmConfig from 'utils/getFarmConfig'
 import { FarmCard, FarmCardOffline } from './FarmCard'
 
 interface FarmWithStakedValue extends Farm, StakedValue {
@@ -18,8 +19,6 @@ interface FarmWithStakedValue extends Farm, StakedValue {
 interface FarmCardsProps {
   removed: boolean
 }
-
-const getFarmConfig = (pid: number) => farmsConfig.find((f) => f.pid === pid)
 
 const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
   const [farms] = useFarms()
