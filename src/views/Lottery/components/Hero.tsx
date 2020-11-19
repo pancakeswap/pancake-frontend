@@ -1,8 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Heading, Text, Progress } from '@pancakeswap-libs/uikit'
-import Container from 'components/layout/Container'
 import useI18n from 'hooks/useI18n'
+import Container from 'components/layout/Container'
+import LotteryProgress from './LotteryProgress'
 
 const Title = styled(Heading).attrs({ as: 'h1', size: 'xl' })`
   color: ${({ theme }) => theme.colors.secondary};
@@ -65,6 +66,18 @@ const ProgressWrapper = styled.div`
   width: 100%;
 `
 
+const ProgressTextWrapper = styled.div`
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+`
+
+const StyledText = styled(Text)`
+  margin-right: 16px;
+`
+
 const Hero = () => {
   const TranslateString = useI18n()
 
@@ -77,9 +90,7 @@ const Hero = () => {
           <Blurb>{TranslateString(0, 'Win if 2, 3, or 4 of your ticket numbers match!')}</Blurb>
         </LeftWrapper>
         <RightWrapper>
-          <ProgressWrapper>
-            <Progress step={10} />
-          </ProgressWrapper>
+          <LotteryProgress />
         </RightWrapper>
       </StyledContainer>
     </StyledHero>
