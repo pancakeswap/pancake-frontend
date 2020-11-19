@@ -25,29 +25,39 @@ const BottomTextWrapper = styled.div`
   text-align: center;
 `
 
-const StyledText = styled(Text)`
+const StyledPrimaryText = styled(Text)`
   margin-right: 16px;
 `
 
-const getDeadlineTime = (lotteryHasDrawn, currentTime): string => {
-  if (!lotteryHasDrawn) {
-    const endTime = (parseInt(currentTime / 21600) + 1) * 21600 + 7200
-    const minutes = ((endTime - currentTime) % 3600) / 60
-    const hours = (((endTime - currentTime) % (3600 * 24)) / 3600) % 6
-    return `${parseInt(hours)}h, ${parseInt(minutes)}m`
-  }
+const getMinutes = (endTime, currentTime) => ((endTime - currentTime) % 3600) / 60
+const getHours = (endTime, currentTime) => ((endTime - currentTime) % (3600 * 24)) / 3600
+
+const getTicketSaleTime = (currentTime): string => {
   const endTime = (parseInt(currentTime / 3600) + 1) * 3600
-  const minutes = ((endTime - currentTime) % 3600) / 60
-  const hours = ((endTime - currentTime) % (3600 * 24)) / 3600
+  const minutes = getMinutes(endTime, currentTime)
+  const hours = getHours(endTime, currentTime)
   return `${parseInt(hours)}h, ${parseInt(minutes)}m`
 }
+
+const getLotteryDrawTime = (currentTime): string => {
+  const endTime = (parseInt(currentTime / 21600) + 1) * 21600 + 7200
+  const minutes = getMinutes(endTime, currentTime)
+  const hours = getHours(endTime, currentTime)
+  return `${parseInt(hours)}h, ${parseInt(minutes)}m`
+}
+
+const getLotteryDrawStep = () => {
+  const msBetweenLotteries = 21600000
+}
+
+const getTicketSaleStep = ''
 
 const Hero = () => {
   const [currentTime, setCurrentTime] = useState(Date.parse(new Date()) / 1000)
   const TranslateString = useI18n()
-  const lotteryHasDrawn = useGetLotteryHasDrawn()
-  const timeUntilTicketSale = ''
-  const timeUntilLotteryDraw = getDeadlineTime(lotteryHasDrawn, currentTime)
+  const ticketSaleNotYetStarted = useGetLotteryHasDrawn()
+  const timeUntilTicketSale = getTicketSaleTime(currentTime)
+  const timeUntilLotteryDraw = getLotteryDrawTime(currentTime)
 
   const tick = () => {
     setCurrentTime(currentTime + 1)
@@ -62,22 +72,20 @@ const Hero = () => {
     <ProgressWrapper>
       <Progress step={10} />
       <TopTextWrapper>
-        {lotteryHasDrawn ? (
-          <>
-            <StyledText fontSize="20px" bold>
-              1h 30m
-            </StyledText>
-            <Text fontSize="20px" bold color="contrast">
-              Until ticket sale
-            </Text>
-          </>
-        ) : null}
-      </TopTextWrapper>
-      <BottomTextWrapper>
-        <Text>
-          {timeUntilLotteryDraw} {TranslateString(0, 'until lottery draw')}
+        <StyledPrimaryText fontSize="20px" bold>
+          {ticketSaleNotYetStarted ? timeUntilTicketSale : timeUntilLotteryDraw}
+        </StyledPrimaryText>
+        <Text fontSize="20px" bold color="contrast">
+          {ticketSaleNotYetStarted ? TranslateString(0, 'Until ticket sale') : TranslateString(0, 'Until lottery draw')}
         </Text>
-      </BottomTextWrapper>
+      </TopTextWrapper>
+      {ticketSaleNotYetStarted ? (
+        <BottomTextWrapper>
+          <Text>
+            {timeUntilLotteryDraw} {TranslateString(0, 'Until lottery draw')}
+          </Text>
+        </BottomTextWrapper>
+      ) : null}
     </ProgressWrapper>
   )
 }
