@@ -11,6 +11,7 @@ import useI18n from 'hooks/useI18n'
 import Page from 'components/layout/Page'
 import Container from '../../components/layout/Container'
 import Hero from './components/Hero'
+import Divider from './components/Divider'
 import PrizeCard from './components/PrizeCard'
 import TicketCard from './components/TicketCard'
 import LotteryCountdown from './components/LotteryCountdown'
@@ -47,6 +48,7 @@ const Lottery: React.FC = () => {
       <Page>
         <Hero />
         <Container>
+          <Divider />
           {account && (
             <Subtitle>
               {!lotteryHasDrawn ? `#${index - 2} - Phase 1 - Buy Tickets` : `#${index - 2} - Phase 2 - Claim Winnings`}

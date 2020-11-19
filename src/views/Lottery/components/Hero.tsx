@@ -61,23 +61,6 @@ const RightWrapper = styled.div`
   }
 `
 
-const ProgressWrapper = styled.div`
-  display: block;
-  width: 100%;
-`
-
-const ProgressTextWrapper = styled.div`
-  margin-top: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-`
-
-const StyledText = styled(Text)`
-  margin-right: 16px;
-`
-
 const Hero = () => {
   const TranslateString = useI18n()
 
