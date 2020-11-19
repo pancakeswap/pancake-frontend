@@ -7,6 +7,7 @@ import { getContract } from 'utils/erc20'
 import useFarm from 'hooks/useFarm'
 import useI18n from 'hooks/useI18n'
 import Page from 'components/layout/Page'
+import getFarmConfig from 'utils/getFarmConfig'
 import Harvest from './components/Harvest'
 import Stake from './components/Stake'
 import DualFarmDisclaimer from './components/DualFarmDisclaimer'
@@ -26,7 +27,7 @@ const Farm: React.FC = () => {
     icon: '',
     tokenSymbol: '',
   }
-  const isHardToken = tokenSymbol === 'HARD'
+  const localConfig = getFarmConfig(pid)
   const lpContract = useMemo(() => {
     return getContract(ethereum as provider, lpTokenAddress)
   }, [ethereum, lpTokenAddress])
@@ -36,15 +37,17 @@ const Farm: React.FC = () => {
       <Header>
         <Image src={`/images/tokens/category-${tokenSymbol || 'CAKE'}.png`} alt={tokenSymbol} />
         <Title>{TranslateString(320, 'Stake FLIP tokens to stack CAKE')}</Title>
-        {isHardToken && <DualFarmDisclaimer />}
+        {localConfig.dual && (
+          <DualFarmDisclaimer tokenName={localConfig.tokenSymbol} endBlock={localConfig.dual.endBlock} />
+        )}
       </Header>
       <StyledFarm>
         <Grid>
           <Harvest pid={pid} />
           <Stake lpContract={lpContract} pid={pid} tokenName={lpToken.toUpperCase()} />
         </Grid>
-        {isHardToken ? (
-          <DualFarmDisclaimer />
+        {localConfig.dual ? (
+          <DualFarmDisclaimer tokenName={localConfig.tokenSymbol} endBlock={localConfig.dual.endBlock} />
         ) : (
           <StyledInfo>
             {TranslateString(

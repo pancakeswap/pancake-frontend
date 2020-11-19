@@ -15,6 +15,7 @@ import { getEarned, getMasterChefContract } from 'sushi/utils'
 import { bnToDec } from 'utils'
 import { CommunityTag, CoreTag } from 'components/Tags'
 import UnlockButton from 'components/UnlockButton'
+import getFarmConfig from 'utils/getFarmConfig'
 
 interface FarmWithStakedValue extends Farm, StakedValue {
   apy: BigNumber
@@ -164,6 +165,8 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
     }
   }, [sushi, lpTokenAddress, account, setHarvestable])
 
+  const localConfig = getFarmConfig(farm.pid)
+
   return (
     <FCard>
       {farm.tokenSymbol === 'CAKE' && <StyledCardAccent />}
@@ -180,7 +183,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
       </Label>
       <Label>
         <span>{TranslateString(318, 'Earn')}</span>
-        <span className="right">{farm.tokenSymbol === 'HARD' ? 'CAKE & HARD' : 'CAKE'}</span>
+        <span className="right">{localConfig.dual ? localConfig.dual.earnLabel : 'CAKE'}</span>
       </Label>
       {!removed && (
         <Label>
