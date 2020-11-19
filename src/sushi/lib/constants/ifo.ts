@@ -3,7 +3,8 @@ import { Ifo } from './types'
 const ifos: Ifo[] = [
   {
     id: 'blink',
-    address: '0x4eFF3A0a82f624b617Aab7AF92777deEC521D820',
+    // TODO Update after tests
+    address: '0x4Bd057800C818F0765cddDC36C4188F5dFA2861d',
     isActive: true,
     name: 'BLINk (BLK)',
     subTitle: 'Online games on BSC',
@@ -15,6 +16,8 @@ const ifos: Ifo[] = [
     raiseAmount: '$1,000,000',
     cakeToBurn: '$500,000',
     projectSiteUrl: 'https://blink.wink.org',
+    currency: 'CAKE-BNB LP',
+    currencyAddress: '0xA527a61703D82139F8a06Bc30097cC9CAA2df5A6',
   },
 ]
 
