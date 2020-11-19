@@ -108,7 +108,7 @@ export default [
     isCommunity: true,
     sortOrder: 999,
     tokenPerBlock: '10',
-    isFinished: false,
+    isFinished: true,
   },
   {
     sousId: 9,
