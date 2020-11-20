@@ -13,6 +13,20 @@ export default [
     isCommunity: false,
     isFinished: false,
   },
+    {
+    sousId: 17,
+    contractAddress: {
+      97: '',
+      56: '0xBb2B66a2c7C2fFFB06EA60BeaD69741b3f5BF831',
+    },
+    tokenName: 'BLK',
+    projectLink: 'https://blink.wink.org',
+    harvest: true,
+    tokenPerBlock: '23.14',
+    sortOrder: 3,
+    isCommunity: false,
+    isFinished: false,
+  },
   {
     sousId: 16,
     contractAddress: {
