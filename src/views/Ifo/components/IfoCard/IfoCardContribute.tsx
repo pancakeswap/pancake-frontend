@@ -17,10 +17,17 @@ export interface Props {
   currencyAddress: string
   contract: Contract
   status: IfoStatus
-  totalAmount: BigNumber
+  raisingAmount: BigNumber
 }
 
-const IfoCardContribute: React.FC<Props> = ({ address, currency, currencyAddress, contract, status, totalAmount }) => {
+const IfoCardContribute: React.FC<Props> = ({
+  address,
+  currency,
+  currencyAddress,
+  contract,
+  status,
+  raisingAmount,
+}) => {
   const [pendingTx, setPendingTx] = useState(false)
   const [offeringTokenBalance, setOfferingTokenBalance] = useState(new BigNumber(0))
   const [userInfo, setUserInfo] = useState({ amount: 0, claimed: false })
@@ -54,7 +61,7 @@ const IfoCardContribute: React.FC<Props> = ({ address, currency, currencyAddress
     setPendingTx(false)
   }
   const isFinished = status === 'finished'
-  const percentOfUserContribution = new BigNumber(userInfo.amount).div(totalAmount).times(100)
+  const percentOfUserContribution = new BigNumber(userInfo.amount).div(raisingAmount).times(100)
 
   if (allowance <= 0) {
     return (
