@@ -150,7 +150,7 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
             currencyAddress={currencyAddress}
             contract={contract}
             status={state.status}
-            totalAmount={state.totalAmount}
+            raisingAmount={state.raisingAmount}
           />
         )}
         <IfoCardDescription description={description} />
