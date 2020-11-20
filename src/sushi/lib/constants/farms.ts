@@ -31,7 +31,7 @@ export default [
     icon: '🥞',
     multiplier: '30X',
   },
-    {
+  {
     pid: 37,
     lpAddresses: {
       97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
