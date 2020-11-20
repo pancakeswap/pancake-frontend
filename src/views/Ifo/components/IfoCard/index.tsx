@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { Card, CardBody, CardRibbon, useModal, Text } from '@pancakeswap-libs/uikit'
+import { useWallet } from 'use-wallet'
+import BigNumber from 'bignumber.js'
+import { Card, CardBody, CardRibbon } from '@pancakeswap-libs/uikit'
 import { BSC_BLOCK_TIME } from 'config'
 import { Ifo, IfoStatus } from 'sushi/lib/constants/types'
 import useI18n from 'hooks/useI18n'
-import useCurrentBlock from 'hooks/useCurrentBlock'
-import { useIfoContract } from 'hooks/useContract'
-import useTokenBalance from 'hooks/useTokenBalance'
-import { getBalanceNumber } from 'utils/formatBalance'
+import useCurrentBlock from 'hooks/rework/useCurrentBlock'
+import { useIfoContract } from 'hooks/rework/useContract'
+import UnlockButton from 'components/UnlockButton'
 import IfoCardHeader from './IfoCardHeader'
 import IfoCardProgress from './IfoCardProgress'
 import IfoCardDescription from './IfoCardDescription'
 import IfoCardDetails from './IfoCardDetails'
 import IfoCardTime from './IfoCardTime'
-import LabelButton from './LabelButton'
-import ContributeModal from './ContributeModal'
+import IfoCardContribute from './IfoCardContribute'
 
 export interface IfoCardProps {
   ifo: Ifo
@@ -73,8 +73,6 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
     currency,
     currencyAddress,
   } = ifo
-  const contract = useIfoContract(address)
-  const currentBlock = useCurrentBlock()
   const [state, setState] = useState({
     isLoading: true,
     status: null,
@@ -82,14 +80,16 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
     secondsUntilStart: 0,
     progress: 0,
     secondsUntilEnd: 0,
-    campaignTarget: 0,
-    totalRaised: 0,
+    raisingAmount: new BigNumber(0),
+    totalAmount: new BigNumber(0),
+    startBlockNum: 0,
+    endBlockNum: 0,
   })
+  const { account } = useWallet()
+  const contract = useIfoContract(address)
+
+  const currentBlock = useCurrentBlock()
   const TranslateString = useI18n()
-  const shitcoinBalance = getBalanceNumber(useTokenBalance(address))
-  const [onPresentContributeModal] = useModal(
-    <ContributeModal currency={currency} contract={contract} currencyAddress={currencyAddress} />,
-  )
 
   const Ribbon = getRibbonComponent(state.status, TranslateString)
 
@@ -97,16 +97,8 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
     const fetchProgress = async () => {
       const startBlock = await contract.methods.startBlock().call()
       const endBlock = await contract.methods.endBlock().call()
-      const campaignTarget = parseInt(await contract.methods.raisingAmount().call(), 10)
-      const totalRaised = parseInt(await contract.methods.totalAmount().call(), 10)
-      const offeringAmount = parseInt(await contract.methods.offeringAmount().call(), 10)
-
-      // TODO Remove after tests
-      console.info(
-        `=> Target (raisingAmount): ${campaignTarget} \n
-TotalRaised (totalAmount): ${totalRaised} \n
-OfferingAmount (offeringAmount): ${offeringAmount}`,
-      )
+      const raisingAmount = new BigNumber(await contract.methods.raisingAmount().call())
+      const totalAmount = new BigNumber(await contract.methods.totalAmount().call())
 
       const startBlockNum = parseInt(startBlock, 10)
       const endBlockNum = parseInt(endBlock, 10)
@@ -125,8 +117,10 @@ OfferingAmount (offeringAmount): ${offeringAmount}`,
         status,
         progress,
         blocksRemaining,
-        campaignTarget,
-        totalRaised,
+        raisingAmount,
+        totalAmount,
+        startBlockNum,
+        endBlockNum,
       })
     }
 
@@ -134,6 +128,7 @@ OfferingAmount (offeringAmount): ${offeringAmount}`,
   }, [currentBlock, contract, setState])
 
   const isActive = state.status === 'live'
+  const isFinished = state.status === 'finished'
 
   return (
     <StyledIfoCard ifoId={id} ribbon={Ribbon} isActive={isActive}>
@@ -145,19 +140,18 @@ OfferingAmount (offeringAmount): ${offeringAmount}`,
           status={state.status}
           secondsUntilStart={state.secondsUntilStart}
           secondsUntilEnd={state.secondsUntilEnd}
+          block={isActive || isFinished ? state.endBlockNum : state.startBlockNum}
         />
-        {isActive && (
-          <>
-            <LabelButton
-              buttonLabel="Contribute"
-              label={`Your contribution (${currency})`}
-              value={shitcoinBalance.toString()}
-              onClick={onPresentContributeModal}
-            />
-            <Text fontSize="14px" color="textSubtle">
-              {`Approx ?${state.totalRaised} | ${(state.totalRaised / state.campaignTarget) * 100}% of total`}
-            </Text>
-          </>
+        {!account && <UnlockButton fullWidth />}
+        {(isActive || isFinished) && (
+          <IfoCardContribute
+            address={address}
+            currency={currency}
+            currencyAddress={currencyAddress}
+            contract={contract}
+            status={state.status}
+            totalAmount={state.totalAmount}
+          />
         )}
         <IfoCardDescription description={description} />
         <IfoCardDetails
@@ -167,6 +161,8 @@ OfferingAmount (offeringAmount): ${offeringAmount}`,
           raiseAmount={raiseAmount}
           cakeToBurn={cakeToBurn}
           projectSiteUrl={projectSiteUrl}
+          raisingAmount={state.raisingAmount}
+          totalAmount={state.totalAmount}
         />
       </CardBody>
     </StyledIfoCard>

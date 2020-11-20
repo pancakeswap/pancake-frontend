@@ -6,6 +6,7 @@ interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   value: string
   label?: string
   buttonLabel: string
+  disabled?: boolean
 }
 
 const ButtonWrapper = styled.div`
@@ -18,7 +19,7 @@ const ButtonWrapper = styled.div`
   padding-left: 16px;
 `
 
-const LabelButton: React.FC<Props> = ({ value, label, buttonLabel, onClick }) => {
+const LabelButton: React.FC<Props> = ({ value, label, buttonLabel, onClick, disabled = false }) => {
   return (
     <div>
       {label && (
@@ -30,7 +31,9 @@ const LabelButton: React.FC<Props> = ({ value, label, buttonLabel, onClick }) =>
         <Text bold fontSize="20px">
           {value}
         </Text>
-        <Button onClick={onClick}>{buttonLabel}</Button>
+        <Button onClick={onClick} disabled={disabled}>
+          {buttonLabel}
+        </Button>
       </ButtonWrapper>
     </div>
   )

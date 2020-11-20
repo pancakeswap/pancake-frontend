@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useWallet } from 'use-wallet'
+import BigNumber from 'bignumber.js'
 import { Modal, Button, Flex, Link, OpenNewIcon } from '@pancakeswap-libs/uikit'
 import BalanceInput from 'components/Input/BalanceInput'
 import useTokenBalance from 'hooks/useTokenBalance'
@@ -24,7 +25,7 @@ const ContributeModal: React.FC<Props> = ({ currency, contract, currencyAddress,
         value={value}
         onChange={(e) => setValue(e.currentTarget.value)}
         symbol={currency}
-        max={balance.toFixed(4).toString()}
+        max={balance.toFixed(4)}
         onSelectMax={() => setValue(balance.toString())}
       />
       <Flex justifyContent="space-between" mb="24px">
@@ -36,7 +37,9 @@ const ContributeModal: React.FC<Props> = ({ currency, contract, currencyAddress,
           disabled={pendingTx}
           onClick={async () => {
             setPendingTx(true)
-            await contract.methods.deposit(value).send({ from: account })
+            await contract.methods
+              .deposit(new BigNumber(value).times(new BigNumber(10).pow(18)).toString())
+              .send({ from: account })
             setPendingTx(false)
             onDismiss()
           }}
@@ -44,7 +47,11 @@ const ContributeModal: React.FC<Props> = ({ currency, contract, currencyAddress,
           Confirm
         </Button>
       </Flex>
-      <Link href="https://exchange.pancakeswap.finance/#/pool" target="blank" style={{ margin: 'auto' }}>
+      <Link
+        href="https://exchange.pancakeswap.finance/#/add/ETH/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82"
+        target="blank"
+        style={{ margin: 'auto' }}
+      >
         {`Get ${currency}`}
         <OpenNewIcon color="primary" ml="8px" />
       </Link>
