@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
 import { Text, OpenNewIcon, Link } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
+import { IfoStatus } from 'sushi/lib/constants/types'
 
 export interface IfoCardDetailsProps {
   launchDate: string
@@ -13,6 +14,7 @@ export interface IfoCardDetailsProps {
   projectSiteUrl: string
   raisingAmount: BigNumber
   totalAmount: BigNumber
+  status: IfoStatus
 }
 
 const StyledIfoCardDetails = styled.div`
@@ -46,6 +48,7 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({
   projectSiteUrl,
   raisingAmount,
   totalAmount,
+  status,
 }) => {
   const TranslateString = useI18n()
 
@@ -79,10 +82,14 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({
           <Display>{TranslateString(999, 'CAKE to burn (USD)')}</Display>
           <Text>{cakeToBurn}</Text>
         </Item>
-        <Item>
-          <Display>{TranslateString(999, 'Total raised (% of target)')}</Display>
-          <Text>{`${raisingAmount.div(totalAmount).times(100).toFixed(2)}%`}</Text>
-        </Item>
+        {totalAmount.toNumber() > 0 && (
+          <Item>
+            <Display>{TranslateString(999, 'Total raised (% of target)')}</Display>
+            <Text>
+              {status === 'finished' ? 'Completed' : `${raisingAmount.div(totalAmount).times(100).toFixed(2)}%`}
+            </Text>
+          </Item>
+        )}
       </StyledIfoCardDetails>
       <ProjectLink>
         <a href={projectSiteUrl} target="_blank" rel="noreferrer">

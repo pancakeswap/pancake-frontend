@@ -163,6 +163,7 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
           projectSiteUrl={projectSiteUrl}
           raisingAmount={state.raisingAmount}
           totalAmount={state.totalAmount}
+          status={state.status}
         />
       </CardBody>
     </StyledIfoCard>
