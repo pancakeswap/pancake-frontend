@@ -4,7 +4,7 @@ import BigNumber from 'bignumber.js'
 import { Modal, Button, Flex, Link, OpenNewIcon } from '@pancakeswap-libs/uikit'
 import BalanceInput from 'components/Input/BalanceInput'
 import useTokenBalance from 'hooks/useTokenBalance'
-import { getBalanceNumber } from 'utils/formatBalance'
+import { getFullDisplayBalance } from 'utils/formatBalance'
 
 interface Props {
   currency: string
@@ -17,7 +17,7 @@ const ContributeModal: React.FC<Props> = ({ currency, contract, currencyAddress,
   const [value, setValue] = useState('')
   const [pendingTx, setPendingTx] = useState(false)
   const { account } = useWallet()
-  const balance = getBalanceNumber(useTokenBalance(currencyAddress))
+  const balance = getFullDisplayBalance(useTokenBalance(currencyAddress))
 
   return (
     <Modal title={`Contribute ${currency}`} onDismiss={onDismiss}>
@@ -25,7 +25,7 @@ const ContributeModal: React.FC<Props> = ({ currency, contract, currencyAddress,
         value={value}
         onChange={(e) => setValue(e.currentTarget.value)}
         symbol={currency}
-        max={balance.toFixed(4)}
+        max={balance}
         onSelectMax={() => setValue(balance.toString())}
       />
       <Flex justifyContent="space-between" mb="24px">
