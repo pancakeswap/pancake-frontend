@@ -559,7 +559,7 @@ export default [
       endBlock: 3229250,
     },
   },
-    {
+  {
     pid: 40,
     lpAddresses: {
       97: '',
