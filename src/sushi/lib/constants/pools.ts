@@ -14,7 +14,7 @@ export default [
     isFinished: false,
   },
   {
-    sousId: 17,
+    sousId: 18,
     contractAddress: {
       97: '',
       56: '0x42Afc29b2dEa792974d1e9420696870f1Ca6d18b',
@@ -26,6 +26,19 @@ export default [
     sortOrder: 3,
     isCommunity: false,
     isFinished: false,
+  },
+  {
+    sousId: 17,
+    contractAddress: {
+      97: '',
+      56: '0xBb2B66a2c7C2fFFB06EA60BeaD69741b3f5BF831',
+    },
+    tokenName: 'BLK',
+    projectLink: 'https://blink.wink.org',
+    harvest: true,
+    tokenPerBlock: '23.14',
+    isCommunity: false,
+    isFinished: true,
   },
   {
     sousId: 16,
