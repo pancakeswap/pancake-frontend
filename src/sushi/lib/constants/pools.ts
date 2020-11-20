@@ -17,7 +17,7 @@ export default [
     sousId: 17,
     contractAddress: {
       97: '',
-      56: '0xBb2B66a2c7C2fFFB06EA60BeaD69741b3f5BF831',
+      56: '0x42Afc29b2dEa792974d1e9420696870f1Ca6d18b',
     },
     tokenName: 'BLK',
     projectLink: 'https://blink.wink.org',
