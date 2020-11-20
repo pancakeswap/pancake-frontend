@@ -51,7 +51,7 @@ interface HarvestProps {
  *
  * TODO - when all CAKE is unstaked we can remove this
  */
-const SYRUPIDS = [5, 6, 3, 1]
+const SYRUPIDS = [5, 6, 3, 1, 17]
 
 const PoolCard: React.FC<HarvestProps> = ({
   syrup,
