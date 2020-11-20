@@ -156,7 +156,9 @@ const PoolCard: React.FC<HarvestProps> = ({
         {!isOldSyrup ? (
           <Balance
             value={
-              tokenName === 'CTK' || tokenName === 'HARD' ? getBalanceNumber(earnings, 6) : getBalanceNumber(earnings)
+              tokenName === 'CTK' || tokenName === 'HARD' || tokenName === 'BLK'
+                ? getBalanceNumber(earnings, 6)
+                : getBalanceNumber(earnings)
             }
             isDisabled={isReallyFinished}
           />
