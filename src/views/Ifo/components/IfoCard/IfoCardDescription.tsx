@@ -9,6 +9,7 @@ export interface IfoCardDescriptionProps {
 }
 
 const StyledIfoCardDescription = styled.div`
+  margin-top: 24px;
   margin-bottom: 24px;
 `
 

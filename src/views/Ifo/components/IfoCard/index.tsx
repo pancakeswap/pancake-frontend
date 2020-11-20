@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
+import { useWallet } from 'use-wallet'
+import BigNumber from 'bignumber.js'
 import { Card, CardBody, CardRibbon } from '@pancakeswap-libs/uikit'
 import { BSC_BLOCK_TIME } from 'config'
 import { Ifo, IfoStatus } from 'sushi/lib/constants/types'
 import useI18n from 'hooks/useI18n'
-import useCurrentBlock from 'hooks/useCurrentBlock'
-import { useIfoContract } from 'hooks/useContract'
+import useCurrentBlock from 'hooks/rework/useCurrentBlock'
+import { useIfoContract } from 'hooks/rework/useContract'
+import UnlockButton from 'components/UnlockButton'
 import IfoCardHeader from './IfoCardHeader'
 import IfoCardProgress from './IfoCardProgress'
 import IfoCardDescription from './IfoCardDescription'
 import IfoCardDetails from './IfoCardDetails'
 import IfoCardTime from './IfoCardTime'
+import IfoCardContribute from './IfoCardContribute'
 
 export interface IfoCardProps {
   ifo: Ifo
@@ -66,9 +70,9 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
     raiseAmount,
     cakeToBurn,
     projectSiteUrl,
+    currency,
+    currencyAddress,
   } = ifo
-  const contract = useIfoContract(address)
-  const currentBlock = useCurrentBlock()
   const [state, setState] = useState({
     isLoading: true,
     status: null,
@@ -76,14 +80,25 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
     secondsUntilStart: 0,
     progress: 0,
     secondsUntilEnd: 0,
+    raisingAmount: new BigNumber(0),
+    totalAmount: new BigNumber(0),
+    startBlockNum: 0,
+    endBlockNum: 0,
   })
+  const { account } = useWallet()
+  const contract = useIfoContract(address)
+
+  const currentBlock = useCurrentBlock()
   const TranslateString = useI18n()
+
   const Ribbon = getRibbonComponent(state.status, TranslateString)
 
   useEffect(() => {
     const fetchProgress = async () => {
       const startBlock = await contract.methods.startBlock().call()
       const endBlock = await contract.methods.endBlock().call()
+      const raisingAmount = new BigNumber(await contract.methods.raisingAmount().call())
+      const totalAmount = new BigNumber(await contract.methods.totalAmount().call())
 
       const startBlockNum = parseInt(startBlock, 10)
       const endBlockNum = parseInt(endBlock, 10)
@@ -93,7 +108,7 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
       const blocksRemaining = endBlockNum - currentBlock
 
       // Calculate the total progress with a default of 5%
-      const progress = currentBlock > startBlockNum ? (currentBlock - startBlockNum) / totalBlocks : 5
+      const progress = currentBlock > startBlockNum ? ((currentBlock - startBlockNum) / totalBlocks) * 100 : 5
 
       setState({
         isLoading: false,
@@ -102,14 +117,21 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
         status,
         progress,
         blocksRemaining,
+        raisingAmount,
+        totalAmount,
+        startBlockNum,
+        endBlockNum,
       })
     }
 
     fetchProgress()
   }, [currentBlock, contract, setState])
 
+  const isActive = state.status === 'live'
+  const isFinished = state.status === 'finished'
+
   return (
-    <StyledIfoCard ifoId={id} ribbon={Ribbon} isActive={state.status === 'live'}>
+    <StyledIfoCard ifoId={id} ribbon={Ribbon} isActive={isActive}>
       <CardBody>
         <IfoCardHeader ifoId={id} name={name} subTitle={subTitle} />
         <IfoCardProgress progress={state.progress} />
@@ -118,7 +140,19 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
           status={state.status}
           secondsUntilStart={state.secondsUntilStart}
           secondsUntilEnd={state.secondsUntilEnd}
+          block={isActive || isFinished ? state.endBlockNum : state.startBlockNum}
         />
+        {!account && <UnlockButton fullWidth />}
+        {(isActive || isFinished) && (
+          <IfoCardContribute
+            address={address}
+            currency={currency}
+            currencyAddress={currencyAddress}
+            contract={contract}
+            status={state.status}
+            totalAmount={state.totalAmount}
+          />
+        )}
         <IfoCardDescription description={description} />
         <IfoCardDetails
           launchDate={launchDate}
@@ -127,6 +161,8 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
           raiseAmount={raiseAmount}
           cakeToBurn={cakeToBurn}
           projectSiteUrl={projectSiteUrl}
+          raisingAmount={state.raisingAmount}
+          totalAmount={state.totalAmount}
         />
       </CardBody>
     </StyledIfoCard>

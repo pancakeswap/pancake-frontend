@@ -13,4 +13,6 @@ export type Ifo = {
   raiseAmount: string
   cakeToBurn: string
   projectSiteUrl: string
+  currency: string
+  currencyAddress: string
 }

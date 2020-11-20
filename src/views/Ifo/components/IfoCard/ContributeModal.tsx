@@ -1,0 +1,62 @@
+import React, { useState } from 'react'
+import { useWallet } from 'use-wallet'
+import BigNumber from 'bignumber.js'
+import { Modal, Button, Flex, Link, OpenNewIcon } from '@pancakeswap-libs/uikit'
+import BalanceInput from 'components/Input/BalanceInput'
+import useTokenBalance from 'hooks/useTokenBalance'
+import { getBalanceNumber } from 'utils/formatBalance'
+
+interface Props {
+  currency: string
+  contract: any
+  currencyAddress: string
+  onDismiss?: () => void
+}
+
+const ContributeModal: React.FC<Props> = ({ currency, contract, currencyAddress, onDismiss }) => {
+  const [value, setValue] = useState('')
+  const [pendingTx, setPendingTx] = useState(false)
+  const { account } = useWallet()
+  const balance = getBalanceNumber(useTokenBalance(currencyAddress))
+
+  return (
+    <Modal title={`Contribute ${currency}`} onDismiss={onDismiss}>
+      <BalanceInput
+        value={value}
+        onChange={(e) => setValue(e.currentTarget.value)}
+        symbol={currency}
+        max={balance.toFixed(4)}
+        onSelectMax={() => setValue(balance.toString())}
+      />
+      <Flex justifyContent="space-between" mb="24px">
+        <Button fullWidth variant="secondary" onClick={onDismiss} mr="8px">
+          Cancel
+        </Button>
+        <Button
+          fullWidth
+          disabled={pendingTx}
+          onClick={async () => {
+            setPendingTx(true)
+            await contract.methods
+              .deposit(new BigNumber(value).times(new BigNumber(10).pow(18)).toString())
+              .send({ from: account })
+            setPendingTx(false)
+            onDismiss()
+          }}
+        >
+          Confirm
+        </Button>
+      </Flex>
+      <Link
+        href="https://exchange.pancakeswap.finance/#/add/ETH/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82"
+        target="blank"
+        style={{ margin: 'auto' }}
+      >
+        {`Get ${currency}`}
+        <OpenNewIcon color="primary" ml="8px" />
+      </Link>
+    </Modal>
+  )
+}
+
+export default ContributeModal
