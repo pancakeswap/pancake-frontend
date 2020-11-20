@@ -13,7 +13,7 @@ export default [
     isCommunity: false,
     isFinished: false,
   },
-    {
+  {
     sousId: 17,
     contractAddress: {
       97: '',
