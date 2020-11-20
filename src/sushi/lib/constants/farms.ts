@@ -536,6 +536,45 @@ export default [
     isCommunity: true,
   },
   {
+    pid: 39,
+    lpAddresses: {
+      97: '',
+      56: '0xbEA35584b9a88107102ABEf0BDeE2c4FaE5D8c31',
+    },
+    tokenAddresses: {
+      97: '',
+      56: '0x728C5baC3C3e370E372Fc4671f9ef6916b814d8B',
+    },
+    name: 'UNFI STACKING',
+    symbol: 'UNFI-BNB LP',
+    tokenSymbol: 'UNFI',
+    icon: '🥞',
+    multiplier: '2X',
+    isCommunity: false,
+    dual: {
+      rewardPerBlock: 0.02893,
+      earnLabel: 'CAKE & UNFI',
+      endBlock: 3229250,
+    },
+  },
+  {
+    pid: 40,
+    lpAddresses: {
+      97: '',
+      56: '0xC743Dc05F03D25E1aF8eC5F8228f4BD25513c8d0',
+    },
+    tokenAddresses: {
+      97: '',
+      56: '0x63870A18B6e42b01Ef1Ad8A2302ef50B7132054F',
+    },
+    name: 'BLINk STACKING',
+    symbol: 'BLK-BNB LP',
+    tokenSymbol: 'BLK',
+    icon: '🥞',
+    multiplier: '2X',
+    isCommunity: false,
+  },
+  {
     pid: 8,
     lpAddresses: {
       97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
