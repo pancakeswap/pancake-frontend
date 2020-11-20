@@ -16,7 +16,7 @@ const ifos: Ifo[] = [
     cakeToBurn: '$500,000',
     projectSiteUrl: 'https://blink.wink.org',
     currency: 'CAKE-BNB LP',
-    currencyAddress: '0x009cf7bc57584b7998236eff51b98a168dcea9b0',
+    currencyAddress: '0xA527a61703D82139F8a06Bc30097cC9CAA2df5A6',
   },
 ]
 
