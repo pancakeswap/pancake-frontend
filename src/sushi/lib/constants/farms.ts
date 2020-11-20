@@ -536,8 +536,6 @@ export default [
     isCommunity: true,
   },
   {
-<<<<<<< HEAD
-=======
     pid: 39,
     lpAddresses: {
       97: '',
@@ -577,7 +575,6 @@ export default [
     isCommunity: false,
   },
   {
->>>>>>> add BLK farm
     pid: 8,
     lpAddresses: {
       97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
