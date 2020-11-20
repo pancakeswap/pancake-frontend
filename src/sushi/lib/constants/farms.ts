@@ -32,6 +32,49 @@ export default [
     multiplier: '30X',
   },
   {
+    pid: 37,
+    lpAddresses: {
+      97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
+      56: '0x9f40e8a2fcaa267a0c374b6c661e0b372264cc3d',
+    },
+    tokenAddresses: {
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
+      56: '0xf79037f6f6be66832de4e7516be52826bc3cbcc4',
+    },
+    symbol: 'HARD-BNB LP',
+    tokenSymbol: 'HARD',
+    icon: '🥞',
+    multiplier: '1X',
+    isCommunity: false,
+    dual: {
+      rewardPerBlock: 0.808,
+      earnLabel: 'CAKE & HARD',
+      endBlock: 2857600,
+    },
+  },
+  {
+    pid: 39,
+    lpAddresses: {
+      97: '',
+      56: '0xbEA35584b9a88107102ABEf0BDeE2c4FaE5D8c31',
+    },
+    tokenAddresses: {
+      97: '',
+      56: '0x728C5baC3C3e370E372Fc4671f9ef6916b814d8B',
+    },
+    name: 'UNFI STACKING',
+    symbol: 'UNFI-BNB LP',
+    tokenSymbol: 'UNFI',
+    icon: '🥞',
+    multiplier: '2X',
+    isCommunity: false,
+    dual: {
+      rewardPerBlock: 0.02893,
+      earnLabel: 'CAKE & UNFI',
+      endBlock: 3229250,
+    },
+  },
+  {
     pid: 2,
     lpAddresses: {
       97: '0x2f7682b64b88149ba3250aee32db712964de5fa9',
@@ -476,27 +519,6 @@ export default [
     isCommunity: true,
   },
   {
-    pid: 37,
-    lpAddresses: {
-      97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
-      56: '0x9f40e8a2fcaa267a0c374b6c661e0b372264cc3d',
-    },
-    tokenAddresses: {
-      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
-      56: '0xf79037f6f6be66832de4e7516be52826bc3cbcc4',
-    },
-    symbol: 'HARD-BNB LP',
-    tokenSymbol: 'HARD',
-    icon: '🥞',
-    multiplier: '1X',
-    isCommunity: true,
-    dual: {
-      rewardPerBlock: 0.808,
-      earnLabel: 'CAKE & HARD',
-      endBlock: 2857600,
-    },
-  },
-  {
     pid: 38,
     lpAddresses: {
       97: '',
@@ -512,28 +534,6 @@ export default [
     icon: '🥞',
     multiplier: '0.2X',
     isCommunity: true,
-  },
-  {
-    pid: 39,
-    lpAddresses: {
-      97: '',
-      56: '0xbEA35584b9a88107102ABEf0BDeE2c4FaE5D8c31',
-    },
-    tokenAddresses: {
-      97: '',
-      56: '0x728C5baC3C3e370E372Fc4671f9ef6916b814d8B',
-    },
-    name: 'UNFI STACKING',
-    symbol: 'UNFI-BNB LP',
-    tokenSymbol: 'UNFI',
-    icon: '🥞',
-    multiplier: '2X',
-    isCommunity: false,
-    dual: {
-      rewardPerBlock: 0.02893,
-      earnLabel: 'CAKE & UNFI',
-      endBlock: 3229250,
-    },
   },
   {
     pid: 8,
