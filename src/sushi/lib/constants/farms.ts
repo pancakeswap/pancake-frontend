@@ -66,7 +66,7 @@ export default [
     symbol: 'UNFI-BNB LP',
     tokenSymbol: 'UNFI',
     icon: '🥞',
-    multiplier: '2X',
+    multiplier: '1X',
     isCommunity: false,
     dual: {
       rewardPerBlock: 0.02893,
