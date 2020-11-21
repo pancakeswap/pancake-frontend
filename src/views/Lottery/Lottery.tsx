@@ -2,6 +2,7 @@ import React, { useEffect, useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { Switch } from 'react-router-dom'
 import { useWallet } from 'use-wallet'
+import { Heading, Card, CardBody, Button, BaseLayout } from '@pancakeswap-libs/uikit'
 import { getLotteryContract, getLotteryIssueIndex } from 'sushi/lotteryUtils'
 import { getBalanceNumber } from 'utils/formatBalance'
 import useGetLotteryHasDrawn from 'hooks/useGetLotteryHasDrawn'
@@ -15,7 +16,29 @@ import Divider from './components/Divider'
 import PrizeCard from './components/PrizeCard'
 import TicketCard from './components/TicketCard'
 import LotteryCountdown from './components/LotteryCountdown'
+import TotalPrizesCard from './components/TotalPrizesCard'
 import WinningNumbers from './components/WinningNumbers'
+
+const Cards = styled(BaseLayout)`
+  align-items: start;
+  margin-bottom: 48px;
+
+  & > div {
+    grid-column: span 6;
+  }
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    & > div {
+      grid-column: span 8;
+    }
+  }
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    & > div {
+      grid-column: span 6;
+    }
+  }
+`
 
 const Lottery: React.FC = () => {
   const { account } = useWallet()
@@ -49,6 +72,10 @@ const Lottery: React.FC = () => {
         <Hero />
         <Container>
           <Divider />
+          {/* NextDraw */}
+          <Cards>
+            <TotalPrizesCard />
+          </Cards>
           {account && (
             <Subtitle>
               {!lotteryHasDrawn ? `#${index - 2} - Phase 1 - Buy Tickets` : `#${index - 2} - Phase 2 - Claim Winnings`}
