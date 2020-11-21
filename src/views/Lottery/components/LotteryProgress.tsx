@@ -29,12 +29,12 @@ const StyledPrimaryText = styled(Text)`
   margin-right: 16px;
 `
 
-const getMinutes = (msTimeValue) => (msTimeValue % 3600) / 60
-const getHours = (msTimeValue) => (msTimeValue % (3600 * 24)) / 3600
+const getMinutes = (msTimeValue) => Math.floor((msTimeValue % 3600000) / 60000)
+const getHours = (msTimeValue) => Math.floor((msTimeValue % (3600000 * 24)) / 3600000)
 const hoursAndMinutesString = (hours, minutes) => `${parseInt(hours)}h, ${parseInt(minutes)}m`
 
 const getTicketSaleTime = (currentTime): string => {
-  const endTime = (parseInt(currentTime / 3600) + 1) * 3600
+  const endTime = currentTime / 3600 + 1 * 3600
   const timeDifference = endTime - currentTime
   const minutes = getMinutes(timeDifference)
   const hours = getHours(timeDifference)
@@ -42,9 +42,13 @@ const getTicketSaleTime = (currentTime): string => {
 }
 
 const getLotteryDrawTime = (currentTime): string => {
-  const timeDifference = (parseInt(currentTime / 21600) + 1) * 21600 + 7200
-  const minutes = getMinutes(timeDifference)
-  const hours = getHours(timeDifference)
+  // lottery is every 6 hrs (21600000 ms)
+  // so they are at 00:00, 06:00, 12:00, 18:00
+  // break the current time into chunks of 6hrs (/ 21600000), add one more 6hr unit, multiply by 6hrs to get it back to current timex
+  const nextLotteryDraw = (parseInt(currentTime / 21600000) + 1) * 21600000
+  const timeUntilLotteryDraw = nextLotteryDraw - currentTime
+  const minutes = getMinutes(timeUntilLotteryDraw)
+  const hours = getHours(timeUntilLotteryDraw)
   return hoursAndMinutesString(hours, minutes)
 }
 
@@ -52,20 +56,20 @@ const getTicketSaleStep = () => ''
 
 const getLotteryDrawStep = (currentTime) => {
   const msBetweenLotteries = 21600000
-  const endTime = (parseInt(currentTime / 21600) + 1) * 21600 + 7200
+  const endTime = currentTime / 21600 + 1 * 21600 + 7200
   const msUntilLotteryDraw = (endTime - currentTime) * 1000
   return (msUntilLotteryDraw / msBetweenLotteries) * 100
 }
 
 const Hero = () => {
-  const [currentTime, setCurrentTime] = useState(Date.parse(new Date()) / 1000)
+  const [currentTime, setCurrentTime] = useState(Date.now())
   const TranslateString = useI18n()
   const ticketSaleNotYetStarted = useGetLotteryHasDrawn()
   const timeUntilTicketSale = getTicketSaleTime(currentTime)
   const timeUntilLotteryDraw = getLotteryDrawTime(currentTime)
 
   const tick = () => {
-    setCurrentTime(currentTime + 1)
+    setCurrentTime(currentTime + 1000)
   }
 
   useEffect(() => {
