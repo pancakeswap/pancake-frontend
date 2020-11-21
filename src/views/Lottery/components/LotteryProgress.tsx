@@ -34,10 +34,10 @@ const getHours = (msTimeValue) => Math.floor((msTimeValue % (3600000 * 24)) / 36
 const hoursAndMinutesString = (hours, minutes) => `${parseInt(hours)}h, ${parseInt(minutes)}m`
 
 const getTicketSaleTime = (currentTime): string => {
-  const endTime = currentTime / 3600 + 1 * 3600
-  const timeDifference = endTime - currentTime
-  const minutes = getMinutes(timeDifference)
-  const hours = getHours(timeDifference)
+  const endTime = (parseInt(currentTime / 3600000) + 1) * 3600000
+  const timeUntilNextTicketSale = endTime - currentTime
+  const minutes = getMinutes(timeUntilNextTicketSale)
+  const hours = getHours(timeUntilNextTicketSale)
   return hoursAndMinutesString(hours, minutes)
 }
 
@@ -64,7 +64,7 @@ const getLotteryDrawStep = (currentTime) => {
 const Hero = () => {
   const [currentTime, setCurrentTime] = useState(Date.now())
   const TranslateString = useI18n()
-  const ticketSaleNotYetStarted = useGetLotteryHasDrawn()
+  const lotteryHasDrawn = useGetLotteryHasDrawn()
   const timeUntilTicketSale = getTicketSaleTime(currentTime)
   const timeUntilLotteryDraw = getLotteryDrawTime(currentTime)
 
@@ -82,13 +82,13 @@ const Hero = () => {
       <Progress step={getLotteryDrawStep(currentTime)} />
       <TopTextWrapper>
         <StyledPrimaryText fontSize="20px" bold>
-          {ticketSaleNotYetStarted ? timeUntilTicketSale : timeUntilLotteryDraw}
+          {lotteryHasDrawn ? timeUntilTicketSale : timeUntilLotteryDraw}
         </StyledPrimaryText>
         <Text fontSize="20px" bold color="contrast">
-          {ticketSaleNotYetStarted ? TranslateString(0, 'Until ticket sale') : TranslateString(0, 'Until lottery draw')}
+          {lotteryHasDrawn ? TranslateString(0, 'Until ticket sale') : TranslateString(0, 'Until lottery draw')}
         </Text>
       </TopTextWrapper>
-      {ticketSaleNotYetStarted ? (
+      {lotteryHasDrawn ? (
         <BottomTextWrapper>
           <Text>
             {timeUntilLotteryDraw} {TranslateString(0, 'Until lottery draw')}
