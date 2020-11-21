@@ -24,13 +24,16 @@ export const getLotteryDrawTime = (currentTime): string => {
   return hoursAndMinutesString(hours, minutes)
 }
 
-export const getTicketSaleStep = () => {
+export const getTicketSaleStep = (currentTime) => {
   const msBetweenLotteries = 21600000
+  const endTime = getNextTicketSaleTime(currentTime)
+  const msUntilTicketSale = endTime - currentTime
+  return (msUntilTicketSale / msBetweenLotteries) * 100
 }
 
 export const getLotteryDrawStep = (currentTime) => {
   const msBetweenLotteries = 21600000
-  const endTime = currentTime / 21600 + 1 * 21600 + 7200
-  const msUntilLotteryDraw = (endTime - currentTime) * 1000
+  const endTime = getNextLotteryDrawTime(currentTime)
+  const msUntilLotteryDraw = endTime - currentTime
   return (msUntilLotteryDraw / msBetweenLotteries) * 100
 }
