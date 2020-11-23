@@ -30,5 +30,5 @@ export const getLotteryDrawStep = (currentTime) => {
   const msBetweenLotteries = 21600000
   const endTime = getNextLotteryDrawTime(currentTime)
   const msUntilLotteryDraw = endTime - currentTime
-  return msBetweenLotteries / msUntilLotteryDraw - 1
+  return (msBetweenLotteries / msUntilLotteryDraw - 1) * 100
 }
