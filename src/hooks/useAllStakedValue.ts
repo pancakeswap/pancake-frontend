@@ -28,7 +28,7 @@ const useAllStakedValue = () => {
 
   useEffect(() => {
     const fetchAllStakedValue = async () => {
-      const balances: Array<StakedValue> = await Promise.all(
+      const res: Array<StakedValue> = await Promise.all(
         farms.map(
           ({
             pid,
@@ -43,7 +43,7 @@ const useAllStakedValue = () => {
           }) => getTotalLPWethValue(masterChefContract, wethContact, lpContract, tokenContract, pid, tokenSymbol),
         ),
       )
-      setBalance(balances)
+      setBalance(res)
     }
 
     if (account && masterChefContract && sushi) {

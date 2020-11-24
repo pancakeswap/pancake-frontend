@@ -18,12 +18,12 @@ const useAllEarnings = () => {
 
   useEffect(() => {
     const fetchAllBalances = async () => {
-      const balances: Array<BigNumber> = await Promise.all(
+      const res: Array<BigNumber> = await Promise.all(
         farms.map(({ pid }: { pid: number }) => {
           return getEarned(masterChefContract, pid, account)
         }),
       )
-      setBalance(balances)
+      setBalance(res)
     }
 
     if (account && masterChefContract && sushi) {
