@@ -5,7 +5,6 @@ import Container from 'components/layout/Container'
 import useI18n from 'hooks/useI18n'
 
 const StyledHero = styled.div`
-  padding-bottom: 32px;
   padding-top: 32px;
 `
 const Hero = () => {

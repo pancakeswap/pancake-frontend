@@ -5,6 +5,7 @@ import useI18n from 'hooks/useI18n'
 import Page from 'components/layout/Page'
 import Container from 'components/layout/Container'
 import Hero from './components/Hero'
+import Menu from './components/Menu'
 import NftCard from './components/NftCard'
 
 const Grid = styled(BaseLayout)`
@@ -25,6 +26,7 @@ const Nft = () => {
     <Page>
       <Hero />
       <Container>
+        <Menu />
         <Grid>
           <div>
             <NftCard />
