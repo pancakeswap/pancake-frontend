@@ -2,31 +2,15 @@ import React from 'react'
 import styled from 'styled-components'
 import { Button, Card, CardBody, Heading, Text, Tag } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
+import InfoRow from '../InfoRow'
+import NftLink from '../NftLink'
 
 const NftImage = styled.div`
   overflow: hidden;
 `
 
-const Info = styled.div`
-  align-items: center;
-  display: flex;
-
-  *:first-child {
-    flex: 1;
-  }
-
-  *:last-child {
-    text-align: right;
-  }
-`
-
-const Header = styled(Info)`
+const Header = styled(InfoRow)`
   margin-bottom: 24px;
-`
-
-const Link = styled.a`
-  color: ${({ theme }) => theme.colors.primary};
-  text-decoration: underline;
 `
 
 const NftCard = () => {
@@ -44,25 +28,25 @@ const NftCard = () => {
             {TranslateString(526, 'Available')}
           </Tag>
         </Header>
-        <Info>
+        <InfoRow>
           <Text>{TranslateString(999, 'Value')}:</Text>
           <Text>100 CAKE</Text>
-        </Info>
-        <Info>
+        </InfoRow>
+        <InfoRow>
           <Text>{TranslateString(999, 'Time left to trade in')}:</Text>
-          <Link href="https://pancakeswap.info">100 Blocks</Link>
-        </Info>
+          <NftLink href="https://pancakeswap.info">100 Blocks</NftLink>
+        </InfoRow>
         <Button fullWidth my="24px">
           {TranslateString(999, 'Claim this NFT')}
         </Button>
-        <Info>
+        <InfoRow>
           <Text>{TranslateString(999, 'Series')}</Text>
           <Text>1</Text>
-        </Info>
-        <Info>
+        </InfoRow>
+        <InfoRow>
           <Text>{TranslateString(999, 'Number already minted')}:</Text>
           <Text>300</Text>
-        </Info>
+        </InfoRow>
       </CardBody>
     </Card>
   )
