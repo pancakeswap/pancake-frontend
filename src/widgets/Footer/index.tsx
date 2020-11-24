@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import Link from "../../components/Link";
+import { Link } from "../../components/Link";
 import config from "./config";
 
 const StyledFooter = styled.footer`
@@ -8,11 +8,11 @@ const StyledFooter = styled.footer`
   justify-content: center;
   flex-direction: column;
   padding: 32px;
-  ${Link}:not(:last-child) {
+  a:not(:last-child) {
     margin-bottom: 16px;
   }
   ${({ theme }) => theme.mediaQueries.sm} {
-    ${Link}:not(:last-child) {
+    a:not(:last-child) {
       margin-bottom: 0;
       margin-right: 32px;
     }

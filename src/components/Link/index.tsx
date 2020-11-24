@@ -1,8 +1,13 @@
+import React, { AnchorHTMLAttributes } from "react";
 import styled from "styled-components";
-import { AnchorHTMLAttributes } from "react";
-import Text from "../Text";
+import Text, { TextProps } from "../Text";
+import OpenNewIcon from "../Svg/Icons/OpenNew";
 
-const Link = styled(Text).attrs({ as: "a", bold: true })<AnchorHTMLAttributes<HTMLAnchorElement>>`
+interface LinkProps extends TextProps, AnchorHTMLAttributes<HTMLAnchorElement> {
+  external?: boolean;
+}
+
+const StyledLink = styled(Text)<LinkProps>`
   display: flex;
   align-items: center;
   color: ${({ theme }) => theme.colors.primary};
@@ -12,4 +17,23 @@ const Link = styled(Text).attrs({ as: "a", bold: true })<AnchorHTMLAttributes<HT
   }
 `;
 
-export default Link;
+const Link: React.FC<LinkProps> = ({ external, ...props }) => {
+  const internalProps = external
+    ? {
+        target: "_blank",
+        rel: "noreferrer noopener",
+      }
+    : {};
+  return <StyledLink as="a" bold {...internalProps} {...props} />;
+};
+
+const LinkExternal: React.FC<LinkProps> = ({ children, ...props }) => {
+  return (
+    <Link external {...props}>
+      {children}
+      <OpenNewIcon color="primary" ml="4px" />
+    </Link>
+  );
+};
+
+export { Link, LinkExternal };

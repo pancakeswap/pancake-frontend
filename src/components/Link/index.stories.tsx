@@ -1,6 +1,6 @@
 import React from "react";
 import { PancakesIcon } from "../Svg";
-import Link from "./index";
+import { Link, LinkExternal } from "./index";
 
 export default {
   title: "Link",
@@ -26,10 +26,18 @@ export const Default: React.FC = () => {
         <Link href="/">Default</Link>
       </div>
       <div>
+        <Link external href="/">
+          External
+        </Link>
+      </div>
+      <div>
         <Link href="/">
           With icon
           <PancakesIcon />
         </Link>
+      </div>
+      <div>
+        <LinkExternal href="/">LinkExternal</LinkExternal>
       </div>
     </div>
   );
