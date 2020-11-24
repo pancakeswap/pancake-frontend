@@ -13,6 +13,7 @@ import Pools from './views/Pools'
 import Ifo from './views/Ifo'
 import RegisterToWinPage from './views/Nft/RegisterToWinPage'
 import NotFound from './views/NotFound'
+import Nft from './views/Nft'
 
 const App: React.FC = () => {
   const { account, connect } = useWallet()
