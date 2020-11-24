@@ -26,7 +26,6 @@
     "radix": 0,
     "no-await-in-loop": 0,
     "eqeqeq": 0,
-    "@typescript-eslint/no-shadow": 0,
     "no-irregular-whitespace": 0,
     "import/no-extraneous-dependencies": 0,
     "prefer-spread": 0,

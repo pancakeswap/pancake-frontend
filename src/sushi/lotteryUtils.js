@@ -14,7 +14,7 @@ export const multiCall = async (sushi, abi, calls) => {
       const calldata = newCalls.map((call) => [call[0].toLowerCase(), itf.encodeFunctionData(call[1], call[2])])
       const { returnData } = await multicall.methods.aggregate(calldata).call()
       i++
-      res = res.concat(returnData.map((call, i) => itf.decodeFunctionResult(newCalls[i][1], call)))
+      res = res.concat(returnData.map((call, index) => itf.decodeFunctionResult(newCalls[index][1], call)))
     }
   } else {
     const calldata = calls.map((call) => [call[0].toLowerCase(), itf.encodeFunctionData(call[1], call[2])])

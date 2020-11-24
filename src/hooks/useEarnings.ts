@@ -22,8 +22,8 @@ const useEarnings = (pid: number) => {
 
   useEffect(() => {
     const fetchBalance = async () => {
-      const balance = await getEarned(masterChefContract, pid, account)
-      setBalance(new BigNumber(balance))
+      const res = await getEarned(masterChefContract, pid, account)
+      setBalance(new BigNumber(res))
     }
 
     if (account && masterChefContract && sushi) {
@@ -45,11 +45,11 @@ export const useSousEarnings = (sousId) => {
   useEffect(() => {
     const fetchBalance = async () => {
       if (sousId === 0) {
-        const balance = await getEarned(masterChefContract, '0', account)
-        setBalance(new BigNumber(balance))
+        const res = await getEarned(masterChefContract, '0', account)
+        setBalance(new BigNumber(res))
       } else {
-        const balance = await getSousEarned(sousChefContract, account)
-        setBalance(new BigNumber(balance))
+        const res = await getSousEarned(sousChefContract, account)
+        setBalance(new BigNumber(res))
       }
     }
 

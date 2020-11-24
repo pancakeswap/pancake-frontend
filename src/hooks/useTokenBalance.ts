@@ -15,8 +15,8 @@ const useTokenBalance = (tokenAddress: string) => {
 
   useEffect(() => {
     const fetchBalance = async () => {
-      const balance = await getBalance(ethereum, tokenAddress, account)
-      setBalance(new BigNumber(balance))
+      const res = await getBalance(ethereum, tokenAddress, account)
+      setBalance(new BigNumber(res))
     }
 
     if (account && ethereum) {
@@ -52,8 +52,8 @@ export const useBurnedBalance = (tokenAddress: string) => {
 
   useEffect(() => {
     const fetchBalance = async () => {
-      const balance = await getBalance(ethereum, tokenAddress, '0x000000000000000000000000000000000000dEaD')
-      setBalance(new BigNumber(balance))
+      const res = await getBalance(ethereum, tokenAddress, '0x000000000000000000000000000000000000dEaD')
+      setBalance(new BigNumber(res))
     }
 
     if (account && ethereum) {
@@ -71,8 +71,8 @@ export const useTokenBalance2 = (tokenAddress: string, account2: string) => {
 
   useEffect(() => {
     const fetchBalance = async () => {
-      const balance = await getBalance(ethereum, tokenAddress, account2)
-      setBalance(getBalanceNumber(new BigNumber(balance)))
+      const res = await getBalance(ethereum, tokenAddress, account2)
+      setBalance(getBalanceNumber(new BigNumber(res)))
     }
 
     if (account && ethereum) {

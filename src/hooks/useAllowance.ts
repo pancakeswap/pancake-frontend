@@ -16,8 +16,8 @@ const useAllowance = (lpContract: Contract) => {
 
   useEffect(() => {
     const fetchAllowance = async () => {
-      const allowance = await getAllowance(lpContract, masterChefContract, account)
-      setAllowance(new BigNumber(allowance))
+      const res = await getAllowance(lpContract, masterChefContract, account)
+      setAllowance(new BigNumber(res))
     }
 
     if (account && masterChefContract && lpContract) {
@@ -38,8 +38,8 @@ export const useSousAllowance = (lpContract: Contract, sousId) => {
 
   useEffect(() => {
     const fetchAllowance = async () => {
-      const allowance = await getAllowance(lpContract, sousChefContract, account)
-      setAllowance(new BigNumber(allowance))
+      const res = await getAllowance(lpContract, sousChefContract, account)
+      setAllowance(new BigNumber(res))
     }
 
     if (account && sousChefContract && lpContract) {
@@ -61,8 +61,8 @@ export const useLotteryAllowance = () => {
 
   useEffect(() => {
     const fetchAllowance = async () => {
-      const allowance = await getAllowance(cakeContract, lotteryContract, account)
-      setAllowance(new BigNumber(allowance))
+      const res = await getAllowance(cakeContract, lotteryContract, account)
+      setAllowance(new BigNumber(res))
     }
 
     if (account && cakeContract && cakeContract) {

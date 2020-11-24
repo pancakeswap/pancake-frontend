@@ -15,8 +15,8 @@ const useStakedBalance = (pid: number) => {
   const block = useBlock()
 
   const fetchBalance = useCallback(async () => {
-    const balance = await getStaked(masterChefContract, pid, account)
-    setBalance(new BigNumber(balance))
+    const res = await getStaked(masterChefContract, pid, account)
+    setBalance(new BigNumber(res))
   }, [account, masterChefContract, pid])
 
   useEffect(() => {
@@ -38,11 +38,11 @@ export const useSousStakedBalance = (sousId) => {
 
   const fetchBalance = useCallback(async () => {
     if (sousId === 0) {
-      const balance = await getStaked(masterChefContract, '0', account)
-      setBalance(new BigNumber(balance))
+      const res = await getStaked(masterChefContract, '0', account)
+      setBalance(new BigNumber(res))
     } else {
-      const balance = await getSousStaked(sousChefContract, account)
-      setBalance(new BigNumber(balance))
+      const res = await getSousStaked(sousChefContract, account)
+      setBalance(new BigNumber(res))
     }
   }, [sousId, masterChefContract, account, sousChefContract])
 
@@ -63,8 +63,8 @@ export const useSousTotalStaked = (sousId) => {
   const block = useBlock()
 
   const fetchBalance = useCallback(async () => {
-    const balance = await getTotalStaked(sushi, sousChefContract)
-    setBalance(new BigNumber(balance))
+    const res = await getTotalStaked(sushi, sousChefContract)
+    setBalance(new BigNumber(res))
   }, [sushi, sousChefContract])
 
   useEffect(() => {
