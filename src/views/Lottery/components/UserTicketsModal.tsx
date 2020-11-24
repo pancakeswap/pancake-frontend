@@ -18,6 +18,7 @@ const UserTicketsModal: React.FC<UserTicketsModalProps> = ({ myTicketNumbers, on
     (number) => {
       let n = 0
       for (let i = winNumbers.length - 1; i >= 0; i--) {
+        // eslint-disable-next-line eqeqeq
         if (winNumbers[i] == number[i]) n++
       }
       return n
