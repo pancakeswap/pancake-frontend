@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React from 'react'
 import styled from 'styled-components'
 import { Text, Heading, BaseLayout, Button, Link, OpenNewIcon, Flex } from '@pancakeswap-libs/uikit'

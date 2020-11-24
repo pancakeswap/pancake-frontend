@@ -54,7 +54,7 @@ const PrizeCard: React.FC = () => {
             <StyledCardActions>
               {!account && <UnlockButton fullWidth />}
               {account && (
-                <Button fullWidth disabled={getBalanceNumber(claimAmount) == 0 || requesteClaim} onClick={handleClaim}>
+                <Button fullWidth disabled={getBalanceNumber(claimAmount) === 0 || requesteClaim} onClick={handleClaim}>
                   {TranslateString(480, 'Claim prizes')}
                 </Button>
               )}
