@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Text, Heading, BaseLayout, Button, Link, LinkExternal, Flex } from '@pancakeswap-libs/uikit'
+import { Text, Heading, BaseLayout, Button, LinkExternal, Flex } from '@pancakeswap-libs/uikit'
 import { ifosConfig } from 'sushi/lib/constants'
 import useI18n from 'hooks/useI18n'
 import Page from 'components/layout/Page'
