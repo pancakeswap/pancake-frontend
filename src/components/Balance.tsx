@@ -10,15 +10,16 @@ interface TextProps {
 }
 
 interface BalanceProps extends TextProps {
-  value: number
+  value?: number
   decimals?: number
+  unit?: string
 }
 
 const StyledText = styled(Text)<TextProps>`
   color: ${({ isDisabled, color, theme }) => (isDisabled ? theme.colors.textDisabled : color)};
 `
 
-const Balance: React.FC<BalanceProps> = ({ value, fontSize, color, decimals, isDisabled }) => {
+const Balance: React.FC<BalanceProps> = ({ value, fontSize, color, decimals, isDisabled, unit }) => {
   const previousValue = useRef(0)
 
   useEffect(() => {
@@ -28,6 +29,7 @@ const Balance: React.FC<BalanceProps> = ({ value, fontSize, color, decimals, isD
   return (
     <StyledText bold color={color} fontSize={fontSize} isDisabled={isDisabled}>
       <CountUp start={previousValue.current} end={value} decimals={decimals} duration={1} separator="," />
+      {value && unit && <span>{unit}</span>}
     </StyledText>
   )
 }

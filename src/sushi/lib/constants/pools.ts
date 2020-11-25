@@ -193,6 +193,7 @@ export default [
     sortOrder: 999,
     isCommunity: false,
     isFinished: true,
+    isOldSyrup: true,
   },
   {
     sousId: 5,
@@ -206,6 +207,7 @@ export default [
     sortOrder: 999,
     isCommunity: false,
     isFinished: true,
+    isOldSyrup: true,
   },
   {
     sousId: 4,
@@ -234,6 +236,7 @@ export default [
     sortOrder: 999,
     isCommunity: false,
     isFinished: true,
+    isOldSyrup: true,
   },
   {
     sousId: 2,
@@ -262,6 +265,7 @@ export default [
     sortOrder: 999,
     isCommunity: false,
     isFinished: true,
+    isOldSyrup: true,
   },
   {
     sousId: -1,
