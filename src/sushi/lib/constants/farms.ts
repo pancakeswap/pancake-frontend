@@ -88,7 +88,7 @@ export default [
     symbol: 'BLK-BNB LP',
     tokenSymbol: 'BLK',
     icon: '🥞',
-    multiplier: '2X',
+    multiplier: '1X',
     isCommunity: false,
   },
   {

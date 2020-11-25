@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useWallet } from 'use-wallet'
 import BigNumber from 'bignumber.js'
-import { Modal, Button, Flex, Link, LinkExternal } from '@pancakeswap-libs/uikit'
+import { Modal, Button, Flex, LinkExternal } from '@pancakeswap-libs/uikit'
 import BalanceInput from 'components/Input/BalanceInput'
 import useTokenBalance from 'hooks/useTokenBalance'
 import { getFullDisplayBalance } from 'utils/formatBalance'
