@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Text, Heading, BaseLayout, Button, Link, OpenNewIcon, Flex } from '@pancakeswap-libs/uikit'
+import { Text, Heading, BaseLayout, Button, Link, LinkExternal, Flex } from '@pancakeswap-libs/uikit'
 import { ifosConfig } from 'sushi/lib/constants'
 import useI18n from 'hooks/useI18n'
 import Page from 'components/layout/Page'
@@ -62,17 +62,12 @@ const Ifo = () => {
               <li>{TranslateString(598, 'Get CAKE-BNB LP tokens by adding CAKE and BNB liquidity')}</li>
             </List>
             <Flex mb="16px">
-              <Link href="https://exchange.pancakeswap.finance/#/swap" target="blank" mr="16px">
+              <LinkExternal href="https://exchange.pancakeswap.finance/#/swap" mr="16px">
                 {TranslateString(999, 'Buy cake')}
-                <OpenNewIcon color="primary" ml="4px" />
-              </Link>
-              <Link
-                href="https://exchange.pancakeswap.finance/#/add/ETH/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82"
-                target="blank"
-              >
+              </LinkExternal>
+              <LinkExternal href="https://exchange.pancakeswap.finance/#/add/ETH/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82">
                 {TranslateString(999, 'Get LP tokens')}
-                <OpenNewIcon color="primary" ml="4px" />
-              </Link>
+              </LinkExternal>
             </Flex>
             <Heading mb="16px">{TranslateString(600, 'During Sale')}:</Heading>
             <List>
@@ -108,6 +103,7 @@ const Ifo = () => {
               <Button
                 as="a"
                 href="https://docs.google.com/forms/d/e/1FAIpQLScGdT5rrVMr4WOWr08pvcroSeuIOtEJf1sVdQGVdcAOqryigQ/viewform"
+                // @ts-ignore
                 target="_blank"
                 rel="noopener noreferrer"
               >
