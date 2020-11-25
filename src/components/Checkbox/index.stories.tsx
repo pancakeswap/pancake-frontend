@@ -9,8 +9,13 @@ export default {
 
 export const Default: React.FC = () => {
   return (
-    <div>
-      <Checkbox />
-    </div>
+    <>
+      <div style={{ marginBottom: "32px" }}>
+        <Checkbox />
+      </div>
+      <div>
+        <Checkbox scale="sm" />
+      </div>
+    </>
   );
 };
