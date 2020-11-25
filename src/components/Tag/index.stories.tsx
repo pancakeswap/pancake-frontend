@@ -52,30 +52,38 @@ export const Default: React.FC = () => {
       <Row>
         <Tag>Core</Tag>
         <Tag variant="pink">Community</Tag>
-      </Row>
-      <Row>
-        <Tag startIcon={<CommunityIcon />}>Core</Tag>
-        <Tag startIcon={<CoreIcon />} variant="pink">
-          Community
-        </Tag>
-        <Tag startIcon={<CoreIcon />} endIcon={<CoreIcon />} variant="pink">
-          Start & End Icon
-        </Tag>
+        <Tag variant="green">Available</Tag>
+        <Tag variant="gray">Gray</Tag>
       </Row>
       <Row>
         <Tag outline>Core</Tag>
         <Tag variant="pink" outline>
           Community
         </Tag>
+        <Tag variant="green" outline>
+          Available
+        </Tag>
+        <Tag variant="gray" outline>
+          Gray
+        </Tag>
       </Row>
       <Row>
-        <Tag startIcon={<CommunityIcon />} outline>
-          Core
+        <Tag startIcon={<CommunityIcon />}>Start Icon</Tag>
+        <Tag startIcon={<CoreIcon />} variant="pink">
+          End Icon
         </Tag>
-        <Tag startIcon={<CoreIcon />} variant="pink" outline>
-          Community
+        <Tag startIcon={<CoreIcon />} endIcon={<CoreIcon />} variant="pink">
+          Start & End Icon
         </Tag>
-        <Tag startIcon={<CoreIcon />} endIcon={<CoreIcon />} variant="pink" outline>
+      </Row>
+      <Row>
+        <Tag outline startIcon={<CommunityIcon />}>
+          Start Icon
+        </Tag>
+        <Tag outline startIcon={<CoreIcon />} variant="pink">
+          End Icon
+        </Tag>
+        <Tag outline startIcon={<CoreIcon />} endIcon={<CoreIcon />} variant="pink">
           Start & End Icon
         </Tag>
       </Row>

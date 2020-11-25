@@ -62,6 +62,7 @@ export const StyledTag = styled.div<ThemedProps>`
   height: 28px;
   line-height: 1.5;
   padding: 0 8px;
+
   svg {
     fill: ${getColor};
   }

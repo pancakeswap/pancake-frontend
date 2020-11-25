@@ -3,6 +3,8 @@ import { ReactNode } from "react";
 export const variants = {
   PINK: "pink",
   PURPLE: "purple",
+  GREEN: "green",
+  GRAY: "gray",
 } as const;
 
 export type Variants = typeof variants[keyof typeof variants];

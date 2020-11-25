@@ -15,12 +15,30 @@ const purpleTheme = {
   borderColorOutline: lightColors.secondary,
 };
 
+const greenTheme = {
+  background: lightColors.success,
+  color: "#FFFFFF",
+  colorOutline: lightColors.success,
+  borderColorOutline: lightColors.success,
+};
+
+const grayTheme = {
+  background: lightColors.textDisabled,
+  color: "#FFFFFF",
+  colorOutline: lightColors.textDisabled,
+  borderColorOutline: lightColors.textDisabled,
+};
+
 export const light: TagTheme = {
   pink: pinkTheme,
   purple: purpleTheme,
+  green: greenTheme,
+  gray: grayTheme,
 };
 
 export const dark: TagTheme = {
   pink: pinkTheme,
   purple: purpleTheme,
+  green: greenTheme,
+  gray: grayTheme,
 };

@@ -1,7 +1,7 @@
 import React from "react";
 import Flex from "./index";
 import Text from "../Text";
-import Link from "../Link";
+import { Link } from "../Link";
 
 export default {
   title: "Flex",
