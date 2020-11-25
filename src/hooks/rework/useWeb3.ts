@@ -3,8 +3,9 @@ import Web3 from 'web3'
 import { HttpProviderOptions } from 'web3-core-helpers'
 import { provider as ProviderType } from 'web3-core'
 import { useWallet } from 'use-wallet'
+import getRpcUrl from 'utils/getRpcUrl'
 
-const RPC_URL = process.env.REACT_APP_RPC_URL
+const RPC_URL = getRpcUrl()
 const httpProvider = new Web3.providers.HttpProvider(RPC_URL, {} as HttpProviderOptions)
 
 /**
