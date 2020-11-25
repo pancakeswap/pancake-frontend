@@ -1,7 +1,7 @@
 import React, { AnchorHTMLAttributes } from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
-import Button from "../../components/Button";
+import Button from "../../components/Button/Button";
 
 const MenuButton = styled(Button)`
   padding: 0 8px;

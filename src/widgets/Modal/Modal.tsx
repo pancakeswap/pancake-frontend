@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Heading from "../../components/Heading";
-import Button from "../../components/Button";
+import Button from "../../components/Button/Button";
 import Flex from "../../components/Flex";
 import { CloseIcon } from "../../components/Svg";
 

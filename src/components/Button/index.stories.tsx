@@ -1,7 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import { LogoIcon } from "../Svg";
-import Button from "./index";
+import { LogoIcon, AddIcon } from "../Svg";
+import Button from "./Button";
+import IconButton from "./IconButton";
 
 const Row = styled.div`
   margin-bottom: 32px;
@@ -123,5 +124,28 @@ export const WithIcon: React.FC = () => {
         Start & End Icon
       </Button>
     </Row>
+  );
+};
+
+export const Icons: React.FC = () => {
+  return (
+    <>
+      <Row>
+        <IconButton>
+          <LogoIcon />
+        </IconButton>
+        <IconButton>
+          <AddIcon />
+        </IconButton>
+      </Row>
+      <Row>
+        <IconButton size="sm">
+          <LogoIcon />
+        </IconButton>
+        <IconButton size="sm">
+          <AddIcon />
+        </IconButton>
+      </Row>
+    </>
   );
 };

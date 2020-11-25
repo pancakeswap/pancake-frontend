@@ -1,5 +1,5 @@
 import React from "react";
-import Button from "../Button";
+import Button from "../Button/Button";
 import { sizes } from "../Button/types";
 import { ButtonMenuItemProps } from "./types";
 
