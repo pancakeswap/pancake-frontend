@@ -3,7 +3,8 @@ import React, { useCallback, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { Button, useModal, AddIcon } from '@pancakeswap-libs/uikit'
 import { useWallet } from 'use-wallet'
-import { Contract } from 'web3-eth-contract'
+import { provider } from 'web3-core'
+import { getContract } from 'utils/erc20'
 import { BLOCKS_PER_YEAR } from 'config'
 import UnlockButton from 'components/UnlockButton'
 import Label from 'components/Label'
@@ -14,7 +15,7 @@ import { useSousEarnings, useSousLeftBlocks } from 'hooks/useEarnings'
 import { useSousStake } from 'hooks/useStake'
 import useSushi from 'hooks/useSushi'
 import { useSousStakedBalance, useSousTotalStaked } from 'hooks/useStakedBalance'
-import useTokenBalance from 'hooks/useTokenBalance'
+import useTokenBalance, { useTokenBalance2 } from 'hooks/useTokenBalance'
 import { useSousUnstake } from 'hooks/useUnstake'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useSousReward } from 'hooks/useReward'
@@ -30,7 +31,6 @@ import HarvestButton from './HarvestButton'
 import CardFooter from './CardFooter'
 
 interface HarvestProps {
-  syrup: Contract
   tokenName: string
   sousId: number
   projectLink: string
@@ -40,21 +40,30 @@ interface HarvestProps {
   tokenPrice: BigNumber
   isCommunity?: boolean
   isFinished?: boolean
+  isOldSyrup?: boolean
 }
 
-/**
- * Temporary code
- *
- * 1. Mark this pool as finished
- * 2. Do not let people stake
- * 3. Let people unstake
- *
- * TODO - when all CAKE is unstaked we can remove this
- */
-const SYRUPIDS = [5, 6, 3, 1]
+const CAKE_ADDRESS = '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82'
+const COMMUNITY_ADDR = {
+  STAX: {
+    lp: '0x7cd05f8b960ba071fdf69c750c0e5a57c8366500',
+    token: '0x0Da6Ed8B13214Ff28e9Ca979Dd37439e8a88F6c4',
+  },
+  NAR: {
+    lp: '0x745c4fd226e169d6da959283275a8e0ecdd7f312',
+    token: '0xa1303e6199b319a891b79685f0537d289af1fc83',
+  },
+  NYA: {
+    lp: '0x2730bf486d658838464a4ef077880998d944252d',
+    token: '0xbfa0841f7a90c4ce6643f651756ee340991f99d5',
+  },
+  bROOBEE: {
+    lp: '0x970858016C963b780E06f7DCfdEf8e809919BcE8',
+    token: '0xe64f5cb844946c1f102bd25bbd87a5ab4ae89fbe',
+  },
+}
 
 const PoolCard: React.FC<HarvestProps> = ({
-  syrup,
   sousId,
   tokenName,
   projectLink,
@@ -64,8 +73,13 @@ const PoolCard: React.FC<HarvestProps> = ({
   tokenPerBlock,
   isCommunity,
   isFinished,
+  isOldSyrup,
 }) => {
   const TranslateString = useI18n()
+  const { ethereum } = useWallet()
+  const syrup = useMemo(() => {
+    return getContract(ethereum as provider, '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82')
+  }, [ethereum])
   const [requestedApproval, setRequestedApproval] = useState(false)
   const { account } = useWallet()
   const allowance = useSousAllowance(syrup, sousId)
@@ -80,24 +94,39 @@ const PoolCard: React.FC<HarvestProps> = ({
 
   const { onStake } = useSousStake(sousId)
   const { onUnstake } = useSousUnstake(sousId)
-
-  const [pendingTx, setPendingTx] = useState(false)
   const { onReward } = useSousReward(sousId)
 
-  const apy = useMemo(() => {
-    if (!harvest || cakePrice.isLessThanOrEqualTo(0)) return '-'
+  const [pendingTx, setPendingTx] = useState(false)
 
-    const a = tokenPrice.times(BLOCKS_PER_YEAR).times(tokenPerBlock)
+  // /!\ Dirty fix
+  // The community LP are all against CAKE instead of BNB. Thus, the usual function for price computation didn't work.
+  // This quick fix aim to properly compute the price of CAKE pools in order to get the correct APY.
+  // This fix will need to be cleaned, by using config files instead of the COMMUNITY_ADDR,
+  // and factorise the price computation logic.
+  const cakeBalanceOnLP = useTokenBalance2(CAKE_ADDRESS, COMMUNITY_ADDR[tokenName]?.lp)
+  const tokenBalanceOnLP = useTokenBalance2(COMMUNITY_ADDR[tokenName]?.token, COMMUNITY_ADDR[tokenName]?.lp)
+  const price = (() => {
+    if (isCommunity) {
+      if (cakeBalanceOnLP === 0 || tokenBalanceOnLP === 0) return new BigNumber(0)
+      const tokenBalanceOnLPNB = new BigNumber(tokenBalanceOnLP)
+      const cakeBalanceOnLPBN = new BigNumber(cakeBalanceOnLP)
+      const ratio = cakeBalanceOnLPBN.div(tokenBalanceOnLPNB)
+      return ratio.times(cakePrice)
+    }
+    return tokenPrice
+  })()
+
+  const apy: BigNumber = useMemo(() => {
+    if (!harvest || cakePrice.isLessThanOrEqualTo(0)) return null
+
+    const a = price.times(BLOCKS_PER_YEAR).times(tokenPerBlock)
     const b = cakePrice.times(getBalanceNumber(totalStaked))
 
-    return `${a.div(b).times(100).toFixed(2)}%`
-  }, [cakePrice, harvest, tokenPerBlock, tokenPrice, totalStaked])
+    return a.div(b).times(100)
+  }, [cakePrice, harvest, tokenPerBlock, price, totalStaked])
 
   const accountHasStakedBalance = account && stakedBalance.toNumber() > 0
   const needsApproval = !accountHasStakedBalance && !allowance.toNumber()
-
-  // TODO - Remove this when pool removed
-  const isOldSyrup = SYRUPIDS.includes(sousId)
 
   // 1. isFinished - set manually in the list of pools
   // 2. isCalculatedFinished - calculated based on current/ending block
@@ -205,7 +234,7 @@ const PoolCard: React.FC<HarvestProps> = ({
           {isReallyFinished || isOldSyrup ? (
             '-'
           ) : (
-            <Balance fontSize="14px" isDisabled={isReallyFinished} value={parseFloat(apy)} />
+            <Balance fontSize="14px" isDisabled={isReallyFinished} value={apy?.toNumber()} unit="%" />
           )}
         </StyledDetails>
         <StyledDetails>

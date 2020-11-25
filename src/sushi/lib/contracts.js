@@ -49,9 +49,6 @@ export default class Contracts {
 
     this.sousChefs = poolsConfig.map((pool) =>
       Object.assign(pool, {
-        sortOrder: pool.sortOrder,
-        isCommunity: pool.isCommunity,
-        isFinished: pool.isFinished,
         contractAddress: pool.contractAddress[networkId],
         sousContract: new this.web3.eth.Contract(SousChefAbi),
       }),
