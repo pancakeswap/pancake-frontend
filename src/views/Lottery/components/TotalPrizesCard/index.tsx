@@ -4,9 +4,19 @@ import { Heading, Card, CardBody, CardFooter, Button, Text, PancakeRoundIcon } f
 import { useWallet } from 'use-wallet'
 import useI18n from 'hooks/useI18n'
 import PrizeGrid from './PrizeGrid'
+import DetailsButton from './DetailsButton'
 
 const CardHeading = styled.div`
   position: relative;
+  display: flex;
+  justify-content: space-between;
+`
+
+const Right = styled.div`
+  display: flex;
+`
+
+const Left = styled.div`
   display: flex;
 `
 
@@ -23,28 +33,44 @@ const PrizeCountWrapper = styled.div`
   flex-direction: column;
 `
 
+const ExpandingWrapper = styled.div<{ hideFooter: boolean }>`
+  height: ${(props) => (props.hideFooter ? '0px' : '100%')};
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    height: 100%;
+  }
+`
+
 const FarmedStakingCard = () => {
   const { account } = useWallet()
   const TranslateString = useI18n()
+  const [hideFooter, setHideFooter] = useState(true)
 
   return (
     <Card>
       <CardBody>
         <CardHeading>
-          <IconWrapper>
-            <PancakeRoundIcon />
-          </IconWrapper>
-          <PrizeCountWrapper>
-            <Text fontSize="14px" color="textSubtle">
-              Total Prizes:
-            </Text>
-            <Heading size="lg">100,000 {TranslateString(0, 'CAKE')}</Heading>
-          </PrizeCountWrapper>
+          <Left>
+            <IconWrapper>
+              <PancakeRoundIcon />
+            </IconWrapper>
+            <PrizeCountWrapper>
+              <Text fontSize="14px" color="textSubtle">
+                Total Prizes:
+              </Text>
+              <Heading size="lg">100,000 {TranslateString(0, 'CAKE')}</Heading>
+            </PrizeCountWrapper>
+          </Left>
+          <Right>
+            <DetailsButton onClick={() => setHideFooter(!hideFooter)} />
+          </Right>
         </CardHeading>
       </CardBody>
-      <CardFooter>
-        <PrizeGrid />
-      </CardFooter>
+      <ExpandingWrapper hideFooter={hideFooter}>
+        <CardFooter>
+          <PrizeGrid />
+        </CardFooter>
+      </ExpandingWrapper>
     </Card>
   )
 }
