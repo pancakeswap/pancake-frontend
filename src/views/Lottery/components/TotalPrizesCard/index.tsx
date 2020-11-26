@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react'
 import styled from 'styled-components'
-import { Heading, Card, CardBody, Button, Text, PancakeRoundIcon } from '@pancakeswap-libs/uikit'
+import { Heading, Card, CardBody, CardFooter, Button, Text, PancakeRoundIcon } from '@pancakeswap-libs/uikit'
 import { useWallet } from 'use-wallet'
 import useI18n from 'hooks/useI18n'
 import PrizeGrid from './PrizeGrid'
@@ -8,7 +8,6 @@ import PrizeGrid from './PrizeGrid'
 const CardHeading = styled.div`
   position: relative;
   display: flex;
-  padding-bottom: 24px;
 `
 
 const IconWrapper = styled.div`
@@ -22,14 +21,6 @@ const IconWrapper = styled.div`
 const PrizeCountWrapper = styled.div`
   display: flex;
   flex-direction: column;
-`
-
-const Divider = styled.div`
-  position: absolute;
-  bottom: 0;
-  background-color: ${({ theme }) => theme.colors.borderColor};
-  height: 1px;
-  width: 100%;
 `
 
 const FarmedStakingCard = () => {
@@ -49,10 +40,11 @@ const FarmedStakingCard = () => {
             </Text>
             <Heading size="lg">100,000 {TranslateString(0, 'CAKE')}</Heading>
           </PrizeCountWrapper>
-          <Divider />
         </CardHeading>
-        <PrizeGrid />
       </CardBody>
+      <CardFooter>
+        <PrizeGrid />
+      </CardFooter>
     </Card>
   )
 }
