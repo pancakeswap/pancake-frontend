@@ -2,6 +2,10 @@ import React from 'react'
 import styled from 'styled-components'
 import { Heading, Text } from '@pancakeswap-libs/uikit'
 
+export interface PrizeGridProps {
+  lotteryPrizeAmount?: number
+}
+
 const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -20,7 +24,12 @@ const GridItem = styled.div<{ marginBottom?: string }>`
   margin-bottom: ${(props) => (props.marginBottom ? props.marginBottom : '10px')};
 `
 
-const PrizeGrid = () => {
+const PrizeGrid: React.FC<PrizeGridProps> = ({ lotteryPrizeAmount = 0 }) => {
+  const fourMatchesAmount = +((lotteryPrizeAmount / 100) * 60).toFixed(0)
+  const threeMatchesAmount = +((lotteryPrizeAmount / 100) * 20).toFixed(0)
+  const twoMatchesAmount = +((lotteryPrizeAmount / 100) * 10).toFixed(0)
+  const burnAmount = +((lotteryPrizeAmount / 100) * 10).toFixed(0)
+
   return (
     <Grid>
       <GridItem>
@@ -46,7 +55,7 @@ const PrizeGrid = () => {
         <RightAlignedHeading size="md">0.001%</RightAlignedHeading>
       </GridItem>
       <GridItem>
-        <RightAlignedHeading size="md">60,000</RightAlignedHeading>
+        <RightAlignedHeading size="md">{fourMatchesAmount.toLocaleString()}</RightAlignedHeading>
       </GridItem>
       {/* 3 matches row */}
       <GridItem>
@@ -56,7 +65,7 @@ const PrizeGrid = () => {
         <RightAlignedText>0.36%</RightAlignedText>
       </GridItem>
       <GridItem>
-        <RightAlignedText>38,000</RightAlignedText>
+        <RightAlignedText>{threeMatchesAmount.toLocaleString()}</RightAlignedText>
       </GridItem>
       {/* 2 matches row */}
       <GridItem marginBottom="20px">
@@ -66,7 +75,7 @@ const PrizeGrid = () => {
         <RightAlignedText>4.86%</RightAlignedText>
       </GridItem>
       <GridItem marginBottom="20px">
-        <RightAlignedText>1,000</RightAlignedText>
+        <RightAlignedText>{twoMatchesAmount.toLocaleString()}</RightAlignedText>
       </GridItem>
       {/* Burn row */}
       <GridItem marginBottom="0">
@@ -74,7 +83,7 @@ const PrizeGrid = () => {
       </GridItem>
       <GridItem marginBottom="0" />
       <GridItem marginBottom="0">
-        <RightAlignedText>1,000</RightAlignedText>
+        <RightAlignedText>{burnAmount.toLocaleString()}</RightAlignedText>
       </GridItem>
     </Grid>
   )

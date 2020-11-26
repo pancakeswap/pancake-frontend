@@ -2,7 +2,9 @@ import React, { useState, useCallback } from 'react'
 import styled from 'styled-components'
 import { Heading, Card, CardBody, CardFooter, Button, Text, PancakeRoundIcon } from '@pancakeswap-libs/uikit'
 import { useWallet } from 'use-wallet'
+import { getBalanceNumber } from 'utils/formatBalance'
 import useI18n from 'hooks/useI18n'
+import { useTotalRewards } from 'hooks/useTickets'
 import PrizeGrid from './PrizeGrid'
 import DetailsButton from './DetailsButton'
 
@@ -45,6 +47,8 @@ const FarmedStakingCard = () => {
   const { account } = useWallet()
   const TranslateString = useI18n()
   const [hideFooter, setHideFooter] = useState(true)
+  const lotteryPrizeAmount = +getBalanceNumber(useTotalRewards()).toFixed(0)
+  const lotteryPrizeWithCommaSeparators = lotteryPrizeAmount.toLocaleString()
 
   return (
     <Card>
@@ -58,7 +62,9 @@ const FarmedStakingCard = () => {
               <Text fontSize="14px" color="textSubtle">
                 Total Prizes:
               </Text>
-              <Heading size="lg">100,000 {TranslateString(0, 'CAKE')}</Heading>
+              <Heading size="lg">
+                {lotteryPrizeWithCommaSeparators} {TranslateString(0, 'CAKE')}
+              </Heading>
             </PrizeCountWrapper>
           </Left>
           <Right>
@@ -68,7 +74,7 @@ const FarmedStakingCard = () => {
       </CardBody>
       <ExpandingWrapper hideFooter={hideFooter}>
         <CardFooter>
-          <PrizeGrid />
+          <PrizeGrid lotteryPrizeAmount={lotteryPrizeAmount} />
         </CardFooter>
       </ExpandingWrapper>
     </Card>
