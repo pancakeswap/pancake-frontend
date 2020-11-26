@@ -1,17 +1,23 @@
 import React from "react";
-import { TagProps, variants } from "./types";
-import { StyledTag, StartIcon, EndIcon } from "./StyledTag";
+import { TagProps } from "./types";
+import { StyledTag } from "./StyledTag";
 
 const Tag: React.FC<TagProps> = ({ startIcon, endIcon, children, ...props }) => (
   <StyledTag {...props}>
-    {startIcon && <StartIcon>{startIcon}</StartIcon>}
+    {React.isValidElement(startIcon) &&
+      React.cloneElement(startIcon, {
+        mr: "0.5rem",
+      })}
     {children}
-    {endIcon && <EndIcon>{endIcon}</EndIcon>}
+    {React.isValidElement(endIcon) &&
+      React.cloneElement(endIcon, {
+        ml: "0.5rem",
+      })}
   </StyledTag>
 );
 
 Tag.defaultProps = {
-  variant: variants.PURPLE,
+  variant: "primary",
   outline: false,
 };
 

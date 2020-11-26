@@ -1,26 +1,18 @@
 import { ReactNode } from "react";
+import { SpaceProps } from "styled-system";
 
 export const variants = {
-  PINK: "pink",
-  PURPLE: "purple",
-  GREEN: "green",
-  GRAY: "gray",
+  PRIMARY: "primary",
+  SECONDARY: "secondary",
+  SUCCESS: "success",
+  TEXTDISABLED: "textDisabled",
+  TEXTSUBTLE: "textSubtle",
+  BINANCE: "binance",
 } as const;
 
 export type Variants = typeof variants[keyof typeof variants];
 
-export type TagThemeVariant = {
-  background: string;
-  color: string;
-  colorOutline: string;
-  borderColorOutline: string;
-};
-
-export type TagTheme = {
-  [key in Variants]: TagThemeVariant;
-};
-
-export interface TagProps {
+export interface TagProps extends SpaceProps {
   variant?: Variants;
   startIcon?: ReactNode;
   endIcon?: ReactNode;
