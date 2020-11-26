@@ -20,7 +20,11 @@ const Farm: React.FC = () => {
 
   const pools = getPools(sushi).map((pool) => {
     const stakedValue = stakedValues.find((s) => s.tokenSymbol === pool.tokenName)
-    return { ...pool, tokenPrice: stakedValue?.tokenPriceInWeth || new BigNumber(0) }
+    return {
+      ...pool,
+      tokenPrice: stakedValue?.tokenPriceInWeth || new BigNumber(0),
+      quoteToken: stakedValue?.quoteToken,
+    }
   })
 
   const [finishedPools, openPools] = partition(pools, (pool) => pool.isFinished)

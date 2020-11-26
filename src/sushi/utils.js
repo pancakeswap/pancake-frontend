@@ -2,6 +2,7 @@ import BigNumber from 'bignumber.js'
 import get from 'lodash/get'
 import memoize from 'lodash/memoize'
 import { ethers } from 'ethers'
+import { QuoteToken } from 'sushi/lib/constants/types'
 import { poolsConfig } from './lib/constants'
 
 BigNumber.config({
@@ -63,14 +64,11 @@ export const getTotalStaked = async (sushi, sousChefContract) => {
   return syrupBalance > sushiBalance ? syrupBalance : sushiBalance
 }
 
-export const getTotalLPWethValue = async (
-  masterChefContract,
-  wethContract,
-  lpContract,
-  tokenContract,
-  pid,
-  tokenSymbol,
-) => {
+export const getTotalLPWethValue = async (sushi, lpContract, tokenContract, pid, tokenSymbol) => {
+  const masterChefContract = getMasterChefContract(sushi)
+  const wethContract = getWethContract(sushi)
+  const sushiContract = getSushiContract(sushi)
+
   const tokenAmountWholeLP = await tokenContract.methods.balanceOf(lpContract.options.address).call()
   const tokenDecimals = await tokenContract.methods.decimals().call()
   // Get the share of lpContract that masterChefContract owns
@@ -78,23 +76,31 @@ export const getTotalLPWethValue = async (
   // Convert that into the portion of total lpContract = p1
   const totalSupply = await lpContract.methods.totalSupply().call()
   // Get total weth value for the lpContract = w1
-  const lpContractWeth = await wethContract.methods.balanceOf(lpContract.options.address).call()
+
+  let lpContractValue = await wethContract.methods.balanceOf(lpContract.options.address).call()
+  let quoteToken = QuoteToken.BNB
+  if (parseFloat(lpContractValue) === 0) {
+    lpContractValue = await sushiContract.methods.balanceOf(lpContract.options.address).call()
+    quoteToken = QuoteToken.CAKE
+  }
+
   // Return p1 * w1 * 2
+  const lpContractValueBN = new BigNumber(lpContractValue)
   const portionLp = new BigNumber(balance).div(new BigNumber(totalSupply))
-  const lpWethWorth = new BigNumber(lpContractWeth)
-  const totalLpWethValue = portionLp.times(lpWethWorth).times(new BigNumber(2))
+  const totalLpValue = portionLp.times(lpContractValueBN).times(new BigNumber(2))
   // Calculate
   const tokenAmount = new BigNumber(tokenAmountWholeLP).times(portionLp).div(new BigNumber(10).pow(tokenDecimals))
+  const wethAmount = lpContractValueBN.times(portionLp).div(new BigNumber(10).pow(18))
 
-  const wethAmount = new BigNumber(lpContractWeth).times(portionLp).div(new BigNumber(10).pow(18))
   return {
     pid,
     tokenSymbol,
     tokenAmount,
     wethAmount,
-    totalWethValue: totalLpWethValue.div(new BigNumber(10).pow(18)),
+    totalWethValue: totalLpValue.div(new BigNumber(10).pow(18)),
     tokenPriceInWeth: wethAmount.div(tokenAmount),
     poolWeight: await getPoolWeight(masterChefContract, pid),
+    quoteToken,
   }
 }
 

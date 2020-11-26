@@ -15,7 +15,7 @@ import { useSousEarnings, useSousLeftBlocks } from 'hooks/useEarnings'
 import { useSousStake } from 'hooks/useStake'
 import useSushi from 'hooks/useSushi'
 import { useSousStakedBalance, useSousTotalStaked } from 'hooks/useStakedBalance'
-import useTokenBalance, { useTokenBalance2 } from 'hooks/useTokenBalance'
+import useTokenBalance from 'hooks/useTokenBalance'
 import { useSousUnstake } from 'hooks/useUnstake'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useSousReward } from 'hooks/useReward'
@@ -41,26 +41,6 @@ interface HarvestProps {
   isCommunity?: boolean
   isFinished?: boolean
   isOldSyrup?: boolean
-}
-
-const CAKE_ADDRESS = '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82'
-const COMMUNITY_ADDR = {
-  STAX: {
-    lp: '0x7cd05f8b960ba071fdf69c750c0e5a57c8366500',
-    token: '0x0Da6Ed8B13214Ff28e9Ca979Dd37439e8a88F6c4',
-  },
-  NAR: {
-    lp: '0x745c4fd226e169d6da959283275a8e0ecdd7f312',
-    token: '0xa1303e6199b319a891b79685f0537d289af1fc83',
-  },
-  NYA: {
-    lp: '0x2730bf486d658838464a4ef077880998d944252d',
-    token: '0xbfa0841f7a90c4ce6643f651756ee340991f99d5',
-  },
-  bROOBEE: {
-    lp: '0x970858016C963b780E06f7DCfdEf8e809919BcE8',
-    token: '0xe64f5cb844946c1f102bd25bbd87a5ab4ae89fbe',
-  },
 }
 
 const PoolCard: React.FC<HarvestProps> = ({
@@ -98,23 +78,7 @@ const PoolCard: React.FC<HarvestProps> = ({
 
   const [pendingTx, setPendingTx] = useState(false)
 
-  // /!\ Dirty fix
-  // The community LP are all against CAKE instead of BNB. Thus, the usual function for price computation didn't work.
-  // This quick fix aim to properly compute the price of CAKE pools in order to get the correct APY.
-  // This fix will need to be cleaned, by using config files instead of the COMMUNITY_ADDR,
-  // and factorise the price computation logic.
-  const cakeBalanceOnLP = useTokenBalance2(CAKE_ADDRESS, COMMUNITY_ADDR[tokenName]?.lp)
-  const tokenBalanceOnLP = useTokenBalance2(COMMUNITY_ADDR[tokenName]?.token, COMMUNITY_ADDR[tokenName]?.lp)
-  const price = (() => {
-    if (isCommunity) {
-      if (cakeBalanceOnLP === 0 || tokenBalanceOnLP === 0) return new BigNumber(0)
-      const tokenBalanceOnLPNB = new BigNumber(tokenBalanceOnLP)
-      const cakeBalanceOnLPBN = new BigNumber(cakeBalanceOnLP)
-      const ratio = cakeBalanceOnLPBN.div(tokenBalanceOnLPNB)
-      return ratio.times(cakePrice)
-    }
-    return tokenPrice
-  })()
+  const price = tokenPrice
 
   const apy: BigNumber = useMemo(() => {
     if (!harvest || cakePrice.isLessThanOrEqualTo(0)) return null
