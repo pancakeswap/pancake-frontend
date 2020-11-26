@@ -95,6 +95,7 @@ export const getTotalLPWethValue = async (sushi, lpContract, tokenContract, pid,
   return {
     pid,
     tokenSymbol,
+    tokenDecimals,
     tokenAmount,
     wethAmount,
     totalWethValue: totalLpValue.div(new BigNumber(10).pow(18)),

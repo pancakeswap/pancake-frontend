@@ -1,7 +1,11 @@
-export default [
+import { Pool, QuoteToken } from './types'
+
+const pools: Pool[] = [
   {
     sousId: 0,
     tokenName: 'CAKE',
+    stakingTokenName: QuoteToken.CAKE,
+    stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
       97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
       56: '0x73feaa1eE314F8c655E354234017bE2193C9E24E',
@@ -16,6 +20,8 @@ export default [
   {
     sousId: 18,
     tokenName: 'BLK',
+    stakingTokenName: QuoteToken.CAKE,
+    stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
       97: '',
       56: '0x42Afc29b2dEa792974d1e9420696870f1Ca6d18b',
@@ -30,6 +36,8 @@ export default [
   {
     sousId: 17,
     tokenName: 'BLK',
+    stakingTokenName: QuoteToken.CAKE,
+    stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
       97: '',
       56: '0xBb2B66a2c7C2fFFB06EA60BeaD69741b3f5BF831',
@@ -43,6 +51,8 @@ export default [
   {
     sousId: 16,
     tokenName: 'UNFI',
+    stakingTokenName: QuoteToken.CAKE,
+    stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
       97: '',
       56: '0xFb1088Dae0f03C5123587d2babb3F307831E6367',
@@ -57,6 +67,8 @@ export default [
   {
     sousId: 15,
     tokenName: 'TWT',
+    stakingTokenName: QuoteToken.CAKE,
+    stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
       97: '',
       56: '0x9c4EBADa591FFeC4124A7785CAbCfb7068fED2fb',
@@ -71,6 +83,8 @@ export default [
   {
     sousId: 14,
     tokenName: 'HARD',
+    stakingTokenName: QuoteToken.CAKE,
+    stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
       97: '',
       56: '0x90F995b9d46b32c4a1908A8c6D0122e392B3Be97',
@@ -85,6 +99,8 @@ export default [
   {
     sousId: 13,
     tokenName: 'bROOBEE',
+    stakingTokenName: QuoteToken.CAKE,
+    stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
       97: '',
       56: '0xdc8c45b7F3747Ca9CaAEB3fa5e0b5FCE9430646b',
@@ -99,6 +115,8 @@ export default [
   {
     sousId: 12,
     tokenName: 'STAX',
+    stakingTokenName: QuoteToken.CAKE,
+    stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
       97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
       56: '0xFF02241a2A1d2a7088A344309400E9fE74772815',
@@ -113,6 +131,8 @@ export default [
   {
     sousId: 11,
     tokenName: 'NAR',
+    stakingTokenName: QuoteToken.CAKE,
+    stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
       97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
       56: '0xDc938BA1967b06d666dA79A7B1E31a8697D1565E',
@@ -127,6 +147,8 @@ export default [
   {
     sousId: 10,
     tokenName: 'NYA',
+    stakingTokenName: QuoteToken.CAKE,
+    stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
       97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
       56: '0x07a0A5B67136d40F4d7d95Bc8e0583bafD7A81b9',
@@ -141,6 +163,8 @@ export default [
   {
     sousId: 9,
     tokenName: 'CTK',
+    stakingTokenName: QuoteToken.CAKE,
+    stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
       97: '0xAfd61Dc94f11A70Ae110dC0E0F2061Af5633061A',
       56: '0x21A9A53936E812Da06B7623802DEc9A1f94ED23a',
@@ -155,6 +179,8 @@ export default [
   {
     sousId: 8,
     tokenName: 'TWT',
+    stakingTokenName: QuoteToken.CAKE,
+    stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
       97: '0xAfd61Dc94f11A70Ae110dC0E0F2061Af5633061A',
       56: '0xe7f9A439Aa7292719aC817798DDd1c4D35934aAF',
@@ -169,6 +195,8 @@ export default [
   {
     sousId: 7,
     tokenName: 'INJ',
+    stakingTokenName: QuoteToken.CAKE,
+    stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
       97: '0xAfd61Dc94f11A70Ae110dC0E0F2061Af5633061A',
       56: '0xcec2671C81a0Ecf7F8Ee796EFa6DBDc5Cb062693',
@@ -183,6 +211,8 @@ export default [
   {
     sousId: 6,
     tokenName: 'CTK',
+    stakingTokenName: QuoteToken.SYRUP,
+    stakingTokenAddress: '0x009cF7bC57584b7998236eff51b98A168DceA9B0',
     contractAddress: {
       97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
       56: '0xF35d63Df93f32e025bce4A1B98dcEC1fe07AD892',
@@ -193,11 +223,12 @@ export default [
     sortOrder: 999,
     isCommunity: false,
     isFinished: true,
-    isOldSyrup: true,
   },
   {
     sousId: 5,
     tokenName: 'CTK',
+    stakingTokenName: QuoteToken.SYRUP,
+    stakingTokenAddress: '0x009cF7bC57584b7998236eff51b98A168DceA9B0',
     contractAddress: {
       97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
       56: '0x3B9B74f48E89Ebd8b45a53444327013a2308A9BC',
@@ -207,11 +238,12 @@ export default [
     sortOrder: 999,
     isCommunity: false,
     isFinished: true,
-    isOldSyrup: true,
   },
   {
     sousId: 4,
     tokenName: 'SXP',
+    stakingTokenName: QuoteToken.CAKE,
+    stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
       97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
       56: '0xD32B30b151a6aDB2e0Fa573a37510C097DaBD2F3',
@@ -226,6 +258,8 @@ export default [
   {
     sousId: 3,
     tokenName: 'INJ',
+    stakingTokenName: QuoteToken.SYRUP,
+    stakingTokenAddress: '0x009cF7bC57584b7998236eff51b98A168DceA9B0',
     contractAddress: {
       97: '0xAfd61Dc94f11A70Ae110dC0E0F2061Af5633061A',
       56: '0x92E8CeB7eAeD69fB6E4d9dA43F605D2610214E68',
@@ -236,11 +270,12 @@ export default [
     sortOrder: 999,
     isCommunity: false,
     isFinished: true,
-    isOldSyrup: true,
   },
   {
     sousId: 2,
     tokenName: 'ALPHA',
+    stakingTokenName: QuoteToken.CAKE,
+    stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
       97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
       56: '0x73c83bd1646991cBca3e6b83ca905542FE07C57A',
@@ -255,6 +290,8 @@ export default [
   {
     sousId: 1,
     tokenName: 'TWT',
+    stakingTokenName: QuoteToken.SYRUP,
+    stakingTokenAddress: '0x009cF7bC57584b7998236eff51b98A168DceA9B0',
     contractAddress: {
       97: '0xAfd61Dc94f11A70Ae110dC0E0F2061Af5633061A',
       56: '0xAfd61Dc94f11A70Ae110dC0E0F2061Af5633061A',
@@ -265,18 +302,22 @@ export default [
     sortOrder: 999,
     isCommunity: false,
     isFinished: true,
-    isOldSyrup: true,
   },
   {
     sousId: -1,
     tokenName: 'XVS',
+    stakingTokenName: QuoteToken.CAKE,
+    stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
       97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
       56: '0x6ab8463a4185b80905e05a9ff80a2d6b714b9e95',
     },
+    tokenPerBlock: '0',
     projectLink: 'https://venus.io/',
     sortOrder: 999,
     isCommunity: false,
     isFinished: true,
   },
 ]
+
+export default pools

@@ -22,3 +22,20 @@ export enum QuoteToken {
   'CAKE' = 'CAKE',
   'SYRUP' = 'SYRUP',
 }
+
+export type Pool = {
+  sousId: number
+  tokenName: string
+  stakingTokenName: QuoteToken
+  stakingTokenAddress: string
+  contractAddress: {
+    97?: string
+    56: string
+  }
+  projectLink: string
+  tokenPerBlock: string
+  sortOrder?: number
+  harvest?: boolean
+  isCommunity?: boolean
+  isFinished?: boolean
+}

@@ -23,7 +23,8 @@ const Farm: React.FC = () => {
     return {
       ...pool,
       tokenPrice: stakedValue?.tokenPriceInWeth || new BigNumber(0),
-      quoteToken: stakedValue?.quoteToken,
+      tokenPriceQuoteToken: stakedValue?.quoteToken,
+      tokenDecimals: stakedValue?.tokenDecimals,
     }
   })
 

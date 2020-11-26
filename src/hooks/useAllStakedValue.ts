@@ -16,6 +16,7 @@ export interface StakedValue {
   tokenPriceInWeth: BigNumber
   poolWeight: BigNumber
   quoteToken: QuoteToken
+  tokenDecimals: string
 }
 
 const useAllStakedValue = () => {
