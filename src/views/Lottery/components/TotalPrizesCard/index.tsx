@@ -43,8 +43,7 @@ const ExpandingWrapper = styled.div<{ hideFooter: boolean }>`
   }
 `
 
-const FarmedStakingCard = () => {
-  const { account } = useWallet()
+const TotalPrizesCard = () => {
   const TranslateString = useI18n()
   const [hideFooter, setHideFooter] = useState(true)
   const lotteryPrizeAmount = +getBalanceNumber(useTotalRewards()).toFixed(0)
@@ -81,4 +80,4 @@ const FarmedStakingCard = () => {
   )
 }
 
-export default FarmedStakingCard
+export default TotalPrizesCard

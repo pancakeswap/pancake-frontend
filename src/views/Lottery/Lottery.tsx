@@ -14,6 +14,7 @@ import Container from '../../components/layout/Container'
 import Hero from './components/Hero'
 import Divider from './components/Divider'
 import PrizeCard from './components/PrizeCard'
+import UnlockWalletCard from './components/UnlockWalletCard'
 import TicketCard from './components/TicketCard'
 import LotteryCountdown from './components/LotteryCountdown'
 import TotalPrizesCard from './components/TotalPrizesCard'
@@ -75,7 +76,9 @@ const Lottery: React.FC = () => {
           {/* NextDraw */}
           <Cards>
             <TotalPrizesCard />
+            {!account && <UnlockWalletCard />}
           </Cards>
+
           {account && (
             <Subtitle>
               {!lotteryHasDrawn ? `#${index - 2} - Phase 1 - Buy Tickets` : `#${index - 2} - Phase 2 - Claim Winnings`}
