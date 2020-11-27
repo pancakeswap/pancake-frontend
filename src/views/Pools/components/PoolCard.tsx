@@ -80,6 +80,7 @@ const PoolCard: React.FC<HarvestProps> = ({
 
     const a = tokenPrice.times(BLOCKS_PER_YEAR).times(tokenPerBlock)
     const b = cakePrice.times(getBalanceNumber(totalStaked))
+
     return a.div(b).times(100)
   }, [cakePrice, harvest, tokenPerBlock, tokenPrice, totalStaked])
 
@@ -175,7 +176,7 @@ const PoolCard: React.FC<HarvestProps> = ({
         </StyledCardActions>
         <StyledDetails>
           <div style={{ flex: 1 }}>{TranslateString(352, 'APY')}:</div>
-          {isFinished || isOldSyrup ? (
+          {isFinished || isOldSyrup || apy?.isNaN() ? (
             '-'
           ) : (
             <Balance fontSize="14px" isDisabled={isFinished} value={apy?.toNumber()} unit="%" />
