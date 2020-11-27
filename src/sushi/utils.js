@@ -64,6 +64,12 @@ export const getTotalStaked = async (sushi, sousChefContract) => {
   return syrupBalance > sushiBalance ? syrupBalance : sushiBalance
 }
 
+export const getTotalStakedBNB = async (sushi, sousChefContract) => {
+  const weth = await getWethContract(sushi)
+  const wethBalance = await weth.methods.balanceOf(sousChefContract.options.address).call()
+  return wethBalance
+}
+
 export const getTotalLPWethValue = async (sushi, lpContract, tokenContract, pid, tokenSymbol) => {
   const masterChefContract = getMasterChefContract(sushi)
   const wethContract = getWethContract(sushi)

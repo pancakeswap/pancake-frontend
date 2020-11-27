@@ -3,7 +3,14 @@ import { useCallback, useEffect, useState } from 'react'
 import BigNumber from 'bignumber.js'
 import { useWallet } from 'use-wallet'
 
-import { getStaked, getMasterChefContract, getSousChefContract, getSousStaked, getTotalStaked } from '../sushi/utils'
+import {
+  getStaked,
+  getMasterChefContract,
+  getSousChefContract,
+  getSousStaked,
+  getTotalStaked,
+  getTotalStakedBNB,
+} from '../sushi/utils'
 import useSushi from './useSushi'
 import useBlock from './useBlock'
 
@@ -55,7 +62,7 @@ export const useSousStakedBalance = (sousId) => {
   return balance
 }
 
-export const useSousTotalStaked = (sousId) => {
+export const useSousTotalStaked = (sousId, isUsingBnb = false) => {
   const [balance, setBalance] = useState(new BigNumber(0))
   const { account }: { account: string } = useWallet()
   const sushi = useSushi()
@@ -63,9 +70,11 @@ export const useSousTotalStaked = (sousId) => {
   const block = useBlock()
 
   const fetchBalance = useCallback(async () => {
-    const res = await getTotalStaked(sushi, sousChefContract)
+    const res = isUsingBnb
+      ? await getTotalStakedBNB(sushi, sousChefContract)
+      : await getTotalStaked(sushi, sousChefContract)
     setBalance(new BigNumber(res))
-  }, [sushi, sousChefContract])
+  }, [isUsingBnb, sushi, sousChefContract])
 
   useEffect(() => {
     if (account && sushi) {

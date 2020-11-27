@@ -74,7 +74,7 @@ const PoolCard: React.FC<HarvestProps> = ({
 
   const { isFinished: isCalculatedFinished, farmStart, blocksRemaining } = useSousLeftBlocks(sousId)
   const stakedBalance = useSousStakedBalance(sousId)
-  const totalStaked = useSousTotalStaked(sousId)
+  const totalStaked = useSousTotalStaked(sousId, isBnbPool)
   const earnings = useSousEarnings(sousId)
   const { onStake } = useSousStake(sousId, isBnbPool)
   const { onUnstake } = useSousUnstake(sousId)
@@ -85,13 +85,14 @@ const PoolCard: React.FC<HarvestProps> = ({
   const [pendingTx, setPendingTx] = useState(false)
 
   const apy: BigNumber = useMemo(() => {
-    if (!harvest || cakePrice.isLessThanOrEqualTo(0)) return null
+    if (cakePrice?.isEqualTo(0) || tokenPrice?.isEqualTo(0)) return null
+    const stakedTokenPrice: BigNumber = isBnbPool ? new BigNumber(1) : cakePrice
 
     const a = tokenPrice.times(BLOCKS_PER_YEAR).times(tokenPerBlock)
-    const b = cakePrice.times(getBalanceNumber(totalStaked))
+    const b = stakedTokenPrice.times(getBalanceNumber(totalStaked))
 
     return a.div(b).times(100)
-  }, [cakePrice, harvest, tokenPerBlock, tokenPrice, totalStaked])
+  }, [cakePrice, isBnbPool, tokenPerBlock, tokenPrice, totalStaked])
 
   const isOldSyrup = stakingTokenName === QuoteToken.SYRUP
   const accountHasStakedBalance = account && stakedBalance.toNumber() > 0
