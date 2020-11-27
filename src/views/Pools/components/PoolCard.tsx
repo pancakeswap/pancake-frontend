@@ -101,7 +101,11 @@ const PoolCard: React.FC<HarvestProps> = ({
 
   const [onPresentDeposit] = useModal(
     <DepositModal
-      max={userBalance.isLessThanOrEqualTo(10) ? userBalance : new BigNumber(10)}
+      max={
+        isBnbPool && userBalance.isGreaterThan(10)
+          ? new BigNumber(10).multipliedBy(new BigNumber(10).pow(18))
+          : userBalance
+      }
       onConfirm={onStake}
       tokenName={stakingTokenName}
     />,
