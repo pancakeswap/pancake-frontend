@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 import { useWallet } from 'use-wallet'
 import useSushi from './useSushi'
-import { soushHarvest, harvest, getMasterChefContract, getSousChefContract } from '../sushi/utils'
+import { soushHarvest, soushHarvestBnb, harvest, getMasterChefContract, getSousChefContract } from '../sushi/utils'
 
 const useReward = (farmPid: number) => {
   const { account } = useWallet()
@@ -32,7 +32,7 @@ export const useAllReward = (farmPids: number[]) => {
   return { onReward: handleReward }
 }
 
-export const useSousReward = (sousId) => {
+export const useSousReward = (sousId, isUsingBnb = false) => {
   const { account } = useWallet()
   const sushi = useSushi()
   const sousChefContract = getSousChefContract(sushi, sousId)
@@ -43,9 +43,13 @@ export const useSousReward = (sousId) => {
       const txHash = await harvest(masterChefContract, 0, account)
       return txHash
     }
+    if (isUsingBnb) {
+      const txHash = await soushHarvestBnb(sousChefContract, account)
+      return txHash
+    }
     const txHash = await soushHarvest(sousChefContract, account)
     return txHash
-  }, [account, masterChefContract, sousChefContract, sousId])
+  }, [account, isUsingBnb, masterChefContract, sousChefContract, sousId])
 
   return { onReward: handleReward }
 }

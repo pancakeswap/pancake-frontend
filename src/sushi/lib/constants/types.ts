@@ -18,7 +18,7 @@ export type Ifo = {
 }
 
 export enum QuoteToken {
-  'BNB' = 'WBNB',
+  'BNB' = 'BNB',
   'CAKE' = 'CAKE',
   'SYRUP' = 'SYRUP',
 }
@@ -26,14 +26,15 @@ export enum QuoteToken {
 export enum PoolCategory {
   'COMMUNITY' = 'Community',
   'CORE' = 'Core',
-  'BINANCE' = 'Binance',
+  'BINANCE' = 'Binance', // Pools using native BNB behave differently than pools using a token
 }
 
 export type Pool = {
   sousId: number
+  image?: string
   tokenName: string
   stakingTokenName: QuoteToken
-  stakingTokenAddress: string
+  stakingTokenAddress?: string
   contractAddress: {
     97?: string
     56: string
@@ -43,6 +44,5 @@ export type Pool = {
   tokenPerBlock: string
   sortOrder?: number
   harvest?: boolean
-  isCommunity?: boolean
   isFinished?: boolean
 }

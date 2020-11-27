@@ -23,14 +23,14 @@ export const getAllowance = async (
   }
 }
 
-export const getBalance = async (
+export const getTokenBalance = async (
   provider: ProviderType,
   tokenAddress: string,
   userAddress: string,
 ): Promise<string> => {
-  const lpContract = getContract(provider, tokenAddress)
+  const contract = getContract(provider, tokenAddress)
   try {
-    const balance: string = await lpContract.methods.balanceOf(userAddress).call()
+    const balance: string = await contract.methods.balanceOf(userAddress).call()
     return balance
   } catch (e) {
     return '0'

@@ -29,14 +29,16 @@ import HarvestButton from './HarvestButton'
 import CardFooter from './CardFooter'
 
 interface HarvestProps {
+  cakePrice: BigNumber
+  userBnbBalance: BigNumber
+  sousId: number
+  image?: string
   tokenName: string
   stakingTokenName: QuoteToken
   stakingTokenAddress: string
-  sousId: number
   projectLink: string
   harvest: boolean
   tokenPerBlock: string
-  cakePrice: BigNumber
   tokenPrice: BigNumber
   isFinished?: boolean
   tokenDecimals: number
@@ -44,35 +46,42 @@ interface HarvestProps {
 }
 
 const PoolCard: React.FC<HarvestProps> = ({
+  cakePrice,
+  userBnbBalance,
   sousId,
+  image,
   tokenName,
   stakingTokenName,
   stakingTokenAddress,
   projectLink,
   harvest,
-  cakePrice,
   tokenPrice,
   tokenPerBlock,
   isFinished: isFinishedConfig,
   tokenDecimals,
   poolCategory,
 }) => {
+  // Pools using native BNB behave differently than pools using a token
+  const isBnbPool = poolCategory === PoolCategory.BINANCE
   const TranslateString = useI18n()
   const stakingTokenContract = useERC20(stakingTokenAddress)
-  const [requestedApproval, setRequestedApproval] = useState(false)
-  const { account } = useWallet()
+
+  // allowance and onApprove are used only when isBnbPool === false
   const allowance = useSousAllowance(stakingTokenContract, sousId)
   const { onApprove } = useSousApprove(stakingTokenContract, sousId)
-  const { isFinished: isCalculatedFinished, farmStart, blocksRemaining } = useSousLeftBlocks(sousId)
   const tokenBalance = useTokenBalance(stakingTokenContract.options.address)
+  const userBalance = isBnbPool ? userBnbBalance : tokenBalance
+
+  const { isFinished: isCalculatedFinished, farmStart, blocksRemaining } = useSousLeftBlocks(sousId)
   const stakedBalance = useSousStakedBalance(sousId)
   const totalStaked = useSousTotalStaked(sousId)
   const earnings = useSousEarnings(sousId)
-
-  const { onStake } = useSousStake(sousId)
+  const { onStake } = useSousStake(sousId, isBnbPool)
   const { onUnstake } = useSousUnstake(sousId)
-  const { onReward } = useSousReward(sousId)
+  const { onReward } = useSousReward(sousId, isBnbPool)
 
+  const { account } = useWallet()
+  const [requestedApproval, setRequestedApproval] = useState(false)
   const [pendingTx, setPendingTx] = useState(false)
 
   const apy: BigNumber = useMemo(() => {
@@ -86,12 +95,12 @@ const PoolCard: React.FC<HarvestProps> = ({
 
   const isOldSyrup = stakingTokenName === QuoteToken.SYRUP
   const accountHasStakedBalance = account && stakedBalance.toNumber() > 0
-  const needsApproval = !accountHasStakedBalance && !allowance.toNumber()
+  const needsApproval = !accountHasStakedBalance && !allowance.toNumber() && !isBnbPool
   const isFinished = isFinishedConfig || isCalculatedFinished
   const isCardActive = isFinished && accountHasStakedBalance
 
   const [onPresentDeposit] = useModal(
-    <DepositModal max={tokenBalance} onConfirm={onStake} tokenName={stakingTokenName} />,
+    <DepositModal max={userBalance} onConfirm={onStake} tokenName={stakingTokenName} />,
   )
 
   const [onPresentWithdraw] = useModal(
@@ -120,7 +129,7 @@ const PoolCard: React.FC<HarvestProps> = ({
         </CardTitle>
         <div style={{ marginBottom: '8px', display: 'flex', alignItems: 'center' }}>
           <div style={{ flex: 1 }}>
-            <CardTokenImg src={`/images/tokens/${tokenName}.png`} alt={tokenName} />
+            <CardTokenImg src={`/images/tokens/${image || tokenName}.png`} alt={tokenName} />
           </div>
           {account && harvest && !isOldSyrup && (
             <HarvestButton

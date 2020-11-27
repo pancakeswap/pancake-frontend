@@ -19,13 +19,12 @@ const pools: Pool[] = [
   },
   {
     sousId: 20,
+    image: 'CAKEBNB',
     tokenName: 'CAKE',
     stakingTokenName: QuoteToken.BNB,
-    stakingTokenAddress: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
     contractAddress: {
       97: '',
-      // Prod contract : 0xFAB00a76248F07D7cd8A54aF1069E223e843e52b
-      56: '0xD364611a040d88251b4a9ce270A0c02270eC8b4C',
+      56: '0x555Ea72d7347E82C614C16f005fA91cAf06DCB5a',
     },
     poolCategory: PoolCategory.BINANCE,
     projectLink: 'http://pancakeswap.finance/',
@@ -41,9 +40,9 @@ const pools: Pool[] = [
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
       97: '',
-      56: '0x326D754c64329aD7cb35744770D56D0E1f3B3124',
+      56: '0xF022A604EAF644820D3C561F1918DaB922f6790a',
     },
-    poolCategory: PoolCategory.BINANCE,
+    poolCategory: PoolCategory.CORE,
     projectLink: 'http://pancakeswap.finance/',
     harvest: true,
     tokenPerBlock: '0.0041',
