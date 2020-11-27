@@ -18,7 +18,7 @@ import { useSousUnstake } from 'hooks/useUnstake'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useSousReward } from 'hooks/useReward'
 import Balance from 'components/Balance'
-import { QuoteToken } from 'sushi/lib/constants/types'
+import { QuoteToken, PoolCategory } from 'sushi/lib/constants/types'
 import DepositModal from './DepositModal'
 import WithdrawModal from './WithdrawModal'
 import CardTitle from './CardTitle'
@@ -38,9 +38,9 @@ interface HarvestProps {
   tokenPerBlock: string
   cakePrice: BigNumber
   tokenPrice: BigNumber
-  isCommunity?: boolean
   isFinished?: boolean
   tokenDecimals: number
+  poolCategory: PoolCategory
 }
 
 const PoolCard: React.FC<HarvestProps> = ({
@@ -53,9 +53,9 @@ const PoolCard: React.FC<HarvestProps> = ({
   cakePrice,
   tokenPrice,
   tokenPerBlock,
-  isCommunity,
   isFinished: isFinishedConfig,
   tokenDecimals,
+  poolCategory,
 }) => {
   const TranslateString = useI18n()
   const stakingTokenContract = useERC20(stakingTokenAddress)
@@ -198,7 +198,7 @@ const PoolCard: React.FC<HarvestProps> = ({
         blocksRemaining={blocksRemaining}
         isFinished={isFinished}
         farmStart={farmStart}
-        isCommunity={isCommunity}
+        poolCategory={poolCategory}
       />
     </Card>
   )

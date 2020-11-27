@@ -46,11 +46,11 @@ const Farm: React.FC = () => {
         <img src="/images/syrup.png" alt="SYRUP POOL icon" />
       </Hero>
       <Pools>
-        {orderBy(openPools, ['sortOrder', 'isCommunity']).map((pool) => (
+        {orderBy(openPools, ['sortOrder']).map((pool) => (
           <PoolCard key={pool.sousId} cakePrice={cakePrice} {...pool} />
         ))}
         <Coming />
-        {orderBy(finishedPools, ['sortOrder', 'isCommunity']).map((pool) => (
+        {orderBy(finishedPools, ['sortOrder']).map((pool) => (
           <PoolCard key={pool.sousId} cakePrice={cakePrice} {...pool} />
         ))}
       </Pools>
