@@ -23,6 +23,12 @@ export enum QuoteToken {
   'SYRUP' = 'SYRUP',
 }
 
+export enum PoolCategory {
+  'COMMUNITY' = 'Community',
+  'CORE' = 'Core',
+  'BINANCE' = 'Binance',
+}
+
 export type Pool = {
   sousId: number
   tokenName: string
@@ -32,6 +38,7 @@ export type Pool = {
     97?: string
     56: string
   }
+  poolCategory: PoolCategory
   projectLink: string
   tokenPerBlock: string
   sortOrder?: number
