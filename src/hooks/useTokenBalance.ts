@@ -3,7 +3,7 @@ import BigNumber from 'bignumber.js'
 import { useWallet } from 'use-wallet'
 import { provider } from 'web3-core'
 import { getBalanceNumber } from '../utils/formatBalance'
-import { getBalance } from '../utils/erc20'
+import { getTokenBalance } from '../utils/erc20'
 import { getSushiSupply } from '../sushi/utils'
 import useBlock from './useBlock'
 import useSushi from './useSushi'
@@ -15,7 +15,7 @@ const useTokenBalance = (tokenAddress: string) => {
 
   useEffect(() => {
     const fetchBalance = async () => {
-      const res = await getBalance(ethereum, tokenAddress, account)
+      const res = await getTokenBalance(ethereum, tokenAddress, account)
       setBalance(new BigNumber(res))
     }
 
@@ -52,7 +52,7 @@ export const useBurnedBalance = (tokenAddress: string) => {
 
   useEffect(() => {
     const fetchBalance = async () => {
-      const res = await getBalance(ethereum, tokenAddress, '0x000000000000000000000000000000000000dEaD')
+      const res = await getTokenBalance(ethereum, tokenAddress, '0x000000000000000000000000000000000000dEaD')
       setBalance(new BigNumber(res))
     }
 
@@ -71,7 +71,7 @@ export const useTokenBalance2 = (tokenAddress: string, account2: string) => {
 
   useEffect(() => {
     const fetchBalance = async () => {
-      const res = await getBalance(ethereum, tokenAddress, account2)
+      const res = await getTokenBalance(ethereum, tokenAddress, account2)
       setBalance(getBalanceNumber(new BigNumber(res)))
     }
 
@@ -90,12 +90,12 @@ export const useBnbPriceUSD = () => {
 
   useEffect(() => {
     const fetchBalance = async () => {
-      const busd = await getBalance(
+      const busd = await getTokenBalance(
         ethereum,
         '0xe9e7cea3dedca5984780bafc599bd69add087d56',
         '0x1B96B92314C44b159149f7E0303511fB2Fc4774f',
       )
-      const bnb = await getBalance(
+      const bnb = await getTokenBalance(
         ethereum,
         '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
         '0x1B96B92314C44b159149f7E0303511fB2Fc4774f',
@@ -118,24 +118,24 @@ export const useCakePriceUSD = () => {
 
   useEffect(() => {
     const fetchBalance = async () => {
-      const busd = await getBalance(
+      const busd = await getTokenBalance(
         ethereum,
         '0xe9e7cea3dedca5984780bafc599bd69add087d56',
         '0x1B96B92314C44b159149f7E0303511fB2Fc4774f',
       )
-      const bnb0 = await getBalance(
+      const bnb0 = await getTokenBalance(
         ethereum,
         '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
         '0x1B96B92314C44b159149f7E0303511fB2Fc4774f',
       )
       const bnbPrice = getBalanceNumber(new BigNumber(busd)) / getBalanceNumber(new BigNumber(bnb0))
 
-      const cake = await getBalance(
+      const cake = await getTokenBalance(
         ethereum,
         '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
         '0xA527a61703D82139F8a06Bc30097cC9CAA2df5A6',
       )
-      const bnb1 = await getBalance(
+      const bnb1 = await getTokenBalance(
         ethereum,
         '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
         '0xA527a61703D82139F8a06Bc30097cC9CAA2df5A6',

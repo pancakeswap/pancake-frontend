@@ -5,11 +5,13 @@ import SushiAbi from './abi/sushi.json'
 import SyrupAbi from './abi/syrup.json'
 import UNIV2PairAbi from './abi/uni_v2_lp.json'
 import SousChefAbi from './abi/sousChef.json'
+import SousChefBnbAbi from './abi/sousChefBnb.json'
 import LotteryAbi from './abi/lottery.json'
 import LotteryNFTAbi from './abi/lotteryNft.json'
 import WETHAbi from './abi/weth.json'
 import MultiCallAbi from './abi/Multicall.json'
 import { contractAddresses, farmsConfig, poolsConfig } from './constants'
+import { PoolCategory } from './constants/types'
 
 const SUBTRACT_GAS_LIMIT = 100000
 
@@ -33,6 +35,7 @@ export default class Contracts {
     this.masterChef = new this.web3.eth.Contract(MasterChefAbi)
     this.syrup = new this.web3.eth.Contract(SyrupAbi)
     this.sousChef = new this.web3.eth.Contract(SousChefAbi)
+    this.sousChefBnb = new this.web3.eth.Contract(SousChefBnbAbi)
     this.weth = new this.web3.eth.Contract(WETHAbi)
     this.lottery = new this.web3.eth.Contract(LotteryAbi)
     this.lotteryNft = new this.web3.eth.Contract(LotteryNFTAbi)
@@ -50,7 +53,10 @@ export default class Contracts {
     this.sousChefs = poolsConfig.map((pool) =>
       Object.assign(pool, {
         contractAddress: pool.contractAddress[networkId],
-        sousContract: new this.web3.eth.Contract(SousChefAbi),
+        sousContract:
+          pool.poolCategory === PoolCategory.BINANCE
+            ? new this.web3.eth.Contract(SousChefBnbAbi)
+            : new this.web3.eth.Contract(SousChefAbi),
       }),
     )
 

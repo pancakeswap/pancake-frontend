@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { Heading } from '@pancakeswap-libs/uikit'
 import orderBy from 'lodash/orderBy'
 import partition from 'lodash/partition'
+import useUserBnbBalance from 'hooks/rework/useBnbBalance'
 import useSushi from 'hooks/useSushi'
 import useI18n from 'hooks/useI18n'
 import useAllStakedValue from 'hooks/useAllStakedValue'
@@ -15,6 +16,7 @@ const Farm: React.FC = () => {
   const sushi = useSushi()
   const TranslateString = useI18n()
   const stakedValues = useAllStakedValue()
+  const userBnbBalance = useUserBnbBalance()
 
   const cakePrice = stakedValues.find((s) => s.tokenSymbol === 'CAKE')?.tokenPriceInWeth || new BigNumber(0)
 
@@ -47,11 +49,11 @@ const Farm: React.FC = () => {
       </Hero>
       <Pools>
         {orderBy(openPools, ['sortOrder']).map((pool) => (
-          <PoolCard key={pool.sousId} cakePrice={cakePrice} {...pool} />
+          <PoolCard key={pool.sousId} cakePrice={cakePrice} userBnbBalance={userBnbBalance} {...pool} />
         ))}
         <Coming />
         {orderBy(finishedPools, ['sortOrder']).map((pool) => (
-          <PoolCard key={pool.sousId} cakePrice={cakePrice} {...pool} />
+          <PoolCard key={pool.sousId} cakePrice={cakePrice} userBnbBalance={userBnbBalance} {...pool} />
         ))}
       </Pools>
     </Page>
