@@ -40,7 +40,7 @@ const pools: Pool[] = [
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
       97: '',
-      56: '0xF022A604EAF644820D3C561F1918DaB922f6790a',
+      56: '0x326D754c64329aD7cb35744770D56D0E1f3B3124',
     },
     poolCategory: PoolCategory.CORE,
     projectLink: 'http://pancakeswap.finance/',
