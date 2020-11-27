@@ -16,5 +16,8 @@ export { default as PancakesIcon } from "./Icons/Pancakes";
 export { default as PancakeRoundIcon } from "./Icons/PancakeRound";
 export { default as RemoveIcon } from "./Icons/Remove";
 export { default as VerifiedIcon } from "./Icons/Verified";
-
+export { default as ProgressBunny } from "./Icons/ProgressBunny";
+export { default as Won } from "./Icons/Won";
+export { default as Ticket } from "./Icons/Ticket";
+export { default as TicketRound } from "./Icons/TicketRound";
 export { default as Svg } from "./Svg";

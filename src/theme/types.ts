@@ -36,6 +36,7 @@ export type Colors = {
   success: string;
   failure: string;
   contrast: string;
+  invertedContrast: string;
   input: string;
   background: string;
   backgroundDisabled: string;
