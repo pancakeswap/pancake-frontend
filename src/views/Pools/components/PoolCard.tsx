@@ -100,7 +100,11 @@ const PoolCard: React.FC<HarvestProps> = ({
   const isCardActive = isFinished && accountHasStakedBalance
 
   const [onPresentDeposit] = useModal(
-    <DepositModal max={userBalance} onConfirm={onStake} tokenName={stakingTokenName} />,
+    <DepositModal
+      max={userBalance.isLessThanOrEqualTo(10) ? userBalance : new BigNumber(10)}
+      onConfirm={onStake}
+      tokenName={stakingTokenName}
+    />,
   )
 
   const [onPresentWithdraw] = useModal(
