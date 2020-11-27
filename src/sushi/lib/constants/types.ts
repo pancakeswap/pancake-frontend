@@ -18,7 +18,7 @@ export type Ifo = {
 }
 
 export enum QuoteToken {
-  'BNB' = 'BNB',
+  'BNB' = 'WBNB',
   'CAKE' = 'CAKE',
   'SYRUP' = 'SYRUP',
 }
