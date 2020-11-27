@@ -3,7 +3,7 @@ import { useCallback } from 'react'
 import { useWallet } from 'use-wallet'
 import useSushi from './useSushi'
 
-import { stake, sousStake, getMasterChefContract, getSousChefContract } from '../sushi/utils'
+import { stake, sousStake, sousStakeBnb, getMasterChefContract, getSousChefContract } from '../sushi/utils'
 
 const useStake = (pid: number) => {
   const { account } = useWallet()
@@ -20,7 +20,7 @@ const useStake = (pid: number) => {
   return { onStake: handleStake }
 }
 
-export const useSousStake = (sousId) => {
+export const useSousStake = (sousId, isUsingBnb = false) => {
   const { account } = useWallet()
   const sushi = useSushi()
 
@@ -28,11 +28,13 @@ export const useSousStake = (sousId) => {
     async (amount: string) => {
       if (sousId === 0) {
         await stake(getMasterChefContract(sushi), 0, amount, account)
+      } else if (isUsingBnb) {
+        await sousStakeBnb(getSousChefContract(sushi, sousId), amount, account)
       } else {
         await sousStake(getSousChefContract(sushi, sousId), amount, account)
       }
     },
-    [account, sousId, sushi],
+    [account, isUsingBnb, sousId, sushi],
   )
 
   return { onStake: handleStake }

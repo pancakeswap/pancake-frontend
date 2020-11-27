@@ -9,7 +9,7 @@ import Farm from './views/Farm'
 import Home from './views/Home'
 import Stake from './views/Stake'
 import Lottery from './views/Lottery'
-import Syrup2 from './views/CakeStaking'
+import Pools from './views/Pools'
 import Ifo from './views/Ifo'
 
 const App: React.FC = () => {
@@ -39,13 +39,10 @@ const App: React.FC = () => {
           <Stake />
         </Route>
         <Route path="/syrup">
-          <Syrup2 />
+          <Pools />
         </Route>
         <Route path="/lottery">
           <Lottery />
-        </Route>
-        <Route path="/staking2">
-          <Syrup2 />
         </Route>
         <Route path="/removed">
           <Farms removed />

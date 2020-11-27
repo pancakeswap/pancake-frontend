@@ -2,7 +2,7 @@ import React from 'react'
 
 import styled from 'styled-components'
 
-import WarningTag from '../../CakeStaking/components/warningTag'
+import WarningTag from '../../Pools/components/warningTag'
 
 const Warning: React.FC = () => {
   return (

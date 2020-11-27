@@ -5,7 +5,14 @@ import { getBalanceNumber } from 'utils/formatBalance'
 import useI18n from 'hooks/useI18n'
 import { ChevronDown, ChevronUp } from 'react-feather'
 import Balance from 'components/Balance'
-import { CommunityTag, CoreTag } from 'components/Tags'
+import { CommunityTag, CoreTag, BinanceTag } from 'components/Tags'
+import { PoolCategory } from 'sushi/lib/constants/types'
+
+const tags = {
+  [PoolCategory.BINANCE]: BinanceTag,
+  [PoolCategory.CORE]: CoreTag,
+  [PoolCategory.COMMUNITY]: CommunityTag,
+}
 
 interface Props {
   projectLink: string
@@ -13,7 +20,7 @@ interface Props {
   blocksRemaining: number
   isFinished: boolean
   farmStart: number
-  isCommunity?: boolean
+  poolCategory: PoolCategory
 }
 
 const StyledFooter = styled.div<{ isFinished: boolean }>`
@@ -71,18 +78,21 @@ const CardFooter: React.FC<Props> = ({
   blocksRemaining,
   isFinished,
   farmStart,
-  isCommunity,
+  poolCategory,
 }) => {
   const [isOpen, setIsOpen] = useState(false)
   const TranslateString = useI18n()
   const Icon = isOpen ? ChevronUp : ChevronDown
 
   const handleClick = () => setIsOpen(!isOpen)
+  const Tag = tags[poolCategory]
 
   return (
     <StyledFooter isFinished={isFinished}>
       <Row>
-        <FlexFull>{isCommunity ? <CommunityTag /> : <CoreTag />}</FlexFull>
+        <FlexFull>
+          <Tag />
+        </FlexFull>
         <StyledDetailsButton onClick={handleClick}>
           {isOpen ? 'Hide' : 'Details'} <Icon />
         </StyledDetailsButton>
