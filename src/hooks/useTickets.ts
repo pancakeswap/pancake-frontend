@@ -23,8 +23,8 @@ const useTickets = () => {
 
   useEffect(() => {
     const fetchBalance = async () => {
-      const tickets = await getTickets(sushi, lotteryContract, ticketsContract, account)
-      setTickets(tickets)
+      const res = await getTickets(sushi, lotteryContract, ticketsContract, account)
+      setTickets(res)
     }
 
     if (account && lotteryContract && ticketsContract && sushi) {
@@ -44,8 +44,8 @@ export const useTotalRewards = () => {
 
   useEffect(() => {
     const fetchBalance = async () => {
-      const rewards = await getTotalRewards(lotteryContract)
-      setRewards(new BigNumber(rewards))
+      const res = await getTotalRewards(lotteryContract)
+      setRewards(new BigNumber(res))
     }
 
     if (account && lotteryContract && sushi) {

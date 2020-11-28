@@ -2,6 +2,7 @@ import BigNumber from 'bignumber.js'
 import get from 'lodash/get'
 import memoize from 'lodash/memoize'
 import { ethers } from 'ethers'
+import { QuoteToken } from 'sushi/lib/constants/types'
 import { poolsConfig } from './lib/constants'
 
 BigNumber.config({
@@ -63,14 +64,17 @@ export const getTotalStaked = async (sushi, sousChefContract) => {
   return syrupBalance > sushiBalance ? syrupBalance : sushiBalance
 }
 
-export const getTotalLPWethValue = async (
-  masterChefContract,
-  wethContract,
-  lpContract,
-  tokenContract,
-  pid,
-  tokenSymbol,
-) => {
+export const getTotalStakedBNB = async (sushi, sousChefContract) => {
+  const weth = await getWethContract(sushi)
+  const wethBalance = await weth.methods.balanceOf(sousChefContract.options.address).call()
+  return wethBalance
+}
+
+export const getTotalLPWethValue = async (sushi, lpContract, tokenContract, pid, tokenSymbol) => {
+  const masterChefContract = getMasterChefContract(sushi)
+  const wethContract = getWethContract(sushi)
+  const sushiContract = getSushiContract(sushi)
+
   const tokenAmountWholeLP = await tokenContract.methods.balanceOf(lpContract.options.address).call()
   const tokenDecimals = await tokenContract.methods.decimals().call()
   // Get the share of lpContract that masterChefContract owns
@@ -78,23 +82,32 @@ export const getTotalLPWethValue = async (
   // Convert that into the portion of total lpContract = p1
   const totalSupply = await lpContract.methods.totalSupply().call()
   // Get total weth value for the lpContract = w1
-  const lpContractWeth = await wethContract.methods.balanceOf(lpContract.options.address).call()
+
+  let lpContractValue = await wethContract.methods.balanceOf(lpContract.options.address).call()
+  let quoteToken = QuoteToken.BNB
+  if (parseFloat(lpContractValue) === 0) {
+    lpContractValue = await sushiContract.methods.balanceOf(lpContract.options.address).call()
+    quoteToken = QuoteToken.CAKE
+  }
+
   // Return p1 * w1 * 2
+  const lpContractValueBN = new BigNumber(lpContractValue)
   const portionLp = new BigNumber(balance).div(new BigNumber(totalSupply))
-  const lpWethWorth = new BigNumber(lpContractWeth)
-  const totalLpWethValue = portionLp.times(lpWethWorth).times(new BigNumber(2))
+  const totalLpValue = portionLp.times(lpContractValueBN).times(new BigNumber(2))
   // Calculate
   const tokenAmount = new BigNumber(tokenAmountWholeLP).times(portionLp).div(new BigNumber(10).pow(tokenDecimals))
+  const wethAmount = lpContractValueBN.times(portionLp).div(new BigNumber(10).pow(18))
 
-  const wethAmount = new BigNumber(lpContractWeth).times(portionLp).div(new BigNumber(10).pow(18))
   return {
     pid,
     tokenSymbol,
+    tokenDecimals,
     tokenAmount,
     wethAmount,
-    totalWethValue: totalLpWethValue.div(new BigNumber(10).pow(18)),
+    totalWethValue: totalLpValue.div(new BigNumber(10).pow(18)),
     tokenPriceInWeth: wethAmount.div(tokenAmount),
     poolWeight: await getPoolWeight(masterChefContract, pid),
+    quoteToken,
   }
 }
 
@@ -135,6 +148,15 @@ export const sousStake = async (sousChefContract, amount, account) => {
     })
 }
 
+export const sousStakeBnb = async (sousChefContract, amount, account) => {
+  return sousChefContract.methods
+    .deposit()
+    .send({ from: account, value: new BigNumber(amount).times(new BigNumber(10).pow(18)).toString() })
+    .on('transactionHash', (tx) => {
+      return tx.transactionHash
+    })
+}
+
 export const unstake = async (masterChefContract, pid, amount, account) => {
   if (pid === 0) {
     return masterChefContract.methods
@@ -153,8 +175,16 @@ export const unstake = async (masterChefContract, pid, amount, account) => {
 }
 
 export const sousUnstake = async (sousChefContract, amount, account) => {
-  // hard fix for old CTK
+  // shit code: hard fix for old CTK and BLK
   if (sousChefContract.options.address === '0x3B9B74f48E89Ebd8b45a53444327013a2308A9BC') {
+    return sousChefContract.methods
+      .emergencyWithdraw()
+      .send({ from: account })
+      .on('transactionHash', (tx) => {
+        return tx.transactionHash
+      })
+  }
+  if (sousChefContract.options.address === '0xBb2B66a2c7C2fFFB06EA60BeaD69741b3f5BF831') {
     return sousChefContract.methods
       .emergencyWithdraw()
       .send({ from: account })
@@ -200,6 +230,15 @@ export const soushHarvest = async (sousChefContract, account) => {
   return sousChefContract.methods
     .deposit('0')
     .send({ from: account })
+    .on('transactionHash', (tx) => {
+      return tx.transactionHash
+    })
+}
+
+export const soushHarvestBnb = async (sousChefContract, account) => {
+  return sousChefContract.methods
+    .deposit()
+    .send({ from: account, value: new BigNumber(0) })
     .on('transactionHash', (tx) => {
       return tx.transactionHash
     })

@@ -37,6 +37,7 @@ const BuyTicketModal: React.FC<BuyTicketModalProps> = ({ max, onDismiss }) => {
       setRequestedBuy(true)
       const length = parseInt(val)
       // @ts-ignore
+      // eslint-disable-next-line prefer-spread
       const numbers = Array.apply(null, { length }).map(() => [
         Math.floor(Math.random() * maxNumber) + 1,
         Math.floor(Math.random() * maxNumber) + 1,

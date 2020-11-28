@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 import BigNumber from 'bignumber.js'
 import { Interface } from '@ethersproject/abi'
 import ticketAbi from './lib/abi/lotteryNft.json'
@@ -14,7 +15,7 @@ export const multiCall = async (sushi, abi, calls) => {
       const calldata = newCalls.map((call) => [call[0].toLowerCase(), itf.encodeFunctionData(call[1], call[2])])
       const { returnData } = await multicall.methods.aggregate(calldata).call()
       i++
-      res = res.concat(returnData.map((call, i) => itf.decodeFunctionResult(newCalls[i][1], call)))
+      res = res.concat(returnData.map((call, index) => itf.decodeFunctionResult(newCalls[index][1], call)))
     }
   } else {
     const calldata = calls.map((call) => [call[0].toLowerCase(), itf.encodeFunctionData(call[1], call[2])])
@@ -49,6 +50,7 @@ export const getTickets = async (sushi, lotteryContract, ticketsContract, accoun
   const issueIdex = await lotteryContract.methods.issueIndex().call()
   const length = await getTicketsAmount(ticketsContract, account)
 
+  // eslint-disable-next-line prefer-spread
   const calls1 = Array.apply(null, { length }).map((a, i) => [
     ticketsContract.options.address,
     'tokenOfOwnerByIndex',
@@ -81,6 +83,7 @@ export const getTicketsAmount = async (ticketsContract, account) => {
 export const multiClaim = async (sushi, lotteryContract, ticketsContract, account) => {
   await lotteryContract.methods.issueIndex().call()
   const length = await getTicketsAmount(ticketsContract, account)
+  // eslint-disable-next-line prefer-spread
   const calls1 = Array.apply(null, { length }).map((a, i) => [
     ticketsContract.options.address,
     'tokenOfOwnerByIndex',
@@ -124,6 +127,7 @@ export const getTotalClaim = async (sushi, lotteryContract, ticketsContract, acc
   try {
     const issueIdex = await lotteryContract.methods.issueIndex().call()
     const length = await getTicketsAmount(ticketsContract, account)
+    // eslint-disable-next-line prefer-spread
     const calls1 = Array.apply(null, { length }).map((a, i) => [
       ticketsContract.options.address,
       'tokenOfOwnerByIndex',
@@ -140,6 +144,7 @@ export const getTotalClaim = async (sushi, lotteryContract, ticketsContract, acc
 
     const finalTokenids = []
     ticketIssues.forEach(async (ticketIssue, i) => {
+      // eslint-disable-next-line no-empty
       if (!drawed && ticketIssue.toString() === issueIdex) {
       } else if (!claimedStatus[i][0]) {
         finalTokenids.push(tokenIds[i])
@@ -195,7 +200,8 @@ export const getWinningNumbers = async (lotteryContract) => {
   const issueIdex = await lotteryContract.methods.issueIndex().call()
   const numbers = []
   const drawed = await lotteryContract.methods.drawed().call()
-  if (!drawed && issueIdex == 0) {
+
+  if (!drawed && parseInt(issueIdex, 10) === 0) {
     return [0, 0, 0, 0]
   }
   if (!drawed) {

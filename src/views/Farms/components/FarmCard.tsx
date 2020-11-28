@@ -167,6 +167,10 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
 
   const localConfig = getFarmConfig(farm.pid)
 
+  // We assume the token name is coin pair + lp e.g. CAKE-BNB LP, LINK-BNB LP,
+  // NAR-CAKE LP. The images should be cake-bnb.svg, link-bnb.svg, nar-cake.svg
+  const farmImage = farm.id.split(' ')[0].toLocaleLowerCase()
+
   return (
     <FCard>
       {farm.tokenSymbol === 'CAKE' && <StyledCardAccent />}
@@ -175,7 +179,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
           <Multiplier>{farm.multiplier}</Multiplier>
           {isCommunityFarm ? <CommunityTag /> : <CoreTag />}
         </Flex>
-        <img src={`/images/tokens/category-${farm.tokenSymbol}.png`} alt={farm.tokenSymbol} />
+        <img src={`/images/farms/${farmImage}.svg`} alt={farm.tokenSymbol} />
       </CardImage>
       <Label>
         <span>{TranslateString(316, 'Deposit')}</span>
@@ -220,6 +224,10 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
 const FarmCardOffline: React.FC<FarmCardProps> = ({ pool }) => {
   const TranslateString = useI18n()
 
+  // We assume the token name is coin pair + lp e.g. CAKE-BNB LP, LINK-BNB LP,
+  // NAR-CAKE LP. The images should be cake-bnb.svg, link-bnb.svg, nar-cake.svg
+  const farmImage = pool.symbol.split(' ')[0].toLocaleLowerCase()
+
   return (
     <FCard key={pool.pid + pool.symbol}>
       <CardImage>
@@ -227,7 +235,7 @@ const FarmCardOffline: React.FC<FarmCardProps> = ({ pool }) => {
           <Multiplier>{pool.multiplier}</Multiplier>
           {pool.isCommunity ? <CommunityTag /> : <CoreTag />}
         </Flex>
-        <img src={`/images/tokens/category-${pool.tokenSymbol}.png`} alt={pool.tokenSymbol} />
+        <img src={`/images/farms/${farmImage}.svg`} alt={pool.tokenSymbol} />
       </CardImage>
       <Label>
         <span>{TranslateString(316, 'Deposit')}</span>

@@ -19,7 +19,7 @@ const Content = styled(Container)`
 `
 
 const Block = styled.div`
-  margin-bottom 32px;
+  margin-bottom: 32px;
 `
 
 const MainImage = styled.img`

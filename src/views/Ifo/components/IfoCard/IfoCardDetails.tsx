@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Text, OpenNewIcon, Link } from '@pancakeswap-libs/uikit'
+import BigNumber from 'bignumber.js'
+import { Text, LinkExternal, Link } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 
 export interface IfoCardDetailsProps {
@@ -10,6 +11,8 @@ export interface IfoCardDetailsProps {
   raiseAmount: string
   cakeToBurn: string
   projectSiteUrl: string
+  raisingAmount: BigNumber
+  totalAmount: BigNumber
 }
 
 const StyledIfoCardDetails = styled.div`
@@ -26,14 +29,6 @@ const Display = styled(Text)`
   flex: 1;
 `
 
-const ProjectLink = styled.div`
-  align-items: center;
-  color: ${({ theme }) => theme.colors.primary};
-  display: flex;
-  font-weight: 600;
-  justify-content: center;
-`
-
 const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({
   launchDate,
   launchTime,
@@ -41,6 +36,8 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({
   raiseAmount,
   cakeToBurn,
   projectSiteUrl,
+  raisingAmount,
+  totalAmount,
 }) => {
   const TranslateString = useI18n()
 
@@ -74,13 +71,14 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({
           <Display>{TranslateString(999, 'CAKE to burn (USD)')}</Display>
           <Text>{cakeToBurn}</Text>
         </Item>
+        <Item>
+          <Display>{TranslateString(999, 'Total raised (% of target)')}</Display>
+          <Text>{`${totalAmount.div(raisingAmount).times(100).toFixed(2)}%`}</Text>
+        </Item>
       </StyledIfoCardDetails>
-      <ProjectLink>
-        <a href={projectSiteUrl} target="_blank" rel="noreferrer">
-          {TranslateString(412, 'View project site')}
-        </a>
-        <OpenNewIcon color="primary" ml="4px" />
-      </ProjectLink>
+      <LinkExternal href={projectSiteUrl} style={{ margin: 'auto' }}>
+        {TranslateString(412, 'View project site')}
+      </LinkExternal>
     </>
   )
 }
