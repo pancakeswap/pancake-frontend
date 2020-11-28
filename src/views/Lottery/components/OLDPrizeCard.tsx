@@ -14,7 +14,7 @@ import { useMultiClaimLottery } from 'hooks/useBuyLottery'
 import useTickets, { useTotalClaim } from 'hooks/useTickets'
 import Loading from 'components/Loading'
 import UnlockButton from '../../../components/UnlockButton'
-import UserTicketsModal from './UserTicketsModal'
+import UserTicketsModal from './TicketCard/UserTicketsModal'
 
 const Wrapper = styled.div`
   margin-bottom: 24px;

@@ -1,14 +1,8 @@
 import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { useWallet } from 'use-wallet'
-import { Button, useModal } from '@pancakeswap-libs/uikit'
+import { Button, useModal, Card, CardBody, PancakeRoundIcon, Text, Heading } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
-import Card from 'components/Card'
-import CardContent from 'components/CardContent'
-import CardIcon from 'components/CardIcon'
-import Label from 'components/Label'
-import Value from 'components/Value'
-import UnlockButton from 'components/UnlockButton'
 import useGetLotteryHasDrawn from 'hooks/useGetLotteryHasDrawn'
 import { useLotteryAllowance } from 'hooks/useAllowance'
 import { useLotteryApprove } from 'hooks/useApprove'
@@ -19,16 +13,40 @@ import { getSushiAddress } from 'sushi/utils'
 import BuyTicketModal from './BuyTicketModal'
 import MyTicketsModal from './UserTicketsModal'
 import PurchaseWarningModal from './PurchaseWarningModal'
+import { getTicketSaleTime } from '../../helpers/CountdownHelpers'
 
-const Wrapper = styled.div``
+const CardHeader = styled.div`
+  align-items: center;
+  display: flex;
+`
+
+const IconWrapper = styled.div`
+  margin-right: 16px;
+  svg {
+    width: 48px;
+    height: 48px;
+  }
+`
+
+const TicketCountWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`
+
+const CardActions = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: ${(props) => props.theme.spacing[3]}px;
+`
 
 const TicketCard: React.FC = () => {
   const [requestedApproval, setRequestedApproval] = useState(false)
-  const { account } = useWallet()
   const TranslateString = useI18n()
   const allowance = useLotteryAllowance()
   const { onApprove } = useLotteryApprove()
   const lotteryHasDrawn = useGetLotteryHasDrawn()
+  // const lotteryHasDrawn = true
+  const timeUntilTicketSale = lotteryHasDrawn && getTicketSaleTime(Date.now())
   const sushi = useSushi()
   const sushiBalance = useTokenBalance(getSushiAddress(sushi))
 
@@ -53,73 +71,63 @@ const TicketCard: React.FC = () => {
     }
   }, [onApprove, onPresentApprove])
 
-  // Hide this component if numbers have been drawn
-  if (lotteryHasDrawn) {
-    return null
+  const renderLotteryTicketButtons = () => {
+    if (!allowance.toNumber()) {
+      return (
+        <Button fullWidth disabled={requestedApproval} onClick={handleApprove}>
+          {TranslateString(998, 'Approve CAKE')}
+        </Button>
+      )
+    }
+    return (
+      <Button fullWidth onClick={onPresentBuy}>
+        {TranslateString(430, 'Buy ticket')}
+      </Button>
+    )
   }
 
   return (
-    <Wrapper>
-      <Card>
-        <CardContent>
-          <StyledCardContentInner>
-            <StyledCardHeader>
-              <CardIcon>🎟</CardIcon>
-              <Value value={ticketsLength} decimals={0} />
-              <Label text={TranslateString(428, 'Your total tickets for this round')} />
-            </StyledCardHeader>
-            <StyledCardActions>
-              {!account && <UnlockButton fullWidth />}
-              {account &&
-                (!allowance.toNumber() ? (
-                  <Button fullWidth disabled={requestedApproval} onClick={handleApprove}>
-                    {TranslateString(998, 'Approve CAKE')}
-                  </Button>
-                ) : (
-                  <>
-                    <Button fullWidth onClick={onPresentBuy}>
-                      {TranslateString(430, 'Buy ticket')}
-                    </Button>
-                  </>
-                ))}
-            </StyledCardActions>
-            {account && ticketsLength > 0 && (
-              <MyTicketsP onClick={onPresentMyTickets}>{TranslateString(432, 'View your tickets')}</MyTicketsP>
-            )}
-
-            {ticketsLength === 0 && <br />}
-            {ticketsLength === 0 && <br />}
-          </StyledCardContentInner>
-        </CardContent>
-      </Card>
-    </Wrapper>
+    <Card>
+      <CardBody>
+        <CardHeader>
+          <IconWrapper>
+            <PancakeRoundIcon />
+          </IconWrapper>
+          {lotteryHasDrawn ? (
+            <TicketCountWrapper>
+              <Text fontSize="14px" color="textSubtle">
+                {TranslateString(999, 'Until ticket sale:')}
+              </Text>
+              <Heading size="lg">{timeUntilTicketSale}</Heading>
+            </TicketCountWrapper>
+          ) : (
+            <TicketCountWrapper>
+              <Text fontSize="14px" color="textSubtle">
+                {TranslateString(999, 'Your tickets for this round')}
+              </Text>
+              <Heading size="lg">{ticketsLength}</Heading>
+            </TicketCountWrapper>
+          )}
+        </CardHeader>
+        <CardActions>
+          {lotteryHasDrawn ? (
+            <Button disabled> {TranslateString(999, 'On sale soon')}</Button>
+          ) : (
+            renderLotteryTicketButtons()
+          )}
+        </CardActions>
+        {ticketsLength > 0 && (
+          <MyTicketsP onClick={onPresentMyTickets}>{TranslateString(432, 'View your tickets')}</MyTicketsP>
+        )}
+      </CardBody>
+    </Card>
   )
 }
-
-const StyledCardHeader = styled.div`
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-`
-const StyledCardActions = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: ${(props) => props.theme.spacing[6]}px;
-  width: 100%;
-`
 
 const MyTicketsP = styled.div`
   cursor: pointer;
   margin-top: 1.35em;
   color: ${(props) => props.theme.colors.secondary};
-`
-
-const StyledCardContentInner = styled.div`
-  align-items: center;
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  justify-content: space-between;
 `
 
 export default TicketCard
