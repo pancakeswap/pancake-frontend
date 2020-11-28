@@ -16,6 +16,10 @@ import Loading from 'components/Loading'
 import UnlockButton from '../../../components/UnlockButton'
 import UserTicketsModal from './UserTicketsModal'
 
+const Wrapper = styled.div`
+  margin-bottom: 24px;
+`
+
 const PrizeCard: React.FC = () => {
   const [requesteClaim, setRequestedClaim] = useState(false)
   const { account } = useWallet()
@@ -41,7 +45,7 @@ const PrizeCard: React.FC = () => {
   }, [onMultiClaim, setRequestedClaim])
 
   return (
-    <div style={{ margin: '5px', width: '380px' }}>
+    <Wrapper>
       <Card>
         <CardContent>
           <StyledCardContentInner>
@@ -70,7 +74,7 @@ const PrizeCard: React.FC = () => {
           </StyledCardContentInner>
         </CardContent>
       </Card>
-    </div>
+    </Wrapper>
   )
 }
 

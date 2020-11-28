@@ -20,6 +20,8 @@ import BuyTicketModal from './BuyTicketModal'
 import MyTicketsModal from './UserTicketsModal'
 import PurchaseWarningModal from './PurchaseWarningModal'
 
+const Wrapper = styled.div``
+
 const TicketCard: React.FC = () => {
   const [requestedApproval, setRequestedApproval] = useState(false)
   const { account } = useWallet()
@@ -57,7 +59,7 @@ const TicketCard: React.FC = () => {
   }
 
   return (
-    <div style={{ margin: '5px', width: '380px' }}>
+    <Wrapper>
       <Card>
         <CardContent>
           <StyledCardContentInner>
@@ -90,7 +92,7 @@ const TicketCard: React.FC = () => {
           </StyledCardContentInner>
         </CardContent>
       </Card>
-    </div>
+    </Wrapper>
   )
 }
 

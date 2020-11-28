@@ -75,8 +75,19 @@ const Lottery: React.FC = () => {
           <Divider />
           {/* NextDraw */}
           <Cards>
-            <TotalPrizesCard />
-            {!account && <UnlockWalletCard />}
+            <div>
+              <TotalPrizesCard />
+            </div>
+            <div>
+              {!account ? (
+                <UnlockWalletCard />
+              ) : (
+                <>
+                  <PrizeCard />
+                  <TicketCard />
+                </>
+              )}
+            </div>
           </Cards>
 
           {account && (
@@ -91,12 +102,7 @@ const Lottery: React.FC = () => {
           </Title>
           <Title2>{getBalanceNumber(lotteryPrizeAmount).toFixed(2)} CAKE</Title2>
           <Subtitle>{subtitleText}</Subtitle>
-          <StyledFarm>
-            <StyledCardWrapper>
-              <PrizeCard />
-              <TicketCard />
-            </StyledCardWrapper>
-          </StyledFarm>
+
           <LotteryCountdown />
           <WinningNumbers />
         </Container>
