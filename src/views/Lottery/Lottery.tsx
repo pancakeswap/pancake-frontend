@@ -69,13 +69,6 @@ const Lottery: React.FC = () => {
     }
   }, [account, lotteryContract, sushi, fetchIndex])
 
-  const lotteryPrizeAmount = useTotalRewards()
-
-  const subtitleText = TranslateString(
-    426,
-    'Spend CAKE to buy tickets, contributing to the lottery pot. Win prizes if 2, 3, or 4 of your ticket numbers match the winning numbers and their exact order! Good luck!',
-  )
-
   return (
     <Switch>
       <Page>
@@ -99,19 +92,12 @@ const Lottery: React.FC = () => {
             </SecondCardColumnWrapper>
           </Cards>
 
+          {/* legacy page content */}
           {account && (
             <Subtitle>
               {!lotteryHasDrawn ? `#${index - 2} - Phase 1 - Buy Tickets` : `#${index - 2} - Phase 2 - Claim Winnings`}
             </Subtitle>
           )}
-          <Title style={{ marginTop: '0.5em' }}>
-            💰
-            <br />
-            {TranslateString(422, 'WIN')}
-          </Title>
-          <Title2>{getBalanceNumber(lotteryPrizeAmount).toFixed(2)} CAKE</Title2>
-          <Subtitle>{subtitleText}</Subtitle>
-
           <LotteryCountdown />
           <WinningNumbers />
         </Container>
@@ -119,31 +105,6 @@ const Lottery: React.FC = () => {
     </Switch>
   )
 }
-
-const Title = styled.div`
-  color: ${(props) => props.theme.colors.secondary};
-  font-size: 56px;
-  width: 50vw;
-  text-align: center;
-  font-weight: 1000;
-  margin-top: 0.5em;
-
-  @media (max-width: 600px) {
-    font-size: 40px;
-  }
-`
-
-const Title2 = styled.div`
-  color: ${(props) => props.theme.colors.primary};
-  font-size: 56px;
-  width: 50vw;
-  text-align: center;
-  font-weight: 1000;
-
-  @media (max-width: 600px) {
-    font-size: 38px;
-  }
-`
 
 const Subtitle = styled.div`
   color: ${(props) => props.theme.colors.secondary};
@@ -156,21 +117,6 @@ const Subtitle = styled.div`
   @media (max-width: 600px) {
     font-size: 16px;
     width: 80vw;
-  }
-`
-const StyledCardWrapper = styled.div`
-  display: flex;
-  width: 100%;
-  position: relative;
-`
-
-const StyledFarm = styled.div`
-  margin-top: 2.5em;
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  @media (max-width: 768px) {
-    width: 100%;
   }
 `
 
