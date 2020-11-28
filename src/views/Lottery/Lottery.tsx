@@ -13,7 +13,7 @@ import Page from 'components/layout/Page'
 import Container from '../../components/layout/Container'
 import Hero from './components/Hero'
 import Divider from './components/Divider'
-import PrizeCard from './components/PrizeCard'
+import YourPrizesCard from './components/YourPrizesCard'
 import UnlockWalletCard from './components/UnlockWalletCard'
 import TicketCard from './components/TicketCard'
 import LotteryCountdown from './components/LotteryCountdown'
@@ -83,7 +83,7 @@ const Lottery: React.FC = () => {
                 <UnlockWalletCard />
               ) : (
                 <>
-                  <PrizeCard />
+                  <YourPrizesCard />
                   <TicketCard />
                 </>
               )}
