@@ -1,6 +1,5 @@
 import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
-import { useWallet } from 'use-wallet'
 import { Button, useModal, Card, CardBody, PancakeRoundIcon, Text, Heading } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import useGetLotteryHasDrawn from 'hooks/useGetLotteryHasDrawn'
@@ -45,7 +44,6 @@ const TicketCard: React.FC = () => {
   const allowance = useLotteryAllowance()
   const { onApprove } = useLotteryApprove()
   const lotteryHasDrawn = useGetLotteryHasDrawn()
-  // const lotteryHasDrawn = true
   const timeUntilTicketSale = lotteryHasDrawn && getTicketSaleTime(Date.now())
   const sushi = useSushi()
   const sushiBalance = useTokenBalance(getSushiAddress(sushi))
@@ -74,15 +72,31 @@ const TicketCard: React.FC = () => {
   const renderLotteryTicketButtons = () => {
     if (!allowance.toNumber()) {
       return (
-        <Button fullWidth disabled={requestedApproval} onClick={handleApprove}>
-          {TranslateString(998, 'Approve CAKE')}
-        </Button>
+        <>
+          <Button fullWidth disabled>
+            {TranslateString(432, 'View your tickets')}
+          </Button>
+          <Button fullWidth disabled={requestedApproval} onClick={handleApprove}>
+            {TranslateString(998, 'Approve CAKE')}
+          </Button>
+        </>
       )
     }
     return (
-      <Button fullWidth onClick={onPresentBuy}>
-        {TranslateString(430, 'Buy ticket')}
-      </Button>
+      <>
+        <Button
+          style={{ marginRight: '8px' }}
+          fullWidth
+          disabled={ticketsLength === 0}
+          variant="secondary"
+          onClick={onPresentMyTickets}
+        >
+          {TranslateString(432, 'View your tickets')}
+        </Button>
+        <Button fullWidth onClick={onPresentBuy}>
+          {TranslateString(430, 'Buy ticket')}
+        </Button>
+      </>
     )
   }
 
@@ -116,18 +130,9 @@ const TicketCard: React.FC = () => {
             renderLotteryTicketButtons()
           )}
         </CardActions>
-        {ticketsLength > 0 && (
-          <MyTicketsP onClick={onPresentMyTickets}>{TranslateString(432, 'View your tickets')}</MyTicketsP>
-        )}
       </CardBody>
     </Card>
   )
 }
-
-const MyTicketsP = styled.div`
-  cursor: pointer;
-  margin-top: 1.35em;
-  color: ${(props) => props.theme.colors.secondary};
-`
 
 export default TicketCard
