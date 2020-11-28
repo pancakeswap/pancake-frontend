@@ -8,6 +8,8 @@ import ModalActions from 'components/ModalActions'
 import { useMultiBuyLottery, useMaxNumber } from 'hooks/useBuyLottery'
 import useI18n from 'hooks/useI18n'
 
+const ButtonsWrapper = styled.div``
+
 interface BuyTicketModalProps {
   max: BigNumber
   onConfirm?: (amount: string, numbers: Array<number>) => void
@@ -89,10 +91,11 @@ const BuyTicketModal: React.FC<BuyTicketModalProps> = ({ max, onDismiss }) => {
         <Final>{TranslateString(460, `You will spend: ${cakeCosts(val)} CAKE`)}</Final>
       </div>
       <ModalActions>
-        <Button variant="secondary" onClick={onDismiss}>
+        <Button fullWidth variant="secondary" onClick={onDismiss}>
           {TranslateString(462, 'Cancel')}
         </Button>
         <Button
+          fullWidth
           disabled={pendingTx || parseInt(val) > Number(maxTickets) || parseInt(val) > 50 || parseInt(val) < 1}
           onClick={async () => {
             setPendingTx(true)
