@@ -8,7 +8,6 @@ import useUserBnbBalance from 'hooks/rework/useBnbBalance'
 import useSushi from 'hooks/useSushi'
 import useI18n from 'hooks/useI18n'
 import useAllStakedValue from 'hooks/useAllStakedValue'
-import { useBnbPriceUSD } from 'hooks/useTokenBalance'
 import { getPools } from 'sushi/utils'
 import Coming from './components/Coming'
 import PoolCard from './components/PoolCard'
@@ -18,14 +17,13 @@ const Farm: React.FC = () => {
   const TranslateString = useI18n()
   const stakedValues = useAllStakedValue()
   const userBnbBalance = useUserBnbBalance()
-  const bnbPriceUSD = useBnbPriceUSD()
 
   const cakePrice = stakedValues.find((s) => s.tokenSymbol === 'CAKE')?.tokenPriceInWeth || new BigNumber(0)
 
   const pools = getPools(sushi).map((pool) => {
     const stakedValue =
       pool.tokenName === 'BNB'
-        ? { tokenPriceInWeth: new BigNumber(bnbPriceUSD), quoteToken: 'USD', tokenDecimals: '18' }
+        ? { tokenPriceInWeth: new BigNumber(1), quoteToken: 'BNB', tokenDecimals: '18' }
         : stakedValues.find((s) => s.tokenSymbol === pool.tokenName)
 
     return {
