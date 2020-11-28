@@ -1,44 +1,35 @@
 import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { useWallet } from 'use-wallet'
-import { Card, Button, useModal, Text, CardBody } from '@pancakeswap-libs/uikit'
+import { Card, Button, useModal, Heading, CardBody } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
-import CardContent from 'components/CardContent'
-import CardIcon from 'components/CardIcon'
-import Label from 'components/Label'
-import Value from 'components/Value'
 import { getBalanceNumber } from 'utils/formatBalance'
 import useGetLotteryHasDrawn from 'hooks/useGetLotteryHasDrawn'
 import { useMultiClaimLottery } from 'hooks/useBuyLottery'
 import useTickets, { useTotalClaim } from 'hooks/useTickets'
 import Loading from 'components/Loading'
-import UnlockButton from '../../../../components/UnlockButton'
 import UserTicketsModal from '../UserTicketsModal'
+import NoPrizesContent from './NoPrizesContent'
 
 const StyledCard = styled(Card)`
   margin-bottom: 24px;
-  background-color: unset;
-  box-shadow: unset;
-  border: 1px solid ${({ theme }) => theme.colors.textDisabled};
-`
-const LoseInner = styled.div`
-  display: flex;
-  align-items: center;
-`
-const LoseImage = styled.img`
-  margin-right: 20px;
+  ${(props) =>
+    props.isDisabled
+      ? `  
+        background-color: unset;
+        box-shadow: unset;
+        border: 1px solid ${({ theme }) => theme.colors.textDisabled};
+        `
+      : ``}
 `
 
-const StyledCardHeader = styled.div`
-  align-items: center;
+const WinningsWrapper = styled.div`
   display: flex;
-  flex-direction: column;
+  align-items: baseline;
 `
+
 const StyledCardActions = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: ${(props) => props.theme.spacing[6]}px;
-  width: 100%;
+  margin-top: ${(props) => props.theme.spacing[3]}px;
 `
 
 const StyledCardContentInner = styled.div`
@@ -76,30 +67,39 @@ const YourPrizesCard: React.FC = () => {
   console.log(`number: ${getBalanceNumber(claimAmount)}`)
 
   const winnings = getBalanceNumber(claimAmount)
-  const isAWin = winnings > 0
+  //   const isAWin = winnings > 0
+  const isAWin = true
 
   return (
-    <StyledCard isDisabled={!isAWin}>
+    <StyledCard isDisabled={!isAWin} isActive={isAWin}>
       <CardBody>
         {isAWin ? (
           <StyledCardContentInner>
-            <StyledCardHeader>
-              <CardIcon>🎁</CardIcon>
-              {claimLoading && <Loading />}
-              {!claimLoading && <Value value={winnings} />}
-              <Label text={TranslateString(482, 'CAKE prizes to be claimed!')} />
-            </StyledCardHeader>
+            {/* 'won' icon to go here after uikit update */}
+            <Heading as="h3" size="lg" color="secondary" style={{}}>
+              You won!
+            </Heading>
+            {claimLoading && <Loading />}
+            {!claimLoading && (
+              <>
+                <WinningsWrapper>
+                  <Heading as="h4" size="xl" style={{ marginRight: '6px' }}>
+                    {winnings}
+                  </Heading>
+                  <Heading as="h4" size="lg">
+                    CAKE
+                  </Heading>
+                </WinningsWrapper>
+              </>
+            )}
             <StyledCardActions>
               <Button fullWidth disabled={requestedClaim} onClick={handleClaim}>
-                {TranslateString(480, 'Claim prizes')}
+                {TranslateString(999, 'Collect')}
               </Button>
             </StyledCardActions>
           </StyledCardContentInner>
         ) : (
-          <LoseInner>
-            <LoseImage src="/images/no-prize.svg" alt="no prizes won" />
-            <Text color="textDisabled">Sorry, no prizes to collect</Text>
-          </LoseInner>
+          <NoPrizesContent />
         )}
       </CardBody>
     </StyledCard>
