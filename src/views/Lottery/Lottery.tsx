@@ -7,7 +7,7 @@ import { getLotteryContract, getLotteryIssueIndex } from 'sushi/lotteryUtils'
 import { getBalanceNumber } from 'utils/formatBalance'
 import useGetLotteryHasDrawn from 'hooks/useGetLotteryHasDrawn'
 import useSushi from 'hooks/useSushi'
-import { useTotalRewards } from 'hooks/useTickets'
+import { useTotalRewards, useTotalClaim } from 'hooks/useTickets'
 import useI18n from 'hooks/useI18n'
 import Page from 'components/layout/Page'
 import Container from '../../components/layout/Container'
@@ -41,13 +41,22 @@ const Cards = styled(BaseLayout)`
   }
 `
 
+const SecondCardColumnWrapper = styled.div<{ isAWin?: boolean }>`
+  display: flex;
+  flex-direction: ${(props) => (props.isAWin ? 'column' : 'column-reverse')};
+`
+
 const Lottery: React.FC = () => {
   const { account } = useWallet()
   const TranslateString = useI18n()
   const lotteryHasDrawn = useGetLotteryHasDrawn()
   const sushi = useSushi()
   const lotteryContract = getLotteryContract(sushi)
+  const { claimAmount } = useTotalClaim()
   const [index, setIndex] = useState(0)
+
+  const winnings = getBalanceNumber(claimAmount)
+  const isAWin = winnings > 0
 
   const fetchIndex = useCallback(async () => {
     const issueIndex = await getLotteryIssueIndex(lotteryContract)
@@ -78,7 +87,7 @@ const Lottery: React.FC = () => {
             <div>
               <TotalPrizesCard />
             </div>
-            <div>
+            <SecondCardColumnWrapper isAWin={isAWin}>
               {!account ? (
                 <UnlockWalletCard />
               ) : (
@@ -87,7 +96,7 @@ const Lottery: React.FC = () => {
                   <TicketCard />
                 </>
               )}
-            </div>
+            </SecondCardColumnWrapper>
           </Cards>
 
           {account && (

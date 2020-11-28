@@ -8,10 +8,10 @@ import PrizesWonContent from './PrizesWonContent'
 import NoPrizesContent from './NoPrizesContent'
 
 const StyledCard = styled(Card)`
-  margin-bottom: 24px;
   ${(props) =>
     props.isDisabled
       ? `  
+        margin-top: 24px;
         background-color: unset;
         box-shadow: unset;
         border: 1px solid ${props.theme.colors.textDisabled};
