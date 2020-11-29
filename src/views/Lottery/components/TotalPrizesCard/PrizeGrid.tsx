@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import useI18n from 'hooks/useI18n'
 import { Heading, Text } from '@pancakeswap-libs/uikit'
 
 export interface PrizeGridProps {
@@ -29,22 +30,23 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({ lotteryPrizeAmount = 0 }) => {
   const threeMatchesAmount = +((lotteryPrizeAmount / 100) * 20).toFixed(0)
   const twoMatchesAmount = +((lotteryPrizeAmount / 100) * 10).toFixed(0)
   const burnAmount = +((lotteryPrizeAmount / 100) * 10).toFixed(0)
+  const TranslateString = useI18n()
 
   return (
     <Grid>
       <GridItem>
         <Text fontSize="14px" color="textSubtle">
-          No. Matched
+          {TranslateString(999, 'No. Matched')}
         </Text>
       </GridItem>
       <GridItem>
         <RightAlignedText fontSize="14px" color="textSubtle">
-          Win Chance
+          {TranslateString(999, 'Win Chance')}
         </RightAlignedText>
       </GridItem>
       <GridItem>
         <RightAlignedText fontSize="14px" color="textSubtle">
-          Prize Pot
+          {TranslateString(999, 'Prize Pot')}
         </RightAlignedText>
       </GridItem>
       {/* 4 matches row */}
@@ -79,7 +81,7 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({ lotteryPrizeAmount = 0 }) => {
       </GridItem>
       {/* Burn row */}
       <GridItem marginBottom="0">
-        <Text>To burn:</Text>
+        <Text>{TranslateString(999, 'To burn:')}</Text>
       </GridItem>
       <GridItem marginBottom="0" />
       <GridItem marginBottom="0">

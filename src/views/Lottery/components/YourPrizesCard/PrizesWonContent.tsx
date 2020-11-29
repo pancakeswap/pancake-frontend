@@ -48,8 +48,8 @@ const PrizesWonContent: React.FC = () => {
   return (
     <StyledCardContentInner>
       {/* 'won' icon to go here after uikit update */}
-      <Heading as="h3" size="lg" color="secondary" style={{}}>
-        You won!
+      <Heading as="h3" size="lg" color="secondary">
+        {TranslateString(999, 'You won!')}
       </Heading>
       {claimLoading && <Loading />}
       {!claimLoading && (

@@ -4,9 +4,7 @@ import { Switch } from 'react-router-dom'
 import { useWallet } from 'use-wallet'
 import { BaseLayout } from '@pancakeswap-libs/uikit'
 import { getBalanceNumber } from 'utils/formatBalance'
-import useGetLotteryHasDrawn from 'hooks/useGetLotteryHasDrawn'
 import { useTotalClaim } from 'hooks/useTickets'
-import useI18n from 'hooks/useI18n'
 import Page from 'components/layout/Page'
 import Container from '../../components/layout/Container'
 import Hero from './components/Hero'
@@ -70,7 +68,8 @@ const Lottery: React.FC = () => {
       <Page>
         <Hero />
         <Container>
-          {/* Uncomment when implementing 'Past Draws' <Divider /> */}
+          {/* Uncomment when implementing 'Past Draws' 
+          <Divider /> */}
           <Cards>
             <div>
               <TotalPrizesCard />

@@ -1,7 +1,6 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
-import { Heading, Card, CardBody, CardFooter, Button, Text, PancakeRoundIcon } from '@pancakeswap-libs/uikit'
-import { useWallet } from 'use-wallet'
+import { Heading, Card, CardBody, CardFooter, Text, PancakeRoundIcon } from '@pancakeswap-libs/uikit'
 import { getBalanceNumber } from 'utils/formatBalance'
 import useI18n from 'hooks/useI18n'
 import { useTotalRewards } from 'hooks/useTickets'
@@ -59,11 +58,9 @@ const TotalPrizesCard = () => {
             </IconWrapper>
             <PrizeCountWrapper>
               <Text fontSize="14px" color="textSubtle">
-                Total Prizes:
+                {TranslateString(999, 'Total Prizes:')}
               </Text>
-              <Heading size="lg">
-                {lotteryPrizeWithCommaSeparators} {TranslateString(0, 'CAKE')}
-              </Heading>
+              <Heading size="lg">{lotteryPrizeWithCommaSeparators} CAKE</Heading>
             </PrizeCountWrapper>
           </Left>
           <Right>
