@@ -87,7 +87,7 @@ const Lottery: React.FC = () => {
               ) : (
                 <>
                   <YourPrizesCard />
-                  <TicketCard />
+                  <TicketCard isSecondCard={isAWin} />
                 </>
               )}
             </SecondCardColumnWrapper>

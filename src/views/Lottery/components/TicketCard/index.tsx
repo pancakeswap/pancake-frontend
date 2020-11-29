@@ -14,6 +14,27 @@ import MyTicketsModal from './UserTicketsModal'
 import PurchaseWarningModal from './PurchaseWarningModal'
 import { getTicketSaleTime } from '../../helpers/CountdownHelpers'
 
+interface CardProps {
+  isSecondCard?: boolean
+}
+
+const StyledCard = styled(Card)<CardProps>`
+  ${(props) =>
+    props.isSecondCard
+      ? `  
+        margin-top: 16px;
+
+        ${props.theme.mediaQueries.sm} {
+          margin-top: 24px;
+        }
+
+        ${props.theme.mediaQueries.lg} {
+          margin-top: 32px;
+        }
+        `
+      : ``}
+`
+
 const CardHeader = styled.div`
   align-items: center;
   display: flex;
@@ -38,7 +59,7 @@ const CardActions = styled.div`
   margin-top: ${(props) => props.theme.spacing[3]}px;
 `
 
-const TicketCard: React.FC = () => {
+const TicketCard: React.FC<CardProps> = ({ isSecondCard = false }) => {
   const [requestedApproval, setRequestedApproval] = useState(false)
   const TranslateString = useI18n()
   const allowance = useLotteryAllowance()
@@ -109,7 +130,7 @@ const TicketCard: React.FC = () => {
   }
 
   return (
-    <Card>
+    <StyledCard isSecondCard={isSecondCard}>
       <CardBody>
         <CardHeader>
           <IconWrapper>
@@ -139,7 +160,7 @@ const TicketCard: React.FC = () => {
           )}
         </CardActions>
       </CardBody>
-    </Card>
+    </StyledCard>
   )
 }
 
