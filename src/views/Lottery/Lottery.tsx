@@ -75,8 +75,7 @@ const Lottery: React.FC = () => {
       <Page>
         <Hero />
         <Container>
-          <Divider />
-          {/* NextDraw */}
+          {/* Uncomment when implementing 'Past Draws' <Divider /> */}
           <Cards>
             <div>
               <TotalPrizesCard />
@@ -95,31 +94,11 @@ const Lottery: React.FC = () => {
           <HowItWorks />
 
           {/* legacy page content */}
-          {account && (
-            <Subtitle>
-              {!lotteryHasDrawn ? `#${index - 2} - Phase 1 - Buy Tickets` : `#${index - 2} - Phase 2 - Claim Winnings`}
-            </Subtitle>
-          )}
-          <LotteryCountdown />
           <WinningNumbers />
         </Container>
       </Page>
     </Switch>
   )
 }
-
-const Subtitle = styled.div`
-  color: ${(props) => props.theme.colors.secondary};
-  font-size: 20px;
-  width: 50vw;
-  text-align: center;
-  font-weight: 600;
-  margin-top: 0.8em;
-
-  @media (max-width: 600px) {
-    font-size: 16px;
-    width: 80vw;
-  }
-`
 
 export default Lottery

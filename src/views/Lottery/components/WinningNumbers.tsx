@@ -17,7 +17,7 @@ const WinningNumbers: React.FC = () => {
   const TranslateString = useI18n()
 
   return (
-    <CardWrapper style={{ marginTop: '4em' }}>
+    <CardWrapper>
       <Card>
         <CardContent>
           <StyledCardContentInner>
