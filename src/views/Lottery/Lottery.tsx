@@ -1,22 +1,18 @@
-import React, { useEffect, useCallback, useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { Switch } from 'react-router-dom'
 import { useWallet } from 'use-wallet'
 import { BaseLayout } from '@pancakeswap-libs/uikit'
-import { getLotteryContract, getLotteryIssueIndex } from 'sushi/lotteryUtils'
 import { getBalanceNumber } from 'utils/formatBalance'
 import useGetLotteryHasDrawn from 'hooks/useGetLotteryHasDrawn'
-import useSushi from 'hooks/useSushi'
-import { useTotalRewards, useTotalClaim } from 'hooks/useTickets'
+import { useTotalClaim } from 'hooks/useTickets'
 import useI18n from 'hooks/useI18n'
 import Page from 'components/layout/Page'
 import Container from '../../components/layout/Container'
 import Hero from './components/Hero'
-import Divider from './components/Divider'
 import YourPrizesCard from './components/YourPrizesCard'
 import UnlockWalletCard from './components/UnlockWalletCard'
 import TicketCard from './components/TicketCard'
-import LotteryCountdown from './components/LotteryCountdown'
 import TotalPrizesCard from './components/TotalPrizesCard'
 import WinningNumbers from './components/WinningNumbers'
 import HowItWorks from './components/HowItWorks'
@@ -31,7 +27,7 @@ const Cards = styled(BaseLayout)`
 
   ${({ theme }) => theme.mediaQueries.sm} {
     & > div {
-      grid-column: span 8;
+      grid-column: span 12;
     }
   }
 
@@ -49,26 +45,25 @@ const SecondCardColumnWrapper = styled.div<{ isAWin?: boolean }>`
 
 const Lottery: React.FC = () => {
   const { account } = useWallet()
-  const TranslateString = useI18n()
-  const lotteryHasDrawn = useGetLotteryHasDrawn()
-  const sushi = useSushi()
-  const lotteryContract = getLotteryContract(sushi)
   const { claimAmount } = useTotalClaim()
-  const [index, setIndex] = useState(0)
-
   const winnings = getBalanceNumber(claimAmount)
   const isAWin = winnings > 0
 
-  const fetchIndex = useCallback(async () => {
-    const issueIndex = await getLotteryIssueIndex(lotteryContract)
-    setIndex(issueIndex)
-  }, [lotteryContract])
+  // May be useful for 'Past draws'
+  // const sushi = useSushi()
+  // const lotteryContract = getLotteryContract(sushi)
+  // const [index, setIndex] = useState(0)
 
-  useEffect(() => {
-    if (account && lotteryContract && sushi) {
-      fetchIndex()
-    }
-  }, [account, lotteryContract, sushi, fetchIndex])
+  // const fetchIndex = useCallback(async () => {
+  //   const issueIndex = await getLotteryIssueIndex(lotteryContract)
+  //   setIndex(issueIndex)
+  // }, [lotteryContract])
+
+  // useEffect(() => {
+  //   if (account && lotteryContract && sushi) {
+  //     fetchIndex()
+  //   }
+  // }, [account, lotteryContract, sushi, fetchIndex])
 
   return (
     <Switch>
@@ -92,7 +87,6 @@ const Lottery: React.FC = () => {
             </SecondCardColumnWrapper>
           </Cards>
           <HowItWorks />
-
           {/* legacy page content */}
           <WinningNumbers />
         </Container>
