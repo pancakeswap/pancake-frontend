@@ -68,9 +68,9 @@ const Hero = () => {
     <StyledHero>
       <StyledContainer>
         <LeftWrapper>
-          <Title>{TranslateString(0, 'The CAKE Lottery')}</Title>
-          <Blurb>{TranslateString(0, 'Buy tickets with CAKE')}</Blurb>
-          <Blurb>{TranslateString(0, 'Win if 2, 3, or 4 of your ticket numbers match!')}</Blurb>
+          <Title>{TranslateString(999, 'The CAKE Lottery')}</Title>
+          <Blurb>{TranslateString(999, 'Buy tickets with CAKE')}</Blurb>
+          <Blurb>{TranslateString(999, 'Win if 2, 3, or 4 of your ticket numbers match!')}</Blurb>
         </LeftWrapper>
         <RightWrapper>
           <LotteryProgress />
