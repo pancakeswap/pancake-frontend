@@ -51,7 +51,7 @@ const Hero = () => {
 
   return (
     <ProgressWrapper>
-      <Progress step={getLotteryDrawStep(currentTime)} />
+      <Progress primaryStep={getLotteryDrawStep(currentTime)} secondaryStep={getTicketSaleStep()} showProgressBunny />
       <TopTextWrapper>
         <StyledPrimaryText fontSize="20px" bold color="contrast">
           {lotteryHasDrawn ? timeUntilTicketSale : timeUntilLotteryDraw}

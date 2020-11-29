@@ -13,7 +13,7 @@ const StyledProgress = styled.div`
 const IfoCardProgress: React.FC<IfoCardProgressProps> = ({ progress }) => {
   return (
     <StyledProgress>
-      <Progress step={progress} />
+      <Progress primaryStep={progress} />
     </StyledProgress>
   )
 }
