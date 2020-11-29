@@ -1,5 +1,5 @@
 // @ts-nocheck
-const getMinutes = (msTimeValue) => Math.floor((msTimeValue % 3000) / 60)
+const getMinutes = (msTimeValue) => Math.floor((msTimeValue % 3600) / 60)
 const getHours = (msTimeValue) => Math.floor((msTimeValue % (3600 * 24)) / 3600)
 const getNextTicketSaleTime = (currentTime) => (parseInt(currentTime / 3600) + 1) * 3600
 // lottery is every 6 hrs (21600 s)
