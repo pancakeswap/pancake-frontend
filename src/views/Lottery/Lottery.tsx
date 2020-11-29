@@ -2,7 +2,7 @@ import React, { useEffect, useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { Switch } from 'react-router-dom'
 import { useWallet } from 'use-wallet'
-import { Heading, Card, CardBody, Button, BaseLayout } from '@pancakeswap-libs/uikit'
+import { BaseLayout } from '@pancakeswap-libs/uikit'
 import { getLotteryContract, getLotteryIssueIndex } from 'sushi/lotteryUtils'
 import { getBalanceNumber } from 'utils/formatBalance'
 import useGetLotteryHasDrawn from 'hooks/useGetLotteryHasDrawn'
@@ -19,10 +19,11 @@ import TicketCard from './components/TicketCard'
 import LotteryCountdown from './components/LotteryCountdown'
 import TotalPrizesCard from './components/TotalPrizesCard'
 import WinningNumbers from './components/WinningNumbers'
+import HowItWorks from './components/HowItWorks'
 
 const Cards = styled(BaseLayout)`
   align-items: start;
-  margin-bottom: 48px;
+  margin-bottom: 32px;
 
   & > div {
     grid-column: span 6;
@@ -91,6 +92,7 @@ const Lottery: React.FC = () => {
               )}
             </SecondCardColumnWrapper>
           </Cards>
+          <HowItWorks />
 
           {/* legacy page content */}
           {account && (

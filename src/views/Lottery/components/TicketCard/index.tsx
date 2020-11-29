@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { Button, useModal, Card, CardBody, PancakeRoundIcon, Text, Heading } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
@@ -44,16 +44,24 @@ const TicketCard: React.FC = () => {
   const allowance = useLotteryAllowance()
   const { onApprove } = useLotteryApprove()
   const lotteryHasDrawn = useGetLotteryHasDrawn()
-  const timeUntilTicketSale = lotteryHasDrawn && getTicketSaleTime(Date.now() / 1000)
   const sushi = useSushi()
   const sushiBalance = useTokenBalance(getSushiAddress(sushi))
 
   const tickets = useTickets()
+  const ticketsLength = tickets.length
   const [onPresentMyTickets] = useModal(<MyTicketsModal myTicketNumbers={tickets} from="buy" />)
   const [onPresentApprove] = useModal(<PurchaseWarningModal />)
   const [onPresentBuy] = useModal(<BuyTicketModal max={sushiBalance} tokenName="CAKE" />)
 
-  const ticketsLength = tickets.length
+  const [currentTime, setCurrentTime] = useState(Date.now() / 1000)
+  const timeUntilTicketSale = lotteryHasDrawn && getTicketSaleTime(currentTime)
+  const tick = () => {
+    setCurrentTime(currentTime + 1)
+  }
+  useEffect(() => {
+    const timerID = setInterval(() => tick(), 1000)
+    return () => clearInterval(timerID)
+  })
 
   const handleApprove = useCallback(async () => {
     try {
