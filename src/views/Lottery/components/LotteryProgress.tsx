@@ -34,14 +34,14 @@ const StyledPrimaryText = styled(Text)`
   margin-right: 16px;
 `
 const Hero = () => {
-  const [currentTime, setCurrentTime] = useState(Date.now())
+  const [currentTime, setCurrentTime] = useState(Date.now() / 1000)
   const TranslateString = useI18n()
   const lotteryHasDrawn = useGetLotteryHasDrawn()
   const timeUntilTicketSale = getTicketSaleTime(currentTime)
   const timeUntilLotteryDraw = getLotteryDrawTime(currentTime)
 
   const tick = () => {
-    setCurrentTime(currentTime + 1000)
+    setCurrentTime(currentTime + 1)
   }
 
   useEffect(() => {

@@ -1,12 +1,12 @@
 // @ts-nocheck
-const getMinutes = (msTimeValue) => Math.floor((msTimeValue % 3600000) / 60000)
-const getHours = (msTimeValue) => Math.floor((msTimeValue % (3600000 * 24)) / 3600000)
-const getNextTicketSaleTime = (currentTime) => (parseInt(currentTime / 3600000) + 1) * 3600000
-// lottery is every 6 hrs (21600000 ms)
+const getMinutes = (msTimeValue) => Math.floor((msTimeValue % 3000) / 60)
+const getHours = (msTimeValue) => Math.floor((msTimeValue % (3600 * 24)) / 3600)
+const getNextTicketSaleTime = (currentTime) => (parseInt(currentTime / 3600) + 1) * 3600
+// lottery is every 6 hrs (21600 s)
 // lottery draws UTC: 02:00 (10:00 SGT), 08:00 (16:00 SGT), 14:00 (22:00 SGT), 20:00 (04:00 SGT)
-// break the current time into chunks of 6hrs (/ 21600000), add one more 6hr unit, multiply by 6hrs to get it back to current time, add 2 hrs to get it relative to SGT
+// break the current time into chunks of 6hrs (/ 21600), add one more 6hr unit, multiply by 6hrs to get it back to current time, add 2 hrs to get it relative to SGT
 const getNextLotteryDrawTime = (currentTime) => {
-  return (parseInt(currentTime / 21600000) + 1) * 21600000 + 7200000
+  return (parseInt(currentTime / 21600) + 1) * 21600 + 7200
 }
 const hoursAndMinutesString = (hours, minutes) => `${parseInt(hours)}h, ${parseInt(minutes)}m`
 
@@ -26,12 +26,12 @@ export const getLotteryDrawTime = (currentTime): string => {
   return hoursAndMinutesString(hours, minutes)
 }
 
-export const getTicketSaleStep = () => (3600000 / 21600000) * 100
+export const getTicketSaleStep = () => (3600 / 21600) * 100
 
 export const getLotteryDrawStep = (currentTime) => {
-  const msBetweenLotteries = 21600000
+  const sBetweenLotteries = 21600
   const endTime = getNextLotteryDrawTime(currentTime)
   const msUntilLotteryDraw = endTime - currentTime
-  const percentageRemaining = (msUntilLotteryDraw / msBetweenLotteries) * 100
+  const percentageRemaining = (msUntilLotteryDraw / sBetweenLotteries) * 100
   return 100 - percentageRemaining
 }

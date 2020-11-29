@@ -44,7 +44,7 @@ const TicketCard: React.FC = () => {
   const allowance = useLotteryAllowance()
   const { onApprove } = useLotteryApprove()
   const lotteryHasDrawn = useGetLotteryHasDrawn()
-  const timeUntilTicketSale = lotteryHasDrawn && getTicketSaleTime(Date.now())
+  const timeUntilTicketSale = lotteryHasDrawn && getTicketSaleTime(Date.now() / 1000)
   const sushi = useSushi()
   const sushiBalance = useTokenBalance(getSushiAddress(sushi))
 
