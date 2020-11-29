@@ -25,16 +25,17 @@ const StyledHero = styled.div`
 
 const StyledContainer = styled(Container)`
   display: flex;
-  flex-direction: row;
 
-  @media (max-width: 500px) {
-    flex-direction: column;
+  flex-direction: column;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    flex-direction: row;
   }
 `
 
 const LeftWrapper = styled.div`
   flex: 1;
-  padding-right: 16px;
+  padding-right: 0;
 
   ${({ theme }) => theme.mediaQueries.sm} {
     padding-right: 24px;
@@ -50,9 +51,11 @@ const RightWrapper = styled.div`
   align-items: center;
   justify-content: center;
   flex: 1;
-  padding-left: 16px;
+  padding-left: 0;
+  margin-top: 16px;
 
   ${({ theme }) => theme.mediaQueries.sm} {
+    margin-top: 0;
     padding-left: 24px;
   }
 
