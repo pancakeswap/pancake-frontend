@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import random from "lodash/random";
-import Button from "../Button";
+import Button from "../Button/Button";
 import Progress from "./index";
 
 export default {
