@@ -11,6 +11,7 @@ import Stake from './views/Stake'
 import Lottery from './views/Lottery'
 import Pools from './views/Pools'
 import Ifo from './views/Ifo'
+import NotFound from './views/NotFound'
 
 const App: React.FC = () => {
   const { account, connect } = useWallet()
@@ -50,6 +51,7 @@ const App: React.FC = () => {
         <Route path="/ifo">
           <Ifo />
         </Route>
+        <Route component={NotFound} />
       </Switch>
       <Footer />
     </Router>
