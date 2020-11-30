@@ -108,7 +108,7 @@ const PoolCard: React.FC<HarvestProps> = ({
           : userBalance
       }
       onConfirm={onStake}
-      tokenName={stakingTokenName}
+      tokenName={isBnbPool ? `${stakingTokenName} (10 bnb max)` : stakingTokenName}
     />,
   )
 

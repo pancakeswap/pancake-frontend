@@ -86,7 +86,12 @@ const FarmedStakingCard = () => {
         </Block>
         <Actions>
           {account ? (
-            <Button disabled={balancesWithValue.length <= 0 || pendingTx} onClick={harvestAllFarms} fullWidth>
+            <Button
+              id="harvest-all"
+              disabled={balancesWithValue.length <= 0 || pendingTx}
+              onClick={harvestAllFarms}
+              fullWidth
+            >
               {pendingTx
                 ? TranslateString(999, 'Collecting CAKE')
                 : TranslateString(999, `Harvest all (${balancesWithValue.length})`)}
