@@ -8,8 +8,6 @@ import ModalActions from 'components/ModalActions'
 import { useMultiBuyLottery, useMaxNumber } from 'hooks/useBuyLottery'
 import useI18n from 'hooks/useI18n'
 
-const ButtonsWrapper = styled.div``
-
 interface BuyTicketModalProps {
   max: BigNumber
   onConfirm?: (amount: string, numbers: Array<number>) => void
