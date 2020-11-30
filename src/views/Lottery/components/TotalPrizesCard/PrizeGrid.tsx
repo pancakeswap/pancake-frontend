@@ -9,7 +9,7 @@ export interface PrizeGridProps {
 
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   grid-template-rows: repeat(4, auto);
 `
 
@@ -41,20 +41,12 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({ lotteryPrizeAmount = 0 }) => {
       </GridItem>
       <GridItem>
         <RightAlignedText fontSize="14px" color="textSubtle">
-          {TranslateString(999, 'Win Chance')}
-        </RightAlignedText>
-      </GridItem>
-      <GridItem>
-        <RightAlignedText fontSize="14px" color="textSubtle">
           {TranslateString(999, 'Prize Pot')}
         </RightAlignedText>
       </GridItem>
       {/* 4 matches row */}
       <GridItem>
         <Heading size="md">4</Heading>
-      </GridItem>
-      <GridItem>
-        <RightAlignedHeading size="md">0.001%</RightAlignedHeading>
       </GridItem>
       <GridItem>
         <RightAlignedHeading size="md">{fourMatchesAmount.toLocaleString()}</RightAlignedHeading>
@@ -64,17 +56,11 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({ lotteryPrizeAmount = 0 }) => {
         <Text bold>3</Text>
       </GridItem>
       <GridItem>
-        <RightAlignedText>0.36%</RightAlignedText>
-      </GridItem>
-      <GridItem>
         <RightAlignedText>{threeMatchesAmount.toLocaleString()}</RightAlignedText>
       </GridItem>
       {/* 2 matches row */}
       <GridItem marginBottom="20px">
         <Text>2</Text>
-      </GridItem>
-      <GridItem marginBottom="20px">
-        <RightAlignedText>4.86%</RightAlignedText>
       </GridItem>
       <GridItem marginBottom="20px">
         <RightAlignedText>{twoMatchesAmount.toLocaleString()}</RightAlignedText>
@@ -83,7 +69,6 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({ lotteryPrizeAmount = 0 }) => {
       <GridItem marginBottom="0">
         <Text>{TranslateString(999, 'To burn:')}</Text>
       </GridItem>
-      <GridItem marginBottom="0" />
       <GridItem marginBottom="0">
         <RightAlignedText>{burnAmount.toLocaleString()}</RightAlignedText>
       </GridItem>
