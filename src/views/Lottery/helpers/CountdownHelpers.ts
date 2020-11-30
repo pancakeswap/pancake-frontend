@@ -56,7 +56,7 @@ export const getLotteryDrawTime = (currentTime): string => {
   return hoursAndMinutesString(hours, minutes)
 }
 
-export const getTicketSaleStep = () => (2 / 6) * 100
+export const getTicketSaleStep = () => (1 / 6) * 100
 
 export const getLotteryDrawStep = (currentTime) => {
   const sBetweenLotteries = 21600000
