@@ -34,7 +34,7 @@ const YourPrizesCard: React.FC = () => {
 
   return (
     <StyledCard isDisabled={!isAWin} isActive={isAWin}>
-      <CardBody>{isAWin ? <PrizesWonContent /> : <NoPrizesContent />}</CardBody>
+      <CardBody>{!isAWin ? <PrizesWonContent /> : <NoPrizesContent />}</CardBody>
     </StyledCard>
   )
 }

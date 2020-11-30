@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 import { Button, Modal } from '@pancakeswap-libs/uikit'
-import ModalActions from 'components/ModalActions'
+// import ModalActions from 'components/ModalActions'
 import styled from 'styled-components'
 import { useWinningNumbers } from 'hooks/useTickets'
 import useI18n from 'hooks/useI18n'
@@ -47,11 +47,9 @@ const UserTicketsModal: React.FC<UserTicketsModalProps> = ({ myTicketNumbers, on
       <TicketsList>
         <h2>{listItems}</h2>
       </TicketsList>
-      <ModalActions>
-        <Button variant="secondary" onClick={onDismiss}>
-          {TranslateString(438, 'Close')}
-        </Button>
-      </ModalActions>
+      <Button variant="secondary" onClick={onDismiss}>
+        {TranslateString(438, 'Close')}
+      </Button>
     </Modal>
   )
 }
