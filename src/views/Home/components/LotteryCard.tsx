@@ -98,13 +98,14 @@ const FarmedStakingCard = () => {
         </Block>
         <Actions>
           <Button
+            id="dashboard-collect-winnings"
             disabled={getBalanceNumber(claimAmount) === 0 || requesteClaim}
             onClick={handleClaim}
             style={{ marginRight: '8px' }}
           >
             {TranslateString(556, 'Collect Winnings')}
           </Button>
-          <Button variant="secondary" onClick={onPresentBuy} disabled={lotteryHasDrawn}>
+          <Button id="dashboard-buy-tickets" variant="secondary" onClick={onPresentBuy} disabled={lotteryHasDrawn}>
             {TranslateString(558, 'Buy Tickets')}
           </Button>
         </Actions>
