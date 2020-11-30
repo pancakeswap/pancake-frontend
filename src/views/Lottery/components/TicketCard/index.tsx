@@ -53,10 +53,10 @@ const TicketCard: React.FC<CardProps> = ({ isSecondCard = false }) => {
   const tickets = useTickets()
   const ticketsLength = tickets.length
 
-  const [currentTime, setCurrentTime] = useState(Date.now() / 1000)
+  const [currentTime, setCurrentTime] = useState(Date.now())
   const timeUntilTicketSale = lotteryHasDrawn && getTicketSaleTime(currentTime)
   const tick = () => {
-    setCurrentTime(currentTime + 1)
+    setCurrentTime(currentTime + 1000)
   }
   useEffect(() => {
     const timerID = setInterval(() => tick(), 1000)
