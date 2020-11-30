@@ -47,9 +47,9 @@ const UserTicketsModal: React.FC<UserTicketsModalProps> = ({ myTicketNumbers, on
       <TicketsList>
         <h2>{listItems}</h2>
       </TicketsList>
-      <Button variant="secondary" onClick={onDismiss}>
+      <StyledButton variant="secondary" onClick={onDismiss}>
         {TranslateString(438, 'Close')}
-      </Button>
+      </StyledButton>
     </Modal>
   )
 }
@@ -63,6 +63,10 @@ const TicketsList = styled.div`
   overflow-y: auto;
   max-height: 400px;
   color: ${(props) => props.theme.colors.primary};
+`
+
+const StyledButton = styled(Button)`
+  margin-top: ${(props) => props.theme.spacing[2]}px;
 `
 
 export default UserTicketsModal
