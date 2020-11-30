@@ -1,11 +1,12 @@
 import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
-import { Button, Heading, Won } from '@pancakeswap-libs/uikit'
+import { Button, Heading, Won, useModal, Link } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useMultiClaimLottery } from 'hooks/useBuyLottery'
-import { useTotalClaim } from 'hooks/useTickets'
+import useTickets, { useTotalClaim } from 'hooks/useTickets'
 import Loading from 'components/Loading'
+import MyTicketsModal from '../TicketCard/UserTicketsModal'
 
 const WinningsWrapper = styled.div`
   display: flex;
@@ -33,11 +34,17 @@ const StyledCardContentInner = styled.div`
   justify-content: space-between;
 `
 
+const StyledButton = styled(Button)`
+  margin-top: ${(props) => props.theme.spacing[1]}px;
+`
+
 const PrizesWonContent: React.FC = () => {
   const [requestedClaim, setRequestedClaim] = useState(false)
   const TranslateString = useI18n()
   const { claimLoading, claimAmount } = useTotalClaim()
   const { onMultiClaim } = useMultiClaimLottery()
+  const tickets = useTickets()
+  const [onPresentMyTickets] = useModal(<MyTicketsModal myTicketNumbers={tickets} from="buy" />)
 
   const handleClaim = useCallback(async () => {
     try {
@@ -80,6 +87,9 @@ const PrizesWonContent: React.FC = () => {
           {TranslateString(999, 'Collect')}
         </Button>
       </StyledCardActions>
+      <StyledButton variant="text" onClick={onPresentMyTickets}>
+        {TranslateString(432, 'View your tickets')}
+      </StyledButton>
     </StyledCardContentInner>
   )
 }
