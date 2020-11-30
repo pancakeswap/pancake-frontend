@@ -21,7 +21,11 @@ const Farm: React.FC = () => {
   const cakePrice = stakedValues.find((s) => s.tokenSymbol === 'CAKE')?.tokenPriceInWeth || new BigNumber(0)
 
   const pools = getPools(sushi).map((pool) => {
-    const stakedValue = stakedValues.find((s) => s.tokenSymbol === pool.tokenName)
+    const stakedValue =
+      pool.tokenName === 'BNB'
+        ? { tokenPriceInWeth: new BigNumber(1), quoteToken: 'BNB', tokenDecimals: '18' }
+        : stakedValues.find((s) => s.tokenSymbol === pool.tokenName)
+
     return {
       ...pool,
       tokenPrice: stakedValue?.tokenPriceInWeth || new BigNumber(0),
