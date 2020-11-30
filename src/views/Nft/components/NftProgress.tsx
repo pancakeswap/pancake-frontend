@@ -25,6 +25,13 @@ const Link = styled(UIKitLink)`
   text-decoration: underline;
 `
 
+const Message = styled.p`
+  color: ${({ theme }) => theme.colors.textSubtle};
+  font-size: 14px;
+  padding-top: 16px;
+  text-align: center;
+`
+
 const NftProgress = () => {
   const TranslateString = useI18n()
   const timeLeft = '8h 30m'
@@ -52,6 +59,7 @@ const NftProgress = () => {
             </Link>
           </div>
         </Row>
+        <Message>{TranslateString(999, 'NFTs can be traded in for CAKE until the above block height')}</Message>
       </CardBody>
     </Card>
   )
