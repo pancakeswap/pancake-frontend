@@ -14,6 +14,7 @@ import Ifo from './views/Ifo'
 import RegisterToWinPage from './views/Nft/RegisterToWinPage'
 import NotFound from './views/NotFound'
 import Nft from './views/Nft'
+import RegisterToWinPage from './views/Nft/RegisterToWinPage'
 
 const App: React.FC = () => {
   const { account, connect } = useWallet()
@@ -55,6 +56,9 @@ const App: React.FC = () => {
         </Route>
         <Route path="/nft">
           <RegisterToWinPage />
+        </Route>
+        <Route path="/nft-live">
+          <Nft />
         </Route>
         <Route component={NotFound} />
       </Switch>
