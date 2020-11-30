@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { Card, CardBody, PancakeRoundIcon, Text, Heading } from '@pancakeswap-libs/uikit'
+import { Card, CardBody, TicketRound, Text, Heading } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import useGetLotteryHasDrawn from 'hooks/useGetLotteryHasDrawn'
 import useTickets from 'hooks/useTickets'
@@ -68,7 +68,7 @@ const TicketCard: React.FC<CardProps> = ({ isSecondCard = false }) => {
       <CardBody>
         <CardHeader>
           <IconWrapper>
-            <PancakeRoundIcon />
+            <TicketRound />
           </IconWrapper>
           {lotteryHasDrawn ? (
             <TicketCountWrapper>

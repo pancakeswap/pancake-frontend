@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
-import { Button, Heading, PancakeRoundIcon } from '@pancakeswap-libs/uikit'
+import { Button, Heading, Won } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useMultiClaimLottery } from 'hooks/useBuyLottery'
@@ -56,9 +56,8 @@ const PrizesWonContent: React.FC = () => {
 
   return (
     <StyledCardContentInner>
-      {/* 'won' icon to go here after uikit update */}
       <IconWrapper>
-        <PancakeRoundIcon />
+        <Won />
       </IconWrapper>
       <Heading as="h3" size="lg" color="secondary">
         {TranslateString(999, 'You won!')}
