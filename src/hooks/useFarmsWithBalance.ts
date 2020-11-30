@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import BigNumber from 'bignumber.js'
 import { useWallet } from 'use-wallet'
-import { Farm } from 'contexts/Farms'
+import { Farm } from 'types/farms'
 import { getEarned, getMasterChefContract, getFarms } from '../sushi/utils'
 import useSushi from './useSushi'
 import useBlock from './useBlock'
@@ -11,9 +11,7 @@ export interface FarmWithBalance extends Farm {
 }
 
 const useFarmsWithBalance = () => {
-  const [farmsWithBalances, setFarmsWithBalances] = useState<FarmWithBalance[]>(
-    [],
-  )
+  const [farmsWithBalances, setFarmsWithBalances] = useState<FarmWithBalance[]>([])
   const { account } = useWallet()
   const sushi = useSushi()
   const farms = getFarms(sushi)

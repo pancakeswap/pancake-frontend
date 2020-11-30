@@ -1,8 +1,8 @@
-import { useContext } from 'react'
-import { Context as FarmsContext, Farm } from '../contexts/Farms'
+import useFarms from 'hooks/useFarms'
+import { Farm } from 'types/farms'
 
 const useFarm = (id: string): Farm => {
-  const { farms } = useContext(FarmsContext)
+  const farms = useFarms()
   const farm = farms.find((f) => f.id === id)
   return farm
 }

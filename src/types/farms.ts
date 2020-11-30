@@ -14,8 +14,3 @@ export interface Farm {
   tokenSymbol: string
   multiplier: string
 }
-
-export interface FarmsContext {
-  farms: Farm[]
-  unharvested: number
-}
