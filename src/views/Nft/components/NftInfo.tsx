@@ -1,9 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Card } from '@pancakeswap-libs/uikit'
 import { useWallet } from 'use-wallet'
 import Container from 'components/layout/Container'
 import StatusCard from './StatusCard'
+import NftProgress from './NftProgress'
 
 const StyledNtfInfo = styled.div`
   display: grid;
@@ -24,6 +24,7 @@ const NftInfo = () => {
     <Container>
       <StyledNtfInfo>
         <StatusCard />
+        <NftProgress />
       </StyledNtfInfo>
     </Container>
   )
