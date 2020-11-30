@@ -197,7 +197,7 @@ const PoolCard: React.FC<HarvestProps> = ({
           {isFinished || isOldSyrup || apy?.isNaN() ? (
             '-'
           ) : (
-            <Balance fontSize="14px" isDisabled={isFinished} value={apy?.toNumber()} unit="%" />
+            <Balance fontSize="14px" isDisabled={isFinished} value={apy?.toNumber()} decimals={2} unit="%" />
           )}
         </StyledDetails>
         <StyledDetails>
