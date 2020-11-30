@@ -1,5 +1,6 @@
 export { default as AddIcon } from "./Icons/Add";
 export { default as ArrowForwardIcon } from "./Icons/ArrowForward";
+export { default as BinanceIcon } from "./Icons/Binance";
 export { default as BlockIcon } from "./Icons/Block";
 export { default as CheckmarkIcon } from "./Icons/Checkmark";
 export { default as ChevronDownIcon } from "./Icons/ChevronDown";
