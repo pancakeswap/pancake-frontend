@@ -78,7 +78,7 @@ export default [
     pid: 41,
     lpAddresses: {
       97: '',
-      56: '',
+      56: '0xff17ff314925dff772b71abdff2782bc913b3575',
     },
     tokenAddresses: {
       97: '',
