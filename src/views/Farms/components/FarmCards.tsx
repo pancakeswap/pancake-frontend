@@ -3,8 +3,9 @@ import React from 'react'
 import BigNumber from 'bignumber.js'
 import { BLOCKS_PER_YEAR, CAKE_PER_BLOCK, CAKE_POOL_PID } from 'config'
 import { farmsConfig } from 'sushi/lib/constants'
-import { Farm } from 'contexts/Farms'
-import { useTokenBalance2, useBnbPriceUSD } from 'hooks/useTokenBalance'
+import { Farm } from 'types/farms'
+import { useTokenBalance2 } from 'hooks/useTokenBalance'
+import { useBnbPriceUSD } from 'hooks/usePrices'
 import useFarms from 'hooks/useFarms'
 import useAllStakedValue, { StakedValue } from 'hooks/useAllStakedValue'
 import Page from 'components/layout/Page'
@@ -21,7 +22,7 @@ interface FarmCardsProps {
 }
 
 const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
-  const [farms] = useFarms()
+  const farms = useFarms()
   const stakedValue = useAllStakedValue()
   const bnbPrice = useBnbPriceUSD()
 
