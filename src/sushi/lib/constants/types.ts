@@ -45,4 +45,5 @@ export type Pool = {
   sortOrder?: number
   harvest?: boolean
   isFinished?: boolean
+  tokenDecimals: number
 }
