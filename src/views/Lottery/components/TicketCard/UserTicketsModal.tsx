@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react'
 import { Button, Modal } from '@pancakeswap-libs/uikit'
-// import ModalActions from 'components/ModalActions'
 import styled from 'styled-components'
 import { useWinningNumbers } from 'hooks/useTickets'
 import useI18n from 'hooks/useI18n'
