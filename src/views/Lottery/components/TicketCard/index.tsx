@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { Card, CardBody, TicketRound, Text, Heading } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import useGetLotteryHasDrawn from 'hooks/useGetLotteryHasDrawn'
 import useTickets from 'hooks/useTickets'
+import { useCurrentTime } from '../../../../hooks/useTimer'
 import TicketActions from './TicketActions'
-import { getTicketSaleTime, getUtcTimeNow } from '../../helpers/CountdownHelpers'
+import { getTicketSaleTime } from '../../helpers/CountdownHelpers'
 
 interface CardProps {
   isSecondCard?: boolean
@@ -53,15 +54,8 @@ const TicketCard: React.FC<CardProps> = ({ isSecondCard = false }) => {
   const tickets = useTickets()
   const ticketsLength = tickets.length
 
-  const [currentTime, setCurrentTime] = useState(getUtcTimeNow(new Date()))
+  const currentTime = useCurrentTime()
   const timeUntilTicketSale = lotteryHasDrawn && getTicketSaleTime(currentTime)
-  const tick = () => {
-    setCurrentTime(currentTime + 1000)
-  }
-  useEffect(() => {
-    const timerID = setInterval(() => tick(), 1000)
-    return () => clearInterval(timerID)
-  })
 
   return (
     <StyledCard isSecondCard={isSecondCard}>

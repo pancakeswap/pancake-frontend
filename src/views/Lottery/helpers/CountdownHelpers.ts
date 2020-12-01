@@ -1,4 +1,6 @@
 // @ts-nocheck
+import getTimePeriods from 'utils/getTimePeriods'
+
 export const getUtcTimeNow = (date: Date) => {
   const utcTimeStamp = Date.UTC(
     date.getFullYear(),
@@ -48,24 +50,21 @@ const getNextLotteryDrawTime = (currentTime) => {
 }
 
 const getNextTicketSaleTime = (currentTime) => (parseInt(currentTime / 3600000) + 1) * 3600000
-
-const getMinutes = (msTimeValue) => Math.floor((msTimeValue / (1000 * 60)) % 60)
-const getHours = (msTimeValue) => Math.floor((msTimeValue / (1000 * 60 * 60)) % 24)
 const hoursAndMinutesString = (hours, minutes) => `${parseInt(hours)}h, ${parseInt(minutes)}m`
 
 export const getTicketSaleTime = (currentTime): string => {
   const nextTicketSaleTime = getNextTicketSaleTime(currentTime)
-  const timeUntilNextTicketSale = nextTicketSaleTime - currentTime
-  const minutes = getMinutes(timeUntilNextTicketSale)
-  const hours = getHours(timeUntilNextTicketSale)
+  const msUntilNextTicketSale = nextTicketSaleTime - currentTime
+  const { minutes } = getTimePeriods(msUntilNextTicketSale/1000)
+  const { hours } = getTimePeriods(msUntilNextTicketSale/1000)
   return hoursAndMinutesString(hours, minutes)
 }
 
 export const getLotteryDrawTime = (currentTime): string => {
   const nextLotteryDrawTime = getNextLotteryDrawTime(currentTime)
-  const timeUntilLotteryDraw = nextLotteryDrawTime - currentTime
-  const minutes = getMinutes(timeUntilLotteryDraw)
-  const hours = getHours(timeUntilLotteryDraw)
+  const msUntilLotteryDraw = nextLotteryDrawTime - currentTime
+  const { minutes } = getTimePeriods(msUntilLotteryDraw/1000)
+  const { hours } = getTimePeriods(msUntilLotteryDraw/1000)
   return hoursAndMinutesString(hours, minutes)
 }
 

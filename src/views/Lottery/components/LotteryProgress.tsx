@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { Text, Progress } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
@@ -8,8 +8,8 @@ import {
   getLotteryDrawStep,
   getTicketSaleTime,
   getTicketSaleStep,
-  getUtcTimeNow,
 } from '../helpers/CountdownHelpers'
+import { useCurrentTime } from '../../../hooks/useTimer'
 
 const ProgressWrapper = styled.div`
   display: block;
@@ -35,20 +35,11 @@ const StyledPrimaryText = styled(Text)`
   margin-right: 16px;
 `
 const Hero = () => {
-  const [currentTime, setCurrentTime] = useState(getUtcTimeNow(new Date()))
   const TranslateString = useI18n()
   const lotteryHasDrawn = useGetLotteryHasDrawn()
+  const currentTime = useCurrentTime()
   const timeUntilTicketSale = getTicketSaleTime(currentTime)
   const timeUntilLotteryDraw = getLotteryDrawTime(currentTime)
-
-  const tick = () => {
-    setCurrentTime(currentTime + 1000)
-  }
-
-  useEffect(() => {
-    const timerID = setInterval(() => tick(), 1000)
-    return () => clearInterval(timerID)
-  })
 
   return (
     <ProgressWrapper>
@@ -61,13 +52,13 @@ const Hero = () => {
           {lotteryHasDrawn ? TranslateString(0, 'Until ticket sale') : TranslateString(0, 'Until lottery draw')}
         </Text>
       </TopTextWrapper>
-      {lotteryHasDrawn ? (
+      {lotteryHasDrawn && (
         <BottomTextWrapper>
           <Text color="invertedContrast">
             {timeUntilLotteryDraw} {TranslateString(0, 'Until lottery draw')}
           </Text>
         </BottomTextWrapper>
-      ) : null}
+      )}
     </ProgressWrapper>
   )
 }
