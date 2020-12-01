@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from 'react'
+import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { Button, useModal } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
@@ -33,15 +33,6 @@ const TicketCard: React.FC = () => {
   const [onPresentMyTickets] = useModal(<MyTicketsModal myTicketNumbers={tickets} from="buy" />)
   const [onPresentApprove] = useModal(<PurchaseWarningModal />)
   const [onPresentBuy] = useModal(<BuyTicketModal max={sushiBalance} tokenName="CAKE" />)
-
-  const [currentTime, setCurrentTime] = useState(Date.now() / 1000)
-  const tick = () => {
-    setCurrentTime(currentTime + 1)
-  }
-  useEffect(() => {
-    const timerID = setInterval(() => tick(), 1000)
-    return () => clearInterval(timerID)
-  })
 
   const handleApprove = useCallback(async () => {
     try {
