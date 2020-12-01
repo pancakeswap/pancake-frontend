@@ -1,51 +1,43 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Button, Card, CardBody, Heading, Text, Tag } from '@pancakeswap-libs/uikit'
+import { Card, CardBody, Heading, Text, Tag } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
+import { Nft } from 'sushi/lib/constants/types'
 import InfoRow from '../InfoRow'
-import NftLink from '../NftLink'
+import Image from '../Image'
 
-const NftImage = styled.div`
-  overflow: hidden;
-`
+interface NftCardProps {
+  nft: Nft
+}
 
 const Header = styled(InfoRow)`
   margin-bottom: 24px;
 `
 
-const NftCard = () => {
+const Value = styled(Text)`
+  font-weight: 600;
+`
+
+const NftCard: React.FC<NftCardProps> = ({ nft }) => {
   const TranslateString = useI18n()
 
   return (
     <Card>
-      <NftImage>
-        <img src="/nft-temp.svg" alt="nft temp" />
-      </NftImage>
+      <Image src={`/images/nfts/${nft.previewImage}`} alt={nft.name} />
       <CardBody>
         <Header>
-          <Heading>Swapsies</Heading>
+          <Heading>{nft.name}</Heading>
           <Tag outline variant="pink">
             {TranslateString(526, 'Available')}
           </Tag>
         </Header>
         <InfoRow>
-          <Text>{TranslateString(999, 'Value')}:</Text>
-          <Text>100 CAKE</Text>
+          <Text>{TranslateString(999, 'Value if traded in')}:</Text>
+          <Value>100 CAKE</Value>
         </InfoRow>
         <InfoRow>
-          <Text>{TranslateString(999, 'Time left to trade in')}:</Text>
-          <NftLink href="https://pancakeswap.info">100 Blocks</NftLink>
-        </InfoRow>
-        <Button fullWidth my="24px">
-          {TranslateString(999, 'Claim this NFT')}
-        </Button>
-        <InfoRow>
-          <Text>{TranslateString(999, 'Series')}</Text>
-          <Text>1</Text>
-        </InfoRow>
-        <InfoRow>
-          <Text>{TranslateString(999, 'Number already minted')}:</Text>
-          <Text>300</Text>
+          <Text>{TranslateString(999, 'Number minted')}:</Text>
+          <Value>300</Value>
         </InfoRow>
       </CardBody>
     </Card>
