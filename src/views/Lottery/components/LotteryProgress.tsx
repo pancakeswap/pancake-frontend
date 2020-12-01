@@ -8,6 +8,7 @@ import {
   getLotteryDrawStep,
   getTicketSaleTime,
   getTicketSaleStep,
+  getUtcTimeNow,
 } from '../helpers/CountdownHelpers'
 
 const ProgressWrapper = styled.div`
@@ -34,7 +35,7 @@ const StyledPrimaryText = styled(Text)`
   margin-right: 16px;
 `
 const Hero = () => {
-  const [currentTime, setCurrentTime] = useState(Date.now())
+  const [currentTime, setCurrentTime] = useState(getUtcTimeNow(new Date()))
   const TranslateString = useI18n()
   const lotteryHasDrawn = useGetLotteryHasDrawn()
   const timeUntilTicketSale = getTicketSaleTime(currentTime)

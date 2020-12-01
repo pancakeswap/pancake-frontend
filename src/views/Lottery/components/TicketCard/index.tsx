@@ -5,7 +5,7 @@ import useI18n from 'hooks/useI18n'
 import useGetLotteryHasDrawn from 'hooks/useGetLotteryHasDrawn'
 import useTickets from 'hooks/useTickets'
 import TicketActions from './TicketActions'
-import { getTicketSaleTime } from '../../helpers/CountdownHelpers'
+import { getTicketSaleTime, getUtcTimeNow } from '../../helpers/CountdownHelpers'
 
 interface CardProps {
   isSecondCard?: boolean
@@ -53,7 +53,7 @@ const TicketCard: React.FC<CardProps> = ({ isSecondCard = false }) => {
   const tickets = useTickets()
   const ticketsLength = tickets.length
 
-  const [currentTime, setCurrentTime] = useState(Date.now())
+  const [currentTime, setCurrentTime] = useState(getUtcTimeNow(new Date()))
   const timeUntilTicketSale = lotteryHasDrawn && getTicketSaleTime(currentTime)
   const tick = () => {
     setCurrentTime(currentTime + 1000)
