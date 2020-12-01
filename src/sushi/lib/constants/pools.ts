@@ -50,6 +50,22 @@ const pools: Pool[] = [
     isFinished: false,
   },
   {
+    sousId: 21,
+    tokenName: 'VAI',
+    stakingTokenName: QuoteToken.CAKE,
+    stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
+    contractAddress: {
+      97: '',
+      56: '0x1AD34D8d4D79ddE88c9B6b8490F8fC67831f2CAe',
+    },
+    poolCategory: PoolCategory.CORE,
+    projectLink: 'https://venus.io/',
+    harvest: true,
+    tokenPerBlock: '0.104',
+    sortOrder: 999,
+    isFinished: false,
+  },
+  {
     sousId: 18,
     tokenName: 'BLK',
     stakingTokenName: QuoteToken.CAKE,
