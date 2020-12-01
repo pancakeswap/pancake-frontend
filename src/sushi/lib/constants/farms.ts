@@ -74,6 +74,23 @@ export default [
       endBlock: 3229250,
     },
   },
+    {
+    pid: 41,
+    lpAddresses: {
+      97: '',
+      56: '0xff17ff314925dff772b71abdff2782bc913b3575',
+    },
+    tokenAddresses: {
+      97: '',
+      56: '0x4bd17003473389a42daf6a0a729f6fdb328bbbd7',
+    },
+    name: 'VAI STACKING',
+    symbol: 'VAI-BUSD LP',
+    tokenSymbol: 'VAI',
+    icon: '🥞',
+    multiplier: '2X',
+    isCommunity: false,
+  },
   {
     pid: 40,
     lpAddresses: {
