@@ -129,7 +129,7 @@ interface FarmCardProps {
 }
 
 const CAKE_TOKEN_ADDRESS = contractAddresses.sushi[56]
-const BUSD_TOKEN_ADDRESS = '0x55d398326f99059ff775485246999027b3197955'
+const BUSD_TOKEN_ADDRESS = '0xe9e7cea3dedca5984780bafc599bd69add087d56'
 const WBNB_TOKEN_ADDRESS = contractAddresses.weth[56]
 
 const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
@@ -142,7 +142,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
   const isCommunityFarm = communityFarms.includes(farm.tokenSymbol)
 
   let totalValue = totalValueBNBPool
-  if (farm.pid === 11) {
+  if (farm.pid === 11 || farm.pid === 41) {
     totalValue = totalValueBUSDPool
   }
   if (isCommunityFarm && farm.pid !== 37) {

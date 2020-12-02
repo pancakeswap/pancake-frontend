@@ -72,7 +72,7 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
 
     let apy
 
-    if (farm.pid === 11) {
+    if (farm.pid === 11 || farm.pid === 41) {
       apy = stakedValueItem
         ? cakePrice
             .times(cakeRewardPerBlock)
