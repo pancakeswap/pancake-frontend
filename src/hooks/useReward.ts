@@ -1,40 +1,55 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback } from 'react'
-
-import useSushi from './useSushi'
 import { useWallet } from 'use-wallet'
+import useSushi from './useSushi'
+import { soushHarvest, soushHarvestBnb, harvest, getMasterChefContract, getSousChefContract } from '../sushi/utils'
 
-import { soushHarvest, harvest, getMasterChefContract, getSousChefContract } from '../sushi/utils'
-
-const useReward = (pid: number) => {
+const useReward = (farmPid: number) => {
   const { account } = useWallet()
   const sushi = useSushi()
   const masterChefContract = getMasterChefContract(sushi)
 
   const handleReward = useCallback(async () => {
-    const txHash = await harvest(masterChefContract, pid, account)
+    const txHash = await harvest(masterChefContract, farmPid, account)
     return txHash
-  }, [account, pid, sushi])
+  }, [account, farmPid, masterChefContract])
 
   return { onReward: handleReward }
 }
 
-export const useSousReward = (sousId) => {
+export const useAllReward = (farmPids: number[]) => {
+  const { account } = useWallet()
+  const sushi = useSushi()
+  const masterChefContract = getMasterChefContract(sushi)
+
+  const handleReward = useCallback(async () => {
+    const harvestPromises = farmPids.reduce((accum, pid) => {
+      return [...accum, harvest(masterChefContract, pid, account)]
+    }, [])
+
+    return Promise.all(harvestPromises)
+  }, [account, farmPids, masterChefContract])
+
+  return { onReward: handleReward }
+}
+
+export const useSousReward = (sousId, isUsingBnb = false) => {
   const { account } = useWallet()
   const sushi = useSushi()
   const sousChefContract = getSousChefContract(sushi, sousId)
   const masterChefContract = getMasterChefContract(sushi)
 
   const handleReward = useCallback(async () => {
-    if(sousId === 0) {
+    if (sousId === 0) {
       const txHash = await harvest(masterChefContract, 0, account)
       return txHash
     }
-    else {
-      const txHash = await soushHarvest(sousChefContract, account)
+    if (isUsingBnb) {
+      const txHash = await soushHarvestBnb(sousChefContract, account)
       return txHash
     }
-  }, [account, sousId, sushi])
+    const txHash = await soushHarvest(sousChefContract, account)
+    return txHash
+  }, [account, isUsingBnb, masterChefContract, sousChefContract, sousId])
 
   return { onReward: handleReward }
 }

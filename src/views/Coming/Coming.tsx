@@ -1,16 +1,11 @@
 // @ts-nocheck
 import React from 'react'
 import styled from 'styled-components'
-import Button from '../../components/Button'
-import Container from '../../components/Container'
 import Page from '../../components/Page'
 import PageHeader from './PageHeader'
-import Spacer from '../../components/Spacer'
 
 const Coming: React.FC = () => {
-  const [currentTime, setCurrentTime] = React.useState(
-    Date.parse(new Date()) / 1000,
-  )
+  const [currentTime, setCurrentTime] = React.useState(Date.parse(new Date()) / 1000)
 
   const endTime = 1600783200
   const seconds = (endTime - currentTime) % 60
@@ -24,19 +19,17 @@ const Coming: React.FC = () => {
 
   React.useEffect(() => {
     // 执行定时
-    let timerID = setInterval(() => tick(), 1000)
+    const timerID = setInterval(() => tick(), 1000)
     // 卸载组件时进行清理
     return () => clearInterval(timerID)
   })
 
   return (
     <Page>
-      <PageHeader icon={'🥞'} title="CAKE will start flipping in" />
+      <PageHeader icon="🥞" title="CAKE will start flipping in" />
       <StyledInfo>
-        <Countdown>{parseInt(days ? days : '0')}</Countdown>D
-        <Countdown>{parseInt(hours)}</Countdown>H
-        <Countdown>{parseInt(minutes)}</Countdown>M
-        <Countdown>{seconds}</Countdown>S
+        <Countdown>{parseInt(days || '0')}</Countdown>D<Countdown>{parseInt(hours)}</Countdown>H
+        <Countdown>{parseInt(minutes)}</Countdown>M<Countdown>{seconds}</Countdown>S
       </StyledInfo>
     </Page>
   )
@@ -47,7 +40,7 @@ const StyledInfo = styled.div`
   box-shadow: 0px 2.2623px 11.3115px rgba(171, 133, 115, 0.16);
   border-radius: 50px;
   font-size: 25px;
-  color: ${(props) => props.theme.colors.blue[100]};
+  color: #25beca;
   font-weight: 900;
   height: 120px;
   padding: 20px;

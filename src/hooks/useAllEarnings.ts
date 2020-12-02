@@ -1,5 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { provider } from 'web3-core'
 
 import BigNumber from 'bignumber.js'
@@ -17,21 +16,20 @@ const useAllEarnings = () => {
   const masterChefContract = getMasterChefContract(sushi)
   const block = useBlock()
 
-  const fetchAllBalances = useCallback(async () => {
-    const balances: Array<BigNumber> = await Promise.all(
-      farms.map(({ pid }: { pid: number }) =>{
-        return getEarned(masterChefContract, pid, account)
-      }
-      ),
-    )
-    setBalance(balances)
-  }, [account, masterChefContract, sushi])
-
   useEffect(() => {
+    const fetchAllBalances = async () => {
+      const res: Array<BigNumber> = await Promise.all(
+        farms.map(({ pid }: { pid: number }) => {
+          return getEarned(masterChefContract, pid, account)
+        }),
+      )
+      setBalance(res)
+    }
+
     if (account && masterChefContract && sushi) {
       fetchAllBalances()
     }
-  }, [account, block, masterChefContract, setBalance, sushi])
+  }, [account, block, farms, masterChefContract, setBalance, sushi])
 
   return balances
 }

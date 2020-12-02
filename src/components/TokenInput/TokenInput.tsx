@@ -1,13 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
-
-import Button from '../Button'
+import { Button } from '@pancakeswap-libs/uikit'
+import useI18n from '../../hooks/useI18n'
 import Input, { InputProps } from '../Input'
 
 interface TokenInputProps extends InputProps {
-  max: number | string,
-  symbol: string,
-  onSelectMax?: () => void,
+  max: number | string
+  symbol: string
+  onSelectMax?: () => void
 }
 
 const TokenInput: React.FC<TokenInputProps> = ({
@@ -17,19 +17,24 @@ const TokenInput: React.FC<TokenInputProps> = ({
   onSelectMax,
   value,
 }) => {
+  const TranslateString = useI18n()
   return (
     <StyledTokenInput>
-      <StyledMaxText>{max.toLocaleString()} {symbol} Available</StyledMaxText>
+      <StyledMaxText>
+        {max.toLocaleString()} {symbol} {TranslateString(526, 'Available')}
+      </StyledMaxText>
       <Input
-        endAdornment={(
+        endAdornment={
           <StyledTokenAdornmentWrapper>
             <StyledTokenSymbol>{symbol}</StyledTokenSymbol>
             <StyledSpacer />
             <div>
-              <Button size="sm" text="Max" onClick={onSelectMax} />
+              <Button size="sm" onClick={onSelectMax}>
+                {TranslateString(452, 'Max')}
+              </Button>
             </div>
           </StyledTokenAdornmentWrapper>
-        )}
+        }
         onChange={onChange}
         placeholder="0"
         value={value}
@@ -38,18 +43,10 @@ const TokenInput: React.FC<TokenInputProps> = ({
   )
 }
 
-/*
-            <div>
-              <Button size="sm" text="Max" />
-            </div>
-*/
-
-const StyledTokenInput = styled.div`
-
-`
+const StyledTokenInput = styled.div``
 
 const StyledSpacer = styled.div`
-  width: ${props => props.theme.spacing[3]}px;
+  width: ${(props) => props.theme.spacing[3]}px;
 `
 
 const StyledTokenAdornmentWrapper = styled.div`
@@ -59,7 +56,7 @@ const StyledTokenAdornmentWrapper = styled.div`
 
 const StyledMaxText = styled.div`
   align-items: center;
-  color: ${props => props.theme.colors.grey[400]};
+  color: ${(props) => props.theme.colors.primary};
   display: flex;
   font-size: 14px;
   font-weight: 700;

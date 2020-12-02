@@ -1,8 +1,7 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback } from 'react'
 
-import useSushi from './useSushi'
 import { useWallet } from 'use-wallet'
+import useSushi from './useSushi'
 
 import { unstake, sousUnstake, getMasterChefContract, getSousChefContract, sousEmegencyUnstake } from '../sushi/utils'
 
@@ -14,9 +13,9 @@ const useUnstake = (pid: number) => {
   const handleUnstake = useCallback(
     async (amount: string) => {
       const txHash = await unstake(masterChefContract, pid, amount, account)
-      console.log(txHash)
+      console.info(txHash)
     },
-    [account, pid, sushi],
+    [account, masterChefContract, pid],
   )
 
   return { onUnstake: handleUnstake }
@@ -33,19 +32,18 @@ export const useSousUnstake = (sousId) => {
 
   const handleUnstake = useCallback(
     async (amount: string) => {
-      if(sousId === 0) {
+      if (sousId === 0) {
         const txHash = await unstake(masterChefContract, 0, amount, account)
-        console.log(txHash)
-      }
-      else if(isOldSyrup) {
+        console.info(txHash)
+      } else if (isOldSyrup) {
         const txHash = await sousEmegencyUnstake(sousChefContract, amount, account)
-      }
-      else {
+        console.info(txHash)
+      } else {
         const txHash = await sousUnstake(sousChefContract, amount, account)
-        console.log(txHash)
+        console.info(txHash)
       }
     },
-    [account, sushi, sousChefContract, isOldSyrup],
+    [sousId, isOldSyrup, masterChefContract, account, sousChefContract],
   )
 
   return { onUnstake: handleUnstake }

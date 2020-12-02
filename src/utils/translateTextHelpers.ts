@@ -10,11 +10,7 @@ const replaceDynamicString = (foundTranslation: string, fallback: string) => {
   return foundTranslation.replace(stringToReplace, fallbackValueAtIndex)
 }
 
-export const getTranslation = (
-  translations: Array<any>,
-  translationId: number,
-  fallback: string,
-) => {
+export const getTranslation = (translations: Array<any>, translationId: number, fallback: string) => {
   const foundTranslation = translations.find((translation) => {
     return translation.data.stringId === translationId
   })
@@ -25,9 +21,8 @@ export const getTranslation = (
       return replaceDynamicString(translatedString, fallback)
     }
     return translatedString
-  } else {
-    return fallback
   }
+  return fallback
 }
 
 // TODO: Replace instances where this is called directly with the "useI18n" hook.
@@ -37,7 +32,9 @@ export const TranslateString = (translationId: number, fallback: string) => {
   const { translations } = useContext(TranslationsContext)
   if (translations[0] === 'error') {
     return fallback
-  } else if (translations.length > 0) {
+  }
+  if (translations.length > 0) {
     return getTranslation(translations, translationId, fallback)
   }
+  return fallback
 }

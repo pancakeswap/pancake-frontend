@@ -6,19 +6,16 @@ interface PurchasedTicketsProps {
 }
 
 const PurchasedTickets: React.FC<PurchasedTicketsProps> = ({ myTicketNumbers }) => {
+  const listItems = myTicketNumbers.map((number) => <p key={number}>{number.toString()}</p>)
 
-    const listItems = myTicketNumbers.map((number, index) =>
-        <p key={index}>{number.toString()}</p>
-    );
-
-    return (
-        <div>
-            <Title>My tickets(Current Round)</Title>
-            <TicketsList>
-                <h2>{listItems}</h2>
-            </TicketsList>
-        </div>
-    )
+  return (
+    <div>
+      <Title>My tickets(Current Round)</Title>
+      <TicketsList>
+        <h2>{listItems}</h2>
+      </TicketsList>
+    </div>
+  )
 }
 
 const TicketsList = styled.div`
@@ -27,11 +24,11 @@ const TicketsList = styled.div`
   padding-right: 5em;
   overflow-y: auto;
   max-height: 400px;
-  color: ${props => props.theme.colors.primary};
+  color: ${(props) => props.theme.colors.primary};
 `
 const Title = styled.div`
   color: ${(props) => props.theme.colors.secondary};
-  font-size:20px;
+  font-size: 20px;
   text-align: center;
   font-weight: 600;
   margin-top: 1em;

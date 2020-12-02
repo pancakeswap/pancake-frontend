@@ -1,25 +1,19 @@
 import BigNumber from 'bignumber.js'
 import React, { useCallback, useMemo, useState } from 'react'
-import Button from '../../../components/Button'
-import Modal, { ModalProps } from '../../../components/Modal'
-import ModalActions from '../../../components/ModalActions'
-import ModalTitle from '../../../components/ModalTitle'
+import { Button, Modal } from '@pancakeswap-libs/uikit'
+import ModalActions from 'components/ModalActions'
 import TokenInput from '../../../components/TokenInput'
 import useI18n from '../../../hooks/useI18n'
 import { getFullDisplayBalance } from '../../../utils/formatBalance'
 
-interface WithdrawModalProps extends ModalProps {
+interface WithdrawModalProps {
   max: BigNumber
   onConfirm: (amount: string) => void
+  onDismiss?: () => void
   tokenName?: string
 }
 
-const WithdrawModal: React.FC<WithdrawModalProps> = ({
-  onConfirm,
-  onDismiss,
-  max,
-  tokenName = '',
-}) => {
+const WithdrawModal: React.FC<WithdrawModalProps> = ({ onConfirm, onDismiss, max, tokenName = '' }) => {
   const [val, setVal] = useState('')
   const [pendingTx, setPendingTx] = useState(false)
   const TranslateString = useI18n()
@@ -39,8 +33,7 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({
   }, [fullBalance, setVal])
 
   return (
-    <Modal>
-      <ModalTitle text={`Withdraw ${tokenName}`} />
+    <Modal title={`Withdraw ${tokenName}`} onDismiss={onDismiss}>
       <TokenInput
         onSelectMax={handleSelectMax}
         onChange={handleChange}
@@ -49,25 +42,20 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({
         symbol={tokenName}
       />
       <ModalActions>
-        <Button
-          text={TranslateString(462, 'Cancel')}
-          variant="secondary"
-          onClick={onDismiss}
-        />
+        <Button variant="secondary" onClick={onDismiss}>
+          {TranslateString(462, 'Cancel')}
+        </Button>
         <Button
           disabled={pendingTx}
-          text={
-            pendingTx
-              ? TranslateString(488, 'Pending Confirmation')
-              : TranslateString(464, 'Confirm')
-          }
           onClick={async () => {
             setPendingTx(true)
             await onConfirm(val)
             setPendingTx(false)
             onDismiss()
           }}
-        />
+        >
+          {pendingTx ? TranslateString(488, 'Pending Confirmation') : TranslateString(464, 'Confirm')}
+        </Button>
       </ModalActions>
     </Modal>
   )
