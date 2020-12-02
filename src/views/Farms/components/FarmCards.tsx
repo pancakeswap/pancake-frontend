@@ -33,7 +33,7 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
     }
   }, {})
 
-  const cakePrice = stakedValueById[CAKE_POOL_PID] ? stakedValueById[CAKE_POOL_PID].tokenPriceInWeth : new BigNumber(0)
+  const cakePrice = stakedValueById[CAKE_POOL_PID] ? stakedValueById[CAKE_POOL_PID].tokenPrice : new BigNumber(0)
 
   const realFarms = !removed
     ? farms.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
@@ -72,7 +72,7 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
 
     let apy
 
-    if (farm.pid === 11) {
+    if (farm.pid === 11 || farm.pid === 41) {
       apy = stakedValueItem
         ? cakePrice
             .times(cakeRewardPerBlock)
@@ -98,7 +98,7 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
         cakePrice.times(cakeRewardPerBlock).times(BLOCKS_PER_YEAR).div(stakedValueItem.totalWethValue)
       const hardApy =
         stakedValueItem &&
-        stakedValueItem.tokenPriceInWeth
+        stakedValueItem.tokenPrice
           .times(config?.dual?.rewardPerBlock)
           .times(BLOCKS_PER_YEAR)
           .div(stakedValueItem.totalWethValue)

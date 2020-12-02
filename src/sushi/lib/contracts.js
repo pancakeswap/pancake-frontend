@@ -40,6 +40,7 @@ export default class Contracts {
     this.lottery = new this.web3.eth.Contract(LotteryAbi)
     this.lotteryNft = new this.web3.eth.Contract(LotteryNFTAbi)
     this.multicall = new this.web3.eth.Contract(MultiCallAbi)
+    this.busd = new this.web3.eth.Contract(ERC20Abi)
 
     this.pools = farmsConfig.map((pool) =>
       Object.assign(pool, {
@@ -80,6 +81,7 @@ export default class Contracts {
     setProvider(this.lottery, contractAddresses.lottery[networkId])
     setProvider(this.lotteryNft, contractAddresses.lotteryNFT[networkId])
     setProvider(this.multicall, contractAddresses.mulltiCall[networkId])
+    setProvider(this.busd, contractAddresses.busd[networkId])
 
     this.pools.forEach(({ lpContract, lpAddress, tokenContract, tokenAddress }) => {
       setProvider(lpContract, lpAddress)

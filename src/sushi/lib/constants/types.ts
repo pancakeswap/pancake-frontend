@@ -21,6 +21,7 @@ export enum QuoteToken {
   'BNB' = 'BNB',
   'CAKE' = 'CAKE',
   'SYRUP' = 'SYRUP',
+  'BUSD' = 'BUSD',
 }
 
 export enum PoolCategory {
@@ -45,4 +46,5 @@ export type Pool = {
   sortOrder?: number
   harvest?: boolean
   isFinished?: boolean
+  tokenDecimals: number
 }

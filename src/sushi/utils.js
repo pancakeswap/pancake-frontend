@@ -22,6 +22,9 @@ export const getSyrupContract = (sushi) => {
 export const getWethContract = (sushi) => {
   return sushi && sushi.contracts && sushi.contracts.weth
 }
+export const getBusdContract = (sushi) => {
+  return sushi && sushi.contracts && sushi.contracts.busd
+}
 
 export const getMasterChefContract = (sushi) => {
   return sushi && sushi.contracts && sushi.contracts.masterChef
@@ -74,6 +77,7 @@ export const getTotalLPWethValue = async (sushi, lpContract, tokenContract, pid,
   const masterChefContract = getMasterChefContract(sushi)
   const wethContract = getWethContract(sushi)
   const sushiContract = getSushiContract(sushi)
+  const busdContract = getBusdContract(sushi)
 
   const tokenAmountWholeLP = await tokenContract.methods.balanceOf(lpContract.options.address).call()
   const tokenDecimals = await tokenContract.methods.decimals().call()
@@ -88,6 +92,10 @@ export const getTotalLPWethValue = async (sushi, lpContract, tokenContract, pid,
   if (parseFloat(lpContractValue) === 0) {
     lpContractValue = await sushiContract.methods.balanceOf(lpContract.options.address).call()
     quoteToken = QuoteToken.CAKE
+  }
+  if (parseFloat(lpContractValue) === 0) {
+    lpContractValue = await busdContract.methods.balanceOf(lpContract.options.address).call()
+    quoteToken = QuoteToken.BUSD
   }
 
   // Return p1 * w1 * 2
@@ -105,7 +113,7 @@ export const getTotalLPWethValue = async (sushi, lpContract, tokenContract, pid,
     tokenAmount,
     wethAmount,
     totalWethValue: totalLpValue.div(new BigNumber(10).pow(18)),
-    tokenPriceInWeth: wethAmount.div(tokenAmount),
+    tokenPrice: wethAmount.div(tokenAmount),
     poolWeight: await getPoolWeight(masterChefContract, pid),
     quoteToken,
   }
