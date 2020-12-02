@@ -16,6 +16,7 @@ const pools: Pool[] = [
     tokenPerBlock: '10',
     sortOrder: 1,
     isFinished: false,
+    tokenDecimals: 18,
   },
   {
     sousId: 20,
@@ -32,6 +33,7 @@ const pools: Pool[] = [
     tokenPerBlock: '0.5',
     sortOrder: 2,
     isFinished: false,
+    tokenDecimals: 18,
   },
   {
     sousId: 19,
@@ -48,6 +50,7 @@ const pools: Pool[] = [
     tokenPerBlock: '0.0041',
     sortOrder: 3,
     isFinished: false,
+    tokenDecimals: 18,
   },
   {
     sousId: 21,
@@ -64,6 +67,7 @@ const pools: Pool[] = [
     tokenPerBlock: '0.104',
     sortOrder: 999,
     isFinished: false,
+    tokenDecimals: 18,
   },
   {
     sousId: 18,
@@ -80,6 +84,7 @@ const pools: Pool[] = [
     tokenPerBlock: '23.14',
     sortOrder: 999,
     isFinished: false,
+    tokenDecimals: 6,
   },
   {
     sousId: 17,
@@ -96,6 +101,7 @@ const pools: Pool[] = [
     tokenPerBlock: '23.14',
     sortOrder: 999,
     isFinished: true,
+    tokenDecimals: 18,
   },
   {
     sousId: 16,
@@ -112,6 +118,7 @@ const pools: Pool[] = [
     tokenPerBlock: '0.02893',
     sortOrder: 999,
     isFinished: false,
+    tokenDecimals: 18,
   },
   {
     sousId: 15,
@@ -128,6 +135,7 @@ const pools: Pool[] = [
     tokenPerBlock: '5',
     sortOrder: 999,
     isFinished: false,
+    tokenDecimals: 18,
   },
   {
     sousId: 14,
@@ -144,6 +152,7 @@ const pools: Pool[] = [
     tokenPerBlock: '0.346',
     sortOrder: 999,
     isFinished: false,
+    tokenDecimals: 6,
   },
   {
     sousId: 13,
@@ -159,7 +168,8 @@ const pools: Pool[] = [
     harvest: true,
     tokenPerBlock: '12.5',
     sortOrder: 999,
-    isFinished: false,
+    isFinished: true,
+    tokenDecimals: 18,
   },
   {
     sousId: 12,
@@ -176,6 +186,7 @@ const pools: Pool[] = [
     tokenPerBlock: '0.2',
     sortOrder: 999,
     isFinished: true,
+    tokenDecimals: 18,
   },
   {
     sousId: 11,
@@ -192,6 +203,7 @@ const pools: Pool[] = [
     tokenPerBlock: '1',
     sortOrder: 999,
     isFinished: true,
+    tokenDecimals: 18,
   },
   {
     sousId: 10,
@@ -208,6 +220,7 @@ const pools: Pool[] = [
     sortOrder: 999,
     tokenPerBlock: '10',
     isFinished: true,
+    tokenDecimals: 18,
   },
   {
     sousId: 9,
@@ -224,6 +237,7 @@ const pools: Pool[] = [
     tokenPerBlock: '0.5',
     sortOrder: 999,
     isFinished: true,
+    tokenDecimals: 6,
   },
   {
     sousId: 8,
@@ -240,6 +254,7 @@ const pools: Pool[] = [
     tokenPerBlock: '20',
     sortOrder: 999,
     isFinished: true,
+    tokenDecimals: 18,
   },
   {
     sousId: 7,
@@ -256,6 +271,7 @@ const pools: Pool[] = [
     tokenPerBlock: '0.25',
     sortOrder: 999,
     isFinished: true,
+    tokenDecimals: 18,
   },
   {
     sousId: 6,
@@ -272,6 +288,7 @@ const pools: Pool[] = [
     tokenPerBlock: '0.5',
     sortOrder: 999,
     isFinished: true,
+    tokenDecimals: 18,
   },
   {
     sousId: 5,
@@ -287,6 +304,7 @@ const pools: Pool[] = [
     tokenPerBlock: '0.5',
     sortOrder: 999,
     isFinished: true,
+    tokenDecimals: 6,
   },
   {
     sousId: 4,
@@ -303,6 +321,7 @@ const pools: Pool[] = [
     tokenPerBlock: '0.5',
     sortOrder: 999,
     isFinished: true,
+    tokenDecimals: 18,
   },
   {
     sousId: 3,
@@ -319,6 +338,7 @@ const pools: Pool[] = [
     tokenPerBlock: '0.25',
     sortOrder: 999,
     isFinished: true,
+    tokenDecimals: 18,
   },
   {
     sousId: 2,
@@ -335,6 +355,7 @@ const pools: Pool[] = [
     tokenPerBlock: '20',
     sortOrder: 999,
     isFinished: true,
+    tokenDecimals: 18,
   },
   {
     sousId: 1,
@@ -351,6 +372,7 @@ const pools: Pool[] = [
     tokenPerBlock: '20',
     sortOrder: 999,
     isFinished: true,
+    tokenDecimals: 18,
   },
   {
     sousId: -1,
@@ -366,6 +388,7 @@ const pools: Pool[] = [
     projectLink: 'https://venus.io/',
     sortOrder: 999,
     isFinished: true,
+    tokenDecimals: 18,
   },
 ]
 
