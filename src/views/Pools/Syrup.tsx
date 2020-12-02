@@ -8,7 +8,9 @@ import useUserBnbBalance from 'hooks/rework/useBnbBalance'
 import useSushi from 'hooks/useSushi'
 import useI18n from 'hooks/useI18n'
 import useAllStakedValue from 'hooks/useAllStakedValue'
+import { useBnbPriceUSD } from 'hooks/usePrices'
 import { getPools } from 'sushi/utils'
+import { QuoteToken } from 'sushi/lib/constants/types'
 import Coming from './components/Coming'
 import PoolCard from './components/PoolCard'
 
@@ -17,19 +19,25 @@ const Farm: React.FC = () => {
   const TranslateString = useI18n()
   const stakedValues = useAllStakedValue()
   const userBnbBalance = useUserBnbBalance()
+  const bnbPriceUSD = useBnbPriceUSD()
+  const cakePriceVsBNB = stakedValues.find((s) => s.tokenSymbol === 'CAKE')?.tokenPrice || new BigNumber(0)
 
-  const cakePrice = stakedValues.find((s) => s.tokenSymbol === 'CAKE')?.tokenPriceInWeth || new BigNumber(0)
+  const priceToBnb = (tokenName: string, tokenPrice: BigNumber, quoteToken: QuoteToken) => {
+    if (tokenName === 'BNB') {
+      return new BigNumber(1)
+    }
+    if (tokenPrice && quoteToken === QuoteToken.BUSD) {
+      return tokenPrice.div(bnbPriceUSD)
+    }
+    return tokenPrice
+  }
 
   const pools = getPools(sushi).map((pool) => {
-    const stakedValue =
-      pool.tokenName === 'BNB'
-        ? { tokenPriceInWeth: new BigNumber(1), quoteToken: 'BNB', tokenDecimals: '18' }
-        : stakedValues.find((s) => s.tokenSymbol === pool.tokenName)
+    const stakedValue = stakedValues.find((s) => s.tokenSymbol === pool.tokenName)
 
     return {
       ...pool,
-      tokenPrice: stakedValue?.tokenPriceInWeth || new BigNumber(0),
-      tokenPriceQuoteToken: stakedValue?.quoteToken,
+      tokenPrice: priceToBnb(pool.tokenName, stakedValue?.tokenPrice, stakedValue?.quoteToken),
     }
   })
 
@@ -52,11 +60,11 @@ const Farm: React.FC = () => {
       </Hero>
       <Pools>
         {orderBy(openPools, ['sortOrder']).map((pool) => (
-          <PoolCard key={pool.sousId} cakePrice={cakePrice} userBnbBalance={userBnbBalance} {...pool} />
+          <PoolCard key={pool.sousId} cakePriceVsBNB={cakePriceVsBNB} userBnbBalance={userBnbBalance} {...pool} />
         ))}
         <Coming />
         {orderBy(finishedPools, ['sortOrder']).map((pool) => (
-          <PoolCard key={pool.sousId} cakePrice={cakePrice} userBnbBalance={userBnbBalance} {...pool} />
+          <PoolCard key={pool.sousId} cakePriceVsBNB={cakePriceVsBNB} userBnbBalance={userBnbBalance} {...pool} />
         ))}
       </Pools>
     </Page>
