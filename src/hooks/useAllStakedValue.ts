@@ -13,10 +13,17 @@ export interface StakedValue {
   tokenAmount: BigNumber
   wethAmount: BigNumber
   totalWethValue: BigNumber
-  tokenPriceInWeth: BigNumber
+  tokenPrice: BigNumber
   poolWeight: BigNumber
   quoteToken: QuoteToken
   tokenDecimals: string
+}
+
+interface Farm {
+  pid: number
+  tokenSymbol: string
+  lpContract: Contract
+  tokenContract: Contract
 }
 
 const useAllStakedValue = () => {
@@ -29,19 +36,10 @@ const useAllStakedValue = () => {
   useEffect(() => {
     const fetchAllStakedValue = async () => {
       const res: Array<StakedValue> = await Promise.all(
-        farms.map(
-          ({
-            pid,
-            tokenSymbol,
-            lpContract,
-            tokenContract,
-          }: {
-            pid: number
-            tokenSymbol: string
-            lpContract: Contract
-            tokenContract: Contract
-          }) => getTotalLPWethValue(sushi, lpContract, tokenContract, pid, tokenSymbol),
-        ),
+        farms.map((farm: Farm) => {
+          const { pid, tokenSymbol, lpContract, tokenContract } = farm
+          return getTotalLPWethValue(sushi, lpContract, tokenContract, pid, tokenSymbol)
+        }),
       )
       setBalance(res)
     }

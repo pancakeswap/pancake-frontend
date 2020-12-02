@@ -21,6 +21,7 @@ export enum QuoteToken {
   'BNB' = 'BNB',
   'CAKE' = 'CAKE',
   'SYRUP' = 'SYRUP',
+  'BUSD' = 'BUSD',
 }
 
 export enum PoolCategory {
