@@ -30,7 +30,7 @@ const getNextLotteryDrawTime = (currentTime) => {
   if (nextLotteryIsTomorrow) {
     const tomorrow = new Date(timeOfNextDraw)
     tomorrow.setDate(tomorrow.getUTCDate() + 1)
-    timeOfNextDraw = tomorrow.getUtcTime()
+    timeOfNextDraw = tomorrow.getUTCTime()
   }
 
   return timeOfNextDraw
