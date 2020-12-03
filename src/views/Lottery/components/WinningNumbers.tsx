@@ -17,7 +17,7 @@ const WinningNumbers: React.FC = () => {
   const TranslateString = useI18n()
 
   return (
-    <CardWrapper style={{ marginTop: '4em' }}>
+    <CardWrapper>
       <Card>
         <CardContent>
           <StyledCardContentInner>
@@ -202,14 +202,15 @@ const TicketNumberBox = styled.div`
 `
 
 const RabbitBox = styled.div`
-  padding: 10px;
+  /* padding: 10px; */
   border-radius: 12px;
-  margin: 20px;
+  margin: 16px 20px;
   width: 60px;
 `
 
 const RabbitBoxSmall = styled.div`
-  padding: 10px;
+  padding-top: 10px;
+  padding-left: 10px;
   border-radius: 12px;
   margin: 20px;
   width: 20px;

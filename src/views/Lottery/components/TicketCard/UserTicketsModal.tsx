@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react'
 import { Button, Modal } from '@pancakeswap-libs/uikit'
-import ModalActions from 'components/ModalActions'
 import styled from 'styled-components'
 import { useWinningNumbers } from 'hooks/useTickets'
 import useI18n from 'hooks/useI18n'
@@ -47,11 +46,9 @@ const UserTicketsModal: React.FC<UserTicketsModalProps> = ({ myTicketNumbers, on
       <TicketsList>
         <h2>{listItems}</h2>
       </TicketsList>
-      <ModalActions>
-        <Button variant="secondary" onClick={onDismiss}>
-          {TranslateString(438, 'Close')}
-        </Button>
-      </ModalActions>
+      <StyledButton variant="secondary" onClick={onDismiss}>
+        {TranslateString(438, 'Close')}
+      </StyledButton>
     </Modal>
   )
 }
@@ -65,6 +62,10 @@ const TicketsList = styled.div`
   overflow-y: auto;
   max-height: 400px;
   color: ${(props) => props.theme.colors.primary};
+`
+
+const StyledButton = styled(Button)`
+  margin-top: ${(props) => props.theme.spacing[2]}px;
 `
 
 export default UserTicketsModal
