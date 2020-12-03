@@ -1,13 +1,6 @@
 // @ts-nocheck
 import getTimePeriods from 'utils/getTimePeriods'
 
-export const getUtcTimeNow = (now) => {
-  const utcTimeStamp = Date.UTC(now.getUTCFullYear(),now.getUTCMonth(), now.getUTCDate(), 
-  now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds(), now.getUTCMilliseconds());
-  return utcTimeStamp
-} 
-
-
 // lottery draws UTC: 02:00 (10:00 SGT), 08:00 (16:00 SGT), 14:00 (22:00 SGT), 20:00 (04:00 SGT)
 const lotteryDrawHoursUtc = [2, 8, 14, 20]
 
