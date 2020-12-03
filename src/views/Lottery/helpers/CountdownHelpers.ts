@@ -31,12 +31,11 @@ const getNextLotteryDrawTime = (currentTime) => {
   const currentHour = date.getUTCHours()
   const nextLotteryHour = getClosestLotteryHour(currentHour)
   const nextLotteryIsTomorrow = nextLotteryHour === 2 && currentHour <= 23
- 
   let timeOfNextDraw = date.setUTCHours(nextLotteryHour, 0, 0, 0)
-  
+
   if (nextLotteryIsTomorrow) {
     const tomorrow = new Date(timeOfNextDraw)
-    tomorrow.setDate(tomorrow.getDate() + 1)
+    tomorrow.setDate(tomorrow.getUtcDate() + 1)
     timeOfNextDraw = tomorrow.getTime()
   }
 
