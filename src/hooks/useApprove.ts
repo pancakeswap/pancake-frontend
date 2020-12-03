@@ -1,15 +1,12 @@
 import { useCallback } from 'react'
-
 import { useWallet } from 'use-wallet'
-import { provider } from 'web3-core'
 import { Contract } from 'web3-eth-contract'
 import useSushi from './useSushi'
-
 import { getSushiContract, approve, getMasterChefContract, getSousChefContract } from '../sushi/utils'
 import { getLotteryContract } from '../sushi/lotteryUtils'
 
 const useApprove = (lpContract: Contract) => {
-  const { account }: { account: string; ethereum: provider } = useWallet()
+  const { account }: { account: string } = useWallet()
   const sushi = useSushi()
   const masterChefContract = getMasterChefContract(sushi)
 
@@ -26,7 +23,7 @@ const useApprove = (lpContract: Contract) => {
 }
 
 export const useSousApprove = (lpContract: Contract, sousId) => {
-  const { account }: { account: string; ethereum: provider } = useWallet()
+  const { account }: { account: string } = useWallet()
   const sushi = useSushi()
   const sousChefContract = getSousChefContract(sushi, sousId)
 
@@ -43,7 +40,7 @@ export const useSousApprove = (lpContract: Contract, sousId) => {
 }
 
 export const useLotteryApprove = () => {
-  const { account }: { account: string; ethereum: provider } = useWallet()
+  const { account }: { account: string } = useWallet()
   const sushi = useSushi()
   const lotteryContract = getLotteryContract(sushi)
   const cakeContract = getSushiContract(sushi)
