@@ -37,13 +37,13 @@ const StyledPrimaryText = styled(Text)`
 const Hero = () => {
   const TranslateString = useI18n()
   const lotteryHasDrawn = useGetLotteryHasDrawn()
-  const currentMs = useCurrentTime()
-  const timeUntilTicketSale = getTicketSaleTime(currentMs)
-  const timeUntilLotteryDraw = getLotteryDrawTime(currentMs)
+  const currentMillis = useCurrentTime()
+  const timeUntilTicketSale = getTicketSaleTime(currentMillis)
+  const timeUntilLotteryDraw = getLotteryDrawTime(currentMillis)
 
   return (
     <ProgressWrapper>
-      <Progress primaryStep={getLotteryDrawStep(currentMs)} secondaryStep={getTicketSaleStep()} showProgressBunny />
+      <Progress primaryStep={getLotteryDrawStep(currentMillis)} secondaryStep={getTicketSaleStep()} showProgressBunny />
       <TopTextWrapper>
         <StyledPrimaryText fontSize="20px" bold color="contrast">
           {lotteryHasDrawn ? timeUntilTicketSale : timeUntilLotteryDraw}
