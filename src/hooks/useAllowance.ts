@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import BigNumber from 'bignumber.js'
 import { useWallet } from 'use-wallet'
-import { provider } from 'web3-core'
 import { Contract } from 'web3-eth-contract'
 import useSushi from './useSushi'
 import { getAllowance } from '../utils/erc20'
@@ -10,7 +9,7 @@ import { getLotteryContract } from '../sushi/lotteryUtils'
 
 const useAllowance = (lpContract: Contract) => {
   const [allowance, setAllowance] = useState(new BigNumber(0))
-  const { account }: { account: string; ethereum: provider } = useWallet()
+  const { account }: { account: string } = useWallet()
   const sushi = useSushi()
   const masterChefContract = getMasterChefContract(sushi)
 
@@ -32,7 +31,7 @@ const useAllowance = (lpContract: Contract) => {
 
 export const useSousAllowance = (lpContract: Contract, sousId) => {
   const [allowance, setAllowance] = useState(new BigNumber(0))
-  const { account }: { account: string; ethereum: provider } = useWallet()
+  const { account }: { account: string } = useWallet()
   const sushi = useSushi()
   const sousChefContract = getSousChefContract(sushi, sousId)
 
@@ -54,7 +53,7 @@ export const useSousAllowance = (lpContract: Contract, sousId) => {
 
 export const useLotteryAllowance = () => {
   const [allowance, setAllowance] = useState(new BigNumber(0))
-  const { account }: { account: string; ethereum: provider } = useWallet()
+  const { account }: { account: string } = useWallet()
   const sushi = useSushi()
   const lotteryContract = getLotteryContract(sushi)
   const cakeContract = getSushiContract(sushi)

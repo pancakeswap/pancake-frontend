@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { provider } from 'web3-core'
 import BigNumber from 'bignumber.js'
 import { useWallet } from 'use-wallet'
 import {
@@ -15,7 +14,7 @@ import useBlock from './useBlock'
 
 const useEarnings = (pid: number) => {
   const [balance, setBalance] = useState(new BigNumber(0))
-  const { account }: { account: string; ethereum: provider } = useWallet()
+  const { account }: { account: string } = useWallet()
   const sushi = useSushi()
   const masterChefContract = getMasterChefContract(sushi)
   const block = useBlock()
@@ -36,7 +35,7 @@ const useEarnings = (pid: number) => {
 
 export const useSousEarnings = (sousId) => {
   const [balance, setBalance] = useState(new BigNumber(0))
-  const { account }: { account: string; ethereum: provider } = useWallet()
+  const { account }: { account: string } = useWallet()
   const sushi = useSushi()
   const sousChefContract = getSousChefContract(sushi, sousId)
   const masterChefContract = getMasterChefContract(sushi)
@@ -68,7 +67,7 @@ export const useSousLeftBlocks = (sousId) => {
     blocksRemaining: 0,
     isFinished: false,
   })
-  const { account }: { account: string; ethereum: provider } = useWallet()
+  const { account }: { account: string } = useWallet()
   const sushi = useSushi()
   const sousChefContract = getSousChefContract(sushi, sousId)
   const block = useBlock()
