@@ -6,7 +6,7 @@ import { Card, CardBody, CardRibbon } from '@pancakeswap-libs/uikit'
 import { BSC_BLOCK_TIME } from 'config'
 import { Ifo, IfoStatus } from 'sushi/lib/constants/types'
 import useI18n from 'hooks/useI18n'
-import useCurrentBlock from 'hooks/rework/useCurrentBlock'
+import useBlock from 'hooks/useBlock'
 import { useIfoContract } from 'hooks/rework/useContract'
 import UnlockButton from 'components/UnlockButton'
 import IfoCardHeader from './IfoCardHeader'
@@ -88,7 +88,7 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
   const { account } = useWallet()
   const contract = useIfoContract(address)
 
-  const currentBlock = useCurrentBlock()
+  const currentBlock = useBlock()
   const TranslateString = useI18n()
 
   const Ribbon = getRibbonComponent(state.status, TranslateString)
