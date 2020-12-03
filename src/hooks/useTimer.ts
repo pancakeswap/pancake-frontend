@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react'
-import { getUtcTimeNow } from '../views/Lottery/helpers/CountdownHelpers'
 
 export const useCurrentTime = () => {
-  const [currentTime, setCurrentTime] = useState(getUtcTimeNow(new Date()))
+  const [currentTime, setCurrentTime] = useState(Date.now())
 
   const tick = () => {
     setCurrentTime(currentTime + 1000)
