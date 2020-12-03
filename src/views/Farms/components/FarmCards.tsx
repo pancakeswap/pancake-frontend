@@ -126,9 +126,9 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
       <Grid>
         {rows.length > 0
           ? rows.map((farm) => (
-              <FarmCard farm={farm} stakedValue={stakedValueById[farm.tokenSymbol]} removed={removed} />
+              <FarmCard key={farm.pid} farm={farm} stakedValue={stakedValueById[farm.tokenSymbol]} removed={removed} />
             ))
-          : farmsConfig.filter((f) => f.pid !== 0).map((pool) => <FarmCardOffline pool={pool} />)}
+          : farmsConfig.filter((f) => f.pid !== 0).map((pool) => <FarmCardOffline key={pool.pid} pool={pool} />)}
       </Grid>
     </Page>
   )

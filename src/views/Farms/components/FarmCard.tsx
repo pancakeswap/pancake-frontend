@@ -201,7 +201,8 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
         </Label>
       )}
       <Action>
-        <Button as={ReactRouterLink} to={`/farms/${farm.id}`} fullWidth>
+        {/* No full width props because of as={ReactRouterLink} */}
+        <Button as={ReactRouterLink} to={`/farms/${farm.id}`} style={{ width: '100%' }}>
           {TranslateString(999, 'Select')}
         </Button>
       </Action>

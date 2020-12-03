@@ -1,7 +1,9 @@
-import { useEffect, useRef, useState } from 'react'
-import useWeb3 from './useWeb3'
+import React, { useState, useEffect, useRef } from 'react'
+import useWeb3 from 'hooks/rework/useWeb3'
 
-const useCurrentBlock = () => {
+const BlockContext = React.createContext(0)
+
+const BlockContextProvider = ({ children }) => {
   const previousBlock = useRef(0)
   const [block, setBlock] = useState(0)
   const web3 = useWeb3()
@@ -19,9 +21,9 @@ const useCurrentBlock = () => {
     }
 
     return () => clearInterval(interval)
-  }, [setBlock, web3, previousBlock])
+  }, [web3])
 
-  return block
+  return <BlockContext.Provider value={block}>{children}</BlockContext.Provider>
 }
 
-export default useCurrentBlock
+export { BlockContext, BlockContextProvider }

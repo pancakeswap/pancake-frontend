@@ -6,6 +6,7 @@ import TransactionProvider from './contexts/Transactions'
 import SushiProvider from './contexts/SushiProvider'
 import { LanguageContextProvider } from './contexts/Localisation/languageContext'
 import { ThemeContextProvider } from './contexts/ThemeContext'
+import { BlockContextProvider } from './contexts/BlockContext'
 
 const Providers: React.FC = ({ children }) => {
   const rpcUrl = getRpcUrl()
@@ -19,11 +20,13 @@ const Providers: React.FC = ({ children }) => {
             walletconnect: { rpcUrl },
           }}
         >
-          <SushiProvider>
-            <TransactionProvider>
-              <ModalProvider>{children}</ModalProvider>
-            </TransactionProvider>
-          </SushiProvider>
+          <BlockContextProvider>
+            <SushiProvider>
+              <TransactionProvider>
+                <ModalProvider>{children}</ModalProvider>
+              </TransactionProvider>
+            </SushiProvider>
+          </BlockContextProvider>
         </UseWalletProvider>
       </LanguageContextProvider>
     </ThemeContextProvider>

@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { provider } from 'web3-core'
 import BigNumber from 'bignumber.js'
 import { useWallet } from 'use-wallet'
 import { Contract } from 'web3-eth-contract'
@@ -28,7 +27,7 @@ interface Farm {
 
 const useAllStakedValue = () => {
   const [balances, setBalance] = useState([] as Array<StakedValue>)
-  const { account }: { account: string; ethereum: provider } = useWallet()
+  const { account }: { account: string } = useWallet()
   const sushi = useSushi()
   const farms = getFarms(sushi)
   const block = useBlock()
