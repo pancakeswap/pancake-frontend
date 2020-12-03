@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react'
 
 export const useCurrentTime = () => {
-  const [currentTime, setCurrentTime] = useState(new Date().getTime())
+  const [currentMs, setCurrentMs] = useState(new Date().getTime())
 
 
   const tick = () => {
-    setCurrentTime(currentTime + 1000)
+    setCurrentMs(currentMs + 1000)
   }
 
   useEffect(() => {
@@ -13,7 +13,7 @@ export const useCurrentTime = () => {
     return () => clearInterval(timerID)
   })
 
-  return currentTime
+  return currentMs
 }
 
 export default useCurrentTime
