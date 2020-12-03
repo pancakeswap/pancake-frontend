@@ -1,6 +1,13 @@
 // @ts-nocheck
 import getTimePeriods from 'utils/getTimePeriods'
 
+export const getUtcTimeNow = (now) => {
+  const utcTimeStamp = Date.UTC(now.getUTCFullYear(),now.getUTCMonth(), now.getUTCDate(), 
+  now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds(), now.getUTCMilliseconds());
+  return utcTimeStamp
+} 
+
+
 // lottery draws UTC: 02:00 (10:00 SGT), 08:00 (16:00 SGT), 14:00 (22:00 SGT), 20:00 (04:00 SGT)
 const lotteryDrawHoursUtc = [2, 8, 14, 20]
 
@@ -24,12 +31,12 @@ const getNextLotteryDrawTime = (currentTime) => {
   const currentHour = date.getUTCHours()
   const nextLotteryHour = getClosestLotteryHour(currentHour)
   const nextLotteryIsTomorrow = nextLotteryHour === 2 && currentHour <= 23
-
-  let timeOfNextDraw = date.setHours(nextLotteryHour, 0, 0, 0)
-
+ 
+  let timeOfNextDraw = date.setUTCHours(nextLotteryHour, 0, 0, 0)
+  
   if (nextLotteryIsTomorrow) {
     const tomorrow = new Date(timeOfNextDraw)
-    tomorrow.setDate(tomorrow.getUTCDate() + 1)
+    tomorrow.setDate(tomorrow.getDate() + 1)
     timeOfNextDraw = tomorrow.getTime()
   }
 

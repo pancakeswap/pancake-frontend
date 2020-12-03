@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 
 export const useCurrentTime = () => {
-  const [currentTime, setCurrentTime] = useState(Date.now())
+  const [currentTime, setCurrentTime] = useState(new Date().getTime())
+
 
   const tick = () => {
     setCurrentTime(currentTime + 1000)
