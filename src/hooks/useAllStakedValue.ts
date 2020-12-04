@@ -1,11 +1,8 @@
 import { useEffect, useState } from 'react'
 import BigNumber from 'bignumber.js'
-import { useWallet } from 'use-wallet'
-import { Contract } from 'web3-eth-contract'
 import { QuoteToken } from 'sushi/lib/constants/types'
-import { getFarms, getTotalLPWethValue } from '../sushi/utils'
+import { getFarms, getLPValues } from '../sushi/utils'
 import useSushi from './useSushi'
-import useBlock from './useBlock'
 
 export interface StakedValue {
   tokenSymbol: string
@@ -21,32 +18,29 @@ export interface StakedValue {
 interface Farm {
   pid: number
   tokenSymbol: string
-  lpContract: Contract
-  tokenContract: Contract
+  tokenAddress: string
+  lpTokenAddress: string
 }
 
 const useAllStakedValue = () => {
   const [balances, setBalance] = useState([] as Array<StakedValue>)
-  const { account }: { account: string } = useWallet()
   const sushi = useSushi()
   const farms = getFarms(sushi)
-  const block = useBlock()
 
   useEffect(() => {
     const fetchAllStakedValue = async () => {
       const res: Array<StakedValue> = await Promise.all(
         farms.map((farm: Farm) => {
-          const { pid, tokenSymbol, lpContract, tokenContract } = farm
-          return getTotalLPWethValue(sushi, lpContract, tokenContract, pid, tokenSymbol)
+          const { pid, tokenSymbol, tokenAddress, lpTokenAddress } = farm
+
+          return getLPValues(pid, tokenSymbol, tokenAddress, lpTokenAddress)
         }),
       )
       setBalance(res)
     }
 
-    if (account && sushi) {
-      fetchAllStakedValue()
-    }
-  }, [account, block, farms, setBalance, sushi])
+    fetchAllStakedValue()
+  }, [farms])
 
   return balances
 }

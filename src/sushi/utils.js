@@ -2,6 +2,10 @@ import BigNumber from 'bignumber.js'
 import get from 'lodash/get'
 import memoize from 'lodash/memoize'
 import { ethers } from 'ethers'
+import addresses from 'sushi/lib/constants/contracts'
+import erc20 from 'sushi/lib/abi/erc20.json'
+import masterchefABI from 'sushi/lib/abi/masterchef.json'
+import multicall from 'utils/multicall'
 import { QuoteToken } from 'sushi/lib/constants/types'
 import { poolsConfig } from './lib/constants'
 
@@ -45,12 +49,6 @@ export const getPools = (sushi) => {
   return get(sushi, 'contracts.sousChefs', poolsConfig)
 }
 
-export const getPoolWeight = async (masterChefContract, pid) => {
-  const { allocPoint } = await masterChefContract.methods.poolInfo(pid).call()
-  const totalAllocPoint = await masterChefContract.methods.totalAllocPoint().call()
-  return new BigNumber(allocPoint).div(new BigNumber(totalAllocPoint))
-}
-
 export const getEarned = async (masterChefContract, pid, account) => {
   return masterChefContract.methods.pendingCake(pid, account).call()
 }
@@ -73,28 +71,63 @@ export const getTotalStakedBNB = async (sushi, sousChefContract) => {
   return wethBalance
 }
 
-export const getTotalLPWethValue = async (sushi, lpContract, tokenContract, pid, tokenSymbol) => {
-  const masterChefContract = getMasterChefContract(sushi)
-  const wethContract = getWethContract(sushi)
-  const sushiContract = getSushiContract(sushi)
-  const busdContract = getBusdContract(sushi)
+export const getLPValues = async (pid, tokenSymbol, tokenAddress, lpTokenAddress) => {
+  const calls = [
+    {
+      address: tokenAddress,
+      name: 'decimals',
+    },
+    {
+      address: tokenAddress,
+      name: 'balanceOf',
+      params: [lpTokenAddress],
+    },
+    {
+      address: lpTokenAddress,
+      name: 'balanceOf',
+      params: [addresses.masterChef[56]],
+    },
+    {
+      address: lpTokenAddress,
+      name: 'totalSupply',
+    },
+    {
+      address: addresses.weth[56],
+      name: 'balanceOf',
+      params: [lpTokenAddress],
+    },
+    {
+      address: addresses.sushi[56],
+      name: 'balanceOf',
+      params: [lpTokenAddress],
+    },
+    {
+      address: addresses.busd[56],
+      name: 'balanceOf',
+      params: [lpTokenAddress],
+    },
+  ]
 
-  const tokenAmountWholeLP = await tokenContract.methods.balanceOf(lpContract.options.address).call()
-  const tokenDecimals = await tokenContract.methods.decimals().call()
-  // Get the share of lpContract that masterChefContract owns
-  const balance = await lpContract.methods.balanceOf(masterChefContract.options.address).call()
-  // Convert that into the portion of total lpContract = p1
-  const totalSupply = await lpContract.methods.totalSupply().call()
-  // Get total weth value for the lpContract = w1
+  const res = await multicall(erc20, calls)
 
-  let lpContractValue = await wethContract.methods.balanceOf(lpContract.options.address).call()
+  const [
+    tokenDecimals,
+    tokenAmountWholeLP,
+    balance,
+    totalSupply,
+    lpContractValueWeth,
+    lpContractValueCake,
+    lpContractValueBusd,
+  ] = res
+
+  let lpContractValue = lpContractValueWeth
   let quoteToken = QuoteToken.BNB
   if (parseFloat(lpContractValue) === 0) {
-    lpContractValue = await sushiContract.methods.balanceOf(lpContract.options.address).call()
+    lpContractValue = lpContractValueCake
     quoteToken = QuoteToken.CAKE
   }
   if (parseFloat(lpContractValue) === 0) {
-    lpContractValue = await busdContract.methods.balanceOf(lpContract.options.address).call()
+    lpContractValue = lpContractValueBusd
     quoteToken = QuoteToken.BUSD
   }
 
@@ -106,6 +139,21 @@ export const getTotalLPWethValue = async (sushi, lpContract, tokenContract, pid,
   const tokenAmount = new BigNumber(tokenAmountWholeLP).times(portionLp).div(new BigNumber(10).pow(tokenDecimals))
   const wethAmount = lpContractValueBN.times(portionLp).div(new BigNumber(10).pow(18))
 
+  const [info, totalAllocPoint] = await multicall(masterchefABI, [
+    {
+      address: addresses.masterChef[56],
+      name: 'poolInfo',
+      params: [pid],
+    },
+    {
+      address: addresses.masterChef[56],
+      name: 'totalAllocPoint',
+    },
+  ])
+
+  // eslint-disable-next-line no-underscore-dangle
+  const poolWeight = new BigNumber(info.allocPoint._hex).div(new BigNumber(totalAllocPoint))
+
   return {
     pid,
     tokenSymbol,
@@ -114,7 +162,7 @@ export const getTotalLPWethValue = async (sushi, lpContract, tokenContract, pid,
     wethAmount,
     totalWethValue: totalLpValue.div(new BigNumber(10).pow(18)),
     tokenPrice: wethAmount.div(tokenAmount),
-    poolWeight: await getPoolWeight(masterChefContract, pid),
+    poolWeight,
     quoteToken,
   }
 }
