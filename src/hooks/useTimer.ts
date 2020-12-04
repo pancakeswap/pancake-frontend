@@ -10,8 +10,10 @@ export const useCurrentTime = () => {
 
   useEffect(() => {
     const timerID = setInterval(() => tick(), 1000)
+
     return () => clearInterval(timerID)
-  })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return currentMillis
 }
