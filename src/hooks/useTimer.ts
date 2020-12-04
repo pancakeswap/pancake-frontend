@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react'
-import { getUtcTimeNow } from '../views/Lottery/helpers/CountdownHelpers'
 
 export const useCurrentTime = () => {
-  const [currentTime, setCurrentTime] = useState(getUtcTimeNow(new Date()))
+  const [currentMillis, setCurrentMillis] = useState(new Date().getTime())
+
 
   const tick = () => {
-    setCurrentTime(currentTime + 1000)
+    setCurrentMillis(currentMillis + 1000)
   }
 
   useEffect(() => {
@@ -13,7 +13,7 @@ export const useCurrentTime = () => {
     return () => clearInterval(timerID)
   })
 
-  return currentTime
+  return currentMillis
 }
 
 export default useCurrentTime

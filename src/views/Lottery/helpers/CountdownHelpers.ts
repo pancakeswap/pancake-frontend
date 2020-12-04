@@ -1,19 +1,6 @@
 // @ts-nocheck
 import getTimePeriods from 'utils/getTimePeriods'
 
-export const getUtcTimeNow = (date: Date) => {
-  const utcTimeStamp = Date.UTC(
-    date.getFullYear(),
-    date.getMonth(),
-    date.getDate(),
-    date.getHours(),
-    date.getMinutes(),
-    date.getSeconds(),
-    date.getMilliseconds())
-  return utcTimeStamp
-} 
-
-
 // lottery draws UTC: 02:00 (10:00 SGT), 08:00 (16:00 SGT), 14:00 (22:00 SGT), 20:00 (04:00 SGT)
 const lotteryDrawHoursUtc = [2, 8, 14, 20]
 
@@ -32,37 +19,37 @@ const getClosestLotteryHour = (currentHour) => {
   }
 }
 
-const getNextLotteryDrawTime = (currentTime) => {
-  const date = new Date(currentTime)
-  const currentHour = date.getHours()
+const getNextLotteryDrawTime = (currentMillis) => {
+  const date = new Date(currentMillis)
+  const currentHour = date.getUTCHours()
   const nextLotteryHour = getClosestLotteryHour(currentHour)
   const nextLotteryIsTomorrow = nextLotteryHour === 2 && currentHour <= 23
-
-  let timeOfNextDraw = date.setHours(nextLotteryHour, 0, 0, 0)
+  let millisTimeOfNextDraw = date.setUTCHours(nextLotteryHour, 0, 0, 0)
 
   if (nextLotteryIsTomorrow) {
-    const tomorrow = new Date(timeOfNextDraw)
-    tomorrow.setDate(tomorrow.getDate() + 1)
-    timeOfNextDraw = tomorrow.getTime()
+    const tomorrow = new Date(millisTimeOfNextDraw)
+    const nextDay = tomorrow.getUTCDate() + 1
+    tomorrow.setUTCDate(nextDay)
+    millisTimeOfNextDraw = tomorrow.getTime()
   }
 
-  return timeOfNextDraw
+  return millisTimeOfNextDraw
 }
 
-const getNextTicketSaleTime = (currentTime) => (parseInt(currentTime / 3600000) + 1) * 3600000
+const getNextTicketSaleTime = (currentMillis) => (parseInt(currentMillis / 3600000) + 1) * 3600000
 const hoursAndMinutesString = (hours, minutes) => `${parseInt(hours)}h, ${parseInt(minutes)}m`
 
-export const getTicketSaleTime = (currentTime): string => {
-  const nextTicketSaleTime = getNextTicketSaleTime(currentTime)
-  const msUntilNextTicketSale = nextTicketSaleTime - currentTime
+export const getTicketSaleTime = (currentMillis): string => {
+  const nextTicketSaleTime = getNextTicketSaleTime(currentMillis)
+  const msUntilNextTicketSale = nextTicketSaleTime - currentMillis
   const { minutes } = getTimePeriods(msUntilNextTicketSale/1000)
   const { hours } = getTimePeriods(msUntilNextTicketSale/1000)
   return hoursAndMinutesString(hours, minutes)
 }
 
-export const getLotteryDrawTime = (currentTime): string => {
-  const nextLotteryDrawTime = getNextLotteryDrawTime(currentTime)
-  const msUntilLotteryDraw = nextLotteryDrawTime - currentTime
+export const getLotteryDrawTime = (currentMillis): string => {
+  const nextLotteryDrawTime = getNextLotteryDrawTime(currentMillis)
+  const msUntilLotteryDraw = nextLotteryDrawTime - currentMillis
   const { minutes } = getTimePeriods(msUntilLotteryDraw/1000)
   const { hours } = getTimePeriods(msUntilLotteryDraw/1000)
   return hoursAndMinutesString(hours, minutes)
@@ -70,10 +57,10 @@ export const getLotteryDrawTime = (currentTime): string => {
 
 export const getTicketSaleStep = () => (1 / 6) * 100
 
-export const getLotteryDrawStep = (currentTime) => {
+export const getLotteryDrawStep = (currentMillis) => {
   const sBetweenLotteries = 21600000
-  const endTime = getNextLotteryDrawTime(currentTime)
-  const sUntilLotteryDraw = endTime - currentTime
+  const endTime = getNextLotteryDrawTime(currentMillis)
+  const sUntilLotteryDraw = endTime - currentMillis
   const percentageRemaining = (sUntilLotteryDraw / sBetweenLotteries) * 100
   return 100 - percentageRemaining
 }
