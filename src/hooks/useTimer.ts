@@ -1,28 +1,17 @@
-import { useState, useEffect, useRef } from 'react'
-
-const useInterval = (callback, delay) => {
-  const savedCallback = useRef(null)
-
-  useEffect(() => {
-    savedCallback.current = callback
-  })
-
-  useEffect(() => {
-    function tick() {
-      savedCallback.current()
-    }
-
-    const id = setInterval(tick, delay)
-    return () => clearInterval(id)
-  }, [delay])
-}
+import { useState, useEffect } from 'react'
 
 export const useCurrentTime = () => {
   const [currentMillis, setCurrentMillis] = useState(new Date().getTime())
 
-  useInterval(() => {
-    setCurrentMillis(currentMillis + 1000)
-  }, 1000)
+  useEffect(() => {
+    const tick = () => {
+      setCurrentMillis((prevMillis) => prevMillis + 1000)
+    }
+
+    const timerID = setInterval(() => tick(), 1000)
+
+    return () => clearInterval(timerID)
+  }, [])
 
   return currentMillis
 }
