@@ -28,7 +28,6 @@ const Image = styled.img`
 const StyledButton = styled(Button)`
   padding: 0 12px;
   height: unset;
-  /* margin-top: ${(props) => props.theme.spacing[1]}px; */
 `
 
 const NoPrizesContent: React.FC = () => {
