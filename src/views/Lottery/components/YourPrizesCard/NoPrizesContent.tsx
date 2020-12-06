@@ -19,7 +19,7 @@ const StyledText = styled(Text)`
 `
 
 const Image = styled.img`
-  margin-right: 6;
+  margin-right: 6px;
 
   ${({ theme }) => theme.mediaQueries.md} {
     margin-right: 20px;
