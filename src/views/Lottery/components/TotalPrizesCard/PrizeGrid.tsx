@@ -26,10 +26,10 @@ const GridItem = styled.div<{ marginBottom?: string }>`
 `
 
 const PrizeGrid: React.FC<PrizeGridProps> = ({ lotteryPrizeAmount = 0 }) => {
-  const fourMatchesAmount = +((lotteryPrizeAmount / 100) * 60).toFixed(0)
+  const fourMatchesAmount = +((lotteryPrizeAmount / 100) * 50).toFixed(0)
   const threeMatchesAmount = +((lotteryPrizeAmount / 100) * 20).toFixed(0)
   const twoMatchesAmount = +((lotteryPrizeAmount / 100) * 10).toFixed(0)
-  const burnAmount = +((lotteryPrizeAmount / 100) * 10).toFixed(0)
+  const burnAmount = +((lotteryPrizeAmount / 100) * 20).toFixed(0)
   const TranslateString = useI18n()
 
   return (
