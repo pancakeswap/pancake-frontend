@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useWallet } from 'use-wallet'
 import useI18n from 'hooks/useI18n'
 import { Card, CardBody, Heading, Text } from '@pancakeswap-libs/uikit'
+import { RABBIT_MINTING_FARM_ADDRESS } from 'sushi/lib/constants/nfts'
+import { useRabbitMintingFarm } from 'hooks/rework/useContract'
 import UnlockButton from 'components/UnlockButton'
 import PleaseWaitCard from './PleaseWaitCard'
 import NoNftsToClaimCard from './NoNftsToClaimCard'
@@ -19,6 +21,19 @@ import NftInWalletCard from './NftInWalletCard'
 const StatusCard = () => {
   const { account } = useWallet()
   const TranslateString = useI18n()
+  const rabbitMintingFarmContract = useRabbitMintingFarm(RABBIT_MINTING_FARM_ADDRESS)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        console.log('rabbitMintingFarmContract', rabbitMintingFarmContract.methods)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    fetchData()
+  }, [rabbitMintingFarmContract])
 
   if (!account) {
     return (
@@ -32,7 +47,7 @@ const StatusCard = () => {
     )
   }
 
-  return <div>statuscard</div>
+  return <div>status</div>
 }
 
 export default StatusCard

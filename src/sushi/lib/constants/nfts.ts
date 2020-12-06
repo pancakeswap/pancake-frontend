@@ -1,5 +1,8 @@
 import { Nft } from './types'
 
+export const RABBIT_MINTING_FARM_ADDRESS = '0x0f138e84341a4Ec0306C9Acc77e6fDF6385B8a34'
+export const PANCAKE_RABBITS_ADDRESS = '0xC3c5675130cb075DE8a782Cdc1fc67B9a382145e'
+
 const Nfts: Nft[] = [
   {
     name: 'Swapsies',

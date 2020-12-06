@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { Card, CardBody, Heading, Text, Tag } from '@pancakeswap-libs/uikit'
+import { PANCAKE_RABBITS_ADDRESS } from 'sushi/lib/constants/nfts'
+import { usePancakeRabbits } from 'hooks/rework/useContract'
 import useI18n from 'hooks/useI18n'
 import { Nft } from 'sushi/lib/constants/types'
 import InfoRow from '../InfoRow'
@@ -20,6 +22,24 @@ const Value = styled(Text)`
 
 const NftCard: React.FC<NftCardProps> = ({ nft }) => {
   const TranslateString = useI18n()
+  const panckaeRabbitsContract = usePancakeRabbits(PANCAKE_RABBITS_ADDRESS)
+
+  // console.log(`${nft.name} contract`, panckaeRabbitsContract.methods)
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const serialToken = await panckaeRabbitsContract.methods.tokenURI(nft.serialNumber).call()
+  //       console.log('serialToken', serialToken)
+  //     } catch (e) {
+  //       console.error(e)
+  //     }
+  //   }
+
+  //   if (nft.serialNumber === 0) {
+  //     fetchData()
+  //   }
+  // }, [panckaeRabbitsContract, nft])
 
   return (
     <Card>
