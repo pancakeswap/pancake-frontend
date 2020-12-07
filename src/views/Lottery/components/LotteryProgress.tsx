@@ -34,7 +34,7 @@ const BottomTextWrapper = styled.div`
 const StyledPrimaryText = styled(Text)`
   margin-right: 16px;
 `
-const Hero = () => {
+const LotteryProgress = () => {
   const TranslateString = useI18n()
   const lotteryHasDrawn = useGetLotteryHasDrawn()
   const currentMillis = useCurrentTime()
@@ -63,4 +63,4 @@ const Hero = () => {
   )
 }
 
-export default Hero
+export default LotteryProgress

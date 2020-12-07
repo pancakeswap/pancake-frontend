@@ -8,6 +8,8 @@ import { useTotalClaim } from 'hooks/useTickets'
 import Page from 'components/layout/Page'
 import Container from '../../components/layout/Container'
 import Hero from './components/Hero'
+import Divider from './components/Divider'
+import LotteryPageToggle from './components/LotteryPageToggle'
 import YourPrizesCard from './components/YourPrizesCard'
 import UnlockWalletCard from './components/UnlockWalletCard'
 import TicketCard from './components/TicketCard'
@@ -68,8 +70,8 @@ const Lottery: React.FC = () => {
       <Page>
         <Hero />
         <Container>
-          {/* Uncomment when implementing 'Past Draws' 
-          <Divider /> */}
+          <LotteryPageToggle />
+          <Divider />
           <Cards>
             <div>
               <TotalPrizesCard />
