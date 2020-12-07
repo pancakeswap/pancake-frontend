@@ -8,6 +8,7 @@ import HowItWorks from './components/HowItWorks'
 import NftList from './components/NftList'
 import NftProgress from './components/NftProgress'
 import StatusCard from './components/StatusCard'
+import NftProvider from './contexts/NftProvider'
 
 const StyledHero = styled.div`
   border-bottom: 1px solid ${({ theme }) => theme.colors.textSubtle};
@@ -30,24 +31,26 @@ const Nft = () => {
   const TranslateString = useI18n()
 
   return (
-    <Page>
-      <Container>
-        <StyledHero>
-          <Heading as="h1" size="xxl" color="secondary" mb="24px">
-            {TranslateString(999, 'NFTs')}
-          </Heading>
-          <Heading as="h2" size="lg" color="secondary">
-            {TranslateString(999, 'Trade in for CAKE, or keep for your collection!')}
-          </Heading>
-        </StyledHero>
-        <StyledNtfInfo>
-          <StatusCard />
-          <NftProgress />
-        </StyledNtfInfo>
-      </Container>
-      <NftList />
-      <HowItWorks />
-    </Page>
+    <NftProvider>
+      <Page>
+        <Container>
+          <StyledHero>
+            <Heading as="h1" size="xxl" color="secondary" mb="24px">
+              {TranslateString(999, 'NFTs')}
+            </Heading>
+            <Heading as="h2" size="lg" color="secondary">
+              {TranslateString(999, 'Trade in for CAKE, or keep for your collection!')}
+            </Heading>
+          </StyledHero>
+          <StyledNtfInfo>
+            <StatusCard />
+            <NftProgress />
+          </StyledNtfInfo>
+        </Container>
+        <NftList />
+        <HowItWorks />
+      </Page>
+    </NftProvider>
   )
 }
 

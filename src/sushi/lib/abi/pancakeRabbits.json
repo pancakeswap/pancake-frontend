@@ -68,6 +68,20 @@
     "type": "function"
   },
   {
+    "inputs": [{ "internalType": "uint8", "name": "", "type": "uint8" }],
+    "name": "bunnyBurnCount",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint8", "name": "", "type": "uint8" }],
+    "name": "bunnyCount",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [{ "internalType": "uint256", "name": "_tokenId", "type": "uint256" }],
     "name": "burn",
     "outputs": [],
@@ -82,23 +96,23 @@
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "uint8", "name": "_serialId", "type": "uint8" }],
-    "name": "getSerialName",
-    "outputs": [{ "internalType": "string", "name": "", "type": "string" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [{ "internalType": "uint256", "name": "_tokenId", "type": "uint256" }],
-    "name": "getSerialNameToken",
-    "outputs": [{ "internalType": "string", "name": "", "type": "string" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [{ "internalType": "uint256", "name": "_tokenId", "type": "uint256" }],
-    "name": "getSerialNumber",
+    "name": "getBunnyId",
     "outputs": [{ "internalType": "uint8", "name": "", "type": "uint8" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint8", "name": "_bunnyId", "type": "uint8" }],
+    "name": "getBunnyName",
+    "outputs": [{ "internalType": "string", "name": "", "type": "string" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "_tokenId", "type": "uint256" }],
+    "name": "getBunnyNameOfTokenId",
+    "outputs": [{ "internalType": "string", "name": "", "type": "string" }],
     "stateMutability": "view",
     "type": "function"
   },
@@ -116,7 +130,7 @@
     "inputs": [
       { "internalType": "address", "name": "_to", "type": "address" },
       { "internalType": "string", "name": "_tokenURI", "type": "string" },
-      { "internalType": "uint8", "name": "_serialNumber", "type": "uint8" }
+      { "internalType": "uint8", "name": "_bunnyId", "type": "uint8" }
     ],
     "name": "mint",
     "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
@@ -169,20 +183,6 @@
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "uint8", "name": "", "type": "uint8" }],
-    "name": "serialNames",
-    "outputs": [{ "internalType": "string", "name": "", "type": "string" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-    "name": "serialNumbers",
-    "outputs": [{ "internalType": "uint8", "name": "", "type": "uint8" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
       { "internalType": "address", "name": "operator", "type": "address" },
       { "internalType": "bool", "name": "approved", "type": "bool" }
@@ -194,10 +194,10 @@
   },
   {
     "inputs": [
-      { "internalType": "uint8", "name": "_serialId", "type": "uint8" },
-      { "internalType": "string", "name": "_nameId", "type": "string" }
+      { "internalType": "uint8", "name": "_bunnyId", "type": "uint8" },
+      { "internalType": "string", "name": "_name", "type": "string" }
     ],
-    "name": "setSerialName",
+    "name": "setBunnyName",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -261,6 +261,20 @@
   {
     "inputs": [{ "internalType": "address", "name": "newOwner", "type": "address" }],
     "name": "transferOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint8", "name": "_bunnyId", "type": "uint8" }],
+    "name": "updateBunnyBurn",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint8", "name": "_bunnyId", "type": "uint8" }],
+    "name": "updateBunnyCount",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

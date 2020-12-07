@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext } from 'react'
 import styled from 'styled-components'
 import { Card, CardBody, Heading, OpenNewIcon, Text, Link as UIKitLink } from '@pancakeswap-libs/uikit'
 import { BSC_BLOCK_TIME } from 'config'
-import { RABBIT_MINTING_FARM_ADDRESS } from 'sushi/lib/constants/nfts'
-import { useRabbitMintingFarm } from 'hooks/rework/useContract'
 import useI18n from 'hooks/useI18n'
-import useCurrentBlock from 'hooks/rework/useCurrentBlock'
+import useBlock from 'hooks/useBlock'
 import getTimePeriods from 'utils/getTimePeriods'
 import formatTimePeriod from 'utils/formatTimePeriod'
+import { RabbitMintingContext } from '../contexts/NftProvider'
 
 const TimeLeft = styled(Heading)`
   margin-bottom: 16px;
@@ -39,41 +38,14 @@ const Message = styled.p`
 `
 
 const NftProgress = () => {
-  const [state, setState] = useState({
-    isLoading: true,
-    currentDistributedSupply: 0,
-    totalSupplyDistributed: 0,
-    endBlockNumber: 0,
-  })
+  const { isInitialized, currentDistributedSupply, totalSupplyDistributed, endBlockNumber } = useContext(
+    RabbitMintingContext,
+  )
   const TranslateString = useI18n()
-  const currentBlock = useCurrentBlock()
-  const rabbitMintingFarmContract = useRabbitMintingFarm(RABBIT_MINTING_FARM_ADDRESS)
+  const currentBlock = useBlock()
 
-  useEffect(() => {
-    const fetchMintData = async () => {
-      try {
-        const { methods } = rabbitMintingFarmContract
-        const totalSupplyDistributed = await methods.totalSupplyDistributed().call()
-        const currentDistributedSupply = await methods.currentDistributedSupply().call()
-        const endBlockNumber = await methods.endBlockNumber().call()
-
-        setState((prevState) => ({
-          ...prevState,
-          isLoading: false,
-          currentDistributedSupply,
-          totalSupplyDistributed,
-          endBlockNumber,
-        }))
-      } catch (e) {
-        console.error(e)
-      }
-    }
-
-    fetchMintData()
-  }, [rabbitMintingFarmContract, setState])
-
-  // TODO - use "state.endBlockNumer"
-  const secondsRemaining = (4538721 - currentBlock) * BSC_BLOCK_TIME
+  // TODO - use "endBlockNumer"
+  const secondsRemaining = (endBlockNumber - currentBlock) * BSC_BLOCK_TIME
   const timeLeft = formatTimePeriod(getTimePeriods(secondsRemaining), ['seconds'])
 
   return (
@@ -85,23 +57,17 @@ const NftProgress = () => {
         <Row>
           <Text>{TranslateString(999, "Total NFT's claimed")}:</Text>
           <Text>
-            <strong>
-              {state.isLoading ? '...' : `${state.currentDistributedSupply}/${state.totalSupplyDistributed}`}
-            </strong>
+            <strong>{!isInitialized ? '...' : `${currentDistributedSupply}/${totalSupplyDistributed}`}</strong>
           </Text>
         </Row>
         <Row>
           <Text>{TranslateString(999, 'Can be traded until')}:</Text>
           <div>
-            {state.isLoading ? (
+            {!isInitialized ? (
               '...'
             ) : (
-              <Link
-                href={`https://bscscan.com/block/${state.endBlockNumber}`}
-                target="_blank"
-                rel="noreferrer noopener"
-              >
-                {`Block ${state.endBlockNumber}`}
+              <Link href={`https://bscscan.com/block/${endBlockNumber}`} target="_blank" rel="noreferrer noopener">
+                {`Block ${endBlockNumber}`}
                 <OpenNewIcon color="primary" ml="2px" />
               </Link>
             )}{' '}
