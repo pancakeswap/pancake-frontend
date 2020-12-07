@@ -37,10 +37,12 @@ export interface Address {
 
 export interface Farm {
   pid: number
-  lpAddresses: Address
-  tokenAddresses: Address
   lpSymbol: string
+  lpAddresses: Address
   tokenSymbol: string
+  tokenAddresses: Address
+  quoteTokenSymbol: string
+  quoteTokenAdresses: Address
   multiplier?: string
   isCommunity?: boolean
   dual?: {
