@@ -32,7 +32,7 @@ export default class Sushi {
     this.contracts = new Contracts(realProvider, networkId, this.web3, options)
     this.sushiAddress = contractAddresses.sushi[networkId]
     this.masterChefAddress = contractAddresses.masterChef[networkId]
-    this.wethAddress = contractAddresses.weth[networkId]
+    this.wbnbAddress = contractAddresses.wbnb[networkId]
     this.syrupAddress = contractAddresses.syrup[networkId]
     this.sousChefAddress = contractAddresses.sousChef[networkId]
   }
