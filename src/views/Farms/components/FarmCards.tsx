@@ -89,7 +89,7 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
       apy = calculateCommunityApy(nyaBalance)
     } else if (farm.tokenSymbol === 'bROOBEE') {
       apy = calculateCommunityApy(bROOBEEBalance)
-    } else if (farm.tokenSymbol === 'HARD' || farm.tokenSymbol === 'UNFI') {
+    } else if (farm.tokenSymbol === 'UNFI') {
       const config = getFarmConfig(farm.pid)
 
       // TODO: Refactor APY for dual farm
