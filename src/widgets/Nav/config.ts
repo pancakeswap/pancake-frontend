@@ -32,4 +32,8 @@ export default [
     label: "IFO",
     href: "/ifo",
   },
+  {
+    label: "NFT",
+    href: "/nft",
+  },
 ];
