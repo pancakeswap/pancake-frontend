@@ -130,7 +130,7 @@ interface FarmCardProps {
 
 const CAKE_TOKEN_ADDRESS = contractAddresses.sushi[56]
 const BUSD_TOKEN_ADDRESS = '0xe9e7cea3dedca5984780bafc599bd69add087d56'
-const WBNB_TOKEN_ADDRESS = contractAddresses.weth[56]
+const WBNB_TOKEN_ADDRESS = contractAddresses.wbnb[56]
 
 const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
   const TranslateString = useI18n()
