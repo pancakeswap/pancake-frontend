@@ -23,8 +23,8 @@ export const getSyrupAddress = (sushi) => {
 export const getSyrupContract = (sushi) => {
   return sushi && sushi.contracts && sushi.contracts.syrup
 }
-export const getWethContract = (sushi) => {
-  return sushi && sushi.contracts && sushi.contracts.weth
+export const getWbnbContract = (sushi) => {
+  return sushi && sushi.contracts && sushi.contracts.wbnb
 }
 export const getBusdContract = (sushi) => {
   return sushi && sushi.contracts && sushi.contracts.busd
@@ -66,9 +66,9 @@ export const getTotalStaked = async (sushi, sousChefContract) => {
 }
 
 export const getTotalStakedBNB = async (sushi, sousChefContract) => {
-  const weth = await getWethContract(sushi)
-  const wethBalance = await weth.methods.balanceOf(sousChefContract.options.address).call()
-  return wethBalance
+  const wbnb = await getWbnbContract(sushi)
+  const wbnbBalance = await wbnb.methods.balanceOf(sousChefContract.options.address).call()
+  return wbnbBalance
 }
 
 export const getLPValues = async (pid, tokenSymbol, tokenAddress, lpTokenAddress) => {
@@ -92,7 +92,7 @@ export const getLPValues = async (pid, tokenSymbol, tokenAddress, lpTokenAddress
       name: 'totalSupply',
     },
     {
-      address: addresses.weth[56],
+      address: addresses.wbnb[56],
       name: 'balanceOf',
       params: [lpTokenAddress],
     },
@@ -115,12 +115,12 @@ export const getLPValues = async (pid, tokenSymbol, tokenAddress, lpTokenAddress
     tokenAmountWholeLP,
     balance,
     totalSupply,
-    lpContractValueWeth,
+    lpContractValueWbnb,
     lpContractValueCake,
     lpContractValueBusd,
   ] = res
 
-  let lpContractValue = lpContractValueWeth
+  let lpContractValue = lpContractValueWbnb
   let quoteToken = QuoteToken.BNB
   if (parseFloat(lpContractValue) === 0) {
     lpContractValue = lpContractValueCake
@@ -137,7 +137,7 @@ export const getLPValues = async (pid, tokenSymbol, tokenAddress, lpTokenAddress
   const totalLpValue = portionLp.times(lpContractValueBN).times(new BigNumber(2))
   // Calculate
   const tokenAmount = new BigNumber(tokenAmountWholeLP).times(portionLp).div(new BigNumber(10).pow(tokenDecimals))
-  const wethAmount = lpContractValueBN.times(portionLp).div(new BigNumber(10).pow(18))
+  const wbnbAmount = lpContractValueBN.times(portionLp).div(new BigNumber(10).pow(18))
 
   const [info, totalAllocPoint] = await multicall(masterchefABI, [
     {
@@ -159,9 +159,9 @@ export const getLPValues = async (pid, tokenSymbol, tokenAddress, lpTokenAddress
     tokenSymbol,
     tokenDecimals,
     tokenAmount,
-    wethAmount,
-    totalWethValue: totalLpValue.div(new BigNumber(10).pow(18)),
-    tokenPrice: wethAmount.div(tokenAmount),
+    wbnbAmount,
+    totalWbnbValue: totalLpValue.div(new BigNumber(10).pow(18)),
+    tokenPrice: wbnbAmount.div(tokenAmount),
     poolWeight,
     quoteToken,
   }
