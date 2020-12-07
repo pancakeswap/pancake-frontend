@@ -1,6 +1,5 @@
 import React from 'react'
 import orderBy from 'lodash/orderBy'
-import { Card, CardBody, Heading } from '@pancakeswap-libs/uikit'
 import Container from 'components/layout/Container'
 import nfts from 'sushi/lib/constants/nfts'
 import NftCard from './NftCard'
