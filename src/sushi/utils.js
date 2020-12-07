@@ -42,7 +42,7 @@ export const getSousChefContract = (sushi, sousId) => {
 
 export const getFarms = memoize((sushi) => {
   const pools = get(sushi, 'contracts.pools', [])
-  return pools.map((pool) => ({ ...pool, id: pool.symbol, lpToken: pool.symbol, lpTokenAddress: pool.lpAddress }))
+  return pools
 })
 
 export const getPools = (sushi) => {
@@ -71,7 +71,7 @@ export const getTotalStakedBNB = async (sushi, sousChefContract) => {
   return wbnbBalance
 }
 
-export const getLPValues = async (pid, tokenSymbol, tokenAddress, lpTokenAddress) => {
+export const getLPValues = async (pid, tokenSymbol, lpAddress, tokenAddress, quoteTokenAddress, quoteToken) => {
   const calls = [
     {
       address: tokenAddress,
@@ -80,56 +80,27 @@ export const getLPValues = async (pid, tokenSymbol, tokenAddress, lpTokenAddress
     {
       address: tokenAddress,
       name: 'balanceOf',
-      params: [lpTokenAddress],
+      params: [lpAddress],
     },
     {
-      address: lpTokenAddress,
+      address: lpAddress,
       name: 'balanceOf',
       params: [addresses.masterChef[56]],
     },
     {
-      address: lpTokenAddress,
+      address: lpAddress,
       name: 'totalSupply',
     },
     {
-      address: addresses.wbnb[56],
+      address: quoteTokenAddress,
       name: 'balanceOf',
-      params: [lpTokenAddress],
-    },
-    {
-      address: addresses.sushi[56],
-      name: 'balanceOf',
-      params: [lpTokenAddress],
-    },
-    {
-      address: addresses.busd[56],
-      name: 'balanceOf',
-      params: [lpTokenAddress],
+      params: [lpAddress],
     },
   ]
 
   const res = await multicall(erc20, calls)
 
-  const [
-    tokenDecimals,
-    tokenAmountWholeLP,
-    balance,
-    totalSupply,
-    lpContractValueWbnb,
-    lpContractValueCake,
-    lpContractValueBusd,
-  ] = res
-
-  let lpContractValue = lpContractValueWbnb
-  let quoteToken = QuoteToken.BNB
-  if (parseFloat(lpContractValue) === 0) {
-    lpContractValue = lpContractValueCake
-    quoteToken = QuoteToken.CAKE
-  }
-  if (parseFloat(lpContractValue) === 0) {
-    lpContractValue = lpContractValueBusd
-    quoteToken = QuoteToken.BUSD
-  }
+  const [tokenDecimals, tokenAmountWholeLP, balance, totalSupply, lpContractValue] = res
 
   // Return p1 * w1 * 2
   const lpContractValueBN = new BigNumber(lpContractValue)
