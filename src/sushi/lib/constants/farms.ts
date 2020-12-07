@@ -88,7 +88,7 @@ export default [
      symbol: 'VAI-BUSD LP',
      tokenSymbol: 'VAI',
      icon: '🥞',
-     multiplier: '2X',
+     multiplier: '1X',
      isCommunity: false,
    },
   {
