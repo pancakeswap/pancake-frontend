@@ -17,10 +17,10 @@ const Farm: React.FC = () => {
   const { ethereum } = useWallet()
   const { farmId } = useParams<{ farmId?: string }>()
 
-  const { pid, lpToken, lpTokenAddress, tokenSymbol } = useFarm(farmId) || {
+  const { pid, lpSymbol, lpAddress, tokenSymbol } = useFarm(farmId) || {
     pid: 0,
-    lpToken: '',
-    lpTokenAddress: '',
+    lpSymbol: '',
+    lpAddress: '',
     tokenAddress: '',
     earnToken: '',
     name: '',
@@ -29,8 +29,8 @@ const Farm: React.FC = () => {
   }
   const localConfig = getFarmConfig(pid)
   const lpContract = useMemo(() => {
-    return getContract(ethereum as provider, lpTokenAddress)
-  }, [ethereum, lpTokenAddress])
+    return getContract(ethereum as provider, lpAddress)
+  }, [ethereum, lpAddress])
 
   return (
     <StyledPage>
@@ -44,7 +44,7 @@ const Farm: React.FC = () => {
       <StyledFarm>
         <Grid>
           <Harvest pid={pid} />
-          <Stake lpContract={lpContract} pid={pid} tokenName={lpToken.toUpperCase()} />
+          <Stake lpContract={lpContract} pid={pid} tokenName={lpSymbol.toUpperCase()} />
         </Grid>
         {localConfig.dual ? (
           <DualFarmDisclaimer tokenName={localConfig.tokenSymbol} endBlock={localConfig.dual.endBlock} />
