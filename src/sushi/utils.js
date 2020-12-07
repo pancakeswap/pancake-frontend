@@ -42,7 +42,7 @@ export const getSousChefContract = (sushi, sousId) => {
 
 export const getFarms = memoize((sushi) => {
   const pools = get(sushi, 'contracts.pools', [])
-  return pools.map((pool) => ({ ...pool, id: pool.symbol, lpToken: pool.symbol, lpTokenAddress: pool.lpAddress }))
+  return pools
 })
 
 export const getPools = (sushi) => {
@@ -71,7 +71,7 @@ export const getTotalStakedBNB = async (sushi, sousChefContract) => {
   return wbnbBalance
 }
 
-export const getLPValues = async (pid, tokenSymbol, tokenAddress, lpTokenAddress) => {
+export const getLPValues = async (pid, tokenSymbol, tokenAddress, lpAddress) => {
   const calls = [
     {
       address: tokenAddress,
@@ -80,31 +80,31 @@ export const getLPValues = async (pid, tokenSymbol, tokenAddress, lpTokenAddress
     {
       address: tokenAddress,
       name: 'balanceOf',
-      params: [lpTokenAddress],
+      params: [lpAddress],
     },
     {
-      address: lpTokenAddress,
+      address: lpAddress,
       name: 'balanceOf',
       params: [addresses.masterChef[56]],
     },
     {
-      address: lpTokenAddress,
+      address: lpAddress,
       name: 'totalSupply',
     },
     {
       address: addresses.wbnb[56],
       name: 'balanceOf',
-      params: [lpTokenAddress],
+      params: [lpAddress],
     },
     {
       address: addresses.sushi[56],
       name: 'balanceOf',
-      params: [lpTokenAddress],
+      params: [lpAddress],
     },
     {
       address: addresses.busd[56],
       name: 'balanceOf',
-      params: [lpTokenAddress],
+      params: [lpAddress],
     },
   ]
 
