@@ -11,14 +11,13 @@ import { useTokenBalance2 } from 'hooks/useTokenBalance'
 import { useBnbPriceUSD, useCakePriceUSD } from 'hooks/usePrices'
 import useSushi from 'hooks/useSushi'
 import useI18n from 'hooks/useI18n'
-import { StakedValue } from 'hooks/useAllStakedValue'
 import { getEarned, getMasterChefContract } from 'sushi/utils'
 import { bnToDec } from 'utils'
 import { CommunityTag, CoreTag } from 'components/Tags'
 import UnlockButton from 'components/UnlockButton'
 import getFarmConfig from 'utils/getFarmConfig'
 
-interface FarmWithStakedValue extends Farm, StakedValue {
+interface FarmWithStakedValue extends Farm {
   apy: BigNumber
 }
 

@@ -7,10 +7,10 @@ import { Farm } from 'types/farms'
 import { useTokenBalance2 } from 'hooks/useTokenBalance'
 import { useBnbPriceUSD } from 'hooks/usePrices'
 import useFarms from 'hooks/useFarms'
-import useAllStakedValue, { StakedValue } from 'hooks/useAllStakedValue'
 import Page from 'components/layout/Page'
 import Grid from 'components/layout/Grid'
 import getFarmConfig from 'utils/getFarmConfig'
+import { useFarmsLP } from 'contexts/DataContext'
 import { FarmCard, FarmCardOffline } from './FarmCard'
 
 interface FarmWithStakedValue extends Farm, StakedValue {
@@ -23,7 +23,7 @@ interface FarmCardsProps {
 
 const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
   const farms = useFarms()
-  const stakedValue = useAllStakedValue()
+  const stakedValue = useFarmsLP()
   const bnbPrice = useBnbPriceUSD()
 
   const stakedValueById = stakedValue.reduce((accum, value) => {
