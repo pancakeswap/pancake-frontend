@@ -1,3 +1,4 @@
+import useBlock from 'hooks/useBlock'
 import React, { createContext, ReactNode, useEffect, useState } from 'react'
 import { useWallet } from 'use-wallet'
 import { getPancakeRabbitContract, getRabbitMintingContract } from '../utils/contracts'
@@ -17,7 +18,11 @@ type State = {
   balanceOf: number
 }
 
-export const NftProviderContext = createContext<State | null>(null)
+type Context = {
+  canBurnNft: boolean
+} & State
+
+export const NftProviderContext = createContext<Context | null>(null)
 
 const NftProvider: React.FC<NftProviderProps> = ({ children }) => {
   const [state, setState] = useState<State>({
@@ -31,6 +36,7 @@ const NftProvider: React.FC<NftProviderProps> = ({ children }) => {
     balanceOf: 0,
   })
   const { account } = useWallet()
+  const currentBlock = useBlock()
 
   // Static data
   useEffect(() => {
@@ -73,7 +79,7 @@ const NftProvider: React.FC<NftProviderProps> = ({ children }) => {
         const promises = [
           methods.canClaim(account).call(),
           methods.hasClaimed(account).call(),
-          pancakeRabbitsContract.methods.balanceOf(account),
+          pancakeRabbitsContract.methods.balanceOf(account).call(),
         ]
         const [canClaim, hasClaimed, balanceOf] = await Promise.all(promises)
 
@@ -94,7 +100,9 @@ const NftProvider: React.FC<NftProviderProps> = ({ children }) => {
     }
   }, [account, setState])
 
-  return <NftProviderContext.Provider value={state}>{children}</NftProviderContext.Provider>
+  const canBurnNft = state.endBlockNumber <= currentBlock
+
+  return <NftProviderContext.Provider value={{ ...state, canBurnNft }}>{children}</NftProviderContext.Provider>
 }
 
 export default NftProvider
