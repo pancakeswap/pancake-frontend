@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Switch } from 'react-router-dom'
 import { useWallet } from 'use-wallet'
@@ -48,6 +48,7 @@ const Lottery: React.FC = () => {
   const { claimAmount } = useTotalClaim()
   const winnings = getBalanceNumber(claimAmount)
   const isAWin = winnings > 0
+  const [nextDrawActive, setNextDrawActive] = useState(true)
 
   // May be useful for 'Past draws'
   // const sushi = useSushi()
@@ -70,26 +71,32 @@ const Lottery: React.FC = () => {
       <Page>
         <Hero />
         <Container>
-          <LotteryPageToggle />
+          <LotteryPageToggle nextDrawActive={nextDrawActive} setNextDrawActive={setNextDrawActive} />
           <Divider />
-          <Cards>
-            <div>
-              <TotalPrizesCard />
-            </div>
-            <SecondCardColumnWrapper isAWin={isAWin}>
-              {!account ? (
-                <UnlockWalletCard />
-              ) : (
-                <>
-                  <YourPrizesCard />
-                  <TicketCard isSecondCard={isAWin} />
-                </>
-              )}
-            </SecondCardColumnWrapper>
-          </Cards>
-          <HowItWorks />
-          {/* legacy page content */}
-          <WinningNumbers />
+          {nextDrawActive ? (
+            <>
+              <Cards>
+                <div>
+                  <TotalPrizesCard />
+                </div>
+                <SecondCardColumnWrapper isAWin={isAWin}>
+                  {!account ? (
+                    <UnlockWalletCard />
+                  ) : (
+                    <>
+                      <YourPrizesCard />
+                      <TicketCard isSecondCard={isAWin} />
+                    </>
+                  )}
+                </SecondCardColumnWrapper>
+              </Cards>
+              <HowItWorks />
+              {/* legacy page content */}
+              <WinningNumbers />
+            </>
+          ) : (
+            <div>Wat</div>
+          )}
         </Container>
       </Page>
     </Switch>
