@@ -48,3 +48,11 @@ export type Pool = {
   isFinished?: boolean
   tokenDecimals: number
 }
+
+export type Nft = {
+  name: string
+  previewImage: string
+  blurImage: string
+  sortOrder: number
+  serialNumber: number
+}
