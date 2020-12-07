@@ -3,9 +3,9 @@ import styled from "styled-components";
 const ProgressBunnyWrapper = styled.div`
   display: flex;
   z-index: 2;
-  top: 0;
+  top: -65%;
   position: absolute;
-  transform: translateX(-50%) translateY(-100%);
+  transform: translate(-50%, -50%);
   transition: left 200ms ease-out;
 `;
 
