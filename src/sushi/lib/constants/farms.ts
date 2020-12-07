@@ -32,27 +32,6 @@ export default [
     multiplier: '30X',
   },
   {
-    pid: 37,
-    lpAddresses: {
-      97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
-      56: '0x9f40e8a2fcaa267a0c374b6c661e0b372264cc3d',
-    },
-    tokenAddresses: {
-      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
-      56: '0xf79037f6f6be66832de4e7516be52826bc3cbcc4',
-    },
-    symbol: 'HARD-BNB LP',
-    tokenSymbol: 'HARD',
-    icon: '🥞',
-    multiplier: '1X',
-    isCommunity: false,
-    dual: {
-      rewardPerBlock: 0.808,
-      earnLabel: 'CAKE & HARD',
-      endBlock: 2857600,
-    },
-  },
-  {
     pid: 39,
     lpAddresses: {
       97: '',
@@ -104,6 +83,22 @@ export default [
     name: 'BLINk STACKING',
     symbol: 'BLK-BNB LP',
     tokenSymbol: 'BLK',
+    icon: '🥞',
+    multiplier: '1X',
+    isCommunity: false,
+  },
+  {
+    pid: 37,
+    lpAddresses: {
+      97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
+      56: '0x9f40e8a2fcaa267a0c374b6c661e0b372264cc3d',
+    },
+    tokenAddresses: {
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
+      56: '0xf79037f6f6be66832de4e7516be52826bc3cbcc4',
+    },
+    symbol: 'HARD-BNB LP',
+    tokenSymbol: 'HARD',
     icon: '🥞',
     multiplier: '1X',
     isCommunity: false,
