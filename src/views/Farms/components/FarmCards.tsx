@@ -95,19 +95,19 @@ const FarmCards: React.FC<FarmCardsProps> = ({ removed }) => {
       // TODO: Refactor APY for dual farm
       const cakeApy =
         stakedValueItem &&
-        cakePrice.times(cakeRewardPerBlock).times(BLOCKS_PER_YEAR).div(stakedValueItem.totalWethValue)
+        cakePrice.times(cakeRewardPerBlock).times(BLOCKS_PER_YEAR).div(stakedValueItem.totalWbnbValue)
       const hardApy =
         stakedValueItem &&
         stakedValueItem.tokenPrice
           .times(config?.dual?.rewardPerBlock)
           .times(BLOCKS_PER_YEAR)
-          .div(stakedValueItem.totalWethValue)
+          .div(stakedValueItem.totalWbnbValue)
 
       apy = cakeApy && hardApy && cakeApy.plus(hardApy)
     } else {
       apy =
         stakedValueItem && !removed
-          ? cakePrice.times(cakeRewardPerBlock).times(BLOCKS_PER_YEAR).div(stakedValueItem.totalWethValue)
+          ? cakePrice.times(cakeRewardPerBlock).times(BLOCKS_PER_YEAR).div(stakedValueItem.totalWbnbValue)
           : null
     }
 

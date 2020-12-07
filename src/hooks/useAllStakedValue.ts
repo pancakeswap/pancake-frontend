@@ -7,8 +7,8 @@ import useSushi from './useSushi'
 export interface StakedValue {
   tokenSymbol: string
   tokenAmount: BigNumber
-  wethAmount: BigNumber
-  totalWethValue: BigNumber
+  wbnbAmount: BigNumber
+  totalWbnbValue: BigNumber
   tokenPrice: BigNumber
   poolWeight: BigNumber
   quoteToken: QuoteToken

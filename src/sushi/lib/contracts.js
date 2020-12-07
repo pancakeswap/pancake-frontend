@@ -8,7 +8,7 @@ import SousChefAbi from './abi/sousChef.json'
 import SousChefBnbAbi from './abi/sousChefBnb.json'
 import LotteryAbi from './abi/lottery.json'
 import LotteryNFTAbi from './abi/lotteryNft.json'
-import WETHAbi from './abi/weth.json'
+import WBNBAbi from './abi/weth.json'
 import MultiCallAbi from './abi/Multicall.json'
 import { contractAddresses, farmsConfig, poolsConfig } from './constants'
 import { PoolCategory } from './constants/types'
@@ -36,7 +36,7 @@ export default class Contracts {
     this.syrup = new this.web3.eth.Contract(SyrupAbi)
     this.sousChef = new this.web3.eth.Contract(SousChefAbi)
     this.sousChefBnb = new this.web3.eth.Contract(SousChefBnbAbi)
-    this.weth = new this.web3.eth.Contract(WETHAbi)
+    this.wbnb = new this.web3.eth.Contract(WBNBAbi)
     this.lottery = new this.web3.eth.Contract(LotteryAbi)
     this.lotteryNft = new this.web3.eth.Contract(LotteryNFTAbi)
     this.multicall = new this.web3.eth.Contract(MultiCallAbi)
@@ -76,7 +76,7 @@ export default class Contracts {
     setProvider(this.sushi, contractAddresses.sushi[networkId])
     setProvider(this.syrup, contractAddresses.syrup[networkId])
     setProvider(this.masterChef, contractAddresses.masterChef[networkId])
-    setProvider(this.weth, contractAddresses.weth[networkId])
+    setProvider(this.wbnb, contractAddresses.wbnb[networkId])
     setProvider(this.sousChef, contractAddresses.sousChef[networkId])
     setProvider(this.lottery, contractAddresses.lottery[networkId])
     setProvider(this.lotteryNft, contractAddresses.lotteryNFT[networkId])
