@@ -3,7 +3,7 @@ import { useWallet } from 'use-wallet'
 import useI18n from 'hooks/useI18n'
 import { Card, CardBody, Heading, Text } from '@pancakeswap-libs/uikit'
 import UnlockButton from 'components/UnlockButton'
-import { RabbitMintingContext } from '../contexts/NftProvider'
+import { NftProviderContext } from '../contexts/NftProvider'
 import NoNftsToClaimCard from './NoNftsToClaimCard'
 import YouWonCard from './YouWonCard'
 import NftInWalletCard from './NftInWalletCard'
@@ -18,7 +18,7 @@ import NftInWalletCard from './NftInWalletCard'
  */
 const StatusCard = () => {
   const { account } = useWallet()
-  const { isInitialized, canClaim, hasClaimed, balanceOf } = useContext(RabbitMintingContext)
+  const { isInitialized, canClaim, hasClaimed, balanceOf } = useContext(NftProviderContext)
   const TranslateString = useI18n()
 
   if (!account) {

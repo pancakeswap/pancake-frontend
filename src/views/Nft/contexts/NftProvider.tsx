@@ -17,7 +17,7 @@ type State = {
   balanceOf: number
 }
 
-export const RabbitMintingContext = createContext<State | null>(null)
+export const NftProviderContext = createContext<State | null>(null)
 
 const NftProvider: React.FC<NftProviderProps> = ({ children }) => {
   const [state, setState] = useState<State>({
@@ -94,7 +94,7 @@ const NftProvider: React.FC<NftProviderProps> = ({ children }) => {
     }
   }, [account, setState])
 
-  return <RabbitMintingContext.Provider value={state}>{children}</RabbitMintingContext.Provider>
+  return <NftProviderContext.Provider value={state}>{children}</NftProviderContext.Provider>
 }
 
 export default NftProvider

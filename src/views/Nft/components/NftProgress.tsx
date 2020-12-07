@@ -6,7 +6,7 @@ import useI18n from 'hooks/useI18n'
 import useBlock from 'hooks/useBlock'
 import getTimePeriods from 'utils/getTimePeriods'
 import formatTimePeriod from 'utils/formatTimePeriod'
-import { RabbitMintingContext } from '../contexts/NftProvider'
+import { NftProviderContext } from '../contexts/NftProvider'
 
 const TimeLeft = styled(Heading)`
   margin-bottom: 16px;
@@ -39,7 +39,7 @@ const Message = styled.p`
 
 const NftProgress = () => {
   const { isInitialized, currentDistributedSupply, totalSupplyDistributed, endBlockNumber } = useContext(
-    RabbitMintingContext,
+    NftProviderContext,
   )
   const TranslateString = useI18n()
   const currentBlock = useBlock()
