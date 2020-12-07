@@ -16,8 +16,8 @@ import { TranslateString } from '../../utils/translateTextHelpers'
 const Farm: React.FC = () => {
   const farmInfo = useFarm('CAKE') || {
     pid: 0,
-    lpToken: '',
-    lpTokenAddress: '',
+    lpSymbol: '',
+    lpAddress: '',
     tokenAddress: '',
     earnToken: '',
     name: '',
@@ -25,7 +25,7 @@ const Farm: React.FC = () => {
     tokenSymbol: '',
   }
 
-  const { pid, lpToken, lpTokenAddress } = farmInfo
+  const { pid, lpSymbol, lpAddress } = farmInfo
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -34,8 +34,8 @@ const Farm: React.FC = () => {
   const { ethereum } = useWallet()
 
   const lpContract = useMemo(() => {
-    return getContract(ethereum as provider, lpTokenAddress)
-  }, [ethereum, lpTokenAddress])
+    return getContract(ethereum as provider, lpAddress)
+  }, [ethereum, lpAddress])
 
   return (
     <Page>
@@ -69,7 +69,7 @@ const Farm: React.FC = () => {
             </StyledCardWrapper>
             <Spacer />
             <StyledCardWrapper>
-              <Stake lpContract={lpContract} pid={pid} tokenName={lpToken.toUpperCase()} />
+              <Stake lpContract={lpContract} pid={pid} tokenName={lpSymbol.toUpperCase()} />
             </StyledCardWrapper>
           </StyledCardsWrapper>
           <Spacer size="lg" />

@@ -3,20 +3,17 @@ import { useWallet } from 'use-wallet'
 import multicall from 'utils/multicall'
 import masterChefABI from 'sushi/lib/abi/masterchef.json'
 import addresses from 'sushi/lib/constants/contracts'
-import { getFarms } from '../sushi/utils'
-import useSushi from './useSushi'
+import { farmsConfig } from 'sushi/lib/constants'
 import useBlock from './useBlock'
 
 const useAllEarnings = () => {
   const [balances, setBalance] = useState([])
   const { account }: { account: string } = useWallet()
-  const sushi = useSushi()
-  const farms = getFarms(sushi)
   const block = useBlock()
 
   useEffect(() => {
     const fetchAllBalances = async () => {
-      const calls = farms.map((farm) => ({
+      const calls = farmsConfig.map((farm) => ({
         address: addresses.masterChef[56],
         name: 'pendingCake',
         params: [farm.pid, account],
@@ -30,7 +27,7 @@ const useAllEarnings = () => {
     if (account) {
       fetchAllBalances()
     }
-  }, [account, farms, block])
+  }, [account, block])
 
   return balances
 }
