@@ -22,9 +22,17 @@ const useAllStakedValue = () => {
     const fetchAllStakedValue = async () => {
       const res: Array<StakedValue> = await Promise.all(
         farmsConfig.map((farm) => {
-          return getLPValues(farm.pid, farm.tokenSymbol, farm.tokenAddresses[56], farm.lpAddresses[56])
+          return getLPValues(
+            farm.pid,
+            farm.tokenSymbol,
+            farm.lpAddresses[56],
+            farm.tokenAddresses[56],
+            farm.quoteTokenAdresses[56],
+            farm.quoteTokenSymbol,
+          )
         }),
       )
+
       setBalance(res)
     }
 

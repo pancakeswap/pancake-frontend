@@ -71,7 +71,7 @@ export const getTotalStakedBNB = async (sushi, sousChefContract) => {
   return wbnbBalance
 }
 
-export const getLPValues = async (pid, tokenSymbol, tokenAddress, lpAddress) => {
+export const getLPValues = async (pid, tokenSymbol, lpAddress, tokenAddress, quoteTokenAddress, quoteToken) => {
   const calls = [
     {
       address: tokenAddress,
@@ -92,17 +92,7 @@ export const getLPValues = async (pid, tokenSymbol, tokenAddress, lpAddress) => 
       name: 'totalSupply',
     },
     {
-      address: addresses.wbnb[56],
-      name: 'balanceOf',
-      params: [lpAddress],
-    },
-    {
-      address: addresses.sushi[56],
-      name: 'balanceOf',
-      params: [lpAddress],
-    },
-    {
-      address: addresses.busd[56],
+      address: quoteTokenAddress,
       name: 'balanceOf',
       params: [lpAddress],
     },
@@ -110,26 +100,7 @@ export const getLPValues = async (pid, tokenSymbol, tokenAddress, lpAddress) => 
 
   const res = await multicall(erc20, calls)
 
-  const [
-    tokenDecimals,
-    tokenAmountWholeLP,
-    balance,
-    totalSupply,
-    lpContractValueWbnb,
-    lpContractValueCake,
-    lpContractValueBusd,
-  ] = res
-
-  let lpContractValue = lpContractValueWbnb
-  let quoteToken = QuoteToken.BNB
-  if (parseFloat(lpContractValue) === 0) {
-    lpContractValue = lpContractValueCake
-    quoteToken = QuoteToken.CAKE
-  }
-  if (parseFloat(lpContractValue) === 0) {
-    lpContractValue = lpContractValueBusd
-    quoteToken = QuoteToken.BUSD
-  }
+  const [tokenDecimals, tokenAmountWholeLP, balance, totalSupply, lpContractValue] = res
 
   // Return p1 * w1 * 2
   const lpContractValueBN = new BigNumber(lpContractValue)
