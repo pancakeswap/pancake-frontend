@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { Button } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
@@ -24,9 +24,8 @@ const StyledButton = styled(Button)`
   box-shadow: ${({ theme }) => theme.shadows.inset};
 `
 
-const Hero = () => {
+const Hero = ({ nextDrawActive, setNextDrawActive }) => {
   const TranslateString = useI18n()
-  const [nextDrawActive, setNextDrawActive] = useState(true)
 
   return (
     <Wrapper>
