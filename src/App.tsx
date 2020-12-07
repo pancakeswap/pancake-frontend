@@ -57,9 +57,9 @@ const App: React.FC = () => {
         <Route path="/nft">
           <RegisterToWinPage />
         </Route>
-        <Route path="/nft-live">
+        {/* <Route path="/nft-live">
           <Nft />
-        </Route>
+        </Route> */}
         <Route component={NotFound} />
       </Switch>
       <Footer />
