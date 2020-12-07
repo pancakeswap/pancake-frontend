@@ -4,6 +4,8 @@ import { useWallet } from 'use-wallet'
 import { BaseLayout } from '@pancakeswap-libs/uikit'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useTotalClaim } from 'hooks/useTickets'
+import PastLotteryRoundViewer from './components/PastLotteryRoundViewer'
+import PastDrawsHistoryCard from './components/PastDrawsHistoryCard'
 
 const Cards = styled(BaseLayout)`
   align-items: start;
@@ -28,10 +30,14 @@ const Cards = styled(BaseLayout)`
 
 const SecondCardColumnWrapper = styled.div<{ isAWin?: boolean }>`
   display: flex;
-  flex-direction: ${(props) => (props.isAWin ? 'column' : 'column-reverse')};
+  flex-direction: column;
 `
 
-const Lottery: React.FC = () => {
+const StyledImage = styled.img`
+  align-self: center;
+`
+
+const PastDrawsPage: React.FC = () => {
   const { account } = useWallet()
   const { claimAmount } = useTotalClaim()
   const winnings = getBalanceNumber(claimAmount)
@@ -54,7 +60,15 @@ const Lottery: React.FC = () => {
   //   }
   // }, [account, lotteryContract, sushi, fetchIndex])
 
-  return <div>Wat</div>
+  return (
+    <Cards>
+      <PastLotteryRoundViewer />
+      <SecondCardColumnWrapper>
+        <PastDrawsHistoryCard />
+        <StyledImage src="/images/pancake-lottery-bunny.png" alt="lottery bunny" />
+      </SecondCardColumnWrapper>
+    </Cards>
+  )
 }
 
-export default Lottery
+export default PastDrawsPage
