@@ -135,9 +135,9 @@ const WBNB_TOKEN_ADDRESS = contractAddresses.wbnb[56]
 const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
   const TranslateString = useI18n()
   const cakePrice = useCakePriceUSD()
-  const totalValueBUSDPool = useTokenBalance2(BUSD_TOKEN_ADDRESS, farm.lpTokenAddress) * 2
-  const totalValueCakePool = useTokenBalance2(CAKE_TOKEN_ADDRESS, farm.lpTokenAddress) * cakePrice * 2
-  const totalValueBNBPool = useTokenBalance2(WBNB_TOKEN_ADDRESS, farm.lpTokenAddress) * useBnbPriceUSD() * 2
+  const totalValueBUSDPool = useTokenBalance2(BUSD_TOKEN_ADDRESS, farm.lpAddress) * 2
+  const totalValueCakePool = useTokenBalance2(CAKE_TOKEN_ADDRESS, farm.lpAddress) * cakePrice * 2
+  const totalValueBNBPool = useTokenBalance2(WBNB_TOKEN_ADDRESS, farm.lpAddress) * useBnbPriceUSD() * 2
 
   const isCommunityFarm = communityFarms.includes(farm.tokenSymbol)
 
@@ -152,25 +152,25 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
   const [, setHarvestable] = useState(0)
 
   const { account } = useWallet()
-  const { lpTokenAddress } = farm
+  const { lpAddress } = farm
   const sushi = useSushi()
 
   useEffect(() => {
     async function fetchEarned() {
       if (sushi) return
-      const earned = await getEarned(getMasterChefContract(sushi), lpTokenAddress, account)
+      const earned = await getEarned(getMasterChefContract(sushi), lpAddress, account)
       setHarvestable(bnToDec(earned))
     }
     if (sushi && account) {
       fetchEarned()
     }
-  }, [sushi, lpTokenAddress, account, setHarvestable])
+  }, [sushi, lpAddress, account, setHarvestable])
 
   const localConfig = getFarmConfig(farm.pid)
 
   // We assume the token name is coin pair + lp e.g. CAKE-BNB LP, LINK-BNB LP,
   // NAR-CAKE LP. The images should be cake-bnb.svg, link-bnb.svg, nar-cake.svg
-  const farmImage = farm.id.split(' ')[0].toLocaleLowerCase()
+  const farmImage = farm.lpSymbol.split(' ')[0].toLocaleLowerCase()
 
   return (
     <FCard>
@@ -184,7 +184,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
       </CardImage>
       <Label>
         <span>{TranslateString(316, 'Deposit')}</span>
-        <span className="right">{farm.lpToken && farm.lpToken.toUpperCase().replace('PANCAKE', '')}</span>
+        <span className="right">{farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('PANCAKE', '')}</span>
       </Label>
       <Label>
         <span>{TranslateString(318, 'Earn')}</span>
@@ -202,7 +202,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
       )}
       <Action>
         {/* No full width props because of as={ReactRouterLink} */}
-        <Button as={ReactRouterLink} to={`/farms/${farm.id}`} style={{ width: '100%' }}>
+        <Button as={ReactRouterLink} to={`/farms/${farm.lpSymbol}`} style={{ width: '100%' }}>
           {TranslateString(568, 'Select')}
         </Button>
       </Action>
@@ -210,12 +210,12 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
         <Label>
           <span>{TranslateString(23, 'Total Liquidity')}</span>
           <span className="right">
-            {farm.lpToken !== 'BAKE-BNB Bakery LP' ? `$${parseInt(totalValue).toLocaleString()}` : '-'}
+            {farm.lpSymbol !== 'BAKE-BNB Bakery LP' ? `$${parseInt(totalValue).toLocaleString()}` : '-'}
           </span>
         </Label>
       )}
       <ViewMore>
-        <Link href={`https://bscscan.com/address/${farm.lpTokenAddress}`} target="_blank">
+        <Link href={`https://bscscan.com/address/${farm.lpAddress}`} target="_blank">
           {TranslateString(356, 'View on BscScan')} &gt;
         </Link>
       </ViewMore>
@@ -228,10 +228,10 @@ const FarmCardOffline: React.FC<FarmCardProps> = ({ pool }) => {
 
   // We assume the token name is coin pair + lp e.g. CAKE-BNB LP, LINK-BNB LP,
   // NAR-CAKE LP. The images should be cake-bnb.svg, link-bnb.svg, nar-cake.svg
-  const farmImage = pool.symbol.split(' ')[0].toLocaleLowerCase()
+  const farmImage = pool.lpSymbol.split(' ')[0].toLocaleLowerCase()
 
   return (
-    <FCard key={pool.pid + pool.symbol}>
+    <FCard key={pool.pid + pool.lpSymbol}>
       <CardImage>
         <Flex flexDirection="column" alignItems="flex-start">
           <Multiplier>{pool.multiplier}</Multiplier>
@@ -241,7 +241,7 @@ const FarmCardOffline: React.FC<FarmCardProps> = ({ pool }) => {
       </CardImage>
       <Label>
         <span>{TranslateString(316, 'Deposit')}</span>
-        <span className="right">{pool.symbol}</span>
+        <span className="right">{pool.lpSymbol}</span>
       </Label>
       <Label>
         <span>{TranslateString(318, 'Earn')}</span>

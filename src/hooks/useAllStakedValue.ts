@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import BigNumber from 'bignumber.js'
 import { QuoteToken } from 'sushi/lib/constants/types'
-import { getFarms, getLPValues } from '../sushi/utils'
-import useSushi from './useSushi'
+import farmsConfig from 'sushi/lib/constants/farms'
+import { getLPValues } from 'sushi/utils'
 
 export interface StakedValue {
   tokenSymbol: string
@@ -15,32 +15,29 @@ export interface StakedValue {
   tokenDecimals: string
 }
 
-interface Farm {
-  pid: number
-  tokenSymbol: string
-  tokenAddress: string
-  lpTokenAddress: string
-}
-
 const useAllStakedValue = () => {
   const [balances, setBalance] = useState([] as Array<StakedValue>)
-  const sushi = useSushi()
-  const farms = getFarms(sushi)
 
   useEffect(() => {
     const fetchAllStakedValue = async () => {
       const res: Array<StakedValue> = await Promise.all(
-        farms.map((farm: Farm) => {
-          const { pid, tokenSymbol, tokenAddress, lpTokenAddress } = farm
-
-          return getLPValues(pid, tokenSymbol, tokenAddress, lpTokenAddress)
+        farmsConfig.map((farm) => {
+          return getLPValues(
+            farm.pid,
+            farm.tokenSymbol,
+            farm.lpAddresses[56],
+            farm.tokenAddresses[56],
+            farm.quoteTokenAdresses[56],
+            farm.quoteTokenSymbol,
+          )
         }),
       )
+
       setBalance(res)
     }
 
     fetchAllStakedValue()
-  }, [farms])
+  }, [])
 
   return balances
 }

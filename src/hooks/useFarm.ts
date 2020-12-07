@@ -1,9 +1,8 @@
 import useFarms from 'hooks/useFarms'
-import { Farm } from 'types/farms'
 
-const useFarm = (id: string): Farm => {
+const useFarm = (lpSymbol: string) => {
   const farms = useFarms()
-  const farm = farms.find((f) => f.id === id)
+  const farm = farms.find((f) => f.lpSymbol === lpSymbol)
   return farm
 }
 
