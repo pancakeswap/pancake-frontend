@@ -4,12 +4,12 @@ import { Card, CardBody, Heading, Text, Tag, Button, useModal } from '@pancakesw
 import { useWallet } from 'use-wallet'
 import useI18n from 'hooks/useI18n'
 import { Nft } from 'sushi/lib/constants/types'
-import { PANCAKE_RABBITS_ADDRESS } from 'sushi/lib/constants/nfts'
-import { usePancakeRabbits } from 'hooks/rework/useContract'
 import InfoRow from '../InfoRow'
+import { getPancakeRabbitContract } from '../../utils/contracts'
 import Image from '../Image'
 import { NftProviderContext } from '../../contexts/NftProvider'
 import ClaimNftModal from '../ClaimNftModal'
+import BurnNftModal from '../BurnNftModal'
 
 interface NftCardProps {
   nft: Nft
@@ -32,16 +32,21 @@ const NftCard: React.FC<NftCardProps> = ({ nft }) => {
   const [state, setState] = useState({ isLoading: true, bunnyCount: 0 })
   const { account } = useWallet()
   const TranslateString = useI18n()
-  const { isInitialized, canClaim, hasClaimed, balanceOf, getTokenIds } = useContext(NftProviderContext)
-  const pancakeRabbitContract = usePancakeRabbits(PANCAKE_RABBITS_ADDRESS)
-  const [onPresentClaimModal] = useModal(<ClaimNftModal nft={nft} />)
+  const { isInitialized, canClaim, hasClaimed, balanceOf, canBurnNft, getTokenIds, reInitialize } = useContext(
+    NftProviderContext,
+  )
   const { bunnyId } = nft
   const walletCanClaim = canClaim && !hasClaimed
   const tokenIds = getTokenIds(nft.bunnyId)
 
+  const [onPresentClaimModal] = useModal(<ClaimNftModal nft={nft} onSuccess={reInitialize} />)
+  const [onPresentBurnModal] = useModal(<BurnNftModal nft={nft} tokenIds={tokenIds} onSuccess={reInitialize} />)
+
+  const isActive = isInitialized && canBurnNft && tokenIds && tokenIds.length > 0
+
   useEffect(() => {
     const fetchRabbitInfo = async () => {
-      const { methods } = pancakeRabbitContract
+      const { methods } = getPancakeRabbitContract({ from: account })
       const bunnyCount = await methods.bunnyCount(bunnyId).call()
 
       setState({ isLoading: false, bunnyCount })
@@ -50,10 +55,10 @@ const NftCard: React.FC<NftCardProps> = ({ nft }) => {
     if (account) {
       fetchRabbitInfo()
     }
-  }, [balanceOf, pancakeRabbitContract, account, bunnyId, setState])
+  }, [balanceOf, account, bunnyId, setState])
 
   return (
-    <Card>
+    <Card isActive={isActive}>
       <Image src={`/images/nfts/${nft.previewImage}`} alt={nft.name} />
       <CardBody>
         <Header>
@@ -82,6 +87,11 @@ const NftCard: React.FC<NftCardProps> = ({ nft }) => {
         {isInitialized && walletCanClaim && (
           <Button fullWidth onClick={onPresentClaimModal}>
             {TranslateString(999, 'Claim this NFT')}
+          </Button>
+        )}
+        {isActive && (
+          <Button variant="secondary" fullWidth onClick={onPresentBurnModal}>
+            {TranslateString(999, 'Trade in for CAKE')}
           </Button>
         )}
       </CardBody>

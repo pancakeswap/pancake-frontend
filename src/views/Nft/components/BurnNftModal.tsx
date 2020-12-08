@@ -1,15 +1,16 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useWallet } from 'use-wallet'
-import { Button, Modal, Text } from '@pancakeswap-libs/uikit'
-import { RABBIT_MINTING_FARM_ADDRESS } from 'sushi/lib/constants/nfts'
+import { Button, Checkbox, Modal, Text } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
-import { useRabbitMintingFarm } from 'hooks/rework/useContract'
 import { Nft } from 'sushi/lib/constants/types'
+import { RABBIT_MINTING_FARM_ADDRESS } from 'sushi/lib/constants/nfts'
+import { useRabbitMintingFarm } from 'hooks/rework/useContract'
 import InfoRow from './InfoRow'
 
-interface ClaimNftModalProps {
+interface BurnNftModalProps {
   nft: Nft
+  tokenIds: number[]
   onSuccess: () => any
   onDismiss?: () => void
 }
@@ -28,17 +29,20 @@ const Actions = styled.div`
   grid-gap: 8px;
 `
 
-const ClaimNftModal: React.FC<ClaimNftModalProps> = ({ nft, onSuccess, onDismiss }) => {
+const BurnNftModal: React.FC<BurnNftModalProps> = ({ nft, tokenIds, onSuccess, onDismiss }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(null)
+  const [accepted, setAccepted] = useState(false)
   const TranslateString = useI18n()
   const { account } = useWallet()
   const rabbitMintingContract = useRabbitMintingFarm(RABBIT_MINTING_FARM_ADDRESS)
 
   const handleConfirm = async () => {
     try {
+      const [tokenId] = tokenIds
+
       await rabbitMintingContract.methods
-        .mintNFT(nft.bunnyId)
+        .burnNFT(tokenId)
         .send({ from: account })
         .on('sending', () => {
           setIsLoading(true)
@@ -49,11 +53,11 @@ const ClaimNftModal: React.FC<ClaimNftModalProps> = ({ nft, onSuccess, onDismiss
         })
         .on('error', () => {
           console.error(error)
-          setError('Unable to claim NFT')
+          setError('Unable to burn NFT')
           setIsLoading(false)
         })
     } catch (err) {
-      console.error('Unable to mint NFT:', err)
+      console.error('Unable to burn NFT:', err)
     }
   }
 
@@ -66,15 +70,31 @@ const ClaimNftModal: React.FC<ClaimNftModalProps> = ({ nft, onSuccess, onDismiss
           </Text>
         )}
         <InfoRow>
-          <Text>{TranslateString(999, 'You will receive')}:</Text>
+          <Text>{TranslateString(999, 'Trade in')}:</Text>
           <Value>{`1x "${nft.name}" NFT`}</Value>
         </InfoRow>
+        <InfoRow>
+          <Text>{TranslateString(999, 'You will receive')}:</Text>
+          <Value>10 CAKE</Value>
+        </InfoRow>
+      </ModalContent>
+      <ModalContent>
+        <Text color="failure">
+          {TranslateString(999, 'When you trade in this NFT to receive CAKE, you will lose access to it forever!')}
+        </Text>
+        <Text color="failure">{TranslateString(999, 'It will be burned and removed from circulation')}</Text>
+      </ModalContent>
+      <ModalContent style={{ alignItems: 'center', display: 'inline-flex' }}>
+        <Checkbox checked={accepted} scale="sm" onChange={() => setAccepted(!accepted)} />
+        <Text ml="8px" onClick={() => setAccepted(!accepted)} style={{ cursor: 'pointer' }}>
+          {TranslateString(999, 'I understand')}
+        </Text>
       </ModalContent>
       <Actions>
         <Button fullWidth variant="secondary" onClick={onDismiss}>
           {TranslateString(462, 'Cancel')}
         </Button>
-        <Button fullWidth onClick={handleConfirm} disabled={!account || isLoading}>
+        <Button fullWidth onClick={handleConfirm} disabled={!account || isLoading || !accepted}>
           {TranslateString(464, 'Confirm')}
         </Button>
       </Actions>
@@ -82,4 +102,4 @@ const ClaimNftModal: React.FC<ClaimNftModalProps> = ({ nft, onSuccess, onDismiss
   )
 }
 
-export default ClaimNftModal
+export default BurnNftModal

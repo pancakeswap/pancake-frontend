@@ -1,5 +1,5 @@
 import useBlock from 'hooks/useBlock'
-import React, { createContext, ReactNode, useEffect, useState } from 'react'
+import React, { createContext, ReactNode, useEffect, useRef, useState } from 'react'
 import { useWallet } from 'use-wallet'
 import { getPancakeRabbitContract, getRabbitMintingContract } from '../utils/contracts'
 
@@ -26,11 +26,13 @@ type State = {
 type Context = {
   canBurnNft: boolean
   getTokenIds: (bunnyId: number) => number[]
+  reInitialize: () => void
 } & State
 
 export const NftProviderContext = createContext<Context | null>(null)
 
 const NftProvider: React.FC<NftProviderProps> = ({ children }) => {
+  const isMounted = useRef(true)
   const [state, setState] = useState<State>({
     isInitialized: false,
     canClaim: false,
@@ -44,6 +46,8 @@ const NftProvider: React.FC<NftProviderProps> = ({ children }) => {
   })
   const { account } = useWallet()
   const currentBlock = useBlock()
+
+  const { isInitialized } = state
 
   // Static data
   useEffect(() => {
@@ -75,7 +79,7 @@ const NftProvider: React.FC<NftProviderProps> = ({ children }) => {
     }
 
     fetchContractData()
-  }, [setState])
+  }, [isInitialized, setState])
 
   // Data from the contract that needs an account
   useEffect(() => {
@@ -149,13 +153,34 @@ const NftProvider: React.FC<NftProviderProps> = ({ children }) => {
     if (account) {
       fetchContractData()
     }
-  }, [account, setState])
+  }, [isInitialized, account, setState])
 
-  const canBurnNft = state.endBlockNumber <= currentBlock
+  useEffect(() => {
+    return () => {
+      isMounted.current = false
+    }
+  }, [isMounted])
+
+  const canBurnNft = currentBlock <= state.endBlockNumber
   const getTokenIds = (bunnyId: number) => state.bunnyMap[bunnyId]
 
+  /**
+   * Allows consumers to re-fetch all data from the contact. Triggers the effects.
+   * For example when a transaction has been completed
+   */
+  const reInitialize = () => {
+    // Only attempt to re-initialize if the component is still mounted
+    // Transactions can take awhile so it is likely some users will navigate to another page
+    // before the transaction is finished
+    if (isMounted.current) {
+      setState((prevState) => ({ ...prevState, isInitialized: false }))
+    }
+  }
+
   return (
-    <NftProviderContext.Provider value={{ ...state, canBurnNft, getTokenIds }}>{children}</NftProviderContext.Provider>
+    <NftProviderContext.Provider value={{ ...state, canBurnNft, getTokenIds, reInitialize }}>
+      {children}
+    </NftProviderContext.Provider>
   )
 }
 

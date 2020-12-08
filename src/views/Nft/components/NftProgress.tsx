@@ -44,7 +44,6 @@ const NftProgress = () => {
   const TranslateString = useI18n()
   const currentBlock = useBlock()
 
-  // TODO - use "endBlockNumer"
   const secondsRemaining = (endBlockNumber - currentBlock) * BSC_BLOCK_TIME
   const timeLeft = formatTimePeriod(getTimePeriods(secondsRemaining), ['seconds'])
 
