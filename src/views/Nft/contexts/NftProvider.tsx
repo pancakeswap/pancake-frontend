@@ -126,13 +126,9 @@ const NftProvider: React.FC<NftProviderProps> = ({ children }) => {
 
             const [bunnyId, tokenId] = association
 
-            if (!accum[bunnyId]) {
-              return { [bunnyId]: [tokenId] }
-            }
-
             return {
               ...accum,
-              [bunnyId]: [...accum[bunnyId], tokenId],
+              [bunnyId]: accum[bunnyId] ? [...accum[bunnyId], tokenId] : [tokenId],
             }
           }, {})
         }

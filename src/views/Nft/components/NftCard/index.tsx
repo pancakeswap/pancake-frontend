@@ -42,7 +42,7 @@ const NftCard: React.FC<NftCardProps> = ({ nft }) => {
   const [onPresentClaimModal] = useModal(<ClaimNftModal nft={nft} onSuccess={reInitialize} />)
   const [onPresentBurnModal] = useModal(<BurnNftModal nft={nft} tokenIds={tokenIds} onSuccess={reInitialize} />)
 
-  const isActive = isInitialized && canBurnNft && tokenIds && tokenIds.length > 0
+  const walletOwnsNft = tokenIds && tokenIds.length > 0
 
   useEffect(() => {
     const fetchRabbitInfo = async () => {
@@ -58,7 +58,7 @@ const NftCard: React.FC<NftCardProps> = ({ nft }) => {
   }, [balanceOf, account, bunnyId, setState])
 
   return (
-    <Card isActive={isActive}>
+    <Card isActive={walletOwnsNft}>
       <Image src={`/images/nfts/${nft.previewImage}`} alt={nft.name} />
       <CardBody>
         <Header>
@@ -89,7 +89,7 @@ const NftCard: React.FC<NftCardProps> = ({ nft }) => {
             {TranslateString(999, 'Claim this NFT')}
           </Button>
         )}
-        {isActive && (
+        {isInitialized && canBurnNft && walletOwnsNft && (
           <Button variant="secondary" fullWidth onClick={onPresentBurnModal}>
             {TranslateString(999, 'Trade in for CAKE')}
           </Button>
