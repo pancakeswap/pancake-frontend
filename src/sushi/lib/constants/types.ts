@@ -54,5 +54,5 @@ export type Nft = {
   previewImage: string
   blurImage: string
   sortOrder: number
-  serialNumber: number
+  bunnyId: number
 }

@@ -17,6 +17,7 @@ interface NftCardProps {
 
 const Header = styled(InfoRow)`
   margin-bottom: 24px;
+  min-height: 28px;
 `
 
 const InfoBlock = styled.div`
@@ -31,23 +32,25 @@ const NftCard: React.FC<NftCardProps> = ({ nft }) => {
   const [state, setState] = useState({ isLoading: true, bunnyCount: 0 })
   const { account } = useWallet()
   const TranslateString = useI18n()
-  const { isInitialized, canClaim, hasClaimed } = useContext(NftProviderContext)
+  const { isInitialized, canClaim, hasClaimed, balanceOf, getTokenIds } = useContext(NftProviderContext)
   const pancakeRabbitContract = usePancakeRabbits(PANCAKE_RABBITS_ADDRESS)
   const [onPresentClaimModal] = useModal(<ClaimNftModal nft={nft} />)
-  const { serialNumber } = nft
+  const { bunnyId } = nft
   const walletCanClaim = canClaim && !hasClaimed
+  const tokenIds = getTokenIds(nft.bunnyId)
 
   useEffect(() => {
     const fetchRabbitInfo = async () => {
       const { methods } = pancakeRabbitContract
-      const bunnyCount = await methods.bunnyCount(serialNumber).call()
+      const bunnyCount = await methods.bunnyCount(bunnyId).call()
+
       setState({ isLoading: false, bunnyCount })
     }
 
     if (account) {
       fetchRabbitInfo()
     }
-  }, [pancakeRabbitContract, account, serialNumber, setState])
+  }, [balanceOf, pancakeRabbitContract, account, bunnyId, setState])
 
   return (
     <Card>
@@ -60,11 +63,16 @@ const NftCard: React.FC<NftCardProps> = ({ nft }) => {
               {TranslateString(526, 'Available')}
             </Tag>
           )}
+          {isInitialized && tokenIds && (
+            <Tag outline variant="secondary">
+              {TranslateString(999, 'In Wallet')}
+            </Tag>
+          )}
         </Header>
         <InfoBlock>
           <InfoRow>
             <Text>{TranslateString(999, 'Value if traded in')}:</Text>
-            <Value>100 CAKE</Value>
+            <Value>10 CAKE</Value>
           </InfoRow>
           <InfoRow>
             <Text>{TranslateString(999, 'Number minted')}:</Text>
