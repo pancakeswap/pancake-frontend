@@ -11,4 +11,9 @@ const useFarmsLP = () => {
   return data.farms
 }
 
-export { useDataProvider, useFarmsLP }
+const useFarmLP = (lpSymbol: string) => {
+  const { data } = useContext(DataContext)
+  return data.farms.find((farm) => farm.lpSymbol === lpSymbol)
+}
+
+export { useDataProvider, useFarmsLP, useFarmLP }

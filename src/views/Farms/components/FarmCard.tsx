@@ -5,9 +5,8 @@ import styled, { keyframes } from 'styled-components'
 import { useWallet } from 'use-wallet'
 import { Link as ReactRouterLink } from 'react-router-dom'
 import { Button, Flex } from '@pancakeswap-libs/uikit'
-import { communityFarms, contractAddresses } from 'sushi/lib/constants'
-import { Farm } from 'types/farms'
-import { useTokenBalance2 } from 'hooks/useTokenBalance'
+import { communityFarms } from 'sushi/lib/constants'
+import { FarmLP } from 'contexts/DataContext/types'
 import { useBnbPriceUSD, useCakePriceUSD } from 'hooks/usePrices'
 import useSushi from 'hooks/useSushi'
 import useI18n from 'hooks/useI18n'
@@ -16,8 +15,9 @@ import { bnToDec } from 'utils'
 import { CommunityTag, CoreTag } from 'components/Tags'
 import UnlockButton from 'components/UnlockButton'
 import getFarmConfig from 'utils/getFarmConfig'
+import { QuoteToken } from 'sushi/lib/constants/types'
 
-interface FarmWithStakedValue extends Farm {
+interface FarmWithStakedValue extends FarmLP {
   apy: BigNumber
 }
 
@@ -127,25 +127,19 @@ interface FarmCardProps {
   cakePrice?: number
 }
 
-const CAKE_TOKEN_ADDRESS = contractAddresses.sushi[56]
-const BUSD_TOKEN_ADDRESS = '0xe9e7cea3dedca5984780bafc599bd69add087d56'
-const WBNB_TOKEN_ADDRESS = contractAddresses.wbnb[56]
-
 const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
   const TranslateString = useI18n()
   const cakePrice = useCakePriceUSD()
-  const totalValueBUSDPool = useTokenBalance2(BUSD_TOKEN_ADDRESS, farm.lpAddress) * 2
-  const totalValueCakePool = useTokenBalance2(CAKE_TOKEN_ADDRESS, farm.lpAddress) * cakePrice * 2
-  const totalValueBNBPool = useTokenBalance2(WBNB_TOKEN_ADDRESS, farm.lpAddress) * useBnbPriceUSD() * 2
+  const bnbPrice = useBnbPriceUSD()
 
   const isCommunityFarm = communityFarms.includes(farm.tokenSymbol)
 
-  let totalValue = totalValueBNBPool
-  if (farm.pid === 11 || farm.pid === 41) {
-    totalValue = totalValueBUSDPool
+  let totalValue = farm.lpTotalInQuoteToken
+  if (farm.quoteTokenSymbol === QuoteToken.BNB) {
+    totalValue *= bnbPrice
   }
-  if (isCommunityFarm && farm.pid !== 37) {
-    totalValue = totalValueCakePool
+  if (farm.quoteTokenSymbol === QuoteToken.CAKE) {
+    totalValue *= cakePrice
   }
 
   const [, setHarvestable] = useState(0)
@@ -201,9 +195,13 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
       )}
       <Action>
         {/* No full width props because of as={ReactRouterLink} */}
-        <Button as={ReactRouterLink} to={`/farms/${farm.lpSymbol}`} style={{ width: '100%' }}>
-          {TranslateString(999, 'Select')}
-        </Button>
+        {account ? (
+          <Button as={ReactRouterLink} to={`/farms/${farm.lpSymbol}`} style={{ width: '100%' }}>
+            {TranslateString(999, 'Select')}
+          </Button>
+        ) : (
+          <UnlockButton fullWidth />
+        )}
       </Action>
       {!removed && (
         <Label>
@@ -222,35 +220,4 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
   )
 }
 
-const FarmCardOffline: React.FC<FarmCardProps> = ({ pool }) => {
-  const TranslateString = useI18n()
-
-  // We assume the token name is coin pair + lp e.g. CAKE-BNB LP, LINK-BNB LP,
-  // NAR-CAKE LP. The images should be cake-bnb.svg, link-bnb.svg, nar-cake.svg
-  const farmImage = pool.lpSymbol.split(' ')[0].toLocaleLowerCase()
-
-  return (
-    <FCard key={pool.pid + pool.lpSymbol}>
-      <CardImage>
-        <Flex flexDirection="column" alignItems="flex-start">
-          <Multiplier>{pool.multiplier}</Multiplier>
-          {pool.isCommunity ? <CommunityTag /> : <CoreTag />}
-        </Flex>
-        <img src={`/images/farms/${farmImage}.svg`} alt={pool.tokenSymbol} />
-      </CardImage>
-      <Label>
-        <span>{TranslateString(316, 'Deposit')}</span>
-        <span className="right">{pool.lpSymbol}</span>
-      </Label>
-      <Label>
-        <span>{TranslateString(318, 'Earn')}</span>
-        <span className="right">CAKE</span>
-      </Label>
-      <Action>
-        <UnlockButton fullWidth />
-      </Action>
-    </FCard>
-  )
-}
-
-export { FarmCard, FarmCardOffline }
+export default FarmCard

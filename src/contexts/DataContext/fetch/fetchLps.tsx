@@ -10,52 +10,75 @@ const CHAIN_ID = process.env.REACT_APP_CHAIN_ID
 const fetchLps = async () => {
   const data = await Promise.all(
     farmsConfig.map(async (farmConfig) => {
+      const lpAdress = farmConfig.lpAddresses[CHAIN_ID]
       const calls = [
+        // Balance of token in the LP contract
+        {
+          address: farmConfig.tokenAddresses[CHAIN_ID],
+          name: 'balanceOf',
+          params: [lpAdress],
+        },
+        // Balance of quote token on LP contract
+        {
+          address: farmConfig.quoteTokenAdresses[CHAIN_ID],
+          name: 'balanceOf',
+          params: [lpAdress],
+        },
+        // Balance of LP tokens in the master chef contract
+        {
+          address: lpAdress,
+          name: 'balanceOf',
+          params: [addresses.masterChef[56]],
+        },
+        // Total supply of LP tokens
+        {
+          address: lpAdress,
+          name: 'totalSupply',
+        },
+        // Token decimals
         {
           address: farmConfig.tokenAddresses[CHAIN_ID],
           name: 'decimals',
         },
-        {
-          address: farmConfig.tokenAddresses[CHAIN_ID],
-          name: 'balanceOf',
-          params: [farmConfig.lpAddresses[CHAIN_ID]],
-        },
-        {
-          address: farmConfig.lpAddresses[CHAIN_ID],
-          name: 'balanceOf',
-          params: [addresses.masterChef[56]],
-        },
-        {
-          address: farmConfig.lpAddresses[CHAIN_ID],
-          name: 'totalSupply',
-        },
+        // Quote token decimals
         {
           address: farmConfig.quoteTokenAdresses[CHAIN_ID],
-          name: 'balanceOf',
-          params: [farmConfig.lpAddresses[CHAIN_ID]],
+          name: 'decimals',
         },
       ]
 
-      const res = await multicall(erc20, calls)
+      const [
+        tokenBalanceLP,
+        quoteTokenBlanceLP,
+        lpTokenBalanceMC,
+        lpTotalSupply,
+        tokenDecimals,
+        quoteTokenDecimals,
+      ] = await multicall(erc20, calls)
 
-      const [tokenDecimals, tokenAmountWholeLP, balance, totalSupply, lpContractValue] = res
+      // Ratio in % a LP tokens that are in staking, vs the total number in circulation
+      const lpTokenRatio = new BigNumber(lpTokenBalanceMC).div(new BigNumber(lpTotalSupply))
 
-      // Return p1 * w1 * 2
-      const lpContractValueBN = new BigNumber(lpContractValue)
-      const portionLp = new BigNumber(balance).div(new BigNumber(totalSupply))
-      const totalLpValue = portionLp.times(lpContractValueBN).times(new BigNumber(2))
-      // Calculate
-      const tokenAmount = new BigNumber(tokenAmountWholeLP).times(portionLp).div(new BigNumber(10).pow(tokenDecimals))
-      const wbnbAmount = lpContractValueBN.times(portionLp).div(new BigNumber(10).pow(18))
+      // Total value in staking in quote token value
+      const lpTotalInQuoteToken = new BigNumber(quoteTokenBlanceLP)
+        .div(new BigNumber(10).pow(18))
+        .times(new BigNumber(2))
+        .times(lpTokenRatio)
+
+      // Amount of token in the LP that are considered staking (i.e amount of token * lp ratio)
+      const tokenAmount = new BigNumber(tokenBalanceLP).div(new BigNumber(10).pow(tokenDecimals)).times(lpTokenRatio)
+      const quoteTokenAmount = new BigNumber(quoteTokenBlanceLP)
+        .div(new BigNumber(10).pow(quoteTokenDecimals))
+        .times(lpTokenRatio)
 
       const [info, totalAllocPoint] = await multicall(masterchefABI, [
         {
-          address: addresses.masterChef[56],
+          address: addresses.masterChef[CHAIN_ID],
           name: 'poolInfo',
           params: [farmConfig.pid],
         },
         {
-          address: addresses.masterChef[56],
+          address: addresses.masterChef[CHAIN_ID],
           name: 'totalAllocPoint',
         },
       ])
@@ -65,11 +88,10 @@ const fetchLps = async () => {
 
       return {
         ...farmConfig,
-        tokenDecimals,
         tokenAmount,
-        wbnbAmount,
-        totalWbnbValue: totalLpValue.div(new BigNumber(10).pow(18)),
-        tokenPrice: wbnbAmount.div(tokenAmount),
+        quoteTokenAmount,
+        lpTotalInQuoteToken,
+        tokenPriceVsQuote: quoteTokenAmount.div(tokenAmount),
         poolWeight,
       }
     }),

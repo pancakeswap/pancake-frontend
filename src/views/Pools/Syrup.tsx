@@ -20,7 +20,7 @@ const Farm: React.FC = () => {
   const stakedValues = useFarmsLP()
   const userBnbBalance = useUserBnbBalance()
   const bnbPriceUSD = useBnbPriceUSD()
-  const cakePriceVsBNB = stakedValues.find((s) => s.tokenSymbol === 'CAKE')?.tokenPrice || new BigNumber(0)
+  const cakePriceVsBNB = stakedValues.find((s) => s.tokenSymbol === 'CAKE')?.tokenPriceVsQuote || new BigNumber(0)
 
   const priceToBnb = (tokenName: string, tokenPrice: BigNumber, quoteToken: QuoteToken) => {
     if (tokenName === 'BNB') {
@@ -37,7 +37,7 @@ const Farm: React.FC = () => {
 
     return {
       ...pool,
-      tokenPrice: priceToBnb(pool.tokenName, stakedValue?.tokenPrice, stakedValue?.quoteTokenSymbol),
+      tokenPrice: priceToBnb(pool.tokenName, stakedValue?.tokenPriceVsQuote, stakedValue?.quoteTokenSymbol),
     }
   })
 
