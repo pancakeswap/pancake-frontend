@@ -1,9 +1,7 @@
 import useBlock from 'hooks/useBlock'
 import React, { createContext, ReactNode, useEffect, useState } from 'react'
 import { useWallet } from 'use-wallet'
-import { PANCAKE_RABBITS_ADDRESS } from 'sushi/lib/constants/nfts'
-import { usePancakeRabbits } from 'hooks/rework/useContract'
-import { getRabbitMintingContract } from '../utils/contracts'
+import { getPancakeRabbitContract, getRabbitMintingContract } from '../utils/contracts'
 
 interface NftProviderProps {
   children: ReactNode
@@ -46,7 +44,6 @@ const NftProvider: React.FC<NftProviderProps> = ({ children }) => {
   })
   const { account } = useWallet()
   const currentBlock = useBlock()
-  const pancakeRabbitsContract = usePancakeRabbits(PANCAKE_RABBITS_ADDRESS)
 
   // Static data
   useEffect(() => {
@@ -85,6 +82,7 @@ const NftProvider: React.FC<NftProviderProps> = ({ children }) => {
     const fetchContractData = async () => {
       try {
         const { methods } = getRabbitMintingContract()
+        const pancakeRabbitsContract = getPancakeRabbitContract()
         const promises = [
           methods.canClaim(account).call(),
           methods.hasClaimed(account).call(),
@@ -151,7 +149,7 @@ const NftProvider: React.FC<NftProviderProps> = ({ children }) => {
     if (account) {
       fetchContractData()
     }
-  }, [account, pancakeRabbitsContract, setState])
+  }, [account, setState])
 
   const canBurnNft = state.endBlockNumber <= currentBlock
   const getTokenIds = (bunnyId: number) => state.bunnyMap[bunnyId]
