@@ -7,7 +7,7 @@ import { Link as ReactRouterLink } from 'react-router-dom'
 import { Button, Flex } from '@pancakeswap-libs/uikit'
 import { communityFarms } from 'sushi/lib/constants'
 import { FarmLP } from 'contexts/DataContext/types'
-import { useBnbPriceUSD, useCakePriceUSD } from 'hooks/usePrices'
+import { usePriceBnbBusd, usePriceCakeBusd } from 'contexts/DataContext'
 import useSushi from 'hooks/useSushi'
 import useI18n from 'hooks/useI18n'
 import { getEarned, getMasterChefContract } from 'sushi/utils'
@@ -129,8 +129,8 @@ interface FarmCardProps {
 
 const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
   const TranslateString = useI18n()
-  const cakePrice = useCakePriceUSD()
-  const bnbPrice = useBnbPriceUSD()
+  const cakePrice = usePriceCakeBusd()
+  const bnbPrice = usePriceBnbBusd()
 
   const isCommunityFarm = communityFarms.includes(farm.tokenSymbol)
 

@@ -2,11 +2,6 @@ import BigNumber from 'bignumber.js'
 import get from 'lodash/get'
 import memoize from 'lodash/memoize'
 import { ethers } from 'ethers'
-import addresses from 'sushi/lib/constants/contracts'
-import erc20 from 'sushi/lib/abi/erc20.json'
-import masterchefABI from 'sushi/lib/abi/masterchef.json'
-import multicall from 'utils/multicall'
-import { QuoteToken } from 'sushi/lib/constants/types'
 import { poolsConfig } from './lib/constants'
 
 BigNumber.config({

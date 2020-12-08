@@ -7,8 +7,7 @@ import partition from 'lodash/partition'
 import useUserBnbBalance from 'hooks/rework/useBnbBalance'
 import useSushi from 'hooks/useSushi'
 import useI18n from 'hooks/useI18n'
-import { useFarmsLP } from 'contexts/DataContext'
-import { useBnbPriceUSD } from 'hooks/usePrices'
+import { useFarmsLP, usePriceBnbBusd } from 'contexts/DataContext'
 import { getPools } from 'sushi/utils'
 import { QuoteToken } from 'sushi/lib/constants/types'
 import Coming from './components/Coming'
@@ -19,7 +18,7 @@ const Farm: React.FC = () => {
   const TranslateString = useI18n()
   const stakedValues = useFarmsLP()
   const userBnbBalance = useUserBnbBalance()
-  const bnbPriceUSD = useBnbPriceUSD()
+  const bnbPriceUSD = usePriceBnbBusd()
   const cakePriceVsBNB = stakedValues.find((s) => s.tokenSymbol === 'CAKE')?.tokenPriceVsQuote || new BigNumber(0)
 
   const priceToBnb = (tokenName: string, tokenPrice: BigNumber, quoteToken: QuoteToken) => {
