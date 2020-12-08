@@ -1,4 +1,5 @@
-import { ButtonHTMLAttributes, ReactNode } from "react";
+import { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from "react";
+import { Link, LinkProps } from "react-router-dom";
 import { SpaceProps } from "styled-system";
 
 export const sizes = {
@@ -11,20 +12,25 @@ export const variants = {
   SECONDARY: "secondary",
   TERTIARY: "tertiary",
   TEXT: "text",
+  DANGER: "danger",
 } as const;
 
 export type Sizes = typeof sizes[keyof typeof sizes];
 export type Variants = typeof variants[keyof typeof variants];
 
-export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement>, SpaceProps {
+type ButtonTypes = ButtonHTMLAttributes<HTMLButtonElement> | AnchorHTMLAttributes<HTMLAnchorElement> | LinkProps;
+
+export type ButtonProps = {
   variant?: Variants;
   size?: Sizes;
   startIcon?: ReactNode;
   endIcon?: ReactNode;
   fullWidth?: boolean;
-  as?: "a" | "button";
+  as?: "a" | "button" | typeof Link;
   href?: string;
-}
+  external?: boolean;
+} & ButtonTypes &
+  SpaceProps;
 
 export type ButtonThemeVariant = {
   background: string;

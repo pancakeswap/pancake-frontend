@@ -2,6 +2,7 @@ import React, { AnchorHTMLAttributes } from "react";
 import styled from "styled-components";
 import Text, { TextProps } from "../Text";
 import OpenNewIcon from "../Svg/Icons/OpenNew";
+import getExternalLinkProps from "../../util/getExternalLinkProps";
 
 interface LinkProps extends TextProps, AnchorHTMLAttributes<HTMLAnchorElement> {
   external?: boolean;
@@ -18,12 +19,7 @@ const StyledLink = styled(Text)<LinkProps>`
 `;
 
 const Link: React.FC<LinkProps> = ({ external, ...props }) => {
-  const internalProps = external
-    ? {
-        target: "_blank",
-        rel: "noreferrer noopener",
-      }
-    : {};
+  const internalProps = external ? getExternalLinkProps() : {};
   return <StyledLink as="a" bold {...internalProps} {...props} />;
 };
 

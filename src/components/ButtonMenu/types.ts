@@ -1,9 +1,9 @@
 import { ButtonProps, Sizes } from "../Button/types";
 
-export interface ButtonMenuItemProps extends ButtonProps {
+export type ButtonMenuItemProps = {
   isActive?: boolean;
   size?: Sizes;
-}
+} & ButtonProps;
 
 export interface ButtonMenuProps {
   activeIndex?: number;

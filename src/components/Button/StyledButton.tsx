@@ -2,9 +2,9 @@ import styled, { DefaultTheme } from "styled-components";
 import { space } from "styled-system";
 import { ButtonProps, ButtonThemeVariant, variants } from "./types";
 
-interface ThemedProps extends ButtonProps {
+type ThemedProps = {
   theme: DefaultTheme;
-}
+} & ButtonProps;
 
 const getButtonVariantProp = (prop: keyof ButtonThemeVariant) => ({
   theme,

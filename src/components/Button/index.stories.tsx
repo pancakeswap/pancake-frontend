@@ -54,6 +54,15 @@ export const Default: React.FC = () => {
           Small
         </Button>
       </Row>
+      <Row>
+        <Button variant="danger">Danger</Button>
+        <Button variant="danger" disabled>
+          Disabled
+        </Button>
+        <Button variant="danger" size="sm">
+          Small
+        </Button>
+      </Row>
     </>
   );
 };
@@ -62,7 +71,9 @@ export const ButtonLink: React.FC = () => {
   return (
     <>
       <Row>
-        <Button as="a">Primary</Button>
+        <Button as="a" href="https://pancakeswap.finance" target="_blank" rel="noreferrer">
+          Primary
+        </Button>
         <Button as="a" disabled>
           Disabled
         </Button>
