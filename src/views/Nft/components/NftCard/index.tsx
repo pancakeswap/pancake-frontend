@@ -76,8 +76,8 @@ const NftCard: React.FC<NftCardProps> = ({ nft }) => {
         ...prevState,
         isLoading: false,
         isDataFetched: true,
-        bunnyCount,
-        bunnyBurnCount,
+        bunnyCount: parseInt(bunnyCount, 10),
+        bunnyBurnCount: parseInt(bunnyBurnCount, 10),
       }))
     } catch (error) {
       console.error(error)
@@ -149,7 +149,7 @@ const NftCard: React.FC<NftCardProps> = ({ nft }) => {
             </InfoRow>
             <InfoRow>
               <Text>{TranslateString(999, 'Number minted')}:</Text>
-              <Value>{state.bunnyCount}</Value>
+              <Value>{state.bunnyCount + state.bunnyBurnCount}</Value>
             </InfoRow>
             <InfoRow>
               <Text>{TranslateString(999, 'Number burned')}:</Text>
