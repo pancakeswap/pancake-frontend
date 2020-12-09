@@ -33,16 +33,19 @@ const SecondCardColumnWrapper = styled.div<{ isAWin?: boolean }>`
   flex-direction: column;
 `
 
-const StyledImage = styled.img`
-  align-self: center;
+const BunnyImageWrapper = styled.div`
+  display: flex;
+  margin-top: 32px;
+  justify-content: center;
 `
+
+const StyledImage = styled.img``
 
 const PastDrawsPage: React.FC = () => {
   const { account } = useWallet()
   const { claimAmount } = useTotalClaim()
   const winnings = getBalanceNumber(claimAmount)
   const isAWin = winnings > 0
-  const [nextDrawActive, setNextDrawActive] = useState(true)
 
   // May be useful for 'Past draws'
   // const sushi = useSushi()
@@ -65,7 +68,9 @@ const PastDrawsPage: React.FC = () => {
       <PastLotteryRoundViewer />
       <SecondCardColumnWrapper>
         <PastDrawsHistoryCard />
-        <StyledImage src="/images/pancake-lottery-bunny.png" alt="lottery bunny" />
+        <BunnyImageWrapper>
+          <StyledImage src="/images/pancake-lottery-bunny.png" alt="lottery bunny" />
+        </BunnyImageWrapper>
       </SecondCardColumnWrapper>
     </Cards>
   )
