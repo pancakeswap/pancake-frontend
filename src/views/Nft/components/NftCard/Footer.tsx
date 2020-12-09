@@ -7,6 +7,7 @@ import InfoRow from '../InfoRow'
 
 interface FooterProps {
   bunnyId: number
+  description: string
 }
 
 const DetailsButton = styled(Button).attrs({ variant: 'text', fullWidth: true })`
@@ -30,7 +31,7 @@ const Value = styled(Text)`
   font-weight: 600;
 `
 
-const Footer: React.FC<FooterProps> = ({ bunnyId }) => {
+const Footer: React.FC<FooterProps> = ({ bunnyId, description }) => {
   const [state, setState] = useState({
     isLoading: false,
     isDataFetched: false,
@@ -72,6 +73,9 @@ const Footer: React.FC<FooterProps> = ({ bunnyId }) => {
       </DetailsButton>
       {state.isOpen && (
         <InfoBlock>
+          <Text as="p" color="textSubtle" mb="16px" style={{ textAlign: 'center' }}>
+            {description}
+          </Text>
           <InfoRow>
             <Text>{TranslateString(999, 'Value if traded in')}:</Text>
             <Value>10 CAKE</Value>

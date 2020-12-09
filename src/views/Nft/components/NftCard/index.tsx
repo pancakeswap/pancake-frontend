@@ -31,7 +31,11 @@ const NftCard: React.FC<NftCardProps> = ({ nft }) => {
 
   return (
     <Card isActive={walletOwnsNft}>
-      <Image src={`/images/nfts/${nft.previewImage}`} alt={nft.name} />
+      <Image
+        src={`/images/nfts/${nft.previewImage}`}
+        alt={nft.name}
+        originalLink={walletOwnsNft ? nft.originalImage : null}
+      />
       <CardBody>
         <Header>
           <Heading>{nft.name}</Heading>
@@ -57,7 +61,7 @@ const NftCard: React.FC<NftCardProps> = ({ nft }) => {
           </Button>
         )}
       </CardBody>
-      <Footer bunnyId={nft.bunnyId} />
+      <Footer bunnyId={nft.bunnyId} description={nft.description} />
     </Card>
   )
 }
