@@ -41,7 +41,7 @@ export interface Farm {
   lpAddresses: Address
   tokenSymbol: string
   tokenAddresses: Address
-  quoteTokenSymbol: string
+  quoteTokenSymbol: QuoteToken
   quoteTokenAdresses: Address
   multiplier?: string
   isCommunity?: boolean

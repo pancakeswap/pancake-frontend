@@ -7,8 +7,7 @@ import partition from 'lodash/partition'
 import useUserBnbBalance from 'hooks/rework/useBnbBalance'
 import useSushi from 'hooks/useSushi'
 import useI18n from 'hooks/useI18n'
-import useAllStakedValue from 'hooks/useAllStakedValue'
-import { useBnbPriceUSD } from 'hooks/usePrices'
+import { useFarmsLP, usePriceBnbBusd } from 'contexts/DataContext'
 import { getPools } from 'sushi/utils'
 import { QuoteToken } from 'sushi/lib/constants/types'
 import Coming from './components/Coming'
@@ -17,10 +16,10 @@ import PoolCard from './components/PoolCard'
 const Farm: React.FC = () => {
   const sushi = useSushi()
   const TranslateString = useI18n()
-  const stakedValues = useAllStakedValue()
+  const stakedValues = useFarmsLP()
   const userBnbBalance = useUserBnbBalance()
-  const bnbPriceUSD = useBnbPriceUSD()
-  const cakePriceVsBNB = stakedValues.find((s) => s.tokenSymbol === 'CAKE')?.tokenPrice || new BigNumber(0)
+  const bnbPriceUSD = usePriceBnbBusd()
+  const cakePriceVsBNB = stakedValues.find((s) => s.tokenSymbol === 'CAKE')?.tokenPriceVsQuote || new BigNumber(0)
 
   const priceToBnb = (tokenName: string, tokenPrice: BigNumber, quoteToken: QuoteToken) => {
     if (tokenName === 'BNB') {
@@ -37,7 +36,7 @@ const Farm: React.FC = () => {
 
     return {
       ...pool,
-      tokenPrice: priceToBnb(pool.tokenName, stakedValue?.tokenPrice, stakedValue?.quoteToken),
+      tokenPrice: priceToBnb(pool.tokenName, stakedValue?.tokenPriceVsQuote, stakedValue?.quoteTokenSymbol),
     }
   })
 
