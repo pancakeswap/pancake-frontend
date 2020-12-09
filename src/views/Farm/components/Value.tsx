@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react'
 import CountUp from 'react-countup'
 
@@ -19,6 +18,7 @@ const Value: React.FC<ValueProps> = ({ value, decimals, fontSize = '14px' }) => 
       updateStart(end)
       updateEnd(value)
     }
+    /* eslint-disable react-hooks/exhaustive-deps */
   }, [value])
 
   return (

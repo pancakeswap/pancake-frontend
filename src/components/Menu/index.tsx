@@ -4,13 +4,13 @@ import { useWallet } from 'use-wallet'
 import { allLanguages } from 'config/localisation/languageCodes'
 import { LanguageContext } from 'contexts/Localisation/languageContext'
 import useTheme from 'hooks/useTheme'
-import { useCakePriceUSD } from 'hooks/usePrices'
+import { usePriceCakeBusd } from 'contexts/DataContext'
 
 const Menu = () => {
   const { account, connect, reset } = useWallet()
   const { selectedLanguage, setSelectedLanguage } = useContext(LanguageContext)
   const { isDark, toggleTheme } = useTheme()
-  const cakePriceUsd = useCakePriceUSD()
+  const cakePriceUsd = usePriceCakeBusd()
 
   return (
     <Nav
@@ -22,7 +22,7 @@ const Menu = () => {
       currentLang={selectedLanguage && selectedLanguage.code}
       langs={allLanguages}
       setLang={setSelectedLanguage}
-      cakePriceUsd={cakePriceUsd}
+      cakePriceUsd={cakePriceUsd.toNumber()}
     />
   )
 }

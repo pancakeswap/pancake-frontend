@@ -4,10 +4,10 @@ import styled from 'styled-components'
 import { useWallet } from 'use-wallet'
 import { provider } from 'web3-core'
 import { getContract } from 'utils/erc20'
-import useFarm from 'hooks/useFarm'
 import useI18n from 'hooks/useI18n'
+import useUserFarm from 'hooks/useUserFarm'
 import Page from 'components/layout/Page'
-import getFarmConfig from 'utils/getFarmConfig'
+import { useFarmLP } from 'contexts/DataContext'
 import Harvest from './components/Harvest'
 import Stake from './components/Stake'
 import DualFarmDisclaimer from './components/DualFarmDisclaimer'
@@ -15,19 +15,12 @@ import DualFarmDisclaimer from './components/DualFarmDisclaimer'
 const Farm: React.FC = () => {
   const TranslateString = useI18n()
   const { ethereum } = useWallet()
-  const { farmId } = useParams<{ farmId?: string }>()
+  const { lpSymbol } = useParams<{ lpSymbol?: string }>()
 
-  const { pid, lpSymbol, lpAddress, tokenSymbol } = useFarm(farmId) || {
-    pid: 0,
-    lpSymbol: '',
-    lpAddress: '',
-    tokenAddress: '',
-    earnToken: '',
-    name: '',
-    icon: '',
-    tokenSymbol: '',
-  }
-  const localConfig = getFarmConfig(pid)
+  const { pid, lpAddresses, tokenSymbol, dual } = useFarmLP(lpSymbol)
+  const lpAddress = lpAddresses[process.env.REACT_APP_CHAIN_ID]
+  const { allowance, tokenBalance, stakedBalance, earnings } = useUserFarm(lpAddress, pid)
+
   const lpContract = useMemo(() => {
     return getContract(ethereum as provider, lpAddress)
   }, [ethereum, lpAddress])
@@ -37,17 +30,22 @@ const Farm: React.FC = () => {
       <Header>
         <Image src={`/images/tokens/category-${tokenSymbol || 'CAKE'}.png`} alt={tokenSymbol} />
         <Title>{TranslateString(320, 'Stake FLIP tokens to stack CAKE')}</Title>
-        {localConfig.dual && (
-          <DualFarmDisclaimer tokenName={localConfig.tokenSymbol} endBlock={localConfig.dual.endBlock} />
-        )}
+        {dual && <DualFarmDisclaimer tokenName={tokenSymbol} endBlock={dual.endBlock} />}
       </Header>
       <StyledFarm>
         <Grid>
-          <Harvest pid={pid} />
-          <Stake lpContract={lpContract} pid={pid} tokenName={lpSymbol.toUpperCase()} />
+          <Harvest pid={pid} earnings={earnings} />
+          <Stake
+            lpContract={lpContract}
+            pid={pid}
+            tokenName={lpSymbol.toUpperCase()}
+            allowance={allowance}
+            tokenBalance={tokenBalance}
+            stakedBalance={stakedBalance}
+          />
         </Grid>
-        {localConfig.dual ? (
-          <DualFarmDisclaimer tokenName={localConfig.tokenSymbol} endBlock={localConfig.dual.endBlock} />
+        {dual ? (
+          <DualFarmDisclaimer tokenName={tokenSymbol} endBlock={dual.endBlock} />
         ) : (
           <StyledInfo>
             {TranslateString(

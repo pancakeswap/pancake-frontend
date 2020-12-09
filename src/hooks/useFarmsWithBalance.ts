@@ -36,7 +36,7 @@ const useFarmsWithBalance = () => {
     if (account && masterChefContract && sushi) {
       fetchBalances()
     }
-  }, [block, account, masterChefContract, sushi, farms, setFarmsWithBalances])
+  }, [account, farms, masterChefContract, sushi, block])
 
   return farmsWithBalances
 }

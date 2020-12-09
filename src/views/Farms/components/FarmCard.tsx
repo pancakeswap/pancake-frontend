@@ -1,25 +1,19 @@
-// @ts-nocheck
-import React, { useEffect, useState } from 'react'
+import React, { useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import styled, { keyframes } from 'styled-components'
 import { useWallet } from 'use-wallet'
 import { Link as ReactRouterLink } from 'react-router-dom'
 import { Button, Flex } from '@pancakeswap-libs/uikit'
-import { communityFarms, contractAddresses } from 'sushi/lib/constants'
-import { Farm } from 'types/farms'
-import { useTokenBalance2 } from 'hooks/useTokenBalance'
-import { useBnbPriceUSD, useCakePriceUSD } from 'hooks/usePrices'
-import useSushi from 'hooks/useSushi'
+import { communityFarms } from 'sushi/lib/constants'
+import { FarmLP } from 'contexts/DataContext/types'
+import { usePriceBnbBusd, usePriceCakeBusd } from 'contexts/DataContext'
 import useI18n from 'hooks/useI18n'
-import { StakedValue } from 'hooks/useAllStakedValue'
-import { getEarned, getMasterChefContract } from 'sushi/utils'
-import { bnToDec } from 'utils'
 import { CommunityTag, CoreTag } from 'components/Tags'
 import UnlockButton from 'components/UnlockButton'
-import getFarmConfig from 'utils/getFarmConfig'
+import { QuoteToken } from 'sushi/lib/constants/types'
 
-interface FarmWithStakedValue extends Farm, StakedValue {
-  apy: BigNumber
+export interface FarmWithStakedValue extends FarmLP {
+  apy?: BigNumber
 }
 
 const Action = styled.div`
@@ -128,49 +122,31 @@ interface FarmCardProps {
   cakePrice?: number
 }
 
-const CAKE_TOKEN_ADDRESS = contractAddresses.sushi[56]
-const BUSD_TOKEN_ADDRESS = '0xe9e7cea3dedca5984780bafc599bd69add087d56'
-const WBNB_TOKEN_ADDRESS = contractAddresses.wbnb[56]
-
 const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
   const TranslateString = useI18n()
-  const cakePrice = useCakePriceUSD()
-  const totalValueBUSDPool = useTokenBalance2(BUSD_TOKEN_ADDRESS, farm.lpAddress) * 2
-  const totalValueCakePool = useTokenBalance2(CAKE_TOKEN_ADDRESS, farm.lpAddress) * cakePrice * 2
-  const totalValueBNBPool = useTokenBalance2(WBNB_TOKEN_ADDRESS, farm.lpAddress) * useBnbPriceUSD() * 2
+  const cakePrice = usePriceCakeBusd()
+  const bnbPrice = usePriceBnbBusd()
+  const { account } = useWallet()
 
   const isCommunityFarm = communityFarms.includes(farm.tokenSymbol)
-
-  let totalValue = totalValueBNBPool
-  if (farm.pid === 11 || farm.pid === 41) {
-    totalValue = totalValueBUSDPool
-  }
-  if (isCommunityFarm && farm.pid !== 37) {
-    totalValue = totalValueCakePool
-  }
-
-  const [, setHarvestable] = useState(0)
-
-  const { account } = useWallet()
-  const { lpAddress } = farm
-  const sushi = useSushi()
-
-  useEffect(() => {
-    async function fetchEarned() {
-      if (sushi) return
-      const earned = await getEarned(getMasterChefContract(sushi), lpAddress, account)
-      setHarvestable(bnToDec(earned))
-    }
-    if (sushi && account) {
-      fetchEarned()
-    }
-  }, [sushi, lpAddress, account, setHarvestable])
-
-  const localConfig = getFarmConfig(farm.pid)
-
   // We assume the token name is coin pair + lp e.g. CAKE-BNB LP, LINK-BNB LP,
   // NAR-CAKE LP. The images should be cake-bnb.svg, link-bnb.svg, nar-cake.svg
   const farmImage = farm.lpSymbol.split(' ')[0].toLocaleLowerCase()
+
+  const totalValue: BigNumber = useMemo(() => {
+    if (!farm.lpTotalInQuoteToken) {
+      return null
+    }
+    if (farm.quoteTokenSymbol === QuoteToken.BNB) {
+      return farm.lpTotalInQuoteToken.times(bnbPrice)
+    }
+    if (farm.quoteTokenSymbol === QuoteToken.CAKE) {
+      return farm.lpTotalInQuoteToken.times(cakePrice)
+    }
+    return farm.lpTotalInQuoteToken
+  }, [bnbPrice, cakePrice, farm.lpTotalInQuoteToken, farm.quoteTokenSymbol])
+
+  const totalValueFormated = totalValue ? `$${Number(totalValue.toFixed(0)).toLocaleString()}` : '-'
 
   return (
     <FCard>
@@ -188,7 +164,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
       </Label>
       <Label>
         <span>{TranslateString(318, 'Earn')}</span>
-        <span className="right">{localConfig.dual ? localConfig.dual.earnLabel : 'CAKE'}</span>
+        <span className="right">{farm.dual ? farm.dual.earnLabel : 'CAKE'}</span>
       </Label>
       {!removed && (
         <Label>
@@ -201,21 +177,24 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
         </Label>
       )}
       <Action>
-        {/* No full width props because of as={ReactRouterLink} */}
-        <Button as={ReactRouterLink} to={`/farms/${farm.lpSymbol}`} style={{ width: '100%' }}>
-          {TranslateString(568, 'Select')}
-        </Button>
+        {account ? (
+          /* No full width props because of as={ReactRouterLink} */
+          // @ts-ignore
+          <Button as={ReactRouterLink} to={`/farms/${farm.lpSymbol}`} style={{ width: '100%' }}>
+            {TranslateString(568, 'Select')}
+          </Button>
+        ) : (
+          <UnlockButton fullWidth />
+        )}
       </Action>
       {!removed && (
         <Label>
           <span>{TranslateString(23, 'Total Liquidity')}</span>
-          <span className="right">
-            {farm.lpSymbol !== 'BAKE-BNB Bakery LP' ? `$${parseInt(totalValue).toLocaleString()}` : '-'}
-          </span>
+          <span className="right">{totalValueFormated}</span>
         </Label>
       )}
       <ViewMore>
-        <Link href={`https://bscscan.com/address/${farm.lpAddress}`} target="_blank">
+        <Link href={`https://bscscan.com/address/${farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]}`} target="_blank">
           {TranslateString(356, 'View on BscScan')} &gt;
         </Link>
       </ViewMore>
@@ -223,35 +202,4 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
   )
 }
 
-const FarmCardOffline: React.FC<FarmCardProps> = ({ pool }) => {
-  const TranslateString = useI18n()
-
-  // We assume the token name is coin pair + lp e.g. CAKE-BNB LP, LINK-BNB LP,
-  // NAR-CAKE LP. The images should be cake-bnb.svg, link-bnb.svg, nar-cake.svg
-  const farmImage = pool.lpSymbol.split(' ')[0].toLocaleLowerCase()
-
-  return (
-    <FCard key={pool.pid + pool.lpSymbol}>
-      <CardImage>
-        <Flex flexDirection="column" alignItems="flex-start">
-          <Multiplier>{pool.multiplier}</Multiplier>
-          {pool.isCommunity ? <CommunityTag /> : <CoreTag />}
-        </Flex>
-        <img src={`/images/farms/${farmImage}.svg`} alt={pool.tokenSymbol} />
-      </CardImage>
-      <Label>
-        <span>{TranslateString(316, 'Deposit')}</span>
-        <span className="right">{pool.lpSymbol}</span>
-      </Label>
-      <Label>
-        <span>{TranslateString(318, 'Earn')}</span>
-        <span className="right">CAKE</span>
-      </Label>
-      <Action>
-        <UnlockButton fullWidth />
-      </Action>
-    </FCard>
-  )
-}
-
-export { FarmCard, FarmCardOffline }
+export default FarmCard

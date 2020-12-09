@@ -16,7 +16,7 @@ import { useSousStakedBalance, useSousTotalStaked } from 'hooks/useStakedBalance
 import useTokenBalance from 'hooks/useTokenBalance'
 import { useSousUnstake } from 'hooks/useUnstake'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { useSousReward } from 'hooks/useReward'
+import { useSousHarvest } from 'hooks/useHarvest'
 import Balance from 'components/Balance'
 import { QuoteToken, PoolCategory } from 'sushi/lib/constants/types'
 import DepositModal from './DepositModal'
@@ -78,14 +78,16 @@ const PoolCard: React.FC<HarvestProps> = ({
   const earnings = useSousEarnings(sousId)
   const { onStake } = useSousStake(sousId, isBnbPool)
   const { onUnstake } = useSousUnstake(sousId)
-  const { onReward } = useSousReward(sousId, isBnbPool)
+  const { onReward } = useSousHarvest(sousId, isBnbPool)
 
   const { account } = useWallet()
   const [requestedApproval, setRequestedApproval] = useState(false)
   const [pendingTx, setPendingTx] = useState(false)
 
   const apy: BigNumber = useMemo(() => {
-    if (cakePriceVsBNB?.isEqualTo(0) || tokenPrice?.isEqualTo(0)) return null
+    if (cakePriceVsBNB?.isEqualTo(0) || tokenPrice?.isEqualTo(0) || totalStaked?.isEqualTo(0)) {
+      return null
+    }
     const stakedTokenPrice: BigNumber = isBnbPool ? new BigNumber(1) : cakePriceVsBNB
 
     const a = tokenPrice.times(BLOCKS_PER_YEAR).times(tokenPerBlock)

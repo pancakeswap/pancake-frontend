@@ -9,10 +9,8 @@ import CardContent from '../../../components/CardContent'
 import CardIcon from '../../../components/CardIcon'
 import Label from '../../../components/Label'
 import Value from '../../../components/Value'
-import useAllowance from '../../../hooks/useAllowance'
 import useApprove from '../../../hooks/useApprove'
 import useStake from '../../../hooks/useStake'
-import useStakedBalance from '../../../hooks/useStakedBalance'
 import useTokenBalance from '../../../hooks/useTokenBalance'
 import useUnstake from '../../../hooks/useUnstake'
 import useI18n from '../../../hooks/useI18n'
@@ -27,24 +25,22 @@ interface StakeProps {
   lpContract: Contract
   pid: number
   tokenName: string
+  allowance: BigNumber
+  tokenBalance: BigNumber
+  stakedBalance: BigNumber
 }
 
-const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName }) => {
+const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName, allowance, tokenBalance, stakedBalance }) => {
   const TranslateString = useI18n()
   const [requestedApproval, setRequestedApproval] = useState(false)
   const { account } = useWallet()
   const sushi = useSushi()
 
-  const allowance = useAllowance(lpContract)
-  const { onApprove } = useApprove(lpContract)
-
-  const tokenBalance = useTokenBalance(lpContract.options.address)
-  const syrupBalance = useTokenBalance(getSyrupAddress(sushi))
-
-  const stakedBalance = useStakedBalance(pid)
-
   const { onStake } = useStake(pid)
   const { onUnstake } = useUnstake(pid)
+  const { onApprove } = useApprove(lpContract)
+
+  const syrupBalance = useTokenBalance(getSyrupAddress(sushi))
 
   const [onPresentDeposit] = useModal(<DepositModal max={tokenBalance} onConfirm={onStake} tokenName={tokenName} />)
 
@@ -68,6 +64,7 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName }) => {
       console.error(e)
     }
   }, [onApprove, setRequestedApproval])
+  const isAllowed = account && allowance && allowance.isGreaterThan(0)
 
   return (
     <Card>
@@ -80,22 +77,21 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName }) => {
           </StyledCardHeader>
           <StyledCardActions>
             {!account && <UnlockButton fullWidth />}
-            {account &&
-              (!allowance.toNumber() ? (
-                <Button fullWidth disabled={requestedApproval} onClick={handleApprove}>
-                  {`${TranslateString(564, 'Approve')} ${tokenName}`}
+            {isAllowed ? (
+              <>
+                <Button fullWidth disabled={stakedBalance.eq(new BigNumber(0))} onClick={onPresentWithdraw}>
+                  {TranslateString(588, 'Unstake')}
                 </Button>
-              ) : (
-                <>
-                  <Button fullWidth disabled={stakedBalance.eq(new BigNumber(0))} onClick={onPresentWithdraw}>
-                    {TranslateString(588, 'Unstake')}
-                  </Button>
-                  <StyledActionSpacer />
-                  <IconButton onClick={onPresentDeposit}>
-                    <AddIcon color="background" />
-                  </IconButton>
-                </>
-              ))}
+                <StyledActionSpacer />
+                <IconButton onClick={onPresentDeposit}>
+                  <AddIcon color="background" />
+                </IconButton>
+              </>
+            ) : (
+              <Button fullWidth disabled={requestedApproval} onClick={handleApprove}>
+                {`${TranslateString(564, 'Approve')} ${tokenName}`}
+              </Button>
+            )}
           </StyledCardActions>
         </StyledCardContentInner>
       </CardContent>
