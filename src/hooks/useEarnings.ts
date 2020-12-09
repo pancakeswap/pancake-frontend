@@ -17,7 +17,6 @@ const useEarnings = (pid: number) => {
   const { account }: { account: string } = useWallet()
   const sushi = useSushi()
   const masterChefContract = getMasterChefContract(sushi)
-  const block = useBlock()
 
   useEffect(() => {
     const fetchBalance = async () => {
@@ -25,10 +24,10 @@ const useEarnings = (pid: number) => {
       setBalance(new BigNumber(res))
     }
 
-    if (account && masterChefContract && sushi) {
+    if (account && masterChefContract) {
       fetchBalance()
     }
-  }, [account, block, masterChefContract, pid, setBalance, sushi])
+  }, [account, masterChefContract, pid])
 
   return balance
 }
@@ -39,7 +38,6 @@ export const useSousEarnings = (sousId) => {
   const sushi = useSushi()
   const sousChefContract = getSousChefContract(sushi, sousId)
   const masterChefContract = getMasterChefContract(sushi)
-  const block = useBlock()
 
   useEffect(() => {
     const fetchBalance = async () => {
@@ -52,10 +50,10 @@ export const useSousEarnings = (sousId) => {
       }
     }
 
-    if (account && sousChefContract && sushi) {
+    if (account && sousChefContract) {
       fetchBalance()
     }
-  }, [account, block, sousChefContract, setBalance, sushi, sousId, masterChefContract])
+  }, [account, masterChefContract, sousChefContract, sousId])
 
   return balance
 }
@@ -99,7 +97,7 @@ export const useSousLeftBlocks = (sousId) => {
     if (account && sousChefContract && sushi) {
       fetchBalance()
     }
-  }, [account, block, sousChefContract, setState, sushi, sousId])
+  }, [account, block, sousChefContract, sousId, sushi])
 
   return state
 }

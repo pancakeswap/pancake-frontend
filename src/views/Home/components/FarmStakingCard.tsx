@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { Heading, Card, CardBody, Button } from '@pancakeswap-libs/uikit'
 import { useWallet } from 'use-wallet'
 import useI18n from 'hooks/useI18n'
-import { useAllReward } from 'hooks/useReward'
+import { useAllHarvest } from 'hooks/useHarvest'
 import useFarmsWithBalance from 'hooks/useFarmsWithBalance'
 import UnlockButton from 'components/UnlockButton'
 import CakeHarvestBalance from './CakeHarvestBalance'
@@ -54,7 +54,7 @@ const FarmedStakingCard = () => {
   const farmsWithBalance = useFarmsWithBalance()
   const balancesWithValue = farmsWithBalance.filter((balanceType) => balanceType.balance.toNumber() > 0)
 
-  const { onReward } = useAllReward(balancesWithValue.map((farmWithBalance) => farmWithBalance.pid))
+  const { onReward } = useAllHarvest(balancesWithValue.map((farmWithBalance) => farmWithBalance.pid))
 
   const harvestAllFarms = useCallback(async () => {
     setPendingTx(true)
