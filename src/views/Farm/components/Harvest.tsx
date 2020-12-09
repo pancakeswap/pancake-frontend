@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
-import { Button } from '@pancakeswap-libs/uikit'
+import { Button, Card, CardBody } from '@pancakeswap-libs/uikit'
 import Label from 'components/Label'
 import { useHarvest } from 'hooks/useHarvest'
 import useI18n from 'hooks/useI18n'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { Card, CardImage } from './Card'
+import Image from './Image'
 import Value from './Value'
 
 interface HarvestProps {
@@ -21,25 +21,27 @@ const Harvest: React.FC<HarvestProps> = ({ pid, earnings }) => {
 
   return (
     <Card>
-      <StyledCardContentInner>
-        <StyledCardHeader>
-          <CardImage src="/images/tokens/CAKE.png" alt="cake" />
-          <Value value={getBalanceNumber(earnings)} fontSize="40px" />
-          <Label text={TranslateString(330, 'CAKE Earned')} />
-        </StyledCardHeader>
-        <StyledCardActions>
-          <Button
-            disabled={!earnings.toNumber() || pendingTx}
-            onClick={async () => {
-              setPendingTx(true)
-              await onReward()
-              setPendingTx(false)
-            }}
-          >
-            {pendingTx ? 'Collecting CAKE' : 'Harvest'}
-          </Button>
-        </StyledCardActions>
-      </StyledCardContentInner>
+      <CardBody>
+        <StyledCardContentInner>
+          <StyledCardHeader>
+            <Image src="/images/tokens/CAKE.png" alt="cake" />
+            <Value value={getBalanceNumber(earnings)} fontSize="40px" />
+            <Label text={TranslateString(330, 'CAKE Earned')} />
+          </StyledCardHeader>
+          <StyledCardActions>
+            <Button
+              disabled={!earnings.toNumber() || pendingTx}
+              onClick={async () => {
+                setPendingTx(true)
+                await onReward()
+                setPendingTx(false)
+              }}
+            >
+              {pendingTx ? 'Collecting CAKE' : 'Harvest'}
+            </Button>
+          </StyledCardActions>
+        </StyledCardContentInner>
+      </CardBody>
     </Card>
   )
 }

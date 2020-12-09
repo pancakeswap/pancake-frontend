@@ -3,7 +3,7 @@ import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import { useWallet } from 'use-wallet'
 import { Contract } from 'web3-eth-contract'
-import { Button, useModal, AddIcon } from '@pancakeswap-libs/uikit'
+import { Button, useModal, AddIcon, Card, CardBody } from '@pancakeswap-libs/uikit'
 import Label from 'components/Label'
 import useApprove from 'hooks/useApprove'
 import useStake from 'hooks/useStake'
@@ -13,7 +13,7 @@ import { getBalanceNumber } from 'utils/formatBalance'
 import UnlockButton from 'components/UnlockButton'
 import DepositModal from './DepositModal'
 import WithdrawModal from './WithdrawModal'
-import { Card, CardImage } from './Card'
+import Image from './Image'
 import Value from './Value'
 
 interface StakeProps {
@@ -59,34 +59,36 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName, allowance, to
 
   return (
     <Card>
-      <StyledCardContentInner>
-        <StyledCardHeader>
-          <CardImage src={`/images/farms/${farmImage}.svg`} alt={`${tokenName} logo`} />
-          <Value
-            value={getBalanceNumber(stakedBalance)}
-            decimals={tokenName === 'HARD' ? 6 : undefined}
-            fontSize="40px"
-          />
-          <Label text={`${tokenName} ${TranslateString(332, 'Tokens Staked')}`} />
-        </StyledCardHeader>
-        <StyledCardActions>
-          {!account && <UnlockButton />}
-          {account &&
-            (isAllowed ? (
-              <>
-                <Button disabled={stakedBalance.eq(new BigNumber(0))} onClick={onPresentWithdraw}>
-                  {TranslateString(292, 'Unstake')}
-                </Button>
-                <StyledActionSpacer />
-                <Button onClick={onPresentDeposit}>
-                  <AddIcon color="background" />
-                </Button>
-              </>
-            ) : (
-              <Button disabled={requestedApproval} onClick={handleApprove}>{`Approve ${tokenName}`}</Button>
-            ))}
-        </StyledCardActions>
-      </StyledCardContentInner>
+      <CardBody>
+        <StyledCardContentInner>
+          <StyledCardHeader>
+            <Image src={`/images/farms/${farmImage}.svg`} alt={`${tokenName} logo`} />
+            <Value
+              value={getBalanceNumber(stakedBalance)}
+              decimals={tokenName === 'HARD' ? 6 : undefined}
+              fontSize="40px"
+            />
+            <Label text={`${tokenName} ${TranslateString(332, 'Tokens Staked')}`} />
+          </StyledCardHeader>
+          <StyledCardActions>
+            {!account && <UnlockButton />}
+            {account &&
+              (isAllowed ? (
+                <>
+                  <Button disabled={stakedBalance.eq(new BigNumber(0))} onClick={onPresentWithdraw}>
+                    {TranslateString(292, 'Unstake')}
+                  </Button>
+                  <StyledActionSpacer />
+                  <Button onClick={onPresentDeposit}>
+                    <AddIcon color="background" />
+                  </Button>
+                </>
+              ) : (
+                <Button disabled={requestedApproval} onClick={handleApprove}>{`Approve ${tokenName}`}</Button>
+              ))}
+          </StyledCardActions>
+        </StyledCardContentInner>
+      </CardBody>
     </Card>
   )
 }
