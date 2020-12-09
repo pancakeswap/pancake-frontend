@@ -2,6 +2,7 @@ import { ButtonTheme } from "../components/Button/types";
 import { CardTheme } from "../components/Card/types";
 import { ToggleTheme } from "../components/Toggle/types";
 import { NavTheme } from "../widgets/Nav/types";
+import { ModalTheme } from "../widgets/Modal/types";
 import { Colors, Breakpoints, MediaQueries, Spacing, Shadows, Radii, ZIndices } from "./types";
 
 export interface PancakeTheme {
@@ -11,6 +12,7 @@ export interface PancakeTheme {
   button: ButtonTheme;
   card: CardTheme;
   nav: NavTheme;
+  modal: ModalTheme;
   toggle: ToggleTheme;
   breakpoints: Breakpoints;
   mediaQueries: MediaQueries;
