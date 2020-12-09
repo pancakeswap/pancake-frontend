@@ -11,7 +11,6 @@ import Stake from './views/Stake'
 import Lottery from './views/Lottery'
 import Pools from './views/Pools'
 import Ifo from './views/Ifo'
-import RegisterToWinPage from './views/Nft/RegisterToWinPage'
 import NotFound from './views/NotFound'
 import Nft from './views/Nft'
 
@@ -54,9 +53,6 @@ const App: React.FC = () => {
           <Ifo />
         </Route>
         <Route path="/nft">
-          <RegisterToWinPage />
-        </Route>
-        <Route path="/nft-live">
           <Nft />
         </Route>
         <Route component={NotFound} />

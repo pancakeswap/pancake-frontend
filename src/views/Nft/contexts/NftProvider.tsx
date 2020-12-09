@@ -54,16 +54,17 @@ const NftProvider: React.FC<NftProviderProps> = ({ children }) => {
     const fetchContractData = async () => {
       try {
         const { methods } = getRabbitMintingContract()
-        const promises = [
+        const [
+          endBlockNumber,
+          countBunniesBurnt,
+          totalSupplyDistributed,
+          currentDistributedSupply,
+        ] = await Promise.all([
           methods.endBlockNumber().call(),
           methods.countBunniesBurnt().call(),
           methods.totalSupplyDistributed().call(),
           methods.currentDistributedSupply().call(),
-        ]
-
-        const [endBlockNumber, countBunniesBurnt, totalSupplyDistributed, currentDistributedSupply] = await Promise.all(
-          promises,
-        )
+        ])
 
         setState((prevState) => ({
           ...prevState,
@@ -96,7 +97,7 @@ const NftProvider: React.FC<NftProviderProps> = ({ children }) => {
         let bunnyMap: BunnyMap = {}
 
         // If the "balanceOf" is greater than 0 then retrieve the tokenIds
-        // owned by the wallet
+        // owned by the wallet, then the bunnyId's associated with the tokenIds
         if (balanceOf > 0) {
           const getTokenIdAndBunnyId = async (index: number) => {
             try {
@@ -161,7 +162,7 @@ const NftProvider: React.FC<NftProviderProps> = ({ children }) => {
   const getTokenIds = (bunnyId: number) => state.bunnyMap[bunnyId]
 
   /**
-   * Allows consumers to re-fetch all data from the contact. Triggers the effects.
+   * Allows consumers to re-fetch all data from the contract. Triggers the effects.
    * For example when a transaction has been completed
    */
   const reInitialize = () => {
