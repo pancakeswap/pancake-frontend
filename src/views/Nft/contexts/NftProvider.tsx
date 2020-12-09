@@ -17,6 +17,7 @@ type State = {
   hasClaimed: boolean
   countBunniesBurnt: number
   endBlockNumber: number
+  startBlockNumber: number
   totalSupplyDistributed: number
   currentDistributedSupply: number
   balanceOf: number
@@ -38,6 +39,7 @@ const NftProvider: React.FC<NftProviderProps> = ({ children }) => {
     canClaim: false,
     hasClaimed: false,
     countBunniesBurnt: 0,
+    startBlockNumber: 0,
     endBlockNumber: 0,
     totalSupplyDistributed: 0,
     currentDistributedSupply: 0,
@@ -55,11 +57,13 @@ const NftProvider: React.FC<NftProviderProps> = ({ children }) => {
       try {
         const { methods } = getRabbitMintingContract()
         const [
+          startBlockNumber,
           endBlockNumber,
           countBunniesBurnt,
           totalSupplyDistributed,
           currentDistributedSupply,
         ] = await Promise.all([
+          methods.startBlockNumber().call(),
           methods.endBlockNumber().call(),
           methods.countBunniesBurnt().call(),
           methods.totalSupplyDistributed().call(),
@@ -70,6 +74,7 @@ const NftProvider: React.FC<NftProviderProps> = ({ children }) => {
           ...prevState,
           isInitialized: true,
           countBunniesBurnt: parseInt(countBunniesBurnt, 10),
+          startBlockNumber: parseInt(startBlockNumber, 10),
           endBlockNumber: parseInt(endBlockNumber, 10),
           currentDistributedSupply: parseInt(currentDistributedSupply, 10),
           totalSupplyDistributed: parseInt(totalSupplyDistributed, 10),
