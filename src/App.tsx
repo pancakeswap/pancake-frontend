@@ -35,7 +35,7 @@ const App: React.FC = () => {
         <Route exact path="/farms">
           <Farms removed={false} />
         </Route>
-        <Route path="/farms/:farmId">
+        <Route path="/farms/:lpSymbol">
           <Farm />
         </Route>
         <Route path="/staking">
