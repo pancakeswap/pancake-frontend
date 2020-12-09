@@ -13,6 +13,7 @@ import Pools from './views/Pools'
 import Ifo from './views/Ifo'
 import NotFound from './views/NotFound'
 import Nft from './views/Nft'
+import NftGlobalNotification from './views/Nft/components/NftGlobalNotification'
 
 const App: React.FC = () => {
   const { account, connect } = useWallet()
@@ -58,6 +59,7 @@ const App: React.FC = () => {
         <Route component={NotFound} />
       </Switch>
       <Footer />
+      <NftGlobalNotification />
     </Router>
   )
 }

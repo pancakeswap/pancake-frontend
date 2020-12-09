@@ -62,7 +62,7 @@ const BurnNftModal: React.FC<BurnNftModalProps> = ({ nft, tokenIds, onSuccess, o
   }
 
   return (
-    <Modal title={TranslateString(999, 'Claim NFT')} onDismiss={onDismiss}>
+    <Modal title={TranslateString(999, 'Trade in NFT')} onDismiss={onDismiss}>
       <ModalContent>
         {error && (
           <Text color="failure" mb="8px">

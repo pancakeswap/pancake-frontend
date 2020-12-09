@@ -18,6 +18,7 @@ const StyledHero = styled.div`
 `
 
 const StyledNtfInfo = styled.div`
+  align-items: start;
   display: grid;
   grid-template-columns: 1fr;
   grid-gap: 32px;
