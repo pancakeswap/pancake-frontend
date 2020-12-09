@@ -1,5 +1,4 @@
-// @ts-nocheck
-import React, { useEffect, useState } from 'react'
+import React, { useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import styled, { keyframes } from 'styled-components'
 import { useWallet } from 'use-wallet'
@@ -8,17 +7,13 @@ import { Button, Flex } from '@pancakeswap-libs/uikit'
 import { communityFarms } from 'sushi/lib/constants'
 import { FarmLP } from 'contexts/DataContext/types'
 import { usePriceBnbBusd, usePriceCakeBusd } from 'contexts/DataContext'
-import useSushi from 'hooks/useSushi'
 import useI18n from 'hooks/useI18n'
-import { getEarned, getMasterChefContract } from 'sushi/utils'
-import { bnToDec } from 'utils'
 import { CommunityTag, CoreTag } from 'components/Tags'
 import UnlockButton from 'components/UnlockButton'
-import getFarmConfig from 'utils/getFarmConfig'
 import { QuoteToken } from 'sushi/lib/constants/types'
 
-interface FarmWithStakedValue extends FarmLP {
-  apy: BigNumber
+export interface FarmWithStakedValue extends FarmLP {
+  apy?: BigNumber
 }
 
 const Action = styled.div`
@@ -131,39 +126,27 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
   const TranslateString = useI18n()
   const cakePrice = usePriceCakeBusd()
   const bnbPrice = usePriceBnbBusd()
+  const { account } = useWallet()
 
   const isCommunityFarm = communityFarms.includes(farm.tokenSymbol)
-
-  let totalValue = farm.lpTotalInQuoteToken
-  if (farm.quoteTokenSymbol === QuoteToken.BNB) {
-    totalValue *= bnbPrice
-  }
-  if (farm.quoteTokenSymbol === QuoteToken.CAKE) {
-    totalValue *= cakePrice
-  }
-
-  const [, setHarvestable] = useState(0)
-
-  const { account } = useWallet()
-  const { lpAddress } = farm
-  const sushi = useSushi()
-
-  useEffect(() => {
-    async function fetchEarned() {
-      if (sushi) return
-      const earned = await getEarned(getMasterChefContract(sushi), lpAddress, account)
-      setHarvestable(bnToDec(earned))
-    }
-    if (sushi && account) {
-      fetchEarned()
-    }
-  }, [sushi, lpAddress, account, setHarvestable])
-
-  const localConfig = getFarmConfig(farm.pid)
-
   // We assume the token name is coin pair + lp e.g. CAKE-BNB LP, LINK-BNB LP,
   // NAR-CAKE LP. The images should be cake-bnb.svg, link-bnb.svg, nar-cake.svg
   const farmImage = farm.lpSymbol.split(' ')[0].toLocaleLowerCase()
+
+  const totalValue: BigNumber = useMemo(() => {
+    if (!farm.lpTotalInQuoteToken) {
+      return null
+    }
+    if (farm.quoteTokenSymbol === QuoteToken.BNB) {
+      return farm.lpTotalInQuoteToken.times(bnbPrice)
+    }
+    if (farm.quoteTokenSymbol === QuoteToken.CAKE) {
+      return farm.lpTotalInQuoteToken.times(cakePrice)
+    }
+    return farm.lpTotalInQuoteToken
+  }, [bnbPrice, cakePrice, farm.lpTotalInQuoteToken, farm.quoteTokenSymbol])
+
+  const totalValueFormated = totalValue ? `$${Number(totalValue.toFixed(0)).toLocaleString()}` : '-'
 
   return (
     <FCard>
@@ -181,7 +164,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
       </Label>
       <Label>
         <span>{TranslateString(318, 'Earn')}</span>
-        <span className="right">{localConfig.dual ? localConfig.dual.earnLabel : 'CAKE'}</span>
+        <span className="right">{farm.dual ? farm.dual.earnLabel : 'CAKE'}</span>
       </Label>
       {!removed && (
         <Label>
@@ -194,8 +177,9 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
         </Label>
       )}
       <Action>
-        {/* No full width props because of as={ReactRouterLink} */}
         {account ? (
+          /* No full width props because of as={ReactRouterLink} */
+          // @ts-ignore
           <Button as={ReactRouterLink} to={`/farms/${farm.lpSymbol}`} style={{ width: '100%' }}>
             {TranslateString(999, 'Select')}
           </Button>
@@ -206,13 +190,11 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
       {!removed && (
         <Label>
           <span>{TranslateString(23, 'Total Liquidity')}</span>
-          <span className="right">
-            {farm.lpSymbol !== 'BAKE-BNB Bakery LP' ? `$${parseInt(totalValue).toLocaleString()}` : '-'}
-          </span>
+          <span className="right">{totalValueFormated}</span>
         </Label>
       )}
       <ViewMore>
-        <Link href={`https://bscscan.com/address/${farm.lpAddress}`} target="_blank">
+        <Link href={`https://bscscan.com/address/${farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]}`} target="_blank">
           {TranslateString(356, 'View on BscScan')} &gt;
         </Link>
       </ViewMore>
