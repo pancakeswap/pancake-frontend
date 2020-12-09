@@ -3,11 +3,10 @@ import styled from 'styled-components'
 import { Button } from '@pancakeswap-libs/uikit'
 import Label from 'components/Label'
 import useEarnings from 'hooks/useEarnings'
-import useReward from 'hooks/useReward'
+import { useHarvest } from 'hooks/useHarvest'
 import useI18n from 'hooks/useI18n'
 import { getBalanceNumber } from 'utils/formatBalance'
-import Card from './Card'
-import CardImage from './CardImage'
+import { Card, CardImage } from './Card'
 import Value from './Value'
 
 interface HarvestProps {
@@ -18,7 +17,7 @@ const Harvest: React.FC<HarvestProps> = ({ pid }) => {
   const TranslateString = useI18n()
   const earnings = useEarnings(pid)
   const [pendingTx, setPendingTx] = useState(false)
-  const { onReward } = useReward(pid)
+  const { onReward } = useHarvest(pid)
 
   return (
     <Card>

@@ -14,9 +14,9 @@ import DualFarmDisclaimer from './components/DualFarmDisclaimer'
 const Farm: React.FC = () => {
   const TranslateString = useI18n()
   const { ethereum } = useWallet()
-  const { farmId } = useParams<{ farmId?: string }>()
+  const { lpSymbol } = useParams<{ lpSymbol?: string }>()
 
-  const { pid, lpSymbol, lpAddresses, tokenSymbol, dual } = useFarmLP(farmId)
+  const { pid, lpAddresses, tokenSymbol, dual } = useFarmLP(lpSymbol)
   const lpAddress = lpAddresses[process.env.REACT_APP_CHAIN_ID]
 
   const lpContract = useMemo(() => {

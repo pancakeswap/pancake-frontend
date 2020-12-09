@@ -7,7 +7,7 @@ import CardIcon from '../../../components/CardIcon'
 import Label from '../../../components/Label'
 import Value from '../../../components/Value'
 import useEarnings from '../../../hooks/useEarnings'
-import useReward from '../../../hooks/useReward'
+import { useHarvest } from '../../../hooks/useHarvest'
 import useI18n from '../../../hooks/useI18n'
 import { getBalanceNumber } from '../../../utils/formatBalance'
 
@@ -19,7 +19,7 @@ const Harvest: React.FC<HarvestProps> = ({ pid }) => {
   const TranslateString = useI18n()
   const earnings = useEarnings(pid)
   const [pendingTx, setPendingTx] = useState(false)
-  const { onReward } = useReward(pid)
+  const { onReward } = useHarvest(pid)
 
   return (
     <Card>

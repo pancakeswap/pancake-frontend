@@ -16,8 +16,7 @@ import { getBalanceNumber } from 'utils/formatBalance'
 import UnlockButton from 'components/UnlockButton'
 import DepositModal from './DepositModal'
 import WithdrawModal from './WithdrawModal'
-import Card from './Card'
-import CardImage from './CardImage'
+import { Card, CardImage } from './Card'
 import Value from './Value'
 
 interface StakeProps {
