@@ -2,10 +2,10 @@ import React, { useEffect, useMemo } from 'react'
 import styled from 'styled-components'
 import { useWallet } from 'use-wallet'
 import { provider } from 'web3-core'
+import { useFarmLP } from 'contexts/DataContext'
 import Spacer from '../../components/Spacer'
 import Page from '../../components/Page'
 import PageHeader from '../../components/PageHeader'
-import useFarm from '../../hooks/useFarm'
 import { getContract } from '../../utils/erc20'
 import Harvest from './components/Harvest'
 import Syrup from './components/Syrup'
@@ -14,18 +14,10 @@ import SyrupWarning from './components/SyrupWarning'
 import { TranslateString } from '../../utils/translateTextHelpers'
 
 const Farm: React.FC = () => {
-  const farmInfo = useFarm('CAKE') || {
-    pid: 0,
-    lpSymbol: '',
-    lpAddress: '',
-    tokenAddress: '',
-    earnToken: '',
-    name: '',
-    icon: '',
-    tokenSymbol: '',
-  }
+  const farmInfo = useFarmLP('CAKE')
 
-  const { pid, lpSymbol, lpAddress } = farmInfo
+  const { pid, lpSymbol, lpAddresses } = farmInfo
+  const lpAddress = lpAddresses[process.env.REACT_APP_CHAIN_ID]
 
   useEffect(() => {
     window.scrollTo(0, 0)

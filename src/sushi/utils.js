@@ -2,11 +2,6 @@ import BigNumber from 'bignumber.js'
 import get from 'lodash/get'
 import memoize from 'lodash/memoize'
 import { ethers } from 'ethers'
-import addresses from 'sushi/lib/constants/contracts'
-import erc20 from 'sushi/lib/abi/erc20.json'
-import masterchefABI from 'sushi/lib/abi/masterchef.json'
-import multicall from 'utils/multicall'
-import { QuoteToken } from 'sushi/lib/constants/types'
 import { poolsConfig } from './lib/constants'
 
 BigNumber.config({
@@ -69,73 +64,6 @@ export const getTotalStakedBNB = async (sushi, sousChefContract) => {
   const wbnb = await getWbnbContract(sushi)
   const wbnbBalance = await wbnb.methods.balanceOf(sousChefContract.options.address).call()
   return wbnbBalance
-}
-
-export const getLPValues = async (pid, tokenSymbol, lpAddress, tokenAddress, quoteTokenAddress, quoteToken) => {
-  const calls = [
-    {
-      address: tokenAddress,
-      name: 'decimals',
-    },
-    {
-      address: tokenAddress,
-      name: 'balanceOf',
-      params: [lpAddress],
-    },
-    {
-      address: lpAddress,
-      name: 'balanceOf',
-      params: [addresses.masterChef[56]],
-    },
-    {
-      address: lpAddress,
-      name: 'totalSupply',
-    },
-    {
-      address: quoteTokenAddress,
-      name: 'balanceOf',
-      params: [lpAddress],
-    },
-  ]
-
-  const res = await multicall(erc20, calls)
-
-  const [tokenDecimals, tokenAmountWholeLP, balance, totalSupply, lpContractValue] = res
-
-  // Return p1 * w1 * 2
-  const lpContractValueBN = new BigNumber(lpContractValue)
-  const portionLp = new BigNumber(balance).div(new BigNumber(totalSupply))
-  const totalLpValue = portionLp.times(lpContractValueBN).times(new BigNumber(2))
-  // Calculate
-  const tokenAmount = new BigNumber(tokenAmountWholeLP).times(portionLp).div(new BigNumber(10).pow(tokenDecimals))
-  const wbnbAmount = lpContractValueBN.times(portionLp).div(new BigNumber(10).pow(18))
-
-  const [info, totalAllocPoint] = await multicall(masterchefABI, [
-    {
-      address: addresses.masterChef[56],
-      name: 'poolInfo',
-      params: [pid],
-    },
-    {
-      address: addresses.masterChef[56],
-      name: 'totalAllocPoint',
-    },
-  ])
-
-  // eslint-disable-next-line no-underscore-dangle
-  const poolWeight = new BigNumber(info.allocPoint._hex).div(new BigNumber(totalAllocPoint))
-
-  return {
-    pid,
-    tokenSymbol,
-    tokenDecimals,
-    tokenAmount,
-    wbnbAmount,
-    totalWbnbValue: totalLpValue.div(new BigNumber(10).pow(18)),
-    tokenPrice: wbnbAmount.div(tokenAmount),
-    poolWeight,
-    quoteToken,
-  }
 }
 
 export const approve = async (lpContract, masterChefContract, account) => {
