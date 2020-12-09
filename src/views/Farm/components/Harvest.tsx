@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
+import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import { Button } from '@pancakeswap-libs/uikit'
 import Label from 'components/Label'
-import useEarnings from 'hooks/useEarnings'
 import { useHarvest } from 'hooks/useHarvest'
 import useI18n from 'hooks/useI18n'
 import { getBalanceNumber } from 'utils/formatBalance'
@@ -11,11 +11,11 @@ import Value from './Value'
 
 interface HarvestProps {
   pid: number
+  earnings: BigNumber
 }
 
-const Harvest: React.FC<HarvestProps> = ({ pid }) => {
+const Harvest: React.FC<HarvestProps> = ({ pid, earnings }) => {
   const TranslateString = useI18n()
-  const earnings = useEarnings(pid)
   const [pendingTx, setPendingTx] = useState(false)
   const { onReward } = useHarvest(pid)
 

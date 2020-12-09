@@ -1,16 +1,13 @@
-import BigNumber from 'bignumber.js'
 import React, { useCallback, useState } from 'react'
+import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import { useWallet } from 'use-wallet'
 import { Contract } from 'web3-eth-contract'
 import { Button, useModal, AddIcon } from '@pancakeswap-libs/uikit'
 import Label from 'components/Label'
-import useAllowance from 'hooks/useAllowance'
 import useApprove from 'hooks/useApprove'
 import useStake from 'hooks/useStake'
 import useI18n from 'hooks/useI18n'
-import useStakedBalance from 'hooks/useStakedBalance'
-import useTokenBalance from 'hooks/useTokenBalance'
 import useUnstake from 'hooks/useUnstake'
 import { getBalanceNumber } from 'utils/formatBalance'
 import UnlockButton from 'components/UnlockButton'
@@ -23,24 +20,21 @@ interface StakeProps {
   lpContract: Contract
   pid: number
   tokenName: string
+  allowance: BigNumber
+  tokenBalance: BigNumber
+  stakedBalance: BigNumber
 }
 
-const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName }) => {
+const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName, allowance, tokenBalance, stakedBalance }) => {
   const [requestedApproval, setRequestedApproval] = useState(false)
   const TranslateString = useI18n()
   const { account } = useWallet()
 
-  const allowance = useAllowance(lpContract)
   const { onApprove } = useApprove(lpContract)
-
-  const tokenBalance = useTokenBalance(lpContract.options.address)
-  const stakedBalance = useStakedBalance(pid)
-
   const { onStake } = useStake(pid)
   const { onUnstake } = useUnstake(pid)
 
   const [onPresentDeposit] = useModal(<DepositModal max={tokenBalance} onConfirm={onStake} tokenName={tokenName} />)
-
   const [onPresentWithdraw] = useModal(
     <WithdrawModal max={stakedBalance} onConfirm={onUnstake} tokenName={tokenName} />,
   )
@@ -61,6 +55,7 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName }) => {
   // We assume the token name is coin pair + lp e.g. CAKE-BNB LP, LINK-BNB LP,
   // NAR-CAKE LP. The images should be cake-bnb.svg, link-bnb.svg, nar-cake.svg
   const farmImage = tokenName.split(' ')[0].toLocaleLowerCase()
+  const isAllowed = account && allowance && allowance.isGreaterThan(0)
 
   return (
     <Card>
@@ -77,9 +72,7 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName }) => {
         <StyledCardActions>
           {!account && <UnlockButton />}
           {account &&
-            (!allowance.toNumber() ? (
-              <Button disabled={requestedApproval} onClick={handleApprove}>{`Approve ${tokenName}`}</Button>
-            ) : (
+            (isAllowed ? (
               <>
                 <Button disabled={stakedBalance.eq(new BigNumber(0))} onClick={onPresentWithdraw}>
                   {TranslateString(292, 'Unstake')}
@@ -89,6 +82,8 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName }) => {
                   <AddIcon color="background" />
                 </Button>
               </>
+            ) : (
+              <Button disabled={requestedApproval} onClick={handleApprove}>{`Approve ${tokenName}`}</Button>
             ))}
         </StyledCardActions>
       </StyledCardContentInner>
