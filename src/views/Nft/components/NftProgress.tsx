@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import styled from 'styled-components'
-import { Card, CardBody, Heading, OpenNewIcon, Text, Link as UIKitLink } from '@pancakeswap-libs/uikit'
+import { Card, CardBody, Heading, OpenNewIcon, Text, Link as UIKitLink, Progress } from '@pancakeswap-libs/uikit'
 import { BSC_BLOCK_TIME } from 'config'
 import useI18n from 'hooks/useI18n'
 import useBlock from 'hooks/useBlock'
@@ -37,19 +37,32 @@ const Message = styled.p`
   text-align: center;
 `
 
+const ProgressWrap = styled.div`
+  margin-bottom: 16px;
+`
+
 const NftProgress = () => {
-  const { isInitialized, currentDistributedSupply, totalSupplyDistributed, endBlockNumber } = useContext(
-    NftProviderContext,
-  )
+  const {
+    isInitialized,
+    currentDistributedSupply,
+    totalSupplyDistributed,
+    countBunniesBurnt,
+    startBlockNumber,
+    endBlockNumber,
+  } = useContext(NftProviderContext)
   const TranslateString = useI18n()
   const currentBlock = useBlock()
-
   const secondsRemaining = (endBlockNumber - currentBlock) * BSC_BLOCK_TIME
   const timeLeft = formatTimePeriod(getTimePeriods(secondsRemaining), ['seconds'])
+  const totalBlocks = endBlockNumber - startBlockNumber
+  const progress = currentBlock > startBlockNumber ? ((currentBlock - startBlockNumber) / totalBlocks) * 100 : 5
 
   return (
     <Card>
       <CardBody>
+        <ProgressWrap>
+          <Progress primaryStep={progress} />
+        </ProgressWrap>
         <TimeLeft>
           {timeLeft ? TranslateString(999, `${timeLeft} left to trade in NFTs`) : TranslateString(999, 'Finished!')}
         </TimeLeft>
@@ -57,6 +70,12 @@ const NftProgress = () => {
           <Text>{TranslateString(999, "Total NFT's claimed")}:</Text>
           <Text>
             <strong>{!isInitialized ? '...' : `${currentDistributedSupply}/${totalSupplyDistributed}`}</strong>
+          </Text>
+        </Row>
+        <Row>
+          <Text>{TranslateString(999, "Total NFT's burned")}:</Text>
+          <Text>
+            <strong>{!isInitialized ? '...' : `${countBunniesBurnt}/${totalSupplyDistributed}`}</strong>
           </Text>
         </Row>
         <Row>

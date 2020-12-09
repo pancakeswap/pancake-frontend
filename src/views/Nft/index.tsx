@@ -43,8 +43,8 @@ const Nft = () => {
             </Heading>
           </StyledHero>
           <StyledNtfInfo>
-            <StatusCard />
             <NftProgress />
+            <StatusCard />
           </StyledNtfInfo>
         </Container>
         <NftList />

@@ -124,12 +124,12 @@ const NftCard: React.FC<NftCardProps> = ({ nft }) => {
           )}
         </Header>
         {isInitialized && walletCanClaim && (
-          <Button fullWidth onClick={onPresentClaimModal} mt="16px">
+          <Button fullWidth onClick={onPresentClaimModal} mt="24px">
             {TranslateString(999, 'Claim this NFT')}
           </Button>
         )}
         {isInitialized && canBurnNft && walletOwnsNft && (
-          <Button variant="danger" fullWidth onClick={onPresentBurnModal} mt="16px">
+          <Button variant="danger" fullWidth onClick={onPresentBurnModal} mt="24px">
             {TranslateString(999, 'Trade in for CAKE')}
           </Button>
         )}
