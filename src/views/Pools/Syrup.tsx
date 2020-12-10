@@ -7,7 +7,7 @@ import partition from 'lodash/partition'
 import useUserBnbBalance from 'hooks/rework/useBnbBalance'
 import useSushi from 'hooks/useSushi'
 import useI18n from 'hooks/useI18n'
-import { useFarmsLP, usePriceBnbBusd } from 'contexts/DataContext'
+import { useFarms, usePriceBnbBusd } from 'state/hooks'
 import { getPools } from 'sushi/utils'
 import { QuoteToken } from 'sushi/lib/constants/types'
 import Coming from './components/Coming'
@@ -16,23 +16,24 @@ import PoolCard from './components/PoolCard'
 const Farm: React.FC = () => {
   const sushi = useSushi()
   const TranslateString = useI18n()
-  const stakedValues = useFarmsLP()
+  const farms = useFarms()
   const userBnbBalance = useUserBnbBalance()
   const bnbPriceUSD = usePriceBnbBusd()
-  const cakePriceVsBNB = stakedValues.find((s) => s.tokenSymbol === 'CAKE')?.tokenPriceVsQuote || new BigNumber(0)
+  const cakePriceVsBNB = new BigNumber(farms.find((s) => s.tokenSymbol === 'CAKE')?.tokenPriceVsQuote || 0)
 
-  const priceToBnb = (tokenName: string, tokenPrice: BigNumber, quoteToken: QuoteToken) => {
+  const priceToBnb = (tokenName: string, tokenPrice: BigNumber, quoteToken: QuoteToken): BigNumber => {
+    const tokenPriceBN = new BigNumber(tokenPrice)
     if (tokenName === 'BNB') {
       return new BigNumber(1)
     }
     if (tokenPrice && quoteToken === QuoteToken.BUSD) {
-      return tokenPrice.div(bnbPriceUSD)
+      return tokenPriceBN.div(bnbPriceUSD)
     }
-    return tokenPrice
+    return tokenPriceBN
   }
 
   const pools = getPools(sushi).map((pool) => {
-    const stakedValue = stakedValues.find((s) => s.tokenSymbol === pool.tokenName)
+    const stakedValue = farms.find((s) => s.tokenSymbol === pool.tokenName)
 
     return {
       ...pool,
