@@ -1,8 +1,8 @@
 import BigNumber from 'bignumber.js'
 import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync } from './actions'
-import { State, Farm } from './types'
+import { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync, fetchPoolsPublicDataAsync } from './actions'
+import { State, Farm, Pool } from './types'
 
 const ZERO = new BigNumber(0)
 
@@ -10,6 +10,7 @@ const useStateInit = () => {
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(fetchFarmsPublicDataAsync())
+    dispatch(fetchPoolsPublicDataAsync())
   }, [dispatch])
 }
 
@@ -51,9 +52,14 @@ export const useFarmUser = (pid, account) => {
 
 // Pools
 
-export const usePools = () => {
+export const usePools = (): Pool[] => {
   const pools = useSelector((state: State) => state.pools.data)
   return pools
+}
+
+export const usePoolFromPid = (sousId): Pool => {
+  const pool = useSelector((state: State) => state.pools.data.find((p) => p.sousId === sousId))
+  return pool
 }
 
 // Prices

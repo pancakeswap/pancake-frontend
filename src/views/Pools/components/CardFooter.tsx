@@ -19,7 +19,7 @@ interface Props {
   totalStaked: BigNumber
   blocksRemaining: number
   isFinished: boolean
-  farmStart: number
+  blocksUntilStart: number
   poolCategory: PoolCategory
 }
 
@@ -77,7 +77,7 @@ const CardFooter: React.FC<Props> = ({
   totalStaked,
   blocksRemaining,
   isFinished,
-  farmStart,
+  blocksUntilStart,
   poolCategory,
 }) => {
   const [isOpen, setIsOpen] = useState(false)
@@ -110,15 +110,15 @@ const CardFooter: React.FC<Props> = ({
             </FlexFull>
             <Balance fontSize="14px" isDisabled={isFinished} value={getBalanceNumber(totalStaked)} />
           </Row>
-          {farmStart > 0 && (
+          {blocksUntilStart > 0 && (
             <Row>
               <FlexFull>
                 <Label>{TranslateString(410, 'Start')}:</Label>
               </FlexFull>
-              <Balance fontSize="14px" isDisabled={isFinished} value={farmStart} decimals={0} />
+              <Balance fontSize="14px" isDisabled={isFinished} value={blocksUntilStart} decimals={0} />
             </Row>
           )}
-          {farmStart === 0 && blocksRemaining > 0 && (
+          {blocksUntilStart === 0 && blocksRemaining > 0 && (
             <Row>
               <FlexFull>
                 <Label>{TranslateString(410, 'End')}:</Label>

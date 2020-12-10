@@ -12,13 +12,14 @@ import { useSousApprove } from 'hooks/useApprove'
 import useI18n from 'hooks/useI18n'
 import { useSousEarnings, useSousLeftBlocks } from 'hooks/useEarnings'
 import { useSousStake } from 'hooks/useStake'
-import { useSousStakedBalance, useSousTotalStaked } from 'hooks/useStakedBalance'
+import useSousStakedBalance from 'hooks/useStakedBalance'
 import useTokenBalance from 'hooks/useTokenBalance'
 import { useSousUnstake } from 'hooks/useUnstake'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useSousHarvest } from 'hooks/useHarvest'
 import Balance from 'components/Balance'
 import { QuoteToken, PoolCategory } from 'sushi/lib/constants/types'
+import { Pool } from 'state/types'
 import DepositModal from './DepositModal'
 import WithdrawModal from './WithdrawModal'
 import CardTitle from './CardTitle'
@@ -28,39 +29,31 @@ import OldSyrupTitle from './OldSyrupTitle'
 import HarvestButton from './HarvestButton'
 import CardFooter from './CardFooter'
 
+interface PoolWithPrice extends Pool {
+  tokenPrice: BigNumber
+}
+
 interface HarvestProps {
   cakePriceVsBNB: BigNumber
   userBnbBalance: BigNumber
-  sousId: number
-  image?: string
-  tokenName: string
-  stakingTokenName: QuoteToken
-  stakingTokenAddress: string
-  projectLink: string
-  harvest: boolean
-  tokenPerBlock: string
-  tokenPrice: BigNumber
-  isFinished?: boolean
-  tokenDecimals: number
-  poolCategory: PoolCategory
+  pool: PoolWithPrice
 }
 
-const PoolCard: React.FC<HarvestProps> = ({
-  cakePriceVsBNB,
-  userBnbBalance,
-  sousId,
-  image,
-  tokenName,
-  stakingTokenName,
-  stakingTokenAddress,
-  projectLink,
-  harvest,
-  tokenPrice,
-  tokenPerBlock,
-  isFinished: isFinishedConfig,
-  tokenDecimals,
-  poolCategory,
-}) => {
+const PoolCard: React.FC<HarvestProps> = ({ cakePriceVsBNB, userBnbBalance, pool }) => {
+  const {
+    sousId,
+    image,
+    tokenName,
+    stakingTokenName,
+    stakingTokenAddress,
+    projectLink,
+    harvest,
+    tokenPrice,
+    tokenPerBlock,
+    tokenDecimals,
+    poolCategory,
+    totalStaked,
+  } = pool
   // Pools using native BNB behave differently than pools using a token
   const isBnbPool = poolCategory === PoolCategory.BINANCE
   const TranslateString = useI18n()
@@ -72,9 +65,8 @@ const PoolCard: React.FC<HarvestProps> = ({
   const tokenBalance = useTokenBalance(stakingTokenContract.options.address)
   const userBalance = isBnbPool ? userBnbBalance : tokenBalance
 
-  const { isFinished: isCalculatedFinished, farmStart, blocksRemaining } = useSousLeftBlocks(sousId)
+  const { isFinished, blocksUntilStart, blocksRemaining } = useSousLeftBlocks(sousId)
   const stakedBalance = useSousStakedBalance(sousId)
-  const totalStaked = useSousTotalStaked(sousId, isBnbPool)
   const earnings = useSousEarnings(sousId)
   const { onStake } = useSousStake(sousId, isBnbPool)
   const { onUnstake } = useSousUnstake(sousId)
@@ -85,7 +77,7 @@ const PoolCard: React.FC<HarvestProps> = ({
   const [pendingTx, setPendingTx] = useState(false)
 
   const apy: BigNumber = useMemo(() => {
-    if (cakePriceVsBNB?.isEqualTo(0) || tokenPrice?.isEqualTo(0) || totalStaked?.isEqualTo(0)) {
+    if (cakePriceVsBNB?.isEqualTo(0) || tokenPrice?.isEqualTo(0) || !totalStaked) {
       return null
     }
     const stakedTokenPrice: BigNumber = isBnbPool ? new BigNumber(1) : cakePriceVsBNB
@@ -99,7 +91,6 @@ const PoolCard: React.FC<HarvestProps> = ({
   const isOldSyrup = stakingTokenName === QuoteToken.SYRUP
   const accountHasStakedBalance = account && stakedBalance.toNumber() > 0
   const needsApproval = !accountHasStakedBalance && !allowance.toNumber() && !isBnbPool
-  const isFinished = isFinishedConfig || isCalculatedFinished
   const isCardActive = isFinished && accountHasStakedBalance
 
   const [onPresentDeposit] = useModal(
@@ -217,7 +208,7 @@ const PoolCard: React.FC<HarvestProps> = ({
         totalStaked={totalStaked}
         blocksRemaining={blocksRemaining}
         isFinished={isFinished}
-        farmStart={farmStart}
+        blocksUntilStart={blocksUntilStart}
         poolCategory={poolCategory}
       />
     </Card>
