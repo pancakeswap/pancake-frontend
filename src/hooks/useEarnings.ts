@@ -12,26 +12,6 @@ import {
 import useSushi from './useSushi'
 import useBlock from './useBlock'
 
-const useEarnings = (pid: number) => {
-  const [balance, setBalance] = useState(new BigNumber(0))
-  const { account }: { account: string } = useWallet()
-  const sushi = useSushi()
-  const masterChefContract = getMasterChefContract(sushi)
-
-  useEffect(() => {
-    const fetchBalance = async () => {
-      const res = await getEarned(masterChefContract, pid, account)
-      setBalance(new BigNumber(res))
-    }
-
-    if (account && masterChefContract) {
-      fetchBalance()
-    }
-  }, [account, masterChefContract, pid])
-
-  return balance
-}
-
 export const useSousEarnings = (sousId) => {
   const [balance, setBalance] = useState(new BigNumber(0))
   const { account }: { account: string } = useWallet()
@@ -101,5 +81,3 @@ export const useSousLeftBlocks = (sousId) => {
 
   return state
 }
-
-export default useEarnings
