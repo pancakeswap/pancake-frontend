@@ -35,7 +35,7 @@ export interface Address {
   56: string
 }
 
-export interface Farm {
+export interface FarmConfig {
   pid: number
   lpSymbol: string
   lpAddresses: Address
@@ -52,7 +52,7 @@ export interface Farm {
   }
 }
 
-export interface Pool {
+export interface PoolConfig {
   sousId: number
   image?: string
   tokenName: string

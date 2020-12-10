@@ -13,6 +13,8 @@ const useStateInit = () => {
   }, [dispatch])
 }
 
+// Farms
+
 export const useFarms = () => {
   const farms = useSelector((state: State) => state.farms.data)
   return farms
@@ -27,6 +29,15 @@ export const useFarmFromSymbol = (lpSymbol: string) => {
   const farm = useSelector((state: State) => state.farms.data.find((f) => f.lpSymbol === lpSymbol))
   return farm
 }
+
+// Pools
+
+export const usePools = () => {
+  const pools = useSelector((state: State) => state.pools.data)
+  return pools
+}
+
+// Prices
 
 export const usePriceBnbBusd = (): BigNumber => {
   const pid = 2 // BUSD-BNB LP

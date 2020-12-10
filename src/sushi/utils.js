@@ -2,7 +2,6 @@ import BigNumber from 'bignumber.js'
 import get from 'lodash/get'
 import memoize from 'lodash/memoize'
 import { ethers } from 'ethers'
-import { poolsConfig } from './lib/constants'
 
 BigNumber.config({
   EXPONENTIAL_AT: 1000,
@@ -39,10 +38,6 @@ export const getFarms = memoize((sushi) => {
   const pools = get(sushi, 'contracts.pools', [])
   return pools
 })
-
-export const getPools = (sushi) => {
-  return get(sushi, 'contracts.sousChefs', poolsConfig)
-}
 
 export const getEarned = async (masterChefContract, pid, account) => {
   return masterChefContract.methods.pendingCake(pid, account).call()
