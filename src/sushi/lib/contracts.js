@@ -42,24 +42,22 @@ export default class Contracts {
     this.multicall = new this.web3.eth.Contract(MultiCallAbi)
     this.busd = new this.web3.eth.Contract(ERC20Abi)
 
-    this.pools = farmsConfig.map((pool) =>
-      Object.assign(pool, {
-        lpAddress: pool.lpAddresses[networkId],
-        tokenAddress: pool.tokenAddresses[networkId],
-        lpContract: new this.web3.eth.Contract(UNIV2PairAbi),
-        tokenContract: new this.web3.eth.Contract(ERC20Abi),
-      }),
-    )
+    this.pools = farmsConfig.map((pool) => ({
+      ...pool,
+      lpAddress: pool.lpAddresses[networkId],
+      tokenAddress: pool.tokenAddresses[networkId],
+      lpContract: new this.web3.eth.Contract(UNIV2PairAbi),
+      tokenContract: new this.web3.eth.Contract(ERC20Abi),
+    }))
 
-    this.sousChefs = poolsConfig.map((pool) =>
-      Object.assign(pool, {
-        contractAddress: pool.contractAddress[networkId],
-        sousContract:
-          pool.poolCategory === PoolCategory.BINANCE
-            ? new this.web3.eth.Contract(SousChefBnbAbi)
-            : new this.web3.eth.Contract(SousChefAbi),
-      }),
-    )
+    this.sousChefs = poolsConfig.map((pool) => ({
+      ...pool,
+      contractAddress: pool.contractAddress[networkId],
+      sousContract:
+        pool.poolCategory === PoolCategory.BINANCE
+          ? new this.web3.eth.Contract(SousChefBnbAbi)
+          : new this.web3.eth.Contract(SousChefAbi),
+    }))
 
     this.setProvider(provider, networkId)
     this.setDefaultAccount(this.web3.eth.defaultAccount)

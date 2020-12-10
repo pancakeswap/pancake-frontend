@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import { useWallet } from 'use-wallet'
 import { provider } from 'web3-core'
-import { useFarmLP } from 'contexts/DataContext'
+import { useFarmFromSymbol } from 'state/hooks'
 import Spacer from 'components/Spacer'
 import Page from 'components/Page'
 import PageHeader from 'components/PageHeader'
@@ -15,7 +15,7 @@ import Stake from './components/Stake'
 import SyrupWarning from './components/SyrupWarning'
 
 const Farm: React.FC = () => {
-  const farmInfo = useFarmLP('CAKE')
+  const farmInfo = useFarmFromSymbol('CAKE')
 
   const { pid, lpSymbol, lpAddresses } = farmInfo
   const lpAddress = lpAddresses[process.env.REACT_APP_CHAIN_ID]

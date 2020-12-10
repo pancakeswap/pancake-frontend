@@ -1,10 +1,23 @@
 import { useEffect, useState } from 'react'
 import BigNumber from 'bignumber.js'
 import { useWallet } from 'use-wallet'
-import { Farm } from 'types/farms'
+import { Contract } from 'web3-eth-contract'
 import { getEarned, getMasterChefContract, getFarms } from '../sushi/utils'
 import useSushi from './useSushi'
 import useBlock from './useBlock'
+
+export interface Farm {
+  pid: number
+  name: string
+  lpSymbol: string
+  lpAddress: string
+  lpContract: Contract
+  tokenAddress: string
+  earnToken: string
+  earnTokenAddress: string
+  tokenSymbol: string
+  multiplier: string
+}
 
 export interface FarmWithBalance extends Farm {
   balance: BigNumber
