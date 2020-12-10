@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js'
 import React, { useCallback, useMemo, useState } from 'react'
 import styled from 'styled-components'
-import { Button, useModal, AddIcon } from '@pancakeswap-libs/uikit'
+import { Button, IconButton, useModal, AddIcon } from '@pancakeswap-libs/uikit'
 import { useWallet } from 'use-wallet'
 import { BLOCKS_PER_YEAR } from 'config'
 import UnlockButton from 'components/UnlockButton'
@@ -163,7 +163,7 @@ const PoolCard: React.FC<HarvestProps> = ({
           {account &&
             (needsApproval && !isOldSyrup ? (
               <div style={{ flex: 1 }}>
-                <Button disabled={isFinished || requestedApproval} onClick={handleApprove}>
+                <Button disabled={isFinished || requestedApproval} onClick={handleApprove} fullWidth>
                   {`Approve ${stakingTokenName}`}
                 </Button>
               </div>
@@ -185,9 +185,9 @@ const PoolCard: React.FC<HarvestProps> = ({
                 </Button>
                 <StyledActionSpacer />
                 {!isOldSyrup && (
-                  <Button disabled={isFinished && sousId !== 0} onClick={onPresentDeposit}>
+                  <IconButton disabled={isFinished && sousId !== 0} onClick={onPresentDeposit}>
                     <AddIcon color="background" />
-                  </Button>
+                  </IconButton>
                 )}
               </>
             ))}
