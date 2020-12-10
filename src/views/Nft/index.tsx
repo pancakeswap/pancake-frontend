@@ -25,7 +25,7 @@ const Nft = () => {
         <Container>
           <StyledHero>
             <Heading as="h1" size="xxl" color="secondary" mb="24px">
-              {TranslateString(999, 'NFTs')}
+              NFTs
             </Heading>
             <Heading as="h2" size="lg" color="secondary">
               {TranslateString(999, 'Trade in for CAKE, or keep for your collection!')}
