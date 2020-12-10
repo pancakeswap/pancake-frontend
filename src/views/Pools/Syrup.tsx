@@ -58,11 +58,11 @@ const Farm: React.FC = () => {
       </Hero>
       <Pools>
         {orderBy(openPools, ['sortOrder']).map((pool) => (
-          <PoolCard key={pool.sousId} cakePriceVsBNB={cakePriceVsBNB} userBnbBalance={userBnbBalance} {...pool} />
+          <PoolCard key={pool.sousId} cakePriceVsBNB={cakePriceVsBNB} userBnbBalance={userBnbBalance} pool={pool} />
         ))}
         <Coming />
         {orderBy(finishedPools, ['sortOrder']).map((pool) => (
-          <PoolCard key={pool.sousId} cakePriceVsBNB={cakePriceVsBNB} userBnbBalance={userBnbBalance} {...pool} />
+          <PoolCard key={pool.sousId} cakePriceVsBNB={cakePriceVsBNB} userBnbBalance={userBnbBalance} pool={pool} />
         ))}
       </Pools>
     </Page>

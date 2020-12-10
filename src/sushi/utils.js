@@ -17,13 +17,6 @@ export const getSyrupAddress = (sushi) => {
 export const getSyrupContract = (sushi) => {
   return sushi && sushi.contracts && sushi.contracts.syrup
 }
-export const getWbnbContract = (sushi) => {
-  return sushi && sushi.contracts && sushi.contracts.wbnb
-}
-export const getBusdContract = (sushi) => {
-  return sushi && sushi.contracts && sushi.contracts.busd
-}
-
 export const getMasterChefContract = (sushi) => {
   return sushi && sushi.contracts && sushi.contracts.masterChef
 }
@@ -45,20 +38,6 @@ export const getEarned = async (masterChefContract, pid, account) => {
 
 export const getSousEarned = async (sousChefContract, account) => {
   return sousChefContract.methods.pendingReward(account).call()
-}
-
-export const getTotalStaked = async (sushi, sousChefContract) => {
-  const syrup = await getSyrupContract(sushi)
-  const sushi2 = await getSushiContract(sushi)
-  const syrupBalance = await syrup.methods.balanceOf(sousChefContract.options.address).call()
-  const sushiBalance = await sushi2.methods.balanceOf(sousChefContract.options.address).call()
-  return syrupBalance > sushiBalance ? syrupBalance : sushiBalance
-}
-
-export const getTotalStakedBNB = async (sushi, sousChefContract) => {
-  const wbnb = await getWbnbContract(sushi)
-  const wbnbBalance = await wbnb.methods.balanceOf(sousChefContract.options.address).call()
-  return wbnbBalance
 }
 
 export const approve = async (lpContract, masterChefContract, account) => {
@@ -210,22 +189,5 @@ export const getSousStaked = async (sousChefContract, account) => {
   } catch (err) {
     console.error(err)
     return new BigNumber(0)
-  }
-}
-
-export const getSousStartBlock = async (sousChefContract) => {
-  try {
-    const startBlock = await sousChefContract.methods.startBlock().call()
-    return startBlock
-  } catch {
-    return 0
-  }
-}
-export const getSousEndBlock = async (sousChefContract) => {
-  try {
-    const endBlcok = await sousChefContract.methods.bonusEndBlock().call()
-    return endBlcok
-  } catch {
-    return 0
   }
 }
