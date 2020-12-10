@@ -3,7 +3,7 @@ import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { useWallet } from 'use-wallet'
 import { Contract } from 'web3-eth-contract'
-import { Button, useModal, AddIcon } from '@pancakeswap-libs/uikit'
+import { Button, IconButton, useModal, AddIcon } from '@pancakeswap-libs/uikit'
 import Label from 'components/Label'
 import useAllowance from 'hooks/useAllowance'
 import useApprove from 'hooks/useApprove'
@@ -86,9 +86,9 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName }) => {
                   {TranslateString(292, 'Unstake')}
                 </Button>
                 <StyledActionSpacer />
-                <Button onClick={onPresentDeposit}>
+                <IconButton onClick={onPresentDeposit}>
                   <AddIcon color="background" />
-                </Button>
+                </IconButton>
               </>
             ))}
         </StyledCardActions>
