@@ -85,7 +85,9 @@ const PoolCard: React.FC<HarvestProps> = ({
   const [pendingTx, setPendingTx] = useState(false)
 
   const apy: BigNumber = useMemo(() => {
-    if (cakePriceVsBNB?.isEqualTo(0) || tokenPrice?.isEqualTo(0)) return null
+    if (cakePriceVsBNB?.isEqualTo(0) || tokenPrice?.isEqualTo(0) || totalStaked?.isEqualTo(0)) {
+      return null
+    }
     const stakedTokenPrice: BigNumber = isBnbPool ? new BigNumber(1) : cakePriceVsBNB
 
     const a = tokenPrice.times(BLOCKS_PER_YEAR).times(tokenPerBlock)
