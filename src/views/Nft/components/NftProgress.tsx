@@ -7,23 +7,11 @@ import useBlock from 'hooks/useBlock'
 import getTimePeriods from 'utils/getTimePeriods'
 import formatTimePeriod from 'utils/formatTimePeriod'
 import { NftProviderContext } from '../contexts/NftProvider'
+import InfoRow from './InfoRow'
 
 const TimeLeft = styled(Heading)`
   margin-bottom: 16px;
   text-align: center;
-`
-
-const Row = styled.div`
-  align-items: center;
-  display: flex;
-
-  & > div:first-child {
-    flex: 1;
-  }
-
-  & > div:last-child {
-    text-align: right;
-  }
 `
 
 const Link = styled(UIKitLink)`
@@ -66,19 +54,19 @@ const NftProgress = () => {
         <TimeLeft>
           {timeLeft ? TranslateString(999, `${timeLeft} left to trade in NFTs`) : TranslateString(999, 'Finished!')}
         </TimeLeft>
-        <Row>
+        <InfoRow>
           <Text>{TranslateString(999, "Total NFT's claimed")}:</Text>
           <Text>
             <strong>{!isInitialized ? '...' : `${currentDistributedSupply}/${totalSupplyDistributed}`}</strong>
           </Text>
-        </Row>
-        <Row>
+        </InfoRow>
+        <InfoRow>
           <Text>{TranslateString(999, "Total NFT's burned")}:</Text>
           <Text>
             <strong>{!isInitialized ? '...' : `${countBunniesBurnt}/${totalSupplyDistributed}`}</strong>
           </Text>
-        </Row>
-        <Row>
+        </InfoRow>
+        <InfoRow>
           <Text>{TranslateString(999, 'Can be traded until')}:</Text>
           <div>
             {!isInitialized ? (
@@ -90,7 +78,7 @@ const NftProgress = () => {
               </Link>
             )}{' '}
           </div>
-        </Row>
+        </InfoRow>
         <Message>{TranslateString(999, 'NFTs can be traded in for CAKE until the above block height')}</Message>
       </CardBody>
     </Card>

@@ -6,26 +6,14 @@ import Page from 'components/layout/Page'
 import Container from 'components/layout/Container'
 import HowItWorks from './components/HowItWorks'
 import NftList from './components/NftList'
-import NftProgress from './components/NftProgress'
-import StatusCard from './components/StatusCard'
 import NftProvider from './contexts/NftProvider'
+import NftInfo from './components/NftInfo'
 
 const StyledHero = styled.div`
   border-bottom: 1px solid ${({ theme }) => theme.colors.textSubtle};
   margin-bottom: 24px;
   padding-bottom: 32px;
   padding-top: 32px;
-`
-
-const StyledNtfInfo = styled.div`
-  align-items: start;
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-gap: 32px;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    grid-template-columns: repeat(2, 1fr);
-  }
 `
 
 const Nft = () => {
@@ -43,10 +31,7 @@ const Nft = () => {
               {TranslateString(999, 'Trade in for CAKE, or keep for your collection!')}
             </Heading>
           </StyledHero>
-          <StyledNtfInfo>
-            <NftProgress />
-            <StatusCard />
-          </StyledNtfInfo>
+          <NftInfo />
         </Container>
         <NftList />
         <HowItWorks />
