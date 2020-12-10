@@ -1,6 +1,6 @@
-import { Pool, QuoteToken, PoolCategory } from './types'
+import { PoolConfig, QuoteToken, PoolCategory } from './types'
 
-const pools: Pool[] = [
+const pools: PoolConfig[] = [
   {
     sousId: 0,
     tokenName: 'CAKE',

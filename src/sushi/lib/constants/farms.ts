@@ -1,7 +1,7 @@
 import contracts from './contracts'
-import { Farm, QuoteToken } from './types'
+import { FarmConfig, QuoteToken } from './types'
 
-const farms: Farm[] = [
+const farms: FarmConfig[] = [
   {
     pid: 0,
     lpSymbol: 'CAKE',
