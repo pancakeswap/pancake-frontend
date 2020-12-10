@@ -34,7 +34,7 @@ const Farms: React.FC<FarmsProps> = ({ removed }) => {
     let apy = cakePriceVsBNB.times(cakeRewardPerYear).div(farm.lpTotalInQuoteToken)
 
     if (farm.quoteTokenSymbol === QuoteToken.BUSD) {
-      apy = cakePriceVsBNB.times(cakeRewardPerYear).div(farm.tokenAmount).times(bnbPrice)
+      apy = cakePriceVsBNB.times(cakeRewardPerYear).div(farm.lpTotalInQuoteToken).times(bnbPrice)
     } else if (farm.quoteTokenSymbol === QuoteToken.CAKE) {
       apy = cakeRewardPerYear.div(farm.lpTotalInQuoteToken)
     } else if (farm.dual) {

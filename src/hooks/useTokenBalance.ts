@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import BigNumber from 'bignumber.js'
 import { useWallet } from 'use-wallet'
 import { provider } from 'web3-core'
-import { getBalanceNumber } from '../utils/formatBalance'
 import { getTokenBalance } from '../utils/erc20'
 import { getSushiSupply } from '../sushi/utils'
 import useBlock from './useBlock'
@@ -22,7 +21,7 @@ const useTokenBalance = (tokenAddress: string) => {
     if (account && ethereum) {
       fetchBalance()
     }
-  }, [account, ethereum, setBalance, block, tokenAddress])
+  }, [account, ethereum, tokenAddress, block])
 
   return balance
 }
@@ -40,7 +39,7 @@ export const useTotalSupply = () => {
     if (sushi) {
       fetchTotalSupply()
     }
-  }, [block, sushi, setTotalSupply])
+  }, [block, sushi])
 
   return totalSupply
 }
@@ -59,26 +58,7 @@ export const useBurnedBalance = (tokenAddress: string) => {
     if (account && ethereum) {
       fetchBalance()
     }
-  }, [account, ethereum, setBalance, block, tokenAddress])
-
-  return balance
-}
-
-export const useTokenBalance2 = (tokenAddress: string, account2: string) => {
-  const [balance, setBalance] = useState(0)
-  const { account, ethereum }: { account: string; ethereum: provider } = useWallet()
-  const block = useBlock()
-
-  useEffect(() => {
-    const fetchBalance = async () => {
-      const res = await getTokenBalance(ethereum, tokenAddress, account2)
-      setBalance(getBalanceNumber(new BigNumber(res)))
-    }
-
-    if (account && ethereum) {
-      fetchBalance()
-    }
-  }, [account, ethereum, setBalance, block, tokenAddress, account2])
+  }, [account, ethereum, tokenAddress, block])
 
   return balance
 }

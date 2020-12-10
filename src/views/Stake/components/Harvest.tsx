@@ -1,23 +1,23 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Button } from '@pancakeswap-libs/uikit'
+import BigNumber from 'bignumber.js'
 import Card from '../../../components/Card'
 import CardContent from '../../../components/CardContent'
 import CardIcon from '../../../components/CardIcon'
 import Label from '../../../components/Label'
 import Value from '../../../components/Value'
-import useEarnings from '../../../hooks/useEarnings'
 import { useHarvest } from '../../../hooks/useHarvest'
 import useI18n from '../../../hooks/useI18n'
 import { getBalanceNumber } from '../../../utils/formatBalance'
 
 interface HarvestProps {
   pid: number
+  earnings: BigNumber
 }
 
-const Harvest: React.FC<HarvestProps> = ({ pid }) => {
+const Harvest: React.FC<HarvestProps> = ({ pid, earnings }) => {
   const TranslateString = useI18n()
-  const earnings = useEarnings(pid)
   const [pendingTx, setPendingTx] = useState(false)
   const { onReward } = useHarvest(pid)
 
