@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from 'react'
-
 import BigNumber from 'bignumber.js'
 import { useWallet } from 'use-wallet'
 
@@ -43,23 +42,22 @@ export const useSousStakedBalance = (sousId) => {
 
 export const useSousTotalStaked = (sousId, isUsingBnb = false) => {
   const [balance, setBalance] = useState(new BigNumber(0))
-  const { account }: { account: string } = useWallet()
   const sushi = useSushi()
   const sousChefContract = getSousChefContract(sushi, sousId)
   const block = useBlock()
 
-  const fetchBalance = useCallback(async () => {
-    const res = isUsingBnb
-      ? await getTotalStakedBNB(sushi, sousChefContract)
-      : await getTotalStaked(sushi, sousChefContract)
-    setBalance(new BigNumber(res))
-  }, [isUsingBnb, sushi, sousChefContract])
-
   useEffect(() => {
-    if (account && sushi) {
+    const fetchBalance = async () => {
+      const res = isUsingBnb
+        ? await getTotalStakedBNB(sushi, sousChefContract)
+        : await getTotalStaked(sushi, sousChefContract)
+      setBalance(new BigNumber(res))
+    }
+
+    if (sushi) {
       fetchBalance()
     }
-  }, [account, setBalance, block, sushi, fetchBalance])
+  }, [isUsingBnb, sousChefContract, sushi, block])
 
   return balance
 }
