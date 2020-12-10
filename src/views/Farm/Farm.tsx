@@ -7,7 +7,7 @@ import { getContract } from 'utils/erc20'
 import useI18n from 'hooks/useI18n'
 import useUserFarm from 'hooks/useUserFarm'
 import Page from 'components/layout/Page'
-import { useFarmLP } from 'contexts/DataContext'
+import { useFarmFromSymbol } from 'state/hooks'
 import Harvest from './components/Harvest'
 import Stake from './components/Stake'
 import DualFarmDisclaimer from './components/DualFarmDisclaimer'
@@ -17,7 +17,7 @@ const Farm: React.FC = () => {
   const { ethereum } = useWallet()
   const { lpSymbol } = useParams<{ lpSymbol?: string }>()
 
-  const { pid, lpAddresses, tokenSymbol, dual } = useFarmLP(lpSymbol)
+  const { pid, lpAddresses, tokenSymbol, dual } = useFarmFromSymbol(lpSymbol)
   const lpAddress = lpAddresses[process.env.REACT_APP_CHAIN_ID]
   const { allowance, tokenBalance, stakedBalance, earnings } = useUserFarm(lpAddress, pid)
 

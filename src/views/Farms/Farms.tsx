@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom'
 import BigNumber from 'bignumber.js'
 import { BLOCKS_PER_YEAR, CAKE_PER_BLOCK, CAKE_POOL_PID } from 'config'
 import Grid from 'components/layout/Grid'
-import { useFarmsLP, usePriceBnbBusd } from 'contexts/DataContext'
+import { useFarms, usePriceBnbBusd } from 'state/hooks'
 import { QuoteToken } from 'sushi/lib/constants/types'
 import useI18n from 'hooks/useI18n'
 import Page from 'components/Page'
@@ -16,10 +16,10 @@ interface FarmsProps {
 
 const Farms: React.FC<FarmsProps> = ({ removed }) => {
   const TranslateString = useI18n()
-  const farmsLP = useFarmsLP()
+  const farmsLP = useFarms()
   const bnbPrice = usePriceBnbBusd()
 
-  const cakePriceVsBNB = farmsLP.find((farm) => farm.pid === CAKE_POOL_PID)?.tokenPriceVsQuote || new BigNumber(0)
+  const cakePriceVsBNB = new BigNumber(farmsLP.find((farm) => farm.pid === CAKE_POOL_PID)?.tokenPriceVsQuote || 0)
   const farmsToDisplay = removed
     ? farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X')
     : farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
@@ -42,7 +42,10 @@ const Farms: React.FC<FarmsProps> = ({ removed }) => {
         farm && cakePriceVsBNB.times(cakeRewardPerBlock).times(BLOCKS_PER_YEAR).div(farm.lpTotalInQuoteToken)
       const dualApy =
         farm.tokenPriceVsQuote &&
-        farm.tokenPriceVsQuote.times(farm.dual.rewardPerBlock).times(BLOCKS_PER_YEAR).div(farm.lpTotalInQuoteToken)
+        new BigNumber(farm.tokenPriceVsQuote)
+          .times(farm.dual.rewardPerBlock)
+          .times(BLOCKS_PER_YEAR)
+          .div(farm.lpTotalInQuoteToken)
 
       apy = cakeApy && dualApy && cakeApy.plus(dualApy)
     }
