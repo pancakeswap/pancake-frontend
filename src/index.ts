@@ -6,6 +6,7 @@ export { default as ColorBox } from "./components/ColorBox";
 export { default as Flex } from "./components/Flex";
 export { default as Dropdown } from "./components/Dropdown";
 export { default as Heading } from "./components/Heading";
+export { default as Input } from "./components/Input";
 export * from "./components/Card";
 export * from "./components/Layouts";
 export * from "./components/Svg";
