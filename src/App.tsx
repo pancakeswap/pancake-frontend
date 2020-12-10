@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { useWallet } from 'use-wallet'
 import { ResetCSS, Footer } from '@pancakeswap-libs/uikit'
+import useStateInit from 'state/hooks'
 import GlobalStyle from './style/Global'
 import Menu from './components/Menu'
 import Farms from './views/Farms'
@@ -22,6 +23,8 @@ const App: React.FC = () => {
       connect('injected')
     }
   }, [account, connect])
+
+  useStateInit()
 
   return (
     <Router>

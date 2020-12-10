@@ -9,6 +9,10 @@ export interface FarmLP extends Farm {
   poolWeight?: BigNumber
 }
 
+export interface FarmsState {
+  data: FarmLP[]
+}
+
 export interface State {
-  farms: FarmLP[]
+  farms: FarmsState
 }

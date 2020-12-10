@@ -4,7 +4,7 @@ import { useWallet } from 'use-wallet'
 import { allLanguages } from 'config/localisation/languageCodes'
 import { LanguageContext } from 'contexts/Localisation/languageContext'
 import useTheme from 'hooks/useTheme'
-import { usePriceCakeBusd } from 'contexts/DataContext'
+import { usePriceCakeBusd } from 'state/hooks'
 
 const Menu = () => {
   const { account, connect, reset } = useWallet()
