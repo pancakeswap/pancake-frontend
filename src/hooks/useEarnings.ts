@@ -13,6 +13,7 @@ import useSushi from './useSushi'
 import useBlock from './useBlock'
 
 export const useSousEarnings = (sousId) => {
+  const block = useBlock()
   const [balance, setBalance] = useState(new BigNumber(0))
   const { account }: { account: string } = useWallet()
   const sushi = useSushi()
@@ -33,7 +34,7 @@ export const useSousEarnings = (sousId) => {
     if (account && sousChefContract) {
       fetchBalance()
     }
-  }, [account, masterChefContract, sousChefContract, sousId])
+  }, [account, masterChefContract, sousChefContract, sousId, block])
 
   return balance
 }
