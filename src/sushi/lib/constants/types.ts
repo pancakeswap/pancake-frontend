@@ -51,8 +51,10 @@ export type Pool = {
 
 export type Nft = {
   name: string
+  description: string
+  originalImage: string
   previewImage: string
   blurImage: string
   sortOrder: number
-  serialNumber: number
+  bunnyId: number
 }
