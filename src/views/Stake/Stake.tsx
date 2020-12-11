@@ -2,25 +2,24 @@ import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import { useWallet } from 'use-wallet'
 import { provider } from 'web3-core'
-import { useFarmFromSymbol } from 'state/hooks'
+import { useFarmFromSymbol, useFarmUser } from 'state/hooks'
 import Spacer from 'components/Spacer'
 import Page from 'components/Page'
 import PageHeader from 'components/PageHeader'
 import { getContract } from 'utils/erc20'
 import { TranslateString } from 'utils/translateTextHelpers'
-import useUserFarm from 'hooks/useUserFarm'
 import Harvest from './components/Harvest'
 import Syrup from './components/Syrup'
 import Stake from './components/Stake'
 import SyrupWarning from './components/SyrupWarning'
 
 const Farm: React.FC = () => {
+  const { ethereum, account } = useWallet()
   const farmInfo = useFarmFromSymbol('CAKE')
 
   const { pid, lpSymbol, lpAddresses } = farmInfo
   const lpAddress = lpAddresses[process.env.REACT_APP_CHAIN_ID]
-  const { allowance, tokenBalance, stakedBalance, earnings } = useUserFarm(lpAddress, pid)
-  const { ethereum } = useWallet()
+  const { allowance, tokenBalance, stakedBalance, earnings } = useFarmUser(pid, account)
 
   const lpContract = useMemo(() => {
     return getContract(ethereum as provider, lpAddress)

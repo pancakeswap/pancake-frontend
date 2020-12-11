@@ -1,12 +1,18 @@
 import BigNumber from 'bignumber.js'
 import { FarmConfig, PoolConfig } from 'sushi/lib/constants/types'
 
-export interface FarmLP extends FarmConfig {
+export interface Farm extends FarmConfig {
   tokenAmount?: BigNumber
   quoteTokenAmount?: BigNumber
   lpTotalInQuoteToken?: BigNumber
   tokenPriceVsQuote?: BigNumber
   poolWeight?: BigNumber
+  userData?: {
+    allowance: BigNumber
+    tokenBalance: BigNumber
+    stakedBalance: BigNumber
+    earnings: BigNumber
+  }
 }
 
 export interface Pool extends PoolConfig {
@@ -18,7 +24,7 @@ export interface Pool extends PoolConfig {
 // Slices states
 
 export interface FarmsState {
-  data: FarmLP[]
+  data: Farm[]
 }
 
 export interface PoolsState {
