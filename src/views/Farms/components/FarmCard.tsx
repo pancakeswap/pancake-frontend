@@ -203,7 +203,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
       <Action>
         {/* No full width props because of as={ReactRouterLink} */}
         <Button as={ReactRouterLink} to={`/farms/${farm.id}`} style={{ width: '100%' }}>
-          {TranslateString(999, 'Select')}
+          {TranslateString(568, 'Select')}
         </Button>
       </Action>
       {!removed && (
