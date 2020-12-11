@@ -1,13 +1,13 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { useWallet } from 'use-wallet'
 import { Button, Modal, Text } from '@pancakeswap-libs/uikit'
-// import { getBalanceNumber } from 'utils/formatBalance'
+import { getBalanceNumber } from 'utils/formatBalance'
 import { RABBIT_MINTING_FARM_ADDRESS } from 'sushi/lib/constants/nfts'
-// import { getSushiAddress } from 'sushi/utils'
+import { getSushiAddress } from 'sushi/utils'
 import { Nft } from 'sushi/lib/constants/types'
-// import useSushi from 'hooks/useSushi'
-// import useTokenBalance from 'hooks/useTokenBalance'
+import useSushi from 'hooks/useSushi'
+import useTokenBalance from 'hooks/useTokenBalance'
 import useI18n from 'hooks/useI18n'
 import { useRabbitMintingFarm } from 'hooks/rework/useContract'
 import InfoRow from './InfoRow'
@@ -38,11 +38,9 @@ const ClaimNftModal: React.FC<ClaimNftModalProps> = ({ nft, onSuccess, onDismiss
   const TranslateString = useI18n()
   const { account } = useWallet()
   const rabbitMintingContract = useRabbitMintingFarm(RABBIT_MINTING_FARM_ADDRESS)
-  // TODO - #1 enable this when going live
-  // const sushi = useSushi()
-  // const sushiBalance = useTokenBalance(getSushiAddress(sushi))
-  // const cakeInWallet = getBalanceNumber(sushiBalance)
-  const cakeInWallet = 1
+  const sushi = useSushi()
+  const sushiBalance = useTokenBalance(getSushiAddress(sushi))
+  const cakeInWallet = getBalanceNumber(sushiBalance)
 
   const handleConfirm = async () => {
     try {
@@ -66,12 +64,11 @@ const ClaimNftModal: React.FC<ClaimNftModalProps> = ({ nft, onSuccess, onDismiss
     }
   }
 
-  // TODO - #2 enable this when going live
-  // useEffect(() => {
-  //   if (cakeInWallet === 0) {
-  //     setError('You must have a CAKE balance greater than zero to claim NFT')
-  //   }
-  // }, [cakeInWallet, setError])
+  useEffect(() => {
+    if (cakeInWallet === 0) {
+      setError('You must have a CAKE balance greater than zero to claim NFT')
+    }
+  }, [cakeInWallet, setError])
 
   return (
     <Modal title={TranslateString(999, 'Claim NFT')} onDismiss={onDismiss}>
