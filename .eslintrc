@@ -26,5 +26,6 @@
     "radix": 0,
     "import/no-extraneous-dependencies": 0
     // End temporary rules
+    
   }
 }
