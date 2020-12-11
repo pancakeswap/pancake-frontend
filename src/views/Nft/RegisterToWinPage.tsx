@@ -35,9 +35,9 @@ const RegisterToWinPage = () => {
             {TranslateString(999, 'NFTs')}
           </Heading>
           <Heading as="h2" size="lg" color="secondary" mb="16px">
-            {TranslateString(999, 'Trade in for CAKE, or keep for your collection!')}
+            {TranslateString(614, 'Trade in for CAKE, or keep for your collection!')}
           </Heading>
-          <Text mb="24px">{TranslateString(999, 'Register your interest in winning an NFT below.')}</Text>
+          <Text mb="24px">{TranslateString(616, 'Register your interest in winning an NFT below.')}</Text>
           <Cta>
             <Button
               as="a"
@@ -45,10 +45,10 @@ const RegisterToWinPage = () => {
               target="_blank"
               rel="noopener noreferrer"
             >
-              {TranslateString(999, 'Register for a chance to win')}
+              {TranslateString(618, 'Register for a chance to win')}
             </Button>
             <Button as="a" href="#how-it-works" variant="secondary">
-              {TranslateString(999, 'Learn more')}
+              {TranslateString(620, 'Learn more')}
             </Button>
           </Cta>
         </StyledHero>
