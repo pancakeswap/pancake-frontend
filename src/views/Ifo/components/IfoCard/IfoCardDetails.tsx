@@ -45,7 +45,7 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({
     <>
       <StyledIfoCardDetails>
         <Item>
-          <Display>{TranslateString(999, 'Launch Time')}</Display>
+          <Display>{TranslateString(582, 'Launch Time')}</Display>
           <Text>
             {launchDate},
             <Link
@@ -60,7 +60,7 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({
           </Text>
         </Item>
         <Item>
-          <Display>{TranslateString(999, 'For Sale')}</Display>
+          <Display>{TranslateString(584, 'For Sale')}</Display>
           <Text>{saleAmount}</Text>
         </Item>
         <Item>
@@ -68,7 +68,7 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({
           <Text>{raiseAmount}</Text>
         </Item>
         <Item>
-          <Display>{TranslateString(999, 'CAKE to burn (USD)')}</Display>
+          <Display>{TranslateString(586, 'CAKE to burn (USD)')}</Display>
           <Text>{cakeToBurn}</Text>
         </Item>
         <Item>

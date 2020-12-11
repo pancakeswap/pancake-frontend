@@ -2,12 +2,6 @@ import BigNumber from 'bignumber.js'
 import get from 'lodash/get'
 import memoize from 'lodash/memoize'
 import { ethers } from 'ethers'
-import addresses from 'sushi/lib/constants/contracts'
-import erc20 from 'sushi/lib/abi/erc20.json'
-import masterchefABI from 'sushi/lib/abi/masterchef.json'
-import multicall from 'utils/multicall'
-import { QuoteToken } from 'sushi/lib/constants/types'
-import { poolsConfig } from './lib/constants'
 
 BigNumber.config({
   EXPONENTIAL_AT: 1000,
@@ -23,8 +17,8 @@ export const getSyrupAddress = (sushi) => {
 export const getSyrupContract = (sushi) => {
   return sushi && sushi.contracts && sushi.contracts.syrup
 }
-export const getWethContract = (sushi) => {
-  return sushi && sushi.contracts && sushi.contracts.weth
+export const getWbnbContract = (sushi) => {
+  return sushi && sushi.contracts && sushi.contracts.wbnb
 }
 export const getBusdContract = (sushi) => {
   return sushi && sushi.contracts && sushi.contracts.busd
@@ -42,12 +36,8 @@ export const getSousChefContract = (sushi, sousId) => {
 
 export const getFarms = memoize((sushi) => {
   const pools = get(sushi, 'contracts.pools', [])
-  return pools.map((pool) => ({ ...pool, id: pool.symbol, lpToken: pool.symbol, lpTokenAddress: pool.lpAddress }))
+  return pools
 })
-
-export const getPools = (sushi) => {
-  return get(sushi, 'contracts.sousChefs', poolsConfig)
-}
 
 export const getEarned = async (masterChefContract, pid, account) => {
   return masterChefContract.methods.pendingCake(pid, account).call()
@@ -66,105 +56,9 @@ export const getTotalStaked = async (sushi, sousChefContract) => {
 }
 
 export const getTotalStakedBNB = async (sushi, sousChefContract) => {
-  const weth = await getWethContract(sushi)
-  const wethBalance = await weth.methods.balanceOf(sousChefContract.options.address).call()
-  return wethBalance
-}
-
-export const getLPValues = async (pid, tokenSymbol, tokenAddress, lpTokenAddress) => {
-  const calls = [
-    {
-      address: tokenAddress,
-      name: 'decimals',
-    },
-    {
-      address: tokenAddress,
-      name: 'balanceOf',
-      params: [lpTokenAddress],
-    },
-    {
-      address: lpTokenAddress,
-      name: 'balanceOf',
-      params: [addresses.masterChef[56]],
-    },
-    {
-      address: lpTokenAddress,
-      name: 'totalSupply',
-    },
-    {
-      address: addresses.weth[56],
-      name: 'balanceOf',
-      params: [lpTokenAddress],
-    },
-    {
-      address: addresses.sushi[56],
-      name: 'balanceOf',
-      params: [lpTokenAddress],
-    },
-    {
-      address: addresses.busd[56],
-      name: 'balanceOf',
-      params: [lpTokenAddress],
-    },
-  ]
-
-  const res = await multicall(erc20, calls)
-
-  const [
-    tokenDecimals,
-    tokenAmountWholeLP,
-    balance,
-    totalSupply,
-    lpContractValueWeth,
-    lpContractValueCake,
-    lpContractValueBusd,
-  ] = res
-
-  let lpContractValue = lpContractValueWeth
-  let quoteToken = QuoteToken.BNB
-  if (parseFloat(lpContractValue) === 0) {
-    lpContractValue = lpContractValueCake
-    quoteToken = QuoteToken.CAKE
-  }
-  if (parseFloat(lpContractValue) === 0) {
-    lpContractValue = lpContractValueBusd
-    quoteToken = QuoteToken.BUSD
-  }
-
-  // Return p1 * w1 * 2
-  const lpContractValueBN = new BigNumber(lpContractValue)
-  const portionLp = new BigNumber(balance).div(new BigNumber(totalSupply))
-  const totalLpValue = portionLp.times(lpContractValueBN).times(new BigNumber(2))
-  // Calculate
-  const tokenAmount = new BigNumber(tokenAmountWholeLP).times(portionLp).div(new BigNumber(10).pow(tokenDecimals))
-  const wethAmount = lpContractValueBN.times(portionLp).div(new BigNumber(10).pow(18))
-
-  const [info, totalAllocPoint] = await multicall(masterchefABI, [
-    {
-      address: addresses.masterChef[56],
-      name: 'poolInfo',
-      params: [pid],
-    },
-    {
-      address: addresses.masterChef[56],
-      name: 'totalAllocPoint',
-    },
-  ])
-
-  // eslint-disable-next-line no-underscore-dangle
-  const poolWeight = new BigNumber(info.allocPoint._hex).div(new BigNumber(totalAllocPoint))
-
-  return {
-    pid,
-    tokenSymbol,
-    tokenDecimals,
-    tokenAmount,
-    wethAmount,
-    totalWethValue: totalLpValue.div(new BigNumber(10).pow(18)),
-    tokenPrice: wethAmount.div(tokenAmount),
-    poolWeight,
-    quoteToken,
-  }
+  const wbnb = await getWbnbContract(sushi)
+  const wbnbBalance = await wbnb.methods.balanceOf(sousChefContract.options.address).call()
+  return wbnbBalance
 }
 
 export const approve = async (lpContract, masterChefContract, account) => {

@@ -4,6 +4,7 @@ import styled from 'styled-components'
 interface ImageProps {
   src: string
   alt: string
+  originalLink?: string
 }
 
 const Container = styled.div`
@@ -25,10 +26,20 @@ const StyledImage = styled.img`
   border-radius: 32px 32px 0 0;
 `
 
-const Image: React.FC<ImageProps> = ({ src, alt }) => (
-  <Container>
-    <StyledImage src={src} alt={alt} />
-  </Container>
-)
+const Image: React.FC<ImageProps> = ({ src, alt, originalLink }) => {
+  const previewImage = <StyledImage src={src} alt={alt} />
+
+  return (
+    <Container>
+      {originalLink ? (
+        <a href={originalLink} target="_blank" rel="noreferrer noopener">
+          {previewImage}
+        </a>
+      ) : (
+        previewImage
+      )}
+    </Container>
+  )
+}
 
 export default Image

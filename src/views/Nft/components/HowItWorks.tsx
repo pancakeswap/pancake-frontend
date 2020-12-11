@@ -37,7 +37,7 @@ const HowItWorks = () => {
       <StyledHowItWorks>
         <Section>
           <Heading id="how-it-works" color="secondary" size="lg" mb="16px">
-            {TranslateString(999, 'How it works')}
+            {TranslateString(632, 'How it works')}
           </Heading>
           <Row>
             <Icon>
@@ -45,7 +45,7 @@ const HowItWorks = () => {
             </Icon>
             <Text>
               {TranslateString(
-                999,
+                634,
                 'Winners will be able to claim an NFT on this page once the claiming period starts.',
               )}
             </Text>
@@ -55,7 +55,7 @@ const HowItWorks = () => {
               <ArrowForwardIcon />
             </Icon>
             <Text>
-              {TranslateString(999, 'If you’re not selected, you won’t be able to claim. Better luck next time!')}
+              {TranslateString(636, 'If you’re not selected, you won’t be able to claim. Better luck next time!')}
             </Text>
           </Row>
           <Row>
@@ -64,7 +64,7 @@ const HowItWorks = () => {
             </Icon>
             <Text>
               {TranslateString(
-                999,
+                638,
                 "Winners can trade in their NFTs for a CAKE value until the expiry date written below. If you don't trade in your NFT by then, don’t worry: you’ll still keep it in your wallet!",
               )}
             </Text>
@@ -72,13 +72,13 @@ const HowItWorks = () => {
         </Section>
         <Section>
           <Heading color="secondary" size="lg" mb="16px">
-            {TranslateString(999, 'How are winners selected?')}
+            {TranslateString(640, 'How are winners selected?')}
           </Heading>
           <Row>
             <Icon>
               <ArrowForwardIcon />
             </Icon>
-            <Text>{TranslateString(999, 'Winners are selected at random! Good luck!')}</Text>
+            <Text>{TranslateString(642, 'Winners are selected at random! Good luck!')}</Text>
           </Row>
         </Section>
         <div>
@@ -88,7 +88,7 @@ const HowItWorks = () => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            {TranslateString(999, 'Register for a chance to win')}
+            {TranslateString(644, 'Register for a chance to win')}
           </Button>
         </div>
       </StyledHowItWorks>
