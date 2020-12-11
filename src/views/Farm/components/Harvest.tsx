@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import { Button, Card, CardBody } from '@pancakeswap-libs/uikit'
+import { useDispatch } from 'react-redux'
+import { fetchFarmUserDataAsync } from 'state/actions'
 import Label from 'components/Label'
 import { useHarvest } from 'hooks/useHarvest'
 import useI18n from 'hooks/useI18n'
@@ -12,9 +14,11 @@ import Value from './Value'
 interface HarvestProps {
   pid: number
   earnings: BigNumber
+  account: string
 }
 
-const Harvest: React.FC<HarvestProps> = ({ pid, earnings }) => {
+const Harvest: React.FC<HarvestProps> = ({ pid, earnings, account }) => {
+  const dispatch = useDispatch()
   const TranslateString = useI18n()
   const [pendingTx, setPendingTx] = useState(false)
   const { onReward } = useHarvest(pid)
@@ -34,6 +38,7 @@ const Harvest: React.FC<HarvestProps> = ({ pid, earnings }) => {
               onClick={async () => {
                 setPendingTx(true)
                 await onReward()
+                dispatch(fetchFarmUserDataAsync(pid, account))
                 setPendingTx(false)
               }}
             >

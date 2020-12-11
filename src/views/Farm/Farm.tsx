@@ -5,21 +5,20 @@ import { useWallet } from 'use-wallet'
 import { provider } from 'web3-core'
 import { getContract } from 'utils/erc20'
 import useI18n from 'hooks/useI18n'
-import useUserFarm from 'hooks/useUserFarm'
 import Page from 'components/layout/Page'
-import { useFarmFromSymbol } from 'state/hooks'
+import { useFarmFromSymbol, useFarmUser } from 'state/hooks'
 import Harvest from './components/Harvest'
 import Stake from './components/Stake'
 import DualFarmDisclaimer from './components/DualFarmDisclaimer'
 
 const Farm: React.FC = () => {
   const TranslateString = useI18n()
-  const { ethereum } = useWallet()
+  const { ethereum, account } = useWallet()
   const { lpSymbol } = useParams<{ lpSymbol?: string }>()
 
   const { pid, lpAddresses, tokenSymbol, dual } = useFarmFromSymbol(lpSymbol)
   const lpAddress = lpAddresses[process.env.REACT_APP_CHAIN_ID]
-  const { allowance, tokenBalance, stakedBalance, earnings } = useUserFarm(lpAddress, pid)
+  const { allowance, tokenBalance, stakedBalance, earnings } = useFarmUser(pid, account)
 
   const lpContract = useMemo(() => {
     return getContract(ethereum as provider, lpAddress)
@@ -34,7 +33,7 @@ const Farm: React.FC = () => {
       </Header>
       <StyledFarm>
         <Grid>
-          <Harvest pid={pid} earnings={earnings} />
+          <Harvest pid={pid} earnings={earnings} account={account} />
           <Stake
             lpContract={lpContract}
             pid={pid}

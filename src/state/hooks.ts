@@ -1,33 +1,52 @@
 import BigNumber from 'bignumber.js'
 import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { updateFarmPublicDataAsync } from './actions'
-import { State } from './types'
+import { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync } from './actions'
+import { State, Farm } from './types'
 
 const ZERO = new BigNumber(0)
 
 const useStateInit = () => {
   const dispatch = useDispatch()
   useEffect(() => {
-    dispatch(updateFarmPublicDataAsync())
+    dispatch(fetchFarmsPublicDataAsync())
   }, [dispatch])
 }
 
 // Farms
 
-export const useFarms = () => {
+export const useFarms = (): Farm[] => {
   const farms = useSelector((state: State) => state.farms.data)
   return farms
 }
 
-export const useFarmFromPid = (pid) => {
+export const useFarmFromPid = (pid): Farm => {
   const farm = useSelector((state: State) => state.farms.data.find((f) => f.pid === pid))
   return farm
 }
 
-export const useFarmFromSymbol = (lpSymbol: string) => {
+export const useFarmFromSymbol = (lpSymbol: string): Farm => {
   const farm = useSelector((state: State) => state.farms.data.find((f) => f.lpSymbol === lpSymbol))
   return farm
+}
+
+export const useFarmUser = (pid, account) => {
+  const dispatch = useDispatch()
+  const farm = useFarmFromPid(pid)
+
+  useEffect(() => {
+    if (!farm.userData && account) {
+      dispatch(fetchFarmUserDataAsync(pid, account))
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [account, pid])
+
+  return {
+    allowance: farm.userData ? new BigNumber(farm.userData.allowance) : new BigNumber(0),
+    tokenBalance: farm.userData ? new BigNumber(farm.userData.tokenBalance) : new BigNumber(0),
+    stakedBalance: farm.userData ? new BigNumber(farm.userData.stakedBalance) : new BigNumber(0),
+    earnings: farm.userData ? new BigNumber(farm.userData.earnings) : new BigNumber(0),
+  }
 }
 
 // Pools

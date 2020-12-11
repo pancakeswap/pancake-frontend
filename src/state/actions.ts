@@ -1,1 +1,1 @@
-export { updateFarmPublicData, updateFarmPublicDataAsync } from './farms'
+export { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync } from './farms'
