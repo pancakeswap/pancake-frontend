@@ -7,7 +7,7 @@ import farmsConfig from 'sushi/lib/constants/farms'
 
 const CHAIN_ID = process.env.REACT_APP_CHAIN_ID
 
-const fetchLps = async () => {
+const fetchFarms = async () => {
   const data = await Promise.all(
     farmsConfig.map(async (farmConfig) => {
       const lpAdress = farmConfig.lpAddresses[CHAIN_ID]
@@ -99,4 +99,4 @@ const fetchLps = async () => {
   return data
 }
 
-export default fetchLps
+export default fetchFarms
