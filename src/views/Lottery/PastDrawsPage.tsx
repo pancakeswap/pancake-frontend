@@ -47,22 +47,6 @@ const PastDrawsPage: React.FC = () => {
   const winnings = getBalanceNumber(claimAmount)
   const isAWin = winnings > 0
 
-  // May be useful for 'Past draws'
-  // const sushi = useSushi()
-  // const lotteryContract = getLotteryContract(sushi)
-  // const [index, setIndex] = useState(0)
-
-  // const fetchIndex = useCallback(async () => {
-  //   const issueIndex = await getLotteryIssueIndex(lotteryContract)
-  //   setIndex(issueIndex)
-  // }, [lotteryContract])
-
-  // useEffect(() => {
-  //   if (account && lotteryContract && sushi) {
-  //     fetchIndex()
-  //   }
-  // }, [account, lotteryContract, sushi, fetchIndex])
-
   return (
     <Cards>
       <PastLotteryRoundViewer />
