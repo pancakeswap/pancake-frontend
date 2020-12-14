@@ -55,6 +55,7 @@
     "@commitlint/cli": "^11.0.0",
     "@commitlint/config-conventional": "^11.0.0",
     "@pancakeswap-libs/eslint-config-pancake": "1.0.0",
+    "@types/jest": "^26.0.19",
     "eslint": "^7.2.0",
     "husky": "^4.3.0",
     "prettier": "^2.1.2"
