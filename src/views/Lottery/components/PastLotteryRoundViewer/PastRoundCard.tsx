@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
-import { Heading, Card, CardBody, CardFooter, Text, PancakeRoundIcon, TicketRound } from '@pancakeswap-libs/uikit'
+import { Heading, Card, CardBody, CardFooter, PancakeRoundIcon, TicketRound } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import LotteryCardHeading from '../LotteryCardHeading'
 import PastLotteryActions from './PastLotteryActions'
