@@ -4,6 +4,7 @@ import { Heading, Card, CardBody, CardFooter, Text, PancakeRoundIcon, TicketRoun
 import useI18n from 'hooks/useI18n'
 import LotteryCardHeading from '../LotteryCardHeading'
 import PastLotteryActions from './PastLotteryActions'
+import PrizeGrid from '../TotalPrizesCard/PrizeGrid'
 
 const CardHeading = styled.div`
   position: relative;
@@ -13,11 +14,11 @@ const CardHeading = styled.div`
 `
 
 const StyledHeading = styled(Heading)`
-  margin-bottom: 24px;
+  margin-bottom: ${(props) => props.theme.spacing[4]}px;
 `
 
 const TopLotteryCardHeading = styled(LotteryCardHeading)`
-  margin-bottom: 24px;
+  margin-bottom: ${(props) => props.theme.spacing[4]}px;
 `
 
 const PastRoundCard = () => {
@@ -37,7 +38,7 @@ const PastRoundCard = () => {
         </CardHeading>
       </CardBody>
       <CardFooter>
-        <span>Grid</span>
+        <PrizeGrid lotteryPrizeAmount={100000} />
         <PastLotteryActions />
       </CardFooter>
     </Card>

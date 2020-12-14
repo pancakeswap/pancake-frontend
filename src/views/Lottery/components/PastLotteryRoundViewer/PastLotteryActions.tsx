@@ -7,10 +7,10 @@ import useTickets from 'hooks/useTickets'
 import MyTicketsModal from '../TicketCard/UserTicketsModal'
 import UnlockButton from '../../../../components/UnlockButton'
 
-const CardActions = styled.div`
+const Wrapper = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: ${(props) => props.theme.spacing[3]}px;
+  margin-top: ${(props) => props.theme.spacing[4]}px;
 `
 
 const TicketCard: React.FC = () => {
@@ -21,7 +21,7 @@ const TicketCard: React.FC = () => {
   const { account } = useWallet()
 
   return (
-    <CardActions>
+    <Wrapper>
       <Button
         style={{ marginRight: '8px' }}
         as="a"
@@ -37,7 +37,7 @@ const TicketCard: React.FC = () => {
           {TranslateString(999, 'View your tickets')}
         </Button>
       )}
-    </CardActions>
+    </Wrapper>
   )
 }
 
