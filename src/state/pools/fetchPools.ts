@@ -32,8 +32,8 @@ export const fetchPoolsBlockLimits = async () => {
     const endBlock = ends[index]
     return {
       sousId: cakePoolConfig.sousId,
-      startBlock: new BigNumber(startBlock).toNumber(),
-      endBlock: new BigNumber(endBlock).toNumber(),
+      startBlock: new BigNumber(startBlock).toJSON(),
+      endBlock: new BigNumber(endBlock).toJSON(),
     }
   })
 }
@@ -64,11 +64,11 @@ export const fetchPoolsTotalStatking = async () => {
   return [
     ...cakePools.map((p, index) => ({
       sousId: p.sousId,
-      totalStaked: new BigNumber(cakePoolsTotalStaked[index]).toNumber(),
+      totalStaked: new BigNumber(cakePoolsTotalStaked[index]).toJSON(),
     })),
     ...bnbPool.map((p, index) => ({
       sousId: p.sousId,
-      totalStaked: new BigNumber(bnbPoolsTotalStaked[index]).toNumber(),
+      totalStaked: new BigNumber(bnbPoolsTotalStaked[index]).toJSON(),
     })),
   ]
 }

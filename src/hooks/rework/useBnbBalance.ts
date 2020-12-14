@@ -21,7 +21,9 @@ const useUserBnbBalance = () => {
         console.error(error)
       }
     }
-    fetch()
+    if (account) {
+      fetch()
+    }
   }, [account, web3, block])
 
   return balance

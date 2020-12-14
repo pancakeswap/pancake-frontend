@@ -42,11 +42,11 @@ const fetchFarmUser = async (pid: number, account: string) => {
   ])
 
   return {
-    allowance: new BigNumber(allowance).toNumber(),
-    tokenBalance: new BigNumber(tokenBalance).toNumber(),
+    allowance: new BigNumber(allowance).toJSON(),
+    tokenBalance: new BigNumber(tokenBalance).toJSON(),
     // eslint-disable-next-line no-underscore-dangle
-    stakedBalance: new BigNumber(userInfo[0]._hex).toNumber(),
-    earnings: new BigNumber(earnings).toNumber(),
+    stakedBalance: new BigNumber(userInfo[0]._hex).toJSON(),
+    earnings: new BigNumber(earnings).toJSON(),
   }
 }
 
