@@ -88,11 +88,11 @@ const fetchFarms = async () => {
 
       return {
         ...farmConfig,
-        tokenAmount: tokenAmount.toNumber(),
-        quoteTokenAmount: quoteTokenAmount.toNumber(),
-        lpTotalInQuoteToken: lpTotalInQuoteToken.toNumber(),
-        tokenPriceVsQuote: quoteTokenAmount.div(tokenAmount).toNumber(),
-        poolWeight: poolWeight.toNumber(),
+        tokenAmount: tokenAmount.toJSON(),
+        quoteTokenAmount: quoteTokenAmount.toJSON(),
+        lpTotalInQuoteToken: lpTotalInQuoteToken.toJSON(),
+        tokenPriceVsQuote: quoteTokenAmount.div(tokenAmount).toJSON(),
+        poolWeight: poolWeight.toJSON(),
       }
     }),
   )
