@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import { CheckboxProps, scales } from "./types";
+import { RadioProps, scales } from "./types";
 
-const getScale = ({ scale }: CheckboxProps) => {
+const getScale = ({ scale }: RadioProps) => {
   switch (scale) {
     case scales.SM:
       return "24px";
@@ -11,7 +11,17 @@ const getScale = ({ scale }: CheckboxProps) => {
   }
 };
 
-const Checkbox = styled.input.attrs({ type: "checkbox" })<CheckboxProps>`
+const getCheckedScale = ({ scale }: RadioProps) => {
+  switch (scale) {
+    case scales.SM:
+      return "12px";
+    case scales.MD:
+    default:
+      return "20px";
+  }
+};
+
+const Radio = styled.input.attrs({ type: "radio" })<RadioProps>`
   appearance: none;
   overflow: hidden;
   cursor: pointer;
@@ -22,24 +32,18 @@ const Checkbox = styled.input.attrs({ type: "checkbox" })<CheckboxProps>`
   vertical-align: middle;
   transition: background-color 0.2s ease-in-out;
   border: 0;
-  border-radius: 8px;
+  border-radius: 50%;
   background-color: ${({ theme }) => theme.colors.input};
   box-shadow: ${({ theme }) => theme.shadows.inset};
 
   &:after {
+    border-radius: 50%;
     content: "";
+    height: ${getCheckedScale};
+    left: 6px;
     position: absolute;
-    border-bottom: 2px solid;
-    border-left: 2px solid;
-    border-color: transparent;
-    top: 30%;
-    left: 0;
-    right: 0;
-    width: 50%;
-    height: 25%;
-    margin: auto;
-    transform: rotate(-50deg);
-    transition: border-color 0.2s ease-in-out;
+    top: 6px;
+    width: ${getCheckedScale};
   }
 
   &:hover:not(:disabled):not(:checked) {
@@ -54,7 +58,7 @@ const Checkbox = styled.input.attrs({ type: "checkbox" })<CheckboxProps>`
   &:checked {
     background-color: ${({ theme }) => theme.colors.success};
     &:after {
-      border-color: white;
+      background-color: ${({ theme }) => theme.radio.handleBackground};
     }
   }
 
@@ -64,8 +68,8 @@ const Checkbox = styled.input.attrs({ type: "checkbox" })<CheckboxProps>`
   }
 `;
 
-Checkbox.defaultProps = {
+Radio.defaultProps = {
   scale: scales.MD,
 };
 
-export default Checkbox;
+export default Radio;

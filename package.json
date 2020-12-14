@@ -61,7 +61,7 @@
     "react-dom": "^16.14.0",
     "react-is": "^16.13.1",
     "react-router-dom": "^5.2.0",
-    "rollup": "^2.31.0",
+    "rollup": "^2.35.0",
     "styled-components": "^5.2.0",
     "themeprovider-storybook": "^1.6.4",
     "ts-jest": "^26.4.4",
