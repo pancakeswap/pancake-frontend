@@ -4,7 +4,7 @@ import { Heading, Card, CardBody, CardFooter, Text, PancakeRoundIcon, TicketRoun
 import useI18n from 'hooks/useI18n'
 import LotteryCardHeading from '../LotteryCardHeading'
 import PastLotteryActions from './PastLotteryActions'
-import PrizeGrid from '../TotalPrizesCard/PrizeGrid'
+import PrizeGrid from '../PrizeGrid'
 
 const CardHeading = styled.div`
   position: relative;
