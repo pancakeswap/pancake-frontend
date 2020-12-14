@@ -9,7 +9,7 @@ const PastDrawsHistoryCard = () => {
   return (
     <Card>
       <CardBody>
-        <span>History</span>
+        <Heading size="md">History</Heading>
       </CardBody>
     </Card>
   )
