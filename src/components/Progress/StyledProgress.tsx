@@ -25,6 +25,7 @@ const StyledProgress = styled.div`
   border-radius: 32px;
   box-shadow: ${({ theme }) => theme.shadows.inset};
   height: 16px;
+  overflow: hidden;
 `;
 
 export default StyledProgress;
