@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { Heading, Card, CardBody, Button } from '@pancakeswap-libs/uikit'
 import { useWallet } from 'use-wallet'
 import useI18n from 'hooks/useI18n'
-import { useAllReward } from 'hooks/useReward'
+import { useAllHarvest } from 'hooks/useHarvest'
 import useFarmsWithBalance from 'hooks/useFarmsWithBalance'
 import UnlockButton from 'components/UnlockButton'
 import CakeHarvestBalance from './CakeHarvestBalance'
@@ -54,7 +54,7 @@ const FarmedStakingCard = () => {
   const farmsWithBalance = useFarmsWithBalance()
   const balancesWithValue = farmsWithBalance.filter((balanceType) => balanceType.balance.toNumber() > 0)
 
-  const { onReward } = useAllReward(balancesWithValue.map((farmWithBalance) => farmWithBalance.pid))
+  const { onReward } = useAllHarvest(balancesWithValue.map((farmWithBalance) => farmWithBalance.pid))
 
   const harvestAllFarms = useCallback(async () => {
     setPendingTx(true)
@@ -70,19 +70,19 @@ const FarmedStakingCard = () => {
   return (
     <StyledFarmStakingCard>
       <CardBody>
-        <CardTitle>{TranslateString(999, 'Farms & Staking')}</CardTitle>
+        <CardTitle>{TranslateString(542, 'Farms & Staking')}</CardTitle>
         <CardImage src="/images/cake.svg" alt="cake logo" />
         <Block>
           <Value>
             <CakeHarvestBalance />
           </Value>
-          <Label>{TranslateString(999, 'CAKE to Harvest')}</Label>
+          <Label>{TranslateString(544, 'CAKE to Harvest')}</Label>
         </Block>
         <Block>
           <Value>
             <CakeWalletBalance />
           </Value>
-          <Label>{TranslateString(999, 'CAKE in Wallet')}</Label>
+          <Label>{TranslateString(546, 'CAKE in Wallet')}</Label>
         </Block>
         <Actions>
           {account ? (
@@ -93,7 +93,7 @@ const FarmedStakingCard = () => {
               fullWidth
             >
               {pendingTx
-                ? TranslateString(999, 'Collecting CAKE')
+                ? TranslateString(548, 'Collecting CAKE')
                 : TranslateString(999, `Harvest all (${balancesWithValue.length})`)}
             </Button>
           ) : (

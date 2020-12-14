@@ -23,7 +23,7 @@ const useGetLotteryHasDrawn = () => {
 
       fetchLotteryStatus()
     }
-  }, [lotteryContract, sushi, account, setLotteryHasDrawn])
+  }, [account, lotteryContract, sushi])
 
   return lotteryHasDrawn
 }

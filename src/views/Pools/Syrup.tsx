@@ -5,43 +5,41 @@ import { Heading } from '@pancakeswap-libs/uikit'
 import orderBy from 'lodash/orderBy'
 import partition from 'lodash/partition'
 import useUserBnbBalance from 'hooks/rework/useBnbBalance'
-import useSushi from 'hooks/useSushi'
 import useI18n from 'hooks/useI18n'
-import useAllStakedValue from 'hooks/useAllStakedValue'
-import { useBnbPriceUSD } from 'hooks/usePrices'
-import { getPools } from 'sushi/utils'
+import { useFarms, usePriceBnbBusd, usePools } from 'state/hooks'
 import { QuoteToken } from 'sushi/lib/constants/types'
 import Coming from './components/Coming'
 import PoolCard from './components/PoolCard'
 
 const Farm: React.FC = () => {
-  const sushi = useSushi()
   const TranslateString = useI18n()
-  const stakedValues = useAllStakedValue()
+  const farms = useFarms()
+  const pools = usePools()
   const userBnbBalance = useUserBnbBalance()
-  const bnbPriceUSD = useBnbPriceUSD()
-  const cakePriceVsBNB = stakedValues.find((s) => s.tokenSymbol === 'CAKE')?.tokenPrice || new BigNumber(0)
+  const bnbPriceUSD = usePriceBnbBusd()
+  const cakePriceVsBNB = new BigNumber(farms.find((s) => s.tokenSymbol === 'CAKE')?.tokenPriceVsQuote || 0)
 
-  const priceToBnb = (tokenName: string, tokenPrice: BigNumber, quoteToken: QuoteToken) => {
+  const priceToBnb = (tokenName: string, tokenPrice: BigNumber, quoteToken: QuoteToken): BigNumber => {
+    const tokenPriceBN = new BigNumber(tokenPrice)
     if (tokenName === 'BNB') {
       return new BigNumber(1)
     }
     if (tokenPrice && quoteToken === QuoteToken.BUSD) {
-      return tokenPrice.div(bnbPriceUSD)
+      return tokenPriceBN.div(bnbPriceUSD)
     }
-    return tokenPrice
+    return tokenPriceBN
   }
 
-  const pools = getPools(sushi).map((pool) => {
-    const stakedValue = stakedValues.find((s) => s.tokenSymbol === pool.tokenName)
+  const poolsWithPrice = pools.map((pool) => {
+    const farm = farms.find((f) => f.tokenSymbol === pool.tokenName)
 
     return {
       ...pool,
-      tokenPrice: priceToBnb(pool.tokenName, stakedValue?.tokenPrice, stakedValue?.quoteToken),
+      tokenPrice: priceToBnb(pool.tokenName, farm?.tokenPriceVsQuote, farm?.quoteTokenSymbol),
     }
   })
 
-  const [finishedPools, openPools] = partition(pools, (pool) => pool.isFinished)
+  const [finishedPools, openPools] = partition(poolsWithPrice, (pool) => pool.isFinished)
 
   return (
     <Page>

@@ -30,7 +30,7 @@ const useTickets = () => {
     if (account && lotteryContract && ticketsContract && sushi) {
       fetchBalance()
     }
-  }, [account, block, lotteryContract, setTickets, sushi, ticketsContract])
+  }, [account, lotteryContract, sushi, ticketsContract, block])
 
   return tickets
 }
@@ -51,7 +51,7 @@ export const useTotalRewards = () => {
     if (account && lotteryContract && sushi) {
       fetchBalance()
     }
-  }, [account, block, lotteryContract, setRewards, sushi])
+  }, [account, lotteryContract, sushi, block])
 
   return rewards
 }
@@ -75,7 +75,7 @@ export const useTotalClaim = () => {
     if (account && lotteryContract && ticketsContract && sushi) {
       fetchBalance()
     }
-  }, [account, lotteryContract, setClaimAmount, sushi, ticketsContract, fetchBalance])
+  }, [account, fetchBalance, lotteryContract, sushi, ticketsContract])
 
   return { claimLoading, claimAmount }
 }
@@ -117,7 +117,7 @@ export const useMatchingRewardLength = (numbers) => {
     if (account && lotteryContract && sushi) {
       fetchBalance()
     }
-  }, [account, block, lotteryContract, numbers, setMatchingNumbers, sushi])
+  }, [account, lotteryContract, numbers, sushi, block])
 
   return matchingNumbers
 }

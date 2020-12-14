@@ -1,5 +1,7 @@
 import Web3 from 'web3'
 import { HttpProviderOptions } from 'web3-core-helpers'
+import { AbiItem } from 'web3-utils'
+import { ContractOptions } from 'web3-eth-contract'
 import getRpcUrl from 'utils/getRpcUrl'
 
 const RPC_URL = getRpcUrl()
@@ -13,4 +15,9 @@ const getWeb3 = () => {
   return web3
 }
 
-export { getWeb3, httpProvider }
+const getContract = (abi: AbiItem, address: string, contractOptions?: ContractOptions) => {
+  const web3 = getWeb3()
+  return new web3.eth.Contract(abi, address, contractOptions)
+}
+
+export { getWeb3, getContract, httpProvider }

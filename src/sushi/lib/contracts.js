@@ -8,7 +8,7 @@ import SousChefAbi from './abi/sousChef.json'
 import SousChefBnbAbi from './abi/sousChefBnb.json'
 import LotteryAbi from './abi/lottery.json'
 import LotteryNFTAbi from './abi/lotteryNft.json'
-import WETHAbi from './abi/weth.json'
+import WBNBAbi from './abi/weth.json'
 import MultiCallAbi from './abi/Multicall.json'
 import { contractAddresses, farmsConfig, poolsConfig } from './constants'
 import { PoolCategory } from './constants/types'
@@ -36,30 +36,28 @@ export default class Contracts {
     this.syrup = new this.web3.eth.Contract(SyrupAbi)
     this.sousChef = new this.web3.eth.Contract(SousChefAbi)
     this.sousChefBnb = new this.web3.eth.Contract(SousChefBnbAbi)
-    this.weth = new this.web3.eth.Contract(WETHAbi)
+    this.wbnb = new this.web3.eth.Contract(WBNBAbi)
     this.lottery = new this.web3.eth.Contract(LotteryAbi)
     this.lotteryNft = new this.web3.eth.Contract(LotteryNFTAbi)
     this.multicall = new this.web3.eth.Contract(MultiCallAbi)
     this.busd = new this.web3.eth.Contract(ERC20Abi)
 
-    this.pools = farmsConfig.map((pool) =>
-      Object.assign(pool, {
-        lpAddress: pool.lpAddresses[networkId],
-        tokenAddress: pool.tokenAddresses[networkId],
-        lpContract: new this.web3.eth.Contract(UNIV2PairAbi),
-        tokenContract: new this.web3.eth.Contract(ERC20Abi),
-      }),
-    )
+    this.pools = farmsConfig.map((pool) => ({
+      ...pool,
+      lpAddress: pool.lpAddresses[networkId],
+      tokenAddress: pool.tokenAddresses[networkId],
+      lpContract: new this.web3.eth.Contract(UNIV2PairAbi),
+      tokenContract: new this.web3.eth.Contract(ERC20Abi),
+    }))
 
-    this.sousChefs = poolsConfig.map((pool) =>
-      Object.assign(pool, {
-        contractAddress: pool.contractAddress[networkId],
-        sousContract:
-          pool.poolCategory === PoolCategory.BINANCE
-            ? new this.web3.eth.Contract(SousChefBnbAbi)
-            : new this.web3.eth.Contract(SousChefAbi),
-      }),
-    )
+    this.sousChefs = poolsConfig.map((pool) => ({
+      ...pool,
+      contractAddress: pool.contractAddress[networkId],
+      sousContract:
+        pool.poolCategory === PoolCategory.BINANCE
+          ? new this.web3.eth.Contract(SousChefBnbAbi)
+          : new this.web3.eth.Contract(SousChefAbi),
+    }))
 
     this.setProvider(provider, networkId)
     this.setDefaultAccount(this.web3.eth.defaultAccount)
@@ -76,7 +74,7 @@ export default class Contracts {
     setProvider(this.sushi, contractAddresses.sushi[networkId])
     setProvider(this.syrup, contractAddresses.syrup[networkId])
     setProvider(this.masterChef, contractAddresses.masterChef[networkId])
-    setProvider(this.weth, contractAddresses.weth[networkId])
+    setProvider(this.wbnb, contractAddresses.wbnb[networkId])
     setProvider(this.sousChef, contractAddresses.sousChef[networkId])
     setProvider(this.lottery, contractAddresses.lottery[networkId])
     setProvider(this.lotteryNft, contractAddresses.lotteryNFT[networkId])
