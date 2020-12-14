@@ -1,1 +1,3 @@
-module.exports = { rootDir: 'src', transform: { '^.+.[t|j]sx?$': 'ts-jest' } };
+module.exports = {
+  preset: "ts-jest",
+};
