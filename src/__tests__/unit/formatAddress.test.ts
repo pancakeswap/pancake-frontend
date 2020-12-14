@@ -1,4 +1,4 @@
-import formatAddress from './formatAddress'
+import formatAddress from '../../utils/formatAddress'
 
 it.each([
   ['bc1qmkv9wumjy2yzgghf2jmuvzvua6hgauh5grnm59', 'bc1qmk...grnm59'],
