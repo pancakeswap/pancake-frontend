@@ -26,6 +26,10 @@ const GridItem = styled.div<{ marginBottom?: string }>`
   margin-bottom: ${(props) => (props.marginBottom ? props.marginBottom : '10px')};
 `
 
+const PastDrawGridItem = styled(GridItem)`
+  transform: translate(-40%, 0%);
+`
+
 const PrizeGrid: React.FC<PrizeGridProps> = ({ lotteryPrizeAmount = 0, pastDraw = false }) => {
   const fourMatchesAmount = +((lotteryPrizeAmount / 100) * 50).toFixed(0)
   const threeMatchesAmount = +((lotteryPrizeAmount / 100) * 20).toFixed(0)
@@ -41,11 +45,11 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({ lotteryPrizeAmount = 0, pastDraw 
         </Text>
       </GridItem>
       {pastDraw && (
-        <GridItem>
+        <PastDrawGridItem>
           <RightAlignedText fontSize="14px" color="textSubtle">
             {TranslateString(999, 'Winners')}
           </RightAlignedText>
-        </GridItem>
+        </PastDrawGridItem>
       )}
       <GridItem>
         <RightAlignedText fontSize="14px" color="textSubtle">
@@ -57,9 +61,9 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({ lotteryPrizeAmount = 0, pastDraw 
         <Heading size="md">4</Heading>
       </GridItem>
       {pastDraw && (
-        <GridItem>
+        <PastDrawGridItem>
           <RightAlignedHeading size="md">1</RightAlignedHeading>
-        </GridItem>
+        </PastDrawGridItem>
       )}
       <GridItem>
         <RightAlignedHeading size="md">{fourMatchesAmount.toLocaleString()}</RightAlignedHeading>
@@ -69,9 +73,9 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({ lotteryPrizeAmount = 0, pastDraw 
         <Text bold>3</Text>
       </GridItem>
       {pastDraw && (
-        <GridItem>
+        <PastDrawGridItem>
           <RightAlignedText bold>8</RightAlignedText>
-        </GridItem>
+        </PastDrawGridItem>
       )}
       <GridItem>
         <RightAlignedText>{threeMatchesAmount.toLocaleString()}</RightAlignedText>
@@ -81,9 +85,9 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({ lotteryPrizeAmount = 0, pastDraw 
         <Text>2</Text>
       </GridItem>
       {pastDraw && (
-        <GridItem marginBottom="20px">
+        <PastDrawGridItem marginBottom="20px">
           <RightAlignedText>27</RightAlignedText>
-        </GridItem>
+        </PastDrawGridItem>
       )}
       <GridItem marginBottom="20px">
         <RightAlignedText>{twoMatchesAmount.toLocaleString()}</RightAlignedText>
