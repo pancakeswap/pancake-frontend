@@ -38,7 +38,7 @@ const PastRoundCard = () => {
         </CardHeading>
       </CardBody>
       <CardFooter>
-        <PrizeGrid lotteryPrizeAmount={100000} />
+        <PrizeGrid lotteryPrizeAmount={100000} pastDraw />
         <PastLotteryActions />
       </CardFooter>
     </Card>
