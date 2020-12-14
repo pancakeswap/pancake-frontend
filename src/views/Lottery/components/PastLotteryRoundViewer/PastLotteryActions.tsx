@@ -11,6 +11,10 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   margin-top: ${(props) => props.theme.spacing[4]}px;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    justify-content: space-between;
+  }
 `
 
 const TicketCard: React.FC = () => {
