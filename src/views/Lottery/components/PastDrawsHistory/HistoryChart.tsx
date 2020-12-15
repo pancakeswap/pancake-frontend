@@ -56,6 +56,7 @@ const HistoryChart = () => {
         lineHeight,
         maxRotation: 0,
         beginAtZero: true,
+        autoSkipPadding: 15,
         userCallback: (value, index, values) => {
           return value.toLocaleString() // this is all we need
         },
