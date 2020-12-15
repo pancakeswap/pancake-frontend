@@ -44,6 +44,22 @@ export const Default: React.FC = () => {
           <ButtonMenuItem>Button 4</ButtonMenuItem>
         </ButtonMenu>
       </Row>
+      <Row>
+        <ButtonMenu activeIndex={index} onClick={handleClick} variant="subtle">
+          <ButtonMenuItem>Button 1</ButtonMenuItem>
+          <ButtonMenuItem>Button 2</ButtonMenuItem>
+          <ButtonMenuItem>Button 3</ButtonMenuItem>
+          <ButtonMenuItem>Button 4</ButtonMenuItem>
+        </ButtonMenu>
+      </Row>
+      <Row>
+        <ButtonMenu activeIndex={index1} onClick={handleClick1} size="sm" variant="subtle">
+          <ButtonMenuItem>Button 1</ButtonMenuItem>
+          <ButtonMenuItem>Button 2</ButtonMenuItem>
+          <ButtonMenuItem>Button 3</ButtonMenuItem>
+          <ButtonMenuItem>Button 4</ButtonMenuItem>
+        </ButtonMenu>
+      </Row>
     </>
   );
 };

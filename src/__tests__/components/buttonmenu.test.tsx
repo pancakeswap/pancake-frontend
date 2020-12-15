@@ -15,7 +15,7 @@ it("renders correctly", () => {
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
       <div
-        class="sc-bdfBwQ gdJSqy"
+        class="sc-bdfBwQ emLCCz"
       >
         <button
           class="sc-gsTCUz ghXEjt"
@@ -23,7 +23,7 @@ it("renders correctly", () => {
           Item 1
         </button>
         <button
-          class="sc-gsTCUz dFDTyt"
+          class="sc-gsTCUz bsQSlZ sc-dlfnbm kvjOFs"
         >
           Item 2
         </button>

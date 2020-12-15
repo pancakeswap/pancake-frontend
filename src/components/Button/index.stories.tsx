@@ -1,8 +1,10 @@
 import React from "react";
 import styled from "styled-components";
+import capitalize from "lodash/capitalize";
 import { LogoIcon, AddIcon } from "../Svg";
 import Button from "./Button";
 import IconButton from "./IconButton";
+import { variants } from "./types";
 
 const Row = styled.div`
   margin-bottom: 32px;
@@ -22,47 +24,17 @@ export default {
 export const Default: React.FC = () => {
   return (
     <>
-      <Row>
-        <Button>Primary</Button>
-        <Button disabled>Disabled</Button>
-        <Button size="sm">Small</Button>
-      </Row>
-      <Row>
-        <Button variant="secondary">Secondary</Button>
-        <Button variant="secondary" disabled>
-          Disabled
-        </Button>
-        <Button variant="secondary" size="sm">
-          Small
-        </Button>
-      </Row>
-      <Row>
-        <Button variant="tertiary">Tertiary</Button>
-        <Button variant="tertiary" disabled>
-          Disabled
-        </Button>
-        <Button variant="tertiary" size="sm">
-          Small
-        </Button>
-      </Row>
-      <Row>
-        <Button variant="text">Text</Button>
-        <Button variant="text" disabled>
-          Disabled
-        </Button>
-        <Button variant="text" size="sm">
-          Small
-        </Button>
-      </Row>
-      <Row>
-        <Button variant="danger">Danger</Button>
-        <Button variant="danger" disabled>
-          Disabled
-        </Button>
-        <Button variant="danger" size="sm">
-          Small
-        </Button>
-      </Row>
+      {Object.values(variants).map((variant) => (
+        <Row key={variant}>
+          <Button variant={variant}>{capitalize(variant)}</Button>
+          <Button variant={variant} disabled>
+            Disabled
+          </Button>
+          <Button variant={variant} size="sm">
+            Small
+          </Button>
+        </Row>
+      ))}
     </>
   );
 };

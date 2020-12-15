@@ -13,6 +13,7 @@ export const variants = {
   TERTIARY: "tertiary",
   TEXT: "text",
   DANGER: "danger",
+  SUBTLE: "subtle",
 } as const;
 
 export type Sizes = typeof sizes[keyof typeof sizes];

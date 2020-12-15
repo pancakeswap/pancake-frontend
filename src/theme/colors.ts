@@ -24,7 +24,7 @@ export const lightColors: Colors = {
   tertiary: "#EFF4F5",
   text: "#452A7A",
   textDisabled: "#BDC2C4",
-  textSubtle: "#AEA0D6",
+  textSubtle: "#8f80ba",
   borderColor: "#E9EAEB",
 };
 
@@ -35,11 +35,11 @@ export const darkColors: Colors = {
   backgroundDisabled: "#362C45",
   contrast: "#FFFFFF",
   invertedContrast: "#191326",
-  input: "#473d5d",
+  input: "#483f5a",
   primaryDark: "#0098A1",
-  tertiary: "#293450",
+  tertiary: "#353547",
   text: "#DBCDF9",
-  textDisabled: "#524B63",
+  textDisabled: "#666171",
   textSubtle: "#A28BD4",
   borderColor: "#524B63",
 };

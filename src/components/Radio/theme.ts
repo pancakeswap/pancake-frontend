@@ -5,5 +5,5 @@ export const light: RadioTheme = {
 };
 
 export const dark: RadioTheme = {
-  handleBackground: "#2B223E",
+  handleBackground: "#27262c",
 };

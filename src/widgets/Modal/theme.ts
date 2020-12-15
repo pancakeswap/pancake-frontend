@@ -5,5 +5,5 @@ export const light: ModalTheme = {
 };
 
 export const dark: ModalTheme = {
-  background: "#2B223E",
+  background: "#27262c",
 };
