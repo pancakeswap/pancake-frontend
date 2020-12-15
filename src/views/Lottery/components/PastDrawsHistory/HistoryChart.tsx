@@ -4,11 +4,32 @@ import { Line } from '@reactchartjs/react-chart.js'
 import FixtureData from './fixtureData'
 
 const HistoryChart = () => {
+  const [historyData, setHistoryData] = useState([])
+
   const getDataArray = (kind) => {
     return FixtureData.map((dataPoint) => {
       return dataPoint[kind]
     }).reverse()
   }
+
+  const getHistoryChartData = () => {
+    return fetch('https://gatsby-pancake-api-ktm3u9r4c.vercel.app/api/lotteryHistory')
+      .then((response) => {
+        // debugger // eslint-disable-line no-debugger
+        return response.json()
+      })
+      .then((json) => {
+        setHistoryData(json)
+      })
+      .catch((error) => {
+        console.error(error)
+      })
+  }
+
+  useEffect(() => {
+    // Uncomment when implementing data fetch
+    // getHistoryChartData()
+  }, [])
 
   const lineStyles = ({ color }) => {
     return {
