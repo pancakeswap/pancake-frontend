@@ -5,7 +5,7 @@ import { Line } from '@reactchartjs/react-chart.js'
 import FixtureData from './fixtureData'
 
 const Wrapper = styled.div`
-  height: 400px;
+  /* height: 400px; */
 `
 
 const HistoryChart = () => {
@@ -17,17 +17,15 @@ const HistoryChart = () => {
     }).reverse()
   }
 
-  const axesStyles = ({ color }) => {
+  const lineStyles = ({ color }) => {
     return {
-      borderCapStyle: 'round',
-      gridLines: { display: false },
-      ticks: { fontFamily: 'Kanit, sans-serif', fontColor: color, fontSize: 14, lineHeight: 1.5 },
+      borderColor: color,
+      fill: false,
+      borderWidth: 2,
+      pointRadius: 0,
+      pointHitRadius: 10,
     }
   }
-
-  // const testObj = { thing: 'wat', ...axesStyles({ color: 'red' }) }
-
-  // debugger
 
   const data = {
     labels: getDataArray('lotteryNumber'),
@@ -35,18 +33,34 @@ const HistoryChart = () => {
       {
         label: 'Pool Size',
         data: getDataArray('poolSize'),
-        fill: false,
-        borderColor: '#8F80BA',
         yAxisID: 'y-axis-pool',
+        ...lineStyles({ color: '#8F80BA' }),
       },
       {
         label: 'Burned',
         data: getDataArray('burned'),
-        fill: false,
-        borderColor: '#1FC7D4',
         yAxisID: 'y-axis-burned',
+        ...lineStyles({ color: '#1FC7D4' }),
       },
     ],
+  }
+
+  const axesStyles = ({ color, lineHeight }) => {
+    return {
+      borderCapStyle: 'round',
+      gridLines: { display: false },
+      ticks: {
+        fontFamily: 'Kanit, sans-serif',
+        fontColor: color,
+        fontSize: 14,
+        lineHeight,
+        maxRotation: 0,
+        beginAtZero: true,
+        userCallback: (value, index, values) => {
+          return value.toLocaleString() // this is all we need
+        },
+      },
+    }
   }
 
   const options = {
@@ -58,19 +72,19 @@ const HistoryChart = () => {
           display: true,
           position: 'left',
           id: 'y-axis-pool',
-          ...axesStyles({ color: '#8f80ba' }),
+          ...axesStyles({ color: '#8f80ba', lineHeight: 1.6 }),
         },
         {
           type: 'linear',
           display: true,
           position: 'right',
           id: 'y-axis-burned',
-          ...axesStyles({ color: '#1FC7D4' }),
+          ...axesStyles({ color: '#1FC7D4', lineHeight: 1.5 }),
         },
       ],
       xAxes: [
         {
-          ...axesStyles({ color: '#452A7A' }),
+          ...axesStyles({ color: '#452A7A', lineHeight: 1 }),
         },
       ],
     },
@@ -79,7 +93,7 @@ const HistoryChart = () => {
   return (
     <Wrapper>
       {/* @ts-ignore */}
-      <Line data={data} options={options} height={300} />
+      <Line data={data} options={options} />
     </Wrapper>
   )
 }

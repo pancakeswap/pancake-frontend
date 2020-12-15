@@ -23,11 +23,6 @@ const Circle = styled.div<{ isPoolSize?: boolean }>`
   margin-right: 6px;
 `
 
-//
-// const StyledFooter = styled.div<{ isFinished: boolean }>`
-// border-top: 1px solid ${({ theme }) => (theme.isDark ? '#524B63' : '#E9EAEB')};
-// color: ${({ isFinished, theme }) => theme.colors[isFinished ? 'textDisabled2' : 'primary2']};
-
 const Legend = () => {
   const TranslateString = useI18n()
 
