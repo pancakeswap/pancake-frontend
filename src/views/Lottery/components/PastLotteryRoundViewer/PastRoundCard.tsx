@@ -5,6 +5,7 @@ import useI18n from 'hooks/useI18n'
 import LotteryCardHeading from '../LotteryCardHeading'
 import PastLotteryActions from './PastLotteryActions'
 import PrizeGrid from '../PrizeGrid'
+import Timestamp from '../Timestamp'
 
 const CardHeading = styled.div`
   position: relative;
@@ -28,6 +29,7 @@ const PastRoundCard = () => {
     <Card>
       <CardBody>
         <CardHeading>
+          <Timestamp timeValue="2020-12-14T14:00:00.000Z" />
           <StyledHeading size="md">Round #51</StyledHeading>
           <TopLotteryCardHeading valueToDisplay={TranslateString(999, '1, 2, 3, 4')} Icon={TicketRound}>
             {TranslateString(999, 'Winning numbers')}
