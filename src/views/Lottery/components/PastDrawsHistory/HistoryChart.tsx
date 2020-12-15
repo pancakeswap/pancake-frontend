@@ -4,7 +4,9 @@ import useI18n from 'hooks/useI18n'
 import { Line } from '@reactchartjs/react-chart.js'
 import FixtureData from './fixtureData'
 
-const Wrapper = styled.div``
+const Wrapper = styled.div`
+  height: 400px;
+`
 
 const HistoryChart = () => {
   const TranslateString = useI18n()
@@ -15,6 +17,12 @@ const HistoryChart = () => {
     }).reverse()
   }
 
+  const axesStyles = {
+    borderCapStyle: 'round',
+    gridLines: { display: false },
+    ticks: { fontFamily: 'times' },
+  }
+
   const data = {
     labels: getDataArray('lotteryNumber'),
     datasets: [
@@ -22,17 +30,17 @@ const HistoryChart = () => {
         label: 'Pool Size',
         data: getDataArray('poolSize'),
         fill: false,
-        backgroundColor: 'rgb(255, 99, 132)',
-        borderColor: 'rgba(255, 99, 132, 0.2)',
+        borderColor: '#8F80BA',
         yAxisID: 'y-axis-1',
+        ...axesStyles,
       },
       {
         label: 'Burned',
         data: getDataArray('burned'),
         fill: false,
-        backgroundColor: 'rgb(54, 162, 235)',
-        borderColor: 'rgba(54, 162, 235, 0.2)',
+        borderColor: '#1FC7D4',
         yAxisID: 'y-axis-2',
+        ...axesStyles,
       },
     ],
   }
@@ -45,15 +53,14 @@ const HistoryChart = () => {
           display: true,
           position: 'left',
           id: 'y-axis-1',
+          ...axesStyles,
         },
         {
           type: 'linear',
           display: true,
           position: 'right',
           id: 'y-axis-2',
-          gridLines: {
-            drawOnArea: false,
-          },
+          ...axesStyles,
         },
       ],
     },
