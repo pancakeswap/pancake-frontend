@@ -21,7 +21,7 @@ const HistoryChart = () => {
     return {
       borderCapStyle: 'round',
       gridLines: { display: false },
-      ticks: { fontFamily: 'Kanit, sans-serif', fontColor: color },
+      ticks: { fontFamily: 'Kanit, sans-serif', fontColor: color, fontSize: 14, lineHeight: 1.5 },
     }
   }
 
@@ -37,36 +37,40 @@ const HistoryChart = () => {
         data: getDataArray('poolSize'),
         fill: false,
         borderColor: '#8F80BA',
-        yAxisID: 'y-axis-1',
-        ...axesStyles({ color: '#8F80BA' }),
+        yAxisID: 'y-axis-pool',
       },
       {
         label: 'Burned',
         data: getDataArray('burned'),
         fill: false,
         borderColor: '#1FC7D4',
-        yAxisID: 'y-axis-2',
-        ...axesStyles({ color: '#1FC7D4' }),
+        yAxisID: 'y-axis-burned',
       },
     ],
   }
 
   const options = {
+    legend: { display: false },
     scales: {
       yAxes: [
         {
           type: 'linear',
           display: true,
           position: 'left',
-          id: 'y-axis-1',
-          ...axesStyles,
+          id: 'y-axis-pool',
+          ...axesStyles({ color: '#8f80ba' }),
         },
         {
           type: 'linear',
           display: true,
           position: 'right',
-          id: 'y-axis-2',
-          ...axesStyles,
+          id: 'y-axis-burned',
+          ...axesStyles({ color: '#1FC7D4' }),
+        },
+      ],
+      xAxes: [
+        {
+          ...axesStyles({ color: '#452A7A' }),
         },
       ],
     },
@@ -75,7 +79,7 @@ const HistoryChart = () => {
   return (
     <Wrapper>
       {/* @ts-ignore */}
-      <Line data={data} options={options} />
+      <Line data={data} options={options} height={300} />
     </Wrapper>
   )
 }

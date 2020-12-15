@@ -11,6 +11,7 @@ const PastDrawsHistoryCard = () => {
     <Card>
       <CardBody>
         <Heading size="md">{TranslateString(999, 'History')}</Heading>
+
         <HistoryChart />
       </CardBody>
     </Card>
