@@ -5,7 +5,7 @@ import { BaseLayout } from '@pancakeswap-libs/uikit'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useTotalClaim } from 'hooks/useTickets'
 import PastLotteryRoundViewer from './components/PastLotteryRoundViewer'
-import PastDrawsHistoryCard from './components/PastDrawsHistoryCard'
+import PastDrawsHistoryCard from './components/PastDrawsHistory/PastDrawsHistoryCard'
 
 const Cards = styled(BaseLayout)`
   align-items: start;
