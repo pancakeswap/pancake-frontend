@@ -6,7 +6,7 @@ import HistoryChart from './HistoryChart'
 
 const Wrapper = styled.div`
   display: flex;
-  margin: 30px 0;
+  margin: 36px 0 28px;
 `
 
 const LegendItem = styled.div`

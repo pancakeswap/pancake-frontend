@@ -1,16 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import useI18n from 'hooks/useI18n'
 import { Line } from '@reactchartjs/react-chart.js'
 import FixtureData from './fixtureData'
 
-const Wrapper = styled.div`
-  /* height: 400px; */
-`
-
 const HistoryChart = () => {
-  const TranslateString = useI18n()
-
   const getDataArray = (kind) => {
     return FixtureData.map((dataPoint) => {
       return dataPoint[kind]
@@ -58,7 +51,7 @@ const HistoryChart = () => {
         beginAtZero: true,
         autoSkipPadding: 15,
         userCallback: (value, index, values) => {
-          return value.toLocaleString() // this is all we need
+          return value.toLocaleString()
         },
       },
     }
@@ -92,10 +85,8 @@ const HistoryChart = () => {
   }
 
   return (
-    <Wrapper>
-      {/* @ts-ignore */}
-      <Line data={data} options={options} />
-    </Wrapper>
+    // @ts-ignore
+    <Line data={data} options={options} />
   )
 }
 
