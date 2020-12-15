@@ -1,7 +1,12 @@
 import BigNumber from 'bignumber.js'
 import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync, fetchPoolsPublicDataAsync } from './actions'
+import {
+  fetchFarmsPublicDataAsync,
+  fetchFarmUserDataAsync,
+  fetchPoolsPublicDataAsync,
+  fetchPoolsUserDataAsync,
+} from './actions'
 import { State, Farm, Pool } from './types'
 
 const ZERO = new BigNumber(0)
@@ -52,7 +57,15 @@ export const useFarmUser = (pid, account) => {
 
 // Pools
 
-export const usePools = (): Pool[] => {
+export const usePools = (account): Pool[] => {
+  const dispatch = useDispatch()
+  useEffect(() => {
+    if (account) {
+      dispatch(fetchPoolsUserDataAsync(account))
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [account])
+
   const pools = useSelector((state: State) => state.pools.data)
   return pools
 }

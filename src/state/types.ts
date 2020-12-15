@@ -19,6 +19,12 @@ export interface Pool extends PoolConfig {
   totalStaked?: BigNumber
   startBlock?: number
   endBlock?: number
+  userData?: {
+    allowance: BigNumber
+    stakingTokenBalance: BigNumber
+    stakedBalance: BigNumber
+    pendingReward: BigNumber
+  }
 }
 
 // Slices states

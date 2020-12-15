@@ -7,13 +7,10 @@ import { BLOCKS_PER_YEAR } from 'config'
 import UnlockButton from 'components/UnlockButton'
 import Label from 'components/Label'
 import { useERC20 } from 'hooks/rework/useContract'
-import { useSousAllowance } from 'hooks/useAllowance'
 import { useSousApprove } from 'hooks/useApprove'
 import useI18n from 'hooks/useI18n'
-import { useSousEarnings, useSousLeftBlocks } from 'hooks/useEarnings'
+import useSousLeftBlocks from 'hooks/useEarnings'
 import { useSousStake } from 'hooks/useStake'
-import useSousStakedBalance from 'hooks/useStakedBalance'
-import useTokenBalance from 'hooks/useTokenBalance'
 import { useSousUnstake } from 'hooks/useUnstake'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useSousHarvest } from 'hooks/useHarvest'
@@ -35,11 +32,10 @@ interface PoolWithPrice extends Pool {
 
 interface HarvestProps {
   cakePriceVsBNB: BigNumber
-  userBnbBalance: BigNumber
   pool: PoolWithPrice
 }
 
-const PoolCard: React.FC<HarvestProps> = ({ cakePriceVsBNB, userBnbBalance, pool }) => {
+const PoolCard: React.FC<HarvestProps> = ({ cakePriceVsBNB, pool }) => {
   const {
     sousId,
     image,
@@ -53,26 +49,25 @@ const PoolCard: React.FC<HarvestProps> = ({ cakePriceVsBNB, userBnbBalance, pool
     tokenDecimals,
     poolCategory,
     totalStaked,
+    userData,
   } = pool
   // Pools using native BNB behave differently than pools using a token
   const isBnbPool = poolCategory === PoolCategory.BINANCE
   const TranslateString = useI18n()
   const stakingTokenContract = useERC20(stakingTokenAddress)
+  const { account } = useWallet()
 
-  // allowance and onApprove are used only when isBnbPool === false
-  const allowance = useSousAllowance(stakingTokenContract, sousId)
-  const { onApprove } = useSousApprove(stakingTokenContract, sousId)
-  const tokenBalance = useTokenBalance(stakingTokenContract.options.address)
-  const userBalance = isBnbPool ? userBnbBalance : tokenBalance
+  const allowance = new BigNumber(userData?.allowance || 0)
+  const stakingTokenBalance = new BigNumber(userData?.stakingTokenBalance || 0)
+  const stakedBalance = new BigNumber(userData?.stakedBalance || 0)
+  const earnings = new BigNumber(userData?.pendingReward || 0)
 
   const { isFinished, blocksUntilStart, blocksRemaining } = useSousLeftBlocks(sousId)
-  const stakedBalance = useSousStakedBalance(sousId)
-  const earnings = useSousEarnings(sousId)
+  const { onApprove } = useSousApprove(stakingTokenContract, sousId)
   const { onStake } = useSousStake(sousId, isBnbPool)
   const { onUnstake } = useSousUnstake(sousId)
   const { onReward } = useSousHarvest(sousId, isBnbPool)
 
-  const { account } = useWallet()
   const [requestedApproval, setRequestedApproval] = useState(false)
   const [pendingTx, setPendingTx] = useState(false)
 
@@ -89,16 +84,16 @@ const PoolCard: React.FC<HarvestProps> = ({ cakePriceVsBNB, userBnbBalance, pool
   }, [cakePriceVsBNB, isBnbPool, tokenPerBlock, tokenPrice, totalStaked])
 
   const isOldSyrup = stakingTokenName === QuoteToken.SYRUP
-  const accountHasStakedBalance = account && stakedBalance.toNumber() > 0
+  const accountHasStakedBalance = stakedBalance?.toNumber() > 0
   const needsApproval = !accountHasStakedBalance && !allowance.toNumber() && !isBnbPool
   const isCardActive = isFinished && accountHasStakedBalance
 
   const [onPresentDeposit] = useModal(
     <DepositModal
       max={
-        isBnbPool && userBalance.isGreaterThan(10)
+        isBnbPool && stakingTokenBalance.isGreaterThan(10)
           ? new BigNumber(10).multipliedBy(new BigNumber(10).pow(18))
-          : userBalance
+          : stakingTokenBalance
       }
       onConfirm={onStake}
       tokenName={isBnbPool ? `${stakingTokenName} (10 bnb max)` : stakingTokenName}

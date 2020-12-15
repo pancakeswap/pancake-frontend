@@ -38,7 +38,7 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName, allowance, to
 
   const { onStake } = useStake(pid)
   const { onUnstake } = useUnstake(pid)
-  const { onApprove } = useApprove(lpContract)
+  const { onApprove } = useApprove(lpContract, pid)
 
   const syrupBalance = useTokenBalance(getSyrupAddress(sushi))
 
