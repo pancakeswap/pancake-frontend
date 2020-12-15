@@ -17,11 +17,17 @@ const HistoryChart = () => {
     }).reverse()
   }
 
-  const axesStyles = {
-    borderCapStyle: 'round',
-    gridLines: { display: false },
-    ticks: { fontFamily: 'times' },
+  const axesStyles = ({ color }) => {
+    return {
+      borderCapStyle: 'round',
+      gridLines: { display: false },
+      ticks: { fontFamily: 'Kanit, sans-serif', fontColor: color },
+    }
   }
+
+  // const testObj = { thing: 'wat', ...axesStyles({ color: 'red' }) }
+
+  // debugger
 
   const data = {
     labels: getDataArray('lotteryNumber'),
@@ -32,7 +38,7 @@ const HistoryChart = () => {
         fill: false,
         borderColor: '#8F80BA',
         yAxisID: 'y-axis-1',
-        ...axesStyles,
+        ...axesStyles({ color: '#8F80BA' }),
       },
       {
         label: 'Burned',
@@ -40,7 +46,7 @@ const HistoryChart = () => {
         fill: false,
         borderColor: '#1FC7D4',
         yAxisID: 'y-axis-2',
-        ...axesStyles,
+        ...axesStyles({ color: '#1FC7D4' }),
       },
     ],
   }
