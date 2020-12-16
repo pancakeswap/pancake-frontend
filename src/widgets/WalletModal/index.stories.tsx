@@ -1,6 +1,6 @@
 import React from "react";
 import Button from "../../components/Button/Button";
-import Flex from "../../components/Flex";
+import Flex from "../../components/Flex/Flex";
 import useWalletModal from "./index";
 
 export default {

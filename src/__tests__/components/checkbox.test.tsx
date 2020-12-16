@@ -1,6 +1,6 @@
 import React from "react";
 import { renderWithTheme } from "../../testHelpers";
-import Checkbox from "../../components/Checkbox";
+import Checkbox from "../../components/Checkbox/Checkbox";
 
 const handleChange = jest.fn();
 

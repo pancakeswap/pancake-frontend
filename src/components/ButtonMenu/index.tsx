@@ -1,23 +1,3 @@
-import React, { cloneElement, Children, ReactElement } from "react";
-import StyledButtonMenu from "./StyledButtonMenu";
-import { sizes, variants } from "../Button/types";
-import { ButtonMenuProps, ButtonMenuItemProps } from "./types";
-
-const ButtonMenu: React.FC<ButtonMenuProps> = ({
-  activeIndex = 0,
-  size = sizes.MD,
-  variant = variants.PRIMARY,
-  onClick,
-  children,
-}) => {
-  return (
-    <StyledButtonMenu>
-      {Children.map(children, (child: ReactElement<ButtonMenuItemProps>, index) => {
-        const handleClick = () => onClick && onClick(index);
-        return cloneElement(child, { isActive: activeIndex === index, onClick: handleClick, size, variant });
-      })}
-    </StyledButtonMenu>
-  );
-};
-
-export default ButtonMenu;
+export { default as ButtonMenu } from "./ButtonMenu";
+export { default as ButtonMenuItem } from "./ButtonMenuItem";
+export type { ButtonMenuProps, ButtonMenuItemProps } from "./types";

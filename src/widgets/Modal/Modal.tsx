@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import Heading from "../../components/Heading";
+import Heading from "../../components/Heading/Heading";
 import Button from "../../components/Button/Button";
-import Flex from "../../components/Flex";
+import Flex from "../../components/Flex/Flex";
 import { CloseIcon } from "../../components/Svg";
 
 interface Props {

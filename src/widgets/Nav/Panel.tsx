@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { CloseIcon, ChevronDownIcon } from "../../components/Svg";
 import Button from "../../components/Button/Button";
-import Dropdown from "../../components/Dropdown";
+import Dropdown from "../../components/Dropdown/Dropdown";
 import MenuDropdwn from "./MenuDropdwn";
 import Language from "./icons/Language";
 import UserBlock from "./UserBlock";

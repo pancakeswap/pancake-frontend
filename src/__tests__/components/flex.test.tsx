@@ -1,6 +1,6 @@
 import React from "react";
 import { renderWithTheme } from "../../testHelpers";
-import Flex from "../../components/Flex";
+import Flex from "../../components/Flex/Flex";
 
 it("renders correctly", () => {
   const { asFragment } = renderWithTheme(<Flex>flex</Flex>);

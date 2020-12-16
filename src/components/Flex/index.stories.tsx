@@ -1,6 +1,6 @@
 import React from "react";
-import Flex from "./index";
-import Text from "../Text";
+import Flex from "./Flex";
+import Text from "../Text/Text";
 import { Link } from "../Link";
 
 export default {

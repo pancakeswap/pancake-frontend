@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import random from "lodash/random";
 import Button from "../Button/Button";
-import Progress from "./index";
+import Progress from "./Progress";
 
 export default {
   title: "Progress",

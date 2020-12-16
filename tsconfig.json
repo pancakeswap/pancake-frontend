@@ -16,5 +16,5 @@
     "jsx": "react"
   },
   "include": ["src"],
-  "exclude": ["node_moduels", "src/**/*.stories.tsx"]
+  "exclude": ["node_modules", "src/**/*.stories.tsx", "src/__tests__/**/*"]
 }

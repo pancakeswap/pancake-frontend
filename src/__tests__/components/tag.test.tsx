@@ -1,6 +1,6 @@
 import React from "react";
 import { renderWithTheme } from "../../testHelpers";
-import Tag from "../../components/Tag";
+import Tag from "../../components/Tag/Tag";
 
 it("renders correctly", () => {
   const { asFragment } = renderWithTheme(<Tag>Core</Tag>);

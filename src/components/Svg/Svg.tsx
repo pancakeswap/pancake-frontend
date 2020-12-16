@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { space } from "styled-system";
 import getThemeValue from "../../util/getThemeValue";
-import SvgProps from "./types";
+import { SvgProps } from "./types";
 
 const Svg = styled.svg<SvgProps>`
   fill: ${({ theme, color }) => getThemeValue(`colors.${color}`, color)(theme)};

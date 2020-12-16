@@ -3,7 +3,7 @@ import styled from "styled-components";
 /* eslint-disable import/no-unresolved */
 import { Meta } from "@storybook/react/types-6-0";
 import { CommunityIcon, RemoveIcon } from "../Svg";
-import Tag from "./index";
+import Tag from "./Tag";
 import { variants } from "./types";
 
 const Row = styled.div`

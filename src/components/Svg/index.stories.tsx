@@ -1,6 +1,6 @@
 import React from "react";
-import Flex from "../Flex";
-import Text from "../Text";
+import Flex from "../Flex/Flex";
+import Text from "../Text/Text";
 import Svg from "./Svg";
 
 export default {

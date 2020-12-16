@@ -1,5 +1,5 @@
 import { FC } from "react";
-import SvgProps from "../../components/Svg/types";
+import { SvgProps } from "../../components/Svg/types";
 
 export type ConnectorId =
   | "authereum"

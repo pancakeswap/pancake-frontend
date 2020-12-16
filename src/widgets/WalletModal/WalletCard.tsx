@@ -1,6 +1,6 @@
 import React from "react";
 import Button from "../../components/Button/Button";
-import Text from "../../components/Text";
+import Text from "../../components/Text/Text";
 import { localStorageKey } from "./config";
 import { Login, Config } from "./types";
 

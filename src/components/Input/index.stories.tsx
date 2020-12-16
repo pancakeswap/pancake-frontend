@@ -2,8 +2,8 @@ import React from "react";
 import styled from "styled-components";
 /* eslint-disable import/no-unresolved */
 import { Meta } from "@storybook/react/types-6-0";
-import Heading from "../Heading";
-import Input from "./index";
+import Heading from "../Heading/Heading";
+import Input from "./Input";
 import { scales } from "./types";
 
 const Row = styled.div`

@@ -1,8 +1,8 @@
 import React from "react";
 import Button from "../../components/Button/Button";
-import Text from "../../components/Text";
-import { Link } from "../../components/Link";
-import Flex from "../../components/Flex";
+import Text from "../../components/Text/Text";
+import Link from "../../components/Link/Link";
+import Flex from "../../components/Flex/Flex";
 import { OpenNewIcon } from "../../components/Svg";
 import { Modal } from "../Modal";
 import { localStorageKey } from "./config";

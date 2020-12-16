@@ -14,10 +14,10 @@ export const sizes = {
   XXL: "xxl",
 };
 
-type Tags = typeof tags[keyof typeof tags];
-type Sizes = typeof sizes[keyof typeof sizes];
+export type Tags = typeof tags[keyof typeof tags];
+export type Sizes = typeof sizes[keyof typeof sizes];
 
-export interface Props {
+export interface HeadingProps {
   as?: Tags;
   size?: Sizes;
 }

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Radio from "./index";
+import Radio from "./Radio";
 
 export default {
   title: "Radio",

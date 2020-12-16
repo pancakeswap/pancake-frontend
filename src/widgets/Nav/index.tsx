@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { HamburgerIcon } from "../../components/Svg";
-import Overlay from "../../components/Overlay";
+import Overlay from "../../components/Overlay/Overlay";
 import Logo from "./icons/Logo";
 import { MobileOnlyButton } from "./Buttons";
 import Panel from "./Panel";

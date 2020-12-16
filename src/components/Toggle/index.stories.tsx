@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Toggle from "./index";
+import Toggle from "./Toggle";
 
 export default {
   title: "Toggle",

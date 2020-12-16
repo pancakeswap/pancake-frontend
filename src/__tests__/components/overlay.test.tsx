@@ -1,6 +1,6 @@
 import React from "react";
 import { renderWithTheme } from "../../testHelpers";
-import Overlay from "../../components/Overlay";
+import Overlay from "../../components/Overlay/Overlay";
 
 it("renders correctly", () => {
   const { asFragment } = renderWithTheme(<Overlay show />);

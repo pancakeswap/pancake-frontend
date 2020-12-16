@@ -1,7 +1,7 @@
 import React from "react";
 import { Modal, useModal } from ".";
 import Button from "../../components/Button/Button";
-import Heading from "../../components/Heading";
+import Heading from "../../components/Heading/Heading";
 
 export default {
   title: "Modal",
