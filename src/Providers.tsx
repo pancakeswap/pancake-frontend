@@ -7,6 +7,7 @@ import SushiProvider from 'contexts/SushiProvider'
 import { LanguageContextProvider } from 'contexts/Localisation/languageContext'
 import { ThemeContextProvider } from 'contexts/ThemeContext'
 import { BlockContextProvider } from 'contexts/BlockContext'
+import { RefreshContextProvider } from 'contexts/RefreshContext'
 import store from 'state'
 
 const Providers: React.FC = ({ children }) => {
@@ -24,7 +25,9 @@ const Providers: React.FC = ({ children }) => {
           >
             <BlockContextProvider>
               <SushiProvider>
-                <ModalProvider>{children}</ModalProvider>
+                <RefreshContextProvider>
+                  <ModalProvider>{children}</ModalProvider>
+                </RefreshContextProvider>
               </SushiProvider>
             </BlockContextProvider>
           </UseWalletProvider>

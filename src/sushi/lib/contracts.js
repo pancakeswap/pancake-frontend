@@ -122,7 +122,6 @@ export default class Contracts {
         } catch (error) {
           const data = method.encodeABI()
           const { from, value } = options
-          // eslint-disable-next-line no-underscore-dangle
           const to = method._parent._address
           error.transactionData = { from, value, data, to }
           throw error

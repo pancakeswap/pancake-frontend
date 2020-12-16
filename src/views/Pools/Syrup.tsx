@@ -1,10 +1,10 @@
 import React from 'react'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
+import { useWallet } from 'use-wallet'
 import { Heading } from '@pancakeswap-libs/uikit'
 import orderBy from 'lodash/orderBy'
 import partition from 'lodash/partition'
-import useUserBnbBalance from 'hooks/rework/useBnbBalance'
 import useI18n from 'hooks/useI18n'
 import { useFarms, usePriceBnbBusd, usePools } from 'state/hooks'
 import { QuoteToken } from 'sushi/lib/constants/types'
@@ -13,9 +13,9 @@ import PoolCard from './components/PoolCard'
 
 const Farm: React.FC = () => {
   const TranslateString = useI18n()
+  const { account } = useWallet()
   const farms = useFarms()
-  const pools = usePools()
-  const userBnbBalance = useUserBnbBalance()
+  const pools = usePools(account)
   const bnbPriceUSD = usePriceBnbBusd()
   const cakePriceVsBNB = new BigNumber(farms.find((s) => s.tokenSymbol === 'CAKE')?.tokenPriceVsQuote || 0)
 
@@ -58,11 +58,11 @@ const Farm: React.FC = () => {
       </Hero>
       <Pools>
         {orderBy(openPools, ['sortOrder']).map((pool) => (
-          <PoolCard key={pool.sousId} cakePriceVsBNB={cakePriceVsBNB} userBnbBalance={userBnbBalance} pool={pool} />
+          <PoolCard key={pool.sousId} cakePriceVsBNB={cakePriceVsBNB} pool={pool} />
         ))}
         <Coming />
         {orderBy(finishedPools, ['sortOrder']).map((pool) => (
-          <PoolCard key={pool.sousId} cakePriceVsBNB={cakePriceVsBNB} userBnbBalance={userBnbBalance} pool={pool} />
+          <PoolCard key={pool.sousId} cakePriceVsBNB={cakePriceVsBNB} pool={pool} />
         ))}
       </Pools>
     </Page>

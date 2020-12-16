@@ -83,7 +83,6 @@ const fetchFarms = async () => {
         },
       ])
 
-      // eslint-disable-next-line no-underscore-dangle
       const poolWeight = new BigNumber(info.allocPoint._hex).div(new BigNumber(totalAllocPoint))
 
       return {

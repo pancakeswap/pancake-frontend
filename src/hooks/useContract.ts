@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { AbiItem } from 'web3-utils'
 import { ContractOptions } from 'web3-eth-contract'
-import useWeb3 from 'hooks/rework/useWeb3'
+import useWeb3 from 'hooks/useWeb3'
 import ifo from 'sushi/lib/abi/ifo.json'
 import erc20 from 'sushi/lib/abi/erc20.json'
 import rabbitmintingfarm from 'sushi/lib/abi/rabbitmintingfarm.json'

@@ -4,13 +4,11 @@ import styled from 'styled-components'
 import { useWallet } from 'use-wallet'
 import { Contract } from 'web3-eth-contract'
 import { Button, IconButton, useModal, AddIcon, Card, CardBody } from '@pancakeswap-libs/uikit'
-import { useDispatch } from 'react-redux'
 import Label from 'components/Label'
-import useApprove from 'hooks/useApprove'
+import { useApprove } from 'hooks/useApprove'
 import useStake from 'hooks/useStake'
 import useI18n from 'hooks/useI18n'
 import useUnstake from 'hooks/useUnstake'
-import { fetchFarmUserDataAsync } from 'state/actions'
 import { getBalanceNumber } from 'utils/formatBalance'
 import UnlockButton from 'components/UnlockButton'
 import DepositModal from './DepositModal'
@@ -28,41 +26,28 @@ interface StakeProps {
 }
 
 const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName, allowance, tokenBalance, stakedBalance }) => {
-  const dispatch = useDispatch()
   const { account } = useWallet()
   const [requestedApproval, setRequestedApproval] = useState(false)
   const TranslateString = useI18n()
 
-  const { onApprove } = useApprove(lpContract)
+  const { onApprove } = useApprove(lpContract, pid)
   const { onStake } = useStake(pid)
   const { onUnstake } = useUnstake(pid)
-  const handleStake = async (amount) => {
-    await onStake(amount)
-    dispatch(fetchFarmUserDataAsync(pid, account))
-  }
-  const handleUnStake = async (amount) => {
-    await onUnstake(amount)
-    dispatch(fetchFarmUserDataAsync(pid, account))
-  }
 
-  const [onPresentDeposit] = useModal(<DepositModal max={tokenBalance} onConfirm={handleStake} tokenName={tokenName} />)
+  const [onPresentDeposit] = useModal(<DepositModal max={tokenBalance} onConfirm={onStake} tokenName={tokenName} />)
   const [onPresentWithdraw] = useModal(
-    <WithdrawModal max={stakedBalance} onConfirm={handleUnStake} tokenName={tokenName} />,
+    <WithdrawModal max={stakedBalance} onConfirm={onUnstake} tokenName={tokenName} />,
   )
 
   const handleApprove = useCallback(async () => {
     try {
       setRequestedApproval(true)
-      const txHash = await onApprove()
-      // user rejected tx or didn't go thru
-      if (txHash) {
-        dispatch(fetchFarmUserDataAsync(pid, account))
-      }
+      await onApprove()
       setRequestedApproval(false)
     } catch (e) {
       console.error(e)
     }
-  }, [account, dispatch, onApprove, pid])
+  }, [onApprove])
 
   // We assume the token name is coin pair + lp e.g. CAKE-BNB LP, LINK-BNB LP,
   // NAR-CAKE LP. The images should be cake-bnb.svg, link-bnb.svg, nar-cake.svg

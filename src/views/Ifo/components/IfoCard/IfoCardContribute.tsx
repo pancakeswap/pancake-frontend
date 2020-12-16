@@ -3,9 +3,9 @@ import { useModal, Button, Text } from '@pancakeswap-libs/uikit'
 import { useWallet } from 'use-wallet'
 import BigNumber from 'bignumber.js'
 import { Contract } from 'web3-eth-contract'
-import { useERC20 } from 'hooks/rework/useContract'
-import { useAllowance } from 'hooks/rework/useAllowance'
-import { useApprove } from 'hooks/rework/useApprove'
+import { useERC20 } from 'hooks/useContract'
+import { useIfoAllowance } from 'hooks/useAllowance'
+import { useIfoApprove } from 'hooks/useApprove'
 import { IfoStatus } from 'sushi/lib/constants/types'
 import { getBalanceNumber } from 'utils/formatBalance'
 import LabelButton from './LabelButton'
@@ -34,8 +34,8 @@ const IfoCardContribute: React.FC<Props> = ({
 
   const { account } = useWallet()
   const contractRaisingToken = useERC20(currencyAddress)
-  const allowance = useAllowance(contractRaisingToken, address, pendingTx)
-  const onApprove = useApprove(contractRaisingToken, address)
+  const allowance = useIfoAllowance(contractRaisingToken, address, pendingTx)
+  const onApprove = useIfoApprove(contractRaisingToken, address)
   const [onPresentContributeModal] = useModal(
     <ContributeModal currency={currency} contract={contract} currencyAddress={currencyAddress} />,
   )
