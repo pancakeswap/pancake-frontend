@@ -1,10 +1,21 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { Line } from '@reactchartjs/react-chart.js'
+import { Text } from '@pancakeswap-libs/uikit'
+import axios from 'axios'
 import FixtureData from './fixtureData'
+
+const ErrorWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
 
 const HistoryChart = () => {
   const [historyData, setHistoryData] = useState([])
+  const [error, setError] = useState(false)
 
   const getDataArray = (kind) => {
     return FixtureData.map((dataPoint) => {
@@ -13,22 +24,20 @@ const HistoryChart = () => {
   }
 
   const getHistoryChartData = () => {
-    return fetch('https://gatsby-pancake-api-ktm3u9r4c.vercel.app/api/lotteryHistory')
-      .then((response) => {
-        // debugger // eslint-disable-line no-debugger
-        return response.json()
+    axios
+      .get(`https://api.pancakeswap.com/api/lotteryHistory`)
+      .then((res) => {
+        setHistoryData(res.data)
       })
-      .then((json) => {
-        setHistoryData(json)
-      })
-      .catch((error) => {
-        console.error(error)
+      .catch((apiError) => {
+        setError(true)
+        console.log(apiError.response)
       })
   }
 
   useEffect(() => {
     // Uncomment when implementing data fetch
-    // getHistoryChartData()
+    getHistoryChartData()
   }, [])
 
   const lineStyles = ({ color }) => {
@@ -106,8 +115,16 @@ const HistoryChart = () => {
   }
 
   return (
-    // @ts-ignore
-    <Line data={data} options={options} />
+    <>
+      {error ? (
+        <ErrorWrapper>
+          <Text>Error fetching data</Text>
+        </ErrorWrapper>
+      ) : (
+        // @ts-ignore
+        <Line data={data} options={options} />
+      )}
+    </>
   )
 }
 
