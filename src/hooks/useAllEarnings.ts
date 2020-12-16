@@ -4,12 +4,12 @@ import multicall from 'utils/multicall'
 import masterChefABI from 'sushi/lib/abi/masterchef.json'
 import addresses from 'sushi/lib/constants/contracts'
 import { farmsConfig } from 'sushi/lib/constants'
-import useBlock from './useBlock'
+import useRefresh from './useRefresh'
 
 const useAllEarnings = () => {
   const [balances, setBalance] = useState([])
   const { account }: { account: string } = useWallet()
-  const block = useBlock()
+  const { fastRefresh } = useRefresh()
 
   useEffect(() => {
     const fetchAllBalances = async () => {
@@ -27,7 +27,7 @@ const useAllEarnings = () => {
     if (account) {
       fetchAllBalances()
     }
-  }, [account, block])
+  }, [account, fastRefresh])
 
   return balances
 }

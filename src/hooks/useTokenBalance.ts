@@ -4,13 +4,13 @@ import { useWallet } from 'use-wallet'
 import { provider } from 'web3-core'
 import { getTokenBalance } from '../utils/erc20'
 import { getSushiSupply } from '../sushi/utils'
-import useBlock from './useBlock'
+import useRefresh from './useRefresh'
 import useSushi from './useSushi'
 
 const useTokenBalance = (tokenAddress: string) => {
   const [balance, setBalance] = useState(new BigNumber(0))
   const { account, ethereum }: { account: string; ethereum: provider } = useWallet()
-  const block = useBlock()
+  const { fastRefresh } = useRefresh()
 
   useEffect(() => {
     const fetchBalance = async () => {
@@ -21,14 +21,14 @@ const useTokenBalance = (tokenAddress: string) => {
     if (account && ethereum) {
       fetchBalance()
     }
-  }, [account, ethereum, tokenAddress, block])
+  }, [account, ethereum, tokenAddress, fastRefresh])
 
   return balance
 }
 
 export const useTotalSupply = () => {
   const sushi = useSushi()
-  const block = useBlock()
+  const { slowRefresh } = useRefresh()
   const [totalSupply, setTotalSupply] = useState<BigNumber>()
 
   useEffect(() => {
@@ -39,7 +39,7 @@ export const useTotalSupply = () => {
     if (sushi) {
       fetchTotalSupply()
     }
-  }, [block, sushi])
+  }, [slowRefresh, sushi])
 
   return totalSupply
 }
@@ -47,7 +47,7 @@ export const useTotalSupply = () => {
 export const useBurnedBalance = (tokenAddress: string) => {
   const [balance, setBalance] = useState(new BigNumber(0))
   const { account, ethereum }: { account: string; ethereum: provider } = useWallet()
-  const block = useBlock()
+  const { slowRefresh } = useRefresh()
 
   useEffect(() => {
     const fetchBalance = async () => {
@@ -58,7 +58,7 @@ export const useBurnedBalance = (tokenAddress: string) => {
     if (account && ethereum) {
       fetchBalance()
     }
-  }, [account, ethereum, tokenAddress, block])
+  }, [account, ethereum, tokenAddress, slowRefresh])
 
   return balance
 }

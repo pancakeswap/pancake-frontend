@@ -4,7 +4,7 @@ import { useWallet } from 'use-wallet'
 import { Contract } from 'web3-eth-contract'
 import { getEarned, getMasterChefContract, getFarms } from '../sushi/utils'
 import useSushi from './useSushi'
-import useBlock from './useBlock'
+import useRefresh from './useRefresh'
 
 export interface Farm {
   pid: number
@@ -29,7 +29,7 @@ const useFarmsWithBalance = () => {
   const sushi = useSushi()
   const farms = getFarms(sushi)
   const masterChefContract = getMasterChefContract(sushi)
-  const block = useBlock()
+  const { fastRefresh } = useRefresh()
 
   useEffect(() => {
     const fetchBalances = async () => {
@@ -49,7 +49,7 @@ const useFarmsWithBalance = () => {
     if (account && masterChefContract && sushi) {
       fetchBalances()
     }
-  }, [account, farms, masterChefContract, sushi, block])
+  }, [account, farms, masterChefContract, sushi, fastRefresh])
 
   return farmsWithBalances
 }
