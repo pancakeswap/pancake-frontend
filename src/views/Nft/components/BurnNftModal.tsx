@@ -5,7 +5,7 @@ import { Button, Checkbox, Modal, Text } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import { Nft } from 'sushi/lib/constants/types'
 import { RABBIT_MINTING_FARM_ADDRESS } from 'sushi/lib/constants/nfts'
-import { useRabbitMintingFarm } from 'hooks/rework/useContract'
+import { useRabbitMintingFarm } from 'hooks/useContract'
 import InfoRow from './InfoRow'
 
 interface BurnNftModalProps {

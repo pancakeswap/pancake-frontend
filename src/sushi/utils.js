@@ -1,6 +1,4 @@
 import BigNumber from 'bignumber.js'
-import get from 'lodash/get'
-import memoize from 'lodash/memoize'
 import { ethers } from 'ethers'
 
 BigNumber.config({
@@ -14,9 +12,6 @@ export const getSushiAddress = (sushi) => {
 export const getSyrupAddress = (sushi) => {
   return sushi && sushi.syrupAddress
 }
-export const getSyrupContract = (sushi) => {
-  return sushi && sushi.contracts && sushi.contracts.syrup
-}
 export const getMasterChefContract = (sushi) => {
   return sushi && sushi.contracts && sushi.contracts.masterChef
 }
@@ -27,27 +22,10 @@ export const getSousChefContract = (sushi, sousId) => {
   return sushi && sushi.contracts && sushi.contracts.sousChefs.filter((chef) => chef.sousId === sousId)[0]?.sousContract
 }
 
-export const getFarms = memoize((sushi) => {
-  const pools = get(sushi, 'contracts.pools', [])
-  return pools
-})
-
-export const getEarned = async (masterChefContract, pid, account) => {
-  return masterChefContract.methods.pendingCake(pid, account).call()
-}
-
-export const getSousEarned = async (sousChefContract, account) => {
-  return sousChefContract.methods.pendingReward(account).call()
-}
-
 export const approve = async (lpContract, masterChefContract, account) => {
   return lpContract.methods
     .approve(masterChefContract.options.address, ethers.constants.MaxUint256)
     .send({ from: account })
-}
-
-export const getSushiSupply = async (sushi) => {
-  return new BigNumber(await sushi.contracts.sushi.methods.totalSupply().call())
 }
 
 export const stake = async (masterChefContract, pid, amount, account) => {
@@ -171,23 +149,4 @@ export const soushHarvestBnb = async (sousChefContract, account) => {
     .on('transactionHash', (tx) => {
       return tx.transactionHash
     })
-}
-
-export const getStaked = async (masterChefContract, pid, account) => {
-  try {
-    const { amount } = await masterChefContract.methods.userInfo(pid, account).call()
-    return new BigNumber(amount)
-  } catch {
-    return new BigNumber(0)
-  }
-}
-
-export const getSousStaked = async (sousChefContract, account) => {
-  try {
-    const { amount } = await sousChefContract.methods.userInfo(account).call()
-    return new BigNumber(amount)
-  } catch (err) {
-    console.error(err)
-    return new BigNumber(0)
-  }
 }

@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react'
 import BigNumber from 'bignumber.js'
 import { useWallet } from 'use-wallet'
 import { provider } from 'web3-core'
+import cakeABI from 'sushi/lib/abi/sushi.json'
+import addresses from 'sushi/lib/constants/contracts'
+import { getContract } from 'utils/web3'
 import { getTokenBalance } from '../utils/erc20'
-import { getSushiSupply } from '../sushi/utils'
 import useRefresh from './useRefresh'
-import useSushi from './useSushi'
 
 const useTokenBalance = (tokenAddress: string) => {
   const [balance, setBalance] = useState(new BigNumber(0))
@@ -27,19 +28,18 @@ const useTokenBalance = (tokenAddress: string) => {
 }
 
 export const useTotalSupply = () => {
-  const sushi = useSushi()
   const { slowRefresh } = useRefresh()
   const [totalSupply, setTotalSupply] = useState<BigNumber>()
 
   useEffect(() => {
     async function fetchTotalSupply() {
-      const supply = await getSushiSupply(sushi)
-      setTotalSupply(supply)
+      const cakeContract = getContract(cakeABI, addresses.sushi[process.env.REACT_APP_CHAIN_ID])
+      const supply = await cakeContract.methods.totalSupply().call()
+      setTotalSupply(new BigNumber(supply))
     }
-    if (sushi) {
-      fetchTotalSupply()
-    }
-  }, [slowRefresh, sushi])
+
+    fetchTotalSupply()
+  }, [slowRefresh])
 
   return totalSupply
 }

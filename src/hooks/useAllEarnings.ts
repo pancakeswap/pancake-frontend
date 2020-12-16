@@ -14,7 +14,7 @@ const useAllEarnings = () => {
   useEffect(() => {
     const fetchAllBalances = async () => {
       const calls = farmsConfig.map((farm) => ({
-        address: addresses.masterChef[56],
+        address: addresses.masterChef[process.env.REACT_APP_CHAIN_ID],
         name: 'pendingCake',
         params: [farm.pid, account],
       }))
