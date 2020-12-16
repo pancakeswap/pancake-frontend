@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import { Line } from '@reactchartjs/react-chart.js'
 import { Text } from '@pancakeswap-libs/uikit'
 import axios from 'axios'
-import FixtureData from './fixtureData'
 
 const ErrorWrapper = styled.div`
   width: 100%;
@@ -16,12 +15,6 @@ const ErrorWrapper = styled.div`
 const HistoryChart = () => {
   const [historyData, setHistoryData] = useState([])
   const [error, setError] = useState(false)
-
-  const getDataArray = (kind) => {
-    return FixtureData.map((dataPoint) => {
-      return dataPoint[kind]
-    }).reverse()
-  }
 
   const getHistoryChartData = () => {
     axios
@@ -36,9 +29,16 @@ const HistoryChart = () => {
   }
 
   useEffect(() => {
-    // Uncomment when implementing data fetch
     getHistoryChartData()
   }, [])
+
+  const getDataArray = (kind) => {
+    return historyData
+      .map((dataPoint) => {
+        return dataPoint[kind]
+      })
+      .reverse()
+  }
 
   const lineStyles = ({ color }) => {
     return {
@@ -122,7 +122,7 @@ const HistoryChart = () => {
         </ErrorWrapper>
       ) : (
         // @ts-ignore
-        <Line data={data} options={options} />
+        historyData.length > 1 && <Line data={data} options={options} />
       )}
     </>
   )
