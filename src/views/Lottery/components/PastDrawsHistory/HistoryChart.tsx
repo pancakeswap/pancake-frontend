@@ -122,7 +122,7 @@ const HistoryChart = () => {
           <Text>Error fetching data</Text>
         </InnerWrapper>
       )}
-      {historyData.length > 1 ? (
+      {!error && historyData.length > 1 ? (
         <Line data={data} options={options} type="line" />
       ) : (
         <InnerWrapper>
