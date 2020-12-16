@@ -3,8 +3,9 @@ import styled from 'styled-components'
 import { Line } from '@reactchartjs/react-chart.js'
 import { Text } from '@pancakeswap-libs/uikit'
 import axios from 'axios'
+import Loading from '../../../../components/Loading/Loading'
 
-const ErrorWrapper = styled.div`
+const InnerWrapper = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
@@ -116,13 +117,17 @@ const HistoryChart = () => {
 
   return (
     <>
-      {error ? (
-        <ErrorWrapper>
+      {error && (
+        <InnerWrapper>
           <Text>Error fetching data</Text>
-        </ErrorWrapper>
+        </InnerWrapper>
+      )}
+      {historyData.length > 1 ? (
+        <Line data={data} options={options} type="line" />
       ) : (
-        // @ts-ignore
-        historyData.length > 1 && <Line data={data} options={options} />
+        <InnerWrapper>
+          <Loading />
+        </InnerWrapper>
       )}
     </>
   )
