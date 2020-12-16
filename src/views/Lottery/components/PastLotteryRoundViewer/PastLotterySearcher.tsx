@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import styled from 'styled-components'
-import { useWallet } from 'use-wallet'
 import { Text, Input, Button } from '@pancakeswap-libs/uikit'
 import useSushi from 'hooks/useSushi'
 import useI18n from 'hooks/useI18n'
@@ -25,23 +24,7 @@ const StyledButton = styled(Button)`
 
 const PastLotterySearcher = () => {
   const TranslateString = useI18n()
-  const [index, setIndex] = useState(0)
-  const [inputNumber, setInputNumber] = useState(index)
-  const sushi = useSushi()
-  const { account } = useWallet()
-  const lotteryContract = getLotteryContract(sushi)
-
-  const getCurrentLotteryIndex = useCallback(async () => {
-    const issueIndex = await getLotteryIssueIndex(lotteryContract)
-    setIndex(issueIndex)
-    setInputNumber(issueIndex)
-  }, [lotteryContract])
-
-  useEffect(() => {
-    if (account && lotteryContract && sushi) {
-      getCurrentLotteryIndex()
-    }
-  }, [account, lotteryContract, sushi, getCurrentLotteryIndex])
+  const [inputNumber, setInputNumber] = useState(1)
 
   const onSubmit = () => {
     console.log(inputNumber)
