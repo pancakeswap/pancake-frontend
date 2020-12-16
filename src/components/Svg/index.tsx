@@ -1,5 +1,6 @@
 export { default as AddIcon } from "./Icons/Add";
 export { default as ArrowForwardIcon } from "./Icons/ArrowForward";
+export { default as ArrowDownIcon } from "./Icons/ArrowDown";
 export { default as BinanceIcon } from "./Icons/Binance";
 export { default as BlockIcon } from "./Icons/Block";
 export { default as CheckmarkIcon } from "./Icons/Checkmark";
@@ -21,4 +22,6 @@ export { default as ProgressBunny } from "./Icons/ProgressBunny";
 export { default as Won } from "./Icons/Won";
 export { default as Ticket } from "./Icons/Ticket";
 export { default as TicketRound } from "./Icons/TicketRound";
+export { default as SwapVertIcon } from "./Icons/SwapVert";
+export { default as SyncAltIcon } from "./Icons/SyncAlt";
 export { default as Svg } from "./Svg";
