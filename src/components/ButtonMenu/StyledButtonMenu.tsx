@@ -5,7 +5,8 @@ const StyledButtonMenu = styled.div`
   border-radius: 16px;
   display: inline-flex;
 
-  & > button + button {
+  & > button + button,
+  & > a + a {
     margin-left: 2px; // To avoid focus shadow overlap
   }
 `;

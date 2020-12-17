@@ -16,20 +16,22 @@ const ButtonMenuItem: React.FC<ButtonMenuItemProps> = ({
   isActive = false,
   size = sizes.MD,
   variant = variants.PRIMARY,
+  as,
   ...props
 }) => {
   if (!isActive) {
     return (
       <InactiveButton
-        {...props}
+        forwardedAs={as}
         size={size}
         variant="tertiary"
         colorKey={variant === variants.PRIMARY ? "primary" : "textSubtle"}
+        {...props}
       />
     );
   }
 
-  return <Button size={size} variant={variant} {...props} />;
+  return <Button as={as} size={size} variant={variant} {...props} />;
 };
 
 export default ButtonMenuItem;
