@@ -7,6 +7,7 @@ const StyledFooter = styled.footer`
   display: flex;
   justify-content: center;
   flex-direction: column;
+  width: 100%;
   padding: 32px;
   a:not(:last-child) {
     margin-bottom: 16px;

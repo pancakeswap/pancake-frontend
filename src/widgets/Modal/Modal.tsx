@@ -4,10 +4,10 @@ import Heading from "../../components/Heading/Heading";
 import Button from "../../components/Button/Button";
 import Flex from "../../components/Flex/Flex";
 import { CloseIcon } from "../../components/Svg";
+import { ModalProps } from "./types";
 
-interface Props {
+interface Props extends ModalProps {
   title: string;
-  onDismiss: () => void;
 }
 
 const StyledModal = styled.div`

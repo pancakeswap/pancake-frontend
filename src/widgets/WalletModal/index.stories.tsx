@@ -1,7 +1,7 @@
 import React from "react";
 import Button from "../../components/Button/Button";
 import Flex from "../../components/Flex/Flex";
-import useWalletModal from "./index";
+import useWalletModal from "./useWalletModal";
 
 export default {
   title: "WalletModal",

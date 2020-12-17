@@ -63,7 +63,7 @@ const LinkBlock = styled.div`
     width: 100%;
     min-height: 40px;
     padding: 8px 40px;
-    font-weight: bold;
+    font-weight: 600;
     transition: background-color 0.2s;
     color: ${({ theme }) => theme.colors.primary};
     :hover {
@@ -148,7 +148,7 @@ const Panel: React.FC<Props> = ({
         <Dropdown
           target={
             <MenuButton startIcon={<Language color="primary" />} mr="4px">
-              {currentLang}
+              {currentLang.toUpperCase()}
             </MenuButton>
           }
         >

@@ -19,7 +19,7 @@ export * from "./components/Toggle";
 export { default as Footer } from "./widgets/Footer";
 export * from "./widgets/Modal";
 export { default as Nav } from "./widgets/Nav";
-export { default as useWalletModal } from "./widgets/WalletModal";
+export * from "./widgets/WalletModal";
 
 // Theme
 export { default as ResetCSS } from "./ResetCSS";

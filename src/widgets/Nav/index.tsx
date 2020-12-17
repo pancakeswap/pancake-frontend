@@ -13,6 +13,7 @@ const StyledNav = styled.nav`
   justify-content: space-between;
   align-items: center;
   padding: 0 18px;
+  width: 100%;
   height: 64px;
   background-color: ${({ theme }) => theme.nav.background};
   ${({ theme }) => theme.mediaQueries.nav} {

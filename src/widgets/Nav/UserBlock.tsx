@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Button from "../../components/Button/Button";
-import useWalletModal from "../WalletModal";
+import { useWalletModal } from "../WalletModal";
 import { Login } from "../WalletModal/types";
 
 interface Props {

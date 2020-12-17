@@ -1,6 +1,11 @@
 import React, { createContext, useState } from "react";
 import styled from "styled-components";
 import Overlay from "../../components/Overlay/Overlay";
+import { ModalProps } from "./types";
+
+interface ModalsContext extends ModalProps {
+  onPresent: (node: React.ReactNode, key?: string) => void;
+}
 
 const ModalWrapper = styled.div`
   display: flex;
@@ -14,11 +19,6 @@ const ModalWrapper = styled.div`
   left: 0;
   z-index: ${({ theme }) => theme.zIndices.modal - 1};
 `;
-
-interface ModalsContext {
-  onPresent: (node: React.ReactNode, key?: string) => void;
-  onDismiss: () => void;
-}
 
 export const Context = createContext<ModalsContext>({
   onPresent: () => null,
