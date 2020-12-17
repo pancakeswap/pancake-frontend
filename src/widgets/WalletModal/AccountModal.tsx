@@ -30,7 +30,7 @@ const AccountModal: React.FC<Props> = ({ account, logout, onDismiss = () => null
       mb="32px"
     >
       <OpenNewIcon width="20px" color="primary" mr="4px" />
-      {`View on BscScan `}
+      View on BscScan
     </Link>
     <Flex justifyContent="center">
       <Button

@@ -21,12 +21,8 @@ export * from "./components/Toggle";
 export { default as useParticleBurst } from "./hooks";
 
 // Widgets
-export { default as Footer } from "./widgets/Footer";
 export * from "./widgets/Modal";
-
-export { default as Nav } from "./widgets/Nav";
-export type { NavProps, MenuLink, MenuDropdown } from "./widgets/Nav/types";
-
+export * from "./widgets/Menu";
 export * from "./widgets/WalletModal";
 
 // Theme

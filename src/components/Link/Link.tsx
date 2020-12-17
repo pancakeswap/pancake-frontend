@@ -7,7 +7,6 @@ import { LinkProps } from "./types";
 const StyledLink = styled(Text)<LinkProps>`
   display: flex;
   align-items: center;
-  color: ${({ theme }) => theme.colors.primary};
   width: fit-content;
   &:hover {
     text-decoration: underline;
@@ -17,6 +16,10 @@ const StyledLink = styled(Text)<LinkProps>`
 const Link: React.FC<LinkProps> = ({ external, ...props }) => {
   const internalProps = external ? getExternalLinkProps() : {};
   return <StyledLink as="a" bold {...internalProps} {...props} />;
+};
+
+Link.defaultProps = {
+  color: "primary",
 };
 
 export default Link;

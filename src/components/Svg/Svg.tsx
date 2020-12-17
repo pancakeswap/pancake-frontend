@@ -5,6 +5,7 @@ import { SvgProps } from "./types";
 
 const Svg = styled.svg<SvgProps>`
   fill: ${({ theme, color }) => getThemeValue(`colors.${color}`, color)(theme)};
+  flex-shrink: 0;
   ${space}
 `;
 

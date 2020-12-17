@@ -3,7 +3,7 @@ import { ButtonTheme } from "../components/Button/types";
 import { CardTheme } from "../components/Card/types";
 import { RadioTheme } from "../components/Radio/types";
 import { ToggleTheme } from "../components/Toggle/types";
-import { NavTheme } from "../widgets/Nav/types";
+import { NavTheme } from "../widgets/Menu/types";
 import { ModalTheme } from "../widgets/Modal/types";
 import { Colors, Breakpoints, MediaQueries, Spacing, Shadows, Radii, ZIndices } from "./types";
 

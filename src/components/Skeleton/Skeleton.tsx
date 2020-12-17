@@ -26,7 +26,7 @@ const pulse = keyframes`
 const Root = styled.div<{ variant: SkeletonProps["variant"]; width?: number; height?: number }>`
   min-height: 20px;
   display: block;
-  background-color: ${({ theme }) => theme.colors.textDisabled};
+  background-color: ${({ theme }) => theme.colors.backgroundDisabled};
   width: ${({ width }) => (width ? `${width}px` : "100%")};
   height: ${({ height }) => (height ? `${height}px` : "100%")};
   border-radius: ${({ variant, theme }) => (variant === VARIANT.CIRCLE ? theme.radii.circle : theme.radii.small)};
@@ -34,11 +34,13 @@ const Root = styled.div<{ variant: SkeletonProps["variant"]; width?: number; hei
 
 const Pulse = styled(Root)`
   animation: ${pulse} 2s infinite ease-out;
+  transform: translate3d(0, 0, 0);
 `;
 
 const Waves = styled(Root)`
   position: relative;
   overflow: hidden;
+  transform: translate3d(0, 0, 0);
   &:before {
     content: "";
     position: absolute;

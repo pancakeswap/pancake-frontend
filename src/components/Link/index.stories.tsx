@@ -26,6 +26,11 @@ export const Default: React.FC = () => {
         <Link href="/">Default</Link>
       </div>
       <div>
+        <Link href="/" color="text">
+          Custom color
+        </Link>
+      </div>
+      <div>
         <Link external href="/">
           External
         </Link>
