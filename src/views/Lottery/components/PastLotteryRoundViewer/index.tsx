@@ -54,7 +54,7 @@ const PastLotteryRoundViewer = () => {
   return (
     <Wrapper>
       <PastLotterySearcher />
-      <PastRoundCard />
+      <PastRoundCard error={error} />
     </Wrapper>
   )
 }
