@@ -26,32 +26,50 @@ const StyledText = styled(Text)`
   padding: ${(props) => props.theme.spacing[4]}px;
 `
 
-const PastRoundCard = ({ error }) => {
+const PastRoundCard = ({ error, data }) => {
   const TranslateString = useI18n()
+
+  /* eslint-disable no-debugger */
+  const {
+    burned,
+    contractLink,
+    jackpotTicket,
+    lotteryDate,
+    lotteryNumber,
+    lotteryNumbers,
+    match2Ticket,
+    match3Ticket,
+    poolJackpot,
+    poolMatch2,
+    poolMatch3,
+    poolSize,
+  } = data
 
   return (
     <Card>
       {error ? (
         <StyledText>Error fetching data</StyledText>
       ) : (
-        <>
-          <CardBody>
-            <CardHeading>
-              <Timestamp timeValue="2020-12-14T14:00:00.000Z" />
-              <StyledHeading size="md">Round #51</StyledHeading>
-              <TopLotteryCardHeading valueToDisplay={TranslateString(999, '1, 2, 3, 4')} Icon={TicketRound}>
-                {TranslateString(999, 'Winning numbers')}
-              </TopLotteryCardHeading>
-              <LotteryCardHeading valueToDisplay={TranslateString(999, '100,000 CAKE')} Icon={PancakeRoundIcon}>
-                {TranslateString(999, 'Total prizes')}
-              </LotteryCardHeading>
-            </CardHeading>
-          </CardBody>
-          <CardFooter>
-            <PrizeGrid lotteryPrizeAmount={100000} pastDraw />
-            <PastLotteryActions />
-          </CardFooter>
-        </>
+        data && (
+          <>
+            <CardBody>
+              <CardHeading>
+                <Timestamp timeValue={lotteryDate} />
+                <StyledHeading size="md">Round #51</StyledHeading>
+                <TopLotteryCardHeading valueToDisplay={TranslateString(999, '1, 2, 3, 4')} Icon={TicketRound}>
+                  {TranslateString(999, 'Winning numbers')}
+                </TopLotteryCardHeading>
+                <LotteryCardHeading valueToDisplay={TranslateString(999, '100,000 CAKE')} Icon={PancakeRoundIcon}>
+                  {TranslateString(999, 'Total prizes')}
+                </LotteryCardHeading>
+              </CardHeading>
+            </CardBody>
+            <CardFooter>
+              <PrizeGrid lotteryPrizeAmount={100000} pastDraw />
+              <PastLotteryActions />
+            </CardFooter>
+          </>
+        )
       )}
     </Card>
   )

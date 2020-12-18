@@ -5,8 +5,6 @@ import useSushi from 'hooks/useSushi'
 import useI18n from 'hooks/useI18n'
 import { getLotteryContract, getLotteryIssueIndex } from '../../../../sushi/lotteryUtils'
 
-/* eslint-disable no-debugger */
-
 const Wrapper = styled.div`
   margin-bottom: 24px;
 `
@@ -22,13 +20,8 @@ const StyledButton = styled(Button)`
   transform: translate(0%, -50%);
 `
 
-const PastLotterySearcher = () => {
+const PastLotterySearcher = ({ inputNumber, setInputNumber, onSubmit }) => {
   const TranslateString = useI18n()
-  const [inputNumber, setInputNumber] = useState(1)
-
-  const onSubmit = () => {
-    console.log(inputNumber)
-  }
 
   return (
     <Wrapper>
