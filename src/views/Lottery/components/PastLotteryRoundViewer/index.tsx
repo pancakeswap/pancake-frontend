@@ -19,13 +19,17 @@ const PastLotteryRoundViewer = () => {
   const lotteryContract = getLotteryContract(sushi)
   const { account } = useWallet()
   const [inputNumber, setInputNumber] = useState(1)
+  const [mostRecentLotteryNumber, setMostRecentLotteryNumber] = useState(1)
   const [roundData, setRoundData] = useState(null)
   const [error, setError] = useState(false)
+  const [loaded, setLoaded] = useState(false)
 
   const getInitialLotteryIndex = useCallback(async () => {
     const index = await getLotteryIssueIndex(lotteryContract)
     // for some reason the index returned here is out of range by 1
     setInputNumber(index - 1)
+    setMostRecentLotteryNumber(index - 1)
+    setLoaded(true)
   }, [lotteryContract])
 
   useEffect(() => {
@@ -34,29 +38,35 @@ const PastLotteryRoundViewer = () => {
     }
   }, [account, lotteryContract, sushi, getInitialLotteryIndex])
 
+  const getPastLotteryRoundData = ({ useMostRecentLotteryNumber }) => {
+    const lotteryNumber = useMostRecentLotteryNumber ? mostRecentLotteryNumber : inputNumber
+
+    axios
+      .get(`https://api.pancakeswap.com/api/singleLottery?lotteryNumber=${lotteryNumber}`)
+      .then((res) => {
+        setRoundData(res.data)
+      })
+      .catch((apiError) => {
+        setError(true)
+        console.log(apiError.response)
+      })
+  }
+
   useEffect(() => {
-    const getPastLotteryRoundData = () => {
-      axios
-        .get(`https://api.pancakeswap.com/api/singleLottery?lotteryNumber=${inputNumber}`)
-        .then((res) => {
-          setRoundData(res.data)
-        })
-        .catch((apiError) => {
-          setError(true)
-          console.log(apiError.response)
-        })
+    if (loaded) {
+      getPastLotteryRoundData({ useMostRecentLotteryNumber: true })
     }
-    getPastLotteryRoundData()
-  }, [inputNumber])
+    /* eslint-disable react-hooks/exhaustive-deps */
+  }, [loaded])
 
   const onSubmit = () => {
-    console.log(inputNumber)
+    getPastLotteryRoundData({ useMostRecentLotteryNumber: false })
   }
 
   return (
     <Wrapper>
       <PastLotterySearcher inputNumber={inputNumber} setInputNumber={setInputNumber} onSubmit={onSubmit} />
-      {!roundData && !error ? (
+      {(!roundData && !error) || !loaded ? (
         <Card>
           <CardBody>
             <Loading />
