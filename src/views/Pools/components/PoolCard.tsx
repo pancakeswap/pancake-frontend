@@ -1,9 +1,8 @@
 import BigNumber from 'bignumber.js'
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { Button, IconButton, useModal, AddIcon } from '@pancakeswap-libs/uikit'
 import { useWallet } from 'use-wallet'
-import { BLOCKS_PER_YEAR } from 'config'
 import UnlockButton from 'components/UnlockButton'
 import Label from 'components/Label'
 import { useERC20 } from 'hooks/useContract'
@@ -26,16 +25,15 @@ import OldSyrupTitle from './OldSyrupTitle'
 import HarvestButton from './HarvestButton'
 import CardFooter from './CardFooter'
 
-interface PoolWithPrice extends Pool {
-  tokenPrice: BigNumber
+interface PoolWithApy extends Pool {
+  apy: BigNumber
 }
 
 interface HarvestProps {
-  cakePriceVsBNB: BigNumber
-  pool: PoolWithPrice
+  pool: PoolWithApy
 }
 
-const PoolCard: React.FC<HarvestProps> = ({ cakePriceVsBNB, pool }) => {
+const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
   const {
     sousId,
     image,
@@ -44,8 +42,7 @@ const PoolCard: React.FC<HarvestProps> = ({ cakePriceVsBNB, pool }) => {
     stakingTokenAddress,
     projectLink,
     harvest,
-    tokenPrice,
-    tokenPerBlock,
+    apy,
     tokenDecimals,
     poolCategory,
     totalStaked,
@@ -72,18 +69,6 @@ const PoolCard: React.FC<HarvestProps> = ({ cakePriceVsBNB, pool }) => {
   const stakingTokenBalance = new BigNumber(userData?.stakingTokenBalance || 0)
   const stakedBalance = new BigNumber(userData?.stakedBalance || 0)
   const earnings = new BigNumber(userData?.pendingReward || 0)
-
-  const apy: BigNumber = useMemo(() => {
-    if (cakePriceVsBNB?.isEqualTo(0) || tokenPrice?.isEqualTo(0) || !totalStaked) {
-      return null
-    }
-    const stakedTokenPrice: BigNumber = isBnbPool ? new BigNumber(1) : cakePriceVsBNB
-
-    const a = tokenPrice.times(BLOCKS_PER_YEAR).times(tokenPerBlock)
-    const b = stakedTokenPrice.times(getBalanceNumber(totalStaked))
-
-    return a.div(b).times(100)
-  }, [cakePriceVsBNB, isBnbPool, tokenPerBlock, tokenPrice, totalStaked])
 
   const blocksUntilStart = Math.max(startBlock - block, 0)
   const blocksRemaining = Math.max(endBlock - block, 0)
@@ -187,7 +172,7 @@ const PoolCard: React.FC<HarvestProps> = ({ cakePriceVsBNB, pool }) => {
         </StyledCardActions>
         <StyledDetails>
           <div style={{ flex: 1 }}>{TranslateString(352, 'APY')}:</div>
-          {isReallyFinished || isOldSyrup || !apy || apy?.isNaN() ? (
+          {isReallyFinished || isOldSyrup || !apy || apy?.isNaN() || !apy?.isFinite() ? (
             '-'
           ) : (
             <Balance fontSize="14px" isDisabled={isReallyFinished} value={apy?.toNumber()} decimals={2} unit="%" />
