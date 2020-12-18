@@ -9,7 +9,7 @@ import { Nft } from 'sushi/lib/constants/types'
 import useSushi from 'hooks/useSushi'
 import useTokenBalance from 'hooks/useTokenBalance'
 import useI18n from 'hooks/useI18n'
-import { useRabbitMintingFarm } from 'hooks/rework/useContract'
+import { useRabbitMintingFarm } from 'hooks/useContract'
 import InfoRow from './InfoRow'
 
 interface ClaimNftModalProps {

@@ -9,7 +9,7 @@ import CardContent from '../../../components/CardContent'
 import CardIcon from '../../../components/CardIcon'
 import Label from '../../../components/Label'
 import Value from '../../../components/Value'
-import useApprove from '../../../hooks/useApprove'
+import { useApprove } from '../../../hooks/useApprove'
 import useStake from '../../../hooks/useStake'
 import useTokenBalance from '../../../hooks/useTokenBalance'
 import useUnstake from '../../../hooks/useUnstake'
@@ -38,7 +38,7 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName, allowance, to
 
   const { onStake } = useStake(pid)
   const { onUnstake } = useUnstake(pid)
-  const { onApprove } = useApprove(lpContract)
+  const { onApprove } = useApprove(lpContract, pid)
 
   const syrupBalance = useTokenBalance(getSyrupAddress(sushi))
 
