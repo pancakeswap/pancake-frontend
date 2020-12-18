@@ -17,9 +17,9 @@ const Wrapper = styled.div`
   }
 `
 
-const TicketCard: React.FC<{ contractLink?: string }> = ({ contractLink }) => {
+const TicketCard: React.FC<{ contractLink?: string; lotteryNumber?: number }> = ({ contractLink, lotteryNumber }) => {
   const TranslateString = useI18n()
-  const tickets = useTickets()
+  const tickets = useTickets(lotteryNumber)
   const ticketsLength = tickets.length
   const [onPresentMyTickets] = useModal(<MyTicketsModal myTicketNumbers={tickets} from="buy" />)
   const { account } = useWallet()

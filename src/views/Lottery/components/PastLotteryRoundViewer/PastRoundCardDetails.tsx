@@ -71,7 +71,7 @@ const PastRoundCardDetails = ({ data }) => {
             threeTicketMatches={match3Ticket}
             pastDraw
           />
-          <PastLotteryActions contractLink={contractLink} />
+          <PastLotteryActions contractLink={contractLink} lotteryNumber={lotteryNumber} />
         </CardFooter>
       </>
     )
