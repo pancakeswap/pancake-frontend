@@ -40,13 +40,15 @@ const PastLotteryRoundViewer = () => {
 
   const getPastLotteryRoundData = ({ useMostRecentLotteryNumber }) => {
     const lotteryNumber = useMostRecentLotteryNumber ? mostRecentLotteryNumber : inputNumber
-
+    /* eslint-disable no-debugger */
     axios
       .get(`https://api.pancakeswap.com/api/singleLottery?lotteryNumber=${lotteryNumber}`)
       .then((res) => {
-        setRoundData(res.data)
         if (res.data.error) {
-          setError({ message: res.data.message, type: 'out of range' })
+          setError({ message: 'The lottery number you provided does not exist', type: 'out of range' })
+        } else {
+          setError({ message: null, type: null })
+          setRoundData(res.data)
         }
       })
       .catch((apiError) => {

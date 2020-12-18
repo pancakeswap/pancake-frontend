@@ -42,6 +42,7 @@ const PastRoundCardDetails = ({ data }) => {
   } = data
 
   return (
+    !data.error &&
     data && (
       <>
         <CardBody>
