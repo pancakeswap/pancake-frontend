@@ -17,7 +17,7 @@ const Wrapper = styled.div`
   }
 `
 
-const TicketCard: React.FC = () => {
+const TicketCard: React.FC<{ contractLink?: string }> = ({ contractLink }) => {
   const TranslateString = useI18n()
   const tickets = useTickets()
   const ticketsLength = tickets.length
@@ -26,12 +26,7 @@ const TicketCard: React.FC = () => {
 
   return (
     <Wrapper>
-      <Button
-        style={{ marginRight: '8px' }}
-        as="a"
-        href="https://bscscan.com/address/0x3c3f2049cc17c136a604be23cf7e42745edf3b91"
-        variant="secondary"
-      >
+      <Button style={{ marginRight: '8px' }} as="a" href={contractLink} variant="secondary">
         View on BSCscan
       </Button>
       {!account ? (

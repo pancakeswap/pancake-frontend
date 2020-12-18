@@ -31,7 +31,7 @@ const PastRoundCard = ({ error, data }) => {
 
   /* eslint-disable no-debugger */
   const {
-    burned,
+    // burned,
     contractLink,
     jackpotTicket,
     lotteryDate,
@@ -39,11 +39,13 @@ const PastRoundCard = ({ error, data }) => {
     lotteryNumbers,
     match2Ticket,
     match3Ticket,
-    poolJackpot,
-    poolMatch2,
-    poolMatch3,
+    // poolJackpot,
+    // poolMatch2,
+    // poolMatch3,
     poolSize,
   } = data
+
+  debugger
 
   return (
     <Card>
@@ -55,18 +57,30 @@ const PastRoundCard = ({ error, data }) => {
             <CardBody>
               <CardHeading>
                 <Timestamp timeValue={lotteryDate} />
-                <StyledHeading size="md">Round #51</StyledHeading>
-                <TopLotteryCardHeading valueToDisplay={TranslateString(999, '1, 2, 3, 4')} Icon={TicketRound}>
+                <StyledHeading size="md">Round #{lotteryNumber}</StyledHeading>
+                <TopLotteryCardHeading
+                  valueToDisplay={`${lotteryNumbers[0]}, ${lotteryNumbers[1]}, ${lotteryNumbers[2]}, ${lotteryNumbers[3]}`}
+                  Icon={TicketRound}
+                >
                   {TranslateString(999, 'Winning numbers')}
                 </TopLotteryCardHeading>
-                <LotteryCardHeading valueToDisplay={TranslateString(999, '100,000 CAKE')} Icon={PancakeRoundIcon}>
+                <LotteryCardHeading
+                  valueToDisplay={TranslateString(999, `${poolSize.toLocaleString()} CAKE`)}
+                  Icon={PancakeRoundIcon}
+                >
                   {TranslateString(999, 'Total prizes')}
                 </LotteryCardHeading>
               </CardHeading>
             </CardBody>
             <CardFooter>
-              <PrizeGrid lotteryPrizeAmount={100000} pastDraw />
-              <PastLotteryActions />
+              <PrizeGrid
+                lotteryPrizeAmount={poolSize}
+                jackpotMatches={jackpotTicket}
+                twoTicketMatches={match2Ticket}
+                threeTicketMatches={match3Ticket}
+                pastDraw
+              />
+              <PastLotteryActions contractLink={contractLink} />
             </CardFooter>
           </>
         )

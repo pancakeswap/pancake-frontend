@@ -6,6 +6,9 @@ import { Heading, Text } from '@pancakeswap-libs/uikit'
 export interface PrizeGridProps {
   lotteryPrizeAmount?: number
   pastDraw?: boolean
+  jackpotMatches?: number
+  twoTicketMatches?: number
+  threeTicketMatches?: number
 }
 
 const Grid = styled.div<{ pastDraw?: boolean }>`
@@ -30,7 +33,13 @@ const PastDrawGridItem = styled(GridItem)`
   transform: translate(-40%, 0%);
 `
 
-const PrizeGrid: React.FC<PrizeGridProps> = ({ lotteryPrizeAmount = 0, pastDraw = false }) => {
+const PrizeGrid: React.FC<PrizeGridProps> = ({
+  lotteryPrizeAmount = 0,
+  pastDraw = false,
+  jackpotMatches,
+  twoTicketMatches,
+  threeTicketMatches,
+}) => {
   const fourMatchesAmount = +((lotteryPrizeAmount / 100) * 50).toFixed(0)
   const threeMatchesAmount = +((lotteryPrizeAmount / 100) * 20).toFixed(0)
   const twoMatchesAmount = +((lotteryPrizeAmount / 100) * 10).toFixed(0)
@@ -62,7 +71,7 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({ lotteryPrizeAmount = 0, pastDraw 
       </GridItem>
       {pastDraw && (
         <PastDrawGridItem>
-          <RightAlignedHeading size="md">1</RightAlignedHeading>
+          <RightAlignedHeading size="md">{jackpotMatches}</RightAlignedHeading>
         </PastDrawGridItem>
       )}
       <GridItem>
@@ -74,7 +83,7 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({ lotteryPrizeAmount = 0, pastDraw 
       </GridItem>
       {pastDraw && (
         <PastDrawGridItem>
-          <RightAlignedText bold>8</RightAlignedText>
+          <RightAlignedText bold>{threeTicketMatches}</RightAlignedText>
         </PastDrawGridItem>
       )}
       <GridItem>
@@ -86,7 +95,7 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({ lotteryPrizeAmount = 0, pastDraw 
       </GridItem>
       {pastDraw && (
         <PastDrawGridItem marginBottom="20px">
-          <RightAlignedText>27</RightAlignedText>
+          <RightAlignedText>{twoTicketMatches}</RightAlignedText>
         </PastDrawGridItem>
       )}
       <GridItem marginBottom="20px">
