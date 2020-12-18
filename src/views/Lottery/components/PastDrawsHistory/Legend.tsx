@@ -1,8 +1,7 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
-import { Heading, Card, CardBody, CardFooter, Text, PancakeRoundIcon, TicketRound } from '@pancakeswap-libs/uikit'
+import { Text } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
-import HistoryChart from './HistoryChart'
 
 const Wrapper = styled.div`
   display: flex;

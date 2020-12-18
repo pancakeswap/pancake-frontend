@@ -23,9 +23,8 @@ const HistoryChart = () => {
       .then((res) => {
         setHistoryData(res.data)
       })
-      .catch((apiError) => {
+      .catch(() => {
         setError(true)
-        console.log(apiError.response)
       })
   }
 
@@ -81,7 +80,7 @@ const HistoryChart = () => {
         maxRotation: 0,
         beginAtZero: true,
         autoSkipPadding: 15,
-        userCallback: (value, index, values) => {
+        userCallback: (value) => {
           return value.toLocaleString()
         },
       },
