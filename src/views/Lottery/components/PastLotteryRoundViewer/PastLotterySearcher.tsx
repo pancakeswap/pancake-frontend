@@ -1,9 +1,7 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { Text, Input, Button } from '@pancakeswap-libs/uikit'
-import useSushi from 'hooks/useSushi'
 import useI18n from 'hooks/useI18n'
-import { getLotteryContract, getLotteryIssueIndex } from '../../../../sushi/lotteryUtils'
 
 const Wrapper = styled.div`
   margin-bottom: 24px;
@@ -25,7 +23,7 @@ const PastLotterySearcher = ({ inputNumber, setInputNumber, onSubmit }) => {
 
   return (
     <Wrapper>
-      <Text>Select lottery number:</Text>
+      <Text>{TranslateString(999, 'Select lottery number:')}</Text>
       <SearchWrapper>
         <Input
           value={inputNumber}
@@ -35,7 +33,7 @@ const PastLotterySearcher = ({ inputNumber, setInputNumber, onSubmit }) => {
           }}
         />
         <StyledButton size="sm" onClick={onSubmit}>
-          Search
+          {TranslateString(999, 'Search:')}
         </StyledButton>
       </SearchWrapper>
     </Wrapper>

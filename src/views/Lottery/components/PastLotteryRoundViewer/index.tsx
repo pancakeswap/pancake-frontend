@@ -4,6 +4,7 @@ import axios from 'axios'
 import { Card, CardBody } from '@pancakeswap-libs/uikit'
 import useSushi from 'hooks/useSushi'
 import { useWallet } from 'use-wallet'
+import useI18n from 'hooks/useI18n'
 import { getLotteryContract, getLotteryIssueIndex } from '../../../../sushi/lotteryUtils'
 import PastLotterySearcher from './PastLotterySearcher'
 import PastRoundCard from './PastRoundCard'
@@ -16,6 +17,7 @@ const Wrapper = styled.div`
 
 const PastLotteryRoundViewer = () => {
   const sushi = useSushi()
+  const TranslateString = useI18n()
   const lotteryContract = getLotteryContract(sushi)
   const { account } = useWallet()
   const [inputNumber, setInputNumber] = useState(1)
@@ -40,20 +42,21 @@ const PastLotteryRoundViewer = () => {
 
   const getPastLotteryRoundData = ({ useMostRecentLotteryNumber }) => {
     const lotteryNumber = useMostRecentLotteryNumber ? mostRecentLotteryNumber : inputNumber
-    /* eslint-disable no-debugger */
     axios
       .get(`https://api.pancakeswap.com/api/singleLottery?lotteryNumber=${lotteryNumber}`)
       .then((res) => {
         if (res.data.error) {
-          setError({ message: 'The lottery number you provided does not exist', type: 'out of range' })
+          setError({
+            message: TranslateString(999, 'The lottery number you provided does not exist'),
+            type: 'out of range',
+          })
         } else {
           setError({ message: null, type: null })
           setRoundData(res.data)
         }
       })
-      .catch((apiError) => {
-        setError({ message: 'Error fetching data', type: 'api' })
-        console.log(apiError.response)
+      .catch(() => {
+        setError({ message: TranslateString(999, 'Error fetching data'), type: 'api' })
       })
   }
 

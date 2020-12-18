@@ -25,7 +25,6 @@ const TopLotteryCardHeading = styled(LotteryCardHeading)`
 const PastRoundCardDetails = ({ data }) => {
   const TranslateString = useI18n()
 
-  /* eslint-disable no-debugger */
   const {
     // burned,
     contractLink,

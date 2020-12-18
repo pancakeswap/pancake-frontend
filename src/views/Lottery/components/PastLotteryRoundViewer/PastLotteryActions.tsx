@@ -27,7 +27,7 @@ const TicketCard: React.FC<{ contractLink?: string; lotteryNumber?: number }> = 
   return (
     <Wrapper>
       <Button style={{ marginRight: '8px' }} as="a" href={contractLink} variant="secondary">
-        View on BSCscan
+        {TranslateString(999, 'View on BSCscan')}
       </Button>
       {!account ? (
         <UnlockButton />
