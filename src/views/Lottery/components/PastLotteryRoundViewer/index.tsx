@@ -21,14 +21,14 @@ const PastLotteryRoundViewer = () => {
   const [inputNumber, setInputNumber] = useState(1)
   const [mostRecentLotteryNumber, setMostRecentLotteryNumber] = useState(1)
   const [roundData, setRoundData] = useState(null)
-  const [error, setError] = useState(false)
+  const [error, setError] = useState({ message: null, type: null })
   const [loaded, setLoaded] = useState(false)
 
   const getInitialLotteryIndex = useCallback(async () => {
     const index = await getLotteryIssueIndex(lotteryContract)
-    // for some reason the index returned here is out of range by 1
-    setInputNumber(index - 1)
-    setMostRecentLotteryNumber(index - 1)
+    const previousLotteryNumber = index - 1
+    setInputNumber(previousLotteryNumber)
+    setMostRecentLotteryNumber(previousLotteryNumber)
     setLoaded(true)
   }, [lotteryContract])
 
@@ -45,9 +45,12 @@ const PastLotteryRoundViewer = () => {
       .get(`https://api.pancakeswap.com/api/singleLottery?lotteryNumber=${lotteryNumber}`)
       .then((res) => {
         setRoundData(res.data)
+        if (res.data.error) {
+          setError({ message: res.data.message, type: 'out of range' })
+        }
       })
       .catch((apiError) => {
-        setError(true)
+        setError({ message: 'Error fetching data', type: 'api' })
         console.log(apiError.response)
       })
   }
@@ -66,7 +69,8 @@ const PastLotteryRoundViewer = () => {
   return (
     <Wrapper>
       <PastLotterySearcher inputNumber={inputNumber} setInputNumber={setInputNumber} onSubmit={onSubmit} />
-      {(!roundData && !error) || !loaded ? (
+      {(!roundData && error.type !== 'api') || !loaded ? (
+        // if there is no round data, and the api call hasn't errored, OR it's still loading - show loader
         <Card>
           <CardBody>
             <Loading />

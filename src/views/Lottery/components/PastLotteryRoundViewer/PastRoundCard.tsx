@@ -6,6 +6,8 @@ import LotteryCardHeading from '../LotteryCardHeading'
 import PastLotteryActions from './PastLotteryActions'
 import PrizeGrid from '../PrizeGrid'
 import Timestamp from '../Timestamp'
+import PastRoundCardError from './PastRoundCardError'
+import PastRoundCardDetails from './PastRoundCardDetails'
 
 const CardHeading = styled.div`
   position: relative;
@@ -45,46 +47,9 @@ const PastRoundCard = ({ error, data }) => {
     poolSize,
   } = data
 
-  debugger
-
   return (
     <Card>
-      {error ? (
-        <StyledText>Error fetching data</StyledText>
-      ) : (
-        data && (
-          <>
-            <CardBody>
-              <CardHeading>
-                <Timestamp timeValue={lotteryDate} />
-                <StyledHeading size="md">Round #{lotteryNumber}</StyledHeading>
-                <TopLotteryCardHeading
-                  valueToDisplay={`${lotteryNumbers[0]}, ${lotteryNumbers[1]}, ${lotteryNumbers[2]}, ${lotteryNumbers[3]}`}
-                  Icon={TicketRound}
-                >
-                  {TranslateString(999, 'Winning numbers')}
-                </TopLotteryCardHeading>
-                <LotteryCardHeading
-                  valueToDisplay={TranslateString(999, `${poolSize.toLocaleString()} CAKE`)}
-                  Icon={PancakeRoundIcon}
-                >
-                  {TranslateString(999, 'Total prizes')}
-                </LotteryCardHeading>
-              </CardHeading>
-            </CardBody>
-            <CardFooter>
-              <PrizeGrid
-                lotteryPrizeAmount={poolSize}
-                jackpotMatches={jackpotTicket}
-                twoTicketMatches={match2Ticket}
-                threeTicketMatches={match3Ticket}
-                pastDraw
-              />
-              <PastLotteryActions contractLink={contractLink} />
-            </CardFooter>
-          </>
-        )
-      )}
+      {error.message ? <PastRoundCardError error={error} data={data} /> : <PastRoundCardDetails data={data} />}
     </Card>
   )
 }
