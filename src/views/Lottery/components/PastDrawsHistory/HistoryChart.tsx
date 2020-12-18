@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { Line } from '@reactchartjs/react-chart.js'
+import { Line } from 'react-chartjs-2'
 import { Text } from '@pancakeswap-libs/uikit'
 import axios from 'axios'
 import Loading from '../../../../components/Loading/Loading'

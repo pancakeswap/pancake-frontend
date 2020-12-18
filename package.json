@@ -32,8 +32,7 @@
   "dependencies": {
     "@crowdin/crowdin-api-client": "^1.8.16",
     "@ethersproject/abi": "^5.0.7",
-    "@pancakeswap-libs/uikit": "^0.5.0",
-    "@reactchartjs/react-chart.js": "^1.0.0-rc.3",
+    "@pancakeswap-libs/uikit": "0.5.0",
     "@reduxjs/toolkit": "^1.5.0",
     "@types/react": "^16.9.46",
     "@types/react-dom": "^16.9.8",
@@ -44,6 +43,7 @@
     "chart.js": "^2.9.4",
     "lodash": "^4.17.20",
     "react": "^16.13.1",
+    "react-chartjs-2": "^2.11.1",
     "react-countup": "^4.3.3",
     "react-dom": "^16.13.1",
     "react-feather": "^2.0.8",
