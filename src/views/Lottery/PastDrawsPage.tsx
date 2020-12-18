@@ -1,9 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
-import { useWallet } from 'use-wallet'
 import { BaseLayout } from '@pancakeswap-libs/uikit'
-import { getBalanceNumber } from 'utils/formatBalance'
-import { useTotalClaim } from 'hooks/useTickets'
 import PastLotteryRoundViewer from './components/PastLotteryRoundViewer'
 import PastDrawsHistoryCard from './components/PastDrawsHistoryCard'
 
@@ -42,11 +39,6 @@ const BunnyImageWrapper = styled.div`
 const StyledImage = styled.img``
 
 const PastDrawsPage: React.FC = () => {
-  const { account } = useWallet()
-  const { claimAmount } = useTotalClaim()
-  const winnings = getBalanceNumber(claimAmount)
-  const isAWin = winnings > 0
-
   return (
     <Cards>
       <PastLotteryRoundViewer />

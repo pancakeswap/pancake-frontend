@@ -5,11 +5,12 @@ import { Heading, Text } from '@pancakeswap-libs/uikit'
 
 export interface PrizeGridProps {
   lotteryPrizeAmount?: number
+  pastDraw?: boolean
 }
 
-const Grid = styled.div`
+const Grid = styled.div<{ pastDraw?: boolean }>`
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(${(props) => (props.pastDraw ? 3 : 2)}, 1fr);
   grid-template-rows: repeat(4, auto);
 `
 
@@ -25,7 +26,11 @@ const GridItem = styled.div<{ marginBottom?: string }>`
   margin-bottom: ${(props) => (props.marginBottom ? props.marginBottom : '10px')};
 `
 
-const PrizeGrid: React.FC<PrizeGridProps> = ({ lotteryPrizeAmount = 0 }) => {
+const PastDrawGridItem = styled(GridItem)`
+  transform: translate(-40%, 0%);
+`
+
+const PrizeGrid: React.FC<PrizeGridProps> = ({ lotteryPrizeAmount = 0, pastDraw = false }) => {
   const fourMatchesAmount = +((lotteryPrizeAmount / 100) * 50).toFixed(0)
   const threeMatchesAmount = +((lotteryPrizeAmount / 100) * 20).toFixed(0)
   const twoMatchesAmount = +((lotteryPrizeAmount / 100) * 10).toFixed(0)
@@ -33,12 +38,19 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({ lotteryPrizeAmount = 0 }) => {
   const TranslateString = useI18n()
 
   return (
-    <Grid>
+    <Grid pastDraw={pastDraw}>
       <GridItem>
         <Text fontSize="14px" color="textSubtle">
           {TranslateString(999, 'No. Matched')}
         </Text>
       </GridItem>
+      {pastDraw && (
+        <PastDrawGridItem>
+          <RightAlignedText fontSize="14px" color="textSubtle">
+            {TranslateString(999, 'Winners')}
+          </RightAlignedText>
+        </PastDrawGridItem>
+      )}
       <GridItem>
         <RightAlignedText fontSize="14px" color="textSubtle">
           {TranslateString(999, 'Prize Pot')}
@@ -48,6 +60,11 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({ lotteryPrizeAmount = 0 }) => {
       <GridItem>
         <Heading size="md">4</Heading>
       </GridItem>
+      {pastDraw && (
+        <PastDrawGridItem>
+          <RightAlignedHeading size="md">1</RightAlignedHeading>
+        </PastDrawGridItem>
+      )}
       <GridItem>
         <RightAlignedHeading size="md">{fourMatchesAmount.toLocaleString()}</RightAlignedHeading>
       </GridItem>
@@ -55,6 +72,11 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({ lotteryPrizeAmount = 0 }) => {
       <GridItem>
         <Text bold>3</Text>
       </GridItem>
+      {pastDraw && (
+        <PastDrawGridItem>
+          <RightAlignedText bold>8</RightAlignedText>
+        </PastDrawGridItem>
+      )}
       <GridItem>
         <RightAlignedText>{threeMatchesAmount.toLocaleString()}</RightAlignedText>
       </GridItem>
@@ -62,16 +84,30 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({ lotteryPrizeAmount = 0 }) => {
       <GridItem marginBottom="20px">
         <Text>2</Text>
       </GridItem>
+      {pastDraw && (
+        <PastDrawGridItem marginBottom="20px">
+          <RightAlignedText>27</RightAlignedText>
+        </PastDrawGridItem>
+      )}
       <GridItem marginBottom="20px">
         <RightAlignedText>{twoMatchesAmount.toLocaleString()}</RightAlignedText>
       </GridItem>
       {/* Burn row */}
       <GridItem marginBottom="0">
-        <Text>{TranslateString(999, 'To burn:')}</Text>
+        <Text>{TranslateString(999, `${pastDraw ? 'Burned' : 'To burn'}`)}:</Text>
       </GridItem>
-      <GridItem marginBottom="0">
-        <RightAlignedText>{burnAmount.toLocaleString()}</RightAlignedText>
-      </GridItem>
+      {pastDraw ? (
+        <>
+          <GridItem marginBottom="0" />
+          <GridItem marginBottom="0">
+            <RightAlignedText>{burnAmount.toLocaleString()}</RightAlignedText>
+          </GridItem>
+        </>
+      ) : (
+        <GridItem marginBottom="0">
+          <RightAlignedText>{burnAmount.toLocaleString()}</RightAlignedText>
+        </GridItem>
+      )}
     </Grid>
   )
 }
