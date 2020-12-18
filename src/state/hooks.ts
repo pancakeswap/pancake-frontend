@@ -1,16 +1,24 @@
 import BigNumber from 'bignumber.js'
 import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync } from './actions'
-import { State, Farm } from './types'
+import useRefresh from 'hooks/useRefresh'
+import {
+  fetchFarmsPublicDataAsync,
+  fetchFarmUserDataAsync,
+  fetchPoolsPublicDataAsync,
+  fetchPoolsUserDataAsync,
+} from './actions'
+import { State, Farm, Pool } from './types'
 
 const ZERO = new BigNumber(0)
 
-const useStateInit = () => {
+export const useFetchPublicData = () => {
   const dispatch = useDispatch()
+  const { slowRefresh } = useRefresh()
   useEffect(() => {
     dispatch(fetchFarmsPublicDataAsync())
-  }, [dispatch])
+    dispatch(fetchPoolsPublicDataAsync())
+  }, [dispatch, slowRefresh])
 }
 
 // Farms
@@ -32,14 +40,14 @@ export const useFarmFromSymbol = (lpSymbol: string): Farm => {
 
 export const useFarmUser = (pid, account) => {
   const dispatch = useDispatch()
+  const { fastRefresh } = useRefresh()
   const farm = useFarmFromPid(pid)
 
   useEffect(() => {
-    if (!farm.userData && account) {
+    if (account) {
       dispatch(fetchFarmUserDataAsync(pid, account))
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [account, pid])
+  }, [account, dispatch, pid, fastRefresh])
 
   return {
     allowance: farm.userData ? new BigNumber(farm.userData.allowance) : new BigNumber(0),
@@ -51,9 +59,22 @@ export const useFarmUser = (pid, account) => {
 
 // Pools
 
-export const usePools = () => {
+export const usePools = (account): Pool[] => {
+  const { fastRefresh } = useRefresh()
+  const dispatch = useDispatch()
+  useEffect(() => {
+    if (account) {
+      dispatch(fetchPoolsUserDataAsync(account))
+    }
+  }, [account, dispatch, fastRefresh])
+
   const pools = useSelector((state: State) => state.pools.data)
   return pools
+}
+
+export const usePoolFromPid = (sousId): Pool => {
+  const pool = useSelector((state: State) => state.pools.data.find((p) => p.sousId === sousId))
+  return pool
 }
 
 // Prices
@@ -70,5 +91,3 @@ export const usePriceCakeBusd = (): BigNumber => {
   const farm = useFarmFromPid(pid)
   return farm.tokenPriceVsQuote ? bnbPriceUSD.times(farm.tokenPriceVsQuote) : ZERO
 }
-
-export default useStateInit

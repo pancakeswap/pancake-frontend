@@ -2,7 +2,7 @@ import { useCallback, useState, useEffect } from 'react'
 import { useWallet } from 'use-wallet'
 import BigNumber from 'bignumber.js'
 import useSushi from './useSushi'
-import useBlock from './useBlock'
+import useRefresh from './useRefresh'
 import {
   getTotalRewards,
   getTotalClaim,
@@ -19,7 +19,7 @@ const useTickets = () => {
   const sushi = useSushi()
   const ticketsContract = getTicketsContract(sushi)
   const lotteryContract = getLotteryContract(sushi)
-  const block = useBlock()
+  const { fastRefresh } = useRefresh()
 
   useEffect(() => {
     const fetchBalance = async () => {
@@ -30,7 +30,7 @@ const useTickets = () => {
     if (account && lotteryContract && ticketsContract && sushi) {
       fetchBalance()
     }
-  }, [account, lotteryContract, sushi, ticketsContract, block])
+  }, [account, lotteryContract, sushi, ticketsContract, fastRefresh])
 
   return tickets
 }
@@ -40,7 +40,7 @@ export const useTotalRewards = () => {
   const { account } = useWallet()
   const sushi = useSushi()
   const lotteryContract = getLotteryContract(sushi)
-  const block = useBlock()
+  const { fastRefresh } = useRefresh()
 
   useEffect(() => {
     const fetchBalance = async () => {
@@ -51,7 +51,7 @@ export const useTotalRewards = () => {
     if (account && lotteryContract && sushi) {
       fetchBalance()
     }
-  }, [account, lotteryContract, sushi, block])
+  }, [account, lotteryContract, sushi, fastRefresh])
 
   return rewards
 }
@@ -85,7 +85,7 @@ export const useWinningNumbers = () => {
   const { account } = useWallet()
   const sushi = useSushi()
   const lotteryContract = getLotteryContract(sushi)
-  const block = useBlock()
+  const { fastRefresh } = useRefresh()
 
   useEffect(() => {
     const fetchBalance = async () => {
@@ -96,7 +96,7 @@ export const useWinningNumbers = () => {
     if (account && lotteryContract && sushi) {
       fetchBalance()
     }
-  }, [account, block, lotteryContract, setWinningNumbers, sushi])
+  }, [account, fastRefresh, lotteryContract, setWinningNumbers, sushi])
 
   return winngNumbers
 }
@@ -106,7 +106,7 @@ export const useMatchingRewardLength = (numbers) => {
   const { account } = useWallet()
   const sushi = useSushi()
   const lotteryContract = getLotteryContract(sushi)
-  const block = useBlock()
+  const { fastRefresh } = useRefresh()
 
   useEffect(() => {
     const fetchBalance = async () => {
@@ -117,7 +117,7 @@ export const useMatchingRewardLength = (numbers) => {
     if (account && lotteryContract && sushi) {
       fetchBalance()
     }
-  }, [account, lotteryContract, numbers, sushi, block])
+  }, [account, lotteryContract, numbers, sushi, fastRefresh])
 
   return matchingNumbers
 }
