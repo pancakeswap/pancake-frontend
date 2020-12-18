@@ -1,55 +1,40 @@
 import { useEffect, useState } from 'react'
 import BigNumber from 'bignumber.js'
 import { useWallet } from 'use-wallet'
-import { Contract } from 'web3-eth-contract'
-import { getEarned, getMasterChefContract, getFarms } from '../sushi/utils'
-import useSushi from './useSushi'
-import useBlock from './useBlock'
+import multicall from 'utils/multicall'
+import masterChefABI from 'sushi/lib/abi/masterchef.json'
+import addresses from 'sushi/lib/constants/contracts'
+import { farmsConfig } from 'sushi/lib/constants'
+import { FarmConfig } from 'sushi/lib/constants/types'
+import useRefresh from './useRefresh'
 
-export interface Farm {
-  pid: number
-  name: string
-  lpSymbol: string
-  lpAddress: string
-  lpContract: Contract
-  tokenAddress: string
-  earnToken: string
-  earnTokenAddress: string
-  tokenSymbol: string
-  multiplier: string
-}
-
-export interface FarmWithBalance extends Farm {
+export interface FarmWithBalance extends FarmConfig {
   balance: BigNumber
 }
 
 const useFarmsWithBalance = () => {
   const [farmsWithBalances, setFarmsWithBalances] = useState<FarmWithBalance[]>([])
   const { account } = useWallet()
-  const sushi = useSushi()
-  const farms = getFarms(sushi)
-  const masterChefContract = getMasterChefContract(sushi)
-  const block = useBlock()
+  const { fastRefresh } = useRefresh()
 
   useEffect(() => {
     const fetchBalances = async () => {
-      const newList: Promise<FarmWithBalance>[] = farms.map(async (farm) => {
-        const balance = await getEarned(masterChefContract, farm.pid, account)
+      const calls = farmsConfig.map((farm) => ({
+        address: addresses.masterChef[process.env.REACT_APP_CHAIN_ID],
+        name: 'pendingCake',
+        params: [farm.pid, account],
+      }))
 
-        return {
-          ...farm,
-          balance: new BigNumber(balance),
-        }
-      })
+      const rawResults = await multicall(masterChefABI, calls)
+      const results = farmsConfig.map((farm, index) => ({ ...farm, balance: new BigNumber(rawResults[index]) }))
 
-      const results = await Promise.all(newList)
       setFarmsWithBalances(results)
     }
 
-    if (account && masterChefContract && sushi) {
+    if (account) {
       fetchBalances()
     }
-  }, [account, farms, masterChefContract, sushi, block])
+  }, [account, fastRefresh])
 
   return farmsWithBalances
 }

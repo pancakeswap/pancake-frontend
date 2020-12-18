@@ -33,7 +33,7 @@ const Farm: React.FC = () => {
       </Header>
       <StyledFarm>
         <Grid>
-          <Harvest pid={pid} earnings={earnings} account={account} />
+          <Harvest pid={pid} earnings={earnings} />
           <Stake
             lpContract={lpContract}
             pid={pid}

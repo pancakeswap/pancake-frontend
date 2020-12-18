@@ -2,15 +2,16 @@ import { useEffect, useState } from 'react'
 import BigNumber from 'bignumber.js'
 import { useWallet } from 'use-wallet'
 import { provider } from 'web3-core'
+import cakeABI from 'sushi/lib/abi/sushi.json'
+import addresses from 'sushi/lib/constants/contracts'
+import { getContract } from 'utils/web3'
 import { getTokenBalance } from '../utils/erc20'
-import { getSushiSupply } from '../sushi/utils'
-import useBlock from './useBlock'
-import useSushi from './useSushi'
+import useRefresh from './useRefresh'
 
 const useTokenBalance = (tokenAddress: string) => {
   const [balance, setBalance] = useState(new BigNumber(0))
   const { account, ethereum }: { account: string; ethereum: provider } = useWallet()
-  const block = useBlock()
+  const { fastRefresh } = useRefresh()
 
   useEffect(() => {
     const fetchBalance = async () => {
@@ -21,25 +22,24 @@ const useTokenBalance = (tokenAddress: string) => {
     if (account && ethereum) {
       fetchBalance()
     }
-  }, [account, ethereum, tokenAddress, block])
+  }, [account, ethereum, tokenAddress, fastRefresh])
 
   return balance
 }
 
 export const useTotalSupply = () => {
-  const sushi = useSushi()
-  const block = useBlock()
+  const { slowRefresh } = useRefresh()
   const [totalSupply, setTotalSupply] = useState<BigNumber>()
 
   useEffect(() => {
     async function fetchTotalSupply() {
-      const supply = await getSushiSupply(sushi)
-      setTotalSupply(supply)
+      const cakeContract = getContract(cakeABI, addresses.sushi[process.env.REACT_APP_CHAIN_ID])
+      const supply = await cakeContract.methods.totalSupply().call()
+      setTotalSupply(new BigNumber(supply))
     }
-    if (sushi) {
-      fetchTotalSupply()
-    }
-  }, [block, sushi])
+
+    fetchTotalSupply()
+  }, [slowRefresh])
 
   return totalSupply
 }
@@ -47,7 +47,7 @@ export const useTotalSupply = () => {
 export const useBurnedBalance = (tokenAddress: string) => {
   const [balance, setBalance] = useState(new BigNumber(0))
   const { account, ethereum }: { account: string; ethereum: provider } = useWallet()
-  const block = useBlock()
+  const { slowRefresh } = useRefresh()
 
   useEffect(() => {
     const fetchBalance = async () => {
@@ -58,7 +58,7 @@ export const useBurnedBalance = (tokenAddress: string) => {
     if (account && ethereum) {
       fetchBalance()
     }
-  }, [account, ethereum, tokenAddress, block])
+  }, [account, ethereum, tokenAddress, slowRefresh])
 
   return balance
 }

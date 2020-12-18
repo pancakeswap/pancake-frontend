@@ -83,16 +83,15 @@ const fetchFarms = async () => {
         },
       ])
 
-      // eslint-disable-next-line no-underscore-dangle
       const poolWeight = new BigNumber(info.allocPoint._hex).div(new BigNumber(totalAllocPoint))
 
       return {
         ...farmConfig,
-        tokenAmount: tokenAmount.toNumber(),
-        quoteTokenAmount: quoteTokenAmount.toNumber(),
-        lpTotalInQuoteToken: lpTotalInQuoteToken.toNumber(),
-        tokenPriceVsQuote: quoteTokenAmount.div(tokenAmount).toNumber(),
-        poolWeight: poolWeight.toNumber(),
+        tokenAmount: tokenAmount.toJSON(),
+        quoteTokenAmount: quoteTokenAmount.toJSON(),
+        lpTotalInQuoteToken: lpTotalInQuoteToken.toJSON(),
+        tokenPriceVsQuote: quoteTokenAmount.div(tokenAmount).toJSON(),
+        poolWeight: poolWeight.toJSON(),
       }
     }),
   )
