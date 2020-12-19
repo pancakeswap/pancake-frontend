@@ -9,7 +9,7 @@ import NextDrawPage from './NextDrawPage'
 import PastDrawsPage from './PastDrawsPage'
 
 const Lottery: React.FC = () => {
-  const [nextDrawActive, setNextDrawActive] = useState(false)
+  const [nextDrawActive, setNextDrawActive] = useState(true)
 
   return (
     <Switch>
