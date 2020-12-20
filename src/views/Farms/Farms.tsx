@@ -93,10 +93,10 @@ const Image = styled.img`
 const Title = styled.div`
   color: ${(props) => props.theme.colors.secondary};
   font-size: 29px;
-  width: 50vw;
-  text-align: center;
+  width: 100%;
+  text-align: left;
   font-weight: 900;
-  margin: 50px;
+  margin: 50px 0;
 `
 
 export default Farms

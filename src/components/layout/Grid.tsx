@@ -6,6 +6,7 @@ const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(8, 1fr);
   grid-gap: 16px;
+  width: 100%;
 
   @media (min-width: 576px) {
     grid-template-columns: repeat(8, 1fr);

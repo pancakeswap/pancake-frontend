@@ -8,6 +8,8 @@ const StyledMain = styled.div`
   display: flex;
   flex-direction: column;
   min-height: calc(100vh - 145px);
+  width: 60vw;
+  margin: auto;
   @media (max-width: 500px) {
     width: 100vw;
   }
