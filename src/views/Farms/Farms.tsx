@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { NavLink } from 'react-router-dom'
 import BigNumber from 'bignumber.js'
@@ -9,6 +9,7 @@ import { QuoteToken } from 'sushi/lib/constants/types'
 import useI18n from 'hooks/useI18n'
 import Page from 'components/Page'
 import FarmCard, { FarmWithStakedValue } from './components/FarmCard'
+import FarmHeader from './components/FarmHeader'
 
 interface FarmsProps {
   removed: boolean
@@ -18,6 +19,7 @@ const Farms: React.FC<FarmsProps> = ({ removed }) => {
   const TranslateString = useI18n()
   const farmsLP = useFarms()
   const bnbPrice = usePriceBnbBusd()
+  const [tableView, setTableView] = useState(false)
 
   const cakePriceVsBNB = new BigNumber(farmsLP.find((farm) => farm.pid === CAKE_POOL_PID)?.tokenPriceVsQuote || 0)
   const farmsToDisplay = removed
@@ -57,6 +59,7 @@ const Farms: React.FC<FarmsProps> = ({ removed }) => {
     <Page>
       <Title>{TranslateString(999999, 'Farms')}</Title>
       <Description>{TranslateString(999999, 'Stake Liquidity Pool (LP) tokens to earn.')}</Description>
+      <FarmHeader searchString="" selectedView={tableView} showAllStatus={false} setViewStatus={setTableView} />
       <StyledLink exact activeClassName="active" to="/staking">
         Staking
       </StyledLink>
@@ -103,7 +106,7 @@ const Description = styled.div`
   font-size: 1.5rem;
   color: #452A7A;
   width: 100%;
-  margin: 1.5rem 0;
+  margin: 1.5rem 0 0 0;
   font-weight: 600;
 `
 
