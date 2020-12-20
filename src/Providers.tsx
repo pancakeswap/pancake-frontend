@@ -1,32 +1,39 @@
 import React from 'react'
 import { ModalProvider } from '@pancakeswap-libs/uikit'
 import { UseWalletProvider } from 'use-wallet'
+import { Provider } from 'react-redux'
 import getRpcUrl from 'utils/getRpcUrl'
-import TransactionProvider from './contexts/Transactions'
-import SushiProvider from './contexts/SushiProvider'
-import { LanguageContextProvider } from './contexts/Localisation/languageContext'
-import { ThemeContextProvider } from './contexts/ThemeContext'
+import SushiProvider from 'contexts/SushiProvider'
+import { LanguageContextProvider } from 'contexts/Localisation/languageContext'
+import { ThemeContextProvider } from 'contexts/ThemeContext'
+import { BlockContextProvider } from 'contexts/BlockContext'
+import { RefreshContextProvider } from 'contexts/RefreshContext'
+import store from 'state'
 
 const Providers: React.FC = ({ children }) => {
   const rpcUrl = getRpcUrl()
 
   return (
-    <ThemeContextProvider>
-      <LanguageContextProvider>
-        <UseWalletProvider
-          chainId={parseInt(process.env.REACT_APP_CHAIN_ID)}
-          connectors={{
-            walletconnect: { rpcUrl },
-          }}
-        >
-          <SushiProvider>
-            <TransactionProvider>
-              <ModalProvider>{children}</ModalProvider>
-            </TransactionProvider>
-          </SushiProvider>
-        </UseWalletProvider>
-      </LanguageContextProvider>
-    </ThemeContextProvider>
+    <Provider store={store}>
+      <ThemeContextProvider>
+        <LanguageContextProvider>
+          <UseWalletProvider
+            chainId={parseInt(process.env.REACT_APP_CHAIN_ID)}
+            connectors={{
+              walletconnect: { rpcUrl },
+            }}
+          >
+            <BlockContextProvider>
+              <SushiProvider>
+                <RefreshContextProvider>
+                  <ModalProvider>{children}</ModalProvider>
+                </RefreshContextProvider>
+              </SushiProvider>
+            </BlockContextProvider>
+          </UseWalletProvider>
+        </LanguageContextProvider>
+      </ThemeContextProvider>
+    </Provider>
   )
 }
 

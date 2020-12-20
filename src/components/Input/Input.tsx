@@ -9,21 +9,11 @@ export interface InputProps {
   value: string
 }
 
-const Input: React.FC<InputProps> = ({
-  endAdornment,
-  onChange,
-  placeholder,
-  startAdornment,
-  value,
-}) => {
+const Input: React.FC<InputProps> = ({ endAdornment, onChange, placeholder, startAdornment, value }) => {
   return (
     <StyledInputWrapper>
       {!!startAdornment && startAdornment}
-      <StyledInput
-        placeholder={placeholder}
-        value={value}
-        onChange={onChange}
-      />
+      <StyledInput placeholder={placeholder} value={value} onChange={onChange} />
       {!!endAdornment && endAdornment}
     </StyledInputWrapper>
   )
@@ -39,6 +29,7 @@ const StyledInputWrapper = styled.div`
 `
 
 const StyledInput = styled.input`
+  width: 100%;
   background: none;
   border: 0;
   color: ${(props) => props.theme.colors.primary};

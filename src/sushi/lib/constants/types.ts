@@ -1,6 +1,6 @@
 export type IfoStatus = 'coming_soon' | 'live' | 'finished'
 
-export type Ifo = {
+export interface Ifo {
   id: string
   isActive: boolean
   address: string
@@ -21,6 +21,7 @@ export enum QuoteToken {
   'BNB' = 'BNB',
   'CAKE' = 'CAKE',
   'SYRUP' = 'SYRUP',
+  'BUSD' = 'BUSD',
 }
 
 export enum PoolCategory {
@@ -29,20 +30,50 @@ export enum PoolCategory {
   'BINANCE' = 'Binance', // Pools using native BNB behave differently than pools using a token
 }
 
-export type Pool = {
+export interface Address {
+  97?: string
+  56: string
+}
+
+export interface FarmConfig {
+  pid: number
+  lpSymbol: string
+  lpAddresses: Address
+  tokenSymbol: string
+  tokenAddresses: Address
+  quoteTokenSymbol: QuoteToken
+  quoteTokenAdresses: Address
+  multiplier?: string
+  isCommunity?: boolean
+  dual?: {
+    rewardPerBlock: number
+    earnLabel: string
+    endBlock: number
+  }
+}
+
+export interface PoolConfig {
   sousId: number
   image?: string
   tokenName: string
   stakingTokenName: QuoteToken
   stakingTokenAddress?: string
-  contractAddress: {
-    97?: string
-    56: string
-  }
+  contractAddress: Address
   poolCategory: PoolCategory
   projectLink: string
   tokenPerBlock: string
   sortOrder?: number
   harvest?: boolean
   isFinished?: boolean
+  tokenDecimals: number
+}
+
+export type Nft = {
+  name: string
+  description: string
+  originalImage: string
+  previewImage: string
+  blurImage: string
+  sortOrder: number
+  bunnyId: number
 }

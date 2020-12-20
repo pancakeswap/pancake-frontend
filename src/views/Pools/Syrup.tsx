@@ -1,40 +1,45 @@
 import React from 'react'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
+import { useWallet } from 'use-wallet'
 import { Heading } from '@pancakeswap-libs/uikit'
 import orderBy from 'lodash/orderBy'
 import partition from 'lodash/partition'
-import useUserBnbBalance from 'hooks/rework/useBnbBalance'
-import useSushi from 'hooks/useSushi'
 import useI18n from 'hooks/useI18n'
-import useAllStakedValue from 'hooks/useAllStakedValue'
-import { getPools } from 'sushi/utils'
+import { useFarms, usePriceBnbBusd, usePools } from 'state/hooks'
+import { QuoteToken } from 'sushi/lib/constants/types'
 import Coming from './components/Coming'
 import PoolCard from './components/PoolCard'
 
 const Farm: React.FC = () => {
-  const sushi = useSushi()
   const TranslateString = useI18n()
-  const stakedValues = useAllStakedValue()
-  const userBnbBalance = useUserBnbBalance()
+  const { account } = useWallet()
+  const farms = useFarms()
+  const pools = usePools(account)
+  const bnbPriceUSD = usePriceBnbBusd()
+  const cakePriceVsBNB = new BigNumber(farms.find((s) => s.tokenSymbol === 'CAKE')?.tokenPriceVsQuote || 0)
 
-  const cakePrice = stakedValues.find((s) => s.tokenSymbol === 'CAKE')?.tokenPriceInWeth || new BigNumber(0)
+  const priceToBnb = (tokenName: string, tokenPrice: BigNumber, quoteToken: QuoteToken): BigNumber => {
+    const tokenPriceBN = new BigNumber(tokenPrice)
+    if (tokenName === 'BNB') {
+      return new BigNumber(1)
+    }
+    if (tokenPrice && quoteToken === QuoteToken.BUSD) {
+      return tokenPriceBN.div(bnbPriceUSD)
+    }
+    return tokenPriceBN
+  }
 
-  const pools = getPools(sushi).map((pool) => {
-    const stakedValue =
-      pool.tokenName === 'BNB'
-        ? { tokenPriceInWeth: new BigNumber(1), quoteToken: 'BNB', tokenDecimals: '18' }
-        : stakedValues.find((s) => s.tokenSymbol === pool.tokenName)
+  const poolsWithPrice = pools.map((pool) => {
+    const farm = farms.find((f) => f.tokenSymbol === pool.tokenName)
 
     return {
       ...pool,
-      tokenPrice: stakedValue?.tokenPriceInWeth || new BigNumber(0),
-      tokenPriceQuoteToken: stakedValue?.quoteToken,
-      tokenDecimals: stakedValue?.tokenDecimals,
+      tokenPrice: priceToBnb(pool.tokenName, farm?.tokenPriceVsQuote, farm?.quoteTokenSymbol),
     }
   })
 
-  const [finishedPools, openPools] = partition(pools, (pool) => pool.isFinished)
+  const [finishedPools, openPools] = partition(poolsWithPrice, (pool) => pool.isFinished)
 
   return (
     <Page>
@@ -53,11 +58,11 @@ const Farm: React.FC = () => {
       </Hero>
       <Pools>
         {orderBy(openPools, ['sortOrder']).map((pool) => (
-          <PoolCard key={pool.sousId} cakePrice={cakePrice} userBnbBalance={userBnbBalance} {...pool} />
+          <PoolCard key={pool.sousId} cakePriceVsBNB={cakePriceVsBNB} pool={pool} />
         ))}
         <Coming />
         {orderBy(finishedPools, ['sortOrder']).map((pool) => (
-          <PoolCard key={pool.sousId} cakePrice={cakePrice} userBnbBalance={userBnbBalance} {...pool} />
+          <PoolCard key={pool.sousId} cakePriceVsBNB={cakePriceVsBNB} pool={pool} />
         ))}
       </Pools>
     </Page>

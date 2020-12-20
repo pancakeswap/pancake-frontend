@@ -1,88 +1,81 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import { useWallet } from 'use-wallet'
 import { provider } from 'web3-core'
-import Spacer from '../../components/Spacer'
-import Page from '../../components/Page'
-import PageHeader from '../../components/PageHeader'
-import useFarm from '../../hooks/useFarm'
-import { getContract } from '../../utils/erc20'
+import { useFarmFromSymbol, useFarmUser } from 'state/hooks'
+import Spacer from 'components/Spacer'
+import Page from 'components/Page'
+import PageHeader from 'components/PageHeader'
+import { getContract } from 'utils/erc20'
+import { TranslateString } from 'utils/translateTextHelpers'
 import Harvest from './components/Harvest'
 import Syrup from './components/Syrup'
 import Stake from './components/Stake'
 import SyrupWarning from './components/SyrupWarning'
-import { TranslateString } from '../../utils/translateTextHelpers'
 
 const Farm: React.FC = () => {
-  const farmInfo = useFarm('CAKE') || {
-    pid: 0,
-    lpToken: '',
-    lpTokenAddress: '',
-    tokenAddress: '',
-    earnToken: '',
-    name: '',
-    icon: '',
-    tokenSymbol: '',
-  }
+  const { ethereum, account } = useWallet()
+  const farmInfo = useFarmFromSymbol('CAKE')
 
-  const { pid, lpToken, lpTokenAddress } = farmInfo
-
-  useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
-
-  const { ethereum } = useWallet()
+  const { pid, lpSymbol, lpAddresses } = farmInfo
+  const lpAddress = lpAddresses[process.env.REACT_APP_CHAIN_ID]
+  const { allowance, tokenBalance, stakedBalance, earnings } = useFarmUser(pid, account)
 
   const lpContract = useMemo(() => {
-    return getContract(ethereum as provider, lpTokenAddress)
-  }, [ethereum, lpTokenAddress])
+    return getContract(ethereum as provider, lpAddress)
+  }, [ethereum, lpAddress])
 
   return (
     <Page>
-      <>
-        <div style={{ maxWidth: '800px', padding: '48px 16px 0' }}>
-          <SyrupWarning />
-        </div>
-        <PageHeader
-          icon={<img src="/images/cakecat.png" height="90" alt="Stake Cake, get SYRUP icon" />}
-          title="Stake CAKE, get CAKE."
-          subtitle={
-            <StyledSubtitle>
-              <p>This page was previously used for acquiring SYRUP</p>
-              <p>
-                Since SYRUP has now been disabled, the page is only useful for removing your SYRUP before moving it to
-                CAKE-based pools.
-              </p>
-              <p>If you stake CAKE in the CAKE pool, it&apos;ll also show up here.</p>
-            </StyledSubtitle>
-          }
-        />
+      <div style={{ maxWidth: '800px', padding: '48px 16px 0' }}>
+        <SyrupWarning />
+      </div>
+      <PageHeader
+        icon={<img src="/images/cakecat.png" height="90" alt="Stake Cake, get SYRUP icon" />}
+        title="Stake CAKE, get CAKE."
+        subtitle={
+          <StyledSubtitle>
+            <p>This page was previously used for acquiring SYRUP</p>
+            <p>
+              Since SYRUP has now been disabled, the page is only useful for removing your SYRUP before moving it to
+              CAKE-based pools.
+            </p>
+            <p>If you stake CAKE in the CAKE pool, it&apos;ll also show up here.</p>
+          </StyledSubtitle>
+        }
+      />
+      <Spacer size="lg" />
+      <StyledFarm>
+        <StyledCardsWrapper>
+          <StyledCardWrapper>
+            <Syrup />
+          </StyledCardWrapper>
+          <Spacer />
+          <StyledCardWrapper>
+            <Harvest pid={pid} earnings={earnings} />
+          </StyledCardWrapper>
+          <Spacer />
+          <StyledCardWrapper>
+            <Stake
+              lpContract={lpContract}
+              pid={pid}
+              tokenName={lpSymbol.toUpperCase()}
+              allowance={allowance}
+              tokenBalance={tokenBalance}
+              stakedBalance={stakedBalance}
+            />
+          </StyledCardWrapper>
+        </StyledCardsWrapper>
         <Spacer size="lg" />
-        <StyledFarm>
-          <StyledCardsWrapper>
-            <StyledCardWrapper>
-              <Syrup />
-            </StyledCardWrapper>
-            <Spacer />
-            <StyledCardWrapper>
-              <Harvest pid={pid} />
-            </StyledCardWrapper>
-            <Spacer />
-            <StyledCardWrapper>
-              <Stake lpContract={lpContract} pid={pid} tokenName={lpToken.toUpperCase()} />
-            </StyledCardWrapper>
-          </StyledCardsWrapper>
-          <Spacer size="lg" />
-          <StyledInfo>
-            ⭐️{' '}
-            {TranslateString(
-              334,
-              'Every time you stake and unstake CAKE tokens, the contract will automagically harvest CAKE rewards for you!',
-            )}
-          </StyledInfo>
-          <Spacer size="lg" />
-        </StyledFarm>
-      </>
+        <StyledInfo>
+          ⭐️{' '}
+          {TranslateString(
+            334,
+            'Every time you stake and unstake CAKE tokens, the contract will automagically harvest CAKE rewards for you!',
+          )}
+        </StyledInfo>
+        <Spacer size="lg" />
+      </StyledFarm>
     </Page>
   )
 }

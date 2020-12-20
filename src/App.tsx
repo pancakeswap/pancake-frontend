@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { useWallet } from 'use-wallet'
 import { ResetCSS, Footer } from '@pancakeswap-libs/uikit'
+import { useFetchPublicData } from 'state/hooks'
 import GlobalStyle from './style/Global'
 import Menu from './components/Menu'
 import Farms from './views/Farms'
@@ -12,6 +13,8 @@ import Lottery from './views/Lottery'
 import Pools from './views/Pools'
 import Ifo from './views/Ifo'
 import NotFound from './views/NotFound'
+import Nft from './views/Nft'
+import NftGlobalNotification from './views/Nft/components/NftGlobalNotification'
 
 const App: React.FC = () => {
   const { account, connect } = useWallet()
@@ -20,6 +23,8 @@ const App: React.FC = () => {
       connect('injected')
     }
   }, [account, connect])
+
+  useFetchPublicData()
 
   return (
     <Router>
@@ -33,7 +38,7 @@ const App: React.FC = () => {
         <Route exact path="/farms">
           <Farms removed={false} />
         </Route>
-        <Route path="/farms/:farmId">
+        <Route path="/farms/:lpSymbol">
           <Farm />
         </Route>
         <Route path="/staking">
@@ -51,9 +56,13 @@ const App: React.FC = () => {
         <Route path="/ifo">
           <Ifo />
         </Route>
+        <Route path="/nft">
+          <Nft />
+        </Route>
         <Route component={NotFound} />
       </Switch>
       <Footer />
+      <NftGlobalNotification />
     </Router>
   )
 }

@@ -1,46 +1,47 @@
 import React, { useState } from 'react'
+import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
-import { Button } from '@pancakeswap-libs/uikit'
+import { Button, Card, CardBody } from '@pancakeswap-libs/uikit'
 import Label from 'components/Label'
-import useEarnings from 'hooks/useEarnings'
-import useReward from 'hooks/useReward'
+import { useHarvest } from 'hooks/useHarvest'
 import useI18n from 'hooks/useI18n'
 import { getBalanceNumber } from 'utils/formatBalance'
-import Card from './Card'
-import CardImage from './CardImage'
+import Image from './Image'
 import Value from './Value'
 
 interface HarvestProps {
   pid: number
+  earnings: BigNumber
 }
 
-const Harvest: React.FC<HarvestProps> = ({ pid }) => {
+const Harvest: React.FC<HarvestProps> = ({ pid, earnings }) => {
   const TranslateString = useI18n()
-  const earnings = useEarnings(pid)
   const [pendingTx, setPendingTx] = useState(false)
-  const { onReward } = useReward(pid)
+  const { onReward } = useHarvest(pid)
 
   return (
     <Card>
-      <StyledCardContentInner>
-        <StyledCardHeader>
-          <CardImage src="/images/tokens/CAKE.png" alt="cake" />
-          <Value value={getBalanceNumber(earnings)} fontSize="40px" />
-          <Label text={TranslateString(330, 'CAKE Earned')} />
-        </StyledCardHeader>
-        <StyledCardActions>
-          <Button
-            disabled={!earnings.toNumber() || pendingTx}
-            onClick={async () => {
-              setPendingTx(true)
-              await onReward()
-              setPendingTx(false)
-            }}
-          >
-            {pendingTx ? 'Collecting CAKE' : 'Harvest'}
-          </Button>
-        </StyledCardActions>
-      </StyledCardContentInner>
+      <CardBody>
+        <StyledCardContentInner>
+          <StyledCardHeader>
+            <Image src="/images/tokens/CAKE.png" alt="cake" />
+            <Value value={getBalanceNumber(earnings)} fontSize="40px" />
+            <Label text={TranslateString(330, 'CAKE Earned')} />
+          </StyledCardHeader>
+          <StyledCardActions>
+            <Button
+              disabled={!earnings.toNumber() || pendingTx}
+              onClick={async () => {
+                setPendingTx(true)
+                await onReward()
+                setPendingTx(false)
+              }}
+            >
+              {pendingTx ? 'Collecting CAKE' : 'Harvest'}
+            </Button>
+          </StyledCardActions>
+        </StyledCardContentInner>
+      </CardBody>
     </Card>
   )
 }

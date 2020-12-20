@@ -1,35 +1,33 @@
 import { useEffect, useState } from 'react'
-import { provider } from 'web3-core'
-
-import BigNumber from 'bignumber.js'
 import { useWallet } from 'use-wallet'
-
-import { getEarned, getMasterChefContract, getFarms } from '../sushi/utils'
-import useSushi from './useSushi'
-import useBlock from './useBlock'
+import multicall from 'utils/multicall'
+import masterChefABI from 'sushi/lib/abi/masterchef.json'
+import addresses from 'sushi/lib/constants/contracts'
+import { farmsConfig } from 'sushi/lib/constants'
+import useRefresh from './useRefresh'
 
 const useAllEarnings = () => {
-  const [balances, setBalance] = useState([] as Array<BigNumber>)
-  const { account }: { account: string; ethereum: provider } = useWallet()
-  const sushi = useSushi()
-  const farms = getFarms(sushi)
-  const masterChefContract = getMasterChefContract(sushi)
-  const block = useBlock()
+  const [balances, setBalance] = useState([])
+  const { account }: { account: string } = useWallet()
+  const { fastRefresh } = useRefresh()
 
   useEffect(() => {
     const fetchAllBalances = async () => {
-      const res: Array<BigNumber> = await Promise.all(
-        farms.map(({ pid }: { pid: number }) => {
-          return getEarned(masterChefContract, pid, account)
-        }),
-      )
+      const calls = farmsConfig.map((farm) => ({
+        address: addresses.masterChef[process.env.REACT_APP_CHAIN_ID],
+        name: 'pendingCake',
+        params: [farm.pid, account],
+      }))
+
+      const res = await multicall(masterChefABI, calls)
+
       setBalance(res)
     }
 
-    if (account && masterChefContract && sushi) {
+    if (account) {
       fetchAllBalances()
     }
-  }, [account, block, farms, masterChefContract, setBalance, sushi])
+  }, [account, fastRefresh])
 
   return balances
 }
