@@ -66,16 +66,6 @@ const Farms: React.FC<FarmsProps> = ({ removed }) => {
           ))}
         </Grid>
       </Page>
-      {removed ? (
-        <NavLink exact activeClassName="active" to="/farms">
-          Active Pools
-        </NavLink>
-      ) : (
-        <NavLink exact activeClassName="active" to="/removed">
-          Inactive Pools
-        </NavLink>
-      )}
-      <Image src="/images/cakecat.png" />
     </Page>
   )
 }
