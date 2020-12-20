@@ -8,7 +8,8 @@ import FarmStakingCard from './components/FarmStakingCard'
 import LotteryCard from './components/LotteryCard'
 import CakeStats from './components/CakeStats'
 import EarnAPYCard from './components/EarnAPYCard'
-
+import EarnAssetCard from './components/EarnAssetCard'
+import WinCard from './components/WinCard'
 
 const Hero = styled.div`
   align-items: center;
@@ -103,8 +104,8 @@ const Home: React.FC = () => {
         <CakeStats />
         <CTACards>
           <EarnAPYCard />
-          <EarnAPYCard />
-          <EarnAPYCard />
+          <EarnAssetCard />
+          <WinCard />
         </CTACards>
       </Container>
     </Page>
