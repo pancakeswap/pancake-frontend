@@ -55,7 +55,8 @@ const Farms: React.FC<FarmsProps> = ({ removed }) => {
 
   return (
     <Page>
-      <Title>{TranslateString(320, 'Stake FLIP tokens to stack CAKE')}</Title>
+      <Title>{TranslateString(999999, 'Farms')}</Title>
+      <Description>{TranslateString(999999, 'Stake Liquidity Pool (LP) tokens to earn.')}</Description>
       <StyledLink exact activeClassName="active" to="/staking">
         Staking
       </StyledLink>
@@ -94,9 +95,16 @@ const Title = styled.div`
   color: ${(props) => props.theme.colors.secondary};
   font-size: 29px;
   width: 100%;
-  text-align: left;
   font-weight: 900;
-  margin: 50px 0;
+  margin: 50px 0 0 0;
+`
+
+const Description = styled.div`
+  font-size: 1.5rem;
+  color: #452A7A;
+  width: 100%;
+  margin: 1.5rem 0;
+  font-weight: 600;
 `
 
 export default Farms
