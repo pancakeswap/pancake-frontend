@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Switch } from 'react-router-dom'
 import Page from 'components/layout/Page'
 import Container from '../../components/layout/Container'
@@ -10,6 +10,21 @@ import PastDrawsPage from './PastDrawsPage'
 
 const Lottery: React.FC = () => {
   const [nextDrawActive, setNextDrawActive] = useState(true)
+  const [historyData, setHistoryData] = useState([])
+  const [historyError, setHistoryError] = useState(false)
+
+  const getHistoryChartData = () => {
+    fetch(`https://api.pancakeswap.com/api/lotteryHistory`)
+      .then((response) => response.json())
+      .then((data) => setHistoryData(data))
+      .catch(() => {
+        setHistoryError(true)
+      })
+  }
+
+  useEffect(() => {
+    getHistoryChartData()
+  }, [])
 
   return (
     <Switch>
@@ -18,7 +33,7 @@ const Lottery: React.FC = () => {
         <Container>
           <LotteryPageToggle nextDrawActive={nextDrawActive} setNextDrawActive={setNextDrawActive} />
           <Divider />
-          {nextDrawActive ? <NextDrawPage /> : <PastDrawsPage />}
+          {nextDrawActive ? <NextDrawPage /> : <PastDrawsPage historyError={historyError} historyData={historyData} />}
         </Container>
       </Page>
     </Switch>

@@ -38,28 +38,17 @@ const BunnyImageWrapper = styled.div`
 
 const StyledImage = styled.img``
 
-const PastDrawsPage: React.FC = () => {
-  // May be useful for 'Past draws'
-  // const sushi = useSushi()
-  // const lotteryContract = getLotteryContract(sushi)
-  // const [index, setIndex] = useState(0)
+interface PastDrawProps {
+  historyError: boolean
+  historyData: Array<any>
+}
 
-  // const fetchIndex = useCallback(async () => {
-  //   const issueIndex = await getLotteryIssueIndex(lotteryContract)
-  //   setIndex(issueIndex)
-  // }, [lotteryContract])
-
-  // useEffect(() => {
-  //   if (account && lotteryContract && sushi) {
-  //     fetchIndex()
-  //   }
-  // }, [account, lotteryContract, sushi, fetchIndex])
-
+const PastDrawsPage: React.FC<PastDrawProps> = ({ historyError, historyData }) => {
   return (
     <Cards>
       <PastLotteryRoundViewer />
       <SecondCardColumnWrapper>
-        <PastDrawsHistoryCard />
+        <PastDrawsHistoryCard error={historyError} historyData={historyData} />
         <BunnyImageWrapper>
           <StyledImage src="/images/pancake-lottery-bunny.png" alt="lottery bunny" />
         </BunnyImageWrapper>

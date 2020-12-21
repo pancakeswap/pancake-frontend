@@ -12,23 +12,12 @@ const InnerWrapper = styled.div`
   justify-content: center;
 `
 
-const HistoryChart = () => {
-  const [historyData, setHistoryData] = useState([])
-  const [error, setError] = useState(false)
+interface HistoryProps {
+  error: boolean
+  historyData: Array<any>
+}
 
-  const getHistoryChartData = () => {
-    fetch(`https://api.pancakeswap.com/api/lotteryHistory`)
-      .then((response) => response.json())
-      .then((data) => setHistoryData(data))
-      .catch(() => {
-        setError(true)
-      })
-  }
-
-  useEffect(() => {
-    getHistoryChartData()
-  }, [])
-
+const HistoryChart = ({ historyData, error }) => {
   const getDataArray = (kind) => {
     return historyData
       .map((dataPoint) => {
@@ -47,7 +36,7 @@ const HistoryChart = () => {
     }
   }
 
-  const data = {
+  const chartData = {
     labels: getDataArray('lotteryNumber'),
     datasets: [
       {
@@ -119,7 +108,7 @@ const HistoryChart = () => {
         </InnerWrapper>
       )}
       {!error && historyData.length > 1 ? (
-        <Line data={data} options={options} type="line" />
+        <Line data={chartData} options={options} type="line" />
       ) : (
         <InnerWrapper>
           <Loading />
