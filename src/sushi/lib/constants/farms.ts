@@ -38,7 +38,7 @@ const farms: FarmConfig[] = [
     lpSymbol: 'JUV-BNB LP',
     lpAddresses: {
       97: '',
-      56: '',
+      56: '0x51a2ffa5b7de506f9a22549e48b33f6cf0d9030e',
     },
     tokenSymbol: 'JUV',
     tokenAddresses: {
@@ -55,7 +55,7 @@ const farms: FarmConfig[] = [
     lpSymbol: 'PSG-BNB LP',
     lpAddresses: {
       97: '',
-      56: '',
+      56: '0x9c4f6a5050cf863e67a402e8b377973b4e3372c1',
     },
     tokenSymbol: 'PSG',
     tokenAddresses: {
