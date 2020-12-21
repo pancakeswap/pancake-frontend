@@ -14,10 +14,6 @@ const CardHeading = styled.div`
   justify-content: space-between;
 `
 
-const StyledHeading = styled(Heading)`
-  margin-bottom: ${(props) => props.theme.spacing[4]}px;
-`
-
 const TopLotteryCardHeading = styled(LotteryCardHeading)`
   margin-bottom: ${(props) => props.theme.spacing[4]}px;
 `
@@ -47,7 +43,9 @@ const PastRoundCardDetails = ({ data }) => {
         <CardBody>
           <CardHeading>
             <Timestamp timeValue={lotteryDate} />
-            <StyledHeading size="md">Round #{lotteryNumber}</StyledHeading>
+            <Heading size="md" mb="24px">
+              Round #{lotteryNumber}
+            </Heading>
             <TopLotteryCardHeading
               valueToDisplay={`${lotteryNumbers[0]}, ${lotteryNumbers[1]}, ${lotteryNumbers[2]}, ${lotteryNumbers[3]}`}
               Icon={TicketRound}
