@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Heading, Card, CardBody, Ticket } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
-import UnlockButton from '../../../components/UnlockButton'
+import UnlockButton from 'components/UnlockButton'
 
 const StyledCardBody = styled(CardBody)`
   display: flex;
