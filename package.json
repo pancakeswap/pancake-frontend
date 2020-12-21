@@ -38,7 +38,6 @@
     "@types/react-dom": "^16.9.8",
     "@types/react-router-dom": "^5.1.5",
     "@types/styled-components": "^5.1.4",
-    "axios": "^0.21.0",
     "bignumber.js": "^9.0.0",
     "chart.js": "^2.9.4",
     "lodash": "^4.17.20",

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { Line } from 'react-chartjs-2'
 import { Text } from '@pancakeswap-libs/uikit'
-import axios from 'axios'
 import Loading from '../../../../components/Loading/Loading'
 
 const InnerWrapper = styled.div`
@@ -18,11 +17,9 @@ const HistoryChart = () => {
   const [error, setError] = useState(false)
 
   const getHistoryChartData = () => {
-    axios
-      .get(`https://api.pancakeswap.com/api/lotteryHistory`)
-      .then((res) => {
-        setHistoryData(res.data)
-      })
+    fetch(`https://api.pancakeswap.com/api/lotteryHistory`)
+      .then((response) => response.json())
+      .then((data) => setHistoryData(data))
       .catch(() => {
         setError(true)
       })
