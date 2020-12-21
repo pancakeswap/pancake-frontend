@@ -5,10 +5,10 @@ import { Card, CardBody } from '@pancakeswap-libs/uikit'
 import useSushi from 'hooks/useSushi'
 import { useWallet } from 'use-wallet'
 import useI18n from 'hooks/useI18n'
-import { getLotteryContract, getLotteryIssueIndex } from '../../../../sushi/lotteryUtils'
+import { getLotteryContract, getLotteryIssueIndex } from 'sushi/lotteryUtils'
+import Loading from 'components/Loading/Loading'
 import PastLotterySearcher from './PastLotterySearcher'
 import PastRoundCard from './PastRoundCard'
-import Loading from '../../../../components/Loading/Loading'
 
 const Wrapper = styled.div`
   display: flex;

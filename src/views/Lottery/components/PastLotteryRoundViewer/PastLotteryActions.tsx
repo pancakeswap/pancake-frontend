@@ -4,8 +4,8 @@ import { Button, useModal } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import { useWallet } from 'use-wallet'
 import useTickets from 'hooks/useTickets'
+import UnlockButton from 'components/UnlockButton'
 import MyTicketsModal from '../TicketCard/UserTicketsModal'
-import UnlockButton from '../../../../components/UnlockButton'
 
 const Wrapper = styled.div`
   display: flex;
