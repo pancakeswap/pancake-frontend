@@ -34,7 +34,7 @@ const farms: FarmConfig[] = [
     multiplier: '30X',
   },
   {
-    pid: 42,
+    pid: 43,
     lpSymbol: 'JUV-BNB LP',
     lpAddresses: {
       97: '',
@@ -51,7 +51,7 @@ const farms: FarmConfig[] = [
     isCommunity: false,
   },
   {
-    pid: 43,
+    pid: 42,
     lpSymbol: 'PSG-BNB LP',
     lpAddresses: {
       97: '',
