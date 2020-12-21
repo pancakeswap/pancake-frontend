@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React, { lazy, Suspense } from 'react'
 import styled from 'styled-components'
-import { Line } from 'react-chartjs-2'
 import { Text } from '@pancakeswap-libs/uikit'
 import Loading from 'components/Loading/Loading'
+
+const Line = lazy(() => import('./LineChartWrapper'))
 
 const InnerWrapper = styled.div`
   width: 100%;
@@ -17,7 +18,7 @@ interface HistoryProps {
   historyData: Array<any>
 }
 
-const HistoryChart = ({ historyData, error }) => {
+const HistoryChart: React.FC<HistoryProps> = ({ historyData, error }) => {
   const getDataArray = (kind) => {
     return historyData
       .map((dataPoint) => {
@@ -108,7 +109,9 @@ const HistoryChart = ({ historyData, error }) => {
         </InnerWrapper>
       )}
       {!error && historyData.length > 1 ? (
-        <Line data={chartData} options={options} type="line" />
+        <Suspense fallback={<div>Loading...</div>}>
+          <Line data={chartData} options={options} type="line" />
+        </Suspense>
       ) : (
         <InnerWrapper>
           <Loading />
