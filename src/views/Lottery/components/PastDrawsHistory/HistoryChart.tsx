@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { Line } from 'react-chartjs-2'
 import { Text } from '@pancakeswap-libs/uikit'
-import Loading from '../../../../components/Loading/Loading'
+import Loading from 'components/Loading/Loading'
 
 const InnerWrapper = styled.div`
   width: 100%;
