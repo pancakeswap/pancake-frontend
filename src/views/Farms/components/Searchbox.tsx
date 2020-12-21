@@ -41,14 +41,23 @@ const Container = styled.form`
       }    
     }
   }
-
-  img {
+  
+  .search-button {
+    display: flex;
+    align-items: center;
     position: absolute;
     float: right;
-    width: 25px;
     height: 25px;
     top: 20px;
     right: 10px;
+    
+    span {
+      line-height: 4px;
+      color: #1FC7D4;
+      margin-right: 8px;
+      font-weight: 600;
+      font-size: 1rem;
+    }
   }
 `
 
@@ -56,7 +65,10 @@ export default function SearchBox({ inputText }: Props): ReactElement {
   return (
     <Container>
       <input type="text" id="search-bar" placeholder="Search forms" />
-      <img src="/images/icons/search.svg" alt="search icon" />
+      <div className="search-button">
+        <span>Search</span>
+        <img src="/images/icons/search.svg" alt="search icon" />
+      </div>
     </Container>
   )
 }
