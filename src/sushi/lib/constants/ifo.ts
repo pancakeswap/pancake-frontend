@@ -22,7 +22,7 @@ const ifos: Ifo[] = [
     id: 'ditto',
     address: '0x570c9eB19553526Fb35895a531928E19C7D20788',
     isActive: true,
-    name: 'Ditto (DIITO)',
+    name: 'Ditto (DITTO)',
     subTitle: 'Next-gen elastic supply token',
     description:
       'Ditto is the first elastic supply token on the Binance Smart Chain. Its goal is to maintain a stable price of $1, where its supply will adapt to changes in demand. All supply changes will apply equally to every wallet holding Ditto, and holders should always have the same % of the total supply',
