@@ -48,7 +48,10 @@ const IfoCardContribute: React.FC<Props> = ({
       setUserInfo(userinfo)
       setOfferingTokenBalance(balance)
     }
-    fetch()
+
+    if (account) {
+      fetch()
+    }
   }, [account, contract.methods, pendingTx])
 
   if (allowance === null) {
