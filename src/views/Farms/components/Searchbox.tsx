@@ -1,46 +1,16 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement, Dispatch } from 'react'
 import styled from 'styled-components'
+// import { Input } from '@pancakeswap-libs/uikit'
 
 interface Props {
-  inputText: string;
+  searchText: string;
+  onChange: Dispatch<string>;
 }
 
-const Container = styled.form`
+const Container = styled.div`
   width: 320px;
   height: 64px;
-  display: block;
   position: relative;
-
-  input#search-bar {
-    background: #EEEAF4;
-
-    box-shadow: inset 0px 2px 2px -1px rgba(0, 0, 0, 0.2);
-    border-radius: 16px;
-    margin: 0 auto;
-    width: 100%;
-    height: 100%;
-    padding: 0 20px;
-    font-size: 1rem;
-    border: 1px solid #D0CFCE;
-    outline: none;
-    &:focus{
-      border: 1px solid #008ABF;
-      transition: 0.35s ease;
-      color: #008ABF;
-      &::-webkit-input-placeholder{
-        transition: opacity 0.45s ease; 
-        opacity: 0;
-      }
-      &::-moz-placeholder {
-        transition: opacity 0.45s ease; 
-        opacity: 0;
-      }
-      &:-ms-placeholder {
-      transition: opacity 0.45s ease; 
-      opacity: 0;
-      }    
-    }
-  }
   
   .search-button {
     display: flex;
@@ -48,7 +18,7 @@ const Container = styled.form`
     position: absolute;
     float: right;
     height: 25px;
-    top: 20px;
+    top: 8px;
     right: 10px;
     
     span {
@@ -61,10 +31,10 @@ const Container = styled.form`
   }
 `
 
-export default function SearchBox({ inputText }: Props): ReactElement {
+export default function SearchBox({ searchText, onChange }: Props): ReactElement {
   return (
     <Container>
-      <input type="text" id="search-bar" placeholder="Search forms" />
+      {/* <Input type="text" placeholder="Search forms" value={searchText} onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange(e.target.value)} /> */}
       <div className="search-button">
         <span>Search</span>
         <img src="/images/icons/search.svg" alt="search icon" />

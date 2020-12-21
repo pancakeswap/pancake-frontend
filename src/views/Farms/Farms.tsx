@@ -7,7 +7,7 @@ import Grid from 'components/layout/Grid'
 import { useFarms, usePriceBnbBusd } from 'state/hooks'
 import { QuoteToken } from 'sushi/lib/constants/types'
 import useI18n from 'hooks/useI18n'
-import Page from 'components/Page'
+import Page from 'components/layout/Page'
 import FarmCard, { FarmWithStakedValue } from './components/FarmCard'
 import FarmHeader from './components/FarmHeader'
 
@@ -56,9 +56,9 @@ const Farms: React.FC<FarmsProps> = ({ removed }) => {
   })
 
   return (
-    <Page>
-      <Title>{TranslateString(999999, 'Farms')}</Title>
-      <Description>{TranslateString(999999, 'Stake Liquidity Pool (LP) tokens to earn.')}</Description>
+    <StyledPage>
+      <Title>{TranslateString(999, 'Farms')}</Title>
+      <Description>{TranslateString(999, 'Stake Liquidity Pool (LP) tokens to earn.')}</Description>
       <FarmHeader searchString="" selectedView={tableView} showAllStatus={false} setViewStatus={setTableView} />
       <StyledLink exact activeClassName="active" to="/staking">
         Staking
@@ -70,7 +70,7 @@ const Farms: React.FC<FarmsProps> = ({ removed }) => {
           ))}
         </Grid>
       </Page>
-    </Page>
+    </StyledPage>
   )
 }
 
@@ -88,16 +88,16 @@ const StyledLink = styled(NavLink)`
   }
 `
 
-const Image = styled.img`
-  @media (max-width: 500px) {
-    width: 100vw;
+const StyledPage = styled(Page)`
+  @media (min-width: 968px) {
+    width: 60vw;
+    margin: auto;
   }
 `
 
 const Title = styled.div`
   color: ${(props) => props.theme.colors.secondary};
   font-size: 29px;
-  width: 100%;
   font-weight: 900;
   margin: 50px 0 0 0;
 `
