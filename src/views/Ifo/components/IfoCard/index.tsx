@@ -23,6 +23,7 @@ export interface IfoCardProps {
 const StyledIfoCard = styled(Card)<{ ifoId: string }>`
   background-image: ${({ ifoId }) => `url('/images/ifos/${ifoId}-bg.svg')`};
   background-repeat: no-repeat;
+  background-size: contain;
   padding-top: 112px;
   margin-left: auto;
   margin-right: auto;
