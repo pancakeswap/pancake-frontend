@@ -20,7 +20,7 @@ const ifos: Ifo[] = [
   },
   {
     id: 'ditto',
-    address: '',
+    address: '0x570c9eB19553526Fb35895a531928E19C7D20788',
     isActive: true,
     name: 'Ditto (DIITO)',
     subTitle: 'Next-gen elastic supply token',
