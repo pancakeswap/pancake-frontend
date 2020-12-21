@@ -34,6 +34,40 @@ const farms: FarmConfig[] = [
     multiplier: '30X',
   },
   {
+    pid: 42,
+    lpSymbol: 'JUV-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x51a2ffa5b7de506f9a22549e48b33f6cf0d9030e',
+    },
+    tokenSymbol: 'JUV',
+    tokenAddresses: {
+      97: '',
+      56: '0xc40c9a843e1c6d01b7578284a9028854f6683b1b',
+    },
+    quoteTokenSymbol: QuoteToken.BNB,
+    quoteTokenAdresses: contracts.wbnb,
+    multiplier: '1X',
+    isCommunity: false,
+  },
+  {
+    pid: 43,
+    lpSymbol: 'PSG-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x9c4f6a5050cf863e67a402e8b377973b4e3372c1',
+    },
+    tokenSymbol: 'PSG',
+    tokenAddresses: {
+      97: '',
+      56: '0xbc5609612b7c44bef426de600b5fd1379db2ecf1',
+    },
+    quoteTokenSymbol: QuoteToken.BNB,
+    quoteTokenAdresses: contracts.wbnb,
+    multiplier: '1X',
+    isCommunity: false,
+  },
+  {
     pid: 39,
     lpSymbol: 'UNFI-BNB LP',
     lpAddresses: {
@@ -49,11 +83,6 @@ const farms: FarmConfig[] = [
     quoteTokenAdresses: contracts.wbnb,
     multiplier: '1X',
     isCommunity: false,
-    dual: {
-      rewardPerBlock: 0.02893,
-      earnLabel: 'CAKE & UNFI',
-      endBlock: 3229250,
-    },
   },
   {
     pid: 41,
