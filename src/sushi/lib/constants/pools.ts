@@ -65,8 +65,8 @@ const pools: PoolConfig[] = [
     projectLink: 'https://www.chiliz.com',
     harvest: true,
     tokenPerBlock: '0.02',
-    sortOrder: 4,
-    isFinished: false,
+    sortOrder: 999,
+    isFinished: true,
     tokenDecimals: 2,
   },
   {
@@ -82,8 +82,8 @@ const pools: PoolConfig[] = [
     projectLink: 'https://www.chiliz.com',
     harvest: true,
     tokenPerBlock: '0.02',
-    sortOrder: 5,
-    isFinished: false,
+    sortOrder: 999,
+    isFinished: true,
     tokenDecimals: 2,
   },
   {
