@@ -4,7 +4,7 @@ import { Card, CardBody, TicketRound, Text, Heading } from '@pancakeswap-libs/ui
 import useI18n from 'hooks/useI18n'
 import useGetLotteryHasDrawn from 'hooks/useGetLotteryHasDrawn'
 import useTickets from 'hooks/useTickets'
-import { useCurrentTime } from '../../../../hooks/useTimer'
+import { useCurrentTime } from 'hooks/useTimer'
 import TicketActions from './TicketActions'
 import { getTicketSaleTime } from '../../helpers/CountdownHelpers'
 
