@@ -39,22 +39,6 @@ const BunnyImageWrapper = styled.div`
 const StyledImage = styled.img``
 
 const PastDrawsPage: React.FC = () => {
-  // May be useful for 'Past draws'
-  // const sushi = useSushi()
-  // const lotteryContract = getLotteryContract(sushi)
-  // const [index, setIndex] = useState(0)
-
-  // const fetchIndex = useCallback(async () => {
-  //   const issueIndex = await getLotteryIssueIndex(lotteryContract)
-  //   setIndex(issueIndex)
-  // }, [lotteryContract])
-
-  // useEffect(() => {
-  //   if (account && lotteryContract && sushi) {
-  //     fetchIndex()
-  //   }
-  // }, [account, lotteryContract, sushi, fetchIndex])
-
   return (
     <Cards>
       <PastLotteryRoundViewer />
