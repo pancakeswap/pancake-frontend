@@ -4,7 +4,7 @@ import { Heading, Card, CardBody, CardFooter, Text, PancakeRoundIcon } from '@pa
 import { getBalanceNumber } from 'utils/formatBalance'
 import useI18n from 'hooks/useI18n'
 import { useTotalRewards } from 'hooks/useTickets'
-import PrizeGrid from './PrizeGrid'
+import PrizeGrid from '../PrizeGrid'
 import DetailsButton from './DetailsButton'
 
 const CardHeading = styled.div`

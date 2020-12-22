@@ -1,29 +1,10 @@
-import React, { useState } from 'react'
-import styled from 'styled-components'
-import { Heading, Card, CardBody, CardFooter, Text, PancakeRoundIcon, TicketRound } from '@pancakeswap-libs/uikit'
-import useI18n from 'hooks/useI18n'
+import React from 'react'
+import { Card } from '@pancakeswap-libs/uikit'
+import PastRoundCardError from './PastRoundCardError'
+import PastRoundCardDetails from './PastRoundCardDetails'
 
-const CardHeading = styled.div`
-  position: relative;
-  display: flex;
-  justify-content: space-between;
-`
-
-const PastRoundCard = () => {
-  const TranslateString = useI18n()
-
-  return (
-    <Card>
-      <CardBody>
-        <CardHeading>
-          <span>Round</span>
-        </CardHeading>
-      </CardBody>
-      <CardFooter>
-        <span>Grid</span>
-      </CardFooter>
-    </Card>
-  )
+const PastRoundCard = ({ error, data }) => {
+  return <Card>{error.message ? <PastRoundCardError error={error} /> : <PastRoundCardDetails data={data} />}</Card>
 }
 
 export default PastRoundCard
