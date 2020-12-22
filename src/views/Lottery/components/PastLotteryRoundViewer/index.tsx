@@ -26,19 +26,19 @@ const PastLotteryRoundViewer = () => {
   const [error, setError] = useState({ message: null, type: null })
   const [loaded, setLoaded] = useState(false)
 
-  const getInitialLotteryIndex = useCallback(async () => {
-    const index = await getLotteryIssueIndex(lotteryContract)
-    const previousLotteryNumber = index - 1
-    setInputNumber(previousLotteryNumber)
-    setMostRecentLotteryNumber(previousLotteryNumber)
-    setLoaded(true)
-  }, [lotteryContract])
-
   useEffect(() => {
+    const getInitialLotteryIndex = async () => {
+      const index = await getLotteryIssueIndex(lotteryContract)
+      const previousLotteryNumber = index - 1
+      setInputNumber(previousLotteryNumber)
+      setMostRecentLotteryNumber(previousLotteryNumber)
+      setLoaded(true)
+    }
+
     if (account && lotteryContract && sushi) {
       getInitialLotteryIndex()
     }
-  }, [account, lotteryContract, sushi, getInitialLotteryIndex])
+  }, [account, lotteryContract, sushi])
 
   const getPastLotteryRoundData = ({ useMostRecentLotteryNumber }) => {
     const lotteryNumber = useMostRecentLotteryNumber ? mostRecentLotteryNumber : inputNumber
