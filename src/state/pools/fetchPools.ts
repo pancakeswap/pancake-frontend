@@ -39,12 +39,12 @@ export const fetchPoolsBlockLimits = async () => {
 }
 
 export const fetchPoolsTotalStatking = async () => {
-  const cakePools = poolsConfig.filter((p) => p.stakingTokenName !== QuoteToken.BNB)
+  const nonBnbPools = poolsConfig.filter((p) => p.stakingTokenName !== QuoteToken.BNB)
   const bnbPool = poolsConfig.filter((p) => p.stakingTokenName === QuoteToken.BNB)
 
-  const callsCakePools = cakePools.map((poolConfig) => {
+  const callsNonBnbPools = nonBnbPools.map((poolConfig) => {
     return {
-      address: addresses.sushi[CHAIN_ID],
+      address: poolConfig.stakingTokenAddress,
       name: 'balanceOf',
       params: [poolConfig.contractAddress[CHAIN_ID]],
     }
@@ -58,13 +58,13 @@ export const fetchPoolsTotalStatking = async () => {
     }
   })
 
-  const cakePoolsTotalStaked = await multicall(cakeABI, callsCakePools)
+  const nonBnbPoolsTotalStaked = await multicall(cakeABI, callsNonBnbPools)
   const bnbPoolsTotalStaked = await multicall(wbnbABI, callsBnbPools)
 
   return [
-    ...cakePools.map((p, index) => ({
+    ...nonBnbPools.map((p, index) => ({
       sousId: p.sousId,
-      totalStaked: new BigNumber(cakePoolsTotalStaked[index]).toJSON(),
+      totalStaked: new BigNumber(nonBnbPoolsTotalStaked[index]).toJSON(),
     })),
     ...bnbPool.map((p, index) => ({
       sousId: p.sousId,
