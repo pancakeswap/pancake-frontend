@@ -79,13 +79,10 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
   const needsApproval = !accountHasStakedBalance && !allowance.toNumber() && !isBnbPool
   const isCardActive = isFinished && accountHasStakedBalance
 
+  const convertedLimit = new BigNumber(stakingLimit).multipliedBy(new BigNumber(10).pow(tokenDecimals))
   const [onPresentDeposit] = useModal(
     <DepositModal
-      max={
-        isBnbPool && stakingTokenBalance.isGreaterThan(10)
-          ? new BigNumber(10).multipliedBy(new BigNumber(10).pow(18))
-          : stakingTokenBalance
-      }
+      max={stakingLimit && stakingTokenBalance.isGreaterThan(convertedLimit) ? convertedLimit : stakingTokenBalance}
       onConfirm={onStake}
       tokenName={stakingLimit ? `${stakingTokenName} (${stakingLimit} max)` : stakingTokenName}
     />,
