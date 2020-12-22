@@ -15,6 +15,7 @@ export interface Ifo {
   projectSiteUrl: string
   currency: string
   currencyAddress: string
+  tokenDecimals: number
 }
 
 export enum QuoteToken {

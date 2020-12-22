@@ -17,6 +17,7 @@ const ifos: Ifo[] = [
     projectSiteUrl: 'https://blink.wink.org',
     currency: 'CAKE-BNB LP',
     currencyAddress: '0xA527a61703D82139F8a06Bc30097cC9CAA2df5A6',
+    tokenDecimals: 6,
   },
   {
     id: 'ditto',
@@ -34,6 +35,7 @@ const ifos: Ifo[] = [
     projectSiteUrl: 'https://ditto.money/',
     currency: 'CAKE-BNB LP',
     currencyAddress: '0xA527a61703D82139F8a06Bc30097cC9CAA2df5A6',
+    tokenDecimals: 9,
   },
 ]
 
