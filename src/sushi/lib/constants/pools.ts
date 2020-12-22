@@ -19,7 +19,7 @@ const pools: PoolConfig[] = [
     tokenDecimals: 18,
   },
   {
-    sousId: 22,
+    sousId: 26,
     image: 'CAKETWT',
     tokenName: 'TWT',
     stakingTokenName: QuoteToken.TWT,
