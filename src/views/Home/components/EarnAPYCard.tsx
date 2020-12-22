@@ -1,8 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Heading, Card, CardBody, ArrowForwardIcon } from '@pancakeswap-libs/uikit'
-import { NavLink } from 'react-router-dom'
+import {Heading, Card, CardBody, ArrowForwardIcon} from '@pancakeswap-libs/uikit'
+import {NavLink} from 'react-router-dom'
 import useI18n from 'hooks/useI18n'
+import BigNumber from "bignumber.js";
+import {useFarms} from "../../../state/hooks";
+import {BLOCKS_PER_YEAR, CAKE_PER_BLOCK,} from "../../../config";
 
 const StyledFarmStakingCard = styled(Card)`
   margin-left: auto;
@@ -11,12 +14,12 @@ const StyledFarmStakingCard = styled(Card)`
   width: 100%;
   
 
-  ${({ theme }) => theme.mediaQueries.lg} {
+  ${({theme}) => theme.mediaQueries.lg} {
     margin: 0;
     max-width: none;
   }
 `
-const CardMidContent = styled(Heading).attrs({ size: 'xl' })`
+const CardMidContent = styled(Heading).attrs({size: 'xl'})`
   margin-bottom: 0px;
 `
 const Row = styled.div`
@@ -25,24 +28,42 @@ const Row = styled.div`
 `
 
 const FarmedStakingCard = () => {
-    const TranslateString = useI18n() 
-   
+    const TranslateString = useI18n()
+    const farmsLP = useFarms()
 
-  return (
-    <StyledFarmStakingCard>
-      <CardBody>
-        <div>Earn up to</div>
-        <CardMidContent>{TranslateString(999, '293% APY')}</CardMidContent>
-        <div>in Farms</div>
-        <NavLink exact activeClassName="active" to="/farms">
-          <Row> 
-            <ArrowForwardIcon />
-          </Row>
-        </NavLink>
-      </CardBody>
-      
-    </StyledFarmStakingCard>
-  )
+
+    const calculateAPY = () => {
+        const farm = farmsLP[1];
+        const cakePriceVsBNB = new BigNumber(farm?.tokenPriceVsQuote || 0)
+
+        // if (!farm.tokenAmount || !farm.lpTotalInQuoteToken || !farm.lpTotalInQuoteToken) {
+        //     return farm
+        // }
+
+        const cakeRewardPerBlock = CAKE_PER_BLOCK.times(farm.poolWeight)
+        const cakeRewardPerYear = cakeRewardPerBlock.times(BLOCKS_PER_YEAR)
+
+
+        return cakePriceVsBNB.times(cakeRewardPerYear).div(farm.lpTotalInQuoteToken)
+    }
+
+    // const api =
+
+    return (
+        <StyledFarmStakingCard>
+            <CardBody>
+                <div>Earn up to</div>
+                <CardMidContent>{calculateAPY() ? `${calculateAPY().times(new BigNumber(100)).toNumber().toLocaleString('en-US').slice(0, -1)}%` : `Loading...`} APY</CardMidContent>
+                <div>in Farms</div>
+                <NavLink exact activeClassName="active" to="/farms">
+                    <Row>
+                        <ArrowForwardIcon/>
+                    </Row>
+                </NavLink>
+            </CardBody>
+
+        </StyledFarmStakingCard>
+    )
 }
 
 export default FarmedStakingCard
