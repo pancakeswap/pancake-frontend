@@ -13,16 +13,15 @@ const Lottery: React.FC = () => {
   const [historyData, setHistoryData] = useState([])
   const [historyError, setHistoryError] = useState(false)
 
-  const getHistoryChartData = () => {
-    fetch(`https://api.pancakeswap.com/api/lotteryHistory`)
-      .then((response) => response.json())
-      .then((data) => setHistoryData(data))
-      .catch(() => {
-        setHistoryError(true)
-      })
-  }
-
   useEffect(() => {
+    const getHistoryChartData = () => {
+      fetch(`https://api.pancakeswap.com/api/lotteryHistory`)
+        .then((response) => response.json())
+        .then((data) => setHistoryData(data))
+        .catch(() => {
+          setHistoryError(true)
+        })
+    }
     getHistoryChartData()
   }, [])
 
