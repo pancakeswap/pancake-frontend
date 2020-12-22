@@ -30,7 +30,7 @@ const pools: PoolConfig[] = [
       56: '0x0554a5D083Abf2f056ae3F6029e1714B9A655174',
     },
     poolCategory: PoolCategory.CORE,
-    projectLink: 'http://pancakeswap.finance/',
+    projectLink: 'https://trustwallet.com/',
     harvest: true,
     tokenPerBlock: '0.248',
     sortOrder: 3,
