@@ -21,7 +21,7 @@ const pools: PoolConfig[] = [
   {
     sousId: 26,
     image: 'CAKETWT',
-    tokenName: 'TWT',
+    tokenName: 'CAKE',
     stakingTokenName: QuoteToken.TWT,
     stakingTokenAddress: '0x4b0f1812e5df2a09796481ff14017e6005508003',
     stakingLimit: 1000,
