@@ -50,6 +50,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
     endBlock,
     isFinished,
     userData,
+    stakingLimit,
   } = pool
   // Pools using native BNB behave differently than pools using a token
   const isBnbPool = poolCategory === PoolCategory.BINANCE
@@ -86,7 +87,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
           : stakingTokenBalance
       }
       onConfirm={onStake}
-      tokenName={isBnbPool ? `${stakingTokenName} (10 bnb max)` : stakingTokenName}
+      tokenName={stakingLimit ? `${stakingTokenName} (${stakingLimit} max)` : stakingTokenName}
     />,
   )
 

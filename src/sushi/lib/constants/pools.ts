@@ -20,10 +20,11 @@ const pools: PoolConfig[] = [
   },
   {
     sousId: 22,
-    image: 'caketwt',
+    image: 'CAKETWT',
     tokenName: 'TWT',
     stakingTokenName: QuoteToken.TWT,
     stakingTokenAddress: '0x4b0f1812e5df2a09796481ff14017e6005508003',
+    stakingLimit: 1000,
     contractAddress: {
       97: '',
       56: '0x0554a5D083Abf2f056ae3F6029e1714B9A655174',
@@ -41,6 +42,7 @@ const pools: PoolConfig[] = [
     image: 'CAKEBNB',
     tokenName: 'CAKE',
     stakingTokenName: QuoteToken.BNB,
+    stakingLimit: 10,
     contractAddress: {
       97: '',
       56: '0x555Ea72d7347E82C614C16f005fA91cAf06DCB5a',
