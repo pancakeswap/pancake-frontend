@@ -10,6 +10,7 @@ import useI18n from 'hooks/useI18n'
 import Page from 'components/layout/Page'
 import FarmCard, { FarmWithStakedValue } from './components/FarmCard'
 import FarmHeader from './components/FarmHeader'
+import Table from '../../components/Table'
 
 interface FarmsProps {
   removed: boolean
@@ -64,11 +65,14 @@ const Farms: React.FC<FarmsProps> = ({ removed }) => {
         Staking
       </StyledLink>
       <Page>
-        <Grid>
-          {farmsToDisplayWithAPY.map((farm) => (
-            <FarmCard key={farm.pid} farm={farm} removed={removed} />
-          ))}
-        </Grid>
+        {
+          tableView ? <Table /> :
+          <Grid>
+            {farmsToDisplayWithAPY.map((farm) => (
+              <FarmCard key={farm.pid} farm={farm} removed={removed} />
+            ))}
+          </Grid>
+        }
       </Page>
     </StyledPage>
   )

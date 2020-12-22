@@ -1,6 +1,6 @@
 import React, { ReactElement, Dispatch } from 'react'
 import styled from 'styled-components'
-// import { Input } from '@pancakeswap-libs/uikit'
+import { Input } from '@pancakeswap-libs/uikit'
 
 interface Props {
   searchText: string;
@@ -18,7 +18,7 @@ const Container = styled.div`
     position: absolute;
     float: right;
     height: 25px;
-    top: 8px;
+    top: 7px;
     right: 10px;
     
     span {
@@ -34,7 +34,7 @@ const Container = styled.div`
 export default function SearchBox({ searchText, onChange }: Props): ReactElement {
   return (
     <Container>
-      {/* <Input type="text" placeholder="Search forms" value={searchText} onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange(e.target.value)} /> */}
+      <Input type="text" placeholder="Search forms" value={searchText} onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange(e.target.value)} />
       <div className="search-button">
         <span>Search</span>
         <img src="/images/icons/search.svg" alt="search icon" />
