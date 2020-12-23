@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { BaseLayout } from '@pancakeswap-libs/uikit'
 import PastLotteryRoundViewer from './components/PastLotteryRoundViewer'
-import PastDrawsHistoryCard from './components/PastDrawsHistoryCard'
+import PastDrawsHistoryCard from './components/PastDrawsHistory/PastDrawsHistoryCard'
 
 const Cards = styled(BaseLayout)`
   align-items: start;
@@ -38,12 +38,17 @@ const BunnyImageWrapper = styled.div`
 
 const StyledImage = styled.img``
 
-const PastDrawsPage: React.FC = () => {
+interface PastDrawProps {
+  historyError: boolean
+  historyData: Array<any>
+}
+
+const PastDrawsPage: React.FC<PastDrawProps> = ({ historyError, historyData }) => {
   return (
     <Cards>
       <PastLotteryRoundViewer />
       <SecondCardColumnWrapper>
-        <PastDrawsHistoryCard />
+        <PastDrawsHistoryCard error={historyError} historyData={historyData} />
         <BunnyImageWrapper>
           <StyledImage src="/images/pancake-lottery-bunny.png" alt="lottery bunny" />
         </BunnyImageWrapper>
