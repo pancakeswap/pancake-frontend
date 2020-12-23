@@ -34,6 +34,23 @@ const farms: FarmConfig[] = [
     multiplier: '30X',
   },
   {
+    pid: 44,
+    lpSymbol: 'Ditto-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x470bc451810b312bbb1256f96b0895d95ea659b1',
+    },
+    tokenSymbol: 'DITTO',
+    tokenAddresses: {
+      97: '',
+      56: '0x233d91A0713155003fc4DcE0AFa871b508B3B715',
+    },
+    quoteTokenSymbol: QuoteToken.BNB,
+    quoteTokenAdresses: contracts.wbnb,
+    multiplier: '2X',
+    isCommunity: false,
+  },
+  {
     pid: 43,
     lpSymbol: 'JUV-BNB LP',
     lpAddresses: {
