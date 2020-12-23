@@ -29,7 +29,6 @@ const Row = styled.div`
 
 const FarmedStakingCard = () => {
     const TranslateString = useI18n() 
-   
 
   return (
     <StyledFarmStakingCard>
