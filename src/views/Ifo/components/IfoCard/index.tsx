@@ -20,6 +20,15 @@ export interface IfoCardProps {
   ifo: Ifo
 }
 
+/**
+ * An arbitrary block number representing when the initial "static" release
+ * of the IFO.
+ *
+ * NOTE: This blocks needs to change when an IFO is pre-released so the
+ * "progress until start" can be calculated
+ */
+const RELEASE_BLOCK = 3279767
+
 const StyledIfoCard = styled(Card)<{ ifoId: string }>`
   background-image: ${({ ifoId }) => `url('/images/ifos/${ifoId}-bg.svg')`};
   background-repeat: no-repeat;
@@ -97,10 +106,12 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
 
   useEffect(() => {
     const fetchProgress = async () => {
-      const startBlock = await contract.methods.startBlock().call()
-      const endBlock = await contract.methods.endBlock().call()
-      const raisingAmount = new BigNumber(await contract.methods.raisingAmount().call())
-      const totalAmount = new BigNumber(await contract.methods.totalAmount().call())
+      const [startBlock, endBlock, raisingAmount, totalAmount] = await Promise.all([
+        contract.methods.startBlock().call(),
+        contract.methods.endBlock().call(),
+        contract.methods.raisingAmount().call(),
+        contract.methods.totalAmount().call(),
+      ])
 
       const startBlockNum = parseInt(startBlock, 10)
       const endBlockNum = parseInt(endBlock, 10)
@@ -109,18 +120,21 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
       const totalBlocks = endBlockNum - startBlockNum
       const blocksRemaining = endBlockNum - currentBlock
 
-      // Calculate the total progress with a default of 5%
-      const progress = currentBlock > startBlockNum ? ((currentBlock - startBlockNum) / totalBlocks) * 100 : 5
+      // Calculate the total progress until finished or until start
+      const progress =
+        currentBlock > startBlockNum
+          ? ((currentBlock - startBlockNum) / totalBlocks) * 100
+          : ((currentBlock - RELEASE_BLOCK) / (startBlockNum - RELEASE_BLOCK)) * 100
 
       setState({
         isLoading: false,
         secondsUntilEnd: blocksRemaining * BSC_BLOCK_TIME,
         secondsUntilStart: (startBlockNum - currentBlock) * BSC_BLOCK_TIME,
+        raisingAmount: new BigNumber(raisingAmount),
+        totalAmount: new BigNumber(totalAmount),
         status,
         progress,
         blocksRemaining,
-        raisingAmount,
-        totalAmount,
         startBlockNum,
         endBlockNum,
       })
