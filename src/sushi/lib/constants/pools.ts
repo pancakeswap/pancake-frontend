@@ -19,6 +19,23 @@ const pools: PoolConfig[] = [
     tokenDecimals: 18,
   },
   {
+    sousId: 27,
+    tokenName: 'DITTO',
+    stakingTokenName: QuoteToken.CAKE,
+    stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
+    contractAddress: {
+      97: '',
+      56: '0x624ef5C2C6080Af188AF96ee5B3160Bb28bb3E02',
+    },
+    poolCategory: PoolCategory.CORE,
+    projectLink: 'https://ditto.money/',
+    harvest: true,
+    tokenPerBlock: '0.01157',
+    sortOrder: 5,
+    isFinished: false,
+    tokenDecimals: 9,
+  },
+  {
     sousId: 26,
     image: 'CAKETWT',
     tokenName: 'CAKE',
