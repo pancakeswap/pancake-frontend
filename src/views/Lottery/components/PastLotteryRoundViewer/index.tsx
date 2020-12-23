@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
 import styled from 'styled-components'
-import axios from 'axios'
 import { Card, CardBody } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import Loading from 'components/Loading/Loading'
@@ -36,17 +35,18 @@ const PastLotteryRoundViewer = () => {
 
   const getPastLotteryRoundData = ({ useMostRecentLotteryNumber }) => {
     const lotteryNumber = useMostRecentLotteryNumber ? mostRecentLotteryNumber : inputNumber
-    axios
-      .get(`https://api.pancakeswap.com/api/singleLottery?lotteryNumber=${lotteryNumber}`)
-      .then((res) => {
-        if (res.data.error) {
+
+    fetch(`https://api.pancakeswap.com/api/singleLottery?lotteryNumber=${lotteryNumber}`)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.error) {
           setError({
             message: TranslateString(999, 'The lottery number you provided does not exist'),
             type: 'out of range',
           })
         } else {
           setError({ message: null, type: null })
-          setRoundData(res.data)
+          setRoundData(data)
         }
       })
       .catch(() => {
