@@ -12,7 +12,8 @@ const Wrapper = styled.div`
 `
 
 const ButtonsWrapper = styled.div`
-  width: 225px;
+  display: flex;
+  width: 233px;
   height: 100%;
   border-radius: 16px;
   position: relative;

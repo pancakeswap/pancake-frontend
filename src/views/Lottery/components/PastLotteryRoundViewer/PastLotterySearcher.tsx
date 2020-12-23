@@ -16,6 +16,7 @@ const StyledButton = styled(Button)`
   right: 8px;
   top: 50%;
   transform: translate(0%, -50%);
+  width: auto;
 `
 
 const PastLotterySearcher = ({ inputNumber, setInputNumber, onSubmit }) => {
@@ -33,7 +34,7 @@ const PastLotterySearcher = ({ inputNumber, setInputNumber, onSubmit }) => {
           }}
         />
         <StyledButton size="sm" onClick={onSubmit}>
-          {TranslateString(999, 'Search:')}
+          {TranslateString(999, 'Search')}
         </StyledButton>
       </SearchWrapper>
     </Wrapper>
