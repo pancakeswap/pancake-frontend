@@ -73,6 +73,7 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
     projectSiteUrl,
     currency,
     currencyAddress,
+    tokenDecimals,
   } = ifo
   const [state, setState] = useState({
     isLoading: true,
@@ -152,6 +153,7 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
             contract={contract}
             status={state.status}
             raisingAmount={state.raisingAmount}
+            tokenDecimals={tokenDecimals}
           />
         )}
         <IfoCardDescription description={description} />

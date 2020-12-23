@@ -18,6 +18,7 @@ export interface Props {
   contract: Contract
   status: IfoStatus
   raisingAmount: BigNumber
+  tokenDecimals: number
 }
 
 const IfoCardContribute: React.FC<Props> = ({
@@ -27,6 +28,7 @@ const IfoCardContribute: React.FC<Props> = ({
   contract,
   status,
   raisingAmount,
+  tokenDecimals,
 }) => {
   const [pendingTx, setPendingTx] = useState(false)
   const [offeringTokenBalance, setOfferingTokenBalance] = useState(new BigNumber(0))
@@ -98,7 +100,7 @@ const IfoCardContribute: React.FC<Props> = ({
           isFinished
             ? userInfo.claimed
               ? 'Claimed'
-              : getBalanceNumber(offeringTokenBalance, 6).toFixed(4)
+              : getBalanceNumber(offeringTokenBalance, tokenDecimals).toFixed(4)
             : getBalanceNumber(new BigNumber(userInfo.amount)).toFixed(4)
         }
         onClick={isFinished ? claim : onPresentContributeModal}
