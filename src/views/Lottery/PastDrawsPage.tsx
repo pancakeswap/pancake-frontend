@@ -36,8 +36,6 @@ const BunnyImageWrapper = styled.div`
   justify-content: center;
 `
 
-const StyledImage = styled.img``
-
 const PastDrawsPage: React.FC = () => {
   return (
     <Cards>
@@ -45,7 +43,7 @@ const PastDrawsPage: React.FC = () => {
       <SecondCardColumnWrapper>
         <PastDrawsHistoryCard />
         <BunnyImageWrapper>
-          <StyledImage src="/images/pancake-lottery-bunny.png" alt="lottery bunny" />
+          <img src="/images/pancake-lottery-bunny.png" alt="lottery bunny" />
         </BunnyImageWrapper>
       </SecondCardColumnWrapper>
     </Cards>
