@@ -36,10 +36,6 @@ const FarmedStakingCard = () => {
         const farm = farmsLP[1];
         const cakePriceVsBNB = new BigNumber(farm?.tokenPriceVsQuote || 0)
 
-        // if (!farm.tokenAmount || !farm.lpTotalInQuoteToken || !farm.lpTotalInQuoteToken) {
-        //     return farm
-        // }
-
         const cakeRewardPerBlock = CAKE_PER_BLOCK.times(farm.poolWeight)
         const cakeRewardPerYear = cakeRewardPerBlock.times(BLOCKS_PER_YEAR)
 
@@ -47,13 +43,11 @@ const FarmedStakingCard = () => {
         return cakePriceVsBNB.times(cakeRewardPerYear).div(farm.lpTotalInQuoteToken)
     }
 
-    // const api =
-
     return (
         <StyledFarmStakingCard>
             <CardBody>
                 <div>Earn up to</div>
-                <CardMidContent>{calculateAPY() ? `${calculateAPY().times(new BigNumber(100)).toNumber().toLocaleString('en-US').slice(0, -1)}%` : `Loading...`} APY</CardMidContent>
+                <CardMidContent>{calculateAPY() ? `${calculateAPY().times(new BigNumber(100)).toNumber().toLocaleString('en-US').slice(0, -1)}%` : `Loading...`} {TranslateString(352, 'APY')}</CardMidContent>
                 <div>in Farms</div>
                 <NavLink exact activeClassName="active" to="/farms">
                     <Row>
