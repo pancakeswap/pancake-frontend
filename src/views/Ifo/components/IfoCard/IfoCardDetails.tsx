@@ -49,7 +49,7 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({
           <Text>
             {launchDate},
             <Link
-              href="https://www.worldtimebuddy.com/event?lid=1880252&h=1880252&sts=26763360&sln=21-22&a=show&euid=505bcb85-76e9-e614-ad1d-0f6fe15ed548"
+              href="https://www.timeanddate.com/worldclock/singapore/singapore"
               target="blank"
               rel="noopener noreferrer"
               ml="4px"

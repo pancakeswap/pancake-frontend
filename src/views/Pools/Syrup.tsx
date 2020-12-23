@@ -3,11 +3,13 @@ import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import { useWallet } from 'use-wallet'
 import { Heading } from '@pancakeswap-libs/uikit'
+import { BLOCKS_PER_YEAR } from 'config'
 import orderBy from 'lodash/orderBy'
 import partition from 'lodash/partition'
 import useI18n from 'hooks/useI18n'
+import { getBalanceNumber } from 'utils/formatBalance'
 import { useFarms, usePriceBnbBusd, usePools } from 'state/hooks'
-import { QuoteToken } from 'sushi/lib/constants/types'
+import { QuoteToken, PoolCategory } from 'sushi/lib/constants/types'
 import Coming from './components/Coming'
 import PoolCard from './components/PoolCard'
 
@@ -17,7 +19,6 @@ const Farm: React.FC = () => {
   const farms = useFarms()
   const pools = usePools(account)
   const bnbPriceUSD = usePriceBnbBusd()
-  const cakePriceVsBNB = new BigNumber(farms.find((s) => s.tokenSymbol === 'CAKE')?.tokenPriceVsQuote || 0)
 
   const priceToBnb = (tokenName: string, tokenPrice: BigNumber, quoteToken: QuoteToken): BigNumber => {
     const tokenPriceBN = new BigNumber(tokenPrice)
@@ -30,16 +31,30 @@ const Farm: React.FC = () => {
     return tokenPriceBN
   }
 
-  const poolsWithPrice = pools.map((pool) => {
-    const farm = farms.find((f) => f.tokenSymbol === pool.tokenName)
+  const poolsWithApy = pools.map((pool) => {
+    const isBnbPool = pool.poolCategory === PoolCategory.BINANCE
+    const rewardTokenFarm = farms.find((f) => f.tokenSymbol === pool.tokenName)
+    const stakingTokenFarm = farms.find((s) => s.tokenSymbol === pool.stakingTokenName)
+
+    // /!\ Assume that the farm quote price is BNB
+    const stakingTokenPriceInBNB = isBnbPool ? new BigNumber(1) : new BigNumber(stakingTokenFarm?.tokenPriceVsQuote)
+    const rewardTokenPriceInBNB = priceToBnb(
+      pool.tokenName,
+      rewardTokenFarm?.tokenPriceVsQuote,
+      rewardTokenFarm?.quoteTokenSymbol,
+    )
+
+    const totalRewardPricePerYear = rewardTokenPriceInBNB.times(pool.tokenPerBlock).times(BLOCKS_PER_YEAR)
+    const totalStakingTokenInPool = stakingTokenPriceInBNB.times(getBalanceNumber(pool.totalStaked))
+    const apy = totalRewardPricePerYear.div(totalStakingTokenInPool).times(100)
 
     return {
       ...pool,
-      tokenPrice: priceToBnb(pool.tokenName, farm?.tokenPriceVsQuote, farm?.quoteTokenSymbol),
+      apy,
     }
   })
 
-  const [finishedPools, openPools] = partition(poolsWithPrice, (pool) => pool.isFinished)
+  const [finishedPools, openPools] = partition(poolsWithApy, (pool) => pool.isFinished)
 
   return (
     <Page>
@@ -58,11 +73,11 @@ const Farm: React.FC = () => {
       </Hero>
       <Pools>
         {orderBy(openPools, ['sortOrder']).map((pool) => (
-          <PoolCard key={pool.sousId} cakePriceVsBNB={cakePriceVsBNB} pool={pool} />
+          <PoolCard key={pool.sousId} pool={pool} />
         ))}
         <Coming />
         {orderBy(finishedPools, ['sortOrder']).map((pool) => (
-          <PoolCard key={pool.sousId} cakePriceVsBNB={cakePriceVsBNB} pool={pool} />
+          <PoolCard key={pool.sousId} pool={pool} />
         ))}
       </Pools>
     </Page>

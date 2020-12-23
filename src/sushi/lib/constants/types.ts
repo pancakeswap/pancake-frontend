@@ -15,6 +15,8 @@ export interface Ifo {
   projectSiteUrl: string
   currency: string
   currencyAddress: string
+  tokenDecimals: number
+  releaseBlockNumber: number
 }
 
 export enum QuoteToken {
@@ -22,6 +24,7 @@ export enum QuoteToken {
   'CAKE' = 'CAKE',
   'SYRUP' = 'SYRUP',
   'BUSD' = 'BUSD',
+  'TWT' = 'TWT',
 }
 
 export enum PoolCategory {
@@ -57,6 +60,7 @@ export interface PoolConfig {
   image?: string
   tokenName: string
   stakingTokenName: QuoteToken
+  stakingLimit?: number
   stakingTokenAddress?: string
   contractAddress: Address
   poolCategory: PoolCategory
