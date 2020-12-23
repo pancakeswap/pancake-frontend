@@ -1,7 +1,7 @@
 import React, { lazy, Suspense, useContext } from 'react'
 import styled from 'styled-components'
 import { Text } from '@pancakeswap-libs/uikit'
-import { PastLotteryDataContext } from 'contexts/PastLotteryDataContext'
+import PastLotteryDataContext from 'contexts/PastLotteryDataContext'
 import Loading from 'components/Loading/Loading'
 
 const Line = lazy(() => import('./LineChartWrapper'))
@@ -102,7 +102,7 @@ const HistoryChart: React.FC = () => {
     <>
       {historyError && (
         <InnerWrapper>
-          <Text>historyError fetching data</Text>
+          <Text>Error fetching data</Text>
         </InnerWrapper>
       )}
       {!historyError && historyData.length > 1 ? (

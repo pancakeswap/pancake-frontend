@@ -6,12 +6,13 @@ import React, { useState } from 'react'
 // }
 
 export interface PastLotteryDataState {
-  // pastRoundError: PastRoundErrorObject
+  mostRecentLotteryNumber: number
   historyError: boolean
   historyData: Array<any>
 }
 
-export const PastLotteryDataContext = React.createContext({
+export default React.createContext({
+  mostRecentLotteryNumber: 0,
   historyError: false,
   historyData: [],
 } as PastLotteryDataState)
