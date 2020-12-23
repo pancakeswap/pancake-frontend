@@ -18,6 +18,7 @@ const ifos: Ifo[] = [
     currency: 'CAKE-BNB LP',
     currencyAddress: '0xA527a61703D82139F8a06Bc30097cC9CAA2df5A6',
     tokenDecimals: 6,
+    releaseBlockNumber: 3279767,
   },
   {
     id: 'ditto',
@@ -36,6 +37,7 @@ const ifos: Ifo[] = [
     currency: 'CAKE-BNB LP',
     currencyAddress: '0xA527a61703D82139F8a06Bc30097cC9CAA2df5A6',
     tokenDecimals: 9,
+    releaseBlockNumber: 3279767,
   },
 ]
 

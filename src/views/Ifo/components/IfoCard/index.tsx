@@ -20,15 +20,6 @@ export interface IfoCardProps {
   ifo: Ifo
 }
 
-/**
- * An arbitrary block number representing when the initial "static" release
- * of the IFO.
- *
- * NOTE: This blocks needs to change when an IFO is pre-released so the
- * "progress until start" can be calculated
- */
-const RELEASE_BLOCK = 3279767
-
 const StyledIfoCard = styled(Card)<{ ifoId: string }>`
   background-image: ${({ ifoId }) => `url('/images/ifos/${ifoId}-bg.svg')`};
   background-repeat: no-repeat;
@@ -83,6 +74,7 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
     currency,
     currencyAddress,
     tokenDecimals,
+    releaseBlockNumber,
   } = ifo
   const [state, setState] = useState({
     isLoading: true,
@@ -124,7 +116,7 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
       const progress =
         currentBlock > startBlockNum
           ? ((currentBlock - startBlockNum) / totalBlocks) * 100
-          : ((currentBlock - RELEASE_BLOCK) / (startBlockNum - RELEASE_BLOCK)) * 100
+          : ((currentBlock - releaseBlockNumber) / (startBlockNum - releaseBlockNumber)) * 100
 
       setState({
         isLoading: false,
@@ -141,7 +133,7 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
     }
 
     fetchProgress()
-  }, [currentBlock, contract, setState])
+  }, [currentBlock, contract, releaseBlockNumber, setState])
 
   const isActive = state.status === 'live'
   const isFinished = state.status === 'finished'
