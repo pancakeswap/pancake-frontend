@@ -38,17 +38,12 @@ const BunnyImageWrapper = styled.div`
 
 const StyledImage = styled.img``
 
-interface PastDrawProps {
-  historyError: boolean
-  historyData: Array<any>
-}
-
-const PastDrawsPage: React.FC<PastDrawProps> = ({ historyError, historyData }) => {
+const PastDrawsPage: React.FC = () => {
   return (
     <Cards>
       <PastLotteryRoundViewer />
       <SecondCardColumnWrapper>
-        <PastDrawsHistoryCard error={historyError} historyData={historyData} />
+        <PastDrawsHistoryCard />
         <BunnyImageWrapper>
           <StyledImage src="/images/pancake-lottery-bunny.png" alt="lottery bunny" />
         </BunnyImageWrapper>

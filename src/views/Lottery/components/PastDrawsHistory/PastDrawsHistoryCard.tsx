@@ -4,12 +4,7 @@ import useI18n from 'hooks/useI18n'
 import HistoryChart from './HistoryChart'
 import Legend from './Legend'
 
-interface HistoryProps {
-  error: boolean
-  historyData: Array<any>
-}
-
-const PastDrawsHistoryCard: React.FC<HistoryProps> = ({ error, historyData }) => {
+const PastDrawsHistoryCard: React.FC = () => {
   const TranslateString = useI18n()
 
   return (
@@ -17,7 +12,7 @@ const PastDrawsHistoryCard: React.FC<HistoryProps> = ({ error, historyData }) =>
       <CardBody>
         <Heading size="md">{TranslateString(999, 'History')}</Heading>
         <Legend />
-        <HistoryChart error={error} historyData={historyData} />
+        <HistoryChart />
       </CardBody>
     </Card>
   )

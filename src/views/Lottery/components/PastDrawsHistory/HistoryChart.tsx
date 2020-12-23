@@ -1,6 +1,7 @@
-import React, { lazy, Suspense } from 'react'
+import React, { lazy, Suspense, useContext } from 'react'
 import styled from 'styled-components'
 import { Text } from '@pancakeswap-libs/uikit'
+import { PastLotteryDataContext } from 'contexts/PastLotteryDataContext'
 import Loading from 'components/Loading/Loading'
 
 const Line = lazy(() => import('./LineChartWrapper'))
@@ -13,12 +14,8 @@ const InnerWrapper = styled.div`
   justify-content: center;
 `
 
-interface HistoryProps {
-  error: boolean
-  historyData: Array<any>
-}
-
-const HistoryChart: React.FC<HistoryProps> = ({ historyData, error }) => {
+const HistoryChart: React.FC = () => {
+  const { historyData, historyError } = useContext(PastLotteryDataContext)
   const getDataArray = (kind) => {
     return historyData
       .map((dataPoint) => {
@@ -103,12 +100,12 @@ const HistoryChart: React.FC<HistoryProps> = ({ historyData, error }) => {
 
   return (
     <>
-      {error && (
+      {historyError && (
         <InnerWrapper>
-          <Text>Error fetching data</Text>
+          <Text>historyError fetching data</Text>
         </InnerWrapper>
       )}
-      {!error && historyData.length > 1 ? (
+      {!historyError && historyData.length > 1 ? (
         <Suspense fallback={<div>Loading...</div>}>
           <Line data={chartData} options={options} type="line" />
         </Suspense>

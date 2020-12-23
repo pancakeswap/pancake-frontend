@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Switch } from 'react-router-dom'
 import Page from 'components/layout/Page'
 import Container from 'components/layout/Container'
+import { PastLotteryDataContext } from 'contexts/PastLotteryDataContext'
 import Hero from './components/Hero'
 import Divider from './components/Divider'
 import LotteryPageToggle from './components/LotteryPageToggle'
@@ -32,7 +33,9 @@ const Lottery: React.FC = () => {
         <Container>
           <LotteryPageToggle nextDrawActive={nextDrawActive} setNextDrawActive={setNextDrawActive} />
           <Divider />
-          {nextDrawActive ? <NextDrawPage /> : <PastDrawsPage historyError={historyError} historyData={historyData} />}
+          <PastLotteryDataContext.Provider value={{ historyError, historyData }}>
+            {nextDrawActive ? <NextDrawPage /> : <PastDrawsPage />}
+          </PastLotteryDataContext.Provider>
         </Container>
       </Page>
     </Switch>
