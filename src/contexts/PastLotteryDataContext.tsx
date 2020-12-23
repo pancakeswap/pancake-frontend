@@ -1,9 +1,4 @@
-import React, { useState } from 'react'
-
-// export interface PastRoundErrorObject {
-//   message: string
-//   type: string
-// }
+import React from 'react'
 
 export interface PastLotteryDataState {
   mostRecentLotteryNumber: number
