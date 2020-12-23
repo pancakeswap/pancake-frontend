@@ -32,7 +32,7 @@
   "dependencies": {
     "@crowdin/crowdin-api-client": "^1.10.1",
     "@ethersproject/abi": "^5.0.7",
-    "@pancakeswap-libs/uikit": "^0.6.0",
+    "@pancakeswap-libs/uikit": "^0.7.1",
     "@reduxjs/toolkit": "^1.5.0",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",

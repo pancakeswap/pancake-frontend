@@ -1,21 +1,20 @@
 import React, { useContext } from 'react'
-import { Nav } from '@pancakeswap-libs/uikit'
+import { Menu as UikitMenu } from '@pancakeswap-libs/uikit'
 import { useWallet } from 'use-wallet'
 import { allLanguages } from 'config/localisation/languageCodes'
 import { LanguageContext } from 'contexts/Localisation/languageContext'
 import useTheme from 'hooks/useTheme'
 import { usePriceCakeBusd } from 'state/hooks'
-import links from './links'
+import config from './config'
 
-const Menu = () => {
+const Menu = (props) => {
   const { account, connect, reset } = useWallet()
   const { selectedLanguage, setSelectedLanguage } = useContext(LanguageContext)
   const { isDark, toggleTheme } = useTheme()
   const cakePriceUsd = usePriceCakeBusd()
 
   return (
-    <Nav
-      links={links}
+    <UikitMenu
       account={account}
       login={connect}
       logout={reset}
@@ -25,6 +24,8 @@ const Menu = () => {
       langs={allLanguages}
       setLang={setSelectedLanguage}
       cakePriceUsd={cakePriceUsd.toNumber()}
+      links={config}
+      {...props}
     />
   )
 }
