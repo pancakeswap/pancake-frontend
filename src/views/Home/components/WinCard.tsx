@@ -20,34 +20,36 @@ const StyledFarmStakingCard = styled(Card)`
 const CardTitle = styled(Heading)`
   display: flex;
   margin-bottom: 0px;
-  color: #452A7A;
+  color: #452a7a;
 `
 const CardMidContent = styled(Heading).attrs({ size: 'xl' })`
   margin-bottom: 0px;
-  color: #7645D9;
+  color: #7645d9;
 `
 const CardFooter = styled(Heading)`
   display: flex;
-  color: #452A7A;
+  color: #452a7a;
 `
 const Row = styled.div`
   display: flex;
   justify-content: flex-end;
 `
 
-const FarmedStakingCard = () => {
-    const TranslateString = useI18n() 
-    const lotteryPrizeAmount = +getBalanceNumber(useTotalRewards()).toFixed(0)
-    const lotteryPrizeWithCommaSeparators = lotteryPrizeAmount.toLocaleString()
+const WinCard = () => {
+  const TranslateString = useI18n()
+  const lotteryPrizeAmount = +getBalanceNumber(useTotalRewards()).toFixed(0)
+  const lotteryPrizeWithCommaSeparators = lotteryPrizeAmount.toLocaleString()
 
   return (
     <StyledFarmStakingCard>
       <CardBody>
         <CardTitle>Win up to</CardTitle>
-        <CardMidContent>{lotteryPrizeWithCommaSeparators} {TranslateString(999, 'CAKE')}</CardMidContent>
+        <CardMidContent>
+          {lotteryPrizeWithCommaSeparators} {TranslateString(999, 'CAKE')}
+        </CardMidContent>
         <CardFooter>in Lottery</CardFooter>
         <NavLink exact activeClassName="active" to="/lottery">
-          <Row> 
+          <Row>
             <ArrowForwardIcon />
           </Row>
         </NavLink>
@@ -56,4 +58,4 @@ const FarmedStakingCard = () => {
   )
 }
 
-export default FarmedStakingCard
+export default WinCard

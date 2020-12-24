@@ -4,12 +4,12 @@ import { Heading, Text, BaseLayout } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import Page from 'components/layout/Page'
 import Container from 'components/layout/Container'
-import FarmStakingCard from './components/FarmStakingCard'
-import LotteryCard from './components/LotteryCard'
-import CakeStats from './components/CakeStats'
-import EarnAPYCard from './components/EarnAPYCard'
-import EarnAssetCard from './components/EarnAssetCard'
-import WinCard from './components/WinCard'
+import FarmStakingCard from 'views/Home/components/FarmStakingCard'
+import LotteryCard from 'views/Home/components/LotteryCard'
+import CakeStats from 'views/Home/components/CakeStats'
+import EarnAPYCard from 'views/Home/components/EarnAPYCard'
+import EarnAssetCard from 'views/Home/components/EarnAssetCard'
+import WinCard from 'views/Home/components/WinCard'
 
 const Hero = styled.div`
   align-items: center;
