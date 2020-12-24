@@ -3,6 +3,7 @@ import { Nav } from '@pancakeswap-libs/uikit'
 import { useWallet } from 'use-wallet'
 import { allLanguages } from 'config/localisation/languageCodes'
 import { LanguageContext } from 'contexts/Localisation/languageContext'
+import useMerryChristmas from 'hooks/useMerryChristmas'
 import useTheme from 'hooks/useTheme'
 import { usePriceCakeBusd } from 'state/hooks'
 
@@ -11,6 +12,8 @@ const Menu = () => {
   const { selectedLanguage, setSelectedLanguage } = useContext(LanguageContext)
   const { isDark, toggleTheme } = useTheme()
   const cakePriceUsd = usePriceCakeBusd()
+
+  useMerryChristmas()
 
   return (
     <Nav
