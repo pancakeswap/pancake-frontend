@@ -134,7 +134,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
           )}
         </div>
         {!isOldSyrup ? (
-          <BalanceAndCompond>
+          <BalanceAndCompound>
             <Balance value={getBalanceNumber(earnings, tokenDecimals)} isDisabled={isReallyFinished} />
             {sousId === 0 && account && harvest && (
               <HarvestButton
@@ -143,7 +143,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
                 onClick={onPresentCompound}
               />
             )}
-          </BalanceAndCompond>
+          </BalanceAndCompound>
         ) : (
           <OldSyrupTitle hasBalance={accountHasStakedBalance} />
         )}
@@ -231,7 +231,7 @@ const StyledCardActions = styled.div`
   box-sizing: border-box;
 `
 
-const BalanceAndCompond = styled.div`
+const BalanceAndCompound = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
