@@ -16,7 +16,7 @@ const Row = styled.div`
 `;
 
 export default {
-  title: "Input",
+  title: "Components/Input",
   component: Input,
   argTypes: {},
 } as Meta;

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { BaseLayout, CardsLayout } from ".";
 
 export default {
-  title: "Layouts",
+  title: "Components/Layouts",
   argTypes: {},
 };
 

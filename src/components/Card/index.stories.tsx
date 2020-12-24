@@ -16,7 +16,7 @@ const Row = styled.div`
 `;
 
 export default {
-  title: "Card",
+  title: "Components/Card",
   component: Card,
   argTypes: {},
 } as Meta;

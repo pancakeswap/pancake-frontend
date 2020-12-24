@@ -4,7 +4,7 @@ import Text from "../Text/Text";
 import Svg from "./Svg";
 
 export default {
-  title: "Svg Icons",
+  title: "Components/Svg Icons",
   component: Svg,
   argTypes: {},
 };

@@ -3,7 +3,7 @@ import Button from "../Button/Button";
 import Dropdown from "./Dropdown";
 
 export default {
-  title: "Dropdown",
+  title: "Components/Dropdown",
   component: Dropdown,
   argTypes: {},
 };

@@ -3,7 +3,7 @@ import { PancakesIcon } from "../Svg";
 import { Link, LinkExternal } from "./index";
 
 export default {
-  title: "Link",
+  title: "Components/Link",
   component: Link,
   argTypes: {
     fontSize: {

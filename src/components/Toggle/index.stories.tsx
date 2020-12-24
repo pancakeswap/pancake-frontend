@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Toggle from "./Toggle";
 
 export default {
-  title: "Toggle",
+  title: "Components/Toggle",
   component: Toggle,
 };
 

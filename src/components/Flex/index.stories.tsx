@@ -4,7 +4,7 @@ import Text from "../Text/Text";
 import { Link } from "../Link";
 
 export default {
-  title: "Flex",
+  title: "Components/Flex",
   component: Flex,
   argTypes: {},
 };

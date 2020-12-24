@@ -16,7 +16,7 @@ const Row = styled.div`
 `;
 
 export default {
-  title: "Tag",
+  title: "Components/Tag",
   argTypes: {},
 } as Meta;
 

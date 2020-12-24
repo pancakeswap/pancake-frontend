@@ -5,7 +5,7 @@ import Nav from "./index";
 import { LangType } from "./types";
 
 export default {
-  title: "Nav",
+  title: "Widgets/Nav",
   component: Nav,
   argTypes: {},
 };

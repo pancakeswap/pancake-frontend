@@ -4,7 +4,7 @@ import Flex from "../../components/Flex/Flex";
 import useWalletModal from "./useWalletModal";
 
 export default {
-  title: "WalletModal",
+  title: "Widgets/WalletModal",
   argTypes: {},
 };
 

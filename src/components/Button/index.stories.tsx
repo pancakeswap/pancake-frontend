@@ -16,7 +16,7 @@ const Row = styled.div`
 `;
 
 export default {
-  title: "Button",
+  title: "Components/Button",
   component: Button,
   argTypes: {},
 };

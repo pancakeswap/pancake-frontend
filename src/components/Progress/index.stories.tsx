@@ -4,7 +4,7 @@ import Button from "../Button/Button";
 import Progress from "./Progress";
 
 export default {
-  title: "Progress",
+  title: "Components/Progress",
   component: Progress,
   argTypes: {},
 };
