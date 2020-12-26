@@ -33,6 +33,7 @@ const IfoCardWrapper = styled.div`
   padding-bottom: 40px;
   padding-top: 40px;
   margin: 0 auto;
+  max-width: 700px;
 `
 
 const List = styled.ul`

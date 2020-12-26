@@ -17,7 +17,7 @@ const Button = styled.button<{ active: boolean }>`
   align-items: center;
   padding: 4px 12px;
   background: ${({ theme }) => theme.colors.tertiary};
-  box-shadow: inset 0px -1px 0px rgba(14, 14, 44, 0.4);
+  box-shadow: inset 0px -1px 0px rgba(14, 14, 44, 0.2);
   border-radius: 16px;
   border: none;
   color: ${({ theme }) => theme.colors.primary};
