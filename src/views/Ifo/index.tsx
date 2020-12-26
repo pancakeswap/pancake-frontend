@@ -7,6 +7,7 @@ import Page from 'components/layout/Page'
 import Container from 'components/layout/Container'
 import Hero from './components/Hero'
 import IfoCard from './components/IfoCard'
+import IfoTab from './components/IfoTab'
 import Title from './components/Title'
 
 const LaunchIfoCallout = styled(BaseLayout)`
@@ -26,6 +27,7 @@ const LaunchIfoCallout = styled(BaseLayout)`
 const IfoCardWrapper = styled.div`
   padding-bottom: 40px;
   padding-top: 40px;
+  border-top: 2px solid ${({ theme }) => theme.colors.textSubtle};
 `
 
 const List = styled.ul`
@@ -50,6 +52,7 @@ const Ifo = () => {
     <Page>
       <Hero />
       <Container>
+        <IfoTab />
         <IfoCardWrapper>
           <IfoCard ifo={activeIfo} />
         </IfoCardWrapper>
