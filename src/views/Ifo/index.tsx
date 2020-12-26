@@ -57,7 +57,7 @@ const Ifo = () => {
     <Page>
       <Hero />
       <Container>
-        <Tabs>
+        <Tabs startAt={1}>
           <Tab title="Next IFO">
             <IfoCardWrapper>
               <NothingText  bold fontSize="20px" color="secondary">There’s nothing here yet!</NothingText>

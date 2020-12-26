@@ -3,7 +3,8 @@ import styled from 'styled-components';
 import TabTitle from "./TabTitle"
 
 type Props = {
-  children: ReactElement[]
+  children: ReactElement[],
+  startAt?: number,
 }
 
 const Wrapper = styled.div`
@@ -24,8 +25,8 @@ const Tab = styled.div`
   box-shadow: inset 0px 2px 2px -1px rgba(0, 0, 0, 0.2);
   border-radius: 16px;
 `
-const Tabs: React.FC<Props> = ({ children }) => {
-  const [selectedTab, setSelectedTab] = useState(0)
+const Tabs: React.FC<Props> = ({ children, startAt = 0 }) => {
+  const [selectedTab, setSelectedTab] = useState(startAt)
 
   return (
     <>
