@@ -5,9 +5,9 @@ import { ifosConfig } from 'sushi/lib/constants'
 import useI18n from 'hooks/useI18n'
 import Page from 'components/layout/Page'
 import Container from 'components/layout/Container'
+import { Tab, Tabs } from 'components/Tabs';
 import Hero from './components/Hero'
 import IfoCard from './components/IfoCard'
-import IfoTab from './components/IfoTab'
 import Title from './components/Title'
 
 const LaunchIfoCallout = styled(BaseLayout)`
@@ -52,10 +52,19 @@ const Ifo = () => {
     <Page>
       <Hero />
       <Container>
-        <IfoTab />
-        <IfoCardWrapper>
-          <IfoCard ifo={activeIfo} />
-        </IfoCardWrapper>
+        <Tabs>
+          <Tab title="Next IFO">
+            <IfoCardWrapper>
+              Nothing to See
+            </IfoCardWrapper>
+          </Tab>
+          <Tab title="Past IFOs">
+            <IfoCardWrapper>
+              <IfoCard ifo={activeIfo} />
+            </IfoCardWrapper>
+          </Tab>
+        </Tabs>
+
         <LaunchIfoCallout>
           <div>
             <Title as="h2">{TranslateString(592, 'How to take part')}</Title>
