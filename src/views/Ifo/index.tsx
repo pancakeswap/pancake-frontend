@@ -10,6 +10,10 @@ import Hero from './components/Hero'
 import IfoCard from './components/IfoCard'
 import Title from './components/Title'
 
+const NothingText = styled(Text)`
+  display: flex;
+  justify-content: center;
+`
 const LaunchIfoCallout = styled(BaseLayout)`
   border-top: 2px solid ${({ theme }) => theme.colors.textSubtle};
   display: grid;
@@ -25,9 +29,10 @@ const LaunchIfoCallout = styled(BaseLayout)`
 `
 
 const IfoCardWrapper = styled.div`
+  border-top: 2px solid ${({ theme }) => theme.colors.textSubtle};
   padding-bottom: 40px;
   padding-top: 40px;
-  border-top: 2px solid ${({ theme }) => theme.colors.textSubtle};
+  margin: 0 auto;
 `
 
 const List = styled.ul`
@@ -55,7 +60,7 @@ const Ifo = () => {
         <Tabs>
           <Tab title="Next IFO">
             <IfoCardWrapper>
-              Nothing to See
+              <NothingText  bold fontSize="20px" color="secondary">There’s nothing here yet!</NothingText>
             </IfoCardWrapper>
           </Tab>
           <Tab title="Past IFOs">
