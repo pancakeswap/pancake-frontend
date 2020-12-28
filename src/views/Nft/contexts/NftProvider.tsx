@@ -1,7 +1,11 @@
-import useBlock from 'hooks/useBlock'
 import React, { createContext, ReactNode, useEffect, useRef, useState } from 'react'
+import BigNumber from 'bignumber.js'
 import { useWallet } from 'use-wallet'
-import { getPancakeRabbitContract, getRabbitMintingContract } from '../utils/contracts'
+import useBlock from 'hooks/useBlock'
+import rabbitmintingfarm from 'sushi/lib/abi/rabbitmintingfarm.json'
+import { RABBIT_MINTING_FARM_ADDRESS } from 'sushi/lib/constants/nfts'
+import multicall from 'utils/multicall'
+import { getPancakeRabbitContract } from '../utils/contracts'
 
 interface NftProviderProps {
   children: ReactNode
@@ -55,29 +59,35 @@ const NftProvider: React.FC<NftProviderProps> = ({ children }) => {
   useEffect(() => {
     const fetchContractData = async () => {
       try {
-        const { methods } = getRabbitMintingContract()
         const [
-          startBlockNumber,
-          endBlockNumber,
-          countBunniesBurnt,
-          totalSupplyDistributed,
-          currentDistributedSupply,
-        ] = await Promise.all([
-          methods.startBlockNumber().call(),
-          methods.endBlockNumber().call(),
-          methods.countBunniesBurnt().call(),
-          methods.totalSupplyDistributed().call(),
-          methods.currentDistributedSupply().call(),
+          startBlockNumberArr,
+          endBlockNumberArr,
+          countBunniesBurntArr,
+          totalSupplyDistributedArr,
+          currentDistributedSupplyArr,
+        ] = await multicall(rabbitmintingfarm, [
+          { address: RABBIT_MINTING_FARM_ADDRESS, name: 'startBlockNumber' },
+          { address: RABBIT_MINTING_FARM_ADDRESS, name: 'endBlockNumber' },
+          { address: RABBIT_MINTING_FARM_ADDRESS, name: 'countBunniesBurnt' },
+          { address: RABBIT_MINTING_FARM_ADDRESS, name: 'totalSupplyDistributed' },
+          { address: RABBIT_MINTING_FARM_ADDRESS, name: 'currentDistributedSupply' },
         ])
+
+        // TODO: Figure out why these are coming back as arrays
+        const [startBlockNumber]: [BigNumber] = startBlockNumberArr
+        const [endBlockNumber]: [BigNumber] = endBlockNumberArr
+        const [countBunniesBurnt]: [BigNumber] = countBunniesBurntArr
+        const [totalSupplyDistributed]: [BigNumber] = totalSupplyDistributedArr
+        const [currentDistributedSupply]: [BigNumber] = currentDistributedSupplyArr
 
         setState((prevState) => ({
           ...prevState,
           isInitialized: true,
-          countBunniesBurnt: parseInt(countBunniesBurnt, 10),
-          startBlockNumber: parseInt(startBlockNumber, 10),
-          endBlockNumber: parseInt(endBlockNumber, 10),
-          currentDistributedSupply: parseInt(currentDistributedSupply, 10),
-          totalSupplyDistributed: parseInt(totalSupplyDistributed, 10),
+          countBunniesBurnt: countBunniesBurnt.toNumber(),
+          startBlockNumber: startBlockNumber.toNumber(),
+          endBlockNumber: endBlockNumber.toNumber(),
+          currentDistributedSupply: currentDistributedSupply.toNumber(),
+          totalSupplyDistributed: totalSupplyDistributed.toNumber(),
         }))
       } catch (error) {
         console.error('an error occured', error)
@@ -91,14 +101,15 @@ const NftProvider: React.FC<NftProviderProps> = ({ children }) => {
   useEffect(() => {
     const fetchContractData = async () => {
       try {
-        const { methods } = getRabbitMintingContract()
         const pancakeRabbitsContract = getPancakeRabbitContract()
-        const promises = [
-          methods.canClaim(account).call(),
-          methods.hasClaimed(account).call(),
-          pancakeRabbitsContract.methods.balanceOf(account).call(),
-        ]
-        const [canClaim, hasClaimed, balanceOf] = await Promise.all(promises)
+        const [canClaimArr, hasClaimedArr] = await multicall(rabbitmintingfarm, [
+          { address: RABBIT_MINTING_FARM_ADDRESS, name: 'canClaim', params: [account] },
+          { address: RABBIT_MINTING_FARM_ADDRESS, name: 'hasClaimed', params: [account] },
+        ])
+        const balanceOf = await pancakeRabbitsContract.methods.balanceOf(account).call()
+        const [canClaim]: [boolean] = canClaimArr
+        const [hasClaimed]: [boolean] = hasClaimedArr
+
         let bunnyMap: BunnyMap = {}
 
         // If the "balanceOf" is greater than 0 then retrieve the tokenIds

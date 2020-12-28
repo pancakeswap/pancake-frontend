@@ -58,10 +58,20 @@ const NftCard: React.FC<NftCardProps> = ({ nft }) => {
     bunnyBurnCount: 0,
   })
   const TranslateString = useI18n()
-  const { isInitialized, canClaim, hasClaimed, canBurnNft, getTokenIds, reInitialize } = useContext(NftProviderContext)
+  const {
+    isInitialized,
+    canClaim,
+    hasClaimed,
+    canBurnNft,
+    totalSupplyDistributed,
+    currentDistributedSupply,
+    getTokenIds,
+    reInitialize,
+  } = useContext(NftProviderContext)
   const walletCanClaim = canClaim && !hasClaimed
   const { bunnyId, name, previewImage, originalImage, description } = nft
   const tokenIds = getTokenIds(bunnyId)
+  const isSupplyAvailable = currentDistributedSupply < totalSupplyDistributed
   const walletOwnsNft = tokenIds && tokenIds.length > 0
   const Icon = state.isOpen ? ChevronUpIcon : ChevronDownIcon
 
@@ -123,7 +133,7 @@ const NftCard: React.FC<NftCardProps> = ({ nft }) => {
             </Tag>
           )}
         </Header>
-        {isInitialized && walletCanClaim && (
+        {isInitialized && walletCanClaim && isSupplyAvailable && (
           <Button fullWidth onClick={onPresentClaimModal} mt="24px">
             {TranslateString(999, 'Claim this NFT')}
           </Button>
