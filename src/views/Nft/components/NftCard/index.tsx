@@ -20,6 +20,7 @@ import { NftProviderContext } from '../../contexts/NftProvider'
 import { getPancakeRabbitContract } from '../../utils/contracts'
 import ClaimNftModal from '../ClaimNftModal'
 import BurnNftModal from '../BurnNftModal'
+import TransferNftModal from '../TransferNftModal'
 
 interface NftCardProps {
   nft: Nft
@@ -115,6 +116,9 @@ const NftCard: React.FC<NftCardProps> = ({ nft }) => {
 
   const [onPresentClaimModal] = useModal(<ClaimNftModal nft={nft} onSuccess={handleSuccess} />)
   const [onPresentBurnModal] = useModal(<BurnNftModal nft={nft} tokenIds={tokenIds} onSuccess={handleSuccess} />)
+  const [onPresentTransferModal] = useModal(
+    <TransferNftModal nft={nft} tokenIds={tokenIds} onSuccess={handleSuccess} />,
+  )
 
   return (
     <Card isActive={walletOwnsNft}>
@@ -133,6 +137,11 @@ const NftCard: React.FC<NftCardProps> = ({ nft }) => {
             </Tag>
           )}
         </Header>
+        {isInitialized && walletOwnsNft && (
+          <Button fullWidth variant="secondary" mt="24px" onClick={onPresentTransferModal}>
+            {TranslateString(999, 'Transfer')}
+          </Button>
+        )}
         {isInitialized && walletCanClaim && isSupplyAvailable && (
           <Button fullWidth onClick={onPresentClaimModal} mt="24px">
             {TranslateString(999, 'Claim this NFT')}
