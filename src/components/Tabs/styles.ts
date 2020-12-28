@@ -26,7 +26,7 @@ const Tab = styled.div`
     top:0;
     left: 0;
     width:100%;
-    height:100%;
+    height:2px;
     box-shadow: inset 0px 2px 2px -1px rgba(0, 0, 0, 0.2); 
     border-radius: 16px;
   }
