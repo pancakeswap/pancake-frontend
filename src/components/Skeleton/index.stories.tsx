@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Skeleton from "./Skeleton";
 
 export default {
-  title: "Skeleton",
+  title: "Components/Skeleton",
   component: Skeleton,
   argTypes: {
     width: { control: "number" },

@@ -13,6 +13,7 @@ export * from "./components/Tag";
 export * from "./components/Text";
 export * from "./components/Link";
 export * from "./components/Progress";
+export * from "./components/Skeleton";
 export * from "./components/Toggle";
 
 // Hooks
