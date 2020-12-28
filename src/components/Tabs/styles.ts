@@ -15,20 +15,18 @@ const Tab = styled.div`
   /* Light/Tertiary */
   background: ${({ theme }) => theme.colors.tertiary};
   /* Field/Inset */
-  /* box-shadow: inset 0px 2px 2px -1px rgba(0, 0, 0, 0.2); */
+  box-shadow: inset 0px 2px 2px -1px rgba(0, 0, 0, 0.2);
   border-radius: 16px;
   position: relative;
   &:before{
     content:'';
     position:absolute;
-    left:5%;
-    opacity:0.5;
     top:0;
     left: 0;
-    width:100%;
-    height:2px;
+    /* width:100%;
+    height:100%;
     box-shadow: inset 0px 2px 2px -1px rgba(0, 0, 0, 0.2); 
-    border-radius: 16px;
+    border-radius: 16px; */
   }
 `
 
