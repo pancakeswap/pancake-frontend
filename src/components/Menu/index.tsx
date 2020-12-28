@@ -3,9 +3,9 @@ import { Nav } from '@pancakeswap-libs/uikit'
 import { useWallet } from 'use-wallet'
 import { allLanguages } from 'config/localisation/languageCodes'
 import { LanguageContext } from 'contexts/Localisation/languageContext'
-import useMerryChristmas from 'hooks/useMerryChristmas'
 import useTheme from 'hooks/useTheme'
 import { usePriceCakeBusd } from 'state/hooks'
+import links from './links'
 
 const Menu = () => {
   const { account, connect, reset } = useWallet()
@@ -13,10 +13,9 @@ const Menu = () => {
   const { isDark, toggleTheme } = useTheme()
   const cakePriceUsd = usePriceCakeBusd()
 
-  useMerryChristmas()
-
   return (
     <Nav
+      links={links}
       account={account}
       login={connect}
       logout={reset}
