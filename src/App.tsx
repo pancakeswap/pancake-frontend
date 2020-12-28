@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom'
 import { useWallet } from 'use-wallet'
 import { ResetCSS, Footer } from '@pancakeswap-libs/uikit'
 import { useFetchPublicData } from 'state/hooks'
@@ -44,8 +44,11 @@ const App: React.FC = () => {
         <Route path="/staking">
           <Stake />
         </Route>
-        <Route path="/syrup">
+        <Route path="/pools">
           <Pools />
+        </Route>
+        <Route path="/syrup">
+          <Redirect to="/pools" />
         </Route>
         <Route path="/lottery">
           <Lottery />
