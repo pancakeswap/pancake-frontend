@@ -1,9 +1,12 @@
 import React, { useEffect, useRef } from 'react'
+import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import { Button, Heading, Modal, useModal } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import { useWallet } from 'use-wallet'
-import { getRabbitMintingContract } from '../utils/contracts'
+import rabbitmintingfarm from 'sushi/lib/abi/rabbitmintingfarm.json'
+import { RABBIT_MINTING_FARM_ADDRESS } from 'sushi/lib/constants/nfts'
+import multicall from 'utils/multicall'
 
 interface NftYouWonModalProps {
   onDismiss?: () => void
@@ -49,21 +52,24 @@ const NftGlobalNotification = () => {
 
   useEffect(() => {
     const checkNftStatus = async () => {
-      const { methods } = getRabbitMintingContract()
-      const [totalSupplyDistributed, currentDistributedSupply] = await Promise.all([
-        methods.totalSupplyDistributed().call(),
-        methods.currentDistributedSupply().call(),
-      ])
+      const [totalSupplyDistributedArr, currentDistributedSupplyArr, canClaimArr, hasClaimedArr] = await multicall(
+        rabbitmintingfarm,
+        [
+          { address: RABBIT_MINTING_FARM_ADDRESS, name: 'totalSupplyDistributed' },
+          { address: RABBIT_MINTING_FARM_ADDRESS, name: 'currentDistributedSupply' },
+          { address: RABBIT_MINTING_FARM_ADDRESS, name: 'canClaim', params: [account] },
+          { address: RABBIT_MINTING_FARM_ADDRESS, name: 'hasClaimed', params: [account] },
+        ],
+      )
 
-      if (parseInt(currentDistributedSupply, 10) < parseInt(totalSupplyDistributed, 10)) {
-        const [canClaim, hasClaimed] = await Promise.all([
-          methods.canClaim(account).call(),
-          methods.hasClaimed(account).call(),
-        ])
+      // TODO: Figure out why these values are coming back as an array
+      const [totalSupplyDistributed]: BigNumber[] = totalSupplyDistributedArr
+      const [currentDistributedSupply]: BigNumber[] = currentDistributedSupplyArr
+      const [canClaim]: boolean[] = canClaimArr
+      const [hasClaimed]: boolean[] = hasClaimedArr
 
-        if (canClaim && !hasClaimed) {
-          showModal.current()
-        }
+      if (currentDistributedSupply.lt(totalSupplyDistributed) && canClaim && !hasClaimed) {
+        showModal.current()
       }
     }
 
