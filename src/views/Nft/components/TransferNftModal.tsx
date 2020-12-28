@@ -69,7 +69,7 @@ const TransferNftModal: React.FC<TransferNftModalProps> = ({ nft, tokenIds, onSu
           })
       }
     } catch (err) {
-      console.error('Unable to mint NFT:', err)
+      console.error('Unable to transfer NFT:', err)
     }
   }
 
