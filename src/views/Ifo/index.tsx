@@ -58,15 +58,15 @@ const Ifo = () => {
     <Page>
       <Hero />
       <Container>
-        <Tabs startAt={1}>
+        <Tabs startAt={0}>
           <Tab title="Next IFO">
             <IfoCardWrapper>
-              <NothingText  bold fontSize="20px" color="secondary">There’s nothing here yet!</NothingText>
+              <IfoCard ifo={activeIfo} />
             </IfoCardWrapper>
           </Tab>
           <Tab title="Past IFOs">
             <IfoCardWrapper>
-              <IfoCard ifo={activeIfo} />
+              <NothingText bold fontSize="20px" color="secondary">There’s nothing here yet!</NothingText>
             </IfoCardWrapper>
           </Tab>
         </Tabs>
