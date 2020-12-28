@@ -22,6 +22,7 @@ const StyledNav = styled.nav`
 `;
 
 const Nav: React.FC<NavProps> = ({
+  links,
   account,
   login,
   logout,
@@ -42,6 +43,7 @@ const Nav: React.FC<NavProps> = ({
         <HamburgerIcon />
       </MobileOnlyButton>
       <Panel
+        links={links}
         show={isOpened}
         account={account}
         closeNav={() => setIsOpened(false)}

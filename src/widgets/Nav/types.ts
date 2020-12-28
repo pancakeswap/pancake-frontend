@@ -10,7 +10,18 @@ export interface LangType {
   language: string;
 }
 
+export interface MenuLink {
+  label: string;
+  href: string;
+}
+
+export interface MenuDropdown {
+  label: string;
+  items: MenuLink[];
+}
+
 export interface NavProps {
+  links: Array<MenuLink | MenuDropdown>;
   account?: string;
   login: Login;
   logout: () => void;

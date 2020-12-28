@@ -8,12 +8,12 @@ import Language from "./icons/Language";
 import UserBlock from "./UserBlock";
 import PancakePrice from "./PancakePrice";
 import { MobileOnlyButton, MenuButton, MenuLink } from "./Buttons";
-import config from "./config";
 import Dark from "./icons/Dark";
 import Light from "./icons/Light";
 import { NavProps } from "./types";
 
 interface Props extends NavProps {
+  links: NavProps["links"];
   show: boolean;
   closeNav: () => void;
 }
@@ -90,6 +90,7 @@ const ControlBlock = styled.div`
 `;
 
 const Panel: React.FC<Props> = ({
+  links,
   show,
   account,
   closeNav,
@@ -112,8 +113,8 @@ const Panel: React.FC<Props> = ({
         <CloseIcon />
       </MobileOnlyButton>
       <LinkBlock>
-        {config.map((entry) => {
-          if (entry.items) {
+        {links.map((entry) => {
+          if ("items" in entry) {
             return (
               <MenuDropdwn
                 key={entry.label}

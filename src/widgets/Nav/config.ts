@@ -1,4 +1,6 @@
-export default [
+import { NavProps } from "./types";
+
+const links: NavProps["links"] = [
   {
     label: "Trade",
     items: [
@@ -37,3 +39,5 @@ export default [
     href: "/nft",
   },
 ];
+
+export default links;

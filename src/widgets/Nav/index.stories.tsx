@@ -1,6 +1,7 @@
 import React from "react";
 import noop from "lodash/noop";
 import { BrowserRouter } from "react-router-dom";
+import config from "./config";
 import Nav from "./index";
 import { LangType } from "./types";
 
@@ -23,6 +24,7 @@ export const Connected: React.FC = () => {
   return (
     <BrowserRouter>
       <Nav
+        links={config}
         account="0xbdda50183d817c3289f895a4472eb475967dc980"
         login={noop}
         logout={noop}
@@ -41,6 +43,7 @@ export const NotConnected: React.FC = () => {
   return (
     <BrowserRouter>
       <Nav
+        links={config}
         account={null}
         login={noop}
         logout={() => null}
