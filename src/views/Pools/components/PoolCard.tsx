@@ -18,6 +18,7 @@ import { QuoteToken, PoolCategory } from 'sushi/lib/constants/types'
 import { Pool } from 'state/types'
 import DepositModal from './DepositModal'
 import WithdrawModal from './WithdrawModal'
+import CompoundModal from './CompoundModal'
 import CardTitle from './CardTitle'
 import CardTokenImg from './CardTokenImg'
 import Card from './Card'
@@ -88,6 +89,10 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
     />,
   )
 
+  const [onPresentCompound] = useModal(
+    <CompoundModal earnings={earnings} onConfirm={onStake} tokenName={stakingTokenName} />,
+  )
+
   const [onPresentWithdraw] = useModal(
     <WithdrawModal max={stakedBalance} onConfirm={onUnstake} tokenName={stakingTokenName} />,
   )
@@ -129,7 +134,16 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
           )}
         </div>
         {!isOldSyrup ? (
-          <Balance value={getBalanceNumber(earnings, tokenDecimals)} isDisabled={isReallyFinished} />
+          <BalanceAndCompound>
+            <Balance value={getBalanceNumber(earnings, tokenDecimals)} isDisabled={isReallyFinished} />
+            {sousId === 0 && account && harvest && (
+              <HarvestButton
+                disabled={!earnings.toNumber() || pendingTx}
+                text={pendingTx ? TranslateString(999, 'Compounding') : TranslateString(999, 'Compound')}
+                onClick={onPresentCompound}
+              />
+            )}
+          </BalanceAndCompound>
         ) : (
           <OldSyrupTitle hasBalance={accountHasStakedBalance} />
         )}
@@ -215,6 +229,13 @@ const StyledCardActions = styled.div`
   margin: 16px 0;
   width: 100%;
   box-sizing: border-box;
+`
+
+const BalanceAndCompound = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
 `
 
 const StyledActionSpacer = styled.div`
