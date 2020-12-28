@@ -23,7 +23,7 @@ const ifos: Ifo[] = [
   {
     id: 'ditto',
     address: '0x570c9eB19553526Fb35895a531928E19C7D20788',
-    isActive: true,
+    isActive: false,
     name: 'Ditto (DITTO)',
     subTitle: 'Next-gen elastic supply token',
     description:
@@ -38,6 +38,25 @@ const ifos: Ifo[] = [
     currencyAddress: '0xA527a61703D82139F8a06Bc30097cC9CAA2df5A6',
     tokenDecimals: 9,
     releaseBlockNumber: 3279767,
+  },
+  {
+    id: 'tenet',
+    address: '0xB922aA19A2603A07C6C9ED6c236618C9bac51f06',
+    isActive: true,
+    name: 'Tenet (TEN)',
+    subTitle: 'Cross-chain Automated Market Maker',
+    description:
+      'Tenet is a cross-chain Automated Market Maker (AMM) connector that provides a decentralized Liquidity Tap for various tokens. The Liquidity Tap is the powerhouse of the Liquidity Pool, employing a dynamic algorithm to give the Liquidity Provider fairer, more efficient, and richer incentives. Tenet aims to build a cross-chain and cross-platform toolkit protocol that allows the demand side to customize the parameters of the liquidity tap, allowing them to reach out to more liquidity participants effectively and with relative ease.',
+    launchDate: 'Jan. 5',
+    launchTime: '3PM SGT',
+    saleAmount: '1,000,000 TEN',
+    raiseAmount: '$1,000,000',
+    cakeToBurn: '$500,000',
+    projectSiteUrl: 'https://www.tenet.farm/',
+    currency: 'CAKE-BNB LP',
+    currencyAddress: '0xA527a61703D82139F8a06Bc30097cC9CAA2df5A6',
+    tokenDecimals: 18,
+    releaseBlockNumber: 3483883,
   },
 ]
 
