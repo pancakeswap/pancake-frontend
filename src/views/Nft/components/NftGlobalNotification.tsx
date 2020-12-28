@@ -37,6 +37,11 @@ const NftYouWonModal: React.FC<NftYouWonModalProps> = ({ onDismiss }) => {
   )
 }
 
+/**
+ * 1. Checks if nft supply available
+ * 2. If supply is available check if the user can claim
+ * 3. If the user can claim show a modal
+ */
 const NftGlobalNotification = () => {
   const { account } = useWallet()
   const [onPresentBurnModal] = useModal(<NftYouWonModal />)
@@ -45,11 +50,20 @@ const NftGlobalNotification = () => {
   useEffect(() => {
     const checkNftStatus = async () => {
       const { methods } = getRabbitMintingContract()
-      const canClaim = await methods.canClaim(account).call()
-      const hasClaimed = await methods.hasClaimed(account).call()
+      const [totalSupplyDistributed, currentDistributedSupply] = await Promise.all([
+        methods.totalSupplyDistributed().call(),
+        methods.currentDistributedSupply().call(),
+      ])
 
-      if (canClaim && !hasClaimed) {
-        showModal.current()
+      if (parseInt(currentDistributedSupply, 10) < parseInt(totalSupplyDistributed, 10)) {
+        const [canClaim, hasClaimed] = await Promise.all([
+          methods.canClaim(account).call(),
+          methods.hasClaimed(account).call(),
+        ])
+
+        if (canClaim && !hasClaimed) {
+          showModal.current()
+        }
       }
     }
 
