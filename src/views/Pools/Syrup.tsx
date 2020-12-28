@@ -7,6 +7,7 @@ import { BLOCKS_PER_YEAR } from 'config'
 import orderBy from 'lodash/orderBy'
 import partition from 'lodash/partition'
 import useI18n from 'hooks/useI18n'
+import useBlock from 'hooks/useBlock'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useFarms, usePriceBnbBusd, usePools } from 'state/hooks'
 import { QuoteToken, PoolCategory } from 'sushi/lib/constants/types'
@@ -19,6 +20,7 @@ const Farm: React.FC = () => {
   const farms = useFarms()
   const pools = usePools(account)
   const bnbPriceUSD = usePriceBnbBusd()
+  const block = useBlock()
 
   const priceToBnb = (tokenName: string, tokenPrice: BigNumber, quoteToken: QuoteToken): BigNumber => {
     const tokenPriceBN = new BigNumber(tokenPrice)
@@ -50,6 +52,7 @@ const Farm: React.FC = () => {
 
     return {
       ...pool,
+      isFinished: pool.sousId === 0 ? false : pool.isFinished || block > pool.endBlock,
       apy,
     }
   })
