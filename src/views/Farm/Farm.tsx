@@ -28,7 +28,7 @@ const Farm: React.FC = () => {
     <StyledPage>
       <Header>
         <Image src={`/images/tokens/category-${tokenSymbol || 'CAKE'}.png`} alt={tokenSymbol} />
-        <Title>{TranslateString(320, 'Stake FLIP tokens to stack CAKE')}</Title>
+        <Title>{TranslateString(999, 'Stake LP tokens to earn CAKE')}</Title>
         {dual && <DualFarmDisclaimer tokenName={tokenSymbol} endBlock={dual.endBlock} />}
       </Header>
       <StyledFarm>
