@@ -1,30 +1,29 @@
-import React, { ReactElement, useState } from "react"
-import { Wrapper, Tab } from './styles';
-import TabTitle from "./TabTitle"
+import React, { useState } from "react";
+import styled from 'styled-components';
+import { ButtonMenu, ButtonMenuItem } from '@pancakeswap-libs/uikit';
+import { TabsProps } from './types';
 
-type Props = {
-  children: ReactElement[],
-  startAt?: number,
-}
+const Wrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 39px;
+`;
 
-
-const Tabs: React.FC<Props> = ({ children, startAt = 0 }) => {
+const Tabs: React.FC<TabsProps> = ({ children, startAt = 0 }) => {
   const [selectedTab, setSelectedTab] = useState(startAt)
 
+  const handleClick = (newIndex) => setSelectedTab(newIndex);
   return (
     <>
       <Wrapper>
-        <Tab>
-          {children.map((item, index) => (
-            <TabTitle
-              key={`${item}`}
-              title={item.props.title}
-              index={index}
-              setSelectedTab={setSelectedTab}
-              active={selectedTab === index}
-            />
+        <ButtonMenu activeIndex={selectedTab} onClick={handleClick} size="sm">
+          {children.map((item) => (
+            <ButtonMenuItem key={`${item}${Math.random()}`}>
+                {item.props.title}
+            </ButtonMenuItem>
           ))}
-        </Tab>
+        </ButtonMenu>
       </Wrapper>
       {children[selectedTab]}
     </>

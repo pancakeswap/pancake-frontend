@@ -58,7 +58,7 @@ const Ifo = () => {
     <Page>
       <Hero />
       <Container>
-        <Tabs startAt={0}>
+        <Tabs>
           <Tab title="Next IFO">
             <IfoCardWrapper>
               <IfoCard ifo={activeIfo} />
