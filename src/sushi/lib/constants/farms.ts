@@ -34,6 +34,57 @@ const farms: FarmConfig[] = [
     multiplier: '30X',
   },
   {
+    pid: 46,
+    lpSymbol: 'OG-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x64373608f2e93ea97ad4d8ca2cce6b2575db2f55',
+    },
+    tokenSymbol: 'OG',
+    tokenAddresses: {
+      97: '',
+      56: '0xf05e45ad22150677a017fbd94b84fbb63dc9b44c',
+    },
+    quoteTokenSymbol: QuoteToken.BNB,
+    quoteTokenAdresses: contracts.wbnb,
+    multiplier: '1X',
+    isCommunity: false,
+  },
+  {
+    pid: 47,
+    lpSymbol: 'ASR-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0xd6b900d5308356317299dafe303e661271aa12f1',
+    },
+    tokenSymbol: 'ASR',
+    tokenAddresses: {
+      97: '',
+      56: '0x80d5f92c2c8c682070c95495313ddb680b267320',
+    },
+    quoteTokenSymbol: QuoteToken.BNB,
+    quoteTokenAdresses: contracts.wbnb,
+    multiplier: '1X',
+    isCommunity: false,
+  },
+  {
+    pid: 48,
+    lpSymbol: 'ATM-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0xd5b3ebf1a85d32c73a82b40f75e1cd929caf4029',
+    },
+    tokenSymbol: 'ATM',
+    tokenAddresses: {
+      97: '',
+      56: '0x25e9d05365c867e59c1904e7463af9f312296f9e',
+    },
+    quoteTokenSymbol: QuoteToken.BNB,
+    quoteTokenAdresses: contracts.wbnb,
+    multiplier: '1X',
+    isCommunity: false,
+  },
+  {
     pid: 45,
     lpSymbol: 'REEF-BNB LP',
     lpAddresses: {
