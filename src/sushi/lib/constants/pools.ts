@@ -25,7 +25,7 @@ const pools: PoolConfig[] = [
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
       97: '',
-      56: '',
+      56: '0xC63AE68AE8871Da393793b78fb3E35d2C12004D7',
     },
     poolCategory: PoolCategory.CORE,
     projectLink: 'https://www.chiliz.com',
@@ -42,7 +42,7 @@ const pools: PoolConfig[] = [
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
       97: '',
-      56: '',
+      56: '0x4e2B16AD38a67b8F8EC608F84a52b073ED04Eaf2',
     },
     poolCategory: PoolCategory.CORE,
     projectLink: 'https://www.chiliz.com',
@@ -59,7 +59,7 @@ const pools: PoolConfig[] = [
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
       97: '',
-      56: '',
+      56: '0x16E74B2DC9b7877Afeb9BE4D1a393CB44181344E',
     },
     poolCategory: PoolCategory.CORE,
     projectLink: 'https://www.chiliz.com',
