@@ -1,12 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Text, Heading, BaseLayout, Button, LinkExternal, Flex } from '@pancakeswap-libs/uikit'
+import { Text, Heading, BaseLayout, Button, LinkExternal, Flex, ButtonMenu } from '@pancakeswap-libs/uikit'
 import { ifosConfig } from 'config/constants'
 import useI18n from 'hooks/useI18n'
 import Page from 'components/layout/Page'
 import Container from 'components/layout/Container'
 import Hero from './components/Hero'
 import IfoCard from './components/IfoCard'
+import IfoTabButtons from './components/IfoTabButtons'
 import Title from './components/Title'
 
 const LaunchIfoCallout = styled(BaseLayout)`
@@ -24,8 +25,11 @@ const LaunchIfoCallout = styled(BaseLayout)`
 `
 
 const IfoCardWrapper = styled.div`
+  border-top: 2px solid ${({ theme }) => theme.colors.textSubtle};
   padding-bottom: 40px;
   padding-top: 40px;
+  margin: 0 auto;
+  max-width: 700px;
 `
 
 const List = styled.ul`
@@ -50,6 +54,7 @@ const Ifo = () => {
     <Page>
       <Hero />
       <Container>
+        <IfoTabButtons />
         <IfoCardWrapper>
           <IfoCard ifo={activeIfo} />
         </IfoCardWrapper>
