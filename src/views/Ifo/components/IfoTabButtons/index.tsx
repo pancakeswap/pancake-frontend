@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
-import { useRouteMatch } from 'react-router-dom'
+import { useRouteMatch, Link } from 'react-router-dom'
 import { ButtonMenu, ButtonMenuItem } from '@pancakeswap-libs/uikit'
 
 const Wrapper = styled.div`
@@ -12,16 +12,14 @@ const Wrapper = styled.div`
 
 const IfoTabButtons = () => {
   const match = useRouteMatch('/ifo/history')
-  const [index, setIndex] = useState(match ? 1 : 0)
-  const handleClick = (newIndex) => setIndex(newIndex)
 
   return (
     <Wrapper>
-      <ButtonMenu activeIndex={index} onClick={handleClick} size="sm">
-        <ButtonMenuItem as="a" href="/ifo">
+      <ButtonMenu activeIndex={match ? 1 : 0} size="sm" variant="subtle">
+        <ButtonMenuItem as={Link} to="/ifo">
           Next IFO
         </ButtonMenuItem>
-        <ButtonMenuItem as="a" href="/ifo/history">
+        <ButtonMenuItem as={Link} to="/ifo/history">
           Past IFOs
         </ButtonMenuItem>
       </ButtonMenu>
