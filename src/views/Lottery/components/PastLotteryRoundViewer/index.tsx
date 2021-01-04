@@ -16,6 +16,7 @@ const StyledCardBody = styled(CardBody)`
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 504px; // height of final card
 `
 
 const PastLotteryRoundViewer = () => {
@@ -87,7 +88,6 @@ const PastLotteryRoundViewer = () => {
     <Wrapper>
       <PastLotterySearcher initialLotteryNumber={mostRecentLotteryNumber} onSubmit={handleSubmit} />
       {!isInitialized || isLoading ? (
-        // if there is no round data, and the api call hasn't errored, OR it's still loading - show loader
         <Card>
           <StyledCardBody>
             <Loading />
