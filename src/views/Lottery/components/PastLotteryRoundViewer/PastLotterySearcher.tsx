@@ -16,7 +16,7 @@ const SearchWrapper = styled.div`
   position: relative;
 `
 
-const StyledButton = styled(Button).attrs({ type: 'submit' })`
+const ButtonWrapper = styled.div`
   position: absolute;
   right: 8px;
   top: 50%;
@@ -26,6 +26,7 @@ const StyledButton = styled(Button).attrs({ type: 'submit' })`
 
 const PastLotterySearcher: React.FC<PastLotterySearcherProps> = ({ initialLotteryNumber, onSubmit }) => {
   const [lotteryNumber, setLotteryNumber] = useState(initialLotteryNumber)
+  const [isError, setIsError] = useState(false)
   const TranslateString = useI18n()
 
   const handleSubmit = (evt: React.FormEvent<HTMLFormElement>) => {
@@ -34,7 +35,12 @@ const PastLotterySearcher: React.FC<PastLotterySearcherProps> = ({ initialLotter
   }
 
   const handleChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
-    setLotteryNumber(parseInt(evt.currentTarget.value, 10))
+    const value = parseInt(evt.currentTarget.value, 10)
+
+    // The max value will always be the initialLotterNumber which equals
+    // the latest lottery round
+    setIsError(value > initialLotteryNumber)
+    setLotteryNumber(value)
   }
 
   return (
@@ -42,8 +48,18 @@ const PastLotterySearcher: React.FC<PastLotterySearcherProps> = ({ initialLotter
       <Text>{TranslateString(999, 'Select lottery number:')}</Text>
       <form onSubmit={handleSubmit}>
         <SearchWrapper>
-          <Input value={lotteryNumber} type="number" onChange={handleChange} />
-          <StyledButton size="sm">{TranslateString(999, 'Search')}</StyledButton>
+          <Input
+            value={lotteryNumber}
+            type="number"
+            isWarning={isError}
+            max={initialLotteryNumber}
+            onChange={handleChange}
+          />
+          <ButtonWrapper>
+            <Button type="submit" size="sm" disabled={isError}>
+              {TranslateString(999, 'Search')}
+            </Button>
+          </ButtonWrapper>
         </SearchWrapper>
       </form>
     </Wrapper>
