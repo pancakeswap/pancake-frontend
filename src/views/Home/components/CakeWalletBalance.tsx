@@ -2,7 +2,6 @@ import React from 'react'
 import styled from 'styled-components'
 import { Text } from '@pancakeswap-libs/uikit'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
-import useSushi from 'hooks/useSushi'
 import useTokenBalance from 'hooks/useTokenBalance'
 import useI18n from 'hooks/useI18n'
 import { getSushiAddress } from 'sushi/utils'
@@ -15,11 +14,10 @@ const Label = styled(Text)`
 
 const CakeWalletBalance = () => {
   const TranslateString = useI18n()
-  const sushi = useSushi()
-  const sushiBalance = useTokenBalance(getSushiAddress(sushi))
+  const sushiBalance = useTokenBalance(getSushiAddress())
   const { account } = useWallet()
 
-  if (!account || !sushi) {
+  if (!account) {
     return <Label>{TranslateString(298, 'Locked')}</Label>
   }
 

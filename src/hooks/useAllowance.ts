@@ -2,18 +2,16 @@ import { useEffect, useState } from 'react'
 import BigNumber from 'bignumber.js'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { Contract } from 'web3-eth-contract'
-import useSushi from './useSushi'
+import { useCake } from './useContract'
 import { getAllowance } from '../utils/erc20'
-import { getSushiContract } from '../sushi/utils'
 import { getLotteryContract } from '../sushi/lotteryUtils'
 
 // Retrieve lottery allowance
 export const useLotteryAllowance = () => {
   const [allowance, setAllowance] = useState(new BigNumber(0))
   const { account }: { account: string } = useWallet()
-  const sushi = useSushi()
-  const lotteryContract = getLotteryContract(sushi)
-  const cakeContract = getSushiContract(sushi)
+  const lotteryContract = getLotteryContract()
+  const cakeContract = useCake()
 
   useEffect(() => {
     const fetchAllowance = async () => {

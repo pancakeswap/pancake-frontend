@@ -4,16 +4,15 @@ import { Contract } from 'web3-eth-contract'
 import { ethers } from 'ethers'
 import { useDispatch } from 'react-redux'
 import { updateUserAllowance, fetchFarmUserDataAsync } from 'state/actions'
-import { getSushiContract, approve, getMasterChefContract, getSousChefContract } from 'sushi/utils'
+import { approve } from 'sushi/utils'
 import { getLotteryContract } from 'sushi/lotteryUtils'
-import useSushi from './useSushi'
+import { useMasterchef, useCake, useSousChef } from './useContract'
 
 // Approve a Farm
 export const useApprove = (lpContract: Contract, pid: number) => {
   const dispatch = useDispatch()
   const { account }: { account: string } = useWallet()
-  const sushi = useSushi()
-  const masterChefContract = getMasterChefContract(sushi)
+  const masterChefContract = useMasterchef()
 
   const handleApprove = useCallback(async () => {
     try {
@@ -32,8 +31,7 @@ export const useApprove = (lpContract: Contract, pid: number) => {
 export const useSousApprove = (lpContract: Contract, sousId) => {
   const dispatch = useDispatch()
   const { account }: { account: string } = useWallet()
-  const sushi = useSushi()
-  const sousChefContract = getSousChefContract(sushi, sousId)
+  const sousChefContract = useSousChef(sousId)
 
   const handleApprove = useCallback(async () => {
     try {
@@ -51,9 +49,8 @@ export const useSousApprove = (lpContract: Contract, sousId) => {
 // Approve the lottery
 export const useLotteryApprove = () => {
   const { account }: { account: string } = useWallet()
-  const sushi = useSushi()
-  const lotteryContract = getLotteryContract(sushi)
-  const cakeContract = getSushiContract(sushi)
+  const cakeContract = useCake()
+  const lotteryContract = getLotteryContract()
 
   const handleApprove = useCallback(async () => {
     try {

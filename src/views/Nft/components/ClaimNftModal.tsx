@@ -6,7 +6,6 @@ import { getBalanceNumber } from 'utils/formatBalance'
 import { RABBIT_MINTING_FARM_ADDRESS } from 'sushi/lib/constants/nfts'
 import { getSushiAddress } from 'sushi/utils'
 import { Nft } from 'sushi/lib/constants/types'
-import useSushi from 'hooks/useSushi'
 import useTokenBalance from 'hooks/useTokenBalance'
 import useI18n from 'hooks/useI18n'
 import { useRabbitMintingFarm } from 'hooks/useContract'
@@ -38,8 +37,7 @@ const ClaimNftModal: React.FC<ClaimNftModalProps> = ({ nft, onSuccess, onDismiss
   const TranslateString = useI18n()
   const { account } = useWallet()
   const rabbitMintingContract = useRabbitMintingFarm(RABBIT_MINTING_FARM_ADDRESS)
-  const sushi = useSushi()
-  const sushiBalance = useTokenBalance(getSushiAddress(sushi))
+  const sushiBalance = useTokenBalance(getSushiAddress())
   const cakeInWallet = getBalanceNumber(sushiBalance)
 
   const handleConfirm = async () => {

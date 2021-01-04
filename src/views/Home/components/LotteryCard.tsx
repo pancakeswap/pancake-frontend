@@ -4,7 +4,6 @@ import { Heading, Card, CardBody, Button, useModal } from '@pancakeswap-libs/uik
 import { getSushiAddress } from 'sushi/utils'
 import { getBalanceNumber } from 'utils/formatBalance'
 import useI18n from 'hooks/useI18n'
-import useSushi from 'hooks/useSushi'
 import useGetLotteryHasDrawn from 'hooks/useGetLotteryHasDrawn'
 import useTokenBalance from 'hooks/useTokenBalance'
 import { useMultiClaimLottery } from 'hooks/useBuyLottery'
@@ -61,8 +60,7 @@ const FarmedStakingCard = () => {
   const TranslateString = useI18n()
   const { claimAmount } = useTotalClaim()
   const { onMultiClaim } = useMultiClaimLottery()
-  const sushi = useSushi()
-  const sushiBalance = useTokenBalance(getSushiAddress(sushi))
+  const sushiBalance = useTokenBalance(getSushiAddress())
 
   const handleClaim = useCallback(async () => {
     try {
