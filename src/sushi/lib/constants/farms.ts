@@ -34,7 +34,7 @@ const farms: FarmConfig[] = [
     multiplier: '30X',
   },
   {
-    pid: 47,
+    pid: 49,
     lpSymbol: 'bALBT-BNB LP',
     lpAddresses: {
       97: '',
