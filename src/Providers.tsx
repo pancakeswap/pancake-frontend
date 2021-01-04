@@ -3,7 +3,6 @@ import { ModalProvider } from '@pancakeswap-libs/uikit'
 import bsc, { UseWalletProvider } from '@binance-chain/bsc-use-wallet'
 import { Provider } from 'react-redux'
 import getRpcUrl from 'utils/getRpcUrl'
-import SushiProvider from 'contexts/SushiProvider'
 import { LanguageContextProvider } from 'contexts/Localisation/languageContext'
 import { ThemeContextProvider } from 'contexts/ThemeContext'
 import { BlockContextProvider } from 'contexts/BlockContext'
@@ -25,11 +24,9 @@ const Providers: React.FC = ({ children }) => {
             }}
           >
             <BlockContextProvider>
-              <SushiProvider>
-                <RefreshContextProvider>
-                  <ModalProvider>{children}</ModalProvider>
-                </RefreshContextProvider>
-              </SushiProvider>
+              <RefreshContextProvider>
+                <ModalProvider>{children}</ModalProvider>
+              </RefreshContextProvider>
             </BlockContextProvider>
           </UseWalletProvider>
         </LanguageContextProvider>

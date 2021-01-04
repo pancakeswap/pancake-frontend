@@ -6,16 +6,14 @@ import CardContent from '../../../components/CardContent'
 import CardIcon from '../../../components/CardIcon'
 import Label from '../../../components/Label'
 import Value from '../../../components/Value'
-import useSushi from '../../../hooks/useSushi'
 import useTokenBalance from '../../../hooks/useTokenBalance'
 import useI18n from '../../../hooks/useI18n'
 import { getBalanceNumber } from '../../../utils/formatBalance'
 import { getSyrupAddress } from '../../../sushi/utils'
 
 const Harvest: React.FC = () => {
-  const sushi = useSushi()
   const TranslateString = useI18n()
-  const syrupBalance = useTokenBalance(getSyrupAddress(sushi))
+  const syrupBalance = useTokenBalance(getSyrupAddress())
 
   return (
     <Card>

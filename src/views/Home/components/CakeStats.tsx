@@ -4,7 +4,6 @@ import styled from 'styled-components'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useTotalSupply, useBurnedBalance } from 'hooks/useTokenBalance'
 import useI18n from 'hooks/useI18n'
-import useSushi from 'hooks/useSushi'
 import { getSushiAddress } from 'sushi/utils'
 import CardValue from 'components/Card/CardValue'
 
@@ -32,9 +31,8 @@ const Title = styled(Heading).attrs({ size: 'lg' })`
 
 const CakeStats = () => {
   const TranslateString = useI18n()
-  const sushi = useSushi()
   const totalSupply = useTotalSupply()
-  const burnedBalance = useBurnedBalance(getSushiAddress(sushi))
+  const burnedBalance = useBurnedBalance(getSushiAddress())
   const cakeSupply = totalSupply ? getBalanceNumber(totalSupply) - getBalanceNumber(burnedBalance) : 0
 
   return (

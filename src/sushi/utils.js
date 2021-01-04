@@ -1,25 +1,20 @@
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
+import addresses from 'sushi/lib/constants/contracts'
 
 BigNumber.config({
   EXPONENTIAL_AT: 1000,
   DECIMAL_PLACES: 80,
 })
 
-export const getSushiAddress = (sushi) => {
-  return sushi && sushi.sushiAddress
+export const getSushiAddress = () => {
+  return addresses.sushi[process.env.REACT_APP_CHAIN_ID]
 }
-export const getSyrupAddress = (sushi) => {
-  return sushi && sushi.syrupAddress
+export const getSyrupAddress = () => {
+  return addresses.syrup[process.env.REACT_APP_CHAIN_ID]
 }
-export const getMasterChefContract = (sushi) => {
-  return sushi && sushi.contracts && sushi.contracts.masterChef
-}
-export const getSushiContract = (sushi) => {
-  return sushi && sushi.contracts && sushi.contracts.sushi
-}
-export const getSousChefContract = (sushi, sousId) => {
-  return sushi && sushi.contracts && sushi.contracts.sousChefs.filter((chef) => chef.sousId === sousId)[0]?.sousContract
+export const getMulticallAddress = () => {
+  return addresses.mulltiCall[process.env.REACT_APP_CHAIN_ID]
 }
 
 export const approve = async (lpContract, masterChefContract, account) => {
