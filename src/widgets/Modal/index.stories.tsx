@@ -1,4 +1,5 @@
 import React from "react";
+import noop from "lodash/noop";
 import { Modal, useModal } from ".";
 import Button from "../../components/Button/Button";
 import Heading from "../../components/Heading/Heading";
@@ -10,7 +11,7 @@ export default {
 };
 
 const CustomModal = ({ title }) => (
-  <Modal title="Title">
+  <Modal title={title} onDismiss={noop}>
     <Heading>{title}</Heading>
     <Button>This button Does nothing</Button>
   </Modal>

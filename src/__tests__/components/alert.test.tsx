@@ -14,7 +14,7 @@ it("renders correctly", () => {
           class="sc-dlfnbm OPOyL"
         >
           <svg
-            class="sc-bdfBwQ gzsyvQ"
+            class="sc-bdfBwQ bfCnsY"
             color="currentColor"
             viewBox="0 0 24 24"
             width="20px"
