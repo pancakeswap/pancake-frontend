@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext, useCallback, useRef } from 'react'
 import styled from 'styled-components'
 import { Card, CardBody } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
@@ -20,55 +20,73 @@ const StyledCardBody = styled(CardBody)`
 
 const PastLotteryRoundViewer = () => {
   const TranslateString = useI18n()
-  const [inputNumber, setInputNumber] = useState(1)
-  const [roundData, setRoundData] = useState(null)
-  const [error, setError] = useState({ message: null, type: null })
-  const [loaded, setLoaded] = useState(false)
   const { mostRecentLotteryNumber } = useContext(PastLotteryDataContext)
+  const [state, setState] = useState({
+    roundData: null,
+    error: { message: null, type: null },
+    isInitialized: false,
+    isLoading: true,
+  })
+  const { roundData, error, isInitialized, isLoading } = state
+
+  const TranslateStringRef = useRef(TranslateString)
+
+  const getLotteryRoundData = useCallback(
+    (lotteryNumber: number) => {
+      setState((prevState) => ({
+        ...prevState,
+        isLoading: true,
+      }))
+
+      fetch(`https://api.pancakeswap.com/api/singleLottery?lotteryNumber=${lotteryNumber}`)
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.error) {
+            setState((prevState) => ({
+              ...prevState,
+              error: {
+                message: TranslateStringRef.current(999, 'The lottery number you provided does not exist'),
+                type: 'out of range',
+              },
+              isLoading: false,
+              isInitialized: true,
+            }))
+          } else {
+            setState((prevState) => ({
+              ...prevState,
+              error: { message: null, type: null },
+              roundData: data,
+              isLoading: false,
+              isInitialized: true,
+            }))
+          }
+        })
+        .catch(() => {
+          setState((prevState) => ({
+            ...prevState,
+            error: { message: TranslateStringRef.current(999, 'Error fetching data'), type: 'api' },
+            isLoading: false,
+            isInitialized: true,
+          }))
+        })
+    },
+    [setState, TranslateStringRef],
+  )
 
   useEffect(() => {
     if (mostRecentLotteryNumber > 0) {
-      setInputNumber(mostRecentLotteryNumber)
-      setLoaded(true)
+      getLotteryRoundData(mostRecentLotteryNumber)
     }
-  }, [mostRecentLotteryNumber])
+  }, [mostRecentLotteryNumber, getLotteryRoundData])
 
-  const getPastLotteryRoundData = ({ useMostRecentLotteryNumber }) => {
-    const lotteryNumber = useMostRecentLotteryNumber ? mostRecentLotteryNumber : inputNumber
-
-    fetch(`https://api.pancakeswap.com/api/singleLottery?lotteryNumber=${lotteryNumber}`)
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.error) {
-          setError({
-            message: TranslateString(999, 'The lottery number you provided does not exist'),
-            type: 'out of range',
-          })
-        } else {
-          setError({ message: null, type: null })
-          setRoundData(data)
-        }
-      })
-      .catch(() => {
-        setError({ message: TranslateString(999, 'Error fetching data'), type: 'api' })
-      })
-  }
-
-  useEffect(() => {
-    if (loaded) {
-      getPastLotteryRoundData({ useMostRecentLotteryNumber: true })
-    }
-    /* eslint-disable react-hooks/exhaustive-deps */
-  }, [loaded])
-
-  const onSubmit = () => {
-    getPastLotteryRoundData({ useMostRecentLotteryNumber: false })
+  const handleSubmit = (lotteryNumber: number) => {
+    getLotteryRoundData(lotteryNumber)
   }
 
   return (
     <Wrapper>
-      <PastLotterySearcher inputNumber={inputNumber} setInputNumber={setInputNumber} onSubmit={onSubmit} />
-      {(!roundData && error.type !== 'api') || !loaded ? (
+      <PastLotterySearcher initialLotteryNumber={mostRecentLotteryNumber} onSubmit={handleSubmit} />
+      {!isInitialized || isLoading ? (
         // if there is no round data, and the api call hasn't errored, OR it's still loading - show loader
         <Card>
           <StyledCardBody>

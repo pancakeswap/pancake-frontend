@@ -1,7 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Text, Input, Button } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
+
+interface PastLotterySearcherProps {
+  initialLotteryNumber: number
+  onSubmit: (num: number) => void
+}
 
 const Wrapper = styled.div`
   margin-bottom: 24px;
@@ -11,7 +16,7 @@ const SearchWrapper = styled.div`
   position: relative;
 `
 
-const StyledButton = styled(Button)`
+const StyledButton = styled(Button).attrs({ type: 'submit' })`
   position: absolute;
   right: 8px;
   top: 50%;
@@ -19,24 +24,28 @@ const StyledButton = styled(Button)`
   width: auto;
 `
 
-const PastLotterySearcher = ({ inputNumber, setInputNumber, onSubmit }) => {
+const PastLotterySearcher: React.FC<PastLotterySearcherProps> = ({ initialLotteryNumber, onSubmit }) => {
+  const [lotteryNumber, setLotteryNumber] = useState(initialLotteryNumber)
   const TranslateString = useI18n()
+
+  const handleSubmit = (evt: React.FormEvent<HTMLFormElement>) => {
+    evt.preventDefault()
+    onSubmit(lotteryNumber)
+  }
+
+  const handleChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
+    setLotteryNumber(parseInt(evt.currentTarget.value, 10))
+  }
 
   return (
     <Wrapper>
       <Text>{TranslateString(999, 'Select lottery number:')}</Text>
-      <SearchWrapper>
-        <Input
-          value={inputNumber}
-          type="number"
-          onChange={(event) => {
-            setInputNumber(parseInt(event.currentTarget.value))
-          }}
-        />
-        <StyledButton size="sm" onClick={onSubmit}>
-          {TranslateString(999, 'Search')}
-        </StyledButton>
-      </SearchWrapper>
+      <form onSubmit={handleSubmit}>
+        <SearchWrapper>
+          <Input value={lotteryNumber} type="number" onChange={handleChange} />
+          <StyledButton size="sm">{TranslateString(999, 'Search')}</StyledButton>
+        </SearchWrapper>
+      </form>
     </Wrapper>
   )
 }
