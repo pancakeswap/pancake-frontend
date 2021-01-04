@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import styled from 'styled-components'
-import { Heading, Card, CardBody, CardFooter, Text, PancakeRoundIcon } from '@pancakeswap-libs/uikit'
+import { Heading, Card, CardBody, CardFooter, Text, PancakeRoundIcon, Flex, Skeleton } from '@pancakeswap-libs/uikit'
 import { getBalanceNumber } from 'utils/formatBalance'
 import useI18n from 'hooks/useI18n'
 import { useTotalRewards } from 'hooks/useTickets'
+import PastLotteryDataContext from 'contexts/PastLotteryDataContext'
 import PrizeGrid from '../PrizeGrid'
 import DetailsButton from './DetailsButton'
 
@@ -47,10 +48,19 @@ const TotalPrizesCard = () => {
   const [hideFooter, setHideFooter] = useState(true)
   const lotteryPrizeAmount = +getBalanceNumber(useTotalRewards()).toFixed(0)
   const lotteryPrizeWithCommaSeparators = lotteryPrizeAmount.toLocaleString()
+  const { currentLotteryNumber } = useContext(PastLotteryDataContext)
 
   return (
     <Card>
       <CardBody>
+        <Flex mb="16px" alignItems="center" justifyContent="space-between" style={{ height: '20px' }}>
+          {currentLotteryNumber === 0 && <Skeleton height={20} width={56} />}
+          {currentLotteryNumber > 0 && (
+            <>
+              <Text fontSize="12px" style={{ fontWeight: 600 }}>{`Round #${currentLotteryNumber}`}</Text>
+            </>
+          )}
+        </Flex>
         <CardHeading>
           <Left>
             <IconWrapper>

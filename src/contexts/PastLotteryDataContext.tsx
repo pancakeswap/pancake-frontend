@@ -2,6 +2,7 @@ import React from 'react'
 
 export interface PastLotteryDataState {
   mostRecentLotteryNumber: number
+  currentLotteryNumber: number
   historyError: boolean
   historyData: Array<any>
 }

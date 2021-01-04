@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Text } from '@pancakeswap-libs/uikit'
+import formatLotteryDate from '../helpers/formatLotteryDate'
 
 const Wrapper = styled.div`
   position: absolute;
@@ -9,11 +10,7 @@ const Wrapper = styled.div`
 `
 
 const Timestamp = ({ timeValue }) => {
-  const date = new Date(timeValue)
-
-  const dateString = date.toDateString()
-  const hours = date.getUTCHours()
-  const monthAndDay = dateString.split(' ').splice(1, 2).join(' ')
+  const { monthAndDay, hours } = formatLotteryDate(timeValue)
 
   return (
     <Wrapper>
