@@ -34,6 +34,23 @@ const farms: FarmConfig[] = [
     multiplier: '30X',
   },
   {
+    pid: 50,
+    lpSymbol: 'TEN-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x142c997fbd3f971e21e2ecbff95c2a761ebd10d4',
+    },
+    tokenSymbol: 'TEN',
+    tokenAddresses: {
+      97: '',
+      56: '0xdff8cb622790b7f92686c722b02cab55592f152c',
+    },
+    quoteTokenSymbol: QuoteToken.BNB,
+    quoteTokenAdresses: contracts.wbnb,
+    multiplier: '2X',
+    isCommunity: false,
+  },
+  {
     pid: 49,
     lpSymbol: 'bALBT-BNB LP',
     lpAddresses: {
@@ -51,16 +68,16 @@ const farms: FarmConfig[] = [
     isCommunity: false,
   },
   {
-    pid: 46,
-    lpSymbol: 'OG-BNB LP',
+    pid: 48,
+    lpSymbol: 'ATM-BNB LP',
     lpAddresses: {
       97: '',
-      56: '0x64373608f2e93ea97ad4d8ca2cce6b2575db2f55',
+      56: '0xd5b3ebf1a85d32c73a82b40f75e1cd929caf4029',
     },
-    tokenSymbol: 'OG',
+    tokenSymbol: 'ATM',
     tokenAddresses: {
       97: '',
-      56: '0xf05e45ad22150677a017fbd94b84fbb63dc9b44c',
+      56: '0x25e9d05365c867e59c1904e7463af9f312296f9e',
     },
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
@@ -85,16 +102,16 @@ const farms: FarmConfig[] = [
     isCommunity: false,
   },
   {
-    pid: 48,
-    lpSymbol: 'ATM-BNB LP',
+    pid: 46,
+    lpSymbol: 'OG-BNB LP',
     lpAddresses: {
       97: '',
-      56: '0xd5b3ebf1a85d32c73a82b40f75e1cd929caf4029',
+      56: '0x64373608f2e93ea97ad4d8ca2cce6b2575db2f55',
     },
-    tokenSymbol: 'ATM',
+    tokenSymbol: 'OG',
     tokenAddresses: {
       97: '',
-      56: '0x25e9d05365c867e59c1904e7463af9f312296f9e',
+      56: '0xf05e45ad22150677a017fbd94b84fbb63dc9b44c',
     },
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
