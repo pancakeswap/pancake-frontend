@@ -16,7 +16,7 @@ const StyledCardBody = styled(CardBody)`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 504px; // height of final card
+  height: 552px; // height of final card
 `
 
 const PastLotteryRoundViewer = () => {
