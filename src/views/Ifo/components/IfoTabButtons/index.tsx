@@ -11,7 +11,7 @@ const Wrapper = styled.div`
 `
 
 const IfoTabButtons = () => {
-  const match = useRouteMatch('/ifo/past-ifos')
+  const match = useRouteMatch('/ifo/history')
   const [index, setIndex] = useState(match ? 1 : 0)
   const handleClick = (newIndex) => setIndex(newIndex)
 
@@ -21,7 +21,7 @@ const IfoTabButtons = () => {
         <ButtonMenuItem as="a" href="/ifo">
           Next IFO
         </ButtonMenuItem>
-        <ButtonMenuItem as="a" href="/ifo/past-ifos">
+        <ButtonMenuItem as="a" href="/ifo/history">
           Past IFOs
         </ButtonMenuItem>
       </ButtonMenu>

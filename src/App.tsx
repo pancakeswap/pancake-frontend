@@ -64,7 +64,6 @@ const App: React.FC = () => {
         </Route>
         <Route component={NotFound} />
       </Switch>
-      <Footer />
       <NftGlobalNotification />
     </Router>
   )
