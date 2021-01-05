@@ -17,6 +17,10 @@ const CardActions = styled.div`
   display: flex;
   justify-content: center;
   margin-top: ${(props) => props.theme.spacing[3]}px;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    justify-content: space-between;
+  }
 `
 
 const TicketCard: React.FC = () => {
