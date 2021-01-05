@@ -12,22 +12,20 @@ const Ifos = () => {
   const { path } = useRouteMatch()
 
   return (
-    <>
-      <Page>
-        <Hero />
-        <Container>
-          <IfoTabButtons />
-          <>
-            <Route exact path={`${path}`}>
-              <CurrentIfo />
-            </Route>
-            <Route path={`${path}/history`}>
-              <PastIfo />
-            </Route>
-          </>
-        </Container>
-      </Page>
-    </>
+    <Page>
+      <Hero />
+      <Container>
+        <IfoTabButtons />
+        <>
+          <Route exact path={`${path}`}>
+            <CurrentIfo />
+          </Route>
+          <Route path={`${path}/history`}>
+            <PastIfo />
+          </Route>
+        </>
+      </Container>
+    </Page>
   )
 }
 
