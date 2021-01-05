@@ -19,6 +19,23 @@ const pools: PoolConfig[] = [
     tokenDecimals: 18,
   },
   {
+    sousId: 33,
+    tokenName: 'TEN',
+    stakingTokenName: QuoteToken.CAKE,
+    stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
+    contractAddress: {
+      97: '',
+      56: '0x4A26b082B432B060B1b00A84eE4E823F04a6f69a',
+    },
+    poolCategory: PoolCategory.CORE,
+    projectLink: 'https://www.tenet.farm/',
+    harvest: true,
+    tokenPerBlock: '0.05787',
+    sortOrder: 999,
+    isFinished: false,
+    tokenDecimals: 18,
+  },
+  {
     sousId: 32,
     tokenName: 'bALBT',
     stakingTokenName: QuoteToken.CAKE,
