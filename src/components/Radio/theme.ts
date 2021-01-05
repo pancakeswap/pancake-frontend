@@ -1,9 +1,10 @@
+import { darkColors, lightColors } from "../../theme/colors";
 import { RadioTheme } from "./types";
 
 export const light: RadioTheme = {
-  handleBackground: "#FFFFFF",
+  handleBackground: lightColors.card,
 };
 
 export const dark: RadioTheme = {
-  handleBackground: "#27262c",
+  handleBackground: darkColors.card,
 };

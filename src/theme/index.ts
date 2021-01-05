@@ -1,3 +1,4 @@
+import { AlertTheme } from "../components/Alert/types";
 import { ButtonTheme } from "../components/Button/types";
 import { CardTheme } from "../components/Card/types";
 import { RadioTheme } from "../components/Radio/types";
@@ -9,6 +10,7 @@ import { Colors, Breakpoints, MediaQueries, Spacing, Shadows, Radii, ZIndices } 
 export interface PancakeTheme {
   siteWidth: number;
   isDark: boolean;
+  alert: AlertTheme;
   colors: Colors;
   button: ButtonTheme;
   card: CardTheme;

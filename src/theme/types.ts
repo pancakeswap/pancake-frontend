@@ -35,6 +35,7 @@ export type Colors = {
   tertiary: string;
   success: string;
   failure: string;
+  warning: string;
   contrast: string;
   invertedContrast: string;
   input: string;
@@ -44,6 +45,7 @@ export type Colors = {
   textDisabled: string;
   textSubtle: string;
   borderColor: string;
+  card: string;
 
   // Brand colors
   binance: string;

@@ -1,10 +1,10 @@
 import { darkColors, lightColors } from "../../theme/colors";
-import { ModalTheme } from "./types";
+import { AlertTheme } from "./types";
 
-export const light: ModalTheme = {
+export const light: AlertTheme = {
   background: lightColors.card,
 };
 
-export const dark: ModalTheme = {
+export const dark: AlertTheme = {
   background: darkColors.card,
 };
