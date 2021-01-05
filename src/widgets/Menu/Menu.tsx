@@ -10,6 +10,7 @@ import { MENU_HEIGHT, SIDEBAR_WIDTH_REDUCED, SIDEBAR_WIDTH_FULL } from "./config
 
 const Wrapper = styled.div`
   position: relative;
+  width: 100%;
 `;
 
 const StyledNav = styled.nav<{ showMenu: boolean }>`
@@ -94,7 +95,7 @@ const Menu: React.FC<NavProps> = ({
     <Wrapper>
       <StyledNav showMenu={showMenu}>
         <Logo isPushed={isPushed} togglePush={() => setIsPushed((prevState: boolean) => !prevState)} isDark={isDark} />
-        <UserBlock account={account} closeNav={() => setIsPushed(false)} login={login} logout={logout} />
+        <UserBlock account={account} login={login} logout={logout} />
       </StyledNav>
       <BodyWrapper>
         <Panel

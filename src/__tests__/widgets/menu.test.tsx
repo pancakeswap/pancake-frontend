@@ -28,7 +28,7 @@ it("renders correctly", () => {
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
       <div
-        class="sc-cxFLnm fwPLrC"
+        class="sc-cxFLnm jUhxcH"
       >
         <nav
           class="sc-lmoMRL Pixxb"
