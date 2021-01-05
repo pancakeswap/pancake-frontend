@@ -38,7 +38,7 @@ const farms: FarmConfig[] = [
     lpSymbol: 'TEN-BNB LP',
     lpAddresses: {
       97: '',
-      56: '0x21c8c038fab57a070eba03da2cb1f36af75727d9',
+      56: '0x01ecc44ddd2d104f44d2aa1a2bd9dfbc91ae8275',
     },
     tokenSymbol: 'TEN',
     tokenAddresses: {
