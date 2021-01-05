@@ -1,23 +1,29 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Text } from '@pancakeswap-libs/uikit'
+import { ifosConfig } from 'sushi/lib/constants'
+import IfoCard from './components/IfoCard'
 
 const IfoCardWrapper = styled.div`
   border-top: 2px solid ${({ theme }) => theme.colors.textSubtle};
   padding-bottom: 40px;
   padding-top: 40px;
-`
-const NothingText = styled(Text)`
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
 `
 
+const Wrapper = styled.div`
+  margin-bottom: 32px;
+  display: inline-flex;
+`
+const inactiveIfo = ifosConfig.filter((ifo) => !ifo.isActive)
 const PastIfo = () => {
   return (
     <IfoCardWrapper>
-      <NothingText bold fontSize="24px" color="secondary">
-        There’s nothing here yet!
-      </NothingText>
+      {inactiveIfo.map((ifo) => (
+          <Wrapper key={ifo.id}>
+            <IfoCard ifo={ifo} />
+          </Wrapper>
+      ))}
     </IfoCardWrapper>
   )
 }
