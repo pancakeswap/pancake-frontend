@@ -1,9 +1,17 @@
 import React from 'react'
 import { Card } from '@pancakeswap-libs/uikit'
+import { DataResponse } from 'utils/getLotteryRoundData'
 import PastRoundCardError from './PastRoundCardError'
 import PastRoundCardDetails from './PastRoundCardDetails'
 
-const PastRoundCard = ({ error, data }) => {
+interface PastRoundCardProps {
+  error: {
+    message: string
+  }
+  data: DataResponse
+}
+
+const PastRoundCard: React.FC<PastRoundCardProps> = ({ error, data }) => {
   return <Card>{error.message ? <PastRoundCardError error={error} /> : <PastRoundCardDetails data={data} />}</Card>
 }
 

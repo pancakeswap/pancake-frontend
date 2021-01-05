@@ -1,7 +1,13 @@
 import React from 'react'
 import { Text } from '@pancakeswap-libs/uikit'
 
-const PastRoundCardError = ({ error }) => {
+interface PastRoundCardErrorProps {
+  error: {
+    message: string
+  }
+}
+
+const PastRoundCardError: React.FC<PastRoundCardErrorProps> = ({ error }) => {
   return <Text p="24px">{error.message}</Text>
 }
 

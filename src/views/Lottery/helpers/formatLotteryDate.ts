@@ -1,6 +1,3 @@
-/**
- * TODO: Make this function more generic
- */
 const formatLotteryDate = (lotteryDate: string) => {
   if (!lotteryDate) {
     return {}
