@@ -4,7 +4,7 @@ import { Text } from '@pancakeswap-libs/uikit'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import useTokenBalance from 'hooks/useTokenBalance'
 import useI18n from 'hooks/useI18n'
-import { getSushiAddress } from 'sushi/utils'
+import { getSushiAddress } from 'utils/utils'
 import { getBalanceNumber } from 'utils/formatBalance'
 import CardValue from 'components/Card/CardValue'
 

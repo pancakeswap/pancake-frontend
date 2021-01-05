@@ -4,9 +4,8 @@ import { Contract } from 'web3-eth-contract'
 import { ethers } from 'ethers'
 import { useDispatch } from 'react-redux'
 import { updateUserAllowance, fetchFarmUserDataAsync } from 'state/actions'
-import { approve } from 'sushi/utils'
-import { getLotteryContract } from 'sushi/lotteryUtils'
-import { useMasterchef, useCake, useSousChef } from './useContract'
+import { approve } from 'utils/utils'
+import { useMasterchef, useCake, useSousChef, useLottery } from './useContract'
 
 // Approve a Farm
 export const useApprove = (lpContract: Contract, pid: number) => {
@@ -50,7 +49,7 @@ export const useSousApprove = (lpContract: Contract, sousId) => {
 export const useLotteryApprove = () => {
   const { account }: { account: string } = useWallet()
   const cakeContract = useCake()
-  const lotteryContract = getLotteryContract()
+  const lotteryContract = useLottery()
 
   const handleApprove = useCallback(async () => {
     try {

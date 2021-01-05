@@ -2,11 +2,10 @@
 import BigNumber from 'bignumber.js'
 import { Interface } from '@ethersproject/abi'
 import { getWeb3 } from 'utils/web3'
-import MultiCallAbi from 'sushi/lib/abi/Multicall.json'
-import { getMulticallAddress } from 'sushi/utils'
-import addresses from 'sushi/lib/constants/contracts'
-import ticketAbi from './lib/abi/lotteryNft.json'
-import lotteryAbi from './lib/abi/lottery.json'
+import MultiCallAbi from 'config/abi/Multicall.json'
+import ticketAbi from 'config/abi/lotteryNft.json'
+import lotteryAbi from 'config/abi/lottery.json'
+import { getMulticallAddress } from './utils'
 
 export const multiCall = async (abi, calls) => {
   const web3 = getWeb3()
@@ -41,14 +40,6 @@ export const multiBuy = async (lotteryContract, price, numbersList, account) => 
   } catch (err) {
     return console.error(err)
   }
-}
-
-export const getLotteryContract = () => {
-  return addresses.lottery[process.env.REACT_APP_CHAIN_ID]
-}
-
-export const getTicketsContract = () => {
-  return addresses.lotteryNFT[process.env.REACT_APP_CHAIN_ID]
 }
 
 export const getTickets = async (lotteryContract, ticketsContract, account, customLotteryNum) => {

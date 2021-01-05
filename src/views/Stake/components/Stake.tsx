@@ -18,7 +18,7 @@ import { getBalanceNumber } from '../../../utils/formatBalance'
 import DepositModal from './DepositModal'
 import WithdrawModal from './WithdrawModal'
 import UnlockButton from '../../../components/UnlockButton'
-import { getSyrupAddress } from '../../../sushi/utils'
+import { getSyrupAddress } from '../../../utils/utils'
 
 interface StakeProps {
   lpContract: Contract

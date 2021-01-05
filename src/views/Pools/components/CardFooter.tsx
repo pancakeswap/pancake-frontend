@@ -6,7 +6,7 @@ import useI18n from 'hooks/useI18n'
 import { ChevronDown, ChevronUp } from 'react-feather'
 import Balance from 'components/Balance'
 import { CommunityTag, CoreTag, BinanceTag } from 'components/Tags'
-import { PoolCategory } from 'sushi/lib/constants/types'
+import { PoolCategory } from 'config/constants/types'
 
 const tags = {
   [PoolCategory.BINANCE]: BinanceTag,

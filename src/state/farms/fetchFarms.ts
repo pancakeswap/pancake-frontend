@@ -1,9 +1,9 @@
 import BigNumber from 'bignumber.js'
-import addresses from 'sushi/lib/constants/contracts'
-import erc20 from 'sushi/lib/abi/erc20.json'
-import masterchefABI from 'sushi/lib/abi/masterchef.json'
+import addresses from 'config/constants/contracts'
+import erc20 from 'config/abi/erc20.json'
+import masterchefABI from 'config/abi/masterchef.json'
 import multicall from 'utils/multicall'
-import farmsConfig from 'sushi/lib/constants/farms'
+import farmsConfig from 'config/constants/farms'
 
 const CHAIN_ID = process.env.REACT_APP_CHAIN_ID
 

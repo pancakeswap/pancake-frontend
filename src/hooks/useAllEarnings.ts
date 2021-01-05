@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import multicall from 'utils/multicall'
-import masterChefABI from 'sushi/lib/abi/masterchef.json'
-import addresses from 'sushi/lib/constants/contracts'
-import { farmsConfig } from 'sushi/lib/constants'
+import masterChefABI from 'config/abi/masterchef.json'
+import addresses from 'config/constants/contracts'
+import { farmsConfig } from 'config/constants'
 import useRefresh from './useRefresh'
 
 const useAllEarnings = () => {

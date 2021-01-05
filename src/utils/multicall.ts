@@ -1,8 +1,8 @@
 import { AbiItem } from 'web3-utils'
 import { Interface } from '@ethersproject/abi'
 import { getWeb3 } from 'utils/web3'
-import MultiCallAbi from 'sushi/lib/abi/Multicall.json'
-import { getMulticallAddress } from 'sushi/utils'
+import MultiCallAbi from 'config/abi/Multicall.json'
+import { getMulticallAddress } from 'utils/utils'
 
 interface Call {
   address: string // Address of the contract

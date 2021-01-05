@@ -4,13 +4,13 @@ import styled, { keyframes } from 'styled-components'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { Link as ReactRouterLink } from 'react-router-dom'
 import { Button, Flex } from '@pancakeswap-libs/uikit'
-import { communityFarms } from 'sushi/lib/constants'
+import { communityFarms } from 'config/constants'
 import { Farm } from 'state/types'
 import { usePriceBnbBusd, usePriceCakeBusd } from 'state/hooks'
 import useI18n from 'hooks/useI18n'
 import { CommunityTag, CoreTag } from 'components/Tags'
 import UnlockButton from 'components/UnlockButton'
-import { QuoteToken } from 'sushi/lib/constants/types'
+import { QuoteToken } from 'config/constants/types'
 
 export interface FarmWithStakedValue extends Farm {
   apy?: BigNumber
