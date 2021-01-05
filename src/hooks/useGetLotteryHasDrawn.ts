@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
-import { getLotteryContract, getLotteryStatus } from 'sushi/lotteryUtils'
+import { useLottery } from 'hooks/useContract'
+import { getLotteryStatus } from 'utils/lotteryUtils'
 
 /**
  * Returns whether or not the current lottery has drawn numbers
@@ -10,7 +11,7 @@ import { getLotteryContract, getLotteryStatus } from 'sushi/lotteryUtils'
 const useGetLotteryHasDrawn = () => {
   const [lotteryHasDrawn, setLotteryHasDrawn] = useState(true)
   const { account } = useWallet()
-  const lotteryContract = getLotteryContract()
+  const lotteryContract = useLottery()
 
   useEffect(() => {
     if (account && lotteryContract) {

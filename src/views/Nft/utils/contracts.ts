@@ -1,9 +1,9 @@
 import { AbiItem } from 'web3-utils'
 import { getContract } from 'utils/web3'
 import { ContractOptions } from 'web3-eth-contract'
-import rabbitmintingfarm from 'sushi/lib/abi/rabbitmintingfarm.json'
-import pancakeRabbits from 'sushi/lib/abi/pancakeRabbits.json'
-import { RABBIT_MINTING_FARM_ADDRESS, PANCAKE_RABBITS_ADDRESS } from 'sushi/lib/constants/nfts'
+import rabbitmintingfarm from 'config/abi/rabbitmintingfarm.json'
+import pancakeRabbits from 'config/abi/pancakeRabbits.json'
+import { RABBIT_MINTING_FARM_ADDRESS, PANCAKE_RABBITS_ADDRESS } from 'config/constants/nfts'
 
 // TODO: Figure out how to add current account to contracts to write methods can be used
 

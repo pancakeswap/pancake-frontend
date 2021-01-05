@@ -1,11 +1,6 @@
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
-import addresses from 'sushi/lib/constants/contracts'
-
-BigNumber.config({
-  EXPONENTIAL_AT: 1000,
-  DECIMAL_PLACES: 80,
-})
+import addresses from 'config/constants/contracts'
 
 export const getSushiAddress = () => {
   return addresses.sushi[process.env.REACT_APP_CHAIN_ID]

@@ -2,8 +2,8 @@ import React, { createContext, ReactNode, useEffect, useRef, useState } from 're
 import BigNumber from 'bignumber.js'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import useBlock from 'hooks/useBlock'
-import rabbitmintingfarm from 'sushi/lib/abi/rabbitmintingfarm.json'
-import { RABBIT_MINTING_FARM_ADDRESS } from 'sushi/lib/constants/nfts'
+import rabbitmintingfarm from 'config/abi/rabbitmintingfarm.json'
+import { RABBIT_MINTING_FARM_ADDRESS } from 'config/constants/nfts'
 import multicall from 'utils/multicall'
 import { getPancakeRabbitContract } from '../utils/contracts'
 

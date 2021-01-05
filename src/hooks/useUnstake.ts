@@ -7,7 +7,7 @@ import {
   updateUserBalance,
   updateUserPendingReward,
 } from 'state/actions'
-import { unstake, sousUnstake, sousEmegencyUnstake } from 'sushi/utils'
+import { unstake, sousUnstake, sousEmegencyUnstake } from 'utils/utils'
 import { useMasterchef, useSousChef } from './useContract'
 
 const useUnstake = (pid: number) => {

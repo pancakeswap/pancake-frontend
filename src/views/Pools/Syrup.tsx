@@ -10,7 +10,7 @@ import useI18n from 'hooks/useI18n'
 import useBlock from 'hooks/useBlock'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useFarms, usePriceBnbBusd, usePools } from 'state/hooks'
-import { QuoteToken, PoolCategory } from 'sushi/lib/constants/types'
+import { QuoteToken, PoolCategory } from 'config/constants/types'
 import Coming from './components/Coming'
 import PoolCard from './components/PoolCard'
 

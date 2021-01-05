@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useTotalSupply, useBurnedBalance } from 'hooks/useTokenBalance'
 import useI18n from 'hooks/useI18n'
-import { getSushiAddress } from 'sushi/utils'
+import { getSushiAddress } from 'utils/utils'
 import CardValue from 'components/Card/CardValue'
 
 const StyledCakeStats = styled(Card)`

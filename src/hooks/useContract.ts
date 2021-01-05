@@ -2,17 +2,17 @@ import { useEffect, useState } from 'react'
 import { AbiItem } from 'web3-utils'
 import { ContractOptions } from 'web3-eth-contract'
 import useWeb3 from 'hooks/useWeb3'
-import { contractAddresses, poolsConfig } from 'sushi/lib/constants'
-import { PoolCategory } from 'sushi/lib/constants/types'
-import ifo from 'sushi/lib/abi/ifo.json'
-import erc20 from 'sushi/lib/abi/erc20.json'
-import rabbitmintingfarm from 'sushi/lib/abi/rabbitmintingfarm.json'
-import pancakeRabbits from 'sushi/lib/abi/pancakeRabbits.json'
-import lottery from 'sushi/lib/abi/lottery.json'
-import lotteryTicket from 'sushi/lib/abi/lotteryNft.json'
-import masterChef from 'sushi/lib/abi/masterchef.json'
-import sousChef from 'sushi/lib/abi/sousChef.json'
-import sousChefBnb from 'sushi/lib/abi/sousChefBnb.json'
+import { contractAddresses, poolsConfig } from 'config/constants'
+import { PoolCategory } from 'config/constants/types'
+import ifo from 'config/abi/ifo.json'
+import erc20 from 'config/abi/erc20.json'
+import rabbitmintingfarm from 'config/abi/rabbitmintingfarm.json'
+import pancakeRabbits from 'config/abi/pancakeRabbits.json'
+import lottery from 'config/abi/lottery.json'
+import lotteryTicket from 'config/abi/lotteryNft.json'
+import masterChef from 'config/abi/masterchef.json'
+import sousChef from 'config/abi/sousChef.json'
+import sousChefBnb from 'config/abi/sousChefBnb.json'
 
 const useContract = (abi: AbiItem, address: string, contractOptions?: ContractOptions) => {
   const web3 = useWeb3()
@@ -53,14 +53,14 @@ export const usePancakeRabbits = (address: string) => {
   return useContract(pancakeRabbitsAbi, address)
 }
 
-export const useLottery = (address: string) => {
+export const useLottery = () => {
   const abi = (lottery as unknown) as AbiItem
-  return useContract(abi, address)
+  return useContract(abi, contractAddresses.lottery[process.env.REACT_APP_CHAIN_ID])
 }
 
-export const useLotteryTicker = (address: string) => {
+export const useLotteryTicket = () => {
   const abi = (lotteryTicket as unknown) as AbiItem
-  return useContract(abi, address)
+  return useContract(abi, contractAddresses.lotteryNFT[process.env.REACT_APP_CHAIN_ID])
 }
 
 export const useMasterchef = () => {
