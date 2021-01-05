@@ -3,9 +3,9 @@ import styled from 'styled-components'
 import { ButtonMenu, ButtonMenuItem } from '@pancakeswap-libs/uikit'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import PastLotteryDataContext from 'contexts/PastLotteryDataContext'
-import { getLotteryContract, getLotteryIssueIndex } from 'sushi/lotteryUtils'
+import { getLotteryIssueIndex } from 'utils/lotteryUtils'
 import useI18n from 'hooks/useI18n'
-import useSushi from 'hooks/useSushi'
+import { useLottery } from 'hooks/useContract'
 import Page from 'components/layout/Page'
 import Container from 'components/layout/Container'
 import Hero from './components/Hero'
@@ -22,8 +22,7 @@ const Wrapper = styled.div`
 `
 
 const Lottery: React.FC = () => {
-  const sushi = useSushi()
-  const lotteryContract = getLotteryContract(sushi)
+  const lotteryContract = useLottery()
   const { account } = useWallet()
   const TranslateString = useI18n()
   const [activeIndex, setActiveIndex] = useState(0)
@@ -50,10 +49,10 @@ const Lottery: React.FC = () => {
       setMostRecentLotteryNumber(previousLotteryNumber)
     }
 
-    if (account && lotteryContract && sushi) {
+    if (account && lotteryContract) {
       getInitialLotteryIndex()
     }
-  }, [account, lotteryContract, sushi])
+  }, [account, lotteryContract])
 
   const handleClick = (index) => {
     setActiveIndex(index)

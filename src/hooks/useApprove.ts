@@ -4,7 +4,7 @@ import { Contract } from 'web3-eth-contract'
 import { ethers } from 'ethers'
 import { useDispatch } from 'react-redux'
 import { updateUserAllowance, fetchFarmUserDataAsync } from 'state/actions'
-import { approve } from 'utils/utils'
+import { approve } from 'utils/callHelpers'
 import { useMasterchef, useCake, useSousChef, useLottery } from './useContract'
 
 // Approve a Farm

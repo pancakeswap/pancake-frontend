@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react'
 import { AbiItem } from 'web3-utils'
 import { ContractOptions } from 'web3-eth-contract'
 import useWeb3 from 'hooks/useWeb3'
-import { contractAddresses, poolsConfig } from 'config/constants'
+import { getMasterChefAddress, getCakeAddress, getLotteryAddress, getLotteryTicketAddress } from 'utils/addressHelpers'
+import { poolsConfig } from 'config/constants'
 import { PoolCategory } from 'config/constants/types'
 import ifo from 'config/abi/ifo.json'
 import erc20 from 'config/abi/erc20.json'
@@ -40,7 +41,7 @@ export const useERC20 = (address: string) => {
 }
 
 export const useCake = () => {
-  return useERC20(contractAddresses.sushi[process.env.REACT_APP_CHAIN_ID])
+  return useERC20(getCakeAddress())
 }
 
 export const useRabbitMintingFarm = (address: string) => {
@@ -55,17 +56,17 @@ export const usePancakeRabbits = (address: string) => {
 
 export const useLottery = () => {
   const abi = (lottery as unknown) as AbiItem
-  return useContract(abi, contractAddresses.lottery[process.env.REACT_APP_CHAIN_ID])
+  return useContract(abi, getLotteryAddress())
 }
 
 export const useLotteryTicket = () => {
   const abi = (lotteryTicket as unknown) as AbiItem
-  return useContract(abi, contractAddresses.lotteryNFT[process.env.REACT_APP_CHAIN_ID])
+  return useContract(abi, getLotteryTicketAddress())
 }
 
 export const useMasterchef = () => {
   const abi = (masterChef as unknown) as AbiItem
-  return useContract(abi, contractAddresses.masterChef[process.env.REACT_APP_CHAIN_ID])
+  return useContract(abi, getMasterChefAddress())
 }
 
 export const useSousChef = (id) => {

@@ -9,7 +9,7 @@ import Value from '../../../components/Value'
 import useTokenBalance from '../../../hooks/useTokenBalance'
 import useI18n from '../../../hooks/useI18n'
 import { getBalanceNumber } from '../../../utils/formatBalance'
-import { getSyrupAddress } from '../../../utils/utils'
+import { getSyrupAddress } from '../../../utils/addressHelpers'
 
 const Harvest: React.FC = () => {
   const TranslateString = useI18n()

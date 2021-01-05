@@ -5,7 +5,7 @@ import { getWeb3 } from 'utils/web3'
 import MultiCallAbi from 'config/abi/Multicall.json'
 import ticketAbi from 'config/abi/lotteryNft.json'
 import lotteryAbi from 'config/abi/lottery.json'
-import { getMulticallAddress } from './utils'
+import { getMulticallAddress } from './addressHelpers'
 
 export const multiCall = async (abi, calls) => {
   const web3 = getWeb3()
