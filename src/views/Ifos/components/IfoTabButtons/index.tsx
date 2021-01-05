@@ -11,15 +11,15 @@ const Wrapper = styled.div`
 `
 
 const IfoTabButtons = () => {
-  const match = useRouteMatch('/ifo/history')
+  const { url, isExact } = useRouteMatch()
 
   return (
     <Wrapper>
-      <ButtonMenu activeIndex={match ? 1 : 0} size="sm" variant="subtle">
-        <ButtonMenuItem as={Link} to="/ifo">
+      <ButtonMenu activeIndex={!isExact ? 1 : 0} size="sm" variant="subtle">
+        <ButtonMenuItem as={Link} to={`${url}`}>
           Next IFO
         </ButtonMenuItem>
-        <ButtonMenuItem as={Link} to="/ifo/history">
+        <ButtonMenuItem as={Link} to={`${url}/history`}>
           Past IFOs
         </ButtonMenuItem>
       </ButtonMenu>
