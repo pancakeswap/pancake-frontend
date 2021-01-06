@@ -18,9 +18,9 @@ export interface LanguageState {
 }
 
 const LanguageContext = React.createContext({
-  selectedLanguage: { code: '', language: '' },
+  selectedLanguage: EN,
   setSelectedLanguage: () => undefined,
-  translatedLanguage: { code: '', language: '' },
+  translatedLanguage: EN,
   setTranslatedLanguage: () => undefined,
 } as LanguageState)
 
@@ -35,8 +35,8 @@ const fetchTranslationsForSelectedLanguage = (selectedLanguage) => {
 }
 
 const LanguageContextProvider = ({ children }) => {
-  const [selectedLanguage, setSelectedLanguage] = useState<any>(undefined)
-  const [translatedLanguage, setTranslatedLanguage] = useState<any>(undefined)
+  const [selectedLanguage, setSelectedLanguage] = useState<any>(EN)
+  const [translatedLanguage, setTranslatedLanguage] = useState<any>(EN)
   const [translations, setTranslations] = useState<Array<any>>([])
 
   const getStoredLang = (storedLangCode: string) => {

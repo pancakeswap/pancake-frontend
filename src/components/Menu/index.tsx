@@ -5,6 +5,7 @@ import { allLanguages } from 'config/localisation/languageCodes'
 import { LanguageContext } from 'contexts/Localisation/languageContext'
 import useTheme from 'hooks/useTheme'
 import { usePriceCakeBusd } from 'state/hooks'
+import links from './links'
 
 const Menu = () => {
   const { account, connect, reset } = useWallet()
@@ -14,6 +15,7 @@ const Menu = () => {
 
   return (
     <Nav
+      links={links}
       account={account}
       login={connect}
       logout={reset}

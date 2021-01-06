@@ -13,7 +13,7 @@ import {
   getTickets,
 } from '../sushi/lotteryUtils'
 
-const useTickets = () => {
+const useTickets = (lotteryNumber = null) => {
   const [tickets, setTickets] = useState([])
   const { account } = useWallet()
   const sushi = useSushi()
@@ -23,14 +23,14 @@ const useTickets = () => {
 
   useEffect(() => {
     const fetchBalance = async () => {
-      const res = await getTickets(sushi, lotteryContract, ticketsContract, account)
+      const res = await getTickets(sushi, lotteryContract, ticketsContract, account, lotteryNumber)
       setTickets(res)
     }
 
     if (account && lotteryContract && ticketsContract && sushi) {
       fetchBalance()
     }
-  }, [account, lotteryContract, sushi, ticketsContract, fastRefresh])
+  }, [account, lotteryContract, sushi, ticketsContract, fastRefresh, lotteryNumber])
 
   return tickets
 }

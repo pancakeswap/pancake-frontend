@@ -20,6 +20,7 @@ import { NftProviderContext } from '../../contexts/NftProvider'
 import { getPancakeRabbitContract } from '../../utils/contracts'
 import ClaimNftModal from '../ClaimNftModal'
 import BurnNftModal from '../BurnNftModal'
+import TransferNftModal from '../TransferNftModal'
 
 interface NftCardProps {
   nft: Nft
@@ -58,10 +59,20 @@ const NftCard: React.FC<NftCardProps> = ({ nft }) => {
     bunnyBurnCount: 0,
   })
   const TranslateString = useI18n()
-  const { isInitialized, canClaim, hasClaimed, canBurnNft, getTokenIds, reInitialize } = useContext(NftProviderContext)
+  const {
+    isInitialized,
+    canClaim,
+    hasClaimed,
+    canBurnNft,
+    totalSupplyDistributed,
+    currentDistributedSupply,
+    getTokenIds,
+    reInitialize,
+  } = useContext(NftProviderContext)
   const walletCanClaim = canClaim && !hasClaimed
   const { bunnyId, name, previewImage, originalImage, description } = nft
   const tokenIds = getTokenIds(bunnyId)
+  const isSupplyAvailable = currentDistributedSupply < totalSupplyDistributed
   const walletOwnsNft = tokenIds && tokenIds.length > 0
   const Icon = state.isOpen ? ChevronUpIcon : ChevronDownIcon
 
@@ -105,6 +116,9 @@ const NftCard: React.FC<NftCardProps> = ({ nft }) => {
 
   const [onPresentClaimModal] = useModal(<ClaimNftModal nft={nft} onSuccess={handleSuccess} />)
   const [onPresentBurnModal] = useModal(<BurnNftModal nft={nft} tokenIds={tokenIds} onSuccess={handleSuccess} />)
+  const [onPresentTransferModal] = useModal(
+    <TransferNftModal nft={nft} tokenIds={tokenIds} onSuccess={handleSuccess} />,
+  )
 
   return (
     <Card isActive={walletOwnsNft}>
@@ -123,7 +137,12 @@ const NftCard: React.FC<NftCardProps> = ({ nft }) => {
             </Tag>
           )}
         </Header>
-        {isInitialized && walletCanClaim && (
+        {isInitialized && walletOwnsNft && (
+          <Button fullWidth variant="secondary" mt="24px" onClick={onPresentTransferModal}>
+            {TranslateString(999, 'Transfer')}
+          </Button>
+        )}
+        {isInitialized && walletCanClaim && isSupplyAvailable && (
           <Button fullWidth onClick={onPresentClaimModal} mt="24px">
             {TranslateString(999, 'Claim this NFT')}
           </Button>

@@ -46,8 +46,8 @@ export const getTicketsContract = (sushi) => {
   return sushi && sushi.contracts && sushi.contracts.lotteryNft
 }
 
-export const getTickets = async (sushi, lotteryContract, ticketsContract, account) => {
-  const issueIdex = await lotteryContract.methods.issueIndex().call()
+export const getTickets = async (sushi, lotteryContract, ticketsContract, account, customLotteryNum) => {
+  const issueIdex = customLotteryNum || (await lotteryContract.methods.issueIndex().call())
   const length = await getTicketsAmount(ticketsContract, account)
 
   // eslint-disable-next-line prefer-spread

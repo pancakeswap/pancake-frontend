@@ -55,7 +55,7 @@ const Farms: React.FC<FarmsProps> = ({ removed }) => {
 
   return (
     <Page>
-      <Title>{TranslateString(320, 'Stake FLIP tokens to stack CAKE')}</Title>
+      <Title>{TranslateString(999, 'Stake LP tokens to earn CAKE')}</Title>
       <StyledLink exact activeClassName="active" to="/staking">
         Staking
       </StyledLink>

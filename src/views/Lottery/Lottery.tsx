@@ -1,96 +1,84 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { Switch } from 'react-router-dom'
+import { ButtonMenu, ButtonMenuItem } from '@pancakeswap-libs/uikit'
 import { useWallet } from 'use-wallet'
-import { BaseLayout } from '@pancakeswap-libs/uikit'
-import { getBalanceNumber } from 'utils/formatBalance'
-import { useTotalClaim } from 'hooks/useTickets'
+import PastLotteryDataContext from 'contexts/PastLotteryDataContext'
+import { getLotteryContract, getLotteryIssueIndex } from 'sushi/lotteryUtils'
+import useI18n from 'hooks/useI18n'
+import useSushi from 'hooks/useSushi'
 import Page from 'components/layout/Page'
-import Container from '../../components/layout/Container'
+import Container from 'components/layout/Container'
 import Hero from './components/Hero'
-import YourPrizesCard from './components/YourPrizesCard'
-import UnlockWalletCard from './components/UnlockWalletCard'
-import TicketCard from './components/TicketCard'
-import TotalPrizesCard from './components/TotalPrizesCard'
-import WinningNumbers from './components/WinningNumbers'
-import HowItWorks from './components/HowItWorks'
+import Divider from './components/Divider'
+import NextDrawPage from './NextDrawPage'
+import PastDrawsPage from './PastDrawsPage'
 
-const Cards = styled(BaseLayout)`
-  align-items: start;
-  margin-bottom: 32px;
-
-  & > div {
-    grid-column: span 6;
-  }
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    & > div {
-      grid-column: span 12;
-    }
-  }
-
-  ${({ theme }) => theme.mediaQueries.lg} {
-    & > div {
-      grid-column: span 6;
-    }
-  }
-`
-
-const SecondCardColumnWrapper = styled.div<{ isAWin?: boolean }>`
+const Wrapper = styled.div`
+  position: relative;
   display: flex;
-  flex-direction: ${(props) => (props.isAWin ? 'column' : 'column-reverse')};
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 32px;
 `
 
 const Lottery: React.FC = () => {
+  const sushi = useSushi()
+  const lotteryContract = getLotteryContract(sushi)
   const { account } = useWallet()
-  const { claimAmount } = useTotalClaim()
-  const winnings = getBalanceNumber(claimAmount)
-  const isAWin = winnings > 0
+  const TranslateString = useI18n()
+  const [activeIndex, setActiveIndex] = useState(0)
+  const [historyData, setHistoryData] = useState([])
+  const [historyError, setHistoryError] = useState(false)
+  const [currentLotteryNumber, setCurrentLotteryNumber] = useState(0)
+  const [mostRecentLotteryNumber, setMostRecentLotteryNumber] = useState(1)
 
-  // May be useful for 'Past draws'
-  // const sushi = useSushi()
-  // const lotteryContract = getLotteryContract(sushi)
-  // const [index, setIndex] = useState(0)
+  useEffect(() => {
+    fetch(`https://api.pancakeswap.com/api/lotteryHistory`)
+      .then((response) => response.json())
+      .then((data) => setHistoryData(data))
+      .catch(() => {
+        setHistoryError(true)
+      })
+  }, [])
 
-  // const fetchIndex = useCallback(async () => {
-  //   const issueIndex = await getLotteryIssueIndex(lotteryContract)
-  //   setIndex(issueIndex)
-  // }, [lotteryContract])
+  useEffect(() => {
+    const getInitialLotteryIndex = async () => {
+      const index = await getLotteryIssueIndex(lotteryContract)
+      const previousLotteryNumber = index - 1
 
-  // useEffect(() => {
-  //   if (account && lotteryContract && sushi) {
-  //     fetchIndex()
-  //   }
-  // }, [account, lotteryContract, sushi, fetchIndex])
+      setCurrentLotteryNumber(index)
+      setMostRecentLotteryNumber(previousLotteryNumber)
+    }
+
+    if (account && lotteryContract && sushi) {
+      getInitialLotteryIndex()
+    }
+  }, [account, lotteryContract, sushi])
+
+  const handleClick = (index) => {
+    setActiveIndex(index)
+  }
 
   return (
-    <Switch>
+    <>
       <Page>
         <Hero />
         <Container>
-          {/* Uncomment when implementing 'Past Draws' 
-          <Divider /> */}
-          <Cards>
-            <div>
-              <TotalPrizesCard />
-            </div>
-            <SecondCardColumnWrapper isAWin={isAWin}>
-              {!account ? (
-                <UnlockWalletCard />
-              ) : (
-                <>
-                  <YourPrizesCard />
-                  <TicketCard isSecondCard={isAWin} />
-                </>
-              )}
-            </SecondCardColumnWrapper>
-          </Cards>
-          <HowItWorks />
-          {/* legacy page content */}
-          <WinningNumbers />
+          <Wrapper>
+            <ButtonMenu activeIndex={activeIndex} onClick={handleClick} size="sm" variant="subtle">
+              <ButtonMenuItem>{TranslateString(999, 'Next draw')}</ButtonMenuItem>
+              <ButtonMenuItem>{TranslateString(999, 'Past draws')}</ButtonMenuItem>
+            </ButtonMenu>
+          </Wrapper>
+          <Divider />
+          <PastLotteryDataContext.Provider
+            value={{ historyError, historyData, mostRecentLotteryNumber, currentLotteryNumber }}
+          >
+            {activeIndex === 0 ? <NextDrawPage /> : <PastDrawsPage />}
+          </PastLotteryDataContext.Provider>
         </Container>
       </Page>
-    </Switch>
+    </>
   )
 }
 
