@@ -42,6 +42,7 @@ it("renders ConnectModal correctly", () => {
         >
           <button
             class="sc-eCssSg gfGMMG"
+            id="wallet-connect-metamask"
             style="justify-content: space-between;"
           >
             <div
@@ -183,6 +184,7 @@ it("renders ConnectModal correctly", () => {
           </button>
           <button
             class="sc-eCssSg gfGMMG"
+            id="wallet-connect-trustwallet"
             style="justify-content: space-between;"
           >
             <div
@@ -225,6 +227,7 @@ it("renders ConnectModal correctly", () => {
           </button>
           <button
             class="sc-eCssSg gfGMMG"
+            id="wallet-connect-mathwallet"
             style="justify-content: space-between;"
           >
             <div
@@ -256,6 +259,7 @@ it("renders ConnectModal correctly", () => {
           </button>
           <button
             class="sc-eCssSg gfGMMG"
+            id="wallet-connect-tokenpocket"
             style="justify-content: space-between;"
           >
             <div
@@ -289,6 +293,7 @@ it("renders ConnectModal correctly", () => {
           </button>
           <button
             class="sc-eCssSg iuYxsG"
+            id="wallet-connect-walletconnect"
             style="justify-content: space-between;"
           >
             <div
