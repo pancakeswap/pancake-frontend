@@ -1,6 +1,6 @@
 import React, { createContext, ReactNode, useEffect, useRef, useState } from 'react'
 import BigNumber from 'bignumber.js'
-import { useWallet } from 'use-wallet'
+import { useWallet } from '@binance-chain/bsc-use-wallet'
 import useBlock from 'hooks/useBlock'
 import rabbitmintingfarm from 'sushi/lib/abi/rabbitmintingfarm.json'
 import { RABBIT_MINTING_FARM_ADDRESS } from 'sushi/lib/constants/nfts'

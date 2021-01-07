@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import Web3 from 'web3'
-import { useWallet } from 'use-wallet'
+import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { Button, Input, Modal, Text } from '@pancakeswap-libs/uikit'
 import { PANCAKE_RABBITS_ADDRESS } from 'sushi/lib/constants/nfts'
 import { Nft } from 'sushi/lib/constants/types'

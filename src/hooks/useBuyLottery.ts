@@ -1,5 +1,5 @@
 import { useCallback, useState, useEffect } from 'react'
-import { useWallet } from 'use-wallet'
+import { useWallet } from '@binance-chain/bsc-use-wallet'
 
 import useSushi from './useSushi'
 import { getLotteryContract, getTicketsContract, multiClaim, getMax, multiBuy } from '../sushi/lotteryUtils'

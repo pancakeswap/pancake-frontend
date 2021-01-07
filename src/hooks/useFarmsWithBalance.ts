@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import BigNumber from 'bignumber.js'
-import { useWallet } from 'use-wallet'
+import { useWallet } from '@binance-chain/bsc-use-wallet'
 import multicall from 'utils/multicall'
 import masterChefABI from 'sushi/lib/abi/masterchef.json'
 import addresses from 'sushi/lib/constants/contracts'

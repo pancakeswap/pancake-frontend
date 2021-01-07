@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import styled, { keyframes } from 'styled-components'
-import { useWallet } from 'use-wallet'
+import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { Link as ReactRouterLink } from 'react-router-dom'
 import { Button, Flex } from '@pancakeswap-libs/uikit'
 import { communityFarms } from 'sushi/lib/constants'

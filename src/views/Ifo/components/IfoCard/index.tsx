@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { useWallet } from 'use-wallet'
+import { useWallet } from '@binance-chain/bsc-use-wallet'
 import BigNumber from 'bignumber.js'
 import { Card, CardBody, CardRibbon } from '@pancakeswap-libs/uikit'
 import { BSC_BLOCK_TIME } from 'config'
