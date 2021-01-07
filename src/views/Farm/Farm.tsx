@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
-import { useWallet } from 'use-wallet'
+import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { provider } from 'web3-core'
 import { getContract } from 'utils/erc20'
 import useI18n from 'hooks/useI18n'

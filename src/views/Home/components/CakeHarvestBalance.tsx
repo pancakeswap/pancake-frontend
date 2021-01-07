@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Text } from '@pancakeswap-libs/uikit'
-import { useWallet } from 'use-wallet'
+import { useWallet } from '@binance-chain/bsc-use-wallet'
 import BigNumber from 'bignumber.js'
 import useI18n from 'hooks/useI18n'
 import useAllEarnings from 'hooks/useAllEarnings'

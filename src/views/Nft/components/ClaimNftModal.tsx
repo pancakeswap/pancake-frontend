@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { useWallet } from 'use-wallet'
+import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { Button, Modal, Text } from '@pancakeswap-libs/uikit'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { RABBIT_MINTING_FARM_ADDRESS } from 'sushi/lib/constants/nfts'

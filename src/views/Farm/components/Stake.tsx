@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
-import { useWallet } from 'use-wallet'
+import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { Contract } from 'web3-eth-contract'
 import { Button, IconButton, useModal, AddIcon, Card, CardBody } from '@pancakeswap-libs/uikit'
 import Label from 'components/Label'

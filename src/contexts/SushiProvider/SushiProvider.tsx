@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useState } from 'react'
-import { useWallet } from 'use-wallet'
+import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { Sushi } from '../../sushi'
 
 export interface SushiContext {

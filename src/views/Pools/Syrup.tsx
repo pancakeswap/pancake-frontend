@@ -1,7 +1,7 @@
 import React from 'react'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
-import { useWallet } from 'use-wallet'
+import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { Heading } from '@pancakeswap-libs/uikit'
 import { BLOCKS_PER_YEAR } from 'config'
 import orderBy from 'lodash/orderBy'
