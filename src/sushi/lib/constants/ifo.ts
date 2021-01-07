@@ -71,7 +71,7 @@ const ifos: Ifo[] = [
     saleAmount: '10,000,000 Helmet',
     raiseAmount: '$1,000,000',
     cakeToBurn: '$500,000',
-    projectSiteUrl: 'http://www.helmet.insure/',
+    projectSiteUrl: 'https://www.helmet.insure/',
     currency: 'CAKE-BNB LP',
     currencyAddress: '0xA527a61703D82139F8a06Bc30097cC9CAA2df5A6',
     tokenDecimals: 18,
