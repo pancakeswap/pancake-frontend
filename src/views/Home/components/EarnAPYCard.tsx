@@ -18,18 +18,11 @@ const StyledFarmStakingCard = styled(Card)`
     max-width: none;
   }
 `
-const CardTitle = styled(Heading)`
-  display: flex;
-  margin-bottom: 0px;
-  color: #452a7a;
+const Label = styled(Heading)`
+  color: ${({ theme }) => theme.colors.display};
 `
 const CardMidContent = styled(Heading).attrs({ size: 'xl' })`
-  margin-bottom: 0px;
   color: #7645d9;
-`
-const CardFooter = styled(Heading)`
-  display: flex;
-  color: #452a7a;
 `
 const Row = styled.div`
   display: flex;
@@ -53,14 +46,14 @@ const EarnAPYCard = () => {
   return (
     <StyledFarmStakingCard>
       <CardBody>
-        <CardTitle>Earn up to</CardTitle>
-        <CardMidContent>
+        <Label mb={0}>Earn up to</Label>
+        <CardMidContent mb={0}>
           {calculateAPY()
             ? `${calculateAPY().times(new BigNumber(100)).toNumber().toLocaleString('en-US').slice(0, -1)}%`
             : `Loading...`}{' '}
           {TranslateString(352, 'APY')}
         </CardMidContent>
-        <CardFooter>in Farms</CardFooter>
+        <Label>in Farms</Label>
         <NavLink exact activeClassName="active" to="/farms">
           <Row>
             <ArrowForwardIcon />
