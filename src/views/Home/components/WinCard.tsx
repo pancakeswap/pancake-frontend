@@ -17,19 +17,13 @@ const StyledFarmStakingCard = styled(Card)`
     max-width: none;
   }
 `
-const CardTitle = styled(Heading)`
-  display: flex;
-  margin-bottom: 0px;
-  color: #452a7a;
+const Label = styled(Heading)`
+  color: ${({ theme }) => theme.colors.display};
 `
 const CardMidContent = styled(Heading).attrs({ size: 'xl' })`
-  margin-bottom: 0px;
   color: #7645d9;
 `
-const CardFooter = styled(Heading)`
-  display: flex;
-  color: #452a7a;
-`
+
 const Row = styled.div`
   display: flex;
   justify-content: flex-end;
@@ -43,11 +37,11 @@ const WinCard = () => {
   return (
     <StyledFarmStakingCard>
       <CardBody>
-        <CardTitle>Win up to</CardTitle>
-        <CardMidContent>
+        <Label mb={0}>Win up to</Label>
+        <CardMidContent mb={0}>
           {lotteryPrizeWithCommaSeparators} {TranslateString(999, 'CAKE')}
         </CardMidContent>
-        <CardFooter>in Lottery</CardFooter>
+        <Label>in Lottery</Label>
         <NavLink exact activeClassName="active" to="/lottery">
           <Row>
             <ArrowForwardIcon />
