@@ -60,7 +60,7 @@ const ifos: Ifo[] = [
   },
   {
     id: 'helmet',
-    address: '',
+    address: '0xa32509d760ee47Eb2Be96D338b5d69B5FBa4eFEB',
     isActive: true,
     name: 'Helmet.insure (Helmet)',
     subTitle: 'Crypto-assets insurance trading platform',
@@ -73,7 +73,7 @@ const ifos: Ifo[] = [
     cakeToBurn: '$500,000',
     projectSiteUrl: 'http://www.helmet.insure/',
     currency: 'CAKE-BNB LP',
-    currencyAddress: '0xa32509d760ee47Eb2Be96D338b5d69B5FBa4eFEB',
+    currencyAddress: '0xA527a61703D82139F8a06Bc30097cC9CAA2df5A6',
     tokenDecimals: 18,
     releaseBlockNumber: 3771926,
   },
