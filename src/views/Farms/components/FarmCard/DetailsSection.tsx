@@ -1,7 +1,7 @@
 import React from 'react'
 import useI18n from 'hooks/useI18n'
 import styled from 'styled-components'
-import { Text, Flex } from '@pancakeswap-libs/uikit'
+import { Text, Flex, Link } from '@pancakeswap-libs/uikit'
 
 export interface ExpandableSectionProps {
   bscScanAddress?: string
@@ -10,13 +10,8 @@ export interface ExpandableSectionProps {
   lpSymbol?: string
 }
 
-const Link = styled.a`
-  text-decoration: none;
-  color: ${(props) => props.theme.colors.secondary};
-`
-
 const Wrapper = styled.div`
-  margin-top: 28px;
+  margin-top: 24px;
 `
 
 const DetailsSection: React.FC<ExpandableSectionProps> = ({
@@ -39,9 +34,11 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
           <Text>{totalValueFormated}</Text>
         </Flex>
       )}
-      <Link href={bscScanAddress} target="_blank">
-        {TranslateString(356, 'View on BscScan')} &gt;
-      </Link>
+      <Flex justifyContent="flex-start">
+        <Link external href={bscScanAddress} target="_blank" bold={false}>
+          {TranslateString(356, 'View on BscScan')}
+        </Link>
+      </Flex>
     </Wrapper>
   )
 }
