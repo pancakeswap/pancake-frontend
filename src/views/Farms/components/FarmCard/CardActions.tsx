@@ -53,13 +53,26 @@ const CardActions: React.FC<FarmCardActionsProps> = ({ farm }) => {
     return isAllowed ? (
       <div>wa</div>
     ) : (
-      <Button disabled={requestedApproval} onClick={handleApprove}>
-        {TranslateString(452, 'Approve Contract')}
+      <Button fullWidth disabled={requestedApproval} onClick={handleApprove}>
+        {TranslateString(999, 'Approve Contract')}
       </Button>
     )
   }
 
-  return <Action>{!account ? <UnlockButton fullWidth /> : renderApprovalOrStakeButton()}</Action>
+  return (
+    <Action>
+      {/* Both text elements should make use of updated textTransform prop when uikit version is deployed */}
+      <Flex mb="6px">
+        <Text bold color="secondary" fontSize="12px" pr="3px">
+          {tokenName}
+        </Text>
+        <Text bold color="textSubtle" fontSize="12px">
+          {TranslateString(999, 'Staked')}
+        </Text>
+      </Flex>
+      {!account ? <UnlockButton fullWidth /> : renderApprovalOrStakeButton()}
+    </Action>
+  )
 }
 
 export default CardActions
