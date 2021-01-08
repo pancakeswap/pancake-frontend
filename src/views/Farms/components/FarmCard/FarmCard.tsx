@@ -11,7 +11,7 @@ import ExpandableSectionButton from 'components/ExpandableSectionButton'
 import { QuoteToken } from 'sushi/lib/constants/types'
 import DetailsSection from './DetailsSection'
 import CardHeading from './CardHeading'
-import CardActions from './CardActions'
+import CardActions from './CardActionsContainer'
 
 export interface FarmWithStakedValue extends Farm {
   apy?: BigNumber

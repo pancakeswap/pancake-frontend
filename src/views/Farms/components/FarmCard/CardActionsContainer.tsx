@@ -11,6 +11,7 @@ import { useFarmFromSymbol, useFarmUser } from 'state/hooks'
 import useI18n from 'hooks/useI18n'
 import UnlockButton from 'components/UnlockButton'
 import { useApprove } from 'hooks/useApprove'
+import FarmAction from './FarmAction'
 
 const Action = styled.div`
   padding-top: 16px;
@@ -51,7 +52,7 @@ const CardActions: React.FC<FarmCardActionsProps> = ({ farm }) => {
 
   const renderApprovalOrStakeButton = () => {
     return isAllowed ? (
-      <div>wa</div>
+      <FarmAction isStaking balance={stakedBalance} />
     ) : (
       <Button fullWidth disabled={requestedApproval} onClick={handleApprove}>
         {TranslateString(999, 'Approve Contract')}
@@ -62,7 +63,7 @@ const CardActions: React.FC<FarmCardActionsProps> = ({ farm }) => {
   return (
     <Action>
       {/* Both text elements should make use of updated textTransform prop when uikit version is deployed */}
-      <Flex mb="6px">
+      <Flex mb="4px">
         <Text bold color="secondary" fontSize="12px" pr="3px">
           {tokenName}
         </Text>
