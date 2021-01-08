@@ -32,7 +32,7 @@ const CardActions: React.FC<FarmCardActionsProps> = ({ farm }) => {
   const { allowance, tokenBalance, stakedBalance, earnings } = useFarmUser(pid, account)
   const lpAddress = lpAddresses[process.env.REACT_APP_CHAIN_ID]
   const lpName = farm.lpSymbol.toUpperCase()
-  const isAllowed = account && allowance && allowance.isGreaterThan(0)
+  const isApproved = account && allowance && allowance.isGreaterThan(0)
 
   const lpContract = useMemo(() => {
     return getContract(ethereum as provider, lpAddress)
@@ -51,7 +51,7 @@ const CardActions: React.FC<FarmCardActionsProps> = ({ farm }) => {
   }, [onApprove])
 
   const renderApprovalOrStakeButton = () => {
-    return isAllowed ? (
+    return isApproved ? (
       <StakeAction stakedBalance={stakedBalance} tokenBalance={tokenBalance} tokenName={lpName} pid={pid} />
     ) : (
       <Button mt="8px" fullWidth disabled={requestedApproval} onClick={handleApprove}>
