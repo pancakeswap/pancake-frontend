@@ -194,15 +194,11 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
       />
       <ExpandingWrapper expanded={showExpandableSection}>
         <ExpandableSection
+          removed={removed}
           bscScanAddress={`https://bscscan.com/address/${farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]}`}
+          totalValueFormated={totalValueFormated}
         />
       </ExpandingWrapper>
-      {!removed && (
-        <Label>
-          <span>{TranslateString(23, 'Total Liquidity')}</span>
-          <span className="right">{totalValueFormated}</span>
-        </Label>
-      )}
     </FCard>
   )
 }
