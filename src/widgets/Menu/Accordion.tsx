@@ -8,6 +8,7 @@ import { ArrowDropDownIcon, ArrowDropUpIcon } from "../../components/Svg";
 interface Props extends PushedProps {
   label: string;
   icon: React.ReactElement;
+  initialOpenState?: boolean;
 }
 
 const Container = styled.div`
@@ -24,8 +25,8 @@ const AccordionContent = styled.div<{ isOpen: boolean; isPushed: boolean; maxHei
   border-top: ${({ isOpen, isPushed }) => (isOpen && isPushed ? "solid 2px rgba(133, 133, 133, 0.1)" : 0)};
 `;
 
-const Accordion: React.FC<Props> = ({ label, icon, isPushed, pushNav, children }) => {
-  const [isOpen, setIsOpen] = useState(false);
+const Accordion: React.FC<Props> = ({ label, icon, isPushed, pushNav, initialOpenState = false, children }) => {
+  const [isOpen, setIsOpen] = useState(initialOpenState);
 
   const handleClick = () => {
     if (isPushed) {

@@ -25,6 +25,7 @@ export interface MenuEntry {
   icon: string;
   items?: MenuSubEntry[];
   href?: string;
+  initialOpenState?: boolean;
 }
 
 export interface PanelProps {
