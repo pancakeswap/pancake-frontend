@@ -58,10 +58,16 @@ const useMatchBreakpoints = (): State => {
         }));
       };
 
-      mql.addEventListener("change", handler);
+      // Safari < 14 fix
+      if (mql.addEventListener) {
+        mql.addEventListener("change", handler);
+      }
 
       return () => {
-        mql.removeEventListener("change", handler);
+        // Safari < 14 fix
+        if (mql.removeEventListener) {
+          mql.removeEventListener("change", handler);
+        }
       };
     });
 
