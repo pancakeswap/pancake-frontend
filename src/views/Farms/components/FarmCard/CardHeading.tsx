@@ -1,7 +1,6 @@
 import React from 'react'
-import useI18n from 'hooks/useI18n'
 import styled from 'styled-components'
-import { Tag, Flex, Link, Heading } from '@pancakeswap-libs/uikit'
+import { Tag, Flex, Heading } from '@pancakeswap-libs/uikit'
 import { CommunityTag, CoreTag } from 'components/Tags'
 
 export interface ExpandableSectionProps {
@@ -29,8 +28,6 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
   farmImage,
   tokenSymbol,
 }) => {
-  const TranslateString = useI18n()
-
   return (
     <Wrapper justifyContent="space-between" alignItems="center" mb="12px">
       <div>
