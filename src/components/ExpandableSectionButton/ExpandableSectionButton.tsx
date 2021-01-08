@@ -4,17 +4,13 @@ import { ChevronDownIcon, ChevronUpIcon, Text } from '@pancakeswap-libs/uikit'
 
 export interface ExpandableSectionButtonProps {
   onClick?: () => void
-  expanded: boolean
+  expanded?: boolean
 }
 
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    display: none;
-  }
 
   svg {
     fill: ${({ theme }) => theme.colors.primary};

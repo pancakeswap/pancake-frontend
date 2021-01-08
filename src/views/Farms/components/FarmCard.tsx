@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useState } from 'react'
 import BigNumber from 'bignumber.js'
 import styled, { keyframes } from 'styled-components'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
@@ -10,6 +10,7 @@ import { usePriceBnbBusd, usePriceCakeBusd } from 'state/hooks'
 import useI18n from 'hooks/useI18n'
 import { CommunityTag, CoreTag } from 'components/Tags'
 import UnlockButton from 'components/UnlockButton'
+import ExpandableSectionButton from 'components/ExpandableSectionButton'
 import { QuoteToken } from 'sushi/lib/constants/types'
 
 export interface FarmWithStakedValue extends Farm {
@@ -127,6 +128,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
   const cakePrice = usePriceCakeBusd()
   const bnbPrice = usePriceBnbBusd()
   const { account } = useWallet()
+  const [showExpandableSection, setShowExpandableSection] = useState(false)
 
   const isCommunityFarm = communityFarms.includes(farm.tokenSymbol)
   // We assume the token name is coin pair + lp e.g. CAKE-BNB LP, LINK-BNB LP,
@@ -189,6 +191,10 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
           <UnlockButton fullWidth />
         )}
       </Action>
+      <ExpandableSectionButton
+        onClick={() => setShowExpandableSection(!showExpandableSection)}
+        expanded={showExpandableSection}
+      />
       {!removed && (
         <Label>
           <span>{TranslateString(23, 'Total Liquidity')}</span>
