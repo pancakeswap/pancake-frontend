@@ -1,7 +1,6 @@
 import React, { useMemo, useState } from 'react'
 import BigNumber from 'bignumber.js'
 import styled, { keyframes } from 'styled-components'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { Flex, Text } from '@pancakeswap-libs/uikit'
 import { communityFarms } from 'sushi/lib/constants'
 import { Farm } from 'state/types'
@@ -143,9 +142,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
         <Text>{TranslateString(318, 'Earn')}:</Text>
         <Text bold>{earnLabel}</Text>
       </Flex>
-
       <CardActions farm={farm} />
-
       <Divider />
       <ExpandableSectionButton
         onClick={() => setShowExpandableSection(!showExpandableSection)}
