@@ -31,7 +31,6 @@ it("renders correctly", () => {
         login={noop}
         logout={noop}
         isDark={false}
-        isMobile
         toggleTheme={noop}
         langs={langs}
         setLang={noop}
