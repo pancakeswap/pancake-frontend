@@ -12,6 +12,7 @@ import { CommunityTag, CoreTag } from 'components/Tags'
 import UnlockButton from 'components/UnlockButton'
 import ExpandableSectionButton from 'components/ExpandableSectionButton'
 import { QuoteToken } from 'sushi/lib/constants/types'
+import ExpandableSection from './ExpandableSection'
 
 export interface FarmWithStakedValue extends Farm {
   apy?: BigNumber
@@ -19,15 +20,6 @@ export interface FarmWithStakedValue extends Farm {
 
 const Action = styled.div`
   padding: 16px 0;
-`
-
-const ViewMore = styled.div`
-  padding-top: 16px;
-`
-
-const Link = styled.a`
-  text-decoration: none;
-  color: ${(props) => props.theme.colors.secondary};
 `
 
 const RainbowLight = keyframes`
@@ -117,6 +109,11 @@ const FCard = styled.div`
   }
 `
 
+const ExpandingWrapper = styled.div<{ expanded: boolean }>`
+  height: ${(props) => (props.expanded ? '100%' : '0px')};
+  overflow: hidden;
+`
+
 interface FarmCardProps {
   farm: FarmWithStakedValue
   removed: boolean
@@ -195,17 +192,17 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
         onClick={() => setShowExpandableSection(!showExpandableSection)}
         expanded={showExpandableSection}
       />
+      <ExpandingWrapper expanded={showExpandableSection}>
+        <ExpandableSection
+          bscScanAddress={`https://bscscan.com/address/${farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]}`}
+        />
+      </ExpandingWrapper>
       {!removed && (
         <Label>
           <span>{TranslateString(23, 'Total Liquidity')}</span>
           <span className="right">{totalValueFormated}</span>
         </Label>
       )}
-      <ViewMore>
-        <Link href={`https://bscscan.com/address/${farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]}`} target="_blank">
-          {TranslateString(356, 'View on BscScan')} &gt;
-        </Link>
-      </ViewMore>
     </FCard>
   )
 }

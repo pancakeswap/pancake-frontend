@@ -8,7 +8,7 @@ import { useFarms, usePriceBnbBusd } from 'state/hooks'
 import { QuoteToken } from 'sushi/lib/constants/types'
 import useI18n from 'hooks/useI18n'
 import Page from 'components/Page'
-import FarmCard, { FarmWithStakedValue } from './components/FarmCard'
+import FarmCard, { FarmWithStakedValue } from './components/FarmCard/FarmCard'
 
 interface FarmsProps {
   removed: boolean
