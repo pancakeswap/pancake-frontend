@@ -6,6 +6,7 @@ export interface ExpandableSectionProps {
   bscScanAddress?: string
   removed?: boolean
   totalValueFormated?: string
+  lpSymbol?: string
 }
 
 const Link = styled.a`
@@ -26,11 +27,20 @@ const Label = styled.div`
   }
 `
 
-const ExpandableSectionButton: React.FC<ExpandableSectionProps> = ({ bscScanAddress, removed, totalValueFormated }) => {
+const DetailsSection: React.FC<ExpandableSectionProps> = ({
+  bscScanAddress,
+  removed,
+  totalValueFormated,
+  lpSymbol,
+}) => {
   const TranslateString = useI18n()
 
   return (
     <>
+      <Label>
+        <span>{TranslateString(316, 'Stake')}</span>
+        <span className="right">{lpSymbol}</span>
+      </Label>
       {!removed && (
         <Label>
           <span>{TranslateString(23, 'Total Liquidity')}</span>
@@ -44,4 +54,4 @@ const ExpandableSectionButton: React.FC<ExpandableSectionProps> = ({ bscScanAddr
   )
 }
 
-export default ExpandableSectionButton
+export default DetailsSection

@@ -12,7 +12,7 @@ import { CommunityTag, CoreTag } from 'components/Tags'
 import UnlockButton from 'components/UnlockButton'
 import ExpandableSectionButton from 'components/ExpandableSectionButton'
 import { QuoteToken } from 'sushi/lib/constants/types'
-import ExpandableSection from './ExpandableSection'
+import DetailsSection from './DetailsSection'
 
 export interface FarmWithStakedValue extends Farm {
   apy?: BigNumber
@@ -149,6 +149,8 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
     ? `$${Number(totalValue).toLocaleString(undefined, { maximumFractionDigits: 0 })}`
     : '-'
 
+  const lpSymbol = farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('PANCAKE', '')
+
   return (
     <FCard>
       {farm.tokenSymbol === 'CAKE' && <StyledCardAccent />}
@@ -193,10 +195,11 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
         expanded={showExpandableSection}
       />
       <ExpandingWrapper expanded={showExpandableSection}>
-        <ExpandableSection
+        <DetailsSection
           removed={removed}
           bscScanAddress={`https://bscscan.com/address/${farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]}`}
           totalValueFormated={totalValueFormated}
+          lpSymbol={lpSymbol}
         />
       </ExpandingWrapper>
     </FCard>
