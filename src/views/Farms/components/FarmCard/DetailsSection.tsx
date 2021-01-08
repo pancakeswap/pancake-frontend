@@ -1,6 +1,7 @@
 import React from 'react'
 import useI18n from 'hooks/useI18n'
 import styled from 'styled-components'
+import { Text, Flex } from '@pancakeswap-libs/uikit'
 
 export interface ExpandableSectionProps {
   bscScanAddress?: string
@@ -14,17 +15,8 @@ const Link = styled.a`
   color: ${(props) => props.theme.colors.secondary};
 `
 
-const Label = styled.div`
-  line-height: 1.5rem;
-  color: ${(props) => props.theme.colors.secondary};
-  > span {
-    float: left;
-  }
-  .right {
-    float: right;
-    color: ${(props) => props.theme.colors.primary};
-    font-weight: 900;
-  }
+const Wrapper = styled.div`
+  margin-top: 28px;
 `
 
 const DetailsSection: React.FC<ExpandableSectionProps> = ({
@@ -36,21 +28,21 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
   const TranslateString = useI18n()
 
   return (
-    <>
-      <Label>
-        <span>{TranslateString(316, 'Stake')}</span>
-        <span className="right">{lpSymbol}</span>
-      </Label>
+    <Wrapper>
+      <Flex justifyContent="space-between">
+        <Text>{TranslateString(316, 'Stake')}:</Text>
+        <Text>{lpSymbol}</Text>
+      </Flex>
       {!removed && (
-        <Label>
-          <span>{TranslateString(23, 'Total Liquidity')}</span>
-          <span className="right">{totalValueFormated}</span>
-        </Label>
+        <Flex justifyContent="space-between">
+          <Text>{TranslateString(23, 'Total Liquidity')}:</Text>
+          <Text>{totalValueFormated}</Text>
+        </Flex>
       )}
       <Link href={bscScanAddress} target="_blank">
         {TranslateString(356, 'View on BscScan')} &gt;
       </Link>
-    </>
+    </Wrapper>
   )
 }
 

@@ -19,7 +19,7 @@ export interface FarmWithStakedValue extends Farm {
 }
 
 const Action = styled.div`
-  padding: 16px 0;
+  padding-top: 16px;
 `
 
 const RainbowLight = keyframes`
@@ -109,6 +109,13 @@ const FCard = styled.div`
   }
 `
 
+const Divider = styled.div`
+  background-color: ${({ theme }) => theme.colors.borderColor};
+  height: 1px;
+  margin: 28px auto;
+  width: 100%;
+`
+
 const ExpandingWrapper = styled.div<{ expanded: boolean }>`
   height: ${(props) => (props.expanded ? '100%' : '0px')};
   overflow: hidden;
@@ -190,6 +197,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
           <UnlockButton fullWidth />
         )}
       </Action>
+      <Divider />
       <ExpandableSectionButton
         onClick={() => setShowExpandableSection(!showExpandableSection)}
         expanded={showExpandableSection}
