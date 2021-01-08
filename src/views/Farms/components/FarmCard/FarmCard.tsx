@@ -2,25 +2,20 @@ import React, { useMemo, useState } from 'react'
 import BigNumber from 'bignumber.js'
 import styled, { keyframes } from 'styled-components'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
-import { Link as ReactRouterLink } from 'react-router-dom'
-import { Button, Flex, Text } from '@pancakeswap-libs/uikit'
+import { Flex, Text } from '@pancakeswap-libs/uikit'
 import { communityFarms } from 'sushi/lib/constants'
 import { Farm } from 'state/types'
 import { usePriceBnbBusd, usePriceCakeBusd } from 'state/hooks'
 import useI18n from 'hooks/useI18n'
-import UnlockButton from 'components/UnlockButton'
 import ExpandableSectionButton from 'components/ExpandableSectionButton'
 import { QuoteToken } from 'sushi/lib/constants/types'
 import DetailsSection from './DetailsSection'
 import CardHeading from './CardHeading'
+import CardActions from './CardActions'
 
 export interface FarmWithStakedValue extends Farm {
   apy?: BigNumber
 }
-
-const Action = styled.div`
-  padding-top: 16px;
-`
 
 const RainbowLight = keyframes`
 	0% {
@@ -61,21 +56,8 @@ const StyledCardAccent = styled.div`
   z-index: -1;
 `
 
-const Label = styled.div`
-  line-height: 1.5rem;
-  color: ${(props) => props.theme.colors.secondary};
-  > span {
-    float: left;
-  }
-  .right {
-    float: right;
-    color: ${(props) => props.theme.colors.primary};
-    font-weight: 900;
-  }
-`
-
 const FCard = styled.div`
-  align-self: stretch;
+  align-self: baseline;
   background: ${(props) => props.theme.card.background};
   border-radius: 32px;
   box-shadow: 0px 2px 12px -8px rgba(25, 19, 38, 0.1), 0px 1px 1px rgba(25, 19, 38, 0.05);
@@ -113,7 +95,6 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
   const TranslateString = useI18n()
   const cakePrice = usePriceCakeBusd()
   const bnbPrice = usePriceBnbBusd()
-  const { account } = useWallet()
   const [showExpandableSection, setShowExpandableSection] = useState(false)
 
   const isCommunityFarm = communityFarms.includes(farm.tokenSymbol)
@@ -140,7 +121,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
 
   const lpLabel = farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('PANCAKE', '')
   const earnLabel = farm.dual ? farm.dual.earnLabel : 'CAKE'
-  const farmAPY = farm.apy.times(new BigNumber(100)).toNumber().toLocaleString('en-US').slice(0, -1)
+  const farmAPY = farm.apy && farm.apy.times(new BigNumber(100)).toNumber().toLocaleString('en-US').slice(0, -1)
 
   return (
     <FCard>
@@ -163,17 +144,8 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
         <Text bold>{earnLabel}</Text>
       </Flex>
 
-      <Action>
-        {account ? (
-          /* No full width props because of as={ReactRouterLink} */
-          // @ts-ignore
-          <Button as={ReactRouterLink} to={`/farms/${farm.lpSymbol}`} style={{ width: '100%' }}>
-            {TranslateString(568, 'Select')}
-          </Button>
-        ) : (
-          <UnlockButton fullWidth />
-        )}
-      </Action>
+      <CardActions farm={farm} />
+
       <Divider />
       <ExpandableSectionButton
         onClick={() => setShowExpandableSection(!showExpandableSection)}
