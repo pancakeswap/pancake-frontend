@@ -39,13 +39,13 @@ const FarmAction: React.FC<FarmCardActionsProps> = ({ stakedBalance, tokenBalanc
 
   const renderStakingButtons = () => {
     return displayBalance === 0 ? (
-      <Button>Stake LP</Button>
+      <Button onClick={onPresentDeposit}>Stake LP</Button>
     ) : (
       <>
-        <Button onClick={onPresentWithdraw}>
+        <IconButton onClick={onPresentWithdraw}>
           {/* This should be changed to SubtractIcon once uikit updated */}
           <AddIcon color="background" />
-        </Button>
+        </IconButton>
         <IconButton onClick={onPresentDeposit}>
           <AddIcon color="background" />
         </IconButton>
