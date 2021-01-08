@@ -1,4 +1,2 @@
-import useParticleBurst from "./useParticleBurst";
-
+export { default as useMatchBreakpoints } from "./useMatchBreakpoints";
 export { default as useParticleBurst } from "./useParticleBurst";
-export default useParticleBurst;

@@ -1,14 +1,22 @@
 import { MediaQueries, Breakpoints, Spacing } from "./types";
 
-const breakpoints: Breakpoints = ["370px", "576px", "852px", "968px", "1080px"];
+export const breakpointMap: { [key: string]: number } = {
+  xs: 370,
+  sm: 576,
+  md: 852,
+  lg: 968,
+  xl: 1080,
+};
+
+const breakpoints: Breakpoints = Object.values(breakpointMap).map((breakpoint) => `${breakpoint}px`);
 
 const mediaQueries: MediaQueries = {
-  xs: `@media screen and (min-width: ${breakpoints[0]})`,
-  sm: `@media screen and (min-width: ${breakpoints[1]})`,
-  md: `@media screen and (min-width: ${breakpoints[2]})`,
-  lg: `@media screen and (min-width: ${breakpoints[3]})`,
-  xl: `@media screen and (min-width: ${breakpoints[4]})`,
-  nav: `@media screen and (min-width: ${breakpoints[3]})`,
+  xs: `@media screen and (min-width: ${breakpointMap.xs}px)`,
+  sm: `@media screen and (min-width: ${breakpointMap.sm}px)`,
+  md: `@media screen and (min-width: ${breakpointMap.md}px)`,
+  lg: `@media screen and (min-width: ${breakpointMap.lg}px)`,
+  xl: `@media screen and (min-width: ${breakpointMap.xl}px)`,
+  nav: `@media screen and (min-width: ${breakpointMap.lg}px)`,
 };
 
 export const shadows = {

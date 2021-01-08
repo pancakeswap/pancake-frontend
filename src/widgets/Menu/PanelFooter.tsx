@@ -6,8 +6,9 @@ import Flex from "../../components/Flex/Flex";
 import Dropdown from "../../components/Dropdown/Dropdown";
 import Link from "../../components/Link/Link";
 import Skeleton from "../../components/Skeleton/Skeleton";
+import Button from "../../components/Button/Button";
+import IconButton from "../../components/Button/IconButton";
 import MenuButton from "./MenuButton";
-import { MenuEntry } from "./MenuEntry";
 import * as IconModule from "./icons";
 import { socials, MENU_ENTRY_HEIGHT } from "./config";
 import { PanelProps, PushedProps } from "./types";
@@ -18,10 +19,8 @@ const Icons = (IconModule as unknown) as { [key: string]: React.FC<SvgProps> };
 const { MoonIcon, SunIcon, LanguageIcon } = Icons;
 
 const Container = styled.div`
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
+  flex: none;
+  padding: 8px 4px;
   background-color: ${({ theme }) => theme.nav.background};
   border-top: solid 2px rgba(133, 133, 133, 0.1);
 `;
@@ -68,9 +67,9 @@ const PanelFooter: React.FC<Props> = ({
   if (!isPushed) {
     return (
       <Container>
-        <MenuEntry onClick={() => pushNav(true)}>
+        <IconButton variant="text" onClick={() => pushNav(true)}>
           <CogIcon />
-        </MenuEntry>
+        </IconButton>
       </Container>
     );
   }
@@ -111,7 +110,7 @@ const PanelFooter: React.FC<Props> = ({
         </Flex>
       </SocialEntry>
       <SettingsEntry>
-        <MenuButton onClick={() => toggleTheme(!isDark)}>
+        <Button variant="text" onClick={() => toggleTheme(!isDark)}>
           {/* alignItems center is a Safari fix */}
           <Flex alignItems="center">
             <SunIcon color={isDark ? "textDisabled" : "text"} width="24px" />
@@ -120,13 +119,13 @@ const PanelFooter: React.FC<Props> = ({
             </Text>
             <MoonIcon color={isDark ? "text" : "textDisabled"} width="24px" />
           </Flex>
-        </MenuButton>
+        </Button>
         <Dropdown
           position="top-right"
           target={
-            <MenuButton startIcon={<LanguageIcon color="textSubtle" width="24px" />}>
+            <Button variant="text" startIcon={<LanguageIcon color="textSubtle" width="24px" />}>
               <Text color="textSubtle">{currentLang?.toUpperCase()}</Text>
-            </MenuButton>
+            </Button>
           }
         >
           {langs.map((lang) => (

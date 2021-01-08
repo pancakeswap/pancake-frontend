@@ -17,11 +17,14 @@ const Container = styled.div`
   flex-direction: column;
   overflow-y: auto;
   overflow-x: hidden;
-  padding-bottom: 98px; // Because PanelFooter is in absolute position
+  height: 100%;
 `;
 
-const PanelBody: React.FC<Props> = ({ isPushed, pushNav, links }) => {
+const PanelBody: React.FC<Props> = ({ isPushed, pushNav, isMobile, links }) => {
   const location = useLocation();
+
+  // Close the menu when a user clicks a link on mobile
+  const handleClick = isMobile ? () => pushNav(false) : undefined;
 
   return (
     <Container>
@@ -33,7 +36,7 @@ const PanelBody: React.FC<Props> = ({ isPushed, pushNav, links }) => {
             <Accordion key={entry.label} isPushed={isPushed} pushNav={pushNav} icon={iconElement} label={entry.label}>
               {isPushed &&
                 entry.items.map((item) => (
-                  <MenuEntry key={item.href} secondary isActive={item.href === location.pathname}>
+                  <MenuEntry key={item.href} secondary isActive={item.href === location.pathname} onClick={handleClick}>
                     <MenuLink href={item.href}>{item.label}</MenuLink>
                   </MenuEntry>
                 ))}
@@ -42,7 +45,7 @@ const PanelBody: React.FC<Props> = ({ isPushed, pushNav, links }) => {
         }
         return (
           <MenuEntry key={entry.label} isActive={entry.href === location.pathname}>
-            <MenuLink href={entry.href}>
+            <MenuLink href={entry.href} onClick={handleClick}>
               {iconElement}
               <LinkLabel isPushed={isPushed}>{entry.label}</LinkLabel>
             </MenuLink>

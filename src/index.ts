@@ -18,7 +18,7 @@ export * from "./components/Skeleton";
 export * from "./components/Toggle";
 
 // Hooks
-export { default as useParticleBurst } from "./hooks";
+export * from "./hooks";
 
 // Widgets
 export * from "./widgets/Modal";

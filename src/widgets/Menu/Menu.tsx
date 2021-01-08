@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import debounce from "lodash/debounce";
 import Overlay from "../../components/Overlay/Overlay";
+import { useMatchBreakpoints } from "../../hooks";
 import Logo from "./Logo";
 import Panel from "./Panel";
 import UserBlock from "./UserBlock";
@@ -47,8 +48,9 @@ const Inner = styled.div<{ isPushed: boolean; showMenu: boolean }>`
 `;
 
 const MobileOnlyOverlay = styled(Overlay)`
-  position: absolute;
+  position: fixed;
   height: 100%;
+
   ${({ theme }) => theme.mediaQueries.nav} {
     display: none;
   }
@@ -67,7 +69,9 @@ const Menu: React.FC<NavProps> = ({
   links,
   children,
 }) => {
-  const [isPushed, setIsPushed] = useState(true);
+  const { isXl } = useMatchBreakpoints();
+  const isMobile = isXl === false;
+  const [isPushed, setIsPushed] = useState(!isMobile);
   const [showMenu, setShowMenu] = useState(true);
   const refPrevOffset = useRef(window.pageYOffset);
 
@@ -108,6 +112,7 @@ const Menu: React.FC<NavProps> = ({
       <BodyWrapper>
         <Panel
           isPushed={isPushed}
+          isMobile={isMobile}
           showMenu={showMenu}
           isDark={isDark}
           toggleTheme={toggleTheme}
