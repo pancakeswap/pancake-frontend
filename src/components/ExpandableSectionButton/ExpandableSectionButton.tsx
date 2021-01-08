@@ -1,9 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
-import { ChevronDownIcon, Text } from '@pancakeswap-libs/uikit'
+import { ChevronDownIcon, ChevronUpIcon, Text } from '@pancakeswap-libs/uikit'
 
 export interface ExpandableSectionButtonProps {
   onClick?: () => void
+  expanded: boolean
 }
 
 const Wrapper = styled.div`
@@ -20,15 +21,19 @@ const Wrapper = styled.div`
   }
 `
 
-const ExpandableSectionButton: React.FC<ExpandableSectionButtonProps> = ({ onClick }) => {
+const ExpandableSectionButton: React.FC<ExpandableSectionButtonProps> = ({ onClick, expanded }) => {
   return (
     <Wrapper onClick={() => onClick()}>
       <Text color="primary" bold>
-        Details
+        {expanded ? 'Hide' : 'Details'}
       </Text>
-      <ChevronDownIcon />
+      {expanded ? <ChevronUpIcon /> : <ChevronDownIcon />}
     </Wrapper>
   )
+}
+
+ExpandableSectionButton.defaultProps = {
+  expanded: false,
 }
 
 export default ExpandableSectionButton

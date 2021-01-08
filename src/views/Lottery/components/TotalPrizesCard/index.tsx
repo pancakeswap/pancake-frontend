@@ -78,7 +78,7 @@ const TotalPrizesCard = () => {
             </PrizeCountWrapper>
           </Left>
           <Right>
-            <ExpandableSectionButton onClick={() => setHideFooter(!hideFooter)} />
+            <ExpandableSectionButton onClick={() => setHideFooter(!hideFooter)} expanded={!hideFooter} />
           </Right>
         </CardHeading>
       </CardBody>
