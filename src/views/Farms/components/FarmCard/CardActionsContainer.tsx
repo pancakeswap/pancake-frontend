@@ -52,7 +52,7 @@ const CardActions: React.FC<FarmCardActionsProps> = ({ farm }) => {
 
   const renderApprovalOrStakeButton = () => {
     return isAllowed ? (
-      <FarmAction isStaking balance={stakedBalance} />
+      <FarmAction isStaking stakedBalance={stakedBalance} tokenBalance={tokenBalance} tokenName={tokenName} pid={pid} />
     ) : (
       <Button fullWidth disabled={requestedApproval} onClick={handleApprove}>
         {TranslateString(999, 'Approve Contract')}
