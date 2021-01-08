@@ -6,8 +6,8 @@ import { getBalanceNumber } from 'utils/formatBalance'
 import useI18n from 'hooks/useI18n'
 import { useTotalRewards } from 'hooks/useTickets'
 import PastLotteryDataContext from 'contexts/PastLotteryDataContext'
+import ExpandableSectionButton from 'components/ExpandableSectionButton/ExpandableSectionButton'
 import PrizeGrid from '../PrizeGrid'
-import DetailsButton from './DetailsButton'
 
 const CardHeading = styled.div`
   position: relative;
@@ -78,7 +78,7 @@ const TotalPrizesCard = () => {
             </PrizeCountWrapper>
           </Left>
           <Right>
-            <DetailsButton onClick={() => setHideFooter(!hideFooter)} />
+            <ExpandableSectionButton onClick={() => setHideFooter(!hideFooter)} />
           </Right>
         </CardHeading>
       </CardBody>
