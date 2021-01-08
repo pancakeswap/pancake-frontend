@@ -30,7 +30,8 @@ const FarmAction: React.FC<FarmCardActionsProps> = ({ stakedBalance, tokenBalanc
   const { onStake } = useStake(pid)
   const { onUnstake } = useUnstake(pid)
 
-  const displayBalance = getBalanceNumber(stakedBalance)
+  const rawStakedBalance = getBalanceNumber(stakedBalance)
+  const displayBalance = rawStakedBalance.toLocaleString()
 
   const [onPresentDeposit] = useModal(<DepositModal max={tokenBalance} onConfirm={onStake} tokenName={tokenName} />)
   const [onPresentWithdraw] = useModal(
@@ -38,18 +39,18 @@ const FarmAction: React.FC<FarmCardActionsProps> = ({ stakedBalance, tokenBalanc
   )
 
   const renderStakingButtons = () => {
-    return displayBalance === 0 ? (
-      <Button onClick={onPresentDeposit}>Stake LP</Button>
+    return rawStakedBalance === 0 ? (
+      <Button onClick={onPresentDeposit}>{TranslateString(999, 'Stake LP')}</Button>
     ) : (
-      <>
-        <IconButton onClick={onPresentWithdraw}>
+      <div>
+        <IconButton variant="tertiary" onClick={onPresentWithdraw} mr="6px">
           {/* This should be changed to SubtractIcon once uikit updated */}
-          <AddIcon color="background" />
+          <AddIcon color="primary" />
         </IconButton>
-        <IconButton onClick={onPresentDeposit}>
-          <AddIcon color="background" />
+        <IconButton variant="tertiary" onClick={onPresentDeposit}>
+          <AddIcon color="primary" />
         </IconButton>
-      </>
+      </div>
     )
   }
 
@@ -59,7 +60,7 @@ const FarmAction: React.FC<FarmCardActionsProps> = ({ stakedBalance, tokenBalanc
 
   return (
     <Flex justifyContent="space-between" alignItems="center">
-      <Heading color={displayBalance === 0 ? 'textDisabled' : 'text'}>{displayBalance}</Heading>
+      <Heading color={rawStakedBalance === 0 ? 'textDisabled' : 'text'}>{displayBalance}</Heading>
       {isStaking ? renderStakingButtons() : renderHarvestButtons()}
     </Flex>
   )
