@@ -7,26 +7,21 @@ export interface ExpandableSectionProps {
   bscScanAddress?: string
   removed?: boolean
   totalValueFormated?: string
-  lpSymbol?: string
+  lpLabel?: string
 }
 
 const Wrapper = styled.div`
   margin-top: 24px;
 `
 
-const DetailsSection: React.FC<ExpandableSectionProps> = ({
-  bscScanAddress,
-  removed,
-  totalValueFormated,
-  lpSymbol,
-}) => {
+const DetailsSection: React.FC<ExpandableSectionProps> = ({ bscScanAddress, removed, totalValueFormated, lpLabel }) => {
   const TranslateString = useI18n()
 
   return (
     <Wrapper>
       <Flex justifyContent="space-between">
         <Text>{TranslateString(316, 'Stake')}:</Text>
-        <Text>{lpSymbol}</Text>
+        <Text>{lpLabel}</Text>
       </Flex>
       {!removed && (
         <Flex justifyContent="space-between">

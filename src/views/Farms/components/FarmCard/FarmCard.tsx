@@ -8,11 +8,11 @@ import { communityFarms } from 'sushi/lib/constants'
 import { Farm } from 'state/types'
 import { usePriceBnbBusd, usePriceCakeBusd } from 'state/hooks'
 import useI18n from 'hooks/useI18n'
-import { CommunityTag, CoreTag } from 'components/Tags'
 import UnlockButton from 'components/UnlockButton'
 import ExpandableSectionButton from 'components/ExpandableSectionButton'
 import { QuoteToken } from 'sushi/lib/constants/types'
 import DetailsSection from './DetailsSection'
+import CardHeading from './CardHeading'
 
 export interface FarmWithStakedValue extends Farm {
   apy?: BigNumber
@@ -59,24 +59,6 @@ const StyledCardAccent = styled.div`
   bottom: -2px;
   left: -2px;
   z-index: -1;
-`
-
-const Multiplier = styled.div`
-  line-height: 25px;
-  padding: 0 8px;
-  background: #25beca;
-  border-radius: 8px;
-  color: ${(props) => props.theme.colors.background};
-  font-weight: 900;
-  margin-bottom: 8px;
-  display: inline-block;
-`
-
-const CardImage = styled.div`
-  display: flex;
-  justify-content: space-between;
-  text-align: center;
-  margin-bottom: 16px;
 `
 
 const Label = styled.div`
@@ -156,25 +138,22 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
     ? `$${Number(totalValue).toLocaleString(undefined, { maximumFractionDigits: 0 })}`
     : '-'
 
-  const lpSymbol = farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('PANCAKE', '')
+  const lpLabel = farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('PANCAKE', '')
+  const earnLabel = farm.dual ? farm.dual.earnLabel : 'CAKE'
 
   return (
     <FCard>
       {farm.tokenSymbol === 'CAKE' && <StyledCardAccent />}
-      <CardImage>
-        <Flex flexDirection="column" alignItems="flex-start">
-          <Multiplier>{farm.multiplier}</Multiplier>
-          {isCommunityFarm ? <CommunityTag /> : <CoreTag />}
-        </Flex>
-        <img src={`/images/farms/${farmImage}.svg`} alt={farm.tokenSymbol} />
-      </CardImage>
-      <Label>
-        <span>{TranslateString(316, 'Deposit')}</span>
-        <span className="right">{farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('PANCAKE', '')}</span>
-      </Label>
+      <CardHeading
+        lpLabel={lpLabel}
+        multiplier={farm.multiplier}
+        isCommunityFarm={isCommunityFarm}
+        farmImage={farmImage}
+        tokenSymbol={farm.tokenSymbol}
+      />
       <Label>
         <span>{TranslateString(318, 'Earn')}</span>
-        <span className="right">{farm.dual ? farm.dual.earnLabel : 'CAKE'}</span>
+        <span className="right">{earnLabel}</span>
       </Label>
       {!removed && (
         <Label>
@@ -207,7 +186,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
           removed={removed}
           bscScanAddress={`https://bscscan.com/address/${farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]}`}
           totalValueFormated={totalValueFormated}
-          lpSymbol={lpSymbol}
+          lpLabel={lpLabel}
         />
       </ExpandingWrapper>
     </FCard>
