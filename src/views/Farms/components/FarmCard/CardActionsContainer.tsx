@@ -11,7 +11,7 @@ import { useFarmFromSymbol, useFarmUser } from 'state/hooks'
 import useI18n from 'hooks/useI18n'
 import UnlockButton from 'components/UnlockButton'
 import { useApprove } from 'hooks/useApprove'
-import FarmAction from './FarmAction'
+import StakeAction from './StakeAction'
 
 const Action = styled.div`
   padding-top: 16px;
@@ -31,7 +31,7 @@ const CardActions: React.FC<FarmCardActionsProps> = ({ farm }) => {
   const { pid, lpAddresses, tokenSymbol, dual } = useFarmFromSymbol(farm.lpSymbol)
   const { allowance, tokenBalance, stakedBalance, earnings } = useFarmUser(pid, account)
   const lpAddress = lpAddresses[process.env.REACT_APP_CHAIN_ID]
-  const tokenName = farm.lpSymbol.toUpperCase()
+  const lpName = farm.lpSymbol.toUpperCase()
   const isAllowed = account && allowance && allowance.isGreaterThan(0)
 
   const lpContract = useMemo(() => {
@@ -52,7 +52,7 @@ const CardActions: React.FC<FarmCardActionsProps> = ({ farm }) => {
 
   const renderApprovalOrStakeButton = () => {
     return isAllowed ? (
-      <FarmAction isStaking stakedBalance={stakedBalance} tokenBalance={tokenBalance} tokenName={tokenName} pid={pid} />
+      <StakeAction stakedBalance={stakedBalance} tokenBalance={tokenBalance} tokenName={lpName} pid={pid} />
     ) : (
       <Button fullWidth disabled={requestedApproval} onClick={handleApprove}>
         {TranslateString(999, 'Approve Contract')}
@@ -62,10 +62,18 @@ const CardActions: React.FC<FarmCardActionsProps> = ({ farm }) => {
 
   return (
     <Action>
-      {/* Both text elements should make use of updated textTransform prop when uikit version is deployed */}
+      {/* These text elements should make use of updated textTransform prop when uikit version is deployed */}
       <Flex mb="4px">
         <Text bold color="secondary" fontSize="12px" pr="3px">
-          {tokenName}
+          {tokenSymbol}
+        </Text>
+        <Text bold color="textSubtle" fontSize="12px">
+          {TranslateString(999, 'EARNED')}
+        </Text>
+      </Flex>
+      <Flex mb="4px">
+        <Text bold color="secondary" fontSize="12px" pr="3px">
+          {lpName}
         </Text>
         <Text bold color="textSubtle" fontSize="12px">
           {TranslateString(999, 'Staked')}
