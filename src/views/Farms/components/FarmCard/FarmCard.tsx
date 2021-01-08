@@ -3,7 +3,7 @@ import BigNumber from 'bignumber.js'
 import styled, { keyframes } from 'styled-components'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { Link as ReactRouterLink } from 'react-router-dom'
-import { Button, Flex } from '@pancakeswap-libs/uikit'
+import { Button, Flex, Text } from '@pancakeswap-libs/uikit'
 import { communityFarms } from 'sushi/lib/constants'
 import { Farm } from 'state/types'
 import { usePriceBnbBusd, usePriceCakeBusd } from 'state/hooks'
@@ -140,6 +140,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
 
   const lpLabel = farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('PANCAKE', '')
   const earnLabel = farm.dual ? farm.dual.earnLabel : 'CAKE'
+  const farmAPY = farm.apy.times(new BigNumber(100)).toNumber().toLocaleString('en-US').slice(0, -1)
 
   return (
     <FCard>
@@ -151,20 +152,17 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
         farmImage={farmImage}
         tokenSymbol={farm.tokenSymbol}
       />
-      <Label>
-        <span>{TranslateString(318, 'Earn')}</span>
-        <span className="right">{earnLabel}</span>
-      </Label>
       {!removed && (
-        <Label>
-          <span>{TranslateString(352, 'APY')}</span>
-          <span className="right">
-            {farm.apy
-              ? `${farm.apy.times(new BigNumber(100)).toNumber().toLocaleString('en-US').slice(0, -1)}%`
-              : 'Loading ...'}
-          </span>
-        </Label>
+        <Flex justifyContent="space-between">
+          <Text>{TranslateString(352, 'APY')}:</Text>
+          <Text bold>{farm.apy ? `${farmAPY}%` : 'Loading ...'}</Text>
+        </Flex>
       )}
+      <Flex justifyContent="space-between">
+        <Text>{TranslateString(318, 'Earn')}:</Text>
+        <Text bold>{earnLabel}</Text>
+      </Flex>
+
       <Action>
         {account ? (
           /* No full width props because of as={ReactRouterLink} */
