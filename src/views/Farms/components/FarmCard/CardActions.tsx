@@ -1,35 +1,20 @@
-import React, { useMemo, useState } from 'react'
+import React, { useMemo, useState, useCallback } from 'react'
 import BigNumber from 'bignumber.js'
-import styled, { keyframes } from 'styled-components'
+import styled from 'styled-components'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
-import { Link as ReactRouterLink } from 'react-router-dom'
+import { Contract } from 'web3-eth-contract'
+import { provider } from 'web3-core'
+import { getContract } from 'utils/erc20'
 import { Button, Flex, Text } from '@pancakeswap-libs/uikit'
-import { communityFarms } from 'sushi/lib/constants'
 import { Farm } from 'state/types'
-import { usePriceBnbBusd, usePriceCakeBusd } from 'state/hooks'
+import { useFarmFromSymbol, useFarmUser } from 'state/hooks'
 import useI18n from 'hooks/useI18n'
 import UnlockButton from 'components/UnlockButton'
-import ExpandableSectionButton from 'components/ExpandableSectionButton'
-import { QuoteToken } from 'sushi/lib/constants/types'
-import DetailsSection from './DetailsSection'
-import CardHeading from './CardHeading'
+import { useApprove } from 'hooks/useApprove'
 
 const Action = styled.div`
   padding-top: 16px;
 `
-
-const RainbowLight = keyframes`
-	0% {
-		background-position: 0% 50%;
-	}
-	50% {
-		background-position: 100% 50%;
-	}
-	100% {
-		background-position: 0% 50%;
-	}
-`
-
 export interface FarmWithStakedValue extends Farm {
   apy?: BigNumber
 }
@@ -40,21 +25,41 @@ interface FarmCardActionsProps {
 
 const CardActions: React.FC<FarmCardActionsProps> = ({ farm }) => {
   const TranslateString = useI18n()
-  const { account } = useWallet()
+  const [requestedApproval, setRequestedApproval] = useState(false)
+  const { ethereum, account } = useWallet()
+  const { pid, lpAddresses, tokenSymbol, dual } = useFarmFromSymbol(farm.lpSymbol)
+  const { allowance, tokenBalance, stakedBalance, earnings } = useFarmUser(pid, account)
+  const lpAddress = lpAddresses[process.env.REACT_APP_CHAIN_ID]
+  const tokenName = farm.lpSymbol.toUpperCase()
+  const isAllowed = account && allowance && allowance.isGreaterThan(0)
 
-  return (
-    <Action>
-      {account ? (
-        /* No full width props because of as={ReactRouterLink} */
-        // @ts-ignore
-        <Button as={ReactRouterLink} to={`/farms/${farm.lpSymbol}`} style={{ width: '100%' }}>
-          {TranslateString(568, 'Select')}
-        </Button>
-      ) : (
-        <UnlockButton fullWidth />
-      )}
-    </Action>
-  )
+  const lpContract = useMemo(() => {
+    return getContract(ethereum as provider, lpAddress)
+  }, [ethereum, lpAddress])
+
+  const { onApprove } = useApprove(lpContract, pid)
+
+  const handleApprove = useCallback(async () => {
+    try {
+      setRequestedApproval(true)
+      await onApprove()
+      setRequestedApproval(false)
+    } catch (e) {
+      console.error(e)
+    }
+  }, [onApprove])
+
+  const renderApprovalOrStakeButton = () => {
+    return isAllowed ? (
+      <div>wa</div>
+    ) : (
+      <Button disabled={requestedApproval} onClick={handleApprove}>
+        {TranslateString(452, 'Approve Contract')}
+      </Button>
+    )
+  }
+
+  return <Action>{!account ? <UnlockButton fullWidth /> : renderApprovalOrStakeButton()}</Action>
 }
 
 export default CardActions
