@@ -1,7 +1,7 @@
 import React from 'react'
 import useI18n from 'hooks/useI18n'
 import styled from 'styled-components'
-import { Text, Flex, Link } from '@pancakeswap-libs/uikit'
+import { Tag, Flex, Link, Heading } from '@pancakeswap-libs/uikit'
 import { CommunityTag, CoreTag } from 'components/Tags'
 
 export interface ExpandableSectionProps {
@@ -12,22 +12,14 @@ export interface ExpandableSectionProps {
   tokenSymbol?: string
 }
 
-const Wrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  text-align: center;
-  margin-bottom: 16px;
+const Wrapper = styled(Flex)`
+  svg {
+    margin-right: 0.25rem;
+  }
 `
 
-const Multiplier = styled.div`
-  line-height: 25px;
-  padding: 0 8px;
-  background: #25beca;
-  border-radius: 8px;
-  color: ${(props) => props.theme.colors.background};
-  font-weight: 900;
-  margin-bottom: 8px;
-  display: inline-block;
+const MultiplierTag = styled(Tag)`
+  margin-left: 4px;
 `
 
 const CardHeading: React.FC<ExpandableSectionProps> = ({
@@ -40,13 +32,16 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
   const TranslateString = useI18n()
 
   return (
-    <Wrapper>
-      <Flex>
-        <Flex flexDirection="column" alignItems="flex-start">
-          <Multiplier>{multiplier}</Multiplier>
-          {isCommunityFarm ? <CommunityTag /> : <CoreTag />}
-        </Flex>
+    <Wrapper justifyContent="space-between" alignItems="center" mb="12px">
+      <div>
         <img src={`/images/farms/${farmImage}.svg`} alt={tokenSymbol} />
+      </div>
+      <Flex flexDirection="column">
+        <Heading mb="4px">{lpLabel}</Heading>
+        <Flex alignItems="center" justifyContent="center">
+          {isCommunityFarm ? <CommunityTag /> : <CoreTag />}
+          <MultiplierTag variant="secondary">{multiplier}</MultiplierTag>
+        </Flex>
       </Flex>
     </Wrapper>
   )
