@@ -68,7 +68,7 @@ const CardActions: React.FC<FarmCardActionsProps> = ({ farm }) => {
           {tokenSymbol}
         </Text>
         <Text bold color="textSubtle" fontSize="12px">
-          {TranslateString(999, 'EARNED')}
+          {TranslateString(999, 'Earned')}
         </Text>
       </Flex>
       <HarvestAction earnings={earnings} pid={pid} />

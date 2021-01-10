@@ -2,7 +2,7 @@ import React from 'react'
 import useI18n from 'hooks/useI18n'
 import styled from 'styled-components'
 import { Text, Flex, Link, OpenNewIcon } from '@pancakeswap-libs/uikit'
-import getAddLiquidityUrlPathParts from 'utils/getAddLiquidityUrlPathParts'
+import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 
 export interface TokenAddressesObject {
   56?: string
@@ -47,7 +47,7 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
   tokenAddresses,
 }) => {
   const TranslateString = useI18n()
-  const liquidityUrlPathParts = getAddLiquidityUrlPathParts({ quoteTokenAdresses, quoteTokenSymbol, tokenAddresses })
+  const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAdresses, quoteTokenSymbol, tokenAddresses })
 
   return (
     <Wrapper>
