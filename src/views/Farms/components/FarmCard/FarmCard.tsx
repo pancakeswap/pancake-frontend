@@ -122,6 +122,8 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
   const earnLabel = farm.dual ? farm.dual.earnLabel : 'CAKE'
   const farmAPY = farm.apy && farm.apy.times(new BigNumber(100)).toNumber().toLocaleString('en-US').slice(0, -1)
 
+  const { quoteTokenAdresses, quoteTokenSymbol, tokenAddresses } = farm
+
   return (
     <FCard>
       {farm.tokenSymbol === 'CAKE' && <StyledCardAccent />}
@@ -154,6 +156,9 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
           bscScanAddress={`https://bscscan.com/address/${farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]}`}
           totalValueFormated={totalValueFormated}
           lpLabel={lpLabel}
+          quoteTokenAdresses={quoteTokenAdresses}
+          quoteTokenSymbol={quoteTokenSymbol}
+          tokenAddresses={tokenAddresses}
         />
       </ExpandingWrapper>
     </FCard>

@@ -2,12 +2,20 @@ import React from 'react'
 import useI18n from 'hooks/useI18n'
 import styled from 'styled-components'
 import { Text, Flex, Link, OpenNewIcon } from '@pancakeswap-libs/uikit'
+import getAddLiquidityUrlPathParts from 'utils/getAddLiquidityUrlPathParts'
 
+export interface TokenAddressesObject {
+  56?: string
+  97?: string
+}
 export interface ExpandableSectionProps {
   bscScanAddress?: string
   removed?: boolean
   totalValueFormated?: string
   lpLabel?: string
+  quoteTokenAdresses?: TokenAddressesObject
+  quoteTokenSymbol?: string
+  tokenAddresses: TokenAddressesObject
 }
 
 const Wrapper = styled.div`
@@ -29,14 +37,23 @@ const StyledLink = styled(Link)`
   }
 `
 
-const DetailsSection: React.FC<ExpandableSectionProps> = ({ bscScanAddress, removed, totalValueFormated, lpLabel }) => {
+const DetailsSection: React.FC<ExpandableSectionProps> = ({
+  bscScanAddress,
+  removed,
+  totalValueFormated,
+  lpLabel,
+  quoteTokenAdresses,
+  quoteTokenSymbol,
+  tokenAddresses,
+}) => {
   const TranslateString = useI18n()
+  const liquidityUrlPathParts = getAddLiquidityUrlPathParts({ quoteTokenAdresses, quoteTokenSymbol, tokenAddresses })
 
   return (
     <Wrapper>
       <Flex justifyContent="space-between">
         <Text>{TranslateString(316, 'Stake')}:</Text>
-        <StyledLink external href="https://exchange.pancakeswap.finance/#/pool">
+        <StyledLink external href={`https://exchange.pancakeswap.finance/#/add/${liquidityUrlPathParts}`}>
           {lpLabel} <OpenNewIcon />
         </StyledLink>
       </Flex>
