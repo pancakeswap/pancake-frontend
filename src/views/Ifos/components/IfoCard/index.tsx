@@ -28,6 +28,7 @@ const StyledIfoCard = styled(Card)<{ ifoId: string }>`
   margin-left: auto;
   margin-right: auto;
   max-width: 437px;
+  width: 100%;
 `
 
 const getStatus = (currentBlock: number, startBlock: number, endBlock: number): IfoStatus | null => {
@@ -151,7 +152,7 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
           block={isActive || isFinished ? state.endBlockNum : state.startBlockNum}
         />
         {!account && <UnlockButton fullWidth />}
-        {(isActive || isFinished) && (
+        {isActive && !isFinished && (
           <IfoCardContribute
             address={address}
             currency={currency}

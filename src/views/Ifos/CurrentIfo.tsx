@@ -6,6 +6,7 @@ import useI18n from 'hooks/useI18n'
 import Container from 'components/layout/Container'
 import IfoCard from './components/IfoCard'
 import Title from './components/Title'
+import IfoCards from './components/IfoCards'
 
 const LaunchIfoCallout = styled(BaseLayout)`
   border-top: 2px solid ${({ theme }) => theme.colors.textSubtle};
@@ -13,18 +14,11 @@ const LaunchIfoCallout = styled(BaseLayout)`
   grid-template-columns: 1fr;
   grid-gap: 32px;
   margin: 0 auto;
-  max-width: 700px;
   padding: 32px 0;
 
   ${({ theme }) => theme.mediaQueries.sm} {
     grid-template-columns: 1fr 1fr;
   }
-`
-
-const IfoCardWrapper = styled.div`
-  border-top: 2px solid ${({ theme }) => theme.colors.textSubtle};
-  padding-bottom: 40px;
-  padding-top: 40px;
 `
 
 const List = styled.ul`
@@ -47,9 +41,9 @@ const Ifo = () => {
 
   return (
     <Container>
-      <IfoCardWrapper>
+      <IfoCards isSingle>
         <IfoCard ifo={activeIfo} />
-      </IfoCardWrapper>
+      </IfoCards>
       <LaunchIfoCallout>
         <div>
           <Title as="h2">{TranslateString(592, 'How to take part')}</Title>
