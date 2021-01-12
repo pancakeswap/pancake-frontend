@@ -34,6 +34,23 @@ const farms: FarmConfig[] = [
     multiplier: '40X',
   },
   {
+    pid: 55,
+    lpSymbol: 'Helmet-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    tokenSymbol: 'Helmet',
+    tokenAddresses: {
+      97: '',
+      56: '',
+    },
+    quoteTokenSymbol: QuoteToken.BNB,
+    quoteTokenAdresses: contracts.wbnb,
+    multiplier: '2X',
+    isCommunity: false,
+  },
+  {
     pid: 54,
     lpSymbol: 'LTC-BNB LP',
     lpAddresses: {
