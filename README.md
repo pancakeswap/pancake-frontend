@@ -1,37 +1,38 @@
-# 🥞 Pancake UI Kit
+# 🥞 Pancake UIkit
+
+Pancake UIkit is a set of React components and hooks used to build pages on Pancake's apps. It also contains a theme file for dark and light mode.
 
 ## Install
 
 `yarn add @pancakeswap-libs/uikit`
 
-## Documentation
+## Setup
 
-If you want to use components from the UIkit, check the [Storybook documentation](https://pancakeswap.github.io/pancake-uikit/)
+### Theme
 
-## Developing
+Before using Pancake UIkit, you need to provide the theme file to styled-component.
 
-This project uses [Storybook](https://storybook.js.org/). To start development run
-
-```shell
-$ yarn storybook
+```
+import { ThemeProvider } from 'styled-components'
+import { light, dark } from '@pancakeswap-libs/uikit'
+...
+<ThemeProvider theme={isDark}>...</ThemeProvider>
 ```
 
-## Committing
+### Reset
 
-Commit messages follow [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) using [commitlint](https://commitlint.js.org/#/).
+A reset CSS is available as a global styled component.
 
-### Core Types
+```
+import { ResetCSS } from '@pancakeswap-libs/uikit'
+...
+<ResetCSS />
+```
 
-[From Angular's guidlines](https://github.com/angular/angular/blob/22b96b9/CONTRIBUTING.md#-commit-message-guidelines)
+### Types
 
-| Type         | Description                                                                                                 |
-| ------------ | ----------------------------------------------------------------------------------------------------------- |
-| **build**    | Changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm)         |
-| **ci**       | Changes to our CI configuration files and scripts (example scopes: Travis, Circle, BrowserStack, SauceLabs) |
-| **docs**     | Documentation only changes                                                                                  |
-| **feat**     | A new feature                                                                                               |
-| **fix**      | A bug fix                                                                                                   |
-| **perf**     | A code change that improves performance                                                                     |
-| **refactor** | A code change that neither fixes a bug nor adds a feature                                                   |
-| **style**    | Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)      |
-| **test**     | Adding missing tests or correcting existing tests                                                           |
+This project is built with Typescript and export all the relevant types.
+
+## How to use the UIkit
+
+If you want to use components from the UIkit, check the [Storybook documentation](https://pancakeswap.github.io/pancake-uikit/)
