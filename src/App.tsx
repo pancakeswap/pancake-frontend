@@ -30,40 +30,41 @@ const App: React.FC = () => {
     <Router>
       <ResetCSS />
       <GlobalStyle />
-      <Menu />
-      <Switch>
-        <Route path="/" exact>
-          <Home />
-        </Route>
-        <Route exact path="/farms">
-          <Farms removed={false} />
-        </Route>
-        <Route path="/farms/:lpSymbol">
-          <Farm />
-        </Route>
-        <Route path="/staking">
-          <Stake />
-        </Route>
-        <Route path="/pools">
-          <Pools />
-        </Route>
-        <Route path="/syrup">
-          <Redirect to="/pools" />
-        </Route>
-        <Route path="/lottery">
-          <Lottery />
-        </Route>
-        <Route path="/removed">
-          <Farms removed />
-        </Route>
-        <Route path="/ifo">
-          <Ifos />
-        </Route>
-        <Route path="/nft">
-          <Nft />
-        </Route>
-        <Route component={NotFound} />
-      </Switch>
+      <Menu>
+        <Switch>
+          <Route path="/" exact>
+            <Home />
+          </Route>
+          <Route exact path="/farms">
+            <Farms removed={false} />
+          </Route>
+          <Route path="/farms/:lpSymbol">
+            <Farm />
+          </Route>
+          <Route path="/staking">
+            <Stake />
+          </Route>
+          <Route path="/pools">
+            <Pools />
+          </Route>
+          <Route path="/syrup">
+            <Redirect to="/pools" />
+          </Route>
+          <Route path="/lottery">
+            <Lottery />
+          </Route>
+          <Route path="/removed">
+            <Farms removed />
+          </Route>
+          <Route path="/ifo">
+            <Ifos />
+          </Route>
+          <Route path="/nft">
+            <Nft />
+          </Route>
+          <Route component={NotFound} />
+        </Switch>
+      </Menu>
       <NftGlobalNotification />
     </Router>
   )
