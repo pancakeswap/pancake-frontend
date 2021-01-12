@@ -31,7 +31,7 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
-    multiplier: '30X',
+    multiplier: '40X',
   },
   {
     pid: 51,
@@ -98,7 +98,7 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
-    multiplier: '1X',
+    multiplier: '0.5X',
     isCommunity: false,
   },
   {
@@ -115,7 +115,7 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
-    multiplier: '1X',
+    multiplier: '0.5X',
     isCommunity: false,
   },
   {
@@ -132,7 +132,7 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
-    multiplier: '1X',
+    multiplier: '0.5X',
     isCommunity: false,
   },
   {
@@ -183,7 +183,7 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
-    multiplier: '1X',
+    multiplier: '0.5X',
     isCommunity: false,
   },
   {
@@ -200,7 +200,7 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
-    multiplier: '1X',
+    multiplier: '0.5X',
     isCommunity: false,
   },
   {
@@ -525,7 +525,7 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
-    multiplier: '1X',
+    multiplier: '0.5X',
   },
   {
     pid: 21,
@@ -541,7 +541,7 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
-    multiplier: '1X',
+    multiplier: '0X',
   },
   {
     pid: 22,
@@ -589,7 +589,7 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
-    multiplier: '2X',
+    multiplier: '1X',
   },
   {
     pid: 25,
@@ -653,7 +653,7 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
-    multiplier: '1X',
+    multiplier: '0X',
   },
   {
     pid: 30,
