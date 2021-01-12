@@ -9,6 +9,7 @@ import { QuoteToken } from 'sushi/lib/constants/types'
 import useI18n from 'hooks/useI18n'
 import Page from 'components/Page'
 import FarmCard, { FarmWithStakedValue } from './components/FarmCard'
+import Table from './components/Table'
 
 interface FarmsProps {
   removed: boolean
@@ -60,6 +61,7 @@ const Farms: React.FC<FarmsProps> = ({ removed }) => {
         Staking
       </StyledLink>
       <Page>
+        <Table data={["test"]} />
         <Grid>
           {farmsToDisplayWithAPY.map((farm) => (
             <FarmCard key={farm.pid} farm={farm} removed={removed} />
