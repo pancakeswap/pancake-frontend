@@ -23,16 +23,7 @@ const config: MenuEntry[] = [
   {
     label: 'Farms',
     icon: 'FarmIcon',
-    items: [
-      {
-        label: 'Active',
-        href: '/farms',
-      },
-      {
-        label: 'Inactive',
-        href: '/farms/history',
-      },
-    ],
+    href: '/farms',
   },
   {
     label: 'Pools',
@@ -74,16 +65,7 @@ const config: MenuEntry[] = [
   {
     label: 'IFO',
     icon: 'IfoIcon',
-    items: [
-      {
-        label: 'Next',
-        href: '/ifo',
-      },
-      {
-        label: 'History',
-        href: '/ifo/history',
-      },
-    ],
+    href: '/ifo',
   },
   {
     label: 'More',
