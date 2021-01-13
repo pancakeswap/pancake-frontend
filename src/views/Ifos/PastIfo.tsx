@@ -1,6 +1,6 @@
 import React from 'react'
-import { ifosConfig } from 'sushi/lib/constants'
-import { Ifo } from 'sushi/lib/constants/types'
+import { ifosConfig } from 'config/constants'
+import { Ifo } from 'config/constants/types'
 import IfoCard from './components/IfoCard'
 import IfoCards from './components/IfoCards'
 
