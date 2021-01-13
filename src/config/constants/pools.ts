@@ -19,6 +19,23 @@ const pools: PoolConfig[] = [
     tokenDecimals: 18,
   },
   {
+    sousId: 35,
+    tokenName: 'BTCST',
+    stakingTokenName: QuoteToken.CAKE,
+    stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
+    contractAddress: {
+      97: '',
+      56: '0xB6fd2724cc9c90DD31DA35DbDf0300009dceF97d',
+    },
+    poolCategory: PoolCategory.CORE,
+    projectLink: 'https://www.1-b.tc/',
+    harvest: true,
+    tokenPerBlock: '0.011574',
+    sortOrder: 999,
+    isFinished: false,
+    tokenDecimals: 18,
+  },
+  {
     sousId: 34,
     tokenName: 'BSCX',
     stakingTokenName: QuoteToken.CAKE,
