@@ -19,6 +19,7 @@ export { default as InfoIcon } from "./Icons/Info";
 export { default as ListViewIcon } from "./Icons/ListView";
 export { default as LogoIcon } from "./Icons/Logo";
 export { default as LogoRoundIcon } from "./Icons/LogoRound";
+export { default as MinusIcon } from "./Icons/Minus";
 export { default as OpenNewIcon } from "./Icons/OpenNew";
 export { default as PancakesIcon } from "./Icons/Pancakes";
 export { default as PancakeRoundIcon } from "./Icons/PancakeRound";
