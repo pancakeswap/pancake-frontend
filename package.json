@@ -9,8 +9,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
-    "format": "prettier --check 'src/**/*.{js,jsx,ts,tsx}'",
-    "deploy": "yarn build && cp ./build/index.html ./build/200.html && surge ./build sushiswap.org"
+    "format": "prettier --check 'src/**/*.{js,jsx,ts,tsx}'"
   },
   "husky": {
     "hooks": {
