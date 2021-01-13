@@ -33,7 +33,7 @@ const farms: FarmConfig[] = [
     quoteTokenAdresses: contracts.wbnb,
     multiplier: '40X',
   },
-  {
+/*  {
     pid: 55,
     lpSymbol: 'BTCST-BNB LP',
     lpAddresses: {
@@ -49,7 +49,7 @@ const farms: FarmConfig[] = [
     quoteTokenAdresses: contracts.wbnb,
     multiplier: '2X',
     isCommunity: false,
-  },
+*/  },
   {
     pid: 54,
     lpSymbol: 'LTC-BNB LP',
