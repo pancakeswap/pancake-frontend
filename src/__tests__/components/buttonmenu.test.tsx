@@ -23,7 +23,7 @@ it("renders correctly", () => {
           Item 1
         </button>
         <button
-          class="sc-gsTCUz bsQSlZ sc-dlfnbm kvjOFs"
+          class="sc-gsTCUz bsQSlZ sc-dlfnbm cPEMfq"
         >
           Item 2
         </button>
