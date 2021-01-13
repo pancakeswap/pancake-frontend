@@ -15,22 +15,12 @@ const StyledFarmStakingCard = styled(Card)`
     max-width: none;
   }
 `
-
-const CardTitle = styled(Heading)`
-  display: flex;
-  margin-bottom: 0px;
-  color: #191326;
+const Label = styled(Heading)`
+  color: ${({ theme }) => theme.colors.display};
 `
-
 const CardMidContent = styled(Heading).attrs({ size: 'xl' })`
-  display: flex;
-  margin-bottom: 0px;
   color: white;
   font-size: 35px;
-`
-const CardFooter = styled(Heading)`
-  display: flex;
-  color: #191326;
 `
 const Row = styled.div`
   display: flex;
@@ -46,9 +36,9 @@ const EarnAssetCard = () => {
   return (
     <StyledFarmStakingCard>
       <CardBody>
-        <CardTitle>Earn</CardTitle>
-        <CardMidContent>{result}</CardMidContent>
-        <CardFooter>in Pools</CardFooter>
+        <Label mb={0}>Earn</Label>
+        <CardMidContent mb={0}>{result}</CardMidContent>
+        <Label>in Pools</Label>
         <NavLink exact activeClassName="active" to="/syrup">
           <Row>
             <ArrowForwardIcon />
