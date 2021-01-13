@@ -61,7 +61,7 @@ const Farms: React.FC<FarmsProps> = ({ removed }) => {
         Staking
       </StyledLink>
       <Page>
-        <Table data={["test"]} />
+        <Table data={['test']} />
         <Grid>
           {farmsToDisplayWithAPY.map((farm) => (
             <FarmCard key={farm.pid} farm={farm} removed={removed} />
