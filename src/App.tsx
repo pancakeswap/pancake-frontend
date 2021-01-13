@@ -35,10 +35,10 @@ const App: React.FC = () => {
           <Route path="/" exact>
             <Home />
           </Route>
-          <Route exact path="/farms">
-            <Farms removed={false} />
+          <Route path="/farms">
+            <Farms />
           </Route>
-          <Route path="/farms/:lpSymbol">
+          <Route path="/farm/:lpSymbol">
             <Farm />
           </Route>
           <Route path="/staking">
@@ -52,9 +52,6 @@ const App: React.FC = () => {
           </Route>
           <Route path="/lottery">
             <Lottery />
-          </Route>
-          <Route path="/removed">
-            <Farms removed />
           </Route>
           <Route path="/ifo">
             <Ifo />

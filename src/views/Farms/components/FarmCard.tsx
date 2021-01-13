@@ -182,7 +182,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
         {account ? (
           /* No full width props because of as={ReactRouterLink} */
           // @ts-ignore
-          <Button as={ReactRouterLink} to={`/farms/${farm.lpSymbol}`} style={{ width: '100%' }}>
+          <Button as={ReactRouterLink} to={`/farm/${farm.lpSymbol}`} style={{ width: '100%' }}>
             {TranslateString(568, 'Select')}
           </Button>
         ) : (

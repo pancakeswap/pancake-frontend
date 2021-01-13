@@ -1,4 +1,5 @@
 import React from 'react'
+import { Route, useRouteMatch } from 'react-router-dom'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
@@ -13,8 +14,11 @@ import { useFarms, usePriceBnbBusd, usePools } from 'state/hooks'
 import { QuoteToken, PoolCategory } from 'config/constants/types'
 import Coming from './components/Coming'
 import PoolCard from './components/PoolCard'
+import PoolTabButtons from './components/PoolTabButtons'
+import Divider from './components/Divider'
 
 const Farm: React.FC = () => {
+  const { path } = useRouteMatch()
   const TranslateString = useI18n()
   const { account } = useWallet()
   const farms = useFarms()
@@ -74,14 +78,22 @@ const Farm: React.FC = () => {
         </div>
         <img src="/images/syrup.png" alt="SYRUP POOL icon" />
       </Hero>
+      <PoolTabButtons />
+      <Divider />
       <Pools>
-        {orderBy(openPools, ['sortOrder']).map((pool) => (
-          <PoolCard key={pool.sousId} pool={pool} />
-        ))}
-        <Coming />
-        {orderBy(finishedPools, ['sortOrder']).map((pool) => (
-          <PoolCard key={pool.sousId} pool={pool} />
-        ))}
+        <Route exact path={`${path}`}>
+          <>
+            {orderBy(openPools, ['sortOrder']).map((pool) => (
+              <PoolCard key={pool.sousId} pool={pool} />
+            ))}
+            <Coming />
+          </>
+        </Route>
+        <Route path={`${path}/history`}>
+          {orderBy(finishedPools, ['sortOrder']).map((pool) => (
+            <PoolCard key={pool.sousId} pool={pool} />
+          ))}
+        </Route>
       </Pools>
     </Page>
   )

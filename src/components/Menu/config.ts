@@ -23,7 +23,16 @@ const config: MenuEntry[] = [
   {
     label: 'Farms',
     icon: 'FarmIcon',
-    href: '/farms',
+    items: [
+      {
+        label: 'Active',
+        href: '/farms',
+      },
+      {
+        label: 'Inactive',
+        href: '/farms/history',
+      },
+    ],
   },
   {
     label: 'Pools',
