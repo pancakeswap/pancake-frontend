@@ -9,10 +9,11 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
-    "format": "prettier --check 'src/**/*.{js,jsx,ts,tsx}'"
+    "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx}'"
   },
   "husky": {
     "hooks": {
+      "pre-commit": "yarn format",
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },

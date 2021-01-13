@@ -14,15 +14,7 @@ interface ButtonProps {
   variant?: 'default' | 'secondary' | 'tertiary'
 }
 
-const Button: React.FC<ButtonProps> = ({
-  children,
-  disabled,
-  href,
-  onClick,
-  size,
-  text,
-  to,
-}) => {
+const Button: React.FC<ButtonProps> = ({ children, disabled, href, onClick, size, text, to }) => {
   const { colors, spacing } = useContext(ThemeContext)
   const buttonColor = colors.background
 
@@ -51,15 +43,15 @@ const Button: React.FC<ButtonProps> = ({
   const ButtonChild = useMemo(() => {
     if (to) {
       return <StyledLink to={to}>{text}</StyledLink>
-    } if (href) {
+    }
+    if (href) {
       return (
         <StyledExternalLink href={href} target="__blank">
           {text}
         </StyledExternalLink>
       )
-    } 
-      return text
-    
+    }
+    return text
   }, [href, text, to])
 
   return (
@@ -89,8 +81,7 @@ interface StyledButtonProps {
 
 const StyledButton = styled.button<StyledButtonProps>`
   align-items: center;
-  background: ${(props) =>
-    !props.disabled ? props.theme.card.background : `#ddd`};
+  background: ${(props) => (!props.disabled ? props.theme.card.background : `#ddd`)};
   border: 0;
   border-radius: 12px;
   color: ${(props) => (!props.disabled ? `#32cad7` : `#acaaaf`)};
