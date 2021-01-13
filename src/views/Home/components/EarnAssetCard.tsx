@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Heading, Card, CardBody, ArrowForwardIcon } from '@pancakeswap-libs/uikit'
 import { NavLink } from 'react-router-dom'
-import { poolsConfig } from 'sushi/lib/constants'
+import pools from 'config/constants/pools'
 
 const StyledFarmStakingCard = styled(Card)`
   background: linear-gradient(#53dee9, #7645d9);
@@ -29,15 +29,22 @@ const Row = styled.div`
 `
 
 const EarnAssetCard = () => {
-  const check = poolsConfig.slice(3, 7)
+  const TOKENS_TO_EXCLUDE = ['SYRUP']
+  const tokenNames = pools.reduce((accum, pool) => {
+    if (TOKENS_TO_EXCLUDE.includes(pool.tokenName)) {
+      return accum
+    }
 
-  const result = check.map((token) => `${token.tokenName}, `)
+    return [...accum.slice(0, 3), pool.tokenName]
+  }, [])
+
+  const assets = tokenNames.join(', ')
 
   return (
     <StyledFarmStakingCard>
       <CardBody>
         <Label mb={0}>Earn</Label>
-        <CardMidContent mb={0}>{result}</CardMidContent>
+        <CardMidContent mb={0}>{assets}</CardMidContent>
         <Label>in Pools</Label>
         <NavLink exact activeClassName="active" to="/syrup">
           <Row>
