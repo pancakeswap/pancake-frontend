@@ -6,7 +6,7 @@ import { useWallet } from '@binance-chain/bsc-use-wallet'
 import getRpcUrl from 'utils/getRpcUrl'
 
 const RPC_URL = getRpcUrl()
-const httpProvider = new Web3.providers.HttpProvider(RPC_URL, {} as HttpProviderOptions)
+const httpProvider = new Web3.providers.HttpProvider(RPC_URL, { timeout: 10000 } as HttpProviderOptions)
 
 /**
  * Provides a web3 instance using the provider provided by useWallet

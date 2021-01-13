@@ -5,7 +5,7 @@ import { ContractOptions } from 'web3-eth-contract'
 import getRpcUrl from 'utils/getRpcUrl'
 
 const RPC_URL = getRpcUrl()
-const httpProvider = new Web3.providers.HttpProvider(RPC_URL, {} as HttpProviderOptions)
+const httpProvider = new Web3.providers.HttpProvider(RPC_URL, { timeout: 10000 } as HttpProviderOptions)
 
 /**
  * Provides a web3 instance using our own private provider httpProver
