@@ -38,7 +38,7 @@ const farms: FarmConfig[] = [
     lpSymbol: 'BTCST-BNB LP',
     lpAddresses: {
       97: '',
-      56: '',
+      56: '0x91589786D36fEe5B27A5539CfE638a5fc9834665',
     },
     tokenSymbol: 'BTCST',
     tokenAddresses: {
