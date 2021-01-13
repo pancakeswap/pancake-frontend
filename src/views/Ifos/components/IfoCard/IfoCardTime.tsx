@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Link } from '@pancakeswap-libs/uikit'
+import { Link, Text } from '@pancakeswap-libs/uikit'
 import { IfoStatus } from 'config/constants/types'
 import getTimePeriods from 'utils/getTimePeriods'
 import useI18n from 'hooks/useI18n'
@@ -30,11 +30,20 @@ const Countdown = styled.div`
 
 const IfoCardTime: React.FC<IfoCardTimeProps> = ({ isLoading, status, secondsUntilStart, secondsUntilEnd, block }) => {
   const TranslateString = useI18n()
-  const timeUntil = getTimePeriods(status === 'coming_soon' ? secondsUntilStart : secondsUntilEnd)
+  const countdownToUse = status === 'coming_soon' ? secondsUntilStart : secondsUntilEnd
+  const timeUntil = getTimePeriods(countdownToUse)
   const suffix = status === 'coming_soon' ? 'start' : 'finish'
 
   if (isLoading) {
     return <Details>{TranslateString(656, 'Loading...')}</Details>
+  }
+
+  if (countdownToUse <= 0) {
+    return (
+      <Details>
+        <Text bold>{TranslateString(999, 'Finished!')}</Text>
+      </Details>
+    )
   }
 
   return (

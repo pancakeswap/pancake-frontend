@@ -11,7 +11,7 @@ import Home from './views/Home'
 import Stake from './views/Stake'
 import Lottery from './views/Lottery'
 import Pools from './views/Pools'
-import Ifo from './views/Ifo'
+import Ifos from './views/Ifos'
 import NotFound from './views/NotFound'
 import Nft from './views/Nft'
 import NftGlobalNotification from './views/Nft/components/NftGlobalNotification'
@@ -54,7 +54,7 @@ const App: React.FC = () => {
             <Lottery />
           </Route>
           <Route path="/ifo">
-            <Ifo />
+            <Ifos />
           </Route>
           <Route path="/nft">
             <Nft />
