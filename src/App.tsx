@@ -9,7 +9,6 @@ import Menu from './components/Menu'
 import Farms from './views/Farms'
 import Farm from './views/Farm'
 import Home from './views/Home'
-import Stake from './views/Stake'
 import Lottery from './views/Lottery'
 import Pools from './views/Pools'
 import Ifos from './views/Ifos'
@@ -47,14 +46,8 @@ const App: React.FC = () => {
           <Route path="/farm/:lpSymbol">
             <Farm />
           </Route>
-          <Route path="/staking">
-            <Stake />
-          </Route>
           <Route path="/pools">
             <Pools />
-          </Route>
-          <Route path="/syrup">
-            <Redirect to="/pools" />
           </Route>
           <Route path="/lottery">
             <Lottery />
@@ -65,6 +58,14 @@ const App: React.FC = () => {
           <Route path="/nft">
             <Nft />
           </Route>
+          {/* Redirect */}
+          <Route path="/staking">
+            <Redirect to="/pools" />
+          </Route>
+          <Route path="/syrup">
+            <Redirect to="/pools" />
+          </Route>
+          {/* 404 */}
           <Route component={NotFound} />
         </Switch>
       </Menu>
