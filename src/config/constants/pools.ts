@@ -19,6 +19,23 @@ const pools: PoolConfig[] = [
     tokenDecimals: 18,
   },
   {
+    sousId: 36,
+    tokenName: 'Helmet',
+    stakingTokenName: QuoteToken.CAKE,
+    stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
+    contractAddress: {
+      97: '',
+      56: '0x9F23658D5f4CEd69282395089B0f8E4dB85C6e79',
+    },
+    poolCategory: PoolCategory.CORE,
+    projectLink: 'https://www.helmet.insure/',
+    harvest: true,
+    tokenPerBlock: '0.81',
+    sortOrder: 999,
+    isFinished: false,
+    tokenDecimals: 18,
+  },
+  {
     sousId: 35,
     tokenName: 'BTCST',
     stakingTokenName: QuoteToken.CAKE,
