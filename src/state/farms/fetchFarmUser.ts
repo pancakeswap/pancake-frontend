@@ -1,15 +1,15 @@
 import BigNumber from 'bignumber.js'
-import erc20ABI from 'sushi/lib/abi/erc20.json'
-import masterchefABI from 'sushi/lib/abi/masterchef.json'
+import erc20ABI from 'config/abi/erc20.json'
+import masterchefABI from 'config/abi/masterchef.json'
 import multicall from 'utils/multicall'
-import farmsConfig from 'sushi/lib/constants/farms'
-import addresses from 'sushi/lib/constants/contracts'
+import { getMasterChefAddress } from 'utils/addressHelpers'
+import farmsConfig from 'config/constants/farms'
 
 const CHAIN_ID = process.env.REACT_APP_CHAIN_ID
 
 const fetchFarmUser = async (pid: number, account: string) => {
   const farm = farmsConfig.find((f) => f.pid === pid)
-  const masterChefAdress = addresses.masterChef[CHAIN_ID]
+  const masterChefAdress = getMasterChefAddress()
   const lpContractAddress = farm.lpAddresses[CHAIN_ID]
 
   const [allowance, tokenBalance] = await multicall(erc20ABI, [

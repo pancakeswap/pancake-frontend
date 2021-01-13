@@ -13,7 +13,7 @@ import {
   useModal,
 } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
-import { Nft } from 'sushi/lib/constants/types'
+import { Nft } from 'config/constants/types'
 import InfoRow from '../InfoRow'
 import Image from '../Image'
 import { NftProviderContext } from '../../contexts/NftProvider'

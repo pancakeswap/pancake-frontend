@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { useWallet } from 'use-wallet'
+import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { Button, Modal, Text } from '@pancakeswap-libs/uikit'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { RABBIT_MINTING_FARM_ADDRESS } from 'sushi/lib/constants/nfts'
-import { getSushiAddress } from 'sushi/utils'
-import { Nft } from 'sushi/lib/constants/types'
-import useSushi from 'hooks/useSushi'
+import { RABBIT_MINTING_FARM_ADDRESS } from 'config/constants/nfts'
+import { getCakeAddress } from 'utils/addressHelpers'
+import { Nft } from 'config/constants/types'
 import useTokenBalance from 'hooks/useTokenBalance'
 import useI18n from 'hooks/useI18n'
 import { useRabbitMintingFarm } from 'hooks/useContract'
@@ -38,9 +37,8 @@ const ClaimNftModal: React.FC<ClaimNftModalProps> = ({ nft, onSuccess, onDismiss
   const TranslateString = useI18n()
   const { account } = useWallet()
   const rabbitMintingContract = useRabbitMintingFarm(RABBIT_MINTING_FARM_ADDRESS)
-  const sushi = useSushi()
-  const sushiBalance = useTokenBalance(getSushiAddress(sushi))
-  const cakeInWallet = getBalanceNumber(sushiBalance)
+  const cakeBalance = useTokenBalance(getCakeAddress())
+  const cakeInWallet = getBalanceNumber(cakeBalance)
 
   const handleConfirm = async () => {
     try {

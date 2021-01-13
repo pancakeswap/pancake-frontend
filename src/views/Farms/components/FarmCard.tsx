@@ -1,16 +1,16 @@
 import React, { useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import styled, { keyframes } from 'styled-components'
-import { useWallet } from 'use-wallet'
+import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { Link as ReactRouterLink } from 'react-router-dom'
 import { Button, Flex } from '@pancakeswap-libs/uikit'
-import { communityFarms } from 'sushi/lib/constants'
+import { communityFarms } from 'config/constants'
 import { Farm } from 'state/types'
 import { usePriceBnbBusd, usePriceCakeBusd } from 'state/hooks'
 import useI18n from 'hooks/useI18n'
 import { CommunityTag, CoreTag } from 'components/Tags'
 import UnlockButton from 'components/UnlockButton'
-import { QuoteToken } from 'sushi/lib/constants/types'
+import { QuoteToken } from 'config/constants/types'
 
 export interface FarmWithStakedValue extends Farm {
   apy?: BigNumber
@@ -182,7 +182,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
         {account ? (
           /* No full width props because of as={ReactRouterLink} */
           // @ts-ignore
-          <Button as={ReactRouterLink} to={`/farms/${farm.lpSymbol}`} style={{ width: '100%' }}>
+          <Button as={ReactRouterLink} to={`/farm/${farm.lpSymbol}`} style={{ width: '100%' }}>
             {TranslateString(568, 'Select')}
           </Button>
         ) : (

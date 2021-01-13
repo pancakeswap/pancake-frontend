@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit'
-import farmsConfig from 'sushi/lib/constants/farms'
+import farmsConfig from 'config/constants/farms'
 import fetchFarms from './fetchFarms'
 import fetchFarmUser from './fetchFarmUser'
 import { FarmsState, Farm } from '../types'

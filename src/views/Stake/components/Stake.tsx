@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js'
 import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
-import { useWallet } from 'use-wallet'
+import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { Contract } from 'web3-eth-contract'
 import { Button, IconButton, useModal, AddIcon } from '@pancakeswap-libs/uikit'
 import Card from '../../../components/Card'
@@ -17,9 +17,8 @@ import useI18n from '../../../hooks/useI18n'
 import { getBalanceNumber } from '../../../utils/formatBalance'
 import DepositModal from './DepositModal'
 import WithdrawModal from './WithdrawModal'
-import useSushi from '../../../hooks/useSushi'
 import UnlockButton from '../../../components/UnlockButton'
-import { getSyrupAddress } from '../../../sushi/utils'
+import { getSyrupAddress } from '../../../utils/addressHelpers'
 
 interface StakeProps {
   lpContract: Contract
@@ -34,13 +33,12 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName, allowance, to
   const TranslateString = useI18n()
   const [requestedApproval, setRequestedApproval] = useState(false)
   const { account } = useWallet()
-  const sushi = useSushi()
 
   const { onStake } = useStake(pid)
   const { onUnstake } = useUnstake(pid)
   const { onApprove } = useApprove(lpContract, pid)
 
-  const syrupBalance = useTokenBalance(getSyrupAddress(sushi))
+  const syrupBalance = useTokenBalance(getSyrupAddress())
 
   const [onPresentDeposit] = useModal(<DepositModal max={tokenBalance} onConfirm={onStake} tokenName={tokenName} />)
 

@@ -1,39 +1,39 @@
 import { useCallback, useState, useEffect } from 'react'
-import { useWallet } from 'use-wallet'
-
-import useSushi from './useSushi'
-import { getLotteryContract, getTicketsContract, multiClaim, getMax, multiBuy } from '../sushi/lotteryUtils'
+import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useLottery, useLotteryTicket } from 'hooks/useContract'
+import { multiClaim, getMax, multiBuy } from '../utils/lotteryUtils'
 
 export const useMultiClaimLottery = () => {
   const { account } = useWallet()
-  const sushi = useSushi()
+  const lotteryContract = useLottery()
+  const lotteryTicketContract = useLotteryTicket()
 
   const handleClaim = useCallback(async () => {
     try {
-      const txHash = await multiClaim(sushi, getLotteryContract(sushi), getTicketsContract(sushi), account)
+      const txHash = await multiClaim(lotteryContract, lotteryTicketContract, account)
       return txHash
     } catch (e) {
       return false
     }
-  }, [account, sushi])
+  }, [account, lotteryContract, lotteryTicketContract])
 
   return { onMultiClaim: handleClaim }
 }
 
 export const useMultiBuyLottery = () => {
   const { account } = useWallet()
-  const sushi = useSushi()
+  const lotteryContract = useLottery()
 
   const handleBuy = useCallback(
     async (amount: string, numbers: Array<any>) => {
       try {
-        const txHash = await multiBuy(getLotteryContract(sushi), amount, numbers, account)
+        const txHash = await multiBuy(lotteryContract, amount, numbers, account)
         return txHash
       } catch (e) {
         return false
       }
     },
-    [account, sushi],
+    [account, lotteryContract],
   )
 
   return { onMultiBuy: handleBuy }
@@ -41,8 +41,7 @@ export const useMultiBuyLottery = () => {
 
 export const useMaxNumber = () => {
   const [max, setMax] = useState(5)
-  const sushi = useSushi()
-  const lotteryContract = getLotteryContract(sushi)
+  const lotteryContract = useLottery()
 
   const fetchMax = useCallback(async () => {
     const maxNumber = await getMax(lotteryContract)
@@ -50,10 +49,10 @@ export const useMaxNumber = () => {
   }, [lotteryContract])
 
   useEffect(() => {
-    if (lotteryContract && sushi) {
+    if (lotteryContract) {
       fetchMax()
     }
-  }, [lotteryContract, sushi, fetchMax])
+  }, [lotteryContract, fetchMax])
 
   return max
 }
