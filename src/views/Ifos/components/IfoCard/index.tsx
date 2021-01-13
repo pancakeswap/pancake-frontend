@@ -152,7 +152,7 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
           block={isActive || isFinished ? state.endBlockNum : state.startBlockNum}
         />
         {!account && <UnlockButton fullWidth />}
-        {isActive && !isFinished && (
+        {(isActive || isFinished) && (
           <IfoCardContribute
             address={address}
             currency={currency}
