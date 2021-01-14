@@ -16,10 +16,10 @@ const StyledFarmStakingCard = styled(Card)`
   }
 `
 const Label = styled(Heading)`
-  color: ${({ theme }) => theme.colors.display};
+  color: ${({ theme }) => theme.colors.contrast};
 `
 const CardMidContent = styled(Heading).attrs({ size: 'xl' })`
-  color: white;
+  color: ${({ theme }) => theme.colors.invertedContrast};
   font-size: 35px;
 `
 const Row = styled.div`

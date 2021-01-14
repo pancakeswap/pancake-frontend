@@ -18,7 +18,7 @@ const StyledFarmStakingCard = styled(Card)`
   }
 `
 const Label = styled(Heading)`
-  color: ${({ theme }) => theme.colors.display};
+  color: ${({ theme }) => theme.colors.contrast};
 `
 const CardMidContent = styled(Heading).attrs({ size: 'xl' })`
   color: #7645d9;
