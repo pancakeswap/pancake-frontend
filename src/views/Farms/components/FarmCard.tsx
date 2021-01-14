@@ -3,7 +3,7 @@ import BigNumber from 'bignumber.js'
 import styled, { keyframes } from 'styled-components'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { Link as ReactRouterLink } from 'react-router-dom'
-import { Button, Flex } from '@pancakeswap-libs/uikit'
+import { Button, Flex, Image } from '@pancakeswap-libs/uikit'
 import { communityFarms } from 'config/constants'
 import { Farm } from 'state/types'
 import { usePriceBnbBusd, usePriceCakeBusd } from 'state/hooks'
@@ -110,10 +110,6 @@ const FCard = styled.div`
   padding: 24px;
   position: relative;
   text-align: center;
-  img {
-    height: 80px;
-    width: 80px;
-  }
 `
 
 interface FarmCardProps {
@@ -158,7 +154,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
           <Multiplier>{farm.multiplier}</Multiplier>
           {isCommunityFarm ? <CommunityTag /> : <CoreTag />}
         </Flex>
-        <img src={`/images/farms/${farmImage}.svg`} alt={farm.tokenSymbol} />
+        <Image src={`/images/farms/${farmImage}.svg`} alt={farm.tokenSymbol} width={80} height={80} />
       </CardImage>
       <Label>
         <span>{TranslateString(316, 'Deposit')}</span>

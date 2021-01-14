@@ -2,6 +2,7 @@ import React, { useCallback } from 'react'
 import styled from 'styled-components'
 import { Route, useRouteMatch } from 'react-router-dom'
 import BigNumber from 'bignumber.js'
+import { Image } from '@pancakeswap-libs/uikit'
 import { BLOCKS_PER_YEAR, CAKE_PER_BLOCK, CAKE_POOL_PID } from 'config'
 import Grid from 'components/layout/Grid'
 import { useFarms, usePriceBnbBusd } from 'state/hooks'
@@ -70,16 +71,10 @@ const Farms: React.FC = () => {
           <Grid>{farmsList(inactiveFarms, true)}</Grid>
         </Route>
       </Page>
-      <Image src="/images/cakecat.png" />
+      <Image src="/images/cakecat.png" alt="Pancake illustration" width={949} height={384} responsive />
     </Page>
   )
 }
-
-const Image = styled.img`
-  @media (max-width: 500px) {
-    width: 100vw;
-  }
-`
 
 const Title = styled.div`
   color: ${(props) => props.theme.colors.secondary};
