@@ -4,7 +4,6 @@ import styled, { keyframes } from 'styled-components'
 import { Flex, Text } from '@pancakeswap-libs/uikit'
 import { communityFarms } from 'sushi/lib/constants'
 import { Farm } from 'state/types'
-import { usePriceBnbBusd, usePriceCakeBusd } from 'state/hooks'
 import useI18n from 'hooks/useI18n'
 import ExpandableSectionButton from 'components/ExpandableSectionButton'
 import { QuoteToken } from 'sushi/lib/constants/types'
@@ -87,13 +86,13 @@ const ExpandingWrapper = styled.div<{ expanded: boolean }>`
 interface FarmCardProps {
   farm: FarmWithStakedValue
   removed: boolean
-  cakePrice?: number
+  cakePrice?: BigNumber
+  bnbPrice?: BigNumber
 }
 
-const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
+const FarmCard: React.FC<FarmCardProps> = ({ farm, removed, cakePrice, bnbPrice }) => {
   const TranslateString = useI18n()
-  const cakePrice = usePriceCakeBusd()
-  const bnbPrice = usePriceBnbBusd()
+
   const [showExpandableSection, setShowExpandableSection] = useState(false)
 
   const isCommunityFarm = communityFarms.includes(farm.tokenSymbol)

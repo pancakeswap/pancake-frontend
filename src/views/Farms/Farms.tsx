@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom'
 import BigNumber from 'bignumber.js'
 import { BLOCKS_PER_YEAR, CAKE_PER_BLOCK, CAKE_POOL_PID } from 'config'
 import Grid from 'components/layout/Grid'
-import { useFarms, usePriceBnbBusd } from 'state/hooks'
+import { useFarms, usePriceBnbBusd, usePriceCakeBusd } from 'state/hooks'
 import { QuoteToken } from 'sushi/lib/constants/types'
 import useI18n from 'hooks/useI18n'
 import Page from 'components/Page'
@@ -17,6 +17,7 @@ interface FarmsProps {
 const Farms: React.FC<FarmsProps> = ({ removed }) => {
   const TranslateString = useI18n()
   const farmsLP = useFarms()
+  const cakePrice = usePriceCakeBusd()
   const bnbPrice = usePriceBnbBusd()
 
   const cakePriceVsBNB = new BigNumber(farmsLP.find((farm) => farm.pid === CAKE_POOL_PID)?.tokenPriceVsQuote || 0)
@@ -62,7 +63,7 @@ const Farms: React.FC<FarmsProps> = ({ removed }) => {
       <Page>
         <Grid>
           {farmsToDisplayWithAPY.map((farm) => (
-            <FarmCard key={farm.pid} farm={farm} removed={removed} />
+            <FarmCard key={farm.pid} farm={farm} removed={removed} bnbPrice={bnbPrice} cakePrice={cakePrice} />
           ))}
         </Grid>
       </Page>
