@@ -62,7 +62,7 @@ const CardActions: React.FC<FarmCardActionsProps> = ({ farm }) => {
 
   return (
     <Action>
-      {/* These text elements should make use of updated textTransform prop when uikit version is deployed */}
+      {/* TODO: These text elements should make use of updated textTransform prop when uikit version is deployed */}
       <Flex>
         <Text bold color="secondary" fontSize="12px" pr="3px">
           {tokenSymbol}
