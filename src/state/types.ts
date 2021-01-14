@@ -29,7 +29,7 @@ export interface Pool extends PoolConfig {
 
 export enum AlertType {
   SUCCESS = 'success',
-  ERROR = 'error',
+  DANGER = 'danger',
   WARNING = 'warning',
   INFO = 'info',
 }
@@ -58,6 +58,7 @@ export interface AlertsState {
 // Global state
 
 export interface State {
+  alerts: AlertsState
   farms: FarmsState
   pools: PoolsState
 }

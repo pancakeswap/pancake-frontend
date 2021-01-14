@@ -12,12 +12,21 @@ export const alertsSlice = createSlice({
   reducers: {
     push: (state: AlertsState, action: PayloadAction<Alert>) => {
       const { payload } = action
+      const alertIndex = state.data.findIndex((alert) => alert.id === payload.id)
 
-      // Add alert to the list removing any existing alerts with the same id
-      state.data = [...state.data.filter((alert) => alert.id === payload.id), payload]
+      // Remove old duplicate alert
+      if (alertIndex >= 0) {
+        state.data.splice(alertIndex, 1)
+      }
+
+      state.data.push(payload)
     },
     remove: (state: AlertsState, action: PayloadAction<string>) => {
-      state.data = state.data.filter((alert) => alert.id === action.payload)
+      const alertIndex = state.data.findIndex((alert) => alert.id === action.payload)
+
+      if (alertIndex >= 0) {
+        state.data.splice(alertIndex, 1)
+      }
     },
     clear: (state: AlertsState) => {
       state.data = []

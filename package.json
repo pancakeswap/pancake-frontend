@@ -50,6 +50,7 @@
     "react-redux": "^7.2.2",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.1",
+    "react-transition-group": "^4.4.1",
     "styled-components": "^5.1.1",
     "typescript": "^4.1.3",
     "web3": "^1.3.1"

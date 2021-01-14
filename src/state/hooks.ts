@@ -104,8 +104,8 @@ export const useAlert = () => {
     const push = (alert: Alert) => dispatch(pushAlert(alert))
 
     return {
-      alertError: (title: string, description?: string) => {
-        return push({ id: kebabCase(title), type: AlertType.ERROR, title, description })
+      alertDanger: (title: string, description?: string) => {
+        return push({ id: kebabCase(title), type: AlertType.DANGER, title, description })
       },
       alertInfo: (title: string, description?: string) => {
         return push({ id: kebabCase(title), type: AlertType.INFO, title, description })
