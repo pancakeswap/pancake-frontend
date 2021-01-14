@@ -4,7 +4,7 @@ import { Heading, Card, CardBody, ArrowForwardIcon } from '@pancakeswap-libs/uik
 import { NavLink } from 'react-router-dom'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useTotalRewards } from 'hooks/useTickets'
-import useI18n from 'hooks/useI18n'
+import { usePriceCakeBusd } from 'state/hooks'
 
 const StyledFarmStakingCard = styled(Card)`
   margin-left: auto;
@@ -30,17 +30,19 @@ const Row = styled.div`
 `
 
 const WinCard = () => {
-  const TranslateString = useI18n()
   const lotteryPrizeAmount = +getBalanceNumber(useTotalRewards()).toFixed(0)
-  const lotteryPrizeWithCommaSeparators = lotteryPrizeAmount.toLocaleString()
+
+  const cakePrize = usePriceCakeBusd()
+
+  const cakePrizeUSD: any = `0.${cakePrize.c[0]}`
+  const usdValue = cakePrizeUSD * lotteryPrizeAmount
+  const lotteryPrize = Math.round(usdValue).toLocaleString()
 
   return (
     <StyledFarmStakingCard>
       <CardBody>
         <Label mb={0}>Win up to</Label>
-        <CardMidContent mb={0}>
-          {lotteryPrizeWithCommaSeparators} {TranslateString(999, 'CAKE')}
-        </CardMidContent>
+        <CardMidContent mb={0}>${lotteryPrize}</CardMidContent>
         <Label>in Lottery</Label>
         <NavLink exact activeClassName="active" to="/lottery">
           <Row>
