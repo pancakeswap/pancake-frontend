@@ -15,6 +15,7 @@ import Ifos from './views/Ifos'
 import NotFound from './views/NotFound'
 import Nft from './views/Nft'
 import NftGlobalNotification from './views/Nft/components/NftGlobalNotification'
+import AlertListener from './components/AlertListener'
 
 BigNumber.config({
   EXPONENTIAL_AT: 1000,
@@ -23,6 +24,7 @@ BigNumber.config({
 
 const App: React.FC = () => {
   const { account, connect } = useWallet()
+
   useEffect(() => {
     if (!account && window.localStorage.getItem('accountStatus')) {
       connect('injected')
@@ -70,6 +72,7 @@ const App: React.FC = () => {
         </Switch>
       </Menu>
       <NftGlobalNotification />
+      <AlertListener />
     </Router>
   )
 }
