@@ -27,6 +27,20 @@ export interface Pool extends PoolConfig {
   }
 }
 
+export enum AlertType {
+  SUCCESS = 'success',
+  ERROR = 'error',
+  WARNING = 'warning',
+  INFO = 'info',
+}
+
+export interface Alert {
+  id: string
+  type: AlertType
+  title: string
+  description?: string
+}
+
 // Slices states
 
 export interface FarmsState {
@@ -35,6 +49,10 @@ export interface FarmsState {
 
 export interface PoolsState {
   data: Pool[]
+}
+
+export interface AlertsState {
+  data: Alert[]
 }
 
 // Global state

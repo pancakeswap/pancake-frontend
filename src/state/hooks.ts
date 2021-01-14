@@ -1,5 +1,6 @@
+import { useEffect, useMemo } from 'react'
 import BigNumber from 'bignumber.js'
-import { useEffect } from 'react'
+import { kebabCase } from 'lodash'
 import { useSelector, useDispatch } from 'react-redux'
 import useRefresh from 'hooks/useRefresh'
 import {
@@ -7,8 +8,11 @@ import {
   fetchFarmUserDataAsync,
   fetchPoolsPublicDataAsync,
   fetchPoolsUserDataAsync,
+  push as pushAlert,
+  remove as removeAlert,
+  clear as clearAlert,
 } from './actions'
-import { State, Farm, Pool } from './types'
+import { State, Farm, Pool, Alert, AlertType } from './types'
 
 const ZERO = new BigNumber(0)
 
@@ -90,4 +94,33 @@ export const usePriceCakeBusd = (): BigNumber => {
   const bnbPriceUSD = usePriceBnbBusd()
   const farm = useFarmFromPid(pid)
   return farm.tokenPriceVsQuote ? bnbPriceUSD.times(farm.tokenPriceVsQuote) : ZERO
+}
+
+// Alerts
+
+export const useAlert = () => {
+  const dispatch = useDispatch()
+  const helpers = useMemo(() => {
+    const push = (alert: Alert) => dispatch(pushAlert(alert))
+
+    return {
+      alertError: (title: string, description?: string) => {
+        return push({ id: kebabCase(title), type: AlertType.ERROR, title, description })
+      },
+      alertInfo: (title: string, description?: string) => {
+        return push({ id: kebabCase(title), type: AlertType.INFO, title, description })
+      },
+      alertSuccess: (title: string, description?: string) => {
+        return push({ id: kebabCase(title), type: AlertType.SUCCESS, title, description })
+      },
+      alertWarning: (title: string, description?: string) => {
+        return push({ id: kebabCase(title), type: AlertType.WARNING, title, description })
+      },
+      push,
+      remove: (id: string) => dispatch(removeAlert(id)),
+      clear: () => dispatch(clearAlert()),
+    }
+  }, [dispatch])
+
+  return helpers
 }
