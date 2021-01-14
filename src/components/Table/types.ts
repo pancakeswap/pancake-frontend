@@ -1,4 +1,3 @@
-
 export type ColumnType<T extends DataType> = {
   id: number;
   name: string;

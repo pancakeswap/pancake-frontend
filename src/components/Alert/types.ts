@@ -1,3 +1,5 @@
+import { MouseEvent } from "react";
+
 export type AlertTheme = {
   background: string;
 };
@@ -15,4 +17,5 @@ export interface AlertProps {
   variant?: Variants;
   title: string;
   description?: string;
+  onClick?: (evt: MouseEvent<HTMLButtonElement>) => void;
 }

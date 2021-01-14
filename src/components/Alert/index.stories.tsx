@@ -6,10 +6,6 @@ import Alert from "./Alert";
 
 const Row = styled.div`
   margin-bottom: 32px;
-
-  & > button + button {
-    margin-left: 16px;
-  }
 `;
 
 export default {
@@ -32,6 +28,27 @@ export const Default: React.FC = () => {
       </Row>
       <Row>
         <Alert title="Warning" description="A description of the warning alert" variant="warning" />
+      </Row>
+    </div>
+  );
+};
+
+const handleClick = () => console.log("click");
+
+export const WithHandler: React.FC = () => {
+  return (
+    <div style={{ padding: "32px", width: "375px" }}>
+      <Row>
+        <Alert onClick={handleClick} title="Info" />
+      </Row>
+      <Row>
+        <Alert onClick={handleClick} title="Success" variant="success" />
+      </Row>
+      <Row>
+        <Alert onClick={handleClick} title="Danger" variant="danger" />
+      </Row>
+      <Row>
+        <Alert onClick={handleClick} title="Warning" variant="warning" />
       </Row>
     </div>
   );

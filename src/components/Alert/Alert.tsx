@@ -5,11 +5,15 @@ import ErrorIcon from "../Svg/Icons/Error";
 import BlockIcon from "../Svg/Icons/Block";
 import InfoIcon from "../Svg/Icons/Info";
 import { Text } from "../Text";
+import { IconButton } from "../Button";
+import { CloseIcon } from "../Svg";
+import { Flex } from "../Flex";
 import { AlertProps, variants } from "./types";
 
 interface ThemedIconLabel {
   variant: AlertProps["variant"];
   theme: DefaultTheme;
+  hasDescription: boolean;
 }
 
 const getThemeColor = ({ theme, variant = variants.INFO }: ThemedIconLabel) => {
@@ -41,42 +45,53 @@ const getIcon = (variant: AlertProps["variant"] = variants.INFO) => {
 };
 
 const IconLabel = styled.div<ThemedIconLabel>`
+  align-items: ${({ hasDescription }) => (hasDescription ? "start" : "center")};
   background-color: ${getThemeColor};
   border-radius: 16px 0 0 16px;
   color: ${({ theme }) => theme.alert.background};
-  padding: 8px;
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  min-height: 48px;
+  padding: 8px 0;
   width: 40px;
 `;
 
 const Details = styled.div`
-  background-color: ${({ theme }) => theme.alert.background};
-  border-radius: 0 16px 16px 0;
+  flex: 1;
   padding: 8px;
 `;
 
-const StyledAlert = styled.div`
-  border-radius: 16px;
-  box-shadow: ${({ theme }) => theme.shadows.level1};
-  display: flex;
-
-  ${Details} {
-    flex: 1;
-  }
+const CloseHandler = styled.div`
+  border-radius: 0 16px 16px 0;
+  padding: 8px 8px 8px 0;
 `;
 
-const Alert: React.FC<AlertProps> = ({ title, description, variant }) => {
+const StyledAlert = styled(Flex)<{ hasDescription: boolean }>`
+  align-items: ${({ hasDescription }) => (hasDescription ? "stretch" : "center")};
+  background-color: ${({ theme }) => theme.alert.background};
+  border-radius: 16px;
+  box-shadow: ${({ theme }) => theme.shadows.level1};
+`;
+
+const Alert: React.FC<AlertProps> = ({ title, description, variant, onClick }) => {
   const Icon = getIcon(variant);
 
   return (
-    <StyledAlert>
-      <IconLabel variant={variant}>
-        <Icon color="currentColor" width="20px" />
+    <StyledAlert hasDescription={!!description}>
+      <IconLabel variant={variant} hasDescription={!!description}>
+        <Icon color="currentColor" width="24px" />
       </IconLabel>
       <Details>
         <Text bold>{title}</Text>
         {description && <Text as="p">{description}</Text>}
       </Details>
+      {onClick && (
+        <CloseHandler>
+          <IconButton size="sm" variant="text" onClick={onClick}>
+            <CloseIcon width="24px" color="currentColor" />
+          </IconButton>
+        </CloseHandler>
+      )}
     </StyledAlert>
   );
 };
