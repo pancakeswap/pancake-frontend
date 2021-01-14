@@ -2,6 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 import { NavLink } from 'react-router-dom'
 import BigNumber from 'bignumber.js'
+import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { provider } from 'web3-core'
 import { BLOCKS_PER_YEAR, CAKE_PER_BLOCK, CAKE_POOL_PID } from 'config'
 import Grid from 'components/layout/Grid'
 import { useFarms, usePriceBnbBusd, usePriceCakeBusd } from 'state/hooks'
@@ -19,6 +21,7 @@ const Farms: React.FC<FarmsProps> = ({ removed }) => {
   const farmsLP = useFarms()
   const cakePrice = usePriceCakeBusd()
   const bnbPrice = usePriceBnbBusd()
+  const { account, ethereum }: { account: string; ethereum: provider } = useWallet()
 
   const cakePriceVsBNB = new BigNumber(farmsLP.find((farm) => farm.pid === CAKE_POOL_PID)?.tokenPriceVsQuote || 0)
   const farmsToDisplay = removed
@@ -63,7 +66,15 @@ const Farms: React.FC<FarmsProps> = ({ removed }) => {
       <Page>
         <Grid>
           {farmsToDisplayWithAPY.map((farm) => (
-            <FarmCard key={farm.pid} farm={farm} removed={removed} bnbPrice={bnbPrice} cakePrice={cakePrice} />
+            <FarmCard
+              key={farm.pid}
+              farm={farm}
+              removed={removed}
+              bnbPrice={bnbPrice}
+              cakePrice={cakePrice}
+              ethereum={ethereum}
+              account={account}
+            />
           ))}
         </Grid>
       </Page>

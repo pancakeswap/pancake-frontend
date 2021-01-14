@@ -1,7 +1,6 @@
 import React, { useMemo, useState, useCallback } from 'react'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { provider } from 'web3-core'
 import { getContract } from 'utils/erc20'
 import { Button, Flex, Text } from '@pancakeswap-libs/uikit'
@@ -22,12 +21,13 @@ export interface FarmWithStakedValue extends Farm {
 
 interface FarmCardActionsProps {
   farm: FarmWithStakedValue
+  ethereum?: provider
+  account?: null | string
 }
 
-const CardActions: React.FC<FarmCardActionsProps> = ({ farm }) => {
+const CardActions: React.FC<FarmCardActionsProps> = ({ farm, ethereum, account }) => {
   const TranslateString = useI18n()
   const [requestedApproval, setRequestedApproval] = useState(false)
-  const { ethereum, account } = useWallet()
   const { pid, lpAddresses, tokenSymbol } = useFarmFromSymbol(farm.lpSymbol)
   const { allowance, tokenBalance, stakedBalance, earnings } = useFarmUser(pid, account)
   const lpAddress = lpAddresses[process.env.REACT_APP_CHAIN_ID]
