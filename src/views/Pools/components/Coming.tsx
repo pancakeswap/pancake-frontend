@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Image } from '@pancakeswap-libs/uikit'
+import { Image, Button } from '@pancakeswap-libs/uikit'
 import { CommunityTag } from 'components/Tags'
 import useI18n from 'hooks/useI18n'
 import Card from './Card'
@@ -18,24 +18,6 @@ const Label = styled.div`
   margin-bottom: 16px;
 `
 
-const ApplyNowLink = styled.a`
-  align-items: center;
-  background-color: transparent;
-  border: 2px solid ${({ theme }) => theme.colors.primary};
-  border-radius: 16px;
-  color: ${({ theme }) => theme.colors.primary};
-  display: flex;
-  font-size: 16px;
-  height: 48px;
-  justify-content: center;
-  margin: 16px 0;
-  text-decoration: none;
-
-  &:hover {
-    border-color: ${({ theme }) => theme.colors.primaryBright};
-    color: ${({ theme }) => theme.colors.primaryBright};
-  }
-`
 const DetailPlaceholder = styled.div`
   display: flex;
   font-size: 14px;
@@ -64,12 +46,16 @@ const Coming: React.FC = () => {
         <Image src="/images/bunny-question.svg" width={64} height={64} alt="Your project here" />
         <Balance>???</Balance>
         <Label>{TranslateString(416, 'Create a pool for your token')}</Label>
-        <ApplyNowLink
+        <Button
+          variant="secondary"
+          as="a"
           href="https://docs.google.com/forms/d/e/1FAIpQLScGdT5rrVMr4WOWr08pvcroSeuIOtEJf1sVdQGVdcAOqryigQ/viewform"
-          target="_blank"
+          external
+          fullWidth
+          mb="16px"
         >
           {TranslateString(418, 'Apply Now')}
-        </ApplyNowLink>
+        </Button>
         <DetailPlaceholder>
           <div style={{ flex: 1 }}>{TranslateString(352, 'APY')}:</div>
           <Value>??</Value>

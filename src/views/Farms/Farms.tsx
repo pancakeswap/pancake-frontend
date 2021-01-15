@@ -1,8 +1,7 @@
 import React, { useCallback } from 'react'
-import styled from 'styled-components'
 import { Route, useRouteMatch } from 'react-router-dom'
 import BigNumber from 'bignumber.js'
-import { Image } from '@pancakeswap-libs/uikit'
+import { Image, Heading } from '@pancakeswap-libs/uikit'
 import { BLOCKS_PER_YEAR, CAKE_PER_BLOCK, CAKE_POOL_PID } from 'config'
 import Grid from 'components/layout/Grid'
 import { useFarms, usePriceBnbBusd } from 'state/hooks'
@@ -60,7 +59,9 @@ const Farms: React.FC = () => {
 
   return (
     <Page>
-      <Title>{TranslateString(999, 'Stake LP tokens to earn CAKE')}</Title>
+      <Heading as="h1" size="lg" color="secondary" m="50px" style={{ textAlign: 'center' }}>
+        {TranslateString(999, 'Stake LP tokens to earn CAKE')}
+      </Heading>
       <FarmTabButtons />
       <Page>
         <Divider />
@@ -75,14 +76,5 @@ const Farms: React.FC = () => {
     </Page>
   )
 }
-
-const Title = styled.div`
-  color: ${(props) => props.theme.colors.secondary};
-  font-size: 29px;
-  width: 50vw;
-  text-align: center;
-  font-weight: 900;
-  margin: 50px;
-`
 
 export default Farms
