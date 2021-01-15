@@ -34,6 +34,23 @@ const farms: FarmConfig[] = [
     multiplier: '40X',
   },
   {
+    pid: 57,
+    lpSymbol: 'FRONT-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x36b7d2e5c7877392fb17f9219efad56f3d794700',
+    },
+    tokenSymbol: 'FRONT',
+    tokenAddresses: {
+      97: '',
+      56: '0x928e55daB735aa8260AF3cEDadA18B5f70C72f1b',
+    },
+    quoteTokenSymbol: QuoteToken.BNB,
+    quoteTokenAdresses: contracts.wbnb,
+    multiplier: '2X',
+    isCommunity: false,
+  },
+  {
     pid: 56,
     lpSymbol: 'Helmet-BNB LP',
     lpAddresses: {
@@ -47,7 +64,7 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
-    multiplier: '2X',
+    multiplier: '1X',
     isCommunity: false,
   },
   {
@@ -64,7 +81,7 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
-    multiplier: '2X',
+    multiplier: '1X',
     isCommunity: false,
   },
   {
