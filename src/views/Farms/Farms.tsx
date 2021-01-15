@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 import styled from 'styled-components'
-import { Route, useRouteMatch, NavLink } from 'react-router-dom'
+import { Route, useRouteMatch } from 'react-router-dom'
 import BigNumber from 'bignumber.js'
 import { BLOCKS_PER_YEAR, CAKE_PER_BLOCK, CAKE_POOL_PID } from 'config'
 import Grid from 'components/layout/Grid'
@@ -60,9 +60,6 @@ const Farms: React.FC = () => {
   return (
     <Page>
       <Title>{TranslateString(999, 'Stake LP tokens to earn CAKE')}</Title>
-      <StyledLink exact activeClassName="active" to="/staking">
-        Staking
-      </StyledLink>
       <FarmTabButtons />
       <Page>
         <Divider />
@@ -77,20 +74,6 @@ const Farms: React.FC = () => {
     </Page>
   )
 }
-
-const StyledLink = styled(NavLink)`
-  display: none;
-  @media (max-width: 400px) {
-    display: block;
-    background: #50d7dd;
-    border-radius: 5px;
-    line-height: 40px;
-    font-weight: 900;
-    padding: 0 20px;
-    margin-bottom: 30px;
-    color: #fff;
-  }
-`
 
 const Image = styled.img`
   @media (max-width: 500px) {
