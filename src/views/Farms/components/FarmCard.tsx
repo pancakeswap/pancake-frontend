@@ -3,7 +3,7 @@ import BigNumber from 'bignumber.js'
 import styled, { keyframes } from 'styled-components'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { Link as ReactRouterLink } from 'react-router-dom'
-import { Button, Flex, Image } from '@pancakeswap-libs/uikit'
+import { Button, Flex, Image, Link } from '@pancakeswap-libs/uikit'
 import { communityFarms } from 'config/constants'
 import { Farm } from 'state/types'
 import { usePriceBnbBusd, usePriceCakeBusd } from 'state/hooks'
@@ -22,11 +22,6 @@ const Action = styled.div`
 
 const ViewMore = styled.div`
   padding-top: 16px;
-`
-
-const Link = styled.a`
-  text-decoration: none;
-  color: ${(props) => props.theme.colors.secondary};
 `
 
 const RainbowLight = keyframes`
@@ -192,7 +187,11 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
         </Label>
       )}
       <ViewMore>
-        <Link href={`https://bscscan.com/address/${farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]}`} target="_blank">
+        <Link
+          href={`https://bscscan.com/address/${farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]}`}
+          external
+          m="auto"
+        >
           {TranslateString(356, 'View on BscScan')} &gt;
         </Link>
       </ViewMore>
