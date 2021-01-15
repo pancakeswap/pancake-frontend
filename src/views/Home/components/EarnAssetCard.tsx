@@ -15,10 +15,10 @@ const StyledFarmStakingCard = styled(Card)`
     max-width: none;
   }
 `
-const Label = styled(Heading)`
+const Label = styled(Heading).attrs({ size: 'lg' })`
   font-size: 24px;
 `
-const CardMidContent = styled(Heading)`
+const CardMidContent = styled(Heading).attrs({ size: 'xl' })`
   font-size: 40px;
   line-height: 44px;
 `
