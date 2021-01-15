@@ -64,7 +64,7 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
-    multiplier: '1X',
+    multiplier: '2X',
     isCommunity: false,
   },
   {
