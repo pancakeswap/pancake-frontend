@@ -1,10 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
+import { Image } from '@pancakeswap-libs/uikit'
 import { CommunityTag } from 'components/Tags'
 import useI18n from 'hooks/useI18n'
 import Card from './Card'
 import CardTitle from './CardTitle'
-import CardTokenImg from './CardTokenImg'
 
 const Balance = styled.div`
   color: ${({ theme }) => theme.colors.text};
@@ -61,7 +61,7 @@ const Coming: React.FC = () => {
             👀
           </span>
         </CardTitle>
-        <CardTokenImg src="/images/bunny-question.svg" alt="Your project here" />
+        <Image src="/images/bunny-question.svg" width={64} height={64} alt="Your project here" />
         <Balance>???</Balance>
         <Label>{TranslateString(416, 'Create a pool for your token')}</Label>
         <ApplyNowLink
