@@ -2,7 +2,8 @@ import React from "react";
 import Button from "../components/Button/Button";
 import Text from "../components/Text/Text";
 import useParticleBurst from "./useParticleBurst";
-import bunnySantaPath from "./bunny-santa.svg";
+
+const imagePath = "https://via.placeholder.com/10";
 
 export default {
   title: "Hooks/useParticleBurst",
@@ -10,7 +11,7 @@ export default {
 };
 
 export const WithSelector: React.FC = () => {
-  useParticleBurst({ imgSrc: bunnySantaPath, selector: "button" });
+  useParticleBurst({ imgSrc: imagePath, selector: "button" });
 
   return (
     <div style={{ padding: "32px" }}>
@@ -28,7 +29,7 @@ export const WithSelector: React.FC = () => {
 };
 
 export const Document: React.FC = () => {
-  useParticleBurst({ imgSrc: bunnySantaPath });
+  useParticleBurst({ imgSrc: imagePath });
 
   return (
     <div style={{ padding: "32px" }}>
@@ -38,7 +39,7 @@ export const Document: React.FC = () => {
 };
 
 export const AdjustDistance: React.FC = () => {
-  useParticleBurst({ imgSrc: bunnySantaPath, particleOptions: { distance: 800 } });
+  useParticleBurst({ imgSrc: imagePath, particleOptions: { distance: 800 } });
 
   return (
     <div style={{ padding: "32px" }}>
@@ -48,7 +49,7 @@ export const AdjustDistance: React.FC = () => {
 };
 
 export const AdjustSize: React.FC = () => {
-  useParticleBurst({ imgSrc: bunnySantaPath, particleOptions: { size: 80 } });
+  useParticleBurst({ imgSrc: imagePath, particleOptions: { size: 80 } });
 
   return (
     <div style={{ padding: "32px" }}>
@@ -58,7 +59,7 @@ export const AdjustSize: React.FC = () => {
 };
 
 export const AdjustNumberOfParticles: React.FC = () => {
-  useParticleBurst({ imgSrc: bunnySantaPath, numberOfParticles: 100 });
+  useParticleBurst({ imgSrc: imagePath, numberOfParticles: 100 });
 
   return (
     <div style={{ padding: "32px" }}>
@@ -74,7 +75,7 @@ export const DisableUnderCondition: React.FC = () => {
 
     return currentMinutes % 2 !== 0;
   };
-  useParticleBurst({ selector: "button", imgSrc: bunnySantaPath, disableWhen });
+  useParticleBurst({ selector: "button", imgSrc: imagePath, disableWhen });
 
   return (
     <div style={{ padding: "32px" }}>
@@ -85,7 +86,7 @@ export const DisableUnderCondition: React.FC = () => {
 };
 
 export const StopAndStart: React.FC = () => {
-  const { initialize, teardown } = useParticleBurst({ imgSrc: bunnySantaPath });
+  const { initialize, teardown } = useParticleBurst({ imgSrc: imagePath });
 
   const handleInitialize = () => initialize();
   const handleTeardown = () => teardown();
