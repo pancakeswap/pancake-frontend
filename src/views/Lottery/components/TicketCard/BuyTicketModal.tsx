@@ -93,7 +93,7 @@ const BuyTicketModal: React.FC<BuyTicketModalProps> = ({ max, onDismiss }) => {
           {TranslateString(462, 'Cancel')}
         </Button>
         <Button
-          id="Lottery-Buy-Complete"
+          id="lottery-buy-complete"
           fullWidth
           disabled={pendingTx || parseInt(val) > Number(maxTickets) || parseInt(val) > 50 || parseInt(val) < 1}
           onClick={async () => {
