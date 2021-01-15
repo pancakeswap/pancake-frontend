@@ -19,6 +19,23 @@ const pools: PoolConfig[] = [
     tokenDecimals: 18,
   },
   {
+    sousId: 37,
+    tokenName: 'FRONT',
+    stakingTokenName: QuoteToken.CAKE,
+    stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
+    contractAddress: {
+      97: '',
+      56: '0xf7a31366732F08E8e6B88519dC3E827e04616Fc9',
+    },
+    poolCategory: PoolCategory.CORE,
+    projectLink: 'https://frontier.xyz/',
+    harvest: true,
+    tokenPerBlock: '0.2546',
+    sortOrder: 999,
+    isFinished: false,
+    tokenDecimals: 18,
+  },
+  {
     sousId: 36,
     tokenName: 'Helmet',
     stakingTokenName: QuoteToken.CAKE,
