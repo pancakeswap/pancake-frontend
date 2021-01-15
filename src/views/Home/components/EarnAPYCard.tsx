@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Heading, Card, CardBody, ArrowForwardIcon } from '@pancakeswap-libs/uikit'
+import { Heading, Card, CardBody, Flex, ArrowForwardIcon } from '@pancakeswap-libs/uikit'
 import { NavLink } from 'react-router-dom'
 import useI18n from 'hooks/useI18n'
 import BigNumber from 'bignumber.js'
@@ -19,16 +19,12 @@ const StyledFarmStakingCard = styled(Card)`
   }
 `
 const Label = styled(Heading)`
-  color: ${({ theme }) => theme.colors.contrast};
+  font-size: 24px;
 `
-const CardMidContent = styled(Heading).attrs({ size: 'xl' })`
-  color: #7645d9;
+const CardMidContent = styled(Heading)`
+  font-size: 40px;
+  line-height: 44px;
 `
-const Row = styled.div`
-  display: flex;
-  justify-content: flex-end;
-`
-
 const EarnAPYCard = () => {
   const TranslateString = useI18n()
   const farmsLP = useFarms()
@@ -46,19 +42,21 @@ const EarnAPYCard = () => {
   return (
     <StyledFarmStakingCard>
       <CardBody>
-        <Label mb={0}>Earn up to</Label>
-        <CardMidContent mb={0}>
+        <Label mb={0} color="contrast">
+          Earn up to
+        </Label>
+        <CardMidContent mb={0} color="#7645d9">
           {calculateAPY()
             ? `${calculateAPY().times(new BigNumber(100)).toNumber().toLocaleString('en-US').slice(0, -1)}%`
             : `Loading...`}{' '}
           {TranslateString(352, 'APY')}
         </CardMidContent>
-        <Label>in Farms</Label>
-        <NavLink exact activeClassName="active" to="/farms">
-          <Row>
-            <ArrowForwardIcon />
-          </Row>
-        </NavLink>
+        <Flex justifyContent="space-between">
+          <Label>in Farms</Label>
+          <NavLink exact activeClassName="active" to="/farms">
+            <ArrowForwardIcon mt={30} color="primary" />
+          </NavLink>
+        </Flex>
       </CardBody>
     </StyledFarmStakingCard>
   )
