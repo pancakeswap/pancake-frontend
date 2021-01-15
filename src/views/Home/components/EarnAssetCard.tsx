@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Heading, Card, CardBody, ArrowForwardIcon } from '@pancakeswap-libs/uikit'
+import { Heading, Card, CardBody, Flex, ArrowForwardIcon } from '@pancakeswap-libs/uikit'
 import { NavLink } from 'react-router-dom'
 import pools from 'config/constants/pools'
 
@@ -16,18 +16,12 @@ const StyledFarmStakingCard = styled(Card)`
   }
 `
 const Label = styled(Heading)`
-  color: ${({ theme }) => theme.colors.contrast};
+  font-size: 24px;
 `
-const CardMidContent = styled(Heading).attrs({ size: 'xl' })`
-  color: ${({ theme }) => theme.colors.invertedContrast};
-  font-size: 35px;
+const CardMidContent = styled(Heading)`
+  font-size: 40px;
+  line-height: 44px;
 `
-const Row = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  color: #1fc7d4, 100%;
-`
-
 const EarnAssetCard = () => {
   const TOKENS_TO_EXCLUDE = ['SYRUP']
   const tokenNames = pools.reduce((accum, pool) => {
@@ -43,14 +37,18 @@ const EarnAssetCard = () => {
   return (
     <StyledFarmStakingCard>
       <CardBody>
-        <Label mb={0}>Earn</Label>
-        <CardMidContent mb={0}>{assets}</CardMidContent>
-        <Label>in Pools</Label>
-        <NavLink exact activeClassName="active" to="/syrup">
-          <Row>
-            <ArrowForwardIcon />
-          </Row>
-        </NavLink>
+        <Label mb={0} color="contrast">
+          Earn
+        </Label>
+        <CardMidContent mb={0} color="invertedContrast">
+          {assets}
+        </CardMidContent>
+        <Flex justifyContent="space-between">
+          <Label>in Pools</Label>
+          <NavLink exact activeClassName="active" to="/syrup">
+            <ArrowForwardIcon mt={30} color="primary" />
+          </NavLink>
+        </Flex>
       </CardBody>
     </StyledFarmStakingCard>
   )
