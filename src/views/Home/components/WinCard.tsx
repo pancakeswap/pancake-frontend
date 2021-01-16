@@ -17,11 +17,7 @@ const StyledFarmStakingCard = styled(Card)`
     max-width: none;
   }
 `
-const Label = styled(Heading).attrs({ size: 'lg' })`
-  font-size: 24px;
-`
 const CardMidContent = styled(Heading).attrs({ size: 'xl' })`
-  font-size: 40px;
   line-height: 44px;
 `
 const WinCard = () => {
@@ -36,14 +32,14 @@ const WinCard = () => {
   return (
     <StyledFarmStakingCard>
       <CardBody>
-        <Label mb={0} color="contrast">
+        <Heading color="contrast" size="lg">
           Win up to
-        </Label>
-        <CardMidContent mb={0} color="#7645d9">
-          ${lotteryPrize}
-        </CardMidContent>
+        </Heading>
+        <CardMidContent color="#7645d9">${lotteryPrize}</CardMidContent>
         <Flex justifyContent="space-between">
-          <Label>in Lottery</Label>
+          <Heading color="contrast" size="lg">
+            in Lottery
+          </Heading>
           <NavLink exact activeClassName="active" to="/lottery">
             <ArrowForwardIcon mt={30} color="primary" />
           </NavLink>

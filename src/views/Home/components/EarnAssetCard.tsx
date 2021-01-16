@@ -15,11 +15,7 @@ const StyledFarmStakingCard = styled(Card)`
     max-width: none;
   }
 `
-const Label = styled(Heading).attrs({ size: 'lg' })`
-  font-size: 24px;
-`
 const CardMidContent = styled(Heading).attrs({ size: 'xl' })`
-  font-size: 40px;
   line-height: 44px;
 `
 const EarnAssetCard = () => {
@@ -37,14 +33,14 @@ const EarnAssetCard = () => {
   return (
     <StyledFarmStakingCard>
       <CardBody>
-        <Label mb={0} color="contrast">
+        <Heading color="contrast" size="lg">
           Earn
-        </Label>
-        <CardMidContent mb={0} color="invertedContrast">
-          {assets}
-        </CardMidContent>
+        </Heading>
+        <CardMidContent color="invertedContrast">{assets}</CardMidContent>
         <Flex justifyContent="space-between">
-          <Label>in Pools</Label>
+          <Heading color="contrast" size="lg">
+            in Pools
+          </Heading>
           <NavLink exact activeClassName="active" to="/syrup">
             <ArrowForwardIcon mt={30} color="primary" />
           </NavLink>
