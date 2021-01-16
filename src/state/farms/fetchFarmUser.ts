@@ -42,11 +42,11 @@ export const fetchFarmUserTokenBalances = async (account: string) => {
 export const fetchFarmUserStakedBalances = async (account: string) => {
   const masterChefAdress = addresses.masterChef[CHAIN_ID]
 
-  const calls = farmsConfig.map((farm, index) => {
+  const calls = farmsConfig.map((farm) => {
     return {
       address: masterChefAdress,
       name: 'userInfo',
-      params: [index, account],
+      params: [farm.pid, account],
     }
   })
 
@@ -60,11 +60,11 @@ export const fetchFarmUserStakedBalances = async (account: string) => {
 export const fetchFarmUserEarnings = async (account: string) => {
   const masterChefAdress = addresses.masterChef[CHAIN_ID]
 
-  const calls = farmsConfig.map((farm, index) => {
+  const calls = farmsConfig.map((farm) => {
     return {
       address: masterChefAdress,
       name: 'pendingCake',
-      params: [index, account],
+      params: [farm.pid, account],
     }
   })
 
