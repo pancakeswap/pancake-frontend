@@ -19,7 +19,7 @@ const Farm: React.FC = () => {
 
   const { pid, lpSymbol, lpAddresses } = farmInfo
   const lpAddress = lpAddresses[process.env.REACT_APP_CHAIN_ID]
-  const { allowance, tokenBalance, stakedBalance, earnings } = useFarmUser(pid, account)
+  const { allowance, tokenBalance, stakedBalance, earnings } = useFarmUser(pid)
 
   const lpContract = useMemo(() => {
     return getContract(ethereum as provider, lpAddress)

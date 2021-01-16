@@ -28,8 +28,8 @@ interface FarmCardActionsProps {
 const CardActions: React.FC<FarmCardActionsProps> = ({ farm, ethereum, account }) => {
   const TranslateString = useI18n()
   const [requestedApproval, setRequestedApproval] = useState(false)
-  const { pid, lpAddresses, tokenSymbol } = useFarmFromSymbol(farm.lpSymbol)
-  const { allowance, tokenBalance, stakedBalance, earnings } = useFarmUser(pid, account)
+  const { pid, lpAddresses } = useFarmFromSymbol(farm.lpSymbol)
+  const { allowance, tokenBalance, stakedBalance, earnings } = useFarmUser(pid)
   const lpAddress = lpAddresses[process.env.REACT_APP_CHAIN_ID]
   const lpName = farm.lpSymbol.toUpperCase()
   const isApproved = account && allowance && allowance.isGreaterThan(0)
@@ -65,7 +65,8 @@ const CardActions: React.FC<FarmCardActionsProps> = ({ farm, ethereum, account }
       {/* TODO: These text elements should make use of updated textTransform prop when uikit version is deployed */}
       <Flex>
         <Text bold color="secondary" fontSize="12px" pr="3px">
-          {tokenSymbol}
+          {/* TODO: Is there a way to get a dynamic value here from useFarmFromSymbol? */}
+          CAKE
         </Text>
         <Text bold color="textSubtle" fontSize="12px">
           {TranslateString(999, 'Earned')}

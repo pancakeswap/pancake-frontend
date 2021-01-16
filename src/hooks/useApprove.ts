@@ -18,11 +18,14 @@ export const useApprove = (lpContract: Contract, pid: number) => {
   const handleApprove = useCallback(async () => {
     try {
       const tx = await approve(lpContract, masterChefContract, account)
-      dispatch(fetchFarmUserDataAsync(pid, account))
+      dispatch(fetchFarmUserDataAsync(account))
       return tx
     } catch (e) {
       return false
     }
+
+    // TO DO: Fix pid deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account, dispatch, lpContract, masterChefContract, pid])
 
   return { onApprove: handleApprove }
