@@ -2,7 +2,13 @@
 import { createSlice } from '@reduxjs/toolkit'
 import farmsConfig from 'sushi/lib/constants/farms'
 import fetchFarms from './fetchFarms'
-import fetchFarmUser from './fetchFarmUser'
+import {
+  fetchFarmUser,
+  fetchFarmUserEarnings,
+  fetchFarmUserAllowances,
+  fetchFarmUserTokenBalances,
+  fetchFarmUserStakedBalances,
+} from './fetchFarmUser'
 import { FarmsState, Farm } from '../types'
 
 const initialState: FarmsState = { data: [...farmsConfig] }
@@ -36,6 +42,14 @@ export const fetchFarmsPublicDataAsync = () => async (dispatch) => {
 }
 export const fetchFarmUserDataAsync = (pid, account) => async (dispatch) => {
   const userData = await fetchFarmUser(pid, account)
+  const userFarmAllowances = await fetchFarmUserAllowances(account)
+  const userFarmTokenBalances = await fetchFarmUserTokenBalances(account)
+  const userStakedBalances = await fetchFarmUserStakedBalances(account)
+  const userFarmEarnings = await fetchFarmUserEarnings(account)
+
+  // if (userData.stakedBalance !== '0') {
+  //   debugger // eslint-disable-line no-debugger
+  // }
   dispatch(setFarmUserData({ pid, userData }))
 }
 
