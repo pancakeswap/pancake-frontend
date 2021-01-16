@@ -25,9 +25,12 @@ export const farmsSlice = createSlice({
       })
     },
     setFarmUserData: (state, action) => {
-      const { pid, userData } = action.payload
-      const index = state.data.findIndex((f) => f.pid === pid)
-      state.data[index] = { ...state.data[index], userData }
+      const { arrayOfUserDataObjects } = action.payload
+
+      arrayOfUserDataObjects.forEach((userDataEl) => {
+        const { index } = userDataEl
+        state.data[index] = { ...state.data[index], userData: userDataEl }
+      })
     },
   },
 })
@@ -41,16 +44,22 @@ export const fetchFarmsPublicDataAsync = () => async (dispatch) => {
   dispatch(setFarmsPublicData(farms))
 }
 export const fetchFarmUserDataAsync = (pid, account) => async (dispatch) => {
-  const userData = await fetchFarmUser(pid, account)
   const userFarmAllowances = await fetchFarmUserAllowances(account)
   const userFarmTokenBalances = await fetchFarmUserTokenBalances(account)
   const userStakedBalances = await fetchFarmUserStakedBalances(account)
   const userFarmEarnings = await fetchFarmUserEarnings(account)
 
-  // if (userData.stakedBalance !== '0') {
-  //   debugger // eslint-disable-line no-debugger
-  // }
-  dispatch(setFarmUserData({ pid, userData }))
+  const arrayOfUserDataObjects = userFarmAllowances.map((farmAllowance, index) => {
+    return {
+      index,
+      allowance: userFarmAllowances[index],
+      tokenBalance: userFarmTokenBalances[index],
+      stakedBalance: userStakedBalances[index],
+      earnings: userFarmEarnings[index],
+    }
+  })
+
+  dispatch(setFarmUserData({ arrayOfUserDataObjects }))
 }
 
 export default farmsSlice.reducer
