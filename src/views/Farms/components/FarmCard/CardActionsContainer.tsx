@@ -64,20 +64,20 @@ const CardActions: React.FC<FarmCardActionsProps> = ({ farm, ethereum, account }
     <Action>
       {/* TODO: These text elements should make use of updated textTransform prop when uikit version is deployed */}
       <Flex>
-        <Text bold color="secondary" fontSize="12px" pr="3px">
+        <Text bold textTransform="uppercase" color="secondary" fontSize="12px" pr="3px">
           {/* TODO: Is there a way to get a dynamic value here from useFarmFromSymbol? */}
           CAKE
         </Text>
-        <Text bold color="textSubtle" fontSize="12px">
+        <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px">
           {TranslateString(999, 'Earned')}
         </Text>
       </Flex>
       <HarvestAction earnings={earnings} pid={pid} />
       <Flex>
-        <Text bold color="secondary" fontSize="12px" pr="3px">
+        <Text bold textTransform="uppercase" color="secondary" fontSize="12px" pr="3px">
           {lpName}
         </Text>
-        <Text bold color="textSubtle" fontSize="12px">
+        <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px">
           {TranslateString(999, 'Staked')}
         </Text>
       </Flex>

@@ -1,6 +1,7 @@
 import React from 'react'
+import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
-import { Button, Flex, Heading, IconButton, AddIcon, useModal } from '@pancakeswap-libs/uikit'
+import { Button, Flex, Heading, IconButton, AddIcon, MinusIcon, useModal } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import useStake from 'hooks/useStake'
 import useUnstake from 'hooks/useUnstake'
@@ -14,6 +15,13 @@ interface FarmCardActionsProps {
   tokenName?: string
   pid?: number
 }
+
+const IconButtonWrapper = styled.div`
+  display: flex;
+  svg {
+    width: 20px;
+  }
+`
 
 const StakeAction: React.FC<FarmCardActionsProps> = ({ stakedBalance, tokenBalance, tokenName, pid }) => {
   const TranslateString = useI18n()
@@ -32,15 +40,14 @@ const StakeAction: React.FC<FarmCardActionsProps> = ({ stakedBalance, tokenBalan
     return rawStakedBalance === 0 ? (
       <Button onClick={onPresentDeposit}>{TranslateString(999, 'Stake LP')}</Button>
     ) : (
-      <div>
+      <IconButtonWrapper>
         <IconButton variant="tertiary" onClick={onPresentWithdraw} mr="6px">
-          {/* This should be changed to SubtractIcon once uikit updated */}
-          <AddIcon color="primary" />
+          <MinusIcon color="primary" />
         </IconButton>
         <IconButton variant="tertiary" onClick={onPresentDeposit}>
           <AddIcon color="primary" />
         </IconButton>
-      </div>
+      </IconButtonWrapper>
     )
   }
 
