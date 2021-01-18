@@ -61,7 +61,7 @@ const ifos: Ifo[] = [
   {
     id: 'helmet',
     address: '0xa32509d760ee47Eb2Be96D338b5d69B5FBa4eFEB',
-    isActive: true,
+    isActive: false,
     name: 'Helmet.insure (Helmet)',
     subTitle: 'Crypto-assets insurance trading platform',
     description:
