@@ -5,9 +5,7 @@ interface CardTitleProps {
   text?: string
 }
 
-const CardTitle: React.FC<CardTitleProps> = ({ text }) => (
-  <StyledCardTitle>{text}</StyledCardTitle>
-)
+const CardTitle: React.FC<CardTitleProps> = ({ text }) => <StyledCardTitle>{text}</StyledCardTitle>
 
 const StyledCardTitle = styled.div`
   color: ${(props) => props.theme.colors.primary};
