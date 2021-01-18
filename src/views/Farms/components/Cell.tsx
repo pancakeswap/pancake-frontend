@@ -1,7 +1,6 @@
 import React from "react";
 
 type CellProps = {
-  keyId: string;
   filters?: string[];
   isHeader?: boolean;
   onClick?: () => void;

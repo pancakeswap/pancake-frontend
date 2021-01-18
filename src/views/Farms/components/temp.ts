@@ -30,16 +30,66 @@ const columnsDef: ColumnsDefTypes[] = [
     id: 6,
     bold: "",
     normal: "LINKS",
-  },
-  {
-    id: 7,
-    bold: "",
-    normal: "TAGS",
-  },
+  }
 ];
 
-const tempData: TableDataTypes[] = [{
-  poolImage: 'base64string'
-}]
+const tempData: TableDataTypes[] = [
+  {
+    'POOL': 'HARD-BNB',
+    'APY': '334.33',
+    'EARNED': '1',
+    'STAKED': '1',
+    'DETAILS': '5347.709',
+    'LINKS': '1'
+  },
+  {
+    'POOL': 'HARD-BNB',
+    'APY': '334.33',
+    'EARNED': '1',
+    'STAKED': '1',
+    'DETAILS': '5347.709',
+    'LINKS': '1'
+  },
+  {
+    'POOL': 'HARD-BNB',
+    'APY': '334.33',
+    'EARNED': '1',
+    'STAKED': '1',
+    'DETAILS': '5347.709',
+    'LINKS': '1'
+  },
+  {
+    'POOL': 'HARD-BNB',
+    'APY': '334.33',
+    'EARNED': '1',
+    'STAKED': '1',
+    'DETAILS': '5347.709',
+    'LINKS': '1'
+  },
+  {
+    'POOL': 'HARD-BNB',
+    'APY': '334.33',
+    'EARNED': '1',
+    'STAKED': '1',
+    'DETAILS': '5347.709',
+    'LINKS': '1'
+  },
+  {
+    'POOL': 'HARD-BNB',
+    'APY': '334.33',
+    'EARNED': '1',
+    'STAKED': '1',
+    'DETAILS': '5347.709',
+    'LINKS': '1'
+  },
+  {
+    'POOL': 'HARD-BNB',
+    'APY': '334.33',
+    'EARNED': '1',
+    'STAKED': '1',
+    'DETAILS': '5347.709',
+    'LINKS': '1'
+  }
+]
 
 export { columnsDef, tempData };

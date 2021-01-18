@@ -17,5 +17,10 @@ export type ScrollBarProps = {
 };
 
 export type TableDataTypes = {
-  poolImage: string,
+  POOL: string;
+  APY: string;
+  EARNED: string;
+  STAKED: string;
+  DETAILS: string;
+  LINKS: string;
 }
