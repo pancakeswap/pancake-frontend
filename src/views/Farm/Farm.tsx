@@ -13,7 +13,7 @@ import DualFarmDisclaimer from './components/DualFarmDisclaimer'
 
 const Farm: React.FC = () => {
   const TranslateString = useI18n()
-  const { ethereum, account } = useWallet()
+  const { ethereum } = useWallet()
   const { lpSymbol } = useParams<{ lpSymbol?: string }>()
 
   const { pid, lpAddresses, tokenSymbol, dual } = useFarmFromSymbol(lpSymbol)
