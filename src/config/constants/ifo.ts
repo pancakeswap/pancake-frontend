@@ -87,7 +87,7 @@ const ifos: Ifo[] = [
       'Soteria allows users to buy insurance cover to greatly diminish or reduce the financial risk of hacks. It replaces the idea of a traditional insurance company, because it is wholly owned by the members. The model encourages engagement as members receive economic incentives for participating in Risk Assessment, Claims Assessment and Governance.',
     launchDate: 'Jan. 21',
     launchTime: '4PM SGT',
-    saleAmount: '1,500,000 WSOTE',
+    saleAmount: '1,500,000 wSOTE',
     raiseAmount: '$525,00',
     cakeToBurn: '$212,000',
     projectSiteUrl: 'https://soteria.finance/#/',
