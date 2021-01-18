@@ -79,7 +79,7 @@ const ifos: Ifo[] = [
   },
   {
     id: 'soteria',
-    address: '',
+    address: '0x9C21123D94b93361a29B2C2EFB3d5CD8B17e0A9e',
     isActive: true,
     name: 'Soteria',
     subTitle: 'A blockchain based mutual to share the risk of DeFi on Binance Smart Chain',
