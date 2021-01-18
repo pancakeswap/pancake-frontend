@@ -29,7 +29,7 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName, allowance, to
   const [requestedApproval, setRequestedApproval] = useState(false)
   const TranslateString = useI18n()
 
-  const { onApprove } = useApprove(lpContract, pid)
+  const { onApprove } = useApprove(lpContract)
   const { onStake } = useStake(pid)
   const { onUnstake } = useUnstake(pid)
 

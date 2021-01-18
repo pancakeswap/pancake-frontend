@@ -38,7 +38,7 @@ const CardActions: React.FC<FarmCardActionsProps> = ({ farm, ethereum, account }
     return getContract(ethereum as provider, lpAddress)
   }, [ethereum, lpAddress])
 
-  const { onApprove } = useApprove(lpContract, pid)
+  const { onApprove } = useApprove(lpContract)
 
   const handleApprove = useCallback(async () => {
     try {
