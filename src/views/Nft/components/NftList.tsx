@@ -1,7 +1,7 @@
 import React from 'react'
 import orderBy from 'lodash/orderBy'
 import Container from 'components/layout/Container'
-import nfts from 'sushi/lib/constants/nfts'
+import nfts from 'config/constants/nfts'
 import NftCard from './NftCard'
 import NftGrid from './NftGrid'
 
