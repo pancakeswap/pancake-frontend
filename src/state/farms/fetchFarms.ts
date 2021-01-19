@@ -1,9 +1,9 @@
 import BigNumber from 'bignumber.js'
-import addresses from 'sushi/lib/constants/contracts'
-import erc20 from 'sushi/lib/abi/erc20.json'
-import masterchefABI from 'sushi/lib/abi/masterchef.json'
+import erc20 from 'config/abi/erc20.json'
+import masterchefABI from 'config/abi/masterchef.json'
 import multicall from 'utils/multicall'
-import farmsConfig from 'sushi/lib/constants/farms'
+import { getMasterChefAddress } from 'utils/addressHelpers'
+import farmsConfig from 'config/constants/farms'
 
 const CHAIN_ID = process.env.REACT_APP_CHAIN_ID
 
@@ -28,7 +28,7 @@ const fetchFarms = async () => {
         {
           address: lpAdress,
           name: 'balanceOf',
-          params: [addresses.masterChef[56]],
+          params: [getMasterChefAddress()],
         },
         // Total supply of LP tokens
         {
@@ -73,12 +73,12 @@ const fetchFarms = async () => {
 
       const [info, totalAllocPoint] = await multicall(masterchefABI, [
         {
-          address: addresses.masterChef[CHAIN_ID],
+          address: getMasterChefAddress(),
           name: 'poolInfo',
           params: [farmConfig.pid],
         },
         {
-          address: addresses.masterChef[CHAIN_ID],
+          address: getMasterChefAddress(),
           name: 'totalAllocPoint',
         },
       ])

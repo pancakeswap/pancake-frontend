@@ -34,6 +34,7 @@ const CompoundModal: React.FC<DepositModalProps> = ({ earnings, onConfirm, onDis
           {TranslateString(462, 'Cancel')}
         </Button>
         <Button
+          id="compound-cake"
           fullWidth
           disabled={pendingTx}
           onClick={async () => {

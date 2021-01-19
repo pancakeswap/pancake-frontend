@@ -4,8 +4,8 @@ import styled from 'styled-components'
 import { Button, Heading, Modal, useModal } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
-import rabbitmintingfarm from 'sushi/lib/abi/rabbitmintingfarm.json'
-import { RABBIT_MINTING_FARM_ADDRESS } from 'sushi/lib/constants/nfts'
+import rabbitmintingfarm from 'config/abi/rabbitmintingfarm.json'
+import { RABBIT_MINTING_FARM_ADDRESS } from 'config/constants/nfts'
 import multicall from 'utils/multicall'
 
 interface NftYouWonModalProps {

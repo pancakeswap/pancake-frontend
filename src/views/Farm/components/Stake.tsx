@@ -3,7 +3,7 @@ import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { Contract } from 'web3-eth-contract'
-import { Button, IconButton, useModal, AddIcon, Card, CardBody } from '@pancakeswap-libs/uikit'
+import { Button, IconButton, useModal, AddIcon, Card, CardBody, Image } from '@pancakeswap-libs/uikit'
 import Label from 'components/Label'
 import { useApprove } from 'hooks/useApprove'
 import useStake from 'hooks/useStake'
@@ -13,7 +13,6 @@ import { getBalanceNumber } from 'utils/formatBalance'
 import UnlockButton from 'components/UnlockButton'
 import DepositModal from './DepositModal'
 import WithdrawModal from './WithdrawModal'
-import Image from './Image'
 import Value from './Value'
 
 interface StakeProps {
@@ -59,7 +58,7 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName, allowance, to
       <CardBody>
         <StyledCardContentInner>
           <StyledCardHeader>
-            <Image src={`/images/farms/${farmImage}.svg`} alt={`${tokenName} logo`} />
+            <Image src={`/images/farms/${farmImage}.svg`} alt={`${tokenName} logo`} width={48} height={48} mb="16px" />
             <Value
               value={getBalanceNumber(stakedBalance)}
               decimals={tokenName === 'HARD' ? 6 : undefined}

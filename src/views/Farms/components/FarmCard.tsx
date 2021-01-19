@@ -3,14 +3,14 @@ import BigNumber from 'bignumber.js'
 import styled, { keyframes } from 'styled-components'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { Link as ReactRouterLink } from 'react-router-dom'
-import { Button, Flex } from '@pancakeswap-libs/uikit'
-import { communityFarms } from 'sushi/lib/constants'
+import { Button, Flex, Image, Link } from '@pancakeswap-libs/uikit'
+import { communityFarms } from 'config/constants'
 import { Farm } from 'state/types'
 import { usePriceBnbBusd, usePriceCakeBusd } from 'state/hooks'
 import useI18n from 'hooks/useI18n'
 import { CommunityTag, CoreTag } from 'components/Tags'
 import UnlockButton from 'components/UnlockButton'
-import { QuoteToken } from 'sushi/lib/constants/types'
+import { QuoteToken } from 'config/constants/types'
 
 export interface FarmWithStakedValue extends Farm {
   apy?: BigNumber
@@ -22,11 +22,6 @@ const Action = styled.div`
 
 const ViewMore = styled.div`
   padding-top: 16px;
-`
-
-const Link = styled.a`
-  text-decoration: none;
-  color: ${(props) => props.theme.colors.secondary};
 `
 
 const RainbowLight = keyframes`
@@ -110,10 +105,6 @@ const FCard = styled.div`
   padding: 24px;
   position: relative;
   text-align: center;
-  img {
-    height: 80px;
-    width: 80px;
-  }
 `
 
 interface FarmCardProps {
@@ -158,7 +149,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
           <Multiplier>{farm.multiplier}</Multiplier>
           {isCommunityFarm ? <CommunityTag /> : <CoreTag />}
         </Flex>
-        <img src={`/images/farms/${farmImage}.svg`} alt={farm.tokenSymbol} />
+        <Image src={`/images/farms/${farmImage}.svg`} alt={farm.tokenSymbol} width={80} height={80} />
       </CardImage>
       <Label>
         <span>{TranslateString(316, 'Deposit')}</span>
@@ -182,7 +173,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
         {account ? (
           /* No full width props because of as={ReactRouterLink} */
           // @ts-ignore
-          <Button as={ReactRouterLink} to={`/farms/${farm.lpSymbol}`} style={{ width: '100%' }}>
+          <Button as={ReactRouterLink} to={`/farm/${farm.lpSymbol}`} style={{ width: '100%' }}>
             {TranslateString(568, 'Select')}
           </Button>
         ) : (
@@ -196,7 +187,11 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
         </Label>
       )}
       <ViewMore>
-        <Link href={`https://bscscan.com/address/${farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]}`} target="_blank">
+        <Link
+          href={`https://bscscan.com/address/${farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]}`}
+          external
+          m="auto"
+        >
           {TranslateString(356, 'View on BscScan')} &gt;
         </Link>
       </ViewMore>

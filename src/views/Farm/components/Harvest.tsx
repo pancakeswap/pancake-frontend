@@ -1,12 +1,11 @@
 import React, { useState } from 'react'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
-import { Button, Card, CardBody } from '@pancakeswap-libs/uikit'
+import { Button, Card, CardBody, Image } from '@pancakeswap-libs/uikit'
 import Label from 'components/Label'
 import { useHarvest } from 'hooks/useHarvest'
 import useI18n from 'hooks/useI18n'
 import { getBalanceNumber } from 'utils/formatBalance'
-import Image from './Image'
 import Value from './Value'
 
 interface HarvestProps {
@@ -24,7 +23,7 @@ const Harvest: React.FC<HarvestProps> = ({ pid, earnings }) => {
       <CardBody>
         <StyledCardContentInner>
           <StyledCardHeader>
-            <Image src="/images/tokens/CAKE.png" alt="cake" />
+            <Image src="/images/tokens/CAKE.png" alt="cake" width={48} height={48} mb="16px" />
             <Value value={getBalanceNumber(earnings)} fontSize="40px" />
             <Label text={TranslateString(330, 'CAKE Earned')} />
           </StyledCardHeader>
