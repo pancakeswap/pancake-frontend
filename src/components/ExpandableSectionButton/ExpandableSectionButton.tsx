@@ -20,7 +20,7 @@ const Wrapper = styled.div`
 
 const ExpandableSectionButton: React.FC<ExpandableSectionButtonProps> = ({ onClick, expanded }) => {
   return (
-    <Wrapper onClick={() => onClick()}>
+    <Wrapper aria-label="Hide or show expandable content" role="button" onClick={() => onClick()}>
       <Text color="primary" bold>
         {expanded ? 'Hide' : 'Details'}
       </Text>
