@@ -13,7 +13,7 @@ it("renders correctly", () => {
           class="sc-bdfBwQ jvKaGz sc-dlfnbm mabrO"
           color="text"
           viewBox="0 0 128 128"
-          width="150px"
+          width="64px"
           xmlns="http://www.w3.org/2000/svg"
         >
           <svg
@@ -44,10 +44,10 @@ it("renders correctly", () => {
           </svg>
         </svg>
         <svg
-          class="sc-bdfBwQ jvKaGz sc-hKgILt cMmkZP"
+          class="sc-bdfBwQ jvKaGz sc-hKgILt jsGrON"
           color="text"
           viewBox="0 0 256 256"
-          width="300px"
+          width="128px"
           xmlns="http://www.w3.org/2000/svg"
         >
           <path

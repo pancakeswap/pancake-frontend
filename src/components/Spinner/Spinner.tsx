@@ -18,7 +18,7 @@ const float = keyframes`
 		transform: translatey(0px);
 	}
 	50% {
-		transform: translatey(-20px);
+		transform: translatey(10px);
 	}
 	100% {
 		transform: translatey(0px);
@@ -42,7 +42,7 @@ const FloatingPanIcon = styled(PanIcon)`
   transform: translate3d(0, 0, 0);
 `;
 
-const Spinner: React.FC<SpinnerProps> = ({ size = 300 }) => {
+const Spinner: React.FC<SpinnerProps> = ({ size = 128 }) => {
   return (
     <Container>
       <RotatingPancakeIcon width={`${size * 0.5}px`} />
