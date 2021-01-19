@@ -62,7 +62,6 @@ const CardActions: React.FC<FarmCardActionsProps> = ({ farm, ethereum, account }
 
   return (
     <Action>
-      {/* TODO: These text elements should make use of updated textTransform prop when uikit version is deployed */}
       <Flex>
         <Text bold textTransform="uppercase" color="secondary" fontSize="12px" pr="3px">
           {/* TODO: Is there a way to get a dynamic value here from useFarmFromSymbol? */}
