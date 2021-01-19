@@ -5,7 +5,7 @@ import { getBalanceNumber } from 'utils/formatBalance'
 import { useTotalSupply, useBurnedBalance } from 'hooks/useTokenBalance'
 import useI18n from 'hooks/useI18n'
 import { getCakeAddress } from 'utils/addressHelpers'
-import CardValue from 'components/Card/CardValue'
+import CardValue from './CardValue'
 
 const StyledCakeStats = styled(Card)`
   margin-left: auto;
@@ -25,10 +25,6 @@ const Row = styled.div`
   margin-bottom: 8px;
 `
 
-const Title = styled(Heading).attrs({ size: 'lg' })`
-  margin-bottom: 24px;
-`
-
 const CakeStats = () => {
   const TranslateString = useI18n()
   const totalSupply = useTotalSupply()
@@ -38,7 +34,9 @@ const CakeStats = () => {
   return (
     <StyledCakeStats>
       <CardBody>
-        <Title>{TranslateString(534, 'Cake Stats')}</Title>
+        <Heading size="xl" mb="24px">
+          {TranslateString(534, 'Cake Stats')}
+        </Heading>
         <Row>
           <Text fontSize="14px">{TranslateString(536, 'Total CAKE Supply')}</Text>
           {cakeSupply && <CardValue fontSize="14px" value={cakeSupply} />}

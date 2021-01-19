@@ -1,22 +1,17 @@
 import React from 'react'
-import styled from 'styled-components'
+import { Text } from '@pancakeswap-libs/uikit'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useTotalRewards } from 'hooks/useTickets'
-
-const StyledLotteryJackpot = styled.div`
-  font-size: 24px;
-  font-weight: 900;
-`
 
 const LotteryJackpot = () => {
   const lotteryPrizeAmount = useTotalRewards()
 
   return (
-    <StyledLotteryJackpot>
+    <Text bold fontSize="24px">
       {getBalanceNumber(lotteryPrizeAmount).toLocaleString(undefined, {
         maximumFractionDigits: 2,
       })}
-    </StyledLotteryJackpot>
+    </Text>
   )
 }
 

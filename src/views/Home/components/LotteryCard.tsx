@@ -26,9 +26,7 @@ const StyledLotteryCard = styled(Card)`
     max-width: none;
   }
 `
-const CardTitle = styled(Heading).attrs({ size: 'lg' })`
-  margin-bottom: 24px;
-`
+
 const Block = styled.div`
   margin-bottom: 16px;
 `
@@ -80,7 +78,9 @@ const FarmedStakingCard = () => {
   return (
     <StyledLotteryCard>
       <CardBody>
-        <CardTitle>{TranslateString(550, 'Your Lottery Winnings')}</CardTitle>
+        <Heading size="xl" mb="24px">
+          {TranslateString(550, 'Your Lottery Winnings')}
+        </Heading>
         <CardImage src="/images/ticket.svg" alt="cake logo" />
         <Block>
           <Value>

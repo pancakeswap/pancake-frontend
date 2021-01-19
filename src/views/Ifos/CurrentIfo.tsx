@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import { Text, Heading, BaseLayout, Button, LinkExternal, Flex, Image } from '@pancakeswap-libs/uikit'
 import { ifosConfig } from 'config/constants'
 import useI18n from 'hooks/useI18n'
-import Container from 'components/layout/Container'
 import IfoCard from './components/IfoCard'
 import Title from './components/Title'
 import IfoCards from './components/IfoCards'
@@ -40,7 +39,7 @@ const Ifo = () => {
   const TranslateString = useI18n()
 
   return (
-    <Container>
+    <div>
       <IfoCards isSingle>
         <IfoCard ifo={activeIfo} />
       </IfoCards>
@@ -99,7 +98,7 @@ const Ifo = () => {
           </div>
         </div>
       </LaunchIfoCallout>
-    </Container>
+    </div>
   )
 }
 

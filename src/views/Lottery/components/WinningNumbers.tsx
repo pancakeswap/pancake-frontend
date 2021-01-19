@@ -1,12 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
-import { Image } from '@pancakeswap-libs/uikit'
+import { Image, Card, CardBody } from '@pancakeswap-libs/uikit'
 import { useWinningNumbers, useMatchingRewardLength } from 'hooks/useTickets'
 import useI18n from 'hooks/useI18n'
 import useGetLotteryHasDrawn from 'hooks/useGetLotteryHasDrawn'
-import Card from 'components/Card'
-import CardContent from 'components/CardContent'
 
 const WinningNumbers: React.FC = () => {
   const { account } = useWallet()
@@ -20,7 +18,7 @@ const WinningNumbers: React.FC = () => {
   return (
     <CardWrapper>
       <Card>
-        <CardContent>
+        <CardBody>
           <StyledCardContentInner>
             <StyledCardHeader>
               <Title>
@@ -106,7 +104,7 @@ const WinningNumbers: React.FC = () => {
               {TranslateString(448, 'Export recent winning numbers')}
             </Link>
           </StyledCardContentInner>
-        </CardContent>
+        </CardBody>
       </Card>
     </CardWrapper>
   )
