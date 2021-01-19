@@ -1,3 +1,5 @@
+// Constructing the two forward-slash-separated parts of the 'Add Liquidity' URL
+// In the URL, using the quote token 'BNB' is represented by 'ETH'
 const getLiquidityUrlPathParts = ({ quoteTokenAdresses, quoteTokenSymbol, tokenAddresses }) => {
   const chainId = process.env.REACT_APP_CHAIN_ID
   const firstPart = quoteTokenSymbol === 'BNB' ? 'ETH' : quoteTokenAdresses[chainId]
