@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Card, CardBody, Heading, Skeleton, Text, Flex } from '@pancakeswap-libs/uikit'
+import { Card, CardBody, Heading, Skeleton, Text } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import { useGetStats } from 'hooks/api'
 
@@ -13,7 +13,7 @@ const StyledTotalValueLockedCard = styled(Card)`
 const TotalValueLockedCard = () => {
   const TranslateString = useI18n()
   const data = useGetStats()
-  const tvl = data ? data.total_value_locked.toLocaleString('en-US', { maximumFractionDigits: 2 }) : null
+  const tvl = data ? data.total_value_locked_all.toLocaleString('en-US', { maximumFractionDigits: 2 }) : null
 
   return (
     <StyledTotalValueLockedCard>
@@ -24,7 +24,7 @@ const TotalValueLockedCard = () => {
           </Heading>
           {data ? (
             <>
-              <Heading size="xl">{tvl}</Heading>
+              <Heading size="xl">{`$${tvl}`}</Heading>
               <Text color="textSubtle">{TranslateString(999, 'Across all LPs and Syrup Pools')}</Text>
             </>
           ) : (

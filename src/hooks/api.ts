@@ -21,6 +21,7 @@ export interface ApiStatResponse {
   update_at: string
   '24h_total_volume': number
   total_value_locked: number
+  total_value_locked_all: number
   trade_pairs: {
     [key: string]: TradePair
   }
