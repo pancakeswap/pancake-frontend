@@ -20,11 +20,14 @@ export * from "./components/Spinner";
 export * from "./components/Skeleton";
 export * from "./components/Toggle";
 export * from "./components/Table";
+
 // Hooks
 export * from "./hooks";
+
 // Widgets
 export * from "./widgets/Modal";
 export * from "./widgets/Menu";
+export * from "./widgets/Toast";
 export * from "./widgets/WalletModal";
 
 // Theme
