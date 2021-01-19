@@ -11,22 +11,22 @@ export default {
 };
 
 export const Default: React.FC = () => {
-  const [alerts, setAlerts] = useState([]);
+  const [toasts, setToasts] = useState([]);
 
   const handleClick = (description = "") => {
     const now = Date.now();
-    const randomAlert = {
+    const randomToast = {
       id: `id-${now}`,
       title: `Title: ${now}`,
       description,
       type: alertVariants[sample(Object.keys(alertVariants))],
     };
 
-    setAlerts((prevAlerts) => [randomAlert, ...prevAlerts]);
+    setToasts((prevToasts) => [randomToast, ...prevToasts]);
   };
 
   const handleRemove = (id: string) => {
-    setAlerts((prevAlerts) => prevAlerts.filter((prevAlert) => prevAlert.id !== id));
+    setToasts((prevToasts) => prevToasts.filter((prevToast) => prevToast.id !== id));
   };
 
   return (
@@ -38,11 +38,11 @@ export const Default: React.FC = () => {
         type="button"
         variant="secondary"
         ml="8px"
-        onClick={() => handleClick("This is a description to explain more about the alert")}
+        onClick={() => handleClick("This is a description to explain more about the toast")}
       >
         Random Toast with Description
       </Button>
-      <ToastContainer alerts={alerts} onRemove={handleRemove} />
+      <ToastContainer toasts={toasts} onRemove={handleRemove} />
     </div>
   );
 };

@@ -16,11 +16,11 @@ const StyledToast = styled.div`
   }
 `;
 
-const Toast: React.FC<ToastProps> = ({ alert, onRemove, style, ttl, ...props }) => {
+const Toast: React.FC<ToastProps> = ({ toast, onRemove, style, ttl, ...props }) => {
   const timer = useRef<number>();
   const ref = useRef(null);
   const removeHandler = useRef(onRemove);
-  const { id, title, description, type } = alert;
+  const { id, title, description, type } = toast;
 
   const handleRemove = useCallback(() => removeHandler.current(id), [id, removeHandler]);
 

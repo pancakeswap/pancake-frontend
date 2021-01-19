@@ -1,26 +1,26 @@
-export enum AlertType {
+export enum ToastType {
   SUCCESS = "success",
   DANGER = "danger",
   WARNING = "warning",
   INFO = "info",
 }
 
-export interface Alert {
+export interface Toast {
   id: string;
-  type: AlertType;
+  type: ToastType;
   title: string;
   description?: string;
 }
 
 export interface ToastContainerProps {
-  alerts: Alert[];
+  toasts: Toast[];
   stackSpacing?: number;
   ttl?: number;
   onRemove: (id: string) => void;
 }
 
 export interface ToastProps {
-  alert: Alert;
+  toast: Toast;
   onRemove: ToastContainerProps["onRemove"];
   ttl: number;
   style: Partial<CSSStyleDeclaration>;
