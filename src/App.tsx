@@ -15,7 +15,7 @@ import Ifos from './views/Ifos'
 import NotFound from './views/NotFound'
 import Nft from './views/Nft'
 import NftGlobalNotification from './views/Nft/components/NftGlobalNotification'
-import AlertListener from './components/AlertListener'
+import ToastListener from './components/ToastListener'
 
 BigNumber.config({
   EXPONENTIAL_AT: 1000,
@@ -72,7 +72,7 @@ const App: React.FC = () => {
         </Switch>
       </Menu>
       <NftGlobalNotification />
-      <AlertListener />
+      <ToastListener />
     </Router>
   )
 }
