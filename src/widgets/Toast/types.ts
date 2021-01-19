@@ -1,13 +1,15 @@
-export enum ToastType {
-  SUCCESS = "success",
-  DANGER = "danger",
-  WARNING = "warning",
-  INFO = "info",
-}
+export const types = {
+  SUCCESS: "success",
+  DANGER: "danger",
+  WARNING: "warning",
+  INFO: "info",
+};
+
+export type Types = typeof types[keyof typeof types];
 
 export interface Toast {
   id: string;
-  type: ToastType;
+  type: Types;
   title: string;
   description?: string;
 }

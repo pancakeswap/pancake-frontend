@@ -1,8 +1,15 @@
 import React, { useCallback, useEffect, useRef } from "react";
 import { CSSTransition } from "react-transition-group";
 import styled from "styled-components";
-import { Alert } from "../../components/Alert";
-import { ToastProps } from "./types";
+import { Alert, alertVariants } from "../../components/Alert";
+import { ToastProps, types } from "./types";
+
+const alertTypeMap = {
+  [types.INFO]: alertVariants.INFO,
+  [types.SUCCESS]: alertVariants.SUCCESS,
+  [types.DANGER]: alertVariants.DANGER,
+  [types.WARNING]: alertVariants.WARNING,
+};
 
 const StyledToast = styled.div`
   right: 16px;
@@ -55,7 +62,7 @@ const Toast: React.FC<ToastProps> = ({ toast, onRemove, style, ttl, ...props }) 
   return (
     <CSSTransition nodeRef={ref} timeout={250} style={style} {...props}>
       <StyledToast ref={ref} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-        <Alert title={title} description={description} variant={type} onClick={handleRemove} />
+        <Alert title={title} description={description} variant={alertTypeMap[type]} onClick={handleRemove} />
       </StyledToast>
     </CSSTransition>
   );
