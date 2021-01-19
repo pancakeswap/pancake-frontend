@@ -23,9 +23,7 @@ const StyledFarmStakingCard = styled(Card)`
     max-width: none;
   }
 `
-const CardTitle = styled(Heading).attrs({ size: 'lg' })`
-  margin-bottom: 24px;
-`
+
 const Block = styled.div`
   margin-bottom: 16px;
 `
@@ -70,7 +68,9 @@ const FarmedStakingCard = () => {
   return (
     <StyledFarmStakingCard>
       <CardBody>
-        <CardTitle>{TranslateString(542, 'Farms & Staking')}</CardTitle>
+        <Heading size="xl" mb="24px">
+          {TranslateString(542, 'Farms & Staking')}
+        </Heading>
         <CardImage src="/images/cake.svg" alt="cake logo" />
         <Block>
           <Value>

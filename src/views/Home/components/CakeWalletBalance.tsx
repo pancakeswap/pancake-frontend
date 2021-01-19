@@ -6,7 +6,7 @@ import useTokenBalance from 'hooks/useTokenBalance'
 import useI18n from 'hooks/useI18n'
 import { getCakeAddress } from 'utils/addressHelpers'
 import { getBalanceNumber } from 'utils/formatBalance'
-import CardValue from 'components/Card/CardValue'
+import CardValue from './CardValue'
 
 const Label = styled(Text)`
   color: ${({ theme }) => theme.colors.textDisabled};

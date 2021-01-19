@@ -20,7 +20,6 @@ const StyledHero = styled.div`
   background-image: linear-gradient(180deg, #53dee9 0%, #1fc7d4 100%);
   padding-bottom: 40px;
   padding-top: 40px;
-  margin-bottom: 32px;
 `
 
 const StyledContainer = styled(Container)`

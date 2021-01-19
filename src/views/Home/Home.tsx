@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import { Heading, Text, BaseLayout } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import Page from 'components/layout/Page'
-import Container from 'components/layout/Container'
 import FarmStakingCard from './components/FarmStakingCard'
 import LotteryCard from './components/LotteryCard'
 import CakeStats from './components/CakeStats'
@@ -15,8 +14,9 @@ const Hero = styled.div`
   background-position: top center;
   display: flex;
   justify-content: center;
-  margin: 32px auto;
-  max-width: 904px;
+  flex-direction: column;
+  margin: auto;
+  margin-bottom: 32px;
   padding-top: 116px;
   text-align: center;
 
@@ -24,19 +24,8 @@ const Hero = styled.div`
     background-image: url('/images/pan-bg2.svg'), url('/images/pan-bg.svg');
     background-position: left center, right center;
     height: 165px;
-    margin-top: 48px;
     padding-top: 0;
   }
-`
-
-const Title = styled(Heading)`
-  color: ${({ theme }) => theme.colors.secondary};
-  font-size: 40px;
-  margin-bottom: ${({ theme }) => theme.spacing[4]}px;
-`
-
-const Subtitle = styled(Text)`
-  font-weight: 400;
 `
 
 const Cards = styled(BaseLayout)`
@@ -66,18 +55,18 @@ const Home: React.FC = () => {
   return (
     <Page>
       <Hero>
-        <div>
-          <Title as="h1">{TranslateString(576, 'PancakeSwap')}</Title>
-          <Subtitle>{TranslateString(578, 'The #1 AMM and yield farm on Binance Smart Chain.')}</Subtitle>
-        </div>
+        <Heading as="h1" size="xl" mb="24px" color="secondary">
+          {TranslateString(576, 'PancakeSwap')}
+        </Heading>
+        <Text>{TranslateString(578, 'The #1 AMM and yield farm on Binance Smart Chain.')}</Text>
       </Hero>
-      <Container>
+      <div>
         <Cards>
           <FarmStakingCard />
           <LotteryCard />
         </Cards>
         <CakeStats />
-      </Container>
+      </div>
     </Page>
   )
 }
