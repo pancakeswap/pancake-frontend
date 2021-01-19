@@ -22,7 +22,7 @@ export interface FarmWithStakedValue extends Farm {
 interface FarmCardActionsProps {
   farm: FarmWithStakedValue
   ethereum?: provider
-  account?: null | string
+  account?: string
 }
 
 const CardActions: React.FC<FarmCardActionsProps> = ({ farm, ethereum, account }) => {

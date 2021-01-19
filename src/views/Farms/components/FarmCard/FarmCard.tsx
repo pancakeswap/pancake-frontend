@@ -90,7 +90,7 @@ interface FarmCardProps {
   cakePrice?: BigNumber
   bnbPrice?: BigNumber
   ethereum?: provider
-  account?: null | string
+  account?: string
 }
 
 const FarmCard: React.FC<FarmCardProps> = ({ farm, removed, cakePrice, bnbPrice, ethereum, account }) => {
