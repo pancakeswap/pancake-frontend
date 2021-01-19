@@ -66,10 +66,6 @@ const FCard = styled.div`
   padding: 24px;
   position: relative;
   text-align: center;
-  img {
-    height: 80px;
-    width: 80px;
-  }
 `
 
 const Divider = styled.div`

@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Tag, Flex, Heading } from '@pancakeswap-libs/uikit'
+import { Tag, Flex, Heading, Image } from '@pancakeswap-libs/uikit'
 import { CommunityTag, CoreTag } from 'components/Tags'
 
 export interface ExpandableSectionProps {
@@ -30,9 +30,7 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
 }) => {
   return (
     <Wrapper justifyContent="space-between" alignItems="center" mb="12px">
-      <div>
-        <img src={`/images/farms/${farmImage}.svg`} alt={tokenSymbol} />
-      </div>
+      <Image src={`/images/farms/${farmImage}.svg`} alt={tokenSymbol} width={64} height={64} />
       <Flex flexDirection="column">
         <Heading mb="4px">{lpLabel}</Heading>
         <Flex alignItems="center" justifyContent="center">

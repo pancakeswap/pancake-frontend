@@ -1,7 +1,7 @@
 import React from 'react'
 import useI18n from 'hooks/useI18n'
 import styled from 'styled-components'
-import { Text, Flex, Link, OpenNewIcon } from '@pancakeswap-libs/uikit'
+import { Text, Flex, Link, OpenNewIcon, LinkExternal } from '@pancakeswap-libs/uikit'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 
 export interface TokenAddressesObject {
@@ -22,7 +22,7 @@ const Wrapper = styled.div`
   margin-top: 24px;
 `
 
-const StyledLink = styled(Link)`
+const StyledLinkExternal = styled(LinkExternal)`
   text-decoration: none;
   font-weight: normal;
   color: ${({ theme }) => theme.colors.text};
@@ -53,9 +53,9 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
     <Wrapper>
       <Flex justifyContent="space-between">
         <Text>{TranslateString(316, 'Stake')}:</Text>
-        <StyledLink external href={`https://exchange.pancakeswap.finance/#/add/${liquidityUrlPathParts}`}>
-          {lpLabel} <OpenNewIcon />
-        </StyledLink>
+        <StyledLinkExternal href={`https://exchange.pancakeswap.finance/#/add/${liquidityUrlPathParts}`}>
+          {lpLabel}
+        </StyledLinkExternal>
       </Flex>
       {!removed && (
         <Flex justifyContent="space-between">
@@ -64,7 +64,7 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
         </Flex>
       )}
       <Flex justifyContent="flex-start">
-        <Link external href={bscScanAddress} target="_blank" bold={false}>
+        <Link external href={bscScanAddress} bold={false}>
           {TranslateString(356, 'View on BscScan')}
         </Link>
       </Flex>
