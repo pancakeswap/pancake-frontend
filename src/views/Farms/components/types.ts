@@ -14,6 +14,7 @@ export type ColumnsDefTypes = {
 
 export type ScrollBarProps = {
   ref: string;
+  width: number;
 };
 
 export type TableDataTypes = {

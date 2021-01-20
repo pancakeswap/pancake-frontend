@@ -10,7 +10,7 @@ import { QuoteToken } from 'config/constants/types'
 import useI18n from 'hooks/useI18n'
 import Page from 'components/Page'
 import FarmCard, { FarmWithStakedValue } from './components/FarmCard'
-import Table from './components/Table'
+import Table from './components/Table/Table'
 import FarmTabButtons from './components/FarmTabButtons'
 import Divider from './components/Divider'
 import SearchInput from './components/SearchInput'
@@ -36,7 +36,7 @@ const Farms: React.FC = () => {
   const tableRef = useRef(null);
 
   const farmsList = useCallback(
-    (farmsToDisplay, removed: boolean) => {
+    (farmsToDisplay, removed: boolean): FarmWithStakedValue[] => {
       const cakePriceVsBNB = new BigNumber(farmsLP.find((farm) => farm.pid === CAKE_POOL_PID)?.tokenPriceVsQuote || 0)
       const farmsToDisplayWithAPY: FarmWithStakedValue[] = farmsToDisplay.map((farm) => {
         if (!farm.tokenAmount || !farm.lpTotalInQuoteToken || !farm.lpTotalInQuoteToken) {
@@ -65,8 +65,9 @@ const Farms: React.FC = () => {
         }
 
         return { ...farm, apy }
-      })
-      return farmsToDisplayWithAPY.map((farm) => <FarmCard key={farm.pid} farm={farm} removed={removed} />)
+      });
+
+      return farmsToDisplayWithAPY;
     },
     [bnbPrice, farmsLP],
   )
@@ -77,6 +78,8 @@ const Farms: React.FC = () => {
       tableRef.current.setTableQuery(event.target.value);
     }
   }
+
+  const activeFarmsStaked = farmsList(activeFarms, false)
 
   return (
     <Page>
@@ -91,13 +94,13 @@ const Farms: React.FC = () => {
         />
       </ControlContainer>
       <Page>
-        <Table data={['test']} ref={ tableRef } />
+        <Table data={ activeFarmsStaked } ref={ tableRef } />
         <Divider />
         <Route exact path={`${path}`}>
-          <Grid>{farmsList(activeFarms, false)}</Grid>
+          <Grid>{activeFarmsStaked.map((farm) => <FarmCard key={farm.pid} farm={farm} removed={false} />)}</Grid>
         </Route>
         <Route exact path={`${path}/history`}>
-          <Grid>{farmsList(inactiveFarms, true)}</Grid>
+          <Grid>{farmsList(inactiveFarms, true).map((farm) => <FarmCard key={farm.pid} farm={farm} removed />)}</Grid>
         </Route>
       </Page>
       <Image src="/images/cakecat.png" alt="Pancake illustration" width={949} height={384} responsive />

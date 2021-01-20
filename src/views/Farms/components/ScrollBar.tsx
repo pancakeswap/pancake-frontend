@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { ScrollBarProps } from "./types";
 
@@ -26,15 +26,19 @@ const Container = styled.div`
   }
 `;
 
-const ScrollPanel = styled.div`
-  min-width: 900px;
+interface PanelProps {
+  width: number;
+}
+
+const ScrollPanel = styled.div<PanelProps>`
+  min-width: ${props => `${props.width}px` };
   height: 20px;
 `;
 
-const ScrollBar = React.forwardRef<HTMLDivElement, ScrollBarProps>((props, ref) => {
+const ScrollBar = React.forwardRef<HTMLDivElement, ScrollBarProps>(({width}, ref) => {
   return (
     <Container ref={ref}>
-      <ScrollPanel />
+      <ScrollPanel width={ width } />
     </Container>
   );
 });
