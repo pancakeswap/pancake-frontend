@@ -41,6 +41,11 @@ const config: MenuEntry[] = [
     href: '/nft',
   },
   {
+    label: 'Teams & Profile',
+    icon: 'NftIcon',
+    href: '/teams',
+  },
+  {
     label: 'Info',
     icon: 'InfoIcon',
     items: [
