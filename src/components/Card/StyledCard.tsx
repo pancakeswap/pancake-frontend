@@ -1,4 +1,5 @@
 import styled, { DefaultTheme } from "styled-components";
+import { space } from "styled-system";
 import { CardProps } from "./types";
 
 interface StyledCardProps extends CardProps {
@@ -32,6 +33,8 @@ const StyledCard = styled.div<StyledCardProps>`
   color: ${({ theme, isDisabled }) => theme.colors[isDisabled ? "textDisabled" : "text"]};
   overflow: hidden;
   position: relative;
+
+  ${space}
 `;
 
 StyledCard.defaultProps = {

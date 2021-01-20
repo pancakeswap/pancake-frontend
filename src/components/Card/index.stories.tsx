@@ -9,10 +9,6 @@ import Card from "./Card";
 
 const Row = styled.div`
   margin-bottom: 32px;
-
-  & > button + button {
-    margin-left: 16px;
-  }
 `;
 
 export default {
