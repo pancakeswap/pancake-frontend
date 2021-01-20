@@ -13,7 +13,7 @@ import {
   remove as removeToast,
   clear as clearToast,
 } from './actions'
-import { State, Farm, Pool } from './types'
+import { State, Farm, Pool, Profile } from './types'
 
 const ZERO = new BigNumber(0)
 
@@ -123,4 +123,9 @@ export const useToast = () => {
   }, [dispatch])
 
   return helpers
+// Profile
+
+export const useProfile = () => {
+  const profile: Profile = useSelector((state: State) => state.profile.data)
+  return { profile }
 }
