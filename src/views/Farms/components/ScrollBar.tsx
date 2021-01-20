@@ -27,7 +27,7 @@ const Container = styled.div`
 `;
 
 const ScrollPanel = styled.div`
-  min-width: 800px;
+  min-width: 900px;
   height: 20px;
 `;
 

@@ -1,7 +1,8 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useState, useRef } from 'react'
 import { Route, useRouteMatch } from 'react-router-dom'
 import BigNumber from 'bignumber.js'
 import { Image, Heading } from '@pancakeswap-libs/uikit'
+import styled from 'styled-components'
 import { BLOCKS_PER_YEAR, CAKE_PER_BLOCK, CAKE_POOL_PID } from 'config'
 import Grid from 'components/layout/Grid'
 import { useFarms, usePriceBnbBusd } from 'state/hooks'
@@ -12,15 +13,27 @@ import FarmCard, { FarmWithStakedValue } from './components/FarmCard'
 import Table from './components/Table'
 import FarmTabButtons from './components/FarmTabButtons'
 import Divider from './components/Divider'
+import SearchInput from './components/SearchInput'
+
+const ControlContainer = styled.div`
+  display: flex;
+  width: 100%;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding: 0rem 1.5rem;
+`
 
 const Farms: React.FC = () => {
   const { path } = useRouteMatch()
   const TranslateString = useI18n()
   const farmsLP = useFarms()
   const bnbPrice = usePriceBnbBusd()
+  const [query, setQuery] = useState('');
 
   const activeFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
   const inactiveFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X')
+
+  const tableRef = useRef(null);
 
   const farmsList = useCallback(
     (farmsToDisplay, removed: boolean) => {
@@ -58,14 +71,27 @@ const Farms: React.FC = () => {
     [bnbPrice, farmsLP],
   )
 
+  const handleChangeValue = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(event.target.value);
+    if (tableRef.current) {
+      tableRef.current.setTableQuery(event.target.value);
+    }
+  }
+
   return (
     <Page>
       <Heading as="h1" size="lg" color="secondary" m="50px" style={{ textAlign: 'center' }}>
         {TranslateString(999, 'Stake LP tokens to earn CAKE')}
       </Heading>
-      <FarmTabButtons />
+      <ControlContainer>
+        <FarmTabButtons />
+        <SearchInput
+          onChange={handleChangeValue}
+          value={ query }
+        />
+      </ControlContainer>
       <Page>
-        <Table data={['test']} />
+        <Table data={['test']} ref={ tableRef } />
         <Divider />
         <Route exact path={`${path}`}>
           <Grid>{farmsList(activeFarms, false)}</Grid>
