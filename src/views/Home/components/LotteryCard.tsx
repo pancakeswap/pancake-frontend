@@ -23,10 +23,6 @@ const Block = styled.div`
   margin-bottom: 16px;
 `
 
-const Value = styled.div`
-  margin-bottom: 8px;
-`
-
 const CardImage = styled.img`
   margin-bottom: 16px;
 `
@@ -73,17 +69,13 @@ const FarmedStakingCard = () => {
         <Heading size="xl" mb="24px">
           {TranslateString(550, 'Your Lottery Winnings')}
         </Heading>
-        <CardImage src="/images/ticket.svg" alt="cake logo" />
+        <CardImage src="/images/ticket.svg" alt="cake logo" width={64} height={64} />
         <Block>
-          <Value>
-            <CakeWinnings />
-          </Value>
+          <CakeWinnings />
           <Label>{TranslateString(552, 'CAKE to Collect')}</Label>
         </Block>
         <Block>
-          <Value>
-            <LotteryJackpot />
-          </Value>
+          <LotteryJackpot />
           <Label>{TranslateString(554, 'Total jackpot this round')}</Label>
         </Block>
         <Actions>
