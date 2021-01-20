@@ -1,8 +1,17 @@
+import { useEffect, useMemo } from 'react'
 import BigNumber from 'bignumber.js'
-import { useEffect } from 'react'
+import { kebabCase } from 'lodash'
+import { Toast, toastTypes } from '@pancakeswap-libs/uikit'
 import { useSelector, useDispatch } from 'react-redux'
 import useRefresh from 'hooks/useRefresh'
-import { fetchFarmsPublicDataAsync, fetchPoolsPublicDataAsync, fetchPoolsUserDataAsync } from './actions'
+import {
+  fetchFarmsPublicDataAsync,
+  fetchPoolsPublicDataAsync,
+  fetchPoolsUserDataAsync,
+  push as pushToast,
+  remove as removeToast,
+  clear as clearToast,
+} from './actions'
 import { State, Farm, Pool } from './types'
 
 const ZERO = new BigNumber(0)
@@ -77,4 +86,32 @@ export const usePriceCakeBusd = (): BigNumber => {
   const bnbPriceUSD = usePriceBnbBusd()
   const farm = useFarmFromPid(pid)
   return farm.tokenPriceVsQuote ? bnbPriceUSD.times(farm.tokenPriceVsQuote) : ZERO
+}
+
+// Toasts
+export const useToast = () => {
+  const dispatch = useDispatch()
+  const helpers = useMemo(() => {
+    const push = (toast: Toast) => dispatch(pushToast(toast))
+
+    return {
+      toastError: (title: string, description?: string) => {
+        return push({ id: kebabCase(title), type: toastTypes.DANGER, title, description })
+      },
+      toastInfo: (title: string, description?: string) => {
+        return push({ id: kebabCase(title), type: toastTypes.INFO, title, description })
+      },
+      toastSuccess: (title: string, description?: string) => {
+        return push({ id: kebabCase(title), type: toastTypes.SUCCESS, title, description })
+      },
+      toastWarning: (title: string, description?: string) => {
+        return push({ id: kebabCase(title), type: toastTypes.WARNING, title, description })
+      },
+      push,
+      remove: (id: string) => dispatch(removeToast(id)),
+      clear: () => dispatch(clearToast()),
+    }
+  }, [dispatch])
+
+  return helpers
 }
