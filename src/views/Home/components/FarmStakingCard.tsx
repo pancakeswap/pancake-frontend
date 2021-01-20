@@ -20,10 +20,6 @@ const Block = styled.div`
   margin-bottom: 16px;
 `
 
-const Value = styled.div`
-  margin-bottom: 8px;
-`
-
 const CardImage = styled.img`
   margin-bottom: 16px;
 `
@@ -63,17 +59,13 @@ const FarmedStakingCard = () => {
         <Heading size="xl" mb="24px">
           {TranslateString(542, 'Farms & Staking')}
         </Heading>
-        <CardImage src="/images/cake.svg" alt="cake logo" />
+        <CardImage src="/images/cake.svg" alt="cake logo" width={64} height={64} />
         <Block>
-          <Value>
-            <CakeHarvestBalance />
-          </Value>
+          <CakeHarvestBalance />
           <Label>{TranslateString(544, 'CAKE to Harvest')}</Label>
         </Block>
         <Block>
-          <Value>
-            <CakeWalletBalance />
-          </Value>
+          <CakeWalletBalance />
           <Label>{TranslateString(546, 'CAKE in Wallet')}</Label>
         </Block>
         <Actions>
