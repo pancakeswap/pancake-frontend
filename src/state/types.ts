@@ -1,3 +1,4 @@
+import { Toast } from '@pancakeswap-libs/uikit'
 import BigNumber from 'bignumber.js'
 import { FarmConfig, PoolConfig } from 'config/constants/types'
 
@@ -29,6 +30,10 @@ export interface Pool extends PoolConfig {
 
 // Slices states
 
+export interface ToastsState {
+  data: Toast[]
+}
+
 export interface FarmsState {
   data: Farm[]
 }
@@ -41,5 +46,6 @@ export interface PoolsState {
 
 export interface State {
   farms: FarmsState
+  toasts: ToastsState
   pools: PoolsState
 }
