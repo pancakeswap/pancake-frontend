@@ -10,11 +10,6 @@ import CardValue from './CardValue'
 const StyledCakeStats = styled(Card)`
   margin-left: auto;
   margin-right: auto;
-  max-width: 250px;
-
-  ${({ theme }) => theme.mediaQueries.lg} {
-    max-width: 435px;
-  }
 `
 
 const Row = styled.div`
