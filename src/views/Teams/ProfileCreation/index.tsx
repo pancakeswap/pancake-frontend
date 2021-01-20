@@ -1,7 +1,7 @@
 import React from 'react'
 
 const ProfileCreation = () => {
-  return <div />
+  return <div>ProfileCreation</div>
 }
 
 export default ProfileCreation
