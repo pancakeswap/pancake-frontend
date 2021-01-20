@@ -6,6 +6,7 @@ import BigNumber from 'bignumber.js'
 import { useFetchPublicData } from 'state/hooks'
 import GlobalStyle from './style/Global'
 import Menu from './components/Menu'
+import ToastListener from './components/ToastListener'
 import PageLoader from './components/PageLoader'
 import NftGlobalNotification from './views/Nft/components/NftGlobalNotification'
 import Pools from './views/Pools'
@@ -29,6 +30,7 @@ BigNumber.config({
 
 const App: React.FC = () => {
   const { account, connect } = useWallet()
+
   useEffect(() => {
     if (!account && window.localStorage.getItem('accountStatus')) {
       connect('injected')
@@ -81,6 +83,7 @@ const App: React.FC = () => {
         </Suspense>
       </Menu>
       <NftGlobalNotification />
+      <ToastListener />
     </Router>
   )
 }
