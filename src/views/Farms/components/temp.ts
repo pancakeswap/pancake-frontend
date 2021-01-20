@@ -36,7 +36,15 @@ const columnsDef: ColumnsDefTypes[] = [
 const tempData: TableDataTypes[] = [
   {
     'POOL': 'HARD-BNB',
-    'APY': '334.33',
+    'APY': '434.33',
+    'EARNED': '1',
+    'STAKED': '1',
+    'DETAILS': '5347.709',
+    'LINKS': '1'
+  },
+  {
+    'POOL': 'HARD-BNB',
+    'APY': '534.33',
     'EARNED': '1',
     'STAKED': '1',
     'DETAILS': '5347.709',
@@ -52,7 +60,7 @@ const tempData: TableDataTypes[] = [
   },
   {
     'POOL': 'HARD-BNB',
-    'APY': '334.33',
+    'APY': '834.33',
     'EARNED': '1',
     'STAKED': '1',
     'DETAILS': '5347.709',
@@ -60,7 +68,7 @@ const tempData: TableDataTypes[] = [
   },
   {
     'POOL': 'HARD-BNB',
-    'APY': '334.33',
+    'APY': '934.33',
     'EARNED': '1',
     'STAKED': '1',
     'DETAILS': '5347.709',
@@ -68,7 +76,7 @@ const tempData: TableDataTypes[] = [
   },
   {
     'POOL': 'HARD-BNB',
-    'APY': '334.33',
+    'APY': '234.33',
     'EARNED': '1',
     'STAKED': '1',
     'DETAILS': '5347.709',
@@ -76,15 +84,7 @@ const tempData: TableDataTypes[] = [
   },
   {
     'POOL': 'HARD-BNB',
-    'APY': '334.33',
-    'EARNED': '1',
-    'STAKED': '1',
-    'DETAILS': '5347.709',
-    'LINKS': '1'
-  },
-  {
-    'POOL': 'HARD-BNB',
-    'APY': '334.33',
+    'APY': '734.33',
     'EARNED': '1',
     'STAKED': '1',
     'DETAILS': '5347.709',

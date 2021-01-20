@@ -1,12 +1,13 @@
 import React, { useRef, useEffect } from 'react';
 import styled from 'styled-components';
-import { Button, useTable } from '@pancakeswap-libs/uikit'
+import { Button, HeaderType, useTable } from '@pancakeswap-libs/uikit'
 import HarvestButton from 'views/Pools/components/HarvestButton';
 import { Link } from 'react-router-dom';
 
 import ScrollBar from './ScrollBar'
 import { columnsDef, tempData } from "./temp";
 import Cell from "./Cell";
+import { TableDataTypes } from './types';
 
 export interface ITableProps {
   data: string[]
@@ -48,7 +49,7 @@ const TableHead = styled.thead`
     cursor: pointer;
 
     & th {
-      padding: 12px 15px;
+      padding: 0px 15px;
       &:not(:first-child) {
         padding-left: 0px !important;
         padding-right: 0px !important;
@@ -93,8 +94,8 @@ const CellInner = styled.div`
   padding: 0.5rem 0rem;
   display: flex;
   width: 100%;
-  height: 100%;
   align-items: center;
+  padding-right: 1rem;
 `;
 
 const CalculateIcon = styled.img`
@@ -110,7 +111,7 @@ const MultiplyBadge = styled.div`
 
 const ConnectWalletButton = styled(Button)`
   background: ${({ theme }) => theme.colors.primary};
-  border: none;
+  border-width: 0;
   color: white;
   height: 2rem;
   width: 10rem;
@@ -146,28 +147,43 @@ const OpenIcon = styled.img`
 
 const StakeTitle = styled.span`
   color: ${({ theme }) => theme.colors.primary};
+  white-space: nowrap;
 `;
 
 const LinkContainer = styled.div`
-  display: flex;
-  flex-direction: column;
+  display: block;
   text-align: left;
 
   & a {
     color: ${({ theme }) => theme.colors.primary};
+    white-space: nowrap;
+    display: block;
   }
 `
 const Earned = styled.span`
   margin-right: 3rem;
 `;
 
+const ArrowIcon = styled.img`
+  margin-left: 0.375rem;
+  transition: 0.5s;
+
+  &.toggle {
+    transform: rotate(180deg);
+  }
+`
+
+const PoolValue = styled.span`
+  white-space: nowrap;
+`;
+
 const columns = columnsDef.map((column => ({
   id: column.id,
   name: column.normal,
-  label: column.normal,
-})))
+  label: column.normal
+})));
 
-export default function Table (props: ITableProps) {
+export default React.forwardRef((props: ITableProps, ref) => {
   const scrollBarEl = useRef<HTMLDivElement>(null);
   const tableWrapperEl = useRef<HTMLDivElement>(null);
 
@@ -186,7 +202,10 @@ export default function Table (props: ITableProps) {
         content =  (
           <>
             <BnbIcon src="/images/farms/hard-bnb.svg" alt="icon" />
-            {cell.value}
+            <PoolValue>
+              {cell.value}
+            </PoolValue>
+
           </>
         )
         break;
@@ -270,7 +289,36 @@ export default function Table (props: ITableProps) {
     )
   }
 
-  const { headers, rows } = useTable(columns, tempData);
+  const renderSortArrow = (column: HeaderType<TableDataTypes>): JSX.Element => {
+    if (column.sorted && column.sorted.on)  {
+      if (column.sorted.asc) {
+        return (
+          <ArrowIcon
+            src="/images/icons/arrow-down.svg"
+            className="toggle"
+            alt="arrow down"
+          />
+        );
+      }
+
+      return (
+        <ArrowIcon
+          src="/images/icons/arrow-down.svg"
+          alt="arrow down"
+        />
+      );
+    }
+
+    return null;
+  }
+
+  const { headers, rows, toggleSort, setSearchString  } = useTable(columns, tempData, { sortable: true });
+
+  React.useImperativeHandle(ref, () => ({
+    setTableQuery(query: string) {
+      setSearchString(query);
+    }
+  }));
 
   return (
     <Container>
@@ -280,9 +328,18 @@ export default function Table (props: ITableProps) {
           <TableHead>
             <tr>
               {headers.map((column, key) => (
-                <Cell key={`head-${column.id}`} isHeader>
-                  <span className="bold">{columnsDef[key].bold} </span>
-                  {column.label}
+                <Cell
+                  key={`head-${column.name}`}
+                  onClick={() => toggleSort(column.name) }
+                  isHeader
+                >
+                  <CellInner>
+                    <span className="bold">{columnsDef[key].bold} </span>
+                    {column.label}
+                    {
+                      renderSortArrow(column)
+                    }
+                  </CellInner>
                 </Cell>
               ))}
             </tr>
@@ -300,4 +357,4 @@ export default function Table (props: ITableProps) {
       </TableWrapper>
     </Container>
   );
-}
+});
