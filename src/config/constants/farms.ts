@@ -33,6 +33,22 @@ const farms: FarmConfig[] = [
     quoteTokenAdresses: contracts.wbnb,
   },
   {
+    pid: 58,
+    lpSymbol: 'wSOTE-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0xffb9e2d5ce4378f1a89b29bf53f80804cc078102',
+    },
+    tokenSymbol: 'wSOTE',
+    tokenAddresses: {
+      97: '',
+      56: '0x541e619858737031a1244a5d0cd47e5ef480342c',
+    },
+    quoteTokenSymbol: QuoteToken.BNB,
+    quoteTokenAdresses: contracts.wbnb,
+    isCommunity: false,
+  },
+  {
     pid: 57,
     lpSymbol: 'FRONT-BNB LP',
     lpAddresses: {
