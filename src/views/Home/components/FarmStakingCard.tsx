@@ -13,15 +13,7 @@ const StyledFarmStakingCard = styled(Card)`
   background-image: url('/images/cake-bg.svg');
   background-repeat: no-repeat;
   background-position: top right;
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 344px;
-  width: 100%;
-
-  ${({ theme }) => theme.mediaQueries.lg} {
-    margin: 0;
-    max-width: none;
-  }
+  min-height: 376px;
 `
 
 const Block = styled.div`
