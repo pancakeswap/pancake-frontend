@@ -7,7 +7,6 @@ import { getLotteryIssueIndex } from 'utils/lotteryUtils'
 import useI18n from 'hooks/useI18n'
 import { useLottery } from 'hooks/useContract'
 import Page from 'components/layout/Page'
-import Container from 'components/layout/Container'
 import Hero from './components/Hero'
 import Divider from './components/Divider'
 import NextDrawPage from './NextDrawPage'
@@ -60,22 +59,20 @@ const Lottery: React.FC = () => {
 
   return (
     <>
+      <Hero />
       <Page>
-        <Hero />
-        <Container>
-          <Wrapper>
-            <ButtonMenu activeIndex={activeIndex} onClick={handleClick} size="sm" variant="subtle">
-              <ButtonMenuItem>{TranslateString(999, 'Next draw')}</ButtonMenuItem>
-              <ButtonMenuItem>{TranslateString(999, 'Past draws')}</ButtonMenuItem>
-            </ButtonMenu>
-          </Wrapper>
-          <Divider />
-          <PastLotteryDataContext.Provider
-            value={{ historyError, historyData, mostRecentLotteryNumber, currentLotteryNumber }}
-          >
-            {activeIndex === 0 ? <NextDrawPage /> : <PastDrawsPage />}
-          </PastLotteryDataContext.Provider>
-        </Container>
+        <Wrapper>
+          <ButtonMenu activeIndex={activeIndex} onClick={handleClick} size="sm" variant="subtle">
+            <ButtonMenuItem>{TranslateString(999, 'Next draw')}</ButtonMenuItem>
+            <ButtonMenuItem>{TranslateString(999, 'Past draws')}</ButtonMenuItem>
+          </ButtonMenu>
+        </Wrapper>
+        <Divider />
+        <PastLotteryDataContext.Provider
+          value={{ historyError, historyData, mostRecentLotteryNumber, currentLotteryNumber }}
+        >
+          {activeIndex === 0 ? <NextDrawPage /> : <PastDrawsPage />}
+        </PastLotteryDataContext.Provider>
       </Page>
     </>
   )

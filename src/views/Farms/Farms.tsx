@@ -12,8 +12,8 @@ import useRefresh from 'hooks/useRefresh'
 import { fetchFarmUserDataAsync } from 'state/actions'
 import { QuoteToken } from 'config/constants/types'
 import useI18n from 'hooks/useI18n'
-import Page from 'components/Page'
 import FarmCard, { FarmWithStakedValue } from './components/FarmCard/FarmCard'
+import Page from 'components/layout/Page'
 import FarmTabButtons from './components/FarmTabButtons'
 import Divider from './components/Divider'
 
@@ -84,11 +84,11 @@ const Farms: React.FC = () => {
 
   return (
     <Page>
-      <Heading as="h1" size="lg" color="secondary" m="50px" style={{ textAlign: 'center' }}>
+      <Heading as="h1" size="lg" color="secondary" mb="50px" style={{ textAlign: 'center' }}>
         {TranslateString(999, 'Stake LP tokens to earn CAKE')}
       </Heading>
       <FarmTabButtons />
-      <Page>
+      <div>
         <Divider />
         <Route exact path={`${path}`}>
           <Grid>{farmsList(activeFarms, false)}</Grid>
@@ -96,7 +96,7 @@ const Farms: React.FC = () => {
         <Route exact path={`${path}/history`}>
           <Grid>{farmsList(inactiveFarms, true)}</Grid>
         </Route>
-      </Page>
+      </div>
       <Image src="/images/cakecat.png" alt="Pancake illustration" width={949} height={384} responsive />
     </Page>
   )
