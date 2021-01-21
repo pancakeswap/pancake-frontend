@@ -1,6 +1,7 @@
 import { useEffect, useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import { kebabCase } from 'lodash'
+import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { Toast, toastTypes } from '@pancakeswap-libs/uikit'
 import { useSelector, useDispatch } from 'react-redux'
 import useRefresh from 'hooks/useRefresh'
@@ -12,7 +13,8 @@ import {
   remove as removeToast,
   clear as clearToast,
 } from './actions'
-import { State, Farm, Pool } from './types'
+import { State, Farm, Pool, ProfileState } from './types'
+import { fetchProfile } from './profile'
 
 const ZERO = new BigNumber(0)
 
@@ -114,4 +116,20 @@ export const useToast = () => {
   }, [dispatch])
 
   return helpers
+}
+
+// Profile
+
+export const useFetchProfile = () => {
+  const { account } = useWallet()
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(fetchProfile(account))
+  }, [account, dispatch])
+}
+
+export const useProfile = () => {
+  const { isInitialized, isLoading, data }: ProfileState = useSelector((state: State) => state.profile)
+  return { profile: data, isInitialized, isLoading }
 }
