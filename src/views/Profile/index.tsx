@@ -1,5 +1,5 @@
 import React from 'react'
-import ProfileCreation from '../ProfileCreation'
+import ProfileCreation from './ProfileCreation'
 
 const hasProfile = false
 

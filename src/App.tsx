@@ -20,7 +20,7 @@ const Ifos = lazy(() => import('./views/Ifos'))
 const NotFound = lazy(() => import('./views/NotFound'))
 const Nft = lazy(() => import('./views/Nft'))
 const Teams = lazy(() => import('./views/Teams'))
-const Profile = lazy(() => import('./views/Teams/Profile'))
+const Profile = lazy(() => import('./views/Profile'))
 
 // This config is required for number formating
 BigNumber.config({
@@ -68,7 +68,7 @@ const App: React.FC = () => {
             <Route exact path="/teams">
               <Teams />
             </Route>
-            <Route path="/teams/profile">
+            <Route exact path="/profile">
               <Profile />
             </Route>
             {/* Redirect */}
