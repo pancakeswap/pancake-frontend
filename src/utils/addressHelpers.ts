@@ -23,3 +23,6 @@ export const getLotteryAddress = () => {
 export const getLotteryTicketAddress = () => {
   return addresses.lotteryNFT[chainId]
 }
+export const getPancakeProfileAddress = () => {
+  return addresses.pancakeProfile[chainId]
+}
