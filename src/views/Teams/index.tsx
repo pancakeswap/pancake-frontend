@@ -1,17 +1,18 @@
 import React from 'react'
 import { Heading, Text } from '@pancakeswap-libs/uikit'
 import Page from 'components/layout/Page'
+import { useProfile } from 'state/hooks'
 import useI18n from 'hooks/useI18n'
 import NoProfileCard from './components/NoProfileCard'
 
-const hasProfile = false
-
 const Teams = () => {
   const TranslateString = useI18n()
+  const { isInitialized, profile } = useProfile()
+  const showProfileCallout = isInitialized && !profile
 
   return (
     <Page>
-      {!hasProfile && <NoProfileCard />}
+      {showProfileCallout && <NoProfileCard />}
       <Heading size="xxl" color="secondary">
         {TranslateString(999, 'Teams & Profiles')}
       </Heading>
