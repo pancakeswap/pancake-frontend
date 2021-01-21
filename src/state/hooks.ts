@@ -139,6 +139,6 @@ export const useFetchProfile = () => {
 }
 
 export const useProfile = () => {
-  const profileState: ProfileState = useSelector((state: State) => state.profile)
-  return profileState
+  const { isInitialized, isLoading, data }: ProfileState = useSelector((state: State) => state.profile)
+  return { profile: data, isInitialized, isLoading }
 }

@@ -6,7 +6,7 @@ import getProfile from './getProfile'
 const initialState: ProfileState = {
   isInitialized: false,
   isLoading: true,
-  profile: null,
+  data: null,
 }
 
 export const profileSlice = createSlice({
@@ -16,11 +16,11 @@ export const profileSlice = createSlice({
     setProfile: (state, action: PayloadAction<Profile>) => {
       state.isInitialized = true
       state.isLoading = false
-      state.profile = action.payload
+      state.data = action.payload
     },
     clearProfile: (state) => {
       state.isLoading = false
-      state.profile = null
+      state.data = null
     },
   },
 })

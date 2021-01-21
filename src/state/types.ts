@@ -64,7 +64,7 @@ export interface PoolsState {
 export interface ProfileState {
   isInitialized: boolean
   isLoading: boolean
-  profile: Profile
+  data: Profile
 }
 
 // Global state
