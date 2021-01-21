@@ -28,6 +28,25 @@ export interface Pool extends PoolConfig {
   }
 }
 
+export interface Team {
+  id: number
+  name: string
+  image: string
+  points: number
+  userCount: number
+}
+
+export interface Profile {
+  id: number
+  name: string
+  address: string
+  points: number
+  nftAddress: string
+  tokenId: string
+  isActive: boolean
+  team?: Team
+}
+
 // Slices states
 
 export interface ToastsState {
@@ -42,10 +61,17 @@ export interface PoolsState {
   data: Pool[]
 }
 
+export interface ProfileState {
+  isInitialized: boolean
+  isLoading: boolean
+  data: Profile
+}
+
 // Global state
 
 export interface State {
   farms: FarmsState
   toasts: ToastsState
   pools: PoolsState
+  profile: ProfileState
 }
