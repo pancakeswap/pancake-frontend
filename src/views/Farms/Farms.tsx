@@ -1,14 +1,19 @@
-import React, { useCallback } from 'react'
+import React, { useEffect, useCallback } from 'react'
 import { Route, useRouteMatch } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import BigNumber from 'bignumber.js'
+import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { provider } from 'web3-core'
 import { Image, Heading } from '@pancakeswap-libs/uikit'
 import { BLOCKS_PER_YEAR, CAKE_PER_BLOCK, CAKE_POOL_PID } from 'config'
 import Grid from 'components/layout/Grid'
-import { useFarms, usePriceBnbBusd } from 'state/hooks'
+import Page from 'components/layout/Page'
+import { useFarms, usePriceBnbBusd, usePriceCakeBusd } from 'state/hooks'
+import useRefresh from 'hooks/useRefresh'
+import { fetchFarmUserDataAsync } from 'state/actions'
 import { QuoteToken } from 'config/constants/types'
 import useI18n from 'hooks/useI18n'
-import Page from 'components/layout/Page'
-import FarmCard, { FarmWithStakedValue } from './components/FarmCard'
+import FarmCard, { FarmWithStakedValue } from './components/FarmCard/FarmCard'
 import FarmTabButtons from './components/FarmTabButtons'
 import Divider from './components/Divider'
 
@@ -16,7 +21,17 @@ const Farms: React.FC = () => {
   const { path } = useRouteMatch()
   const TranslateString = useI18n()
   const farmsLP = useFarms()
+  const cakePrice = usePriceCakeBusd()
   const bnbPrice = usePriceBnbBusd()
+  const { account, ethereum }: { account: string; ethereum: provider } = useWallet()
+
+  const dispatch = useDispatch()
+  const { fastRefresh } = useRefresh()
+  useEffect(() => {
+    if (account) {
+      dispatch(fetchFarmUserDataAsync(account))
+    }
+  }, [account, dispatch, fastRefresh])
 
   const activeFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
   const inactiveFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X')
@@ -52,9 +67,19 @@ const Farms: React.FC = () => {
 
         return { ...farm, apy }
       })
-      return farmsToDisplayWithAPY.map((farm) => <FarmCard key={farm.pid} farm={farm} removed={removed} />)
+      return farmsToDisplayWithAPY.map((farm) => (
+        <FarmCard
+          key={farm.pid}
+          farm={farm}
+          removed={removed}
+          bnbPrice={bnbPrice}
+          cakePrice={cakePrice}
+          ethereum={ethereum}
+          account={account}
+        />
+      ))
     },
-    [bnbPrice, farmsLP],
+    [bnbPrice, farmsLP, account, cakePrice, ethereum],
   )
 
   return (

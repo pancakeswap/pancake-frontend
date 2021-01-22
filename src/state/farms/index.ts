@@ -2,7 +2,12 @@
 import { createSlice } from '@reduxjs/toolkit'
 import farmsConfig from 'config/constants/farms'
 import fetchFarms from './fetchFarms'
-import fetchFarmUser from './fetchFarmUser'
+import {
+  fetchFarmUserEarnings,
+  fetchFarmUserAllowances,
+  fetchFarmUserTokenBalances,
+  fetchFarmUserStakedBalances,
+} from './fetchFarmUser'
 import { FarmsState, Farm } from '../types'
 
 const initialState: FarmsState = { data: [...farmsConfig] }
@@ -19,9 +24,11 @@ export const farmsSlice = createSlice({
       })
     },
     setFarmUserData: (state, action) => {
-      const { pid, userData } = action.payload
-      const index = state.data.findIndex((f) => f.pid === pid)
-      state.data[index] = { ...state.data[index], userData }
+      const { arrayOfUserDataObjects } = action.payload
+      arrayOfUserDataObjects.forEach((userDataEl) => {
+        const { index } = userDataEl
+        state.data[index] = { ...state.data[index], userData: userDataEl }
+      })
     },
   },
 })
@@ -34,9 +41,23 @@ export const fetchFarmsPublicDataAsync = () => async (dispatch) => {
   const farms = await fetchFarms()
   dispatch(setFarmsPublicData(farms))
 }
-export const fetchFarmUserDataAsync = (pid, account) => async (dispatch) => {
-  const userData = await fetchFarmUser(pid, account)
-  dispatch(setFarmUserData({ pid, userData }))
+export const fetchFarmUserDataAsync = (account) => async (dispatch) => {
+  const userFarmAllowances = await fetchFarmUserAllowances(account)
+  const userFarmTokenBalances = await fetchFarmUserTokenBalances(account)
+  const userStakedBalances = await fetchFarmUserStakedBalances(account)
+  const userFarmEarnings = await fetchFarmUserEarnings(account)
+
+  const arrayOfUserDataObjects = userFarmAllowances.map((farmAllowance, index) => {
+    return {
+      index,
+      allowance: userFarmAllowances[index],
+      tokenBalance: userFarmTokenBalances[index],
+      stakedBalance: userStakedBalances[index],
+      earnings: userFarmEarnings[index],
+    }
+  })
+
+  dispatch(setFarmUserData({ arrayOfUserDataObjects }))
 }
 
 export default farmsSlice.reducer
