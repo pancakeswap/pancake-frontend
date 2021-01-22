@@ -2,14 +2,16 @@ import React, { createContext, ReactNode, useEffect, useRef, useState } from 're
 import BigNumber from 'bignumber.js'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import useBlock from 'hooks/useBlock'
+import { getRabbitMintingFarmAddress } from 'utils/addressHelpers'
 import rabbitmintingfarm from 'config/abi/rabbitmintingfarm.json'
-import { RABBIT_MINTING_FARM_ADDRESS } from 'config/constants/nfts'
 import multicall from 'utils/multicall'
 import { getPancakeRabbitContract } from '../utils/contracts'
 
 interface NftProviderProps {
   children: ReactNode
 }
+
+const rabbitMintingFarmAddress = getRabbitMintingFarmAddress()
 
 type BunnyMap = {
   [key: number]: number[]
@@ -66,11 +68,11 @@ const NftProvider: React.FC<NftProviderProps> = ({ children }) => {
           totalSupplyDistributedArr,
           currentDistributedSupplyArr,
         ] = await multicall(rabbitmintingfarm, [
-          { address: RABBIT_MINTING_FARM_ADDRESS, name: 'startBlockNumber' },
-          { address: RABBIT_MINTING_FARM_ADDRESS, name: 'endBlockNumber' },
-          { address: RABBIT_MINTING_FARM_ADDRESS, name: 'countBunniesBurnt' },
-          { address: RABBIT_MINTING_FARM_ADDRESS, name: 'totalSupplyDistributed' },
-          { address: RABBIT_MINTING_FARM_ADDRESS, name: 'currentDistributedSupply' },
+          { address: rabbitMintingFarmAddress, name: 'startBlockNumber' },
+          { address: rabbitMintingFarmAddress, name: 'endBlockNumber' },
+          { address: rabbitMintingFarmAddress, name: 'countBunniesBurnt' },
+          { address: rabbitMintingFarmAddress, name: 'totalSupplyDistributed' },
+          { address: rabbitMintingFarmAddress, name: 'currentDistributedSupply' },
         ])
 
         // TODO: Figure out why these are coming back as arrays
@@ -103,8 +105,8 @@ const NftProvider: React.FC<NftProviderProps> = ({ children }) => {
       try {
         const pancakeRabbitsContract = getPancakeRabbitContract()
         const [canClaimArr, hasClaimedArr] = await multicall(rabbitmintingfarm, [
-          { address: RABBIT_MINTING_FARM_ADDRESS, name: 'canClaim', params: [account] },
-          { address: RABBIT_MINTING_FARM_ADDRESS, name: 'hasClaimed', params: [account] },
+          { address: rabbitMintingFarmAddress, name: 'canClaim', params: [account] },
+          { address: rabbitMintingFarmAddress, name: 'hasClaimed', params: [account] },
         ])
         const balanceOf = await pancakeRabbitsContract.methods.balanceOf(account).call()
         const [canClaim]: [boolean] = canClaimArr
