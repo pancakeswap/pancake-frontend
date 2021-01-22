@@ -5,7 +5,7 @@ import { space } from "styled-system";
 import ChevronRightIcon from "../Svg/Icons/ChevronRight";
 import { BreadcrumbsProps } from "./types";
 
-const Separator = styled.li`
+const Separator = styled.div`
   align-items: center;
   color: currentColor;
   display: flex;

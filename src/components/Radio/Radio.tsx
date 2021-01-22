@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { space } from "styled-system";
 import { RadioProps, scales } from "./types";
 
 const getScale = ({ scale }: RadioProps) => {
@@ -66,10 +67,12 @@ const Radio = styled.input.attrs({ type: "radio" })<RadioProps>`
     cursor: default;
     opacity: 0.6;
   }
+  ${space}
 `;
 
 Radio.defaultProps = {
   scale: scales.MD,
+  m: 0,
 };
 
 export default Radio;
