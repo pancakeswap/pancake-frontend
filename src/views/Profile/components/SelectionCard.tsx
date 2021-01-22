@@ -13,8 +13,6 @@ interface SelectionCardProps {
 const StyledCard = styled(Card)`
   ${({ isSuccess }) => !isSuccess && 'box-shadow: none;'}
   border-radius: 16px;
-  border: 2px solid ${({ theme }) => theme.colors.tertiary};
-  overflow: hidden;
   margin-bottom: 16px;
 `
 
@@ -26,8 +24,12 @@ const Label = styled.label`
 `
 
 const Body = styled.div`
-  flex-grow: 1;
+  align-items: center;
+  border: 2px solid ${({ theme }) => theme.colors.tertiary};
+  border-radius: 16px 0 0 16px;
   display: flex;
+  flex-grow: 1;
+  height: 80px;
   padding: 8px 16px;
 `
 
@@ -40,12 +42,9 @@ const StyledBackgroundImage = styled.div<{ src: string }>`
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  width: 80px;
+  flex: none;
   height: 80px;
-  ${({ theme }) => theme.mediaQueries.sm} {
-    width: 120px;
-    height: 120px;
-  }
+  width: 80px;
 `
 
 const SelectionCard: React.FC<SelectionCardProps> = ({

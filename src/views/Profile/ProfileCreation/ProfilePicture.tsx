@@ -1,11 +1,16 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Card, CardBody, Heading, Text } from '@pancakeswap-libs/uikit'
+import { Card, CardBody, Flex, Heading, Skeleton, Text } from '@pancakeswap-libs/uikit'
 import { Link as RouterLink } from 'react-router-dom'
 import nftList from 'config/constants/nfts'
 import useI18n from 'hooks/useI18n'
 import useGetWalletNfts from 'hooks/useGetWalletNfts'
 import NftSelectionCard from '../components/NftSelectionCard'
+import NextStepButton from '../components/NextStepButton'
+
+interface ProfilePictureProps {
+  nextStep: () => void
+}
 
 const Link = styled(RouterLink)`
   color: ${({ theme }) => theme.colors.primary};
@@ -13,7 +18,7 @@ const Link = styled(RouterLink)`
 
 const NftWrapper = styled.div``
 
-const ProfilePicture = () => {
+const ProfilePicture: React.FC<ProfilePictureProps> = ({ nextStep }) => {
   const TranslateString = useI18n()
   const { isLoading, nfts } = useGetWalletNfts()
   const bunnyIds = Object.keys(nfts).map((nftItem) => Number(nftItem))
@@ -27,7 +32,7 @@ const ProfilePicture = () => {
       <Heading as="h3" size="xl" mb="24px">
         {TranslateString(999, 'Set Profile Picture')}
       </Heading>
-      <Card>
+      <Card mb="24px">
         <CardBody>
           <Heading as="h4" size="lg" mb="8px">
             {TranslateString(999, 'Choose collectible')}
@@ -42,10 +47,18 @@ const ProfilePicture = () => {
             <Link to="/nft">{TranslateString(999, 'Only approved Pancake Collectibles can be used.')}</Link>
           </Text>
           <NftWrapper>
-            {isLoading ? <div>Loading...</div> : walletNfts.map((walletNft) => <NftSelectionCard nft={walletNft} />)}
+            {isLoading ? (
+              <Flex>
+                <Skeleton height={80} />
+                <Skeleton width={120} />
+              </Flex>
+            ) : (
+              walletNfts.map((walletNft) => <NftSelectionCard nft={walletNft} />)
+            )}
           </NftWrapper>
         </CardBody>
       </Card>
+      <NextStepButton onClick={nextStep}>{TranslateString(999, 'Next Step')}</NextStepButton>
     </>
   )
 }
