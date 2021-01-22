@@ -34,6 +34,23 @@ const farms: FarmConfig[] = [
     multiplier: '40X',
   },
   {
+    pid: 56,
+    lpSymbol: 'Helmet-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x6411310c07d8c48730172146fd6f31fa84034a8b',
+    },
+    tokenSymbol: 'Helmet',
+    tokenAddresses: {
+      97: '',
+      56: '0x948d2a81086A075b3130BAc19e4c6DEe1D2E3fE8',
+    },
+    quoteTokenSymbol: QuoteToken.BNB,
+    quoteTokenAdresses: contracts.wbnb,
+    multiplier: '2X',
+    isCommunity: false,
+  },
+  {
     pid: 55,
     lpSymbol: 'BTCST-BNB LP',
     lpAddresses: {
