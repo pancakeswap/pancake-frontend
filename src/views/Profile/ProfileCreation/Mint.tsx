@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, CardBody, Heading, Text } from '@pancakeswap-libs/uikit'
+import { Card, CardBody, Heading, Text, Button } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import NftSelectionCard from '../components/NftSelectionCard'
 
@@ -54,6 +54,7 @@ const Mint = () => {
           <NftSelectionCard nft={nft1} isChecked />
         </CardBody>
       </Card>
+      <Button>{TranslateString(999, 'Next Step')}</Button>
     </>
   )
 }

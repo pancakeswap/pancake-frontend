@@ -36,7 +36,7 @@ const Header: React.FC<HeaderProps> = ({ breadcrumbIndex = 0 }) => {
       </Text>
       <Breadcrumbs>
         {steps.map(({ translationId, label }, index) => (
-          <Text key={label} color={index === breadcrumbIndex ? 'text' : 'textDisabled'}>
+          <Text key={label} color={index <= breadcrumbIndex ? 'text' : 'textDisabled'}>
             {TranslateString(translationId, label)}
           </Text>
         ))}
