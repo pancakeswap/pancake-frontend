@@ -9,13 +9,15 @@ interface CellProps {
 const CalculateIcon = styled.img`
   width: 1.5rem;
   height: 1.5rem;
+  margin-left: auto;
 `
 
 const Multiplier = styled.div`
   background: ${({ theme }) => theme.colors.secondary};
   border-radius: 1rem;
   color: white;
-  padding: 0.375rem 0.5rem;
+  padding: 0.3125rem 0.5rem;
+  width: 2.5rem;
 `
 
 const Apy: React.FunctionComponent<CellProps> = ({ value, multiplier }) => {

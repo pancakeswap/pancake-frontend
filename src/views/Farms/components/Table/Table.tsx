@@ -1,36 +1,34 @@
 import React, { useRef, useEffect, useState, useMemo } from 'react'
 import styled from 'styled-components'
-import { Button, useTable } from '@pancakeswap-libs/uikit'
-import HarvestButton from 'views/Pools/components/HarvestButton'
-import { Link } from 'react-router-dom'
-import BigNumber from 'bignumber.js'
-import { QuoteToken } from 'config/constants/types'
-import { usePriceBnbBusd, usePriceCakeBusd } from 'state/hooks'
+import { useTable } from '@pancakeswap-libs/uikit'
 
-import Row from './Row'
+import Row, { RowData } from './Row'
 import ScrollBar from '../ScrollBar'
-import { columnsDef, tempData } from "../temp";
+import { ColumnsDef } from "../types";
 import Cell from "../Cell";
-import { TableDataTypes } from '../types';
-import { FarmWithStakedValue } from '../FarmCard'
 
 export interface ITableProps {
-  data: FarmWithStakedValue[]
+  data: RowData[]
 }
 
 const Container = styled.div`
-  padding: 24px;
+  padding: 1rem;
   box-shadow: 0px 2px 12px -8px rgba(25, 19, 38, 0.1), 0px 0px 1px rgba(25, 19, 38, 0.15);
   border-radius: 32px;
   margin: 1rem 0rem;
-`;
+  width: 100%;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    padding: 1.5rem;
+  }
+`
 
 const TableWrapper = styled.div`
   overflow-x: auto;
   &::-webkit-scrollbar {
     display: none;
   }
-`;
+`
 
 const StyledTable = styled.table`
   border-collapse: collapse;
@@ -41,7 +39,7 @@ const StyledTable = styled.table`
   box-shadow: 0px 2px 12px -8px rgba(25, 19, 38, 0.1), 0px 0px 1px rgba(25, 19, 38, 0.15);
   border-radius: 4px;
   text-align: center;
-`;
+`
 
 const TableHead = styled.thead`
   & tr {
@@ -75,7 +73,7 @@ const TableHead = styled.thead`
   & .bold {
     color: #7645d9;
   }
-`;
+`
 
 const TableBody = styled.tbody`
   & tr {
@@ -87,7 +85,7 @@ const TableBody = styled.tbody`
       padding-right: 1rem;
     }
   }
-`;
+`
 
 const ArrowIcon = styled.img`
   margin-left: 0.375rem;
@@ -105,82 +103,89 @@ const CellInner = styled.div`
   padding-right: 1rem;
 `
 
-const columns = columnsDef.map((column => ({
+const TableContainer = styled.div<{showGradient: boolean}>`
+  position: relative;
+  &:after {
+    transition: 0.3s;
+    opacity: ${props => props.showGradient ? '1' : '0'};
+    display: block;
+    content: "";
+    width: 0.875rem;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: linear-gradient(270deg, #E9EAEB 0%, rgba(233, 234, 235, 0) 100%);
+  }
+  ${({ theme }) => theme.mediaQueries.sm} {
+    &:after {
+      display: none;
+    }
+  }
+}
+`
+
+const columns = ColumnsDef.map((column => ({
   id: column.id,
   name: column.normal.toLowerCase(),
   label: column.normal
-})));
+})))
 
 export default React.forwardRef((props: ITableProps, ref) => {
   const scrollBarEl = useRef<HTMLDivElement>(null)
   const tableWrapperEl = useRef<HTMLDivElement>(null)
   const [tableWidth, setTableWidth] = useState(600)
   const [visibleScroll, setVisibleScroll] = useState(true)
+  const [showGradient, setShowGradient] = useState(true)
   const { data } = props
-  const cakePrice = usePriceCakeBusd()
-  const bnbPrice = usePriceBnbBusd()
-
-  const rowData = useMemo(() => {
-    return data.map((farm) => {
-      const row: any = {}
-      let totalValue = farm.lpTotalInQuoteToken
-
-      if (!farm.lpTotalInQuoteToken) {
-        totalValue = null
-      }
-      if (farm.quoteTokenSymbol === QuoteToken.BNB) {
-        totalValue = bnbPrice.times(farm.lpTotalInQuoteToken)
-      }
-      if (farm.quoteTokenSymbol === QuoteToken.CAKE) {
-        totalValue = cakePrice.times(farm.lpTotalInQuoteToken)
-      }
-
-      const totalValueFormated = totalValue
-        ? `$${Number(totalValue).toLocaleString(undefined, { maximumFractionDigits: 0 })}`
-        : '-'
-
-      row.apy = {
-        value: farm.apy ? `${farm.apy.times(new BigNumber(100)).toNumber().toLocaleString('en-US').slice(0, -1)}%` : 'Loading ...',
-        multiplier: farm.multiplier
-      }
-
-      row.pool = {
-        image: farm.lpSymbol.split(' ')[0].toLocaleLowerCase(),
-        label: farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('PANCAKE', '')
-      }
-
-      row.earned = {
-
-      }
-
-      row.staked = {
-
-      }
-
-      row.details = {
-        liquidity: totalValueFormated
-      }
-
-      row.links = {
-        bsc: farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]
-      }
-
-      return row
-    })
-  }, [data, bnbPrice, cakePrice])
 
   useEffect(() => {
-    scrollBarEl.current.onscroll = (): void => {
-      if (tableWrapperEl.current && scrollBarEl.current)
-        tableWrapperEl.current.scrollLeft = scrollBarEl.current.scrollLeft;
-    };
+    if (scrollBarEl && scrollBarEl.current) {
+      let isScrolling1 = false
+      let isScrolling2 = false
+      scrollBarEl.current.onscroll = (): void => {
+        if (tableWrapperEl.current) {
+          if (isScrolling2) {
+            isScrolling2 = false
+            return
+          }
+          isScrolling1 = true
 
+          if (!scrollBarEl.current.scrollLeft) {
+            tableWrapperEl.current.scrollLeft = scrollBarEl.current.scrollLeft
+            return
+          }
 
-    if (scrollBarEl.current.clientWidth + 24 >= tableWrapperEl.current.scrollWidth) {
-      setVisibleScroll(false);
+          const scrollPercent = (scrollBarEl.current.scrollLeft + scrollBarEl.current.clientWidth) / scrollBarEl.current.scrollWidth
+          setShowGradient(scrollPercent !== 1)
+          tableWrapperEl.current.scrollLeft = scrollPercent * tableWrapperEl.current.scrollWidth - tableWrapperEl.current.clientWidth;
+        }
+      }
+
+      tableWrapperEl.current.onscroll = (): void => {
+        if (scrollBarEl.current) {
+          if (isScrolling1) {
+            isScrolling1 = false
+            return
+          }
+          isScrolling2 = true
+
+          if (!tableWrapperEl.current.scrollLeft) {
+            scrollBarEl.current.scrollLeft = tableWrapperEl.current.scrollLeft
+            return
+          }
+          const scrollPercent = (tableWrapperEl.current.scrollLeft + tableWrapperEl.current.clientWidth) / tableWrapperEl.current.scrollWidth
+          setShowGradient(scrollPercent !== 1)
+          scrollBarEl.current.scrollLeft = scrollPercent * scrollBarEl.current.scrollWidth - scrollBarEl.current.clientWidth;
+        }
+      }
+
+      if (scrollBarEl.current.clientWidth + 24 >= tableWrapperEl.current.scrollWidth) {
+        setVisibleScroll(false);
+      }
+      setTableWidth(tableWrapperEl.current.scrollWidth);
     }
-    setTableWidth(tableWrapperEl.current.scrollWidth);
-  }, []);
+  }, [])
 
   const renderSortArrow = (column: any): JSX.Element => {
     if (column.sorted && column.sorted.on)  {
@@ -205,20 +210,21 @@ export default React.forwardRef((props: ITableProps, ref) => {
     return null;
   }
 
-  const { headers, rows, toggleSort, setSearchString  } = useTable(columns, rowData, { sortable: true });
+  const { headers, rows, toggleSort, setSearchString  } = useTable(columns, data, { sortable: true });
 
   React.useImperativeHandle(ref, () => ({
     setTableQuery(query: string) {
       setSearchString(query);
     }
   }));
-  console.log('ggggggggggggggggggggggg')
+
   return (
     <Container>
       {
         visibleScroll &&
-          <ScrollBar ref={scrollBarEl} width={ tableWidth } />
+          <ScrollBar ref={scrollBarEl} width={tableWidth} />
       }
+      <TableContainer showGradient={ showGradient }>
       <TableWrapper ref={tableWrapperEl}>
         <StyledTable>
           <TableHead>
@@ -230,7 +236,7 @@ export default React.forwardRef((props: ITableProps, ref) => {
                   isHeader
                 >
                   <CellInner>
-                    <span className="bold">{columnsDef[key].bold}&nbsp;</span>
+                    <span className="bold">{ColumnsDef[key].bold}&nbsp;</span>
                     {column.label}
                     {
                       renderSortArrow(column)
@@ -244,12 +250,13 @@ export default React.forwardRef((props: ITableProps, ref) => {
           {
             rows.map((row) => {
               return (
-                <Row data={row.original} />
+                <Row {...row.original} key={`table-row-${row.id}`} />
             )})
           }
           </TableBody>
         </StyledTable>
       </TableWrapper>
+      </TableContainer>
     </Container>
-  );
-});
+  )
+})

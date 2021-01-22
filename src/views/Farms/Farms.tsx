@@ -1,11 +1,11 @@
-import React, { useCallback, useState, useRef } from 'react'
-import { Route, useRouteMatch } from 'react-router-dom'
+import React, { useCallback, useState, useRef, useMemo } from 'react'
+import { Route, useLocation, useRouteMatch } from 'react-router-dom'
 import BigNumber from 'bignumber.js'
 import { Image, Heading } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
 import { BLOCKS_PER_YEAR, CAKE_PER_BLOCK, CAKE_POOL_PID } from 'config'
 import Grid from 'components/layout/Grid'
-import { useFarms, usePriceBnbBusd } from 'state/hooks'
+import { useFarms, usePriceBnbBusd, usePriceCakeBusd } from 'state/hooks'
 import { QuoteToken } from 'config/constants/types'
 import useI18n from 'hooks/useI18n'
 import Page from 'components/Page'
@@ -24,10 +24,12 @@ const ControlContainer = styled.div`
 `
 
 const Farms: React.FC = () => {
-  const { path } = useRouteMatch()
+  const { path, url } = useRouteMatch()
+  const { pathname } = useLocation()
   const TranslateString = useI18n()
   const farmsLP = useFarms()
   const bnbPrice = usePriceBnbBusd()
+  const cakePrice = usePriceCakeBusd()
   const [query, setQuery] = useState('');
 
   const activeFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
@@ -79,7 +81,59 @@ const Farms: React.FC = () => {
     }
   }
 
-  const activeFarmsStaked = farmsList(activeFarms, false)
+  const isActive = !pathname.includes('history')
+  let farmsStaked = []
+  if (isActive) {
+    farmsStaked = farmsList(activeFarms, false)
+  } else {
+    farmsStaked = farmsList(inactiveFarms, true)
+  }
+
+  const rowData = farmsStaked.map((farm) => {
+    const row: any = {}
+    let totalValue = farm.lpTotalInQuoteToken
+
+    if (!farm.lpTotalInQuoteToken) {
+      totalValue = null
+    }
+    if (farm.quoteTokenSymbol === QuoteToken.BNB) {
+      totalValue = bnbPrice.times(farm.lpTotalInQuoteToken)
+    }
+    if (farm.quoteTokenSymbol === QuoteToken.CAKE) {
+      totalValue = cakePrice.times(farm.lpTotalInQuoteToken)
+    }
+
+    const totalValueFormated = totalValue
+      ? `$${Number(totalValue).toLocaleString(undefined, { maximumFractionDigits: 0 })}`
+      : '-'
+
+    row.apy = {
+      value: farm.apy ? `${farm.apy.times(new BigNumber(100)).toNumber().toLocaleString('en-US').slice(0, -1)}%` : 'Loading ...',
+      multiplier: farm.multiplier
+    }
+
+    row.pool = {
+      image: farm.lpSymbol.split(' ')[0].toLocaleLowerCase(),
+      label: farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('PANCAKE', '')
+    }
+
+    row.earned = {
+
+    }
+
+    row.staked = {
+
+    }
+
+    row.details = {
+      liquidity: totalValueFormated
+    }
+
+    row.links = {
+      bsc: farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]
+    }
+    return row
+  })
 
   return (
     <Page>
@@ -94,13 +148,13 @@ const Farms: React.FC = () => {
         />
       </ControlContainer>
       <Page>
-        <Table data={ activeFarmsStaked } ref={ tableRef } />
+        <Table data={ rowData } ref={ tableRef } />
         <Divider />
         <Route exact path={`${path}`}>
-          <Grid>{activeFarmsStaked.map((farm) => <FarmCard key={farm.pid} farm={farm} removed={false} />)}</Grid>
+          <Grid>{farmsStaked.map((farm) => <FarmCard key={farm.pid} farm={farm} removed={false} />)}</Grid>
         </Route>
         <Route exact path={`${path}/history`}>
-          <Grid>{farmsList(inactiveFarms, true).map((farm) => <FarmCard key={farm.pid} farm={farm} removed />)}</Grid>
+          <Grid>{farmsStaked.map((farm) => <FarmCard key={farm.pid} farm={farm} removed />)}</Grid>
         </Route>
       </Page>
       <Image src="/images/cakecat.png" alt="Pancake illustration" width={949} height={384} responsive />

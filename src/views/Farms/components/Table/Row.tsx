@@ -8,24 +8,22 @@ import Staked from './Staked'
 import Details from './Details'
 import Links from './Links'
 
-interface RowData {
-  data: {
-    apy: {
-      value: string;
-      multiplier: string;
-    }
-    pool: {
-      image: string;
-      label: string;
-    }
-    earned: any
-    staked: any
-    details: {
-      liquidity: string
-    }
-    links: {
-      bsc: string
-    }
+export interface RowData {
+  apy: {
+    value: string;
+    multiplier: string;
+  }
+  pool: {
+    image: string;
+    label: string;
+  }
+  earned: any
+  staked: any
+  details: {
+    liquidity: string
+  }
+  links: {
+    bsc: string
   }
 }
 
@@ -46,16 +44,16 @@ const CellInner = styled.div`
   padding-right: 1rem;
 `
 
-const Row: React.FunctionComponent<RowData> = ({ data }) => {
+const Row: React.FunctionComponent<RowData> = (props) => {
 
   return (
     <tr>
       {
-        Object.keys(data).map((key) => {
+        Object.keys(props).map((key) => {
           return (
             <td key={key}>
               <CellInner>
-                {React.createElement(cells[key], data[key])}
+                {React.createElement(cells[key], props[key])}
               </CellInner>
             </td>
           )
