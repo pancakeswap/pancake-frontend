@@ -1,11 +1,12 @@
-import React from 'react'
+import React, { useCallback, useRef } from 'react'
 import styled from 'styled-components'
 import { Heading, Card, CardBody, Flex, ArrowForwardIcon } from '@pancakeswap-libs/uikit'
 import { NavLink } from 'react-router-dom'
 import useI18n from 'hooks/useI18n'
 import BigNumber from 'bignumber.js'
-import { useFarms } from 'state/hooks'
-import { BLOCKS_PER_YEAR, CAKE_PER_BLOCK } from 'config'
+import { QuoteToken } from 'config/constants/types'
+import { useFarms, usePriceBnbBusd } from 'state/hooks'
+import { BLOCKS_PER_YEAR, CAKE_PER_BLOCK, CAKE_POOL_PID } from 'config'
 
 const StyledFarmStakingCard = styled(Card)`
   margin-left: auto;
@@ -24,16 +25,48 @@ const CardMidContent = styled(Heading).attrs({ size: 'xl' })`
 const EarnAPYCard = () => {
   const TranslateString = useI18n()
   const farmsLP = useFarms()
+  const bnbPrice = usePriceBnbBusd()
 
-  const calculateAPY = () => {
-    const farm = farmsLP[1]
-    const cakePriceVsBNB = new BigNumber(farm?.tokenPriceVsQuote || 0)
+  const activeFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
+  const maxAPY = useRef(Number.MIN_VALUE)
 
-    const cakeRewardPerBlock = CAKE_PER_BLOCK.times(farm.poolWeight)
-    const cakeRewardPerYear = cakeRewardPerBlock.times(BLOCKS_PER_YEAR)
+  const farmsList = useCallback(
+    (farmsToDisplay) => {
+      const cakePriceVsBNB = new BigNumber(farmsLP.find((farm) => farm.pid === CAKE_POOL_PID)?.tokenPriceVsQuote || 0)
 
-    return cakePriceVsBNB.times(cakeRewardPerYear).div(farm.lpTotalInQuoteToken)
-  }
+      farmsToDisplay.map((farm) => {
+        if (!farm.tokenAmount || !farm.lpTotalInQuoteToken || !farm.lpTotalInQuoteToken) {
+          return farm
+        }
+        const cakeRewardPerBlock = CAKE_PER_BLOCK.times(farm.poolWeight)
+        const cakeRewardPerYear = cakeRewardPerBlock.times(BLOCKS_PER_YEAR)
+
+        let apy = cakePriceVsBNB.times(cakeRewardPerYear).div(farm.lpTotalInQuoteToken)
+
+        if (farm.quoteTokenSymbol === QuoteToken.BUSD) {
+          apy = cakePriceVsBNB.times(cakeRewardPerYear).div(farm.lpTotalInQuoteToken).times(bnbPrice)
+        } else if (farm.quoteTokenSymbol === QuoteToken.CAKE) {
+          apy = cakeRewardPerYear.div(farm.lpTotalInQuoteToken)
+        } else if (farm.dual) {
+          const cakeApy =
+            farm && cakePriceVsBNB.times(cakeRewardPerBlock).times(BLOCKS_PER_YEAR).div(farm.lpTotalInQuoteToken)
+          const dualApy =
+            farm.tokenPriceVsQuote &&
+            new BigNumber(farm.tokenPriceVsQuote)
+              .times(farm.dual.rewardPerBlock)
+              .times(BLOCKS_PER_YEAR)
+              .div(farm.lpTotalInQuoteToken)
+
+          apy = cakeApy && dualApy && cakeApy.plus(dualApy)
+        }
+
+        if (maxAPY.current < apy.toNumber()) maxAPY.current = apy.toNumber()
+
+        return apy
+      })
+    },
+    [bnbPrice, farmsLP],
+  )
 
   return (
     <StyledFarmStakingCard>
@@ -42,10 +75,8 @@ const EarnAPYCard = () => {
           Earn up to
         </Heading>
         <CardMidContent color="#7645d9">
-          {calculateAPY()
-            ? `${calculateAPY().times(new BigNumber(100)).toNumber().toLocaleString('en-US').slice(0, -1)}%`
-            : `Loading...`}{' '}
-          {TranslateString(352, 'APY')}
+          {farmsList(activeFarms)}
+          {(maxAPY.current * 100).toLocaleString('en-US').slice(0, -1)}%{TranslateString(352, ' APY')}
         </CardMidContent>
         <Flex justifyContent="space-between">
           <Heading color="contrast" size="lg">
