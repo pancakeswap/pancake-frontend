@@ -12,6 +12,7 @@ export const Default: React.FC = () => {
   const [radioSm, setRadioSm] = useState("one");
 
   const handleChange = (evt) => {
+    console.log("fired");
     const { value } = evt.target;
     setRadio(value);
   };

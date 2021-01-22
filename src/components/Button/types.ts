@@ -31,6 +31,8 @@ export type ButtonProps = {
   as?: "a" | "button" | typeof Link;
   href?: string;
   external?: boolean;
+  isLoading?: boolean;
+  disabled?: boolean;
 } & ButtonTypes &
   SpaceProps;
 

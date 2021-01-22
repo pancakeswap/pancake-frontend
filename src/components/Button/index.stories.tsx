@@ -1,14 +1,15 @@
 import React from "react";
 import styled from "styled-components";
+import { BrowserRouter, Link } from "react-router-dom";
 import capitalize from "lodash/capitalize";
-import { LogoIcon, AddIcon } from "../Svg";
+import Flex from "../Flex/Flex";
+import { LogoIcon, AddIcon, AutoRenewIcon } from "../Svg";
 import Button from "./Button";
 import IconButton from "./IconButton";
 import { variants } from "./types";
 
-const Row = styled.div`
+const Row = styled(Flex)`
   margin-bottom: 32px;
-
   & > button + button,
   & > a + a {
     margin-left: 16px;
@@ -39,96 +40,54 @@ export const Default: React.FC = () => {
   );
 };
 
-export const ButtonLink: React.FC = () => {
+export const Variants: React.FC = () => {
   return (
-    <>
+    <BrowserRouter>
       <Row>
         <Button as="a" href="https://pancakeswap.finance" target="_blank" rel="noreferrer">
-          Primary
+          As an anchor
         </Button>
-        <Button as="a" disabled>
-          Disabled
+        <Button as={Link} to="/router-link" variant="secondary">
+          As an React Router link
         </Button>
-        <Button as="a" size="sm">
-          Small
-        </Button>
-      </Row>
-      <Row>
-        <Button as="a" variant="secondary">
-          Secondary
-        </Button>
-        <Button as="a" variant="secondary" disabled>
-          Disabled
-        </Button>
-        <Button as="a" variant="secondary" size="sm">
-          Small
+        <Button as="a" href="https://pancakeswap.finance" disabled>
+          As an anchor (disabled)
         </Button>
       </Row>
       <Row>
-        <Button as="a" variant="tertiary">
-          Tertiary
+        <Button fullWidth>Full size</Button>
+      </Row>
+      <Row>
+        <Button isLoading endIcon={<AutoRenewIcon spin color="currentColor" />}>
+          Approving
         </Button>
-        <Button as="a" variant="tertiary" disabled>
-          Disabled
-        </Button>
-        <Button as="a" variant="tertiary" size="sm">
-          Small
+        <Button isLoading variant="success">
+          Approving
         </Button>
       </Row>
       <Row>
-        <Button as="a" variant="text">
-          Text
-        </Button>
-        <Button as="a" variant="text" disabled>
-          Disabled
-        </Button>
-        <Button as="a" variant="text" size="sm">
-          Small
+        <Button startIcon={<LogoIcon />}>Start Icon</Button>
+        <Button endIcon={<LogoIcon />}>End Icon</Button>
+        <Button startIcon={<LogoIcon />} endIcon={<LogoIcon />}>
+          Start & End Icon
         </Button>
       </Row>
-    </>
-  );
-};
-
-export const WithProps: React.FC = () => {
-  return (
-    <Row>
-      <Button fullWidth>Full size</Button>
-    </Row>
-  );
-};
-
-export const WithIcon: React.FC = () => {
-  return (
-    <Row>
-      <Button startIcon={<LogoIcon />}>Start Icon</Button>
-      <Button endIcon={<LogoIcon />}>End Icon</Button>
-      <Button startIcon={<LogoIcon />} endIcon={<LogoIcon />}>
-        Start & End Icon
-      </Button>
-    </Row>
-  );
-};
-
-export const Icons: React.FC = () => {
-  return (
-    <>
       <Row>
         <IconButton>
           <LogoIcon />
         </IconButton>
-        <IconButton>
+        <IconButton variant="secondary">
           <AddIcon />
         </IconButton>
       </Row>
       <Row>
-        <IconButton size="sm">
+        <IconButton size="sm" variant="danger">
           <LogoIcon />
         </IconButton>
-        <IconButton size="sm">
+        <IconButton size="sm" variant="success">
           <AddIcon />
         </IconButton>
       </Row>
-    </>
+    </BrowserRouter>
   );
 };
