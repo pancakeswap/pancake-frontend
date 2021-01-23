@@ -27,10 +27,17 @@ const EarnAPYCard = () => {
   const farmsLP = useFarms()
   const bnbPrice = usePriceBnbBusd()
 
-  const activeFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
   const maxAPY = useRef(Number.MIN_VALUE)
 
-  const farmsList = useCallback(
+  const getHighestAPY = () => {
+    const activeFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
+
+    calculateAPY(activeFarms)
+
+    return (maxAPY.current * 100).toLocaleString('en-US').slice(0, -1)
+  }
+
+  const calculateAPY = useCallback(
     (farmsToDisplay) => {
       const cakePriceVsBNB = new BigNumber(farmsLP.find((farm) => farm.pid === CAKE_POOL_PID)?.tokenPriceVsQuote || 0)
 
@@ -75,8 +82,7 @@ const EarnAPYCard = () => {
           Earn up to
         </Heading>
         <CardMidContent color="#7645d9">
-          {farmsList(activeFarms)}
-          {(maxAPY.current * 100).toLocaleString('en-US').slice(0, -1)}%{TranslateString(352, ' APY')}
+          {getHighestAPY()}%{TranslateString(352, ' APY')}
         </CardMidContent>
         <Flex justifyContent="space-between">
           <Heading color="contrast" size="lg">
