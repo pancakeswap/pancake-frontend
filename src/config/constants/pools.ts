@@ -19,6 +19,23 @@ const pools: PoolConfig[] = [
     tokenDecimals: 18,
   },
   {
+    sousId: 38,
+    tokenName: 'wSOTE',
+    stakingTokenName: QuoteToken.CAKE,
+    stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
+    contractAddress: {
+      97: '',
+      56: '0xD0b738eC507571176D40f28bd56a0120E375f73a',
+    },
+    poolCategory: PoolCategory.CORE,
+    projectLink: 'https://soteria.finance/#/',
+    harvest: true,
+    tokenPerBlock: '0.23',
+    sortOrder: 999,
+    isFinished: false,
+    tokenDecimals: 18,
+  },
+  {
     sousId: 37,
     tokenName: 'FRONT',
     stakingTokenName: QuoteToken.CAKE,

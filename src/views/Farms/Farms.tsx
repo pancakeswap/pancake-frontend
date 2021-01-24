@@ -1,15 +1,20 @@
-import React, { useCallback, useState, useRef } from 'react'
-import { Route, useLocation, useRouteMatch } from 'react-router-dom'
+import React, { useEffect, useCallback, useState, useRef } from 'react'
+import { Route, useRouteMatch, useLocation } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import BigNumber from 'bignumber.js'
+import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { provider } from 'web3-core'
 import { Image, Heading } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
 import { BLOCKS_PER_YEAR, CAKE_PER_BLOCK, CAKE_POOL_PID } from 'config'
 import Grid from 'components/layout/Grid'
+import Page from 'components/layout/Page'
 import { useFarms, usePriceBnbBusd, usePriceCakeBusd } from 'state/hooks'
+import useRefresh from 'hooks/useRefresh'
+import { fetchFarmUserDataAsync } from 'state/actions'
 import { QuoteToken } from 'config/constants/types'
 import useI18n from 'hooks/useI18n'
-import Page from 'components/Page'
-import FarmCard, { FarmWithStakedValue } from './components/FarmCard'
+import FarmCard, { FarmWithStakedValue } from './components/FarmCard/FarmCard'
 import Table from './components/Table/Table'
 import FarmTabButtons from './components/FarmTabButtons'
 import Divider from './components/Divider'
@@ -28,9 +33,18 @@ const Farms: React.FC = () => {
   const { pathname } = useLocation()
   const TranslateString = useI18n()
   const farmsLP = useFarms()
-  const bnbPrice = usePriceBnbBusd()
   const cakePrice = usePriceCakeBusd()
+  const bnbPrice = usePriceBnbBusd()
   const [query, setQuery] = useState('')
+  const { account, ethereum }: { account: string; ethereum: provider } = useWallet()
+
+  const dispatch = useDispatch()
+  const { fastRefresh } = useRefresh()
+  useEffect(() => {
+    if (account) {
+      dispatch(fetchFarmUserDataAsync(account))
+    }
+  }, [account, dispatch, fastRefresh])
 
   const activeFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
   const inactiveFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X')
@@ -135,31 +149,48 @@ const Farms: React.FC = () => {
 
   return (
     <Page>
-      <Heading as="h1" size="lg" color="secondary" m="50px" style={{ textAlign: 'center' }}>
+      <Heading as="h1" size="lg" color="secondary" mb="50px" style={{ textAlign: 'center' }}>
         {TranslateString(999, 'Stake LP tokens to earn CAKE')}
       </Heading>
       <ControlContainer>
         <FarmTabButtons />
         <SearchInput onChange={handleChangeValue} value={query} />
       </ControlContainer>
-      <Page>
-        <Table data={rowData} ref={tableRef} />
+
+      <Table data={rowData} ref={tableRef} />
+      <div>
         <Divider />
         <Route exact path={`${path}`}>
           <Grid>
             {farmsStaked.map((farm) => (
-              <FarmCard key={farm.pid} farm={farm} removed={false} />
+              <FarmCard
+                key={farm.pid}
+                farm={farm}
+                bnbPrice={bnbPrice}
+                cakePrice={cakePrice}
+                ethereum={ethereum}
+                account={account}
+                removed={false}
+            />
             ))}
           </Grid>
         </Route>
         <Route exact path={`${path}/history`}>
           <Grid>
             {farmsStaked.map((farm) => (
-              <FarmCard key={farm.pid} farm={farm} removed />
+              <FarmCard
+                key={farm.pid}
+                farm={farm}
+                bnbPrice={bnbPrice}
+                cakePrice={cakePrice}
+                ethereum={ethereum}
+                account={account}
+                removed
+              />
             ))}
           </Grid>
         </Route>
-      </Page>
+      </div>
       <Image src="/images/cakecat.png" alt="Pancake illustration" width={949} height={384} responsive />
     </Page>
   )
