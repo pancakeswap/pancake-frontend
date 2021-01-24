@@ -2,9 +2,18 @@ import React from 'react'
 import styled from 'styled-components'
 import { Modal, Text, LinkExternal, Flex } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
+import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 
-interface DepositModalProps {
+export interface TokenAddressesObject {
+  56?: string
+  97?: string
+}
+interface ApyCalculatorModalProps {
   onDismiss?: () => void
+  lpLabel?: string
+  quoteTokenAdresses?: TokenAddressesObject
+  quoteTokenSymbol?: string
+  tokenAddresses: TokenAddressesObject
 }
 
 const Grid = styled.div`
@@ -23,10 +32,15 @@ const Description = styled(Text)`
   margin-bottom: 28px;
 `
 
-const ApyCalculatorModal: React.FC<DepositModalProps> = ({ onDismiss }) => {
+const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
+  onDismiss,
+  lpLabel,
+  quoteTokenAdresses,
+  quoteTokenSymbol,
+  tokenAddresses,
+}) => {
   const TranslateString = useI18n()
-  //   const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAdresses, quoteTokenSymbol, tokenAddresses })
-  const liquidityUrlPathParts = 'bleh'
+  const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAdresses, quoteTokenSymbol, tokenAddresses })
 
   return (
     <Modal title="ROI" onDismiss={onDismiss}>
@@ -95,7 +109,7 @@ const ApyCalculatorModal: React.FC<DepositModalProps> = ({ onDismiss }) => {
       </Description>
       <Flex justifyContent="center">
         <LinkExternal href={`https://exchange.pancakeswap.finance/#/add/${liquidityUrlPathParts}`}>
-          Get BLEH-BNB LP
+          Get {lpLabel}
         </LinkExternal>
       </Flex>
     </Modal>
