@@ -171,7 +171,7 @@ const Farms: React.FC = () => {
                 ethereum={ethereum}
                 account={account}
                 removed={false}
-            />
+              />
             ))}
           </Grid>
         </Route>
