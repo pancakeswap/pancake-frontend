@@ -2,8 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 
 interface CellProps {
-  value: string;
-  multiplier: string;
+  value: string
+  multiplier: string
 }
 
 const CalculateIcon = styled.img`
@@ -23,11 +23,9 @@ const Multiplier = styled.div`
 const Apy: React.FunctionComponent<CellProps> = ({ value, multiplier }) => {
   return (
     <>
-    {`${value}`}
-    <CalculateIcon src="/images/calculate.svg" alt="calculate" />
-    <Multiplier>
-      {multiplier}
-    </Multiplier>
+      {`${value}`}
+      <CalculateIcon src="/images/calculate.svg" alt="calculate" />
+      <Multiplier>{multiplier}</Multiplier>
     </>
   )
 }

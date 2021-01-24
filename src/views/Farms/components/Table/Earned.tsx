@@ -9,12 +9,8 @@ const Amount = styled.span`
 const Earned: React.FunctionComponent = () => {
   return (
     <>
-      <Amount>
-        ?
-      </Amount>
-      <HarvestButton disabled>
-        Harvest
-      </HarvestButton>
+      <Amount>?</Amount>
+      <HarvestButton disabled>Harvest</HarvestButton>
     </>
   )
 }

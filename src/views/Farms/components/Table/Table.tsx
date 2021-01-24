@@ -1,11 +1,11 @@
-import React, { useRef, useEffect, useState, useMemo } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { useTable } from '@pancakeswap-libs/uikit'
 
 import Row, { RowData } from './Row'
 import ScrollBar from '../ScrollBar'
-import { ColumnsDef } from "../types";
-import Cell from "../Cell";
+import { ColumnsDef } from '../types'
+import Cell from '../Cell'
 
 export interface ITableProps {
   data: RowData[]
@@ -103,11 +103,11 @@ const CellInner = styled.div`
   padding-right: 1rem;
 `
 
-const TableContainer = styled.div<{showGradient: boolean}>`
+const TableContainer = styled.div<{ showGradient: boolean }>`
   position: relative;
   &:after {
     transition: 0.3s;
-    opacity: ${props => props.showGradient ? '1' : '0'};
+    opacity: ${(props) => (props.showGradient ? '1' : '0')};
     display: block;
     content: "";
     width: 0.875rem;
@@ -125,11 +125,11 @@ const TableContainer = styled.div<{showGradient: boolean}>`
 }
 `
 
-const columns = ColumnsDef.map((column => ({
+const columns = ColumnsDef.map((column) => ({
   id: column.id,
   name: column.normal.toLowerCase(),
-  label: column.normal
-})))
+  label: column.normal,
+}))
 
 export default React.forwardRef((props: ITableProps, ref) => {
   const scrollBarEl = useRef<HTMLDivElement>(null)
@@ -156,9 +156,11 @@ export default React.forwardRef((props: ITableProps, ref) => {
             return
           }
 
-          const scrollPercent = (scrollBarEl.current.scrollLeft + scrollBarEl.current.clientWidth) / scrollBarEl.current.scrollWidth
+          const scrollPercent =
+            (scrollBarEl.current.scrollLeft + scrollBarEl.current.clientWidth) / scrollBarEl.current.scrollWidth
           setShowGradient(scrollPercent !== 1)
-          tableWrapperEl.current.scrollLeft = scrollPercent * tableWrapperEl.current.scrollWidth - tableWrapperEl.current.clientWidth;
+          tableWrapperEl.current.scrollLeft =
+            scrollPercent * tableWrapperEl.current.scrollWidth - tableWrapperEl.current.clientWidth
         }
       }
 
@@ -174,88 +176,68 @@ export default React.forwardRef((props: ITableProps, ref) => {
             scrollBarEl.current.scrollLeft = tableWrapperEl.current.scrollLeft
             return
           }
-          const scrollPercent = (tableWrapperEl.current.scrollLeft + tableWrapperEl.current.clientWidth) / tableWrapperEl.current.scrollWidth
+          const scrollPercent =
+            (tableWrapperEl.current.scrollLeft + tableWrapperEl.current.clientWidth) /
+            tableWrapperEl.current.scrollWidth
           setShowGradient(scrollPercent !== 1)
-          scrollBarEl.current.scrollLeft = scrollPercent * scrollBarEl.current.scrollWidth - scrollBarEl.current.clientWidth;
+          scrollBarEl.current.scrollLeft =
+            scrollPercent * scrollBarEl.current.scrollWidth - scrollBarEl.current.clientWidth
         }
       }
 
       if (scrollBarEl.current.clientWidth + 24 >= tableWrapperEl.current.scrollWidth) {
-        setVisibleScroll(false);
+        setVisibleScroll(false)
       }
-      setTableWidth(tableWrapperEl.current.scrollWidth);
+      setTableWidth(tableWrapperEl.current.scrollWidth)
     }
   }, [])
 
   const renderSortArrow = (column: any): JSX.Element => {
-    if (column.sorted && column.sorted.on)  {
+    if (column.sorted && column.sorted.on) {
       if (column.sorted.asc) {
-        return (
-          <ArrowIcon
-            src="/images/icons/arrow-down.svg"
-            className="toggle"
-            alt="arrow down"
-          />
-        );
+        return <ArrowIcon src="/images/icons/arrow-down.svg" className="toggle" alt="arrow down" />
       }
 
-      return (
-        <ArrowIcon
-          src="/images/icons/arrow-down.svg"
-          alt="arrow down"
-        />
-      );
+      return <ArrowIcon src="/images/icons/arrow-down.svg" alt="arrow down" />
     }
 
-    return null;
+    return null
   }
 
-  const { headers, rows, toggleSort, setSearchString  } = useTable(columns, data, { sortable: true });
+  const { headers, rows, toggleSort, setSearchString } = useTable(columns, data, { sortable: true })
 
   React.useImperativeHandle(ref, () => ({
     setTableQuery(query: string) {
-      setSearchString(query);
-    }
-  }));
+      setSearchString(query)
+    },
+  }))
 
   return (
     <Container>
-      {
-        visibleScroll &&
-          <ScrollBar ref={scrollBarEl} width={tableWidth} />
-      }
-      <TableContainer showGradient={ showGradient }>
-      <TableWrapper ref={tableWrapperEl}>
-        <StyledTable>
-          <TableHead>
-            <tr>
-              {headers.map((column, key) => (
-                <Cell
-                  key={`head-${column.name}`}
-                  onClick={() => toggleSort(column.name) }
-                  isHeader
-                >
-                  <CellInner>
-                    <span className="bold">{ColumnsDef[key].bold}&nbsp;</span>
-                    {column.label}
-                    {
-                      renderSortArrow(column)
-                    }
-                  </CellInner>
-                </Cell>
-              ))}
-            </tr>
-          </TableHead>
-          <TableBody>
-          {
-            rows.map((row) => {
-              return (
-                <Row {...row.original} key={`table-row-${row.id}`} />
-            )})
-          }
-          </TableBody>
-        </StyledTable>
-      </TableWrapper>
+      {visibleScroll && <ScrollBar ref={scrollBarEl} width={tableWidth} />}
+      <TableContainer showGradient={showGradient}>
+        <TableWrapper ref={tableWrapperEl}>
+          <StyledTable>
+            <TableHead>
+              <tr>
+                {headers.map((column, key) => (
+                  <Cell key={`head-${column.name}`} onClick={() => toggleSort(column.name)} isHeader>
+                    <CellInner>
+                      <span className="bold">{ColumnsDef[key].bold}&nbsp;</span>
+                      {column.label}
+                      {renderSortArrow(column)}
+                    </CellInner>
+                  </Cell>
+                ))}
+              </tr>
+            </TableHead>
+            <TableBody>
+              {rows.map((row) => {
+                return <Row {...row.original} key={`table-row-${row.id}`} />
+              })}
+            </TableBody>
+          </StyledTable>
+        </TableWrapper>
       </TableContainer>
     </Container>
   )

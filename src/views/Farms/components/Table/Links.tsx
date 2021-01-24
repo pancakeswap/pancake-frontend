@@ -15,18 +15,14 @@ const Container = styled.div`
     white-space: nowrap;
     display: block;
   }
-`;
+`
 
 const Links: React.FunctionComponent<CellProps> = ({ bsc }) => {
   return (
     <>
       <Container>
-        <Link to={ bsc }>
-          View on BSCScan
-        </Link>
-        <Link to='/farms'>
-          View on Info
-        </Link>
+        <Link to={bsc}>View on BSCScan</Link>
+        <Link to="/farms">View on Info</Link>
       </Container>
     </>
   )

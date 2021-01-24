@@ -10,12 +10,12 @@ import Links from './Links'
 
 export interface RowData {
   apy: {
-    value: string;
-    multiplier: string;
+    value: string
+    multiplier: string
   }
   pool: {
-    image: string;
-    label: string;
+    image: string
+    label: string
   }
   earned: any
   staked: any
@@ -33,7 +33,7 @@ const cells = {
   earned: Earned,
   staked: Staked,
   details: Details,
-  links: Links
+  links: Links,
 }
 
 const CellInner = styled.div`
@@ -45,20 +45,15 @@ const CellInner = styled.div`
 `
 
 const Row: React.FunctionComponent<RowData> = (props) => {
-
   return (
     <tr>
-      {
-        Object.keys(props).map((key) => {
-          return (
-            <td key={key}>
-              <CellInner>
-                {React.createElement(cells[key], props[key])}
-              </CellInner>
-            </td>
-          )
-        })
-      }
+      {Object.keys(props).map((key) => {
+        return (
+          <td key={key}>
+            <CellInner>{React.createElement(cells[key], props[key])}</CellInner>
+          </td>
+        )
+      })}
     </tr>
   )
 }

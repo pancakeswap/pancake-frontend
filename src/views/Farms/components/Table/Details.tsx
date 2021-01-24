@@ -41,21 +41,15 @@ const Details: React.FunctionComponent<CellProps> = ({ liquidity }) => {
     <>
       <Container>
         <div>
-          <StakeLabel>
-            Stake:
-          </StakeLabel>
+          <StakeLabel>Stake:</StakeLabel>
           <StakeTitle>
             HARD-BNB LP
-            <OpenIcon src="/images/open_in_new.svg" alt="open in new"/>
+            <OpenIcon src="/images/open_in_new.svg" alt="open in new" />
           </StakeTitle>
         </div>
         <div>
-          <StakeLabel>
-            Liquidity:
-          </StakeLabel>
-          <span>
-            { liquidity }
-          </span>
+          <StakeLabel>Liquidity:</StakeLabel>
+          <span>{liquidity}</span>
         </div>
       </Container>
     </>

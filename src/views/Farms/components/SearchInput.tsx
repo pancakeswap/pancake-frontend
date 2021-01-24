@@ -1,12 +1,12 @@
-import React from 'react';
+import React from 'react'
 import { Input } from '@pancakeswap-libs/uikit'
-import styled from "styled-components";
+import styled from 'styled-components'
 
 const StyledInput = styled(Input)`
   width: 20rem;
   border-radius: 1rem;
   margin-left: auto;
-`;
+`
 
 interface Props {
   value: string
@@ -14,12 +14,7 @@ interface Props {
 }
 
 const SearchInput: React.FunctionComponent<Props> = ({ value, onChange }) => {
-  return (
-    <StyledInput
-      value={value}
-      onChange={onChange}
-    />
-  )
+  return <StyledInput value={value} onChange={onChange} />
 }
 
-export default SearchInput;
+export default SearchInput

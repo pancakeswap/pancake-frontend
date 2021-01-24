@@ -2,8 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 
 interface CellProps {
-  image: string;
-  label: string;
+  image: string
+  label: string
 }
 
 const Icon = styled.img`
@@ -20,9 +20,7 @@ const Pool: React.FunctionComponent<CellProps> = ({ image, label }) => {
   return (
     <>
       <Icon src={`/images/farms/${image}.svg`} alt="icon" />
-      <Label>
-        {label}
-      </Label>
+      <Label>{label}</Label>
     </>
   )
 }

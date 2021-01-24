@@ -16,9 +16,7 @@ const ConnectWalletButton = styled(Button)`
 const Staked: React.FunctionComponent = () => {
   return (
     <>
-      <ConnectWalletButton>
-        Connect Wallet
-      </ConnectWalletButton>
+      <ConnectWalletButton>Connect Wallet</ConnectWalletButton>
     </>
   )
 }

@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useRef, useMemo } from 'react'
+import React, { useCallback, useState, useRef } from 'react'
 import { Route, useLocation, useRouteMatch } from 'react-router-dom'
 import BigNumber from 'bignumber.js'
 import { Image, Heading } from '@pancakeswap-libs/uikit'
@@ -24,21 +24,21 @@ const ControlContainer = styled.div`
 `
 
 const Farms: React.FC = () => {
-  const { path, url } = useRouteMatch()
+  const { path } = useRouteMatch()
   const { pathname } = useLocation()
   const TranslateString = useI18n()
   const farmsLP = useFarms()
   const bnbPrice = usePriceBnbBusd()
   const cakePrice = usePriceCakeBusd()
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState('')
 
   const activeFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
   const inactiveFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X')
 
-  const tableRef = useRef(null);
+  const tableRef = useRef(null)
 
   const farmsList = useCallback(
-    (farmsToDisplay, removed: boolean): FarmWithStakedValue[] => {
+    (farmsToDisplay): FarmWithStakedValue[] => {
       const cakePriceVsBNB = new BigNumber(farmsLP.find((farm) => farm.pid === CAKE_POOL_PID)?.tokenPriceVsQuote || 0)
       const farmsToDisplayWithAPY: FarmWithStakedValue[] = farmsToDisplay.map((farm) => {
         if (!farm.tokenAmount || !farm.lpTotalInQuoteToken || !farm.lpTotalInQuoteToken) {
@@ -67,26 +67,26 @@ const Farms: React.FC = () => {
         }
 
         return { ...farm, apy }
-      });
+      })
 
-      return farmsToDisplayWithAPY;
+      return farmsToDisplayWithAPY
     },
     [bnbPrice, farmsLP],
   )
 
   const handleChangeValue = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery(event.target.value);
+    setQuery(event.target.value)
     if (tableRef.current) {
-      tableRef.current.setTableQuery(event.target.value);
+      tableRef.current.setTableQuery(event.target.value)
     }
   }
 
   const isActive = !pathname.includes('history')
   let farmsStaked = []
   if (isActive) {
-    farmsStaked = farmsList(activeFarms, false)
+    farmsStaked = farmsList(activeFarms)
   } else {
-    farmsStaked = farmsList(inactiveFarms, true)
+    farmsStaked = farmsList(inactiveFarms)
   }
 
   const rowData = farmsStaked.map((farm) => {
@@ -108,29 +108,27 @@ const Farms: React.FC = () => {
       : '-'
 
     row.apy = {
-      value: farm.apy ? `${farm.apy.times(new BigNumber(100)).toNumber().toLocaleString('en-US').slice(0, -1)}%` : 'Loading ...',
-      multiplier: farm.multiplier
+      value: farm.apy
+        ? `${farm.apy.times(new BigNumber(100)).toNumber().toLocaleString('en-US').slice(0, -1)}%`
+        : 'Loading ...',
+      multiplier: farm.multiplier,
     }
 
     row.pool = {
       image: farm.lpSymbol.split(' ')[0].toLocaleLowerCase(),
-      label: farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('PANCAKE', '')
+      label: farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('PANCAKE', ''),
     }
 
-    row.earned = {
+    row.earned = {}
 
-    }
-
-    row.staked = {
-
-    }
+    row.staked = {}
 
     row.details = {
-      liquidity: totalValueFormated
+      liquidity: totalValueFormated,
     }
 
     row.links = {
-      bsc: farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]
+      bsc: farm.lpAddresses[process.env.REACT_APP_CHAIN_ID],
     }
     return row
   })
@@ -142,19 +140,24 @@ const Farms: React.FC = () => {
       </Heading>
       <ControlContainer>
         <FarmTabButtons />
-        <SearchInput
-          onChange={handleChangeValue}
-          value={ query }
-        />
+        <SearchInput onChange={handleChangeValue} value={query} />
       </ControlContainer>
       <Page>
-        <Table data={ rowData } ref={ tableRef } />
+        <Table data={rowData} ref={tableRef} />
         <Divider />
         <Route exact path={`${path}`}>
-          <Grid>{farmsStaked.map((farm) => <FarmCard key={farm.pid} farm={farm} removed={false} />)}</Grid>
+          <Grid>
+            {farmsStaked.map((farm) => (
+              <FarmCard key={farm.pid} farm={farm} removed={false} />
+            ))}
+          </Grid>
         </Route>
         <Route exact path={`${path}/history`}>
-          <Grid>{farmsStaked.map((farm) => <FarmCard key={farm.pid} farm={farm} removed />)}</Grid>
+          <Grid>
+            {farmsStaked.map((farm) => (
+              <FarmCard key={farm.pid} farm={farm} removed />
+            ))}
+          </Grid>
         </Route>
       </Page>
       <Image src="/images/cakecat.png" alt="Pancake illustration" width={949} height={384} responsive />
