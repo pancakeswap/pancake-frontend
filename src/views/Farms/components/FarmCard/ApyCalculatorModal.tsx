@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { Modal, Text, LinkExternal, Flex } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
+import { calculateApy } from 'utils/compoundApyHelpers'
 
 export interface TokenAddressesObject {
   56?: string
@@ -46,6 +47,9 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
 }) => {
   const TranslateString = useI18n()
   const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAdresses, quoteTokenSymbol, tokenAddresses })
+  const farmApy = apy.times(new BigNumber(100)).toNumber()
+
+  const interest = calculateApy(1000, 7, farmApy)
 
   return (
     <Modal title="ROI" onDismiss={onDismiss}>
