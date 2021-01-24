@@ -143,6 +143,8 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed, cakePrice, bnbPrice,
               quoteTokenAdresses={quoteTokenAdresses}
               quoteTokenSymbol={quoteTokenSymbol}
               tokenAddresses={tokenAddresses}
+              cakePrice={cakePrice}
+              apy={farm.apy}
             />
           </Text>
         </Flex>

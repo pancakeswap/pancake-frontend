@@ -1,4 +1,5 @@
 import React from 'react'
+import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import { Modal, Text, LinkExternal, Flex } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
@@ -11,6 +12,8 @@ export interface TokenAddressesObject {
 interface ApyCalculatorModalProps {
   onDismiss?: () => void
   lpLabel?: string
+  cakePrice?: BigNumber
+  apy?: BigNumber
   quoteTokenAdresses?: TokenAddressesObject
   quoteTokenSymbol?: string
   tokenAddresses: TokenAddressesObject
@@ -38,6 +41,8 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
   quoteTokenAdresses,
   quoteTokenSymbol,
   tokenAddresses,
+  cakePrice,
+  apy,
 }) => {
   const TranslateString = useI18n()
   const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAdresses, quoteTokenSymbol, tokenAddresses })
