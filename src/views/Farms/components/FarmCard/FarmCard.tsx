@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react'
 import BigNumber from 'bignumber.js'
 import styled, { keyframes } from 'styled-components'
-import { Flex, Text } from '@pancakeswap-libs/uikit'
+import { Flex, Text, AddIcon, Button } from '@pancakeswap-libs/uikit'
 import { communityFarms } from 'config/constants'
 import { Farm } from 'state/types'
 import { provider } from 'web3-core'
@@ -11,6 +11,7 @@ import { QuoteToken } from 'config/constants/types'
 import DetailsSection from './DetailsSection'
 import CardHeading from './CardHeading'
 import CardActionsContainer from './CardActionsContainer'
+import ApyButton from './ApyButton'
 
 export interface FarmWithStakedValue extends Farm {
   apy?: BigNumber
@@ -133,9 +134,11 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed, cakePrice, bnbPrice,
         tokenSymbol={farm.tokenSymbol}
       />
       {!removed && (
-        <Flex justifyContent="space-between">
+        <Flex justifyContent="space-between" alignItems="center">
           <Text>{TranslateString(352, 'APY')}:</Text>
-          <Text bold>{farm.apy ? `${farmAPY}%` : 'Loading ...'}</Text>
+          <Text bold style={{ display: 'flex', alignItems: 'center' }}>
+            {farm.apy ? `${farmAPY}%` : 'Loading ...'} <ApyButton />
+          </Text>
         </Flex>
       )}
       <Flex justifyContent="space-between">
