@@ -2,6 +2,11 @@ import React from 'react'
 import { Card, CardBody, Heading, Text } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import NftSelectionCard from '../components/NftSelectionCard'
+import NextStepButton from '../components/NextStepButton'
+
+interface MintProps {
+  nextStep: () => void
+}
 
 const nft = {
   name: 'Swapsies',
@@ -23,7 +28,7 @@ const nft1 = {
   bunnyId: 1,
 }
 
-const Mint = () => {
+const Mint: React.FC<MintProps> = ({ nextStep }) => {
   const TranslateString = useI18n()
 
   return (
@@ -39,7 +44,7 @@ const Mint = () => {
       <Text as="p" mb="24px">
         {TranslateString(999, 'You can change your profile pic later if you get another approved Pancake Collectible.')}
       </Text>
-      <Card>
+      <Card mb="24px">
         <CardBody>
           <Heading as="h4" size="lg" mb="8px">
             {TranslateString(999, 'Choose your Starter!')}
@@ -54,6 +59,7 @@ const Mint = () => {
           <NftSelectionCard nft={nft1} isChecked />
         </CardBody>
       </Card>
+      <NextStepButton onClick={nextStep}>{TranslateString(999, 'Next Step')}</NextStepButton>
     </>
   )
 }
