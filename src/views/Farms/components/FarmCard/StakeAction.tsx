@@ -6,8 +6,8 @@ import useI18n from 'hooks/useI18n'
 import useStake from 'hooks/useStake'
 import useUnstake from 'hooks/useUnstake'
 import { getBalanceNumber } from 'utils/formatBalance'
-import DepositModal from '../../../Farm/components/DepositModal'
-import WithdrawModal from '../../../Farm/components/WithdrawModal'
+import DepositModal from '../DepositModal'
+import WithdrawModal from '../WithdrawModal'
 
 interface FarmCardActionsProps {
   stakedBalance?: BigNumber
