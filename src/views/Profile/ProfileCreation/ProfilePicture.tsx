@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Card, CardBody, Flex, Heading, Skeleton, Text } from '@pancakeswap-libs/uikit'
+import { Card, CardBody, Heading, Skeleton, Text } from '@pancakeswap-libs/uikit'
 import { Link as RouterLink } from 'react-router-dom'
 import nftList from 'config/constants/nfts'
 import useI18n from 'hooks/useI18n'
@@ -47,14 +47,7 @@ const ProfilePicture: React.FC<ProfilePictureProps> = ({ nextStep }) => {
             <Link to="/nft">{TranslateString(999, 'Only approved Pancake Collectibles can be used.')}</Link>
           </Text>
           <NftWrapper>
-            {isLoading ? (
-              <Flex>
-                <Skeleton height={80} />
-                <Skeleton width={120} />
-              </Flex>
-            ) : (
-              walletNfts.map((walletNft) => <NftSelectionCard nft={walletNft} />)
-            )}
+            {isLoading ? <Skeleton height={80} /> : walletNfts.map((walletNft) => <NftSelectionCard nft={walletNft} />)}
           </NftWrapper>
         </CardBody>
       </Card>

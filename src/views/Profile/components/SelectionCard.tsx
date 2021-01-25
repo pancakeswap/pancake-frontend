@@ -38,12 +38,12 @@ const Children = styled.div`
 `
 
 const StyledBackgroundImage = styled.div<{ src: string }>`
+  align-self: stretch;
   background-image: url('${({ src }) => src}');
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
   flex: none;
-  height: 80px;
   width: 80px;
 `
 

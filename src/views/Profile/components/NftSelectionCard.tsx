@@ -9,7 +9,7 @@ interface NftSelectionCardProps {
 }
 
 const NftSelectionCard: React.FC<NftSelectionCardProps> = ({ nft, isChecked = false }) => {
-  const handleChange = (value) => console.log(value)
+  const handleChange = () => true
 
   return (
     <SelectionCard
