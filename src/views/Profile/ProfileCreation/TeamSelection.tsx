@@ -7,8 +7,10 @@ import { getProfileContract } from 'utils/contractHelpers'
 import profileABI from 'config/abi/pancakeProfile.json'
 import multicall from 'utils/multicall'
 import SelectionCard from '../components/SelectionCard'
+import NextStepButton from '../components/NextStepButton'
 
 interface Props {
+  nextStep: () => void
   selectedTeam: number
   handleTeamSelection: (team: number) => void
 }
@@ -53,13 +55,13 @@ const useTeams = () => {
   return teams
 }
 
-const Team: React.FC<Props> = ({ selectedTeam, handleTeamSelection }) => {
+const Team: React.FC<Props> = ({ nextStep, selectedTeam, handleTeamSelection }) => {
   const TranslateString = useI18n()
   // const teams = useTeams()
   const teams = mockTeams
 
   return (
-    <div>
+    <>
       <Text fontSize="20px" color="textSubtle" bold>
         {TranslateString(999, `Step ${3}`)}
       </Text>
@@ -69,7 +71,7 @@ const Team: React.FC<Props> = ({ selectedTeam, handleTeamSelection }) => {
       <Text as="p" mb="24px">
         {TranslateString(999, 'It won’t be possible to undo the choice you make for the foreseeable future!')}
       </Text>
-      <Card>
+      <Card mb="24px">
         <CardBody>
           <Heading as="h4" size="lg" mb="8px">
             {TranslateString(999, 'Join a Team')}
@@ -91,13 +93,13 @@ const Team: React.FC<Props> = ({ selectedTeam, handleTeamSelection }) => {
                 onChange={(val) => handleTeamSelection(parseInt(val, 10))}
               >
                 <Text bold>{team.name}</Text>
-                <Text fontSize="12px">{team.description}</Text>
               </SelectionCard>
             )
           })}
         </CardBody>
       </Card>
-    </div>
+      <NextStepButton onClick={nextStep}>{TranslateString(999, 'Next Step')}</NextStepButton>
+    </>
   )
 }
 
