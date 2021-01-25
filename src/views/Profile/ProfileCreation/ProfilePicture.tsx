@@ -66,7 +66,11 @@ const ProfilePicture: React.FC<ProfilePictureProps> = ({ nextStep }) => {
             <Link to="/nft">{TranslateString(999, 'Only approved Pancake Collectibles can be used.')}</Link>
           </Text>
           <NftWrapper>
-            {isLoading ? <Skeleton height={80} /> : walletNfts.map((walletNft) => <NftSelectionCard nft={walletNft} />)}
+            {isLoading ? (
+              <Skeleton height="80px" mb="16px" />
+            ) : (
+              walletNfts.map((walletNft) => <NftSelectionCard nft={walletNft} />)
+            )}
           </NftWrapper>
         </CardBody>
       </Card>
