@@ -1,19 +1,14 @@
-import React, { createContext, ReactNode, useEffect, useRef, useState } from 'react'
+import React, { createContext, useEffect, useRef, useState } from 'react'
 import BigNumber from 'bignumber.js'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import useBlock from 'hooks/useBlock'
-import rabbitmintingfarm from 'config/abi/rabbitmintingfarm.json'
-import { RABBIT_MINTING_FARM_ADDRESS } from 'config/constants/nfts'
+import useGetWalletNfts, { NftMap } from 'hooks/useGetWalletNfts'
+import { getRabbitMintingFarmAddress } from 'utils/addressHelpers'
+import { getPancakeRabbitContract } from 'utils/contractHelpers'
 import multicall from 'utils/multicall'
-import { getPancakeRabbitContract } from '../utils/contracts'
+import rabbitmintingfarm from 'config/abi/rabbitmintingfarm.json'
 
-interface NftProviderProps {
-  children: ReactNode
-}
-
-type BunnyMap = {
-  [key: number]: number[]
-}
+const rabbitMintingFarmAddress = getRabbitMintingFarmAddress()
 
 type State = {
   isInitialized: boolean
@@ -25,10 +20,10 @@ type State = {
   totalSupplyDistributed: number
   currentDistributedSupply: number
   balanceOf: number
-  bunnyMap: BunnyMap
 }
 
 type Context = {
+  nfts: NftMap
   canBurnNft: boolean
   getTokenIds: (bunnyId: number) => number[]
   reInitialize: () => void
@@ -36,7 +31,7 @@ type Context = {
 
 export const NftProviderContext = createContext<Context | null>(null)
 
-const NftProvider: React.FC<NftProviderProps> = ({ children }) => {
+const NftProvider: React.FC = ({ children }) => {
   const isMounted = useRef(true)
   const [state, setState] = useState<State>({
     isInitialized: false,
@@ -48,11 +43,10 @@ const NftProvider: React.FC<NftProviderProps> = ({ children }) => {
     totalSupplyDistributed: 0,
     currentDistributedSupply: 0,
     balanceOf: 0,
-    bunnyMap: {},
   })
   const { account } = useWallet()
   const currentBlock = useBlock()
-
+  const { nfts: nftList } = useGetWalletNfts()
   const { isInitialized } = state
 
   // Static data
@@ -66,11 +60,11 @@ const NftProvider: React.FC<NftProviderProps> = ({ children }) => {
           totalSupplyDistributedArr,
           currentDistributedSupplyArr,
         ] = await multicall(rabbitmintingfarm, [
-          { address: RABBIT_MINTING_FARM_ADDRESS, name: 'startBlockNumber' },
-          { address: RABBIT_MINTING_FARM_ADDRESS, name: 'endBlockNumber' },
-          { address: RABBIT_MINTING_FARM_ADDRESS, name: 'countBunniesBurnt' },
-          { address: RABBIT_MINTING_FARM_ADDRESS, name: 'totalSupplyDistributed' },
-          { address: RABBIT_MINTING_FARM_ADDRESS, name: 'currentDistributedSupply' },
+          { address: rabbitMintingFarmAddress, name: 'startBlockNumber' },
+          { address: rabbitMintingFarmAddress, name: 'endBlockNumber' },
+          { address: rabbitMintingFarmAddress, name: 'countBunniesBurnt' },
+          { address: rabbitMintingFarmAddress, name: 'totalSupplyDistributed' },
+          { address: rabbitMintingFarmAddress, name: 'currentDistributedSupply' },
         ])
 
         // TODO: Figure out why these are coming back as arrays
@@ -103,52 +97,12 @@ const NftProvider: React.FC<NftProviderProps> = ({ children }) => {
       try {
         const pancakeRabbitsContract = getPancakeRabbitContract()
         const [canClaimArr, hasClaimedArr] = await multicall(rabbitmintingfarm, [
-          { address: RABBIT_MINTING_FARM_ADDRESS, name: 'canClaim', params: [account] },
-          { address: RABBIT_MINTING_FARM_ADDRESS, name: 'hasClaimed', params: [account] },
+          { address: rabbitMintingFarmAddress, name: 'canClaim', params: [account] },
+          { address: rabbitMintingFarmAddress, name: 'hasClaimed', params: [account] },
         ])
         const balanceOf = await pancakeRabbitsContract.methods.balanceOf(account).call()
         const [canClaim]: [boolean] = canClaimArr
         const [hasClaimed]: [boolean] = hasClaimedArr
-
-        let bunnyMap: BunnyMap = {}
-
-        // If the "balanceOf" is greater than 0 then retrieve the tokenIds
-        // owned by the wallet, then the bunnyId's associated with the tokenIds
-        if (balanceOf > 0) {
-          const getTokenIdAndBunnyId = async (index: number) => {
-            try {
-              const tokenId = await pancakeRabbitsContract.methods.tokenOfOwnerByIndex(account, index).call()
-              const bunnyId = await pancakeRabbitsContract.methods.getBunnyId(tokenId).call()
-
-              return [parseInt(bunnyId, 10), parseInt(tokenId, 10)]
-            } catch (error) {
-              return null
-            }
-          }
-
-          const tokenIdPromises = []
-
-          for (let i = 0; i < balanceOf; i++) {
-            tokenIdPromises.push(getTokenIdAndBunnyId(i))
-          }
-
-          const tokenIdsOwnedByWallet = await Promise.all(tokenIdPromises)
-
-          // While improbable a wallet can own more than one of the same bunny so the format is:
-          // { [bunnyId]: [array of tokenIds] }
-          bunnyMap = tokenIdsOwnedByWallet.reduce((accum, association) => {
-            if (!association) {
-              return accum
-            }
-
-            const [bunnyId, tokenId] = association
-
-            return {
-              ...accum,
-              [bunnyId]: accum[bunnyId] ? [...accum[bunnyId], tokenId] : [tokenId],
-            }
-          }, {})
-        }
 
         setState((prevState) => ({
           ...prevState,
@@ -156,7 +110,6 @@ const NftProvider: React.FC<NftProviderProps> = ({ children }) => {
           canClaim,
           hasClaimed,
           balanceOf,
-          bunnyMap,
         }))
       } catch (error) {
         console.error('an error occured', error)
@@ -175,7 +128,7 @@ const NftProvider: React.FC<NftProviderProps> = ({ children }) => {
   }, [isMounted])
 
   const canBurnNft = currentBlock <= state.endBlockNumber
-  const getTokenIds = (bunnyId: number) => state.bunnyMap[bunnyId]
+  const getTokenIds = (bunnyId: number) => nftList[bunnyId]?.tokenIds
 
   /**
    * Allows consumers to re-fetch all data from the contract. Triggers the effects.
@@ -191,7 +144,7 @@ const NftProvider: React.FC<NftProviderProps> = ({ children }) => {
   }
 
   return (
-    <NftProviderContext.Provider value={{ ...state, canBurnNft, getTokenIds, reInitialize }}>
+    <NftProviderContext.Provider value={{ ...state, nfts: nftList, canBurnNft, getTokenIds, reInitialize }}>
       {children}
     </NftProviderContext.Provider>
   )
