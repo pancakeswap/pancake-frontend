@@ -24,6 +24,25 @@ const ProfilePicture: React.FC<ProfilePictureProps> = ({ nextStep }) => {
   const bunnyIds = Object.keys(nfts).map((nftItem) => Number(nftItem))
   const walletNfts = nftList.filter((nft) => bunnyIds.includes(nft.bunnyId))
 
+  if (!isLoading && walletNfts.length === 0) {
+    return (
+      <>
+        <Heading size="xl" mb="24px">
+          {TranslateString(999, 'Oops!')}
+        </Heading>
+        <Text bold fontSize="20px" mb="24px">
+          {TranslateString(999, 'We couldn’t find any Pancake Collectibles in your wallet.')}
+        </Text>
+        <Text as="p">
+          {TranslateString(
+            999,
+            'You need a Pancake Collectible to finish setting up your profile. If you sold or transferred your starter collectible to another wallet, you’ll need to get it back or acquire a new one somehow. You can’t make a new starter with this wallet address.',
+          )}
+        </Text>
+      </>
+    )
+  }
+
   return (
     <>
       <Text fontSize="20px" color="textSubtle" bold>
@@ -47,7 +66,11 @@ const ProfilePicture: React.FC<ProfilePictureProps> = ({ nextStep }) => {
             <Link to="/nft">{TranslateString(999, 'Only approved Pancake Collectibles can be used.')}</Link>
           </Text>
           <NftWrapper>
-            {isLoading ? <Skeleton height={80} /> : walletNfts.map((walletNft) => <NftSelectionCard nft={walletNft} />)}
+            {isLoading ? (
+              <Skeleton height="80px" mb="16px" />
+            ) : (
+              walletNfts.map((walletNft) => <NftSelectionCard nft={walletNft} />)
+            )}
           </NftWrapper>
         </CardBody>
       </Card>
