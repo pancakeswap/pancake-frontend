@@ -34,7 +34,7 @@ const ProfileCreation = () => {
 
   return (
     <Page>
-      <Header breadcrumbIndex={step} setStep={setStep} />
+      <Header breadcrumbIndex={step} />
       {account ? (
         renderStep()
       ) : (

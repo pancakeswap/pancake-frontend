@@ -1,16 +1,15 @@
-import React, { Dispatch, SetStateAction } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { Breadcrumbs, Heading, Text } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 
 interface HeaderProps {
-  setStep: Dispatch<SetStateAction<number>>
   breadcrumbIndex?: number
 }
 
 const BreadcrumbLink = styled(Text)<{ isLink: boolean }>`
   color: ${({ isLink, theme }) => theme.colors[isLink ? 'text' : 'textDisabled']};
-  cursor: ${({ isLink }) => (isLink ? 'pointer' : 'inherit')};
+  font-weight: 400;
 `
 
 const Wrapper = styled.div`
@@ -26,7 +25,7 @@ const steps = [
   { translationId: 999, label: 'Set Name' },
 ]
 
-const Header: React.FC<HeaderProps> = ({ breadcrumbIndex = 0, setStep }) => {
+const Header: React.FC<HeaderProps> = ({ breadcrumbIndex = 0 }) => {
   const TranslateString = useI18n()
 
   return (
@@ -45,7 +44,7 @@ const Header: React.FC<HeaderProps> = ({ breadcrumbIndex = 0, setStep }) => {
           const isLink = index <= breadcrumbIndex
 
           return (
-            <BreadcrumbLink key={label} isLink={isLink} onClick={isLink ? () => setStep(index) : undefined}>
+            <BreadcrumbLink key={label} isLink={isLink}>
               {TranslateString(translationId, label)}
             </BreadcrumbLink>
           )
