@@ -7,7 +7,7 @@ it("renders correctly", () => {
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
       <div
-        class="sc-bdfBwQ sc-gsTCUz kuHpnZ jeKmSf"
+        class="sc-bdfBwQ sc-gsTCUz lnQWmK jeKmSf"
       />
     </DocumentFragment>
   `);
@@ -18,7 +18,7 @@ it("renders correctly avatar", () => {
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
       <div
-        class="sc-bdfBwQ sc-gsTCUz gazSxV jeKmSf"
+        class="sc-bdfBwQ sc-gsTCUz dNWWAj jeKmSf"
         height="50"
         width="50"
       />
@@ -31,7 +31,7 @@ it("renders correctly waves animation", () => {
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
       <div
-        class="sc-bdfBwQ sc-dlfnbm jySpbJ hYUQGT"
+        class="sc-bdfBwQ sc-dlfnbm cIASSD hYUQGT"
         height="50"
         width="50"
       />
