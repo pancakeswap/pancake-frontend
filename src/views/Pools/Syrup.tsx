@@ -12,6 +12,8 @@ import useBlock from 'hooks/useBlock'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useFarms, usePriceBnbBusd, usePools } from 'state/hooks'
 import { QuoteToken, PoolCategory } from 'config/constants/types'
+import FlexLayout from 'components/layout/Flex'
+import Page from 'components/layout/Page'
 import Coming from './components/Coming'
 import PoolCard from './components/PoolCard'
 import PoolTabButtons from './components/PoolTabButtons'
@@ -80,7 +82,7 @@ const Farm: React.FC = () => {
       </Hero>
       <PoolTabButtons />
       <Divider />
-      <Pools>
+      <FlexLayout>
         <Route exact path={`${path}`}>
           <>
             {orderBy(openPools, ['sortOrder']).map((pool) => (
@@ -94,7 +96,7 @@ const Farm: React.FC = () => {
             <PoolCard key={pool.sousId} pool={pool} />
           ))}
         </Route>
-      </Pools>
+      </FlexLayout>
     </Page>
   )
 }
@@ -126,48 +128,6 @@ const Hero = styled.div`
     grid-template-columns: 1fr 1fr;
     margin: 0;
     max-width: none;
-  }
-`
-
-const Page = styled.div`
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 904px;
-  padding-bottom: 48px;
-  padding-left: 16px;
-  padding-right: 16px;
-  @media (min-width: 576px) {
-    padding-left: 24px;
-    padding-right: 24px;
-  }
-  @media (min-width: 968px) {
-    padding-left: 32px;
-    padding-right: 32px;
-  }
-`
-
-const Pools = styled.div`
-  align-items: start;
-  display: grid;
-  grid-template-columns: repeat(8, 1fr);
-  grid-gap: 16px;
-  @media (min-width: 576px) {
-    grid-template-columns: repeat(8, 1fr);
-    grid-gap: 24px;
-  }
-  @media (min-width: 852px) {
-    grid-template-columns: repeat(12, 1fr);
-    grid-gap: 24px;
-  }
-  @media (min-width: 968px) {
-    grid-template-columns: repeat(12, 1fr);
-    grid-gap: 32px;
-  }
-  & > div {
-    grid-column: 2 / 8;
-    @media (min-width: 576px) {
-      grid-column: span 4;
-    }
   }
 `
 

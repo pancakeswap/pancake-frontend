@@ -6,7 +6,7 @@ import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { provider } from 'web3-core'
 import { Image, Heading } from '@pancakeswap-libs/uikit'
 import { BLOCKS_PER_YEAR, CAKE_PER_BLOCK, CAKE_POOL_PID } from 'config'
-import Grid from 'components/layout/Grid'
+import FlexLayout from 'components/layout/Flex'
 import Page from 'components/layout/Page'
 import { useFarms, usePriceBnbBusd, usePriceCakeBusd } from 'state/hooks'
 import useRefresh from 'hooks/useRefresh'
@@ -93,12 +93,14 @@ const Farms: React.FC = () => {
       <FarmTabButtons />
       <div>
         <Divider />
-        <Route exact path={`${path}`}>
-          <Grid>{farmsList(activeFarms, false)}</Grid>
-        </Route>
-        <Route exact path={`${path}/history`}>
-          <Grid>{farmsList(inactiveFarms, true)}</Grid>
-        </Route>
+        <FlexLayout>
+          <Route exact path={`${path}`}>
+            {farmsList(activeFarms, false)}
+          </Route>
+          <Route exact path={`${path}/history`}>
+            {farmsList(inactiveFarms, true)}
+          </Route>
+        </FlexLayout>
       </div>
       <Image src="/images/cakecat.png" alt="Pancake illustration" width={949} height={384} responsive />
     </Page>
