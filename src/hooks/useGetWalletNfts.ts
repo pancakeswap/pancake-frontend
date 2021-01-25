@@ -1,6 +1,6 @@
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { useEffect, useReducer } from 'react'
-import { getPancakeRabbitContract } from 'views/Nft/utils/contracts'
+import { getPancakeRabbitContract } from 'utils/contractHelpers'
 
 const pancakeRabbitsContract = getPancakeRabbitContract()
 

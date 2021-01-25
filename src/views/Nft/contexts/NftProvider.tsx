@@ -4,9 +4,9 @@ import { useWallet } from '@binance-chain/bsc-use-wallet'
 import useBlock from 'hooks/useBlock'
 import useGetWalletNfts, { NftMap } from 'hooks/useGetWalletNfts'
 import { getRabbitMintingFarmAddress } from 'utils/addressHelpers'
-import rabbitmintingfarm from 'config/abi/rabbitmintingfarm.json'
+import { getPancakeRabbitContract } from 'utils/contractHelpers'
 import multicall from 'utils/multicall'
-import { getPancakeRabbitContract } from '../utils/contracts'
+import rabbitmintingfarm from 'config/abi/rabbitmintingfarm.json'
 
 const rabbitMintingFarmAddress = getRabbitMintingFarmAddress()
 
