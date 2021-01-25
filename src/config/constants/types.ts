@@ -25,7 +25,7 @@ export enum QuoteToken {
   'SYRUP' = 'SYRUP',
   'BUSD' = 'BUSD',
   'TWT' = 'TWT',
-  'UST' = 'UST'
+  'UST' = 'UST',
 }
 
 export enum PoolCategory {
