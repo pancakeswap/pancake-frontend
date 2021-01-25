@@ -1,15 +1,14 @@
-export type ColumnType<T extends DataType> = {
-  id: number;
+export type ColumnType<T> = {
   name: string;
   label?: string;
   hidden?: boolean;
   sort?: ((a: RowType<T>, b: RowType<T>) => number) | undefined;
-  render?: ({ value, row }: RenderFunctionArgsType<T>) => React.ReactNode;
-  headerRender?: HeaderRenderType<string>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  render?: ({ value, row }: { value: any; row: T }) => React.ReactNode;
+  headerRender?: HeaderRenderType;
 };
 
-export type ColumnStateType<T extends DataType> = {
-  id: number;
+export type ColumnStateType<T> = {
   name: string;
   label: string;
   hidden: boolean;
@@ -18,14 +17,13 @@ export type ColumnStateType<T extends DataType> = {
     on: boolean;
     asc?: boolean;
   };
-  headerRender?: HeaderRenderType<string>;
+  headerRender?: HeaderRenderType;
 };
 
-export type HeaderRenderType<T> = ({ label }: { label: T }) => React.ReactNode;
+export type HeaderRenderType = ({ label }: { label: React.ReactNode }) => React.ReactNode;
 
 // this is the type saved as state and returned
-export type HeaderType<T extends DataType> = {
-  id: number;
+export type HeaderType<T> = {
   name: string;
   label?: string;
   hidden?: boolean;
@@ -37,20 +35,22 @@ export type HeaderType<T extends DataType> = {
   render: () => React.ReactNode;
 };
 
-export type DataType = { [key: string]: string };
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type DataType = { [key: string]: any };
 
-export type ColumnByNamesType<T extends DataType> = {
+export type ColumnByNamesType<T> = {
   [key: string]: ColumnType<T>;
 };
 
 export type RenderFunctionType<T> = ({ value, row }: RenderFunctionArgsType<T>) => React.ReactNode | undefined;
 
 type RenderFunctionArgsType<T> = {
-  value: React.ReactNode;
-  row?: T;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  value: any;
+  row: T;
 };
 
-export type ColumnByNameType<T extends DataType> = Omit<Required<ColumnType<T>>, "name" | "sort">;
+export type ColumnByNameType<T> = Omit<Required<ColumnType<T>>, "name" | "sort">;
 
 export interface RowType<T extends DataType> {
   id: number;
@@ -61,7 +61,8 @@ export interface RowType<T extends DataType> {
 }
 
 export type CellType = {
-  value: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  value: any;
   render: () => React.ReactNode;
 };
 
@@ -76,7 +77,7 @@ export interface UseTableTypeParams<T extends DataType> {
   };
 }
 
-export interface UseTablePropsType<T extends DataType> {
+export interface UseTablePropsType<T> {
   columns: ColumnType<T>[];
   data: T[];
   options?: {
@@ -86,19 +87,22 @@ export interface UseTablePropsType<T extends DataType> {
   };
 }
 
-export interface UseTableOptionsType<T extends DataType> {
+export interface UseTableOptionsType<T> {
   sortable?: boolean;
   selectable?: boolean;
   pagination?: boolean;
   filter?: (row: RowType<T>[]) => RowType<T>[];
 }
 
-export interface UseTableReturnType<T extends DataType> {
+export interface UseTableReturnType<T> {
   headers: HeaderType<T>[];
   originalRows: RowType<T>[];
   rows: RowType<T>[];
   selectedRows: RowType<T>[];
   dispatch: React.Dispatch<TableAction<T>>;
+  toggleSort: (columnName: string, isAscOverride?: boolean) => void;
+  selectRow: (id: number) => void;
+  toggleAll: () => void;
   setSearchString: (searchString: string) => void;
   toggleAllState: boolean;
   pagination: PaginatorType;
