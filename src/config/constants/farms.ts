@@ -47,7 +47,8 @@ const farms: FarmConfig[] = [
     quoteTokenSymbol: QuoteToken.BUSD,
     quoteTokenAdresses: contracts.busd,
     isCommunity: false,
-  },{
+  },
+  {
     pid: 62,
     lpSymbol: 'mAMZN-UST LP',
     lpAddresses: {
