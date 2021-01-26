@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { Card, CardBody, Heading, Text } from '@pancakeswap-libs/uikit'
-import times from 'lodash/times'
 import useI18n from 'hooks/useI18n'
-import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import { getProfileContract } from 'utils/contractHelpers'
-import profileABI from 'config/abi/pancakeProfile.json'
-import multicall from 'utils/multicall'
+import { getWeb3 } from 'utils/web3'
 import SelectionCard from '../components/SelectionCard'
 import NextStepButton from '../components/NextStepButton'
 
@@ -15,40 +12,37 @@ interface Props {
   handleTeamSelection: (team: number) => void
 }
 
-// To remove
-const mockTeams = [
-  {
-    name: 'Team 1',
-    description: 'team 1 description',
-    image: 'drizzle-preview.png',
-    numberUsers: 10,
-    numberPoints: 100,
-    isJoinable: true,
-  },
-  {
-    name: 'Team 2',
-    description: 'team 2 description',
-    image: 'drizzle-preview.png',
-    numberUsers: 10,
-    numberPoints: 100,
-    isJoinable: true,
-  },
-]
+interface Team {
+  name: string
+  description: string
+  isJoinable: boolean
+}
 
 const useTeams = () => {
-  const [teams, setTeams] = useState(null)
+  const [teams, setTeams] = useState<Team[]>([])
   useEffect(() => {
     const fetchteams = async () => {
-      const contract = getProfileContract()
-      const nbTeams = await contract.methods.numberTeams().call()
-      const calls = times(nbTeams, (index) => ({
-        address: getPancakeProfileAddress(),
-        name: 'getTeamProfile',
-        params: [index],
-      }))
+      try {
+        const contract = getProfileContract()
+        const nbTeams = await contract.methods.numberTeams().call()
 
-      const res = await multicall(profileABI, calls)
-      setTeams(res)
+        const web3 = getWeb3()
+        const batch = new web3.BatchRequest()
+        for (let i = 1; i <= nbTeams; i++) {
+          batch.add(
+            contract.methods.getTeamProfile(i).call.request({}, (error, result) => {
+              if (error) {
+                console.error(error)
+              } else {
+                setTeams((prev) => [...prev, { name: result[0], description: result[1], isJoinable: result[3] }])
+              }
+            }),
+          )
+        }
+        batch.execute()
+      } catch (error) {
+        console.error(error)
+      }
     }
     fetchteams()
   }, [])
@@ -57,8 +51,7 @@ const useTeams = () => {
 
 const Team: React.FC<Props> = ({ nextStep, selectedTeam, handleTeamSelection }) => {
   const TranslateString = useI18n()
-  // const teams = useTeams()
-  const teams = mockTeams
+  const teams = useTeams()
 
   return (
     <>
@@ -89,8 +82,9 @@ const Team: React.FC<Props> = ({ nextStep, selectedTeam, handleTeamSelection }) 
                 name="teams-selection"
                 value={index}
                 isChecked={selectedTeam === index}
-                image={team.image}
+                image="/onsen-preview.png"
                 onChange={(val) => handleTeamSelection(parseInt(val, 10))}
+                disabled={!team.isJoinable}
               >
                 <Text bold>{team.name}</Text>
               </SelectionCard>
