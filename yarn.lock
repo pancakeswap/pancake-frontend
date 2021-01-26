@@ -2847,7 +2847,7 @@
     "@web3-react/types" "^6.0.7"
     tiny-warning "^1.0.3"
 
-"@web3-react/portis-connector@^6.1.1":
+"@web3-react/portis-connector@^6.1.1", "@web3-react/portis-connector@^6.1.6":
   version "6.1.6"
   resolved "https://registry.yarnpkg.com/@web3-react/portis-connector/-/portis-connector-6.1.6.tgz#e98847864c05a35e06e593e3aea0358749aae162"
   integrity sha512-c9qyPoGVG+wLKcIJGzVTDP6oZ/Wn+EbE2cVjeCDTR2opzOO6kJoG7SOZMLXIX1F9v/N6bB8NI6XWlDjROK8zMw==
@@ -2881,7 +2881,7 @@
   resolved "https://registry.yarnpkg.com/@web3-react/types/-/types-6.0.7.tgz#34a6204224467eedc6123abaf55fbb6baeb2809f"
   integrity sha512-ofGmfDhxmNT1/P/MgVa8IKSkCStFiyvXe+U5tyZurKdrtTDFU+wJ/LxClPDtFerWpczNFPUSrKcuhfPX1sI6+A==
 
-"@web3-react/walletconnect-connector@^6.1.4":
+"@web3-react/walletconnect-connector@^6.1.4", "@web3-react/walletconnect-connector@^6.1.6":
   version "6.1.6"
   resolved "https://registry.yarnpkg.com/@web3-react/walletconnect-connector/-/walletconnect-connector-6.1.6.tgz#8c216b2e38db94c60afac8453be31d31019205b7"
   integrity sha512-subMnG0/SmP7bg5ZGxX6z32GjlSFspc7AO+A2pUrifP5My/837sp900uhBxLl5ex2SMe/rDgor+7jUstAkmH8g==
@@ -2891,7 +2891,7 @@
     "@web3-react/types" "^6.0.7"
     tiny-invariant "^1.0.6"
 
-"@web3-react/walletlink-connector@^6.1.1":
+"@web3-react/walletlink-connector@^6.1.1", "@web3-react/walletlink-connector@^6.1.6":
   version "6.1.6"
   resolved "https://registry.yarnpkg.com/@web3-react/walletlink-connector/-/walletlink-connector-6.1.6.tgz#1db2672ac1d19917c6f8755fcc1050a9d8292f52"
   integrity sha512-uWpz9ARqAKYw0ss2CYoQDrlvj5Koo4RoeTLns+ZoZPeMqCIcgDZvlkpWCkPNSs9eSP2PtbqWEzhm0vag7hCCBw==
