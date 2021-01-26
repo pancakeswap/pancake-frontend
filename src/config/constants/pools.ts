@@ -19,6 +19,23 @@ const pools: PoolConfig[] = [
     tokenDecimals: 18,
   },
   {
+    sousId: 40,
+    tokenName: 'EGLD',
+    stakingTokenName: QuoteToken.CAKE,
+    stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
+    contractAddress: {
+      97: '',
+      56: '0x2dcf4cDFf4Dd954683Fe0a6123077f8a025b66cF',
+    },
+    poolCategory: PoolCategory.CORE,
+    projectLink: 'https://elrond.com/',
+    harvest: true,
+    tokenPerBlock: '0.001215',
+    sortOrder: 999,
+    isFinished: false,
+    tokenDecimals: 18,
+  },
+  {
     sousId: 39,
     tokenName: 'UST',
     stakingTokenName: QuoteToken.CAKE,
