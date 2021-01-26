@@ -4,7 +4,7 @@ export const calculateCakePerThousand = (numberOfDays, apy, cakePrice) => {
   const daysAsDecimalOfYear = numberOfDays / 365
   const principal = 1000 * cakePrice
 
-  const finalAmount = principal * Math.pow(1 + apyAsDecimal / timesCompounded, timesCompounded * daysAsDecimalOfYear) // eslint-disable-line no-restricted-properties
+  const finalAmount = principal * (1 + apyAsDecimal / timesCompounded) ** (timesCompounded * daysAsDecimalOfYear)
   const interestEarned = finalAmount - principal
   return interestEarned
 }
