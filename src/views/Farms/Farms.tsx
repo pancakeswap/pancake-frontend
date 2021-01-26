@@ -6,7 +6,7 @@ import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { provider } from 'web3-core'
 import { Image, Heading } from '@pancakeswap-libs/uikit'
 import { BLOCKS_PER_YEAR, CAKE_PER_BLOCK, CAKE_POOL_PID } from 'config'
-import Grid from 'components/layout/Grid'
+import FlexLayout from 'components/layout/Flex'
 import Page from 'components/layout/Page'
 import { useFarms, usePriceBnbBusd, usePriceCakeBusd } from 'state/hooks'
 import useRefresh from 'hooks/useRefresh'
@@ -36,6 +36,9 @@ const Farms: React.FC = () => {
   const activeFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
   const inactiveFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X')
 
+  // /!\ This function will be removed soon
+  // This function compute the APY for each farm and will be replaced when we have a reliable API
+  // to retrieve assets prices against USD
   const farmsList = useCallback(
     (farmsToDisplay, removed: boolean) => {
       const cakePriceVsBNB = new BigNumber(farmsLP.find((farm) => farm.pid === CAKE_POOL_PID)?.tokenPriceVsQuote || 0)
@@ -48,7 +51,7 @@ const Farms: React.FC = () => {
 
         let apy = cakePriceVsBNB.times(cakeRewardPerYear).div(farm.lpTotalInQuoteToken)
 
-        if (farm.quoteTokenSymbol === QuoteToken.BUSD) {
+        if (farm.quoteTokenSymbol === QuoteToken.BUSD || farm.quoteTokenSymbol === QuoteToken.UST) {
           apy = cakePriceVsBNB.times(cakeRewardPerYear).div(farm.lpTotalInQuoteToken).times(bnbPrice)
         } else if (farm.quoteTokenSymbol === QuoteToken.CAKE) {
           apy = cakeRewardPerYear.div(farm.lpTotalInQuoteToken)
@@ -90,12 +93,14 @@ const Farms: React.FC = () => {
       <FarmTabButtons />
       <div>
         <Divider />
-        <Route exact path={`${path}`}>
-          <Grid>{farmsList(activeFarms, false)}</Grid>
-        </Route>
-        <Route exact path={`${path}/history`}>
-          <Grid>{farmsList(inactiveFarms, true)}</Grid>
-        </Route>
+        <FlexLayout>
+          <Route exact path={`${path}`}>
+            {farmsList(activeFarms, false)}
+          </Route>
+          <Route exact path={`${path}/history`}>
+            {farmsList(inactiveFarms, true)}
+          </Route>
+        </FlexLayout>
       </div>
       <Image src="/images/cakecat.png" alt="Pancake illustration" width={949} height={384} responsive />
     </Page>

@@ -19,6 +19,23 @@ const pools: PoolConfig[] = [
     tokenDecimals: 18,
   },
   {
+    sousId: 39,
+    tokenName: 'UST',
+    stakingTokenName: QuoteToken.CAKE,
+    stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
+    contractAddress: {
+      97: '',
+      56: '0x6EFa207ACdE6e1caB77c1322CbdE9628929ba88F',
+    },
+    poolCategory: PoolCategory.CORE,
+    projectLink: 'https://mirror.finance/',
+    harvest: true,
+    tokenPerBlock: '0.1157',
+    sortOrder: 999,
+    isFinished: false,
+    tokenDecimals: 18,
+  },
+  {
     sousId: 38,
     tokenName: 'wSOTE',
     stakingTokenName: QuoteToken.CAKE,
