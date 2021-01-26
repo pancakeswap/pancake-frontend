@@ -7,12 +7,6 @@ import SelectionCard from '../components/SelectionCard'
 import NextStepButton from '../components/NextStepButton'
 import { ProfileCreationContext } from './contexts/ProfileCreationProvider'
 
-interface Props {
-  nextStep: () => void
-  selectedTeam: number
-  handleTeamSelection: (team: number) => void
-}
-
 interface Team {
   name: string
   description: string
@@ -51,11 +45,11 @@ const useTeams = () => {
 }
 
 const Team: React.FC = () => {
-  const { selectedTeam, setTeam, nextStep } = useContext(ProfileCreationContext)
+  const { teamId, setTeamId, nextStep } = useContext(ProfileCreationContext)
   const TranslateString = useI18n()
   const teams = useTeams()
 
-  const handleTeamSelection = (val) => setTeam(val)
+  const handleTeamSelection = (value: string) => setTeamId(parseInt(value, 10))
 
   return (
     <>
@@ -85,9 +79,9 @@ const Team: React.FC = () => {
                 key={team.name}
                 name="teams-selection"
                 value={index}
-                isChecked={selectedTeam === index}
+                isChecked={teamId === index}
                 image="/onsen-preview.png"
-                onChange={(val) => handleTeamSelection(parseInt(val, 10))}
+                onChange={handleTeamSelection}
                 disabled={!team.isJoinable}
               >
                 <Text bold>{team.name}</Text>

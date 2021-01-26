@@ -10,7 +10,8 @@ const starterBunnyIds = [5, 6, 7, 8, 9]
 const nfts = nftList.filter((nft) => starterBunnyIds.includes(nft.bunnyId))
 
 const Mint: React.FC = () => {
-  const [selectedNft, setSelectedNft] = useState(null)
+  const [hasMinted, setHasMinted] = useState(false)
+  const [bunnyId, setBunnyId] = useState(null)
   const { nextStep } = useContext(ProfileCreationContext)
   const TranslateString = useI18n()
 
@@ -39,25 +40,29 @@ const Mint: React.FC = () => {
             {TranslateString(999, 'Cost: 5 CAKE')}
           </Text>
           {nfts.map((nft) => {
-            const handleChange = (bunnyId: string) => setSelectedNft(bunnyId)
+            const handleChange = (value: string) => setBunnyId(parseInt(value, 10))
 
             return (
               <NftSelectionCard
                 key={nft.bunnyId}
                 nft={nft}
-                isChecked={selectedNft === nft.bunnyId.toString()}
+                isChecked={bunnyId === nft.bunnyId}
                 onChange={handleChange}
               />
             )
           })}
           <Flex py="8px">
-            <Button disabled={selectedNft === null}>{TranslateString(999, 'Approve')}</Button>
+            <Button disabled={bunnyId === null} onClick={() => setHasMinted(true)}>
+              {TranslateString(999, 'Approve')}
+            </Button>
             <ChevronRightIcon width="24px" color="textDisabled" />
             <Button disabled>{TranslateString(999, 'Confirmed')}</Button>
           </Flex>
         </CardBody>
       </Card>
-      <NextStepButton onClick={nextStep}>{TranslateString(999, 'Next Step')}</NextStepButton>
+      <NextStepButton onClick={nextStep} disabled={!hasMinted}>
+        {TranslateString(999, 'Next Step')}
+      </NextStepButton>
     </>
   )
 }
