@@ -4,11 +4,12 @@ import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 import { WalletLinkConnector } from '@web3-react/walletlink-connector'
 import { PortisConnector } from '@web3-react/portis-connector'
 
+import getRpcUrl from 'utils/getRpcUrl'
 import { FortmaticConnector } from './Fortmatic'
 import { NetworkConnector } from './NetworkConnector'
 import { BscConnector } from './bsc/bscConnector'
 
-const NETWORK_URL = process.env.REACT_APP_NETWORK_URL
+const NETWORK_URL = getRpcUrl()
 const FORMATIC_KEY = process.env.REACT_APP_FORTMATIC_KEY
 const PORTIS_ID = process.env.REACT_APP_PORTIS_ID
 
