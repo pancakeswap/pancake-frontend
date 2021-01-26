@@ -120,22 +120,6 @@ export const socials = [
         href: "https://t.me/PancakeSwapVN",
       },
       {
-        label: "Italiano",
-        href: "https://t.me/pancakeswap_ita",
-      },
-      {
-        label: "русский",
-        href: "https://t.me/pancakeswap_ru",
-      },
-      {
-        label: "Türkiye",
-        href: "https://t.me/pancakeswapturkiye",
-      },
-      {
-        label: "Português",
-        href: "https://t.me/PancakeSwapPortuguese",
-      },
-      {
         label: "Announcements",
         href: "https://t.me/PancakeSwapAnn",
       },
