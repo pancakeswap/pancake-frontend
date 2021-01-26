@@ -42,7 +42,7 @@ const config: MenuEntry[] = [
   },
   {
     label: 'Teams & Profile',
-    icon: 'NftIcon',
+    icon: 'GroupsIcon',
     href: '/teams',
   },
   {
