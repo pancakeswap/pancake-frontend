@@ -1,16 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Card, CardBody, Heading, Text } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import { getProfileContract } from 'utils/contractHelpers'
 import { getWeb3 } from 'utils/web3'
 import SelectionCard from '../components/SelectionCard'
 import NextStepButton from '../components/NextStepButton'
-
-interface Props {
-  nextStep: () => void
-  selectedTeam: number
-  handleTeamSelection: (team: number) => void
-}
+import { ProfileCreationContext } from './contexts/ProfileCreationProvider'
 
 interface Team {
   name: string
@@ -49,9 +44,12 @@ const useTeams = () => {
   return teams
 }
 
-const Team: React.FC<Props> = ({ nextStep, selectedTeam, handleTeamSelection }) => {
+const Team: React.FC = () => {
+  const { teamId, setTeamId, nextStep } = useContext(ProfileCreationContext)
   const TranslateString = useI18n()
   const teams = useTeams()
+
+  const handleTeamSelection = (value: string) => setTeamId(parseInt(value, 10))
 
   return (
     <>
@@ -81,9 +79,9 @@ const Team: React.FC<Props> = ({ nextStep, selectedTeam, handleTeamSelection }) 
                 key={team.name}
                 name="teams-selection"
                 value={index}
-                isChecked={selectedTeam === index}
+                isChecked={teamId === index}
                 image="/onsen-preview.png"
-                onChange={(val) => handleTeamSelection(parseInt(val, 10))}
+                onChange={handleTeamSelection}
                 disabled={!team.isJoinable}
               >
                 <Text bold>{team.name}</Text>
