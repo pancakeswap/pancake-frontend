@@ -1,14 +1,19 @@
-import React, { useCallback } from 'react'
-import styled from 'styled-components'
-import { Route, useRouteMatch, NavLink } from 'react-router-dom'
+import React, { useEffect, useCallback } from 'react'
+import { Route, useRouteMatch } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import BigNumber from 'bignumber.js'
+import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { provider } from 'web3-core'
+import { Image, Heading } from '@pancakeswap-libs/uikit'
 import { BLOCKS_PER_YEAR, CAKE_PER_BLOCK, CAKE_POOL_PID } from 'config'
-import Grid from 'components/layout/Grid'
-import { useFarms, usePriceBnbBusd } from 'state/hooks'
+import FlexLayout from 'components/layout/Flex'
+import Page from 'components/layout/Page'
+import { useFarms, usePriceBnbBusd, usePriceCakeBusd } from 'state/hooks'
+import useRefresh from 'hooks/useRefresh'
+import { fetchFarmUserDataAsync } from 'state/actions'
 import { QuoteToken } from 'config/constants/types'
 import useI18n from 'hooks/useI18n'
-import Page from 'components/Page'
-import FarmCard, { FarmWithStakedValue } from './components/FarmCard'
+import FarmCard, { FarmWithStakedValue } from './components/FarmCard/FarmCard'
 import FarmTabButtons from './components/FarmTabButtons'
 import Divider from './components/Divider'
 
@@ -16,11 +21,24 @@ const Farms: React.FC = () => {
   const { path } = useRouteMatch()
   const TranslateString = useI18n()
   const farmsLP = useFarms()
+  const cakePrice = usePriceCakeBusd()
   const bnbPrice = usePriceBnbBusd()
+  const { account, ethereum }: { account: string; ethereum: provider } = useWallet()
+
+  const dispatch = useDispatch()
+  const { fastRefresh } = useRefresh()
+  useEffect(() => {
+    if (account) {
+      dispatch(fetchFarmUserDataAsync(account))
+    }
+  }, [account, dispatch, fastRefresh])
 
   const activeFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
   const inactiveFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X')
 
+  // /!\ This function will be removed soon
+  // This function compute the APY for each farm and will be replaced when we have a reliable API
+  // to retrieve assets prices against USD
   const farmsList = useCallback(
     (farmsToDisplay, removed: boolean) => {
       const cakePriceVsBNB = new BigNumber(farmsLP.find((farm) => farm.pid === CAKE_POOL_PID)?.tokenPriceVsQuote || 0)
@@ -33,7 +51,7 @@ const Farms: React.FC = () => {
 
         let apy = cakePriceVsBNB.times(cakeRewardPerYear).div(farm.lpTotalInQuoteToken)
 
-        if (farm.quoteTokenSymbol === QuoteToken.BUSD) {
+        if (farm.quoteTokenSymbol === QuoteToken.BUSD || farm.quoteTokenSymbol === QuoteToken.UST) {
           apy = cakePriceVsBNB.times(cakeRewardPerYear).div(farm.lpTotalInQuoteToken).times(bnbPrice)
         } else if (farm.quoteTokenSymbol === QuoteToken.CAKE) {
           apy = cakeRewardPerYear.div(farm.lpTotalInQuoteToken)
@@ -52,59 +70,41 @@ const Farms: React.FC = () => {
 
         return { ...farm, apy }
       })
-      return farmsToDisplayWithAPY.map((farm) => <FarmCard key={farm.pid} farm={farm} removed={removed} />)
+      return farmsToDisplayWithAPY.map((farm) => (
+        <FarmCard
+          key={farm.pid}
+          farm={farm}
+          removed={removed}
+          bnbPrice={bnbPrice}
+          cakePrice={cakePrice}
+          ethereum={ethereum}
+          account={account}
+        />
+      ))
     },
-    [bnbPrice, farmsLP],
+    [bnbPrice, farmsLP, account, cakePrice, ethereum],
   )
 
   return (
     <Page>
-      <Title>{TranslateString(999, 'Stake LP tokens to earn CAKE')}</Title>
-      <StyledLink exact activeClassName="active" to="/staking">
-        Staking
-      </StyledLink>
+      <Heading as="h1" size="lg" color="secondary" mb="50px" style={{ textAlign: 'center' }}>
+        {TranslateString(999, 'Stake LP tokens to earn CAKE')}
+      </Heading>
       <FarmTabButtons />
-      <Page>
+      <div>
         <Divider />
-        <Route exact path={`${path}`}>
-          <Grid>{farmsList(activeFarms, false)}</Grid>
-        </Route>
-        <Route exact path={`${path}/history`}>
-          <Grid>{farmsList(inactiveFarms, true)}</Grid>
-        </Route>
-      </Page>
-      <Image src="/images/cakecat.png" />
+        <FlexLayout>
+          <Route exact path={`${path}`}>
+            {farmsList(activeFarms, false)}
+          </Route>
+          <Route exact path={`${path}/history`}>
+            {farmsList(inactiveFarms, true)}
+          </Route>
+        </FlexLayout>
+      </div>
+      <Image src="/images/cakecat.png" alt="Pancake illustration" width={949} height={384} responsive />
     </Page>
   )
 }
-
-const StyledLink = styled(NavLink)`
-  display: none;
-  @media (max-width: 400px) {
-    display: block;
-    background: #50d7dd;
-    border-radius: 5px;
-    line-height: 40px;
-    font-weight: 900;
-    padding: 0 20px;
-    margin-bottom: 30px;
-    color: #fff;
-  }
-`
-
-const Image = styled.img`
-  @media (max-width: 500px) {
-    width: 100vw;
-  }
-`
-
-const Title = styled.div`
-  color: ${(props) => props.theme.colors.secondary};
-  font-size: 29px;
-  width: 50vw;
-  text-align: center;
-  font-weight: 900;
-  margin: 50px;
-`
 
 export default Farms

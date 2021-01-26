@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Text, Heading, Link } from '@pancakeswap-libs/uikit'
+import { Text, Heading, Link, Image } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 
 const LayoutWrapper = styled.div`
@@ -14,7 +14,7 @@ const StyledHeading = styled(Heading)`
   margin: 16px 0;
 `
 
-const StyledImage = styled.img`
+const StyledImage = styled(Image)`
   align-self: center;
 `
 
@@ -28,7 +28,7 @@ const HowItWorks = () => {
 
   return (
     <LayoutWrapper>
-      <StyledImage src="/images/pancake-lottery-bunny.png" alt="lottery bunny" />
+      <StyledImage src="/images/pancake-lottery-bunny.png" alt="lottery bunny" width={163} height={140} />
       <StyledHeading size="lg" as="h3" color="secondary">
         {TranslateString(999, 'How it works')}
       </StyledHeading>

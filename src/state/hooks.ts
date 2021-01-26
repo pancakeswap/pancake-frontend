@@ -2,12 +2,7 @@ import BigNumber from 'bignumber.js'
 import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import useRefresh from 'hooks/useRefresh'
-import {
-  fetchFarmsPublicDataAsync,
-  fetchFarmUserDataAsync,
-  fetchPoolsPublicDataAsync,
-  fetchPoolsUserDataAsync,
-} from './actions'
+import { fetchFarmsPublicDataAsync, fetchPoolsPublicDataAsync, fetchPoolsUserDataAsync } from './actions'
 import { State, Farm, Pool } from './types'
 
 const ZERO = new BigNumber(0)
@@ -38,16 +33,8 @@ export const useFarmFromSymbol = (lpSymbol: string): Farm => {
   return farm
 }
 
-export const useFarmUser = (pid, account) => {
-  const dispatch = useDispatch()
-  const { fastRefresh } = useRefresh()
+export const useFarmUser = (pid) => {
   const farm = useFarmFromPid(pid)
-
-  useEffect(() => {
-    if (account) {
-      dispatch(fetchFarmUserDataAsync(pid, account))
-    }
-  }, [account, dispatch, pid, fastRefresh])
 
   return {
     allowance: farm.userData ? new BigNumber(farm.userData.allowance) : new BigNumber(0),

@@ -1,9 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Text, Heading, BaseLayout, Button, LinkExternal, Flex } from '@pancakeswap-libs/uikit'
+import { Text, Heading, BaseLayout, Button, LinkExternal, Flex, Image } from '@pancakeswap-libs/uikit'
 import { ifosConfig } from 'config/constants'
 import useI18n from 'hooks/useI18n'
-import Container from 'components/layout/Container'
 import IfoCard from './components/IfoCard'
 import Title from './components/Title'
 import IfoCards from './components/IfoCards'
@@ -40,7 +39,7 @@ const Ifo = () => {
   const TranslateString = useI18n()
 
   return (
-    <Container>
+    <div>
       <IfoCards isSingle>
         <IfoCard ifo={activeIfo} />
       </IfoCards>
@@ -80,7 +79,7 @@ const Ifo = () => {
           </Text>
         </div>
         <div>
-          <img src="/images/ifo-bunny.svg" alt="ifo bunny" />
+          <Image src="/images/ifo-bunny.svg" alt="ifo bunny" width={436} height={406} responsive />
           <div>
             <Title as="h2">{TranslateString(512, 'Want to launch your own IFO?')}</Title>
             <Text mb={3}>
@@ -99,7 +98,7 @@ const Ifo = () => {
           </div>
         </div>
       </LaunchIfoCallout>
-    </Container>
+    </div>
   )
 }
 

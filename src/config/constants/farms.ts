@@ -31,7 +31,118 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
-    multiplier: '40X',
+  },
+  {
+    pid: 63,
+    lpSymbol: 'UST-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0xD1F12370b2ba1C79838337648F820a87eDF5e1e6',
+    },
+    tokenSymbol: 'UST',
+    tokenAddresses: {
+      97: '',
+      56: '0xe9e7cea3dedca5984780bafc599bd69add087d56',
+    },
+    quoteTokenSymbol: QuoteToken.BUSD,
+    quoteTokenAdresses: contracts.busd,
+    isCommunity: false,
+  },
+  {
+    pid: 62,
+    lpSymbol: 'mAMZN-UST LP',
+    lpAddresses: {
+      97: '',
+      56: '0xc92Dc34665c8a21f98E1E38474580b61b4f3e1b9',
+    },
+    tokenSymbol: 'mAMZN',
+    tokenAddresses: {
+      97: '',
+      56: '0x3947B992DC0147D2D89dF0392213781b04B25075',
+    },
+    quoteTokenSymbol: QuoteToken.UST,
+    quoteTokenAdresses: contracts.ust,
+    isCommunity: false,
+  },
+  {
+    pid: 61,
+    lpSymbol: 'mGOOGL-UST LP',
+    lpAddresses: {
+      97: '',
+      56: '0x852A68181f789AE6d1Da3dF101740a59A071004f',
+    },
+    tokenSymbol: 'mGOOGL',
+    tokenAddresses: {
+      97: '',
+      56: '0x62D71B23bF15218C7d2D7E48DBbD9e9c650B173f',
+    },
+    quoteTokenSymbol: QuoteToken.UST,
+    quoteTokenAdresses: contracts.ust,
+    isCommunity: false,
+  },
+  {
+    pid: 60,
+    lpSymbol: 'mNFLX-UST LP',
+    lpAddresses: {
+      97: '',
+      56: '0xF609ade3846981825776068a8eD7746470029D1f',
+    },
+    tokenSymbol: 'mNFLX',
+    tokenAddresses: {
+      97: '',
+      56: '0xa04F060077D90Fe2647B61e4dA4aD1F97d6649dc',
+    },
+    quoteTokenSymbol: QuoteToken.UST,
+    quoteTokenAdresses: contracts.ust,
+    isCommunity: false,
+  },
+  {
+    pid: 59,
+    lpSymbol: 'mTSLA-UST LP',
+    lpAddresses: {
+      97: '',
+      56: '0xD5664D2d15cdffD597515f1c0D945c6c1D3Bf85B',
+    },
+    tokenSymbol: 'mTSLA',
+    tokenAddresses: {
+      97: '',
+      56: '0xF215A127A196e3988C09d052e16BcFD365Cd7AA3',
+    },
+    quoteTokenSymbol: QuoteToken.UST,
+    quoteTokenAdresses: contracts.ust,
+    isCommunity: false,
+  },
+  {
+    pid: 58,
+    lpSymbol: 'wSOTE-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0xffb9e2d5ce4378f1a89b29bf53f80804cc078102',
+    },
+    tokenSymbol: 'wSOTE',
+    tokenAddresses: {
+      97: '',
+      56: '0x541e619858737031a1244a5d0cd47e5ef480342c',
+    },
+    quoteTokenSymbol: QuoteToken.BNB,
+    quoteTokenAdresses: contracts.wbnb,
+    isCommunity: false,
+  },
+  {
+    pid: 57,
+    lpSymbol: 'FRONT-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x36b7d2e5c7877392fb17f9219efad56f3d794700',
+    },
+    tokenSymbol: 'FRONT',
+    tokenAddresses: {
+      97: '',
+      56: '0x928e55daB735aa8260AF3cEDadA18B5f70C72f1b',
+    },
+    quoteTokenSymbol: QuoteToken.BNB,
+    quoteTokenAdresses: contracts.wbnb,
+    isCommunity: false,
   },
   {
     pid: 56,
@@ -47,7 +158,6 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
-    multiplier: '2X',
     isCommunity: false,
   },
   {
@@ -64,7 +174,6 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
-    multiplier: '2X',
     isCommunity: false,
   },
   {
@@ -81,7 +190,6 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
-    multiplier: '2X',
     isCommunity: false,
   },
   {
@@ -98,7 +206,6 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BUSD,
     quoteTokenAdresses: contracts.busd,
-    multiplier: '0.5X',
     isCommunity: false,
   },
   {
@@ -115,7 +222,6 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BUSD,
     quoteTokenAdresses: contracts.busd,
-    multiplier: '0.5X',
     isCommunity: false,
   },
   {
@@ -132,7 +238,6 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
-    multiplier: '1X',
     isCommunity: false,
   },
   {
@@ -149,7 +254,6 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
-    multiplier: '1X',
     isCommunity: false,
   },
   {
@@ -166,7 +270,6 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
-    multiplier: '1X',
     isCommunity: false,
   },
   {
@@ -183,7 +286,6 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
-    multiplier: '0.5X',
     isCommunity: false,
   },
   {
@@ -200,7 +302,6 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
-    multiplier: '0.5X',
     isCommunity: false,
   },
   {
@@ -217,7 +318,6 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
-    multiplier: '0.5X',
     isCommunity: false,
   },
   {
@@ -234,7 +334,6 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
-    multiplier: '1X',
     isCommunity: false,
   },
   {
@@ -251,7 +350,6 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
-    multiplier: '1X',
     isCommunity: false,
   },
   {
@@ -268,7 +366,6 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
-    multiplier: '0.5X',
     isCommunity: false,
   },
   {
@@ -285,7 +382,6 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
-    multiplier: '0.5X',
     isCommunity: false,
   },
   {
@@ -319,7 +415,6 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BUSD,
     quoteTokenAdresses: contracts.busd,
-    multiplier: '1X',
     isCommunity: false,
   },
   {
@@ -336,7 +431,6 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
-    multiplier: '1X',
     isCommunity: false,
   },
   {
@@ -353,7 +447,6 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
-    multiplier: '1X',
     isCommunity: false,
   },
   {
@@ -370,7 +463,6 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
-    multiplier: '8X',
   },
   {
     pid: 3,
@@ -386,7 +478,6 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
-    multiplier: '1X',
   },
   {
     pid: 4,
@@ -402,7 +493,6 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
-    multiplier: '2X',
   },
   {
     pid: 5,
@@ -418,7 +508,6 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
-    multiplier: '2X',
   },
   {
     pid: 6,
@@ -434,7 +523,6 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
-    multiplier: '1X',
   },
   {
     pid: 7,
@@ -450,7 +538,6 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
-    multiplier: '2X',
   },
   {
     pid: 11,
@@ -466,7 +553,6 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BUSD,
     quoteTokenAdresses: contracts.busd,
-    multiplier: '1X',
   },
   {
     pid: 12,
@@ -482,7 +568,6 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
-    multiplier: '2X',
   },
   {
     pid: 13,
@@ -498,7 +583,6 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
-    multiplier: '1X',
   },
   {
     pid: 14,
@@ -514,7 +598,6 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
-    multiplier: '2X',
   },
   {
     pid: 15,
@@ -530,7 +613,6 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
-    multiplier: '2X',
   },
   {
     pid: 16,
@@ -546,7 +628,6 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
-    multiplier: '1X',
   },
   {
     pid: 17,
@@ -562,7 +643,6 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
-    multiplier: '2X',
   },
   {
     pid: 18,
@@ -578,7 +658,6 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
-    multiplier: '1X',
   },
   {
     pid: 19,
@@ -594,7 +673,6 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
-    multiplier: '1X',
   },
   {
     pid: 20,
@@ -610,7 +688,6 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
-    multiplier: '0.5X',
   },
   {
     pid: 21,
@@ -626,7 +703,6 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
-    multiplier: '0X',
   },
   {
     pid: 22,
@@ -642,7 +718,6 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
-    multiplier: '0.5X',
   },
   {
     pid: 23,
@@ -658,7 +733,6 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
-    multiplier: '0.5X',
   },
   {
     pid: 24,
@@ -674,7 +748,6 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
-    multiplier: '1X',
   },
   {
     pid: 25,
@@ -690,7 +763,6 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
-    multiplier: '2X',
   },
   {
     pid: 26,
@@ -706,7 +778,6 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
-    multiplier: '1X',
   },
   {
     pid: 27,
@@ -722,7 +793,6 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
-    multiplier: '1X',
   },
   {
     pid: 29,
@@ -738,7 +808,6 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
-    multiplier: '0X',
   },
   {
     pid: 30,
@@ -754,7 +823,6 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
-    multiplier: '1X',
   },
   {
     pid: 32,
@@ -770,7 +838,6 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
-    multiplier: '1X',
   },
   {
     pid: 34,
@@ -786,7 +853,6 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.CAKE,
     quoteTokenAdresses: contracts.cake,
-    multiplier: '0.1X',
     isCommunity: true,
   },
   {
@@ -803,7 +869,6 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.CAKE,
     quoteTokenAdresses: contracts.cake,
-    multiplier: '0.1X',
     isCommunity: true,
   },
   {
@@ -820,7 +885,6 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.CAKE,
     quoteTokenAdresses: contracts.cake,
-    multiplier: '0.1X',
     isCommunity: true,
   },
   {
@@ -837,7 +901,6 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.CAKE,
     quoteTokenAdresses: contracts.cake,
-    multiplier: '0.2X',
     isCommunity: true,
   },
   {
@@ -854,7 +917,6 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
-    multiplier: '0X',
   },
   {
     pid: 9,
@@ -870,7 +932,6 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
-    multiplier: '0X',
   },
   {
     pid: 10,
@@ -886,7 +947,6 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
-    multiplier: '0X',
   },
 ]
 

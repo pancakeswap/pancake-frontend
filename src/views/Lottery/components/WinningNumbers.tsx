@@ -1,11 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { Image, Card, CardBody } from '@pancakeswap-libs/uikit'
 import { useWinningNumbers, useMatchingRewardLength } from 'hooks/useTickets'
 import useI18n from 'hooks/useI18n'
 import useGetLotteryHasDrawn from 'hooks/useGetLotteryHasDrawn'
-import Card from 'components/Card'
-import CardContent from 'components/CardContent'
 
 const WinningNumbers: React.FC = () => {
   const { account } = useWallet()
@@ -19,7 +18,7 @@ const WinningNumbers: React.FC = () => {
   return (
     <CardWrapper>
       <Card>
-        <CardContent>
+        <CardBody>
           <StyledCardContentInner>
             <StyledCardHeader>
               <Title>
@@ -40,44 +39,44 @@ const WinningNumbers: React.FC = () => {
             <RabbitRow>
               <RabbitBox>
                 <CardImageFirst>
-                  <img src="/images/sign bunny 1@2x.png" alt="" width={100} />
+                  <Image src="/images/sign bunny 1@2x.png" alt="Number 1" width={200} height={150} responsive />
                 </CardImageFirst>
               </RabbitBox>
               <RabbitBox>
                 <CardImage style={{ marginLeft: '-1.2em' }}>
-                  <img src="/images/sign bunny 2@2x.png" alt="" width={100} />
+                  <Image src="/images/sign bunny 2@2x.png" alt="Number 2" width={200} height={150} responsive />
                 </CardImage>
               </RabbitBox>
               <RabbitBox>
                 <CardImage style={{ marginLeft: '-1.2em' }}>
-                  <img src="/images/sign bunny 3@2x.png" alt="" width={100} />
+                  <Image src="/images/sign bunny 3@2x.png" alt="Number 3" width={200} height={150} responsive />
                 </CardImage>
               </RabbitBox>
               <RabbitBox>
                 <CardImage style={{ marginLeft: '-1.2em' }}>
-                  <img src="/images/sign bunny 4@2x.png" alt="" width={100} />
+                  <Image src="/images/sign bunny 4@2x.png" alt="Number 4" width={200} height={150} responsive />
                 </CardImage>
               </RabbitBox>
             </RabbitRow>
             <RabbitRowSmall>
               <RabbitBoxSmall>
                 <CardImageFirst>
-                  <img src="/images/sign bunny 1@2x.png" alt="" width={60} />
+                  <Image src="/images/sign bunny 1@2x.png" alt="Number 1" width={200} height={150} responsive />
                 </CardImageFirst>
               </RabbitBoxSmall>
               <RabbitBoxSmall>
                 <CardImage style={{ marginLeft: '-1.2em' }}>
-                  <img src="/images/sign bunny 2@2x.png" alt="" width={60} />
+                  <Image src="/images/sign bunny 2@2x.png" alt="Number 2" width={200} height={150} responsive />
                 </CardImage>
               </RabbitBoxSmall>
               <RabbitBoxSmall>
                 <CardImage style={{ marginLeft: '-1.2em' }}>
-                  <img src="/images/sign bunny 3@2x.png" alt="" width={60} />
+                  <Image src="/images/sign bunny 3@2x.png" alt="Number 3" width={200} height={150} responsive />
                 </CardImage>
               </RabbitBoxSmall>
               <RabbitBoxSmall>
                 <CardImage style={{ marginLeft: '-1.2em' }}>
-                  <img src="/images/sign bunny 4@2x.png" alt="" width={60} />
+                  <Image src="/images/sign bunny 4@2x.png" alt="Number 4" width={200} height={150} responsive />
                 </CardImage>
               </RabbitBoxSmall>
             </RabbitRowSmall>
@@ -105,7 +104,7 @@ const WinningNumbers: React.FC = () => {
               {TranslateString(448, 'Export recent winning numbers')}
             </Link>
           </StyledCardContentInner>
-        </CardContent>
+        </CardBody>
       </Card>
     </CardWrapper>
   )
