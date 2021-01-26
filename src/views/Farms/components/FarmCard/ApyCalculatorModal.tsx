@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { Modal, Text, LinkExternal, Flex } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
-import { calculateCakePerThousand, calculateRoi } from 'utils/compoundApyHelpers'
+import { calculateCakePerThousand, apyModalRoi } from 'utils/compoundApyHelpers'
 
 export interface TokenAddressesObject {
   56?: string
@@ -78,7 +78,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
           <Text>1d</Text>
         </GridItem>
         <GridItem>
-          <Text>{calculateRoi(cakePerThousand1D, costOfOneThousandCake)}%</Text>
+          <Text>{apyModalRoi(cakePerThousand1D, costOfOneThousandCake)}%</Text>
         </GridItem>
         <GridItem>
           <Text>{cakePerThousand1D.toFixed(2)}</Text>
@@ -88,7 +88,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
           <Text>7d</Text>
         </GridItem>
         <GridItem>
-          <Text>{calculateRoi(cakePerThousand7D, costOfOneThousandCake)}%</Text>
+          <Text>{apyModalRoi(cakePerThousand7D, costOfOneThousandCake)}%</Text>
         </GridItem>
         <GridItem>
           <Text>{cakePerThousand7D.toFixed(2)}</Text>
@@ -98,7 +98,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
           <Text>30d</Text>
         </GridItem>
         <GridItem>
-          <Text>{calculateRoi(cakePerThousand30D, costOfOneThousandCake)}%</Text>
+          <Text>{apyModalRoi(cakePerThousand30D, costOfOneThousandCake)}%</Text>
         </GridItem>
         <GridItem>
           <Text>{cakePerThousand30D.toFixed(2)}</Text>
@@ -108,7 +108,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
           <Text>365d(APY)</Text>
         </GridItem>
         <GridItem>
-          <Text>{calculateRoi(cakePerThousand365D, costOfOneThousandCake)}%</Text>
+          <Text>{apyModalRoi(cakePerThousand365D, costOfOneThousandCake)}%</Text>
         </GridItem>
         <GridItem>
           <Text>{cakePerThousand365D.toFixed(2)}</Text>

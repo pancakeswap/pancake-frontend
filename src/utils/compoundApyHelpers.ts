@@ -9,7 +9,7 @@ export const calculateCakePerThousand = (numberOfDays, apy, cakePrice) => {
   return interestEarned
 }
 
-export const calculateRoi = (cakePerThousandDollars, costOfOneThousandCake) => {
+export const apyModalRoi = (cakePerThousandDollars, costOfOneThousandCake) => {
   const percentage = (cakePerThousandDollars / costOfOneThousandCake) * 100
   return percentage.toFixed(2)
 }

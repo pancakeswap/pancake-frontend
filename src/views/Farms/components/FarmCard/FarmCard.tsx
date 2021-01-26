@@ -137,15 +137,21 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed, cakePrice, bnbPrice,
         <Flex justifyContent="space-between" alignItems="center">
           <Text>{TranslateString(352, 'APY')}:</Text>
           <Text bold style={{ display: 'flex', alignItems: 'center' }}>
-            {farm.apy ? `${farmAPY}%` : 'Loading ...'}{' '}
-            <ApyButton
-              lpLabel={lpLabel}
-              quoteTokenAdresses={quoteTokenAdresses}
-              quoteTokenSymbol={quoteTokenSymbol}
-              tokenAddresses={tokenAddresses}
-              cakePrice={cakePrice}
-              apy={farm.apy}
-            />
+            {farm.apy ? (
+              <>
+                ${farmAPY}%
+                <ApyButton
+                  lpLabel={lpLabel}
+                  quoteTokenAdresses={quoteTokenAdresses}
+                  quoteTokenSymbol={quoteTokenSymbol}
+                  tokenAddresses={tokenAddresses}
+                  cakePrice={cakePrice}
+                  apy={farm.apy}
+                />
+              </>
+            ) : (
+              'Loading ...'
+            )}
           </Text>
         </Flex>
       )}
