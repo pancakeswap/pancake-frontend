@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Card, CardBody, Heading, Text } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import { getProfileContract } from 'utils/contractHelpers'
 import { getWeb3 } from 'utils/web3'
 import SelectionCard from '../components/SelectionCard'
 import NextStepButton from '../components/NextStepButton'
+import { ProfileCreationContext } from './contexts/ProfileCreationProvider'
 
 interface Props {
   nextStep: () => void
@@ -49,9 +50,12 @@ const useTeams = () => {
   return teams
 }
 
-const Team: React.FC<Props> = ({ nextStep, selectedTeam, handleTeamSelection }) => {
+const Team: React.FC = () => {
+  const { selectedTeam, setTeam, nextStep } = useContext(ProfileCreationContext)
   const TranslateString = useI18n()
   const teams = useTeams()
+
+  const handleTeamSelection = (val) => setTeam(val)
 
   return (
     <>
