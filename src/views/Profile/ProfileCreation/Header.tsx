@@ -1,11 +1,8 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import styled from 'styled-components'
 import { Breadcrumbs, Heading, Text } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
-
-interface HeaderProps {
-  breadcrumbIndex?: number
-}
+import { ProfileCreationContext } from './contexts/ProfileCreationProvider'
 
 const BreadcrumbLink = styled(Text)<{ isLink: boolean }>`
   color: ${({ isLink, theme }) => theme.colors[isLink ? 'text' : 'textDisabled']};
@@ -25,8 +22,9 @@ const steps = [
   { translationId: 999, label: 'Set Name' },
 ]
 
-const Header: React.FC<HeaderProps> = ({ breadcrumbIndex = 0 }) => {
+const Header: React.FC = () => {
   const TranslateString = useI18n()
+  const { currentStep } = useContext(ProfileCreationContext)
 
   return (
     <Wrapper>
@@ -41,7 +39,7 @@ const Header: React.FC<HeaderProps> = ({ breadcrumbIndex = 0 }) => {
       </Text>
       <Breadcrumbs>
         {steps.map(({ translationId, label }, index) => {
-          const isLink = index <= breadcrumbIndex
+          const isLink = index <= currentStep
 
           return (
             <BreadcrumbLink key={label} isLink={isLink}>
