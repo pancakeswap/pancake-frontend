@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { Modal, Text, LinkExternal, Flex } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
-import { calculateApy } from 'utils/compoundApyHelpers'
+import { calculateCakePerThousand, calculateRoi } from 'utils/compoundApyHelpers'
 
 export interface TokenAddressesObject {
   56?: string
@@ -47,9 +47,13 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
 }) => {
   const TranslateString = useI18n()
   const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAdresses, quoteTokenSymbol, tokenAddresses })
-  const farmApy = apy.times(new BigNumber(100)).toNumber()
+  const farmApy = apy && apy.times(new BigNumber(100)).toNumber()
+  const costOfOneThousandCake = cakePrice.toNumber() * 1000
 
-  const interest = calculateApy(1000, 7, farmApy)
+  const cakePerThousand1D = calculateCakePerThousand(1, farmApy, cakePrice)
+  const cakePerThousand7D = calculateCakePerThousand(7, farmApy, cakePrice)
+  const cakePerThousand30D = calculateCakePerThousand(30, farmApy, cakePrice)
+  const cakePerThousand365D = calculateCakePerThousand(365, farmApy, cakePrice)
 
   return (
     <Modal title="ROI" onDismiss={onDismiss}>
@@ -74,40 +78,40 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
           <Text>1d</Text>
         </GridItem>
         <GridItem>
-          <Text>1</Text>
+          <Text>{calculateRoi(cakePerThousand1D, costOfOneThousandCake)}%</Text>
         </GridItem>
         <GridItem>
-          <Text>1</Text>
+          <Text>{cakePerThousand1D.toFixed(2)}</Text>
         </GridItem>
         {/* 7 day row */}
         <GridItem>
           <Text>7d</Text>
         </GridItem>
         <GridItem>
-          <Text>7</Text>
+          <Text>{calculateRoi(cakePerThousand7D, costOfOneThousandCake)}%</Text>
         </GridItem>
         <GridItem>
-          <Text>7</Text>
+          <Text>{cakePerThousand7D.toFixed(2)}</Text>
         </GridItem>
         {/* 30 day row */}
         <GridItem>
           <Text>30d</Text>
         </GridItem>
         <GridItem>
-          <Text>30</Text>
+          <Text>{calculateRoi(cakePerThousand30D, costOfOneThousandCake)}%</Text>
         </GridItem>
         <GridItem>
-          <Text>30</Text>
+          <Text>{cakePerThousand30D.toFixed(2)}</Text>
         </GridItem>
         {/* 365 day / APY row */}
         <GridItem>
           <Text>365d(APY)</Text>
         </GridItem>
         <GridItem>
-          <Text>365</Text>
+          <Text>{calculateRoi(cakePerThousand365D, costOfOneThousandCake)}%</Text>
         </GridItem>
         <GridItem>
-          <Text>365</Text>
+          <Text>{cakePerThousand365D.toFixed(2)}</Text>
         </GridItem>
       </Grid>
       <Description fontSize="12px" color="textSubtle">
