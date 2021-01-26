@@ -45,10 +45,10 @@ export default {
   },
   pancakeRabbits: {
     56: '0xDf7952B35f24aCF7fC0487D01c8d5690a60DBa07',
-    97: '0xc3c5675130cb075de8a782cdc1fc67b9a382145e',
+    97: '0x60935F36e4631F73f0f407e68642144e07aC7f5E',
   },
   rabbitMintingFarm: {
     56: '0x7c8b60d2b859a38c8B9b5B6CB4565485cb637c7a',
-    97: '0x0f138e84341a4Ec0306C9Acc77e6fDF6385B8a34',
+    97: '0x07e7951E29D56BE1a131178c631012dB0f62f9D9',
   },
 }

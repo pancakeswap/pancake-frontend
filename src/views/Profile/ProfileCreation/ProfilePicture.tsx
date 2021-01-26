@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import styled from 'styled-components'
 import { Card, CardBody, Heading, Skeleton, Text } from '@pancakeswap-libs/uikit'
 import { Link as RouterLink } from 'react-router-dom'
@@ -7,10 +7,7 @@ import useI18n from 'hooks/useI18n'
 import useGetWalletNfts from 'hooks/useGetWalletNfts'
 import NftSelectionCard from '../components/NftSelectionCard'
 import NextStepButton from '../components/NextStepButton'
-
-interface ProfilePictureProps {
-  nextStep: () => void
-}
+import { ProfileCreationContext } from './contexts/ProfileCreationProvider'
 
 const Link = styled(RouterLink)`
   color: ${({ theme }) => theme.colors.primary};
@@ -18,7 +15,8 @@ const Link = styled(RouterLink)`
 
 const NftWrapper = styled.div``
 
-const ProfilePicture: React.FC<ProfilePictureProps> = ({ nextStep }) => {
+const ProfilePicture: React.FC = () => {
+  const { nextStep, bunnyId, setBunnyId } = useContext(ProfileCreationContext)
   const TranslateString = useI18n()
   const { isLoading, nfts } = useGetWalletNfts()
   const bunnyIds = Object.keys(nfts).map((nftItem) => Number(nftItem))
@@ -47,11 +45,23 @@ const ProfilePicture: React.FC<ProfilePictureProps> = ({ nextStep }) => {
             <Link to="/nft">{TranslateString(999, 'Only approved Pancake Collectibles can be used.')}</Link>
           </Text>
           <NftWrapper>
-            {isLoading ? <Skeleton height={80} /> : walletNfts.map((walletNft) => <NftSelectionCard nft={walletNft} />)}
+            {isLoading ? (
+              <Skeleton height="80px" mb="16px" />
+            ) : (
+              walletNfts.map((walletNft) => (
+                <NftSelectionCard
+                  nft={walletNft}
+                  isChecked={walletNft.bunnyId === bunnyId}
+                  onChange={(value: string) => setBunnyId(parseInt(value, 10))}
+                />
+              ))
+            )}
           </NftWrapper>
         </CardBody>
       </Card>
-      <NextStepButton onClick={nextStep}>{TranslateString(999, 'Next Step')}</NextStepButton>
+      <NextStepButton onClick={nextStep} disabled={bunnyId === null}>
+        {TranslateString(999, 'Next Step')}
+      </NextStepButton>
     </>
   )
 }

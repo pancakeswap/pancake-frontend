@@ -1,6 +1,7 @@
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { useEffect, useReducer } from 'react'
 import { getPancakeRabbitContract } from 'utils/contractHelpers'
+import makeBatchRequest from 'utils/makeBatchRequest'
 
 const pancakeRabbitsContract = getPancakeRabbitContract()
 
@@ -55,9 +56,9 @@ const useGetWalletNfts = () => {
 
           const getTokenIdAndBunnyId = async (index: number) => {
             try {
-              const tokenId = await pancakeRabbitsContract.methods.tokenOfOwnerByIndex(account, index).call()
-              const bunnyId = await pancakeRabbitsContract.methods.getBunnyId(tokenId).call()
-              const tokenUri = await pancakeRabbitsContract.methods.tokenURI(tokenId).call()
+              const { tokenOfOwnerByIndex, getBunnyId, tokenURI } = pancakeRabbitsContract.methods
+              const tokenId = await tokenOfOwnerByIndex(account, index).call()
+              const [bunnyId, tokenUri] = await makeBatchRequest([getBunnyId(tokenId).call, tokenURI(tokenId).call])
 
               return [Number(bunnyId), Number(tokenId), tokenUri]
             } catch (error) {
