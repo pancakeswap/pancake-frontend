@@ -39,6 +39,11 @@ export const links = [
     href: "/nft",
   },
   {
+    label: "Profile & Teams",
+    icon: "GroupsIcon",
+    href: "/profile",
+  },
+  {
     label: "Info",
     icon: "InfoIcon",
     items: [
