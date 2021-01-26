@@ -3,29 +3,18 @@ import { AbstractConnector } from '@web3-react/abstract-connector'
 import warning from 'tiny-warning'
 
 import { SendReturnResult, SendReturn, Send, SendOld } from './types'
+import NoBscProviderError from './noBscProviderError'
+import UserRejectedRequestError from './userRejectedRequestError'
 
 function parseSendReturn(sendReturn: SendReturnResult | SendReturn): any {
   // eslint-disable-next-line no-prototype-builtins
   return sendReturn.hasOwnProperty('result') ? sendReturn.result : sendReturn
 }
+class BscConnector extends AbstractConnector {
+  private ethAccount: string;
+  
+  private ethChainId: string;
 
-export class NoBscProviderError extends Error {
-  public constructor() {
-    super()
-    this.name = this.constructor.name
-    this.message = 'No BSC provider was found on window.BinanceChain.'
-  }
-}
-
-export class UserRejectedRequestError extends Error {
-  public constructor() {
-    super()
-    this.name = this.constructor.name
-    this.message = 'The user rejected the request.'
-  }
-}
-
-export class BscConnector extends AbstractConnector {
   constructor(kwargs: AbstractConnectorArguments) {
     super(kwargs)
 
@@ -33,6 +22,8 @@ export class BscConnector extends AbstractConnector {
     this.handleChainChanged = this.handleChainChanged.bind(this)
     this.handleAccountsChanged = this.handleAccountsChanged.bind(this)
     this.handleClose = this.handleClose.bind(this)
+    this.ethAccount = 'eth_accounts'
+    this.ethChainId = 'eth_chainId'
   }
 
   private handleChainChanged(chainId: string | number): void {
@@ -94,6 +85,7 @@ export class BscConnector extends AbstractConnector {
   }
 
   public async getProvider(): Promise<any> {
+    this.ethChainId = 'eth_chainId'
     return window.BinanceChain
   }
 
@@ -104,7 +96,7 @@ export class BscConnector extends AbstractConnector {
 
     let chainId
     try {
-      chainId = await (window.BinanceChain.send as Send)('eth_chainId').then(parseSendReturn)
+      chainId = await (window.BinanceChain.send as Send)(this.ethChainId).then(parseSendReturn)
     } catch {
       warning(false, 'eth_chainId was unsuccessful, falling back to net_version')
     }
@@ -147,7 +139,7 @@ export class BscConnector extends AbstractConnector {
 
     let account
     try {
-      account = await (window.BinanceChain.send as Send)('eth_accounts').then(
+      account = await (window.BinanceChain.send as Send)(this.ethAccount).then(
         (sendReturn) => parseSendReturn(sendReturn)[0]
       )
     } catch {
@@ -163,7 +155,7 @@ export class BscConnector extends AbstractConnector {
     }
 
     if (!account) {
-      account = parseSendReturn((window.BinanceChain.send as SendOld)({ method: 'eth_accounts' }))[0]
+      account = parseSendReturn((window.BinanceChain.send as SendOld)({ method: this.ethAccount }))[0]
     }
 
     return account
@@ -178,7 +170,7 @@ export class BscConnector extends AbstractConnector {
     }
   }
 
-  public async isAuthorized(): Promise<boolean> {
+  public static async isAuthorized(): Promise<boolean> {
     if (!window.BinanceChain) {
       return false
     }
@@ -195,3 +187,5 @@ export class BscConnector extends AbstractConnector {
     }
   }
 }
+
+export default BscConnector

@@ -7,7 +7,7 @@ import { PortisConnector } from '@web3-react/portis-connector'
 import getRpcUrl from 'utils/getRpcUrl'
 import { FortmaticConnector } from './Fortmatic'
 import { NetworkConnector } from './NetworkConnector'
-import { BscConnector } from './bsc/bscConnector'
+import BscConnector from './bsc/bscConnector'
 
 const NETWORK_URL = getRpcUrl()
 const FORMATIC_KEY = process.env.REACT_APP_FORTMATIC_KEY
