@@ -34,7 +34,6 @@ const useTickets = (lotteryNumber = null) => {
 
 export const useTotalRewards = () => {
   const [rewards, setRewards] = useState(new BigNumber(0))
-  const { account } = useWallet()
   const lotteryContract = useLottery()
   const { fastRefresh } = useRefresh()
 
@@ -44,10 +43,10 @@ export const useTotalRewards = () => {
       setRewards(new BigNumber(res))
     }
 
-    if (account && lotteryContract) {
+    if (lotteryContract) {
       fetchBalance()
     }
-  }, [account, lotteryContract, fastRefresh])
+  }, [lotteryContract, fastRefresh])
 
   return rewards
 }
@@ -77,7 +76,6 @@ export const useTotalClaim = () => {
 
 export const useWinningNumbers = () => {
   const [winngNumbers, setWinningNumbers] = useState([0, 0, 0, 0])
-  const { account } = useWallet()
   const lotteryContract = useLottery()
   const { fastRefresh } = useRefresh()
 
@@ -87,17 +85,16 @@ export const useWinningNumbers = () => {
       setWinningNumbers(rewards)
     }
 
-    if (account && lotteryContract) {
+    if (lotteryContract) {
       fetchBalance()
     }
-  }, [account, fastRefresh, lotteryContract, setWinningNumbers])
+  }, [fastRefresh, lotteryContract, setWinningNumbers])
 
   return winngNumbers
 }
 
 export const useMatchingRewardLength = (numbers) => {
   const [matchingNumbers, setMatchingNumbers] = useState(0)
-  const { account } = useWallet()
   const lotteryContract = useLottery()
   const { fastRefresh } = useRefresh()
 
@@ -107,10 +104,10 @@ export const useMatchingRewardLength = (numbers) => {
       setMatchingNumbers(matchedNumbaers)
     }
 
-    if (account && lotteryContract) {
+    if (lotteryContract) {
       fetchBalance()
     }
-  }, [account, lotteryContract, numbers, fastRefresh])
+  }, [lotteryContract, numbers, fastRefresh])
 
   return matchingNumbers
 }

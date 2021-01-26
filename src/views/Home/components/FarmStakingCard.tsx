@@ -13,25 +13,11 @@ const StyledFarmStakingCard = styled(Card)`
   background-image: url('/images/cake-bg.svg');
   background-repeat: no-repeat;
   background-position: top right;
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 344px;
-  width: 100%;
+  min-height: 376px;
+`
 
-  ${({ theme }) => theme.mediaQueries.lg} {
-    margin: 0;
-    max-width: none;
-  }
-`
-const CardTitle = styled(Heading).attrs({ size: 'lg' })`
-  margin-bottom: 24px;
-`
 const Block = styled.div`
   margin-bottom: 16px;
-`
-
-const Value = styled.div`
-  margin-bottom: 8px;
 `
 
 const CardImage = styled.img`
@@ -70,18 +56,16 @@ const FarmedStakingCard = () => {
   return (
     <StyledFarmStakingCard>
       <CardBody>
-        <CardTitle>{TranslateString(542, 'Farms & Staking')}</CardTitle>
-        <CardImage src="/images/cake.svg" alt="cake logo" />
+        <Heading size="xl" mb="24px">
+          {TranslateString(542, 'Farms & Staking')}
+        </Heading>
+        <CardImage src="/images/cake.svg" alt="cake logo" width={64} height={64} />
         <Block>
-          <Value>
-            <CakeHarvestBalance />
-          </Value>
+          <CakeHarvestBalance />
           <Label>{TranslateString(544, 'CAKE to Harvest')}</Label>
         </Block>
         <Block>
-          <Value>
-            <CakeWalletBalance />
-          </Value>
+          <CakeWalletBalance />
           <Label>{TranslateString(546, 'CAKE in Wallet')}</Label>
         </Block>
         <Actions>

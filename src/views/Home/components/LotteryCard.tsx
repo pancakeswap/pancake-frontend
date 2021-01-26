@@ -16,25 +16,11 @@ const StyledLotteryCard = styled(Card)`
   background-image: url('/images/ticket-bg.svg');
   background-repeat: no-repeat;
   background-position: top right;
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 344px;
-  width: 100%;
+  min-height: 376px;
+`
 
-  ${({ theme }) => theme.mediaQueries.lg} {
-    margin: 0;
-    max-width: none;
-  }
-`
-const CardTitle = styled(Heading).attrs({ size: 'lg' })`
-  margin-bottom: 24px;
-`
 const Block = styled.div`
   margin-bottom: 16px;
-`
-
-const Value = styled.div`
-  margin-bottom: 8px;
 `
 
 const CardImage = styled.img`
@@ -80,18 +66,16 @@ const FarmedStakingCard = () => {
   return (
     <StyledLotteryCard>
       <CardBody>
-        <CardTitle>{TranslateString(550, 'Your Lottery Winnings')}</CardTitle>
-        <CardImage src="/images/ticket.svg" alt="cake logo" />
+        <Heading size="xl" mb="24px">
+          {TranslateString(550, 'Your Lottery Winnings')}
+        </Heading>
+        <CardImage src="/images/ticket.svg" alt="cake logo" width={64} height={64} />
         <Block>
-          <Value>
-            <CakeWinnings />
-          </Value>
+          <CakeWinnings />
           <Label>{TranslateString(552, 'CAKE to Collect')}</Label>
         </Block>
         <Block>
-          <Value>
-            <LotteryJackpot />
-          </Value>
+          <LotteryJackpot />
           <Label>{TranslateString(554, 'Total jackpot this round')}</Label>
         </Block>
         <Actions>

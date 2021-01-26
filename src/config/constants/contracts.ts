@@ -35,4 +35,8 @@ export default {
     56: '0xe9e7cea3dedca5984780bafc599bd69add087d56',
     97: '',
   },
+  ust: {
+    56: '0x23396cF899Ca06c4472205fC903bDB4de249D6fC',
+    97: '',
+  },
 }

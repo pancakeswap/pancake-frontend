@@ -1,16 +1,11 @@
 import React from 'react'
-import styled from 'styled-components'
 import { Text } from '@pancakeswap-libs/uikit'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import useTokenBalance from 'hooks/useTokenBalance'
 import useI18n from 'hooks/useI18n'
 import { getCakeAddress } from 'utils/addressHelpers'
 import { getBalanceNumber } from 'utils/formatBalance'
-import CardValue from 'components/Card/CardValue'
-
-const Label = styled(Text)`
-  color: ${({ theme }) => theme.colors.textDisabled};
-`
+import CardValue from './CardValue'
 
 const CakeWalletBalance = () => {
   const TranslateString = useI18n()
@@ -18,7 +13,11 @@ const CakeWalletBalance = () => {
   const { account } = useWallet()
 
   if (!account) {
-    return <Label>{TranslateString(298, 'Locked')}</Label>
+    return (
+      <Text color="textDisabled" style={{ lineHeight: '36px' }}>
+        {TranslateString(298, 'Locked')}
+      </Text>
+    )
   }
 
   return <CardValue value={getBalanceNumber(cakeBalance)} fontSize="24px" />

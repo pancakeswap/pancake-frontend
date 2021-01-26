@@ -2,7 +2,7 @@ import React, { lazy, Suspense, useContext } from 'react'
 import styled from 'styled-components'
 import { Text } from '@pancakeswap-libs/uikit'
 import PastLotteryDataContext from 'contexts/PastLotteryDataContext'
-import Loading from 'components/Loading/Loading'
+import Loading from '../Loading'
 
 const Line = lazy(() => import('./LineChartWrapper'))
 

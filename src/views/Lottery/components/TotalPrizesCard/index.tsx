@@ -6,8 +6,8 @@ import { getBalanceNumber } from 'utils/formatBalance'
 import useI18n from 'hooks/useI18n'
 import { useTotalRewards } from 'hooks/useTickets'
 import PastLotteryDataContext from 'contexts/PastLotteryDataContext'
+import ExpandableSectionButton from 'components/ExpandableSectionButton/ExpandableSectionButton'
 import PrizeGrid from '../PrizeGrid'
-import DetailsButton from './DetailsButton'
 
 const CardHeading = styled.div`
   position: relative;
@@ -17,6 +17,10 @@ const CardHeading = styled.div`
 
 const Right = styled.div`
   display: flex;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    display: none;
+  }
 `
 
 const Left = styled.div`
@@ -36,8 +40,8 @@ const PrizeCountWrapper = styled.div`
   flex-direction: column;
 `
 
-const ExpandingWrapper = styled.div<{ hideFooter: boolean }>`
-  height: ${(props) => (props.hideFooter ? '0px' : '100%')};
+const ExpandingWrapper = styled.div<{ showFooter: boolean }>`
+  height: ${(props) => (props.showFooter ? '100%' : '0px')};
 
   ${({ theme }) => theme.mediaQueries.sm} {
     height: 100%;
@@ -47,7 +51,7 @@ const ExpandingWrapper = styled.div<{ hideFooter: boolean }>`
 const TotalPrizesCard = () => {
   const TranslateString = useI18n()
   const { account } = useWallet()
-  const [hideFooter, setHideFooter] = useState(true)
+  const [showFooter, setShowFooter] = useState(false)
   const lotteryPrizeAmount = +getBalanceNumber(useTotalRewards()).toFixed(0)
   const lotteryPrizeWithCommaSeparators = lotteryPrizeAmount.toLocaleString()
   const { currentLotteryNumber } = useContext(PastLotteryDataContext)
@@ -78,11 +82,11 @@ const TotalPrizesCard = () => {
             </PrizeCountWrapper>
           </Left>
           <Right>
-            <DetailsButton onClick={() => setHideFooter(!hideFooter)} />
+            <ExpandableSectionButton onClick={() => setShowFooter(!showFooter)} expanded={showFooter} />
           </Right>
         </CardHeading>
       </CardBody>
-      <ExpandingWrapper hideFooter={hideFooter}>
+      <ExpandingWrapper showFooter={showFooter}>
         <CardFooter>
           <PrizeGrid lotteryPrizeAmount={lotteryPrizeAmount} />
         </CardFooter>

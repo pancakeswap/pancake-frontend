@@ -3,10 +3,10 @@ import styled from 'styled-components'
 import { Heading, Text, BaseLayout } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import Page from 'components/layout/Page'
-import Container from 'components/layout/Container'
 import FarmStakingCard from 'views/Home/components/FarmStakingCard'
 import LotteryCard from 'views/Home/components/LotteryCard'
 import CakeStats from 'views/Home/components/CakeStats'
+import TotalValueLockedCard from 'views/Home/components/TotalValueLockedCard'
 import EarnAPYCard from 'views/Home/components/EarnAPYCard'
 import EarnAssetCard from 'views/Home/components/EarnAssetCard'
 import WinCard from 'views/Home/components/WinCard'
@@ -18,8 +18,9 @@ const Hero = styled.div`
   background-position: top center;
   display: flex;
   justify-content: center;
-  margin: 32px auto;
-  max-width: 904px;
+  flex-direction: column;
+  margin: auto;
+  margin-bottom: 32px;
   padding-top: 116px;
   text-align: center;
 
@@ -27,27 +28,18 @@ const Hero = styled.div`
     background-image: url('/images/pan-bg2.svg'), url('/images/pan-bg.svg');
     background-position: left center, right center;
     height: 165px;
-    margin-top: 48px;
     padding-top: 0;
   }
 `
 
-const Title = styled(Heading)`
-  color: ${({ theme }) => theme.colors.secondary};
-  font-size: 40px;
-  margin-bottom: ${({ theme }) => theme.spacing[4]}px;
-`
-
-const Subtitle = styled(Text)`
-  font-weight: 400;
-`
-
 const Cards = styled(BaseLayout)`
-  align-items: start;
+  align-items: stretch;
+  justify-content: stretch;
   margin-bottom: 48px;
 
   & > div {
     grid-column: span 6;
+    width: 100%;
   }
 
   ${({ theme }) => theme.mediaQueries.sm} {
@@ -91,23 +83,25 @@ const Home: React.FC = () => {
   return (
     <Page>
       <Hero>
-        <div>
-          <Title as="h1">{TranslateString(576, 'PancakeSwap')}</Title>
-          <Subtitle>{TranslateString(578, 'The #1 AMM and yield farm on Binance Smart Chain.')}</Subtitle>
-        </div>
+        <Heading as="h1" size="xl" mb="24px" color="secondary">
+          {TranslateString(576, 'PancakeSwap')}
+        </Heading>
+        <Text>{TranslateString(578, 'The #1 AMM and yield farm on Binance Smart Chain.')}</Text>
       </Hero>
-      <Container>
+      <div>
         <Cards>
           <FarmStakingCard />
           <LotteryCard />
+          <CakeStats />
+          <TotalValueLockedCard />
         </Cards>
-        <CakeStats />
+
         <CTACards>
           <EarnAPYCard />
           <EarnAssetCard />
           <WinCard />
         </CTACards>
-      </Container>
+      </div>
     </Page>
   )
 }
