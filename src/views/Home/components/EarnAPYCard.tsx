@@ -1,6 +1,6 @@
 import React, { useCallback, useRef } from 'react'
 import styled from 'styled-components'
-import { Heading, Card, CardBody, Flex, ArrowForwardIcon } from '@pancakeswap-libs/uikit'
+import { Heading, Card, CardBody, Flex, ArrowForwardIcon, Skeleton } from '@pancakeswap-libs/uikit'
 import { NavLink } from 'react-router-dom'
 import useI18n from 'hooks/useI18n'
 import BigNumber from 'bignumber.js'
@@ -82,7 +82,11 @@ const EarnAPYCard = () => {
           Earn up to
         </Heading>
         <CardMidContent color="#7645d9">
-          {getHighestAPY()}%{TranslateString(352, ' APY')}
+          {getHighestAPY() ? (
+            `${getHighestAPY()}% ${TranslateString(352, ' APY')}`
+          ) : (
+            <Skeleton animation="pulse" variant="rect" />
+          )}
         </CardMidContent>
         <Flex justifyContent="space-between">
           <Heading color="contrast" size="lg">
