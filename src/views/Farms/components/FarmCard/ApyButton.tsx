@@ -1,6 +1,6 @@
 import React from 'react'
 import BigNumber from 'bignumber.js'
-import { AddIcon, IconButton, useModal } from '@pancakeswap-libs/uikit'
+import { CalculateIcon, IconButton, useModal } from '@pancakeswap-libs/uikit'
 import ApyCalculatorModal from './ApyCalculatorModal'
 
 export interface TokenAddressesObject {
@@ -38,7 +38,7 @@ const ApyButton: React.FC<ApyButtonProps> = ({
   return (
     // TODO: Use 'Calculate' icon when uikit update is deployed
     <IconButton onClick={onPresentApyModal} variant="text" size="sm" ml="4px">
-      <AddIcon />
+      <CalculateIcon />
     </IconButton>
   )
 }
