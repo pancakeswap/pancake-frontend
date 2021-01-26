@@ -1,34 +1,18 @@
-import React from 'react'
-import { Card, CardBody, Heading, Text } from '@pancakeswap-libs/uikit'
+import React, { useContext, useState } from 'react'
+import { ChevronRightIcon, Button, Card, CardBody, Flex, Heading, Text } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
+import nftList from 'config/constants/nfts'
 import NftSelectionCard from '../components/NftSelectionCard'
 import NextStepButton from '../components/NextStepButton'
+import { ProfileCreationContext } from './contexts/ProfileCreationProvider'
 
-interface MintProps {
-  nextStep: () => void
-}
+const starterBunnyIds = [5, 6, 7, 8, 9]
+const nfts = nftList.filter((nft) => starterBunnyIds.includes(nft.bunnyId))
 
-const nft = {
-  name: 'Swapsies',
-  description: 'These bunnies love nothing more than swapping pancakes. Especially on BSC.',
-  originalImage: 'https://gateway.pinata.cloud/ipfs/QmXdHqg3nywpNJWDevJQPtkz93vpfoHcZWQovFz2nmtPf5/swapsies.png',
-  previewImage: 'swapsies-preview.png',
-  blurImage: 'swapsies-blur.png',
-  sortOrder: 999,
-  bunnyId: 0,
-}
-
-const nft1 = {
-  name: 'Drizzle',
-  description: "It's raining syrup on this bunny, but he doesn't seem to mind. Can you blame him?",
-  originalImage: 'https://gateway.pinata.cloud/ipfs/QmXdHqg3nywpNJWDevJQPtkz93vpfoHcZWQovFz2nmtPf5/drizzle.png',
-  previewImage: 'drizzle-preview.png',
-  blurImage: 'drizzle-blur.png',
-  sortOrder: 999,
-  bunnyId: 1,
-}
-
-const Mint: React.FC<MintProps> = ({ nextStep }) => {
+const Mint: React.FC = () => {
+  const [hasMinted, setHasMinted] = useState(false)
+  const [bunnyId, setBunnyId] = useState(null)
+  const { nextStep } = useContext(ProfileCreationContext)
   const TranslateString = useI18n()
 
   return (
@@ -55,11 +39,30 @@ const Mint: React.FC<MintProps> = ({ nextStep }) => {
           <Text as="p" mb="24px" color="textSubtle">
             {TranslateString(999, 'Cost: 5 CAKE')}
           </Text>
-          <NftSelectionCard nft={nft} />
-          <NftSelectionCard nft={nft1} isChecked />
+          {nfts.map((nft) => {
+            const handleChange = (value: string) => setBunnyId(parseInt(value, 10))
+
+            return (
+              <NftSelectionCard
+                key={nft.bunnyId}
+                nft={nft}
+                isChecked={bunnyId === nft.bunnyId}
+                onChange={handleChange}
+              />
+            )
+          })}
+          <Flex py="8px">
+            <Button disabled={bunnyId === null} onClick={() => setHasMinted(true)}>
+              {TranslateString(999, 'Approve')}
+            </Button>
+            <ChevronRightIcon width="24px" color="textDisabled" />
+            <Button disabled>{TranslateString(999, 'Confirmed')}</Button>
+          </Flex>
         </CardBody>
       </Card>
-      <NextStepButton onClick={nextStep}>{TranslateString(999, 'Next Step')}</NextStepButton>
+      <NextStepButton onClick={nextStep} disabled={!hasMinted}>
+        {TranslateString(999, 'Next Step')}
+      </NextStepButton>
     </>
   )
 }
