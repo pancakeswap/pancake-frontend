@@ -36,7 +36,6 @@ const ApyButton: React.FC<ApyButtonProps> = ({
   )
 
   return (
-    // TODO: Use 'Calculate' icon when uikit update is deployed
     <IconButton onClick={onPresentApyModal} variant="text" size="sm" ml="4px">
       <CalculateIcon />
     </IconButton>
