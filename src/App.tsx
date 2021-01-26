@@ -4,6 +4,7 @@ import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { ResetCSS } from '@pancakeswap-libs/uikit'
 import BigNumber from 'bignumber.js'
 import { useFetchProfile, useFetchPublicData } from 'state/hooks'
+import Web3ReactManager from 'components/Web3ReactManager'
 import GlobalStyle from './style/Global'
 import Menu from './components/Menu'
 import ToastListener from './components/ToastListener'
@@ -54,6 +55,7 @@ const App: React.FC = () => {
       <GlobalStyle />
       <Menu>
         <Suspense fallback={<PageLoader />}>
+          <Web3ReactManager>
           <Switch>
             <Route path="/" exact>
               <Home />
@@ -95,6 +97,7 @@ const App: React.FC = () => {
             {/* 404 */}
             <Route component={NotFound} />
           </Switch>
+          </Web3ReactManager>
         </Suspense>
       </Menu>
       <ToastListener />
