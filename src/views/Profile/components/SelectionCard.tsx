@@ -8,6 +8,7 @@ interface SelectionCardProps {
   isChecked?: boolean
   onChange: (val: any) => void
   image: string
+  disabled?: boolean
 }
 
 const StyledCard = styled(Card)`
@@ -53,6 +54,7 @@ const SelectionCard: React.FC<SelectionCardProps> = ({
   isChecked = false,
   image,
   onChange,
+  disabled,
   children,
   ...props
 }) => {
@@ -60,7 +62,13 @@ const SelectionCard: React.FC<SelectionCardProps> = ({
     <StyledCard isSuccess={isChecked} mb="16px" {...props}>
       <Label>
         <Body>
-          <Radio name={name} checked={isChecked} value={value} onChange={(e) => onChange(e.target.value)} />
+          <Radio
+            name={name}
+            checked={isChecked}
+            value={value}
+            onChange={(e) => onChange(e.target.value)}
+            disabled={disabled}
+          />
           <Children>{children}</Children>
         </Body>
         <StyledBackgroundImage src={`/images/nfts/${image}`} />
