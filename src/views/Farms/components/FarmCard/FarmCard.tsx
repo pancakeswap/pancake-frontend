@@ -135,11 +135,10 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed, cakePrice, bnbPrice,
       />
       {!removed && (
         <Flex justifyContent="space-between" alignItems="center">
-          <Text>{TranslateString(352, 'APY')}:</Text>
+          <Text>{TranslateString(352, 'APR')}:</Text>
           <Text bold style={{ display: 'flex', alignItems: 'center' }}>
             {farm.apy ? (
               <>
-                {farmAPY}%
                 <ApyButton
                   lpLabel={lpLabel}
                   quoteTokenAdresses={quoteTokenAdresses}
@@ -148,6 +147,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed, cakePrice, bnbPrice,
                   cakePrice={cakePrice}
                   apy={farm.apy}
                 />
+                {farmAPY}%
               </>
             ) : (
               <Skeleton height={24} width={80} />
