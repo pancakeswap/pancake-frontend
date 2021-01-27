@@ -10,14 +10,25 @@ const Separator = styled.div`
   color: currentColor;
   display: flex;
   justify-content: center;
-  padding-left: 16px;
-  padding-right: 16px;
+  padding-left: 4px;
+  padding-right: 4px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
 `;
 
 const StyledBreadcrumbs = styled.ul`
   align-items: center;
   color: ${({ theme }) => theme.colors.textDisabled};
   display: flex;
+  flex-wrap: wrap;
   list-style-type: none;
 
   ${space}

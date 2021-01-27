@@ -14,12 +14,16 @@ export default {
 export const Default: React.FC = () => {
   return (
     <Text p="32px">
-      <BreadCrumbs>
+      <BreadCrumbs mb="32px">
         <Link href="/" color="secondary" style={{ fontWeight: 400 }}>
           Link
         </Link>
         <Text color="textDisabled">Crumb 1</Text>
         <Text color="textDisabled">Crumb 2</Text>
+      </BreadCrumbs>
+      <BreadCrumbs>
+        <Text>PancakeSwap</Text>
+        <Text>The #1 AMM and yield farm on Binance Smart Chain.</Text>
       </BreadCrumbs>
     </Text>
   );
