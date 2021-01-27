@@ -34,7 +34,7 @@ const farms: FarmConfig[] = [
   },
   {
     pid: 64,
-    lpSymbol: 'EGLD-BUSD LP',
+    lpSymbol: 'EGLD-BNB LP',
     lpAddresses: {
       97: '',
       56: '0x6aaD6e2ec5B3B12F1853518534Cc9C2e5b2177ae',
