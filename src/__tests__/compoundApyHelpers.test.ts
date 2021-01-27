@@ -11,15 +11,12 @@ it.each([
   expect(calculateCakeEarnedPerThousandDollars({ numberOfDays, farmApy, cakePrice })).toEqual(expected)
 })
 
-// it.each([
-//   [10, 1000, '1.00'],
-//   [4.8, 800, '0.60'],
-//   [217.48, 1200, '18.12'],
-//   [100.67, 5000, '2.01'],
-//   [8572.84, 200, '4286.42'],
-// ])(
-//   'calculate roi % when %i cake is earned with a principal cost of %i',
-//   (cakePerThousandDollars, costOfOneThousandCake, expected) => {
-//     expect(apyModalRoi(cakePerThousandDollars, costOfOneThousandCake)).toEqual(expected)
-//   },
-// )
+it.each([
+  [{ amountEarned: 10, amountInvested: 1000 }, '1.00'],
+  [{ amountEarned: 4.8, amountInvested: 10 }, '48.00'],
+  [{ amountEarned: 217.48, amountInvested: 950 }, '22.89'],
+  [{ amountEarned: 100.67, amountInvested: 100 }, '100.67'],
+  [{ amountEarned: 8572.84, amountInvested: 20000 }, '42.86'],
+])('calculate roi % with values %o', ({ amountEarned, amountInvested }, expected) => {
+  expect(apyModalRoi({ amountEarned, amountInvested })).toEqual(expected)
+})
