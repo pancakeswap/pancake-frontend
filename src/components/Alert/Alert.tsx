@@ -45,29 +45,30 @@ const getIcon = (variant: AlertProps["variant"] = variants.INFO) => {
 };
 
 const IconLabel = styled.div<ThemedIconLabel>`
-  align-items: ${({ hasDescription }) => (hasDescription ? "start" : "center")};
   background-color: ${getThemeColor};
   border-radius: 16px 0 0 16px;
   color: ${({ theme }) => theme.alert.background};
-  display: flex;
-  flex: none;
-  justify-content: center;
-  min-height: 56px;
   padding: 12px;
 `;
 
-const Details = styled.div`
+const withHandlerSpacing = 32 + 12 + 8; // button size + inner spacing + handler position
+const Details = styled.div<{ hasHandler: boolean }>`
   flex: 1;
-  padding: 12px;
+  padding-bottom: 12px;
+  padding-left: 12px;
+  padding-right: ${({ hasHandler }) => (hasHandler ? `${withHandlerSpacing}px` : "12px")};
+  padding-top: 12px;
 `;
 
 const CloseHandler = styled.div`
   border-radius: 0 16px 16px 0;
-  padding: 12px 12px 12px 0;
+  right: 8px;
+  position: absolute;
+  top: 8px;
 `;
 
-const StyledAlert = styled(Flex)<{ hasDescription: boolean }>`
-  align-items: ${({ hasDescription }) => (hasDescription ? "stretch" : "center")};
+const StyledAlert = styled(Flex)`
+  position: relative;
   background-color: ${({ theme }) => theme.alert.background};
   border-radius: 16px;
   box-shadow: 0px 20px 36px -8px rgba(14, 14, 44, 0.1), 0px 1px 1px rgba(0, 0, 0, 0.05);
@@ -77,11 +78,11 @@ const Alert: React.FC<AlertProps> = ({ title, description, variant, onClick }) =
   const Icon = getIcon(variant);
 
   return (
-    <StyledAlert hasDescription={!!description}>
+    <StyledAlert>
       <IconLabel variant={variant} hasDescription={!!description}>
         <Icon color="currentColor" width="24px" />
       </IconLabel>
-      <Details>
+      <Details hasHandler={!!onClick}>
         <Text bold>{title}</Text>
         {description && <Text as="p">{description}</Text>}
       </Details>

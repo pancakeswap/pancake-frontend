@@ -17,7 +17,7 @@ export default {
 
 export const Default: React.FC = () => {
   return (
-    <div style={{ padding: "32px", width: "375px" }}>
+    <div style={{ padding: "32px", width: "400px" }}>
       <Row>
         <Alert title="Info" description="A description of the info alert" />
       </Row>
@@ -38,15 +38,20 @@ const handleClick = noop;
 
 export const WithHandler: React.FC = () => {
   return (
-    <div style={{ padding: "32px", width: "375px" }}>
+    <div style={{ padding: "32px", width: "400px" }}>
       <Row>
         <Alert onClick={handleClick} title="Info" />
       </Row>
       <Row>
-        <Alert onClick={handleClick} title="Success" variant="success" />
+        <Alert
+          onClick={handleClick}
+          title="Success"
+          description="A description of the success alert"
+          variant="success"
+        />
       </Row>
       <Row>
-        <Alert onClick={handleClick} title="Danger" variant="danger" />
+        <Alert onClick={handleClick} title="Danger A description of the warning alert" variant="danger" />
       </Row>
       <Row>
         <Alert onClick={handleClick} title="Warning" variant="warning" />
