@@ -1,10 +1,10 @@
 const roundToTwoDp = (number) => Math.round(number * 100) / 100
 
-export const calculateCakePerThousand = ({ numberOfDays, apy, cakePrice }) => {
+export const calculateCakeEarnedPerThousandDollars = ({ numberOfDays, farmApy, cakePrice }) => {
   // Everything here is worked out relative to a year, with the asset compounding daily
   const timesCompounded = 365
   //   We use decimal values rather than % in the math for both APY and the number of days being calculates as a proportion of the year
-  const apyAsDecimal = apy / 100
+  const apyAsDecimal = farmApy / 100
   const daysAsDecimalOfYear = numberOfDays / timesCompounded
   //   Calculate the starting CAKE balance with a dollar balance of $1000.
   const principal = 1000 / cakePrice
@@ -17,7 +17,7 @@ export const calculateCakePerThousand = ({ numberOfDays, apy, cakePrice }) => {
   return roundToTwoDp(interestEarned)
 }
 
-export const apyModalRoi = (cakePerThousandDollars, costOfOneThousandCake) => {
-  const percentage = (cakePerThousandDollars / costOfOneThousandCake) * 100
+export const apyModalRoi = ({ cakeEarnedPerThousandDollars, oneThousandDollarsWorthOfCake }) => {
+  const percentage = (cakeEarnedPerThousandDollars / oneThousandDollarsWorthOfCake) * 100
   return percentage.toFixed(2)
 }

@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { Modal, Text, LinkExternal, Flex } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
-import { calculateCakePerThousand, apyModalRoi } from 'utils/compoundApyHelpers'
+import { calculateCakeEarnedPerThousandDollars, apyModalRoi } from 'utils/compoundApyHelpers'
 import { Address } from 'config/constants/types'
 
 interface ApyCalculatorModalProps {
@@ -45,12 +45,12 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
   const TranslateString = useI18n()
   const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAdresses, quoteTokenSymbol, tokenAddresses })
   const farmApy = apy.times(new BigNumber(100)).toNumber()
-  const costOfOneThousandCake = cakePrice.toNumber() * 1000
+  const oneThousandDollarsWorthOfCake = 1000 / cakePrice.toNumber()
 
-  const cakePerThousand1D = calculateCakePerThousand({ numberOfDays: 1, apy: farmApy, cakePrice })
-  const cakePerThousand7D = calculateCakePerThousand({ numberOfDays: 7, apy: farmApy, cakePrice })
-  const cakePerThousand30D = calculateCakePerThousand({ numberOfDays: 30, apy: farmApy, cakePrice })
-  const cakePerThousand365D = calculateCakePerThousand({ numberOfDays: 365, apy: farmApy, cakePrice })
+  const cakeEarnedPerThousand1D = calculateCakeEarnedPerThousandDollars({ numberOfDays: 1, farmApy, cakePrice })
+  const cakeEarnedPerThousand7D = calculateCakeEarnedPerThousandDollars({ numberOfDays: 7, farmApy, cakePrice })
+  const cakeEarnedPerThousand30D = calculateCakeEarnedPerThousandDollars({ numberOfDays: 30, farmApy, cakePrice })
+  const cakeEarnedPerThousand365D = calculateCakeEarnedPerThousandDollars({ numberOfDays: 365, farmApy, cakePrice })
 
   return (
     <Modal title="ROI" onDismiss={onDismiss}>
@@ -75,40 +75,48 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
           <Text>1d</Text>
         </GridItem>
         <GridItem>
-          <Text>{apyModalRoi(cakePerThousand1D, costOfOneThousandCake)}%</Text>
+          <Text>
+            {apyModalRoi({ cakeEarnedPerThousandDollars: cakeEarnedPerThousand1D, oneThousandDollarsWorthOfCake })}%
+          </Text>
         </GridItem>
         <GridItem>
-          <Text>{cakePerThousand1D}</Text>
+          <Text>{cakeEarnedPerThousand1D}</Text>
         </GridItem>
         {/* 7 day row */}
         <GridItem>
           <Text>7d</Text>
         </GridItem>
         <GridItem>
-          <Text>{apyModalRoi(cakePerThousand7D, costOfOneThousandCake)}%</Text>
+          <Text>
+            {apyModalRoi({ cakeEarnedPerThousandDollars: cakeEarnedPerThousand7D, oneThousandDollarsWorthOfCake })}%
+          </Text>
         </GridItem>
         <GridItem>
-          <Text>{cakePerThousand7D}</Text>
+          <Text>{cakeEarnedPerThousand7D}</Text>
         </GridItem>
         {/* 30 day row */}
         <GridItem>
           <Text>30d</Text>
         </GridItem>
         <GridItem>
-          <Text>{apyModalRoi(cakePerThousand30D, costOfOneThousandCake)}%</Text>
+          <Text>
+            {apyModalRoi({ cakeEarnedPerThousandDollars: cakeEarnedPerThousand30D, oneThousandDollarsWorthOfCake })}%
+          </Text>
         </GridItem>
         <GridItem>
-          <Text>{cakePerThousand30D}</Text>
+          <Text>{cakeEarnedPerThousand30D}</Text>
         </GridItem>
         {/* 365 day / APY row */}
         <GridItem>
           <Text>365d(APY)</Text>
         </GridItem>
         <GridItem>
-          <Text>{apyModalRoi(cakePerThousand365D, costOfOneThousandCake)}%</Text>
+          <Text>
+            {apyModalRoi({ cakeEarnedPerThousandDollars: cakeEarnedPerThousand365D, oneThousandDollarsWorthOfCake })}%
+          </Text>
         </GridItem>
         <GridItem>
-          <Text>{cakePerThousand365D}</Text>
+          <Text>{cakeEarnedPerThousand365D}</Text>
         </GridItem>
       </Grid>
       <Description fontSize="12px" color="textSubtle">
