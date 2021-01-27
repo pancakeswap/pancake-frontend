@@ -9,7 +9,7 @@ import ProfilePicture from './ProfilePicture'
 import TeamSelection from './TeamSelection'
 
 const Steps = () => {
-  const { currentStep } = useContext(ProfileCreationContext)
+  const { isInitialized, currentStep } = useContext(ProfileCreationContext)
   const { account } = useWallet()
   const TranslateString = useI18n()
 
@@ -25,6 +25,10 @@ const Steps = () => {
         <UnlockButton />
       </div>
     )
+  }
+
+  if (!isInitialized) {
+    return <div>Loading...</div>
   }
 
   if (currentStep === 0) {

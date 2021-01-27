@@ -8,7 +8,6 @@ import GlobalStyle from './style/Global'
 import Menu from './components/Menu'
 import ToastListener from './components/ToastListener'
 import PageLoader from './components/PageLoader'
-import NftGlobalNotification from './views/Nft/components/NftGlobalNotification'
 import Pools from './views/Pools'
 
 // Route-based code splitting
@@ -83,7 +82,6 @@ const App: React.FC = () => {
           </Switch>
         </Suspense>
       </Menu>
-      <NftGlobalNotification />
       <ToastListener />
     </Router>
   )

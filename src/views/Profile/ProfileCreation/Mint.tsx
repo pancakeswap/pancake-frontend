@@ -1,6 +1,20 @@
 import React, { useContext, useState } from 'react'
-import { ChevronRightIcon, Button, Card, CardBody, Flex, Heading, Text } from '@pancakeswap-libs/uikit'
+import styled from 'styled-components'
+import BigNumber from 'bignumber.js'
+import {
+  ChevronRightIcon,
+  Button as UIKitButton,
+  Card,
+  CardBody,
+  Flex,
+  Heading,
+  Text,
+  AutoRenewIcon,
+} from '@pancakeswap-libs/uikit'
+import { useWallet } from '@binance-chain/bsc-use-wallet'
 import useI18n from 'hooks/useI18n'
+import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
+import { useCake, useRabbitMintingFarm } from 'hooks/useContract'
 import nftList from 'config/constants/nfts'
 import NftSelectionCard from '../components/NftSelectionCard'
 import NextStepButton from '../components/NextStepButton'
@@ -9,11 +23,35 @@ import { ProfileCreationContext } from './contexts/ProfileCreationProvider'
 const starterBunnyIds = [5, 6, 7, 8, 9]
 const nfts = nftList.filter((nft) => starterBunnyIds.includes(nft.bunnyId))
 
+const Button = styled(UIKitButton)`
+  min-width: 160px;
+`
+
+const spinnerIcon = <AutoRenewIcon spin color="currentColor" />
+
 const Mint: React.FC = () => {
-  const [hasMinted, setHasMinted] = useState(false)
   const [bunnyId, setBunnyId] = useState(null)
   const { nextStep } = useContext(ProfileCreationContext)
+  const { account } = useWallet()
+  const cakeContract = useCake()
+  const mintingFarmContract = useRabbitMintingFarm()
   const TranslateString = useI18n()
+  const {
+    isApproving,
+    isApproved,
+    isConfirmed,
+    isConfirming,
+    handleApprove,
+    handleConfirm,
+  } = useApproveConfirmTransaction(
+    () => {
+      const cost = new BigNumber(5).multipliedBy(new BigNumber(10).pow(18)).toJSON()
+      return cakeContract.methods.approve(mintingFarmContract.options.address, cost).send({ from: account })
+    },
+    () => {
+      return mintingFarmContract.methods.mintNFT(bunnyId).send({ from: account })
+    },
+  )
 
   return (
     <>
@@ -48,19 +86,32 @@ const Mint: React.FC = () => {
                 nft={nft}
                 isChecked={bunnyId === nft.bunnyId}
                 onChange={handleChange}
+                isDisabled={isApproving || isConfirming}
               />
             )
           })}
           <Flex py="8px">
-            <Button disabled={bunnyId === null} onClick={() => setHasMinted(true)}>
-              {TranslateString(999, 'Approve')}
+            <Button
+              disabled={bunnyId === null || isConfirmed || isConfirming || isApproved}
+              onClick={handleApprove}
+              endIcon={isApproving ? spinnerIcon : undefined}
+              isLoading={isApproving}
+            >
+              {isApproving ? TranslateString(999, 'Approving') : TranslateString(999, 'Approve')}
             </Button>
             <ChevronRightIcon width="24px" color="textDisabled" />
-            <Button disabled>{TranslateString(999, 'Confirmed')}</Button>
+            <Button
+              onClick={handleConfirm}
+              disabled={!isApproved || isConfirmed}
+              isLoading={isConfirming}
+              endIcon={isConfirming ? spinnerIcon : undefined}
+            >
+              {isConfirming ? TranslateString(999, 'Confirming') : TranslateString(999, 'Confirm')}
+            </Button>
           </Flex>
         </CardBody>
       </Card>
-      <NextStepButton onClick={nextStep} disabled={!hasMinted}>
+      <NextStepButton onClick={nextStep} disabled={!isConfirmed}>
         {TranslateString(999, 'Next Step')}
       </NextStepButton>
     </>
