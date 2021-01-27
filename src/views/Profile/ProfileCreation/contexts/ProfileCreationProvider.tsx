@@ -1,11 +1,15 @@
-import React, { createContext, useMemo, useReducer } from 'react'
+import React, { createContext, useEffect, useMemo, useReducer } from 'react'
+import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { getRabbitMintingContract } from 'utils/contractHelpers'
 
 type Actions =
   | { type: 'set_step'; step: number }
   | { type: 'set_team'; teamId: number | null }
   | { type: 'set_bunny'; bunnyId: number | null }
+  | { type: 'initialize'; step: number }
 
 interface State {
+  isInitialized: boolean
   currentStep: number
   teamId: number | null
   bunnyId: number | null
@@ -18,6 +22,7 @@ interface ContextType extends State {
 }
 
 const initialState: State = {
+  isInitialized: false,
   currentStep: 0,
   teamId: null,
   bunnyId: null,
@@ -25,6 +30,12 @@ const initialState: State = {
 
 const reducer = (state: State, action: Actions) => {
   switch (action.type) {
+    case 'initialize':
+      return {
+        ...state,
+        isInitialized: true,
+        currentStep: action.step,
+      }
     case 'set_step':
       return {
         ...state,
@@ -49,6 +60,22 @@ export const ProfileCreationContext = createContext<ContextType>(null)
 
 const ProfileCreationProvider: React.FC = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState)
+  const { account } = useWallet()
+
+  // Initial checks
+  useEffect(() => {
+    const fetchData = async () => {
+      const mintingContract = getRabbitMintingContract()
+      const hasClaimed = await mintingContract.methods.hasClaimed(account).call()
+
+      dispatch({ type: 'initialize', step: hasClaimed ? 1 : 0 })
+    }
+
+    if (account) {
+      fetchData()
+    }
+  }, [account, dispatch])
+
   const memoizedState = useMemo(
     () => ({
       ...state,
