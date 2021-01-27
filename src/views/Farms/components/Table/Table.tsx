@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { RowType, useTable } from '@pancakeswap-libs/uikit'
+import BigNumber from 'bignumber.js'
 
 import Row, { RowData } from './Row'
 import ScrollBar from '../ScrollBar'
@@ -134,13 +135,32 @@ const columns = ColumnsDef.map((column) => ({
       case 'pool':
         return a.id - b.id
       case 'apy':
-        return Number(a.original.apy.value) - Number(b.original.apy.value)
+        if (a.original.apy.value && b.original.apy.value) {
+          return Number(a.original.apy.value) - Number(b.original.apy.value)
+        }
+
+        return 0
       case 'details':
-        return a.original.details.liquidity - b.original.details.liquidity
+        if (a.original.details.liquidity && b.original.details.liquidity) {
+          return a.original.details.liquidity - b.original.details.liquidity
+        }
+
+        return 0
+      case 'earned':
+        return a.original.earned.earnings - b.original.earned.earnings
+      case 'staked':
+        if (a.original.staked.userData && b.original.staked.userData) {
+          return new BigNumber(a.original.staked.userData.stakedBalance).comparedTo(
+            new BigNumber(b.original.staked.userData.stakedBalance),
+          )
+        }
+
+        return 0
       default:
         return 1
     }
   },
+  sortable: column.name !== 'links',
 }))
 
 export default React.forwardRef((props: ITableProps, ref) => {
@@ -233,7 +253,11 @@ export default React.forwardRef((props: ITableProps, ref) => {
             <TableHead>
               <tr>
                 {headers.map((column, key) => (
-                  <Cell key={`head-${column.name}`} onClick={() => toggleSort(column.name)} isHeader>
+                  <Cell
+                    key={`head-${column.name}`}
+                    onClick={() => (column.name !== 'links' ? toggleSort(column.name) : '')}
+                    isHeader
+                  >
                     <CellInner>
                       <span className="bold">{ColumnsDef[key].bold}&nbsp;</span>
                       {column.label}

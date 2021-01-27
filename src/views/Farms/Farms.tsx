@@ -14,11 +14,14 @@ import useRefresh from 'hooks/useRefresh'
 import { fetchFarmUserDataAsync } from 'state/actions'
 import { QuoteToken } from 'config/constants/types'
 import useI18n from 'hooks/useI18n'
+import { getBalanceNumber } from 'utils/formatBalance'
+import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import FarmCard, { FarmWithStakedValue } from './components/FarmCard/FarmCard'
 import Table from './components/Table/Table'
 import FarmTabButtons from './components/FarmTabButtons'
 import Divider from './components/Divider'
 import SearchInput from './components/SearchInput'
+import { RowData } from './components/Table/Row'
 
 const ControlContainer = styled.div`
   display: flex;
@@ -107,7 +110,6 @@ const Farms: React.FC = () => {
   }
 
   const rowData = farmsStaked.map((farm) => {
-    const row: any = {}
     let totalValue = farm.lpTotalInQuoteToken
 
     if (!farm.lpTotalInQuoteToken) {
@@ -120,29 +122,34 @@ const Farms: React.FC = () => {
       totalValue = cakePrice.times(farm.lpTotalInQuoteToken)
     }
 
-    row.apy = {
-      value: farm.apy
-        ? Number(`${farm.apy.times(new BigNumber(100)).toNumber().toLocaleString('en-US').slice(0, -1)}`)
-        : null,
-      multiplier: farm.multiplier,
+    const { quoteTokenAdresses, quoteTokenSymbol, tokenAddresses } = farm
+
+    const row: RowData = {
+      apy: {
+        value: farm.apy
+          ? Number(`${farm.apy.times(new BigNumber(100)).toNumber().toLocaleString('en-US').slice(0, -1)}`)
+          : null,
+        multiplier: farm.multiplier,
+      },
+      pool: {
+        image: farm.lpSymbol.split(' ')[0].toLocaleLowerCase(),
+        label: farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('PANCAKE', ''),
+      },
+      earned: {
+        earnings: farm.userData ? getBalanceNumber(new BigNumber(farm.userData.earnings)) : null,
+        pid: farm.pid,
+      },
+      staked: farm,
+      details: {
+        liquidity: Number(totalValue),
+        lpName: farm.lpSymbol.toUpperCase(),
+        liquidityUrlPathParts: getLiquidityUrlPathParts({ quoteTokenAdresses, quoteTokenSymbol, tokenAddresses }),
+      },
+      links: {
+        bsc: `https://bscscan.com/address/${farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]}`,
+      },
     }
 
-    row.pool = {
-      image: farm.lpSymbol.split(' ')[0].toLocaleLowerCase(),
-      label: farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('PANCAKE', ''),
-    }
-
-    row.earned = {}
-
-    row.staked = {}
-
-    row.details = {
-      liquidity: Number(totalValue),
-    }
-
-    row.links = {
-      bsc: farm.lpAddresses[process.env.REACT_APP_CHAIN_ID],
-    }
     return row
   })
 

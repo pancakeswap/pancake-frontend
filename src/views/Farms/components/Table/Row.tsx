@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
 
 import Apy from './Apy'
 import Pool from './Pool'
@@ -10,17 +11,22 @@ import Links from './Links'
 
 export interface RowData {
   apy: {
-    value: string
+    value: number
     multiplier: string
   }
   pool: {
     image: string
     label: string
   }
-  earned: any
-  staked: any
+  earned: {
+    earnings: number
+    pid: number
+  }
+  staked: FarmWithStakedValue
   details: {
     liquidity: number
+    lpName: string
+    liquidityUrlPathParts: string
   }
   links: {
     bsc: string
