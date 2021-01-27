@@ -47,10 +47,10 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
   const farmApy = apy.times(new BigNumber(100)).toNumber()
   const costOfOneThousandCake = cakePrice.toNumber() * 1000
 
-  const cakePerThousand1D = calculateCakePerThousand(1, farmApy, cakePrice)
-  const cakePerThousand7D = calculateCakePerThousand(7, farmApy, cakePrice)
-  const cakePerThousand30D = calculateCakePerThousand(30, farmApy, cakePrice)
-  const cakePerThousand365D = calculateCakePerThousand(365, farmApy, cakePrice)
+  const cakePerThousand1D = calculateCakePerThousand({ numberOfDays: 1, apy: farmApy, cakePrice })
+  const cakePerThousand7D = calculateCakePerThousand({ numberOfDays: 7, apy: farmApy, cakePrice })
+  const cakePerThousand30D = calculateCakePerThousand({ numberOfDays: 30, apy: farmApy, cakePrice })
+  const cakePerThousand365D = calculateCakePerThousand({ numberOfDays: 365, apy: farmApy, cakePrice })
 
   return (
     <Modal title="ROI" onDismiss={onDismiss}>
