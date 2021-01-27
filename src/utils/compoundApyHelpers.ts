@@ -17,7 +17,7 @@ export const calculateCakeEarnedPerThousandDollars = ({ numberOfDays, farmApy, c
   return roundToTwoDp(interestEarned)
 }
 
-export const apyModalRoi = ({ cakeEarnedPerThousandDollars, oneThousandDollarsWorthOfCake }) => {
-  const percentage = (cakeEarnedPerThousandDollars / oneThousandDollarsWorthOfCake) * 100
+export const apyModalRoi = ({ amountEarned, amountInvested }) => {
+  const percentage = (amountEarned / amountInvested) * 100
   return percentage.toFixed(2)
 }

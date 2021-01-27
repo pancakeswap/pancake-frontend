@@ -76,7 +76,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
         </GridItem>
         <GridItem>
           <Text>
-            {apyModalRoi({ cakeEarnedPerThousandDollars: cakeEarnedPerThousand1D, oneThousandDollarsWorthOfCake })}%
+            {apyModalRoi({ amountEarned: cakeEarnedPerThousand1D, amountInvested: oneThousandDollarsWorthOfCake })}%
           </Text>
         </GridItem>
         <GridItem>
@@ -88,7 +88,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
         </GridItem>
         <GridItem>
           <Text>
-            {apyModalRoi({ cakeEarnedPerThousandDollars: cakeEarnedPerThousand7D, oneThousandDollarsWorthOfCake })}%
+            {apyModalRoi({ amountEarned: cakeEarnedPerThousand7D, amountInvested: oneThousandDollarsWorthOfCake })}%
           </Text>
         </GridItem>
         <GridItem>
@@ -100,7 +100,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
         </GridItem>
         <GridItem>
           <Text>
-            {apyModalRoi({ cakeEarnedPerThousandDollars: cakeEarnedPerThousand30D, oneThousandDollarsWorthOfCake })}%
+            {apyModalRoi({ amountEarned: cakeEarnedPerThousand30D, amountInvested: oneThousandDollarsWorthOfCake })}%
           </Text>
         </GridItem>
         <GridItem>
@@ -112,7 +112,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
         </GridItem>
         <GridItem>
           <Text>
-            {apyModalRoi({ cakeEarnedPerThousandDollars: cakeEarnedPerThousand365D, oneThousandDollarsWorthOfCake })}%
+            {apyModalRoi({ amountEarned: cakeEarnedPerThousand365D, amountInvested: oneThousandDollarsWorthOfCake })}%
           </Text>
         </GridItem>
         <GridItem>
