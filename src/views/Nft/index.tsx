@@ -6,7 +6,6 @@ import Page from 'components/layout/Page'
 import HowItWorks from './components/HowItWorks'
 import NftList from './components/NftList'
 import NftProvider from './contexts/NftProvider'
-import NftInfo from './components/NftInfo'
 
 const StyledHero = styled.div`
   border-bottom: 1px solid ${({ theme }) => theme.colors.textSubtle};
@@ -28,7 +27,6 @@ const Nft = () => {
             {TranslateString(999, 'Trade in for CAKE, or keep for your collection!')}
           </Heading>
         </StyledHero>
-        <NftInfo />
         <NftList />
         <HowItWorks />
       </Page>
