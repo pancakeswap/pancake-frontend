@@ -1,3 +1,5 @@
+const roundToTwoDp = (number) => Math.round(number * 100) / 100
+
 export const calculateCakePerThousand = ({ numberOfDays, apy, cakePrice }) => {
   // Everything here is worked out relative to a year, with the asset compounding daily
   const timesCompounded = 365
@@ -12,7 +14,7 @@ export const calculateCakePerThousand = ({ numberOfDays, apy, cakePrice }) => {
 
   // To get the cake earned, deduct the amount after compounding (finalAmount) from the starting CAKE balance (principal)
   const interestEarned = finalAmount - principal
-  return interestEarned
+  return roundToTwoDp(interestEarned)
 }
 
 export const apyModalRoi = (cakePerThousandDollars, costOfOneThousandCake) => {

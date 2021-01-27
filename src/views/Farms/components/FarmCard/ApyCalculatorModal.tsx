@@ -78,7 +78,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
           <Text>{apyModalRoi(cakePerThousand1D, costOfOneThousandCake)}%</Text>
         </GridItem>
         <GridItem>
-          <Text>{cakePerThousand1D.toFixed(2)}</Text>
+          <Text>{cakePerThousand1D}</Text>
         </GridItem>
         {/* 7 day row */}
         <GridItem>
@@ -88,7 +88,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
           <Text>{apyModalRoi(cakePerThousand7D, costOfOneThousandCake)}%</Text>
         </GridItem>
         <GridItem>
-          <Text>{cakePerThousand7D.toFixed(2)}</Text>
+          <Text>{cakePerThousand7D}</Text>
         </GridItem>
         {/* 30 day row */}
         <GridItem>
@@ -98,7 +98,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
           <Text>{apyModalRoi(cakePerThousand30D, costOfOneThousandCake)}%</Text>
         </GridItem>
         <GridItem>
-          <Text>{cakePerThousand30D.toFixed(2)}</Text>
+          <Text>{cakePerThousand30D}</Text>
         </GridItem>
         {/* 365 day / APY row */}
         <GridItem>
@@ -108,7 +108,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
           <Text>{apyModalRoi(cakePerThousand365D, costOfOneThousandCake)}%</Text>
         </GridItem>
         <GridItem>
-          <Text>{cakePerThousand365D.toFixed(2)}</Text>
+          <Text>{cakePerThousand365D}</Text>
         </GridItem>
       </Grid>
       <Description fontSize="12px" color="textSubtle">
