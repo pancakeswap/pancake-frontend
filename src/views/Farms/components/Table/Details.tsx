@@ -37,6 +37,14 @@ const StakeTitle = styled.span`
 `
 
 const Details: React.FunctionComponent<CellProps> = ({ liquidity }) => {
+  const renderLiquidity = (): string => {
+    if (liquidity) {
+      return `$${Number(liquidity).toLocaleString(undefined, { maximumFractionDigits: 0 })}`
+    }
+
+    return '-'
+  }
+
   return (
     <>
       <Container>
@@ -49,7 +57,7 @@ const Details: React.FunctionComponent<CellProps> = ({ liquidity }) => {
         </div>
         <div>
           <StakeLabel>Liquidity:</StakeLabel>
-          <span>{liquidity}</span>
+          <span>{renderLiquidity()}</span>
         </div>
       </Container>
     </>

@@ -20,7 +20,7 @@ export interface RowData {
   earned: any
   staked: any
   details: {
-    liquidity: string
+    liquidity: number
   }
   links: {
     bsc: string

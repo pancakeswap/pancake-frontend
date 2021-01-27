@@ -21,9 +21,16 @@ const Multiplier = styled.div`
 `
 
 const Apy: React.FunctionComponent<CellProps> = ({ value, multiplier }) => {
+  const renderValue = (): string => {
+    if (value) {
+      return `${value}%`
+    }
+
+    return 'Loading...'
+  }
   return (
     <>
-      {`${value}`}
+      {renderValue()}
       <CalculateIcon src="/images/calculate.svg" alt="calculate" />
       <Multiplier>{multiplier}</Multiplier>
     </>

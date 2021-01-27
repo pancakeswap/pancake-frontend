@@ -10,6 +10,7 @@ export type ColumnsDefTypes = {
   id: number
   bold: string
   normal: string
+  name: string
 }
 
 export type ScrollBarProps = {
@@ -31,30 +32,36 @@ export const ColumnsDef: ColumnsDefTypes[] = [
     id: 1,
     bold: '',
     normal: 'POOL',
+    name: 'pool',
   },
   {
     id: 2,
     bold: '',
     normal: 'APY',
+    name: 'apy',
   },
   {
     id: 3,
     bold: 'CAKE',
     normal: 'EARNED',
+    name: 'earned',
   },
   {
     id: 4,
     bold: 'LP TOKENS',
     normal: 'STAKED',
+    name: 'staked',
   },
   {
     id: 5,
     bold: '',
     normal: 'DETAILS',
+    name: 'details',
   },
   {
     id: 6,
     bold: '',
     normal: 'LINKS',
+    name: 'links',
   },
 ]

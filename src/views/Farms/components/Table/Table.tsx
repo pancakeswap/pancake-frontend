@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { useTable } from '@pancakeswap-libs/uikit'
+import { RowType, useTable } from '@pancakeswap-libs/uikit'
 
 import Row, { RowData } from './Row'
 import ScrollBar from '../ScrollBar'
@@ -127,8 +127,20 @@ const TableContainer = styled.div<{ showGradient: boolean }>`
 
 const columns = ColumnsDef.map((column) => ({
   id: column.id,
-  name: column.normal.toLowerCase(),
+  name: column.name,
   label: column.normal,
+  sort: (a: RowType<RowData>, b: RowType<RowData>) => {
+    switch (column.name) {
+      case 'pool':
+        return a.id - b.id
+      case 'apy':
+        return Number(a.original.apy.value) - Number(b.original.apy.value)
+      case 'details':
+        return a.original.details.liquidity - b.original.details.liquidity
+      default:
+        return 1
+    }
+  },
 }))
 
 export default React.forwardRef((props: ITableProps, ref) => {
@@ -138,6 +150,20 @@ export default React.forwardRef((props: ITableProps, ref) => {
   const [visibleScroll, setVisibleScroll] = useState(true)
   const [showGradient, setShowGradient] = useState(true)
   const { data } = props
+
+  const renderSortArrow = (column: any): JSX.Element => {
+    if (column.sorted && column.sorted.on) {
+      if (column.sorted.asc) {
+        return <ArrowIcon src="/images/icons/arrow-down.svg" className="toggle" alt="arrow down" />
+      }
+
+      return <ArrowIcon src="/images/icons/arrow-down.svg" alt="arrow down" />
+    }
+
+    return null
+  }
+
+  const { headers, rows, toggleSort, setSearchString } = useTable(columns, data, { sortable: true })
 
   useEffect(() => {
     if (scrollBarEl && scrollBarEl.current) {
@@ -191,20 +217,6 @@ export default React.forwardRef((props: ITableProps, ref) => {
       setTableWidth(tableWrapperEl.current.scrollWidth)
     }
   }, [])
-
-  const renderSortArrow = (column: any): JSX.Element => {
-    if (column.sorted && column.sorted.on) {
-      if (column.sorted.asc) {
-        return <ArrowIcon src="/images/icons/arrow-down.svg" className="toggle" alt="arrow down" />
-      }
-
-      return <ArrowIcon src="/images/icons/arrow-down.svg" alt="arrow down" />
-    }
-
-    return null
-  }
-
-  const { headers, rows, toggleSort, setSearchString } = useTable(columns, data, { sortable: true })
 
   React.useImperativeHandle(ref, () => ({
     setTableQuery(query: string) {

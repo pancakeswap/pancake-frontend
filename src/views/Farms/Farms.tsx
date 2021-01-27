@@ -117,14 +117,10 @@ const Farms: React.FC = () => {
       totalValue = cakePrice.times(farm.lpTotalInQuoteToken)
     }
 
-    const totalValueFormated = totalValue
-      ? `$${Number(totalValue).toLocaleString(undefined, { maximumFractionDigits: 0 })}`
-      : '-'
-
     row.apy = {
       value: farm.apy
-        ? `${farm.apy.times(new BigNumber(100)).toNumber().toLocaleString('en-US').slice(0, -1)}%`
-        : 'Loading ...',
+        ? Number(`${farm.apy.times(new BigNumber(100)).toNumber().toLocaleString('en-US').slice(0, -1)}`)
+        : null,
       multiplier: farm.multiplier,
     }
 
@@ -138,7 +134,7 @@ const Farms: React.FC = () => {
     row.staked = {}
 
     row.details = {
-      liquidity: totalValueFormated,
+      liquidity: Number(totalValue),
     }
 
     row.links = {
