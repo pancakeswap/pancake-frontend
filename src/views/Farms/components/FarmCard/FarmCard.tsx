@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react'
 import BigNumber from 'bignumber.js'
 import styled, { keyframes } from 'styled-components'
-import { Flex, Text } from '@pancakeswap-libs/uikit'
+import { Flex, Text, Skeleton } from '@pancakeswap-libs/uikit'
 import { communityFarms } from 'config/constants'
 import { Farm } from 'state/types'
 import { provider } from 'web3-core'
@@ -139,7 +139,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed, cakePrice, bnbPrice,
           <Text bold style={{ display: 'flex', alignItems: 'center' }}>
             {farm.apy ? (
               <>
-                ${farmAPY}%
+                {farmAPY}%
                 <ApyButton
                   lpLabel={lpLabel}
                   quoteTokenAdresses={quoteTokenAdresses}
@@ -150,7 +150,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed, cakePrice, bnbPrice,
                 />
               </>
             ) : (
-              'Loading ...'
+              <Skeleton height={24} width={80} />
             )}
           </Text>
         </Flex>
