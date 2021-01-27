@@ -57,7 +57,7 @@ const Coming: React.FC = () => {
           {TranslateString(418, 'Apply Now')}
         </Button>
         <DetailPlaceholder>
-          <div style={{ flex: 1 }}>{TranslateString(352, 'APY')}:</div>
+          <div style={{ flex: 1 }}>{TranslateString(736, 'APR')}:</div>
           <Value>??</Value>
         </DetailPlaceholder>
         <DetailPlaceholder>

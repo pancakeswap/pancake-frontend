@@ -7,7 +7,7 @@ import { provider } from 'web3-core'
 import { Image, Heading } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
 import { BLOCKS_PER_YEAR, CAKE_PER_BLOCK, CAKE_POOL_PID } from 'config'
-import Grid from 'components/layout/Grid'
+import FlexLayout from 'components/layout/Flex'
 import Page from 'components/layout/Page'
 import { useFarms, usePriceBnbBusd, usePriceCakeBusd } from 'state/hooks'
 import useRefresh from 'hooks/useRefresh'
@@ -51,6 +51,9 @@ const Farms: React.FC = () => {
 
   const tableRef = useRef(null)
 
+  // /!\ This function will be removed soon
+  // This function compute the APY for each farm and will be replaced when we have a reliable API
+  // to retrieve assets prices against USD
   const farmsList = useCallback(
     (farmsToDisplay): FarmWithStakedValue[] => {
       const cakePriceVsBNB = new BigNumber(farmsLP.find((farm) => farm.pid === CAKE_POOL_PID)?.tokenPriceVsQuote || 0)
@@ -63,7 +66,7 @@ const Farms: React.FC = () => {
 
         let apy = cakePriceVsBNB.times(cakeRewardPerYear).div(farm.lpTotalInQuoteToken)
 
-        if (farm.quoteTokenSymbol === QuoteToken.BUSD) {
+        if (farm.quoteTokenSymbol === QuoteToken.BUSD || farm.quoteTokenSymbol === QuoteToken.UST) {
           apy = cakePriceVsBNB.times(cakeRewardPerYear).div(farm.lpTotalInQuoteToken).times(bnbPrice)
         } else if (farm.quoteTokenSymbol === QuoteToken.CAKE) {
           apy = cakeRewardPerYear.div(farm.lpTotalInQuoteToken)
@@ -156,8 +159,8 @@ const Farms: React.FC = () => {
       <Table data={rowData} ref={tableRef} />
       <div>
         <Divider />
-        <Route exact path={`${path}`}>
-          <Grid>
+        <FlexLayout>
+          <Route exact path={`${path}`}>
             {farmsStaked.map((farm) => (
               <FarmCard
                 key={farm.pid}
@@ -169,10 +172,8 @@ const Farms: React.FC = () => {
                 removed={false}
               />
             ))}
-          </Grid>
-        </Route>
-        <Route exact path={`${path}/history`}>
-          <Grid>
+          </Route>
+          <Route exact path={`${path}/history`}>
             {farmsStaked.map((farm) => (
               <FarmCard
                 key={farm.pid}
@@ -184,8 +185,8 @@ const Farms: React.FC = () => {
                 removed
               />
             ))}
-          </Grid>
-        </Route>
+          </Route>
+        </FlexLayout>
       </div>
       <Image src="/images/cakecat.png" alt="Pancake illustration" width={949} height={384} responsive />
     </Page>
