@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { Menu as UikitMenu } from '@pancakeswap-libs/uikit'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWeb3React } from '@web3-react/core'
 import { allLanguages } from 'config/localisation/languageCodes'
 import { LanguageContext } from 'contexts/Localisation/languageContext'
 import useTheme from 'hooks/useTheme'
@@ -8,7 +8,7 @@ import { usePriceCakeBusd, useProfile } from 'state/hooks'
 import config from './config'
 
 const Menu = (props) => {
-  const { account, connect, reset } = useWallet()
+  const { account, activate, deactivate } = useWeb3React()
   const { selectedLanguage, setSelectedLanguage } = useContext(LanguageContext)
   const { isDark, toggleTheme } = useTheme()
   const cakePriceUsd = usePriceCakeBusd()
@@ -17,8 +17,8 @@ const Menu = (props) => {
   return (
     <UikitMenu
       account={account}
-      login={connect}
-      logout={reset}
+      login={activate}
+      logout={deactivate}
       isDark={isDark}
       toggleTheme={toggleTheme}
       currentLang={selectedLanguage && selectedLanguage.code}

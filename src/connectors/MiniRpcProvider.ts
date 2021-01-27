@@ -74,8 +74,9 @@ class MiniRpcProvider implements AsyncSendable {
       return
     }
     const byKey = batch.reduce<{ [id: number]: BatchItem }>((memo, current) => {
-      memo[current.request.id] = current
-      return memo
+      const memoCopy = Object.assign(memo)
+      memoCopy[current.request.id] = current
+      return memoCopy
     }, {})
     // eslint-disable-next-line no-restricted-syntax
     for (const result of json) {

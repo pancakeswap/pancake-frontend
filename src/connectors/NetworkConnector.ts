@@ -41,11 +41,11 @@ export class NetworkConnector extends AbstractConnector {
   }
 
   public async getAccount(): Promise<null> {
-    return null
+    return this.currentChainId && null
   }
 
   public deactivate() {
-    return null
+    return this.currentChainId && null
   }
 }
 

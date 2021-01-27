@@ -8,7 +8,7 @@ import { network } from 'connectors'
 import useEagerConnect from 'hooks/useEagerConnect'
 import useInactiveListener from 'hooks/useInactiveListener'
 
-export const NetworkContextName = 'NETWORK'
+// export const NetworkContextName = 'NETWORK'
 
 const MessageWrapper = styled.div`
   display: flex;
@@ -24,7 +24,7 @@ const Message = styled.h2`
 export default function Web3ReactManager({ children }: { children: JSX.Element }) {
   const t = useI18n()
   const { active } = useWeb3React()
-  const { active: networkActive, error: networkError, activate: activateNetwork } = useWeb3React(NetworkContextName)
+  const { active: networkActive, error: networkError, activate: activateNetwork } = useWeb3React()
 
   // try to eagerly connect to an injected provider, if it exists and has granted access already
   const triedEager = useEagerConnect()
@@ -58,6 +58,7 @@ export default function Web3ReactManager({ children }: { children: JSX.Element }
 
   // if the account context isn't active, and there's an error on the network context, it's an irrecoverable error
   if (!active && networkError) {
+    console.log('network', networkError)
     return (
       <MessageWrapper>
         <Message>{t(999, 'unknownError')}</Message>
