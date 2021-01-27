@@ -5,19 +5,16 @@ import { Modal, Text, LinkExternal, Flex } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import { calculateCakePerThousand, apyModalRoi } from 'utils/compoundApyHelpers'
+import { Address } from 'config/constants/types'
 
-export interface TokenAddressesObject {
-  56?: string
-  97?: string
-}
 interface ApyCalculatorModalProps {
   onDismiss?: () => void
   lpLabel?: string
   cakePrice?: BigNumber
   apy?: BigNumber
-  quoteTokenAdresses?: TokenAddressesObject
+  quoteTokenAdresses?: Address
   quoteTokenSymbol?: string
-  tokenAddresses: TokenAddressesObject
+  tokenAddresses: Address
 }
 
 const Grid = styled.div`

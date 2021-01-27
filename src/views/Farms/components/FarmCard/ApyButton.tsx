@@ -1,19 +1,16 @@
 import React from 'react'
 import BigNumber from 'bignumber.js'
 import { CalculateIcon, IconButton, useModal } from '@pancakeswap-libs/uikit'
+import { Address } from 'config/constants/types'
 import ApyCalculatorModal from './ApyCalculatorModal'
 
-export interface TokenAddressesObject {
-  56?: string
-  97?: string
-}
 export interface ApyButtonProps {
   lpLabel?: string
   cakePrice?: BigNumber
   apy?: BigNumber
-  quoteTokenAdresses?: TokenAddressesObject
+  quoteTokenAdresses?: Address
   quoteTokenSymbol?: string
-  tokenAddresses: TokenAddressesObject
+  tokenAddresses: Address
 }
 
 const ApyButton: React.FC<ApyButtonProps> = ({

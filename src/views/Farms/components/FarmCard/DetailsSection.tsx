@@ -3,19 +3,16 @@ import useI18n from 'hooks/useI18n'
 import styled from 'styled-components'
 import { Text, Flex, Link, LinkExternal } from '@pancakeswap-libs/uikit'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
+import { Address } from 'config/constants/types'
 
-export interface TokenAddressesObject {
-  56?: string
-  97?: string
-}
 export interface ExpandableSectionProps {
   bscScanAddress?: string
   removed?: boolean
   totalValueFormated?: string
   lpLabel?: string
-  quoteTokenAdresses?: TokenAddressesObject
+  quoteTokenAdresses?: Address
   quoteTokenSymbol?: string
-  tokenAddresses: TokenAddressesObject
+  tokenAddresses: Address
 }
 
 const Wrapper = styled.div`
