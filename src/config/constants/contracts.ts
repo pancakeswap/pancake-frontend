@@ -1,6 +1,6 @@
 export default {
   cake: {
-    97: '0x43acC9A5E94905c7D31415EB410F3E666e5F1e9A',
+    97: '0xa35062141Fa33BCA92Ce69FeD37D0E8908868AAe',
     56: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
   },
   syrup: {
@@ -49,6 +49,6 @@ export default {
   },
   rabbitMintingFarm: {
     56: '0x7c8b60d2b859a38c8B9b5B6CB4565485cb637c7a',
-    97: '0x07e7951E29D56BE1a131178c631012dB0f62f9D9',
+    97: '0x8f4739a48883Fdd89b65DC245dD5774fC8f44a67',
   },
 }
