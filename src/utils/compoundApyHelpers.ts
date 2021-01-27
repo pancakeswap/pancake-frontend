@@ -1,8 +1,8 @@
 export const calculateCakePerThousand = (numberOfDays, apy, cakePrice) => {
   const timesCompounded = 365
   const apyAsDecimal = apy / 100
-  const daysAsDecimalOfYear = numberOfDays / 365
-  const principal = 1000 * cakePrice
+  const daysAsDecimalOfYear = numberOfDays / timesCompounded
+  const principal = 1000 / cakePrice
 
   const finalAmount = principal * (1 + apyAsDecimal / timesCompounded) ** (timesCompounded * daysAsDecimalOfYear)
   const interestEarned = finalAmount - principal
