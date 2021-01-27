@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { Button, Checkbox, Modal, Text } from '@pancakeswap-libs/uikit'
-import { getRabbitMintingFarmAddress } from 'utils/addressHelpers'
 import useI18n from 'hooks/useI18n'
 import { Nft } from 'config/constants/types'
 import { useRabbitMintingFarm } from 'hooks/useContract'
@@ -14,8 +13,6 @@ interface BurnNftModalProps {
   onSuccess: () => any
   onDismiss?: () => void
 }
-
-const rabbitMintingFarmAddress = getRabbitMintingFarmAddress()
 
 const Value = styled(Text)`
   font-weight: 600;
@@ -37,7 +34,7 @@ const BurnNftModal: React.FC<BurnNftModalProps> = ({ nft, tokenIds, onSuccess, o
   const [accepted, setAccepted] = useState(false)
   const TranslateString = useI18n()
   const { account } = useWallet()
-  const rabbitMintingContract = useRabbitMintingFarm(rabbitMintingFarmAddress)
+  const rabbitMintingContract = useRabbitMintingFarm()
 
   const handleConfirm = async () => {
     try {

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { Button, Modal, Text } from '@pancakeswap-libs/uikit'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { getCakeAddress, getRabbitMintingFarmAddress } from 'utils/addressHelpers'
+import { getCakeAddress } from 'utils/addressHelpers'
 import { Nft } from 'config/constants/types'
 import useTokenBalance from 'hooks/useTokenBalance'
 import useI18n from 'hooks/useI18n'
@@ -15,8 +15,6 @@ interface ClaimNftModalProps {
   onSuccess: () => any
   onDismiss?: () => void
 }
-
-const rabbitMintingFarmAddress = getRabbitMintingFarmAddress()
 
 const Value = styled(Text)`
   font-weight: 600;
@@ -37,7 +35,7 @@ const ClaimNftModal: React.FC<ClaimNftModalProps> = ({ nft, onSuccess, onDismiss
   const [error, setError] = useState(null)
   const TranslateString = useI18n()
   const { account } = useWallet()
-  const rabbitMintingContract = useRabbitMintingFarm(rabbitMintingFarmAddress)
+  const rabbitMintingContract = useRabbitMintingFarm()
   const cakeBalance = useTokenBalance(getCakeAddress())
   const cakeInWallet = getBalanceNumber(cakeBalance)
 
