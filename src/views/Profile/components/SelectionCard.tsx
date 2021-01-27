@@ -17,11 +17,12 @@ const StyledCard = styled(Card)`
   margin-bottom: 16px;
 `
 
-const Label = styled.label`
-  cursor: pointer;
+const Label = styled.label<{ isDisabled: boolean }>`
+  cursor: ${({ isDisabled }) => (isDisabled ? 'not-allowed' : 'pointer')};
   display: flex;
   justify-content: space-between;
   align-items: center;
+  opacity: ${({ isDisabled }) => (isDisabled ? '0.6' : '1')};
 `
 
 const Body = styled.div`
@@ -59,8 +60,8 @@ const SelectionCard: React.FC<SelectionCardProps> = ({
   ...props
 }) => {
   return (
-    <StyledCard isSuccess={isChecked} mb="16px" {...props}>
-      <Label>
+    <StyledCard isSuccess={isChecked} isDisabled={disabled} mb="16px" {...props}>
+      <Label isDisabled={disabled}>
         <Body>
           <Radio
             name={name}

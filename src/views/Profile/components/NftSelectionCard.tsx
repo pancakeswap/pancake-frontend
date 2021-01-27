@@ -5,12 +5,25 @@ import SelectionCard from './SelectionCard'
 
 interface NftSelectionCardProps {
   isChecked?: boolean
+  isDisabled?: boolean
   onChange: (bunnyId: string) => void
   nft: Nft
 }
 
-const NftSelectionCard: React.FC<NftSelectionCardProps> = ({ nft, isChecked = false, onChange }) => (
-  <SelectionCard name="starter" value={nft.bunnyId} image={nft.previewImage} onChange={onChange} isChecked={isChecked}>
+const NftSelectionCard: React.FC<NftSelectionCardProps> = ({
+  nft,
+  isChecked = false,
+  isDisabled = false,
+  onChange,
+}) => (
+  <SelectionCard
+    name="starter"
+    value={nft.bunnyId}
+    image={nft.previewImage}
+    onChange={onChange}
+    disabled={isDisabled}
+    isChecked={isChecked}
+  >
     <Text bold>{nft.name}</Text>
   </SelectionCard>
 )
