@@ -98,6 +98,6 @@ settings.forEach((item: SettingsObject) => {
   api(item.link).then((res) => {
     const secondKey = Object.keys(res)[1]
     const formattedData = getFormattedData(item.type, res[secondKey])
-    fs.writeFileSync(`src/config/constants/${item.name}.json`, JSON.stringify(formattedData))
+    fs.writeFileSync(`src/config/constants/${item.name}.json`, JSON.stringify(formattedData, undefined, 2))
   })
 })
