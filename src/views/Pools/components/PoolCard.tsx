@@ -181,7 +181,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
             ))}
         </StyledCardActions>
         <StyledDetails>
-          <div style={{ flex: 1 }}>{TranslateString(352, 'APY')}:</div>
+          <div style={{ flex: 1 }}>{TranslateString(736, 'APR')}:</div>
           {isFinished || isOldSyrup || !apy || apy?.isNaN() || !apy?.isFinite() ? (
             '-'
           ) : (

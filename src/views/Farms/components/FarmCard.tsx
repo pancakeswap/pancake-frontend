@@ -161,7 +161,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed }) => {
       </Label>
       {!removed && (
         <Label>
-          <span>{TranslateString(352, 'APY')}</span>
+          <span>{TranslateString(736, 'APR')}</span>
           <span className="right">
             {farm.apy
               ? `${farm.apy.times(new BigNumber(100)).toNumber().toLocaleString('en-US').slice(0, -1)}%`
