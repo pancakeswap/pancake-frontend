@@ -10,7 +10,7 @@ import { getPancakeRabbitsAddress } from 'utils/addressHelpers'
 import useProfileCreation from './contexts/hook'
 
 const UserName: React.FC = () => {
-  const { teamId, bunnyId, userName, setUserName } = useProfileCreation()
+  const { teamId, tokenId, userName, setUserName } = useProfileCreation()
   const TranslateString = useI18n()
   const { account } = useWallet()
   const web3 = useWeb3()
@@ -52,7 +52,7 @@ const UserName: React.FC = () => {
       })
 
       if (res.ok) {
-        await contract.methods.createProfile(teamId, getPancakeRabbitsAddress(), bunnyId).send({ from: account })
+        await contract.methods.createProfile(teamId, getPancakeRabbitsAddress(), tokenId).send({ from: account })
       } else {
         const data = await res.json()
         toastError(data?.error?.message)

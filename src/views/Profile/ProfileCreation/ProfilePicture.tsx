@@ -5,7 +5,7 @@ import { Link as RouterLink } from 'react-router-dom'
 import nftList from 'config/constants/nfts'
 import useI18n from 'hooks/useI18n'
 import useGetWalletNfts from 'hooks/useGetWalletNfts'
-import NftSelectionCard from '../components/NftSelectionCard'
+import SelectionCard from '../components/SelectionCard'
 import NextStepButton from '../components/NextStepButton'
 import { ProfileCreationContext } from './contexts/ProfileCreationProvider'
 
@@ -16,10 +16,10 @@ const Link = styled(RouterLink)`
 const NftWrapper = styled.div``
 
 const ProfilePicture: React.FC = () => {
-  const { nextStep, bunnyId, setBunnyId } = useContext(ProfileCreationContext)
+  const { nextStep, tokenId, setTokenId } = useContext(ProfileCreationContext)
   const TranslateString = useI18n()
-  const { isLoading, nfts } = useGetWalletNfts()
-  const bunnyIds = Object.keys(nfts).map((nftItem) => Number(nftItem))
+  const { isLoading, nfts: nftsInWallet } = useGetWalletNfts()
+  const bunnyIds = Object.keys(nftsInWallet).map((nftWalletItem) => Number(nftWalletItem))
   const walletNfts = nftList.filter((nft) => bunnyIds.includes(nft.bunnyId))
 
   return (
@@ -48,19 +48,27 @@ const ProfilePicture: React.FC = () => {
             {isLoading ? (
               <Skeleton height="80px" mb="16px" />
             ) : (
-              walletNfts.map((walletNft) => (
-                <NftSelectionCard
-                  key={walletNft.bunnyId}
-                  nft={walletNft}
-                  isChecked={walletNft.bunnyId === bunnyId}
-                  onChange={(value: string) => setBunnyId(parseInt(value, 10))}
-                />
-              ))
+              walletNfts.map((walletNft) => {
+                const [firstTokenId] = nftsInWallet[walletNft.bunnyId].tokenIds
+
+                return (
+                  <SelectionCard
+                    name="profilePicture"
+                    key={walletNft.bunnyId}
+                    value={firstTokenId}
+                    image={walletNft.previewImage}
+                    isChecked={firstTokenId === tokenId}
+                    onChange={(value: string) => setTokenId(parseInt(value, 10))}
+                  >
+                    <Text bold>{walletNft.name}</Text>
+                  </SelectionCard>
+                )
+              })
             )}
           </NftWrapper>
         </CardBody>
       </Card>
-      <NextStepButton onClick={nextStep} disabled={bunnyId === null}>
+      <NextStepButton onClick={nextStep} disabled={tokenId === null}>
         {TranslateString(999, 'Next Step')}
       </NextStepButton>
     </>
