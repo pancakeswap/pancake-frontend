@@ -1,14 +1,19 @@
 import React from 'react'
+import Page from 'components/layout/Page'
 import ProfileCreation from './ProfileCreation'
 
 const hasProfile = false
 
 const Profile = () => {
   if (!hasProfile) {
-    return <ProfileCreation />
+    return (
+      <Page>
+        <ProfileCreation />
+      </Page>
+    )
   }
 
-  return <div>Profile</div>
+  return <Page>Profile</Page>
 }
 
 export default Profile
