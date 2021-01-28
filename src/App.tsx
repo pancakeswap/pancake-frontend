@@ -36,7 +36,7 @@ const App: React.FC = () => {
     }
   }, [account, connect])
 
-  // useFetchPublicData()
+  useFetchPublicData()
   useFetchProfile()
 
   return (
