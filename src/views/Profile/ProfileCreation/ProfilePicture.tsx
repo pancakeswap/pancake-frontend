@@ -69,6 +69,7 @@ const ProfilePicture: React.FC = () => {
             ) : (
               walletNfts.map((walletNft) => (
                 <NftSelectionCard
+                  key={walletNft.bunnyId}
                   nft={walletNft}
                   isChecked={walletNft.bunnyId === bunnyId}
                   onChange={(value: string) => setBunnyId(parseInt(value, 10))}

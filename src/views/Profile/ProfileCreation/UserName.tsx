@@ -5,7 +5,7 @@ import useI18n from 'hooks/useI18n'
 import useWeb3 from 'hooks/useWeb3'
 import debounce from 'lodash/debounce'
 import { useToast } from 'state/hooks'
-import { getProfileContract } from 'utils/contractHelpers'
+import { useProfile } from 'hooks/useContract'
 import { getPancakeRabbitsAddress } from 'utils/addressHelpers'
 import useProfileCreation from './contexts/hook'
 
@@ -15,7 +15,7 @@ const UserName: React.FC = () => {
   const { account } = useWallet()
   const web3 = useWeb3()
   const { toastError } = useToast()
-  const contract = getProfileContract()
+  const contract = useProfile()
   const [isValid, setIsValid] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [message, setMessage] = useState('')
