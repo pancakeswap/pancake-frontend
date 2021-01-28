@@ -1,31 +1,14 @@
 import React, { createContext, useEffect, useMemo, useReducer } from 'react'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { getRabbitMintingContract } from 'utils/contractHelpers'
-
-type Actions =
-  | { type: 'set_step'; step: number }
-  | { type: 'set_team'; teamId: number | null }
-  | { type: 'set_bunny'; bunnyId: number | null }
-  | { type: 'initialize'; step: number }
-
-interface State {
-  isInitialized: boolean
-  currentStep: number
-  teamId: number | null
-  bunnyId: number | null
-}
-
-interface ContextType extends State {
-  nextStep: () => void
-  setTeamId: (teamId: number) => void
-  setBunnyId: (bunnyId: number) => void
-}
+import { Actions, State, ContextType } from './types'
 
 const initialState: State = {
   isInitialized: false,
   currentStep: 0,
   teamId: null,
   bunnyId: null,
+  userName: null,
 }
 
 const reducer = (state: State, action: Actions) => {
@@ -50,6 +33,11 @@ const reducer = (state: State, action: Actions) => {
       return {
         ...state,
         bunnyId: action.bunnyId,
+      }
+    case 'set_username':
+      return {
+        ...state,
+        userName: action.userName,
       }
     default:
       return state
@@ -82,6 +70,7 @@ const ProfileCreationProvider: React.FC = ({ children }) => {
       nextStep: () => dispatch({ type: 'set_step', step: state.currentStep + 1 }),
       setTeamId: (teamId: number) => dispatch({ type: 'set_team', teamId }),
       setBunnyId: (bunnyId: number) => dispatch({ type: 'set_bunny', bunnyId }),
+      setUserName: (userName: string) => dispatch({ type: 'set_username', userName }),
     }),
     [state, dispatch],
   )
