@@ -16,7 +16,7 @@ import useI18n from 'hooks/useI18n'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useCake, useRabbitMintingFarm } from 'hooks/useContract'
 import nftList from 'config/constants/nfts'
-import NftSelectionCard from '../components/NftSelectionCard'
+import SelectionCard from '../components/SelectionCard'
 import NextStepButton from '../components/NextStepButton'
 import { ProfileCreationContext } from './contexts/ProfileCreationProvider'
 
@@ -81,13 +81,17 @@ const Mint: React.FC = () => {
             const handleChange = (value: string) => setBunnyId(parseInt(value, 10))
 
             return (
-              <NftSelectionCard
+              <SelectionCard
                 key={nft.bunnyId}
-                nft={nft}
+                name="mintStarter"
+                value={nft.bunnyId}
+                image={nft.previewImage}
                 isChecked={bunnyId === nft.bunnyId}
                 onChange={handleChange}
-                isDisabled={isApproving || isConfirming || isConfirmed}
-              />
+                disabled={isApproving || isConfirming || isConfirmed}
+              >
+                <Text bold>{nft.name}</Text>
+              </SelectionCard>
             )
           })}
           <Flex py="8px">
