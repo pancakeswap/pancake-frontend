@@ -7,11 +7,11 @@ const initialState: State = {
   isInitialized: false,
   currentStep: 0,
   teamId: null,
-  bunnyId: null,
+  tokenId: null,
   userName: null,
 }
 
-const reducer = (state: State, action: Actions) => {
+const reducer = (state: State, action: Actions): State => {
   switch (action.type) {
     case 'initialize':
       return {
@@ -29,10 +29,10 @@ const reducer = (state: State, action: Actions) => {
         ...state,
         teamId: action.teamId,
       }
-    case 'set_bunny':
+    case 'set_tokenid':
       return {
         ...state,
-        bunnyId: action.bunnyId,
+        tokenId: action.tokenId,
       }
     case 'set_username':
       return {
@@ -69,7 +69,7 @@ const ProfileCreationProvider: React.FC = ({ children }) => {
       ...state,
       nextStep: () => dispatch({ type: 'set_step', step: state.currentStep + 1 }),
       setTeamId: (teamId: number) => dispatch({ type: 'set_team', teamId }),
-      setBunnyId: (bunnyId: number) => dispatch({ type: 'set_bunny', bunnyId }),
+      setTokenId: (tokenId: number) => dispatch({ type: 'set_tokenid', tokenId }),
       setUserName: (userName: string) => dispatch({ type: 'set_username', userName }),
     }),
     [state, dispatch],
