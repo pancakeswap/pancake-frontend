@@ -2,9 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Heading, Card, CardBody, Flex, ArrowForwardIcon } from '@pancakeswap-libs/uikit'
 import { NavLink } from 'react-router-dom'
-import { getBalanceNumber } from 'utils/formatBalance'
-import { useTotalRewards } from 'hooks/useTickets'
-import { usePriceCakeBusd } from 'state/hooks'
+import useLotteryTotalPrizesUsd from 'hooks/useLotteryTotalPrizesUsd'
 
 const StyledFarmStakingCard = styled(Card)`
   margin-left: auto;
@@ -21,13 +19,7 @@ const CardMidContent = styled(Heading).attrs({ size: 'xl' })`
   line-height: 44px;
 `
 const WinCard = () => {
-  const lotteryPrizeAmount = +getBalanceNumber(useTotalRewards()).toFixed(0)
-
-  const cakePrize = usePriceCakeBusd()
-
-  const cakePrizeUSD: any = `0.${cakePrize.c[0]}`
-  const usdValue = cakePrizeUSD * lotteryPrizeAmount
-  const lotteryPrize = Math.round(usdValue).toLocaleString()
+  const lotteryPrize = Math.round(useLotteryTotalPrizesUsd()).toLocaleString()
 
   return (
     <StyledFarmStakingCard>
