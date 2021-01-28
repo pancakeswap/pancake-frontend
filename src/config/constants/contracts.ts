@@ -41,7 +41,7 @@ export default {
   },
   pancakeProfile: {
     56: '',
-    97: '0x76dcE8de182aa8B0b2fF1609F9aD09a2a4659c9f',
+    97: '0xfb3310CcA65fe9479a3590206Be3CEEC70DE77FE',
   },
   pancakeRabbits: {
     56: '0xDf7952B35f24aCF7fC0487D01c8d5690a60DBa07',
