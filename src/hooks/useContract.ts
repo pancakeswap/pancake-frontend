@@ -8,6 +8,7 @@ import {
   getLotteryAddress,
   getLotteryTicketAddress,
   getRabbitMintingFarmAddress,
+  getPancakeProfileAddress,
 } from 'utils/addressHelpers'
 import { poolsConfig } from 'config/constants'
 import { PoolCategory } from 'config/constants/types'
@@ -20,6 +21,7 @@ import lotteryTicket from 'config/abi/lotteryNft.json'
 import masterChef from 'config/abi/masterchef.json'
 import sousChef from 'config/abi/sousChef.json'
 import sousChefBnb from 'config/abi/sousChefBnb.json'
+import profile from 'config/abi/pancakeProfile.json'
 
 const useContract = (abi: AbiItem, address: string, contractOptions?: ContractOptions) => {
   const web3 = useWeb3()
@@ -58,6 +60,11 @@ export const useRabbitMintingFarm = () => {
 export const usePancakeRabbits = (address: string) => {
   const pancakeRabbitsAbi = (pancakeRabbits as unknown) as AbiItem
   return useContract(pancakeRabbitsAbi, address)
+}
+
+export const useProfile = () => {
+  const profileABIAbi = (profile as unknown) as AbiItem
+  return useContract(profileABIAbi, getPancakeProfileAddress())
 }
 
 export const useLottery = () => {
