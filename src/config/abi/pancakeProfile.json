@@ -42,7 +42,7 @@
   {
     "anonymous": false,
     "inputs": [
-      { "indexed": false, "internalType": "uint16", "name": "teamId", "type": "uint16" },
+      { "indexed": false, "internalType": "uint256", "name": "teamId", "type": "uint256" },
       { "indexed": false, "internalType": "string", "name": "teamName", "type": "string" }
     ],
     "name": "TeamAdd",
@@ -51,7 +51,7 @@
   {
     "anonymous": false,
     "inputs": [
-      { "indexed": true, "internalType": "uint16", "name": "teamId", "type": "uint16" },
+      { "indexed": true, "internalType": "uint256", "name": "teamId", "type": "uint256" },
       { "indexed": false, "internalType": "uint256", "name": "numberPoints", "type": "uint256" },
       { "indexed": true, "internalType": "uint256", "name": "campaignId", "type": "uint256" }
     ],
@@ -62,8 +62,8 @@
     "anonymous": false,
     "inputs": [
       { "indexed": true, "internalType": "address", "name": "userAddress", "type": "address" },
-      { "indexed": false, "internalType": "uint16", "name": "oldTeamId", "type": "uint16" },
-      { "indexed": false, "internalType": "uint16", "name": "newTeamId", "type": "uint16" }
+      { "indexed": false, "internalType": "uint256", "name": "oldTeamId", "type": "uint256" },
+      { "indexed": false, "internalType": "uint256", "name": "newTeamId", "type": "uint256" }
     ],
     "name": "UserChangeTeam",
     "type": "event"
@@ -72,7 +72,7 @@
     "anonymous": false,
     "inputs": [
       { "indexed": true, "internalType": "address", "name": "userAddress", "type": "address" },
-      { "indexed": false, "internalType": "uint16", "name": "teamId", "type": "uint16" },
+      { "indexed": false, "internalType": "uint256", "name": "teamId", "type": "uint256" },
       { "indexed": false, "internalType": "address", "name": "nftAddress", "type": "address" },
       { "indexed": false, "internalType": "uint256", "name": "tokenId", "type": "uint256" }
     ],
@@ -83,7 +83,7 @@
     "anonymous": false,
     "inputs": [
       { "indexed": true, "internalType": "address", "name": "userAddress", "type": "address" },
-      { "indexed": false, "internalType": "uint16", "name": "teamId", "type": "uint16" }
+      { "indexed": false, "internalType": "uint256", "name": "teamId", "type": "uint256" }
     ],
     "name": "UserPause",
     "type": "event"
@@ -112,7 +112,7 @@
     "anonymous": false,
     "inputs": [
       { "indexed": true, "internalType": "address", "name": "userAddress", "type": "address" },
-      { "indexed": false, "internalType": "uint16", "name": "teamId", "type": "uint16" },
+      { "indexed": false, "internalType": "uint256", "name": "teamId", "type": "uint256" },
       { "indexed": false, "internalType": "address", "name": "nftAddress", "type": "address" },
       { "indexed": false, "internalType": "uint256", "name": "tokenId", "type": "uint256" }
     ],
@@ -166,8 +166,8 @@
   },
   {
     "inputs": [
-      { "internalType": "uint16", "name": "_teamId", "type": "uint16" },
-      { "internalType": "string", "name": "_teamName", "type": "string" }
+      { "internalType": "string", "name": "_teamName", "type": "string" },
+      { "internalType": "string", "name": "_teamDescription", "type": "string" }
     ],
     "name": "addTeam",
     "outputs": [],
@@ -184,7 +184,7 @@
   {
     "inputs": [
       { "internalType": "address", "name": "_userAddress", "type": "address" },
-      { "internalType": "uint16", "name": "_newTeamId", "type": "uint16" }
+      { "internalType": "uint256", "name": "_newTeamId", "type": "uint256" }
     ],
     "name": "changeTeam",
     "outputs": [],
@@ -200,7 +200,7 @@
   },
   {
     "inputs": [
-      { "internalType": "uint16", "name": "_teamId", "type": "uint16" },
+      { "internalType": "uint256", "name": "_teamId", "type": "uint256" },
       { "internalType": "address", "name": "_nftAddress", "type": "address" },
       { "internalType": "uint256", "name": "_tokenId", "type": "uint256" }
     ],
@@ -234,9 +234,10 @@
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "uint16", "name": "_teamId", "type": "uint16" }],
+    "inputs": [{ "internalType": "uint256", "name": "_teamId", "type": "uint256" }],
     "name": "getTeamProfile",
     "outputs": [
+      { "internalType": "string", "name": "", "type": "string" },
       { "internalType": "string", "name": "", "type": "string" },
       { "internalType": "uint256", "name": "", "type": "uint256" },
       { "internalType": "uint256", "name": "", "type": "uint256" },
@@ -251,7 +252,7 @@
     "outputs": [
       { "internalType": "uint256", "name": "", "type": "uint256" },
       { "internalType": "uint256", "name": "", "type": "uint256" },
-      { "internalType": "uint16", "name": "", "type": "uint16" },
+      { "internalType": "uint256", "name": "", "type": "uint256" },
       { "internalType": "address", "name": "", "type": "address" },
       { "internalType": "uint256", "name": "", "type": "uint256" },
       { "internalType": "bool", "name": "", "type": "bool" }
@@ -288,7 +289,7 @@
   },
   {
     "inputs": [
-      { "internalType": "uint16", "name": "_teamId", "type": "uint16" },
+      { "internalType": "uint256", "name": "_teamId", "type": "uint256" },
       { "internalType": "uint256", "name": "_numberPoints", "type": "uint256" },
       { "internalType": "uint256", "name": "_campaignId", "type": "uint256" }
     ],
@@ -320,14 +321,14 @@
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "uint16", "name": "_teamId", "type": "uint16" }],
+    "inputs": [{ "internalType": "uint256", "name": "_teamId", "type": "uint256" }],
     "name": "makeTeamJoinable",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "uint16", "name": "_teamId", "type": "uint16" }],
+    "inputs": [{ "internalType": "uint256", "name": "_teamId", "type": "uint256" }],
     "name": "makeTeamNotJoinable",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -393,8 +394,39 @@
   },
   {
     "inputs": [
-      { "internalType": "uint16", "name": "_teamId", "type": "uint16" },
-      { "internalType": "string", "name": "_teamName", "type": "string" }
+      { "internalType": "uint256", "name": "_teamId", "type": "uint256" },
+      { "internalType": "uint256", "name": "_numberPoints", "type": "uint256" }
+    ],
+    "name": "removeTeamPoints",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_userAddress", "type": "address" },
+      { "internalType": "uint256", "name": "_numberPoints", "type": "uint256" }
+    ],
+    "name": "removeUserPoints",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address[]", "name": "_userAddresses", "type": "address[]" },
+      { "internalType": "uint256", "name": "_numberPoints", "type": "uint256" }
+    ],
+    "name": "removeUserPointsMultiple",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "_teamId", "type": "uint256" },
+      { "internalType": "string", "name": "_teamName", "type": "string" },
+      { "internalType": "string", "name": "_teamDescription", "type": "string" }
     ],
     "name": "renameTeam",
     "outputs": [],
