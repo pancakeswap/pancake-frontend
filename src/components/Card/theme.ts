@@ -1,13 +1,6 @@
 import { darkColors, lightColors } from "../../theme/colors";
 import { shadows } from "../../theme/base";
-
-export type CardTheme = {
-  background: string;
-  boxShadow: string;
-  boxShadowActive: string;
-  boxShadowSuccess: string;
-  boxShadowWarning: string;
-};
+import { CardTheme } from "./types";
 
 export const light: CardTheme = {
   background: lightColors.card,
@@ -15,6 +8,7 @@ export const light: CardTheme = {
   boxShadowActive: shadows.active,
   boxShadowSuccess: shadows.success,
   boxShadowWarning: shadows.warning,
+  cardHeaderBackground: "linear-gradient(111.68deg, #F2ECF2 0%, #E8F2F6 100%)",
 };
 
 export const dark: CardTheme = {
@@ -23,4 +17,5 @@ export const dark: CardTheme = {
   boxShadowActive: shadows.active,
   boxShadowSuccess: shadows.success,
   boxShadowWarning: shadows.warning,
+  cardHeaderBackground: "linear-gradient(166.77deg, #3B4155 0%, #3A3045 100%)",
 };

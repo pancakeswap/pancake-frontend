@@ -2,7 +2,9 @@ import React from "react";
 import styled from "styled-components";
 /* eslint-disable import/no-unresolved */
 import { Meta } from "@storybook/react/types-6-0";
+import Heading from "../Heading/Heading";
 import CardRibbon from "./CardRibbon";
+import UIKitCardHeader from "./CardHeader";
 import CardBody from "./CardBody";
 import CardFooter from "./CardFooter";
 import Card from "./Card";
@@ -54,6 +56,19 @@ export const Default: React.FC = () => {
   );
 };
 
+export const CardHeader: React.FC = () => {
+  return (
+    <div style={{ padding: "32px", width: "500px" }}>
+      <Card>
+        <UIKitCardHeader>
+          <Heading size="xl">Card Header</Heading>
+        </UIKitCardHeader>
+        <CardBody>Body</CardBody>
+        <CardFooter>Footer</CardFooter>
+      </Card>
+    </div>
+  );
+};
 export const Ribbon: React.FC = () => {
   return (
     <div style={{ padding: "32px", width: "500px" }}>
