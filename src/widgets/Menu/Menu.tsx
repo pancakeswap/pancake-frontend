@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
-import debounce from "lodash/debounce";
+import throttle from "lodash/throttle";
 import Overlay from "../../components/Overlay/Overlay";
 import { useMatchBreakpoints } from "../../hooks";
 import Logo from "./Logo";
@@ -78,20 +78,29 @@ const Menu: React.FC<NavProps> = ({
   useEffect(() => {
     const handleScroll = () => {
       const currentOffset = window.pageYOffset;
-      if (currentOffset < refPrevOffset.current) {
-        // Has scroll up
+      const isBottomOfPage = window.document.body.clientHeight === currentOffset + window.innerHeight;
+      const isTopOfPage = currentOffset === 0;
+      // Always show the menu when user reach the top
+      if (isTopOfPage) {
         setShowMenu(true);
-      } else {
-        // Has scroll down
-        setShowMenu(false);
+      }
+      // Avoid triggering anything at the bottom because of layout shift
+      else if (!isBottomOfPage) {
+        if (currentOffset < refPrevOffset.current) {
+          // Has scroll up
+          setShowMenu(true);
+        } else {
+          // Has scroll down
+          setShowMenu(false);
+        }
       }
       refPrevOffset.current = currentOffset;
     };
-    const debouncedHandleScroll = debounce(handleScroll, 300, { leading: true, trailing: true });
+    const throttledHandleScroll = throttle(handleScroll, 200);
 
-    window.addEventListener("scroll", debouncedHandleScroll);
+    window.addEventListener("scroll", throttledHandleScroll);
     return () => {
-      window.removeEventListener("scroll", debouncedHandleScroll);
+      window.removeEventListener("scroll", throttledHandleScroll);
     };
   }, []);
 

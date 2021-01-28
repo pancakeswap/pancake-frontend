@@ -1,6 +1,16 @@
 {
   "extends": "@pancakeswap-libs/eslint-config-pancake",
   "rules": {
-    "import/no-extraneous-dependencies": ["error", {"devDependencies": ["src/setupTests.[jt]s?(x)","src/testHelpers.[jt]s?(x)", "**/*.test.[jt]s?(x)", "rollup.config.js"]}]
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": [
+          "src/setupTests.[jt]s?(x)",
+          "src/testHelpers.[jt]s?(x)",
+          "**/*.test.[jt]s?(x)",
+          "rollup.config.js"
+        ]
+      }
+    ]
   }
 }
