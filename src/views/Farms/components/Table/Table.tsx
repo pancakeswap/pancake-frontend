@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { RowType, useTable } from '@pancakeswap-libs/uikit'
 import BigNumber from 'bignumber.js'
+import useI18n from 'hooks/useI18n'
 
 import Row, { RowData } from './Row'
 import ScrollBar from '../ScrollBar'
@@ -18,6 +19,7 @@ const Container = styled.div`
   border-radius: 32px;
   margin: 1rem 0rem;
   width: 100%;
+  background: ${(props) => props.theme.card.background};
 
   ${({ theme }) => theme.mediaQueries.sm} {
     padding: 1.5rem;
@@ -33,10 +35,8 @@ const TableWrapper = styled.div`
 
 const StyledTable = styled.table`
   border-collapse: collapse;
-  min-width: 800px;
   font-size: 0.9rem;
   overflow: hidden;
-  background: #ffffff;
   box-shadow: 0px 2px 12px -8px rgba(25, 19, 38, 0.1), 0px 0px 1px rgba(25, 19, 38, 0.15);
   border-radius: 4px;
   text-align: center;
@@ -44,7 +44,7 @@ const StyledTable = styled.table`
 
 const TableHead = styled.thead`
   & tr {
-    background-color: #eff4f5;
+    background-color: ${(props) => props.theme.colors.tertiary};
     border-radius: 4px;
     color: #8f80ba;
     font-weight: 700;
@@ -78,8 +78,6 @@ const TableHead = styled.thead`
 
 const TableBody = styled.tbody`
   & tr {
-    border-bottom: 1px solid #dddddd;
-
     td {
       font-size: 0.875rem;
       vertical-align: middle;
@@ -169,6 +167,7 @@ export default React.forwardRef((props: ITableProps, ref) => {
   const [tableWidth, setTableWidth] = useState(600)
   const [visibleScroll, setVisibleScroll] = useState(true)
   const [showGradient, setShowGradient] = useState(true)
+  const TranslateString = useI18n()
   const { data } = props
 
   const renderSortArrow = (column: any): JSX.Element => {
@@ -260,7 +259,7 @@ export default React.forwardRef((props: ITableProps, ref) => {
                   >
                     <CellInner>
                       <span className="bold">{ColumnsDef[key].bold}&nbsp;</span>
-                      {column.label}
+                      {TranslateString(ColumnsDef[key].translationId, column.label)}
                       {renderSortArrow(column)}
                     </CellInner>
                   </Cell>

@@ -1,11 +1,25 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Link } from 'react-router-dom'
 import useI18n from 'hooks/useI18n'
+import { LinkExternal } from '@pancakeswap-libs/uikit'
 
 interface CellProps {
-  bsc
+  bsc: string
+  info: string
 }
+
+const StyledLinkExternal = styled(LinkExternal)`
+  text-decoration: none;
+  font-weight: normal;
+  color: ${({ theme }) => theme.colors.text};
+  display: flex;
+  align-items: center;
+  font-size: 0.875rem;
+
+  svg {
+    display: none;
+  }
+`
 
 const Container = styled.div`
   display: block;
@@ -18,14 +32,14 @@ const Container = styled.div`
   }
 `
 
-const Links: React.FunctionComponent<CellProps> = ({ bsc }) => {
+const Links: React.FunctionComponent<CellProps> = ({ bsc, info }) => {
   const TranslateString = useI18n()
 
   return (
     <>
       <Container>
-        <Link to={bsc}>{TranslateString(356, 'View on BscScan')}</Link>
-        <Link to="/farms">View on Info</Link>
+        <StyledLinkExternal href={bsc}>{TranslateString(356, 'View on BscScan')}</StyledLinkExternal>
+        <StyledLinkExternal href={info}>{TranslateString(999, 'View on Info site')}</StyledLinkExternal>
       </Container>
     </>
   )

@@ -147,7 +147,9 @@ const Farms: React.FC = () => {
       },
       links: {
         bsc: `https://bscscan.com/address/${farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]}`,
+        info: `https://pancakeswap.info/pair/${farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]}`,
       },
+      tags: farm,
     }
 
     return row

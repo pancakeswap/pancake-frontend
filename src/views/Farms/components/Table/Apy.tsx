@@ -11,6 +11,7 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  color: ${(props) => props.theme.colors.text};
 `
 
 const CalculateIcon = styled.img`
@@ -22,7 +23,7 @@ const CalculateIcon = styled.img`
 const Multiplier = styled.div`
   background: ${({ theme }) => theme.colors.secondary};
   border-radius: 1rem;
-  color: white;
+  color: ${({ theme }) => theme.card.background};
   padding: 0.3125rem 0rem;
   width: 2.5rem;
   text-align: center;

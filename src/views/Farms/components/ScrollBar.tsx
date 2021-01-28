@@ -10,19 +10,15 @@ const Container = styled.div`
 
   &::-webkit-scrollbar {
     height: 0.5em;
-    background: #eeeaf4;
+    background: ${(props) => props.theme.colors.input};
     box-shadow: inset 0px 2px 2px -1px rgba(0, 0, 0, 0.2);
     border-radius: 16px;
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: #8f80ba;
+    background-color: ${(props) => props.theme.colors.textSubtle};
     box-shadow: inset 0px 2px 2px -1px rgba(0, 0, 0, 0.2);
     border-radius: 8px;
-
-    &:hover {
-      background: rgb(143, 128, 186, 0.8);
-    }
   }
 `
 

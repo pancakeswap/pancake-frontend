@@ -63,7 +63,7 @@ const Staked: React.FunctionComponent<FarmWithStakedValue> = ({ pid, lpSymbol, l
 
     return (
       <Container>
-        <Button mt="8px" fullWidth disabled={requestedApproval} onClick={handleApprove}>
+        <Button fullWidth disabled={requestedApproval} onClick={handleApprove}>
           {TranslateString(999, 'Approve Contract')}
         </Button>
       </Container>

@@ -14,6 +14,7 @@ const Icon = styled.img`
 
 const Label = styled.span`
   white-space: nowrap;
+  color: ${(props) => props.theme.colors.text};
 `
 
 const Pool: React.FunctionComponent<CellProps> = ({ image, label }) => {

@@ -8,6 +8,7 @@ import Earned from './Earned'
 import Staked from './Staked'
 import Details from './Details'
 import Links from './Links'
+import Tags from './Tags'
 
 export interface RowData {
   apy: {
@@ -30,7 +31,9 @@ export interface RowData {
   }
   links: {
     bsc: string
+    info: string
   }
+  tags: FarmWithStakedValue
 }
 
 const cells = {
@@ -40,6 +43,7 @@ const cells = {
   staked: Staked,
   details: Details,
   links: Links,
+  tags: Tags,
 }
 
 const CellInner = styled.div`

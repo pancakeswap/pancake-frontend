@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { LinkExternal } from '@pancakeswap-libs/uikit'
+import useI18n from 'hooks/useI18n'
 
 interface CellProps {
   liquidity: number
@@ -21,6 +22,7 @@ const Container = styled.div`
     & span {
       display: flex;
       align-items: center;
+      color: ${(props) => props.theme.colors.text};
     }
   }
 `
@@ -33,7 +35,6 @@ const StakeLabel = styled.span`
 const StyledLinkExternal = styled(LinkExternal)`
   white-space: nowrap;
   color: ${({ theme }) => theme.colors.primary};
-  text-decoration: none !important;
   font-weight: normal;
   font-size: 0.875rem;
   svg {
@@ -44,6 +45,8 @@ const StyledLinkExternal = styled(LinkExternal)`
 `
 
 const Details: React.FunctionComponent<CellProps> = ({ liquidity, lpName, liquidityUrlPathParts }) => {
+  const TranslateString = useI18n()
+
   const renderLiquidity = (): string => {
     if (liquidity) {
       return `$${Number(liquidity).toLocaleString(undefined, { maximumFractionDigits: 0 })}`
@@ -56,13 +59,13 @@ const Details: React.FunctionComponent<CellProps> = ({ liquidity, lpName, liquid
     <>
       <Container>
         <div>
-          <StakeLabel>Stake:</StakeLabel>
+          <StakeLabel>{TranslateString(316, 'Stake')}:</StakeLabel>
           <StyledLinkExternal href={`https://exchange.pancakeswap.finance/#/add/${liquidityUrlPathParts}`}>
             {lpName}
           </StyledLinkExternal>
         </div>
         <div>
-          <StakeLabel>Liquidity:</StakeLabel>
+          <StakeLabel>{TranslateString(999, 'Liquidity')}:</StakeLabel>
           <span>{renderLiquidity()}</span>
         </div>
       </Container>
