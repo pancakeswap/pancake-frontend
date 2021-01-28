@@ -1843,7 +1843,7 @@
     eslint-plugin-react "^7.21.5"
     eslint-plugin-react-hooks "^4.0.0"
 
-"@pancakeswap-libs/uikit@^0.9.3":
+"@pancakeswap-libs/uikit@^0.9.4":
   version "0.9.4"
   resolved "https://registry.yarnpkg.com/@pancakeswap-libs/uikit/-/uikit-0.9.4.tgz#4e8a6b68771720a3c03b0c3e8ab629d55b733e39"
   integrity sha512-3M+8/hP6C5QSF3VwYTgeC1aC2fvXk23tvPQ638PEiET0hhbeSVHAWPCl5q8sfmuf6iBsjE1Tb/w8whal0LT2VA==
