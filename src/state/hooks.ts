@@ -125,11 +125,13 @@ export const useFetchProfile = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(fetchProfile(account))
+    if (account) {
+      dispatch(fetchProfile(account))
+    }
   }, [account, dispatch])
 }
 
 export const useProfile = () => {
   const { isInitialized, isLoading, data }: ProfileState = useSelector((state: State) => state.profile)
-  return { profile: data, isInitialized, isLoading }
+  return { profile: data, hasProfile: isInitialized && data !== null, isInitialized, isLoading }
 }

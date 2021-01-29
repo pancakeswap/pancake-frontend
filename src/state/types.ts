@@ -1,6 +1,6 @@
 import { Toast } from '@pancakeswap-libs/uikit'
 import BigNumber from 'bignumber.js'
-import { FarmConfig, PoolConfig } from 'config/constants/types'
+import { FarmConfig, Nft, PoolConfig } from 'config/constants/types'
 
 export interface Farm extends FarmConfig {
   tokenAmount?: BigNumber
@@ -29,22 +29,33 @@ export interface Pool extends PoolConfig {
 }
 
 export interface Team {
-  id: number
   name: string
-  image: string
+  description: string
   points: number
-  userCount: number
+  users: number
+  isJoinable: boolean
+}
+
+export interface IpfsData {
+  name: string
+  description: string
+  image: string
+  attributes: {
+    bunnyId: string
+  }
 }
 
 export interface Profile {
-  id: number
-  name: string
-  address: string
-  points: number
+  userId: number
+  numberPoints: number
+  teamId: number
   nftAddress: string
-  tokenId: string
+  tokenId: number
   isActive: boolean
-  team?: Team
+  username: string
+  ipfs: IpfsData
+  nft: Nft
+  team: Team
 }
 
 // Slices states
