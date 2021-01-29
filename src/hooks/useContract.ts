@@ -1,7 +1,5 @@
-import { useEffect, useState } from 'react'
+import { useMemo } from 'react'
 import { AbiItem } from 'web3-utils'
-import { ContractOptions } from 'web3-eth-contract'
-import useWeb3 from 'hooks/useWeb3'
 import {
   getAddress,
   getMasterChefAddress,
@@ -14,6 +12,8 @@ import {
   getPointCenterIfoAddress,
   getBunnySpecialAddress,
 } from 'utils/addressHelpers'
+import { Contract } from '@ethersproject/contracts'
+import { useWeb3React } from '@web3-react/core'
 import { poolsConfig } from 'config/constants'
 import { PoolCategory } from 'config/constants/types'
 import ifo from 'config/abi/ifo.json'
@@ -28,16 +28,20 @@ import sousChefBnb from 'config/abi/sousChefBnb.json'
 import profile from 'config/abi/pancakeProfile.json'
 import pointCenterIfo from 'config/abi/pointCenterIfo.json'
 import bunnySpecial from 'config/abi/bunnySpecial.json'
+import { getContract } from 'utils/erc20'
 
-const useContract = (abi: AbiItem, address: string, contractOptions?: ContractOptions) => {
-  const web3 = useWeb3()
-  const [contract, setContract] = useState(new web3.eth.Contract(abi, address, contractOptions))
+function useContract(ABI: any, address: string | undefined, withSignerIfPossible = true): Contract | null {
+  const { library, account } = useWeb3React()
 
-  useEffect(() => {
-    setContract(new web3.eth.Contract(abi, address, contractOptions))
-  }, [abi, address, contractOptions, web3])
-
-  return contract
+  return useMemo(() => {
+    if (!address || !ABI || !library) return null
+    try {
+      return getContract(address, ABI, library, withSignerIfPossible && account ? account : undefined)
+    } catch (error) {
+      console.error('Failed to get contract', error)
+      return null
+    }
+  }, [address, ABI, library, withSignerIfPossible, account])
 }
 
 /**

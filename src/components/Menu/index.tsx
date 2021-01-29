@@ -1,10 +1,11 @@
 import React, { useContext } from 'react'
-import { Menu as UikitMenu } from '@pancakeswap-libs/uikit'
+import { Menu as UikitMenu, ConnectorId } from '@pancakeswap-libs/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { allLanguages } from 'config/localisation/languageCodes'
 import { LanguageContext } from 'contexts/Localisation/languageContext'
 import useTheme from 'hooks/useTheme'
 import { usePriceCakeBusd, useProfile } from 'state/hooks'
+import { walletconnect, injected, bsc } from 'connectors'
 import config from './config'
 
 const Menu = (props) => {
@@ -17,7 +18,17 @@ const Menu = (props) => {
   return (
     <UikitMenu
       account={account}
-      login={activate}
+      login={(connectorId: ConnectorId) => {
+        if (connectorId === 'walletconnect') {
+          return activate(walletconnect)
+        }
+
+        if (connectorId === 'bsc') {
+          return activate(bsc)
+        }
+
+        return activate(injected)
+      }}
       logout={deactivate}
       isDark={isDark}
       toggleTheme={toggleTheme}

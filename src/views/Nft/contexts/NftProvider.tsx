@@ -76,7 +76,8 @@ const NftProvider: React.FC = ({ children }) => {
         const [hasClaimedArr] = await multicall(bunnyFactory, [
           { address: bunnyFactoryAddress, name: 'hasClaimed', params: [account] },
         ])
-        const balanceOf = await pancakeRabbitsContract.methods.balanceOf(account).call()
+
+        const balanceOf = await pancakeRabbitsContract.balanceOf(account)
         const [hasClaimed]: [boolean] = hasClaimedArr
 
         setState((prevState) => ({

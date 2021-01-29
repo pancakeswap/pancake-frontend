@@ -100,11 +100,11 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
 
   useEffect(() => {
     const fetchProgress = async () => {
-      const [startBlock, endBlock, raisingAmount, totalAmount] = await makeBatchRequest([
-        contract.methods.startBlock().call,
-        contract.methods.endBlock().call,
-        contract.methods.raisingAmount().call,
-        contract.methods.totalAmount().call,
+      const [startBlock, endBlock, raisingAmount, totalAmount] = await Promise.all([
+        contract.startBlock(),
+        contract.endBlock(),
+        contract.raisingAmount(),
+        contract.totalAmount(),
       ])
 
       const startBlockNum = parseInt(startBlock as string, 10)

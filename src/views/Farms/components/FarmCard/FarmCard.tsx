@@ -4,7 +4,7 @@ import styled, { keyframes } from 'styled-components'
 import { Flex, Text, Skeleton } from '@pancakeswap-libs/uikit'
 import { communityFarms } from 'config/constants'
 import { Farm } from 'state/types'
-import { provider } from 'web3-core'
+import { Web3Provider } from '@ethersproject/providers'
 import useI18n from 'hooks/useI18n'
 import ExpandableSectionButton from 'components/ExpandableSectionButton'
 import { QuoteToken } from 'config/constants/types'
@@ -89,7 +89,7 @@ interface FarmCardProps {
   cakePrice?: BigNumber
   bnbPrice?: BigNumber
   ethPrice?: BigNumber
-  ethereum?: provider
+  ethereum?: Web3Provider
   account?: string
 }
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useModal, Button, Text } from '@pancakeswap-libs/uikit'
 import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
-import { Contract } from 'web3-eth-contract'
+import { Contract } from '@ethersproject/contracts'
 import { useERC20 } from 'hooks/useContract'
 import { useIfoAllowance } from 'hooks/useAllowance'
 import { useIfoApprove } from 'hooks/useApprove'
@@ -44,8 +44,8 @@ const IfoCardContribute: React.FC<Props> = ({
 
   useEffect(() => {
     const fetch = async () => {
-      const balance = new BigNumber(await contract.methods.getOfferingAmount(account).call())
-      const userinfo = await contract.methods.userInfo(account).call()
+      const balance = await contract.getOfferingAmount(account)
+      const userinfo = await contract.userInfo(account)
 
       setUserInfo(userinfo)
       setOfferingTokenBalance(balance)
@@ -54,7 +54,7 @@ const IfoCardContribute: React.FC<Props> = ({
     if (account) {
       fetch()
     }
-  }, [account, contract.methods, pendingTx])
+  }, [account, contract.methods, pendingTx, contract])
 
   if (allowance === null) {
     return null
@@ -62,7 +62,7 @@ const IfoCardContribute: React.FC<Props> = ({
 
   const claim = async () => {
     setPendingTx(true)
-    await contract.methods.harvest().send({ from: account })
+    await contract.harvest().send({ from: account })
     setPendingTx(false)
   }
   const isFinished = status === 'finished'

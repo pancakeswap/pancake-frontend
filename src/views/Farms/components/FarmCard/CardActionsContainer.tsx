@@ -1,7 +1,7 @@
 import React, { useMemo, useState, useCallback } from 'react'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
-import { provider } from 'web3-core'
+import { Web3Provider } from '@ethersproject/providers'
 import { getContract } from 'utils/erc20'
 import { getAddress } from 'utils/addressHelpers'
 import { Button, Flex, Text } from '@pancakeswap-libs/uikit'
@@ -9,6 +9,7 @@ import { Farm } from 'state/types'
 import { useFarmFromSymbol, useFarmUser } from 'state/hooks'
 import useI18n from 'hooks/useI18n'
 import UnlockButton from 'components/UnlockButton'
+import erc20 from 'config/abi/erc20.json'
 import { useApprove } from 'hooks/useApprove'
 import StakeAction from './StakeAction'
 import HarvestAction from './HarvestAction'
@@ -22,7 +23,7 @@ export interface FarmWithStakedValue extends Farm {
 
 interface FarmCardActionsProps {
   farm: FarmWithStakedValue
-  ethereum?: provider
+  ethereum?: Web3Provider
   account?: string
   addLiquidityUrl?: string
 }
@@ -37,7 +38,7 @@ const CardActions: React.FC<FarmCardActionsProps> = ({ farm, ethereum, account, 
   const isApproved = account && allowance && allowance.isGreaterThan(0)
 
   const lpContract = useMemo(() => {
-    return getContract(ethereum as provider, lpAddress)
+    return getContract(lpAddress, erc20, ethereum)
   }, [ethereum, lpAddress])
 
   const { onApprove } = useApprove(lpContract)

@@ -33,7 +33,7 @@ export const useTotalSupply = () => {
   useEffect(() => {
     async function fetchTotalSupply() {
       const cakeContract = getContract(cakeABI, getCakeAddress())
-      const supply = await cakeContract.methods.totalSupply().call()
+      const supply = await cakeContract.totalSupply()
       setTotalSupply(new BigNumber(supply))
     }
 
