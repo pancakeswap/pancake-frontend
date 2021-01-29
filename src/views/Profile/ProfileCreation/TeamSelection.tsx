@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { Card, CardBody, Heading, Text } from '@pancakeswap-libs/uikit'
+import { Card, CardBody, Heading, Text, Skeleton } from '@pancakeswap-libs/uikit'
+import times from 'lodash/times'
 import useI18n from 'hooks/useI18n'
 import { getProfileContract } from 'utils/contractHelpers'
 import { getWeb3 } from 'utils/web3'
@@ -73,6 +74,7 @@ const Team: React.FC = () => {
               'There’s currently no big difference between teams, and no benefit of joining one team over another for now. So pick whichever one you like!',
             )}
           </Text>
+          {teams.length === 0 && times(3).map((key) => <Skeleton key={key} height="80px" mb="16px" />)}
           {teams.map((team, index) => {
             return (
               <SelectionCard

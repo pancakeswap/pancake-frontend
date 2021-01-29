@@ -1,5 +1,17 @@
 import React, { useState } from 'react'
-import { Card, CardBody, Heading, Text, Input, Button } from '@pancakeswap-libs/uikit'
+import styled from 'styled-components'
+import {
+  Card,
+  CardBody,
+  Heading,
+  Text,
+  Input as UIKitInput,
+  Button,
+  AutoRenewIcon,
+  CheckmarkIcon,
+  Flex,
+  WarningIcon,
+} from '@pancakeswap-libs/uikit'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import useI18n from 'hooks/useI18n'
 import useWeb3 from 'hooks/useWeb3'
@@ -8,6 +20,29 @@ import { useToast } from 'state/hooks'
 import { useProfile } from 'hooks/useContract'
 import { getPancakeRabbitsAddress } from 'utils/addressHelpers'
 import useProfileCreation from './contexts/hook'
+
+const MIN_LENGTH = 3
+const MAX_LENGTH = 15
+
+const InputWrap = styled.div`
+  position: relative;
+  max-width: 240px;
+`
+
+const Input = styled(UIKitInput)`
+  padding-right: 40px;
+`
+
+const Indicator = styled(Flex)`
+  align-items: center;
+  height: 24px;
+  justify-content: center;
+  margin-top: -12px;
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  width: 24px;
+`
 
 const UserName: React.FC = () => {
   const { teamId, tokenId, userName, setUserName } = useProfileCreation()
@@ -22,16 +57,27 @@ const UserName: React.FC = () => {
 
   const handleChange = debounce(async (e) => {
     const { value } = e.target
-    const res = await fetch(`${process.env.REACT_APP_API_PROFILE}/api/users/valid?username=${value}`)
-    if (res.ok) {
-      setIsValid(true)
-      setMessage('')
+
+    // No need to search until the value is at least the min value
+    if (value.length <= MIN_LENGTH) {
+      setUserName(value)
     } else {
-      const data = await res.json()
-      setIsValid(false)
-      setMessage(data?.error?.message)
+      try {
+        setIsLoading(true)
+        const res = await fetch(`${process.env.REACT_APP_API_PROFILE}/api/users/valid?username=${value}`)
+        if (res.ok) {
+          setIsValid(true)
+          setMessage('')
+        } else {
+          const data = await res.json()
+          setIsValid(false)
+          setMessage(data?.error?.message)
+        }
+        setUserName(value)
+      } finally {
+        setIsLoading(false)
+      }
     }
-    setUserName(value)
   }, 200)
 
   const handleComplete = async () => {
@@ -89,13 +135,20 @@ const UserName: React.FC = () => {
               'Your name must be at least 3 and at most 15 standard letters and numbers long. You can’t change this once you click Confirm.',
             )}
           </Text>
-          <Input
-            onChange={handleChange}
-            isWarning={userName && !isValid}
-            isSuccess={userName && isValid}
-            minLength={3}
-            maxLength={15}
-          />
+          <InputWrap>
+            <Input
+              onChange={handleChange}
+              isWarning={userName && !isValid}
+              isSuccess={userName && isValid}
+              minLength={MIN_LENGTH}
+              maxLength={MAX_LENGTH}
+            />
+            <Indicator>
+              {isLoading && <AutoRenewIcon spin />}
+              {!isLoading && isValid && userName && <CheckmarkIcon color="success" />}
+              {!isLoading && !isValid && userName && <WarningIcon color="failure" />}
+            </Indicator>
+          </InputWrap>
           <Text color="textSubtle" fontSize="14px" mt="4px" style={{ minHeight: '21px' }}>
             {message}
           </Text>
