@@ -22,7 +22,7 @@ const Message = styled.h2`
 `
 
 export default function Web3ReactManager({ children }: { children: JSX.Element }) {
-  const t = useI18n()
+  const TranslateString = useI18n()
   const { active: networkActive, error: networkError, activate: activateNetwork } = useWeb3React()
 
   // try to eagerly connect to an injected provider, if it exists and has granted access already
@@ -59,7 +59,7 @@ export default function Web3ReactManager({ children }: { children: JSX.Element }
   if (networkError) {
     return (
       <MessageWrapper>
-        <Message>{t(999, 'unknownError')}</Message>
+        <Message>{TranslateString(999, 'unknownError')}</Message>
       </MessageWrapper>
     )
   }
