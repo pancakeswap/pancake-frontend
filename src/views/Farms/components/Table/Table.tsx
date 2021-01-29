@@ -254,7 +254,7 @@ export default React.forwardRef((props: ITableProps, ref) => {
                 {headers.map((column, key) => (
                   <Cell
                     key={`head-${column.name}`}
-                    onClick={() => (column.name !== 'links' ? toggleSort(column.name) : '')}
+                    onClick={() => ((column.name !== 'links' && column.name !== 'tags') ? toggleSort(column.name) : '')}
                     isHeader
                   >
                     <CellInner>
