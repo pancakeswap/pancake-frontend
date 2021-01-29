@@ -57,7 +57,6 @@ export default function Web3ReactManager({ children }: { children: JSX.Element }
 
   // if the account context isn't active, and there's an error on the network context, it's an irrecoverable error
   if (networkError) {
-    console.log('network', networkError)
     return (
       <MessageWrapper>
         <Message>{t(999, 'unknownError')}</Message>
