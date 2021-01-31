@@ -1,8 +1,8 @@
 import BigNumber from 'bignumber.js'
 import React, { useCallback, useMemo, useState } from 'react'
-import { Button, Modal } from '@pancakeswap-libs/uikit'
+import { Button, Modal, Flex } from '@pancakeswap-libs/uikit'
 import ModalActions from 'components/ModalActions'
-import TokenInput from 'components/TokenInput'
+import ModalInput from 'components/ModalInput'
 import useI18n from 'hooks/useI18n'
 import { getFullDisplayBalance } from 'utils/formatBalance'
 
@@ -33,14 +33,15 @@ const DepositModal: React.FC<DepositModalProps> = ({ max, onConfirm, onDismiss, 
   }, [fullBalance, setVal])
 
   return (
-    <Modal title={`${TranslateString(316, 'Deposit')} ${tokenName} Tokens`} onDismiss={onDismiss}>
-      <TokenInput
+    <Modal title={TranslateString(999, 'Stake LP tokens')} onDismiss={onDismiss}>
+      <ModalInput
         value={val}
         onSelectMax={handleSelectMax}
         onChange={handleChange}
         max={fullBalance}
         symbol={tokenName}
       />
+      <Flex>blah</Flex>
       <ModalActions>
         <Button variant="secondary" onClick={onDismiss}>
           {TranslateString(462, 'Cancel')}
