@@ -2,7 +2,6 @@ import React from 'react'
 import useI18n from 'hooks/useI18n'
 import styled from 'styled-components'
 import { Text, Flex, Link, LinkExternal } from '@pancakeswap-libs/uikit'
-import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 
 export interface TokenAddressesObject {
   56?: string
@@ -13,9 +12,7 @@ export interface ExpandableSectionProps {
   removed?: boolean
   totalValueFormated?: string
   lpLabel?: string
-  quoteTokenAdresses?: TokenAddressesObject
-  quoteTokenSymbol?: string
-  tokenAddresses: TokenAddressesObject
+  addLiquidityUrl?: string
 }
 
 const Wrapper = styled.div`
@@ -42,20 +39,15 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
   removed,
   totalValueFormated,
   lpLabel,
-  quoteTokenAdresses,
-  quoteTokenSymbol,
-  tokenAddresses,
+  addLiquidityUrl,
 }) => {
   const TranslateString = useI18n()
-  const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAdresses, quoteTokenSymbol, tokenAddresses })
 
   return (
     <Wrapper>
       <Flex justifyContent="space-between">
         <Text>{TranslateString(316, 'Stake')}:</Text>
-        <StyledLinkExternal href={`https://exchange.pancakeswap.finance/#/add/${liquidityUrlPathParts}`}>
-          {lpLabel}
-        </StyledLinkExternal>
+        <StyledLinkExternal href={addLiquidityUrl}>{lpLabel}</StyledLinkExternal>
       </Flex>
       {!removed && (
         <Flex justifyContent="space-between">
