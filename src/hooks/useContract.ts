@@ -10,6 +10,7 @@ import {
   getRabbitMintingFarmAddress,
   getPancakeProfileAddress,
   getPancakeRabbitsAddress,
+  getBnbPredictionAddress,
 } from 'utils/addressHelpers'
 import { poolsConfig } from 'config/constants'
 import { PoolCategory } from 'config/constants/types'
@@ -23,6 +24,7 @@ import masterChef from 'config/abi/masterchef.json'
 import sousChef from 'config/abi/sousChef.json'
 import sousChefBnb from 'config/abi/sousChefBnb.json'
 import profile from 'config/abi/pancakeProfile.json'
+import predictionBnb from 'config/abi/bnbPricePrediction.json'
 
 const useContract = (abi: AbiItem, address: string, contractOptions?: ContractOptions) => {
   const web3 = useWeb3()
@@ -88,6 +90,11 @@ export const useSousChef = (id) => {
   const rawAbi = config.poolCategory === PoolCategory.BINANCE ? sousChefBnb : sousChef
   const abi = (rawAbi as unknown) as AbiItem
   return useContract(abi, config.contractAddress[process.env.REACT_APP_CHAIN_ID])
+}
+
+export const usePredictionBnb = () => {
+  const predictionBnbAbi = (predictionBnb as unknown) as AbiItem
+  return useContract(predictionBnbAbi, getBnbPredictionAddress())
 }
 
 export default useContract

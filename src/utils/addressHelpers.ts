@@ -32,3 +32,6 @@ export const getPancakeRabbitsAddress = () => {
 export const getRabbitMintingFarmAddress = () => {
   return addresses.rabbitMintingFarm[chainId]
 }
+export const getBnbPredictionAddress = () => {
+  return addresses.bnbPrediction[chainId]
+}

@@ -1,5 +1,6 @@
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
+import { decToBn } from 'utils'
 
 export const approve = async (lpContract, masterChefContract, account) => {
   return lpContract.methods
@@ -125,6 +126,33 @@ export const soushHarvestBnb = async (sousChefContract, account) => {
   return sousChefContract.methods
     .deposit()
     .send({ from: account, value: new BigNumber(0) })
+    .on('transactionHash', (tx) => {
+      return tx.transactionHash
+    })
+}
+
+export const bidBull = async (contract, account, amount) => {
+  return contract.methods
+    .bidBull()
+    .send({ from: account, value: decToBn(amount) })
+    .on('transactionHash', (tx) => {
+      return tx.transactionHash
+    })
+}
+
+export const bidBear = async (contract, account, amount) => {
+  return contract.methods
+    .bidBear()
+    .send({ from: account, value: decToBn(amount) })
+    .on('transactionHash', (tx) => {
+      return tx.transactionHash
+    })
+}
+
+export const claim = async (contract, account, epoch) => {
+  return contract.methods
+    .claim(epoch)
+    .send({ from: account })
     .on('transactionHash', (tx) => {
       return tx.transactionHash
     })
