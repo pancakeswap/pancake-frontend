@@ -4,11 +4,6 @@ import { Breadcrumbs, Heading, Text } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import { ProfileCreationContext } from './contexts/ProfileCreationProvider'
 
-const BreadcrumbLink = styled(Text)<{ isLink: boolean }>`
-  color: ${({ isLink, theme }) => theme.colors[isLink ? 'text' : 'textDisabled']};
-  cursor: ${({ isLink }) => (isLink ? 'pointer' : 'inherit')};
-`
-
 const Wrapper = styled.div`
   border-bottom: 2px solid ${({ theme }) => theme.colors.textSubtle};
   margin-bottom: 24px;
@@ -39,12 +34,10 @@ const Header: React.FC = () => {
       </Text>
       <Breadcrumbs>
         {steps.map(({ translationId, label }, index) => {
-          const isLink = index <= currentStep
-
           return (
-            <BreadcrumbLink key={label} isLink={isLink} onClick={isLink ? () => setStep(index) : undefined}>
+            <Text key={label} color={index <= currentStep ? 'text' : 'textDisabled'}>
               {TranslateString(translationId, label)}
-            </BreadcrumbLink>
+            </Text>
           )
         })}
       </Breadcrumbs>
