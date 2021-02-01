@@ -36,15 +36,6 @@ export interface Team {
   isJoinable: boolean
 }
 
-export interface IpfsData {
-  name: string
-  description: string
-  image: string
-  attributes: {
-    bunnyId: string
-  }
-}
-
 export interface Profile {
   userId: number
   numberPoints: number
@@ -53,7 +44,6 @@ export interface Profile {
   tokenId: number
   isActive: boolean
   username: string
-  ipfs: IpfsData
   nft: Nft
   team: Team
 }
