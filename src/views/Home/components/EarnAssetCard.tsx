@@ -8,7 +8,6 @@ const StyledFarmStakingCard = styled(Card)`
   background: linear-gradient(#53dee9, #7645d9);
   margin-left: auto;
   margin-right: auto;
-  max-width: 344px;
   width: 100%;
   ${({ theme }) => theme.mediaQueries.lg} {
     margin: 0;

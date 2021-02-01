@@ -11,7 +11,6 @@ import { BLOCKS_PER_YEAR, CAKE_PER_BLOCK, CAKE_POOL_PID } from 'config'
 const StyledFarmStakingCard = styled(Card)`
   margin-left: auto;
   margin-right: auto;
-  max-width: 344px;
   width: 100%;
 
   ${({ theme }) => theme.mediaQueries.lg} {
@@ -85,7 +84,7 @@ const EarnAPYCard = () => {
           {getHighestAPY() ? (
             `${getHighestAPY()}% ${TranslateString(352, ' APY')}`
           ) : (
-            <Skeleton animation="pulse" variant="rect" />
+            <Skeleton animation="pulse" variant="rect" height="44px" />
           )}
         </CardMidContent>
         <Flex justifyContent="space-between">
