@@ -35,7 +35,7 @@ const Hero = styled.div`
 const Cards = styled(BaseLayout)`
   align-items: stretch;
   justify-content: stretch;
-  margin-bottom: 48px;
+  margin-bottom: 16px;
 
   & > div {
     grid-column: span 6;
@@ -57,8 +57,7 @@ const Cards = styled(BaseLayout)`
 
 const CTACards = styled(BaseLayout)`
   align-items: start;
-  margin-top: 48px;
-  margin-bottom: 48px;
+  margin-bottom: 16px;
 
   & > div {
     grid-column: span 6;
@@ -92,15 +91,16 @@ const Home: React.FC = () => {
         <Cards>
           <FarmStakingCard />
           <LotteryCard />
-          <CakeStats />
-          <TotalValueLockedCard />
         </Cards>
-
         <CTACards>
           <EarnAPYCard />
           <EarnAssetCard />
           <WinCard />
         </CTACards>
+        <Cards>
+          <CakeStats />
+          <TotalValueLockedCard />
+        </Cards>
       </div>
     </Page>
   )

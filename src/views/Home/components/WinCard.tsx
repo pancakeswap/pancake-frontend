@@ -7,7 +7,6 @@ import useLotteryTotalPrizesUsd from 'hooks/useLotteryTotalPrizesUsd'
 const StyledFarmStakingCard = styled(Card)`
   margin-left: auto;
   margin-right: auto;
-  max-width: 344px;
   width: 100%;
 
   ${({ theme }) => theme.mediaQueries.lg} {
