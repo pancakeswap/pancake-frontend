@@ -30,6 +30,14 @@ const ContributeModal: React.FC<Props> = ({ account, teamId, tokenId, onDismiss 
     handleApprove,
     handleConfirm,
   } = useApproveConfirmTransaction({
+    onRequiresApproval: async () => {
+      try {
+        const approvedAddress = await pancakeRabbitsContract.methods.getApproved(tokenId).call()
+        return approvedAddress.toLowerCase() === profileContract.options.address.toLowerCase()
+      } catch (error) {
+        return false
+      }
+    },
     onApprove: () => {
       return pancakeRabbitsContract.methods.approve(profileContract.options.address, tokenId).send({ from: account })
     },

@@ -1,11 +1,13 @@
-import { useReducer } from 'react'
+import { useEffect, useReducer, useRef } from 'react'
 import { noop } from 'lodash'
+import { useWallet } from '@binance-chain/bsc-use-wallet'
 
 type Web3Payload = Record<string, unknown> | null
 
 type LoadingState = 'idle' | 'loading' | 'success' | 'fail'
 
 type Action =
+  | { type: 'requires_approval' }
   | { type: 'approve_sending' }
   | { type: 'approve_receipt'; payload: Web3Payload }
   | { type: 'approve_error'; payload: Web3Payload }
@@ -33,6 +35,11 @@ const initialState: State = {
 
 const reducer = (state: State, actions: Action): State => {
   switch (actions.type) {
+    case 'requires_approval':
+      return {
+        ...state,
+        approvalState: 'success',
+      }
     case 'approve_sending':
       return {
         ...state,
@@ -77,11 +84,30 @@ type ContractHandler = () => any
 interface ApproveConfirmTransaction {
   onApprove: ContractHandler
   onConfirm: ContractHandler
+  onRequiresApproval?: () => Promise<boolean>
   onSuccess: (state: State) => void
 }
 
-const useApproveConfirmTransaction = ({ onApprove, onConfirm, onSuccess = noop }: ApproveConfirmTransaction) => {
+const useApproveConfirmTransaction = ({
+  onApprove,
+  onConfirm,
+  onRequiresApproval,
+  onSuccess = noop,
+}: ApproveConfirmTransaction) => {
+  const { account } = useWallet()
   const [state, dispatch] = useReducer(reducer, initialState)
+  const handlePreApprove = useRef(onRequiresApproval)
+
+  // Check if approval is necessary, re-check if account changes
+  useEffect(() => {
+    if (account && handlePreApprove.current) {
+      handlePreApprove.current().then((result) => {
+        if (result) {
+          dispatch({ type: 'requires_approval' })
+        }
+      })
+    }
+  }, [account, handlePreApprove, dispatch])
 
   return {
     isApproving: state.approvalState === 'loading',

@@ -13,6 +13,8 @@ import useProfileCreation from './contexts/hook'
 
 const starterBunnyIds = [5, 6, 7, 8, 9]
 const nfts = nftList.filter((nft) => starterBunnyIds.includes(nft.bunnyId))
+const minimumCakeRequired = new BigNumber(10).multipliedBy(new BigNumber(10).pow(18)) // 10 CAKE
+const allowance = new BigNumber(50).multipliedBy(new BigNumber(10).pow(18)) // 50 CAKE
 
 const Mint: React.FC = () => {
   const [bunnyId, setBunnyId] = useState(null)
@@ -29,9 +31,20 @@ const Mint: React.FC = () => {
     handleApprove,
     handleConfirm,
   } = useApproveConfirmTransaction({
+    onRequiresApproval: async () => {
+      // TODO: Move this to a helper, this check will be probably be used many times
+      try {
+        const response = await cakeContract.methods.allowance(account, mintingFarmContract.options.address).call()
+        const currentAllowance = new BigNumber(response)
+        return currentAllowance.gte(minimumCakeRequired)
+      } catch (error) {
+        return false
+      }
+    },
     onApprove: () => {
-      const cost = new BigNumber(50).multipliedBy(new BigNumber(10).pow(18)).toJSON()
-      return cakeContract.methods.approve(mintingFarmContract.options.address, cost).send({ from: account })
+      return cakeContract.methods
+        .approve(mintingFarmContract.options.address, allowance.toJSON())
+        .send({ from: account })
     },
     onConfirm: () => {
       return mintingFarmContract.methods.mintNFT(bunnyId).send({ from: account })

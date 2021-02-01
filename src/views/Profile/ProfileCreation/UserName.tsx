@@ -199,7 +199,7 @@ const UserName: React.FC = () => {
           <Text color="textSubtle" fontSize="14px" mt="4px" mb="16px" style={{ minHeight: '21px' }}>
             {message}
           </Text>
-          <Button onClick={handleConfirm} disabled={!isValid || isUserCreated}>
+          <Button onClick={handleConfirm} disabled={!isValid || isUserCreated || isLoading}>
             {TranslateString(999, 'Confirm')}
           </Button>
         </CardBody>
