@@ -1843,11 +1843,7 @@
     eslint-plugin-react "^7.21.5"
     eslint-plugin-react-hooks "^4.0.0"
 
-<<<<<<< HEAD
-"@pancakeswap-libs/uikit@0.9.5":
-=======
 "@pancakeswap-libs/uikit@^0.9.5":
->>>>>>> feat(profile): Profile view setup (#358)
   version "0.9.5"
   resolved "https://registry.yarnpkg.com/@pancakeswap-libs/uikit/-/uikit-0.9.5.tgz#4dedb032be03f6d31e7417075eed49a78306727d"
   integrity sha512-kIhpxO3C4MvZm/dPN8K22Cs0NMah1z0FOUseZrrXADJbqTAV5brqB1mDSUc4hv0uQqrqF0JrBrDe1KqX32RPsA==
