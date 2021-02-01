@@ -78,8 +78,7 @@ export const useProfile = () => {
 }
 
 export const useLottery = () => {
-  const abi = (lottery as unknown) as AbiItem
-  return useContract(abi, getLotteryAddress())
+  return useContract(lottery, getLotteryAddress())
 }
 
 export const useLotteryTicket = () => {

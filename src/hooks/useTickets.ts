@@ -40,7 +40,7 @@ export const useTotalRewards = () => {
   useEffect(() => {
     const fetchBalance = async () => {
       const res = await getTotalRewards(lotteryContract)
-      setRewards(new BigNumber(res))
+      setRewards(res.toString())
     }
 
     if (lotteryContract) {
