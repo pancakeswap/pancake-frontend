@@ -54,7 +54,7 @@ const IfoCardContribute: React.FC<Props> = ({
     if (account) {
       fetch()
     }
-  }, [account, contract.methods, pendingTx, contract])
+  }, [account, pendingTx, contract])
 
   if (allowance === null) {
     return null

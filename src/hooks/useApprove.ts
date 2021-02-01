@@ -68,9 +68,8 @@ export const useIfoApprove = (tokenContract: Contract, spenderAddress: string) =
   const { account } = useWeb3React()
   const onApprove = useCallback(async () => {
     try {
-      const tx = await tokenContract.methods
-        .approve(spenderAddress, ethers.constants.MaxUint256)
-        .send({ from: account })
+      const tx = await tokenContract
+        .approve(spenderAddress, ethers.constants.MaxUint256, { from: account })
       return tx
     } catch {
       return false

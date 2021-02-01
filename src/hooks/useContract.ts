@@ -49,13 +49,11 @@ function useContract(ABI: any, address: string | undefined, withSignerIfPossible
  */
 
 export const useIfoContract = (address: string) => {
-  const ifoAbi = (ifo as unknown) as AbiItem
-  return useContract(ifoAbi, address)
+  return useContract(ifo, address)
 }
 
 export const useERC20 = (address: string) => {
-  const erc20Abi = (erc20 as unknown) as AbiItem
-  return useContract(erc20Abi, address)
+  return useContract(erc20, address)
 }
 
 export const useCake = () => {
@@ -63,18 +61,19 @@ export const useCake = () => {
 }
 
 export const useBunnyFactory = () => {
-  const bunnyFactoryAbi = (bunnyFactory as unknown) as AbiItem
-  return useContract(bunnyFactoryAbi, getBunnyFactoryAddress())
-}
-
-export const usePancakeRabbits = () => {
-  const pancakeRabbitsAbi = (pancakeRabbits as unknown) as AbiItem
-  return useContract(pancakeRabbitsAbi, getPancakeRabbitsAddress())
+  return useContract(bunnyFactory, getBunnyFactoryAddress())
 }
 
 export const useProfile = () => {
-  const profileABIAbi = (profile as unknown) as AbiItem
-  return useContract(profileABIAbi, getPancakeProfileAddress())
+  return useContract(profile, getPancakeProfileAddress())
+}
+
+export const useRabbitMintingFarm = (address: string) => {
+  return useContract(rabbitmintingfarm, address)
+}
+
+export const usePancakeRabbits = (address: string) => {
+  return useContract(pancakeRabbits, address)
 }
 
 export const useLottery = () => {
@@ -82,13 +81,11 @@ export const useLottery = () => {
 }
 
 export const useLotteryTicket = () => {
-  const abi = (lotteryTicket as unknown) as AbiItem
-  return useContract(abi, getLotteryTicketAddress())
+  return useContract(lotteryTicket, getLotteryTicketAddress())
 }
 
 export const useMasterchef = () => {
-  const abi = (masterChef as unknown) as AbiItem
-  return useContract(abi, getMasterChefAddress())
+  return useContract(masterChef, getMasterChefAddress())
 }
 
 export const useSousChef = (id) => {

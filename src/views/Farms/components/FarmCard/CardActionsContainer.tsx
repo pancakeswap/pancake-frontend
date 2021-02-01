@@ -38,8 +38,8 @@ const CardActions: React.FC<FarmCardActionsProps> = ({ farm, ethereum, account, 
   const isApproved = account && allowance && allowance.isGreaterThan(0)
 
   const lpContract = useMemo(() => {
-    return getContract(lpAddress, erc20, ethereum)
-  }, [ethereum, lpAddress])
+    return getContract(lpAddress, erc20, ethereum, account)
+  }, [ethereum, lpAddress, account])
 
   const { onApprove } = useApprove(lpContract)
 

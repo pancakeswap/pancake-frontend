@@ -32,7 +32,7 @@ export const multiCall = async (abi, calls) => {
 
 export const multiBuy = async (lotteryContract, price, numbersList, account) => {
   try {
-    return lotteryContract.methods
+    return lotteryContract
       .multiBuy(new BigNumber(price).times(new BigNumber(10).pow(18)).toString(), numbersList)
       .send({ from: account })
       .on('transactionHash', (tx) => {
@@ -113,7 +113,7 @@ export const multiClaim = async (lotteryContract, ticketsContract, account) => {
   }
 
   try {
-    return lotteryContract.methods
+    return lotteryContract
       .multiClaim(finanltokenIds)
       .send({ from: account })
       .on('transactionHash', (tx) => {

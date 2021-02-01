@@ -41,7 +41,7 @@ const BurnNftModal: React.FC<BurnNftModalProps> = ({ nft, tokenIds, onSuccess, o
     try {
       const [tokenId] = tokenIds
 
-      await rabbitMintingContract.methods
+      await rabbitMintingContract
         .burnNFT(tokenId)
         .send({ from: account })
         .on('sending', () => {

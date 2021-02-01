@@ -2,14 +2,13 @@ import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
 
 export const approve = async (lpContract, masterChefContract, account) => {
-  return lpContract.methods
-    .approve(masterChefContract.options.address, ethers.constants.MaxUint256)
-    .send({ from: account })
+  return lpContract
+    .approve(masterChefContract.address, ethers.constants.MaxUint256, { from: account })
 }
 
 export const stake = async (masterChefContract, pid, amount, account) => {
   if (pid === 0) {
-    return masterChefContract.methods
+    return masterChefContract
       .enterStaking(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
       .send({ from: account, gas: 200000 })
       .on('transactionHash', (tx) => {
@@ -17,7 +16,7 @@ export const stake = async (masterChefContract, pid, amount, account) => {
       })
   }
 
-  return masterChefContract.methods
+  return masterChefContract
     .deposit(pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
     .send({ from: account, gas: 200000 })
     .on('transactionHash', (tx) => {
@@ -26,7 +25,7 @@ export const stake = async (masterChefContract, pid, amount, account) => {
 }
 
 export const sousStake = async (sousChefContract, amount, account) => {
-  return sousChefContract.methods
+  return sousChefContract
     .deposit(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
     .send({ from: account, gas: 200000 })
     .on('transactionHash', (tx) => {
@@ -35,7 +34,7 @@ export const sousStake = async (sousChefContract, amount, account) => {
 }
 
 export const sousStakeBnb = async (sousChefContract, amount, account) => {
-  return sousChefContract.methods
+  return sousChefContract
     .deposit()
     .send({ from: account, gas: 200000, value: new BigNumber(amount).times(new BigNumber(10).pow(18)).toString() })
     .on('transactionHash', (tx) => {
@@ -45,15 +44,14 @@ export const sousStakeBnb = async (sousChefContract, amount, account) => {
 
 export const unstake = async (masterChefContract, pid, amount, account) => {
   if (pid === 0) {
-    return masterChefContract.methods
+    return masterChefContract
       .leaveStaking(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
       .send({ from: account, gas: 200000 })
       .on('transactionHash', (tx) => {
         return tx.transactionHash
       })
   }
-
-  return masterChefContract.methods
+  return masterChefContract
     .withdraw(pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
     .send({ from: account, gas: 200000 })
     .on('transactionHash', (tx) => {
@@ -64,7 +62,7 @@ export const unstake = async (masterChefContract, pid, amount, account) => {
 export const sousUnstake = async (sousChefContract, amount, account) => {
   // shit code: hard fix for old CTK and BLK
   if (sousChefContract.options.address === '0x3B9B74f48E89Ebd8b45a53444327013a2308A9BC') {
-    return sousChefContract.methods
+    return sousChefContract
       .emergencyWithdraw()
       .send({ from: account })
       .on('transactionHash', (tx) => {
@@ -72,15 +70,14 @@ export const sousUnstake = async (sousChefContract, amount, account) => {
       })
   }
   if (sousChefContract.options.address === '0xBb2B66a2c7C2fFFB06EA60BeaD69741b3f5BF831') {
-    return sousChefContract.methods
+    return sousChefContract
       .emergencyWithdraw()
       .send({ from: account })
       .on('transactionHash', (tx) => {
         return tx.transactionHash
       })
   }
-
-  return sousChefContract.methods
+  return sousChefContract
     .withdraw(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
     .send({ from: account, gas: 200000 })
     .on('transactionHash', (tx) => {
@@ -89,7 +86,7 @@ export const sousUnstake = async (sousChefContract, amount, account) => {
 }
 
 export const sousEmegencyUnstake = async (sousChefContract, amount, account) => {
-  return sousChefContract.methods
+  return sousChefContract
     .emergencyWithdraw()
     .send({ from: account })
     .on('transactionHash', (tx) => {
@@ -99,15 +96,14 @@ export const sousEmegencyUnstake = async (sousChefContract, amount, account) => 
 
 export const harvest = async (masterChefContract, pid, account) => {
   if (pid === 0) {
-    return masterChefContract.methods
+    return masterChefContract
       .leaveStaking('0')
       .send({ from: account, gas: 200000 })
       .on('transactionHash', (tx) => {
         return tx.transactionHash
       })
   }
-
-  return masterChefContract.methods
+  return masterChefContract
     .deposit(pid, '0')
     .send({ from: account, gas: 200000 })
     .on('transactionHash', (tx) => {
@@ -116,7 +112,7 @@ export const harvest = async (masterChefContract, pid, account) => {
 }
 
 export const soushHarvest = async (sousChefContract, account) => {
-  return sousChefContract.methods
+  return sousChefContract
     .deposit('0')
     .send({ from: account, gas: 200000 })
     .on('transactionHash', (tx) => {
@@ -125,7 +121,7 @@ export const soushHarvest = async (sousChefContract, account) => {
 }
 
 export const soushHarvestBnb = async (sousChefContract, account) => {
-  return sousChefContract.methods
+  return sousChefContract
     .deposit()
     .send({ from: account, gas: 200000, value: new BigNumber(0) })
     .on('transactionHash', (tx) => {
