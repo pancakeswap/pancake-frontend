@@ -19,6 +19,23 @@ const pools: PoolConfig[] = [
     tokenDecimals: 18,
   },
   {
+    sousId: 41,
+    tokenName: 'BDO',
+    stakingTokenName: QuoteToken.CAKE,
+    stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
+    contractAddress: {
+      97: '',
+      56: '0x9cB24e9460351bC51d4066BC6AEd1F3809b02B78',
+    },
+    poolCategory: PoolCategory.CORE,
+    projectLink: 'https://bdollar.fi/',
+    harvest: true,
+    tokenPerBlock: '0.075',
+    sortOrder: 999,
+    isFinished: false,
+    tokenDecimals: 18,
+  },
+  {
     sousId: 40,
     tokenName: 'EGLD',
     stakingTokenName: QuoteToken.CAKE,

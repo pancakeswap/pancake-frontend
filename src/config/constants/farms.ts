@@ -33,6 +33,22 @@ const farms: FarmConfig[] = [
     quoteTokenAdresses: contracts.wbnb,
   },
   {
+    pid: 66,
+    lpSymbol: 'BDO-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x74690f829fec83ea424ee1f1654041b2491a7be9',
+    },
+    tokenSymbol: 'BDO',
+    tokenAddresses: {
+      97: '',
+      56: '0x190b589cf9fb8ddeabbfeae36a813ffb2a702454',
+    },
+    quoteTokenSymbol: QuoteToken.BNB,
+    quoteTokenAdresses: contracts.wbnb,
+    isCommunity: false,
+  },
+  {
     pid: 65,
     lpSymbol: 'EGLD-BNB LP',
     lpAddresses: {
