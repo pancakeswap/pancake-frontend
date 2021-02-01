@@ -38,8 +38,8 @@ const Links: React.FunctionComponent<CellProps> = ({ bsc, info }) => {
   return (
     <>
       <Container>
-        <StyledLinkExternal href={bsc}>{TranslateString(356, 'View on BscScan')}</StyledLinkExternal>
-        <StyledLinkExternal href={info}>{TranslateString(999, 'View on Info site')}</StyledLinkExternal>
+        <StyledLinkExternal href={bsc}>{TranslateString(999, 'BscScan')}</StyledLinkExternal>
+        <StyledLinkExternal href={info}>{TranslateString(999, 'Info site')}</StyledLinkExternal>
       </Container>
     </>
   )

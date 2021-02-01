@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
 import { communityFarms } from 'config/constants'
-import { CommunityTag, CoreTag } from 'components/Tags'
+import { CommunityTag, CoreTag, DualTag } from 'components/Tags'
 
 const StyledCommunityTag = styled(CommunityTag)`
   height: 1.5rem;
@@ -21,10 +21,25 @@ const StyledCoreTag = styled(CoreTag)`
   }
 `
 
-const Tags: React.FunctionComponent<FarmWithStakedValue> = ({ tokenSymbol }) => {
+const StyledDualTag = styled(DualTag)`
+  height: 1.5rem;
+  padding: 0 0.375rem;
+  margin-left: 0.25rem;
+
+  svg {
+    width: 0.875rem;
+  }
+`
+
+const Tags: React.FunctionComponent<FarmWithStakedValue> = ({ tokenSymbol, dual }) => {
   const isCommunityFarm = communityFarms.includes(tokenSymbol)
 
-  return <>{isCommunityFarm ? <StyledCommunityTag /> : <StyledCoreTag />}</>
+  return (
+    <>
+      {isCommunityFarm ? <StyledCommunityTag /> : <StyledCoreTag />}
+      {dual ? <StyledDualTag /> : null}
+    </>
+  )
 }
 
 export default Tags

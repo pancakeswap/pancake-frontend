@@ -2,8 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
 
-import Apy from './Apy'
-import Pool from './Pool'
+import Apr, { AprProps } from './Apr'
+import Farm, { FarmProps } from './Farm'
 import Earned from './Earned'
 import Staked from './Staked'
 import Details from './Details'
@@ -11,14 +11,8 @@ import Links from './Links'
 import Tags from './Tags'
 
 export interface RowData {
-  apy: {
-    value: number
-    multiplier: string
-  }
-  pool: {
-    image: string
-    label: string
-  }
+  apr: AprProps
+  farm: FarmProps
   earned: {
     earnings: number
     pid: number
@@ -37,8 +31,8 @@ export interface RowData {
 }
 
 const cells = {
-  apy: Apy,
-  pool: Pool,
+  apr: Apr,
+  farm: Farm,
   earned: Earned,
   staked: Staked,
   details: Details,

@@ -32,15 +32,15 @@ export const ColumnsDef: ColumnsDefTypes[] = [
   {
     id: 1,
     bold: '',
-    normal: 'POOL',
-    name: 'pool',
+    normal: 'Farm',
+    name: 'farm',
     translationId: 999,
   },
   {
     id: 2,
     bold: '',
-    normal: 'APY',
-    name: 'apy',
+    normal: 'APR',
+    name: 'apr',
     translationId: 999,
   },
   {
@@ -79,3 +79,8 @@ export const ColumnsDef: ColumnsDefTypes[] = [
     translationId: 999,
   },
 ]
+
+export enum ViewMode {
+  'TABLE' = 'TABLE',
+  'CARD' = 'CARD',
+}

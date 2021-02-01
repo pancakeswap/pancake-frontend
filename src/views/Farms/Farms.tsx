@@ -19,9 +19,10 @@ import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import FarmCard, { FarmWithStakedValue } from './components/FarmCard/FarmCard'
 import Table from './components/Table/Table'
 import FarmTabButtons from './components/FarmTabButtons'
-import Divider from './components/Divider'
 import SearchInput from './components/SearchInput'
 import { RowData } from './components/Table/Row'
+import ToggleView from './components/ToggleView/ToggleView'
+import { ViewMode } from './components/types'
 
 const ControlContainer = styled.div`
   display: flex;
@@ -39,6 +40,7 @@ const Farms: React.FC = () => {
   const cakePrice = usePriceCakeBusd()
   const bnbPrice = usePriceBnbBusd()
   const [query, setQuery] = useState('')
+  const [viewMode, setViewMode] = useState(ViewMode.TABLE)
   const { account, ethereum }: { account: string; ethereum: provider } = useWallet()
 
   const dispatch = useDispatch()
@@ -60,7 +62,7 @@ const Farms: React.FC = () => {
   const farmsList = useCallback(
     (farmsToDisplay): FarmWithStakedValue[] => {
       const cakePriceVsBNB = new BigNumber(farmsLP.find((farm) => farm.pid === CAKE_POOL_PID)?.tokenPriceVsQuote || 0)
-      const farmsToDisplayWithAPY: FarmWithStakedValue[] = farmsToDisplay.map((farm) => {
+      let farmsToDisplayWithAPY: FarmWithStakedValue[] = farmsToDisplay.map((farm) => {
         if (!farm.tokenAmount || !farm.lpTotalInQuoteToken || !farm.lpTotalInQuoteToken) {
           return farm
         }
@@ -89,16 +91,23 @@ const Farms: React.FC = () => {
         return { ...farm, apy }
       })
 
+      if (query) {
+        const lowered = query.toLowerCase()
+        farmsToDisplayWithAPY = farmsToDisplayWithAPY.filter((farm: FarmWithStakedValue) => {
+          if (farm.lpSymbol.toLowerCase().includes(lowered)) {
+            return true
+          }
+
+          return false
+        })
+      }
       return farmsToDisplayWithAPY
     },
-    [bnbPrice, farmsLP],
+    [bnbPrice, farmsLP, query],
   )
 
-  const handleChangeValue = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(event.target.value)
-    if (tableRef.current) {
-      tableRef.current.setTableQuery(event.target.value)
-    }
   }
 
   const isActive = !pathname.includes('history')
@@ -123,17 +132,24 @@ const Farms: React.FC = () => {
     }
 
     const { quoteTokenAdresses, quoteTokenSymbol, tokenAddresses } = farm
+    const lpLabel = farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('PANCAKE', '')
 
     const row: RowData = {
-      apy: {
+      apr: {
         value: farm.apy
           ? Number(`${farm.apy.times(new BigNumber(100)).toNumber().toLocaleString('en-US').slice(0, -1)}`)
           : null,
         multiplier: farm.multiplier,
+        lpLabel,
+        quoteTokenAdresses,
+        quoteTokenSymbol,
+        tokenAddresses,
+        cakePrice,
+        originalValue: farm.apy,
       },
-      pool: {
+      farm: {
         image: farm.lpSymbol.split(' ')[0].toLocaleLowerCase(),
-        label: farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('PANCAKE', ''),
+        label: lpLabel,
       },
       earned: {
         earnings: farm.userData ? getBalanceNumber(new BigNumber(farm.userData.earnings)) : null,
@@ -155,19 +171,14 @@ const Farms: React.FC = () => {
     return row
   })
 
-  return (
-    <Page>
-      <Heading as="h1" size="lg" color="secondary" mb="50px" style={{ textAlign: 'center' }}>
-        {TranslateString(999, 'Stake LP tokens to earn CAKE')}
-      </Heading>
-      <ControlContainer>
-        <FarmTabButtons />
-        <SearchInput onChange={handleChangeValue} value={query} />
-      </ControlContainer>
+  const renderContent = (): JSX.Element => {
+    if (viewMode === ViewMode.TABLE) {
+      return <Table data={rowData} ref={tableRef} />
+    }
 
-      <Table data={rowData} ref={tableRef} />
+    return (
       <div>
-        <Divider />
+        {/* <Divider /> */}
         <FlexLayout>
           <Route exact path={`${path}`}>
             {farmsStaked.map((farm) => (
@@ -197,6 +208,20 @@ const Farms: React.FC = () => {
           </Route>
         </FlexLayout>
       </div>
+    )
+  }
+
+  return (
+    <Page>
+      <Heading as="h1" size="lg" color="secondary" mb="50px" style={{ textAlign: 'center' }}>
+        {TranslateString(999, 'Stake LP tokens to earn CAKE')}
+      </Heading>
+      <ControlContainer>
+        <ToggleView viewMode={viewMode} onToggle={(mode: ViewMode) => setViewMode(mode)} />
+        <FarmTabButtons />
+        <SearchInput onChange={handleChangeQuery} value={query} />
+      </ControlContainer>
+      {renderContent()}
       <Image src="/images/cakecat.png" alt="Pancake illustration" width={949} height={384} responsive />
     </Page>
   )

@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-interface CellProps {
+export interface FarmProps {
   image: string
   label: string
 }
@@ -17,7 +17,7 @@ const Label = styled.span`
   color: ${(props) => props.theme.colors.text};
 `
 
-const Pool: React.FunctionComponent<CellProps> = ({ image, label }) => {
+const Farm: React.FunctionComponent<FarmProps> = ({ image, label }) => {
   return (
     <>
       <Icon src={`/images/farms/${image}.svg`} alt="icon" />
@@ -26,4 +26,4 @@ const Pool: React.FunctionComponent<CellProps> = ({ image, label }) => {
   )
 }
 
-export default Pool
+export default Farm

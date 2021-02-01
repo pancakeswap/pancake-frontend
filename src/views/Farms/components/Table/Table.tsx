@@ -130,11 +130,11 @@ const columns = ColumnsDef.map((column) => ({
   label: column.normal,
   sort: (a: RowType<RowData>, b: RowType<RowData>) => {
     switch (column.name) {
-      case 'pool':
+      case 'farm':
         return a.id - b.id
-      case 'apy':
-        if (a.original.apy.value && b.original.apy.value) {
-          return Number(a.original.apy.value) - Number(b.original.apy.value)
+      case 'apr':
+        if (a.original.apr.value && b.original.apr.value) {
+          return Number(a.original.apr.value) - Number(b.original.apr.value)
         }
 
         return 0
@@ -254,7 +254,7 @@ export default React.forwardRef((props: ITableProps, ref) => {
                 {headers.map((column, key) => (
                   <Cell
                     key={`head-${column.name}`}
-                    onClick={() => ((column.name !== 'links' && column.name !== 'tags') ? toggleSort(column.name) : '')}
+                    onClick={() => (column.name !== 'links' && column.name !== 'tags' ? toggleSort(column.name) : '')}
                     isHeader
                   >
                     <CellInner>
