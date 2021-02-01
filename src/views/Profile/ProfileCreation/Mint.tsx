@@ -1,16 +1,6 @@
-import React, { useContext, useState } from 'react'
-import styled from 'styled-components'
+import React, { useState } from 'react'
 import BigNumber from 'bignumber.js'
-import {
-  ChevronRightIcon,
-  Button as UIKitButton,
-  Card,
-  CardBody,
-  Flex,
-  Heading,
-  Text,
-  AutoRenewIcon,
-} from '@pancakeswap-libs/uikit'
+import { Card, CardBody, Heading, Text } from '@pancakeswap-libs/uikit'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import useI18n from 'hooks/useI18n'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
@@ -18,20 +8,15 @@ import { useCake, useRabbitMintingFarm } from 'hooks/useContract'
 import nftList from 'config/constants/nfts'
 import SelectionCard from '../components/SelectionCard'
 import NextStepButton from '../components/NextStepButton'
-import { ProfileCreationContext } from './contexts/ProfileCreationProvider'
+import ApproveConfirmButtons from '../components/ApproveConfirmButtons'
+import useProfileCreation from './contexts/hook'
 
 const starterBunnyIds = [5, 6, 7, 8, 9]
 const nfts = nftList.filter((nft) => starterBunnyIds.includes(nft.bunnyId))
 
-const Button = styled(UIKitButton)`
-  min-width: 160px;
-`
-
-const spinnerIcon = <AutoRenewIcon spin color="currentColor" />
-
 const Mint: React.FC = () => {
   const [bunnyId, setBunnyId] = useState(null)
-  const { nextStep } = useContext(ProfileCreationContext)
+  const { actions, minimumCakeRequired, allowance } = useProfileCreation()
   const { account } = useWallet()
   const cakeContract = useCake()
   const mintingFarmContract = useRabbitMintingFarm()
@@ -43,15 +28,27 @@ const Mint: React.FC = () => {
     isConfirming,
     handleApprove,
     handleConfirm,
-  } = useApproveConfirmTransaction(
-    () => {
-      const cost = new BigNumber(5).multipliedBy(new BigNumber(10).pow(18)).toJSON()
-      return cakeContract.methods.approve(mintingFarmContract.options.address, cost).send({ from: account })
+  } = useApproveConfirmTransaction({
+    onRequiresApproval: async () => {
+      // TODO: Move this to a helper, this check will be probably be used many times
+      try {
+        const response = await cakeContract.methods.allowance(account, mintingFarmContract.options.address).call()
+        const currentAllowance = new BigNumber(response)
+        return currentAllowance.gte(minimumCakeRequired)
+      } catch (error) {
+        return false
+      }
     },
-    () => {
+    onApprove: () => {
+      return cakeContract.methods
+        .approve(mintingFarmContract.options.address, allowance.toJSON())
+        .send({ from: account })
+    },
+    onConfirm: () => {
       return mintingFarmContract.methods.mintNFT(bunnyId).send({ from: account })
     },
-  )
+    onSuccess: () => actions.nextStep(),
+  })
 
   return (
     <>
@@ -94,28 +91,17 @@ const Mint: React.FC = () => {
               </SelectionCard>
             )
           })}
-          <Flex py="8px">
-            <Button
-              disabled={bunnyId === null || isConfirmed || isConfirming || isApproved}
-              onClick={handleApprove}
-              endIcon={isApproving ? spinnerIcon : undefined}
-              isLoading={isApproving}
-            >
-              {isApproving ? TranslateString(999, 'Approving') : TranslateString(999, 'Approve')}
-            </Button>
-            <ChevronRightIcon width="24px" color="textDisabled" />
-            <Button
-              onClick={handleConfirm}
-              disabled={!isApproved || isConfirmed}
-              isLoading={isConfirming}
-              endIcon={isConfirming ? spinnerIcon : undefined}
-            >
-              {isConfirming ? TranslateString(999, 'Confirming') : TranslateString(999, 'Confirm')}
-            </Button>
-          </Flex>
+          <ApproveConfirmButtons
+            isApproveDisabled={bunnyId === null || isConfirmed || isConfirming || isApproved}
+            isApproving={isApproving}
+            isConfirmDisabled={!isApproved || isConfirmed}
+            isConfirming={isConfirming}
+            onApprove={handleApprove}
+            onConfirm={handleConfirm}
+          />
         </CardBody>
       </Card>
-      <NextStepButton onClick={nextStep} disabled={!isConfirmed}>
+      <NextStepButton onClick={actions.nextStep} disabled={!isConfirmed}>
         {TranslateString(999, 'Next Step')}
       </NextStepButton>
     </>

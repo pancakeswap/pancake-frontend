@@ -13,29 +13,32 @@ export const profileSlice = createSlice({
   name: 'profile',
   initialState,
   reducers: {
-    setProfile: (state, action: PayloadAction<Profile>) => {
+    profileFetchStart: (state) => {
+      state.isLoading = true
+    },
+    profileFetchSucceeded: (state, action: PayloadAction<Profile>) => {
       state.isInitialized = true
       state.isLoading = false
       state.data = action.payload
     },
-    clearProfile: (state) => {
+    profileFetchFailed: (state) => {
       state.isLoading = false
-      state.data = null
+      state.isInitialized = true
     },
   },
 })
 
 // Actions
-export const { clearProfile, setProfile } = profileSlice.actions
+export const { profileFetchStart, profileFetchSucceeded, profileFetchFailed } = profileSlice.actions
 
 // Thunks
 export const fetchProfile = (address: string) => async (dispatch) => {
   try {
+    dispatch(profileFetchStart())
     const profile = await getProfile(address)
-
-    dispatch(setProfile(profile))
+    dispatch(profileFetchSucceeded(profile))
   } catch (error) {
-    dispatch(clearProfile())
+    dispatch(profileFetchFailed())
   }
 }
 

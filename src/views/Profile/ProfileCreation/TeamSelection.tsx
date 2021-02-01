@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { Card, CardBody, Heading, Text } from '@pancakeswap-libs/uikit'
+import { Card, CardBody, Heading, Text, Skeleton } from '@pancakeswap-libs/uikit'
+import times from 'lodash/times'
 import useI18n from 'hooks/useI18n'
 import { getProfileContract } from 'utils/contractHelpers'
 import { getWeb3 } from 'utils/web3'
@@ -45,11 +46,10 @@ const useTeams = () => {
 }
 
 const Team: React.FC = () => {
-  const { teamId, setTeamId, nextStep } = useContext(ProfileCreationContext)
+  const { teamId: currentTeamId, actions } = useContext(ProfileCreationContext)
   const TranslateString = useI18n()
   const teams = useTeams()
-
-  const handleTeamSelection = (value: string) => setTeamId(parseInt(value, 10))
+  const handleTeamSelection = (value: string) => actions.setTeamId(parseInt(value, 10))
 
   return (
     <>
@@ -73,13 +73,17 @@ const Team: React.FC = () => {
               'There’s currently no big difference between teams, and no benefit of joining one team over another for now. So pick whichever one you like!',
             )}
           </Text>
+          {teams.length === 0 && times(3).map((key) => <Skeleton key={key} height="80px" mb="16px" />)}
           {teams.map((team, index) => {
+            // Team indices start at 1
+            const teamId = index + 1
+
             return (
               <SelectionCard
                 key={team.name}
                 name="teams-selection"
-                value={index}
-                isChecked={teamId === index}
+                value={teamId}
+                isChecked={currentTeamId === teamId}
                 image="/onsen-preview.png"
                 onChange={handleTeamSelection}
                 disabled={!team.isJoinable}
@@ -90,7 +94,9 @@ const Team: React.FC = () => {
           })}
         </CardBody>
       </Card>
-      <NextStepButton onClick={nextStep}>{TranslateString(999, 'Next Step')}</NextStepButton>
+      <NextStepButton onClick={actions.nextStep} disabled={currentTeamId === null}>
+        {TranslateString(999, 'Next Step')}
+      </NextStepButton>
     </>
   )
 }

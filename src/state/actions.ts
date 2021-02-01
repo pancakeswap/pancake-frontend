@@ -8,4 +8,4 @@ export {
   updateUserPendingReward,
   updateUserStakedBalance,
 } from './pools'
-export { clearProfile, setProfile } from './profile'
+export { profileFetchStart, profileFetchSucceeded, profileFetchFailed } from './profile'
