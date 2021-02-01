@@ -35,7 +35,7 @@ const Hero = styled.div`
 const Cards = styled(BaseLayout)`
   align-items: stretch;
   justify-content: stretch;
-  margin-bottom: 16px;
+  margin-bottom: 32px;
 
   & > div {
     grid-column: span 6;
@@ -57,7 +57,7 @@ const Cards = styled(BaseLayout)`
 
 const CTACards = styled(BaseLayout)`
   align-items: start;
-  margin-bottom: 16px;
+  margin-bottom: 32px;
 
   & > div {
     grid-column: span 6;
