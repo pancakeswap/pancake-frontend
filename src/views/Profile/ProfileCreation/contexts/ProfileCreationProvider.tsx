@@ -8,7 +8,7 @@ const initialState: State = {
   currentStep: 0,
   teamId: null,
   tokenId: null,
-  userName: null,
+  userName: '',
 }
 
 const reducer = (state: State, action: Actions): State => {
@@ -19,10 +19,10 @@ const reducer = (state: State, action: Actions): State => {
         isInitialized: true,
         currentStep: action.step,
       }
-    case 'set_step':
+    case 'next_step':
       return {
         ...state,
-        currentStep: action.step,
+        currentStep: state.currentStep + 1,
       }
     case 'set_team':
       return {
@@ -64,18 +64,17 @@ const ProfileCreationProvider: React.FC = ({ children }) => {
     }
   }, [account, dispatch])
 
-  const memoizedState = useMemo(
+  const actions: ContextType['actions'] = useMemo(
     () => ({
-      ...state,
-      nextStep: () => dispatch({ type: 'set_step', step: state.currentStep + 1 }),
+      nextStep: () => dispatch({ type: 'next_step' }),
       setTeamId: (teamId: number) => dispatch({ type: 'set_team', teamId }),
       setTokenId: (tokenId: number) => dispatch({ type: 'set_tokenid', tokenId }),
       setUserName: (userName: string) => dispatch({ type: 'set_username', userName }),
     }),
-    [state, dispatch],
+    [dispatch],
   )
 
-  return <ProfileCreationContext.Provider value={memoizedState}>{children}</ProfileCreationContext.Provider>
+  return <ProfileCreationContext.Provider value={{ ...state, actions }}>{children}</ProfileCreationContext.Provider>
 }
 
 export default ProfileCreationProvider

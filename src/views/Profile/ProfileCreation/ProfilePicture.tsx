@@ -16,7 +16,7 @@ const Link = styled(RouterLink)`
 const NftWrapper = styled.div``
 
 const ProfilePicture: React.FC = () => {
-  const { nextStep, tokenId, setTokenId } = useContext(ProfileCreationContext)
+  const { tokenId, actions } = useContext(ProfileCreationContext)
   const TranslateString = useI18n()
   const { isLoading, nfts: nftsInWallet } = useGetWalletNfts()
   const bunnyIds = Object.keys(nftsInWallet).map((nftWalletItem) => Number(nftWalletItem))
@@ -77,7 +77,7 @@ const ProfilePicture: React.FC = () => {
                     value={firstTokenId}
                     image={walletNft.previewImage}
                     isChecked={firstTokenId === tokenId}
-                    onChange={(value: string) => setTokenId(parseInt(value, 10))}
+                    onChange={(value: string) => actions.setTokenId(parseInt(value, 10))}
                   >
                     <Text bold>{walletNft.name}</Text>
                   </SelectionCard>
@@ -87,7 +87,7 @@ const ProfilePicture: React.FC = () => {
           </NftWrapper>
         </CardBody>
       </Card>
-      <NextStepButton onClick={nextStep} disabled={tokenId === null}>
+      <NextStepButton onClick={actions.nextStep} disabled={tokenId === null}>
         {TranslateString(999, 'Next Step')}
       </NextStepButton>
     </>

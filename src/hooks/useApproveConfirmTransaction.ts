@@ -1,4 +1,5 @@
 import { useReducer } from 'react'
+import { noop } from 'lodash'
 
 type Web3Payload = Record<string, unknown> | null
 
@@ -11,8 +12,6 @@ type Action =
   | { type: 'confirm_sending' }
   | { type: 'confirm_receipt'; payload: Web3Payload }
   | { type: 'confirm_error'; payload: Web3Payload }
-
-type ContractHandler = () => any
 
 interface State {
   approvalState: LoadingState
@@ -72,7 +71,16 @@ const reducer = (state: State, actions: Action): State => {
       return state
   }
 }
-const useApproveConfirmTransaction = (onApprove: ContractHandler, onConfirm: ContractHandler) => {
+
+type ContractHandler = () => any
+
+interface ApproveConfirmTransaction {
+  onApprove: ContractHandler
+  onConfirm: ContractHandler
+  onSuccess: (state: State) => void
+}
+
+const useApproveConfirmTransaction = ({ onApprove, onConfirm, onSuccess }: ApproveConfirmTransaction) => {
   const [state, dispatch] = useReducer(reducer, initialState)
 
   return {
@@ -103,6 +111,7 @@ const useApproveConfirmTransaction = (onApprove: ContractHandler, onConfirm: Con
         })
         .on('receipt', (payload: Web3Payload) => {
           dispatch({ type: 'confirm_receipt', payload })
+          onSuccess(state)
         })
         .on('error', (error: Web3Payload) => {
           dispatch({ type: 'confirm_error', payload: error })

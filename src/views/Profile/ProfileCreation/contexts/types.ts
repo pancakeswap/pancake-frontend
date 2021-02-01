@@ -1,5 +1,5 @@
 export type Actions =
-  | { type: 'set_step'; step: number }
+  | { type: 'next_step' }
   | { type: 'set_team'; teamId: number | null }
   | { type: 'set_tokenid'; tokenId: number | null }
   | { type: 'set_username'; userName: string | null }
@@ -14,8 +14,10 @@ export interface State {
 }
 
 export interface ContextType extends State {
-  nextStep: () => void
-  setTeamId: (teamId: number) => void
-  setTokenId: (tokenId: number) => void
-  setUserName: (userName: string) => void
+  actions: {
+    nextStep: () => void
+    setTeamId: (teamId: number) => void
+    setTokenId: (tokenId: number) => void
+    setUserName: (userName: string) => void
+  }
 }

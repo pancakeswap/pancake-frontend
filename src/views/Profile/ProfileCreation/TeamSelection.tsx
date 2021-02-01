@@ -46,11 +46,10 @@ const useTeams = () => {
 }
 
 const Team: React.FC = () => {
-  const { teamId, setTeamId, nextStep } = useContext(ProfileCreationContext)
+  const { teamId: currentTeamId, actions } = useContext(ProfileCreationContext)
   const TranslateString = useI18n()
   const teams = useTeams()
-
-  const handleTeamSelection = (value: string) => setTeamId(parseInt(value, 10))
+  const handleTeamSelection = (value: string) => actions.setTeamId(parseInt(value, 10))
 
   return (
     <>
@@ -76,12 +75,15 @@ const Team: React.FC = () => {
           </Text>
           {teams.length === 0 && times(3).map((key) => <Skeleton key={key} height="80px" mb="16px" />)}
           {teams.map((team, index) => {
+            // Team indices start at 1
+            const teamId = index + 1
+
             return (
               <SelectionCard
                 key={team.name}
                 name="teams-selection"
-                value={index}
-                isChecked={teamId === index}
+                value={teamId}
+                isChecked={currentTeamId === teamId}
                 image="/onsen-preview.png"
                 onChange={handleTeamSelection}
                 disabled={!team.isJoinable}
@@ -92,7 +94,7 @@ const Team: React.FC = () => {
           })}
         </CardBody>
       </Card>
-      <NextStepButton onClick={nextStep}>{TranslateString(999, 'Next Step')}</NextStepButton>
+      <NextStepButton onClick={actions.nextStep}>{TranslateString(999, 'Next Step')}</NextStepButton>
     </>
   )
 }
