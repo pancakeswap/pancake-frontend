@@ -1,8 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
+import orderBy from 'lodash/orderBy'
 import { Heading, Card, CardBody, Flex, ArrowForwardIcon } from '@pancakeswap-libs/uikit'
 import { NavLink } from 'react-router-dom'
 import pools from 'config/constants/pools'
+import { Pool } from 'state/types'
 
 const StyledFarmStakingCard = styled(Card)`
   background: linear-gradient(#53dee9, #7645d9);
@@ -18,16 +20,10 @@ const CardMidContent = styled(Heading).attrs({ size: 'xl' })`
   line-height: 44px;
 `
 const EarnAssetCard = () => {
-  const TOKENS_TO_EXCLUDE = ['SYRUP']
-  const tokenNames = pools.reduce((accum, pool) => {
-    if (TOKENS_TO_EXCLUDE.includes(pool.tokenName)) {
-      return accum
-    }
+  const latestPools: Pool[] = orderBy(pools, ['sortOrder', 'pid'], ['desc', 'desc']).slice(0, 3)
 
-    return [...accum.slice(0, 3), pool.tokenName]
-  }, [])
-
-  const assets = tokenNames.join(', ')
+  // Always include CAKE
+  const assets = ['CAKE', ...latestPools.map((pool) => pool.tokenName)].join(', ')
 
   return (
     <StyledFarmStakingCard>
