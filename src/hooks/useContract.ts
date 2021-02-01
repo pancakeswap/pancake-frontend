@@ -9,6 +9,7 @@ import {
   getLotteryTicketAddress,
   getRabbitMintingFarmAddress,
   getPancakeProfileAddress,
+  getPancakeRabbitsAddress,
 } from 'utils/addressHelpers'
 import { poolsConfig } from 'config/constants'
 import { PoolCategory } from 'config/constants/types'
@@ -57,9 +58,9 @@ export const useRabbitMintingFarm = () => {
   return useContract(rabbitMintingFarmAbi, getRabbitMintingFarmAddress())
 }
 
-export const usePancakeRabbits = (address: string) => {
+export const usePancakeRabbits = () => {
   const pancakeRabbitsAbi = (pancakeRabbits as unknown) as AbiItem
-  return useContract(pancakeRabbitsAbi, address)
+  return useContract(pancakeRabbitsAbi, getPancakeRabbitsAddress())
 }
 
 export const useProfile = () => {
