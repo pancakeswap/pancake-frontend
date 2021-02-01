@@ -80,7 +80,7 @@ interface ApproveConfirmTransaction {
   onSuccess: (state: State) => void
 }
 
-const useApproveConfirmTransaction = ({ onApprove, onConfirm, onSuccess }: ApproveConfirmTransaction) => {
+const useApproveConfirmTransaction = ({ onApprove, onConfirm, onSuccess = noop }: ApproveConfirmTransaction) => {
   const [state, dispatch] = useReducer(reducer, initialState)
 
   return {

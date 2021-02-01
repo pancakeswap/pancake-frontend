@@ -31,7 +31,6 @@ const Mint: React.FC = () => {
   } = useApproveConfirmTransaction({
     onApprove: () => {
       const cost = new BigNumber(50).multipliedBy(new BigNumber(10).pow(18)).toJSON()
-      console.log(cost)
       return cakeContract.methods.approve(mintingFarmContract.options.address, cost).send({ from: account })
     },
     onConfirm: () => {
