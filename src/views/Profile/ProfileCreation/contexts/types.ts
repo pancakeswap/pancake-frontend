@@ -1,5 +1,7 @@
+import BigNumber from 'bignumber.js'
+
 export type Actions =
-  | { type: 'set_step'; step: number }
+  | { type: 'next_step' }
   | { type: 'set_team'; teamId: number | null }
   | { type: 'set_tokenid'; tokenId: number | null }
   | { type: 'set_username'; userName: string | null }
@@ -11,11 +13,15 @@ export interface State {
   teamId: number | null
   tokenId: number | null
   userName: string
+  minimumCakeRequired: BigNumber
+  allowance: BigNumber
 }
 
 export interface ContextType extends State {
-  nextStep: () => void
-  setTeamId: (teamId: number) => void
-  setTokenId: (tokenId: number) => void
-  setUserName: (userName: string) => void
+  actions: {
+    nextStep: () => void
+    setTeamId: (teamId: number) => void
+    setTokenId: (tokenId: number) => void
+    setUserName: (userName: string) => void
+  }
 }
