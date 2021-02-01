@@ -1,3 +1,5 @@
+import BigNumber from 'bignumber.js'
+
 export type Actions =
   | { type: 'next_step' }
   | { type: 'set_team'; teamId: number | null }
@@ -11,6 +13,8 @@ export interface State {
   teamId: number | null
   tokenId: number | null
   userName: string
+  minimumCakeRequired: BigNumber
+  allowance: BigNumber
 }
 
 export interface ContextType extends State {

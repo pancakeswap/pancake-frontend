@@ -94,7 +94,9 @@ const Team: React.FC = () => {
           })}
         </CardBody>
       </Card>
-      <NextStepButton onClick={actions.nextStep}>{TranslateString(999, 'Next Step')}</NextStepButton>
+      <NextStepButton onClick={actions.nextStep} disabled={currentTeamId === null}>
+        {TranslateString(999, 'Next Step')}
+      </NextStepButton>
     </>
   )
 }

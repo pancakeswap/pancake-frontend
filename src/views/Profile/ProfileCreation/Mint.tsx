@@ -13,12 +13,10 @@ import useProfileCreation from './contexts/hook'
 
 const starterBunnyIds = [5, 6, 7, 8, 9]
 const nfts = nftList.filter((nft) => starterBunnyIds.includes(nft.bunnyId))
-const minimumCakeRequired = new BigNumber(10).multipliedBy(new BigNumber(10).pow(18)) // 10 CAKE
-const allowance = new BigNumber(50).multipliedBy(new BigNumber(10).pow(18)) // 50 CAKE
 
 const Mint: React.FC = () => {
   const [bunnyId, setBunnyId] = useState(null)
-  const { actions } = useProfileCreation()
+  const { actions, minimumCakeRequired, allowance } = useProfileCreation()
   const { account } = useWallet()
   const cakeContract = useCake()
   const mintingFarmContract = useRabbitMintingFarm()

@@ -1,4 +1,5 @@
 import React, { createContext, useEffect, useMemo, useReducer } from 'react'
+import BigNumber from 'bignumber.js'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { getRabbitMintingContract } from 'utils/contractHelpers'
 import { Actions, State, ContextType } from './types'
@@ -9,6 +10,8 @@ const initialState: State = {
   teamId: null,
   tokenId: null,
   userName: '',
+  minimumCakeRequired: new BigNumber(10).multipliedBy(new BigNumber(10).pow(18)), // 10 CAKE
+  allowance: new BigNumber(50).multipliedBy(new BigNumber(10).pow(18)), // 50 CAKE
 }
 
 const reducer = (state: State, action: Actions): State => {

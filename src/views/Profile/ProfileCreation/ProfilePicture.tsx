@@ -1,9 +1,13 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import styled from 'styled-components'
-import { Card, CardBody, Heading, Skeleton, Text } from '@pancakeswap-libs/uikit'
+import { AutoRenewIcon, Button, Card, CardBody, Heading, Skeleton, Text } from '@pancakeswap-libs/uikit'
 import { Link as RouterLink } from 'react-router-dom'
+import { useWallet } from '@binance-chain/bsc-use-wallet'
 import nftList from 'config/constants/nfts'
 import useI18n from 'hooks/useI18n'
+import { useToast } from 'state/hooks'
+import { getPancakeProfileAddress } from 'utils/addressHelpers'
+import { usePancakeRabbits } from 'hooks/useContract'
 import useGetWalletNfts from 'hooks/useGetWalletNfts'
 import SelectionCard from '../components/SelectionCard'
 import NextStepButton from '../components/NextStepButton'
@@ -13,14 +17,38 @@ const Link = styled(RouterLink)`
   color: ${({ theme }) => theme.colors.primary};
 `
 
-const NftWrapper = styled.div``
+const NftWrapper = styled.div`
+  margin-bottom: 24px;
+`
 
 const ProfilePicture: React.FC = () => {
+  const [isApproved, setIsApproved] = useState(false)
+  const [isApproving, setIsApproving] = useState(false)
   const { tokenId, actions } = useContext(ProfileCreationContext)
   const TranslateString = useI18n()
   const { isLoading, nfts: nftsInWallet } = useGetWalletNfts()
+  const pancakeRabbitsContract = usePancakeRabbits()
+  const { account } = useWallet()
+  const { toastError } = useToast()
   const bunnyIds = Object.keys(nftsInWallet).map((nftWalletItem) => Number(nftWalletItem))
   const walletNfts = nftList.filter((nft) => bunnyIds.includes(nft.bunnyId))
+
+  const handleApprove = () => {
+    pancakeRabbitsContract.methods
+      .approve(getPancakeProfileAddress(), tokenId)
+      .send({ from: account })
+      .on('sending', () => {
+        setIsApproving(true)
+      })
+      .on('receipt', () => {
+        setIsApproving(false)
+        setIsApproved(true)
+      })
+      .on('error', (error) => {
+        toastError('Error', error?.message)
+        setIsApproving(false)
+      })
+  }
 
   if (!isLoading && walletNfts.length === 0) {
     return (
@@ -85,9 +113,26 @@ const ProfilePicture: React.FC = () => {
               })
             )}
           </NftWrapper>
+          <Heading as="h4" size="lg" mb="8px">
+            {TranslateString(999, 'Allow collectible to be locked')}
+          </Heading>
+          <Text as="p" color="textSubtle" mb="16px">
+            {TranslateString(
+              999,
+              "The collectible you've chosen will be locked in a smart contract while it’s being used as your profile picture. Don't worry - you'll be able to get it back at any time.",
+            )}
+          </Text>
+          <Button
+            isLoading={isApproving}
+            disabled={isApproved || isApproving || tokenId === null}
+            onClick={handleApprove}
+            endIcon={isApproving ? <AutoRenewIcon spin color="currentColor" /> : undefined}
+          >
+            {TranslateString(999, 'Approve')}
+          </Button>
         </CardBody>
       </Card>
-      <NextStepButton onClick={actions.nextStep} disabled={tokenId === null}>
+      <NextStepButton onClick={actions.nextStep} disabled={tokenId === null || !isApproved || isApproving}>
         {TranslateString(999, 'Next Step')}
       </NextStepButton>
     </>

@@ -54,7 +54,7 @@ const Indicator = styled(Flex)`
 `
 
 const UserName: React.FC = () => {
-  const { teamId, tokenId, userName, actions } = useProfileCreation()
+  const { teamId, tokenId, userName, actions, minimumCakeRequired, allowance } = useProfileCreation()
   const TranslateString = useI18n()
   const { account } = useWallet()
   const { toastError } = useToast()
@@ -64,7 +64,14 @@ const UserName: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [message, setMessage] = useState('')
   const [onPresentConfirmProfileCreation] = useModal(
-    <ConfirmProfileCreationModal userName={userName} tokenId={tokenId} account={account} teamId={teamId} />,
+    <ConfirmProfileCreationModal
+      userName={userName}
+      tokenId={tokenId}
+      account={account}
+      teamId={teamId}
+      minimumCakeRequired={minimumCakeRequired}
+      allowance={allowance}
+    />,
   )
   const isUserCreated = existingUserState === ExistingUserState.CREATED
 
