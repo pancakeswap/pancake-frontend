@@ -67,7 +67,7 @@ const App: React.FC = () => {
             <Route exact path="/teams">
               <Teams />
             </Route>
-            <Route exact path="/profile">
+            <Route path="/profile">
               <Profile />
             </Route>
             {/* Redirect */}
