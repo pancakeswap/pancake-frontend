@@ -70,8 +70,6 @@ const ModalInput: React.FC<ModalInputProps> = ({
 
   const displayBalance = isBalanceZero ? '0' : parseFloat(max).toFixed(4)
 
-  // debugger // eslint-disable-line no-debugger
-
   return (
     <div style={{ position: 'relative' }}>
       <StyledTokenInput isWarning={isBalanceZero}>

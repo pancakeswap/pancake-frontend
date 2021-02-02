@@ -33,8 +33,6 @@ const DepositModal: React.FC<DepositModalProps> = ({ max, onConfirm, onDismiss, 
     setVal(fullBalance)
   }, [fullBalance, setVal])
 
-  // debugger // eslint-disable-line no-debugger
-
   return (
     <Modal title={TranslateString(999, 'Stake LP tokens')} onDismiss={onDismiss}>
       <ModalInput
