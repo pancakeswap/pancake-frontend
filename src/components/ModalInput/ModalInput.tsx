@@ -1,20 +1,35 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Text, Button, Input, Flex } from '@pancakeswap-libs/uikit'
+import { Text, Button, Input, InputProps, Flex } from '@pancakeswap-libs/uikit'
 import useI18n from '../../hooks/useI18n'
-import { InputProps } from '../Input'
 
-interface ModalInputProps extends InputProps {
+interface ModalInputProps {
   max: number | string
   symbol: string
   onSelectMax?: () => void
+  onChange: (e: React.FormEvent<HTMLInputElement>) => void
+  placeholder?: string
+  value: string
 }
 
-const StyledTokenInput = styled.div`
+const getBoxShadow = ({ isSuccess = false, isWarning = false, theme }) => {
+  if (isWarning) {
+    return theme.shadows.warning
+  }
+
+  if (isSuccess) {
+    return theme.shadows.success
+  }
+
+  return theme.shadows.inset
+}
+
+const StyledTokenInput = styled.div<InputProps>`
   display: flex;
   flex-direction: column;
   background-color: ${({ theme }) => theme.colors.input};
   border-radius: 16px;
+  box-shadow: ${getBoxShadow};
   color: ${({ theme }) => theme.colors.text};
   padding: 8px 16px;
   width: 100%;
@@ -22,34 +37,24 @@ const StyledTokenInput = styled.div`
 
 const StyledInput = styled(Input)`
   box-shadow: none;
+  width: auto;
+  padding: 0;
+  margin-right: 8px;
 `
 
 const ModalInput: React.FC<ModalInputProps> = ({ max, symbol, onChange, onSelectMax, value }) => {
   const TranslateString = useI18n()
   return (
-    <StyledTokenInput>
+    <StyledTokenInput isWarning>
       <Flex justifyContent="space-between">
         <Text fontSize="14px">{TranslateString(999, 'Deposit')}</Text>
         <Text fontSize="14px">
           {TranslateString(999, 'Balance')}: {max.toLocaleString()}
         </Text>
       </Flex>
-      <Flex>
-        <StyledInput
-          // endAdornment={
-          //   <StyledTokenAdornmentWrapper>
-          //     <StyledTokenSymbol>{symbol}</StyledTokenSymbol>
-          //     <StyledSpacer />
-          //     <div>
-
-          //     </div>
-          //   </StyledTokenAdornmentWrapper>
-          // }
-          onChange={onChange}
-          placeholder="0"
-          value={value}
-        />
-        <Button size="sm" onClick={onSelectMax}>
+      <Flex alignItems="flex-end">
+        <StyledInput onChange={onChange} placeholder="0" value={value} />
+        <Button size="sm" onClick={onSelectMax} mr="8px">
           {TranslateString(452, 'Max')}
         </Button>
         <Text fontSize="16px">{symbol}</Text>
@@ -57,29 +62,5 @@ const ModalInput: React.FC<ModalInputProps> = ({ max, symbol, onChange, onSelect
     </StyledTokenInput>
   )
 }
-
-const StyledSpacer = styled.div`
-  width: ${(props) => props.theme.spacing[3]}px;
-`
-
-const StyledTokenAdornmentWrapper = styled.div`
-  align-items: center;
-  display: flex;
-`
-
-const StyledMaxText = styled.div`
-  align-items: center;
-  color: ${(props) => props.theme.colors.primary};
-  display: flex;
-  font-size: 14px;
-  font-weight: 700;
-  height: 44px;
-  justify-content: flex-end;
-`
-
-const StyledTokenSymbol = styled.span`
-  color: ${(props) => props.theme.colors.primary};
-  font-weight: 700;
-`
 
 export default ModalInput
