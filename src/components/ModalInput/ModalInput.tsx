@@ -31,22 +31,22 @@ const StyledTokenInput = styled.div<InputProps>`
   border-radius: 16px;
   box-shadow: ${getBoxShadow};
   color: ${({ theme }) => theme.colors.text};
-  padding: 8px 16px;
+  padding: 8px 16px 8px 0;
   width: 100%;
 `
 
 const StyledInput = styled(Input)`
   box-shadow: none;
   width: auto;
-  padding: 0;
-  margin-right: 8px;
+  margin: 0 8px;
+  padding: 0 8px;
 `
 
 const ModalInput: React.FC<ModalInputProps> = ({ max, symbol, onChange, onSelectMax, value }) => {
   const TranslateString = useI18n()
   return (
     <StyledTokenInput isWarning>
-      <Flex justifyContent="space-between">
+      <Flex justifyContent="space-between" pl="16px">
         <Text fontSize="14px">{TranslateString(999, 'Deposit')}</Text>
         <Text fontSize="14px">
           {TranslateString(999, 'Balance')}: {max.toLocaleString()}
@@ -54,7 +54,13 @@ const ModalInput: React.FC<ModalInputProps> = ({ max, symbol, onChange, onSelect
       </Flex>
       <Flex alignItems="flex-end">
         <StyledInput onChange={onChange} placeholder="0" value={value} />
-        <Button size="sm" onClick={onSelectMax} mr="8px">
+        <Button
+          size="sm"
+          onClick={() => {
+            onSelectMax()
+          }}
+          mr="8px"
+        >
           {TranslateString(452, 'Max')}
         </Button>
         <Text fontSize="16px">{symbol}</Text>
