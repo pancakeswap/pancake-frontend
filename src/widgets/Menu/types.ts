@@ -5,6 +5,13 @@ export interface LangType {
   language: string;
 }
 
+export interface Profile {
+  username?: string;
+  image?: string;
+  profileLink: string;
+  noProfileLink: string;
+}
+
 export interface PushedProps {
   isPushed: boolean;
   pushNav: (isPushed: boolean) => void;
@@ -41,5 +48,6 @@ export interface PanelProps {
 export interface NavProps extends PanelProps {
   account?: string;
   login: Login;
+  profile?: Profile;
   logout: () => void;
 }
