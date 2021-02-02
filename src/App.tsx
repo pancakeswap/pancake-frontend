@@ -1,10 +1,8 @@
-import React, { useEffect, Suspense, lazy } from 'react'
+import React, { Suspense, lazy } from 'react'
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom'
-import { useWeb3React } from '@web3-react/core'
 import { ResetCSS } from '@pancakeswap-libs/uikit'
 import BigNumber from 'bignumber.js'
 import { useFetchProfile, useFetchPublicData } from 'state/hooks'
-import { injected } from 'connectors'
 import Web3ReactManager from 'components/Web3ReactManager'
 import GlobalStyle from './style/Global'
 import Menu from './components/Menu'
@@ -33,13 +31,6 @@ BigNumber.config({
 })
 
 const App: React.FC = () => {
-  const { account, activate } = useWeb3React()
-  useEffect(() => {
-    if (!account && window.localStorage.getItem('accountStatus')) {
-      activate(injected)
-    }
-  }, [account, activate])
-
   useFetchPublicData()
   useFetchProfile()
 
