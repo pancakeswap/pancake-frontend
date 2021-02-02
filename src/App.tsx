@@ -19,6 +19,7 @@ const Ifos = lazy(() => import('./views/Ifos'))
 const NotFound = lazy(() => import('./views/NotFound'))
 const Nft = lazy(() => import('./views/Nft'))
 const Teams = lazy(() => import('./views/Teams'))
+const Team = lazy(() => import('./views/Teams/Team'))
 const Profile = lazy(() => import('./views/Profile'))
 
 // This config is required for number formating
@@ -66,6 +67,9 @@ const App: React.FC = () => {
             </Route>
             <Route exact path="/teams">
               <Teams />
+            </Route>
+            <Route path="/teams/:id">
+              <Team />
             </Route>
             <Route path="/profile">
               <Profile />

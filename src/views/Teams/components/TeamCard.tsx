@@ -1,55 +1,53 @@
 import React from 'react'
-import styled, { DefaultTheme } from 'styled-components'
-import { Link } from 'react-router-dom'
-import { Button, Card, CommunityIcon, Flex, Heading, PrizeIcon, Text } from '@pancakeswap-libs/uikit'
-import { Team } from 'state/types'
+import styled from 'styled-components'
+import { Card, CardBody, CommunityIcon, Heading, PrizeIcon } from '@pancakeswap-libs/uikit'
+import CardHeader from 'views/Profile/components/CardHeader'
 import useI18n from 'hooks/useI18n'
+import { Team } from 'state/types'
+import ComingSoon from 'views/Profile/components/ComingSoon'
+import StatBox from 'views/Profile/components/StatBox'
 
 interface TeamCardProps {
-  rank: number
   team: Team
 }
 
-const getBackground = (theme: DefaultTheme) => {
-  if (theme.isDark) {
-    return 'linear-gradient(139.73deg, #142339 0%, #24243D 47.4%, #37273F 100%)'
-  }
-
-  return 'linear-gradient(139.73deg, #E6FDFF 0%, #EFF4F5 46.87%, #F3EFFF 100%)'
-}
-
-const TeamRank = styled.div`
-  align-self: stretch;
-  background: ${({ theme }) => getBackground(theme)};
-  flex: none;
-  padding: 16px 0;
-  text-align: center;
-  width: 56px;
-`
-
-const Body = styled.div`
-  align-items: start;
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  padding: 24px;
+const Wrapper = styled.div`
+  padding-top: 16px;
 
   ${({ theme }) => theme.mediaQueries.md} {
-    align-items: center;
-    flex-direction: row;
-    font-size: 40px;
+    padding-top: 24px;
   }
-`
-
-const Info = styled.div`
-  flex: 1;
 `
 
 const Avatar = styled.img`
   border-radius: 50%;
+  height: 64px;
+  margin-top: -12px;
+  width: 64px;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    height: 128px;
+    margin-top: -24px;
+    width: 128px;
+  }
 `
 
-const TeamName = styled(Heading).attrs({ as: 'h3' })`
+const AvatarWrap = styled.div`
+  margin-bottom: 8px;
+  text-align: center;
+`
+
+const StyledCard = styled(Card)`
+  overflow: visible;
+`
+
+const StyledCardHeader = styled(CardHeader)`
+  border-radius: 32px 32px 0 0;
+  padding-top: 0;
+  text-align: center;
+`
+
+const TeamName = styled(Heading).attrs({ as: 'h1' })`
   font-size: 24px;
 
   ${({ theme }) => theme.mediaQueries.md} {
@@ -57,77 +55,46 @@ const TeamName = styled(Heading).attrs({ as: 'h3' })`
   }
 `
 
-const MobileAvatar = styled.div`
-  flex: none;
-  margin-right: 8px;
-
-  ${Avatar} {
-    height: 64px;
-    width: 64px;
-  }
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    display: none;
-  }
-`
-
-const DesktopAvatar = styled.div`
-  display: none;
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    display: block;
-    margin-left: 24px;
-
-    ${Avatar} {
-      height: 128px;
-      width: 128px;
-    }
-  }
-`
-
-const StyledTeamCard = styled(Card)`
-  display: flex;
+const StatRow = styled.div`
+  display: grid;
+  grid-gap: 16px;
+  grid-template-columns: 1fr;
   margin-bottom: 16px;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    grid-gap: 32px;
+    grid-template-columns: repeat(2, 1fr);
+    margin-bottom: 32px;
+  }
 `
 
-const TeamCard: React.FC<TeamCardProps> = ({ rank, team }) => {
+const TeamCard: React.FC<TeamCardProps> = ({ team }) => {
   const TranslateString = useI18n()
-  const avatar = <Avatar src="/images/nfts/onsen-preview.png" alt="team avatar" />
 
   return (
-    <StyledTeamCard>
-      <TeamRank>
-        <Text bold fontSize="24px">
-          {rank}
-        </Text>
-      </TeamRank>
-      <Body>
-        <Info>
-          <Flex alignItems="center">
-            <MobileAvatar>{avatar}</MobileAvatar>
-            <TeamName>{team.name}</TeamName>
-          </Flex>
-          <Flex py="8px">
-            <Flex>
-              <PrizeIcon width="24px" mr="8px" />
-              <Text fontSize="24px" bold>
-                {team.points.toLocaleString()}
-              </Text>
-            </Flex>
-            <Flex ml="24px">
-              <CommunityIcon width="24px" mr="8px" />
-              <Text fontSize="24px" bold>
-                {team.users.toLocaleString()}
-              </Text>
-            </Flex>
-          </Flex>
-        </Info>
-        <Button as={Link} to={`/teams/${team?.id}`} variant="secondary" size="sm">
-          {TranslateString(999, 'See More')}
-        </Button>
-        <DesktopAvatar>{avatar}</DesktopAvatar>
-      </Body>
-    </StyledTeamCard>
+    <Wrapper>
+      <StyledCard>
+        <StyledCardHeader>
+          <AvatarWrap>
+            <Avatar src="/images/nfts/onsen-preview.png" alt="team avatar" />
+          </AvatarWrap>
+          <TeamName>{team.name}</TeamName>
+        </StyledCardHeader>
+        <CardBody>
+          <StatRow>
+            <StatBox icon={CommunityIcon} title={team.users} subtitle={TranslateString(999, 'Active Members')} />
+            <StatBox
+              icon={PrizeIcon}
+              title={TranslateString(999, 'Coming Soon')}
+              subtitle={TranslateString(999, 'Team Points')}
+              isDisabled
+            />
+          </StatRow>
+          <Heading>{TranslateString(999, 'Team Achievements')}</Heading>
+          <ComingSoon />
+        </CardBody>
+      </StyledCard>
+    </Wrapper>
   )
 }
 
