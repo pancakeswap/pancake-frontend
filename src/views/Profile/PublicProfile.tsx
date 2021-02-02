@@ -20,6 +20,7 @@ import CardHeader from './components/CardHeader'
 import SecondaryCard from './components/SecondaryCard'
 import Collectibles from './components/Collectibles'
 import ComingSoon from './components/ComingSoon'
+import WalletNotConnected from './components/WalletNotConnected'
 
 const Avatar = styled.div`
   margin-right: 16px;
@@ -82,6 +83,10 @@ const PublicProfile = () => {
   const { account } = useWallet()
   const { profile } = useProfile()
   const TranslateString = useI18n()
+
+  if (!account) {
+    return <WalletNotConnected />
+  }
 
   return (
     <>
