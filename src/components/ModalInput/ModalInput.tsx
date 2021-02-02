@@ -4,7 +4,7 @@ import { Text, Button, Input, InputProps, Flex, Link } from '@pancakeswap-libs/u
 import useI18n from '../../hooks/useI18n'
 
 interface ModalInputProps {
-  max: number | string
+  max: string
   symbol: string
   onSelectMax?: () => void
   onChange: (e: React.FormEvent<HTMLInputElement>) => void
@@ -35,9 +35,17 @@ const StyledTokenInput = styled.div<InputProps>`
 
 const StyledInput = styled(Input)`
   box-shadow: none;
-  width: auto;
+  width: 60px;
   margin: 0 8px;
   padding: 0 8px;
+
+  ${({ theme }) => theme.mediaQueries.xs} {
+    width: 80px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    width: auto;
+  }
 `
 
 const StyledErrorMessage = styled(Text)`
@@ -60,6 +68,8 @@ const ModalInput: React.FC<ModalInputProps> = ({
   const TranslateString = useI18n()
   const isBalanceZero = max === '0' || !max
 
+  const displayBalance = isBalanceZero ? '0' : parseFloat(max).toFixed(4)
+
   // debugger // eslint-disable-line no-debugger
 
   return (
@@ -68,10 +78,10 @@ const ModalInput: React.FC<ModalInputProps> = ({
         <Flex justifyContent="space-between" pl="16px">
           <Text fontSize="14px">{withdrawal ? TranslateString(999, 'Unstake') : TranslateString(999, 'Stake')}</Text>
           <Text fontSize="14px">
-            {TranslateString(999, 'Balance')}: {max.toLocaleString()}
+            {TranslateString(999, 'Balance')}: {displayBalance.toLocaleString()}
           </Text>
         </Flex>
-        <Flex alignItems="flex-end">
+        <Flex alignItems="flex-end" justifyContent="space-around">
           <StyledInput onChange={onChange} placeholder="0" value={value} />
           <Button size="sm" onClick={onSelectMax} mr="8px">
             {TranslateString(452, 'Max')}
