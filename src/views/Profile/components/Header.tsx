@@ -21,9 +21,6 @@ const ProfileHeader = () => {
       <Heading as="h2" size="lg" mb="16px">
         {TranslateString(999, 'Check your stats and collect achievements')}
       </Heading>
-      <Button as={Link} to="/profile">
-        {TranslateString(999, 'Edit Profile')}
-      </Button>
     </StyledProfileHeader>
   )
 }

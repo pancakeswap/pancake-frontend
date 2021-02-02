@@ -27,10 +27,10 @@ const Profile = () => {
     <Page>
       <Header />
       <Route exact path="/profile">
-        <TaskCenter />
-      </Route>
-      <Route path="/profile/view">
         <PublicProfile />
+      </Route>
+      <Route path="/profile/tasks">
+        <TaskCenter />
       </Route>
     </Page>
   )
