@@ -11,6 +11,7 @@ interface ModalInputProps {
   placeholder?: string
   value: string
   addLiquidityUrl?: string
+  withdrawal?: boolean
 }
 
 const getBoxShadow = ({ isWarning = false, theme }) => {
@@ -41,21 +42,31 @@ const StyledInput = styled(Input)`
 
 const StyledErrorMessage = styled(Text)`
   position: absolute;
-
+  bottom: -22px;
   a {
     display: inline;
   }
 `
 
-const ModalInput: React.FC<ModalInputProps> = ({ max, symbol, onChange, onSelectMax, value, addLiquidityUrl }) => {
+const ModalInput: React.FC<ModalInputProps> = ({
+  max,
+  symbol,
+  onChange,
+  onSelectMax,
+  value,
+  addLiquidityUrl,
+  withdrawal,
+}) => {
   const TranslateString = useI18n()
-  const isBalanceZero = value === '0' || !value
+  const isBalanceZero = max === '0' || !max
+
+  // debugger // eslint-disable-line no-debugger
 
   return (
-    <div>
+    <div style={{ position: 'relative' }}>
       <StyledTokenInput isWarning={isBalanceZero}>
         <Flex justifyContent="space-between" pl="16px">
-          <Text fontSize="14px">{TranslateString(999, 'Deposit')}</Text>
+          <Text fontSize="14px">{withdrawal ? TranslateString(999, 'Unstake') : TranslateString(999, 'Stake')}</Text>
           <Text fontSize="14px">
             {TranslateString(999, 'Balance')}: {max.toLocaleString()}
           </Text>
