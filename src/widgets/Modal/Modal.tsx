@@ -4,9 +4,9 @@ import Heading from "../../components/Heading/Heading";
 import Button from "../../components/Button/Button";
 import Flex from "../../components/Flex/Flex";
 import { CloseIcon } from "../../components/Svg";
-import { ModalProps } from "./types";
+import { InjectedProps } from "./types";
 
-interface Props extends ModalProps {
+interface Props extends InjectedProps {
   title: string;
 }
 

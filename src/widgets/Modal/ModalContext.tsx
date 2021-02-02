@@ -1,10 +1,12 @@
 import React, { createContext, useState } from "react";
 import styled from "styled-components";
 import Overlay from "../../components/Overlay/Overlay";
-import { ModalProps } from "./types";
+import { Handler } from "./types";
 
-interface ModalsContext extends ModalProps {
+interface ModalsContext {
   onPresent: (node: React.ReactNode, key?: string) => void;
+  onDismiss: Handler;
+  setCloseOnOverlayClick: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const ModalWrapper = styled.div`
@@ -23,11 +25,13 @@ const ModalWrapper = styled.div`
 export const Context = createContext<ModalsContext>({
   onPresent: () => null,
   onDismiss: () => null,
+  setCloseOnOverlayClick: () => true,
 });
 
 const ModalProvider: React.FC = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [modalNode, setModalNode] = useState<React.ReactNode>();
+  const [closeOnOverlayClick, setCloseOnOverlayClick] = useState(true);
 
   const handlePresent = (node: React.ReactNode) => {
     setModalNode(node);
@@ -39,16 +43,23 @@ const ModalProvider: React.FC = ({ children }) => {
     setIsOpen(false);
   };
 
+  const handleOverlayDismiss = () => {
+    if (closeOnOverlayClick) {
+      handleDismiss();
+    }
+  };
+
   return (
     <Context.Provider
       value={{
         onPresent: handlePresent,
         onDismiss: handleDismiss,
+        setCloseOnOverlayClick,
       }}
     >
       {isOpen && (
         <ModalWrapper>
-          <Overlay show onClick={handleDismiss} />
+          <Overlay show onClick={handleOverlayDismiss} />
           {React.isValidElement(modalNode) &&
             React.cloneElement(modalNode, {
               onDismiss: handleDismiss,

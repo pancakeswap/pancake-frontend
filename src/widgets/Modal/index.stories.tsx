@@ -1,6 +1,6 @@
 import React from "react";
-import noop from "lodash/noop";
 import { Modal, useModal } from ".";
+import { InjectedProps } from "./types";
 import Button from "../../components/Button/Button";
 import Heading from "../../components/Heading/Heading";
 
@@ -10,8 +10,12 @@ export default {
   argTypes: {},
 };
 
-const CustomModal = ({ title }) => (
-  <Modal title={title} onDismiss={noop}>
+interface CustomModalProps extends InjectedProps {
+  title: string;
+}
+
+const CustomModal: React.FC<CustomModalProps> = ({ title, onDismiss }) => (
+  <Modal title={title} onDismiss={onDismiss}>
     <Heading>{title}</Heading>
     <Button>This button Does nothing</Button>
   </Modal>
@@ -24,6 +28,16 @@ export const Default: React.FC = () => {
     <div>
       <Button onClick={onPresent1}>Open modal 1</Button>
       <Button onClick={onPresent2}>Open modal 2</Button>
+    </div>
+  );
+};
+
+export const DisableOverlayClick: React.FC = () => {
+  const [onPresent1] = useModal(<CustomModal title="Modal 1" />, false);
+
+  return (
+    <div>
+      <Button onClick={onPresent1}>Disabled overlay click</Button>
     </div>
   );
 };
