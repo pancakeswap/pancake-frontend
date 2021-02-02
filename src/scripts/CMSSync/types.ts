@@ -6,6 +6,6 @@ export enum SettingsType {
 
 export interface SettingsObject {
   name: string
-  link: string
+  url: string
   type: SettingsType
 }

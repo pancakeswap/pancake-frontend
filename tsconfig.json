@@ -17,7 +17,6 @@
     "strictNullChecks": false,
     "noImplicitAny": false,
     "noFallthroughCasesInSwitch": true,
-    "module": "esnext"
   },
   "include": ["src"]
 }
