@@ -31,7 +31,6 @@ export const getPools = (data) => {
   const pools: PoolConfig = data.map((pool) => {
     return {
       sousId: pool._id,
-      // image: string,
       tokenName: pool?.token?.name,
       stakingTokenName: pool?.quote_token?.name,
       stakingLimit: pool?.quote_token?.decimals,
@@ -61,11 +60,6 @@ export const getFarms = (data) => {
       quoteTokenAdresses: farm?.quote_token?.mainnet_address,
       multiplier: farm?.multiplier,
       isCommunity: farm?.is_community,
-      // dual: {
-      //   rewardPerBlock: obj
-      //   earnLabel: obj
-      //   endBlock: obj
-      // }
     }
   })
   return farms
