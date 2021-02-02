@@ -1,12 +1,11 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React from 'react'
 import { Card, CardBody, Heading, Text, Skeleton } from '@pancakeswap-libs/uikit'
 import times from 'lodash/times'
 import useI18n from 'hooks/useI18n'
-import { getProfileContract } from 'utils/contractHelpers'
-import { getWeb3 } from 'utils/web3'
+import useTeams from 'hooks/useTeams'
 import SelectionCard from '../components/SelectionCard'
 import NextStepButton from '../components/NextStepButton'
-import { ProfileCreationContext } from './contexts/ProfileCreationProvider'
+import useProfileCreation from './contexts/hook'
 
 interface Team {
   name: string
@@ -14,39 +13,8 @@ interface Team {
   isJoinable: boolean
 }
 
-const useTeams = () => {
-  const [teams, setTeams] = useState<Team[]>([])
-  useEffect(() => {
-    const fetchteams = async () => {
-      try {
-        const contract = getProfileContract()
-        const nbTeams = await contract.methods.numberTeams().call()
-
-        const web3 = getWeb3()
-        const batch = new web3.BatchRequest()
-        for (let i = 1; i <= nbTeams; i++) {
-          batch.add(
-            contract.methods.getTeamProfile(i).call.request({}, (error, result) => {
-              if (error) {
-                console.error(error)
-              } else {
-                setTeams((prev) => [...prev, { name: result[0], description: result[1], isJoinable: result[3] }])
-              }
-            }),
-          )
-        }
-        batch.execute()
-      } catch (error) {
-        console.error(error)
-      }
-    }
-    fetchteams()
-  }, [])
-  return teams
-}
-
 const Team: React.FC = () => {
-  const { teamId: currentTeamId, actions } = useContext(ProfileCreationContext)
+  const { teamId: currentTeamId, actions } = useProfileCreation()
   const TranslateString = useI18n()
   const teams = useTeams()
   const handleTeamSelection = (value: string) => actions.setTeamId(parseInt(value, 10))
