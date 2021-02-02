@@ -1,8 +1,6 @@
 import React, { useContext } from 'react'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
-import { Heading, Text } from '@pancakeswap-libs/uikit'
-import useI18n from 'hooks/useI18n'
-import UnlockButton from 'components/UnlockButton'
+import NoWalletConnected from '../components/WalletNotConnected'
 import { ProfileCreationContext } from './contexts/ProfileCreationProvider'
 import Mint from './Mint'
 import ProfilePicture from './ProfilePicture'
@@ -12,20 +10,9 @@ import UserName from './UserName'
 const Steps = () => {
   const { isInitialized, currentStep } = useContext(ProfileCreationContext)
   const { account } = useWallet()
-  const TranslateString = useI18n()
 
   if (!account) {
-    return (
-      <div>
-        <Heading size="xl" mb="8px">
-          {TranslateString(999, 'Oops!')}
-        </Heading>
-        <Text as="p" mb="16px">
-          {TranslateString(999, 'Please connect your wallet to continue')}
-        </Text>
-        <UnlockButton />
-      </div>
-    )
+    return <NoWalletConnected />
   }
 
   if (!isInitialized) {
