@@ -1,6 +1,6 @@
 import fetch from 'node-fetch'
 
-export default function api<T>(url: string): Promise<T> {
+export default function get<T>(url: string): Promise<T> {
   return fetch(url).then((response) => {
     if (!response.ok) {
       throw new Error(response.statusText)

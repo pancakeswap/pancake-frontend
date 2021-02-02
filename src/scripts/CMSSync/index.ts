@@ -1,5 +1,5 @@
 import fs from 'fs'
-import api from '../api'
+import get from '../http-get'
 import settings from './settings'
 import { SettingsObject } from './types'
 import { getFormattedData } from './parser'
@@ -7,7 +7,7 @@ import { getFormattedData } from './parser'
 const CMSSync = (config: SettingsObject[]) => {
   config.forEach((item: SettingsObject) => {
     console.info(` ✅ - ${item.name}`)
-    api(item.url).then((res) => {
+    get(item.url).then((res) => {
       const [, secondKey] = Object.keys(res)
       const formattedData = getFormattedData(item.type, res[secondKey])
       fs.writeFileSync(`src/config/constants/${item.name}.json`, JSON.stringify(formattedData, undefined, 2))
