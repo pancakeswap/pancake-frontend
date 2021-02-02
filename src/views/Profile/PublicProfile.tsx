@@ -19,6 +19,8 @@ import Menu from './components/Menu'
 import CardHeader from './components/CardHeader'
 import SecondaryCard from './components/SecondaryCard'
 import Collectibles from './components/Collectibles'
+import ComingSoon from './components/ComingSoon'
+import WalletNotConnected from './components/WalletNotConnected'
 
 const Avatar = styled.div`
   margin-right: 16px;
@@ -35,13 +37,6 @@ const Avatar = styled.div`
 
 const Content = styled.div`
   flex: 1;
-`
-
-const ComingSoon = styled(Flex)`
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
-  height: 192px;
 `
 
 const Username = styled(Heading)`
@@ -89,9 +84,13 @@ const PublicProfile = () => {
   const { profile } = useProfile()
   const TranslateString = useI18n()
 
+  if (!account) {
+    return <WalletNotConnected />
+  }
+
   return (
     <>
-      <Menu activeIndex={1} />
+      <Menu />
       <div>
         <Card>
           <CardHeader>
@@ -135,12 +134,7 @@ const PublicProfile = () => {
             <Heading as="h4" size="md">
               {TranslateString(999, 'Achievements')}
             </Heading>
-            <ComingSoon>
-              <img src="/images/bunny-placeholder.svg" alt="Bunny Placeholder" />
-              <Heading as="h5" size="md" color="textDisabled">
-                {TranslateString(999, 'Coming Soon!')}
-              </Heading>
-            </ComingSoon>
+            <ComingSoon />
             <Collectibles />
           </CardBody>
         </Card>

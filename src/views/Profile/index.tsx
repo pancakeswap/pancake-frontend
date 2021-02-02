@@ -1,5 +1,6 @@
 import React from 'react'
 import { Route } from 'react-router-dom'
+import { useWallet } from '@binance-chain/bsc-use-wallet'
 import Page from 'components/layout/Page'
 import PageLoader from 'components/PageLoader'
 import { useProfile } from 'state/hooks'
@@ -9,13 +10,14 @@ import TaskCenter from './TaskCenter'
 import PublicProfile from './PublicProfile'
 
 const Profile = () => {
-  const { isInitialized, hasProfile } = useProfile()
+  const { isInitialized, isLoading, hasProfile } = useProfile()
+  const { account } = useWallet()
 
-  if (!isInitialized) {
+  if (!isInitialized || isLoading) {
     return <PageLoader />
   }
 
-  if (!hasProfile) {
+  if (account && !hasProfile) {
     return (
       <Page>
         <ProfileCreation />
@@ -27,10 +29,10 @@ const Profile = () => {
     <Page>
       <Header />
       <Route exact path="/profile">
-        <TaskCenter />
-      </Route>
-      <Route path="/profile/view">
         <PublicProfile />
+      </Route>
+      <Route path="/profile/tasks">
+        <TaskCenter />
       </Route>
     </Page>
   )
