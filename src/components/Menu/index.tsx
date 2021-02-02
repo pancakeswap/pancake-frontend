@@ -28,7 +28,7 @@ const Menu = (props) => {
       links={config}
       profile={{
         username: profile?.username,
-        image: `/images/nfts/${profile?.nft.previewImage}`,
+        image: profile?.username ? `/images/nfts/${profile?.nft.previewImage}` : undefined,
         profileLink: '/profile',
         noProfileLink: '/profile',
       }}
