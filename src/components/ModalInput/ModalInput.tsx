@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Text, Button, Input, InputProps, Flex } from '@pancakeswap-libs/uikit'
+import { Text, Button, Input, InputProps, Flex, Link } from '@pancakeswap-libs/uikit'
 import useI18n from '../../hooks/useI18n'
 
 interface ModalInputProps {
@@ -10,6 +10,7 @@ interface ModalInputProps {
   onChange: (e: React.FormEvent<HTMLInputElement>) => void
   placeholder?: string
   value: string
+  addLiquidityUrl?: string
 }
 
 const getBoxShadow = ({ isWarning = false, theme }) => {
@@ -40,11 +41,16 @@ const StyledInput = styled(Input)`
 
 const StyledErrorMessage = styled(Text)`
   position: absolute;
+
+  a {
+    display: inline;
+  }
 `
 
-const ModalInput: React.FC<ModalInputProps> = ({ max, symbol, onChange, onSelectMax, value }) => {
+const ModalInput: React.FC<ModalInputProps> = ({ max, symbol, onChange, onSelectMax, value, addLiquidityUrl }) => {
   const TranslateString = useI18n()
-  const isBalanceZero = value === '0'
+  const isBalanceZero = value === '0' || !value
+
   return (
     <div>
       <StyledTokenInput isWarning={isBalanceZero}>
@@ -64,7 +70,10 @@ const ModalInput: React.FC<ModalInputProps> = ({ max, symbol, onChange, onSelect
       </StyledTokenInput>
       {isBalanceZero && (
         <StyledErrorMessage fontSize="14px" color="failure">
-          No tokens to stake: get {symbol}
+          No tokens to stake:{' '}
+          <Link fontSize="14px" bold={false} href={addLiquidityUrl} external color="failure">
+            {TranslateString(999, 'get')} {symbol}
+          </Link>
         </StyledErrorMessage>
       )}
     </div>
