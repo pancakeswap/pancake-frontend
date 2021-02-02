@@ -7,7 +7,6 @@ import { QuoteToken } from 'config/constants/types'
 import multicall from 'utils/multicall'
 import { getAddress, getMasterChefAddress } from 'utils/addressHelpers'
 import { httpProvider } from 'utils/web3'
-import BigNumber from 'bignumber.js'
 
 // Pool 0, Cake / Cake is a different kind of contract (master chef)
 // BNB pools use the native BNB token (wrapping ? unwrapping is done at the contract level)
@@ -25,7 +24,7 @@ export const fetchPoolsAllowance = async (account) => {
 
   const allowances = await multicall(erc20ABI, calls)
   return nonBnbPools.reduce(
-    (acc, pool, index) => ({ ...acc, [pool.sousId]: new BigNumber(allowances[index]).toJSON() }),
+    (acc, pool, index) => ({ ...acc, [pool.sousId]: allowances[index].toString() }),
     {},
   )
 }
@@ -39,14 +38,14 @@ export const fetchUserBalances = async (account) => {
   }))
   const tokenBalancesRaw = await multicall(erc20ABI, calls)
   const tokenBalances = nonBnbPools.reduce(
-    (acc, pool, index) => ({ ...acc, [pool.sousId]: new BigNumber(tokenBalancesRaw[index]).toJSON() }),
+    (acc, pool, index) => ({ ...acc, [pool.sousId]: tokenBalancesRaw[index].toString() }),
     {},
   )
 
   // BNB pools
   const bnbBalance = await httpProvider.getBalance(account)
   const bnbBalances = bnbPools.reduce(
-    (acc, pool) => ({ ...acc, [pool.sousId]: bnbBalance.toJSON() }),
+    (acc, pool) => ({ ...acc, [pool.sousId]: bnbBalance.toString() }),
     {},
   )
 
@@ -63,7 +62,7 @@ export const fetchUserStakeBalances = async (account) => {
   const stakedBalances = nonMasterPools.reduce(
     (acc, pool, index) => ({
       ...acc,
-      [pool.sousId]: new BigNumber(userInfo[index].amount._hex).toJSON(),
+      [pool.sousId]: userInfo[index].amount.toString(),
     }),
     {},
   )
@@ -71,7 +70,7 @@ export const fetchUserStakeBalances = async (account) => {
   // Cake / Cake pool
   const { amount: masterPoolAmount } = await masterChefContract.userInfo('0', account)
 
-  return { ...stakedBalances, 0: new BigNumber(masterPoolAmount).toJSON() }
+  return { ...stakedBalances, 0: masterPoolAmount.toString() }
 }
 
 export const fetchUserPendingRewards = async (account) => {
@@ -84,7 +83,7 @@ export const fetchUserPendingRewards = async (account) => {
   const pendingRewards = nonMasterPools.reduce(
     (acc, pool, index) => ({
       ...acc,
-      [pool.sousId]: new BigNumber(res[index]).toJSON(),
+      [pool.sousId]: res[index].toString(),
     }),
     {},
   )
@@ -92,5 +91,5 @@ export const fetchUserPendingRewards = async (account) => {
   // Cake / Cake pool
   const pendingReward = await masterChefContract.pendingCake('0', account)
 
-  return { ...pendingRewards, 0: new BigNumber(pendingReward).toJSON() }
+  return { ...pendingRewards, 0: pendingReward.toString() }
 }

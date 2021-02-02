@@ -15,7 +15,7 @@ const useTokenBalance = (tokenAddress: string) => {
   useEffect(() => {
     const fetchBalance = async () => {
       const res = await getTokenBalance(ethereum, tokenAddress, account)
-      setBalance(new BigNumber(res))
+      setBalance(new BigNumber(res.toString()))
     }
 
     if (account && ethereum) {
@@ -34,7 +34,7 @@ export const useTotalSupply = () => {
     async function fetchTotalSupply() {
       const cakeContract = getContract(cakeABI, getCakeAddress())
       const supply = await cakeContract.totalSupply()
-      setTotalSupply(new BigNumber(supply))
+      setTotalSupply(new BigNumber(supply.toString()))
     }
 
     fetchTotalSupply()
@@ -51,7 +51,7 @@ export const useBurnedBalance = (tokenAddress: string) => {
   useEffect(() => {
     const fetchBalance = async () => {
       const res = await getTokenBalance(ethereum, tokenAddress, '0x000000000000000000000000000000000000dEaD')
-      setBalance(new BigNumber(res))
+      setBalance(new BigNumber(res.toString()))
     }
 
     if (account && ethereum) {

@@ -15,7 +15,7 @@ export const useLotteryAllowance = () => {
   useEffect(() => {
     const fetchAllowance = async () => {
       const res = await getAllowance(cakeContract, lotteryContract, account)
-      setAllowance(new BigNumber(res))
+      setAllowance(new BigNumber(res.toString()))
     }
 
     if (account && cakeContract && cakeContract) {
@@ -37,7 +37,7 @@ export const useIfoAllowance = (tokenContract: Contract, spenderAddress: string,
     const fetch = async () => {
       try {
         const res = await tokenContract.allowance(account, spenderAddress)
-        setAllowance(new BigNumber(res))
+        setAllowance(new BigNumber(res.toString()))
       } catch (e) {
         setAllowance(null)
       }
