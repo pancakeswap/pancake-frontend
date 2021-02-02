@@ -89,7 +89,10 @@ const ProfilePicture: React.FC = () => {
             )}
           </Text>
           <Text as="p" color="textSubtle" mb="24px">
-            <Link to="/nft">{TranslateString(999, 'Only approved Pancake Collectibles can be used.')}</Link>
+            {TranslateString(999, 'Only approved Pancake Collectibles can be used.')}
+            <Link to="/nft" style={{ marginLeft: '4px' }}>
+              {TranslateString(999, 'See the list >')}
+            </Link>
           </Text>
           <NftWrapper>
             {isLoading ? (
