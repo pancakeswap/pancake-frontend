@@ -66,13 +66,13 @@ export const unstake = async (masterChefContract, pid, amount, account) => {
 export const sousUnstake = async (sousChefContract, amount, account) => {
   try {
     // shit code: hard fix for old CTK and BLK
-    if (sousChefContract.options.address === '0x3B9B74f48E89Ebd8b45a53444327013a2308A9BC') {
+    if (sousChefContract.address === '0x3B9B74f48E89Ebd8b45a53444327013a2308A9BC') {
       const tx = await sousChefContract
         .emergencyWithdraw({ from: account })
       await tx.wait();
       return tx.hash;
     }
-    if (sousChefContract.options.address === '0xBb2B66a2c7C2fFFB06EA60BeaD69741b3f5BF831') {
+    if (sousChefContract.address === '0xBb2B66a2c7C2fFFB06EA60BeaD69741b3f5BF831') {
       const tx = await sousChefContract
         .emergencyWithdraw({ from: account })
       await tx.wait();
