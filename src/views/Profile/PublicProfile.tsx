@@ -118,12 +118,7 @@ const PublicProfile = () => {
             )}
           </CardHeader>
           <CardBody>
-            <StatBox
-              icon={PrizeIcon}
-              title={profile.numberPoints}
-              subtitle={TranslateString(999, 'Points')}
-              mb="24px"
-            />
+            <StatBox icon={PrizeIcon} title={profile.points} subtitle={TranslateString(999, 'Points')} mb="24px" />
             <Heading as="h4" size="md">
               {TranslateString(999, 'Achievements')}
             </Heading>

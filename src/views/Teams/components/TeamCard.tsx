@@ -1,9 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Card, CardBody, CommunityIcon, Heading, PrizeIcon } from '@pancakeswap-libs/uikit'
+import { Team } from 'config/constants/types'
 import CardHeader from 'views/Profile/components/CardHeader'
 import useI18n from 'hooks/useI18n'
-import { Team } from 'state/types'
 import ComingSoon from 'views/Profile/components/ComingSoon'
 import StatBox from 'views/Profile/components/StatBox'
 

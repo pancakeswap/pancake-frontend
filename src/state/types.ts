@@ -1,6 +1,6 @@
 import { Toast } from '@pancakeswap-libs/uikit'
 import BigNumber from 'bignumber.js'
-import { FarmConfig, Nft, PoolConfig } from 'config/constants/types'
+import { FarmConfig, Nft, PoolConfig, Team } from 'config/constants/types'
 
 export interface Farm extends FarmConfig {
   tokenAmount?: BigNumber
@@ -28,18 +28,9 @@ export interface Pool extends PoolConfig {
   }
 }
 
-export interface Team {
-  id?: number
-  name: string
-  description: string
-  points: number
-  users: number
-  isJoinable: boolean
-}
-
 export interface Profile {
   userId: number
-  numberPoints: number
+  points: number
   teamId: number
   nftAddress: string
   tokenId: number
@@ -69,6 +60,24 @@ export interface ProfileState {
   data: Profile
 }
 
+export type TeamResponse = {
+  0: string
+  1: string
+  2: string
+  3: string
+  4: boolean
+}
+
+export type TeamsById = {
+  [key: string]: Team
+}
+
+export interface TeamsState {
+  isInitialized: boolean
+  isLoading: boolean
+  data: TeamsById
+}
+
 // Global state
 
 export interface State {
@@ -76,4 +85,5 @@ export interface State {
   toasts: ToastsState
   pools: PoolsState
   profile: ProfileState
+  teams: TeamsState
 }
