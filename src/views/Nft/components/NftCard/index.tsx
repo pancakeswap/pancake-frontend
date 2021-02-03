@@ -18,8 +18,6 @@ import { Nft } from 'config/constants/types'
 import InfoRow from '../InfoRow'
 import Image from '../Image'
 import { NftProviderContext } from '../../contexts/NftProvider'
-import ClaimNftModal from '../ClaimNftModal'
-import BurnNftModal from '../BurnNftModal'
 import TransferNftModal from '../TransferNftModal'
 
 interface NftCardProps {
@@ -50,21 +48,10 @@ const InfoBlock = styled.div`
 const NftCard: React.FC<NftCardProps> = ({ nft }) => {
   const [isOpen, setIsOpen] = useState(false)
   const TranslateString = useI18n()
-  const {
-    isInitialized,
-    canClaim,
-    hasClaimed,
-    canBurnNft,
-    totalSupplyDistributed,
-    currentDistributedSupply,
-    getTokenIds,
-    reInitialize,
-  } = useContext(NftProviderContext)
+  const { isInitialized, getTokenIds, reInitialize } = useContext(NftProviderContext)
   const { profile } = useProfile()
-  const walletCanClaim = canClaim && !hasClaimed
   const { bunnyId, name, previewImage, originalImage, description } = nft
   const tokenIds = getTokenIds(bunnyId)
-  const isSupplyAvailable = currentDistributedSupply < totalSupplyDistributed
   const walletOwnsNft = tokenIds && tokenIds.length > 0
   const Icon = isOpen ? ChevronUpIcon : ChevronDownIcon
 
@@ -76,8 +63,6 @@ const NftCard: React.FC<NftCardProps> = ({ nft }) => {
     reInitialize()
   }
 
-  const [onPresentClaimModal] = useModal(<ClaimNftModal nft={nft} onSuccess={handleSuccess} />)
-  const [onPresentBurnModal] = useModal(<BurnNftModal nft={nft} tokenIds={tokenIds} onSuccess={handleSuccess} />)
   const [onPresentTransferModal] = useModal(
     <TransferNftModal nft={nft} tokenIds={tokenIds} onSuccess={handleSuccess} />,
   )
@@ -88,11 +73,6 @@ const NftCard: React.FC<NftCardProps> = ({ nft }) => {
       <CardBody>
         <Header>
           <Heading>{name}</Heading>
-          {isInitialized && walletCanClaim && (
-            <Tag outline variant="success">
-              {TranslateString(526, 'Available')}
-            </Tag>
-          )}
           {isInitialized && tokenIds && (
             <Tag outline variant="secondary">
               {TranslateString(999, 'In Wallet')}
@@ -107,16 +87,6 @@ const NftCard: React.FC<NftCardProps> = ({ nft }) => {
         {isInitialized && walletOwnsNft && (
           <Button fullWidth variant="secondary" mt="24px" onClick={onPresentTransferModal}>
             {TranslateString(999, 'Transfer')}
-          </Button>
-        )}
-        {isInitialized && walletCanClaim && isSupplyAvailable && (
-          <Button fullWidth onClick={onPresentClaimModal} mt="24px">
-            {TranslateString(999, 'Claim this NFT')}
-          </Button>
-        )}
-        {isInitialized && canBurnNft && walletOwnsNft && (
-          <Button variant="danger" fullWidth onClick={onPresentBurnModal} mt="24px">
-            {TranslateString(999, 'Trade in for CAKE')}
           </Button>
         )}
       </CardBody>

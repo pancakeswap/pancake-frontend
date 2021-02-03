@@ -12,12 +12,9 @@ const rabbitMintingFarmAddress = getRabbitMintingFarmAddress()
 
 type State = {
   isInitialized: boolean
-  canClaim: boolean
   hasClaimed: boolean
   endBlockNumber: number
   startBlockNumber: number
-  totalSupplyDistributed: number
-  currentDistributedSupply: number
   balanceOf: number
 }
 
@@ -34,12 +31,9 @@ const NftProvider: React.FC = ({ children }) => {
   const isMounted = useRef(true)
   const [state, setState] = useState<State>({
     isInitialized: false,
-    canClaim: false,
     hasClaimed: false,
     startBlockNumber: 0,
     endBlockNumber: 0,
-    totalSupplyDistributed: 0,
-    currentDistributedSupply: 0,
     balanceOf: 0,
   })
   const { account } = useWallet()
@@ -51,34 +45,20 @@ const NftProvider: React.FC = ({ children }) => {
   useEffect(() => {
     const fetchContractData = async () => {
       try {
-        const [
-          startBlockNumberArr,
-          endBlockNumberArr,
-          countBunniesBurntArr,
-          totalSupplyDistributedArr,
-          currentDistributedSupplyArr,
-        ] = await multicall(rabbitmintingfarm, [
+        const [startBlockNumberArr, endBlockNumberArr] = await multicall(rabbitmintingfarm, [
           { address: rabbitMintingFarmAddress, name: 'startBlockNumber' },
           { address: rabbitMintingFarmAddress, name: 'endBlockNumber' },
-          { address: rabbitMintingFarmAddress, name: 'totalSupplyDistributed' },
-          { address: rabbitMintingFarmAddress, name: 'currentDistributedSupply' },
         ])
 
         // TODO: Figure out why these are coming back as arrays
         const [startBlockNumber]: [BigNumber] = startBlockNumberArr
         const [endBlockNumber]: [BigNumber] = endBlockNumberArr
-        const [countBunniesBurnt]: [BigNumber] = countBunniesBurntArr
-        const [totalSupplyDistributed]: [BigNumber] = totalSupplyDistributedArr
-        const [currentDistributedSupply]: [BigNumber] = currentDistributedSupplyArr
 
         setState((prevState) => ({
           ...prevState,
           isInitialized: true,
-          countBunniesBurnt: countBunniesBurnt.toNumber(),
           startBlockNumber: startBlockNumber.toNumber(),
           endBlockNumber: endBlockNumber.toNumber(),
-          currentDistributedSupply: currentDistributedSupply.toNumber(),
-          totalSupplyDistributed: totalSupplyDistributed.toNumber(),
         }))
       } catch (error) {
         console.error('an error occured', error)
@@ -93,18 +73,15 @@ const NftProvider: React.FC = ({ children }) => {
     const fetchContractData = async () => {
       try {
         const pancakeRabbitsContract = getPancakeRabbitContract()
-        const [canClaimArr, hasClaimedArr] = await multicall(rabbitmintingfarm, [
-          { address: rabbitMintingFarmAddress, name: 'canClaim', params: [account] },
+        const [hasClaimedArr] = await multicall(rabbitmintingfarm, [
           { address: rabbitMintingFarmAddress, name: 'hasClaimed', params: [account] },
         ])
         const balanceOf = await pancakeRabbitsContract.methods.balanceOf(account).call()
-        const [canClaim]: [boolean] = canClaimArr
         const [hasClaimed]: [boolean] = hasClaimedArr
 
         setState((prevState) => ({
           ...prevState,
           isInitialized: true,
-          canClaim,
           hasClaimed,
           balanceOf,
         }))
