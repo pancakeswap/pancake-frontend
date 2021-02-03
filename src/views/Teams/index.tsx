@@ -11,7 +11,7 @@ const Teams = () => {
   const TranslateString = useI18n()
   const { teams, isLoading } = useTeams()
   const teamList = Object.values(teams)
-  const topTeams = orderBy(teamList, ['points', 'name'], ['desc', 'asc'])
+  const topTeams = orderBy(teamList, ['points', 'id', 'name'], ['desc', 'asc', 'asc'])
 
   return (
     <Page>
