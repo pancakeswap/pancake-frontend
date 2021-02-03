@@ -14,7 +14,6 @@ type State = {
   isInitialized: boolean
   canClaim: boolean
   hasClaimed: boolean
-  countBunniesBurnt: number
   endBlockNumber: number
   startBlockNumber: number
   totalSupplyDistributed: number
@@ -37,7 +36,6 @@ const NftProvider: React.FC = ({ children }) => {
     isInitialized: false,
     canClaim: false,
     hasClaimed: false,
-    countBunniesBurnt: 0,
     startBlockNumber: 0,
     endBlockNumber: 0,
     totalSupplyDistributed: 0,
@@ -62,7 +60,6 @@ const NftProvider: React.FC = ({ children }) => {
         ] = await multicall(rabbitmintingfarm, [
           { address: rabbitMintingFarmAddress, name: 'startBlockNumber' },
           { address: rabbitMintingFarmAddress, name: 'endBlockNumber' },
-          { address: rabbitMintingFarmAddress, name: 'countBunniesBurnt' },
           { address: rabbitMintingFarmAddress, name: 'totalSupplyDistributed' },
           { address: rabbitMintingFarmAddress, name: 'currentDistributedSupply' },
         ])
