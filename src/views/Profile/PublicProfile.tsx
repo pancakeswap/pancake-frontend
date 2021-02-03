@@ -21,19 +21,7 @@ import Collectibles from './components/Collectibles'
 import ComingSoon from './components/ComingSoon'
 import WalletNotConnected from './components/WalletNotConnected'
 import StatBox from './components/StatBox'
-
-const Avatar = styled.div`
-  margin-right: 16px;
-  width: 64px;
-
-  & > img {
-    border-radius: 50%;
-  }
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    width: 128px;
-  }
-`
+import ProfileAvatar from './components/ProfileAvatar'
 
 const Content = styled.div`
   flex: 1;
@@ -95,9 +83,7 @@ const PublicProfile = () => {
         <Card>
           <CardHeader>
             <Flex alignItems={['start', null, 'center']} flexDirection={['column', null, 'row']}>
-              <Avatar>
-                <img src={`/images/nfts/${profile.nft.previewImage}`} alt={profile.username} />
-              </Avatar>
+              <ProfileAvatar profile={profile} />
               <Content>
                 <Username>{`@${profile.username}`}</Username>
                 <Flex alignItems="center">
