@@ -12,6 +12,7 @@ import {
   CardFooter,
   useModal,
 } from '@pancakeswap-libs/uikit'
+import { useProfile } from 'state/hooks'
 import useI18n from 'hooks/useI18n'
 import { Nft } from 'config/constants/types'
 import InfoRow from '../InfoRow'
@@ -59,6 +60,7 @@ const NftCard: React.FC<NftCardProps> = ({ nft }) => {
     getTokenIds,
     reInitialize,
   } = useContext(NftProviderContext)
+  const { profile } = useProfile()
   const walletCanClaim = canClaim && !hasClaimed
   const { bunnyId, name, previewImage, originalImage, description } = nft
   const tokenIds = getTokenIds(bunnyId)
@@ -94,6 +96,11 @@ const NftCard: React.FC<NftCardProps> = ({ nft }) => {
           {isInitialized && tokenIds && (
             <Tag outline variant="secondary">
               {TranslateString(999, 'In Wallet')}
+            </Tag>
+          )}
+          {profile.nft.bunnyId === bunnyId && (
+            <Tag outline variant="success">
+              {TranslateString(999, 'Profile Pic')}
             </Tag>
           )}
         </Header>
