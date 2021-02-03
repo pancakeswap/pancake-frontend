@@ -72,7 +72,7 @@ const SelectionCard: React.FC<SelectionCardProps> = ({
           />
           <Children>{children}</Children>
         </Body>
-        <StyledBackgroundImage src={`/images/nfts/${image}`} />
+        <StyledBackgroundImage src={image} />
       </Label>
     </StyledCard>
   )
