@@ -12,6 +12,7 @@ export { default as CalculateIcon } from "./Icons/Calculate";
 export { default as CheckmarkIcon } from "./Icons/Checkmark";
 export { default as CheckmarkCircleIcon } from "./Icons/CheckmarkCircle";
 export { default as ChevronDownIcon } from "./Icons/ChevronDown";
+export { default as ChevronLeftIcon } from "./Icons/ChevronLeft";
 export { default as ChevronRightIcon } from "./Icons/ChevronRight";
 export { default as ChevronUpIcon } from "./Icons/ChevronUp";
 export { default as CloseIcon } from "./Icons/Close";
