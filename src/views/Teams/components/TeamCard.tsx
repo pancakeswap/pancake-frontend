@@ -1,9 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Card, CardBody, CommunityIcon, Heading, PrizeIcon } from '@pancakeswap-libs/uikit'
+import { Card, CardBody, CommunityIcon, Heading, PrizeIcon, Text } from '@pancakeswap-libs/uikit'
+import { Team } from 'config/constants/types'
 import CardHeader from 'views/Profile/components/CardHeader'
 import useI18n from 'hooks/useI18n'
-import { Team } from 'state/types'
 import ComingSoon from 'views/Profile/components/ComingSoon'
 import StatBox from 'views/Profile/components/StatBox'
 
@@ -76,9 +76,10 @@ const TeamCard: React.FC<TeamCardProps> = ({ team }) => {
       <StyledCard>
         <StyledCardHeader>
           <AvatarWrap>
-            <Avatar src="/images/nfts/onsen-preview.png" alt="team avatar" />
+            <Avatar src={`/images/teams/${team.previewImage}`} alt="team avatar" />
           </AvatarWrap>
           <TeamName>{team.name}</TeamName>
+          <Text as="p">{team.description}</Text>
         </StyledCardHeader>
         <CardBody>
           <StatRow>

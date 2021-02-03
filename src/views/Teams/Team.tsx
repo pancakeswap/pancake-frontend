@@ -1,37 +1,22 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import Page from 'components/layout/Page'
 import { Link, Redirect, useParams } from 'react-router-dom'
 import { ChevronLeftIcon, Flex, Text } from '@pancakeswap-libs/uikit'
 import PageLoader from 'components/PageLoader'
-import { Team as TeamType } from 'state/types'
+import teams from 'config/constants/teams'
 import useI18n from 'hooks/useI18n'
-import { getProfileContract } from 'utils/contractHelpers'
-import { TeamResponse, transformTeamResponse } from 'state/profile/helpers'
+import { useTeam } from 'state/hooks'
 import TeamCard from './components/TeamCard'
 import TeamHeader from './components/TeamHeader'
 
 const Team = () => {
-  const { id }: { id: string } = useParams()
-  const [is404, setIs404] = useState(false)
-  const [team, setTeam] = useState<TeamType>(null)
+  const { id: idStr }: { id: string } = useParams()
+  const id = Number(idStr)
   const TranslateString = useI18n()
+  const isValidTeamId = teams.findIndex((team) => team.id === id) !== -1
+  const team = useTeam(id)
 
-  useEffect(() => {
-    const fetchTeam = async () => {
-      try {
-        const pancakeProfileContract = getProfileContract()
-        const response = await pancakeProfileContract.methods.getTeamProfile(id).call()
-        const teamData = transformTeamResponse(response as TeamResponse)
-        setTeam(teamData)
-      } catch (error) {
-        setIs404(true)
-      }
-    }
-
-    fetchTeam()
-  }, [id, setTeam, setIs404])
-
-  if (is404) {
+  if (!isValidTeamId) {
     return <Redirect to="/404" />
   }
 

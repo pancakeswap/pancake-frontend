@@ -1,10 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { Link as RouterLink } from 'react-router-dom'
 import {
   Card,
   CardBody,
   CheckmarkCircleIcon,
+  ChevronLeftIcon,
   Flex,
   Heading,
   Link,
@@ -21,19 +23,7 @@ import Collectibles from './components/Collectibles'
 import ComingSoon from './components/ComingSoon'
 import WalletNotConnected from './components/WalletNotConnected'
 import StatBox from './components/StatBox'
-
-const Avatar = styled.div`
-  margin-right: 16px;
-  width: 64px;
-
-  & > img {
-    border-radius: 50%;
-  }
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    width: 128px;
-  }
-`
+import ProfileAvatar from './components/ProfileAvatar'
 
 const Content = styled.div`
   flex: 1;
@@ -90,14 +80,20 @@ const PublicProfile = () => {
 
   return (
     <>
+      <Flex mb="24px">
+        <RouterLink to="/teams">
+          <Flex alignItems="center">
+            <ChevronLeftIcon color="primary" />
+            <Text color="primary">{TranslateString(999, 'Teams Overview')}</Text>
+          </Flex>
+        </RouterLink>
+      </Flex>
       <Menu />
       <div>
         <Card>
           <CardHeader>
             <Flex alignItems={['start', null, 'center']} flexDirection={['column', null, 'row']}>
-              <Avatar>
-                <img src={`/images/nfts/${profile.nft.previewImage}`} alt={profile.username} />
-              </Avatar>
+              <ProfileAvatar profile={profile} />
               <Content>
                 <Username>{`@${profile.username}`}</Username>
                 <Flex alignItems="center">
@@ -118,12 +114,7 @@ const PublicProfile = () => {
             )}
           </CardHeader>
           <CardBody>
-            <StatBox
-              icon={PrizeIcon}
-              title={profile.numberPoints}
-              subtitle={TranslateString(999, 'Points')}
-              mb="24px"
-            />
+            <StatBox icon={PrizeIcon} title={profile.points} subtitle={TranslateString(999, 'Points')} mb="24px" />
             <Heading as="h4" size="md">
               {TranslateString(999, 'Achievements')}
             </Heading>
