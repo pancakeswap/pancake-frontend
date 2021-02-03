@@ -7,7 +7,7 @@ import { BSC_BLOCK_TIME } from 'config'
 import { Ifo, IfoStatus } from 'config/constants/types'
 import makeBatchRequest from 'utils/makeBatchRequest'
 import useI18n from 'hooks/useI18n'
-import useBlock from 'hooks/useBlock'
+import { useBlock } from 'state/hooks'
 import { useIfoContract } from 'hooks/useContract'
 import UnlockButton from 'components/UnlockButton'
 import IfoCardHeader from './IfoCardHeader'
@@ -93,7 +93,7 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
   const { account } = useWallet()
   const contract = useIfoContract(address)
 
-  const currentBlock = useBlock()
+  const { blockNumber: currentBlock } = useBlock()
   const TranslateString = useI18n()
 
   const Ribbon = getRibbonComponent(state.status, TranslateString)

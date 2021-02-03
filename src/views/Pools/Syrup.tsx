@@ -8,9 +8,8 @@ import { BLOCKS_PER_YEAR } from 'config'
 import orderBy from 'lodash/orderBy'
 import partition from 'lodash/partition'
 import useI18n from 'hooks/useI18n'
-import useBlock from 'hooks/useBlock'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { useFarms, usePriceBnbBusd, usePools, usePriceEthBnb } from 'state/hooks'
+import { useFarms, usePriceBnbBusd, usePools, usePriceEthBnb, useBlock } from 'state/hooks'
 import { QuoteToken, PoolCategory } from 'config/constants/types'
 import FlexLayout from 'components/layout/Flex'
 import Page from 'components/layout/Page'
@@ -27,8 +26,8 @@ const Farm: React.FC = () => {
   const pools = usePools(account)
   const bnbPriceUSD = usePriceBnbBusd()
   const ethPriceBnb = usePriceEthBnb()
-  const block = useBlock()
   const [stackedOnly, setStackedOnly] = useState(false)
+  const { blockNumber } = useBlock()
 
   const priceToBnb = (tokenName: string, tokenPrice: BigNumber, quoteToken: QuoteToken): BigNumber => {
     const tokenPriceBN = new BigNumber(tokenPrice)
@@ -66,7 +65,7 @@ const Farm: React.FC = () => {
 
     return {
       ...pool,
-      isFinished: pool.sousId === 0 ? false : pool.isFinished || block > pool.endBlock,
+      isFinished: pool.sousId === 0 ? false : pool.isFinished || blockNumber > pool.endBlock,
       apy,
     }
   })

@@ -3,7 +3,7 @@ import { Router, Redirect, Route, Switch } from 'react-router-dom'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { ResetCSS } from '@pancakeswap-libs/uikit'
 import BigNumber from 'bignumber.js'
-import { useFetchProfile, useFetchPublicData } from 'state/hooks'
+import { useFetchPublicData, useFetchProfile, useWebsocket } from 'state/hooks'
 import GlobalStyle from './style/Global'
 import Menu from './components/Menu'
 import ToastListener from './components/ToastListener'
@@ -47,6 +47,7 @@ const App: React.FC = () => {
 
   useFetchPublicData()
   useFetchProfile()
+  useWebsocket()
 
   return (
     <Router history={history}>

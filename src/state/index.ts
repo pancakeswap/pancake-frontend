@@ -5,6 +5,7 @@ import poolsReducer from './pools'
 import profileReducer from './profile'
 import teamsReducer from './teams'
 import achievementsReducer from './achievements'
+import lastBlockReducer from './lastBlock'
 
 export default configureStore({
   devTools: process.env.NODE_ENV !== 'production',
@@ -15,5 +16,6 @@ export default configureStore({
     profile: profileReducer,
     teams: teamsReducer,
     achievements: achievementsReducer,
+    lastBlock: lastBlockReducer,
   },
 })

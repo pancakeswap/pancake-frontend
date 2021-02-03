@@ -104,6 +104,11 @@ export interface AchievementState {
   data: Achievement[]
 }
 
+export interface LastBlock {
+  blockNumber: number
+  timestamp: number
+}
+
 // Global state
 
 export interface State {
@@ -113,4 +118,5 @@ export interface State {
   profile: ProfileState
   teams: TeamsState
   achievements: AchievementState
+  lastBlock: LastBlock
 }
