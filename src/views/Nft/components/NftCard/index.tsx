@@ -98,7 +98,7 @@ const NftCard: React.FC<NftCardProps> = ({ nft }) => {
               {TranslateString(999, 'In Wallet')}
             </Tag>
           )}
-          {profile.nft.bunnyId === bunnyId && (
+          {profile?.nft?.bunnyId === bunnyId && (
             <Tag outline variant="success">
               {TranslateString(999, 'Profile Pic')}
             </Tag>
