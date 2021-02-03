@@ -31,6 +31,15 @@ const getProfile = async (address: string): Promise<Profile> => {
     const response = await fetch(`${profileApi}/api/users?address=${address}`)
     const { username = '' } = await response.json()
 
+    // Save the preview image to local storage for the exchange
+    localStorage.setItem(
+      `profile_${address}`,
+      JSON.stringify({
+        username,
+        avatar: `https://pancakeswap.finance/images/nfts/${nft.previewImage}`,
+      }),
+    )
+
     return {
       userId,
       numberPoints,
