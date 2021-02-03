@@ -1,6 +1,7 @@
 import React from 'react'
 import { Card, CardBody, Heading, Text, Skeleton } from '@pancakeswap-libs/uikit'
 import times from 'lodash/times'
+import shuffle from 'lodash/shuffle'
 import useI18n from 'hooks/useI18n'
 import useTeams from 'hooks/useTeams'
 import SelectionCard from '../components/SelectionCard'
@@ -41,25 +42,26 @@ const Team: React.FC = () => {
               'There’s currently no big difference between teams, and no benefit of joining one team over another for now. So pick whichever one you like!',
             )}
           </Text>
-          {teams.length === 0 && times(3).map((key) => <Skeleton key={key} height="80px" mb="16px" />)}
-          {teams.map((team, index) => {
-            // Team indices start at 1
-            const teamId = index + 1
+          {!teams && times(3).map((key) => <Skeleton key={key} height="80px" mb="16px" />)}
+          {teams &&
+            shuffle(teams).map((team, index) => {
+              // Team indices start at 1
+              const teamId = index + 1
 
-            return (
-              <SelectionCard
-                key={team.name}
-                name="teams-selection"
-                value={teamId}
-                isChecked={currentTeamId === teamId}
-                image="/onsen-preview.png"
-                onChange={handleTeamSelection}
-                disabled={!team.isJoinable}
-              >
-                <Text bold>{team.name}</Text>
-              </SelectionCard>
-            )
-          })}
+              return (
+                <SelectionCard
+                  key={team.name}
+                  name="teams-selection"
+                  value={teamId}
+                  isChecked={currentTeamId === teamId}
+                  image="/onsen-preview.png"
+                  onChange={handleTeamSelection}
+                  disabled={!team.isJoinable}
+                >
+                  <Text bold>{team.name}</Text>
+                </SelectionCard>
+              )
+            })}
         </CardBody>
       </Card>
       <NextStepButton onClick={actions.nextStep} disabled={currentTeamId === null}>
