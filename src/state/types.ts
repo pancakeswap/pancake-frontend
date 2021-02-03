@@ -121,6 +121,11 @@ export interface PriceState {
   data: PriceList
 }
 
+export interface LastBlock {
+  blockNumber: number
+  timestamp: number
+}
+
 // Global state
 
 export interface State {
@@ -131,4 +136,5 @@ export interface State {
   profile: ProfileState
   teams: TeamsState
   achievements: AchievementState
+  lastBlock: LastBlock
 }

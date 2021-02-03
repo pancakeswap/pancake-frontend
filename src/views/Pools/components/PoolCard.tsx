@@ -10,11 +10,11 @@ import { useSousApprove } from 'hooks/useApprove'
 import useI18n from 'hooks/useI18n'
 import { useSousStake } from 'hooks/useStake'
 import { useSousUnstake } from 'hooks/useUnstake'
-import useBlock from 'hooks/useBlock'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useSousHarvest } from 'hooks/useHarvest'
 import Balance from 'components/Balance'
 import { QuoteToken, PoolCategory } from 'config/constants/types'
+import { useBlock } from 'state/hooks'
 import { Pool } from 'state/types'
 import DepositModal from './DepositModal'
 import WithdrawModal from './WithdrawModal'
@@ -57,7 +57,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
   const TranslateString = useI18n()
   const stakingTokenContract = useERC20(stakingTokenAddress)
   const { account } = useWeb3React()
-  const block = useBlock()
+  const { blockNumber } = useBlock()
   const { onApprove } = useSousApprove(stakingTokenContract, sousId)
   const { onStake } = useSousStake(sousId, isBnbPool)
   const { onUnstake } = useSousUnstake(sousId)
@@ -71,8 +71,8 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
   const stakedBalance = new BigNumber(userData?.stakedBalance || 0)
   const earnings = new BigNumber(userData?.pendingReward || 0)
 
-  const blocksUntilStart = Math.max(startBlock - block, 0)
-  const blocksRemaining = Math.max(endBlock - block, 0)
+  const blocksUntilStart = Math.max(startBlock - blockNumber, 0)
+  const blocksRemaining = Math.max(endBlock - blockNumber, 0)
   const isOldSyrup = stakingTokenName === QuoteToken.SYRUP
   const accountHasStakedBalance = stakedBalance?.toNumber() > 0
   const needsApproval = !accountHasStakedBalance && !allowance.toNumber() && !isBnbPool

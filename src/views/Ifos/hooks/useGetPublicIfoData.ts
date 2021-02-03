@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js'
 import { BSC_BLOCK_TIME } from 'config'
 import { Ifo, IfoStatus } from 'config/constants/types'
-import useBlock from 'hooks/useBlock'
+import { useBlock } from 'state/hooks'
 import { useIfoContract } from 'hooks/useContract'
 import { useEffect, useState } from 'react'
 import makeBatchRequest from 'utils/makeBatchRequest'
@@ -56,7 +56,7 @@ const useGetPublicIfoData = (ifo: Ifo) => {
     startBlockNum: 0,
     endBlockNum: 0,
   })
-  const currentBlock = useBlock()
+  const { blockNumber } = useBlock()
   const contract = useIfoContract(address)
 
   useEffect(() => {
@@ -71,19 +71,19 @@ const useGetPublicIfoData = (ifo: Ifo) => {
       const startBlockNum = parseInt(startBlock, 10)
       const endBlockNum = parseInt(endBlock, 10)
 
-      const status = getStatus(currentBlock, startBlockNum, endBlockNum)
+      const status = getStatus(blockNumber, startBlockNum, endBlockNum)
       const totalBlocks = endBlockNum - startBlockNum
-      const blocksRemaining = endBlockNum - currentBlock
+      const blocksRemaining = endBlockNum - blockNumber
 
       // Calculate the total progress until finished or until start
       const progress =
-        currentBlock > startBlockNum
-          ? ((currentBlock - startBlockNum) / totalBlocks) * 100
-          : ((currentBlock - releaseBlockNumber) / (startBlockNum - releaseBlockNumber)) * 100
+        blockNumber > startBlockNum
+          ? ((blockNumber - startBlockNum) / totalBlocks) * 100
+          : ((blockNumber - releaseBlockNumber) / (startBlockNum - releaseBlockNumber)) * 100
 
       setState({
         secondsUntilEnd: blocksRemaining * BSC_BLOCK_TIME,
-        secondsUntilStart: (startBlockNum - currentBlock) * BSC_BLOCK_TIME,
+        secondsUntilStart: (startBlockNum - blockNumber) * BSC_BLOCK_TIME,
         raisingAmount: new BigNumber(raisingAmount),
         totalAmount: new BigNumber(totalAmount),
         status,
@@ -95,7 +95,7 @@ const useGetPublicIfoData = (ifo: Ifo) => {
     }
 
     fetchProgress()
-  }, [address, currentBlock, contract, releaseBlockNumber, setState])
+  }, [address, blockNumber, contract, releaseBlockNumber, setState])
 
   return state
 }

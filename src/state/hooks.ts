@@ -3,18 +3,20 @@ import BigNumber from 'bignumber.js'
 import { kebabCase } from 'lodash'
 import { useWeb3React } from '@web3-react/core'
 import { Toast, toastTypes } from '@pancakeswap-libs/uikit'
+import { io } from 'socket.io-client'
 import { useSelector, useDispatch } from 'react-redux'
 import { Team } from 'config/constants/types'
 import useRefresh from 'hooks/useRefresh'
 import {
-  fetchFarmsPublicDataAsync,
+  setFarmsPublicData,
+  setlastBlock,
   fetchPoolsPublicDataAsync,
   fetchPoolsUserDataAsync,
   push as pushToast,
   remove as removeToast,
   clear as clearToast,
 } from './actions'
-import { State, Farm, Pool, ProfileState, TeamsState, AchievementState, PriceState } from './types'
+import { State, Farm, Pool, ProfileState, TeamsState, AchievementState, PriceState, LastBlock } from './types'
 import { fetchProfile } from './profile'
 import { fetchTeam, fetchTeams } from './teams'
 import { fetchAchievements } from './achievements'
@@ -22,13 +24,39 @@ import { fetchPrices } from './prices'
 
 const ZERO = new BigNumber(0)
 
+export const useWebsocket = () => {
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    const socket = io(process.env.REACT_APP_WSS_URL, {
+      reconnectionDelayMax: 10000,
+      transports: ['websocket', 'polling'],
+    })
+
+    socket.on('farms', (data) => {
+      dispatch(setFarmsPublicData(data))
+    })
+
+    socket.on('block', (data) => {
+      dispatch(setlastBlock(data))
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+}
+
 export const useFetchPublicData = () => {
   const dispatch = useDispatch()
   const { slowRefresh } = useRefresh()
+
   useEffect(() => {
-    dispatch(fetchFarmsPublicDataAsync())
     dispatch(fetchPoolsPublicDataAsync())
   }, [dispatch, slowRefresh])
+}
+
+// Block
+
+export const useBlock = (): LastBlock => {
+  return useSelector((state: State) => state.lastBlock)
 }
 
 // Farms
