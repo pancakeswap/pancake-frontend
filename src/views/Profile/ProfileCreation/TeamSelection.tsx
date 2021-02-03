@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React from 'react'
 import { Card, CardBody, Heading, Text, Skeleton } from '@pancakeswap-libs/uikit'
 import times from 'lodash/times'
+import shuffle from 'lodash/shuffle'
 import useI18n from 'hooks/useI18n'
-import { getProfileContract } from 'utils/contractHelpers'
-import { getWeb3 } from 'utils/web3'
+import useTeams from 'hooks/useTeams'
 import SelectionCard from '../components/SelectionCard'
 import NextStepButton from '../components/NextStepButton'
-import { ProfileCreationContext } from './contexts/ProfileCreationProvider'
+import useProfileCreation from './contexts/hook'
 
 interface Team {
   name: string
@@ -14,39 +14,8 @@ interface Team {
   isJoinable: boolean
 }
 
-const useTeams = () => {
-  const [teams, setTeams] = useState<Team[]>([])
-  useEffect(() => {
-    const fetchteams = async () => {
-      try {
-        const contract = getProfileContract()
-        const nbTeams = await contract.methods.numberTeams().call()
-
-        const web3 = getWeb3()
-        const batch = new web3.BatchRequest()
-        for (let i = 1; i <= nbTeams; i++) {
-          batch.add(
-            contract.methods.getTeamProfile(i).call.request({}, (error, result) => {
-              if (error) {
-                console.error(error)
-              } else {
-                setTeams((prev) => [...prev, { name: result[0], description: result[1], isJoinable: result[3] }])
-              }
-            }),
-          )
-        }
-        batch.execute()
-      } catch (error) {
-        console.error(error)
-      }
-    }
-    fetchteams()
-  }, [])
-  return teams
-}
-
 const Team: React.FC = () => {
-  const { teamId: currentTeamId, actions } = useContext(ProfileCreationContext)
+  const { teamId: currentTeamId, actions } = useProfileCreation()
   const TranslateString = useI18n()
   const teams = useTeams()
   const handleTeamSelection = (value: string) => actions.setTeamId(parseInt(value, 10))
@@ -73,25 +42,26 @@ const Team: React.FC = () => {
               'There’s currently no big difference between teams, and no benefit of joining one team over another for now. So pick whichever one you like!',
             )}
           </Text>
-          {teams.length === 0 && times(3).map((key) => <Skeleton key={key} height="80px" mb="16px" />)}
-          {teams.map((team, index) => {
-            // Team indices start at 1
-            const teamId = index + 1
+          {!teams && times(3).map((key) => <Skeleton key={key} height="80px" mb="16px" />)}
+          {teams &&
+            shuffle(teams).map((team, index) => {
+              // Team indices start at 1
+              const teamId = index + 1
 
-            return (
-              <SelectionCard
-                key={team.name}
-                name="teams-selection"
-                value={teamId}
-                isChecked={currentTeamId === teamId}
-                image="/onsen-preview.png"
-                onChange={handleTeamSelection}
-                disabled={!team.isJoinable}
-              >
-                <Text bold>{team.name}</Text>
-              </SelectionCard>
-            )
-          })}
+              return (
+                <SelectionCard
+                  key={team.name}
+                  name="teams-selection"
+                  value={teamId}
+                  isChecked={currentTeamId === teamId}
+                  image="/onsen-preview.png"
+                  onChange={handleTeamSelection}
+                  disabled={!team.isJoinable}
+                >
+                  <Text bold>{team.name}</Text>
+                </SelectionCard>
+              )
+            })}
         </CardBody>
       </Card>
       <NextStepButton onClick={actions.nextStep} disabled={currentTeamId === null}>

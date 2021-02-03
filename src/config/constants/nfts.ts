@@ -3,7 +3,7 @@ import { Nft } from './types'
 const Nfts: Nft[] = [
   {
     name: 'Sleepy',
-    description: '',
+    description: 'Aww, looks like eating pancakes all day is tough work. Sweet dreams!',
     originalImage: 'https://gateway.pinata.cloud/ipfs/QmXdHqg3nywpNJWDevJQPtkz93vpfoHcZWQovFz2nmtPf5/sleepy.png',
     previewImage: 'sleepy-preview.png',
     blurImage: 'sleepy-blur.png',
@@ -12,7 +12,7 @@ const Nfts: Nft[] = [
   },
   {
     name: 'Sunny',
-    description: '',
+    description: 'Sunny is always cheerful when there are pancakes around. Smile!',
     originalImage: 'https://gateway.pinata.cloud/ipfs/QmXdHqg3nywpNJWDevJQPtkz93vpfoHcZWQovFz2nmtPf5/sunny.png',
     previewImage: 'sunny-preview.png',
     blurImage: 'sunny-blur.png',
@@ -21,7 +21,7 @@ const Nfts: Nft[] = [
   },
   {
     name: 'Flipper',
-    description: '',
+    description: "Don't let that dopey smile deceive you... Flipper's a master CAKE chef!",
     originalImage: 'https://gateway.pinata.cloud/ipfs/QmXdHqg3nywpNJWDevJQPtkz93vpfoHcZWQovFz2nmtPf5/flipper.png',
     previewImage: 'flipper-preview.png',
     blurImage: 'flipper-blur.png',
@@ -30,7 +30,7 @@ const Nfts: Nft[] = [
   },
   {
     name: 'Dollop',
-    description: '',
+    description: "Nommm... Oh hi, I'm just meditating on the meaning of CAKE.",
     originalImage: 'https://gateway.pinata.cloud/ipfs/QmXdHqg3nywpNJWDevJQPtkz93vpfoHcZWQovFz2nmtPf5/dollop.png',
     previewImage: 'dollop-preview.png',
     blurImage: 'dollop-blur.png',
@@ -39,7 +39,7 @@ const Nfts: Nft[] = [
   },
   {
     name: 'Twinkle',
-    description: '',
+    description: "Three guesses what's put that twinkle in those eyes! (Hint: it's CAKE)",
     originalImage: 'https://gateway.pinata.cloud/ipfs/QmXdHqg3nywpNJWDevJQPtkz93vpfoHcZWQovFz2nmtPf5/twinkle.png',
     previewImage: 'twinkle-preview.png',
     blurImage: 'twinkle-blur.png',

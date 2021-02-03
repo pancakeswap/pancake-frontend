@@ -10,17 +10,17 @@ import {
   Link,
   Tag,
   Text,
-  HelpIcon,
+  PrizeIcon,
   OpenNewIcon,
 } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import { useProfile } from 'state/hooks'
 import Menu from './components/Menu'
 import CardHeader from './components/CardHeader'
-import SecondaryCard from './components/SecondaryCard'
 import Collectibles from './components/Collectibles'
 import ComingSoon from './components/ComingSoon'
 import WalletNotConnected from './components/WalletNotConnected'
+import StatBox from './components/StatBox'
 
 const Avatar = styled.div`
   margin-right: 16px;
@@ -118,19 +118,12 @@ const PublicProfile = () => {
             )}
           </CardHeader>
           <CardBody>
-            <SecondaryCard mb="24px">
-              <Flex alignItems="start">
-                <HelpIcon width="44px" mr="32px" />
-                <div>
-                  <Heading as="h3" size="xl">
-                    {profile.numberPoints}
-                  </Heading>
-                  <Text textTransform="uppercase" color="textSubtle" fontSize="12px" bold>
-                    {TranslateString(999, 'Points')}
-                  </Text>
-                </div>
-              </Flex>
-            </SecondaryCard>
+            <StatBox
+              icon={PrizeIcon}
+              title={profile.numberPoints}
+              subtitle={TranslateString(999, 'Points')}
+              mb="24px"
+            />
             <Heading as="h4" size="md">
               {TranslateString(999, 'Achievements')}
             </Heading>

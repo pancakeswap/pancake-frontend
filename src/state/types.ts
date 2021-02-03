@@ -29,6 +29,7 @@ export interface Pool extends PoolConfig {
 }
 
 export interface Team {
+  id?: number
   name: string
   description: string
   points: number
