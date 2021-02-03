@@ -103,11 +103,14 @@ const TeamCard: React.FC<TeamCardProps> = ({ rank, team }) => {
       </TeamRank>
       <Body>
         <Info>
-          <Flex alignItems="center">
+          <Flex alignItems="center" mb="16px">
             <MobileAvatar>{avatar}</MobileAvatar>
             <TeamName>{team.name}</TeamName>
           </Flex>
-          <Flex py="8px">
+          <Text as="p" color="textSubtle" pr="24px" mb="16px">
+            {team.description}
+          </Text>
+          <Flex>
             <Flex>
               <PrizeIcon width="24px" mr="8px" />
               <Text fontSize="24px" bold>
