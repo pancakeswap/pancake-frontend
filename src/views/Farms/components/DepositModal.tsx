@@ -42,6 +42,7 @@ const DepositModal: React.FC<DepositModalProps> = ({ max, onConfirm, onDismiss, 
         max={fullBalance}
         symbol={tokenName}
         addLiquidityUrl={addLiquidityUrl}
+        inputTitle={TranslateString(999, 'Stake')}
       />
       <ModalActions>
         <Button variant="secondary" onClick={onDismiss} fullWidth>
