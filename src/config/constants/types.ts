@@ -89,7 +89,7 @@ export type Team = {
   description: string
   originalImage: string
   previewImage: string
-  avatar: string
+  avatarImage: string
   isJoinable?: boolean
   users: number
   points: number
