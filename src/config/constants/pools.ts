@@ -19,6 +19,23 @@ const pools: PoolConfig[] = [
     tokenDecimals: 18,
   },
   {
+    sousId: 42,
+    tokenName: 'HGET',
+    stakingTokenName: QuoteToken.CAKE,
+    stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
+    contractAddress: {
+      97: '',
+      56: '0xcCD0b93cC6ce3dC6dFaA9DB68f70e5C8455aC5bd',
+    },
+    poolCategory: PoolCategory.CORE,
+    projectLink: 'https://www.hedget.com/',
+    harvest: true,
+    tokenPerBlock: '0.0138',
+    sortOrder: 999,
+    isFinished: false,
+    tokenDecimals: 6,
+  },
+  {
     sousId: 41,
     tokenName: 'BDO',
     stakingTokenName: QuoteToken.CAKE,
