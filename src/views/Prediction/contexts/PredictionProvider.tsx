@@ -133,32 +133,31 @@ const PredictionProvider: React.FC<PredictionProviderProps> = ({ children }) => 
 
   // subscribe contract events
   useEffect(() => {
-    const subscribeEvents = async () => {
-      try {
-        bnbPredictionContract.events.BetBear().on('data', (event) => {
-          // onBidCallback
-          console.log('bit bear...', event.returnValues) // same results as the optional callback above
-        })
-        bnbPredictionContract.events.BetBull().on('data', (event) => {
-          // onBidCallback
-          // 0: "0x0E03aF5d4a7B721Ce8cF54ef2ddDb96aaC618048"
-          // 1: "1"
-          // 2: "20000000000000"
-          // currentEpoch: "1"
-          // price: "20000000000000"
-          // sender: "0x0E03aF5d4a7B721Ce8cF54ef2ddDb96aaC618048"
-          console.log('bit bull...', event.returnValues) // same results as the optional callback above
-        })
-        bnbPredictionContract.events.Claim().on('data', (event) => {
-          console.log('claim...', event.returnValues) // same results as the optional callback above
-          // handleClaim
-        })
-      } catch (error) {
-        console.error('an error occured', error)
-      }
+    const betBearSubscription = bnbPredictionContract.events.BetBear().on('data', (event) => {
+      // onBidCallback
+      console.log('bit bear...', event.returnValues) // same results as the optional callback above
+    })
+    const betBullSubscription = bnbPredictionContract.events.BetBull().on('data', (event) => {
+      // onBidCallback
+      // 0: "0x0E03aF5d4a7B721Ce8cF54ef2ddDb96aaC618048"
+      // 1: "1"
+      // 2: "20000000000000"
+      // currentEpoch: "1"
+      // price: "20000000000000"
+      // sender: "0x0E03aF5d4a7B721Ce8cF54ef2ddDb96aaC618048"
+      console.log('bit bull...', event.returnValues) // same results as the optional callback above
+    })
+    const claimSubscription = bnbPredictionContract.events.Claim().on('data', (event) => {
+      console.log('claim...', event.returnValues) // same results as the optional callback above
+      // handleClaim
+    })
+
+    return () => {
+      // TODO!!!!!
+      betBearSubscription.unsubscribe()
+      betBullSubscription.unsubscribe()
+      claimSubscription.unsubscribe()
     }
-    subscribeEvents()
-    // TODO disconnect?
   }, [setState, bnbPredictionContract])
 
   return (
