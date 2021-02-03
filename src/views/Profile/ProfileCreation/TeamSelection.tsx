@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, CardBody, Heading, Text } from '@pancakeswap-libs/uikit'
+import { Card, CardBody, CommunityIcon, Flex, Heading, Text } from '@pancakeswap-libs/uikit'
 import shuffle from 'lodash/shuffle'
 import { useTeams } from 'state/hooks'
 import useI18n from 'hooks/useI18n'
@@ -55,6 +55,10 @@ const Team: React.FC = () => {
                   disabled={!team.isJoinable}
                 >
                   <Text bold>{team.name}</Text>
+                  <Flex>
+                    <CommunityIcon mr="8px" />
+                    <Text>{team.users.toLocaleString()}</Text>
+                  </Flex>
                 </SelectionCard>
               )
             })}
