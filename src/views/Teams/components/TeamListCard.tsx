@@ -2,8 +2,8 @@ import React from 'react'
 import styled, { DefaultTheme } from 'styled-components'
 import { Link } from 'react-router-dom'
 import { Button, Card, CommunityIcon, Flex, Heading, PrizeIcon, Text } from '@pancakeswap-libs/uikit'
-import { Team } from 'state/types'
 import useI18n from 'hooks/useI18n'
+import { Team } from 'config/constants/types'
 
 interface TeamCardProps {
   rank: number
@@ -92,7 +92,7 @@ const StyledTeamCard = styled(Card)`
 
 const TeamCard: React.FC<TeamCardProps> = ({ rank, team }) => {
   const TranslateString = useI18n()
-  const avatar = <Avatar src="/images/nfts/onsen-preview.png" alt="team avatar" />
+  const avatar = <Avatar src={`/images/teams/${team.previewImage}`} alt="team avatar" />
 
   return (
     <StyledTeamCard>
@@ -103,11 +103,14 @@ const TeamCard: React.FC<TeamCardProps> = ({ rank, team }) => {
       </TeamRank>
       <Body>
         <Info>
-          <Flex alignItems="center">
+          <Flex alignItems="center" mb="16px">
             <MobileAvatar>{avatar}</MobileAvatar>
             <TeamName>{team.name}</TeamName>
           </Flex>
-          <Flex py="8px">
+          <Text as="p" color="textSubtle" pr="24px" mb="16px">
+            {team.description}
+          </Text>
+          <Flex>
             <Flex>
               <PrizeIcon width="24px" mr="8px" />
               <Text fontSize="24px" bold>

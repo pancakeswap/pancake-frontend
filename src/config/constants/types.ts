@@ -82,3 +82,15 @@ export type Nft = {
   sortOrder: number
   bunnyId: number
 }
+
+export type Team = {
+  id: number
+  name: string
+  description: string
+  originalImage: string
+  previewImage: string
+  avatarImage: string
+  isJoinable?: boolean
+  users: number
+  points: number
+}
