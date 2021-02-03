@@ -4,6 +4,7 @@ import noop from "lodash/noop";
 /* eslint-disable import/no-unresolved */
 import { Meta } from "@storybook/react/types-6-0";
 import Alert from "./Alert";
+import { Text } from "../Text";
 
 const Row = styled.div`
   margin-bottom: 32px;
@@ -19,16 +20,24 @@ export const Default: React.FC = () => {
   return (
     <div style={{ padding: "32px", width: "400px" }}>
       <Row>
-        <Alert title="Info" description="A description of the info alert" />
+        <Alert title="Info">
+          <Text as="p">This is a description</Text>
+        </Alert>
       </Row>
       <Row>
-        <Alert title="Success" description="A description of the success alert" variant="success" />
+        <Alert title="Success" variant="success">
+          <Text as="p">This is a description</Text>
+        </Alert>
       </Row>
       <Row>
-        <Alert title="Danger" description="A description of the danger alert" variant="danger" />
+        <Alert title="Warning" variant="warning">
+          <Text as="p">This is a description</Text>
+        </Alert>
       </Row>
       <Row>
-        <Alert title="Warning" description="A description of the warning alert" variant="warning" />
+        <Alert title="Danger" variant="danger">
+          <Text as="p">This is a description</Text>
+        </Alert>
       </Row>
     </div>
   );
@@ -43,15 +52,12 @@ export const WithHandler: React.FC = () => {
         <Alert onClick={handleClick} title="Info" />
       </Row>
       <Row>
-        <Alert
-          onClick={handleClick}
-          title="Success"
-          description="A description of the success alert"
-          variant="success"
-        />
+        <Alert onClick={handleClick} title="Success" variant="success">
+          A description of the success alert
+        </Alert>
       </Row>
       <Row>
-        <Alert onClick={handleClick} title="Danger A description of the warning alert" variant="danger" />
+        <Alert onClick={handleClick} title="Danger A Long Title" variant="danger" />
       </Row>
       <Row>
         <Alert onClick={handleClick} title="Warning" variant="warning" />

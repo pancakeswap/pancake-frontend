@@ -74,17 +74,17 @@ const StyledAlert = styled(Flex)`
   box-shadow: 0px 20px 36px -8px rgba(14, 14, 44, 0.1), 0px 1px 1px rgba(0, 0, 0, 0.05);
 `;
 
-const Alert: React.FC<AlertProps> = ({ title, description, variant, onClick }) => {
+const Alert: React.FC<AlertProps> = ({ title, children, variant, onClick }) => {
   const Icon = getIcon(variant);
 
   return (
     <StyledAlert>
-      <IconLabel variant={variant} hasDescription={!!description}>
+      <IconLabel variant={variant} hasDescription={!!children}>
         <Icon color="currentColor" width="24px" />
       </IconLabel>
       <Details hasHandler={!!onClick}>
         <Text bold>{title}</Text>
-        {description && <Text as="p">{description}</Text>}
+        {typeof children === "string" ? <Text as="p">{children}</Text> : children}
       </Details>
       {onClick && (
         <CloseHandler>
