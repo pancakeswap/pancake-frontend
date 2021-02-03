@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Page from 'components/layout/Page'
 import { Link, Redirect, useParams } from 'react-router-dom'
-import { ChevronRightIcon, Flex, Text } from '@pancakeswap-libs/uikit'
+import { ChevronLeftIcon, Flex, Text } from '@pancakeswap-libs/uikit'
 import PageLoader from 'components/PageLoader'
 import { Team as TeamType } from 'state/types'
 import useI18n from 'hooks/useI18n'
@@ -45,7 +45,7 @@ const Team = () => {
       <Flex mb="24px">
         <Link to="/teams">
           <Flex alignItems="center">
-            <ChevronRightIcon style={{ transform: 'rotate(180deg)' }} color="primary" />
+            <ChevronLeftIcon color="primary" />
             <Text color="primary">{TranslateString(999, 'Teams Overview')}</Text>
           </Flex>
         </Link>
