@@ -21,7 +21,7 @@ export const getIfos = (data) => {
       currency: ifo.currency,
       currencyAddress: ifo.currency_address,
       tokenDecimals: ifo.decimals,
-      releaseBlockNumber: ifo.__v,
+      releaseBlockNumber: ifo.release_block,
     }
   })
   return ifos
@@ -35,7 +35,9 @@ export const getPools = (data) => {
       stakingTokenName: pool?.quote_token?.name,
       stakingLimit: pool?.quote_token?.decimals,
       stakingTokenAddress: pool?.quote_token?.mainnet_address,
-      contractAddress: pool.contract_address,
+      contractAddress: {
+        56: pool.contract_address,
+      },
       poolCategory: pool.category,
       projectLink: pool.project_url,
       tokenPerBlock: pool.token_per_block,
@@ -53,12 +55,15 @@ export const getFarms = (data) => {
     return {
       pid: farm.pid,
       lpSymbol: farm.lp_symbol,
-      lpAddresses: farm.lp_mainnet_address,
+      lpAddresses: {
+        56: farm.lp_mainnet_address,
+      },
       tokenSymbol: farm?.token?.symbol,
-      tokenAddresses: farm?.token?.mainnet_address,
+      tokenAddresses: {
+        56: farm?.token?.mainnet_address,
+      },
       quoteTokenSymbol: farm?.quote_token?.symbol,
       quoteTokenAdresses: farm?.quote_token?.mainnet_address,
-      multiplier: farm?.multiplier,
       isCommunity: farm?.is_community,
     }
   })

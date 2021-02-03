@@ -6,9 +6,8 @@ import { getFormattedData } from './parser'
 
 const CMSSync = (config: SettingsObject[]) => {
   config.forEach((item: SettingsObject) => {
-    get(item.url).then((res) => {
-      const [, secondKey] = Object.keys(res)
-      const formattedData = getFormattedData(item.type, res[secondKey])
+    get(item.url).then((res: any) => {
+      const formattedData = getFormattedData(item.type, res.data)
       fs.writeFile(`src/config/constants/${item.name}.json`, JSON.stringify(formattedData, undefined, 2), (err) => {
         if (err) throw err
         console.info(` ✅ - ${item.name} has been saved!`)
