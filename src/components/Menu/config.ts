@@ -43,7 +43,16 @@ const config: MenuEntry[] = [
   {
     label: 'Teams & Profile',
     icon: 'GroupsIcon',
-    href: '/teams',
+    items: [
+      {
+        label: 'Leaderboard',
+        href: '/teams',
+      },
+      {
+        label: 'Your Profile',
+        href: '/profile',
+      },
+    ],
   },
   {
     label: 'Info',
