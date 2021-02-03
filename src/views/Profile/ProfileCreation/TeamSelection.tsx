@@ -1,9 +1,8 @@
 import React from 'react'
-import { Card, CardBody, Heading, Text, Skeleton } from '@pancakeswap-libs/uikit'
-import times from 'lodash/times'
+import { Card, CardBody, CommunityIcon, Flex, Heading, Text } from '@pancakeswap-libs/uikit'
 import shuffle from 'lodash/shuffle'
+import { useTeams } from 'state/hooks'
 import useI18n from 'hooks/useI18n'
-import useTeams from 'hooks/useTeams'
 import SelectionCard from '../components/SelectionCard'
 import NextStepButton from '../components/NextStepButton'
 import useProfileCreation from './contexts/hook'
@@ -17,8 +16,9 @@ interface Team {
 const Team: React.FC = () => {
   const { teamId: currentTeamId, actions } = useProfileCreation()
   const TranslateString = useI18n()
-  const teams = useTeams()
+  const { teams } = useTeams()
   const handleTeamSelection = (value: string) => actions.setTeamId(parseInt(value, 10))
+  const teamValues = Object.values(teams)
 
   return (
     <>
@@ -42,23 +42,23 @@ const Team: React.FC = () => {
               'There’s currently no big difference between teams, and no benefit of joining one team over another for now. So pick whichever one you like!',
             )}
           </Text>
-          {!teams && times(3).map((key) => <Skeleton key={key} height="80px" mb="16px" />)}
-          {teams &&
-            shuffle(teams).map((team, index) => {
-              // Team indices start at 1
-              const teamId = index + 1
-
+          {teamValues &&
+            shuffle(teamValues).map((team) => {
               return (
                 <SelectionCard
                   key={team.name}
                   name="teams-selection"
-                  value={teamId}
-                  isChecked={currentTeamId === teamId}
-                  image="/onsen-preview.png"
+                  value={team.id}
+                  isChecked={currentTeamId === team.id}
+                  image={`/images/teams/${team.previewImage}`}
                   onChange={handleTeamSelection}
                   disabled={!team.isJoinable}
                 >
                   <Text bold>{team.name}</Text>
+                  <Flex>
+                    <CommunityIcon mr="8px" />
+                    <Text>{team.users.toLocaleString()}</Text>
+                  </Flex>
                 </SelectionCard>
               )
             })}

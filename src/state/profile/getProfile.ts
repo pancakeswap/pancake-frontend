@@ -3,9 +3,9 @@ import pancakeProfileAbi from 'config/abi/pancakeProfile.json'
 import pancakeRabbitsAbi from 'config/abi/pancakeRabbits.json'
 import { getContract } from 'utils/web3'
 import { Profile } from 'state/types'
+import { getTeam } from 'state/teams/helpers'
 import nfts from 'config/constants/nfts'
-import makeBatchRequest from 'utils/makeBatchRequest'
-import { transformProfileResponse, transformTeamResponse, TeamResponse } from './helpers'
+import { transformProfileResponse } from './helpers'
 
 const profileContract = getContract(pancakeProfileAbi, getPancakeProfileAddress())
 const rabbitContract = getContract(pancakeRabbitsAbi, getPancakeRabbitsAddress())
@@ -20,14 +20,10 @@ const getProfile = async (address: string): Promise<Profile> => {
     }
 
     const profileResponse = await profileContract.methods.getUserProfile(address).call()
-    const { userId, numberPoints, teamId, tokenId, nftAddress, isActive } = transformProfileResponse(profileResponse)
-    const [bunnyId, teamProfileResponse] = await makeBatchRequest([
-      rabbitContract.methods.getBunnyId(tokenId).call,
-      profileContract.methods.getTeamProfile(teamId).call,
-    ])
-    const team = transformTeamResponse(teamProfileResponse as TeamResponse)
-    const nft = nfts.find((nftItem) => nftItem.bunnyId === Number(bunnyId))
+    const { userId, points, teamId, tokenId, nftAddress, isActive } = transformProfileResponse(profileResponse)
 
+    const [bunnyId, team] = await Promise.all([rabbitContract.methods.getBunnyId(tokenId).call(), getTeam(teamId)])
+    const nft = nfts.find((nftItem) => nftItem.bunnyId === Number(bunnyId))
     const response = await fetch(`${profileApi}/api/users?address=${address}`)
     const { username = '' } = await response.json()
 
@@ -42,7 +38,7 @@ const getProfile = async (address: string): Promise<Profile> => {
 
     return {
       userId,
-      numberPoints,
+      points,
       teamId,
       tokenId,
       username,
