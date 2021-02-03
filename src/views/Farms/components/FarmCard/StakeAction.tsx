@@ -16,10 +16,21 @@ interface FarmCardActionsProps {
   pid?: number
 }
 
+const StyledHeading = styled(Heading)`
+  margin-right: 3rem;
+`
+
+const StakingButtonContainer = styled.div`
+  margin-left: auto;
+`
 const IconButtonWrapper = styled.div`
   display: flex;
-  svg {
-    width: 20px;
+
+  button {
+    width: 2rem;
+    svg {
+      width: 20px;
+    }
   }
 `
 
@@ -53,8 +64,8 @@ const StakeAction: React.FC<FarmCardActionsProps> = ({ stakedBalance, tokenBalan
 
   return (
     <Flex justifyContent="space-between" alignItems="center">
-      <Heading color={rawStakedBalance === 0 ? 'textDisabled' : 'text'}>{displayBalance}</Heading>
-      {renderStakingButtons()}
+      <StyledHeading color={rawStakedBalance === 0 ? 'textDisabled' : 'text'}>{displayBalance}</StyledHeading>
+      <StakingButtonContainer>{renderStakingButtons()}</StakingButtonContainer>
     </Flex>
   )
 }

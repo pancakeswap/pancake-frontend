@@ -12,6 +12,9 @@ import { getContract } from 'utils/erc20'
 import { provider } from 'web3-core'
 
 const Container = styled.div`
+  margin-left: auto;
+  margin-right: auto;
+
   button {
     white-space: nowrap;
     color: white;

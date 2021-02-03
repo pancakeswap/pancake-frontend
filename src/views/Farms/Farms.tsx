@@ -29,7 +29,11 @@ const ControlContainer = styled.div`
   width: 100%;
   align-items: center;
   margin-bottom: 2rem;
-  padding: 0rem 1.5rem;
+  padding: 0;
+`
+
+const SearchContainer = styled.div`
+  margin-left: auto;
 `
 
 const Farms: React.FC = () => {
@@ -135,6 +139,9 @@ const Farms: React.FC = () => {
     const lpLabel = farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('PANCAKE', '')
 
     const row: RowData = {
+      icon: {
+        image: farm.lpSymbol.split(' ')[0].toLocaleLowerCase(),
+      },
       apr: {
         value: farm.apy
           ? Number(`${farm.apy.times(new BigNumber(100)).toNumber().toLocaleString('en-US').slice(0, -1)}`)
@@ -148,7 +155,6 @@ const Farms: React.FC = () => {
         originalValue: farm.apy,
       },
       farm: {
-        image: farm.lpSymbol.split(' ')[0].toLocaleLowerCase(),
         label: lpLabel,
       },
       earned: {
@@ -165,14 +171,13 @@ const Farms: React.FC = () => {
         bsc: `https://bscscan.com/address/${farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]}`,
         info: `https://pancakeswap.info/pair/${farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]}`,
       },
-      tags: farm,
     }
 
     return row
   })
 
   const renderContent = (): JSX.Element => {
-    if (viewMode === ViewMode.TABLE) {
+    if (viewMode === ViewMode.TABLE && rowData.length) {
       return <Table data={rowData} ref={tableRef} />
     }
 
@@ -219,7 +224,9 @@ const Farms: React.FC = () => {
       <ControlContainer>
         <ToggleView viewMode={viewMode} onToggle={(mode: ViewMode) => setViewMode(mode)} />
         <FarmTabButtons />
-        <SearchInput onChange={handleChangeQuery} value={query} />
+        <SearchContainer>
+          <SearchInput onChange={handleChangeQuery} value={query} />
+        </SearchContainer>
       </ControlContainer>
       {renderContent()}
       <Image src="/images/cakecat.png" alt="Pancake illustration" width={949} height={384} responsive />

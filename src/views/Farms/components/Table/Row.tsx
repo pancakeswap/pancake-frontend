@@ -4,30 +4,20 @@ import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
 
 import Apr, { AprProps } from './Apr'
 import Farm, { FarmProps } from './Farm'
-import Earned from './Earned'
+import Earned, { EarnedProps } from './Earned'
 import Staked from './Staked'
-import Details from './Details'
-import Links from './Links'
-import Tags from './Tags'
+import Details, { DetailsProps } from './Details'
+import Links, { LinksProps } from './Links'
+import CoinIcon, { CoinIconProps } from './CoinIcon'
 
 export interface RowData {
+  icon: CoinIconProps
   apr: AprProps
   farm: FarmProps
-  earned: {
-    earnings: number
-    pid: number
-  }
+  earned: EarnedProps
   staked: FarmWithStakedValue
-  details: {
-    liquidity: number
-    lpName: string
-    liquidityUrlPathParts: string
-  }
-  links: {
-    bsc: string
-    info: string
-  }
-  tags: FarmWithStakedValue
+  details: DetailsProps
+  links: LinksProps
 }
 
 const cells = {
@@ -37,7 +27,7 @@ const cells = {
   staked: Staked,
   details: Details,
   links: Links,
-  tags: Tags,
+  icon: CoinIcon,
 }
 
 const CellInner = styled.div`

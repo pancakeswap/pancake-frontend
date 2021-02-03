@@ -12,6 +12,7 @@ export type ColumnsDefTypes = {
   normal: string
   name: string
   translationId: number
+  sortable: boolean
 }
 
 export type ScrollBarProps = {
@@ -30,11 +31,20 @@ export type TableDataTypes = {
 
 export const ColumnsDef: ColumnsDefTypes[] = [
   {
+    id: 0,
+    bold: '',
+    normal: '',
+    name: 'icon',
+    translationId: 999,
+    sortable: false,
+  },
+  {
     id: 1,
     bold: '',
     normal: 'Farm',
     name: 'farm',
     translationId: 999,
+    sortable: true,
   },
   {
     id: 2,
@@ -42,6 +52,7 @@ export const ColumnsDef: ColumnsDefTypes[] = [
     normal: 'APR',
     name: 'apr',
     translationId: 999,
+    sortable: true,
   },
   {
     id: 3,
@@ -49,6 +60,7 @@ export const ColumnsDef: ColumnsDefTypes[] = [
     normal: 'EARNED',
     name: 'earned',
     translationId: 999,
+    sortable: true,
   },
   {
     id: 4,
@@ -56,6 +68,7 @@ export const ColumnsDef: ColumnsDefTypes[] = [
     normal: 'STAKED',
     name: 'staked',
     translationId: 999,
+    sortable: true,
   },
   {
     id: 5,
@@ -63,6 +76,7 @@ export const ColumnsDef: ColumnsDefTypes[] = [
     normal: 'DETAILS',
     name: 'details',
     translationId: 999,
+    sortable: true,
   },
   {
     id: 6,
@@ -70,13 +84,7 @@ export const ColumnsDef: ColumnsDefTypes[] = [
     normal: 'LINKS',
     name: 'links',
     translationId: 999,
-  },
-  {
-    id: 7,
-    bold: '',
-    normal: 'TAGS',
-    name: 'tags',
-    translationId: 999,
+    sortable: false,
   },
 ]
 

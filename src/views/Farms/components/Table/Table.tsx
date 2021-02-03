@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { RowType, useTable } from '@pancakeswap-libs/uikit'
+import { RowType, useTable, ChevronDownIcon } from '@pancakeswap-libs/uikit'
 import BigNumber from 'bignumber.js'
 import useI18n from 'hooks/useI18n'
 
@@ -27,7 +27,9 @@ const Container = styled.div`
 `
 
 const TableWrapper = styled.div`
-  overflow-x: auto;
+  overflow: auto;
+  max-height: 600px;
+
   &::-webkit-scrollbar {
     display: none;
   }
@@ -36,10 +38,10 @@ const TableWrapper = styled.div`
 const StyledTable = styled.table`
   border-collapse: collapse;
   font-size: 0.9rem;
-  overflow: hidden;
-  box-shadow: 0px 2px 12px -8px rgba(25, 19, 38, 0.1), 0px 0px 1px rgba(25, 19, 38, 0.15);
   border-radius: 4px;
   text-align: center;
+  margin-left: auto;
+  margin-right: auto;
 `
 
 const TableHead = styled.thead`
@@ -53,11 +55,14 @@ const TableHead = styled.thead`
     cursor: pointer;
 
     & th {
-      padding: 1px 15px;
-      &:not(:first-child) {
-        padding-left: 0px !important;
-        padding-right: 0px !important;
-        text-align: left;
+      background-color: ${(props) => props.theme.colors.tertiary};
+      position: sticky;
+      top: 0;
+      padding: 1px 0px;
+      z-index: 100;
+
+      &:first-child {
+        padding-right: 0.8rem;
       }
     }
   }
@@ -82,11 +87,22 @@ const TableBody = styled.tbody`
       font-size: 0.875rem;
       vertical-align: middle;
       padding-right: 1rem;
+
+      &:first-child {
+        position: sticky;
+        left: 0;
+        padding-right: 0;
+        background: ${(props) => props.theme.card.background};
+
+        > div {
+          padding-right: 0;
+        }
+      }
     }
   }
 `
 
-const ArrowIcon = styled.img`
+const ArrowIcon = styled(ChevronDownIcon)`
   margin-left: 0.375rem;
   transition: 0.5s;
 
@@ -158,10 +174,10 @@ const columns = ColumnsDef.map((column) => ({
         return 1
     }
   },
-  sortable: column.name !== 'links',
+  sortable: column.sortable,
 }))
 
-export default React.forwardRef((props: ITableProps, ref) => {
+export default React.forwardRef((props: ITableProps) => {
   const scrollBarEl = useRef<HTMLDivElement>(null)
   const tableWrapperEl = useRef<HTMLDivElement>(null)
   const [tableWidth, setTableWidth] = useState(600)
@@ -173,16 +189,16 @@ export default React.forwardRef((props: ITableProps, ref) => {
   const renderSortArrow = (column: any): JSX.Element => {
     if (column.sorted && column.sorted.on) {
       if (column.sorted.asc) {
-        return <ArrowIcon src="/images/icons/arrow-down.svg" className="toggle" alt="arrow down" />
+        return <ArrowIcon className="toggle" color="secondary" />
       }
 
-      return <ArrowIcon src="/images/icons/arrow-down.svg" alt="arrow down" />
+      return <ArrowIcon color="secondary" />
     }
 
     return null
   }
 
-  const { headers, rows, toggleSort, setSearchString } = useTable(columns, data, { sortable: true })
+  const { headers, rows, toggleSort } = useTable(columns, data, { sortable: true, sortColumn: 'farm' })
 
   useEffect(() => {
     if (scrollBarEl && scrollBarEl.current) {
@@ -237,12 +253,6 @@ export default React.forwardRef((props: ITableProps, ref) => {
     }
   }, [])
 
-  React.useImperativeHandle(ref, () => ({
-    setTableQuery(query: string) {
-      setSearchString(query)
-    },
-  }))
-
   return (
     <Container>
       {visibleScroll && <ScrollBar ref={scrollBarEl} width={tableWidth} />}
@@ -254,12 +264,12 @@ export default React.forwardRef((props: ITableProps, ref) => {
                 {headers.map((column, key) => (
                   <Cell
                     key={`head-${column.name}`}
-                    onClick={() => (column.name !== 'links' && column.name !== 'tags' ? toggleSort(column.name) : '')}
+                    onClick={() => (ColumnsDef[key].sortable ? toggleSort(column.name) : '')}
                     isHeader
                   >
                     <CellInner>
                       <span className="bold">{ColumnsDef[key].bold}&nbsp;</span>
-                      {TranslateString(ColumnsDef[key].translationId, column.label)}
+                      {TranslateString(ColumnsDef[key].translationId, ColumnsDef[key].normal)}
                       {renderSortArrow(column)}
                     </CellInner>
                   </Cell>

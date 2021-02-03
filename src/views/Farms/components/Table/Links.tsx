@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import useI18n from 'hooks/useI18n'
 import { LinkExternal } from '@pancakeswap-libs/uikit'
 
-interface CellProps {
+export interface LinksProps {
   bsc: string
   info: string
 }
@@ -32,7 +32,7 @@ const Container = styled.div`
   }
 `
 
-const Links: React.FunctionComponent<CellProps> = ({ bsc, info }) => {
+const Links: React.FunctionComponent<LinksProps> = ({ bsc, info }) => {
   const TranslateString = useI18n()
 
   return (

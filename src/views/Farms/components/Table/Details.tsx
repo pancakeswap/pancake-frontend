@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { LinkExternal } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 
-interface CellProps {
+export interface DetailsProps {
   liquidity: number
   lpName: string
   liquidityUrlPathParts: string
@@ -44,7 +44,7 @@ const StyledLinkExternal = styled(LinkExternal)`
   }
 `
 
-const Details: React.FunctionComponent<CellProps> = ({ liquidity, lpName, liquidityUrlPathParts }) => {
+const Details: React.FunctionComponent<DetailsProps> = ({ liquidity, lpName, liquidityUrlPathParts }) => {
   const TranslateString = useI18n()
 
   const renderLiquidity = (): string => {
