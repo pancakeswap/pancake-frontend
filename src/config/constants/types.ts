@@ -73,24 +73,35 @@ export interface PoolConfig {
   tokenDecimals: number
 }
 
+export type Images = {
+  lg: string
+  md: string
+  sm: string
+  ipfs?: string
+}
+
+export type NftImages = {
+  blur: string
+} & Images
+
 export type Nft = {
   name: string
   description: string
-  originalImage: string
-  previewImage: string
-  blurImage: string
+  images: NftImages
   sortOrder: number
   bunnyId: number
 }
+
+export type TeamImages = {
+  alt: string
+} & Images
 
 export type Team = {
   id: number
   name: string
   description: string
-  originalImage: string
-  previewImage: string
-  avatarImage: string
   isJoinable?: boolean
   users: number
   points: number
+  images: TeamImages
 }

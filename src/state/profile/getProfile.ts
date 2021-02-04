@@ -32,7 +32,7 @@ const getProfile = async (address: string): Promise<Profile> => {
       `profile_${address}`,
       JSON.stringify({
         username,
-        avatar: `https://pancakeswap.finance/images/nfts/${nft.previewImage}`,
+        avatar: `https://pancakeswap.finance/images/nfts/${nft.images.sm}`,
       }),
     )
 
