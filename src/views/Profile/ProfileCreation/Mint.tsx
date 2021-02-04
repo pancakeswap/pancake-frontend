@@ -72,7 +72,7 @@ const Mint: React.FC = () => {
             {TranslateString(999, 'Choose wisely: you can only ever make one starter collectible!')}
           </Text>
           <Text as="p" mb="24px" color="textSubtle">
-            {TranslateString(999, 'Cost: 5 CAKE')}
+            {TranslateString(999, 'Cost: 4 CAKE')}
           </Text>
           {nfts.map((nft) => {
             const handleChange = (value: string) => setBunnyId(parseInt(value, 10))
