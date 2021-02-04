@@ -1,6 +1,6 @@
 export default {
   cake: {
-    97: '0x43acC9A5E94905c7D31415EB410F3E666e5F1e9A',
+    97: '0xa35062141Fa33BCA92Ce69FeD37D0E8908868AAe',
     56: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
   },
   syrup: {
@@ -38,5 +38,17 @@ export default {
   ust: {
     56: '0x23396cF899Ca06c4472205fC903bDB4de249D6fC',
     97: '',
+  },
+  pancakeProfile: {
+    56: '0xDf4dBf6536201370F95e06A0F8a7a70fE40E388a',
+    97: '0xfb3310CcA65fe9479a3590206Be3CEEC70DE77FE',
+  },
+  pancakeRabbits: {
+    56: '0xDf7952B35f24aCF7fC0487D01c8d5690a60DBa07',
+    97: '0x60935F36e4631F73f0f407e68642144e07aC7f5E',
+  },
+  rabbitMintingFarm: {
+    56: '0x1C99222F857C1d72234703eC5b9Ed88089Bd7091',
+    97: '0x8f4739a48883Fdd89b65DC245dD5774fC8f44a67',
   },
 }
