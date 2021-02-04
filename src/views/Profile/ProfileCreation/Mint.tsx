@@ -82,7 +82,7 @@ const Mint: React.FC = () => {
                 key={nft.bunnyId}
                 name="mintStarter"
                 value={nft.bunnyId}
-                image={`/images/nfts/${nft.previewImage}`}
+                image={`/images/nfts/${nft.images.md}`}
                 isChecked={bunnyId === nft.bunnyId}
                 onChange={handleChange}
                 disabled={isApproving || isConfirming || isConfirmed}
