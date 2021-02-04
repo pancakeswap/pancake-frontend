@@ -40,7 +40,7 @@ export default {
     97: '',
   },
   pancakeProfile: {
-    56: '',
+    56: '0xDf4dBf6536201370F95e06A0F8a7a70fE40E388a',
     97: '0xfb3310CcA65fe9479a3590206Be3CEEC70DE77FE',
   },
   pancakeRabbits: {
@@ -48,7 +48,7 @@ export default {
     97: '0x60935F36e4631F73f0f407e68642144e07aC7f5E',
   },
   rabbitMintingFarm: {
-    56: '0x7c8b60d2b859a38c8B9b5B6CB4565485cb637c7a',
+    56: '0x1C99222F857C1d72234703eC5b9Ed88089Bd7091',
     97: '0x8f4739a48883Fdd89b65DC245dD5774fC8f44a67',
   },
 }
