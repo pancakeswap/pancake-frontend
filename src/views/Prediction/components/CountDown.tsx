@@ -20,9 +20,9 @@ const formatTime = (s: number) => {
 
 const CountDown: React.FC<CountDownProps> = ({ seconds, timeOver, ...restProps }) => {
   const realSeconds = seconds > 0 ? seconds : 0
-  const remine = useTimer(realSeconds)
-  if (remine === 0 && typeof timeOver === 'function') timeOver()
-  const { h, m, s } = formatTime(remine)
+  const remain = useTimer(realSeconds)
+  if (remain === 0 && typeof timeOver === 'function') timeOver()
+  const { h, m, s } = formatTime(remain)
 
   return (
     <Text bold color="success" {...restProps}>

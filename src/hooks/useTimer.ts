@@ -17,7 +17,7 @@ export const useCurrentTime = () => {
 }
 
 export const useTimer = (initSecond) => {
-  const [remine, setRemine] = useState(initSecond)
+  const [remain, setRemain] = useState(initSecond)
   const startTimeRef = useRef(Date.now())
 
   useEffect(() => {
@@ -29,7 +29,7 @@ export const useTimer = (initSecond) => {
       if (initSecond - cost > 0) {
         tid = setTimeout(update, 500)
       }
-      setRemine(Math.max(0, initSecond - cost))
+      setRemain(Math.max(0, initSecond - cost))
     }
     update()
 
@@ -38,7 +38,7 @@ export const useTimer = (initSecond) => {
     }
   }, [initSecond])
 
-  return remine
+  return remain
 }
 
 export default useCurrentTime
