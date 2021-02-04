@@ -85,10 +85,11 @@ const useGetWalletNfts = () => {
               ...accum,
               [bunnyId]: {
                 tokenUri,
-                tokenIds: accum[bunnyId] ? [...accum[bunnyId], tokenId] : [tokenId],
+                tokenIds: accum[bunnyId] ? [...accum[bunnyId].tokenIds, tokenId] : [tokenId],
               },
             }
           }, {})
+
           dispatch({ type: 'set_nfts', data: nfts })
         } else {
           // Reset it in case of wallet change
