@@ -10,6 +10,7 @@ export interface Profile {
   image?: string;
   profileLink: string;
   noProfileLink: string;
+  showPip?: boolean;
 }
 
 export interface PushedProps {
