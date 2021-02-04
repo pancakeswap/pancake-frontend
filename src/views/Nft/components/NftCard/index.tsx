@@ -50,7 +50,7 @@ const NftCard: React.FC<NftCardProps> = ({ nft }) => {
   const TranslateString = useI18n()
   const { isInitialized, getTokenIds, reInitialize } = useContext(NftProviderContext)
   const { profile } = useProfile()
-  const { bunnyId, name, previewImage, originalImage, description } = nft
+  const { bunnyId, name, images, description } = nft
   const tokenIds = getTokenIds(bunnyId)
   const walletOwnsNft = tokenIds && tokenIds.length > 0
   const Icon = isOpen ? ChevronUpIcon : ChevronDownIcon
@@ -69,7 +69,7 @@ const NftCard: React.FC<NftCardProps> = ({ nft }) => {
 
   return (
     <Card isActive={walletOwnsNft}>
-      <Image src={`/images/nfts/${previewImage}`} alt={name} originalLink={walletOwnsNft ? originalImage : null} />
+      <Image src={`/images/nfts/${images.lg}`} alt={name} originalLink={walletOwnsNft ? images.ipfs : null} />
       <CardBody>
         <Header>
           <Heading>{name}</Heading>

@@ -76,7 +76,7 @@ const TeamCard: React.FC<TeamCardProps> = ({ team }) => {
       <StyledCard>
         <StyledCardHeader>
           <AvatarWrap>
-            <Avatar src={`/images/teams/${team.previewImage}`} alt="team avatar" />
+            <Avatar src={`/images/teams/${team.images.md}`} alt="team avatar" />
           </AvatarWrap>
           <TeamName>{team.name}</TeamName>
           <Text as="p">{team.description}</Text>
