@@ -37,8 +37,7 @@ const StyledCard = styled(Card)`
     margin-right: 16px;
   }
 `
-const CardHeader = styled.div<{ status: STATUS }>`
-  display: flex;
+const CardHeader = styled(Flex)<{ status: STATUS }>`
   justify-content: space-between;
   align-items: center;
   height: 28px;
