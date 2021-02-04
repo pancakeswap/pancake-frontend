@@ -8,16 +8,19 @@ declare module 'jazzicon' {
 
 declare module 'fortmatic'
 
-interface Window {
-  ethereum?: {
-    isMetaMask?: true
-    on?: (...args: any[]) => void
-    removeListener?: (...args: any[]) => void
+declare global {
+  interface Window {
+    ethereum?: {
+      isMetaMask?: true
+      on?: (...args: any[]) => void
+      removeListener?: (...args: any[]) => void
+    }
+    web3?: any
+    BinanceChain?: BinanceChain,
+    library: Web3Provider,
+    account: string | null
   }
-  web3?: any
-  BinanceChain?: BinanceChain,
-  library: Web3Provider,
-  account: string | null
+
 }
 
 declare module 'content-hash' {
