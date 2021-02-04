@@ -92,7 +92,7 @@ const StyledTeamCard = styled(Card)`
 
 const TeamCard: React.FC<TeamCardProps> = ({ rank, team }) => {
   const TranslateString = useI18n()
-  const avatar = <Avatar src={`/images/teams/${team.previewImage}`} alt="team avatar" />
+  const avatar = <Avatar src={`/images/teams/${team.images.md}`} alt="team avatar" />
 
   return (
     <StyledTeamCard>
