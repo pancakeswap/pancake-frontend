@@ -104,4 +104,6 @@ export type Team = {
   users: number
   points: number
   images: TeamImages
+  background: string
+  textColor: string
 }
