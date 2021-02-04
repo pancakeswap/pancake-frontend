@@ -5,6 +5,7 @@ import { useWallet } from '@binance-chain/bsc-use-wallet'
 import useI18n from 'hooks/useI18n'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useCake, useRabbitMintingFarm } from 'hooks/useContract'
+import useHasCakeBalance from 'hooks/useHasCakeBalance'
 import nftList from 'config/constants/nfts'
 import SelectionCard from '../components/SelectionCard'
 import NextStepButton from '../components/NextStepButton'
@@ -13,6 +14,7 @@ import useProfileCreation from './contexts/hook'
 
 const starterBunnyIds = [5, 6, 7, 8, 9]
 const nfts = nftList.filter((nft) => starterBunnyIds.includes(nft.bunnyId))
+const minimumCakeBalance = 4
 
 const Mint: React.FC = () => {
   const [bunnyId, setBunnyId] = useState(null)
@@ -21,6 +23,7 @@ const Mint: React.FC = () => {
   const cakeContract = useCake()
   const mintingFarmContract = useRabbitMintingFarm()
   const TranslateString = useI18n()
+  const hasMinimumCakeRequired = useHasCakeBalance(minimumCakeBalance)
   const {
     isApproving,
     isApproved,
@@ -85,7 +88,7 @@ const Mint: React.FC = () => {
                 image={`/images/nfts/${nft.images.md}`}
                 isChecked={bunnyId === nft.bunnyId}
                 onChange={handleChange}
-                disabled={isApproving || isConfirming || isConfirmed}
+                disabled={isApproving || isConfirming || isConfirmed || !hasMinimumCakeRequired}
               >
                 <Text bold>{nft.name}</Text>
               </SelectionCard>
@@ -99,6 +102,11 @@ const Mint: React.FC = () => {
             onApprove={handleApprove}
             onConfirm={handleConfirm}
           />
+          {!hasMinimumCakeRequired && (
+            <Text color="failure" mt="16px">
+              {TranslateString(999, `A minimum of ${minimumCakeBalance} CAKE is required`)}
+            </Text>
+          )}
         </CardBody>
       </Card>
       <NextStepButton onClick={actions.nextStep} disabled={!isConfirmed}>
