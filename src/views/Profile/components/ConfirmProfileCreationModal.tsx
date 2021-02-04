@@ -66,7 +66,7 @@ const ContributeModal: React.FC<Props> = ({ account, teamId, tokenId, minimumCak
       </Text>
       <Flex justifyContent="space-between" mb="16px">
         <Text>{TranslateString(999, 'Cost')}</Text>
-        <Text>{TranslateString(999, '5 CAKE')}</Text>
+        <Text>{TranslateString(999, '1 CAKE')}</Text>
       </Flex>
       <ApproveConfirmButtons
         isApproveDisabled={isConfirmed || isConfirming || isApproved}
