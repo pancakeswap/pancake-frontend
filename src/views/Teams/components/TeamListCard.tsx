@@ -112,13 +112,15 @@ const TeamCard: React.FC<TeamCardProps> = ({ rank, team }) => {
           </Text>
           <Flex>
             <Flex>
-              <PrizeIcon width="24px" mr="8px" />
+              {/* alignSelf for Safari fix */}
+              <PrizeIcon width="24px" mr="8px" style={{ alignSelf: 'center' }} />
               <Text fontSize="24px" bold>
                 {team.points.toLocaleString()}
               </Text>
             </Flex>
             <Flex ml="24px">
-              <CommunityIcon width="24px" mr="8px" />
+              {/* alignSelf for Safari fix */}
+              <CommunityIcon width="24px" mr="8px" style={{ alignSelf: 'center' }} />
               <Text fontSize="24px" bold>
                 {team.users.toLocaleString()}
               </Text>

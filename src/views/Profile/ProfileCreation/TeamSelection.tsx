@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { Card, CardBody, CommunityIcon, Flex, Heading, Text } from '@pancakeswap-libs/uikit'
 import shuffle from 'lodash/shuffle'
 import { useTeams } from 'state/hooks'
@@ -18,7 +18,7 @@ const Team: React.FC = () => {
   const TranslateString = useI18n()
   const { teams } = useTeams()
   const handleTeamSelection = (value: string) => actions.setTeamId(parseInt(value, 10))
-  const teamValues = Object.values(teams)
+  const teamValues = useMemo(() => shuffle(Object.values(teams)), [teams])
 
   return (
     <>
@@ -43,7 +43,7 @@ const Team: React.FC = () => {
             )}
           </Text>
           {teamValues &&
-            shuffle(teamValues).map((team) => {
+            teamValues.map((team) => {
               return (
                 <SelectionCard
                   key={team.name}
