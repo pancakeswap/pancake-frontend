@@ -20,6 +20,7 @@ import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { useToast } from 'state/hooks'
 import useWeb3 from 'hooks/useWeb3'
 import useI18n from 'hooks/useI18n'
+import useHasCakeBalance from 'hooks/useHasCakeBalance'
 import debounce from 'lodash/debounce'
 import useProfileCreation from './contexts/hook'
 import ConfirmProfileCreationModal from '../components/ConfirmProfileCreationModal'
@@ -33,6 +34,7 @@ enum ExistingUserState {
 const MIN_LENGTH = 3
 const MAX_LENGTH = 15
 const profileApiUrl = process.env.REACT_APP_API_PROFILE
+const minimumCakeBalance = 1
 
 const InputWrap = styled.div`
   position: relative;
@@ -65,6 +67,7 @@ const UserName: React.FC = () => {
   const [isValid, setIsValid] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [message, setMessage] = useState('')
+  const hasMinimumCakeRequired = useHasCakeBalance(minimumCakeBalance)
   const [onPresentConfirmProfileCreation] = useModal(
     <ConfirmProfileCreationModal
       userName={userName}
@@ -234,6 +237,11 @@ const UserName: React.FC = () => {
       <Button onClick={onPresentConfirmProfileCreation} disabled={!isValid || !isUserCreated}>
         {TranslateString(999, 'Complete Profile')}
       </Button>
+      {!hasMinimumCakeRequired && (
+        <Text color="failure" mt="16px">
+          {TranslateString(999, `A minimum of ${minimumCakeBalance} CAKE is required`)}
+        </Text>
+      )}
     </>
   )
 }
