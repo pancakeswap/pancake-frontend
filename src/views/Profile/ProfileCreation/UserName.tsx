@@ -13,6 +13,7 @@ import {
   WarningIcon,
   useModal,
   Skeleton,
+  Checkbox,
 } from '@pancakeswap-libs/uikit'
 import { parseISO, formatDistance } from 'date-fns'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
@@ -54,6 +55,7 @@ const Indicator = styled(Flex)`
 `
 
 const UserName: React.FC = () => {
+  const [isAcknowledged, setIsAcknoledged] = useState(false)
   const { teamId, tokenId, userName, actions, minimumCakeRequired, allowance } = useProfileCreation()
   const TranslateString = useI18n()
   const { account } = useWallet()
@@ -130,6 +132,8 @@ const UserName: React.FC = () => {
     }
   }
 
+  const handleAcknoledge = () => setIsAcknoledged(!isAcknowledged)
+
   // Perform an initial check to see if the wallet has already created a username
   useEffect(() => {
     const fetchUser = async () => {
@@ -203,10 +207,26 @@ const UserName: React.FC = () => {
               </Indicator>
             </InputWrap>
           )}
-          <Text color="textSubtle" fontSize="14px" mt="4px" mb="16px" style={{ minHeight: '21px' }}>
+          <Text color="textSubtle" fontSize="14px" py="4px" mb="16px" style={{ minHeight: '30px' }}>
             {message}
           </Text>
-          <Button onClick={handleConfirm} disabled={!isValid || isUserCreated || isLoading}>
+          <Text as="p" color="failure" mb="8px">
+            {TranslateString(
+              999,
+              "Only reuse a name from other social media if you're OK with people viewing your wallet. You can't change your name once you click Confirm.",
+            )}
+          </Text>
+          <label htmlFor="checkbox" style={{ display: 'block', cursor: 'pointer', marginBottom: '24px' }}>
+            <Flex alignItems="center">
+              <div style={{ flex: 'none' }}>
+                <Checkbox id="checkbox" scale="sm" checked={isAcknowledged} onChange={handleAcknoledge} />
+              </div>
+              <Text ml="8px">
+                {TranslateString(999, 'I understand that people can view my wallet if they know my username')}
+              </Text>
+            </Flex>
+          </label>
+          <Button onClick={handleConfirm} disabled={!isValid || isUserCreated || isLoading || !isAcknowledged}>
             {TranslateString(999, 'Confirm')}
           </Button>
         </CardBody>
