@@ -30,10 +30,7 @@ const ControlContainer = styled.div`
   align-items: center;
   margin-bottom: 2rem;
   padding: 0;
-`
-
-const SearchContainer = styled.div`
-  margin-left: auto;
+  position: relative;
 `
 
 const Farms: React.FC = () => {
@@ -178,6 +175,7 @@ const Farms: React.FC = () => {
 
   const renderContent = (): JSX.Element => {
     if (viewMode === ViewMode.TABLE && rowData.length) {
+      return null
       return <Table data={rowData} ref={tableRef} />
     }
 
@@ -224,9 +222,7 @@ const Farms: React.FC = () => {
       <ControlContainer>
         <ToggleView viewMode={viewMode} onToggle={(mode: ViewMode) => setViewMode(mode)} />
         <FarmTabButtons />
-        <SearchContainer>
-          <SearchInput onChange={handleChangeQuery} value={query} />
-        </SearchContainer>
+        <SearchInput onChange={handleChangeQuery} value={query} />
       </ControlContainer>
       {renderContent()}
       <Image src="/images/cakecat.png" alt="Pancake illustration" width={949} height={384} responsive />

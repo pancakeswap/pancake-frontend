@@ -131,6 +131,8 @@ const TableContainer = styled.div<{ showGradient: boolean }>`
     top: 0;
     right: 0;
     background: linear-gradient(270deg, #E9EAEB 0%, rgba(233, 234, 235, 0) 100%);
+    z-index: 100;
+
   }
   ${({ theme }) => theme.mediaQueries.sm} {
     &:after {
