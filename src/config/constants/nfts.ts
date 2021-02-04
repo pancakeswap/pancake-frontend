@@ -25,7 +25,7 @@ const Nfts: Nft[] = [
       blur: 'sunny-blur.png',
     },
     sortOrder: 999,
-    bunnyId: 6,
+    bunnyId: 9,
   },
   {
     name: 'Churro',
@@ -38,7 +38,7 @@ const Nfts: Nft[] = [
       blur: 'churro-blur.png',
     },
     sortOrder: 999,
-    bunnyId: 7,
+    bunnyId: 8,
   },
   {
     name: 'Dollop',
@@ -51,7 +51,7 @@ const Nfts: Nft[] = [
       blur: 'dollop-blur.png',
     },
     sortOrder: 999,
-    bunnyId: 8,
+    bunnyId: 6,
   },
   {
     name: 'Twinkle',
@@ -64,7 +64,7 @@ const Nfts: Nft[] = [
       blur: 'twinkle-blur.png',
     },
     sortOrder: 999,
-    bunnyId: 9,
+    bunnyId: 7,
   },
   {
     name: 'Swapsies',
