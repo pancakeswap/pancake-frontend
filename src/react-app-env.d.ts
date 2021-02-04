@@ -1,5 +1,7 @@
 /// <reference types="react-scripts" />
 
+import { Web3Provider } from "@ethersproject/providers";
+
 declare module 'jazzicon' {
   export default function(diameter: number, seed: number): HTMLElement
 }
@@ -13,7 +15,9 @@ interface Window {
     removeListener?: (...args: any[]) => void
   }
   web3?: any
-  BinanceChain?: BinanceChain
+  BinanceChain?: BinanceChain,
+  library: Web3Provider,
+  account: string | null
 }
 
 declare module 'content-hash' {

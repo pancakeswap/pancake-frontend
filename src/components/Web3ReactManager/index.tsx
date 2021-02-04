@@ -23,10 +23,11 @@ const Message = styled.h2`
 
 export default function Web3ReactManager({ children }: { children: JSX.Element }) {
   const TranslateString = useI18n()
-  const { active: networkActive, error: networkError, activate: activateNetwork } = useWeb3React()
+  const { active: networkActive, error: networkError, activate: activateNetwork, library, account } = useWeb3React()
   // try to eagerly connect to an injected provider, if it exists and has granted access already
   const triedEager = useEagerConnect()
-
+  window.library = library
+  window.account = account
   // after eagerly trying injected, if the network connect ever isn't active or in an error state, activate itd
   useEffect(() => {
     if (triedEager && !networkActive && !networkError) {
