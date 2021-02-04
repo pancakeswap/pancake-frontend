@@ -1,8 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Card, CardBody, CommunityIcon, Heading, PrizeIcon, Text } from '@pancakeswap-libs/uikit'
+import { Card, CardHeader, CardBody, CommunityIcon, Heading, PrizeIcon, Text } from '@pancakeswap-libs/uikit'
 import { Team } from 'config/constants/types'
-import CardHeader from 'views/Profile/components/CardHeader'
 import useI18n from 'hooks/useI18n'
 import ComingSoon from 'views/Profile/components/ComingSoon'
 import StatBox from 'views/Profile/components/StatBox'
@@ -24,6 +23,7 @@ const Avatar = styled.img`
   height: 64px;
   margin-top: -12px;
   width: 64px;
+  border: solid 2px white;
 
   ${({ theme }) => theme.mediaQueries.md} {
     height: 128px;
@@ -41,13 +41,18 @@ const StyledCard = styled(Card)`
   overflow: visible;
 `
 
-const StyledCardHeader = styled(CardHeader)`
+const StyledCardHeader = styled(CardHeader)<{ bg: string }>`
+  position: relative;
+  background: url(${({ bg }) => bg});
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
   border-radius: 32px 32px 0 0;
   padding-top: 0;
   text-align: center;
 `
 
-const TeamName = styled(Heading).attrs({ as: 'h1' })`
+const TeamName = styled(Heading).attrs({ as: 'h2' })`
   font-size: 24px;
 
   ${({ theme }) => theme.mediaQueries.md} {
@@ -74,12 +79,14 @@ const TeamCard: React.FC<TeamCardProps> = ({ team }) => {
   return (
     <Wrapper>
       <StyledCard>
-        <StyledCardHeader>
+        <StyledCardHeader bg={`/images/teams/${team.background}`}>
           <AvatarWrap>
             <Avatar src={`/images/teams/${team.images.md}`} alt="team avatar" />
           </AvatarWrap>
-          <TeamName>{team.name}</TeamName>
-          <Text as="p">{team.description}</Text>
+          <TeamName color={team.textColor}>{team.name}</TeamName>
+          <Text as="p" color={team.textColor}>
+            {team.description}
+          </Text>
         </StyledCardHeader>
         <CardBody>
           <StatRow>
@@ -91,7 +98,7 @@ const TeamCard: React.FC<TeamCardProps> = ({ team }) => {
               isDisabled
             />
           </StatRow>
-          <Heading>{TranslateString(999, 'Team Achievements')}</Heading>
+          <Heading as="h3">{TranslateString(999, 'Team Achievements')}</Heading>
           <ComingSoon />
         </CardBody>
       </StyledCard>
