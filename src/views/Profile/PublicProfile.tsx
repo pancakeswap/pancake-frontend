@@ -1,12 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
-import { Link as RouterLink } from 'react-router-dom'
 import {
   Card,
   CardBody,
   CheckmarkCircleIcon,
-  ChevronLeftIcon,
   Flex,
   Heading,
   Link,
@@ -80,14 +78,6 @@ const PublicProfile = () => {
 
   return (
     <>
-      <Flex mb="24px">
-        <RouterLink to="/teams">
-          <Flex alignItems="center">
-            <ChevronLeftIcon color="primary" />
-            <Text color="primary">{TranslateString(999, 'Teams Overview')}</Text>
-          </Flex>
-        </RouterLink>
-      </Flex>
       <Menu />
       <div>
         <Card>
