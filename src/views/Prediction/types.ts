@@ -33,7 +33,9 @@ export interface IBetInfo {
 }
 
 /**   pre+3 current next+1
- * 1. BetBear event监听后拿到的参数
- * 2. stake dialog何时关闭
- * 3. testnet连接问题
+ * 1. BetBear监听后更新页面
+ * 2. Menu居中展示
+ * 3. icon上传到uikit-icons
+ * 4. comment resolve
+ * 5. mobile design
  */

@@ -104,7 +104,7 @@ const Direction = ({ amount, payout, direction }) => {
 type IPredictionItem = IRound & {
   remainSecond?: number
   currentEpoch?: number
-  onBid?: (d: DIRECTION) => void
+  onBid?: () => void
   handleClaim?: (epoch: number) => void
 }
 
@@ -188,7 +188,7 @@ export const PredictionItem: React.FC<IPredictionItem> = (props) => {
         </Flex>
         <Direction amount={bullAmount} direction={DIRECTION.BULL} payout={bullPayout} />
         {status === STATUS.COMING ? (
-          <ComingPredictionDetails onBid={onBid} />
+          <ComingPredictionDetails onBid={onBid} userAmount={userAmount} />
         ) : (
           <PredictionDetails lockPrice={lockPrice} endPrice={endPrice} totalAmount={totalAmount} />
         )}

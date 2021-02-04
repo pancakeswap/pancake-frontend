@@ -10,20 +10,24 @@ import { PredictionProviderContext } from '../contexts/PredictionProvider'
 
 const Container = styled.div`
   margin-top: 24px;
-  width: calc(100vw - 304px);
   padding-bottom: 16px;
   border-radius: 16px;
   border: 2px solid ${(props) => props.theme.colors.input};
 `
 const ScrollContainer = styled.div`
-  height: 276px;
-  display: flex;
+  min-height: 276px;
   padding: 16px 0 24px 0;
   scroll-behavior: smooth;
   overflow-x: auto;
   &::-webkit-scrollbar {
     width: 0;
     height: 0;
+  }
+`
+const FlexContainer = styled(Flex)`
+  flex-direction: column;
+  ${({ theme }) => theme.mediaQueries.lg} {
+    flex-direction: row;
   }
 `
 const TextButton = styled(Text).attrs({bold: true, color: 'primary'})`
@@ -35,7 +39,7 @@ const PredictionList: React.FC = () => {
   const bnbPredictionContract = usePredictionBnb()
   const { onPresentConnectModal } = useWalletModal(connect, reset)
   const { preRounds, curRound, nextRound, account, remainSecond, currentEpoch } = useContext(PredictionProviderContext)
-  const [onPresent] = useModal(<BidModal account={account} />)
+  const [onPresent] = useModal(<BidModal account={account} userAmount={nextRound.userAmount} userDirection={nextRound.userDirection} />)
   const onBid = useCallback(() => {
     if (!account) {
       onPresentConnectModal()
@@ -63,7 +67,7 @@ const PredictionList: React.FC = () => {
   return (
     <Container>
       <ScrollContainer ref={scrollRef}>
-        <Flex>
+        <FlexContainer>
           {preRounds.map((item) => (
             <PredictionItem key={item.epoch} handleClaim={handleClaim} {...item} />
           ))}
@@ -71,7 +75,7 @@ const PredictionList: React.FC = () => {
             <ActivePredictionItem {...curRound} remainSecond={remainSecond} currentEpoch={currentEpoch} />
           )}
           {nextRound.epoch !== undefined && <PredictionItem {...nextRound} remainSecond={remainSecond} onBid={onBid} />}
-        </Flex>
+        </FlexContainer>
       </ScrollContainer>
       <Flex px="20px" justifyContent="space-between">
         <TextButton onClick={() => handleScroll(true)}>

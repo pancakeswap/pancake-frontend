@@ -9,8 +9,17 @@ import PredictionProvider from './contexts/PredictionProvider'
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
   padding: 32px 32px 0;
+  margin: 0 auto;
+  max-width: 100%;
   height: calc(100vh - 64px);
+  > div {
+    width: 100%;
+  }
+  ${({ theme }) => theme.mediaQueries.lg} {
+    max-width: calc(100vw - 240px);
+  }
 `
 const Prediction: React.FC = () => {
   useEffect(() => {

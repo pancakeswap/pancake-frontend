@@ -1,5 +1,6 @@
 import styled from 'styled-components'
-import React, { useState, useCallback } from 'react'
+import React, { useState, useMemo, useCallback } from 'react'
+import BigNumber from 'bignumber.js'
 import { Button, Modal, Flex, Text } from '@pancakeswap-libs/uikit'
 import TokenInput from 'components/TokenInput'
 import { useBnbBalance } from 'hooks/useBnbBalance'
@@ -11,6 +12,8 @@ import { DIRECTION } from '../types'
 type BidModalProps = {
   account: string
   onDismiss?: () => void
+  userAmount: string
+  userDirection: DIRECTION
 }
 
 const OpButton = styled(Button)`
@@ -18,7 +21,7 @@ const OpButton = styled(Button)`
   color: ${(props) => props.theme.colors.card};
 `
 
-const BidModal: React.FC<BidModalProps> = ({ account, onDismiss }) => {
+const BidModal: React.FC<BidModalProps> = ({ account, onDismiss, userAmount, userDirection }) => {
   const balance = useBnbBalance()
   const [error, setError] = useState('')
   const [amount, setAmount] = useState('')
@@ -28,6 +31,7 @@ const BidModal: React.FC<BidModalProps> = ({ account, onDismiss }) => {
   const handleSelectMax = useCallback(() => {
     setAmount(balance)
   }, [balance, setAmount])
+  const showBalance = useMemo(() => new BigNumber(balance).toFixed(4, 1), [balance])
 
   const handleBid = async (direction) => {
     let errorMsg = ''
@@ -49,9 +53,12 @@ const BidModal: React.FC<BidModalProps> = ({ account, onDismiss }) => {
     onDismiss()
   }
 
+  const text = userDirection === DIRECTION.BULL ? 'BUMP' : 'DUMP'
+
   return (
     <Modal title="Start Bid" onDismiss={onDismiss}>
-      <TokenInput symbol="BNB" value={amount} max={balance} onChange={handleChange} onSelectMax={handleSelectMax} />
+      {+userAmount > 0 && <Text fontSize='12px' bold>Your Position({text}): {userAmount}BNB</Text>}
+      <TokenInput symbol="BNB" value={amount} max={showBalance} onChange={handleChange} onSelectMax={handleSelectMax} />
       {error && (
         <Text color="failure" fontSize="12px">
           {error}

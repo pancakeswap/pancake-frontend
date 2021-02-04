@@ -41,7 +41,8 @@ type PredictionDetailsProps = {
   totalAmount: string
 }
 type ComingPredictionDetailsProps = {
-  onBid?: (d: DIRECTION) => void
+  userAmount: string,
+  onBid: () => void
 }
 
 export const PredictionDetails: React.FC<PredictionDetailsProps> = ({ lockPrice, endPrice, totalAmount }) => {
@@ -69,24 +70,23 @@ export const PredictionDetails: React.FC<PredictionDetailsProps> = ({ lockPrice,
   )
 }
 
-export const ComingPredictionDetails: React.FC<ComingPredictionDetailsProps> = ({ onBid }) => {
-  const handleBid = useCallback(
-    (direction) => {
-      if (typeof onBid === 'function') onBid(direction)
-    },
-    [onBid],
-  )
-
-  return (
-    <ComingDetailCard>
-      <OpButton variant="success" onClick={() => handleBid(DIRECTION.BULL)}>
-        Enter PUMP
+export const ComingPredictionDetails: React.FC<ComingPredictionDetailsProps> = ({ userAmount, onBid }) => (
+  <ComingDetailCard>
+    {+userAmount > 0 ? (
+      <OpButton variant="success" my='10px' onClick={onBid}>
+        Adjust Position
       </OpButton>
-      <OpButton mt="2" variant="danger" onClick={() => handleBid(DIRECTION.BEAR)}>
-        Enter DUMP
-      </OpButton>
-    </ComingDetailCard>
-  )
-}
+    ) : (
+      <>
+        <OpButton variant="success" onClick={onBid}>
+          Enter PUMP
+        </OpButton>
+        <OpButton mt="2" variant="danger" onClick={onBid}>
+          Enter DUMP
+        </OpButton>
+      </>
+    )}
+  </ComingDetailCard>
+)
 
-export default {}
+export default { }
