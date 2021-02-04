@@ -19,23 +19,6 @@ const pools: PoolConfig[] = [
     tokenDecimals: 18,
   },
   {
-    sousId: 43,
-    tokenName: 'LIT',
-    stakingTokenName: QuoteToken.CAKE,
-    stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
-    contractAddress: {
-      97: '',
-      56: '0x1714bAAE9DD4738CDEA07756427FA8d4F08D9479',
-    },
-    poolCategory: PoolCategory.CORE,
-    projectLink: 'https://www.litentry.com/',
-    harvest: true,
-    tokenPerBlock: '0.231',
-    sortOrder: 999,
-    isFinished: false,
-    tokenDecimals: 18,
-  },
-  {
     sousId: 42,
     tokenName: 'HGET',
     stakingTokenName: QuoteToken.CAKE,
