@@ -60,7 +60,7 @@ const UserName: React.FC = () => {
   const [isAcknowledged, setIsAcknoledged] = useState(false)
   const { teamId, tokenId, userName, actions, minimumCakeRequired, allowance } = useProfileCreation()
   const TranslateString = useI18n()
-  const { account } = useWallet()
+  const { account, ethereum } = useWallet()
   const { toastError } = useToast()
   const web3 = useWeb3()
   const [existingUserState, setExistingUserState] = useState<ExistingUserState>(ExistingUserState.IDLE)
@@ -108,8 +108,11 @@ const UserName: React.FC = () => {
     try {
       setIsLoading(true)
 
-      // Last param is the password, and is null to request a signature in the wallet
-      const signature = await web3.eth.personal.sign(userName, account, null)
+      const provider = ethereum as any
+      const signature = provider?.bnbSign
+        ? (await provider.bnbSign(account, userName))?.signature
+        : await web3.eth.personal.sign(userName, account, null) // Last param is the password, and is null to request a signature in the wallet
+
       const response = await fetch(`${profileApiUrl}/api/users/register`, {
         method: 'POST',
         headers: {
