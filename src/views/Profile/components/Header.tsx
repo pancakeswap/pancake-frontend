@@ -6,8 +6,8 @@ import HeaderWrapper from './HeaderWrapper'
 
 const ProfileHeader = () => {
   const TranslateString = useI18n()
-  const [onPresentClaimGiftModal] = useModal(<ClaimNftAndCakeModal />)
-  const canClaim = useCanClaim()
+  const { canClaim, checkClaimStatus } = useCanClaim()
+  const [onPresentClaimGiftModal] = useModal(<ClaimNftAndCakeModal onSuccess={checkClaimStatus} />)
 
   return (
     <HeaderWrapper>

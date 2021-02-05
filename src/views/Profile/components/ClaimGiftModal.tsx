@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Modal, Text, InjectedModalProps, Button, AutoRenewIcon } from '@pancakeswap-libs/uikit'
 import { AbiItem } from 'web3-utils'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
@@ -9,13 +9,20 @@ import { useToast } from 'state/hooks'
 import useContract from 'hooks/useContract'
 import useI18n from 'hooks/useI18n'
 
-type ClaimGiftProps = InjectedModalProps
+interface ClaimGiftProps extends InjectedModalProps {
+  onSuccess: () => void
+}
 
 const claimRefundAddress = getClaimRefundAddress()
 
 export const useCanClaim = () => {
   const [canClaim, setCanClaim] = useState(false)
+  const [refresh, setRefresh] = useState(1)
   const { account } = useWallet()
+
+  const checkClaimStatus = useCallback(() => {
+    setRefresh((prevRefresh) => prevRefresh + 1)
+  }, [setRefresh])
 
   useEffect(() => {
     const fetchClaimStatus = async () => {
@@ -27,9 +34,9 @@ export const useCanClaim = () => {
     if (account) {
       fetchClaimStatus()
     }
-  }, [account, setCanClaim])
+  }, [account, refresh, setCanClaim])
 
-  return canClaim
+  return { canClaim, checkClaimStatus }
 }
 
 const useClaimRefundContract = () => {
@@ -37,11 +44,11 @@ const useClaimRefundContract = () => {
   return useContract(abi, claimRefundAddress)
 }
 
-const ClaimGift: React.FC<ClaimGiftProps> = ({ onDismiss }) => {
+const ClaimGift: React.FC<ClaimGiftProps> = ({ onSuccess, onDismiss }) => {
   const [isConfirming, setIsConfirming] = useState(false)
   const { account } = useWallet()
   const TranslateString = useI18n()
-  const canClaim = useCanClaim()
+  const { canClaim } = useCanClaim()
   const claimRefundContract = useClaimRefundContract()
   const { toastSuccess, toastError } = useToast()
 
@@ -54,6 +61,7 @@ const ClaimGift: React.FC<ClaimGiftProps> = ({ onDismiss }) => {
       })
       .on('receipt', () => {
         toastSuccess('Success!')
+        onSuccess()
         onDismiss()
       })
       .on('error', (error) => {
