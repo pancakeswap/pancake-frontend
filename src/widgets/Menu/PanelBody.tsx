@@ -33,6 +33,8 @@ const PanelBody: React.FC<Props> = ({ isPushed, pushNav, isMobile, links }) => {
       {links.map((entry) => {
         const Icon = Icons[entry.icon];
         const iconElement = <Icon width="24px" mr="8px" />;
+        const calloutClass = entry.calloutClass ? entry.calloutClass : undefined;
+
         if (entry.items) {
           return (
             <Accordion
@@ -42,6 +44,7 @@ const PanelBody: React.FC<Props> = ({ isPushed, pushNav, isMobile, links }) => {
               icon={iconElement}
               label={entry.label}
               initialOpenState={entry.initialOpenState}
+              className={calloutClass}
             >
               {isPushed &&
                 entry.items.map((item) => (
@@ -53,7 +56,7 @@ const PanelBody: React.FC<Props> = ({ isPushed, pushNav, isMobile, links }) => {
           );
         }
         return (
-          <MenuEntry key={entry.label} isActive={entry.href === location.pathname}>
+          <MenuEntry key={entry.label} isActive={entry.href === location.pathname} className={calloutClass}>
             <MenuLink href={entry.href} onClick={handleClick}>
               {iconElement}
               <LinkLabel isPushed={isPushed}>{entry.label}</LinkLabel>

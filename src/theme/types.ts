@@ -27,6 +27,10 @@ export type Shadows = {
   inset: string;
 };
 
+export type Gradients = {
+  bubblegum: string;
+};
+
 export type Colors = {
   primary: string;
   primaryBright: string;
@@ -46,6 +50,9 @@ export type Colors = {
   textSubtle: string;
   borderColor: string;
   card: string;
+
+  // Gradients
+  gradients: Gradients;
 
   // Brand colors
   binance: string;

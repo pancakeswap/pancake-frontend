@@ -26,6 +26,7 @@ export interface NavTheme {
 export interface MenuSubEntry {
   label: string;
   href: string;
+  calloutClass?: string;
 }
 
 export interface MenuEntry {
@@ -33,6 +34,7 @@ export interface MenuEntry {
   icon: string;
   items?: MenuSubEntry[];
   href?: string;
+  calloutClass?: string;
   initialOpenState?: boolean;
 }
 

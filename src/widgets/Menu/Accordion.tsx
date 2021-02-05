@@ -9,6 +9,7 @@ interface Props extends PushedProps {
   label: string;
   icon: React.ReactElement;
   initialOpenState?: boolean;
+  className?: string;
 }
 
 const Container = styled.div`
@@ -27,7 +28,15 @@ const AccordionContent = styled.div<{ isOpen: boolean; isPushed: boolean; maxHei
   border-width: 1px;
 `;
 
-const Accordion: React.FC<Props> = ({ label, icon, isPushed, pushNav, initialOpenState = false, children }) => {
+const Accordion: React.FC<Props> = ({
+  label,
+  icon,
+  isPushed,
+  pushNav,
+  initialOpenState = false,
+  children,
+  className,
+}) => {
   const [isOpen, setIsOpen] = useState(initialOpenState);
 
   const handleClick = () => {
@@ -41,7 +50,7 @@ const Accordion: React.FC<Props> = ({ label, icon, isPushed, pushNav, initialOpe
 
   return (
     <Container>
-      <MenuEntry onClick={handleClick}>
+      <MenuEntry onClick={handleClick} className={className}>
         {icon}
         <LinkLabel isPushed={isPushed}>{label}</LinkLabel>
         {isOpen ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}

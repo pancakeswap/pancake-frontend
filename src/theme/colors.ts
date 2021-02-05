@@ -28,6 +28,9 @@ export const lightColors: Colors = {
   textSubtle: "#8f80ba",
   borderColor: "#E9EAEB",
   card: "#FFFFFF",
+  gradients: {
+    bubblegum: "linear-gradient(139.73deg, #E6FDFF 0%, #F3EFFF 100%)",
+  },
 };
 
 export const darkColors: Colors = {
@@ -46,4 +49,7 @@ export const darkColors: Colors = {
   textSubtle: "#A28BD4",
   borderColor: "#524B63",
   card: "#27262c",
+  gradients: {
+    bubblegum: "linear-gradient(139.73deg, #313D5C 0%, #3D2A54 100%)",
+  },
 };
