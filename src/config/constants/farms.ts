@@ -34,7 +34,7 @@ const farms: FarmConfig[] = [
   },
   {
     pid: 70,
-    lpSymbol: 'BETH-ETH LP',
+    lpSymbol: 'ETH-BETH LP',
     lpAddresses: {
       97: '',
       56: '0x99d865ed50d2c32c1493896810fa386c1ce81d91',
