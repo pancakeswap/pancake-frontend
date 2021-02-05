@@ -51,4 +51,12 @@ export default {
     56: '0x1C99222F857C1d72234703eC5b9Ed88089Bd7091',
     97: '0x8f4739a48883Fdd89b65DC245dD5774fC8f44a67',
   },
+  eth: {
+    56: '0x2170ed0880ac9a755fd29b2688956bd959f933f8',
+    97: '',
+  },
+  claimRefund: {
+    56: '0xE7e53A7e9E3Cf6b840f167eF69519175c497e149',
+    97: '',
+  },
 }
