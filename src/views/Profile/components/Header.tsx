@@ -11,7 +11,11 @@ const ProfileHeader = () => {
 
   return (
     <HeaderWrapper>
-      <Flex alignItems="center" justifyContent="space-between">
+      <Flex
+        flexDirection={['column', null, 'row']}
+        alignItems={['start', null, 'center']}
+        justifyContent="space-between"
+      >
         <div>
           <Heading as="h1" size="xxl" mb="8px" color="secondary">
             {TranslateString(999, 'Your Profile')}
