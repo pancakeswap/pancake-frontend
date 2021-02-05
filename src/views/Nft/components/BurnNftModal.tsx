@@ -41,21 +41,17 @@ const BurnNftModal: React.FC<BurnNftModalProps> = ({ nft, tokenIds, onSuccess, o
     try {
       const [tokenId] = tokenIds
 
-      await rabbitMintingContract
+      const tx = await rabbitMintingContract
         .burnNFT(tokenId)
-        .send({ from: account })
-        .on('sending', () => {
-          setIsLoading(true)
-        })
-        .on('receipt', () => {
-          onDismiss()
-          onSuccess()
-        })
-        .on('error', () => {
-          console.error(error)
-          setError('Unable to burn NFT')
-          setIsLoading(false)
-        })
+        setIsLoading(true)
+      tx.wait().then(() => {
+        onDismiss()
+        onSuccess()
+      }).catch(() => {
+        console.error(error)
+        setError('Unable to burn NFT')
+        setIsLoading(false)
+      })
     } catch (err) {
       console.error('Unable to burn NFT:', err)
     }

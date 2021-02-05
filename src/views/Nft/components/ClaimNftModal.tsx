@@ -42,17 +42,13 @@ const ClaimNftModal: React.FC<ClaimNftModalProps> = ({ nft, onSuccess, onDismiss
 
   const handleConfirm = async () => {
     try {
-      await rabbitMintingContract
-        .mintNFT(nft.bunnyId)
-        .send({ from: account })
-        .on('sending', () => {
-          setIsLoading(true)
-        })
-        .on('receipt', () => {
+      const tx = await rabbitMintingContract
+        .mintNFT(nft.bunnyId, { from: account })
+        setIsLoading(true)
+        tx.wait().then(() => {
           onDismiss()
           onSuccess()
-        })
-        .on('error', () => {
+        }).catch(() => {
           console.error(error)
           setError('Unable to claim NFT')
           setIsLoading(false)
