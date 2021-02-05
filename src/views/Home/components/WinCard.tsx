@@ -31,7 +31,7 @@ const WinCard = () => {
           <Heading color="contrast" size="lg">
             up for grabs
           </Heading>
-          <NavLink exact activeClassName="active" to="/lottery">
+          <NavLink exact activeClassName="active" to="/lottery" id="lottery-pot-cta">
             <ArrowForwardIcon mt={30} color="primary" />
           </NavLink>
         </Flex>

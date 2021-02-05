@@ -91,7 +91,7 @@ const EarnAPYCard = () => {
           <Heading color="contrast" size="lg">
             in Farms
           </Heading>
-          <NavLink exact activeClassName="active" to="/farms">
+          <NavLink exact activeClassName="active" to="/farms" id="farm-apy-cta">
             <ArrowForwardIcon mt={30} color="primary" />
           </NavLink>
         </Flex>
