@@ -33,6 +33,22 @@ const farms: FarmConfig[] = [
     quoteTokenAdresses: contracts.wbnb,
   },
   {
+    pid: 70,
+    lpSymbol: 'ETH-BETH LP',
+    lpAddresses: {
+      97: '',
+      56: '0x99d865ed50d2c32c1493896810fa386c1ce81d91',
+    },
+    tokenSymbol: 'ETH',
+    tokenAddresses: {
+      97: '',
+      56: '0x250632378e573c6be1ac2f97fcdf00515d0aa91b',
+    },
+    quoteTokenSymbol: QuoteToken.BETH,
+    quoteTokenAdresses: contracts.beth,
+    isCommunity: false,
+  },
+  {
     pid: 69,
     lpSymbol: 'LINA-BUSD LP',
     lpAddresses: {
