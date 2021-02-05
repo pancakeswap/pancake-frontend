@@ -1,13 +1,16 @@
 import React from "react";
 import styled from "styled-components";
 import Heading from "../../components/Heading/Heading";
-import Button from "../../components/Button/Button";
 import Flex from "../../components/Flex/Flex";
-import { CloseIcon } from "../../components/Svg";
+import { ArrowBackIcon, CloseIcon } from "../../components/Svg";
+import { IconButton } from "../../components/Button";
 import { InjectedProps } from "./types";
 
 interface Props extends InjectedProps {
   title: string;
+  hideCloseButton?: boolean;
+  onBack?: () => void;
+  bodyPadding?: string;
 }
 
 const StyledModal = styled.div`
@@ -27,27 +30,42 @@ const StyledModal = styled.div`
 
 const ModalHeader = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid #e9eaeb;
   align-items: center;
   padding: 12px 24px;
 `;
 
-const CloseButton = styled(Button)`
-  padding: 8px;
-  width: 48px;
+const ModalTitle = styled(Flex)`
+  align-items: center;
+  flex: 1;
 `;
 
-const Modal: React.FC<Props> = ({ title, onDismiss, children }) => (
+const Modal: React.FC<Props> = ({
+  title,
+  onDismiss,
+  onBack,
+  children,
+  hideCloseButton = false,
+  bodyPadding = "24px",
+}) => (
   <StyledModal>
     <ModalHeader>
-      <Heading>{title}</Heading>
-      <CloseButton variant="text" onClick={onDismiss} aria-label="Close the dialog">
-        <CloseIcon color="primary" onClick={onDismiss} />
-      </CloseButton>
+      <ModalTitle>
+        {onBack && (
+          <IconButton variant="text" onClick={onBack} area-label="go back" mr="8px">
+            <ArrowBackIcon color="primary" />
+          </IconButton>
+        )}
+        <Heading>{title}</Heading>
+      </ModalTitle>
+      {!hideCloseButton && (
+        <IconButton variant="text" onClick={onDismiss} aria-label="Close the dialog">
+          <CloseIcon color="primary" />
+        </IconButton>
+      )}
     </ModalHeader>
-    <Flex flexDirection="column" p="24px">
+    <Flex flexDirection="column" p={bodyPadding}>
       {children}
     </Flex>
   </StyledModal>
