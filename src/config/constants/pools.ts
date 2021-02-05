@@ -19,6 +19,23 @@ const pools: PoolConfig[] = [
     tokenDecimals: 18,
   },
   {
+    sousId: 45,
+    tokenName: 'LINA',
+    stakingTokenName: QuoteToken.CAKE,
+    stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
+    contractAddress: {
+      97: '',
+      56: '0x212bb602418C399c29D52C55100fD6bBa12bea05',
+    },
+    poolCategory: PoolCategory.CORE,
+    projectLink: 'https://linear.finance/',
+    harvest: true,
+    tokenPerBlock: '0.983',
+    sortOrder: 999,
+    isFinished: false,
+    tokenDecimals: 18,
+  },
+  {
     sousId: 44,
     tokenName: 'LINA',
     stakingTokenName: QuoteToken.CAKE,
@@ -32,7 +49,7 @@ const pools: PoolConfig[] = [
     harvest: true,
     tokenPerBlock: '0.0983',
     sortOrder: 999,
-    isFinished: false,
+    isFinished: true,
     tokenDecimals: 18,
   },
   {
