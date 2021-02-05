@@ -39,10 +39,10 @@ const farms: FarmConfig[] = [
       97: '',
       56: '0x99d865ed50d2c32c1493896810fa386c1ce81d91',
     },
-    tokenSymbol: 'ETH',
+    tokenSymbol: 'BETH',
     tokenAddresses: {
       97: '',
-      56: '0x2170ed0880ac9a755fd29b2688956bd959f933f8',
+      56: '0x250632378e573c6be1ac2f97fcdf00515d0aa91b',
     },
     quoteTokenSymbol: QuoteToken.ETH,
     quoteTokenAdresses: contracts.eth,
