@@ -54,4 +54,5 @@ export default {
   beth: {
     56: '0x250632378e573c6be1ac2f97fcdf00515d0aa91b',
     97: '',
+  },
 }
