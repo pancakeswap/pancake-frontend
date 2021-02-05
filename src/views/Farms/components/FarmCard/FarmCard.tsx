@@ -8,6 +8,8 @@ import { provider } from 'web3-core'
 import useI18n from 'hooks/useI18n'
 import ExpandableSectionButton from 'components/ExpandableSectionButton'
 import { QuoteToken } from 'config/constants/types'
+import { BASE_ADD_LIQUIDITY_URL } from 'config'
+import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import DetailsSection from './DetailsSection'
 import CardHeading from './CardHeading'
 import CardActionsContainer from './CardActionsContainer'
@@ -122,6 +124,8 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed, cakePrice, bnbPrice,
   const farmAPY = farm.apy && farm.apy.times(new BigNumber(100)).toNumber().toLocaleString('en-US').slice(0, -1)
 
   const { quoteTokenAdresses, quoteTokenSymbol, tokenAddresses } = farm
+  const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAdresses, quoteTokenSymbol, tokenAddresses })
+  const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
 
   return (
     <FCard>
@@ -139,14 +143,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed, cakePrice, bnbPrice,
           <Text bold style={{ display: 'flex', alignItems: 'center' }}>
             {farm.apy ? (
               <>
-                <ApyButton
-                  lpLabel={lpLabel}
-                  quoteTokenAdresses={quoteTokenAdresses}
-                  quoteTokenSymbol={quoteTokenSymbol}
-                  tokenAddresses={tokenAddresses}
-                  cakePrice={cakePrice}
-                  apy={farm.apy}
-                />
+                <ApyButton lpLabel={lpLabel} addLiquidityUrl={addLiquidityUrl} cakePrice={cakePrice} apy={farm.apy} />
                 {farmAPY}%
               </>
             ) : (
@@ -159,7 +156,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed, cakePrice, bnbPrice,
         <Text>{TranslateString(318, 'Earn')}:</Text>
         <Text bold>{earnLabel}</Text>
       </Flex>
-      <CardActionsContainer farm={farm} ethereum={ethereum} account={account} />
+      <CardActionsContainer farm={farm} ethereum={ethereum} account={account} addLiquidityUrl={addLiquidityUrl} />
       <Divider />
       <ExpandableSectionButton
         onClick={() => setShowExpandableSection(!showExpandableSection)}
@@ -171,9 +168,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed, cakePrice, bnbPrice,
           bscScanAddress={`https://bscscan.com/address/${farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]}`}
           totalValueFormated={totalValueFormated}
           lpLabel={lpLabel}
-          quoteTokenAdresses={quoteTokenAdresses}
-          quoteTokenSymbol={quoteTokenSymbol}
-          tokenAddresses={tokenAddresses}
+          addLiquidityUrl={addLiquidityUrl}
         />
       </ExpandingWrapper>
     </FCard>

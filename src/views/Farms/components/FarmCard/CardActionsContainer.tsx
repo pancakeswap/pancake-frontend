@@ -23,9 +23,10 @@ interface FarmCardActionsProps {
   farm: FarmWithStakedValue
   ethereum?: provider
   account?: string
+  addLiquidityUrl?: string
 }
 
-const CardActions: React.FC<FarmCardActionsProps> = ({ farm, ethereum, account }) => {
+const CardActions: React.FC<FarmCardActionsProps> = ({ farm, ethereum, account, addLiquidityUrl }) => {
   const TranslateString = useI18n()
   const [requestedApproval, setRequestedApproval] = useState(false)
   const { pid, lpAddresses } = useFarmFromSymbol(farm.lpSymbol)
@@ -52,7 +53,13 @@ const CardActions: React.FC<FarmCardActionsProps> = ({ farm, ethereum, account }
 
   const renderApprovalOrStakeButton = () => {
     return isApproved ? (
-      <StakeAction stakedBalance={stakedBalance} tokenBalance={tokenBalance} tokenName={lpName} pid={pid} />
+      <StakeAction
+        stakedBalance={stakedBalance}
+        tokenBalance={tokenBalance}
+        tokenName={lpName}
+        pid={pid}
+        addLiquidityUrl={addLiquidityUrl}
+      />
     ) : (
       <Button mt="8px" fullWidth disabled={requestedApproval} onClick={handleApprove}>
         {TranslateString(999, 'Approve Contract')}
