@@ -16,14 +16,14 @@ const NoProfileCard = () => {
         >
           <div>
             <Heading size="lg" mb="8px">
-              {TranslateString(999, "You haven't set up your profile yet!")}
+              {TranslateString(1052, "You haven't set up your profile yet!")}
             </Heading>
             <Text>
-              {TranslateString(999, 'You can do this at any time by clicking on your profile picture in the menu')}
+              {TranslateString(1054, 'You can do this at any time by clicking on your profile picture in the menu')}
             </Text>
           </div>
           <Button as={Link} to="/profile" mt={['16px', null, 0]}>
-            {TranslateString(999, 'Set up now')}
+            {TranslateString(1050, 'Set up now')}
           </Button>
         </Flex>
       </CardBody>

@@ -17,7 +17,7 @@ const Teams = () => {
     <Page>
       <TeamHeader />
       <Flex alignItems="center" justifyContent="space-between" mb="32px">
-        <Heading size="xl">{TranslateString(999, 'Teams')}</Heading>
+        <Heading size="xl">{TranslateString(1040, 'Teams')}</Heading>
         {isLoading && <AutoRenewIcon spin />}
       </Flex>
       {topTeams.map((team, index) => (
