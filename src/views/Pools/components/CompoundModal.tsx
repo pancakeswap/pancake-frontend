@@ -23,7 +23,7 @@ const CompoundModal: React.FC<DepositModalProps> = ({ earnings, onConfirm, onDis
 
   return (
     <Modal
-      title={`${TranslateString(999, 'Compound')} ${TranslateString(330, `${tokenName} Earned`)}`}
+      title={`${TranslateString(704, 'Compound')} ${TranslateString(330, `${tokenName} Earned`)}`}
       onDismiss={onDismiss}
     >
       <BalanceRow>

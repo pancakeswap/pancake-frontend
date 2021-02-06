@@ -59,7 +59,7 @@ const ApproveConfirmButtons: React.FC<ApproveConfirmButtonsProps> = ({
         endIcon={isApproving ? spinnerIcon : undefined}
         isLoading={isApproving}
       >
-        {isApproving ? TranslateString(999, 'Approving') : TranslateString(999, 'Approve')}
+        {isApproving ? TranslateString(800, 'Approving') : TranslateString(564, 'Approve')}
       </Button>
       <ChevronRight />
       <ChevronBottom />
@@ -69,7 +69,7 @@ const ApproveConfirmButtons: React.FC<ApproveConfirmButtonsProps> = ({
         isLoading={isConfirming}
         endIcon={isConfirming ? spinnerIcon : undefined}
       >
-        {isConfirming ? TranslateString(999, 'Confirming') : TranslateString(999, 'Confirm')}
+        {isConfirming ? TranslateString(802, 'Confirming') : TranslateString(464, 'Confirm')}
       </Button>
     </Flex>
   )

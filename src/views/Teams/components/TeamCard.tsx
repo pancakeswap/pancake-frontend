@@ -93,7 +93,7 @@ const TeamCard: React.FC<TeamCardProps> = ({ team }) => {
             <StatBox icon={CommunityIcon} title={team.users} subtitle={TranslateString(999, 'Active Members')} />
             <StatBox
               icon={PrizeIcon}
-              title={TranslateString(999, 'Coming Soon')}
+              title={TranslateString(350, 'Coming Soon')}
               subtitle={TranslateString(999, 'Team Points')}
               isDisabled
             />

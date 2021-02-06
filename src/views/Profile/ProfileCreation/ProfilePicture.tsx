@@ -54,14 +54,14 @@ const ProfilePicture: React.FC = () => {
     return (
       <>
         <Heading size="xl" mb="24px">
-          {TranslateString(999, 'Oops!')}
+          {TranslateString(852, 'Oops!')}
         </Heading>
         <Text bold fontSize="20px" mb="24px">
-          {TranslateString(999, 'We couldn’t find any Pancake Collectibles in your wallet.')}
+          {TranslateString(854, 'We couldn’t find any Pancake Collectibles in your wallet.')}
         </Text>
         <Text as="p">
           {TranslateString(
-            999,
+            856,
             'You need a Pancake Collectible to finish setting up your profile. If you sold or transferred your starter collectible to another wallet, you’ll need to get it back or acquire a new one somehow. You can’t make a new starter with this wallet address.',
           )}
         </Text>
@@ -75,21 +75,21 @@ const ProfilePicture: React.FC = () => {
         {TranslateString(999, `Step ${2}`)}
       </Text>
       <Heading as="h3" size="xl" mb="24px">
-        {TranslateString(999, 'Set Profile Picture')}
+        {TranslateString(778, 'Set Profile Picture')}
       </Heading>
       <Card mb="24px">
         <CardBody>
           <Heading as="h4" size="lg" mb="8px">
-            {TranslateString(999, 'Choose collectible')}
+            {TranslateString(812, 'Choose collectible')}
           </Heading>
           <Text as="p" color="textSubtle">
             {TranslateString(
-              999,
+              814,
               'Choose a profile picture from the eligible collectibles (NFT) in your wallet, shown below.',
             )}
           </Text>
           <Text as="p" color="textSubtle" mb="24px">
-            {TranslateString(999, 'Only approved Pancake Collectibles can be used.')}
+            {TranslateString(816, 'Only approved Pancake Collectibles can be used.')}
             <Link to="/nft" style={{ marginLeft: '4px' }}>
               {TranslateString(999, 'See the list >')}
             </Link>
@@ -117,11 +117,11 @@ const ProfilePicture: React.FC = () => {
             )}
           </NftWrapper>
           <Heading as="h4" size="lg" mb="8px">
-            {TranslateString(999, 'Allow collectible to be locked')}
+            {TranslateString(818, 'Allow collectible to be locked')}
           </Heading>
           <Text as="p" color="textSubtle" mb="16px">
             {TranslateString(
-              999,
+              820,
               "The collectible you've chosen will be locked in a smart contract while it’s being used as your profile picture. Don't worry - you'll be able to get it back at any time.",
             )}
           </Text>
@@ -131,12 +131,12 @@ const ProfilePicture: React.FC = () => {
             onClick={handleApprove}
             endIcon={isApproving ? <AutoRenewIcon spin color="currentColor" /> : undefined}
           >
-            {TranslateString(999, 'Approve')}
+            {TranslateString(564, 'Approve')}
           </Button>
         </CardBody>
       </Card>
       <NextStepButton onClick={actions.nextStep} disabled={tokenId === null || !isApproved || isApproving}>
-        {TranslateString(999, 'Next Step')}
+        {TranslateString(798, 'Next Step')}
       </NextStepButton>
     </>
   )
