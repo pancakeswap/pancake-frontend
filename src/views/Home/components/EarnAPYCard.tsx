@@ -78,7 +78,7 @@ const EarnAPYCard = () => {
     <StyledFarmStakingCard>
       <CardBody>
         <Heading color="contrast" size="lg">
-          Earn up to
+          {TranslateString(318, 'Earn up to')}
         </Heading>
         <CardMidContent color="#7645d9">
           {getHighestAPY() ? (
@@ -89,7 +89,7 @@ const EarnAPYCard = () => {
         </CardMidContent>
         <Flex justifyContent="space-between">
           <Heading color="contrast" size="lg">
-            in Farms
+            {TranslateString(674, 'in Farms')}
           </Heading>
           <NavLink exact activeClassName="active" to="/farms">
             <ArrowForwardIcon mt={30} color="primary" />

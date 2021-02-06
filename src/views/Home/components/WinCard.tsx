@@ -1,4 +1,5 @@
 import React from 'react'
+import useI18n from 'hooks/useI18n'
 import styled from 'styled-components'
 import { Heading, Card, CardBody, Flex, ArrowForwardIcon } from '@pancakeswap-libs/uikit'
 import { NavLink } from 'react-router-dom'
@@ -18,13 +19,14 @@ const CardMidContent = styled(Heading).attrs({ size: 'xl' })`
   line-height: 44px;
 `
 const WinCard = () => {
+  const TranslateString = useI18n()
   const lotteryPrize = Math.round(useLotteryTotalPrizesUsd()).toLocaleString()
 
   return (
     <StyledFarmStakingCard>
       <CardBody>
         <Heading color="contrast" size="lg">
-          Lottery with
+          {TranslateString(290, 'Lottery with')}
         </Heading>
         <CardMidContent color="#7645d9">${lotteryPrize}</CardMidContent>
         <Flex justifyContent="space-between">
