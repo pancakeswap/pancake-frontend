@@ -50,19 +50,19 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({
     <Grid pastDraw={pastDraw}>
       <GridItem>
         <Text fontSize="14px" color="textSubtle">
-          {TranslateString(999, 'No. Matched')}
+          {TranslateString(756, 'No. Matched')}
         </Text>
       </GridItem>
       {pastDraw && (
         <PastDrawGridItem>
           <RightAlignedText fontSize="14px" color="textSubtle">
-            {TranslateString(999, 'Winners')}
+            {TranslateString(754, 'Winners')}
           </RightAlignedText>
         </PastDrawGridItem>
       )}
       <GridItem>
         <RightAlignedText fontSize="14px" color="textSubtle">
-          {TranslateString(999, 'Prize Pot')}
+          {TranslateString(752, 'Prize Pot')}
         </RightAlignedText>
       </GridItem>
       {/* 4 matches row */}
