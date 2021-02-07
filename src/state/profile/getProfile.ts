@@ -2,14 +2,14 @@ import { getPancakeProfileAddress, getPancakeRabbitsAddress } from 'utils/addres
 import pancakeProfileAbi from 'config/abi/pancakeProfile.json'
 import pancakeRabbitsAbi from 'config/abi/pancakeRabbits.json'
 import { Nft } from 'config/constants/types'
-import { getContract } from 'utils/web3'
+import { getContract } from 'utils/erc20'
 import { Profile } from 'state/types'
 import { getTeam } from 'state/teams/helpers'
 import nfts from 'config/constants/nfts'
 import { transformProfileResponse } from './helpers'
 
-const profileContract = getContract(pancakeProfileAbi, getPancakeProfileAddress())
-const rabbitContract = getContract(pancakeRabbitsAbi, getPancakeRabbitsAddress())
+const profileContract = getContract(getPancakeProfileAddress(), pancakeProfileAbi, window.library)
+const rabbitContract = getContract(getPancakeRabbitsAddress(), pancakeRabbitsAbi, window.library)
 const profileApi = process.env.REACT_APP_API_PROFILE
 
 export interface GetProfileResponse {

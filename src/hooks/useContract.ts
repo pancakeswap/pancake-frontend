@@ -8,6 +8,7 @@ import {
   getLotteryTicketAddress,
   getBunnyFactoryAddress,
   getPancakeProfileAddress,
+  getRabbitMintingFarmAddress,
   getPancakeRabbitsAddress,
   getPointCenterIfoAddress,
   getBunnySpecialAddress,
@@ -29,6 +30,8 @@ import profile from 'config/abi/pancakeProfile.json'
 import pointCenterIfo from 'config/abi/pointCenterIfo.json'
 import bunnySpecial from 'config/abi/bunnySpecial.json'
 import { getContract } from 'utils/erc20'
+import cakeABI from 'config/abi/cake.json'
+
 
 function useContract(ABI: any, address: string | undefined, withSignerIfPossible = true): Contract | null {
   const { library, account } = useWeb3React()
@@ -68,12 +71,12 @@ export const useProfile = () => {
   return useContract(profile, getPancakeProfileAddress())
 }
 
-export const useRabbitMintingFarm = (address: string) => {
-  return useContract(rabbitmintingfarm, address)
+export const useRabbitMintingFarm = () => {
+  return useContract(rabbitmintingfarm, getRabbitMintingFarmAddress())
 }
 
-export const usePancakeRabbits = (address: string) => {
-  return useContract(pancakeRabbits, address)
+export const usePancakeRabbits = () => {
+  return useContract(pancakeRabbits, getPancakeRabbitsAddress())
 }
 
 export const useLottery = () => {
@@ -86,6 +89,10 @@ export const useLotteryTicket = () => {
 
 export const useMasterchef = () => {
   return useContract(masterChef, getMasterChefAddress())
+}
+
+export const useCakeContract = () => {
+  return useContract(cakeABI, getCakeAddress())
 }
 
 export const useSousChef = (id) => {

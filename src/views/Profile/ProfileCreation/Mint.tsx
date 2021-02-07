@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import BigNumber from 'bignumber.js'
 import { Card, CardBody, Heading, Text } from '@pancakeswap-libs/uikit'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWeb3React } from '@web3-react/core'
 import useI18n from 'hooks/useI18n'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useCake, useBunnyFactory } from 'hooks/useContract'
@@ -19,8 +19,7 @@ const minimumCakeBalanceToMint = new BigNumber(MINT_COST).multipliedBy(new BigNu
 const Mint: React.FC = () => {
   const [bunnyId, setBunnyId] = useState(null)
   const { actions, minimumCakeRequired, allowance } = useProfileCreation()
-
-  const { account } = useWallet()
+  const { account } = useWeb3React()
   const cakeContract = useCake()
   const bunnyFactoryContract = useBunnyFactory()
   const TranslateString = useI18n()

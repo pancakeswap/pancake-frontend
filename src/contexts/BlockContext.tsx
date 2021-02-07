@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { httpProvider } from 'utils/web3'
+import { httpProvider } from 'utils/erc20'
 
 const BlockContext = React.createContext(0)
 

@@ -1,9 +1,12 @@
 import { Contract } from '@ethersproject/contracts'
 import { getAddress } from '@ethersproject/address'
 import { AddressZero } from '@ethersproject/constants'
-import { Web3Provider, JsonRpcSigner } from '@ethersproject/providers'
+import { Web3Provider, JsonRpcSigner, JsonRpcProvider } from '@ethersproject/providers'
 import erc20 from 'config/abi/erc20.json'
+import getRpcUrl from 'utils/getRpcUrl'
 
+const RPC_URL = getRpcUrl()
+export const httpProvider = new JsonRpcProvider(RPC_URL)
 // returns the checksummed address if the address is valid, otherwise returns false
 export function isAddress(value: any): string | false {
   try {
@@ -23,12 +26,13 @@ export function getProviderOrSigner(library: Web3Provider, account?: string): We
   return account ? getSigner(library, account) : library
 }
 
-export function getContract(address: string, ABI: any, library: Web3Provider, account?: string): Contract {
+export function getContract(address: string, ABI: any, library?: Web3Provider, account?: string): Contract {
   if (!isAddress(address) || address === AddressZero) {
     throw Error(`Invalid 'address' parameter '${address}'.`)
   }
-
-  return new Contract(address, ABI, getProviderOrSigner(library, account) as any)
+  if (library && account)
+    return new Contract(address, ABI, getProviderOrSigner(library, account) as any)
+  return new Contract(address, ABI, getProviderOrSigner(window.library, window.account) as any)
 }
 
 export const getAllowance = async (

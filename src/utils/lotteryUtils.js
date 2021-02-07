@@ -5,7 +5,7 @@ import MultiCallAbi from 'config/abi/Multicall.json'
 import ticketAbi from 'config/abi/lotteryNft.json'
 import lotteryAbi from 'config/abi/lottery.json'
 import { LOTTERY_TICKET_PRICE } from 'config'
-import { getContract } from 'utils/web3'
+import { getContract } from 'utils/erc20'
 import { getMulticallAddress } from './addressHelpers'
 
 export const multiCall = async (abi, calls) => {
@@ -41,11 +41,7 @@ export const multiBuy = async (lotteryContract, price, numbersList, account) => 
 }
 
 export const getTickets = async (lotteryContract, ticketsContract, account, customLotteryNum) => {
-<<<<<<< HEAD
-  const issueIndex = customLotteryNum || (await lotteryContract.methods.issueIndex().call())
-=======
-  const issueIdex = customLotteryNum || (await lotteryContract.issueIndex())
->>>>>>> update web3 with ethers
+  const issueIndex = customLotteryNum || (await lotteryContract.issueIndex())
   const length = await getTicketsAmount(ticketsContract, account)
 
   // eslint-disable-next-line prefer-spread
@@ -63,11 +59,7 @@ export const getTickets = async (lotteryContract, ticketsContract, account, cust
 
   const finalTokenids = []
   ticketIssues.forEach(async (ticketIssue, i) => {
-<<<<<<< HEAD
     if (new BigNumber(ticketIssue).eq(issueIndex)) {
-=======
-    if (ticketIssue.toString() === issueIdex.toString()) {
->>>>>>> fix: Fix tx revert issue
       finalTokenids.push(tokenIds[i])
     }
   })

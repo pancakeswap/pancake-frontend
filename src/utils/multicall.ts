@@ -1,6 +1,6 @@
 import { Interface } from '@ethersproject/abi'
 import { Contract } from '@ethersproject/contracts'
-import { httpProvider } from 'utils/web3'
+import { httpProvider } from 'utils/erc20'
 import MultiCallAbi from 'config/abi/Multicall.json'
 import { getMulticallAddress } from 'utils/addressHelpers'
 

@@ -1,5 +1,5 @@
 import { AbiItem } from 'web3-utils'
-import { getContract } from 'utils/web3'
+import { getContract } from 'utils/erc20'
 import rabbitmintingfarm from 'config/abi/rabbitmintingfarm.json'
 import pancakeRabbits from 'config/abi/pancakeRabbits.json'
 import { RABBIT_MINTING_FARM_ADDRESS, PANCAKE_RABBITS_ADDRESS } from 'config/constants/nfts'
@@ -8,12 +8,12 @@ import { RABBIT_MINTING_FARM_ADDRESS, PANCAKE_RABBITS_ADDRESS } from 'config/con
 
 export const getRabbitMintingContract = () => {
   const rabbitMintingFarmAbi = (rabbitmintingfarm as unknown) as AbiItem
-  return getContract(rabbitMintingFarmAbi, RABBIT_MINTING_FARM_ADDRESS)
+  return getContract(RABBIT_MINTING_FARM_ADDRESS, rabbitMintingFarmAbi)
 }
 
 export const getPancakeRabbitContract = () => {
   const pancakeRabbitsAbi = (pancakeRabbits as unknown) as AbiItem
-  return getContract(pancakeRabbitsAbi, PANCAKE_RABBITS_ADDRESS)
+  return getContract(PANCAKE_RABBITS_ADDRESS, pancakeRabbitsAbi)
 }
 
 export default getRabbitMintingContract

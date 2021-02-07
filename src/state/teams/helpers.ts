@@ -1,5 +1,5 @@
 import merge from 'lodash/merge'
-import { getContract } from 'utils/web3'
+import { getContract } from 'utils/erc20'
 import pancakeProfileAbi from 'config/abi/pancakeProfile.json'
 import teamsList from 'config/constants/teams'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
@@ -7,7 +7,7 @@ import { Team } from 'config/constants/types'
 import makeBatchRequest from 'utils/makeBatchRequest'
 import { TeamsById, TeamResponse } from 'state/types'
 
-const profileContract = getContract(pancakeProfileAbi, getPancakeProfileAddress())
+const profileContract = getContract(getPancakeProfileAddress(), pancakeProfileAbi, window.library)
 
 export const getTeam = async (teamId: number): Promise<Team> => {
   try {
