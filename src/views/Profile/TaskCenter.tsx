@@ -22,7 +22,7 @@ const TaskCenter = () => {
                 {TranslateString(999, 'Collecting points for these tasks makes them available again.')}
               </Text>
             </div>
-            <Button disabled>{TranslateString(999, 'Collect')}</Button>
+            <Button disabled>{TranslateString(1056, 'Collect')}</Button>
           </Flex>
         </CardHeader>
         <CardBody>
@@ -38,7 +38,7 @@ const TaskCenter = () => {
               </Heading>
               <Text as="p">{TranslateString(999, 'Earn more points for completing larger quests!')}</Text>
             </div>
-            <Button disabled>{TranslateString(999, 'Collect')}</Button>
+            <Button disabled>{TranslateString(1056, 'Collect')}</Button>
           </Flex>
         </CardHeader>
         <CardBody>

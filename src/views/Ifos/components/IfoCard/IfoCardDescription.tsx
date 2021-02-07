@@ -48,7 +48,7 @@ const IfoCardDescription: React.FC<IfoCardDescriptionProps> = ({ defaultIsOpen =
     <StyledIfoCardDescription>
       <Divider />
       <ToggleButton onClick={handleClick}>
-        {isOpen ? TranslateString(999, 'Hide') : TranslateString(999, 'Show')}
+        {isOpen ? TranslateString(1066, 'Hide') : TranslateString(1064, 'Show')}
       </ToggleButton>
       <Description isOpen={isOpen}>{description}</Description>
     </StyledIfoCardDescription>

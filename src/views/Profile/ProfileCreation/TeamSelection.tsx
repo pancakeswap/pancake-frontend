@@ -26,19 +26,19 @@ const Team: React.FC = () => {
         {TranslateString(999, `Step ${3}`)}
       </Text>
       <Heading as="h3" size="xl" mb="24px">
-        {TranslateString(999, 'Join a Team')}
+        {TranslateString(826, 'Join a Team')}
       </Heading>
       <Text as="p" mb="24px">
-        {TranslateString(999, 'It won’t be possible to undo the choice you make for the foreseeable future!')}
+        {TranslateString(828, 'It won’t be possible to undo the choice you make for the foreseeable future!')}
       </Text>
       <Card mb="24px">
         <CardBody>
           <Heading as="h4" size="lg" mb="8px">
-            {TranslateString(999, 'Join a Team')}
+            {TranslateString(826, 'Join a Team')}
           </Heading>
           <Text as="p" color="textSubtle" mb="24px">
             {TranslateString(
-              999,
+              830,
               'There’s currently no big difference between teams, and no benefit of joining one team over another for now. So pick whichever one you like!',
             )}
           </Text>
@@ -65,7 +65,7 @@ const Team: React.FC = () => {
         </CardBody>
       </Card>
       <NextStepButton onClick={actions.nextStep} disabled={currentTeamId === null}>
-        {TranslateString(999, 'Next Step')}
+        {TranslateString(798, 'Next Step')}
       </NextStepButton>
     </>
   )

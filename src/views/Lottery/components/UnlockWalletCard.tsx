@@ -31,7 +31,7 @@ const UnlockWalletCard = () => {
         <IconWrapper>
           <Ticket />
         </IconWrapper>
-        <StyledHeading size="md">{TranslateString(999, 'Unlock wallet to access lottery')}</StyledHeading>
+        <StyledHeading size="md">{TranslateString(1080, 'Unlock wallet to access lottery')}</StyledHeading>
         <UnlockButton />
       </StyledCardBody>
     </Card>

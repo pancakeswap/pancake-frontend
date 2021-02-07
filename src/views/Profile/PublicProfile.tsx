@@ -98,7 +98,7 @@ const PublicProfile = () => {
             {profile.isActive && (
               <Status>
                 <Tag startIcon={<CheckmarkCircleIcon width="18px" />} outline>
-                  {TranslateString(999, 'Active')}
+                  {TranslateString(698, 'Active')}
                 </Tag>
               </Status>
             )}

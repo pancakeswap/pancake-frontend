@@ -233,12 +233,12 @@ const UserName: React.FC = () => {
             </Flex>
           </label>
           <Button onClick={handleConfirm} disabled={!isValid || isUserCreated || isLoading || !isAcknowledged}>
-            {TranslateString(999, 'Confirm')}
+            {TranslateString(464, 'Confirm')}
           </Button>
         </CardBody>
       </Card>
       <Button onClick={onPresentConfirmProfileCreation} disabled={!isValid || !isUserCreated}>
-        {TranslateString(999, 'Complete Profile')}
+        {TranslateString(842, 'Complete Profile')}
       </Button>
       {!hasMinimumCakeRequired && (
         <Text color="failure" mt="16px">
