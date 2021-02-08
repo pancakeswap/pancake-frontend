@@ -1,5 +1,6 @@
 import React from 'react'
 import { Button, Flex, Heading, useModal, Won } from '@pancakeswap-libs/uikit'
+import { useProfile } from 'state/hooks'
 import useI18n from 'hooks/useI18n'
 import ClaimNftAndCakeModal, { useCanClaim } from './ClaimGiftModal'
 import HeaderWrapper from './HeaderWrapper'
@@ -10,6 +11,7 @@ const ProfileHeader = () => {
   const { canClaim, checkClaimStatus } = useCanClaim()
   const [onPresentClaimGiftModal] = useModal(<ClaimNftAndCakeModal onSuccess={checkClaimStatus} />)
   const [onEditProfileModal] = useModal(<EditProfileModal />, false)
+  const { hasProfile } = useProfile()
 
   return (
     <HeaderWrapper>
@@ -25,7 +27,7 @@ const ProfileHeader = () => {
           <Heading as="h2" size="lg" mb="16px">
             {TranslateString(999, 'Check your stats and collect achievements')}
           </Heading>
-          <Button onClick={onEditProfileModal}>{TranslateString(999, 'Edit Profile')}</Button>
+          {hasProfile && <Button onClick={onEditProfileModal}>{TranslateString(999, 'Edit Profile')}</Button>}
         </div>
         {canClaim && (
           <Button variant="tertiary" onClick={onPresentClaimGiftModal} startIcon={<Won />}>
