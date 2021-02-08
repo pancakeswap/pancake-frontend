@@ -155,6 +155,14 @@ export const socials = [
         href: "https://t.me/PancakeswapEs",
       },
       {
+        label: "日本語",
+        href: "https://t.me/pancakeswapjp",
+      },
+      {
+        label: "Français",
+        href: "https://t.me/pancakeswapfr",
+      },
+      {
         label: "Announcements",
         href: "https://t.me/PancakeSwapAnn",
       },
