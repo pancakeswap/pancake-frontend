@@ -30,7 +30,7 @@ const HowItWorks = () => {
     <LayoutWrapper>
       <StyledImage src="/images/pancake-lottery-bunny.png" alt="lottery bunny" width={163} height={140} />
       <StyledHeading size="lg" as="h3" color="secondary">
-        {TranslateString(999, 'How it works')}
+        {TranslateString(632, 'How it works')}
       </StyledHeading>
       <Text fontSize="16px">
         {TranslateString(

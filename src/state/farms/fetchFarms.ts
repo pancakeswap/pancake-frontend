@@ -2,25 +2,23 @@ import BigNumber from 'bignumber.js'
 import erc20 from 'config/abi/erc20.json'
 import masterchefABI from 'config/abi/masterchef.json'
 import multicall from 'utils/multicall'
-import { getMasterChefAddress } from 'utils/addressHelpers'
+import { getAddress, getMasterChefAddress } from 'utils/addressHelpers'
 import farmsConfig from 'config/constants/farms'
-
-const CHAIN_ID = process.env.REACT_APP_CHAIN_ID
 
 const fetchFarms = async () => {
   const data = await Promise.all(
     farmsConfig.map(async (farmConfig) => {
-      const lpAdress = farmConfig.lpAddresses[CHAIN_ID]
+      const lpAdress = getAddress(farmConfig.lpAddresses)
       const calls = [
         // Balance of token in the LP contract
         {
-          address: farmConfig.tokenAddresses[CHAIN_ID],
+          address: getAddress(farmConfig.tokenAddresses),
           name: 'balanceOf',
           params: [lpAdress],
         },
         // Balance of quote token on LP contract
         {
-          address: farmConfig.quoteTokenAdresses[CHAIN_ID],
+          address: getAddress(farmConfig.quoteTokenAdresses),
           name: 'balanceOf',
           params: [lpAdress],
         },
@@ -37,12 +35,12 @@ const fetchFarms = async () => {
         },
         // Token decimals
         {
-          address: farmConfig.tokenAddresses[CHAIN_ID],
+          address: getAddress(farmConfig.tokenAddresses),
           name: 'decimals',
         },
         // Quote token decimals
         {
-          address: farmConfig.quoteTokenAdresses[CHAIN_ID],
+          address: getAddress(farmConfig.quoteTokenAdresses),
           name: 'decimals',
         },
       ]

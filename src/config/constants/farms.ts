@@ -33,6 +33,86 @@ const farms: FarmConfig[] = [
     quoteTokenAdresses: contracts.wbnb,
   },
   {
+    pid: 70,
+    lpSymbol: 'BETH-ETH LP',
+    lpAddresses: {
+      97: '',
+      56: '0x99d865ed50d2c32c1493896810fa386c1ce81d91',
+    },
+    tokenSymbol: 'BETH',
+    tokenAddresses: {
+      97: '',
+      56: '0x250632378e573c6be1ac2f97fcdf00515d0aa91b',
+    },
+    quoteTokenSymbol: QuoteToken.ETH,
+    quoteTokenAdresses: contracts.eth,
+    isCommunity: false,
+  },
+  {
+    pid: 69,
+    lpSymbol: 'LINA-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0xeb325a8ea1c5abf40c7ceaf645596c1f943d0948',
+    },
+    tokenSymbol: 'LINA',
+    tokenAddresses: {
+      97: '',
+      56: '0x762539b45a1dcce3d36d080f74d1aed37844b878',
+    },
+    quoteTokenSymbol: QuoteToken.BUSD,
+    quoteTokenAdresses: contracts.busd,
+    isCommunity: false,
+  },
+  {
+    pid: 68,
+    lpSymbol: 'LIT-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x60bB03D1010b99CEAdD0dd209b64bC8bd83da161',
+    },
+    tokenSymbol: 'LIT',
+    tokenAddresses: {
+      97: '',
+      56: '0xb59490ab09a0f526cc7305822ac65f2ab12f9723',
+    },
+    quoteTokenSymbol: QuoteToken.BNB,
+    quoteTokenAdresses: contracts.wbnb,
+    isCommunity: false,
+  },
+  {
+    pid: 67,
+    lpSymbol: 'HGET-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x66b9e1eac8a81f3752f7f3a5e95de460688a17ee',
+    },
+    tokenSymbol: 'HGET',
+    tokenAddresses: {
+      97: '',
+      56: '0xc7d8d35eba58a0935ff2d5a33df105dd9f071731',
+    },
+    quoteTokenSymbol: QuoteToken.BNB,
+    quoteTokenAdresses: contracts.wbnb,
+    isCommunity: false,
+  },
+  {
+    pid: 66,
+    lpSymbol: 'BDO-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x74690f829fec83ea424ee1f1654041b2491a7be9',
+    },
+    tokenSymbol: 'BDO',
+    tokenAddresses: {
+      97: '',
+      56: '0x190b589cf9fb8ddeabbfeae36a813ffb2a702454',
+    },
+    quoteTokenSymbol: QuoteToken.BNB,
+    quoteTokenAdresses: contracts.wbnb,
+    isCommunity: false,
+  },
+  {
     pid: 65,
     lpSymbol: 'EGLD-BNB LP',
     lpAddresses: {

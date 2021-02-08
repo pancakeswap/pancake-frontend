@@ -1,9 +1,22 @@
+import { useEffect, useMemo } from 'react'
 import BigNumber from 'bignumber.js'
-import { useEffect } from 'react'
+import { kebabCase } from 'lodash'
+import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { Toast, toastTypes } from '@pancakeswap-libs/uikit'
 import { useSelector, useDispatch } from 'react-redux'
+import { Team } from 'config/constants/types'
 import useRefresh from 'hooks/useRefresh'
-import { fetchFarmsPublicDataAsync, fetchPoolsPublicDataAsync, fetchPoolsUserDataAsync } from './actions'
-import { State, Farm, Pool } from './types'
+import {
+  fetchFarmsPublicDataAsync,
+  fetchPoolsPublicDataAsync,
+  fetchPoolsUserDataAsync,
+  push as pushToast,
+  remove as removeToast,
+  clear as clearToast,
+} from './actions'
+import { State, Farm, Pool, ProfileState, TeamsState } from './types'
+import { fetchProfile } from './profile'
+import { fetchTeam, fetchTeams } from './teams'
 
 const ZERO = new BigNumber(0)
 
@@ -77,4 +90,79 @@ export const usePriceCakeBusd = (): BigNumber => {
   const bnbPriceUSD = usePriceBnbBusd()
   const farm = useFarmFromPid(pid)
   return farm.tokenPriceVsQuote ? bnbPriceUSD.times(farm.tokenPriceVsQuote) : ZERO
+}
+
+export const usePriceEthBusd = (): BigNumber => {
+  const pid = 14 // ETH-BNB LP
+  const bnbPriceUSD = usePriceBnbBusd()
+  const farm = useFarmFromPid(pid)
+  return farm.tokenPriceVsQuote ? bnbPriceUSD.times(farm.tokenPriceVsQuote) : ZERO
+}
+
+// Toasts
+export const useToast = () => {
+  const dispatch = useDispatch()
+  const helpers = useMemo(() => {
+    const push = (toast: Toast) => dispatch(pushToast(toast))
+
+    return {
+      toastError: (title: string, description?: string) => {
+        return push({ id: kebabCase(title), type: toastTypes.DANGER, title, description })
+      },
+      toastInfo: (title: string, description?: string) => {
+        return push({ id: kebabCase(title), type: toastTypes.INFO, title, description })
+      },
+      toastSuccess: (title: string, description?: string) => {
+        return push({ id: kebabCase(title), type: toastTypes.SUCCESS, title, description })
+      },
+      toastWarning: (title: string, description?: string) => {
+        return push({ id: kebabCase(title), type: toastTypes.WARNING, title, description })
+      },
+      push,
+      remove: (id: string) => dispatch(removeToast(id)),
+      clear: () => dispatch(clearToast()),
+    }
+  }, [dispatch])
+
+  return helpers
+}
+
+// Profile
+
+export const useFetchProfile = () => {
+  const { account } = useWallet()
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(fetchProfile(account))
+  }, [account, dispatch])
+}
+
+export const useProfile = () => {
+  const { isInitialized, isLoading, data }: ProfileState = useSelector((state: State) => state.profile)
+  return { profile: data, hasProfile: isInitialized && data !== null, isInitialized, isLoading }
+}
+
+// Teams
+
+export const useTeam = (id: number) => {
+  const team: Team = useSelector((state: State) => state.teams.data[id])
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(fetchTeam(id))
+  }, [id, dispatch])
+
+  return team
+}
+
+export const useTeams = () => {
+  const { isInitialized, isLoading, data }: TeamsState = useSelector((state: State) => state.teams)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(fetchTeams())
+  }, [dispatch])
+
+  return { teams: data, isInitialized, isLoading }
 }

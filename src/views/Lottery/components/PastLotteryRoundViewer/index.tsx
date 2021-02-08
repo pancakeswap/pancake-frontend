@@ -49,7 +49,7 @@ const PastLotteryRoundViewer = () => {
           setState((prevState) => ({
             ...prevState,
             error: {
-              message: TranslateString(999, 'The lottery number you provided does not exist'),
+              message: TranslateString(1076, 'The lottery number you provided does not exist'),
               type: 'out of range',
             },
             isLoading: false,
@@ -68,7 +68,7 @@ const PastLotteryRoundViewer = () => {
       .catch(() => {
         setState((prevState) => ({
           ...prevState,
-          error: { message: TranslateString(999, 'Error fetching data'), type: 'api' },
+          error: { message: TranslateString(1078, 'Error fetching data'), type: 'api' },
           isLoading: false,
           isInitialized: true,
         }))

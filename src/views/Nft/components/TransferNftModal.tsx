@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import Web3 from 'web3'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { Button, Input, Modal, Text } from '@pancakeswap-libs/uikit'
-import { PANCAKE_RABBITS_ADDRESS } from 'config/constants/nfts'
 import { Nft } from 'config/constants/types'
 import useI18n from 'hooks/useI18n'
 import { usePancakeRabbits } from 'hooks/useContract'
@@ -43,7 +42,7 @@ const TransferNftModal: React.FC<TransferNftModalProps> = ({ nft, tokenIds, onSu
   const [error, setError] = useState(null)
   const TranslateString = useI18n()
   const { account } = useWallet()
-  const pancakeRabbitsContract = usePancakeRabbits(PANCAKE_RABBITS_ADDRESS)
+  const pancakeRabbitsContract = usePancakeRabbits()
 
   const handleConfirm = async () => {
     try {
