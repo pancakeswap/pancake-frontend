@@ -175,7 +175,6 @@ const Farms: React.FC = () => {
 
   const renderContent = (): JSX.Element => {
     if (viewMode === ViewMode.TABLE && rowData.length) {
-      return null
       return <Table data={rowData} ref={tableRef} />
     }
 
