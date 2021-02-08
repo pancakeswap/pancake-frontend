@@ -64,6 +64,7 @@ const Farm: React.FC = () => {
   })
 
   const [finishedPools, openPools] = partition(poolsWithApy, (pool) => pool.isFinished)
+  const farmingPools = openPools.filter((pool) => pool.userData && pool.userData.stakedBalance > new BigNumber(0))
 
   return (
     <Page>
@@ -90,6 +91,11 @@ const Farm: React.FC = () => {
             ))}
             <Coming />
           </>
+        </Route>
+        <Route path={`${path}/farming`}>
+          {orderBy(farmingPools, ['sortOrder']).map((pool) => (
+            <PoolCard key={pool.sousId} pool={pool} />
+          ))}
         </Route>
         <Route path={`${path}/history`}>
           {orderBy(finishedPools, ['sortOrder']).map((pool) => (

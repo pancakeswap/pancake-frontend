@@ -36,7 +36,9 @@ const Farms: React.FC = () => {
 
   const activeFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
   const inactiveFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X')
-
+  const farmingFarms = farmsLP
+    .filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
+    .filter((farm) => farm.userData && farm.userData.stakedBalance > new BigNumber(0))
   // /!\ This function will be removed soon
   // This function compute the APY for each farm and will be replaced when we have a reliable API
   // to retrieve assets prices against USD
@@ -104,6 +106,9 @@ const Farms: React.FC = () => {
           </Route>
           <Route exact path={`${path}/history`}>
             {farmsList(inactiveFarms, true)}
+          </Route>
+          <Route exact path={`${path}/farming`}>
+            {farmsList(farmingFarms, false)}
           </Route>
         </FlexLayout>
       </div>
