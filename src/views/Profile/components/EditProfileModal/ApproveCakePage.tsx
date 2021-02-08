@@ -5,6 +5,7 @@ import useI18n from 'hooks/useI18n'
 import { useCake } from 'hooks/useContract'
 import { useProfile, useToast } from 'state/hooks'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
+import { getFullDisplayBalance } from 'utils/formatBalance'
 import useGetProfileCosts from '../../hooks/useGetProfileCosts'
 import { UseEditProfileResponse } from './reducer'
 
@@ -17,13 +18,14 @@ const ApproveCakePage: React.FC<ApproveCakePageProps> = ({ goToChange, onDismiss
   const { profile } = useProfile()
   const TranslateString = useI18n()
   const { account } = useWallet()
-  const { numberCakeToUpdate } = useGetProfileCosts()
+  const { numberCakeToUpdate, numberCakeToReactivate } = useGetProfileCosts()
   const cakeContract = useCake()
   const { toastError } = useToast()
+  const cost = profile.isActive ? numberCakeToUpdate : numberCakeToReactivate
 
   const handleApprove = () => {
     cakeContract.methods
-      .approve(getPancakeProfileAddress(), numberCakeToUpdate.times(2).toJSON())
+      .approve(getPancakeProfileAddress(), cost.times(2).toJSON())
       .send({ from: account })
       .on('sending', () => {
         setIsApproving(true)
@@ -43,12 +45,12 @@ const ApproveCakePage: React.FC<ApproveCakePageProps> = ({ goToChange, onDismiss
 
   return (
     <Flex flexDirection="column">
-      <Text as="p" color="textSubtle" mb="24px">
-        {TranslateString(
-          999,
-          "The collectible you've chosen will be locked in a smart contract while it’s being used as your profile picture. Don't worry - you'll be able to get it back at any time.",
-        )}
-      </Text>
+      <Flex alignItems="center" justifyContent="space-between" mb="24px">
+        <Text>
+          {profile.isActive ? TranslateString(999, 'Cost to update:') : TranslateString(999, 'Cost to reactivate:')}
+        </Text>
+        <Text>{TranslateString(999, `${getFullDisplayBalance(cost)} CAKE`)}</Text>
+      </Flex>
       <Button
         disabled={isApproving}
         isLoading={isApproving}
@@ -59,7 +61,7 @@ const ApproveCakePage: React.FC<ApproveCakePageProps> = ({ goToChange, onDismiss
       >
         {TranslateString(999, 'Approve')}
       </Button>
-      <Button variant="text" fullWidth onClick={onDismiss}>
+      <Button variant="text" fullWidth onClick={onDismiss} disabled={isApproving}>
         {TranslateString(999, 'Close Window')}
       </Button>
     </Flex>

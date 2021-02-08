@@ -49,7 +49,10 @@ export interface UseEditProfileResponse extends State {
 }
 
 const useEditProfile = (): UseEditProfileResponse => {
-  const [state, dispatch] = useReducer(reducer, { currentPage: Pages.START, previousPage: null })
+  const [state, dispatch] = useReducer(reducer, {
+    currentPage: Pages.START,
+    previousPage: null,
+  })
 
   const goToStart = () => dispatch({ type: 'set_page', page: Pages.START })
   const goToChange = () => dispatch({ type: 'set_page', page: Pages.CHANGE })

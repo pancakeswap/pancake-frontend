@@ -11,19 +11,13 @@ import { useProfile } from 'state/hooks'
 import useGetProfileCosts from 'views/Profile/hooks/useGetProfileCosts'
 import useHasCakeBalance from 'hooks/useHasCakeBalance'
 import { UseEditProfileResponse } from './reducer'
+import ProfileAvatar from '../ProfileAvatar'
 
 interface StartPageProps extends InjectedModalProps {
   goToChange: UseEditProfileResponse['goToChange']
   goToRemove: UseEditProfileResponse['goToRemove']
   goToApprove: UseEditProfileResponse['goToApprove']
 }
-
-const Avatar = styled.img`
-  border-radius: 50%;
-  height: 128px;
-  margin-bottom: 24px;
-  width: 128px;
-`
 
 const DangerOutline = styled(Button).attrs({ variant: 'secondary', fullWidth: true })`
   border-color: ${({ theme }) => theme.colors.failure};
@@ -38,28 +32,29 @@ const DangerOutline = styled(Button).attrs({ variant: 'secondary', fullWidth: tr
 
 const StartPage: React.FC<StartPageProps> = ({ goToApprove, goToChange, goToRemove, onDismiss }) => {
   const [needsApproval, setNeedsApproval] = useState(null)
-  const { numberCakeToUpdate } = useGetProfileCosts()
-  const hasMinimumCakeRequired = useHasCakeBalance(numberCakeToUpdate)
   const { profile } = useProfile()
+  const { numberCakeToUpdate, numberCakeToReactivate } = useGetProfileCosts()
+  const hasMinimumCakeRequired = useHasCakeBalance(profile.isActive ? numberCakeToUpdate : numberCakeToReactivate)
   const TranslateString = useI18n()
   const { account } = useWallet()
   const cakeContract = useCake()
+  const cost = profile.isActive ? numberCakeToUpdate : numberCakeToReactivate
 
   /**
-   * Check if the wallet has the required CAKE allowance to change their profile pic
-   * If they don't, we send them to the approval screen first when clicking "Change Profile Pic"
+   * Check if the wallet has the required CAKE allowance to change their profile pic or reactivate
+   * If they don't, we send them to the approval screen first
    */
   useEffect(() => {
     const checkApprovalStatus = async () => {
       const response = await cakeContract.methods.allowance(account, getPancakeProfileAddress()).call()
       const currentAllowance = new BigNumber(response)
-      setNeedsApproval(currentAllowance.lt(numberCakeToUpdate))
+      setNeedsApproval(currentAllowance.lt(cost))
     }
 
     if (account) {
       checkApprovalStatus()
     }
-  }, [account, numberCakeToUpdate, setNeedsApproval, cakeContract])
+  }, [account, cost, setNeedsApproval, cakeContract])
 
   if (!profile) {
     return null
@@ -67,21 +62,35 @@ const StartPage: React.FC<StartPageProps> = ({ goToApprove, goToChange, goToRemo
 
   return (
     <Flex alignItems="center" justifyContent="center" flexDirection="column">
-      <Avatar src={`/images/nfts/${profile.nft.images.md}`} />
-      {!hasMinimumCakeRequired && (
-        <Text as="p" mb="16px" color="failure">
-          {TranslateString(999, `A minimum of ${getFullDisplayBalance(numberCakeToUpdate)} CAKE is required`)}
+      <ProfileAvatar profile={profile} />
+      <Flex alignItems="center" style={{ height: '48px' }} justifyContent="center">
+        <Text as="p" color="failure">
+          {!hasMinimumCakeRequired &&
+            TranslateString(999, `A minimum of ${getFullDisplayBalance(numberCakeToUpdate)} CAKE is required`)}
         </Text>
+      </Flex>
+      {profile.isActive ? (
+        <>
+          <Button
+            fullWidth
+            mb="8px"
+            onClick={needsApproval === true ? goToApprove : goToChange}
+            disabled={!hasMinimumCakeRequired || needsApproval === null}
+          >
+            {TranslateString(999, 'Change Profile Pic')}
+          </Button>
+          <DangerOutline onClick={goToRemove}>{TranslateString(999, 'Remove Profile Pic')}</DangerOutline>
+        </>
+      ) : (
+        <Button
+          fullWidth
+          mb="8px"
+          onClick={needsApproval === true ? goToApprove : goToChange}
+          disabled={!hasMinimumCakeRequired || needsApproval === null}
+        >
+          {TranslateString(999, 'Reactivate Profile')}
+        </Button>
       )}
-      <Button
-        fullWidth
-        mb="8px"
-        onClick={needsApproval === true ? goToApprove : goToChange}
-        disabled={!hasMinimumCakeRequired || needsApproval === null}
-      >
-        {TranslateString(999, 'Change Profile Pic')}
-      </Button>
-      <DangerOutline onClick={goToRemove}>{TranslateString(999, 'Remove Profile Pic')}</DangerOutline>
       <Button variant="text" fullWidth onClick={onDismiss}>
         {TranslateString(999, 'Close Window')}
       </Button>

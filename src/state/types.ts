@@ -36,8 +36,9 @@ export interface Profile {
   tokenId: number
   isActive: boolean
   username: string
-  nft: Nft
+  nft?: Nft
   team: Team
+  hasRegistered: boolean
 }
 
 // Slices states
@@ -57,6 +58,7 @@ export interface PoolsState {
 export interface ProfileState {
   isInitialized: boolean
   isLoading: boolean
+  hasRegistered: boolean
   data: Profile
 }
 
