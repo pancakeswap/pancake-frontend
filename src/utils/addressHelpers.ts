@@ -1,36 +1,38 @@
 import addresses from 'config/constants/contracts'
+import { Address } from 'config/constants/types'
 
-const chainId = process.env.REACT_APP_CHAIN_ID
+export const getAddress = (address: Address): string => {
+  const mainNetChainId = 56
+  const chainId = process.env.REACT_APP_CHAIN_ID
+  return address[chainId] ? address[chainId] : address[mainNetChainId]
+}
 
 export const getCakeAddress = () => {
-  return addresses.cake[chainId]
-}
-export const getSyrupAddress = () => {
-  return addresses.syrup[chainId]
+  return getAddress(addresses.cake)
 }
 export const getMasterChefAddress = () => {
-  return addresses.masterChef[chainId]
+  return getAddress(addresses.masterChef)
 }
 export const getMulticallAddress = () => {
-  return addresses.mulltiCall[chainId]
+  return getAddress(addresses.mulltiCall)
 }
 export const getWbnbAddress = () => {
-  return addresses.wbnb[chainId]
+  return getAddress(addresses.wbnb)
 }
 export const getLotteryAddress = () => {
-  return addresses.lottery[chainId]
+  return getAddress(addresses.lottery)
 }
 export const getLotteryTicketAddress = () => {
-  return addresses.lotteryNFT[chainId]
+  return getAddress(addresses.lotteryNFT)
 }
 export const getPancakeProfileAddress = () => {
-  return addresses.pancakeProfile[chainId]
+  return getAddress(addresses.pancakeProfile)
 }
 export const getPancakeRabbitsAddress = () => {
-  return addresses.pancakeRabbits[chainId]
+  return getAddress(addresses.pancakeRabbits)
 }
 export const getRabbitMintingFarmAddress = () => {
-  return addresses.rabbitMintingFarm[chainId]
+  return getAddress(addresses.rabbitMintingFarm)
 }
 export const getClaimRefundAddress = () => {
   return addresses.claimRefund[chainId]

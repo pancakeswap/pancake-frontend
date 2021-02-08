@@ -3,6 +3,7 @@ import { AbiItem } from 'web3-utils'
 import { ContractOptions } from 'web3-eth-contract'
 import useWeb3 from 'hooks/useWeb3'
 import {
+  getAddress,
   getMasterChefAddress,
   getCakeAddress,
   getLotteryAddress,
@@ -87,7 +88,7 @@ export const useSousChef = (id) => {
   const config = poolsConfig.find((pool) => pool.sousId === id)
   const rawAbi = config.poolCategory === PoolCategory.BINANCE ? sousChefBnb : sousChef
   const abi = (rawAbi as unknown) as AbiItem
-  return useContract(abi, config.contractAddress[process.env.REACT_APP_CHAIN_ID])
+  return useContract(abi, getAddress(config.contractAddress))
 }
 
 export default useContract
