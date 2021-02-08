@@ -10,7 +10,7 @@
     "eject": "react-scripts eject",
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
     "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx}'",
-    "cms-sync": "npx ts-node src/scripts/CMSSync"
+    "generate:config": "ts-node --compiler-options '{\"module\":\"commonjs\"}' src/scripts/generateConfig"
   },
   "husky": {
     "hooks": {

@@ -1,5 +1,5 @@
 import fs from 'fs'
-import get from '../http-get'
+import get from '../lib/http-get'
 import settings from './settings'
 import { SettingsObject } from './types'
 import { getFormattedData } from './parser'
