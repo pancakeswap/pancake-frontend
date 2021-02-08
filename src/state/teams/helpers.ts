@@ -16,7 +16,7 @@ export const getTeam = async (teamId: number): Promise<Team> => {
       2: numberUsers,
       3: numberPoints,
       4: isJoinable,
-    } = await profileContract.methods.getTeamProfile(teamId).call()
+    } = await profileContract.getTeamProfile(teamId)
     const staticTeamInfo = teamsList.find((staticTeam) => staticTeam.id === teamId)
 
     return merge({}, staticTeamInfo, {
@@ -41,11 +41,11 @@ export const getTeams = async (): Promise<TeamsById> => {
         [team.id]: team,
       }
     }, {})
-    const nbTeams = await profileContract.methods.numberTeams().call()
+    const nbTeams = await profileContract.numberTeams()
     const calls = []
 
     for (let i = 1; i <= nbTeams; i++) {
-      calls.push(profileContract.methods.getTeamProfile(i).call)
+      calls.push(profileContract.getTeamProfile(i))
     }
 
     const teamData = (await makeBatchRequest(calls)) as TeamResponse[]

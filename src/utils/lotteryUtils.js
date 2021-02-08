@@ -9,7 +9,7 @@ import { getContract } from 'utils/erc20'
 import { getMulticallAddress } from './addressHelpers'
 
 export const multiCall = async (abi, calls) => {
-  const multi = getContract(MultiCallAbi, getMulticallAddress())
+  const multi = getContract(getMulticallAddress(), MultiCallAbi)
   const itf = new Interface(abi)
   let res = []
   if (calls.length > 100) {

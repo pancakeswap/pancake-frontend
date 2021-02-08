@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
 import { Button, Modal, Text } from '@pancakeswap-libs/uikit'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { RABBIT_MINTING_FARM_ADDRESS } from 'config/constants/nfts'
 import { getCakeAddress } from 'utils/addressHelpers'
 import { Nft } from 'config/constants/types'
 import useTokenBalance from 'hooks/useTokenBalance'
@@ -36,7 +35,7 @@ const ClaimNftModal: React.FC<ClaimNftModalProps> = ({ nft, onSuccess, onDismiss
   const [error, setError] = useState(null)
   const TranslateString = useI18n()
   const { account } = useWeb3React()
-  const rabbitMintingContract = useRabbitMintingFarm(RABBIT_MINTING_FARM_ADDRESS)
+  const rabbitMintingContract = useRabbitMintingFarm()
   const cakeBalance = useTokenBalance(getCakeAddress())
   const cakeInWallet = getBalanceNumber(cakeBalance)
 

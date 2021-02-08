@@ -35,13 +35,13 @@ const getUsername = async (address: string): Promise<string> => {
 
 const getProfile = async (address: string): Promise<GetProfileResponse> => {
   try {
-    const hasRegistered = (await profileContract.methods.hasRegistered(address).call()) as boolean
+    const hasRegistered = await profileContract.hasRegistered(address)
 
     if (!hasRegistered) {
       return { hasRegistered, profile: null }
     }
 
-    const profileResponse = await profileContract.methods.getUserProfile(address).call()
+    const profileResponse = await profileContract.getUserProfile(address)
     const { userId, points, teamId, tokenId, nftAddress, isActive } = transformProfileResponse(profileResponse)
     const team = await getTeam(teamId)
     const username = await getUsername(address)
@@ -50,7 +50,7 @@ const getProfile = async (address: string): Promise<GetProfileResponse> => {
     // so only fetch the nft data if active
     let nft: Nft
     if (isActive) {
-      const bunnyId = await rabbitContract.methods.getBunnyId(tokenId).call()
+      const bunnyId = await rabbitContract.getBunnyId(tokenId)
       nft = nfts.find((nftItem) => nftItem.bunnyId === Number(bunnyId))
 
       // Save the preview image to local storage for the exchange

@@ -33,21 +33,18 @@ const ProfilePicture: React.FC = () => {
   const bunnyIds = Object.keys(nftsInWallet).map((nftWalletItem) => Number(nftWalletItem))
   const walletNfts = nftList.filter((nft) => bunnyIds.includes(nft.bunnyId))
 
-  const handleApprove = () => {
-    pancakeRabbitsContract.methods
-      .approve(getPancakeProfileAddress(), tokenId)
-      .send({ from: account })
-      .on('sending', () => {
-        setIsApproving(true)
-      })
-      .on('receipt', () => {
-        setIsApproving(false)
-        setIsApproved(true)
-      })
-      .on('error', (error) => {
-        toastError('Error', error?.message)
-        setIsApproving(false)
-      })
+  const handleApprove = async () => {
+    setIsApproving(true)
+    const tx = pancakeRabbitsContract
+      .approve(getPancakeProfileAddress(), tokenId, { from: account })
+    try {
+      tx.wait()
+      setIsApproving(false)
+      setIsApproved(true)
+    } catch (error) {
+      toastError('Error', error?.message)
+      setIsApproving(false)
+    }
   }
 
   if (!isLoading && walletNfts.length === 0) {

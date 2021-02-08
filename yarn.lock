@@ -2019,9 +2019,9 @@
     schema-utils "^2.6.5"
     source-map "^0.7.3"
 
-"@pooltogether/etherplex@https://github.com/pooltogether/etherplex.git#ethers.beta.5":
+"@pooltogether/etherplex@https://github.com/pooltogether/etherplex#ethers.beta.5":
   version "0.2.0"
-  resolved "https://github.com/pooltogether/etherplex.git#42450833d1eda9e8442a8cf78336df25701cf885"
+  resolved "https://github.com/pooltogether/etherplex#42450833d1eda9e8442a8cf78336df25701cf885"
   dependencies:
     debug "^4.1.1"
     lodash "^4.17.15"

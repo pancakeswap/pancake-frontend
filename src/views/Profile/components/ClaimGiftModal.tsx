@@ -27,7 +27,7 @@ export const useCanClaim = () => {
   useEffect(() => {
     const fetchClaimStatus = async () => {
       const claimRefundContract = getContract(claimRefundAddress, claimRefundAbi)
-      const walletCanClaim = await claimRefundContract.methods.canClaim(account).call()
+      const walletCanClaim = await claimRefundContract.canClaim(account)
       setCanClaim(walletCanClaim)
     }
 
@@ -53,21 +53,18 @@ const ClaimGift: React.FC<ClaimGiftProps> = ({ onSuccess, onDismiss }) => {
   const { toastSuccess, toastError } = useToast()
 
   const handleClick = () => {
-    claimRefundContract.methods
-      .getCakeBack()
-      .send({ from: account })
-      .on('sending', () => {
-        setIsConfirming(true)
-      })
-      .on('receipt', () => {
-        toastSuccess('Success!')
-        onSuccess()
-        onDismiss()
-      })
-      .on('error', (error) => {
-        setIsConfirming(false)
-        toastError('Error', error?.message)
-      })
+    setIsConfirming(true)
+    const tx = claimRefundContract
+      .getCakeBack({ from: account })
+    try {
+      tx.wait()
+      toastSuccess('Success!')
+      onSuccess()
+      onDismiss()
+    } catch (error) {
+      setIsConfirming(false)
+      toastError('Error', error?.message)
+    }
   }
 
   return (

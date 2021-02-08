@@ -35,20 +35,19 @@ const Mint: React.FC = () => {
     onRequiresApproval: async () => {
       // TODO: Move this to a helper, this check will be probably be used many times
       try {
-        const response = await cakeContract.methods.allowance(account, bunnyFactoryContract.options.address).call()
-        const currentAllowance = new BigNumber(response)
+        const response = await cakeContract.allowance(account, bunnyFactoryContract.address)
+        const currentAllowance = new BigNumber(response.toString())
         return currentAllowance.gte(minimumCakeRequired)
       } catch (error) {
         return false
       }
     },
     onApprove: () => {
-      return cakeContract.methods
-        .approve(bunnyFactoryContract.options.address, allowance.toJSON())
-        .send({ from: account })
+      return cakeContract
+        .approve(bunnyFactoryContract.address, allowance.toJSON(), { from: account })
     },
     onConfirm: () => {
-      return bunnyFactoryContract.methods.mintNFT(bunnyId).send({ from: account })
+      return bunnyFactoryContract.mintNFT(bunnyId, { from: account })
     },
     onSuccess: () => actions.nextStep(),
   })

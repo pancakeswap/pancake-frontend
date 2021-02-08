@@ -5,7 +5,7 @@ import { Button, Heading, Modal, useModal } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import { useWeb3React } from '@web3-react/core'
 import rabbitmintingfarm from 'config/abi/rabbitmintingfarm.json'
-import { RABBIT_MINTING_FARM_ADDRESS } from 'config/constants/nfts'
+import { getRabbitMintingFarmAddress } from 'utils/addressHelpers'
 import multicall from 'utils/multicall'
 
 interface NftYouWonModalProps {
@@ -55,10 +55,10 @@ const NftGlobalNotification = () => {
       const [totalSupplyDistributedArr, currentDistributedSupplyArr, canClaimArr, hasClaimedArr] = await multicall(
         rabbitmintingfarm,
         [
-          { address: RABBIT_MINTING_FARM_ADDRESS, name: 'totalSupplyDistributed' },
-          { address: RABBIT_MINTING_FARM_ADDRESS, name: 'currentDistributedSupply' },
-          { address: RABBIT_MINTING_FARM_ADDRESS, name: 'canClaim', params: [account] },
-          { address: RABBIT_MINTING_FARM_ADDRESS, name: 'hasClaimed', params: [account] },
+          { address: getRabbitMintingFarmAddress(), name: 'totalSupplyDistributed' },
+          { address: getRabbitMintingFarmAddress(), name: 'currentDistributedSupply' },
+          { address: getRabbitMintingFarmAddress(), name: 'canClaim', params: [account] },
+          { address: getRabbitMintingFarmAddress(), name: 'hasClaimed', params: [account] },
         ],
       )
 

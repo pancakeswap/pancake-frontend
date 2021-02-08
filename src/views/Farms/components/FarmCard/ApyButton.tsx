@@ -1,7 +1,6 @@
 import React from 'react'
 import BigNumber from 'bignumber.js'
 import { IconButton, useModal, CalculateIcon } from '@pancakeswap-libs/uikit'
-import { Address } from 'config/constants/types'
 import ApyCalculatorModal from './ApyCalculatorModal'
 
 export interface ApyButtonProps {

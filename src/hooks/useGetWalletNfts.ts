@@ -57,7 +57,7 @@ const useGetWalletNfts = () => {
   useEffect(() => {
     const fetchNfts = async () => {
       try {
-        const balanceOf = await pancakeRabbitsContract.methods.balanceOf(account).call()
+        const balanceOf = await pancakeRabbitsContract.balanceOf(account)
 
         if (balanceOf > 0) {
           let nfts: NftMap = {}
@@ -65,10 +65,9 @@ const useGetWalletNfts = () => {
           const getTokenIdAndBunnyId = async (index: number) => {
             try {
               const { tokenOfOwnerByIndex, getBunnyId, tokenURI } = pancakeRabbitsContract
-              const tokenId = await tokenOfOwnerByIndex(account, index).call()
-              const [bunnyId, tokenUri] = await makeBatchRequest([getBunnyId(tokenId), tokenURI(tokenId)])
-
-              return [Number(bunnyId), Number(tokenId), tokenUri]
+              const tokenId = await tokenOfOwnerByIndex(account, index)
+              const [bunnyId, tokenUri] = await makeBatchRequest([getBunnyId(tokenId.toString()), tokenURI(tokenId.toString())])
+              return [Number(bunnyId), Number(tokenId.toString()), tokenUri]
             } catch (error) {
               return null
             }
