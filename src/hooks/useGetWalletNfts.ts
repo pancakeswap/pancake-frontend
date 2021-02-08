@@ -1,7 +1,6 @@
 import { useWeb3React } from '@web3-react/core'
 import { useEffect, useReducer } from 'react'
 import { getPancakeRabbitContract } from 'utils/contractHelpers'
-import makeBatchRequest from 'utils/makeBatchRequest'
 import multicall from 'utils/multicall'
 import pancakeRabbitsAbi from 'config/abi/pancakeRabbits.json'
 import { getPancakeRabbitsAddress } from 'utils/addressHelpers'

@@ -53,7 +53,6 @@ export const getTeams = async (): Promise<TeamsById> => {
       })
     }
     const teamData = await multicall(pancakeProfileAbi, calls)
-    // const teamData = (await makeBatchRequest(calls)) as TeamResponse[]
     const onChainTeamData = teamData.reduce((accum, team, index) => {
       const { 0: teamName, 2: numberUsers, 3: numberPoints, 4: isJoinable } = team
 
