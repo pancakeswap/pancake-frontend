@@ -106,7 +106,7 @@ const PublicProfile = () => {
           <CardBody>
             <StatBox icon={PrizeIcon} title={profile.points} subtitle={TranslateString(999, 'Points')} mb="24px" />
             <Heading as="h4" size="md">
-              {TranslateString(999, 'Achievements')}
+              {TranslateString(1092, 'Achievements')}
             </Heading>
             <ComingSoon />
             <Collectibles />

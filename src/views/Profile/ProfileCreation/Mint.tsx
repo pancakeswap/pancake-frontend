@@ -59,20 +59,20 @@ const Mint: React.FC = () => {
         {TranslateString(999, `Step ${1}`)}
       </Text>
       <Heading as="h3" size="xl" mb="24px">
-        {TranslateString(999, 'Get Starter Collectible')}
+        {TranslateString(776, 'Get Starter Collectible')}
       </Heading>
-      <Text as="p">{TranslateString(999, 'Every profile starts by making a “starter” collectible (NFT).')}</Text>
-      <Text as="p">{TranslateString(999, 'This starter will also become your first profile picture.')}</Text>
+      <Text as="p">{TranslateString(786, 'Every profile starts by making a “starter” collectible (NFT).')}</Text>
+      <Text as="p">{TranslateString(788, 'This starter will also become your first profile picture.')}</Text>
       <Text as="p" mb="24px">
-        {TranslateString(999, 'You can change your profile pic later if you get another approved Pancake Collectible.')}
+        {TranslateString(790, 'You can change your profile pic later if you get another approved Pancake Collectible.')}
       </Text>
       <Card mb="24px">
         <CardBody>
           <Heading as="h4" size="lg" mb="8px">
-            {TranslateString(999, 'Choose your Starter!')}
+            {TranslateString(792, 'Choose your Starter!')}
           </Heading>
           <Text as="p" color="textSubtle">
-            {TranslateString(999, 'Choose wisely: you can only ever make one starter collectible!')}
+            {TranslateString(794, 'Choose wisely: you can only ever make one starter collectible!')}
           </Text>
           <Text as="p" mb="24px" color="textSubtle">
             {TranslateString(999, 'Cost: 4 CAKE')}
@@ -104,13 +104,13 @@ const Mint: React.FC = () => {
           />
           {!hasMinimumCakeRequired && (
             <Text color="failure" mt="16px">
-              {TranslateString(999, `A minimum of ${minimumCakeBalance} CAKE is required`)}
+              {TranslateString(1098, `A minimum of ${minimumCakeBalance} CAKE is required`)}
             </Text>
           )}
         </CardBody>
       </Card>
       <NextStepButton onClick={actions.nextStep} disabled={!isConfirmed}>
-        {TranslateString(999, 'Next Step')}
+        {TranslateString(798, 'Next Step')}
       </NextStepButton>
     </>
   )
