@@ -3,6 +3,8 @@ import styled from 'styled-components'
 import ApyButton from 'views/Farms/components/FarmCard/ApyButton'
 import { Address, QuoteToken } from 'config/constants/types'
 import BigNumber from 'bignumber.js'
+import { BASE_ADD_LIQUIDITY_URL } from 'config'
+import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 
 export interface AprProps {
   value: number
@@ -43,16 +45,17 @@ const Apr: React.FunctionComponent<AprProps> = ({
   originalValue,
 }) => {
   const displayApy = value ? `${value}%` : 'Loading...'
+  const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAdresses, quoteTokenSymbol, tokenAddresses })
+  const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
+
   return (
     <Container>
       <div>{displayApy}</div>
       <ApyButton
         lpLabel={lpLabel}
-        quoteTokenAdresses={quoteTokenAdresses}
-        quoteTokenSymbol={quoteTokenSymbol}
-        tokenAddresses={tokenAddresses}
         cakePrice={cakePrice}
         apy={originalValue}
+        addLiquidityUrl={addLiquidityUrl}
       />
       <Multiplier>{multiplier}</Multiplier>
     </Container>
