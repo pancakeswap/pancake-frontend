@@ -421,7 +421,9 @@ it("renders ConnectModal correctly", () => {
 });
 
 it("renders AccountModal correctly", () => {
-  const { asFragment } = renderWithTheme(<AccountModal logout={noop} />);
+  const { asFragment } = renderWithTheme(
+    <AccountModal account="0xb218C5D6aF1F979aC42BC68d98A5A0D796C6aB01" logout={noop} />
+  );
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
       <div
@@ -466,14 +468,16 @@ it("renders AccountModal correctly", () => {
             color="text"
             font-size="20px"
             style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 8px;"
-          />
+          >
+            0xb218C5D6aF1F979aC42BC68d98A5A0D796C6aB01
+          </div>
           <div
             class="sc-eCssSg gZPLzm"
           >
             <a
               class="sc-bdfBwQ sc-gsTCUz kgxXAa djpNeP"
               color="primary"
-              href="https://bscscan.com/address/undefined"
+              href="https://bscscan.com/address/0xb218C5D6aF1F979aC42BC68d98A5A0D796C6aB01"
               rel="noreferrer noopener"
               target="_blank"
             >

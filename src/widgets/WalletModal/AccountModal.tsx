@@ -8,7 +8,7 @@ import CopyToClipboard from "./CopyToClipboard";
 import { localStorageKey } from "./config";
 
 interface Props {
-  account?: string;
+  account: string;
   logout: () => void;
   onDismiss?: () => void;
 }

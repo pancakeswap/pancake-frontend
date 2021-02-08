@@ -4,7 +4,7 @@ import Text from "../../components/Text/Text";
 import { CopyIcon } from "../../components/Svg";
 
 interface Props {
-  toCopy?: string | number;
+  toCopy: string;
 }
 
 const StyleButton = styled(Text).attrs({ role: "button" })`
@@ -35,11 +35,13 @@ const CopyToClipboard: React.FC<Props> = ({ toCopy, children, ...props }) => {
       small
       bold
       onClick={() => {
-        navigator.clipboard.writeText(JSON.stringify(toCopy));
-        setIsTooltipDisplayed(true);
-        setTimeout(() => {
-          setIsTooltipDisplayed(false);
-        }, 1000);
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(toCopy);
+          setIsTooltipDisplayed(true);
+          setTimeout(() => {
+            setIsTooltipDisplayed(false);
+          }, 1000);
+        }
       }}
       {...props}
     >
