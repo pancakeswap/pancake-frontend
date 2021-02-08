@@ -5,9 +5,7 @@ import BigNumber from 'bignumber.js'
 import useI18n from 'hooks/useI18n'
 
 import Row, { RowData } from './Row'
-import ScrollBar from '../ScrollBar'
 import { ColumnsDef } from '../types'
-import Cell from '../Cell'
 
 export interface ITableProps {
   data: RowData[]
@@ -44,47 +42,10 @@ const StyledTable = styled.table`
   margin-right: auto;
 `
 
-const TableHead = styled.thead`
-  & tr {
-    background-color: ${(props) => props.theme.colors.tertiary};
-    border-radius: 4px;
-    color: #8f80ba;
-    font-weight: 700;
-    font-size: 0.75rem;
-    text-transform: capitalize;
-    cursor: pointer;
-
-    & th {
-      background-color: ${(props) => props.theme.colors.tertiary};
-      position: sticky;
-      top: 0;
-      padding: 1px 0px;
-      z-index: 100;
-
-      &:first-child {
-        padding-right: 0.8rem;
-      }
-    }
-  }
-
-  & input {
-    font-weight: 700;
-    border: 1px solid #cccccc;
-    border-radius: 10px;
-    padding: 4px;
-    width: 80%;
-    outline-width: 0;
-  }
-
-  & .bold {
-    color: #7645d9;
-  }
-`
-
 const TableBody = styled.tbody`
   & tr {
     td {
-      font-size: 0.875rem;
+      font-size: 1rem;
       vertical-align: middle;
       padding-right: 1rem;
 
@@ -110,35 +71,9 @@ const ArrowIcon = styled(ChevronDownIcon)`
     transform: rotate(180deg);
   }
 `
-const CellInner = styled.div`
-  padding: 0.3125rem 0rem;
-  display: flex;
-  width: 100%;
-  align-items: center;
-  padding-right: 1rem;
-`
 
-const TableContainer = styled.div<{ showGradient: boolean }>`
+const TableContainer = styled.div`
   position: relative;
-  &:after {
-    transition: 0.3s;
-    opacity: ${(props) => (props.showGradient ? '1' : '0')};
-    display: block;
-    content: "";
-    width: 0.875rem;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    right: 0;
-    background: linear-gradient(270deg, #E9EAEB 0%, rgba(233, 234, 235, 0) 100%);
-    z-index: 100;
-
-  }
-  ${({ theme }) => theme.mediaQueries.sm} {
-    &:after {
-      display: none;
-    }
-  }
 }
 `
 
@@ -156,22 +91,8 @@ const columns = ColumnsDef.map((column) => ({
         }
 
         return 0
-      case 'details':
-        if (a.original.details.liquidity && b.original.details.liquidity) {
-          return a.original.details.liquidity - b.original.details.liquidity
-        }
-
-        return 0
       case 'earned':
         return a.original.earned.earnings - b.original.earned.earnings
-      case 'staked':
-        if (a.original.staked.userData && b.original.staked.userData) {
-          return new BigNumber(a.original.staked.userData.stakedBalance).comparedTo(
-            new BigNumber(b.original.staked.userData.stakedBalance),
-          )
-        }
-
-        return 0
       default:
         return 1
     }
@@ -257,27 +178,9 @@ export default React.forwardRef((props: ITableProps) => {
 
   return (
     <Container>
-      {visibleScroll && <ScrollBar ref={scrollBarEl} width={tableWidth} />}
-      <TableContainer showGradient={showGradient}>
+      <TableContainer>
         <TableWrapper ref={tableWrapperEl}>
           <StyledTable>
-            <TableHead>
-              <tr>
-                {headers.map((column, key) => (
-                  <Cell
-                    key={`head-${column.name}`}
-                    onClick={() => (ColumnsDef[key].sortable ? toggleSort(column.name) : '')}
-                    isHeader
-                  >
-                    <CellInner>
-                      <span className="bold">{ColumnsDef[key].bold}&nbsp;</span>
-                      {TranslateString(ColumnsDef[key].translationId, ColumnsDef[key].normal)}
-                      {renderSortArrow(column)}
-                    </CellInner>
-                  </Cell>
-                ))}
-              </tr>
-            </TableHead>
             <TableBody>
               {rows.map((row) => {
                 return <Row {...row.original} key={`table-row-${row.id}`} />

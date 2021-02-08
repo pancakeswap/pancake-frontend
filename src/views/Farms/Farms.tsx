@@ -158,16 +158,13 @@ const Farms: React.FC = () => {
         earnings: farm.userData ? getBalanceNumber(new BigNumber(farm.userData.earnings)) : null,
         pid: farm.pid,
       },
-      staked: farm,
-      details: {
+      liquidity: {
         liquidity: Number(totalValue),
-        lpName: farm.lpSymbol.toUpperCase(),
-        liquidityUrlPathParts: getLiquidityUrlPathParts({ quoteTokenAdresses, quoteTokenSymbol, tokenAddresses }),
       },
-      links: {
-        bsc: `https://bscscan.com/address/${farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]}`,
-        info: `https://pancakeswap.info/pair/${farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]}`,
+      multiplier: {
+        multiplier: farm.multiplier,
       },
+      details: null
     }
 
     return row
@@ -175,7 +172,6 @@ const Farms: React.FC = () => {
 
   const renderContent = (): JSX.Element => {
     if (viewMode === ViewMode.TABLE && rowData.length) {
-      return null
       return <Table data={rowData} ref={tableRef} />
     }
 

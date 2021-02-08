@@ -4,6 +4,8 @@ import ApyButton from 'views/Farms/components/FarmCard/ApyButton'
 import { Address, QuoteToken } from 'config/constants/types'
 import BigNumber from 'bignumber.js'
 
+import ColumnLabel from './ColumnLabel'
+
 export interface AprProps {
   value: number
   multiplier: string
@@ -21,15 +23,11 @@ const Container = styled.div`
   align-items: center;
   justify-content: space-between;
   color: ${(props) => props.theme.colors.text};
-`
 
-const Multiplier = styled.div`
-  background: ${({ theme }) => theme.colors.secondary};
-  border-radius: 1rem;
-  color: ${({ theme }) => theme.card.background};
-  padding: 0.3125rem 0rem;
-  width: 2.5rem;
-  text-align: center;
+  button {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
 `
 
 const Apr: React.FunctionComponent<AprProps> = ({
@@ -44,18 +42,22 @@ const Apr: React.FunctionComponent<AprProps> = ({
 }) => {
   const displayApy = value ? `${value}%` : 'Loading...'
   return (
-    <Container>
-      <div>{displayApy}</div>
-      <ApyButton
-        lpLabel={lpLabel}
-        quoteTokenAdresses={quoteTokenAdresses}
-        quoteTokenSymbol={quoteTokenSymbol}
-        tokenAddresses={tokenAddresses}
-        cakePrice={cakePrice}
-        apy={originalValue}
-      />
-      <Multiplier>{multiplier}</Multiplier>
-    </Container>
+    <div>
+      <ColumnLabel>
+        APR
+      </ColumnLabel>
+      <Container>
+        <div>{displayApy}</div>
+        <ApyButton
+          lpLabel={lpLabel}
+          quoteTokenAdresses={quoteTokenAdresses}
+          quoteTokenSymbol={quoteTokenSymbol}
+          tokenAddresses={tokenAddresses}
+          cakePrice={cakePrice}
+          apy={originalValue}
+        />
+      </Container>
+    </div>
   )
 }
 

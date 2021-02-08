@@ -8,6 +8,7 @@ export interface FarmProps {
 const Label = styled.span`
   white-space: nowrap;
   color: ${(props) => props.theme.colors.text};
+  font-weight: 600;
 `
 
 const Farm: React.FunctionComponent<FarmProps> = ({ label }) => {

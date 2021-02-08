@@ -1,33 +1,32 @@
 import React from 'react'
 import styled from 'styled-components'
-import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
 
 import Apr, { AprProps } from './Apr'
 import Farm, { FarmProps } from './Farm'
 import Earned, { EarnedProps } from './Earned'
-import Staked from './Staked'
-import Details, { DetailsProps } from './Details'
-import Links, { LinksProps } from './Links'
+import Details from './Details'
 import CoinIcon, { CoinIconProps } from './CoinIcon'
+import Multiplier, { MultiplierProps } from './Multiplier'
+import Liquidity, { LiquidityProps } from './Liquidity'
 
 export interface RowData {
   icon: CoinIconProps
   apr: AprProps
   farm: FarmProps
   earned: EarnedProps
-  staked: FarmWithStakedValue
-  details: DetailsProps
-  links: LinksProps
+  multiplier: MultiplierProps
+  liquidity: LiquidityProps,
+  details: null
 }
 
 const cells = {
   apr: Apr,
   farm: Farm,
   earned: Earned,
-  staked: Staked,
   details: Details,
-  links: Links,
   icon: CoinIcon,
+  multiplier: Multiplier,
+  liquidity: Liquidity
 }
 
 const CellInner = styled.div`
