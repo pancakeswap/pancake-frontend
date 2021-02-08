@@ -9,7 +9,7 @@ const WalletNotConnected = () => {
   return (
     <div>
       <Heading size="xl" mb="8px">
-        {TranslateString(999, 'Oops!')}
+        {TranslateString(852, 'Oops!')}
       </Heading>
       <Text as="p" mb="16px">
         {TranslateString(999, 'Please connect your wallet to continue')}

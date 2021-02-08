@@ -15,14 +15,14 @@ const TaskCenter = () => {
           <Flex alignItems="center" justifyContent="space-between">
             <div>
               <Heading size="lg" mb="8px">
-                {TranslateString(999, 'Task Center')}
+                {TranslateString(1090, 'Task Center')}
               </Heading>
-              <Text as="p">{TranslateString(999, 'Earn points by completing regular tasks!')}</Text>
+              <Text as="p">{TranslateString(1088, 'Earn points by completing regular tasks!')}</Text>
               <Text as="p">
-                {TranslateString(999, 'Collecting points for these tasks makes them available again.')}
+                {TranslateString(1086, 'Collecting points for these tasks makes them available again.')}
               </Text>
             </div>
-            <Button disabled>{TranslateString(999, 'Collect')}</Button>
+            <Button disabled>{TranslateString(1056, 'Collect')}</Button>
           </Flex>
         </CardHeader>
         <CardBody>
@@ -34,11 +34,11 @@ const TaskCenter = () => {
           <Flex alignItems="center" justifyContent="space-between">
             <div>
               <Heading size="lg" mb="8px">
-                {TranslateString(999, 'Achievements')}
+                {TranslateString(1092, 'Achievements')}
               </Heading>
-              <Text as="p">{TranslateString(999, 'Earn more points for completing larger quests!')}</Text>
+              <Text as="p">{TranslateString(1084, 'Earn more points for completing larger quests!')}</Text>
             </div>
-            <Button disabled>{TranslateString(999, 'Collect')}</Button>
+            <Button disabled>{TranslateString(1056, 'Collect')}</Button>
           </Flex>
         </CardHeader>
         <CardBody>

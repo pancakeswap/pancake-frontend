@@ -203,7 +203,7 @@ const UserName: React.FC = () => {
                 minLength={MIN_LENGTH}
                 maxLength={MAX_LENGTH}
                 disabled={isUserCreated}
-                placeholder={TranslateString(999, 'Enter your name...')}
+                placeholder={TranslateString(1094, 'Enter your name...')}
                 value={userName}
               />
               <Indicator>
@@ -218,7 +218,7 @@ const UserName: React.FC = () => {
           </Text>
           <Text as="p" color="failure" mb="8px">
             {TranslateString(
-              999,
+              1100,
               "Only reuse a name from other social media if you're OK with people viewing your wallet. You can't change your name once you click Confirm.",
             )}
           </Text>
@@ -228,21 +228,21 @@ const UserName: React.FC = () => {
                 <Checkbox id="checkbox" scale="sm" checked={isAcknowledged} onChange={handleAcknoledge} />
               </div>
               <Text ml="8px">
-                {TranslateString(999, 'I understand that people can view my wallet if they know my username')}
+                {TranslateString(1096, 'I understand that people can view my wallet if they know my username')}
               </Text>
             </Flex>
           </label>
           <Button onClick={handleConfirm} disabled={!isValid || isUserCreated || isLoading || !isAcknowledged}>
-            {TranslateString(999, 'Confirm')}
+            {TranslateString(464, 'Confirm')}
           </Button>
         </CardBody>
       </Card>
       <Button onClick={onPresentConfirmProfileCreation} disabled={!isValid || !isUserCreated}>
-        {TranslateString(999, 'Complete Profile')}
+        {TranslateString(842, 'Complete Profile')}
       </Button>
       {!hasMinimumCakeRequired && (
         <Text color="failure" mt="16px">
-          {TranslateString(999, `A minimum of ${minimumCakeBalance} CAKE is required`)}
+          {TranslateString(1098, `A minimum of ${minimumCakeBalance} CAKE is required`)}
         </Text>
       )}
     </>

@@ -11,10 +11,10 @@ const Wrapper = styled.div`
 `
 
 const steps = [
-  { translationId: 999, label: 'Get Starter Collectible' },
-  { translationId: 999, label: 'Set Profile Picture' },
-  { translationId: 999, label: 'Join Team' },
-  { translationId: 999, label: 'Set Name' },
+  { translationId: 776, label: 'Get Starter Collectible' },
+  { translationId: 778, label: 'Set Profile Picture' },
+  { translationId: 780, label: 'Join Team' },
+  { translationId: 782, label: 'Set Name' },
 ]
 
 const Header: React.FC = () => {
@@ -24,13 +24,13 @@ const Header: React.FC = () => {
   return (
     <Wrapper>
       <Heading as="h1" size="xxl" color="secondary" mb="8px">
-        {TranslateString(999, 'Profile Setup')}
+        {TranslateString(770, 'Profile Setup')}
       </Heading>
       <Heading as="h2" size="lg" mb="8px">
-        {TranslateString(999, 'Show off your stats and collectibles with your unique profile')}
+        {TranslateString(772, 'Show off your stats and collectibles with your unique profile')}
       </Heading>
       <Text color="textSubtle" mb="24px">
-        {TranslateString(999, 'Total cost: 5 CAKE')}
+        {TranslateString(774, 'Total cost: 5 CAKE')}
       </Text>
       <Breadcrumbs>
         {steps.map(({ translationId, label }, index) => {

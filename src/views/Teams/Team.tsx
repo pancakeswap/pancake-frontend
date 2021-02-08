@@ -31,7 +31,7 @@ const Team = () => {
         <Link to="/teams">
           <Flex alignItems="center">
             <ChevronLeftIcon color="primary" />
-            <Text color="primary">{TranslateString(999, 'Teams Overview')}</Text>
+            <Text color="primary">{TranslateString(1038, 'Teams Overview')}</Text>
           </Flex>
         </Link>
       </Flex>

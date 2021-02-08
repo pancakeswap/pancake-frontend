@@ -15,7 +15,7 @@ const TeamHeader = () => {
       {showProfileCallout && <NoProfileCard />}
       <HeaderWrapper>
         <Heading as="h1" size="xxl" color="secondary">
-          {TranslateString(999, 'Teams & Profiles')}
+          {TranslateString(1082, 'Teams & Profiles')}
         </Heading>
         <Text bold>
           {TranslateString(

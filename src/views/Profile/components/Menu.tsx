@@ -16,7 +16,7 @@ const Menu: React.FC<MenuProps> = ({ activeIndex = 0 }) => {
         <RouterLink to="/teams">
           <Flex alignItems="center">
             <ChevronLeftIcon color="primary" />
-            <Text color="primary">{TranslateString(999, 'Teams Overview')}</Text>
+            <Text color="primary">{TranslateString(1038, 'Teams Overview')}</Text>
           </Flex>
         </RouterLink>
       </Flex>
@@ -24,10 +24,10 @@ const Menu: React.FC<MenuProps> = ({ activeIndex = 0 }) => {
       <Flex mb="24px" justifyContent="center">
         <ButtonMenu activeIndex={activeIndex} variant="subtle" size="sm">
           <ButtonMenuItem as={RouterLink} to="/profile">
-            {TranslateString(999, 'Public Profile')}
+            {TranslateString(1104, 'Public Profile')}
           </ButtonMenuItem>
           <ButtonMenuItem as={RouterLink} to="/profile/tasks">
-            {TranslateString(999, 'Task Center')}
+            {TranslateString(1090, 'Task Center')}
           </ButtonMenuItem>
         </ButtonMenu>
       </Flex>

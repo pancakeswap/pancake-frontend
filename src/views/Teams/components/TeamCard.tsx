@@ -90,15 +90,15 @@ const TeamCard: React.FC<TeamCardProps> = ({ team }) => {
         </StyledCardHeader>
         <CardBody>
           <StatRow>
-            <StatBox icon={CommunityIcon} title={team.users} subtitle={TranslateString(999, 'Active Members')} />
+            <StatBox icon={CommunityIcon} title={team.users} subtitle={TranslateString(1048, 'Active Members')} />
             <StatBox
               icon={PrizeIcon}
-              title={TranslateString(999, 'Coming Soon')}
-              subtitle={TranslateString(999, 'Team Points')}
+              title={TranslateString(350, 'Coming Soon')}
+              subtitle={TranslateString(1046, 'Team Points')}
               isDisabled
             />
           </StatRow>
-          <Heading as="h3">{TranslateString(999, 'Team Achievements')}</Heading>
+          <Heading as="h3">{TranslateString(1044, 'Team Achievements')}</Heading>
           <ComingSoon />
         </CardBody>
       </StyledCard>

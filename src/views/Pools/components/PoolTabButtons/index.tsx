@@ -12,10 +12,10 @@ const PoolTabButtons = () => {
     <Wrapper>
       <ButtonMenu activeIndex={!isExact ? 1 : 0} size="sm" variant="subtle">
         <ButtonMenuItem as={Link} to={`${url}`}>
-          {TranslateString(999, 'Active')}
+          {TranslateString(698, 'Active')}
         </ButtonMenuItem>
         <ButtonMenuItem as={Link} to={`${url}/history`}>
-          {TranslateString(999, 'Inactive')}
+          {TranslateString(700, 'Inactive')}
         </ButtonMenuItem>
       </ButtonMenu>
     </Wrapper>
