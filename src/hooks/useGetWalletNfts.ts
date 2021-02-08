@@ -2,6 +2,9 @@ import { useWeb3React } from '@web3-react/core'
 import { useEffect, useReducer } from 'react'
 import { getPancakeRabbitContract } from 'utils/contractHelpers'
 import makeBatchRequest from 'utils/makeBatchRequest'
+import multicall from 'utils/multicall'
+import pancakeRabbitsAbi from 'config/abi/pancakeRabbits.json'
+import { getPancakeRabbitsAddress } from 'utils/addressHelpers'
 
 const pancakeRabbitsContract = getPancakeRabbitContract()
 
@@ -64,10 +67,19 @@ const useGetWalletNfts = () => {
 
           const getTokenIdAndBunnyId = async (index: number) => {
             try {
-              const { tokenOfOwnerByIndex, getBunnyId, tokenURI } = pancakeRabbitsContract
+              const { tokenOfOwnerByIndex } = pancakeRabbitsContract
               const tokenId = await tokenOfOwnerByIndex(account, index)
-              const [bunnyId, tokenUri] = await makeBatchRequest([getBunnyId(tokenId.toString()), tokenURI(tokenId.toString())])
-              return [Number(bunnyId), Number(tokenId.toString()), tokenUri]
+              const calls = [{
+                address: getPancakeRabbitsAddress(),
+                name: 'getBunnyId',
+                params: [tokenId.toString()],
+              }, {
+                address: getPancakeRabbitsAddress(),
+                name: 'tokenURI',
+                params: [tokenId.toString()],
+              }]
+              const res = await multicall(pancakeRabbitsAbi, calls)
+              return [Number(res[0]), Number(tokenId.toString()), res[1]]
             } catch (error) {
               return null
             }

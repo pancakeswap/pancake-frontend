@@ -139,7 +139,6 @@ export const useToast = () => {
 export const useFetchProfile = () => {
   const { account } = useWeb3React()
   const dispatch = useDispatch()
-
   useEffect(() => {
     dispatch(fetchProfile(account))
   }, [account, dispatch])

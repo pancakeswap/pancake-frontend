@@ -8,9 +8,6 @@ import { getTeam } from 'state/teams/helpers'
 import nfts from 'config/constants/nfts'
 import { transformProfileResponse } from './helpers'
 
-const profileContract = getContract(getPancakeProfileAddress(), pancakeProfileAbi, window.library)
-const rabbitContract = getContract(getPancakeRabbitsAddress(), pancakeRabbitsAbi, window.library)
-const profileApi = process.env.REACT_APP_API_PROFILE
 
 export interface GetProfileResponse {
   hasRegistered: boolean
@@ -18,6 +15,8 @@ export interface GetProfileResponse {
 }
 
 const getUsername = async (address: string): Promise<string> => {
+  const profileApi = process.env.REACT_APP_API_PROFILE
+
   try {
     const response = await fetch(`${profileApi}/api/users/${address}`)
 
@@ -34,6 +33,9 @@ const getUsername = async (address: string): Promise<string> => {
 }
 
 const getProfile = async (address: string): Promise<GetProfileResponse> => {
+  const profileContract = getContract(getPancakeProfileAddress(), pancakeProfileAbi, window.library)
+  const rabbitContract = getContract(getPancakeRabbitsAddress(), pancakeRabbitsAbi, window.library)
+
   try {
     const hasRegistered = await profileContract.hasRegistered(address)
 
