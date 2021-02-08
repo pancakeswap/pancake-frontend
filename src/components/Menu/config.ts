@@ -43,6 +43,7 @@ const config: MenuEntry[] = [
   {
     label: 'Teams & Profile',
     icon: 'GroupsIcon',
+    calloutClass: 'rainbow',
     items: [
       {
         label: 'Leaderboard',
