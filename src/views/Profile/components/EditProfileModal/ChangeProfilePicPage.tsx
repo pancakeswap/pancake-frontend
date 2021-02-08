@@ -78,6 +78,16 @@ const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss }
           )
         })
       )}
+      {!isLoading && walletNfts.length === 0 && (
+        <>
+          <Text as="p" color="textSubtle" mb="16px">
+            {TranslateString(999, 'Sorry! You don’t have any eligible Collectibles in your wallet to use!')}
+          </Text>
+          <Text as="p" color="textSubtle" mb="24px">
+            {TranslateString(999, 'Make sure you have a Pancake Collectible in your wallet and try again!')}
+          </Text>
+        </>
+      )}
       <ApproveConfirmButtons
         isApproveDisabled={isConfirmed || isConfirming || isApproved || tokenId === null}
         isApproving={isApproving}
