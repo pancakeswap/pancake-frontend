@@ -19,6 +19,23 @@ const pools: PoolConfig[] = [
     tokenDecimals: 18,
   },
   {
+    sousId: 46,
+    tokenName: 'SFP',
+    stakingTokenName: QuoteToken.CAKE,
+    stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
+    contractAddress: {
+      97: '',
+      56: '0x2B02d43967765b18E31a9621da640588f3550EFD',
+    },
+    poolCategory: PoolCategory.CORE,
+    projectLink: 'https://www.safepal.io/',
+    harvest: true,
+    tokenPerBlock: '0.6',
+    sortOrder: 999,
+    isFinished: false,
+    tokenDecimals: 18,
+  },
+  {
     sousId: 45,
     tokenName: 'LINA',
     stakingTokenName: QuoteToken.CAKE,
