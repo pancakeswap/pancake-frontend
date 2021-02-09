@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
 import BigNumber from 'bignumber.js'
-import { getProfileContract } from 'utils/contractHelpers'
-import makeBatchRequest from 'utils/makeBatchRequest'
 import { useToast } from 'state/hooks'
+import multicall from 'utils/multicall'
+import profileABI from 'config/abi/pancakeProfile.json'
+import { getPancakeProfileAddress } from 'utils/addressHelpers'
 
 const useGetProfileCosts = () => {
   const [costs, setCosts] = useState({
@@ -15,17 +16,26 @@ const useGetProfileCosts = () => {
   useEffect(() => {
     const fetchCosts = async () => {
       try {
-        const profileContract = getProfileContract()
-        const [numberCakeToReactivate, numberCakeToRegister, numberCakeToUpdate] = await makeBatchRequest([
-          profileContract.methods.numberCakeToReactivate().call,
-          profileContract.methods.numberCakeToRegister().call,
-          profileContract.methods.numberCakeToUpdate().call,
-        ])
+        const calls = [{
+          address: getPancakeProfileAddress(),
+          name: 'numberCakeToReactivate',
+          params: [],
+        },{
+          address: getPancakeProfileAddress(),
+          name: 'numberCakeToRegister',
+          params: [],
+        },{
+          address: getPancakeProfileAddress(),
+          name: 'numberCakeToUpdate',
+          params: [],
+        }]
+  
+        const res = await multicall(profileABI, calls)
 
         setCosts({
-          numberCakeToReactivate: new BigNumber(numberCakeToReactivate as string),
-          numberCakeToRegister: new BigNumber(numberCakeToRegister as string),
-          numberCakeToUpdate: new BigNumber(numberCakeToUpdate as string),
+          numberCakeToReactivate: new BigNumber(res[0].toString()),
+          numberCakeToRegister: new BigNumber(res[1].toString()),
+          numberCakeToUpdate: new BigNumber(res[2].toString()),
         })
       } catch (error) {
         toastError('Error', 'Could not retrieve CAKE costs for profile')

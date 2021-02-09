@@ -15,7 +15,7 @@ const useI18n = () => {
     }
 
     const foundTranslation = translations.find((translation) => {
-      return translation.data.stringId === translationId
+      return translation?.data?.stringId === translationId
     })
 
     if (foundTranslation) {
