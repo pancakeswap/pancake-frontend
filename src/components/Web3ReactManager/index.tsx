@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
-import useI18n from 'hooks/useI18n'
+import { ToastContainer } from '@pancakeswap-libs/uikit'
 
 import PageLoader from 'components/PageLoader'
 import { network } from 'connectors'
 import useEagerConnect from 'hooks/useEagerConnect'
 import useInactiveListener from 'hooks/useInactiveListener'
+import { useToast } from 'state/hooks'
 
 const MessageWrapper = styled.div`
   display: flex;
@@ -15,12 +16,7 @@ const MessageWrapper = styled.div`
   height: 20rem;
 `
 
-const Message = styled.h2`
-  color: ${({ theme }) => theme.colors.primaryDark};
-`
-
 export default function Web3ReactManager({ children }: { children: JSX.Element }) {
-  const TranslateString = useI18n()
   const { active: networkActive, error: networkError, activate: activateNetwork, library, account } = useWeb3React()
   // try to eagerly connect to an injected provider, if it exists and has granted access already
   const triedEager = useEagerConnect()
@@ -32,7 +28,7 @@ export default function Web3ReactManager({ children }: { children: JSX.Element }
       activateNetwork(network)
     }
   }, [triedEager, networkActive, networkError, activateNetwork])
-
+  const { remove } = useToast()
   // when there's no account connected, react to logins (broadly speaking) on the injected provider, if it exists
   useInactiveListener(!triedEager)
   // handle delayed loader state
@@ -54,11 +50,14 @@ export default function Web3ReactManager({ children }: { children: JSX.Element }
 
   // if the account context isn't active, and there's an error on the network context, it's an irrecoverable error
   if (networkError) {
-    return (
-      <MessageWrapper>
-        <Message>{TranslateString(999, 'unknownError')}</Message>
-      </MessageWrapper>
-    )
+    return <>
+      {children}
+      <ToastContainer toasts={[{
+        id: networkError.name,
+        type: 'WARNING',
+        title: networkError.message,
+      }]} onRemove={(id) => remove(id)} />
+    </>
   }
 
   // if neither context is active, spin

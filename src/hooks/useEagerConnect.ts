@@ -5,10 +5,8 @@ import { injected } from 'connectors'
 function useEagerConnect() {
   const { activate, active } = useWeb3ReactCore() // specifically using useWeb3ReactCore because of what this hook does
   const [tried, setTried] = useState(false)
-  console.log('activate status', active)
   useEffect(() => {
     injected.isAuthorized().then((isAuthorized) => {
-      console.log('isAuthorized', isAuthorized)
       const hasSignedIn = window.localStorage.getItem('accountStatus')
       if (isAuthorized && hasSignedIn) {
         activate(injected, undefined, true).catch(() => {
