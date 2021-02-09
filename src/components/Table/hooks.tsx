@@ -101,7 +101,7 @@ const createReducer = <T extends DataType>() => (state: TableState<T>, action: T
             ...column,
             sorted: {
               on: true,
-              asc: false,
+              asc: column.sorted.asc,
             },
           };
         }
@@ -319,6 +319,7 @@ export const useTable = <T extends DataType>(
           sort: column.sort,
           sorted: {
             on: false,
+            asc: false,
           },
         };
       }),
