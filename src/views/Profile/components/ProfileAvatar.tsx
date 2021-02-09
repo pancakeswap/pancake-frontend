@@ -1,5 +1,5 @@
 import React from 'react'
-import { BunnyPlaceholderIcon } from '@pancakeswap-libs/uikit'
+import { NoProfileAvatarIcon } from '@pancakeswap-libs/uikit'
 import { Profile } from 'state/types'
 import styled from 'styled-components'
 
@@ -43,7 +43,7 @@ const AvatarWrapper = styled.div<{ bg: string }>`
   }
 `
 // TODO: replace with no provile avatar icon
-const AvatarInactive = styled(BunnyPlaceholderIcon)`
+const AvatarInactive = styled(NoProfileAvatarIcon)`
   height: 64px;
   width: 64px;
 
