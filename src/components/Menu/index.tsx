@@ -9,11 +9,19 @@ import { walletconnect, injected, bsc } from 'connectors'
 import config from './config'
 
 const Menu = (props) => {
-  const { account, activate, deactivate } = useWeb3React()
+  const { account, activate, deactivate, connector } = useWeb3React()
   const { selectedLanguage, setSelectedLanguage } = useContext(LanguageContext)
   const { isDark, toggleTheme } = useTheme()
   const cakePriceUsd = usePriceCakeBusd()
   const { profile } = useProfile()
+
+  const closeConnection = () => {
+    if (connector === walletconnect) {
+      (connector as any).close()
+    } else {
+      deactivate()
+    }
+  }
 
   return (
     <UikitMenu
@@ -29,7 +37,7 @@ const Menu = (props) => {
 
         return activate(injected)
       }}
-      logout={deactivate}
+      logout={closeConnection}
       isDark={isDark}
       toggleTheme={toggleTheme}
       currentLang={selectedLanguage && selectedLanguage.code}
