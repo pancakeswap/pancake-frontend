@@ -99,6 +99,12 @@ export const usePriceEthBusd = (): BigNumber => {
   return farm.tokenPriceVsQuote ? bnbPriceUSD.times(farm.tokenPriceVsQuote) : ZERO
 }
 
+export const usePriceEthBnb = (): BigNumber => {
+  const priceBnbBusd = usePriceBnbBusd()
+  const priceEthBusd = usePriceEthBusd()
+  return priceEthBusd.div(priceBnbBusd)
+}
+
 // Toasts
 export const useToast = () => {
   const dispatch = useDispatch()
