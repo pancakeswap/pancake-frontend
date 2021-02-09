@@ -8,8 +8,6 @@ import { network } from 'connectors'
 import useEagerConnect from 'hooks/useEagerConnect'
 import useInactiveListener from 'hooks/useInactiveListener'
 
-// export const NetworkContextName = 'NETWORK'
-
 const MessageWrapper = styled.div`
   display: flex;
   align-items: center;

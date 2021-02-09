@@ -57,7 +57,7 @@ const TransferNftModal: React.FC<TransferNftModalProps> = ({ nft, tokenIds, onSu
         const tx = pancakeRabbitsContract
           .transferFrom(account, value, tokenIds[0], { from: account })
         try {
-          tx.wait()
+          await tx.wait()
           onDismiss()
           onSuccess()
           toastSuccess('NFT successfully transferred!')
