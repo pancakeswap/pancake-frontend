@@ -3,6 +3,7 @@ import styled from 'styled-components'
 
 export interface FarmProps {
   label: string
+  pid: number
 }
 
 const Label = styled.span`

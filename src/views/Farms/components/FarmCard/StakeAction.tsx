@@ -29,10 +29,22 @@ const IconButtonWrapper = styled.div`
 
   button {
     width: 2rem;
+    height: 2rem;
+
     svg {
       width: 20px;
     }
   }
+`
+
+const StyledButton = styled(Button)`
+  white-space: nowrap;
+  color: white;
+  height: 2rem;
+  width: 10rem;
+  border-radius: 1rem;
+  padding-left: 0;
+  padding-right: 0;
 `
 
 const StakeAction: React.FC<FarmCardActionsProps> = ({
@@ -58,7 +70,7 @@ const StakeAction: React.FC<FarmCardActionsProps> = ({
 
   const renderStakingButtons = () => {
     return rawStakedBalance === 0 ? (
-      <Button onClick={onPresentDeposit}>{TranslateString(999, 'Stake LP')}</Button>
+      <StyledButton onClick={onPresentDeposit}>{TranslateString(999, 'Stake LP')}</StyledButton>
     ) : (
       <IconButtonWrapper>
         <IconButton variant="tertiary" onClick={onPresentWithdraw} mr="6px">

@@ -149,7 +149,7 @@ const columns = ColumnsDef.map((column) => ({
   sort: (a: RowType<RowData>, b: RowType<RowData>) => {
     switch (column.name) {
       case 'farm':
-        return a.id - b.id
+        return b.id - a.id
       case 'apr':
         if (a.original.apr.value && b.original.apr.value) {
           return Number(a.original.apr.value) - Number(b.original.apr.value)
