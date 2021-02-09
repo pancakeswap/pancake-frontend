@@ -1,11 +1,12 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { Profile, ProfileState } from 'state/types'
-import getProfile from './getProfile'
+import { ProfileState } from 'state/types'
+import getProfile, { GetProfileResponse } from './getProfile'
 
 const initialState: ProfileState = {
   isInitialized: false,
   isLoading: true,
+  hasRegistered: false,
   data: null,
 }
 
@@ -16,10 +17,15 @@ export const profileSlice = createSlice({
     profileFetchStart: (state) => {
       state.isLoading = true
     },
-    profileFetchSucceeded: (state, action: PayloadAction<Profile>) => {
-      state.isInitialized = true
-      state.isLoading = false
-      state.data = action.payload
+    profileFetchSucceeded: (state, action: PayloadAction<GetProfileResponse>) => {
+      const { profile, hasRegistered } = action.payload
+
+      return {
+        isInitialized: true,
+        isLoading: false,
+        hasRegistered,
+        data: profile,
+      }
     },
     profileFetchFailed: (state) => {
       state.isLoading = false
@@ -35,8 +41,8 @@ export const { profileFetchStart, profileFetchSucceeded, profileFetchFailed } = 
 export const fetchProfile = (address: string) => async (dispatch) => {
   try {
     dispatch(profileFetchStart())
-    const profile = await getProfile(address)
-    dispatch(profileFetchSucceeded(profile))
+    const response = await getProfile(address)
+    dispatch(profileFetchSucceeded(response))
   } catch (error) {
     dispatch(profileFetchFailed())
   }
