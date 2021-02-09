@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { Profile } from "./types";
-import NoProfileAvatar from "./icons/NoProfileAvatar";
+import NoProfileAvatar from "../../components/Svg/Icons/NoProfileAvatar";
 
 interface AvatarProps {
   profile: Profile;
