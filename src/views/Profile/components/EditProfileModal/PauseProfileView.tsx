@@ -9,9 +9,9 @@ import { getBalanceNumber } from 'utils/formatBalance'
 import { useProfile as useProfileContract } from 'hooks/useContract'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 
-type RemovePageProps = InjectedModalProps
+type PauseProfilePageProps = InjectedModalProps
 
-const RemovePage: React.FC<RemovePageProps> = ({ onDismiss }) => {
+const PauseProfilePage: React.FC<PauseProfilePageProps> = ({ onDismiss }) => {
   const [isAcknowledged, setIsAcknowledged] = useState(false)
   const [isConfirming, setIsConfirming] = useState(false)
   const { profile } = useProfile()
@@ -85,4 +85,4 @@ const RemovePage: React.FC<RemovePageProps> = ({ onDismiss }) => {
   )
 }
 
-export default RemovePage
+export default PauseProfilePage

@@ -38,7 +38,7 @@ const getProfile = async (address: string): Promise<GetProfileResponse> => {
     const hasRegistered = (await profileContract.methods.hasRegistered(address).call()) as boolean
 
     if (!hasRegistered) {
-      return { hasRegistered }
+      return { hasRegistered, profile: null }
     }
 
     const profileResponse = await profileContract.methods.getUserProfile(address).call()

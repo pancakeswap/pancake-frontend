@@ -1,38 +1,38 @@
 import React from 'react'
 import { InjectedModalProps, Modal } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
-import useEditProfile, { Pages } from './reducer'
-import StartPage from './StartPage'
-import RemovePage from './RemovePage'
-import ChangeProfilePicPage from './ChangeProfilePicPage'
-import ApproveCakePage from './ApproveCakePage'
+import useEditProfile, { Views } from './reducer'
+import StartView from './StartView'
+import PauseProfileView from './PauseProfileView'
+import ChangeProfilePicView from './ChangeProfilePicView'
+import ApproveCakeView from './ApproveCakeView'
 
 type EditProfileModalProps = InjectedModalProps
 
-const pageTitle = {
-  [Pages.START]: { id: 999, label: 'Edit Profile' },
-  [Pages.CHANGE]: { id: 999, label: 'Change Profile Pic' },
-  [Pages.REMOVE]: { id: 999, label: 'Remove Profile Pic' },
-  [Pages.APPROVE]: { id: 999, label: 'Approve CAKE' },
+const viewTitle = {
+  [Views.START]: { id: 999, label: 'Edit Profile' },
+  [Views.CHANGE]: { id: 999, label: 'Change Profile Pic' },
+  [Views.REMOVE]: { id: 999, label: 'Remove Profile Pic' },
+  [Views.APPROVE]: { id: 999, label: 'Approve CAKE' },
 }
 
 const EditProfileModal: React.FC<EditProfileModalProps> = ({ onDismiss }) => {
-  const { currentPage, goToChange, goToRemove, goToApprove, goPrevious } = useEditProfile()
+  const { currentView, goToChange, goToRemove, goToApprove, goPrevious } = useEditProfile()
   const TranslateString = useI18n()
-  const { id, label } = pageTitle[currentPage]
+  const { id, label } = viewTitle[currentView]
 
-  const isStartPage = currentPage === Pages.START
-  const handleBack = isStartPage ? null : () => goPrevious()
+  const isStartView = currentView === Views.START
+  const handleBack = isStartView ? null : () => goPrevious()
 
   return (
-    <Modal title={TranslateString(id, label)} onBack={handleBack} onDismiss={onDismiss} hideCloseButton={!isStartPage}>
+    <Modal title={TranslateString(id, label)} onBack={handleBack} onDismiss={onDismiss} hideCloseButton={!isStartView}>
       <div style={{ maxWidth: '400px' }}>
-        {currentPage === Pages.START && (
-          <StartPage goToApprove={goToApprove} goToChange={goToChange} goToRemove={goToRemove} onDismiss={onDismiss} />
+        {currentView === Views.START && (
+          <StartView goToApprove={goToApprove} goToChange={goToChange} goToRemove={goToRemove} onDismiss={onDismiss} />
         )}
-        {currentPage === Pages.REMOVE && <RemovePage onDismiss={onDismiss} />}
-        {currentPage === Pages.CHANGE && <ChangeProfilePicPage onDismiss={onDismiss} />}
-        {currentPage === Pages.APPROVE && <ApproveCakePage goToChange={goToChange} onDismiss={onDismiss} />}
+        {currentView === Views.REMOVE && <PauseProfileView onDismiss={onDismiss} />}
+        {currentView === Views.CHANGE && <ChangeProfilePicView onDismiss={onDismiss} />}
+        {currentView === Views.APPROVE && <ApproveCakeView goToChange={goToChange} onDismiss={onDismiss} />}
       </div>
     </Modal>
   )

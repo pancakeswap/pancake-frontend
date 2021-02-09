@@ -20,10 +20,12 @@ export const profileSlice = createSlice({
     profileFetchSucceeded: (state, action: PayloadAction<GetProfileResponse>) => {
       const { profile, hasRegistered } = action.payload
 
-      state.isInitialized = true
-      state.isLoading = false
-      state.hasRegistered = hasRegistered
-      state.data = profile
+      return {
+        isInitialized: true,
+        isLoading: false,
+        hasRegistered,
+        data: profile,
+      }
     },
     profileFetchFailed: (state) => {
       state.isLoading = false
