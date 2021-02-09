@@ -10,7 +10,7 @@ import partition from 'lodash/partition'
 import useI18n from 'hooks/useI18n'
 import useBlock from 'hooks/useBlock'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { useFarms, usePriceBnbBusd, usePools } from 'state/hooks'
+import { useFarms, usePriceBnbBusd, usePools, usePriceEthBnb } from 'state/hooks'
 import { QuoteToken, PoolCategory } from 'config/constants/types'
 import FlexLayout from 'components/layout/Flex'
 import Page from 'components/layout/Page'
@@ -26,6 +26,7 @@ const Farm: React.FC = () => {
   const farms = useFarms()
   const pools = usePools(account)
   const bnbPriceUSD = usePriceBnbBusd()
+  const ethPriceBnb = usePriceEthBnb()
   const block = useBlock()
 
   const priceToBnb = (tokenName: string, tokenPrice: BigNumber, quoteToken: QuoteToken): BigNumber => {
@@ -43,14 +44,19 @@ const Farm: React.FC = () => {
     const isBnbPool = pool.poolCategory === PoolCategory.BINANCE
     const rewardTokenFarm = farms.find((f) => f.tokenSymbol === pool.tokenName)
     const stakingTokenFarm = farms.find((s) => s.tokenSymbol === pool.stakingTokenName)
+    // tmp mulitplier to support ETH farms
+    // Will be removed after the price api
+    const tempMultiplier = stakingTokenFarm?.quoteTokenSymbol === 'ETH' ? ethPriceBnb : 1
 
     // /!\ Assume that the farm quote price is BNB
-    const stakingTokenPriceInBNB = isBnbPool ? new BigNumber(1) : new BigNumber(stakingTokenFarm?.tokenPriceVsQuote)
+    const stakingTokenPriceInBNB = isBnbPool
+      ? new BigNumber(1)
+      : new BigNumber(stakingTokenFarm?.tokenPriceVsQuote).div(tempMultiplier)
     const rewardTokenPriceInBNB = priceToBnb(
       pool.tokenName,
       rewardTokenFarm?.tokenPriceVsQuote,
       rewardTokenFarm?.quoteTokenSymbol,
-    )
+    ).div(tempMultiplier)
 
     const totalRewardPricePerYear = rewardTokenPriceInBNB.times(pool.tokenPerBlock).times(BLOCKS_PER_YEAR)
     const totalStakingTokenInPool = stakingTokenPriceInBNB.times(getBalanceNumber(pool.totalStaked))
