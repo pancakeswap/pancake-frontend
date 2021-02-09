@@ -27,6 +27,8 @@ const Farm: React.FC = () => {
   const pools = usePools(account)
   const bnbPriceUSD = usePriceBnbBusd()
   const block = useBlock()
+  const [stackedOnly,setStackedOnly] = useState(0);
+
 
   const priceToBnb = (tokenName: string, tokenPrice: BigNumber, quoteToken: QuoteToken): BigNumber => {
     const tokenPriceBN = new BigNumber(tokenPrice)
@@ -64,7 +66,7 @@ const Farm: React.FC = () => {
   })
 
   const [finishedPools, openPools] = partition(poolsWithApy, (pool) => pool.isFinished)
-  const farmingPools = openPools.filter((pool) => pool.userData && pool.userData.stakedBalance > new BigNumber(0))
+  const stackedOnlyPools = openPools.filter((pool) => pool.userData && pool.userData.stakedBalance > new BigNumber(0))
 
   return (
     <Page>
@@ -81,21 +83,18 @@ const Farm: React.FC = () => {
         </div>
         <img src="/images/syrup.png" alt="SYRUP POOL icon" width={410} height={191} />
       </Hero>
-      <PoolTabButtons />
+      <PoolTabButtons stackedOnly={stackedOnly} setStackedOnly={setStackedOnly}/>
       <Divider />
       <FlexLayout>
         <Route exact path={`${path}`}>
           <>
-            {orderBy(openPools, ['sortOrder']).map((pool) => (
+            {stackedOnly ? orderBy(stackedOnlyPools, ['sortOrder']).map((pool) => (
+              <PoolCard key={pool.sousId} pool={pool} />
+            )) : orderBy(openPools, ['sortOrder']).map((pool) => (
               <PoolCard key={pool.sousId} pool={pool} />
             ))}
             <Coming />
           </>
-        </Route>
-        <Route path={`${path}/farming`}>
-          {orderBy(farmingPools, ['sortOrder']).map((pool) => (
-            <PoolCard key={pool.sousId} pool={pool} />
-          ))}
         </Route>
         <Route path={`${path}/history`}>
           {orderBy(finishedPools, ['sortOrder']).map((pool) => (
