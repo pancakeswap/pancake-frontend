@@ -16,7 +16,7 @@ const FarmTabButtons = ({ stackedOnly, setStackedOnly }) => {
       </ToggleWrapper>
       <ButtonMenu activeIndex={isExact ? 0 : 1} size="sm" variant="subtle">
         <ButtonMenuItem as={Link} to={`${url}`}>
-        {TranslateString(698, 'Active')}
+          {TranslateString(698, 'Active')}
         </ButtonMenuItem>
         <ButtonMenuItem as={Link} to={`${url}/history`}>
           {TranslateString(700, 'Inactive')}
