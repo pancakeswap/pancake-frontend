@@ -42,6 +42,7 @@ it("renders correctly", () => {
       </Menu>
     </BrowserRouter>
   );
+
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
       <div
@@ -579,7 +580,7 @@ it("renders correctly", () => {
             </div>
           </div>
           <div
-            class="sc-jJEJSO csWmhS"
+            class="sc-jJEJSO jxRCvt"
           >
             body
           </div>
