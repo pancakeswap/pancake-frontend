@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
 
 import Apr, { AprProps } from './Apr'
 import Farm, { FarmProps } from './Farm'
@@ -8,6 +9,7 @@ import Details from './Details'
 import CoinIcon, { CoinIconProps } from './CoinIcon'
 import Multiplier, { MultiplierProps } from './Multiplier'
 import Liquidity, { LiquidityProps } from './Liquidity'
+import ActionPanel from './ActionPanel'
 
 export interface RowData {
   icon: CoinIconProps
@@ -16,7 +18,7 @@ export interface RowData {
   earned: EarnedProps
   multiplier: MultiplierProps
   liquidity: LiquidityProps,
-  details: null
+  details: FarmWithStakedValue
 }
 
 const cells = {
@@ -34,11 +36,14 @@ const CellInner = styled.div`
   display: flex;
   width: 100%;
   align-items: center;
-  padding-right: 1rem;
+  padding-right: 3rem;
 `
 
 const Row: React.FunctionComponent<RowData> = (props) => {
+  const { details } = props;
+
   return (
+    <>
     <tr>
       {Object.keys(props).map((key) => {
         return (
@@ -48,6 +53,12 @@ const Row: React.FunctionComponent<RowData> = (props) => {
         )
       })}
     </tr>
+    <tr>
+      <td colSpan={7}>
+        <ActionPanel farm={details} />
+      </td>
+    </tr>
+    </>
   )
 }
 

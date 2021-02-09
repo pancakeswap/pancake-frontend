@@ -3,8 +3,7 @@ import styled from 'styled-components'
 import ApyButton from 'views/Farms/components/FarmCard/ApyButton'
 import { Address, QuoteToken } from 'config/constants/types'
 import BigNumber from 'bignumber.js'
-
-import ColumnLabel from './ColumnLabel'
+import CellLayout from './CellLayout'
 
 export interface AprProps {
   value: number
@@ -21,18 +20,28 @@ const Container = styled.div`
   width: 7.5rem;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   color: ${(props) => props.theme.colors.text};
+  font-weight: 600;
 
   button {
     width: 1.25rem;
     height: 1.25rem;
+
+    svg {
+      path {
+        fill: ${(props) => props.theme.colors.textSubtle};
+      }
+    }
   }
+`
+
+const AprWrapper = styled.div`
+  min-width: 3.8rem;
+  text-align: left;
 `
 
 const Apr: React.FunctionComponent<AprProps> = ({
   value,
-  multiplier,
   lpLabel,
   quoteTokenAdresses,
   quoteTokenSymbol,
@@ -40,14 +49,13 @@ const Apr: React.FunctionComponent<AprProps> = ({
   cakePrice,
   originalValue,
 }) => {
-  const displayApy = value ? `${value}%` : 'Loading...'
+  const displayApr = value ? `${value}%` : 'Loading...'
   return (
-    <div>
-      <ColumnLabel>
-        APR
-      </ColumnLabel>
+    <CellLayout label="APR">
       <Container>
-        <div>{displayApy}</div>
+        <AprWrapper>
+          {displayApr}
+        </AprWrapper>
         <ApyButton
           lpLabel={lpLabel}
           quoteTokenAdresses={quoteTokenAdresses}
@@ -57,7 +65,7 @@ const Apr: React.FunctionComponent<AprProps> = ({
           apy={originalValue}
         />
       </Container>
-    </div>
+    </CellLayout>
   )
 }
 

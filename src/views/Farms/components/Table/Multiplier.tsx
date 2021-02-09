@@ -1,29 +1,28 @@
 import React from 'react'
 import styled from 'styled-components'
+import { HelpIcon } from '@pancakeswap-libs/uikit'
 
-import ColumnLabel from './ColumnLabel'
+import CellLayout from './CellLayout'
 
 export interface MultiplierProps {
   multiplier: string
 }
 
 const MultiplierWrapper = styled.div`
-  background: ${({ theme }) => theme.colors.secondary};
-  border-radius: 1rem;
-  color: ${({ theme }) => theme.card.background};
-  padding: 0.3125rem 0rem;
+  color: ${({ theme }) => theme.colors.text};
   width: 2.5rem;
-  text-align: center;
+  font-weight: 600;
+  text-align: left;
 `
 
 const Multiplier: React.FunctionComponent<MultiplierProps> = ({ multiplier }) => {
+  const displayMultipler = multiplier ? multiplier.toLowerCase() : '-'
+
   return (
-    <div>
-      <ColumnLabel>
-        Multiplier
-      </ColumnLabel>
-      <MultiplierWrapper>{multiplier}</MultiplierWrapper>
-    </div>
+    <CellLayout label="Multiplier">
+      <MultiplierWrapper>{displayMultipler}</MultiplierWrapper>
+      <HelpIcon color="textSubtle" />
+    </CellLayout>
   )
 }
 

@@ -37,9 +37,9 @@ const StyledTable = styled.table`
   border-collapse: collapse;
   font-size: 0.9rem;
   border-radius: 4px;
-  text-align: center;
   margin-left: auto;
   margin-right: auto;
+  width: 100%;
 `
 
 const TableBody = styled.tbody`
@@ -52,7 +52,6 @@ const TableBody = styled.tbody`
       &:first-child {
         position: sticky;
         left: 0;
-        padding-right: 0;
         background: ${(props) => props.theme.card.background};
 
         > div {

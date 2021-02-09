@@ -164,7 +164,7 @@ const Farms: React.FC = () => {
       multiplier: {
         multiplier: farm.multiplier,
       },
-      details: null
+      details: farm,
     }
 
     return row
