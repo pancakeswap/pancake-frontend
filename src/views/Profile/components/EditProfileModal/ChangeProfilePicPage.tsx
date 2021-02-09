@@ -13,10 +13,7 @@ import { getPancakeProfileAddress, getPancakeRabbitsAddress } from 'utils/addres
 import SelectionCard from '../SelectionCard'
 import ApproveConfirmButtons from '../ApproveConfirmButtons'
 
-// @ts-ignore
-interface ChangeProfilePicPageProps extends InjectedModalProps {
-  temp?: number
-}
+type ChangeProfilePicPageProps = InjectedModalProps
 
 const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss }) => {
   const [tokenId, setTokenId] = useState(null)
