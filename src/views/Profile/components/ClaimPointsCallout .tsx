@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Button, Card, CardBody, CardHeader, Flex, Heading, PrizeIcon } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
+import AchievementRow from './AchievementRow'
 
 const ButtonWrapper = styled.div`
   ${({ theme }) => theme.mediaQueries.sm} {
@@ -25,7 +26,9 @@ const ClaimPointsCallout = () => {
           </ButtonWrapper>
         </Flex>
       </CardHeader>
-      <CardBody>callout</CardBody>
+      <CardBody>
+        <AchievementRow achievement={{ image: '/images/nfts/drizzle-md.png', title: 'Title' }} />
+      </CardBody>
     </Card>
   )
 }
