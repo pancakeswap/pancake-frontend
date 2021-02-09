@@ -18,11 +18,12 @@ export interface AprProps {
 }
 
 const Container = styled.div`
-  width: 7.5rem;
+  min-width: 7.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
   color: ${(props) => props.theme.colors.text};
+  width: 100%;
 `
 
 const Multiplier = styled.div`
@@ -32,6 +33,11 @@ const Multiplier = styled.div`
   padding: 0.3125rem 0rem;
   width: 2.5rem;
   text-align: center;
+`
+
+const ButtonsWrapper = styled.div`
+  display: flex;
+  align-items: center;
 `
 
 const Apr: React.FunctionComponent<AprProps> = ({
@@ -51,13 +57,10 @@ const Apr: React.FunctionComponent<AprProps> = ({
   return (
     <Container>
       <div>{displayApy}</div>
-      <ApyButton
-        lpLabel={lpLabel}
-        cakePrice={cakePrice}
-        apy={originalValue}
-        addLiquidityUrl={addLiquidityUrl}
-      />
-      <Multiplier>{multiplier}</Multiplier>
+      <ButtonsWrapper>
+        <ApyButton lpLabel={lpLabel} cakePrice={cakePrice} apy={originalValue} addLiquidityUrl={addLiquidityUrl} />
+        <Multiplier>{multiplier}</Multiplier>
+      </ButtonsWrapper>
     </Container>
   )
 }

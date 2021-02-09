@@ -123,8 +123,6 @@ const Farms: React.FC = () => {
     farmsStaked = farmsList(inactiveFarms)
   }
 
-  console.log('fffffffffffffffff', farmsStaked)
-
   const rowData = farmsStaked.map((farm) => {
     let totalValue = farm.lpTotalInQuoteToken
 
@@ -159,7 +157,7 @@ const Farms: React.FC = () => {
       },
       farm: {
         label: lpLabel,
-        pid: farm.pid
+        pid: farm.pid,
       },
       earned: {
         earnings: farm.userData ? getBalanceNumber(new BigNumber(farm.userData.earnings)) : null,
