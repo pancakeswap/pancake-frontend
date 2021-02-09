@@ -1,6 +1,7 @@
 import { Button, Card, CardBody, CardHeader, Flex, Heading, Text } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import React from 'react'
+import ClaimPointsCallout from './components/ClaimPointsCallout '
 import ComingSoon from './components/ComingSoon'
 import Menu from './components/Menu'
 
@@ -10,6 +11,7 @@ const TaskCenter = () => {
   return (
     <>
       <Menu activeIndex={1} />
+      <ClaimPointsCallout />
       <Card mb="32px">
         <CardHeader>
           <Flex alignItems="center" justifyContent="space-between">
