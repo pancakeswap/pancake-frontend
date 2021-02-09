@@ -1,36 +1,22 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useRouteMatch, useLocation, Link } from 'react-router-dom'
-import { ButtonMenu, ButtonMenuItem } from '@pancakeswap-libs/uikit'
+import { ButtonMenu, ButtonMenuItem, Text, Toggle } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 
-const FarmTabButtons = () => {
+const FarmTabButtons = ({ stackedOnly, setStackedOnly }) => {
   const { url, isExact } = useRouteMatch()
   const TranslateString = useI18n()
-  const location = useLocation()
-
-  const getActiveIndex = () => {
-    switch (location.pathname) {
-      case `${url}/farming`:
-        return 1
-        break
-      case `${url}/history`:
-        return 2
-        break
-      default:
-        return 0
-        break
-    }
-  }
 
   return (
     <Wrapper>
-      <ButtonMenu activeIndex={getActiveIndex()} size="sm" variant="subtle">
+      <ToggleWrapper>
+        <Toggle checked={stackedOnly} onChange={() => setStackedOnly(!stackedOnly)} /* small */ />
+        <Text> {TranslateString(699, 'Stacked only')}</Text>
+      </ToggleWrapper>
+      <ButtonMenu activeIndex={isExact ? 0 : 1} size="sm" variant="subtle">
         <ButtonMenuItem as={Link} to={`${url}`}>
-          {TranslateString(698, 'Active')}
-        </ButtonMenuItem>
-        <ButtonMenuItem as={Link} to={`${url}/farming`}>
-          {TranslateString(699, 'Farming')}
+        {TranslateString(698, 'Active')}
         </ButtonMenuItem>
         <ButtonMenuItem as={Link} to={`${url}/history`}>
           {TranslateString(700, 'Inactive')}
@@ -47,4 +33,15 @@ const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
   margin-bottom: 32px;
+`
+
+const ToggleWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 32px;
+
+  ${Text} {
+    margin-left: 8px;
+  }
 `
