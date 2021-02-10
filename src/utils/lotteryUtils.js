@@ -62,7 +62,8 @@ export const getTickets = async (lotteryContract, ticketsContract, account, cust
 
   const finalTokenids = []
   ticketIssues.forEach(async (ticketIssue, i) => {
-    if (ticketIssue.toString() === issueIdex) {
+    // eslint-disable-next-line eqeqeq
+    if (ticketIssue.toString() == issueIdex) {
       finalTokenids.push(tokenIds[i])
     }
   })
