@@ -5,7 +5,7 @@ const ifos: Ifo[] = [
     id: 'berry',
     address: '0xba79C4846a82B3FDE3bbf1A90DafE25286101663',
     isActive: true,
-    name: 'Berry Tributes',
+    name: 'Berry',
     subTitle: 'A decentralized oracle network on BSC',
     description:
       'Berry Data is a transparent community-veriﬁed price oracle on BSC. Berry Data provides a trustless and decentralized alternative for off-chain data. As the governance token for Berry Data, BRY allows holders to pay for Berry Data feeds, vote on governance issues, validate data through staking, and build the Berry ecosystem.',
