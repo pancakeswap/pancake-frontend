@@ -30,12 +30,12 @@ const useGetProfileCosts = () => {
           params: [],
         }]
   
-        const res = await multicall(profileABI, calls)
+        const [numReactive, numRegister, numUpdate] = await multicall(profileABI, calls)
 
         setCosts({
-          numberCakeToReactivate: new BigNumber(res[0].toString()),
-          numberCakeToRegister: new BigNumber(res[1].toString()),
-          numberCakeToUpdate: new BigNumber(res[2].toString()),
+          numberCakeToReactivate: new BigNumber(numReactive.toString()),
+          numberCakeToRegister: new BigNumber(numRegister.toString()),
+          numberCakeToUpdate: new BigNumber(numUpdate.toString()),
         })
       } catch (error) {
         toastError('Error', 'Could not retrieve CAKE costs for profile')
