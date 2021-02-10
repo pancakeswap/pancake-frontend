@@ -9,6 +9,9 @@ import useTokenBalance from 'hooks/useTokenBalance'
 import { useMultiClaimLottery } from 'hooks/useBuyLottery'
 import { useTotalClaim } from 'hooks/useTickets'
 import BuyModal from 'views/Lottery/components/TicketCard/BuyTicketModal'
+import { useLotteryAllowance } from 'hooks/useAllowance'
+import { useLotteryApprove } from 'hooks/useApprove'
+import PurchaseWarningModal from 'views/Lottery/components/TicketCard/PurchaseWarningModal'
 import CakeWinnings from './CakeWinnings'
 import LotteryJackpot from './LotteryJackpot'
 
@@ -44,9 +47,27 @@ const FarmedStakingCard = () => {
   const lotteryHasDrawn = useGetLotteryHasDrawn()
   const [requesteClaim, setRequestedClaim] = useState(false)
   const TranslateString = useI18n()
+  const allowance = useLotteryAllowance()
+  const { onApprove } = useLotteryApprove()
+  const [onPresentApprove] = useModal(<PurchaseWarningModal />)
+  const [requestedApproval, setRequestedApproval] = useState(false)
   const { claimAmount } = useTotalClaim()
   const { onMultiClaim } = useMultiClaimLottery()
   const cakeBalance = useTokenBalance(getCakeAddress())
+
+  const handleApprove = useCallback(async () => {
+    try {
+      setRequestedApproval(true)
+      const txHash = await onApprove()
+      // user rejected tx or didn't go thru
+      if (!txHash) {
+        setRequestedApproval(false)
+      }
+      onPresentApprove()
+    } catch (e) {
+      console.error(e)
+    }
+  }, [onApprove, onPresentApprove])
 
   const handleClaim = useCallback(async () => {
     try {
@@ -60,6 +81,21 @@ const FarmedStakingCard = () => {
       console.error(e)
     }
   }, [onMultiClaim, setRequestedClaim])
+
+  const renderLotteryTicketButtonBuyOrApprove = () => {
+    if (!allowance.toNumber()) {
+      return (
+        <Button fullWidth disabled={requestedApproval} onClick={handleApprove}>
+          {TranslateString(494, 'Approve CAKE')}
+        </Button>
+      )
+    }
+    return (
+      <Button id="dashboard-buy-tickets" variant="secondary" onClick={onPresentBuy} disabled={lotteryHasDrawn}>
+        {TranslateString(558, 'Buy Tickets')}
+      </Button>
+    )
+  }
 
   const [onPresentBuy] = useModal(<BuyModal max={cakeBalance} tokenName="CAKE" />)
 
@@ -87,9 +123,7 @@ const FarmedStakingCard = () => {
           >
             {TranslateString(556, 'Collect Winnings')}
           </Button>
-          <Button id="dashboard-buy-tickets" variant="secondary" onClick={onPresentBuy} disabled={lotteryHasDrawn}>
-            {TranslateString(558, 'Buy Tickets')}
-          </Button>
+          {renderLotteryTicketButtonBuyOrApprove()}
         </Actions>
       </CardBody>
     </StyledLotteryCard>
