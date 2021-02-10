@@ -44,6 +44,7 @@ const Farm: React.FC = () => {
     const isBnbPool = pool.poolCategory === PoolCategory.BINANCE
     const rewardTokenFarm = farms.find((f) => f.tokenSymbol === pool.tokenName)
     const stakingTokenFarm = farms.find((s) => s.tokenSymbol === pool.stakingTokenName)
+
     // tmp mulitplier to support ETH farms
     // Will be removed after the price api
     const tempMultiplier = stakingTokenFarm?.quoteTokenSymbol === 'ETH' ? ethPriceBnb : 1
@@ -51,12 +52,12 @@ const Farm: React.FC = () => {
     // /!\ Assume that the farm quote price is BNB
     const stakingTokenPriceInBNB = isBnbPool
       ? new BigNumber(1)
-      : new BigNumber(stakingTokenFarm?.tokenPriceVsQuote).div(tempMultiplier)
+      : new BigNumber(stakingTokenFarm?.tokenPriceVsQuote).times(tempMultiplier)
     const rewardTokenPriceInBNB = priceToBnb(
       pool.tokenName,
       rewardTokenFarm?.tokenPriceVsQuote,
       rewardTokenFarm?.quoteTokenSymbol,
-    ).div(tempMultiplier)
+    )
 
     const totalRewardPricePerYear = rewardTokenPriceInBNB.times(pool.tokenPerBlock).times(BLOCKS_PER_YEAR)
     const totalStakingTokenInPool = stakingTokenPriceInBNB.times(getBalanceNumber(pool.totalStaked))
