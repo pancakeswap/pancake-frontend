@@ -17,7 +17,7 @@ const MessageWrapper = styled.div`
 `
 
 export default function Web3ReactManager({ children }: { children: JSX.Element }) {
-  const { active: networkActive, error: networkError, activate: activateNetwork, library, account } = useWeb3React()
+  const { active: networkActive, error: networkError, activate: activateNetwork, chainId, library, account } = useWeb3React()
   // try to eagerly connect to an injected provider, if it exists and has granted access already
   const triedEager = useEagerConnect()
   // after eagerly trying injected, if the network connect ever isn't active or in an error state, activate itd
@@ -33,6 +33,7 @@ export default function Web3ReactManager({ children }: { children: JSX.Element }
   const [showLoader, setShowLoader] = useState(false)
   window.library = library
   window.account = account
+  window.chainId = chainId
   useEffect(() => {
     const timeout = setTimeout(() => {
       setShowLoader(true)

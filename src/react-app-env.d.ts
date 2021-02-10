@@ -18,7 +18,8 @@ declare global {
     web3?: any
     BinanceChain?: BinanceChain,
     library: Web3Provider,
-    account: string | null
+    account: string | null,
+    chainId: number
   }
 
 }
