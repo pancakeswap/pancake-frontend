@@ -80,7 +80,7 @@ const ifos: Ifo[] = [
   {
     id: 'soteria',
     address: '0x9C21123D94b93361a29B2C2EFB3d5CD8B17e0A9e',
-    isActive: true,
+    isActive: false,
     name: 'Soteria',
     subTitle: 'A blockchain based mutual to share the risk of DeFi on Binance Smart Chain',
     description:
@@ -95,6 +95,25 @@ const ifos: Ifo[] = [
     currencyAddress: '0xA527a61703D82139F8a06Bc30097cC9CAA2df5A6',
     tokenDecimals: 18,
     releaseBlockNumber: 4086064,
+  },
+  {
+    id: 'berry',
+    address: '0xba79C4846a82B3FDE3bbf1A90DafE25286101663',
+    isActive: true,
+    name: 'Berry Tributes',
+    subTitle: 'A decentralized oracle network on BSC',
+    description:
+      'Berry Data is a transparent community-veriﬁed price oracle on BSC. Berry Data provides a trustless and decentralized alternative for off-chain data. As the governance token for Berry Data, BRY allows holders to pay for Berry Data feeds, vote on governance issues, validata data through staking, and build the Berry ecosystem.',
+    launchDate: 'Feb. 16',
+    launchTime: '5PM SGT',
+    saleAmount: '2,000,000 BRY',
+    raiseAmount: '$1,000,000',
+    cakeToBurn: '$500,000',
+    projectSiteUrl: 'https://berrydata.co/',
+    currency: 'CAKE-BNB LP',
+    currencyAddress: '0xA527a61703D82139F8a06Bc30097cC9CAA2df5A6',
+    tokenDecimals: 18,
+    releaseBlockNumber: 4750968,
   },
 ]
 
