@@ -19,6 +19,25 @@ const pools: PoolConfig[] = [
     tokenDecimals: 18,
   },
   {
+    sousId: 48,
+    image: 'CAKECOMP',
+    tokenName: 'CAKE',
+    stakingTokenName: QuoteToken.COMP,
+    stakingTokenAddress: '0x52ce071bd9b1c4b00a0b92d298c512478cad67e8',
+    stakingLimit: 1,
+    contractAddress: {
+      97: '',
+      56: '0xE0565fBb109A3f3f8097D8A9D931277bfd795072',
+    },
+    poolCategory: PoolCategory.CORE,
+    projectLink: 'https://compound.finance/',
+    harvest: true,
+    tokenPerBlock: '0.055',
+    sortOrder: 999,
+    isFinished: false,
+    tokenDecimals: 18,
+  },
+  {
     sousId: 47,
     image: 'CAKECOMP',
     tokenName: 'CAKE',
@@ -34,7 +53,7 @@ const pools: PoolConfig[] = [
     harvest: true,
     tokenPerBlock: '0.55',
     sortOrder: 999,
-    isFinished: false,
+    isFinished: true,
     tokenDecimals: 18,
   },
   {
@@ -255,7 +274,7 @@ const pools: PoolConfig[] = [
     harvest: true,
     tokenPerBlock: '0.17361',
     sortOrder: 999,
-    isFinished: false,
+    isFinished: true,
     tokenDecimals: 18,
   },
   {
@@ -272,7 +291,7 @@ const pools: PoolConfig[] = [
     harvest: true,
     tokenPerBlock: '0.05787',
     sortOrder: 999,
-    isFinished: false,
+    isFinished: true,
     tokenDecimals: 18,
   },
   {
@@ -289,7 +308,7 @@ const pools: PoolConfig[] = [
     harvest: true,
     tokenPerBlock: '0.4166',
     sortOrder: 999,
-    isFinished: false,
+    isFinished: true,
     tokenDecimals: 18,
   },
   {
@@ -306,7 +325,7 @@ const pools: PoolConfig[] = [
     harvest: true,
     tokenPerBlock: '0.01',
     sortOrder: 999,
-    isFinished: false,
+    isFinished: true,
     tokenDecimals: 2,
   },
   {
@@ -323,7 +342,7 @@ const pools: PoolConfig[] = [
     harvest: true,
     tokenPerBlock: '0.01',
     sortOrder: 999,
-    isFinished: false,
+    isFinished: true,
     tokenDecimals: 2,
   },
   {
@@ -340,7 +359,7 @@ const pools: PoolConfig[] = [
     harvest: true,
     tokenPerBlock: '0.01',
     sortOrder: 999,
-    isFinished: false,
+    isFinished: true,
     tokenDecimals: 2,
   },
   {
@@ -356,8 +375,8 @@ const pools: PoolConfig[] = [
     projectLink: 'https://reef.finance/',
     harvest: true,
     tokenPerBlock: '115.74',
-    sortOrder: 5,
-    isFinished: false,
+    sortOrder: 999,
+    isFinished: true,
     tokenDecimals: 18,
   },
   {
@@ -373,7 +392,7 @@ const pools: PoolConfig[] = [
     projectLink: 'https://ditto.money/',
     harvest: true,
     tokenPerBlock: '0.01157',
-    sortOrder: 5,
+    sortOrder: 999,
     isFinished: false,
     tokenDecimals: 9,
   },
@@ -393,7 +412,7 @@ const pools: PoolConfig[] = [
     harvest: true,
     tokenPerBlock: '0.248',
     sortOrder: 999,
-    isFinished: false,
+    isFinished: true,
     tokenDecimals: 18,
   },
   {
@@ -410,7 +429,7 @@ const pools: PoolConfig[] = [
     harvest: true,
     tokenPerBlock: '0.02',
     sortOrder: 999,
-    isFinished: false,
+    isFinished: true,
     tokenDecimals: 2,
   },
   {
@@ -427,7 +446,7 @@ const pools: PoolConfig[] = [
     harvest: true,
     tokenPerBlock: '0.02',
     sortOrder: 999,
-    isFinished: false,
+    isFinished: true,
     tokenDecimals: 2,
   },
   {
@@ -478,7 +497,7 @@ const pools: PoolConfig[] = [
     harvest: true,
     tokenPerBlock: '0.104',
     sortOrder: 999,
-    isFinished: false,
+    isFinished: true,
     tokenDecimals: 18,
   },
   {
