@@ -4,15 +4,15 @@ import { useRouteMatch, Link } from 'react-router-dom'
 import { ButtonMenu, ButtonMenuItem, Toggle, Text } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 
-const PoolTabButtons = ({ stackedOnly, setStackedOnly }) => {
+const PoolTabButtons = ({ stakedOnly, setStakedOnly }) => {
   const { url, isExact } = useRouteMatch()
   const TranslateString = useI18n()
 
   return (
     <Wrapper>
       <ToggleWrapper>
-        <Toggle checked={stackedOnly} onChange={() => setStackedOnly(!stackedOnly)} /* small */ />
-        <Text> {TranslateString(699, 'Stacked only')}</Text>
+        <Toggle checked={stakedOnly} onChange={() => setStakedOnly(!stakedOnly)} />
+        <Text> {TranslateString(699, 'Staked only')}</Text>
       </ToggleWrapper>
       <ButtonMenu activeIndex={isExact ? 0 : 1} size="sm" variant="subtle">
         <ButtonMenuItem as={Link} to={`${url}`}>
@@ -33,13 +33,25 @@ const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
   margin-bottom: 32px;
+
+  flex-direction: column;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    flex-direction: row;
+  }
 `
 
 const ToggleWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-right: 32px;
+  margin-right: 0;
+  margin-bottom: 16px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    margin-right: 32px;
+    margin-bottom: 0;
+  }
 
   ${Text} {
     margin-left: 8px;
