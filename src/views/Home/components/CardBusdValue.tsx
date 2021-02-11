@@ -2,14 +2,13 @@ import React, { useEffect, useRef } from 'react'
 import { useCountUp } from 'react-countup'
 import { Text } from '@pancakeswap-libs/uikit'
 
-interface CardValueProps {
+interface CardBusdValueProps {
   value: number
   decimals?: number
   fontSize?: string
-  lineHeight?: string
 }
 
-const CardValue: React.FC<CardValueProps> = ({ value, decimals, fontSize = '40px', lineHeight = '44px' }) => {
+const CardBusdValue: React.FC<CardBusdValueProps> = ({ value, decimals = 2, fontSize = '14px' }) => {
   const { countUp, update } = useCountUp({
     start: 0,
     end: value,
@@ -27,10 +26,10 @@ const CardValue: React.FC<CardValueProps> = ({ value, decimals, fontSize = '40px
   }, [value, updateValue])
 
   return (
-    <Text bold fontSize={fontSize} style={{ lineHeight }}>
-      {countUp}
+    <Text fontSize={fontSize} color="textSubtle">
+      ~${countUp}
     </Text>
   )
 }
 
-export default CardValue
+export default CardBusdValue
