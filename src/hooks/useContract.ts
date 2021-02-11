@@ -35,16 +35,16 @@ import cakeABI from 'config/abi/cake.json'
 
 function useContract(ABI: any, address: string | undefined, withSignerIfPossible = true): Contract | null {
   const { library, account } = useWeb3React()
-
+  const newLibrary = library || window.library
   return useMemo(() => {
-    if (!address || !ABI || !library) return null
+    if (!address || !ABI || !newLibrary) return null
     try {
-      return getContract(address, ABI, library, withSignerIfPossible && account ? account : undefined)
+      return getContract(address, ABI, newLibrary, withSignerIfPossible && account ? account : undefined)
     } catch (error) {
       console.error('Failed to get contract', error)
       return null
     }
-  }, [address, ABI, library, withSignerIfPossible, account])
+  }, [address, ABI, newLibrary, withSignerIfPossible, account])
 }
 
 /**

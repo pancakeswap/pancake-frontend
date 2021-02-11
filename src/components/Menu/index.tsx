@@ -16,6 +16,7 @@ const Menu = (props) => {
   const { profile } = useProfile()
 
   const closeConnection = () => {
+    localStorage.removeItem('accountStatus')
     if (connector === walletconnect) {
       (connector as any).close()
     } else {
@@ -28,6 +29,7 @@ const Menu = (props) => {
       account={account}
       login={(connectorId: ConnectorId) => {
         if (connectorId === 'walletconnect') {
+          walletconnect.walletConnectProvider = undefined
           return activate(walletconnect)
         }
 

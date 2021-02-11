@@ -7,7 +7,6 @@ import useI18n from 'hooks/useI18n'
 const UnlockButton = (props) => {
   const TranslateString = useI18n()
   const { account, activate, deactivate } = useWeb3React()
-
   const handleLogin = (connectorId: ConnectorId) => {
     if (connectorId === 'walletconnect') {
       return activate(walletconnect)
