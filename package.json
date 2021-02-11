@@ -9,7 +9,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
-    "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx}'"
+    "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx}'",
+    "generate:config": "ts-node --compiler-options '{\"module\":\"commonjs\"}' scripts/generateConfig"
   },
   "husky": {
     "hooks": {
@@ -43,6 +44,7 @@
     "chart.js": "^2.9.4",
     "date-fns": "^2.16.1",
     "lodash": "^4.17.20",
+    "node-fetch": "^2.6.1",
     "react": "^17.0.1",
     "react-chartjs-2": "^2.11.1",
     "react-countup": "^4.3.3",
@@ -63,6 +65,7 @@
     "eslint": "^7.16.0",
     "husky": "^4.3.0",
     "prettier": "^2.1.2",
-    "source-map-explorer": "^2.5.1"
+    "source-map-explorer": "^2.5.2",
+    "ts-node": "^9.1.1"
   }
 }
