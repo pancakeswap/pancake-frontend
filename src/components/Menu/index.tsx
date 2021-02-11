@@ -9,7 +9,7 @@ import { walletconnect, injected, bsc } from 'connectors'
 import config from './config'
 
 const Menu = (props) => {
-  const { account, activate, deactivate, connector } = useWeb3React()
+  const { account, activate, deactivate } = useWeb3React()
   const { selectedLanguage, setSelectedLanguage } = useContext(LanguageContext)
   const { isDark, toggleTheme } = useTheme()
   const cakePriceUsd = usePriceCakeBusd()
@@ -17,11 +17,7 @@ const Menu = (props) => {
 
   const closeConnection = () => {
     localStorage.removeItem('accountStatus')
-    if (connector === walletconnect) {
-      (connector as any).close()
-    } else {
-      deactivate()
-    }
+    deactivate()
   }
 
   return (
