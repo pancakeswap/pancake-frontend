@@ -45,7 +45,7 @@ const farms: FarmConfig[] = [
       56: '0xe40255c5d7fa7ceec5120408c78c787cecb4cfdb',
     },
     quoteTokenSymbol: QuoteToken.BNB,
-    quoteTokenAdresses: contracts.wBNB,
+    quoteTokenAdresses: contracts.wbnb,
     isCommunity: false,
   },
   {
