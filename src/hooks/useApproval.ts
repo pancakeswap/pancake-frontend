@@ -1,5 +1,5 @@
-import { useCallback, useState } from "react"
-import { useLotteryApprove } from "./useApprove"
+import { useCallback, useState } from 'react'
+import { useLotteryApprove } from './useApprove'
 
 export const useApproval = (onPresentApprove: () => void) => {
   const [requestedApproval, setRequestedApproval] = useState(false)
