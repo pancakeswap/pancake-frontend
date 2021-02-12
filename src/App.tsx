@@ -31,6 +31,12 @@ BigNumber.config({
 const App: React.FC = () => {
   const { account, connect } = useWallet()
 
+  // Monkey patch warn() because of web3 flood
+  // To be removed when web3 1.3.5 is released
+  useEffect(() => {
+    console.warn = () => null
+  }, [])
+
   useEffect(() => {
     if (!account && window.localStorage.getItem('accountStatus')) {
       connect('injected')
