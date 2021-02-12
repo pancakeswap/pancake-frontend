@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { Alert, ButtonMenu, ButtonMenuItem, Text } from '@pancakeswap-libs/uikit'
+import { ButtonMenu, ButtonMenuItem } from '@pancakeswap-libs/uikit'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import PastLotteryDataContext from 'contexts/PastLotteryDataContext'
 import { getLotteryIssueIndex } from 'utils/lotteryUtils'
@@ -61,11 +61,6 @@ const Lottery: React.FC = () => {
     <>
       <Hero />
       <Page>
-        <div style={{ marginBottom: '40px' }}>
-          <Alert variant="warning" title="Notice!">
-            <Text>Lottery is currently paused and undergoing maintenance</Text>
-          </Alert>
-        </div>
         <Wrapper>
           <ButtonMenu activeIndex={activeIndex} onClick={handleClick} size="sm" variant="subtle">
             <ButtonMenuItem>{TranslateString(716, 'Next draw')}</ButtonMenuItem>
