@@ -14,7 +14,7 @@ import {
   remove as removeToast,
   clear as clearToast,
 } from './actions'
-import { State, Farm, Pool, ProfileState, TeamsState } from './types'
+import { State, Farm, Pool, ProfileState, TeamsState, AchievementState } from './types'
 import { fetchProfile } from './profile'
 import { fetchTeam, fetchTeams } from './teams'
 
@@ -171,4 +171,11 @@ export const useTeams = () => {
   }, [dispatch])
 
   return { teams: data, isInitialized, isLoading }
+}
+
+// Achievements
+
+export const useAchievements = () => {
+  const achievements: AchievementState['data'] = useSelector((state: State) => state.achievements.data)
+  return achievements
 }

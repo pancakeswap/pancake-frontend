@@ -5,6 +5,7 @@ import BigNumber from 'bignumber.js'
 import { Card, CardBody, CardRibbon } from '@pancakeswap-libs/uikit'
 import { BSC_BLOCK_TIME } from 'config'
 import { Ifo, IfoStatus } from 'config/constants/types'
+import makeBatchRequest from 'utils/makeBatchRequest'
 import useI18n from 'hooks/useI18n'
 import useBlock from 'hooks/useBlock'
 import { useIfoContract } from 'hooks/useContract'
@@ -99,15 +100,15 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
 
   useEffect(() => {
     const fetchProgress = async () => {
-      const [startBlock, endBlock, raisingAmount, totalAmount] = await Promise.all([
-        contract.methods.startBlock().call(),
-        contract.methods.endBlock().call(),
-        contract.methods.raisingAmount().call(),
-        contract.methods.totalAmount().call(),
+      const [startBlock, endBlock, raisingAmount, totalAmount] = await makeBatchRequest([
+        contract.methods.startBlock().call,
+        contract.methods.endBlock().call,
+        contract.methods.raisingAmount().call,
+        contract.methods.totalAmount().call,
       ])
 
-      const startBlockNum = parseInt(startBlock, 10)
-      const endBlockNum = parseInt(endBlock, 10)
+      const startBlockNum = parseInt(startBlock as string, 10)
+      const endBlockNum = parseInt(endBlock as string, 10)
 
       const status = getStatus(currentBlock, startBlockNum, endBlockNum)
       const totalBlocks = endBlockNum - startBlockNum
@@ -123,8 +124,8 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
         isLoading: false,
         secondsUntilEnd: blocksRemaining * BSC_BLOCK_TIME,
         secondsUntilStart: (startBlockNum - currentBlock) * BSC_BLOCK_TIME,
-        raisingAmount: new BigNumber(raisingAmount),
-        totalAmount: new BigNumber(totalAmount),
+        raisingAmount: new BigNumber(raisingAmount as string),
+        totalAmount: new BigNumber(totalAmount as string),
         status,
         progress,
         blocksRemaining,

@@ -84,7 +84,7 @@ const PublicProfile = () => {
 
   return (
     <>
-      <Menu />
+      <Menu activeIndex={1} />
       <div>
         <Card>
           <CardHeader>
