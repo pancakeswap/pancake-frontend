@@ -7,6 +7,7 @@ export interface PrizeGridProps {
   lotteryPrizeAmount?: number
   pastDraw?: boolean
   jackpotMatches?: number
+  oneTicketMatches?: number
   twoTicketMatches?: number
   threeTicketMatches?: number
 }
@@ -37,6 +38,7 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({
   lotteryPrizeAmount = 0,
   pastDraw = false,
   jackpotMatches,
+  oneTicketMatches,
   twoTicketMatches,
   threeTicketMatches,
 }) => {
@@ -108,7 +110,7 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({
       </GridItem>
       {pastDraw && (
         <PastDrawGridItem marginBottom="20px">
-          <RightAlignedText>{twoTicketMatches}</RightAlignedText>
+          <RightAlignedText>{oneTicketMatches}</RightAlignedText>
         </PastDrawGridItem>
       )}
       <GridItem marginBottom="20px">

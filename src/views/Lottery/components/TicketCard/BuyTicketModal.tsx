@@ -7,9 +7,7 @@ import TicketInput from 'components/TicketInput'
 import ModalActions from 'components/ModalActions'
 import { useMultiBuyLottery, useMaxNumber } from 'hooks/useBuyLottery'
 import useI18n from 'hooks/useI18n'
-
-const maxNumberOfTickets = 50
-const ticketPrice = 1
+import { LOTTERY_MAX_NUMBER_OF_TICKETS, LOTTERY_TICKET_PRICE } from 'config'
 
 interface BuyTicketModalProps {
   max: BigNumber
@@ -28,7 +26,7 @@ const BuyTicketModal: React.FC<BuyTicketModalProps> = ({ max, onDismiss }) => {
   }, [max])
 
   const maxTickets = useMemo(() => {
-    return parseInt(getFullDisplayBalance(max.div(ticketPrice)), 10)
+    return parseInt(getFullDisplayBalance(max.div(LOTTERY_TICKET_PRICE)), 10)
   }, [max])
 
   const handleChange = (e: React.FormEvent<HTMLInputElement>) => setVal(e.currentTarget.value)
@@ -47,7 +45,7 @@ const BuyTicketModal: React.FC<BuyTicketModalProps> = ({ max, onDismiss }) => {
         Math.floor(Math.random() * maxNumber) + 1,
         Math.floor(Math.random() * maxNumber) + 1,
       ])
-      const txHash = await onMultiBuy(ticketPrice.toString(), numbers)
+      const txHash = await onMultiBuy(LOTTERY_TICKET_PRICE.toString(), numbers)
       // user rejected tx or didn't go thru
       if (txHash) {
         setRequestedBuy(false)
@@ -58,15 +56,15 @@ const BuyTicketModal: React.FC<BuyTicketModalProps> = ({ max, onDismiss }) => {
   }, [onMultiBuy, setRequestedBuy, maxNumber, val])
 
   const handleSelectMax = useCallback(() => {
-    if (Number(maxTickets) > maxNumberOfTickets) {
-      setVal(maxNumberOfTickets.toString())
+    if (Number(maxTickets) > LOTTERY_MAX_NUMBER_OF_TICKETS) {
+      setVal(LOTTERY_MAX_NUMBER_OF_TICKETS.toString())
     } else {
       setVal(maxTickets.toString())
     }
   }, [maxTickets])
 
   const cakeCosts = (amount: string): number => {
-    return +amount * ticketPrice
+    return +amount * LOTTERY_TICKET_PRICE
   }
   return (
     <Modal title={TranslateString(450, 'Enter amount of tickets to buy')} onDismiss={onDismiss}>
@@ -79,7 +77,7 @@ const BuyTicketModal: React.FC<BuyTicketModalProps> = ({ max, onDismiss }) => {
         availableSymbol="CAKE"
       />
       <div>
-        <Tips>{TranslateString(999, `1 Ticket = ${ticketPrice} CAKE`, { num: ticketPrice })}</Tips>
+        <Tips>{TranslateString(999, `1 Ticket = ${LOTTERY_TICKET_PRICE} CAKE`, { num: LOTTERY_TICKET_PRICE })}</Tips>
       </div>
       <div>
         <Announce>
@@ -98,7 +96,10 @@ const BuyTicketModal: React.FC<BuyTicketModalProps> = ({ max, onDismiss }) => {
           id="lottery-buy-complete"
           fullWidth
           disabled={
-            pendingTx || parseInt(val) > Number(maxTickets) || parseInt(val) > maxNumberOfTickets || parseInt(val) < 1
+            pendingTx ||
+            parseInt(val) > Number(maxTickets) ||
+            parseInt(val) > LOTTERY_MAX_NUMBER_OF_TICKETS ||
+            parseInt(val) < 1
           }
           onClick={async () => {
             setPendingTx(true)

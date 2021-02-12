@@ -13,6 +13,7 @@ const WinningNumbers: React.FC = () => {
   const MatchedNumber4 = useMatchingRewardLength(4)
   const MatchedNumber3 = useMatchingRewardLength(3)
   const MatchedNumber2 = useMatchingRewardLength(2)
+  const MatchedNumber1 = useMatchingRewardLength(1)
   const TranslateString = useI18n()
 
   return (
@@ -97,6 +98,12 @@ const WinningNumbers: React.FC = () => {
                 <CenteredTextWithPadding>{TranslateString(446, 'Tickets matching 2 numbers:')}</CenteredTextWithPadding>
                 <CenteredTextWithPadding>
                   <strong>{MatchedNumber2}</strong>
+                </CenteredTextWithPadding>
+              </RowNoPadding>
+              <RowNoPadding>
+                <CenteredTextWithPadding>{TranslateString(999, 'Tickets matching 1 numbers:')}</CenteredTextWithPadding>
+                <CenteredTextWithPadding>
+                  <strong>{MatchedNumber1}</strong>
                 </CenteredTextWithPadding>
               </RowNoPadding>
             </Column>
