@@ -79,7 +79,7 @@ const BuyTicketModal: React.FC<BuyTicketModalProps> = ({ max, onDismiss }) => {
         availableSymbol="CAKE"
       />
       <div>
-        <Tips>{TranslateString(999, `1 Ticket = ${ticketPrice} CAKE`)}</Tips>
+        <Tips>{TranslateString(999, `1 Ticket = ${ticketPrice} CAKE`, { num: ticketPrice })}</Tips>
       </div>
       <div>
         <Announce>
