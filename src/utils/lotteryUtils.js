@@ -5,6 +5,7 @@ import { getWeb3 } from 'utils/web3'
 import MultiCallAbi from 'config/abi/Multicall.json'
 import ticketAbi from 'config/abi/lotteryNft.json'
 import lotteryAbi from 'config/abi/lottery.json'
+import { LOTTERY_TICKET_PRICE } from 'config'
 import { getMulticallAddress } from './addressHelpers'
 
 export const multiCall = async (abi, calls) => {
@@ -185,7 +186,7 @@ export const getMatchingRewardLength = async (lotteryContract, matchNumber) => {
   }
   try {
     const amount = await lotteryContract.methods.historyAmount(issueIdex, 5 - matchNumber).call()
-    return amount / 1e18 / 10
+    return amount / 1e18 / LOTTERY_TICKET_PRICE
   } catch (err) {
     console.error(err)
   }
