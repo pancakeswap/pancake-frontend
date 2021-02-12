@@ -12,10 +12,6 @@ function useEagerConnect() {
         activate(injected, undefined, true).catch(() => {
           setTried(true)
         })
-      } else if (isMobile && window.ethereum && hasSignedIn) {
-        activate(injected, undefined, true).catch(() => {
-          setTried(true)
-        })
       } else {
         setTried(true)
       }
