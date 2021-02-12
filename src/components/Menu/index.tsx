@@ -6,6 +6,7 @@ import { LanguageContext } from 'contexts/Localisation/languageContext'
 import useTheme from 'hooks/useTheme'
 import { usePriceCakeBusd, useProfile } from 'state/hooks'
 import config from './config'
+import useWalletRouting from '../../hooks/useWalletRouting'
 
 const Menu = (props) => {
   const { account, connect, reset } = useWallet()
@@ -13,10 +14,11 @@ const Menu = (props) => {
   const { isDark, toggleTheme } = useTheme()
   const cakePriceUsd = usePriceCakeBusd()
   const { profile } = useProfile()
+  useWalletRouting()
 
   return (
     <UikitMenu
-      account={account}
+      account={account}z
       login={connect}
       logout={reset}
       isDark={isDark}
