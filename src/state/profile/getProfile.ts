@@ -8,7 +8,6 @@ import { getTeam } from 'state/teams/helpers'
 import nfts from 'config/constants/nfts'
 import { transformProfileResponse } from './helpers'
 
-
 export interface GetProfileResponse {
   hasRegistered: boolean
   profile?: Profile

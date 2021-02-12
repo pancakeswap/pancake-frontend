@@ -32,7 +32,6 @@ import bunnySpecial from 'config/abi/bunnySpecial.json'
 import { getContract } from 'utils/erc20'
 import cakeABI from 'config/abi/cake.json'
 
-
 function useContract(ABI: any, address: string | undefined, withSignerIfPossible = true): Contract | null {
   const { library, account } = useWeb3React()
   const newLibrary = library || window.library

@@ -37,8 +37,7 @@ const ContributeModal: React.FC<Props> = ({ currency, contract, currencyAddress,
           disabled={pendingTx}
           onClick={async () => {
             setPendingTx(true)
-            await contract
-              .deposit(new BigNumber(value).times(new BigNumber(10).pow(18)).toString(), { from: account })
+            await contract.deposit(new BigNumber(value).times(new BigNumber(10).pow(18)).toString(), { from: account })
             setPendingTx(false)
             onDismiss()
           }}

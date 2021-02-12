@@ -22,7 +22,7 @@ const UnlockButton = (props) => {
     }
 
     return activate(injected)
-}
+  }
 
   const { onPresentConnectModal } = useWalletModal(handleLogin, deactivate, account as string)
 

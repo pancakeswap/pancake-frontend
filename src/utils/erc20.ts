@@ -30,8 +30,7 @@ export function getContract(address: string, ABI: any, library?: Web3Provider, a
   if (!isAddress(address) || address === AddressZero) {
     throw Error(`Invalid 'address' parameter '${address}'.`)
   }
-  if (library && account)
-    return new Contract(address, ABI, getProviderOrSigner(library, account) as any)
+  if (library && account) return new Contract(address, ABI, getProviderOrSigner(library, account) as any)
   return new Contract(address, ABI, getProviderOrSigner(window.library, window.account) as any)
 }
 
@@ -53,7 +52,7 @@ export const getTokenBalance = async (
   tokenAddress: string,
   userAddress: string,
 ): Promise<string> => {
-  const contract = getContract(tokenAddress, erc20, provider, )
+  const contract = getContract(tokenAddress, erc20, provider)
   try {
     const balance: string = await contract.balanceOf(userAddress)
     return balance

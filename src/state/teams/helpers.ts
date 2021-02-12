@@ -7,16 +7,10 @@ import { Team } from 'config/constants/types'
 import multicall from 'utils/multicall'
 import { TeamsById } from 'state/types'
 
-
 export const getTeam = async (teamId: number): Promise<Team> => {
   const profileContract = getContract(getPancakeProfileAddress(), pancakeProfileAbi)
   try {
-    const {
-      0: teamName,
-      2: numberUsers,
-      3: numberPoints,
-      4: isJoinable,
-    } = await profileContract.getTeamProfile(teamId)
+    const { 0: teamName, 2: numberUsers, 3: numberPoints, 4: isJoinable } = await profileContract.getTeamProfile(teamId)
     const staticTeamInfo = teamsList.find((staticTeam) => staticTeam.id === teamId)
     return merge({}, staticTeamInfo, {
       isJoinable,
@@ -49,7 +43,7 @@ export const getTeams = async (): Promise<TeamsById> => {
       calls.push({
         address: getPancakeProfileAddress(),
         name: 'getTeamProfile',
-        params: [i]
+        params: [i],
       })
     }
     const teamData = await multicall(pancakeProfileAbi, calls)

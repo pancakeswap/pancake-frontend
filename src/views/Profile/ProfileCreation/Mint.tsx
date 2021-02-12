@@ -43,8 +43,7 @@ const Mint: React.FC = () => {
       }
     },
     onApprove: () => {
-      return cakeContract
-        .approve(bunnyFactoryContract.address, allowance.toJSON(), { from: account })
+      return cakeContract.approve(bunnyFactoryContract.address, allowance.toJSON(), { from: account })
     },
     onConfirm: () => {
       return bunnyFactoryContract.mintNFT(bunnyId, { from: account })

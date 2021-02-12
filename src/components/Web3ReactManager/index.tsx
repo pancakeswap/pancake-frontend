@@ -17,9 +17,17 @@ const MessageWrapper = styled.div`
 `
 
 export default function Web3ReactManager({ children }: { children: JSX.Element }) {
-  const [toasts, setToasts] = useState([]);
+  const [toasts, setToasts] = useState([])
 
-  const { active: networkActive, error: networkError, activate: activateNetwork, chainId, library, account, connector } = useWeb3React()
+  const {
+    active: networkActive,
+    error: networkError,
+    activate: activateNetwork,
+    chainId,
+    library,
+    account,
+    connector,
+  } = useWeb3React()
   if (connector instanceof WalletConnectConnector) {
     connector.walletConnectProvider.on('disconnect', () => localStorage.removeItem('accountStatus'))
   }
@@ -27,8 +35,7 @@ export default function Web3ReactManager({ children }: { children: JSX.Element }
   const triedEager = useEagerConnect()
   // after eagerly trying injected, if the network connect ever isn't active or in an error state, activate itd
   const isUserRejectedRequestError = networkError instanceof UserRejectedRequestError
-  if (isUserRejectedRequestError)
-  {
+  if (isUserRejectedRequestError) {
     localStorage.removeItem('accountStatus')
   }
 
@@ -40,12 +47,9 @@ export default function Web3ReactManager({ children }: { children: JSX.Element }
   useInactiveListener(!triedEager)
   // handle delayed loader state
   const [showLoader, setShowLoader] = useState(false)
-  if (library)
-    window.library = library
-  if (account)
-    window.account = account
-  if (chainId)
-    window.chainId = chainId
+  if (library) window.library = library
+  if (account) window.account = account
+  if (chainId) window.chainId = chainId
   useEffect(() => {
     const timeout = setTimeout(() => {
       setShowLoader(true)
@@ -57,8 +61,8 @@ export default function Web3ReactManager({ children }: { children: JSX.Element }
   }, [])
 
   const handleRemove = (id: string) => {
-    setToasts((prevToasts) => prevToasts.filter((prevToast) => prevToast.id !== id));
-  };
+    setToasts((prevToasts) => prevToasts.filter((prevToast) => prevToast.id !== id))
+  }
 
   // on page load, do nothing until we've tried to connect to the injected connector
   if (!triedEager) {
@@ -67,19 +71,24 @@ export default function Web3ReactManager({ children }: { children: JSX.Element }
 
   // if the account context isn't active, and there's an error on the network context, it's an irrecoverable error
   if (networkError) {
-    setToasts((prevToasts) => [{
-      id: networkError.name,
-      type: 'WARNING',
-      title: networkError.message,
-    }, ...prevToasts])
-    return <>
-      {children}
-      <ToastContainer toasts={toasts} onRemove={handleRemove} />
-    </>
+    setToasts((prevToasts) => [
+      {
+        id: networkError.name,
+        type: 'WARNING',
+        title: networkError.message,
+      },
+      ...prevToasts,
+    ])
+    return (
+      <>
+        {children}
+        <ToastContainer toasts={toasts} onRemove={handleRemove} />
+      </>
+    )
   }
 
   // if neither context is active, spin
-  if (!networkActive ) {
+  if (!networkActive) {
     return showLoader ? (
       <MessageWrapper>
         <PageLoader />

@@ -1,9 +1,9 @@
 /// <reference types="react-scripts" />
 
-import { Web3Provider } from "@ethersproject/providers";
+import { Web3Provider } from '@ethersproject/providers'
 
 declare module 'jazzicon' {
-  export default function(diameter: number, seed: number): HTMLElement
+  export default function (diameter: number, seed: number): HTMLElement
 }
 
 declare module 'fortmatic'
@@ -16,12 +16,11 @@ declare global {
       removeListener?: (...args: any[]) => void
     }
     web3?: any
-    BinanceChain?: BinanceChain,
-    library: Web3Provider,
-    account: string | null,
+    BinanceChain?: BinanceChain
+    library: Web3Provider
+    account: string | null
     chainId: number
   }
-
 }
 
 declare module 'content-hash' {

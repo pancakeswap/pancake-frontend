@@ -54,8 +54,7 @@ const ClaimGift: React.FC<ClaimGiftProps> = ({ onSuccess, onDismiss }) => {
 
   const handleClick = () => {
     setIsConfirming(true)
-    const tx = claimRefundContract
-      .getCakeBack({ from: account })
+    const tx = claimRefundContract.getCakeBack({ from: account })
     try {
       tx.wait()
       toastSuccess('Success!')

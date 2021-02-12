@@ -16,20 +16,24 @@ const useGetProfileCosts = () => {
   useEffect(() => {
     const fetchCosts = async () => {
       try {
-        const calls = [{
-          address: getPancakeProfileAddress(),
-          name: 'numberCakeToReactivate',
-          params: [],
-        },{
-          address: getPancakeProfileAddress(),
-          name: 'numberCakeToRegister',
-          params: [],
-        },{
-          address: getPancakeProfileAddress(),
-          name: 'numberCakeToUpdate',
-          params: [],
-        }]
-  
+        const calls = [
+          {
+            address: getPancakeProfileAddress(),
+            name: 'numberCakeToReactivate',
+            params: [],
+          },
+          {
+            address: getPancakeProfileAddress(),
+            name: 'numberCakeToRegister',
+            params: [],
+          },
+          {
+            address: getPancakeProfileAddress(),
+            name: 'numberCakeToUpdate',
+            params: [],
+          },
+        ]
+
         const [numReactive, numRegister, numUpdate] = await multicall(profileABI, calls)
 
         setCosts({

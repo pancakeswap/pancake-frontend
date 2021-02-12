@@ -10,7 +10,6 @@ import { RefreshContextProvider } from 'contexts/RefreshContext'
 import Web3ReactManager from 'components/Web3ReactManager'
 import store from 'state'
 
-
 const Providers: React.FC = ({ children }) => {
   return (
     <Web3ReactProvider getLibrary={getLibrary}>
@@ -20,9 +19,7 @@ const Providers: React.FC = ({ children }) => {
             <BlockContextProvider>
               <RefreshContextProvider>
                 <Web3ReactManager>
-                  <ModalProvider>
-                      {children}
-                  </ModalProvider>
+                  <ModalProvider>{children}</ModalProvider>
                 </Web3ReactManager>
               </RefreshContextProvider>
             </BlockContextProvider>

@@ -23,10 +23,7 @@ export const fetchPoolsAllowance = async (account) => {
   }))
 
   const allowances = await multicall(erc20ABI, calls)
-  return nonBnbPools.reduce(
-    (acc, pool, index) => ({ ...acc, [pool.sousId]: allowances[index].toString() }),
-    {},
-  )
+  return nonBnbPools.reduce((acc, pool, index) => ({ ...acc, [pool.sousId]: allowances[index].toString() }), {})
 }
 
 export const fetchUserBalances = async (account) => {
@@ -44,10 +41,7 @@ export const fetchUserBalances = async (account) => {
 
   // BNB pools
   const bnbBalance = await httpProvider.getBalance(account)
-  const bnbBalances = bnbPools.reduce(
-    (acc, pool) => ({ ...acc, [pool.sousId]: bnbBalance.toString() }),
-    {},
-  )
+  const bnbBalances = bnbPools.reduce((acc, pool) => ({ ...acc, [pool.sousId]: bnbBalance.toString() }), {})
 
   return { ...tokenBalances, ...bnbBalances }
 }

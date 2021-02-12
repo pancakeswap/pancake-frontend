@@ -56,8 +56,7 @@ const ConfirmProfileCreationModal: React.FC<Props> = ({
       return cakeContract.approve(profileContract.address, allowance.toJSON(), { from: account })
     },
     onConfirm: () => {
-      return profileContract
-        .createProfile(teamId, pancakeRabbitsContract.address, tokenId, { from: account })
+      return profileContract.createProfile(teamId, pancakeRabbitsContract.address, tokenId, { from: account })
     },
     onSuccess: async () => {
       await dispatch(fetchProfile(account))

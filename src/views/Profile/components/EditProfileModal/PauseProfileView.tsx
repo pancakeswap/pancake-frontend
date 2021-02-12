@@ -31,7 +31,7 @@ const PauseProfilePage: React.FC<PauseProfilePageProps> = ({ onDismiss }) => {
       await tx.wait()
       await dispatch(fetchProfile(account))
       toastSuccess('Profile Paused!')
-  
+
       onDismiss()
     } catch (error) {
       toastError('Error', error?.message)

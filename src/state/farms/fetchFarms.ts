@@ -64,7 +64,9 @@ const fetchFarms = async () => {
         .times(lpTokenRatio)
 
       // Amount of token in the LP that are considered staking (i.e amount of token * lp ratio)
-      const tokenAmount = new BigNumber(tokenBalanceLP.toString()).div(new BigNumber(10).pow(tokenDecimals.toString())).times(lpTokenRatio)
+      const tokenAmount = new BigNumber(tokenBalanceLP.toString())
+        .div(new BigNumber(10).pow(tokenDecimals.toString()))
+        .times(lpTokenRatio)
       const quoteTokenAmount = new BigNumber(quoteTokenBlanceLP.toString())
         .div(new BigNumber(10).pow(quoteTokenDecimals.toString()))
         .times(lpTokenRatio)

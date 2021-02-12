@@ -36,8 +36,7 @@ const ProfilePicture: React.FC = () => {
   const handleApprove = async () => {
     setIsApproving(true)
     try {
-      const tx = await pancakeRabbitsContract
-        .approve(getPancakeProfileAddress(), tokenId, { from: account })
+      const tx = await pancakeRabbitsContract.approve(getPancakeProfileAddress(), tokenId, { from: account })
       await tx.wait()
       setIsApproving(false)
       setIsApproved(true)

@@ -68,15 +68,18 @@ const useGetWalletNfts = () => {
             try {
               const { tokenOfOwnerByIndex } = pancakeRabbitsContract
               const tokenId = await tokenOfOwnerByIndex(account, index)
-              const calls = [{
-                address: getPancakeRabbitsAddress(),
-                name: 'getBunnyId',
-                params: [tokenId.toString()],
-              }, {
-                address: getPancakeRabbitsAddress(),
-                name: 'tokenURI',
-                params: [tokenId.toString()],
-              }]
+              const calls = [
+                {
+                  address: getPancakeRabbitsAddress(),
+                  name: 'getBunnyId',
+                  params: [tokenId.toString()],
+                },
+                {
+                  address: getPancakeRabbitsAddress(),
+                  name: 'tokenURI',
+                  params: [tokenId.toString()],
+                },
+              ]
               const res = await multicall(pancakeRabbitsAbi, calls)
               return [Number(res[0]), Number(tokenId.toString()), res[1]]
             } catch (error) {
