@@ -13,8 +13,7 @@ import CardBusdValue from './CardBusdValue'
 const CakeWalletBalance = () => {
   const TranslateString = useI18n()
   const cakeBalance = useTokenBalance(getCakeAddress())
-  const busdBalance = new BigNumber(cakeBalance).multipliedBy(usePriceCakeBusd()).toNumber()
-
+  const busdBalance = new BigNumber(getBalanceNumber(cakeBalance)).multipliedBy(usePriceCakeBusd()).toNumber()
   const { account } = useWallet()
 
   if (!account) {

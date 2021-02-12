@@ -1,6 +1,4 @@
-import React, { useEffect, useRef } from 'react'
-import { useCountUp } from 'react-countup'
-import { Text } from '@pancakeswap-libs/uikit'
+import React from 'react'
 import CardValue, { CardValueProps } from './CardValue'
 
 const CardBusdValue: React.FC<CardValueProps> = ({ value }) => {
