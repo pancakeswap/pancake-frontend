@@ -11,7 +11,7 @@ const useI18n = () => {
 
   return (translationId: number, fallback: string, data: ContextData = {}) => {
     const foundTranslation = translations.find((translation) => {
-      return translation.data.stringId === translationId
+      return translation.data?.stringId === translationId
     })
 
     if (foundTranslation) {

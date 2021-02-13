@@ -14,9 +14,9 @@ import { useFarms, usePriceBnbBusd, usePools, usePriceEthBnb } from 'state/hooks
 import { QuoteToken, PoolCategory } from 'config/constants/types'
 import FlexLayout from 'components/layout/Flex'
 import Page from 'components/layout/Page'
+import TabToolbar from 'components/TabToolbar'
 import Coming from './components/Coming'
 import PoolCard from './components/PoolCard'
-import PoolTabButtons from './components/PoolTabButtons'
 import Divider from './components/Divider'
 
 const Farm: React.FC = () => {
@@ -28,7 +28,8 @@ const Farm: React.FC = () => {
   const bnbPriceUSD = usePriceBnbBusd()
   const ethPriceBnb = usePriceEthBnb()
   const block = useBlock()
-  const [stackedOnly, setStackedOnly] = useState(false)
+  const [stakedOnly, setStakedOnly] = useState(false)
+  const [filter, setFilter] = useState('')
 
   const priceToBnb = (tokenName: string, tokenPrice: BigNumber, quoteToken: QuoteToken): BigNumber => {
     const tokenPriceBN = new BigNumber(tokenPrice)
@@ -71,10 +72,14 @@ const Farm: React.FC = () => {
     }
   })
 
-  const [finishedPools, openPools] = partition(poolsWithApy, (pool) => pool.isFinished)
-  const stackedOnlyPools = openPools.filter(
-    (pool) => pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0),
-  )
+  const filterPools = (pool) =>
+    pool.tokenName.toLowerCase().includes(filter.toLowerCase().trim()) ||
+    pool.stakingTokenName.toLowerCase().includes(filter.toLowerCase().trim())
+  const filterStakedOnly = (pool) => pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0)
+
+  const [finishedPools, openPools] = partition(poolsWithApy.filter(filterPools), (pool) => pool.isFinished)
+  const stakedOnlyPools = openPools.filter(filterStakedOnly)
+  const stakedOnlyFinishedPools = finishedPools.filter(filterStakedOnly)
 
   return (
     <Page>
@@ -91,21 +96,27 @@ const Farm: React.FC = () => {
         </div>
         <img src="/images/syrup.png" alt="SYRUP POOL icon" width={410} height={191} />
       </Hero>
-      <PoolTabButtons stackedOnly={stackedOnly} setStackedOnly={setStackedOnly} />
+      <TabToolbar
+        account={account}
+        stakedOnly={stakedOnly}
+        setStakedOnly={setStakedOnly}
+        filter={filter}
+        setFilter={setFilter}
+      />
       <Divider />
       <FlexLayout>
         <Route exact path={`${path}`}>
           <>
-            {stackedOnly
-              ? orderBy(stackedOnlyPools, ['sortOrder']).map((pool) => <PoolCard key={pool.sousId} pool={pool} />)
+            {stakedOnly
+              ? orderBy(stakedOnlyPools, ['sortOrder']).map((pool) => <PoolCard key={pool.sousId} pool={pool} />)
               : orderBy(openPools, ['sortOrder']).map((pool) => <PoolCard key={pool.sousId} pool={pool} />)}
             <Coming />
           </>
         </Route>
         <Route path={`${path}/history`}>
-          {orderBy(finishedPools, ['sortOrder']).map((pool) => (
-            <PoolCard key={pool.sousId} pool={pool} />
-          ))}
+          {stakedOnly
+            ? orderBy(stakedOnlyFinishedPools, ['sortOrder']).map((pool) => <PoolCard key={pool.sousId} pool={pool} />)
+            : orderBy(finishedPools, ['sortOrder']).map((pool) => <PoolCard key={pool.sousId} pool={pool} />)}
         </Route>
       </FlexLayout>
     </Page>
