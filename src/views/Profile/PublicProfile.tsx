@@ -12,6 +12,7 @@ import {
   Text,
   PrizeIcon,
   OpenNewIcon,
+  BlockIcon,
 } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import { useProfile } from 'state/hooks'
@@ -95,13 +96,17 @@ const PublicProfile = () => {
                 <ResponsiveText bold>{profile.team.name}</ResponsiveText>
               </Content>
             </Flex>
-            {profile.isActive && (
-              <Status>
+            <Status>
+              {profile.isActive ? (
                 <Tag startIcon={<CheckmarkCircleIcon width="18px" />} outline>
                   {TranslateString(698, 'Active')}
                 </Tag>
-              </Status>
-            )}
+              ) : (
+                <Tag variant="failure" startIcon={<BlockIcon width="18px" />} outline>
+                  {TranslateString(999, 'Paused')}
+                </Tag>
+              )}
+            </Status>
           </CardHeader>
           <CardBody>
             <StatBox icon={PrizeIcon} title={profile.points} subtitle={TranslateString(999, 'Points')} mb="24px" />

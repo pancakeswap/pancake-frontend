@@ -33,6 +33,54 @@ const farms: FarmConfig[] = [
     quoteTokenAdresses: contracts.wbnb,
   },
   {
+    pid: 73,
+    lpSymbol: 'SWGb-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0xc1800c29cf91954357cd0bf3f0accaada3d0109c',
+    },
+    tokenSymbol: 'SWGb',
+    tokenAddresses: {
+      97: '',
+      56: '0xe40255c5d7fa7ceec5120408c78c787cecb4cfdb',
+    },
+    quoteTokenSymbol: QuoteToken.BNB,
+    quoteTokenAdresses: contracts.wbnb,
+    isCommunity: false,
+  },
+  {
+    pid: 72,
+    lpSymbol: 'COMP-ETH LP',
+    lpAddresses: {
+      97: '',
+      56: '0x0392957571f28037607c14832d16f8b653edd472',
+    },
+    tokenSymbol: 'COMP',
+    tokenAddresses: {
+      97: '',
+      56: '0x52ce071bd9b1c4b00a0b92d298c512478cad67e8',
+    },
+    quoteTokenSymbol: QuoteToken.ETH,
+    quoteTokenAdresses: contracts.eth,
+    isCommunity: false,
+  },
+  {
+    pid: 71,
+    lpSymbol: 'SFP-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0xcbe2cf3bd012e9c1ade2ee4d41db3dac763e78f3',
+    },
+    tokenSymbol: 'SFP',
+    tokenAddresses: {
+      97: '',
+      56: '0xd41fdb03ba84762dd66a0af1a6c8540ff1ba5dfb',
+    },
+    quoteTokenSymbol: QuoteToken.BNB,
+    quoteTokenAdresses: contracts.wbnb,
+    isCommunity: false,
+  },
+  {
     pid: 70,
     lpSymbol: 'BETH-ETH LP',
     lpAddresses: {
