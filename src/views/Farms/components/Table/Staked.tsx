@@ -10,6 +10,8 @@ import useI18n from 'hooks/useI18n'
 import { useApprove } from 'hooks/useApprove'
 import { getContract } from 'utils/erc20'
 import { provider } from 'web3-core'
+import { BASE_ADD_LIQUIDITY_URL } from 'config'
+import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 
 const Container = styled.div`
   display: flex;
@@ -28,13 +30,15 @@ const Container = styled.div`
   }
 `
 
-const Staked: React.FunctionComponent<FarmWithStakedValue> = ({ pid, lpSymbol, lpAddresses }) => {
+const Staked: React.FunctionComponent<FarmWithStakedValue> = ({ pid, lpSymbol, lpAddresses, quoteTokenAdresses, quoteTokenSymbol, tokenAddresses }) => {
   const TranslateString = useI18n()
   const { account, ethereum } = useWallet()
   const [requestedApproval, setRequestedApproval] = useState(false)
   const { allowance, tokenBalance, stakedBalance } = useFarmUser(pid)
   const isApproved = account && allowance && allowance.isGreaterThan(0)
   const lpAddress = lpAddresses[process.env.REACT_APP_CHAIN_ID]
+  const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAdresses, quoteTokenSymbol, tokenAddresses })
+  const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
 
   const lpContract = useMemo(() => {
     return getContract(ethereum as provider, lpAddress)
@@ -61,6 +65,7 @@ const Staked: React.FunctionComponent<FarmWithStakedValue> = ({ pid, lpSymbol, l
             tokenBalance={tokenBalance}
             tokenName={lpSymbol.toUpperCase()}
             pid={pid}
+            addLiquidityUrl={addLiquidityUrl}
           />
         </Container>
       )

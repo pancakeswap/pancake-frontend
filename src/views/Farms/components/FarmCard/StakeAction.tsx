@@ -28,7 +28,7 @@ const IconButtonWrapper = styled.div`
   display: flex;
 
   button {
-    width: 2rem;
+    width: 2rem !important;
     height: 2rem;
 
     svg {
