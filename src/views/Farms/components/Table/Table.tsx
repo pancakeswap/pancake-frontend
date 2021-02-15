@@ -48,7 +48,7 @@ const TableHead = styled.thead`
   & tr {
     background-color: ${(props) => props.theme.colors.tertiary};
     border-radius: 4px;
-    color: #8f80ba;
+    color: ${(props) => props.theme.colors.textSubtle};
     font-weight: 700;
     font-size: 12px;
     text-transform: capitalize;

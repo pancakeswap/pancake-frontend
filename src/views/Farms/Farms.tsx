@@ -29,7 +29,6 @@ const ControlContainer = styled.div`
   width: 100%;
   align-items: center;
   margin-bottom: 32px;
-  padding: 0;
   position: relative;
 `
 
