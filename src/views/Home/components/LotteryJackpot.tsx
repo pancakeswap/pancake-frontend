@@ -10,17 +10,16 @@ import CardBusdValue from './CardBusdValue'
 const LotteryJackpot = () => {
   const TranslateString = useI18n()
   const lotteryPrizeAmount = useTotalRewards()
-  const lotteryPrizeAmountBusd = new BigNumber(getBalanceNumber(lotteryPrizeAmount))
-    .multipliedBy(usePriceCakeBusd())
-    .toNumber()
+  const balance = getBalanceNumber(lotteryPrizeAmount)
+  const lotteryPrizeAmoutCake = balance.toLocaleString(undefined, {
+    maximumFractionDigits: 2,
+  })
+  const lotteryPrizeAmountBusd = new BigNumber(balance).multipliedBy(usePriceCakeBusd()).toNumber()
 
   return (
     <>
       <Text bold fontSize="24px" style={{ lineHeight: '1.5' }}>
-        {getBalanceNumber(lotteryPrizeAmount).toLocaleString(undefined, {
-          maximumFractionDigits: 2,
-        })}{' '}
-        {TranslateString(999, 'CAKE')}
+        {lotteryPrizeAmoutCake} {TranslateString(999, 'CAKE')}
       </Text>
       <CardBusdValue value={lotteryPrizeAmountBusd} />
     </>
