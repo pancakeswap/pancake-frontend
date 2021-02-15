@@ -12,7 +12,7 @@ export const sizes = {
   LG: "lg",
   XL: "xl",
   XXL: "xxl",
-};
+} as const;
 
 export type Tags = typeof tags[keyof typeof tags];
 export type Sizes = typeof sizes[keyof typeof sizes];
