@@ -37,7 +37,7 @@ const Tags: React.FunctionComponent<FarmWithStakedValue> = ({ tokenSymbol, dual 
   return (
     <>
       {isCommunityFarm ? <StyledCommunityTag /> : <StyledCoreTag />}
-      {dual ? <StyledDualTag /> : null}
+      {dual && <StyledDualTag />}
     </>
   )
 }
