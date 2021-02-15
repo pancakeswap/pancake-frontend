@@ -41,7 +41,7 @@ const IfoCardTime: React.FC<IfoCardTimeProps> = ({ isLoading, status, secondsUnt
   if (countdownToUse <= 0) {
     return (
       <Details>
-        <Text bold>{TranslateString(999, 'Finished!')}</Text>
+        <Text bold>{TranslateString(388, 'Finished!')}</Text>
       </Details>
     )
   }

@@ -173,7 +173,7 @@ const UserName: React.FC = () => {
         {TranslateString(999, `Step ${4}`)}
       </Text>
       <Heading as="h3" size="xl" mb="24px">
-        {TranslateString(999, 'Set Your Name')}
+        {TranslateString(1110, 'Set Your Name')}
       </Heading>
       <Text as="p" mb="24px">
         {TranslateString(
@@ -184,11 +184,11 @@ const UserName: React.FC = () => {
       <Card mb="24px">
         <CardBody>
           <Heading as="h4" size="lg" mb="8px">
-            {TranslateString(999, 'Set Your Name')}
+            {TranslateString(1110, 'Set Your Name')}
           </Heading>
           <Text as="p" color="textSubtle" mb="24px">
             {TranslateString(
-              999,
+              840,
               'Your name must be at least 3 and at most 15 standard letters and numbers long. You can’t change this once you click Confirm.',
             )}
           </Text>
