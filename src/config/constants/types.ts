@@ -122,7 +122,3 @@ export type Campaign = {
   description?: TranslatableText
   badge?: string
 }
-
-export type Campaigns = {
-  [key: string]: Campaign
-}

@@ -43,7 +43,7 @@ const AchievementRow: React.FC<AchievementRowProps> = ({ achievement, onCollectS
   const TranslateString = useI18n()
   const pointCenterContract = usePointCenterIfoContract()
   const { account } = useWallet()
-  const { toastError } = useToast()
+  const { toastError, toastSuccess } = useToast()
 
   const handleCollectPoints = () => {
     pointCenterContract.methods
@@ -55,6 +55,7 @@ const AchievementRow: React.FC<AchievementRowProps> = ({ achievement, onCollectS
       .on('receipt', () => {
         setIsCollecting(false)
         onCollectSuccess(achievement)
+        toastSuccess('Points Collected!')
       })
       .on('error', (error) => {
         toastError('Error', error?.message)

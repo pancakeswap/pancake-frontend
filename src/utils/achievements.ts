@@ -3,7 +3,7 @@ import { getPointCenterIfoAddress } from 'utils/addressHelpers'
 import { getContract } from 'utils/web3'
 import pointCenterIfo from 'config/abi/pointCenterIfo.json'
 import ifosList from 'config/constants/ifo'
-import campaigns from 'config/constants/campaigns'
+import { campaignMap } from 'config/constants/campaigns'
 import { Achievement, TranslatableText } from 'state/types'
 import makeBatchRequest from './makeBatchRequest'
 
@@ -72,19 +72,22 @@ export const getClaimableIfoData = async (account: string): Promise<Achievement[
   )) as IfoMapResponse[]
 
   // Transform response to an Achievement
-  return claimableIfoData.reduce((accum, claimableIfoDataItem, index) => {
-    const campaignMeta = campaigns[claimableIfoDataItem.campaignId]
+  return claimableIfoData.reduce((accum, claimableIfoDataItem) => {
+    const id = Number(claimableIfoDataItem.campaignId)
 
-    if (!campaignMeta) {
+    if (!campaignMap.has(id)) {
       return accum
     }
+
+    const campaignMeta = campaignMap.get(id)
+    const { address } = ifoCampaigns.find((ifoCampaign) => ifoCampaign.campaignId === id)
 
     return [
       ...accum,
       {
-        id: Number(claimableIfoDataItem.campaignId),
+        id,
+        address,
         type: 'ifo',
-        address: ifoCampaignAddresses[index],
         title: getAchievementTitle(campaignMeta),
         description: getAchievementDescription(campaignMeta),
         badge: campaignMeta.badge,

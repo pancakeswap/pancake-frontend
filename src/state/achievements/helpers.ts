@@ -1,5 +1,5 @@
 import { getProfileContract } from 'utils/contractHelpers'
-import campaigns from 'config/constants/campaigns'
+import { campaignMap } from 'config/constants/campaigns'
 import { Achievement } from 'state/types'
 import { getAchievementTitle, getAchievementDescription } from 'utils/achievements'
 
@@ -29,10 +29,11 @@ export const getAchievements = async (account: string): Promise<Achievement[]> =
   const pointIncreaseEvents = await getUserPointIncreaseEvents(account)
 
   return pointIncreaseEvents.reduce((accum, event) => {
-    const campaignMeta = campaigns[event.returnValues.campaignId]
-    if (!campaignMeta) {
+    if (!campaignMap.has(event.returnValues.campaignId)) {
       return accum
     }
+
+    const campaignMeta = campaignMap.get(event.returnValues.campaignId)
 
     return [
       ...accum,
