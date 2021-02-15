@@ -62,7 +62,7 @@ export const getTickets = async (lotteryContract, ticketsContract, account, cust
 
   const finalTokenids = []
   ticketIssues.forEach(async (ticketIssue, i) => {
-    if (parseInt(ticketIssue, 10) === issueIndex) {
+    if (new BigNumber(ticketIssue).eq(issueIndex)) {
       finalTokenids.push(tokenIds[i])
     }
   })
