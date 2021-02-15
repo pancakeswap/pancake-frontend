@@ -102,9 +102,9 @@ const Farms: React.FC = () => {
       })
 
       if (query) {
-        const lowered = query.toLowerCase()
+        const lowercaseQuery = query.toLowerCase()
         farmsToDisplayWithAPY = farmsToDisplayWithAPY.filter((farm: FarmWithStakedValue) => {
-          if (farm.lpSymbol.toLowerCase().includes(lowered)) {
+          if (farm.lpSymbol.toLowerCase().includes(lowercaseQuery)) {
             return true
           }
 
