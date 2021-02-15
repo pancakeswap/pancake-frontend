@@ -11,5 +11,14 @@ export const Default: React.FC = () => {
 
   const toggle = () => setIsChecked(!isChecked);
 
-  return <Toggle checked={isChecked} onChange={toggle} />;
+  return (
+    <>
+      <div style={{ marginBottom: "32px" }}>
+        <Toggle checked={isChecked} onChange={toggle} />
+      </div>
+      <div>
+        <Toggle checked={isChecked} onChange={toggle} scale="sm" />
+      </div>
+    </>
+  );
 };
