@@ -76,7 +76,7 @@ const CardActions: React.FC<FarmCardActionsProps> = ({ farm, ethereum, account, 
           CAKE
         </Text>
         <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px">
-          {TranslateString(999, 'Earned')}
+          {TranslateString(1072, 'Earned')}
         </Text>
       </Flex>
       <HarvestAction earnings={earnings} pid={pid} />
@@ -85,7 +85,7 @@ const CardActions: React.FC<FarmCardActionsProps> = ({ farm, ethereum, account, 
           {lpName}
         </Text>
         <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px">
-          {TranslateString(999, 'Staked')}
+          {TranslateString(1074, 'Staked')}
         </Text>
       </Flex>
       {!account ? <UnlockButton mt="8px" fullWidth /> : renderApprovalOrStakeButton()}

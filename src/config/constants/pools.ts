@@ -19,6 +19,23 @@ const pools: PoolConfig[] = [
     tokenDecimals: 18,
   },
   {
+    sousId: 49,
+    tokenName: 'SWGb',
+    stakingTokenName: QuoteToken.CAKE,
+    stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
+    contractAddress: {
+      97: '',
+      56: '0x73e4E8d010289267dEe3d1Fc48974B60363963CE',
+    },
+    poolCategory: PoolCategory.CORE,
+    projectLink: 'https://swirgepay.com/',
+    harvest: true,
+    tokenPerBlock: '0.899',
+    sortOrder: 999,
+    isFinished: false,
+    tokenDecimals: 18,
+  },
+  {
     sousId: 48,
     image: 'CAKECOMP',
     tokenName: 'CAKE',

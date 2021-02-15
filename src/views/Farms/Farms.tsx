@@ -53,11 +53,16 @@ const Farms: React.FC = () => {
     }
   }, [account, dispatch, fastRefresh])
 
+  const [stackedOnly, setStackedOnly] = useState(false)
+
   const activeFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
   const inactiveFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X')
 
   const tableRef = useRef(null)
 
+  const stackedOnlyFarms = activeFarms.filter(
+    (farm) => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0),
+  )
   // /!\ This function will be removed soon
   // This function compute the APY for each farm and will be replaced when we have a reliable API
   // to retrieve assets prices against USD
@@ -118,7 +123,7 @@ const Farms: React.FC = () => {
   const isActive = !pathname.includes('history')
   let farmsStaked = []
   if (isActive) {
-    farmsStaked = farmsList(activeFarms)
+    farmsStaked = stackedOnly ? farmsList(stackedOnlyFarms) : farmsList(activeFarms)
   } else {
     farmsStaked = farmsList(inactiveFarms)
   }
@@ -223,11 +228,11 @@ const Farms: React.FC = () => {
   return (
     <Page>
       <Heading as="h1" size="lg" color="secondary" mb="50px" style={{ textAlign: 'center' }}>
-        {TranslateString(999, 'Stake LP tokens to earn CAKE')}
+        {TranslateString(696, 'Stake LP tokens to earn CAKE')}
       </Heading>
       <ControlContainer>
         <ToggleView viewMode={viewMode} onToggle={(mode: ViewMode) => setViewMode(mode)} />
-        <FarmTabButtons />
+        <FarmTabButtons stackedOnly={stackedOnly} setStackedOnly={setStackedOnly} />
         <SearchInput onChange={handleChangeQuery} value={query} />
       </ControlContainer>
       {renderContent()}
