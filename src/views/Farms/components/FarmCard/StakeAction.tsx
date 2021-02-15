@@ -18,7 +18,7 @@ interface FarmCardActionsProps {
 }
 
 const StyledHeading = styled(Heading)`
-  margin-right: 3rem;
+  margin-right: 48px;
 `
 
 const StakingButtonContainer = styled.div`
@@ -28,8 +28,8 @@ const IconButtonWrapper = styled.div`
   display: flex;
 
   button {
-    width: 2rem !important;
-    height: 2rem;
+    width: 32px !important;
+    height: 32px;
 
     svg {
       width: 20px;
@@ -40,9 +40,9 @@ const IconButtonWrapper = styled.div`
 const StyledButton = styled(Button)`
   white-space: nowrap;
   color: white;
-  height: 2rem;
-  width: 10rem;
-  border-radius: 1rem;
+  height: 32px;
+  width: 160px;
+  border-radius: 16px;
   padding-left: 0;
   padding-right: 0;
 `

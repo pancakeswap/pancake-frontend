@@ -29,18 +29,18 @@ const Container = styled.div`
 
 const StakeLabel = styled.span`
   color: ${({ theme }) => theme.colors.text};
-  margin-right: 0.5rem;
+  margin-right: 8px;
 `
 
 const StyledLinkExternal = styled(LinkExternal)`
   white-space: nowrap;
   color: ${({ theme }) => theme.colors.primary};
   font-weight: normal;
-  font-size: 0.875rem;
+  font-size: 14px;
   svg {
-    width: 1rem;
-    height: 1rem;
-    margin-left: 0.375rem;
+    width: 16px;
+    height: 16px;
+    margin-left: 6px;
   }
 `
 

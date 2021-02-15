@@ -28,7 +28,7 @@ const ControlContainer = styled.div`
   display: flex;
   width: 100%;
   align-items: center;
-  margin-bottom: 2rem;
+  margin-bottom: 32px;
   padding: 0;
   position: relative;
 `

@@ -31,11 +31,11 @@ const cells = {
 }
 
 const CellInner = styled.div`
-  padding: 0.3125rem 0rem;
+  padding: 5px 0px;
   display: flex;
   width: 100%;
   align-items: center;
-  padding-right: 1rem;
+  padding-right: 16px;
 `
 
 const Row: React.FunctionComponent<RowData> = (props) => {

@@ -22,15 +22,22 @@ const Container = styled.div`
   button {
     white-space: nowrap;
     color: white;
-    height: 2rem;
-    width: 10rem;
-    border-radius: 1rem;
+    height: 32px;
+    width: 160px;
+    border-radius: 16px;
     padding-left: 0;
     padding-right: 0;
   }
 `
 
-const Staked: React.FunctionComponent<FarmWithStakedValue> = ({ pid, lpSymbol, lpAddresses, quoteTokenAdresses, quoteTokenSymbol, tokenAddresses }) => {
+const Staked: React.FunctionComponent<FarmWithStakedValue> = ({
+  pid,
+  lpSymbol,
+  lpAddresses,
+  quoteTokenAdresses,
+  quoteTokenSymbol,
+  tokenAddresses,
+}) => {
   const TranslateString = useI18n()
   const { account, ethereum } = useWallet()
   const [requestedApproval, setRequestedApproval] = useState(false)

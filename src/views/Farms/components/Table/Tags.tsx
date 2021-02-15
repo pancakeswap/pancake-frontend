@@ -5,29 +5,29 @@ import { communityFarms } from 'config/constants'
 import { CommunityTag, CoreTag, DualTag } from 'components/Tags'
 
 const StyledCommunityTag = styled(CommunityTag)`
-  height: 1.5rem;
-  padding: 0 0.375rem;
+  height: 24px;
+  padding: 0 6px;
   svg {
-    width: 0.875rem;
+    width: 14px;
   }
 `
 
 const StyledCoreTag = styled(CoreTag)`
-  height: 1.5rem;
-  padding: 0 0.375rem;
+  height: 24px;
+  padding: 0 6px;
 
   svg {
-    width: 0.875rem;
+    width: 14px;
   }
 `
 
 const StyledDualTag = styled(DualTag)`
-  height: 1.5rem;
-  padding: 0 0.375rem;
-  margin-left: 0.25rem;
+  height: 24px;
+  padding: 0 6px;
+  margin-left: 4px;
 
   svg {
-    width: 0.875rem;
+    width: 14px;
   }
 `
 

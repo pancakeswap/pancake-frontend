@@ -3,8 +3,8 @@ import { Input, SearchIcon, IconButton } from '@pancakeswap-libs/uikit'
 import styled, { css } from 'styled-components'
 
 const StyledInput = styled(Input)`
-  border-radius: 1rem;
-  padding-right: 5rem;
+  border-radius: 16px;
+  padding-right: 80px;
   transition: 0.3s;
   margin-left: auto;
   ${({ theme }) => theme.mediaQueries.sm} {
@@ -17,7 +17,7 @@ const StyledInput = styled(Input)`
 const InputWrapper = styled.div`
   position: relative;
   ${({ theme }) => theme.mediaQueries.sm} {
-    width: 20rem;
+    width: 320px;
     display: block;
   }
 `
@@ -27,7 +27,7 @@ const SearchButton = styled.button`
   border: none;
   outline: none;
   position: absolute;
-  right: 0.25rem;
+  right: 4px;
   top: 50%;
   transform: translate(0px, -50%);
   display: flex;
@@ -65,9 +65,9 @@ const Container = styled.div<{ toggled: boolean }>`
 `
 
 const Label = styled.span`
-  margin-right: 0.375rem;
+  margin-right: 6px;
   color: ${(props) => props.theme.colors.primary};
-  font-size: 1rem;
+  font-size: 16px;
   font-weight: 600;
 `
 

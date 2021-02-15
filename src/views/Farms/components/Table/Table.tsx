@@ -14,15 +14,15 @@ export interface ITableProps {
 }
 
 const Container = styled.div`
-  padding: 1rem;
+  padding: 16px;
   box-shadow: 0px 2px 12px -8px rgba(25, 19, 38, 0.1), 0px 0px 1px rgba(25, 19, 38, 0.15);
   border-radius: 32px;
-  margin: 1rem 0rem;
+  margin: 16px 0px;
   width: 100%;
   background: ${(props) => props.theme.card.background};
 
   ${({ theme }) => theme.mediaQueries.sm} {
-    padding: 1.5rem;
+    padding: 24px;
   }
 `
 
@@ -37,7 +37,7 @@ const TableWrapper = styled.div`
 
 const StyledTable = styled.table`
   border-collapse: collapse;
-  font-size: 0.9rem;
+  font-size: 14px;
   border-radius: 4px;
   text-align: center;
   margin-left: auto;
@@ -50,7 +50,7 @@ const TableHead = styled.thead`
     border-radius: 4px;
     color: #8f80ba;
     font-weight: 700;
-    font-size: 0.75rem;
+    font-size: 12px;
     text-transform: capitalize;
     cursor: pointer;
 
@@ -62,7 +62,7 @@ const TableHead = styled.thead`
       z-index: 100;
 
       &:first-child {
-        padding-right: 0.8rem;
+        padding-right: 13px;
       }
     }
   }
@@ -84,9 +84,9 @@ const TableHead = styled.thead`
 const TableBody = styled.tbody`
   & tr {
     td {
-      font-size: 0.875rem;
+      font-size: 14px;
       vertical-align: middle;
-      padding-right: 1rem;
+      padding-right: 16px;
 
       &:first-child {
         position: sticky;
@@ -103,7 +103,7 @@ const TableBody = styled.tbody`
 `
 
 const ArrowIcon = styled(ChevronDownIcon)`
-  margin-left: 0.375rem;
+  margin-left: 6px;
   transition: 0.5s;
 
   &.toggle {
@@ -111,11 +111,11 @@ const ArrowIcon = styled(ChevronDownIcon)`
   }
 `
 const CellInner = styled.div`
-  padding: 0.3125rem 0rem;
+  padding: 5px 0px;
   display: flex;
   width: 100%;
   align-items: center;
-  padding-right: 1rem;
+  padding-right: 16px;
 `
 
 const TableContainer = styled.div<{ showGradient: boolean }>`
@@ -125,7 +125,7 @@ const TableContainer = styled.div<{ showGradient: boolean }>`
     opacity: ${(props) => (props.showGradient ? '1' : '0')};
     display: block;
     content: "";
-    width: 0.875rem;
+    width: 14px;
     height: 100%;
     position: absolute;
     top: 0;

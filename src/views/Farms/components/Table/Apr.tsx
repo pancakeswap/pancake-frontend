@@ -18,7 +18,7 @@ export interface AprProps {
 }
 
 const Container = styled.div`
-  min-width: 7.5rem;
+  min-width: 120px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -28,10 +28,10 @@ const Container = styled.div`
 
 const Multiplier = styled.div`
   background: ${({ theme }) => theme.colors.secondary};
-  border-radius: 1rem;
+  border-radius: 16px;
   color: ${({ theme }) => theme.card.background};
-  padding: 0.3125rem 0rem;
-  width: 2.5rem;
+  padding: 5px 0;
+  width: 40px;
   text-align: center;
 `
 

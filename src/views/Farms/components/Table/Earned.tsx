@@ -17,13 +17,13 @@ const Amount = styled.span<{ earned: number }>`
 `
 
 const HarvestButton = styled(Button)<ButtonProps>`
-  width: 5.25rem;
-  height: 2rem;
+  width: 84px;
+  height: 32px;
 `
 
 const Container = styled.div`
   display: flex;
-  min-width: 10rem;
+  min-width: 160px;
   justify-content: space-between;
 `
 

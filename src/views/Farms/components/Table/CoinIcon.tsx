@@ -6,8 +6,8 @@ export interface CoinIconProps {
 }
 
 const IconImage = styled.img`
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 24px;
+  height: 24px;
 `
 
 const CoinIcon: React.FunctionComponent<CoinIconProps> = ({ image }) => {

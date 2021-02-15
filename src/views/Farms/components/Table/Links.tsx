@@ -14,7 +14,7 @@ const StyledLinkExternal = styled(LinkExternal)`
   color: ${({ theme }) => theme.colors.text};
   display: flex;
   align-items: center;
-  font-size: 0.875rem;
+  font-size: 14px;
 
   svg {
     display: none;
