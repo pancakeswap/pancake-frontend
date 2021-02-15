@@ -36,6 +36,9 @@ const PanelBody: React.FC<Props> = ({ isPushed, pushNav, isMobile, links }) => {
         const calloutClass = entry.calloutClass ? entry.calloutClass : undefined;
 
         if (entry.items) {
+          const itemsMatchIndex = entry.items.findIndex((item) => item.href === location.pathname);
+          const initialOpenState = entry.initialOpenState === true ? entry.initialOpenState : itemsMatchIndex >= 0;
+
           return (
             <Accordion
               key={entry.label}
@@ -43,7 +46,7 @@ const PanelBody: React.FC<Props> = ({ isPushed, pushNav, isMobile, links }) => {
               pushNav={pushNav}
               icon={iconElement}
               label={entry.label}
-              initialOpenState={entry.initialOpenState}
+              initialOpenState={initialOpenState}
               className={calloutClass}
             >
               {isPushed &&
