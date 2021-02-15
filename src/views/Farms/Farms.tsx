@@ -190,7 +190,6 @@ const Farms: React.FC = () => {
 
     return (
       <div>
-        {/* <Divider /> */}
         <FlexLayout>
           <Route exact path={`${path}`}>
             {farmsStaked.map((farm) => (
