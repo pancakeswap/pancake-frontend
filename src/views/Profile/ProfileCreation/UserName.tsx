@@ -83,7 +83,7 @@ const UserName: React.FC = () => {
   const checkUsernameValidity = debounce(async (value: string) => {
     try {
       setIsLoading(true)
-      const res = await fetch(`${profileApiUrl}/api/users/valid?username=${value}`)
+      const res = await fetch(`${profileApiUrl}/api/users/valid/${value}`)
 
       if (res.ok) {
         setIsValid(true)
@@ -144,7 +144,7 @@ const UserName: React.FC = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch(`${profileApiUrl}/api/users?address=${account}`)
+        const response = await fetch(`${profileApiUrl}/api/users/${account}`)
         const data = await response.json()
 
         if (response.ok) {
