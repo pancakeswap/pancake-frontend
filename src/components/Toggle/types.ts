@@ -11,8 +11,8 @@ export const scales = {
 
 export type Scales = typeof scales[keyof typeof scales];
 
-export interface ToggleProps {
-  scale: Scales;
+export interface ToggleProps extends InputHTMLAttributes<HTMLInputElement> {
+  scale?: Scales;
   checked?: boolean;
 }
 
@@ -20,7 +20,7 @@ export interface HandleProps {
   scale: Scales;
 }
 
-export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+export interface InputProps {
   scale: Scales;
 }
 
