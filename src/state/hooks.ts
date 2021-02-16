@@ -14,9 +14,10 @@ import {
   remove as removeToast,
   clear as clearToast,
 } from './actions'
-import { State, Farm, Pool, ProfileState, TeamsState } from './types'
+import { State, Farm, Pool, ProfileState, TeamsState, AchievementState } from './types'
 import { fetchProfile } from './profile'
 import { fetchTeam, fetchTeams } from './teams'
+import { fetchAchievements } from './achievements'
 
 const ZERO = new BigNumber(0)
 
@@ -171,4 +172,22 @@ export const useTeams = () => {
   }, [dispatch])
 
   return { teams: data, isInitialized, isLoading }
+}
+
+// Achievements
+
+export const useFetchAchievements = () => {
+  const { account } = useWallet()
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    if (account) {
+      dispatch(fetchAchievements(account))
+    }
+  }, [account, dispatch])
+}
+
+export const useAchievements = () => {
+  const achievements: AchievementState['data'] = useSelector((state: State) => state.achievements.data)
+  return achievements
 }

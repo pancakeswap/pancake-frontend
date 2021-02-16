@@ -19,6 +19,23 @@ const pools: PoolConfig[] = [
     tokenDecimals: 18,
   },
   {
+    sousId: 50,
+    tokenName: 'ZEE',
+    stakingTokenName: QuoteToken.CAKE,
+    stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
+    contractAddress: {
+      97: '',
+      56: '0x02861B607a5E87daf3FD6ec19DFB715F1b371379',
+    },
+    poolCategory: PoolCategory.CORE,
+    projectLink: 'https://zeroswap.io/',
+    harvest: true,
+    tokenPerBlock: '0.1736',
+    sortOrder: 999,
+    isFinished: false,
+    tokenDecimals: 18,
+  },
+  {
     sousId: 49,
     tokenName: 'SWGb',
     stakingTokenName: QuoteToken.CAKE,

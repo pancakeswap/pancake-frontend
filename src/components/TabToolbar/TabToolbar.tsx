@@ -67,7 +67,7 @@ const TabToolbar: React.FC<TabToolbarProps> = ({ account, stakedOnly, setStakedO
       </ButtonMenu>
       {account && (
         <ToggleWrapper>
-          <Toggle checked={stakedOnly} onChange={() => setStakedOnly(!stakedOnly)} />
+          <Toggle checked={stakedOnly} onChange={() => setStakedOnly(!stakedOnly)} scale="sm" />
           <Text> {TranslateString(699, 'Staked only')}</Text>
         </ToggleWrapper>
       )}

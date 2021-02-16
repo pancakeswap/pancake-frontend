@@ -1,6 +1,16 @@
 import { Toast } from '@pancakeswap-libs/uikit'
 import BigNumber from 'bignumber.js'
-import { FarmConfig, Nft, PoolConfig, Team } from 'config/constants/types'
+import { CampaignType, FarmConfig, Nft, PoolConfig, Team } from 'config/constants/types'
+
+export type TranslatableText =
+  | string
+  | {
+      id: number
+      fallback: string
+      data?: {
+        [key: string]: string | number
+      }
+    }
 
 export interface Farm extends FarmConfig {
   tokenAmount?: BigNumber
@@ -80,6 +90,20 @@ export interface TeamsState {
   data: TeamsById
 }
 
+export interface Achievement {
+  id: string
+  type: CampaignType
+  address: string
+  title: TranslatableText
+  description?: TranslatableText
+  badge: string
+  points: number
+}
+
+export interface AchievementState {
+  data: Achievement[]
+}
+
 // Global state
 
 export interface State {
@@ -88,4 +112,5 @@ export interface State {
   pools: PoolsState
   profile: ProfileState
   teams: TeamsState
+  achievements: AchievementState
 }
