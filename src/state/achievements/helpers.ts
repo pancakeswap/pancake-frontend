@@ -16,6 +16,7 @@ export const getUserPointIncreaseEvents = async (account: string) => {
         userAddress: account,
       },
     })
+
     return events
   } catch (error) {
     return []

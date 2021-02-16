@@ -60,7 +60,7 @@ export default {
     97: '',
   },
   pointCenterIfo: {
-    56: '',
-    97: '0xdD17817ACe7f82EDA7a6E35939A65a0e81B96A7a',
+    56: '0x3C6919b132462C1FEc572c6300E83191f4F0012a',
+    97: '0xd2Ac1B1728Bb1C11ae02AB6e75B76Ae41A2997e3',
   },
 }

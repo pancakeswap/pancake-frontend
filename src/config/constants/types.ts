@@ -19,7 +19,7 @@ export interface Ifo {
   currencyAddress: string
   tokenDecimals: number
   releaseBlockNumber: number
-  campaignId?: number
+  campaignId?: string
 }
 
 export enum QuoteToken {
@@ -116,7 +116,7 @@ export type Team = {
 export type CampaignType = 'ifo'
 
 export type Campaign = {
-  id: number
+  id: string
   type: CampaignType
   title?: TranslatableText
   description?: TranslatableText

@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-d
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { ResetCSS } from '@pancakeswap-libs/uikit'
 import BigNumber from 'bignumber.js'
-import { useFetchProfile, useFetchPublicData } from 'state/hooks'
+import { useFetchAchievements, useFetchProfile, useFetchPublicData } from 'state/hooks'
 import GlobalStyle from './style/Global'
 import Menu from './components/Menu'
 import ToastListener from './components/ToastListener'
@@ -45,6 +45,7 @@ const App: React.FC = () => {
 
   useFetchPublicData()
   useFetchProfile()
+  useFetchAchievements()
 
   return (
     <Router>

@@ -17,6 +17,7 @@ import {
 import { State, Farm, Pool, ProfileState, TeamsState, AchievementState } from './types'
 import { fetchProfile } from './profile'
 import { fetchTeam, fetchTeams } from './teams'
+import { fetchAchievements } from './achievements'
 
 const ZERO = new BigNumber(0)
 
@@ -174,6 +175,17 @@ export const useTeams = () => {
 }
 
 // Achievements
+
+export const useFetchAchievements = () => {
+  const { account } = useWallet()
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    if (account) {
+      dispatch(fetchAchievements(account))
+    }
+  }, [account, dispatch])
+}
 
 export const useAchievements = () => {
   const achievements: AchievementState['data'] = useSelector((state: State) => state.achievements.data)

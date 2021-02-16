@@ -91,7 +91,7 @@ export interface TeamsState {
 }
 
 export interface Achievement {
-  id: number
+  id: string
   type: CampaignType
   address: string
   title: TranslatableText

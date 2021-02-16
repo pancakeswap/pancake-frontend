@@ -39,7 +39,7 @@ export const fetchAchievements = (account: string) => async (dispatch: Dispatch)
     dispatch(setAchievements(achievements))
   } catch (error) {
     const title = 'Error fetching achievements'
-    dispatch(push({ id: kebabCase(title), type: toastTypes.DANGER, title, description: 'Please try again' }))
+    dispatch(push({ id: kebabCase(title), type: toastTypes.DANGER, title }))
   }
 }
 

@@ -38,6 +38,7 @@ const ifos: Ifo[] = [
     currencyAddress: '0xA527a61703D82139F8a06Bc30097cC9CAA2df5A6',
     tokenDecimals: 18,
     releaseBlockNumber: 4086064,
+    campaignId: '511050000',
   },
   {
     id: 'helmet',
@@ -57,6 +58,7 @@ const ifos: Ifo[] = [
     currencyAddress: '0xA527a61703D82139F8a06Bc30097cC9CAA2df5A6',
     tokenDecimals: 18,
     releaseBlockNumber: 3771926,
+    campaignId: '511040000',
   },
   {
     id: 'tenet',
@@ -76,6 +78,7 @@ const ifos: Ifo[] = [
     currencyAddress: '0xA527a61703D82139F8a06Bc30097cC9CAA2df5A6',
     tokenDecimals: 18,
     releaseBlockNumber: 3483883,
+    campaignId: '511030000',
   },
   {
     id: 'ditto',
@@ -95,6 +98,7 @@ const ifos: Ifo[] = [
     currencyAddress: '0xA527a61703D82139F8a06Bc30097cC9CAA2df5A6',
     tokenDecimals: 9,
     releaseBlockNumber: 3279767,
+    campaignId: '511020000',
   },
   {
     id: 'blink',
@@ -114,6 +118,7 @@ const ifos: Ifo[] = [
     currencyAddress: '0xA527a61703D82139F8a06Bc30097cC9CAA2df5A6',
     tokenDecimals: 6,
     releaseBlockNumber: 3279767,
+    campaignId: '511010000',
   },
 ]
 

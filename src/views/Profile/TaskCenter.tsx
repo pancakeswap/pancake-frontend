@@ -1,31 +1,33 @@
-import React, { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import React from 'react'
 import { Card, CardBody, CardHeader, Flex, Heading, Text } from '@pancakeswap-libs/uikit'
-import { fetchAchievements } from 'state/achievements'
 import useI18n from 'hooks/useI18n'
-import AchievementsCard from './components/AchievementsCard'
+import AchievementsList from './components/AchievementsList'
 import ClaimPointsCallout from './components/ClaimPointsCallout '
 import ComingSoon from './components/ComingSoon'
 import Menu from './components/Menu'
 
 const TaskCenter = () => {
   const TranslateString = useI18n()
-  const dispatch = useDispatch()
-  const { account } = useWallet()
-
-  // Get all user achievements
-  useEffect(() => {
-    if (account) {
-      dispatch(fetchAchievements(account))
-    }
-  }, [account, dispatch])
 
   return (
     <>
       <Menu />
       <ClaimPointsCallout />
-      <AchievementsCard />
+      <Card mb="32px">
+        <CardHeader>
+          <Flex alignItems="center" justifyContent="space-between">
+            <div>
+              <Heading size="lg" mb="8px">
+                {TranslateString(1092, 'Achievements')}
+              </Heading>
+              <Text as="p">{TranslateString(1084, 'Earn more points for completing larger quests!')}</Text>
+            </div>
+          </Flex>
+        </CardHeader>
+        <CardBody>
+          <AchievementsList />
+        </CardBody>
+      </Card>
       <Card mb="32px">
         <CardHeader>
           <Flex alignItems="center" justifyContent="space-between">
