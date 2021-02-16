@@ -8,6 +8,7 @@ import { addAchievement } from 'state/achievements'
 import useI18n from 'hooks/useI18n'
 import { getClaimableIfoData } from 'utils/achievements'
 import AchievementRow from './AchievementRow'
+import { addPoints } from 'state/profile'
 
 const ClaimPointsCallout = () => {
   const [claimableAchievements, setClaimableAchievement] = useState<Achievement[]>([])
@@ -28,6 +29,8 @@ const ClaimPointsCallout = () => {
 
   const handleCollectSuccess = (achievement: Achievement) => {
     dispatch(addAchievement(achievement))
+    dispatch(addPoints(achievement.points))
+
     setClaimableAchievement((prevClaimableAchievements) =>
       prevClaimableAchievements.filter((prevClaimableAchievement) => prevClaimableAchievement.id !== achievement.id),
     )
