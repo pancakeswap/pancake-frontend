@@ -37,3 +37,6 @@ export const getRabbitMintingFarmAddress = () => {
 export const getClaimRefundAddress = () => {
   return getAddress(addresses.claimRefund)
 }
+export const getPointCenterIfoAddress = () => {
+  return getAddress(addresses.pointCenterIfo)
+}

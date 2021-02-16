@@ -3,7 +3,7 @@ import { NoProfileAvatarIcon } from '@pancakeswap-libs/uikit'
 import { Profile } from 'state/types'
 import styled from 'styled-components'
 
-interface ProfileAvatarProps {
+export interface ProfileAvatarProps {
   profile: Profile
 }
 
@@ -15,6 +15,7 @@ const TeamAvatar = styled.img`
   position: absolute;
   right: 0px;
   width: 24px;
+  z-index: 5;
 
   ${({ theme }) => theme.mediaQueries.sm} {
     border-width: 2px;
@@ -29,7 +30,6 @@ const AvatarWrapper = styled.div<{ bg: string }>`
   background-size: cover;
   border-radius: 50%;
   height: 64px;
-  margin-right: 16px;
   position: relative;
   width: 64px;
 

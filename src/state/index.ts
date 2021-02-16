@@ -4,6 +4,7 @@ import toastsReducer from './toasts'
 import poolsReducer from './pools'
 import profileReducer from './profile'
 import teamsReducer from './teams'
+import achievementsReducer from './achievements'
 
 export default configureStore({
   devTools: process.env.NODE_ENV !== 'production',
@@ -13,5 +14,6 @@ export default configureStore({
     pools: poolsReducer,
     profile: profileReducer,
     teams: teamsReducer,
+    achievements: achievementsReducer,
   },
 })
