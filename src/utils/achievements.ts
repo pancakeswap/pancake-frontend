@@ -37,7 +37,7 @@ export const getAchievementDescription = (campaign: Campaign): TranslatableText 
     case 'ifo':
       return {
         id: 999,
-        fallback: `Commit 2 or more CAKE-BNB LP in the ${campaign.title} IFO`,
+        fallback: `Committed more than $5 worth of LP in the ${campaign.title} IFO`,
         data: {
           name: campaign.title as string,
         },
