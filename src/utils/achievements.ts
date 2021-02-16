@@ -22,7 +22,7 @@ export const getAchievementTitle = (campaign: Campaign): TranslatableText => {
     case 'ifo':
       return {
         id: 999,
-        fallback: `You participated in the ${campaign.title} IFO`,
+        fallback: `IFO Shopper: ${campaign.title}`,
         data: {
           name: campaign.title as string,
         },
@@ -51,7 +51,7 @@ export const getAchievementDescription = (campaign: Campaign): TranslatableText 
  * Checks if a wallet is eligble to claim points from valid IFO's
  */
 export const getClaimableIfoData = async (account: string): Promise<Achievement[]> => {
-  const ifoCampaigns = ifosList.filter((ifoItem) => !!ifoItem.campaignId)
+  const ifoCampaigns = ifosList.filter((ifoItem) => ifoItem.campaignId !== undefined)
   const ifoCampaignAddresses = ifoCampaigns.map((ifoItem) => ifoItem.address)
   const pointCenterContract = getPointCenterClaimContract()
 

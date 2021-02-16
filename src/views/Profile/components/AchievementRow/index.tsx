@@ -18,23 +18,23 @@ interface AchievementRowProps {
 }
 
 const StyledAchievementRow = styled(Flex)`
-  align-items: center;
   border-bottom: 1px solid ${({ theme }) => theme.colors.borderColor};
   padding-bottom: 16px;
   padding-top: 16px;
 `
 
 const Details = styled.div`
-  align-items: center;
-  display: flex;
   flex: 1;
-  flex-direction: column;
-  padding-left: 16px;
-  padding-right: 16px;
+`
 
-  ${({ theme }) => theme.mediaQueries.sm} {
+const Body = styled(Flex)`
+  flex-direction: column;
+  flex: 1;
+  margin-left: 8px;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    align-items: center;
     flex-direction: row;
-    justify-content: space-between;
   }
 `
 
@@ -66,25 +66,30 @@ const AchievementRow: React.FC<AchievementRowProps> = ({ achievement, onCollectS
   return (
     <StyledAchievementRow>
       <AchievementAvatar badge={achievement.badge} />
-      <Details>
-        <div>
+      <Body>
+        <Details>
           <AchievementTitle title={achievement.title} />
           <AchievementDescription description={achievement.description} />
+        </Details>
+        <PointsLabel points={achievement.points} px={[0, null, null, '32px']} mb={['16px', null, null, 0]} />
+        <ActionColumn>
+          <Button
+            onClick={handleCollectPoints}
+            isLoading={isCollecting}
+            endIcon={isCollecting ? <AutoRenewIcon spin color="currentColor" /> : null}
+            disabled={isCollecting}
+            variant="secondary"
+          >
+            {TranslateString(999, 'Collect')}
+          </Button>
+        </ActionColumn>
+      </Body>
+      {/* <Details>
+        <div>
+          <AchievementTitle title={achievement.title} />
         </div>
-        <PointsLabel points={achievement.points} />
-      </Details>
-      <ActionColumn>
-        <Button
-          onClick={handleCollectPoints}
-          isLoading={isCollecting}
-          endIcon={isCollecting ? <AutoRenewIcon spin color="currentColor" /> : null}
-          disabled={isCollecting}
-          variant="secondary"
-          fullWidth
-        >
-          {TranslateString(999, 'Collect')}
-        </Button>
-      </ActionColumn>
+        
+      </Details> */}
     </StyledAchievementRow>
   )
 }

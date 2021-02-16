@@ -1,25 +1,20 @@
 import React from 'react'
-import styled from 'styled-components'
-import { Flex, PrizeIcon, Text } from '@pancakeswap-libs/uikit'
+import { Flex, FlexProps, PrizeIcon, Text } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 
-interface PointsLabelProps {
+interface PointsLabelProps extends FlexProps {
   points: number
 }
 
-const InlineFlex = styled(Flex)`
-  display: inline-flex;
-`
-
-const PointsLabel: React.FC<PointsLabelProps> = ({ points }) => {
+const PointsLabel: React.FC<PointsLabelProps> = ({ points, ...props }) => {
   const TranslateString = useI18n()
   const localePoints = points.toLocaleString()
 
   return (
-    <InlineFlex alignItems="center">
+    <Flex alignItems="center" {...props}>
       <PrizeIcon mr="4px" color="textSubtle" />
       <Text color="textSubtle">{TranslateString(999, `${localePoints} points`, { num: localePoints })}</Text>
-    </InlineFlex>
+    </Flex>
   )
 }
 

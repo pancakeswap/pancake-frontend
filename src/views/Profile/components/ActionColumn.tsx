@@ -6,6 +6,10 @@ const ActionColumn = styled.div`
 
   ${({ theme }) => theme.mediaQueries.sm} {
     max-width: 160px;
+
+    & > button {
+      width: 100%;
+    }
   }
 `
 
