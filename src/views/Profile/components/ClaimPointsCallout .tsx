@@ -2,13 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { sumBy } from 'lodash'
 import { useDispatch } from 'react-redux'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
-import { Button, Card, CardBody, CardHeader, Flex, Heading, PrizeIcon } from '@pancakeswap-libs/uikit'
+import { Card, CardBody, CardHeader, Flex, Heading, PrizeIcon } from '@pancakeswap-libs/uikit'
 import { Achievement } from 'state/types'
 import { addAchievement } from 'state/achievements'
 import useI18n from 'hooks/useI18n'
 import { getClaimableIfoData } from 'utils/achievements'
 import AchievementRow from './AchievementRow'
-import ActionColumn from './ActionColumn'
 
 const ClaimPointsCallout = () => {
   const [claimableAchievements, setClaimableAchievement] = useState<Achievement[]>([])
@@ -26,9 +25,6 @@ const ClaimPointsCallout = () => {
       fetchIfoClaims()
     }
   }, [account, dispatch, setClaimableAchievement])
-
-  /* eslint-disable no-alert */
-  const donottry = () => alert("Don't even try Chungus")
 
   const handleCollectSuccess = (achievement: Achievement) => {
     dispatch(addAchievement(achievement))
@@ -53,11 +49,6 @@ const ClaimPointsCallout = () => {
               {TranslateString(999, `${totalPointsToCollect} Points to Collect`, { num: totalPointsToCollect })}
             </Heading>
           </Flex>
-          <ActionColumn>
-            <Button fullWidth onClick={donottry}>
-              {TranslateString(999, 'Collect All')}
-            </Button>
-          </ActionColumn>
         </Flex>
       </CardHeader>
       <CardBody>
