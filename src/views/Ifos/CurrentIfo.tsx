@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Text, Heading, BaseLayout, Button, LinkExternal, Flex, Image, Alert } from '@pancakeswap-libs/uikit'
+import { Text, Heading, BaseLayout, Button, LinkExternal, Flex, Image } from '@pancakeswap-libs/uikit'
 import { ifosConfig } from 'config/constants'
 import useI18n from 'hooks/useI18n'
 import IfoCard from './components/IfoCard'
@@ -40,16 +40,6 @@ const Ifo = () => {
 
   return (
     <div>
-      <div style={{ marginBottom: '40px' }}>
-        <Alert variant="warning" title="Notice!">
-          <Text>
-            We’re currently experiencing an issue where some users are unable to unstake from the IFO contract. Affected
-            users are those who didn’t commit enough CAKE-BNB LP tokens to earn any percentage of the BRY tokens. Users
-            who committed above the threshold number of LP tokens should be able to unstake and claim BRY as usual. We
-            are working to solve this ASAP.
-          </Text>
-        </Alert>
-      </div>
       <IfoCards isSingle>
         <IfoCard ifo={activeIfo} />
       </IfoCards>
