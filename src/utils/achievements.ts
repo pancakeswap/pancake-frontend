@@ -28,7 +28,7 @@ export const getAchievementTitle = (campaign: Campaign): TranslatableText => {
         },
       }
     default:
-      return campaign.description
+      return campaign.title
   }
 }
 
