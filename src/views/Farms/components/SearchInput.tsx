@@ -9,7 +9,7 @@ const StyledInput = styled(Input)`
   margin-left: auto;
   ${({ theme }) => theme.mediaQueries.sm} {
     width: 100% !important;
-    padding: 0 1rem !important;
+    padding: 0 16px !important;
     opacity: 1 !important;
   }
 `
@@ -85,7 +85,7 @@ const MobileContainer = styled.div`
 
 interface Props {
   value: string
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 const SearchInput: React.FunctionComponent<Props> = ({ value, onChange }) => {

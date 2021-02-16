@@ -36,12 +36,10 @@ const Links: React.FunctionComponent<LinksProps> = ({ bsc, info }) => {
   const TranslateString = useI18n()
 
   return (
-    <>
-      <Container>
-        <StyledLinkExternal href={bsc}>{TranslateString(999, 'BscScan')}</StyledLinkExternal>
-        <StyledLinkExternal href={info}>{TranslateString(999, 'Info site')}</StyledLinkExternal>
-      </Container>
-    </>
+    <Container>
+      <StyledLinkExternal href={bsc}>{TranslateString(999, 'BscScan')}</StyledLinkExternal>
+      <StyledLinkExternal href={info}>{TranslateString(999, 'Info site')}</StyledLinkExternal>
+    </Container>
   )
 }
 

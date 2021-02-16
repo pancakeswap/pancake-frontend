@@ -11,11 +11,7 @@ const IconImage = styled.img`
 `
 
 const CoinIcon: React.FunctionComponent<CoinIconProps> = ({ image }) => {
-  return (
-    <>
-      <IconImage src={`/images/farms/${image}.svg`} alt="icon" />
-    </>
-  )
+  return <IconImage src={`/images/farms/${image}.svg`} alt="icon" />
 }
 
 export default CoinIcon

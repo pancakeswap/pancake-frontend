@@ -12,11 +12,7 @@ const Label = styled.span`
 `
 
 const Farm: React.FunctionComponent<FarmProps> = ({ label }) => {
-  return (
-    <>
-      <Label>{label}</Label>
-    </>
-  )
+  return <Label>{label}</Label>
 }
 
 export default Farm

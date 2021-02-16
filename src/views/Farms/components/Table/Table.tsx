@@ -69,7 +69,7 @@ const TableHead = styled.thead`
 
   & input {
     font-weight: 700;
-    border: 1px solid #cccccc;
+    border: 1px solid ${(props) => props.theme.colors.inputBorder};
     border-radius: 10px;
     padding: 4px;
     width: 80%;
