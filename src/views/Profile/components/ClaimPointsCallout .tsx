@@ -4,11 +4,11 @@ import { useDispatch } from 'react-redux'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { Card, CardBody, CardHeader, Flex, Heading, PrizeIcon } from '@pancakeswap-libs/uikit'
 import { Achievement } from 'state/types'
+import { addPoints } from 'state/profile'
 import { addAchievement } from 'state/achievements'
 import useI18n from 'hooks/useI18n'
 import { getClaimableIfoData } from 'utils/achievements'
 import AchievementRow from './AchievementRow'
-import { addPoints } from 'state/profile'
 
 const ClaimPointsCallout = () => {
   const [claimableAchievements, setClaimableAchievement] = useState<Achievement[]>([])
