@@ -19,6 +19,23 @@ const pools: PoolConfig[] = [
     tokenDecimals: 18,
   },
   {
+    sousId: 51,
+    tokenName: 'BRY',
+    stakingTokenName: QuoteToken.CAKE,
+    stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
+    contractAddress: {
+      97: '',
+      56: '0x1c736F4FB20C7742Ee83a4099fE92abA61dFca41',
+    },
+    poolCategory: PoolCategory.CORE,
+    projectLink: 'https://berrydata.co/',
+    harvest: true,
+    tokenPerBlock: '0.1157',
+    sortOrder: 999,
+    isFinished: false,
+    tokenDecimals: 18,
+  },
+  {
     sousId: 50,
     tokenName: 'ZEE',
     stakingTokenName: QuoteToken.CAKE,
