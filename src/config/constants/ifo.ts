@@ -3,7 +3,7 @@ import { Ifo } from './types'
 const ifos: Ifo[] = [
   {
     id: 'berry',
-    address: '0xba79C4846a82B3FDE3bbf1A90DafE25286101663',
+    address: '0x5d028cE3435B2bB9AceBfaC599EEbA1ccD63d7dd',
     isActive: true,
     name: 'Berry',
     subTitle: 'A decentralized oracle network on BSC',
