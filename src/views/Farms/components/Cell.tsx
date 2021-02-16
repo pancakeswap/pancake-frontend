@@ -6,12 +6,8 @@ type CellProps = {
   onClick?: () => void
 }
 
-const Cell: React.FC<CellProps> = ({ isHeader, children, onClick }) => {
+const Cell: React.FC<CellProps> = ({ isHeader = false, children, onClick }) => {
   return isHeader ? <th onClick={onClick}>{children}</th> : <td>{children}</td>
-}
-
-Cell.defaultProps = {
-  isHeader: false,
 }
 
 export default Cell

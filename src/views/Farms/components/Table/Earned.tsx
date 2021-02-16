@@ -3,7 +3,6 @@ import styled from 'styled-components'
 
 import CellLayout from './CellLayout'
 
-
 export interface EarnedProps {
   earnings: number
   pid: number

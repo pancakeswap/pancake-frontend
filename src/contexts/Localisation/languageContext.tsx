@@ -60,14 +60,15 @@ const LanguageContextProvider = ({ children }) => {
       fetchTranslationsForSelectedLanguage(selectedLanguage)
         .then((translationApiResponse) => {
           if (translationApiResponse.data.length < 1) {
-            setTranslations(['error'])
+            setTranslations([])
           } else {
             setTranslations(translationApiResponse.data)
           }
         })
         .then(() => setTranslatedLanguage(selectedLanguage))
-        .catch(() => {
-          setTranslations(['error'])
+        .catch((e) => {
+          setTranslations([])
+          console.error('Error while loading translations', e)
         })
     }
   }, [selectedLanguage, setTranslations])

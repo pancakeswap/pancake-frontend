@@ -29,15 +29,34 @@ export type TableDataTypes = {
   LINKS: string
 }
 
-export const ColumnsDef: ColumnsDefTypes[] = [
+export const MobileColumnSchema = [
   {
-    id: 0,
+    id: 1,
     bold: '',
-    normal: '',
-    name: 'icon',
+    normal: 'Farm',
+    name: 'farm',
     translationId: 999,
-    sortable: false,
+    sortable: true,
   },
+  {
+    id: 2,
+    bold: 'CAKE',
+    normal: 'EARNED',
+    name: 'earned',
+    translationId: 999,
+    sortable: true,
+  },
+  {
+    id: 3,
+    bold: '',
+    normal: 'APR',
+    name: 'apr',
+    translationId: 999,
+    sortable: true,
+  }
+]
+
+export const DesktopColumnSchema: ColumnsDefTypes[] = [
   {
     id: 1,
     bold: '',

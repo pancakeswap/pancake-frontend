@@ -1,27 +1,21 @@
 import React, { useRef, useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { RowType, useTable, ChevronDownIcon } from '@pancakeswap-libs/uikit'
-import BigNumber from 'bignumber.js'
+import { useTable, ChevronDownIcon, Button, ChevronUpIcon, ColumnType } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 
 import Row, { RowData } from './Row'
-import { ColumnsDef } from '../types'
+import { DesktopColumnSchema, MobileColumnSchema } from '../types'
 
 export interface ITableProps {
   data: RowData[]
+  columns: ColumnType<RowData>[]
 }
 
 const Container = styled.div`
-  padding: 1rem;
   box-shadow: 0px 2px 12px -8px rgba(25, 19, 38, 0.1), 0px 0px 1px rgba(25, 19, 38, 0.15);
-  border-radius: 32px;
-  margin: 1rem 0rem;
+  margin: 16px 0px;
   width: 100%;
   background: ${(props) => props.theme.card.background};
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    padding: 1.5rem;
-  }
 `
 
 const TableWrapper = styled.div`
@@ -35,7 +29,7 @@ const TableWrapper = styled.div`
 
 const StyledTable = styled.table`
   border-collapse: collapse;
-  font-size: 0.9rem;
+  font-size: 14px;
   border-radius: 4px;
   margin-left: auto;
   margin-right: auto;
@@ -44,26 +38,17 @@ const StyledTable = styled.table`
 
 const TableBody = styled.tbody`
   & tr {
+    border-bottom: 2px solid ${(props) => props.theme.colors.borderColor};
+
     td {
-      font-size: 1rem;
+      font-size: 16px;
       vertical-align: middle;
-      padding-right: 1rem;
-
-      &:first-child {
-        position: sticky;
-        left: 0;
-        background: ${(props) => props.theme.card.background};
-
-        > div {
-          padding-right: 0;
-        }
-      }
     }
   }
 `
 
 const ArrowIcon = styled(ChevronDownIcon)`
-  margin-left: 0.375rem;
+  margin-left: 6px;
   transition: 0.5s;
 
   &.toggle {
@@ -76,28 +61,12 @@ const TableContainer = styled.div`
 }
 `
 
-const columns = ColumnsDef.map((column) => ({
-  id: column.id,
-  name: column.name,
-  label: column.normal,
-  sort: (a: RowType<RowData>, b: RowType<RowData>) => {
-    switch (column.name) {
-      case 'farm':
-        return a.id - b.id
-      case 'apr':
-        if (a.original.apr.value && b.original.apr.value) {
-          return Number(a.original.apr.value) - Number(b.original.apr.value)
-        }
-
-        return 0
-      case 'earned':
-        return a.original.earned.earnings - b.original.earned.earnings
-      default:
-        return 1
-    }
-  },
-  sortable: column.sortable,
-}))
+const ScrollButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  padding-top: 5px;
+  padding-bottom: 5px;
+`
 
 export default React.forwardRef((props: ITableProps) => {
   const scrollBarEl = useRef<HTMLDivElement>(null)
@@ -106,7 +75,7 @@ export default React.forwardRef((props: ITableProps) => {
   const [visibleScroll, setVisibleScroll] = useState(true)
   const [showGradient, setShowGradient] = useState(true)
   const TranslateString = useI18n()
-  const { data } = props
+  const { data, columns } = props
 
   const renderSortArrow = (column: any): JSX.Element => {
     if (column.sorted && column.sorted.on) {
@@ -175,6 +144,13 @@ export default React.forwardRef((props: ITableProps) => {
     }
   }, [])
 
+  const scrollToTop = (): void => {
+    tableWrapperEl.current.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    })
+  }
+
   return (
     <Container>
       <TableContainer>
@@ -187,6 +163,12 @@ export default React.forwardRef((props: ITableProps) => {
             </TableBody>
           </StyledTable>
         </TableWrapper>
+        <ScrollButtonContainer>
+          <Button variant="text" onClick={scrollToTop}>
+            {TranslateString(999, 'To Top')}
+            <ChevronUpIcon color="primary" />
+          </Button>
+        </ScrollButtonContainer>
       </TableContainer>
     </Container>
   )

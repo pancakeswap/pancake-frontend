@@ -29,11 +29,11 @@ const Legend = () => {
     <Wrapper>
       <LegendItem>
         <Circle isPoolSize />
-        <Text>{TranslateString(999, 'Pool Size')}</Text>
+        <Text>{TranslateString(748, 'Pool Size')}</Text>
       </LegendItem>
       <LegendItem>
         <Circle />
-        <Text>{TranslateString(999, 'Burned')}</Text>
+        <Text>{TranslateString(750, 'Burned')}</Text>
       </LegendItem>
     </Wrapper>
   )

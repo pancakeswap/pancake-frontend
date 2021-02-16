@@ -14,10 +14,11 @@ interface FarmCardActionsProps {
   tokenBalance?: BigNumber
   tokenName?: string
   pid?: number
+  addLiquidityUrl?: string
 }
 
 const StyledHeading = styled(Heading)`
-  margin-right: 3rem;
+  margin-right: 48px;
 `
 
 const StakingButtonContainer = styled.div`
@@ -27,14 +28,32 @@ const IconButtonWrapper = styled.div`
   display: flex;
 
   button {
-    width: 2rem;
+    width: 32px;
+    height: 32px;
+
     svg {
       width: 20px;
     }
   }
 `
 
-const StakeAction: React.FC<FarmCardActionsProps> = ({ stakedBalance, tokenBalance, tokenName, pid }) => {
+const StyledButton = styled(Button)`
+  white-space: nowrap;
+  color: white;
+  height: 32px;
+  width: 160px;
+  border-radius: 16px;
+  padding-left: 0;
+  padding-right: 0;
+`
+
+const StakeAction: React.FC<FarmCardActionsProps> = ({
+  stakedBalance,
+  tokenBalance,
+  tokenName,
+  pid,
+  addLiquidityUrl,
+}) => {
   const TranslateString = useI18n()
   const { onStake } = useStake(pid)
   const { onUnstake } = useUnstake(pid)
@@ -42,14 +61,16 @@ const StakeAction: React.FC<FarmCardActionsProps> = ({ stakedBalance, tokenBalan
   const rawStakedBalance = getBalanceNumber(stakedBalance)
   const displayBalance = rawStakedBalance.toLocaleString()
 
-  const [onPresentDeposit] = useModal(<DepositModal max={tokenBalance} onConfirm={onStake} tokenName={tokenName} />)
+  const [onPresentDeposit] = useModal(
+    <DepositModal max={tokenBalance} onConfirm={onStake} tokenName={tokenName} addLiquidityUrl={addLiquidityUrl} />,
+  )
   const [onPresentWithdraw] = useModal(
     <WithdrawModal max={stakedBalance} onConfirm={onUnstake} tokenName={tokenName} />,
   )
 
   const renderStakingButtons = () => {
     return rawStakedBalance === 0 ? (
-      <Button onClick={onPresentDeposit}>{TranslateString(999, 'Stake LP')}</Button>
+      <StyledButton onClick={onPresentDeposit}>{TranslateString(999, 'Stake LP')}</StyledButton>
     ) : (
       <IconButtonWrapper>
         <IconButton variant="tertiary" onClick={onPresentWithdraw} mr="6px">

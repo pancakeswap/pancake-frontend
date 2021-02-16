@@ -4,12 +4,12 @@ import { useDispatch } from 'react-redux'
 import BigNumber from 'bignumber.js'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { provider } from 'web3-core'
-import { Image, Heading } from '@pancakeswap-libs/uikit'
+import { Image, Heading, RowType, useMatchBreakpoints } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
 import { BLOCKS_PER_YEAR, CAKE_PER_BLOCK, CAKE_POOL_PID } from 'config'
 import FlexLayout from 'components/layout/Flex'
 import Page from 'components/layout/Page'
-import { useFarms, usePriceBnbBusd, usePriceCakeBusd } from 'state/hooks'
+import { useFarms, usePriceBnbBusd, usePriceCakeBusd, usePriceEthBusd } from 'state/hooks'
 import useRefresh from 'hooks/useRefresh'
 import { fetchFarmUserDataAsync } from 'state/actions'
 import { QuoteToken } from 'config/constants/types'
@@ -22,14 +22,13 @@ import FarmTabButtons from './components/FarmTabButtons'
 import SearchInput from './components/SearchInput'
 import { RowData } from './components/Table/Row'
 import ToggleView from './components/ToggleView/ToggleView'
-import { ViewMode } from './components/types'
+import { DesktopColumnSchema, MobileColumnSchema, ViewMode } from './components/types'
 
 const ControlContainer = styled.div`
   display: flex;
   width: 100%;
   align-items: center;
-  margin-bottom: 2rem;
-  padding: 0;
+  margin-bottom: 32px;
   position: relative;
 `
 
@@ -43,6 +42,7 @@ const Farms: React.FC = () => {
   const [query, setQuery] = useState('')
   const [viewMode, setViewMode] = useState(ViewMode.TABLE)
   const { account, ethereum }: { account: string; ethereum: provider } = useWallet()
+  const ethPriceUsd = usePriceEthBusd()
 
   const dispatch = useDispatch()
   const { fastRefresh } = useRefresh()
@@ -52,11 +52,16 @@ const Farms: React.FC = () => {
     }
   }, [account, dispatch, fastRefresh])
 
+  const [stackedOnly, setStackedOnly] = useState(false)
+
   const activeFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
   const inactiveFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X')
 
   const tableRef = useRef(null)
 
+  const stackedOnlyFarms = activeFarms.filter(
+    (farm) => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0),
+  )
   // /!\ This function will be removed soon
   // This function compute the APY for each farm and will be replaced when we have a reliable API
   // to retrieve assets prices against USD
@@ -70,10 +75,13 @@ const Farms: React.FC = () => {
         const cakeRewardPerBlock = CAKE_PER_BLOCK.times(farm.poolWeight)
         const cakeRewardPerYear = cakeRewardPerBlock.times(BLOCKS_PER_YEAR)
 
+        // cakePriceInQuote * cakeRewardPerYear / lpTotalInQuoteToken
         let apy = cakePriceVsBNB.times(cakeRewardPerYear).div(farm.lpTotalInQuoteToken)
 
         if (farm.quoteTokenSymbol === QuoteToken.BUSD || farm.quoteTokenSymbol === QuoteToken.UST) {
           apy = cakePriceVsBNB.times(cakeRewardPerYear).div(farm.lpTotalInQuoteToken).times(bnbPrice)
+        } else if (farm.quoteTokenSymbol === QuoteToken.ETH) {
+          apy = cakePrice.div(ethPriceUsd).times(cakeRewardPerYear).div(farm.lpTotalInQuoteToken)
         } else if (farm.quoteTokenSymbol === QuoteToken.CAKE) {
           apy = cakeRewardPerYear.div(farm.lpTotalInQuoteToken)
         } else if (farm.dual) {
@@ -93,9 +101,9 @@ const Farms: React.FC = () => {
       })
 
       if (query) {
-        const lowered = query.toLowerCase()
+        const lowercaseQuery = query.toLowerCase()
         farmsToDisplayWithAPY = farmsToDisplayWithAPY.filter((farm: FarmWithStakedValue) => {
-          if (farm.lpSymbol.toLowerCase().includes(lowered)) {
+          if (farm.lpSymbol.toLowerCase().includes(lowercaseQuery)) {
             return true
           }
 
@@ -104,7 +112,7 @@ const Farms: React.FC = () => {
       }
       return farmsToDisplayWithAPY
     },
-    [bnbPrice, farmsLP, query],
+    [bnbPrice, farmsLP, query, cakePrice, ethPriceUsd],
   )
 
   const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -114,7 +122,7 @@ const Farms: React.FC = () => {
   const isActive = !pathname.includes('history')
   let farmsStaked = []
   if (isActive) {
-    farmsStaked = farmsList(activeFarms)
+    farmsStaked = stackedOnly ? farmsList(stackedOnlyFarms) : farmsList(activeFarms)
   } else {
     farmsStaked = farmsList(inactiveFarms)
   }
@@ -136,9 +144,6 @@ const Farms: React.FC = () => {
     const lpLabel = farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('PANCAKE', '')
 
     const row: RowData = {
-      icon: {
-        image: farm.lpSymbol.split(' ')[0].toLocaleLowerCase(),
-      },
       apr: {
         value: farm.apy
           ? Number(`${farm.apy.times(new BigNumber(100)).toNumber().toLocaleString('en-US').slice(0, -1)}`)
@@ -152,7 +157,9 @@ const Farms: React.FC = () => {
         originalValue: farm.apy,
       },
       farm: {
+        image: farm.lpSymbol.split(' ')[0].toLocaleLowerCase(),
         label: lpLabel,
+        pid: farm.pid,
       },
       earned: {
         earnings: farm.userData ? getBalanceNumber(new BigNumber(farm.userData.earnings)) : null,
@@ -170,14 +177,40 @@ const Farms: React.FC = () => {
     return row
   })
 
+  const { isXs } = useMatchBreakpoints()
+
   const renderContent = (): JSX.Element => {
     if (viewMode === ViewMode.TABLE && rowData.length) {
-      return <Table data={rowData} ref={tableRef} />
+      const columnSchema = isXs ? DesktopColumnSchema : MobileColumnSchema
+
+      const columns = columnSchema.map((column) => ({
+        id: column.id,
+        name: column.name,
+        label: column.normal,
+        sort: (a: RowType<RowData>, b: RowType<RowData>) => {
+          switch (column.name) {
+            case 'farm':
+              return b.id - a.id
+            case 'apr':
+              if (a.original.apr.value && b.original.apr.value) {
+                return Number(a.original.apr.value) - Number(b.original.apr.value)
+              }
+
+              return 0
+            case 'earned':
+              return a.original.earned.earnings - b.original.earned.earnings
+            default:
+              return 1
+          }
+        },
+        sortable: column.sortable,
+      }))
+
+      return <Table data={rowData} ref={tableRef} columns={columns} />
     }
 
     return (
       <div>
-        {/* <Divider /> */}
         <FlexLayout>
           <Route exact path={`${path}`}>
             {farmsStaked.map((farm) => (
@@ -186,6 +219,7 @@ const Farms: React.FC = () => {
                 farm={farm}
                 bnbPrice={bnbPrice}
                 cakePrice={cakePrice}
+                ethPrice={ethPriceUsd}
                 ethereum={ethereum}
                 account={account}
                 removed={false}
@@ -199,6 +233,7 @@ const Farms: React.FC = () => {
                 farm={farm}
                 bnbPrice={bnbPrice}
                 cakePrice={cakePrice}
+                ethPrice={ethPriceUsd}
                 ethereum={ethereum}
                 account={account}
                 removed
@@ -213,11 +248,11 @@ const Farms: React.FC = () => {
   return (
     <Page>
       <Heading as="h1" size="lg" color="secondary" mb="50px" style={{ textAlign: 'center' }}>
-        {TranslateString(999, 'Stake LP tokens to earn CAKE')}
+        {TranslateString(696, 'Stake LP tokens to earn CAKE')}
       </Heading>
       <ControlContainer>
         <ToggleView viewMode={viewMode} onToggle={(mode: ViewMode) => setViewMode(mode)} />
-        <FarmTabButtons />
+        <FarmTabButtons stackedOnly={stackedOnly} setStackedOnly={setStackedOnly} />
         <SearchInput onChange={handleChangeQuery} value={query} />
       </ControlContainer>
       {renderContent()}

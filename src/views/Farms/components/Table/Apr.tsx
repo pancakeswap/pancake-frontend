@@ -3,6 +3,9 @@ import styled from 'styled-components'
 import ApyButton from 'views/Farms/components/FarmCard/ApyButton'
 import { Address, QuoteToken } from 'config/constants/types'
 import BigNumber from 'bignumber.js'
+import { BASE_ADD_LIQUIDITY_URL } from 'config'
+import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
+
 import CellLayout from './CellLayout'
 
 export interface AprProps {
@@ -17,7 +20,7 @@ export interface AprProps {
 }
 
 const Container = styled.div`
-  width: 7.5rem;
+  min-width: 120px;
   display: flex;
   align-items: center;
   color: ${(props) => props.theme.colors.text};
@@ -40,6 +43,11 @@ const AprWrapper = styled.div`
   text-align: left;
 `
 
+const ButtonsWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`
+
 const Apr: React.FunctionComponent<AprProps> = ({
   value,
   lpLabel,
@@ -50,20 +58,13 @@ const Apr: React.FunctionComponent<AprProps> = ({
   originalValue,
 }) => {
   const displayApr = value ? `${value}%` : 'Loading...'
+  const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAdresses, quoteTokenSymbol, tokenAddresses })
+  const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
   return (
     <CellLayout label="APR">
       <Container>
-        <AprWrapper>
-          {displayApr}
-        </AprWrapper>
-        <ApyButton
-          lpLabel={lpLabel}
-          quoteTokenAdresses={quoteTokenAdresses}
-          quoteTokenSymbol={quoteTokenSymbol}
-          tokenAddresses={tokenAddresses}
-          cakePrice={cakePrice}
-          apy={originalValue}
-        />
+        <AprWrapper>{displayApr}</AprWrapper>
+        <ApyButton lpLabel={lpLabel} cakePrice={cakePrice} apy={originalValue} addLiquidityUrl={addLiquidityUrl} />
       </Container>
     </CellLayout>
   )

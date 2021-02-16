@@ -13,7 +13,7 @@ export interface ExpandableSectionProps {
 
 const Wrapper = styled(Flex)`
   svg {
-    margin-right: 0.25rem;
+    margin-right: 4px;
   }
 `
 

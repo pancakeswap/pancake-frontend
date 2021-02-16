@@ -7,6 +7,7 @@ export interface PrizeGridProps {
   lotteryPrizeAmount?: number
   pastDraw?: boolean
   jackpotMatches?: number
+  oneTicketMatches?: number
   twoTicketMatches?: number
   threeTicketMatches?: number
 }
@@ -37,32 +38,34 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({
   lotteryPrizeAmount = 0,
   pastDraw = false,
   jackpotMatches,
+  oneTicketMatches,
   twoTicketMatches,
   threeTicketMatches,
 }) => {
   const fourMatchesAmount = +((lotteryPrizeAmount / 100) * 50).toFixed(0)
   const threeMatchesAmount = +((lotteryPrizeAmount / 100) * 20).toFixed(0)
   const twoMatchesAmount = +((lotteryPrizeAmount / 100) * 10).toFixed(0)
-  const burnAmount = +((lotteryPrizeAmount / 100) * 20).toFixed(0)
+  const oneMatchesAmount = +((lotteryPrizeAmount / 100) * 5).toFixed(0)
+  const burnAmount = +((lotteryPrizeAmount / 100) * 15).toFixed(0)
   const TranslateString = useI18n()
 
   return (
     <Grid pastDraw={pastDraw}>
       <GridItem>
         <Text fontSize="14px" color="textSubtle">
-          {TranslateString(999, 'No. Matched')}
+          {TranslateString(756, 'No. Matched')}
         </Text>
       </GridItem>
       {pastDraw && (
         <PastDrawGridItem>
           <RightAlignedText fontSize="14px" color="textSubtle">
-            {TranslateString(999, 'Winners')}
+            {TranslateString(754, 'Winners')}
           </RightAlignedText>
         </PastDrawGridItem>
       )}
       <GridItem>
         <RightAlignedText fontSize="14px" color="textSubtle">
-          {TranslateString(999, 'Prize Pot')}
+          {TranslateString(752, 'Prize Pot')}
         </RightAlignedText>
       </GridItem>
       {/* 4 matches row */}
@@ -90,16 +93,28 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({
         <RightAlignedText>{threeMatchesAmount.toLocaleString()}</RightAlignedText>
       </GridItem>
       {/* 2 matches row */}
-      <GridItem marginBottom="20px">
+      <GridItem>
         <Text>2</Text>
       </GridItem>
       {pastDraw && (
-        <PastDrawGridItem marginBottom="20px">
+        <PastDrawGridItem>
           <RightAlignedText>{twoTicketMatches}</RightAlignedText>
         </PastDrawGridItem>
       )}
-      <GridItem marginBottom="20px">
+      <GridItem>
         <RightAlignedText>{twoMatchesAmount.toLocaleString()}</RightAlignedText>
+      </GridItem>
+      {/* 1 matches row */}
+      <GridItem marginBottom="20px">
+        <Text>1</Text>
+      </GridItem>
+      {pastDraw && (
+        <PastDrawGridItem marginBottom="20px">
+          <RightAlignedText>{oneTicketMatches}</RightAlignedText>
+        </PastDrawGridItem>
+      )}
+      <GridItem marginBottom="20px">
+        <RightAlignedText>{oneMatchesAmount.toLocaleString()}</RightAlignedText>
       </GridItem>
       {/* Burn row */}
       <GridItem marginBottom="0">
