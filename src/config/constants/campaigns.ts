@@ -4,32 +4,32 @@ import { Campaign } from './types'
  * id: The campaign id (required)
  * type: The type of the achievement
  * title: A string or an object to be translated.
- * Note: If string it could be used as a variable in a translation e.g. IFOs
+ * Note: If the value is a string it is likely used as data in a translation object
  *
  * badge: Achievement avatar
  */
 
 const campaigns: Campaign[] = [
   {
-    id: '511050000',
+    id: '512042102',
     type: 'ifo',
     title: 'Soteria',
     badge: 'ifo-wsote.svg',
   },
   {
-    id: '511040000',
+    id: '512032102',
     type: 'ifo',
     title: 'Helmet',
     badge: 'ifo-helmet.svg',
   },
   {
-    id: '511030000',
+    id: '512022102',
     type: 'ifo',
     title: 'Tenet',
     badge: 'ifo-ten.svg',
   },
   {
-    id: '511020000',
+    id: '512012102',
     type: 'ifo',
     title: 'Ditto',
     badge: 'ifo-ditto.svg',

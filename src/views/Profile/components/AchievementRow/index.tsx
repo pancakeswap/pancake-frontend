@@ -84,12 +84,6 @@ const AchievementRow: React.FC<AchievementRowProps> = ({ achievement, onCollectS
           </Button>
         </ActionColumn>
       </Body>
-      {/* <Details>
-        <div>
-          <AchievementTitle title={achievement.title} />
-        </div>
-        
-      </Details> */}
     </StyledAchievementRow>
   )
 }
