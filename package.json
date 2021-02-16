@@ -64,6 +64,7 @@
     "@types/jest": "^26.0.19",
     "eslint": "^7.20.0",
     "husky": "4.3.5",
+    "@types/react-redux": "^7.1.16",
     "prettier": "^2.1.2",
     "source-map-explorer": "^2.5.2",
     "ts-node": "^9.1.1"

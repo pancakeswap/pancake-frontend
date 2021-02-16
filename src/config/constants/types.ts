@@ -1,3 +1,5 @@
+import { TranslatableText } from 'state/types'
+
 export type IfoStatus = 'coming_soon' | 'live' | 'finished'
 
 export interface Ifo {
@@ -17,6 +19,7 @@ export interface Ifo {
   currencyAddress: string
   tokenDecimals: number
   releaseBlockNumber: number
+  campaignId?: string
 }
 
 export enum QuoteToken {
@@ -108,4 +111,14 @@ export type Team = {
   images: TeamImages
   background: string
   textColor: string
+}
+
+export type CampaignType = 'ifo'
+
+export type Campaign = {
+  id: string
+  type: CampaignType
+  title?: TranslatableText
+  description?: TranslatableText
+  badge?: string
 }

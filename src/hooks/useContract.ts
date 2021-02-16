@@ -11,6 +11,7 @@ import {
   getRabbitMintingFarmAddress,
   getPancakeProfileAddress,
   getPancakeRabbitsAddress,
+  getPointCenterIfoAddress,
 } from 'utils/addressHelpers'
 import { poolsConfig } from 'config/constants'
 import { PoolCategory } from 'config/constants/types'
@@ -24,6 +25,7 @@ import masterChef from 'config/abi/masterchef.json'
 import sousChef from 'config/abi/sousChef.json'
 import sousChefBnb from 'config/abi/sousChefBnb.json'
 import profile from 'config/abi/pancakeProfile.json'
+import pointCenterIfo from 'config/abi/pointCenterIfo.json'
 
 const useContract = (abi: AbiItem, address: string, contractOptions?: ContractOptions) => {
   const web3 = useWeb3()
@@ -89,6 +91,11 @@ export const useSousChef = (id) => {
   const rawAbi = config.poolCategory === PoolCategory.BINANCE ? sousChefBnb : sousChef
   const abi = (rawAbi as unknown) as AbiItem
   return useContract(abi, getAddress(config.contractAddress))
+}
+
+export const usePointCenterIfoContract = () => {
+  const abi = (pointCenterIfo as unknown) as AbiItem
+  return useContract(abi, getPointCenterIfoAddress())
 }
 
 export default useContract
