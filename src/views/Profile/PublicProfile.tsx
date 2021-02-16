@@ -22,10 +22,15 @@ import Collectibles from './components/Collectibles'
 import ComingSoon from './components/ComingSoon'
 import WalletNotConnected from './components/WalletNotConnected'
 import StatBox from './components/StatBox'
-import ProfileAvatar from './components/ProfileAvatar'
+import EditProfileAvatar from './components/EditProfileAvatar'
 
 const Content = styled.div`
   flex: 1;
+  padding: 16px 0;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    padding: 0 16px;
+  }
 `
 
 const Username = styled(Heading)`
@@ -84,7 +89,7 @@ const PublicProfile = () => {
         <Card>
           <CardHeader>
             <Flex alignItems={['start', null, 'center']} flexDirection={['column', null, 'row']}>
-              <ProfileAvatar profile={profile} />
+              <EditProfileAvatar profile={profile} />
               <Content>
                 <Username>{`@${profile.username}`}</Username>
                 <Flex alignItems="center">
