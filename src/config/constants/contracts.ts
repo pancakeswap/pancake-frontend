@@ -48,7 +48,7 @@ export default {
     97: '0x60935F36e4631F73f0f407e68642144e07aC7f5E',
   },
   bunnyFactory: {
-    56: '0x1C99222F857C1d72234703eC5b9Ed88089Bd7091',
+    56: '0xfa249Caa1D16f75fa159F7DFBAc0cC5EaB48CeFf',
     97: '0x707CBF373175fdB601D34eeBF2Cf665d08f01148',
   },
   eth: {
