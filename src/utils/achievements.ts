@@ -1,6 +1,6 @@
 import { Campaign } from 'config/constants/types'
 import { getPointCenterIfoAddress } from 'utils/addressHelpers'
-import { getContract } from 'utils/web3'
+import { getContract } from 'utils/erc20'
 import pointCenterIfo from 'config/abi/pointCenterIfo.json'
 import ifosList from 'config/constants/ifo'
 import { campaignMap } from 'config/constants/campaigns'
@@ -14,7 +14,7 @@ interface IfoMapResponse {
 }
 
 export const getPointCenterClaimContract = () => {
-  return getContract(pointCenterIfo, getPointCenterIfoAddress())
+  return getContract(getPointCenterIfoAddress(), pointCenterIfo)
 }
 
 export const getAchievementTitle = (campaign: Campaign): TranslatableText => {
@@ -56,15 +56,14 @@ export const getClaimableIfoData = async (account: string): Promise<Achievement[
   const pointCenterContract = getPointCenterClaimContract()
 
   // Returns the claim status of every IFO with a campaign ID
-  const claimStatuses = (await pointCenterContract.methods
-    .checkClaimStatuses(account, ifoCampaignAddresses)
-    .call()) as boolean[]
+  const claimStatuses = (await pointCenterContract
+    .checkClaimStatuses(account, ifoCampaignAddresses)) as boolean[]
 
   // Get IFO data for all IFO's that are eligible to claim
   const claimableIfoData = (await makeBatchRequest(
     claimStatuses.reduce((accum, claimStatus, index) => {
       if (claimStatus === true) {
-        return [...accum, pointCenterContract.methods.ifos(ifoCampaignAddresses[index]).call]
+        return [...accum, pointCenterContract.ifos(ifoCampaignAddresses[index])]
       }
 
       return accum

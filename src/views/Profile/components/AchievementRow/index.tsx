@@ -45,22 +45,18 @@ const AchievementRow: React.FC<AchievementRowProps> = ({ achievement, onCollectS
   const { account } = useWallet()
   const { toastError, toastSuccess } = useToast()
 
-  const handleCollectPoints = () => {
-    pointCenterContract.methods
-      .getPoints(achievement.address)
-      .send({ from: account })
-      .on('sending', () => {
-        setIsCollecting(true)
-      })
-      .on('receipt', () => {
-        setIsCollecting(false)
-        onCollectSuccess(achievement)
-        toastSuccess('Points Collected!')
-      })
-      .on('error', (error) => {
-        toastError('Error', error?.message)
-        setIsCollecting(false)
-      })
+  const handleCollectPoints = async () => {
+    const tx = pointCenterContract.getPoints(achievement.address, { from: account })
+    setIsCollecting(true)
+    try {
+      await tx.wait()
+      setIsCollecting(false)
+      onCollectSuccess(achievement)
+      toastSuccess('Points Collected!')
+    } catch (error) {
+      toastError('Error', error?.message)
+      setIsCollecting(false)
+    }
   }
 
   return (
