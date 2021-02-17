@@ -204,15 +204,15 @@ export default React.forwardRef((props: ITableProps) => {
 
   useEffect(() => {
     if (scrollBarEl && scrollBarEl.current) {
-      let isScrolling1 = false
-      let isScrolling2 = false
+      let isBarScrolling = false
+      let isTableScrolling = false
       scrollBarEl.current.onscroll = (): void => {
         if (tableWrapperEl.current) {
-          if (isScrolling2) {
-            isScrolling2 = false
+          if (isTableScrolling) {
+            isTableScrolling = false
             return
           }
-          isScrolling1 = true
+          isBarScrolling = true
 
           if (!scrollBarEl.current.scrollLeft) {
             tableWrapperEl.current.scrollLeft = scrollBarEl.current.scrollLeft
@@ -229,11 +229,11 @@ export default React.forwardRef((props: ITableProps) => {
 
       tableWrapperEl.current.onscroll = (): void => {
         if (scrollBarEl.current) {
-          if (isScrolling1) {
-            isScrolling1 = false
+          if (isBarScrolling) {
+            isBarScrolling = false
             return
           }
-          isScrolling2 = true
+          isTableScrolling = true
 
           if (!tableWrapperEl.current.scrollLeft) {
             scrollBarEl.current.scrollLeft = tableWrapperEl.current.scrollLeft
