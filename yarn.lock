@@ -1863,10 +1863,10 @@
     eslint-plugin-react "^7.21.5"
     eslint-plugin-react-hooks "^4.0.0"
 
-"@pancakeswap-libs/uikit@^0.10.5":
-  version "0.10.5"
-  resolved "https://registry.yarnpkg.com/@pancakeswap-libs/uikit/-/uikit-0.10.5.tgz#68d8440d23d2350cee3aa9af37e82ba71a8c0658"
-  integrity sha512-T1uikr5ImU3wMMdf5PbYLJTCacdCmzJSkOu+SUmG06OlM6gLvTWsAZeAai9CX4llyEvv1BzQQTDVnwVbPFFoNw==
+"@pancakeswap-libs/uikit@^0.10.6":
+  version "0.10.6"
+  resolved "https://registry.yarnpkg.com/@pancakeswap-libs/uikit/-/uikit-0.10.6.tgz#1334f28e0f89891d48c0b29dd252e3b5a75c7cb7"
+  integrity sha512-EmdLZitV7Y007x5VpUOYvlFNjBRL8JS5tSyODVFa7Ixl/hEd0vqcvisKXc27HLJV30fAxZMu9MQ/2xv6QpeENw==
   dependencies:
     "@types/lodash" "^4.14.162"
     "@types/styled-system" "^5.1.10"
