@@ -56,20 +56,18 @@ const Details: React.FunctionComponent<DetailsProps> = ({ liquidity, lpName, liq
   }
 
   return (
-    <>
-      <Container>
-        <div>
-          <StakeLabel>{TranslateString(316, 'Stake')}:</StakeLabel>
-          <StyledLinkExternal href={`https://exchange.pancakeswap.finance/#/add/${liquidityUrlPathParts}`}>
-            {lpName}
-          </StyledLinkExternal>
-        </div>
-        <div>
-          <StakeLabel>{TranslateString(999, 'Liquidity')}:</StakeLabel>
-          <span>{renderLiquidity()}</span>
-        </div>
-      </Container>
-    </>
+    <Container>
+      <div>
+        <StakeLabel>{TranslateString(316, 'Stake')}:</StakeLabel>
+        <StyledLinkExternal href={`https://exchange.pancakeswap.finance/#/add/${liquidityUrlPathParts}`}>
+          {lpName}
+        </StyledLinkExternal>
+      </div>
+      <div>
+        <StakeLabel>{TranslateString(999, 'Liquidity')}:</StakeLabel>
+        <span>{renderLiquidity()}</span>
+      </div>
+    </Container>
   )
 }
 
