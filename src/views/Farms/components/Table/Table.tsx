@@ -68,7 +68,7 @@ const TableHead = styled.thead`
   }
 
   & .bold {
-    color: #7645d9;
+    color: ${(props) => props.theme.colors.secondary};
   }
 `
 
