@@ -14,16 +14,18 @@ import useProfileCreation from './contexts/hook'
 
 const starterBunnyIds = [5, 6, 7, 8, 9]
 const nfts = nftList.filter((nft) => starterBunnyIds.includes(nft.bunnyId))
-const minimumCakeBalance = 4
+const cakeCostToMint = 4
+const minimumCakeBalanceToMint = new BigNumber(cakeCostToMint).multipliedBy(new BigNumber(10).pow(18))
 
 const Mint: React.FC = () => {
   const [bunnyId, setBunnyId] = useState(null)
   const { actions, minimumCakeRequired, allowance } = useProfileCreation()
+
   const { account } = useWallet()
   const cakeContract = useCake()
   const bunnyFactoryContract = useBunnyFactory()
   const TranslateString = useI18n()
-  const hasMinimumCakeRequired = useHasCakeBalance(minimumCakeBalance)
+  const hasMinimumCakeRequired = useHasCakeBalance(minimumCakeBalanceToMint)
   const {
     isApproving,
     isApproved,
@@ -94,19 +96,19 @@ const Mint: React.FC = () => {
               </SelectionCard>
             )
           })}
+          {!hasMinimumCakeRequired && (
+            <Text color="failure" mb="16px">
+              {TranslateString(1098, `A minimum of ${cakeCostToMint} CAKE is required`)}
+            </Text>
+          )}
           <ApproveConfirmButtons
             isApproveDisabled={bunnyId === null || isConfirmed || isConfirming || isApproved}
             isApproving={isApproving}
-            isConfirmDisabled={!isApproved || isConfirmed}
+            isConfirmDisabled={!isApproved || isConfirmed || !hasMinimumCakeRequired}
             isConfirming={isConfirming}
             onApprove={handleApprove}
             onConfirm={handleConfirm}
           />
-          {!hasMinimumCakeRequired && (
-            <Text color="failure" mt="16px">
-              {TranslateString(1098, `A minimum of ${minimumCakeBalance} CAKE is required`)}
-            </Text>
-          )}
         </CardBody>
       </Card>
       <NextStepButton onClick={actions.nextStep} disabled={!isConfirmed}>

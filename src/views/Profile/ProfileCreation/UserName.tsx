@@ -1,5 +1,6 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import styled from 'styled-components'
+import BigNumber from 'bignumber.js'
 import {
   Card,
   CardBody,
@@ -34,7 +35,8 @@ enum ExistingUserState {
 const MIN_LENGTH = 3
 const MAX_LENGTH = 15
 const profileApiUrl = process.env.REACT_APP_API_PROFILE
-const minimumCakeBalance = 1
+const cakeCostToRegister = 1
+const minimumCakeToRegister = new BigNumber(cakeCostToRegister).multipliedBy(new BigNumber(10).pow(18))
 
 const InputWrap = styled.div`
   position: relative;
@@ -67,7 +69,7 @@ const UserName: React.FC = () => {
   const [isValid, setIsValid] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [message, setMessage] = useState('')
-  const hasMinimumCakeRequired = useHasCakeBalance(minimumCakeBalance)
+  const hasMinimumCakeRequired = useHasCakeBalance(minimumCakeToRegister)
   const [onPresentConfirmProfileCreation] = useModal(
     <ConfirmProfileCreationModal
       userName={userName}
@@ -243,7 +245,7 @@ const UserName: React.FC = () => {
       </Button>
       {!hasMinimumCakeRequired && (
         <Text color="failure" mt="16px">
-          {TranslateString(1098, `A minimum of ${minimumCakeBalance} CAKE is required`)}
+          {TranslateString(1098, `A minimum of ${cakeCostToRegister} CAKE is required`)}
         </Text>
       )}
     </>
