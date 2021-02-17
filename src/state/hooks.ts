@@ -176,7 +176,7 @@ export const useTeams = () => {
 // Achievements
 
 export const useFetchAchievements = () => {
-  const { account } = useWallet()
+  const { account } = useWeb3React()
   const dispatch = useDispatch()
 
   useEffect(() => {

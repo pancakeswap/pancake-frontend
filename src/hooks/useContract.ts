@@ -8,7 +8,6 @@ import {
   getLotteryTicketAddress,
   getBunnyFactoryAddress,
   getPancakeProfileAddress,
-  getRabbitMintingFarmAddress,
   getPancakeRabbitsAddress,
   getPointCenterIfoAddress,
   getBunnySpecialAddress,
@@ -68,10 +67,6 @@ export const useBunnyFactory = () => {
 
 export const useProfile = () => {
   return useContract(profile, getPancakeProfileAddress())
-}
-
-export const useRabbitMintingFarm = () => {
-  return useContract(rabbitmintingfarm, getRabbitMintingFarmAddress())
 }
 
 export const usePancakeRabbits = () => {

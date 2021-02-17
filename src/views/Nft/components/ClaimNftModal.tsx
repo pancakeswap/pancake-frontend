@@ -7,7 +7,7 @@ import { getCakeAddress } from 'utils/addressHelpers'
 import { Nft } from 'config/constants/types'
 import useTokenBalance from 'hooks/useTokenBalance'
 import useI18n from 'hooks/useI18n'
-import { useRabbitMintingFarm } from 'hooks/useContract'
+import { useBunnyFactory } from 'hooks/useContract'
 import InfoRow from './InfoRow'
 
 interface ClaimNftModalProps {
@@ -35,7 +35,7 @@ const ClaimNftModal: React.FC<ClaimNftModalProps> = ({ nft, onSuccess, onDismiss
   const [error, setError] = useState(null)
   const TranslateString = useI18n()
   const { account } = useWeb3React()
-  const rabbitMintingContract = useRabbitMintingFarm()
+  const rabbitMintingContract = useBunnyFactory()
   const cakeBalance = useTokenBalance(getCakeAddress())
   const cakeInWallet = getBalanceNumber(cakeBalance)
 
