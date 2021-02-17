@@ -4,7 +4,7 @@ import { Card, CardBody, Heading, Text } from '@pancakeswap-libs/uikit'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import useI18n from 'hooks/useI18n'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
-import { useCake, useRabbitMintingFarm } from 'hooks/useContract'
+import { useCake, useBunnyFactory } from 'hooks/useContract'
 import useHasCakeBalance from 'hooks/useHasCakeBalance'
 import nftList from 'config/constants/nfts'
 import SelectionCard from '../components/SelectionCard'
@@ -21,7 +21,7 @@ const Mint: React.FC = () => {
   const { actions, minimumCakeRequired, allowance } = useProfileCreation()
   const { account } = useWallet()
   const cakeContract = useCake()
-  const mintingFarmContract = useRabbitMintingFarm()
+  const bunnyFactoryContract = useBunnyFactory()
   const TranslateString = useI18n()
   const hasMinimumCakeRequired = useHasCakeBalance(minimumCakeBalance)
   const {
@@ -35,7 +35,7 @@ const Mint: React.FC = () => {
     onRequiresApproval: async () => {
       // TODO: Move this to a helper, this check will be probably be used many times
       try {
-        const response = await cakeContract.methods.allowance(account, mintingFarmContract.options.address).call()
+        const response = await cakeContract.methods.allowance(account, bunnyFactoryContract.options.address).call()
         const currentAllowance = new BigNumber(response)
         return currentAllowance.gte(minimumCakeRequired)
       } catch (error) {
@@ -44,11 +44,11 @@ const Mint: React.FC = () => {
     },
     onApprove: () => {
       return cakeContract.methods
-        .approve(mintingFarmContract.options.address, allowance.toJSON())
+        .approve(bunnyFactoryContract.options.address, allowance.toJSON())
         .send({ from: account })
     },
     onConfirm: () => {
-      return mintingFarmContract.methods.mintNFT(bunnyId).send({ from: account })
+      return bunnyFactoryContract.methods.mintNFT(bunnyId).send({ from: account })
     },
     onSuccess: () => actions.nextStep(),
   })

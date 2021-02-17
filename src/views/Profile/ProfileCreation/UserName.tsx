@@ -77,6 +77,7 @@ const UserName: React.FC = () => {
       minimumCakeRequired={minimumCakeRequired}
       allowance={allowance}
     />,
+    false,
   )
   const isUserCreated = existingUserState === ExistingUserState.CREATED
 

@@ -31,8 +31,8 @@ export const getPancakeProfileAddress = () => {
 export const getPancakeRabbitsAddress = () => {
   return getAddress(addresses.pancakeRabbits)
 }
-export const getRabbitMintingFarmAddress = () => {
-  return getAddress(addresses.rabbitMintingFarm)
+export const getBunnyFactoryAddress = () => {
+  return getAddress(addresses.bunnyFactory)
 }
 export const getClaimRefundAddress = () => {
   return getAddress(addresses.claimRefund)

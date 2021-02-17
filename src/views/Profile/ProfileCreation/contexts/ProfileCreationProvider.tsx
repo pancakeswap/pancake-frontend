@@ -1,7 +1,7 @@
 import React, { createContext, useEffect, useMemo, useReducer } from 'react'
 import BigNumber from 'bignumber.js'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
-import { getRabbitMintingContract } from 'utils/contractHelpers'
+import { getBunnyFactoryContract } from 'utils/contractHelpers'
 import { Actions, State, ContextType } from './types'
 
 const initialState: State = {
@@ -56,10 +56,9 @@ const ProfileCreationProvider: React.FC = ({ children }) => {
   // Initial checks
   useEffect(() => {
     const fetchData = async () => {
-      const mintingContract = getRabbitMintingContract()
-      const hasClaimed = await mintingContract.methods.hasClaimed(account).call()
-
-      dispatch({ type: 'initialize', step: hasClaimed ? 1 : 0 })
+      const bunnyFactoryContract = getBunnyFactoryContract()
+      const canMint = await bunnyFactoryContract.methods.canMint(account).call()
+      dispatch({ type: 'initialize', step: canMint ? 0 : 1 })
     }
 
     if (account) {
