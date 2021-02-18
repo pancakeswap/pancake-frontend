@@ -19,7 +19,14 @@ interface Props {
   onDismiss?: () => void
 }
 
-const ContributeModal: React.FC<Props> = ({ account, teamId, tokenId, minimumCakeRequired, allowance, onDismiss }) => {
+const ConfirmProfileCreationModal: React.FC<Props> = ({
+  account,
+  teamId,
+  tokenId,
+  minimumCakeRequired,
+  allowance,
+  onDismiss,
+}) => {
   const TranslateString = useI18n()
   const profileContract = useProfile()
   const pancakeRabbitsContract = usePancakeRabbits()
@@ -80,4 +87,4 @@ const ContributeModal: React.FC<Props> = ({ account, teamId, tokenId, minimumCak
   )
 }
 
-export default ContributeModal
+export default ConfirmProfileCreationModal

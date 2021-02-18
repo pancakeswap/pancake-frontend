@@ -3,12 +3,12 @@ import BigNumber from 'bignumber.js'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import useBlock from 'hooks/useBlock'
 import useGetWalletNfts, { NftMap } from 'hooks/useGetWalletNfts'
-import { getRabbitMintingFarmAddress } from 'utils/addressHelpers'
+import { getBunnyFactoryAddress } from 'utils/addressHelpers'
 import { getPancakeRabbitContract } from 'utils/contractHelpers'
 import multicall from 'utils/multicall'
-import rabbitmintingfarm from 'config/abi/rabbitmintingfarm.json'
+import bunnyFactory from 'config/abi/bunnyFactory.json'
 
-const rabbitMintingFarmAddress = getRabbitMintingFarmAddress()
+const bunnyFactoryAddress = getBunnyFactoryAddress()
 
 type State = {
   isInitialized: boolean
@@ -45,9 +45,9 @@ const NftProvider: React.FC = ({ children }) => {
   useEffect(() => {
     const fetchContractData = async () => {
       try {
-        const [startBlockNumberArr, endBlockNumberArr] = await multicall(rabbitmintingfarm, [
-          { address: rabbitMintingFarmAddress, name: 'startBlockNumber' },
-          { address: rabbitMintingFarmAddress, name: 'endBlockNumber' },
+        const [startBlockNumberArr, endBlockNumberArr] = await multicall(bunnyFactory, [
+          { address: bunnyFactoryAddress, name: 'startBlockNumber' },
+          { address: bunnyFactoryAddress, name: 'endBlockNumber' },
         ])
 
         // TODO: Figure out why these are coming back as arrays
@@ -73,8 +73,8 @@ const NftProvider: React.FC = ({ children }) => {
     const fetchContractData = async () => {
       try {
         const pancakeRabbitsContract = getPancakeRabbitContract()
-        const [hasClaimedArr] = await multicall(rabbitmintingfarm, [
-          { address: rabbitMintingFarmAddress, name: 'hasClaimed', params: [account] },
+        const [hasClaimedArr] = await multicall(bunnyFactory, [
+          { address: bunnyFactoryAddress, name: 'hasClaimed', params: [account] },
         ])
         const balanceOf = await pancakeRabbitsContract.methods.balanceOf(account).call()
         const [hasClaimed]: [boolean] = hasClaimedArr

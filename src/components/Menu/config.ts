@@ -50,6 +50,10 @@ const config: MenuEntry[] = [
         href: '/teams',
       },
       {
+        label: 'Task Center',
+        href: '/profile/tasks',
+      },
+      {
         label: 'Your Profile',
         href: '/profile',
       },

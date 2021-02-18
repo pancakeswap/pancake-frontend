@@ -1,10 +1,9 @@
-import React, { useRef, useEffect, useState } from 'react'
+import React, { useRef } from 'react'
 import styled from 'styled-components'
-import { useTable, ChevronDownIcon, Button, ChevronUpIcon, ColumnType } from '@pancakeswap-libs/uikit'
+import { useTable, Button, ChevronUpIcon, ColumnType } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 
 import Row, { RowData } from './Row'
-import { DesktopColumnSchema, MobileColumnSchema } from '../types'
 
 export interface ITableProps {
   data: RowData[]
@@ -47,15 +46,6 @@ const TableBody = styled.tbody`
   }
 `
 
-const ArrowIcon = styled(ChevronDownIcon)`
-  margin-left: 6px;
-  transition: 0.5s;
-
-  &.toggle {
-    transform: rotate(180deg);
-  }
-`
-
 const TableContainer = styled.div`
   position: relative;
 }
@@ -69,80 +59,11 @@ const ScrollButtonContainer = styled.div`
 `
 
 export default React.forwardRef((props: ITableProps) => {
-  const scrollBarEl = useRef<HTMLDivElement>(null)
   const tableWrapperEl = useRef<HTMLDivElement>(null)
-  const [tableWidth, setTableWidth] = useState(600)
-  const [visibleScroll, setVisibleScroll] = useState(true)
-  const [showGradient, setShowGradient] = useState(true)
   const TranslateString = useI18n()
   const { data, columns } = props
 
-  const renderSortArrow = (column: any): JSX.Element => {
-    if (column.sorted && column.sorted.on) {
-      if (column.sorted.asc) {
-        return <ArrowIcon className="toggle" color="secondary" />
-      }
-
-      return <ArrowIcon color="secondary" />
-    }
-
-    return null
-  }
-
-  const { headers, rows, toggleSort } = useTable(columns, data, { sortable: true, sortColumn: 'farm' })
-
-  useEffect(() => {
-    if (scrollBarEl && scrollBarEl.current) {
-      let isScrolling1 = false
-      let isScrolling2 = false
-      scrollBarEl.current.onscroll = (): void => {
-        if (tableWrapperEl.current) {
-          if (isScrolling2) {
-            isScrolling2 = false
-            return
-          }
-          isScrolling1 = true
-
-          if (!scrollBarEl.current.scrollLeft) {
-            tableWrapperEl.current.scrollLeft = scrollBarEl.current.scrollLeft
-            return
-          }
-
-          const scrollPercent =
-            (scrollBarEl.current.scrollLeft + scrollBarEl.current.clientWidth) / scrollBarEl.current.scrollWidth
-          setShowGradient(scrollPercent !== 1)
-          tableWrapperEl.current.scrollLeft =
-            scrollPercent * tableWrapperEl.current.scrollWidth - tableWrapperEl.current.clientWidth
-        }
-      }
-
-      tableWrapperEl.current.onscroll = (): void => {
-        if (scrollBarEl.current) {
-          if (isScrolling1) {
-            isScrolling1 = false
-            return
-          }
-          isScrolling2 = true
-
-          if (!tableWrapperEl.current.scrollLeft) {
-            scrollBarEl.current.scrollLeft = tableWrapperEl.current.scrollLeft
-            return
-          }
-          const scrollPercent =
-            (tableWrapperEl.current.scrollLeft + tableWrapperEl.current.clientWidth) /
-            tableWrapperEl.current.scrollWidth
-          setShowGradient(scrollPercent !== 1)
-          scrollBarEl.current.scrollLeft =
-            scrollPercent * scrollBarEl.current.scrollWidth - scrollBarEl.current.clientWidth
-        }
-      }
-
-      if (scrollBarEl.current.clientWidth + 24 >= tableWrapperEl.current.scrollWidth) {
-        setVisibleScroll(false)
-      }
-      setTableWidth(tableWrapperEl.current.scrollWidth)
-    }
-  }, [])
+  const { rows } = useTable(columns, data, { sortable: true, sortColumn: 'farm' })
 
   const scrollToTop = (): void => {
     tableWrapperEl.current.scrollTo({

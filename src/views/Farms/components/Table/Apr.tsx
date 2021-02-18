@@ -43,11 +43,6 @@ const AprWrapper = styled.div`
   text-align: left;
 `
 
-const ButtonsWrapper = styled.div`
-  display: flex;
-  align-items: center;
-`
-
 const Apr: React.FunctionComponent<AprProps> = ({
   value,
   lpLabel,

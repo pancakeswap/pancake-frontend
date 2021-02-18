@@ -50,11 +50,13 @@ const Row: React.FunctionComponent<RowData> = (props) => {
           )
         })}
       </tr>
-      <tr>
-        <td colSpan={7}>
-          <ActionPanel farm={details} />
-        </td>
-      </tr>
+      {details && (
+        <tr>
+          <td colSpan={6}>
+            <ActionPanel farm={details} />
+          </td>
+        </tr>
+      )}
     </>
   )
 }

@@ -15,7 +15,6 @@ import { fetchFarmUserDataAsync } from 'state/actions'
 import { QuoteToken } from 'config/constants/types'
 import useI18n from 'hooks/useI18n'
 import { getBalanceNumber } from 'utils/formatBalance'
-import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import FarmCard, { FarmWithStakedValue } from './components/FarmCard/FarmCard'
 import Table from './components/Table/Table'
 import FarmTabButtons from './components/FarmTabButtons'
@@ -181,7 +180,7 @@ const Farms: React.FC = () => {
 
   const renderContent = (): JSX.Element => {
     if (viewMode === ViewMode.TABLE && rowData.length) {
-      const columnSchema = isXs ? DesktopColumnSchema : MobileColumnSchema
+      const columnSchema = isXs ? MobileColumnSchema : DesktopColumnSchema
 
       const columns = columnSchema.map((column) => ({
         id: column.id,

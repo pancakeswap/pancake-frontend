@@ -6,13 +6,9 @@ import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import { communityFarms } from 'config/constants'
 import { CommunityTag, CoreTag, DualTag } from 'components/Tags'
-import { getBalanceNumber } from 'utils/formatBalance'
-import BigNumber from 'bignumber.js'
 
 import HarvestAction from './HarvestAction'
 import StakedAction from './StakedAction'
-
-import { ActionContainer, ActionTitles, ActionContent, Earned, Title, Subtle, Staked } from './styles'
 
 export interface ActionPanelProps {
   farm: FarmWithStakedValue
@@ -69,7 +65,6 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({ farm }) => {
   const bsc = `https://bscscan.com/address/${farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]}`
   const info = `https://pancakeswap.info/pair/${farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]}`
   const isCommunityFarm = communityFarms.includes(tokenSymbol)
-  const earnings = farm.userData ? getBalanceNumber(new BigNumber(farm.userData.earnings)) : null
 
   return (
     <Container>
@@ -87,19 +82,7 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({ farm }) => {
           {!dual ? <DualTag /> : null}
         </TagsContainer>
       </div>
-      <ActionContainer>
-        <ActionTitles>
-          <Title>CAKE</Title>
-          <Subtle>EARNED</Subtle>
-        </ActionTitles>
-        <ActionContent>
-          <div>
-            <Earned>1,483,.450</Earned>
-            <Staked>~ 400USD</Staked>
-          </div>
-          <HarvestAction pid={farm.pid} earnings={earnings} />
-        </ActionContent>
-      </ActionContainer>
+      <HarvestAction {...farm} />
       <StakedAction {...farm} />
     </Container>
   )

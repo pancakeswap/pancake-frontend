@@ -44,6 +44,7 @@ const Staked: React.FunctionComponent<FarmWithStakedValue> = ({
   const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAdresses, quoteTokenSymbol, tokenAddresses })
   const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
   const rawStakedBalance = getBalanceNumber(stakedBalance)
+  const displayBalance = rawStakedBalance.toLocaleString()
 
   const [onPresentDeposit] = useModal(
     <DepositModal max={tokenBalance} onConfirm={onStake} tokenName={lpSymbol} addLiquidityUrl={addLiquidityUrl} />,
@@ -72,12 +73,12 @@ const Staked: React.FunctionComponent<FarmWithStakedValue> = ({
         return (
           <ActionContainer>
             <ActionTitles>
-              <Title>CAKE</Title>
-              <Subtle>{TranslateString(999, 'EARNED')}</Subtle>
+              <Title>{lpSymbol} </Title>
+              <Subtle>{TranslateString(999, 'STAKED')}</Subtle>
             </ActionTitles>
             <ActionContent>
               <div>
-                <Earned>1, 483.450</Earned>
+                <Earned>{displayBalance}</Earned>
               </div>
               <IconButtonWrapper>
                 <IconButton variant="secondary" onClick={onPresentWithdraw} mr="6px">

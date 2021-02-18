@@ -2,8 +2,13 @@
   {
     "inputs": [
       {
-        "internalType": "contract PancakeBunnies",
-        "name": "_pancakeBunnies",
+        "internalType": "contract BunnyFactoryV2",
+        "name": "_bunnyFactoryV2",
+        "type": "address"
+      },
+      {
+        "internalType": "contract BunnyMintingStation",
+        "name": "_bunnyMintingStation",
         "type": "address"
       },
       {
@@ -24,11 +29,6 @@
       {
         "internalType": "uint256",
         "name": "_startBlockNumber",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_endBlockNumber",
         "type": "uint256"
       }
     ],
@@ -81,6 +81,32 @@
   },
   {
     "inputs": [],
+    "name": "bunnyFactoryV2",
+    "outputs": [
+      {
+        "internalType": "contract BunnyFactoryV2",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "bunnyMintingStation",
+    "outputs": [
+      {
+        "internalType": "contract BunnyMintingStation",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "cakeToken",
     "outputs": [
       {
@@ -96,13 +122,19 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_newOwner",
+        "name": "userAddress",
         "type": "address"
       }
     ],
-    "name": "changeOwnershipNFTContract",
-    "outputs": [],
-    "stateMutability": "nonpayable",
+    "name": "canMint",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -116,19 +148,6 @@
     "name": "claimFee",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "endBlockNumber",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -178,19 +197,6 @@
   },
   {
     "inputs": [],
-    "name": "pancakeBunnies",
-    "outputs": [
-      {
-        "internalType": "contract PancakeBunnies",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "renounceOwnership",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -225,52 +231,6 @@
       }
     ],
     "name": "setBunnyJson",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "string",
-        "name": "_bunnyId5",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "_bunnyId6",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "_bunnyId7",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "_bunnyId8",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "_bunnyId9",
-        "type": "string"
-      }
-    ],
-    "name": "setBunnyNames",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_newEndBlockNumber",
-        "type": "uint256"
-      }
-    ],
-    "name": "setEndBlockNumber",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
