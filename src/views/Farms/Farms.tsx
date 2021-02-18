@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux'
 import BigNumber from 'bignumber.js'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { provider } from 'web3-core'
-import { Image, Heading, RowType, useMatchBreakpoints } from '@pancakeswap-libs/uikit'
+import { Image, Heading, RowType, useMatchBreakpoints, Toggle, Text } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
 import { BLOCKS_PER_YEAR, CAKE_PER_BLOCK, CAKE_POOL_PID } from 'config'
 import FlexLayout from 'components/layout/Flex'
@@ -23,12 +23,39 @@ import { RowData } from './components/Table/Row'
 import ToggleView from './components/ToggleView/ToggleView'
 import { DesktopColumnSchema, MobileColumnSchema, ViewMode } from './components/types'
 
-const ControlContainer = styled.div`
+const ControlContainer = styled.div<{ viewMode: ViewMode }>`
   display: flex;
   width: 100%;
   align-items: center;
-  margin-bottom: 32px;
   position: relative;
+  background: ${({ viewMode, theme }) =>
+    viewMode === ViewMode.TABLE ? theme.card.cardHeaderBackground : 'transparent'};
+  border-radius: 32px 32px 0px 0px;
+  height: 125px;
+  padding: 0px 32px;
+`
+
+const ToggleViewContainer = styled.div`
+  display: flex;
+  margin-bottom: 32px;
+`
+
+const ToggleWrapper = styled.div`
+  display: flex;
+  align-items: center;
+
+  ${Text} {
+    margin-left: 8px;
+  }
+`
+
+const SortByContainer = styled.div`
+  display: flex;
+  margin-bottom: 18px;
+
+  ${Text} {
+    margin-right: 120px;
+  }
 `
 
 const Farms: React.FC = () => {
@@ -176,11 +203,12 @@ const Farms: React.FC = () => {
     return row
   })
 
-  const { isXs } = useMatchBreakpoints()
+  const { isXl } = useMatchBreakpoints()
+  const isMobile = !isXl
 
   const renderContent = (): JSX.Element => {
     if (viewMode === ViewMode.TABLE && rowData.length) {
-      const columnSchema = isXs ? MobileColumnSchema : DesktopColumnSchema
+      const columnSchema = isMobile ? MobileColumnSchema : DesktopColumnSchema
 
       const columns = columnSchema.map((column) => ({
         id: column.id,
@@ -249,9 +277,27 @@ const Farms: React.FC = () => {
       <Heading as="h1" size="lg" color="secondary" mb="50px" style={{ textAlign: 'center' }}>
         {TranslateString(696, 'Stake LP tokens to earn CAKE')}
       </Heading>
-      <ControlContainer>
+      <ToggleViewContainer>
         <ToggleView viewMode={viewMode} onToggle={(mode: ViewMode) => setViewMode(mode)} />
-        <FarmTabButtons stackedOnly={stackedOnly} setStackedOnly={setStackedOnly} />
+        <FarmTabButtons />
+      </ToggleViewContainer>
+      <ControlContainer viewMode={viewMode}>
+        <div>
+          <SortByContainer>
+            <Text>Sort by:</Text>
+            {/* <select>
+              <option value="Default">Default</option>
+              <option value="APR">APR</option>
+              <option value="Amount-Earned">Amount Earned</option>
+              <option value="Liquidity">Liquidity</option>
+              <option value="Multiplier">Multiplier</option>
+            </select> */}
+          </SortByContainer>
+          <ToggleWrapper>
+            <Toggle checked={stackedOnly} onChange={() => setStackedOnly(!stackedOnly)} scale="sm" />
+            <Text> {TranslateString(1116, 'Staked only')}</Text>
+          </ToggleWrapper>
+        </div>
         <SearchInput onChange={handleChangeQuery} value={query} />
       </ControlContainer>
       {renderContent()}

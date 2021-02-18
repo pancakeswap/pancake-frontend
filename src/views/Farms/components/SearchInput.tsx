@@ -44,7 +44,7 @@ const SearchButton = styled.button`
 const Container = styled.div<{ toggled: boolean }>`
   margin-left: auto;
   position: absolute;
-  right: 0;
+  right: 32px;
 
   ${(props) => css`
     left: ${props.toggled ? '0' : 'auto'};

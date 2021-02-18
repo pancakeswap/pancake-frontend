@@ -4,16 +4,12 @@ import { useRouteMatch, Link } from 'react-router-dom'
 import { ButtonMenu, ButtonMenuItem, Text, Toggle } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 
-const FarmTabButtons = ({ stackedOnly, setStackedOnly }) => {
+const FarmTabButtons = () => {
   const { url, isExact } = useRouteMatch()
   const TranslateString = useI18n()
 
   return (
     <Wrapper>
-      <ToggleWrapper>
-        <Toggle checked={stackedOnly} onChange={() => setStackedOnly(!stackedOnly)} />
-        <Text> {TranslateString(1116, 'Staked only')}</Text>
-      </ToggleWrapper>
       <ButtonMenu activeIndex={isExact ? 0 : 1} size="sm" variant="subtle">
         <ButtonMenuItem as={Link} to={`${url}`}>
           {TranslateString(698, 'Active')}
@@ -32,15 +28,4 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-`
-
-const ToggleWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-right: 32px;
-
-  ${Text} {
-    margin-left: 8px;
-  }
 `
