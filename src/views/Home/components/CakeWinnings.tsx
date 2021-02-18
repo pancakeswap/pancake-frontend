@@ -13,12 +13,13 @@ const Block = styled.div`
 `
 const CakeWinnings = () => {
   const { claimAmount } = useTotalClaim()
-  const claimAmountBusd = new BigNumber(claimAmount).multipliedBy(usePriceCakeBusd()).toNumber()
+  const cakeAmount = getBalanceNumber(claimAmount)
+  const claimAmountBusd = new BigNumber(cakeAmount).multipliedBy(usePriceCakeBusd()).toNumber()
 
   return (
     <Block>
-      <CardValue value={getBalanceNumber(claimAmount)} lineHeight="1.5" />
-      <CardBusdValue value={claimAmountBusd} />
+      <CardValue value={cakeAmount} lineHeight="1.5" />
+      <CardBusdValue value={claimAmountBusd} decimals={2} />
     </Block>
   )
 }
