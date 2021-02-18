@@ -44,33 +44,37 @@ export const multiBuy = async (lotteryContract, price, numbersList, account) => 
 }
 
 export const getTickets = async (lotteryContract, ticketsContract, account, customLotteryNum) => {
-  const issueIndex = customLotteryNum || (await lotteryContract.issueIndex())
-  const length = await getTicketsAmount(ticketsContract, account)
-
-  // eslint-disable-next-line prefer-spread
-  const calls1 = Array.apply(null, { length }).map((a, i) => [
-    ticketsContract.address,
-    'tokenOfOwnerByIndex',
-    [account, i],
-  ])
-  const res = await multiCall(ticketAbi, calls1)
-
-  const tokenIds = res.map((id) => id.toString())
-
-  const calls2 = tokenIds.map((id) => [ticketsContract.address, 'getLotteryIssueIndex', [id]])
-  const ticketIssues = await multiCall(ticketAbi, calls2)
-
-  const finalTokenids = []
-  ticketIssues.forEach(async (ticketIssue, i) => {
-    if (new BigNumber(ticketIssue).eq(issueIndex)) {
-      finalTokenids.push(tokenIds[i])
-    }
-  })
-  const calls3 = finalTokenids.map((id) => [ticketsContract.address, 'getLotteryNumbers', [id]])
-  const tickets = await multiCall(ticketAbi, calls3)
-
-  await getLotteryStatus(lotteryContract)
-  return tickets
+  try {
+    const issueIndex = customLotteryNum || (await lotteryContract.issueIndex()).toString()
+    const length = await getTicketsAmount(ticketsContract, account)
+  
+    // eslint-disable-next-line prefer-spread
+    const calls1 = Array.apply(null, { length }).map((a, i) => [
+      ticketsContract.address,
+      'tokenOfOwnerByIndex',
+      [account, i],
+    ])
+    const res = await multiCall(ticketAbi, calls1)
+  
+    const tokenIds = res.map((id) => id.toString())
+  
+    const calls2 = tokenIds.map((id) => [ticketsContract.address, 'getLotteryIssueIndex', [id]])
+    const ticketIssues = await multiCall(ticketAbi, calls2)
+    
+    const finalTokenids = []
+    ticketIssues.forEach(async (ticketIssue, i) => {
+      if (new BigNumber(ticketIssue.toString()).eq(new BigNumber(issueIndex))) {
+        finalTokenids.push(tokenIds[i])
+      }
+    })
+    const calls3 = finalTokenids.map((id) => [ticketsContract.address, 'getLotteryNumbers', [id]])
+    const tickets = await multiCall(ticketAbi, calls3)
+    await getLotteryStatus(lotteryContract)
+    return tickets
+  } catch (e) {
+    console.log(e)
+    return []
+  }
 }
 
 export const getTicketsAmount = async (ticketsContract, account) => {

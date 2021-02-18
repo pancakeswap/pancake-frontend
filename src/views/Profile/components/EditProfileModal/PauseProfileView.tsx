@@ -25,7 +25,7 @@ const PauseProfilePage: React.FC<PauseProfilePageProps> = ({ onDismiss }) => {
   const handleChange = () => setIsAcknowledged(!isAcknowledged)
 
   const handleDeactivateProfile = async () => {
-    const tx = pancakeProfileContract.pauseProfile({ from: account })
+    const tx = await pancakeProfileContract.pauseProfile({ from: account })
     setIsConfirming(true)
     try {
       await tx.wait()
