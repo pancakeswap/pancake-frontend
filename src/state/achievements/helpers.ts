@@ -9,14 +9,9 @@ import { getAchievementTitle, getAchievementDescription } from 'utils/achievemen
 export const getUserPointIncreaseEvents = async (account: string) => {
   try {
     const profileContract = getProfileContract()
-    const events = await profileContract.getPastEvents('UserPointIncrease', {
-      fromBlock: 'earliest',
-      toBlock: 'latest',
-      filter: {
-        userAddress: account,
-      },
-    })
-
+    const events = await profileContract.queryFilter(
+      profileContract.filters.UserPointIncrease(account), 'earliest', 'latest'
+    )
     return events
   } catch (error) {
     return []
@@ -28,24 +23,23 @@ export const getUserPointIncreaseEvents = async (account: string) => {
  */
 export const getAchievements = async (account: string): Promise<Achievement[]> => {
   const pointIncreaseEvents = await getUserPointIncreaseEvents(account)
-
   return pointIncreaseEvents.reduce((accum, event) => {
-    if (!campaignMap.has(event.returnValues.campaignId)) {
+    if (!campaignMap.has(event.args[2])) {
       return accum
     }
 
-    const campaignMeta = campaignMap.get(event.returnValues.campaignId)
+    const campaignMeta = campaignMap.get(event.args[2])
 
     return [
       ...accum,
       {
-        id: event.returnValues.campaignId,
+        id: event.args[2],
         type: campaignMeta.type,
         address: event.address,
         title: getAchievementTitle(campaignMeta),
         description: getAchievementDescription(campaignMeta),
         badge: campaignMeta.badge,
-        points: Number(event.returnValues.numberPoints),
+        points: Number(event.args[1]),
       },
     ]
   }, [])
