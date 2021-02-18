@@ -6,6 +6,7 @@ import cakeABI from 'config/abi/cake.json'
 import { getContract } from 'utils/web3'
 import { getTokenBalance } from 'utils/erc20'
 import { getCakeAddress } from 'utils/addressHelpers'
+import useWeb3 from './useWeb3'
 import useRefresh from './useRefresh'
 
 const useTokenBalance = (tokenAddress: string) => {
@@ -46,19 +47,17 @@ export const useTotalSupply = () => {
 
 export const useBurnedBalance = (tokenAddress: string) => {
   const [balance, setBalance] = useState(new BigNumber(0))
-  const { account, ethereum }: { account: string; ethereum: provider } = useWallet()
   const { slowRefresh } = useRefresh()
+  const web3 = useWeb3()
 
   useEffect(() => {
     const fetchBalance = async () => {
-      const res = await getTokenBalance(ethereum, tokenAddress, '0x000000000000000000000000000000000000dEaD')
+      const res = await getTokenBalance(web3.currentProvider, tokenAddress, '0x000000000000000000000000000000000000dEaD')
       setBalance(new BigNumber(res))
     }
 
-    if (account && ethereum) {
-      fetchBalance()
-    }
-  }, [account, ethereum, tokenAddress, slowRefresh])
+    fetchBalance()
+  }, [web3, tokenAddress, slowRefresh])
 
   return balance
 }
