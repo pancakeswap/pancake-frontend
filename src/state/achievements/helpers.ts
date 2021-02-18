@@ -14,6 +14,7 @@ export const getUserPointIncreaseEvents = async (account: string) => {
     )
     return events
   } catch (error) {
+    console.error(error)
     return []
   }
 }
@@ -24,22 +25,22 @@ export const getUserPointIncreaseEvents = async (account: string) => {
 export const getAchievements = async (account: string): Promise<Achievement[]> => {
   const pointIncreaseEvents = await getUserPointIncreaseEvents(account)
   return pointIncreaseEvents.reduce((accum, event) => {
-    if (!campaignMap.has(event.args[2])) {
+    if (!campaignMap.has(event.args[2].toString())) {
       return accum
     }
 
-    const campaignMeta = campaignMap.get(event.args[2])
+    const campaignMeta = campaignMap.get(event.args[2].toString())
 
     return [
       ...accum,
       {
-        id: event.args[2],
+        id: event.args[2].toString(),
         type: campaignMeta.type,
         address: event.address,
         title: getAchievementTitle(campaignMeta),
         description: getAchievementDescription(campaignMeta),
         badge: campaignMeta.badge,
-        points: Number(event.args[1]),
+        points: Number(event.args[1].toString()),
       },
     ]
   }, [])
