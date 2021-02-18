@@ -48,7 +48,7 @@ const IfoCardContribute: React.FC<Props> = ({
       const userinfo = await contract.userInfo(account)
 
       setUserInfo(userinfo)
-      setOfferingTokenBalance(balance)
+      setOfferingTokenBalance(new BigNumber(balance.toString()))
     }
 
     if (account) {
