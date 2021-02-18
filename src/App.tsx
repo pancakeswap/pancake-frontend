@@ -9,6 +9,7 @@ import Menu from './components/Menu'
 import ToastListener from './components/ToastListener'
 import PageLoader from './components/PageLoader'
 import Pools from './views/Pools'
+import ClaimNftGift from './views/Profile/components/ClaimNftGift'
 
 // Route-based code splitting
 // Only pool is included in the main bundle because of it's the most visited page'
@@ -93,6 +94,7 @@ const App: React.FC = () => {
         </Suspense>
       </Menu>
       <ToastListener />
+      <ClaimNftGift />
     </Router>
   )
 }

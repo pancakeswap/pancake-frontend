@@ -86,7 +86,7 @@ export type Images = {
 }
 
 export type NftImages = {
-  blur: string
+  blur?: string
 } & Images
 
 export type Nft = {
