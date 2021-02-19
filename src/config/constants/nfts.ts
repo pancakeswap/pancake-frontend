@@ -24,7 +24,7 @@ const Nfts: Nft[] = [
       lg: 'hiccup-lg.png',
       md: 'hiccup-md.png',
       sm: 'hiccup-sm.png',
-      ipfs: 'https://gateway.pinata.cloud/ipfs/QmNS1A5HsRW1JvFWtGkm4o9TgZVe2P7kA8TB4yxvS6A7ms/hiccup.png',
+      ipfs: 'https://gateway.pinata.cloud/ipfs/QmQ6EE6gkVzAQUdQLLM7CyrnME6LZHCoy92ZERW8HXmyjw/hiccup.png',
     },
     sortOrder: 999,
     bunnyId: 10,
