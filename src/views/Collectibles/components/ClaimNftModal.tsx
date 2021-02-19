@@ -3,10 +3,9 @@ import styled from 'styled-components'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { useBunnySpecialContract } from 'hooks/useContract'
 import { useToast } from 'state/hooks'
-import { Button, InjectedModalProps, Modal, Text } from '@pancakeswap-libs/uikit'
+import { Button, InjectedModalProps, Modal, Text, Flex } from '@pancakeswap-libs/uikit'
 import { Nft } from 'config/constants/types'
 import useI18n from 'hooks/useI18n'
-import InfoRow from './InfoRow'
 
 interface ClaimNftModalProps extends InjectedModalProps {
   nft: Nft
@@ -50,12 +49,12 @@ const ClaimNftModal: React.FC<ClaimNftModalProps> = ({ nft, onSuccess, onDismiss
   }
 
   return (
-    <Modal title={TranslateString(630, 'Claim NFT')} onDismiss={onDismiss}>
+    <Modal title={TranslateString(999, 'Claim Collectible')} onDismiss={onDismiss}>
       <ModalContent>
-        <InfoRow>
+        <Flex alignItems="center" mb="8px" justifyContent="space-between">
           <Text>{TranslateString(626, 'You will receive')}:</Text>
-          <Text bold>{`1x "${nft.name}" NFT`}</Text>
-        </InfoRow>
+          <Text bold>{`1x "${nft.name}" Collectible`}</Text>
+        </Flex>
       </ModalContent>
       <Actions>
         <Button fullWidth variant="secondary" onClick={onDismiss}>

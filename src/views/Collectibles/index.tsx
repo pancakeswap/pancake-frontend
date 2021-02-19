@@ -12,17 +12,14 @@ const StyledHero = styled.div`
   padding-bottom: 32px;
 `
 
-const Nft = () => {
+const Collectibles = () => {
   const TranslateString = useI18n()
 
   return (
     <Page>
       <StyledHero>
-        <Heading as="h1" size="xxl" color="secondary" mb="24px">
-          NFTs
-        </Heading>
-        <Heading as="h2" size="lg" color="secondary">
-          {TranslateString(999, 'Trade in for CAKE, or keep for your collection!')}
+        <Heading as="h1" size="xxl" color="secondary">
+          {TranslateString(999, 'Pancake Collectibles')}
         </Heading>
       </StyledHero>
       <NftList />
@@ -31,4 +28,4 @@ const Nft = () => {
   )
 }
 
-export default Nft
+export default Collectibles

@@ -42,9 +42,9 @@ const ClaimGift: React.FC<ClaimGiftProps> = ({ bunnyId, onDismiss }) => {
       <Flex flexDirection="column" alignItems="center" justifyContent="center">
         <NftImage src={`/images/nfts/${nft.images.md}`} height="128px" width="128px" alt="nft image" />
         <Text bold color="secondary" fontSize="24px" mb="24px">
-          {TranslateString(999, 'You won an NFT!')}
+          {TranslateString(999, 'You won a collectible!')}
         </Text>
-        <Button as="a" href="/nft">
+        <Button as="a" href="/collectibles">
           {TranslateString(999, 'Claim now')}
         </Button>
       </Flex>

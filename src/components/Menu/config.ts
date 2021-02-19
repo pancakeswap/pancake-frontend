@@ -36,9 +36,9 @@ const config: MenuEntry[] = [
     href: '/lottery',
   },
   {
-    label: 'NFT',
+    label: 'Collectibles',
     icon: 'NftIcon',
-    href: '/nft',
+    href: '/collectibles',
   },
   {
     label: 'Teams & Profile',

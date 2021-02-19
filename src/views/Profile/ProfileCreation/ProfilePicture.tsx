@@ -90,7 +90,7 @@ const ProfilePicture: React.FC = () => {
           </Text>
           <Text as="p" color="textSubtle" mb="24px">
             {TranslateString(816, 'Only approved Pancake Collectibles can be used.')}
-            <Link to="/nft" style={{ marginLeft: '4px' }}>
+            <Link to="/collectibles" style={{ marginLeft: '4px' }}>
               {TranslateString(999, 'See the list >')}
             </Link>
           </Text>

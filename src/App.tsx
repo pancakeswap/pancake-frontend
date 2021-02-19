@@ -9,7 +9,7 @@ import Menu from './components/Menu'
 import ToastListener from './components/ToastListener'
 import PageLoader from './components/PageLoader'
 import Pools from './views/Pools'
-import ClaimNftGift from './views/Profile/components/ClaimNftGift'
+import ClaimNftGift from './views/Collectibles/components/ClaimNftGift'
 
 // Route-based code splitting
 // Only pool is included in the main bundle because of it's the most visited page'
@@ -18,7 +18,7 @@ const Farms = lazy(() => import('./views/Farms'))
 const Lottery = lazy(() => import('./views/Lottery'))
 const Ifos = lazy(() => import('./views/Ifos'))
 const NotFound = lazy(() => import('./views/NotFound'))
-const Nft = lazy(() => import('./views/Nft'))
+const Collectibles = lazy(() => import('./views/Collectibles'))
 const Teams = lazy(() => import('./views/Teams'))
 const Team = lazy(() => import('./views/Teams/Team'))
 const Profile = lazy(() => import('./views/Profile'))
@@ -69,8 +69,8 @@ const App: React.FC = () => {
             <Route path="/ifo">
               <Ifos />
             </Route>
-            <Route path="/nft">
-              <Nft />
+            <Route path="/collectibles">
+              <Collectibles />
             </Route>
             <Route exact path="/teams">
               <Teams />
@@ -87,6 +87,9 @@ const App: React.FC = () => {
             </Route>
             <Route path="/syrup">
               <Redirect to="/pools" />
+            </Route>
+            <Route path="/nft">
+              <Redirect to="/collectibles" />
             </Route>
             {/* 404 */}
             <Route component={NotFound} />

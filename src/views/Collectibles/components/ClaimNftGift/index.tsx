@@ -11,7 +11,7 @@ const ClaimNftGift = () => {
   const { pathname } = useLocation()
 
   useEffect(() => {
-    if (account && !pathname.includes('/nft')) {
+    if (account && !pathname.includes('/collectibles')) {
       onPresentGiftModalRef.current()
     }
   }, [account, pathname, onPresentGiftModalRef])
