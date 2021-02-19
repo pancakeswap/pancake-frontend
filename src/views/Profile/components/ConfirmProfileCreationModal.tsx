@@ -19,6 +19,9 @@ interface Props {
   onDismiss?: () => void
 }
 
+export const cakeCostToRegister = 0.5
+export const minimumCakeToRegister = new BigNumber(cakeCostToRegister).multipliedBy(new BigNumber(10).pow(18))
+
 const ConfirmProfileCreationModal: React.FC<Props> = ({
   account,
   teamId,
@@ -73,7 +76,7 @@ const ConfirmProfileCreationModal: React.FC<Props> = ({
       </Text>
       <Flex justifyContent="space-between" mb="16px">
         <Text>{TranslateString(999, 'Cost')}</Text>
-        <Text>{TranslateString(999, '1 CAKE')}</Text>
+        <Text>{TranslateString(999, `${cakeCostToRegister} CAKE`, { num: cakeCostToRegister })}</Text>
       </Flex>
       <ApproveConfirmButtons
         isApproveDisabled={isConfirmed || isConfirming || isApproved}

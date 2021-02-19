@@ -14,7 +14,7 @@ import useProfileCreation from './contexts/hook'
 
 const starterBunnyIds = [5, 6, 7, 8, 9]
 const nfts = nftList.filter((nft) => starterBunnyIds.includes(nft.bunnyId))
-const cakeCostToMint = 4
+const cakeCostToMint = 1
 const minimumCakeBalanceToMint = new BigNumber(cakeCostToMint).multipliedBy(new BigNumber(10).pow(18))
 
 const Mint: React.FC = () => {
@@ -77,7 +77,7 @@ const Mint: React.FC = () => {
             {TranslateString(794, 'Choose wisely: you can only ever make one starter collectible!')}
           </Text>
           <Text as="p" mb="24px" color="textSubtle">
-            {TranslateString(999, 'Cost: 4 CAKE')}
+            {TranslateString(999, `Cost: ${cakeCostToMint} CAKE`, { num: cakeCostToMint })}
           </Text>
           {nfts.map((nft) => {
             const handleChange = (value: string) => setBunnyId(parseInt(value, 10))

@@ -1,6 +1,5 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import styled from 'styled-components'
-import BigNumber from 'bignumber.js'
 import {
   Card,
   CardBody,
@@ -24,7 +23,10 @@ import useI18n from 'hooks/useI18n'
 import useHasCakeBalance from 'hooks/useHasCakeBalance'
 import debounce from 'lodash/debounce'
 import useProfileCreation from './contexts/hook'
-import ConfirmProfileCreationModal from '../components/ConfirmProfileCreationModal'
+import ConfirmProfileCreationModal, {
+  cakeCostToRegister,
+  minimumCakeToRegister,
+} from '../components/ConfirmProfileCreationModal'
 
 enum ExistingUserState {
   IDLE = 'idle', // initial state
@@ -35,8 +37,6 @@ enum ExistingUserState {
 const MIN_LENGTH = 3
 const MAX_LENGTH = 15
 const profileApiUrl = process.env.REACT_APP_API_PROFILE
-const cakeCostToRegister = 1
-const minimumCakeToRegister = new BigNumber(cakeCostToRegister).multipliedBy(new BigNumber(10).pow(18))
 
 const InputWrap = styled.div`
   position: relative;

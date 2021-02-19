@@ -10,8 +10,8 @@ const initialState: State = {
   teamId: null,
   tokenId: null,
   userName: '',
-  minimumCakeRequired: new BigNumber(5).multipliedBy(new BigNumber(10).pow(18)), // 5 CAKE
-  allowance: new BigNumber(25).multipliedBy(new BigNumber(10).pow(18)), // 25 CAKE
+  minimumCakeRequired: new BigNumber(1.5).multipliedBy(new BigNumber(10).pow(18)), // 1.5 CAKE
+  allowance: new BigNumber(7.5).multipliedBy(new BigNumber(10).pow(18)), // 7.5 CAKE
 }
 
 const reducer = (state: State, action: Actions): State => {
