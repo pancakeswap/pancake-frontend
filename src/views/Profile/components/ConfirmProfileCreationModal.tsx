@@ -7,6 +7,7 @@ import { useCake, usePancakeRabbits, useProfile } from 'hooks/useContract'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { fetchProfile } from 'state/profile'
 import { useToast } from 'state/hooks'
+import { REGISTER_COST } from '../ProfileCreation/config'
 import ApproveConfirmButtons from './ApproveConfirmButtons'
 
 interface Props {
@@ -18,9 +19,6 @@ interface Props {
   allowance: BigNumber
   onDismiss?: () => void
 }
-
-export const cakeCostToRegister = 0.5
-export const minimumCakeToRegister = new BigNumber(cakeCostToRegister).multipliedBy(new BigNumber(10).pow(18))
 
 const ConfirmProfileCreationModal: React.FC<Props> = ({
   account,
@@ -76,7 +74,7 @@ const ConfirmProfileCreationModal: React.FC<Props> = ({
       </Text>
       <Flex justifyContent="space-between" mb="16px">
         <Text>{TranslateString(999, 'Cost')}</Text>
-        <Text>{TranslateString(999, `${cakeCostToRegister} CAKE`, { num: cakeCostToRegister })}</Text>
+        <Text>{TranslateString(999, `${REGISTER_COST} CAKE`, { num: REGISTER_COST })}</Text>
       </Flex>
       <ApproveConfirmButtons
         isApproveDisabled={isConfirmed || isConfirming || isApproved}
