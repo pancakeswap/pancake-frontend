@@ -2,7 +2,11 @@ import React, { createContext, useEffect, useMemo, useReducer } from 'react'
 import BigNumber from 'bignumber.js'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { getBunnyFactoryContract } from 'utils/contractHelpers'
+import { MINT_COST, REGISTER_COST, ALLOWANCE_MULTIPLIER } from '../config'
 import { Actions, State, ContextType } from './types'
+
+const totalCost = MINT_COST + REGISTER_COST
+const allowance = totalCost * ALLOWANCE_MULTIPLIER
 
 const initialState: State = {
   isInitialized: false,
@@ -10,8 +14,8 @@ const initialState: State = {
   teamId: null,
   tokenId: null,
   userName: '',
-  minimumCakeRequired: new BigNumber(5).multipliedBy(new BigNumber(10).pow(18)), // 5 CAKE
-  allowance: new BigNumber(25).multipliedBy(new BigNumber(10).pow(18)), // 25 CAKE
+  minimumCakeRequired: new BigNumber(totalCost).multipliedBy(new BigNumber(10).pow(18)),
+  allowance: new BigNumber(allowance).multipliedBy(new BigNumber(10).pow(18)),
 }
 
 const reducer = (state: State, action: Actions): State => {
