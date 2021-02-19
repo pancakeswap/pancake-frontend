@@ -1,11 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import orderBy from 'lodash/orderBy'
 import nfts from 'config/constants/nfts'
-import bunnySpecialAbi from 'config/abi/bunnySpecial.json'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
-import { getBunnySpecialAddress } from 'utils/addressHelpers'
+import { getBunnySpecialContract } from 'utils/contractHelpers'
 import useGetWalletNfts from 'hooks/useGetWalletNfts'
-import { getContract } from 'utils/web3'
 import makeBatchRequest from 'utils/makeBatchRequest'
 import { useToast } from 'state/hooks'
 import NftCard from './NftCard'
@@ -15,7 +13,7 @@ type State = {
   [key: string]: boolean
 }
 
-const bunnySpecialContract = getContract(bunnySpecialAbi, getBunnySpecialAddress())
+const bunnySpecialContract = getBunnySpecialContract()
 
 const NftList = () => {
   const [claimableNfts, setClaimableNfts] = useState<State>({})

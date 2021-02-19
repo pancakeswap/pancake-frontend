@@ -1,5 +1,5 @@
 import React, { useEffect, Suspense, lazy } from 'react'
-import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom'
+import { Router, Redirect, Route, Switch } from 'react-router-dom'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { ResetCSS } from '@pancakeswap-libs/uikit'
 import BigNumber from 'bignumber.js'
@@ -9,7 +9,8 @@ import Menu from './components/Menu'
 import ToastListener from './components/ToastListener'
 import PageLoader from './components/PageLoader'
 import Pools from './views/Pools'
-import ClaimNftGift from './views/Collectibles/components/ClaimNftGift'
+import GlobalCheckBullHiccupClaimStatus from './views/Collectibles/components/GlobalCheckBullHiccupClaimStatus'
+import history from './routerHistory'
 
 // Route-based code splitting
 // Only pool is included in the main bundle because of it's the most visited page'
@@ -48,7 +49,7 @@ const App: React.FC = () => {
   useFetchProfile()
 
   return (
-    <Router>
+    <Router history={history}>
       <ResetCSS />
       <GlobalStyle />
       <Menu>
@@ -97,7 +98,7 @@ const App: React.FC = () => {
         </Suspense>
       </Menu>
       <ToastListener />
-      <ClaimNftGift />
+      <GlobalCheckBullHiccupClaimStatus />
     </Router>
   )
 }
