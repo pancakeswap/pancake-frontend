@@ -40,3 +40,6 @@ export const getClaimRefundAddress = () => {
 export const getPointCenterIfoAddress = () => {
   return getAddress(addresses.pointCenterIfo)
 }
+export const getBunnySpecialAddress = () => {
+  return getAddress(addresses.bunnySpecial)
+}

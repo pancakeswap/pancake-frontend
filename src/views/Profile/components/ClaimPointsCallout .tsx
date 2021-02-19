@@ -3,6 +3,7 @@ import { sumBy } from 'lodash'
 import { useDispatch } from 'react-redux'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { Card, CardBody, CardHeader, Flex, Heading, PrizeIcon } from '@pancakeswap-libs/uikit'
+import { useProfile } from 'state/hooks'
 import { Achievement } from 'state/types'
 import { addPoints } from 'state/profile'
 import { addAchievement } from 'state/achievements'
@@ -14,6 +15,7 @@ const ClaimPointsCallout = () => {
   const [claimableAchievements, setClaimableAchievement] = useState<Achievement[]>([])
   const TranslateString = useI18n()
   const dispatch = useDispatch()
+  const { profile } = useProfile()
   const { account } = useWallet()
 
   useEffect(() => {
@@ -34,6 +36,10 @@ const ClaimPointsCallout = () => {
     setClaimableAchievement((prevClaimableAchievements) =>
       prevClaimableAchievements.filter((prevClaimableAchievement) => prevClaimableAchievement.id !== achievement.id),
     )
+  }
+
+  if (!profile.isActive) {
+    return null
   }
 
   if (claimableAchievements.length === 0) {
