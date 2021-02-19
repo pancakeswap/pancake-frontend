@@ -18,7 +18,7 @@ it("renders ConnectModal correctly", () => {
             class="sc-eCssSg sc-pFZIQ cntkGK ePMCIJ"
           >
             <h2
-              class="sc-bdfBwQ sc-hKgILt iEFWFe bCnOmg"
+              class="sc-bdfBwQ sc-hKgILt gWEhOj bCnOmg"
               color="text"
             >
               Connect to a wallet
@@ -52,7 +52,7 @@ it("renders ConnectModal correctly", () => {
             type="button"
           >
             <div
-              class="sc-bdfBwQ OmpVE"
+              class="sc-bdfBwQ fEwDKZ"
               color="primary"
             >
               Metamask
@@ -195,7 +195,7 @@ it("renders ConnectModal correctly", () => {
             type="button"
           >
             <div
-              class="sc-bdfBwQ OmpVE"
+              class="sc-bdfBwQ fEwDKZ"
               color="primary"
             >
               TrustWallet
@@ -239,7 +239,7 @@ it("renders ConnectModal correctly", () => {
             type="button"
           >
             <div
-              class="sc-bdfBwQ OmpVE"
+              class="sc-bdfBwQ fEwDKZ"
               color="primary"
             >
               MathWallet
@@ -272,7 +272,7 @@ it("renders ConnectModal correctly", () => {
             type="button"
           >
             <div
-              class="sc-bdfBwQ OmpVE"
+              class="sc-bdfBwQ fEwDKZ"
               color="primary"
             >
               TokenPocket
@@ -307,7 +307,7 @@ it("renders ConnectModal correctly", () => {
             type="button"
           >
             <div
-              class="sc-bdfBwQ OmpVE"
+              class="sc-bdfBwQ fEwDKZ"
               color="primary"
             >
               WalletConnect
@@ -336,7 +336,7 @@ it("renders ConnectModal correctly", () => {
             type="button"
           >
             <div
-              class="sc-bdfBwQ OmpVE"
+              class="sc-bdfBwQ fEwDKZ"
               color="primary"
             >
               Binance Chain Wallet
@@ -395,7 +395,7 @@ it("renders ConnectModal correctly", () => {
             </svg>
           </button>
           <a
-            class="sc-bdfBwQ sc-gsTCUz cxXgLd djpNeP sc-iqHYGH hzLTbV"
+            class="sc-bdfBwQ sc-gsTCUz eiaRqE djpNeP sc-iqHYGH hzLTbV"
             color="primary"
             href="https://docs.pancakeswap.finance/guides/faq#how-do-i-set-up-my-wallet-on-binance-smart-chain"
             rel="noreferrer noopener"
@@ -436,7 +436,7 @@ it("renders AccountModal correctly", () => {
             class="sc-eCssSg sc-pFZIQ cntkGK ePMCIJ"
           >
             <h2
-              class="sc-bdfBwQ sc-hKgILt iEFWFe bCnOmg"
+              class="sc-bdfBwQ sc-hKgILt gWEhOj bCnOmg"
               color="text"
             >
               Your wallet
@@ -464,7 +464,7 @@ it("renders AccountModal correctly", () => {
           class="sc-eCssSg gIvwGY"
         >
           <div
-            class="sc-bdfBwQ dSimpj"
+            class="sc-bdfBwQ krzIlW"
             color="text"
             font-size="20px"
             style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 8px;"
@@ -475,7 +475,7 @@ it("renders AccountModal correctly", () => {
             class="sc-eCssSg gZPLzm"
           >
             <a
-              class="sc-bdfBwQ sc-gsTCUz kgxXAa djpNeP"
+              class="sc-bdfBwQ sc-gsTCUz bnSWIP djpNeP"
               color="primary"
               href="https://bscscan.com/address/0xb218C5D6aF1F979aC42BC68d98A5A0D796C6aB01"
               rel="noreferrer noopener"
@@ -495,7 +495,7 @@ it("renders AccountModal correctly", () => {
               </svg>
             </a>
             <div
-              class="sc-bdfBwQ sc-crrsfI gRgLU bApUkG"
+              class="sc-bdfBwQ sc-crrsfI czOnMt bApUkG"
               color="text"
               role="button"
             >

@@ -7,7 +7,7 @@ it("renders link correctly", () => {
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
       <a
-        class="sc-bdfBwQ sc-gsTCUz cxXgLd djpNeP"
+        class="sc-bdfBwQ sc-gsTCUz eiaRqE djpNeP"
         color="primary"
         href="https://pancakeswap.finance"
       >
@@ -22,7 +22,7 @@ it("renders link external link correctly", () => {
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
       <a
-        class="sc-bdfBwQ sc-gsTCUz cxXgLd djpNeP"
+        class="sc-bdfBwQ sc-gsTCUz eiaRqE djpNeP"
         color="primary"
         href="https://pancakeswap.finance"
         rel="noreferrer noopener"
