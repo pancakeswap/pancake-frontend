@@ -12,6 +12,7 @@ import {
   getPancakeProfileAddress,
   getPancakeRabbitsAddress,
   getPointCenterIfoAddress,
+  getBunnySpecialAddress,
 } from 'utils/addressHelpers'
 import { poolsConfig } from 'config/constants'
 import { PoolCategory } from 'config/constants/types'
@@ -26,6 +27,7 @@ import sousChef from 'config/abi/sousChef.json'
 import sousChefBnb from 'config/abi/sousChefBnb.json'
 import profile from 'config/abi/pancakeProfile.json'
 import pointCenterIfo from 'config/abi/pointCenterIfo.json'
+import bunnySpecial from 'config/abi/bunnySpecial.json'
 
 const useContract = (abi: AbiItem, address: string, contractOptions?: ContractOptions) => {
   const web3 = useWeb3()
@@ -96,6 +98,11 @@ export const useSousChef = (id) => {
 export const usePointCenterIfoContract = () => {
   const abi = (pointCenterIfo as unknown) as AbiItem
   return useContract(abi, getPointCenterIfoAddress())
+}
+
+export const useBunnySpecialContract = () => {
+  const abi = (bunnySpecial as unknown) as AbiItem
+  return useContract(abi, getBunnySpecialAddress())
 }
 
 export default useContract
