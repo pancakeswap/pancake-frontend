@@ -15,6 +15,7 @@ import { QuoteToken } from 'config/constants/types'
 import useI18n from 'hooks/useI18n'
 import FarmCard, { FarmWithStakedValue } from './components/FarmCard/FarmCard'
 import FarmTabButtons from './components/FarmTabButtons'
+import FarmSearch from './components/FarmSearch'
 import Divider from './components/Divider'
 
 const Farms: React.FC = () => {
@@ -100,6 +101,7 @@ const Farms: React.FC = () => {
         {TranslateString(696, 'Stake LP tokens to earn CAKE')}
       </Heading>
       <FarmTabButtons stackedOnly={stackedOnly} setStackedOnly={setStackedOnly} />
+      <FarmSearch />
       <div>
         <Divider />
         <FlexLayout>

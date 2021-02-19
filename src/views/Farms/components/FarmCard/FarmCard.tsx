@@ -132,7 +132,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed, cakePrice, bnbPrice,
   const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
 
   return (
-    <FCard>
+    <FCard className="f-card">
       {farm.tokenSymbol === 'CAKE' && <StyledCardAccent />}
       <CardHeading
         lpLabel={lpLabel}
