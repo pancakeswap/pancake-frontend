@@ -1,16 +1,18 @@
 import styled from 'styled-components'
-import { BaseLayout } from '@pancakeswap-libs/uikit'
 
-const NftGrid = styled(BaseLayout)`
+const NftGrid = styled.div`
+  display: grid;
+  grid-gap: 32px;
+  grid-template-columns: 1fr;
   padding-bottom: 24px;
   padding-top: 24px;
 
-  & > div {
-    grid-column: 2 / 6;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    grid-template-columns: repeat(2, 1fr);
+  }
 
-    ${({ theme }) => theme.mediaQueries.sm} {
-      grid-column: span 4;
-    }
+  ${({ theme }) => theme.mediaQueries.md} {
+    grid-template-columns: repeat(3, 1fr);
   }
 `
 

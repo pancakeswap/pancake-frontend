@@ -3,11 +3,10 @@ import styled from 'styled-components'
 import { Heading } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import Page from 'components/layout/Page'
-import HowItWorks from './components/HowItWorks'
 import NftList from './components/NftList'
 
 const StyledHero = styled.div`
-  border-bottom: 1px solid ${({ theme }) => theme.colors.textSubtle};
+  border-bottom: 2px solid ${({ theme }) => theme.colors.textSubtle};
   margin-bottom: 24px;
   padding-bottom: 32px;
 `
@@ -23,7 +22,6 @@ const Collectibles = () => {
         </Heading>
       </StyledHero>
       <NftList />
-      <HowItWorks />
     </Page>
   )
 }

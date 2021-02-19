@@ -16,9 +16,9 @@ import { useProfile } from 'state/hooks'
 import useI18n from 'hooks/useI18n'
 import { Nft } from 'config/constants/types'
 import InfoRow from '../InfoRow'
-import Image from '../Image'
 import TransferNftModal from '../TransferNftModal'
 import ClaimNftModal from '../ClaimNftModal'
+import Preview from './Preview'
 
 interface NftCardProps {
   nft: Nft
@@ -52,7 +52,7 @@ const NftCard: React.FC<NftCardProps> = ({ nft, onSuccess, canClaim = false, tok
   const [isOpen, setIsOpen] = useState(false)
   const TranslateString = useI18n()
   const { profile } = useProfile()
-  const { bunnyId, name, images, description } = nft
+  const { bunnyId, name, description } = nft
   const walletOwnsNft = tokenIds.length > 0
   const Icon = isOpen ? ChevronUpIcon : ChevronDownIcon
 
@@ -65,7 +65,7 @@ const NftCard: React.FC<NftCardProps> = ({ nft, onSuccess, canClaim = false, tok
 
   return (
     <Card isActive={walletOwnsNft || canClaim}>
-      <Image src={`/images/nfts/${images.lg}`} alt={name} originalLink={walletOwnsNft ? images.ipfs : null} />
+      <Preview nft={nft} isOwned={walletOwnsNft} />
       <CardBody>
         <Header>
           <Heading>{name}</Heading>

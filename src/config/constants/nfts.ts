@@ -10,6 +10,10 @@ const Nfts: Nft[] = [
       sm: 'bullish-sm.png',
       ipfs: 'https://gateway.pinata.cloud/ipfs/QmNS1A5HsRW1JvFWtGkm4o9TgZVe2P7kA8TB4yxvS6A7ms/bullish.png',
     },
+    video: {
+      webm: 'https://gateway.pinata.cloud/ipfs/QmNS1A5HsRW1JvFWtGkm4o9TgZVe2P7kA8TB4yxvS6A7ms/bullish.webm',
+      mp4: 'https://gateway.pinata.cloud/ipfs/QmNS1A5HsRW1JvFWtGkm4o9TgZVe2P7kA8TB4yxvS6A7ms/bullish.mp4',
+    },
     sortOrder: 999,
     bunnyId: 11,
   },
