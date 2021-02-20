@@ -11,6 +11,7 @@ import PageLoader from './components/PageLoader'
 import Pools from './views/Pools'
 import GlobalCheckBullHiccupClaimStatus from './views/Collectibles/components/GlobalCheckBullHiccupClaimStatus'
 import history from './routerHistory'
+import DocumentTitle from './DocumentTitle'
 
 // Route-based code splitting
 // Only pool is included in the main bundle because of it's the most visited page'
@@ -50,6 +51,7 @@ const App: React.FC = () => {
 
   return (
     <Router history={history}>
+      <DocumentTitle title="PancakeSwap" />
       <ResetCSS />
       <GlobalStyle />
       <Menu>
