@@ -58,7 +58,7 @@ const getProfile = async (address: string): Promise<GetProfileResponse> => {
         `profile_${address}`,
         JSON.stringify({
           username,
-          avatar: `https://pancakeswap.finance/images/nfts/${nft.images.sm}`,
+          avatar: `http://lab.wifewswap.finance/images/nfts/${nft.images.sm}`,
         }),
       )
     }
