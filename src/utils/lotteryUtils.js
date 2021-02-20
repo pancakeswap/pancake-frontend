@@ -72,7 +72,7 @@ export const getTickets = async (lotteryContract, ticketsContract, account, cust
     await getLotteryStatus(lotteryContract)
     return tickets
   } catch (e) {
-    console.log(e)
+    console.error(e)
     return []
   }
 }

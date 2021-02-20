@@ -1,8 +1,8 @@
 import React, { createContext, useEffect, useMemo, useReducer } from 'react'
 import BigNumber from 'bignumber.js'
+import { useWeb3React } from '@web3-react/core'
 import { getBunnyFactoryContract } from 'utils/contractHelpers'
 import { MINT_COST, REGISTER_COST, ALLOWANCE_MULTIPLIER } from '../config'
-import { useWeb3React } from '@web3-react/core'
 import { Actions, State, ContextType } from './types'
 
 const totalCost = MINT_COST + REGISTER_COST
