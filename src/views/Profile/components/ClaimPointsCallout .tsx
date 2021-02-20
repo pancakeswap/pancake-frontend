@@ -38,7 +38,7 @@ const ClaimPointsCallout = () => {
     )
   }
 
-  if (!profile.isActive) {
+  if (!profile?.isActive) {
     return null
   }
 
