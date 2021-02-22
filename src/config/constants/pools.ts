@@ -19,6 +19,23 @@ const pools: PoolConfig[] = [
     tokenDecimals: 18,
   },
   {
+    sousId: 53,
+    tokenName: 'DODO',
+    stakingTokenName: QuoteToken.CAKE,
+    stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
+    contractAddress: {
+      97: '',
+      56: '0xae3001ddb18A6A57BEC2C19D71680437CA87bA1D',
+    },
+    poolCategory: PoolCategory.CORE,
+    projectLink: 'https://dodoex.io/',
+    harvest: true,
+    tokenPerBlock: '0.0578',
+    sortOrder: 999,
+    isFinished: false,
+    tokenDecimals: 18,
+  },
+  {
     sousId: 52,
     tokenName: 'SWINGBY',
     stakingTokenName: QuoteToken.CAKE,
