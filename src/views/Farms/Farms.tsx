@@ -3,7 +3,6 @@ import { Route, useRouteMatch, useLocation } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import BigNumber from 'bignumber.js'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
-import { provider } from 'web3-core'
 import { Image, Heading, RowType, useMatchBreakpoints, Toggle, Text } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
 import { BLOCKS_PER_YEAR, CAKE_PER_BLOCK, CAKE_POOL_PID } from 'config'
@@ -22,44 +21,41 @@ import SearchInput from './components/SearchInput'
 import { RowData } from './components/Table/Row'
 import ToggleView from './components/ToggleView/ToggleView'
 import { DesktopColumnSchema, MobileColumnSchema, ViewMode } from './components/types'
+import Select, { OptionProps } from './components/Select/Select'
 
-const ControlContainer = styled.div<{ viewMode: ViewMode }>`
+const ControlContainer = styled.div`
   display: flex;
   width: 100%;
   align-items: center;
   position: relative;
-  background: ${({ viewMode, theme }) =>
-    viewMode === ViewMode.TABLE ? theme.card.cardHeaderBackground : 'transparent'};
   border-radius: 32px 32px 0px 0px;
   height: 125px;
   padding: 0px 16px;
+  justify-content: space-between;
 
   ${({ theme }) => theme.mediaQueries.sm} {
     padding: 0px 32px;
   }
-`
 
-const ToggleViewContainer = styled.div`
-  display: flex;
-  margin-bottom: 32px;
-  position: relative;
+  > div {
+    display: flex;
+    align-items: center;
+  }
 `
 
 const ToggleWrapper = styled.div`
   display: flex;
   align-items: center;
+  margin-left: 10px;
 
   ${Text} {
     margin-left: 8px;
   }
 `
 
-const SortByContainer = styled.div`
-  display: flex;
-  margin-bottom: 18px;
-
-  ${Text} {
-    margin-right: 120px;
+const LabelWrapper = styled.div`
+  > ${Text} {
+    font-size: 12px;
   }
 `
 
@@ -72,8 +68,8 @@ const Farms: React.FC = () => {
   const bnbPrice = usePriceBnbBusd()
   const [query, setQuery] = useState('')
   const [viewMode, setViewMode] = useState(ViewMode.TABLE)
-  const { account, ethereum }: { account: string; ethereum: provider } = useWallet()
   const ethPriceUsd = usePriceEthBusd()
+  const { account, library: ethereum } = useWallet()
 
   const dispatch = useDispatch()
   const { fastRefresh } = useRefresh()
@@ -282,29 +278,48 @@ const Farms: React.FC = () => {
       <Heading as="h1" size="lg" color="secondary" mb="50px" style={{ textAlign: 'center' }}>
         {TranslateString(696, 'Stake LP tokens to earn CAKE')}
       </Heading>
-      <ToggleViewContainer>
-        <ToggleView viewMode={viewMode} onToggle={(mode: ViewMode) => setViewMode(mode)} />
-        <FarmTabButtons />
-        {isMobile && <SearchInput onChange={handleChangeQuery} value={query} />}
-      </ToggleViewContainer>
-      <ControlContainer viewMode={viewMode}>
+      <ControlContainer>
         <div>
-          <SortByContainer>
-            <Text>Sort by:</Text>
-            {/* <select>
-              <option value="Default">Default</option>
-              <option value="APR">APR</option>
-              <option value="Amount-Earned">Amount Earned</option>
-              <option value="Liquidity">Liquidity</option>
-              <option value="Multiplier">Multiplier</option>
-            </select> */}
-          </SortByContainer>
+          <ToggleView viewMode={viewMode} onToggle={(mode: ViewMode) => setViewMode(mode)} />
           <ToggleWrapper>
             <Toggle checked={stackedOnly} onChange={() => setStackedOnly(!stackedOnly)} scale="sm" />
             <Text> {TranslateString(1116, 'Staked only')}</Text>
           </ToggleWrapper>
+          <FarmTabButtons />
         </div>
-        {!isMobile && <SearchInput onChange={handleChangeQuery} value={query} />}
+        <div>
+          <LabelWrapper>
+            <Text>SORT BY</Text>
+            <Select
+              options={[
+                {
+                  label: 'Hot',
+                  value: 'hot',
+                },
+                {
+                  label: 'APR',
+                  value: 'apr',
+                },
+                {
+                  label: 'Multiplier',
+                  value: 'multiplier',
+                },
+                {
+                  label: 'Earned',
+                  value: 'earned',
+                },
+                {
+                  label: 'Liquidity',
+                  value: 'liquidity',
+                },
+              ]}
+            />
+          </LabelWrapper>
+          <LabelWrapper style={{ marginLeft: 16 }}>
+            <Text>SEARCH</Text>
+            <SearchInput onChange={handleChangeQuery} value={query} />
+          </LabelWrapper>
+        </div>
       </ControlContainer>
       {renderContent()}
       <Image src="/images/cakecat.png" alt="Pancake illustration" width={949} height={384} responsive />

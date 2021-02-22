@@ -8,17 +8,18 @@ import Row, { RowData } from './Row'
 export interface ITableProps {
   data: RowData[]
   columns: ColumnType<RowData>[]
+  sortColumn?: string
 }
 
 const Container = styled.div`
   box-shadow: 0px 2px 12px -8px rgba(25, 19, 38, 0.1), 0px 0px 1px rgba(25, 19, 38, 0.15);
   width: 100%;
   background: ${(props) => props.theme.card.background};
+  border-radius: 16px;
 `
 
 const TableWrapper = styled.div`
   overflow: auto;
-  max-height: 600px;
 
   &::-webkit-scrollbar {
     display: none;
@@ -65,8 +66,7 @@ export default React.forwardRef((props: ITableProps) => {
   const { rows } = useTable(columns, data, { sortable: true, sortColumn: 'farm' })
 
   const scrollToTop = (): void => {
-    tableWrapperEl.current.scrollTo({
-      top: 0,
+    tableWrapperEl.current.scrollIntoView({
       behavior: 'smooth',
     })
   }

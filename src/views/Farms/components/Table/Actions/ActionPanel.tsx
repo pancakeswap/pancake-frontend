@@ -71,6 +71,10 @@ const ActionContainer = styled.div`
   }
 `
 
+const InfoContainer = styled.div`
+  min-width: 200px;
+`
+
 const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({ farm }) => {
   const TranslateString = useI18n()
   const { quoteTokenAdresses, quoteTokenSymbol, tokenAddresses, tokenSymbol, dual } = farm
@@ -82,7 +86,7 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({ farm }) => {
 
   return (
     <Container>
-      <div>
+      <InfoContainer>
         <StakeContainer>
           Stake:
           <StyledLinkExternal href={`https://exchange.pancakeswap.finance/#/add/${liquidityUrlPathParts}`} svg>
@@ -95,7 +99,7 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({ farm }) => {
           {isCommunityFarm ? <CommunityTag /> : <CoreTag />}
           {!dual ? <DualTag /> : null}
         </TagsContainer>
-      </div>
+      </InfoContainer>
       <ActionContainer>
         <HarvestAction {...farm} />
         <StakedAction {...farm} />

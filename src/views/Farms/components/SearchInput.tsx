@@ -17,7 +17,7 @@ const StyledInput = styled(Input)`
 const InputWrapper = styled.div`
   position: relative;
   ${({ theme }) => theme.mediaQueries.sm} {
-    width: 320px;
+    width: 234px;
     display: block;
   }
 `
@@ -42,12 +42,7 @@ const SearchButton = styled.button`
 `
 
 const Container = styled.div<{ toggled: boolean }>`
-  margin-left: auto;
-  position: absolute;
-  right: 0;
-
   ${(props) => css`
-    left: ${props.toggled ? '0' : 'auto'};
     ${StyledInput} {
       width: ${props.toggled ? '100%' : '0'};
       padding: ${props.toggled ? '0 1rem' : '0'};
@@ -58,18 +53,6 @@ const Container = styled.div<{ toggled: boolean }>`
       opacity: ${props.toggled ? '1' : '0'};
     }
   `}
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    left: auto;
-    right: 32px;
-  }
-`
-
-const Label = styled.span`
-  margin-right: 6px;
-  color: ${(props) => props.theme.colors.primary};
-  font-size: 16px;
-  font-weight: 600;
 `
 
 const MobileContainer = styled.div`
@@ -108,10 +91,10 @@ const SearchInput: React.FunctionComponent<Props> = ({ value, onChange }) => {
           placeholder="Search farms"
           onBlur={() => setToggled(false)}
         />
-        <SearchButton type="button">
+        {/* <SearchButton type="button">
           <Label>Search</Label>
           <SearchIcon color="primary" />
-        </SearchButton>
+        </SearchButton> */}
       </InputWrapper>
       {!toggled && (
         <MobileContainer>

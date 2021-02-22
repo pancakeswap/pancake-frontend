@@ -7,6 +7,7 @@ const Container = styled.div`
   width: 100%;
   justify-content: flex-end;
   padding-right: 8px;
+  color: ${(props) => props.theme.colors.primary};
 
   ${({ theme }) => theme.mediaQueries.sm} {
     padding-right: 0px;
@@ -19,7 +20,7 @@ const Details: React.FunctionComponent = () => {
 
   return (
     <Container>
-      {!isMobile && Details}
+      {!isMobile && 'Details'}
       <ChevronDownIcon color="primary" />
     </Container>
   )
