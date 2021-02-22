@@ -12,7 +12,6 @@ import { useIfoContract } from 'hooks/useContract'
 import UnlockButton from 'components/UnlockButton'
 import IfoCardHeader from './IfoCardHeader'
 import IfoCardProgress from './IfoCardProgress'
-import IfoCardDescription from './IfoCardDescription'
 import IfoCardDetails from './IfoCardDetails'
 import IfoCardTime from './IfoCardTime'
 import IfoCardContribute from './IfoCardContribute'
@@ -164,18 +163,18 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
             tokenDecimals={tokenDecimals}
           />
         )}
-        <IfoCardDescription description={description} />
-        <IfoCardDetails
-          launchDate={launchDate}
-          launchTime={launchTime}
-          saleAmount={saleAmount}
-          raiseAmount={raiseAmount}
-          cakeToBurn={cakeToBurn}
-          projectSiteUrl={projectSiteUrl}
-          raisingAmount={state.raisingAmount}
-          totalAmount={state.totalAmount}
-        />
       </CardBody>
+      <IfoCardDetails
+        description={description}
+        launchDate={launchDate}
+        launchTime={launchTime}
+        saleAmount={saleAmount}
+        raiseAmount={raiseAmount}
+        cakeToBurn={cakeToBurn}
+        projectSiteUrl={projectSiteUrl}
+        raisingAmount={state.raisingAmount}
+        totalAmount={state.totalAmount}
+      />
     </StyledIfoCard>
   )
 }
