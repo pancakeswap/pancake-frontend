@@ -120,14 +120,11 @@ class BscConnector extends AbstractConnector {
     }
 
     if (!chainId) {
-      if ((binanceChain as any).isDapper) {
-        chainId = parseSendReturn((binanceChain as any).cachedResults.net_version)
+      if (binanceChain.isDapper) {
+        chainId = parseSendReturn(binanceChain.cachedResults.net_version)
       } else {
         chainId =
-          (binanceChain as any).chainId ||
-          (binanceChain as any).netVersion ||
-          (binanceChain as any).networkVersion ||
-          (binanceChain as any)._chainId
+          binanceChain.chainId || binanceChain.netVersion || binanceChain.networkVersion || binanceChain._chainId
       }
     }
 
