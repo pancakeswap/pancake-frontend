@@ -13,7 +13,7 @@ import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import { getBalanceNumber } from 'utils/formatBalance'
 import useStake from 'hooks/useStake'
 import useUnstake from 'hooks/useUnstake'
-import erc20 from 'config/abi/erc20.json'
+import { provider } from 'web3-core'
 
 import DepositModal from '../../DepositModal'
 import WithdrawModal from '../../WithdrawModal'
@@ -32,7 +32,7 @@ const Staked: React.FunctionComponent<FarmWithStakedValue> = ({
   tokenAddresses,
 }) => {
   const TranslateString = useI18n()
-  const { account, library: ethereum } = useWallet()
+  const { account, ethereum }: { account: string; ethereum: provider } = useWallet()
   const [requestedApproval, setRequestedApproval] = useState(false)
   const { allowance, tokenBalance, stakedBalance } = useFarmUser(pid)
   const { onStake } = useStake(pid)
@@ -52,8 +52,8 @@ const Staked: React.FunctionComponent<FarmWithStakedValue> = ({
   const [onPresentWithdraw] = useModal(<WithdrawModal max={stakedBalance} onConfirm={onUnstake} tokenName={lpSymbol} />)
 
   const lpContract = useMemo(() => {
-    return getContract(lpAddress, erc20, ethereum, account)
-  }, [ethereum, lpAddress, account])
+    return getContract(ethereum as provider, lpAddress)
+  }, [ethereum, lpAddress])
 
   const { onApprove } = useApprove(lpContract)
 

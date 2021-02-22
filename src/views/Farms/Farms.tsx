@@ -14,6 +14,8 @@ import { fetchFarmUserDataAsync } from 'state/actions'
 import { QuoteToken } from 'config/constants/types'
 import useI18n from 'hooks/useI18n'
 import { getBalanceNumber } from 'utils/formatBalance'
+import { provider } from 'web3-core'
+
 import FarmCard, { FarmWithStakedValue } from './components/FarmCard/FarmCard'
 import Table from './components/Table/Table'
 import FarmTabButtons from './components/FarmTabButtons'
@@ -69,7 +71,7 @@ const Farms: React.FC = () => {
   const [query, setQuery] = useState('')
   const [viewMode, setViewMode] = useState(ViewMode.TABLE)
   const ethPriceUsd = usePriceEthBusd()
-  const { account, library: ethereum } = useWallet()
+  const { account, ethereum }: { account: string; ethereum: provider } = useWallet()
 
   const dispatch = useDispatch()
   const { fastRefresh } = useRefresh()
