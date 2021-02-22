@@ -6,6 +6,7 @@ import { SendReturnResult, SendReturn, Send, SendOld } from './types'
 import NoBscProviderError from './noBscProviderError'
 import UserRejectedRequestError from './userRejectedRequestError'
 
+// The BinanceChain needs to be accessed at run time
 const getBinanceChain = () => window.BinanceChain as any
 
 function parseSendReturn(sendReturn: SendReturnResult | SendReturn): any {
