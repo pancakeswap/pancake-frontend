@@ -33,7 +33,11 @@ const CellInner = styled.div`
   display: flex;
   width: 100%;
   align-items: center;
-  padding-right: 32px;
+  padding-right: 8px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    padding-right: 32px;
+  }
 `
 
 const Row: React.FunctionComponent<RowData> = (props) => {

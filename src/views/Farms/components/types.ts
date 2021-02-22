@@ -53,6 +53,14 @@ export const MobileColumnSchema = [
     name: 'apr',
     translationId: 999,
     sortable: true,
+  },
+  {
+    id: 6,
+    bold: '',
+    normal: 'DETAILS',
+    name: 'details',
+    translationId: 999,
+    sortable: true,
   }
 ]
 

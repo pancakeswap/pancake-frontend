@@ -1,24 +1,26 @@
 import React from 'react'
 import styled from 'styled-components'
-import { ChevronDownIcon, Button } from '@pancakeswap-libs/uikit'
+import { ChevronDownIcon, useMatchBreakpoints } from '@pancakeswap-libs/uikit'
 
 const Container = styled.div`
   display: flex;
   width: 100%;
   justify-content: flex-end;
+  padding-right: 8px;
 
-  button {
-    margin-right: -16px;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    padding-right: 0px;
   }
 `
 
 const Details: React.FunctionComponent = () => {
+  const { isXl } = useMatchBreakpoints()
+  const isMobile = !isXl
+
   return (
     <Container>
-      <Button variant="text" size="sm">
-        Details
-        <ChevronDownIcon color="primary" />
-      </Button>
+      {!isMobile && Details}
+      <ChevronDownIcon color="primary" />
     </Container>
   )
 }

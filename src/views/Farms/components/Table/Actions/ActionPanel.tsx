@@ -15,13 +15,16 @@ export interface ActionPanelProps {
 }
 
 const Container = styled.div`
-  padding-left: 32px;
-  padding-right: 32px;
-  padding-top: 16px;
-  padding-bottom: 16px;
   background: ${(props) => props.theme.colors.background};
   display: flex;
-  align-items: flex-start;
+  width: 100%;
+  flex-direction: column-reverse;
+  padding: 24px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    flex-direction: row;
+    padding: 16px 32px;
+  }
 `
 
 const StyledLinkExternal = styled(LinkExternal)<{ svg?: boolean }>`
@@ -57,6 +60,17 @@ const TagsContainer = styled.div`
   }
 `
 
+const ActionContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  flex-basis: 0;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    flex-direction: row;
+  }
+`
+
 const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({ farm }) => {
   const TranslateString = useI18n()
   const { quoteTokenAdresses, quoteTokenSymbol, tokenAddresses, tokenSymbol, dual } = farm
@@ -82,8 +96,10 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({ farm }) => {
           {!dual ? <DualTag /> : null}
         </TagsContainer>
       </div>
-      <HarvestAction {...farm} />
-      <StakedAction {...farm} />
+      <ActionContainer>
+        <HarvestAction {...farm} />
+        <StakedAction {...farm} />
+      </ActionContainer>
     </Container>
   )
 }

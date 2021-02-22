@@ -8,21 +8,29 @@ export interface FarmProps {
 }
 
 const Label = styled.span`
-  white-space: nowrap;
   color: ${(props) => props.theme.colors.text};
   font-weight: 600;
 `
 
 const IconImage = styled.img`
-  min-width: 40px;
-  height: 40px;
   margin-right: 8px;
+  min-width: 24px;
+  height: 24px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    min-width: 40px;
+    height: 40px;
+  }
 `
 
 const Container = styled.div`
-  padding-left: 32px;
+  padding-left: 16px;
   display: flex;
   align-items: center;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    padding-left: 32px;
+  }
 `
 
 const Farm: React.FunctionComponent<FarmProps> = ({ image, label }) => {

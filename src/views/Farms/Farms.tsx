@@ -32,12 +32,17 @@ const ControlContainer = styled.div<{ viewMode: ViewMode }>`
     viewMode === ViewMode.TABLE ? theme.card.cardHeaderBackground : 'transparent'};
   border-radius: 32px 32px 0px 0px;
   height: 125px;
-  padding: 0px 32px;
+  padding: 0px 16px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    padding: 0px 32px;
+  }
 `
 
 const ToggleViewContainer = styled.div`
   display: flex;
   margin-bottom: 32px;
+  position: relative;
 `
 
 const ToggleWrapper = styled.div`
@@ -280,6 +285,7 @@ const Farms: React.FC = () => {
       <ToggleViewContainer>
         <ToggleView viewMode={viewMode} onToggle={(mode: ViewMode) => setViewMode(mode)} />
         <FarmTabButtons />
+        {isMobile && <SearchInput onChange={handleChangeQuery} value={query} />}
       </ToggleViewContainer>
       <ControlContainer viewMode={viewMode}>
         <div>
@@ -298,7 +304,7 @@ const Farms: React.FC = () => {
             <Text> {TranslateString(1116, 'Staked only')}</Text>
           </ToggleWrapper>
         </div>
-        <SearchInput onChange={handleChangeQuery} value={query} />
+        {!isMobile && <SearchInput onChange={handleChangeQuery} value={query} />}
       </ControlContainer>
       {renderContent()}
       <Image src="/images/cakecat.png" alt="Pancake illustration" width={949} height={384} responsive />

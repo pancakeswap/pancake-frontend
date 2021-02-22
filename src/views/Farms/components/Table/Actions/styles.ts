@@ -6,7 +6,12 @@ export const ActionContainer = styled.div`
   border-radius: 1rem;
   flex-grow: 1;
   flex-basis: 0;
-  margin-left: 48px;
+  margin-bottom: 16px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    margin-left: 48px;
+    margin-bottom: 0;
+  }
 `
 
 export const ActionTitles = styled.div`
