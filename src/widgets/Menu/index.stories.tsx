@@ -1,7 +1,7 @@
 import React from "react";
 import noop from "lodash/noop";
 import { BrowserRouter } from "react-router-dom";
-import Flex from "../../components/Flex/Flex";
+import Flex from "../../components/Box/Flex";
 import Heading from "../../components/Heading/Heading";
 import Text from "../../components/Text/Text";
 import Menu from "./Menu";

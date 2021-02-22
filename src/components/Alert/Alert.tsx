@@ -7,7 +7,7 @@ import InfoIcon from "../Svg/Icons/Info";
 import { Text } from "../Text";
 import { IconButton } from "../Button";
 import { CloseIcon } from "../Svg";
-import { Flex } from "../Flex";
+import Flex from "../Box/Flex";
 import { AlertProps, variants } from "./types";
 
 interface ThemedIconLabel {

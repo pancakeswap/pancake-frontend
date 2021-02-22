@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { BrowserRouter, Link } from "react-router-dom";
 import capitalize from "lodash/capitalize";
-import Flex from "../Flex/Flex";
+import Flex from "../Box/Flex";
 import { LogoIcon, AddIcon, AutoRenewIcon } from "../Svg";
 import Button from "./Button";
 import IconButton from "./IconButton";

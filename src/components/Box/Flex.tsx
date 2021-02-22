@@ -1,11 +1,11 @@
 import styled from "styled-components";
-import { flexbox, space } from "styled-system";
+import { flexbox } from "styled-system";
+import Box from "./Box";
 import { FlexProps } from "./types";
 
-const Flex = styled.div<FlexProps>`
+const Flex = styled(Box)<FlexProps>`
   display: flex;
   ${flexbox}
-  ${space}
 `;
 
 export default Flex;

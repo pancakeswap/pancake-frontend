@@ -1,5 +1,5 @@
 import React from "react";
-import Flex from "../Flex/Flex";
+import Flex from "../Box/Flex";
 import Text from "../Text/Text";
 import Svg from "./Svg";
 

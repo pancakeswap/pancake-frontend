@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { PancakeRoundIcon, CogIcon, SvgProps } from "../../components/Svg";
 import Text from "../../components/Text/Text";
-import Flex from "../../components/Flex/Flex";
+import Flex from "../../components/Box/Flex";
 import Dropdown from "../../components/Dropdown/Dropdown";
 import Link from "../../components/Link/Link";
 import Skeleton from "../../components/Skeleton/Skeleton";
