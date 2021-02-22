@@ -30,8 +30,7 @@ const ClaimNftModal: React.FC<ClaimNftModalProps> = ({ nft, onSuccess, onDismiss
   const bunnySpecialContract = useBunnySpecialContract()
 
   const handleConfirm = async () => {
-    const tx = await bunnySpecialContract
-      .mintNFT(nft.bunnyId, { from: account })
+    const tx = await bunnySpecialContract.mintNFT(nft.bunnyId, { from: account })
     setIsConfirming(true)
     try {
       await tx.wait()

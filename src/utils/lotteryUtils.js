@@ -47,7 +47,7 @@ export const getTickets = async (lotteryContract, ticketsContract, account, cust
   try {
     const issueIndex = customLotteryNum || (await lotteryContract.issueIndex()).toString()
     const length = await getTicketsAmount(ticketsContract, account)
-  
+
     // eslint-disable-next-line prefer-spread
     const calls1 = Array.apply(null, { length }).map((a, i) => [
       ticketsContract.address,
@@ -55,12 +55,12 @@ export const getTickets = async (lotteryContract, ticketsContract, account, cust
       [account, i],
     ])
     const res = await multiCall(ticketAbi, calls1)
-  
+
     const tokenIds = res.map((id) => id.toString())
-  
+
     const calls2 = tokenIds.map((id) => [ticketsContract.address, 'getLotteryIssueIndex', [id]])
     const ticketIssues = await multiCall(ticketAbi, calls2)
-    
+
     const finalTokenids = []
     ticketIssues.forEach(async (ticketIssue, i) => {
       if (new BigNumber(ticketIssue.toString()).eq(new BigNumber(issueIndex))) {

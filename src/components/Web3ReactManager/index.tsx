@@ -42,13 +42,12 @@ export default function Web3ReactManager({ children }: { children: JSX.Element }
     if (isUserRejectedRequestError) {
       localStorage.removeItem('accountStatus')
     }
-  
+
     if (triedEager && !networkActive && !networkError) {
       activateNetwork(network)
     }
-  
-    // when there's no account connected, react to logins (broadly speaking) on the injected provider, if it exists
 
+    // when there's no account connected, react to logins (broadly speaking) on the injected provider, if it exists
   }, [triedEager, connector, activateNetwork, networkActive, networkError])
   // handle delayed loader state
   const [showLoader, setShowLoader] = useState(false)
@@ -73,11 +72,7 @@ export default function Web3ReactManager({ children }: { children: JSX.Element }
   // if the account context isn't active, and there's an error on the network context, it's an irrecoverable error
   if (networkError) {
     dispatch(push({ id: networkError.name, type: toastTypes.DANGER, title: networkError.message }))
-    return (
-      <>
-        {children}
-      </>
-    )
+    return <>{children}</>
   }
 
   // if neither context is active, spin
