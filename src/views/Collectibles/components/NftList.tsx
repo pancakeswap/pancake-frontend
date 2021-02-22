@@ -1,10 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import orderBy from 'lodash/orderBy'
 import nfts from 'config/constants/nfts'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
-import { getBunnySpecialContract } from 'utils/contractHelpers'
+import { useWeb3React } from '@web3-react/core'
+import { getBunnySpecialAddress } from 'utils/addressHelpers'
 import useGetWalletNfts from 'hooks/useGetWalletNfts'
-import makeBatchRequest from 'utils/makeBatchRequest'
+import multicall from 'utils/multicall'
+import bunnySpecialAbi from 'config/abi/bunnySpecial.json'
 import { useToast } from 'state/hooks'
 import NftCard from './NftCard'
 import NftGrid from './NftGrid'
@@ -13,21 +14,23 @@ type State = {
   [key: string]: boolean
 }
 
-const bunnySpecialContract = getBunnySpecialContract()
 
 const NftList = () => {
   const [claimableNfts, setClaimableNfts] = useState<State>({})
   const { nfts: nftTokenIds, refresh } = useGetWalletNfts()
-  const { account } = useWallet()
+  const { account } = useWeb3React()
   const { toastError } = useToast()
 
   const fetchClaimableStatuses = useCallback(
     async (walletAddress: string) => {
       try {
-        const claimStatuses = (await makeBatchRequest(
-          nfts.map((nft) => {
-            return bunnySpecialContract.methods.canClaimSingle(walletAddress, nft.bunnyId).call
-          }),
+        const claimStatuses = (await multicall(
+          bunnySpecialAbi,
+          nfts.map((nft) => ({
+            address: getBunnySpecialAddress(),
+            name: 'canClaimSingle',
+            params: [walletAddress, nft.bunnyId]
+          })),
         )) as boolean[]
 
         setClaimableNfts(
