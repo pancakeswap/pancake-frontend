@@ -82,6 +82,7 @@ const fetchFarms = async () => {
           name: 'totalAllocPoint',
         },
       ])
+
       const allocPoint = new BigNumber(info.allocPoint.toString())
       const poolWeight = allocPoint.div(new BigNumber(totalAllocPoint.toString()))
 
@@ -92,7 +93,7 @@ const fetchFarms = async () => {
         lpTotalInQuoteToken: lpTotalInQuoteToken.toJSON(),
         tokenPriceVsQuote: quoteTokenAmount.div(tokenAmount).toJSON(),
         poolWeight: poolWeight.toJSON(),
-        multiplier: `${info.allocPoint.div(100).toString()}X`,
+        multiplier: `${allocPoint.div(100).toString()}X`,
       }
     }),
   )
