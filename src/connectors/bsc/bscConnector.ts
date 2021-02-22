@@ -59,7 +59,7 @@ class BscConnector extends AbstractConnector {
     }
 
     if ((window.BinanceChain as any).isMetaMask) {
-      (window.BinanceChain as any).autoRefreshOnNetworkChange = false
+      ;(window.BinanceChain as any).autoRefreshOnNetworkChange = false
     }
 
     // try to activate + get account via eth_requestAccounts

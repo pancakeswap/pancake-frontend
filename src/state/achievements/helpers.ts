@@ -9,9 +9,7 @@ import { getAchievementTitle, getAchievementDescription } from 'utils/achievemen
 export const getUserPointIncreaseEvents = async (account: string) => {
   try {
     const profileContract = getProfileContract()
-    const events = await profileContract.queryFilter(
-      profileContract.filters.UserPointIncrease(account), 0, 'latest'
-    )
+    const events = await profileContract.queryFilter(profileContract.filters.UserPointIncrease(account), 0, 'latest')
     return events
   } catch (error) {
     console.error(error)

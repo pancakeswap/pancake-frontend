@@ -56,19 +56,21 @@ export const getClaimableIfoData = async (account: string): Promise<Achievement[
   const pointCenterContract = getPointCenterClaimContract()
 
   // Returns the claim status of every IFO with a campaign ID
-  const claimStatuses = (await pointCenterContract
-    .checkClaimStatuses(account, ifoCampaignAddresses)) as boolean[]
+  const claimStatuses = (await pointCenterContract.checkClaimStatuses(account, ifoCampaignAddresses)) as boolean[]
 
   // Get IFO data for all IFO's that are eligible to claim
   const claimableIfoData = (await multicall(
     pointCenterIfo,
     claimStatuses.reduce((accum, claimStatus, index) => {
       if (claimStatus === true) {
-        return [...accum, {
-          address: getPointCenterIfoAddress(),
-          name: 'ifos',
-          params: [ifoCampaignAddresses[index]]
-        }]
+        return [
+          ...accum,
+          {
+            address: getPointCenterIfoAddress(),
+            name: 'ifos',
+            params: [ifoCampaignAddresses[index]],
+          },
+        ]
       }
 
       return accum

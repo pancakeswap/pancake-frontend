@@ -16,7 +16,10 @@ const useGetBullHiccupClaimableStatus = () => {
 
   useEffect(() => {
     const checkClaimableStatus = async () => {
-      const [isBullClaimable, isHiccupClaimable] = (await bunnySpecialContract.canClaimMultiple(account, [BULL_NFT, HICCUP_NFT])) as boolean[]
+      const [isBullClaimable, isHiccupClaimable] = (await bunnySpecialContract.canClaimMultiple(account, [
+        BULL_NFT,
+        HICCUP_NFT,
+      ])) as boolean[]
       setClaimables({
         [BULL_NFT]: isBullClaimable,
         [HICCUP_NFT]: isHiccupClaimable,
