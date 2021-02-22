@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWeb3React } from '@web3-react/core'
 import { AutoRenewIcon, Button, Flex, InjectedModalProps, Text } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import { useCake } from 'hooks/useContract'
@@ -17,26 +17,22 @@ const ApproveCakePage: React.FC<ApproveCakePageProps> = ({ goToChange, onDismiss
   const [isApproving, setIsApproving] = useState(false)
   const { profile } = useProfile()
   const TranslateString = useI18n()
-  const { account } = useWallet()
+  const { account } = useWeb3React()
   const { numberCakeToUpdate, numberCakeToReactivate } = useGetProfileCosts()
   const cakeContract = useCake()
   const { toastError } = useToast()
   const cost = profile.isActive ? numberCakeToUpdate : numberCakeToReactivate
 
-  const handleApprove = () => {
-    cakeContract.methods
-      .approve(getPancakeProfileAddress(), cost.times(2).toJSON())
-      .send({ from: account })
-      .on('sending', () => {
-        setIsApproving(true)
-      })
-      .on('receipt', () => {
-        goToChange()
-      })
-      .on('error', (error) => {
-        toastError('Error', error?.message)
-        setIsApproving(false)
-      })
+  const handleApprove = async () => {
+    const tx = await cakeContract.approve(getPancakeProfileAddress(), cost.times(2).toJSON(), { from: account })
+    setIsApproving(true)
+    try {
+      await tx.wait()
+      goToChange()
+    } catch (error) {
+      toastError('Error', error?.message)
+      setIsApproving(false)
+    }
   }
 
   if (!profile) {

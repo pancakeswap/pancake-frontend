@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useModal, Button, Text } from '@pancakeswap-libs/uikit'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
-import { Contract } from 'web3-eth-contract'
+import { Contract } from '@ethersproject/contracts'
 import { useERC20 } from 'hooks/useContract'
 import { useIfoAllowance } from 'hooks/useAllowance'
 import { useIfoApprove } from 'hooks/useApprove'
@@ -34,7 +34,7 @@ const IfoCardContribute: React.FC<Props> = ({
   const [offeringTokenBalance, setOfferingTokenBalance] = useState(new BigNumber(0))
   const [userInfo, setUserInfo] = useState({ amount: 0, claimed: false })
 
-  const { account } = useWallet()
+  const { account } = useWeb3React()
   const contractRaisingToken = useERC20(currencyAddress)
   const allowance = useIfoAllowance(contractRaisingToken, address, pendingTx)
   const onApprove = useIfoApprove(contractRaisingToken, address)
@@ -44,17 +44,17 @@ const IfoCardContribute: React.FC<Props> = ({
 
   useEffect(() => {
     const fetch = async () => {
-      const balance = new BigNumber(await contract.methods.getOfferingAmount(account).call())
-      const userinfo = await contract.methods.userInfo(account).call()
+      const balance = await contract.getOfferingAmount(account)
+      const userinfo = await contract.userInfo(account)
 
       setUserInfo(userinfo)
-      setOfferingTokenBalance(balance)
+      setOfferingTokenBalance(new BigNumber(balance.toString()))
     }
 
     if (account) {
       fetch()
     }
-  }, [account, contract.methods, pendingTx])
+  }, [account, pendingTx, contract])
 
   if (allowance === null) {
     return null
@@ -62,7 +62,7 @@ const IfoCardContribute: React.FC<Props> = ({
 
   const claim = async () => {
     setPendingTx(true)
-    await contract.methods.harvest().send({ from: account })
+    await contract.harvest({ from: account })
     setPendingTx(false)
   }
   const isFinished = status === 'finished'

@@ -29,7 +29,7 @@ export default {
   },
   mulltiCall: {
     56: '0x1ee38d535d541c55c9dae27b12edf090c608e6fb',
-    97: '0x67ADCB4dF3931b0C5Da724058ADC2174a9844412',
+    97: '0xC22582D41B5D641Ea9b26AD7C8036bE04950C194',
   },
   busd: {
     56: '0xe9e7cea3dedca5984780bafc599bd69add087d56',

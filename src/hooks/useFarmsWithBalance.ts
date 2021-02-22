@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import BigNumber from 'bignumber.js'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWeb3React } from '@web3-react/core'
 import multicall from 'utils/multicall'
 import { getMasterChefAddress } from 'utils/addressHelpers'
 import masterChefABI from 'config/abi/masterchef.json'
@@ -14,7 +14,7 @@ export interface FarmWithBalance extends FarmConfig {
 
 const useFarmsWithBalance = () => {
   const [farmsWithBalances, setFarmsWithBalances] = useState<FarmWithBalance[]>([])
-  const { account } = useWallet()
+  const { account } = useWeb3React()
   const { fastRefresh } = useRefresh()
 
   useEffect(() => {
@@ -26,7 +26,10 @@ const useFarmsWithBalance = () => {
       }))
 
       const rawResults = await multicall(masterChefABI, calls)
-      const results = farmsConfig.map((farm, index) => ({ ...farm, balance: new BigNumber(rawResults[index]) }))
+      const results = farmsConfig.map((farm, index) => ({
+        ...farm,
+        balance: new BigNumber(rawResults[index].toString()),
+      }))
 
       setFarmsWithBalances(results)
     }

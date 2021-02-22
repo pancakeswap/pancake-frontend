@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWeb3React } from '@web3-react/core'
 import { useBunnySpecialContract } from 'hooks/useContract'
 import { useToast } from 'state/hooks'
 import { Button, InjectedModalProps, Modal, Text, Flex } from '@pancakeswap-libs/uikit'
@@ -25,27 +25,24 @@ const Actions = styled.div`
 const ClaimNftModal: React.FC<ClaimNftModalProps> = ({ nft, onSuccess, onDismiss }) => {
   const [isConfirming, setIsConfirming] = useState(false)
   const TranslateString = useI18n()
-  const { account } = useWallet()
+  const { account } = useWeb3React()
   const { toastError, toastSuccess } = useToast()
   const bunnySpecialContract = useBunnySpecialContract()
 
   const handleConfirm = async () => {
-    bunnySpecialContract.methods
-      .mintNFT(nft.bunnyId)
-      .send({ from: account })
-      .on('sending', () => {
-        setIsConfirming(true)
-      })
-      .on('receipt', () => {
-        toastSuccess('Successfully claimed!')
-        onDismiss()
-        onSuccess()
-      })
-      .on('error', (error) => {
-        console.error('Unable to claim NFT', error)
-        toastError('Error', 'Unable to claim NFT, please try again.')
-        setIsConfirming(false)
-      })
+    const tx = await bunnySpecialContract
+      .mintNFT(nft.bunnyId, { from: account })
+    setIsConfirming(true)
+    try {
+      await tx.wait()
+      toastSuccess('Successfully claimed!')
+      onDismiss()
+      onSuccess()
+    } catch (error) {
+      console.error('Unable to claim NFT', error)
+      toastError('Error', 'Unable to claim NFT, please try again.')
+      setIsConfirming(false)
+    }
   }
 
   return (

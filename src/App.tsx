@@ -1,9 +1,9 @@
-import React, { useEffect, Suspense, lazy } from 'react'
+import React, { Suspense, lazy } from 'react'
 import { Router, Redirect, Route, Switch } from 'react-router-dom'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { ResetCSS } from '@pancakeswap-libs/uikit'
 import BigNumber from 'bignumber.js'
 import { useFetchProfile, useFetchPublicData } from 'state/hooks'
+import Web3ReactManager from 'components/Web3ReactManager'
 import GlobalStyle from './style/Global'
 import Menu from './components/Menu'
 import ToastListener from './components/ToastListener'
@@ -31,20 +31,6 @@ BigNumber.config({
 })
 
 const App: React.FC = () => {
-  const { account, connect } = useWallet()
-
-  // Monkey patch warn() because of web3 flood
-  // To be removed when web3 1.3.5 is released
-  useEffect(() => {
-    console.warn = () => null
-  }, [])
-
-  useEffect(() => {
-    if (!account && window.localStorage.getItem('accountStatus')) {
-      connect('injected')
-    }
-  }, [account, connect])
-
   useFetchPublicData()
   useFetchProfile()
 
@@ -54,6 +40,7 @@ const App: React.FC = () => {
       <GlobalStyle />
       <Menu>
         <Suspense fallback={<PageLoader />}>
+          <Web3ReactManager>
           <Switch>
             <Route path="/" exact>
               <Home />
@@ -95,6 +82,7 @@ const App: React.FC = () => {
             {/* 404 */}
             <Route component={NotFound} />
           </Switch>
+          </Web3ReactManager>
         </Suspense>
       </Menu>
       <ToastListener />
