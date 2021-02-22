@@ -11,11 +11,10 @@ import SelectionCard from '../components/SelectionCard'
 import NextStepButton from '../components/NextStepButton'
 import ApproveConfirmButtons from '../components/ApproveConfirmButtons'
 import useProfileCreation from './contexts/hook'
+import { MINT_COST, STARTER_BUNNY_IDS } from './config'
 
-const starterBunnyIds = [5, 6, 7, 8, 9]
-const nfts = nftList.filter((nft) => starterBunnyIds.includes(nft.bunnyId))
-const cakeCostToMint = 4
-const minimumCakeBalanceToMint = new BigNumber(cakeCostToMint).multipliedBy(new BigNumber(10).pow(18))
+const nfts = nftList.filter((nft) => STARTER_BUNNY_IDS.includes(nft.bunnyId))
+const minimumCakeBalanceToMint = new BigNumber(MINT_COST).multipliedBy(new BigNumber(10).pow(18))
 
 const Mint: React.FC = () => {
   const [bunnyId, setBunnyId] = useState(null)
@@ -77,7 +76,7 @@ const Mint: React.FC = () => {
             {TranslateString(794, 'Choose wisely: you can only ever make one starter collectible!')}
           </Text>
           <Text as="p" mb="24px" color="textSubtle">
-            {TranslateString(999, 'Cost: 4 CAKE')}
+            {TranslateString(999, `Cost: ${MINT_COST} CAKE`, { num: MINT_COST })}
           </Text>
           {nfts.map((nft) => {
             const handleChange = (value: string) => setBunnyId(parseInt(value, 10))
@@ -98,7 +97,7 @@ const Mint: React.FC = () => {
           })}
           {!hasMinimumCakeRequired && (
             <Text color="failure" mb="16px">
-              {TranslateString(1098, `A minimum of ${cakeCostToMint} CAKE is required`)}
+              {TranslateString(1098, `A minimum of ${MINT_COST} CAKE is required`)}
             </Text>
           )}
           <ApproveConfirmButtons

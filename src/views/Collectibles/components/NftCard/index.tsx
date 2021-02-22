@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import {
   Card,
@@ -16,12 +16,15 @@ import { useProfile } from 'state/hooks'
 import useI18n from 'hooks/useI18n'
 import { Nft } from 'config/constants/types'
 import InfoRow from '../InfoRow'
-import Image from '../Image'
-import { NftProviderContext } from '../../contexts/NftProvider'
 import TransferNftModal from '../TransferNftModal'
+import ClaimNftModal from '../ClaimNftModal'
+import Preview from './Preview'
 
 interface NftCardProps {
   nft: Nft
+  canClaim?: boolean
+  tokenIds?: number[]
+  onSuccess: () => void
 }
 
 const Header = styled(InfoRow)`
@@ -45,35 +48,28 @@ const InfoBlock = styled.div`
   padding: 24px;
 `
 
-const NftCard: React.FC<NftCardProps> = ({ nft }) => {
+const NftCard: React.FC<NftCardProps> = ({ nft, onSuccess, canClaim = false, tokenIds = [] }) => {
   const [isOpen, setIsOpen] = useState(false)
   const TranslateString = useI18n()
-  const { isInitialized, getTokenIds, reInitialize } = useContext(NftProviderContext)
   const { profile } = useProfile()
-  const { bunnyId, name, images, description } = nft
-  const tokenIds = getTokenIds(bunnyId)
-  const walletOwnsNft = tokenIds && tokenIds.length > 0
+  const { bunnyId, name, description } = nft
+  const walletOwnsNft = tokenIds.length > 0
   const Icon = isOpen ? ChevronUpIcon : ChevronDownIcon
 
   const handleClick = async () => {
     setIsOpen(!isOpen)
   }
 
-  const handleSuccess = () => {
-    reInitialize()
-  }
-
-  const [onPresentTransferModal] = useModal(
-    <TransferNftModal nft={nft} tokenIds={tokenIds} onSuccess={handleSuccess} />,
-  )
+  const [onPresentTransferModal] = useModal(<TransferNftModal nft={nft} tokenIds={tokenIds} onSuccess={onSuccess} />)
+  const [onPresentClaimModal] = useModal(<ClaimNftModal nft={nft} onSuccess={onSuccess} />)
 
   return (
-    <Card isActive={walletOwnsNft}>
-      <Image src={`/images/nfts/${images.lg}`} alt={name} originalLink={walletOwnsNft ? images.ipfs : null} />
+    <Card isActive={walletOwnsNft || canClaim}>
+      <Preview nft={nft} isOwned={walletOwnsNft} />
       <CardBody>
         <Header>
           <Heading>{name}</Heading>
-          {isInitialized && tokenIds && (
+          {walletOwnsNft && (
             <Tag outline variant="secondary">
               {TranslateString(999, 'In Wallet')}
             </Tag>
@@ -84,7 +80,12 @@ const NftCard: React.FC<NftCardProps> = ({ nft }) => {
             </Tag>
           )}
         </Header>
-        {isInitialized && walletOwnsNft && (
+        {canClaim && (
+          <Button fullWidth mt="24px" onClick={onPresentClaimModal}>
+            {TranslateString(999, 'Claim this NFT')}
+          </Button>
+        )}
+        {walletOwnsNft && (
           <Button fullWidth variant="secondary" mt="24px" onClick={onPresentTransferModal}>
             {TranslateString(999, 'Transfer')}
           </Button>
