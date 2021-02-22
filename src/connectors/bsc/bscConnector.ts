@@ -6,8 +6,7 @@ import { SendReturnResult, SendReturn, Send, SendOld } from './types'
 import NoBscProviderError from './noBscProviderError'
 import UserRejectedRequestError from './userRejectedRequestError'
 
-// The BinanceChain needs to be accessed at run time
-const getBinanceChain = () => window.BinanceChain as any
+const binanceChain = window.BinanceChain as any
 
 function parseSendReturn(sendReturn: SendReturnResult | SendReturn): any {
   // eslint-disable-next-line no-prototype-builtins
@@ -30,7 +29,6 @@ class BscConnector extends AbstractConnector {
   }
 
   private handleChainChanged(chainId: string | number): void {
-    const binanceChain = getBinanceChain()
     this.emitUpdate({ chainId, provider: binanceChain })
   }
 
@@ -47,13 +45,10 @@ class BscConnector extends AbstractConnector {
   }
 
   private handleNetworkChanged(networkId: string | number): void {
-    const binanceChain = getBinanceChain()
     this.emitUpdate({ chainId: networkId, provider: binanceChain })
   }
 
   public async activate(): Promise<ConnectorUpdate> {
-    const binanceChain = getBinanceChain()
-
     if (!binanceChain) {
       throw new NoBscProviderError()
     }
@@ -93,12 +88,10 @@ class BscConnector extends AbstractConnector {
 
   public async getProvider(): Promise<any> {
     this.ethChainId = 'eth_chainId'
-    return getBinanceChain()
+    return binanceChain
   }
 
   public async getChainId(): Promise<number | string> {
-    const binanceChain = getBinanceChain()
-
     if (!binanceChain) {
       throw new NoBscProviderError()
     }
@@ -139,8 +132,6 @@ class BscConnector extends AbstractConnector {
   }
 
   public async getAccount(): Promise<null | string> {
-    const binanceChain = getBinanceChain()
-
     if (!binanceChain) {
       throw new NoBscProviderError()
     }
@@ -168,8 +159,6 @@ class BscConnector extends AbstractConnector {
   }
 
   public deactivate() {
-    const binanceChain = getBinanceChain()
-
     if (binanceChain && binanceChain.removeListener) {
       binanceChain.removeListener('chainChanged', this.handleChainChanged)
       binanceChain.removeListener('accountsChanged', this.handleAccountsChanged)
@@ -179,8 +168,6 @@ class BscConnector extends AbstractConnector {
   }
 
   public static async isAuthorized(): Promise<boolean> {
-    const binanceChain = getBinanceChain()
-
     if (!binanceChain) {
       return false
     }
