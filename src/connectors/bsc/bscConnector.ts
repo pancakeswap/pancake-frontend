@@ -6,8 +6,6 @@ import { SendReturnResult, SendReturn, Send, SendOld } from './types'
 import NoBscProviderError from './noBscProviderError'
 import UserRejectedRequestError from './userRejectedRequestError'
 
-const binanceChain = window.BinanceChain as any
-
 function parseSendReturn(sendReturn: SendReturnResult | SendReturn): any {
   // eslint-disable-next-line no-prototype-builtins
   return sendReturn.hasOwnProperty('result') ? sendReturn.result : sendReturn
@@ -29,7 +27,7 @@ class BscConnector extends AbstractConnector {
   }
 
   private handleChainChanged(chainId: string | number): void {
-    this.emitUpdate({ chainId, provider: binanceChain })
+    this.emitUpdate({ chainId, provider: window.BinanceChain })
   }
 
   private handleAccountsChanged(accounts: string[]): void {
@@ -45,29 +43,29 @@ class BscConnector extends AbstractConnector {
   }
 
   private handleNetworkChanged(networkId: string | number): void {
-    this.emitUpdate({ chainId: networkId, provider: binanceChain })
+    this.emitUpdate({ chainId: networkId, provider: window.BinanceChain })
   }
 
   public async activate(): Promise<ConnectorUpdate> {
-    if (!binanceChain) {
+    if (!window.BinanceChain) {
       throw new NoBscProviderError()
     }
 
-    if (binanceChain.on) {
-      binanceChain.on('chainChanged', this.handleChainChanged)
-      binanceChain.on('accountsChanged', this.handleAccountsChanged)
-      binanceChain.on('close', this.handleClose)
-      binanceChain.on('networkChanged', this.handleNetworkChanged)
+    if (window.BinanceChain.on) {
+      window.BinanceChain.on('chainChanged', this.handleChainChanged)
+      window.BinanceChain.on('accountsChanged', this.handleAccountsChanged)
+      window.BinanceChain.on('close', this.handleClose)
+      window.BinanceChain.on('networkChanged', this.handleNetworkChanged)
     }
 
-    if (binanceChain.isMetaMask) {
-      binanceChain.autoRefreshOnNetworkChange = false
+    if ((window.BinanceChain as any).isMetaMask) {
+      (window.BinanceChain as any).autoRefreshOnNetworkChange = false
     }
 
     // try to activate + get account via eth_requestAccounts
     let account
     try {
-      account = await (binanceChain.send as Send)('eth_requestAccounts').then(
+      account = await (window.BinanceChain.send as Send)('eth_requestAccounts').then(
         (sendReturn) => parseSendReturn(sendReturn)[0],
       )
     } catch (error) {
@@ -80,32 +78,32 @@ class BscConnector extends AbstractConnector {
     // if unsuccessful, try enable
     if (!account) {
       // if enable is successful but doesn't return accounts, fall back to getAccount (not happy i have to do this...)
-      account = await binanceChain.enable().then((sendReturn) => sendReturn && parseSendReturn(sendReturn)[0])
+      account = await window.BinanceChain.enable().then((sendReturn) => sendReturn && parseSendReturn(sendReturn)[0])
     }
 
-    return { provider: binanceChain, ...(account ? { account } : {}) }
+    return { provider: window.BinanceChain, ...(account ? { account } : {}) }
   }
 
   public async getProvider(): Promise<any> {
     this.ethChainId = 'eth_chainId'
-    return binanceChain
+    return window.BinanceChain
   }
 
   public async getChainId(): Promise<number | string> {
-    if (!binanceChain) {
+    if (!window.BinanceChain) {
       throw new NoBscProviderError()
     }
 
     let chainId
     try {
-      chainId = await (binanceChain.send as Send)(this.ethChainId).then(parseSendReturn)
+      chainId = await (window.BinanceChain.send as Send)(this.ethChainId).then(parseSendReturn)
     } catch {
       warning(false, 'eth_chainId was unsuccessful, falling back to net_version')
     }
 
     if (!chainId) {
       try {
-        chainId = await (binanceChain.send as Send)('net_version').then(parseSendReturn)
+        chainId = await (window.BinanceChain.send as Send)('net_version').then(parseSendReturn)
       } catch {
         warning(false, 'net_version was unsuccessful, falling back to net version v2')
       }
@@ -113,18 +111,21 @@ class BscConnector extends AbstractConnector {
 
     if (!chainId) {
       try {
-        chainId = parseSendReturn((binanceChain.send as SendOld)({ method: 'net_version' }))
+        chainId = parseSendReturn((window.BinanceChain.send as SendOld)({ method: 'net_version' }))
       } catch {
         warning(false, 'net_version v2 was unsuccessful, falling back to manual matches and static properties')
       }
     }
 
     if (!chainId) {
-      if (binanceChain.isDapper) {
-        chainId = parseSendReturn(binanceChain.cachedResults.net_version)
+      if ((window.BinanceChain as any).isDapper) {
+        chainId = parseSendReturn((window.BinanceChain as any).cachedResults.net_version)
       } else {
         chainId =
-          binanceChain.chainId || binanceChain.netVersion || binanceChain.networkVersion || binanceChain._chainId
+          (window.BinanceChain as any).chainId ||
+          (window.BinanceChain as any).netVersion ||
+          (window.BinanceChain as any).networkVersion ||
+          (window.BinanceChain as any)._chainId
       }
     }
 
@@ -132,48 +133,50 @@ class BscConnector extends AbstractConnector {
   }
 
   public async getAccount(): Promise<null | string> {
-    if (!binanceChain) {
+    if (!window.BinanceChain) {
       throw new NoBscProviderError()
     }
 
     let account
     try {
-      account = await (binanceChain.send as Send)(this.ethAccount).then((sendReturn) => parseSendReturn(sendReturn)[0])
+      account = await (window.BinanceChain.send as Send)(this.ethAccount).then(
+        (sendReturn) => parseSendReturn(sendReturn)[0],
+      )
     } catch {
       warning(false, 'eth_accounts was unsuccessful, falling back to enable')
     }
 
     if (!account) {
       try {
-        account = await binanceChain.enable().then((sendReturn) => parseSendReturn(sendReturn)[0])
+        account = await window.BinanceChain.enable().then((sendReturn) => parseSendReturn(sendReturn)[0])
       } catch {
         warning(false, 'enable was unsuccessful, falling back to eth_accounts v2')
       }
     }
 
     if (!account) {
-      account = parseSendReturn((binanceChain.send as SendOld)({ method: this.ethAccount }))[0]
+      account = parseSendReturn((window.BinanceChain.send as SendOld)({ method: this.ethAccount }))[0]
     }
 
     return account
   }
 
   public deactivate() {
-    if (binanceChain && binanceChain.removeListener) {
-      binanceChain.removeListener('chainChanged', this.handleChainChanged)
-      binanceChain.removeListener('accountsChanged', this.handleAccountsChanged)
-      binanceChain.removeListener('close', this.handleClose)
-      binanceChain.removeListener('networkChanged', this.handleNetworkChanged)
+    if (window.BinanceChain && window.BinanceChain.removeListener) {
+      window.BinanceChain.removeListener('chainChanged', this.handleChainChanged)
+      window.BinanceChain.removeListener('accountsChanged', this.handleAccountsChanged)
+      window.BinanceChain.removeListener('close', this.handleClose)
+      window.BinanceChain.removeListener('networkChanged', this.handleNetworkChanged)
     }
   }
 
   public static async isAuthorized(): Promise<boolean> {
-    if (!binanceChain) {
+    if (!window.BinanceChain) {
       return false
     }
 
     try {
-      return await (binanceChain.send as Send)('eth_accounts').then((sendReturn) => {
+      return await (window.BinanceChain.send as Send)('eth_accounts').then((sendReturn) => {
         if (parseSendReturn(sendReturn).length > 0) {
           return true
         }

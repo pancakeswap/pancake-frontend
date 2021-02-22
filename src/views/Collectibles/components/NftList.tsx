@@ -14,6 +14,7 @@ type State = {
   [key: string]: boolean
 }
 
+
 const NftList = () => {
   const [claimableNfts, setClaimableNfts] = useState<State>({})
   const { nfts: nftTokenIds, refresh } = useGetWalletNfts()
@@ -23,24 +24,14 @@ const NftList = () => {
   const fetchClaimableStatuses = useCallback(
     async (walletAddress: string) => {
       try {
-        const response = (await multicall(
+        const claimStatuses = (await multicall(
           bunnySpecialAbi,
           nfts.map((nft) => ({
             address: getBunnySpecialAddress(),
             name: 'canClaimSingle',
-            params: [walletAddress, nft.bunnyId],
+            params: [walletAddress, nft.bunnyId]
           })),
-        )) as boolean[][]
-
-        // ClaimStatuses return as an array of arrays
-        // E.g. [[true], [false]]
-        const claimStatuses = response.map((claimStatusArr) => {
-          if (claimStatusArr.length === 1) {
-            return claimStatusArr[0]
-          }
-
-          return false
-        })
+        )) as boolean[]
 
         setClaimableNfts(
           claimStatuses.reduce((accum, claimStatus, index) => {
