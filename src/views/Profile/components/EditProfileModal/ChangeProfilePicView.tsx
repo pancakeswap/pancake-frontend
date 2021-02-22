@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Button, InjectedModalProps, Skeleton, Text } from '@pancakeswap-libs/uikit'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWeb3React } from '@web3-react/core'
 import { useDispatch } from 'react-redux'
 import nftList from 'config/constants/nfts'
 import { useProfile, useToast } from 'state/hooks'
@@ -23,7 +23,7 @@ const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss }
   const { profile } = useProfile()
   const pancakeRabbitsContract = usePancakeRabbits()
   const profileContract = useProfileContract()
-  const { account } = useWallet()
+  const { account } = useWeb3React()
   const { toastSuccess } = useToast()
   const {
     isApproving,
@@ -34,14 +34,14 @@ const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss }
     handleConfirm,
   } = useApproveConfirmTransaction({
     onApprove: () => {
-      return pancakeRabbitsContract.methods.approve(getPancakeProfileAddress(), tokenId).send({ from: account })
+      return pancakeRabbitsContract.approve(getPancakeProfileAddress(), tokenId, { from: account })
     },
     onConfirm: () => {
       if (!profile.isActive) {
-        return profileContract.methods.reactivateProfile(getPancakeRabbitsAddress(), tokenId).send({ from: account })
+        return profileContract.reactivateProfile(getPancakeRabbitsAddress(), tokenId, { from: account })
       }
 
-      return profileContract.methods.updateProfile(getPancakeRabbitsAddress(), tokenId).send({ from: account })
+      return profileContract.updateProfile(getPancakeRabbitsAddress(), tokenId, { from: account })
     },
     onSuccess: async () => {
       // Re-fetch profile

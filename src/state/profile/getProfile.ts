@@ -2,15 +2,11 @@ import { getPancakeProfileAddress, getPancakeRabbitsAddress } from 'utils/addres
 import pancakeProfileAbi from 'config/abi/pancakeProfile.json'
 import pancakeRabbitsAbi from 'config/abi/pancakeRabbits.json'
 import { Nft } from 'config/constants/types'
-import { getContract } from 'utils/web3'
+import { getContract } from 'utils/erc20'
 import { Profile } from 'state/types'
 import { getTeam } from 'state/teams/helpers'
 import nfts from 'config/constants/nfts'
 import { transformProfileResponse } from './helpers'
-
-const profileContract = getContract(pancakeProfileAbi, getPancakeProfileAddress())
-const rabbitContract = getContract(pancakeRabbitsAbi, getPancakeRabbitsAddress())
-const profileApi = process.env.REACT_APP_API_PROFILE
 
 export interface GetProfileResponse {
   hasRegistered: boolean
@@ -18,6 +14,8 @@ export interface GetProfileResponse {
 }
 
 const getUsername = async (address: string): Promise<string> => {
+  const profileApi = process.env.REACT_APP_API_PROFILE
+
   try {
     const response = await fetch(`${profileApi}/api/users/${address}`)
 
@@ -34,14 +32,17 @@ const getUsername = async (address: string): Promise<string> => {
 }
 
 const getProfile = async (address: string): Promise<GetProfileResponse> => {
+  const profileContract = getContract(getPancakeProfileAddress(), pancakeProfileAbi, window.library)
+  const rabbitContract = getContract(getPancakeRabbitsAddress(), pancakeRabbitsAbi, window.library)
+
   try {
-    const hasRegistered = (await profileContract.methods.hasRegistered(address).call()) as boolean
+    const hasRegistered = await profileContract.hasRegistered(address)
 
     if (!hasRegistered) {
       return { hasRegistered, profile: null }
     }
 
-    const profileResponse = await profileContract.methods.getUserProfile(address).call()
+    const profileResponse = await profileContract.getUserProfile(address)
     const { userId, points, teamId, tokenId, nftAddress, isActive } = transformProfileResponse(profileResponse)
     const team = await getTeam(teamId)
     const username = await getUsername(address)
@@ -50,7 +51,7 @@ const getProfile = async (address: string): Promise<GetProfileResponse> => {
     // so only fetch the nft data if active
     let nft: Nft
     if (isActive) {
-      const bunnyId = await rabbitContract.methods.getBunnyId(tokenId).call()
+      const bunnyId = await rabbitContract.getBunnyId(tokenId)
       nft = nfts.find((nftItem) => nftItem.bunnyId === Number(bunnyId))
 
       // Save the preview image to local storage for the exchange

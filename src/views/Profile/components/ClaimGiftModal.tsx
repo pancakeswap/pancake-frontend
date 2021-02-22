@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { Modal, Text, InjectedModalProps, Button, AutoRenewIcon } from '@pancakeswap-libs/uikit'
 import { AbiItem } from 'web3-utils'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWeb3React } from '@web3-react/core'
 import claimRefundAbi from 'config/abi/claimRefund.json'
 import { getClaimRefundAddress } from 'utils/addressHelpers'
-import { getContract } from 'utils/web3'
+import { getContract } from 'utils/erc20'
 import { useToast } from 'state/hooks'
 import useContract from 'hooks/useContract'
 import useI18n from 'hooks/useI18n'
@@ -18,7 +18,7 @@ const claimRefundAddress = getClaimRefundAddress()
 export const useCanClaim = () => {
   const [canClaim, setCanClaim] = useState(false)
   const [refresh, setRefresh] = useState(1)
-  const { account } = useWallet()
+  const { account } = useWeb3React()
 
   const checkClaimStatus = useCallback(() => {
     setRefresh((prevRefresh) => prevRefresh + 1)
@@ -26,8 +26,8 @@ export const useCanClaim = () => {
 
   useEffect(() => {
     const fetchClaimStatus = async () => {
-      const claimRefundContract = getContract(claimRefundAbi, claimRefundAddress)
-      const walletCanClaim = await claimRefundContract.methods.canClaim(account).call()
+      const claimRefundContract = getContract(claimRefundAddress, claimRefundAbi)
+      const walletCanClaim = await claimRefundContract.canClaim(account)
       setCanClaim(walletCanClaim)
     }
 
@@ -46,28 +46,24 @@ const useClaimRefundContract = () => {
 
 const ClaimGift: React.FC<ClaimGiftProps> = ({ onSuccess, onDismiss }) => {
   const [isConfirming, setIsConfirming] = useState(false)
-  const { account } = useWallet()
+  const { account } = useWeb3React()
   const TranslateString = useI18n()
   const { canClaim } = useCanClaim()
   const claimRefundContract = useClaimRefundContract()
   const { toastSuccess, toastError } = useToast()
 
-  const handleClick = () => {
-    claimRefundContract.methods
-      .getCakeBack()
-      .send({ from: account })
-      .on('sending', () => {
-        setIsConfirming(true)
-      })
-      .on('receipt', () => {
-        toastSuccess('Success!')
-        onSuccess()
-        onDismiss()
-      })
-      .on('error', (error) => {
-        setIsConfirming(false)
-        toastError('Error', error?.message)
-      })
+  const handleClick = async () => {
+    setIsConfirming(true)
+    const tx = await claimRefundContract.getCakeBack({ from: account })
+    try {
+      await tx.wait()
+      toastSuccess('Success!')
+      onSuccess()
+      onDismiss()
+    } catch (error) {
+      setIsConfirming(false)
+      toastError('Error', error?.message)
+    }
   }
 
   return (

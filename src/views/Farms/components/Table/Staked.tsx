@@ -2,16 +2,16 @@ import React, { useState, useCallback, useMemo } from 'react'
 import styled from 'styled-components'
 import { Button } from '@pancakeswap-libs/uikit'
 import UnlockButton from 'components/UnlockButton'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWeb3React } from '@web3-react/core'
 import StakeAction from 'views/Farms/components/FarmCard/StakeAction'
 import { useFarmUser } from 'state/hooks'
 import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
 import useI18n from 'hooks/useI18n'
 import { useApprove } from 'hooks/useApprove'
 import { getContract } from 'utils/erc20'
-import { provider } from 'web3-core'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
+import erc20 from 'config/abi/erc20.json'
 
 const Container = styled.div`
   display: flex;
@@ -39,7 +39,7 @@ const Staked: React.FunctionComponent<FarmWithStakedValue> = ({
   tokenAddresses,
 }) => {
   const TranslateString = useI18n()
-  const { account, ethereum } = useWallet()
+  const { account, library: ethereum } = useWeb3React()
   const [requestedApproval, setRequestedApproval] = useState(false)
   const { allowance, tokenBalance, stakedBalance } = useFarmUser(pid)
   const isApproved = account && allowance && allowance.isGreaterThan(0)
@@ -48,8 +48,8 @@ const Staked: React.FunctionComponent<FarmWithStakedValue> = ({
   const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
 
   const lpContract = useMemo(() => {
-    return getContract(ethereum as provider, lpAddress)
-  }, [ethereum, lpAddress])
+    return getContract(lpAddress, erc20, ethereum, account)
+  }, [ethereum, lpAddress, account])
 
   const { onApprove } = useApprove(lpContract)
 

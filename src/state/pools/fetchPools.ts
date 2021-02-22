@@ -5,7 +5,6 @@ import wbnbABI from 'config/abi/weth.json'
 import { QuoteToken } from 'config/constants/types'
 import multicall from 'utils/multicall'
 import { getAddress, getWbnbAddress } from 'utils/addressHelpers'
-import BigNumber from 'bignumber.js'
 
 export const fetchPoolsBlockLimits = async () => {
   const poolsWithEnd = poolsConfig.filter((p) => p.sousId !== 0)
@@ -30,8 +29,8 @@ export const fetchPoolsBlockLimits = async () => {
     const endBlock = ends[index]
     return {
       sousId: cakePoolConfig.sousId,
-      startBlock: new BigNumber(startBlock).toJSON(),
-      endBlock: new BigNumber(endBlock).toJSON(),
+      startBlock: startBlock.toString(),
+      endBlock: endBlock.toString(),
     }
   })
 }
@@ -62,11 +61,11 @@ export const fetchPoolsTotalStatking = async () => {
   return [
     ...nonBnbPools.map((p, index) => ({
       sousId: p.sousId,
-      totalStaked: new BigNumber(nonBnbPoolsTotalStaked[index]).toJSON(),
+      totalStaked: nonBnbPoolsTotalStaked[index].toString(),
     })),
     ...bnbPool.map((p, index) => ({
       sousId: p.sousId,
-      totalStaked: new BigNumber(bnbPoolsTotalStaked[index]).toJSON(),
+      totalStaked: bnbPoolsTotalStaked[index].toString(),
     })),
   ]
 }

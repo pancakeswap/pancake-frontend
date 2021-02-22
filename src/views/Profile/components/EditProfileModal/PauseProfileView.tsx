@@ -7,7 +7,7 @@ import { fetchProfile } from 'state/profile'
 import useGetProfileCosts from 'views/Profile/hooks/useGetProfileCosts'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useProfile as useProfileContract } from 'hooks/useContract'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWeb3React } from '@web3-react/core'
 
 type PauseProfilePageProps = InjectedModalProps
 
@@ -18,30 +18,25 @@ const PauseProfilePage: React.FC<PauseProfilePageProps> = ({ onDismiss }) => {
   const { numberCakeToReactivate } = useGetProfileCosts()
   const TranslateString = useI18n()
   const pancakeProfileContract = useProfileContract()
-  const { account } = useWallet()
+  const { account } = useWeb3React()
   const { toastSuccess, toastError } = useToast()
   const dispatch = useDispatch()
 
   const handleChange = () => setIsAcknowledged(!isAcknowledged)
 
-  const handleDeactivateProfile = () => {
-    pancakeProfileContract.methods
-      .pauseProfile()
-      .send({ from: account })
-      .on('sending', () => {
-        setIsConfirming(true)
-      })
-      .on('receipt', async () => {
-        // Re-fetch profile
-        await dispatch(fetchProfile(account))
-        toastSuccess('Profile Paused!')
+  const handleDeactivateProfile = async () => {
+    const tx = await pancakeProfileContract.pauseProfile({ from: account })
+    setIsConfirming(true)
+    try {
+      await tx.wait()
+      await dispatch(fetchProfile(account))
+      toastSuccess('Profile Paused!')
 
-        onDismiss()
-      })
-      .on('error', (error) => {
-        toastError('Error', error?.message)
-        setIsConfirming(false)
-      })
+      onDismiss()
+    } catch (error) {
+      toastError('Error', error?.message)
+      setIsConfirming(false)
+    }
   }
 
   if (!profile) {

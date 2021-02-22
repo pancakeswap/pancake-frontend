@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react'
 import styled from 'styled-components'
 import { AutoRenewIcon, Button, Card, CardBody, Heading, Skeleton, Text } from '@pancakeswap-libs/uikit'
 import { Link as RouterLink } from 'react-router-dom'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWeb3React } from '@web3-react/core'
 import nftList from 'config/constants/nfts'
 import useI18n from 'hooks/useI18n'
 import { useToast } from 'state/hooks'
@@ -28,26 +28,22 @@ const ProfilePicture: React.FC = () => {
   const TranslateString = useI18n()
   const { isLoading, nfts: nftsInWallet } = useGetWalletNfts()
   const pancakeRabbitsContract = usePancakeRabbits()
-  const { account } = useWallet()
+  const { account } = useWeb3React()
   const { toastError } = useToast()
   const bunnyIds = Object.keys(nftsInWallet).map((nftWalletItem) => Number(nftWalletItem))
   const walletNfts = nftList.filter((nft) => bunnyIds.includes(nft.bunnyId))
 
-  const handleApprove = () => {
-    pancakeRabbitsContract.methods
-      .approve(getPancakeProfileAddress(), tokenId)
-      .send({ from: account })
-      .on('sending', () => {
-        setIsApproving(true)
-      })
-      .on('receipt', () => {
-        setIsApproving(false)
-        setIsApproved(true)
-      })
-      .on('error', (error) => {
-        toastError('Error', error?.message)
-        setIsApproving(false)
-      })
+  const handleApprove = async () => {
+    setIsApproving(true)
+    try {
+      const tx = await pancakeRabbitsContract.approve(getPancakeProfileAddress(), tokenId, { from: account })
+      await tx.wait()
+      setIsApproving(false)
+      setIsApproved(true)
+    } catch (error) {
+      toastError('Error', error?.message)
+      setIsApproving(false)
+    }
   }
 
   if (!isLoading && walletNfts.length === 0) {
@@ -90,7 +86,7 @@ const ProfilePicture: React.FC = () => {
           </Text>
           <Text as="p" color="textSubtle" mb="24px">
             {TranslateString(816, 'Only approved Pancake Collectibles can be used.')}
-            <Link to="/nft" style={{ marginLeft: '4px' }}>
+            <Link to="/collectibles" style={{ marginLeft: '4px' }}>
               {TranslateString(999, 'See the list >')}
             </Link>
           </Text>

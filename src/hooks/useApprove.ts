@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
-import { Contract } from 'web3-eth-contract'
+import { useWeb3React } from '@web3-react/core'
+import { Contract } from '@ethersproject/contracts'
 import { ethers } from 'ethers'
 import { useDispatch } from 'react-redux'
 import { updateUserAllowance, fetchFarmUserDataAsync } from 'state/actions'
@@ -10,7 +10,7 @@ import { useMasterchef, useCake, useSousChef, useLottery } from './useContract'
 // Approve a Farm
 export const useApprove = (lpContract: Contract) => {
   const dispatch = useDispatch()
-  const { account }: { account: string } = useWallet()
+  const { account } = useWeb3React()
   const masterChefContract = useMasterchef()
 
   const handleApprove = useCallback(async () => {
@@ -29,7 +29,7 @@ export const useApprove = (lpContract: Contract) => {
 // Approve a Pool
 export const useSousApprove = (lpContract: Contract, sousId) => {
   const dispatch = useDispatch()
-  const { account }: { account: string } = useWallet()
+  const { account } = useWeb3React()
   const sousChefContract = useSousChef(sousId)
 
   const handleApprove = useCallback(async () => {
@@ -47,7 +47,7 @@ export const useSousApprove = (lpContract: Contract, sousId) => {
 
 // Approve the lottery
 export const useLotteryApprove = () => {
-  const { account }: { account: string } = useWallet()
+  const { account } = useWeb3React()
   const cakeContract = useCake()
   const lotteryContract = useLottery()
 
@@ -65,12 +65,10 @@ export const useLotteryApprove = () => {
 
 // Approve an IFO
 export const useIfoApprove = (tokenContract: Contract, spenderAddress: string) => {
-  const { account } = useWallet()
+  const { account } = useWeb3React()
   const onApprove = useCallback(async () => {
     try {
-      const tx = await tokenContract.methods
-        .approve(spenderAddress, ethers.constants.MaxUint256)
-        .send({ from: account })
+      const tx = await tokenContract.approve(spenderAddress, ethers.constants.MaxUint256, { from: account })
       return tx
     } catch {
       return false

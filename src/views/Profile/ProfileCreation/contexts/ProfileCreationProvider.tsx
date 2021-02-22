@@ -1,8 +1,12 @@
 import React, { createContext, useEffect, useMemo, useReducer } from 'react'
 import BigNumber from 'bignumber.js'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWeb3React } from '@web3-react/core'
 import { getBunnyFactoryContract } from 'utils/contractHelpers'
+import { MINT_COST, REGISTER_COST, ALLOWANCE_MULTIPLIER } from '../config'
 import { Actions, State, ContextType } from './types'
+
+const totalCost = MINT_COST + REGISTER_COST
+const allowance = totalCost * ALLOWANCE_MULTIPLIER
 
 const initialState: State = {
   isInitialized: false,
@@ -10,8 +14,8 @@ const initialState: State = {
   teamId: null,
   tokenId: null,
   userName: '',
-  minimumCakeRequired: new BigNumber(5).multipliedBy(new BigNumber(10).pow(18)), // 5 CAKE
-  allowance: new BigNumber(25).multipliedBy(new BigNumber(10).pow(18)), // 25 CAKE
+  minimumCakeRequired: new BigNumber(totalCost).multipliedBy(new BigNumber(10).pow(18)),
+  allowance: new BigNumber(allowance).multipliedBy(new BigNumber(10).pow(18)),
 }
 
 const reducer = (state: State, action: Actions): State => {
@@ -51,18 +55,29 @@ export const ProfileCreationContext = createContext<ContextType>(null)
 
 const ProfileCreationProvider: React.FC = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState)
-  const { account } = useWallet()
+  const { account } = useWeb3React()
 
   // Initial checks
   useEffect(() => {
+    let isSubscribed = true
+
     const fetchData = async () => {
       const bunnyFactoryContract = getBunnyFactoryContract()
-      const canMint = await bunnyFactoryContract.methods.canMint(account).call()
+      const canMint = await bunnyFactoryContract.canMint(account)
       dispatch({ type: 'initialize', step: canMint ? 0 : 1 })
+
+      // When changing wallets quickly unmounting before the hasClaim finished causes a React error
+      if (isSubscribed) {
+        dispatch({ type: 'initialize', step: canMint ? 0 : 1 })
+      }
     }
 
     if (account) {
       fetchData()
+    }
+
+    return () => {
+      isSubscribed = false
     }
   }, [account, dispatch])
 

@@ -55,18 +55,20 @@ const fetchFarms = async () => {
       ] = await multicall(erc20, calls)
 
       // Ratio in % a LP tokens that are in staking, vs the total number in circulation
-      const lpTokenRatio = new BigNumber(lpTokenBalanceMC).div(new BigNumber(lpTotalSupply))
+      const lpTokenRatio = new BigNumber(lpTokenBalanceMC.toString()).div(new BigNumber(lpTotalSupply.toString()))
 
       // Total value in staking in quote token value
-      const lpTotalInQuoteToken = new BigNumber(quoteTokenBlanceLP)
+      const lpTotalInQuoteToken = new BigNumber(quoteTokenBlanceLP.toString())
         .div(new BigNumber(10).pow(18))
         .times(new BigNumber(2))
         .times(lpTokenRatio)
 
       // Amount of token in the LP that are considered staking (i.e amount of token * lp ratio)
-      const tokenAmount = new BigNumber(tokenBalanceLP).div(new BigNumber(10).pow(tokenDecimals)).times(lpTokenRatio)
-      const quoteTokenAmount = new BigNumber(quoteTokenBlanceLP)
-        .div(new BigNumber(10).pow(quoteTokenDecimals))
+      const tokenAmount = new BigNumber(tokenBalanceLP.toString())
+        .div(new BigNumber(10).pow(tokenDecimals.toString()))
+        .times(lpTokenRatio)
+      const quoteTokenAmount = new BigNumber(quoteTokenBlanceLP.toString())
+        .div(new BigNumber(10).pow(quoteTokenDecimals.toString()))
         .times(lpTokenRatio)
 
       const [info, totalAllocPoint] = await multicall(masterchefABI, [
@@ -80,9 +82,8 @@ const fetchFarms = async () => {
           name: 'totalAllocPoint',
         },
       ])
-
-      const allocPoint = new BigNumber(info.allocPoint._hex)
-      const poolWeight = allocPoint.div(new BigNumber(totalAllocPoint))
+      const allocPoint = new BigNumber(info.allocPoint.toString())
+      const poolWeight = allocPoint.div(new BigNumber(totalAllocPoint.toString()))
 
       return {
         ...farmConfig,
@@ -91,7 +92,7 @@ const fetchFarms = async () => {
         lpTotalInQuoteToken: lpTotalInQuoteToken.toJSON(),
         tokenPriceVsQuote: quoteTokenAmount.div(tokenAmount).toJSON(),
         poolWeight: poolWeight.toJSON(),
-        multiplier: `${allocPoint.div(100).toString()}X`,
+        multiplier: `${info.allocPoint.div(100).toString()}X`,
       }
     }),
   )

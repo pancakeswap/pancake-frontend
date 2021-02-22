@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import { kebabCase } from 'lodash'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWeb3React } from '@web3-react/core'
 import { Toast, toastTypes } from '@pancakeswap-libs/uikit'
 import { useSelector, useDispatch } from 'react-redux'
 import { Team } from 'config/constants/types'
@@ -51,10 +51,10 @@ export const useFarmUser = (pid) => {
   const farm = useFarmFromPid(pid)
 
   return {
-    allowance: farm.userData ? new BigNumber(farm.userData.allowance) : new BigNumber(0),
-    tokenBalance: farm.userData ? new BigNumber(farm.userData.tokenBalance) : new BigNumber(0),
-    stakedBalance: farm.userData ? new BigNumber(farm.userData.stakedBalance) : new BigNumber(0),
-    earnings: farm.userData ? new BigNumber(farm.userData.earnings) : new BigNumber(0),
+    allowance: farm.userData ? new BigNumber(farm.userData.allowance.toString()) : new BigNumber(0),
+    tokenBalance: farm.userData ? new BigNumber(farm.userData.tokenBalance.toString()) : new BigNumber(0),
+    stakedBalance: farm.userData ? new BigNumber(farm.userData.stakedBalance.toString()) : new BigNumber(0),
+    earnings: farm.userData ? new BigNumber(farm.userData.earnings.toString()) : new BigNumber(0),
   }
 }
 
@@ -137,9 +137,8 @@ export const useToast = () => {
 // Profile
 
 export const useFetchProfile = () => {
-  const { account } = useWallet()
+  const { account } = useWeb3React()
   const dispatch = useDispatch()
-
   useEffect(() => {
     dispatch(fetchProfile(account))
   }, [account, dispatch])
@@ -177,7 +176,7 @@ export const useTeams = () => {
 // Achievements
 
 export const useFetchAchievements = () => {
-  const { account } = useWallet()
+  const { account } = useWeb3React()
   const dispatch = useDispatch()
 
   useEffect(() => {

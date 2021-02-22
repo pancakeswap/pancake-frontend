@@ -1,7 +1,9 @@
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWeb3React } from '@web3-react/core'
 import { useEffect, useReducer } from 'react'
 import { getPancakeRabbitContract } from 'utils/contractHelpers'
-import makeBatchRequest from 'utils/makeBatchRequest'
+import multicall from 'utils/multicall'
+import pancakeRabbitsAbi from 'config/abi/pancakeRabbits.json'
+import { getPancakeRabbitsAddress } from 'utils/addressHelpers'
 
 const pancakeRabbitsContract = getPancakeRabbitContract()
 
@@ -12,16 +14,18 @@ export type NftMap = {
   }
 }
 
-type Action = { type: 'set_nfts'; data: NftMap } | { type: 'reset' }
+type Action = { type: 'set_nfts'; data: NftMap } | { type: 'reset' } | { type: 'refresh'; timestamp: number }
 
 type State = {
   isLoading: boolean
   nfts: NftMap
+  lastUpdated: number
 }
 
 const initialState: State = {
   isLoading: true,
   nfts: {},
+  lastUpdated: Date.now(),
 }
 
 const reducer = (state: State, action: Action) => {
@@ -31,6 +35,11 @@ const reducer = (state: State, action: Action) => {
         ...initialState,
         isLoading: false,
         nfts: action.data,
+      }
+    case 'refresh':
+      return {
+        ...initialState,
+        lastUpdated: action.timestamp,
       }
     case 'reset':
       return {
@@ -44,23 +53,35 @@ const reducer = (state: State, action: Action) => {
 
 const useGetWalletNfts = () => {
   const [state, dispatch] = useReducer(reducer, initialState)
-  const { account } = useWallet()
+  const { lastUpdated } = state
+  const { account } = useWeb3React()
 
   useEffect(() => {
     const fetchNfts = async () => {
       try {
-        const balanceOf = await pancakeRabbitsContract.methods.balanceOf(account).call()
+        const balanceOf = await pancakeRabbitsContract.balanceOf(account)
 
         if (balanceOf > 0) {
           let nfts: NftMap = {}
 
           const getTokenIdAndBunnyId = async (index: number) => {
             try {
-              const { tokenOfOwnerByIndex, getBunnyId, tokenURI } = pancakeRabbitsContract.methods
-              const tokenId = await tokenOfOwnerByIndex(account, index).call()
-              const [bunnyId, tokenUri] = await makeBatchRequest([getBunnyId(tokenId).call, tokenURI(tokenId).call])
-
-              return [Number(bunnyId), Number(tokenId), tokenUri]
+              const { tokenOfOwnerByIndex } = pancakeRabbitsContract
+              const tokenId = await tokenOfOwnerByIndex(account, index)
+              const calls = [
+                {
+                  address: getPancakeRabbitsAddress(),
+                  name: 'getBunnyId',
+                  params: [tokenId.toString()],
+                },
+                {
+                  address: getPancakeRabbitsAddress(),
+                  name: 'tokenURI',
+                  params: [tokenId.toString()],
+                },
+              ]
+              const [bunnyId, tokenUri] = await multicall(pancakeRabbitsAbi, calls)
+              return [bunnyId[0], Number(tokenId.toString()), tokenUri[0]]
             } catch (error) {
               return null
             }
@@ -80,7 +101,6 @@ const useGetWalletNfts = () => {
             }
 
             const [bunnyId, tokenId, tokenUri] = association
-
             return {
               ...accum,
               [bunnyId]: {
@@ -103,9 +123,11 @@ const useGetWalletNfts = () => {
     if (account) {
       fetchNfts()
     }
-  }, [account, dispatch])
+  }, [account, lastUpdated, dispatch])
 
-  return state
+  const refresh = () => dispatch({ type: 'refresh', timestamp: Date.now() })
+
+  return { ...state, refresh }
 }
 
 export default useGetWalletNfts

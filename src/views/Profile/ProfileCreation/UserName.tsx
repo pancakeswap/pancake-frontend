@@ -1,5 +1,6 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import styled from 'styled-components'
+import BigNumber from 'bignumber.js'
 import {
   Card,
   CardBody,
@@ -16,14 +17,14 @@ import {
   Checkbox,
 } from '@pancakeswap-libs/uikit'
 import { parseISO, formatDistance } from 'date-fns'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWeb3React } from '@web3-react/core'
 import { useToast } from 'state/hooks'
-import useWeb3 from 'hooks/useWeb3'
 import useI18n from 'hooks/useI18n'
 import useHasCakeBalance from 'hooks/useHasCakeBalance'
 import debounce from 'lodash/debounce'
-import useProfileCreation from './contexts/hook'
 import ConfirmProfileCreationModal from '../components/ConfirmProfileCreationModal'
+import useProfileCreation from './contexts/hook'
+import { USERNAME_MIN_LENGTH, USERNAME_MAX_LENGTH, REGISTER_COST } from './config'
 
 enum ExistingUserState {
   IDLE = 'idle', // initial state
@@ -31,10 +32,8 @@ enum ExistingUserState {
   NEW = 'new', // username has not been created
 }
 
-const MIN_LENGTH = 3
-const MAX_LENGTH = 15
 const profileApiUrl = process.env.REACT_APP_API_PROFILE
-const minimumCakeBalance = 1
+const minimumCakeToRegister = new BigNumber(REGISTER_COST).multipliedBy(new BigNumber(10).pow(18))
 
 const InputWrap = styled.div`
   position: relative;
@@ -60,14 +59,13 @@ const UserName: React.FC = () => {
   const [isAcknowledged, setIsAcknoledged] = useState(false)
   const { teamId, tokenId, userName, actions, minimumCakeRequired, allowance } = useProfileCreation()
   const TranslateString = useI18n()
-  const { account, ethereum } = useWallet()
+  const { account, library: ethereum } = useWeb3React()
   const { toastError } = useToast()
-  const web3 = useWeb3()
   const [existingUserState, setExistingUserState] = useState<ExistingUserState>(ExistingUserState.IDLE)
   const [isValid, setIsValid] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [message, setMessage] = useState('')
-  const hasMinimumCakeRequired = useHasCakeBalance(minimumCakeBalance)
+  const hasMinimumCakeRequired = useHasCakeBalance(minimumCakeToRegister)
   const [onPresentConfirmProfileCreation] = useModal(
     <ConfirmProfileCreationModal
       userName={userName}
@@ -108,11 +106,12 @@ const UserName: React.FC = () => {
   const handleConfirm = async () => {
     try {
       setIsLoading(true)
-
       const provider = ethereum as any
+      const signer = provider.getSigner()
+
       const signature = provider?.bnbSign
         ? (await provider.bnbSign(account, userName))?.signature
-        : await web3.eth.personal.sign(userName, account, null) // Last param is the password, and is null to request a signature in the wallet
+        : await signer.signMessage(userName) // Last param is the password, and is null to request a signature in the wallet
 
       const response = await fetch(`${profileApiUrl}/api/users/register`, {
         method: 'POST',
@@ -201,8 +200,8 @@ const UserName: React.FC = () => {
                 onChange={handleChange}
                 isWarning={userName && !isValid}
                 isSuccess={userName && isValid}
-                minLength={MIN_LENGTH}
-                maxLength={MAX_LENGTH}
+                minLength={USERNAME_MIN_LENGTH}
+                maxLength={USERNAME_MAX_LENGTH}
                 disabled={isUserCreated}
                 placeholder={TranslateString(1094, 'Enter your name...')}
                 value={userName}
@@ -243,7 +242,7 @@ const UserName: React.FC = () => {
       </Button>
       {!hasMinimumCakeRequired && (
         <Text color="failure" mt="16px">
-          {TranslateString(1098, `A minimum of ${minimumCakeBalance} CAKE is required`)}
+          {TranslateString(1098, `A minimum of ${REGISTER_COST} CAKE is required`, { num: REGISTER_COST })}
         </Text>
       )}
     </>

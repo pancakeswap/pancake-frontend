@@ -1,7 +1,5 @@
-import { useEffect, useState } from 'react'
+import { useMemo } from 'react'
 import { AbiItem } from 'web3-utils'
-import { ContractOptions } from 'web3-eth-contract'
-import useWeb3 from 'hooks/useWeb3'
 import {
   getAddress,
   getMasterChefAddress,
@@ -12,7 +10,10 @@ import {
   getPancakeProfileAddress,
   getPancakeRabbitsAddress,
   getPointCenterIfoAddress,
+  getBunnySpecialAddress,
 } from 'utils/addressHelpers'
+import { Contract } from '@ethersproject/contracts'
+import { useWeb3React } from '@web3-react/core'
 import { poolsConfig } from 'config/constants'
 import { PoolCategory } from 'config/constants/types'
 import ifo from 'config/abi/ifo.json'
@@ -26,16 +27,22 @@ import sousChef from 'config/abi/sousChef.json'
 import sousChefBnb from 'config/abi/sousChefBnb.json'
 import profile from 'config/abi/pancakeProfile.json'
 import pointCenterIfo from 'config/abi/pointCenterIfo.json'
+import bunnySpecial from 'config/abi/bunnySpecial.json'
+import { getContract } from 'utils/erc20'
+import cakeABI from 'config/abi/cake.json'
 
-const useContract = (abi: AbiItem, address: string, contractOptions?: ContractOptions) => {
-  const web3 = useWeb3()
-  const [contract, setContract] = useState(new web3.eth.Contract(abi, address, contractOptions))
-
-  useEffect(() => {
-    setContract(new web3.eth.Contract(abi, address, contractOptions))
-  }, [abi, address, contractOptions, web3])
-
-  return contract
+function useContract(ABI: any, address: string | undefined, withSignerIfPossible = true): Contract | null {
+  const { library, account } = useWeb3React()
+  const newLibrary = library || window.library
+  return useMemo(() => {
+    if (!address || !ABI || !newLibrary) return null
+    try {
+      return getContract(address, ABI, newLibrary, withSignerIfPossible && account ? account : undefined)
+    } catch (error) {
+      console.error('Failed to get contract', error)
+      return null
+    }
+  }, [address, ABI, newLibrary, withSignerIfPossible, account])
 }
 
 /**
@@ -43,13 +50,11 @@ const useContract = (abi: AbiItem, address: string, contractOptions?: ContractOp
  */
 
 export const useIfoContract = (address: string) => {
-  const ifoAbi = (ifo as unknown) as AbiItem
-  return useContract(ifoAbi, address)
+  return useContract(ifo, address)
 }
 
 export const useERC20 = (address: string) => {
-  const erc20Abi = (erc20 as unknown) as AbiItem
-  return useContract(erc20Abi, address)
+  return useContract(erc20, address)
 }
 
 export const useCake = () => {
@@ -57,33 +62,31 @@ export const useCake = () => {
 }
 
 export const useBunnyFactory = () => {
-  const bunnyFactoryAbi = (bunnyFactory as unknown) as AbiItem
-  return useContract(bunnyFactoryAbi, getBunnyFactoryAddress())
-}
-
-export const usePancakeRabbits = () => {
-  const pancakeRabbitsAbi = (pancakeRabbits as unknown) as AbiItem
-  return useContract(pancakeRabbitsAbi, getPancakeRabbitsAddress())
+  return useContract(bunnyFactory, getBunnyFactoryAddress())
 }
 
 export const useProfile = () => {
-  const profileABIAbi = (profile as unknown) as AbiItem
-  return useContract(profileABIAbi, getPancakeProfileAddress())
+  return useContract(profile, getPancakeProfileAddress())
+}
+
+export const usePancakeRabbits = () => {
+  return useContract(pancakeRabbits, getPancakeRabbitsAddress())
 }
 
 export const useLottery = () => {
-  const abi = (lottery as unknown) as AbiItem
-  return useContract(abi, getLotteryAddress())
+  return useContract(lottery, getLotteryAddress())
 }
 
 export const useLotteryTicket = () => {
-  const abi = (lotteryTicket as unknown) as AbiItem
-  return useContract(abi, getLotteryTicketAddress())
+  return useContract(lotteryTicket, getLotteryTicketAddress())
 }
 
 export const useMasterchef = () => {
-  const abi = (masterChef as unknown) as AbiItem
-  return useContract(abi, getMasterChefAddress())
+  return useContract(masterChef, getMasterChefAddress())
+}
+
+export const useCakeContract = () => {
+  return useContract(cakeABI, getCakeAddress())
 }
 
 export const useSousChef = (id) => {
@@ -96,6 +99,11 @@ export const useSousChef = (id) => {
 export const usePointCenterIfoContract = () => {
   const abi = (pointCenterIfo as unknown) as AbiItem
   return useContract(abi, getPointCenterIfoAddress())
+}
+
+export const useBunnySpecialContract = () => {
+  const abi = (bunnySpecial as unknown) as AbiItem
+  return useContract(abi, getBunnySpecialAddress())
 }
 
 export default useContract

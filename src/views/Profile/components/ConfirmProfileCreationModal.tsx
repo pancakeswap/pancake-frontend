@@ -7,6 +7,7 @@ import { useCake, usePancakeRabbits, useProfile } from 'hooks/useContract'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { fetchProfile } from 'state/profile'
 import { useToast } from 'state/hooks'
+import { REGISTER_COST } from '../ProfileCreation/config'
 import ApproveConfirmButtons from './ApproveConfirmButtons'
 
 interface Props {
@@ -44,20 +45,18 @@ const ConfirmProfileCreationModal: React.FC<Props> = ({
   } = useApproveConfirmTransaction({
     onRequiresApproval: async () => {
       try {
-        const response = await cakeContract.methods.allowance(account, profileContract.options.address).call()
-        const currentAllowance = new BigNumber(response)
+        const response = await cakeContract.allowance(account, profileContract.address)
+        const currentAllowance = new BigNumber(response.toString())
         return currentAllowance.gte(minimumCakeRequired)
       } catch (error) {
         return false
       }
     },
     onApprove: () => {
-      return cakeContract.methods.approve(profileContract.options.address, allowance.toJSON()).send({ from: account })
+      return cakeContract.approve(profileContract.address, allowance.toJSON(), { from: account })
     },
     onConfirm: () => {
-      return profileContract.methods
-        .createProfile(teamId, pancakeRabbitsContract.options.address, tokenId)
-        .send({ from: account })
+      return profileContract.createProfile(teamId, pancakeRabbitsContract.address, tokenId, { from: account })
     },
     onSuccess: async () => {
       await dispatch(fetchProfile(account))
@@ -73,7 +72,7 @@ const ConfirmProfileCreationModal: React.FC<Props> = ({
       </Text>
       <Flex justifyContent="space-between" mb="16px">
         <Text>{TranslateString(999, 'Cost')}</Text>
-        <Text>{TranslateString(999, '1 CAKE')}</Text>
+        <Text>{TranslateString(999, `${REGISTER_COST} CAKE`, { num: REGISTER_COST })}</Text>
       </Flex>
       <ApproveConfirmButtons
         isApproveDisabled={isConfirmed || isConfirming || isApproved}

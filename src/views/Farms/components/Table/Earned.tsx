@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { Button, ButtonProps } from '@pancakeswap-libs/uikit'
 import { useHarvest } from 'hooks/useHarvest'
 import useI18n from 'hooks/useI18n'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWeb3React } from '@web3-react/core'
 
 export interface EarnedProps {
   earnings: number
@@ -30,7 +30,7 @@ const Container = styled.div`
 const Earned: React.FunctionComponent<EarnedProps> = ({ earnings, pid }) => {
   const TranslateString = useI18n()
   const { onReward } = useHarvest(pid)
-  const { account } = useWallet()
+  const { account } = useWeb3React()
   const [pendingTx, setPendingTx] = useState(false)
   const displayBalance = earnings !== null ? earnings.toLocaleString() : '?'
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
 import { AutoRenewIcon, Button, Flex } from '@pancakeswap-libs/uikit'
 import { Achievement } from 'state/types'
@@ -42,25 +42,21 @@ const AchievementRow: React.FC<AchievementRowProps> = ({ achievement, onCollectS
   const [isCollecting, setIsCollecting] = useState(false)
   const TranslateString = useI18n()
   const pointCenterContract = usePointCenterIfoContract()
-  const { account } = useWallet()
+  const { account } = useWeb3React()
   const { toastError, toastSuccess } = useToast()
 
-  const handleCollectPoints = () => {
-    pointCenterContract.methods
-      .getPoints(achievement.address)
-      .send({ from: account })
-      .on('sending', () => {
-        setIsCollecting(true)
-      })
-      .on('receipt', () => {
-        setIsCollecting(false)
-        onCollectSuccess(achievement)
-        toastSuccess('Points Collected!')
-      })
-      .on('error', (error) => {
-        toastError('Error', error?.message)
-        setIsCollecting(false)
-      })
+  const handleCollectPoints = async () => {
+    const tx = await pointCenterContract.getPoints(achievement.address, { from: account })
+    setIsCollecting(true)
+    try {
+      await tx.wait()
+      setIsCollecting(false)
+      onCollectSuccess(achievement)
+      toastSuccess('Points Collected!')
+    } catch (error) {
+      toastError('Error', error?.message)
+      setIsCollecting(false)
+    }
   }
 
   return (

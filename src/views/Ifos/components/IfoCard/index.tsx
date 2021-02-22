@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
 import { Card, CardBody, CardRibbon } from '@pancakeswap-libs/uikit'
 import { BSC_BLOCK_TIME } from 'config'
 import { Ifo, IfoStatus } from 'config/constants/types'
-import makeBatchRequest from 'utils/makeBatchRequest'
 import useI18n from 'hooks/useI18n'
 import useBlock from 'hooks/useBlock'
 import { useIfoContract } from 'hooks/useContract'
@@ -90,7 +89,7 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
     startBlockNum: 0,
     endBlockNum: 0,
   })
-  const { account } = useWallet()
+  const { account } = useWeb3React()
   const contract = useIfoContract(address)
 
   const currentBlock = useBlock()
@@ -100,11 +99,11 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
 
   useEffect(() => {
     const fetchProgress = async () => {
-      const [startBlock, endBlock, raisingAmount, totalAmount] = await makeBatchRequest([
-        contract.methods.startBlock().call,
-        contract.methods.endBlock().call,
-        contract.methods.raisingAmount().call,
-        contract.methods.totalAmount().call,
+      const [startBlock, endBlock, raisingAmount, totalAmount] = await Promise.all([
+        contract.startBlock(),
+        contract.endBlock(),
+        contract.raisingAmount(),
+        contract.totalAmount(),
       ])
 
       const startBlockNum = parseInt(startBlock as string, 10)
@@ -119,13 +118,12 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
         currentBlock > startBlockNum
           ? ((currentBlock - startBlockNum) / totalBlocks) * 100
           : ((currentBlock - releaseBlockNumber) / (startBlockNum - releaseBlockNumber)) * 100
-
       setState({
         isLoading: false,
         secondsUntilEnd: blocksRemaining * BSC_BLOCK_TIME,
         secondsUntilStart: (startBlockNum - currentBlock) * BSC_BLOCK_TIME,
-        raisingAmount: new BigNumber(raisingAmount as string),
-        totalAmount: new BigNumber(totalAmount as string),
+        raisingAmount: new BigNumber(raisingAmount.toString()),
+        totalAmount: new BigNumber(totalAmount.toString()),
         status,
         progress,
         blocksRemaining,
