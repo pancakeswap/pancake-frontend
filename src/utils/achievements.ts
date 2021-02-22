@@ -5,7 +5,7 @@ import pointCenterIfo from 'config/abi/pointCenterIfo.json'
 import ifosList from 'config/constants/ifo'
 import { campaignMap } from 'config/constants/campaigns'
 import { Achievement, TranslatableText } from 'state/types'
-import makeBatchRequest from './makeBatchRequest'
+import multicall from 'utils/multicall'
 
 interface IfoMapResponse {
   thresholdToClaim: string
@@ -60,10 +60,15 @@ export const getClaimableIfoData = async (account: string): Promise<Achievement[
     .checkClaimStatuses(account, ifoCampaignAddresses)) as boolean[]
 
   // Get IFO data for all IFO's that are eligible to claim
-  const claimableIfoData = (await makeBatchRequest(
+  const claimableIfoData = (await multicall(
+    pointCenterIfo,
     claimStatuses.reduce((accum, claimStatus, index) => {
       if (claimStatus === true) {
-        return [...accum, pointCenterContract.ifos(ifoCampaignAddresses[index])]
+        return [...accum, {
+          address: getPointCenterIfoAddress(),
+          name: 'ifos',
+          params: [ifoCampaignAddresses[index]]
+        }]
       }
 
       return accum
