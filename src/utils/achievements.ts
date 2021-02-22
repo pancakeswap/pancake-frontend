@@ -1,3 +1,4 @@
+import { BigNumber } from 'ethers'
 import { Campaign } from 'config/constants/types'
 import { getPointCenterIfoAddress } from 'utils/addressHelpers'
 import { getContract } from 'utils/erc20'
@@ -8,9 +9,9 @@ import { Achievement, TranslatableText } from 'state/types'
 import multicall from 'utils/multicall'
 
 interface IfoMapResponse {
-  thresholdToClaim: string
-  campaignId: string
-  numberPoints: string
+  thresholdToClaim: BigNumber
+  campaignId: BigNumber
+  numberPoints: BigNumber
 }
 
 export const getPointCenterClaimContract = () => {
@@ -79,23 +80,26 @@ export const getClaimableIfoData = async (account: string): Promise<Achievement[
 
   // Transform response to an Achievement
   return claimableIfoData.reduce((accum, claimableIfoDataItem) => {
-    if (!campaignMap.has(claimableIfoDataItem.campaignId)) {
+    const campaignId = claimableIfoDataItem.campaignId.toString()
+    const numberPoints = claimableIfoDataItem.numberPoints.toNumber()
+
+    if (!campaignMap.has(campaignId)) {
       return accum
     }
 
-    const campaignMeta = campaignMap.get(claimableIfoDataItem.campaignId)
-    const { address } = ifoCampaigns.find((ifoCampaign) => ifoCampaign.campaignId === claimableIfoDataItem.campaignId)
+    const campaignMeta = campaignMap.get(campaignId)
+    const { address } = ifoCampaigns.find((ifoCampaign) => ifoCampaign.campaignId === campaignId)
 
     return [
       ...accum,
       {
         address,
-        id: claimableIfoDataItem.campaignId,
+        id: campaignId,
         type: 'ifo',
         title: getAchievementTitle(campaignMeta),
         description: getAchievementDescription(campaignMeta),
         badge: campaignMeta.badge,
-        points: Number(claimableIfoDataItem.numberPoints),
+        points: numberPoints,
       },
     ]
   }, [])
