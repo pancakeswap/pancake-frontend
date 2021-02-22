@@ -24,7 +24,7 @@ const ApproveCakePage: React.FC<ApproveCakePageProps> = ({ goToChange, onDismiss
   const cost = profile.isActive ? numberCakeToUpdate : numberCakeToReactivate
 
   const handleApprove = async () => {
-    const tx = cakeContract.approve(getPancakeProfileAddress(), cost.times(2).toJSON(), { from: account })
+    const tx = await cakeContract.approve(getPancakeProfileAddress(), cost.times(2).toJSON(), { from: account })
     setIsApproving(true)
     try {
       await tx.wait()

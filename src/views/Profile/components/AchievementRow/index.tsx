@@ -46,7 +46,7 @@ const AchievementRow: React.FC<AchievementRowProps> = ({ achievement, onCollectS
   const { toastError, toastSuccess } = useToast()
 
   const handleCollectPoints = async () => {
-    const tx = pointCenterContract.getPoints(achievement.address, { from: account })
+    const tx = await pointCenterContract.getPoints(achievement.address, { from: account })
     setIsCollecting(true)
     try {
       await tx.wait()

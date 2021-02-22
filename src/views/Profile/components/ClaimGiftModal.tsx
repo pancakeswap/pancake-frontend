@@ -52,11 +52,11 @@ const ClaimGift: React.FC<ClaimGiftProps> = ({ onSuccess, onDismiss }) => {
   const claimRefundContract = useClaimRefundContract()
   const { toastSuccess, toastError } = useToast()
 
-  const handleClick = () => {
+  const handleClick = async () => {
     setIsConfirming(true)
-    const tx = claimRefundContract.getCakeBack({ from: account })
+    const tx = await claimRefundContract.getCakeBack({ from: account })
     try {
-      tx.wait()
+      await tx.wait()
       toastSuccess('Success!')
       onSuccess()
       onDismiss()

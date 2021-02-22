@@ -80,8 +80,8 @@ const useGetWalletNfts = () => {
                   params: [tokenId.toString()],
                 },
               ]
-              const res = await multicall(pancakeRabbitsAbi, calls)
-              return [Number(res[0]), Number(tokenId.toString()), res[1]]
+              const [bunnyId, tokenUri] = await multicall(pancakeRabbitsAbi, calls)
+              return [bunnyId[0], Number(tokenId.toString()), tokenUri[0]]
             } catch (error) {
               return null
             }
@@ -101,7 +101,6 @@ const useGetWalletNfts = () => {
             }
 
             const [bunnyId, tokenId, tokenUri] = association
-
             return {
               ...accum,
               [bunnyId]: {
