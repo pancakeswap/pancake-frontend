@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { HelpIcon } from '@pancakeswap-libs/uikit'
 
-import CellLayout from './CellLayout'
+import Tooltip from '../Tooltip/Tooltip'
 
 export interface MultiplierProps {
   multiplier: string
@@ -10,20 +10,44 @@ export interface MultiplierProps {
 
 const MultiplierWrapper = styled.div`
   color: ${({ theme }) => theme.colors.text};
-  width: 2.5rem;
+  width: 40px;
   font-weight: 600;
-  text-align: left;
+  text-align: right;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    text-align: left;
+  }
+`
+
+const Container = styled.div`
+  display: flex;
+  align-items: center;
+
+  svg {
+    margin-left: 10px;
+  }
 `
 
 const Multiplier: React.FunctionComponent<MultiplierProps> = ({ multiplier }) => {
   const displayMultipler = multiplier ? multiplier.toLowerCase() : '-'
 
   return (
-    <CellLayout label="Multiplier">
+    <Container>
       <MultiplierWrapper>{displayMultipler}</MultiplierWrapper>
-      <HelpIcon color="textSubtle" />
-    </CellLayout>
+      <Tooltip
+        content={
+          <div>
+            The multiplier represents the amount of CAKE rewards each farm gets.
+            <br />
+            <br />
+            For example, if a 1x farm was getting 1 CAKE per block, a 40x farm would be getting 40 CAKE per block.
+          </div>
+        }
+      >
+        <HelpIcon color="textSubtle" />
+      </Tooltip>
+    </Container>
   )
 }
 
-export default Multiplier;
+export default Multiplier

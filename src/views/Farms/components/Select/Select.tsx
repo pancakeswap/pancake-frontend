@@ -111,11 +111,13 @@ const Select: React.FunctionComponent<SelectProps> = ({ options, onChange }) => 
           </DropDownHeader>
           <DropDownListContainer>
             <DropDownList>
-              {options.map((option) => (
-                <ListItem onClick={onOptionClicked(option)} key={option.label}>
-                  <Text>{option.label}</Text>
-                </ListItem>
-              ))}
+              {options.map((option) =>
+                option.label !== selectedOption.label ? (
+                  <ListItem onClick={onOptionClicked(option)} key={option.label}>
+                    <Text>{option.label}</Text>
+                  </ListItem>
+                ) : null,
+              )}
             </DropDownList>
           </DropDownListContainer>
         </DropDownContainer>

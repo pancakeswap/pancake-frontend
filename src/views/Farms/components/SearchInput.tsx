@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react'
-import { Input, SearchIcon, IconButton } from '@pancakeswap-libs/uikit'
-import styled, { css } from 'styled-components'
+import { Input } from '@pancakeswap-libs/uikit'
+import styled from 'styled-components'
 
 const StyledInput = styled(Input)`
   border-radius: 16px;
@@ -22,50 +22,7 @@ const InputWrapper = styled.div`
   }
 `
 
-const SearchButton = styled.button`
-  background: transparent;
-  border: none;
-  outline: none;
-  position: absolute;
-  right: 4px;
-  top: 50%;
-  transform: translate(0px, -50%);
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  opacity: 0;
-  transition: 0.3s;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    opacity: 1 !important;
-  }
-`
-
-const Container = styled.div<{ toggled: boolean }>`
-  ${(props) => css`
-    ${StyledInput} {
-      width: ${props.toggled ? '100%' : '0'};
-      padding: ${props.toggled ? '0 1rem' : '0'};
-      opacity: ${props.toggled ? '1' : '0'};
-    }
-
-    ${SearchButton} {
-      opacity: ${props.toggled ? '1' : '0'};
-    }
-  `}
-`
-
-const MobileContainer = styled.div`
-  display: block;
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translate(0, -50%);
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    display: none;
-  }
-`
+const Container = styled.div<{ toggled: boolean }>``
 
 interface Props {
   value: string
@@ -75,11 +32,6 @@ interface Props {
 const SearchInput: React.FunctionComponent<Props> = ({ value, onChange }) => {
   const [toggled, setToggled] = useState(false)
   const inputEl = useRef(null)
-
-  const handleToggleButtonClick = (): void => {
-    inputEl.current.focus()
-    setToggled(true)
-  }
 
   return (
     <Container toggled={toggled}>
@@ -91,18 +43,7 @@ const SearchInput: React.FunctionComponent<Props> = ({ value, onChange }) => {
           placeholder="Search farms"
           onBlur={() => setToggled(false)}
         />
-        {/* <SearchButton type="button">
-          <Label>Search</Label>
-          <SearchIcon color="primary" />
-        </SearchButton> */}
       </InputWrapper>
-      {!toggled && (
-        <MobileContainer>
-          <IconButton variant="text" size="sm" onClick={handleToggleButtonClick}>
-            <SearchIcon color="primary" />
-          </IconButton>
-        </MobileContainer>
-      )}
     </Container>
   )
 }

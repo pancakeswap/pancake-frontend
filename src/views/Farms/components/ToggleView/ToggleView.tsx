@@ -1,4 +1,5 @@
 import React from 'react'
+import styled from 'styled-components'
 import { ListViewIcon, CardViewIcon, IconButton } from '@pancakeswap-libs/uikit'
 import { ViewMode } from '../types'
 
@@ -6,6 +7,16 @@ interface ToogleViewProps {
   viewMode: ViewMode
   onToggle: (mode: ViewMode) => void
 }
+
+const Container = styled.div`
+  margin-top: 16px;
+  margin-left: -8px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    margin-top: 0;
+    margin-left: 0;
+  }
+`
 
 const ToggleView: React.FunctionComponent<ToogleViewProps> = ({ viewMode, onToggle }) => {
   const handleToggle = (mode: ViewMode) => {
@@ -15,14 +26,14 @@ const ToggleView: React.FunctionComponent<ToogleViewProps> = ({ viewMode, onTogg
   }
 
   return (
-    <div>
+    <Container>
       <IconButton variant="text" size="sm" onClick={() => handleToggle(ViewMode.CARD)}>
         <CardViewIcon color={viewMode === ViewMode.CARD ? 'primary' : 'textDisabled'} />
       </IconButton>
       <IconButton variant="text" size="sm" onClick={() => handleToggle(ViewMode.TABLE)}>
         <ListViewIcon color={viewMode === ViewMode.TABLE ? 'primary' : 'textDisabled'} />
       </IconButton>
-    </div>
+    </Container>
   )
 }
 

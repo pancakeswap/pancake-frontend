@@ -1,8 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import CellLayout from './CellLayout'
-
 export interface EarnedProps {
   earnings: number
   pid: number
@@ -18,11 +16,7 @@ const Amount = styled.span<{ earned: number }>`
 const Earned: React.FunctionComponent<EarnedProps> = ({ earnings }) => {
   const displayBalance = earnings !== null ? earnings.toLocaleString() : '?'
 
-  return (
-    <CellLayout label="Earned">
-      <Amount earned={earnings}>{displayBalance}</Amount>
-    </CellLayout>
-  )
+  return <Amount earned={earnings}>{displayBalance}</Amount>
 }
 
 export default Earned

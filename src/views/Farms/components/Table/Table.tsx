@@ -3,11 +3,11 @@ import styled from 'styled-components'
 import { useTable, Button, ChevronUpIcon, ColumnType } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 
-import Row, { RowData } from './Row'
+import Row, { RowProps } from './Row'
 
 export interface ITableProps {
-  data: RowData[]
-  columns: ColumnType<RowData>[]
+  data: RowProps[]
+  columns: ColumnType<RowProps>[]
   sortColumn?: string
 }
 
@@ -19,7 +19,7 @@ const Container = styled.div`
 `
 
 const TableWrapper = styled.div`
-  overflow: auto;
+  overflow: visible;
 
   &::-webkit-scrollbar {
     display: none;

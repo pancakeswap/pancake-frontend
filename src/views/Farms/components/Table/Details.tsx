@@ -2,6 +2,10 @@ import React from 'react'
 import styled from 'styled-components'
 import { ChevronDownIcon, useMatchBreakpoints } from '@pancakeswap-libs/uikit'
 
+interface DetailsProps {
+  actionPanelToggled: boolean
+}
+
 const Container = styled.div`
   display: flex;
   width: 100%;
@@ -14,14 +18,18 @@ const Container = styled.div`
   }
 `
 
-const Details: React.FunctionComponent = () => {
+const ArrowIcon = styled(ChevronDownIcon)<{ toggled: boolean }>`
+  transform: ${({ toggled }) => (toggled ? 'rotate(180deg)' : 'rotate(0)')};
+`
+
+const Details: React.FunctionComponent<DetailsProps> = ({ actionPanelToggled }) => {
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
 
   return (
     <Container>
       {!isMobile && 'Details'}
-      <ChevronDownIcon color="primary" />
+      <ArrowIcon color="primary" toggled={actionPanelToggled} />
     </Container>
   )
 }

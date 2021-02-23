@@ -3,7 +3,7 @@ import { Route, useRouteMatch, useLocation } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import BigNumber from 'bignumber.js'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
-import { Image, Heading, RowType, useMatchBreakpoints, Toggle, Text } from '@pancakeswap-libs/uikit'
+import { Image, Heading, RowType, Toggle, Text } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
 import { BLOCKS_PER_YEAR, CAKE_PER_BLOCK, CAKE_POOL_PID } from 'config'
 import FlexLayout from 'components/layout/Flex'
@@ -15,14 +15,15 @@ import { QuoteToken } from 'config/constants/types'
 import useI18n from 'hooks/useI18n'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { provider } from 'web3-core'
+import { orderBy } from 'lodash'
 
 import FarmCard, { FarmWithStakedValue } from './components/FarmCard/FarmCard'
 import Table from './components/Table/Table'
 import FarmTabButtons from './components/FarmTabButtons'
 import SearchInput from './components/SearchInput'
-import { RowData } from './components/Table/Row'
+import { RowProps } from './components/Table/Row'
 import ToggleView from './components/ToggleView/ToggleView'
-import { DesktopColumnSchema, MobileColumnSchema, ViewMode } from './components/types'
+import { DesktopColumnSchema, ViewMode } from './components/types'
 import Select, { OptionProps } from './components/Select/Select'
 
 const ControlContainer = styled.div`
@@ -31,17 +32,23 @@ const ControlContainer = styled.div`
   align-items: center;
   position: relative;
   border-radius: 32px 32px 0px 0px;
-  height: 125px;
-  padding: 0px 16px;
+  padding: 24px 0px;
   justify-content: space-between;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    padding: 0px 32px;
-  }
+  flex-direction: column;
 
   > div {
     display: flex;
     align-items: center;
+    width: 100%;
+  }
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    flex-direction: row;
+    padding: 32px;
+
+    > div {
+      width: auto;
+    }
   }
 `
 
@@ -49,15 +56,52 @@ const ToggleWrapper = styled.div`
   display: flex;
   align-items: center;
   margin-left: 10px;
+  margin-top: 16px;
 
   ${Text} {
     margin-left: 8px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    margin-top: 0;
   }
 `
 
 const LabelWrapper = styled.div`
   > ${Text} {
     font-size: 12px;
+  }
+`
+
+const FilterContainer = styled.div`
+  margin-top: 16px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    margin-top: 0;
+  }
+`
+
+const ViewControls = styled.div`
+  flex-wrap: wrap;
+  justify-content: space-between;
+`
+
+const StyledImage = styled(Image)`
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 58px;
+`
+
+const Header = styled.div`
+  padding: 32px 0px;
+  background: ${(props) => props.theme.colors.gradients.bubblegum};
+
+  padding-left: 16px;
+  padding-right: 16px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    padding-left: 24px;
+    padding-right: 24px;
   }
 `
 
@@ -72,6 +116,7 @@ const Farms: React.FC = () => {
   const [viewMode, setViewMode] = useState(ViewMode.TABLE)
   const ethPriceUsd = usePriceEthBusd()
   const { account, ethereum }: { account: string; ethereum: provider } = useWallet()
+  const [sortOption, setSortOption] = useState('hot')
 
   const dispatch = useDispatch()
   const { fastRefresh } = useRefresh()
@@ -91,6 +136,22 @@ const Farms: React.FC = () => {
   const stackedOnlyFarms = activeFarms.filter(
     (farm) => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0),
   )
+
+  const sortFarms = (farms: FarmWithStakedValue[]): FarmWithStakedValue[] => {
+    switch (sortOption) {
+      case 'apr':
+        return orderBy(farms, 'apy', 'desc')
+      case 'multiplier':
+        return orderBy(farms, (farm: FarmWithStakedValue) => Number(farm.multiplier.slice(0, -1)), 'desc')
+      case 'earned':
+        return orderBy(farms, (farm: FarmWithStakedValue) => (farm.userData ? farm.userData.earnings : 0), 'desc')
+      case 'liquidity':
+        return orderBy(farms, (farm: FarmWithStakedValue) => Number(farm.liquidity), 'desc')
+      default:
+        return farms
+    }
+  }
+
   // /!\ This function will be removed soon
   // This function compute the APY for each farm and will be replaced when we have a reliable API
   // to retrieve assets prices against USD
@@ -126,7 +187,19 @@ const Farms: React.FC = () => {
           apy = cakeApy && dualApy && cakeApy.plus(dualApy)
         }
 
-        return { ...farm, apy }
+        let liquidity = farm.lpTotalInQuoteToken
+
+        if (!farm.lpTotalInQuoteToken) {
+          liquidity = null
+        }
+        if (farm.quoteTokenSymbol === QuoteToken.BNB) {
+          liquidity = bnbPrice.times(farm.lpTotalInQuoteToken)
+        }
+        if (farm.quoteTokenSymbol === QuoteToken.CAKE) {
+          liquidity = cakePrice.times(farm.lpTotalInQuoteToken)
+        }
+
+        return { ...farm, apy, liquidity }
       })
 
       if (query) {
@@ -156,23 +229,13 @@ const Farms: React.FC = () => {
     farmsStaked = farmsList(inactiveFarms)
   }
 
+  farmsStaked = sortFarms(farmsStaked)
+
   const rowData = farmsStaked.map((farm) => {
-    let totalValue = farm.lpTotalInQuoteToken
-
-    if (!farm.lpTotalInQuoteToken) {
-      totalValue = null
-    }
-    if (farm.quoteTokenSymbol === QuoteToken.BNB) {
-      totalValue = bnbPrice.times(farm.lpTotalInQuoteToken)
-    }
-    if (farm.quoteTokenSymbol === QuoteToken.CAKE) {
-      totalValue = cakePrice.times(farm.lpTotalInQuoteToken)
-    }
-
     const { quoteTokenAdresses, quoteTokenSymbol, tokenAddresses } = farm
     const lpLabel = farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('PANCAKE', '')
 
-    const row: RowData = {
+    const row: RowProps = {
       apr: {
         value: farm.apy
           ? Number(`${farm.apy.times(new BigNumber(100)).toNumber().toLocaleString('en-US').slice(0, -1)}`)
@@ -195,7 +258,7 @@ const Farms: React.FC = () => {
         pid: farm.pid,
       },
       liquidity: {
-        liquidity: Number(totalValue),
+        liquidity: farm.liquidity,
       },
       multiplier: {
         multiplier: farm.multiplier,
@@ -206,18 +269,15 @@ const Farms: React.FC = () => {
     return row
   })
 
-  const { isXl } = useMatchBreakpoints()
-  const isMobile = !isXl
-
   const renderContent = (): JSX.Element => {
     if (viewMode === ViewMode.TABLE && rowData.length) {
-      const columnSchema = isMobile ? MobileColumnSchema : DesktopColumnSchema
+      const columnSchema = DesktopColumnSchema
 
       const columns = columnSchema.map((column) => ({
         id: column.id,
         name: column.name,
         label: column.normal,
-        sort: (a: RowType<RowData>, b: RowType<RowData>) => {
+        sort: (a: RowType<RowProps>, b: RowType<RowProps>) => {
           switch (column.name) {
             case 'farm':
               return b.id - a.id
@@ -275,57 +335,69 @@ const Farms: React.FC = () => {
     )
   }
 
+  const handleSortOptionChange = (option: OptionProps): void => {
+    setSortOption(option.value)
+  }
+
   return (
-    <Page>
-      <Heading as="h1" size="lg" color="secondary" mb="50px" style={{ textAlign: 'center' }}>
-        {TranslateString(696, 'Stake LP tokens to earn CAKE')}
-      </Heading>
-      <ControlContainer>
-        <div>
-          <ToggleView viewMode={viewMode} onToggle={(mode: ViewMode) => setViewMode(mode)} />
-          <ToggleWrapper>
-            <Toggle checked={stackedOnly} onChange={() => setStackedOnly(!stackedOnly)} scale="sm" />
-            <Text> {TranslateString(1116, 'Staked only')}</Text>
-          </ToggleWrapper>
-          <FarmTabButtons />
-        </div>
-        <div>
-          <LabelWrapper>
-            <Text>SORT BY</Text>
-            <Select
-              options={[
-                {
-                  label: 'Hot',
-                  value: 'hot',
-                },
-                {
-                  label: 'APR',
-                  value: 'apr',
-                },
-                {
-                  label: 'Multiplier',
-                  value: 'multiplier',
-                },
-                {
-                  label: 'Earned',
-                  value: 'earned',
-                },
-                {
-                  label: 'Liquidity',
-                  value: 'liquidity',
-                },
-              ]}
-            />
-          </LabelWrapper>
-          <LabelWrapper style={{ marginLeft: 16 }}>
-            <Text>SEARCH</Text>
-            <SearchInput onChange={handleChangeQuery} value={query} />
-          </LabelWrapper>
-        </div>
-      </ControlContainer>
-      {renderContent()}
-      <Image src="/images/cakecat.png" alt="Pancake illustration" width={949} height={384} responsive />
-    </Page>
+    <>
+      <Header>
+        <Heading as="h1" size="xxl" color="secondary" mb="24px">
+          {TranslateString(999, 'Farms')}
+        </Heading>
+        <Heading size="lg" color="text">
+          {TranslateString(999, 'Stake Liquidity Pool (LP) tokens to earn.')}
+        </Heading>
+      </Header>
+      <Page>
+        <ControlContainer>
+          <ViewControls>
+            <ToggleView viewMode={viewMode} onToggle={(mode: ViewMode) => setViewMode(mode)} />
+            <ToggleWrapper>
+              <Toggle checked={stackedOnly} onChange={() => setStackedOnly(!stackedOnly)} scale="sm" />
+              <Text> {TranslateString(1116, 'Staked only')}</Text>
+            </ToggleWrapper>
+            <FarmTabButtons />
+          </ViewControls>
+          <FilterContainer>
+            <LabelWrapper>
+              <Text>SORT BY</Text>
+              <Select
+                options={[
+                  {
+                    label: 'Hot',
+                    value: 'hot',
+                  },
+                  {
+                    label: 'APR',
+                    value: 'apr',
+                  },
+                  {
+                    label: 'Multiplier',
+                    value: 'multiplier',
+                  },
+                  {
+                    label: 'Earned',
+                    value: 'earned',
+                  },
+                  {
+                    label: 'Liquidity',
+                    value: 'liquidity',
+                  },
+                ]}
+                onChange={handleSortOptionChange}
+              />
+            </LabelWrapper>
+            <LabelWrapper style={{ marginLeft: 16 }}>
+              <Text>SEARCH</Text>
+              <SearchInput onChange={handleChangeQuery} value={query} />
+            </LabelWrapper>
+          </FilterContainer>
+        </ControlContainer>
+        {renderContent()}
+        <StyledImage src="/images/3dpan.png" alt="Pancake illustration" width={120} height={103} />
+      </Page>
+    </>
   )
 }
 

@@ -6,8 +6,6 @@ import BigNumber from 'bignumber.js'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 
-import CellLayout from './CellLayout'
-
 export interface AprProps {
   value: number
   multiplier: string
@@ -20,15 +18,14 @@ export interface AprProps {
 }
 
 const Container = styled.div`
-  min-width: 120px;
   display: flex;
   align-items: center;
   color: ${(props) => props.theme.colors.text};
   font-weight: 600;
 
   button {
-    width: 1.25rem;
-    height: 1.25rem;
+    width: 20px;
+    height: 20px;
 
     svg {
       path {
@@ -39,7 +36,7 @@ const Container = styled.div`
 `
 
 const AprWrapper = styled.div`
-  min-width: 3.8rem;
+  min-width: 60px;
   text-align: left;
 `
 
@@ -56,12 +53,10 @@ const Apr: React.FunctionComponent<AprProps> = ({
   const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAdresses, quoteTokenSymbol, tokenAddresses })
   const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
   return (
-    <CellLayout label="APR">
-      <Container>
-        <AprWrapper>{displayApr}</AprWrapper>
-        <ApyButton lpLabel={lpLabel} cakePrice={cakePrice} apy={originalValue} addLiquidityUrl={addLiquidityUrl} />
-      </Container>
-    </CellLayout>
+    <Container>
+      <AprWrapper>{displayApr}</AprWrapper>
+      <ApyButton lpLabel={lpLabel} cakePrice={cakePrice} apy={originalValue} addLiquidityUrl={addLiquidityUrl} />
+    </Container>
   )
 }
 

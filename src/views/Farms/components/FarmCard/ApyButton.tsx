@@ -15,8 +15,13 @@ const ApyButton: React.FC<ApyButtonProps> = ({ lpLabel, cakePrice, apy, addLiqui
     <ApyCalculatorModal lpLabel={lpLabel} cakePrice={cakePrice} apy={apy} addLiquidityUrl={addLiquidityUrl} />,
   )
 
+  const handleClickButton = (event): void => {
+    event.stopPropagation()
+    onPresentApyModal()
+  }
+
   return (
-    <IconButton onClick={onPresentApyModal} variant="text" size="sm" ml="4px">
+    <IconButton onClick={handleClickButton} variant="text" size="sm" ml="4px">
       <CalculateIcon />
     </IconButton>
   )

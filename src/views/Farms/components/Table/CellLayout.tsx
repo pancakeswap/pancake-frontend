@@ -5,6 +5,7 @@ const Label = styled.div`
   font-size: 0.75rem;
   color: ${(props) => props.theme.colors.textSubtle};
   text-align: left;
+  text-transform: uppercase;
 `
 
 const ContentContainer = styled.div`
@@ -14,18 +15,14 @@ const ContentContainer = styled.div`
 `
 
 interface CellLayoutProps {
-  label: string
+  label?: string
 }
 
-const CellLayout: React.FunctionComponent<CellLayoutProps> = ({ label, children }) => {
+const CellLayout: React.FunctionComponent<CellLayoutProps> = ({ label = '', children }) => {
   return (
     <div>
-      <Label>
-        {label}
-      </Label>
-      <ContentContainer>
-        {children}
-      </ContentContainer>
+      {label && <Label>{label}</Label>}
+      <ContentContainer>{children}</ContentContainer>
     </div>
   )
 }
