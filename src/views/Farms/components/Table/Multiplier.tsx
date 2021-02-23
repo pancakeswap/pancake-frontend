@@ -10,7 +10,7 @@ export interface MultiplierProps {
 
 const MultiplierWrapper = styled.div`
   color: ${({ theme }) => theme.colors.text};
-  width: 40px;
+  width: 36px;
   font-weight: 600;
   text-align: right;
 
@@ -22,10 +22,6 @@ const MultiplierWrapper = styled.div`
 const Container = styled.div`
   display: flex;
   align-items: center;
-
-  svg {
-    margin-left: 10px;
-  }
 `
 
 const Multiplier: React.FunctionComponent<MultiplierProps> = ({ multiplier }) => {
