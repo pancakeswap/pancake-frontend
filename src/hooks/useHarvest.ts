@@ -1,5 +1,5 @@
 import { useCallback } from 'react'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWeb3React } from '@web3-react/core'
 import { useDispatch } from 'react-redux'
 import { fetchFarmUserDataAsync, updateUserBalance, updateUserPendingReward } from 'state/actions'
 import { soushHarvest, soushHarvestBnb, harvest } from 'utils/callHelpers'

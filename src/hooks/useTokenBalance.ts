@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import BigNumber from 'bignumber.js'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWeb3React } from '@web3-react/core'
 import { provider } from 'web3-core'
 import cakeABI from 'config/abi/cake.json'
 import { getContract } from 'utils/web3'

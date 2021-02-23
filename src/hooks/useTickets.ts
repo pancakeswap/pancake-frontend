@@ -1,5 +1,5 @@
 import { useCallback, useState, useEffect } from 'react'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
 import { useLottery, useLotteryTicket } from 'hooks/useContract'
 import useRefresh from './useRefresh'

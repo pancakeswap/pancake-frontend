@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from 'react'
 import Web3 from 'web3'
 import { HttpProviderOptions } from 'web3-core-helpers'
 import { provider as ProviderType } from 'web3-core'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWeb3React } from '@web3-react/core'
 import getRpcUrl from 'utils/getRpcUrl'
 
 const RPC_URL = getRpcUrl()

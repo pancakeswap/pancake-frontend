@@ -1,6 +1,6 @@
 import React, { useEffect, Suspense, lazy } from 'react'
 import { Router, Redirect, Route, Switch } from 'react-router-dom'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWeb3React } from '@web3-react/core'
 import { ResetCSS } from '@pancakeswap-libs/uikit'
 import BigNumber from 'bignumber.js'
 import { useFetchProfile, useFetchPublicData } from 'state/hooks'

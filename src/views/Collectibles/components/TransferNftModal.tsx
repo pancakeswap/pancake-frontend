@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import Web3 from 'web3'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWeb3React } from '@web3-react/core'
 import { Button, Input, Modal, Text } from '@pancakeswap-libs/uikit'
 import { useToast } from 'state/hooks'
 import { Nft } from 'config/constants/types'

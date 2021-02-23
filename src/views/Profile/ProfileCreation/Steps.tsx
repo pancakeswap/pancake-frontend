@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWeb3React } from '@web3-react/core'
 import NoWalletConnected from '../components/WalletNotConnected'
 import { ProfileCreationContext } from './contexts/ProfileCreationProvider'
 import Mint from './Mint'

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWeb3React } from '@web3-react/core'
 import { useBunnySpecialContract } from 'hooks/useContract'
 import { useToast } from 'state/hooks'
 import { Button, InjectedModalProps, Modal, Text, Flex } from '@pancakeswap-libs/uikit'

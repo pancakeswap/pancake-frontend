@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWeb3React } from '@web3-react/core'
 import { Button, Flex, Text, InjectedModalProps } from '@pancakeswap-libs/uikit'
 import { getFullDisplayBalance } from 'utils/formatBalance'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'

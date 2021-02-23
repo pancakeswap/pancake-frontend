@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { Menu as UikitMenu } from '@pancakeswap-libs/uikit'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWeb3React } from '@web3-react/core'
 import { allLanguages } from 'config/localisation/languageCodes'
 import { LanguageContext } from 'contexts/Localisation/languageContext'
 import useTheme from 'hooks/useTheme'

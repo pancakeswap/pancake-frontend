@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
 import { Modal, Button, Flex, LinkExternal } from '@pancakeswap-libs/uikit'
 import BalanceInput from 'components/Input/BalanceInput'
