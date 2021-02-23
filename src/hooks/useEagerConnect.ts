@@ -8,17 +8,13 @@ export default function useEagerConnect() {
 
   useEffect(() => {
     injected.isAuthorized().then(isAuthorized => {
-      if (isAuthorized) {
+      if (isAuthorized && window.localStorage.getItem('accountStatus')) {
         activate(injected, undefined, true).catch(() => {
           setTried(true)
         })
-      } else if (window.ethereum) {
-          activate(injected, undefined, true).catch(() => {
-            setTried(true)
-          })
-        } else {
-          setTried(true)
-        }
+      } else {
+        setTried(true)
+      }
     })
   }, [activate]) // intentionally only running on mount (make sure it's only mounted once :))
 
