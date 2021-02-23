@@ -56,7 +56,6 @@ const fetchFarms = async () => {
 
       // Ratio in % a LP tokens that are in staking, vs the total number in circulation
       const lpTokenRatio = new BigNumber(lpTokenBalanceMC).div(new BigNumber(lpTotalSupply))
-
       // Total value in staking in quote token value
       const lpTotalInQuoteToken = new BigNumber(quoteTokenBlanceLP)
         .div(new BigNumber(10).pow(18))
@@ -80,7 +79,6 @@ const fetchFarms = async () => {
           name: 'totalAllocPoint',
         },
       ])
-
       const allocPoint = new BigNumber(info.allocPoint._hex)
       const poolWeight = allocPoint.div(new BigNumber(totalAllocPoint))
 

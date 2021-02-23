@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { useWeb3React as useWeb3ReactCore } from '@web3-react/core'
-import { isMobile } from 'react-device-detect'
 import { injected } from '../connectors'
 
 export default function useEagerConnect() {
@@ -13,7 +12,7 @@ export default function useEagerConnect() {
         activate(injected, undefined, true).catch(() => {
           setTried(true)
         })
-      } else if (isMobile && window.ethereum) {
+      } else if (window.ethereum) {
           activate(injected, undefined, true).catch(() => {
             setTried(true)
           })

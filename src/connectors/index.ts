@@ -18,8 +18,9 @@ export const network = new NetworkConnector({
 })
 
 let networkLibrary: Web3Provider | undefined
-export function getNetworkLibrary(): Web3Provider {
-  networkLibrary = networkLibrary ?? new Web3Provider(network.provider as any)
+export async function getNetworkLibrary(): Promise<Web3Provider> {
+  const provider = await network.getProvider()
+  networkLibrary = networkLibrary ?? new Web3Provider(provider as any)
   return networkLibrary
 }
 
