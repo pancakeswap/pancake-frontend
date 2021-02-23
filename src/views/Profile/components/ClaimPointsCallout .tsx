@@ -16,7 +16,7 @@ const ClaimPointsCallout = () => {
   const TranslateString = useI18n()
   const dispatch = useDispatch()
   const { profile } = useProfile()
-  const { account } = useWallet()
+  const { account } = useWeb3React()
 
   useEffect(() => {
     const fetchIfoClaims = async () => {

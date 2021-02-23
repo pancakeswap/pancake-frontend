@@ -9,7 +9,7 @@ import UserName from './UserName'
 
 const Steps = () => {
   const { isInitialized, currentStep } = useContext(ProfileCreationContext)
-  const { account } = useWallet()
+  const { account } = useWeb3React()
 
   if (!account) {
     return <NoWalletConnected />

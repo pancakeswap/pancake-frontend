@@ -33,7 +33,7 @@ const TicketCard: React.FC<{ contractLink?: string; lotteryNumber?: number }> = 
   const tickets = useTickets(lotteryNumber)
   const ticketsLength = tickets.length
   const [onPresentMyTickets] = useModal(<MyTicketsModal myTicketNumbers={tickets} from="buy" />)
-  const { account } = useWallet()
+  const { account } = useWeb3React()
 
   if (!account) {
     return (

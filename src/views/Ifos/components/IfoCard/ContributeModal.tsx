@@ -16,7 +16,7 @@ interface Props {
 const ContributeModal: React.FC<Props> = ({ currency, contract, currencyAddress, onDismiss }) => {
   const [value, setValue] = useState('')
   const [pendingTx, setPendingTx] = useState(false)
-  const { account } = useWallet()
+  const { account } = useWeb3React()
   const balance = getFullDisplayBalance(useTokenBalance(currencyAddress))
 
   return (

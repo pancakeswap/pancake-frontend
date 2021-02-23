@@ -38,7 +38,7 @@ const SecondCardColumnWrapper = styled.div<{ isAWin?: boolean }>`
 `
 
 const NextDrawPage: React.FC = () => {
-  const { account } = useWallet()
+  const { account } = useWeb3React()
   const { claimAmount } = useTotalClaim()
   const winnings = getBalanceNumber(claimAmount)
   const isAWin = winnings > 0

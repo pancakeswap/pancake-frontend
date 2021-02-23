@@ -18,7 +18,7 @@ const claimRefundAddress = getClaimRefundAddress()
 export const useCanClaim = () => {
   const [canClaim, setCanClaim] = useState(false)
   const [refresh, setRefresh] = useState(1)
-  const { account } = useWallet()
+  const { account } = useWeb3React()
 
   const checkClaimStatus = useCallback(() => {
     setRefresh((prevRefresh) => prevRefresh + 1)
@@ -46,7 +46,7 @@ const useClaimRefundContract = () => {
 
 const ClaimGift: React.FC<ClaimGiftProps> = ({ onSuccess, onDismiss }) => {
   const [isConfirming, setIsConfirming] = useState(false)
-  const { account } = useWallet()
+  const { account } = useWeb3React()
   const TranslateString = useI18n()
   const { canClaim } = useCanClaim()
   const claimRefundContract = useClaimRefundContract()

@@ -17,7 +17,7 @@ const GlobalCheckBullHiccupClaimStatus = () => {
   const [onPresentGiftModal] = useModal(
     <ClaimBullHiccupNftModal isBullClaimable={isBullClaimable} isHiccupClaimable={isHiccupClaimable} />,
   )
-  const { account } = useWallet()
+  const { account } = useWeb3React()
   const { pathname } = useLocation()
 
   useEffect(() => {

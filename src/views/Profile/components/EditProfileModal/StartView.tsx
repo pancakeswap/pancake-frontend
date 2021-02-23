@@ -36,7 +36,7 @@ const StartPage: React.FC<StartPageProps> = ({ goToApprove, goToChange, goToRemo
   const { numberCakeToUpdate, numberCakeToReactivate } = useGetProfileCosts()
   const hasMinimumCakeRequired = useHasCakeBalance(profile.isActive ? numberCakeToUpdate : numberCakeToReactivate)
   const TranslateString = useI18n()
-  const { account } = useWallet()
+  const { account } = useWeb3React()
   const cakeContract = useCake()
   const cost = profile.isActive ? numberCakeToUpdate : numberCakeToReactivate
 

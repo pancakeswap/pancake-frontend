@@ -8,7 +8,7 @@ import useRefresh from './useRefresh'
 
 const useAllEarnings = () => {
   const [balances, setBalance] = useState([])
-  const { account }: { account: string } = useWallet()
+  const { account } = useWeb3React()
   const { fastRefresh } = useRefresh()
 
   useEffect(() => {

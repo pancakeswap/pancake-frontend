@@ -14,7 +14,7 @@ const CakeWalletBalance = () => {
   const TranslateString = useI18n()
   const cakeBalance = useTokenBalance(getCakeAddress())
   const busdBalance = new BigNumber(getBalanceNumber(cakeBalance)).multipliedBy(usePriceCakeBusd()).toNumber()
-  const { account } = useWallet()
+  const { account } = useWeb3React()
 
   if (!account) {
     return (

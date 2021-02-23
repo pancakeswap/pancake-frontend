@@ -60,7 +60,7 @@ const UserName: React.FC = () => {
   const [isAcknowledged, setIsAcknoledged] = useState(false)
   const { teamId, tokenId, userName, actions, minimumCakeRequired, allowance } = useProfileCreation()
   const TranslateString = useI18n()
-  const { account, ethereum } = useWallet()
+  const { account, library: ethereum } = useWeb3React()
   const { toastError } = useToast()
   const web3 = useWeb3()
   const [existingUserState, setExistingUserState] = useState<ExistingUserState>(ExistingUserState.IDLE)

@@ -12,7 +12,7 @@ import { useMasterchef, useSousChef } from './useContract'
 
 const useUnstake = (pid: number) => {
   const dispatch = useDispatch()
-  const { account } = useWallet()
+  const { account } = useWeb3React()
   const masterChefContract = useMasterchef()
 
   const handleUnstake = useCallback(
@@ -31,7 +31,7 @@ const SYRUPIDS = [5, 6, 3, 1, 22, 23]
 
 export const useSousUnstake = (sousId) => {
   const dispatch = useDispatch()
-  const { account } = useWallet()
+  const { account } = useWeb3React()
   const masterChefContract = useMasterchef()
   const sousChefContract = useSousChef(sousId)
   const isOldSyrup = SYRUPIDS.includes(sousId)

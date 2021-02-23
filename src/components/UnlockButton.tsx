@@ -3,7 +3,7 @@ import { Button, ConnectorId, useWalletModal } from '@pancakeswap-libs/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 
-import { injected, walletconnect, bsc } from 'connectors'
+import { injected, walletconnect } from 'connectors'
 import useI18n from 'hooks/useI18n'
 
 const UnlockButton = (props) => {

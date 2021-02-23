@@ -78,7 +78,7 @@ const Section = styled.div`
 `
 
 const PublicProfile = () => {
-  const { account } = useWallet()
+  const { account } = useWeb3React()
   const { profile } = useProfile()
   const TranslateString = useI18n()
 

@@ -95,7 +95,7 @@ const useApproveConfirmTransaction = ({
   onRequiresApproval,
   onSuccess = noop,
 }: ApproveConfirmTransaction) => {
-  const { account } = useWallet()
+  const { account } = useWeb3React()
   const [state, dispatch] = useReducer(reducer, initialState)
   const handlePreApprove = useRef(onRequiresApproval)
   const { toastError } = useToast()

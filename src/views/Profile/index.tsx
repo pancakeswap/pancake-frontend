@@ -11,7 +11,7 @@ import PublicProfile from './PublicProfile'
 
 const Profile = () => {
   const { isInitialized, isLoading, hasProfile } = useProfile()
-  const { account } = useWallet()
+  const { account } = useWeb3React()
 
   useFetchAchievements()
 

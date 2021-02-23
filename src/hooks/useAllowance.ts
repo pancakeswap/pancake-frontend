@@ -8,7 +8,7 @@ import { getAllowance } from '../utils/erc20'
 // Retrieve lottery allowance
 export const useLotteryAllowance = () => {
   const [allowance, setAllowance] = useState(new BigNumber(0))
-  const { account }: { account: string } = useWallet()
+  const { account } = useWeb3React()
   const lotteryContract = useLottery()
   const cakeContract = useCake()
 
@@ -30,7 +30,7 @@ export const useLotteryAllowance = () => {
 
 // Retrieve IFO allowance
 export const useIfoAllowance = (tokenContract: Contract, spenderAddress: string, dependency?: any) => {
-  const { account }: { account: string } = useWallet()
+  const { account } = useWeb3React()
   const [allowance, setAllowance] = useState(null)
 
   useEffect(() => {

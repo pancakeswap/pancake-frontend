@@ -42,7 +42,7 @@ const AchievementRow: React.FC<AchievementRowProps> = ({ achievement, onCollectS
   const [isCollecting, setIsCollecting] = useState(false)
   const TranslateString = useI18n()
   const pointCenterContract = usePointCenterIfoContract()
-  const { account } = useWallet()
+  const { account } = useWeb3React()
   const { toastError, toastSuccess } = useToast()
 
   const handleCollectPoints = () => {

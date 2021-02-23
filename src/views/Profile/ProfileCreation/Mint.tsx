@@ -20,7 +20,7 @@ const Mint: React.FC = () => {
   const [bunnyId, setBunnyId] = useState(null)
   const { actions, minimumCakeRequired, allowance } = useProfileCreation()
 
-  const { account } = useWallet()
+  const { account } = useWeb3React()
   const cakeContract = useCake()
   const bunnyFactoryContract = useBunnyFactory()
   const TranslateString = useI18n()

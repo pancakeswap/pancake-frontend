@@ -18,7 +18,7 @@ const bunnySpecialContract = getBunnySpecialContract()
 const NftList = () => {
   const [claimableNfts, setClaimableNfts] = useState<State>({})
   const { nfts: nftTokenIds, refresh } = useGetWalletNfts()
-  const { account } = useWallet()
+  const { account } = useWeb3React()
   const { toastError } = useToast()
 
   const fetchClaimableStatuses = useCallback(

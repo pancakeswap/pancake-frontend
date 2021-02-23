@@ -90,7 +90,7 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
     startBlockNum: 0,
     endBlockNum: 0,
   })
-  const { account } = useWallet()
+  const { account } = useWeb3React()
   const contract = useIfoContract(address)
 
   const currentBlock = useBlock()

@@ -25,7 +25,7 @@ const Actions = styled.div`
 const ClaimNftModal: React.FC<ClaimNftModalProps> = ({ nft, onSuccess, onDismiss }) => {
   const [isConfirming, setIsConfirming] = useState(false)
   const TranslateString = useI18n()
-  const { account } = useWallet()
+  const { account } = useWeb3React()
   const { toastError, toastSuccess } = useToast()
   const bunnySpecialContract = useBunnySpecialContract()
 

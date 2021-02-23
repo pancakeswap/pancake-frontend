@@ -23,7 +23,7 @@ const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss }
   const { profile } = useProfile()
   const pancakeRabbitsContract = usePancakeRabbits()
   const profileContract = useProfileContract()
-  const { account } = useWallet()
+  const { account } = useWeb3React()
   const { toastSuccess } = useToast()
   const {
     isApproving,
