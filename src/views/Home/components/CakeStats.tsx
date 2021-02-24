@@ -23,8 +23,8 @@ const Row = styled.div`
 const CakeStats = () => {
   const TranslateString = useI18n()
   const totalSupply = useTotalSupply()
-  const burnedBalance = useBurnedBalance(getCakeAddress())
-  const cakeSupply = totalSupply ? getBalanceNumber(totalSupply) - getBalanceNumber(burnedBalance) : 0
+  const burnedBalance = getBalanceNumber(useBurnedBalance(getCakeAddress()))
+  const cakeSupply = totalSupply ? getBalanceNumber(totalSupply) - burnedBalance : 0
 
   return (
     <StyledCakeStats>
@@ -38,7 +38,7 @@ const CakeStats = () => {
         </Row>
         <Row>
           <Text fontSize="14px">{TranslateString(538, 'Total CAKE Burned')}</Text>
-          <CardValue fontSize="14px" value={getBalanceNumber(burnedBalance)} />
+          <CardValue fontSize="14px" decimals={0} value={burnedBalance} />
         </Row>
         <Row>
           <Text fontSize="14px">{TranslateString(540, 'New CAKE/block')}</Text>
