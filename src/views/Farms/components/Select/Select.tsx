@@ -9,6 +9,10 @@ const DropDownHeader = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 0px 16px;
+  box-shadow: ${({ theme }) => theme.shadows.inset};
+  border: 1px solid ${({ theme }) => theme.colors.inputSecondary};
+  border-radius: 16px;
+  background: ${(props) => props.theme.colors.input};
 `
 
 const DropDownListContainer = styled.div`
@@ -22,26 +26,26 @@ const DropDownListContainer = styled.div`
 
 const DropDownContainer = styled.div<{ isOpen: boolean; width: number; height: number }>`
   cursor: pointer;
-  background: ${(props) => props.theme.colors.input};
-  border: 1px solid ${({ theme }) => theme.colors.inputSecondary};
-  box-shadow: ${({ isOpen, theme }) => (isOpen ? theme.tooltip.boxShadow : theme.shadows.inset)};
   width: ${({ width }) => width}px;
-  border-radius: ${({ isOpen }) => (isOpen ? '16px 16px 0 0' : '16px')};
   position: relative;
+  background: ${(props) => props.theme.colors.input};
+  border-radius: 16px;
 
   ${(props) =>
     props.isOpen &&
     css`
       ${DropDownHeader} {
         border-bottom: 1px solid ${({ theme }) => theme.colors.inputSecondary};
+        box-shadow: ${({ theme }) => theme.tooltip.boxShadow};
+        border-radius: 16px 16px 0 0;
       }
 
       ${DropDownListContainer} {
         height: auto;
         border: 1px solid ${({ theme }) => theme.colors.inputSecondary};
         border-top-width: 0;
-        margin-left: -1px;
         border-radius: 0 0 16px 16px;
+        box-shadow: ${({ theme }) => theme.tooltip.boxShadow};
       }
     `}
 `
@@ -110,10 +114,12 @@ const Select: React.FunctionComponent<SelectProps> = ({ options, onChange }) => 
 
   return (
     <DropDownContainer isOpen={isOpen} ref={containerRef} {...containerSize}>
-      <DropDownHeader onClick={toggling}>
-        <Text>{selectedOption.label}</Text>
-        <ArrowDropDownIcon color="text" />
-      </DropDownHeader>
+      {containerSize.width !== 0 && (
+        <DropDownHeader onClick={toggling}>
+          <Text>{selectedOption.label}</Text>
+          <ArrowDropDownIcon color="text" />
+        </DropDownHeader>
+      )}
       <DropDownListContainer>
         <DropDownList ref={dropdownRef}>
           {options.map((option) =>
