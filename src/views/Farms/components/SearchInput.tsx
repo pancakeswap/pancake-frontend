@@ -4,7 +4,6 @@ import styled from 'styled-components'
 
 const StyledInput = styled(Input)`
   border-radius: 16px;
-  padding-right: 80px;
   transition: 0.3s;
   margin-left: auto;
   ${({ theme }) => theme.mediaQueries.sm} {

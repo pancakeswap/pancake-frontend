@@ -16,12 +16,16 @@ const DropDownHeader = styled.div`
 `
 
 const DropDownListContainer = styled.div`
-  min-width: 168px;
+  min-width: 136px;
   height: 0;
   position: absolute;
   overflow: hidden;
   background: ${(props) => props.theme.colors.input};
   z-index: ${({ theme }) => theme.zIndices.dropdown};
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    min-width: 168px;
+  }
 `
 
 const DropDownContainer = styled.div<{ isOpen: boolean; width: number; height: number }>`
@@ -31,7 +35,11 @@ const DropDownContainer = styled.div<{ isOpen: boolean; width: number; height: n
   background: ${(props) => props.theme.colors.input};
   border-radius: 16px;
   height: 40px;
-  min-width: 168px;
+  min-width: 136px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    min-width: 168px;
+  }
 
   ${(props) =>
     props.isOpen &&

@@ -82,12 +82,12 @@ const TagsContainer = styled.div`
 const ActionContainer = styled.div`
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
-  flex-basis: 0;
 
   ${({ theme }) => theme.mediaQueries.sm} {
     flex-direction: row;
     align-items: center;
+    flex-grow: 1;
+    flex-basis: 0;
   }
 `
 
