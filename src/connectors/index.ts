@@ -17,20 +17,18 @@ export const network = new NetworkConnector({
   urls: { [NETWORK_CHAIN_ID]: NETWORK_URL }
 })
 
-let networkLibrary: Web3Provider | undefined
 export async function getNetworkLibrary(): Promise<Web3Provider> {
   const provider = await network.getProvider()
-  networkLibrary = networkLibrary ?? new Web3Provider(provider as any)
-  return networkLibrary
+  return new Web3Provider(provider as any)
 }
 
 export const injected = new InjectedConnector({
-  supportedChainIds: [56, 97]
+  supportedChainIds: [NETWORK_CHAIN_ID]
 })
 
 // mainnet only
 export const walletconnect = new WalletConnectConnector({
-  rpc: { 1: NETWORK_URL },
+  rpc: { [NETWORK_CHAIN_ID]: NETWORK_URL },
   bridge: 'https://bridge.walletconnect.org',
   qrcode: true,
   pollingInterval: 15000

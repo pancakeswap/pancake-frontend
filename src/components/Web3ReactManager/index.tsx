@@ -6,7 +6,7 @@ import useInactiveListener from 'hooks/useInactiveListener'
 import PageLoader from 'components/PageLoader'
 import { network } from 'connectors'
 
-export default function Web3ReactManager({ children }: { children: JSX.Element }) {
+const Web3ReactManager = ({ children }: { children: JSX.Element }) => {
   const { active, error, activate } = useWeb3React()
 
   // try to eagerly connect to an injected provider, if it exists and has granted access already
@@ -34,11 +34,6 @@ export default function Web3ReactManager({ children }: { children: JSX.Element }
     }
   }, [])
 
-  // on page load, do nothing until we've tried to connect to the injected connector
-  if (!triedEager) {
-    return null
-  }
-
   // if the account context isn't active, and there's an error on the network context, it's an irrecoverable error
   if (!active && error) {
     // return (
@@ -57,3 +52,5 @@ export default function Web3ReactManager({ children }: { children: JSX.Element }
 
   return children
 }
+
+export default Web3ReactManager
