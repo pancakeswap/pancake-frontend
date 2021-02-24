@@ -21,7 +21,6 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   color: ${(props) => props.theme.colors.text};
-  font-weight: 600;
 
   button {
     width: 20px;

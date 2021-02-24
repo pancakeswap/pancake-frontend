@@ -6,13 +6,12 @@ export interface TooltipProps {
 }
 
 const TooltipContent = styled.div`
-  background: #27262c;
+  background: ${({ theme }) => theme.tooltip.background};
   padding: 16px;
   border-radius: 16px;
-  color: #eae2fc;
+  color: ${({ theme }) => theme.tooltip.text};
   width: max-content;
   display: none;
-  box-shadow: 0px 4px 12px -8px rgba(14, 14, 44, 0.1);
   padding: 16px;
   max-height: 500px;
   z-index: 5;
@@ -29,7 +28,7 @@ const TooltipContent = styled.div`
     height: 0;
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
-    border-top: 10px solid #27262c;
+    border-top: 10px solid ${({ theme }) => theme.tooltip.background};
     bottom: 0;
     position: absolute;
     transform: translate(-34px, 9px);

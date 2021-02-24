@@ -10,7 +10,6 @@ const Amount = styled.span<{ earned: number }>`
   color: ${(props) => (props.earned ? props.theme.colors.text : props.theme.colors.textDisabled)};
   display: flex;
   align-items: center;
-  font-weight: 600;
 `
 
 const Earned: React.FunctionComponent<EarnedProps> = ({ earnings }) => {

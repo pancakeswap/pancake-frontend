@@ -31,7 +31,6 @@ const ControlContainer = styled.div`
   width: 100%;
   align-items: center;
   position: relative;
-  border-radius: 32px 32px 0px 0px;
   padding: 24px 0px;
   justify-content: space-between;
   flex-direction: column;
@@ -40,11 +39,14 @@ const ControlContainer = styled.div`
     display: flex;
     align-items: center;
     width: 100%;
+    padding-top: 8px;
+    padding-bottom: 8px;
   }
 
   ${({ theme }) => theme.mediaQueries.sm} {
     flex-direction: row;
-    padding: 32px;
+    flex-wrap: wrap;
+    padding: 24px 32px;
 
     > div {
       width: auto;
@@ -73,17 +75,15 @@ const LabelWrapper = styled.div`
   }
 `
 
-const FilterContainer = styled.div`
-  margin-top: 16px;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    margin-top: 0;
-  }
-`
+const FilterContainer = styled.div``
 
 const ViewControls = styled.div`
   flex-wrap: wrap;
   justify-content: space-between;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    justify-content: flex-start;
+  }
 `
 
 const StyledImage = styled(Image)`

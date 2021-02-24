@@ -11,7 +11,6 @@ export interface MultiplierProps {
 const MultiplierWrapper = styled.div`
   color: ${({ theme }) => theme.colors.text};
   width: 36px;
-  font-weight: 600;
   text-align: right;
 
   ${({ theme }) => theme.mediaQueries.sm} {
@@ -22,6 +21,16 @@ const MultiplierWrapper = styled.div`
 const Container = styled.div`
   display: flex;
   align-items: center;
+
+  svg {
+    margin-left: 14px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    svg {
+      margin-left: 0;
+    }
+  }
 `
 
 const Multiplier: React.FunctionComponent<MultiplierProps> = ({ multiplier }) => {

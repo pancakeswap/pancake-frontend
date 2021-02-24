@@ -12,7 +12,7 @@ const DropDownHeader = styled.div`
 `
 
 const DropDownListContainer = styled.div`
-  width: 10.5em;
+  min-width: 168px;
   height: 0;
   overflow: hidden;
 `
@@ -21,16 +21,15 @@ const DropDownContainer = styled.div<{ isOpen: boolean }>`
   cursor: pointer;
   border-radius: 16px;
   background: ${(props) => props.theme.colors.input};
-  border: 1px solid #d7caec;
+  border: 1px solid ${({ theme }) => theme.colors.inputSecondary};
   overflow: hidden;
-  box-shadow: ${({ isOpen, theme }) =>
-    isOpen ? '0px 0px 2px rgba(0, 0, 0, 0.2), 0px 4px 12px -8px rgba(14, 14, 44, 0.1)' : theme.shadows.inset};
+  box-shadow: ${({ isOpen, theme }) => (isOpen ? theme.tooltip.boxShadow : theme.shadows.inset)};
 
   ${(props) =>
     props.isOpen &&
     css`
       ${DropDownHeader} {
-        border-bottom: 1px solid #d7caec;
+        border-bottom: 1px solid ${({ theme }) => theme.colors.inputSecondary};
       }
 
       ${DropDownListContainer} {
@@ -49,7 +48,7 @@ const ListItem = styled.li`
   list-style: none;
   padding: 6px 16px;
   &:hover {
-    background: #d7caec;
+    background: ${({ theme }) => theme.colors.inputSecondary};
   }
 `
 
@@ -107,7 +106,7 @@ const Select: React.FunctionComponent<SelectProps> = ({ options, onChange }) => 
         <DropDownContainer isOpen={isOpen}>
           <DropDownHeader onClick={toggling} ref={headerRef}>
             <Text>{selectedOption.label}</Text>
-            <ArrowDropDownIcon />
+            <ArrowDropDownIcon color="text" />
           </DropDownHeader>
           <DropDownListContainer>
             <DropDownList>
