@@ -1,5 +1,5 @@
 import { Web3Provider } from '@ethersproject/providers'
-import { InjectedConnector } from '@web3-react/injected-connector'
+import { BscConnector } from '@binance-chain/bsc-connector'
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 import getRpcUrl from 'utils/getRpcUrl'
 
@@ -22,7 +22,7 @@ export async function getNetworkLibrary(): Promise<Web3Provider> {
   return new Web3Provider(provider as any)
 }
 
-export const injected = new InjectedConnector({
+export const injected = new BscConnector({
   supportedChainIds: [NETWORK_CHAIN_ID],
 })
 

@@ -1145,6 +1145,15 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
+"@binance-chain/bsc-connector@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@binance-chain/bsc-connector/-/bsc-connector-1.0.0.tgz#5ce6b02af0921c5fb52c10861b7a0b4a958ca57a"
+  integrity sha512-Id/P/Zs8Cgg+fJv3XN3BVWZB3Pj+VA00flhpkB6K+vUzjMihS+sZFrMYDnjiRfrJgi0ppEMqRsMlOli9+qwxaA==
+  dependencies:
+    "@web3-react/abstract-connector" "^6.0.7"
+    "@web3-react/types" "^6.0.7"
+    tiny-warning "^1.0.3"
+
 "@cnakazawa/watch@^1.0.3":
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/@cnakazawa/watch/-/watch-1.0.4.tgz#f864ae85004d0fcab6f50be9141c4da368d1656a"
