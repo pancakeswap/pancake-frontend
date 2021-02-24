@@ -5,7 +5,7 @@ import { useWeb3React } from '@web3-react/core'
 import getRpcUrl from 'utils/getRpcUrl'
 
 const RPC_URL = getRpcUrl()
-const httpProvider = new  (RPC_URL, { timeout: 10000 } as HttpProviderOptions)
+const httpProvider = new Web3.providers.HttpProvider(RPC_URL, { timeout: 10000 } as HttpProviderOptions)
 
 /**
  * Provides a web3 instance using the provider provided by useWeb3React
