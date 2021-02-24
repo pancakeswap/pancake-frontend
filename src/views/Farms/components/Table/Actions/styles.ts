@@ -1,9 +1,9 @@
 import styled from 'styled-components'
 
 export const ActionContainer = styled.div`
-  padding: 1rem;
-  border: 2px solid #eeeaf4;
-  border-radius: 1rem;
+  padding: 16px;
+  border: 2px solid ${({ theme }) => theme.colors.input};
+  border-radius: 16px;
   flex-grow: 1;
   flex-basis: 0;
   margin-bottom: 16px;
@@ -16,7 +16,7 @@ export const ActionContainer = styled.div`
 
 export const ActionTitles = styled.div`
   font-weight: 600;
-  font-size: 0.75rem;
+  font-size: 12px;
   margin-bottom: 8px;
 `
 
@@ -35,11 +35,11 @@ export const ActionContent = styled.div`
 `
 export const Earned = styled.div`
   font-weight: 600;
-  font-size: 1.25rem;
+  font-size: 20px;
   color: ${({ theme }) => theme.colors.text};
 `
 
 export const Staked = styled.div`
-  font-size: 0.75rem;
+  font-size: 12px;
   color: ${(props) => props.theme.colors.textSubtle};
 `

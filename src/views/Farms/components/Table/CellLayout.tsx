@@ -2,14 +2,14 @@ import React from 'react'
 import styled from 'styled-components'
 
 const Label = styled.div`
-  font-size: 0.75rem;
+  font-size: 12px;
   color: ${(props) => props.theme.colors.textSubtle};
   text-align: left;
   text-transform: uppercase;
 `
 
 const ContentContainer = styled.div`
-  min-height: 1.5rem;
+  min-height: 24px;
   display: flex;
   align-items: center;
 `

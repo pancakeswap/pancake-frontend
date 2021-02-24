@@ -46,7 +46,7 @@ const StakeContainer = styled.div`
   display: flex;
 
   a {
-    margin-left: 0.5rem;
+    margin-left: 8px;
   }
 `
 
@@ -55,13 +55,13 @@ const TagsContainer = styled.div`
   align-items: center;
 
   > div {
-    height: 1.5rem;
-    padding: 0 0.375rem;
-    font-size: 0.875rem;
-    margin-right: 0.25rem;
+    height: 24px;
+    padding: 0 6px;
+    font-size: 14px;
+    margin-right: 4px;
 
     svg {
-      width: 0.875rem;
+      width: 14px;
     }
   }
 `
