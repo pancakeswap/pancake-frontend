@@ -30,7 +30,7 @@ import pointCenterIfo from 'config/abi/pointCenterIfo.json'
 import bunnySpecial from 'config/abi/bunnySpecial.json'
 
 const useContract = (abi: AbiItem, address: string, contractOptions?: ContractOptions) => {
-  const {library: web3} = useWeb3React()
+  const { library: web3 } = useWeb3React()
   const [contract, setContract] = useState(new web3.eth.Contract(abi, address, contractOptions))
 
   useEffect(() => {
