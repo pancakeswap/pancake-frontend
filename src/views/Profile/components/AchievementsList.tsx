@@ -29,7 +29,7 @@ const AchievementsList = () => {
       {achievements.length === 0 && (
         <Flex alignItems="center" justifyContent="center" style={{ height: '64px' }}>
           <Heading as="h5" size="md" color="textDisabled">
-            {TranslateString(999, 'No achievments yet!')}
+            {TranslateString(999, 'No achievements yet!')}
           </Heading>
         </Flex>
       )}
