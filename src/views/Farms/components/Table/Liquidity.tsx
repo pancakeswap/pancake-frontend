@@ -10,7 +10,7 @@ export interface LiquidityProps {
 }
 
 const LiquidityWrapper = styled.div`
-  min-width: 100px;
+  min-width: 110px;
   font-weight: 600;
   text-align: right;
 
@@ -37,7 +37,7 @@ const Container = styled.div`
 const Liquidity: React.FunctionComponent<LiquidityProps> = ({ liquidity }) => {
   const displayLiquidity = liquidity
     ? `$${Number(liquidity).toLocaleString(undefined, { maximumFractionDigits: 0 })}`
-    : ''
+    : '-'
   const TranslateString = useI18n()
 
   return (
