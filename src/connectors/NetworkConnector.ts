@@ -1,3 +1,5 @@
+/* eslint-disable class-methods-use-this */
+// eslint-disable-next-line max-classes-per-file
 import { ConnectorUpdate } from '@web3-react/types'
 import { AbstractConnector } from '@web3-react/abstract-connector'
 import invariant from 'tiny-invariant'
@@ -30,14 +32,21 @@ interface BatchItem {
 
 class MiniRpcProvider implements AsyncSendable {
   public readonly isMetaMask: false = false
+
   public readonly chainId: number
+
   public readonly url: string
+
   public readonly host: string
+
   public readonly path: string
+
   public readonly batchWaitTimeMs: number
 
   private nextId = 1
+
   private batchTimeoutId: ReturnType<typeof setTimeout> | null = null
+
   private batch: BatchItem[] = []
 
   constructor(chainId: number, url: string, batchWaitTimeMs?: number) {
@@ -51,8 +60,7 @@ class MiniRpcProvider implements AsyncSendable {
   }
 
   public readonly clearBatch = async () => {
-    console.debug('Clearing batch', this.batch)
-    const batch = this.batch
+    const {batch} = this
     this.batch = []
     this.batchTimeoutId = null
     let response: Response
@@ -80,9 +88,11 @@ class MiniRpcProvider implements AsyncSendable {
       return
     }
     const byKey = batch.reduce<{ [id: number]: BatchItem }>((memo, current) => {
+      // eslint-disable-next-line no-param-reassign
       memo[current.request.id] = current
       return memo
     }, {})
+    // eslint-disable-next-line no-restricted-syntax
     for (const result of json) {
       const {
         resolve,
@@ -102,6 +112,7 @@ class MiniRpcProvider implements AsyncSendable {
   }
 
   public readonly sendAsync = (
+    // eslint-disable-next-line @typescript-eslint/ban-types
     request: { jsonrpc: '2.0'; id: number | string | null; method: string; params?: unknown[] | object },
     callback: (error: any, response: any) => void,
   ): void => {
@@ -112,6 +123,7 @@ class MiniRpcProvider implements AsyncSendable {
 
   public readonly request = async (
     method: string | { method: string; params: unknown[] },
+    // eslint-disable-next-line @typescript-eslint/ban-types
     params?: unknown[] | object,
   ): Promise<unknown> => {
     if (typeof method !== 'string') {
@@ -137,8 +149,10 @@ class MiniRpcProvider implements AsyncSendable {
   }
 }
 
+// eslint-disable-next-line import/prefer-default-export
 export class NetworkConnector extends AbstractConnector {
   private readonly providers: { [chainId: number]: MiniRpcProvider }
+
   private currentChainId: number
 
   constructor({ urls, defaultChainId }: NetworkConnectorArguments) {
@@ -168,11 +182,13 @@ export class NetworkConnector extends AbstractConnector {
     return this.currentChainId
   }
 
+  // eslint-disable-next-line class-methods-use-this
   public async getAccount(): Promise<null> {
     return null
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   public deactivate() {
-    return
+    
   }
 }

@@ -5,9 +5,11 @@ import useEagerConnect from 'hooks/useEagerConnect'
 import useInactiveListener from 'hooks/useInactiveListener'
 import PageLoader from 'components/PageLoader'
 import { network } from 'connectors'
+import { useToast } from 'state/hooks'
 
 const Web3ReactManager = ({ children }: { children: JSX.Element }) => {
-  const { active, error, activate, connector } = useWeb3React()
+  const { active, error, activate } = useWeb3React()
+  const { toastError } = useToast()
 
   // try to eagerly connect to an injected provider, if it exists and has granted access already
   const triedEager = useEagerConnect()
@@ -34,15 +36,9 @@ const Web3ReactManager = ({ children }: { children: JSX.Element }) => {
     }
   }, [])
 
-  console.log(active, error, connector)
   // if the account context isn't active, and there's an error on the network context, it's an irrecoverable error
   if (!active && error) {
-    return null
-    // return (
-    //   <MessageWrapper>
-    //     <Message>{t('unknownError')}</Message>
-    //   </MessageWrapper>
-    // )
+    toastError(error.name, error.message)
   }
 
   // if neither context is active, spin
