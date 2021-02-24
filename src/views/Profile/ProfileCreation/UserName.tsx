@@ -19,7 +19,6 @@ import {
 import { parseISO, formatDistance } from 'date-fns'
 import { useWeb3React } from '@web3-react/core'
 import { useToast } from 'state/hooks'
-import useWeb3 from 'hooks/useWeb3'
 import useI18n from 'hooks/useI18n'
 import useHasCakeBalance from 'hooks/useHasCakeBalance'
 import debounce from 'lodash/debounce'
@@ -62,7 +61,6 @@ const UserName: React.FC = () => {
   const TranslateString = useI18n()
   const { account, library: ethereum } = useWeb3React()
   const { toastError } = useToast()
-  const web3 = useWeb3()
   const [existingUserState, setExistingUserState] = useState<ExistingUserState>(ExistingUserState.IDLE)
   const [isValid, setIsValid] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -112,7 +110,7 @@ const UserName: React.FC = () => {
       const provider = ethereum as any
       const signature = provider?.bnbSign
         ? (await provider.bnbSign(account, userName))?.signature
-        : await web3.eth.personal.sign(userName, account, null) // Last param is the password, and is null to request a signature in the wallet
+        : await provider.eth.personal.sign(userName, account, null) // Last param is the password, and is null to request a signature in the wallet
 
       const response = await fetch(`${profileApiUrl}/api/users/register`, {
         method: 'POST',

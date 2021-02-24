@@ -7,7 +7,7 @@ import PageLoader from 'components/PageLoader'
 import { network } from 'connectors'
 
 const Web3ReactManager = ({ children }: { children: JSX.Element }) => {
-  const { active, error, activate } = useWeb3React()
+  const { active, error, activate, connector } = useWeb3React()
 
   // try to eagerly connect to an injected provider, if it exists and has granted access already
   const triedEager = useEagerConnect()
@@ -34,8 +34,10 @@ const Web3ReactManager = ({ children }: { children: JSX.Element }) => {
     }
   }, [])
 
+  console.log(active, error, connector)
   // if the account context isn't active, and there's an error on the network context, it's an irrecoverable error
   if (!active && error) {
+    return null
     // return (
     //   <MessageWrapper>
     //     <Message>{t('unknownError')}</Message>

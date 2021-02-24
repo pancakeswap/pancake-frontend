@@ -1,9 +1,9 @@
 import { Web3Provider } from '@ethersproject/providers'
-import { BscConnector } from '@binance-chain/bsc-connector'
+import { InjectedConnector } from '@web3-react/injected-connector'
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 import getRpcUrl from 'utils/getRpcUrl'
 
-import { NetworkConnector } from '@web3-react/network-connector'
+import { NetworkConnector } from './NetworkConnector'
 
 const NETWORK_URL = getRpcUrl()
 
@@ -14,22 +14,24 @@ if (typeof NETWORK_URL === 'undefined') {
 }
 
 export const network = new NetworkConnector({
-  urls: { [NETWORK_CHAIN_ID]: NETWORK_URL },
+  urls: { [NETWORK_CHAIN_ID]: NETWORK_URL }
 })
 
+let networkLibrary: Web3Provider | undefined
 export async function getNetworkLibrary(): Promise<Web3Provider> {
   const provider = await network.getProvider()
-  return new Web3Provider(provider as any)
+  networkLibrary = networkLibrary ?? new Web3Provider(provider as any)
+  return networkLibrary
 }
 
-export const injected = new BscConnector({
-  supportedChainIds: [NETWORK_CHAIN_ID],
+export const injected = new InjectedConnector({
+  supportedChainIds: [NETWORK_CHAIN_ID]
 })
 
 // mainnet only
 export const walletconnect = new WalletConnectConnector({
-  rpc: { [NETWORK_CHAIN_ID]: NETWORK_URL },
+  rpc: { 1: NETWORK_URL },
   bridge: 'https://bridge.walletconnect.org',
   qrcode: true,
-  pollingInterval: 15000,
+  pollingInterval: 15000
 })

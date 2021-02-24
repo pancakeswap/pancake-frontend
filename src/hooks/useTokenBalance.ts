@@ -6,7 +6,6 @@ import { getContract } from 'utils/web3'
 import { provider } from 'web3-core'
 import { getTokenBalance } from 'utils/erc20'
 import { getCakeAddress } from 'utils/addressHelpers'
-import useWeb3 from 'hooks/useWeb3'
 import useRefresh from './useRefresh'
 
 const useTokenBalance = (tokenAddress: string) => {
@@ -48,7 +47,7 @@ export const useTotalSupply = () => {
 export const useBurnedBalance = (tokenAddress: string) => {
   const [balance, setBalance] = useState(new BigNumber(0))
   const { slowRefresh } = useRefresh()
-  const web3 = useWeb3()
+  const { library: web3 } = useWeb3React()
 
   useEffect(() => {
     const fetchBalance = async () => {

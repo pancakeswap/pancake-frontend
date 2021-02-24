@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { AbiItem } from 'web3-utils'
 import { ContractOptions } from 'web3-eth-contract'
-import useWeb3 from 'hooks/useWeb3'
+import { useWeb3React } from '@web3-react/core'
 import {
   getAddress,
   getMasterChefAddress,
@@ -30,7 +30,7 @@ import pointCenterIfo from 'config/abi/pointCenterIfo.json'
 import bunnySpecial from 'config/abi/bunnySpecial.json'
 
 const useContract = (abi: AbiItem, address: string, contractOptions?: ContractOptions) => {
-  const web3 = useWeb3()
+  const {library: web3} = useWeb3React()
   const [contract, setContract] = useState(new web3.eth.Contract(abi, address, contractOptions))
 
   useEffect(() => {

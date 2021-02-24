@@ -1,5 +1,5 @@
-import { Web3Provider } from '@ethersproject/providers'
+import Web3 from 'web3'
 
-export default function getLibrary(provider: any): Web3Provider {
-  return provider
+export default function getLibrary(provider: any) {
+  return new Web3(provider)
 }
