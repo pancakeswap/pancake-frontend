@@ -7,7 +7,7 @@ export default function useEagerConnect() {
   const [tried, setTried] = useState(false)
 
   useEffect(() => {
-    injected.isAuthorized().then(isAuthorized => {
+    injected.isAuthorized().then((isAuthorized) => {
       if (isAuthorized && window.localStorage.getItem('accountStatus')) {
         activate(injected, undefined, true).catch(() => {
           setTried(true)

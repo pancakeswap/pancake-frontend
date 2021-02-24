@@ -14,7 +14,7 @@ if (typeof NETWORK_URL === 'undefined') {
 }
 
 export const network = new NetworkConnector({
-  urls: { [NETWORK_CHAIN_ID]: NETWORK_URL }
+  urls: { [NETWORK_CHAIN_ID]: NETWORK_URL },
 })
 
 export async function getNetworkLibrary(): Promise<Web3Provider> {
@@ -23,7 +23,7 @@ export async function getNetworkLibrary(): Promise<Web3Provider> {
 }
 
 export const injected = new InjectedConnector({
-  supportedChainIds: [NETWORK_CHAIN_ID]
+  supportedChainIds: [NETWORK_CHAIN_ID],
 })
 
 // mainnet only
@@ -31,5 +31,5 @@ export const walletconnect = new WalletConnectConnector({
   rpc: { [NETWORK_CHAIN_ID]: NETWORK_URL },
   bridge: 'https://bridge.walletconnect.org',
   qrcode: true,
-  pollingInterval: 15000
+  pollingInterval: 15000,
 })

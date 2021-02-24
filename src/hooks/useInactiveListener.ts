@@ -19,7 +19,7 @@ export default function useInactiveListener(suppress = false) {
       const handleAccountsChanged = (accounts: string[]) => {
         if (accounts.length > 0) {
           // eat errors
-          activate(injected, undefined, true).catch(e => {
+          activate(injected, undefined, true).catch((e) => {
             console.error('Failed to activate after accounts changed', e)
           })
         }

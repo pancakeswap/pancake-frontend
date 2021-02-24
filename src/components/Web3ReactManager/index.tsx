@@ -45,9 +45,7 @@ const Web3ReactManager = ({ children }: { children: JSX.Element }) => {
 
   // if neither context is active, spin
   if (!active && !error) {
-    return showLoader ? (
-      <PageLoader />
-    ) : null
+    return showLoader ? <PageLoader /> : null
   }
 
   return children
