@@ -8,6 +8,7 @@ import GlobalStyle from './style/Global'
 import Menu from './components/Menu'
 import ToastListener from './components/ToastListener'
 import PageLoader from './components/PageLoader'
+import EasterEgg from './components/EasterEgg'
 import Pools from './views/Pools'
 import GlobalCheckBullHiccupClaimStatus from './views/Collectibles/components/GlobalCheckBullHiccupClaimStatus'
 import history from './routerHistory'
@@ -97,6 +98,7 @@ const App: React.FC = () => {
           </Switch>
         </Suspense>
       </Menu>
+      <EasterEgg iterations={2} />
       <ToastListener />
       <GlobalCheckBullHiccupClaimStatus />
     </Router>
