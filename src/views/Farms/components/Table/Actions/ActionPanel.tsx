@@ -128,11 +128,11 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({ details, apr, 
           <Apr {...apr} />
         </ValueWrapper>
         <ValueWrapper>
-          <Text>Multiplier</Text>
+          <Text>{TranslateString(999, 'Multiplier')}</Text>
           <Multiplier {...multiplier} />
         </ValueWrapper>
         <ValueWrapper>
-          <Text>Liquidity</Text>
+          <Text>{TranslateString(999, 'Liquidity')}</Text>
           <Liquidity {...liquidity} />
         </ValueWrapper>
       </ValueContainer>

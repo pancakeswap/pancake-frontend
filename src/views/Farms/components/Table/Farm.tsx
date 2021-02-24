@@ -1,5 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
+import { useFarmUser } from 'state/hooks'
+import useI18n from 'hooks/useI18n'
+import { Text } from '@pancakeswap-libs/uikit'
+import { getBalanceNumber } from 'utils/formatBalance'
 
 export interface FarmProps {
   label: string
@@ -33,11 +37,22 @@ const Container = styled.div`
   }
 `
 
-const Farm: React.FunctionComponent<FarmProps> = ({ image, label }) => {
+const Farm: React.FunctionComponent<FarmProps> = ({ image, label, pid }) => {
+  const { stakedBalance } = useFarmUser(pid)
+  const TranslateString = useI18n()
+  const rawStakedBalance = getBalanceNumber(stakedBalance)
+
   return (
     <Container>
       <IconImage src={`/images/farms/${image}.svg`} alt="icon" />
-      <Label>{label}</Label>
+      <div>
+        {rawStakedBalance && (
+          <Text color="secondary" fontSize="12px" bold>
+            {TranslateString(999, 'FARMING')}
+          </Text>
+        )}
+        <Label>{label}</Label>
+      </div>
     </Container>
   )
 }

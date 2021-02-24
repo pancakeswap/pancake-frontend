@@ -96,7 +96,7 @@ const Staked: React.FunctionComponent<FarmWithStakedValue> = ({
       return (
         <ActionContainer>
           <ActionTitles>
-            <Subtle>{TranslateString(999, 'STAKE')}</Subtle>
+            <Subtle>{TranslateString(999, 'STAKE')} </Subtle>
             <Title>{lpSymbol}</Title>
           </ActionTitles>
           <ActionContent>

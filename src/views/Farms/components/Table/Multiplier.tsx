@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { HelpIcon } from '@pancakeswap-libs/uikit'
+import useI18n from 'hooks/useI18n'
 
 import Tooltip from '../Tooltip/Tooltip'
 
@@ -35,6 +36,7 @@ const Container = styled.div`
 
 const Multiplier: React.FunctionComponent<MultiplierProps> = ({ multiplier }) => {
   const displayMultipler = multiplier ? multiplier.toLowerCase() : '-'
+  const TranslateString = useI18n()
 
   return (
     <Container>
@@ -42,10 +44,13 @@ const Multiplier: React.FunctionComponent<MultiplierProps> = ({ multiplier }) =>
       <Tooltip
         content={
           <div>
-            The multiplier represents the amount of CAKE rewards each farm gets.
+            {TranslateString(999, 'The multiplier represents the amount of CAKE rewards each farm gets.')}
             <br />
             <br />
-            For example, if a 1x farm was getting 1 CAKE per block, a 40x farm would be getting 40 CAKE per block.
+            {TranslateString(
+              999,
+              'For example, if a 1x farm was getting 1 CAKE per block, a 40x farm would be getting 40 CAKE per block.',
+            )}
           </div>
         }
       >
