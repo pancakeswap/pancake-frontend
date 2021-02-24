@@ -30,6 +30,8 @@ const DropDownContainer = styled.div<{ isOpen: boolean; width: number; height: n
   position: relative;
   background: ${(props) => props.theme.colors.input};
   border-radius: 16px;
+  height: 40px;
+  min-width: 168px;
 
   ${(props) =>
     props.isOpen &&
@@ -48,6 +50,13 @@ const DropDownContainer = styled.div<{ isOpen: boolean; width: number; height: n
         box-shadow: ${({ theme }) => theme.tooltip.boxShadow};
       }
     `}
+
+  svg {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
 `
 
 const DropDownList = styled.ul`
@@ -62,18 +71,6 @@ const ListItem = styled.li`
   padding: 6px 16px;
   &:hover {
     background: ${({ theme }) => theme.colors.inputSecondary};
-  }
-`
-
-const Container = styled.div<{ width: number; height: number }>`
-  position: relative;
-  width: ${({ width }) => width}px;
-  height: ${({ height }) => height}px;
-
-  > div {
-    transform: translateY(-20px);
-    padding-top: 20px;
-    position: absolute;
   }
 `
 
@@ -117,9 +114,9 @@ const Select: React.FunctionComponent<SelectProps> = ({ options, onChange }) => 
       {containerSize.width !== 0 && (
         <DropDownHeader onClick={toggling}>
           <Text>{selectedOption.label}</Text>
-          <ArrowDropDownIcon color="text" />
         </DropDownHeader>
       )}
+      <ArrowDropDownIcon color="text" />
       <DropDownListContainer>
         <DropDownList ref={dropdownRef}>
           {options.map((option) =>
