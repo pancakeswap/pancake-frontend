@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
 import { useMatchBreakpoints } from '@pancakeswap-libs/uikit'
+import useI18n from 'hooks/useI18n'
 
 import Apr, { AprProps } from './Apr'
 import Farm, { FarmProps } from './Farm'
@@ -45,11 +46,26 @@ const CellInner = styled.div`
 
 const StyledTr = styled.tr`
   cursor: pointer;
+  border-bottom: 2px solid ${(props) => props.theme.colors.borderColor};
+`
+
+const EarnedMobileCell = styled.td`
+  padding: 16px 0 24px 16px;
+`
+
+const AprMobileCell = styled.td`
+  padding-top: 16px;
+  padding-bottom: 24px;
+`
+
+const FarmMobileCell = styled.td`
+  padding-top: 24px;
 `
 
 const Row: React.FunctionComponent<RowProps> = (props) => {
   const { details } = props
   const [actionPanelToggled, setActionPanelToggled] = useState(false)
+  const TranslateString = useI18n()
 
   const toggleActionPanel = () => {
     setActionPanelToggled(!actionPanelToggled)
@@ -63,39 +79,92 @@ const Row: React.FunctionComponent<RowProps> = (props) => {
     return key
   }
 
-  const { isXl } = useMatchBreakpoints()
+  const { isXl, isXs } = useMatchBreakpoints()
   const isMobile = !isXl
   const tableSchema = isMobile ? MobileColumnSchema : DesktopColumnSchema
   const columnNames = tableSchema.map((column) => column.name)
 
+  const handleRenderRow = () => {
+    if (!isXs) {
+      return (
+        <StyledTr onClick={toggleActionPanel}>
+          {Object.keys(props).map((key) => {
+            if (columnNames.indexOf(key) === -1) {
+              return null
+            }
+
+            switch (key) {
+              case 'details':
+                return (
+                  <td key={key}>
+                    <CellInner>
+                      <CellLayout>
+                        <Details actionPanelToggled={actionPanelToggled} />
+                      </CellLayout>
+                    </CellInner>
+                  </td>
+                )
+              case 'apr':
+                return (
+                  <td key={key}>
+                    <CellInner>
+                      <CellLayout label={TranslateString(999, 'Apr')}>
+                        <Apr {...props.apr} hideButton />
+                      </CellLayout>
+                    </CellInner>
+                  </td>
+                )
+              default:
+                return (
+                  <td key={key}>
+                    <CellInner>
+                      <CellLayout label={cellLabel(key)}>{React.createElement(cells[key], props[key])}</CellLayout>
+                    </CellInner>
+                  </td>
+                )
+            }
+          })}
+        </StyledTr>
+      )
+    }
+
+    return (
+      <StyledTr onClick={toggleActionPanel}>
+        <td>
+          <tr>
+            <FarmMobileCell>
+              <CellLayout>
+                <Farm {...props.farm} />
+              </CellLayout>
+            </FarmMobileCell>
+          </tr>
+          <tr>
+            <EarnedMobileCell>
+              <CellLayout label={TranslateString(999, 'Earned')}>
+                <Earned {...props.earned} />
+              </CellLayout>
+            </EarnedMobileCell>
+            <AprMobileCell>
+              <CellLayout label={TranslateString(999, 'Apr')}>
+                <Apr {...props.apr} hideButton />
+              </CellLayout>
+            </AprMobileCell>
+          </tr>
+        </td>
+        <td>
+          <CellInner>
+            <CellLayout>
+              <Details actionPanelToggled={actionPanelToggled} />
+            </CellLayout>
+          </CellInner>
+        </td>
+      </StyledTr>
+    )
+  }
+
   return (
     <>
-      <StyledTr onClick={toggleActionPanel}>
-        {Object.keys(props).map((key) => {
-          if (columnNames.indexOf(key) === -1) {
-            return null
-          }
-
-          if (key === 'details') {
-            return (
-              <td key={key}>
-                <CellInner>
-                  <CellLayout>
-                    <Details actionPanelToggled={actionPanelToggled} />
-                  </CellLayout>
-                </CellInner>
-              </td>
-            )
-          }
-          return (
-            <td key={key}>
-              <CellInner>
-                <CellLayout label={cellLabel(key)}>{React.createElement(cells[key], props[key])}</CellLayout>
-              </CellInner>
-            </td>
-          )
-        })}
-      </StyledTr>
+      {handleRenderRow()}
       {actionPanelToggled && details && (
         <tr>
           <td colSpan={6}>

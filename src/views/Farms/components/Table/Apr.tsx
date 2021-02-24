@@ -16,6 +16,7 @@ export interface AprProps {
   tokenAddresses: Address
   cakePrice: BigNumber
   originalValue: BigNumber
+  hideButton?: boolean
 }
 
 const Container = styled.div`
@@ -48,6 +49,7 @@ const Apr: React.FunctionComponent<AprProps> = ({
   tokenAddresses,
   cakePrice,
   originalValue,
+  hideButton = false,
 }) => {
   const TranslateString = useI18n()
   const displayApr = value ? `${value}%` : TranslateString(656, 'Loading...')
@@ -56,7 +58,9 @@ const Apr: React.FunctionComponent<AprProps> = ({
   return (
     <Container>
       <AprWrapper>{displayApr}</AprWrapper>
-      <ApyButton lpLabel={lpLabel} cakePrice={cakePrice} apy={originalValue} addLiquidityUrl={addLiquidityUrl} />
+      {!hideButton && (
+        <ApyButton lpLabel={lpLabel} cakePrice={cakePrice} apy={originalValue} addLiquidityUrl={addLiquidityUrl} />
+      )}
     </Container>
   )
 }

@@ -42,15 +42,23 @@ const Farm: React.FunctionComponent<FarmProps> = ({ image, label, pid }) => {
   const TranslateString = useI18n()
   const rawStakedBalance = getBalanceNumber(stakedBalance)
 
+  const handleRenderFarming = (): JSX.Element => {
+    if (rawStakedBalance) {
+      return (
+        <Text color="secondary" fontSize="12px" bold>
+          {TranslateString(999, 'FARMING')}
+        </Text>
+      )
+    }
+
+    return null
+  }
+
   return (
     <Container>
       <IconImage src={`/images/farms/${image}.svg`} alt="icon" />
       <div>
-        {rawStakedBalance && (
-          <Text color="secondary" fontSize="12px" bold>
-            {TranslateString(999, 'FARMING')}
-          </Text>
-        )}
+        {handleRenderFarming()}
         <Label>{label}</Label>
       </div>
     </Container>

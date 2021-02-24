@@ -37,8 +37,6 @@ const StyledTable = styled.table`
 
 const TableBody = styled.tbody`
   & tr {
-    border-bottom: 2px solid ${(props) => props.theme.colors.borderColor};
-
     td {
       font-size: 16px;
       vertical-align: middle;

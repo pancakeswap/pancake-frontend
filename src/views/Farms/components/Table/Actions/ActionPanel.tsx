@@ -35,6 +35,8 @@ const Container = styled.div`
 
 const StyledLinkExternal = styled(LinkExternal)<{ svg?: boolean }>`
   font-weight: 400;
+  margin-top: 8px;
+
   svg {
     display: ${(props) => (props.svg ? 'block' : 'none')};
   }
@@ -44,15 +46,26 @@ const StakeContainer = styled.div`
   color: ${(props) => props.theme.colors.text};
   align-items: center;
   display: flex;
+  justify-content: space-between;
 
   a {
+    margin-top: 0;
     margin-left: 8px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    justify-content: flex-start;
   }
 `
 
 const TagsContainer = styled.div`
   display: flex;
   align-items: center;
+  margin-top: 25px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    margin-top: 16px;
+  }
 
   > div {
     height: 24px;
@@ -74,6 +87,7 @@ const ActionContainer = styled.div`
 
   ${({ theme }) => theme.mediaQueries.sm} {
     flex-direction: row;
+    align-items: center;
   }
 `
 
@@ -93,6 +107,7 @@ const ValueWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin: 4px 0px;
 `
 
 const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({ details, apr, multiplier, liquidity }) => {
