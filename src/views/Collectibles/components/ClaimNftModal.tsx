@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { useBunnySpecialContract } from 'hooks/useContract'
 import { useToast } from 'state/hooks'
-import { Button, InjectedModalProps, Modal, Text, Flex } from '@pancakeswap-libs/uikit'
+import { Button, InjectedModalProps, Modal, Text, Flex } from 'toastswapuikit'
 import { Nft } from 'config/constants/types'
 import useI18n from 'hooks/useI18n'
 

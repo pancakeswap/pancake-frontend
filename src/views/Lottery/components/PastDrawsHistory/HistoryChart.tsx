@@ -1,6 +1,6 @@
 import React, { lazy, Suspense, useContext } from 'react'
 import styled from 'styled-components'
-import { Text } from '@pancakeswap-libs/uikit'
+import { Text } from 'toastswapuikit'
 import PastLotteryDataContext from 'contexts/PastLotteryDataContext'
 import Loading from '../Loading'
 
@@ -57,7 +57,7 @@ const HistoryChart: React.FC = () => {
       borderCapStyle: 'round',
       gridLines: { display: false },
       ticks: {
-        fontFamily: 'Kanit, sans-serif',
+        fontFamily: 'poppins, sans-serif',
         fontColor: color,
         fontSize: 14,
         lineHeight,

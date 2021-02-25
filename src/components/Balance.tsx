@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import CountUp from 'react-countup'
 import styled from 'styled-components'
-import { Text } from '@pancakeswap-libs/uikit'
+import { Text } from 'toastswapuikit'
 
 interface TextProps {
   isDisabled?: boolean
@@ -16,7 +16,7 @@ interface BalanceProps extends TextProps {
 }
 
 const StyledText = styled(Text)<TextProps>`
-  color: ${({ isDisabled, color, theme }) => (isDisabled ? theme.colors.textDisabled : color)};
+  color: #fff;
 `
 
 const Balance: React.FC<BalanceProps> = ({ value, fontSize, color, decimals, isDisabled, unit }) => {

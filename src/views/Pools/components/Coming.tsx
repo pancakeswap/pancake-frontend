@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Image, Button } from '@pancakeswap-libs/uikit'
+import { Image, Button } from 'toastswapuikit'
 import { CommunityTag } from 'components/Tags'
 import useI18n from 'hooks/useI18n'
 import Card from './Card'
@@ -63,7 +63,7 @@ const Coming: React.FC = () => {
         <DetailPlaceholder>
           <div style={{ flex: 1 }}>
             <span role="img" aria-label="syrup">
-              🥞{' '}
+              🍞{' '}
             </span>
             {TranslateString(384, 'Your Stake')}:
           </div>

@@ -1,5 +1,5 @@
 import React from 'react'
-import { BunnyPlaceholderIcon, Flex, Heading } from '@pancakeswap-libs/uikit'
+import { BunnyPlaceholderIcon, Flex, Heading } from 'toastswapuikit'
 import useI18n from 'hooks/useI18n'
 
 interface ComingSoonProps {

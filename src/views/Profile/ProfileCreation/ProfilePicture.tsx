@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react'
 import styled from 'styled-components'
-import { AutoRenewIcon, Button, Card, CardBody, Heading, Skeleton, Text } from '@pancakeswap-libs/uikit'
+import { AutoRenewIcon, Button, Card, CardBody, Heading, Skeleton, Text } from 'toastswapuikit'
 import { Link as RouterLink } from 'react-router-dom'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import nftList from 'config/constants/nfts'

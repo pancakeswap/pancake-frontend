@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, InjectedModalProps, Skeleton, Text } from '@pancakeswap-libs/uikit'
+import { Button, InjectedModalProps, Skeleton, Text } from 'toastswapuikit'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { useDispatch } from 'react-redux'
 import nftList from 'config/constants/nfts'

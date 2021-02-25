@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import styled from 'styled-components'
-import { AutoRenewIcon, Button, Flex } from '@pancakeswap-libs/uikit'
+import { AutoRenewIcon, Button, Flex } from 'toastswapuikit'
 import { Achievement } from 'state/types'
 import { useToast } from 'state/hooks'
 import useI18n from 'hooks/useI18n'

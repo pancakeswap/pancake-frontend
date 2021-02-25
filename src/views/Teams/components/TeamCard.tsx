@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Card, CardHeader, CardBody, CommunityIcon, Heading, PrizeIcon, Text } from '@pancakeswap-libs/uikit'
+import { Card, CardHeader, CardBody, CommunityIcon, Heading, PrizeIcon, Text } from 'toastswapuikit'
 import { Team } from 'config/constants/types'
 import useI18n from 'hooks/useI18n'
 import ComingSoon from 'views/Profile/components/ComingSoon'

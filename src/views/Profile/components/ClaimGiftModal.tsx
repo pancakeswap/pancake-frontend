@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { Modal, Text, InjectedModalProps, Button, AutoRenewIcon } from '@pancakeswap-libs/uikit'
+import { Modal, Text, InjectedModalProps, Button, AutoRenewIcon } from 'toastswapuikit'
 import { AbiItem } from 'web3-utils'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import claimRefundAbi from 'config/abi/claimRefund.json'

@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import styled from 'styled-components'
-import { Breadcrumbs, Heading, Text } from '@pancakeswap-libs/uikit'
+import { Breadcrumbs, Heading, Text } from 'toastswapuikit'
 import useI18n from 'hooks/useI18n'
 import { ProfileCreationContext } from './contexts/ProfileCreationProvider'
 
