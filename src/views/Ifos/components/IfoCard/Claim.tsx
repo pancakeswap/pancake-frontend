@@ -68,7 +68,7 @@ const Claim: React.FC<ClaimProps> = ({
               LP Tokens
             </Text>
             <Text as="span" color="textSubtle" fontSize="12px" textTransform="uppercase" bold>
-              Staked
+              Committed
             </Text>
           </Flex>
           <Text fontSize="20px" bold color={offeringTokenBalance.gt(0) ? 'text' : 'textDisabled'}>

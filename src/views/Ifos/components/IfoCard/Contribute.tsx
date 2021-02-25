@@ -55,7 +55,7 @@ const Contribute: React.FC<ContributeProps> = ({
           CAKE-BNB LP
         </Text>
         <Text as="span" color="textSubtle" fontSize="12px" textTransform="uppercase" bold>
-          Staked
+          Committed
         </Text>
       </Flex>
       <Flex alignItems="center">
