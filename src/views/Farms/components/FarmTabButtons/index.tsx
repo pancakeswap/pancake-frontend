@@ -28,8 +28,6 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-left: 0;
-  margin-top: 16px;
 
   a {
     padding-left: 12px;
@@ -37,7 +35,6 @@ const Wrapper = styled.div`
   }
 
   ${({ theme }) => theme.mediaQueries.sm} {
-    margin-top: 0;
     margin-left: 16px;
   }
 `

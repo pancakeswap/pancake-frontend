@@ -31,26 +31,14 @@ const ControlContainer = styled.div`
   width: 100%;
   align-items: center;
   position: relative;
-  padding: 24px 0px;
+
   justify-content: space-between;
   flex-direction: column;
-
-  > div {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    padding-top: 8px;
-    padding-bottom: 8px;
-  }
 
   ${({ theme }) => theme.mediaQueries.sm} {
     flex-direction: row;
     flex-wrap: wrap;
-    padding: 24px 32px;
-
-    > div {
-      width: auto;
-    }
+    padding: 16px 32px;
   }
 `
 
@@ -58,14 +46,9 @@ const ToggleWrapper = styled.div`
   display: flex;
   align-items: center;
   margin-left: 10px;
-  margin-top: 16px;
 
   ${Text} {
     margin-left: 8px;
-  }
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    margin-top: 0;
   }
 `
 
@@ -75,14 +58,36 @@ const LabelWrapper = styled.div`
   }
 `
 
-const FilterContainer = styled.div``
+const FilterContainer = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 8px 0px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    width: auto;
+    padding: 0;
+  }
+`
 
 const ViewControls = styled.div`
   flex-wrap: wrap;
   justify-content: space-between;
+  display: flex;
+  align-items: center;
+  width: 100%;
+
+  > div {
+    padding: 8px 0px;
+  }
 
   ${({ theme }) => theme.mediaQueries.sm} {
     justify-content: flex-start;
+    width: auto;
+
+    > div {
+      padding: 0;
+    }
   }
 `
 

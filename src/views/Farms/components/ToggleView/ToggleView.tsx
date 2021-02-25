@@ -9,11 +9,9 @@ interface ToogleViewProps {
 }
 
 const Container = styled.div`
-  margin-top: 16px;
   margin-left: -8px;
 
   ${({ theme }) => theme.mediaQueries.sm} {
-    margin-top: 0;
     margin-left: 0;
   }
 `
