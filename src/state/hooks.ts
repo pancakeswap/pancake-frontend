@@ -30,6 +30,7 @@ export const useWebsocket = () => {
     const socket = io(process.env.REACT_APP_WSS_URL, {
       reconnectionDelayMax: 10000,
       transports: ['websocket', 'polling'],
+      withCredentials: true,
     })
 
     socket.on('farms', (data) => {

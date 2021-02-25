@@ -16,10 +16,10 @@ export const farmsSlice = createSlice({
   initialState,
   reducers: {
     setFarmsPublicData: (state, action) => {
-      const res = farmsConfig.map((farmConfig) => {
-        const farmData = action.payload.find((farm) => farm.pid === farmConfig.pid)
+      const res = state.data.map((prevFarm) => {
+        const farmData = action.payload.find((farm) => farm.pid === prevFarm.pid)
         return {
-          ...farmConfig,
+          ...prevFarm,
           tokenAmount: farmData?.ta,
           quoteTokenAmount: farmData?.qta,
           lpTotalInQuoteToken: farmData?.tqt,
