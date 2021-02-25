@@ -33,6 +33,22 @@ const farms: FarmConfig[] = [
     quoteTokenAdresses: contracts.wbnb,
   },
   {
+    pid: 78,
+    lpSymbol: 'SUSHI-ETH LP',
+    lpAddresses: {
+      97: '',
+      56: '0x17580340f3daedae871a8c21d15911742ec79e0f',
+    },
+    tokenSymbol: 'SUSHI',
+    tokenAddresses: {
+      97: '',
+      56: '0x947950bcc74888a40ffa2593c5798f11fc9124c4',
+    },
+    quoteTokenSymbol: QuoteToken.ETH,
+    quoteTokenAdresses: contracts.eth,
+    isCommunity: false,
+  },
+  {
     pid: 77,
     lpSymbol: 'DODO-BNB LP',
     lpAddresses: {
