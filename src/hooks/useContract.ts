@@ -8,15 +8,17 @@ import {
   getCakeAddress,
   getLotteryAddress,
   getLotteryTicketAddress,
-  getRabbitMintingFarmAddress,
+  getBunnyFactoryAddress,
   getPancakeProfileAddress,
   getPancakeRabbitsAddress,
+  getPointCenterIfoAddress,
+  getBunnySpecialAddress,
 } from 'utils/addressHelpers'
 import { poolsConfig } from 'config/constants'
 import { PoolCategory } from 'config/constants/types'
 import ifo from 'config/abi/ifo.json'
 import erc20 from 'config/abi/erc20.json'
-import rabbitmintingfarm from 'config/abi/rabbitmintingfarm.json'
+import bunnyFactory from 'config/abi/bunnyFactory.json'
 import pancakeRabbits from 'config/abi/pancakeRabbits.json'
 import lottery from 'config/abi/lottery.json'
 import lotteryTicket from 'config/abi/lotteryNft.json'
@@ -24,6 +26,8 @@ import masterChef from 'config/abi/masterchef.json'
 import sousChef from 'config/abi/sousChef.json'
 import sousChefBnb from 'config/abi/sousChefBnb.json'
 import profile from 'config/abi/pancakeProfile.json'
+import pointCenterIfo from 'config/abi/pointCenterIfo.json'
+import bunnySpecial from 'config/abi/bunnySpecial.json'
 
 const useContract = (abi: AbiItem, address: string, contractOptions?: ContractOptions) => {
   const web3 = useWeb3()
@@ -54,9 +58,9 @@ export const useCake = () => {
   return useERC20(getCakeAddress())
 }
 
-export const useRabbitMintingFarm = () => {
-  const rabbitMintingFarmAbi = (rabbitmintingfarm as unknown) as AbiItem
-  return useContract(rabbitMintingFarmAbi, getRabbitMintingFarmAddress())
+export const useBunnyFactory = () => {
+  const bunnyFactoryAbi = (bunnyFactory as unknown) as AbiItem
+  return useContract(bunnyFactoryAbi, getBunnyFactoryAddress())
 }
 
 export const usePancakeRabbits = () => {
@@ -89,6 +93,16 @@ export const useSousChef = (id) => {
   const rawAbi = config.poolCategory === PoolCategory.BINANCE ? sousChefBnb : sousChef
   const abi = (rawAbi as unknown) as AbiItem
   return useContract(abi, getAddress(config.contractAddress))
+}
+
+export const usePointCenterIfoContract = () => {
+  const abi = (pointCenterIfo as unknown) as AbiItem
+  return useContract(abi, getPointCenterIfoAddress())
+}
+
+export const useBunnySpecialContract = () => {
+  const abi = (bunnySpecial as unknown) as AbiItem
+  return useContract(abi, getBunnySpecialAddress())
 }
 
 export default useContract

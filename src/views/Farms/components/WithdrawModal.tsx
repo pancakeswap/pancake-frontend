@@ -33,14 +33,14 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ onConfirm, onDismiss, max
   }, [fullBalance, setVal])
 
   return (
-    <Modal title={TranslateString(999, 'Unstake LP tokens')} onDismiss={onDismiss}>
+    <Modal title={TranslateString(1126, 'Unstake LP tokens')} onDismiss={onDismiss}>
       <ModalInput
         onSelectMax={handleSelectMax}
         onChange={handleChange}
         value={val}
         max={fullBalance}
         symbol={tokenName}
-        inputTitle={TranslateString(999, 'Unstake')}
+        inputTitle={TranslateString(588, 'Unstake')}
       />
       <ModalActions>
         <Button variant="secondary" onClick={onDismiss} fullWidth>

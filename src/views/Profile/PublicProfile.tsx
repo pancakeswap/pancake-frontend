@@ -19,13 +19,18 @@ import { useProfile } from 'state/hooks'
 import Menu from './components/Menu'
 import CardHeader from './components/CardHeader'
 import Collectibles from './components/Collectibles'
-import ComingSoon from './components/ComingSoon'
 import WalletNotConnected from './components/WalletNotConnected'
 import StatBox from './components/StatBox'
-import ProfileAvatar from './components/ProfileAvatar'
+import EditProfileAvatar from './components/EditProfileAvatar'
+import AchievementsList from './components/AchievementsList'
 
 const Content = styled.div`
   flex: 1;
+  padding: 16px 0;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    padding: 0 16px;
+  }
 `
 
 const Username = styled(Heading)`
@@ -68,6 +73,10 @@ const AddressLink = styled(Link)`
   }
 `
 
+const Section = styled.div`
+  margin-bottom: 40px;
+`
+
 const PublicProfile = () => {
   const { account } = useWallet()
   const { profile } = useProfile()
@@ -79,12 +88,12 @@ const PublicProfile = () => {
 
   return (
     <>
-      <Menu />
+      <Menu activeIndex={1} />
       <div>
         <Card>
           <CardHeader>
             <Flex alignItems={['start', null, 'center']} flexDirection={['column', null, 'row']}>
-              <ProfileAvatar profile={profile} />
+              <EditProfileAvatar profile={profile} />
               <Content>
                 <Username>{`@${profile.username}`}</Username>
                 <Flex alignItems="center">
@@ -110,10 +119,12 @@ const PublicProfile = () => {
           </CardHeader>
           <CardBody>
             <StatBox icon={PrizeIcon} title={profile.points} subtitle={TranslateString(999, 'Points')} mb="24px" />
-            <Heading as="h4" size="md">
-              {TranslateString(1092, 'Achievements')}
-            </Heading>
-            <ComingSoon />
+            <Section>
+              <Heading as="h4" size="md" mb="16px">
+                {TranslateString(1092, 'Achievements')}
+              </Heading>
+              <AchievementsList />
+            </Section>
             <Collectibles />
           </CardBody>
         </Card>

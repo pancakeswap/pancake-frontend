@@ -33,6 +33,86 @@ const farms: FarmConfig[] = [
     quoteTokenAdresses: contracts.wbnb,
   },
   {
+    pid: 78,
+    lpSymbol: 'SUSHI-ETH LP',
+    lpAddresses: {
+      97: '',
+      56: '0x17580340f3daedae871a8c21d15911742ec79e0f',
+    },
+    tokenSymbol: 'SUSHI',
+    tokenAddresses: {
+      97: '',
+      56: '0x947950bcc74888a40ffa2593c5798f11fc9124c4',
+    },
+    quoteTokenSymbol: QuoteToken.ETH,
+    quoteTokenAdresses: contracts.eth,
+    isCommunity: false,
+  },
+  {
+    pid: 77,
+    lpSymbol: 'DODO-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x9e642d174b14faea31d842dc83037c42b53236e6',
+    },
+    tokenSymbol: 'DODO',
+    tokenAddresses: {
+      97: '',
+      56: '0x67ee3cb086f8a16f34bee3ca72fad36f7db929e2',
+    },
+    quoteTokenSymbol: QuoteToken.BNB,
+    quoteTokenAdresses: contracts.wbnb,
+    isCommunity: false,
+  },
+  {
+    pid: 76,
+    lpSymbol: 'SWINGBY-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x4576C456AF93a37a096235e5d83f812AC9aeD027',
+    },
+    tokenSymbol: 'SWINGBY',
+    tokenAddresses: {
+      97: '',
+      56: '0x71DE20e0C4616E7fcBfDD3f875d568492cBE4739',
+    },
+    quoteTokenSymbol: QuoteToken.BNB,
+    quoteTokenAdresses: contracts.wbnb,
+    isCommunity: false,
+  },
+  {
+    pid: 75,
+    lpSymbol: 'BRY-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x5E3CD27F36932Bc0314aC4e2510585798C34a2fC',
+    },
+    tokenSymbol: 'BRY',
+    tokenAddresses: {
+      97: '',
+      56: '0xf859Bf77cBe8699013d6Dbc7C2b926Aaf307F830',
+    },
+    quoteTokenSymbol: QuoteToken.BNB,
+    quoteTokenAdresses: contracts.wbnb,
+    isCommunity: false,
+  },
+  {
+    pid: 74,
+    lpSymbol: 'ZEE-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0xb5ab3996808c7e489dcdc0f1af2ab212ae0059af',
+    },
+    tokenSymbol: 'ZEE',
+    tokenAddresses: {
+      97: '',
+      56: '0x44754455564474a89358b2c2265883df993b12f0',
+    },
+    quoteTokenSymbol: QuoteToken.BNB,
+    quoteTokenAdresses: contracts.wbnb,
+    isCommunity: false,
+  },
+  {
     pid: 73,
     lpSymbol: 'SWGb-BNB LP',
     lpAddresses: {

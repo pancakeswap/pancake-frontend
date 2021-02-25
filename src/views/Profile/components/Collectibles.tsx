@@ -66,7 +66,7 @@ const Collectibles = () => {
         </Flex>
       )}
       <Flex alignItems="center" justifyContent="flex-end">
-        <Link to="/nft">{TranslateString(999, 'See all approved Pancake Collectibles')}</Link>
+        <Link to="/collectibles">{TranslateString(999, 'See all approved Pancake Collectibles')}</Link>
         <ChevronRightIcon />
       </Flex>
     </>

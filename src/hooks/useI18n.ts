@@ -10,6 +10,10 @@ const useI18n = () => {
   const { translations } = useContext(TranslationsContext)
 
   return (translationId: number, fallback: string, data: ContextData = {}) => {
+    if (translations.length === 0) {
+      return fallback
+    }
+
     const foundTranslation = translations.find((translation) => {
       return translation.data.stringId === translationId
     })

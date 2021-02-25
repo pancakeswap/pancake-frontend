@@ -1,3 +1,5 @@
+import { TranslatableText } from 'state/types'
+
 export type IfoStatus = 'coming_soon' | 'live' | 'finished'
 
 export interface Ifo {
@@ -17,6 +19,7 @@ export interface Ifo {
   currencyAddress: string
   tokenDecimals: number
   releaseBlockNumber: number
+  campaignId?: string
 }
 
 export enum QuoteToken {
@@ -28,6 +31,7 @@ export enum QuoteToken {
   'UST' = 'UST',
   'ETH' = 'ETH',
   'COMP' = 'COMP',
+  'SUSHI' = 'SUSHI',
 }
 
 export enum PoolCategory {
@@ -83,8 +87,13 @@ export type Images = {
 }
 
 export type NftImages = {
-  blur: string
+  blur?: string
 } & Images
+
+export type NftVideo = {
+  webm: string
+  mp4: string
+}
 
 export type Nft = {
   name: string
@@ -92,6 +101,7 @@ export type Nft = {
   images: NftImages
   sortOrder: number
   bunnyId: number
+  video?: NftVideo
 }
 
 export type TeamImages = {
@@ -108,4 +118,14 @@ export type Team = {
   images: TeamImages
   background: string
   textColor: string
+}
+
+export type CampaignType = 'ifo'
+
+export type Campaign = {
+  id: string
+  type: CampaignType
+  title?: TranslatableText
+  description?: TranslatableText
+  badge?: string
 }
