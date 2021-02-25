@@ -67,14 +67,8 @@ export const useLotteryApprove = () => {
 export const useIfoApprove = (tokenContract: Contract, spenderAddress: string) => {
   const { account } = useWeb3React()
   const onApprove = useCallback(async () => {
-    try {
-      const tx = await tokenContract.methods
-        .approve(spenderAddress, ethers.constants.MaxUint256)
-        .send({ from: account })
-      return tx
-    } catch {
-      return false
-    }
+    const tx = await tokenContract.methods.approve(spenderAddress, ethers.constants.MaxUint256).send({ from: account })
+    return tx
   }, [account, spenderAddress, tokenContract])
 
   return onApprove

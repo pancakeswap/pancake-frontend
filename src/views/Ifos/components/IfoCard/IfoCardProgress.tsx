@@ -1,20 +1,15 @@
 import React from 'react'
-import styled from 'styled-components'
-import { Progress } from '@pancakeswap-libs/uikit'
+import { Box, Progress } from '@pancakeswap-libs/uikit'
 
 interface IfoCardProgressProps {
   progress: number
 }
 
-const StyledProgress = styled.div`
-  margin-bottom: 16px;
-`
-
 const IfoCardProgress: React.FC<IfoCardProgressProps> = ({ progress }) => {
   return (
-    <StyledProgress>
+    <Box mb="16px">
       <Progress primaryStep={progress} />
-    </StyledProgress>
+    </Box>
   )
 }
 
