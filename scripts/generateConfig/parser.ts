@@ -7,8 +7,8 @@ export const getIfos = (data) => {
     const lunchTime2 = parseISO(ifo.launch_datetime)
     return {
       id: ifo._id,
-      isActive: ifo.is_active,
       address: ifo.address,
+      isActive: ifo.is_active,
       name: ifo.name,
       subTitle: ifo?.sub_title,
       description: ifo?.description,
@@ -30,10 +30,10 @@ export const getIfos = (data) => {
 export const getPools = (data) => {
   const pools: PoolConfig = data.map((pool) => {
     return {
-      sousId: pool._id,
+      sousId: pool.sous_id,
       tokenName: pool?.token?.name,
       stakingTokenName: pool?.quote_token?.name,
-      stakingLimit: pool?.quote_token?.decimals,
+      stakingLimit: pool?.staking_limit,
       stakingTokenAddress: pool?.quote_token?.mainnet_address,
       contractAddress: {
         56: pool.contract_address,
@@ -41,9 +41,9 @@ export const getPools = (data) => {
       },
       poolCategory: pool.category,
       projectLink: pool.project_url,
+      harvest: pool.harvest,
       tokenPerBlock: pool.token_per_block,
       sortOrder: pool.ranking,
-      harvest: pool.harvest,
       isFinished: pool.is_finished,
       tokenDecimals: pool?.token?.decimals,
     }

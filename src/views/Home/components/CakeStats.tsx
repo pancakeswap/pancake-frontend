@@ -24,8 +24,8 @@ const Row = styled.div`
 const CakeStats = () => {
   const TranslateString = useI18n()
   const totalSupply = useTotalSupply()
-  const burnedBalance = useBurnedBalance(getCakeAddress())
-  const cakeSupply = totalSupply ? getBalanceNumber(totalSupply) - getBalanceNumber(burnedBalance) : 0
+  const burnedBalance = getBalanceNumber(useBurnedBalance(getCakeAddress()))
+  const cakeSupply = totalSupply ? getBalanceNumber(totalSupply) - burnedBalance : 0
 
   const data = useGetStats()
   const tvl = data ? data.total_value_locked_all.toLocaleString('en-US', { maximumFractionDigits: 0 }) : null
