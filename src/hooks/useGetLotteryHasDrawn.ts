@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWeb3React } from '@web3-react/core'
 import { useLottery } from 'hooks/useContract'
 import { getLotteryStatus } from 'utils/lotteryUtils'
 
@@ -10,7 +10,7 @@ import { getLotteryStatus } from 'utils/lotteryUtils'
  */
 const useGetLotteryHasDrawn = () => {
   const [lotteryHasDrawn, setLotteryHasDrawn] = useState(true)
-  const { account } = useWallet()
+  const { account } = useWeb3React()
   const lotteryContract = useLottery()
 
   useEffect(() => {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
 import { Card, CardBody, CardRibbon } from '@pancakeswap-libs/uikit'
 import { BSC_BLOCK_TIME } from 'config'
@@ -90,7 +90,7 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
     startBlockNum: 0,
     endBlockNum: 0,
   })
-  const { account } = useWallet()
+  const { account } = useWeb3React()
   const contract = useIfoContract(address)
 
   const currentBlock = useBlock()
