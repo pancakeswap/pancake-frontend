@@ -16,10 +16,10 @@ export const farmsSlice = createSlice({
   initialState,
   reducers: {
     setFarmsPublicData: (state, action) => {
-      const res = farmsConfig.map((farmConfig) => {
-        const farmData = action.payload.find((farm) => farm.pid === farmConfig.pid)
+      state.data = state.data.map((prevFarmData) => {
+        const farmData = action.payload.find((farm) => farm.pid === prevFarmData.pid)
         return {
-          ...farmConfig,
+          ...prevFarmData,
           tokenAmount: farmData?.ta,
           quoteTokenAmount: farmData?.qta,
           lpTotalInQuoteToken: farmData?.tqt,
@@ -28,20 +28,19 @@ export const farmsSlice = createSlice({
           multiplier: farmData?.m,
         }
       })
-      state.data = res
     },
     setFarmUserData: (state, action) => {
       const { arrayOfUserDataObjects } = action.payload
-      arrayOfUserDataObjects.forEach((userDataEl) => {
-        const { index } = userDataEl
-        state.data[index] = { ...state.data[index], userData: userDataEl }
+      arrayOfUserDataObjects.forEach((userData) => {
+        const { index } = userData
+        state.data[index] = { ...state.data[index], userData }
       })
     },
   },
 })
 
 // Actions
-export const { setFarmUserData, setFarmsPublicData } = farmsSlice.actions
+export const { setFarmsPublicData, setFarmUserData } = farmsSlice.actions
 
 // Thunks
 export const fetchFarmUserDataAsync = (account) => async (dispatch) => {

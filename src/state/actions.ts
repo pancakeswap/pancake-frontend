@@ -1,7 +1,7 @@
 export { clear, remove, push } from './toasts'
 export { fetchFarmUserDataAsync, setFarmsPublicData } from './farms'
 export {
-  fetchPoolsPublicDataAsync,
+  setPoolsPublicData,
   fetchPoolsUserDataAsync,
   updateUserAllowance,
   updateUserBalance,

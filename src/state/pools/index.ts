@@ -1,14 +1,13 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit'
 import poolsConfig from 'config/constants/pools'
-import { fetchPoolsBlockLimits, fetchPoolsTotalStatking } from './fetchPools'
 import {
   fetchPoolsAllowance,
   fetchUserBalances,
   fetchUserStakeBalances,
   fetchUserPendingRewards,
 } from './fetchPoolsUser'
-import { PoolsState, Pool } from '../types'
+import { PoolsState } from '../types'
 
 const initialState: PoolsState = { data: [...poolsConfig] }
 
@@ -17,17 +16,16 @@ export const PoolsSlice = createSlice({
   initialState,
   reducers: {
     setPoolsPublicData: (state, action) => {
-      const livePoolsData: Pool[] = action.payload
-      state.data = state.data.map((pool) => {
-        const livePoolData = livePoolsData.find((entry) => entry.sousId === pool.sousId)
-        return { ...pool, ...livePoolData }
+      state.data = state.data.map((prevPoolData) => {
+        const poolData = action.payload.find((entry) => entry.sid === prevPoolData.sousId)
+        return { ...prevPoolData, totalStaked: poolData?.ts, startBlock: poolData?.sb, endBlock: poolData?.eb }
       })
     },
     setPoolsUserData: (state, action) => {
       const userData = action.payload
-      state.data = state.data.map((pool) => {
-        const userPoolData = userData.find((entry) => entry.sousId === pool.sousId)
-        return { ...pool, userData: userPoolData }
+      state.data = state.data.map((prevPoolData) => {
+        const userPoolData = userData.find((entry) => entry.sousId === prevPoolData.sousId)
+        return { ...prevPoolData, userData: userPoolData }
       })
     },
     updatePoolsUserData: (state, action) => {
@@ -42,21 +40,6 @@ export const PoolsSlice = createSlice({
 export const { setPoolsPublicData, setPoolsUserData, updatePoolsUserData } = PoolsSlice.actions
 
 // Thunks
-export const fetchPoolsPublicDataAsync = () => async (dispatch) => {
-  const blockLimits = await fetchPoolsBlockLimits()
-  const totalStakings = await fetchPoolsTotalStatking()
-
-  const liveData = poolsConfig.map((pool) => {
-    const blockLimit = blockLimits.find((entry) => entry.sousId === pool.sousId)
-    const totalStaking = totalStakings.find((entry) => entry.sousId === pool.sousId)
-    return {
-      ...blockLimit,
-      ...totalStaking,
-    }
-  })
-
-  dispatch(setPoolsPublicData(liveData))
-}
 
 export const fetchPoolsUserDataAsync = (account) => async (dispatch) => {
   const allowances = await fetchPoolsAllowance(account)

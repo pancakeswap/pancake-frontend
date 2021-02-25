@@ -10,8 +10,8 @@ import useRefresh from 'hooks/useRefresh'
 import {
   setFarmsPublicData,
   setlastBlock,
-  fetchPoolsPublicDataAsync,
   fetchPoolsUserDataAsync,
+  setPoolsPublicData,
   push as pushToast,
   remove as removeToast,
   clear as clearToast,
@@ -31,6 +31,7 @@ export const useWebsocket = () => {
     const socket = io(process.env.REACT_APP_WSS_URL, {
       reconnectionDelayMax: 10000,
       transports: ['websocket', 'polling'],
+      withCredentials: true,
     })
 
     socket.on('farms', (data) => {
@@ -40,17 +41,12 @@ export const useWebsocket = () => {
     socket.on('block', (data) => {
       dispatch(setlastBlock(data))
     })
+
+    socket.on('pools', (data) => {
+      dispatch(setPoolsPublicData(data))
+    })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-}
-
-export const useFetchPublicData = () => {
-  const dispatch = useDispatch()
-  const { slowRefresh } = useRefresh()
-
-  useEffect(() => {
-    dispatch(fetchPoolsPublicDataAsync())
-  }, [dispatch, slowRefresh])
 }
 
 // Block
