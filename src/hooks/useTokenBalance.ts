@@ -52,7 +52,11 @@ export const useBurnedBalance = (tokenAddress: string) => {
 
   useEffect(() => {
     const fetchBalance = async () => {
-      const res = await getTokenBalance(web3.currentProvider, tokenAddress, '0x000000000000000000000000000000000000dEaD')
+      const res = await getTokenBalance(
+        web3.currentProvider,
+        tokenAddress,
+        '0x000000000000000000000000000000000000dEaD',
+      )
       setBalance(new BigNumber(res))
     }
 
