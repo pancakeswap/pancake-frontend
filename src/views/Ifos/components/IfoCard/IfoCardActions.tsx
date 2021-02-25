@@ -45,7 +45,7 @@ const IfoCardActions: React.FC<Props> = ({ ifo, publicIfoData }) => {
       )}
       {publicIfoData.status === 'finished' && (
         <Claim
-          tokenSymbol={ifo.tokenSymbol}
+          ifo={ifo}
           contract={contract}
           userInfo={userInfo}
           isPendingTx={isPendingTx}

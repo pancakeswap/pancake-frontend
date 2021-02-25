@@ -9,7 +9,7 @@ import { Ifo } from 'config/constants/types'
 import { UserInfo, WalletIfoState } from '../../hooks/useGetWalletIfoData'
 
 interface ClaimProps {
-  tokenSymbol: Ifo['tokenSymbol']
+  ifo: Ifo
   contract: Contract
   userInfo: UserInfo
   isPendingTx: WalletIfoState['isPendingTx']
@@ -26,19 +26,13 @@ const AmountGrid = styled.div`
 
 const DISPLAY_DECIMALS = 4
 
-const Claim: React.FC<ClaimProps> = ({
-  tokenSymbol,
-  contract,
-  userInfo,
-  isPendingTx,
-  setPendingTx,
-  offeringTokenBalance,
-}) => {
+const Claim: React.FC<ClaimProps> = ({ ifo, contract, userInfo, isPendingTx, setPendingTx, offeringTokenBalance }) => {
   const TranslateString = useI18n()
   const { account } = useWallet()
   const didContribute = userInfo.amount.gt(0)
   const canClaim = !userInfo.claimed && offeringTokenBalance.gt(0)
-  const contributedBalance = getBalanceNumber(userInfo.amount, DISPLAY_DECIMALS)
+  const contributedBalance = getBalanceNumber(userInfo.amount)
+  const { tokenSymbol, tokenDecimals } = ifo
 
   const handleClaim = async () => {
     setPendingTx(true)
@@ -72,7 +66,9 @@ const Claim: React.FC<ClaimProps> = ({
             </Text>
           </Flex>
           <Text fontSize="20px" bold color={offeringTokenBalance.gt(0) ? 'text' : 'textDisabled'}>
-            {offeringTokenBalance.toFixed(offeringTokenBalance.eq(0) ? 0 : DISPLAY_DECIMALS)}
+            {getBalanceNumber(offeringTokenBalance, tokenDecimals).toFixed(
+              offeringTokenBalance.eq(0) ? 0 : DISPLAY_DECIMALS,
+            )}
           </Text>
         </Box>
       </AmountGrid>
@@ -85,7 +81,7 @@ const Claim: React.FC<ClaimProps> = ({
           isLoading={isPendingTx}
           endIcon={isPendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
         >
-          {canClaim ? TranslateString(999, 'Claimed') : TranslateString(999, 'Claim')}
+          {canClaim ? TranslateString(999, 'Claim') : TranslateString(999, 'Claimed')}
         </Button>
       ) : (
         <Button disabled fullWidth mb="24px">
