@@ -54,6 +54,16 @@ const useGetWalletIfoData = (ifo: Ifo) => {
     }))
   }
 
+  const setIsClaimed = () => {
+    setState((prevState) => ({
+      ...prevState,
+      userInfo: {
+        ...prevState.userInfo,
+        claimed: true,
+      },
+    }))
+  }
+
   useEffect(() => {
     const fetchIfoData = async () => {
       const [offeringAmount, userInfoResponse] = (await makeBatchRequest([
@@ -76,7 +86,7 @@ const useGetWalletIfoData = (ifo: Ifo) => {
     }
   }, [account, contract, setState])
 
-  return { ...state, allowance, contract, setPendingTx, addUserContributedAmount }
+  return { ...state, allowance, contract, setPendingTx, addUserContributedAmount, setIsClaimed }
 }
 
 export default useGetWalletIfoData

@@ -22,6 +22,7 @@ const IfoCardActions: React.FC<Props> = ({ ifo, publicIfoData }) => {
     contract,
     setPendingTx,
     addUserContributedAmount,
+    setIsClaimed,
   } = useGetWalletIfoData(ifo)
   const { account } = useWallet()
 
@@ -51,6 +52,7 @@ const IfoCardActions: React.FC<Props> = ({ ifo, publicIfoData }) => {
           isPendingTx={isPendingTx}
           setPendingTx={setPendingTx}
           offeringTokenBalance={offeringTokenBalance}
+          setIsClaimed={setIsClaimed}
         />
       )}
     </>

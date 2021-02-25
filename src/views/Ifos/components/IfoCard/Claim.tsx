@@ -3,6 +3,7 @@ import { useWallet } from '@binance-chain/bsc-use-wallet'
 import styled from 'styled-components'
 import { Contract } from 'web3-eth-contract'
 import { AutoRenewIcon, Box, Button, Flex, Text } from '@pancakeswap-libs/uikit'
+import { useToast } from 'state/hooks'
 import useI18n from 'hooks/useI18n'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { Ifo } from 'config/constants/types'
@@ -15,6 +16,7 @@ interface ClaimProps {
   isPendingTx: WalletIfoState['isPendingTx']
   setPendingTx: (status: boolean) => void
   offeringTokenBalance: WalletIfoState['offeringTokenBalance']
+  setIsClaimed: () => void
 }
 
 const AmountGrid = styled.div`
@@ -26,18 +28,35 @@ const AmountGrid = styled.div`
 
 const DISPLAY_DECIMALS = 4
 
-const Claim: React.FC<ClaimProps> = ({ ifo, contract, userInfo, isPendingTx, setPendingTx, offeringTokenBalance }) => {
+const Claim: React.FC<ClaimProps> = ({
+  ifo,
+  contract,
+  userInfo,
+  isPendingTx,
+  setPendingTx,
+  offeringTokenBalance,
+  setIsClaimed,
+}) => {
   const TranslateString = useI18n()
   const { account } = useWallet()
   const didContribute = userInfo.amount.gt(0)
   const canClaim = !userInfo.claimed && offeringTokenBalance.gt(0)
   const contributedBalance = getBalanceNumber(userInfo.amount)
   const { tokenSymbol, tokenDecimals } = ifo
+  const { toastError, toastSuccess } = useToast()
 
   const handleClaim = async () => {
-    setPendingTx(true)
-    await contract.methods.harvest().send({ from: account })
-    setPendingTx(false)
+    try {
+      setPendingTx(true)
+      await contract.methods.harvest().send({ from: account })
+      setIsClaimed()
+      toastSuccess('Success!', 'You have successfully claimed your rewards.')
+    } catch (error) {
+      toastError('Error', error?.message)
+      console.error(error)
+    } finally {
+      setPendingTx(false)
+    }
   }
 
   return (
