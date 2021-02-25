@@ -19,7 +19,7 @@ const pools: PoolConfig[] = [
     tokenDecimals: 18,
   },
   {
-    sousId: 48,
+    sousId: 54,
     image: 'CAKESUSHI',
     tokenName: 'CAKE',
     stakingTokenName: QuoteToken.SUSHI,
