@@ -8,6 +8,7 @@ import useI18n from 'hooks/useI18n'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { Ifo } from 'config/constants/types'
 import { UserInfo, WalletIfoState } from '../../hooks/useGetWalletIfoData'
+import BalanceInUsd from './BalanceInUsd'
 
 interface ClaimProps {
   ifo: Ifo
@@ -43,6 +44,7 @@ const Claim: React.FC<ClaimProps> = ({
   const canClaim = !userInfo.claimed && offeringTokenBalance.gt(0)
   const contributedBalance = getBalanceNumber(userInfo.amount)
   const { tokenSymbol, tokenDecimals } = ifo
+  const rewardBalance = getBalanceNumber(offeringTokenBalance, tokenDecimals)
   const { toastError, toastSuccess } = useToast()
 
   const handleClaim = async () => {
@@ -85,10 +87,9 @@ const Claim: React.FC<ClaimProps> = ({
             </Text>
           </Flex>
           <Text fontSize="20px" bold color={offeringTokenBalance.gt(0) ? 'text' : 'textDisabled'}>
-            {getBalanceNumber(offeringTokenBalance, tokenDecimals).toFixed(
-              offeringTokenBalance.eq(0) ? 0 : DISPLAY_DECIMALS,
-            )}
+            {rewardBalance.toFixed(offeringTokenBalance.eq(0) ? 0 : DISPLAY_DECIMALS)}
           </Text>
+          <BalanceInUsd token={tokenSymbol} balance={rewardBalance} />
         </Box>
       </AmountGrid>
       {didContribute ? (

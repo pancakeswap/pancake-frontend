@@ -14,10 +14,11 @@ import {
   remove as removeToast,
   clear as clearToast,
 } from './actions'
-import { State, Farm, Pool, ProfileState, TeamsState, AchievementState } from './types'
+import { State, Farm, Pool, ProfileState, TeamsState, AchievementState, PriceState } from './types'
 import { fetchProfile } from './profile'
 import { fetchTeam, fetchTeams } from './teams'
 import { fetchAchievements } from './achievements'
+import { fetchPrices } from './prices'
 
 const ZERO = new BigNumber(0)
 
@@ -190,4 +191,29 @@ export const useFetchAchievements = () => {
 export const useAchievements = () => {
   const achievements: AchievementState['data'] = useSelector((state: State) => state.achievements.data)
   return achievements
+}
+
+// Prices
+export const useFetchPriceList = () => {
+  const { slowRefresh } = useRefresh()
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(fetchPrices())
+  }, [dispatch, slowRefresh])
+}
+
+export const useGetApiPrices = () => {
+  const prices: PriceState['data'] = useSelector((state: State) => state.prices.data)
+  return prices
+}
+
+export const useGetApiPrice = (token: string) => {
+  const prices = useGetApiPrices()
+
+  if (!prices) {
+    return null
+  }
+
+  return prices[token.toLowerCase()]
 }
