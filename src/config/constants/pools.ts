@@ -22,7 +22,7 @@ const pools: PoolConfig[] = [
     sousId: 55,
     tokenName: 'bOPEN',
     stakingTokenName: QuoteToken.CAKE,
-    stakingTokenAddress: '0xF35262a9d427F96d2437379eF090db986eaE5d42',
+    stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
       97: '',
       56: '0x5Ac8406498dC1921735d559CeC271bEd23B294A7',
