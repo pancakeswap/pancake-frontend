@@ -19,6 +19,23 @@ const pools: PoolConfig[] = [
     tokenDecimals: 18,
   },
   {
+    sousId: 56,
+    tokenName: 'BOR',
+    stakingTokenName: QuoteToken.CAKE,
+    stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
+    contractAddress: {
+      97: '',
+      56: '0x3e677dC00668d69c2A7724b9AFA7363e8A56994e',
+    },
+    poolCategory: PoolCategory.CORE,
+    projectLink: 'https://www.boringdao.com/',
+    harvest: true,
+    tokenPerBlock: '0.000395',
+    sortOrder: 999,
+    isFinished: false,
+    tokenDecimals: 18,
+  },
+  {
     sousId: 55,
     tokenName: 'bOPEN',
     stakingTokenName: QuoteToken.CAKE,
