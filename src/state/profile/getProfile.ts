@@ -1,3 +1,4 @@
+import Cookies from 'js-cookie'
 import { getPancakeProfileAddress, getPancakeRabbitsAddress } from 'utils/addressHelpers'
 import pancakeProfileAbi from 'config/abi/pancakeProfile.json'
 import pancakeRabbitsAbi from 'config/abi/pancakeRabbits.json'
@@ -53,13 +54,14 @@ const getProfile = async (address: string): Promise<GetProfileResponse> => {
       const bunnyId = await rabbitContract.methods.getBunnyId(tokenId).call()
       nft = nfts.find((nftItem) => nftItem.bunnyId === Number(bunnyId))
 
-      // Save the preview image to local storage for the exchange
-      localStorage.setItem(
+      // Save the preview image in a cookie so it can be used on the exchange
+      Cookies.set(
         `profile_${address}`,
-        JSON.stringify({
+        {
           username,
           avatar: `https://pancakeswap.finance/images/nfts/${nft.images.sm}`,
-        }),
+        },
+        { domain: 'pancakeswap.finance', secure: true, expires: 30 },
       )
     }
 
