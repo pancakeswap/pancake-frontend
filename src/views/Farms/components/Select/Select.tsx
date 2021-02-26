@@ -13,6 +13,7 @@ const DropDownHeader = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.inputSecondary};
   border-radius: 16px;
   background: ${(props) => props.theme.colors.input};
+  transition: border-radius 0.15s;
 `
 
 const DropDownListContainer = styled.div`
@@ -22,6 +23,10 @@ const DropDownListContainer = styled.div`
   overflow: hidden;
   background: ${(props) => props.theme.colors.input};
   z-index: ${({ theme }) => theme.zIndices.dropdown};
+  transition: transform 0.15s, opacity 0.15s;
+  transform: scaleY(0);
+  transform-origin: top;
+  opacity: 0;
 
   ${({ theme }) => theme.mediaQueries.sm} {
     min-width: 168px;
@@ -52,6 +57,8 @@ const DropDownContainer = styled.div<{ isOpen: boolean; width: number; height: n
 
       ${DropDownListContainer} {
         height: auto;
+        transform: scaleY(1);
+        opacity: 1;
         border: 1px solid ${({ theme }) => theme.colors.inputSecondary};
         border-top-width: 0;
         border-radius: 0 0 16px 16px;
@@ -124,7 +131,7 @@ const Select: React.FunctionComponent<SelectProps> = ({ options, onChange }) => 
           <Text>{selectedOption.label}</Text>
         </DropDownHeader>
       )}
-      <ArrowDropDownIcon color="text" />
+      <ArrowDropDownIcon color="text" onClick={toggling} />
       <DropDownListContainer>
         <DropDownList ref={dropdownRef}>
           {options.map((option) =>
