@@ -1,7 +1,7 @@
 import { useCallback, useState, useEffect } from 'react'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { useLottery, useLotteryTicket } from 'hooks/useContract'
-import { multiClaim, getMax, multiBuy } from '../utils/lotteryUtils'
+import { multiClaim, getMax, multiBuy } from 'utils/lotteryUtils'
 
 export const useMultiClaimLottery = () => {
   const { account } = useWallet()
