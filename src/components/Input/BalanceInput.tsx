@@ -1,12 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Button } from '@pancakeswap-libs/uikit'
+import { Button, Input, InputProps } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
-import Input, { InputProps } from './Input'
 
 interface Props extends InputProps {
   max: number | string
   symbol: string
+  value: string
+  onChange?: (e: React.FormEvent<HTMLInputElement>) => void
   onSelectMax?: () => void
 }
 
@@ -34,27 +35,32 @@ const StyledTokenSymbol = styled.span`
   font-weight: 700;
 `
 
+const StyledInputWrapper = styled.div`
+  align-items: center;
+  background-color: ${(props) => props.theme.colors.input};
+  border-radius: ${(props) => props.theme.radii.default};
+  display: flex;
+  height: 72px;
+  padding: 0 ${(props) => props.theme.spacing[3]}px;
+`
+
 const BalanceInput: React.FC<Props> = ({ max, symbol, onChange, onSelectMax, value }) => {
   const TranslateString = useI18n()
 
   return (
     <div>
-      <Input
-        endAdornment={
-          <StyledTokenAdornmentWrapper>
-            <StyledTokenSymbol>{symbol}</StyledTokenSymbol>
-            <StyledSpacer />
-            <div>
-              <Button size="sm" onClick={onSelectMax}>
-                {TranslateString(452, 'Max')}
-              </Button>
-            </div>
-          </StyledTokenAdornmentWrapper>
-        }
-        onChange={onChange}
-        placeholder="0"
-        value={value}
-      />
+      <StyledInputWrapper>
+        <Input onChange={onChange} placeholder="0" value={value} />
+        <StyledTokenAdornmentWrapper>
+          <StyledTokenSymbol>{symbol}</StyledTokenSymbol>
+          <StyledSpacer />
+          <div>
+            <Button size="sm" onClick={onSelectMax}>
+              {TranslateString(452, 'Max')}
+            </Button>
+          </div>
+        </StyledTokenAdornmentWrapper>
+      </StyledInputWrapper>
       <StyledMaxText>{TranslateString(454, `${max.toLocaleString()} ${symbol} Available`)}</StyledMaxText>
     </div>
   )
