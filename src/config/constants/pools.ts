@@ -19,6 +19,23 @@ const pools: PoolConfig[] = [
     tokenDecimals: 18,
   },
   {
+    sousId: 57,
+    tokenName: 'IOTX',
+    stakingTokenName: QuoteToken.CAKE,
+    stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
+    contractAddress: {
+      97: '',
+      56: '0xCE54BA909d23B9d4BE0Ff0d84e5aE83F0ADD8D9a',
+    },
+    poolCategory: PoolCategory.CORE,
+    projectLink: 'https://iotex.io/',
+    harvest: true,
+    tokenPerBlock: '6.365',
+    sortOrder: 999,
+    isFinished: false,
+    tokenDecimals: 18,
+  },
+  {
     sousId: 56,
     tokenName: 'BOR',
     stakingTokenName: QuoteToken.CAKE,
