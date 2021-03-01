@@ -1,29 +1,27 @@
 import { useEffect, useState } from 'react'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
-import cakeABI from 'config/abi/cake.json'
-import { getContract } from 'utils/web3'
-import { getTokenBalance } from 'utils/erc20'
-import { getCakeAddress } from 'utils/addressHelpers'
+import { getBep20Contract, getCakeContract } from 'utils/contractHelpers'
 import useWeb3 from './useWeb3'
 import useRefresh from './useRefresh'
 
 const useTokenBalance = (tokenAddress: string) => {
   const [balance, setBalance] = useState(new BigNumber(0))
-  const { account, library } = useWeb3React()
-
+  const { account } = useWeb3React()
+  const web3 = useWeb3()
   const { fastRefresh } = useRefresh()
 
   useEffect(() => {
     const fetchBalance = async () => {
-      const res = await getTokenBalance(library, tokenAddress, account)
+      const contract = getBep20Contract(tokenAddress, web3)
+      const res = await contract.methods.balanceOf(account).call()
       setBalance(new BigNumber(res))
     }
 
-    if (account && library) {
+    if (account) {
       fetchBalance()
     }
-  }, [account, library, tokenAddress, fastRefresh])
+  }, [account, tokenAddress, web3, fastRefresh])
 
   return balance
 }
@@ -34,7 +32,7 @@ export const useTotalSupply = () => {
 
   useEffect(() => {
     async function fetchTotalSupply() {
-      const cakeContract = getContract(cakeABI, getCakeAddress())
+      const cakeContract = getCakeContract()
       const supply = await cakeContract.methods.totalSupply().call()
       setTotalSupply(new BigNumber(supply))
     }
@@ -52,11 +50,8 @@ export const useBurnedBalance = (tokenAddress: string) => {
 
   useEffect(() => {
     const fetchBalance = async () => {
-      const res = await getTokenBalance(
-        web3.currentProvider,
-        tokenAddress,
-        '0x000000000000000000000000000000000000dEaD',
-      )
+      const contract = getBep20Contract(tokenAddress, web3)
+      const res = await contract.methods.balanceOf('0x000000000000000000000000000000000000dEaD').call()
       setBalance(new BigNumber(res))
     }
 

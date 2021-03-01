@@ -22,7 +22,7 @@ const Farms: React.FC = () => {
   const farmsLP = useFarms()
   const cakePrice = usePriceCakeBusd()
   const bnbPrice = usePriceBnbBusd()
-  const { account, library } = useWeb3React()
+  const { account } = useWeb3React()
   const ethPriceUsd = usePriceEthBusd()
 
   const dispatch = useDispatch()
@@ -85,12 +85,11 @@ const Farms: React.FC = () => {
           bnbPrice={bnbPrice}
           cakePrice={cakePrice}
           ethPrice={ethPriceUsd}
-          provider={library}
           account={account}
         />
       ))
     },
-    [farmsLP, bnbPrice, ethPriceUsd, cakePrice, library, account],
+    [farmsLP, bnbPrice, ethPriceUsd, cakePrice, account],
   )
 
   return (

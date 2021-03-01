@@ -1,15 +1,16 @@
-import React, { useMemo, useState, useCallback } from 'react'
+import React, { useState, useCallback } from 'react'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import { provider as ProviderType } from 'web3-core'
-import { getContract } from 'utils/erc20'
 import { getAddress } from 'utils/addressHelpers'
+import { getBep20Contract } from 'utils/contractHelpers'
 import { Button, Flex, Text } from '@pancakeswap-libs/uikit'
 import { Farm } from 'state/types'
 import { useFarmFromSymbol, useFarmUser } from 'state/hooks'
 import useI18n from 'hooks/useI18n'
-import UnlockButton from 'components/UnlockButton'
+import useWeb3 from 'hooks/useWeb3'
 import { useApprove } from 'hooks/useApprove'
+import UnlockButton from 'components/UnlockButton'
 import StakeAction from './StakeAction'
 import HarvestAction from './HarvestAction'
 
@@ -27,7 +28,7 @@ interface FarmCardActionsProps {
   addLiquidityUrl?: string
 }
 
-const CardActions: React.FC<FarmCardActionsProps> = ({ farm, provider, account, addLiquidityUrl }) => {
+const CardActions: React.FC<FarmCardActionsProps> = ({ farm, account, addLiquidityUrl }) => {
   const TranslateString = useI18n()
   const [requestedApproval, setRequestedApproval] = useState(false)
   const { pid, lpAddresses } = useFarmFromSymbol(farm.lpSymbol)
@@ -35,10 +36,9 @@ const CardActions: React.FC<FarmCardActionsProps> = ({ farm, provider, account, 
   const lpAddress = getAddress(lpAddresses)
   const lpName = farm.lpSymbol.toUpperCase()
   const isApproved = account && allowance && allowance.isGreaterThan(0)
+  const web3 = useWeb3()
 
-  const lpContract = useMemo(() => {
-    return getContract(provider as ProviderType, lpAddress)
-  }, [provider, lpAddress])
+  const lpContract = getBep20Contract(lpAddress, web3)
 
   const { onApprove } = useApprove(lpContract)
 
