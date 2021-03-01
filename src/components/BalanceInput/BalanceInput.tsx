@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { Button, Input, InputProps } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 
-interface Props extends InputProps {
+export interface BalanceInputProps extends InputProps {
   max: number | string
   symbol: string
   value: string
@@ -44,7 +44,7 @@ const StyledInputWrapper = styled.div`
   padding: 0 ${(props) => props.theme.spacing[3]}px;
 `
 
-const BalanceInput: React.FC<Props> = ({ max, symbol, onChange, onSelectMax, value }) => {
+const BalanceInput: React.FC<BalanceInputProps> = ({ max, symbol, onChange, onSelectMax, value }) => {
   const TranslateString = useI18n()
 
   return (

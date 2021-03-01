@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
 import { Modal, Button, Flex, LinkExternal } from '@pancakeswap-libs/uikit'
-import BalanceInput from 'components/Input/BalanceInput'
+import BalanceInput from 'components/BalanceInput/BalanceInput'
 import useTokenBalance from 'hooks/useTokenBalance'
 import { getFullDisplayBalance } from 'utils/formatBalance'
 
