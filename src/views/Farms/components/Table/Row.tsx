@@ -39,7 +39,7 @@ const CellInner = styled.div`
   align-items: center;
   padding-right: 8px;
 
-  ${({ theme }) => theme.mediaQueries.sm} {
+  ${({ theme }) => theme.mediaQueries.xl} {
     padding-right: 32px;
   }
 `
@@ -80,6 +80,7 @@ const Row: React.FunctionComponent<RowProps> = (props) => {
   }
 
   const { isXl, isXs } = useMatchBreakpoints()
+
   const isMobile = !isXl
   const tableSchema = isMobile ? MobileColumnSchema : DesktopColumnSchema
   const columnNames = tableSchema.map((column) => column.name)

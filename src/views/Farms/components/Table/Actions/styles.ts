@@ -8,8 +8,8 @@ export const ActionContainer = styled.div`
   flex-basis: 0;
   margin-bottom: 16px;
 
-  ${({ theme }) => theme.mediaQueries.sm} {
-    margin-left: 24px;
+  ${({ theme }) => theme.mediaQueries.lg} {
+    margin-left: 12px;
     margin-bottom: 0;
     max-height: 100px;
   }

@@ -8,8 +8,13 @@ import { useHarvest } from 'hooks/useHarvest'
 import useI18n from 'hooks/useI18n'
 import { usePriceCakeBusd } from 'state/hooks'
 import { useCountUp } from 'react-countup'
+import styled from 'styled-components'
 
 import { ActionContainer, ActionTitles, Title, Subtle, ActionContent, Earned, Staked } from './styles'
+
+const HarvestButton = styled(Button)`
+  margin-left: 4px;
+`
 
 const HarvestAction: React.FunctionComponent<FarmWithStakedValue> = ({ pid, userData }) => {
   const earningsBigNumber = userData ? new BigNumber(userData.earnings) : null
@@ -54,7 +59,7 @@ const HarvestAction: React.FunctionComponent<FarmWithStakedValue> = ({ pid, user
           <Earned>{displayBalance}</Earned>
           <Staked>~{countUp}USD</Staked>
         </div>
-        <Button
+        <HarvestButton
           disabled={!earnings || pendingTx || !account}
           onClick={async () => {
             setPendingTx(true)
@@ -63,7 +68,7 @@ const HarvestAction: React.FunctionComponent<FarmWithStakedValue> = ({ pid, user
           }}
         >
           {TranslateString(999, 'Harvest')}
-        </Button>
+        </HarvestButton>
       </ActionContent>
     </ActionContainer>
   )
