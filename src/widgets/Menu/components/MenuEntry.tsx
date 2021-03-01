@@ -1,3 +1,4 @@
+import React from "react";
 import styled, { keyframes, DefaultTheme } from "styled-components";
 import { MENU_ENTRY_HEIGHT } from "../config";
 
@@ -65,4 +66,7 @@ MenuEntry.defaultProps = {
   role: "button",
 };
 
-export { MenuEntry, LinkLabel };
+const MenuEntryMemo = React.memo(MenuEntry, () => true);
+const LinkLabelMemo = React.memo(LinkLabel, () => true);
+
+export { MenuEntryMemo as MenuEntry, LinkLabelMemo as LinkLabel };

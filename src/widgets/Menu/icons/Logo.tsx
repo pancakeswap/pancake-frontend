@@ -82,4 +82,4 @@ const Logo: React.FC<LogoProps> = ({ isDark, ...props }) => {
   );
 };
 
-export default Logo;
+export default React.memo(Logo, (prev, next) => prev.isDark === next.isDark);

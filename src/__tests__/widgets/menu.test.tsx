@@ -209,7 +209,7 @@ it("renders correctly", () => {
               class="sc-kEjbxe fnkFQx"
             >
               <div
-                class="sc-fubCfw hswJXu"
+                class="sc-fubCfw ivOlsg"
                 role="button"
               >
                 <a
@@ -239,7 +239,7 @@ it("renders correctly", () => {
                 class="sc-pFZIQ kJqcph"
               >
                 <div
-                  class="sc-fubCfw duwseR"
+                  class="sc-fubCfw bRGoVr"
                   role="button"
                 >
                   <svg
@@ -277,7 +277,7 @@ it("renders correctly", () => {
                 />
               </div>
               <div
-                class="sc-fubCfw duwseR"
+                class="sc-fubCfw bRGoVr"
                 role="button"
               >
                 <a
@@ -315,7 +315,7 @@ it("renders correctly", () => {
                 </a>
               </div>
               <div
-                class="sc-fubCfw duwseR"
+                class="sc-fubCfw bRGoVr"
                 role="button"
               >
                 <a
@@ -345,7 +345,7 @@ it("renders correctly", () => {
                 </a>
               </div>
               <div
-                class="sc-fubCfw duwseR"
+                class="sc-fubCfw bRGoVr"
                 role="button"
               >
                 <a
@@ -372,7 +372,7 @@ it("renders correctly", () => {
                 </a>
               </div>
               <div
-                class="sc-fubCfw duwseR"
+                class="sc-fubCfw bRGoVr"
                 role="button"
               >
                 <a
@@ -400,7 +400,7 @@ it("renders correctly", () => {
                 class="sc-pFZIQ kJqcph"
               >
                 <div
-                  class="sc-fubCfw duwseR rainbow"
+                  class="sc-fubCfw bRGoVr rainbow"
                   role="button"
                 >
                   <svg
@@ -439,7 +439,7 @@ it("renders correctly", () => {
                 class="sc-pFZIQ kJqcph"
               >
                 <div
-                  class="sc-fubCfw duwseR"
+                  class="sc-fubCfw bRGoVr"
                   role="button"
                 >
                   <svg
@@ -483,7 +483,7 @@ it("renders correctly", () => {
                 class="sc-pFZIQ kJqcph"
               >
                 <div
-                  class="sc-fubCfw duwseR"
+                  class="sc-fubCfw bRGoVr"
                   role="button"
                 >
                   <svg
@@ -522,7 +522,7 @@ it("renders correctly", () => {
                 class="sc-pFZIQ kJqcph"
               >
                 <div
-                  class="sc-fubCfw duwseR"
+                  class="sc-fubCfw bRGoVr"
                   role="button"
                 >
                   <svg
@@ -559,10 +559,10 @@ it("renders correctly", () => {
               </div>
             </div>
             <div
-              class="sc-bkzZxe jfJWEE"
+              class="sc-idOhPF bXwMqE"
             >
               <button
-                class="sc-eCssSg bcQvse sc-fFubgz gudwLA"
+                class="sc-eCssSg bcQvse sc-iqHYGH iOsNjo"
                 scale="md"
               >
                 <svg
