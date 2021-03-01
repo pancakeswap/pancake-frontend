@@ -2,10 +2,31 @@ import { Ifo } from './types'
 
 const ifos: Ifo[] = [
   {
+    id: 'watch',
+    address: '0x94A24cA3FaE6D485639EfA72853Cf4327cA78F02',
+    isActive: true,
+    name: 'Yieldwatch (WATCH)',
+    subTitle: 'A smart yield farming dashboard on BSC',
+    description:
+      'Yieldwatch is a smart yield farming dashboard on Binance Smart Chain that lets you monitor your liquidity pools, yield farming and token staking performance with fast and casual UI. The $WATCH token is a membership token, which is required to access advanced PRO features.',
+    launchDate: 'Mar. 4',
+    launchTime: '5PM SGT',
+    saleAmount: '8,000,000 WATCH',
+    raiseAmount: '$800,000',
+    cakeToBurn: '$400,000',
+    projectSiteUrl: 'https://yieldwatch.net/',
+    currency: 'CAKE-BNB LP',
+    currencyAddress: '0xA527a61703D82139F8a06Bc30097cC9CAA2df5A6',
+    tokenDecimals: 18,
+    tokenSymbol: 'WATCH',
+    releaseBlockNumber: 5294924,
+    campaignId: '511070000',
+  },
+  {
     id: 'berry',
     address: '0x5d028cE3435B2bB9AceBfaC599EEbA1ccD63d7dd',
-    isActive: true,
-    name: 'Berry',
+    isActive: false,
+    name: 'Berry (BRY)',
     subTitle: 'A decentralized oracle network on BSC',
     description:
       'Berry Data is a transparent community-veriﬁed price oracle on BSC. Berry Data provides a trustless and decentralized alternative for off-chain data. As the governance token for Berry Data, BRY allows holders to pay for Berry Data feeds, vote on governance issues, validate data through staking, and build the Berry ecosystem.',
@@ -26,7 +47,7 @@ const ifos: Ifo[] = [
     id: 'soteria',
     address: '0x9C21123D94b93361a29B2C2EFB3d5CD8B17e0A9e',
     isActive: false,
-    name: 'Soteria',
+    name: 'Soteria (wSOTE)',
     subTitle: 'A blockchain based mutual to share the risk of DeFi on Binance Smart Chain',
     description:
       'Soteria allows users to buy insurance cover to greatly diminish or reduce the financial risk of hacks. It replaces the idea of a traditional insurance company, because it is wholly owned by the members. The model encourages engagement as members receive economic incentives for participating in Risk Assessment, Claims Assessment and Governance.',
@@ -123,7 +144,7 @@ const ifos: Ifo[] = [
     currency: 'CAKE-BNB LP',
     currencyAddress: '0xA527a61703D82139F8a06Bc30097cC9CAA2df5A6',
     tokenDecimals: 6,
-    tokenSymbol: 'BLINK',
+    tokenSymbol: 'blink',
     releaseBlockNumber: 3279767,
     campaignId: '511010000',
   },
