@@ -82,9 +82,12 @@ const Claim: React.FC<ClaimProps> = ({
             {contributedBalance.toFixed(userInfo.amount.eq(0) ? 0 : DISPLAY_DECIMALS)}
           </Text>
           <MetaLabel>
-            {canClaim
-              ? TranslateString(999, `${refundedBalance} to reclaim`, { num: refundedBalance })
-              : TranslateString(999, `${refundedBalance} reclaimed`, { num: refundedBalance })}
+            {hasParticipated &&
+              canClaim &&
+              TranslateString(999, `${refundedBalance} to reclaim`, { num: refundedBalance })}
+            {hasParticipated &&
+              !canClaim &&
+              TranslateString(999, `${refundedBalance} to reclaimed`, { num: refundedBalance })}
           </MetaLabel>
         </Box>
         <Box>
