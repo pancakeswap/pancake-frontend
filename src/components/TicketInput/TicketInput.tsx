@@ -1,14 +1,15 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Button } from '@pancakeswap-libs/uikit'
+import { Button, Input, InputProps } from '@pancakeswap-libs/uikit'
 import useI18n from '../../hooks/useI18n'
-import Input, { InputProps } from '../Input'
 
 interface TokenInputProps extends InputProps {
   max: number | string
   symbol: string
   availableSymbol: string
+  value: string
   onSelectMax?: () => void
+  onChange?: (e: React.FormEvent<HTMLInputElement>) => void
 }
 
 const TicketInput: React.FC<TokenInputProps> = ({ max, symbol, availableSymbol, onChange, onSelectMax, value }) => {
@@ -16,26 +17,31 @@ const TicketInput: React.FC<TokenInputProps> = ({ max, symbol, availableSymbol, 
 
   return (
     <StyledTokenInput>
-      <Input
-        endAdornment={
-          <StyledTokenAdornmentWrapper>
-            <StyledTokenSymbol>{symbol}</StyledTokenSymbol>
-            <StyledSpacer />
-            <div>
-              <Button size="sm" onClick={onSelectMax}>
-                {TranslateString(452, 'Max')}
-              </Button>
-            </div>
-          </StyledTokenAdornmentWrapper>
-        }
-        onChange={onChange}
-        placeholder="0"
-        value={value}
-      />
+      <StyledInputWrapper>
+        <Input onChange={onChange} placeholder="0" value={value} />
+        <StyledTokenAdornmentWrapper>
+          <StyledTokenSymbol>{symbol}</StyledTokenSymbol>
+          <StyledSpacer />
+          <div>
+            <Button size="sm" onClick={onSelectMax}>
+              {TranslateString(452, 'Max')}
+            </Button>
+          </div>
+        </StyledTokenAdornmentWrapper>
+      </StyledInputWrapper>
       <StyledMaxText>{TranslateString(454, `${max.toLocaleString()} ${availableSymbol} Available`)}</StyledMaxText>
     </StyledTokenInput>
   )
 }
+
+const StyledInputWrapper = styled.div`
+  align-items: center;
+  background-color: ${(props) => props.theme.colors.input};
+  border-radius: ${(props) => props.theme.radii.default};
+  display: flex;
+  height: 72px;
+  padding: 0 ${(props) => props.theme.spacing[3]}px;
+`
 
 const StyledTokenInput = styled.div``
 
