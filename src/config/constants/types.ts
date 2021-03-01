@@ -1,6 +1,6 @@
 import { TranslatableText } from 'state/types'
 
-export type IfoStatus = 'coming_soon' | 'live' | 'finished'
+export type IfoStatus = 'idle' | 'coming_soon' | 'live' | 'finished'
 
 export interface Ifo {
   id: string
@@ -18,6 +18,7 @@ export interface Ifo {
   currency: string
   currencyAddress: string
   tokenDecimals: number
+  tokenSymbol: string
   releaseBlockNumber: number
   campaignId?: string
 }
