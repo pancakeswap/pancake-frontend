@@ -48,7 +48,7 @@ const StyledCardAccent = styled.div`
   );
   background-size: 300% 300%;
   animation: ${RainbowLight} 2s linear infinite;
-  border-radius: 16px;
+  border-radius: 32px;
   filter: blur(6px);
   position: absolute;
   top: -2px;
