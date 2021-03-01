@@ -16,7 +16,7 @@ const UserBlock: React.FC<Props> = ({ account, login, logout }) => {
     <div>
       {account ? (
         <Button
-          size="sm"
+          scale="sm"
           variant="tertiary"
           onClick={() => {
             onPresentAccountModal();
@@ -26,7 +26,7 @@ const UserBlock: React.FC<Props> = ({ account, login, logout }) => {
         </Button>
       ) : (
         <Button
-          size="sm"
+          scale="sm"
           onClick={() => {
             onPresentConnectModal();
           }}

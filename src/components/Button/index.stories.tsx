@@ -1,12 +1,19 @@
+import { capitalize } from "lodash";
 import React from "react";
-import styled from "styled-components";
 import { BrowserRouter, Link } from "react-router-dom";
-import capitalize from "lodash/capitalize";
+import styled from "styled-components";
+import Box from "../Box/Box";
 import Flex from "../Box/Flex";
-import { LogoIcon, AddIcon, AutoRenewIcon } from "../Svg";
-import Button from "./Button";
+import { AddIcon, AutoRenewIcon, LogoIcon } from "../Svg";
 import IconButton from "./IconButton";
-import { variants } from "./types";
+import Button from "./Button";
+import { scales, variants } from "./types";
+
+export default {
+  title: "Components/Button",
+  component: Button,
+  argTypes: {},
+};
 
 const Row = styled(Flex)`
   margin-bottom: 32px;
@@ -16,78 +23,121 @@ const Row = styled(Flex)`
   }
 `;
 
-export default {
-  title: "Components/Button",
-  component: Button,
-  argTypes: {},
-};
-
 export const Default: React.FC = () => {
   return (
     <>
-      {Object.values(variants).map((variant) => (
-        <Row key={variant}>
-          <Button variant={variant}>{capitalize(variant)}</Button>
-          <Button variant={variant} disabled>
-            Disabled
-          </Button>
-          <Button variant={variant} size="sm">
-            Small
-          </Button>
-        </Row>
-      ))}
+      <Box mb="32px">
+        <button type="button">Unstyled Button</button>
+      </Box>
+      <Box mb="32px">
+        {Object.values(variants).map((variant) => {
+          return (
+            <Box key={variant} mb="32px">
+              {Object.values(scales).map((scale) => {
+                return (
+                  <Button key={scale} variant={variant} scale={scale} mr="8px">
+                    {`${capitalize(variant)} ${scale.toUpperCase()}`}
+                  </Button>
+                );
+              })}
+            </Box>
+          );
+        })}
+      </Box>
+      <Box>
+        <Button mr="8px" disabled>
+          Disabled
+        </Button>
+        <Button variant="secondary" disabled>
+          Disabled
+        </Button>
+      </Box>
+    </>
+  );
+};
+
+export const Anchors: React.FC = () => {
+  return (
+    <>
+      <Box mb="32px">
+        {Object.values(variants).map((variant) => {
+          return (
+            <Box key={variant} mb="32px">
+              {Object.values(scales).map((scale) => {
+                return (
+                  <Button
+                    as="a"
+                    href="https://pancakeswap.finance"
+                    key={scale}
+                    variant={variant}
+                    scale={scale}
+                    external
+                    mr="8px"
+                  >
+                    {`${capitalize(variant)} anchor ${scale.toUpperCase()}`}
+                  </Button>
+                );
+              })}
+            </Box>
+          );
+        })}
+      </Box>
+      <Box>
+        <Button as="a" href="https://pancakeswap.finance" mr="8px" external disabled>
+          Disabled
+        </Button>
+        <Button as="a" href="https://pancakeswap.finance" variant="secondary" external disabled>
+          Disabled
+        </Button>
+      </Box>
     </>
   );
 };
 
 export const Variants: React.FC = () => {
   return (
-    <BrowserRouter>
-      <Row>
-        <Button as="a" href="https://pancakeswap.finance" target="_blank" rel="noreferrer">
-          As an anchor
-        </Button>
-        <Button as={Link} to="/router-link" variant="secondary">
-          As an React Router link
-        </Button>
-        <Button as="a" href="https://pancakeswap.finance" disabled>
-          As an anchor (disabled)
-        </Button>
-      </Row>
-      <Row>
-        <Button fullWidth>Full size</Button>
-      </Row>
-      <Row>
-        <Button isLoading endIcon={<AutoRenewIcon spin color="currentColor" />}>
-          Approving
-        </Button>
-        <Button isLoading variant="success">
-          Approving
-        </Button>
-      </Row>
-      <Row>
-        <Button startIcon={<LogoIcon />}>Start Icon</Button>
-        <Button endIcon={<LogoIcon />}>End Icon</Button>
-        <Button startIcon={<LogoIcon />} endIcon={<LogoIcon />}>
-          Start & End Icon
-        </Button>
-      </Row>
-      <Row>
-        <IconButton>
-          <LogoIcon />
-        </IconButton>
-        <IconButton variant="secondary">
-          <AddIcon />
-        </IconButton>
-      </Row>
-      <Row>
-        <IconButton size="sm" variant="danger">
-          <LogoIcon />
-        </IconButton>
-        <IconButton size="sm" variant="success">
-          <AddIcon />
-        </IconButton>
-      </Row>
-    </BrowserRouter>
+    <Box width="640px">
+      <BrowserRouter>
+        <Row>
+          <Button as={Link} to="/router-link" variant="secondary">
+            As an React Router link
+          </Button>
+        </Row>
+        <Row>
+          <Button width="100%">Full size</Button>
+        </Row>
+        <Row>
+          <Button isLoading endIcon={<AutoRenewIcon spin color="currentColor" />}>
+            Approving
+          </Button>
+          <Button isLoading variant="success">
+            Approving
+          </Button>
+        </Row>
+        <Row>
+          <Button startIcon={<LogoIcon />}>Start Icon</Button>
+          <Button endIcon={<LogoIcon />}>End Icon</Button>
+          <Button startIcon={<LogoIcon />} endIcon={<LogoIcon />}>
+            Start & End Icon
+          </Button>
+        </Row>
+        <Row>
+          <IconButton>
+            <LogoIcon />
+          </IconButton>
+          <IconButton variant="secondary">
+            <AddIcon />
+          </IconButton>
+        </Row>
+        <Row>
+          <IconButton scale="sm" variant="danger">
+            <LogoIcon />
+          </IconButton>
+          <IconButton scale="sm" variant="success">
+            <AddIcon color="currentColor" />
+          </IconButton>
+        </Row>
+      </BrowserRouter>
+    </Box>
   );
 };

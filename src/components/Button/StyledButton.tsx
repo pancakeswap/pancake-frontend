@@ -1,16 +1,17 @@
 import styled, { DefaultTheme } from "styled-components";
-import { space } from "styled-system";
-import { ButtonProps, ButtonThemeVariant, variants } from "./types";
+import { space, layout, variant } from "styled-system";
+import { scaleVariants, styleVariants } from "./theme";
+import { BaseButtonProps } from "./types";
 
-type ThemedProps = {
+interface ThemedButtonProps extends BaseButtonProps {
   theme: DefaultTheme;
-} & ButtonProps;
+}
 
-const getDisabledStyles = ({ isLoading, theme }: ThemedProps) => {
+const getDisabledStyles = ({ isLoading, theme }: ThemedButtonProps) => {
   if (isLoading === true) {
     return `
       &:disabled,
-      &.button--disabled {
+      &.pancake-button--disabled {
         cursor: not-allowed;
       }
     `;
@@ -18,7 +19,7 @@ const getDisabledStyles = ({ isLoading, theme }: ThemedProps) => {
 
   return `
     &:disabled,
-    &.button--disabled {
+    &.pancake-button--disabled {
       background-color: ${theme.colors.backgroundDisabled};
       border-color: ${theme.colors.backgroundDisabled};
       box-shadow: none;
@@ -28,68 +29,54 @@ const getDisabledStyles = ({ isLoading, theme }: ThemedProps) => {
   `;
 };
 
-const removePointerEvents = ({ disabled, as }: ThemedProps) => {
-  if (disabled && as && as !== "button") {
-    return `
-      pointer-events: none;
-    `;
-  }
+/**
+ * This is to get around an issue where if you use a Link component
+ * React will throw a invalid DOM attribute error
+ * @see https://github.com/styled-components/styled-components/issues/135
+ */
+interface TransientButtonProps extends ThemedButtonProps {
+  $isLoading?: boolean;
+}
 
-  return "";
+const getOpacity = ({ $isLoading = false }: TransientButtonProps) => {
+  return $isLoading ? ".5" : "1";
 };
 
-const getButtonVariantProp = (prop: keyof ButtonThemeVariant) => ({
-  theme,
-  variant = variants.PRIMARY,
-}: ThemedProps) => {
-  return theme.button[variant][prop];
-};
-
-const StyledButton = styled.button<ButtonProps>`
+const StyledButton = styled.button<BaseButtonProps>`
   align-items: center;
-  background-color: ${getButtonVariantProp("background")};
-  border: ${getButtonVariantProp("border")};
+  border: 0;
   border-radius: 16px;
-  box-shadow: ${getButtonVariantProp("boxShadow")};
-  color: ${getButtonVariantProp("color")};
+  box-shadow: 0px -1px 0px 0px rgba(14, 14, 44, 0.4) inset;
   cursor: pointer;
   display: inline-flex;
   font-family: inherit;
   font-size: 16px;
   font-weight: 600;
-  /* max-content instead of auto for Safari fix */
-  width: ${({ fullWidth }) => (fullWidth ? "100%" : "max-content")};
-  height: ${({ size }) => (size === "sm" ? "32px" : "48px")};
-  line-height: 1;
-  letter-spacing: 0.03em;
   justify-content: center;
+  letter-spacing: 0.03em;
+  line-height: 1;
+  opacity: ${getOpacity};
   outline: 0;
-  padding: ${({ size }) => (size === "sm" ? "0 16px" : "0 24px")};
   transition: background-color 0.2s;
-  opacity: ${({ isLoading }) => (isLoading ? 0.5 : 1)};
 
-  &:hover:not(:disabled):not(.button--disabled):not(:active) {
-    background-color: ${getButtonVariantProp("backgroundHover")};
-    border-color: ${getButtonVariantProp("borderColorHover")};
+  &:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
+    opacity: 0.65;
   }
 
-  &:focus:not(:active) {
-    box-shadow: 0 0 0 2px ${({ theme }) => theme.colors.secondary};
-  }
-
-  &:active {
-    background-color: ${getButtonVariantProp("backgroundActive")};
-    box-shadow: ${getButtonVariantProp("boxShadowActive")};
+  &:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
+    opacity: 0.85;
   }
 
   ${getDisabledStyles}
-  ${removePointerEvents}
+  ${variant({
+    prop: "scale",
+    variants: scaleVariants,
+  })}
+  ${variant({
+    variants: styleVariants,
+  })}
+  ${layout}
   ${space}
 `;
-
-StyledButton.defaultProps = {
-  fullWidth: false,
-  type: "button",
-};
 
 export default StyledButton;

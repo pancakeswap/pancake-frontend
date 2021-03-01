@@ -1,10 +1,10 @@
 import styled from "styled-components";
 import Button from "./Button";
-import { ButtonProps } from "./types";
+import { BaseButtonProps, PolymorphicComponent } from "./types";
 
-const IconButton = styled(Button)<ButtonProps>`
+const IconButton: PolymorphicComponent<BaseButtonProps, "button"> = styled(Button)<BaseButtonProps>`
   padding: 0;
-  width: ${({ size }) => (size === "sm" ? "32px" : "48px")};
+  width: ${({ scale }) => (scale === "sm" ? "32px" : "48px")};
 `;
 
 export default IconButton;

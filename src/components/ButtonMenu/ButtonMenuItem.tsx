@@ -1,34 +1,32 @@
 import React from "react";
 import styled from "styled-components";
 import Button from "../Button/Button";
-import { sizes, variants } from "../Button/types";
+import { BaseButtonProps, PolymorphicComponent, variants } from "../Button/types";
 import { ButtonMenuItemProps } from "./types";
 
-type InactiveButtonProps = {
+interface InactiveButtonProps extends BaseButtonProps {
+  forwardedAs: BaseButtonProps["as"];
   colorKey: "primary" | "textSubtle";
-} & ButtonMenuItemProps;
+}
 
-const InactiveButton = styled(Button)<InactiveButtonProps>`
+const InactiveButton: PolymorphicComponent<InactiveButtonProps, "button"> = styled(Button)<InactiveButtonProps>`
   background-color: transparent;
   color: ${({ theme, colorKey }) => theme.colors[colorKey]};
-
   &:hover:not(:disabled):not(:active) {
     background-color: transparent;
   }
 `;
 
-const ButtonMenuItem: React.FC<ButtonMenuItemProps> = ({
+const ButtonMenuItem: PolymorphicComponent<ButtonMenuItemProps, "button"> = ({
   isActive = false,
-  size = sizes.MD,
   variant = variants.PRIMARY,
   as,
   ...props
-}) => {
+}: ButtonMenuItemProps) => {
   if (!isActive) {
     return (
       <InactiveButton
         forwardedAs={as}
-        size={size}
         variant="tertiary"
         colorKey={variant === variants.PRIMARY ? "primary" : "textSubtle"}
         {...props}
@@ -36,7 +34,7 @@ const ButtonMenuItem: React.FC<ButtonMenuItemProps> = ({
     );
   }
 
-  return <Button as={as} size={size} variant={variant} {...props} />;
+  return <Button as={as} variant={variant} {...props} />;
 };
 
 export default ButtonMenuItem;

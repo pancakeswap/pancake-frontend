@@ -15,7 +15,7 @@ const WalletCard: React.FC<Props> = ({ login, walletConfig, onDismiss, mb }) => 
   const { title, icon: Icon } = walletConfig;
   return (
     <Button
-      fullWidth
+      width="100%"
       variant="tertiary"
       onClick={() => {
         login(walletConfig.connectorId);

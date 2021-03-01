@@ -11,14 +11,14 @@ interface ToastActionProps {
 const ToastAction: React.FC<ToastActionProps> = ({ action }) => {
   if (action.url.startsWith("http")) {
     return (
-      <Button as="a" size="sm" href={action.url} {...getExternalLinkProps()}>
+      <Button as="a" scale="sm" href={action.url} {...getExternalLinkProps()}>
         {action.text}
       </Button>
     );
   }
 
   return (
-    <Button as={Link} size="sm" to={action.url}>
+    <Button as={Link} scale="sm" to={action.url}>
       {action.text}
     </Button>
   );
