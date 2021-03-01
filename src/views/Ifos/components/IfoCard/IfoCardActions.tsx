@@ -1,5 +1,5 @@
 import React from 'react'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWeb3React } from '@web3-react/core'
 import { Ifo } from 'config/constants/types'
 import UnlockButton from 'components/UnlockButton'
 import { PublicIfoState } from 'views/Ifos/hooks/useGetPublicIfoData'
@@ -24,7 +24,7 @@ const IfoCardActions: React.FC<Props> = ({ ifo, publicIfoData }) => {
     addUserContributedAmount,
     setIsClaimed,
   } = useGetWalletIfoData(ifo)
-  const { account } = useWallet()
+  const { account } = useWeb3React()
 
   if (!account) {
     return <UnlockButton />

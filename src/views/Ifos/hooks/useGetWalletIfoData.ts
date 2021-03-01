@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
 import { Ifo } from 'config/constants/types'
 import { useERC20, useIfoContract } from 'hooks/useContract'
@@ -33,7 +33,7 @@ const useGetWalletIfoData = (ifo: Ifo) => {
   const { address, currencyAddress } = ifo
   const { isPendingTx } = state
 
-  const { account } = useWallet()
+  const { account } = useWeb3React()
   const contract = useIfoContract(address)
   const currencyContract = useERC20(currencyAddress)
   const allowance = useIfoAllowance(currencyContract, address, isPendingTx)

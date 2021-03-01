@@ -1,6 +1,6 @@
 import React from 'react'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
 import styled from 'styled-components'
+import { useWeb3React } from '@web3-react/core'
 import { Contract } from 'web3-eth-contract'
 import { AutoRenewIcon, Box, Button, Flex, Text } from '@pancakeswap-libs/uikit'
 import { useToast } from 'state/hooks'
@@ -39,7 +39,7 @@ const Claim: React.FC<ClaimProps> = ({
   setIsClaimed,
 }) => {
   const TranslateString = useI18n()
-  const { account } = useWallet()
+  const { account } = useWeb3React()
   const didContribute = userInfo.amount.gt(0)
   const canClaim = !userInfo.claimed && offeringTokenBalance.gt(0)
   const contributedBalance = getBalanceNumber(userInfo.amount)
