@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
 import { Modal, Button, Flex, LinkExternal } from '@pancakeswap-libs/uikit'
 import BalanceInput from 'components/Input/BalanceInput'
@@ -16,7 +16,7 @@ interface Props {
 const ContributeModal: React.FC<Props> = ({ currency, contract, currencyAddress, onDismiss }) => {
   const [value, setValue] = useState('')
   const [pendingTx, setPendingTx] = useState(false)
-  const { account } = useWallet()
+  const { account } = useWeb3React()
   const balance = getFullDisplayBalance(useTokenBalance(currencyAddress))
 
   return (
