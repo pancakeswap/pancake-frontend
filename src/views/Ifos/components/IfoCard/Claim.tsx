@@ -87,7 +87,7 @@ const Claim: React.FC<ClaimProps> = ({
               TranslateString(999, `${refundedBalance} to reclaim`, { num: refundedBalance })}
             {hasParticipated &&
               !canClaim &&
-              TranslateString(999, `${refundedBalance} to reclaimed`, { num: refundedBalance })}
+              TranslateString(999, `${refundedBalance} reclaimed`, { num: refundedBalance })}
           </MetaLabel>
         </Box>
         <Box>
