@@ -18,6 +18,7 @@ const IfoCardActions: React.FC<Props> = ({ ifo, publicIfoData }) => {
   const {
     isPendingTx,
     offeringTokenBalance,
+    refundingAmount,
     userInfo,
     contract,
     setPendingTx,
@@ -52,6 +53,7 @@ const IfoCardActions: React.FC<Props> = ({ ifo, publicIfoData }) => {
           isPendingTx={isPendingTx}
           setPendingTx={setPendingTx}
           offeringTokenBalance={offeringTokenBalance}
+          refundingAmount={refundingAmount}
           setIsClaimed={setIsClaimed}
         />
       )}

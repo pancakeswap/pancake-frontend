@@ -1,6 +1,6 @@
 import React from 'react'
-import { Box, Text } from '@pancakeswap-libs/uikit'
 import { useGetApiPrice } from 'state/hooks'
+import MetaLabel from './MetaLabel'
 
 interface BalanceInUsdProps {
   token: string
@@ -13,11 +13,9 @@ const BalanceInUsd: React.FC<BalanceInUsdProps> = ({ token, balance }) => {
   const total = priceInUsd * balance
 
   return (
-    <Box minHeight="18px">
-      <Text color="textSubtle" fontSize="12px">
-        {hasBalance && `~$${total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
-      </Text>
-    </Box>
+    <MetaLabel>
+      {hasBalance && `~$${total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
+    </MetaLabel>
   )
 }
 

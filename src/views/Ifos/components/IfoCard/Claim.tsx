@@ -9,6 +9,7 @@ import { getBalanceNumber } from 'utils/formatBalance'
 import { Ifo } from 'config/constants/types'
 import { UserInfo, WalletIfoState } from '../../hooks/useGetWalletIfoData'
 import BalanceInUsd from './BalanceInUsd'
+import MetaLabel from './MetaLabel'
 
 interface ClaimProps {
   ifo: Ifo
@@ -17,6 +18,7 @@ interface ClaimProps {
   isPendingTx: WalletIfoState['isPendingTx']
   setPendingTx: (status: boolean) => void
   offeringTokenBalance: WalletIfoState['offeringTokenBalance']
+  refundingAmount: WalletIfoState['refundingAmount']
   setIsClaimed: () => void
 }
 
@@ -36,6 +38,7 @@ const Claim: React.FC<ClaimProps> = ({
   isPendingTx,
   setPendingTx,
   offeringTokenBalance,
+  refundingAmount,
   setIsClaimed,
 }) => {
   const TranslateString = useI18n()
@@ -43,9 +46,11 @@ const Claim: React.FC<ClaimProps> = ({
   const didContribute = userInfo.amount.gt(0)
   const canClaim = !userInfo.claimed && offeringTokenBalance.gt(0)
   const contributedBalance = getBalanceNumber(userInfo.amount)
+  const refundedBalance = getBalanceNumber(refundingAmount).toFixed(userInfo.amount.eq(0) ? 0 : DISPLAY_DECIMALS)
   const { tokenSymbol, tokenDecimals } = ifo
   const rewardBalance = getBalanceNumber(offeringTokenBalance, tokenDecimals)
   const { toastError, toastSuccess } = useToast()
+  const hasParticipated = offeringTokenBalance.gt(0)
 
   const handleClaim = async () => {
     try {
@@ -76,20 +81,34 @@ const Claim: React.FC<ClaimProps> = ({
           <Text fontSize="20px" bold color={offeringTokenBalance.gt(0) ? 'text' : 'textDisabled'}>
             {contributedBalance.toFixed(userInfo.amount.eq(0) ? 0 : DISPLAY_DECIMALS)}
           </Text>
+          <MetaLabel>
+            {hasParticipated &&
+              canClaim &&
+              TranslateString(999, `${refundedBalance} to reclaim`, { num: refundedBalance })}
+            {hasParticipated &&
+              !canClaim &&
+              TranslateString(999, `${refundedBalance} reclaimed`, { num: refundedBalance })}
+          </MetaLabel>
         </Box>
         <Box>
           <Flex mb="4px">
             <Text as="span" bold fontSize="12px" mr="4px" textTransform="uppercase">
               {tokenSymbol}
             </Text>
-            <Text as="span" color="textSubtle" fontSize="12px" textTransform="uppercase" bold>
-              To Claim
-            </Text>
+            {!canClaim && hasParticipated ? (
+              <Text as="span" color="textSubtle" fontSize="12px" textTransform="uppercase" bold>
+                Claimed
+              </Text>
+            ) : (
+              <Text as="span" color="textSubtle" fontSize="12px" textTransform="uppercase" bold>
+                To Claim
+              </Text>
+            )}
           </Flex>
           <Text fontSize="20px" bold color={offeringTokenBalance.gt(0) ? 'text' : 'textDisabled'}>
             {rewardBalance.toFixed(offeringTokenBalance.eq(0) ? 0 : DISPLAY_DECIMALS)}
           </Text>
-          <BalanceInUsd token={tokenSymbol} balance={rewardBalance} />
+          {canClaim && <BalanceInUsd token={tokenSymbol} balance={rewardBalance} />}
         </Box>
       </AmountGrid>
       {didContribute ? (

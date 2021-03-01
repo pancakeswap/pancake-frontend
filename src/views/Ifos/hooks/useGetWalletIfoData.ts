@@ -14,6 +14,7 @@ export interface UserInfo {
 export interface WalletIfoState {
   isPendingTx: boolean
   offeringTokenBalance: BigNumber
+  refundingAmount: BigNumber
   userInfo: UserInfo
 }
 
@@ -24,6 +25,7 @@ const useGetWalletIfoData = (ifo: Ifo) => {
   const [state, setState] = useState<WalletIfoState>({
     isPendingTx: false,
     offeringTokenBalance: new BigNumber(0),
+    refundingAmount: new BigNumber(0),
     userInfo: {
       amount: new BigNumber(0),
       claimed: false,
@@ -66,14 +68,16 @@ const useGetWalletIfoData = (ifo: Ifo) => {
 
   useEffect(() => {
     const fetchIfoData = async () => {
-      const [offeringAmount, userInfoResponse] = (await makeBatchRequest([
+      const [offeringAmount, userInfoResponse, refundingAmount] = (await makeBatchRequest([
         contract.methods.getOfferingAmount(account).call,
         contract.methods.userInfo(account).call,
-      ])) as [string, UserInfo]
+        contract.methods.getRefundingAmount(account).call,
+      ])) as [string, UserInfo, string]
 
       setState((prevState) => ({
         ...prevState,
         offeringTokenBalance: new BigNumber(offeringAmount),
+        refundingAmount: new BigNumber(refundingAmount),
         userInfo: {
           amount: new BigNumber(userInfoResponse.amount),
           claimed: userInfoResponse.claimed,
