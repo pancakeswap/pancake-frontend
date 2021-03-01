@@ -28,9 +28,9 @@ export const useLotteryAllowance = () => {
 }
 
 // Retrieve IFO allowance
-export const useIfoAllowance = (tokenContract: Contract, spenderAddress: string, dependency?: any) => {
+export const useIfoAllowance = (tokenContract: Contract, spenderAddress: string, dependency?: any): BigNumber => {
   const { account } = useWeb3React()
-  const [allowance, setAllowance] = useState(null)
+  const [allowance, setAllowance] = useState(new BigNumber(0))
 
   useEffect(() => {
     const fetch = async () => {
@@ -38,7 +38,7 @@ export const useIfoAllowance = (tokenContract: Contract, spenderAddress: string,
         const res = await tokenContract.methods.allowance(account, spenderAddress).call()
         setAllowance(new BigNumber(res))
       } catch (e) {
-        setAllowance(null)
+        console.error(e)
       }
     }
     fetch()

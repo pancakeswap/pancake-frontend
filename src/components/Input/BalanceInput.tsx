@@ -1,62 +1,51 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Button } from '@pancakeswap-libs/uikit'
+import { Button, Box, BoxProps, Flex, Text } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
-import Input, { InputProps } from './Input'
+import Input from './Input'
 
-interface Props extends InputProps {
-  max: number | string
+interface BalanceInputProps extends BoxProps {
+  title: string
+  max: number
   symbol: string
+  onChange: (evt: React.FormEvent<HTMLInputElement>) => void
+  value: string
   onSelectMax?: () => void
 }
 
-const StyledSpacer = styled.div`
-  width: ${(props) => props.theme.spacing[3]}px;
+const StyledBalanceInput = styled(Box)`
+  background: ${({ theme }) => theme.colors.input};
+  box-shadow: 0px 2px 2px -1px rgba(0, 0, 0, 0.2) inset;
+  border-radius: ${({ theme }) => theme.radii.default};
+  padding: 8px 16px;
 `
 
-const StyledTokenAdornmentWrapper = styled.div`
-  align-items: center;
-  display: flex;
-`
-
-const StyledMaxText = styled.div`
-  align-items: center;
-  color: ${(props) => props.theme.colors.primary};
-  display: flex;
-  font-size: 14px;
-  font-weight: 700;
-  height: 44px;
-  justify-content: flex-end;
-`
-
-const StyledTokenSymbol = styled.span`
-  color: ${(props) => props.theme.colors.primary};
-  font-weight: 700;
-`
-
-const BalanceInput: React.FC<Props> = ({ max, symbol, onChange, onSelectMax, value }) => {
+const BalanceInput: React.FC<BalanceInputProps> = ({ title, max, symbol, onChange, onSelectMax, value, ...props }) => {
   const TranslateString = useI18n()
+  const maxDisplay = max.toFixed(6)
 
   return (
-    <div>
+    <StyledBalanceInput {...props}>
+      <Flex alignItems="center" justifyContent="space-between" mb="8px">
+        <Text fontSize="14px">{title}</Text>
+        <Text fontSize="14px">{TranslateString(999, `Balance: ${maxDisplay}`, { num: maxDisplay })}</Text>
+      </Flex>
       <Input
         endAdornment={
-          <StyledTokenAdornmentWrapper>
-            <StyledTokenSymbol>{symbol}</StyledTokenSymbol>
-            <StyledSpacer />
-            <div>
-              <Button size="sm" onClick={onSelectMax}>
+          <Flex alignItems="center">
+            {onSelectMax && (
+              <Button size="sm" onClick={onSelectMax} mr="8px">
                 {TranslateString(452, 'Max')}
               </Button>
-            </div>
-          </StyledTokenAdornmentWrapper>
+            )}
+            <Text>{symbol}</Text>
+          </Flex>
         }
         onChange={onChange}
         placeholder="0"
         value={value}
       />
-      <StyledMaxText>{TranslateString(454, `${max.toLocaleString()} ${symbol} Available`)}</StyledMaxText>
-    </div>
+    </StyledBalanceInput>
   )
 }
 

@@ -104,11 +104,29 @@ export interface AchievementState {
   data: Achievement[]
 }
 
+// API Price State
+export interface PriceList {
+  [key: string]: number
+}
+
+export interface PriceApiResponse {
+  /* eslint-disable camelcase */
+  update_at: string
+  prices: PriceList
+}
+
+export interface PriceState {
+  isLoading: boolean
+  lastUpdated: string
+  data: PriceList
+}
+
 // Global state
 
 export interface State {
   farms: FarmsState
   toasts: ToastsState
+  prices: PriceState
   pools: PoolsState
   profile: ProfileState
   teams: TeamsState

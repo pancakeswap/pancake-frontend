@@ -1,58 +1,91 @@
 import React, { useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
-import { Modal, Button, Flex, LinkExternal } from '@pancakeswap-libs/uikit'
+import { ethers } from 'ethers'
+import { Modal, LinkExternal, Box } from '@pancakeswap-libs/uikit'
 import BalanceInput from 'components/Input/BalanceInput'
 import useTokenBalance from 'hooks/useTokenBalance'
-import { getFullDisplayBalance } from 'utils/formatBalance'
+import { getBalanceNumber } from 'utils/formatBalance'
+import useI18n from 'hooks/useI18n'
+import ApproveConfirmButtons from 'views/Profile/components/ApproveConfirmButtons'
+import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
+import { useERC20 } from 'hooks/useContract'
 
 interface Props {
   currency: string
   contract: any
   currencyAddress: string
+  onSuccess: (amount: BigNumber) => void
   onDismiss?: () => void
 }
 
-const ContributeModal: React.FC<Props> = ({ currency, contract, currencyAddress, onDismiss }) => {
+const ContributeModal: React.FC<Props> = ({ currency, contract, currencyAddress, onDismiss, onSuccess }) => {
   const [value, setValue] = useState('')
-  const [pendingTx, setPendingTx] = useState(false)
   const { account } = useWeb3React()
-  const balance = getFullDisplayBalance(useTokenBalance(currencyAddress))
+  const raisingTokenContract = useERC20(currencyAddress)
+  const balance = getBalanceNumber(useTokenBalance(currencyAddress))
+  const TranslateString = useI18n()
+  const valueWithTokenDecimals = new BigNumber(value).times(new BigNumber(10).pow(18))
+  const {
+    isApproving,
+    isApproved,
+    isConfirmed,
+    isConfirming,
+    handleApprove,
+    handleConfirm,
+  } = useApproveConfirmTransaction({
+    onRequiresApproval: async () => {
+      try {
+        const response = await raisingTokenContract.methods.allowance(account, contract.options.address).call()
+        const currentAllowance = new BigNumber(response)
+        return currentAllowance.gt(0)
+      } catch (error) {
+        return false
+      }
+    },
+    onApprove: () => {
+      return raisingTokenContract.methods
+        .approve(contract.options.address, ethers.constants.MaxUint256)
+        .send({ from: account })
+    },
+    onConfirm: () => {
+      return contract.methods.deposit(valueWithTokenDecimals.toString()).send({ from: account })
+    },
+    onSuccess: async () => {
+      onDismiss()
+      onSuccess(valueWithTokenDecimals)
+    },
+  })
 
   return (
     <Modal title={`Contribute ${currency}`} onDismiss={onDismiss}>
-      <BalanceInput
-        value={value}
-        onChange={(e) => setValue(e.currentTarget.value)}
-        symbol={currency}
-        max={balance}
-        onSelectMax={() => setValue(balance.toString())}
-      />
-      <Flex justifyContent="space-between" mb="24px">
-        <Button fullWidth variant="secondary" onClick={onDismiss} mr="8px">
-          Cancel
-        </Button>
-        <Button
-          fullWidth
-          disabled={pendingTx}
-          onClick={async () => {
-            setPendingTx(true)
-            await contract.methods
-              .deposit(new BigNumber(value).times(new BigNumber(10).pow(18)).toString())
-              .send({ from: account })
-            setPendingTx(false)
-            onDismiss()
-          }}
+      <Box width="344px">
+        <BalanceInput
+          title={TranslateString(999, 'Contribute')}
+          value={value}
+          onChange={(e) => setValue(e.currentTarget.value)}
+          symbol={currency}
+          max={balance}
+          onSelectMax={() => setValue(balance.toString())}
+          mb="24px"
+        />
+        <ApproveConfirmButtons
+          isApproveDisabled={isConfirmed || isConfirming || isApproved}
+          isApproving={isApproving}
+          isConfirmDisabled={
+            !isApproved || isConfirmed || valueWithTokenDecimals.isNaN() || valueWithTokenDecimals.eq(0)
+          }
+          isConfirming={isConfirming}
+          onApprove={handleApprove}
+          onConfirm={handleConfirm}
+        />
+        <LinkExternal
+          href="https://exchange.pancakeswap.finance/#/add/ETH/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82"
+          style={{ margin: '16px auto 0' }}
         >
-          Confirm
-        </Button>
-      </Flex>
-      <LinkExternal
-        href="https://exchange.pancakeswap.finance/#/add/ETH/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82"
-        style={{ margin: 'auto' }}
-      >
-        {`Get ${currency}`}
-      </LinkExternal>
+          {`Get ${currency}`}
+        </LinkExternal>
+      </Box>
     </Modal>
   )
 }
