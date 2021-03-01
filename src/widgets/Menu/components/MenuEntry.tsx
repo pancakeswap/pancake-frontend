@@ -1,5 +1,5 @@
 import styled, { keyframes, DefaultTheme } from "styled-components";
-import { MENU_ENTRY_HEIGHT } from "./config";
+import { MENU_ENTRY_HEIGHT } from "../config";
 
 export interface Props {
   secondary?: boolean;
@@ -53,7 +53,7 @@ const MenuEntry = styled.div<Props>`
   flex-shrink: 0;
 
   &.rainbow {
-    -webkit-background-clip: text;
+    background-clip: text;
     animation: ${rainbowAnimation} 3s ease-in-out infinite;
     background: ${({ theme }) => theme.colors.gradients.bubblegum};
     background-size: 400% 100%;

@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import noop from "lodash/noop";
 import { BrowserRouter } from "react-router-dom";
 import Flex from "../../components/Box/Flex";
 import Heading from "../../components/Heading/Heading";
 import Text from "../../components/Text/Text";
+import { MenuEntry } from "./components/MenuEntry";
 import Menu from "./Menu";
-import { MenuEntry } from "./MenuEntry";
 import { LangType } from "./types";
 import { links } from "./config";
 
@@ -17,22 +17,51 @@ export default {
 
 const langs: LangType[] = [...Array(20)].map((_, i) => ({ code: `en${i}`, language: `English${i}` }));
 
+// This hook is used to simulate a props change, and force a re rendering
+const useProps = () => {
+  const [props, setProps] = useState({
+    account: "0xbdda50183d817c3289f895a4472eb475967dc980",
+    login: noop,
+    logout: noop,
+    isDark: false,
+    toggleTheme: noop,
+    langs,
+    setLang: noop,
+    currentLang: "EN",
+    cakePriceUsd: 0.023158668932877668,
+    links,
+    profile: null,
+  });
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setProps({
+        account: "0xbdda50183d817c3289f895a4472eb475967dc980",
+        login: noop,
+        logout: noop,
+        isDark: false,
+        toggleTheme: noop,
+        langs,
+        setLang: noop,
+        currentLang: "EN",
+        cakePriceUsd: 0.023158668932877668,
+        links,
+        profile: null,
+      });
+    }, 2000);
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+
+  return props;
+};
+
 export const Connected: React.FC = () => {
+  const props = useProps();
   return (
     <BrowserRouter>
-      <Menu
-        account="0xbdda50183d817c3289f895a4472eb475967dc980"
-        login={noop}
-        logout={noop}
-        isDark={false}
-        toggleTheme={noop}
-        langs={langs}
-        setLang={noop}
-        currentLang="EN"
-        cakePriceUsd={0.23158668932877668}
-        links={links}
-        profile={null}
-      >
+      <Menu {...props}>
         <div>
           <Heading as="h1" mb="8px">
             Page body

@@ -1,17 +1,17 @@
 import React from "react";
 import styled from "styled-components";
-import { PancakeRoundIcon, CogIcon, SvgProps } from "../../components/Svg";
-import Text from "../../components/Text/Text";
-import Flex from "../../components/Box/Flex";
-import Dropdown from "../../components/Dropdown/Dropdown";
-import Link from "../../components/Link/Link";
-import Skeleton from "../../components/Skeleton/Skeleton";
-import Button from "../../components/Button/Button";
-import IconButton from "../../components/Button/IconButton";
+import { PancakeRoundIcon, CogIcon, SvgProps } from "../../../components/Svg";
+import Text from "../../../components/Text/Text";
+import Flex from "../../../components/Box/Flex";
+import Dropdown from "../../../components/Dropdown/Dropdown";
+import Link from "../../../components/Link/Link";
+import Skeleton from "../../../components/Skeleton/Skeleton";
+import Button from "../../../components/Button/Button";
+import IconButton from "../../../components/Button/IconButton";
 import MenuButton from "./MenuButton";
-import * as IconModule from "./icons";
-import { socials, MENU_ENTRY_HEIGHT } from "./config";
-import { PanelProps, PushedProps } from "./types";
+import * as IconModule from "../icons";
+import { socials, MENU_ENTRY_HEIGHT } from "../config";
+import { PanelProps, PushedProps } from "../types";
 
 interface Props extends PanelProps, PushedProps {}
 
