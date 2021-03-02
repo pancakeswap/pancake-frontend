@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import { useLocation } from 'react-router-dom'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWeb3React } from '@web3-react/core'
 import { useModal } from '@pancakeswap-libs/uikit'
 import useGetBullHiccupClaimableStatus from '../hooks/useGetBullHiccupClaimableStatus'
 import ClaimBullHiccupNftModal from './ClaimBullHiccupNftModal'
@@ -17,7 +17,7 @@ const GlobalCheckBullHiccupClaimStatus = () => {
   const [onPresentGiftModal] = useModal(
     <ClaimBullHiccupNftModal isBullClaimable={isBullClaimable} isHiccupClaimable={isHiccupClaimable} />,
   )
-  const { account } = useWallet()
+  const { account } = useWeb3React()
   const { pathname } = useLocation()
 
   useEffect(() => {

@@ -22,7 +22,7 @@ const WarningModal: React.FC<{ onDismiss?: () => void }> = ({ onDismiss }) => {
         )}
       </TicketsList>
       <ModalActions>
-        <Button fullWidth onClick={onDismiss}>
+        <Button width="100%" onClick={onDismiss}>
           {TranslateString(476, 'I understand')}
         </Button>
       </ModalActions>

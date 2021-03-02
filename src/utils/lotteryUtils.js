@@ -1,7 +1,7 @@
 /* eslint-disable no-await-in-loop */
 import BigNumber from 'bignumber.js'
 import { Interface } from '@ethersproject/abi'
-import { getWeb3 } from 'utils/web3'
+import { getWeb3NoAccount } from 'utils/web3'
 import MultiCallAbi from 'config/abi/Multicall.json'
 import ticketAbi from 'config/abi/lotteryNft.json'
 import lotteryAbi from 'config/abi/lottery.json'
@@ -9,7 +9,7 @@ import { LOTTERY_TICKET_PRICE } from 'config'
 import { getMulticallAddress } from './addressHelpers'
 
 export const multiCall = async (abi, calls) => {
-  const web3 = getWeb3()
+  const web3 = getWeb3NoAccount()
   const multi = new web3.eth.Contract(MultiCallAbi, getMulticallAddress())
   const itf = new Interface(abi)
   let res = []

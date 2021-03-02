@@ -43,7 +43,7 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ onConfirm, onDismiss, max
         inputTitle={TranslateString(588, 'Unstake')}
       />
       <ModalActions>
-        <Button variant="secondary" onClick={onDismiss} fullWidth>
+        <Button variant="secondary" onClick={onDismiss} width="100%">
           {TranslateString(462, 'Cancel')}
         </Button>
         <Button
@@ -54,7 +54,7 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ onConfirm, onDismiss, max
             setPendingTx(false)
             onDismiss()
           }}
-          fullWidth
+          width="100%"
         >
           {pendingTx ? TranslateString(488, 'Pending Confirmation') : TranslateString(464, 'Confirm')}
         </Button>
