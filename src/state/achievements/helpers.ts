@@ -20,7 +20,7 @@ export const getUserPointIncreaseEvents = async (account: string): Promise<UserP
       profileSubgraphApi,
       gql`
         {
-          user(id: "${account}") {
+          user(id: "${account.toLowerCase()}") {
             points {
               id
               campaignId
