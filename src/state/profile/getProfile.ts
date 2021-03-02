@@ -1,6 +1,7 @@
 import Cookies from 'js-cookie'
 import { getProfileContract, getPancakeRabbitContract } from 'utils/contractHelpers'
 import { Nft } from 'config/constants/types'
+import { API_PROFILE } from 'config'
 import { Profile } from 'state/types'
 import { getTeam } from 'state/teams/helpers'
 import nfts from 'config/constants/nfts'
@@ -8,7 +9,6 @@ import { transformProfileResponse } from './helpers'
 
 const profileContract = getProfileContract()
 const rabbitContract = getPancakeRabbitContract()
-const profileApi = process.env.REACT_APP_API_PROFILE
 
 export interface GetProfileResponse {
   hasRegistered: boolean
@@ -17,7 +17,7 @@ export interface GetProfileResponse {
 
 const getUsername = async (address: string): Promise<string> => {
   try {
-    const response = await fetch(`${profileApi}/api/users/${address}`)
+    const response = await fetch(`${API_PROFILE}/api/users/${address}`)
 
     if (!response.ok) {
       return ''

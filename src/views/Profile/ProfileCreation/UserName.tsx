@@ -18,6 +18,7 @@ import {
 } from '@pancakeswap-libs/uikit'
 import { parseISO, formatDistance } from 'date-fns'
 import { useWeb3React } from '@web3-react/core'
+import { API_PROFILE } from 'config'
 import { useToast } from 'state/hooks'
 import useWeb3 from 'hooks/useWeb3'
 import useI18n from 'hooks/useI18n'
@@ -33,7 +34,6 @@ enum ExistingUserState {
   NEW = 'new', // username has not been created
 }
 
-const profileApiUrl = process.env.REACT_APP_API_PROFILE
 const minimumCakeToRegister = new BigNumber(REGISTER_COST).multipliedBy(new BigNumber(10).pow(18))
 
 const InputWrap = styled.div`
@@ -84,7 +84,7 @@ const UserName: React.FC = () => {
   const checkUsernameValidity = debounce(async (value: string) => {
     try {
       setIsLoading(true)
-      const res = await fetch(`${profileApiUrl}/api/users/valid/${value}`)
+      const res = await fetch(`${API_PROFILE}/api/users/valid/${value}`)
 
       if (res.ok) {
         setIsValid(true)
@@ -113,7 +113,7 @@ const UserName: React.FC = () => {
         ? (await library.bnbSign(account, userName))?.signature
         : await web3.eth.personal.sign(userName, account, null) // Last param is the password, and is null to request a signature in the wallet
 
-      const response = await fetch(`${profileApiUrl}/api/users/register`, {
+      const response = await fetch(`${API_PROFILE}/api/users/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -144,7 +144,7 @@ const UserName: React.FC = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch(`${profileApiUrl}/api/users/${account}`)
+        const response = await fetch(`${API_PROFILE}/api/users/${account}`)
         const data = await response.json()
 
         if (response.ok) {

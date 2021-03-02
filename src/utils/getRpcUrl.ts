@@ -1,11 +1,6 @@
-import random from 'lodash/random'
+import { NODE_1, NODE_2, NODE_3 } from 'config'
+import sample from 'lodash/sample'
 
-// Array of available nodes to connect to
-const nodes = [process.env.REACT_APP_NODE_1, process.env.REACT_APP_NODE_2, process.env.REACT_APP_NODE_3]
-
-const getNodeUrl = () => {
-  const randomIndex = random(0, nodes.length - 1)
-  return nodes[randomIndex]
-}
+const getNodeUrl = () => sample([NODE_1, NODE_2, NODE_3])
 
 export default getNodeUrl
