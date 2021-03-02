@@ -69,7 +69,7 @@ const PauseProfilePage: React.FC<PauseProfilePageProps> = ({ onDismiss }) => {
         </Flex>
       </label>
       <Button
-        fullWidth
+        width="100%"
         isLoading={isConfirming}
         endIcon={isConfirming ? <AutoRenewIcon spin color="currentColor" /> : null}
         disabled={!isAcknowledged || isConfirming}
@@ -78,7 +78,7 @@ const PauseProfilePage: React.FC<PauseProfilePageProps> = ({ onDismiss }) => {
       >
         {TranslateString(999, 'Confirm')}
       </Button>
-      <Button variant="text" fullWidth onClick={onDismiss}>
+      <Button variant="text" width="100%" onClick={onDismiss}>
         {TranslateString(999, 'Close Window')}
       </Button>
     </>

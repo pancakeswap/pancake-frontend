@@ -56,7 +56,7 @@ const PastLotterySearcher: React.FC<PastLotterySearcherProps> = ({ initialLotter
             onChange={handleChange}
           />
           <ButtonWrapper>
-            <Button type="submit" size="sm" disabled={isError}>
+            <Button type="submit" scale="sm" disabled={isError}>
               {TranslateString(744, 'Search')}
             </Button>
           </ButtonWrapper>

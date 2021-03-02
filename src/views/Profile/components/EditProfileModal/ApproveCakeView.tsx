@@ -55,13 +55,13 @@ const ApproveCakePage: React.FC<ApproveCakePageProps> = ({ goToChange, onDismiss
         disabled={isApproving}
         isLoading={isApproving}
         endIcon={isApproving ? <AutoRenewIcon spin color="currentColor" /> : null}
-        fullWidth
+        width="100%"
         mb="8px"
         onClick={handleApprove}
       >
         {TranslateString(999, 'Approve')}
       </Button>
-      <Button variant="text" fullWidth onClick={onDismiss} disabled={isApproving}>
+      <Button variant="text" width="100%" onClick={onDismiss} disabled={isApproving}>
         {TranslateString(999, 'Close Window')}
       </Button>
     </Flex>

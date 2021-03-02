@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Button, Input, InputProps } from '@pancakeswap-libs/uikit'
+import { Button, Flex, Input, InputProps } from '@pancakeswap-libs/uikit'
 import useI18n from '../../hooks/useI18n'
 
 interface TokenInputProps extends InputProps {
@@ -8,7 +8,7 @@ interface TokenInputProps extends InputProps {
   symbol: string
   value: string
   onSelectMax?: () => void
-  onChange?: (e: React.FormEvent<HTMLInputElement>) => void
+  onChange?: (evt: React.FormEvent<HTMLInputElement>) => void
 }
 
 const TokenInput: React.FC<TokenInputProps> = ({ max, symbol, onChange, onSelectMax, value }) => {
@@ -18,7 +18,7 @@ const TokenInput: React.FC<TokenInputProps> = ({ max, symbol, onChange, onSelect
       <StyledMaxText>
         {max.toLocaleString()} {symbol} {TranslateString(526, 'Available')}
       </StyledMaxText>
-      <StyledInputWrapper>
+      <Flex alignItems="center">
         <Input onChange={onChange} placeholder="0" value={value} />
         <StyledTokenAdornmentWrapper>
           <StyledTokenSymbol>{symbol}</StyledTokenSymbol>
@@ -29,19 +29,10 @@ const TokenInput: React.FC<TokenInputProps> = ({ max, symbol, onChange, onSelect
             </Button>
           </div>
         </StyledTokenAdornmentWrapper>
-      </StyledInputWrapper>
+      </Flex>
     </StyledTokenInput>
   )
 }
-
-const StyledInputWrapper = styled.div`
-  align-items: center;
-  background-color: ${(props) => props.theme.colors.input};
-  border-radius: ${(props) => props.theme.radii.default};
-  display: flex;
-  height: 72px;
-  padding: 0 ${(props) => props.theme.spacing[3]}px;
-`
 
 const StyledTokenInput = styled.div``
 
