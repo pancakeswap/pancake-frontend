@@ -1,7 +1,5 @@
 import { Campaign } from 'config/constants/types'
-import { getPointCenterIfoAddress } from 'utils/addressHelpers'
-import { getContract } from 'utils/web3'
-import pointCenterIfo from 'config/abi/pointCenterIfo.json'
+import { getPointCenterIfoContract } from 'utils/contractHelpers'
 import ifosList from 'config/constants/ifo'
 import { campaignMap } from 'config/constants/campaigns'
 import { Achievement, TranslatableText } from 'state/types'
@@ -11,10 +9,6 @@ interface IfoMapResponse {
   thresholdToClaim: string
   campaignId: string
   numberPoints: string
-}
-
-export const getPointCenterClaimContract = () => {
-  return getContract(pointCenterIfo, getPointCenterIfoAddress())
 }
 
 export const getAchievementTitle = (campaign: Campaign): TranslatableText => {
@@ -53,7 +47,7 @@ export const getAchievementDescription = (campaign: Campaign): TranslatableText 
 export const getClaimableIfoData = async (account: string): Promise<Achievement[]> => {
   const ifoCampaigns = ifosList.filter((ifoItem) => ifoItem.campaignId !== undefined)
   const ifoCampaignAddresses = ifoCampaigns.map((ifoItem) => ifoItem.address)
-  const pointCenterContract = getPointCenterClaimContract()
+  const pointCenterContract = getPointCenterIfoContract()
 
   // Returns the claim status of every IFO with a campaign ID
   const claimStatuses = (await pointCenterContract.methods

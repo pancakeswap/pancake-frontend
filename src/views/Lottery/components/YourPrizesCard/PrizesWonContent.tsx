@@ -83,7 +83,7 @@ const PrizesWonContent: React.FC = () => {
         </>
       )}
       <StyledCardActions>
-        <Button fullWidth disabled={requestedClaim} onClick={handleClaim}>
+        <Button width="100%" disabled={requestedClaim} onClick={handleClaim}>
           {TranslateString(1056, 'Collect')}
         </Button>
       </StyledCardActions>

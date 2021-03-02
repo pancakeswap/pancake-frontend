@@ -98,7 +98,7 @@ const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss }
         onApprove={handleApprove}
         onConfirm={handleConfirm}
       />
-      <Button variant="text" fullWidth onClick={onDismiss} disabled={isApproving || isConfirming}>
+      <Button variant="text" width="100%" onClick={onDismiss} disabled={isApproving || isConfirming}>
         {TranslateString(999, 'Close Window')}
       </Button>
     </>

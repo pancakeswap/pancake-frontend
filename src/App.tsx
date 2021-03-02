@@ -3,7 +3,7 @@ import { Router, Redirect, Route, Switch } from 'react-router-dom'
 import { ResetCSS } from '@pancakeswap-libs/uikit'
 import BigNumber from 'bignumber.js'
 import useEagerConnect from 'hooks/useEagerConnect'
-import { useFetchProfile, useFetchPublicData } from 'state/hooks'
+import { useFetchPriceList, useFetchProfile, useFetchPublicData } from 'state/hooks'
 import GlobalStyle from './style/Global'
 import Menu from './components/Menu'
 import ToastListener from './components/ToastListener'
@@ -41,6 +41,7 @@ const App: React.FC = () => {
   useEagerConnect()
   useFetchPublicData()
   useFetchProfile()
+  useFetchPriceList()
 
   return (
     <Router history={history}>
