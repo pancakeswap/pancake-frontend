@@ -1,2 +1,4 @@
 export { default as useWalletModal } from "./useWalletModal";
-export type { ConnectorId, Login } from "./types";
+export { connectorLocalStorageKey } from "./config";
+export { ConnectorNames } from "./types";
+export type { Login } from "./types";

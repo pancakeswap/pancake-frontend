@@ -4,40 +4,40 @@ import TokenPocket from "./icons/TokenPocket";
 import TrustWallet from "./icons/TrustWallet";
 import WalletConnect from "./icons/WalletConnect";
 import BinanceChain from "./icons/BinanceChain";
-import { Config } from "./types";
+import { Config, ConnectorNames } from "./types";
 
 const connectors: Config[] = [
   {
     title: "Metamask",
     icon: Metamask,
-    connectorId: "injected",
+    connectorId: ConnectorNames.Injected,
   },
   {
     title: "TrustWallet",
     icon: TrustWallet,
-    connectorId: "injected",
+    connectorId: ConnectorNames.Injected,
   },
   {
     title: "MathWallet",
     icon: MathWallet,
-    connectorId: "injected",
+    connectorId: ConnectorNames.Injected,
   },
   {
     title: "TokenPocket",
     icon: TokenPocket,
-    connectorId: "injected",
+    connectorId: ConnectorNames.Injected,
   },
   {
     title: "WalletConnect",
     icon: WalletConnect,
-    connectorId: "walletconnect",
+    connectorId: ConnectorNames.WalletConnect,
   },
   {
     title: "Binance Chain Wallet",
     icon: BinanceChain,
-    connectorId: "bsc",
+    connectorId: ConnectorNames.BSC,
   },
 ];
 
 export default connectors;
-export const localStorageKey = "accountStatus";
+export const connectorLocalStorageKey = "connectorId";
