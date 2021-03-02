@@ -115,7 +115,7 @@ const Claim: React.FC<ClaimProps> = ({
         <Button
           onClick={handleClaim}
           disabled={isPendingTx || !canClaim}
-          fullWidth
+          width="100%"
           mb="24px"
           isLoading={isPendingTx}
           endIcon={isPendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
@@ -123,7 +123,7 @@ const Claim: React.FC<ClaimProps> = ({
           {canClaim ? TranslateString(999, 'Claim') : TranslateString(999, 'Claimed')}
         </Button>
       ) : (
-        <Button disabled fullWidth mb="24px">
+        <Button disabled width="100%" mb="24px">
           {TranslateString(999, 'Nothing to Claim')}
         </Button>
       )}

@@ -41,7 +41,7 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ ifo, publicIfoData }) =
       <Button
         variant="text"
         onClick={handleToggle}
-        fullWidth
+        width="100%"
         endIcon={
           isOpen ? <ChevronUpIcon color="primary" width="24px" /> : <ChevronDownIcon color="primary" width="24px" />
         }

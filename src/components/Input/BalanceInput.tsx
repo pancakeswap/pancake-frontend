@@ -34,7 +34,7 @@ const BalanceInput: React.FC<BalanceInputProps> = ({ title, max, symbol, onChang
         endAdornment={
           <Flex alignItems="center">
             {onSelectMax && (
-              <Button size="sm" onClick={onSelectMax} mr="8px">
+              <Button scale="sm" onClick={onSelectMax} mr="8px">
                 {TranslateString(452, 'Max')}
               </Button>
             )}

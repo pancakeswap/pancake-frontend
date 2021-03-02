@@ -51,7 +51,7 @@ const Coming: React.FC = () => {
           as="a"
           href="https://docs.google.com/forms/d/e/1FAIpQLScGdT5rrVMr4WOWr08pvcroSeuIOtEJf1sVdQGVdcAOqryigQ/viewform"
           external
-          fullWidth
+          width="100%"
           mb="16px"
         >
           {TranslateString(418, 'Apply Now')}
