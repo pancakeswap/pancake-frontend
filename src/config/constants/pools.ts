@@ -19,6 +19,23 @@ const pools: PoolConfig[] = [
     tokenDecimals: 18,
   },
   {
+    sousId: 58,
+    tokenName: 'bMXX',
+    stakingTokenName: QuoteToken.CAKE,
+    stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
+    contractAddress: {
+      97: '',
+      56: '0x6F31B87f51654424Ce57E9F8243E27ed13846CDB',
+    },
+    poolCategory: PoolCategory.CORE,
+    projectLink: 'https://multiplier.finance/',
+    harvest: true,
+    tokenPerBlock: '0.00248',
+    sortOrder: 999,
+    isFinished: false,
+    tokenDecimals: 18,
+  },
+  {
     sousId: 57,
     tokenName: 'IOTX',
     stakingTokenName: QuoteToken.CAKE,
