@@ -1,6 +1,7 @@
 import { InjectedConnector } from '@web3-react/injected-connector'
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 import { BscConnector } from '@binance-chain/bsc-connector'
+import { ConnectorNames } from '@pancakeswap-libs/uikit'
 import Web3 from 'web3'
 import getNodeUrl from './getRpcUrl'
 
@@ -18,13 +19,6 @@ const walletconnect = new WalletConnectConnector({
 })
 
 const bscConnector = new BscConnector({ supportedChainIds: [chainId] })
-
-// TODO move this enum to the uikit
-enum ConnectorNames {
-  Injected = 'injected',
-  WalletConnect = 'walletconnect',
-  BSC = 'bsc',
-}
 
 export const connectorsByName: { [connectorName in ConnectorNames]: any } = {
   [ConnectorNames.Injected]: injected,

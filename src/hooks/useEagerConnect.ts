@@ -1,20 +1,16 @@
 import { useEffect } from 'react'
-import { useWeb3React } from '@web3-react/core'
-import { connectorsByName } from 'utils/web3React'
-
-const { injected } = connectorsByName
+import { connectorLocalStorageKey, ConnectorNames } from '@pancakeswap-libs/uikit'
+import useAuth from 'hooks/useAuth'
 
 const useEagerConnect = () => {
-  const { activate } = useWeb3React()
+  const { login } = useAuth()
 
   useEffect(() => {
-    injected.isAuthorized().then((isAuthorized) => {
-      const hasSignedIn = window.localStorage.getItem('accountStatus')
-      if (isAuthorized && hasSignedIn) {
-        activate(injected, undefined, true)
-      }
-    })
-  }, [activate])
+    const connectorId = window.localStorage.getItem(connectorLocalStorageKey) as ConnectorNames
+    if (connectorId) {
+      login(connectorId)
+    }
+  }, [login])
 }
 
 export default useEagerConnect
