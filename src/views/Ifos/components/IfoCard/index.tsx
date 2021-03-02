@@ -60,7 +60,7 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
             />
           </>
         )}
-        {account ? <IfoCardActions ifo={ifo} publicIfoData={publicIfoData} /> : <UnlockButton fullWidth />}
+        {account ? <IfoCardActions ifo={ifo} publicIfoData={publicIfoData} /> : <UnlockButton width="100%" />}
       </CardBody>
       <IfoCardDetails ifo={ifo} publicIfoData={publicIfoData} />
     </StyledIfoCard>

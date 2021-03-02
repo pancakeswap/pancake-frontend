@@ -57,10 +57,10 @@ const ClaimNftModal: React.FC<ClaimNftModalProps> = ({ nft, onSuccess, onDismiss
         </Flex>
       </ModalContent>
       <Actions>
-        <Button fullWidth variant="secondary" onClick={onDismiss}>
+        <Button width="100%" variant="secondary" onClick={onDismiss}>
           {TranslateString(462, 'Cancel')}
         </Button>
-        <Button fullWidth onClick={handleConfirm} disabled={!account || isConfirming}>
+        <Button width="100%" onClick={handleConfirm} disabled={!account || isConfirming}>
           {TranslateString(464, 'Confirm')}
         </Button>
       </Actions>
