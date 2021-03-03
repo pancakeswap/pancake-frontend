@@ -11,7 +11,7 @@ const Container = styled.div`
   width: 100%;
   justify-content: flex-end;
   padding-right: 8px;
-  color: ${(props) => props.theme.colors.primary};
+  color: ${({ theme }) => theme.colors.primary};
 
   ${({ theme }) => theme.mediaQueries.sm} {
     padding-right: 0px;
@@ -23,7 +23,7 @@ const ArrowIcon = styled(ChevronDownIcon)<{ toggled: boolean }>`
   height: 20px;
 `
 
-const Details: React.FunctionComponent<DetailsProps> = ({ actionPanelToggled }) => {
+const Details: React.FC<DetailsProps> = ({ actionPanelToggled }) => {
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
 

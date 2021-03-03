@@ -4,13 +4,7 @@ import styled from 'styled-components'
 
 const StyledInput = styled(Input)`
   border-radius: 16px;
-  transition: 0.3s;
   margin-left: auto;
-  ${({ theme }) => theme.mediaQueries.sm} {
-    width: 100% !important;
-    padding: 0 1rem !important;
-    opacity: 1 !important;
-  }
 `
 
 const InputWrapper = styled.div`
@@ -28,7 +22,7 @@ interface Props {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-const SearchInput: React.FunctionComponent<Props> = ({ value, onChange }) => {
+const SearchInput: React.FC<Props> = ({ value, onChange }) => {
   const [toggled, setToggled] = useState(false)
   const inputEl = useRef(null)
 

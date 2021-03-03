@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { sumBy } from 'lodash'
 import { useDispatch } from 'react-redux'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWeb3React } from '@web3-react/core'
 import { Card, CardBody, CardHeader, Flex, Heading, PrizeIcon } from '@pancakeswap-libs/uikit'
 import { useProfile } from 'state/hooks'
 import { Achievement } from 'state/types'
@@ -16,7 +16,7 @@ const ClaimPointsCallout = () => {
   const TranslateString = useI18n()
   const dispatch = useDispatch()
   const { profile } = useProfile()
-  const { account } = useWallet()
+  const { account } = useWeb3React()
 
   useEffect(() => {
     const fetchIfoClaims = async () => {

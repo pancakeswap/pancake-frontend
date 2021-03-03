@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWeb3React } from '@web3-react/core'
 import { Button } from '@pancakeswap-libs/uikit'
 import BigNumber from 'bignumber.js'
 import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
@@ -8,13 +8,8 @@ import { useHarvest } from 'hooks/useHarvest'
 import useI18n from 'hooks/useI18n'
 import { usePriceCakeBusd } from 'state/hooks'
 import { useCountUp } from 'react-countup'
-import styled from 'styled-components'
 
 import { ActionContainer, ActionTitles, Title, Subtle, ActionContent, Earned, Staked } from './styles'
-
-const HarvestButton = styled(Button)`
-  margin-left: 4px;
-`
 
 const HarvestAction: React.FunctionComponent<FarmWithStakedValue> = ({ pid, userData }) => {
   const earningsBigNumber = userData ? new BigNumber(userData.earnings) : null
@@ -30,7 +25,7 @@ const HarvestAction: React.FunctionComponent<FarmWithStakedValue> = ({ pid, user
   }
 
   const [pendingTx, setPendingTx] = useState(false)
-  const { account } = useWallet()
+  const { account } = useWeb3React()
   const { onReward } = useHarvest(pid)
   const TranslateString = useI18n()
 
@@ -39,7 +34,6 @@ const HarvestAction: React.FunctionComponent<FarmWithStakedValue> = ({ pid, user
     end: earningsBusd,
     duration: 1,
     separator: ',',
-    // eslint-disable-next-line no-nested-ternary
     decimals: 3,
   })
   const updateValue = useRef(update)
@@ -59,16 +53,17 @@ const HarvestAction: React.FunctionComponent<FarmWithStakedValue> = ({ pid, user
           <Earned>{displayBalance}</Earned>
           <Staked>~{countUp}USD</Staked>
         </div>
-        <HarvestButton
+        <Button
           disabled={!earnings || pendingTx || !account}
           onClick={async () => {
             setPendingTx(true)
             await onReward()
             setPendingTx(false)
           }}
+          ml="4px"
         >
           {TranslateString(999, 'Harvest')}
-        </HarvestButton>
+        </Button>
       </ActionContent>
     </ActionContainer>
   )

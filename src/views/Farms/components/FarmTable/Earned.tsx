@@ -7,7 +7,7 @@ export interface EarnedProps {
 }
 
 const Amount = styled.span<{ earned: number }>`
-  color: ${(props) => (props.earned ? props.theme.colors.text : props.theme.colors.textDisabled)};
+  color: ${({ earned, theme }) => (earned ? theme.colors.text : theme.colors.textDisabled)};
   display: flex;
   align-items: center;
 `

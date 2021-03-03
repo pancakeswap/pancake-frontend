@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { getWeb3 } from 'utils/web3'
+import { getWeb3NoAccount } from 'utils/web3'
 
 const BlockContext = React.createContext(0)
 
@@ -8,7 +8,7 @@ const BlockContextProvider = ({ children }) => {
   const [block, setBlock] = useState(0)
 
   useEffect(() => {
-    const web3 = getWeb3()
+    const web3 = getWeb3NoAccount()
     const interval = setInterval(async () => {
       const blockNumber = await web3.eth.getBlockNumber()
       if (blockNumber !== previousBlock.current) {

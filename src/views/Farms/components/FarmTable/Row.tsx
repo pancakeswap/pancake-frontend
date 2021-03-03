@@ -46,7 +46,7 @@ const CellInner = styled.div`
 
 const StyledTr = styled.tr`
   cursor: pointer;
-  border-bottom: 2px solid ${(props) => props.theme.colors.borderColor};
+  border-bottom: 2px solid ${({ theme }) => theme.colors.borderColor};
 `
 
 const EarnedMobileCell = styled.td`
@@ -110,7 +110,7 @@ const Row: React.FunctionComponent<RowProps> = (props) => {
                   <td key={key}>
                     <CellInner>
                       <CellLayout label={TranslateString(999, 'Apr')}>
-                        <Apr {...props.apr} hideButton />
+                        <Apr {...props.apr} hideButton={isMobile} />
                       </CellLayout>
                     </CellInner>
                   </td>

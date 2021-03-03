@@ -33,6 +33,102 @@ const farms: FarmConfig[] = [
     quoteTokenAdresses: contracts.wbnb,
   },
   {
+    pid: 82,
+    lpSymbol: 'bMXX-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x4D5aA94Ce6BbB1BC4eb73207a5a5d4D052cFcD67',
+    },
+    tokenSymbol: 'bMXX',
+    tokenAddresses: {
+      97: '',
+      56: '0x4131b87f74415190425ccd873048c708f8005823',
+    },
+    quoteTokenSymbol: QuoteToken.BNB,
+    quoteTokenAdresses: contracts.wbnb,
+    isCommunity: false,
+  },
+  {
+    pid: 81,
+    lpSymbol: 'IOTX-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0x36b8b28d37f93372188f2aa2507b68a5cd8b2664',
+    },
+    tokenSymbol: 'IOTX',
+    tokenAddresses: {
+      97: '',
+      56: '0x9678e42cebeb63f23197d726b29b1cb20d0064e5',
+    },
+    quoteTokenSymbol: QuoteToken.BUSD,
+    quoteTokenAdresses: contracts.busd,
+    isCommunity: false,
+  },
+  {
+    pid: 80,
+    lpSymbol: 'BOR-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x86e650350c40a5178a5d014ba37fe8556232b898',
+    },
+    tokenSymbol: 'BOR',
+    tokenAddresses: {
+      97: '',
+      56: '0x92d7756c60dcfd4c689290e8a9f4d263b3b32241',
+    },
+    quoteTokenSymbol: QuoteToken.BNB,
+    quoteTokenAdresses: contracts.wbnb,
+    isCommunity: false,
+  },
+  {
+    pid: 79,
+    lpSymbol: 'bOPEN-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x9d8b7e4a9d53654d82f12c83448d8f92732bc761',
+    },
+    tokenSymbol: 'bOPEN',
+    tokenAddresses: {
+      97: '',
+      56: '0xF35262a9d427F96d2437379eF090db986eaE5d42',
+    },
+    quoteTokenSymbol: QuoteToken.BNB,
+    quoteTokenAdresses: contracts.wbnb,
+    isCommunity: false,
+  },
+  {
+    pid: 78,
+    lpSymbol: 'SUSHI-ETH LP',
+    lpAddresses: {
+      97: '',
+      56: '0x17580340f3daedae871a8c21d15911742ec79e0f',
+    },
+    tokenSymbol: 'SUSHI',
+    tokenAddresses: {
+      97: '',
+      56: '0x947950bcc74888a40ffa2593c5798f11fc9124c4',
+    },
+    quoteTokenSymbol: QuoteToken.ETH,
+    quoteTokenAdresses: contracts.eth,
+    isCommunity: false,
+  },
+  {
+    pid: 77,
+    lpSymbol: 'DODO-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x9e642d174b14faea31d842dc83037c42b53236e6',
+    },
+    tokenSymbol: 'DODO',
+    tokenAddresses: {
+      97: '',
+      56: '0x67ee3cb086f8a16f34bee3ca72fad36f7db929e2',
+    },
+    quoteTokenSymbol: QuoteToken.BNB,
+    quoteTokenAdresses: contracts.wbnb,
+    isCommunity: false,
+  },
+  {
     pid: 76,
     lpSymbol: 'SWINGBY-BNB LP',
     lpAddresses: {

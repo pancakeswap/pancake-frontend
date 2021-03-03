@@ -2,7 +2,7 @@ import React, { useEffect, useCallback, useState, useRef } from 'react'
 import { Route, useRouteMatch, useLocation } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import BigNumber from 'bignumber.js'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWeb3React } from '@web3-react/core'
 import { Image, Heading, RowType, Toggle, Text } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
 import { BLOCKS_PER_YEAR, CAKE_PER_BLOCK, CAKE_POOL_PID } from 'config'
@@ -14,14 +14,13 @@ import { fetchFarmUserDataAsync } from 'state/actions'
 import { QuoteToken } from 'config/constants/types'
 import useI18n from 'hooks/useI18n'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { provider } from 'web3-core'
 import { orderBy } from 'lodash'
 
 import FarmCard, { FarmWithStakedValue } from './components/FarmCard/FarmCard'
-import Table from './components/Table/Table'
+import Table from './components/FarmTable/FarmTable'
 import FarmTabButtons from './components/FarmTabButtons'
 import SearchInput from './components/SearchInput'
-import { RowProps } from './components/Table/Row'
+import { RowProps } from './components/FarmTable/Row'
 import ToggleView from './components/ToggleView/ToggleView'
 import { DesktopColumnSchema, ViewMode } from './components/types'
 import Select, { OptionProps } from './components/Select/Select'
@@ -99,7 +98,7 @@ const StyledImage = styled(Image)`
 
 const Header = styled.div`
   padding: 32px 0px;
-  background: ${(props) => props.theme.colors.gradients.bubblegum};
+  background: ${({ theme }) => theme.colors.gradients.bubblegum};
 
   padding-left: 16px;
   padding-right: 16px;
@@ -120,7 +119,7 @@ const Farms: React.FC = () => {
   const [query, setQuery] = useState('')
   const [viewMode, setViewMode] = useState(ViewMode.TABLE)
   const ethPriceUsd = usePriceEthBusd()
-  const { account, ethereum }: { account: string; ethereum: provider } = useWallet()
+  const { account } = useWeb3React()
   const [sortOption, setSortOption] = useState('hot')
 
   const dispatch = useDispatch()
@@ -315,7 +314,6 @@ const Farms: React.FC = () => {
                 bnbPrice={bnbPrice}
                 cakePrice={cakePrice}
                 ethPrice={ethPriceUsd}
-                ethereum={ethereum}
                 account={account}
                 removed={false}
               />
@@ -329,7 +327,6 @@ const Farms: React.FC = () => {
                 bnbPrice={bnbPrice}
                 cakePrice={cakePrice}
                 ethPrice={ethPriceUsd}
-                ethereum={ethereum}
                 account={account}
                 removed
               />

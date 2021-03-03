@@ -22,7 +22,7 @@ export interface AprProps {
 const Container = styled.div`
   display: flex;
   align-items: center;
-  color: ${(props) => props.theme.colors.text};
+  color: ${({ theme }) => theme.colors.text};
 
   button {
     width: 20px;
@@ -30,7 +30,7 @@ const Container = styled.div`
 
     svg {
       path {
-        fill: ${(props) => props.theme.colors.textSubtle};
+        fill: ${({ theme }) => theme.colors.textSubtle};
       }
     }
   }
@@ -41,7 +41,7 @@ const AprWrapper = styled.div`
   text-align: left;
 `
 
-const Apr: React.FunctionComponent<AprProps> = ({
+const Apr: React.FC<AprProps> = ({
   value,
   lpLabel,
   quoteTokenAdresses,

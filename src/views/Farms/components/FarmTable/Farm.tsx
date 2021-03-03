@@ -12,7 +12,7 @@ export interface FarmProps {
 }
 
 const Label = styled.span`
-  color: ${(props) => props.theme.colors.text};
+  color: ${({ theme }) => theme.colors.text};
   font-weight: 600;
 `
 

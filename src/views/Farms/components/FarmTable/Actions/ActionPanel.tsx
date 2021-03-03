@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import useI18n from 'hooks/useI18n'
-import { LinkExternal, Text } from '@pancakeswap-libs/uikit'
+import { LinkExternal, Text, Link } from '@pancakeswap-libs/uikit'
 import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import { communityFarms } from 'config/constants'
@@ -21,37 +21,33 @@ export interface ActionPanelProps {
 }
 
 const Container = styled.div`
-  background: ${(props) => props.theme.colors.background};
+  background: ${({ theme }) => theme.colors.background};
   display: flex;
   width: 100%;
   flex-direction: column-reverse;
   padding: 24px;
 
-  ${({ theme }) => theme.mediaQueries.sm} {
+  ${({ theme }) => theme.mediaQueries.xl} {
     flex-direction: row;
     padding: 16px 32px;
   }
 `
 
-const StyledLinkExternal = styled(LinkExternal)<{ svg?: boolean }>`
+const StyledLinkExternal = styled(LinkExternal)`
+  font-weight: 400;
+  margin-left: 8px;
+`
+
+const StyledLink = styled(Link)`
   font-weight: 400;
   margin-top: 8px;
-
-  svg {
-    display: ${(props) => (props.svg ? 'block' : 'none')};
-  }
 `
 
 const StakeContainer = styled.div`
-  color: ${(props) => props.theme.colors.text};
+  color: ${({ theme }) => theme.colors.text};
   align-items: center;
   display: flex;
   justify-content: space-between;
-
-  a {
-    margin-top: 0;
-    margin-left: 8px;
-  }
 
   ${({ theme }) => theme.mediaQueries.sm} {
     justify-content: flex-start;
@@ -98,7 +94,7 @@ const InfoContainer = styled.div`
 const ValueContainer = styled.div`
   display: block;
 
-  ${({ theme }) => theme.mediaQueries.sm} {
+  ${({ theme }) => theme.mediaQueries.xl} {
     display: none;
   }
 `
@@ -117,8 +113,9 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({ details, apr, 
   const { quoteTokenAdresses, quoteTokenSymbol, tokenAddresses, tokenSymbol, dual } = farm
   const lpLabel = farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('PANCAKE', '')
   const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAdresses, quoteTokenSymbol, tokenAddresses })
-  const bsc = `https://bscscan.com/address/${farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]}`
-  const info = `https://pancakeswap.info/pair/${farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]}`
+  const lpAddress = farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]
+  const bsc = `https://bscscan.com/address/${lpAddress}}`
+  const info = `https://pancakeswap.info/pair/${lpAddress}`
   const isCommunityFarm = communityFarms.includes(tokenSymbol)
 
   return (
@@ -126,12 +123,16 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({ details, apr, 
       <InfoContainer>
         <StakeContainer>
           Stake:
-          <StyledLinkExternal href={`https://exchange.pancakeswap.finance/#/add/${liquidityUrlPathParts}`} svg>
+          <StyledLinkExternal href={`https://exchange.pancakeswap.finance/#/add/${liquidityUrlPathParts}`}>
             {lpLabel}
           </StyledLinkExternal>
         </StakeContainer>
-        <StyledLinkExternal href={bsc}>{TranslateString(999, 'BscScan')}</StyledLinkExternal>
-        <StyledLinkExternal href={info}>{TranslateString(999, 'Info site')}</StyledLinkExternal>
+        <StyledLink href={bsc} external>
+          {TranslateString(999, 'BscScan')}
+        </StyledLink>
+        <StyledLink href={info} external>
+          {TranslateString(999, 'Info site')}
+        </StyledLink>
         <TagsContainer>
           {isCommunityFarm ? <CommunityTag /> : <CoreTag />}
           {!dual ? <DualTag /> : null}
