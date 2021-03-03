@@ -114,7 +114,7 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({ details, apr, 
   const lpLabel = farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('PANCAKE', '')
   const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAdresses, quoteTokenSymbol, tokenAddresses })
   const lpAddress = farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]
-  const bsc = `https://bscscan.com/address/${lpAddress}}`
+  const bsc = `https://bscscan.com/address/${lpAddress}`
   const info = `https://pancakeswap.info/pair/${lpAddress}`
   const isCommunityFarm = communityFarms.includes(tokenSymbol)
 
@@ -135,7 +135,7 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({ details, apr, 
         </StyledLink>
         <TagsContainer>
           {isCommunityFarm ? <CommunityTag /> : <CoreTag />}
-          {!dual ? <DualTag /> : null}
+          {dual ? <DualTag /> : null}
         </TagsContainer>
       </InfoContainer>
       <ValueContainer>
