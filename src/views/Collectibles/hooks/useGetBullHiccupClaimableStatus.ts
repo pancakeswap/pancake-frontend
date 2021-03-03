@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWeb3React } from '@web3-react/core'
 import { getBunnySpecialContract } from 'utils/contractHelpers'
 
 export const BULL_NFT = 11
@@ -13,7 +13,7 @@ const useGetBullHiccupClaimableStatus = () => {
     [BULL_NFT]: false,
     [HICCUP_NFT]: false,
   })
-  const { account } = useWallet()
+  const { account } = useWeb3React()
 
   useEffect(() => {
     const checkClaimableStatus = async () => {

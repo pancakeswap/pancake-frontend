@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWeb3React } from '@web3-react/core'
 import { AutoRenewIcon, Button, Flex, InjectedModalProps, Text } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import { useCake } from 'hooks/useContract'
@@ -17,7 +17,7 @@ const ApproveCakePage: React.FC<ApproveCakePageProps> = ({ goToChange, onDismiss
   const [isApproving, setIsApproving] = useState(false)
   const { profile } = useProfile()
   const TranslateString = useI18n()
-  const { account } = useWallet()
+  const { account } = useWeb3React()
   const { numberCakeToUpdate, numberCakeToReactivate } = useGetProfileCosts()
   const cakeContract = useCake()
   const { toastError } = useToast()
@@ -55,13 +55,13 @@ const ApproveCakePage: React.FC<ApproveCakePageProps> = ({ goToChange, onDismiss
         disabled={isApproving}
         isLoading={isApproving}
         endIcon={isApproving ? <AutoRenewIcon spin color="currentColor" /> : null}
-        fullWidth
+        width="100%"
         mb="8px"
         onClick={handleApprove}
       >
         {TranslateString(999, 'Approve')}
       </Button>
-      <Button variant="text" fullWidth onClick={onDismiss} disabled={isApproving}>
+      <Button variant="text" width="100%" onClick={onDismiss} disabled={isApproving}>
         {TranslateString(999, 'Close Window')}
       </Button>
     </Flex>

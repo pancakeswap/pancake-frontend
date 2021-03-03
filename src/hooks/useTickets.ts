@@ -1,7 +1,8 @@
-import { useCallback, useEffect, useState } from 'react'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useCallback, useState, useEffect } from 'react'
+import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
 import { useLottery, useLotteryTicket } from 'hooks/useContract'
+import useRefresh from './useRefresh'
 import {
   getMatchingRewardLength,
   getTickets,
@@ -9,11 +10,10 @@ import {
   getTotalRewards,
   getWinningNumbers,
 } from 'utils/lotteryUtils'
-import useRefresh from './useRefresh'
 
 const useTickets = (lotteryNumber = null) => {
   const [tickets, setTickets] = useState([])
-  const { account } = useWallet()
+  const { account } = useWeb3React()
   const ticketsContract = useLotteryTicket()
   const lotteryContract = useLottery()
   const { fastRefresh } = useRefresh()
@@ -54,7 +54,7 @@ export const useTotalRewards = () => {
 export const useTotalClaim = () => {
   const [claimAmount, setClaimAmount] = useState(new BigNumber(0))
   const [claimLoading, setClaimLoading] = useState(false)
-  const { account } = useWallet()
+  const { account } = useWeb3React()
   const ticketsContract = useLotteryTicket()
   const lotteryContract = useLottery()
 

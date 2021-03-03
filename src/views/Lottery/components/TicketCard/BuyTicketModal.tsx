@@ -89,12 +89,12 @@ const BuyTicketModal: React.FC<BuyTicketModalProps> = ({ max, onDismiss }) => {
         <Final>{TranslateString(460, `You will spend: ${cakeCosts(val)} CAKE`)}</Final>
       </div>
       <ModalActions>
-        <Button fullWidth variant="secondary" onClick={onDismiss}>
+        <Button width="100%" variant="secondary" onClick={onDismiss}>
           {TranslateString(462, 'Cancel')}
         </Button>
         <Button
           id="lottery-buy-complete"
-          fullWidth
+          width="100%"
           disabled={
             pendingTx ||
             parseInt(val) > Number(maxTickets) ||

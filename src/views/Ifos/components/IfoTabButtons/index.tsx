@@ -15,7 +15,7 @@ const IfoTabButtons = () => {
 
   return (
     <Wrapper>
-      <ButtonMenu activeIndex={!isExact ? 1 : 0} size="sm" variant="subtle">
+      <ButtonMenu activeIndex={!isExact ? 1 : 0} scale="sm" variant="subtle">
         <ButtonMenuItem as={Link} to={`${url}`}>
           Next IFO
         </ButtonMenuItem>
