@@ -1,13 +1,14 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Button } from '@pancakeswap-libs/uikit'
+import { Button, Flex, Input, InputProps } from '@pancakeswap-libs/uikit'
 import useI18n from '../../hooks/useI18n'
-import Input, { InputProps } from '../Input'
 
 interface TokenInputProps extends InputProps {
   max: number | string
   symbol: string
+  value: string
   onSelectMax?: () => void
+  onChange: (evt: React.FormEvent<HTMLInputElement>) => void
 }
 
 const TokenInput: React.FC<TokenInputProps> = ({ max, symbol, onChange, onSelectMax, value }) => {
@@ -17,22 +18,18 @@ const TokenInput: React.FC<TokenInputProps> = ({ max, symbol, onChange, onSelect
       <StyledMaxText>
         {max.toLocaleString()} {symbol} {TranslateString(526, 'Available')}
       </StyledMaxText>
-      <Input
-        endAdornment={
-          <StyledTokenAdornmentWrapper>
-            <StyledTokenSymbol>{symbol}</StyledTokenSymbol>
-            <StyledSpacer />
-            <div>
-              <Button scale="sm" onClick={onSelectMax}>
-                {TranslateString(452, 'Max')}
-              </Button>
-            </div>
-          </StyledTokenAdornmentWrapper>
-        }
-        onChange={onChange}
-        placeholder="0"
-        value={value}
-      />
+      <Flex alignItems="center">
+        <Input onChange={onChange} placeholder="0" value={value} />
+        <StyledTokenAdornmentWrapper>
+          <StyledTokenSymbol>{symbol}</StyledTokenSymbol>
+          <StyledSpacer />
+          <div>
+            <Button size="sm" onClick={onSelectMax}>
+              {TranslateString(452, 'Max')}
+            </Button>
+          </div>
+        </StyledTokenAdornmentWrapper>
+      </Flex>
     </StyledTokenInput>
   )
 }
