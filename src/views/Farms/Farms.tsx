@@ -118,7 +118,7 @@ const Farms: React.FC = () => {
   const bnbPrice = usePriceBnbBusd()
   const [query, setQuery] = useState('')
   const [viewMode, setViewMode] = useState(ViewMode.TABLE)
-  const ethPriceUsd = usePriceEthBusd()
+  const ethPrice = usePriceEthBusd()
   const { account } = useWeb3React()
   const [sortOption, setSortOption] = useState('hot')
 
@@ -173,7 +173,7 @@ const Farms: React.FC = () => {
         if (farm.quoteTokenSymbol === QuoteToken.BUSD || farm.quoteTokenSymbol === QuoteToken.UST) {
           apy = cakePriceVsBNB.times(cakeRewardPerYear).div(farm.lpTotalInQuoteToken).times(bnbPrice)
         } else if (farm.quoteTokenSymbol === QuoteToken.ETH) {
-          apy = cakePrice.div(ethPriceUsd).times(cakeRewardPerYear).div(farm.lpTotalInQuoteToken)
+          apy = cakePrice.div(ethPrice).times(cakeRewardPerYear).div(farm.lpTotalInQuoteToken)
         } else if (farm.quoteTokenSymbol === QuoteToken.CAKE) {
           apy = cakeRewardPerYear.div(farm.lpTotalInQuoteToken)
         } else if (farm.dual) {
@@ -194,11 +194,18 @@ const Farms: React.FC = () => {
         if (!farm.lpTotalInQuoteToken) {
           liquidity = null
         }
-        if (farm.quoteTokenSymbol === QuoteToken.BNB) {
-          liquidity = bnbPrice.times(farm.lpTotalInQuoteToken)
-        }
-        if (farm.quoteTokenSymbol === QuoteToken.CAKE) {
-          liquidity = cakePrice.times(farm.lpTotalInQuoteToken)
+
+        switch (farm.quoteTokenSymbol) {
+          case QuoteToken.BNB:
+            liquidity = bnbPrice.times(farm.lpTotalInQuoteToken)
+            break
+          case QuoteToken.CAKE:
+            liquidity = cakePrice.times(farm.lpTotalInQuoteToken)
+            break
+          case QuoteToken.ETH:
+            liquidity = ethPrice.times(farm.lpTotalInQuoteToken)
+            break
+          default:
         }
 
         return { ...farm, apy, liquidity }
@@ -214,9 +221,10 @@ const Farms: React.FC = () => {
           return false
         })
       }
+      console.log('ggggggggggggggggggggggggg')
       return farmsToDisplayWithAPY
     },
-    [bnbPrice, farmsLP, query, cakePrice, ethPriceUsd],
+    [bnbPrice, farmsLP, query, cakePrice, ethPrice],
   )
 
   const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -232,7 +240,11 @@ const Farms: React.FC = () => {
   }
 
   farmsStaked = sortFarms(farmsStaked)
-
+  console.log(
+    'ffffffffffffff',
+    Number(farmsLP[5].lpTotalInQuoteToken).toLocaleString(undefined, { maximumFractionDigits: 0 }),
+    Number(farmsStaked[5].liquidity).toLocaleString(undefined, { maximumFractionDigits: 0 }),
+  )
   const rowData = farmsStaked.map((farm) => {
     const { quoteTokenAdresses, quoteTokenSymbol, tokenAddresses } = farm
     const lpLabel = farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('PANCAKE', '')
@@ -311,7 +323,7 @@ const Farms: React.FC = () => {
                 farm={farm}
                 bnbPrice={bnbPrice}
                 cakePrice={cakePrice}
-                ethPrice={ethPriceUsd}
+                ethPrice={ethPrice}
                 account={account}
                 removed={false}
               />
@@ -324,7 +336,7 @@ const Farms: React.FC = () => {
                 farm={farm}
                 bnbPrice={bnbPrice}
                 cakePrice={cakePrice}
-                ethPrice={ethPriceUsd}
+                ethPrice={ethPrice}
                 account={account}
                 removed
               />
