@@ -124,7 +124,6 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({ details, apr, 
           {isCommunityFarm ? <CommunityTag /> : <CoreTag />}
           {dual ? <DualTag /> : null}
         </TagsContainer>
-        
         <StyledLinkExternal href={`https://exchange.pancakeswap.finance/#/add/${liquidityUrlPathParts}`}>
           {TranslateString(999, 'Provide Liquidity')}
         </StyledLinkExternal>
