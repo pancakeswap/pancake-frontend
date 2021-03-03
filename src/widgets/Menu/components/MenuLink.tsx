@@ -10,4 +10,4 @@ const MenuLink: React.FC<AnchorHTMLAttributes<HTMLAnchorElement>> = ({ href, ...
   return <Tag {...props} {...otherProps} />;
 };
 
-export default React.memo(MenuLink, () => true);
+export default MenuLink;

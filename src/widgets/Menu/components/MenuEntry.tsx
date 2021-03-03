@@ -66,7 +66,6 @@ MenuEntry.defaultProps = {
   role: "button",
 };
 
-const MenuEntryMemo = React.memo(MenuEntry, () => true);
-const LinkLabelMemo = React.memo(LinkLabel, () => true);
+const LinkLabelMemo = React.memo(LinkLabel, (prev, next) => prev.isPushed === next.isPushed);
 
-export { MenuEntryMemo as MenuEntry, LinkLabelMemo as LinkLabel };
+export { MenuEntry, LinkLabelMemo as LinkLabel };
