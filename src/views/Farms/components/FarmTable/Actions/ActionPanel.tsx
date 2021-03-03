@@ -43,17 +43,6 @@ const StyledLink = styled(Link)`
   margin-top: 8px;
 `
 
-const StakeContainer = styled.div`
-  color: ${({ theme }) => theme.colors.text};
-  align-items: center;
-  display: flex;
-  justify-content: space-between;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    justify-content: flex-start;
-  }
-`
-
 const TagsContainer = styled.div`
   display: flex;
   align-items: center;
