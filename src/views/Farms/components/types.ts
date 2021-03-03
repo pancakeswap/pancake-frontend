@@ -61,7 +61,7 @@ export const MobileColumnSchema = [
     name: 'details',
     translationId: 999,
     sortable: true,
-  }
+  },
 ]
 
 export const DesktopColumnSchema: ColumnsDefTypes[] = [

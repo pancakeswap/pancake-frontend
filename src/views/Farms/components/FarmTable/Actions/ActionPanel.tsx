@@ -135,7 +135,7 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({ details, apr, 
         </StyledLink>
         <TagsContainer>
           {isCommunityFarm ? <CommunityTag /> : <CoreTag />}
-          {!dual ? <DualTag /> : null}
+          {dual ? <DualTag /> : null}
         </TagsContainer>
       </InfoContainer>
       <ValueContainer>
