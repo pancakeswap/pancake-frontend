@@ -42,11 +42,11 @@ const DepositModal: React.FC<DepositModalProps> = ({ max, onConfirm, onDismiss, 
         symbol={tokenName}
       />
       <ModalActions>
-        <Button fullWidth variant="secondary" onClick={onDismiss}>
+        <Button width="100%" variant="secondary" onClick={onDismiss}>
           {TranslateString(462, 'Cancel')}
         </Button>
         <Button
-          fullWidth
+          width="100%"
           disabled={pendingTx}
           onClick={async () => {
             setPendingTx(true)

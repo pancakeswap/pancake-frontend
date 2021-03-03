@@ -31,7 +31,7 @@ const Header = styled(InfoRow)`
   min-height: 28px;
 `
 
-const DetailsButton = styled(Button).attrs({ variant: 'text', fullWidth: true })`
+const DetailsButton = styled(Button).attrs({ variant: 'text' })`
   height: auto;
   padding: 16px 24px;
 
@@ -81,18 +81,18 @@ const NftCard: React.FC<NftCardProps> = ({ nft, onSuccess, canClaim = false, tok
           )}
         </Header>
         {canClaim && (
-          <Button fullWidth mt="24px" onClick={onPresentClaimModal}>
+          <Button width="100%" mt="24px" onClick={onPresentClaimModal}>
             {TranslateString(999, 'Claim this NFT')}
           </Button>
         )}
         {walletOwnsNft && (
-          <Button fullWidth variant="secondary" mt="24px" onClick={onPresentTransferModal}>
+          <Button width="100%" variant="secondary" mt="24px" onClick={onPresentTransferModal}>
             {TranslateString(999, 'Transfer')}
           </Button>
         )}
       </CardBody>
       <CardFooter p="0">
-        <DetailsButton endIcon={<Icon width="24px" color="primary" />} onClick={handleClick}>
+        <DetailsButton width="100%" endIcon={<Icon width="24px" color="primary" />} onClick={handleClick}>
           {TranslateString(658, 'Details')}
         </DetailsButton>
         {isOpen && (
