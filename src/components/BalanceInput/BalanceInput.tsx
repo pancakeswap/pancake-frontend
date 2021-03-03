@@ -7,7 +7,7 @@ export interface BalanceInputProps extends BoxProps {
   title: string
   max: number
   symbol: string
-  onChange?: (evt: React.FormEvent<HTMLInputElement>) => void
+  onChange: (evt: React.FormEvent<HTMLInputElement>) => void
   value: string
   onSelectMax?: () => void
 }
