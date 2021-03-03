@@ -19,6 +19,23 @@ const pools: PoolConfig[] = [
     tokenDecimals: 18,
   },
   {
+    sousId: 59,
+    tokenName: 'xMARK',
+    stakingTokenName: QuoteToken.CAKE,
+    stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
+    contractAddress: {
+      97: '',
+      56: '0xA5137e08C48167E363Be8Ec42A68f4F54330964E',
+    },
+    poolCategory: PoolCategory.CORE,
+    projectLink: 'https://benchmarkprotocol.finance/',
+    harvest: true,
+    tokenPerBlock: '0.0413',
+    sortOrder: 999,
+    isFinished: false,
+    tokenDecimals: 9,
+  },
+  {
     sousId: 58,
     tokenName: 'bMXX',
     stakingTokenName: QuoteToken.CAKE,
