@@ -221,7 +221,7 @@ const Farms: React.FC = () => {
           return false
         })
       }
-      console.log('ggggggggggggggggggggggggg')
+
       return farmsToDisplayWithAPY
     },
     [bnbPrice, farmsLP, query, cakePrice, ethPrice],
@@ -240,11 +240,7 @@ const Farms: React.FC = () => {
   }
 
   farmsStaked = sortFarms(farmsStaked)
-  console.log(
-    'ffffffffffffff',
-    Number(farmsLP[5].lpTotalInQuoteToken).toLocaleString(undefined, { maximumFractionDigits: 0 }),
-    Number(farmsStaked[5].liquidity).toLocaleString(undefined, { maximumFractionDigits: 0 }),
-  )
+
   const rowData = farmsStaked.map((farm) => {
     const { quoteTokenAdresses, quoteTokenSymbol, tokenAddresses } = farm
     const lpLabel = farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('PANCAKE', '')
