@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState, useRef } from 'react'
+import React, { useEffect, useCallback, useState } from 'react'
 import { Route, useRouteMatch, useLocation } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import BigNumber from 'bignumber.js'
@@ -278,7 +278,7 @@ const Farms: React.FC = () => {
       const columns = columnSchema.map((column) => ({
         id: column.id,
         name: column.name,
-        label: column.normal,
+        label: column.label,
         sort: (a: RowType<RowProps>, b: RowType<RowProps>) => {
           switch (column.name) {
             case 'farm':
