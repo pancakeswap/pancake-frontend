@@ -44,13 +44,12 @@ const Claim: React.FC<ClaimProps> = ({
   const TranslateString = useI18n()
   const { account } = useWeb3React()
   const didContribute = userInfo.amount.gt(0)
-  const canClaim = !userInfo.claimed && offeringTokenBalance.gt(0)
+  const canClaim = !userInfo.claimed
   const contributedBalance = getBalanceNumber(userInfo.amount)
   const refundedBalance = getBalanceNumber(refundingAmount).toFixed(userInfo.amount.eq(0) ? 0 : DISPLAY_DECIMALS)
   const { tokenSymbol, tokenDecimals } = ifo
   const rewardBalance = getBalanceNumber(offeringTokenBalance, tokenDecimals)
   const { toastError, toastSuccess } = useToast()
-  const hasParticipated = offeringTokenBalance.gt(0)
 
   const handleClaim = async () => {
     try {
@@ -82,12 +81,9 @@ const Claim: React.FC<ClaimProps> = ({
             {contributedBalance.toFixed(userInfo.amount.eq(0) ? 0 : DISPLAY_DECIMALS)}
           </Text>
           <MetaLabel>
-            {hasParticipated &&
-              canClaim &&
-              TranslateString(999, `${refundedBalance} to reclaim`, { num: refundedBalance })}
-            {hasParticipated &&
-              !canClaim &&
-              TranslateString(999, `${refundedBalance} reclaimed`, { num: refundedBalance })}
+            {canClaim
+              ? TranslateString(999, `${refundedBalance} to reclaim`, { num: refundedBalance })
+              : TranslateString(999, `${refundedBalance} reclaimed`, { num: refundedBalance })}
           </MetaLabel>
         </Box>
         <Box>
@@ -95,7 +91,7 @@ const Claim: React.FC<ClaimProps> = ({
             <Text as="span" bold fontSize="12px" mr="4px" textTransform="uppercase">
               {tokenSymbol}
             </Text>
-            {!canClaim && hasParticipated ? (
+            {!canClaim ? (
               <Text as="span" color="textSubtle" fontSize="12px" textTransform="uppercase" bold>
                 Claimed
               </Text>
