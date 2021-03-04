@@ -6,12 +6,12 @@ import useI18n from 'hooks/useI18n'
 
 interface PercentageOfTotalProps {
   userAmount: UserInfo['amount']
-  raisingAmount: BigNumber
+  totalAmount: BigNumber
 }
 
-const PercentageOfTotal: React.FC<PercentageOfTotalProps> = ({ userAmount, raisingAmount }) => {
+const PercentageOfTotal: React.FC<PercentageOfTotalProps> = ({ userAmount, totalAmount }) => {
   const TranslateString = useI18n()
-  const percentOfUserContribution = userAmount.div(raisingAmount).times(100).toNumber()
+  const percentOfUserContribution = userAmount.div(totalAmount).times(100).toNumber()
   const percentofUserDisplay = percentOfUserContribution.toLocaleString(undefined, { maximumFractionDigits: 2 })
 
   return (
