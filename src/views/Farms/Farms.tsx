@@ -203,6 +203,10 @@ const Farms: React.FC = () => {
           liquidity = cakePrice.times(farm.lpTotalInQuoteToken)
         }
 
+        if (farm.quoteTokenSymbol === QuoteToken.ETH) {
+          liquidity = ethPriceUsd.times(farm.lpTotalInQuoteToken)
+        }
+
         return { ...farm, apy, liquidity }
       })
 
