@@ -19,6 +19,23 @@ const pools: PoolConfig[] = [
     tokenDecimals: 18,
   },
   {
+    sousId: 60,
+    tokenName: 'WATCH',
+    stakingTokenName: QuoteToken.CAKE,
+    stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
+    contractAddress: {
+      97: '',
+      56: '0xC58954199E268505fa3D3Cb0A00b7207af8C2D1d',
+    },
+    poolCategory: PoolCategory.CORE,
+    projectLink: 'https://yieldwatch.net/',
+    harvest: true,
+    tokenPerBlock: '0.3472',
+    sortOrder: 999,
+    isFinished: false,
+    tokenDecimals: 18,
+  },
+  {
     sousId: 59,
     tokenName: 'xMARK',
     stakingTokenName: QuoteToken.CAKE,
