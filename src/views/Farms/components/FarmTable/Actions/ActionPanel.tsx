@@ -140,7 +140,7 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({ details, apr, 
       </InfoContainer>
       <ValueContainer>
         <ValueWrapper>
-          <Text>APR</Text>
+          <Text>{TranslateString(736, 'APR')}</Text>
           <Apr {...apr} />
         </ValueWrapper>
         <ValueWrapper>
