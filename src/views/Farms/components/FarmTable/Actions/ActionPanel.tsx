@@ -43,6 +43,17 @@ const StyledLink = styled(Link)`
   margin-top: 8px;
 `
 
+const StakeContainer = styled.div`
+  color: ${({ theme }) => theme.colors.text};
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    justify-content: flex-start;
+  }
+`
+
 const TagsContainer = styled.div`
   display: flex;
   align-items: center;
@@ -100,6 +111,7 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({ details, apr, 
 
   const TranslateString = useI18n()
   const { quoteTokenAdresses, quoteTokenSymbol, tokenAddresses, tokenSymbol, dual } = farm
+  const lpLabel = farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('PANCAKE', '')
   const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAdresses, quoteTokenSymbol, tokenAddresses })
   const lpAddress = farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]
   const bsc = `https://bscscan.com/address/${lpAddress}`
@@ -109,19 +121,21 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({ details, apr, 
   return (
     <Container>
       <InfoContainer>
-        <TagsContainer>
-          {isCommunityFarm ? <CommunityTag /> : <CoreTag />}
-          {dual ? <DualTag /> : null}
-        </TagsContainer>
-        <StyledLinkExternal href={`https://exchange.pancakeswap.finance/#/add/${liquidityUrlPathParts}`}>
-          {TranslateString(999, 'Provide Liquidity')}
-        </StyledLinkExternal>
+        <StakeContainer>
+          <StyledLinkExternal href={`https://exchange.pancakeswap.finance/#/add/${liquidityUrlPathParts}`}>
+            Get {lpLabel}
+          </StyledLinkExternal>
+        </StakeContainer>
         <StyledLink href={bsc} external>
           {TranslateString(999, 'View Contract')}
         </StyledLink>
         <StyledLink href={info} external>
           {TranslateString(999, 'See Pair Info')}
         </StyledLink>
+        <TagsContainer>
+          {isCommunityFarm ? <CommunityTag /> : <CoreTag />}
+          {dual ? <DualTag /> : null}
+        </TagsContainer>
       </InfoContainer>
       <ValueContainer>
         <ValueWrapper>
