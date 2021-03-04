@@ -39,14 +39,14 @@ export const MobileColumnSchema: ColumnsDefTypes[] = [
   {
     id: 2,
     name: 'earned',
-    translationId: 999,
+    translationId: 1072,
     sortable: true,
     label: 'Earned',
   },
   {
     id: 3,
     name: 'apr',
-    translationId: 999,
+    translationId: 736,
     sortable: true,
     label: 'APR',
   },
@@ -70,14 +70,14 @@ export const DesktopColumnSchema: ColumnsDefTypes[] = [
   {
     id: 2,
     name: 'earned',
-    translationId: 999,
+    translationId: 1072,
     sortable: true,
     label: 'Earned',
   },
   {
     id: 3,
     name: 'apr',
-    translationId: 999,
+    translationId: 736,
     sortable: true,
     label: 'APR',
   },
