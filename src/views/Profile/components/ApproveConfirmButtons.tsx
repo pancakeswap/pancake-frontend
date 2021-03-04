@@ -1,6 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
-import { ChevronRightIcon, Button as UIKitButton, Flex, AutoRenewIcon, ChevronDownIcon } from '@pancakeswap-libs/uikit'
+import {
+  ChevronRightIcon,
+  Button as UIKitButton,
+  AutoRenewIcon,
+  ChevronDownIcon,
+  Box,
+  Flex,
+} from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 
 interface ApproveConfirmButtonsProps {
@@ -12,12 +19,22 @@ interface ApproveConfirmButtonsProps {
   onConfirm: () => void
 }
 
+const StyledApprovConfirmButtons = styled.div`
+  align-items: center;
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-content: center;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    grid-template-columns: 1fr 24px 1fr;
+  }
+`
+
 const Button = styled(UIKitButton)`
   width: 100%;
 
   ${({ theme }) => theme.mediaQueries.md} {
     min-width: 160px;
-    width: auto;
   }
 `
 
@@ -52,26 +69,32 @@ const ApproveConfirmButtons: React.FC<ApproveConfirmButtonsProps> = ({
   const TranslateString = useI18n()
 
   return (
-    <Flex py="8px" flexDirection={['column', null, 'row']} alignItems="center">
-      <Button
-        disabled={isApproveDisabled}
-        onClick={onApprove}
-        endIcon={isApproving ? spinnerIcon : undefined}
-        isLoading={isApproving}
-      >
-        {isApproving ? TranslateString(800, 'Approving') : TranslateString(564, 'Approve')}
-      </Button>
-      <ChevronRight />
-      <ChevronBottom />
-      <Button
-        onClick={onConfirm}
-        disabled={isConfirmDisabled}
-        isLoading={isConfirming}
-        endIcon={isConfirming ? spinnerIcon : undefined}
-      >
-        {isConfirming ? TranslateString(802, 'Confirming') : TranslateString(464, 'Confirm')}
-      </Button>
-    </Flex>
+    <StyledApprovConfirmButtons>
+      <Box>
+        <Button
+          disabled={isApproveDisabled}
+          onClick={onApprove}
+          endIcon={isApproving ? spinnerIcon : undefined}
+          isLoading={isApproving}
+        >
+          {isApproving ? TranslateString(800, 'Approving') : TranslateString(564, 'Approve')}
+        </Button>
+      </Box>
+      <Flex justifyContent="center">
+        <ChevronRight />
+        <ChevronBottom />
+      </Flex>
+      <Box>
+        <Button
+          onClick={onConfirm}
+          disabled={isConfirmDisabled}
+          isLoading={isConfirming}
+          endIcon={isConfirming ? spinnerIcon : undefined}
+        >
+          {isConfirming ? TranslateString(802, 'Confirming') : TranslateString(464, 'Confirm')}
+        </Button>
+      </Box>
+    </StyledApprovConfirmButtons>
   )
 }
 

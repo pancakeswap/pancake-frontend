@@ -28,7 +28,7 @@ const Contribute: React.FC<ContributeProps> = ({
   addUserContributedAmount,
 }) => {
   const { currency, currencyAddress } = ifo
-  const { raisingAmount } = publicIfoData
+  const { totalAmount } = publicIfoData
   const TranslateString = useI18n()
   const contributedBalance = getBalanceNumber(userInfo.amount)
   const { toastSuccess } = useToast()
@@ -68,7 +68,7 @@ const Contribute: React.FC<ContributeProps> = ({
           {TranslateString(999, 'Contribute')}
         </Button>
       </Flex>
-      <PercentageOfTotal userAmount={userInfo.amount} raisingAmount={raisingAmount} />
+      <PercentageOfTotal userAmount={userInfo.amount} totalAmount={totalAmount} />
     </Box>
   )
 }
