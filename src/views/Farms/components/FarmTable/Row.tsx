@@ -102,7 +102,7 @@ const Row: React.FunctionComponent<RowProps> = (props) => {
                 return (
                   <td key={key}>
                     <CellInner>
-                      <CellLayout label={TranslateString(999, 'APR')}>
+                      <CellLayout label={TranslateString(736, 'APR')}>
                         <Apr {...props.apr} hideButton={isMobile} />
                       </CellLayout>
                     </CellInner>
@@ -112,7 +112,9 @@ const Row: React.FunctionComponent<RowProps> = (props) => {
                 return (
                   <td key={key}>
                     <CellInner>
-                      <CellLayout label={tableSchema[columnIndex].label}>
+                      <CellLayout
+                        label={TranslateString(tableSchema[columnIndex].translationId, tableSchema[columnIndex].label)}
+                      >
                         {React.createElement(cells[key], props[key])}
                       </CellLayout>
                     </CellInner>
@@ -136,12 +138,12 @@ const Row: React.FunctionComponent<RowProps> = (props) => {
           </tr>
           <tr>
             <EarnedMobileCell>
-              <CellLayout label={TranslateString(999, 'Earned')}>
+              <CellLayout label={TranslateString(1072, 'Earned')}>
                 <Earned {...props.earned} />
               </CellLayout>
             </EarnedMobileCell>
             <AprMobileCell>
-              <CellLayout label={TranslateString(999, 'APR')}>
+              <CellLayout label={TranslateString(736, 'APR')}>
                 <Apr {...props.apr} hideButton />
               </CellLayout>
             </AprMobileCell>
