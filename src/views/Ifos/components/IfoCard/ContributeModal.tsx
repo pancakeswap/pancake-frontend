@@ -59,14 +59,14 @@ const ContributeModal: React.FC<Props> = ({ currency, contract, currencyAddress,
 
   return (
     <Modal title={`Contribute ${currency}`} onDismiss={onDismiss}>
-      <Box>
+      <Box maxWidth="400px">
         <BalanceInput
           title={TranslateString(999, 'Contribute')}
           value={value}
           onChange={(e) => setValue(e.currentTarget.value)}
           symbol={currency}
           max={balance}
-          onSelectMax={() => setValue(balance.toString())}
+          onSelectMax={() => setValue(balance.toFixed(9))}
           mb="24px"
         />
         <Text as="p" mb="24px">
