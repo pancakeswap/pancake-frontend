@@ -3,7 +3,7 @@ import { Ifo } from './types'
 const ifos: Ifo[] = [
   {
     id: 'watch',
-    address: '0x94A24cA3FaE6D485639EfA72853Cf4327cA78F02',
+    address: '0x55344b55C71Ad8834C397E6e08dF5195cF84fe6d',
     isActive: true,
     name: 'Yieldwatch (WATCH)',
     subTitle: 'A smart yield farming dashboard on BSC',
