@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
-import { Modal, LinkExternal, Box } from '@pancakeswap-libs/uikit'
+import { Modal, LinkExternal, Box, Text } from '@pancakeswap-libs/uikit'
 import BalanceInput from 'components/BalanceInput'
 import useTokenBalance from 'hooks/useTokenBalance'
 import { getBalanceNumber } from 'utils/formatBalance'
@@ -69,6 +69,12 @@ const ContributeModal: React.FC<Props> = ({ currency, contract, currencyAddress,
           onSelectMax={() => setValue(balance.toString())}
           mb="24px"
         />
+        <Text as="p" mb="24px">
+          {TranslateString(
+            999,
+            "If you don't contribute enough LP tokens, you may not receive any IFO tokens at all and will only receive a full refund of your LP tokens.",
+          )}
+        </Text>
         <ApproveConfirmButtons
           isApproveDisabled={isConfirmed || isConfirming || isApproved}
           isApproving={isApproving}
