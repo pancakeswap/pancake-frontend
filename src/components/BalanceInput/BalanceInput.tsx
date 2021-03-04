@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Button, Box, BoxProps, Flex, Input, Text } from '@pancakeswap-libs/uikit'
+import { Button, Box, BoxProps, Flex, Input as UIKitInput, Text } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 
 export interface BalanceInputProps extends BoxProps {
@@ -18,6 +18,20 @@ const StyledBalanceInput = styled(Box)`
   border-radius: ${({ theme }) => theme.radii.default};
   padding: 8px 16px;
 `
+
+const Input = styled(UIKitInput)`
+  box-shadow: none;
+  flex: 1;
+`
+
+const TokenSymbol = styled(Text)`
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+`
+
 const BalanceInput: React.FC<BalanceInputProps> = ({ title, max, symbol, onChange, onSelectMax, value, ...props }) => {
   const TranslateString = useI18n()
   const maxDisplay = max.toFixed(6)
@@ -30,14 +44,12 @@ const BalanceInput: React.FC<BalanceInputProps> = ({ title, max, symbol, onChang
       </Flex>
       <Flex alignItems="center">
         <Input onChange={onChange} placeholder="0" value={value} />
-        <Flex alignItems="center">
-          {onSelectMax && (
-            <Button scale="sm" onClick={onSelectMax} mr="8px">
-              {TranslateString(452, 'Max')}
-            </Button>
-          )}
-          <Text>{symbol}</Text>
-        </Flex>
+        {onSelectMax && (
+          <Button scale="sm" onClick={onSelectMax} mr="8px">
+            {TranslateString(452, 'Max')}
+          </Button>
+        )}
+        <TokenSymbol title={symbol}>{symbol}</TokenSymbol>
       </Flex>
     </StyledBalanceInput>
   )
