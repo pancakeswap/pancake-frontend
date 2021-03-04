@@ -93,10 +93,10 @@ const Staked: React.FunctionComponent<FarmWithStakedValue> = ({
             </div>
             <IconButtonWrapper>
               <IconButton variant="secondary" onClick={onPresentWithdraw} mr="6px">
-                <MinusIcon color="primary" />
+                <MinusIcon color="primary" width="14px" />
               </IconButton>
               <IconButton variant="secondary" onClick={onPresentDeposit}>
-                <AddIcon color="primary" />
+                <AddIcon color="primary" width="14px" />
               </IconButton>
             </IconButtonWrapper>
           </ActionContent>
