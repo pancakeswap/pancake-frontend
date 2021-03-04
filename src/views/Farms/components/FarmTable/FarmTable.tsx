@@ -57,7 +57,7 @@ const ScrollButtonContainer = styled.div`
   padding-bottom: 5px;
 `
 
-export default React.forwardRef((props: ITableProps) => {
+const FarmTable: React.FC<ITableProps> = (props) => {
   const tableWrapperEl = useRef<HTMLDivElement>(null)
   const TranslateString = useI18n()
   const { data, columns } = props
@@ -91,4 +91,6 @@ export default React.forwardRef((props: ITableProps) => {
       </TableContainer>
     </Container>
   )
-})
+}
+
+export default FarmTable

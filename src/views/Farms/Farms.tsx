@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState, useRef } from 'react'
+import React, { useEffect, useCallback, useState } from 'react'
 import { Route, useRouteMatch, useLocation } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import BigNumber from 'bignumber.js'
@@ -134,8 +134,6 @@ const Farms: React.FC = () => {
 
   const activeFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
   const inactiveFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X')
-
-  const tableRef = useRef(null)
 
   const stackedOnlyFarms = activeFarms.filter(
     (farm) => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0),
@@ -300,7 +298,7 @@ const Farms: React.FC = () => {
         sortable: column.sortable,
       }))
 
-      return <Table data={rowData} ref={tableRef} columns={columns} />
+      return <Table data={rowData} columns={columns} />
     }
 
     return (
