@@ -66,7 +66,7 @@ const ContributeModal: React.FC<Props> = ({ currency, contract, currencyAddress,
           onChange={(e) => setValue(e.currentTarget.value)}
           symbol={currency}
           max={balance}
-          onSelectMax={() => setValue(balance.toFixed(6))}
+          onSelectMax={() => setValue(balance.toString())}
           mb="24px"
         />
         <Text as="p" mb="24px">
