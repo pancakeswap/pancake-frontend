@@ -59,7 +59,7 @@ const ContributeModal: React.FC<Props> = ({ currency, contract, currencyAddress,
 
   return (
     <Modal title={`Contribute ${currency}`} onDismiss={onDismiss}>
-      <Box>
+      <Box maxWidth="400px">
         <BalanceInput
           title={TranslateString(999, 'Contribute')}
           value={value}
