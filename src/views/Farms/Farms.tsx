@@ -278,7 +278,7 @@ const Farms: React.FC = () => {
       const columns = columnSchema.map((column) => ({
         id: column.id,
         name: column.name,
-        label: column.normal,
+        label: column.label,
         sort: (a: RowType<RowProps>, b: RowType<RowProps>) => {
           switch (column.name) {
             case 'farm':
