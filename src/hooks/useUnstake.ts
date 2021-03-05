@@ -37,7 +37,7 @@ export const useSousUnstake = (sousId) => {
   const isOldSyrup = SYRUPIDS.includes(sousId)
 
   const handleUnstake = useCallback(
-    async (amount: string) => {
+    async (amount: string, decimals: number) => {
       if (sousId === 0) {
         const txHash = await unstake(masterChefContract, 0, amount, account)
         console.info(txHash)
@@ -45,7 +45,7 @@ export const useSousUnstake = (sousId) => {
         const txHash = await sousEmegencyUnstake(sousChefContract, amount, account)
         console.info(txHash)
       } else {
-        const txHash = await sousUnstake(sousChefContract, amount, account)
+        const txHash = await sousUnstake(sousChefContract, amount, decimals, account)
         console.info(txHash)
       }
       dispatch(updateUserStakedBalance(sousId, account))

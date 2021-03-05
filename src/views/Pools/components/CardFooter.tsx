@@ -17,6 +17,7 @@ const tags = {
 
 interface Props {
   projectLink: string
+  decimals: number
   totalStaked: BigNumber
   startBlock: number
   endBlock: number
@@ -73,7 +74,15 @@ const TokenLink = styled.a`
   color: #12aab5;
 `
 
-const CardFooter: React.FC<Props> = ({ projectLink, totalStaked, isFinished, startBlock, endBlock, poolCategory }) => {
+const CardFooter: React.FC<Props> = ({
+  projectLink,
+  decimals,
+  totalStaked,
+  isFinished,
+  startBlock,
+  endBlock,
+  poolCategory,
+}) => {
   const block = useBlock()
   const [isOpen, setIsOpen] = useState(false)
   const TranslateString = useI18n()
@@ -106,7 +115,7 @@ const CardFooter: React.FC<Props> = ({ projectLink, totalStaked, isFinished, sta
                 {TranslateString(408, 'Total')}
               </Label>
             </FlexFull>
-            <Balance fontSize="14px" isDisabled={isFinished} value={getBalanceNumber(totalStaked)} />
+            <Balance fontSize="14px" isDisabled={isFinished} value={getBalanceNumber(totalStaked, decimals)} />
           </Row>
           {blocksUntilStart > 0 && (
             <Row>
