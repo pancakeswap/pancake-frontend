@@ -44,7 +44,7 @@ export const links = [
     items: [
       {
         label: "Leaderboard",
-        href: "/",
+        href: "/teams",
       },
       {
         label: "YourProfile",
