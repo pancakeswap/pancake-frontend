@@ -37,6 +37,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
     tokenName,
     stakingTokenName,
     stakingTokenAddress,
+    stakingTokenDecimals,
     projectLink,
     harvest,
     tokenDecimals,
@@ -64,7 +65,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
   const apy = getPoolApy(
     stakingTokenPrice,
     rewardTokenPrice,
-    getBalanceNumber(pool.totalStaked),
+    getBalanceNumber(pool.totalStaked, stakingTokenDecimals),
     parseFloat(pool.tokenPerBlock),
   )
 
@@ -87,6 +88,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
       max={stakingLimit && stakingTokenBalance.isGreaterThan(convertedLimit) ? convertedLimit : stakingTokenBalance}
       onConfirm={onStake}
       tokenName={stakingLimit ? `${stakingTokenName} (${stakingLimit} max)` : stakingTokenName}
+      stakingTokenDecimals={stakingTokenDecimals}
     />,
   )
 
@@ -95,7 +97,12 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
   )
 
   const [onPresentWithdraw] = useModal(
-    <WithdrawModal max={stakedBalance} onConfirm={onUnstake} tokenName={stakingTokenName} />,
+    <WithdrawModal
+      max={stakedBalance}
+      onConfirm={onUnstake}
+      tokenName={stakingTokenName}
+      stakingTokenDecimals={stakingTokenDecimals}
+    />,
   )
 
   const handleApprove = useCallback(async () => {
@@ -166,7 +173,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
                     isOldSyrup
                       ? async () => {
                           setPendingTx(true)
-                          await onUnstake('0')
+                          await onUnstake('0', stakingTokenDecimals)
                           setPendingTx(false)
                         }
                       : onPresentWithdraw
@@ -193,11 +200,16 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
         </StyledDetails>
         <StyledDetails>
           <div>{TranslateString(384, 'Your Stake')}:</div>
-          <Balance fontSize="14px" isDisabled={isFinished} value={getBalanceNumber(stakedBalance)} />
+          <Balance
+            fontSize="14px"
+            isDisabled={isFinished}
+            value={getBalanceNumber(stakedBalance, stakingTokenDecimals)}
+          />
         </StyledDetails>
       </div>
       <CardFooter
         projectLink={projectLink}
+        decimals={stakingTokenDecimals}
         totalStaked={totalStaked}
         startBlock={startBlock}
         endBlock={endBlock}

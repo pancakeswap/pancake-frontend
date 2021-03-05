@@ -71,6 +71,7 @@ export interface PoolConfig {
   stakingTokenName: QuoteToken
   stakingLimit?: number
   stakingTokenAddress?: string
+  stakingTokenDecimals?: number
   contractAddress: Address
   poolCategory: PoolCategory
   projectLink: string
