@@ -8,8 +8,7 @@ export type TableProps = {
 
 export type ColumnsDefTypes = {
   id: number
-  bold: string
-  normal: string
+  label: string
   name: string
   translationId: number
   sortable: boolean
@@ -29,89 +28,79 @@ export type TableDataTypes = {
   LINKS: string
 }
 
-export const MobileColumnSchema = [
+export const MobileColumnSchema: ColumnsDefTypes[] = [
   {
     id: 1,
-    bold: '',
-    normal: 'Farm',
     name: 'farm',
     translationId: 999,
     sortable: true,
+    label: '',
   },
   {
     id: 2,
-    bold: 'CAKE',
-    normal: 'EARNED',
     name: 'earned',
-    translationId: 999,
+    translationId: 1072,
     sortable: true,
+    label: 'Earned',
   },
   {
     id: 3,
-    bold: '',
-    normal: 'APR',
     name: 'apr',
-    translationId: 999,
+    translationId: 736,
     sortable: true,
+    label: 'APR',
   },
   {
     id: 6,
-    bold: '',
-    normal: 'DETAILS',
     name: 'details',
     translationId: 999,
     sortable: true,
+    label: '',
   },
 ]
 
 export const DesktopColumnSchema: ColumnsDefTypes[] = [
   {
     id: 1,
-    bold: '',
-    normal: 'Farm',
     name: 'farm',
     translationId: 999,
     sortable: true,
+    label: '',
   },
   {
     id: 2,
-    bold: 'CAKE',
-    normal: 'EARNED',
     name: 'earned',
-    translationId: 999,
+    translationId: 1072,
     sortable: true,
+    label: 'Earned',
   },
   {
     id: 3,
-    bold: '',
-    normal: 'APR',
     name: 'apr',
-    translationId: 999,
+    translationId: 736,
     sortable: true,
+    label: 'APR',
   },
   {
     id: 4,
-    bold: '',
-    normal: 'STAKED',
     name: 'liquidity',
     translationId: 999,
     sortable: true,
+    label: 'Liquidity',
   },
   {
     id: 5,
-    bold: '',
-    normal: 'MULTIPLIER',
     name: 'multiplier',
     translationId: 999,
     sortable: true,
+    label: 'Multiplier',
   },
   {
     id: 6,
-    bold: '',
-    normal: 'DETAILS',
     name: 'details',
     translationId: 999,
     sortable: true,
+    label: '',
   },
 ]
 

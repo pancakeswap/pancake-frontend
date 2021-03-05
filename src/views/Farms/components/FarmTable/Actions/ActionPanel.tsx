@@ -27,7 +27,7 @@ const Container = styled.div`
   flex-direction: column-reverse;
   padding: 24px;
 
-  ${({ theme }) => theme.mediaQueries.xl} {
+  ${({ theme }) => theme.mediaQueries.lg} {
     flex-direction: row;
     padding: 16px 32px;
   }
@@ -94,7 +94,7 @@ const InfoContainer = styled.div`
 const ValueContainer = styled.div`
   display: block;
 
-  ${({ theme }) => theme.mediaQueries.xl} {
+  ${({ theme }) => theme.mediaQueries.lg} {
     display: none;
   }
 `
@@ -140,7 +140,7 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({ details, apr, 
       </InfoContainer>
       <ValueContainer>
         <ValueWrapper>
-          <Text>APR</Text>
+          <Text>{TranslateString(736, 'APR')}</Text>
           <Apr {...apr} />
         </ValueWrapper>
         <ValueWrapper>

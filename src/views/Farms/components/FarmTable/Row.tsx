@@ -71,14 +71,6 @@ const Row: React.FunctionComponent<RowProps> = (props) => {
     setActionPanelToggled(!actionPanelToggled)
   }
 
-  const cellLabel = (key: string): string => {
-    if (key === 'farm' || key === 'details') {
-      return ''
-    }
-
-    return key
-  }
-
   const { isXl, isXs } = useMatchBreakpoints()
 
   const isMobile = !isXl
@@ -90,7 +82,8 @@ const Row: React.FunctionComponent<RowProps> = (props) => {
       return (
         <StyledTr onClick={toggleActionPanel}>
           {Object.keys(props).map((key) => {
-            if (columnNames.indexOf(key) === -1) {
+            const columnIndex = columnNames.indexOf(key)
+            if (columnIndex === -1) {
               return null
             }
 
@@ -109,7 +102,7 @@ const Row: React.FunctionComponent<RowProps> = (props) => {
                 return (
                   <td key={key}>
                     <CellInner>
-                      <CellLayout label={TranslateString(999, 'Apr')}>
+                      <CellLayout label={TranslateString(736, 'APR')}>
                         <Apr {...props.apr} hideButton={isMobile} />
                       </CellLayout>
                     </CellInner>
@@ -119,7 +112,11 @@ const Row: React.FunctionComponent<RowProps> = (props) => {
                 return (
                   <td key={key}>
                     <CellInner>
-                      <CellLayout label={cellLabel(key)}>{React.createElement(cells[key], props[key])}</CellLayout>
+                      <CellLayout
+                        label={TranslateString(tableSchema[columnIndex].translationId, tableSchema[columnIndex].label)}
+                      >
+                        {React.createElement(cells[key], props[key])}
+                      </CellLayout>
                     </CellInner>
                   </td>
                 )
@@ -141,12 +138,12 @@ const Row: React.FunctionComponent<RowProps> = (props) => {
           </tr>
           <tr>
             <EarnedMobileCell>
-              <CellLayout label={TranslateString(999, 'Earned')}>
+              <CellLayout label={TranslateString(1072, 'Earned')}>
                 <Earned {...props.earned} />
               </CellLayout>
             </EarnedMobileCell>
             <AprMobileCell>
-              <CellLayout label={TranslateString(999, 'Apr')}>
+              <CellLayout label={TranslateString(736, 'APR')}>
                 <Apr {...props.apr} hideButton />
               </CellLayout>
             </AprMobileCell>

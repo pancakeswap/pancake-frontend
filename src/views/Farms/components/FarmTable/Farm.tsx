@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { useFarmUser } from 'state/hooks'
 import useI18n from 'hooks/useI18n'
-import { Text } from '@pancakeswap-libs/uikit'
+import { Text, Image } from '@pancakeswap-libs/uikit'
 import { getBalanceNumber } from 'utils/formatBalance'
 
 export interface FarmProps {
@@ -11,18 +11,12 @@ export interface FarmProps {
   image: string
 }
 
-const Label = styled.span`
-  color: ${({ theme }) => theme.colors.text};
-  font-weight: 600;
-`
-
-const IconImage = styled.img`
-  margin-right: 8px;
-  min-width: 24px;
+const IconImage = styled(Image)`
+  width: 24px;
   height: 24px;
 
   ${({ theme }) => theme.mediaQueries.sm} {
-    min-width: 40px;
+    width: 40px;
     height: 40px;
   }
 `
@@ -56,10 +50,10 @@ const Farm: React.FunctionComponent<FarmProps> = ({ image, label, pid }) => {
 
   return (
     <Container>
-      <IconImage src={`/images/farms/${image}.svg`} alt="icon" />
+      <IconImage src={`/images/farms/${image}.svg`} alt="icon" width={40} height={40} mr="8px" />
       <div>
         {handleRenderFarming()}
-        <Label>{label}</Label>
+        <Text bold>{label}</Text>
       </div>
     </Container>
   )
