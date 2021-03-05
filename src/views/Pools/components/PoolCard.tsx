@@ -87,6 +87,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
       max={stakingLimit && stakingTokenBalance.isGreaterThan(convertedLimit) ? convertedLimit : stakingTokenBalance}
       onConfirm={onStake}
       tokenName={stakingLimit ? `${stakingTokenName} (${stakingLimit} max)` : stakingTokenName}
+      tokenDecimals={tokenDecimals}
     />,
   )
 
