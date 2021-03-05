@@ -35,6 +35,8 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
     sousId,
     image,
     tokenName,
+    tokenAddress,
+    tokenImageUrl,
     stakingTokenName,
     stakingTokenAddress,
     stakingTokenDecimals,
@@ -209,6 +211,10 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
       </div>
       <CardFooter
         projectLink={projectLink}
+        tokenName={tokenName}
+        tokenAddress={tokenAddress}
+        tokenImageUrl={tokenImageUrl}
+        tokenDecimals={tokenDecimals}
         decimals={stakingTokenDecimals}
         totalStaked={totalStaked}
         startBlock={startBlock}

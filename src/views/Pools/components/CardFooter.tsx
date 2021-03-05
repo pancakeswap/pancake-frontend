@@ -7,7 +7,8 @@ import { ChevronDown, ChevronUp } from 'react-feather'
 import Balance from 'components/Balance'
 import { CommunityTag, CoreTag, BinanceTag } from 'components/Tags'
 import useBlock from 'hooks/useBlock'
-import { PoolCategory } from 'config/constants/types'
+import { PoolCategory, Address } from 'config/constants/types'
+import addTokenToMetaMask from 'utils/metamask'
 
 const tags = {
   [PoolCategory.BINANCE]: BinanceTag,
@@ -17,6 +18,10 @@ const tags = {
 
 interface Props {
   projectLink: string
+  tokenName: string
+  tokenAddress?: Address
+  tokenImageUrl?: string
+  tokenDecimals: number
   decimals: number
   totalStaked: BigNumber
   startBlock: number
@@ -73,9 +78,23 @@ const TokenLink = styled.a`
   text-decoration: none;
   color: #12aab5;
 `
+const AddTokenToMetamaskLink = styled.a`
+  font-size: 14px;
+  text-decoration: none;
+  color: #12aab5;
+  cursor: pointer;
+`
+
+const Image = styled.img`
+  margin-left: 5px;
+`
 
 const CardFooter: React.FC<Props> = ({
   projectLink,
+  tokenName,
+  tokenAddress,
+  tokenDecimals,
+  tokenImageUrl,
   decimals,
   totalStaked,
   isFinished,
@@ -93,6 +112,9 @@ const CardFooter: React.FC<Props> = ({
 
   const blocksUntilStart = Math.max(startBlock - block, 0)
   const blocksRemaining = Math.max(endBlock - block, 0)
+
+  const showMetaMaskLink =
+    (window as any).ethereum && (window as any).ethereum.isMetaMask && tokenAddress && tokenDecimals
 
   return (
     <StyledFooter isFinished={isFinished}>
@@ -133,9 +155,21 @@ const CardFooter: React.FC<Props> = ({
               <Balance fontSize="14px" isDisabled={isFinished} value={blocksRemaining} decimals={0} />
             </Row>
           )}
-          <TokenLink href={projectLink} target="_blank">
-            {TranslateString(412, 'View project site')}
-          </TokenLink>
+          <Row>
+            <TokenLink href={projectLink} target="_blank">
+              {TranslateString(412, 'View project site')}
+            </TokenLink>
+          </Row>
+          {showMetaMaskLink && (
+            <Row style={{ marginTop: '4px' }}>
+              <AddTokenToMetamaskLink
+                onClick={() => addTokenToMetaMask(tokenName, tokenAddress, tokenDecimals, tokenImageUrl)}
+              >
+                {TranslateString(999, `Add ${tokenName} to MetaMask`)}
+              </AddTokenToMetamaskLink>
+              <Image src="/images/metamask-fox.svg" alt="Metamask logo" width={15} height={15} />
+            </Row>
+          )}
         </Details>
       )}
     </StyledFooter>
