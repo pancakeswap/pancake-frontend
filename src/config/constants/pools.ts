@@ -35,7 +35,7 @@ const pools: PoolConfig[] = [
     tokenPerBlock: '0.0462',
     sortOrder: 999,
     isFinished: false,
-    tokenDecimals: 4,
+    tokenDecimals: 18,
   },
   {
     sousId: 61,
@@ -53,7 +53,7 @@ const pools: PoolConfig[] = [
     tokenPerBlock: '3.616',
     sortOrder: 999,
     isFinished: false,
-    tokenDecimals: 18,
+    tokenDecimals: 4,
   },
   {
     sousId: 60,
