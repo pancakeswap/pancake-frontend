@@ -19,7 +19,7 @@ const pools: PoolConfig[] = [
     tokenDecimals: 18,
   },
   {
-    sousId: 62,
+    sousId: 61,
     image: 'CAKETPT',
     tokenName: 'CAKE',
     stakingTokenName: QuoteToken.TPT,
@@ -38,7 +38,7 @@ const pools: PoolConfig[] = [
     tokenDecimals: 18,
   },
   {
-    sousId: 61,
+    sousId: 62,
     image: 'TPTCAKE',
     tokenName: 'TPT',
     stakingTokenName: QuoteToken.CAKE,
