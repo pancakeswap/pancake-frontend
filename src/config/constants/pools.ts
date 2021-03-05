@@ -24,6 +24,7 @@ const pools: PoolConfig[] = [
     tokenName: 'CAKE',
     stakingTokenName: QuoteToken.TPT,
     stakingTokenAddress: '0xeca41281c24451168a37211f0bc2b8645af45092',
+    stakingLimit: 25000,
     contractAddress: {
       97: '',
       56: '0x0c3D6892aa3b23811Af3bd1bbeA8b0740E8e4528',
