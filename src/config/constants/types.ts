@@ -70,6 +70,7 @@ export interface PoolConfig {
   tokenName: string
   stakingTokenName: QuoteToken
   stakingLimit?: number
+  earningTokenAddress?: string
   stakingTokenAddress?: string
   stakingTokenDecimals?: number
   contractAddress: Address
