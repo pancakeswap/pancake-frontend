@@ -10,12 +10,13 @@ import { useSousApprove } from 'hooks/useApprove'
 import useI18n from 'hooks/useI18n'
 import { useSousStake } from 'hooks/useStake'
 import { useSousUnstake } from 'hooks/useUnstake'
-import useBlock from 'hooks/useBlock'
 import { getBalanceNumber } from 'utils/formatBalance'
+import { getPoolApy } from 'utils/apy'
 import { useSousHarvest } from 'hooks/useHarvest'
 import Balance from 'components/Balance'
 import { QuoteToken, PoolCategory } from 'config/constants/types'
 import { Pool } from 'state/types'
+import { useGetApiPrice } from 'state/hooks'
 import DepositModal from './DepositModal'
 import WithdrawModal from './WithdrawModal'
 import CompoundModal from './CompoundModal'
@@ -25,12 +26,8 @@ import OldSyrupTitle from './OldSyrupTitle'
 import HarvestButton from './HarvestButton'
 import CardFooter from './CardFooter'
 
-interface PoolWithApy extends Pool {
-  apy: BigNumber
-}
-
 interface HarvestProps {
-  pool: PoolWithApy
+  pool: Pool
 }
 
 const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
@@ -42,7 +39,6 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
     stakingTokenAddress,
     projectLink,
     harvest,
-    apy,
     tokenDecimals,
     poolCategory,
     totalStaked,
@@ -57,11 +53,20 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
   const TranslateString = useI18n()
   const stakingTokenContract = useERC20(stakingTokenAddress)
   const { account } = useWeb3React()
-  const block = useBlock()
   const { onApprove } = useSousApprove(stakingTokenContract, sousId)
   const { onStake } = useSousStake(sousId, isBnbPool)
   const { onUnstake } = useSousUnstake(sousId)
   const { onReward } = useSousHarvest(sousId, isBnbPool)
+
+  // APY
+  const rewardTokenPrice = useGetApiPrice(tokenName)
+  const stakingTokenPrice = useGetApiPrice(stakingTokenName)
+  const apy = getPoolApy(
+    stakingTokenPrice,
+    rewardTokenPrice,
+    getBalanceNumber(pool.totalStaked),
+    parseInt(pool.tokenPerBlock, 10),
+  )
 
   const [requestedApproval, setRequestedApproval] = useState(false)
   const [pendingTx, setPendingTx] = useState(false)
@@ -71,8 +76,6 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
   const stakedBalance = new BigNumber(userData?.stakedBalance || 0)
   const earnings = new BigNumber(userData?.pendingReward || 0)
 
-  const blocksUntilStart = Math.max(startBlock - block, 0)
-  const blocksRemaining = Math.max(endBlock - block, 0)
   const isOldSyrup = stakingTokenName === QuoteToken.SYRUP
   const accountHasStakedBalance = stakedBalance?.toNumber() > 0
   const needsApproval = !accountHasStakedBalance && !allowance.toNumber() && !isBnbPool
@@ -181,29 +184,24 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
             ))}
         </StyledCardActions>
         <StyledDetails>
-          <div style={{ flex: 1 }}>{TranslateString(736, 'APR')}:</div>
-          {isFinished || isOldSyrup || !apy || apy?.isNaN() || !apy?.isFinite() ? (
+          <div>{TranslateString(736, 'APR')}:</div>
+          {isFinished || isOldSyrup || !apy ? (
             '-'
           ) : (
-            <Balance fontSize="14px" isDisabled={isFinished} value={apy?.toNumber()} decimals={2} unit="%" />
+            <Balance fontSize="14px" isDisabled={isFinished} value={apy} decimals={2} unit="%" />
           )}
         </StyledDetails>
         <StyledDetails>
-          <div style={{ flex: 1 }}>
-            <span role="img" aria-label={stakingTokenName}>
-              🥞{' '}
-            </span>
-            {TranslateString(384, 'Your Stake')}:
-          </div>
+          <div>{TranslateString(384, 'Your Stake')}:</div>
           <Balance fontSize="14px" isDisabled={isFinished} value={getBalanceNumber(stakedBalance)} />
         </StyledDetails>
       </div>
       <CardFooter
         projectLink={projectLink}
         totalStaked={totalStaked}
-        blocksRemaining={blocksRemaining}
+        startBlock={startBlock}
+        endBlock={endBlock}
         isFinished={isFinished}
-        blocksUntilStart={blocksUntilStart}
         poolCategory={poolCategory}
       />
     </Card>
@@ -243,6 +241,8 @@ const StyledActionSpacer = styled.div`
 
 const StyledDetails = styled.div`
   display: flex;
+  justify-content: space-between;
+  align-items: center;
   font-size: 14px;
 `
 
