@@ -8,6 +8,7 @@ import Balance from 'components/Balance'
 import { CommunityTag, CoreTag, BinanceTag } from 'components/Tags'
 import useBlock from 'hooks/useBlock'
 import { PoolCategory } from 'config/constants/types'
+import registerToken from 'utils/metamaskUtils'
 
 const tags = {
   [PoolCategory.BINANCE]: BinanceTag,
@@ -19,6 +20,10 @@ interface Props {
   projectLink: string
   decimals: number
   totalStaked: BigNumber
+  tokenName: string
+  earningTokenAddress: string
+  earningTokenImage: string
+  tokenDecimals: number
   startBlock: number
   endBlock: number
   isFinished: boolean
@@ -62,6 +67,10 @@ const Row = styled.div`
   display: flex;
 `
 
+const RowRight = styled(Row)`
+  justify-content: flex-end;
+`
+
 const FlexFull = styled.div`
   flex: 1;
 `
@@ -72,12 +81,23 @@ const TokenLink = styled.a`
   font-size: 14px;
   text-decoration: none;
   color: #12aab5;
+  cursor: pointer;
+`
+
+const MetamaskIcon = styled.img`
+  width: 15px;
+  height: 15px;
+  margin-left: 5px;
 `
 
 const CardFooter: React.FC<Props> = ({
   projectLink,
   decimals,
+  earningTokenAddress,
+  earningTokenImage,
   totalStaked,
+  tokenName,
+  tokenDecimals,
   isFinished,
   startBlock,
   endBlock,
@@ -93,6 +113,10 @@ const CardFooter: React.FC<Props> = ({
 
   const blocksUntilStart = Math.max(startBlock - block, 0)
   const blocksRemaining = Math.max(endBlock - block, 0)
+
+  const isMetamask = (window as any).ethereum && (window as any).ethereum.isMetaMask && earningTokenAddress
+
+  const imageSrc = earningTokenImage ? `https://pancakeswap.finance/images/tokens/${earningTokenImage}.png` : ''
 
   return (
     <StyledFooter isFinished={isFinished}>
@@ -132,6 +156,14 @@ const CardFooter: React.FC<Props> = ({
               </FlexFull>
               <Balance fontSize="14px" isDisabled={isFinished} value={blocksRemaining} decimals={0} />
             </Row>
+          )}
+          {isMetamask && (
+            <RowRight>
+              <TokenLink onClick={() => registerToken(earningTokenAddress, tokenName, tokenDecimals, imageSrc)}>
+                Add {tokenName} to Metamask
+              </TokenLink>
+              <MetamaskIcon src="/images/metamask-icon.svg" alt="metamask-icon" />
+            </RowRight>
           )}
           <TokenLink href={projectLink} target="_blank">
             {TranslateString(412, 'View project site')}
