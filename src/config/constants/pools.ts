@@ -4,6 +4,8 @@ const pools: PoolConfig[] = [
   {
     sousId: 0,
     tokenName: 'CAKE',
+    earningTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
+    earningTokenImage: 'CAKE',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
@@ -22,6 +24,8 @@ const pools: PoolConfig[] = [
     sousId: 62,
     image: 'CAKETPT',
     tokenName: 'CAKE',
+    earningTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
+    earningTokenImage: 'CAKE',
     stakingTokenName: QuoteToken.TPT,
     stakingTokenAddress: '0xeca41281c24451168a37211f0bc2b8645af45092',
     stakingTokenDecimals: 4,
@@ -42,6 +46,8 @@ const pools: PoolConfig[] = [
     sousId: 61,
     image: 'TPTCAKE',
     tokenName: 'TPT',
+    earningTokenAddress: '0xeca41281c24451168a37211f0bc2b8645af45092',
+    earningTokenImage: 'tpt',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
@@ -59,6 +65,8 @@ const pools: PoolConfig[] = [
   {
     sousId: 60,
     tokenName: 'WATCH',
+    earningTokenAddress: '0x7a9f28eb62c791422aa23ceae1da9c847cbec9b0',
+    earningTokenImage: 'watch',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
@@ -76,6 +84,8 @@ const pools: PoolConfig[] = [
   {
     sousId: 59,
     tokenName: 'xMARK',
+    earningTokenAddress: '0x26a5dfab467d4f58fb266648cae769503cec9580',
+    earningTokenImage: 'xmark',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
