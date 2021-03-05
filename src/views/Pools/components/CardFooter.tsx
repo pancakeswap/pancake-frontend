@@ -6,7 +6,6 @@ import useI18n from 'hooks/useI18n'
 import { ChevronDown, ChevronUp } from 'react-feather'
 import Balance from 'components/Balance'
 import { CommunityTag, CoreTag, BinanceTag } from 'components/Tags'
-import useBlock from 'hooks/useBlock'
 import { PoolCategory } from 'config/constants/types'
 
 const tags = {
@@ -18,9 +17,9 @@ const tags = {
 interface Props {
   projectLink: string
   totalStaked: BigNumber
-  startBlock: number
-  endBlock: number
+  blocksRemaining: number
   isFinished: boolean
+  blocksUntilStart: number
   poolCategory: PoolCategory
 }
 
@@ -46,7 +45,6 @@ const StyledDetailsButton = styled.button`
   &:hover {
     opacity: 0.9;
   }
-
   & > svg {
     margin-left: 4px;
   }
@@ -73,17 +71,20 @@ const TokenLink = styled.a`
   color: #12aab5;
 `
 
-const CardFooter: React.FC<Props> = ({ projectLink, totalStaked, isFinished, startBlock, endBlock, poolCategory }) => {
-  const block = useBlock()
+const CardFooter: React.FC<Props> = ({
+  projectLink,
+  totalStaked,
+  blocksRemaining,
+  isFinished,
+  blocksUntilStart,
+  poolCategory,
+}) => {
   const [isOpen, setIsOpen] = useState(false)
   const TranslateString = useI18n()
   const Icon = isOpen ? ChevronUp : ChevronDown
 
   const handleClick = () => setIsOpen(!isOpen)
   const Tag = tags[poolCategory]
-
-  const blocksUntilStart = Math.max(startBlock - block, 0)
-  const blocksRemaining = Math.max(endBlock - block, 0)
 
   return (
     <StyledFooter isFinished={isFinished}>
