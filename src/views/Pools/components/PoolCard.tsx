@@ -64,7 +64,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
   const apy = getPoolApy(
     stakingTokenPrice,
     rewardTokenPrice,
-    getBalanceNumber(pool.totalStaked),
+    getBalanceNumber(pool.totalStaked, tokenDecimals),
     parseFloat(pool.tokenPerBlock),
   )
 
