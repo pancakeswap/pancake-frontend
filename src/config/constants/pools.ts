@@ -4,8 +4,8 @@ const pools: PoolConfig[] = [
   {
     sousId: 0,
     tokenName: 'CAKE',
-    earningTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
-    earningTokenImage: 'CAKE',
+    tokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
+    tokenImage: 'CAKE',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
@@ -24,8 +24,8 @@ const pools: PoolConfig[] = [
     sousId: 62,
     image: 'CAKETPT',
     tokenName: 'CAKE',
-    earningTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
-    earningTokenImage: 'CAKE',
+    tokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
+    tokenImage: 'CAKE',
     stakingTokenName: QuoteToken.TPT,
     stakingTokenAddress: '0xeca41281c24451168a37211f0bc2b8645af45092',
     stakingTokenDecimals: 4,
@@ -46,8 +46,8 @@ const pools: PoolConfig[] = [
     sousId: 61,
     image: 'TPTCAKE',
     tokenName: 'TPT',
-    earningTokenAddress: '0xeca41281c24451168a37211f0bc2b8645af45092',
-    earningTokenImage: 'tpt',
+    tokenAddress: '0xeca41281c24451168a37211f0bc2b8645af45092',
+    tokenImage: 'tpt',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
@@ -65,8 +65,8 @@ const pools: PoolConfig[] = [
   {
     sousId: 60,
     tokenName: 'WATCH',
-    earningTokenAddress: '0x7a9f28eb62c791422aa23ceae1da9c847cbec9b0',
-    earningTokenImage: 'watch',
+    tokenAddress: '0x7a9f28eb62c791422aa23ceae1da9c847cbec9b0',
+    tokenImage: 'watch',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
@@ -84,8 +84,8 @@ const pools: PoolConfig[] = [
   {
     sousId: 59,
     tokenName: 'xMARK',
-    earningTokenAddress: '0x26a5dfab467d4f58fb266648cae769503cec9580',
-    earningTokenImage: 'xmark',
+    tokenAddress: '0x26a5dfab467d4f58fb266648cae769503cec9580',
+    tokenImage: 'xmark',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
@@ -103,6 +103,8 @@ const pools: PoolConfig[] = [
   {
     sousId: 58,
     tokenName: 'bMXX',
+    tokenAddress: '0x4131b87f74415190425ccd873048c708f8005823',
+    tokenImage: 'bmxx',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
@@ -120,6 +122,8 @@ const pools: PoolConfig[] = [
   {
     sousId: 57,
     tokenName: 'IOTX',
+    tokenAddress: '0x9678e42cebeb63f23197d726b29b1cb20d0064e5',
+    tokenImage: 'iotx',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
@@ -137,6 +141,8 @@ const pools: PoolConfig[] = [
   {
     sousId: 56,
     tokenName: 'BOR',
+    tokenAddress: '0x92d7756c60dcfd4c689290e8a9f4d263b3b32241',
+    tokenImage: 'bor',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
@@ -154,6 +160,8 @@ const pools: PoolConfig[] = [
   {
     sousId: 55,
     tokenName: 'bOPEN',
+    tokenAddress: '0xf35262a9d427f96d2437379ef090db986eae5d42',
+    tokenImage: 'bopen',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
@@ -172,6 +180,8 @@ const pools: PoolConfig[] = [
     sousId: 54,
     image: 'CAKESUSHI',
     tokenName: 'CAKE',
+    tokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
+    tokenImage: 'CAKE',
     stakingTokenName: QuoteToken.SUSHI,
     stakingTokenAddress: '0x947950bcc74888a40ffa2593c5798f11fc9124c4',
     stakingLimit: 50,
@@ -190,6 +200,8 @@ const pools: PoolConfig[] = [
   {
     sousId: 53,
     tokenName: 'DODO',
+    tokenAddress: '0x67ee3cb086f8a16f34bee3ca72fad36f7db929e2',
+    tokenImage: 'dodo',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
@@ -207,6 +219,8 @@ const pools: PoolConfig[] = [
   {
     sousId: 52,
     tokenName: 'SWINGBY',
+    tokenAddress: '0x71de20e0c4616e7fcbfdd3f875d568492cbe4739',
+    tokenImage: 'swingby',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
@@ -224,6 +238,8 @@ const pools: PoolConfig[] = [
   {
     sousId: 51,
     tokenName: 'BRY',
+    tokenAddress: '0xf859bf77cbe8699013d6dbc7c2b926aaf307f830',
+    tokenImage: 'bry',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
@@ -241,6 +257,8 @@ const pools: PoolConfig[] = [
   {
     sousId: 50,
     tokenName: 'ZEE',
+    tokenAddress: '0x44754455564474a89358b2c2265883df993b12f0',
+    tokenImage: 'zee',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
@@ -258,6 +276,8 @@ const pools: PoolConfig[] = [
   {
     sousId: 49,
     tokenName: 'SWGb',
+    tokenAddress: '0xe40255c5d7fa7ceec5120408c78c787cecb4cfdb',
+    tokenImage: 'swgb',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
@@ -276,6 +296,8 @@ const pools: PoolConfig[] = [
     sousId: 48,
     image: 'CAKECOMP',
     tokenName: 'CAKE',
+    tokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
+    tokenImage: 'CAKE',
     stakingTokenName: QuoteToken.COMP,
     stakingTokenAddress: '0x52ce071bd9b1c4b00a0b92d298c512478cad67e8',
     stakingLimit: 1,
@@ -295,6 +317,8 @@ const pools: PoolConfig[] = [
     sousId: 47,
     image: 'CAKECOMP',
     tokenName: 'CAKE',
+    tokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
+    tokenImage: 'CAKE',
     stakingTokenName: QuoteToken.COMP,
     stakingTokenAddress: '0x52ce071bd9b1c4b00a0b92d298c512478cad67e8',
     stakingLimit: 1,
@@ -313,6 +337,8 @@ const pools: PoolConfig[] = [
   {
     sousId: 46,
     tokenName: 'SFP',
+    tokenAddress: '0xd41fdb03ba84762dd66a0af1a6c8540ff1ba5dfb',
+    tokenImage: 'sfp',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
@@ -330,6 +356,8 @@ const pools: PoolConfig[] = [
   {
     sousId: 45,
     tokenName: 'LINA',
+    tokenAddress: '0x762539b45a1dcce3d36d080f74d1aed37844b878',
+    tokenImage: 'lina',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
@@ -347,6 +375,8 @@ const pools: PoolConfig[] = [
   {
     sousId: 44,
     tokenName: 'LINA',
+    tokenAddress: '0x762539b45a1dcce3d36d080f74d1aed37844b878',
+    tokenImage: 'lina',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
@@ -364,6 +394,8 @@ const pools: PoolConfig[] = [
   {
     sousId: 43,
     tokenName: 'LIT',
+    tokenAddress: '0xb59490ab09a0f526cc7305822ac65f2ab12f9723',
+    tokenImage: 'lit',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
@@ -381,6 +413,8 @@ const pools: PoolConfig[] = [
   {
     sousId: 42,
     tokenName: 'HGET',
+    tokenAddress: '0xc7d8d35eba58a0935ff2d5a33df105dd9f071731',
+    tokenImage: 'hget',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
@@ -398,6 +432,8 @@ const pools: PoolConfig[] = [
   {
     sousId: 41,
     tokenName: 'BDO',
+    tokenAddress: '0x190b589cf9fb8ddeabbfeae36a813ffb2a702454',
+    tokenImage: 'bdo',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
@@ -415,6 +451,8 @@ const pools: PoolConfig[] = [
   {
     sousId: 40,
     tokenName: 'EGLD',
+    tokenAddress: '0xbf7c81fff98bbe61b40ed186e4afd6ddd01337fe',
+    tokenImage: 'egld',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
@@ -432,6 +470,8 @@ const pools: PoolConfig[] = [
   {
     sousId: 39,
     tokenName: 'UST',
+    tokenAddress: '0x23396cf899ca06c4472205fc903bdb4de249d6fc',
+    tokenImage: 'ust',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
@@ -449,6 +489,8 @@ const pools: PoolConfig[] = [
   {
     sousId: 38,
     tokenName: 'wSOTE',
+    tokenAddress: '0x541e619858737031a1244a5d0cd47e5ef480342c',
+    tokenImage: 'wsote',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
@@ -466,6 +508,8 @@ const pools: PoolConfig[] = [
   {
     sousId: 37,
     tokenName: 'FRONT',
+    tokenAddress: '0x928e55dab735aa8260af3cedada18b5f70c72f1b',
+    tokenImage: 'front',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
@@ -483,6 +527,8 @@ const pools: PoolConfig[] = [
   {
     sousId: 36,
     tokenName: 'Helmet',
+    tokenAddress: '0x948d2a81086a075b3130bac19e4c6dee1d2e3fe8',
+    tokenImage: 'helmet',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
@@ -500,6 +546,8 @@ const pools: PoolConfig[] = [
   {
     sousId: 35,
     tokenName: 'BTCST',
+    tokenAddress: '0x78650b139471520656b9e7aa7a5e9276814a38e9',
+    tokenImage: 'btcst',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
@@ -517,6 +565,8 @@ const pools: PoolConfig[] = [
   {
     sousId: 34,
     tokenName: 'BSCX',
+    tokenAddress: '0x5ac52ee5b2a633895292ff6d8a89bb9190451587',
+    tokenImage: 'bscx',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
@@ -534,6 +584,8 @@ const pools: PoolConfig[] = [
   {
     sousId: 33,
     tokenName: 'TEN',
+    tokenAddress: '0xdff8cb622790b7f92686c722b02cab55592f152c',
+    tokenImage: 'ten',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
@@ -551,6 +603,8 @@ const pools: PoolConfig[] = [
   {
     sousId: 32,
     tokenName: 'bALBT',
+    tokenAddress: '0x72faa679e1008ad8382959ff48e392042a8b06f7',
+    tokenImage: 'balbt',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
@@ -568,6 +622,8 @@ const pools: PoolConfig[] = [
   {
     sousId: 31,
     tokenName: 'ASR',
+    tokenAddress: '0x80d5f92c2c8c682070c95495313ddb680b267320',
+    tokenImage: 'asr',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
@@ -585,6 +641,8 @@ const pools: PoolConfig[] = [
   {
     sousId: 30,
     tokenName: 'ATM',
+    tokenAddress: '0x25e9d05365c867e59c1904e7463af9f312296f9e',
+    tokenImage: 'atm',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
@@ -602,6 +660,8 @@ const pools: PoolConfig[] = [
   {
     sousId: 29,
     tokenName: 'OG',
+    tokenAddress: '0xf05e45ad22150677a017fbd94b84fbb63dc9b44c',
+    tokenImage: 'og',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
@@ -619,6 +679,8 @@ const pools: PoolConfig[] = [
   {
     sousId: 28,
     tokenName: 'REEF',
+    tokenAddress: '0xf21768ccbc73ea5b6fd3c687208a7c2def2d966e',
+    tokenImage: 'reef',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
@@ -636,6 +698,8 @@ const pools: PoolConfig[] = [
   {
     sousId: 27,
     tokenName: 'DITTO',
+    tokenAddress: '0x233d91a0713155003fc4dce0afa871b508b3b715',
+    tokenImage: 'ditto',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
@@ -654,6 +718,8 @@ const pools: PoolConfig[] = [
     sousId: 26,
     image: 'CAKETWT',
     tokenName: 'CAKE',
+    tokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
+    tokenImage: 'CAKE',
     stakingTokenName: QuoteToken.TWT,
     stakingTokenAddress: '0x4b0f1812e5df2a09796481ff14017e6005508003',
     stakingLimit: 1000,
@@ -672,6 +738,8 @@ const pools: PoolConfig[] = [
   {
     sousId: 24,
     tokenName: 'JUV',
+    tokenAddress: '0xc40c9a843e1c6d01b7578284a9028854f6683b1b',
+    tokenImage: 'JUV',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
@@ -689,6 +757,8 @@ const pools: PoolConfig[] = [
   {
     sousId: 25,
     tokenName: 'PSG',
+    tokenAddress: '0xbc5609612b7c44bef426de600b5fd1379db2ecf1',
+    tokenImage: 'PSG',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
@@ -706,6 +776,8 @@ const pools: PoolConfig[] = [
   {
     sousId: 22,
     tokenName: 'JUV',
+    tokenAddress: '0xc40c9a843e1c6d01b7578284a9028854f6683b1b',
+    tokenImage: 'JUV',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
@@ -723,6 +795,8 @@ const pools: PoolConfig[] = [
   {
     sousId: 23,
     tokenName: 'PSG',
+    tokenAddress: '0xbc5609612b7c44bef426de600b5fd1379db2ecf1',
+    tokenImage: 'PSG',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
@@ -740,6 +814,8 @@ const pools: PoolConfig[] = [
   {
     sousId: 21,
     tokenName: 'VAI',
+    tokenAddress: '0x4bd17003473389a42daf6a0a729f6fdb328bbbd7',
+    tokenImage: 'vai',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
@@ -758,6 +834,8 @@ const pools: PoolConfig[] = [
     sousId: 20,
     image: 'CAKEBNB',
     tokenName: 'CAKE',
+    tokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
+    tokenImage: 'CAKE',
     stakingTokenName: QuoteToken.BNB,
     stakingLimit: 10,
     contractAddress: {
@@ -775,6 +853,8 @@ const pools: PoolConfig[] = [
   {
     sousId: 19,
     tokenName: 'BNB',
+    tokenAddress: '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c',
+    tokenImage: 'bnb',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
@@ -792,6 +872,8 @@ const pools: PoolConfig[] = [
   {
     sousId: 18,
     tokenName: 'BLK',
+    tokenAddress: '0x63870a18b6e42b01ef1ad8a2302ef50b7132054f',
+    tokenImage: 'blk',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
@@ -809,6 +891,8 @@ const pools: PoolConfig[] = [
   {
     sousId: 17,
     tokenName: 'BLK',
+    tokenAddress: '0x63870a18b6e42b01ef1ad8a2302ef50b7132054f',
+    tokenImage: 'blk',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
@@ -826,6 +910,8 @@ const pools: PoolConfig[] = [
   {
     sousId: 16,
     tokenName: 'UNFI',
+    tokenAddress: '0x728c5bac3c3e370e372fc4671f9ef6916b814d8b',
+    tokenImage: 'unfi',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
@@ -843,6 +929,8 @@ const pools: PoolConfig[] = [
   {
     sousId: 15,
     tokenName: 'TWT',
+    tokenAddress: '0x4b0f1812e5df2a09796481ff14017e6005508003',
+    tokenImage: 'TWT',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
@@ -860,6 +948,8 @@ const pools: PoolConfig[] = [
   {
     sousId: 14,
     tokenName: 'HARD',
+    tokenAddress: '0xf79037f6f6be66832de4e7516be52826bc3cbcc4',
+    tokenImage: 'HARD',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
@@ -877,6 +967,8 @@ const pools: PoolConfig[] = [
   {
     sousId: 13,
     tokenName: 'bROOBEE',
+    tokenAddress: '0xe64f5cb844946c1f102bd25bbd87a5ab4ae89fbe',
+    tokenImage: 'bROOBEE',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
@@ -894,6 +986,8 @@ const pools: PoolConfig[] = [
   {
     sousId: 12,
     tokenName: 'STAX',
+    tokenAddress: '0x0da6ed8b13214ff28e9ca979dd37439e8a88f6c4',
+    tokenImage: 'STAX',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
@@ -911,6 +1005,8 @@ const pools: PoolConfig[] = [
   {
     sousId: 11,
     tokenName: 'NAR',
+    tokenAddress: '0xa1303e6199b319a891b79685f0537d289af1fc83',
+    tokenImage: 'NAR',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
@@ -928,6 +1024,8 @@ const pools: PoolConfig[] = [
   {
     sousId: 10,
     tokenName: 'NYA',
+    tokenAddress: '0xbfa0841f7a90c4ce6643f651756ee340991f99d5',
+    tokenImage: 'NYA',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
@@ -945,6 +1043,8 @@ const pools: PoolConfig[] = [
   {
     sousId: 9,
     tokenName: 'CTK',
+    tokenAddress: '0xa8c2b8eec3d368c0253ad3dae65a5f2bbb89c929',
+    tokenImage: 'CTK',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
@@ -962,6 +1062,8 @@ const pools: PoolConfig[] = [
   {
     sousId: 8,
     tokenName: 'TWT',
+    tokenAddress: '0x4b0f1812e5df2a09796481ff14017e6005508003',
+    tokenImage: 'TWT',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
@@ -979,6 +1081,8 @@ const pools: PoolConfig[] = [
   {
     sousId: 7,
     tokenName: 'INJ',
+    tokenAddress: '0xa2b726b1145a4773f68593cf171187d8ebe4d495',
+    tokenImage: 'INJ',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
@@ -996,6 +1100,8 @@ const pools: PoolConfig[] = [
   {
     sousId: 6,
     tokenName: 'CTK',
+    tokenAddress: '0xa8c2b8eec3d368c0253ad3dae65a5f2bbb89c929',
+    tokenImage: 'CTK',
     stakingTokenName: QuoteToken.SYRUP,
     stakingTokenAddress: '0x009cF7bC57584b7998236eff51b98A168DceA9B0',
     contractAddress: {
@@ -1013,6 +1119,8 @@ const pools: PoolConfig[] = [
   {
     sousId: 5,
     tokenName: 'CTK',
+    tokenAddress: '0xa8c2b8eec3d368c0253ad3dae65a5f2bbb89c929',
+    tokenImage: 'CTK',
     stakingTokenName: QuoteToken.SYRUP,
     stakingTokenAddress: '0x009cF7bC57584b7998236eff51b98A168DceA9B0',
     contractAddress: {
@@ -1029,6 +1137,8 @@ const pools: PoolConfig[] = [
   {
     sousId: 4,
     tokenName: 'SXP',
+    tokenAddress: '0x47bead2563dcbf3bf2c9407fea4dc236faba485a',
+    tokenImage: 'SXP',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
@@ -1046,6 +1156,8 @@ const pools: PoolConfig[] = [
   {
     sousId: 3,
     tokenName: 'INJ',
+    tokenAddress: '0xa2b726b1145a4773f68593cf171187d8ebe4d495',
+    tokenImage: 'INJ',
     stakingTokenName: QuoteToken.SYRUP,
     stakingTokenAddress: '0x009cF7bC57584b7998236eff51b98A168DceA9B0',
     contractAddress: {
@@ -1063,6 +1175,8 @@ const pools: PoolConfig[] = [
   {
     sousId: 2,
     tokenName: 'ALPHA',
+    tokenAddress: '0xa1faa113cbe53436df28ff0aee54275c13b40975',
+    tokenImage: 'ALPHA',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
@@ -1080,6 +1194,8 @@ const pools: PoolConfig[] = [
   {
     sousId: 1,
     tokenName: 'TWT',
+    tokenAddress: '0x4b0f1812e5df2a09796481ff14017e6005508003',
+    tokenImage: '0x4b0f1812e5df2a09796481ff14017e6005508003',
     stakingTokenName: QuoteToken.SYRUP,
     stakingTokenAddress: '0x009cF7bC57584b7998236eff51b98A168DceA9B0',
     contractAddress: {
@@ -1097,6 +1213,8 @@ const pools: PoolConfig[] = [
   {
     sousId: -1,
     tokenName: 'XVS',
+    tokenAddress: '0xcf6bb5389c92bdda8a3747ddb454cb7a64626c63',
+    tokenImage: 'XVS',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
