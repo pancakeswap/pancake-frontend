@@ -33,6 +33,22 @@ const farms: FarmConfig[] = [
     quoteTokenAdresses: contracts.wbnb,
   },
   {
+    pid: 86,
+    lpSymbol: 'BEL-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0xAB97952a2806D5c92b7046c7aB13a72A87e0097b',
+    },
+    tokenSymbol: 'BEL',
+    tokenAddresses: {
+      97: '',
+      56: '0x8443f091997f06a61670b735ed92734f5628692f',
+    },
+    quoteTokenSymbol: QuoteToken.BNB,
+    quoteTokenAdresses: contracts.wbnb,
+    isCommunity: false,
+  },
+  {
     pid: 85,
     lpSymbol: 'TPT-BUSD LP',
     lpAddresses: {
