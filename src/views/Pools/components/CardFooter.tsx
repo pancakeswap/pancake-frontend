@@ -21,8 +21,8 @@ interface Props {
   decimals: number
   totalStaked: BigNumber
   tokenName: string
-  earningTokenAddress: string
-  earningTokenImage: string
+  tokenAddress: string
+  tokenImage: string
   tokenDecimals: number
   startBlock: number
   endBlock: number
@@ -93,8 +93,8 @@ const MetamaskIcon = styled.img`
 const CardFooter: React.FC<Props> = ({
   projectLink,
   decimals,
-  earningTokenAddress,
-  earningTokenImage,
+  tokenAddress,
+  tokenImage,
   totalStaked,
   tokenName,
   tokenDecimals,
@@ -114,9 +114,9 @@ const CardFooter: React.FC<Props> = ({
   const blocksUntilStart = Math.max(startBlock - block, 0)
   const blocksRemaining = Math.max(endBlock - block, 0)
 
-  const isMetamask = (window as any).ethereum && (window as any).ethereum.isMetaMask && earningTokenAddress
+  const isMetamask = (window as any).ethereum && (window as any).ethereum.isMetaMask && tokenAddress
 
-  const imageSrc = earningTokenImage ? `https://pancakeswap.finance/images/tokens/${earningTokenImage}.png` : ''
+  const imageSrc = tokenImage ? `https://pancakeswap.finance/images/tokens/${tokenImage}.png` : ''
 
   return (
     <StyledFooter isFinished={isFinished}>
@@ -159,7 +159,7 @@ const CardFooter: React.FC<Props> = ({
           )}
           {isMetamask && (
             <RowRight>
-              <TokenLink onClick={() => registerToken(earningTokenAddress, tokenName, tokenDecimals, imageSrc)}>
+              <TokenLink onClick={() => registerToken(tokenAddress, tokenName, tokenDecimals, imageSrc)}>
                 Add {tokenName} to Metamask
               </TokenLink>
               <MetamaskIcon src="/images/metamask-icon.svg" alt="metamask-icon" />
