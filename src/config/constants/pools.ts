@@ -19,6 +19,23 @@ const pools: PoolConfig[] = [
     tokenDecimals: 18,
   },
   {
+    sousId: 63,
+    tokenName: 'BEL',
+    stakingTokenName: QuoteToken.CAKE,
+    stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
+    contractAddress: {
+      97: '',
+      56: '0x2C0f449387b15793B9da27c2d945dBed83ab1B07',
+    },
+    poolCategory: PoolCategory.CORE,
+    projectLink: 'https://bella.fi/',
+    harvest: true,
+    tokenPerBlock: '0.0549',
+    sortOrder: 999,
+    isFinished: false,
+    tokenDecimals: 18,
+  },
+  {
     sousId: 62,
     image: 'CAKETPT',
     tokenName: 'CAKE',
