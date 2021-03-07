@@ -8,7 +8,7 @@ import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import useI18n from 'hooks/useI18n'
 
 export interface AprProps {
-  value: number
+  value: string
   multiplier: string
   lpLabel: string
   quoteTokenAdresses: Address
@@ -52,14 +52,19 @@ const Apr: React.FC<AprProps> = ({
   hideButton = false,
 }) => {
   const TranslateString = useI18n()
-  const displayApr = value ? `${value}%` : TranslateString(656, 'Loading...')
   const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAdresses, quoteTokenSymbol, tokenAddresses })
   const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
   return (
     <Container>
-      <AprWrapper>{displayApr}</AprWrapper>
-      {!hideButton && (
-        <ApyButton lpLabel={lpLabel} cakePrice={cakePrice} apy={originalValue} addLiquidityUrl={addLiquidityUrl} />
+      {originalValue ? (
+        <>
+          <AprWrapper>{value}%</AprWrapper>
+          {!hideButton && (
+            <ApyButton lpLabel={lpLabel} cakePrice={cakePrice} apy={originalValue} addLiquidityUrl={addLiquidityUrl} />
+          )}
+        </>
+      ) : (
+        <AprWrapper>{TranslateString(656, 'Loading...')}</AprWrapper>
       )}
     </Container>
   )
