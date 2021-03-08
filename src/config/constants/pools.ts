@@ -19,6 +19,23 @@ const pools: PoolConfig[] = [
     tokenDecimals: 18,
   },
   {
+    sousId: 64,
+    tokenName: 'DEXE',
+    stakingTokenName: QuoteToken.CAKE,
+    stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
+    contractAddress: {
+      97: '',
+      56: '0x9E6dA246d369a41DC44673ce658966cAf487f7b2',
+    },
+    poolCategory: PoolCategory.CORE,
+    projectLink: 'https://dexe.network/',
+    harvest: true,
+    tokenPerBlock: '0.009837',
+    sortOrder: 999,
+    isFinished: false,
+    tokenDecimals: 18,
+  },
+  {
     sousId: 63,
     tokenName: 'BEL',
     stakingTokenName: QuoteToken.CAKE,
