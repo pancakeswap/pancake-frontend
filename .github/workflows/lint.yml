@@ -8,6 +8,7 @@ on:
 
 jobs:
   commitlint:
+    if: ${{ startsWith(github.ref, 'bugfix') == false }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
