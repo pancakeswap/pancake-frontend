@@ -9,7 +9,8 @@ import { CommunityTag, CoreTag, BinanceTag } from 'components/Tags'
 import useBlock from 'hooks/useBlock'
 import { PoolCategory } from 'config/constants/types'
 import registerToken from 'utils/metamaskUtils'
-import { Flex } from '@pancakeswap-libs/uikit'
+import { Flex, MetamaskIcon } from '@pancakeswap-libs/uikit'
+import { BASE_URL } from 'config'
 
 const tags = {
   [PoolCategory.BINANCE]: BinanceTag,
@@ -80,12 +81,6 @@ const TokenLink = styled.a`
   cursor: pointer;
 `
 
-const MetamaskIcon = styled.img`
-  width: 15px;
-  height: 15px;
-  margin-left: 4px;
-`
-
 const CardFooter: React.FC<Props> = ({
   projectLink,
   decimals,
@@ -109,9 +104,7 @@ const CardFooter: React.FC<Props> = ({
   const blocksUntilStart = Math.max(startBlock - block, 0)
   const blocksRemaining = Math.max(endBlock - block, 0)
 
-  const isMetamask = (window as WindowChain).ethereum && (window as WindowChain).ethereum.isMetaMask && tokenAddress
-
-  const imageSrc = `https://pancakeswap.finance/images/tokens/${tokenName.toLowerCase()}.png`
+  const imageSrc = `${BASE_URL}/images/tokens/${tokenName.toLowerCase()}.png`
 
   return (
     <StyledFooter isFinished={isFinished}>
@@ -152,16 +145,12 @@ const CardFooter: React.FC<Props> = ({
               <Balance fontSize="14px" isDisabled={isFinished} value={blocksRemaining} decimals={0} />
             </Row>
           )}
-          {isMetamask && (
-            <FlexFull>
-              <Flex justifyContent="flex-end">
-                <TokenLink onClick={() => registerToken(tokenAddress, tokenName, tokenDecimals, imageSrc)}>
-                  Add {tokenName} to Metamask
-                </TokenLink>
-                <MetamaskIcon src="/images/metamask-icon.svg" alt="metamask-icon" />
-              </Flex>
-            </FlexFull>
-          )}
+          <Flex flex={1} justifyContent="flex-end">
+            <TokenLink onClick={() => registerToken(tokenAddress, tokenName, tokenDecimals, imageSrc)}>
+              Add {tokenName} to Metamask
+            </TokenLink>
+            <MetamaskIcon height={15} width={15} ml="4px" />
+          </Flex>
           <TokenLink href={projectLink} target="_blank">
             {TranslateString(412, 'View project site')}
           </TokenLink>
