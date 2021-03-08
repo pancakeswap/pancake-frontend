@@ -3,10 +3,10 @@ import { Ifo } from './types'
 const ifos: Ifo[] = [
   {
     id: 'belt',
-    address: '',
+    address: '0xc9FBedC033a1c479a6AD451ffE463025E92a1d38',
     isActive: true,
     name: 'Belt (BELT)',
-    subTitle: '',
+    subTitle: 'AMM protocol incorporating multi-strategy yield optimization',
     description:
       'Belt.fi is a protocol that allows users to retain the stability of their asset positions and get maximum yields with minimal risk, including automated vault compounding and yield optimization strategies. BELT is the governance and incentivization token of Belt Finance. BELT will be distributed to all types of pools.',
     launchDate: 'Mar. 10',
@@ -19,7 +19,7 @@ const ifos: Ifo[] = [
     currencyAddress: '0xA527a61703D82139F8a06Bc30097cC9CAA2df5A6',
     tokenDecimals: 18,
     tokenSymbol: 'BELT',
-    releaseBlockNumber: 5294924,
+    releaseBlockNumber: 5493919,
     campaignId: '511080000',
   },
   {
