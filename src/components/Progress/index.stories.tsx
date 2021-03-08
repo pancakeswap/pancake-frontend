@@ -1,7 +1,10 @@
 import React, { useState } from "react";
-import random from "lodash/random";
+import { capitalize, random } from "lodash";
+import Box from "../Box/Box";
+import Heading from "../Heading/Heading";
 import Button from "../Button/Button";
 import Progress from "./Progress";
+import { variants } from "./types";
 
 export default {
   title: "Components/Progress",
@@ -16,7 +19,16 @@ export const Default: React.FC = () => {
 
   return (
     <div style={{ padding: "32px", width: "400px" }}>
-      <Progress primaryStep={progress} />
+      {Object.values(variants).map((variant) => {
+        return (
+          <Box key={variant} mb="16px">
+            <Heading size="md" mb="8px">
+              {capitalize(variant)}
+            </Heading>
+            <Progress variant={variant} primaryStep={progress} />
+          </Box>
+        );
+      })}
       <div style={{ marginTop: "32px" }}>
         <Button type="button" scale="sm" onClick={handleClick}>
           Random Progress
