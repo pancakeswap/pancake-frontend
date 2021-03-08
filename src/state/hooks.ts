@@ -5,6 +5,7 @@ import { useWeb3React } from '@web3-react/core'
 import { Toast, toastTypes } from '@pancakeswap-libs/uikit'
 import { useSelector, useDispatch } from 'react-redux'
 import { Team } from 'config/constants/types'
+import { getWeb3NoAccount } from 'utils/web3'
 import useRefresh from 'hooks/useRefresh'
 import {
   fetchFarmsPublicDataAsync,
@@ -13,8 +14,9 @@ import {
   push as pushToast,
   remove as removeToast,
   clear as clearToast,
+  setBlock,
 } from './actions'
-import { State, Farm, Pool, ProfileState, TeamsState, AchievementState, PriceState } from './types'
+import { State, Farm, Pool, Block, ProfileState, TeamsState, AchievementState, PriceState } from './types'
 import { fetchProfile } from './profile'
 import { fetchTeam, fetchTeams } from './teams'
 import { fetchAchievements } from './achievements'
@@ -29,6 +31,16 @@ export const useFetchPublicData = () => {
     dispatch(fetchFarmsPublicDataAsync())
     dispatch(fetchPoolsPublicDataAsync())
   }, [dispatch, slowRefresh])
+
+  useEffect(() => {
+    const web3 = getWeb3NoAccount()
+    const interval = setInterval(async () => {
+      const blockNumber = await web3.eth.getBlockNumber()
+      dispatch(setBlock(blockNumber))
+    }, 6000)
+
+    return () => clearInterval(interval)
+  }, [dispatch])
 }
 
 // Farms
@@ -99,12 +111,6 @@ export const usePriceEthBusd = (): BigNumber => {
   const bnbPriceUSD = usePriceBnbBusd()
   const farm = useFarmFromPid(pid)
   return farm.tokenPriceVsQuote ? bnbPriceUSD.times(farm.tokenPriceVsQuote) : ZERO
-}
-
-export const usePriceEthBnb = (): BigNumber => {
-  const priceBnbBusd = usePriceBnbBusd()
-  const priceEthBusd = usePriceEthBusd()
-  return priceEthBusd.div(priceBnbBusd)
 }
 
 // Toasts
@@ -216,4 +222,9 @@ export const useGetApiPrice = (token: string) => {
   }
 
   return prices[token.toLowerCase()]
+}
+
+// Block
+export const useBlock = (): Block => {
+  return useSelector((state: State) => state.block)
 }

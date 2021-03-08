@@ -7,8 +7,7 @@ import { Heading } from '@pancakeswap-libs/uikit'
 import orderBy from 'lodash/orderBy'
 import partition from 'lodash/partition'
 import useI18n from 'hooks/useI18n'
-import useBlock from 'hooks/useBlock'
-import { usePools } from 'state/hooks'
+import { usePools, useBlock } from 'state/hooks'
 import FlexLayout from 'components/layout/Flex'
 import Page from 'components/layout/Page'
 import Coming from './components/Coming'
@@ -21,12 +20,12 @@ const Farm: React.FC = () => {
   const TranslateString = useI18n()
   const { account } = useWeb3React()
   const pools = usePools(account)
-  const block = useBlock()
+  const { blockNumber } = useBlock()
   const [stackedOnly, setStackedOnly] = useState(false)
 
   const [finishedPools, openPools] = useMemo(
-    () => partition(pools, (pool) => pool.isFinished || block > pool.endBlock),
-    [block, pools],
+    () => partition(pools, (pool) => pool.isFinished || blockNumber > pool.endBlock),
+    [blockNumber, pools],
   )
   const stackedOnlyPools = useMemo(
     () => openPools.filter((pool) => pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0)),
