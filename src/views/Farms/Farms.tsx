@@ -243,7 +243,9 @@ const Farms: React.FC = () => {
 
     const row: RowProps = {
       apr: {
-        value: farm.apy && farm.apy.times(new BigNumber(100)).toNumber().toLocaleString('en-US').slice(0, -1),
+        value:
+          farm.apy &&
+          farm.apy.times(new BigNumber(100)).toNumber().toLocaleString('en-US', { maximumFractionDigits: 2 }),
         multiplier: farm.multiplier,
         lpLabel,
         quoteTokenAdresses,
