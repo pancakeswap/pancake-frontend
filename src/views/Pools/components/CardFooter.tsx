@@ -9,6 +9,7 @@ import { CommunityTag, CoreTag, BinanceTag } from 'components/Tags'
 import useBlock from 'hooks/useBlock'
 import { PoolCategory } from 'config/constants/types'
 import registerToken from 'utils/metamaskUtils'
+import { Flex } from '@pancakeswap-libs/uikit'
 
 const tags = {
   [PoolCategory.BINANCE]: BinanceTag,
@@ -22,7 +23,6 @@ interface Props {
   totalStaked: BigNumber
   tokenName: string
   tokenAddress: string
-  tokenImage: string
   tokenDecimals: number
   startBlock: number
   endBlock: number
@@ -67,10 +67,6 @@ const Row = styled.div`
   display: flex;
 `
 
-const RowRight = styled(Row)`
-  justify-content: flex-end;
-`
-
 const FlexFull = styled.div`
   flex: 1;
 `
@@ -80,21 +76,20 @@ const Label = styled.div`
 const TokenLink = styled.a`
   font-size: 14px;
   text-decoration: none;
-  color: #12aab5;
+  color: ${(props) => props.theme.colors.primary};
   cursor: pointer;
 `
 
 const MetamaskIcon = styled.img`
   width: 15px;
   height: 15px;
-  margin-left: 5px;
+  margin-left: 4px;
 `
 
 const CardFooter: React.FC<Props> = ({
   projectLink,
   decimals,
   tokenAddress,
-  tokenImage,
   totalStaked,
   tokenName,
   tokenDecimals,
@@ -114,9 +109,9 @@ const CardFooter: React.FC<Props> = ({
   const blocksUntilStart = Math.max(startBlock - block, 0)
   const blocksRemaining = Math.max(endBlock - block, 0)
 
-  const isMetamask = (window as any).ethereum && (window as any).ethereum.isMetaMask && tokenAddress
+  const isMetamask = (window as WindowChain).ethereum && (window as WindowChain).ethereum.isMetaMask && tokenAddress
 
-  const imageSrc = tokenImage ? `https://pancakeswap.finance/images/tokens/${tokenImage}.png` : ''
+  const imageSrc = `https://pancakeswap.finance/images/tokens/${tokenName.toLowerCase()}.png`
 
   return (
     <StyledFooter isFinished={isFinished}>
@@ -158,12 +153,14 @@ const CardFooter: React.FC<Props> = ({
             </Row>
           )}
           {isMetamask && (
-            <RowRight>
-              <TokenLink onClick={() => registerToken(tokenAddress, tokenName, tokenDecimals, imageSrc)}>
-                Add {tokenName} to Metamask
-              </TokenLink>
-              <MetamaskIcon src="/images/metamask-icon.svg" alt="metamask-icon" />
-            </RowRight>
+            <FlexFull>
+              <Flex justifyContent="flex-end">
+                <TokenLink onClick={() => registerToken(tokenAddress, tokenName, tokenDecimals, imageSrc)}>
+                  Add {tokenName} to Metamask
+                </TokenLink>
+                <MetamaskIcon src="/images/metamask-icon.svg" alt="metamask-icon" />
+              </Flex>
+            </FlexFull>
           )}
           <TokenLink href={projectLink} target="_blank">
             {TranslateString(412, 'View project site')}
