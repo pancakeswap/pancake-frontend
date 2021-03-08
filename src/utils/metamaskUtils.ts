@@ -1,13 +1,13 @@
-const registerToken = async (earningTokenAddress: string, tokenName: string, tokenDecimals: number, image: string) => {
-  const tokenAdded = await (window as any).ethereum.request({
+const registerToken = async (tokenAddress: string, tokenSymbol: string, tokenDecimals: number, tokenImage: string) => {
+  const tokenAdded = await (window as WindowChain).ethereum.request({
     method: 'wallet_watchAsset',
     params: {
       type: 'ERC20',
       options: {
-        address: earningTokenAddress,
-        symbol: tokenName,
+        address: tokenAddress,
+        symbol: tokenSymbol,
         decimals: tokenDecimals,
-        image,
+        image: tokenImage,
       },
     },
   })
