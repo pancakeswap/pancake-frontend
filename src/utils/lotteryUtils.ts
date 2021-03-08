@@ -6,11 +6,12 @@ import MultiCallAbi from 'config/abi/Multicall.json'
 import ticketAbi from 'config/abi/lotteryNft.json'
 import lotteryAbi from 'config/abi/lottery.json'
 import { LOTTERY_TICKET_PRICE } from 'config'
+import { AbiItem } from 'web3-utils'
 import { getMulticallAddress } from './addressHelpers'
 
 export const multiCall = async (abi, calls) => {
   const web3 = getWeb3NoAccount()
-  const multi = new web3.eth.Contract(MultiCallAbi, getMulticallAddress())
+  const multi = new web3.eth.Contract((MultiCallAbi as unknown) as AbiItem, getMulticallAddress())
   const itf = new Interface(abi)
   let res = []
   if (calls.length > 100) {
@@ -48,7 +49,7 @@ export const getTickets = async (lotteryContract, ticketsContract, account, cust
   const length = await getTicketsAmount(ticketsContract, account)
 
   // eslint-disable-next-line prefer-spread
-  const calls1 = Array.apply(null, { length }).map((a, i) => [
+  const calls1 = Array.apply(null, { length } as unknown[]).map((a, i) => [
     ticketsContract.options.address,
     'tokenOfOwnerByIndex',
     [account, i],
@@ -81,7 +82,7 @@ export const multiClaim = async (lotteryContract, ticketsContract, account) => {
   await lotteryContract.methods.issueIndex().call()
   const length = await getTicketsAmount(ticketsContract, account)
   // eslint-disable-next-line prefer-spread
-  const calls1 = Array.apply(null, { length }).map((a, i) => [
+  const calls1 = Array.apply(null, { length } as unknown[]).map((a, i) => [
     ticketsContract.options.address,
     'tokenOfOwnerByIndex',
     [account, i],
@@ -125,7 +126,7 @@ export const getTotalClaim = async (lotteryContract, ticketsContract, account) =
     const issueIndex = await lotteryContract.methods.issueIndex().call()
     const length = await getTicketsAmount(ticketsContract, account)
     // eslint-disable-next-line prefer-spread
-    const calls1 = Array.apply(null, { length }).map((a, i) => [
+    const calls1 = Array.apply(null, { length } as unknown[]).map((a, i) => [
       ticketsContract.options.address,
       'tokenOfOwnerByIndex',
       [account, i],
@@ -151,13 +152,13 @@ export const getTotalClaim = async (lotteryContract, ticketsContract, account) =
     const calls4 = finalTokenids.map((id) => [lotteryContract.options.address, 'getRewardView', [id]])
 
     const rewards = await multiCall(lotteryAbi, calls4)
-    const claim = rewards.reduce((p, c) => BigNumber.sum(p, c), BigNumber(0))
+    const claim = rewards.reduce((p, c) => BigNumber.sum(p, c), new BigNumber(0))
 
     return claim
   } catch (err) {
     console.error(err)
   }
-  return BigNumber(0)
+  return new BigNumber(0)
 }
 
 export const getTotalRewards = async (lotteryContract) => {
