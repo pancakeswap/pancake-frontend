@@ -6,7 +6,7 @@ import useI18n from 'hooks/useI18n'
 import { ChevronDown, ChevronUp } from 'react-feather'
 import Balance from 'components/Balance'
 import { CommunityTag, CoreTag, BinanceTag } from 'components/Tags'
-import useBlock from 'hooks/useBlock'
+import { useBlock } from 'state/hooks'
 import { PoolCategory } from 'config/constants/types'
 
 const tags = {
@@ -83,7 +83,7 @@ const CardFooter: React.FC<Props> = ({
   endBlock,
   poolCategory,
 }) => {
-  const block = useBlock()
+  const { blockNumber: currentBlock } = useBlock()
   const [isOpen, setIsOpen] = useState(false)
   const TranslateString = useI18n()
   const Icon = isOpen ? ChevronUp : ChevronDown
@@ -91,8 +91,8 @@ const CardFooter: React.FC<Props> = ({
   const handleClick = () => setIsOpen(!isOpen)
   const Tag = tags[poolCategory]
 
-  const blocksUntilStart = Math.max(startBlock - block, 0)
-  const blocksRemaining = Math.max(endBlock - block, 0)
+  const blocksUntilStart = Math.max(startBlock - currentBlock, 0)
+  const blocksRemaining = Math.max(endBlock - currentBlock, 0)
 
   return (
     <StyledFooter isFinished={isFinished}>
