@@ -20,6 +20,23 @@ const pools: PoolConfig[] = [
     tokenDecimals: 18,
   },
   {
+    sousId: 65,
+    tokenName: 'BFI',
+    stakingTokenName: QuoteToken.CAKE,
+    stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
+    contractAddress: {
+      97: '',
+      56: '0x0A595623b58dFDe6eB468b613C11A7A8E84F09b9',
+    },
+    poolCategory: PoolCategory.CORE,
+    projectLink: 'https://bearn.fi/',
+    harvest: true,
+    tokenPerBlock: '0.0001157',
+    sortOrder: 999,
+    isFinished: false,
+    tokenDecimals: 18,
+  },
+  {
     sousId: 64,
     tokenName: 'DEXE',
     stakingTokenName: QuoteToken.CAKE,
