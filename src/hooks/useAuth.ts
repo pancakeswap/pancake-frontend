@@ -36,7 +36,8 @@ const useAuth = () => {
             error instanceof UserRejectedRequestErrorWalletConnect
           ) {
             if (connector instanceof WalletConnectConnector) {
-              (connector as WalletConnectConnector).walletConnectProvider = null
+              const walletConnector = connector as WalletConnectConnector
+              walletConnector.walletConnectProvider = null
             }
             toastError('Authorization Error', `Please authorize to access your account`)
           } else {
