@@ -29,11 +29,13 @@ const Button = <E extends ElementType = "button">(props: ButtonProps<E>): JSX.El
         {isValidElement(startIcon) &&
           cloneElement(startIcon, {
             mr: "0.5rem",
+            color: "currentColor",
           })}
         {children}
         {isValidElement(endIcon) &&
           cloneElement(endIcon, {
             ml: "0.5rem",
+            color: "currentColor",
           })}
       </>
     </StyledButton>
