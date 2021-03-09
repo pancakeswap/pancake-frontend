@@ -35,12 +35,6 @@ const Container = styled.div`
 
 const StyledLinkExternal = styled(LinkExternal)`
   font-weight: 400;
-  margin-left: 8px;
-`
-
-const StyledLink = styled(Link)`
-  font-weight: 400;
-  margin-top: 8px;
 `
 
 const StakeContainer = styled.div`
@@ -122,16 +116,12 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({ details, apr, 
     <Container>
       <InfoContainer>
         <StakeContainer>
-          <StyledLink href={`https://exchange.pancakeswap.finance/#/add/${liquidityUrlPathParts}`} external>
+          <StyledLinkExternal href={`https://exchange.pancakeswap.finance/#/add/${liquidityUrlPathParts}`}>
             {TranslateString(999, `Get ${lpLabel}`, { name: lpLabel })}
-          </StyledLink>
+          </StyledLinkExternal>
         </StakeContainer>
-        <StyledLink href={bsc} external>
-          {TranslateString(999, 'View Contract')}
-        </StyledLink>
-        <StyledLink href={info} external>
-          {TranslateString(999, 'See Pair Info')}
-        </StyledLink>
+        <StyledLinkExternal href={bsc}>{TranslateString(999, 'View Contract')}</StyledLinkExternal>
+        <StyledLinkExternal href={info}>{TranslateString(999, 'See Pair Info')}</StyledLinkExternal>
         <TagsContainer>
           {isCommunityFarm ? <CommunityTag /> : <CoreTag />}
           {dual ? <DualTag /> : null}
