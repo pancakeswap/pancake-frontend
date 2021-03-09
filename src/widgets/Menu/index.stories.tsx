@@ -214,7 +214,7 @@ export const MenuEntryComponent: React.FC = () => {
 
 export const WithSubmenuSelected: React.FC = () => {
   return (
-    <MemoryRouter initialEntries={['/teams']}>
+    <MemoryRouter initialEntries={["/teams"]}>
       <Menu
         account="0xbdda50183d817c3289f895a4472eb475967dc980"
         login={noop}
