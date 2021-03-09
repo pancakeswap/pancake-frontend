@@ -4,6 +4,7 @@ export { default as ArrowDownIcon } from "./Icons/ArrowDown";
 export { default as ArrowDropDownIcon } from "./Icons/ArrowDropDown";
 export { default as ArrowDropUpIcon } from "./Icons/ArrowDropUp";
 export { default as ArrowForwardIcon } from "./Icons/ArrowForward";
+export { default as ArrowUpIcon } from "./Icons/ArrowUp";
 export { default as AutoRenewIcon } from "./Icons/AutoRenew";
 export { default as BinanceIcon } from "./Icons/Binance";
 export { default as BlockIcon } from "./Icons/Block";
