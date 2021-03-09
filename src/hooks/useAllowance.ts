@@ -4,12 +4,14 @@ import { useWeb3React } from '@web3-react/core'
 import { Contract } from 'web3-eth-contract'
 import { getLotteryAddress } from 'utils/addressHelpers'
 import { useCake } from './useContract'
+import useRefresh from './useRefresh'
 
 // Retrieve lottery allowance
 export const useLotteryAllowance = () => {
   const [allowance, setAllowance] = useState(new BigNumber(0))
   const { account } = useWeb3React()
   const cakeContract = useCake()
+  const { fastRefresh } = useRefresh()
 
   useEffect(() => {
     const fetchAllowance = async () => {
@@ -20,9 +22,7 @@ export const useLotteryAllowance = () => {
     if (account) {
       fetchAllowance()
     }
-    const refreshInterval = setInterval(fetchAllowance, 10000)
-    return () => clearInterval(refreshInterval)
-  }, [account, cakeContract])
+  }, [account, cakeContract, fastRefresh])
 
   return allowance
 }
