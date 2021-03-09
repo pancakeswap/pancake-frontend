@@ -15,7 +15,7 @@ jobs:
       matrix:
         node: [14.x]
 
-    name: Node v${{ matrix.node }}
+    name: Did you fuck up again?
 
     steps:
       - name: Checkout code

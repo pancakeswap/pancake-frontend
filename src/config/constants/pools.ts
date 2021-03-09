@@ -20,7 +20,7 @@ const pools: PoolConfig[] = [
     tokenDecimals: 18,
   },
   {
-    sousId: 65,
+    sousId: 66,
     tokenName: 'RAMP',
     tokenAddress: '0x8519ea49c997f50ceffa444d240fb655e89248aa',
     stakingTokenName: QuoteToken.CAKE,
