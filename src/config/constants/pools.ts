@@ -22,6 +22,7 @@ const pools: PoolConfig[] = [
   {
     sousId: 65,
     tokenName: 'BFI',
+    tokenAddress: '0x81859801b01764d4f0fa5e64729f5a6c3b91435b',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
@@ -39,6 +40,7 @@ const pools: PoolConfig[] = [
   {
     sousId: 64,
     tokenName: 'DEXE',
+    tokenAddress: '0x039cb485212f996a9dbb85a9a75d898f94d38da6',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {
@@ -56,6 +58,7 @@ const pools: PoolConfig[] = [
   {
     sousId: 63,
     tokenName: 'BEL',
+    tokenAddress: '0x8443f091997f06a61670b735ed92734f5628692f',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     contractAddress: {

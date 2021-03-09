@@ -4,12 +4,12 @@ import styled from 'styled-components'
 import { getBalanceNumber } from 'utils/formatBalance'
 import useI18n from 'hooks/useI18n'
 import { ChevronDown, ChevronUp } from 'react-feather'
+import { Flex, MetamaskIcon } from '@pancakeswap-libs/uikit'
 import Balance from 'components/Balance'
 import { CommunityTag, CoreTag, BinanceTag } from 'components/Tags'
 import { useBlock } from 'state/hooks'
 import { PoolCategory } from 'config/constants/types'
-import registerToken from 'utils/metamaskUtils'
-import { Flex, MetamaskIcon } from '@pancakeswap-libs/uikit'
+import { registerToken } from 'utils/wallet'
 import { BASE_URL } from 'config'
 
 const tags = {
@@ -63,9 +63,8 @@ const Details = styled.div`
   margin-top: 24px;
 `
 
-const Row = styled.div`
+const Row = styled(Flex)`
   align-items: center;
-  display: flex;
 `
 
 const FlexFull = styled.div`
@@ -118,7 +117,7 @@ const CardFooter: React.FC<Props> = ({
       </Row>
       {isOpen && (
         <Details>
-          <Row style={{ marginBottom: '4px' }}>
+          <Row mb="4px">
             <FlexFull>
               <Label>
                 <span role="img" aria-label="syrup">
@@ -130,7 +129,7 @@ const CardFooter: React.FC<Props> = ({
             <Balance fontSize="14px" isDisabled={isFinished} value={getBalanceNumber(totalStaked, decimals)} />
           </Row>
           {blocksUntilStart > 0 && (
-            <Row>
+            <Row mb="4px">
               <FlexFull>
                 <Label>{TranslateString(410, 'Start')}:</Label>
               </FlexFull>
@@ -138,14 +137,14 @@ const CardFooter: React.FC<Props> = ({
             </Row>
           )}
           {blocksUntilStart === 0 && blocksRemaining > 0 && (
-            <Row>
+            <Row mb="4px">
               <FlexFull>
                 <Label>{TranslateString(410, 'End')}:</Label>
               </FlexFull>
               <Balance fontSize="14px" isDisabled={isFinished} value={blocksRemaining} decimals={0} />
             </Row>
           )}
-          <Flex flex={1} justifyContent="flex-end">
+          <Flex mb="4px">
             <TokenLink onClick={() => registerToken(tokenAddress, tokenName, tokenDecimals, imageSrc)}>
               Add {tokenName} to Metamask
             </TokenLink>
