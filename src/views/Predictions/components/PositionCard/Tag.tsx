@@ -4,42 +4,42 @@ import { ArrowForwardIcon, Flex, FlexProps, Text } from '@pancakeswap-libs/uikit
 import useI18n from 'hooks/useI18n'
 import { PositionType } from './types'
 
-interface LabelProps extends FlexProps {
+interface TagProps extends FlexProps {
   bg: string
   startIcon?: ReactNode
 }
 
-const StyledLabel = styled(Flex)<{ bg: LabelProps['bg'] }>`
+const StyledTag = styled(Flex)<{ bg: TagProps['bg'] }>`
   background-color: ${({ bg, theme }) => theme.colors[bg]};
   display: inline-flex;
 `
 
-const Label: React.FC<LabelProps> = ({ bg = 'success', startIcon, children, ...props }) => {
+const Tag: React.FC<TagProps> = ({ bg = 'success', startIcon, children, ...props }) => {
   const icon = startIcon || <ArrowForwardIcon color="currentColor" />
 
   return (
-    <StyledLabel alignItems="center" justifyContent="center" borderRadius="4px" bg={bg} py="4px" px="8px" {...props}>
+    <StyledTag alignItems="center" justifyContent="center" borderRadius="4px" bg={bg} py="4px" px="8px" {...props}>
       {icon}
       <Text textTransform="uppercase" color="white" ml="4px">
         {children}
       </Text>
-    </StyledLabel>
+    </StyledTag>
   )
 }
 
-interface PositionLabelProps extends FlexProps {
+interface PositionTagProps extends FlexProps {
   enteredPosition: PositionType
 }
 
-export const PositionLabel: React.FC<PositionLabelProps> = ({ enteredPosition, ...props }) => {
+export const PositionTag: React.FC<PositionTagProps> = ({ enteredPosition, ...props }) => {
   const TranslateString = useI18n()
   const icon = <ArrowForwardIcon color="white" />
 
   return (
-    <Label bg={enteredPosition === PositionType.UP ? 'success' : 'failure'} startIcon={icon} {...props}>
+    <Tag bg={enteredPosition === PositionType.UP ? 'success' : 'failure'} startIcon={icon} {...props}>
       {enteredPosition === PositionType.UP ? TranslateString(999, 'Up') : TranslateString(999, 'Down')}
-    </Label>
+    </Tag>
   )
 }
 
-export default Label
+export default Tag
