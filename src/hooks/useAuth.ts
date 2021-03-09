@@ -5,7 +5,7 @@ import {
   NoEthereumProviderError,
   UserRejectedRequestError as UserRejectedRequestErrorInjected
 } from '@web3-react/injected-connector'
-import { UserRejectedRequestError as UserRejectedRequestErrorWalletConnect } from '@web3-react/walletconnect-connector'
+import { UserRejectedRequestError as UserRejectedRequestErrorWalletConnect, WalletConnectConnector } from '@web3-react/walletconnect-connector'
 import { ConnectorNames, connectorLocalStorageKey } from '@pancakeswap-libs/uikit'
 import { useToast } from 'state/hooks'
 import { connectorsByName } from 'utils/web3React'
@@ -35,6 +35,9 @@ const useAuth = () => {
             error instanceof UserRejectedRequestErrorInjected ||
             error instanceof UserRejectedRequestErrorWalletConnect
           ) {
+            if (connector instanceof WalletConnectConnector) {
+              (connector as WalletConnectConnector).walletConnectProvider = null
+            }
             toastError('Authorization Error', `Please authorize to access your account`)
           } else {
             toastError(error.name, error.message)
