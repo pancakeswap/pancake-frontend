@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import useI18n from 'hooks/useI18n'
-import { LinkExternal, Text, Link } from '@pancakeswap-libs/uikit'
+import { LinkExternal, Text } from '@pancakeswap-libs/uikit'
 import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import { communityFarms } from 'config/constants'
