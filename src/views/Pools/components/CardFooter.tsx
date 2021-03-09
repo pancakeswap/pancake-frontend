@@ -8,6 +8,9 @@ import Balance from 'components/Balance'
 import { CommunityTag, CoreTag, BinanceTag } from 'components/Tags'
 import { useBlock } from 'state/hooks'
 import { PoolCategory } from 'config/constants/types'
+import registerToken from 'utils/metamaskUtils'
+import { Flex, MetamaskIcon } from '@pancakeswap-libs/uikit'
+import { BASE_URL } from 'config'
 
 const tags = {
   [PoolCategory.BINANCE]: BinanceTag,
@@ -19,6 +22,9 @@ interface Props {
   projectLink: string
   decimals: number
   totalStaked: BigNumber
+  tokenName: string
+  tokenAddress: string
+  tokenDecimals: number
   startBlock: number
   endBlock: number
   isFinished: boolean
@@ -71,13 +77,17 @@ const Label = styled.div`
 const TokenLink = styled.a`
   font-size: 14px;
   text-decoration: none;
-  color: #12aab5;
+  color: ${(props) => props.theme.colors.primary};
+  cursor: pointer;
 `
 
 const CardFooter: React.FC<Props> = ({
   projectLink,
   decimals,
+  tokenAddress,
   totalStaked,
+  tokenName,
+  tokenDecimals,
   isFinished,
   startBlock,
   endBlock,
@@ -93,6 +103,8 @@ const CardFooter: React.FC<Props> = ({
 
   const blocksUntilStart = Math.max(startBlock - currentBlock, 0)
   const blocksRemaining = Math.max(endBlock - currentBlock, 0)
+
+  const imageSrc = `${BASE_URL}/images/tokens/${tokenName.toLowerCase()}.png`
 
   return (
     <StyledFooter isFinished={isFinished}>
@@ -133,6 +145,12 @@ const CardFooter: React.FC<Props> = ({
               <Balance fontSize="14px" isDisabled={isFinished} value={blocksRemaining} decimals={0} />
             </Row>
           )}
+          <Flex flex={1} justifyContent="flex-end">
+            <TokenLink onClick={() => registerToken(tokenAddress, tokenName, tokenDecimals, imageSrc)}>
+              Add {tokenName} to Metamask
+            </TokenLink>
+            <MetamaskIcon height={15} width={15} ml="4px" />
+          </Flex>
           <TokenLink href={projectLink} target="_blank">
             {TranslateString(412, 'View project site')}
           </TokenLink>
