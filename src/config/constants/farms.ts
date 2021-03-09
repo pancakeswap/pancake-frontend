@@ -37,7 +37,7 @@ const farms: FarmConfig[] = [
     lpSymbol: 'RAMP-BUSD LP',
     lpAddresses: {
       97: '',
-      56: '0x45a9e8d48bc560416008d122c9437927fed50e7d',
+      56: '0xbF36959939982D0D34B37Fb3f3425da9676C13a3',
     },
     tokenSymbol: 'RAMP',
     tokenAddresses: {
