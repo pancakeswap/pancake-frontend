@@ -5,8 +5,8 @@ describe('Config farms', () => {
     const duplicates = farms.filter((f) => pid === f.pid)
     expect(duplicates).toHaveLength(1)
   })
-  it.each(farms.map((farm) => farm.lpAddresses))('Farm #%d has an unique address', (lpAddresses) => {
-    const duplicates = farms.filter((f) => lpAddresses === f.lpAddresses)
+  it.each(farms.map((farm) => [farm.pid, farm.lpAddresses]))('Farm #%d has an unique address', (pid, lpAddresses) => {
+    const duplicates = farms.filter((f) => lpAddresses[56] === f.lpAddresses[56])
     expect(duplicates).toHaveLength(1)
   })
 })
