@@ -30,7 +30,7 @@ const useAuth = () => {
         } else {
           window.localStorage.removeItem(connectorLocalStorageKey)
           if (error instanceof NoEthereumProviderError || error instanceof NoBscProviderError) {
-            toastError('Provider Error', `No provider was found`)
+            toastError('Provider Error', 'No provider was found')
           } else if (
             error instanceof UserRejectedRequestErrorInjected ||
             error instanceof UserRejectedRequestErrorWalletConnect
@@ -39,7 +39,7 @@ const useAuth = () => {
               const walletConnector = connector as WalletConnectConnector
               walletConnector.walletConnectProvider = null
             }
-            toastError('Authorization Error', `Please authorize to access your account`)
+            toastError('Authorization Error', 'Please authorize to access your account')
           } else {
             toastError(error.name, error.message)
           }
