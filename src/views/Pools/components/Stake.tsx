@@ -24,7 +24,6 @@ const Stake: React.FC<StakeProps> = ({ pool, tokenName, isOldSyrup, isBnbPool })
   const { onApprove } = useSousApprove(stakingTokenContract, sousId)
 
   const allowance = new BigNumber(userData?.allowance || 0)
-  const stakingTokenBalance = new BigNumber(userData?.stakingTokenBalance || 0)
   const stakedBalance = new BigNumber(userData?.stakedBalance || 0)
   const accountHasStakedBalance = stakedBalance?.toNumber() > 0
   const needsApproval = !accountHasStakedBalance && !allowance.toNumber() && !isBnbPool
@@ -83,7 +82,7 @@ const Stake: React.FC<StakeProps> = ({ pool, tokenName, isOldSyrup, isBnbPool })
 
   return (
     <Flex flexDirection="column" mt="16px">
-      <Flex mb="10px">{handleRenderLabel()}</Flex>
+      <Flex mb="4px">{handleRenderLabel()}</Flex>
       {handleRenderActions()}
     </Flex>
   )
