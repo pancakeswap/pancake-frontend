@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { getBalanceNumber } from 'utils/formatBalance'
 import useI18n from 'hooks/useI18n'
 import { ChevronDown, ChevronUp } from 'react-feather'
-import { Flex, MetamaskIcon } from '@pancakeswap-libs/uikit'
+import { Flex, MetamaskIcon, Text, LinkExternal } from '@pancakeswap-libs/uikit'
 import Balance from 'components/Balance'
 import { CommunityTag, CoreTag, BinanceTag } from 'components/Tags'
 import { useBlock } from 'state/hooks'
@@ -70,14 +70,17 @@ const Row = styled(Flex)`
 const FlexFull = styled.div`
   flex: 1;
 `
-const Label = styled.div`
-  font-size: 14px;
-`
+
 const TokenLink = styled.a`
   font-size: 14px;
   text-decoration: none;
   color: ${(props) => props.theme.colors.primary};
   cursor: pointer;
+  margin-left: auto;
+`
+
+const StyledLinkExternal = styled(LinkExternal)`
+  font-weight: 400;
 `
 
 const CardFooter: React.FC<Props> = ({
@@ -119,19 +122,16 @@ const CardFooter: React.FC<Props> = ({
         <Details>
           <Row mb="4px">
             <FlexFull>
-              <Label>
-                <span role="img" aria-label="syrup">
-                  🥞{' '}
-                </span>
-                {TranslateString(408, 'Total')}
-              </Label>
+              <Text fontSize="14px">{TranslateString(999, 'Total staked')}</Text>
             </FlexFull>
             <Balance fontSize="14px" isDisabled={isFinished} value={getBalanceNumber(totalStaked, decimals)} />
+            &nbsp;
+            <Text fontSize="14px">{tokenName}</Text>
           </Row>
           {blocksUntilStart > 0 && (
             <Row mb="4px">
               <FlexFull>
-                <Label>{TranslateString(410, 'Start')}:</Label>
+                <Text fontSize="14px">{TranslateString(410, 'Start')}:</Text>
               </FlexFull>
               <Balance fontSize="14px" isDisabled={isFinished} value={blocksUntilStart} decimals={0} />
             </Row>
@@ -139,7 +139,7 @@ const CardFooter: React.FC<Props> = ({
           {blocksUntilStart === 0 && blocksRemaining > 0 && (
             <Row mb="4px">
               <FlexFull>
-                <Label>{TranslateString(410, 'End')}:</Label>
+                <Text>{TranslateString(410, 'End')}:</Text>
               </FlexFull>
               <Balance fontSize="14px" isDisabled={isFinished} value={blocksRemaining} decimals={0} />
             </Row>
@@ -150,9 +150,9 @@ const CardFooter: React.FC<Props> = ({
             </TokenLink>
             <MetamaskIcon height={15} width={15} ml="4px" />
           </Flex>
-          <TokenLink href={projectLink} target="_blank">
-            {TranslateString(412, 'View project site')}
-          </TokenLink>
+          <StyledLinkExternal href={projectLink} ml="auto">
+            {TranslateString(999, 'Project site')}
+          </StyledLinkExternal>
         </Details>
       )}
     </StyledFooter>
