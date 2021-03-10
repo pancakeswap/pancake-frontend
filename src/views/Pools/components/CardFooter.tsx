@@ -9,8 +9,12 @@ import Balance from 'components/Balance'
 import { CommunityTag, CoreTag, BinanceTag } from 'components/Tags'
 import { useBlock } from 'state/hooks'
 import { PoolCategory } from 'config/constants/types'
+<<<<<<< HEAD
 import { registerToken } from 'utils/wallet'
 import { BASE_URL } from 'config'
+=======
+import { Text, LinkExternal } from '@pancakeswap-libs/uikit'
+>>>>>>> feat: Pool card layout
 
 const tags = {
   [PoolCategory.BINANCE]: BinanceTag,
@@ -29,6 +33,7 @@ interface Props {
   endBlock: number
   isFinished: boolean
   poolCategory: PoolCategory
+  tokenName: string
 }
 
 const StyledFooter = styled.div<{ isFinished: boolean }>`
@@ -70,6 +75,7 @@ const Row = styled(Flex)`
 const FlexFull = styled.div`
   flex: 1;
 `
+<<<<<<< HEAD
 const Label = styled.div`
   font-size: 14px;
 `
@@ -78,6 +84,10 @@ const TokenLink = styled.a`
   text-decoration: none;
   color: ${(props) => props.theme.colors.primary};
   cursor: pointer;
+=======
+const StyledLinkExternal = styled(LinkExternal)`
+  font-weight: 400;
+>>>>>>> feat: Pool card layout
 `
 
 const CardFooter: React.FC<Props> = ({
@@ -91,6 +101,7 @@ const CardFooter: React.FC<Props> = ({
   startBlock,
   endBlock,
   poolCategory,
+  tokenName,
 }) => {
   const { blockNumber: currentBlock } = useBlock()
   const [isOpen, setIsOpen] = useState(false)
@@ -119,19 +130,16 @@ const CardFooter: React.FC<Props> = ({
         <Details>
           <Row mb="4px">
             <FlexFull>
-              <Label>
-                <span role="img" aria-label="syrup">
-                  🥞{' '}
-                </span>
-                {TranslateString(408, 'Total')}
-              </Label>
+              <Text fontSize="14px">{TranslateString(999, 'Total staked')}</Text>
             </FlexFull>
             <Balance fontSize="14px" isDisabled={isFinished} value={getBalanceNumber(totalStaked, decimals)} />
+            &nbsp;
+            <Text fontSize="14px">{tokenName}</Text>
           </Row>
           {blocksUntilStart > 0 && (
             <Row mb="4px">
               <FlexFull>
-                <Label>{TranslateString(410, 'Start')}:</Label>
+                <Text fontSize="14px">{TranslateString(410, 'Start')}:</Text>
               </FlexFull>
               <Balance fontSize="14px" isDisabled={isFinished} value={blocksUntilStart} decimals={0} />
             </Row>
@@ -139,11 +147,12 @@ const CardFooter: React.FC<Props> = ({
           {blocksUntilStart === 0 && blocksRemaining > 0 && (
             <Row mb="4px">
               <FlexFull>
-                <Label>{TranslateString(410, 'End')}:</Label>
+                <Text>{TranslateString(410, 'End')}:</Text>
               </FlexFull>
               <Balance fontSize="14px" isDisabled={isFinished} value={blocksRemaining} decimals={0} />
             </Row>
           )}
+<<<<<<< HEAD
           <Flex mb="4px">
             <TokenLink onClick={() => registerToken(tokenAddress, tokenName, tokenDecimals, imageSrc)}>
               Add {tokenName} to Metamask
@@ -153,6 +162,17 @@ const CardFooter: React.FC<Props> = ({
           <TokenLink href={projectLink} target="_blank">
             {TranslateString(412, 'View project site')}
           </TokenLink>
+=======
+          <Row>
+            <FlexFull>
+              <Text>{TranslateString(410, 'End')}:</Text>
+            </FlexFull>
+            <Balance fontSize="14px" isDisabled={isFinished} value={10} decimals={0} color="primary" bold={false} />
+          </Row>
+          <StyledLinkExternal href={projectLink} ml="auto">
+            {TranslateString(999, 'Project site')}
+          </StyledLinkExternal>
+>>>>>>> feat: Pool card layout
         </Details>
       )}
     </StyledFooter>
