@@ -83,7 +83,7 @@ const Stake: React.FC<StakeProps> = ({ pool, tokenName, isOldSyrup, isBnbPool })
 
   return (
     <Flex flexDirection="column" mt="16px">
-      <Flex mb="10px">{handleRenderLabel()}</Flex>
+      <Flex mb="4px">{handleRenderLabel()}</Flex>
       {handleRenderActions()}
     </Flex>
   )

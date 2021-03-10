@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Flex } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
+
 import { getBalanceNumber } from 'utils/formatBalance'
 import { getPoolApy } from 'utils/apy'
 import { getAddress } from 'utils/addressHelpers'
