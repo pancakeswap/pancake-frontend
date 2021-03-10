@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { orderBy, random } from 'lodash'
+import { orderBy, random, times } from 'lodash'
 import SwiperCore, { Keyboard, Mousewheel } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Box, Flex, HelpIcon, IconButton } from '@pancakeswap-libs/uikit'
 import { useGetRounds } from 'state/hooks'
 import { PricePairLabel, TimerLabel } from './components/Label'
 import PrevNextNav from './components/PrevNextNav'
-import { ExpiredPositionCard } from './components/PositionCard'
+import { ExpiredPositionCard, NextCard } from './components/PositionCard'
 import History from './icons/History'
 
 import 'swiper/swiper.min.css'
@@ -37,7 +37,7 @@ const Positions = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       setPrice(random(215, 230))
-    }, 2000)
+    }, 5000)
 
     return () => clearInterval(timer)
   }, [setPrice])
@@ -88,6 +88,13 @@ const Positions = () => {
               <ExpiredPositionCard round={round} />
             </SwiperSlide>
           ))}
+          {times(2).map((key) => {
+            return (
+              <SwiperSlide key={`soon-${key}`}>
+                <NextCard />
+              </SwiperSlide>
+            )
+          })}
         </Swiper>
       </StyledSwiper>
     </Box>

@@ -223,6 +223,12 @@ export const useGetCurrentEpoch = () => {
   return useSelector((state: State) => state.predictions.currentEpoch)
 }
 
+export const useGetLiveRound = () => {
+  const { currentEpoch, rounds } = useSelector((state: State) => state.predictions)
+  return rounds[currentEpoch]
+}
+
+
 // Collectibles
 export const useGetCollectibles = () => {
   const { account } = useWeb3React()

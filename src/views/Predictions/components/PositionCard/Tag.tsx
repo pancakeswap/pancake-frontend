@@ -1,7 +1,6 @@
 import React, { ReactNode } from 'react'
 import styled from 'styled-components'
 import { ArrowUpIcon, ArrowDownIcon, Flex, FlexProps, Text } from '@pancakeswap-libs/uikit'
-import useI18n from 'hooks/useI18n'
 import { Position } from 'state/types'
 
 interface TagProps extends FlexProps {

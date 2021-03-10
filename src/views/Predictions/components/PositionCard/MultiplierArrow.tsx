@@ -8,10 +8,11 @@ import MultiplierDown from '../../icons/MultiplierDown'
 import EnteredTag from './EnteredTag'
 
 interface MultiplierArrowProps {
-  multiplier: number
-  hasEntered: boolean
+  multiplier?: number
+  hasEntered?: boolean
   roundPosition?: Position
   isActive?: boolean
+  isDisabled?: boolean
 }
 
 const ArrowWrapper = styled.div`
@@ -39,17 +40,35 @@ const EnteredTagWrapper = styled.div`
   top: 0;
 `
 
+const getTextColor = (fallback = 'textSubtle') => (isActive: boolean, isDisabled: boolean) => {
+  if (isDisabled) {
+    return 'textDisabled'
+  }
+
+  if (isActive) {
+    return 'white'
+  }
+
+  return fallback
+}
+
 const MultiplierArrow: React.FC<MultiplierArrowProps> = ({
   multiplier,
-  hasEntered,
+  hasEntered = false,
   roundPosition = Position.UP,
   isActive = false,
+  isDisabled = false,
 }) => {
   const TranslateString = useI18n()
+  const upColor = getTextColor('success')(isActive, isDisabled)
+  const downColor = getTextColor('failure')(isActive, isDisabled)
+  const textColor = getTextColor()(isActive, isDisabled)
   const multiplierText = (
     <Flex>
-      <Text color={isActive ? 'white' : 'textSubtle'} bold lineHeight="21px">{`${multiplier}x`}</Text>
-      <Text color={isActive ? 'white' : 'textSubtle'} lineHeight="21px" ml="4px">
+      <Text color={textColor} bold lineHeight="21px">
+        {multiplier ? `${multiplier}x` : '~'}
+      </Text>
+      <Text color={textColor} lineHeight="21px" ml="4px">
         {TranslateString(999, 'Payout')}
       </Text>
     </Flex>
@@ -66,7 +85,7 @@ const MultiplierArrow: React.FC<MultiplierArrowProps> = ({
         )}
         <Content>
           {multiplierText}
-          <Text bold fontSize="24px" lineHeight="26px" color={isActive ? 'white' : 'failure'}>
+          <Text bold fontSize="24px" lineHeight="26px" color={downColor}>
             {TranslateString(999, 'Down')}
           </Text>
         </Content>
@@ -83,7 +102,7 @@ const MultiplierArrow: React.FC<MultiplierArrowProps> = ({
         </EnteredTagWrapper>
       )}
       <Content>
-        <Text bold fontSize="24px" lineHeight="26px" color={isActive ? 'white' : 'success'}>
+        <Text bold fontSize="24px" lineHeight="26px" color={upColor}>
           {TranslateString(999, 'Up')}
         </Text>
         {multiplierText}

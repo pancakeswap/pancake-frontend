@@ -49,7 +49,7 @@ export const getCurrentEpoch = (): Promise<number> => {
   })
 }
 
-export const getPastRounds = async (roundsToGet = 5) => {
+export const getPastRounds = async (roundsToGet = 3) => {
   const currentEpoch = await getCurrentEpoch()
   const oldestEpoch = currentEpoch - roundsToGet
   const roundPromises = []
