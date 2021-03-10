@@ -93,7 +93,6 @@ const pools: PoolConfig[] = [
   },
   {
     sousId: 62,
-    image: 'CAKETPT',
     tokenName: 'CAKE',
     tokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     stakingTokenName: QuoteToken.TPT,
@@ -114,7 +113,6 @@ const pools: PoolConfig[] = [
   },
   {
     sousId: 61,
-    image: 'TPTCAKE',
     tokenName: 'TPT',
     tokenAddress: '0xeca41281c24451168a37211f0bc2b8645af45092',
     stakingTokenName: QuoteToken.CAKE,
@@ -241,7 +239,6 @@ const pools: PoolConfig[] = [
   },
   {
     sousId: 54,
-    image: 'CAKESUSHI',
     tokenName: 'CAKE',
     tokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     stakingTokenName: QuoteToken.SUSHI,
@@ -351,7 +348,6 @@ const pools: PoolConfig[] = [
   },
   {
     sousId: 48,
-    image: 'CAKECOMP',
     tokenName: 'CAKE',
     tokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     stakingTokenName: QuoteToken.COMP,
@@ -371,7 +367,6 @@ const pools: PoolConfig[] = [
   },
   {
     sousId: 47,
-    image: 'CAKECOMP',
     tokenName: 'CAKE',
     tokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     stakingTokenName: QuoteToken.COMP,
@@ -751,7 +746,6 @@ const pools: PoolConfig[] = [
   },
   {
     sousId: 26,
-    image: 'CAKETWT',
     tokenName: 'CAKE',
     tokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     stakingTokenName: QuoteToken.TWT,
@@ -861,7 +855,6 @@ const pools: PoolConfig[] = [
   },
   {
     sousId: 20,
-    image: 'CAKEBNB',
     tokenName: 'CAKE',
     tokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     stakingTokenName: QuoteToken.BNB,
