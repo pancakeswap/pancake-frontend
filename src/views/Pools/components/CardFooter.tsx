@@ -70,6 +70,10 @@ const FlexFull = styled.div`
 const StyledLinkExternal = styled(LinkExternal)`
   font-weight: 400;
   font-size: 14px;
+  <<<<<<< HEAD
+=======
+
+>>>>>>> feat: Pool card layout updated
   svg {
     width: 16px;
   }
