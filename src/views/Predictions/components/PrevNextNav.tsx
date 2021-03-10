@@ -3,13 +3,22 @@ import { ArrowBackIcon, ArrowForwardIcon, Card, IconButton } from '@pancakeswap-
 import styled from 'styled-components'
 import BunnyCards from '../icons/BunnyCards'
 
-const StyledCardNav = styled(Card)`
+interface PrevNextNavProps {
+  onNext: () => void
+  onPrev: () => void
+}
+
+const StyledPrevNextNav = styled(Card)`
   align-items: center;
-  display: flex;
+  display: none;
   justify-content: space-between;
   overflow: initial;
   position: relative;
   width: 128px;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    display: flex;
+  }
 `
 
 const Icon = styled.div`
@@ -18,20 +27,20 @@ const Icon = styled.div`
   margin-left: -32px;
 `
 
-const CardNav = () => {
+const PrevNextNav: React.FC<PrevNextNavProps> = ({ onNext, onPrev }) => {
   return (
-    <StyledCardNav>
-      <IconButton variant="text" scale="sm">
+    <StyledPrevNextNav>
+      <IconButton variant="text" scale="sm" onClick={onPrev}>
         <ArrowBackIcon color="primary" width="24px" />
       </IconButton>
       <Icon>
         <BunnyCards />
       </Icon>
-      <IconButton variant="text" scale="sm">
+      <IconButton variant="text" scale="sm" onClick={onNext}>
         <ArrowForwardIcon color="primary" width="24px" />
       </IconButton>{' '}
-    </StyledCardNav>
+    </StyledPrevNextNav>
   )
 }
 
-export default CardNav
+export default PrevNextNav

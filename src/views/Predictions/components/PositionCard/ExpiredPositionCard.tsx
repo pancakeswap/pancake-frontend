@@ -14,7 +14,7 @@ const PositionCard: React.FC = () => {
       <CardHeader p="8px">
         <Flex alignItems="center">
           <WaitIcon mr="4px" width="14px" />
-          <Text>{TranslateString(999, 'Soon')}</Text>
+          <Text>{TranslateString(999, 'Expired')}</Text>
         </Flex>
       </CardHeader>
       <CardBody p="16px">

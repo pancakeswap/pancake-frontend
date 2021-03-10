@@ -68,10 +68,10 @@ const EnterPositionCallout: React.FC<EnterPositionCalloutProps> = ({
       </Flex>
       {!hasPosition && (
         <Box>
-          <PositionButton width="100%" startIcon={<ArrowUpIcon />} variant="success" mb="8px">
+          <PositionButton width="100%" startIcon={<ArrowUpIcon color="currentColor" />} variant="success" mb="8px">
             {TranslateString(999, 'Up')}
           </PositionButton>
-          <PositionButton width="100%" startIcon={<ArrowDownIcon />} variant="danger">
+          <PositionButton width="100%" startIcon={<ArrowDownIcon color="currentColor" />} variant="danger">
             {TranslateString(999, 'Down')}
           </PositionButton>
         </Box>

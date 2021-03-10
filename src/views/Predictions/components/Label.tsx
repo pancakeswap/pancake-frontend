@@ -23,6 +23,10 @@ const Label = styled(Card)`
   overflow: initial;
 `
 
+const Countdown = styled(Text)`
+  width: 56px;
+`
+
 const getPriceChangeColor = (priceChange: PriceChange) => {
   switch (priceChange) {
     case PriceChange.UP:
@@ -44,7 +48,7 @@ export const PricePairLabel: React.FC<PricePairLabelProps> = ({ pricePair, price
     if (previousPrice.current === price) {
       setPriceChange(PriceChange.NOCHANGE)
     } else {
-      setPriceChange(previousPrice.current > price ? PriceChange.DOWN : PriceChange.UP)
+      setPriceChange(previousPrice.current < price ? PriceChange.DOWN : PriceChange.UP)
     }
     previousPrice.current = price
   }, [previousPrice, price, setPriceChange])
@@ -79,14 +83,14 @@ export const TimerLabel: React.FC<TimerLabelProps> = ({ secondsLeft, interval })
   return (
     <Box pr="24px" position="relative">
       <Label pl="16px" pr="32px">
-        <Text bold fontSize="20px" color="secondary">
+        <Countdown bold fontSize="20px" color="secondary">
           {`${minutesDisplay}:${secondsDisplay}`}
-        </Text>
+        </Countdown>
         <Text ml="8px" fontSize="12px">
           {interval}
         </Text>
       </Label>
-      <Box position="absolute" right={0} mt="-24px" top="50%" zIndex={30}>
+      <Box position="absolute" right={0} top="-10px" zIndex={30}>
         <PocketWatch width="48px" />
       </Box>
     </Box>
