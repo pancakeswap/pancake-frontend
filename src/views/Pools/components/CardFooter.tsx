@@ -1,20 +1,17 @@
 import React, { useState } from 'react'
 import BigNumber from 'bignumber.js'
+import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
 import { getBalanceNumber } from 'utils/formatBalance'
 import useI18n from 'hooks/useI18n'
 import { ChevronDown, ChevronUp } from 'react-feather'
-import { Flex, MetamaskIcon } from '@pancakeswap-libs/uikit'
 import Balance from 'components/Balance'
 import { CommunityTag, CoreTag, BinanceTag } from 'components/Tags'
 import { useBlock } from 'state/hooks'
 import { PoolCategory } from 'config/constants/types'
-<<<<<<< HEAD
+import { Text, LinkExternal, TimerIcon, Flex, MetamaskIcon } from '@pancakeswap-libs/uikit'
 import { registerToken } from 'utils/wallet'
 import { BASE_URL } from 'config'
-=======
-import { Text, LinkExternal } from '@pancakeswap-libs/uikit'
->>>>>>> feat: Pool card layout
 
 const tags = {
   [PoolCategory.BINANCE]: BinanceTag,
@@ -33,7 +30,6 @@ interface Props {
   endBlock: number
   isFinished: boolean
   poolCategory: PoolCategory
-  tokenName: string
 }
 
 const StyledFooter = styled.div<{ isFinished: boolean }>`
@@ -64,30 +60,28 @@ const StyledDetailsButton = styled.button`
   }
 `
 
-const Details = styled.div`
-  margin-top: 24px;
-`
-
 const Row = styled(Flex)`
   align-items: center;
+  display: flex;
 `
 
 const FlexFull = styled.div`
   flex: 1;
 `
-<<<<<<< HEAD
-const Label = styled.div`
-  font-size: 14px;
-`
-const TokenLink = styled.a`
-  font-size: 14px;
-  text-decoration: none;
-  color: ${(props) => props.theme.colors.primary};
-  cursor: pointer;
-=======
 const StyledLinkExternal = styled(LinkExternal)`
   font-weight: 400;
->>>>>>> feat: Pool card layout
+  font-size: 14px;
+
+  svg {
+    width: 16px;
+  }
+`
+
+const TokenLink = styled.a`
+  font-size: 14px;
+  color: ${(props) => props.theme.colors.primary};
+  cursor: pointer;
+  margin-left: auto;
 `
 
 const CardFooter: React.FC<Props> = ({
@@ -101,15 +95,22 @@ const CardFooter: React.FC<Props> = ({
   startBlock,
   endBlock,
   poolCategory,
-  tokenName,
 }) => {
+  const { account } = useWeb3React()
   const { blockNumber: currentBlock } = useBlock()
   const [isOpen, setIsOpen] = useState(false)
   const TranslateString = useI18n()
   const Icon = isOpen ? ChevronUp : ChevronDown
 
   const handleClick = () => setIsOpen(!isOpen)
-  const Tag = tags[poolCategory]
+  const Tag = styled(tags[poolCategory])`
+    height: 24px;
+    padding: 0 6px;
+
+    svg {
+      width: 14px;
+    }
+  `
 
   const blocksUntilStart = Math.max(startBlock - currentBlock, 0)
   const blocksRemaining = Math.max(endBlock - currentBlock, 0)
@@ -127,8 +128,8 @@ const CardFooter: React.FC<Props> = ({
         </StyledDetailsButton>
       </Row>
       {isOpen && (
-        <Details>
-          <Row mb="4px">
+        <>
+          <Row mb="4px" mt="20px">
             <FlexFull>
               <Text fontSize="14px">{TranslateString(999, 'Total staked')}</Text>
             </FlexFull>
@@ -137,7 +138,7 @@ const CardFooter: React.FC<Props> = ({
             <Text fontSize="14px">{tokenName}</Text>
           </Row>
           {blocksUntilStart > 0 && (
-            <Row mb="4px">
+            <Row>
               <FlexFull>
                 <Text fontSize="14px">{TranslateString(410, 'Start')}:</Text>
               </FlexFull>
@@ -145,35 +146,36 @@ const CardFooter: React.FC<Props> = ({
             </Row>
           )}
           {blocksUntilStart === 0 && blocksRemaining > 0 && (
-            <Row mb="4px">
+            <Row>
               <FlexFull>
-                <Text>{TranslateString(410, 'End')}:</Text>
+                <Text fontSize="14px">{TranslateString(410, 'End')}:</Text>
               </FlexFull>
-              <Balance fontSize="14px" isDisabled={isFinished} value={blocksRemaining} decimals={0} />
+              <Balance
+                fontSize="14px"
+                isDisabled={isFinished}
+                value={blocksRemaining}
+                decimals={0}
+                color="primary"
+                bold={false}
+              />
+              <TimerIcon color="primary" width="16px" />
             </Row>
           )}
-<<<<<<< HEAD
-          <Flex mb="4px">
-            <TokenLink onClick={() => registerToken(tokenAddress, tokenName, tokenDecimals, imageSrc)}>
-              Add {tokenName} to Metamask
-            </TokenLink>
-            <MetamaskIcon height={15} width={15} ml="4px" />
-          </Flex>
-          <TokenLink href={projectLink} target="_blank">
-            {TranslateString(412, 'View project site')}
-          </TokenLink>
-=======
-          <Row>
-            <FlexFull>
-              <Text>{TranslateString(410, 'End')}:</Text>
-            </FlexFull>
-            <Balance fontSize="14px" isDisabled={isFinished} value={10} decimals={0} color="primary" bold={false} />
-          </Row>
           <StyledLinkExternal href={projectLink} ml="auto">
             {TranslateString(999, 'Project site')}
           </StyledLinkExternal>
->>>>>>> feat: Pool card layout
-        </Details>
+          <StyledLinkExternal href="#" ml="auto">
+            {TranslateString(999, 'Info site')}
+          </StyledLinkExternal>
+          {!!account && (
+            <Flex mb="4px">
+              <TokenLink onClick={() => registerToken(tokenAddress, tokenName, tokenDecimals, imageSrc)}>
+                Add {tokenName} to Metamask
+              </TokenLink>
+              <MetamaskIcon height={14} width={14} ml="4px" />
+            </Flex>
+          )}
+        </>
       )}
     </StyledFooter>
   )
