@@ -276,7 +276,7 @@ const pools: PoolConfig[] = [
   },
   {
     sousId: 52,
-    tokenName: 'SWINGBY',
+    tokenName: 'SWGb',
     tokenAddress: '0x71de20e0c4616e7fcbfdd3f875d568492cbe4739',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
