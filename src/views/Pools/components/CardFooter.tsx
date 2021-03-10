@@ -1,14 +1,15 @@
 import React, { useState } from 'react'
 import BigNumber from 'bignumber.js'
+import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
 import { getBalanceNumber } from 'utils/formatBalance'
 import useI18n from 'hooks/useI18n'
 import { ChevronDown, ChevronUp } from 'react-feather'
-import { Flex, MetamaskIcon } from '@pancakeswap-libs/uikit'
 import Balance from 'components/Balance'
 import { CommunityTag, CoreTag, BinanceTag } from 'components/Tags'
 import { useBlock } from 'state/hooks'
 import { PoolCategory } from 'config/constants/types'
+import { Text, LinkExternal, TimerIcon, Flex, MetamaskIcon } from '@pancakeswap-libs/uikit'
 import { registerToken } from 'utils/wallet'
 import { BASE_URL } from 'config'
 
@@ -53,31 +54,32 @@ const StyledDetailsButton = styled.button`
   &:hover {
     opacity: 0.9;
   }
-
   & > svg {
     margin-left: 4px;
   }
 `
 
-const Details = styled.div`
-  margin-top: 24px;
-`
-
 const Row = styled(Flex)`
   align-items: center;
+  display: flex;
 `
 
 const FlexFull = styled.div`
   flex: 1;
 `
-const Label = styled.div`
+const StyledLinkExternal = styled(LinkExternal)`
+  font-weight: 400;
   font-size: 14px;
+  svg {
+    width: 16px;
+  }
 `
+
 const TokenLink = styled.a`
   font-size: 14px;
-  text-decoration: none;
   color: ${(props) => props.theme.colors.primary};
   cursor: pointer;
+  margin-left: auto;
 `
 
 const CardFooter: React.FC<Props> = ({
@@ -92,13 +94,20 @@ const CardFooter: React.FC<Props> = ({
   endBlock,
   poolCategory,
 }) => {
+  const { account } = useWeb3React()
   const { blockNumber: currentBlock } = useBlock()
   const [isOpen, setIsOpen] = useState(false)
   const TranslateString = useI18n()
   const Icon = isOpen ? ChevronUp : ChevronDown
 
   const handleClick = () => setIsOpen(!isOpen)
-  const Tag = tags[poolCategory]
+  const Tag = styled(tags[poolCategory])`
+    height: 24px;
+    padding: 0 6px;
+    svg {
+      width: 14px;
+    }
+  `
 
   const blocksUntilStart = Math.max(startBlock - currentBlock, 0)
   const blocksRemaining = Math.max(endBlock - currentBlock, 0)
@@ -116,46 +125,54 @@ const CardFooter: React.FC<Props> = ({
         </StyledDetailsButton>
       </Row>
       {isOpen && (
-        <Details>
-          <Row mb="4px">
+        <>
+          <Row mb="4px" mt="20px">
             <FlexFull>
-              <Label>
-                <span role="img" aria-label="syrup">
-                  🥞{' '}
-                </span>
-                {TranslateString(408, 'Total')}
-              </Label>
+              <Text fontSize="14px">{TranslateString(999, 'Total staked')}</Text>
             </FlexFull>
             <Balance fontSize="14px" isDisabled={isFinished} value={getBalanceNumber(totalStaked, decimals)} />
+            &nbsp;
+            <Text fontSize="14px">{tokenName}</Text>
           </Row>
           {blocksUntilStart > 0 && (
-            <Row mb="4px">
+            <Row>
               <FlexFull>
-                <Label>{TranslateString(410, 'Start')}:</Label>
+                <Text fontSize="14px">{TranslateString(410, 'Start')}:</Text>
               </FlexFull>
               <Balance fontSize="14px" isDisabled={isFinished} value={blocksUntilStart} decimals={0} />
             </Row>
           )}
           {blocksUntilStart === 0 && blocksRemaining > 0 && (
-            <Row mb="4px">
+            <Row>
               <FlexFull>
-                <Label>{TranslateString(410, 'End')}:</Label>
+                <Text fontSize="14px">{TranslateString(410, 'End')}:</Text>
               </FlexFull>
-              <Balance fontSize="14px" isDisabled={isFinished} value={blocksRemaining} decimals={0} />
+              <Balance
+                fontSize="14px"
+                isDisabled={isFinished}
+                value={blocksRemaining}
+                decimals={0}
+                color="primary"
+                bold={false}
+              />
+              <TimerIcon color="primary" width="16px" />
             </Row>
           )}
-          {tokenAddress && (
+          <StyledLinkExternal href={projectLink} ml="auto">
+            {TranslateString(999, 'Project site')}
+          </StyledLinkExternal>
+          <StyledLinkExternal href="#" ml="auto">
+            {TranslateString(999, 'Info site')}
+          </StyledLinkExternal>
+          {!!account && (
             <Flex mb="4px">
               <TokenLink onClick={() => registerToken(tokenAddress, tokenName, tokenDecimals, imageSrc)}>
                 Add {tokenName} to Metamask
               </TokenLink>
-              <MetamaskIcon height={15} width={15} ml="4px" />
+              <MetamaskIcon height={14} width={14} ml="4px" />
             </Flex>
           )}
-          <TokenLink href={projectLink} target="_blank">
-            {TranslateString(412, 'View project site')}
-          </TokenLink>
-        </Details>
+        </>
       )}
     </StyledFooter>
   )
