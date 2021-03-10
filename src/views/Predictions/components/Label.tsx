@@ -54,7 +54,7 @@ export const PricePairLabel: React.FC<PricePairLabelProps> = ({ pricePair, price
   }, [previousPrice, price, setPriceChange])
 
   return (
-    <Box pl="24px" position="relative">
+    <Box pl="24px" position="relative" display="inline-block">
       <Box position="absolute" left={0} mt="-24px" top="50%" zIndex={30}>
         <BnbUsdtPairToken width="48px" />
       </Box>

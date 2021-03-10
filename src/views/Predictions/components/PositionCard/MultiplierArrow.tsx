@@ -2,15 +2,15 @@ import React from 'react'
 import styled from 'styled-components'
 import { Flex, Text } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
+import { Position } from 'state/types'
 import MultiplierUp from '../../icons/MultiplierUp'
 import MultiplierDown from '../../icons/MultiplierDown'
-import { PositionType } from './types'
 import EnteredTag from './EnteredTag'
 
 interface MultiplierArrowProps {
   multiplier: number
   hasEntered: boolean
-  positionType?: PositionType
+  roundPosition?: Position
   isActive?: boolean
 }
 
@@ -42,7 +42,7 @@ const EnteredTagWrapper = styled.div`
 const MultiplierArrow: React.FC<MultiplierArrowProps> = ({
   multiplier,
   hasEntered,
-  positionType = 'up',
+  roundPosition = Position.UP,
   isActive = false,
 }) => {
   const TranslateString = useI18n()
@@ -55,7 +55,7 @@ const MultiplierArrow: React.FC<MultiplierArrowProps> = ({
     </Flex>
   )
 
-  if (positionType === 'down') {
+  if (roundPosition === Position.DOWN) {
     return (
       <ArrowWrapper>
         <MultiplierDown isActive={isActive} />

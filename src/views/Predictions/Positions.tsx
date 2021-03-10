@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { random, times } from 'lodash'
+import { orderBy, random } from 'lodash'
 import SwiperCore, { Keyboard, Mousewheel } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Box, Flex, HelpIcon, IconButton } from '@pancakeswap-libs/uikit'
+import { useGetRounds } from 'state/hooks'
 import { PricePairLabel, TimerLabel } from './components/Label'
 import PrevNextNav from './components/PrevNextNav'
+import { ExpiredPositionCard } from './components/PositionCard'
 import History from './icons/History'
 
 import 'swiper/swiper.min.css'
@@ -22,9 +24,15 @@ const Row = styled(Flex)`
   flex: 1;
 `
 
+const SetCol = styled.div`
+  flex: none;
+  width: 270px;
+`
+
 const Positions = () => {
   const [swiperInstance, setSwiperInstance] = useState(null)
   const [price, setPrice] = useState(200)
+  const rounds = useGetRounds()
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -45,19 +53,23 @@ const Positions = () => {
   return (
     <Box>
       <Row alignItems="center" px="16px" py="24px">
-        <PricePairLabel pricePair="BNBUSDT" price={price} />
+        <SetCol>
+          <PricePairLabel pricePair="BNBUSDT" price={price} />
+        </SetCol>
         <Row justifyContent="center">
           <PrevNextNav onNext={handleNext} onPrev={handlePrev} />
         </Row>
-        <Flex alignItems="center">
-          <TimerLabel secondsLeft={random(20, 300)} interval="5m" />
-          <IconButton variant="subtle" ml="8px">
-            <HelpIcon width="24px" color="white" />
-          </IconButton>
-          <IconButton variant="subtle" ml="8px">
-            <History width="24px" color="white" />
-          </IconButton>
-        </Flex>
+        <SetCol>
+          <Flex alignItems="center">
+            <TimerLabel secondsLeft={random(20, 300)} interval="5m" />
+            <IconButton variant="subtle" ml="8px">
+              <HelpIcon width="24px" color="white" />
+            </IconButton>
+            <IconButton variant="subtle" ml="8px">
+              <History width="24px" color="white" />
+            </IconButton>
+          </Flex>
+        </SetCol>
       </Row>
       <StyledSwiper>
         <Swiper
@@ -71,9 +83,9 @@ const Positions = () => {
           mousewheel
           keyboard
         >
-          {times(10).map((k) => (
-            <SwiperSlide key={k}>
-              <div style={{ height: '350px', backgroundColor: 'azure' }}>{k}</div>
+          {orderBy(rounds, ['epoch'], ['desc']).map((round) => (
+            <SwiperSlide key={round.epoch}>
+              <ExpiredPositionCard round={round} />
             </SwiperSlide>
           ))}
         </Swiper>

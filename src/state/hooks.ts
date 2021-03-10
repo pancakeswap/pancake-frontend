@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import { useSelector } from 'react-redux'
@@ -9,13 +9,20 @@ import { getWeb3NoAccount } from 'utils/web3'
 import { getAddress } from 'utils/addressHelpers'
 import { getBalanceNumber } from 'utils/formatBalance'
 import useRefresh from 'hooks/useRefresh'
-import { fetchFarmsPublicDataAsync, fetchPoolsPublicDataAsync, fetchPoolsUserDataAsync, setBlock } from './actions'
-import { State, Farm, FarmsState, Pool, ProfileState, TeamsState, AchievementState, PriceState } from './types'
+import {
+  fetchFarmsPublicDataAsync,
+  fetchPoolsPublicDataAsync,
+  fetchPoolsUserDataAsync,
+  setBlock,
+} from './actions'
+import { State, Farm, FarmsState, Pool, ProfileState, TeamsState, AchievementState, PriceState,Round } from './types'
 import { fetchProfile } from './profile'
 import { fetchTeam, fetchTeams } from './teams'
 import { fetchAchievements } from './achievements'
 import { fetchPrices } from './prices'
 import { fetchWalletNfts } from './collectibles'
+import { initializePredictions } from './predictions'
+import { transformRoundResponse } from './predictions/helpers'
 
 export const useFetchPublicData = () => {
   const dispatch = useAppDispatch()
@@ -194,6 +201,26 @@ export const useBlock = () => {
 
 export const useInitialBlock = () => {
   return useSelector((state: State) => state.block.initialBlock)
+  
+// Predictions
+export const useInitializePredictions = () => {
+  const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    dispatch(initializePredictions())
+  }, [dispatch])
+}
+
+export const useGetRounds = () => {
+  const rounds = useSelector((state: State) => state.predictions.rounds)
+
+  return useMemo(() => {
+    return Object.values(rounds).map(transformRoundResponse)
+  }, [rounds])
+}
+
+export const useGetCurrentEpoch = () => {
+  return useSelector((state: State) => state.predictions.currentEpoch)
 }
 
 // Collectibles
