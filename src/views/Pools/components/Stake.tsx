@@ -8,6 +8,7 @@ import { useERC20 } from 'hooks/useContract'
 import useHasCakeBalance from 'hooks/useHasCakeBalance'
 import { useSousApprove } from 'hooks/useApprove'
 import useI18n from 'hooks/useI18n'
+import { getAddress } from 'utils/addressHelpers'
 
 import CakeRequiredModal from './CakeRequiredModal'
 import StakeModal from './StakeModal'
@@ -20,17 +21,17 @@ interface StakeProps {
 }
 
 const Stake: React.FC<StakeProps> = ({ pool, isOldSyrup, isBnbPool }) => {
-  const { userData, isFinished, stakingTokenAddress, sousId, stakingTokenDecimals, stakingTokenName } = pool
+  const { userData, isFinished, stakingToken, sousId } = pool
 
   const TranslateString = useI18n()
   const hasCake = useHasCakeBalance(new BigNumber(0))
   const { account } = useWeb3React()
-  const stakingTokenContract = useERC20(stakingTokenAddress)
+  const stakingTokenContract = useERC20(getAddress(stakingToken.address))
   const { onApprove } = useSousApprove(stakingTokenContract, sousId)
 
   const [onPresentCakeRequired] = useModal(<CakeRequiredModal />)
   const [onPresentStake] = useModal(
-    <StakeModal isBnbPool={isBnbPool} sousId={sousId} stakingTokenDecimals={stakingTokenDecimals} />,
+    <StakeModal isBnbPool={isBnbPool} sousId={sousId} stakingTokenDecimals={stakingToken.decimals} />,
   )
 
   const allowance = new BigNumber(userData?.allowance || 0)
@@ -64,7 +65,7 @@ const Stake: React.FC<StakeProps> = ({ pool, isOldSyrup, isBnbPool }) => {
         </Text>
         &nbsp;
         <Text color="textSecondary" fontSize="12px" bold>
-          {stakingTokenName}
+          {stakingToken.symbol}
         </Text>
       </>
     )
