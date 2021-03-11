@@ -28,7 +28,6 @@ const Staked: React.FunctionComponent<FarmWithStakedValue> = ({
   lpSymbol,
   lpAddresses,
   quoteTokenAdresses,
-  quoteTokenSymbol,
   tokenAddresses,
 }) => {
   const TranslateString = useI18n()
@@ -42,7 +41,7 @@ const Staked: React.FunctionComponent<FarmWithStakedValue> = ({
   const isApproved = account && allowance && allowance.isGreaterThan(0)
 
   const lpAddress = lpAddresses[process.env.REACT_APP_CHAIN_ID]
-  const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAdresses, quoteTokenSymbol, tokenAddresses })
+  const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAdresses, tokenAddresses })
   const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
   const rawStakedBalance = getBalanceNumber(stakedBalance)
   const displayBalance = rawStakedBalance.toLocaleString()
