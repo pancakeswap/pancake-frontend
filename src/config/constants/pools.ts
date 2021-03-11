@@ -20,6 +20,24 @@ const pools: PoolConfig[] = [
     tokenDecimals: 18,
   },
   {
+    sousId: 68,
+    tokenName: 'NULS',
+    tokenAddress: '0x8cd6e29d3686d24d3c2018cee54621ea0f89313b',
+    stakingTokenName: QuoteToken.CAKE,
+    stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
+    contractAddress: {
+      97: '',
+      56: '0x580DC9bB9260A922E3A4355b9119dB990F09410d',
+    },
+    poolCategory: PoolCategory.CORE,
+    projectLink: 'https://www.nuls.io/',
+    harvest: true,
+    tokenPerBlock: '0.0868',
+    sortOrder: 999,
+    isFinished: false,
+    tokenDecimals: 8,
+  },
+  {
     sousId: 67,
     tokenName: 'BELT',
     tokenAddress: '0xE0e514c71282b6f4e823703a39374Cf58dc3eA4f',
@@ -126,7 +144,7 @@ const pools: PoolConfig[] = [
     harvest: true,
     tokenPerBlock: '0.0462',
     sortOrder: 999,
-    isFinished: false,
+    isFinished: true,
     tokenDecimals: 18,
   },
   {
@@ -271,7 +289,7 @@ const pools: PoolConfig[] = [
     harvest: true,
     tokenPerBlock: '0.0367',
     sortOrder: 999,
-    isFinished: false,
+    isFinished: true,
     tokenDecimals: 18,
   },
   {
@@ -294,7 +312,7 @@ const pools: PoolConfig[] = [
   },
   {
     sousId: 52,
-    tokenName: 'SWGb',
+    tokenName: 'SWINGBY',
     tokenAddress: '0x71de20e0c4616e7fcbfdd3f875d568492cbe4739',
     stakingTokenName: QuoteToken.CAKE,
     stakingTokenAddress: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
@@ -380,7 +398,7 @@ const pools: PoolConfig[] = [
     harvest: true,
     tokenPerBlock: '0.055',
     sortOrder: 999,
-    isFinished: false,
+    isFinished: true,
     tokenDecimals: 18,
   },
   {
@@ -435,7 +453,7 @@ const pools: PoolConfig[] = [
     harvest: true,
     tokenPerBlock: '0.983',
     sortOrder: 999,
-    isFinished: false,
+    isFinished: true,
     tokenDecimals: 18,
   },
   {
@@ -489,7 +507,7 @@ const pools: PoolConfig[] = [
     harvest: true,
     tokenPerBlock: '0.0138',
     sortOrder: 999,
-    isFinished: false,
+    isFinished: true,
     tokenDecimals: 6,
   },
   {
@@ -507,7 +525,7 @@ const pools: PoolConfig[] = [
     harvest: true,
     tokenPerBlock: '0.075',
     sortOrder: 999,
-    isFinished: false,
+    isFinished: true,
     tokenDecimals: 18,
   },
   {
@@ -525,7 +543,7 @@ const pools: PoolConfig[] = [
     harvest: true,
     tokenPerBlock: '0.001215',
     sortOrder: 999,
-    isFinished: false,
+    isFinished: true,
     tokenDecimals: 18,
   },
   {
@@ -543,7 +561,7 @@ const pools: PoolConfig[] = [
     harvest: true,
     tokenPerBlock: '0.1157',
     sortOrder: 999,
-    isFinished: false,
+    isFinished: true,
     tokenDecimals: 18,
   },
   {
@@ -561,7 +579,7 @@ const pools: PoolConfig[] = [
     harvest: true,
     tokenPerBlock: '0.23',
     sortOrder: 999,
-    isFinished: false,
+    isFinished: true,
     tokenDecimals: 18,
   },
   {
@@ -579,7 +597,7 @@ const pools: PoolConfig[] = [
     harvest: true,
     tokenPerBlock: '0.2546',
     sortOrder: 999,
-    isFinished: false,
+    isFinished: true,
     tokenDecimals: 18,
   },
   {
@@ -597,7 +615,7 @@ const pools: PoolConfig[] = [
     harvest: true,
     tokenPerBlock: '0.81',
     sortOrder: 999,
-    isFinished: false,
+    isFinished: true,
     tokenDecimals: 18,
   },
   {
@@ -615,7 +633,7 @@ const pools: PoolConfig[] = [
     harvest: true,
     tokenPerBlock: '0.011574',
     sortOrder: 999,
-    isFinished: false,
+    isFinished: true,
     tokenDecimals: 18,
   },
   {
