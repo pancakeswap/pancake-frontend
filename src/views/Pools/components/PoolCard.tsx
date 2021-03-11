@@ -127,7 +127,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
         </CardTitle>
         <div style={{ marginBottom: '8px', display: 'flex', alignItems: 'center' }}>
           <div style={{ flex: 1 }}>
-            <Image src={`/images/pools/${poolImage}.svg`} alt={tokenName} width={64} height={64} />
+            <Image src={`/images/pools/${poolImage}`} alt={tokenName} width={64} height={64} />
           </div>
           {account && harvest && !isOldSyrup && (
             <HarvestButton
