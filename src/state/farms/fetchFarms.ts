@@ -8,29 +8,29 @@ import farmsConfig from 'config/constants/farms'
 const fetchFarms = async () => {
   const data = await Promise.all(
     farmsConfig.map(async (farmConfig) => {
-      const lpAdress = getAddress(farmConfig.lpAddresses)
+      const lpAddress = getAddress(farmConfig.lpAddresses)
       const calls = [
         // Balance of token in the LP contract
         {
           address: getAddress(farmConfig.tokenAddresses),
           name: 'balanceOf',
-          params: [lpAdress],
+          params: [lpAddress],
         },
         // Balance of quote token on LP contract
         {
           address: getAddress(farmConfig.quoteTokenAdresses),
           name: 'balanceOf',
-          params: [lpAdress],
+          params: [lpAddress],
         },
         // Balance of LP tokens in the master chef contract
         {
-          address: lpAdress,
+          address: lpAddress,
           name: 'balanceOf',
           params: [getMasterChefAddress()],
         },
         // Total supply of LP tokens
         {
-          address: lpAdress,
+          address: lpAddress,
           name: 'totalSupply',
         },
         // Token decimals
