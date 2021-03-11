@@ -33,7 +33,6 @@ interface HarvestProps {
 const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
   const {
     sousId,
-    image,
     tokenName,
     tokenAddress,
     stakingTokenName,
@@ -96,7 +95,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
   const [onPresentCompound] = useModal(
     <CompoundModal earnings={earnings} onConfirm={onStake} tokenName={stakingTokenName} />,
   )
-
+  const poolImage = `${pool.tokenName}-${pool.stakingTokenName}.svg`.toLocaleLowerCase()
   const [onPresentWithdraw] = useModal(
     <WithdrawModal
       max={stakedBalance}
@@ -128,7 +127,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
         </CardTitle>
         <div style={{ marginBottom: '8px', display: 'flex', alignItems: 'center' }}>
           <div style={{ flex: 1 }}>
-            <Image src={`/images/tokens/${image || tokenName}.png`} width={64} height={64} alt={tokenName} />
+            <Image src={`/images/pools/${poolImage}`} alt={tokenName} width={64} height={64} />
           </div>
           {account && harvest && !isOldSyrup && (
             <HarvestButton
