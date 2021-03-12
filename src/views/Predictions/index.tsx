@@ -9,6 +9,9 @@ import History from './History'
 import TradingView from './components/TradingView'
 
 const MainContent = styled.div<{ isActive: boolean }>`
+  display: grid;
+  grid-template-rows: repeat(2, 1fr);
+  height: calc(100vh - 64px);
   margin-right: ${({ isActive }) => (isActive ? '320px' : 0)};
   transition: 300ms ease-in-out;
 

@@ -61,7 +61,7 @@ const Positions = () => {
   }, [slideToLive])
 
   return (
-    <Box>
+    <Box py="24px" overflowX="hidden" overflowY="auto">
       <Row alignItems="center" px="16px" py="24px">
         <SetCol>
           <PricePairLabel />
