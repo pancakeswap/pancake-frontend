@@ -6,6 +6,7 @@ import PageLoader from 'components/PageLoader'
 import Container from './components/Container'
 import Positions from './Positions'
 import History from './History'
+import TradingView from './components/TradingView'
 
 const MainContent = styled.div<{ isActive: boolean }>`
   margin-right: ${({ isActive }) => (isActive ? '320px' : 0)};
@@ -50,6 +51,7 @@ const Predictions = () => {
     <Container>
       <MainContent isActive={isHistoryPaneOpen}>
         <Positions />
+        <TradingView />
       </MainContent>
       <Pane isActive={isHistoryPaneOpen}>
         <History />
