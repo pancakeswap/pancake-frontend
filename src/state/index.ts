@@ -9,19 +9,22 @@ import teamsReducer from './teams'
 import achievementsReducer from './achievements'
 import blockReducer from './block'
 import collectiblesReducer from './collectibles'
+import tickerReducer from './ticker'
 
 const store = configureStore({
   devTools: process.env.NODE_ENV !== 'production',
   reducer: {
+    achievements: achievementsReducer,
+    block: blockReducer,
     farms: farmsReducer,
     pools: poolsReducer,
     prices: pricesReducer,
     predictions: predictionsReducer,
     profile: profileReducer,
     teams: teamsReducer,
-    achievements: achievementsReducer,
-    block: blockReducer,
     collectibles: collectiblesReducer,
+    ticker: tickerReducer,
+    toasts: toastsReducer,
   },
 })
 

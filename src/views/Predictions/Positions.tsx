@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { random } from 'lodash'
 import SwiperCore, { Keyboard, Mousewheel } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Box, Flex, HelpIcon, IconButton } from '@pancakeswap-libs/uikit'
@@ -37,19 +36,10 @@ const SetCol = styled.div`
 
 const Positions = () => {
   const [swiperInstance, setSwiperInstance] = useState(null)
-  const [price, setPrice] = useState(200)
   const currentEpoch = useGetCurrentEpoch()
   const roundData = useGetRounds()
   const rounds = sortRounds(roundData, currentEpoch)
   const liveRoundIndex = rounds.findIndex((round) => round.epoch === currentEpoch)
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setPrice(random(215, 230))
-    }, 5000)
-
-    return () => clearInterval(timer)
-  }, [setPrice])
 
   const handleNext = () => {
     swiperInstance.slideNext()
@@ -74,7 +64,7 @@ const Positions = () => {
     <Box>
       <Row alignItems="center" px="16px" py="24px">
         <SetCol>
-          <PricePairLabel pricePair="BNBUSDT" price={price} />
+          <PricePairLabel />
         </SetCol>
         <Row justifyContent="center">
           <PrevNextNav onSlideToLive={slideToLive} onNext={handleNext} onPrev={handlePrev} />

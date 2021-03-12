@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import { Box, Card, Text } from '@pancakeswap-libs/uikit'
-import { useGetCurrentRound } from 'state/hooks'
+import { useBnbUsdtTicker, useGetCurrentRound } from 'state/hooks'
 import BnbUsdtPairToken from '../icons/BnbUsdtPairToken'
 import PocketWatch from '../icons/PocketWatch'
 import useBlockCountdown from '../hooks/useGetBlockCountdown'
@@ -11,11 +11,6 @@ enum PriceChange {
   UP = 'up',
   DOWN = 'down',
   NOCHANGE = 'nochange',
-}
-
-interface PricePairLabelProps {
-  pricePair: string
-  price: number
 }
 
 const Label = styled(Card)`
@@ -41,19 +36,16 @@ const getPriceChangeColor = (priceChange: PriceChange) => {
   }
 }
 
-export const PricePairLabel: React.FC<PricePairLabelProps> = ({ pricePair, price }) => {
-  const [priceChange, setPriceChange] = useState<PriceChange>(PriceChange.NOCHANGE)
-  const previousPrice = useRef(price)
-  const { symbol, color } = getPriceChangeColor(priceChange)
+export const PricePairLabel: React.FC = () => {
+  const lastPriceRef = useRef(0)
+  const { stream } = useBnbUsdtTicker()
+  const { lastPrice } = stream ?? {}
+  const positionChange = lastPrice > lastPriceRef.current ? PriceChange.DOWN : PriceChange.UP
+  const { color, symbol } = getPriceChangeColor(positionChange)
 
   useEffect(() => {
-    if (previousPrice.current === price) {
-      setPriceChange(PriceChange.NOCHANGE)
-    } else {
-      setPriceChange(previousPrice.current < price ? PriceChange.DOWN : PriceChange.UP)
-    }
-    previousPrice.current = price
-  }, [previousPrice, price, setPriceChange])
+    lastPriceRef.current = lastPrice
+  }, [lastPriceRef, lastPrice])
 
   return (
     <Box pl="24px" position="relative" display="inline-block">
@@ -62,10 +54,11 @@ export const PricePairLabel: React.FC<PricePairLabelProps> = ({ pricePair, price
       </Box>
       <Label pl="32px" pr="16px">
         <Text bold fontSize="20px" lineHeight="22px" textTransform="uppercase">
-          {pricePair}
+          BNBUSDT
         </Text>
         <Text color={color} fontSize="12px" ml="8px" style={{ width: '60px' }} textAlign="center">
-          {`${symbol} $${price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
+          {lastPrice &&
+            `${symbol} $${lastPrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
         </Text>
       </Label>
     </Box>
