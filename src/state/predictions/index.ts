@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { PredictionsState, PredictionStatus, Round } from 'state/types'
-import { getPastRounds } from './helpers'
+import { PredictionsState, PredictionStatus, RoundResponse } from 'state/types'
+import { getInitialRounds } from './helpers'
 
 const initialState: PredictionsState = {
   status: PredictionStatus.INITIAL,
@@ -12,11 +12,11 @@ const initialState: PredictionsState = {
 
 type InitializeReturn = {
   currentEpoch: number
-  rounds: Round[]
+  rounds: RoundResponse[]
 }
 
 export const initializePredictions = createAsyncThunk<InitializeReturn>('predictions/initialize', async () => {
-  const data = await getPastRounds()
+  const data = await getInitialRounds()
   return data
 })
 

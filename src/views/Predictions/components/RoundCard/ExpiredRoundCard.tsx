@@ -8,11 +8,11 @@ import Card from './Card'
 import RoundInfoBox from './RoundInfoBox'
 import { PositionTag } from './Tag'
 
-interface ExpiredPositionCardProps {
+interface ExpiredRoundCardProps {
   round: Round
 }
 
-const ExpiredPositionCard: React.FC<ExpiredPositionCardProps> = ({ round }) => {
+const ExpiredRoundCard: React.FC<ExpiredRoundCardProps> = ({ round }) => {
   const TranslateString = useI18n()
   const { endBlock, lockPrice, closePrice, bullAmount, bearAmount } = round
   const roundPosition = closePrice.gt(lockPrice) ? Position.UP : Position.DOWN
@@ -66,4 +66,4 @@ const ExpiredPositionCard: React.FC<ExpiredPositionCardProps> = ({ round }) => {
   )
 }
 
-export default ExpiredPositionCard
+export default ExpiredRoundCard

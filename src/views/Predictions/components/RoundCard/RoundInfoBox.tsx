@@ -28,6 +28,7 @@ const getBorderColor = ({ theme, roundPosition, isActive = false }: ThemedRoundI
 }
 
 const RoundInfoBox = styled(Box)<RoundInfoBoxProps>`
+  background: ${({ theme }) => theme.card.background};
   border: 2px solid ${getBorderColor};
   border-radius: 8px;
   padding: 16px;

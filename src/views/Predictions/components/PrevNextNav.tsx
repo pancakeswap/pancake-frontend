@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import BunnyCards from '../icons/BunnyCards'
 
 interface PrevNextNavProps {
+  onSlideToLive: () => void
   onNext: () => void
   onPrev: () => void
 }
@@ -22,18 +23,19 @@ const StyledPrevNextNav = styled(Card)`
 `
 
 const Icon = styled.div`
-  position: absolute;
+  cursor: pointer;
   left: 50%;
   margin-left: -32px;
+  position: absolute;
 `
 
-const PrevNextNav: React.FC<PrevNextNavProps> = ({ onNext, onPrev }) => {
+const PrevNextNav: React.FC<PrevNextNavProps> = ({ onSlideToLive, onNext, onPrev }) => {
   return (
     <StyledPrevNextNav>
       <IconButton variant="text" scale="sm" onClick={onPrev}>
         <ArrowBackIcon color="primary" width="24px" />
       </IconButton>
-      <Icon>
+      <Icon onClick={onSlideToLive}>
         <BunnyCards />
       </Icon>
       <IconButton variant="text" scale="sm" onClick={onNext}>

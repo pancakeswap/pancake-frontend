@@ -1,4 +1,6 @@
 import BigNumber from 'bignumber.js'
+import { orderBy } from 'lodash'
+import { RoundData } from 'state/types'
 import { getBalanceAmount } from 'utils/formatBalance'
 
 export const getUsdAmount = (usdBn: BigNumber) => {
@@ -28,3 +30,18 @@ export const formatBnbFromBigNumber = (bnbBn: BigNumber) => {
 export const formatRoundPriceDifference = (lockPrice: BigNumber, closePrice: BigNumber) => {
   return formatUsdFromBigNumber(closePrice.minus(lockPrice))
 }
+
+export const sortRounds = (rounds: RoundData, currentEpoch: number) => {
+  const currentRound = rounds[currentEpoch]
+  const roundArr = Object.values(rounds).filter((round) => round.epoch !== currentEpoch)
+  const sortedRounds = orderBy(roundArr, ['epoch'], ['asc'])
+
+  if (sortedRounds.length > 0) {
+    const middleIndex = Math.floor(sortedRounds.length / 2)
+    sortedRounds.splice(middleIndex, 0, currentRound)
+  }
+
+  return sortedRounds
+}
+
+export const padTime = (num: number) => num.toString().padStart(2, '0')

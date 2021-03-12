@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { orderBy, random, times } from 'lodash'
+import { random } from 'lodash'
 import SwiperCore, { Keyboard, Mousewheel } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Box, Flex, HelpIcon, IconButton } from '@pancakeswap-libs/uikit'
-import { useGetRounds } from 'state/hooks'
+import { useGetCurrentEpoch, useGetRounds } from 'state/hooks'
+import { sortRounds } from './helpers'
 import { PricePairLabel, TimerLabel } from './components/Label'
 import PrevNextNav from './components/PrevNextNav'
-import { ExpiredPositionCard, NextCard } from './components/PositionCard'
+import RoundCard from './components/RoundCard'
 import History from './icons/History'
 
 import 'swiper/swiper.min.css'
@@ -15,6 +16,11 @@ import 'swiper/swiper.min.css'
 SwiperCore.use([Keyboard, Mousewheel])
 
 const StyledSwiper = styled.div`
+  .swiper-wrapper {
+    align-items: center;
+    display: flex;
+  }
+
   .swiper-slide {
     width: 320px;
   }
@@ -32,7 +38,10 @@ const SetCol = styled.div`
 const Positions = () => {
   const [swiperInstance, setSwiperInstance] = useState(null)
   const [price, setPrice] = useState(200)
-  const rounds = useGetRounds()
+  const currentEpoch = useGetCurrentEpoch()
+  const roundData = useGetRounds()
+  const rounds = sortRounds(roundData, currentEpoch)
+  const liveRoundIndex = rounds.findIndex((round) => round.epoch === currentEpoch)
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -50,6 +59,17 @@ const Positions = () => {
     swiperInstance.slidePrev()
   }
 
+  const slideToLive = useCallback(() => {
+    if (swiperInstance) {
+      swiperInstance.slideTo(liveRoundIndex)
+    }
+  }, [swiperInstance, liveRoundIndex])
+
+  // When the epoch changes move to the live round
+  useEffect(() => {
+    slideToLive()
+  }, [slideToLive])
+
   return (
     <Box>
       <Row alignItems="center" px="16px" py="24px">
@@ -57,11 +77,11 @@ const Positions = () => {
           <PricePairLabel pricePair="BNBUSDT" price={price} />
         </SetCol>
         <Row justifyContent="center">
-          <PrevNextNav onNext={handleNext} onPrev={handlePrev} />
+          <PrevNextNav onSlideToLive={slideToLive} onNext={handleNext} onPrev={handlePrev} />
         </Row>
         <SetCol>
           <Flex alignItems="center">
-            <TimerLabel secondsLeft={random(20, 300)} interval="5m" />
+            <TimerLabel interval="5m" />
             <IconButton variant="subtle" ml="8px">
               <HelpIcon width="24px" color="white" />
             </IconButton>
@@ -73,7 +93,7 @@ const Positions = () => {
       </Row>
       <StyledSwiper>
         <Swiper
-          initialSlide={3}
+          initialSlide={liveRoundIndex >= 0 ? liveRoundIndex : 0}
           onSwiper={setSwiperInstance}
           spaceBetween={16}
           slidesPerView="auto"
@@ -83,18 +103,11 @@ const Positions = () => {
           mousewheel
           keyboard
         >
-          {orderBy(rounds, ['epoch'], ['desc']).map((round) => (
+          {rounds.map((round) => (
             <SwiperSlide key={round.epoch}>
-              <ExpiredPositionCard round={round} />
+              <RoundCard round={round} />
             </SwiperSlide>
           ))}
-          {times(2).map((key) => {
-            return (
-              <SwiperSlide key={`soon-${key}`}>
-                <NextCard />
-              </SwiperSlide>
-            )
-          })}
         </Swiper>
       </StyledSwiper>
     </Box>
