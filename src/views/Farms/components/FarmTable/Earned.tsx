@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { useWeb3React } from '@web3-react/core'
 
 export interface EarnedProps {
   earnings: number
@@ -13,7 +14,8 @@ const Amount = styled.span<{ earned: number }>`
 `
 
 const Earned: React.FunctionComponent<EarnedProps> = ({ earnings }) => {
-  const displayBalance = earnings !== null ? earnings.toLocaleString() : '?'
+  const { account } = useWeb3React()
+  const displayBalance = earnings !== null && account ? earnings.toLocaleString() : '?'
 
   return <Amount earned={earnings}>{displayBalance}</Amount>
 }

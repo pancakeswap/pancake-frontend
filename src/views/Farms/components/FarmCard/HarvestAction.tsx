@@ -4,6 +4,7 @@ import { Button, Flex, Heading } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import { useHarvest } from 'hooks/useHarvest'
 import { getBalanceNumber } from 'utils/formatBalance'
+import { useWeb3React } from '@web3-react/core'
 
 interface FarmCardActionsProps {
   earnings?: BigNumber
@@ -11,11 +12,12 @@ interface FarmCardActionsProps {
 }
 
 const HarvestAction: React.FC<FarmCardActionsProps> = ({ earnings, pid }) => {
+  const { account } = useWeb3React()
   const TranslateString = useI18n()
   const [pendingTx, setPendingTx] = useState(false)
   const { onReward } = useHarvest(pid)
 
-  const rawEarningsBalance = getBalanceNumber(earnings)
+  const rawEarningsBalance = account ? getBalanceNumber(earnings) : 0
   const displayBalance = rawEarningsBalance.toLocaleString()
 
   return (

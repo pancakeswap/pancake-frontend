@@ -12,7 +12,8 @@ import { useCountUp } from 'react-countup'
 import { ActionContainer, ActionTitles, Title, Subtle, ActionContent, Earned, Staked } from './styles'
 
 const HarvestAction: React.FunctionComponent<FarmWithStakedValue> = ({ pid, userData }) => {
-  const earningsBigNumber = userData ? new BigNumber(userData.earnings) : null
+  const { account } = useWeb3React()
+  const earningsBigNumber = userData && account ? new BigNumber(userData.earnings) : null
   const cakePrice = usePriceCakeBusd()
   let earnings = null
   let earningsBusd = 0
@@ -25,7 +26,6 @@ const HarvestAction: React.FunctionComponent<FarmWithStakedValue> = ({ pid, user
   }
 
   const [pendingTx, setPendingTx] = useState(false)
-  const { account } = useWeb3React()
   const { onReward } = useHarvest(pid)
   const TranslateString = useI18n()
 
