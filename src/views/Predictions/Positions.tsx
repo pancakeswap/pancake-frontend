@@ -8,7 +8,7 @@ import { sortRounds } from './helpers'
 import { PricePairLabel, TimerLabel } from './components/Label'
 import PrevNextNav from './components/PrevNextNav'
 import RoundCard from './components/RoundCard'
-import History from './icons/History'
+import HistoryButton from './components/HistoryButton'
 
 import 'swiper/swiper.min.css'
 
@@ -75,9 +75,7 @@ const Positions = () => {
             <IconButton variant="subtle" ml="8px">
               <HelpIcon width="24px" color="white" />
             </IconButton>
-            <IconButton variant="subtle" ml="8px">
-              <History width="24px" color="white" />
-            </IconButton>
+            <HistoryButton />
           </Flex>
         </SetCol>
       </Row>
@@ -92,6 +90,7 @@ const Positions = () => {
           centeredSlides
           mousewheel
           keyboard
+          resizeObserver
         >
           {rounds.map((round) => (
             <SwiperSlide key={round.epoch}>

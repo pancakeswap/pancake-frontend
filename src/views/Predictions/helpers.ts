@@ -1,6 +1,7 @@
 import BigNumber from 'bignumber.js'
 import { orderBy } from 'lodash'
 import { RoundData } from 'state/types'
+import { DefaultTheme } from 'styled-components'
 import { getBalanceAmount } from 'utils/formatBalance'
 
 export const getUsdAmount = (usdBn: BigNumber) => {
@@ -45,3 +46,12 @@ export const sortRounds = (rounds: RoundData, currentEpoch: number) => {
 }
 
 export const padTime = (num: number) => num.toString().padStart(2, '0')
+
+// TODO: Move this to the UI Kit
+export const getBubbleGumBackground = (theme: DefaultTheme) => {
+  if (theme.isDark) {
+    return 'linear-gradient(139.73deg, #142339 0%, #24243D 47.4%, #37273F 100%)'
+  }
+
+  return 'linear-gradient(139.73deg, #E6FDFF 0%, #EFF4F5 46.87%, #F3EFFF 100%)'
+}

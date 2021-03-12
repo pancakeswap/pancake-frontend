@@ -7,6 +7,7 @@ const initialState: PredictionsState = {
   status: PredictionStatus.INITIAL,
   isLoading: false,
   currentEpoch: 0,
+  isHistoryPaneOpen: false,
   rounds: {},
 }
 
@@ -23,7 +24,11 @@ export const initializePredictions = createAsyncThunk<InitializeReturn>('predict
 export const predictionsSlice = createSlice({
   name: 'predictions',
   initialState,
-  reducers: {},
+  reducers: {
+    setHistoryPaneState: (state, action: PayloadAction<boolean>) => {
+      state.isHistoryPaneOpen = action.payload
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(initializePredictions.pending, (state) => {
       state.isLoading = true
@@ -32,6 +37,7 @@ export const predictionsSlice = createSlice({
       return {
         status: PredictionStatus.LIVE,
         isLoading: false,
+        isHistoryPaneOpen: false,
         currentEpoch: action.payload.currentEpoch,
         rounds: action.payload.rounds.reduce((accum, roundResponse) => {
           return {
@@ -43,5 +49,8 @@ export const predictionsSlice = createSlice({
     })
   },
 })
+
+// Actions
+export const { setHistoryPaneState } = predictionsSlice.actions
 
 export default predictionsSlice.reducer

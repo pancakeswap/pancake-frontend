@@ -1,10 +1,10 @@
 import React from 'react'
-import styled, { DefaultTheme } from 'styled-components'
+import styled from 'styled-components'
 import { CardBody, CardHeader, Flex, PlayCircleOutlineIcon, Progress, Text } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import { Round, Position } from 'state/types'
 import { useBnbUsdtTicker } from 'state/hooks'
-import { formatBnbFromBigNumber, formatUsd } from '../../helpers'
+import { formatBnbFromBigNumber, formatUsd, getBubbleGumBackground } from '../../helpers'
 import MultiplierArrow from './MultiplierArrow'
 import Card from './Card'
 import RoundInfoBox from './RoundInfoBox'
@@ -19,21 +19,12 @@ const GradientBorder = styled.div`
   padding: 1px;
 `
 
-// TODO: Move this to the UI Kit
-const getBackground = (theme: DefaultTheme) => {
-  if (theme.isDark) {
-    return 'linear-gradient(139.73deg, #142339 0%, #24243D 47.4%, #37273F 100%)'
-  }
-
-  return 'linear-gradient(139.73deg, #E6FDFF 0%, #EFF4F5 46.87%, #F3EFFF 100%)'
-}
-
 const TransparentCardHeader = styled(CardHeader)`
   background: transparent;
 `
 
 const GradientCard = styled(Card)`
-  background: ${({ theme }) => getBackground(theme)};
+  background: ${({ theme }) => getBubbleGumBackground(theme)};
 `
 
 const LiveRoundCard: React.FC<LiveRoundCardProps> = ({ round }) => {
@@ -64,7 +55,7 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({ round }) => {
               {TranslateString(999, 'Last Price')}
             </Text>
             <Flex alignItems="center" justifyContent="space-between" mb="16px">
-              <Text bold fontSize="24px">
+              <Text bold fontSize="24px" style={{ minHeight: '36px' }}>
                 {stream && formatUsd(stream.lastPrice)}
               </Text>
             </Flex>

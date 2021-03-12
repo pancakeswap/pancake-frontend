@@ -219,6 +219,10 @@ export const useInitialBlock = () => {
 }
 
 // Predictions
+export const useIsHistoryPaneOpen = () => {
+  return useSelector((state: State) => state.predictions.isHistoryPaneOpen)
+}
+
 export const useInitializePredictions = () => {
   const dispatch = useAppDispatch()
 
