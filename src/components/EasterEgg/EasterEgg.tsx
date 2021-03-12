@@ -16,4 +16,4 @@ const EasterEgg: React.FC<FallingBunniesProps> = (props) => {
   return null
 }
 
-export default EasterEgg
+export default React.memo(EasterEgg)
