@@ -16,13 +16,14 @@ const Wrapper = styled.div`
 const PastLotterySearcher: React.FC<PastLotterySearcherProps> = ({ initialLotteryNumber, onSubmit }) => {
   const TranslateString = useI18n()
 
-  const rounds = Array.from(Array(initialLotteryNumber)).map((_, i) => {
+  const rounds = Array.from(Array(initialLotteryNumber))
+    .map((_, i) => {
       return {
         label: `Round ${i + 1}`,
         value: i + 1,
       }
-    },
-  ).reverse()
+    })
+    .reverse()
 
   const handleSortOptionChange = (option: RoundOptionProps): void => {
     onSubmit(option.value)
@@ -31,10 +32,7 @@ const PastLotterySearcher: React.FC<PastLotterySearcherProps> = ({ initialLotter
   return (
     <Wrapper>
       <Text>{TranslateString(742, 'Select lottery round:')}</Text>
-      <RoundSelect
-        options={rounds}
-        onChange={handleSortOptionChange}
-      />
+      <RoundSelect options={rounds} onChange={handleSortOptionChange} />
     </Wrapper>
   )
 }

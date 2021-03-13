@@ -46,24 +46,24 @@ const DropDownContainer = styled.div<{ isOpen: boolean; width: number; height: n
   }
 
   ${(props) =>
-          props.isOpen &&
-          css`
-            ${DropDownHeader} {
-              border-bottom: 1px solid ${({ theme }) => theme.colors.inputSecondary};
-              box-shadow: ${({ theme }) => theme.tooltip.boxShadow};
-              border-radius: 16px 16px 0 0;
-            }
+    props.isOpen &&
+    css`
+      ${DropDownHeader} {
+        border-bottom: 1px solid ${({ theme }) => theme.colors.inputSecondary};
+        box-shadow: ${({ theme }) => theme.tooltip.boxShadow};
+        border-radius: 16px 16px 0 0;
+      }
 
-            ${DropDownListContainer} {
-              height: auto;
-              transform: scaleY(1);
-              opacity: 1;
-              border: 1px solid ${({ theme }) => theme.colors.inputSecondary};
-              border-top-width: 0;
-              border-radius: 0 0 16px 16px;
-              box-shadow: ${({ theme }) => theme.tooltip.boxShadow};
-            }
-          `}
+      ${DropDownListContainer} {
+        height: auto;
+        transform: scaleY(1);
+        opacity: 1;
+        border: 1px solid ${({ theme }) => theme.colors.inputSecondary};
+        border-top-width: 0;
+        border-radius: 0 0 16px 16px;
+        box-shadow: ${({ theme }) => theme.tooltip.boxShadow};
+      }
+    `}
   svg {
     position: absolute;
     right: 16px;
@@ -132,14 +132,14 @@ const RoundSelect: React.FunctionComponent<RoundSelectProps> = ({ options, onCha
           <Text>{selectedOption.label}</Text>
         </DropDownHeader>
       )}
-      <ArrowDropDownIcon color='text' onClick={toggling} />
+      <ArrowDropDownIcon color="text" onClick={toggling} />
       <DropDownListContainer>
         <DropDownList ref={dropdownRef}>
-          {options.map((option) =>
+          {options.map((option) => (
             <ListItem onClick={onOptionClicked(option)} key={option.label}>
               <Text>{option.label}</Text>
-            </ListItem>,
-          )}
+            </ListItem>
+          ))}
         </DropDownList>
       </DropDownListContainer>
     </DropDownContainer>
