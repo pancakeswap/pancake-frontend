@@ -16,7 +16,6 @@ const SearchWrapper = styled.div`
   position: relative;
 `
 const InputWrapper = styled.div`
-  input::-webkit-outer-spin-button,
   input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
