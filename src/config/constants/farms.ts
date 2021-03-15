@@ -33,7 +33,7 @@ const farms: FarmConfig[] = [
     quoteTokenAdresses: contracts.wbnb,
   },
   {
-    pid: 97,
+    pid: 96,
     lpSymbol: 'BUNNY-BNB LP',
     lpAddresses: {
       97: '',
