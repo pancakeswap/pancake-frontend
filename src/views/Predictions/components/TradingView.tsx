@@ -18,21 +18,19 @@ const TradingView = () => {
         /* eslint-disable new-cap */
         // @ts-ignore
         tv.current = new window.TradingView.widget({
-          width: '100%',
+          autosize: true,
           height: '100%',
           symbol: 'BINANCE:BNBUSDT',
-          interval: 'D',
+          interval: '5',
           timezone: 'Etc/UTC',
           theme: theme.isDark ? 'dark' : 'light',
           style: '1',
           locale: 'en',
           toolbar_bg: '#f1f3f6',
           enable_publishing: false,
-          hide_side_toolbar: false,
           allow_symbol_change: true,
-          container_id: 'tradingview_d253d',
+          container_id: 'tradingview_b239c',
         })
-
         hasLoadedScript.current = true
       })
 
@@ -42,7 +40,7 @@ const TradingView = () => {
 
   return (
     <Box overflow="hidden" className="tradingview_container">
-      <div id="tradingview_d253d" />
+      <div id="tradingview_b239c" />
     </Box>
   )
 }

@@ -3,16 +3,15 @@ import styled from 'styled-components'
 import { Flex, Text } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import { Position } from 'state/types'
-import MultiplierUp from '../../icons/MultiplierUp'
-import MultiplierDown from '../../icons/MultiplierDown'
+import { MultiplierDown, MultiplierUp } from '../../icons/MultiplierIcon'
 import EnteredTag from './EnteredTag'
 
 interface MultiplierArrowProps {
   multiplier?: number
   hasEntered?: boolean
   roundPosition?: Position
-  isActive?: boolean
   isDisabled?: boolean
+  isActive?: boolean
 }
 
 const ArrowWrapper = styled.div`
@@ -56,8 +55,8 @@ const MultiplierArrow: React.FC<MultiplierArrowProps> = ({
   multiplier,
   hasEntered = false,
   roundPosition = Position.UP,
-  isActive = false,
   isDisabled = false,
+  isActive = false,
 }) => {
   const TranslateString = useI18n()
   const upColor = getTextColor('success')(isActive, isDisabled)

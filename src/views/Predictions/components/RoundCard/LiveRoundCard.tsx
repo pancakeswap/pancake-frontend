@@ -49,7 +49,7 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({ round }) => {
         </TransparentCardHeader>
         <Progress variant="flat" primaryStep={54} />
         <CardBody p="16px">
-          <MultiplierArrow multiplier={10.3} hasEntered={false} />
+          <MultiplierArrow multiplier={10.3} hasEntered={false} isActive={false} />
           <RoundInfoBox>
             <Text color="textSubtle" fontSize="12px" bold textTransform="uppercase" mb="8px">
               {TranslateString(999, 'Last Price')}
@@ -68,7 +68,7 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({ round }) => {
               <Text bold>{`${formatBnbFromBigNumber(prizePool)} BNB`}</Text>
             </Flex>
           </RoundInfoBox>
-          <MultiplierArrow multiplier={1} roundPosition={Position.DOWN} hasEntered={false} />
+          <MultiplierArrow multiplier={1} roundPosition={Position.DOWN} hasEntered={false} isActive={false} />
         </CardBody>
       </GradientCard>
     </GradientBorder>
