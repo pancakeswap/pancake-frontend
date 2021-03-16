@@ -1,4 +1,5 @@
 import typescript from "@rollup/plugin-typescript";
+import url from "@rollup/plugin-url";
 import pkg from "./package.json";
 
 export default {
@@ -7,5 +8,5 @@ export default {
     { file: pkg.main, format: "cjs" },
     { file: pkg.module, format: "es" },
   ],
-  plugins: [typescript()],
+  plugins: [url(), typescript()],
 };

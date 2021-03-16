@@ -5,5 +5,5 @@ export default interface SliderProps extends BoxProps {
   max: number;
   value: number;
   onValueChanged: (newValue: number) => void;
-  valueLabel: string;
+  valueLabel?: string;
 }

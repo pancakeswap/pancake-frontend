@@ -2307,6 +2307,15 @@
     "@rollup/pluginutils" "^3.1.0"
     resolve "^1.17.0"
 
+"@rollup/plugin-url@^6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@rollup/plugin-url/-/plugin-url-6.0.0.tgz#20fbc8cda9bc5f0c31d7225f633002ce73e920b0"
+  integrity sha512-UHGyoo3EbLufCZtXon/baNf75PAYT+Gs/NUgFMx2ZaDQ314PKNP0pJTrpbhDqFkZADzpkqJWyQOfJ2Nd6Qk4TA==
+  dependencies:
+    "@rollup/pluginutils" "^3.1.0"
+    make-dir "^3.1.0"
+    mime "^2.4.6"
+
 "@rollup/pluginutils@^3.1.0":
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/@rollup/pluginutils/-/pluginutils-3.1.0.tgz#706b4524ee6dc8b103b3c995533e5ad680c02b9b"
@@ -10098,6 +10107,11 @@ mime@^2.4.4:
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/mime/-/mime-2.5.0.tgz#2b4af934401779806ee98026bb42e8c1ae1876b1"
   integrity sha512-ft3WayFSFUVBuJj7BMLKAQcSlItKtfjsKDDsii3rqFDAZ7t11zRe8ASw/GlmivGwVUYtwkQrxiGGpL6gFvB0ag==
+
+mime@^2.4.6:
+  version "2.5.2"
+  resolved "https://registry.yarnpkg.com/mime/-/mime-2.5.2.tgz#6e3dc6cc2b9510643830e5f19d5cb753da5eeabe"
+  integrity sha512-tqkh47FzKeCPD2PUiPB6pkbMzsCasjxAfC62/Wap5qrUWcb+sFasXUC5I3gYM5iBM8v/Qpn4UK0x+j0iHyFPDg==
 
 mimic-fn@^1.0.0:
   version "1.2.0"

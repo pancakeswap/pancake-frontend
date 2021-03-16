@@ -1,12 +1,8 @@
 import { InputHTMLAttributes } from "react";
 import styled from "styled-components";
 import { Box } from "../Box";
-
-// Using require instead of import to avoid trouble with TS bunding and SVG types
-/* eslint-disable @typescript-eslint/no-var-requires */
-const bunnyHead = require("./svg/bunnyhead-main.svg");
-const bunnyHeadMax = require("./svg/bunnyhead-max.svg");
-/* eslint-enable @typescript-eslint/no-var-requires */
+import bunnyHeadMain from "./svg/bunnyhead-main.svg";
+import bunnyHeadMax from "./svg/bunnyhead-max.svg";
 
 export const SliderContainer = styled(Box)`
   position: relative;
@@ -44,7 +40,7 @@ export const StyledInput = styled.input<StyledInputProps>`
 
   ::-webkit-slider-thumb {
     -webkit-appearance: none;
-    background-image: url(${({ isCurrentValueMaxValue }) => (isCurrentValueMaxValue ? bunnyHeadMax : bunnyHead)});
+    background-image: url(${({ isCurrentValueMaxValue }) => (isCurrentValueMaxValue ? bunnyHeadMax : bunnyHeadMain)});
     width: 24px;
     height: 32px;
     cursor: pointer;
@@ -57,7 +53,7 @@ export const StyledInput = styled.input<StyledInputProps>`
   }
   ::-moz-range-thumb {
     -webkit-appearance: none;
-    background-image: url(${({ isCurrentValueMaxValue }) => (isCurrentValueMaxValue ? bunnyHeadMax : bunnyHead)});
+    background-image: url(${({ isCurrentValueMaxValue }) => (isCurrentValueMaxValue ? bunnyHeadMax : bunnyHeadMain)});
     width: 24px;
     height: 32px;
     cursor: pointer;
@@ -73,7 +69,7 @@ export const StyledInput = styled.input<StyledInputProps>`
   }
   ::-ms-thumb {
     -webkit-appearance: none;
-    background-image: url(${({ isCurrentValueMaxValue }) => (isCurrentValueMaxValue ? bunnyHeadMax : bunnyHead)});
+    background-image: url(${({ isCurrentValueMaxValue }) => (isCurrentValueMaxValue ? bunnyHeadMax : bunnyHeadMain)});
     width: 24px;
     height: 32px;
     cursor: pointer;

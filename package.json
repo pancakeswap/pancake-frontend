@@ -38,6 +38,7 @@
     "@commitlint/config-conventional": "^11.0.0",
     "@pancakeswap-libs/eslint-config-pancake": "0.1.0",
     "@rollup/plugin-typescript": "^8.2.0",
+    "@rollup/plugin-url": "^6.0.0",
     "@storybook/addon-a11y": "^6.1.18",
     "@storybook/addon-actions": "^6.1.18",
     "@storybook/addon-essentials": "^6.1.18",
