@@ -78,7 +78,7 @@ const FarmedStakingCard = () => {
             >
               {pendingTx
                 ? TranslateString(548, 'Collecting CAKE')
-                : TranslateString(532, `Harvest all (${balancesWithValue.length})`)}
+                : TranslateString(532, `Harvest all (${balancesWithValue.length})`, { count: balancesWithValue.length })}
             </Button>
           ) : (
             <UnlockButton width="100%" />
