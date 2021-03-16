@@ -15,9 +15,13 @@ const Amount = styled.span<{ earned: number }>`
 
 const Earned: React.FunctionComponent<EarnedProps> = ({ earnings }) => {
   const { account } = useWeb3React()
-  const displayBalance = earnings !== null && account ? earnings.toLocaleString() : '?'
+  let amountEarned = earnings
+  if (account == null) {
+    amountEarned = null
+  }
 
-  return <Amount earned={earnings}>{displayBalance}</Amount>
+  const displayBalance = amountEarned !== null ? amountEarned.toLocaleString() : '?'
+  return <Amount earned={amountEarned}>{displayBalance}</Amount>
 }
 
 export default Earned
