@@ -1,35 +1,26 @@
 {
-  "name": "@pancakeswap-libs/uikit",
-  "version": "0.15.0",
-  "description": "Set of UI components for pancake projects",
-  "main": "dist/index.cjs.js",
-  "module": "dist/index.esm.js",
-  "types": "dist/index.d.ts",
-  "files": [
-    "dist"
+  "name": "pancake-toolkit",
+  "version": "1.0.0",
+  "description": "Pancake frontend packages",
+  "private": true,
+  "workspaces": [
+    "packages/*"
   ],
-  "repository": "https://github.com/pancakeswap/pancake-uikit",
-  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pancakeswap/pancake-toolkit.git"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pancakeswap/pancake-toolkit/issues"
+  },
+  "homepage": "https://github.com/pancakeswap/pancake-toolkit#readme",
   "scripts": {
-    "build": "rm -rf ./dist && rollup -c && tsc -d --emitDeclarationOnly --declarationDir dist",
-    "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
-    "format:check": "prettier --check --loglevel error 'src/**/*.{js,jsx,ts,tsx}'",
-    "format:write": "prettier --write 'src/**/*.{js,jsx,ts,tsx}'",
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook",
-    "test": "jest",
-    "release": "yarn build && np"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "yarn format:write",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
-  },
-  "jest": {
-    "setupFilesAfterEnv": [
-      "<rootDir>/src/setupTests.js"
-    ]
+    "build": "lerna run build",
+    "test": "lerna run test",
+    "lint": "lerna run lint",
+    "format": "lerna run format",
+    "build-storybook": "lerna run build-storybook"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
@@ -44,8 +35,6 @@
     "@storybook/addon-essentials": "^6.1.18",
     "@storybook/addon-links": "^6.1.18",
     "@storybook/react": "^6.1.18",
-    "@testing-library/jest-dom": "^5.11.6",
-    "@testing-library/react": "^11.2.5",
     "@types/react": "^17.0.2",
     "@types/react-router-dom": "^5.1.6",
     "@types/react-transition-group": "^4.4.0",
@@ -57,31 +46,13 @@
     "eslint": "^7.20.0",
     "husky": "4.3.5",
     "jest": "^26.6.3",
-    "jest-styled-components": "^7.0.3",
-    "np": "^7.4.0",
+    "lerna": "^3.19.0",
     "prettier": "^2.1.2",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
     "react-is": "^17.0.1",
-    "react-router-dom": "^5.2.0",
     "rollup": "^2.39.0",
-    "styled-components": "^5.2.0",
     "themeprovider-storybook": "^1.6.4",
     "ts-jest": "^26.5.1",
     "tslib": "^2.0.3",
     "typescript": "^4.1.5"
-  },
-  "peerDependencies": {
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
-    "react-router-dom": "^5.2.0",
-    "styled-components": "^5.2.0"
-  },
-  "dependencies": {
-    "@types/lodash": "^4.14.162",
-    "@types/styled-system": "^5.1.10",
-    "lodash": "^4.17.20",
-    "react-transition-group": "^4.4.1",
-    "styled-system": "^5.1.5"
   }
 }
