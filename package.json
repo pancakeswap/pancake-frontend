@@ -19,7 +19,7 @@
     "build": "lerna run build",
     "test": "lerna run test",
     "lint": "lerna run lint",
-    "format": "lerna run format",
+    "format:check": "lerna run format:check",
     "build-storybook": "lerna run build-storybook"
   },
   "devDependencies": {
