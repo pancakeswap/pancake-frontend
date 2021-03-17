@@ -1,10 +1,13 @@
 import React from 'react'
 import Page from 'components/layout/Page'
+import YourScore from './components/YourScore'
 
 const TradingCompetition = () => {
+  const registered = false
+
   return (
     <Page>
-      <span>Hey</span>
+      <YourScore registered={registered} />
     </Page>
   )
 }
