@@ -16,7 +16,7 @@ const Amount = styled.span<{ earned: number }>`
 const Earned: React.FunctionComponent<EarnedProps> = ({ earnings }) => {
   const { account } = useWeb3React()
   let amountEarned = earnings
-  if (account == null) {
+  if (!account) {
     amountEarned = null
   }
 
