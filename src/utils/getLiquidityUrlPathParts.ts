@@ -4,7 +4,7 @@ import { QuoteToken } from 'config/constants/types'
 
 const getLiquidityUrlPathParts = ({ quoteTokenSymbol, quoteTokenAdresses, tokenAddresses }) => {
   const chainId = process.env.REACT_APP_CHAIN_ID
-  const firstPart = quoteTokenSymbol === QuoteToken.BNB ? "BNB" : quoteTokenAdresses[chainId]
+  const firstPart = quoteTokenSymbol === QuoteToken.BNB ? 'BNB' : quoteTokenAdresses[chainId]
   const secondPart = tokenAddresses[chainId]
   return `${firstPart}/${secondPart}`
 }
