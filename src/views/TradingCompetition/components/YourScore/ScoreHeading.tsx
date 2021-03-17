@@ -43,9 +43,9 @@ const Laurel: React.FC<{ dir: string; src: string }> = styled.img`
 const ScoreHeading: React.FC<ScoreHeadingProps> = ({ profile }) => {
   return (
     <Wrapper>
-      <Laurel dir="l" src="/images/laurel.svg" />
+      <Laurel dir="l" src="/images/competition/laurel.svg" />
       {profile ? <ProfileAvatar profile={profile} border /> : <NoProfileAvatarIcon />}
-      <Laurel dir="r" src="/images/laurel.svg" />
+      <Laurel dir="r" src="/images/competition/laurel.svg" />
     </Wrapper>
   )
 }
