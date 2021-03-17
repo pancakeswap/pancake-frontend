@@ -44,7 +44,7 @@ const ScoreHeading: React.FC<ScoreHeadingProps> = ({ profile }) => {
   return (
     <Wrapper>
       <Laurel dir="l" src="/images/laurel.svg" />
-      {profile ? <ProfileAvatar profile={profile} /> : <NoProfileAvatarIcon />}
+      {profile ? <ProfileAvatar profile={profile} border /> : <NoProfileAvatarIcon />}
       <Laurel dir="r" src="/images/laurel.svg" />
     </Wrapper>
   )
