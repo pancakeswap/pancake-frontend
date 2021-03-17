@@ -12,7 +12,7 @@ const Wrapper = styled.div`
 const YourScore: React.FC<YourScoreProps> = ({ registered = false, account, profile }) => {
   return (
     <Wrapper>
-      {registered && <ScoreHeading />}
+      {registered && <ScoreHeading profile={profile} />}
       <ScoreCard registered={registered} account={account} profile={profile} />
     </Wrapper>
   )
