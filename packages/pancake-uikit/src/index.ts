@@ -1,5 +1,6 @@
 // Components
 export * from "./components/Alert";
+export * from "./components/BalanceInput";
 export * from "./components/Box";
 export * from "./components/Breadcrumbs";
 export * from "./components/Button";

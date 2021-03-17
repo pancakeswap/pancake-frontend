@@ -11,12 +11,13 @@
   "repository": "https://github.com/pancakeswap/pancake-uikit",
   "license": "MIT",
   "scripts": {
+    "start": "yarn storybook",
     "build": "rm -rf ./dist && rollup -c && tsc -d --emitDeclarationOnly --declarationDir dist",
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
     "format:check": "prettier --check --loglevel error 'src/**/*.{js,jsx,ts,tsx}'",
     "format:write": "prettier --write 'src/**/*.{js,jsx,ts,tsx}'",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook",
+    "storybook:build": "build-storybook",
     "test": "jest"
   },
   "husky": {
