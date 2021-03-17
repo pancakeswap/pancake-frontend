@@ -1,22 +1,23 @@
 import { InputHTMLAttributes } from "react";
 import styled from "styled-components";
-import { Box } from "../Box";
+import Text from "../Text/Text";
 import bunnyHeadMain from "./svg/bunnyhead-main.svg";
 import bunnyHeadMax from "./svg/bunnyhead-max.svg";
-
-export const SliderContainer = styled(Box)`
-  position: relative;
-  height: 48px;
-`;
 
 interface SliderLabelProps {
   progress: number;
 }
-export const SliderLabel = styled.label<SliderLabelProps>`
-  position: absolute;
+
+interface StyledInputProps extends InputHTMLAttributes<HTMLInputElement> {
+  isMax: boolean;
+}
+
+export const SliderLabel = styled(Text)<SliderLabelProps>`
   bottom: 0;
-  margin-left: 16px; // offset the bunny butt width
+  font-size: 12px;
   left: calc(${({ progress }) => progress}%);
+  position: absolute;
+  margin-left: 16px; // offset the bunny butt width
 `;
 
 export const BunnyButt = styled.img`
@@ -29,56 +30,38 @@ export const BunnySlider = styled.div`
   width: 100%;
 `;
 
-interface StyledInputProps extends InputHTMLAttributes<HTMLInputElement> {
-  isCurrentValueMaxValue: boolean;
-}
+const getBaseThumbStyles = ({ isMax }: StyledInputProps) => `
+-webkit-appearance: none;
+  background-image: url(${isMax ? bunnyHeadMax : bunnyHeadMain});
+  width: 24px;
+  height: 32px;
+  cursor: pointer;
+  transform: translate(-2px, -2px);
+  transition: 0.1s all;
+
+  :hover {
+    transform: scale(1.1) translate(-3px, -3px);
+  }
+`;
 
 export const StyledInput = styled.input<StyledInputProps>`
+  cursor: pointer;
   height: 32px;
   position: relative;
-  cursor: pointer;
 
   ::-webkit-slider-thumb {
     -webkit-appearance: none;
-    background-image: url(${({ isCurrentValueMaxValue }) => (isCurrentValueMaxValue ? bunnyHeadMax : bunnyHeadMain)});
-    width: 24px;
-    height: 32px;
-    cursor: pointer;
-    transform: translate(-2px, -2px);
-    transition: 0.1s all;
-
-    :hover {
-      transform: scale(1.1) translate(-3px, -3px);
-    }
+    ${getBaseThumbStyles}
   }
   ::-moz-range-thumb {
-    -webkit-appearance: none;
-    background-image: url(${({ isCurrentValueMaxValue }) => (isCurrentValueMaxValue ? bunnyHeadMax : bunnyHeadMain)});
-    width: 24px;
-    height: 32px;
-    cursor: pointer;
-    transition: 0.1s all;
-    transform: translate(-2px, -2px);
-    // custom moz reset
+    ${getBaseThumbStyles}
+
     background-color: transparent;
     border: 0;
-
-    :hover {
-      transform: scale(1.1) translate(-3px, -3px);
-    }
   }
-  ::-ms-thumb {
-    -webkit-appearance: none;
-    background-image: url(${({ isCurrentValueMaxValue }) => (isCurrentValueMaxValue ? bunnyHeadMax : bunnyHeadMain)});
-    width: 24px;
-    height: 32px;
-    cursor: pointer;
-    transform: translate(-2px, -2px);
-    transition: 0.1s all;
 
-    :hover {
-      transform: scale(1.1) translate(-3px, -3px);
-    }
+  ::-ms-thumb {
+    ${getBaseThumbStyles}
   }
 `;
 
@@ -90,9 +73,8 @@ export const BarBackground = styled.div`
   background-color: ${({ theme }) => theme.colors.inputSecondary};
 `;
 
-export const BarProgress = styled.div<{ progress: number; isCurrentValueMaxValue: boolean }>`
+export const BarProgress = styled.div<{ progress: number; isMax: boolean }>`
   position: absolute;
-  width: ${({ progress, isCurrentValueMaxValue }) => (isCurrentValueMaxValue ? "calc(100% - 16px)" : `${progress}%`)};
   height: 10px;
   top: 18px;
 
