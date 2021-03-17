@@ -9,11 +9,11 @@ const Wrapper = styled.div`
   max-width: 680px;
 `
 
-const YourScore: React.FC<YourScoreProps> = ({ registered = false }) => {
+const YourScore: React.FC<YourScoreProps> = ({ registered = false, account, profile }) => {
   return (
     <Wrapper>
       {registered && <ScoreHeading />}
-      <ScoreCard registered={registered} />
+      <ScoreCard registered={registered} account={account} profile={profile} />
     </Wrapper>
   )
 }
