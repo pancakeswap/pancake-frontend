@@ -5,7 +5,6 @@ import styled from 'styled-components'
 
 export interface ProfileAvatarProps {
   profile: Profile
-  border?: boolean
 }
 
 const TeamAvatar = styled.img`
@@ -25,12 +24,11 @@ const TeamAvatar = styled.img`
   }
 `
 
-const AvatarWrapper = styled.div<{ bg: string; border: boolean }>`
+const AvatarWrapper = styled.div<{ bg: string }>`
   background: url('${({ bg }) => bg}');
   background-repeat: no-repeat;
   background-size: cover;
   border-radius: 50%;
-  ${({ border, theme }) => (border ? `border: 2px solid ${theme.colors.invertedContrast};` : '')}
   height: 64px;
   position: relative;
   width: 64px;
@@ -55,9 +53,9 @@ const AvatarInactive = styled(NoProfileAvatarIcon)`
   }
 `
 
-const ProfileAvatar: React.FC<ProfileAvatarProps> = ({ profile, border = false }) => {
+const ProfileAvatar: React.FC<ProfileAvatarProps> = ({ profile }) => {
   return (
-    <AvatarWrapper border={border} bg={`/images/nfts/${profile.nft?.images?.md}`}>
+    <AvatarWrapper bg={`/images/nfts/${profile.nft?.images?.md}`}>
       {!profile.isActive && <AvatarInactive />}
       <TeamAvatar src={`/images/teams/${profile.team.images.alt}`} alt={profile.team.name} />
     </AvatarWrapper>
