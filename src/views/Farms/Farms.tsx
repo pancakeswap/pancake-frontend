@@ -144,7 +144,11 @@ const Farms: React.FC = () => {
       case 'apr':
         return orderBy(farms, 'apy', 'desc')
       case 'multiplier':
-        return orderBy(farms, (farm: FarmWithStakedValue) => Number(farm.multiplier.slice(0, -1)), 'desc')
+        return orderBy(
+          farms,
+          (farm: FarmWithStakedValue) => (farm.multiplier ? Number(farm.multiplier.slice(0, -1)) : 0),
+          'desc',
+        )
       case 'earned':
         return orderBy(farms, (farm: FarmWithStakedValue) => (farm.userData ? farm.userData.earnings : 0), 'desc')
       case 'liquidity':
