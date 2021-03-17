@@ -760,7 +760,7 @@ const pools: PoolConfig[] = [
     tokenPerBlock: '0.011574',
     sortOrder: 999,
     isFinished: true,
-    tokenDecimals: 18,
+    tokenDecimals: 17,
   },
   {
     sousId: 34,
