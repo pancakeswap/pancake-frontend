@@ -44,6 +44,7 @@ const AprWrapper = styled.div`
 const Apr: React.FC<AprProps> = ({
   value,
   lpLabel,
+  quoteTokenSymbol,
   quoteTokenAdresses,
   tokenAddresses,
   cakePrice,
@@ -51,7 +52,11 @@ const Apr: React.FC<AprProps> = ({
   hideButton = false,
 }) => {
   const TranslateString = useI18n()
-  const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAdresses, tokenAddresses })
+  const liquidityUrlPathParts = getLiquidityUrlPathParts({
+    quoteTokenSymbol,
+    quoteTokenAdresses,
+    tokenAddresses,
+  })
   const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
   return (
     <Container>

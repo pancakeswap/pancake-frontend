@@ -97,16 +97,20 @@ const ValueWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 4px 0px;
+  margin: 4px 0;
 `
 
 const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({ details, apr, multiplier, liquidity }) => {
   const farm = details
 
   const TranslateString = useI18n()
-  const { quoteTokenAdresses, tokenAddresses, tokenSymbol, dual } = farm
+  const { quoteTokenSymbol, quoteTokenAdresses, tokenAddresses, tokenSymbol, dual } = farm
   const lpLabel = farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('PANCAKE', '')
-  const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAdresses, tokenAddresses })
+  const liquidityUrlPathParts = getLiquidityUrlPathParts({
+    quoteTokenSymbol,
+    quoteTokenAdresses,
+    tokenAddresses,
+  })
   const lpAddress = farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]
   const bsc = `https://bscscan.com/address/${lpAddress}`
   const info = `https://pancakeswap.info/pair/${lpAddress}`

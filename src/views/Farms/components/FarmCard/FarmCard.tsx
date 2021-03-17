@@ -130,8 +130,12 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed, cakePrice, bnbPrice,
   const farmAPY =
     farm.apy && farm.apy.times(new BigNumber(100)).toNumber().toLocaleString('en-US', { maximumFractionDigits: 2 })
 
-  const { quoteTokenAdresses, tokenAddresses } = farm
-  const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAdresses, tokenAddresses })
+  const { quoteTokenSymbol, quoteTokenAdresses, tokenAddresses } = farm
+  const liquidityUrlPathParts = getLiquidityUrlPathParts({
+    quoteTokenSymbol,
+    quoteTokenAdresses,
+    tokenAddresses,
+  })
   const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
 
   return (
