@@ -36,7 +36,7 @@ const CardUserInfo: React.FC<YourScoreProps> = ({ registered, account, profile }
   const subHeadingText = getSubHeadingText()
 
   return (
-    <Flex flexDirection="column" alignItems="center">
+    <Flex flexDirection="column" alignItems="center" mt="12px">
       <Heading size="lg" textAlign="center">
         {headingText ? TranslateString(999, headingText) : <Skeleton height={25} width={110} />}
       </Heading>

@@ -26,6 +26,7 @@ const LaurelWrapper = styled.div`
 `
 
 const ProfileWrapper = styled.div`
+  z-index: 2;
   svg {
     height: 64px;
     width: 64px;

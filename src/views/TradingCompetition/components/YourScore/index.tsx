@@ -7,18 +7,42 @@ import Ribbon from '../Ribbon/Ribbon'
 import { YourScoreProps } from '../../types'
 
 const Wrapper = styled.div`
+  position: relative;
   margin: 24px auto 0;
   max-width: 680px;
+`
+
+const HeadingWrapper = styled.div`
+  padding-bottom: 4px;
+`
+
+const RibbonWrapper = styled(Flex)`
+  position: absolute;
+  width: 100%;
+  z-index: 1;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -8px);
+`
+
+const ScoreCardWrapper = styled.div`
+  margin-top: 24px;
 `
 
 const YourScore: React.FC<YourScoreProps> = ({ registered = false, account, profile }) => {
   return (
     <Wrapper>
-      {registered && <ScoreHeading profile={profile} />}
-      <Flex alignItems="center" justifyContent="center">
+      {registered && (
+        <HeadingWrapper>
+          <ScoreHeading profile={profile} />
+        </HeadingWrapper>
+      )}
+      <RibbonWrapper alignItems="center" justifyContent="center">
         <Ribbon>Some text woah ooah woah</Ribbon>
-      </Flex>
-      <ScoreCard registered={registered} account={account} profile={profile} />
+      </RibbonWrapper>
+      <ScoreCardWrapper>
+        <ScoreCard registered={registered} account={account} profile={profile} />
+      </ScoreCardWrapper>
     </Wrapper>
   )
 }
