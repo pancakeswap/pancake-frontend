@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js'
-import React, { useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { Flex } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
@@ -49,8 +49,6 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
     parseFloat(pool.tokenPerBlock),
   )
 
-  const [pendingTx, setPendingTx] = useState(false)
-
   const stakedBalance = new BigNumber(userData?.stakedBalance || 0)
   const earnings = new BigNumber(userData?.pendingReward || 0)
 
@@ -75,15 +73,15 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
           isFinished={isFinished}
           sousId={sousId}
           tokenName={tokenName}
+          stakingTokenName={stakingToken.symbol}
           isBnbPool={isBnbPool}
           harvest={harvest}
           isOldSyrup={isOldSyrup}
           earnings={earnings}
-          pendingTx={pendingTx}
           tokenDecimals={tokenDecimals}
-          setPendingTx={setPendingTx}
+          stakingTokenDecimals={stakingToken.decimals}
         />
-        <Stake tokenName={tokenName} pool={pool} isOldSyrup={isOldSyrup} isBnbPool={isBnbPool} />
+        <Stake pool={pool} isOldSyrup={isOldSyrup} isBnbPool={isBnbPool} />
       </Flex>
       <CardFooter
         projectLink={earningToken.projectLink}

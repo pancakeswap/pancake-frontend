@@ -1,5 +1,5 @@
 import React from 'react'
-import { Flex, Text, Button } from '@pancakeswap-libs/uikit'
+import { Flex, Text, Button, useModal } from '@pancakeswap-libs/uikit'
 import { useWeb3React } from '@web3-react/core'
 import useI18n from 'hooks/useI18n'
 import { useSousHarvest } from 'hooks/useHarvest'
@@ -7,37 +7,70 @@ import { usePriceCakeBusd } from 'state/hooks'
 import BigNumber from 'bignumber.js'
 import { getBalanceNumber } from 'utils/formatBalance'
 import Balance from 'components/Balance'
+import CollectModal from './CollectModal'
 
 interface EarnedProps {
   isFinished: boolean
   sousId: number
   tokenName: string
+  stakingTokenName: string
   harvest: boolean
   isOldSyrup: boolean
   earnings: BigNumber
-  pendingTx: boolean
   isBnbPool: boolean
   tokenDecimals: number
-  setPendingTx: (status: boolean) => void
+  stakingTokenDecimals?: number
 }
 
 const Earned: React.FC<EarnedProps> = ({
   isFinished,
   sousId,
   tokenName,
+  stakingTokenName,
   isOldSyrup,
   harvest,
-  pendingTx,
   earnings,
   isBnbPool,
   tokenDecimals,
-  setPendingTx,
+  stakingTokenDecimals,
 }) => {
   const TranslateString = useI18n()
   const cakePrice = usePriceCakeBusd()
   const { account } = useWeb3React()
-  const { onReward } = useSousHarvest(sousId, isBnbPool)
   const earningsBusd = earnings.multipliedBy(cakePrice).toNumber()
+
+  const [onPresentCollect] = useModal(
+    <CollectModal
+      earnings={earnings}
+      stakingTokenDecimals={stakingTokenDecimals}
+      earningsBusd={earningsBusd}
+      sousId={sousId}
+      isBnbPool={isBnbPool}
+    />,
+  )
+
+  const [onPresentHarvest] = useModal(
+    <CollectModal
+      earnings={earnings}
+      stakingTokenDecimals={stakingTokenDecimals}
+      earningsBusd={earningsBusd}
+      sousId={sousId}
+      isBnbPool={isBnbPool}
+      harvest
+    />,
+  )
+
+  const handleRenderActionButton = (): JSX.Element => {
+    if (tokenName === stakingTokenName) {
+      return <Button onClick={onPresentCollect}>Collect</Button>
+    }
+
+    if (account && harvest && !isOldSyrup) {
+      return <Button onClick={onPresentHarvest}>{TranslateString(562, 'Harvest')}</Button>
+    }
+
+    return null
+  }
 
   return (
     <Flex flexDirection="column" mt="20px">
@@ -63,18 +96,7 @@ const Earned: React.FC<EarnedProps> = ({
             <Balance value={earningsBusd} isDisabled={!earningsBusd} fontSize="12px" prefix="~" />
           </Flex>
         </Flex>
-        {account && harvest && !isOldSyrup && (
-          <Button
-            disabled={!earnings.toNumber() || pendingTx}
-            onClick={async () => {
-              setPendingTx(true)
-              await onReward()
-              setPendingTx(false)
-            }}
-          >
-            {pendingTx ? 'Collecting' : 'Harvest'}
-          </Button>
-        )}
+        {handleRenderActionButton()}
       </Flex>
     </Flex>
   )
