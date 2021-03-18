@@ -315,28 +315,12 @@ const Farms: React.FC = () => {
         <FlexLayout>
           <Route exact path={`${path}`}>
             {farmsStaked.map((farm) => (
-              <FarmCard
-                key={farm.pid}
-                farm={farm}
-                bnbPrice={bnbPrice}
-                cakePrice={cakePrice}
-                ethPrice={ethPriceUsd}
-                account={account}
-                removed={false}
-              />
+              <FarmCard key={farm.pid} farm={farm} cakePrice={cakePrice} account={account} removed={false} />
             ))}
           </Route>
           <Route exact path={`${path}/history`}>
             {farmsStaked.map((farm) => (
-              <FarmCard
-                key={farm.pid}
-                farm={farm}
-                bnbPrice={bnbPrice}
-                cakePrice={cakePrice}
-                ethPrice={ethPriceUsd}
-                account={account}
-                removed
-              />
+              <FarmCard key={farm.pid} farm={farm} cakePrice={cakePrice} account={account} removed />
             ))}
           </Route>
         </FlexLayout>
