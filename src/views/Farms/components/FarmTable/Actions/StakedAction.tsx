@@ -23,13 +23,7 @@ const IconButtonWrapper = styled.div`
   display: flex;
 `
 
-const Staked: React.FunctionComponent<FarmWithStakedValue> = ({
-  pid,
-  lpSymbol,
-  lpAddresses,
-  quoteTokenAdresses,
-  tokenAddresses,
-}) => {
+const Staked: React.FunctionComponent<FarmWithStakedValue> = ({ pid, lpSymbol, lpAddresses, quoteToken, token }) => {
   const TranslateString = useI18n()
   const { account } = useWeb3React()
   const [requestedApproval, setRequestedApproval] = useState(false)
@@ -41,7 +35,10 @@ const Staked: React.FunctionComponent<FarmWithStakedValue> = ({
   const isApproved = account && allowance && allowance.isGreaterThan(0)
 
   const lpAddress = lpAddresses[process.env.REACT_APP_CHAIN_ID]
-  const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAdresses, tokenAddresses })
+  const liquidityUrlPathParts = getLiquidityUrlPathParts({
+    quoteTokenAdresses: quoteToken.address,
+    tokenAddresses: token.address,
+  })
   const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
   const rawStakedBalance = getBalanceNumber(stakedBalance)
   const displayBalance = rawStakedBalance.toLocaleString()

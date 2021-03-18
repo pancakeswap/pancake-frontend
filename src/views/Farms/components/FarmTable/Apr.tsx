@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import ApyButton from 'views/Farms/components/FarmCard/ApyButton'
-import { Address, QuoteToken } from 'config/constants/types'
+import { Address } from 'config/constants/types'
 import BigNumber from 'bignumber.js'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
@@ -12,7 +12,7 @@ export interface AprProps {
   multiplier: string
   lpLabel: string
   quoteTokenAdresses: Address
-  quoteTokenSymbol: QuoteToken
+  quoteTokenSymbol: string
   tokenAddresses: Address
   cakePrice: BigNumber
   originalValue: BigNumber

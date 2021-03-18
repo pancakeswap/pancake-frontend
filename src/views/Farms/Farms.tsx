@@ -11,7 +11,8 @@ import Page from 'components/layout/Page'
 import { useFarms, usePriceBnbBusd, usePriceCakeBusd, usePriceEthBusd } from 'state/hooks'
 import useRefresh from 'hooks/useRefresh'
 import { fetchFarmUserDataAsync } from 'state/actions'
-import { QuoteToken } from 'config/constants/types'
+import { Farm } from 'state/types'
+import tokens from 'config/constants/tokens'
 import useI18n from 'hooks/useI18n'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { orderBy } from 'lodash'
@@ -144,7 +145,11 @@ const Farms: React.FC = () => {
       case 'apr':
         return orderBy(farms, 'apy', 'desc')
       case 'multiplier':
-        return orderBy(farms, (farm: FarmWithStakedValue) => Number(farm.multiplier.slice(0, -1)), 'desc')
+        return orderBy(
+          farms,
+          (farm: FarmWithStakedValue) => (farm.multiplier ? Number(farm.multiplier.slice(0, -1)) : 0),
+          'desc',
+        )
       case 'earned':
         return orderBy(farms, (farm: FarmWithStakedValue) => (farm.userData ? farm.userData.earnings : 0), 'desc')
       case 'liquidity':
@@ -158,7 +163,7 @@ const Farms: React.FC = () => {
   // This function compute the APY for each farm and will be replaced when we have a reliable API
   // to retrieve assets prices against USD
   const farmsList = useCallback(
-    (farmsToDisplay): FarmWithStakedValue[] => {
+    (farmsToDisplay: Farm[]): FarmWithStakedValue[] => {
       const cakePriceVsBNB = new BigNumber(farmsLP.find((farm) => farm.pid === CAKE_POOL_PID)?.tokenPriceVsQuote || 0)
       let farmsToDisplayWithAPY: FarmWithStakedValue[] = farmsToDisplay.map((farm) => {
         if (!farm.tokenAmount || !farm.lpTotalInQuoteToken) {
@@ -170,11 +175,11 @@ const Farms: React.FC = () => {
         // cakePriceInQuote * cakeRewardPerYear / lpTotalInQuoteToken
         let apy = cakePriceVsBNB.times(cakeRewardPerYear).div(farm.lpTotalInQuoteToken)
 
-        if (farm.quoteTokenSymbol === QuoteToken.BUSD || farm.quoteTokenSymbol === QuoteToken.UST) {
+        if (farm.quoteToken.symbol === tokens.busd.symbol || farm.quoteToken.symbol === tokens.ust.symbol) {
           apy = cakePriceVsBNB.times(cakeRewardPerYear).div(farm.lpTotalInQuoteToken).times(bnbPrice)
-        } else if (farm.quoteTokenSymbol === QuoteToken.ETH) {
+        } else if (farm.quoteToken.symbol === tokens.eth.symbol) {
           apy = cakePrice.div(ethPriceUsd).times(cakeRewardPerYear).div(farm.lpTotalInQuoteToken)
-        } else if (farm.quoteTokenSymbol === QuoteToken.CAKE) {
+        } else if (farm.quoteToken.symbol === tokens.cake.symbol) {
           apy = cakeRewardPerYear.div(farm.lpTotalInQuoteToken)
         } else if (farm.dual) {
           const cakeApy =
@@ -194,14 +199,14 @@ const Farms: React.FC = () => {
         if (!farm.lpTotalInQuoteToken) {
           liquidity = null
         }
-        if (farm.quoteTokenSymbol === QuoteToken.BNB) {
+        if (farm.quoteToken.symbol === tokens.wbnb.symbol) {
           liquidity = bnbPrice.times(farm.lpTotalInQuoteToken)
         }
-        if (farm.quoteTokenSymbol === QuoteToken.CAKE) {
+        if (farm.quoteToken.symbol === tokens.cake.symbol) {
           liquidity = cakePrice.times(farm.lpTotalInQuoteToken)
         }
 
-        if (farm.quoteTokenSymbol === QuoteToken.ETH) {
+        if (farm.quoteToken.symbol === tokens.eth.symbol) {
           liquidity = ethPriceUsd.times(farm.lpTotalInQuoteToken)
         }
 

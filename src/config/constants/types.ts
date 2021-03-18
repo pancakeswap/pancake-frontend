@@ -23,19 +23,6 @@ export interface Ifo {
   campaignId?: string
 }
 
-export enum QuoteToken {
-  'BNB' = 'BNB',
-  'CAKE' = 'CAKE',
-  'SYRUP' = 'SYRUP',
-  'BUSD' = 'BUSD',
-  'TWT' = 'TWT',
-  'UST' = 'UST',
-  'ETH' = 'ETH',
-  'COMP' = 'COMP',
-  'SUSHI' = 'SUSHI',
-  'TPT' = 'TPT',
-}
-
 export enum PoolCategory {
   'COMMUNITY' = 'Community',
   'CORE' = 'Core',
@@ -47,14 +34,19 @@ export interface Address {
   56: string
 }
 
+export interface Token {
+  symbol: string
+  address?: Address
+  decimals?: number
+  projectLink?: string
+}
+
 export interface FarmConfig {
   pid: number
   lpSymbol: string
   lpAddresses: Address
-  tokenSymbol: string
-  tokenAddresses: Address
-  quoteTokenSymbol: QuoteToken
-  quoteTokenAdresses: Address
+  token: Token
+  quoteToken: Token
   multiplier?: string
   isCommunity?: boolean
   dual?: {
@@ -66,20 +58,15 @@ export interface FarmConfig {
 
 export interface PoolConfig {
   sousId: number
-  tokenName: string
-  tokenAddress: string
-  stakingTokenName: QuoteToken
+  earningToken: Token
+  stakingToken: Token
   stakingLimit?: number
-  stakingTokenAddress?: string
-  stakingTokenDecimals?: number
   contractAddress: Address
   poolCategory: PoolCategory
-  projectLink: string
   tokenPerBlock: string
   sortOrder?: number
   harvest?: boolean
   isFinished?: boolean
-  tokenDecimals: number
 }
 
 export type Images = {
