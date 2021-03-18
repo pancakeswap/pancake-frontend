@@ -22,6 +22,12 @@
     "format:check": "lerna run format:check",
     "storybook:build": "lerna run storybook:build"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn format:check",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
   "devDependencies": {
     "@babel/core": "^7.12.16",
     "@babel/preset-env": "^7.12.16",
