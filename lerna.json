@@ -5,8 +5,9 @@
   "workspaces": true,
   "ignoreChanges": ["**/__tests__/**", "**/*.md"],
   "command": {
-    "publish": {
-      "message": "chore(release): Publish"
+    "version": {
+      "conventionalCommits": true,
+      "message": "chore(release): Publish %s"
     }
   }
 }
