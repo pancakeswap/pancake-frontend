@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import ScoreCard from './ScoreCard'
 import ScoreHeading from './ScoreHeading'
+import Ribbon from '../Ribbon'
 import { YourScoreProps } from '../../types'
 
 const Wrapper = styled.div`
@@ -13,6 +14,7 @@ const YourScore: React.FC<YourScoreProps> = ({ registered = false, account, prof
   return (
     <Wrapper>
       {registered && <ScoreHeading profile={profile} />}
+      <Ribbon />
       <ScoreCard registered={registered} account={account} profile={profile} />
     </Wrapper>
   )
