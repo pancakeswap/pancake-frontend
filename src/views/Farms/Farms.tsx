@@ -247,6 +247,7 @@ const Farms: React.FC = () => {
     const tokenAddress = token.address
     const quoteTokenAddress = quoteToken.address
     const lpLabel = farm.lpSymbol && farm.lpSymbol.split(' ')[0].toUpperCase().replace('PANCAKE', '')
+
     const row: RowProps = {
       apr: {
         value:
