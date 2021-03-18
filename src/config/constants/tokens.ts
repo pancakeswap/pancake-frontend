@@ -597,6 +597,222 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://dusk.network/',
   },
+  busd: {
+    symbol: 'BUSD',
+    address: {
+      56: '0xe9e7cea3dedca5984780bafc599bd69add087d56',
+      97: '',
+    },
+    decimals: 18,
+  },
+  eth: {
+    symbol: 'ETH',
+    address: {
+      56: '0x2170ed0880ac9a755fd29b2688956bd959f933f8',
+      97: '',
+    },
+    decimals: 18,
+  },
+  beth: {
+    symbol: 'BETH',
+    address: {
+      56: '0x250632378e573c6be1ac2f97fcdf00515d0aa91b',
+      97: '',
+    },
+    decimals: 18,
+  },
+  mamzn: {
+    symbol: 'mAMZN',
+    address: {
+      56: '0x3947B992DC0147D2D89dF0392213781b04B25075',
+      97: '',
+    },
+    decimals: 18,
+  },
+  mgoogl: {
+    symbol: 'mGOOGL',
+    address: {
+      56: '0x62D71B23bF15218C7d2D7E48DBbD9e9c650B173f',
+      97: '',
+    },
+    decimals: 18,
+  },
+  mnflx: {
+    symbol: 'mNFLX',
+    address: {
+      56: '0xa04F060077D90Fe2647B61e4dA4aD1F97d6649dc',
+      97: '',
+    },
+    decimals: 18,
+  },
+  mtsla: {
+    symbol: 'mTSLA',
+    address: {
+      56: '0xF215A127A196e3988C09d052e16BcFD365Cd7AA3',
+      97: '',
+    },
+    decimals: 18,
+  },
+  ltc: {
+    symbol: 'LTC',
+    address: {
+      56: '0x4338665cbb7b2485a8855a139b75d5e34ab0db94',
+      97: '',
+    },
+    decimals: 18,
+  },
+  usdc: {
+    symbol: 'USDC',
+    address: {
+      56: '0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d',
+      97: '',
+    },
+    decimals: 18,
+  },
+  dai: {
+    symbol: 'DAI',
+    address: {
+      56: '0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3',
+      97: '',
+    },
+    decimals: 18,
+  },
+  ada: {
+    symbol: 'ADA',
+    address: {
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
+      56: '0x3ee2200efb3400fabb9aacf31297cbdd1d435d47',
+    },
+    decimals: 18,
+  },
+  band: {
+    symbol: 'BAND',
+    address: {
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
+      56: '0xad6caeb32cd2c308980a548bd0bc5aa4306c6c18',
+    },
+    decimals: 18,
+  },
+  dot: {
+    symbol: 'DOT',
+    address: {
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
+      56: '0x7083609fce4d1d8dc0c979aab8c869ea2c873402',
+    },
+    decimals: 18,
+  },
+  eos: {
+    symbol: 'EOS',
+    address: {
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
+      56: '0x56b6fb708fc5732dec1afc8d8556423a2edccbd6',
+    },
+    decimals: 18,
+  },
+  link: {
+    symbol: 'LINK',
+    address: {
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
+      56: '0xf8a0bf9cf54bb92f17374d9e9a321e6a111a51bd',
+    },
+    decimals: 18,
+  },
+  usdt: {
+    symbol: 'USDT',
+    address: {
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
+      56: '0x55d398326f99059ff775485246999027b3197955',
+    },
+    decimals: 18,
+  },
+  btc: {
+    symbol: 'BTC',
+    address: {
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
+      56: '0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c',
+    },
+    decimals: 18,
+  },
+  xrp: {
+    symbol: 'XRP',
+    address: {
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
+      56: '0x1d2f0da169ceb9fc7b3144628db156f3f6c60dbe',
+    },
+    decimals: 18,
+  },
+  atom: {
+    symbol: 'ATOM',
+    address: {
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
+      56: '0x0eb3a705fc54725037cc9e008bdede697f62f335',
+    },
+    decimals: 18,
+  },
+  yfii: {
+    symbol: 'YFII',
+    address: {
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
+      56: '0x7f70642d88cf1c4a3a7abb072b53b929b653eda5',
+    },
+    decimals: 18,
+  },
+  xtz: {
+    symbol: 'XTZ',
+    address: {
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
+      56: '0x16939ef78684453bfdfb47825f8a5f714f12623a',
+    },
+    decimals: 18,
+  },
+  bch: {
+    symbol: 'BCH',
+    address: {
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
+      56: '0x8ff795a6f4d97e7887c79bea79aba5cc76444adf',
+    },
+    decimals: 18,
+  },
+  yfi: {
+    symbol: 'YFI',
+    address: {
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
+      56: '0x88f1a5ae2a3bf98aeaf342d26b30a79438c9142e',
+    },
+    decimals: 18,
+  },
+  uni: {
+    symbol: 'UNI',
+    address: {
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
+      56: '0xbf5140a22578168fd562dccf235e5d43a02ce9b1',
+    },
+    decimals: 18,
+  },
+  fil: {
+    symbol: 'FIL',
+    address: {
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
+      56: '0x0d8ce2a99bb6e3b7db580ed848240e4a0f9ae153',
+    },
+    decimals: 18,
+  },
+  bake: {
+    symbol: 'BAKE',
+    address: {
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
+      56: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
+    },
+    decimals: 18,
+  },
+  burger: {
+    symbol: 'BURGER',
+    address: {
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
+      56: '0xae9269f27437f0fcbc232d39ec814844a51d6b8f',
+    },
+    decimals: 18,
+  },
 }
 
 export default tokens

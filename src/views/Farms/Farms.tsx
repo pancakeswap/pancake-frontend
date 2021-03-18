@@ -11,6 +11,7 @@ import Page from 'components/layout/Page'
 import { useFarms, usePriceBnbBusd, usePriceCakeBusd, usePriceEthBusd } from 'state/hooks'
 import useRefresh from 'hooks/useRefresh'
 import { fetchFarmUserDataAsync } from 'state/actions'
+import { Farm } from 'state/types'
 import { QuoteToken } from 'config/constants/types'
 import useI18n from 'hooks/useI18n'
 import { getBalanceNumber } from 'utils/formatBalance'
@@ -162,7 +163,7 @@ const Farms: React.FC = () => {
   // This function compute the APY for each farm and will be replaced when we have a reliable API
   // to retrieve assets prices against USD
   const farmsList = useCallback(
-    (farmsToDisplay): FarmWithStakedValue[] => {
+    (farmsToDisplay: Farm[]): FarmWithStakedValue[] => {
       const cakePriceVsBNB = new BigNumber(farmsLP.find((farm) => farm.pid === CAKE_POOL_PID)?.tokenPriceVsQuote || 0)
       let farmsToDisplayWithAPY: FarmWithStakedValue[] = farmsToDisplay.map((farm) => {
         if (!farm.tokenAmount || !farm.lpTotalInQuoteToken) {
@@ -174,11 +175,11 @@ const Farms: React.FC = () => {
         // cakePriceInQuote * cakeRewardPerYear / lpTotalInQuoteToken
         let apy = cakePriceVsBNB.times(cakeRewardPerYear).div(farm.lpTotalInQuoteToken)
 
-        if (farm.quoteTokenSymbol === QuoteToken.BUSD || farm.quoteTokenSymbol === QuoteToken.UST) {
+        if (farm.quoteToken.symbol === QuoteToken.BUSD || farm.quoteToken.symbol === QuoteToken.UST) {
           apy = cakePriceVsBNB.times(cakeRewardPerYear).div(farm.lpTotalInQuoteToken).times(bnbPrice)
-        } else if (farm.quoteTokenSymbol === QuoteToken.ETH) {
+        } else if (farm.quoteToken.symbol === QuoteToken.ETH) {
           apy = cakePrice.div(ethPriceUsd).times(cakeRewardPerYear).div(farm.lpTotalInQuoteToken)
-        } else if (farm.quoteTokenSymbol === QuoteToken.CAKE) {
+        } else if (farm.quoteToken.symbol === QuoteToken.CAKE) {
           apy = cakeRewardPerYear.div(farm.lpTotalInQuoteToken)
         } else if (farm.dual) {
           const cakeApy =
@@ -198,14 +199,14 @@ const Farms: React.FC = () => {
         if (!farm.lpTotalInQuoteToken) {
           liquidity = null
         }
-        if (farm.quoteTokenSymbol === QuoteToken.BNB) {
+        if (farm.quoteToken.symbol === QuoteToken.BNB) {
           liquidity = bnbPrice.times(farm.lpTotalInQuoteToken)
         }
-        if (farm.quoteTokenSymbol === QuoteToken.CAKE) {
+        if (farm.quoteToken.symbol === QuoteToken.CAKE) {
           liquidity = cakePrice.times(farm.lpTotalInQuoteToken)
         }
 
-        if (farm.quoteTokenSymbol === QuoteToken.ETH) {
+        if (farm.quoteToken.symbol === QuoteToken.ETH) {
           liquidity = ethPriceUsd.times(farm.lpTotalInQuoteToken)
         }
 
