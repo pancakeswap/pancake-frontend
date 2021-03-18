@@ -13,11 +13,21 @@ const StyledTag = styled(Flex)<{ bg: TagProps['bg'] }>`
   display: inline-flex;
 `
 
-const Tag: React.FC<TagProps> = ({ bg = 'success', startIcon, children, ...props }) => {
+const Tag: React.FC<TagProps> = ({ bg = 'success', startIcon, children, onClick, ...props }) => {
   const icon = startIcon || <ArrowUpIcon color="white" />
 
   return (
-    <StyledTag alignItems="center" justifyContent="center" borderRadius="4px" bg={bg} py="4px" px="8px" {...props}>
+    <StyledTag
+      alignItems="center"
+      justifyContent="center"
+      borderRadius="4px"
+      bg={bg}
+      py="4px"
+      px="8px"
+      onClick={onClick}
+      style={{ cursor: onClick ? 'pointer' : 'normal' }}
+      {...props}
+    >
       {icon}
       <Text textTransform="uppercase" color="white" ml="4px">
         {children}

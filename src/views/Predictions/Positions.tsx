@@ -9,6 +9,7 @@ import { PricePairLabel, TimerLabel } from './components/Label'
 import PrevNextNav from './components/PrevNextNav'
 import RoundCard from './components/RoundCard'
 import HistoryButton from './components/HistoryButton'
+import FlexRow from './components/FlexRow'
 
 import 'swiper/swiper.min.css'
 
@@ -25,29 +26,17 @@ const StyledSwiper = styled.div`
   }
 `
 
-const Row = styled(Flex)`
-  flex: 1;
-`
-
 const SetCol = styled.div`
   flex: none;
   width: 270px;
 `
 
 const Positions = () => {
-  const [swiperInstance, setSwiperInstance] = useState(null)
+  const [swiperInstance, setSwiperInstance] = useState<SwiperCore>(null)
   const currentEpoch = useGetCurrentEpoch()
   const roundData = useGetRounds()
   const rounds = sortRounds(roundData, currentEpoch)
   const liveRoundIndex = rounds.findIndex((round) => round.epoch === currentEpoch)
-
-  const handleNext = () => {
-    swiperInstance.slideNext()
-  }
-
-  const handlePrev = () => {
-    swiperInstance.slidePrev()
-  }
 
   const slideToLive = useCallback(() => {
     if (swiperInstance) {
@@ -62,13 +51,13 @@ const Positions = () => {
 
   return (
     <Box py="24px" overflowX="hidden" overflowY="auto">
-      <Row alignItems="center" px="16px" py="24px">
+      <FlexRow alignItems="center" px="16px" py="24px">
         <SetCol>
           <PricePairLabel />
         </SetCol>
-        <Row justifyContent="center">
-          <PrevNextNav onSlideToLive={slideToLive} onNext={handleNext} onPrev={handlePrev} />
-        </Row>
+        <FlexRow justifyContent="center">
+          <PrevNextNav swiperInstance={swiperInstance} onSlideToLive={slideToLive} />
+        </FlexRow>
         <SetCol>
           <Flex alignItems="center">
             <TimerLabel interval="5m" />
@@ -78,7 +67,7 @@ const Positions = () => {
             <HistoryButton />
           </Flex>
         </SetCol>
-      </Row>
+      </FlexRow>
       <StyledSwiper>
         <Swiper
           initialSlide={liveRoundIndex >= 0 ? liveRoundIndex : 0}
@@ -94,7 +83,7 @@ const Positions = () => {
         >
           {rounds.map((round) => (
             <SwiperSlide key={round.epoch}>
-              <RoundCard round={round} />
+              <RoundCard round={round} swiperInstance={swiperInstance} />
             </SwiperSlide>
           ))}
         </Swiper>

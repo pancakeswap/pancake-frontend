@@ -248,6 +248,11 @@ export const useGetCurrentEpoch = () => {
   return useSelector((state: State) => state.predictions.currentEpoch)
 }
 
+export const useIsNextRound = (epoch: number) => {
+  const currentEpoch = useGetCurrentEpoch()
+  return epoch === currentEpoch + 1
+}
+
 export const useGetLiveRound = () => {
   const { currentEpoch, rounds } = useSelector((state: State) => state.predictions)
   return rounds[currentEpoch]

@@ -1,12 +1,12 @@
 import React from 'react'
 import { ArrowBackIcon, ArrowForwardIcon, Card, IconButton } from '@pancakeswap-libs/uikit'
+import SwiperCore from 'swiper'
 import styled from 'styled-components'
 import BunnyCards from '../icons/BunnyCards'
 
 interface PrevNextNavProps {
+  swiperInstance: SwiperCore
   onSlideToLive: () => void
-  onNext: () => void
-  onPrev: () => void
 }
 
 const StyledPrevNextNav = styled(Card)`
@@ -29,18 +29,26 @@ const Icon = styled.div`
   position: absolute;
 `
 
-const PrevNextNav: React.FC<PrevNextNavProps> = ({ onSlideToLive, onNext, onPrev }) => {
+const PrevNextNav: React.FC<PrevNextNavProps> = ({ swiperInstance, onSlideToLive }) => {
+  const handlePrevSlide = () => {
+    swiperInstance.slidePrev()
+  }
+
+  const handleNextSlide = () => {
+    swiperInstance.slideNext()
+  }
+
   return (
     <StyledPrevNextNav>
-      <IconButton variant="text" scale="sm" onClick={onPrev}>
+      <IconButton variant="text" scale="sm" onClick={handlePrevSlide}>
         <ArrowBackIcon color="primary" width="24px" />
       </IconButton>
       <Icon onClick={onSlideToLive}>
         <BunnyCards />
       </Icon>
-      <IconButton variant="text" scale="sm" onClick={onNext}>
+      <IconButton variant="text" scale="sm" onClick={handleNextSlide}>
         <ArrowForwardIcon color="primary" width="24px" />
-      </IconButton>{' '}
+      </IconButton>
     </StyledPrevNextNav>
   )
 }

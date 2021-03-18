@@ -5,8 +5,8 @@ import { PredictionStatus } from 'state/types'
 import PageLoader from 'components/PageLoader'
 import Container from './components/Container'
 import Positions from './Positions'
-import History from './History'
 import TradingView from './components/TradingView'
+import History from './History'
 
 const MainContent = styled.div<{ isActive: boolean }>`
   display: grid;

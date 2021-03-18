@@ -2,7 +2,7 @@ import BigNumber from 'bignumber.js'
 import { random } from 'lodash'
 import { Round, RoundResponse } from 'state/types'
 
-const currentBlock = 5608693
+const currentBlock = 5780730
 const totalRate = 200
 
 export const transformRoundResponse = (roundResponse: RoundResponse): Round => {
