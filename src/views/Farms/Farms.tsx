@@ -243,9 +243,10 @@ const Farms: React.FC = () => {
   farmsStaked = sortFarms(farmsStaked)
 
   const rowData = farmsStaked.map((farm) => {
-    const { quoteTokenAdresses, quoteTokenSymbol, tokenAddresses } = farm
+    const { token, quoteToken } = farm
+    const tokenAddress = token.address
+    const quoteTokenAddress = quoteToken.address
     const lpLabel = farm.lpSymbol && farm.lpSymbol.split(' ')[0].toUpperCase().replace('PANCAKE', '')
-
     const row: RowProps = {
       apr: {
         value:
@@ -253,9 +254,8 @@ const Farms: React.FC = () => {
           farm.apy.times(new BigNumber(100)).toNumber().toLocaleString('en-US', { maximumFractionDigits: 2 }),
         multiplier: farm.multiplier,
         lpLabel,
-        quoteTokenAdresses,
-        quoteTokenSymbol,
-        tokenAddresses,
+        tokenAddress,
+        quoteTokenAddress,
         cakePrice,
         originalValue: farm.apy,
       },
