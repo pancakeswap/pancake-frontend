@@ -96,22 +96,7 @@ const Earned: React.FC<EarnedProps> = ({
             <Balance value={earningsBusd} isDisabled={!earningsBusd} fontSize="12px" prefix="~" />
           </Flex>
         </Flex>
-<<<<<<< HEAD
         {handleRenderActionButton()}
-=======
-        {account && harvest && !isOldSyrup && (
-          <Button
-            disabled={!earnings.toNumber() || pendingTx}
-            onClick={async () => {
-              setPendingTx(true)
-              await onReward()
-              setPendingTx(false)
-            }}
-          >
-            {pendingTx ? 'Collecting' : 'Harvest'}
-          </Button>
-        )}
->>>>>>> feat: Pool card layout updated
       </Flex>
     </Flex>
   )

@@ -15,7 +15,6 @@ import StakeModal from './StakeModal'
 
 interface StakeProps {
   pool: Pool
-  stakingTokenDecimals?: number
   isOldSyrup: boolean
   isBnbPool: boolean
 }

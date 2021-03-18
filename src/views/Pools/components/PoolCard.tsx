@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js'
-import React, { useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { useModal, Flex } from '@pancakeswap-libs/uikit'
 import { useWeb3React } from '@web3-react/core'
@@ -55,8 +55,6 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
     parseFloat(pool.tokenPerBlock),
   )
 
-  const [pendingTx, setPendingTx] = useState(false)
-
   const stakedBalance = new BigNumber(userData?.stakedBalance || 0)
   const earnings = new BigNumber(userData?.pendingReward || 0)
 
@@ -80,13 +78,13 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
           isFinished={isFinished}
           sousId={sousId}
           tokenName={tokenName}
-          stakingTokenName={stakingTokenName}
+          stakingTokenName={stakingToken.symbol}
           isBnbPool={isBnbPool}
           harvest={harvest}
           isOldSyrup={isOldSyrup}
           earnings={earnings}
           tokenDecimals={tokenDecimals}
-          stakingTokenDecimals={stakingTokenDecimals}
+          stakingTokenDecimals={stakingToken.decimals}
         />
         <Stake pool={pool} isOldSyrup={isOldSyrup} isBnbPool={isBnbPool} />
       </Flex>
@@ -158,7 +156,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
         isFinished={isFinished}
         poolCategory={poolCategory}
         tokenName={tokenName}
-        tokenAddress={tokenAddress}
+        tokenAddress={getAddress(earningToken.address)}
         tokenDecimals={tokenDecimals}
       />
     </Card>
