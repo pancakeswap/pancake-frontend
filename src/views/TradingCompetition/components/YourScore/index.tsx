@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { Flex } from '@pancakeswap-libs/uikit'
 import ScoreCard from './ScoreCard'
 import ScoreHeading from './ScoreHeading'
-import Ribbon from '../Ribbon'
+import Ribbon from '../Ribbon/Ribbon'
 import { YourScoreProps } from '../../types'
 
 const Wrapper = styled.div`

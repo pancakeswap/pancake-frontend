@@ -1,11 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Text, Flex } from '@pancakeswap-libs/uikit'
-import RibbonDownMid from '../svgs/RibbonDownMid'
-import { ReactComponent as RibbonUpMid } from '../svgs/ribbon-up-mid.svg'
-import { ReactComponent as RibbonUpSide } from '../svgs/ribbon-up-side.svg'
-import Laurel from './Laurel'
-import { ReactComponent as RibbonDownSide } from '../svgs/ribbon-down-side.svg'
+import RibbonDownMid from '../../svgs/RibbonDownMid'
+import { ReactComponent as RibbonUpMid } from '../../svgs/ribbon-up-mid.svg'
+import { ReactComponent as RibbonUpSide } from '../../svgs/ribbon-up-side.svg'
+import Laurel from '../Laurel'
+import { RibbonText, VisuallyHiddenRibbonText } from './RibbonText'
+import { ReactComponent as RibbonDownSide } from '../../svgs/ribbon-down-side.svg'
 
 const Wrapper = styled(Flex)`
   position: relative;
@@ -48,6 +49,7 @@ const LaurelWrapper = styled.div<{ dir?: 'l' | 'r' }>`
   position: absolute;
   height: 48px;
   z-index: 2;
+  top: -1px;
 
   svg {
     height: 22px;
@@ -56,26 +58,12 @@ const LaurelWrapper = styled.div<{ dir?: 'l' | 'r' }>`
   ${({ dir }) =>
     dir === 'l'
       ? `
-    left: -5px;
+    left: -4px;
     transform: rotate(-30deg);
   `
       : `
-      right: -5px;
+      right: -4px;
       transform: rotate(30deg);`}
-`
-
-const RightLaurelWrapper = styled.div`
-  position: absolute;
-  z-index: 2;
-  right: 0;
-  svg {
-    width: 16px;
-  }
-`
-
-const VisuallyHiddenText = styled(Text)`
-  visibility: hidden;
-  padding: 0 24px;
 `
 
 export const RibbonDown = ({ children }) => {
@@ -87,10 +75,10 @@ export const RibbonDown = ({ children }) => {
       </LaurelWrapper>
       <div>
         <ExpandingRibbonDownMid preserveAspectRatio="none" />
-        <VisuallyHiddenText>{children}</VisuallyHiddenText>
+        <VisuallyHiddenRibbonText p="0 30px">{children}</VisuallyHiddenRibbonText>
       </div>
       <TextWrapper>
-        <Text p="0 24px">{children}</Text>
+        <RibbonText p="0 30px">{children}</RibbonText>
       </TextWrapper>
       <LaurelWrapper dir="r">
         <Laurel dir="r" />
