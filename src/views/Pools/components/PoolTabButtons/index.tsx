@@ -10,10 +10,6 @@ const PoolTabButtons = ({ stackedOnly, setStackedOnly }) => {
 
   return (
     <Wrapper>
-      <ToggleWrapper>
-        <Toggle checked={stackedOnly} onChange={() => setStackedOnly(!stackedOnly)} />
-        <Text> {TranslateString(999, 'Staked only')}</Text>
-      </ToggleWrapper>
       <ButtonMenu activeIndex={isExact ? 0 : 1} scale="sm" variant="subtle">
         <ButtonMenuItem as={Link} to={`${url}`}>
           {TranslateString(1198, 'Live')}
@@ -22,6 +18,10 @@ const PoolTabButtons = ({ stackedOnly, setStackedOnly }) => {
           {TranslateString(388, 'Finished')}
         </ButtonMenuItem>
       </ButtonMenu>
+      <ToggleWrapper>
+        <Toggle checked={stackedOnly} onChange={() => setStackedOnly(!stackedOnly)} scale="sm" />
+        <Text> {TranslateString(999, 'Staked only')}</Text>
+      </ToggleWrapper>
     </Wrapper>
   )
 }
@@ -32,14 +32,19 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 32px;
+  margin-bottom: 16px;
+  width: 100%;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    margin-bottom: 0;
+  }
 `
 
 const ToggleWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-right: 32px;
+  margin-left: 32px;
 
   ${Text} {
     margin-left: 8px;
