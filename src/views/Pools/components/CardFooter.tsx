@@ -11,6 +11,7 @@ import { useBlock } from 'state/hooks'
 import { PoolCategory } from 'config/constants/types'
 import { registerToken } from 'utils/wallet'
 import { BASE_URL } from 'config'
+import useTheme from 'hooks/useTheme'
 
 const tags = {
   [PoolCategory.BINANCE]: BinanceTag,
@@ -105,12 +106,12 @@ const CardFooter: React.FC<Props> = ({
 
   const imageSrc = `${BASE_URL}/images/tokens/${tokenName.toLowerCase()}.png`
 
+  const { isDark } = useTheme()
+
   return (
     <StyledFooter isFinished={isFinished}>
       <Row>
-        <FlexFull>
-          <Tag />
-        </FlexFull>
+        <FlexFull>{Tag({ outline: !isDark })}</FlexFull>
         <StyledDetailsButton onClick={handleClick}>
           {isOpen ? TranslateString(1066, 'Hide') : TranslateString(658, 'Details')} <Icon />
         </StyledDetailsButton>
