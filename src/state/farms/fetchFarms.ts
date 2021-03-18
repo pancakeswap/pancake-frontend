@@ -12,13 +12,13 @@ const fetchFarms = async () => {
       const calls = [
         // Balance of token in the LP contract
         {
-          address: getAddress(farmConfig.tokenAddresses),
+          address: getAddress(farmConfig.token.address),
           name: 'balanceOf',
           params: [lpAddress],
         },
         // Balance of quote token on LP contract
         {
-          address: getAddress(farmConfig.quoteTokenAdresses),
+          address: getAddress(farmConfig.quoteToken.address),
           name: 'balanceOf',
           params: [lpAddress],
         },
@@ -35,12 +35,12 @@ const fetchFarms = async () => {
         },
         // Token decimals
         {
-          address: getAddress(farmConfig.tokenAddresses),
+          address: getAddress(farmConfig.token.address),
           name: 'decimals',
         },
         // Quote token decimals
         {
-          address: getAddress(farmConfig.quoteTokenAdresses),
+          address: getAddress(farmConfig.quoteToken.address),
           name: 'decimals',
         },
       ]

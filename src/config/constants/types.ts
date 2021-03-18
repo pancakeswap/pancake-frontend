@@ -51,17 +51,15 @@ export interface Token {
   symbol: string
   address?: Address
   decimals?: number
-  projectLink: string
+  projectLink?: string
 }
 
 export interface FarmConfig {
   pid: number
   lpSymbol: string
   lpAddresses: Address
-  tokenSymbol: string
-  tokenAddresses: Address
-  quoteTokenSymbol: QuoteToken
-  quoteTokenAdresses: Address
+  token: Token
+  quoteToken: Token
   multiplier?: string
   isCommunity?: boolean
   dual?: {
