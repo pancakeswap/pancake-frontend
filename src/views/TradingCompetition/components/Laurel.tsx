@@ -3,9 +3,14 @@ import { ReactComponent as LaurelSvg } from '../svgs/laurel.svg'
 
 interface LaurelProps {
   dir?: string
+  fillColor?: string
 }
 
 const Laurel = styled(LaurelSvg)<LaurelProps>`
+  path {
+    fill: ${({ fillColor }) => fillColor || '#27262c'};
+  }
+
   ${({ dir }) =>
     dir === 'l'
       ? `
