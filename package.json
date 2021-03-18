@@ -20,7 +20,8 @@
     "test": "lerna run test",
     "lint": "lerna run lint",
     "format:check": "lerna run format:check",
-    "storybook:build": "lerna run storybook:build"
+    "storybook:build": "lerna run storybook:build",
+    "release": "yarn build && yarn lerna publish"
   },
   "husky": {
     "hooks": {
@@ -53,7 +54,6 @@
     "husky": "4.3.5",
     "jest": "^26.6.3",
     "lerna": "^3.19.0",
-    "np": "^7.4.0",
     "prettier": "^2.1.2",
     "react-is": "^17.0.1",
     "rollup": "^2.39.0",
