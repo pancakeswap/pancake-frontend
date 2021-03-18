@@ -15,7 +15,8 @@ import { getPoolApy } from 'utils/apy'
 import { getAddress } from 'utils/addressHelpers'
 import { useSousHarvest } from 'hooks/useHarvest'
 import Balance from 'components/Balance'
-import { QuoteToken, PoolCategory } from 'config/constants/types'
+import { PoolCategory } from 'config/constants/types'
+import tokens from 'config/constants/tokens'
 import { Pool } from 'state/types'
 import { useGetApiPrice } from 'state/hooks'
 import DepositModal from './DepositModal'
@@ -73,7 +74,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
   const stakedBalance = new BigNumber(userData?.stakedBalance || 0)
   const earnings = new BigNumber(userData?.pendingReward || 0)
 
-  const isOldSyrup = stakingToken.symbol === QuoteToken.SYRUP
+  const isOldSyrup = stakingToken.symbol === tokens.syrup.symbol
   const accountHasStakedBalance = stakedBalance?.toNumber() > 0
   const needsApproval = !accountHasStakedBalance && !allowance.toNumber() && !isBnbPool
   const isCardActive = isFinished && accountHasStakedBalance

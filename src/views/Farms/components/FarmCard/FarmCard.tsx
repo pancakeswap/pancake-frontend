@@ -7,7 +7,7 @@ import { Farm } from 'state/types'
 import { provider as ProviderType } from 'web3-core'
 import useI18n from 'hooks/useI18n'
 import ExpandableSectionButton from 'components/ExpandableSectionButton'
-import { QuoteToken } from 'config/constants/types'
+import tokens from 'config/constants/tokens'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import DetailsSection from './DetailsSection'
@@ -108,13 +108,13 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed, cakePrice, bnbPrice,
     if (!farm.lpTotalInQuoteToken) {
       return null
     }
-    if (farm.quoteToken.symbol === QuoteToken.BNB) {
+    if (farm.quoteToken.symbol === tokens.bnb.symbol) {
       return bnbPrice.times(farm.lpTotalInQuoteToken)
     }
-    if (farm.quoteToken.symbol === QuoteToken.CAKE) {
+    if (farm.quoteToken.symbol === tokens.cake.symbol) {
       return cakePrice.times(farm.lpTotalInQuoteToken)
     }
-    if (farm.quoteToken.symbol === QuoteToken.ETH) {
+    if (farm.quoteToken.symbol === tokens.eth.symbol) {
       return ethPrice.times(farm.lpTotalInQuoteToken)
     }
     return farm.lpTotalInQuoteToken

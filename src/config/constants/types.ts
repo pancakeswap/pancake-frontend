@@ -23,19 +23,6 @@ export interface Ifo {
   campaignId?: string
 }
 
-export enum QuoteToken {
-  'BNB' = 'BNB',
-  'CAKE' = 'CAKE',
-  'SYRUP' = 'SYRUP',
-  'BUSD' = 'BUSD',
-  'TWT' = 'TWT',
-  'UST' = 'UST',
-  'ETH' = 'ETH',
-  'COMP' = 'COMP',
-  'SUSHI' = 'SUSHI',
-  'TPT' = 'TPT',
-}
-
 export enum PoolCategory {
   'COMMUNITY' = 'Community',
   'CORE' = 'Core',
