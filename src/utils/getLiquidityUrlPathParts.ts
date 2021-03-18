@@ -5,10 +5,10 @@ import { getWbnbAddress } from './addressHelpers'
 const getLiquidityUrlPathParts = ({ quoteTokenAddress, tokenAddress }) => {
   const chainId = process.env.REACT_APP_CHAIN_ID
   const wBNBAddressString = getWbnbAddress()
-  const quoteTokenAddressString = quoteTokenAddress ? quoteTokenAddress[chainId] : null
-  const tokenAddressString = tokenAddress ? tokenAddress[chainId] : null
-  const firstPart = quoteTokenAddressString === wBNBAddressString ? 'BNB' : quoteTokenAddressString
-  const secondPart = tokenAddressString === wBNBAddressString ? 'BNB' : tokenAddressString
+  const quoteTokenAddressString: string | null = quoteTokenAddress ? quoteTokenAddress[chainId] : null
+  const tokenAddressString: string | null = tokenAddress ? tokenAddress[chainId] : null
+  const firstPart = !quoteTokenAddressString || quoteTokenAddressString === wBNBAddressString ? 'BNB' : quoteTokenAddressString
+  const secondPart = !tokenAddressString || tokenAddressString === wBNBAddressString ? 'BNB' : tokenAddressString
   return `${firstPart}/${secondPart}`
 }
 
