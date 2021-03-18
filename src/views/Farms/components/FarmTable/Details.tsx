@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { ChevronDownIcon, useMatchBreakpoints } from '@pancakeswap-libs/uikit'
-import useI18n from '../../../../hooks/useI18n'
+import useI18n from 'hooks/useI18n'
 
 interface DetailsProps {
   actionPanelToggled: boolean
