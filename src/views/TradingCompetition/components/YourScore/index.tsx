@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { Flex } from '@pancakeswap-libs/uikit'
 import ScoreCard from './ScoreCard'
 import ScoreHeading from './ScoreHeading'
 import Ribbon from '../Ribbon'
@@ -14,7 +15,9 @@ const YourScore: React.FC<YourScoreProps> = ({ registered = false, account, prof
   return (
     <Wrapper>
       {registered && <ScoreHeading profile={profile} />}
-      <Ribbon />
+      <Flex alignItems="center" justifyContent="center">
+        <Ribbon>Some text woah ooah woah</Ribbon>
+      </Flex>
       <ScoreCard registered={registered} account={account} profile={profile} />
     </Wrapper>
   )
