@@ -111,7 +111,9 @@ const CardFooter: React.FC<Props> = ({
   return (
     <StyledFooter isFinished={isFinished}>
       <Row>
-        <FlexFull>{Tag({ outline: !isDark })}</FlexFull>
+        <FlexFull>
+          <Tag outline={!isDark} />
+        </FlexFull>
         <StyledDetailsButton onClick={handleClick}>
           {isOpen ? TranslateString(1066, 'Hide') : TranslateString(658, 'Details')} <Icon />
         </StyledDetailsButton>
