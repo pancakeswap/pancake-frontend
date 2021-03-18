@@ -12,7 +12,7 @@ import { useFarms, usePriceBnbBusd, usePriceCakeBusd, usePriceEthBusd } from 'st
 import useRefresh from 'hooks/useRefresh'
 import { fetchFarmUserDataAsync } from 'state/actions'
 import { Farm } from 'state/types'
-import { QuoteToken } from 'config/constants/types'
+import tokens from 'config/constants/tokens'
 import useI18n from 'hooks/useI18n'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { orderBy } from 'lodash'
@@ -175,11 +175,11 @@ const Farms: React.FC = () => {
         // cakePriceInQuote * cakeRewardPerYear / lpTotalInQuoteToken
         let apy = cakePriceVsBNB.times(cakeRewardPerYear).div(farm.lpTotalInQuoteToken)
 
-        if (farm.quoteToken.symbol === QuoteToken.BUSD || farm.quoteToken.symbol === QuoteToken.UST) {
+        if (farm.quoteToken.symbol === tokens.busd.symbol || farm.quoteToken.symbol === tokens.ust.symbol) {
           apy = cakePriceVsBNB.times(cakeRewardPerYear).div(farm.lpTotalInQuoteToken).times(bnbPrice)
-        } else if (farm.quoteToken.symbol === QuoteToken.ETH) {
+        } else if (farm.quoteToken.symbol === tokens.eth.symbol) {
           apy = cakePrice.div(ethPriceUsd).times(cakeRewardPerYear).div(farm.lpTotalInQuoteToken)
-        } else if (farm.quoteToken.symbol === QuoteToken.CAKE) {
+        } else if (farm.quoteToken.symbol === tokens.cake.symbol) {
           apy = cakeRewardPerYear.div(farm.lpTotalInQuoteToken)
         } else if (farm.dual) {
           const cakeApy =
@@ -199,14 +199,14 @@ const Farms: React.FC = () => {
         if (!farm.lpTotalInQuoteToken) {
           liquidity = null
         }
-        if (farm.quoteToken.symbol === QuoteToken.BNB) {
+        if (farm.quoteToken.symbol === tokens.wbnb.symbol) {
           liquidity = bnbPrice.times(farm.lpTotalInQuoteToken)
         }
-        if (farm.quoteToken.symbol === QuoteToken.CAKE) {
+        if (farm.quoteToken.symbol === tokens.cake.symbol) {
           liquidity = cakePrice.times(farm.lpTotalInQuoteToken)
         }
 
-        if (farm.quoteToken.symbol === QuoteToken.ETH) {
+        if (farm.quoteToken.symbol === tokens.eth.symbol) {
           liquidity = ethPriceUsd.times(farm.lpTotalInQuoteToken)
         }
 
