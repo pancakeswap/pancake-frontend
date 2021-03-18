@@ -1,6 +1,11 @@
 {
-  "packages": [
-    "packages/*"
-  ],
-  "version": "0.0.0"
+  "packages": ["packages/*"],
+  "version": "independent",
+  "npmClient": "yarn",
+  "workspaces": true,
+  "ignoreChanges": ["**/__tests__/**", "**/*.md"],
+  "command": {
+    "conventionalCommits": true,
+    "message": "chore(release): Publish"
+  }
 }
