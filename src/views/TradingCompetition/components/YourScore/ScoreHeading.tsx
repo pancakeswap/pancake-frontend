@@ -1,8 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
-import { NoProfileAvatarIcon, Flex } from '@pancakeswap-libs/uikit'
+import { NoProfileAvatarIcon } from '@pancakeswap-libs/uikit'
 import { Profile } from 'state/types'
 import ProfileAvatar from '../../../Profile/components/ProfileAvatar'
+import Sticker from '../Sticker'
 
 interface ScoreHeadingProps {
   profile: Profile
@@ -40,20 +41,11 @@ const Laurel: React.FC<{ dir: string; src: string }> = styled.img`
   }
 `
 
-const ProfilePicWrapper = styled(Flex)` */
-  width: fit-content;
-  height: fit-content;
-  background-color: ${({ theme }) => theme.colors.invertedContrast};
-  border: 2px solid ${({ theme }) => theme.colors.invertedContrast};
-  border-radius: 50%;
-  box-shadow: ${({ theme }) => theme.card.boxShadow};
-`
-
 const ScoreHeading: React.FC<ScoreHeadingProps> = ({ profile }) => {
   return (
     <Wrapper>
       <Laurel dir="l" src="/images/competition/laurel.svg" />
-      <ProfilePicWrapper>{profile ? <ProfileAvatar profile={profile} /> : <NoProfileAvatarIcon />}</ProfilePicWrapper>
+      <Sticker>{profile ? <ProfileAvatar profile={profile} /> : <NoProfileAvatarIcon />}</Sticker>
       <Laurel dir="r" src="/images/competition/laurel.svg" />
     </Wrapper>
   )
