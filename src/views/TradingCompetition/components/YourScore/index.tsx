@@ -21,8 +21,8 @@ const RibbonWrapper = styled(Flex)`
   width: 100%;
   z-index: 1;
   left: 50%;
-  top: 50%;
-  transform: translate(-50%, -8px);
+  top: 128px;
+  transform: translate(-50%, 0);
 `
 
 const ScoreCardWrapper = styled.div`
