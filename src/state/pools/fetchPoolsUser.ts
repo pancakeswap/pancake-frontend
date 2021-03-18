@@ -3,7 +3,6 @@ import poolsConfig from 'config/constants/pools'
 import masterChefABI from 'config/abi/masterchef.json'
 import sousChefABI from 'config/abi/sousChef.json'
 import erc20ABI from 'config/abi/erc20.json'
-import { QuoteToken } from 'config/constants/types'
 import multicall from 'utils/multicall'
 import { getAddress, getMasterChefAddress } from 'utils/addressHelpers'
 import { getWeb3NoAccount } from 'utils/web3'
@@ -11,15 +10,15 @@ import BigNumber from 'bignumber.js'
 
 // Pool 0, Cake / Cake is a different kind of contract (master chef)
 // BNB pools use the native BNB token (wrapping ? unwrapping is done at the contract level)
-const nonBnbPools = poolsConfig.filter((p) => p.stakingTokenName !== QuoteToken.BNB)
-const bnbPools = poolsConfig.filter((p) => p.stakingTokenName === QuoteToken.BNB)
+const nonBnbPools = poolsConfig.filter((p) => p.stakingToken.symbol !== 'BNB')
+const bnbPools = poolsConfig.filter((p) => p.stakingToken.symbol === 'BNB')
 const nonMasterPools = poolsConfig.filter((p) => p.sousId !== 0)
 const web3 = getWeb3NoAccount()
 const masterChefContract = new web3.eth.Contract((masterChefABI as unknown) as AbiItem, getMasterChefAddress())
 
 export const fetchPoolsAllowance = async (account) => {
   const calls = nonBnbPools.map((p) => ({
-    address: p.stakingTokenAddress,
+    address: getAddress(p.stakingToken.address),
     name: 'allowance',
     params: [account, getAddress(p.contractAddress)],
   }))
@@ -34,7 +33,7 @@ export const fetchPoolsAllowance = async (account) => {
 export const fetchUserBalances = async (account) => {
   // Non BNB pools
   const calls = nonBnbPools.map((p) => ({
-    address: p.stakingTokenAddress,
+    address: getAddress(p.stakingToken.address),
     name: 'balanceOf',
     params: [account],
   }))
