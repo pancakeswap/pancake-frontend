@@ -77,15 +77,15 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
           isFinished={isFinished}
           sousId={sousId}
           tokenName={tokenName}
+          stakingTokenName={stakingTokenName}
           isBnbPool={isBnbPool}
           harvest={harvest}
           isOldSyrup={isOldSyrup}
           earnings={earnings}
-          pendingTx={pendingTx}
           tokenDecimals={tokenDecimals}
-          setPendingTx={setPendingTx}
+          stakingTokenDecimals={stakingTokenDecimals}
         />
-        <Stake tokenName={tokenName} pool={pool} isOldSyrup={isOldSyrup} isBnbPool={isBnbPool} />
+        <Stake pool={pool} isOldSyrup={isOldSyrup} isBnbPool={isBnbPool} />
       </Flex>
       {/* <div style={{ marginBottom: '8px', display: 'flex', alignItems: 'center' }}>
         <div style={{ flex: 1 }}>
