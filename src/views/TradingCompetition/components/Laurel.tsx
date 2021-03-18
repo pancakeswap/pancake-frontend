@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { ReactComponent as LaurelSvg } from '../svgs/laurel.svg'
 
 interface LaurelProps {
-  dir?: string
+  dir?: 'l' | 'r'
   fillColor?: string
 }
 
