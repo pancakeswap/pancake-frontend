@@ -588,6 +588,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://beefy.finance/',
   },
+  dusk: {
+    symbol: 'DUSK',
+    address: {
+      56: '0xb2bd0749dbe21f623d9baba856d3b0f0e1bfec9c',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://dusk.network/',
+  },
 }
 
 export default tokens
