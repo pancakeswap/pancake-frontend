@@ -36,6 +36,7 @@ const Wrapper = styled.div`
   width: 100%;
 
   ${({ theme }) => theme.mediaQueries.sm} {
+    width: auto;
     margin-bottom: 0;
   }
 `

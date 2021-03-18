@@ -45,7 +45,7 @@ const Farm: React.FC = () => {
             </Heading>
             <Button variant="subtle" ml="auto" as="a">
               {isXl && 'Help'}
-              <HelpIcon color="white" />
+              <HelpIcon color="white" ml="4px" />
             </Button>
           </Flex>
           <Text fontSize="20px" bold>
@@ -113,7 +113,7 @@ const ControlContainer = styled(Flex)`
 `
 
 const StyledInput = styled(Input)`
-  max-width: 256px;
+  width: 256px;
   margin-left: 24px;
 `
 

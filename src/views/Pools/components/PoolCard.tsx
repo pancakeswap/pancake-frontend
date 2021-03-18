@@ -64,7 +64,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
       {isFinished && sousId !== 0 && <PoolFinishedSash />}
       <CardHeader
         title={`${TranslateString(318, 'Earn')} ${tokenName}`}
-        coinIconUrl={`/images/tokens/${poolImage}`}
+        coinIconUrl={`/images/pools/${poolImage}`}
         tokenName={tokenName}
       />
       <Flex flexDirection="column" padding="24px">
