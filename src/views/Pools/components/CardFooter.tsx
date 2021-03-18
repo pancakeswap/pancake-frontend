@@ -144,12 +144,14 @@ const CardFooter: React.FC<Props> = ({
               <Balance fontSize="14px" isDisabled={isFinished} value={blocksRemaining} decimals={0} />
             </Row>
           )}
-          <Flex mb="4px">
-            <TokenLink onClick={() => registerToken(tokenAddress, tokenName, tokenDecimals, imageSrc)}>
-              Add {tokenName} to Metamask
-            </TokenLink>
-            <MetamaskIcon height={15} width={15} ml="4px" />
-          </Flex>
+          {tokenAddress && (
+            <Flex mb="4px">
+              <TokenLink onClick={() => registerToken(tokenAddress, tokenName, tokenDecimals, imageSrc)}>
+                Add {tokenName} to Metamask
+              </TokenLink>
+              <MetamaskIcon height={15} width={15} ml="4px" />
+            </Flex>
+          )}
           <TokenLink href={projectLink} target="_blank">
             {TranslateString(412, 'View project site')}
           </TokenLink>
