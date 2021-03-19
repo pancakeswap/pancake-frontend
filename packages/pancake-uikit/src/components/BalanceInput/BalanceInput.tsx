@@ -9,10 +9,11 @@ const BalanceInput: React.FC<BalanceInputProps> = ({
   onChange,
   currencyValue,
   inputProps,
+  isWarning = false,
   ...props
 }) => {
   return (
-    <StyledBalanceInput {...props}>
+    <StyledBalanceInput isWarning={isWarning} {...props}>
       <StyledInput type="text" value={value} onChange={onChange} placeholder={placeholder} {...inputProps} />
       {currencyValue && (
         <Text fontSize="12px" textAlign="right" color="textSubtle">

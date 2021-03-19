@@ -26,6 +26,7 @@ const SliderVariant = ({ initialValue }: { initialValue: number }) => {
 
   return (
     <Slider
+      name="slider"
       min={min}
       max={max}
       value={value}
@@ -44,10 +45,15 @@ export const Default: React.FC = () => {
 };
 
 export const Variants: React.FC = () => {
+  const [value, setValue] = useState(10);
+
+  const handleChange = (newValue) => {
+    setValue(newValue);
+  };
+
   return (
     <Col>
-      <SliderVariant initialValue={0} />
-      <SliderVariant initialValue={10} />
+      <Slider name="sliderdisabled" value={value} onValueChanged={handleChange} min={1} max={20} isDisabled />
     </Col>
   );
 };
@@ -69,7 +75,7 @@ export const Balance: React.FC = () => {
 
   return (
     <Box width="420px">
-      <Slider min={0} max={maxBalance} value={balance} onValueChanged={handleChange} />
+      <Slider name="slider" min={0} max={maxBalance} value={balance} onValueChanged={handleChange} />
       <Flex justifyContent="space-between" py="16px">
         {percentShortcuts.map((percent) => {
           const handleClick = () => {

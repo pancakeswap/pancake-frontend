@@ -7,4 +7,5 @@ export interface BalanceInputProps extends BoxProps {
   currencyValue?: ReactNode;
   placeholder?: string;
   inputProps?: Omit<InputHTMLAttributes<HTMLInputElement>, "value" | "placeholder" | "onChange">;
+  isWarning?: boolean;
 }

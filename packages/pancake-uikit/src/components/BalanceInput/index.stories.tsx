@@ -21,7 +21,15 @@ export const Default: React.FC = () => {
 
   return (
     <Box width="300px">
-      <BalanceInput value={value} currencyValue={currencyValue} onChange={handleChange} placeholder="0.0" />
+      <BalanceInput value={value} currencyValue={currencyValue} onChange={handleChange} placeholder="0.0" mb="32px" />
+      <BalanceInput
+        value={value * 1.5}
+        currencyValue={currencyValue}
+        onChange={handleChange}
+        placeholder="1.5"
+        isWarning
+        mb="32px"
+      />
     </Box>
   );
 };
