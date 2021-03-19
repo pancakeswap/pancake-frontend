@@ -4,8 +4,9 @@ import { Flex } from '@pancakeswap-libs/uikit'
 import { RibbonProps } from '../../types'
 import Ribbon from '../Ribbon'
 
-const Wrapper = styled(Flex)`
+const Wrapper = styled(Flex)<{ ribbonDirection?: string }>`
   position: relative;
+  margin-bottom: ${({ ribbonDirection }) => (ribbonDirection === 'down' ? '54px' : '48px')};
 `
 
 const ImageComponentWrapper = styled.div``
@@ -21,7 +22,7 @@ const RibbonWrapper = styled(Flex)<{ ribbonDirection?: string }>`
 
 const RibbonWithImage: React.FC<RibbonProps> = ({ imageComponent, ribbonDirection = 'down', ribbonText = '' }) => {
   return (
-    <Wrapper alignItems="center" justifyContent="center">
+    <Wrapper alignItems="center" justifyContent="center" ribbonDirection={ribbonDirection}>
       <ImageComponentWrapper>{imageComponent}</ImageComponentWrapper>
       <RibbonWrapper alignItems="center" justifyContent="center" ribbonDirection={ribbonDirection}>
         <Ribbon ribbonDirection={ribbonDirection}>{ribbonText}</Ribbon>

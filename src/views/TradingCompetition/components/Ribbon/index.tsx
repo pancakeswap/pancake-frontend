@@ -91,7 +91,25 @@ const Ribbon: React.FC<RibbonProps> = ({ children, ribbonDirection }) => {
   }
 
   const RibbonUp = () => {
-    return <span>up</span>
+    return (
+      <Wrapper>
+        <LeftSideRibbon width="32px" />
+        <LaurelWrapper dir="l">
+          <Laurel dir="l" />
+        </LaurelWrapper>
+        <div>
+          <ExpandingRibbonDownMid preserveAspectRatio="none" />
+          <VisuallyHiddenHeadingText p="0 30px">{children}</VisuallyHiddenHeadingText>
+        </div>
+        <TextWrapper>
+          <HeadingText p="0 30px">{children}</HeadingText>
+        </TextWrapper>
+        <LaurelWrapper dir="r">
+          <Laurel dir="r" />
+        </LaurelWrapper>
+        <RightSideRibbon width="32px" />
+      </Wrapper>
+    )
   }
 
   return ribbonDirection === 'up' ? <RibbonUp /> : <RibbonDown />
