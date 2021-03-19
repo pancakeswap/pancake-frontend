@@ -1,7 +1,5 @@
 import React from 'react'
-import styled from 'styled-components'
 import { Card, CardBody, Flex } from '@pancakeswap-libs/uikit'
-import useI18n from 'hooks/useI18n'
 import UnlockButton from 'components/UnlockButton'
 import { YourScoreProps } from '../../types'
 import CardUserInfo from './CardUserInfo'

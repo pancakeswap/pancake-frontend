@@ -1,4 +1,3 @@
-import React from 'react'
 import { Heading } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
 

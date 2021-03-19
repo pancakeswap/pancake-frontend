@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Flex } from '@pancakeswap-libs/uikit'
+import useI18n from 'hooks/useI18n'
 import ScoreCard from './ScoreCard'
 import ScoreProfile from './ScoreProfile'
 import RibbonWithImage from '../RibbonWithImage'
@@ -17,11 +17,13 @@ const ScoreCardWrapper = styled.div`
 `
 
 const YourScore: React.FC<YourScoreProps> = ({ registered = false, account, profile }) => {
+  const TranslateString = useI18n()
+
   return (
     <Wrapper>
       {registered && (
         <RibbonWithImage imageComponent={<ScoreProfile profile={profile} />} ribbonDirection="down" isCardHeader>
-          Your Score
+          {TranslateString(999, 'Your Score')}
         </RibbonWithImage>
       )}
       <ScoreCardWrapper>
