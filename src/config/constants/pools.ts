@@ -22,7 +22,7 @@ const pools: PoolConfig[] = [
     earningToken: tokens.trade,
     contractAddress: {
       97: '',
-      56: '',
+      56: '0x509C99D73FB54b2c20689708b3F824147292D38e',
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
