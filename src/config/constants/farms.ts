@@ -943,7 +943,7 @@ const farms: FarmConfig[] = [
       56: '0x970858016C963b780E06f7DCfdEf8e809919BcE8',
     },
     token: tokens.broobee,
-    quoteToken: tokens.wbnb,
+    quoteToken: tokens.cake,
     isCommunity: true,
   },
   {

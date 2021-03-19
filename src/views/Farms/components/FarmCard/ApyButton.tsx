@@ -6,7 +6,7 @@ import ApyCalculatorModal from './ApyCalculatorModal'
 export interface ApyButtonProps {
   lpLabel?: string
   cakePrice?: BigNumber
-  apy?: BigNumber
+  apy?: number
   addLiquidityUrl?: string
 }
 
