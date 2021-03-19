@@ -1,5 +1,4 @@
 import React, { useState, useCallback } from 'react'
-import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import { provider as ProviderType } from 'web3-core'
 import { getAddress } from 'utils/addressHelpers'
@@ -18,7 +17,7 @@ const Action = styled.div`
   padding-top: 16px;
 `
 export interface FarmWithStakedValue extends Farm {
-  apy?: BigNumber
+  apy?: number
 }
 
 interface FarmCardActionsProps {

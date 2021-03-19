@@ -5,16 +5,15 @@ import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import { Image, Heading, RowType, Toggle, Text } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
-import { BLOCKS_PER_YEAR, CAKE_PER_BLOCK, CAKE_POOL_PID } from 'config'
 import FlexLayout from 'components/layout/Flex'
 import Page from 'components/layout/Page'
-import { useFarms, usePriceBnbBusd, usePriceCakeBusd, usePriceEthBusd } from 'state/hooks'
+import { useFarms, usePriceCakeBusd, useGetApiPrices } from 'state/hooks'
 import useRefresh from 'hooks/useRefresh'
 import { fetchFarmUserDataAsync } from 'state/actions'
 import { Farm } from 'state/types'
-import tokens from 'config/constants/tokens'
 import useI18n from 'hooks/useI18n'
 import { getBalanceNumber } from 'utils/formatBalance'
+import { getFarmApy } from 'utils/apy'
 import { orderBy } from 'lodash'
 
 import FarmCard, { FarmWithStakedValue } from './components/FarmCard/FarmCard'
@@ -116,12 +115,11 @@ const Farms: React.FC = () => {
   const TranslateString = useI18n()
   const farmsLP = useFarms()
   const cakePrice = usePriceCakeBusd()
-  const bnbPrice = usePriceBnbBusd()
   const [query, setQuery] = useState('')
   const [viewMode, setViewMode] = useState(ViewMode.TABLE)
-  const ethPriceUsd = usePriceEthBusd()
   const { account } = useWeb3React()
   const [sortOption, setSortOption] = useState('hot')
+  const prices = useGetApiPrices()
 
   const dispatch = useDispatch()
   const { fastRefresh } = useRefresh()
@@ -159,58 +157,18 @@ const Farms: React.FC = () => {
     }
   }
 
-  // /!\ This function will be removed soon
-  // This function compute the APY for each farm and will be replaced when we have a reliable API
-  // to retrieve assets prices against USD
   const farmsList = useCallback(
     (farmsToDisplay: Farm[]): FarmWithStakedValue[] => {
-      const cakePriceVsBNB = new BigNumber(farmsLP.find((farm) => farm.pid === CAKE_POOL_PID)?.tokenPriceVsQuote || 0)
       let farmsToDisplayWithAPY: FarmWithStakedValue[] = farmsToDisplay.map((farm) => {
-        if (!farm.tokenAmount || !farm.lpTotalInQuoteToken) {
+        if (!farm.lpTotalInQuoteToken || !prices) {
           return farm
         }
-        const cakeRewardPerBlock = CAKE_PER_BLOCK.times(farm.poolWeight)
-        const cakeRewardPerYear = cakeRewardPerBlock.times(BLOCKS_PER_YEAR)
 
-        // cakePriceInQuote * cakeRewardPerYear / lpTotalInQuoteToken
-        let apy = cakePriceVsBNB.times(cakeRewardPerYear).div(farm.lpTotalInQuoteToken)
+        const quoteTokenPriceUsd = prices[farm.quoteToken.symbol.toLowerCase()]
+        const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(quoteTokenPriceUsd)
+        const apy = getFarmApy(farm.poolWeight, cakePrice, totalLiquidity)
 
-        if (farm.quoteToken.symbol === tokens.busd.symbol || farm.quoteToken.symbol === tokens.ust.symbol) {
-          apy = cakePriceVsBNB.times(cakeRewardPerYear).div(farm.lpTotalInQuoteToken).times(bnbPrice)
-        } else if (farm.quoteToken.symbol === tokens.eth.symbol) {
-          apy = cakePrice.div(ethPriceUsd).times(cakeRewardPerYear).div(farm.lpTotalInQuoteToken)
-        } else if (farm.quoteToken.symbol === tokens.cake.symbol) {
-          apy = cakeRewardPerYear.div(farm.lpTotalInQuoteToken)
-        } else if (farm.dual) {
-          const cakeApy =
-            farm && cakePriceVsBNB.times(cakeRewardPerBlock).times(BLOCKS_PER_YEAR).div(farm.lpTotalInQuoteToken)
-          const dualApy =
-            farm.tokenPriceVsQuote &&
-            new BigNumber(farm.tokenPriceVsQuote)
-              .times(farm.dual.rewardPerBlock)
-              .times(BLOCKS_PER_YEAR)
-              .div(farm.lpTotalInQuoteToken)
-
-          apy = cakeApy && dualApy && cakeApy.plus(dualApy)
-        }
-
-        let liquidity = farm.lpTotalInQuoteToken
-
-        if (!farm.lpTotalInQuoteToken) {
-          liquidity = null
-        }
-        if (farm.quoteToken.symbol === tokens.wbnb.symbol) {
-          liquidity = bnbPrice.times(farm.lpTotalInQuoteToken)
-        }
-        if (farm.quoteToken.symbol === tokens.cake.symbol) {
-          liquidity = cakePrice.times(farm.lpTotalInQuoteToken)
-        }
-
-        if (farm.quoteToken.symbol === tokens.eth.symbol) {
-          liquidity = ethPriceUsd.times(farm.lpTotalInQuoteToken)
-        }
-
-        return { ...farm, apy, liquidity }
+        return { ...farm, apy, liquidity: totalLiquidity }
       })
 
       if (query) {
@@ -225,7 +183,7 @@ const Farms: React.FC = () => {
       }
       return farmsToDisplayWithAPY
     },
-    [bnbPrice, farmsLP, query, cakePrice, ethPriceUsd],
+    [cakePrice, prices, query],
   )
 
   const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -248,9 +206,7 @@ const Farms: React.FC = () => {
 
     const row: RowProps = {
       apr: {
-        value:
-          farm.apy &&
-          farm.apy.times(new BigNumber(100)).toNumber().toLocaleString('en-US', { maximumFractionDigits: 2 }),
+        value: farm.apy && farm.apy.toLocaleString('en-US', { maximumFractionDigits: 2 }),
         multiplier: farm.multiplier,
         lpLabel,
         quoteTokenAdresses,
@@ -315,28 +271,12 @@ const Farms: React.FC = () => {
         <FlexLayout>
           <Route exact path={`${path}`}>
             {farmsStaked.map((farm) => (
-              <FarmCard
-                key={farm.pid}
-                farm={farm}
-                bnbPrice={bnbPrice}
-                cakePrice={cakePrice}
-                ethPrice={ethPriceUsd}
-                account={account}
-                removed={false}
-              />
+              <FarmCard key={farm.pid} farm={farm} cakePrice={cakePrice} account={account} removed={false} />
             ))}
           </Route>
           <Route exact path={`${path}/history`}>
             {farmsStaked.map((farm) => (
-              <FarmCard
-                key={farm.pid}
-                farm={farm}
-                bnbPrice={bnbPrice}
-                cakePrice={cakePrice}
-                ethPrice={ethPriceUsd}
-                account={account}
-                removed
-              />
+              <FarmCard key={farm.pid} farm={farm} cakePrice={cakePrice} account={account} removed />
             ))}
           </Route>
         </FlexLayout>

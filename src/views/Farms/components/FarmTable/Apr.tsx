@@ -15,7 +15,7 @@ export interface AprProps {
   quoteTokenSymbol: string
   tokenAddresses: Address
   cakePrice: BigNumber
-  originalValue: BigNumber
+  originalValue: number
   hideButton?: boolean
 }
 
