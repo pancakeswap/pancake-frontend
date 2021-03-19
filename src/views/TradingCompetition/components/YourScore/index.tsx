@@ -2,8 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 import { Flex } from '@pancakeswap-libs/uikit'
 import ScoreCard from './ScoreCard'
-import ScoreHeader from './ScoreHeader'
-import Ribbon from '../Ribbon'
+import ScoreProfile from './ScoreProfile'
+import RibbonWithImage from '../RibbonWithImage'
 import { YourScoreProps } from '../../types'
 
 const Wrapper = styled.div`
@@ -12,9 +12,7 @@ const Wrapper = styled.div`
   max-width: 680px;
 `
 
-const HeadingWrapper = styled.div`
-  padding-bottom: 4px;
-`
+const HeaderWrapper = styled.div``
 
 const RibbonWrapper = styled(Flex)`
   position: absolute;
@@ -33,14 +31,12 @@ const YourScore: React.FC<YourScoreProps> = ({ registered = false, account, prof
   return (
     <Wrapper>
       {registered && (
-        <>
-          <HeadingWrapper>
-            <ScoreHeader profile={profile} />
-          </HeadingWrapper>
-          <RibbonWrapper alignItems="center" justifyContent="center">
-            <Ribbon>Some text woah ooah woah</Ribbon>
-          </RibbonWrapper>
-        </>
+        <RibbonWithImage
+          imageComponent={<ScoreProfile profile={profile} />}
+          ribbonDirection="down"
+          ribbonText="Your Score"
+          isCardHeader
+        />
       )}
 
       <ScoreCardWrapper>

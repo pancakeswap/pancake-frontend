@@ -13,6 +13,7 @@ export interface YourScoreProps extends CompetitionProps {
 export interface RibbonProps {
   ribbonDirection?: 'up' | 'down'
   ribbonText?: string
+  isCardHeader?: boolean
   imageComponent?: React.ReactNode
   children?: React.ReactNode
 }
