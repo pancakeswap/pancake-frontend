@@ -1,5 +1,6 @@
 import BigNumber from 'bignumber.js'
 import { BLOCKS_PER_YEAR, CAKE_PER_BLOCK } from 'config'
+
 /**
  * Get the APY value in %
  * @param stakingTokenPrice Token price in the same quote currency
