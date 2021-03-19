@@ -28,14 +28,17 @@ const EarnAPYCard = () => {
   const cakePrice = usePriceCakeBusd()
 
   const highestApy = useMemo(() => {
-    const apys = farmsLP.map((farm) => {
-      if (farm.lpTotalInQuoteToken && prices) {
-        const quoteTokenPriceUsd = prices[farm.quoteToken.symbol.toLowerCase()]
-        const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(quoteTokenPriceUsd)
-        return getFarmApy(farm.poolWeight, cakePrice, totalLiquidity)
-      }
-      return null
-    })
+    const apys = farmsLP
+      // Filter inactive farms, because their theoretical APY is super high. In practice, it's 0.
+      .filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
+      .map((farm) => {
+        if (farm.lpTotalInQuoteToken && prices) {
+          const quoteTokenPriceUsd = prices[farm.quoteToken.symbol.toLowerCase()]
+          const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(quoteTokenPriceUsd)
+          return getFarmApy(farm.poolWeight, cakePrice, totalLiquidity)
+        }
+        return null
+      })
 
     const maxApy = max(apys)
     return maxApy?.toLocaleString('en-US', { maximumFractionDigits: 2 })
