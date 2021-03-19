@@ -840,6 +840,42 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://burgerswap.org/',
   },
+  bdigg: {
+    symbol: 'bDIGG',
+    address: {
+      56: '0x5986d5c77c65e5801a5caa4fae80089f870a71da',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://badger.finance/',
+  },
+  bbadger: {
+    symbol: 'bBadger',
+    address: {
+      56: '0x1f7216fdb338247512ec99715587bb97bbf96eae',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://badger.finance/',
+  },
+  trade: {
+    symbol: 'TRADE',
+    address: {
+      56: '0x7af173f350d916358af3e218bdf2178494beb748',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://unitrade.app/',
+  },
+  pnt: {
+    symbol: 'PNT',
+    address: {
+      56: '0x7a1da9f49224ef98389b071b8a3294d1cc5e3e6a',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://ptokens.io/',
+  },
 }
 
 export default tokens
