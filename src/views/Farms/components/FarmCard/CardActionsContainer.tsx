@@ -68,17 +68,15 @@ const CardActions: React.FC<FarmCardActionsProps> = ({ farm, account, addLiquidi
     )
   }
 
-  const tokenEarnedString = TranslateString(330, 'CAKE Earned', { asset: 'CAKE' }).split(' ')
-
   return (
     <Action>
       <Flex>
         <Text bold textTransform="uppercase" color="secondary" fontSize="12px" pr="3px">
           {/* TODO: Is there a way to get a dynamic value here from useFarmFromSymbol? */}
-          {tokenEarnedString[0]}
+          CAKE
         </Text>
         <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px">
-          {tokenEarnedString[1]}
+          {TranslateString(1072, 'Earned')}
         </Text>
       </Flex>
       <HarvestAction earnings={earnings} pid={pid} />
