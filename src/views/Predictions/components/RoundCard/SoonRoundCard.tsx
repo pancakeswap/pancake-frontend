@@ -1,5 +1,5 @@
 import React from 'react'
-import { CardBody, CardHeader, Flex, Text, WaitIcon } from '@pancakeswap-libs/uikit'
+import { CardBody, Text, WaitIcon } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import { Position, Round } from 'state/types'
 import { padTime } from '../../helpers'
@@ -7,6 +7,7 @@ import useBlockCountdown from '../../hooks/useGetBlockCountdown'
 import MultiplierArrow from './MultiplierArrow'
 import Card from './Card'
 import RoundInfoBox from './RoundInfoBox'
+import CardHeader from './CardHeader'
 
 interface SoonRoundCardProps {
   round: Round
@@ -21,14 +22,13 @@ const SoonRoundCard: React.FC<SoonRoundCardProps> = ({ round }) => {
 
   return (
     <Card>
-      <CardHeader p="8px">
-        <Flex alignItems="center" justifyContent="space-between">
-          <Flex alignItems="center">
-            <WaitIcon mr="4px" width="14px" />
-            <Text fontSize="14px">{TranslateString(999, 'Later')}</Text>
-          </Flex>
-        </Flex>
-      </CardHeader>
+      <CardHeader
+        status="soon"
+        icon={<WaitIcon mr="4px" width="21px" />}
+        title={TranslateString(999, 'Later')}
+        epoch={round.epoch}
+        blockNumber={round.startBlock}
+      />
       <CardBody p="16px">
         <MultiplierArrow isDisabled />
         <RoundInfoBox>

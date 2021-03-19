@@ -119,7 +119,9 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ defaultPosition, onBa
           value={value}
           onValueChanged={handleSliderChange}
           mb="8px"
-          valueLabel={`${percentageOfMaxBalance.toLocaleString(undefined, { maximumFractionDigits: 2 })}%`}
+          valueLabel={
+            account ? `${percentageOfMaxBalance.toLocaleString(undefined, { maximumFractionDigits: 2 })}%` : ''
+          }
         />
         <Flex alignItems="center" justifyContent="space-between" mb="16px">
           {percentShortcuts.map((percent) => {

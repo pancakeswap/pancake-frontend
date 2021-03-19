@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import SwiperCore from 'swiper'
-import { CardBody, CardHeader, Flex, Text, PlayCircleOutlineIcon, Button } from '@pancakeswap-libs/uikit'
+import { CardBody, PlayCircleOutlineIcon, Button } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import { Position, Round } from 'state/types'
 import CardFlip from '../CardFlip'
@@ -8,6 +8,7 @@ import MultiplierArrow from './MultiplierArrow'
 import Card from './Card'
 import RoundInfoBox from './RoundInfoBox'
 import SetPositionCard from './SetPositionCard'
+import CardHeader from './CardHeader'
 
 interface NextRoundCardProps {
   round: Round
@@ -37,14 +38,13 @@ const NextRoundCard: React.FC<NextRoundCardProps> = ({ round, swiperInstance }) 
   return (
     <CardFlip isFlipped={state.isSettingPosition} height="417px">
       <Card>
-        <CardHeader p="8px">
-          <Flex alignItems="center" justifyContent="space-between">
-            <Flex alignItems="center">
-              <PlayCircleOutlineIcon mr="4px" width="14px" />
-              <Text fontSize="14px">{TranslateString(999, 'Next')}</Text>
-            </Flex>
-          </Flex>
-        </CardHeader>
+        <CardHeader
+          status="next"
+          epoch={round.epoch}
+          blockNumber={round.endBlock}
+          icon={<PlayCircleOutlineIcon color="white" mr="4px" width="21px" />}
+          title={TranslateString(999, 'Next')}
+        />
         <CardBody p="16px">
           <MultiplierArrow />
           <RoundInfoBox>

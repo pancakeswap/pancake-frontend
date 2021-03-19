@@ -1,5 +1,5 @@
 import React from 'react'
-import { BlockIcon, CardBody, CardHeader, Flex, Text } from '@pancakeswap-libs/uikit'
+import { BlockIcon, CardBody, Flex, Text } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import { Round, Position } from 'state/types'
 import { formatBnbFromBigNumber, formatRoundPriceDifference, formatUsdFromBigNumber } from '../../helpers'
@@ -7,6 +7,7 @@ import MultiplierArrow from './MultiplierArrow'
 import Card from './Card'
 import RoundInfoBox from './RoundInfoBox'
 import { PositionTag } from './Tag'
+import CardHeader from './CardHeader'
 
 interface ExpiredRoundCardProps {
   round: Round
@@ -21,19 +22,13 @@ const ExpiredRoundCard: React.FC<ExpiredRoundCardProps> = ({ round }) => {
 
   return (
     <Card>
-      <CardHeader p="8px">
-        <Flex alignItems="center" justifyContent="space-between">
-          <Flex alignItems="center">
-            <BlockIcon mr="4px" width="14px" color="textDisabled" />
-            <Text fontSize="14px" color="textDisabled">
-              {TranslateString(999, 'Expired')}
-            </Text>
-          </Flex>
-          <Text fontSize="14px" color="textDisabled">
-            {TranslateString(999, `Ended: Block ${endBlock}`, { num: endBlock })}
-          </Text>
-        </Flex>
-      </CardHeader>
+      <CardHeader
+        status="expired"
+        icon={<BlockIcon mr="4px" width="21px" color="textDisabled" />}
+        title={TranslateString(999, 'Expired')}
+        blockNumber={endBlock}
+        epoch={round.epoch}
+      />
       <CardBody p="16px">
         <MultiplierArrow multiplier={10.3} isActive={roundPosition === Position.UP} hasEntered={false} />
         <RoundInfoBox roundPosition={roundPosition}>

@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { CardBody, CardHeader, Flex, PlayCircleOutlineIcon, Progress, Text } from '@pancakeswap-libs/uikit'
+import { CardBody, Flex, PlayCircleOutlineIcon, Progress, Text } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import { Round, Position } from 'state/types'
 import { useBnbUsdtTicker } from 'state/hooks'
@@ -8,6 +8,7 @@ import { formatBnbFromBigNumber, formatUsd, getBubbleGumBackground } from '../..
 import MultiplierArrow from './MultiplierArrow'
 import Card from './Card'
 import RoundInfoBox from './RoundInfoBox'
+import CardHeader from './CardHeader'
 
 interface LiveRoundCardProps {
   round: Round
@@ -17,10 +18,6 @@ const GradientBorder = styled.div`
   background: linear-gradient(180deg, #53dee9 0%, #7645d9 100%);
   border-radius: 16px;
   padding: 1px;
-`
-
-const TransparentCardHeader = styled(CardHeader)`
-  background: transparent;
 `
 
 const GradientCard = styled(Card)`
@@ -36,17 +33,13 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({ round }) => {
   return (
     <GradientBorder>
       <GradientCard>
-        <TransparentCardHeader p="16px">
-          <Flex alignItems="center" justifyContent="space-between">
-            <Flex alignItems="center">
-              <PlayCircleOutlineIcon mr="4px" width="21px" color="secondary" />
-              <Text bold textTransform="uppercase" color="secondary">
-                {TranslateString(999, 'Live')}
-              </Text>
-            </Flex>
-            <Text color="secondary">{TranslateString(999, `Ended: Block ${endBlock}`, { num: endBlock })}</Text>
-          </Flex>
-        </TransparentCardHeader>
+        <CardHeader
+          status="live"
+          icon={<PlayCircleOutlineIcon mr="4px" width="24px" color="secondary" />}
+          title={TranslateString(999, 'Live')}
+          epoch={round.epoch}
+          blockNumber={endBlock}
+        />
         <Progress variant="flat" primaryStep={54} />
         <CardBody p="16px">
           <MultiplierArrow multiplier={10.3} hasEntered={false} isActive={false} />
