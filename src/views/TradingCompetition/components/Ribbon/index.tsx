@@ -4,15 +4,17 @@ import { Text, Flex } from '@pancakeswap-libs/uikit'
 import { RibbonProps } from '../../types'
 import RibbonDownMid from '../../svgs/RibbonDownMid'
 import RibbonDownSide from '../../svgs/RibbonDownSide'
+import RibbonUpSide from '../../svgs/RibbonUpSide'
+import RibbonUpMid from '../../svgs/RibbonUpMid'
 // import { ReactComponent as RibbonUpMid } from '../../svgs/ribbon-up-mid.svg'
 // import { ReactComponent as RibbonUpSide } from '../../svgs/ribbon-up-side.svg'
 import Laurel from '../Laurel'
 import { HeadingText, VisuallyHiddenHeadingText } from '../CompetitionHeading'
 
-const Wrapper = styled(Flex)`
+const Wrapper = styled(Flex)<{ ribbonDirection?: 'up' | 'down' }>`
   position: relative;
   display: inline-flex;
-  align-items: flex-start;
+  align-items: ${({ ribbonDirection }) => (ribbonDirection === 'up' ? 'flex-end' : 'flex-start')};
   justify-content: center;
 `
 
@@ -24,23 +26,44 @@ const TextWrapper = styled(Flex)`
   background-color: #7645d9;
 `
 
-const ExpandingRibbonDownMid = styled(RibbonDownMid)`
+const RibbonDownMidExpanding = styled(RibbonDownMid)`
   width: 100%;
   height: 48px;
 `
 
-const RightSideRibbon = styled(RibbonDownSide)`
-  position: absolute;
-  right: 0;
-  z-index: 1;
-  transform: scaleX(-1);
-  right: -31px;
+const RibbonUpMidExpanding = styled(RibbonUpMid)`
+  width: 100%;
+  height: 48px;
 `
 
-const LeftSideRibbon = styled(RibbonDownSide)`
-  position: absolute;
-  left: -31px;
-  z-index: 1;
+const RightSideRibbonStyles = `
+position: absolute;
+right: 0;
+z-index: 1;
+transform: scaleX(-1);
+right: -31px;
+`
+
+const RibbonDownRightSide = styled(RibbonDownSide)`
+  ${RightSideRibbonStyles}
+`
+
+const RibbonUpRightSide = styled(RibbonUpSide)`
+  ${RightSideRibbonStyles}
+`
+
+const LeftSideRibbonStyles = `
+position: absolute;
+left: -31px;
+z-index: 1;
+`
+
+const RibbonDownLeftSide = styled(RibbonDownSide)`
+  ${LeftSideRibbonStyles}
+`
+
+const RibbonUpLeftSide = styled(RibbonUpSide)`
+  ${LeftSideRibbonStyles}
 `
 
 const LaurelWrapper = styled.div<{ dir?: 'l' | 'r' }>`
@@ -70,13 +93,13 @@ const LaurelWrapper = styled.div<{ dir?: 'l' | 'r' }>`
 const Ribbon: React.FC<RibbonProps> = ({ children, ribbonDirection }) => {
   const RibbonDown = () => {
     return (
-      <Wrapper>
-        <LeftSideRibbon width="32px" />
+      <Wrapper ribbonDirection={ribbonDirection}>
+        <RibbonDownLeftSide width="32px" />
         <LaurelWrapper dir="l">
           <Laurel dir="l" />
         </LaurelWrapper>
         <div>
-          <ExpandingRibbonDownMid preserveAspectRatio="none" />
+          <RibbonDownMidExpanding preserveAspectRatio="none" />
           <VisuallyHiddenHeadingText p="0 30px">{children}</VisuallyHiddenHeadingText>
         </div>
         <TextWrapper>
@@ -85,20 +108,20 @@ const Ribbon: React.FC<RibbonProps> = ({ children, ribbonDirection }) => {
         <LaurelWrapper dir="r">
           <Laurel dir="r" />
         </LaurelWrapper>
-        <RightSideRibbon width="32px" />
+        <RibbonDownRightSide width="32px" />
       </Wrapper>
     )
   }
 
   const RibbonUp = () => {
     return (
-      <Wrapper>
-        <LeftSideRibbon width="32px" />
+      <Wrapper ribbonDirection={ribbonDirection}>
+        <RibbonUpLeftSide width="32px" />
         <LaurelWrapper dir="l">
           <Laurel dir="l" />
         </LaurelWrapper>
         <div>
-          <ExpandingRibbonDownMid preserveAspectRatio="none" />
+          <RibbonUpMidExpanding preserveAspectRatio="none" />
           <VisuallyHiddenHeadingText p="0 30px">{children}</VisuallyHiddenHeadingText>
         </div>
         <TextWrapper>
@@ -107,7 +130,7 @@ const Ribbon: React.FC<RibbonProps> = ({ children, ribbonDirection }) => {
         <LaurelWrapper dir="r">
           <Laurel dir="r" />
         </LaurelWrapper>
-        <RightSideRibbon width="32px" />
+        <RibbonUpRightSide width="32px" />
       </Wrapper>
     )
   }

@@ -20,7 +20,7 @@ export const HeadingText = styled(Heading)`
 export const VisuallyHiddenHeadingText = styled(Heading)`
   ${sharedStyles}
   visibility: hidden;
-  height: 1px;
+  height: 0px;
 `
 
 export default HeadingText

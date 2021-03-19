@@ -9,17 +9,17 @@ import Prizes from './svgs/Prizes'
 import Ranks from './svgs/Ranks'
 
 const TradingCompetition = () => {
-  const { account } = useWeb3React()
-  const { profile } = useProfile()
+  // const { account } = useWeb3React()
+  // const { profile } = useProfile()
   const registered = true
+  const account = ''
+  const profile = undefined
   //   debugger // eslint-disable-line no-debugger
 
   return (
     <Page>
       <YourScore registered={registered} account={account} profile={profile} />
-      <Flex mt="32px" />
       <RibbonWithImage imageComponent={<Prizes width="175px" />} ribbonDirection="up" ribbonText="Prizes" />
-      <Flex mt="32px" />
       <RibbonWithImage imageComponent={<Ranks width="175px" />} ribbonDirection="down" ribbonText="Team Ranks" />
     </Page>
   )
