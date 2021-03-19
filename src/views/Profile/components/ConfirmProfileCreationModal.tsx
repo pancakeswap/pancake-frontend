@@ -7,6 +7,7 @@ import { useCake, usePancakeRabbits, useProfile } from 'hooks/useContract'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { fetchProfile } from 'state/profile'
 import { useToast } from 'state/hooks'
+import { REGISTER_COST } from '../ProfileCreation/config'
 import ApproveConfirmButtons from './ApproveConfirmButtons'
 
 interface Props {
@@ -19,7 +20,14 @@ interface Props {
   onDismiss?: () => void
 }
 
-const ContributeModal: React.FC<Props> = ({ account, teamId, tokenId, minimumCakeRequired, allowance, onDismiss }) => {
+const ConfirmProfileCreationModal: React.FC<Props> = ({
+  account,
+  teamId,
+  tokenId,
+  minimumCakeRequired,
+  allowance,
+  onDismiss,
+}) => {
   const TranslateString = useI18n()
   const profileContract = useProfile()
   const pancakeRabbitsContract = usePancakeRabbits()
@@ -66,7 +74,7 @@ const ContributeModal: React.FC<Props> = ({ account, teamId, tokenId, minimumCak
       </Text>
       <Flex justifyContent="space-between" mb="16px">
         <Text>{TranslateString(999, 'Cost')}</Text>
-        <Text>{TranslateString(999, '1 CAKE')}</Text>
+        <Text>{TranslateString(999, `${REGISTER_COST} CAKE`, { num: REGISTER_COST })}</Text>
       </Flex>
       <ApproveConfirmButtons
         isApproveDisabled={isConfirmed || isConfirming || isApproved}
@@ -80,4 +88,4 @@ const ContributeModal: React.FC<Props> = ({ account, teamId, tokenId, minimumCak
   )
 }
 
-export default ContributeModal
+export default ConfirmProfileCreationModal

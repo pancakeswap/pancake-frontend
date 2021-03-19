@@ -1,4 +1,6 @@
-export type IfoStatus = 'coming_soon' | 'live' | 'finished'
+import { TranslatableText } from 'state/types'
+
+export type IfoStatus = 'idle' | 'coming_soon' | 'live' | 'finished'
 
 export interface Ifo {
   id: string
@@ -16,18 +18,9 @@ export interface Ifo {
   currency: string
   currencyAddress: string
   tokenDecimals: number
+  tokenSymbol: string
   releaseBlockNumber: number
-}
-
-export enum QuoteToken {
-  'BNB' = 'BNB',
-  'CAKE' = 'CAKE',
-  'SYRUP' = 'SYRUP',
-  'BUSD' = 'BUSD',
-  'TWT' = 'TWT',
-  'UST' = 'UST',
-  'ETH' = 'ETH',
-  'COMP' = 'COMP',
+  campaignId?: string
 }
 
 export enum PoolCategory {
@@ -41,14 +34,19 @@ export interface Address {
   56: string
 }
 
+export interface Token {
+  symbol: string
+  address?: Address
+  decimals?: number
+  projectLink?: string
+}
+
 export interface FarmConfig {
   pid: number
   lpSymbol: string
   lpAddresses: Address
-  tokenSymbol: string
-  tokenAddresses: Address
-  quoteTokenSymbol: QuoteToken
-  quoteTokenAdresses: Address
+  token: Token
+  quoteToken: Token
   multiplier?: string
   isCommunity?: boolean
   dual?: {
@@ -60,19 +58,15 @@ export interface FarmConfig {
 
 export interface PoolConfig {
   sousId: number
-  image?: string
-  tokenName: string
-  stakingTokenName: QuoteToken
+  earningToken: Token
+  stakingToken: Token
   stakingLimit?: number
-  stakingTokenAddress?: string
   contractAddress: Address
   poolCategory: PoolCategory
-  projectLink: string
   tokenPerBlock: string
   sortOrder?: number
   harvest?: boolean
   isFinished?: boolean
-  tokenDecimals: number
 }
 
 export type Images = {
@@ -83,8 +77,13 @@ export type Images = {
 }
 
 export type NftImages = {
-  blur: string
+  blur?: string
 } & Images
+
+export type NftVideo = {
+  webm: string
+  mp4: string
+}
 
 export type Nft = {
   name: string
@@ -92,6 +91,7 @@ export type Nft = {
   images: NftImages
   sortOrder: number
   bunnyId: number
+  video?: NftVideo
 }
 
 export type TeamImages = {
@@ -108,4 +108,14 @@ export type Team = {
   images: TeamImages
   background: string
   textColor: string
+}
+
+export type CampaignType = 'ifo'
+
+export type Campaign = {
+  id: string
+  type: CampaignType
+  title?: TranslatableText
+  description?: TranslatableText
+  badge?: string
 }

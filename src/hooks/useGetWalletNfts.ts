@@ -1,4 +1,4 @@
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWeb3React } from '@web3-react/core'
 import { useEffect, useReducer } from 'react'
 import { getPancakeRabbitContract } from 'utils/contractHelpers'
 import makeBatchRequest from 'utils/makeBatchRequest'
@@ -12,16 +12,18 @@ export type NftMap = {
   }
 }
 
-type Action = { type: 'set_nfts'; data: NftMap } | { type: 'reset' }
+type Action = { type: 'set_nfts'; data: NftMap } | { type: 'reset' } | { type: 'refresh'; timestamp: number }
 
 type State = {
   isLoading: boolean
   nfts: NftMap
+  lastUpdated: number
 }
 
 const initialState: State = {
   isLoading: true,
   nfts: {},
+  lastUpdated: Date.now(),
 }
 
 const reducer = (state: State, action: Action) => {
@@ -31,6 +33,11 @@ const reducer = (state: State, action: Action) => {
         ...initialState,
         isLoading: false,
         nfts: action.data,
+      }
+    case 'refresh':
+      return {
+        ...initialState,
+        lastUpdated: action.timestamp,
       }
     case 'reset':
       return {
@@ -44,7 +51,8 @@ const reducer = (state: State, action: Action) => {
 
 const useGetWalletNfts = () => {
   const [state, dispatch] = useReducer(reducer, initialState)
-  const { account } = useWallet()
+  const { account } = useWeb3React()
+  const { lastUpdated } = state
 
   useEffect(() => {
     const fetchNfts = async () => {
@@ -103,9 +111,11 @@ const useGetWalletNfts = () => {
     if (account) {
       fetchNfts()
     }
-  }, [account, dispatch])
+  }, [account, lastUpdated, dispatch])
 
-  return state
+  const refresh = () => dispatch({ type: 'refresh', timestamp: Date.now() })
+
+  return { ...state, refresh }
 }
 
 export default useGetWalletNfts

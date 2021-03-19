@@ -7,6 +7,7 @@ export interface PrizeGridProps {
   lotteryPrizeAmount?: number
   pastDraw?: boolean
   jackpotMatches?: number
+  oneTicketMatches?: number
   twoTicketMatches?: number
   threeTicketMatches?: number
 }
@@ -90,15 +91,15 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({
         <RightAlignedText>{threeMatchesAmount.toLocaleString()}</RightAlignedText>
       </GridItem>
       {/* 2 matches row */}
-      <GridItem marginBottom="20px">
+      <GridItem>
         <Text>2</Text>
       </GridItem>
       {pastDraw && (
-        <PastDrawGridItem marginBottom="20px">
+        <PastDrawGridItem>
           <RightAlignedText>{twoTicketMatches}</RightAlignedText>
         </PastDrawGridItem>
       )}
-      <GridItem marginBottom="20px">
+      <GridItem>
         <RightAlignedText>{twoMatchesAmount.toLocaleString()}</RightAlignedText>
       </GridItem>
       {/* Burn row */}

@@ -36,9 +36,9 @@ const config: MenuEntry[] = [
     href: '/lottery',
   },
   {
-    label: 'NFT',
+    label: 'Collectibles',
     icon: 'NftIcon',
-    href: '/nft',
+    href: '/collectibles',
   },
   {
     label: 'Teams & Profile',
@@ -48,6 +48,10 @@ const config: MenuEntry[] = [
       {
         label: 'Leaderboard',
         href: '/teams',
+      },
+      {
+        label: 'Task Center',
+        href: '/profile/tasks',
       },
       {
         label: 'Your Profile',

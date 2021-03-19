@@ -51,10 +51,10 @@ const StakeAction: React.FC<FarmCardActionsProps> = ({
     ) : (
       <IconButtonWrapper>
         <IconButton variant="tertiary" onClick={onPresentWithdraw} mr="6px">
-          <MinusIcon color="primary" />
+          <MinusIcon color="primary" width="14px" />
         </IconButton>
         <IconButton variant="tertiary" onClick={onPresentDeposit}>
-          <AddIcon color="primary" />
+          <AddIcon color="primary" width="14px" />
         </IconButton>
       </IconButtonWrapper>
     )

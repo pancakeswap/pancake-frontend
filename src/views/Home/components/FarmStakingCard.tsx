@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react'
 import styled from 'styled-components'
 import { Heading, Card, CardBody, Button } from '@pancakeswap-libs/uikit'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWeb3React } from '@web3-react/core'
 import useI18n from 'hooks/useI18n'
 import { useAllHarvest } from 'hooks/useHarvest'
 import useFarmsWithBalance from 'hooks/useFarmsWithBalance'
@@ -35,7 +35,7 @@ const Actions = styled.div`
 
 const FarmedStakingCard = () => {
   const [pendingTx, setPendingTx] = useState(false)
-  const { account } = useWallet()
+  const { account } = useWeb3React()
   const TranslateString = useI18n()
   const farmsWithBalance = useFarmsWithBalance()
   const balancesWithValue = farmsWithBalance.filter((balanceType) => balanceType.balance.toNumber() > 0)
@@ -61,12 +61,12 @@ const FarmedStakingCard = () => {
         </Heading>
         <CardImage src="/images/cake.svg" alt="cake logo" width={64} height={64} />
         <Block>
+          <Label>{TranslateString(544, 'CAKE to Harvest')}:</Label>
           <CakeHarvestBalance />
-          <Label>{TranslateString(544, 'CAKE to Harvest')}</Label>
         </Block>
         <Block>
+          <Label>{TranslateString(546, 'CAKE in Wallet')}:</Label>
           <CakeWalletBalance />
-          <Label>{TranslateString(546, 'CAKE in Wallet')}</Label>
         </Block>
         <Actions>
           {account ? (
@@ -74,14 +74,16 @@ const FarmedStakingCard = () => {
               id="harvest-all"
               disabled={balancesWithValue.length <= 0 || pendingTx}
               onClick={harvestAllFarms}
-              fullWidth
+              width="100%"
             >
               {pendingTx
                 ? TranslateString(548, 'Collecting CAKE')
-                : TranslateString(532, `Harvest all (${balancesWithValue.length})`)}
+                : TranslateString(532, `Harvest all (${balancesWithValue.length})`, {
+                    count: balancesWithValue.length,
+                  })}
             </Button>
           ) : (
-            <UnlockButton fullWidth />
+            <UnlockButton width="100%" />
           )}
         </Actions>
       </CardBody>

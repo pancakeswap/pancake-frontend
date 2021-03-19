@@ -1,6 +1,7 @@
 import { useEffect, useReducer, useRef } from 'react'
 import { noop } from 'lodash'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWeb3React } from '@web3-react/core'
+import { useToast } from 'state/hooks'
 
 type Web3Payload = Record<string, unknown> | null
 
@@ -94,9 +95,10 @@ const useApproveConfirmTransaction = ({
   onRequiresApproval,
   onSuccess = noop,
 }: ApproveConfirmTransaction) => {
-  const { account } = useWallet()
+  const { account } = useWeb3React()
   const [state, dispatch] = useReducer(reducer, initialState)
   const handlePreApprove = useRef(onRequiresApproval)
+  const { toastError } = useToast()
 
   // Check if approval is necessary, re-check if account changes
   useEffect(() => {
@@ -128,6 +130,8 @@ const useApproveConfirmTransaction = ({
         })
         .on('error', (error: Web3Payload) => {
           dispatch({ type: 'approve_error', payload: error })
+          console.error('An error occurred approving transaction:', error)
+          toastError('An error occurred approving transaction')
         })
     },
     handleConfirm: () => {
@@ -141,6 +145,8 @@ const useApproveConfirmTransaction = ({
         })
         .on('error', (error: Web3Payload) => {
           dispatch({ type: 'confirm_error', payload: error })
+          console.error('An error occurred confirming transaction:', error)
+          toastError('An error occurred confirming transaction')
         })
     },
   }

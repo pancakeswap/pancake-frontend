@@ -7,7 +7,7 @@ import { fetchProfile } from 'state/profile'
 import useGetProfileCosts from 'views/Profile/hooks/useGetProfileCosts'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useProfile as useProfileContract } from 'hooks/useContract'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWeb3React } from '@web3-react/core'
 
 type PauseProfilePageProps = InjectedModalProps
 
@@ -18,7 +18,7 @@ const PauseProfilePage: React.FC<PauseProfilePageProps> = ({ onDismiss }) => {
   const { numberCakeToReactivate } = useGetProfileCosts()
   const TranslateString = useI18n()
   const pancakeProfileContract = useProfileContract()
-  const { account } = useWallet()
+  const { account } = useWeb3React()
   const { toastSuccess, toastError } = useToast()
   const dispatch = useDispatch()
 
@@ -69,7 +69,7 @@ const PauseProfilePage: React.FC<PauseProfilePageProps> = ({ onDismiss }) => {
         </Flex>
       </label>
       <Button
-        fullWidth
+        width="100%"
         isLoading={isConfirming}
         endIcon={isConfirming ? <AutoRenewIcon spin color="currentColor" /> : null}
         disabled={!isAcknowledged || isConfirming}
@@ -78,7 +78,7 @@ const PauseProfilePage: React.FC<PauseProfilePageProps> = ({ onDismiss }) => {
       >
         {TranslateString(999, 'Confirm')}
       </Button>
-      <Button variant="text" fullWidth onClick={onDismiss}>
+      <Button variant="text" width="100%" onClick={onDismiss}>
         {TranslateString(999, 'Close Window')}
       </Button>
     </>

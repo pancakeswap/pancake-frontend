@@ -76,12 +76,12 @@ const ModalInput: React.FC<ModalInputProps> = ({
         <Flex justifyContent="space-between" pl="16px">
           <Text fontSize="14px">{inputTitle}</Text>
           <Text fontSize="14px">
-            {TranslateString(999, 'Balance')}: {displayBalance.toLocaleString()}
+            {TranslateString(1120, 'Balance')}: {displayBalance.toLocaleString()}
           </Text>
         </Flex>
         <Flex alignItems="flex-end" justifyContent="space-around">
           <StyledInput onChange={onChange} placeholder="0" value={value} />
-          <Button size="sm" onClick={onSelectMax} mr="8px">
+          <Button scale="sm" onClick={onSelectMax} mr="8px">
             {TranslateString(452, 'Max')}
           </Button>
           <Text fontSize="16px">{symbol}</Text>

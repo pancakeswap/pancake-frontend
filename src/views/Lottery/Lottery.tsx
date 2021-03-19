@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { ButtonMenu, ButtonMenuItem } from '@pancakeswap-libs/uikit'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
 import PastLotteryDataContext from 'contexts/PastLotteryDataContext'
 import { getLotteryIssueIndex } from 'utils/lotteryUtils'
 import useI18n from 'hooks/useI18n'
@@ -22,7 +21,6 @@ const Wrapper = styled.div`
 
 const Lottery: React.FC = () => {
   const lotteryContract = useLottery()
-  const { account } = useWallet()
   const TranslateString = useI18n()
   const [activeIndex, setActiveIndex] = useState(0)
   const [historyData, setHistoryData] = useState([])
@@ -48,10 +46,10 @@ const Lottery: React.FC = () => {
       setMostRecentLotteryNumber(previousLotteryNumber)
     }
 
-    if (account && lotteryContract) {
+    if (lotteryContract) {
       getInitialLotteryIndex()
     }
-  }, [account, lotteryContract])
+  }, [lotteryContract])
 
   const handleClick = (index) => {
     setActiveIndex(index)
@@ -62,7 +60,7 @@ const Lottery: React.FC = () => {
       <Hero />
       <Page>
         <Wrapper>
-          <ButtonMenu activeIndex={activeIndex} onClick={handleClick} size="sm" variant="subtle">
+          <ButtonMenu activeIndex={activeIndex} onItemClick={handleClick} scale="sm" variant="subtle">
             <ButtonMenuItem>{TranslateString(716, 'Next draw')}</ButtonMenuItem>
             <ButtonMenuItem>{TranslateString(718, 'Past draws')}</ButtonMenuItem>
           </ButtonMenu>

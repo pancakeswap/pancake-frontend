@@ -22,12 +22,12 @@ const Menu: React.FC<MenuProps> = ({ activeIndex = 0 }) => {
       </Flex>
 
       <Flex mb="24px" justifyContent="center">
-        <ButtonMenu activeIndex={activeIndex} variant="subtle" size="sm">
-          <ButtonMenuItem as={RouterLink} to="/profile">
-            {TranslateString(1104, 'Public Profile')}
-          </ButtonMenuItem>
+        <ButtonMenu activeIndex={activeIndex} variant="subtle" scale="sm">
           <ButtonMenuItem as={RouterLink} to="/profile/tasks">
             {TranslateString(1090, 'Task Center')}
+          </ButtonMenuItem>
+          <ButtonMenuItem as={RouterLink} to="/profile">
+            {TranslateString(1104, 'Public Profile')}
           </ButtonMenuItem>
         </ButtonMenu>
       </Flex>
