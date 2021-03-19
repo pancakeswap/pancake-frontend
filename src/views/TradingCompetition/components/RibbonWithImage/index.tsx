@@ -10,21 +10,21 @@ const Wrapper = styled(Flex)`
 
 const ImageComponentWrapper = styled.div``
 
-const RibbonWrapper = styled(Flex)`
+const RibbonWrapper = styled(Flex)<{ ribbonDirection?: string }>`
   position: absolute;
   width: 100%;
   z-index: 1;
   left: 50%;
-  top: 128px;
+  bottom: ${({ ribbonDirection }) => (ribbonDirection === 'down' ? '-54px' : '-48px')};
   transform: translate(-50%, 0);
 `
 
-const RibbonWithImage: React.FC<RibbonProps> = ({ imageComponent, ribbonDirection }) => {
+const RibbonWithImage: React.FC<RibbonProps> = ({ imageComponent, ribbonDirection = 'down', ribbonText = '' }) => {
   return (
     <Wrapper alignItems="center" justifyContent="center">
       <ImageComponentWrapper>{imageComponent}</ImageComponentWrapper>
-      <RibbonWrapper alignItems="center" justifyContent="center">
-        <Ribbon ribbonDirection={ribbonDirection}>Some text woah ooah woah</Ribbon>
+      <RibbonWrapper alignItems="center" justifyContent="center" ribbonDirection={ribbonDirection}>
+        <Ribbon ribbonDirection={ribbonDirection}>{ribbonText}</Ribbon>
       </RibbonWrapper>
     </Wrapper>
   )
