@@ -31,14 +31,10 @@ const YourScore: React.FC<YourScoreProps> = ({ registered = false, account, prof
   return (
     <Wrapper>
       {registered && (
-        <RibbonWithImage
-          imageComponent={<ScoreProfile profile={profile} />}
-          ribbonDirection="down"
-          ribbonText="Your Score"
-          isCardHeader
-        />
+        <RibbonWithImage imageComponent={<ScoreProfile profile={profile} />} ribbonDirection="down" isCardHeader>
+          Your Score
+        </RibbonWithImage>
       )}
-
       <ScoreCardWrapper>
         <ScoreCard registered={registered} account={account} profile={profile} />
       </ScoreCardWrapper>

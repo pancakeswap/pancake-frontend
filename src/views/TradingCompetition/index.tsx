@@ -19,8 +19,12 @@ const TradingCompetition = () => {
   return (
     <Page>
       <YourScore registered={registered} account={account} profile={profile} />
-      <RibbonWithImage imageComponent={<Prizes width="175px" />} ribbonDirection="up" ribbonText="Prizes" />
-      <RibbonWithImage imageComponent={<Ranks width="175px" />} ribbonDirection="down" ribbonText="Team Ranks" />
+      <RibbonWithImage imageComponent={<Prizes width="175px" />} ribbonDirection="up">
+        Prizes
+      </RibbonWithImage>
+      <RibbonWithImage imageComponent={<Ranks width="175px" />} ribbonDirection="down">
+        Team Ranks
+      </RibbonWithImage>
     </Page>
   )
 }

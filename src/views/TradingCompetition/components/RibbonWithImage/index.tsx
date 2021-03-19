@@ -5,14 +5,21 @@ import { Flex } from '@pancakeswap-libs/uikit'
 import { RibbonProps } from '../../types'
 import Ribbon from '../Ribbon'
 
-const Wrapper = styled(Flex)<{ ribbonDirection?: string; isCardHeader?: boolean }>`
+const Wrapper = styled(Flex)<{ marginBottom?: string }>`
   position: relative;
-  margin-bottom: ${({ ribbonDirection, isCardHeader }) =>
-    isCardHeader ? '36px' : ribbonDirection === 'down' ? '54px' : '50px'};
+  margin-bottom: ${({ marginBottom }) => marginBottom};
 `
 
-const ImageComponentWrapper = styled.div<{ isCardHeader?: boolean }>`
-  ${({ isCardHeader }) => (isCardHeader ? `` : ``)}
+const Spacer = styled.div`
+  height: 54px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    height: 116px;
+  }
+`
+
+const AbsoluteImageWrapper = styled.div`
+  position: absolute;
 `
 
 const RibbonWrapper = styled(Flex)<{ ribbonDirection?: string }>`
@@ -27,18 +34,33 @@ const RibbonWrapper = styled(Flex)<{ ribbonDirection?: string }>`
 const RibbonWithImage: React.FC<RibbonProps> = ({
   imageComponent,
   ribbonDirection = 'down',
-  ribbonText = '',
+  children,
   isCardHeader,
 }) => {
-  const margin = () => {
-    return ''
+  const marginBottom = () => {
+    if (isCardHeader) {
+      return '36px'
+    }
+
+    if (ribbonDirection === 'down') {
+      return '66px'
+    }
+
+    return '50px'
   }
 
   return (
-    <Wrapper alignItems="center" justifyContent="center" ribbonDirection={ribbonDirection} isCardHeader={isCardHeader}>
-      <ImageComponentWrapper isCardHeader={isCardHeader}>{imageComponent}</ImageComponentWrapper>
+    <Wrapper alignItems="center" justifyContent="center" marginBottom={marginBottom()}>
+      {isCardHeader ? (
+        <>
+          <Spacer />
+          <AbsoluteImageWrapper>{imageComponent}</AbsoluteImageWrapper>
+        </>
+      ) : (
+        imageComponent
+      )}
       <RibbonWrapper alignItems="center" justifyContent="center" ribbonDirection={ribbonDirection}>
-        <Ribbon ribbonDirection={ribbonDirection}>{ribbonText}</Ribbon>
+        <Ribbon ribbonDirection={ribbonDirection}>{children}</Ribbon>
       </RibbonWrapper>
     </Wrapper>
   )
