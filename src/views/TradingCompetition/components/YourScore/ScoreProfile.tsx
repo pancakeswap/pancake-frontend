@@ -4,7 +4,7 @@ import { NoProfileAvatarIcon } from '@pancakeswap-libs/uikit'
 import { Profile } from 'state/types'
 import ProfileAvatar from '../../../Profile/components/ProfileAvatar'
 import Sticker from '../Sticker'
-import Laurel from '../Laurel'
+import StyledLaurel from '../StyledLaurel'
 
 interface ScoreHeaderProps {
   profile: Profile
@@ -17,11 +17,12 @@ const Wrapper = styled.div`
 `
 
 const LaurelWrapper = styled.div`
-  height: 32px;
-  width: auto;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    height: 64px;
+  svg {
+    height: 32px;
+    width: auto;
+    ${({ theme }) => theme.mediaQueries.sm} {
+      height: 64px;
+    }
   }
 `
 
@@ -42,13 +43,13 @@ const ScoreHeader: React.FC<ScoreHeaderProps> = ({ profile }) => {
   return (
     <Wrapper>
       <LaurelWrapper>
-        <Laurel dir="l" />
+        <StyledLaurel dir="l" />
       </LaurelWrapper>
       <ProfileWrapper>
         <Sticker>{profile ? <ProfileAvatar profile={profile} /> : <NoProfileAvatarIcon />}</Sticker>
       </ProfileWrapper>
       <LaurelWrapper>
-        <Laurel dir="r" />
+        <StyledLaurel dir="r" />
       </LaurelWrapper>
     </Wrapper>
   )

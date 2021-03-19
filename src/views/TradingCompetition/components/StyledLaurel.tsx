@@ -1,16 +1,7 @@
 import styled from 'styled-components'
 import { Laurel } from '../svgs'
 
-interface LaurelProps {
-  dir?: 'l' | 'r'
-  fillColor?: string
-}
-
-const StyledLaurel = styled(Laurel)<LaurelProps>`
-  path {
-    fill: ${({ fillColor }) => fillColor || '#27262c'};
-  }
-
+const StyledLaurel = styled(Laurel)<{ dir?: 'l' | 'r' }>`
   ${({ dir }) =>
     dir === 'l'
       ? `

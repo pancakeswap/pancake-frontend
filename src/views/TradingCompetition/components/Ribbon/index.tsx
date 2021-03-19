@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Flex } from '@pancakeswap-libs/uikit'
 import { RibbonProps } from '../../types'
-import Laurel from '../Laurel'
+import StyledLaurel from '../StyledLaurel'
 import {
   RibbonDownMidExpanding,
   RibbonUpMidExpanding,
@@ -61,7 +61,7 @@ const Ribbon: React.FC<RibbonProps> = ({ children, ribbonDirection }) => {
       <Wrapper ribbonDirection={ribbonDirection}>
         <RibbonDownLeftSide width="32px" />
         <LaurelWrapper dir="l">
-          <Laurel dir="l" />
+          <StyledLaurel dir="l" />
         </LaurelWrapper>
         <div>
           <RibbonDownMidExpanding preserveAspectRatio="none" />
@@ -71,7 +71,7 @@ const Ribbon: React.FC<RibbonProps> = ({ children, ribbonDirection }) => {
           <HeadingText p="0 30px">{children}</HeadingText>
         </TextWrapper>
         <LaurelWrapper dir="r">
-          <Laurel dir="r" />
+          <StyledLaurel dir="r" />
         </LaurelWrapper>
         <RibbonDownRightSide width="32px" />
       </Wrapper>
@@ -83,7 +83,7 @@ const Ribbon: React.FC<RibbonProps> = ({ children, ribbonDirection }) => {
       <Wrapper ribbonDirection={ribbonDirection}>
         <RibbonUpLeftSide width="32px" />
         <LaurelWrapper dir="l">
-          <Laurel dir="l" />
+          <StyledLaurel dir="l" />
         </LaurelWrapper>
         <div>
           <RibbonUpMidExpanding preserveAspectRatio="none" />
@@ -93,7 +93,7 @@ const Ribbon: React.FC<RibbonProps> = ({ children, ribbonDirection }) => {
           <HeadingText p="0 30px">{children}</HeadingText>
         </TextWrapper>
         <LaurelWrapper dir="r">
-          <Laurel dir="r" />
+          <StyledLaurel dir="r" />
         </LaurelWrapper>
         <RibbonUpRightSide width="32px" />
       </Wrapper>
