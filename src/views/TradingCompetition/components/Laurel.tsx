@@ -1,12 +1,12 @@
 import styled from 'styled-components'
-import { ReactComponent as LaurelSvg } from '../svgs/laurel.svg'
+import { Laurel } from '../svgs'
 
 interface LaurelProps {
   dir?: 'l' | 'r'
   fillColor?: string
 }
 
-const Laurel = styled(LaurelSvg)<LaurelProps>`
+const StyledLaurel = styled(Laurel)<LaurelProps>`
   path {
     fill: ${({ fillColor }) => fillColor || '#27262c'};
   }
@@ -20,4 +20,4 @@ const Laurel = styled(LaurelSvg)<LaurelProps>`
       : 'margin-left: 8px;'}
 `
 
-export default Laurel
+export default StyledLaurel

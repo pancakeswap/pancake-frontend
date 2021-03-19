@@ -35,10 +35,13 @@ const LaurelWrapper = styled.div<{ dir?: 'l' | 'r' }>`
   position: absolute;
   height: 48px;
   z-index: 2;
-  top: -1px;
+  top: -2px;
 
   svg {
-    height: 22px;
+    height: 20px;
+    path {
+      fill: ${({ theme }) => theme.colors.text};
+    }
   }
 
   ${({ dir }) =>

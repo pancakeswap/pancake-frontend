@@ -12,17 +12,6 @@ const Wrapper = styled.div`
   max-width: 680px;
 `
 
-const HeaderWrapper = styled.div``
-
-const RibbonWrapper = styled(Flex)`
-  position: absolute;
-  width: 100%;
-  z-index: 1;
-  left: 50%;
-  top: 128px;
-  transform: translate(-50%, 0);
-`
-
 const ScoreCardWrapper = styled.div`
   margin-top: 24px;
 `
