@@ -690,8 +690,8 @@ const tokens = {
   ada: {
     symbol: 'ADA',
     address: {
-      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
       56: '0x3ee2200efb3400fabb9aacf31297cbdd1d435d47',
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
     },
     decimals: 18,
     projectLink: 'https://www.cardano.org/',
@@ -699,8 +699,8 @@ const tokens = {
   band: {
     symbol: 'BAND',
     address: {
-      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
       56: '0xad6caeb32cd2c308980a548bd0bc5aa4306c6c18',
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
     },
     decimals: 18,
     projectLink: 'https://bandprotocol.com/',
@@ -708,8 +708,8 @@ const tokens = {
   dot: {
     symbol: 'DOT',
     address: {
-      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
       56: '0x7083609fce4d1d8dc0c979aab8c869ea2c873402',
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
     },
     decimals: 18,
     projectLink: 'https://polkadot.network/',
@@ -717,8 +717,8 @@ const tokens = {
   eos: {
     symbol: 'EOS',
     address: {
-      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
       56: '0x56b6fb708fc5732dec1afc8d8556423a2edccbd6',
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
     },
     decimals: 18,
     projectLink: 'https://eos.io/',
@@ -726,8 +726,8 @@ const tokens = {
   link: {
     symbol: 'LINK',
     address: {
-      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
       56: '0xf8a0bf9cf54bb92f17374d9e9a321e6a111a51bd',
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
     },
     decimals: 18,
     projectLink: 'https://chain.link/',
@@ -744,8 +744,8 @@ const tokens = {
   btc: {
     symbol: 'BTC',
     address: {
-      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
       56: '0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c',
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
     },
     decimals: 18,
     projectLink: 'https://bitcoin.org/',
@@ -753,8 +753,8 @@ const tokens = {
   xrp: {
     symbol: 'XRP',
     address: {
-      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
       56: '0x1d2f0da169ceb9fc7b3144628db156f3f6c60dbe',
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
     },
     decimals: 18,
     projectLink: 'https://ripple.com/xrp/',
@@ -762,8 +762,8 @@ const tokens = {
   atom: {
     symbol: 'ATOM',
     address: {
-      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
       56: '0x0eb3a705fc54725037cc9e008bdede697f62f335',
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
     },
     decimals: 18,
     projectLink: 'https://cosmos.network/',
@@ -789,8 +789,8 @@ const tokens = {
   bch: {
     symbol: 'BCH',
     address: {
-      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
       56: '0x8ff795a6f4d97e7887c79bea79aba5cc76444adf',
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
     },
     decimals: 18,
     projectLink: 'http://bch.info/',
@@ -798,8 +798,8 @@ const tokens = {
   yfi: {
     symbol: 'YFI',
     address: {
-      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
       56: '0x88f1a5ae2a3bf98aeaf342d26b30a79438c9142e',
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
     },
     decimals: 18,
     projectLink: 'https://yearn.finance/',
@@ -807,8 +807,8 @@ const tokens = {
   uni: {
     symbol: 'UNI',
     address: {
-      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
       56: '0xbf5140a22578168fd562dccf235e5d43a02ce9b1',
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
     },
     decimals: 18,
     projectLink: 'https://uniswap.org/',
@@ -816,8 +816,8 @@ const tokens = {
   fil: {
     symbol: 'FIL',
     address: {
-      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
       56: '0x0d8ce2a99bb6e3b7db580ed848240e4a0f9ae153',
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
     },
     decimals: 18,
     projectLink: 'https://filecoin.io/',
@@ -825,8 +825,8 @@ const tokens = {
   bake: {
     symbol: 'BAKE',
     address: {
-      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
       56: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
     },
     decimals: 18,
     projectLink: 'https://www.bakeryswap.org/',
@@ -834,8 +834,8 @@ const tokens = {
   burger: {
     symbol: 'BURGER',
     address: {
-      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
       56: '0xae9269f27437f0fcbc232d39ec814844a51d6b8f',
+      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
     },
     decimals: 18,
     projectLink: 'https://burgerswap.org/',
