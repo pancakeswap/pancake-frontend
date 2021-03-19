@@ -1,8 +1,9 @@
-# Change Log
+## [0.15.2](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap-libs/uikit@0.15.2...@pancakeswap-libs/uikit@0.15.2) (2021-03-19)
 
-All notable changes to this project will be documented in this file.
-See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [0.15.2](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap-libs/uikit@0.15.1...@pancakeswap-libs/uikit@0.15.2) (2021-03-19)
+### Bug Fixes
 
-**Note:** Version bump only for package @pancakeswap-libs/uikit
+* **uikit:** Accept float values for Slider ([#4](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/4)) ([018d7e5](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/018d7e5276e06cf880b2ce8f15f6eaa10e47f236))
+
+
+
