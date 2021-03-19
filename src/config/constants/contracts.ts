@@ -1,12 +1,4 @@
 export default {
-  cake: {
-    97: '0xa35062141Fa33BCA92Ce69FeD37D0E8908868AAe',
-    56: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
-  },
-  syrup: {
-    97: '0xfE1e507CeB712BDe086f3579d2c03248b2dB77f9',
-    56: '0x009cF7bC57584b7998236eff51b98A168DceA9B0',
-  },
   masterChef: {
     97: '0x1d32c2945C8FDCBc7156c553B7cEa4325a17f4f9',
     56: '0x73feaa1eE314F8c655E354234017bE2193C9E24E',
@@ -14,10 +6,6 @@ export default {
   sousChef: {
     97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
     56: '0x6ab8463a4185b80905e05a9ff80a2d6b714b9e95',
-  },
-  wbnb: {
-    97: '0xae13d989dac2f0debff460ac112a837c89baa7cd',
-    56: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
   },
   lottery: {
     97: '0x99c2EcD51d52c036B00130d882Bc65f20Fdecf9f',
@@ -31,14 +19,6 @@ export default {
     56: '0x1ee38d535d541c55c9dae27b12edf090c608e6fb',
     97: '0x67ADCB4dF3931b0C5Da724058ADC2174a9844412',
   },
-  busd: {
-    56: '0xe9e7cea3dedca5984780bafc599bd69add087d56',
-    97: '',
-  },
-  ust: {
-    56: '0x23396cF899Ca06c4472205fC903bDB4de249D6fC',
-    97: '',
-  },
   pancakeProfile: {
     56: '0xDf4dBf6536201370F95e06A0F8a7a70fE40E388a',
     97: '0x4B683C7E13B6d5D7fd1FeA9530F451954c1A7c8A',
@@ -50,10 +30,6 @@ export default {
   bunnyFactory: {
     56: '0xfa249Caa1D16f75fa159F7DFBAc0cC5EaB48CeFf',
     97: '0x707CBF373175fdB601D34eeBF2Cf665d08f01148',
-  },
-  eth: {
-    56: '0x2170ed0880ac9a755fd29b2688956bd959f933f8',
-    97: '',
   },
   claimRefund: {
     56: '0xE7e53A7e9E3Cf6b840f167eF69519175c497e149',

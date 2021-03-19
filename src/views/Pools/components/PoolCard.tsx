@@ -15,7 +15,8 @@ import { getPoolApy } from 'utils/apy'
 import { getAddress } from 'utils/addressHelpers'
 import { useSousHarvest } from 'hooks/useHarvest'
 import Balance from 'components/Balance'
-import { QuoteToken, PoolCategory } from 'config/constants/types'
+import { PoolCategory } from 'config/constants/types'
+import tokens from 'config/constants/tokens'
 import { Pool } from 'state/types'
 import { useGetApiPrice } from 'state/hooks'
 import DepositModal from './DepositModal'
@@ -45,10 +46,11 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
     userData,
     stakingLimit,
   } = pool
+
   // Pools using native BNB behave differently than pools using a token
   const isBnbPool = poolCategory === PoolCategory.BINANCE
   const TranslateString = useI18n()
-  const stakingTokenContract = useERC20(getAddress(stakingToken.address))
+  const stakingTokenContract = useERC20(stakingToken.address ? getAddress(stakingToken.address) : '')
   const { account } = useWeb3React()
   const { onApprove } = useSousApprove(stakingTokenContract, sousId)
   const { onStake } = useSousStake(sousId, isBnbPool)
@@ -73,7 +75,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
   const stakedBalance = new BigNumber(userData?.stakedBalance || 0)
   const earnings = new BigNumber(userData?.pendingReward || 0)
 
-  const isOldSyrup = stakingToken.symbol === QuoteToken.SYRUP
+  const isOldSyrup = stakingToken.symbol === tokens.syrup.symbol
   const accountHasStakedBalance = stakedBalance?.toNumber() > 0
   const needsApproval = !accountHasStakedBalance && !allowance.toNumber() && !isBnbPool
   const isCardActive = isFinished && accountHasStakedBalance
@@ -212,7 +214,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
         isFinished={isFinished}
         poolCategory={poolCategory}
         tokenName={earningToken.symbol}
-        tokenAddress={getAddress(earningToken.address)}
+        tokenAddress={earningToken.address ? getAddress(earningToken.address) : ''}
         tokenDecimals={earningToken.decimals}
       />
     </Card>

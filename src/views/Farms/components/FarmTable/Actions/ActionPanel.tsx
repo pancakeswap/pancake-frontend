@@ -104,13 +104,16 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({ details, apr, 
   const farm = details
 
   const TranslateString = useI18n()
-  const { quoteTokenAdresses, tokenAddresses, tokenSymbol, dual } = farm
+  const { quoteToken, token, dual } = farm
   const lpLabel = farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('PANCAKE', '')
-  const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAdresses, tokenAddresses })
+  const liquidityUrlPathParts = getLiquidityUrlPathParts({
+    quoteTokenAdresses: quoteToken.address,
+    tokenAddresses: token.address,
+  })
   const lpAddress = farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]
   const bsc = `https://bscscan.com/address/${lpAddress}`
   const info = `https://pancakeswap.info/pair/${lpAddress}`
-  const isCommunityFarm = communityFarms.includes(tokenSymbol)
+  const isCommunityFarm = communityFarms.includes(token.symbol)
 
   return (
     <Container>
