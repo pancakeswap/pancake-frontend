@@ -22,8 +22,6 @@ import { fetchTeam, fetchTeams } from './teams'
 import { fetchAchievements } from './achievements'
 import { fetchPrices } from './prices'
 
-const ZERO = new BigNumber(0)
-
 export const useFetchPublicData = () => {
   const dispatch = useDispatch()
   const { slowRefresh } = useRefresh()
@@ -89,28 +87,6 @@ export const usePools = (account): Pool[] => {
 export const usePoolFromPid = (sousId): Pool => {
   const pool = useSelector((state: State) => state.pools.data.find((p) => p.sousId === sousId))
   return pool
-}
-
-// Prices
-
-export const usePriceBnbBusd = (): BigNumber => {
-  const pid = 2 // BUSD-BNB LP
-  const farm = useFarmFromPid(pid)
-  return farm.tokenPriceVsQuote ? new BigNumber(1).div(farm.tokenPriceVsQuote) : ZERO
-}
-
-export const usePriceCakeBusd = (): BigNumber => {
-  const pid = 1 // CAKE-BNB LP
-  const bnbPriceUSD = usePriceBnbBusd()
-  const farm = useFarmFromPid(pid)
-  return farm.tokenPriceVsQuote ? bnbPriceUSD.times(farm.tokenPriceVsQuote) : ZERO
-}
-
-export const usePriceEthBusd = (): BigNumber => {
-  const pid = 14 // ETH-BNB LP
-  const bnbPriceUSD = usePriceBnbBusd()
-  const farm = useFarmFromPid(pid)
-  return farm.tokenPriceVsQuote ? bnbPriceUSD.times(farm.tokenPriceVsQuote) : ZERO
 }
 
 // Toasts
@@ -222,6 +198,11 @@ export const useGetApiPrice = (token: string) => {
   }
 
   return prices[token.toLowerCase()]
+}
+
+export const usePriceCakeBusd = (): BigNumber => {
+  const cakePrice = useGetApiPrice('cake')
+  return new BigNumber(cakePrice)
 }
 
 // Block

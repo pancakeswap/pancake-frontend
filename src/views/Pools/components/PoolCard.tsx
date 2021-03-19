@@ -46,10 +46,11 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
     userData,
     stakingLimit,
   } = pool
+
   // Pools using native BNB behave differently than pools using a token
   const isBnbPool = poolCategory === PoolCategory.BINANCE
   const TranslateString = useI18n()
-  const stakingTokenContract = useERC20(getAddress(stakingToken.address))
+  const stakingTokenContract = useERC20(stakingToken.address ? getAddress(stakingToken.address) : '')
   const { account } = useWeb3React()
   const { onApprove } = useSousApprove(stakingTokenContract, sousId)
   const { onStake } = useSousStake(sousId, isBnbPool)
@@ -213,7 +214,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
         isFinished={isFinished}
         poolCategory={poolCategory}
         tokenName={earningToken.symbol}
-        tokenAddress={getAddress(earningToken.address)}
+        tokenAddress={earningToken.address ? getAddress(earningToken.address) : ''}
         tokenDecimals={earningToken.decimals}
       />
     </Card>
