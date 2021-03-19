@@ -2,11 +2,11 @@ import React from 'react'
 import styled from 'styled-components'
 import { Text, Flex } from '@pancakeswap-libs/uikit'
 import RibbonDownMid from '../../svgs/RibbonDownMid'
+import RibbonDownSide from '../../svgs/RibbonDownSide'
 import { ReactComponent as RibbonUpMid } from '../../svgs/ribbon-up-mid.svg'
 import { ReactComponent as RibbonUpSide } from '../../svgs/ribbon-up-side.svg'
 import Laurel from '../Laurel'
 import { RibbonText, VisuallyHiddenRibbonText } from './RibbonText'
-import { ReactComponent as RibbonDownSide } from '../../svgs/ribbon-down-side.svg'
 
 const Wrapper = styled(Flex)`
   position: relative;
@@ -28,7 +28,7 @@ const ExpandingRibbonDownMid = styled(RibbonDownMid)`
   height: 48px;
 `
 
-const RibbonDownSideRight = styled(RibbonDownSide)`
+const RightSideRibbon = styled(RibbonDownSide)`
   position: absolute;
   right: 0;
   z-index: 1;
@@ -36,7 +36,7 @@ const RibbonDownSideRight = styled(RibbonDownSide)`
   right: -31px;
 `
 
-const RibbonDownSideLeft = styled(RibbonDownSide)`
+const LeftSideRibbon = styled(RibbonDownSide)`
   position: absolute;
   left: -31px;
   z-index: 1;
@@ -69,7 +69,7 @@ const LaurelWrapper = styled.div<{ dir?: 'l' | 'r' }>`
 export const RibbonDown = ({ children }) => {
   return (
     <Wrapper>
-      <RibbonDownSideLeft />
+      <LeftSideRibbon width="32px" />
       <LaurelWrapper dir="l">
         <Laurel dir="l" />
       </LaurelWrapper>
@@ -83,7 +83,7 @@ export const RibbonDown = ({ children }) => {
       <LaurelWrapper dir="r">
         <Laurel dir="r" />
       </LaurelWrapper>
-      <RibbonDownSideRight />
+      <RightSideRibbon width="32px" />
     </Wrapper>
   )
 }
