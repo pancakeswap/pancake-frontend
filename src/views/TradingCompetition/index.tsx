@@ -3,22 +3,23 @@ import { useWeb3React } from '@web3-react/core'
 import { useProfile } from 'state/hooks'
 import Page from 'components/layout/Page'
 import RibbonWithImage from './components/RibbonWithImage'
+import Section from './components/Section'
 import Prizes from './svgs/Prizes'
 import Ranks from './svgs/Ranks'
 
 const TradingCompetition = () => {
-  const { account } = useWeb3React()
-  const { profile } = useProfile()
-  const registered = true
-
   return (
     <Page>
-      <RibbonWithImage imageComponent={<Prizes width="175px" />} ribbonDirection="up">
-        Prizes
-      </RibbonWithImage>
-      <RibbonWithImage imageComponent={<Ranks width="175px" />} ribbonDirection="down">
-        Team Ranks
-      </RibbonWithImage>
+      <Section>
+        <RibbonWithImage imageComponent={<Prizes width="175px" />} ribbonDirection="up">
+          Prizes
+        </RibbonWithImage>
+      </Section>
+      <Section>
+        <RibbonWithImage imageComponent={<Ranks width="175px" />} ribbonDirection="down">
+          Team Ranks
+        </RibbonWithImage>
+      </Section>
     </Page>
   )
 }
