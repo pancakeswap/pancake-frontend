@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { Text } from '@pancakeswap-libs/uikit'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useTotalRewards } from 'hooks/useTickets'
@@ -14,7 +14,11 @@ const LotteryJackpot = () => {
   const lotteryPrizeAmoutCake = balance.toLocaleString(undefined, {
     maximumFractionDigits: 2,
   })
-  const lotteryPrizeAmountBusd = new BigNumber(balance).multipliedBy(usePriceCakeBusd()).toNumber()
+  const cakePrice = usePriceCakeBusd()
+
+  const lotteryPrizeAmountBusd = Number.isNaN(cakePrice.toNumber()) || Number.isNaN(balance)
+    ? 0
+    : new BigNumber(balance).multipliedBy(cakePrice).toNumber()
 
   return (
     <>
