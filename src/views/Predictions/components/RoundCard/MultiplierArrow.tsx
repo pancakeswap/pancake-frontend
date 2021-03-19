@@ -15,7 +15,7 @@ interface MultiplierArrowProps {
 }
 
 const ArrowWrapper = styled.div`
-  height: 80px;
+  height: 65px;
   margin: 0 auto;
   position: relative;
   width: 240px;
@@ -65,7 +65,7 @@ const MultiplierArrow: React.FC<MultiplierArrowProps> = ({
   const multiplierText = (
     <Flex>
       <Text color={textColor} bold lineHeight="21px">
-        {multiplier ? `${multiplier}x` : '~'}
+        {multiplier ? `${multiplier}x` : '-'}
       </Text>
       <Text color={textColor} lineHeight="21px" ml="4px">
         {TranslateString(999, 'Payout')}
@@ -84,7 +84,7 @@ const MultiplierArrow: React.FC<MultiplierArrowProps> = ({
         )}
         <Content>
           {multiplierText}
-          <Text bold fontSize="24px" lineHeight="26px" color={downColor}>
+          <Text bold fontSize="24px" lineHeight="26px" mb="8px" color={downColor} textTransform="uppercase">
             {TranslateString(999, 'Down')}
           </Text>
         </Content>
@@ -101,7 +101,7 @@ const MultiplierArrow: React.FC<MultiplierArrowProps> = ({
         </EnteredTagWrapper>
       )}
       <Content>
-        <Text bold fontSize="24px" lineHeight="26px" color={upColor}>
+        <Text bold fontSize="24px" lineHeight="26px" color={upColor} textTransform="uppercase">
           {TranslateString(999, 'Up')}
         </Text>
         {multiplierText}

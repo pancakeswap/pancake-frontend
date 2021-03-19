@@ -8,6 +8,7 @@ const initialState: PredictionsState = {
   isLoading: false,
   currentEpoch: 0,
   isHistoryPaneOpen: false,
+  isChartPaneOpen: false,
   rounds: {},
 }
 
@@ -28,29 +29,28 @@ export const predictionsSlice = createSlice({
     setHistoryPaneState: (state, action: PayloadAction<boolean>) => {
       state.isHistoryPaneOpen = action.payload
     },
+    setChartPaneState: (state, action: PayloadAction<boolean>) => {
+      state.isChartPaneOpen = action.payload
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(initializePredictions.pending, (state) => {
       state.isLoading = true
     })
     builder.addCase(initializePredictions.fulfilled, (state, action: PayloadAction<InitializeReturn>) => {
-      return {
-        status: PredictionStatus.LIVE,
-        isLoading: false,
-        isHistoryPaneOpen: false,
-        currentEpoch: action.payload.currentEpoch,
-        rounds: action.payload.rounds.reduce((accum, roundResponse) => {
-          return {
-            ...accum,
-            [roundResponse.epoch]: roundResponse,
-          }
-        }, {}),
-      }
+      state.status = PredictionStatus.LIVE
+      state.currentEpoch = action.payload.currentEpoch
+      state.rounds = action.payload.rounds.reduce((accum, roundResponse) => {
+        return {
+          ...accum,
+          [roundResponse.epoch]: roundResponse,
+        }
+      }, {})
     })
   },
 })
 
 // Actions
-export const { setHistoryPaneState } = predictionsSlice.actions
+export const { setChartPaneState, setHistoryPaneState } = predictionsSlice.actions
 
 export default predictionsSlice.reducer

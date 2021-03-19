@@ -1,15 +1,6 @@
 import React, { useState } from 'react'
 import SwiperCore from 'swiper'
-import {
-  CardBody,
-  CardHeader,
-  Flex,
-  Text,
-  PlayCircleOutlineIcon,
-  Button,
-  ArrowUpIcon,
-  ArrowDownIcon,
-} from '@pancakeswap-libs/uikit'
+import { CardBody, CardHeader, Flex, Text, PlayCircleOutlineIcon, Button } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import { Position, Round } from 'state/types'
 import CardFlip from '../CardFlip'
@@ -44,7 +35,7 @@ const NextRoundCard: React.FC<NextRoundCardProps> = ({ round, swiperInstance }) 
   }
 
   return (
-    <CardFlip isFlipped={state.isSettingPosition} height="425px">
+    <CardFlip isFlipped={state.isSettingPosition} height="417px">
       <Card>
         <CardHeader p="8px">
           <Flex alignItems="center" justifyContent="space-between">
@@ -57,22 +48,11 @@ const NextRoundCard: React.FC<NextRoundCardProps> = ({ round, swiperInstance }) 
         <CardBody p="16px">
           <MultiplierArrow />
           <RoundInfoBox>
-            <Button
-              variant="success"
-              startIcon={<ArrowUpIcon color="white" width="24px" />}
-              width="100%"
-              onClick={() => handleSetPosition(Position.UP)}
-              mb="4px"
-            >
-              {TranslateString(999, 'Up')}
+            <Button variant="success" width="100%" onClick={() => handleSetPosition(Position.UP)} mb="4px">
+              {TranslateString(999, 'Enter UP')}
             </Button>
-            <Button
-              variant="danger"
-              startIcon={<ArrowDownIcon color="white" width="24px" />}
-              width="100%"
-              onClick={() => handleSetPosition(Position.DOWN)}
-            >
-              {TranslateString(999, 'Down')}
+            <Button variant="danger" width="100%" onClick={() => handleSetPosition(Position.DOWN)}>
+              {TranslateString(999, 'Enter DOWN')}
             </Button>
           </RoundInfoBox>
           <MultiplierArrow roundPosition={Position.DOWN} />

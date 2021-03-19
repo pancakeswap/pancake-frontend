@@ -50,8 +50,8 @@ const Positions = () => {
   }, [slideToLive])
 
   return (
-    <Box py="24px" overflowX="hidden" overflowY="auto">
-      <FlexRow alignItems="center" px="16px" py="24px">
+    <Box overflowX="hidden" overflowY="auto">
+      <FlexRow alignItems="center" p="16px">
         <SetCol>
           <PricePairLabel />
         </SetCol>

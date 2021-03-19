@@ -42,6 +42,8 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ defaultPosition, onBa
   const TranslateString = useI18n()
   const balanceDisplay = getBnbAmount(bnbBalance).toNumber()
   const maxBalance = getBnbAmount(bnbBalance.minus(dust)).toNumber()
+  const valueAsStr = value === 0 ? '' : value.toString()
+  const percentageOfMaxBalance = (value / maxBalance) * 100
 
   const handleChange = (evt) => {
     const newValue = evt.target.value
@@ -58,6 +60,12 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ defaultPosition, onBa
 
   const setMax = () => {
     setValue(maxBalance)
+  }
+
+  // Clear value
+  const handleGoBack = () => {
+    setValue(0)
+    onBack()
   }
 
   // Disable the swiper events to avoid conflicts
@@ -77,7 +85,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ defaultPosition, onBa
     <Card onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}>
       <CardHeader p="8px">
         <Flex alignItems="center">
-          <IconButton variant="text" onClick={onBack}>
+          <IconButton variant="text" onClick={handleGoBack}>
             <ArrowBackIcon width="24px" />
           </IconButton>
           <FlexRow>
@@ -88,7 +96,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ defaultPosition, onBa
           </PositionTag>
         </Flex>
       </CardHeader>
-      <CardBody>
+      <CardBody py="16px">
         <Flex alignItems="center" justifyContent="space-between" mb="8px">
           <Text textAlign="right" color="textSubtle">
             {TranslateString(999, 'Commit')}:
@@ -100,10 +108,19 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ defaultPosition, onBa
             </Text>
           </Flex>
         </Flex>
-        <BalanceInput value={value} onChange={handleChange} inputProps={{ disabled: !account }} />
+        <BalanceInput value={valueAsStr} onChange={handleChange} inputProps={{ disabled: !account }} />
         <Text textAlign="right" mb="16px" color="textSubtle" fontSize="12px" style={{ height: '18px' }}>
           {account && TranslateString(999, `Balance: ${balanceDisplay}`, { num: balanceDisplay })}
         </Text>
+        <Slider
+          name="balance"
+          min={0}
+          max={maxBalance}
+          value={value}
+          onValueChanged={handleSliderChange}
+          mb="8px"
+          valueLabel={`${percentageOfMaxBalance.toLocaleString(undefined, { maximumFractionDigits: 2 })}%`}
+        />
         <Flex alignItems="center" justifyContent="space-between" mb="16px">
           {percentShortcuts.map((percent) => {
             const handleClick = () => {
@@ -120,8 +137,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ defaultPosition, onBa
             {TranslateString(452, 'Max')}
           </Button>
         </Flex>
-        <Slider min={0} max={maxBalance} value={value} onValueChanged={handleSliderChange} mb="16px" />
-        <Box mb="16px">
+        <Box mb="8px">
           {account ? <Button width="100%">{TranslateString(464, 'Confirm')}</Button> : <UnlockButton width="100%" />}
         </Box>
         <Text as="p" fontSize="12px" lineHeight={1} color="textSubtle">

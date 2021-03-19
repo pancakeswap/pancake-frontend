@@ -11,20 +11,20 @@ export const MultiplierDown: React.FC<MultiplierProps> = ({ isActive, ...props }
   const fill = theme.colors[isActive ? 'failure' : 'tertiary']
 
   return (
-    <Svg height="80px" width="240px" viewBox="0 0 240 80" {...props}>
+    <Svg height="65px" width="240px" viewBox="0 0 240 65" {...props}>
       <g filter="url(#filter0_i)">
         <path
-          d="M9.69179e-05 32.7071L0.000366466 0H240L240 32.7073C240 39.7039 235.454 45.889 228.776 47.9776L134.627 77.425C125.103 80.4038 114.897 80.4038 105.373 77.425L11.2239 47.9777C4.54616 45.8891 3.9256e-05 39.7038 9.69179e-05 32.7071Z"
+          d="M10.0001 15.7243L10.0003 1H234L234 15.7247C234 22.4864 229.749 28.5181 223.381 30.7923L138.48 61.1141C127.823 64.9203 116.177 64.9203 105.519 61.1141L20.6188 30.7924C14.2508 28.5181 10.0001 22.4862 10.0001 15.7243Z"
           fill={fill}
         />
       </g>
       <defs>
         <filter
           id="filter0_i"
-          x="0"
-          y="0"
-          width="240"
-          height="79.6591"
+          x="10.0001"
+          y="1"
+          width="224"
+          height="62.9688"
           filterUnits="userSpaceOnUse"
           colorInterpolationFilters="sRGB"
         >
@@ -52,20 +52,20 @@ export const MultiplierUp: React.FC<MultiplierProps> = ({ isActive, ...props }) 
   const fill = theme.colors[isActive ? 'success' : 'tertiary']
 
   return (
-    <Svg height="80px" width="240px" viewBox="0 0 240 80" {...props}>
+    <Svg height="65px" width="240px" viewBox="0 0 240 65" {...props}>
       <g filter="url(#filter0_i)">
         <path
-          d="M9.69179e-05 47.2929L0.000366466 80H240L240 47.2927C240 40.2961 235.454 34.111 228.776 32.0224L134.627 2.575C125.103 -0.403848 114.897 -0.403842 105.373 2.575L11.2239 32.0223C4.54616 34.1109 3.9256e-05 40.2962 9.69179e-05 47.2929Z"
+          d="M10.0001 49.2757L10.0003 64H234L234 49.2753C234 42.5136 229.749 36.4819 223.381 34.2077L138.48 3.8859C127.823 0.0796983 116.177 0.0796931 105.519 3.8859L20.6188 34.2076C14.2508 36.4819 10.0001 42.5138 10.0001 49.2757Z"
           fill={fill}
         />
       </g>
       <defs>
         <filter
           id="filter0_i"
-          x="0"
-          y="0.34082"
-          width="240"
-          height="79.6591"
+          x="10.0001"
+          y="1.03125"
+          width="224"
+          height="62.9688"
           filterUnits="userSpaceOnUse"
           colorInterpolationFilters="sRGB"
         >

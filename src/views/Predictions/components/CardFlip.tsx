@@ -15,7 +15,7 @@ const Front = styled.div`
   left: 0;
   position: absolute;
   top: 0;
-  transition: z-index;
+  transition: z-index 600ms;
   width: 100%;
 
   & > div {
