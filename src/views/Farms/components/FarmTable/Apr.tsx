@@ -14,7 +14,7 @@ export interface AprProps {
   tokenAddress?: Address
   quoteTokenAddress?: Address
   cakePrice: BigNumber
-  originalValue: BigNumber
+  originalValue: number
   hideButton?: boolean
 }
 
