@@ -6,7 +6,7 @@ import ProfileAvatar from '../../../Profile/components/ProfileAvatar'
 import Sticker from '../Sticker'
 import Laurel from '../Laurel'
 
-interface ScoreHeadingProps {
+interface ScoreHeaderProps {
   profile: Profile
 }
 
@@ -38,7 +38,7 @@ const ProfileWrapper = styled.div`
   }
 `
 
-const ScoreHeading: React.FC<ScoreHeadingProps> = ({ profile }) => {
+const ScoreHeader: React.FC<ScoreHeaderProps> = ({ profile }) => {
   return (
     <Wrapper>
       <LaurelWrapper>
@@ -54,4 +54,4 @@ const ScoreHeading: React.FC<ScoreHeadingProps> = ({ profile }) => {
   )
 }
 
-export default ScoreHeading
+export default ScoreHeader

@@ -9,3 +9,9 @@ export interface CompetitionProps {
 export interface YourScoreProps extends CompetitionProps {
   test?: boolean
 }
+
+export interface RibbonProps {
+  ribbonDirection?: string
+  imageComponent?: React.ReactNode
+  children?: React.ReactNode
+}

@@ -2,8 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 import { Flex } from '@pancakeswap-libs/uikit'
 import ScoreCard from './ScoreCard'
-import ScoreHeading from './ScoreHeading'
-import Ribbon from '../Ribbon/Ribbon'
+import ScoreHeader from './ScoreHeader'
+import Ribbon from '../Ribbon'
 import { YourScoreProps } from '../../types'
 
 const Wrapper = styled.div`
@@ -33,13 +33,16 @@ const YourScore: React.FC<YourScoreProps> = ({ registered = false, account, prof
   return (
     <Wrapper>
       {registered && (
-        <HeadingWrapper>
-          <ScoreHeading profile={profile} />
-        </HeadingWrapper>
+        <>
+          <HeadingWrapper>
+            <ScoreHeader profile={profile} />
+          </HeadingWrapper>
+          <RibbonWrapper alignItems="center" justifyContent="center">
+            <Ribbon>Some text woah ooah woah</Ribbon>
+          </RibbonWrapper>
+        </>
       )}
-      <RibbonWrapper alignItems="center" justifyContent="center">
-        <Ribbon>Some text woah ooah woah</Ribbon>
-      </RibbonWrapper>
+
       <ScoreCardWrapper>
         <ScoreCard registered={registered} account={account} profile={profile} />
       </ScoreCardWrapper>

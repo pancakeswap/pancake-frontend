@@ -1,12 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Text, Flex } from '@pancakeswap-libs/uikit'
+import { RibbonProps } from '../../types'
 import RibbonDownMid from '../../svgs/RibbonDownMid'
 import RibbonDownSide from '../../svgs/RibbonDownSide'
-import { ReactComponent as RibbonUpMid } from '../../svgs/ribbon-up-mid.svg'
-import { ReactComponent as RibbonUpSide } from '../../svgs/ribbon-up-side.svg'
+// import { ReactComponent as RibbonUpMid } from '../../svgs/ribbon-up-mid.svg'
+// import { ReactComponent as RibbonUpSide } from '../../svgs/ribbon-up-side.svg'
 import Laurel from '../Laurel'
-import { RibbonText, VisuallyHiddenRibbonText } from './RibbonText'
+import { HeadingText, VisuallyHiddenHeadingText } from '../CompetitionHeading'
 
 const Wrapper = styled(Flex)`
   position: relative;
@@ -66,26 +67,34 @@ const LaurelWrapper = styled.div<{ dir?: 'l' | 'r' }>`
       transform: rotate(30deg);`}
 `
 
-export const RibbonDown = ({ children }) => {
-  return (
-    <Wrapper>
-      <LeftSideRibbon width="32px" />
-      <LaurelWrapper dir="l">
-        <Laurel dir="l" />
-      </LaurelWrapper>
-      <div>
-        <ExpandingRibbonDownMid preserveAspectRatio="none" />
-        <VisuallyHiddenRibbonText p="0 30px">{children}</VisuallyHiddenRibbonText>
-      </div>
-      <TextWrapper>
-        <RibbonText p="0 30px">{children}</RibbonText>
-      </TextWrapper>
-      <LaurelWrapper dir="r">
-        <Laurel dir="r" />
-      </LaurelWrapper>
-      <RightSideRibbon width="32px" />
-    </Wrapper>
-  )
+const Ribbon: React.FC<RibbonProps> = ({ children, ribbonDirection }) => {
+  const RibbonDown = () => {
+    return (
+      <Wrapper>
+        <LeftSideRibbon width="32px" />
+        <LaurelWrapper dir="l">
+          <Laurel dir="l" />
+        </LaurelWrapper>
+        <div>
+          <ExpandingRibbonDownMid preserveAspectRatio="none" />
+          <VisuallyHiddenHeadingText p="0 30px">{children}</VisuallyHiddenHeadingText>
+        </div>
+        <TextWrapper>
+          <HeadingText p="0 30px">{children}</HeadingText>
+        </TextWrapper>
+        <LaurelWrapper dir="r">
+          <Laurel dir="r" />
+        </LaurelWrapper>
+        <RightSideRibbon width="32px" />
+      </Wrapper>
+    )
+  }
+
+  const RibbonUp = () => {
+    return <span>up</span>
+  }
+
+  return ribbonDirection === 'up' ? <RibbonUp /> : <RibbonDown />
 }
 
-export default RibbonDown
+export default Ribbon
