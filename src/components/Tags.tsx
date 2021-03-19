@@ -1,28 +1,41 @@
 import React from 'react'
 import { Tag, VerifiedIcon, CommunityIcon, BinanceIcon } from '@pancakeswap-libs/uikit'
+import useTheme from '../hooks/useTheme'
 
-const CoreTag = (props) => (
-  <Tag variant="secondary" outline startIcon={<VerifiedIcon />} {...props}>
-    Core
-  </Tag>
-)
+const CoreTag = (props) => {
+  const { isDark } = useTheme()
+  return (
+    <Tag variant="secondary" outline={!isDark} startIcon={<VerifiedIcon />} {...props}>
+      Core
+    </Tag>
+  )
+}
 
-const CommunityTag = (props) => (
-  <Tag variant="textSubtle" outline startIcon={<CommunityIcon />} {...props}>
-    Community
-  </Tag>
-)
+const CommunityTag = (props) => {
+  const { isDark } = useTheme()
+  return (
+    <Tag variant="textSubtle" outline={!isDark} startIcon={<CommunityIcon />} {...props}>
+      Community
+    </Tag>
+  )
+}
 
-const BinanceTag = (props) => (
-  <Tag variant="binance" outline startIcon={<BinanceIcon />} {...props}>
-    Binance
-  </Tag>
-)
+const BinanceTag = (props) => {
+  const { isDark } = useTheme()
+  return (
+    <Tag variant="binance" outline={!isDark} startIcon={<BinanceIcon />} {...props}>
+      Binance
+    </Tag>
+  )
+}
 
-const DualTag = (props) => (
-  <Tag variant="textSubtle" outline {...props}>
-    Dual
-  </Tag>
-)
+const DualTag = (props) => {
+  const { isDark } = useTheme()
+  return (
+    <Tag variant="textSubtle" outline={!isDark} {...props}>
+      Dual
+    </Tag>
+  )
+}
 
 export { CoreTag, CommunityTag, BinanceTag, DualTag }
