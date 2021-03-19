@@ -16,9 +16,10 @@ const LotteryJackpot = () => {
   })
   const cakePrice = usePriceCakeBusd()
 
-  const lotteryPrizeAmountBusd = Number.isNaN(cakePrice.toNumber()) || Number.isNaN(balance)
-    ? 0
-    : new BigNumber(balance).multipliedBy(cakePrice).toNumber()
+  const lotteryPrizeAmountBusd =
+    Number.isNaN(cakePrice.toNumber()) || Number.isNaN(balance)
+      ? 0
+      : new BigNumber(balance).multipliedBy(cakePrice).toNumber()
 
   return (
     <>
