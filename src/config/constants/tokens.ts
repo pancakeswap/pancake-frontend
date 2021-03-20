@@ -876,6 +876,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://ptokens.io/',
   },
+  pbtc: {
+    symbol: 'pBTC',
+    address: {
+      56: '0xed28a457a5a76596ac48d87c0f577020f6ea1c4c',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://ptokens.io/',
+  },
 }
 
 export default tokens
