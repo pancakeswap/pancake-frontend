@@ -7,6 +7,7 @@ interface SectionProps {
   backgroundStyle?: string
   svgFill?: string
   index?: number
+  intersectComponent?: React.ReactNode
 }
 
 const BackgroundColorWrapper = styled(Flex)<SectionProps>`
@@ -29,6 +30,7 @@ const BackgroundColorWrapper = styled(Flex)<SectionProps>`
 `
 
 const IntersectWrapper = styled.div<SectionProps>`
+  position: relative;
   display: flex;
   align-items: center;
   z-index: -${({ index }) => index};
@@ -44,13 +46,29 @@ const IntersectWrapper = styled.div<SectionProps>`
   }
 `
 
-const Section: React.FC<SectionProps> = ({ children, backgroundStyle = '#faf9fa', svgFill = '#faf9fa', index = 1 }) => {
+const IntersectComponentWrapper = styled.div`
+  width: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 5;
+  transform: translate(-50%, -50%);
+`
+
+const Section: React.FC<SectionProps> = ({
+  children,
+  backgroundStyle = '#faf9fa',
+  svgFill = '#faf9fa',
+  index = 1,
+  intersectComponent = null,
+}) => {
   return (
     <>
       <BackgroundColorWrapper backgroundStyle={backgroundStyle} index={index}>
         {children}
       </BackgroundColorWrapper>
       <IntersectWrapper svgFill={svgFill} index={index}>
+        {intersectComponent && <IntersectComponentWrapper>{intersectComponent}</IntersectComponentWrapper>}
         <BottomIntersect width="100%" />
       </IntersectWrapper>
     </>
