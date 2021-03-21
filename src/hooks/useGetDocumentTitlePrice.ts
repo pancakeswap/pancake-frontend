@@ -1,6 +1,5 @@
 import { useEffect } from 'react'
 import { usePriceCakeBusd } from 'state/hooks'
-import { BigNumber } from 'bignumber.js'
 
 const useGetDocumentTitlePrice = () => {
   const cakePriceUsdNumber = usePriceCakeBusd().toNumber()
