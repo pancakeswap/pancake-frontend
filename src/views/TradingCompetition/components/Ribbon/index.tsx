@@ -18,6 +18,10 @@ const Wrapper = styled(Flex)<{ ribbonDirection?: 'up' | 'down' }>`
   display: inline-flex;
   align-items: ${({ ribbonDirection }) => (ribbonDirection === 'up' ? 'flex-end' : 'flex-start')};
   justify-content: center;
+
+  svg {
+    z-index: 200;
+  }
 `
 
 const TextWrapper = styled(Flex)`
