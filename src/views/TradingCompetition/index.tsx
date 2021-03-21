@@ -15,11 +15,11 @@ const TradingCompetition = () => {
           Prizes
         </RibbonWithImage>
       </Section>
-      <Section>
+      {/* <Section>
         <RibbonWithImage imageComponent={<Ranks width="175px" />} ribbonDirection="down">
           Team Ranks
         </RibbonWithImage>
-      </Section>
+      </Section> */}
     </Page>
   )
 }

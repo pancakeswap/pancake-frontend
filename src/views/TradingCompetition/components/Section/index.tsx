@@ -9,23 +9,32 @@ const Wrapper = styled(Flex)`
   flex-direction: column;
 `
 
+const Background = styled.div`
+  z-index: -1;
+  padding-top: 32px;
+  background-color: ${({ theme }) => theme.colors.text};
+  height: 100%;
+  position: absolute;
+  left: -24px;
+  bottom: 0;
+  width: calc(100% + 48px);
+`
+
 const IntersectWrapper = styled.div`
   z-index: -1;
   position: absolute;
-  left: -32px;
+  left: -24px;
   bottom: -50%;
   transform: translate(0%, 50%);
-  width: calc(100% + 32px);
+  width: calc(100% + 48px);
 `
-
-const IntersectSpacer = styled.div``
 
 const Section = ({ children }) => {
   return (
     <>
       <Wrapper>
         {children}
-        <IntersectSpacer />
+        <Background />
         <IntersectWrapper>
           <BottomIntersect width="100%" />
         </IntersectWrapper>
