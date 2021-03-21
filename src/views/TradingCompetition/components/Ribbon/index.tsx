@@ -11,7 +11,7 @@ import {
   RibbonDownLeftSide,
   RibbonUpLeftSide,
 } from './RibbonStyles'
-import { HeadingText, VisuallyHiddenHeadingText } from '../CompetitionHeadingText'
+import { Heading2Text, VisuallyHiddenHeading2Text } from '../CompetitionHeadingText'
 
 const Wrapper = styled(Flex)<{ ribbonDirection?: 'up' | 'down' }>`
   position: relative;
@@ -69,10 +69,10 @@ const Ribbon: React.FC<RibbonProps> = ({ children, ribbonDirection }) => {
         </LaurelWrapper>
         <div>
           <RibbonDownMidExpanding preserveAspectRatio="none" />
-          <VisuallyHiddenHeadingText p="0 30px">{children}</VisuallyHiddenHeadingText>
+          <VisuallyHiddenHeading2Text p="0 30px">{children}</VisuallyHiddenHeading2Text>
         </div>
         <TextWrapper>
-          <HeadingText p="0 30px">{children}</HeadingText>
+          <Heading2Text p="0 30px">{children}</Heading2Text>
         </TextWrapper>
         <LaurelWrapper dir="r">
           <StyledLaurel dir="r" />
@@ -91,10 +91,10 @@ const Ribbon: React.FC<RibbonProps> = ({ children, ribbonDirection }) => {
         </LaurelWrapper>
         <div>
           <RibbonUpMidExpanding preserveAspectRatio="none" />
-          <VisuallyHiddenHeadingText p="0 30px">{children}</VisuallyHiddenHeadingText>
+          <VisuallyHiddenHeading2Text p="0 30px">{children}</VisuallyHiddenHeading2Text>
         </div>
         <TextWrapper>
-          <HeadingText p="0 30px">{children}</HeadingText>
+          <Heading2Text p="0 30px">{children}</Heading2Text>
         </TextWrapper>
         <LaurelWrapper dir="r">
           <StyledLaurel dir="r" />

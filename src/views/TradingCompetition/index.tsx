@@ -8,7 +8,14 @@ import RibbonWithImage from './components/RibbonWithImage'
 import Section from './components/Section'
 import Prizes from './svgs/Prizes'
 import Ranks from './svgs/Ranks'
-import { DARKBG, DARKFILL, MIDBLUEBG, MIDBLUEFILL } from './components/Section/sectionStyles'
+import {
+  DARKBG,
+  DARKFILL,
+  MIDBLUEBG,
+  MIDBLUEFILL,
+  LIGHTBLUEBG,
+  LIGHTBLUEFILL,
+} from './components/Section/sectionStyles'
 
 const TradingCompetition = () => {
   return (
@@ -28,6 +35,7 @@ const TradingCompetition = () => {
           </RibbonWithImage>
         }
       />
+      <Section backgroundStyle={LIGHTBLUEBG} svgFill={LIGHTBLUEFILL} index={3} />
     </Page>
   )
 }
