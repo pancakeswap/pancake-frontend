@@ -25,7 +25,7 @@ const TradingCompetition = () => {
           Prizes
         </RibbonWithImage>
       </Section>
-      <Section
+      {/* <Section
         backgroundStyle={MIDBLUEBG}
         svgFill={MIDBLUEFILL}
         index={2}
@@ -34,8 +34,17 @@ const TradingCompetition = () => {
             Team Ranks
           </RibbonWithImage>
         }
-      />
-      <Section backgroundStyle={LIGHTBLUEBG} svgFill={LIGHTBLUEFILL} index={3} />
+      /> */}
+      <Section backgroundStyle={LIGHTBLUEBG} svgFill={LIGHTBLUEFILL} index={5}>
+        <RibbonWithImage imageComponent={<Prizes width="175px" />} ribbonDirection="up">
+          Light blue
+        </RibbonWithImage>
+      </Section>
+      <Section index={3} intersectionPosition="top">
+        <RibbonWithImage imageComponent={<Prizes width="175px" />} ribbonDirection="up">
+          Intersect top
+        </RibbonWithImage>
+      </Section>
     </Page>
   )
 }

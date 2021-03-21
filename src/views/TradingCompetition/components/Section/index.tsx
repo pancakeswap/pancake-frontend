@@ -7,25 +7,24 @@ interface SectionProps {
   backgroundStyle?: string
   svgFill?: string
   index?: number
+  intersectionPosition?: 'top' | 'bottom'
   intersectComponent?: React.ReactNode
 }
 
 const BackgroundColorWrapper = styled(Flex)<SectionProps>`
-  z-index: -${({ index }) => index};
-  padding-top: 48px;
   position: relative;
-  background: ${({ backgroundStyle }) => backgroundStyle};
   flex-direction: column;
+  z-index: -${({ index }) => index};
+  background: ${({ backgroundStyle }) => backgroundStyle};
 
-  margin: -34px -16px;
+  padding-top: ${({ intersectionPosition }) => (intersectionPosition === 'top' ? '6px' : '48px')};
+  margin: ${({ intersectionPosition }) => (intersectionPosition === 'top' ? '0' : '-34px')} -16px;
 
   ${({ theme }) => theme.mediaQueries.sm} {
-    margin: -42px -24px;
+    margin: ${({ intersectionPosition }) => (intersectionPosition === 'top' ? '0' : '-42px')} -24px;
   }
 
   ${({ theme }) => theme.mediaQueries.lg} {
-    /* margin: -34px -100%;
-    overflow: hidden; */
   }
 `
 
@@ -33,16 +32,17 @@ const IntersectWrapper = styled.div<SectionProps>`
   position: relative;
   display: flex;
   align-items: center;
+  width: calc(100% + 48px);
   z-index: -${({ index }) => index};
+
   svg {
     fill: ${({ svgFill }) => svgFill};
     z-index: -${({ index }) => index};
   }
-  margin: 33px -24px 0;
-  width: calc(100% + 48px);
+  margin: ${({ intersectionPosition }) => (intersectionPosition === 'top' ? '-33px' : '33px')} -16px 0;
 
   ${({ theme }) => theme.mediaQueries.sm} {
-    margin: 41px -24px 0;
+    margin: ${({ intersectionPosition }) => (intersectionPosition === 'top' ? '-41px' : '41px')} -24px 0;
   }
 `
 
@@ -60,17 +60,30 @@ const Section: React.FC<SectionProps> = ({
   backgroundStyle = '#faf9fa',
   svgFill = '#faf9fa',
   index = 1,
-  intersectComponent = null,
+  intersectComponent,
+  intersectionPosition = 'bottom',
 }) => {
   return (
     <>
-      <BackgroundColorWrapper backgroundStyle={backgroundStyle} index={index}>
+      {intersectionPosition === 'top' && (
+        <IntersectWrapper svgFill={svgFill} index={index} intersectionPosition={intersectionPosition}>
+          {intersectComponent && <IntersectComponentWrapper>{intersectComponent}</IntersectComponentWrapper>}
+          <TopIntersect width="100%" />
+        </IntersectWrapper>
+      )}
+      <BackgroundColorWrapper
+        backgroundStyle={backgroundStyle}
+        index={index}
+        intersectionPosition={intersectionPosition}
+      >
         {children}
       </BackgroundColorWrapper>
-      <IntersectWrapper svgFill={svgFill} index={index}>
-        {intersectComponent && <IntersectComponentWrapper>{intersectComponent}</IntersectComponentWrapper>}
-        <BottomIntersect width="100%" />
-      </IntersectWrapper>
+      {intersectionPosition === 'bottom' && (
+        <IntersectWrapper svgFill={svgFill} index={index}>
+          {intersectComponent && <IntersectComponentWrapper>{intersectComponent}</IntersectComponentWrapper>}
+          <BottomIntersect width="100%" />
+        </IntersectWrapper>
+      )}
     </>
   )
 }
