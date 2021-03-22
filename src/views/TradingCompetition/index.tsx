@@ -18,6 +18,10 @@ import {
 } from './components/Section/sectionStyles'
 
 const TradingCompetition = () => {
+  const { account } = useWeb3React()
+  const { profile } = useProfile()
+  const registered = true
+
   return (
     <Page>
       <Section backgroundStyle={DARKBG} svgFill={DARKFILL} index={1}>
