@@ -19,6 +19,10 @@ import {
 } from './components/Section/sectionStyles'
 
 const TradingCompetition = () => {
+  const { account } = useWeb3React()
+  const { profile } = useProfile()
+  const registered = true
+
   return (
     <Page>
       {/* <YourScore registered={registered} account={account} profile={profile} /> */}
