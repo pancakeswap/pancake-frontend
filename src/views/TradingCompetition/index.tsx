@@ -39,7 +39,7 @@ const CompetitionPage = styled.div`
 const TradingCompetition = () => {
   const { account } = useWeb3React()
   const { profile } = useProfile()
-  const registered = true
+  const registered = false
   const isCompetitionLive = false
 
   return (
