@@ -1,7 +1,7 @@
 import React from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { useProfile } from 'state/hooks'
-import { Card, CardHeader, CardBody } from '@pancakeswap-libs/uikit'
+import { Card, CardHeader, CardBody, Button, Flex } from '@pancakeswap-libs/uikit'
 import Page from 'components/layout/Page'
 import styled from 'styled-components'
 import RibbonWithImage from './components/RibbonWithImage'
@@ -21,7 +21,14 @@ import {
 const SampleCard = () => (
   <Card>
     <CardHeader>A header</CardHeader>
-    <CardBody>Some body stuff</CardBody>
+    <CardBody>
+      <Flex flexDirection="column">
+        Some body stuff{' '}
+        <Button mt="8px" onClick={() => console.log('clicked')}>
+          Click me
+        </Button>
+      </Flex>
+    </CardBody>
   </Card>
 )
 
@@ -33,10 +40,18 @@ const TradingCompetition = () => {
   const { account } = useWeb3React()
   const { profile } = useProfile()
   const registered = true
+  const isCompetitionLive = false
 
   return (
     <CompetitionPage>
-      <Section backgroundStyle={DARKBG} svgFill={DARKFILL} index={1} intersectComponent={<BattleCta />}>
+      <Section
+        backgroundStyle={DARKBG}
+        svgFill={DARKFILL}
+        index={1}
+        intersectComponent={
+          <BattleCta registered={registered} account={account} isCompetitionLive={isCompetitionLive} />
+        }
+      >
         <SampleCard />
       </Section>
       <Section backgroundStyle={MIDBLUEBG} svgFill={MIDBLUEFILL} index={2} intersectComponent={<SampleCard />} />
@@ -46,6 +61,7 @@ const TradingCompetition = () => {
         </RibbonWithImage>
       </Section>
       <Section index={3} intersectionPosition="top">
+        <SampleCard />
         <RibbonWithImage imageComponent={<Prizes width="175px" />} ribbonDirection="up">
           Intersect top
         </RibbonWithImage>

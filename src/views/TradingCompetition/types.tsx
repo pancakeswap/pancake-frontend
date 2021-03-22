@@ -3,7 +3,8 @@ import { Profile } from 'state/types'
 export interface CompetitionProps {
   registered?: boolean
   account?: string
-  profile: Profile
+  profile?: Profile
+  isCompetitionLive?: boolean
 }
 
 export interface YourScoreProps extends CompetitionProps {

@@ -1,7 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Card, CardBody, Flex, LaurelLeftIcon, LaurelRightIcon, Button } from '@pancakeswap-libs/uikit'
+import useI18n from 'hooks/useI18n'
 import { Heading2Text } from '../CompetitionHeadingText'
+import { CompetitionProps } from '../../types'
 
 const StyledCard = styled(Card)`
   display: inline-flex;
@@ -17,17 +19,26 @@ const StyledCard = styled(Card)`
 
 const StyledButton = styled(Button)`
   margin: 16px 20px 0;
+  z-index: 200;
 `
 
-const BattleCta = () => {
+const BattleCta: React.FC<CompetitionProps> = ({ registered, account, isCompetitionLive }) => {
+  const TranslateString = useI18n()
+
+  const handleCtaClick = () => {
+    console.log('clicked')
+  }
+
   return (
     <StyledCard>
       <CardBody>
         <Flex flexDirection="column" justifyContent="center" alignItems="center">
-          <Heading2Text>Starting Soon</Heading2Text>
+          <Heading2Text>
+            {isCompetitionLive ? TranslateString(999, 'Now Live!') : TranslateString(999, 'Starting Soon')}
+          </Heading2Text>
           <Flex alignItems="flex-end">
             <LaurelLeftIcon />
-            <StyledButton>Sample</StyledButton>
+            <StyledButton onClick={() => handleCtaClick()}>Sample</StyledButton>
             <LaurelRightIcon />
           </Flex>
         </Flex>
