@@ -20,7 +20,7 @@ const StyledText = styled(Text)<TextProps>`
     if (isDisabled) {
       return theme.colors.textDisabled
     }
-    if (!color) {
+    if (color !== Balance.defaultProps.color) {
       return color
     }
     return theme.colors.text
