@@ -1,7 +1,7 @@
 import React from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { useProfile } from 'state/hooks'
-import { Card, CardHeader, CardBody, Button, Flex } from '@pancakeswap-libs/uikit'
+import { Card, CardHeader, CardBody, Flex, Button } from '@pancakeswap-libs/uikit'
 import Page from 'components/layout/Page'
 import styled from 'styled-components'
 import RibbonWithImage from './components/RibbonWithImage'
@@ -47,15 +47,15 @@ const TradingCompetition = () => {
       <Section
         backgroundStyle={DARKBG}
         svgFill={DARKFILL}
-        index={1}
+        index={4}
         intersectComponent={
           <BattleCta registered={registered} account={account} isCompetitionLive={isCompetitionLive} />
         }
       >
         <SampleCard />
       </Section>
-      <Section backgroundStyle={MIDBLUEBG} svgFill={MIDBLUEFILL} index={2} intersectComponent={<SampleCard />} />
-      <Section backgroundStyle={LIGHTBLUEBG} svgFill={LIGHTBLUEFILL} index={3}>
+      <Section backgroundStyle={MIDBLUEBG} svgFill={MIDBLUEFILL} index={3} intersectComponent={<SampleCard />} />
+      <Section backgroundStyle={LIGHTBLUEBG} svgFill={LIGHTBLUEFILL} index={2}>
         <RibbonWithImage imageComponent={<Prizes width="175px" />} ribbonDirection="down">
           Light blue
         </RibbonWithImage>

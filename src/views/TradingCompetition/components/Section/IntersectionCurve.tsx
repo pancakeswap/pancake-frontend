@@ -1,0 +1,40 @@
+import React from 'react'
+import styled from 'styled-components'
+import { SectionProps } from '../../types'
+import { TopIntersectSvg, BottomIntersectSvg } from './StyledIntersect'
+
+const IntersectWrapper = styled.div<SectionProps>`
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  z-index: ${({ index }) => index};
+
+  svg {
+    fill: ${({ svgFill }) => svgFill};
+  }
+
+  margin: ${({ intersectionPosition }) => (intersectionPosition === 'top' ? '-32px' : '32px')} 0 0;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    margin: ${({ intersectionPosition }) => (intersectionPosition === 'top' ? '-40px' : '40px')} 0 0;
+  }
+`
+
+const IntersectComponentWrapper = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`
+
+const IntersectionCurve: React.FC<SectionProps> = ({ svgFill, index, intersectionPosition, intersectComponent }) => {
+  return (
+    <IntersectWrapper svgFill={svgFill} index={index} intersectionPosition={intersectionPosition}>
+      {intersectComponent && <IntersectComponentWrapper>{intersectComponent}</IntersectComponentWrapper>}
+      {intersectionPosition === 'top' ? <TopIntersectSvg width="100%" /> : <BottomIntersectSvg width="100%" />}
+    </IntersectWrapper>
+  )
+}
+
+export default IntersectionCurve

@@ -7,11 +7,11 @@ svg {
   }
 `
 
-export const TopIntersect = styled(Intersect)`
+export const TopIntersectSvg = styled(Intersect)`
   ${sharedStyles}
   transform: rotate(180deg);
 `
 
-export const BottomIntersect = styled(Intersect)`
+export const BottomIntersectSvg = styled(Intersect)`
   ${sharedStyles}
 `
