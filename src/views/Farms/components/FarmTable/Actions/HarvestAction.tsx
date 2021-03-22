@@ -42,13 +42,11 @@ const HarvestAction: React.FunctionComponent<FarmWithStakedValue> = ({ pid, user
     updateValue.current(earningsBusd)
   }, [earningsBusd, updateValue])
 
-  const tokenEarnedString = TranslateString(330, 'CAKE Earned', { asset: 'CAKE' }).split(' ')
-
   return (
     <ActionContainer>
       <ActionTitles>
-        <Title>{tokenEarnedString[0]} </Title>
-        <Subtle>{tokenEarnedString[1]}</Subtle>
+        <Title>CAKE </Title>
+        <Subtle>{TranslateString(999, 'EARNED')}</Subtle>
       </ActionTitles>
       <ActionContent>
         <div>
@@ -64,7 +62,7 @@ const HarvestAction: React.FunctionComponent<FarmWithStakedValue> = ({ pid, user
           }}
           ml="4px"
         >
-          {TranslateString(999, 'Harvest')}
+          {TranslateString(562, 'Harvest')}
         </Button>
       </ActionContent>
     </ActionContainer>
