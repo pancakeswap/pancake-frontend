@@ -111,8 +111,8 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed, cakePrice, account }
   const farmAPY = farm.apy && farm.apy.toLocaleString('en-US', { maximumFractionDigits: 2 })
 
   const liquidityUrlPathParts = getLiquidityUrlPathParts({
-    quoteTokenAdresses: farm.quoteToken.address,
-    tokenAddresses: farm.token.address,
+    quoteTokenAddress: farm.quoteToken.address,
+    tokenAddress: farm.token.address,
   })
   const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
 
