@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Text from "../Text/Text";
 import bunnyHeadMain from "./svg/bunnyhead-main.svg";
 import bunnyHeadMax from "./svg/bunnyhead-max.svg";
+import bunnyButt from "./svg/bunnybutt.svg";
 
 interface SliderLabelProps {
   progress: number;
@@ -12,6 +13,29 @@ interface StyledInputProps extends InputHTMLAttributes<HTMLInputElement> {
   isMax: boolean;
 }
 
+interface DisabledProp {
+  disabled?: boolean;
+}
+
+const getCursorStyle = ({ disabled = false }: DisabledProp) => {
+  return disabled ? "not-allowed" : "cursor";
+};
+
+const getBaseThumbStyles = ({ isMax, disabled }: StyledInputProps) => `
+  -webkit-appearance: none;
+  background-image: url(${isMax ? bunnyHeadMax : bunnyHeadMain});
+  cursor: ${getCursorStyle};
+  width: 24px;
+  height: 32px;
+  filter: ${disabled ? "grayscale(100%)" : "none"};
+  transform: translate(-2px, -2px);
+  transition: 200ms transform;
+
+  &:hover {
+    transform: ${disabled ? "scale(1) translate(-2px, -2px)" : "scale(1.1) translate(-3px, -3px)"};
+  }
+`;
+
 export const SliderLabel = styled(Text)<SliderLabelProps>`
   bottom: 0;
   font-size: 12px;
@@ -20,32 +44,22 @@ export const SliderLabel = styled(Text)<SliderLabelProps>`
   margin-left: 16px; // offset the bunny butt width
 `;
 
-export const BunnyButt = styled.img`
+export const BunnyButt = styled.div<DisabledProp>`
+  background: url(${bunnyButt}) no-repeat;
+  height: 32px;
+  filter: ${({ disabled }) => (disabled ? "grayscale(100%)" : "none")};
   position: absolute;
+  width: 15px;
 `;
 
 export const BunnySlider = styled.div`
   position: absolute;
   left: 14px;
-  width: 100%;
-`;
-
-const getBaseThumbStyles = ({ isMax }: StyledInputProps) => `
--webkit-appearance: none;
-  background-image: url(${isMax ? bunnyHeadMax : bunnyHeadMain});
-  width: 24px;
-  height: 32px;
-  cursor: pointer;
-  transform: translate(-2px, -2px);
-  transition: 0.1s all;
-
-  :hover {
-    transform: scale(1.1) translate(-3px, -3px);
-  }
+  width: calc(100% - 14px);
 `;
 
 export const StyledInput = styled.input<StyledInputProps>`
-  cursor: pointer;
+  cursor: ${getCursorStyle};
   height: 32px;
   position: relative;
 
@@ -53,6 +67,7 @@ export const StyledInput = styled.input<StyledInputProps>`
     -webkit-appearance: none;
     ${getBaseThumbStyles}
   }
+
   ::-moz-range-thumb {
     ${getBaseThumbStyles}
 
@@ -65,18 +80,18 @@ export const StyledInput = styled.input<StyledInputProps>`
   }
 `;
 
-export const BarBackground = styled.div`
-  position: absolute;
-  width: 100%;
+export const BarBackground = styled.div<DisabledProp>`
+  background-color: ${({ theme, disabled }) => theme.colors[disabled ? "textDisabled" : "inputSecondary"]};
   height: 2px;
+  position: absolute;
   top: 18px;
-  background-color: ${({ theme }) => theme.colors.inputSecondary};
+  width: 100%;
 `;
 
-export const BarProgress = styled.div<{ progress: number; isMax: boolean }>`
-  position: absolute;
+export const BarProgress = styled.div<DisabledProp>`
+  background-color: ${({ theme }) => theme.colors.primary};
+  filter: ${({ disabled }) => (disabled ? "grayscale(100%)" : "none")};
   height: 10px;
+  position: absolute;
   top: 18px;
-
-  background: ${({ theme }) => theme.colors.primary};
 `;

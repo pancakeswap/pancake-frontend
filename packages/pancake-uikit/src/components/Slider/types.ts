@@ -8,5 +8,5 @@ export default interface SliderProps extends BoxProps {
   step?: number | "any";
   onValueChanged: (newValue: number) => void;
   valueLabel?: string;
-  isDisabled?: boolean;
+  disabled?: boolean;
 }

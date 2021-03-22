@@ -14,7 +14,7 @@ export default {
 
 const Col = styled(Flex)`
   flex-direction: column;
-  width: 300px;
+  width: 420px;
 `;
 
 const SliderVariant = ({ initialValue }: { initialValue: number }) => {
@@ -53,7 +53,7 @@ export const Variants: React.FC = () => {
 
   return (
     <Col>
-      <Slider name="sliderdisabled" value={value} onValueChanged={handleChange} min={1} max={20} isDisabled />
+      <Slider name="sliderdisabled" value={value} onValueChanged={handleChange} min={1} max={20} disabled />
     </Col>
   );
 };
