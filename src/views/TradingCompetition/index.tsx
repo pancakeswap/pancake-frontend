@@ -40,7 +40,7 @@ const TradingCompetition = () => {
         }
       /> */}
       <Section backgroundStyle={LIGHTBLUEBG} svgFill={LIGHTBLUEFILL} index={5}>
-        <RibbonWithImage imageComponent={<Prizes width="175px" />} ribbonDirection="up">
+        <RibbonWithImage imageComponent={<Prizes width="175px" />} ribbonDirection="down">
           Light blue
         </RibbonWithImage>
       </Section>
