@@ -879,7 +879,7 @@ const pools: PoolConfig[] = [
   {
     sousId: 18,
     stakingToken: tokens.cake,
-    earningToken: tokens.blk,
+    earningToken: tokens.blink,
     contractAddress: {
       97: '',
       56: '0x42Afc29b2dEa792974d1e9420696870f1Ca6d18b',
@@ -893,7 +893,7 @@ const pools: PoolConfig[] = [
   {
     sousId: 17,
     stakingToken: tokens.cake,
-    earningToken: tokens.blk,
+    earningToken: tokens.blink,
     contractAddress: {
       97: '',
       56: '0xBb2B66a2c7C2fFFB06EA60BeaD69741b3f5BF831',
