@@ -8,13 +8,13 @@ const CoreTag = (props) => (
 )
 
 const CommunityTag = (props) => (
-  <Tag variant="secondary" outline startIcon={<VerifiedIcon color="secondary" />} {...props}>
+  <Tag variant="textSubtle" outline startIcon={<CommunityIcon color="secondary"/>} {...props}>
     Community
   </Tag>
 )
 
 const BinanceTag = (props) => (
-  <Tag variant="secondary" outline startIcon={<VerifiedIcon color="secondary" />} {...props}>
+  <Tag variant="binance" outline startIcon={<BinanceIcon color="secondary"/>} {...props}>
     Binance
   </Tag>
 )
