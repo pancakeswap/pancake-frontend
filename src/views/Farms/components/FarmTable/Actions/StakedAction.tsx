@@ -36,8 +36,8 @@ const Staked: React.FunctionComponent<FarmWithStakedValue> = ({ pid, lpSymbol, l
 
   const lpAddress = lpAddresses[process.env.REACT_APP_CHAIN_ID]
   const liquidityUrlPathParts = getLiquidityUrlPathParts({
-    quoteTokenAdresses: quoteToken.address,
-    tokenAddresses: token.address,
+    quoteTokenAddress: quoteToken.address,
+    tokenAddress: token.address,
   })
   const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
   const rawStakedBalance = getBalanceNumber(stakedBalance)
