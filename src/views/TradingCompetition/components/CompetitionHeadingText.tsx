@@ -4,6 +4,7 @@ import styled from 'styled-components'
 const sharedH1Styles = (theme) => `
 font-size: 48px;
 line-height: 110%;
+white-space: nowrap;
 
 ${theme.mediaQueries.sm} {
   font-size: 64px;
@@ -13,6 +14,7 @@ ${theme.mediaQueries.sm} {
 const sharedH2Styles = (theme) => `
 font-size: 32px;
 line-height: 110%;
+white-space: nowrap;
 
 ${theme.mediaQueries.sm} {
   font-size: 40px

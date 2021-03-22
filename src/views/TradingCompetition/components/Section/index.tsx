@@ -18,13 +18,10 @@ const BackgroundColorWrapper = styled(Flex)<SectionProps>`
   background: ${({ backgroundStyle }) => backgroundStyle};
 
   padding-top: ${({ intersectionPosition }) => (intersectionPosition === 'top' ? '6px' : '48px')};
-  margin: ${({ intersectionPosition }) => (intersectionPosition === 'top' ? '0' : '-34px')} -16px;
+  margin: ${({ intersectionPosition }) => (intersectionPosition === 'top' ? '0' : '-34px')} 0;
 
   ${({ theme }) => theme.mediaQueries.sm} {
-    margin: ${({ intersectionPosition }) => (intersectionPosition === 'top' ? '0' : '-42px')} -24px;
-  }
-
-  ${({ theme }) => theme.mediaQueries.lg} {
+    margin: ${({ intersectionPosition }) => (intersectionPosition === 'top' ? '0' : '-42px')} 0;
   }
 `
 
@@ -32,27 +29,43 @@ const IntersectWrapper = styled.div<SectionProps>`
   position: relative;
   display: flex;
   align-items: center;
-  width: calc(100% + 48px);
+  width: 100%;
   z-index: -${({ index }) => index};
 
   svg {
     fill: ${({ svgFill }) => svgFill};
     z-index: -${({ index }) => index};
   }
-  margin: ${({ intersectionPosition }) => (intersectionPosition === 'top' ? '-33px' : '33px')} -16px 0;
+
+  margin: ${({ intersectionPosition }) => (intersectionPosition === 'top' ? '-32px' : '32px')} 0 0;
 
   ${({ theme }) => theme.mediaQueries.sm} {
-    margin: ${({ intersectionPosition }) => (intersectionPosition === 'top' ? '-41px' : '41px')} -24px 0;
+    margin: ${({ intersectionPosition }) => (intersectionPosition === 'top' ? '-40px' : '40px')} 0 0;
   }
 `
 
 const IntersectComponentWrapper = styled.div`
-  width: 100%;
   position: absolute;
   top: 50%;
   left: 50%;
   z-index: 5;
   transform: translate(-50%, -50%);
+`
+
+const ChildrenWrapper = styled.div`
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1200px;
+  padding: 16px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    padding: 24px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
 `
 
 const Section: React.FC<SectionProps> = ({
@@ -76,7 +89,7 @@ const Section: React.FC<SectionProps> = ({
         index={index}
         intersectionPosition={intersectionPosition}
       >
-        {children}
+        <ChildrenWrapper>{children}</ChildrenWrapper>
       </BackgroundColorWrapper>
       {intersectionPosition === 'bottom' && (
         <IntersectWrapper svgFill={svgFill} index={index}>
