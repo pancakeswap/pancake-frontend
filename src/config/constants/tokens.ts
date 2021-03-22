@@ -435,8 +435,8 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://pancakeswap.finance/',
   },
-  blk: {
-    symbol: 'BLK',
+  blink: {
+    symbol: 'BLINK',
     address: {
       56: '0x63870a18b6e42b01ef1ad8a2302ef50b7132054f',
       97: '',
@@ -741,8 +741,8 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://tether.to/',
   },
-  btc: {
-    symbol: 'BTC',
+  btcb: {
+    symbol: 'BTCB',
     address: {
       56: '0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c',
       97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
