@@ -6,8 +6,12 @@ import { Heading2Text } from '../CompetitionHeadingText'
 const StyledCard = styled(Card)`
   display: inline-flex;
   background: linear-gradient(180deg, #7645d9 0%, #452a7a 100%);
+
   svg {
-    z-index: 0;
+    margin-bottom: 6px;
+    height: 32px;
+    width: auto;
+    fill: ${({ theme }) => theme.colors.warning};
   }
 `
 
@@ -21,7 +25,7 @@ const BattleCta = () => {
       <CardBody>
         <Flex flexDirection="column" justifyContent="center" alignItems="center">
           <Heading2Text>Starting Soon</Heading2Text>
-          <Flex>
+          <Flex alignItems="flex-end">
             <LaurelLeftIcon />
             <StyledButton>Sample</StyledButton>
             <LaurelRightIcon />
