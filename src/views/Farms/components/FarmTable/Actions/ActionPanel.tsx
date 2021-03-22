@@ -107,8 +107,8 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({ details, apr, 
   const { quoteToken, token, dual } = farm
   const lpLabel = farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('PANCAKE', '')
   const liquidityUrlPathParts = getLiquidityUrlPathParts({
-    quoteTokenAdresses: quoteToken.address,
-    tokenAddresses: token.address,
+    quoteTokenAddress: quoteToken.address,
+    tokenAddress: token.address,
   })
   const lpAddress = farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]
   const bsc = `https://bscscan.com/address/${lpAddress}`
