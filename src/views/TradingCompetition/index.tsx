@@ -25,11 +25,8 @@ const TradingCompetition = () => {
 
   return (
     <Page>
-      {/* <YourScore registered={registered} account={account} profile={profile} /> */}
       <Section backgroundStyle={DARKBG} svgFill={DARKFILL} index={1}>
-        <RibbonWithImage imageComponent={<Prizes width="175px" />} ribbonDirection="up">
-          Prizes
-        </RibbonWithImage>
+        <YourScore registered={registered} account={account} profile={profile} />
       </Section>
       {/* <Section
         backgroundStyle={MIDBLUEBG}

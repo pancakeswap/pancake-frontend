@@ -8,6 +8,7 @@ import { YourScoreProps } from '../../types'
 
 const Wrapper = styled.div`
   position: relative;
+  width: 100%;
   margin: 24px auto 0;
   max-width: 680px;
 `
