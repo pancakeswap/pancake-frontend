@@ -34,7 +34,6 @@ const IntersectWrapper = styled.div<SectionProps>`
 
   svg {
     fill: ${({ svgFill }) => svgFill};
-    z-index: -${({ index }) => index};
   }
 
   margin: ${({ intersectionPosition }) => (intersectionPosition === 'top' ? '-32px' : '32px')} 0 0;
