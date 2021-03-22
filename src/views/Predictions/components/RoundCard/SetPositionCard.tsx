@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { ChangeEventHandler, useEffect, useState } from 'react'
 import SwiperCore from 'swiper'
 import {
   ArrowBackIcon,
@@ -34,24 +34,42 @@ interface SetPositionCardProps {
 const dust = new BigNumber(0.01).times(new BigNumber(10).pow(18))
 const percentShortcuts = [10, 25, 50, 75]
 
+const getPercentDisplay = (percentage: number) => {
+  if (Number.isNaN(percentage)) {
+    return ''
+  }
+
+  if (percentage > 100) {
+    return ''
+  }
+
+  if (percentage < 0) {
+    return ''
+  }
+
+  return `${percentage.toLocaleString(undefined, { maximumFractionDigits: 1 })}%`
+}
+
 const SetPositionCard: React.FC<SetPositionCardProps> = ({ defaultPosition, onBack, swiperInstance }) => {
   const [position, setPosition] = useState<Position>(defaultPosition)
-  const [value, setValue] = useState(0)
+  const [value, setValue] = useState('')
+  const [isFieldWarning, setIsFieldWarning] = useState(false)
   const bnbBalance = useGetBnbBalance()
   const { account } = useWeb3React()
   const TranslateString = useI18n()
   const balanceDisplay = getBnbAmount(bnbBalance).toNumber()
   const maxBalance = getBnbAmount(bnbBalance.minus(dust)).toNumber()
-  const valueAsStr = value === 0 ? '' : value.toString()
-  const percentageOfMaxBalance = (value / maxBalance) * 100
+  const valueAsFloat = parseFloat(value)
+  const percentageOfMaxBalance = (valueAsFloat / maxBalance) * 100
+  const percentageDisplay = getPercentDisplay(percentageOfMaxBalance)
 
-  const handleChange = (evt) => {
+  const handleChange: ChangeEventHandler<HTMLInputElement> = (evt) => {
     const newValue = evt.target.value
     setValue(newValue)
   }
 
   const handleSliderChange = (newValue: number) => {
-    setValue(newValue)
+    setValue(newValue.toString())
   }
 
   const togglePosition = () => {
@@ -59,12 +77,12 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ defaultPosition, onBa
   }
 
   const setMax = () => {
-    setValue(maxBalance)
+    setValue(maxBalance.toString())
   }
 
   // Clear value
   const handleGoBack = () => {
-    setValue(0)
+    setValue('')
     onBack()
   }
 
@@ -80,6 +98,10 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ defaultPosition, onBa
     swiperInstance.mousewheel.enable()
     swiperInstance.attachEvents()
   }
+
+  useEffect(() => {
+    setIsFieldWarning(valueAsFloat > maxBalance)
+  }, [valueAsFloat, maxBalance, setIsFieldWarning])
 
   return (
     <Card onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}>
@@ -108,7 +130,12 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ defaultPosition, onBa
             </Text>
           </Flex>
         </Flex>
-        <BalanceInput value={valueAsStr} onChange={handleChange} inputProps={{ disabled: !account }} />
+        <BalanceInput
+          value={value}
+          onChange={handleChange}
+          isWarning={isFieldWarning}
+          inputProps={{ disabled: !account }}
+        />
         <Text textAlign="right" mb="16px" color="textSubtle" fontSize="12px" style={{ height: '18px' }}>
           {account && TranslateString(999, `Balance: ${balanceDisplay}`, { num: balanceDisplay })}
         </Text>
@@ -116,17 +143,16 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ defaultPosition, onBa
           name="balance"
           min={0}
           max={maxBalance}
-          value={value}
+          value={valueAsFloat <= maxBalance ? valueAsFloat : maxBalance}
           onValueChanged={handleSliderChange}
           mb="8px"
-          valueLabel={
-            account ? `${percentageOfMaxBalance.toLocaleString(undefined, { maximumFractionDigits: 2 })}%` : ''
-          }
+          valueLabel={account ? percentageDisplay : ''}
+          disabled={!account}
         />
         <Flex alignItems="center" justifyContent="space-between" mb="16px">
           {percentShortcuts.map((percent) => {
             const handleClick = () => {
-              setValue((percent / 100) * maxBalance)
+              setValue(((percent / 100) * maxBalance).toString())
             }
 
             return (
@@ -140,7 +166,13 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ defaultPosition, onBa
           </Button>
         </Flex>
         <Box mb="8px">
-          {account ? <Button width="100%">{TranslateString(464, 'Confirm')}</Button> : <UnlockButton width="100%" />}
+          {account ? (
+            <Button width="100%" disabled={isFieldWarning || valueAsFloat <= 0}>
+              {TranslateString(464, 'Confirm')}
+            </Button>
+          ) : (
+            <UnlockButton width="100%" />
+          )}
         </Box>
         <Text as="p" fontSize="12px" lineHeight={1} color="textSubtle">
           {TranslateString(999, "You won't be able to remove or change your position once you enter it.")}

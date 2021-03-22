@@ -1,4 +1,5 @@
 import React from 'react'
+import styled from 'styled-components'
 import { BlockIcon, CardBody, Flex, Text } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import { Round, Position } from 'state/types'
@@ -13,6 +14,15 @@ interface ExpiredRoundCardProps {
   round: Round
 }
 
+const StyledExpiredRoundCard = styled(Card)`
+  opacity: 0.7;
+  transition: opacity 300ms;
+
+  &:hover {
+    opacity: 1;
+  }
+`
+
 const ExpiredRoundCard: React.FC<ExpiredRoundCardProps> = ({ round }) => {
   const TranslateString = useI18n()
   const { endBlock, lockPrice, closePrice, bullAmount, bearAmount } = round
@@ -21,7 +31,7 @@ const ExpiredRoundCard: React.FC<ExpiredRoundCardProps> = ({ round }) => {
   const prizePool = bullAmount.plus(bearAmount)
 
   return (
-    <Card>
+    <StyledExpiredRoundCard>
       <CardHeader
         status="expired"
         icon={<BlockIcon mr="4px" width="21px" color="textDisabled" />}
@@ -57,7 +67,7 @@ const ExpiredRoundCard: React.FC<ExpiredRoundCardProps> = ({ round }) => {
           hasEntered={false}
         />
       </CardBody>
-    </Card>
+    </StyledExpiredRoundCard>
   )
 }
 
