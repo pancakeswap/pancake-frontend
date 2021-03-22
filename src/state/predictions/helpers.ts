@@ -2,13 +2,13 @@ import BigNumber from 'bignumber.js'
 import { random } from 'lodash'
 import { Round, RoundResponse } from 'state/types'
 
-const currentBlock = 5780730
-const totalRate = 200
+const currentBlock = 5897885
+const totalRate = 100
 
 export const transformRoundResponse = (roundResponse: RoundResponse): Round => {
   const base = 23140409205
-  const low = base * 0.95
-  const high = base * 1.05
+  const low = base * 0.9
+  const high = base * 1.15
   const { totalAmount, rewardBaseCalAmount, rewardAmount, ...rest } = roundResponse
 
   return {
@@ -28,8 +28,8 @@ export const getRound = (epoch: number): Promise<RoundResponse> => {
     setTimeout(() => {
       resolve({
         epoch,
-        startBlock: 6874205,
-        lockBlock: 6874225,
+        startBlock: 5893994,
+        lockBlock: 5894000,
         endBlock: currentBlock + totalRate,
         lockPrice: 23140409205,
         closePrice: 9,
@@ -47,16 +47,16 @@ export const getRound = (epoch: number): Promise<RoundResponse> => {
 export const getCurrentEpoch = (): Promise<number> => {
   return new Promise((resolve) => {
     setTimeout(() => {
-      resolve(95)
+      resolve(4)
     }, 100)
   })
 }
 
-export const makeFutureRound = (epoch: number, startBlock: number): RoundResponse => ({
+export const makeRound = (epoch: number, startBlock: number, endBlock: number): RoundResponse => ({
   epoch,
   startBlock,
+  endBlock,
   lockBlock: 0,
-  endBlock: 0,
   lockPrice: 0,
   closePrice: 0,
   totalAmount: 0,
@@ -67,29 +67,18 @@ export const makeFutureRound = (epoch: number, startBlock: number): RoundRespons
   oracleCalled: false,
 })
 
-export const getInitialRounds = async (roundRange = 3) => {
+export const getInitialRounds = async () => {
   const currentEpoch = await getCurrentEpoch()
-  const oldestEpoch = currentEpoch - roundRange
-  const roundPromises = []
+  const rounds = []
 
-  for (let i = currentEpoch; i >= oldestEpoch; i--) {
-    roundPromises.push(getRound(i))
+  let startBlock = currentBlock - 7 * totalRate
+  for (let i = 1; i <= 7; i++) {
+    const endBlock = startBlock + totalRate
+    rounds.push(makeRound(i, startBlock, endBlock))
+    startBlock = currentBlock - i * totalRate
   }
 
-  const [currentRound, ...pastRounds] = (await Promise.all(roundPromises)) as RoundResponse[]
-
-  // Add the same number of future rounds as past
-  const maxEpoch = currentEpoch + roundRange
-  const futureRounds = []
-
-  let roundNo = 0
-
-  for (let i = currentEpoch + 1; i <= maxEpoch; i++) {
-    futureRounds.push(makeFutureRound(i, currentRound.endBlock + roundNo * totalRate))
-    roundNo += 1
-  }
-
-  return { currentEpoch, rounds: [currentRound, ...pastRounds, ...futureRounds] }
+  return { currentEpoch, rounds }
 }
 
 export default getRound

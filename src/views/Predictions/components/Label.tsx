@@ -1,11 +1,12 @@
 import React, { useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import { Box, Card, Text } from '@pancakeswap-libs/uikit'
-import { useBnbUsdtTicker, useGetCurrentRound } from 'state/hooks'
+import { useGetCurrentRound } from 'state/hooks'
+import { useBnbUsdtTicker } from 'hooks/ticker'
 import BnbUsdtPairToken from '../icons/BnbUsdtPairToken'
 import PocketWatch from '../icons/PocketWatch'
 import useBlockCountdown from '../hooks/useGetBlockCountdown'
-import { padTime } from '../helpers'
+import { formatRoundTime } from '../helpers'
 
 enum PriceChange {
   UP = 'up',
@@ -71,15 +72,14 @@ interface TimerLabelProps {
 
 export const TimerLabel: React.FC<TimerLabelProps> = ({ interval }) => {
   const currentRound = useGetCurrentRound()
-  const { minutes, seconds } = useBlockCountdown(currentRound.endBlock)
-  const padMinute = padTime(minutes >= 0 ? minutes : 0)
-  const padSecond = padTime(seconds >= 0 ? seconds : 0)
+  const seconds = useBlockCountdown(currentRound.endBlock)
+  const countdown = formatRoundTime(seconds)
 
   return (
     <Box pr="24px" position="relative">
       <Label pl="16px" pr="32px">
         <Countdown bold fontSize="20px" color="secondary">
-          {`${padMinute}:${padSecond}`}
+          {countdown}
         </Countdown>
         <Text ml="8px" fontSize="12px">
           {interval}

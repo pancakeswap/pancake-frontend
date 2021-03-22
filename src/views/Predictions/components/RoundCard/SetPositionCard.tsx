@@ -143,11 +143,11 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ defaultPosition, onBa
           name="balance"
           min={0}
           max={maxBalance}
-          value={valueAsFloat <= maxBalance ? valueAsFloat : maxBalance}
+          value={valueAsFloat <= maxBalance ? valueAsFloat : 0}
           onValueChanged={handleSliderChange}
-          mb="8px"
           valueLabel={account ? percentageDisplay : ''}
           disabled={!account}
+          mb="4px"
         />
         <Flex alignItems="center" justifyContent="space-between" mb="16px">
           {percentShortcuts.map((percent) => {

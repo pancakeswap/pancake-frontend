@@ -3,6 +3,7 @@ import { orderBy } from 'lodash'
 import { RoundData } from 'state/types'
 import { DefaultTheme } from 'styled-components'
 import { getBalanceAmount } from 'utils/formatBalance'
+import getTimePeriods from 'utils/getTimePeriods'
 
 export const getUsdAmount = (usdBn: BigNumber) => {
   return getBalanceAmount(usdBn, 8)
@@ -46,6 +47,11 @@ export const sortRounds = (rounds: RoundData, currentEpoch: number) => {
 }
 
 export const padTime = (num: number) => num.toString().padStart(2, '0')
+
+export const formatRoundTime = (secondsBetweenBlocks: number) => {
+  const { minutes, seconds } = getTimePeriods(secondsBetweenBlocks)
+  return `${padTime(minutes)}:${padTime(seconds)}`
+}
 
 // TODO: Move this to the UI Kit
 export const getBubbleGumBackground = (theme: DefaultTheme) => {

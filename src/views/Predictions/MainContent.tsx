@@ -16,12 +16,12 @@ const PositionsWrapper = styled.div`
   align-items: center;
   display: flex;
   flex: 1;
-  min-height: 480px;
+  min-height: 513px;
 `
 
 const ChartWrapper = styled.div<{ isOpen: boolean }>`
   height: ${({ isOpen }) => (isOpen ? '100%' : 0)};
-  overflow: hidden;
+  position: relative;
 `
 
 const Wrapper = styled.div<MainContentProps>`
@@ -41,6 +41,15 @@ const ExpandChartButton = styled(Button)`
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
   color: ${({ theme }) => theme.colors.text};
+  left: 32px;
+  position: absolute;
+  top: -32px;
+  z-index: 50;
+
+  &:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
+    background-color: ${({ theme }) => theme.card.background};
+    opacity: 1;
+  }
 `
 
 const MainContent: React.FC<MainContentProps> = ({ isHistoryPaneOpen, isChartPaneOpen }) => {
@@ -56,18 +65,15 @@ const MainContent: React.FC<MainContentProps> = ({ isHistoryPaneOpen, isChartPan
       <PositionsWrapper>
         <Positions />
       </PositionsWrapper>
-      <Box>
+      <ChartWrapper isOpen={isChartPaneOpen}>
         <ExpandChartButton
           variant="tertiary"
           scale="sm"
-          ml="32px"
           startIcon={isChartPaneOpen ? <ArrowDownIcon /> : <ChartIcon />}
           onClick={togglePane}
         >
           {isChartPaneOpen ? TranslateString(438, 'Close') : TranslateString(999, 'Charts')}
         </ExpandChartButton>
-      </Box>
-      <ChartWrapper isOpen={isChartPaneOpen}>
         <TradingView />
       </ChartWrapper>
     </Wrapper>

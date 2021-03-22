@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef } from 'react'
+import { useEffect, useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import { useSelector } from 'react-redux'
@@ -15,21 +15,7 @@ import {
   fetchPoolsUserDataAsync,
   setBlock,
 } from './actions'
-import {
-  State,
-  Farm,
-  FarmsState,
-  Pool,
-  ProfileState,
-  TeamsState,
-  AchievementState,
-  PriceState,
-  RoundData,
-  StreamData,
-  TokenPair,
-  TickerData,
-  TickerStream,
-} from './types'
+import { State, Farm, Pool, ProfileState, TeamsState, AchievementState, PriceState, RoundData } from './types'
 import { fetchProfile } from './profile'
 import { fetchTeam, fetchTeams } from './teams'
 import { fetchAchievements } from './achievements'
@@ -37,7 +23,6 @@ import { fetchPrices } from './prices'
 import { fetchWalletNfts } from './collectibles'
 import { initializePredictions } from './predictions'
 import { transformRoundResponse } from './predictions/helpers'
-import { setConnectedStatus, setTokenPair } from './ticker'
 
 export const useFetchPublicData = () => {
   const dispatch = useAppDispatch()
@@ -270,106 +255,6 @@ export const useGetCurrentRound = () => {
   const currentEpoch = useGetCurrentEpoch()
   const roundData = useSelector((state: State) => state.predictions.rounds)
   return roundData[currentEpoch]
-}
-
-// Ticker
-export const useGetTokenPairConnectionStatus = (tokenPair: TokenPair) => {
-  const tokenPairData: TickerData = useSelector((state: State) => state.ticker[tokenPair])
-
-  if (tokenPairData === undefined) {
-    return false
-  }
-
-  return tokenPairData.isConnected
-}
-
-export const useGetTokenPairData = (tokenPair: TokenPair): TickerStream => {
-  return useSelector((state: State) => state.ticker.data[tokenPair]?.data)
-}
-
-export const useTokenPairTicker = (tokenPair: TokenPair, connectOnMount: boolean) => {
-  const websocket = useRef<WebSocket>(null)
-  const stream = useGetTokenPairData(tokenPair)
-  const tokenPairConnectionStatus = useGetTokenPairConnectionStatus(tokenPair)
-  const dispatch = useAppDispatch()
-
-  const connect = useCallback(() => {
-    websocket.current.onmessage = (evt) => {
-      try {
-        const data = JSON.parse(evt.data) as StreamData
-        dispatch(
-          setTokenPair({
-            tokenPair,
-            data: {
-              eventType: data.e,
-              eventTime: data.E,
-              symbol: data.s,
-              priceChange: parseFloat(data.p),
-              priceChangePercent: parseFloat(data.P),
-              weightAveragePrice: parseFloat(data.w),
-              firstTrade: parseFloat(data.x),
-              lastPrice: parseFloat(data.c),
-              lastQuantity: Number(data.Q),
-              bestBidPrice: parseFloat(data.b),
-              bestBidQuantity: Number(data.B),
-              bestAskPrice: parseFloat(data.a),
-              bestAskQuantity: Number(data.A),
-              openPrice: parseFloat(data.o),
-              highPrice: parseFloat(data.h),
-              lowPrice: parseFloat(data.l),
-              totalTradedBaseAssetVolume: Number(data.v),
-              totalTradedQuoteAssetVolume: Number(data.q),
-              statisticsOpenTime: Number(data.O),
-              statisticsCloseTime: Number(data.C),
-              firstTradeId: Number(data.F),
-              lastTradeId: Number(data.L),
-              totalNumberOfTrades: Number(data.n),
-            },
-          }),
-        )
-      } catch (error) {
-        console.error(`Error parsing data from stream`, error)
-      }
-    }
-  }, [tokenPair, websocket, dispatch])
-
-  const disconnect = useCallback(() => {
-    websocket.current.close()
-  }, [websocket])
-
-  useEffect(() => {
-    let ws: WebSocket
-
-    // Only make a new connection if we need
-    if (!tokenPairConnectionStatus) {
-      ws = new WebSocket(`wss://stream.binance.com:9443/ws/streams/${tokenPair}@ticker`)
-
-      ws.onopen = () => {
-        dispatch(setConnectedStatus({ tokenPair, status: true }))
-      }
-
-      ws.onclose = () => {
-        dispatch(setConnectedStatus({ tokenPair, status: false }))
-      }
-
-      websocket.current = ws
-
-      if (connectOnMount) {
-        connect()
-      }
-    }
-
-    return () => {
-      ws.close()
-    }
-  }, [tokenPair, tokenPairConnectionStatus, websocket, connect, connectOnMount, dispatch])
-
-  return { stream, connect, disconnect }
-}
-
-// Token pair helpers
-export const useBnbUsdtTicker = (connectOnMount = true) => {
-  return useTokenPairTicker(TokenPair.BNBUSDT, connectOnMount)
 }
 
 // Collectibles

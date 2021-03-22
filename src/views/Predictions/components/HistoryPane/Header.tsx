@@ -40,7 +40,7 @@ const Header = () => {
       <Text color="textSubtle" fontSize="12px" mb="8px">
         {TranslateString(999, 'Filter')}
       </Text>
-      <Flex alignItems="center">
+      {/* <Flex alignItems="center">
         <Label htmlFor="collected">
           <Checkbox scale="sm" checked />
           <Text ml="8px">{TranslateString(999, 'Collected')}</Text>
@@ -53,7 +53,7 @@ const Header = () => {
           <Checkbox scale="sm" />
           <Text ml="8px">{TranslateString(999, 'Lost')}</Text>
         </Label>
-      </Flex>
+      </Flex> */}
     </StyledHeader>
   )
 }

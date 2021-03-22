@@ -1,6 +1,9 @@
 import React, { ReactElement } from 'react'
 import { Flex, Text } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
+import useI18n from 'hooks/useI18n'
+import useBlockCountdown from '../../hooks/useGetBlockCountdown'
+import { formatRoundTime } from '../../helpers'
 
 type Status = 'expired' | 'live' | 'next' | 'soon'
 
@@ -25,7 +28,10 @@ const getBackgroundColor = (status: Status) => {
   }
 }
 
-const getTextColorByStatus = (status: Status, fallback = 'text') => {
+type TextColor = 'textDisabled' | 'white' | 'secondary' | 'text' | 'textSubtle'
+type FallbackColor = 'text' | 'textSubtle'
+
+const getTextColorByStatus = (status: Status, fallback: FallbackColor): TextColor => {
   switch (status) {
     case 'expired':
       return 'textDisabled'
@@ -47,9 +53,17 @@ const StyledCardHeader = styled.div<{ status: Status }>`
   padding: ${({ status }) => (status === 'live' ? '16px' : '8px')};
 `
 
+const Time = styled(Text).attrs({ fontSize: '12px' })<{ borderColor: TextColor }>`
+  border-bottom: 1px dotted ${({ theme, borderColor }) => theme.colors[borderColor]};
+`
+
 const CardHeader: React.FC<CardHeaderProps> = ({ status, title, epoch, blockNumber, icon }) => {
-  const textColor = getTextColorByStatus(status)
+  const TranslateString = useI18n()
+  const textColor = getTextColorByStatus(status, 'text')
+  const seconds = useBlockCountdown(blockNumber)
+  const countdown = formatRoundTime(seconds)
   const isLive = status === 'live'
+  const timePrefix = seconds > 0 ? TranslateString(999, 'Start') : TranslateString(999, 'End')
 
   return (
     <StyledCardHeader status={status}>
@@ -64,9 +78,9 @@ const CardHeader: React.FC<CardHeaderProps> = ({ status, title, epoch, blockNumb
           {`#${epoch}`}
         </Text>
       </Flex>
-      <Text color={textColor} textAlign="right">
-        {blockNumber}
-      </Text>
+      <Flex alignItems="center" justifyContent="end">
+        <Time color={textColor} borderColor={textColor}>{`${timePrefix}: ~${countdown}`}</Time>
+      </Flex>
     </StyledCardHeader>
   )
 }
