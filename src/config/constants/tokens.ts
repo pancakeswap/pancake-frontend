@@ -879,7 +879,7 @@ const tokens = {
   mir: {
     symbol: 'MIR',
     address: {
-      56: '0xf64a269F0A06dA07D23F43c1Deb217101ee6Bee7',
+      56: '0x5b6dcf557e2abe2323c48445e8cc948910d8c2c9',
       97: '',
     },
     decimals: 18,
