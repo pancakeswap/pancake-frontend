@@ -876,6 +876,24 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://ptokens.io/',
   },
+  mir: {
+    symbol: 'MIR',
+    address: {
+      56: '0x5b6dcf557e2abe2323c48445e8cc948910d8c2c9',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://mirror.finance/',
+  },
+  pbtc: {
+    symbol: 'pBTC',
+    address: {
+      56: '0xed28a457a5a76596ac48d87c0f577020f6ea1c4c',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://ptokens.io/',
+  },
 }
 
 export default tokens
