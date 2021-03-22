@@ -1,8 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Flex } from '@pancakeswap-libs/uikit'
+import { Flex, LaurelLeftIcon, LaurelRightIcon } from '@pancakeswap-libs/uikit'
 import { RibbonProps } from '../../types'
-import StyledLaurel from '../StyledLaurel'
 import {
   RibbonDownMidExpanding,
   RibbonUpMidExpanding,
@@ -37,26 +36,25 @@ const LaurelWrapper = styled.div<{ dir?: 'l' | 'r' }>`
   align-items: center;
   justify-content: center;
   position: absolute;
-  height: 48px;
   z-index: 2;
-  top: -2px;
+  top: 50%;
+  transform: translate(0, -50%);
+  ${({ dir }) =>
+    dir === 'l'
+      ? `
+    left: 0;
+  `
+      : `
+      right: 0;
+      `}
 
   svg {
     height: 20px;
+    width: auto;
     path {
       fill: ${({ theme }) => theme.colors.text};
     }
   }
-
-  ${({ dir }) =>
-    dir === 'l'
-      ? `
-    left: -4px;
-    transform: rotate(-30deg);
-  `
-      : `
-      right: -4px;
-      transform: rotate(30deg);`}
 `
 
 const Ribbon: React.FC<RibbonProps> = ({ children, ribbonDirection }) => {
@@ -65,7 +63,7 @@ const Ribbon: React.FC<RibbonProps> = ({ children, ribbonDirection }) => {
       <Wrapper ribbonDirection={ribbonDirection}>
         <RibbonDownLeftSide width="32px" />
         <LaurelWrapper dir="l">
-          <StyledLaurel dir="l" />
+          <LaurelLeftIcon />
         </LaurelWrapper>
         <div>
           <RibbonDownMidExpanding preserveAspectRatio="none" />
@@ -75,7 +73,7 @@ const Ribbon: React.FC<RibbonProps> = ({ children, ribbonDirection }) => {
           <Heading2Text p="0 30px">{children}</Heading2Text>
         </TextWrapper>
         <LaurelWrapper dir="r">
-          <StyledLaurel dir="r" />
+          <LaurelRightIcon />
         </LaurelWrapper>
         <RibbonDownRightSide width="32px" />
       </Wrapper>
@@ -87,7 +85,7 @@ const Ribbon: React.FC<RibbonProps> = ({ children, ribbonDirection }) => {
       <Wrapper ribbonDirection={ribbonDirection}>
         <RibbonUpLeftSide width="32px" />
         <LaurelWrapper dir="l">
-          <StyledLaurel dir="l" />
+          <LaurelLeftIcon />
         </LaurelWrapper>
         <div>
           <RibbonUpMidExpanding preserveAspectRatio="none" />
@@ -97,7 +95,7 @@ const Ribbon: React.FC<RibbonProps> = ({ children, ribbonDirection }) => {
           <Heading2Text p="0 30px">{children}</Heading2Text>
         </TextWrapper>
         <LaurelWrapper dir="r">
-          <StyledLaurel dir="r" />
+          <LaurelRightIcon />
         </LaurelWrapper>
         <RibbonUpRightSide width="32px" />
       </Wrapper>
