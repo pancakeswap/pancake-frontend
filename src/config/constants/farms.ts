@@ -649,7 +649,7 @@ const farms: FarmConfig[] = [
       97: '',
       56: '0xC743Dc05F03D25E1aF8eC5F8228f4BD25513c8d0',
     },
-    token: tokens.blk,
+    token: tokens.blink,
     quoteToken: tokens.wbnb,
   },
   {
@@ -769,7 +769,7 @@ const farms: FarmConfig[] = [
       97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
       56: '0x7561EEe90e24F3b348E1087A005F78B4c8453524',
     },
-    token: tokens.btc,
+    token: tokens.btcb,
     quoteToken: tokens.wbnb,
   },
   {
