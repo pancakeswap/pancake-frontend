@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react'
 import styled from 'styled-components'
 import { Heading, Card, CardBody, Button, useModal } from '@pancakeswap-libs/uikit'
+import { useWeb3React } from '@web3-react/core'
 import { getCakeAddress } from 'utils/addressHelpers'
 import { getBalanceNumber } from 'utils/formatBalance'
 import useI18n from 'hooks/useI18n'
@@ -14,6 +15,7 @@ import { useApproval } from 'hooks/useApproval'
 import PurchaseWarningModal from 'views/Lottery/components/TicketCard/PurchaseWarningModal'
 import CakeWinnings from './CakeWinnings'
 import LotteryJackpot from './LotteryJackpot'
+import UnlockButton from '../../../components/UnlockButton'
 
 const StyledLotteryCard = styled(Card)`
   background-image: url('/images/ticket-bg.svg');
@@ -44,6 +46,7 @@ const Actions = styled.div`
 `
 
 const FarmedStakingCard = () => {
+  const { account } = useWeb3React()
   const lotteryHasDrawn = useGetLotteryHasDrawn()
   const [requesteClaim, setRequestedClaim] = useState(false)
   const TranslateString = useI18n()
@@ -99,17 +102,23 @@ const FarmedStakingCard = () => {
           <Label>{TranslateString(554, 'Total jackpot this round')}:</Label>
           <LotteryJackpot />
         </Block>
-        <Actions>
-          <Button
-            id="dashboard-collect-winnings"
-            disabled={getBalanceNumber(claimAmount) === 0 || requesteClaim}
-            onClick={handleClaim}
-            style={{ marginRight: '8px' }}
-          >
-            {TranslateString(556, 'Collect Winnings')}
-          </Button>
-          {renderLotteryTicketButtonBuyOrApprove()}
-        </Actions>
+        {account ? (
+          <Actions>
+            <Button
+              id="dashboard-collect-winnings"
+              disabled={getBalanceNumber(claimAmount) === 0 || requesteClaim}
+              onClick={handleClaim}
+              style={{ marginRight: '8px' }}
+            >
+              {TranslateString(556, 'Collect Winnings')}
+            </Button>
+            {renderLotteryTicketButtonBuyOrApprove()}
+          </Actions>
+        ) : (
+          <Actions>
+            <UnlockButton width="100%" />
+          </Actions>
+        )}
       </CardBody>
     </StyledLotteryCard>
   )
