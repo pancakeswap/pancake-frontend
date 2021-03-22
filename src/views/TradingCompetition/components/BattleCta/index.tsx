@@ -9,9 +9,11 @@ import {
   Button,
   CheckmarkCircleIcon,
   useWalletModal,
+  useModal,
 } from '@pancakeswap-libs/uikit'
 import useAuth from 'hooks/useAuth'
 import useI18n from 'hooks/useI18n'
+import RegisterModal from '../RegisterModal'
 import { Heading2Text } from '../CompetitionHeadingText'
 import { CompetitionProps } from '../../types'
 
@@ -39,10 +41,18 @@ const StyledButton = styled(Button)`
   }
 `
 
-const BattleCta: React.FC<CompetitionProps> = ({ registered, account, isCompetitionLive }) => {
+const BattleCta: React.FC<CompetitionProps> = ({
+  registered,
+  account,
+  isCompetitionLive,
+  profile,
+  isInitialized,
+  isLoading,
+}) => {
   const TranslateString = useI18n()
   const { login, logout } = useAuth()
   const { onPresentConnectModal } = useWalletModal(login, logout)
+  const [onPresentRegisterModal] = useModal(<RegisterModal profile={profile} />, false)
 
   const getButtonText = () => {
     if (!account) {
@@ -73,16 +83,18 @@ const BattleCta: React.FC<CompetitionProps> = ({ registered, account, isCompetit
       onPresentConnectModal()
     }
 
-    if (!registered) {
-      // registerModal
+    if (account && !registered) {
+      onPresentRegisterModal()
     }
 
     if (registered && isCompetitionLive) {
-      // push to exchange
+      window.location.href = 'https://exchange.pancakeswap.finance/#/swap'
     }
 
     return ''
   }
+
+  const isButtonDisabled = () => isLoading || (registered && !isCompetitionLive)
 
   return (
     <StyledCard>
@@ -93,7 +105,7 @@ const BattleCta: React.FC<CompetitionProps> = ({ registered, account, isCompetit
           </Heading2Text>
           <Flex alignItems="flex-end">
             <LaurelLeftIcon />
-            <StyledButton disabled={registered && !isCompetitionLive} onClick={() => handleCtaClick()}>
+            <StyledButton disabled={isButtonDisabled()} onClick={() => handleCtaClick()}>
               {getButtonText()}
             </StyledButton>
             <LaurelRightIcon />

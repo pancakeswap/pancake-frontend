@@ -38,7 +38,7 @@ const CompetitionPage = styled.div`
 
 const TradingCompetition = () => {
   const { account } = useWeb3React()
-  const { profile } = useProfile()
+  const { profile, isInitialized, isLoading } = useProfile()
   const registered = false
   const isCompetitionLive = false
 
@@ -49,7 +49,14 @@ const TradingCompetition = () => {
         svgFill={DARKFILL}
         index={4}
         intersectComponent={
-          <BattleCta registered={registered} account={account} isCompetitionLive={isCompetitionLive} />
+          <BattleCta
+            registered={registered}
+            account={account}
+            isCompetitionLive={isCompetitionLive}
+            profile={profile}
+            isInitialized={isInitialized}
+            isLoading={isLoading}
+          />
         }
       >
         <SampleCard />

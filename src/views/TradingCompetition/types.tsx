@@ -5,6 +5,8 @@ export interface CompetitionProps {
   account?: string
   profile?: Profile
   isCompetitionLive?: boolean
+  isLoading?: boolean
+  isInitialized?: boolean
 }
 
 export interface YourScoreProps extends CompetitionProps {
