@@ -7,10 +7,13 @@ import { Heading, Button, Flex, Text, HelpIcon, Input, useMatchBreakpoints } fro
 import orderBy from 'lodash/orderBy'
 import partition from 'lodash/partition'
 import useI18n from 'hooks/useI18n'
-import { usePools, useBlock } from 'state/hooks'
+import { usePools, useBlock, useGetApiPrices } from 'state/hooks'
 import FlexLayout from 'components/layout/Flex'
 import Page from 'components/layout/Page'
-import Select from 'views/Farms/components/Select/Select'
+import Select, { OptionProps } from 'views/Farms/components/Select/Select'
+import { getBalanceNumber } from 'utils/formatBalance'
+import { getPoolApy } from 'utils/apy'
+import { Pool } from 'state/types'
 
 import Coming from './components/Coming'
 import PoolCard from './components/PoolCard'
@@ -21,10 +24,48 @@ const Farm: React.FC = () => {
   const { path } = useRouteMatch()
   const TranslateString = useI18n()
   const { account } = useWeb3React()
-  const pools = usePools(account)
+  const prices = useGetApiPrices()
+
   const { blockNumber } = useBlock()
   const [stackedOnly, setStackedOnly] = useState(false)
   const { isXl } = useMatchBreakpoints()
+  const [sortOption, setSortOption] = useState('hot')
+
+  const sortPools = (pools: Pool[]): Pool[] => {
+    switch (sortOption) {
+      case 'apr':
+        return orderBy(pools, (pool: Pool) => new BigNumber(pool.apr || 0), 'desc')
+      case 'earned':
+        return orderBy(pools, (pool: Pool) => new BigNumber(pool.userData?.pendingReward || 0), 'desc')
+      case 'total_staked':
+        return orderBy(pools, (pool: Pool) => new BigNumber(pool.totalStaked || 0).toNumber(), 'desc')
+      case 'finish':
+        return orderBy(pools, 'isFinished', 'desc')
+      default:
+        return pools
+    }
+  }
+
+  let pools = usePools(account).map((pool) => {
+    const { earningToken, stakingToken } = pool
+    const stakingTokenPrice = prices ? prices[stakingToken.symbol.toLowerCase()] : null
+    const rewardTokenPrice = prices ? prices[earningToken.symbol.toLowerCase()] : null
+
+    const apr = getPoolApy(
+      stakingTokenPrice,
+      rewardTokenPrice,
+      getBalanceNumber(pool.totalStaked, stakingToken.decimals),
+      parseFloat(pool.tokenPerBlock),
+    )
+
+    if (apr) {
+      return { ...pool, apr }
+    }
+
+    return pool
+  })
+
+  pools = sortPools(pools)
 
   const [finishedPools, openPools] = useMemo(
     () => partition(pools, (pool) => pool.isFinished || blockNumber > pool.endBlock),
@@ -34,6 +75,10 @@ const Farm: React.FC = () => {
     () => openPools.filter((pool) => pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0)),
     [openPools],
   )
+
+  const handleSortOptionChange = (option: OptionProps): void => {
+    setSortOption(option.value)
+  }
 
   return (
     <>
@@ -71,6 +116,10 @@ const Farm: React.FC = () => {
                   value: 'apr',
                 },
                 {
+                  label: 'Earned',
+                  value: 'earned',
+                },
+                {
                   label: 'Total Staked',
                   value: 'total_staked',
                 },
@@ -79,6 +128,7 @@ const Farm: React.FC = () => {
                   value: 'finish',
                 },
               ]}
+              onChange={handleSortOptionChange}
             />
             <StyledInput placeholder="Search pools" />
           </Flex>
@@ -89,13 +139,13 @@ const Farm: React.FC = () => {
           <Route exact path={`${path}`}>
             <>
               {stackedOnly
-                ? orderBy(stackedOnlyPools, ['sortOrder']).map((pool) => <PoolCard key={pool.sousId} pool={pool} />)
-                : orderBy(openPools, ['sortOrder']).map((pool) => <PoolCard key={pool.sousId} pool={pool} />)}
+                ? stackedOnlyPools.map((pool) => <PoolCard key={pool.sousId} pool={pool} />)
+                : openPools.map((pool) => <PoolCard key={pool.sousId} pool={pool} />)}
               <Coming />
             </>
           </Route>
           <Route path={`${path}/history`}>
-            {orderBy(finishedPools, ['sortOrder']).map((pool) => (
+            {finishedPools.map((pool) => (
               <PoolCard key={pool.sousId} pool={pool} />
             ))}
           </Route>

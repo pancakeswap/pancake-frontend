@@ -36,6 +36,7 @@ export interface Pool extends PoolConfig {
     stakedBalance: BigNumber
     pendingReward: BigNumber
   }
+  apr?: number
 }
 
 export interface Profile {

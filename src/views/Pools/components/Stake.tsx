@@ -1,14 +1,17 @@
 import React, { useState, useCallback } from 'react'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
-import { Button, Flex, Text, useModal } from '@pancakeswap-libs/uikit'
+import { Button, Box, Flex, Text, useModal, IconButton, AddIcon, MinusIcon } from '@pancakeswap-libs/uikit'
 import UnlockButton from 'components/UnlockButton'
+import Balance from 'components/Balance'
 import { Pool } from 'state/types'
 import { useERC20 } from 'hooks/useContract'
 import useHasCakeBalance from 'hooks/useHasCakeBalance'
 import { useSousApprove } from 'hooks/useApprove'
+import { usePriceCakeBusd } from 'state/hooks'
 import useI18n from 'hooks/useI18n'
 import { getAddress } from 'utils/addressHelpers'
+import { getBalanceNumber } from 'utils/formatBalance'
 
 import CakeRequiredModal from './CakeRequiredModal'
 import StakeModal from './StakeModal'
@@ -23,6 +26,7 @@ const Stake: React.FC<StakeProps> = ({ pool, isOldSyrup, isBnbPool }) => {
   const { userData, isFinished, stakingToken, sousId } = pool
 
   const TranslateString = useI18n()
+  const cakePrice = usePriceCakeBusd()
   const hasCake = useHasCakeBalance(new BigNumber(0))
   const { account } = useWeb3React()
   const stakingTokenContract = useERC20(getAddress(stakingToken.address))
@@ -37,7 +41,7 @@ const Stake: React.FC<StakeProps> = ({ pool, isOldSyrup, isBnbPool }) => {
   const stakedBalance = new BigNumber(userData?.stakedBalance || 0)
   const accountHasStakedBalance = stakedBalance?.toNumber() > 0
   const needsApproval = !accountHasStakedBalance && !allowance.toNumber() && !isBnbPool
-
+  const stakedBalanceBusd = stakedBalance.multipliedBy(cakePrice).toNumber()
   const [requestedApproval, setRequestedApproval] = useState(false)
 
   const handleStakeClick = () => {
@@ -57,6 +61,21 @@ const Stake: React.FC<StakeProps> = ({ pool, isOldSyrup, isBnbPool }) => {
         </Text>
       )
     }
+
+    if (accountHasStakedBalance) {
+      return (
+        <>
+          <Text color="textSecondary" fontSize="12px" bold>
+            {stakingToken.symbol}
+          </Text>
+          &nbsp;
+          <Text color="textSubtle" textTransform="uppercase" fontSize="12px" bold>
+            {TranslateString(1074, 'Staked')}
+          </Text>
+        </>
+      )
+    }
+
     return (
       <>
         <Text color="textSubtle" textTransform="uppercase" fontSize="12px" bold>
@@ -80,6 +99,29 @@ const Stake: React.FC<StakeProps> = ({ pool, isOldSyrup, isBnbPool }) => {
         <Button disabled={isFinished || requestedApproval} onClick={handleApprove} width="100%">
           {TranslateString(999, 'Enable')}
         </Button>
+      )
+    }
+
+    if (accountHasStakedBalance) {
+      return (
+        <Flex>
+          <Box>
+            <Balance
+              value={getBalanceNumber(stakedBalance, stakingToken.decimals)}
+              isDisabled={!stakedBalance.toNumber() || isFinished}
+              fontSize="20px"
+            />
+            <Balance value={stakedBalanceBusd} isDisabled={!stakedBalanceBusd} fontSize="12px" prefix="~" />
+          </Box>
+          <Flex alignItems="center" ml="auto">
+            <IconButton variant="secondary" onClick={onPresentStake} mr="8px">
+              <MinusIcon color="primary" width="14px" />
+            </IconButton>
+            <IconButton variant="secondary" onClick={onPresentStake}>
+              <AddIcon color="primary" width="14px" />
+            </IconButton>
+          </Flex>
+        </Flex>
       )
     }
 
