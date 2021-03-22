@@ -67,7 +67,6 @@ If a Crowdin translation like this `You have %num% left in your wallet` - would 
 TranslateString(675, `You have ${cakeBalance} left in your wallet`, { num: cakeBalance })
 ```
 
-<a name="bugs"></a>
 ## Issue reports
 
 A bug is a _demonstrable problem_ that is caused by the code in the repository.
@@ -107,4 +106,4 @@ Reproducibility rate:
 **Expected result:**
 ```
 
-A good bug report shouldn't leave others needing to chase you up for more
+A good bug report shouldn't leave others needing to chase you up for more.
