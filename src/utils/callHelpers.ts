@@ -79,6 +79,14 @@ export const sousUnstake = async (sousChefContract, amount, decimals = 18, accou
         return tx.transactionHash
       })
   }
+  if (sousChefContract.options.address === '0x453a75908fb5a36d482d5f8fe88eca836f32ead5') {
+    return sousChefContract.methods
+      .emergencyWithdraw()
+      .send({ from: account })
+      .on('transactionHash', (tx) => {
+        return tx.transactionHash
+      })
+  }
 
   return sousChefContract.methods
     .withdraw(new BigNumber(amount).times(new BigNumber(10).pow(decimals)).toString())
