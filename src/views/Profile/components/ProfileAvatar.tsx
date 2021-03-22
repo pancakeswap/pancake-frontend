@@ -14,7 +14,7 @@ const TeamAvatar = styled.img`
   position: absolute;
   right: 0px;
   width: 37.5%;
-  height: auto;
+  height: 37.5%;
   z-index: 5;
 
   ${({ theme }) => theme.mediaQueries.sm} {
@@ -28,6 +28,8 @@ const AvatarWrapper = styled.div<{ bg: string }>`
   background-size: cover;
   border-radius: 50%;
   position: relative;
+  width: 100%;
+  height: 100%;
 
   & > img {
     border-radius: 50%;
@@ -36,7 +38,7 @@ const AvatarWrapper = styled.div<{ bg: string }>`
 // TODO: replace with no provile avatar icon
 const AvatarInactive = styled(NoProfileAvatarIcon)`
   width: 100%;
-  height: auto;
+  height: 100%;
 `
 
 const ProfileAvatar: React.FC<ProfileAvatarProps> = ({ profile }) => {
