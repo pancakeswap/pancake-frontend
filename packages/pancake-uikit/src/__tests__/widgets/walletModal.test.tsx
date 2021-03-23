@@ -9,10 +9,10 @@ it("renders ConnectModal correctly", () => {
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
       <div
-        class="sc-fubCfw bVmofg"
+        class="sc-fubCfw cNFQaY"
       >
         <div
-          class="sc-pFZIQ QVCVy"
+          class="sc-pFZIQ fDnVSK"
         >
           <div
             class="sc-eCssSg sc-jSgupP sc-jrAGrp jnvqfy cjuMmG eYDuGd"
@@ -465,10 +465,10 @@ it("renders AccountModal correctly", () => {
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
       <div
-        class="sc-fubCfw bVmofg"
+        class="sc-fubCfw cNFQaY"
       >
         <div
-          class="sc-pFZIQ QVCVy"
+          class="sc-pFZIQ fDnVSK"
         >
           <div
             class="sc-eCssSg sc-jSgupP sc-jrAGrp jnvqfy cjuMmG eYDuGd"

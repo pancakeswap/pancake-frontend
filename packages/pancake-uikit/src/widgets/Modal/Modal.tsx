@@ -11,9 +11,11 @@ interface Props extends InjectedProps {
   hideCloseButton?: boolean;
   onBack?: () => void;
   bodyPadding?: string;
+  headerBackground?: string;
+  minWidth?: string;
 }
 
-const StyledModal = styled.div`
+const StyledModal = styled.div<{ minWidth: string }>`
   background: ${({ theme }) => theme.modal.background};
   box-shadow: 0px 20px 36px -8px rgba(14, 14, 44, 0.1), 0px 1px 1px rgba(0, 0, 0, 0.05);
   border: 1px solid ${({ theme }) => theme.colors.borderColor};
@@ -23,17 +25,18 @@ const StyledModal = styled.div`
   overflow-y: auto;
   ${({ theme }) => theme.mediaQueries.xs} {
     width: auto;
-    min-width: 360px;
+    min-width: ${({ minWidth }) => minWidth};
     max-width: 100%;
   }
 `;
 
-const ModalHeader = styled.div`
+const ModalHeader = styled.div<{ background: string }>`
   display: flex;
   align-items: center;
   border-bottom: 1px solid #e9eaeb;
   align-items: center;
   padding: 12px 24px;
+  background: ${({ background }) => background};
 `;
 
 const ModalTitle = styled(Flex)`
@@ -48,9 +51,11 @@ const Modal: React.FC<Props> = ({
   children,
   hideCloseButton = false,
   bodyPadding = "24px",
+  headerBackground = "transparent",
+  minWidth = "360px",
 }) => (
-  <StyledModal>
-    <ModalHeader>
+  <StyledModal minWidth={minWidth}>
+    <ModalHeader background={headerBackground}>
       <ModalTitle>
         {onBack && (
           <IconButton variant="text" onClick={onBack} area-label="go back" mr="8px">
