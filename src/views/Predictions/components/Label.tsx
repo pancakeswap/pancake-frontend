@@ -1,66 +1,94 @@
-import React, { useEffect, useRef } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { Box, Card, Text } from '@pancakeswap-libs/uikit'
-import { useGetCurrentRound } from 'state/hooks'
 import { useBnbUsdtTicker } from 'hooks/ticker'
+import { useGetCurrentRound } from 'state/hooks'
 import BnbUsdtPairToken from '../icons/BnbUsdtPairToken'
 import PocketWatch from '../icons/PocketWatch'
 import useBlockCountdown from '../hooks/useGetBlockCountdown'
 import { formatRoundTime } from '../helpers'
 
-enum PriceChange {
-  UP = 'up',
-  DOWN = 'down',
-  NOCHANGE = 'nochange',
-}
+const Token = styled(Box)`
+  margin-top: -24px;
+  position: absolute;
+  top: 50%;
+  z-index: 30;
 
-const Label = styled(Card)`
-  align-items: center;
-  display: flex;
-  height: 32px;
-  overflow: initial;
-`
-
-const Countdown = styled(Text)`
-  width: 56px;
-`
-
-const getPriceChangeColor = (priceChange: PriceChange) => {
-  switch (priceChange) {
-    case PriceChange.UP:
-      return { symbol: '-', color: 'failure' }
-    case PriceChange.DOWN:
-      return { symbol: '+', color: 'success' }
-    case PriceChange.NOCHANGE:
-    default:
-      return { symbol: '', color: 'text' }
+  & > svg {
+    height: 48px;
+    width: 48px;
   }
-}
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    margin-top: -32px;
+
+    & > svg {
+      height: 64px;
+      width: 64px;
+    }
+  }
+`
+
+const Title = styled(Text)`
+  font-size: 16px;
+  line-height: 21px;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    font-size: 20px;
+    line-height: 22px;
+  }
+`
+
+const Price = styled(Text)`
+  height: 18px;
+  justify-self: start;
+  width: 60px;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    text-align: center;
+  }
+`
+
+const Interval = styled(Text)`
+  ${({ theme }) => theme.mediaQueries.lg} {
+    text-align: center;
+    width: 32px;
+  }
+`
+
+const Label = styled(Card)<{ dir: 'left' | 'right' }>`
+  align-items: ${({ dir }) => (dir === 'right' ? 'flex-end' : 'flex-start')};
+  border-radius: ${({ dir }) => (dir === 'right' ? '8px 8px 8px 24px' : '8px 8px 24px 8px')};
+  display: flex;
+  flex-direction: column;
+  overflow: initial;
+  padding: ${({ dir }) => (dir === 'right' ? '0 28px 0 8px' : '0 8px 0 24px')};
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    align-items: center;
+    border-radius: 16px;
+    flex-direction: row;
+    padding: ${({ dir }) => (dir === 'right' ? '8px 40px 8px 8px' : '8px 8px 8px 40px')};
+  }
+`
 
 export const PricePairLabel: React.FC = () => {
-  const lastPriceRef = useRef(0)
   const { stream } = useBnbUsdtTicker()
   const { lastPrice } = stream ?? {}
-  const positionChange = lastPrice > lastPriceRef.current ? PriceChange.DOWN : PriceChange.UP
-  const { color, symbol } = getPriceChangeColor(positionChange)
-
-  useEffect(() => {
-    lastPriceRef.current = lastPrice
-  }, [lastPriceRef, lastPrice])
 
   return (
     <Box pl="24px" position="relative" display="inline-block">
-      <Box position="absolute" left={0} mt="-24px" top="50%" zIndex={30}>
-        <BnbUsdtPairToken width="48px" />
-      </Box>
-      <Label pl="32px" pr="16px">
-        <Text bold fontSize="20px" lineHeight="22px" textTransform="uppercase">
+      <Token left={0}>
+        <BnbUsdtPairToken />
+      </Token>
+      <Label dir="left">
+        <Title bold textTransform="uppercase">
           BNBUSDT
-        </Text>
-        <Text color={color} fontSize="12px" ml="8px" style={{ width: '60px' }} textAlign="center">
+        </Title>
+        <Price fontSize="12px">
           {lastPrice &&
-            `${symbol} $${lastPrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
-        </Text>
+            `$${lastPrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
+        </Price>
       </Label>
     </Box>
   )
@@ -77,17 +105,15 @@ export const TimerLabel: React.FC<TimerLabelProps> = ({ interval }) => {
 
   return (
     <Box pr="24px" position="relative">
-      <Label pl="16px" pr="32px">
-        <Countdown bold fontSize="20px" color="secondary">
+      <Label dir="right">
+        <Title bold color="secondary">
           {countdown}
-        </Countdown>
-        <Text ml="8px" fontSize="12px">
-          {interval}
-        </Text>
+        </Title>
+        <Interval fontSize="12px">{interval}</Interval>
       </Label>
-      <Box position="absolute" right={0} top="-10px" zIndex={30}>
-        <PocketWatch width="48px" />
-      </Box>
+      <Token right={0}>
+        <PocketWatch />
+      </Token>
     </Box>
   )
 }
