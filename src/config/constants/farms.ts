@@ -23,6 +23,26 @@ const farms: FarmConfig[] = [
     quoteToken: tokens.wbnb,
   },
   {
+    pid: 103,
+    lpSymbol: 'LTO-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x85644fcd00c401e1a0a0a10d2ae6bbe04a73e4ab',
+    },
+    token: tokens.lto,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 102,
+    lpSymbol: 'MIR-UST LP',
+    lpAddresses: {
+      97: '',
+      56: '0xf64a269F0A06dA07D23F43c1Deb217101ee6Bee7',
+    },
+    token: tokens.mir,
+    quoteToken: tokens.ust,
+  },
+  {
     pid: 101,
     lpSymbol: 'TRADE-BNB LP',
     lpAddresses: {
@@ -639,7 +659,7 @@ const farms: FarmConfig[] = [
       97: '',
       56: '0xC743Dc05F03D25E1aF8eC5F8228f4BD25513c8d0',
     },
-    token: tokens.blk,
+    token: tokens.blink,
     quoteToken: tokens.wbnb,
   },
   {
@@ -759,7 +779,7 @@ const farms: FarmConfig[] = [
       97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
       56: '0x7561EEe90e24F3b348E1087A005F78B4c8453524',
     },
-    token: tokens.btc,
+    token: tokens.btcb,
     quoteToken: tokens.wbnb,
   },
   {
