@@ -43,7 +43,7 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({ round }) => {
         <Progress variant="flat" primaryStep={54} />
         <CardBody p="16px">
           <MultiplierArrow multiplier={10.3} hasEntered={false} isActive={false} />
-          <RoundInfoBox isActive>
+          <RoundInfoBox isLive>
             <Text color="textSubtle" fontSize="12px" bold textTransform="uppercase" mb="8px">
               {TranslateString(999, 'Last Price')}
             </Text>

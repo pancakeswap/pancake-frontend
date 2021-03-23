@@ -1,7 +1,7 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
-import { ArrowDownIcon, Box, Button, ChartIcon } from '@pancakeswap-libs/uikit'
+import { ArrowDownIcon, Button, ChartIcon } from '@pancakeswap-libs/uikit'
 import { setChartPaneState } from 'state/predictions'
 import useI18n from 'hooks/useI18n'
 import TradingView from './components/TradingView'
@@ -29,7 +29,7 @@ const Wrapper = styled.div<MainContentProps>`
   flex-direction: column;
   height: calc(100vh - 64px);
   margin-right: ${({ isHistoryPaneOpen }) => (isHistoryPaneOpen ? '320px' : 0)};
-  transition: 300ms ease-in-out;
+  transition: 200ms ease-in-out;
 
   ${({ theme }) => theme.mediaQueries.md} {
     margin-right: ${({ isHistoryPaneOpen }) => (isHistoryPaneOpen ? '384px' : 0)};

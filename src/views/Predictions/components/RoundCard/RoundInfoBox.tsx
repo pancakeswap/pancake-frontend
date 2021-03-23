@@ -1,17 +1,30 @@
+import React from 'react'
 import styled, { DefaultTheme } from 'styled-components'
 import { Box } from '@pancakeswap-libs/uikit'
 import { Position } from 'state/types'
 
 interface RoundInfoBoxProps {
   roundPosition?: Position
-  isActive?: boolean
+  isNext?: boolean
+  isLive?: boolean
+  hasEntered?: boolean
 }
 
-interface ThemedRoundInfoBoxProps extends RoundInfoBoxProps {
-  theme: DefaultTheme
-}
+const getBackgroundColor = ({
+  theme,
+  roundPosition,
+  isNext,
+  isLive,
+  hasEntered,
+}: RoundInfoBoxProps & { theme: DefaultTheme }) => {
+  if (isNext) {
+    return 'linear-gradient(180deg, #53DEE9 0%, #7645D9 100%)'
+  }
 
-const getBorderColor = ({ theme, roundPosition, isActive = false }: ThemedRoundInfoBoxProps) => {
+  if (hasEntered || isLive) {
+    return theme.colors.secondary
+  }
+
   if (roundPosition === Position.UP) {
     return theme.colors.success
   }
@@ -20,18 +33,33 @@ const getBorderColor = ({ theme, roundPosition, isActive = false }: ThemedRoundI
     return theme.colors.failure
   }
 
-  if (isActive) {
-    return theme.colors.secondary
-  }
-
   return theme.colors.borderColor
 }
 
-const RoundInfoBox = styled(Box)<RoundInfoBoxProps>`
+const Background = styled(Box)<RoundInfoBoxProps>`
+  background: ${getBackgroundColor};
+  border-radius: 8px;
+  padding: 2px;
+`
+
+const StyledRoundInfoBox = styled.div`
   background: ${({ theme }) => theme.card.background};
-  border: 2px solid ${getBorderColor};
   border-radius: 8px;
   padding: 16px;
 `
+
+const RoundInfoBox: React.FC<RoundInfoBoxProps> = ({
+  isNext = false,
+  hasEntered = false,
+  isLive = false,
+  children,
+  ...props
+}) => {
+  return (
+    <Background isNext={isNext} hasEntered={hasEntered} isLive={isLive} {...props}>
+      <StyledRoundInfoBox>{children}</StyledRoundInfoBox>
+    </Background>
+  )
+}
 
 export default RoundInfoBox

@@ -47,7 +47,7 @@ const NextRoundCard: React.FC<NextRoundCardProps> = ({ round, swiperInstance }) 
         />
         <CardBody p="16px">
           <MultiplierArrow />
-          <RoundInfoBox>
+          <RoundInfoBox isNext>
             <Button variant="success" width="100%" onClick={() => handleSetPosition(Position.UP)} mb="4px">
               {TranslateString(999, 'Enter UP')}
             </Button>

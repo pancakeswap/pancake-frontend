@@ -55,6 +55,12 @@ const StyledCardHeader = styled.div<{ status: Status }>`
 
 const Time = styled(Text).attrs({ fontSize: '12px' })<{ borderColor: TextColor }>`
   border-bottom: 1px dotted ${({ theme, borderColor }) => theme.colors[borderColor]};
+  cursor: help;
+  justify-self: end;
+`
+
+const Round = styled.div`
+  justify-self: center;
 `
 
 const CardHeader: React.FC<CardHeaderProps> = ({ status, title, epoch, blockNumber, icon }) => {
@@ -73,14 +79,16 @@ const CardHeader: React.FC<CardHeaderProps> = ({ status, title, epoch, blockNumb
           {title}
         </Text>
       </Flex>
-      <Flex alignItems="center">
+      <Round>
         <Text fontSize={isLive ? '14px' : '12px'} color={getTextColorByStatus(status, 'textSubtle')} textAlign="center">
           {`#${epoch}`}
         </Text>
-      </Flex>
-      <Flex alignItems="center" justifyContent="end">
-        <Time color={textColor} borderColor={textColor}>{`${timePrefix}: ~${countdown}`}</Time>
-      </Flex>
+      </Round>
+      <Time
+        color={textColor}
+        borderColor={textColor}
+        title={TranslateString(999, `Block ${blockNumber}`, { num: blockNumber })}
+      >{`${timePrefix}: ~${countdown}`}</Time>
     </StyledCardHeader>
   )
 }
