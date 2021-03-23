@@ -1,46 +1,55 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Box } from '@pancakeswap-libs/uikit'
 import { useTheme } from 'styled-components'
 
 const TradingView = () => {
-  const hasLoadedScript = useRef(false)
+  const [hasInjectedScript, setHasInjectedScript] = useState(false)
   const tv = useRef(null)
   const theme = useTheme()
 
   useEffect(() => {
-    const script = document.createElement('script')
+    // Check if we have loaded the script already
+    const scriptEle = document.getElementById('tradingViewWidget')
 
-    if (!hasLoadedScript.current) {
-      script.setAttribute('src', 'https://s3.tradingview.com/tv.js')
-      script.setAttribute('type', 'text/javascript')
+    if (!scriptEle) {
+      const script = document.createElement('script')
 
-      script.addEventListener('load', () => {
-        /* eslint-disable new-cap */
-        // @ts-ignore
-        tv.current = new window.TradingView.widget({
-          autosize: true,
-          height: '100%',
-          symbol: 'BINANCE:BNBUSDT',
-          interval: '5',
-          timezone: 'Etc/UTC',
-          theme: theme.isDark ? 'dark' : 'light',
-          style: '1',
-          locale: 'en',
-          toolbar_bg: '#f1f3f6',
-          enable_publishing: false,
-          allow_symbol_change: true,
-          container_id: 'tradingview_b239c',
+      if (!hasInjectedScript) {
+        script.setAttribute('src', 'https://s3.tradingview.com/tv.js')
+        script.setAttribute('type', 'text/javascript')
+        script.setAttribute('id', 'tradingViewWidget')
+
+        script.addEventListener('load', () => {
+          setHasInjectedScript(true)
         })
-        hasLoadedScript.current = true
+
+        document.getElementsByTagName('head')[0].appendChild(script)
+      }
+    } else {
+      setHasInjectedScript(true)
+    }
+  }, [hasInjectedScript, setHasInjectedScript, theme])
+
+  useEffect(() => {
+    if (hasInjectedScript) {
+      /* eslint-disable new-cap */
+      // @ts-ignore
+      tv.current = new window.TradingView.widget({
+        autosize: true,
+        height: '100%',
+        symbol: 'BINANCE:BNBUSDT',
+        interval: '5',
+        timezone: 'Etc/UTC',
+        theme: theme.isDark ? 'dark' : 'light',
+        style: '1',
+        locale: 'en',
+        toolbar_bg: '#f1f3f6',
+        enable_publishing: false,
+        allow_symbol_change: true,
+        container_id: 'tradingview_b239c',
       })
-
-      document.getElementsByTagName('head')[0].appendChild(script)
     }
-
-    return () => {
-      script.remove()
-    }
-  }, [tv, hasLoadedScript, theme])
+  }, [tv, hasInjectedScript, theme])
 
   return (
     <Box overflow="hidden" className="tradingview_container">
