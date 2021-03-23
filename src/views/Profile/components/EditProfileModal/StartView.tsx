@@ -30,6 +30,16 @@ const DangerOutline = styled(Button).attrs({ variant: 'secondary' })`
   }
 `
 
+const AvatarWrapper = styled.div`
+  height: 64px;
+  width: 64px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    height: 128px;
+    width: 128px;
+  }
+`
+
 const StartPage: React.FC<StartPageProps> = ({ goToApprove, goToChange, goToRemove, onDismiss }) => {
   const [needsApproval, setNeedsApproval] = useState(null)
   const { profile } = useProfile()
@@ -62,7 +72,9 @@ const StartPage: React.FC<StartPageProps> = ({ goToApprove, goToChange, goToRemo
 
   return (
     <Flex alignItems="center" justifyContent="center" flexDirection="column">
-      <ProfileAvatar profile={profile} />
+      <AvatarWrapper>
+        <ProfileAvatar profile={profile} />
+      </AvatarWrapper>
       <Flex alignItems="center" style={{ height: '48px' }} justifyContent="center">
         <Text as="p" color="failure">
           {!hasMinimumCakeRequired &&

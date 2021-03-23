@@ -130,7 +130,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
           {account && harvest && !isOldSyrup && (
             <HarvestButton
               disabled={!earnings.toNumber() || pendingTx}
-              text={pendingTx ? 'Collecting' : 'Harvest'}
+              text={pendingTx ? TranslateString(999, 'Collecting') : TranslateString(562, 'Harvest')}
               onClick={async () => {
                 setPendingTx(true)
                 await onReward()
