@@ -894,6 +894,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://ptokens.io/',
   },
+  lto: {
+    symbol: 'LTO',
+    address: {
+      56: '0x857b222fc79e1cbbf8ca5f78cb133d1b7cf34bbd',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://ltonetwork.com/',
+  },
 }
 
 export default tokens
