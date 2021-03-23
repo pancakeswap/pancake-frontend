@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import SwiperCore, { Keyboard, Mousewheel } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
@@ -12,6 +12,7 @@ import HistoryButton from './components/HistoryButton'
 import FlexRow from './components/FlexRow'
 
 import 'swiper/swiper.min.css'
+import useSwiper from './hooks/useSwiper'
 
 SwiperCore.use([Keyboard, Mousewheel])
 
@@ -28,26 +29,53 @@ const StyledSwiper = styled.div`
 
 const SetCol = styled.div`
   flex: none;
-  width: 270px;
+  width: auto;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    width: 270px;
+  }
+`
+
+const HelpButtonWrapper = styled.div`
+  order: 1;
+  margin: 0 8px 0 0;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    order: 2;
+    margin: 0 0 0 8px;
+  }
+`
+
+const TimerLabelWrapper = styled.div`
+  order: 2;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    order: 1;
+  }
+`
+
+const HistoryButtonWrapper = styled.div`
+  display: none;
+  order: 3;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    display: initial;
+  }
 `
 
 const Positions = () => {
-  const [swiperInstance, setSwiperInstance] = useState<SwiperCore>(null)
+  const { swiper, setSwiper } = useSwiper()
   const currentEpoch = useGetCurrentEpoch()
   const roundData = useGetRounds()
   const rounds = sortRounds(roundData, currentEpoch)
   const liveRoundIndex = rounds.findIndex((round) => round.epoch === currentEpoch)
 
-  const slideToLive = useCallback(() => {
-    if (swiperInstance) {
-      swiperInstance.slideTo(liveRoundIndex)
-    }
-  }, [swiperInstance, liveRoundIndex])
-
   // When the epoch changes move to the live round
   useEffect(() => {
-    slideToLive()
-  }, [slideToLive])
+    if (swiper) {
+      swiper.slideTo(liveRoundIndex)
+    }
+  }, [swiper, liveRoundIndex])
 
   return (
     <Box overflowX="hidden" overflowY="auto">
@@ -56,22 +84,28 @@ const Positions = () => {
           <PricePairLabel />
         </SetCol>
         <FlexRow justifyContent="center">
-          <PrevNextNav swiperInstance={swiperInstance} onSlideToLive={slideToLive} />
+          <PrevNextNav />
         </FlexRow>
         <SetCol>
-          <Flex alignItems="center">
-            <TimerLabel interval="5m" />
-            <IconButton variant="subtle" ml="8px">
-              <HelpIcon width="24px" color="white" />
-            </IconButton>
-            <HistoryButton />
+          <Flex alignItems="center" justifyContent="flex-end">
+            <TimerLabelWrapper>
+              <TimerLabel interval="5m" />
+            </TimerLabelWrapper>
+            <HelpButtonWrapper>
+              <IconButton variant="subtle">
+                <HelpIcon width="24px" color="white" />
+              </IconButton>
+            </HelpButtonWrapper>
+            <HistoryButtonWrapper>
+              <HistoryButton />
+            </HistoryButtonWrapper>
           </Flex>
         </SetCol>
       </FlexRow>
       <StyledSwiper>
         <Swiper
           initialSlide={liveRoundIndex >= 0 ? liveRoundIndex : 0}
-          onSwiper={setSwiperInstance}
+          onSwiper={setSwiper}
           spaceBetween={16}
           slidesPerView="auto"
           freeMode
@@ -83,7 +117,7 @@ const Positions = () => {
         >
           {rounds.map((round) => (
             <SwiperSlide key={round.epoch}>
-              <RoundCard round={round} swiperInstance={swiperInstance} />
+              <RoundCard round={round} />
             </SwiperSlide>
           ))}
         </Swiper>

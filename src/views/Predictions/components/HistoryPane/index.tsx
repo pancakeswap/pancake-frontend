@@ -11,7 +11,7 @@ const StyledHistoryPane = styled.div<HistoryPaneProps>`
   background-color: ${({ theme }) => theme.card.background};
   box-shadow: -4px 0px 4px -8px rgba(14, 14, 44, 0.1);
   filter: drop-shadow(-1px 0px 1px rgba(0, 0, 0, 0.1));
-  height: 100%;
+  height: calc(100% - 64px);
   max-height: 100%;
   overflow-x: hidden;
   overflow-y: auto;
@@ -19,10 +19,11 @@ const StyledHistoryPane = styled.div<HistoryPaneProps>`
   right: 0;
   top: 0;
   transition: 300ms ease-in-out;
-  width: ${({ isActive }) => (isActive ? '320px' : 0)};
+  width: ${({ isActive }) => (isActive ? '100%' : 0)};
   z-index: 50;
 
   ${({ theme }) => theme.mediaQueries.lg} {
+    height: 100%;
     width: ${({ isActive }) => (isActive ? '384px' : 0)};
   }
 `

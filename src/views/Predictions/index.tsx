@@ -10,6 +10,7 @@ import PageLoader from 'components/PageLoader'
 import Container from './components/Container'
 import HistoryPane from './components/HistoryPane'
 import MainContent from './MainContent'
+import SwiperProvider from './context/SwiperProvider'
 
 const Predictions = () => {
   const status = useGetPredictionsStatus()
@@ -23,10 +24,12 @@ const Predictions = () => {
   }
 
   return (
-    <Container>
-      <MainContent isHistoryPaneOpen={isHistoryPaneOpen} isChartPaneOpen={isChartPaneOpen} />
-      <HistoryPane isActive={isHistoryPaneOpen} />
-    </Container>
+    <SwiperProvider>
+      <Container>
+        <MainContent isHistoryPaneOpen={isHistoryPaneOpen} isChartPaneOpen={isChartPaneOpen} />
+        <HistoryPane isActive={isHistoryPaneOpen} />
+      </Container>
+    </SwiperProvider>
   )
 }
 

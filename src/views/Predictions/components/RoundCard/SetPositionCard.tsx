@@ -1,5 +1,4 @@
 import React, { ChangeEventHandler, useEffect, useState } from 'react'
-import SwiperCore from 'swiper'
 import {
   ArrowBackIcon,
   CardBody,
@@ -21,6 +20,7 @@ import useGetBnbBalance from 'hooks/useGetBnbBalance'
 import UnlockButton from 'components/UnlockButton'
 import { Position } from 'state/types'
 import { getBnbAmount } from '../../helpers'
+import useSwiper from '../../hooks/useSwiper'
 import FlexRow from '../FlexRow'
 import { PositionTag } from './Tag'
 import Card from './Card'
@@ -28,7 +28,6 @@ import Card from './Card'
 interface SetPositionCardProps {
   defaultPosition: Position
   onBack: () => void
-  swiperInstance: SwiperCore
 }
 
 const dust = new BigNumber(0.01).times(new BigNumber(10).pow(18))
@@ -50,10 +49,11 @@ const getPercentDisplay = (percentage: number) => {
   return `${percentage.toLocaleString(undefined, { maximumFractionDigits: 1 })}%`
 }
 
-const SetPositionCard: React.FC<SetPositionCardProps> = ({ defaultPosition, onBack, swiperInstance }) => {
+const SetPositionCard: React.FC<SetPositionCardProps> = ({ defaultPosition, onBack }) => {
   const [position, setPosition] = useState<Position>(defaultPosition)
   const [value, setValue] = useState('')
   const [hasSufficientBalance, setHasSufficientBalance] = useState(true)
+  const { swiper } = useSwiper()
   const bnbBalance = useGetBnbBalance()
   const { account } = useWeb3React()
   const TranslateString = useI18n()
@@ -89,15 +89,15 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ defaultPosition, onBa
 
   // Disable the swiper events to avoid conflicts
   const handleMouseOver = () => {
-    swiperInstance.keyboard.disable()
-    swiperInstance.mousewheel.disable()
-    swiperInstance.detachEvents()
+    swiper.keyboard.disable()
+    swiper.mousewheel.disable()
+    swiper.detachEvents()
   }
 
   const handleMouseOut = () => {
-    swiperInstance.keyboard.enable()
-    swiperInstance.mousewheel.enable()
-    swiperInstance.attachEvents()
+    swiper.keyboard.enable()
+    swiper.mousewheel.enable()
+    swiper.attachEvents()
   }
 
   useEffect(() => {

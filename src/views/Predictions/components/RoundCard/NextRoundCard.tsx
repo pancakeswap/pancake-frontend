@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import SwiperCore from 'swiper'
 import { CardBody, PlayCircleOutlineIcon, Button } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import { Position, Round } from 'state/types'
@@ -12,10 +11,9 @@ import CardHeader from './CardHeader'
 
 interface NextRoundCardProps {
   round: Round
-  swiperInstance: SwiperCore
 }
 
-const NextRoundCard: React.FC<NextRoundCardProps> = ({ round, swiperInstance }) => {
+const NextRoundCard: React.FC<NextRoundCardProps> = ({ round }) => {
   const [state, setState] = useState({
     isSettingPosition: false,
     defaultPosition: Position.UP,
@@ -58,7 +56,7 @@ const NextRoundCard: React.FC<NextRoundCardProps> = ({ round, swiperInstance }) 
           <MultiplierArrow roundPosition={Position.DOWN} />
         </CardBody>
       </Card>
-      <SetPositionCard onBack={handleBack} defaultPosition={state.defaultPosition} swiperInstance={swiperInstance} />
+      <SetPositionCard onBack={handleBack} defaultPosition={state.defaultPosition} />
     </CardFlip>
   )
 }
