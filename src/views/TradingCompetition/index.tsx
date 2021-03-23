@@ -23,7 +23,7 @@ const SampleCard = () => (
     <CardHeader>A header</CardHeader>
     <CardBody>
       <Flex flexDirection="column">
-        Some body stuff{' '}
+        Some body stuff
         <Button mt="8px" onClick={() => console.log('clicked')}>
           Click me
         </Button>
