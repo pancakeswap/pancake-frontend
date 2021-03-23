@@ -34,14 +34,29 @@ const Stake: React.FC<StakeProps> = ({ pool, isOldSyrup, isBnbPool }) => {
 
   const [onPresentCakeRequired] = useModal(<CakeRequiredModal />)
   const [onPresentStake] = useModal(
-    <StakeModal isBnbPool={isBnbPool} sousId={sousId} stakingTokenDecimals={stakingToken.decimals} />,
+    <StakeModal
+      isBnbPool={isBnbPool}
+      sousId={sousId}
+      stakingTokenDecimals={stakingToken.decimals}
+      stakingTokenName={stakingToken.symbol}
+    />,
+  )
+
+  const [onPresentUnstake] = useModal(
+    <StakeModal
+      isBnbPool={isBnbPool}
+      sousId={sousId}
+      stakingTokenDecimals={stakingToken.decimals}
+      stakingTokenName={stakingToken.symbol}
+      isStaking={false}
+    />,
   )
 
   const allowance = new BigNumber(userData?.allowance || 0)
   const stakedBalance = new BigNumber(userData?.stakedBalance || 0)
   const accountHasStakedBalance = stakedBalance?.toNumber() > 0
   const needsApproval = !accountHasStakedBalance && !allowance.toNumber() && !isBnbPool
-  const stakedBalanceBusd = stakedBalance.multipliedBy(cakePrice).toNumber()
+  const stakedBalanceBusd = new BigNumber(getBalanceNumber(stakedBalance)).multipliedBy(cakePrice).toNumber()
   const [requestedApproval, setRequestedApproval] = useState(false)
 
   const handleStakeClick = () => {
@@ -111,10 +126,17 @@ const Stake: React.FC<StakeProps> = ({ pool, isOldSyrup, isBnbPool }) => {
               isDisabled={!stakedBalance.toNumber() || isFinished}
               fontSize="20px"
             />
-            <Balance value={stakedBalanceBusd} isDisabled={!stakedBalanceBusd} fontSize="12px" prefix="~" />
+            <Balance
+              value={stakedBalanceBusd}
+              isDisabled={!stakedBalanceBusd}
+              fontSize="12px"
+              prefix="~"
+              bold={false}
+              unit=" USD"
+            />
           </Box>
           <Flex alignItems="center" ml="auto">
-            <IconButton variant="secondary" onClick={onPresentStake} mr="8px">
+            <IconButton variant="secondary" onClick={onPresentUnstake} mr="8px">
               <MinusIcon color="primary" width="14px" />
             </IconButton>
             <IconButton variant="secondary" onClick={onPresentStake}>

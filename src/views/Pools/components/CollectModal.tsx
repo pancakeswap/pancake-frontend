@@ -1,13 +1,12 @@
 import React, { useState, useMemo } from 'react'
 import useI18n from 'hooks/useI18n'
 import BigNumber from 'bignumber.js'
-import { Button, Modal, ButtonMenu, ButtonMenuItem, Flex, HelpIcon, Text, AutoRenewIcon } from '@pancakeswap-libs/uikit'
-import Tooltip from 'views/Farms/components/Tooltip/Tooltip'
+import { Button, Modal, ButtonMenu, ButtonMenuItem, Flex, HelpIcon, Text, RefreshIcon } from '@pancakeswap-libs/uikit'
 import { getFullDisplayBalance } from 'utils/formatBalance'
 import Balance from 'components/Balance'
 import { useSousStake } from 'hooks/useStake'
 import { useSousHarvest } from 'hooks/useHarvest'
-import { useWeb3React } from '@web3-react/core'
+import useTheme from 'hooks/useTheme'
 
 interface CollectModalProps {
   sousId: number
@@ -15,6 +14,7 @@ interface CollectModalProps {
   earnings: BigNumber
   earningsBusd: number
   stakingTokenDecimals?: number
+  stakingTokenName: string
   harvest?: boolean
   onDismiss?: () => void
 }
@@ -22,6 +22,7 @@ interface CollectModalProps {
 const CollectModal: React.FC<CollectModalProps> = ({
   earnings,
   earningsBusd,
+  stakingTokenName,
   stakingTokenDecimals,
   sousId,
   isBnbPool,
@@ -29,10 +30,10 @@ const CollectModal: React.FC<CollectModalProps> = ({
   onDismiss,
 }) => {
   const TranslateString = useI18n()
-  const { account } = useWeb3React()
   const [pendingTx, setPendingTx] = useState(false)
   const { onStake } = useSousStake(sousId, isBnbPool)
   const { onReward } = useSousHarvest(sousId, isBnbPool)
+  const { theme } = useTheme()
 
   const [showCompound, setShowCompound] = useState(!harvest)
 
@@ -70,14 +71,19 @@ const CollectModal: React.FC<CollectModalProps> = ({
 
   const handleRenderIcon = () => {
     if (pendingTx) {
-      return <AutoRenewIcon color="white" />
+      return <RefreshIcon color="white" />
     }
 
     return null
   }
 
   return (
-    <Modal title={TranslateString(1056, 'Collect')} onDismiss={onDismiss}>
+    <Modal
+      title={TranslateString(1056, 'Collect')}
+      onDismiss={onDismiss}
+      minWidth="280px"
+      headerBackground={theme.card.cardHeaderBackground}
+    >
       {!harvest && (
         <Flex justifyContent="center" alignItems="center" mb="24px">
           <ButtonMenu
@@ -90,34 +96,32 @@ const CollectModal: React.FC<CollectModalProps> = ({
             <ButtonMenuItem as="button">{TranslateString(562, 'Harvest')}</ButtonMenuItem>
           </ButtonMenu>
           <Flex ml="10px">
-            <Tooltip
-              content={TranslateString(
-                999,
-                'Compound: collect and restake CAKE into pool Harvest: collect CAKE and send to wallet',
-              )}
-            >
-              <HelpIcon color="textSubtle" />
-            </Tooltip>
+            <HelpIcon color="textSubtle" />
           </Flex>
         </Flex>
       )}
 
       <Flex justifyContent="space-between" alignItems="center">
         <Text>{handleRenderLabel()}:</Text>
-        <Balance value={Number(fullBalance)} fontSize="16px" />
+        <Balance value={Number(fullBalance)} fontSize="16px" unit={` ${stakingTokenName}`} />
       </Flex>
       <Flex justifyContent="flex-end" alignItems="center">
-        <Balance value={earningsBusd} isDisabled={!earningsBusd} fontSize="12px" prefix="~" />
+        <Balance
+          value={earningsBusd}
+          isDisabled={!earningsBusd}
+          fontSize="12px"
+          prefix="~"
+          unit=" USD"
+          bold={false}
+          color="textSubtle"
+        />
       </Flex>
-      <Button
-        mt="24px"
-        onClick={handleAction}
-        endIcon={handleRenderIcon()}
-        disabled={!earnings || pendingTx || !account}
-      >
+      <Button mt="24px" onClick={handleAction} endIcon={handleRenderIcon()} disabled={!earnings || pendingTx}>
         {handleRenderActionButtonLabel()}
       </Button>
-      <Button variant="text">Close Window</Button>
+      <Button variant="text" onClick={onDismiss}>
+        Close Window
+      </Button>
     </Modal>
   )
 }

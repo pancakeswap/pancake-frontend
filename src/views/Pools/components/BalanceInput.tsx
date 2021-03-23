@@ -30,7 +30,7 @@ const BalanceInput: React.FC<BalanceInputProps> = ({ value, onChange }) => {
   return (
     <Box position="relative">
       <StyledInput value={value} onChange={onChange} placeholder="0.0" />
-      <StyledBalance value={priceBusd} fontSize="12px" prefix="~" color="textSubtle" />
+      <StyledBalance value={priceBusd} fontSize="12px" prefix="~" color="textSubtle" unit=" USD" bold={false} />
     </Box>
   )
 }

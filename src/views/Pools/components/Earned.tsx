@@ -1,6 +1,5 @@
 import React from 'react'
 import { Flex, Text, Button, useModal } from '@pancakeswap-libs/uikit'
-import { useWeb3React } from '@web3-react/core'
 import useI18n from 'hooks/useI18n'
 import { usePriceCakeBusd } from 'state/hooks'
 import BigNumber from 'bignumber.js'
@@ -35,37 +34,50 @@ const Earned: React.FC<EarnedProps> = ({
 }) => {
   const TranslateString = useI18n()
   const cakePrice = usePriceCakeBusd()
-  const { account } = useWeb3React()
-  const earningsBusd = earnings.multipliedBy(cakePrice).toNumber()
+  const earningsBusd = new BigNumber(getBalanceNumber(earnings)).multipliedBy(cakePrice).toNumber()
 
-  const [onPresentCollect] = useModal(
+  const [onPresentCollect, onDismissCollect] = useModal(
     <CollectModal
       earnings={earnings}
       stakingTokenDecimals={stakingTokenDecimals}
       earningsBusd={earningsBusd}
       sousId={sousId}
       isBnbPool={isBnbPool}
+      stakingTokenName={stakingTokenName}
+      onDismiss={() => onDismissCollect()}
     />,
   )
 
-  const [onPresentHarvest] = useModal(
+  const [onPresentHarvest, onDismissHarvest] = useModal(
     <CollectModal
       earnings={earnings}
       stakingTokenDecimals={stakingTokenDecimals}
       earningsBusd={earningsBusd}
       sousId={sousId}
       isBnbPool={isBnbPool}
+      stakingTokenName={stakingTokenName}
+      onDismiss={() => onDismissHarvest()}
       harvest
     />,
   )
 
   const handleRenderActionButton = (): JSX.Element => {
+    const displayedEarnings = parseFloat(getBalanceNumber(earnings, tokenDecimals).toFixed(3))
+
     if (tokenName === stakingTokenName) {
-      return <Button onClick={onPresentCollect}>Collect</Button>
+      return (
+        <Button onClick={onPresentCollect} minWidth="116px" disabled={!displayedEarnings}>
+          Collect
+        </Button>
+      )
     }
 
-    if (account && harvest && !isOldSyrup) {
-      return <Button onClick={onPresentHarvest}>{TranslateString(562, 'Harvest')}</Button>
+    if (harvest && !isOldSyrup) {
+      return (
+        <Button onClick={onPresentHarvest} disabled={!displayedEarnings} minWidth="116px">
+          {TranslateString(562, 'Harvest')}
+        </Button>
+      )
     }
 
     return null
@@ -92,7 +104,15 @@ const Earned: React.FC<EarnedProps> = ({
             />
           </Flex>
           <Flex>
-            <Balance value={earningsBusd} isDisabled={!earningsBusd} fontSize="12px" prefix="~" />
+            <Balance
+              value={earningsBusd}
+              isDisabled={!earningsBusd}
+              fontSize="12px"
+              prefix="~"
+              bold={false}
+              color="textSubtle"
+              unit=" USD"
+            />
           </Flex>
         </Flex>
         {handleRenderActionButton()}

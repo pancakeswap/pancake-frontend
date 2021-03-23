@@ -18,7 +18,7 @@ interface BalanceProps extends TextProps {
 }
 
 const StyledText = styled(Text)<TextProps>`
-  color: ${({ isDisabled, color, theme }) => (isDisabled ? theme.colors.textDisabled : color)};
+  color: ${({ isDisabled, color, theme }) => (isDisabled ? theme.colors.textDisabled : theme.colors[color])};
 `
 
 const Balance: React.FC<BalanceProps> = ({

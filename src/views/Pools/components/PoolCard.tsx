@@ -32,7 +32,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
     endBlock,
     isFinished,
     userData,
-    apr,
+    apr = null,
   } = pool
 
   // Pools using native BNB behave differently than pools using a token
@@ -56,6 +56,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
         title={`${TranslateString(318, 'Earn')} ${tokenName}`}
         coinIconUrl={`/images/pools/${poolImage}`}
         tokenName={tokenName}
+        stakingTokenName={stakingToken.symbol}
       />
       <Flex flexDirection="column" padding="24px">
         <Apr tokenName={tokenName} isOldSyrup={isOldSyrup} isFinished={isFinished} apy={apr} />
