@@ -1,7 +1,7 @@
 import { Heading } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
 
-const sharedH1Styles = (theme) => `
+const H1SizeStyles = (theme) => `
 font-size: 48px;
 line-height: 110%;
 white-space: nowrap;
@@ -11,7 +11,7 @@ ${theme.mediaQueries.sm} {
 }
 `
 
-const sharedH2Styles = (theme) => `
+const H2SizeStyles = (theme) => `
 font-size: 32px;
 line-height: 110%;
 white-space: nowrap;
@@ -21,36 +21,52 @@ ${theme.mediaQueries.sm} {
 }
 `
 
-export const Heading1Text = styled(Heading)`
-  ${({ theme }) => sharedH1Styles(theme)}
-  color: #ffffff;
-  background: -webkit-linear-gradient(#7645d9 0%, #452a7a 100%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-stroke: 4px transparent;
-  text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
+const sharedColorStyles = (props) => `
+color: ${props.textColor ? props.textColor : '#ffffff'};
+
+background:  ${props.background ? props.background : '-webkit-linear-gradient(#7645d9 0%, #452a7a 100%)'};
+${
+  props.fill
+    ? `-webkit-text-fill-color: transparent;`
+    : `
+-webkit-text-stroke: 4px transparent;
+text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);`
+}
 `
 
-export const Heading2Text = styled(Heading)`
-  ${({ theme }) => sharedH2Styles(theme)}
-  color: #FFFFFF;
-  background: -webkit-linear-gradient(#7645d9 0%, #452a7a 100%);
+const sharedVisiblyHiddenStyles = `
+visibility: hidden;
+height: 0px;
+`
+
+interface HeadingProps {
+  textColor?: string
+  background?: string
+  fill?: boolean
+}
+
+export const Heading1Text = styled(Heading)<HeadingProps>`
+  ${({ theme }) => H1SizeStyles(theme)}
+  ${(props) => sharedColorStyles(props)}
   background-clip: text;
   -webkit-background-clip: text;
-  -webkit-text-stroke: 4px transparent;
-  text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
+`
+
+export const Heading2Text = styled(Heading)<HeadingProps>`
+  ${({ theme }) => H2SizeStyles(theme)}
+  ${(props) => sharedColorStyles(props)}
+  background-clip: text;
+  -webkit-background-clip: text;
 `
 
 export const VisuallyHiddenHeading1Text = styled(Heading)`
-  ${({ theme }) => sharedH1Styles(theme)}
-  visibility: hidden;
-  height: 0px;
+  ${({ theme }) => H1SizeStyles(theme)}
+  ${sharedVisiblyHiddenStyles}
 `
 
 export const VisuallyHiddenHeading2Text = styled(Heading)`
-  ${({ theme }) => sharedH2Styles(theme)}
-  visibility: hidden;
-  height: 0px;
+  ${({ theme }) => H2SizeStyles(theme)}
+  ${sharedVisiblyHiddenStyles}
 `
 
 export default Heading1Text
