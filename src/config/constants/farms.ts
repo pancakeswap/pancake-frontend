@@ -23,16 +23,6 @@ const farms: FarmConfig[] = [
     quoteToken: tokens.wbnb,
   },
   {
-    pid: 105,
-    lpSymbol: 'bBADGER-BTCB LP',
-    lpAddresses: {
-      97: '',
-      56: '0xBB2281cA5B4d07263112604D1F182AD0Ab26a252',
-    },
-    token: tokens.bbadger,
-    quoteToken: tokens.btcb,
-  },
-  {
     pid: 104,
     lpSymbol: 'bDIGG-BTCB LP',
     lpAddresses: {
