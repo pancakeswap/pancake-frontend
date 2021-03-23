@@ -45,7 +45,7 @@ const Actions = styled.div`
   }
 `
 
-const FarmedStakingCard = () => {
+const LotteryCard = () => {
   const { account } = useWeb3React()
   const lotteryHasDrawn = useGetLotteryHasDrawn()
   const [requesteClaim, setRequestedClaim] = useState(false)
@@ -124,4 +124,4 @@ const FarmedStakingCard = () => {
   )
 }
 
-export default FarmedStakingCard
+export default LotteryCard
