@@ -13,18 +13,23 @@ interface RegisterModalProps extends CompetitionProps {
   onDismiss?: () => void
 }
 
-const ProfileWrapper = styled.div``
+const AvatarWrapper = styled.div`
+  height: 64px;
+  width: 64px;
+`
 
 const RegisterModal: React.FC<RegisterModalProps> = ({ onDismiss, profile }) => {
   const TranslateString = useI18n()
 
   return (
     <Modal title="Register" onDismiss={onDismiss}>
-      <ProfileWrapper>
-        <ProfileAvatar profile={profile} />
-      </ProfileWrapper>
-      {!profile && <MakeProfile />}
-      {profile && profile.isActive ? <RegisterWithProfile /> : <ReactivateProfile />}
+      <Flex flexDirection="column" alignItems="center" maxWidth="400px">
+        <AvatarWrapper>
+          <ProfileAvatar profile={profile} />
+        </AvatarWrapper>
+        {!profile && <MakeProfile />}
+        {profile && profile.isActive ? <RegisterWithProfile profile={profile} /> : <ReactivateProfile />}
+      </Flex>
       <Button variant="text" onClick={onDismiss}>
         {TranslateString(999, 'Close Window')}
       </Button>

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button } from '@pancakeswap-libs/uikit'
+import { Heading, Button } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 
 const ReactivateProfile = () => {
@@ -7,7 +7,10 @@ const ReactivateProfile = () => {
 
   return (
     <>
-      <span>Reactivate profile</span> <Button>{TranslateString(999, 'Go to my profile')}</Button>
+      <Heading size="md" mb="24px">
+        {TranslateString(999, 'Reactivate your profile!')}
+      </Heading>
+      <Button mt="24px">{TranslateString(999, 'Go to my profile')}</Button>
     </>
   )
 }
