@@ -11,16 +11,16 @@ const TeamAvatar = styled.img`
   border: 1px solid ${({ theme }) => theme.card.background};
   border-radius: 50%;
   bottom: 0px;
-  height: 24px;
   position: absolute;
   right: 0px;
-  width: 24px;
+  min-width: 20px;
+  min-height: 20px;
+  width: 37.5%;
+  height: 37.5%;
   z-index: 5;
 
   ${({ theme }) => theme.mediaQueries.sm} {
     border-width: 2px;
-    height: 48px;
-    width: 48px;
   }
 `
 
@@ -29,28 +29,18 @@ const AvatarWrapper = styled.div<{ bg: string }>`
   background-repeat: no-repeat;
   background-size: cover;
   border-radius: 50%;
-  height: 64px;
   position: relative;
-  width: 64px;
+  width: 100%;
+  height: 100%;
 
   & > img {
     border-radius: 50%;
   }
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    height: 128px;
-    width: 128px;
-  }
 `
 // TODO: replace with no provile avatar icon
 const AvatarInactive = styled(NoProfileAvatarIcon)`
-  height: 64px;
-  width: 64px;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    height: 128px;
-    width: 128px;
-  }
+  width: 100%;
+  height: 100%;
 `
 
 const ProfileAvatar: React.FC<ProfileAvatarProps> = ({ profile }) => {
