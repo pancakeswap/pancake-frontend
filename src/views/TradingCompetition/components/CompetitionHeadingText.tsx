@@ -21,10 +21,11 @@ ${theme.mediaQueries.sm} {
 }
 `
 
-const sharedColorStyles = (props) => `
+const sharedStyles = (props) => `
 color: ${props.textColor ? props.textColor : '#ffffff'};
-
 background:  ${props.background ? props.background : '-webkit-linear-gradient(#7645d9 0%, #452a7a 100%)'};
+background-clip: text;
+-webkit-background-clip: text;
 ${
   props.fill
     ? `-webkit-text-fill-color: transparent;`
@@ -47,16 +48,12 @@ interface HeadingProps {
 
 export const Heading1Text = styled(Heading)<HeadingProps>`
   ${({ theme }) => H1SizeStyles(theme)}
-  ${(props) => sharedColorStyles(props)}
-  background-clip: text;
-  -webkit-background-clip: text;
+  ${(props) => sharedStyles(props)}
 `
 
 export const Heading2Text = styled(Heading)<HeadingProps>`
   ${({ theme }) => H2SizeStyles(theme)}
-  ${(props) => sharedColorStyles(props)}
-  background-clip: text;
-  -webkit-background-clip: text;
+  ${(props) => sharedStyles(props)}
 `
 
 export const VisuallyHiddenHeading1Text = styled(Heading)`
