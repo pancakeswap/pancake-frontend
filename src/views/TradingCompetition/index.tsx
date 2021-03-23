@@ -16,6 +16,7 @@ import {
   LIGHTBLUEBG,
   LIGHTBLUEFILL,
 } from './components/Section/sectionStyles'
+import Countdown from './components/Countdown'
 
 const SampleCard = () => (
   <Card>
@@ -43,6 +44,7 @@ const TradingCompetition = () => {
   return (
     <CompetitionPage>
       <Section backgroundStyle={DARKBG} svgFill={DARKFILL} index={4}>
+        <Countdown />
         <BattleBanner />
       </Section>
       <Section backgroundStyle={MIDBLUEBG} svgFill={MIDBLUEFILL} index={3} intersectComponent={<SampleCard />} />
