@@ -59,7 +59,7 @@ const NftList = () => {
 
   return (
     <NftGrid>
-      {orderBy(nfts, 'sortOrder').map((nft) => {
+      {orderBy(nfts, 'sortOrder' || 999).map((nft) => {
         const tokenIds = nftTokenIds[nft.bunnyId] ? nftTokenIds[nft.bunnyId].tokenIds : []
 
         return (

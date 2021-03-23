@@ -53,13 +53,15 @@ const Farm: React.FC = () => {
         <Route exact path={`${path}`}>
           <>
             {stackedOnly
-              ? orderBy(stackedOnlyPools, ['sortOrder']).map((pool) => <PoolCard key={pool.sousId} pool={pool} />)
-              : orderBy(openPools, ['sortOrder']).map((pool) => <PoolCard key={pool.sousId} pool={pool} />)}
+              ? orderBy(stackedOnlyPools, ['sortOrder' || 999]).map((pool) => (
+                  <PoolCard key={pool.sousId} pool={pool} />
+                ))
+              : orderBy(openPools, ['sortOrder' || 999]).map((pool) => <PoolCard key={pool.sousId} pool={pool} />)}
             <Coming />
           </>
         </Route>
         <Route path={`${path}/history`}>
-          {orderBy(finishedPools, ['sortOrder']).map((pool) => (
+          {orderBy(finishedPools, ['sortOrder' || 999]).map((pool) => (
             <PoolCard key={pool.sousId} pool={pool} />
           ))}
         </Route>
