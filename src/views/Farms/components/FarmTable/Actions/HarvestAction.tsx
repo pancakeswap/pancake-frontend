@@ -46,7 +46,7 @@ const HarvestAction: React.FunctionComponent<FarmWithStakedValue> = ({ pid, user
     <ActionContainer>
       <ActionTitles>
         <Title>CAKE </Title>
-        <Subtle>EARNED</Subtle>
+        <Subtle>{TranslateString(999, 'EARNED')}</Subtle>
       </ActionTitles>
       <ActionContent>
         <div>
@@ -62,7 +62,7 @@ const HarvestAction: React.FunctionComponent<FarmWithStakedValue> = ({ pid, user
           }}
           ml="4px"
         >
-          {TranslateString(999, 'Harvest')}
+          {TranslateString(562, 'Harvest')}
         </Button>
       </ActionContent>
     </ActionContainer>
