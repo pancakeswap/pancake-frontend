@@ -55,14 +55,17 @@ const BattleCta: React.FC<CompetitionProps> = ({
   const [onPresentRegisterModal] = useModal(<RegisterModal profile={profile} />, false)
 
   const getButtonText = () => {
+    // No wallet connected
     if (!account) {
       return TranslateString(999, 'Connect Wallet')
     }
 
+    // User not registered
     if (!registered) {
       return TranslateString(999, 'Register Now!')
     }
 
+    // User registered but competition has not started
     if (registered && !isCompetitionLive) {
       return (
         <>
@@ -71,6 +74,7 @@ const BattleCta: React.FC<CompetitionProps> = ({
       )
     }
 
+    // User registered and competition live
     if (registered && isCompetitionLive) {
       return TranslateString(999, 'Trade Now')
     }
@@ -79,19 +83,20 @@ const BattleCta: React.FC<CompetitionProps> = ({
   }
 
   const handleCtaClick = () => {
+    // No wallet connected
     if (!account) {
       onPresentConnectModal()
     }
 
+    // Wallet connected but user not registered
     if (account && !registered) {
       onPresentRegisterModal()
     }
 
+    // Registered and competition is live
     if (registered && isCompetitionLive) {
       window.location.href = 'https://exchange.pancakeswap.finance/#/swap'
     }
-
-    return ''
   }
 
   const isButtonDisabled = () => isLoading || (registered && !isCompetitionLive)
