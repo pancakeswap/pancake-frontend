@@ -13,6 +13,8 @@ const TeamAvatar = styled.img`
   bottom: 0px;
   position: absolute;
   right: 0px;
+  min-width: 20px;
+  min-height: 20px;
   width: 37.5%;
   height: 37.5%;
   z-index: 5;
