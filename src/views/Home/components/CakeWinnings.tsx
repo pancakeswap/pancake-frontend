@@ -32,11 +32,7 @@ const CakeWinnings = () => {
   return (
     <Block>
       <CardValue value={cakeAmount} lineHeight="1.5" />
-      {claimAmountBusd !== 0 ? (
-        <CardBusdValue value={claimAmountBusd} decimals={2} />
-      ) : (
-        <Skeleton animation="pulse" variant="rect" height="44px" />
-      )}
+      {claimAmountBusd !== 0 && <CardBusdValue value={claimAmountBusd} decimals={2} />}
     </Block>
   )
 }
