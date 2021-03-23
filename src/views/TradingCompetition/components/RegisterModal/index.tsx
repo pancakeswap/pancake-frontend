@@ -28,7 +28,11 @@ const RegisterModal: React.FC<RegisterModalProps> = ({ onDismiss, profile }) => 
           <ProfileAvatar profile={profile} />
         </AvatarWrapper>
         {!profile && <MakeProfile />}
-        {profile && profile.isActive ? <RegisterWithProfile profile={profile} /> : <ReactivateProfile />}
+        {profile && profile.isActive ? (
+          <RegisterWithProfile profile={profile} />
+        ) : (
+          <ReactivateProfile onDismiss={onDismiss} />
+        )}
       </Flex>
       <Button variant="text" onClick={onDismiss}>
         {TranslateString(999, 'Close Window')}
