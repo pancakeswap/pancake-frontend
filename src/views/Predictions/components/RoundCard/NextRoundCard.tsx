@@ -36,7 +36,7 @@ const NextRoundCard: React.FC<NextRoundCardProps> = ({ round, swiperInstance }) 
   }
 
   return (
-    <CardFlip isFlipped={state.isSettingPosition} height="417px">
+    <CardFlip isFlipped={state.isSettingPosition} height="426px">
       <Card>
         <CardHeader
           status="next"

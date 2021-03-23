@@ -53,7 +53,7 @@ const getPercentDisplay = (percentage: number) => {
 const SetPositionCard: React.FC<SetPositionCardProps> = ({ defaultPosition, onBack, swiperInstance }) => {
   const [position, setPosition] = useState<Position>(defaultPosition)
   const [value, setValue] = useState('')
-  const [isFieldWarning, setIsFieldWarning] = useState(false)
+  const [hasSufficientBalance, setHasSufficientBalance] = useState(true)
   const bnbBalance = useGetBnbBalance()
   const { account } = useWeb3React()
   const TranslateString = useI18n()
@@ -62,6 +62,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ defaultPosition, onBa
   const valueAsFloat = parseFloat(value)
   const percentageOfMaxBalance = (valueAsFloat / maxBalance) * 100
   const percentageDisplay = getPercentDisplay(percentageOfMaxBalance)
+  const showFieldWarning = account && valueAsFloat > 0 && !hasSufficientBalance
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = (evt) => {
     const newValue = evt.target.value
@@ -100,8 +101,8 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ defaultPosition, onBa
   }
 
   useEffect(() => {
-    setIsFieldWarning(valueAsFloat > maxBalance)
-  }, [valueAsFloat, maxBalance, setIsFieldWarning])
+    setHasSufficientBalance(valueAsFloat > 0 && valueAsFloat <= maxBalance)
+  }, [valueAsFloat, maxBalance, setHasSufficientBalance])
 
   return (
     <Card onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}>
@@ -133,9 +134,14 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ defaultPosition, onBa
         <BalanceInput
           value={value}
           onChange={handleChange}
-          isWarning={isFieldWarning}
+          isWarning={showFieldWarning}
           inputProps={{ disabled: !account }}
         />
+        {showFieldWarning && (
+          <Text color="failure" fontSize="12px" mt="4px" textAlign="right">
+            {TranslateString(999, 'Insufficient BNB balance')}
+          </Text>
+        )}
         <Text textAlign="right" mb="16px" color="textSubtle" fontSize="12px" style={{ height: '18px' }}>
           {account && TranslateString(999, `Balance: ${balanceDisplay}`, { num: balanceDisplay })}
         </Text>
@@ -167,7 +173,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ defaultPosition, onBa
         </Flex>
         <Box mb="8px">
           {account ? (
-            <Button width="100%" disabled={isFieldWarning || valueAsFloat <= 0}>
+            <Button width="100%" disabled={hasSufficientBalance || valueAsFloat <= 0}>
               {TranslateString(464, 'Confirm')}
             </Button>
           ) : (
