@@ -8,9 +8,9 @@ const TradingView = () => {
   const theme = useTheme()
 
   useEffect(() => {
-    if (!hasLoadedScript.current) {
-      const script = document.createElement('script')
+    const script = document.createElement('script')
 
+    if (!hasLoadedScript.current) {
       script.setAttribute('src', 'https://s3.tradingview.com/tv.js')
       script.setAttribute('type', 'text/javascript')
 
@@ -35,6 +35,10 @@ const TradingView = () => {
       })
 
       document.getElementsByTagName('head')[0].appendChild(script)
+    }
+
+    return () => {
+      script.remove()
     }
   }, [tv, hasLoadedScript, theme])
 
