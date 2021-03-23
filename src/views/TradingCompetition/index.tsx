@@ -36,6 +36,14 @@ const CompetitionPage = styled.div`
   min-height: calc(100vh - 64px);
 `
 
+const StyledFlex = styled(Flex)`
+  flex-direction: column;
+  ${({ theme }) => theme.mediaQueries.xl} {
+    flex-direction: row-reverse;
+    justify-content: space-between;
+  }
+`
+
 const TradingCompetition = () => {
   const { account } = useWeb3React()
   const { profile } = useProfile()
@@ -44,8 +52,10 @@ const TradingCompetition = () => {
   return (
     <CompetitionPage>
       <Section backgroundStyle={DARKBG} svgFill={DARKFILL} index={4}>
-        <Countdown />
-        <BattleBanner />
+        <StyledFlex>
+          <Countdown />
+          <BattleBanner />
+        </StyledFlex>
       </Section>
       <Section backgroundStyle={MIDBLUEBG} svgFill={MIDBLUEFILL} index={3} intersectComponent={<SampleCard />} />
       <Section backgroundStyle={LIGHTBLUEBG} svgFill={LIGHTBLUEFILL} index={2}>
