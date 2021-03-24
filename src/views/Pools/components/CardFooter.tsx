@@ -33,8 +33,8 @@ interface Props {
 }
 
 const StyledFooter = styled.div<{ isFinished: boolean }>`
-  border-top: 1px solid ${({ theme }) => (theme.isDark ? '#524B63' : '#E9EAEB')};
-  color: ${({ isFinished, theme }) => theme.colors[isFinished ? 'textDisabled2' : 'primary2']};
+  border-top: 1px solid ${({ theme }) => theme.colors.borderColor};
+  color: ${({ theme }) => theme.colors.primary};
   padding: 24px;
 `
 
@@ -131,7 +131,7 @@ const CardFooter: React.FC<Props> = ({
             <FlexFull>
               <Text fontSize="14px">{TranslateString(999, 'Total staked')}</Text>
             </FlexFull>
-            <Balance fontSize="14px" isDisabled={isFinished} value={getBalanceNumber(totalStaked, decimals)} />
+            <Balance fontSize="14px" value={getBalanceNumber(totalStaked, decimals)} bold={false} />
             &nbsp;
             <Text fontSize="14px">{tokenName}</Text>
           </Row>
@@ -148,14 +148,7 @@ const CardFooter: React.FC<Props> = ({
               <FlexFull>
                 <Text fontSize="14px">{TranslateString(410, 'End')}:</Text>
               </FlexFull>
-              <Balance
-                fontSize="14px"
-                isDisabled={isFinished}
-                value={blocksRemaining}
-                decimals={0}
-                color="primary"
-                bold={false}
-              />
+              <Balance fontSize="14px" value={blocksRemaining} decimals={0} color="primary" bold={false} />
               <TimerIcon color="primary" width="16px" />
             </Row>
           )}

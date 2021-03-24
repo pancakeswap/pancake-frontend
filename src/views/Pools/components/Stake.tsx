@@ -6,14 +6,13 @@ import UnlockButton from 'components/UnlockButton'
 import Balance from 'components/Balance'
 import { Pool } from 'state/types'
 import { useERC20 } from 'hooks/useContract'
-import useHasCakeBalance from 'hooks/useHasCakeBalance'
 import { useSousApprove } from 'hooks/useApprove'
 import { usePriceCakeBusd } from 'state/hooks'
 import useI18n from 'hooks/useI18n'
 import { getAddress } from 'utils/addressHelpers'
 import { getBalanceNumber } from 'utils/formatBalance'
 
-import CakeRequiredModal from './CakeRequiredModal'
+import TokenRequiredModal from './TokenRequiredModal'
 import StakeModal from './StakeModal'
 
 interface StakeProps {
@@ -23,22 +22,33 @@ interface StakeProps {
 }
 
 const Stake: React.FC<StakeProps> = ({ pool, isOldSyrup, isBnbPool }) => {
-  const { userData, isFinished, stakingToken, sousId } = pool
+  const { userData, isFinished, stakingToken, sousId, stakingLimit, earningToken } = pool
 
   const TranslateString = useI18n()
   const cakePrice = usePriceCakeBusd()
-  const hasCake = useHasCakeBalance(new BigNumber(0))
   const { account } = useWeb3React()
-  const stakingTokenContract = useERC20(getAddress(stakingToken.address))
+  const stakingTokenContract = useERC20(stakingToken.address ? getAddress(stakingToken.address) : '')
+  const convertedLimit = new BigNumber(stakingLimit).multipliedBy(new BigNumber(10).pow(earningToken.decimals))
+  const stakingTokenBalance = new BigNumber(userData?.stakingTokenBalance || 0)
+
+  const allowance = new BigNumber(userData?.allowance || 0)
+  const stakedBalance = new BigNumber(userData?.stakedBalance || 0)
+  const accountHasStakedBalance = stakedBalance?.toNumber() > 0
+  const needsApproval = !accountHasStakedBalance && !allowance.toNumber() && !isBnbPool
+  const stakedBalanceBusd = new BigNumber(getBalanceNumber(stakedBalance)).multipliedBy(cakePrice).toNumber()
+  const [requestedApproval, setRequestedApproval] = useState(false)
+
   const { onApprove } = useSousApprove(stakingTokenContract, sousId)
 
-  const [onPresentCakeRequired] = useModal(<CakeRequiredModal />)
+  const [onPresentTokenRequired] = useModal(<TokenRequiredModal token={stakingToken} />)
   const [onPresentStake] = useModal(
     <StakeModal
       isBnbPool={isBnbPool}
       sousId={sousId}
       stakingTokenDecimals={stakingToken.decimals}
       stakingTokenName={stakingToken.symbol}
+      stakingTokenAddress={stakingToken.address}
+      max={stakingLimit && stakingTokenBalance.isGreaterThan(convertedLimit) ? convertedLimit : stakingTokenBalance}
     />,
   )
 
@@ -48,27 +58,36 @@ const Stake: React.FC<StakeProps> = ({ pool, isOldSyrup, isBnbPool }) => {
       sousId={sousId}
       stakingTokenDecimals={stakingToken.decimals}
       stakingTokenName={stakingToken.symbol}
+      stakingTokenAddress={stakingToken.address}
       isStaking={false}
+      max={stakedBalance}
     />,
   )
 
-  const allowance = new BigNumber(userData?.allowance || 0)
-  const stakedBalance = new BigNumber(userData?.stakedBalance || 0)
-  const accountHasStakedBalance = stakedBalance?.toNumber() > 0
-  const needsApproval = !accountHasStakedBalance && !allowance.toNumber() && !isBnbPool
-  const stakedBalanceBusd = new BigNumber(getBalanceNumber(stakedBalance)).multipliedBy(cakePrice).toNumber()
-  const [requestedApproval, setRequestedApproval] = useState(false)
-
   const handleStakeClick = () => {
-    if (hasCake) {
+    /* if (hasCake) {
       onPresentStake()
       return
-    }
+    } */
 
-    onPresentCakeRequired()
+    onPresentTokenRequired()
   }
 
   const handleRenderLabel = (): JSX.Element => {
+    if (isFinished && sousId !== 0) {
+      return (
+        <>
+          <Text color="secondary" fontSize="12px" bold>
+            {stakingToken.symbol}
+          </Text>
+          &nbsp;
+          <Text color="textSubtle" textTransform="uppercase" fontSize="12px" bold>
+            {TranslateString(1074, 'Staked')}
+          </Text>
+        </>
+      )
+    }
+
     if (!account) {
       return (
         <Text color="textSubtle" textTransform="uppercase" fontSize="12px" bold>
@@ -80,7 +99,7 @@ const Stake: React.FC<StakeProps> = ({ pool, isOldSyrup, isBnbPool }) => {
     if (accountHasStakedBalance) {
       return (
         <>
-          <Text color="textSecondary" fontSize="12px" bold>
+          <Text color="secondary" fontSize="12px" bold>
             {stakingToken.symbol}
           </Text>
           &nbsp;
@@ -97,7 +116,7 @@ const Stake: React.FC<StakeProps> = ({ pool, isOldSyrup, isBnbPool }) => {
           {TranslateString(316, 'Stake')}
         </Text>
         &nbsp;
-        <Text color="textSecondary" fontSize="12px" bold>
+        <Text color="secondary" fontSize="12px" bold>
           {stakingToken.symbol}
         </Text>
       </>
@@ -109,9 +128,36 @@ const Stake: React.FC<StakeProps> = ({ pool, isOldSyrup, isBnbPool }) => {
       return <UnlockButton width="100%" />
     }
 
+    if (isFinished && sousId !== 0) {
+      return (
+        <Flex>
+          <Box>
+            <Balance
+              value={getBalanceNumber(stakedBalance, stakingToken.decimals)}
+              isDisabled={!stakedBalance.toNumber() || isFinished}
+              fontSize="20px"
+            />
+            <Balance
+              value={stakedBalanceBusd}
+              isDisabled={!stakedBalanceBusd}
+              fontSize="12px"
+              prefix="~"
+              bold={false}
+              unit=" USD"
+            />
+          </Box>
+          <Flex alignItems="center" ml="auto">
+            <Button disabled={!stakedBalance.toNumber()} minWidth="116px" onClick={onPresentUnstake}>
+              {TranslateString(588, 'Unstake')}
+            </Button>
+          </Flex>
+        </Flex>
+      )
+    }
+
     if (needsApproval && !isOldSyrup) {
       return (
-        <Button disabled={isFinished || requestedApproval} onClick={handleApprove} width="100%">
+        <Button disabled={isFinished || requestedApproval} onClick={handleApprove} width="100%" minWidth="116px">
           {TranslateString(999, 'Enable')}
         </Button>
       )
@@ -148,7 +194,7 @@ const Stake: React.FC<StakeProps> = ({ pool, isOldSyrup, isBnbPool }) => {
     }
 
     return (
-      <Button width="100%" onClick={handleStakeClick}>
+      <Button width="100%" onClick={handleStakeClick} minWidth="116px">
         {TranslateString(316, 'Stake')}
       </Button>
     )

@@ -6,9 +6,11 @@ import { BASE_EXCHANGE_URL } from 'config'
 import { useSousStake } from 'hooks/useStake'
 import { useSousUnstake } from 'hooks/useUnstake'
 import useTheme from 'hooks/useTheme'
-import { getCakeAddress } from 'utils/addressHelpers'
+import { getAddress } from 'utils/addressHelpers'
 import useTokenBalance from 'hooks/useTokenBalance'
 import BigNumber from 'bignumber.js'
+import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
+import { Address } from 'config/constants/types'
 
 import BalanceInput from './BalanceInput'
 
@@ -17,6 +19,8 @@ interface StakeModalProps {
   isBnbPool: boolean
   stakingTokenDecimals?: number
   stakingTokenName: string
+  stakingTokenAddress?: Address
+  max: BigNumber
   isStaking?: boolean
   onDismiss?: () => void
 }
@@ -35,7 +39,9 @@ const StakeModal: React.FC<StakeModalProps> = ({
   isBnbPool,
   stakingTokenName,
   stakingTokenDecimals = 18,
+  stakingTokenAddress,
   isStaking = true,
+  max,
   onDismiss,
 }) => {
   const TranslateString = useI18n()
@@ -43,16 +49,24 @@ const StakeModal: React.FC<StakeModalProps> = ({
   const { onStake } = useSousStake(sousId, isBnbPool)
   const { onUnstake } = useSousUnstake(sousId)
   const { theme } = useTheme()
-  const cakeBalance = useTokenBalance(getCakeAddress())
+  const tokenBalance = useTokenBalance(getAddress(stakingTokenAddress))
 
   const [pendingTx, setPendingTx] = useState(false)
   const [stakeAmount, setStakeAmount] = useState('')
   const [percent, setPercent] = useState(0)
 
   const handleStakePriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (new BigNumber(event.target.value).lte(cakeBalance)) {
-      setStakeAmount(event.target.value)
-    }
+    const value = event.target.value ? event.target.value : '0'
+
+    setStakeAmount(event.target.value)
+
+    const percentage = Math.floor(
+      new BigNumber(new BigNumber(value).multipliedBy(new BigNumber(10).pow(stakingTokenDecimals)))
+        .dividedBy(tokenBalance)
+        .toNumber() * 100,
+    )
+
+    setPercent(percentage > 100 ? 100 : percentage)
   }
 
   const handleRenderActionButtonLabel = () => {
@@ -81,14 +95,19 @@ const StakeModal: React.FC<StakeModalProps> = ({
 
   const handleConfirmClick = async () => {
     setPendingTx(true)
+    let result = null
     if (isStaking) {
-      await onStake(stakeAmount, stakingTokenDecimals)
+      result = await onStake(stakeAmount, stakingTokenDecimals)
     } else {
-      await onUnstake(stakeAmount, stakingTokenDecimals)
+      result = await onUnstake(stakeAmount, stakingTokenDecimals)
     }
 
     setPendingTx(false)
-    onDismiss()
+  }
+
+  const handleChangePercent = (value) => {
+    setStakeAmount(getFullDisplayBalance(max.multipliedBy(value / 100), stakingTokenDecimals))
+    setPercent(value)
   }
 
   return (
@@ -101,7 +120,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
       <Flex alignItems="center" justifyContent="space-between" mb="8px">
         <Text bold>{isStaking ? TranslateString(316, 'Stake') : TranslateString(588, 'Unstake')}:</Text>
         <Flex alignItems="center" minWidth="70px">
-          <Image src="/images/tokens/CAKE.png" width={24} height={24} alt="Cake" />
+          <Image src={`/images/tokens/${stakingTokenName}.png`} width={24} height={24} alt="Cake" />
           <Text ml="4px" bold>
             CAKE
           </Text>
@@ -109,7 +128,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
       </Flex>
       <BalanceInput value={stakeAmount} onChange={handleStakePriceChange} />
       <Text mt="8px" ml="auto" color="textSubtle" fontSize="12px" mb="8px">
-        Balance: {stakeAmount}
+        Balance: {getFullDisplayBalance(max)}
       </Text>
       <Slider
         min={0}
@@ -121,20 +140,20 @@ const StakeModal: React.FC<StakeModalProps> = ({
         step={1}
       />
       <Flex alignItems="center" justifyContent="space-between" mt="8px">
-        <StyledButton variant="tertiary" onClick={() => setPercent(25)}>
+        <StyledButton variant="tertiary" onClick={() => handleChangePercent(25)}>
           25%
         </StyledButton>
-        <StyledButton variant="tertiary" onClick={() => setPercent(50)}>
+        <StyledButton variant="tertiary" onClick={() => handleChangePercent(50)}>
           50%
         </StyledButton>
-        <StyledButton variant="tertiary" onClick={() => setPercent(75)}>
+        <StyledButton variant="tertiary" onClick={() => handleChangePercent(75)}>
           75%
         </StyledButton>
-        <StyledButton variant="tertiary" onClick={() => setPercent(100)}>
+        <StyledButton variant="tertiary" onClick={() => handleChangePercent(100)}>
           MAX
         </StyledButton>
       </Flex>
-      <Button disabled={pendingTx} onClick={handleConfirmClick} mt="24px" endIcon={handleRenderIcon()}>
+      <Button isLoading={pendingTx} onClick={handleConfirmClick} mt="24px" endIcon={handleRenderIcon()}>
         {handleRenderActionButtonLabel()}
       </Button>
       {isStaking && (

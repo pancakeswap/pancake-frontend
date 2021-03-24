@@ -18,7 +18,6 @@ import { Pool } from 'state/types'
 import Coming from './components/Coming'
 import PoolCard from './components/PoolCard'
 import PoolTabButtons from './components/PoolTabButtons'
-import Divider from './components/Divider'
 
 const Farm: React.FC = () => {
   const { path } = useRouteMatch()
@@ -30,6 +29,7 @@ const Farm: React.FC = () => {
   const [stackedOnly, setStackedOnly] = useState(false)
   const { isXl } = useMatchBreakpoints()
   const [sortOption, setSortOption] = useState('hot')
+  const [query, setQuery] = useState('')
 
   const sortPools = (pools: Pool[]): Pool[] => {
     switch (sortOption) {
@@ -65,7 +65,14 @@ const Farm: React.FC = () => {
     return pool
   })
 
-  pools = sortPools(pools)
+  pools = sortPools(pools).filter((pool) => {
+    const lowerCaseQuery = query.toLowerCase()
+
+    return (
+      pool.earningToken.symbol.toLowerCase().includes(lowerCaseQuery) ||
+      pool.stakingToken.symbol.toLowerCase().includes(lowerCaseQuery)
+    )
+  })
 
   const [finishedPools, openPools] = useMemo(
     () => partition(pools, (pool) => pool.isFinished || blockNumber > pool.endBlock),
@@ -104,38 +111,47 @@ const Farm: React.FC = () => {
       <Page>
         <ControlContainer justifyContent="space-between" alignItems="center" mb="32px">
           <PoolTabButtons stackedOnly={stackedOnly} setStackedOnly={setStackedOnly} />
-          <Flex alignItems="center">
-            <Select
-              options={[
-                {
-                  label: 'Hot',
-                  value: 'hot',
-                },
-                {
-                  label: 'APR',
-                  value: 'apr',
-                },
-                {
-                  label: 'Earned',
-                  value: 'earned',
-                },
-                {
-                  label: 'Total Staked',
-                  value: 'total_staked',
-                },
-                {
-                  label: 'Finish',
-                  value: 'finish',
-                },
-              ]}
-              onChange={handleSortOptionChange}
-            />
-            <StyledInput placeholder="Search pools" />
+          <Flex alignItems="center" width="100%">
+            <InputWrapper alignItems="center">
+              <Text mr="10px" color="textSubtle">
+                Sort by:
+              </Text>
+              <Select
+                options={[
+                  {
+                    label: 'Hot',
+                    value: 'hot',
+                  },
+                  {
+                    label: 'APR',
+                    value: 'apr',
+                  },
+                  {
+                    label: 'Earned',
+                    value: 'earned',
+                  },
+                  {
+                    label: 'Total Staked',
+                    value: 'total_staked',
+                  },
+                  {
+                    label: 'Finish',
+                    value: 'finish',
+                  },
+                ]}
+                onChange={handleSortOptionChange}
+              />
+            </InputWrapper>
+            <InputWrapper>
+              {!isXl && <Text>{TranslateString(744, 'Search')}</Text>}
+              <StyledInput
+                placeholder={TranslateString(999, 'Search pools')}
+                onChange={(event) => setQuery(event.target.value)}
+              />
+            </InputWrapper>
           </Flex>
         </ControlContainer>
-
-        <Divider />
-        <FlexLayout>
+        <CardsContainer>
           <Route exact path={`${path}`}>
             <>
               {stackedOnly
@@ -149,7 +165,7 @@ const Farm: React.FC = () => {
               <PoolCard key={pool.sousId} pool={pool} />
             ))}
           </Route>
-        </FlexLayout>
+        </CardsContainer>
       </Page>
     </>
   )
@@ -163,8 +179,13 @@ const ControlContainer = styled(Flex)`
 `
 
 const StyledInput = styled(Input)`
-  width: 256px;
-  margin-left: 24px;
+  margin-left: 0;
+  width: 100%;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    margin-left: 24px;
+    width: 256px;
+  }
 `
 
 const HeroInner = styled.div`
@@ -197,6 +218,38 @@ const Hero = styled.div`
   img {
     height: auto;
     max-width: 100%;
+  }
+`
+
+const CardsContainer = styled(FlexLayout)`
+  margin-left: -8px;
+  margin-right: -8px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    margin-left: -16px;
+    margin-right: -16px;
+  }
+`
+
+const InputWrapper = styled(Flex)`
+  flex-direction: column;
+  align-items: flex-start;
+  flex-grow: 1;
+  flex-basis: 0;
+
+  ${Text} {
+    font-size: 12px;
+    margin-bottom: 4px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    flex-grow: 0;
+    flex-direction: row;
+    align-items: center;
+    ${Text} {
+      font-size: 12px;
+      margin-bottom: 0;
+    }
   }
 `
 

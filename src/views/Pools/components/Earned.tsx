@@ -86,7 +86,7 @@ const Earned: React.FC<EarnedProps> = ({
   return (
     <Flex flexDirection="column" mt="20px">
       <Flex mb="4px">
-        <Text color="textSecondary" fontSize="12px" bold>
+        <Text color="secondary" fontSize="12px" bold>
           {tokenName}
         </Text>
         &nbsp;

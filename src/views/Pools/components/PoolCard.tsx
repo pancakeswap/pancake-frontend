@@ -1,6 +1,5 @@
 import BigNumber from 'bignumber.js'
 import React from 'react'
-import styled from 'styled-components'
 import { Flex } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 
@@ -44,19 +43,19 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
 
   const isOldSyrup = stakingToken.symbol === tokens.syrup.symbol
   const accountHasStakedBalance = stakedBalance?.toNumber() > 0
-  const isCardActive = isFinished && accountHasStakedBalance
+  const isCardActive = accountHasStakedBalance
   const tokenDecimals = earningToken.decimals
   const tokenName = earningToken.symbol
   const poolImage = `${pool.earningToken.symbol}-${pool.stakingToken.symbol}.svg`.toLocaleLowerCase()
 
   return (
     <Card isActive={isCardActive} isFinished={isFinished && sousId !== 0}>
-      {isFinished && sousId !== 0 && <PoolFinishedSash />}
       <CardHeader
         title={`${TranslateString(318, 'Earn')} ${tokenName}`}
         coinIconUrl={`/images/pools/${poolImage}`}
         tokenName={tokenName}
         stakingTokenName={stakingToken.symbol}
+        isFinished={isFinished && sousId !== 0}
       />
       <Flex flexDirection="column" padding="24px">
         <Apr tokenName={tokenName} isOldSyrup={isOldSyrup} isFinished={isFinished} apy={apr} />
@@ -83,22 +82,11 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
         isFinished={isFinished}
         poolCategory={poolCategory}
         tokenName={stakingToken.symbol}
-        tokenAddress={getAddress(earningToken.address)}
+        tokenAddress={earningToken.address ? getAddress(earningToken.address) : ''}
         tokenDecimals={tokenDecimals}
       />
     </Card>
   )
 }
-
-const PoolFinishedSash = styled.div`
-  background-image: url('/images/pool-finished-sash.svg');
-  background-position: top right;
-  background-repeat: not-repeat;
-  height: 135px;
-  position: absolute;
-  right: -24px;
-  top: -24px;
-  width: 135px;
-`
 
 export default PoolCard
