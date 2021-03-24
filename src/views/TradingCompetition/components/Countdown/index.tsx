@@ -52,17 +52,15 @@ const Countdown = () => {
 
   const nowInMs = Date.now()
   const competitionHasStarted = nowInMs >= competitionStartTime
-  const competitionHasEnded = nowInMs >= competitionEndTime
+  const competitionHasEnded = nowInMs > competitionEndTime
 
   const activeStepIndex = () => {
     if (competitionHasStarted) {
       return 1
     }
-
     if (competitionHasEnded) {
       return 2
     }
-
     return 0
   }
 
@@ -82,8 +80,10 @@ const Countdown = () => {
       <PocketWatchWrapper>
         <PocketWatch />
       </PocketWatchWrapper>
-      <Flex flexDirection="column">
-        <Timer timerText={competitionHasStarted ? 'End:' : 'Start:'} minutes={minutes} hours={hours} days={days} />
+      <Flex flexDirection="column" justifyContent="center">
+        {!competitionHasEnded && (
+          <Timer timerText={competitionHasStarted ? 'End:' : 'Start:'} minutes={minutes} hours={hours} days={days} />
+        )}
         <ProgressStepper steps={steps} activeStepIndex={activeStepIndex()} />
       </Flex>
     </Wrapper>
