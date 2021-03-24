@@ -78,10 +78,13 @@ const Farm: React.FC = () => {
     () => partition(pools, (pool) => pool.isFinished || blockNumber > pool.endBlock),
     [blockNumber, pools],
   )
-  const stackedOnlyPools = useMemo(
-    () => openPools.filter((pool) => pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0)),
-    [openPools],
-  )
+
+  const isStakedPool = (pool: Pool) => {
+    return pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0)
+  }
+
+  const stakedOnlyOpenPools = useMemo(() => openPools.filter(isStakedPool), [openPools])
+  const stakedOnlyFinishedPools = useMemo(() => finishedPools.filter(isStakedPool), [finishedPools])
 
   const handleSortOptionChange = (option: OptionProps): void => {
     setSortOption(option.value)
@@ -155,15 +158,15 @@ const Farm: React.FC = () => {
           <Route exact path={`${path}`}>
             <>
               {stackedOnly
-                ? stackedOnlyPools.map((pool) => <PoolCard key={pool.sousId} pool={pool} />)
+                ? stakedOnlyOpenPools.map((pool) => <PoolCard key={pool.sousId} pool={pool} />)
                 : openPools.map((pool) => <PoolCard key={pool.sousId} pool={pool} />)}
               <Coming />
             </>
           </Route>
           <Route path={`${path}/history`}>
-            {finishedPools.map((pool) => (
-              <PoolCard key={pool.sousId} pool={pool} />
-            ))}
+            {stackedOnly
+              ? stakedOnlyFinishedPools.map((pool) => <PoolCard key={pool.sousId} pool={pool} />)
+              : finishedPools.map((pool) => <PoolCard key={pool.sousId} pool={pool} />)}
           </Route>
         </CardsContainer>
         <Image src="/images/pool-bunnies.png" alt="Pool bunnies" width={256} height={246} mt="32px" mx="auto" />
