@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Flex } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
+import getTimePeriods from 'utils/getTimePeriods'
 import ProgressStepper from './ProgressStepper'
 import Timer from './Timer'
 import { PocketWatch } from '../../svgs'
@@ -46,13 +47,24 @@ const Countdown = () => {
   const activeStepIndex = 1
 
   // 00:00 07.04.2021 UTC
-  const competitionStartTime = 1617750000000
+  const competitionStartTime = 1617753600000
 
   // 00:00 14.04.2021 UTC
-  const competitionEndTime = 1618354800000
+  const competitionEndTime = 1618358400000
 
   const nowInMs = Date.now()
   const competitionHasStarted = nowInMs >= competitionStartTime
+
+  const timeUntilNextEvent = () => {
+    if (competitionHasStarted) {
+      return competitionEndTime - nowInMs
+    }
+    return competitionStartTime - nowInMs
+  }
+
+  const { minutes, hours, days } = getTimePeriods(timeUntilNextEvent() / 1000)
+
+  // debugger // eslint-disable-line no-debugger
 
   return (
     <Wrapper>
@@ -60,10 +72,7 @@ const Countdown = () => {
         <PocketWatch />
       </PocketWatchWrapper>
       <Flex flexDirection="column">
-        <Timer
-          timerText={competitionHasStarted ? 'End:' : 'Start:'}
-          msToCountdownTo={competitionHasStarted ? competitionEndTime : competitionStartTime}
-        />
+        <Timer timerText={competitionHasStarted ? 'End:' : 'Start:'} minutes={minutes} hours={hours} days={days} />
         <ProgressStepper steps={steps} activeStepIndex={activeStepIndex} />
       </Flex>
     </Wrapper>

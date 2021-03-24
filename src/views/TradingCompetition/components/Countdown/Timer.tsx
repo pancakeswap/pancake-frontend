@@ -3,35 +3,38 @@ import styled from 'styled-components'
 import { Flex, Text } from '@pancakeswap-libs/uikit'
 import { Heading2Text } from '../CompetitionHeadingText'
 
+interface TimerProps {
+  timerText?: string
+  minutes?: number
+  hours?: number
+  days?: number
+}
+
 const StyledHeadingText = styled(Heading2Text)`
   font-size: 24px;
   margin-right: 4px;
 `
 
-const Timer: React.FC<{ timerText?: string; msToCountdownTo?: number }> = ({ timerText, msToCountdownTo }) => {
-  const daysCountdown = 1
-  const hoursCountdown = 8
-  const minutesCountdown = 34
-
+const Timer: React.FC<TimerProps> = ({ timerText, minutes, hours, days }) => {
   return (
     <Flex mb="24px" alignItems="flex-end">
       <Text color="#ffff" fontWeight="600" fontSize="16px" mr="16px">
         {timerText}
       </Text>
       <StyledHeadingText background="linear-gradient(180deg, #FFD800 0%, #EB8C00 100%)" fill>
-        {daysCountdown}
+        {days}
       </StyledHeadingText>
       <Text color="#ffff" fontWeight="600" fontSize="16px" mr="16px">
         d
       </Text>
       <StyledHeadingText background="linear-gradient(180deg, #FFD800 0%, #EB8C00 100%)" fill>
-        {hoursCountdown}
+        {hours}
       </StyledHeadingText>
       <Text color="#ffff" fontWeight="600" fontSize="16px" mr="16px">
         h
       </Text>
       <StyledHeadingText background="linear-gradient(180deg, #FFD800 0%, #EB8C00 100%)" fill>
-        {minutesCountdown}
+        {minutes}
       </StyledHeadingText>
       <Text color="#ffff" fontWeight="600" fontSize="16px">
         m
