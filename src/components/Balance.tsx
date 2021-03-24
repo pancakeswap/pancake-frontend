@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import CountUp from 'react-countup'
-import styled from 'styled-components'
 import { Text } from '@pancakeswap-libs/uikit'
+import useTheme from '../hooks/useTheme'
 
 interface TextProps {
   isDisabled?: boolean
@@ -15,30 +15,20 @@ interface BalanceProps extends TextProps {
   unit?: string
 }
 
-const StyledText = styled(Text)<TextProps>`
-  color: ${({ isDisabled, color, theme }) => {
-    if (isDisabled) {
-      return theme.colors.textDisabled
-    }
-    if (color !== Balance.defaultProps.color) {
-      return color
-    }
-    return theme.colors.text
-  }};
-`
-
 const Balance: React.FC<BalanceProps> = ({ value, fontSize, color, decimals, isDisabled, unit }) => {
   const previousValue = useRef(0)
+
+  const { theme } = useTheme()
 
   useEffect(() => {
     previousValue.current = value
   }, [value])
 
   return (
-    <StyledText bold color={color} fontSize={fontSize} isDisabled={isDisabled}>
+    <Text bold color={isDisabled ? theme.colors.textDisabled : color} fontSize={fontSize}>
       <CountUp start={previousValue.current} end={value} decimals={decimals} duration={1} separator="," />
       {value && unit && <span>{unit}</span>}
-    </StyledText>
+    </Text>
   )
 }
 
