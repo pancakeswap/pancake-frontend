@@ -38,7 +38,6 @@ const Earned: React.FC<EarnedProps> = ({
     .multipliedBy(tokenPrice)
     .toNumber()
 
-  console.log('ggggggggggggggg', getBalanceNumber(earnings, earningTokenDecimals))
   const [onPresentCollect, onDismissCollect] = useModal(
     <CollectModal
       earnings={earnings}
@@ -65,6 +64,14 @@ const Earned: React.FC<EarnedProps> = ({
   )
 
   const handleRenderActionButton = (): JSX.Element => {
+    if (isFinished) {
+      return (
+        <Button onClick={onPresentHarvest} disabled={!earnings.toNumber()} minWidth="116px">
+          {TranslateString(562, 'Harvest')}
+        </Button>
+      )
+    }
+
     if (earningTokenName === stakingTokenName) {
       return (
         <Button onClick={onPresentCollect} minWidth="116px" disabled={!earnings.toNumber()}>

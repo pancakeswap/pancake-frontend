@@ -38,8 +38,8 @@ const CollectModal: React.FC<CollectModalProps> = ({
   const [showCompound, setShowCompound] = useState(!harvest)
 
   const fullBalance = useMemo(() => {
-    return getFullDisplayBalance(earnings, stakingTokenDecimals)
-  }, [earnings, stakingTokenDecimals])
+    return getFullDisplayBalance(earnings, earningTokenName)
+  }, [earnings, earningTokenName])
 
   const handleRenderLabel = () => {
     if (showCompound) {
