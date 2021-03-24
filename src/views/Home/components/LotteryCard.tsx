@@ -13,9 +13,9 @@ import BuyModal from 'views/Lottery/components/TicketCard/BuyTicketModal'
 import { useLotteryAllowance } from 'hooks/useAllowance'
 import { useApproval } from 'hooks/useApproval'
 import PurchaseWarningModal from 'views/Lottery/components/TicketCard/PurchaseWarningModal'
+import UnlockButton from 'components/UnlockButton'
 import CakeWinnings from './CakeWinnings'
 import LotteryJackpot from './LotteryJackpot'
-import UnlockButton from '../../../components/UnlockButton'
 
 const StyledLotteryCard = styled(Card)`
   background-image: url('/images/ticket-bg.svg');
