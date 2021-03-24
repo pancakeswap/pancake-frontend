@@ -68,7 +68,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
           harvest={harvest}
           isOldSyrup={isOldSyrup}
           earnings={earnings}
-          tokenDecimals={tokenDecimals}
+          earningTokenDecimals={tokenDecimals}
           stakingTokenDecimals={stakingToken.decimals}
         />
         <Stake pool={pool} isOldSyrup={isOldSyrup} isBnbPool={isBnbPool} />

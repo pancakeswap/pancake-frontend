@@ -16,7 +16,7 @@ interface EarnedProps {
   isOldSyrup: boolean
   earnings: BigNumber
   isBnbPool: boolean
-  tokenDecimals: number
+  earningTokenDecimals: number
   stakingTokenDecimals?: number
 }
 
@@ -29,13 +29,16 @@ const Earned: React.FC<EarnedProps> = ({
   harvest,
   earnings,
   isBnbPool,
-  tokenDecimals,
+  earningTokenDecimals,
   stakingTokenDecimals,
 }) => {
   const TranslateString = useI18n()
   const tokenPrice = useGetApiPrice(earningTokenName)
-  const earningsBusd = new BigNumber(getBalanceNumber(earnings)).multipliedBy(tokenPrice).toNumber()
+  const earningsBusd = new BigNumber(getBalanceNumber(earnings, earningTokenDecimals))
+    .multipliedBy(tokenPrice)
+    .toNumber()
 
+  console.log('ggggggggggggggg', getBalanceNumber(earnings, earningTokenDecimals))
   const [onPresentCollect, onDismissCollect] = useModal(
     <CollectModal
       earnings={earnings}
@@ -43,7 +46,7 @@ const Earned: React.FC<EarnedProps> = ({
       earningsBusd={earningsBusd}
       sousId={sousId}
       isBnbPool={isBnbPool}
-      stakingTokenName={stakingTokenName}
+      earningTokenName={earningTokenName}
       onDismiss={() => onDismissCollect()}
     />,
   )
@@ -55,18 +58,16 @@ const Earned: React.FC<EarnedProps> = ({
       earningsBusd={earningsBusd}
       sousId={sousId}
       isBnbPool={isBnbPool}
-      stakingTokenName={stakingTokenName}
+      earningTokenName={earningTokenName}
       onDismiss={() => onDismissHarvest()}
       harvest
     />,
   )
 
   const handleRenderActionButton = (): JSX.Element => {
-    const displayedEarnings = parseFloat(getBalanceNumber(earnings, tokenDecimals).toFixed(3))
-
     if (earningTokenName === stakingTokenName) {
       return (
-        <Button onClick={onPresentCollect} minWidth="116px" disabled={!displayedEarnings}>
+        <Button onClick={onPresentCollect} minWidth="116px" disabled={!earnings.toNumber()}>
           Collect
         </Button>
       )
@@ -74,7 +75,7 @@ const Earned: React.FC<EarnedProps> = ({
 
     if (harvest && !isOldSyrup) {
       return (
-        <Button onClick={onPresentHarvest} disabled={!displayedEarnings} minWidth="116px">
+        <Button onClick={onPresentHarvest} disabled={!earnings.toNumber()} minWidth="116px">
           {TranslateString(562, 'Harvest')}
         </Button>
       )
@@ -98,9 +99,10 @@ const Earned: React.FC<EarnedProps> = ({
         <Flex flexDirection="column">
           <Flex>
             <Balance
-              value={getBalanceNumber(earnings, tokenDecimals)}
-              isDisabled={!earnings.toNumber() || isFinished}
+              value={getBalanceNumber(earnings, earningTokenDecimals)}
+              isDisabled={!earnings.toNumber()}
               fontSize="20px"
+              decimals={4}
             />
           </Flex>
           <Flex>

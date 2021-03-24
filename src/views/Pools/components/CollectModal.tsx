@@ -14,7 +14,7 @@ interface CollectModalProps {
   earnings: BigNumber
   earningsBusd: number
   stakingTokenDecimals?: number
-  stakingTokenName: string
+  earningTokenName: string
   harvest?: boolean
   onDismiss?: () => void
 }
@@ -22,7 +22,7 @@ interface CollectModalProps {
 const CollectModal: React.FC<CollectModalProps> = ({
   earnings,
   earningsBusd,
-  stakingTokenName,
+  earningTokenName,
   stakingTokenDecimals,
   sousId,
   isBnbPool,
@@ -79,7 +79,7 @@ const CollectModal: React.FC<CollectModalProps> = ({
 
   return (
     <Modal
-      title={TranslateString(1056, 'Collect')}
+      title={harvest ? TranslateString(562, 'Harvest') : TranslateString(1056, 'Collect')}
       onDismiss={onDismiss}
       minWidth="280px"
       headerBackground={theme.card.cardHeaderBackground}
@@ -103,7 +103,7 @@ const CollectModal: React.FC<CollectModalProps> = ({
 
       <Flex justifyContent="space-between" alignItems="center">
         <Text>{handleRenderLabel()}:</Text>
-        <Balance value={Number(fullBalance)} fontSize="16px" unit={` ${stakingTokenName}`} />
+        <Balance value={Number(fullBalance)} fontSize="16px" unit={` ${earningTokenName}`} decimals={4} />
       </Flex>
       <Flex justifyContent="flex-end" alignItems="center">
         <Balance
