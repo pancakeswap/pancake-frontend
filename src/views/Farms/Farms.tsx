@@ -131,12 +131,20 @@ const Farms: React.FC = () => {
 
   const [stackedOnly, setStackedOnly] = useState(false)
 
-  const activeFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
-  const inactiveFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X')
+  const filterFarms = (farms: FarmWithStakedValue[]): FarmWithStakedValue[] => {
+    let result
+    if (!pathname.includes('history')) {
+      result = farms.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
+    } else {
+      result = farms.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X')
+    }
 
-  const stackedOnlyFarms = activeFarms.filter(
-    (farm) => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0),
-  )
+    if (stackedOnly) {
+      return result.filter((farm) => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0))
+    }
+
+    return result
+  }
 
   const sortFarms = (farms: FarmWithStakedValue[]): FarmWithStakedValue[] => {
     switch (sortOption) {
@@ -190,15 +198,7 @@ const Farms: React.FC = () => {
     setQuery(event.target.value)
   }
 
-  const isActive = !pathname.includes('history')
-  let farmsStaked = []
-  if (isActive) {
-    farmsStaked = stackedOnly ? farmsList(stackedOnlyFarms) : farmsList(activeFarms)
-  } else {
-    farmsStaked = farmsList(inactiveFarms)
-  }
-
-  farmsStaked = sortFarms(farmsStaked)
+  const farmsStaked = sortFarms(farmsList(filterFarms(farmsLP)))
 
   const rowData = farmsStaked.map((farm) => {
     const { token, quoteToken } = farm
@@ -226,7 +226,7 @@ const Farms: React.FC = () => {
         pid: farm.pid,
       },
       liquidity: {
-        liquidity: farm.liquidity,
+        liquidity: farm.liquidity ? farm.liquidity.toNumber() : null,
       },
       multiplier: {
         multiplier: farm.multiplier,
