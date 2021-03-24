@@ -9,7 +9,6 @@ export interface CompetitionProps {
 export interface YourScoreProps extends CompetitionProps {
   test?: boolean
 }
-
 export interface RibbonProps {
   ribbonDirection?: 'up' | 'down'
   ribbonText?: string
@@ -17,11 +16,16 @@ export interface RibbonProps {
   imageComponent?: React.ReactNode
   children?: React.ReactNode
 }
-
 export interface SectionProps {
   backgroundStyle?: string
   svgFill?: string
   index?: number
   intersectionPosition?: 'top' | 'bottom'
   intersectComponent?: React.ReactNode
+}
+
+export interface CountdownProps {
+  steps?: Array<string>
+  activeStepIndex?: number
+  stepText?: string
 }

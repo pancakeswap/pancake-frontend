@@ -1,6 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Flex } from '@pancakeswap-libs/uikit'
+import useI18n from 'hooks/useI18n'
+import ProgressStepper from './ProgressStepper'
 import { PocketWatch } from '../../svgs'
 
 const Wrapper = styled.div`
@@ -29,6 +31,14 @@ const PocketWatchWrapper = styled(Flex)`
 `
 
 const Countdown = () => {
+  const TranslateString = useI18n()
+  const steps = [
+    `${TranslateString(999, 'Entry')}`,
+    `${TranslateString(1198, 'Live')}`,
+    `${TranslateString(410, 'End')}`,
+  ]
+  const activeStepIndex = 1
+
   return (
     <Wrapper>
       <PocketWatchWrapper>
@@ -36,7 +46,7 @@ const Countdown = () => {
       </PocketWatchWrapper>
       <Flex flexDirection="column">
         <span>Countdown</span>
-        <span>Stepper</span>
+        <ProgressStepper steps={steps} activeStepIndex={activeStepIndex} />
       </Flex>
     </Wrapper>
   )
