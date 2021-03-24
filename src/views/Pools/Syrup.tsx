@@ -3,7 +3,7 @@ import { Route, useRouteMatch } from 'react-router-dom'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
-import { Heading, Button, Flex, Text, HelpIcon, Input, useMatchBreakpoints } from '@pancakeswap-libs/uikit'
+import { Heading, Button, Flex, Text, HelpIcon, Input, useMatchBreakpoints, Image } from '@pancakeswap-libs/uikit'
 import orderBy from 'lodash/orderBy'
 import partition from 'lodash/partition'
 import useI18n from 'hooks/useI18n'
@@ -111,10 +111,10 @@ const Farm: React.FC = () => {
       <Page>
         <ControlContainer justifyContent="space-between" alignItems="center" mb="32px">
           <PoolTabButtons stackedOnly={stackedOnly} setStackedOnly={setStackedOnly} />
-          <Flex alignItems="center" width="100%">
+          <Flex alignItems="center" width={isXl ? 'auto' : '100%'} ml="auto">
             <InputWrapper alignItems="center">
               <Text mr="10px" color="textSubtle">
-                Sort by:
+                {TranslateString(999, 'Sort by')}:
               </Text>
               <Select
                 options={[
@@ -166,6 +166,7 @@ const Farm: React.FC = () => {
             ))}
           </Route>
         </CardsContainer>
+        <Image src="/images/pool-bunnies.png" alt="Pool bunnies" width={256} height={246} mt="32px" mx="auto" />
       </Page>
     </>
   )
@@ -240,6 +241,7 @@ const InputWrapper = styled(Flex)`
   ${Text} {
     font-size: 12px;
     margin-bottom: 4px;
+    white-space: nowrap;
   }
 
   ${({ theme }) => theme.mediaQueries.sm} {

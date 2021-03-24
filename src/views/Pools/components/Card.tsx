@@ -12,7 +12,7 @@ const Card = styled.div<{ isActive?: boolean; isFinished?: boolean }>`
   max-width: initial;
 
   ${({ theme }) => theme.mediaQueries.sm} {
-    max-width: inherit;
+    max-width: 31.5%;
   }
 `
 
