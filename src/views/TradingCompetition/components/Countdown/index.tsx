@@ -46,10 +46,8 @@ const Countdown = () => {
   ]
   // 00:00 07.04.2021 UTC
   const competitionStartTime = 1617753600000
-
   // 00:00 14.04.2021 UTC
   const competitionEndTime = 1618358400000
-
   const nowInMs = Date.now()
   const competitionHasStarted = nowInMs >= competitionStartTime
   const competitionHasEnded = nowInMs > competitionEndTime
@@ -72,8 +70,6 @@ const Countdown = () => {
   }
 
   const { minutes, hours, days } = getTimePeriods(timeUntilNextEvent() / 1000)
-
-  // debugger // eslint-disable-line no-debugger
 
   return (
     <Wrapper>
