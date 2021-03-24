@@ -23,6 +23,36 @@ const farms: FarmConfig[] = [
     quoteToken: tokens.wbnb,
   },
   {
+    pid: 106,
+    lpSymbol: 'bBADGER-BTCB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x10F461CEAC7A17F59e249954Db0784d42EfF5DB5',
+    },
+    token: tokens.bbadger,
+    quoteToken: tokens.btcb,
+  },
+  {
+    pid: 104,
+    lpSymbol: 'bDIGG-BTCB LP',
+    lpAddresses: {
+      97: '',
+      56: '0xE1E33459505bB3763843a426F7Fd9933418184ae',
+    },
+    token: tokens.bdigg,
+    quoteToken: tokens.btcb,
+  },
+  {
+    pid: 103,
+    lpSymbol: 'LTO-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x85644fcd00c401e1a0a0a10d2ae6bbe04a73e4ab',
+    },
+    token: tokens.lto,
+    quoteToken: tokens.wbnb,
+  },
+  {
     pid: 102,
     lpSymbol: 'MIR-UST LP',
     lpAddresses: {
@@ -649,7 +679,7 @@ const farms: FarmConfig[] = [
       97: '',
       56: '0xC743Dc05F03D25E1aF8eC5F8228f4BD25513c8d0',
     },
-    token: tokens.blk,
+    token: tokens.blink,
     quoteToken: tokens.wbnb,
   },
   {
@@ -769,7 +799,7 @@ const farms: FarmConfig[] = [
       97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
       56: '0x7561EEe90e24F3b348E1087A005F78B4c8453524',
     },
-    token: tokens.btc,
+    token: tokens.btcb,
     quoteToken: tokens.wbnb,
   },
   {

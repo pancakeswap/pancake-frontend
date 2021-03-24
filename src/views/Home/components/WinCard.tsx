@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Heading, Card, CardBody, Flex, ArrowForwardIcon } from '@pancakeswap-libs/uikit'
+import { Heading, Card, CardBody, Flex, ArrowForwardIcon, Skeleton } from '@pancakeswap-libs/uikit'
 import { NavLink } from 'react-router-dom'
 import useLotteryTotalPrizesUsd from 'hooks/useLotteryTotalPrizesUsd'
 
@@ -18,7 +18,7 @@ const CardMidContent = styled(Heading).attrs({ size: 'xl' })`
   line-height: 44px;
 `
 const WinCard = () => {
-  const lotteryPrize = Math.round(useLotteryTotalPrizesUsd()).toLocaleString()
+  const lotteryPrize = Math.round(useLotteryTotalPrizesUsd())
 
   return (
     <StyledFarmStakingCard>
@@ -26,7 +26,13 @@ const WinCard = () => {
         <Heading color="contrast" size="lg">
           Lottery with
         </Heading>
-        <CardMidContent color="#7645d9">${lotteryPrize}</CardMidContent>
+        <CardMidContent color="#7645d9">
+          {lotteryPrize !== 0 ? (
+            `$${lotteryPrize.toLocaleString()}`
+          ) : (
+            <Skeleton animation="pulse" variant="rect" height="44px" />
+          )}
+        </CardMidContent>
         <Flex justifyContent="space-between">
           <Heading color="contrast" size="lg">
             up for grabs

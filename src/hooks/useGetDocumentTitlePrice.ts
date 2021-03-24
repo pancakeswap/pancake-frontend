@@ -3,11 +3,16 @@ import { usePriceCakeBusd } from 'state/hooks'
 
 const useGetDocumentTitlePrice = () => {
   const cakePriceUsd = usePriceCakeBusd()
+
+  const cakePriceUsdString = cakePriceUsd.eq(0)
+    ? ''
+    : ` - $${cakePriceUsd.toNumber().toLocaleString(undefined, {
+        minimumFractionDigits: 3,
+        maximumFractionDigits: 3,
+      })}`
+
   useEffect(() => {
-    document.title = `PancakeSwap - $${Number(cakePriceUsd).toLocaleString(undefined, {
-      minimumFractionDigits: 3,
-      maximumFractionDigits: 3,
-    })}`
-  })
+    document.title = `PancakeSwap${cakePriceUsdString}`
+  }, [cakePriceUsdString])
 }
 export default useGetDocumentTitlePrice

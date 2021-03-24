@@ -34,12 +34,24 @@ const StyledEditProfileAvatar = styled.div`
   }
 `
 
+const AvatarWrapper = styled.div`
+  height: 64px;
+  width: 64px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    height: 128px;
+    width: 128px;
+  }
+`
+
 const EditProfileAvatar: React.FC<ProfileAvatarProps> = ({ profile }) => {
   const [onEditProfileModal] = useModal(<EditProfileModal />, false)
 
   return (
     <StyledEditProfileAvatar onClick={onEditProfileModal}>
-      <ProfileAvatar profile={profile} />
+      <AvatarWrapper>
+        <ProfileAvatar profile={profile} />
+      </AvatarWrapper>
       <EditOverlay />
     </StyledEditProfileAvatar>
   )
