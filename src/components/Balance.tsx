@@ -41,7 +41,14 @@ const Balance: React.FC<BalanceProps> = ({
   return (
     <StyledText bold={bold} color={color} fontSize={fontSize} isDisabled={isDisabled} {...props}>
       {!!prefix && <span>{prefix}</span>}
-      <CountUp start={previousValue.current} end={value} decimals={decimals} duration={1} separator="," />
+      <CountUp
+        start={previousValue.current}
+        end={value}
+        decimals={decimals}
+        duration={1}
+        separator=","
+        formattingFn={(val) => val.toString()}
+      />
       {!!(value && unit) && <span>{unit}</span>}
     </StyledText>
   )
