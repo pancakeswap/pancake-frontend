@@ -16,7 +16,7 @@ const Wrapper = styled(Flex)`
   margin-top: -30px;
   margin-bottom: 50px;
   justify-content: space-around;
-  ${({ theme }) => theme.mediaQueries.lg} {
+  ${({ theme }) => theme.mediaQueries.xl} {
     flex-direction: column;
     margin-top: -38px;
     margin-bottom: 0;
@@ -32,7 +32,7 @@ const PocketWatchWrapper = styled(Flex)`
     width: 64px;
   }
 
-  ${({ theme }) => theme.mediaQueries.lg} {
+  ${({ theme }) => theme.mediaQueries.xl} {
     margin-bottom: 24px;
   }
 `
@@ -44,8 +44,6 @@ const Countdown = () => {
     `${TranslateString(1198, 'Live')}`,
     `${TranslateString(410, 'End')}`,
   ]
-  const activeStepIndex = 1
-
   // 00:00 07.04.2021 UTC
   const competitionStartTime = 1617753600000
 
@@ -54,6 +52,19 @@ const Countdown = () => {
 
   const nowInMs = Date.now()
   const competitionHasStarted = nowInMs >= competitionStartTime
+  const competitionHasEnded = nowInMs >= competitionEndTime
+
+  const activeStepIndex = () => {
+    if (competitionHasStarted) {
+      return 1
+    }
+
+    if (competitionHasEnded) {
+      return 2
+    }
+
+    return 0
+  }
 
   const timeUntilNextEvent = () => {
     if (competitionHasStarted) {
@@ -73,7 +84,7 @@ const Countdown = () => {
       </PocketWatchWrapper>
       <Flex flexDirection="column">
         <Timer timerText={competitionHasStarted ? 'End:' : 'Start:'} minutes={minutes} hours={hours} days={days} />
-        <ProgressStepper steps={steps} activeStepIndex={activeStepIndex} />
+        <ProgressStepper steps={steps} activeStepIndex={activeStepIndex()} />
       </Flex>
     </Wrapper>
   )
