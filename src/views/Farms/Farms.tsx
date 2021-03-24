@@ -193,7 +193,7 @@ const Farms: React.FC = () => {
       }
       return farmsToDisplayWithAPY
     },
-    [cakePrice, prices, query],
+    [cakePrice, prices, query, isActive],
   )
 
   const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
