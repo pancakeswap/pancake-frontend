@@ -1,5 +1,5 @@
 import React from 'react'
-import { Skeleton, Text } from '@pancakeswap-libs/uikit'
+import { Text } from '@pancakeswap-libs/uikit'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useTotalRewards } from 'hooks/useTickets'
 import useI18n from 'hooks/useI18n'
@@ -19,7 +19,7 @@ const LotteryJackpot = () => {
   return (
     <>
       <Text bold fontSize="24px" style={{ lineHeight: '1.5' }}>
-        {lotteryPrizeAmountCake} {TranslateString(999, 'CAKE')}
+        {TranslateString(999, `${lotteryPrizeAmountCake} CAKE`, { amount: lotteryPrizeAmountCake })}
       </Text>
       {lotteryPrizeAmountBusd !== 0 && <CardBusdValue value={lotteryPrizeAmountBusd} />}
     </>

@@ -2,13 +2,13 @@ import React from 'react'
 import { useTotalClaim } from 'hooks/useTickets'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { usePriceCakeBusd } from 'state/hooks'
-import { Skeleton, Text } from '@pancakeswap-libs/uikit'
+import { Text } from '@pancakeswap-libs/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { BigNumber } from 'bignumber.js'
 import styled from 'styled-components'
+import useI18n from 'hooks/useI18n'
 import CardValue from './CardValue'
 import CardBusdValue from './CardBusdValue'
-import useI18n from '../../../hooks/useI18n'
 
 const Block = styled.div`
   margin-bottom: 24px;
