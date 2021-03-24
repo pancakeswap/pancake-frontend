@@ -903,6 +903,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://ltonetwork.com/',
   },
+  pcws: {
+    symbol: 'pCWS',
+    address: {
+      56: '0xbcf39f0edda668c58371e519af37ca705f2bfcbd',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://game.seascape.network/',
+  },
 }
 
 export default tokens
