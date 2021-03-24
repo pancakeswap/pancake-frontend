@@ -154,6 +154,11 @@ const Farm: React.FC = () => {
             </InputWrapper>
           </Flex>
         </ControlContainer>
+        <Route path={`${path}/history`}>
+          <Text color="failure" fontSize="20px" bold>
+            {TranslateString(999, 'These pools are no longer distributing rewards. Please unstake your tokens.')}
+          </Text>
+        </Route>
         <CardsContainer>
           <Route exact path={`${path}`}>
             <>
