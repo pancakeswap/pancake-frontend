@@ -51,13 +51,19 @@ const Countdown = () => {
   // 00:00 14.04.2021 UTC
   const competitionEndTime = 1618354800000
 
+  const nowInMs = Date.now()
+  const competitionHasStarted = nowInMs >= competitionStartTime
+
   return (
     <Wrapper>
       <PocketWatchWrapper>
         <PocketWatch />
       </PocketWatchWrapper>
       <Flex flexDirection="column">
-        <Timer competitionStartTime={competitionStartTime} competitionEndTime={competitionEndTime} />
+        <Timer
+          timerText={competitionHasStarted ? 'End:' : 'Start:'}
+          msToCountdownTo={competitionHasStarted ? competitionEndTime : competitionStartTime}
+        />
         <ProgressStepper steps={steps} activeStepIndex={activeStepIndex} />
       </Flex>
     </Wrapper>
