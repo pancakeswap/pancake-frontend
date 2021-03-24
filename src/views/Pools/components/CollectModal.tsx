@@ -13,7 +13,7 @@ interface CollectModalProps {
   isBnbPool: boolean
   earnings: BigNumber
   earningsBusd: number
-  stakingTokenDecimals?: number
+  earningTokenDecimals?: number
   earningTokenName: string
   harvest?: boolean
   onDismiss?: () => void
@@ -23,7 +23,7 @@ const CollectModal: React.FC<CollectModalProps> = ({
   earnings,
   earningsBusd,
   earningTokenName,
-  stakingTokenDecimals,
+  earningTokenDecimals,
   sousId,
   isBnbPool,
   harvest = false,
@@ -38,8 +38,8 @@ const CollectModal: React.FC<CollectModalProps> = ({
   const [showCompound, setShowCompound] = useState(!harvest)
 
   const fullBalance = useMemo(() => {
-    return getFullDisplayBalance(earnings, earningTokenName)
-  }, [earnings, earningTokenName])
+    return getFullDisplayBalance(earnings, earningTokenDecimals)
+  }, [earnings, earningTokenDecimals])
 
   const handleRenderLabel = () => {
     if (showCompound) {
@@ -60,7 +60,7 @@ const CollectModal: React.FC<CollectModalProps> = ({
   const handleAction = async () => {
     setPendingTx(true)
     if (showCompound) {
-      await onStake(fullBalance, stakingTokenDecimals)
+      await onStake(fullBalance, earningTokenDecimals)
     } else {
       await onReward()
     }

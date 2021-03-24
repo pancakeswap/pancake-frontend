@@ -17,7 +17,6 @@ interface EarnedProps {
   earnings: BigNumber
   isBnbPool: boolean
   earningTokenDecimals: number
-  stakingTokenDecimals?: number
 }
 
 const Earned: React.FC<EarnedProps> = ({
@@ -30,10 +29,9 @@ const Earned: React.FC<EarnedProps> = ({
   earnings,
   isBnbPool,
   earningTokenDecimals,
-  stakingTokenDecimals,
 }) => {
   const TranslateString = useI18n()
-  const tokenPrice = useGetApiPrice(earningTokenName)
+  const tokenPrice = useGetApiPrice(earningTokenName.toLowerCase())
   const earningsBusd = new BigNumber(getBalanceNumber(earnings, earningTokenDecimals))
     .multipliedBy(tokenPrice)
     .toNumber()
@@ -41,7 +39,7 @@ const Earned: React.FC<EarnedProps> = ({
   const [onPresentCollect, onDismissCollect] = useModal(
     <CollectModal
       earnings={earnings}
-      stakingTokenDecimals={stakingTokenDecimals}
+      earningTokenDecimals={earningTokenDecimals}
       earningsBusd={earningsBusd}
       sousId={sousId}
       isBnbPool={isBnbPool}
@@ -53,7 +51,6 @@ const Earned: React.FC<EarnedProps> = ({
   const [onPresentHarvest, onDismissHarvest] = useModal(
     <CollectModal
       earnings={earnings}
-      stakingTokenDecimals={stakingTokenDecimals}
       earningsBusd={earningsBusd}
       sousId={sousId}
       isBnbPool={isBnbPool}

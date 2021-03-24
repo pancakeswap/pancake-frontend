@@ -187,6 +187,7 @@ export const useFetchPriceList = () => {
 
 export const useGetApiPrices = () => {
   const prices: PriceState['data'] = useSelector((state: State) => state.prices.data)
+
   return prices
 }
 
