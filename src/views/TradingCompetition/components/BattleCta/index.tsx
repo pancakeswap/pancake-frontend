@@ -79,7 +79,7 @@ const BattleCta: React.FC<CompetitionProps> = ({
       return TranslateString(999, 'Trade Now')
     }
 
-    return ''
+    return 'Error'
   }
 
   const handleCtaClick = () => {
