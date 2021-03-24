@@ -11,8 +11,8 @@ import {
   ChevronUpIcon,
 } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
+import { PublicIfoState } from 'hooks/useGetPublicIfoData'
 import { Ifo } from 'config/constants/types'
-import { PublicIfoState } from '../../hooks/useGetPublicIfoData'
 
 export interface IfoCardDetailsProps {
   ifo: Ifo
