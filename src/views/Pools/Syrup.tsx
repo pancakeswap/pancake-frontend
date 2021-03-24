@@ -143,7 +143,7 @@ const Farm: React.FC = () => {
               />
             </InputWrapper>
             <InputWrapper>
-              {!isXl && <Text>{TranslateString(744, 'Search')}</Text>}
+              {!isXl && <Text color="textSubtle">{TranslateString(744, 'Search')}</Text>}
               <StyledInput
                 placeholder={TranslateString(999, 'Search pools')}
                 onChange={(event) => setQuery(event.target.value)}
