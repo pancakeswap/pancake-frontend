@@ -28,4 +28,5 @@ export interface CountdownProps {
   steps?: Array<string>
   activeStepIndex?: number
   stepText?: string
+  index?: number
 }
