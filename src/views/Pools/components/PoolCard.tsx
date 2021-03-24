@@ -62,7 +62,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
         <Earned
           isFinished={isFinished}
           sousId={sousId}
-          tokenName={tokenName}
+          earningTokenName={earningToken.symbol}
           stakingTokenName={stakingToken.symbol}
           isBnbPool={isBnbPool}
           harvest={harvest}

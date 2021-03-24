@@ -6,10 +6,8 @@ import { BASE_EXCHANGE_URL } from 'config'
 import { useSousStake } from 'hooks/useStake'
 import { useSousUnstake } from 'hooks/useUnstake'
 import useTheme from 'hooks/useTheme'
-import { getAddress } from 'utils/addressHelpers'
-import useTokenBalance from 'hooks/useTokenBalance'
 import BigNumber from 'bignumber.js'
-import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
+import { getFullDisplayBalance } from 'utils/formatBalance'
 import { Address } from 'config/constants/types'
 
 import BalanceInput from './BalanceInput'
@@ -39,7 +37,6 @@ const StakeModal: React.FC<StakeModalProps> = ({
   isBnbPool,
   stakingTokenName,
   stakingTokenDecimals = 18,
-  stakingTokenAddress,
   isStaking = true,
   max,
   onDismiss,
@@ -49,7 +46,6 @@ const StakeModal: React.FC<StakeModalProps> = ({
   const { onStake } = useSousStake(sousId, isBnbPool)
   const { onUnstake } = useSousUnstake(sousId)
   const { theme } = useTheme()
-  const tokenBalance = useTokenBalance(getAddress(stakingTokenAddress))
 
   const [pendingTx, setPendingTx] = useState(false)
   const [stakeAmount, setStakeAmount] = useState('')
@@ -62,7 +58,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
 
     const percentage = Math.floor(
       new BigNumber(new BigNumber(value).multipliedBy(new BigNumber(10).pow(stakingTokenDecimals)))
-        .dividedBy(tokenBalance)
+        .dividedBy(max)
         .toNumber() * 100,
     )
 
@@ -95,11 +91,11 @@ const StakeModal: React.FC<StakeModalProps> = ({
 
   const handleConfirmClick = async () => {
     setPendingTx(true)
-    let result = null
+
     if (isStaking) {
-      result = await onStake(stakeAmount, stakingTokenDecimals)
+      await onStake(stakeAmount, stakingTokenDecimals)
     } else {
-      result = await onUnstake(stakeAmount, stakingTokenDecimals)
+      await onUnstake(stakeAmount, stakingTokenDecimals)
     }
 
     setPendingTx(false)

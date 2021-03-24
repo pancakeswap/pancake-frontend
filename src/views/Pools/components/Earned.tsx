@@ -1,7 +1,7 @@
 import React from 'react'
 import { Flex, Text, Button, useModal } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
-import { usePriceCakeBusd } from 'state/hooks'
+import { useGetApiPrice } from 'state/hooks'
 import BigNumber from 'bignumber.js'
 import { getBalanceNumber } from 'utils/formatBalance'
 import Balance from 'components/Balance'
@@ -10,7 +10,7 @@ import CollectModal from './CollectModal'
 interface EarnedProps {
   isFinished: boolean
   sousId: number
-  tokenName: string
+  earningTokenName: string
   stakingTokenName: string
   harvest: boolean
   isOldSyrup: boolean
@@ -23,7 +23,7 @@ interface EarnedProps {
 const Earned: React.FC<EarnedProps> = ({
   isFinished,
   sousId,
-  tokenName,
+  earningTokenName,
   stakingTokenName,
   isOldSyrup,
   harvest,
@@ -33,8 +33,8 @@ const Earned: React.FC<EarnedProps> = ({
   stakingTokenDecimals,
 }) => {
   const TranslateString = useI18n()
-  const cakePrice = usePriceCakeBusd()
-  const earningsBusd = new BigNumber(getBalanceNumber(earnings)).multipliedBy(cakePrice).toNumber()
+  const tokenPrice = useGetApiPrice(earningTokenName)
+  const earningsBusd = new BigNumber(getBalanceNumber(earnings)).multipliedBy(tokenPrice).toNumber()
 
   const [onPresentCollect, onDismissCollect] = useModal(
     <CollectModal
@@ -64,7 +64,7 @@ const Earned: React.FC<EarnedProps> = ({
   const handleRenderActionButton = (): JSX.Element => {
     const displayedEarnings = parseFloat(getBalanceNumber(earnings, tokenDecimals).toFixed(3))
 
-    if (tokenName === stakingTokenName) {
+    if (earningTokenName === stakingTokenName) {
       return (
         <Button onClick={onPresentCollect} minWidth="116px" disabled={!displayedEarnings}>
           Collect
@@ -87,7 +87,7 @@ const Earned: React.FC<EarnedProps> = ({
     <Flex flexDirection="column" mt="20px">
       <Flex mb="4px">
         <Text color="secondary" fontSize="12px" bold>
-          {tokenName}
+          {earningTokenName}
         </Text>
         &nbsp;
         <Text color="textSubtle" textTransform="uppercase" fontSize="12px" bold>

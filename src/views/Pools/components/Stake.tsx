@@ -6,6 +6,7 @@ import UnlockButton from 'components/UnlockButton'
 import Balance from 'components/Balance'
 import { Pool } from 'state/types'
 import { useERC20 } from 'hooks/useContract'
+import useHasCakeBalance from 'hooks/useHasCakeBalance'
 import { useSousApprove } from 'hooks/useApprove'
 import { usePriceCakeBusd } from 'state/hooks'
 import useI18n from 'hooks/useI18n'
@@ -26,6 +27,7 @@ const Stake: React.FC<StakeProps> = ({ pool, isOldSyrup, isBnbPool }) => {
 
   const TranslateString = useI18n()
   const cakePrice = usePriceCakeBusd()
+  const hasCake = useHasCakeBalance(new BigNumber(0))
   const { account } = useWeb3React()
   const stakingTokenContract = useERC20(stakingToken.address ? getAddress(stakingToken.address) : '')
   const convertedLimit = new BigNumber(stakingLimit).multipliedBy(new BigNumber(10).pow(earningToken.decimals))
@@ -65,10 +67,10 @@ const Stake: React.FC<StakeProps> = ({ pool, isOldSyrup, isBnbPool }) => {
   )
 
   const handleStakeClick = () => {
-    /* if (hasCake) {
+    if (hasCake) {
       onPresentStake()
       return
-    } */
+    }
 
     onPresentTokenRequired()
   }

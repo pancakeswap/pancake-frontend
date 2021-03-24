@@ -39,8 +39,8 @@ const Farm: React.FC = () => {
         return orderBy(pools, (pool: Pool) => new BigNumber(pool.userData?.pendingReward || 0), 'desc')
       case 'total_staked':
         return orderBy(pools, (pool: Pool) => new BigNumber(pool.totalStaked || 0).toNumber(), 'desc')
-      case 'finish':
-        return orderBy(pools, 'isFinished', 'desc')
+      case 'end_block':
+        return orderBy(pools, (pool: Pool) => pool.endBlock || 0, 'desc')
       default:
         return pools
     }
@@ -135,8 +135,8 @@ const Farm: React.FC = () => {
                     value: 'total_staked',
                   },
                   {
-                    label: 'Finish',
-                    value: 'finish',
+                    label: 'End Block',
+                    value: 'end_block',
                   },
                 ]}
                 onChange={handleSortOptionChange}
