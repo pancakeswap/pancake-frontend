@@ -130,10 +130,10 @@ const Farms: React.FC = () => {
   }, [account, dispatch, fastRefresh])
 
   const [stackedOnly, setStackedOnly] = useState(false)
+  const isActive = !pathname.includes('history')
 
   const filterFarms = (farms: FarmWithStakedValue[]): FarmWithStakedValue[] => {
     let result
-    const isActive = !pathname.includes('history')
 
     if (isActive) {
       result = farms.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
@@ -176,7 +176,7 @@ const Farms: React.FC = () => {
 
         const quoteTokenPriceUsd = prices[farm.quoteToken.symbol.toLowerCase()]
         const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(quoteTokenPriceUsd)
-        const apy = farm.multiplier !== '0X' ? getFarmApy(farm.poolWeight, cakePrice, totalLiquidity) : 0
+        const apy = isActive ? getFarmApy(farm.poolWeight, cakePrice, totalLiquidity) : 0
 
         return { ...farm, apy, liquidity: totalLiquidity }
       })
