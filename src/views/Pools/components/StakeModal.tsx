@@ -29,7 +29,7 @@ const StyledButton = styled(Button)`
   flex-grow: 1;
   padding: 4px 16px;
   height: 20px;
-  max-width: 57px;
+  max-width: 56px;
 `
 
 const StakeModal: React.FC<StakeModalProps> = ({
