@@ -46,7 +46,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
   const isCardActive = accountHasStakedBalance
   const earningTokenDecimals = earningToken.decimals
   const earningTokenName = earningToken.symbol
-  const poolImage = `${pool.earningToken.symbol}-${pool.stakingToken.symbol}.svg`.toLocaleLowerCase()
+  const poolImage = `${earningTokenName}-${stakingToken.symbol}.svg`.toLocaleLowerCase()
 
   return (
     <Card isActive={isCardActive} isFinished={isFinished && sousId !== 0}>
@@ -80,7 +80,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
         endBlock={endBlock}
         isFinished={isFinished}
         poolCategory={poolCategory}
-        earningTokenName={stakingToken.symbol}
+        earningTokenName={earningTokenName}
         earningTokenAddress={earningToken.address ? getAddress(earningToken.address) : ''}
         earningTokenDecimals={earningTokenDecimals}
       />
