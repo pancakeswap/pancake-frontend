@@ -7,7 +7,7 @@ import AprCalculatorModal from './AprCalculatorModal'
 export interface AprButtonProps {
   lpLabel?: string
   cakePrice?: BigNumber
-  apy?: BigNumber
+  apy?: number
   addLiquidityUrl?: string
 }
 

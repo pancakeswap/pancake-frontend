@@ -138,7 +138,7 @@ const CardFooter: React.FC<Props> = ({
           {blocksUntilStart > 0 && (
             <Row>
               <FlexFull>
-                <Text fontSize="14px">{TranslateString(410, 'Start')}:</Text>
+                <Text fontSize="14px">{TranslateString(1212, 'Start')}:</Text>
               </FlexFull>
               <Balance fontSize="14px" isDisabled={isFinished} value={blocksUntilStart} decimals={0} />
             </Row>
