@@ -4,10 +4,10 @@ import { useProfile } from 'state/hooks'
 import { Card, CardHeader, CardBody, Flex, Button } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
 import RibbonWithImage from './components/RibbonWithImage'
+import HowToJoin from './components/HowToJoin'
 import BattleBanner from './components/BattleBanner'
 import Section from './components/Section'
 import Prizes from './svgs/Prizes'
-import Ranks from './svgs/Ranks'
 import {
   DARKBG,
   DARKFILL,
@@ -39,13 +39,16 @@ const TradingCompetition = () => {
   const { account } = useWeb3React()
   const { profile } = useProfile()
   const registered = true
+  const hasCompetitionStarted = false
 
   return (
     <CompetitionPage>
       <Section backgroundStyle={DARKBG} svgFill={DARKFILL} index={4}>
         <BattleBanner />
       </Section>
-      <Section backgroundStyle={MIDBLUEBG} svgFill={MIDBLUEFILL} index={3} intersectComponent={<SampleCard />} />
+      <Section backgroundStyle={MIDBLUEBG} svgFill={MIDBLUEFILL} index={3}>
+        {!hasCompetitionStarted ? <HowToJoin /> : <SampleCard />}
+      </Section>
       <Section backgroundStyle={LIGHTBLUEBG} svgFill={LIGHTBLUEFILL} index={2}>
         <RibbonWithImage imageComponent={<Prizes width="175px" />} ribbonDirection="down">
           Light blue
