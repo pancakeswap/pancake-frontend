@@ -8,32 +8,34 @@ import Timer from './Timer'
 import { PocketWatch } from '../../svgs'
 
 const Wrapper = styled(Flex)`
+  width: fit-content;
+  height: fit-content;
   background: linear-gradient(180deg, #7645d9 0%, #452a7a 100%);
   border: 1px solid #7645d9;
   box-sizing: border-box;
   border-radius: 0px 0px 24px 24px;
   padding: 16px 24px;
-  margin-top: -30px;
-  margin-bottom: 50px;
+  margin: -30px auto 50px;
   justify-content: space-around;
   ${({ theme }) => theme.mediaQueries.xl} {
     flex-direction: column;
-    margin-top: -38px;
-    margin-bottom: 0;
-    margin-left: 36px;
+    margin: -38px 0 0 36px;
   }
 `
 
 const PocketWatchWrapper = styled(Flex)`
   align-items: center;
   justify-content: center;
+  margin-right: 24px;
+
   svg {
     height: 64px;
     width: 64px;
   }
 
   ${({ theme }) => theme.mediaQueries.xl} {
-    margin-bottom: 24px;
+    margin-bottom: 16px;
+    margin-right: 0;
   }
 `
 
