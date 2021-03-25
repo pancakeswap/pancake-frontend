@@ -23,6 +23,16 @@ const farms: FarmConfig[] = [
     quoteToken: tokens.wbnb,
   },
   {
+    pid: 109,
+    lpSymbol: 'LIEN-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0xcd14855150335AAE984aa6D281E090c27035C692',
+    },
+    token: tokens.lien,
+    quoteToken: tokens.wbnb,
+  },
+  {
     pid: 108,
     lpSymbol: 'ZIL-BNB LP',
     lpAddresses: {
