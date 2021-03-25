@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Flex } from '@pancakeswap-libs/uikit'
+import Page from '../../../../components/layout/Page'
 import { SectionProps } from '../../types'
 import IntersectionCurve from './IntersectionCurve'
 
@@ -18,20 +19,8 @@ const BackgroundColorWrapper = styled(Flex)<SectionProps>`
   }
 `
 
-const ChildrenWrapper = styled.div`
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 1200px;
-  padding: 16px;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    padding: 24px;
-  }
-
-  ${({ theme }) => theme.mediaQueries.lg} {
-    padding-top: 32px;
-    padding-bottom: 32px;
-  }
+const ChildrenWrapper = styled(Page)`
+  min-height: auto;
 `
 
 const Section: React.FC<SectionProps> = ({

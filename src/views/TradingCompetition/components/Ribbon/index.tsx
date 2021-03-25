@@ -17,10 +17,6 @@ const Wrapper = styled(Flex)<{ ribbonDirection?: 'up' | 'down' }>`
   display: inline-flex;
   align-items: ${({ ribbonDirection }) => (ribbonDirection === 'up' ? 'flex-end' : 'flex-start')};
   justify-content: center;
-
-  svg {
-    z-index: 200;
-  }
 `
 
 const TextWrapper = styled(Flex)`
@@ -39,14 +35,7 @@ const LaurelWrapper = styled.div<{ dir?: 'l' | 'r' }>`
   z-index: 2;
   top: 50%;
   transform: translate(0, -50%);
-  ${({ dir }) =>
-    dir === 'l'
-      ? `
-    left: 0;
-  `
-      : `
-      right: 0;
-      `}
+  ${({ dir }) => (dir === 'l' ? `left: 0;` : `right: 0;`)}
 
   svg {
     height: 20px;
