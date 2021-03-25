@@ -903,6 +903,24 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://ltonetwork.com/',
   },
+  pcws: {
+    symbol: 'pCWS',
+    address: {
+      56: '0xbcf39f0edda668c58371e519af37ca705f2bfcbd',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://game.seascape.network/',
+  },
+  zil: {
+    symbol: 'ZIL',
+    address: {
+      56: '0xb86abcb37c3a4b64f74f59301aff131a1becc787',
+      97: '',
+    },
+    decimals: 12,
+    projectLink: 'https://www.zilliqa.com/',
+  },
 }
 
 export default tokens
