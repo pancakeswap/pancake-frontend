@@ -138,6 +138,10 @@ const Farms: React.FC = () => {
     (farm) => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0),
   )
 
+  const stackedInactiveFarms = inactiveFarms.filter(
+    (farm) => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0),
+  )
+
   const sortFarms = (farms: FarmWithStakedValue[]): FarmWithStakedValue[] => {
     switch (sortOption) {
       case 'apr':
@@ -195,7 +199,7 @@ const Farms: React.FC = () => {
   if (isActive) {
     farmsStaked = stackedOnly ? farmsList(stackedOnlyFarms) : farmsList(activeFarms)
   } else {
-    farmsStaked = farmsList(inactiveFarms)
+    farmsStaked = stackedOnly ? farmsList(stackedInactiveFarms) : farmsList(inactiveFarms)
   }
 
   farmsStaked = sortFarms(farmsStaked)
