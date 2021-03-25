@@ -7,9 +7,9 @@ import { getFullDisplayBalance } from 'utils/formatBalance'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import { useCake } from 'hooks/useContract'
 import useI18n from 'hooks/useI18n'
-import { useProfile } from 'state/hooks'
-import useGetProfileCosts from 'views/Profile/hooks/useGetProfileCosts'
+import useGetProfileCosts from 'hooks/useGetProfileCosts'
 import useHasCakeBalance from 'hooks/useHasCakeBalance'
+import { useProfile } from 'state/hooks'
 import { UseEditProfileResponse } from './reducer'
 import ProfileAvatar from '../ProfileAvatar'
 
@@ -27,6 +27,16 @@ const DangerOutline = styled(Button).attrs({ variant: 'secondary' })`
   &:hover:not(:disabled):not(.button--disabled):not(:active) {
     border-color: ${({ theme }) => theme.colors.failure};
     opacity: 0.8;
+  }
+`
+
+const AvatarWrapper = styled.div`
+  height: 64px;
+  width: 64px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    height: 128px;
+    width: 128px;
   }
 `
 
@@ -62,7 +72,9 @@ const StartPage: React.FC<StartPageProps> = ({ goToApprove, goToChange, goToRemo
 
   return (
     <Flex alignItems="center" justifyContent="center" flexDirection="column">
-      <ProfileAvatar profile={profile} />
+      <AvatarWrapper>
+        <ProfileAvatar profile={profile} />
+      </AvatarWrapper>
       <Flex alignItems="center" style={{ height: '48px' }} justifyContent="center">
         <Text as="p" color="failure">
           {!hasMinimumCakeRequired &&

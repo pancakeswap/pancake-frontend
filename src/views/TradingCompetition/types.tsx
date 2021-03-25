@@ -17,3 +17,11 @@ export interface RibbonProps {
   imageComponent?: React.ReactNode
   children?: React.ReactNode
 }
+
+export interface SectionProps {
+  backgroundStyle?: string
+  svgFill?: string
+  index?: number
+  intersectionPosition?: 'top' | 'bottom'
+  intersectComponent?: React.ReactNode
+}
