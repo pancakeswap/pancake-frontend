@@ -7,6 +7,9 @@ import Balance from 'components/Balance'
 import { useSousStake } from 'hooks/useStake'
 import { useSousHarvest } from 'hooks/useHarvest'
 import useTheme from 'hooks/useTheme'
+import { useToast } from 'state/hooks'
+
+import ConfirmButton from './ConfirmButton'
 
 interface CollectModalProps {
   sousId: number
@@ -31,9 +34,12 @@ const CollectModal: React.FC<CollectModalProps> = ({
 }) => {
   const TranslateString = useI18n()
   const [pendingTx, setPendingTx] = useState(false)
+  const [confirmedTx, setConfirmedTx] = useState(false)
+
   const { onStake } = useSousStake(sousId, isBnbPool)
   const { onReward } = useSousHarvest(sousId, isBnbPool)
   const { theme } = useTheme()
+  const { toastSuccess, toastError } = useToast()
 
   const [showCompound, setShowCompound] = useState(!harvest)
 
@@ -54,19 +60,46 @@ const CollectModal: React.FC<CollectModalProps> = ({
       return TranslateString(999, 'Confirming')
     }
 
+    if (confirmedTx) {
+      return TranslateString(999, 'Confirmed')
+    }
+
     return TranslateString(999, 'Confirm')
   }
 
   const handleAction = async () => {
     setPendingTx(true)
     if (showCompound) {
-      await onStake(fullBalance, earningTokenDecimals)
+      try {
+        await onStake(fullBalance, earningTokenDecimals)
+        toastSuccess(
+          `${TranslateString(1074, 'Staked')}!`,
+          TranslateString(999, 'Your funds have been staked in the pool!'),
+        )
+        setConfirmedTx(true)
+      } catch (e) {
+        toastError(
+          TranslateString(999, 'Canceled'),
+          TranslateString(999, 'Please try again and confirm the transaction.'),
+        )
+      }
     } else {
-      await onReward()
+      try {
+        await onReward()
+        toastSuccess(
+          `${TranslateString(999, 'Harvested')}!`,
+          TranslateString(999, 'Your earnings have been sent to your wallet!'),
+        )
+        setConfirmedTx(true)
+      } catch (e) {
+        toastError(
+          TranslateString(999, 'Canceled'),
+          TranslateString(999, 'Please try again and confirm the transaction.'),
+        )
+      }
     }
 
     setPendingTx(false)
-    onDismiss()
   }
 
   const handleRenderIcon = () => {
@@ -116,9 +149,16 @@ const CollectModal: React.FC<CollectModalProps> = ({
           color="textSubtle"
         />
       </Flex>
-      <Button mt="24px" onClick={handleAction} endIcon={handleRenderIcon()} disabled={!earnings || pendingTx}>
+      <ConfirmButton
+        mt="24px"
+        onClick={handleAction}
+        endIcon={handleRenderIcon()}
+        disabled={!earnings || pendingTx}
+        isLoading={pendingTx}
+        isConfirmed={confirmedTx}
+      >
         {handleRenderActionButtonLabel()}
-      </Button>
+      </ConfirmButton>
       <Button variant="text" onClick={onDismiss}>
         Close Window
       </Button>

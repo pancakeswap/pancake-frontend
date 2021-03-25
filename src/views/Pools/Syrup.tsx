@@ -98,7 +98,7 @@ const Farm: React.FC = () => {
             <Heading as="h1" size="xxl" mb="16px" fontSize="64px" color="secondary">
               {TranslateString(738, 'Syrup Pool')}
             </Heading>
-            <Button variant="subtle" ml="auto" as="a">
+            <Button variant="subtle" ml="auto" as="a" href="https://docs.pancakeswap.finance/syrup-pools/syrup-pool">
               {isXl && 'Help'}
               <HelpIcon color="white" ml="4px" />
             </Button>
@@ -246,7 +246,7 @@ const InputWrapper = styled(Flex)`
   flex-grow: 1;
   flex-basis: 0;
 
-  ${Text} {
+  > ${Text} {
     font-size: 12px;
     margin-bottom: 4px;
     white-space: nowrap;
@@ -256,7 +256,7 @@ const InputWrapper = styled(Flex)`
     flex-grow: 0;
     flex-direction: row;
     align-items: center;
-    ${Text} {
+    > ${Text} {
       font-size: 12px;
       margin-bottom: 0;
     }

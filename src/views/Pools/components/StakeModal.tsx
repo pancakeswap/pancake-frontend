@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { Modal, Text, Flex, Image, Button, Slider, RefreshIcon } from '@pancakeswap-libs/uikit'
+import { Modal, Text, Flex, Image, Button, Slider, BalanceInput } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import { BASE_EXCHANGE_URL } from 'config'
 import { useSousStake } from 'hooks/useStake'
@@ -9,8 +9,8 @@ import useTheme from 'hooks/useTheme'
 import BigNumber from 'bignumber.js'
 import { getFullDisplayBalance } from 'utils/formatBalance'
 import { Address } from 'config/constants/types'
-
-import BalanceInput from './BalanceInput'
+import { useGetApiPrice, useToast } from 'state/hooks'
+import ConfirmButton from './ConfirmButton'
 
 interface StakeModalProps {
   sousId: number
@@ -43,13 +43,16 @@ const StakeModal: React.FC<StakeModalProps> = ({
 }) => {
   const TranslateString = useI18n()
 
+  const tokenPrice = useGetApiPrice(stakingTokenName.toLowerCase())
   const { onStake } = useSousStake(sousId, isBnbPool)
   const { onUnstake } = useSousUnstake(sousId)
   const { theme } = useTheme()
+  const { toastSuccess, toastError } = useToast()
 
   const [pendingTx, setPendingTx] = useState(false)
   const [stakeAmount, setStakeAmount] = useState('')
   const [percent, setPercent] = useState(0)
+  const [confirmedTx, setConfirmedTx] = useState(false)
 
   const handleStakePriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value ? event.target.value : '0'
@@ -70,15 +73,11 @@ const StakeModal: React.FC<StakeModalProps> = ({
       return TranslateString(999, 'Confirming')
     }
 
-    return TranslateString(999, 'Confirm')
-  }
-
-  const handleRenderIcon = () => {
-    if (pendingTx) {
-      return <RefreshIcon color="white" />
+    if (confirmedTx) {
+      return TranslateString(999, 'Confirmed')
     }
 
-    return null
+    return TranslateString(999, 'Confirm')
   }
 
   const handleRenderTitle = () => {
@@ -91,13 +90,35 @@ const StakeModal: React.FC<StakeModalProps> = ({
 
   const handleConfirmClick = async () => {
     setPendingTx(true)
-
     if (isStaking) {
-      await onStake(stakeAmount, stakingTokenDecimals)
+      try {
+        await onStake(stakeAmount, stakingTokenDecimals)
+        setConfirmedTx(true)
+        toastSuccess(
+          `${TranslateString(1074, 'Staked')}!`,
+          TranslateString(999, 'Your funds have been staked in the pool!'),
+        )
+      } catch (e) {
+        toastError(
+          TranslateString(999, 'Canceled'),
+          TranslateString(999, 'Please try again and confirm the transaction.'),
+        )
+      }
     } else {
-      await onUnstake(stakeAmount, stakingTokenDecimals)
+      try {
+        await onUnstake(stakeAmount, stakingTokenDecimals)
+        setConfirmedTx(true)
+        toastSuccess(
+          `${TranslateString(999, 'Unstaked')}!`,
+          TranslateString(999, 'Your earnings have also been harvested to your wallet!'),
+        )
+      } catch (e) {
+        toastError(
+          TranslateString(999, 'Canceled'),
+          TranslateString(999, 'Please try again and confirm the transaction.'),
+        )
+      }
     }
-
     setPendingTx(false)
   }
 
@@ -122,7 +143,11 @@ const StakeModal: React.FC<StakeModalProps> = ({
           </Text>
         </Flex>
       </Flex>
-      <BalanceInput value={stakeAmount} onChange={handleStakePriceChange} />
+      <BalanceInput
+        value={stakeAmount}
+        onChange={handleStakePriceChange}
+        currencyValue={`~${new BigNumber(stakeAmount).multipliedBy(tokenPrice).toNumber() || 0} USD`}
+      />
       <Text mt="8px" ml="auto" color="textSubtle" fontSize="12px" mb="8px">
         Balance: {getFullDisplayBalance(max)}
       </Text>
@@ -149,9 +174,9 @@ const StakeModal: React.FC<StakeModalProps> = ({
           MAX
         </StyledButton>
       </Flex>
-      <Button isLoading={pendingTx} onClick={handleConfirmClick} mt="24px" endIcon={handleRenderIcon()}>
+      <ConfirmButton isLoading={pendingTx} onClick={handleConfirmClick} mt="24px" isConfirmed={confirmedTx}>
         {handleRenderActionButtonLabel()}
-      </Button>
+      </ConfirmButton>
       {isStaking && (
         <Button mt="8px" as="a" external href={BASE_EXCHANGE_URL} variant="secondary">
           {TranslateString(999, 'Get')} {stakingTokenName}

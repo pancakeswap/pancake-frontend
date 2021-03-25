@@ -8,13 +8,14 @@ import { Pool } from 'state/types'
 import { useERC20 } from 'hooks/useContract'
 import useHasCakeBalance from 'hooks/useHasCakeBalance'
 import { useSousApprove } from 'hooks/useApprove'
-import { usePriceCakeBusd } from 'state/hooks'
+import { usePriceCakeBusd, useToast } from 'state/hooks'
 import useI18n from 'hooks/useI18n'
 import { getAddress } from 'utils/addressHelpers'
 import { getBalanceNumber } from 'utils/formatBalance'
 
 import TokenRequiredModal from './TokenRequiredModal'
 import StakeModal from './StakeModal'
+import ConfirmButton from './ConfirmButton'
 
 interface StakeProps {
   pool: Pool
@@ -41,6 +42,7 @@ const Stake: React.FC<StakeProps> = ({ pool, isOldSyrup, isBnbPool }) => {
   const [requestedApproval, setRequestedApproval] = useState(false)
 
   const { onApprove } = useSousApprove(stakingTokenContract, sousId)
+  const { toastSuccess, toastError } = useToast()
 
   const [onPresentTokenRequired] = useModal(<TokenRequiredModal token={stakingToken} />)
   const [onPresentStake] = useModal(
@@ -73,6 +75,14 @@ const Stake: React.FC<StakeProps> = ({ pool, isOldSyrup, isBnbPool }) => {
     }
 
     onPresentTokenRequired()
+  }
+
+  const handleRenderEnableButtonText = () => {
+    if (requestedApproval) {
+      return TranslateString(999, 'Enabling')
+    }
+
+    return TranslateString(999, 'Enable')
   }
 
   const handleRenderLabel = (): JSX.Element => {
@@ -159,9 +169,15 @@ const Stake: React.FC<StakeProps> = ({ pool, isOldSyrup, isBnbPool }) => {
 
     if (needsApproval && !isOldSyrup) {
       return (
-        <Button disabled={isFinished || requestedApproval} onClick={handleApprove} width="100%" minWidth="116px">
-          {TranslateString(999, 'Enable')}
-        </Button>
+        <ConfirmButton
+          disabled={isFinished || requestedApproval}
+          onClick={handleApprove}
+          width="100%"
+          minWidth="116px"
+          isLoading={requestedApproval}
+        >
+          {handleRenderEnableButtonText()}
+        </ConfirmButton>
       )
     }
 
@@ -209,11 +225,21 @@ const Stake: React.FC<StakeProps> = ({ pool, isOldSyrup, isBnbPool }) => {
       // user rejected tx or didn't go thru
       if (!txHash) {
         setRequestedApproval(false)
+
+        toastError(
+          TranslateString(999, 'Canceled'),
+          TranslateString(999, 'Please try again and confirm the transaction.'),
+        )
+        return
       }
-    } catch (e) {
-      console.error(e)
-    }
-  }, [onApprove, setRequestedApproval])
+
+      toastSuccess(
+        `${TranslateString(999, 'Contract Enabled')}`,
+        TranslateString(999, 'You can now stake in the pool!'),
+      )
+      // eslint-disable-next-line no-empty
+    } catch (e) {}
+  }, [onApprove, setRequestedApproval, toastSuccess, toastError, TranslateString])
 
   return (
     <Flex flexDirection="column" mt="16px">
