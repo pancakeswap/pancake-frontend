@@ -11,7 +11,7 @@ const LotteryJackpot = () => {
   const TranslateString = useI18n()
   const lotteryPrizeAmount = useTotalRewards()
   const balance = getBalanceNumber(lotteryPrizeAmount)
-  const lotteryPrizeAmoutCake = balance.toLocaleString(undefined, {
+  const lotteryPrizeAmountCake = balance.toLocaleString(undefined, {
     maximumFractionDigits: 2,
   })
   const lotteryPrizeAmountBusd = new BigNumber(balance).multipliedBy(usePriceCakeBusd()).toNumber()
@@ -19,9 +19,9 @@ const LotteryJackpot = () => {
   return (
     <>
       <Text bold fontSize="24px" style={{ lineHeight: '1.5' }}>
-        {lotteryPrizeAmoutCake} {TranslateString(999, 'CAKE')}
+        {TranslateString(999, `${lotteryPrizeAmountCake} CAKE`, { amount: lotteryPrizeAmountCake })}
       </Text>
-      <CardBusdValue value={lotteryPrizeAmountBusd} />
+      {lotteryPrizeAmountBusd !== 0 && <CardBusdValue value={lotteryPrizeAmountBusd} />}
     </>
   )
 }
