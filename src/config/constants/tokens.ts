@@ -912,6 +912,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://game.seascape.network/',
   },
+  zil: {
+    symbol: 'ZIL',
+    address: {
+      56: '0xb86abcb37c3a4b64f74f59301aff131a1becc787',
+      97: '',
+    },
+    decimals: 12,
+    projectLink: 'https://www.zilliqa.com/',
+  },
 }
 
 export default tokens
