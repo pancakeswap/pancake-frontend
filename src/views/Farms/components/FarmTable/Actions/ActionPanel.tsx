@@ -104,6 +104,7 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({ details, apr, 
   const farm = details
 
   const TranslateString = useI18n()
+  const isActive = farm.multiplier !== '0X'
   const { quoteToken, token, dual } = farm
   const lpLabel = farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('PANCAKE', '')
   const liquidityUrlPathParts = getLiquidityUrlPathParts({
@@ -118,11 +119,13 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({ details, apr, 
   return (
     <Container>
       <InfoContainer>
-        <StakeContainer>
-          <StyledLinkExternal href={`https://exchange.pancakeswap.finance/#/add/${liquidityUrlPathParts}`}>
-            {TranslateString(999, `Get ${lpLabel}`, { name: lpLabel })}
-          </StyledLinkExternal>
-        </StakeContainer>
+        {isActive && (
+          <StakeContainer>
+            <StyledLinkExternal href={`https://exchange.pancakeswap.finance/#/add/${liquidityUrlPathParts}`}>
+              {TranslateString(999, `Get ${lpLabel}`, { name: lpLabel })}
+            </StyledLinkExternal>
+          </StakeContainer>
+        )}
         <StyledLinkExternal href={bsc}>{TranslateString(999, 'View Contract')}</StyledLinkExternal>
         <StyledLinkExternal href={info}>{TranslateString(999, 'See Pair Info')}</StyledLinkExternal>
         <TagsContainer>
