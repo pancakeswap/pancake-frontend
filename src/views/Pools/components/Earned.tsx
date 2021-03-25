@@ -46,6 +46,7 @@ const Earned: React.FC<EarnedProps> = ({
       earningTokenName={earningTokenName}
       onDismiss={() => onDismissCollect()}
     />,
+    false,
   )
 
   const [onPresentHarvest, onDismissHarvest] = useModal(
@@ -58,6 +59,7 @@ const Earned: React.FC<EarnedProps> = ({
       onDismiss={() => onDismissHarvest()}
       harvest
     />,
+    false,
   )
 
   const handleRenderActionButton = (): JSX.Element => {

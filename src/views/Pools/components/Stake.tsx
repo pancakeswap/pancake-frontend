@@ -44,7 +44,7 @@ const Stake: React.FC<StakeProps> = ({ pool, isOldSyrup, isBnbPool }) => {
   const { onApprove } = useSousApprove(stakingTokenContract, sousId)
   const { toastSuccess, toastError } = useToast()
 
-  const [onPresentTokenRequired] = useModal(<TokenRequiredModal token={stakingToken} />)
+  const [onPresentTokenRequired] = useModal(<TokenRequiredModal token={stakingToken} />, false)
   const [onPresentStake] = useModal(
     <StakeModal
       isBnbPool={isBnbPool}
@@ -54,6 +54,7 @@ const Stake: React.FC<StakeProps> = ({ pool, isOldSyrup, isBnbPool }) => {
       stakingTokenAddress={stakingToken.address}
       max={stakingLimit && stakingTokenBalance.isGreaterThan(convertedLimit) ? convertedLimit : stakingTokenBalance}
     />,
+    false,
   )
 
   const [onPresentUnstake] = useModal(
@@ -66,6 +67,7 @@ const Stake: React.FC<StakeProps> = ({ pool, isOldSyrup, isBnbPool }) => {
       isStaking={false}
       max={stakedBalance}
     />,
+    false,
   )
 
   const handleStakeClick = () => {
