@@ -18,7 +18,7 @@ import { useWeb3React } from '@web3-react/core'
 import useI18n from 'hooks/useI18n'
 import useGetBnbBalance from 'hooks/useGetBnbBalance'
 import UnlockButton from 'components/UnlockButton'
-import { Position } from 'state/types'
+import { BetPosition } from 'state/types'
 import { getBnbAmount } from '../../helpers'
 import useSwiper from '../../hooks/useSwiper'
 import FlexRow from '../FlexRow'
@@ -26,7 +26,7 @@ import { PositionTag } from './Tag'
 import Card from './Card'
 
 interface SetPositionCardProps {
-  defaultPosition: Position
+  defaultPosition: BetPosition
   onBack: () => void
 }
 
@@ -50,7 +50,7 @@ const getPercentDisplay = (percentage: number) => {
 }
 
 const SetPositionCard: React.FC<SetPositionCardProps> = ({ defaultPosition, onBack }) => {
-  const [position, setPosition] = useState<Position>(defaultPosition)
+  const [position, setPosition] = useState<BetPosition>(defaultPosition)
   const [value, setValue] = useState('')
   const [hasSufficientBalance, setHasSufficientBalance] = useState(true)
   const { swiper } = useSwiper()
@@ -74,7 +74,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ defaultPosition, onBa
   }
 
   const togglePosition = () => {
-    setPosition(position === Position.UP ? Position.DOWN : Position.UP)
+    setPosition(position === BetPosition.BULL ? BetPosition.BEAR : BetPosition.BULL)
   }
 
   const setMax = () => {
@@ -114,8 +114,8 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ defaultPosition, onBa
           <FlexRow>
             <Heading size="md">{TranslateString(999, 'Set Position')}</Heading>
           </FlexRow>
-          <PositionTag roundPosition={position} onClick={togglePosition}>
-            {position === Position.UP ? TranslateString(999, 'Up') : TranslateString(999, 'Down')}
+          <PositionTag betPosition={position} onClick={togglePosition}>
+            {position === BetPosition.BULL ? TranslateString(999, 'Up') : TranslateString(999, 'Down')}
           </PositionTag>
         </Flex>
       </CardHeader>

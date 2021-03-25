@@ -2,14 +2,14 @@ import React from 'react'
 import styled from 'styled-components'
 import { Flex, Text } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
-import { Position } from 'state/types'
+import { BetPosition } from 'state/types'
 import { MultiplierDown, MultiplierUp } from '../../icons/MultiplierIcon'
 import EnteredTag from './EnteredTag'
 
 interface MultiplierArrowProps {
   multiplier?: number
   hasEntered?: boolean
-  roundPosition?: Position
+  betPosition?: BetPosition
   isDisabled?: boolean
   isActive?: boolean
 }
@@ -54,7 +54,7 @@ const getTextColor = (fallback = 'textSubtle') => (isActive: boolean, isDisabled
 const MultiplierArrow: React.FC<MultiplierArrowProps> = ({
   multiplier,
   hasEntered = false,
-  roundPosition = Position.UP,
+  betPosition = BetPosition.BULL,
   isDisabled = false,
   isActive = false,
 }) => {
@@ -73,7 +73,7 @@ const MultiplierArrow: React.FC<MultiplierArrowProps> = ({
     </Flex>
   )
 
-  if (roundPosition === Position.DOWN) {
+  if (betPosition === BetPosition.BEAR) {
     return (
       <ArrowWrapper>
         <MultiplierDown isActive={isActive} />

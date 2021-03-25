@@ -1,24 +1,29 @@
 /* eslint-disable no-param-reassign */
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { PredictionsState, PredictionStatus, RoundResponse } from 'state/types'
-import { getInitialRounds } from './helpers'
+import { PredictionsState, PredictionStatus, Round } from 'state/types'
+import { initialize } from './helpers'
 
 const initialState: PredictionsState = {
   status: PredictionStatus.INITIAL,
   isLoading: false,
-  currentEpoch: 0,
   isHistoryPaneOpen: false,
   isChartPaneOpen: false,
-  rounds: {},
+  currentEpoch: 0,
+  intervalBlocks: 100,
+  minBetAmount: '1000000000000000',
+  rounds: [],
 }
 
 type InitializeReturn = {
+  status: PredictionStatus
   currentEpoch: number
-  rounds: RoundResponse[]
+  intervalBlocks: number
+  minBetAmount: string
+  rounds: Round[]
 }
 
 export const initializePredictions = createAsyncThunk<InitializeReturn>('predictions/initialize', async () => {
-  const data = await getInitialRounds()
+  const data = await initialize()
   return data
 })
 
@@ -38,14 +43,18 @@ export const predictionsSlice = createSlice({
       state.isLoading = true
     })
     builder.addCase(initializePredictions.fulfilled, (state, action: PayloadAction<InitializeReturn>) => {
-      state.status = PredictionStatus.LIVE
-      state.currentEpoch = action.payload.currentEpoch
-      state.rounds = action.payload.rounds.reduce((accum, roundResponse) => {
-        return {
-          ...accum,
-          [roundResponse.epoch]: roundResponse,
-        }
-      }, {})
+      const { status, currentEpoch, intervalBlocks, minBetAmount, rounds } = action.payload
+
+      return {
+        isLoading: false,
+        isHistoryPaneOpen: false,
+        isChartPaneOpen: false,
+        status,
+        currentEpoch,
+        intervalBlocks,
+        minBetAmount,
+        rounds,
+      }
     })
   },
 })

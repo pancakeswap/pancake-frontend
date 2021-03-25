@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react'
 import styled from 'styled-components'
 import { ArrowUpIcon, ArrowDownIcon, Flex, FlexProps, Text } from '@pancakeswap-libs/uikit'
-import { Position } from 'state/types'
+import { BetPosition } from 'state/types'
 
 interface TagProps extends FlexProps {
   bg?: string
@@ -37,11 +37,11 @@ const Tag: React.FC<TagProps> = ({ bg = 'success', startIcon, children, onClick,
 }
 
 interface PositionTagProps extends FlexProps {
-  roundPosition: Position
+  betPosition: BetPosition
 }
 
-export const PositionTag: React.FC<PositionTagProps> = ({ roundPosition, children, ...props }) => {
-  const isUpPosition = roundPosition === Position.UP
+export const PositionTag: React.FC<PositionTagProps> = ({ betPosition, children, ...props }) => {
+  const isUpPosition = betPosition === BetPosition.BULL
   const icon = isUpPosition ? <ArrowUpIcon color="white" /> : <ArrowDownIcon color="white" />
 
   return (

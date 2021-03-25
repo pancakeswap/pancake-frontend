@@ -1,10 +1,10 @@
 import React from 'react'
 import styled, { DefaultTheme } from 'styled-components'
 import { Box } from '@pancakeswap-libs/uikit'
-import { Position } from 'state/types'
+import { BetPosition } from 'state/types'
 
 interface RoundInfoBoxProps {
-  roundPosition?: Position
+  betPosition?: BetPosition
   isNext?: boolean
   isLive?: boolean
   hasEntered?: boolean
@@ -12,7 +12,7 @@ interface RoundInfoBoxProps {
 
 const getBackgroundColor = ({
   theme,
-  roundPosition,
+  betPosition,
   isNext,
   isLive,
   hasEntered,
@@ -25,11 +25,11 @@ const getBackgroundColor = ({
     return theme.colors.secondary
   }
 
-  if (roundPosition === Position.UP) {
+  if (betPosition === BetPosition.BULL) {
     return theme.colors.success
   }
 
-  if (roundPosition === Position.DOWN) {
+  if (betPosition === BetPosition.BEAR) {
     return theme.colors.failure
   }
 

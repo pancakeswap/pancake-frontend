@@ -1,84 +1,80 @@
-import BigNumber from 'bignumber.js'
-import { random } from 'lodash'
-import { Round, RoundResponse } from 'state/types'
+import { request, gql } from 'graphql-request'
+import { GRAPH_API_PREDICTIONS } from 'config/constants/endpoints'
+import { PredictionStatus, Round } from 'state/types'
+import { getPredictionsContract } from 'utils/contractHelpers'
+import makeBatchRequest from 'utils/makeBatchRequest'
+import { getRoundsQuery, RoundResponse } from './queries'
 
-const currentBlock = 5897885
-const totalRate = 100
+const numberOrNull = (value: string) => {
+  if (value === null) {
+    return null
+  }
+
+  return Number(value)
+}
 
 export const transformRoundResponse = (roundResponse: RoundResponse): Round => {
-  const base = 23140409205
-  const low = base * 0.9
-  const high = base * 1.15
-  const { totalAmount, rewardBaseCalAmount, rewardAmount, ...rest } = roundResponse
+  const {
+    id,
+    epoch,
+    startedAt,
+    startBlock,
+    lockAt,
+    lockBlock,
+    lockPrice,
+    endAt,
+    endBlock,
+    closePrice,
+    totalBets,
+    totalAmount,
+    bullBets,
+    bearAmount,
+    bullAmount,
+  } = roundResponse
 
   return {
-    ...rest,
-    lockPrice: new BigNumber(random(low, high)),
-    closePrice: new BigNumber(random(low, high)),
-    totalAmount: new BigNumber(totalAmount),
-    bullAmount: new BigNumber(random(500000000000000000000, 5000000000000000000000)),
-    bearAmount: new BigNumber(random(500000000000000000000, 5000000000000000000000)),
-    rewardBaseCalAmount: new BigNumber(rewardBaseCalAmount),
-    rewardAmount: new BigNumber(rewardAmount),
+    id,
+    epoch: numberOrNull(epoch),
+    startedAt: numberOrNull(startedAt),
+    startBlock: numberOrNull(startBlock),
+    lockAt: numberOrNull(lockAt),
+    lockBlock: numberOrNull(lockBlock),
+    lockPrice: lockPrice ? parseFloat(lockPrice) : null,
+    endAt: numberOrNull(endAt),
+    endBlock: numberOrNull(endBlock),
+    closePrice: closePrice ? parseFloat(closePrice) : null,
+    totalBets: numberOrNull(totalBets),
+    totalAmount: lockPrice ? parseFloat(totalAmount) : null,
+    bullBets: numberOrNull(bullBets),
+    bearAmount: numberOrNull(bearAmount),
+    bullAmount: numberOrNull(bullAmount),
   }
 }
 
-export const getRound = (epoch: number): Promise<RoundResponse> => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        epoch,
-        startBlock: 5893994,
-        lockBlock: 5894000,
-        endBlock: currentBlock + totalRate,
-        lockPrice: 23140409205,
-        closePrice: 9,
-        totalAmount: 0,
-        bullAmount: 0,
-        bearAmount: 0,
-        rewardBaseCalAmount: 0,
-        rewardAmount: 0,
-        oracleCalled: false,
-      })
-    }, 300)
-  })
-}
+export const initialize = async () => {
+  const { methods } = getPredictionsContract()
+  const [currentEpoch, intervalBlocks, minBetAmount, isPaused] = (await makeBatchRequest([
+    methods.currentEpoch().call,
+    methods.intervalBlocks().call,
+    methods.minBetAmount().call,
+    methods.paused().call,
+  ])) as [string, string, string, boolean]
+  const response = await request(
+    GRAPH_API_PREDICTIONS,
+    gql`
+    {
+      ${getRoundsQuery()}
+    }
+  `,
+  )
 
-export const getCurrentEpoch = (): Promise<number> => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(4)
-    }, 100)
-  })
-}
+  const rounds = response.rounds.map(transformRoundResponse)
 
-export const makeRound = (epoch: number, startBlock: number, endBlock: number): RoundResponse => ({
-  epoch,
-  startBlock,
-  endBlock,
-  lockBlock: 0,
-  lockPrice: 0,
-  closePrice: 0,
-  totalAmount: 0,
-  bullAmount: 0,
-  bearAmount: 0,
-  rewardBaseCalAmount: 0,
-  rewardAmount: 0,
-  oracleCalled: false,
-})
-
-export const getInitialRounds = async () => {
-  const currentEpoch = await getCurrentEpoch()
-  const rounds = []
-
-  let startBlock = currentBlock - 7 * totalRate
-  for (let i = 1; i <= 7; i++) {
-    const endBlock = startBlock + totalRate
-    rounds.push(makeRound(i, startBlock, endBlock))
-    startBlock = currentBlock - i * totalRate
+  return {
+    status: isPaused ? PredictionStatus.PAUSED : PredictionStatus.LIVE,
+    currentEpoch: Number(currentEpoch),
+    intervalBlocks: Number(intervalBlocks),
+    minBetAmount,
+    rounds,
   }
-
-  return { currentEpoch, rounds }
 }
-
-export default getRound

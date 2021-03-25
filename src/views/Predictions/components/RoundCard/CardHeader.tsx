@@ -68,6 +68,7 @@ const CardHeader: React.FC<CardHeaderProps> = ({ status, title, epoch, blockNumb
   const textColor = getTextColorByStatus(status, 'text')
   const seconds = useBlockCountdown(blockNumber)
   const countdown = formatRoundTime(seconds)
+
   const isLive = status === 'live'
   const timePrefix = seconds > 0 ? TranslateString(999, 'Start') : TranslateString(999, 'End')
 

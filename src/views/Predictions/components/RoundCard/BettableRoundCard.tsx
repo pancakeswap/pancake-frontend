@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { CardBody, PlayCircleOutlineIcon, Button } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
-import { Position, Round } from 'state/types'
+import { BetPosition, Round } from 'state/types'
+import { useGetIntervalBlocks } from 'state/hooks'
 import CardFlip from '../CardFlip'
 import MultiplierArrow from './MultiplierArrow'
 import Card from './Card'
@@ -9,16 +10,21 @@ import RoundInfoBox from './RoundInfoBox'
 import SetPositionCard from './SetPositionCard'
 import CardHeader from './CardHeader'
 
-interface NextRoundCardProps {
+interface BettableRoundCardProps {
   round: Round
 }
 
-const NextRoundCard: React.FC<NextRoundCardProps> = ({ round }) => {
+const BettableRoundCard: React.FC<BettableRoundCardProps> = ({ round }) => {
   const [state, setState] = useState({
     isSettingPosition: false,
-    defaultPosition: Position.UP,
+    defaultPosition: BetPosition.BULL,
   })
   const TranslateString = useI18n()
+  const intervalBlocks = useGetIntervalBlocks()
+
+  // Bettable rounds do not have an endblock set so we approximate it by adding the block interval
+  // to the start block
+  const endBlock = round.startBlock + intervalBlocks
 
   const handleBack = () =>
     setState((prevState) => ({
@@ -39,21 +45,21 @@ const NextRoundCard: React.FC<NextRoundCardProps> = ({ round }) => {
         <CardHeader
           status="next"
           epoch={round.epoch}
-          blockNumber={round.endBlock}
+          blockNumber={endBlock}
           icon={<PlayCircleOutlineIcon color="white" mr="4px" width="21px" />}
           title={TranslateString(999, 'Next')}
         />
         <CardBody p="16px">
           <MultiplierArrow />
           <RoundInfoBox isNext>
-            <Button variant="success" width="100%" onClick={() => handleSetPosition(Position.UP)} mb="4px">
+            <Button variant="success" width="100%" onClick={() => handleSetPosition(BetPosition.BULL)} mb="4px">
               {TranslateString(999, 'Enter UP')}
             </Button>
-            <Button variant="danger" width="100%" onClick={() => handleSetPosition(Position.DOWN)}>
+            <Button variant="danger" width="100%" onClick={() => handleSetPosition(BetPosition.BEAR)}>
               {TranslateString(999, 'Enter DOWN')}
             </Button>
           </RoundInfoBox>
-          <MultiplierArrow roundPosition={Position.DOWN} />
+          <MultiplierArrow betPosition={BetPosition.BEAR} />
         </CardBody>
       </Card>
       <SetPositionCard onBack={handleBack} defaultPosition={state.defaultPosition} />
@@ -61,4 +67,4 @@ const NextRoundCard: React.FC<NextRoundCardProps> = ({ round }) => {
   )
 }
 
-export default NextRoundCard
+export default BettableRoundCard

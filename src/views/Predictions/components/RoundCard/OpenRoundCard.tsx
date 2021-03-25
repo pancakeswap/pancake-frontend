@@ -2,15 +2,17 @@ import React from 'react'
 import styled from 'styled-components'
 import { CardBody, Flex, PlayCircleOutlineIcon, Progress, Text } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
-import { Round, Position } from 'state/types'
+import { Round, BetPosition } from 'state/types'
+import { useGetIntervalBlocks } from 'state/hooks'
 import { useBnbUsdtTicker } from 'hooks/ticker'
-import { formatBnbFromBigNumber, formatUsd, getBubbleGumBackground } from '../../helpers'
+import { formatUsd, getBubbleGumBackground } from '../../helpers'
 import MultiplierArrow from './MultiplierArrow'
 import Card from './Card'
 import RoundInfoBox from './RoundInfoBox'
 import CardHeader from './CardHeader'
+import RoundInfo from './RoundInfo'
 
-interface LiveRoundCardProps {
+interface OpenRoundCardProps {
   round: Round
 }
 
@@ -24,11 +26,15 @@ const GradientCard = styled(Card)`
   background: ${({ theme }) => getBubbleGumBackground(theme)};
 `
 
-const LiveRoundCard: React.FC<LiveRoundCardProps> = ({ round }) => {
+const OpenRoundCard: React.FC<OpenRoundCardProps> = ({ round }) => {
   const TranslateString = useI18n()
-  const { endBlock, bullAmount, bearAmount } = round
+  const { lockPrice, startBlock, totalAmount } = round
   const { stream } = useBnbUsdtTicker()
-  const prizePool = bullAmount.plus(bearAmount)
+  const intervalBlocks = useGetIntervalBlocks()
+
+  // Open rounds do not have an endblock set so we approximate it by adding the block interval
+  // to the start block
+  const endBlock = startBlock + intervalBlocks
 
   return (
     <GradientBorder>
@@ -52,20 +58,13 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({ round }) => {
                 {stream && formatUsd(stream.lastPrice)}
               </Text>
             </Flex>
-            <Flex alignItems="center" justifyContent="space-between">
-              <Text fontSize="14px">{TranslateString(999, 'Locked Price')}:</Text>
-              <Text fontSize="14px">~</Text>
-            </Flex>
-            <Flex alignItems="center" justifyContent="space-between">
-              <Text bold>{TranslateString(999, 'Prize Pool')}:</Text>
-              <Text bold>{`${formatBnbFromBigNumber(prizePool)} BNB`}</Text>
-            </Flex>
+            <RoundInfo lockPrice={lockPrice} totalAmount={totalAmount} />
           </RoundInfoBox>
-          <MultiplierArrow multiplier={1} roundPosition={Position.DOWN} hasEntered={false} isActive={false} />
+          <MultiplierArrow multiplier={1} betPosition={BetPosition.BEAR} hasEntered={false} isActive={false} />
         </CardBody>
       </GradientCard>
     </GradientBorder>
   )
 }
 
-export default LiveRoundCard
+export default OpenRoundCard

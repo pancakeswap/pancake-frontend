@@ -1,6 +1,6 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
-import { ArrowForwardIcon, Box, Button, Checkbox, Flex, Heading, Text } from '@pancakeswap-libs/uikit'
+import { ArrowForwardIcon, Box, Button, Flex, Heading, Text } from '@pancakeswap-libs/uikit'
 import { setHistoryPaneState } from 'state/predictions'
 import useI18n from 'hooks/useI18n'
 import styled from 'styled-components'
@@ -10,13 +10,6 @@ const StyledHeader = styled(Box)`
   background: ${({ theme }) => getBubbleGumBackground(theme)};
 
   padding: 16px;
-`
-
-const Label = styled.label`
-  align-items: center;
-  cursor: pointer;
-  display: flex;
-  margin-right: 8px;
 `
 
 const Header = () => {

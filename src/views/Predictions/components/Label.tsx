@@ -100,7 +100,7 @@ interface TimerLabelProps {
 
 export const TimerLabel: React.FC<TimerLabelProps> = ({ interval }) => {
   const currentRound = useGetCurrentRound()
-  const seconds = useBlockCountdown(currentRound.endBlock)
+  const seconds = useBlockCountdown(currentRound?.endBlock)
   const countdown = formatRoundTime(seconds)
 
   return (

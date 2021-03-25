@@ -1,10 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
+import { orderBy } from 'lodash'
 import SwiperCore, { Keyboard, Mousewheel } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Box } from '@pancakeswap-libs/uikit'
-import { useGetCurrentEpoch, useGetRounds } from 'state/hooks'
-import { sortRounds } from './helpers'
+import { useGetRounds } from 'state/hooks'
 import RoundCard from './components/RoundCard'
 import Menu from './components/Menu'
 
@@ -25,17 +25,15 @@ const StyledSwiper = styled.div`
 `
 const Positions = () => {
   const { setSwiper } = useSwiper()
-  const currentEpoch = useGetCurrentEpoch()
-  const roundData = useGetRounds()
-  const rounds = sortRounds(roundData, currentEpoch)
-  const liveRoundIndex = rounds.findIndex((round) => round.epoch === currentEpoch)
+  const rounds = useGetRounds()
+  const sortedRounds = orderBy(rounds, ['epoch'], ['asc'])
 
   return (
     <Box overflowX="hidden" overflowY="auto">
       <Menu />
       <StyledSwiper>
         <Swiper
-          initialSlide={liveRoundIndex >= 0 ? liveRoundIndex : 0}
+          initialSlide={sortedRounds.length - 2}
           onSwiper={setSwiper}
           spaceBetween={16}
           slidesPerView="auto"
@@ -46,7 +44,7 @@ const Positions = () => {
           keyboard
           resizeObserver
         >
-          {rounds.map((round) => (
+          {sortedRounds.map((round) => (
             <SwiperSlide key={round.epoch}>
               <RoundCard round={round} />
             </SwiperSlide>

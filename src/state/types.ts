@@ -155,9 +155,9 @@ export interface CollectiblesState {
 
 // Predictions
 
-export enum Position {
-  UP = 'up',
-  DOWN = 'down',
+export enum BetPosition {
+  BULL = 'bull',
+  BEAR = 'bear',
 }
 
 export enum PredictionStatus {
@@ -166,49 +166,33 @@ export enum PredictionStatus {
   PAUSED = 'paused',
 }
 
-export interface RoundResponse {
-  epoch: number
-  startBlock: number
-  lockBlock: number
-  endBlock: number
-  lockPrice: number
-  closePrice: number
-  totalAmount: number
-  bullAmount: number
-  bearAmount: number
-  rewardBaseCalAmount: number
-  rewardAmount: number
-  oracleCalled: boolean
-}
-
 export interface Round {
+  id: string
   epoch: number
+  startedAt: number | null
   startBlock: number
-  lockBlock?: number
-  endBlock: number
-  lockPrice: BigNumber
-  closePrice: BigNumber
-  totalAmount: BigNumber
-  bullAmount: BigNumber
-  bearAmount: BigNumber
-  rewardBaseCalAmount: BigNumber
-  rewardAmount: BigNumber
-  oracleCalled: boolean
-}
-
-export interface RoundData {
-  [key: string]: Round
+  lockAt: number | null
+  lockBlock: number | null
+  lockPrice: number | null
+  endAt: number | null
+  endBlock: number | null
+  closePrice: number | null
+  totalBets: number
+  totalAmount: number
+  bullBets: number
+  bearAmount: number
+  bullAmount: number
 }
 
 export interface PredictionsState {
   status: PredictionStatus
-  currentEpoch: number
   isLoading: boolean
   isHistoryPaneOpen: boolean
   isChartPaneOpen: boolean
-  rounds: {
-    [key: string]: RoundResponse
-  }
+  currentEpoch: number
+  intervalBlocks: number
+  minBetAmount: string
+  rounds: Round[]
 }
 
 // Global state

@@ -1,7 +1,7 @@
 import React from 'react'
 import { CardBody, Text, WaitIcon } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
-import { Position, Round } from 'state/types'
+import { BetPosition, Round } from 'state/types'
 import { formatRoundTime } from '../../helpers'
 import useBlockCountdown from '../../hooks/useGetBlockCountdown'
 import MultiplierArrow from './MultiplierArrow'
@@ -37,7 +37,7 @@ const SoonRoundCard: React.FC<SoonRoundCardProps> = ({ round }) => {
             </Text>
           </Text>
         </RoundInfoBox>
-        <MultiplierArrow roundPosition={Position.DOWN} isDisabled />
+        <MultiplierArrow betPosition={BetPosition.BULL} isDisabled />
       </CardBody>
     </Card>
   )
