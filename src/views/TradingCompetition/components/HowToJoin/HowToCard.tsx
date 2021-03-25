@@ -31,7 +31,7 @@ const ChildrenWrapper = styled.div`
 
 const HowToJoin: React.FC<HowToCardProps> = ({ number, title, children }) => {
   return (
-    <Card>
+    <Card mb="16px">
       <CardBody>
         <Inner>
           <NumberWrapper>
