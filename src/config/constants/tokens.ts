@@ -927,7 +927,7 @@ const tokens = {
       56: '0x5d684adaf3fcfe9cfb5cede3abf02f0cdd1012e3',
       97: '',
     },
-    decimals: 12,
+    decimals: 8,
     projectLink: 'https://lien.finance/',
   },
 }
