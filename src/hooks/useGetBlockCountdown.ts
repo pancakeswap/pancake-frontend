@@ -33,7 +33,7 @@ const useBlockCountdown = (blockNumber: number) => {
   }, [blockNumber, timer, setSecondsRemaining])
 
   useEffect(() => {
-    if (secondsRemaining === 0) {
+    if (timer.current && secondsRemaining === 0) {
       clearInterval(timer.current)
     }
   }, [secondsRemaining, timer])
