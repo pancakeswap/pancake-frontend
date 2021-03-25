@@ -19,7 +19,7 @@ import Coming from './components/Coming'
 import PoolCard from './components/PoolCard'
 import PoolTabButtons from './components/PoolTabButtons'
 
-const Farm: React.FC = () => {
+const Syrup: React.FC = () => {
   const { path } = useRouteMatch()
   const TranslateString = useI18n()
   const { account } = useWeb3React()
@@ -155,9 +155,9 @@ const Farm: React.FC = () => {
           </Flex>
         </ControlContainer>
         <Route path={`${path}/history`}>
-          <Text color="failure" fontSize="20px" bold>
+          <FinishedAlert color="failure" fontSize="20px" bold mb="32px">
             {TranslateString(999, 'These pools are no longer distributing rewards. Please unstake your tokens.')}
-          </Text>
+          </FinishedAlert>
         </Route>
         <CardsContainer>
           <Route exact path={`${path}`}>
@@ -263,4 +263,12 @@ const InputWrapper = styled(Flex)`
   }
 `
 
-export default Farm
+const FinishedAlert = styled(Text)`
+  margin-bottom: 24px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    margin-bottom: 32px;
+  }
+`
+
+export default Syrup
