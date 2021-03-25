@@ -38,7 +38,7 @@ const Farm: React.FC = () => {
       case 'earned':
         return orderBy(pools, (pool: Pool) => new BigNumber(pool.userData?.pendingReward || 0), 'desc')
       case 'total_staked':
-        return orderBy(pools, (pool: Pool) => new BigNumber(pool.totalStaked || 0).toNumber(), 'desc')
+        return orderBy(pools, (pool: Pool) => new BigNumber(pool.totalStaked || 0), 'desc')
       case 'end_block':
         return orderBy(pools, (pool: Pool) => pool.endBlock || 0, 'desc')
       default:
