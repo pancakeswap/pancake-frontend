@@ -1,5 +1,5 @@
 import { parseISO, format } from 'date-fns'
-import { Ifo, PoolConfig, FarmConfig } from '../../src/config/constants/types'
+import { Ifo, PoolConfig, FarmConfig } from 'config/constants/types'
 import { SettingsType } from './types'
 
 export const getIfos = (data) => {

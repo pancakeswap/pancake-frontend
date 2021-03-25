@@ -2,9 +2,9 @@ import React from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { useProfile } from 'state/hooks'
 import { Card, CardHeader, CardBody, Flex, Button } from '@pancakeswap-libs/uikit'
-import Page from 'components/layout/Page'
 import styled from 'styled-components'
 import RibbonWithImage from './components/RibbonWithImage'
+import BattleBanner from './components/BattleBanner'
 import Section from './components/Section'
 import BattleCta from './components/BattleCta'
 import Prizes from './svgs/Prizes'
@@ -59,7 +59,7 @@ const TradingCompetition = () => {
           />
         }
       >
-        <SampleCard />
+        <BattleBanner />
       </Section>
       <Section backgroundStyle={MIDBLUEBG} svgFill={MIDBLUEFILL} index={3} intersectComponent={<SampleCard />} />
       <Section backgroundStyle={LIGHTBLUEBG} svgFill={LIGHTBLUEFILL} index={2}>
