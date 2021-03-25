@@ -63,7 +63,7 @@ export const getFarms = (data) => {
       tokenSymbol: farm?.token?.symbol,
       tokenAddresses: {
         56: farm?.token?.mainnet_address,
-        97: '0xa35062141fa33bca92ce69fed37d0e8908868aae',
+        97: '0xD2eDC0C473b7287Cf475dD43e79c218FE02ca588',
       },
       quoteTokenSymbol: farm?.quote_token?.symbol,
       quoteTokenAdresses: farm?.quote_token?.mainnet_address,

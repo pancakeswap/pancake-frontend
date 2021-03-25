@@ -39,11 +39,11 @@ const App: React.FC = () => {
     console.warn = () => null
   }, [])
 
-  useEagerConnect()
-  useFetchPublicData()
-  useFetchProfile()
-  useFetchPriceList()
-  useGetDocumentTitlePrice()
+  // useEagerConnect()
+  // useFetchPublicData()
+  // useFetchProfile()
+  // useFetchPriceList()
+  // useGetDocumentTitlePrice()
 
   return (
     <Router history={history}>
