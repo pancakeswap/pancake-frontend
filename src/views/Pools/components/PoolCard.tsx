@@ -44,21 +44,21 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
   const isOldSyrup = stakingToken.symbol === tokens.syrup.symbol
   const accountHasStakedBalance = stakedBalance?.toNumber() > 0
   const isCardActive = accountHasStakedBalance
-  const tokenDecimals = earningToken.decimals
-  const tokenName = earningToken.symbol
+  const earningTokenDecimals = earningToken.decimals
+  const earningTokenName = earningToken.symbol
   const poolImage = `${pool.earningToken.symbol}-${pool.stakingToken.symbol}.svg`.toLocaleLowerCase()
 
   return (
     <Card isActive={isCardActive} isFinished={isFinished && sousId !== 0}>
       <CardHeader
-        title={`${TranslateString(318, 'Earn')} ${tokenName}`}
+        title={`${TranslateString(318, 'Earn')} ${earningTokenName}`}
         coinIconUrl={`/images/pools/${poolImage}`}
-        tokenName={tokenName}
+        earningTokenName={earningTokenName}
         stakingTokenName={stakingToken.symbol}
         isFinished={isFinished && sousId !== 0}
       />
       <Flex flexDirection="column" padding="24px">
-        <Apr tokenName={tokenName} isOldSyrup={isOldSyrup} isFinished={isFinished} apy={apr} />
+        <Apr tokenName={earningTokenName} isOldSyrup={isOldSyrup} isFinished={isFinished} apy={apr} />
         <Earned
           isFinished={isFinished}
           sousId={sousId}
@@ -68,21 +68,21 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
           harvest={harvest}
           isOldSyrup={isOldSyrup}
           earnings={earnings}
-          earningTokenDecimals={tokenDecimals}
+          earningTokenDecimals={earningTokenDecimals}
         />
         <Stake pool={pool} isOldSyrup={isOldSyrup} isBnbPool={isBnbPool} />
       </Flex>
       <CardFooter
         projectLink={earningToken.projectLink}
-        decimals={stakingToken.decimals}
+        stakingDecimals={stakingToken.decimals}
         totalStaked={totalStaked}
         startBlock={startBlock}
         endBlock={endBlock}
         isFinished={isFinished}
         poolCategory={poolCategory}
-        tokenName={stakingToken.symbol}
-        tokenAddress={earningToken.address ? getAddress(earningToken.address) : ''}
-        tokenDecimals={tokenDecimals}
+        earningTokenName={stakingToken.symbol}
+        earningTokenAddress={earningToken.address ? getAddress(earningToken.address) : ''}
+        earningTokenDecimals={earningTokenDecimals}
       />
     </Card>
   )

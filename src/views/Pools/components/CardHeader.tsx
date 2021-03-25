@@ -30,12 +30,18 @@ const PoolFinishedSash = styled.div`
 interface CardHeaderProps {
   title: string
   coinIconUrl: string
-  tokenName: string
+  earningTokenName: string
   stakingTokenName: string
   isFinished: boolean
 }
 
-const CardHeader: React.FC<CardHeaderProps> = ({ title, coinIconUrl, tokenName, stakingTokenName, isFinished }) => {
+const CardHeader: React.FC<CardHeaderProps> = ({
+  title,
+  coinIconUrl,
+  earningTokenName,
+  stakingTokenName,
+  isFinished,
+}) => {
   const TranslateString = useI18n()
   return (
     <Container isFinished={isFinished}>
@@ -47,7 +53,7 @@ const CardHeader: React.FC<CardHeaderProps> = ({ title, coinIconUrl, tokenName, 
           {TranslateString(999, 'Stake')} {stakingTokenName}
         </Text>
       </Box>
-      <Image src={coinIconUrl} width={64} height={64} alt={tokenName} />
+      <Image src={coinIconUrl} width={64} height={64} alt={earningTokenName} />
       {isFinished && <PoolFinishedSash />}
     </Container>
   )

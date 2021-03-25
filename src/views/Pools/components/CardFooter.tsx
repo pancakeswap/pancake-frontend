@@ -21,11 +21,11 @@ const tags = {
 
 interface Props {
   projectLink: string
-  decimals: number
+  stakingDecimals: number
   totalStaked: BigNumber
-  tokenName: string
-  tokenAddress: string
-  tokenDecimals: number
+  earningTokenName: string
+  earningTokenAddress: string
+  earningTokenDecimals: number
   startBlock: number
   endBlock: number
   isFinished: boolean
@@ -85,11 +85,11 @@ const TokenLink = styled.a`
 
 const CardFooter: React.FC<Props> = ({
   projectLink,
-  decimals,
-  tokenAddress,
+  stakingDecimals,
+  earningTokenAddress,
   totalStaked,
-  tokenName,
-  tokenDecimals,
+  earningTokenName,
+  earningTokenDecimals,
   isFinished,
   startBlock,
   endBlock,
@@ -113,7 +113,7 @@ const CardFooter: React.FC<Props> = ({
   const blocksUntilStart = Math.max(startBlock - currentBlock, 0)
   const blocksRemaining = Math.max(endBlock - currentBlock, 0)
 
-  const imageSrc = `${BASE_URL}/images/tokens/${tokenName.toLowerCase()}.png`
+  const imageSrc = `${BASE_URL}/images/tokens/${earningTokenName.toLowerCase()}.png`
 
   return (
     <StyledFooter isFinished={isFinished}>
@@ -131,9 +131,9 @@ const CardFooter: React.FC<Props> = ({
             <FlexFull>
               <Text fontSize="14px">{TranslateString(999, 'Total staked')}</Text>
             </FlexFull>
-            <Balance fontSize="14px" value={getBalanceNumber(totalStaked, decimals)} bold={false} />
+            <Balance fontSize="14px" value={getBalanceNumber(totalStaked, stakingDecimals)} bold={false} />
             &nbsp;
-            <Text fontSize="14px">{tokenName}</Text>
+            <Text fontSize="14px">{earningTokenName}</Text>
           </Row>
           {blocksUntilStart > 0 && (
             <Row>
@@ -160,8 +160,10 @@ const CardFooter: React.FC<Props> = ({
           </StyledLinkExternal>
           {!!account && (
             <Flex mb="4px">
-              <TokenLink onClick={() => registerToken(tokenAddress, tokenName, tokenDecimals, imageSrc)}>
-                Add {tokenName} to Metamask
+              <TokenLink
+                onClick={() => registerToken(earningTokenAddress, earningTokenName, earningTokenDecimals, imageSrc)}
+              >
+                Add {earningTokenName} to Metamask
               </TokenLink>
               <MetamaskIcon height={14} width={14} ml="4px" />
             </Flex>

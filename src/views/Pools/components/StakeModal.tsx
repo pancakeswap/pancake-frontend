@@ -62,7 +62,8 @@ const StakeModal: React.FC<StakeModalProps> = ({
     const percentage = Math.floor(
       new BigNumber(new BigNumber(value).multipliedBy(new BigNumber(10).pow(stakingTokenDecimals)))
         .dividedBy(max)
-        .toNumber() * 100,
+        .multipliedBy(new BigNumber(100))
+        .toNumber(),
     )
 
     setPercent(percentage > 100 ? 100 : percentage)
