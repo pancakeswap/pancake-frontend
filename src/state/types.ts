@@ -124,7 +124,7 @@ export interface PriceState {
 // Block
 
 export interface BlockState {
-  blockNumber: number
+  currentBlock: number
   initialBlock: number
 }
 
