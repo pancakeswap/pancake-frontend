@@ -20,7 +20,7 @@ const HowToJoin = () => {
   const TranslateString = useI18n()
 
   return (
-    <Wrapper flexDirection="column" maxWidth="736px">
+    <Wrapper flexDirection="column">
       <PrizesTable />
       <PrizesText />
     </Wrapper>

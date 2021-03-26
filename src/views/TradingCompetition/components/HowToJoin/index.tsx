@@ -7,7 +7,7 @@ const HowToJoin = () => {
   const TranslateString = useI18n()
 
   return (
-    <Flex flexDirection="column" maxWidth="736px">
+    <Flex flexDirection="column">
       <Heading color="secondary" size="lg" mb="32px" textAlign="center">
         How Can I Join?
       </Heading>
