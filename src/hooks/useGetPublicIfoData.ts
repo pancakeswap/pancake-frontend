@@ -56,7 +56,7 @@ const useGetPublicIfoData = (ifo: Ifo) => {
     startBlockNum: 0,
     endBlockNum: 0,
   })
-  const { blockNumber: currentBlock } = useBlock()
+  const { currentBlock } = useBlock()
   const contract = useIfoContract(address)
 
   useEffect(() => {
