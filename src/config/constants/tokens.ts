@@ -930,6 +930,15 @@ const tokens = {
     decimals: 8,
     projectLink: 'https://lien.finance/',
   },
+  swth: {
+    symbol: 'SWTH',
+    address: {
+      56: '0x250b211EE44459dAd5Cd3bCa803dD6a7EcB5d46C',
+      97: '',
+    },
+    decimals: 8,
+    projectLink: 'https://switcheo.network/',
+  },
 }
 
 export default tokens
