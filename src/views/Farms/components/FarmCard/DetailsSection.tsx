@@ -5,6 +5,7 @@ import { Text, Flex, LinkExternal } from '@pancakeswap-libs/uikit'
 
 export interface ExpandableSectionProps {
   bscScanAddress?: string
+  infoAddress?: string
   removed?: boolean
   totalValueFormated?: string
   lpLabel?: string
@@ -21,6 +22,7 @@ const StyledLinkExternal = styled(LinkExternal)`
 
 const DetailsSection: React.FC<ExpandableSectionProps> = ({
   bscScanAddress,
+  infoAddress,
   removed,
   totalValueFormated,
   lpLabel,
@@ -40,6 +42,7 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
         </StyledLinkExternal>
       )}
       <StyledLinkExternal href={bscScanAddress}>{TranslateString(999, 'View Contract')}</StyledLinkExternal>
+      <StyledLinkExternal href={infoAddress}>{TranslateString(999, 'See Pair Info')}</StyledLinkExternal>
     </Wrapper>
   )
 }
