@@ -921,6 +921,24 @@ const tokens = {
     decimals: 12,
     projectLink: 'https://www.zilliqa.com/',
   },
+  lien: {
+    symbol: 'LIEN',
+    address: {
+      56: '0x5d684adaf3fcfe9cfb5cede3abf02f0cdd1012e3',
+      97: '',
+    },
+    decimals: 8,
+    projectLink: 'https://lien.finance/',
+  },
+  swth: {
+    symbol: 'SWTH',
+    address: {
+      56: '0x250b211EE44459dAd5Cd3bCa803dD6a7EcB5d46C',
+      97: '',
+    },
+    decimals: 8,
+    projectLink: 'https://switcheo.network/',
+  },
 }
 
 export default tokens

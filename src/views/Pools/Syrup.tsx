@@ -20,12 +20,12 @@ const Farm: React.FC = () => {
   const TranslateString = useI18n()
   const { account } = useWeb3React()
   const pools = usePools(account)
-  const { blockNumber } = useBlock()
+  const { currentBlock } = useBlock()
   const [stackedOnly, setStackedOnly] = useState(false)
 
   const [finishedPools, openPools] = useMemo(
-    () => partition(pools, (pool) => pool.isFinished || blockNumber > pool.endBlock),
-    [blockNumber, pools],
+    () => partition(pools, (pool) => pool.isFinished || currentBlock > pool.endBlock),
+    [currentBlock, pools],
   )
   const stackedOnlyPools = useMemo(
     () => openPools.filter((pool) => pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0)),
