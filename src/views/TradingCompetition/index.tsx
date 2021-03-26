@@ -37,6 +37,10 @@ const CompetitionPage = styled.div`
   min-height: calc(100vh - 64px);
 `
 
+const StyledSection = styled(Section)`
+  padding: 96px 0 24px 0;
+`
+
 const TradingCompetition = () => {
   const { account } = useWeb3React()
   const { profile } = useProfile()
@@ -60,9 +64,9 @@ const TradingCompetition = () => {
       >
         {!hasCompetitionStarted ? <HowToJoin /> : <SampleCard />}
       </Section>
-      <Section backgroundStyle={LIGHTBLUEBG} svgFill={LIGHTBLUEFILL} index={2}>
+      <StyledSection backgroundStyle={LIGHTBLUEBG} svgFill={LIGHTBLUEFILL} index={2} noIntersection>
         <PrizesInfo />
-      </Section>
+      </StyledSection>
       <Section
         index={3}
         intersectionPosition="top"
