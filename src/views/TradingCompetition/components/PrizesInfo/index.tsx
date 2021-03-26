@@ -2,10 +2,9 @@ import React from 'react'
 import styled from 'styled-components'
 import { Flex } from '@pancakeswap-libs/uikit'
 import PrizesText from './PrizesText'
-import PrizesTable from './PrizesTable'
+import PrizesCard from './PrizesCard'
 
 const Wrapper = styled(Flex)`
-  max-width: 736px;
   flex-direction: column-reverse;
 
   ${({ theme }) => theme.mediaQueries.md} {
@@ -18,7 +17,7 @@ const Wrapper = styled(Flex)`
 const PrizesInfo = () => {
   return (
     <Wrapper flexDirection="column">
-      <PrizesTable />
+      <PrizesCard />
       <PrizesText />
     </Wrapper>
   )

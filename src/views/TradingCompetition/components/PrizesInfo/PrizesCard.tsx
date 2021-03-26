@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Card, CardHeader, CardBody, CardFooter, Heading, Text } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
+import PrizesGrid from './PrizesGrid'
 
 const StyledCard = styled(Card)`
   ${({ theme }) => theme.mediaQueries.md} {
@@ -10,7 +11,7 @@ const StyledCard = styled(Card)`
   }
 `
 
-const PrizesTable = () => {
+const PrizesCard = () => {
   const TranslateString = useI18n()
 
   return (
@@ -24,8 +25,7 @@ const PrizesTable = () => {
         </Text>
       </CardHeader>
       <CardBody>
-        <span>Tabmenu</span>
-        <span>Table</span>
+        <PrizesGrid />
       </CardBody>
       <CardFooter>
         <Text color="textSubtle" fontSize="14px">
@@ -39,4 +39,4 @@ const PrizesTable = () => {
   )
 }
 
-export default PrizesTable
+export default PrizesCard
