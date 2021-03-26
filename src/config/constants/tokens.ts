@@ -937,7 +937,7 @@ const tokens = {
       97: '',
     },
     decimals: 8,
-    projectLink: 'https://switcheo.org/',
+    projectLink: 'https://switcheo.network/',
   },
 }
 
