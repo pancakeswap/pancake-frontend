@@ -19,7 +19,7 @@ interface ApproveConfirmButtonsProps {
   onConfirm: () => void
 }
 
-const StyledApprovConfirmButtons = styled.div`
+const StyledApproveConfirmButtons = styled.div`
   align-items: center;
   display: grid;
   grid-template-columns: 1fr;
@@ -69,7 +69,7 @@ const ApproveConfirmButtons: React.FC<ApproveConfirmButtonsProps> = ({
   const TranslateString = useI18n()
 
   return (
-    <StyledApprovConfirmButtons>
+    <StyledApproveConfirmButtons>
       <Box>
         <Button
           disabled={isApproveDisabled}
@@ -94,7 +94,7 @@ const ApproveConfirmButtons: React.FC<ApproveConfirmButtonsProps> = ({
           {isConfirming ? TranslateString(802, 'Confirming') : TranslateString(464, 'Confirm')}
         </Button>
       </Box>
-    </StyledApprovConfirmButtons>
+    </StyledApproveConfirmButtons>
   )
 }
 

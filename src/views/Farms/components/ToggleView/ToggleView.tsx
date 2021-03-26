@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { ListViewIcon, CardViewIcon, IconButton } from '@pancakeswap-libs/uikit'
 import { ViewMode } from '../types'
 
-interface ToogleViewProps {
+interface ToggleViewProps {
   viewMode: ViewMode
   onToggle: (mode: ViewMode) => void
 }
@@ -16,7 +16,7 @@ const Container = styled.div`
   }
 `
 
-const ToggleView: React.FunctionComponent<ToogleViewProps> = ({ viewMode, onToggle }) => {
+const ToggleView: React.FunctionComponent<ToggleViewProps> = ({ viewMode, onToggle }) => {
   const handleToggle = (mode: ViewMode) => {
     if (viewMode !== mode) {
       onToggle(mode)
