@@ -1,5 +1,4 @@
 import React from 'react'
-import styled from 'styled-components'
 import { Flex, Text, Heading } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import HowToCard from './HowToCard'
@@ -8,7 +7,7 @@ const HowToJoin = () => {
   const TranslateString = useI18n()
 
   return (
-    <Flex flexDirection="column">
+    <Flex flexDirection="column" maxWidth="736px">
       <Heading color="secondary" size="lg" mb="32px" textAlign="center">
         How Can I Join?
       </Heading>

@@ -3,10 +3,6 @@ import { useWeb3React } from '@web3-react/core'
 import { useProfile } from 'state/hooks'
 import { Card, CardHeader, CardBody, Flex, Button } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
-import RibbonWithImage from './components/RibbonWithImage'
-import HowToJoin from './components/HowToJoin'
-import BattleBanner from './components/BattleBanner'
-import Section from './components/Section'
 import Prizes from './svgs/Prizes'
 import {
   DARKBG,
@@ -16,6 +12,11 @@ import {
   LIGHTBLUEBG,
   LIGHTBLUEFILL,
 } from './components/Section/sectionStyles'
+import RibbonWithImage from './components/RibbonWithImage'
+import HowToJoin from './components/HowToJoin'
+import BattleBanner from './components/BattleBanner'
+import Section from './components/Section'
+import PrizesInfo from './components/PrizesInfo'
 
 const SampleCard = () => (
   <Card>
@@ -46,13 +47,20 @@ const TradingCompetition = () => {
       <Section backgroundStyle={DARKBG} svgFill={DARKFILL} index={4}>
         <BattleBanner />
       </Section>
-      <Section backgroundStyle={MIDBLUEBG} svgFill={MIDBLUEFILL} index={3}>
+      <Section
+        backgroundStyle={MIDBLUEBG}
+        svgFill={MIDBLUEFILL}
+        index={3}
+        intersectComponent={
+          <RibbonWithImage imageComponent={<Prizes width="175px" />} ribbonDirection="up">
+            Prizes
+          </RibbonWithImage>
+        }
+      >
         {!hasCompetitionStarted ? <HowToJoin /> : <SampleCard />}
       </Section>
       <Section backgroundStyle={LIGHTBLUEBG} svgFill={LIGHTBLUEFILL} index={2}>
-        <RibbonWithImage imageComponent={<Prizes width="175px" />} ribbonDirection="down">
-          Light blue
-        </RibbonWithImage>
+        <PrizesInfo />
       </Section>
       <Section index={3} intersectionPosition="top">
         <RibbonWithImage imageComponent={<Prizes width="175px" />} ribbonDirection="up">
