@@ -11,6 +11,9 @@ const useBlockCountdown = (blockNumber: number) => {
   const initialBlock = useInitialBlock()
 
   useEffect(() => {
+    // Clear old intervals
+    clearInterval(timer.current)
+
     if (initialBlock > 0) {
       const secondsBetweenBlocks = (blockNumber - initialBlock) * BSC_BLOCK_TIME
 
@@ -23,14 +26,14 @@ const useBlockCountdown = (blockNumber: number) => {
         }, 1000)
       }
     }
+
+    return () => {
+      clearInterval(timer.current)
+    }
   }, [initialBlock, blockNumber, timer, setSecondsRemaining])
 
   useEffect(() => {
     if (timer.current && secondsRemaining === 0) {
-      clearInterval(timer.current)
-    }
-
-    return () => {
       clearInterval(timer.current)
     }
   }, [secondsRemaining, timer])
