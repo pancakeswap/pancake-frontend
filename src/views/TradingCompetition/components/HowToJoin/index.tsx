@@ -9,7 +9,7 @@ const HowToJoin = () => {
   return (
     <Flex flexDirection="column">
       <Heading color="secondary" size="lg" mb="32px" textAlign="center">
-        How Can I Join?
+        {TranslateString(999, 'How Can I Join?')}
       </Heading>
       <HowToCard number={1} title={TranslateString(999, 'Entry Period')}>
         <Text fontSize="14px" color="textSubtle">

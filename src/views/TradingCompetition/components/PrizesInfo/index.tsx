@@ -1,7 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Flex, Text, Heading } from '@pancakeswap-libs/uikit'
-import useI18n from 'hooks/useI18n'
+import { Flex } from '@pancakeswap-libs/uikit'
 import PrizesText from './PrizesText'
 import PrizesTable from './PrizesTable'
 
@@ -16,9 +15,7 @@ const Wrapper = styled(Flex)`
   }
 `
 
-const HowToJoin = () => {
-  const TranslateString = useI18n()
-
+const PrizesInfo = () => {
   return (
     <Wrapper flexDirection="column">
       <PrizesTable />
@@ -27,4 +24,4 @@ const HowToJoin = () => {
   )
 }
 
-export default HowToJoin
+export default PrizesInfo
