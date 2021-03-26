@@ -921,6 +921,15 @@ const tokens = {
     decimals: 12,
     projectLink: 'https://www.zilliqa.com/',
   },
+  lien: {
+    symbol: 'LIEN',
+    address: {
+      56: '0x5d684adaf3fcfe9cfb5cede3abf02f0cdd1012e3',
+      97: '',
+    },
+    decimals: 8,
+    projectLink: 'https://lien.finance/',
+  },
 }
 
 export default tokens
