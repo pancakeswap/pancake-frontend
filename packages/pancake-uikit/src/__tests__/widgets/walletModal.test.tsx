@@ -26,7 +26,7 @@ it("renders ConnectModal correctly", () => {
           </div>
           <button
             aria-label="Close the dialog"
-            class="sc-gKsewC ctjIRe sc-iBPRYJ ifcXSU"
+            class="sc-gKsewC ZInsY sc-iBPRYJ ifcXSU"
             scale="md"
           >
             <svg
@@ -46,7 +46,7 @@ it("renders ConnectModal correctly", () => {
           class="sc-eCssSg sc-jSgupP eYcDys jMcUDu"
         >
           <button
-            class="sc-gKsewC jXrrij"
+            class="sc-gKsewC hLJvid"
             id="wallet-connect-metamask"
             scale="md"
             style="justify-content: space-between;"
@@ -190,7 +190,7 @@ it("renders ConnectModal correctly", () => {
             </svg>
           </button>
           <button
-            class="sc-gKsewC jXrrij"
+            class="sc-gKsewC hLJvid"
             id="wallet-connect-trustwallet"
             scale="md"
             style="justify-content: space-between;"
@@ -235,7 +235,7 @@ it("renders ConnectModal correctly", () => {
             </svg>
           </button>
           <button
-            class="sc-gKsewC jXrrij"
+            class="sc-gKsewC hLJvid"
             id="wallet-connect-mathwallet"
             scale="md"
             style="justify-content: space-between;"
@@ -269,7 +269,7 @@ it("renders ConnectModal correctly", () => {
             </svg>
           </button>
           <button
-            class="sc-gKsewC jXrrij"
+            class="sc-gKsewC hLJvid"
             id="wallet-connect-tokenpocket"
             scale="md"
             style="justify-content: space-between;"
@@ -305,7 +305,7 @@ it("renders ConnectModal correctly", () => {
             </svg>
           </button>
           <button
-            class="sc-gKsewC jXrrij"
+            class="sc-gKsewC hLJvid"
             id="wallet-connect-walletconnect"
             scale="md"
             style="justify-content: space-between;"
@@ -335,7 +335,7 @@ it("renders ConnectModal correctly", () => {
             </svg>
           </button>
           <button
-            class="sc-gKsewC jXrrij"
+            class="sc-gKsewC hLJvid"
             id="wallet-connect-binance chain wallet"
             scale="md"
             style="justify-content: space-between;"
@@ -401,7 +401,7 @@ it("renders ConnectModal correctly", () => {
             </svg>
           </button>
           <button
-            class="sc-gKsewC hUerIb"
+            class="sc-gKsewC iJyjSZ"
             id="wallet-connect-safepal wallet"
             scale="md"
             style="justify-content: space-between;"
@@ -482,7 +482,7 @@ it("renders AccountModal correctly", () => {
           </div>
           <button
             aria-label="Close the dialog"
-            class="sc-gKsewC ctjIRe sc-iBPRYJ ifcXSU"
+            class="sc-gKsewC ZInsY sc-iBPRYJ ifcXSU"
             scale="md"
           >
             <svg
@@ -560,7 +560,7 @@ it("renders AccountModal correctly", () => {
             class="sc-eCssSg sc-jSgupP jnvqfy fvYwlu"
           >
             <button
-              class="sc-gKsewC esAjJs"
+              class="sc-gKsewC cWGyuK"
               scale="sm"
             >
               Logout

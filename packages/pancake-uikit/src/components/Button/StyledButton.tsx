@@ -7,8 +7,12 @@ interface ThemedButtonProps extends BaseButtonProps {
   theme: DefaultTheme;
 }
 
-const getDisabledStyles = ({ isLoading, theme }: ThemedButtonProps) => {
-  if (isLoading === true) {
+interface TransientButtonProps extends ThemedButtonProps {
+  $isLoading?: boolean;
+}
+
+const getDisabledStyles = ({ $isLoading, theme }: TransientButtonProps) => {
+  if ($isLoading === true) {
     return `
       &:disabled,
       &.pancake-button--disabled {
@@ -34,9 +38,6 @@ const getDisabledStyles = ({ isLoading, theme }: ThemedButtonProps) => {
  * React will throw a invalid DOM attribute error
  * @see https://github.com/styled-components/styled-components/issues/135
  */
-interface TransientButtonProps extends ThemedButtonProps {
-  $isLoading?: boolean;
-}
 
 const getOpacity = ({ $isLoading = false }: TransientButtonProps) => {
   return $isLoading ? ".5" : "1";
@@ -57,7 +58,7 @@ const StyledButton = styled.button<BaseButtonProps>`
   line-height: 1;
   opacity: ${getOpacity};
   outline: 0;
-  transition: background-color 0.2s;
+  transition: background-color 0.2s, opacity 0.2s;
 
   &:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
     opacity: 0.65;
