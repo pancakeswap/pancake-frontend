@@ -19,6 +19,10 @@ import Coming from './components/Coming'
 import PoolCard from './components/PoolCard'
 import PoolTabButtons from './components/PoolTabButtons'
 
+const isStakedPool = (pool: Pool) => {
+  return pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0)
+}
+
 const Syrup: React.FC = () => {
   const { path } = useRouteMatch()
   const TranslateString = useI18n()
@@ -79,10 +83,6 @@ const Syrup: React.FC = () => {
     [blockNumber, pools],
   )
 
-  const isStakedPool = (pool: Pool) => {
-    return pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0)
-  }
-
   const stakedOnlyOpenPools = useMemo(() => openPools.filter(isStakedPool), [openPools])
   const stakedOnlyFinishedPools = useMemo(() => finishedPools.filter(isStakedPool), [finishedPools])
 
@@ -114,7 +114,7 @@ const Syrup: React.FC = () => {
       <Page>
         <ControlContainer justifyContent="space-between" alignItems="center" mb="32px">
           <PoolTabButtons stackedOnly={stackedOnly} setStackedOnly={setStackedOnly} />
-          <Flex alignItems="center" width={isXl ? 'auto' : '100%'} ml="auto">
+          <Inputs alignItems="center" ml="auto">
             <InputWrapper alignItems="center">
               <Text mr="10px" color="textSubtle">
                 {TranslateString(999, 'Sort by')}:
@@ -152,7 +152,7 @@ const Syrup: React.FC = () => {
                 onChange={(event) => setQuery(event.target.value)}
               />
             </InputWrapper>
-          </Flex>
+          </Inputs>
         </ControlContainer>
         <Route path={`${path}/history`}>
           <FinishedAlert color="failure" fontSize="20px" bold mb="32px">
@@ -161,12 +161,10 @@ const Syrup: React.FC = () => {
         </Route>
         <CardsContainer>
           <Route exact path={`${path}`}>
-            <>
-              {stackedOnly
-                ? stakedOnlyOpenPools.map((pool) => <PoolCard key={pool.sousId} pool={pool} />)
-                : openPools.map((pool) => <PoolCard key={pool.sousId} pool={pool} />)}
-              <Coming />
-            </>
+            {stackedOnly
+              ? stakedOnlyOpenPools.map((pool) => <PoolCard key={pool.sousId} pool={pool} />)
+              : openPools.map((pool) => <PoolCard key={pool.sousId} pool={pool} />)}
+            <Coming />
           </Route>
           <Route path={`${path}/history`}>
             {stackedOnly
@@ -268,6 +266,14 @@ const FinishedAlert = styled(Text)`
 
   ${({ theme }) => theme.mediaQueries.sm} {
     margin-bottom: 32px;
+  }
+`
+
+const Inputs = styled(Flex)`
+  width: 100%;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    width: auto;
   }
 `
 

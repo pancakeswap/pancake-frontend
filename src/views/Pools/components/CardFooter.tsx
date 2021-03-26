@@ -61,7 +61,6 @@ const StyledDetailsButton = styled.button`
 
 const Row = styled(Flex)`
   align-items: center;
-  display: flex;
 `
 
 const FlexFull = styled.div`
