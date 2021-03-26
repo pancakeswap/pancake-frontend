@@ -1,6 +1,6 @@
 import { request, gql } from 'graphql-request'
 import { GRAPH_API_PREDICTIONS } from 'config/constants/endpoints'
-import { PredictionStatus, Round } from 'state/types'
+import { PredictionStatus, Round, RoundData } from 'state/types'
 import { getPredictionsContract } from 'utils/contractHelpers'
 import makeBatchRequest from 'utils/makeBatchRequest'
 import { getRoundsQuery, RoundResponse } from './queries'
@@ -51,30 +51,43 @@ export const transformRoundResponse = (roundResponse: RoundResponse): Round => {
   }
 }
 
-export const initialize = async () => {
+export const makeRoundData = (roundResponses: RoundResponse[]): RoundData => {
+  return roundResponses.reduce((accum, roundResponse) => {
+    return {
+      ...accum,
+      [roundResponse.id]: transformRoundResponse(roundResponse),
+    }
+  }, {})
+}
+
+/**
+ * Gets static data from the contract that will not change
+ */
+export const getStaticPredictionsData = async () => {
   const { methods } = getPredictionsContract()
-  const [currentEpoch, intervalBlocks, minBetAmount, isPaused] = (await makeBatchRequest([
+  const [currentEpoch, intervalBlocks, minBetAmount, isPaused] = await makeBatchRequest([
     methods.currentEpoch().call,
     methods.intervalBlocks().call,
     methods.minBetAmount().call,
     methods.paused().call,
-  ])) as [string, string, string, boolean]
-  const response = await request(
-    GRAPH_API_PREDICTIONS,
-    gql`
-    {
-      ${getRoundsQuery()}
-    }
-  `,
-  )
-
-  const rounds = response.rounds.map(transformRoundResponse)
+  ])
 
   return {
     status: isPaused ? PredictionStatus.PAUSED : PredictionStatus.LIVE,
     currentEpoch: Number(currentEpoch),
     intervalBlocks: Number(intervalBlocks),
     minBetAmount,
-    rounds,
   }
+}
+
+export const getLatestRounds = async () => {
+  const response = await request(
+    GRAPH_API_PREDICTIONS,
+    gql`
+      {
+        ${getRoundsQuery()}
+      }
+  `,
+  )
+  return response.rounds
 }

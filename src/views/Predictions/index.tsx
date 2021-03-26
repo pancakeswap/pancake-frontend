@@ -3,8 +3,11 @@ import { useDispatch } from 'react-redux'
 import { useMatchBreakpoints } from '@pancakeswap-libs/uikit'
 import { getWeb3NoAccount } from 'utils/web3'
 import { setBlock } from 'state/block'
-import { useGetPredictionsStatus, useInitializePredictions } from 'state/hooks'
-import { PredictionStatus } from 'state/types'
+import { useGetPredictionsStatus } from 'state/hooks'
+import { getLatestRounds, getStaticPredictionsData, makeRoundData } from 'state/predictions/helpers'
+import { initialize } from 'state/predictions'
+import { RoundResponse } from 'state/predictions/queries'
+import { PredictionsState, PredictionStatus } from 'state/types'
 import PageLoader from 'components/PageLoader'
 import Container from './components/Container'
 import SwiperProvider from './context/SwiperProvider'
@@ -18,19 +21,27 @@ const Predictions = () => {
   const isDesktop = isLg || isXl
   const dispatch = useDispatch()
 
-  useInitializePredictions()
-
-  // Don't show UI until we are sure that we have a block number
-  // This avoid the cards from jumping states
+  // Don't show UI until we have fetched the initial data sets
   useEffect(() => {
-    const fetchBlockNumber = async () => {
+    const fetchInitialData = async () => {
       const web3 = getWeb3NoAccount()
-      const blockNumber = await web3.eth.getBlockNumber()
+      const [blockNumber, staticPredictionsData, latestRounds] = (await Promise.all([
+        web3.eth.getBlockNumber(),
+        getStaticPredictionsData(),
+        getLatestRounds(),
+      ])) as [number, Omit<PredictionsState, 'rounds'>, RoundResponse[]]
+
       dispatch(setBlock(blockNumber))
+      dispatch(
+        initialize({
+          ...staticPredictionsData,
+          rounds: makeRoundData(latestRounds),
+        }),
+      )
       setIsInitialized(true)
     }
 
-    fetchBlockNumber()
+    fetchInitialData()
   }, [setIsInitialized, dispatch])
 
   if (status === PredictionStatus.INITIAL || !isInitialized) {

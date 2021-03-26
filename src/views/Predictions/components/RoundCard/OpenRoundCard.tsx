@@ -34,7 +34,7 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({ round }) => {
 
   // Open rounds do not have an endblock set so we approximate it by adding the block interval
   // to the start block
-  const endBlock = startBlock + intervalBlocks
+  const endBlock = startBlock + intervalBlocks * 2
 
   return (
     <GradientBorder>
@@ -42,9 +42,10 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({ round }) => {
         <CardHeader
           status="live"
           icon={<PlayCircleOutlineIcon mr="4px" width="24px" color="secondary" />}
-          title={TranslateString(999, 'Live')}
+          title={TranslateString(1198, 'Live')}
           epoch={round.epoch}
           blockNumber={endBlock}
+          timerPrefix={TranslateString(410, 'End')}
         />
         <Progress variant="flat" primaryStep={54} />
         <CardBody p="16px">

@@ -1,40 +1,42 @@
+import { useEffect, useRef, useState } from 'react'
 import { BSC_BLOCK_TIME } from 'config'
-import { useEffect, useState } from 'react'
 import { getWeb3NoAccount } from 'utils/web3'
 
 /**
- * Returns the difference of blocks and estimated seconds
+ * Returns a countdown in seconds of a given block
  */
 const useBlockCountdown = (blockNumber: number) => {
-  const [baseBlock, setBaseBlock] = useState(null)
+  const timer = useRef<ReturnType<typeof setTimeout>>(null)
   const [secondsRemaining, setSecondsRemaining] = useState(0)
 
-  // Step 1 - Fetch current block
   useEffect(() => {
-    const fetchCurrentBlock = async () => {
+    const fetchData = async () => {
       const web3 = getWeb3NoAccount()
       const currentBlockNumber = await web3.eth.getBlockNumber()
-      setSecondsRemaining((blockNumber - currentBlockNumber) * BSC_BLOCK_TIME)
-      setBaseBlock(currentBlockNumber)
+      const secondsBetweenBlocks = (blockNumber - currentBlockNumber) * BSC_BLOCK_TIME
+
+      setSecondsRemaining(secondsBetweenBlocks)
+
+      // Only start a countdown if the provided block number is greater than the current block
+      if (blockNumber > currentBlockNumber) {
+        timer.current = setInterval(() => {
+          setSecondsRemaining((prevSecondsRemaining) => prevSecondsRemaining - 1)
+        }, 1000)
+      }
     }
 
-    fetchCurrentBlock()
-  }, [blockNumber, setBaseBlock])
-
-  // Step 2 - Start the timer when we have established a base block
-  useEffect(() => {
-    let timer: ReturnType<typeof setTimeout> = null
-
-    if (baseBlock !== null && blockNumber >= baseBlock) {
-      timer = setInterval(() => {
-        setSecondsRemaining((prevSecondsRemaining) => prevSecondsRemaining - 1)
-      }, 1000)
-    }
+    fetchData()
 
     return () => {
-      clearInterval(timer)
+      clearInterval(timer.current)
     }
-  }, [baseBlock, blockNumber, setSecondsRemaining])
+  }, [blockNumber, timer, setSecondsRemaining])
+
+  useEffect(() => {
+    if (timer.current && secondsRemaining === 0) {
+      clearInterval(timer.current)
+    }
+  }, [secondsRemaining, timer])
 
   return secondsRemaining
 }

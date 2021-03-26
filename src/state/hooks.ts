@@ -15,13 +15,12 @@ import {
   fetchPoolsUserDataAsync,
   setBlock,
 } from './actions'
-import { State, Farm, Pool, ProfileState, TeamsState, AchievementState, PriceState, RoundData } from './types'
+import { State, Farm, Pool, ProfileState, TeamsState, AchievementState, PriceState } from './types'
 import { fetchProfile } from './profile'
 import { fetchTeam, fetchTeams } from './teams'
 import { fetchAchievements } from './achievements'
 import { fetchPrices } from './prices'
 import { fetchWalletNfts } from './collectibles'
-import { initializePredictions } from './predictions'
 
 export const useFetchPublicData = () => {
   const dispatch = useAppDispatch()
@@ -211,14 +210,6 @@ export const useIsChartPaneOpen = () => {
   return useSelector((state: State) => state.predictions.isChartPaneOpen)
 }
 
-export const useInitializePredictions = () => {
-  const dispatch = useAppDispatch()
-
-  useEffect(() => {
-    dispatch(initializePredictions())
-  }, [dispatch])
-}
-
 export const useGetRounds = () => {
   return useSelector((state: State) => state.predictions.rounds)
 }
@@ -231,20 +222,19 @@ export const useGetIntervalBlocks = () => {
   return useSelector((state: State) => state.predictions.intervalBlocks)
 }
 
-export const useGetLiveRound = () => {
-  const { currentEpoch, rounds } = useSelector((state: State) => state.predictions)
-  return rounds.find((round) => round.epoch === currentEpoch)
+export const useGetRound = (id: string) => {
+  const rounds = useGetRounds()
+  return rounds[id]
+}
+
+export const useGetBettableRound = () => {
+  const rounds = useGetRounds()
+  const currentEpoch = useGetCurrentEpoch()
+  return Object.values(rounds).find((round) => round.epoch === currentEpoch)
 }
 
 export const useGetPredictionsStatus = () => {
   return useSelector((state: State) => state.predictions.status)
-}
-
-export const useGetCurrentRound = () => {
-  const currentEpoch = useGetCurrentEpoch()
-  const rounds = useSelector((state: State) => state.predictions.rounds)
-
-  return rounds.find((round) => round.epoch === currentEpoch)
 }
 
 // Collectibles

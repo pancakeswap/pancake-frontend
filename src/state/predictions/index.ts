@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { PredictionsState, PredictionStatus, Round } from 'state/types'
-import { initialize } from './helpers'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { maxBy } from 'lodash'
+import { PredictionsState, PredictionStatus, Round, RoundData } from 'state/types'
 
 const initialState: PredictionsState = {
   status: PredictionStatus.INITIAL,
@@ -11,21 +11,8 @@ const initialState: PredictionsState = {
   currentEpoch: 0,
   intervalBlocks: 100,
   minBetAmount: '1000000000000000',
-  rounds: [],
+  rounds: {},
 }
-
-type InitializeReturn = {
-  status: PredictionStatus
-  currentEpoch: number
-  intervalBlocks: number
-  minBetAmount: string
-  rounds: Round[]
-}
-
-export const initializePredictions = createAsyncThunk<InitializeReturn>('predictions/initialize', async () => {
-  const data = await initialize()
-  return data
-})
 
 export const predictionsSlice = createSlice({
   name: 'predictions',
@@ -37,29 +24,23 @@ export const predictionsSlice = createSlice({
     setChartPaneState: (state, action: PayloadAction<boolean>) => {
       state.isChartPaneOpen = action.payload
     },
-  },
-  extraReducers: (builder) => {
-    builder.addCase(initializePredictions.pending, (state) => {
-      state.isLoading = true
-    })
-    builder.addCase(initializePredictions.fulfilled, (state, action: PayloadAction<InitializeReturn>) => {
-      const { status, currentEpoch, intervalBlocks, minBetAmount, rounds } = action.payload
+    initialize: (state, action: PayloadAction<PredictionsState>) => {
+      return action.payload
+    },
+    setRound: (state, action: PayloadAction<{ id: string; round: Round }>) => {
+      const { id, round } = action.payload
+      state.rounds[id] = round
+    },
+    setRounds: (state, action: PayloadAction<RoundData>) => {
+      const rounds = Object.values(action.payload)
 
-      return {
-        isLoading: false,
-        isHistoryPaneOpen: false,
-        isChartPaneOpen: false,
-        status,
-        currentEpoch,
-        intervalBlocks,
-        minBetAmount,
-        rounds,
-      }
-    })
+      state.currentEpoch = maxBy(rounds, 'epoch').epoch
+      state.rounds = action.payload
+    },
   },
 })
 
 // Actions
-export const { setChartPaneState, setHistoryPaneState } = predictionsSlice.actions
+export const { setChartPaneState, setHistoryPaneState, setRound, setRounds, initialize } = predictionsSlice.actions
 
 export default predictionsSlice.reducer

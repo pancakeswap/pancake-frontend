@@ -1,8 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
+import { useGetBettableRound } from 'state/hooks'
 import { Box, Card, Text } from '@pancakeswap-libs/uikit'
 import { useBnbUsdtTicker } from 'hooks/ticker'
-import { useGetCurrentRound } from 'state/hooks'
 import BnbUsdtPairToken from '../icons/BnbUsdtPairToken'
 import PocketWatch from '../icons/PocketWatch'
 import useBlockCountdown from '../hooks/useGetBlockCountdown'
@@ -99,8 +99,8 @@ interface TimerLabelProps {
 }
 
 export const TimerLabel: React.FC<TimerLabelProps> = ({ interval }) => {
-  const currentRound = useGetCurrentRound()
-  const seconds = useBlockCountdown(currentRound?.endBlock)
+  const bettableRound = useGetBettableRound()
+  const seconds = useBlockCountdown(bettableRound?.endBlock)
   const countdown = formatRoundTime(seconds)
 
   return (

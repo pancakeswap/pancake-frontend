@@ -38,6 +38,7 @@ const ExpiredRoundCard: React.FC<ExpiredRoundCardProps> = ({ round }) => {
         title={TranslateString(999, 'Expired')}
         blockNumber={endBlock}
         epoch={round.epoch}
+        timerPrefix={TranslateString(410, 'End')}
       />
       <CardBody p="16px">
         <MultiplierArrow multiplier={10.3} isActive={betPosition === BetPosition.BULL} hasEntered={false} />

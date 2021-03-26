@@ -44,7 +44,7 @@ const Background = styled(Box)<RoundInfoBoxProps>`
 
 const StyledRoundInfoBox = styled.div`
   background: ${({ theme }) => theme.card.background};
-  border-radius: 8px;
+  border-radius: 6px;
   padding: 16px;
 `
 

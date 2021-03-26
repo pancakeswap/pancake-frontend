@@ -12,6 +12,7 @@ interface CardHeaderProps {
   title: string
   epoch: number
   blockNumber: number
+  timerPrefix: string
   icon?: ReactElement
 }
 
@@ -63,14 +64,13 @@ const Round = styled.div`
   justify-self: center;
 `
 
-const CardHeader: React.FC<CardHeaderProps> = ({ status, title, epoch, blockNumber, icon }) => {
+const CardHeader: React.FC<CardHeaderProps> = ({ status, title, epoch, blockNumber, timerPrefix, icon }) => {
   const TranslateString = useI18n()
   const textColor = getTextColorByStatus(status, 'text')
   const seconds = useBlockCountdown(blockNumber)
   const countdown = formatRoundTime(seconds)
 
   const isLive = status === 'live'
-  const timePrefix = seconds > 0 ? TranslateString(999, 'Start') : TranslateString(999, 'End')
 
   return (
     <StyledCardHeader status={status}>
@@ -89,7 +89,7 @@ const CardHeader: React.FC<CardHeaderProps> = ({ status, title, epoch, blockNumb
         color={textColor}
         borderColor={textColor}
         title={TranslateString(999, `Block ${blockNumber}`, { num: blockNumber })}
-      >{`${timePrefix}: ~${countdown}`}</Time>
+      >{`${timerPrefix}: ~${countdown}`}</Time>
     </StyledCardHeader>
   )
 }

@@ -48,6 +48,7 @@ const BettableRoundCard: React.FC<BettableRoundCardProps> = ({ round }) => {
           blockNumber={endBlock}
           icon={<PlayCircleOutlineIcon color="white" mr="4px" width="21px" />}
           title={TranslateString(999, 'Next')}
+          timerPrefix={TranslateString(999, 'Start')}
         />
         <CardBody p="16px">
           <MultiplierArrow />

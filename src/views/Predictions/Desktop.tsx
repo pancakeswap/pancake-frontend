@@ -66,7 +66,7 @@ const StyledDesktop = styled.div`
   }
 `
 
-const Desktop = () => {
+const Desktop: React.FC = () => {
   const isHistoryPaneOpen = useIsHistoryPaneOpen()
   const isChartPaneOpen = useIsChartPaneOpen()
   const dispatch = useDispatch()

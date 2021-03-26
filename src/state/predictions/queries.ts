@@ -68,4 +68,31 @@ export const getRoundsQuery = (first = 5, orderBy = 'epoch', orderDirection: Sor
     }
   `
 }
-export default null
+
+export const getRoundQuery = (id: string) => {
+  return `
+    round(id: "${id}") {
+      id
+      epoch
+      startAt
+      startBlock
+      lockAt
+      lockBlock
+      lockPrice
+      endAt
+      endBlock
+      closePrice
+      totalBets
+      totalAmount
+      bullBets
+      bullAmount
+      bearBets
+      bearAmount
+      bets {
+        hash
+        amount
+        position
+      }
+    }
+  `
+}
