@@ -5,7 +5,7 @@ import { Image, Card, CardBody } from '@pancakeswap-libs/uikit'
 import { useWinningNumbers, useMatchingRewardLength } from 'hooks/useTickets'
 import useI18n from 'hooks/useI18n'
 import useGetLotteryHasDrawn from 'hooks/useGetLotteryHasDrawn'
-import { BASE_API } from '../../../config'
+import { BASE_API_URL } from '../../../config'
 
 const WinningNumbers: React.FC = () => {
   const { account } = useWeb3React()
@@ -15,7 +15,7 @@ const WinningNumbers: React.FC = () => {
   const MatchedNumber3 = useMatchingRewardLength(3)
   const MatchedNumber2 = useMatchingRewardLength(2)
   const TranslateString = useI18n()
-  const link = `${BASE_API}/lottery?page=0&pageSize=25`
+  const link = `${BASE_API_URL}/lottery?page=0&pageSize=25`
 
   return (
     <CardWrapper>

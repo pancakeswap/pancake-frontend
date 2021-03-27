@@ -1,4 +1,4 @@
-import { BASE_API } from '../config';
+import { BASE_API_URL } from '../config';
 
 export type DataResponse = {
   lotteryNumber: number
@@ -26,7 +26,7 @@ export type DataResponse = {
  */
 const getLotteryRoundData = async (lotteryNumber: number): Promise<DataResponse> => {
   try {
-    const response = await fetch(`${BASE_API}/singleLottery?lotteryNumber=${lotteryNumber}`)
+    const response = await fetch(`${BASE_API_URL}/singleLottery?lotteryNumber=${lotteryNumber}`)
     const data = await response.json()
 
     return data

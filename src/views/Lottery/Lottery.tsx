@@ -11,7 +11,7 @@ import Hero from './components/Hero'
 import Divider from './components/Divider'
 import NextDrawPage from './NextDrawPage'
 import PastDrawsPage from './PastDrawsPage'
-import { BASE_API } from '../../config'
+import { BASE_API_URL } from '../../config'
  
 
 const Wrapper = styled.div`
@@ -33,7 +33,7 @@ const Lottery: React.FC = () => {
   const [mostRecentLotteryNumber, setMostRecentLotteryNumber] = useState(1)
 
   useEffect(() => {
-    fetch(`${BASE_API}/lotteryHistory`)
+    fetch(`${BASE_API_URL}/lotteryHistory`)
       .then((response) => response.json())
       .then((data) => setHistoryData(data))
       .catch(() => {
@@ -43,14 +43,14 @@ const Lottery: React.FC = () => {
 
   useEffect(() => {
     const getInitialLotteryIndex = async () => {
-      const index = await getLotteryIssueIndex(lotteryContract)
+      const index = await getLotteryIssueIndex(lotteryContract) 
       const previousLotteryNumber = index - 1
 
       setCurrentLotteryNumber(index)
       setMostRecentLotteryNumber(previousLotteryNumber)
     }
 
-    if (account && lotteryContract) {
+    if (lotteryContract) {
       getInitialLotteryIndex()
     }
   }, [account, lotteryContract])
