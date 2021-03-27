@@ -12,9 +12,12 @@ export const useLotteryAllowance = () => {
   const cakeContract = useCake()
 
   useEffect(() => {
-    const fetchAllowance = async () => {
-      const res = await cakeContract.methods.allowance(account, getLotteryAddress()).call()
-      setAllowance(new BigNumber(res))
+    const fetchAllowance = async () => { 
+      if (account) {
+        const res = await cakeContract.methods.allowance(account, getLotteryAddress()).call()
+        console.log(account, res)
+        setAllowance(new BigNumber(res))
+      } 
     }
 
     if (account) {

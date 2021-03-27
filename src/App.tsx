@@ -64,13 +64,13 @@ const App: React.FC = () => {
             <Route path="/lottery">
               <Lottery />
             </Route>
-            <Route path="/ifo">
+            {/* <Route path="/ifo">
               <Ifos />
-            </Route>
-            <Route path="/collectibles">
+            </Route> */}
+            {/* <Route path="/collectibles">
               <Collectibles />
-            </Route>
-            <Route exact path="/teams">
+            </Route> */}
+            {/* <Route exact path="/teams">
               <Teams />
             </Route>
             <Route path="/teams/:id">
@@ -78,7 +78,7 @@ const App: React.FC = () => {
             </Route>
             <Route path="/profile">
               <Profile />
-            </Route>
+            </Route> */}
             {/* Redirect */}
             <Route path="/staking">
               <Redirect to="/pools" />
