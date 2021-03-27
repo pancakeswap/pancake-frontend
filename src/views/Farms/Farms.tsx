@@ -208,7 +208,7 @@ const Farms: React.FC = () => {
 
     const row: RowProps = {
       apr: {
-        value: farm.apy && farm.apy.toLocaleString('en-US', { maximumFractionDigits: 2 }),
+        value: Number.isFinite(farm.apy) ? farm.apy.toLocaleString('en-US', { maximumFractionDigits: 2 }) : null,
         multiplier: farm.multiplier,
         lpLabel,
         tokenAddress,

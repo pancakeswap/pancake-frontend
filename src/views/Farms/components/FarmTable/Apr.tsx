@@ -53,22 +53,18 @@ const Apr: React.FC<AprProps> = ({
   const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAddress, tokenAddress })
   const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
 
-  return originalValue !== 0 ? (
+  return (
     <Container>
-      {originalValue ? (
+      {Number.isFinite(originalValue) ? (
         <>
           <AprWrapper>{value}%</AprWrapper>
-          {!hideButton && (
+          {!hideButton && originalValue !== 0 && (
             <ApyButton lpLabel={lpLabel} cakePrice={cakePrice} apy={originalValue} addLiquidityUrl={addLiquidityUrl} />
           )}
         </>
       ) : (
         <AprWrapper>{TranslateString(656, 'Loading...')}</AprWrapper>
       )}
-    </Container>
-  ) : (
-    <Container>
-      <AprWrapper>{originalValue}%</AprWrapper>
     </Container>
   )
 }
