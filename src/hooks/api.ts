@@ -1,10 +1,11 @@
+import { BASE_API } from './../config/index';
 import { useEffect, useState } from 'react'
 
 /*
  * Due to Cors the api was forked and a proxy was created
  * @see https://github.com/pancakeswap/gatsby-pancake-api/commit/e811b67a43ccc41edd4a0fa1ee704b2f510aa0ba
  */
-export const baseUrl = 'https://gatsby-pancake-api-seven.vercel.app/api'
+export const baseUrl = BASE_API
 
 /* eslint-disable camelcase */
 
