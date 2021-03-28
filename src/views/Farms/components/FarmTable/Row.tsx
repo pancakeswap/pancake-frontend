@@ -33,11 +33,10 @@ const cells = {
 }
 
 const CellInner = styled.div`
-  padding: 24px 0px;
+  padding: 24px 8px 24px 0px;
   display: flex;
   width: 100%;
   align-items: center;
-  padding-right: 8px;
 
   ${({ theme }) => theme.mediaQueries.xl} {
     padding-right: 32px;
