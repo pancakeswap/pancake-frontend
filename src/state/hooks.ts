@@ -16,7 +16,7 @@ import {
   clear as clearToast,
   setBlock,
 } from './actions'
-import { State, Farm, Pool, Block, ProfileState, TeamsState, AchievementState, PriceState } from './types'
+import { State, Farm, Pool, ProfileState, TeamsState, AchievementState, PriceState } from './types'
 import { fetchProfile } from './profile'
 import { fetchTeam, fetchTeams } from './teams'
 import { fetchAchievements } from './achievements'
@@ -212,6 +212,10 @@ export const usePriceCakeBusd = (): BigNumber => {
 }
 
 // Block
-export const useBlock = (): Block => {
+export const useBlock = () => {
   return useSelector((state: State) => state.block)
+}
+
+export const useInitialBlock = () => {
+  return useSelector((state: State) => state.block.initialBlock)
 }

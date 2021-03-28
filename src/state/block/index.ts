@@ -1,13 +1,20 @@
-import { createSlice } from '@reduxjs/toolkit'
-import { Block } from '../types'
+/* eslint-disable no-param-reassign */
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { BlockState } from '../types'
 
-const initialState: Block = { blockNumber: 0 }
+const initialState: BlockState = { currentBlock: 0, initialBlock: 0 }
 
 export const blockSlice = createSlice({
   name: 'Block',
   initialState,
   reducers: {
-    setBlock: (_, action) => ({ blockNumber: action.payload }),
+    setBlock: (state, action: PayloadAction<number>) => {
+      if (state.initialBlock === 0) {
+        state.initialBlock = action.payload
+      }
+
+      state.currentBlock = action.payload
+    },
   },
 })
 

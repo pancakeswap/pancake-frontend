@@ -21,7 +21,8 @@ const IntersectWrapper = styled.div<SectionProps>`
   }
 `
 
-const IntersectComponentWrapper = styled.div`
+const IntersectComponentWrapper = styled.div<{ index?: number }>`
+  z-index: ${({ index }) => index + 1};
   position: absolute;
   top: 50%;
   left: 50%;
@@ -31,7 +32,7 @@ const IntersectComponentWrapper = styled.div`
 const IntersectionCurve: React.FC<SectionProps> = ({ svgFill, index, intersectionPosition, intersectComponent }) => {
   return (
     <IntersectWrapper svgFill={svgFill} index={index} intersectionPosition={intersectionPosition}>
-      {intersectComponent && <IntersectComponentWrapper>{intersectComponent}</IntersectComponentWrapper>}
+      {intersectComponent && <IntersectComponentWrapper index={index}>{intersectComponent}</IntersectComponentWrapper>}
       {intersectionPosition === 'top' ? <TopIntersectSvg width="100%" /> : <BottomIntersectSvg width="100%" />}
     </IntersectWrapper>
   )

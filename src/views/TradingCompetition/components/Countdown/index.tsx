@@ -46,6 +46,7 @@ const Countdown = () => {
     `${TranslateString(1198, 'Live')}`,
     `${TranslateString(410, 'End')}`,
   ]
+
   // 00:00 07.04.2021 UTC
   const competitionStartTime = 1617753600000
   // 00:00 14.04.2021 UTC

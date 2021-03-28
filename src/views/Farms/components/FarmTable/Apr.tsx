@@ -52,7 +52,8 @@ const Apr: React.FC<AprProps> = ({
   const TranslateString = useI18n()
   const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAddress, tokenAddress })
   const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
-  return (
+
+  return originalValue !== 0 ? (
     <Container>
       {originalValue ? (
         <>
@@ -64,6 +65,10 @@ const Apr: React.FC<AprProps> = ({
       ) : (
         <AprWrapper>{TranslateString(656, 'Loading...')}</AprWrapper>
       )}
+    </Container>
+  ) : (
+    <Container>
+      <AprWrapper>{originalValue}%</AprWrapper>
     </Container>
   )
 }
