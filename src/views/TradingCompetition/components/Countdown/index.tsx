@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { Flex, Skeleton } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import getTimePeriods from 'utils/getTimePeriods'
-import { CompetitionSteps } from '../../config'
+import { CompetitionSteps, FINISHED, LIVE } from '../../config'
 import { CompetitionCountdownContext } from '../../contexts/CompetitionCountdownContext'
 import ProgressStepper from './ProgressStepper'
 import Timer from './Timer'
@@ -55,10 +55,10 @@ const Countdown = () => {
         {isLoading ? (
           <Skeleton height={26} width={190} mb="24px" />
         ) : (
-          competitionState.state !== 'FINISHED' && (
+          competitionState.state !== FINISHED && (
             <Timer
               timerText={
-                competitionState.state === 'LIVE'
+                competitionState.state === LIVE
                   ? `${TranslateString(410, 'End')}:`
                   : `${TranslateString(1212, 'Start')}:`
               }
