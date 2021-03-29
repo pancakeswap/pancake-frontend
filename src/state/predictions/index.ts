@@ -2,6 +2,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { maxBy } from 'lodash'
 import { PredictionsState, PredictionStatus, Round, RoundData } from 'state/types'
+import { makeFutureRoundResponse, transformRoundResponse } from './helpers'
 
 const initialState: PredictionsState = {
   status: PredictionStatus.INITIAL,
@@ -31,16 +32,40 @@ export const predictionsSlice = createSlice({
       const { id, round } = action.payload
       state.rounds[id] = round
     },
-    setRounds: (state, action: PayloadAction<RoundData>) => {
-      const rounds = Object.values(action.payload)
+    updateRounds: (state, action: PayloadAction<RoundData>) => {
+      const newRoundData = { ...state.rounds, ...action.payload }
+      const incomingRounds = Object.values(action.payload)
+      const incomingCurrentRound = maxBy(incomingRounds, 'epoch')
 
-      state.currentEpoch = maxBy(rounds, 'epoch').epoch
-      state.rounds = action.payload
+      if (state.currentEpoch !== incomingCurrentRound.epoch) {
+        const rounds = Object.values(newRoundData)
+
+        // Add new round
+        const newestRound = maxBy(rounds, 'epoch')
+        const futureRound = transformRoundResponse(
+          makeFutureRoundResponse(newestRound.epoch + 1, newestRound.startBlock + state.intervalBlocks),
+        )
+
+        newRoundData[futureRound.id] = futureRound
+      }
+
+      state.currentEpoch = incomingCurrentRound.epoch
+      state.rounds = newRoundData
+    },
+    setCurrentEpoch: (state, action: PayloadAction<number>) => {
+      state.currentEpoch = action.payload
     },
   },
 })
 
 // Actions
-export const { setChartPaneState, setHistoryPaneState, setRound, setRounds, initialize } = predictionsSlice.actions
+export const {
+  setChartPaneState,
+  setHistoryPaneState,
+  setRound,
+  updateRounds,
+  setCurrentEpoch,
+  initialize,
+} = predictionsSlice.actions
 
 export default predictionsSlice.reducer

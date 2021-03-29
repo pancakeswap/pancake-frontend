@@ -23,16 +23,15 @@ export interface BetResponse {
 export interface RoundResponse {
   id: string
   epoch: string
-  startedAt: string
   startBlock: string
   lockAt: string
   lockBlock: string
   lockPrice: string
-  endAt: string
   endBlock: string
   closePrice: string
   totalBets: string
   totalAmount: string
+  bearBets: string
   bullBets: string
   bearAmount: string
   bullAmount: string

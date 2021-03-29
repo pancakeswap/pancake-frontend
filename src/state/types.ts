@@ -169,12 +169,10 @@ export enum PredictionStatus {
 export interface Round {
   id: string
   epoch: number
-  startedAt: number | null
   startBlock: number
   lockAt: number | null
   lockBlock: number | null
   lockPrice: number | null
-  endAt: number | null
   endBlock: number | null
   closePrice: number | null
   totalBets: number

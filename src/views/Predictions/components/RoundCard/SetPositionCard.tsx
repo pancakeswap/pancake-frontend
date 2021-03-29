@@ -26,7 +26,8 @@ import { PositionTag } from './Tag'
 import Card from './Card'
 
 interface SetPositionCardProps {
-  defaultPosition: BetPosition
+  position: BetPosition
+  togglePosition: () => void
   onBack: () => void
 }
 
@@ -49,8 +50,7 @@ const getPercentDisplay = (percentage: number) => {
   return `${percentage.toLocaleString(undefined, { maximumFractionDigits: 1 })}%`
 }
 
-const SetPositionCard: React.FC<SetPositionCardProps> = ({ defaultPosition, onBack }) => {
-  const [position, setPosition] = useState<BetPosition>(defaultPosition)
+const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosition, onBack }) => {
   const [value, setValue] = useState('')
   const [hasSufficientBalance, setHasSufficientBalance] = useState(true)
   const { swiper } = useSwiper()
@@ -71,10 +71,6 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ defaultPosition, onBa
 
   const handleSliderChange = (newValue: number) => {
     setValue(newValue.toString())
-  }
-
-  const togglePosition = () => {
-    setPosition(position === BetPosition.BULL ? BetPosition.BEAR : BetPosition.BULL)
   }
 
   const setMax = () => {

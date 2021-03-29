@@ -1,16 +1,15 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import styled from 'styled-components'
-import { orderBy } from 'lodash'
 import SwiperCore, { Keyboard, Mousewheel } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Box } from '@pancakeswap-libs/uikit'
-import { useGetCurrentEpoch, useGetIntervalBlocks, useGetRounds } from 'state/hooks'
+import { useGetSortedRounds } from 'state/hooks'
 import 'swiper/swiper.min.css'
 import RoundCard from './components/RoundCard'
 import Menu from './components/Menu'
 import useSwiper from './hooks/useSwiper'
-import useSubscribeToLatestRounds from './hooks/useSubscribeToLatestRounds'
-import SoonRoundCard from './components/RoundCard/SoonRoundCard'
+import usePollRounds from './hooks/usePollRounds'
+import useOnNextRound from './hooks/useOnNextRound'
 
 SwiperCore.use([Keyboard, Mousewheel])
 
@@ -25,29 +24,19 @@ const StyledSwiper = styled.div`
   }
 `
 const Positions: React.FC = () => {
-  const { swiper, setSwiper } = useSwiper()
-  const roundData = useGetRounds()
-  const currentEpoch = useGetCurrentEpoch()
-  const intervalBlock = useGetIntervalBlocks()
-  const rounds = Object.values(roundData).reverse()
-  const currentRound = rounds.find((round) => round.epoch === currentEpoch)
+  const { setSwiper } = useSwiper()
+  const rounds = useGetSortedRounds()
+  const initialIndex = Math.floor(rounds.length / 2)
 
-  useSubscribeToLatestRounds()
-
-  useEffect(() => {
-    if (swiper) {
-      console.count('useEffect')
-      console.log(currentEpoch)
-      swiper.update()
-    }
-  }, [swiper, currentEpoch])
+  usePollRounds()
+  useOnNextRound()
 
   return (
     <Box overflowX="hidden" overflowY="auto">
       <Menu />
       <StyledSwiper>
         <Swiper
-          initialSlide={rounds.length - 2}
+          initialSlide={initialIndex}
           onSwiper={setSwiper}
           spaceBetween={16}
           slidesPerView="auto"
@@ -63,12 +52,6 @@ const Positions: React.FC = () => {
               <RoundCard round={round} />
             </SwiperSlide>
           ))}
-          <SwiperSlide key={currentEpoch + 1}>
-            <SoonRoundCard epoch={currentEpoch + 1} blockNumber={currentRound.startBlock + intervalBlock * 2} />
-          </SwiperSlide>
-          <SwiperSlide key={currentEpoch + 2}>
-            <SoonRoundCard epoch={currentEpoch + 2} blockNumber={currentRound.startBlock + intervalBlock * 4} />
-          </SwiperSlide>
         </Swiper>
       </StyledSwiper>
     </Box>

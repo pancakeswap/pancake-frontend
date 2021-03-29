@@ -13,16 +13,38 @@ const numberOrNull = (value: string) => {
   return Number(value)
 }
 
+export const generateIdFromEpoch = (epoch: number) => {
+  return `0x${epoch.toString(16)}`
+}
+
+export const makeFutureRoundResponse = (epoch: number, startBlock: number): RoundResponse => {
+  return {
+    id: generateIdFromEpoch(epoch),
+    epoch: epoch.toString(),
+    startBlock: startBlock.toString(),
+    lockAt: null,
+    lockBlock: null,
+    lockPrice: null,
+    endBlock: null,
+    closePrice: null,
+    totalBets: '0',
+    totalAmount: '0',
+    bearBets: '0',
+    bullBets: '0',
+    bearAmount: '0',
+    bullAmount: '0',
+    bets: [],
+  }
+}
+
 export const transformRoundResponse = (roundResponse: RoundResponse): Round => {
   const {
     id,
     epoch,
-    startedAt,
     startBlock,
     lockAt,
     lockBlock,
     lockPrice,
-    endAt,
     endBlock,
     closePrice,
     totalBets,
@@ -35,12 +57,10 @@ export const transformRoundResponse = (roundResponse: RoundResponse): Round => {
   return {
     id,
     epoch: numberOrNull(epoch),
-    startedAt: numberOrNull(startedAt),
     startBlock: numberOrNull(startBlock),
     lockAt: numberOrNull(lockAt),
     lockBlock: numberOrNull(lockBlock),
     lockPrice: lockPrice ? parseFloat(lockPrice) : null,
-    endAt: numberOrNull(endAt),
     endBlock: numberOrNull(endBlock),
     closePrice: closePrice ? parseFloat(closePrice) : null,
     totalBets: numberOrNull(totalBets),
@@ -61,7 +81,7 @@ export const makeRoundData = (roundResponses: RoundResponse[]): RoundData => {
 }
 
 /**
- * Gets static data from the contract that will not change
+ * Gets static data from the contract
  */
 export const getStaticPredictionsData = async () => {
   const { methods } = getPredictionsContract()

@@ -4,7 +4,12 @@ import { useMatchBreakpoints } from '@pancakeswap-libs/uikit'
 import { getWeb3NoAccount } from 'utils/web3'
 import { setBlock } from 'state/block'
 import { useGetPredictionsStatus } from 'state/hooks'
-import { getLatestRounds, getStaticPredictionsData, makeRoundData } from 'state/predictions/helpers'
+import {
+  getLatestRounds,
+  getStaticPredictionsData,
+  makeFutureRoundResponse,
+  makeRoundData,
+} from 'state/predictions/helpers'
 import { initialize } from 'state/predictions'
 import { RoundResponse } from 'state/predictions/queries'
 import { PredictionsState, PredictionStatus } from 'state/types'
@@ -13,6 +18,8 @@ import Container from './components/Container'
 import SwiperProvider from './context/SwiperProvider'
 import Desktop from './Desktop'
 import Mobile from './Mobile'
+
+const FUTURE_ROUND_COUNT = 2
 
 const Predictions = () => {
   const [isInitialized, setIsInitialized] = useState(false)
@@ -31,11 +38,21 @@ const Predictions = () => {
         getLatestRounds(),
       ])) as [number, Omit<PredictionsState, 'rounds'>, RoundResponse[]]
 
+      const { currentEpoch, intervalBlocks } = staticPredictionsData
+      const { startBlock } = latestRounds.find((roundResponse) => roundResponse.epoch === currentEpoch.toString())
+      const futureRounds = []
+
+      for (let i = 1; i <= FUTURE_ROUND_COUNT; i++) {
+        futureRounds.push(makeFutureRoundResponse(currentEpoch + i, Number(startBlock) + intervalBlocks * i))
+      }
+
+      const roundData = makeRoundData([...latestRounds, ...futureRounds])
+
       dispatch(setBlock(blockNumber))
       dispatch(
         initialize({
           ...staticPredictionsData,
-          rounds: makeRoundData(latestRounds),
+          rounds: roundData,
         }),
       )
       setIsInitialized(true)

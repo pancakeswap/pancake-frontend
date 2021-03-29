@@ -1,21 +1,17 @@
-import { useEffect, useMemo } from 'react'
+import { useEffect } from 'react'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
+import { orderBy } from 'lodash'
 import { Team } from 'config/constants/types'
 import Nfts from 'config/constants/nfts'
 import { getWeb3NoAccount } from 'utils/web3'
 import { getAddress } from 'utils/addressHelpers'
 import { getBalanceNumber } from 'utils/formatBalance'
 import useRefresh from 'hooks/useRefresh'
-import {
-  fetchFarmsPublicDataAsync,
-  fetchPoolsPublicDataAsync,
-  fetchPoolsUserDataAsync,
-  setBlock,
-} from './actions'
-import { State, Farm, Pool, ProfileState, TeamsState, AchievementState, PriceState } from './types'
+import { fetchFarmsPublicDataAsync, fetchPoolsPublicDataAsync, fetchPoolsUserDataAsync, setBlock } from './actions'
+import { State, Farm, Pool, ProfileState, TeamsState, AchievementState, PriceState, FarmsState } from './types'
 import { fetchProfile } from './profile'
 import { fetchTeam, fetchTeams } from './teams'
 import { fetchAchievements } from './achievements'
@@ -214,6 +210,11 @@ export const useGetRounds = () => {
   return useSelector((state: State) => state.predictions.rounds)
 }
 
+export const useGetSortedRounds = () => {
+  const roundData = useGetRounds()
+  return orderBy(Object.values(roundData), ['epoch'], ['asc'])
+}
+
 export const useGetCurrentEpoch = () => {
   return useSelector((state: State) => state.predictions.currentEpoch)
 }
@@ -227,10 +228,10 @@ export const useGetRound = (id: string) => {
   return rounds[id]
 }
 
-export const useGetBettableRound = () => {
-  const rounds = useGetRounds()
+export const useGetCurrentRound = () => {
   const currentEpoch = useGetCurrentEpoch()
-  return Object.values(rounds).find((round) => round.epoch === currentEpoch)
+  const rounds = useGetSortedRounds()
+  return rounds.find((round) => round.epoch === currentEpoch)
 }
 
 export const useGetPredictionsStatus = () => {

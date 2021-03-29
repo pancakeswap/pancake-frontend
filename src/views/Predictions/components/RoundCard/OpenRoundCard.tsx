@@ -1,70 +1,77 @@
-import React from 'react'
-import styled from 'styled-components'
-import { CardBody, Flex, PlayCircleOutlineIcon, Progress, Text } from '@pancakeswap-libs/uikit'
+import React, { useState } from 'react'
+import { CardBody, PlayCircleOutlineIcon, Button } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
-import { Round, BetPosition } from 'state/types'
+import { BetPosition, Round } from 'state/types'
 import { useGetIntervalBlocks } from 'state/hooks'
-import { useBnbUsdtTicker } from 'hooks/ticker'
-import { formatUsd, getBubbleGumBackground } from '../../helpers'
+import CardFlip from '../CardFlip'
 import MultiplierArrow from './MultiplierArrow'
 import Card from './Card'
 import RoundInfoBox from './RoundInfoBox'
 import CardHeader from './CardHeader'
-import RoundInfo from './RoundInfo'
+import SetPositionCard from './SetPositionCard'
 
 interface OpenRoundCardProps {
   round: Round
 }
 
-const GradientBorder = styled.div`
-  background: linear-gradient(180deg, #53dee9 0%, #7645d9 100%);
-  border-radius: 16px;
-  padding: 1px;
-`
-
-const GradientCard = styled(Card)`
-  background: ${({ theme }) => getBubbleGumBackground(theme)};
-`
-
 const OpenRoundCard: React.FC<OpenRoundCardProps> = ({ round }) => {
+  const [state, setState] = useState({
+    isSettingPosition: false,
+    position: BetPosition.BULL,
+  })
   const TranslateString = useI18n()
-  const { lockPrice, startBlock, totalAmount } = round
-  const { stream } = useBnbUsdtTicker()
   const intervalBlocks = useGetIntervalBlocks()
 
-  // Open rounds do not have an endblock set so we approximate it by adding the block interval
+  // Bettable rounds do not have an endblock set so we approximate it by adding the block interval
   // to the start block
-  const endBlock = startBlock + intervalBlocks * 2
+  const endBlock = round.startBlock + intervalBlocks
+
+  const handleBack = () =>
+    setState((prevState) => ({
+      ...prevState,
+      isSettingPosition: false,
+    }))
+
+  const handleSetPosition = (newPosition: BetPosition) => {
+    setState({
+      isSettingPosition: true,
+      position: newPosition,
+    })
+  }
+
+  const togglePosition = () => {
+    setState((prevState) => ({
+      ...prevState,
+      position: prevState.position === BetPosition.BULL ? BetPosition.BEAR : BetPosition.BULL,
+    }))
+  }
 
   return (
-    <GradientBorder>
-      <GradientCard>
+    <CardFlip isFlipped={state.isSettingPosition} height="426px">
+      <Card>
         <CardHeader
-          status="live"
-          icon={<PlayCircleOutlineIcon mr="4px" width="24px" color="secondary" />}
-          title={TranslateString(1198, 'Live')}
+          status="next"
           epoch={round.epoch}
           blockNumber={endBlock}
-          timerPrefix={TranslateString(410, 'End')}
+          icon={<PlayCircleOutlineIcon color="white" mr="4px" width="21px" />}
+          title={TranslateString(999, 'Next')}
+          timerPrefix={TranslateString(999, 'Start')}
         />
-        <Progress variant="flat" primaryStep={54} />
         <CardBody p="16px">
-          <MultiplierArrow multiplier={10.3} hasEntered={false} isActive={false} />
-          <RoundInfoBox isLive>
-            <Text color="textSubtle" fontSize="12px" bold textTransform="uppercase" mb="8px">
-              {TranslateString(999, 'Last Price')}
-            </Text>
-            <Flex alignItems="center" justifyContent="space-between" mb="16px">
-              <Text bold fontSize="24px" style={{ minHeight: '36px' }}>
-                {stream && formatUsd(stream.lastPrice)}
-              </Text>
-            </Flex>
-            <RoundInfo lockPrice={lockPrice} totalAmount={totalAmount} />
+          <MultiplierArrow />
+          <RoundInfoBox isNext>
+            <Button variant="success" width="100%" onClick={() => handleSetPosition(BetPosition.BULL)} mb="4px">
+              {TranslateString(999, 'Enter UP')}
+            </Button>
+            <Button variant="danger" width="100%" onClick={() => handleSetPosition(BetPosition.BEAR)}>
+              {TranslateString(999, 'Enter DOWN')}
+            </Button>
           </RoundInfoBox>
-          <MultiplierArrow multiplier={1} betPosition={BetPosition.BEAR} hasEntered={false} isActive={false} />
+          <MultiplierArrow betPosition={BetPosition.BEAR} />
         </CardBody>
-      </GradientCard>
-    </GradientBorder>
+      </Card>
+      <SetPositionCard onBack={handleBack} position={state.position} togglePosition={togglePosition} />
+    </CardFlip>
   )
 }
 
