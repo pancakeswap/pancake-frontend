@@ -26,12 +26,6 @@ const CakeStats = () => {
   const burnedBalance = getBalanceNumber(useBurnedBalance(getCakeAddress()))
   const cakeSupply = totalSupply ? getBalanceNumber(totalSupply) - burnedBalance : 0
 
-  // CAKE/Block details
-  // 40 CAKE per block is minted per block
-  // 18 CAKE per block is sent to Burn pool (we don't count this in the New CAKE/block stat)
-  // 10 CAKE per block goes to CAKE syrup pool
-  // 12 CAKE per block goes to Yield farms and lottery
-  // Total = 40 - CAKE sent to burn pool
   return (
     <StyledCakeStats>
       <CardBody>
