@@ -1,5 +1,5 @@
 import { capitalize } from "lodash";
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter, Link } from "react-router-dom";
 import styled from "styled-components";
 import Box from "../Box/Box";
@@ -7,6 +7,7 @@ import Flex from "../Box/Flex";
 import { AddIcon, AutoRenewIcon, LogoIcon } from "../Svg";
 import IconButton from "./IconButton";
 import Button from "./Button";
+import { ExpandableButton, ExpandableLabel } from "./ExpandableButton";
 import { scales, variants } from "./types";
 
 export default {
@@ -136,6 +137,22 @@ export const Variants: React.FC = () => {
           <IconButton scale="sm" variant="success">
             <AddIcon color="currentColor" />
           </IconButton>
+        </Row>
+      </BrowserRouter>
+    </Box>
+  );
+};
+
+export const Expandable: React.FC = () => {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <Box width="640px">
+      <BrowserRouter>
+        <Row>
+          <ExpandableButton expanded={expanded} onClick={() => setExpanded((prev) => !prev)} />
+          <ExpandableLabel expanded={expanded} onClick={() => setExpanded((prev) => !prev)}>
+            ExpandableLabel
+          </ExpandableLabel>
         </Row>
       </BrowserRouter>
     </Box>
