@@ -38,7 +38,7 @@ const Syrup: React.FC = () => {
   const sortPools = (pools: Pool[]): Pool[] => {
     switch (sortOption) {
       case 'apr':
-        return orderBy(pools, (pool: Pool) => new BigNumber(pool.apr || 0), 'desc')
+        return orderBy(pools, (pool: Pool) => pool.apr || 0, 'desc')
       case 'earned':
         return orderBy(pools, (pool: Pool) => new BigNumber(pool.userData?.pendingReward || 0), 'desc')
       case 'total_staked':
