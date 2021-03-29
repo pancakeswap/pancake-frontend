@@ -16,7 +16,7 @@ it("renders correctly", () => {
         class="sc-bdfBwQ gppsKf"
       >
         <div
-          class="sc-dlfnbm bwJRqk"
+          class="sc-dlfnbm eoWuoy"
         >
           Header
         </div>
