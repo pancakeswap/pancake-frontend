@@ -11,7 +11,6 @@ import CardBusdValue from './CardBusdValue'
 
 const Block = styled.div`
   margin-bottom: 24px;
-}
 `
 
 const CakeHarvestBalance = () => {

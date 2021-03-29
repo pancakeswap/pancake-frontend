@@ -57,7 +57,7 @@ const Indicator = styled(Flex)`
 `
 
 const UserName: React.FC = () => {
-  const [isAcknowledged, setIsAcknoledged] = useState(false)
+  const [isAcknowledged, setIsAcknowledged] = useState(false)
   const { teamId, tokenId, userName, actions, minimumCakeRequired, allowance } = useProfileCreation()
   const TranslateString = useI18n()
   const { account, library } = useWeb3React()
@@ -138,7 +138,7 @@ const UserName: React.FC = () => {
     }
   }
 
-  const handleAcknoledge = () => setIsAcknoledged(!isAcknowledged)
+  const handleAcknowledge = () => setIsAcknowledged(!isAcknowledged)
 
   // Perform an initial check to see if the wallet has already created a username
   useEffect(() => {
@@ -225,7 +225,7 @@ const UserName: React.FC = () => {
           <label htmlFor="checkbox" style={{ display: 'block', cursor: 'pointer', marginBottom: '24px' }}>
             <Flex alignItems="center">
               <div style={{ flex: 'none' }}>
-                <Checkbox id="checkbox" scale="sm" checked={isAcknowledged} onChange={handleAcknoledge} />
+                <Checkbox id="checkbox" scale="sm" checked={isAcknowledged} onChange={handleAcknowledge} />
               </div>
               <Text ml="8px">
                 {TranslateString(1096, 'I understand that people can view my wallet if they know my username')}
