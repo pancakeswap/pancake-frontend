@@ -21,13 +21,13 @@ const Farm: React.FC = () => {
   const { account } = useWeb3React()
   const pools = usePools(account)
   const { currentBlock } = useBlock()
-  const [stackedOnly, setStackedOnly] = useState(false)
+  const [stakedOnly, setStakedOnly] = useState(false)
 
   const [finishedPools, openPools] = useMemo(
     () => partition(pools, (pool) => pool.isFinished || currentBlock > pool.endBlock),
     [currentBlock, pools],
   )
-  const stackedOnlyPools = useMemo(
+  const stakedOnlyPools = useMemo(
     () => openPools.filter((pool) => pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0)),
     [openPools],
   )
@@ -47,13 +47,13 @@ const Farm: React.FC = () => {
         </div>
         <img src="/images/syrup.png" alt="SYRUP POOL icon" width={410} height={191} />
       </Hero>
-      <PoolTabButtons stackedOnly={stackedOnly} setStackedOnly={setStackedOnly} />
+      <PoolTabButtons stakedOnly={stakedOnly} setStakedOnly={setStakedOnly} />
       <Divider />
       <FlexLayout>
         <Route exact path={`${path}`}>
           <>
-            {stackedOnly
-              ? orderBy(stackedOnlyPools, ['sortOrder']).map((pool) => <PoolCard key={pool.sousId} pool={pool} />)
+            {stakedOnly
+              ? orderBy(stakedOnlyPools, ['sortOrder']).map((pool) => <PoolCard key={pool.sousId} pool={pool} />)
               : orderBy(openPools, ['sortOrder']).map((pool) => <PoolCard key={pool.sousId} pool={pool} />)}
             <Coming />
           </>
