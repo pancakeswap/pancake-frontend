@@ -41,6 +41,11 @@ const config: MenuEntry[] = [
     href: '/collectibles',
   },
   {
+    label: 'Team Battle',
+    icon: 'NftIcon',
+    href: '/competition',
+  },
+  {
     label: 'Teams & Profile',
     icon: 'GroupsIcon',
     calloutClass: 'rainbow',

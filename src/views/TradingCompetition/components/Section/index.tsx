@@ -8,10 +8,9 @@ import IntersectionCurve from './IntersectionCurve'
 const BackgroundColorWrapper = styled(Flex)<SectionProps>`
   position: relative;
   flex-direction: column;
-  z-index: ${({ index }) => index};
+  z-index: ${({ index }) => index - 1};
   background: ${({ backgroundStyle }) => backgroundStyle};
-
-  padding-top: ${({ intersectionPosition }) => (intersectionPosition === 'top' ? '6px' : '48px')};
+  padding: ${({ noIntersection }) => (noIntersection ? '96px 0 24px 0' : '48px 0;')};
   margin: ${({ intersectionPosition }) => (intersectionPosition === 'top' ? '0' : '-34px')} 0;
 
   ${({ theme }) => theme.mediaQueries.sm} {
@@ -30,10 +29,11 @@ const Section: React.FC<SectionProps> = ({
   index = 1,
   intersectComponent,
   intersectionPosition = 'bottom',
+  noIntersection = false,
 }) => {
   return (
     <>
-      {intersectionPosition === 'top' && (
+      {!noIntersection && intersectionPosition === 'top' && (
         <IntersectionCurve
           svgFill={svgFill}
           index={index}
@@ -45,10 +45,12 @@ const Section: React.FC<SectionProps> = ({
         backgroundStyle={backgroundStyle}
         index={index}
         intersectionPosition={intersectionPosition}
+        intersectComponent={intersectComponent}
+        noIntersection={noIntersection}
       >
         <ChildrenWrapper>{children}</ChildrenWrapper>
       </BackgroundColorWrapper>
-      {intersectionPosition === 'bottom' && (
+      {!noIntersection && intersectionPosition === 'bottom' && (
         <IntersectionCurve
           svgFill={svgFill}
           index={index}

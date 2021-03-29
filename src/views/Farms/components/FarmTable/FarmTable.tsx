@@ -47,7 +47,6 @@ const TableBody = styled.tbody`
 
 const TableContainer = styled.div`
   position: relative;
-}
 `
 
 const ScrollButtonContainer = styled.div`

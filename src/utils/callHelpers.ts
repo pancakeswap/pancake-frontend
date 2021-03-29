@@ -96,7 +96,7 @@ export const sousUnstake = async (sousChefContract, amount, decimals = 18, accou
     })
 }
 
-export const sousEmegencyUnstake = async (sousChefContract, amount, account) => {
+export const sousEmergencyUnstake = async (sousChefContract, amount, account) => {
   return sousChefContract.methods
     .emergencyWithdraw()
     .send({ from: account })
