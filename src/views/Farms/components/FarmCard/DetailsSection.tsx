@@ -6,7 +6,7 @@ import { Text, Flex, Link, LinkExternal } from '@pancakeswap-libs/uikit'
 export interface ExpandableSectionProps {
   bscScanAddress?: string
   removed?: boolean
-  totalValueFormated?: string
+  totalValueFormatted?: string
   lpLabel?: string
   addLiquidityUrl?: string
 }
@@ -33,7 +33,7 @@ const StyledLinkExternal = styled(LinkExternal)`
 const DetailsSection: React.FC<ExpandableSectionProps> = ({
   bscScanAddress,
   removed,
-  totalValueFormated,
+  totalValueFormatted,
   lpLabel,
   addLiquidityUrl,
 }) => {
@@ -48,7 +48,7 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
       {!removed && (
         <Flex justifyContent="space-between">
           <Text>{TranslateString(354, 'Total Liquidity')}:</Text>
-          <Text>{totalValueFormated}</Text>
+          <Text>{totalValueFormatted}</Text>
         </Flex>
       )}
       <Flex justifyContent="flex-start">

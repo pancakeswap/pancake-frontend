@@ -4,7 +4,7 @@ import { useRouteMatch, Link } from 'react-router-dom'
 import { ButtonMenu, ButtonMenuItem, Toggle, Text } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 
-const PoolTabButtons = ({ stackedOnly, setStackedOnly }) => {
+const PoolTabButtons = ({ stakedOnly, setStakedOnly }) => {
   const { url, isExact } = useRouteMatch()
   const TranslateString = useI18n()
 
@@ -19,7 +19,7 @@ const PoolTabButtons = ({ stackedOnly, setStackedOnly }) => {
         </ButtonMenuItem>
       </ButtonMenu>
       <ToggleWrapper>
-        <Toggle checked={stackedOnly} onChange={() => setStackedOnly(!stackedOnly)} scale="sm" />
+        <Toggle checked={stakedOnly} onChange={() => setStakedOnly(!stakedOnly)} scale="sm" />
         <Text> {TranslateString(999, 'Staked only')}</Text>
       </ToggleWrapper>
     </Wrapper>

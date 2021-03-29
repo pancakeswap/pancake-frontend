@@ -95,7 +95,7 @@ const CardFooter: React.FC<Props> = ({
   poolCategory,
 }) => {
   const { account } = useWeb3React()
-  const { blockNumber: currentBlock } = useBlock()
+  const { currentBlock } = useBlock()
   const [isOpen, setIsOpen] = useState(false)
   const TranslateString = useI18n()
   const Icon = isOpen ? ChevronUp : ChevronDown

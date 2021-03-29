@@ -124,8 +124,9 @@ export interface PriceState {
 
 // Block
 
-export interface Block {
-  blockNumber: number
+export interface BlockState {
+  currentBlock: number
+  initialBlock: number
 }
 
 // Global state
@@ -138,5 +139,5 @@ export interface State {
   profile: ProfileState
   teams: TeamsState
   achievements: AchievementState
-  block: Block
+  block: BlockState
 }

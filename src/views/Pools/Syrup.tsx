@@ -29,8 +29,8 @@ const Syrup: React.FC = () => {
   const { account } = useWeb3React()
   const prices = useGetApiPrices()
 
-  const { blockNumber } = useBlock()
-  const [stackedOnly, setStackedOnly] = useState(false)
+  const { currentBlock } = useBlock()
+  const [stakedOnly, setStakedOnly] = useState(false)
   const { isXl } = useMatchBreakpoints()
   const [sortOption, setSortOption] = useState('hot')
   const [query, setQuery] = useState('')
@@ -79,8 +79,8 @@ const Syrup: React.FC = () => {
   })
 
   const [finishedPools, openPools] = useMemo(
-    () => partition(pools, (pool) => pool.isFinished || blockNumber > pool.endBlock),
-    [blockNumber, pools],
+    () => partition(pools, (pool) => pool.isFinished || currentBlock > pool.endBlock),
+    [currentBlock, pools],
   )
 
   const stakedOnlyOpenPools = useMemo(() => openPools.filter(isStakedPool), [openPools])
@@ -113,7 +113,7 @@ const Syrup: React.FC = () => {
       </Hero>
       <Page>
         <ControlContainer justifyContent="space-between" alignItems="center" mb="32px">
-          <PoolTabButtons stackedOnly={stackedOnly} setStackedOnly={setStackedOnly} />
+          <PoolTabButtons stakedOnly={stakedOnly} setStakedOnly={setStakedOnly} />
           <Inputs alignItems="center" ml="auto">
             <InputWrapper alignItems="center">
               <Text mr="10px" color="textSubtle">
@@ -161,13 +161,13 @@ const Syrup: React.FC = () => {
         </Route>
         <CardsContainer>
           <Route exact path={`${path}`}>
-            {stackedOnly
+            {stakedOnly
               ? stakedOnlyOpenPools.map((pool) => <PoolCard key={pool.sousId} pool={pool} />)
               : openPools.map((pool) => <PoolCard key={pool.sousId} pool={pool} />)}
             <Coming />
           </Route>
           <Route path={`${path}/history`}>
-            {stackedOnly
+            {stakedOnly
               ? stakedOnlyFinishedPools.map((pool) => <PoolCard key={pool.sousId} pool={pool} />)
               : finishedPools.map((pool) => <PoolCard key={pool.sousId} pool={pool} />)}
           </Route>
