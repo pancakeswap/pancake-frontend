@@ -9,11 +9,6 @@ const Card = styled.div<{ isActive?: boolean; isFinished?: boolean }>`
   border: ${({ isActive, theme }) => (isActive ? `1px solid ${theme.colors.primary}` : `1px solid transparent`)};
   flex-direction: column;
   position: relative;
-  max-width: initial;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    max-width: 31.5%;
-  }
 `
 
 export default Card
