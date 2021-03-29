@@ -189,7 +189,10 @@ const TicketNumberBox = styled.div`
   color: white;
   font-size: 20px;
   font-weight: 900;
-  margin: 10px 10px 7px;
+  margin-top: 10px;
+  margin-right: 10px;
+  margin-left: 10px;
+  margin-bottom: 7px;
   width: 40px;
 
   @media (min-width: 768px) {

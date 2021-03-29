@@ -8,7 +8,10 @@ const FlexLayout = styled.div`
     min-width: 280px;
     max-width: 31.5%;
     width: 100%;
-    margin: 0 8px 32px;
+    margin-top: 0;
+    margin-right: 8px;
+    margin-left: 8px;
+    margin-bottom: 32px;
   }
 `
 

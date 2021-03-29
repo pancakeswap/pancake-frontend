@@ -97,7 +97,10 @@ const StyledImage = styled(Image)`
 `
 
 const Header = styled.div`
-  padding: 32px 16px;
+  padding-top: 32px;
+  padding-right: 16px;
+  padding-left: 16px;
+  padding-bottom: 32px;
   background: ${({ theme }) => theme.colors.gradients.bubblegum};
 
   ${({ theme }) => theme.mediaQueries.sm} {

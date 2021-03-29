@@ -33,7 +33,10 @@ const cells = {
 }
 
 const CellInner = styled.div`
-  padding: 24px 8px 24px 0px;
+  padding-top: 24px;
+  padding-right: 8px;
+  padding-left: 0px;
+  padding-bottom: 24px;
   display: flex;
   width: 100%;
   align-items: center;

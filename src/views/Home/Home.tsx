@@ -19,7 +19,10 @@ const Hero = styled.div`
   display: flex;
   justify-content: center;
   flex-direction: column;
-  margin: auto auto 32px;
+  margin-top: auto;
+  margin-right: auto;
+  margin-left: auto;
+  margin-bottom: 32px;
   padding-top: 116px;
   text-align: center;
 
