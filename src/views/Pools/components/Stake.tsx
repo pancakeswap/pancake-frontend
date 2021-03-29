@@ -204,10 +204,10 @@ const Stake: React.FC<StakeProps> = ({ pool, isOldSyrup, isBnbPool }) => {
           </Box>
           <Flex alignItems="center" ml="auto">
             <IconButton variant="secondary" onClick={onPresentUnstake} mr="8px">
-              <MinusIcon color="primary" width="14px" />
+              <MinusIcon color="primary" width="24px" />
             </IconButton>
             <IconButton variant="secondary" onClick={onPresentStake}>
-              <AddIcon color="primary" width="14px" />
+              <AddIcon color="primary" width="24px" />
             </IconButton>
           </Flex>
         </Flex>

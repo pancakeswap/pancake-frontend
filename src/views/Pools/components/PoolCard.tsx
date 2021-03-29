@@ -74,6 +74,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
       </Flex>
       <CardFooter
         projectLink={earningToken.projectLink}
+        stakingTokenName={stakingToken.symbol}
         stakingDecimals={stakingToken.decimals}
         totalStaked={totalStaked}
         startBlock={startBlock}

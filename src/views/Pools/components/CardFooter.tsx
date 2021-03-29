@@ -21,6 +21,7 @@ const tags = {
 
 interface Props {
   projectLink: string
+  stakingTokenName: string
   stakingDecimals: number
   totalStaked: BigNumber
   earningTokenName: string
@@ -84,6 +85,7 @@ const TokenLink = styled.a`
 
 const CardFooter: React.FC<Props> = ({
   projectLink,
+  stakingTokenName,
   stakingDecimals,
   earningTokenAddress,
   totalStaked,
@@ -132,7 +134,7 @@ const CardFooter: React.FC<Props> = ({
             </FlexFull>
             <Balance fontSize="14px" value={getBalanceNumber(totalStaked, stakingDecimals)} bold={false} />
             &nbsp;
-            <Text fontSize="14px">{earningTokenName}</Text>
+            <Text fontSize="14px">{stakingTokenName}</Text>
           </Row>
           {blocksUntilStart > 0 && (
             <Row>
