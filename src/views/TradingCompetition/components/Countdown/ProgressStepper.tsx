@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Flex } from '@pancakeswap-libs/uikit'
+import useI18n from 'hooks/useI18n'
 import { CountdownProps } from '../../types'
 import Step from './Step'
 
@@ -16,15 +17,17 @@ const Spacer = styled.div<{ isPastSpacer?: boolean }>`
 `
 
 const ProgressStepper: React.FC<CountdownProps> = ({ steps, activeStepIndex }) => {
+  const TranslateString = useI18n()
   return (
     <Wrapper>
       <Flex>
-        {steps.map((stepText, index) => {
+        {steps.map((step, index) => {
           const isPastSpacer = index < activeStepIndex
+          const stepText = TranslateString(step.translationId, step.text).toUpperCase()
 
           return (
             <>
-              <Step stepText={stepText.toUpperCase()} index={index} activeStepIndex={activeStepIndex} />
+              <Step stepText={stepText} index={index} activeStepIndex={activeStepIndex} />
               {index + 1 < steps.length && <Spacer isPastSpacer={isPastSpacer} />}
             </>
           )

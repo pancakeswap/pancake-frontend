@@ -22,3 +22,9 @@ export const CompetitionState = {
     step: { index: 2, text: 'End', translationId: 410 },
   },
 }
+
+export const CompetitionSteps = [
+  CompetitionState.REGISTRATION.step,
+  CompetitionState.LIVE.step,
+  CompetitionState.FINISHED.step,
+]

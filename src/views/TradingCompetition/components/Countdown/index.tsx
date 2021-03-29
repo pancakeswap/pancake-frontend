@@ -1,8 +1,9 @@
 import React, { useContext } from 'react'
 import styled from 'styled-components'
-import { Flex } from '@pancakeswap-libs/uikit'
+import { Flex, Skeleton } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import getTimePeriods from 'utils/getTimePeriods'
+import { CompetitionSteps } from '../../config'
 import { CompetitionCountdownContext } from '../../contexts/CompetitionCountdownContext'
 import ProgressStepper from './ProgressStepper'
 import Timer from './Timer'
@@ -43,17 +44,6 @@ const PocketWatchWrapper = styled(Flex)`
 const Countdown = () => {
   const TranslateString = useI18n()
   const { competitionState, timeUntilNextEvent, isLoading } = useContext(CompetitionCountdownContext)
-  const steps = [
-    `${TranslateString(999, 'Entry')}`,
-    `${TranslateString(1198, 'Live')}`,
-    `${TranslateString(410, 'End')}`,
-  ]
-
-  console.log('loading ', isLoading)
-
-  const competitionHasStarted = !isLoading && competitionState.state === 'LIVE'
-  const competitionHasEnded = !isLoading && competitionState.state === 'FINISHED'
-
   const { minutes, hours, days } = getTimePeriods(timeUntilNextEvent)
 
   return (
@@ -62,10 +52,27 @@ const Countdown = () => {
         <PocketWatch />
       </PocketWatchWrapper>
       <Flex flexDirection="column" justifyContent="center">
-        {!isLoading && !competitionHasEnded && (
-          <Timer timerText={competitionHasStarted ? 'End:' : 'Start:'} minutes={minutes} hours={hours} days={days} />
+        {isLoading ? (
+          <Skeleton height={26} width={190} mb="24px" />
+        ) : (
+          competitionState.state !== 'FINISHED' && (
+            <Timer
+              timerText={
+                competitionState.state === 'LIVE'
+                  ? `${TranslateString(410, 'End')}:`
+                  : `${TranslateString(1212, 'Start')}:`
+              }
+              minutes={minutes}
+              hours={hours}
+              days={days}
+            />
+          )
         )}
-        {!isLoading && <ProgressStepper steps={steps} activeStepIndex={competitionState.step.index} />}
+        {isLoading ? (
+          <Skeleton height={42} width={190} />
+        ) : (
+          <ProgressStepper steps={CompetitionSteps} activeStepIndex={competitionState.step.index} />
+        )}
       </Flex>
     </Wrapper>
   )

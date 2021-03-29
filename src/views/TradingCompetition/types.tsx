@@ -26,7 +26,7 @@ export interface SectionProps {
 }
 
 export interface CountdownProps {
-  steps?: Array<string>
+  steps?: Array<{ text: string; translationId: number }>
   activeStepIndex?: number
   stepText?: string
   index?: number
