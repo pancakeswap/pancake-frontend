@@ -7,7 +7,7 @@ export interface ExpandableSectionProps {
   bscScanAddress?: string
   infoAddress?: string
   removed?: boolean
-  totalValueFormated?: string
+  totalValueFormatted?: string
   lpLabel?: string
   addLiquidityUrl?: string
 }
@@ -24,7 +24,7 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
   bscScanAddress,
   infoAddress,
   removed,
-  totalValueFormated,
+  totalValueFormatted,
   lpLabel,
   addLiquidityUrl,
 }) => {
@@ -34,7 +34,7 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
     <Wrapper>
       <Flex justifyContent="space-between">
         <Text>{TranslateString(354, 'Total Liquidity')}:</Text>
-        <Text>{totalValueFormated}</Text>
+        <Text>{totalValueFormatted}</Text>
       </Flex>
       {!removed && (
         <StyledLinkExternal href={addLiquidityUrl}>
