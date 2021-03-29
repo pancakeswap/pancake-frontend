@@ -75,7 +75,7 @@ export const useTotalClaim = () => {
 }
 
 export const useWinningNumbers = () => {
-  const [winngNumbers, setWinningNumbers] = useState([0, 0, 0, 0])
+  const [winningNumbers, setWinningNumbers] = useState([0, 0, 0, 0])
   const lotteryContract = useLottery()
   const { fastRefresh } = useRefresh()
 
@@ -90,7 +90,7 @@ export const useWinningNumbers = () => {
     }
   }, [fastRefresh, lotteryContract, setWinningNumbers])
 
-  return winngNumbers
+  return winningNumbers
 }
 
 export const useMatchingRewardLength = (numbers) => {

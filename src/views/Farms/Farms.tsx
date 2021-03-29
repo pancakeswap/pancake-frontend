@@ -130,6 +130,7 @@ const Farms: React.FC = () => {
   }, [account, dispatch, fastRefresh])
 
   const [stakedOnly, setStakedOnly] = useState(false)
+  const isActive = !pathname.includes('history')
 
   const activeFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
   const inactiveFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X')
@@ -145,7 +146,7 @@ const Farms: React.FC = () => {
   const sortFarms = (farms: FarmWithStakedValue[]): FarmWithStakedValue[] => {
     switch (sortOption) {
       case 'apr':
-        return orderBy(farms, (farm: FarmWithStakedValue) => farm.apy.toNumber(), 'desc')
+        return orderBy(farms, (farm: FarmWithStakedValue) => farm.apy, 'desc')
       case 'multiplier':
         return orderBy(
           farms,
@@ -170,7 +171,7 @@ const Farms: React.FC = () => {
 
         const quoteTokenPriceUsd = prices[farm.quoteToken.symbol.toLowerCase()]
         const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(quoteTokenPriceUsd)
-        const apy = getFarmApy(farm.poolWeight, cakePrice, totalLiquidity)
+        const apy = isActive ? getFarmApy(farm.poolWeight, cakePrice, totalLiquidity) : 0
 
         return { ...farm, apy, liquidity: totalLiquidity }
       })
@@ -178,23 +179,18 @@ const Farms: React.FC = () => {
       if (query) {
         const lowercaseQuery = query.toLowerCase()
         farmsToDisplayWithAPY = farmsToDisplayWithAPY.filter((farm: FarmWithStakedValue) => {
-          if (farm.lpSymbol.toLowerCase().includes(lowercaseQuery)) {
-            return true
-          }
-
-          return false
+          return farm.lpSymbol.toLowerCase().includes(lowercaseQuery)
         })
       }
       return farmsToDisplayWithAPY
     },
-    [cakePrice, prices, query],
+    [cakePrice, prices, query, isActive],
   )
 
   const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(event.target.value)
   }
 
-  const isActive = !pathname.includes('history')
   let farmsStaked = []
   if (isActive) {
     farmsStaked = stakedOnly ? farmsList(stakedOnlyFarms) : farmsList(activeFarms)

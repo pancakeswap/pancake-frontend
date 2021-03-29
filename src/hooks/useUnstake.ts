@@ -7,7 +7,7 @@ import {
   updateUserBalance,
   updateUserPendingReward,
 } from 'state/actions'
-import { unstake, sousUnstake, sousEmegencyUnstake } from 'utils/callHelpers'
+import { unstake, sousUnstake, sousEmergencyUnstake } from 'utils/callHelpers'
 import { useMasterchef, useSousChef } from './useContract'
 
 const useUnstake = (pid: number) => {
@@ -42,7 +42,7 @@ export const useSousUnstake = (sousId) => {
         const txHash = await unstake(masterChefContract, 0, amount, account)
         console.info(txHash)
       } else if (isOldSyrup) {
-        const txHash = await sousEmegencyUnstake(sousChefContract, amount, account)
+        const txHash = await sousEmergencyUnstake(sousChefContract, amount, account)
         console.info(txHash)
       } else {
         const txHash = await sousUnstake(sousChefContract, amount, decimals, account)

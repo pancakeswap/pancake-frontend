@@ -92,7 +92,7 @@ const CardFooter: React.FC<Props> = ({
   endBlock,
   poolCategory,
 }) => {
-  const { blockNumber: currentBlock } = useBlock()
+  const { currentBlock } = useBlock()
   const [isOpen, setIsOpen] = useState(false)
   const TranslateString = useI18n()
   const Icon = isOpen ? ChevronUp : ChevronDown
@@ -131,7 +131,7 @@ const CardFooter: React.FC<Props> = ({
           {blocksUntilStart > 0 && (
             <Row mb="4px">
               <FlexFull>
-                <Label>{TranslateString(410, 'Start')}:</Label>
+                <Label>{TranslateString(1212, 'Start')}:</Label>
               </FlexFull>
               <Balance fontSize="14px" isDisabled={isFinished} value={blocksUntilStart} decimals={0} />
             </Row>
