@@ -48,7 +48,7 @@ const Actions = styled.div`
 const LotteryCard = () => {
   const { account } = useWeb3React()
   const lotteryHasDrawn = useGetLotteryHasDrawn()
-  const [requesteClaim, setRequestedClaim] = useState(false)
+  const [requestClaim, setRequestedClaim] = useState(false)
   const TranslateString = useI18n()
   const allowance = useLotteryAllowance()
   const [onPresentApprove] = useModal(<PurchaseWarningModal />)
@@ -106,7 +106,7 @@ const LotteryCard = () => {
           <Actions>
             <Button
               id="dashboard-collect-winnings"
-              disabled={getBalanceNumber(claimAmount) === 0 || requesteClaim}
+              disabled={getBalanceNumber(claimAmount) === 0 || requestClaim}
               onClick={handleClaim}
               style={{ marginRight: '8px' }}
             >

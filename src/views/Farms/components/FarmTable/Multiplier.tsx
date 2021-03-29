@@ -35,12 +35,12 @@ const Container = styled.div`
 `
 
 const Multiplier: React.FunctionComponent<MultiplierProps> = ({ multiplier }) => {
-  const displayMultipler = multiplier ? multiplier.toLowerCase() : '-'
+  const displayMultiplier = multiplier ? multiplier.toLowerCase() : '-'
   const TranslateString = useI18n()
 
   return (
     <Container>
-      <MultiplierWrapper>{displayMultipler}</MultiplierWrapper>
+      <MultiplierWrapper>{displayMultiplier}</MultiplierWrapper>
       <Tooltip
         content={
           <div>

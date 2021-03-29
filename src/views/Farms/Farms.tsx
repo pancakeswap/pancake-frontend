@@ -129,17 +129,17 @@ const Farms: React.FC = () => {
     }
   }, [account, dispatch, fastRefresh])
 
-  const [stackedOnly, setStackedOnly] = useState(false)
+  const [stakedOnly, setStakedOnly] = useState(false)
   const isActive = !pathname.includes('history')
 
   const activeFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
   const inactiveFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X')
 
-  const stackedOnlyFarms = activeFarms.filter(
+  const stakedOnlyFarms = activeFarms.filter(
     (farm) => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0),
   )
 
-  const stackedInactiveFarms = inactiveFarms.filter(
+  const stakedInactiveFarms = inactiveFarms.filter(
     (farm) => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0),
   )
 
@@ -193,9 +193,9 @@ const Farms: React.FC = () => {
 
   let farmsStaked = []
   if (isActive) {
-    farmsStaked = stackedOnly ? farmsList(stackedOnlyFarms) : farmsList(activeFarms)
+    farmsStaked = stakedOnly ? farmsList(stakedOnlyFarms) : farmsList(activeFarms)
   } else {
-    farmsStaked = stackedOnly ? farmsList(stackedInactiveFarms) : farmsList(inactiveFarms)
+    farmsStaked = stakedOnly ? farmsList(stakedInactiveFarms) : farmsList(inactiveFarms)
   }
 
   farmsStaked = sortFarms(farmsStaked)
@@ -304,7 +304,7 @@ const Farms: React.FC = () => {
           <ViewControls>
             <ToggleView viewMode={viewMode} onToggle={(mode: ViewMode) => setViewMode(mode)} />
             <ToggleWrapper>
-              <Toggle checked={stackedOnly} onChange={() => setStackedOnly(!stackedOnly)} scale="sm" />
+              <Toggle checked={stakedOnly} onChange={() => setStakedOnly(!stakedOnly)} scale="sm" />
               <Text> {TranslateString(1116, 'Staked only')}</Text>
             </ToggleWrapper>
             <FarmTabButtons />
