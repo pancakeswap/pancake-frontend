@@ -36,6 +36,8 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({ round }) => {
   // Open rounds do not have an endblock set so we approximate it by adding the block interval
   // to the start block
   const endBlock = startBlock + intervalBlocks * 2
+  const isBull = stream?.lastPrice > lockPrice
+  const priceColor = isBull ? 'success' : 'failure'
 
   return (
     <GradientBorder>
@@ -50,19 +52,19 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({ round }) => {
         />
         <LiveRoundProgress startBlock={startBlock} endBlock={endBlock} />
         <CardBody p="16px">
-          <MultiplierArrow multiplier={10.3} hasEntered={false} isActive={false} />
-          <RoundInfoBox isLive>
+          <MultiplierArrow multiplier={10.3} hasEntered={false} isActive={isBull} />
+          <RoundInfoBox betPosition={isBull ? BetPosition.BULL : BetPosition.BEAR}>
             <Text color="textSubtle" fontSize="12px" bold textTransform="uppercase" mb="8px">
               {TranslateString(999, 'Last Price')}
             </Text>
             <Flex alignItems="center" justifyContent="space-between" mb="16px">
-              <Text bold fontSize="24px" style={{ minHeight: '36px' }}>
+              <Text bold color={priceColor} fontSize="24px" style={{ minHeight: '36px' }}>
                 {stream && formatUsd(stream.lastPrice)}
               </Text>
             </Flex>
             <RoundInfo lockPrice={lockPrice} totalAmount={totalAmount} />
           </RoundInfoBox>
-          <MultiplierArrow multiplier={1} betPosition={BetPosition.BEAR} hasEntered={false} isActive={false} />
+          <MultiplierArrow multiplier={1} betPosition={BetPosition.BEAR} hasEntered={false} isActive={!isBull} />
         </CardBody>
       </GradientCard>
     </GradientBorder>
