@@ -77,6 +77,7 @@ const CollectModal: React.FC<CollectModalProps> = ({
           TranslateString(999, 'Your funds have been staked in the pool!'),
         )
         setConfirmedTx(true)
+        onDismiss()
       } catch (e) {
         toastError(
           TranslateString(999, 'Canceled'),
@@ -91,6 +92,7 @@ const CollectModal: React.FC<CollectModalProps> = ({
           TranslateString(999, 'Your earnings have been sent to your wallet!'),
         )
         setConfirmedTx(true)
+        onDismiss()
       } catch (e) {
         toastError(
           TranslateString(999, 'Canceled'),

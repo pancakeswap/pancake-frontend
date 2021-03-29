@@ -99,6 +99,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
           `${TranslateString(1074, 'Staked')}!`,
           TranslateString(999, 'Your funds have been staked in the pool!'),
         )
+        onDismiss()
       } catch (e) {
         toastError(
           TranslateString(999, 'Canceled'),
@@ -113,6 +114,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
           `${TranslateString(999, 'Unstaked')}!`,
           TranslateString(999, 'Your earnings have also been harvested to your wallet!'),
         )
+        onDismiss()
       } catch (e) {
         toastError(
           TranslateString(999, 'Canceled'),
