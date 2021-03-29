@@ -8,8 +8,8 @@ interface LiveRoundProgressProps {
 }
 
 const LiveRoundProgress: React.FC<LiveRoundProgressProps> = ({ startBlock, endBlock }) => {
-  const { blockNumber } = useBlock()
-  const rawProgress = ((blockNumber - startBlock) / (endBlock - startBlock)) * 100
+  const { currentBlock } = useBlock()
+  const rawProgress = ((currentBlock - startBlock) / (endBlock - startBlock)) * 100
   const progress = rawProgress <= 100 ? rawProgress : 100
 
   return <Progress variant="flat" primaryStep={progress} />

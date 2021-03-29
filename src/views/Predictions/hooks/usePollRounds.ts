@@ -1,4 +1,3 @@
-import { maxBy } from 'lodash'
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { updateRounds } from 'state/predictions'
