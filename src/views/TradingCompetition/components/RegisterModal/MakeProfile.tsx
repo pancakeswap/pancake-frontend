@@ -2,8 +2,9 @@ import React from 'react'
 import { Button, Heading, Text } from '@pancakeswap-libs/uikit'
 import history from 'routerHistory'
 import useI18n from 'hooks/useI18n'
+import { CompetitionProps } from 'views/TradingCompetition/types'
 
-const MakeProfile: React.FC<{ onDismiss?: () => void }> = ({ onDismiss }) => {
+const MakeProfile: React.FC<CompetitionProps> = ({ onDismiss }) => {
   const TranslateString = useI18n()
 
   const handleClick = () => {

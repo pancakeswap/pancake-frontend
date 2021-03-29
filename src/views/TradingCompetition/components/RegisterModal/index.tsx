@@ -1,17 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Modal, Button, NoProfileAvatarIcon, Flex } from '@pancakeswap-libs/uikit'
-import { Profile } from 'state/types'
 import useI18n from 'hooks/useI18n'
 import { CompetitionProps } from '../../types'
 import MakeProfile from './MakeProfile'
 import ReactivateProfile from './ReactivateProfile'
 import RegisterWithProfile from './RegisterWithProfile'
 import ProfileAvatar from '../../../Profile/components/ProfileAvatar'
-
-interface RegisterModalProps extends CompetitionProps {
-  onDismiss?: () => void
-}
 
 const AvatarWrapper = styled.div`
   height: 64px;
@@ -24,7 +19,7 @@ const StyledNoProfileAvatarIcon = styled(NoProfileAvatarIcon)`
   height: 100%;
 `
 
-const RegisterModal: React.FC<RegisterModalProps> = ({ onDismiss, profile }) => {
+const RegisterModal: React.FC<CompetitionProps> = ({ onDismiss, profile }) => {
   const TranslateString = useI18n()
 
   const modalInner = () => {
@@ -35,7 +30,7 @@ const RegisterModal: React.FC<RegisterModalProps> = ({ onDismiss, profile }) => 
 
     // Profile created and active
     if (profile && profile.isActive) {
-      return <RegisterWithProfile profile={profile} />
+      return <RegisterWithProfile profile={profile} onDismiss={onDismiss} />
     }
 
     // Profile created but not active

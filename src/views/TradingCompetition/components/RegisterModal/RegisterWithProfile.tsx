@@ -1,7 +1,10 @@
 import React, { useState } from 'react'
+import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
-import { Button, Heading, Text, Flex, Checkbox } from '@pancakeswap-libs/uikit'
+import { Button, Heading, Text, Flex, Checkbox, AutoRenewIcon } from '@pancakeswap-libs/uikit'
+import { useTradingCompetitionContract } from 'hooks/useContract'
 import useI18n from 'hooks/useI18n'
+import { useToast } from 'state/hooks'
 import { CompetitionProps } from '../../types'
 
 const StyledCheckbox = styled(Checkbox)`
@@ -12,9 +15,30 @@ const StyledLabel = styled.label`
   cursor: pointer;
 `
 
-const RegisterWithProfile: React.FC<CompetitionProps> = ({ profile }) => {
-  const TranslateString = useI18n()
+const RegisterWithProfile: React.FC<CompetitionProps> = ({ profile, onDismiss }) => {
   const [isAcknowledged, setIsAcknowledged] = useState(false)
+  const [isConfirming, setIsConfirming] = useState(false)
+  const tradingCompetitionContract = useTradingCompetitionContract()
+  const { account } = useWeb3React()
+  const { toastSuccess, toastError } = useToast()
+  const TranslateString = useI18n()
+
+  const handleConfirmClick = () => {
+    tradingCompetitionContract.methods
+      .register()
+      .send({ from: account })
+      .on('sending', () => {
+        setIsConfirming(true)
+      })
+      .on('receipt', async () => {
+        toastSuccess('Registered!')
+        onDismiss()
+      })
+      .on('error', (error) => {
+        toastError('Error', error?.message)
+        setIsConfirming(false)
+      })
+  }
 
   return (
     <>
@@ -46,7 +70,14 @@ const RegisterWithProfile: React.FC<CompetitionProps> = ({ profile }) => {
           </Flex>
         </StyledLabel>
       </Flex>
-      <Button mt="24px" width="100%" disabled={!isAcknowledged}>
+      <Button
+        mt="24px"
+        width="100%"
+        onClick={handleConfirmClick}
+        disabled={!isAcknowledged || isConfirming}
+        isLoading={isConfirming}
+        endIcon={isConfirming ? <AutoRenewIcon spin color="currentColor" /> : null}
+      >
         {TranslateString(464, 'Confirm')}
       </Button>
     </>

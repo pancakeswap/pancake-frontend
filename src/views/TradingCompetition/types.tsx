@@ -7,6 +7,7 @@ export interface CompetitionProps {
   isCompetitionLive?: boolean
   isLoading?: boolean
   isInitialized?: boolean
+  onDismiss?: () => void
 }
 
 export interface YourScoreProps extends CompetitionProps {

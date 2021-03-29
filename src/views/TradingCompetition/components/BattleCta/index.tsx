@@ -79,6 +79,7 @@ const BattleCta: React.FC<CompetitionProps> = ({
       return TranslateString(999, 'Trade Now')
     }
 
+    // May be useful for debugging - if somehow none of the above conditions are met
     return 'Error'
   }
 
