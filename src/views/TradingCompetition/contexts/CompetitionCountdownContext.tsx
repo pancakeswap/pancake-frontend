@@ -3,13 +3,13 @@ import useGetBlockCountdown from '../../../hooks/useGetBlockCountdown'
 import useGetCompetitionState from '../hooks/useGetCompetitionState'
 
 export const CompetitionCountdownContext = createContext({
-  timeUntilNextEvent: null,
+  timeUntilNextEvent: 0,
   competitionState: null,
   isLoading: true,
 })
 
 export const CompetitionCountdownContextProvider = ({ children }) => {
-  const [timeUntilNextEvent, setTimeUntilNextEvent] = useState(null)
+  const [timeUntilNextEvent, setTimeUntilNextEvent] = useState(0)
   const { targetBlock, competitionState, isLoading } = useGetCompetitionState()
   const timeUntilTargetBlock = useGetBlockCountdown(targetBlock)
 
