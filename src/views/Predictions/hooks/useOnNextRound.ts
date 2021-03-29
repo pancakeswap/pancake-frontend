@@ -14,6 +14,8 @@ const useOnNextRound = () => {
 
       // Slide to the current LIVE round which is always the one before the current round
       swiper.slideTo(currentEpochIndex - 1)
+      swiper.update()
+
       previousEpoch.current = currentEpoch
     }
   }, [previousEpoch, currentEpoch, rounds, swiper])
