@@ -8,33 +8,21 @@ export const baseUrl = 'https://api.pancakeswap.com/api/v1'
 
 /* eslint-disable camelcase */
 
-export interface TradePair {
-  swap_pair_contract: string
-  base_symbol: string
-  quote_symbol: string
-  last_price: number
-  base_volume_24_h: number
-  quote_volume_24_h: number
-}
-
-export interface ApiStatResponse {
+export interface ApiTvlResponse {
   update_at: string
   '24h_total_volume': number
   total_value_locked: number
   total_value_locked_all: number
-  trade_pairs: {
-    [key: string]: TradePair
-  }
 }
 
 export const useGetStats = () => {
-  const [data, setData] = useState<ApiStatResponse | null>(null)
+  const [data, setData] = useState<ApiTvlResponse | null>(null)
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`${baseUrl}/stat`)
-        const responsedata: ApiStatResponse = await response.json()
+        const response = await fetch(`${baseUrl}/tvl`)
+        const responsedata: ApiTvlResponse = await response.json()
 
         setData(responsedata)
       } catch (error) {
