@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { CardBody, Flex, PlayCircleOutlineIcon, Progress, Text } from '@pancakeswap-libs/uikit'
+import { CardBody, Flex, PlayCircleOutlineIcon, Text } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import { Round, BetPosition } from 'state/types'
 import { useGetIntervalBlocks } from 'state/hooks'
@@ -11,6 +11,7 @@ import Card from './Card'
 import RoundInfoBox from './RoundInfoBox'
 import CardHeader from './CardHeader'
 import RoundInfo from './RoundInfo'
+import LiveRoundProgress from './RoundProgress'
 
 interface LiveRoundCardProps {
   round: Round
@@ -47,7 +48,7 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({ round }) => {
           blockNumber={endBlock}
           timerPrefix={TranslateString(410, 'End')}
         />
-        <Progress variant="flat" primaryStep={54} />
+        <LiveRoundProgress startBlock={startBlock} endBlock={endBlock} />
         <CardBody p="16px">
           <MultiplierArrow multiplier={10.3} hasEntered={false} isActive={false} />
           <RoundInfoBox isLive>
