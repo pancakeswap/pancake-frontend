@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import styled from 'styled-components'
 import { Flex } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import getTimePeriods from 'utils/getTimePeriods'
+import { CompetitionCountdownContext } from '../../contexts/CompetitionCountdownContext'
 import ProgressStepper from './ProgressStepper'
 import Timer from './Timer'
 import { PocketWatch } from '../../svgs'
@@ -41,38 +42,19 @@ const PocketWatchWrapper = styled(Flex)`
 
 const Countdown = () => {
   const TranslateString = useI18n()
+  const { competitionState, timeUntilNextEvent, isLoading } = useContext(CompetitionCountdownContext)
   const steps = [
     `${TranslateString(999, 'Entry')}`,
     `${TranslateString(1198, 'Live')}`,
     `${TranslateString(410, 'End')}`,
   ]
 
-  // 00:00 07.04.2021 UTC
-  const competitionStartTime = 1617753600000
-  // 00:00 14.04.2021 UTC
-  const competitionEndTime = 1618358400000
-  const nowInMs = Date.now()
-  const competitionHasStarted = nowInMs >= competitionStartTime
-  const competitionHasEnded = nowInMs > competitionEndTime
+  console.log('loading ', isLoading)
 
-  const activeStepIndex = () => {
-    if (competitionHasStarted) {
-      return 1
-    }
-    if (competitionHasEnded) {
-      return 2
-    }
-    return 0
-  }
+  const competitionHasStarted = !isLoading && competitionState.state === 'LIVE'
+  const competitionHasEnded = !isLoading && competitionState.state === 'FINISHED'
 
-  const timeUntilNextEvent = () => {
-    if (competitionHasStarted) {
-      return competitionEndTime - nowInMs
-    }
-    return competitionStartTime - nowInMs
-  }
-
-  const { minutes, hours, days } = getTimePeriods(timeUntilNextEvent() / 1000)
+  const { minutes, hours, days } = getTimePeriods(timeUntilNextEvent)
 
   return (
     <Wrapper>
@@ -80,10 +62,10 @@ const Countdown = () => {
         <PocketWatch />
       </PocketWatchWrapper>
       <Flex flexDirection="column" justifyContent="center">
-        {!competitionHasEnded && (
+        {!isLoading && !competitionHasEnded && (
           <Timer timerText={competitionHasStarted ? 'End:' : 'Start:'} minutes={minutes} hours={hours} days={days} />
         )}
-        <ProgressStepper steps={steps} activeStepIndex={activeStepIndex()} />
+        {!isLoading && <ProgressStepper steps={steps} activeStepIndex={competitionState.step.index} />}
       </Flex>
     </Wrapper>
   )

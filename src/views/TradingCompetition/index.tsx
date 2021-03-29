@@ -19,6 +19,7 @@ import BattleBanner from './components/BattleBanner'
 import Section from './components/Section'
 import PrizesInfo from './components/PrizesInfo'
 import Rules from './components/Rules'
+import { CompetitionCountdownContextProvider } from './contexts/CompetitionCountdownContext'
 
 const SampleCard = () => (
   <Card>
@@ -57,43 +58,45 @@ const TradingCompetition = () => {
   const hasCompetitionStarted = false
 
   return (
-    <CompetitionPage>
-      <Section backgroundStyle={DARKBG} svgFill={DARKFILL} index={4}>
-        <StyledFlex>
-          <Countdown />
-          <BattleBanner />
-        </StyledFlex>
-      </Section>
-      <Section
-        backgroundStyle={MIDBLUEBG}
-        svgFill={MIDBLUEFILL}
-        index={3}
-        intersectComponent={
-          <RibbonWithImage imageComponent={<PrizesIcon width="175px" />} ribbonDirection="up">
-            Prizes
-          </RibbonWithImage>
-        }
-      >
-        {!hasCompetitionStarted ? <HowToJoin /> : <SampleCard />}
-      </Section>
-      <StyledSection backgroundStyle={LIGHTBLUEBG} svgFill={LIGHTBLUEFILL} index={2} noIntersection>
-        <PrizesInfo />
-      </StyledSection>
-      <Section
-        index={3}
-        intersectionPosition="top"
-        intersectComponent={
-          <RibbonWithImage imageComponent={<RulesIcon width="175px" />} ribbonDirection="up">
-            Rules
-          </RibbonWithImage>
-        }
-      >
-        <Rules />
-      </Section>
-      <Section backgroundStyle={DARKBG} svgFill={DARKFILL} index={4} intersectionPosition="top">
-        <SampleCard />
-      </Section>
-    </CompetitionPage>
+    <CompetitionCountdownContextProvider>
+      <CompetitionPage>
+        <Section backgroundStyle={DARKBG} svgFill={DARKFILL} index={4}>
+          <StyledFlex>
+            <Countdown />
+            <BattleBanner />
+          </StyledFlex>
+        </Section>
+        <Section
+          backgroundStyle={MIDBLUEBG}
+          svgFill={MIDBLUEFILL}
+          index={3}
+          intersectComponent={
+            <RibbonWithImage imageComponent={<PrizesIcon width="175px" />} ribbonDirection="up">
+              Prizes
+            </RibbonWithImage>
+          }
+        >
+          {!hasCompetitionStarted ? <HowToJoin /> : <SampleCard />}
+        </Section>
+        <StyledSection backgroundStyle={LIGHTBLUEBG} svgFill={LIGHTBLUEFILL} index={2} noIntersection>
+          <PrizesInfo />
+        </StyledSection>
+        <Section
+          index={3}
+          intersectionPosition="top"
+          intersectComponent={
+            <RibbonWithImage imageComponent={<RulesIcon width="175px" />} ribbonDirection="up">
+              Rules
+            </RibbonWithImage>
+          }
+        >
+          <Rules />
+        </Section>
+        <Section backgroundStyle={DARKBG} svgFill={DARKFILL} index={4} intersectionPosition="top">
+          <SampleCard />
+        </Section>
+      </CompetitionPage>
+    </CompetitionCountdownContextProvider>
   )
 }
 
