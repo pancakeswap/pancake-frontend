@@ -13,18 +13,19 @@ export * from "./components/Heading";
 export * from "./components/Image";
 export * from "./components/Input";
 export * from "./components/Layouts";
+export * from "./components/Link";
 export * from "./components/NotificationDot";
+export * from "./components/Progress";
 export * from "./components/Radio";
+export * from "./components/Slider";
+export * from "./components/Skeleton";
+export * from "./components/Spinner";
 export * from "./components/Svg";
+export * from "./components/Table";
+export * from "./components/TabMenu";
 export * from "./components/Tag";
 export * from "./components/Text";
-export * from "./components/Link";
-export * from "./components/Progress";
-export * from "./components/Slider";
-export * from "./components/Spinner";
-export * from "./components/Skeleton";
 export * from "./components/Toggle";
-export * from "./components/Table";
 
 // Hooks
 export * from "./hooks";
