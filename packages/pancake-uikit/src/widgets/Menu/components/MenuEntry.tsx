@@ -1,5 +1,7 @@
 import React from "react";
 import styled, { keyframes, DefaultTheme } from "styled-components";
+import { Text } from "../../../components/Text";
+import { Colors } from "../../../theme/types";
 import { MENU_ENTRY_HEIGHT } from "../config";
 
 export interface Props {
@@ -66,6 +68,15 @@ MenuEntry.defaultProps = {
   role: "button",
 };
 
+const LinkStatus = styled(Text)<{ color: keyof Colors }>`
+  border-radius: ${({ theme }) => theme.radii.default};
+  padding: 0 8px;
+  border: 2px solid;
+  border-color: ${({ theme, color }) => theme.colors[color]};
+  box-shadow: none;
+  color: ${({ theme, color }) => theme.colors[color]};
+`;
+
 const LinkLabelMemo = React.memo(LinkLabel, (prev, next) => prev.isPushed === next.isPushed);
 
-export { MenuEntry, LinkLabelMemo as LinkLabel };
+export { MenuEntry, LinkStatus, LinkLabelMemo as LinkLabel };
