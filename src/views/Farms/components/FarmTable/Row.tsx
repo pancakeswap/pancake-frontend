@@ -172,10 +172,10 @@ const Row: React.FunctionComponent<RowProps> = (props) => {
   return (
     <>
       {handleRenderRow()}
-      {actionPanelToggled && details && (
+      {details && (
         <tr>
           <td colSpan={6}>
-            <ActionPanel {...props} />
+            <ActionPanel {...props} toggled={actionPanelToggled} />
           </td>
         </tr>
       )}

@@ -18,18 +18,23 @@ export interface ActionPanelProps {
   multiplier: MultiplierProps
   liquidity: LiquidityProps
   details: FarmWithStakedValue
+  toggled: boolean
 }
 
-const Container = styled.div`
+const Container = styled.div<{ toggled: boolean }>`
   background: ${({ theme }) => theme.colors.background};
   display: flex;
   width: 100%;
   flex-direction: column-reverse;
-  padding: 24px;
+  padding: ${({ toggled }) => (toggled ? '24px' : '0')};
+  height: ${({ toggled }) => (toggled ? 'auto' : '0')};
+  opacity: ${({ toggled }) => (toggled ? '1' : '0')};
+  overflow: hidden;
+  transition: opacity 0.2s, height 0.2s;
 
   ${({ theme }) => theme.mediaQueries.lg} {
     flex-direction: row;
-    padding: 16px 32px;
+    padding: ${({ toggled }) => (toggled ? '16px 32px' : '0')};
   }
 `
 
@@ -100,7 +105,7 @@ const ValueWrapper = styled.div`
   margin: 4px 0px;
 `
 
-const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({ details, apr, multiplier, liquidity }) => {
+const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({ details, apr, multiplier, liquidity, toggled }) => {
   const farm = details
 
   const TranslateString = useI18n()
@@ -116,7 +121,7 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({ details, apr, 
   const isCommunityFarm = communityFarms.includes(token.symbol)
 
   return (
-    <Container>
+    <Container toggled={toggled}>
       <InfoContainer>
         <StakeContainer>
           <StyledLinkExternal href={`https://exchange.pancakeswap.finance/#/add/${liquidityUrlPathParts}`}>
