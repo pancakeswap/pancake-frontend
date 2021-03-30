@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { CardBody, Flex, PlayCircleOutlineIcon, Text } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import { Round, BetPosition } from 'state/types'
-import { useGetIntervalBlocks } from 'state/hooks'
+import { useGetTotalIntervalBlocks } from 'state/hooks'
 import { useBnbUsdtTicker } from 'hooks/ticker'
 import { formatUsd, getBubbleGumBackground } from '../../helpers'
 import MultiplierArrow from './MultiplierArrow'
@@ -29,15 +29,12 @@ const GradientCard = styled(Card)`
 
 const LiveRoundCard: React.FC<LiveRoundCardProps> = ({ round }) => {
   const TranslateString = useI18n()
-  const { lockPrice, startBlock, totalAmount } = round
+  const { lockPrice, lockBlock, totalAmount } = round
   const { stream } = useBnbUsdtTicker()
-  const intervalBlocks = useGetIntervalBlocks()
-
-  // Open rounds do not have an endblock set so we approximate it by adding the block interval
-  // to the start block
-  const endBlock = startBlock + intervalBlocks * 2
+  const interval = useGetTotalIntervalBlocks()
   const isBull = stream?.lastPrice > lockPrice
   const priceColor = isBull ? 'success' : 'failure'
+  const estimatedEndBlock = lockBlock + interval
 
   return (
     <GradientBorder>
@@ -47,10 +44,9 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({ round }) => {
           icon={<PlayCircleOutlineIcon mr="4px" width="24px" color="secondary" />}
           title={TranslateString(1198, 'Live')}
           epoch={round.epoch}
-          blockNumber={endBlock}
-          timerPrefix={TranslateString(410, 'End')}
+          blockNumber={estimatedEndBlock}
         />
-        <LiveRoundProgress startBlock={startBlock} endBlock={endBlock} />
+        <LiveRoundProgress startBlock={lockBlock} endBlock={estimatedEndBlock} />
         <CardBody p="16px">
           <MultiplierArrow multiplier={10.3} hasEntered={false} isActive={isBull} />
           <RoundInfoBox betPosition={isBull ? BetPosition.BULL : BetPosition.BEAR}>

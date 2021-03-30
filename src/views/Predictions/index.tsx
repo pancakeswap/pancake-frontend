@@ -38,12 +38,14 @@ const Predictions = () => {
         getLatestRounds(),
       ])) as [number, Omit<PredictionsState, 'rounds'>, RoundResponse[]]
 
-      const { currentEpoch, intervalBlocks } = staticPredictionsData
+      const { currentEpoch, intervalBlocks, bufferBlocks } = staticPredictionsData
       const { startBlock } = latestRounds.find((roundResponse) => roundResponse.epoch === currentEpoch.toString())
+      const currentRoundStartBlock = Number(startBlock)
       const futureRounds = []
+      const halfInterval = (intervalBlocks + bufferBlocks) / 2
 
       for (let i = 1; i <= FUTURE_ROUND_COUNT; i++) {
-        futureRounds.push(makeFutureRoundResponse(currentEpoch + i, Number(startBlock) + intervalBlocks * i))
+        futureRounds.push(makeFutureRoundResponse(currentEpoch + i, (currentRoundStartBlock + halfInterval) * i))
       }
 
       const roundData = makeRoundData([...latestRounds, ...futureRounds])
@@ -52,6 +54,7 @@ const Predictions = () => {
       dispatch(
         initialize({
           ...staticPredictionsData,
+          currentRoundStartBlockNumber: currentRoundStartBlock,
           rounds: roundData,
         }),
       )

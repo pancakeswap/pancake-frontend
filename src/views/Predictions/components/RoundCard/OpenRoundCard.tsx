@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { CardBody, PlayCircleOutlineIcon, Button } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import { BetPosition, Round } from 'state/types'
-import { useGetIntervalBlocks } from 'state/hooks'
+import { useGetTotalIntervalBlocks } from 'state/hooks'
 import CardFlip from '../CardFlip'
 import MultiplierArrow from './MultiplierArrow'
 import Card from './Card'
@@ -20,11 +20,11 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({ round }) => {
     position: BetPosition.BULL,
   })
   const TranslateString = useI18n()
-  const intervalBlocks = useGetIntervalBlocks()
+  const interval = useGetTotalIntervalBlocks()
 
   // Bettable rounds do not have an endblock set so we approximate it by adding the block interval
   // to the start block
-  const endBlock = round.startBlock + intervalBlocks
+  const endBlock = round.startBlock + interval
 
   const handleBack = () =>
     setState((prevState) => ({
@@ -55,7 +55,6 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({ round }) => {
           blockNumber={endBlock}
           icon={<PlayCircleOutlineIcon color="white" mr="4px" width="21px" />}
           title={TranslateString(999, 'Next')}
-          timerPrefix={TranslateString(999, 'Start')}
         />
         <CardBody p="16px">
           <MultiplierArrow />

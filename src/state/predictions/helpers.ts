@@ -85,17 +85,19 @@ export const makeRoundData = (roundResponses: RoundResponse[]): RoundData => {
  */
 export const getStaticPredictionsData = async () => {
   const { methods } = getPredictionsContract()
-  const [currentEpoch, intervalBlocks, minBetAmount, isPaused] = await makeBatchRequest([
+  const [currentEpoch, intervalBlocks, minBetAmount, isPaused, bufferBlocks] = await makeBatchRequest([
     methods.currentEpoch().call,
     methods.intervalBlocks().call,
     methods.minBetAmount().call,
     methods.paused().call,
+    methods.bufferBlocks().call,
   ])
 
   return {
     status: isPaused ? PredictionStatus.PAUSED : PredictionStatus.LIVE,
     currentEpoch: Number(currentEpoch),
     intervalBlocks: Number(intervalBlocks),
+    bufferBlocks: Number(bufferBlocks),
     minBetAmount,
   }
 }

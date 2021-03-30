@@ -10,7 +10,9 @@ const initialState: PredictionsState = {
   isHistoryPaneOpen: false,
   isChartPaneOpen: false,
   currentEpoch: 0,
+  currentRoundStartBlockNumber: 0,
   intervalBlocks: 100,
+  bufferBlocks: 2,
   minBetAmount: '1000000000000000',
   rounds: {},
 }
@@ -50,6 +52,7 @@ export const predictionsSlice = createSlice({
       }
 
       state.currentEpoch = incomingCurrentRound.epoch
+      state.currentRoundStartBlockNumber = incomingCurrentRound.startBlock
       state.rounds = newRoundData
     },
     setCurrentEpoch: (state, action: PayloadAction<number>) => {
