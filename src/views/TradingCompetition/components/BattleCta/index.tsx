@@ -47,13 +47,14 @@ const BattleCta: React.FC<CompetitionProps> = ({
   isCompetitionLive,
   profile,
   isLoading,
+  hasCompetitionFinished,
 }) => {
   const TranslateString = useI18n()
   const { login, logout } = useAuth()
   const { onPresentConnectModal } = useWalletModal(login, logout)
   const [onPresentRegisterModal] = useModal(<RegisterModal profile={profile} />, false)
 
-  const { hasRegistered } = userTradingStats
+  const { hasRegistered, hasClaimed } = userTradingStats
 
   const getButtonText = () => {
     // No wallet connected
@@ -66,18 +67,20 @@ const BattleCta: React.FC<CompetitionProps> = ({
       return TranslateString(999, 'Register Now!')
     }
 
-    // User registered but competition has not started
-    if (hasRegistered && !isCompetitionLive) {
-      return (
-        <>
-          <CheckmarkCircleIcon /> {TranslateString(999, 'Registered!')}
-        </>
-      )
-    }
+    if (hasRegistered) {
+      // User registered but competition has not started
+      if (!isCompetitionLive) {
+        return (
+          <>
+            <CheckmarkCircleIcon /> {TranslateString(999, 'Registered!')}
+          </>
+        )
+      }
 
-    // User registered and competition live
-    if (hasRegistered && isCompetitionLive) {
-      return TranslateString(999, 'Trade Now')
+      // User registered and competition live
+      if (isCompetitionLive) {
+        return TranslateString(999, 'Trade Now')
+      }
     }
 
     // May be useful for debugging - if somehow none of the above conditions are met

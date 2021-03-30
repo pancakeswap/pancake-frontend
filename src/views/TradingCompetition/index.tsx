@@ -47,7 +47,14 @@ const TradingCompetition = () => {
   const { account } = useWeb3React()
   const { profile, isLoading } = useProfile()
   const tradingCompetitionContract = useTradingCompetitionContract()
-  const [userTradingStats, setUserTradingStats] = useState({ hasRegistered: false })
+  const [userTradingStats, setUserTradingStats] = useState({ hasRegistered: false, hasClaimed: false })
+  const [userCanClaim, setUserCanClaim] = useState(false)
+  const [userRewards, setUserRewards] = useState(null)
+  const [teamRewards, setTeamRewards] = useState(null)
+
+  const hasCompetitionFinished = true
+  const isCompetitionLive = false
+  const hasCompetitionStarted = false
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -59,8 +66,29 @@ const TradingCompetition = () => {
     }
   }, [account, tradingCompetitionContract])
 
-  const isCompetitionLive = true
-  const hasCompetitionStarted = false
+  useEffect(() => {
+    const fetchUserRewards = async () => {
+      const claimData = await tradingCompetitionContract.methods.canClaim(account).call()
+      const cakeToClaim = claimData[1]
+      const pointsToClaim = claimData[2]
+      const userCakeAndPoints = { cakeToClaim, pointsToClaim }
+      setUserCanClaim(claimData[0])
+      setUserRewards(userCakeAndPoints)
+    }
+
+    const fetchTeamRewards = async () => {
+      const teamRewardResponse = await tradingCompetitionContract.methods.viewRewardTeams().call()
+      setTeamRewards(teamRewardResponse)
+    }
+
+    if (account && hasCompetitionFinished) {
+      fetchUserRewards()
+      fetchTeamRewards()
+    }
+  }, [account, tradingCompetitionContract, hasCompetitionFinished])
+
+  // if the account is connected, the user hasn't registered and the competition is live or finished - hide cta
+  const shouldHideCta = account && !userTradingStats.hasRegistered && (isCompetitionLive || hasCompetitionFinished)
 
   return (
     <CompetitionPage>
@@ -69,12 +97,12 @@ const TradingCompetition = () => {
         svgFill={DARKFILL}
         index={4}
         intersectComponent={
-          // if the competition is live, and the account is connected but the user hasn't registered - hide cta
-          account && isCompetitionLive && !userTradingStats.hasRegistered ? null : (
+          shouldHideCta ? null : (
             <BattleCta
               userTradingStats={userTradingStats}
               account={account}
               isCompetitionLive={isCompetitionLive}
+              hasCompetitionFinished={hasCompetitionFinished}
               profile={profile}
               isLoading={isLoading}
             />
@@ -110,18 +138,15 @@ const TradingCompetition = () => {
         <Rules />
       </Section>
       <Section backgroundStyle={DARKBG} svgFill={DARKFILL} index={4} intersectionPosition="top">
-        {
-          // if the competition is live, and the account is connected but the user hasn't registered - hide cta
-          account && isCompetitionLive && !userTradingStats.hasRegistered ? null : (
-            <BattleCta
-              userTradingStats={userTradingStats}
-              account={account}
-              isCompetitionLive={isCompetitionLive}
-              profile={profile}
-              isLoading={isLoading}
-            />
-          )
-        }
+        {shouldHideCta ? null : (
+          <BattleCta
+            userTradingStats={userTradingStats}
+            account={account}
+            isCompetitionLive={isCompetitionLive}
+            profile={profile}
+            isLoading={isLoading}
+          />
+        )}
       </Section>
     </CompetitionPage>
   )

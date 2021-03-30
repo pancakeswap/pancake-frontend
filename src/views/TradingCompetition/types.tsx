@@ -16,6 +16,7 @@ export interface CompetitionProps {
   account?: string
   profile?: Profile
   isCompetitionLive?: boolean
+  hasCompetitionFinished?: boolean
   isLoading?: boolean
   onDismiss?: () => void
 }
