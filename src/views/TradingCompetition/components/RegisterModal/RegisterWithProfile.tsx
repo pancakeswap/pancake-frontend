@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
 import { Button, Heading, Text, Flex, Checkbox, AutoRenewIcon } from '@pancakeswap-libs/uikit'
@@ -18,10 +18,15 @@ const StyledLabel = styled.label`
 const RegisterWithProfile: React.FC<CompetitionProps> = ({ profile, onDismiss }) => {
   const [isAcknowledged, setIsAcknowledged] = useState(false)
   const [isConfirming, setIsConfirming] = useState(false)
+  const [signature, setSignature] = useState(null)
   const tradingCompetitionContract = useTradingCompetitionContract()
   const { account } = useWeb3React()
   const { toastSuccess, toastError } = useToast()
   const TranslateString = useI18n()
+
+  useEffect(() => {
+    console.log('signature, ', signature)
+  }, [signature])
 
   const handleConfirmClick = () => {
     tradingCompetitionContract.methods
@@ -30,8 +35,10 @@ const RegisterWithProfile: React.FC<CompetitionProps> = ({ profile, onDismiss })
       .on('sending', () => {
         setIsConfirming(true)
       })
-      .on('receipt', async () => {
-        toastSuccess('Registered!')
+      .on('receipt', async (event) => {
+        console.log(event)
+        setSignature(event.signature)
+        toastSuccess('Registered for the competition!')
         onDismiss()
       })
       .on('error', (error) => {
