@@ -117,7 +117,7 @@ const CollectModal: React.FC<CollectModalProps> = ({
       title={harvest ? TranslateString(562, 'Harvest') : TranslateString(1056, 'Collect')}
       onDismiss={onDismiss}
       minWidth="280px"
-      headerBackground={theme.card.cardHeaderBackground}
+      headerBackground={theme.card.cardHeaderBackground.default}
     >
       {!harvest && (
         <Flex justifyContent="center" alignItems="center" mb="24px">

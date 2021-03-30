@@ -135,7 +135,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
       title={handleRenderTitle()}
       minWidth="288px"
       onDismiss={onDismiss}
-      headerBackground={theme.card.cardHeaderBackground}
+      headerBackground={theme.card.cardHeaderBackground.default}
     >
       <Flex alignItems="center" justifyContent="space-between" mb="8px">
         <Text bold>{isStaking ? TranslateString(316, 'Stake') : TranslateString(588, 'Unstake')}:</Text>

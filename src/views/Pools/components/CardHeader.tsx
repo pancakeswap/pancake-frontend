@@ -5,7 +5,7 @@ import useI18n from 'hooks/useI18n'
 
 const Container = styled.div<{ isFinished: boolean }>`
   background: ${({ isFinished, theme }) =>
-    isFinished ? theme.colors.backgroundDisabled : theme.card.cardHeaderBackground};
+    isFinished ? theme.colors.backgroundDisabled : theme.card.cardHeaderBackground.default};
   border-radius: 32px 32px 0px 0px;
   display: flex;
   width: 100%;
