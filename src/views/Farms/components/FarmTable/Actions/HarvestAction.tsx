@@ -19,7 +19,7 @@ const HarvestAction: React.FunctionComponent<FarmWithStakedValue> = ({ pid, user
   let earningsBusd = 0
   let displayBalance = <Skeleton width={60} />
 
-  // If earnings loaded
+  // If earnings loaded.
   if (earningsBigNumber !== null) {
     earnings = getBalanceNumber(earningsBigNumber)
     earningsBusd = new BigNumber(earnings).multipliedBy(cakePrice).toNumber()
