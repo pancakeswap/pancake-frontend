@@ -44,21 +44,19 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
   const isOldSyrup = stakingToken.symbol === tokens.syrup.symbol
   const accountHasStakedBalance = stakedBalance?.toNumber() > 0
   const isCardActive = accountHasStakedBalance
-  const earningTokenDecimals = earningToken.decimals
-  const earningTokenName = earningToken.symbol
-  const poolImage = `${earningTokenName}-${stakingToken.symbol}.svg`.toLocaleLowerCase()
+  const poolImage = `${earningToken.symbol}-${stakingToken.symbol}.svg`.toLocaleLowerCase()
 
   return (
     <Card isActive={isCardActive} isFinished={isFinished && sousId !== 0}>
       <CardHeader
-        title={`${TranslateString(318, 'Earn')} ${earningTokenName}`}
+        title={`${TranslateString(318, 'Earn')} ${earningToken.symbol}`}
         coinIconUrl={`/images/pools/${poolImage}`}
-        earningTokenName={earningTokenName}
+        earningTokenName={earningToken.symbol}
         stakingTokenName={stakingToken.symbol}
         isFinished={isFinished && sousId !== 0}
       />
       <Flex flexDirection="column" padding="24px">
-        <Apr tokenName={earningTokenName} isOldSyrup={isOldSyrup} isFinished={isFinished} apy={apr} />
+        <Apr tokenName={earningToken.symbol} isOldSyrup={isOldSyrup} isFinished={isFinished} apy={apr} />
         <Earned
           isFinished={isFinished}
           sousId={sousId}
@@ -68,7 +66,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
           harvest={harvest}
           isOldSyrup={isOldSyrup}
           earnings={earnings}
-          earningTokenDecimals={earningTokenDecimals}
+          earningTokenDecimals={earningToken.decimals}
         />
         <Stake pool={pool} isOldSyrup={isOldSyrup} isBnbPool={isBnbPool} />
       </Flex>
@@ -81,9 +79,9 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
         endBlock={endBlock}
         isFinished={isFinished}
         poolCategory={poolCategory}
-        earningTokenName={earningTokenName}
+        earningTokenName={earningToken.symbol}
         earningTokenAddress={earningToken.address ? getAddress(earningToken.address) : ''}
-        earningTokenDecimals={earningTokenDecimals}
+        earningTokenDecimals={earningToken.decimals}
       />
     </Card>
   )
