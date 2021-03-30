@@ -7,7 +7,10 @@ import useI18n from 'hooks/useI18n'
 import { useTotalRewards } from 'hooks/useTickets'
 import PastLotteryDataContext from 'contexts/PastLotteryDataContext'
 import ExpandableSectionButton from 'components/ExpandableSectionButton/ExpandableSectionButton'
+import { BigNumber } from 'bignumber.js'
+import { usePriceCakeBusd } from 'state/hooks'
 import PrizeGrid from '../PrizeGrid'
+import CardBusdValue from '../../../Home/components/CardBusdValue'
 
 const CardHeading = styled.div`
   position: relative;
@@ -53,6 +56,7 @@ const TotalPrizesCard = () => {
   const { account } = useWeb3React()
   const [showFooter, setShowFooter] = useState(false)
   const lotteryPrizeAmount = +getBalanceNumber(useTotalRewards()).toFixed(0)
+  const lotteryPrizeAmountBusd = new BigNumber(lotteryPrizeAmount).multipliedBy(usePriceCakeBusd()).toNumber()
   const lotteryPrizeWithCommaSeparators = lotteryPrizeAmount.toLocaleString()
   const { currentLotteryNumber } = useContext(PastLotteryDataContext)
 
@@ -81,6 +85,7 @@ const TotalPrizesCard = () => {
                 {TranslateString(722, 'Total Pot:')}
               </Text>
               <Heading size="lg">{lotteryPrizeWithCommaSeparators} CAKE</Heading>
+              {lotteryPrizeAmountBusd !== 0 && <CardBusdValue value={lotteryPrizeAmountBusd} />}
             </PrizeCountWrapper>
           </Left>
           <Right>
