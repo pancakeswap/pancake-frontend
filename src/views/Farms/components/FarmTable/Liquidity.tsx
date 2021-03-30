@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { HelpIcon, Text } from '@pancakeswap-libs/uikit'
+import { HelpIcon, Skeleton, Text } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 
 import Tooltip from '../Tooltip/Tooltip'
@@ -35,9 +35,11 @@ const Container = styled.div`
 `
 
 const Liquidity: React.FunctionComponent<LiquidityProps> = ({ liquidity }) => {
-  const displayLiquidity = liquidity
-    ? `$${Number(liquidity).toLocaleString(undefined, { maximumFractionDigits: 0 })}`
-    : '-'
+  const displayLiquidity = liquidity ? (
+    `$${Number(liquidity).toLocaleString(undefined, { maximumFractionDigits: 0 })}`
+  ) : (
+    <Skeleton width={60} />
+  )
   const TranslateString = useI18n()
 
   return (

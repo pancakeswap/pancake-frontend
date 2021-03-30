@@ -10,11 +10,13 @@ import Page from 'components/layout/Page'
 import { useFarms, usePriceCakeBusd, useGetApiPrices } from 'state/hooks'
 import useRefresh from 'hooks/useRefresh'
 import { fetchFarmUserDataAsync } from 'state/actions'
+import { setFarmUserData } from 'state/farms'
 import { Farm } from 'state/types'
 import useI18n from 'hooks/useI18n'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { getFarmApy } from 'utils/apy'
 import { orderBy } from 'lodash'
+import farmsConfig from 'config/constants/farms'
 
 import FarmCard, { FarmWithStakedValue } from './components/FarmCard/FarmCard'
 import Table from './components/FarmTable/FarmTable'
@@ -127,6 +129,16 @@ const Farms: React.FC = () => {
     if (account) {
       dispatch(fetchFarmUserDataAsync(account))
     }
+
+    const arrayOfUserDataObjects = farmsConfig.map((farm, index) => ({
+      index,
+      allowance: 0,
+      tokenBalance: 0,
+      stakedBalance: 0,
+      earnings: 0,
+    }))
+
+    dispatch(setFarmUserData({ arrayOfUserDataObjects }))
   }, [account, dispatch, fastRefresh])
 
   const [stakedOnly, setStakedOnly] = useState(false)
@@ -223,7 +235,6 @@ const Farms: React.FC = () => {
       },
       earned: {
         earnings: farm.userData ? getBalanceNumber(new BigNumber(farm.userData.earnings)) : null,
-        pid: farm.pid,
       },
       liquidity: {
         liquidity: farm.liquidity,
