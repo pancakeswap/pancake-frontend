@@ -38,6 +38,7 @@ const LanguageContextProvider = ({ children }) => {
   const [selectedLanguage, setSelectedLanguage] = useState<any>(EN)
   const [translatedLanguage, setTranslatedLanguage] = useState<any>(EN)
   const [translations, setTranslations] = useState<Array<any>>([])
+  const [storageCheckDone, setStorageCheckDone] = useState(false)
 
   const getStoredLang = (storedLangCode: string) => {
     return allLanguages.filter((language) => {
@@ -53,10 +54,11 @@ const LanguageContextProvider = ({ children }) => {
     } else {
       setSelectedLanguage(EN)
     }
+    setStorageCheckDone(true)
   }, [])
 
   useEffect(() => {
-    if (selectedLanguage) {
+    if (selectedLanguage && storageCheckDone) {
       fetchTranslationsForSelectedLanguage(selectedLanguage)
         .then((translationApiResponse) => {
           if (translationApiResponse.data.length < 1) {
@@ -71,7 +73,7 @@ const LanguageContextProvider = ({ children }) => {
           console.error('Error while loading translations', e)
         })
     }
-  }, [selectedLanguage, setTranslations])
+  }, [selectedLanguage, storageCheckDone])
 
   const handleLanguageSelect = (langObject: LangType) => {
     setSelectedLanguage(langObject)
