@@ -23,6 +23,7 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({ round, hasEnteredUp, hasE
   })
   const TranslateString = useI18n()
   const interval = useGetTotalIntervalBlocks()
+  const canEnterPosition = round.lockPrice === null
 
   // Bettable rounds do not have an endblock set so we approximate it by adding the block interval
   // to the start block
@@ -61,10 +62,21 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({ round, hasEnteredUp, hasE
         <CardBody p="16px">
           <MultiplierArrow hasEntered={hasEnteredUp} />
           <RoundInfoBox isNext>
-            <Button variant="success" width="100%" onClick={() => handleSetPosition(BetPosition.BULL)} mb="4px">
+            <Button
+              variant="success"
+              width="100%"
+              onClick={() => handleSetPosition(BetPosition.BULL)}
+              mb="4px"
+              disabled={!canEnterPosition}
+            >
               {TranslateString(999, 'Enter UP')}
             </Button>
-            <Button variant="danger" width="100%" onClick={() => handleSetPosition(BetPosition.BEAR)}>
+            <Button
+              variant="danger"
+              width="100%"
+              onClick={() => handleSetPosition(BetPosition.BEAR)}
+              disabled={!canEnterPosition}
+            >
               {TranslateString(999, 'Enter DOWN')}
             </Button>
           </RoundInfoBox>

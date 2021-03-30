@@ -8,13 +8,13 @@ import { usePredictionsContract } from 'hooks/useContract'
 import useI18n from 'hooks/useI18n'
 import UnlockButton from 'components/UnlockButton'
 import { getDecimalAmount } from 'utils/formatBalance'
-import { getBnbAmount, formatBnb } from '../../helpers'
 
 interface SetPositionButtonProps {
   value: BigNumber
   bnbBalance: BigNumber
   betPosition: BetPosition
   minBetAmountBalance: number
+  onSuccess: () => void
 }
 
 const getButtonProps = (
@@ -38,6 +38,7 @@ const SetPositionButton: React.FC<SetPositionButtonProps> = ({
   bnbBalance,
   betPosition,
   minBetAmountBalance,
+  onSuccess,
 }) => {
   const [isTxPending, setIsTxPending] = useState(false)
   const { account } = useWeb3React()
@@ -62,14 +63,13 @@ const SetPositionButton: React.FC<SetPositionButtonProps> = ({
       .on('receipt', () => {
         setIsTxPending(false)
         const positionDisplay = betPosition === BetPosition.BULL ? 'Bull' : 'Bear'
-        const valueAmount = formatBnb(getBnbAmount(value).toNumber())
+
+        onSuccess()
 
         toastSuccess(
           'Success!',
-          TranslateString(999, `You have entered the ${positionDisplay} position for ${valueAmount} BNB`, {
+          TranslateString(999, `${positionDisplay} position entered!`, {
             position: positionDisplay,
-            num: valueAmount,
-            token: 'BNB',
           }),
         )
       })

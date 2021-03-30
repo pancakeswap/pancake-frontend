@@ -192,6 +192,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
             bnbBalance={bnbBalance}
             betPosition={position}
             minBetAmountBalance={minBetAmountBalance}
+            onSuccess={() => onBack()}
           />
         </Box>
         <Text as="p" fontSize="12px" lineHeight={1} color="textSubtle">
