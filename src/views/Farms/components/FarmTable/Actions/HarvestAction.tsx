@@ -13,13 +13,13 @@ import { ActionContainer, ActionTitles, Title, Subtle, ActionContent, Earned, St
 
 const HarvestAction: React.FunctionComponent<FarmWithStakedValue> = ({ pid, userData }) => {
   const { account } = useWeb3React()
-  const earningsBigNumber = userData && account ? new BigNumber(userData.earnings) : null
+  const earningsBigNumber = userData ? new BigNumber(userData.earnings) : null
   const cakePrice = usePriceCakeBusd()
   let earnings = null
   let earningsBusd = 0
   let displayBalance = '?'
 
-  if (earningsBigNumber) {
+  if (earningsBigNumber !== null) {
     earnings = getBalanceNumber(earningsBigNumber)
     earningsBusd = new BigNumber(earnings).multipliedBy(cakePrice).toNumber()
     displayBalance = earnings.toLocaleString()

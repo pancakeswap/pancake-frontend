@@ -1,10 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
-import { useWeb3React } from '@web3-react/core'
+import { Skeleton } from '@pancakeswap-libs/uikit'
 
 export interface EarnedProps {
   earnings: number
-  pid: number
 }
 
 const Amount = styled.span<{ earned: number }>`
@@ -14,11 +13,17 @@ const Amount = styled.span<{ earned: number }>`
 `
 
 const Earned: React.FunctionComponent<EarnedProps> = ({ earnings }) => {
-  const { account } = useWeb3React()
-  const amountEarned = account ? earnings : null
+  // If still loading earnings
+  if (earnings === null) {
+    return (
+      <Amount earned={earnings}>
+        <Skeleton width={60} />
+      </Amount>
+    )
+  }
 
-  const displayBalance = amountEarned ? amountEarned.toLocaleString() : '?'
-  return <Amount earned={amountEarned}>{displayBalance}</Amount>
+  const displayBalance = earnings.toLocaleString()
+  return <Amount earned={earnings}>{displayBalance}</Amount>
 }
 
 export default Earned
