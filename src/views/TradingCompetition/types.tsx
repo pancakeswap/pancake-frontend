@@ -1,5 +1,12 @@
 import { Profile } from 'state/types'
 
+export interface UserRewardsProps {
+  userCanClaim?: boolean
+  userRewards?: {
+    cakeToClaim?: string
+    pointsToClaim?: string
+  }
+}
 export interface UserTradingStatsProps {
   0?: string
   1?: string
@@ -11,7 +18,7 @@ export interface UserTradingStatsProps {
   hasClaimed?: boolean
 }
 
-export interface CompetitionProps {
+export interface CompetitionProps extends UserRewardsProps {
   userTradingStats?: UserTradingStatsProps
   account?: string
   profile?: Profile

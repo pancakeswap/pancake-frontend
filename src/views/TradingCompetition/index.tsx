@@ -105,6 +105,8 @@ const TradingCompetition = () => {
               hasCompetitionFinished={hasCompetitionFinished}
               profile={profile}
               isLoading={isLoading}
+              userCanClaim={userCanClaim}
+              userRewards={userRewards}
             />
           )
         }
@@ -145,6 +147,8 @@ const TradingCompetition = () => {
             isCompetitionLive={isCompetitionLive}
             profile={profile}
             isLoading={isLoading}
+            userCanClaim={userCanClaim}
+            userRewards={userRewards}
           />
         )}
       </Section>

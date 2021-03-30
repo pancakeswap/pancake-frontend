@@ -14,6 +14,7 @@ import {
 import useAuth from 'hooks/useAuth'
 import useI18n from 'hooks/useI18n'
 import RegisterModal from '../RegisterModal'
+import ClaimModal from '../ClaimModal'
 import { Heading2Text } from '../CompetitionHeadingText'
 import { CompetitionProps } from '../../types'
 
@@ -48,13 +49,29 @@ const BattleCta: React.FC<CompetitionProps> = ({
   profile,
   isLoading,
   hasCompetitionFinished,
+  userCanClaim,
+  userRewards,
 }) => {
   const TranslateString = useI18n()
   const { login, logout } = useAuth()
   const { onPresentConnectModal } = useWalletModal(login, logout)
   const [onPresentRegisterModal] = useModal(<RegisterModal profile={profile} />, false)
+  const [onPresentClaimModal] = useModal(<ClaimModal />, false)
 
   const { hasRegistered, hasClaimed } = userTradingStats
+
+  const getHeadingText = () => {
+    // Competition live
+    if (isCompetitionLive) {
+      return TranslateString(999, 'Now Live!')
+    }
+    // Competition finished
+    if (hasCompetitionFinished) {
+      return TranslateString(999, 'Finished!')
+    }
+    // Competition not started
+    return TranslateString(999, 'Starting Soon')
+  }
 
   const getButtonText = () => {
     // No wallet connected
@@ -68,6 +85,31 @@ const BattleCta: React.FC<CompetitionProps> = ({
     }
 
     if (hasRegistered) {
+      // User registered and competition live
+      if (isCompetitionLive) {
+        return TranslateString(999, 'Trade Now')
+      }
+
+      // User registered and competition finished
+      if (hasCompetitionFinished) {
+        // User has prizes to claim
+        if (userCanClaim) {
+          return TranslateString(999, 'Claim prizes')
+        }
+        // User has already claimed prizes
+        if (hasClaimed) {
+          return (
+            <>
+              <CheckmarkCircleIcon /> {TranslateString(999, 'Prizes Claimed!')}
+            </>
+          )
+        }
+        // Use has nothing to claim
+        if (!userCanClaim) {
+          return TranslateString(999, 'Nothing to claim')
+        }
+      }
+
       // User registered but competition has not started
       if (!isCompetitionLive) {
         return (
@@ -76,15 +118,10 @@ const BattleCta: React.FC<CompetitionProps> = ({
           </>
         )
       }
-
-      // User registered and competition live
-      if (isCompetitionLive) {
-        return TranslateString(999, 'Trade Now')
-      }
     }
 
     // May be useful for debugging - if somehow none of the above conditions are met
-    return 'Error'
+    return 'Whoopsie'
   }
 
   const handleCtaClick = () => {
@@ -92,27 +129,32 @@ const BattleCta: React.FC<CompetitionProps> = ({
     if (!account) {
       onPresentConnectModal()
     }
-
     // Wallet connected but user not registered
     if (account && !hasRegistered) {
       onPresentRegisterModal()
     }
-
     // Registered and competition is live
     if (hasRegistered && isCompetitionLive) {
       window.location.href = 'https://exchange.pancakeswap.finance/#/swap'
     }
+    // Registered and competition has finished
+    if (hasRegistered && hasCompetitionFinished) {
+      onPresentClaimModal()
+    }
   }
 
-  const isButtonDisabled = () => isLoading || (hasRegistered && !isCompetitionLive)
+  const registeredAndNotLive = hasRegistered && !isCompetitionLive
+  const finishedAndPrizesClaimed = hasCompetitionFinished && account && hasClaimed
+  // This 'nothing to claim' condition needs refining
+  const finishedAndNothingToClaim = hasCompetitionFinished && account && !userCanClaim
+  const isButtonDisabled = () =>
+    isLoading || registeredAndNotLive || finishedAndPrizesClaimed || finishedAndNothingToClaim
 
   return (
     <StyledCard>
       <CardBody>
         <Flex flexDirection="column" justifyContent="center" alignItems="center">
-          <Heading2Text>
-            {isCompetitionLive ? TranslateString(999, 'Now Live!') : TranslateString(999, 'Starting Soon')}
-          </Heading2Text>
+          <Heading2Text>{getHeadingText()}</Heading2Text>
           <Flex alignItems="flex-end">
             <LaurelLeftIcon />
             <StyledButton disabled={isButtonDisabled()} onClick={() => handleCtaClick()}>
