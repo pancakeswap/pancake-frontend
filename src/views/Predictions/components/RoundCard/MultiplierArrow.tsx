@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Flex, Text } from '@pancakeswap-libs/uikit'
+import { Box, Flex, Text } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import { BetPosition } from 'state/types'
 import { MultiplierDown, MultiplierUp } from '../../icons/MultiplierIcon'
@@ -17,7 +17,6 @@ interface MultiplierArrowProps {
 const ArrowWrapper = styled.div`
   height: 65px;
   margin: 0 auto;
-  position: relative;
   width: 240px;
 `
 
@@ -34,9 +33,8 @@ const Content = styled.div`
 `
 
 const EnteredTagWrapper = styled.div`
-  left: 0;
   position: absolute;
-  top: 0;
+  z-index: 10;
 `
 
 const getTextColor = (fallback = 'textSubtle') => (isActive: boolean, isDisabled: boolean) => {
@@ -75,38 +73,42 @@ const MultiplierArrow: React.FC<MultiplierArrowProps> = ({
 
   if (betPosition === BetPosition.BEAR) {
     return (
-      <ArrowWrapper>
-        <MultiplierDown isActive={isActive} />
-        {hasEntered && (
-          <EnteredTagWrapper>
-            <EnteredTag />
-          </EnteredTagWrapper>
-        )}
-        <Content>
-          {multiplierText}
-          <Text bold fontSize="24px" lineHeight="26px" mb="8px" color={downColor} textTransform="uppercase">
-            {TranslateString(999, 'Down')}
-          </Text>
-        </Content>
-      </ArrowWrapper>
+      <Box position="relative">
+        <ArrowWrapper>
+          <MultiplierDown isActive={isActive} />
+          {hasEntered && (
+            <EnteredTagWrapper style={{ right: 0, bottom: 0 }}>
+              <EnteredTag />
+            </EnteredTagWrapper>
+          )}
+          <Content>
+            {multiplierText}
+            <Text bold fontSize="24px" lineHeight="26px" mb="8px" color={downColor} textTransform="uppercase">
+              {TranslateString(999, 'Down')}
+            </Text>
+          </Content>
+        </ArrowWrapper>
+      </Box>
     )
   }
 
   return (
-    <ArrowWrapper>
-      <MultiplierUp isActive={isActive} />
-      {hasEntered && (
-        <EnteredTagWrapper>
-          <EnteredTag />
-        </EnteredTagWrapper>
-      )}
-      <Content>
-        <Text bold fontSize="24px" lineHeight="26px" color={upColor} textTransform="uppercase">
-          {TranslateString(999, 'Up')}
-        </Text>
-        {multiplierText}
-      </Content>
-    </ArrowWrapper>
+    <Box position="relative">
+      <ArrowWrapper>
+        <MultiplierUp isActive={isActive} />
+        {hasEntered && (
+          <EnteredTagWrapper style={{ left: 0, top: 0 }}>
+            <EnteredTag />
+          </EnteredTagWrapper>
+        )}
+        <Content>
+          <Text bold fontSize="24px" lineHeight="26px" color={upColor} textTransform="uppercase">
+            {TranslateString(999, 'Up')}
+          </Text>
+          {multiplierText}
+        </Content>
+      </ArrowWrapper>
+    </Box>
   )
 }
 
