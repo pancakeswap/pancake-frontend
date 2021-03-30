@@ -65,7 +65,7 @@ export const transformRoundResponse = (roundResponse: RoundResponse): Round => {
     endBlock: numberOrNull(endBlock),
     closePrice: closePrice ? parseFloat(closePrice) : null,
     totalBets: numberOrNull(totalBets),
-    totalAmount: lockPrice ? parseFloat(totalAmount) : null,
+    totalAmount: totalAmount ? parseFloat(totalAmount) : 0,
     bullBets: numberOrNull(bullBets),
     bearAmount: numberOrNull(bearAmount),
     bullAmount: numberOrNull(bullAmount),
