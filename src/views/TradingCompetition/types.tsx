@@ -1,12 +1,22 @@
 import { Profile } from 'state/types'
 
+export interface UserTradingStatsProps {
+  0?: string
+  1?: string
+  2?: boolean
+  3?: boolean
+  rewardGroup?: string
+  teamId?: string
+  hasRegistered?: boolean
+  hasClaimed?: boolean
+}
+
 export interface CompetitionProps {
-  registered?: boolean
+  userTradingStats?: UserTradingStatsProps
   account?: string
   profile?: Profile
   isCompetitionLive?: boolean
   isLoading?: boolean
-  isInitialized?: boolean
   onDismiss?: () => void
 }
 

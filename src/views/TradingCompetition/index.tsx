@@ -45,23 +45,23 @@ const StyledSection = styled(Section)`
 
 const TradingCompetition = () => {
   const { account } = useWeb3React()
-  const { profile, isInitialized, isLoading } = useProfile()
+  const { profile, isLoading } = useProfile()
   const tradingCompetitionContract = useTradingCompetitionContract()
-  const [userRegisteredForCompetition, setUserRegisteredForCompetition] = useState(false)
+  const [userTradingStats, setUserTradingStats] = useState({ hasRegistered: false })
 
   useEffect(() => {
     const fetchUser = async () => {
       const user = await tradingCompetitionContract.methods.userTradingStats(account).call()
-      setUserRegisteredForCompetition(user.hasRegistered)
+      setUserTradingStats(user)
     }
     if (account) {
       fetchUser()
     }
   }, [account, tradingCompetitionContract])
 
-  const registered = false
-  const isCompetitionLive = false
+  const isCompetitionLive = true
   const hasCompetitionStarted = false
+
   return (
     <CompetitionPage>
       <Section
@@ -69,14 +69,16 @@ const TradingCompetition = () => {
         svgFill={DARKFILL}
         index={4}
         intersectComponent={
-          <BattleCta
-            registered={registered}
-            account={account}
-            isCompetitionLive={isCompetitionLive}
-            profile={profile}
-            isInitialized={isInitialized}
-            isLoading={isLoading}
-          />
+          // if the competition is live, and the account is connected but the user hasn't registered - hide cta
+          account && isCompetitionLive && !userTradingStats.hasRegistered ? null : (
+            <BattleCta
+              userTradingStats={userTradingStats}
+              account={account}
+              isCompetitionLive={isCompetitionLive}
+              profile={profile}
+              isLoading={isLoading}
+            />
+          )
         }
       >
         <BattleBanner />

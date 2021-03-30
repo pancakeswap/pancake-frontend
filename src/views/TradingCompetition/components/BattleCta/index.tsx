@@ -42,17 +42,18 @@ const StyledButton = styled(Button)`
 `
 
 const BattleCta: React.FC<CompetitionProps> = ({
-  registered,
+  userTradingStats,
   account,
   isCompetitionLive,
   profile,
-  isInitialized,
   isLoading,
 }) => {
   const TranslateString = useI18n()
   const { login, logout } = useAuth()
   const { onPresentConnectModal } = useWalletModal(login, logout)
   const [onPresentRegisterModal] = useModal(<RegisterModal profile={profile} />, false)
+
+  const { hasRegistered } = userTradingStats
 
   const getButtonText = () => {
     // No wallet connected
@@ -61,12 +62,12 @@ const BattleCta: React.FC<CompetitionProps> = ({
     }
 
     // User not registered
-    if (!registered) {
+    if (!hasRegistered) {
       return TranslateString(999, 'Register Now!')
     }
 
     // User registered but competition has not started
-    if (registered && !isCompetitionLive) {
+    if (hasRegistered && !isCompetitionLive) {
       return (
         <>
           <CheckmarkCircleIcon /> {TranslateString(999, 'Registered!')}
@@ -75,7 +76,7 @@ const BattleCta: React.FC<CompetitionProps> = ({
     }
 
     // User registered and competition live
-    if (registered && isCompetitionLive) {
+    if (hasRegistered && isCompetitionLive) {
       return TranslateString(999, 'Trade Now')
     }
 
@@ -90,17 +91,17 @@ const BattleCta: React.FC<CompetitionProps> = ({
     }
 
     // Wallet connected but user not registered
-    if (account && !registered) {
+    if (account && !hasRegistered) {
       onPresentRegisterModal()
     }
 
     // Registered and competition is live
-    if (registered && isCompetitionLive) {
+    if (hasRegistered && isCompetitionLive) {
       window.location.href = 'https://exchange.pancakeswap.finance/#/swap'
     }
   }
 
-  const isButtonDisabled = () => isLoading || (registered && !isCompetitionLive)
+  const isButtonDisabled = () => isLoading || (hasRegistered && !isCompetitionLive)
 
   return (
     <StyledCard>
