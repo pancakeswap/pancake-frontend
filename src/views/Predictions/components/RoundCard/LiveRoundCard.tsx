@@ -5,13 +5,14 @@ import useI18n from 'hooks/useI18n'
 import { Round, BetPosition } from 'state/types'
 import { useGetTotalIntervalBlocks } from 'state/hooks'
 import { useBnbUsdtTicker } from 'hooks/ticker'
-import { formatUsd, getBubbleGumBackground } from '../../helpers'
+import { formatRoundPriceDifference, formatUsd, getBubbleGumBackground } from '../../helpers'
 import MultiplierArrow from './MultiplierArrow'
 import Card from './Card'
 import RoundInfoBox from './RoundInfoBox'
 import CardHeader from './CardHeader'
 import RoundInfo from './RoundInfo'
 import LiveRoundProgress from './RoundProgress'
+import { PositionTag } from './Tag'
 
 interface LiveRoundCardProps {
   round: Round
@@ -56,9 +57,16 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({ round, hasEnteredUp, hasE
               {TranslateString(999, 'Last Price')}
             </Text>
             <Flex alignItems="center" justifyContent="space-between" mb="16px">
-              <Text bold color={priceColor} fontSize="24px" style={{ minHeight: '36px' }}>
-                {stream && formatUsd(stream.lastPrice)}
-              </Text>
+              {stream && (
+                <>
+                  <Text bold color={priceColor} fontSize="24px" style={{ minHeight: '36px' }}>
+                    {formatUsd(stream.lastPrice)}
+                  </Text>
+                  <PositionTag betPosition={isBull ? BetPosition.BULL : BetPosition.BEAR}>
+                    {formatRoundPriceDifference(lockPrice, stream.lastPrice)}
+                  </PositionTag>
+                </>
+              )}
             </Flex>
             <RoundInfo lockPrice={lockPrice} totalAmount={totalAmount} />
           </RoundInfoBox>

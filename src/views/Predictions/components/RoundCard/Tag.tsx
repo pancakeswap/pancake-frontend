@@ -25,7 +25,7 @@ const Tag: React.FC<TagProps> = ({ bg = 'success', startIcon, children, onClick,
       py="4px"
       px="8px"
       onClick={onClick}
-      style={{ cursor: onClick ? 'pointer' : 'normal' }}
+      style={{ cursor: onClick ? 'pointer' : 'normal', width: '90px' }}
       {...props}
     >
       {icon}
