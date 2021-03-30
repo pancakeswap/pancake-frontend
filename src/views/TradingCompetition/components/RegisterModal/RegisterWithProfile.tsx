@@ -15,7 +15,7 @@ const StyledLabel = styled.label`
   cursor: pointer;
 `
 
-const RegisterWithProfile: React.FC<CompetitionProps> = ({ profile, onDismiss }) => {
+const RegisterWithProfile: React.FC<CompetitionProps> = ({ profile, onRegisterSuccess }) => {
   const [isAcknowledged, setIsAcknowledged] = useState(false)
   const [isConfirming, setIsConfirming] = useState(false)
   const tradingCompetitionContract = useTradingCompetitionContract()
@@ -32,7 +32,7 @@ const RegisterWithProfile: React.FC<CompetitionProps> = ({ profile, onDismiss })
       })
       .on('receipt', async () => {
         toastSuccess('You have registered for the competition!')
-        onDismiss()
+        onRegisterSuccess()
       })
       .on('error', (error) => {
         toastError('Error', error?.message)

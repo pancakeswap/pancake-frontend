@@ -51,11 +51,15 @@ const BattleCta: React.FC<CompetitionProps> = ({
   hasCompetitionFinished,
   userCanClaim,
   userRewards,
+  onRegisterSuccess,
 }) => {
   const TranslateString = useI18n()
   const { login, logout } = useAuth()
   const { onPresentConnectModal } = useWalletModal(login, logout)
-  const [onPresentRegisterModal] = useModal(<RegisterModal profile={profile} />, false)
+  const [onPresentRegisterModal] = useModal(
+    <RegisterModal profile={profile} onRegisterSuccess={onRegisterSuccess} />,
+    false,
+  )
   const [onPresentClaimModal] = useModal(<ClaimModal />, false)
 
   const { hasRegistered, hasClaimed } = userTradingStats

@@ -26,6 +26,7 @@ export interface CompetitionProps extends UserRewardsProps {
   hasCompetitionFinished?: boolean
   isLoading?: boolean
   onDismiss?: () => void
+  onRegisterSuccess?: () => void
 }
 
 export interface YourScoreProps extends CompetitionProps {

@@ -47,14 +47,20 @@ const TradingCompetition = () => {
   const { account } = useWeb3React()
   const { profile, isLoading } = useProfile()
   const tradingCompetitionContract = useTradingCompetitionContract()
+  const [registrationSuccessful, setRegistrationSuccessful] = useState(false)
   const [userTradingStats, setUserTradingStats] = useState({ hasRegistered: false, hasClaimed: false })
   const [userCanClaim, setUserCanClaim] = useState(false)
   const [userRewards, setUserRewards] = useState(null)
   const [teamRewards, setTeamRewards] = useState(null)
 
-  const hasCompetitionFinished = true
+  const hasCompetitionFinished = false
   const isCompetitionLive = false
+  // Ignore this. It's part of the root branch, will all be removed when the countdown state is in.
   const hasCompetitionStarted = false
+
+  const onRegisterSuccess = () => {
+    setRegistrationSuccessful(true)
+  }
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -64,7 +70,7 @@ const TradingCompetition = () => {
     if (account) {
       fetchUser()
     }
-  }, [account, tradingCompetitionContract])
+  }, [account, registrationSuccessful, tradingCompetitionContract])
 
   useEffect(() => {
     const fetchUserRewards = async () => {
@@ -87,6 +93,8 @@ const TradingCompetition = () => {
     }
   }, [account, tradingCompetitionContract, hasCompetitionFinished])
 
+  console.log('registered? ', userTradingStats.hasRegistered)
+
   // if the account is connected, the user hasn't registered and the competition is live or finished - hide cta
   const shouldHideCta = account && !userTradingStats.hasRegistered && (isCompetitionLive || hasCompetitionFinished)
 
@@ -107,6 +115,7 @@ const TradingCompetition = () => {
               isLoading={isLoading}
               userCanClaim={userCanClaim}
               userRewards={userRewards}
+              onRegisterSuccess={onRegisterSuccess}
             />
           )
         }

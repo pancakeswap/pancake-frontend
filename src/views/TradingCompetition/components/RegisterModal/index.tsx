@@ -19,7 +19,7 @@ const StyledNoProfileAvatarIcon = styled(NoProfileAvatarIcon)`
   height: 100%;
 `
 
-const RegisterModal: React.FC<CompetitionProps> = ({ onDismiss, profile }) => {
+const RegisterModal: React.FC<CompetitionProps> = ({ onDismiss, profile, onRegisterSuccess }) => {
   const TranslateString = useI18n()
 
   const modalInner = () => {
@@ -30,7 +30,7 @@ const RegisterModal: React.FC<CompetitionProps> = ({ onDismiss, profile }) => {
 
     // Profile created and active
     if (profile && profile.isActive) {
-      return <RegisterWithProfile profile={profile} onDismiss={onDismiss} />
+      return <RegisterWithProfile profile={profile} onDismiss={onDismiss} onRegisterSuccess={onRegisterSuccess} />
     }
 
     // Profile created but not active
