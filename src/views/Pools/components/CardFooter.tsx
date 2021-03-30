@@ -156,7 +156,7 @@ const CardFooter: React.FC<Props> = ({
           <StyledLinkExternal href={projectLink} ml="auto">
             {TranslateString(999, 'Project site')}
           </StyledLinkExternal>
-          <StyledLinkExternal href="#" ml="auto">
+          <StyledLinkExternal href={`https://pancakeswap.info/token/${earningTokenAddress}`} ml="auto">
             {TranslateString(999, 'Info site')}
           </StyledLinkExternal>
           {!!account && (
