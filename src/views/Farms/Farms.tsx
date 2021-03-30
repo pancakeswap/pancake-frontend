@@ -132,6 +132,7 @@ const Farms: React.FC = () => {
       return
     }
 
+    // If account is not connected, set user data zero.
     const arrayOfUserDataObjects = farmsConfig.map((farm, index) => ({
       index,
       allowance: 0,
