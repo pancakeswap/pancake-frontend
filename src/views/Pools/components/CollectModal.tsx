@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react'
 import useI18n from 'hooks/useI18n'
 import BigNumber from 'bignumber.js'
 import { Button, Modal, ButtonMenu, ButtonMenuItem, Flex, HelpIcon, Text, RefreshIcon } from '@pancakeswap-libs/uikit'
-import { getFullDisplayBalance } from 'utils/formatBalance'
+import { getFullDisplayBalance, getBalanceNumber } from 'utils/formatBalance'
 import Balance from 'components/Balance'
 import { useSousStake } from 'hooks/useStake'
 import { useSousHarvest } from 'hooks/useHarvest'
@@ -138,7 +138,12 @@ const CollectModal: React.FC<CollectModalProps> = ({
 
       <Flex justifyContent="space-between" alignItems="center">
         <Text>{handleRenderLabel()}:</Text>
-        <Balance value={Number(fullBalance)} fontSize="16px" unit={` ${earningTokenName}`} decimals={4} />
+        <Balance
+          value={getBalanceNumber(earnings, earningTokenDecimals)}
+          fontSize="16px"
+          unit={` ${earningTokenName}`}
+          decimals={4}
+        />
       </Flex>
       <Flex justifyContent="flex-end" alignItems="center">
         <Balance
