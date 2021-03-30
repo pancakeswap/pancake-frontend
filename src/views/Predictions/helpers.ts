@@ -9,11 +9,11 @@ export const getBnbAmount = (bnbBn: BigNumber) => {
 }
 
 export const formatUsd = (usd: number) => {
-  return usd ? `$${usd.toLocaleString(undefined, { minimumFractionDigits: 3, maximumFractionDigits: 3 })}` : usd
+  return usd ? `$${usd.toLocaleString(undefined, { minimumFractionDigits: 3, maximumFractionDigits: 3 })}` : '0'
 }
 
 export const formatBnb = (bnb: number) => {
-  return bnb ? bnb.toLocaleString(undefined, { minimumFractionDigits: 3, maximumFractionDigits: 3 }) : bnb
+  return bnb ? bnb.toLocaleString(undefined, { minimumFractionDigits: 3, maximumFractionDigits: 3 }) : '0'
 }
 
 export const formatBnbFromBigNumber = (bnbBn: BigNumber) => {

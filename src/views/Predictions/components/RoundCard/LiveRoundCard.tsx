@@ -18,6 +18,8 @@ interface LiveRoundCardProps {
   round: Round
   hasEnteredUp: boolean
   hasEnteredDown: boolean
+  bullMultiplier: number
+  bearMultiplier: number
 }
 
 const GradientBorder = styled.div`
@@ -30,7 +32,13 @@ const GradientCard = styled(Card)`
   background: ${({ theme }) => getBubbleGumBackground(theme)};
 `
 
-const LiveRoundCard: React.FC<LiveRoundCardProps> = ({ round, hasEnteredUp, hasEnteredDown }) => {
+const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
+  round,
+  hasEnteredUp,
+  hasEnteredDown,
+  bullMultiplier,
+  bearMultiplier,
+}) => {
   const TranslateString = useI18n()
   const { lockPrice, lockBlock, totalAmount } = round
   const { stream } = useBnbUsdtTicker()
@@ -51,7 +59,7 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({ round, hasEnteredUp, hasE
         />
         <LiveRoundProgress startBlock={lockBlock} endBlock={estimatedEndBlock} />
         <CardBody p="16px">
-          <MultiplierArrow multiplier={10.3} hasEntered={hasEnteredUp} isActive={isBull} />
+          <MultiplierArrow multiplier={bullMultiplier} hasEntered={hasEnteredUp} isActive={isBull} />
           <RoundInfoBox betPosition={isBull ? BetPosition.BULL : BetPosition.BEAR}>
             <Text color="textSubtle" fontSize="12px" bold textTransform="uppercase" mb="8px">
               {TranslateString(999, 'Last Price')}
@@ -71,7 +79,7 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({ round, hasEnteredUp, hasE
             <RoundInfo lockPrice={lockPrice} totalAmount={totalAmount} />
           </RoundInfoBox>
           <MultiplierArrow
-            multiplier={1}
+            multiplier={bearMultiplier}
             betPosition={BetPosition.BEAR}
             hasEntered={hasEnteredDown}
             isActive={!isBull}

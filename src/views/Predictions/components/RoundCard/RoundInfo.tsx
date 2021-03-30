@@ -2,7 +2,8 @@ import React from 'react'
 import { Box, BoxProps, Flex, Text } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import { Round } from 'state/types'
-import { formatBnb, formatUsd } from '../../helpers'
+import { formatUsd } from '../../helpers'
+import PrizePoolRow from './PrizePoolRow'
 
 interface ExpiredRoundCardProps extends BoxProps {
   lockPrice: Round['lockPrice']
@@ -20,10 +21,7 @@ const RoundInfo: React.FC<ExpiredRoundCardProps> = ({ lockPrice, totalAmount, ..
           <Text fontSize="14px">{`${formatUsd(lockPrice)}`}</Text>
         </Flex>
       )}
-      <Flex alignItems="center" justifyContent="space-between">
-        <Text bold>{TranslateString(999, 'Prize Pool')}:</Text>
-        <Text bold>{`${formatBnb(totalAmount)} BNB`}</Text>
-      </Flex>
+      <PrizePoolRow totalAmount={totalAmount} />
     </Box>
   )
 }
