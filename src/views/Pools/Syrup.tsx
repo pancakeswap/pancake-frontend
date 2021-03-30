@@ -100,7 +100,7 @@ const Syrup: React.FC = () => {
             </Heading>
             <Button variant="subtle" ml="auto" as="a" href="https://docs.pancakeswap.finance/syrup-pools/syrup-pool">
               {isXl && 'Help'}
-              <HelpIcon color="white" ml="4px" />
+              <HelpIcon color="white" />
             </Button>
           </Flex>
           <Text fontSize="20px" bold>
@@ -203,9 +203,25 @@ const HeroInner = styled.div`
   padding-left: 16px;
   padding-right: 16px;
 
+  a {
+    padding: 0 12px;
+
+    svg {
+      margin-left: 0;
+    }
+  }
+
   ${({ theme }) => theme.mediaQueries.sm} {
     padding-left: 24px;
     padding-right: 24px;
+
+    a {
+      padding: 0 24px;
+
+      svg {
+        margin-left: 4px;
+      }
+    }
   }
 `
 
