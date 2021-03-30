@@ -158,7 +158,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
         min={0}
         max={100}
         value={percent}
-        onValueChanged={(newValue) => setPercent(newValue)}
+        onValueChanged={handleChangePercent}
         name="stake"
         valueLabel={`${percent}%`}
         step={1}
