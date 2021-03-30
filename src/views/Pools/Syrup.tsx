@@ -211,7 +211,10 @@ const HeroInner = styled.div`
 
 const Hero = styled.div`
   display: block;
-  background: linear-gradient(180deg, #ceecf3 0%, #ccdcef 51.04%, #cac2ec 100%);
+  background: ${({ theme }) =>
+    theme.isDark
+      ? 'linear-gradient(180deg, #434575 0%, #66578D 100%)'
+      : 'linear-gradient(180deg, #ceecf3 0%, #ccdcef 51.04%, #cac2ec 100%)'};
   padding: 32px 0px;
 
   h1 {
