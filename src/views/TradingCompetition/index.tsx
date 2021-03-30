@@ -110,7 +110,18 @@ const TradingCompetition = () => {
         <Rules />
       </Section>
       <Section backgroundStyle={DARKBG} svgFill={DARKFILL} index={4} intersectionPosition="top">
-        <SampleCard />
+        {
+          // if the competition is live, and the account is connected but the user hasn't registered - hide cta
+          account && isCompetitionLive && !userTradingStats.hasRegistered ? null : (
+            <BattleCta
+              userTradingStats={userTradingStats}
+              account={account}
+              isCompetitionLive={isCompetitionLive}
+              profile={profile}
+              isLoading={isLoading}
+            />
+          )
+        }
       </Section>
     </CompetitionPage>
   )
