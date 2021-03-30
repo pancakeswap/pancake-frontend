@@ -120,6 +120,7 @@ const Farms: React.FC = () => {
   const [query, setQuery] = useState('')
   const [viewMode, setViewMode] = useState(ViewMode.TABLE)
   const { account } = useWeb3React()
+
   const [sortOption, setSortOption] = useState('hot')
   const prices = useGetApiPrices()
 
@@ -128,6 +129,7 @@ const Farms: React.FC = () => {
   useEffect(() => {
     if (account) {
       dispatch(fetchFarmUserDataAsync(account))
+      return
     }
 
     const arrayOfUserDataObjects = farmsConfig.map((farm, index) => ({
