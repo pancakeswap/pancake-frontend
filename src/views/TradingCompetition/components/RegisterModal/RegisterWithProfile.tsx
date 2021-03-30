@@ -38,7 +38,7 @@ const RegisterWithProfile: React.FC<CompetitionProps> = ({ profile, onDismiss })
       .on('receipt', async (event) => {
         console.log(event)
         setSignature(event.signature)
-        toastSuccess('Registered for the competition!')
+        toastSuccess('You have registered for the competition!')
         onDismiss()
       })
       .on('error', (error) => {

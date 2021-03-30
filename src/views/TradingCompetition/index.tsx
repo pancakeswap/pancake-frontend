@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { useProfile } from 'state/hooks'
 import { Card, CardHeader, CardBody, Flex, Button } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
+import { useTradingCompetitionContract } from 'hooks/useContract'
 import { PrizesIcon, RulesIcon } from './svgs'
 import {
   DARKBG,
@@ -45,6 +46,19 @@ const StyledSection = styled(Section)`
 const TradingCompetition = () => {
   const { account } = useWeb3React()
   const { profile, isInitialized, isLoading } = useProfile()
+  const tradingCompetitionContract = useTradingCompetitionContract()
+  const [userRegisteredForCompetition, setUserRegisteredForCompetition] = useState(false)
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const user = await tradingCompetitionContract.methods.userTradingStats(account).call()
+      setUserRegisteredForCompetition(user.hasRegistered)
+    }
+    if (account) {
+      fetchUser()
+    }
+  }, [account, tradingCompetitionContract])
+
   const registered = false
   const isCompetitionLive = false
   const hasCompetitionStarted = false
