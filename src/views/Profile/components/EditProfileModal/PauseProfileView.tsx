@@ -65,7 +65,7 @@ const PauseProfilePage: React.FC<PauseProfilePageProps> = ({ onDismiss }) => {
       <label htmlFor="acknowledgement" style={{ cursor: 'pointer', display: 'block', marginBottom: '24px' }}>
         <Flex alignItems="center">
           <Checkbox id="acknowledgement" checked={isAcknowledged} onChange={handleChange} scale="sm" />
-          <Text ml="8px">{TranslateString(999, 'I understand')}</Text>
+          <Text ml="8px">{TranslateString(476, 'I understand')}</Text>
         </Flex>
       </label>
       <Button
@@ -76,7 +76,7 @@ const PauseProfilePage: React.FC<PauseProfilePageProps> = ({ onDismiss }) => {
         onClick={handleDeactivateProfile}
         mb="8px"
       >
-        {TranslateString(999, 'Confirm')}
+        {TranslateString(464, 'Confirm')}
       </Button>
       <Button variant="text" width="100%" onClick={onDismiss}>
         {TranslateString(999, 'Close Window')}

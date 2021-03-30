@@ -939,6 +939,15 @@ const tokens = {
     decimals: 8,
     projectLink: 'https://switcheo.network/',
   },
+  dft: {
+    symbol: 'DFT',
+    address: {
+      56: '0x42712dF5009c20fee340B245b510c0395896cF6e',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://www.dfuture.com/home',
+  },
 }
 
 export default tokens

@@ -71,7 +71,7 @@ const NftCard: React.FC<NftCardProps> = ({ nft, onSuccess, canClaim = false, tok
           <Heading>{name}</Heading>
           {walletOwnsNft && (
             <Tag outline variant="secondary">
-              {TranslateString(999, 'In Wallet')}
+              {TranslateString(728, 'In Wallet')}
             </Tag>
           )}
           {profile?.nft?.bunnyId === bunnyId && (
@@ -82,7 +82,7 @@ const NftCard: React.FC<NftCardProps> = ({ nft, onSuccess, canClaim = false, tok
         </Header>
         {canClaim && (
           <Button width="100%" mt="24px" onClick={onPresentClaimModal}>
-            {TranslateString(999, 'Claim this NFT')}
+            {TranslateString(652, 'Claim this NFT')}
           </Button>
         )}
         {walletOwnsNft && (
