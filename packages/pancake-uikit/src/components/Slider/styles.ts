@@ -6,7 +6,7 @@ import bunnyHeadMax from "./svg/bunnyhead-max.svg";
 import bunnyButt from "./svg/bunnybutt.svg";
 
 interface SliderLabelProps {
-  progress: number;
+  progress: string;
 }
 
 interface StyledInputProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -36,12 +36,20 @@ const getBaseThumbStyles = ({ isMax, disabled }: StyledInputProps) => `
   }
 `;
 
+export const SliderLabelContainer = styled.div`
+  bottom: 0;
+  position: absolute;
+  left: 14px;
+  width: calc(100% - 30px);
+`;
+
 export const SliderLabel = styled(Text)<SliderLabelProps>`
   bottom: 0;
   font-size: 12px;
-  left: calc(${({ progress }) => progress}%);
+  left: ${({ progress }) => progress};
   position: absolute;
-  margin-left: 16px; // offset the bunny butt width
+  text-align: center;
+  min-width: 24px; // Slider thumb size
 `;
 
 export const BunnyButt = styled.div<DisabledProp>`

@@ -1,11 +1,15 @@
 import React, { ChangeEvent } from "react";
 import { Box } from "../Box";
-import { BunnySlider, BarBackground, BarProgress, BunnyButt, StyledInput, SliderLabel } from "./styles";
+import {
+  BunnySlider,
+  BarBackground,
+  BarProgress,
+  BunnyButt,
+  StyledInput,
+  SliderLabel,
+  SliderLabelContainer,
+} from "./styles";
 import SliderProps from "./types";
-
-// We need to adjust the offset as the percentage increases, as 100% really is 100% - label width.
-// The number 10 is arbitrary, but seems to work...
-const LABEL_OFFSET = 10;
 
 const Slider: React.FC<SliderProps> = ({
   name,
@@ -25,8 +29,8 @@ const Slider: React.FC<SliderProps> = ({
   const progressPercentage = (value / max) * 100;
   const isMax = value === max;
   const progressWidth = isMax ? "calc(100% - 16px)" : `${progressPercentage}%`;
-  const labelOffset = progressPercentage - progressPercentage / LABEL_OFFSET;
-
+  const labelProgress = isMax ? "calc(100% - 12px)" : `${progressPercentage}%`;
+  const displayValueLabel = isMax ? "MAX" : valueLabel;
   return (
     <Box position="relative" height="48px" {...props}>
       <BunnyButt disabled={disabled} />
@@ -45,7 +49,11 @@ const Slider: React.FC<SliderProps> = ({
           disabled={disabled}
         />
       </BunnySlider>
-      {valueLabel && <SliderLabel progress={labelOffset}>{valueLabel}</SliderLabel>}
+      {valueLabel && (
+        <SliderLabelContainer>
+          <SliderLabel progress={labelProgress}>{displayValueLabel}</SliderLabel>
+        </SliderLabelContainer>
+      )}
     </Box>
   );
 };
