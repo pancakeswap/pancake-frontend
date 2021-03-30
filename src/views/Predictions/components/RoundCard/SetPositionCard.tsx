@@ -15,15 +15,16 @@ import {
 } from '@pancakeswap-libs/uikit'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
+import { useGetMinBetAmount } from 'state/hooks'
 import useI18n from 'hooks/useI18n'
 import useGetBnbBalance from 'hooks/useGetBnbBalance'
-import UnlockButton from 'components/UnlockButton'
 import { BetPosition } from 'state/types'
 import { getBnbAmount } from '../../helpers'
 import useSwiper from '../../hooks/useSwiper'
 import FlexRow from '../FlexRow'
 import { PositionTag } from './Tag'
 import Card from './Card'
+import SetPositionButton from './SetPositionButton'
 
 interface SetPositionCardProps {
   position: BetPosition
@@ -52,17 +53,21 @@ const getPercentDisplay = (percentage: number) => {
 
 const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosition, onBack }) => {
   const [value, setValue] = useState('')
-  const [hasSufficientBalance, setHasSufficientBalance] = useState(true)
+  const [errorMessage, setErrorMessage] = useState(null)
+  const { account } = useWeb3React()
   const { swiper } = useSwiper()
   const bnbBalance = useGetBnbBalance()
-  const { account } = useWeb3React()
+  const minBetAmount = useGetMinBetAmount()
   const TranslateString = useI18n()
+
   const balanceDisplay = getBnbAmount(bnbBalance).toNumber()
   const maxBalance = getBnbAmount(bnbBalance.minus(dust)).toNumber()
-  const valueAsFloat = parseFloat(value)
-  const percentageOfMaxBalance = (valueAsFloat / maxBalance) * 100
+  const valueAsBn = new BigNumber(value)
+
+  const percentageOfMaxBalance = valueAsBn.div(maxBalance).times(100).toNumber()
   const percentageDisplay = getPercentDisplay(percentageOfMaxBalance)
-  const showFieldWarning = account && valueAsFloat > 0 && !hasSufficientBalance
+  const showFieldWarning = account && valueAsBn.gt(0) && errorMessage !== null
+  const minBetAmountBalance = getBnbAmount(minBetAmount).toNumber()
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = (evt) => {
     const newValue = evt.target.value
@@ -96,9 +101,23 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
     swiper.attachEvents()
   }
 
+  // Warnings
   useEffect(() => {
-    setHasSufficientBalance(valueAsFloat > 0 && valueAsFloat <= maxBalance)
-  }, [valueAsFloat, maxBalance, setHasSufficientBalance])
+    const bnValue = new BigNumber(value)
+    const hasSufficientBalance = bnValue.gt(0) && bnValue.lte(maxBalance)
+
+    if (!hasSufficientBalance) {
+      setErrorMessage({ id: 999, fallback: 'Insufficient BNB balance' })
+    } else if (bnValue.gt(0) && bnValue.lt(minBetAmountBalance)) {
+      setErrorMessage({
+        id: 999,
+        fallback: `A minumum amount of ${minBetAmountBalance} BNB is required`,
+        data: { num: minBetAmountBalance, token: 'BNB' },
+      })
+    } else {
+      setErrorMessage(null)
+    }
+  }, [value, maxBalance, minBetAmountBalance, setErrorMessage])
 
   return (
     <Card onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}>
@@ -135,7 +154,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
         />
         {showFieldWarning && (
           <Text color="failure" fontSize="12px" mt="4px" textAlign="right">
-            {TranslateString(999, 'Insufficient BNB balance')}
+            {TranslateString(errorMessage.id, errorMessage.fallback, errorMessage.data)}
           </Text>
         )}
         <Text textAlign="right" mb="16px" color="textSubtle" fontSize="12px" style={{ height: '18px' }}>
@@ -145,7 +164,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
           name="balance"
           min={0}
           max={maxBalance}
-          value={valueAsFloat <= maxBalance ? valueAsFloat : 0}
+          value={valueAsBn.lte(maxBalance) ? valueAsBn.toNumber() : 0}
           onValueChanged={handleSliderChange}
           valueLabel={account ? percentageDisplay : ''}
           disabled={!account}
@@ -168,13 +187,12 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
           </Button>
         </Flex>
         <Box mb="8px">
-          {account ? (
-            <Button width="100%" disabled={hasSufficientBalance || valueAsFloat <= 0}>
-              {TranslateString(464, 'Confirm')}
-            </Button>
-          ) : (
-            <UnlockButton width="100%" />
-          )}
+          <SetPositionButton
+            value={valueAsBn}
+            bnbBalance={bnbBalance}
+            betPosition={position}
+            minBetAmountBalance={minBetAmountBalance}
+          />
         </Box>
         <Text as="p" fontSize="12px" lineHeight={1} color="textSubtle">
           {TranslateString(999, "You won't be able to remove or change your position once you enter it.")}

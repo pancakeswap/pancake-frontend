@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import { useSelector } from 'react-redux'
@@ -11,7 +11,7 @@ import { getAddress } from 'utils/addressHelpers'
 import { getBalanceNumber } from 'utils/formatBalance'
 import useRefresh from 'hooks/useRefresh'
 import { fetchFarmsPublicDataAsync, fetchPoolsPublicDataAsync, fetchPoolsUserDataAsync, setBlock } from './actions'
-import { State, Farm, Pool, ProfileState, TeamsState, AchievementState, PriceState, FarmsState } from './types'
+import { State, Farm, Pool, ProfileState, TeamsState, AchievementState, PriceState, Bet, FarmsState } from './types'
 import { fetchProfile } from './profile'
 import { fetchTeam, fetchTeams } from './teams'
 import { fetchAchievements } from './achievements'
@@ -250,6 +250,16 @@ export const useGetPredictionsStatus = () => {
 
 export const useGetCurrentRoundBlockNumber = () => {
   return useSelector((state: State) => state.predictions.currentRoundStartBlockNumber)
+}
+
+export const useGetMinBetAmount = () => {
+  const minBetAmount = useSelector((state: State) => state.predictions.minBetAmount)
+  return useMemo(() => new BigNumber(minBetAmount), [minBetAmount])
+}
+
+export const useGetUserBetByRound = (id: string, account: string): Bet => {
+  const round = useGetRound(id)
+  return round.bets.find((bet) => bet.user.address.toLowerCase() === account.toLocaleLowerCase())
 }
 
 // Collectibles

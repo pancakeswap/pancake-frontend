@@ -1,3 +1,4 @@
+import { useWeb3React } from '@web3-react/core'
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { updateRounds } from 'state/predictions'
@@ -6,8 +7,9 @@ import { RoundResponse } from 'state/predictions/queries'
 
 const POLL_TIME_IN_SECONDS = 15
 
-const usePollRounds = () => {
+const usePollRoundData = () => {
   const dispatch = useDispatch()
+  const { account } = useWeb3React()
 
   useEffect(() => {
     const timer = setInterval(async () => {
@@ -19,7 +21,7 @@ const usePollRounds = () => {
     return () => {
       clearInterval(timer)
     }
-  }, [dispatch])
+  }, [account, dispatch])
 }
 
-export default usePollRounds
+export default usePollRoundData

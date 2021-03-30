@@ -12,9 +12,11 @@ import SetPositionCard from './SetPositionCard'
 
 interface OpenRoundCardProps {
   round: Round
+  hasEnteredUp: boolean
+  hasEnteredDown: boolean
 }
 
-const OpenRoundCard: React.FC<OpenRoundCardProps> = ({ round }) => {
+const OpenRoundCard: React.FC<OpenRoundCardProps> = ({ round, hasEnteredUp, hasEnteredDown }) => {
   const [state, setState] = useState({
     isSettingPosition: false,
     position: BetPosition.BULL,
@@ -57,7 +59,7 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({ round }) => {
           title={TranslateString(999, 'Next')}
         />
         <CardBody p="16px">
-          <MultiplierArrow />
+          <MultiplierArrow hasEntered={hasEnteredUp} />
           <RoundInfoBox isNext>
             <Button variant="success" width="100%" onClick={() => handleSetPosition(BetPosition.BULL)} mb="4px">
               {TranslateString(999, 'Enter UP')}
@@ -66,7 +68,7 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({ round }) => {
               {TranslateString(999, 'Enter DOWN')}
             </Button>
           </RoundInfoBox>
-          <MultiplierArrow betPosition={BetPosition.BEAR} />
+          <MultiplierArrow betPosition={BetPosition.BEAR} hasEntered={hasEnteredDown} />
         </CardBody>
       </Card>
       <SetPositionCard onBack={handleBack} position={state.position} togglePosition={togglePosition} />

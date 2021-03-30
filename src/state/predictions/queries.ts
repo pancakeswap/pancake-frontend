@@ -1,23 +1,18 @@
-import { BetPosition } from 'state/types'
-
-export interface PredictionUser {
+export interface UserResponse {
   id: string
   address: string
-  createdAt: string
-  updatedAt: string
   block: string
   totalBets: string
   totalBNB: string
-  bets: BetResponse[]
 }
 
 export interface BetResponse {
   id: string
-  round: RoundResponse
-  user: PredictionUser
   hash: string
   amount: string
-  position: BetPosition
+  position: string
+  claimed: boolean
+  user: UserResponse
 }
 
 export interface RoundResponse {
@@ -60,37 +55,18 @@ export const getRoundsQuery = (first = 5, orderBy = 'epoch', orderDirection: Sor
       bearBets
       bearAmount
       bets {
-        hash
+        id
+        hash  
         amount
         position
-      }
-    }
-  `
-}
-
-export const getRoundQuery = (id: string) => {
-  return `
-    round(id: "${id}") {
-      id
-      epoch
-      startAt
-      startBlock
-      lockAt
-      lockBlock
-      lockPrice
-      endAt
-      endBlock
-      closePrice
-      totalBets
-      totalAmount
-      bullBets
-      bullAmount
-      bearBets
-      bearAmount
-      bets {
-        hash
-        amount
-        position
+        claimed
+        user {
+          id
+          address
+          block
+          totalBets
+          totalBNB
+        }
       }
     }
   `

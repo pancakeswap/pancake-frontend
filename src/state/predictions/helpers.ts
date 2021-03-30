@@ -1,6 +1,6 @@
 import { request, gql } from 'graphql-request'
 import { GRAPH_API_PREDICTIONS } from 'config/constants/endpoints'
-import { PredictionStatus, Round, RoundData } from 'state/types'
+import { BetPosition, PredictionStatus, Round, RoundData } from 'state/types'
 import { getPredictionsContract } from 'utils/contractHelpers'
 import makeBatchRequest from 'utils/makeBatchRequest'
 import { getRoundsQuery, RoundResponse } from './queries'
@@ -52,6 +52,7 @@ export const transformRoundResponse = (roundResponse: RoundResponse): Round => {
     bullBets,
     bearAmount,
     bullAmount,
+    bets,
   } = roundResponse
 
   return {
@@ -68,6 +69,20 @@ export const transformRoundResponse = (roundResponse: RoundResponse): Round => {
     bullBets: numberOrNull(bullBets),
     bearAmount: numberOrNull(bearAmount),
     bullAmount: numberOrNull(bullAmount),
+    bets: bets.map((betResponse) => ({
+      id: betResponse.id,
+      hash: betResponse.hash,
+      amount: betResponse.amount ? parseFloat(betResponse.amount) : 0,
+      position: betResponse.position === 'Bull' ? BetPosition.BULL : BetPosition.BEAR,
+      claimed: betResponse.claimed,
+      user: {
+        id: betResponse.user.id,
+        address: betResponse.user.address,
+        block: numberOrNull(betResponse.user.block),
+        totalBets: numberOrNull(betResponse.user.totalBets),
+        totalBNB: numberOrNull(betResponse.user.totalBNB),
+      },
+    })),
   }
 }
 
