@@ -62,7 +62,7 @@ const SetPositionButton: React.FC<SetPositionButtonProps> = ({
       })
       .on('receipt', () => {
         setIsTxPending(false)
-        const positionDisplay = betPosition === BetPosition.BULL ? 'Bull' : 'Bear'
+        const positionDisplay = betPosition === BetPosition.BULL ? 'UP' : 'DOWN'
 
         onSuccess()
 
