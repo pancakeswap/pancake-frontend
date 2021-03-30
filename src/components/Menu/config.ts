@@ -106,6 +106,10 @@ const config: MenuEntry[] = [
         label: 'Blog',
         href: 'https://pancakeswap.medium.com',
       },
+      {
+        label: 'Merch',
+        href: 'https://pancakeswap.creator-spring.com/',
+      },
     ],
   },
 ]
