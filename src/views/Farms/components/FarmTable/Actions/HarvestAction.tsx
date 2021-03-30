@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core'
-import { Button } from '@pancakeswap-libs/uikit'
+import { Button, Skeleton } from '@pancakeswap-libs/uikit'
 import BigNumber from 'bignumber.js'
 import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
 import { getBalanceNumber } from 'utils/formatBalance'
@@ -17,8 +17,9 @@ const HarvestAction: React.FunctionComponent<FarmWithStakedValue> = ({ pid, user
   const cakePrice = usePriceCakeBusd()
   let earnings = null
   let earningsBusd = 0
-  let displayBalance = '?'
+  let displayBalance = <Skeleton width={60} />
 
+  // If earnings loaded
   if (earningsBigNumber !== null) {
     earnings = getBalanceNumber(earningsBigNumber)
     earningsBusd = new BigNumber(earnings).multipliedBy(cakePrice).toNumber()
