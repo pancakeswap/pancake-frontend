@@ -13,6 +13,7 @@ export interface Achievement {
 }
 
 export interface Rank {
+  group: string
   rank: string
   tier: Tiers
   cakePrizeInUsd: number
@@ -27,6 +28,7 @@ interface Config {
 const easterPrizes: Config = {
   1: [
     {
+      group: '4',
       rank: '1',
       tier: Tiers.GOLD,
       cakePrizeInUsd: 21000,
@@ -38,6 +40,7 @@ const easterPrizes: Config = {
       hasNft: true,
     },
     {
+      group: '3',
       rank: '2 ~ 10',
       tier: Tiers.SILVER,
       cakePrizeInUsd: 49000,
@@ -48,6 +51,7 @@ const easterPrizes: Config = {
       hasNft: true,
     },
     {
+      group: '2',
       rank: '11 ~ 100',
       tier: Tiers.BRONZE,
       cakePrizeInUsd: 42000,
@@ -57,7 +61,9 @@ const easterPrizes: Config = {
       },
       hasNft: true,
     },
+
     {
+      group: '1',
       rank: '101 ~ 500',
       tier: Tiers.PURPLE,
       cakePrizeInUsd: 28000,
@@ -67,7 +73,9 @@ const easterPrizes: Config = {
       },
       hasNft: true,
     },
+
     {
+      group: '0',
       rank: '501+',
       tier: Tiers.TEAL,
       cakePrizeInUsd: 0,
@@ -79,6 +87,7 @@ const easterPrizes: Config = {
   ],
   2: [
     {
+      group: '4',
       rank: '1',
       tier: Tiers.GOLD,
       cakePrizeInUsd: 6000,
@@ -90,6 +99,7 @@ const easterPrizes: Config = {
       hasNft: false,
     },
     {
+      group: '3',
       rank: '2 ~ 10',
       tier: Tiers.SILVER,
       cakePrizeInUsd: 14000,
@@ -100,6 +110,7 @@ const easterPrizes: Config = {
       hasNft: false,
     },
     {
+      group: '2',
       rank: '11 ~ 100',
       tier: Tiers.BRONZE,
       cakePrizeInUsd: 12000,
@@ -110,6 +121,7 @@ const easterPrizes: Config = {
       hasNft: false,
     },
     {
+      group: '1',
       rank: '101 ~ 500',
       tier: Tiers.PURPLE,
       cakePrizeInUsd: 8000,
@@ -120,6 +132,7 @@ const easterPrizes: Config = {
       hasNft: false,
     },
     {
+      group: '0',
       rank: '501+',
       tier: Tiers.TEAL,
       cakePrizeInUsd: 0,
@@ -131,6 +144,7 @@ const easterPrizes: Config = {
   ],
   3: [
     {
+      group: '4',
       rank: '1',
       tier: Tiers.GOLD,
       cakePrizeInUsd: 3000,
@@ -142,6 +156,7 @@ const easterPrizes: Config = {
       hasNft: false,
     },
     {
+      group: '3',
       rank: '2 ~ 10',
       tier: Tiers.SILVER,
       cakePrizeInUsd: 7000,
@@ -152,6 +167,7 @@ const easterPrizes: Config = {
       hasNft: false,
     },
     {
+      group: '2',
       rank: '11 ~ 100',
       tier: Tiers.BRONZE,
       cakePrizeInUsd: 6000,
@@ -162,6 +178,7 @@ const easterPrizes: Config = {
       hasNft: false,
     },
     {
+      group: '1',
       rank: '101 ~ 500',
       tier: Tiers.PURPLE,
       cakePrizeInUsd: 4000,
@@ -172,6 +189,7 @@ const easterPrizes: Config = {
       hasNft: false,
     },
     {
+      group: '0',
       rank: '501+',
       tier: Tiers.TEAL,
       cakePrizeInUsd: 0,
