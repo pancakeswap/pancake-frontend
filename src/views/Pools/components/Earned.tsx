@@ -5,6 +5,8 @@ import { useGetApiPrice } from 'state/hooks'
 import BigNumber from 'bignumber.js'
 import { getBalanceNumber } from 'utils/formatBalance'
 import Balance from 'components/Balance'
+import Decimals from 'components/Decimals'
+
 import CollectModal from './CollectModal'
 
 interface EarnedProps {
@@ -105,12 +107,7 @@ const Earned: React.FC<EarnedProps> = ({
       <Flex justifyContent="space-between" alignItems="center">
         <Flex flexDirection="column">
           <Flex>
-            <Balance
-              value={getBalanceNumber(earnings, earningTokenDecimals)}
-              isDisabled={!earnings.toNumber()}
-              fontSize="20px"
-              decimals={4}
-            />
+            <Decimals value={getBalanceNumber(earnings, earningTokenDecimals)} decimalPlaces={3} fontSize="20px" bold />
           </Flex>
           <Flex>
             <Balance
