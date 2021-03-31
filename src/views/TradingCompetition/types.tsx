@@ -7,19 +7,17 @@ export interface UserRewardsProps {
     pointsToClaim?: string
   }
 }
-export interface UserTradingStatsProps {
-  0?: string
-  1?: string
-  2?: boolean
-  3?: boolean
-  rewardGroup?: string
-  teamId?: string
+export interface UserTradingInformationProps {
   hasRegistered?: boolean
-  hasClaimed?: boolean
+  hasUserClaimed?: boolean
+  userRewardGroup?: string
+  userCakeRewards?: string
+  userPointReward?: string
+  canClaimNFT?: boolean
 }
 
 export interface CompetitionProps extends UserRewardsProps {
-  userTradingStats?: UserTradingStatsProps
+  userTradingInformation?: UserTradingInformationProps
   account?: string
   profile?: Profile
   isCompetitionLive?: boolean

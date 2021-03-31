@@ -48,10 +48,7 @@ const TradingCompetition = () => {
   const { profile, isLoading } = useProfile()
   const tradingCompetitionContract = useTradingCompetitionContract()
   const [registrationSuccessful, setRegistrationSuccessful] = useState(false)
-  const [userTradingStats, setUserTradingStats] = useState({ hasRegistered: false, hasClaimed: false })
-  const [userCanClaim, setUserCanClaim] = useState(false)
-  const [userRewards, setUserRewards] = useState(null)
-  const [teamRewards, setTeamRewards] = useState(null)
+  const [userTradingInformation, setUserTradingInformation] = useState({ hasRegistered: false, hasUserClaimed: false })
 
   const hasCompetitionFinished = false
   const isCompetitionLive = false
@@ -64,39 +61,27 @@ const TradingCompetition = () => {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const user = await tradingCompetitionContract.methods.userTradingStats(account).call()
-      setUserTradingStats(user)
+      const user = await tradingCompetitionContract.methods.claimInformation(account).call()
+      const userObject = {
+        hasRegistered: user[0],
+        hasUserClaimed: user[1],
+        userRewardGroup: user[2],
+        userCakeRewards: user[3],
+        userPointReward: user[4],
+        canClaimNFT: user[5],
+      }
+      setUserTradingInformation(userObject)
     }
     if (account) {
       fetchUser()
     }
   }, [account, registrationSuccessful, tradingCompetitionContract])
 
-  useEffect(() => {
-    const fetchUserRewards = async () => {
-      const claimData = await tradingCompetitionContract.methods.canClaim(account).call()
-      const cakeToClaim = claimData[1]
-      const pointsToClaim = claimData[2]
-      const userCakeAndPoints = { cakeToClaim, pointsToClaim }
-      setUserCanClaim(claimData[0])
-      setUserRewards(userCakeAndPoints)
-    }
-
-    const fetchTeamRewards = async () => {
-      const teamRewardResponse = await tradingCompetitionContract.methods.viewRewardTeams().call()
-      setTeamRewards(teamRewardResponse)
-    }
-
-    if (account && hasCompetitionFinished) {
-      fetchUserRewards()
-      fetchTeamRewards()
-    }
-  }, [account, tradingCompetitionContract, hasCompetitionFinished])
-
-  console.log('registered? ', userTradingStats.hasRegistered)
+  console.log('registered? ', userTradingInformation.hasRegistered)
 
   // if the account is connected, the user hasn't registered and the competition is live or finished - hide cta
-  const shouldHideCta = account && !userTradingStats.hasRegistered && (isCompetitionLive || hasCompetitionFinished)
+  const shouldHideCta =
+    account && !userTradingInformation.hasRegistered && (isCompetitionLive || hasCompetitionFinished)
 
   return (
     <CompetitionPage>
@@ -107,14 +92,12 @@ const TradingCompetition = () => {
         intersectComponent={
           shouldHideCta ? null : (
             <BattleCta
-              userTradingStats={userTradingStats}
+              userTradingInformation={userTradingInformation}
               account={account}
               isCompetitionLive={isCompetitionLive}
               hasCompetitionFinished={hasCompetitionFinished}
               profile={profile}
               isLoading={isLoading}
-              userCanClaim={userCanClaim}
-              userRewards={userRewards}
               onRegisterSuccess={onRegisterSuccess}
             />
           )
@@ -151,13 +134,13 @@ const TradingCompetition = () => {
       <Section backgroundStyle={DARKBG} svgFill={DARKFILL} index={4} intersectionPosition="top">
         {shouldHideCta ? null : (
           <BattleCta
-            userTradingStats={userTradingStats}
+            userTradingInformation={userTradingInformation}
             account={account}
             isCompetitionLive={isCompetitionLive}
+            hasCompetitionFinished={hasCompetitionFinished}
             profile={profile}
             isLoading={isLoading}
-            userCanClaim={userCanClaim}
-            userRewards={userRewards}
+            onRegisterSuccess={onRegisterSuccess}
           />
         )}
       </Section>

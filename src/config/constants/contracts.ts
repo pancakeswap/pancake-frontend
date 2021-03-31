@@ -45,6 +45,6 @@ export default {
   },
   tradingCompetition: {
     56: '',
-    97: '0x83891b2e9Aa657072Cd65a9419EE1E7980c3F0Ca',
+    97: '0xC787F45B833721ED3aC46E99b703B3E1E01abb97',
   },
 }

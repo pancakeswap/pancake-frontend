@@ -43,14 +43,12 @@ const StyledButton = styled(Button)`
 `
 
 const BattleCta: React.FC<CompetitionProps> = ({
-  userTradingStats,
+  userTradingInformation,
   account,
   isCompetitionLive,
   profile,
   isLoading,
   hasCompetitionFinished,
-  userCanClaim,
-  userRewards,
   onRegisterSuccess,
 }) => {
   const TranslateString = useI18n()
@@ -62,7 +60,8 @@ const BattleCta: React.FC<CompetitionProps> = ({
   )
   const [onPresentClaimModal] = useModal(<ClaimModal />, false)
 
-  const { hasRegistered, hasClaimed } = userTradingStats
+  const { hasRegistered, hasUserClaimed } = userTradingInformation
+  const userCanClaim = false
 
   const getHeadingText = () => {
     // Competition live
@@ -101,7 +100,7 @@ const BattleCta: React.FC<CompetitionProps> = ({
           return TranslateString(999, 'Claim prizes')
         }
         // User has already claimed prizes
-        if (hasClaimed) {
+        if (hasUserClaimed) {
           return (
             <>
               <CheckmarkCircleIcon /> {TranslateString(999, 'Prizes Claimed!')}
@@ -148,7 +147,7 @@ const BattleCta: React.FC<CompetitionProps> = ({
   }
 
   const registeredAndNotLive = hasRegistered && !isCompetitionLive
-  const finishedAndPrizesClaimed = hasCompetitionFinished && account && hasClaimed
+  const finishedAndPrizesClaimed = hasCompetitionFinished && account && hasUserClaimed
   // This 'nothing to claim' condition needs refining
   const finishedAndNothingToClaim = hasCompetitionFinished && account && !userCanClaim
   const isButtonDisabled = () =>

@@ -15,16 +15,6 @@
         "internalType": "address",
         "name": "_cakeTokenAddress",
         "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_numberTeams",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint8",
-        "name": "_bunnyId",
-        "type": "uint8"
       }
     ],
     "stateMutability": "nonpayable",
@@ -128,6 +118,19 @@
   },
   {
     "inputs": [],
+    "name": "bunnyId",
+    "outputs": [
+      {
+        "internalType": "uint8",
+        "name": "",
+        "type": "uint8"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "bunnyMintingStation",
     "outputs": [
       {
@@ -160,8 +163,13 @@
         "type": "address"
       }
     ],
-    "name": "canClaim",
+    "name": "claimInformation",
     "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      },
       {
         "internalType": "bool",
         "name": "",
@@ -176,6 +184,16 @@
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
       }
     ],
     "stateMutability": "view",
@@ -363,9 +381,14 @@
         "internalType": "string",
         "name": "_tokenURI",
         "type": "string"
+      },
+      {
+        "internalType": "uint8",
+        "name": "_bunnyId",
+        "type": "uint8"
       }
     ],
-    "name": "updateWinningTeamAndTokenURI",
+    "name": "updateWinningTeamAndTokenURIAndBunnyId",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
