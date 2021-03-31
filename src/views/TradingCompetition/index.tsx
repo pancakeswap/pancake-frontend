@@ -58,7 +58,7 @@ const TradingCompetition = () => {
   })
 
   const hasCompetitionFinished = false
-  const isCompetitionLive = false
+  const isCompetitionLive = true
   // Ignore this. It's part of the root branch, will all be removed when the countdown state is in.
   const hasCompetitionStarted = false
 
@@ -77,14 +77,23 @@ const TradingCompetition = () => {
         userPointReward: user[4],
         canClaimNFT: user[5],
       }
-      debugger // eslint-disable-line no-debugger
       setUserTradingInformation(userObject)
     }
     if (account) {
       fetchUser()
+    } else {
+      setUserTradingInformation({
+        hasRegistered: false,
+        hasUserClaimed: false,
+        userRewardGroup: '0',
+        userCakeRewards: '0',
+        userPointReward: '0',
+        canClaimNFT: false,
+      })
     }
   }, [account, registrationSuccessful, tradingCompetitionContract])
 
+  console.log('reg success: ', registrationSuccessful)
   console.log('registered? ', userTradingInformation.hasRegistered)
 
   // if the account is connected, the user hasn't registered and the competition is live or finished - hide cta

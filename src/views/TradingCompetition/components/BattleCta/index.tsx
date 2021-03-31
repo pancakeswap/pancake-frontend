@@ -68,7 +68,14 @@ const BattleCta: React.FC<CompetitionProps> = ({
     userPointReward,
     canClaimNFT,
   } = userTradingInformation
-  const userCanClaim = userCakeRewards !== '0' || userPointReward !== '0' || canClaimNFT
+
+  const userCanClaimPrizes = !hasUserClaimed && (userCakeRewards !== '0' || userPointReward !== '0' || canClaimNFT)
+  const registeredAndNotLive = hasRegistered && !isCompetitionLive
+  const finishedAndPrizesClaimed = hasCompetitionFinished && account && hasUserClaimed
+  // This 'nothing to claim' condition needs refining
+  const finishedAndNothingToClaim = hasCompetitionFinished && account && !userCanClaimPrizes
+  const isButtonDisabled = () =>
+    isLoading || registeredAndNotLive || finishedAndPrizesClaimed || finishedAndNothingToClaim
 
   const getHeadingText = () => {
     // Competition live
@@ -94,40 +101,36 @@ const BattleCta: React.FC<CompetitionProps> = ({
       return TranslateString(999, 'Register Now!')
     }
 
-    if (hasRegistered) {
-      // User registered and competition live
-      if (isCompetitionLive) {
-        return TranslateString(999, 'Trade Now')
-      }
+    // User registered and competition live
+    if (isCompetitionLive) {
+      return TranslateString(999, 'Trade Now')
+    }
 
-      // User registered and competition finished
-      if (hasCompetitionFinished) {
-        // User has prizes to claim
-        if (userCanClaim) {
-          return TranslateString(999, 'Claim prizes')
-        }
-        // User has already claimed prizes
-        if (hasUserClaimed) {
-          return (
-            <>
-              <CheckmarkCircleIcon /> {TranslateString(999, 'Prizes Claimed!')}
-            </>
-          )
-        }
-        // Use has nothing to claim
-        if (!userCanClaim) {
-          return TranslateString(999, 'Nothing to claim')
-        }
+    // User registered and competition finished
+    if (hasCompetitionFinished) {
+      // User has prizes to claim
+      if (userCanClaimPrizes) {
+        return TranslateString(999, 'Claim prizes')
       }
-
-      // User registered but competition has not started
-      if (!isCompetitionLive) {
+      // User has already claimed prizes
+      if (hasUserClaimed) {
         return (
           <>
-            <CheckmarkCircleIcon /> {TranslateString(999, 'Registered!')}
+            <CheckmarkCircleIcon /> {TranslateString(999, 'Prizes Claimed!')}
           </>
         )
       }
+      // User has nothing to claim
+      return TranslateString(999, 'Nothing to claim')
+    }
+
+    // User registered but competition has not started
+    if (!isCompetitionLive) {
+      return (
+        <>
+          <CheckmarkCircleIcon /> {TranslateString(999, 'Registered!')}
+        </>
+      )
     }
 
     // May be useful for debugging - if somehow none of the above conditions are met
@@ -135,6 +138,8 @@ const BattleCta: React.FC<CompetitionProps> = ({
   }
 
   const handleCtaClick = () => {
+    // All conditions when button isn't disabled
+
     // No wallet connected
     if (!account) {
       onPresentConnectModal()
@@ -152,13 +157,6 @@ const BattleCta: React.FC<CompetitionProps> = ({
       onPresentClaimModal()
     }
   }
-
-  const registeredAndNotLive = hasRegistered && !isCompetitionLive
-  const finishedAndPrizesClaimed = hasCompetitionFinished && account && hasUserClaimed
-  // This 'nothing to claim' condition needs refining
-  const finishedAndNothingToClaim = hasCompetitionFinished && account && !userCanClaim
-  const isButtonDisabled = () =>
-    isLoading || registeredAndNotLive || finishedAndPrizesClaimed || finishedAndNothingToClaim
 
   return (
     <StyledCard>
