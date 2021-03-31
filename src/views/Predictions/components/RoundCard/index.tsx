@@ -64,6 +64,8 @@ const RoundCard: React.FC<RoundCardProps> = ({ round }) => {
       hasEnteredDown={hasEnteredDown}
       bullMultiplier={bullMultiplier}
       bearMultiplier={bearMultiplier}
+      claimed={bet ? bet.claimed : false}
+      userBetPosition={bet ? bet.position : null}
     />
   )
 }

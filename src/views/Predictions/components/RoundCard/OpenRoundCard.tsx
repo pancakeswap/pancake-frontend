@@ -104,7 +104,12 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
           <MultiplierArrow multiplier={bearMultiplier} betPosition={BetPosition.BEAR} hasEntered={hasEnteredDown} />
         </CardBody>
       </Card>
-      <SetPositionCard onBack={handleBack} position={state.position} togglePosition={togglePosition} />
+      <SetPositionCard
+        roundId={round.id}
+        onBack={handleBack}
+        position={state.position}
+        togglePosition={togglePosition}
+      />
     </CardFlip>
   )
 }

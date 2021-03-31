@@ -64,7 +64,7 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
             <Text color="textSubtle" fontSize="12px" bold textTransform="uppercase" mb="8px">
               {TranslateString(999, 'Last Price')}
             </Text>
-            <Flex alignItems="center" justifyContent="space-between" mb="16px">
+            <Flex alignItems="center" justifyContent="space-between" mb="16px" height="36px">
               {stream && (
                 <>
                   <Text bold color={priceColor} fontSize="24px" style={{ minHeight: '36px' }}>

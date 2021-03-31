@@ -3,7 +3,7 @@ import { GRAPH_API_PREDICTIONS } from 'config/constants/endpoints'
 import { BetPosition, PredictionStatus, Round, RoundData } from 'state/types'
 import { getPredictionsContract } from 'utils/contractHelpers'
 import makeBatchRequest from 'utils/makeBatchRequest'
-import { getRoundsQuery, RoundResponse } from './queries'
+import { getRoundQuery, getRoundsQuery, RoundResponse } from './queries'
 
 const numberOrNull = (value: string) => {
   if (value === null) {
@@ -127,4 +127,16 @@ export const getLatestRounds = async () => {
   `,
   )
   return response.rounds
+}
+
+export const getRound = async (id: string) => {
+  const response = await request(
+    GRAPH_API_PREDICTIONS,
+    gql`
+      {
+        ${getRoundQuery(id)}
+      }
+  `,
+  )
+  return response.round
 }

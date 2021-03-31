@@ -1,8 +1,8 @@
 /* eslint-disable no-param-reassign */
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { maxBy } from 'lodash'
 import { PredictionsState, PredictionStatus, Round, RoundData } from 'state/types'
-import { makeFutureRoundResponse, transformRoundResponse } from './helpers'
+import { getRound, makeFutureRoundResponse, transformRoundResponse } from './helpers'
 
 const initialState: PredictionsState = {
   status: PredictionStatus.INITIAL,
@@ -17,6 +17,14 @@ const initialState: PredictionsState = {
   rounds: {},
 }
 
+// Thunks
+export const updateRound = createAsyncThunk<Round, { id: string }>('predictions/updateRound', async ({ id }) => {
+  const response = await getRound(id)
+  const round = transformRoundResponse(response)
+
+  return round
+})
+
 export const predictionsSlice = createSlice({
   name: 'predictions',
   initialState,
@@ -29,10 +37,6 @@ export const predictionsSlice = createSlice({
     },
     initialize: (state, action: PayloadAction<PredictionsState>) => {
       return action.payload
-    },
-    setRound: (state, action: PayloadAction<{ id: string; round: Round }>) => {
-      const { id, round } = action.payload
-      state.rounds[id] = round
     },
     updateRounds: (state, action: PayloadAction<RoundData>) => {
       const newRoundData = { ...state.rounds, ...action.payload }
@@ -59,13 +63,18 @@ export const predictionsSlice = createSlice({
       state.currentEpoch = action.payload
     },
   },
+  extraReducers: (builder) => {
+    builder.addCase(updateRound.fulfilled, (state, action) => {
+      const { payload: round } = action
+      state.rounds[round.id] = round
+    })
+  },
 })
 
 // Actions
 export const {
   setChartPaneState,
   setHistoryPaneState,
-  setRound,
   updateRounds,
   setCurrentEpoch,
   initialize,

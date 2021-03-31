@@ -12,21 +12,26 @@ import {
   BalanceInput,
   Slider,
   Box,
+  AutoRenewIcon,
 } from '@pancakeswap-libs/uikit'
+import { useDispatch } from 'react-redux'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
-import { useGetMinBetAmount } from 'state/hooks'
+import { useGetMinBetAmount, useToast } from 'state/hooks'
+import { updateRound } from 'state/predictions'
 import useI18n from 'hooks/useI18n'
 import useGetBnbBalance from 'hooks/useGetBnbBalance'
+import { usePredictionsContract } from 'hooks/useContract'
 import { BetPosition } from 'state/types'
+import { getDecimalAmount } from 'utils/formatBalance'
 import { getBnbAmount } from '../../helpers'
 import useSwiper from '../../hooks/useSwiper'
 import FlexRow from '../FlexRow'
 import { PositionTag } from './Tag'
 import Card from './Card'
-import SetPositionButton from './SetPositionButton'
 
 interface SetPositionCardProps {
+  roundId: string
   position: BetPosition
   togglePosition: () => void
   onBack: () => void
@@ -51,14 +56,29 @@ const getPercentDisplay = (percentage: number) => {
   return `${percentage.toLocaleString(undefined, { maximumFractionDigits: 1 })}%`
 }
 
-const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosition, onBack }) => {
+const getButtonProps = (value: BigNumber, bnbBalance: BigNumber, minBetAmountBalance: number) => {
+  if (bnbBalance.eq(0)) {
+    return { id: 999, fallback: 'Insufficient BNB balance', disabled: true }
+  }
+
+  if (value.eq(0) || value.isNaN()) {
+    return { id: 999, fallback: 'Enter an amount', disabled: true }
+  }
+  return { id: 464, fallback: 'Confirm', disabled: value.lt(minBetAmountBalance) }
+}
+
+const SetPositionCard: React.FC<SetPositionCardProps> = ({ roundId, position, togglePosition, onBack }) => {
   const [value, setValue] = useState('')
+  const [isTxPending, setIsTxPending] = useState(false)
   const [errorMessage, setErrorMessage] = useState(null)
   const { account } = useWeb3React()
   const { swiper } = useSwiper()
   const bnbBalance = useGetBnbBalance()
   const minBetAmount = useGetMinBetAmount()
   const TranslateString = useI18n()
+  const dispatch = useDispatch()
+  const { toastSuccess, toastError } = useToast()
+  const predictionsContract = usePredictionsContract()
 
   const balanceDisplay = getBnbAmount(bnbBalance).toNumber()
   const maxBalance = getBnbAmount(bnbBalance.minus(dust)).toNumber()
@@ -99,6 +119,40 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
     swiper.keyboard.enable()
     swiper.mousewheel.enable()
     swiper.attachEvents()
+  }
+
+  const { id, fallback, disabled } = getButtonProps(valueAsBn, bnbBalance, minBetAmountBalance)
+
+  const handleEnterPosition = () => {
+    const betMethod = position === BetPosition.BULL ? 'betBull' : 'betBear'
+    const decimalValue = getDecimalAmount(valueAsBn)
+
+    predictionsContract.methods[betMethod]()
+      .send({ from: account, value: decimalValue })
+      .on('sending', () => {
+        setIsTxPending(true)
+      })
+      .on('receipt', async () => {
+        setIsTxPending(false)
+        const positionDisplay = position === BetPosition.BULL ? 'UP' : 'DOWN'
+
+        await dispatch(updateRound({ id: roundId }))
+        onBack()
+
+        toastSuccess(
+          'Success!',
+          TranslateString(999, `${positionDisplay} position entered`, {
+            position: positionDisplay,
+          }),
+        )
+      })
+      .on('error', (error) => {
+        const errorMsg = TranslateString(999, 'An error occurred, unable to enter your position')
+
+        toastError('Error!', error?.message)
+        setIsTxPending(false)
+        console.error(errorMsg, error)
+      })
   }
 
   // Warnings
@@ -150,7 +204,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
           value={value}
           onChange={handleChange}
           isWarning={showFieldWarning}
-          inputProps={{ disabled: !account }}
+          inputProps={{ disabled: !account || isTxPending }}
         />
         {showFieldWarning && (
           <Text color="failure" fontSize="12px" mt="4px" textAlign="right">
@@ -167,7 +221,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
           value={valueAsBn.lte(maxBalance) ? valueAsBn.toNumber() : 0}
           onValueChanged={handleSliderChange}
           valueLabel={account ? percentageDisplay : ''}
-          disabled={!account}
+          disabled={!account || isTxPending}
           mb="4px"
         />
         <Flex alignItems="center" justifyContent="space-between" mb="16px">
@@ -177,23 +231,31 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
             }
 
             return (
-              <Button key={percent} scale="xs" variant="tertiary" onClick={handleClick} disabled={!account}>
+              <Button
+                key={percent}
+                scale="xs"
+                variant="tertiary"
+                onClick={handleClick}
+                disabled={!account || isTxPending}
+              >
                 {`${percent}%`}
               </Button>
             )
           })}
-          <Button scale="xs" variant="tertiary" onClick={setMax} disabled={!account}>
+          <Button scale="xs" variant="tertiary" onClick={setMax} disabled={!account || isTxPending}>
             {TranslateString(452, 'Max')}
           </Button>
         </Flex>
         <Box mb="8px">
-          <SetPositionButton
-            value={valueAsBn}
-            bnbBalance={bnbBalance}
-            betPosition={position}
-            minBetAmountBalance={minBetAmountBalance}
-            onSuccess={() => onBack()}
-          />
+          <Button
+            width="100%"
+            disabled={!account || disabled}
+            onClick={handleEnterPosition}
+            isLoading={isTxPending}
+            endIcon={isTxPending ? <AutoRenewIcon color="currentColor" spin /> : null}
+          >
+            {TranslateString(id, fallback)}
+          </Button>
         </Box>
         <Text as="p" fontSize="12px" lineHeight={1} color="textSubtle">
           {TranslateString(999, "You won't be able to remove or change your position once you enter it.")}
