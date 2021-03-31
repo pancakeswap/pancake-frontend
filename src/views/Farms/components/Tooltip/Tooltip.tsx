@@ -11,7 +11,7 @@ const TooltipContent = styled.div`
   border-radius: 16px;
   color: ${({ theme }) => theme.tooltip.text};
   width: max-content;
-  display: block;
+  display: none;
   padding: 16px;
   max-height: 500px;
   z-index: ${({ theme }) => theme.zIndices.modal};
