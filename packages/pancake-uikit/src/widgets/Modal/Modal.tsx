@@ -33,9 +33,9 @@ const StyledModal = styled.div<{ minWidth: string }>`
 const ModalHeader = styled.div<{ background: string }>`
   display: flex;
   align-items: center;
-  border-bottom: 1px solid #e9eaeb;
   align-items: center;
   padding: 12px 24px;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.borderColor};
   background: ${({ background }) => background};
 `;
 

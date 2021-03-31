@@ -15,7 +15,7 @@ it("renders correctly", () => {
         class="sc-iBPRYJ bQXnUd"
       >
         <div
-          class="sc-fubCfw gpMxBN"
+          class="sc-fubCfw jzwLMm"
         >
           <div
             class="sc-dlfnbm sc-hKgILt sc-pFZIQ isWJdv dRpfYw ePMCIJ"

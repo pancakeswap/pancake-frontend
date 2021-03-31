@@ -12,7 +12,7 @@ it("renders ConnectModal correctly", () => {
         class="sc-fubCfw cNFQaY"
       >
         <div
-          class="sc-pFZIQ fDnVSK"
+          class="sc-pFZIQ idVZsR"
         >
           <div
             class="sc-eCssSg sc-jSgupP sc-jrAGrp jnvqfy cjuMmG eYDuGd"
@@ -468,7 +468,7 @@ it("renders AccountModal correctly", () => {
         class="sc-fubCfw cNFQaY"
       >
         <div
-          class="sc-pFZIQ fDnVSK"
+          class="sc-pFZIQ idVZsR"
         >
           <div
             class="sc-eCssSg sc-jSgupP sc-jrAGrp jnvqfy cjuMmG eYDuGd"
