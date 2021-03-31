@@ -1,5 +1,4 @@
 export { default as Intersect } from './Intersect'
-export { default as PocketWatch } from './PocketWatch'
 export { default as RibbonDownMid } from './RibbonDownMid'
 export { default as RibbonDownSide } from './RibbonDownSide'
 export { default as RibbonUpMid } from './RibbonUpMid'

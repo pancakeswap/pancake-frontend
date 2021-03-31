@@ -1,13 +1,12 @@
 import React, { useContext } from 'react'
 import styled from 'styled-components'
-import { Flex, Skeleton } from '@pancakeswap-libs/uikit'
+import { Flex, Skeleton, PocketWatchIcon } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import getTimePeriods from 'utils/getTimePeriods'
 import { CompetitionSteps, FINISHED, LIVE } from '../../config'
 import { CompetitionCountdownContext } from '../../contexts/CompetitionCountdownContext'
 import ProgressStepper from './ProgressStepper'
 import Timer from './Timer'
-import { PocketWatch } from '../../svgs'
 
 const Wrapper = styled(Flex)`
   width: fit-content;
@@ -49,7 +48,7 @@ const Countdown = () => {
   return (
     <Wrapper>
       <PocketWatchWrapper>
-        <PocketWatch />
+        <PocketWatchIcon />
       </PocketWatchWrapper>
       <Flex flexDirection="column" justifyContent="center">
         {isLoading ? (

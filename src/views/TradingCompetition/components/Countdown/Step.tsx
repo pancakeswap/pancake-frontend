@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { LogoIcon, CheckmarkCircleIcon, WaitIcon, Flex, Text } from '@pancakeswap-libs/uikit'
+import { LogoIcon, CheckmarkCircleIcon, CircleOutlineIcon, Flex, Text } from '@pancakeswap-libs/uikit'
 import { CountdownProps } from '../../types'
 
 const sharedFlexStyles = `
@@ -61,7 +61,7 @@ const Step: React.FC<CountdownProps> = ({ stepText, index, activeStepIndex }) =>
   if (isFuture) {
     return (
       <FutureWrapper>
-        <WaitIcon />
+        <CircleOutlineIcon />
         <StyledText color="textDisabled">{stepText}</StyledText>
       </FutureWrapper>
     )
