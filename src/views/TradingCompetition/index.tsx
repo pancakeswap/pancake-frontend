@@ -48,6 +48,7 @@ const TradingCompetition = () => {
   const { profile, isLoading } = useProfile()
   const tradingCompetitionContract = useTradingCompetitionContract()
   const [registrationSuccessful, setRegistrationSuccessful] = useState(false)
+  const [claimSuccessful, setClaimSuccessful] = useState(false)
   const [userTradingInformation, setUserTradingInformation] = useState({
     hasRegistered: false,
     hasUserClaimed: false,
@@ -57,13 +58,18 @@ const TradingCompetition = () => {
     canClaimNFT: false,
   })
 
-  const hasCompetitionFinished = false
-  const isCompetitionLive = true
-  // Ignore this. It's part of the root branch, will all be removed when the countdown state is in.
+  const hasCompetitionFinished = true
+  const isCompetitionLive = false
+
+  // Ignore hasCompetitionStarted. It's part of the root branch, will all be removed when the countdown state is in.
   const hasCompetitionStarted = false
 
   const onRegisterSuccess = () => {
     setRegistrationSuccessful(true)
+  }
+
+  const onClaimSuccess = () => {
+    setClaimSuccessful(true)
   }
 
   useEffect(() => {
@@ -73,7 +79,7 @@ const TradingCompetition = () => {
         hasRegistered: user[0],
         hasUserClaimed: user[1],
         userRewardGroup: user[2],
-        userCakeRewards: user[3],
+        userCakeRewards: '1',
         userPointReward: user[4],
         canClaimNFT: user[5],
       }
@@ -91,14 +97,11 @@ const TradingCompetition = () => {
         canClaimNFT: false,
       })
     }
-  }, [account, registrationSuccessful, tradingCompetitionContract])
+  }, [account, registrationSuccessful, claimSuccessful, tradingCompetitionContract])
 
-  console.log('reg success: ', registrationSuccessful)
-  console.log('registered? ', userTradingInformation.hasRegistered)
-
-  // if the account is connected, the user hasn't registered and the competition is live or finished - hide cta
+  // Don't hide when loading. Hide if the account is connected, the user hasn't registered and the competition is live or finished
   const shouldHideCta =
-    account && !userTradingInformation.hasRegistered && (isCompetitionLive || hasCompetitionFinished)
+    !isLoading && account && !userTradingInformation.hasRegistered && (isCompetitionLive || hasCompetitionFinished)
 
   return (
     <CompetitionPage>
@@ -116,6 +119,7 @@ const TradingCompetition = () => {
               profile={profile}
               isLoading={isLoading}
               onRegisterSuccess={onRegisterSuccess}
+              onClaimSuccess={onClaimSuccess}
             />
           )
         }
@@ -158,6 +162,7 @@ const TradingCompetition = () => {
             profile={profile}
             isLoading={isLoading}
             onRegisterSuccess={onRegisterSuccess}
+            onClaimSuccess={onClaimSuccess}
           />
         )}
       </Section>

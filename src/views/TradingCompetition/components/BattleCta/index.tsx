@@ -50,6 +50,7 @@ const BattleCta: React.FC<CompetitionProps> = ({
   isLoading,
   hasCompetitionFinished,
   onRegisterSuccess,
+  onClaimSuccess,
 }) => {
   const TranslateString = useI18n()
   const { login, logout } = useAuth()
@@ -58,7 +59,10 @@ const BattleCta: React.FC<CompetitionProps> = ({
     <RegisterModal profile={profile} onRegisterSuccess={onRegisterSuccess} />,
     false,
   )
-  const [onPresentClaimModal] = useModal(<ClaimModal />, false)
+  const [onPresentClaimModal] = useModal(
+    <ClaimModal userTradingInformation={userTradingInformation} onClaimSuccess={onClaimSuccess} />,
+    false,
+  )
 
   const {
     hasRegistered,
@@ -70,12 +74,12 @@ const BattleCta: React.FC<CompetitionProps> = ({
   } = userTradingInformation
 
   const userCanClaimPrizes = !hasUserClaimed && (userCakeRewards !== '0' || userPointReward !== '0' || canClaimNFT)
-  const registeredAndNotLive = hasRegistered && !isCompetitionLive
+  const registeredAndNotStarted = hasRegistered && !isCompetitionLive && !hasCompetitionFinished
   const finishedAndPrizesClaimed = hasCompetitionFinished && account && hasUserClaimed
-  // This 'nothing to claim' condition needs refining
   const finishedAndNothingToClaim = hasCompetitionFinished && account && !userCanClaimPrizes
+
   const isButtonDisabled = () =>
-    isLoading || registeredAndNotLive || finishedAndPrizesClaimed || finishedAndNothingToClaim
+    isLoading || registeredAndNotStarted || finishedAndPrizesClaimed || finishedAndNothingToClaim
 
   const getHeadingText = () => {
     // Competition live
@@ -95,12 +99,10 @@ const BattleCta: React.FC<CompetitionProps> = ({
     if (!account) {
       return TranslateString(999, 'Connect Wallet')
     }
-
     // User not registered
     if (!hasRegistered) {
       return TranslateString(999, 'Register Now!')
     }
-
     // User registered and competition live
     if (isCompetitionLive) {
       return TranslateString(999, 'Trade Now')

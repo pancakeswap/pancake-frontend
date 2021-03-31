@@ -30,7 +30,7 @@ const RegisterWithProfile: React.FC<CompetitionProps> = ({ profile, onDismiss, o
       .on('sending', () => {
         setIsConfirming(true)
       })
-      .on('receipt', async (event) => {
+      .on('receipt', async () => {
         toastSuccess('You have registered for the competition!')
         onDismiss()
         onRegisterSuccess()
