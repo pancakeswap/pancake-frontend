@@ -131,7 +131,13 @@ const StakeModal: React.FC<StakeModalProps> = ({
 
   const handleChangePercent = (value) => {
     setStakeAmount(
-      getFullDisplayBalance(max.multipliedBy(new BigNumber(value).dividedBy(new BigNumber(100))), stakingTokenDecimals),
+      parseFloat(
+        getFullDisplayBalance(
+          max.multipliedBy(new BigNumber(value).dividedBy(new BigNumber(100))),
+          stakingTokenDecimals,
+          20,
+        ),
+      ).toString(),
     )
     setPercent(value)
   }
