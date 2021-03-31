@@ -59,16 +59,16 @@ const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, use
         <Heading mt="16px" size="md" mb={canClaimNFT ? '16px' : '0px'}>
           {userCakeRewards} CAKE
         </Heading>
-        {/* {canClaimNFT ? ( */}
-        <Flex alignItems="center" flexDirection="column" width="100%">
-          <ImageWrapper>
-            <Image src={NftBunnies} width={128} height={128} />
-          </ImageWrapper>
-          <Text mt="8px" fontSize="16px">
-            {TranslateString(999, 'Collectible NFT')}
-          </Text>
-        </Flex>
-        {/* ) : null} */}
+        {canClaimNFT ? (
+          <Flex alignItems="center" flexDirection="column" width="100%">
+            <ImageWrapper>
+              <Image src={NftBunnies} width={128} height={128} />
+            </ImageWrapper>
+            <Text mt="8px" fontSize="16px">
+              {TranslateString(999, 'Collectible NFT')}
+            </Text>
+          </Flex>
+        ) : null}
       </Flex>
       <Button
         mt="24px"

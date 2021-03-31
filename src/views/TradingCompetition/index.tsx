@@ -79,7 +79,7 @@ const TradingCompetition = () => {
         hasRegistered: user[0],
         hasUserClaimed: user[1],
         userRewardGroup: user[2],
-        userCakeRewards: '1',
+        userCakeRewards: user[3],
         userPointReward: user[4],
         canClaimNFT: user[5],
       }
