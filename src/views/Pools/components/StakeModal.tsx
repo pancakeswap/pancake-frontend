@@ -91,6 +91,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
 
   const handleConfirmClick = async () => {
     setPendingTx(true)
+
     if (isStaking) {
       try {
         await onStake(stakeAmount, stakingTokenDecimals)
@@ -99,12 +100,14 @@ const StakeModal: React.FC<StakeModalProps> = ({
           `${TranslateString(1074, 'Staked')}!`,
           TranslateString(999, 'Your funds have been staked in the pool!'),
         )
+        setPendingTx(false)
         onDismiss()
       } catch (e) {
         toastError(
           TranslateString(999, 'Canceled'),
           TranslateString(999, 'Please try again and confirm the transaction.'),
         )
+        setPendingTx(false)
       }
     } else {
       try {
@@ -114,19 +117,22 @@ const StakeModal: React.FC<StakeModalProps> = ({
           `${TranslateString(999, 'Unstaked')}!`,
           TranslateString(999, 'Your earnings have also been harvested to your wallet!'),
         )
+        setPendingTx(false)
         onDismiss()
       } catch (e) {
         toastError(
           TranslateString(999, 'Canceled'),
           TranslateString(999, 'Please try again and confirm the transaction.'),
         )
+        setPendingTx(false)
       }
     }
-    setPendingTx(false)
   }
 
   const handleChangePercent = (value) => {
-    setStakeAmount(getFullDisplayBalance(max.multipliedBy(value / 100), stakingTokenDecimals))
+    setStakeAmount(
+      getFullDisplayBalance(max.multipliedBy(new BigNumber(value).dividedBy(new BigNumber(100))), stakingTokenDecimals),
+    )
     setPercent(value)
   }
 

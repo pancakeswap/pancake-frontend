@@ -16,7 +16,7 @@ interface CollectModalProps {
   isBnbPool: boolean
   earnings: BigNumber
   earningsBusd: number
-  earningTokenDecimals?: number
+  earningTokenDecimals: number
   earningTokenName: string
   harvest?: boolean
   onDismiss?: () => void
@@ -76,6 +76,7 @@ const CollectModal: React.FC<CollectModalProps> = ({
           `${TranslateString(1074, 'Staked')}!`,
           TranslateString(999, 'Your funds have been staked in the pool!'),
         )
+        setPendingTx(false)
         setConfirmedTx(true)
         onDismiss()
       } catch (e) {
@@ -83,6 +84,7 @@ const CollectModal: React.FC<CollectModalProps> = ({
           TranslateString(999, 'Canceled'),
           TranslateString(999, 'Please try again and confirm the transaction.'),
         )
+        setPendingTx(false)
       }
     } else {
       try {
@@ -91,6 +93,7 @@ const CollectModal: React.FC<CollectModalProps> = ({
           `${TranslateString(999, 'Harvested')}!`,
           TranslateString(999, 'Your earnings have been sent to your wallet!'),
         )
+        setPendingTx(false)
         setConfirmedTx(true)
         onDismiss()
       } catch (e) {
@@ -98,10 +101,9 @@ const CollectModal: React.FC<CollectModalProps> = ({
           TranslateString(999, 'Canceled'),
           TranslateString(999, 'Please try again and confirm the transaction.'),
         )
+        setPendingTx(false)
       }
     }
-
-    setPendingTx(false)
   }
 
   const handleRenderIcon = () => {

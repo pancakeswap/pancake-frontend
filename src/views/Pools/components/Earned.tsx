@@ -52,6 +52,7 @@ const Earned: React.FC<EarnedProps> = ({
   const [onPresentHarvest, onDismissHarvest] = useModal(
     <CollectModal
       earnings={earnings}
+      earningTokenDecimals={earningTokenDecimals}
       earningsBusd={earningsBusd}
       sousId={sousId}
       isBnbPool={isBnbPool}
