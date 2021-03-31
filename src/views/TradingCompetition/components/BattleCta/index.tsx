@@ -60,8 +60,15 @@ const BattleCta: React.FC<CompetitionProps> = ({
   )
   const [onPresentClaimModal] = useModal(<ClaimModal />, false)
 
-  const { hasRegistered, hasUserClaimed } = userTradingInformation
-  const userCanClaim = false
+  const {
+    hasRegistered,
+    hasUserClaimed,
+    userRewardGroup,
+    userCakeRewards,
+    userPointReward,
+    canClaimNFT,
+  } = userTradingInformation
+  const userCanClaim = userCakeRewards !== '0' || userPointReward !== '0' || canClaimNFT
 
   const getHeadingText = () => {
     // Competition live

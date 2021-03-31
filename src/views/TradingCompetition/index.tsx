@@ -48,7 +48,14 @@ const TradingCompetition = () => {
   const { profile, isLoading } = useProfile()
   const tradingCompetitionContract = useTradingCompetitionContract()
   const [registrationSuccessful, setRegistrationSuccessful] = useState(false)
-  const [userTradingInformation, setUserTradingInformation] = useState({ hasRegistered: false, hasUserClaimed: false })
+  const [userTradingInformation, setUserTradingInformation] = useState({
+    hasRegistered: false,
+    hasUserClaimed: false,
+    userRewardGroup: '0',
+    userCakeRewards: '0',
+    userPointReward: '0',
+    canClaimNFT: false,
+  })
 
   const hasCompetitionFinished = false
   const isCompetitionLive = false
@@ -70,6 +77,7 @@ const TradingCompetition = () => {
         userPointReward: user[4],
         canClaimNFT: user[5],
       }
+      debugger // eslint-disable-line no-debugger
       setUserTradingInformation(userObject)
     }
     if (account) {
