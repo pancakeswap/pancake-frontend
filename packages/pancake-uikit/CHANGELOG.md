@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.19.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap-libs/uikit@0.18.0...@pancakeswap-libs/uikit@0.19.0) (2021-03-31)
+
+
+### Bug Fixes
+
+* Modal border inner color use theme value ([#37](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/37)) ([8e5c9c4](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/8e5c9c409b38059f70f6746bc769f4eced009660))
+
+
+### Features
+
+* **uikit:** Icons ([#40](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/40)) ([6aab674](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/6aab674e7f304439cc1f2fe3754aa8f697cc3efd))
+* **uikit:** Icons ([#41](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/41)) ([ff80fbe](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/ff80fbe940e0afd54ecb2be8a08a241109dde185))
+
+
+
+
+
 # [0.18.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap-libs/uikit@0.17.0...@pancakeswap-libs/uikit@0.18.0) (2021-03-30)
 
 
