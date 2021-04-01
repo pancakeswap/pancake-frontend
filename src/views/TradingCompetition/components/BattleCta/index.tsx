@@ -103,7 +103,7 @@ const BattleCta: React.FC<CompetitionProps> = ({
     }
     // User not registered
     if (!hasRegistered) {
-      return TranslateString(999, 'Register Now!')
+      return TranslateString(999, 'I want to Battle!')
     }
     // User registered and competition live
     if (isCompetitionLive) {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { useProfile } from 'state/hooks'
-import { Card, CardHeader, CardBody, Flex, Button } from '@pancakeswap-libs/uikit'
+import { Card, CardHeader, CardBody, Flex, Button, Box, Image } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
 import { useTradingCompetitionContract } from 'hooks/useContract'
 import { PrizesIcon, RulesIcon } from './svgs'
@@ -13,6 +13,7 @@ import {
   LIGHTBLUEBG,
   LIGHTBLUEFILL,
 } from './components/Section/sectionStyles'
+import StormBunny from './pngs/storm.png'
 import RibbonWithImage from './components/RibbonWithImage'
 import HowToJoin from './components/HowToJoin'
 import BattleBanner from './components/BattleBanner'
@@ -43,6 +44,17 @@ const StyledSection = styled(Section)`
   padding: 96px 0 24px 0;
 `
 
+const BottomBunnyWrapper = styled(Box)`
+  display: none;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    display: flex;
+    margin-left: 40px;
+    width: 147px;
+    height: 200px;
+  }
+`
+
 const TradingCompetition = () => {
   const { account } = useWeb3React()
   const { profile, isLoading } = useProfile()
@@ -58,7 +70,7 @@ const TradingCompetition = () => {
     canClaimNFT: false,
   })
 
-  const hasCompetitionFinished = true
+  const hasCompetitionFinished = false
   const isCompetitionLive = false
 
   // Ignore hasCompetitionStarted. It's part of the root branch, will all be removed when the countdown state is in.
@@ -153,18 +165,25 @@ const TradingCompetition = () => {
         <Rules />
       </Section>
       <Section backgroundStyle={DARKBG} svgFill={DARKFILL} index={4} intersectionPosition="top">
-        {shouldHideCta ? null : (
-          <BattleCta
-            userTradingInformation={userTradingInformation}
-            account={account}
-            isCompetitionLive={isCompetitionLive}
-            hasCompetitionFinished={hasCompetitionFinished}
-            profile={profile}
-            isLoading={isLoading}
-            onRegisterSuccess={onRegisterSuccess}
-            onClaimSuccess={onClaimSuccess}
-          />
-        )}
+        <Flex alignItems="center">
+          {shouldHideCta ? null : (
+            <Flex height="fit-content">
+              <BattleCta
+                userTradingInformation={userTradingInformation}
+                account={account}
+                isCompetitionLive={isCompetitionLive}
+                hasCompetitionFinished={hasCompetitionFinished}
+                profile={profile}
+                isLoading={isLoading}
+                onRegisterSuccess={onRegisterSuccess}
+                onClaimSuccess={onClaimSuccess}
+              />
+            </Flex>
+          )}
+          <BottomBunnyWrapper>
+            <Image src={StormBunny} width={147} height={200} />
+          </BottomBunnyWrapper>
+        </Flex>
       </Section>
     </CompetitionPage>
   )
