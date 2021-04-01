@@ -8,7 +8,6 @@ const StyledTooltip = styled(Tooltip)`
   left: 50%;
   right: 0;
   transform: translate(-50%, 100%);
-  margin-top: 20px;
 
   &:after {
     border-top: none;
