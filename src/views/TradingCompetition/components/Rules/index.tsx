@@ -6,7 +6,6 @@ import RulesCard from './RulesCard'
 import FAQs from './FAQs'
 
 const Wrapper = styled(Flex)`
-  max-width: 736px;
   flex-direction: column;
 
   ${({ theme }) => theme.mediaQueries.md} {
@@ -31,7 +30,7 @@ const Rules = () => {
       <StyledCardWrapper>
         <RulesCard title={TranslateString(999, 'Trade to increase your rank')}>
           <Text textAlign="center" fontSize="14px" color="textSubtle">
-            {TranslateString(999, 'Eligible pairs: CAKE-BNB, ABC-DEF, GHI-JKL, MNO-PQRS')}
+            {TranslateString(999, 'Eligible pairs: BNB/BUSD, CAKE/BNB, ETH/BNB and BTCB/BNB')}
           </Text>
         </RulesCard>
         <RulesCard title={TranslateString(999, 'Play as a team')}>
