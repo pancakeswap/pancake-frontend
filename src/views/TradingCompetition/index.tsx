@@ -36,10 +36,6 @@ const StyledFlex = styled(Flex)`
   }
 `
 
-const StyledSection = styled(Section)`
-  padding: 96px 0 24px 0;
-`
-
 const BottomBunnyWrapper = styled(Box)`
   display: none;
 
@@ -131,7 +127,7 @@ const TradingCompetition = () => {
             )
           }
         >
-          <StyledFlex>
+          <StyledFlex mb={shouldHideCta ? '0px' : '48px'}>
             <Countdown />
             <BattleBanner />
           </StyledFlex>
@@ -149,11 +145,15 @@ const TradingCompetition = () => {
           {/* If competition has not yet started, render HowToJoin component - 
           if not, render trading competition rankings
           */}
-          {!isCompetitionLive && !hasCompetitionFinished ? <HowToJoin /> : <div />}
+          <Box mt={shouldHideCta ? '0px' : '54px'}>
+            {!isCompetitionLive && !hasCompetitionFinished ? <HowToJoin /> : <div />}
+          </Box>
         </Section>
-        <StyledSection backgroundStyle={LIGHTBLUEBG} svgFill={LIGHTBLUEFILL} index={2} noIntersection>
-          <PrizesInfo />
-        </StyledSection>
+        <Section backgroundStyle={LIGHTBLUEBG} svgFill={LIGHTBLUEFILL} index={2} noIntersection>
+          <Box mb="78px">
+            <PrizesInfo />
+          </Box>
+        </Section>
         <Section
           index={3}
           intersectionPosition="top"
