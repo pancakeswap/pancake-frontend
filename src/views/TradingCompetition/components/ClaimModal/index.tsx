@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
+import BigNumber from 'bignumber.js'
 import { Modal, Button, Flex, AutoRenewIcon, Heading, Text, Image } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import { useTradingCompetitionContract } from 'hooks/useContract'
 import { useToast } from 'state/hooks'
+import { getBalanceNumber } from 'utils/formatBalance'
 import { CompetitionProps } from '../../types'
 import NftBunnies from '../../pngs/cakers-nft.png'
 
@@ -26,6 +28,9 @@ const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, use
 
   const { userRewardGroup, userCakeRewards, userPointReward, canClaimNFT } = userTradingInformation
 
+  const cakeAsBigNumber = new BigNumber(userCakeRewards as string)
+  const cakeToDisplay = getBalanceNumber(cakeAsBigNumber).toFixed(2)
+
   const handleClaimClick = () => {
     tradingCompetitionContract.methods
       .claimReward()
@@ -39,6 +44,7 @@ const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, use
         onClaimSuccess()
       })
       .on('error', (error) => {
+        // debugger // eslint-disable-line no-debugger
         toastError('Error', error?.message)
         setIsConfirming(false)
       })
@@ -51,14 +57,17 @@ const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, use
           {TranslateString(999, 'Congratulations, you won')}
         </Text>
         <Flex mt="16px">
+          {/* achievements */}
           <Text mr="10px">achievements icons for group {userRewardGroup}</Text>
           <Text>
             +{userPointReward} {TranslateString(999, 'Points')}
           </Text>
         </Flex>
+        {/* cake */}
         <Heading mt="16px" size="md" mb={canClaimNFT ? '16px' : '0px'}>
-          {userCakeRewards} CAKE
+          {cakeToDisplay} CAKE
         </Heading>
+        {/* NFT */}
         {canClaimNFT ? (
           <Flex alignItems="center" flexDirection="column" width="100%">
             <ImageWrapper>

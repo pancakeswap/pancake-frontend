@@ -58,7 +58,7 @@ const TradingCompetition = () => {
     canClaimNFT: false,
   })
 
-  const hasCompetitionFinished = false
+  const hasCompetitionFinished = true
   const isCompetitionLive = false
 
   // Ignore hasCompetitionStarted. It's part of the root branch, will all be removed when the countdown state is in.
