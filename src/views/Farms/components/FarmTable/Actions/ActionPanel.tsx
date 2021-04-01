@@ -28,7 +28,6 @@ const Container = styled.div<{ toggled: boolean }>`
   flex-direction: column-reverse;
   padding: ${({ toggled }) => (toggled ? '24px' : '0')};
   max-height: ${({ toggled }) => (toggled ? '500px' : '0')};
-  opacity: ${({ toggled }) => (toggled ? '1' : '0')};
   overflow: hidden;
   transition: max-height 0.5s;
 
