@@ -44,7 +44,6 @@ const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, use
         onClaimSuccess()
       })
       .on('error', (error) => {
-        // debugger // eslint-disable-line no-debugger
         toastError('Error', error?.message)
         setIsConfirming(false)
       })
