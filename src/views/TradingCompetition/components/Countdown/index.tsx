@@ -1,8 +1,9 @@
 import React, { useContext } from 'react'
 import styled from 'styled-components'
-import { Flex, Skeleton, PocketWatchIcon } from '@pancakeswap-libs/uikit'
+import { Flex, Skeleton, PocketWatchIcon, Text, Link } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import getTimePeriods from 'utils/getTimePeriods'
+import { Heading2Text } from '../CompetitionHeadingText'
 import { CompetitionSteps, FINISHED, LIVE } from '../../config'
 import { CompetitionCountdownContext } from '../../contexts/CompetitionCountdownContext'
 import ProgressStepper from './ProgressStepper'
@@ -40,10 +41,28 @@ const PocketWatchWrapper = styled(Flex)`
   }
 `
 
+const StyledHeading = styled(Heading2Text)`
+  font-size: 24px;
+  margin-right: 4px;
+`
+
+const TimerHeadingComponent = ({ children }) => (
+  <StyledHeading background="linear-gradient(180deg, #FFD800 0%, #EB8C00 100%)" fill>
+    {children}
+  </StyledHeading>
+)
+
+const TimerBodyComponent = ({ children }) => (
+  <Text color="#ffff" fontWeight="600" fontSize="16px" mr="16px">
+    {children}
+  </Text>
+)
+
 const Countdown = () => {
   const TranslateString = useI18n()
   const { competitionState, timeUntilNextEvent, isLoading } = useContext(CompetitionCountdownContext)
   const { minutes, hours, days } = getTimePeriods(timeUntilNextEvent)
+  const targetBlockNumber = competitionState && competitionState.startBlock
 
   return (
     <Wrapper>
@@ -55,16 +74,22 @@ const Countdown = () => {
           <Skeleton height={26} width={190} mb="24px" />
         ) : (
           competitionState.state !== FINISHED && (
-            <Timer
-              timerText={
-                competitionState.state === LIVE
-                  ? `${TranslateString(410, 'End')}:`
-                  : `${TranslateString(1212, 'Start')}:`
-              }
-              minutes={minutes}
-              hours={hours}
-              days={days}
-            />
+            <Flex mb="24px">
+              <Timer
+                timerStage={
+                  competitionState.state === LIVE
+                    ? `${TranslateString(410, 'End')}:`
+                    : `${TranslateString(1212, 'Start')}:`
+                }
+                minutes={minutes}
+                hours={hours}
+                days={days}
+                blockNumber={targetBlockNumber}
+                showTooltip
+                HeadingTextComponent={TimerHeadingComponent}
+                BodyTextComponent={TimerBodyComponent}
+              />
+            </Flex>
           )
         )}
         {isLoading ? (

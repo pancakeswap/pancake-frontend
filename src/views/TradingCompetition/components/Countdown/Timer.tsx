@@ -1,49 +1,86 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Flex, Text } from '@pancakeswap-libs/uikit'
-import { Heading2Text } from '../CompetitionHeadingText'
-import Tooltip from '../../../Farms/components/Tooltip/Tooltip'
+import { Flex, Heading, Text } from '@pancakeswap-libs/uikit'
+import TimerTooltip from './TimerTooltip'
 
-interface TimerProps {
-  timerText?: string
+export interface TimerProps {
+  timerStage?: string
   minutes?: number
   hours?: number
   days?: number
+  showTooltip?: boolean
+  blockNumber?: number
+  HeadingTextComponent?: any
+  BodyTextComponent?: any
 }
 
-const StyledHeadingText = styled(Heading2Text)`
-  font-size: 24px;
-  margin-right: 4px;
+const StyledTimerFlex = styled(Flex)<{ showTooltip?: boolean }>`
+  ${({ theme, showTooltip }) => (showTooltip ? ` border-bottom: 1px dashed ${theme.colors.textSubtle};` : ``)}
+  div:last-of-type {
+    margin-right: 0;
+  }
 `
 
-const Timer: React.FC<TimerProps> = ({ timerText, minutes, hours, days }) => {
+const Timer = ({ minutes, hours, days, showTooltip, HeadingTextComponent, BodyTextComponent }) => {
   return (
-    <Tooltip content="more bits">
-      <Flex mb="24px" alignItems="flex-end">
-        <Text color="#ffff" fontWeight="600" fontSize="16px" mr="16px">
-          {timerText}
-        </Text>
-        <StyledHeadingText background="linear-gradient(180deg, #FFD800 0%, #EB8C00 100%)" fill>
-          {days}
-        </StyledHeadingText>
-        <Text color="#ffff" fontWeight="600" fontSize="16px" mr="16px">
-          d
-        </Text>
-        <StyledHeadingText background="linear-gradient(180deg, #FFD800 0%, #EB8C00 100%)" fill>
-          {hours}
-        </StyledHeadingText>
-        <Text color="#ffff" fontWeight="600" fontSize="16px" mr="16px">
-          h
-        </Text>
-        <StyledHeadingText background="linear-gradient(180deg, #FFD800 0%, #EB8C00 100%)" fill>
-          {minutes}
-        </StyledHeadingText>
-        <Text color="#ffff" fontWeight="600" fontSize="16px">
-          m
-        </Text>
-      </Flex>
-    </Tooltip>
+    <StyledTimerFlex alignItems="flex-end" showTooltip={showTooltip}>
+      <HeadingTextComponent mr="2px">{days}</HeadingTextComponent>
+      <BodyTextComponent mr="16px">d</BodyTextComponent>
+      <HeadingTextComponent mr="2px">{hours}</HeadingTextComponent>
+      <BodyTextComponent mr="16px">h</BodyTextComponent>
+      <HeadingTextComponent mr="2px">{minutes}</HeadingTextComponent>
+      <BodyTextComponent>m</BodyTextComponent>
+    </StyledTimerFlex>
   )
 }
 
-export default Timer
+const DefaultHeadingTextComponent = ({ children, ...props }) => (
+  <Heading size="lg" {...props}>
+    {children}
+  </Heading>
+)
+const DefaultBodyTextComponent = ({ children, ...props }) => (
+  <Text fontSize="16px" fontWeight="600" {...props}>
+    {children}
+  </Text>
+)
+
+const Wrapper: React.FC<TimerProps> = ({
+  timerStage,
+  minutes,
+  hours,
+  days,
+  showTooltip,
+  blockNumber,
+  HeadingTextComponent = DefaultHeadingTextComponent,
+  BodyTextComponent = DefaultBodyTextComponent,
+}) => {
+  return (
+    <Flex alignItems="flex-end" position="relative">
+      <BodyTextComponent mr="16px">{timerStage}</BodyTextComponent>
+      {showTooltip ? (
+        <TimerTooltip blockNumber={blockNumber}>
+          <Timer
+            minutes={minutes}
+            hours={hours}
+            days={days}
+            HeadingTextComponent={HeadingTextComponent}
+            BodyTextComponent={BodyTextComponent}
+            showTooltip={showTooltip}
+          />
+        </TimerTooltip>
+      ) : (
+        <Timer
+          minutes={minutes}
+          hours={hours}
+          days={days}
+          HeadingTextComponent={HeadingTextComponent}
+          BodyTextComponent={BodyTextComponent}
+          showTooltip={showTooltip}
+        />
+      )}
+    </Flex>
+  )
+}
+
+export default Wrapper
