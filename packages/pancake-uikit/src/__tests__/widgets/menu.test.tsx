@@ -203,7 +203,7 @@ it("renders correctly", () => {
           class="sc-hiSbYr lltmGV"
         >
           <div
-            class="sc-kfzAmx ijKars"
+            class="sc-kfzAmx kGTKrM"
           >
             <div
               class="sc-crrsfI laFgBV"
