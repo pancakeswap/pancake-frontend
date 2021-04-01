@@ -27,11 +27,10 @@ const Container = styled.div<{ toggled: boolean }>`
   width: 100%;
   flex-direction: column-reverse;
   padding: ${({ toggled }) => (toggled ? '24px' : '0')};
-  height: ${({ toggled }) => (toggled ? 'auto' : '0')};
   max-height: ${({ toggled }) => (toggled ? '500px' : '0')};
   opacity: ${({ toggled }) => (toggled ? '1' : '0')};
   overflow: hidden;
-  transition: opacity 0.2s, max-height 0.5s;
+  transition: max-height 0.5s;
 
   ${({ theme }) => theme.mediaQueries.lg} {
     flex-direction: row;
