@@ -29,11 +29,11 @@ const Container = styled.div<{ toggled: boolean }>`
   padding: ${({ toggled }) => (toggled ? '24px' : '0')};
   max-height: ${({ toggled }) => (toggled ? '500px' : '0')};
   overflow: hidden;
-  transition: max-height 0.5s;
+  transition: max-height 0.5s ease-in-out, padding 0.5s;
 
   ${({ theme }) => theme.mediaQueries.lg} {
     flex-direction: row;
-    padding: ${({ toggled }) => (toggled ? '16px 32px' : '0')};
+    padding: ${({ toggled }) => (toggled ? '16px 32px' : '0px 32px')};
   }
 `
 
