@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import styled from 'styled-components'
-import { Flex, Skeleton, PocketWatchIcon, Text, Link } from '@pancakeswap-libs/uikit'
+import { Flex, Skeleton, PocketWatchIcon, Text } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import getTimePeriods from 'utils/getTimePeriods'
 import { Heading2Text } from '../CompetitionHeadingText'

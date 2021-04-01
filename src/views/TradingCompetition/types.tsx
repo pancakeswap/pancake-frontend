@@ -1,9 +1,31 @@
 import { Profile } from 'state/types'
 
-export interface CompetitionProps {
-  registered?: boolean
+export interface UserRewardsProps {
+  userCanClaim?: boolean
+  userRewards?: {
+    cakeToClaim?: string
+    pointsToClaim?: string
+  }
+}
+export interface UserTradingInformationProps {
+  hasRegistered?: boolean
+  hasUserClaimed?: boolean
+  userRewardGroup?: string
+  userCakeRewards?: string
+  userPointReward?: string
+  canClaimNFT?: boolean
+}
+
+export interface CompetitionProps extends UserRewardsProps {
+  userTradingInformation?: UserTradingInformationProps
   account?: string
-  profile: Profile
+  profile?: Profile
+  isCompetitionLive?: boolean
+  hasCompetitionFinished?: boolean
+  isLoading?: boolean
+  onDismiss?: () => void
+  onRegisterSuccess?: () => void
+  onClaimSuccess?: () => void
 }
 
 export interface YourScoreProps extends CompetitionProps {
