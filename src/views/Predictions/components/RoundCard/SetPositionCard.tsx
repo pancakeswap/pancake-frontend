@@ -14,16 +14,15 @@ import {
   Box,
   AutoRenewIcon,
 } from '@pancakeswap-libs/uikit'
-import { useDispatch } from 'react-redux'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import { useGetMinBetAmount, useToast } from 'state/hooks'
-import { updateRound } from 'state/predictions'
 import useI18n from 'hooks/useI18n'
 import useGetBnbBalance from 'hooks/useGetBnbBalance'
 import { usePredictionsContract } from 'hooks/useContract'
 import { BetPosition } from 'state/types'
 import { getDecimalAmount } from 'utils/formatBalance'
+import UnlockButton from 'components/UnlockButton'
 import { getBnbAmount } from '../../helpers'
 import useSwiper from '../../hooks/useSwiper'
 import FlexRow from '../FlexRow'
@@ -31,10 +30,10 @@ import { PositionTag } from './Tag'
 import Card from './Card'
 
 interface SetPositionCardProps {
-  roundId: string
   position: BetPosition
   togglePosition: () => void
   onBack: () => void
+  onSuccess: () => Promise<void>
 }
 
 const dust = new BigNumber(0.01).times(new BigNumber(10).pow(18))
@@ -67,7 +66,7 @@ const getButtonProps = (value: BigNumber, bnbBalance: BigNumber, minBetAmountBal
   return { id: 464, fallback: 'Confirm', disabled: value.lt(minBetAmountBalance) }
 }
 
-const SetPositionCard: React.FC<SetPositionCardProps> = ({ roundId, position, togglePosition, onBack }) => {
+const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosition, onBack, onSuccess }) => {
   const [value, setValue] = useState('')
   const [isTxPending, setIsTxPending] = useState(false)
   const [errorMessage, setErrorMessage] = useState(null)
@@ -76,8 +75,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ roundId, position, to
   const bnbBalance = useGetBnbBalance()
   const minBetAmount = useGetMinBetAmount()
   const TranslateString = useI18n()
-  const dispatch = useDispatch()
-  const { toastSuccess, toastError } = useToast()
+  const { toastError } = useToast()
   const predictionsContract = usePredictionsContract()
 
   const balanceDisplay = getBnbAmount(bnbBalance).toNumber()
@@ -134,17 +132,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ roundId, position, to
       })
       .on('receipt', async () => {
         setIsTxPending(false)
-        const positionDisplay = position === BetPosition.BULL ? 'UP' : 'DOWN'
-
-        await dispatch(updateRound({ id: roundId }))
-        onBack()
-
-        toastSuccess(
-          'Success!',
-          TranslateString(999, `${positionDisplay} position entered`, {
-            position: positionDisplay,
-          }),
-        )
+        await onSuccess()
       })
       .on('error', (error) => {
         const errorMsg = TranslateString(999, 'An error occurred, unable to enter your position')
@@ -247,15 +235,19 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ roundId, position, to
           </Button>
         </Flex>
         <Box mb="8px">
-          <Button
-            width="100%"
-            disabled={!account || disabled}
-            onClick={handleEnterPosition}
-            isLoading={isTxPending}
-            endIcon={isTxPending ? <AutoRenewIcon color="currentColor" spin /> : null}
-          >
-            {TranslateString(id, fallback)}
-          </Button>
+          {account ? (
+            <Button
+              width="100%"
+              disabled={!account || disabled}
+              onClick={handleEnterPosition}
+              isLoading={isTxPending}
+              endIcon={isTxPending ? <AutoRenewIcon color="currentColor" spin /> : null}
+            >
+              {TranslateString(id, fallback)}
+            </Button>
+          ) : (
+            <UnlockButton width="100%" />
+          )}
         </Box>
         <Text as="p" fontSize="12px" lineHeight={1} color="textSubtle">
           {TranslateString(999, "You won't be able to remove or change your position once you enter it.")}

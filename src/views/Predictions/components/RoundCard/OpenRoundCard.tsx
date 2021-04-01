@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { CardBody, PlayCircleOutlineIcon, Button } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import { BetPosition, Round } from 'state/types'
-import { useGetTotalIntervalBlocks } from 'state/hooks'
+import { useGetTotalIntervalBlocks, useToast } from 'state/hooks'
+import { updateRound } from 'state/predictions'
 import CardFlip from '../CardFlip'
 import MultiplierArrow from './MultiplierArrow'
 import Card from './Card'
@@ -19,6 +21,12 @@ interface OpenRoundCardProps {
   bearMultiplier: number
 }
 
+interface State {
+  isSettingPosition: boolean
+  position: BetPosition
+  hasEnteredPosition: boolean
+}
+
 const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
   round,
   hasEnteredUp,
@@ -26,13 +34,21 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
   bullMultiplier,
   bearMultiplier,
 }) => {
-  const [state, setState] = useState({
+  const canEnterPosition = round.lockPrice === null && !hasEnteredUp && !hasEnteredDown
+  const [state, setState] = useState<State>({
     isSettingPosition: false,
     position: BetPosition.BULL,
+
+    // We keep this flag in state because it is possible despite polling for new round data
+    // after a user enters a position it returns without the position data. So we want
+    // to be able to update it immediately
+    hasEnteredPosition: false,
   })
   const TranslateString = useI18n()
   const interval = useGetTotalIntervalBlocks()
-  const canEnterPosition = round.lockPrice === null && !hasEnteredUp && !hasEnteredDown
+  const dispatch = useDispatch()
+  const { toastSuccess } = useToast()
+  const { isSettingPosition, position, hasEnteredPosition } = state
 
   // Bettable rounds do not have an endblock set so we approximate it by adding the block interval
   // to the start block
@@ -45,10 +61,11 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
     }))
 
   const handleSetPosition = (newPosition: BetPosition) => {
-    setState({
+    setState((prevState) => ({
+      ...prevState,
       isSettingPosition: true,
       position: newPosition,
-    })
+    }))
   }
 
   const togglePosition = () => {
@@ -58,8 +75,27 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
     }))
   }
 
+  const handleSuccess = async () => {
+    const positionDisplay = position === BetPosition.BULL ? 'UP' : 'DOWN'
+
+    setState((prevState) => ({
+      ...prevState,
+      hasEnteredPosition: false,
+    }))
+
+    await dispatch(updateRound({ id: round.id }))
+    handleBack()
+
+    toastSuccess(
+      'Success!',
+      TranslateString(999, `${positionDisplay} position entered`, {
+        position: positionDisplay,
+      }),
+    )
+  }
+
   return (
-    <CardFlip isFlipped={state.isSettingPosition} height="426px">
+    <CardFlip isFlipped={isSettingPosition} height="426px">
       <Card>
         <CardHeader
           status="next"
@@ -71,7 +107,7 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
         <CardBody p="16px">
           <MultiplierArrow multiplier={bullMultiplier} hasEntered={hasEnteredUp} />
           <RoundInfoBox isNext={canEnterPosition} isLive={!canEnterPosition}>
-            {canEnterPosition ? (
+            {canEnterPosition && !hasEnteredPosition ? (
               <>
                 <PrizePoolRow totalAmount={round.totalAmount} mb="8px" />
                 <Button
@@ -105,9 +141,9 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
         </CardBody>
       </Card>
       <SetPositionCard
-        roundId={round.id}
         onBack={handleBack}
-        position={state.position}
+        onSuccess={handleSuccess}
+        position={position}
         togglePosition={togglePosition}
       />
     </CardFlip>
