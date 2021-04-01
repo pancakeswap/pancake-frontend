@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Card, CardBody, CardHeader, Heading, Text, Flex } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
-import FAQItem from './FAQItem'
+import FoldableText from './FoldableText'
 
 const Wrapper = styled(Flex)`
   margin-top: 16px;
@@ -33,15 +33,15 @@ const FAQ = () => {
           <Heading size="lg">Details</Heading>
         </CardHeader>
         <StyledCardbody>
-          <FAQItem question={TranslateString(999, 'Eligible trading pairs')}>
+          <FoldableText title={TranslateString(999, 'Eligible trading pairs')}>
             <Text fontSize="14px" color="textSubtle">
               {TranslateString(
                 999,
                 'Only trades on BNB/BUSD, CAKE/BNB, ETH/BNB and BTCB/BNB pairs will be included in volume calculations.',
               )}
             </Text>
-          </FAQItem>
-          <FAQItem question={TranslateString(999, 'Calculating team ranks and winners')}>
+          </FoldableText>
+          <FoldableText title={TranslateString(999, 'Calculating team ranks and winners')}>
             <Text fontSize="14px" color="textSubtle">
               -{' '}
               {TranslateString(
@@ -56,8 +56,8 @@ const FAQ = () => {
                 'The final winning team will be the team with the highest total volume score at the end of the competition period.',
               )}
             </Text>
-          </FAQItem>
-          <FAQItem question={TranslateString(999, 'Prize distribution')}>
+          </FoldableText>
+          <FoldableText title={TranslateString(999, 'Prize distribution')}>
             <Text fontSize="14px" color="textSubtle">
               -{' '}
               {TranslateString(
@@ -75,8 +75,8 @@ const FAQ = () => {
             <Text fontSize="14px" color="textSubtle">
               - {TranslateString(999, 'Every participant will win at least one prize at the end of the competition')}
             </Text>
-          </FAQItem>
-          <FAQItem question={TranslateString(999, 'Fine print')}>
+          </FoldableText>
+          <FoldableText title={TranslateString(999, 'Fine print')}>
             <Text fontSize="14px" color="textSubtle">
               -{' '}
               {TranslateString(
@@ -91,39 +91,39 @@ const FAQ = () => {
                 'PancakeSwap can and will disqualify any team or specific members that are proven to have taken malicious action or attempt to “cheat” in any way.',
               )}
             </Text>
-          </FAQItem>
-          <FAQItem question={TranslateString(999, 'Can I join the battle after it starts?')}>
+          </FoldableText>
+          <FoldableText title={TranslateString(999, 'Can I join the battle after it starts?')}>
             <Text fontSize="14px" color="textSubtle">
               {TranslateString(
                 999,
                 'Sorry, no. You need to register during the registration period, before the start of the event.',
               )}
             </Text>
-          </FAQItem>
-          <FAQItem question={TranslateString(999, 'How do I know if I successfully registered?')}>
+          </FoldableText>
+          <FoldableText title={TranslateString(999, 'How do I know if I successfully registered?')}>
             <Text fontSize="14px" color="textSubtle">
               {TranslateString(
                 999,
                 'Sorry, no. You need to register during the registration period, before the start of the event.',
               )}
             </Text>
-          </FAQItem>
-          <FAQItem question={TranslateString(999, 'How can I see my current rank?')}>
+          </FoldableText>
+          <FoldableText title={TranslateString(999, 'How can I see my current rank?')}>
             <Text fontSize="14px" color="textSubtle">
               {TranslateString(
                 999,
                 'Check the Your Score section on the event page. You’ll need to connect your wallet, of course.',
               )}
             </Text>
-          </FAQItem>
-          <FAQItem question={TranslateString(999, 'How do I claim my prize(s)?')}>
+          </FoldableText>
+          <FoldableText title={TranslateString(999, 'How do I claim my prize(s)?')}>
             <Text fontSize="14px" color="textSubtle">
               {TranslateString(
                 999,
                 'After the battle ends, visit the event page and click the “Claim Prizes” button in the top section or in the “Your Score” section. Once you claim your prizes successfully, the button text will change to “Prizes Claimed”.',
               )}
             </Text>
-          </FAQItem>
+          </FoldableText>
         </StyledCardbody>
       </Card>
     </Wrapper>

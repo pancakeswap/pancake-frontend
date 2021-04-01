@@ -20,14 +20,14 @@ const StyledChildrenFlex = styled(Flex)<{ isExpanded?: boolean }>`
   border-bottom: 1px solid ${({ theme }) => theme.colors.inputSecondary};
 `
 
-const FAQItem: React.FC<{ question?: string }> = ({ question, children }) => {
+const FoldableText: React.FC<{ title?: string }> = ({ title, children }) => {
   const [isExpanded, setIsExpanded] = useState(false)
 
   return (
     <Wrapper flexDirection="column" onClick={() => setIsExpanded(!isExpanded)} mt="24px">
       <Flex justifyContent="space-between">
         <Text fontWeight="bold" mb="16px">
-          {question}
+          {title}
         </Text>
         <StyledExpandButton justifyContent="flex-start" alignItems="flex-start">
           <Text fontWeight="bold" color="primary">
@@ -43,4 +43,4 @@ const FAQItem: React.FC<{ question?: string }> = ({ question, children }) => {
   )
 }
 
-export default FAQItem
+export default FoldableText
