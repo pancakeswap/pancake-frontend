@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { useProfile } from 'state/hooks'
-import { Card, CardHeader, CardBody, Flex, Button, Box, Image } from '@pancakeswap-libs/uikit'
+import { Flex, Box, Image } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
 import { useTradingCompetitionContract } from 'hooks/useContract'
 import { PrizesIcon, RulesIcon } from './svgs'
@@ -13,6 +13,7 @@ import {
   LIGHTBLUEBG,
   LIGHTBLUEFILL,
 } from './components/Section/sectionStyles'
+import Countdown from './components/Countdown'
 import StormBunny from './pngs/storm.png'
 import RibbonWithImage from './components/RibbonWithImage'
 import HowToJoin from './components/HowToJoin'
@@ -21,27 +22,23 @@ import Section from './components/Section'
 import BattleCta from './components/BattleCta'
 import PrizesInfo from './components/PrizesInfo'
 import Rules from './components/Rules'
-
-const SampleCard = () => (
-  <Card>
-    <CardHeader>A header</CardHeader>
-    <CardBody>
-      <Flex flexDirection="column">
-        Some body stuff{' '}
-        <Button mt="8px" onClick={() => console.log('clicked')}>
-          Click me
-        </Button>
-      </Flex>
-    </CardBody>
-  </Card>
-)
+import { CompetitionCountdownContextProvider } from './contexts/CompetitionCountdownContext'
 
 const CompetitionPage = styled.div`
   min-height: calc(100vh - 64px);
 `
 
-const StyledSection = styled(Section)`
-  padding: 96px 0 24px 0;
+const BannerFlex = styled(Flex)`
+  flex-direction: column;
+  ${({ theme }) => theme.mediaQueries.xl} {
+    padding-top: 10px;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+  }
+
+  @media screen and (min-width: 1920px) {
+    padding-top: 32px;
+  }
 `
 
 const BottomBunnyWrapper = styled(Box)`
@@ -70,11 +67,9 @@ const TradingCompetition = () => {
     canClaimNFT: false,
   })
 
-  const hasCompetitionFinished = false
+  // These should be replaced with actual 'state' calls when smart contracts are deployed to live and testnet is no longer needed
   const isCompetitionLive = false
-
-  // Ignore hasCompetitionStarted. It's part of the root branch, will all be removed when the countdown state is in.
-  const hasCompetitionStarted = false
+  const hasCompetitionFinished = false
 
   const onRegisterSuccess = () => {
     setRegistrationSuccessful(true)
@@ -116,58 +111,14 @@ const TradingCompetition = () => {
     !isLoading && account && !userTradingInformation.hasRegistered && (isCompetitionLive || hasCompetitionFinished)
 
   return (
-    <CompetitionPage>
-      <Section
-        backgroundStyle={DARKBG}
-        svgFill={DARKFILL}
-        index={4}
-        intersectComponent={
-          shouldHideCta ? null : (
-            <BattleCta
-              userTradingInformation={userTradingInformation}
-              account={account}
-              isCompetitionLive={isCompetitionLive}
-              hasCompetitionFinished={hasCompetitionFinished}
-              profile={profile}
-              isLoading={isLoading}
-              onRegisterSuccess={onRegisterSuccess}
-              onClaimSuccess={onClaimSuccess}
-            />
-          )
-        }
-      >
-        <BattleBanner />
-      </Section>
-      <Section
-        backgroundStyle={MIDBLUEBG}
-        svgFill={MIDBLUEFILL}
-        index={3}
-        intersectComponent={
-          <RibbonWithImage imageComponent={<PrizesIcon width="175px" />} ribbonDirection="up">
-            Prizes
-          </RibbonWithImage>
-        }
-      >
-        {!hasCompetitionStarted ? <HowToJoin /> : <SampleCard />}
-      </Section>
-      <StyledSection backgroundStyle={LIGHTBLUEBG} svgFill={LIGHTBLUEFILL} index={2} noIntersection>
-        <PrizesInfo />
-      </StyledSection>
-      <Section
-        index={3}
-        intersectionPosition="top"
-        intersectComponent={
-          <RibbonWithImage imageComponent={<RulesIcon width="175px" />} ribbonDirection="up">
-            Rules
-          </RibbonWithImage>
-        }
-      >
-        <Rules />
-      </Section>
-      <Section backgroundStyle={DARKBG} svgFill={DARKFILL} index={4} intersectionPosition="top">
-        <Flex alignItems="center">
-          {shouldHideCta ? null : (
-            <Flex height="fit-content">
+    <CompetitionCountdownContextProvider>
+      <CompetitionPage>
+        <Section
+          backgroundStyle={DARKBG}
+          svgFill={DARKFILL}
+          index={4}
+          intersectComponent={
+            shouldHideCta ? null : (
               <BattleCta
                 userTradingInformation={userTradingInformation}
                 account={account}
@@ -178,14 +129,70 @@ const TradingCompetition = () => {
                 onRegisterSuccess={onRegisterSuccess}
                 onClaimSuccess={onClaimSuccess}
               />
-            </Flex>
-          )}
-          <BottomBunnyWrapper>
-            <Image src={StormBunny} width={147} height={200} />
-          </BottomBunnyWrapper>
-        </Flex>
-      </Section>
-    </CompetitionPage>
+            )
+          }
+        >
+          <BannerFlex mb={shouldHideCta ? '0px' : '48px'}>
+            <Countdown />
+            <BattleBanner />
+          </BannerFlex>
+        </Section>
+        <Section
+          backgroundStyle={MIDBLUEBG}
+          svgFill={MIDBLUEFILL}
+          index={3}
+          intersectComponent={
+            <RibbonWithImage imageComponent={<PrizesIcon width="175px" />} ribbonDirection="up">
+              Prizes
+            </RibbonWithImage>
+          }
+        >
+          {/* If competition has not yet started, render HowToJoin component - 
+          if not, render trading competition rankings
+          */}
+          <Box mt={shouldHideCta ? '0px' : '54px'}>
+            {!isCompetitionLive && !hasCompetitionFinished ? <HowToJoin /> : <div />}
+          </Box>
+        </Section>
+        <Section backgroundStyle={LIGHTBLUEBG} svgFill={LIGHTBLUEFILL} index={2} noIntersection>
+          <Box mb="78px">
+            <PrizesInfo />
+          </Box>
+        </Section>
+        <Section
+          index={3}
+          intersectionPosition="top"
+          intersectComponent={
+            <RibbonWithImage imageComponent={<RulesIcon width="175px" />} ribbonDirection="up">
+              Rules
+            </RibbonWithImage>
+          }
+        >
+          <Rules />
+        </Section>
+        <Section backgroundStyle={DARKBG} svgFill={DARKFILL} index={4} intersectionPosition="top">
+          <Flex alignItems="center">
+            {shouldHideCta ? null : (
+              <Flex height="fit-content">
+                <BattleCta
+                  userTradingInformation={userTradingInformation}
+                  account={account}
+                  isCompetitionLive={isCompetitionLive}
+                  hasCompetitionFinished={hasCompetitionFinished}
+                  profile={profile}
+                  isLoading={isLoading}
+                  onRegisterSuccess={onRegisterSuccess}
+                  onClaimSuccess={onClaimSuccess}
+                />
+              </Flex>
+            )}
+            <BottomBunnyWrapper>
+              <Image src={StormBunny} width={147} height={200} />
+            </BottomBunnyWrapper>
+          </Flex>
+        </Section>
+      </CompetitionPage>
+    </CompetitionCountdownContextProvider>
   )
 }
 

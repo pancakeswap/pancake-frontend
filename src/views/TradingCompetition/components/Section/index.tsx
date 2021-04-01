@@ -16,6 +16,14 @@ const BackgroundColorWrapper = styled(Flex)<SectionProps>`
   ${({ theme }) => theme.mediaQueries.sm} {
     margin: ${({ intersectionPosition }) => (intersectionPosition === 'top' ? '0' : '-42px')} 0;
   }
+
+  ${({ theme }) => theme.mediaQueries.xl} {
+    margin: ${({ intersectionPosition }) => (intersectionPosition === 'top' ? '0' : '-52px')} 0;
+  }
+
+  @media screen and (min-width: 1920px) {
+    margin: ${({ intersectionPosition }) => (intersectionPosition === 'top' ? '0' : '-72px')} 0;
+  }
 `
 
 const ChildrenWrapper = styled(Page)`

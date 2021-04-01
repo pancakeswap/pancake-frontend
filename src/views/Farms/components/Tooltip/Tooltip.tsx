@@ -3,6 +3,7 @@ import styled from 'styled-components'
 
 export interface TooltipProps {
   content: React.ReactNode
+  className?: string
 }
 
 const TooltipContent = styled.div`
@@ -44,11 +45,11 @@ const Container = styled.div`
   }
 `
 
-const Tooltip: React.FunctionComponent<TooltipProps> = ({ content, children }) => {
+const Tooltip: React.FunctionComponent<TooltipProps> = ({ content, children, className }) => {
   return (
     <Container>
       {children}
-      <TooltipContent>{content}</TooltipContent>
+      <TooltipContent className={className}>{content}</TooltipContent>
     </Container>
   )
 }

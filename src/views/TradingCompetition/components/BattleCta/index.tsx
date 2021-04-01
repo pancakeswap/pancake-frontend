@@ -73,8 +73,6 @@ const BattleCta: React.FC<CompetitionProps> = ({
     canClaimNFT,
   } = userTradingInformation
 
-  // If user registers, that alone is enough to get some points
-  // Competition should also be in a claim state, are they registered
   const userCanClaimPrizes = !hasUserClaimed && (userCakeRewards !== '0' || userPointReward !== '0' || canClaimNFT)
   const registeredAndNotStarted = hasRegistered && !isCompetitionLive && !hasCompetitionFinished
   const finishedAndPrizesClaimed = hasCompetitionFinished && account && hasUserClaimed
