@@ -37,7 +37,7 @@ const SoonRoundCard: React.FC<SoonRoundCardProps> = ({ round }) => {
           <Text textAlign="center">
             <Text bold>{TranslateString(999, 'Entry starts')}</Text>
             <Text fontSize="24px" bold>
-              {countdown}
+              {`~${countdown}`}
             </Text>
           </Text>
         </RoundInfoBox>
