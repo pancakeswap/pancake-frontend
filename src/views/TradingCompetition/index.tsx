@@ -28,11 +28,16 @@ const CompetitionPage = styled.div`
   min-height: calc(100vh - 64px);
 `
 
-const StyledFlex = styled(Flex)`
+const BannerFlex = styled(Flex)`
   flex-direction: column;
   ${({ theme }) => theme.mediaQueries.xl} {
+    padding-top: 10px;
     flex-direction: row-reverse;
     justify-content: space-between;
+  }
+
+  @media screen and (min-width: 1920px) {
+    padding-top: 32px;
   }
 `
 
@@ -127,10 +132,10 @@ const TradingCompetition = () => {
             )
           }
         >
-          <StyledFlex mb={shouldHideCta ? '0px' : '48px'}>
+          <BannerFlex mb={shouldHideCta ? '0px' : '48px'}>
             <Countdown />
             <BattleBanner />
-          </StyledFlex>
+          </BannerFlex>
         </Section>
         <Section
           backgroundStyle={MIDBLUEBG}
