@@ -13,6 +13,8 @@ import useOnNextRound from './hooks/useOnNextRound'
 
 SwiperCore.use([Keyboard, Mousewheel])
 
+const ROUNDS_TO_SHOW = 7
+
 const StyledSwiper = styled.div`
   .swiper-wrapper {
     align-items: center;
@@ -47,7 +49,7 @@ const Positions: React.FC = () => {
           keyboard
           resizeObserver
         >
-          {rounds.map((round) => (
+          {rounds.slice(0, ROUNDS_TO_SHOW).map((round) => (
             <SwiperSlide key={round.id}>
               <RoundCard round={round} />
             </SwiperSlide>
