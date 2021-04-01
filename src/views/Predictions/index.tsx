@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { useMatchBreakpoints } from '@pancakeswap-libs/uikit'
-import { getWeb3NoAccount } from 'utils/web3'
-import { setBlock } from 'state/block'
-import { useGetPredictionsStatus } from 'state/hooks'
+import { useGetPredictionsStatus, useInitialBlock } from 'state/hooks'
 import {
   getLatestRounds,
   getStaticPredictionsData,
@@ -19,24 +17,21 @@ import SwiperProvider from './context/SwiperProvider'
 import Desktop from './Desktop'
 import Mobile from './Mobile'
 
-const FUTURE_ROUND_COUNT = 2
+const FUTURE_ROUND_COUNT = 2 // the number of rounds in the future to show
 
 const Predictions = () => {
-  const [isInitialized, setIsInitialized] = useState(false)
   const { isLg, isXl } = useMatchBreakpoints()
   const status = useGetPredictionsStatus()
-  const isDesktop = isLg || isXl
   const dispatch = useDispatch()
+  const initialBlock = useInitialBlock()
+  const isDesktop = isLg || isXl
 
-  // Don't show UI until we have fetched the initial data sets
   useEffect(() => {
     const fetchInitialData = async () => {
-      const web3 = getWeb3NoAccount()
-      const [blockNumber, staticPredictionsData, latestRounds] = (await Promise.all([
-        web3.eth.getBlockNumber(),
+      const [staticPredictionsData, latestRounds] = (await Promise.all([
         getStaticPredictionsData(),
         getLatestRounds(),
-      ])) as [number, Omit<PredictionsState, 'rounds'>, RoundResponse[]]
+      ])) as [Omit<PredictionsState, 'rounds'>, RoundResponse[]]
 
       const { currentEpoch, intervalBlocks, bufferBlocks } = staticPredictionsData
       const { startBlock } = latestRounds.find((roundResponse) => roundResponse.epoch === currentEpoch.toString())
@@ -50,7 +45,6 @@ const Predictions = () => {
 
       const roundData = makeRoundData([...latestRounds, ...futureRounds])
 
-      dispatch(setBlock(blockNumber))
       dispatch(
         initialize({
           ...staticPredictionsData,
@@ -58,13 +52,15 @@ const Predictions = () => {
           rounds: roundData,
         }),
       )
-      setIsInitialized(true)
     }
 
-    fetchInitialData()
-  }, [setIsInitialized, dispatch])
+    // Do not start initialization until the first block has been retrieved
+    if (initialBlock > 0) {
+      fetchInitialData()
+    }
+  }, [initialBlock, dispatch])
 
-  if (status === PredictionStatus.INITIAL || !isInitialized) {
+  if (status === PredictionStatus.INITIAL) {
     return <PageLoader />
   }
 
