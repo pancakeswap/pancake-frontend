@@ -23,7 +23,7 @@ export interface ActionPanelProps {
 
 const Panel = styled.div<{ toggled: boolean }>`
   max-height: ${({ toggled }) => (toggled ? '500px' : '0')};
-  transition: max-height 0.5s ease-in-out;
+  transition: max-height 0.5s;
   overflow: hidden;
 `
 
