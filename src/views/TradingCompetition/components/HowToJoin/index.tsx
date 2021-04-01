@@ -7,30 +7,30 @@ const HowToJoin = () => {
   const TranslateString = useI18n()
 
   return (
-    <Flex flexDirection="column">
+    <Flex flexDirection="column" maxWidth="736px">
       <Heading color="secondary" size="lg" mb="32px" textAlign="center">
         {TranslateString(999, 'How Can I Join?')}
       </Heading>
-      <HowToCard number={1} title={TranslateString(999, 'Entry Period')}>
+      <HowToCard number={1} title={TranslateString(999, 'Get Ready')}>
         <Text fontSize="14px" color="textSubtle">
           {TranslateString(
             999,
-            'Set up your Pancake Profile to join a team, then register for the competition via the button above',
+            'Set up your Pancake Profile, then register for the competition by clicking the “I WANT TO BATTLE” button above.',
           )}
         </Text>
       </HowToCard>
-      <HowToCard number={2} title={TranslateString(1198, 'Live')}>
+      <HowToCard number={2} title={TranslateString(999, 'Battle Time')}>
         <Text fontSize="14px" color="textSubtle">
           {TranslateString(
             999,
-            'Trading on certain pairs during the competition will raise your score and your team’s score.',
+            'Trade BNB/BUSD, CAKE/BNB, ETH/BNB and BTCB/BNB during the battle period to raise both your and your team’s score. See the Rules section below for more.',
           )}
         </Text>
         <Text fontSize="14px" color="textSubtle">
           {TranslateString(999, 'See the Rules section below for more.')}
         </Text>
       </HowToCard>
-      <HowToCard number={3} title={TranslateString(1198, 'End')}>
+      <HowToCard number={3} title={TranslateString(999, 'Prize Claim')}>
         <Text fontSize="14px" color="textSubtle">
           {TranslateString(
             999,

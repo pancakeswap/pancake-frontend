@@ -36,7 +36,9 @@ const FAQItem: React.FC<{ question?: string }> = ({ question, children }) => {
           {isExpanded ? <ChevronUpIcon /> : <ChevronDownIcon />}
         </StyledExpandButton>
       </Flex>
-      <StyledChildrenFlex isExpanded={isExpanded}>{children}</StyledChildrenFlex>
+      <StyledChildrenFlex isExpanded={isExpanded} flexDirection="column">
+        {children}
+      </StyledChildrenFlex>
     </Wrapper>
   )
 }
