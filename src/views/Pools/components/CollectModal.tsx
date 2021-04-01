@@ -8,6 +8,7 @@ import { useSousStake } from 'hooks/useStake'
 import { useSousHarvest } from 'hooks/useHarvest'
 import useTheme from 'hooks/useTheme'
 import { useToast } from 'state/hooks'
+import Decimals from 'components/Decimals'
 
 import ConfirmButton from './ConfirmButton'
 
@@ -140,12 +141,7 @@ const CollectModal: React.FC<CollectModalProps> = ({
 
       <Flex justifyContent="space-between" alignItems="center">
         <Text>{handleRenderLabel()}:</Text>
-        <Balance
-          value={getBalanceNumber(earnings, earningTokenDecimals)}
-          fontSize="16px"
-          unit={` ${earningTokenName}`}
-          decimals={4}
-        />
+        <Decimals value={getBalanceNumber(earnings, earningTokenDecimals)} unit={earningTokenName} bold />
       </Flex>
       <Flex justifyContent="flex-end" alignItems="center">
         <Balance

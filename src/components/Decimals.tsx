@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text } from '@pancakeswap-libs/uikit'
+import { Text, Flex } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
 import Tooltip from 'views/Farms/components/Tooltip/Tooltip'
 
@@ -11,8 +11,9 @@ interface TextProps {
 }
 
 interface Props extends TextProps {
-  decimalPlaces: number
+  decimalPlaces?: number
   value: number | string
+  unit?: string
 }
 
 const StyledText = styled(Text)<TextProps>`
@@ -31,12 +32,13 @@ export const truncateToDecimals = (value, decimalPlaces): string => {
 }
 
 const Decimals: React.FC<Props> = ({
-  decimalPlaces,
+  decimalPlaces = 3,
   color = 'text',
   value,
   fontSize = '16px',
   isDisabled = false,
   bold = false,
+  unit = '',
   ...props
 }) => {
   const truncatedValue = truncateToDecimals(value, decimalPlaces)
@@ -44,17 +46,23 @@ const Decimals: React.FC<Props> = ({
 
   if (isTruncated) {
     return (
-      <Tooltip content={Number(value)}>
-        <StyledText
-          color={color}
-          fontSize={fontSize}
-          isDisabled={isDisabled}
-          bold={bold}
-          {...props}
-          style={{ cursor: 'pointer' }}
-        >
-          {truncatedValue}
-        </StyledText>
+      <Tooltip content={Number(value)} position="top">
+        <Flex alignItems="center">
+          <StyledText
+            color={color}
+            fontSize={fontSize}
+            isDisabled={isDisabled}
+            bold={bold}
+            {...props}
+            style={{ cursor: 'pointer' }}
+          >
+            {truncatedValue}
+          </StyledText>
+          &nbsp;
+          <StyledText color={color} fontSize={fontSize} isDisabled={isDisabled} bold={bold} {...props}>
+            {unit}
+          </StyledText>
+        </Flex>
       </Tooltip>
     )
   }
