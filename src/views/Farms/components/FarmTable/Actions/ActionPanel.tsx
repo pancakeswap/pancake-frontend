@@ -21,19 +21,22 @@ export interface ActionPanelProps {
   toggled: boolean
 }
 
-const Container = styled.div<{ toggled: boolean }>`
+const Panel = styled.div<{ toggled: boolean }>`
+  max-height: ${({ toggled }) => (toggled ? '500px' : '0')};
+  transition: max-height 0.5s ease-in-out;
+  overflow: hidden;
+`
+
+const Inner = styled.div`
   background: ${({ theme }) => theme.colors.background};
   display: flex;
   width: 100%;
   flex-direction: column-reverse;
-  padding: ${({ toggled }) => (toggled ? '24px' : '0')};
-  max-height: ${({ toggled }) => (toggled ? '500px' : '0')};
-  overflow: hidden;
-  transition: max-height 0.5s ease-in-out, padding 0.5s;
+  padding: 24px;
 
   ${({ theme }) => theme.mediaQueries.lg} {
     flex-direction: row;
-    padding: ${({ toggled }) => (toggled ? '16px 32px' : '0px 32px')};
+    padding: 16px 32px;
   }
 `
 
@@ -121,41 +124,43 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({ details, apr, 
   const isCommunityFarm = communityFarms.includes(token.symbol)
 
   return (
-    <Container toggled={toggled}>
-      <InfoContainer>
-        {isActive && (
-          <StakeContainer>
-            <StyledLinkExternal href={`https://exchange.pancakeswap.finance/#/add/${liquidityUrlPathParts}`}>
-              {TranslateString(999, `Get ${lpLabel}`, { name: lpLabel })}
-            </StyledLinkExternal>
-          </StakeContainer>
-        )}
-        <StyledLinkExternal href={bsc}>{TranslateString(999, 'View Contract')}</StyledLinkExternal>
-        <StyledLinkExternal href={info}>{TranslateString(999, 'See Pair Info')}</StyledLinkExternal>
-        <TagsContainer>
-          {isCommunityFarm ? <CommunityTag /> : <CoreTag />}
-          {dual ? <DualTag /> : null}
-        </TagsContainer>
-      </InfoContainer>
-      <ValueContainer>
-        <ValueWrapper>
-          <Text>{TranslateString(736, 'APR')}</Text>
-          <Apr {...apr} />
-        </ValueWrapper>
-        <ValueWrapper>
-          <Text>{TranslateString(999, 'Multiplier')}</Text>
-          <Multiplier {...multiplier} />
-        </ValueWrapper>
-        <ValueWrapper>
-          <Text>{TranslateString(999, 'Liquidity')}</Text>
-          <Liquidity {...liquidity} />
-        </ValueWrapper>
-      </ValueContainer>
-      <ActionContainer>
-        <HarvestAction {...farm} />
-        <StakedAction {...farm} />
-      </ActionContainer>
-    </Container>
+    <Panel toggled={toggled}>
+      <Inner>
+        <InfoContainer>
+          {isActive && (
+            <StakeContainer>
+              <StyledLinkExternal href={`https://exchange.pancakeswap.finance/#/add/${liquidityUrlPathParts}`}>
+                {TranslateString(999, `Get ${lpLabel}`, { name: lpLabel })}
+              </StyledLinkExternal>
+            </StakeContainer>
+          )}
+          <StyledLinkExternal href={bsc}>{TranslateString(999, 'View Contract')}</StyledLinkExternal>
+          <StyledLinkExternal href={info}>{TranslateString(999, 'See Pair Info')}</StyledLinkExternal>
+          <TagsContainer>
+            {isCommunityFarm ? <CommunityTag /> : <CoreTag />}
+            {dual ? <DualTag /> : null}
+          </TagsContainer>
+        </InfoContainer>
+        <ValueContainer>
+          <ValueWrapper>
+            <Text>{TranslateString(736, 'APR')}</Text>
+            <Apr {...apr} />
+          </ValueWrapper>
+          <ValueWrapper>
+            <Text>{TranslateString(999, 'Multiplier')}</Text>
+            <Multiplier {...multiplier} />
+          </ValueWrapper>
+          <ValueWrapper>
+            <Text>{TranslateString(999, 'Liquidity')}</Text>
+            <Liquidity {...liquidity} />
+          </ValueWrapper>
+        </ValueContainer>
+        <ActionContainer>
+          <HarvestAction {...farm} />
+          <StakedAction {...farm} />
+        </ActionContainer>
+      </Inner>
+    </Panel>
   )
 }
 
