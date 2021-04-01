@@ -957,6 +957,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://gourmetgalaxy.io/',
   },
+  dego: {
+    symbol: 'DEGO',
+    address: {
+      56: '0x3fda9383a84c05ec8f7630fe10adf1fac13241cc',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://bsc.dego.finance/home',
+  },
 }
 
 export default tokens
