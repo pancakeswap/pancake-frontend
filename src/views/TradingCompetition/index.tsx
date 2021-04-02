@@ -4,14 +4,19 @@ import { useProfile } from 'state/hooks'
 import { Flex, Box, Image } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
 import { useTradingCompetitionContract } from 'hooks/useContract'
+import useTheme from 'hooks/useTheme'
 import { PrizesIcon, RulesIcon } from './svgs'
 import {
   DARKBG,
   DARKFILL,
   MIDBLUEBG,
+  MIDBLUEBG_DARK,
   MIDBLUEFILL,
+  MIDBLUEFILL_DARK,
   LIGHTBLUEBG,
+  LIGHTBLUEBG_DARK,
   LIGHTBLUEFILL,
+  LIGHTBLUEFILL_DARK,
 } from './components/Section/sectionStyles'
 import Countdown from './components/Countdown'
 import StormBunny from './pngs/storm.png'
@@ -55,6 +60,7 @@ const BottomBunnyWrapper = styled(Box)`
 const TradingCompetition = () => {
   const { account } = useWeb3React()
   const { profile, isLoading } = useProfile()
+  const { isDark } = useTheme()
   const tradingCompetitionContract = useTradingCompetitionContract()
   const [registrationSuccessful, setRegistrationSuccessful] = useState(false)
   const [claimSuccessful, setClaimSuccessful] = useState(false)
@@ -144,8 +150,8 @@ const TradingCompetition = () => {
           </BannerFlex>
         </Section>
         <Section
-          backgroundStyle={MIDBLUEBG}
-          svgFill={MIDBLUEFILL}
+          backgroundStyle={isDark ? MIDBLUEBG_DARK : MIDBLUEBG}
+          svgFill={isDark ? MIDBLUEFILL_DARK : MIDBLUEFILL}
           index={3}
           intersectComponent={
             <RibbonWithImage imageComponent={<PrizesIcon width="175px" />} ribbonDirection="up">
@@ -160,7 +166,12 @@ const TradingCompetition = () => {
             {!isCompetitionLive && !hasCompetitionFinished ? <HowToJoin /> : <div />}
           </Box>
         </Section>
-        <Section backgroundStyle={LIGHTBLUEBG} svgFill={LIGHTBLUEFILL} index={2} noIntersection>
+        <Section
+          backgroundStyle={isDark ? LIGHTBLUEBG_DARK : LIGHTBLUEBG}
+          svgFill={isDark ? LIGHTBLUEFILL_DARK : LIGHTBLUEFILL}
+          index={2}
+          noIntersection
+        >
           <Box mb="78px">
             <PrizesInfo />
           </Box>

@@ -9,7 +9,7 @@ const BackgroundColorWrapper = styled(Flex)<SectionProps>`
   position: relative;
   flex-direction: column;
   z-index: ${({ index }) => index - 1};
-  background: ${({ backgroundStyle }) => backgroundStyle};
+  background: ${({ backgroundStyle, theme }) => (!backgroundStyle ? theme.colors.background : backgroundStyle)};
   padding: ${({ noIntersection }) => (noIntersection ? '96px 0 24px 0' : '48px 0;')};
   margin: ${({ intersectionPosition }) => (intersectionPosition === 'top' ? '0' : '-34px')} 0;
 
@@ -32,8 +32,8 @@ const ChildrenWrapper = styled(Page)`
 
 const Section: React.FC<SectionProps> = ({
   children,
-  backgroundStyle = '#faf9fa',
-  svgFill = '#faf9fa',
+  backgroundStyle,
+  svgFill,
   index = 1,
   intersectComponent,
   intersectionPosition = 'bottom',

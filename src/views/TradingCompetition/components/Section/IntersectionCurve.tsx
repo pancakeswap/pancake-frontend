@@ -10,10 +10,6 @@ const IntersectWrapper = styled.div<SectionProps>`
   width: 100%;
   z-index: ${({ index }) => index};
 
-  svg {
-    fill: ${({ svgFill }) => svgFill};
-  }
-
   margin: ${({ intersectionPosition }) => (intersectionPosition === 'top' ? '-32px' : '32px')} 0 0;
 
   ${({ theme }) => theme.mediaQueries.sm} {
@@ -33,7 +29,11 @@ const IntersectionCurve: React.FC<SectionProps> = ({ svgFill, index, intersectio
   return (
     <IntersectWrapper svgFill={svgFill} index={index} intersectionPosition={intersectionPosition}>
       {intersectComponent && <IntersectComponentWrapper index={index}>{intersectComponent}</IntersectComponentWrapper>}
-      {intersectionPosition === 'top' ? <TopIntersectSvg width="100%" /> : <BottomIntersectSvg width="100%" />}
+      {intersectionPosition === 'top' ? (
+        <TopIntersectSvg svgFill={svgFill} width="100%" />
+      ) : (
+        <BottomIntersectSvg svgFill={svgFill} width="100%" />
+      )}
     </IntersectWrapper>
   )
 }
