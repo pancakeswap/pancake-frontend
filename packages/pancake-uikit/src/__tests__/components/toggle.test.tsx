@@ -9,17 +9,17 @@ it("renders correctly", () => {
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
       <div
-        class="sc-dlfnbm jUupPG"
+        class="sc-dkPtyc gpBBxC"
         scale="md"
       >
         <input
           checked=""
-          class="sc-gsTCUz kVKCrS"
+          class="sc-gsDJrp kMeosS"
           scale="md"
           type="checkbox"
         />
         <div
-          class="sc-bdfBwQ dtgDXM"
+          class="sc-bdvvaa kgQOik"
           scale="md"
         />
       </div>
@@ -32,17 +32,17 @@ it("renders correctly scale sm", () => {
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
       <div
-        class="sc-dlfnbm iWurnU"
+        class="sc-dkPtyc etRPcg"
         scale="sm"
       >
         <input
           checked=""
-          class="sc-gsTCUz fmfbFq"
+          class="sc-gsDJrp bYKVIG"
           scale="sm"
           type="checkbox"
         />
         <div
-          class="sc-bdfBwQ bvsyPw"
+          class="sc-bdvvaa evIwYI"
           scale="sm"
         />
       </div>

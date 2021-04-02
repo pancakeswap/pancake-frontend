@@ -28,8 +28,6 @@
   "devDependencies": {
     "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/react": "^11.2.5",
-    "@types/lodash": "^4.14.168",
-    "@types/styled-system": "^5.1.10",
     "jest-styled-components": "^7.0.3",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
@@ -43,6 +41,8 @@
     "styled-components": "^5.2.3"
   },
   "dependencies": {
+    "@types/lodash": "^4.14.168",
+    "@types/styled-system": "^5.1.10",
     "lodash": "^4.17.20",
     "react-transition-group": "^4.4.1",
     "styled-system": "^5.1.5"

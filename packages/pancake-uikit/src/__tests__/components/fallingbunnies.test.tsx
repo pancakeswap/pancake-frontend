@@ -16,10 +16,10 @@ it("renders correctly", () => {
     <DocumentFragment>
       <div>
         <div
-          class="sc-gsTCUz jYheWP"
+          class="sc-gsDJrp cSNsup"
         >
           <svg
-            class="sc-bdfBwQ cuuOmQ"
+            class="sc-bdvvaa jFbviQ"
             color="text"
             height="32"
             viewBox="0 0 32 32"

@@ -7,7 +7,7 @@ it("renders base layout correctly", () => {
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
       <div
-        class="sc-bdfBwQ dvyXkL"
+        class="sc-bdvvaa flIpwv"
       >
         basic layout
       </div>
@@ -20,7 +20,7 @@ it("renders card layout correctly", () => {
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
       <div
-        class="sc-bdfBwQ sc-gsTCUz dvyXkL iqaxyV"
+        class="sc-bdvvaa sc-gsDJrp flIpwv dwTUZT"
       >
         cards layout
       </div>

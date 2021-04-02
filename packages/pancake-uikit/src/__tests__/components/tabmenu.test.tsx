@@ -14,17 +14,17 @@ it("renders correctly", () => {
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
       <div
-        class="sc-bdfBwQ sc-gsTCUz sc-dlfnbm iwJkGQ ckYhbt hfSAvK"
+        class="sc-bdvvaa sc-gsDJrp sc-dkPtyc gaVyZU hzWwMj ipUbgm"
       >
         <div
-          class="sc-bdfBwQ sc-gsTCUz sc-hKgILt iwJkGQ ckYhbt kGuCa-d"
+          class="sc-bdvvaa sc-gsDJrp sc-hKwCoD gaVyZU hzWwMj joasFC"
         >
           <button
-            class="sc-eCssSg ixipzp"
+            class="sc-eCImvq gfevKM"
             color="card"
           >
             <div
-              class="sc-jSgupP dTcSYX"
+              class="sc-jRQAMF kpBUCd"
               color="card"
               font-weight="600"
             >
@@ -32,11 +32,11 @@ it("renders correctly", () => {
             </div>
           </button>
           <button
-            class="sc-eCssSg bTcWnb"
+            class="sc-eCImvq hWcBJK"
             color="textSubtle"
           >
             <div
-              class="sc-jSgupP fEsPNW"
+              class="sc-jRQAMF ftBIrs"
               color="textSubtle"
               font-weight="600"
             >
