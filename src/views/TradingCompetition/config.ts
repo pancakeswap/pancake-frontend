@@ -10,53 +10,52 @@ interface CompetitionStepProps {
   translationId: number
 }
 
-export interface CompetitionStateInstance {
+export interface CompetitionPhaseProps {
   state?: string
-  startBlock?: number | null
+  ends?: number | null
   step?: CompetitionStepProps
 }
 
-export const CompetitionState = {
+export const CompetitionPhases = {
   REGISTRATION: {
     state: REGISTRATION,
-    // Mon 5th 16:00 SGT
-    startBlock: 6299060,
+    // Wed 7th 16:00 SGT
+    ends: 6356660,
     step: { index: 0, text: 'Entry', translationId: 999 },
   },
   LIVE: {
     state: LIVE,
-    // Wed 7th 16:00 SGT
-    startBlock: 6356660,
+    // Wed 14th 16:00 SGT
+    ends: 6961460,
     step: { index: 1, text: 'Live', translationId: 1198 },
   },
   FINISHED: {
     state: FINISHED,
-    // Wed 14th 16:00 SGT
-    startBlock: 6961460,
+    ends: null,
     step: { index: 2, text: 'End', translationId: 410 },
   },
   CLAIM: {
     state: CLAIM,
-    startBlock: null,
+    ends: null,
     step: { index: 2, text: 'End', translationId: 410 },
   },
   OVER: {
     state: OVER,
-    startBlock: null,
+    ends: null,
     step: { index: 2, text: 'End', translationId: 410 },
   },
 }
 
 export const CompetitionSteps = [
-  CompetitionState.REGISTRATION.step,
-  CompetitionState.LIVE.step,
-  CompetitionState.FINISHED.step,
+  CompetitionPhases.REGISTRATION.step,
+  CompetitionPhases.LIVE.step,
+  CompetitionPhases.FINISHED.step,
 ]
 
-export const SmartContractStates = {
-  0: CompetitionState.REGISTRATION,
-  1: CompetitionState.LIVE,
-  2: CompetitionState.FINISHED,
-  3: CompetitionState.CLAIM,
-  4: CompetitionState.OVER,
+export const SmartContractPhases = {
+  0: CompetitionPhases.REGISTRATION,
+  1: CompetitionPhases.LIVE,
+  2: CompetitionPhases.FINISHED,
+  3: CompetitionPhases.CLAIM,
+  4: CompetitionPhases.OVER,
 }

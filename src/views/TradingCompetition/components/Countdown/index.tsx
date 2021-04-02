@@ -5,7 +5,7 @@ import useI18n from 'hooks/useI18n'
 import useGetBlockCountdown from 'hooks/useGetBlockCountdown'
 import getTimePeriods from 'utils/getTimePeriods'
 import { Heading2Text } from '../CompetitionHeadingText'
-import { CompetitionSteps, FINISHED, LIVE, CompetitionStateInstance } from '../../config'
+import { CompetitionSteps, FINISHED, LIVE, CompetitionPhaseProps } from '../../config'
 import ProgressStepper from './ProgressStepper'
 import Timer from './Timer'
 import { GOLDGRADIENT } from '../Section/sectionStyles'
@@ -59,10 +59,10 @@ const TimerBodyComponent = ({ children }) => (
   </Text>
 )
 
-const Countdown: React.FC<{ competitionPhase: CompetitionStateInstance }> = ({ competitionPhase }) => {
+const Countdown: React.FC<{ currentPhase: CompetitionPhaseProps }> = ({ currentPhase }) => {
   const TranslateString = useI18n()
   const [secondsUntilNextEvent, setSecondsUntilNextEvent] = useState(0)
-  const targetBlockNumber = competitionPhase.startBlock
+  const targetBlockNumber = currentPhase.ends
   const secondsUntilTargetBlock = useGetBlockCountdown(targetBlockNumber)
 
   const { minutes, hours, days } = getTimePeriods(secondsUntilNextEvent)
@@ -80,13 +80,11 @@ const Countdown: React.FC<{ competitionPhase: CompetitionStateInstance }> = ({ c
         {!secondsUntilNextEvent ? (
           <Skeleton height={26} width={190} mb="24px" />
         ) : (
-          competitionPhase.state !== FINISHED && (
+          currentPhase.state !== FINISHED && (
             <Flex mb="24px">
               <Timer
                 timerStage={
-                  competitionPhase.state === LIVE
-                    ? `${TranslateString(410, 'End')}:`
-                    : `${TranslateString(1212, 'Start')}:`
+                  currentPhase.state === LIVE ? `${TranslateString(410, 'End')}:` : `${TranslateString(1212, 'Start')}:`
                 }
                 minutes={minutes}
                 hours={hours}
@@ -102,7 +100,7 @@ const Countdown: React.FC<{ competitionPhase: CompetitionStateInstance }> = ({ c
         {!secondsUntilNextEvent ? (
           <Skeleton height={42} width={190} />
         ) : (
-          <ProgressStepper steps={CompetitionSteps} activeStepIndex={competitionPhase.step.index} />
+          <ProgressStepper steps={CompetitionSteps} activeStepIndex={currentPhase.step.index} />
         )}
       </Flex>
     </Wrapper>

@@ -18,7 +18,7 @@ import {
   LIGHTBLUEFILL,
   LIGHTBLUEFILL_DARK,
 } from './components/Section/sectionStyles'
-import { SmartContractStates, CompetitionState, LIVE, FINISHED } from './config'
+import { SmartContractPhases, CompetitionPhases, LIVE, FINISHED } from './config'
 import Countdown from './components/Countdown'
 import StormBunny from './pngs/storm.png'
 import RibbonWithImage from './components/RibbonWithImage'
@@ -62,7 +62,7 @@ const TradingCompetition = () => {
   const { profile, isLoading } = useProfile()
   const { isDark } = useTheme()
   const tradingCompetitionContract = useTradingCompetitionContract()
-  const [competitionPhase, setCompetitionPhase] = useState(CompetitionState.REGISTRATION)
+  const [currentPhase, setCurrentPhase] = useState(CompetitionPhases.REGISTRATION)
   const [registrationSuccessful, setRegistrationSuccessful] = useState(false)
   const [claimSuccessful, setClaimSuccessful] = useState(false)
   const [userTradingInformation, setUserTradingInformation] = useState({
@@ -74,11 +74,11 @@ const TradingCompetition = () => {
     canClaimNFT: false,
   })
 
-  const isCompetitionLive = competitionPhase.state === LIVE
+  const isCompetitionLive = currentPhase.state === LIVE
   console.log('isCompetitionLive: ', isCompetitionLive)
-  const hasCompetitionFinished = competitionPhase.state === FINISHED
+  const hasCompetitionFinished = currentPhase.state === FINISHED
   console.log('hasCompetitionFinished: ', hasCompetitionFinished)
-  console.log('competitionPhase: ', competitionPhase.state)
+  console.log('CompetitionPhases: ', currentPhase.state)
 
   const onRegisterSuccess = () => {
     setRegistrationSuccessful(true)
@@ -91,7 +91,7 @@ const TradingCompetition = () => {
   useEffect(() => {
     const fetchCompetitionInfo = async () => {
       const competitionStatus = await tradingCompetitionContract.methods.currentStatus().call()
-      setCompetitionPhase(SmartContractStates[competitionStatus])
+      setCurrentPhase(SmartContractPhases[competitionStatus])
     }
 
     const fetchUser = async () => {
@@ -148,7 +148,7 @@ const TradingCompetition = () => {
         }
       >
         <BannerFlex mb={shouldHideCta ? '0px' : '48px'}>
-          <Countdown competitionPhase={competitionPhase} />
+          <Countdown currentPhase={currentPhase} />
           <BattleBanner />
         </BannerFlex>
       </Section>
