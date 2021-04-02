@@ -2,7 +2,6 @@ import React from "react";
 import noop from "lodash/noop";
 import { renderWithTheme } from "../../testHelpers";
 import ConnectModal from "../../widgets/WalletModal/ConnectModal";
-import AccountModal from "../../widgets/WalletModal/AccountModal";
 
 it("renders ConnectModal correctly", () => {
   const { asFragment } = renderWithTheme(<ConnectModal login={noop} />);
@@ -452,120 +451,6 @@ it("renders ConnectModal correctly", () => {
             </svg>
             Learn how to connect
           </a>
-        </div>
-      </div>
-    </DocumentFragment>
-  `);
-});
-
-it("renders AccountModal correctly", () => {
-  const { asFragment } = renderWithTheme(
-    <AccountModal account="0xb218C5D6aF1F979aC42BC68d98A5A0D796C6aB01" logout={noop} />
-  );
-  expect(asFragment()).toMatchInlineSnapshot(`
-    <DocumentFragment>
-      <div
-        class="sc-eCssSg sc-kEjbxe Ozdtv bdUZCS"
-      >
-        <div
-          class="sc-fubCfw kITuMA"
-        >
-          <div
-            class="sc-eCssSg sc-jSgupP sc-pFZIQ jnvqfy cjuMmG ePMCIJ"
-          >
-            <h2
-              class="sc-bdfBwQ sc-hKgILt gWEhOj bCnOmg"
-              color="text"
-            >
-              Your wallet
-            </h2>
-          </div>
-          <button
-            aria-label="Close the dialog"
-            class="sc-gKsewC ZInsY sc-iBPRYJ ifcXSU"
-            scale="md"
-          >
-            <svg
-              class="sc-dlfnbm kPlhyw"
-              color="primary"
-              viewBox="0 0 24 24"
-              width="20px"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M18.3 5.70997C17.91 5.31997 17.28 5.31997 16.89 5.70997L12 10.59L7.10997 5.69997C6.71997 5.30997 6.08997 5.30997 5.69997 5.69997C5.30997 6.08997 5.30997 6.71997 5.69997 7.10997L10.59 12L5.69997 16.89C5.30997 17.28 5.30997 17.91 5.69997 18.3C6.08997 18.69 6.71997 18.69 7.10997 18.3L12 13.41L16.89 18.3C17.28 18.69 17.91 18.69 18.3 18.3C18.69 17.91 18.69 17.28 18.3 16.89L13.41 12L18.3 7.10997C18.68 6.72997 18.68 6.08997 18.3 5.70997Z"
-              />
-            </svg>
-          </button>
-        </div>
-        <div
-          class="sc-eCssSg sc-jSgupP sc-jrAGrp eYcDys cjuMmG eRPoVE"
-        >
-          <div
-            class="sc-bdfBwQ krzIlW"
-            color="text"
-            font-size="20px"
-            style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 8px;"
-          >
-            0xb218C5D6aF1F979aC42BC68d98A5A0D796C6aB01
-          </div>
-          <div
-            class="sc-eCssSg sc-jSgupP eHoxAW cjuMmG"
-          >
-            <a
-              class="sc-bdfBwQ sc-gsTCUz bnSWIP djpNeP"
-              color="primary"
-              href="https://bscscan.com/address/0xb218C5D6aF1F979aC42BC68d98A5A0D796C6aB01"
-              rel="noreferrer noopener"
-              target="_blank"
-            >
-              View on BscScan
-              <svg
-                class="sc-dlfnbm dJUqYR"
-                color="primary"
-                viewBox="0 0 24 24"
-                width="20px"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M18 19H6C5.45 19 5 18.55 5 18V6C5 5.45 5.45 5 6 5H11C11.55 5 12 4.55 12 4C12 3.45 11.55 3 11 3H5C3.89 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V13C21 12.45 20.55 12 20 12C19.45 12 19 12.45 19 13V18C19 18.55 18.55 19 18 19ZM14 4C14 4.55 14.45 5 15 5H17.59L8.46 14.13C8.07 14.52 8.07 15.15 8.46 15.54C8.85 15.93 9.48 15.93 9.87 15.54L19 6.41V9C19 9.55 19.45 10 20 10C20.55 10 21 9.55 21 9V4C21 3.45 20.55 3 20 3H15C14.45 3 14 3.45 14 4Z"
-                />
-              </svg>
-            </a>
-            <div
-              class="sc-bdfBwQ sc-bqyKva czOnMt jYrnsj"
-              color="text"
-              role="button"
-            >
-              Copy Address
-              <svg
-                class="sc-dlfnbm dJUqYR"
-                color="primary"
-                viewBox="0 0 24 24"
-                width="20px"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M15 1H4C2.9 1 2 1.9 2 3V16C2 16.55 2.45 17 3 17C3.55 17 4 16.55 4 16V4C4 3.45 4.45 3 5 3H15C15.55 3 16 2.55 16 2C16 1.45 15.55 1 15 1ZM19 5H8C6.9 5 6 5.9 6 7V21C6 22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM18 21H9C8.45 21 8 20.55 8 20V8C8 7.45 8.45 7 9 7H18C18.55 7 19 7.45 19 8V20C19 20.55 18.55 21 18 21Z"
-                />
-              </svg>
-              <div
-                class="sc-kstrdz kDtgKX"
-              >
-                Copied
-              </div>
-            </div>
-          </div>
-          <div
-            class="sc-eCssSg sc-jSgupP jnvqfy fvYwlu"
-          >
-            <button
-              class="sc-gKsewC cWGyuK"
-              scale="sm"
-            >
-              Logout
-            </button>
-          </div>
         </div>
       </div>
     </DocumentFragment>
