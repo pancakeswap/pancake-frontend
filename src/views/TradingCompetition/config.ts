@@ -1,6 +1,20 @@
 export const REGISTRATION = 'REGISTRATION'
 export const LIVE = 'LIVE'
 export const FINISHED = 'FINISHED'
+export const CLAIM = 'CLAIM'
+export const OVER = 'OVER'
+
+interface CompetitionStepProps {
+  index?: number
+  text?: string
+  translationId: number
+}
+
+export interface CompetitionStateInstance {
+  state?: string
+  startBlock?: number | null
+  step?: CompetitionStepProps
+}
 
 export const CompetitionState = {
   REGISTRATION: {
@@ -21,6 +35,16 @@ export const CompetitionState = {
     startBlock: 6961460,
     step: { index: 2, text: 'End', translationId: 410 },
   },
+  CLAIM: {
+    state: CLAIM,
+    startBlock: null,
+    step: { index: 2, text: 'End', translationId: 410 },
+  },
+  OVER: {
+    state: OVER,
+    startBlock: null,
+    step: { index: 2, text: 'End', translationId: 410 },
+  },
 }
 
 export const CompetitionSteps = [
@@ -28,3 +52,11 @@ export const CompetitionSteps = [
   CompetitionState.LIVE.step,
   CompetitionState.FINISHED.step,
 ]
+
+export const SmartContractStates = {
+  0: CompetitionState.REGISTRATION,
+  1: CompetitionState.LIVE,
+  2: CompetitionState.FINISHED,
+  3: CompetitionState.CLAIM,
+  4: CompetitionState.OVER,
+}

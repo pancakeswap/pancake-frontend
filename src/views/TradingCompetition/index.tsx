@@ -18,6 +18,7 @@ import {
   LIGHTBLUEFILL,
   LIGHTBLUEFILL_DARK,
 } from './components/Section/sectionStyles'
+import { SmartContractStates, CompetitionState, LIVE, FINISHED } from './config'
 import Countdown from './components/Countdown'
 import StormBunny from './pngs/storm.png'
 import RibbonWithImage from './components/RibbonWithImage'
@@ -27,7 +28,6 @@ import Section from './components/Section'
 import BattleCta from './components/BattleCta'
 import PrizesInfo from './components/PrizesInfo'
 import Rules from './components/Rules'
-import { CompetitionCountdownContextProvider } from './contexts/CompetitionCountdownContext'
 
 const CompetitionPage = styled.div`
   min-height: calc(100vh - 64px);
@@ -62,6 +62,7 @@ const TradingCompetition = () => {
   const { profile, isLoading } = useProfile()
   const { isDark } = useTheme()
   const tradingCompetitionContract = useTradingCompetitionContract()
+  const [competitionPhase, setCompetitionPhase] = useState(CompetitionState.REGISTRATION)
   const [registrationSuccessful, setRegistrationSuccessful] = useState(false)
   const [claimSuccessful, setClaimSuccessful] = useState(false)
   const [userTradingInformation, setUserTradingInformation] = useState({
@@ -73,9 +74,11 @@ const TradingCompetition = () => {
     canClaimNFT: false,
   })
 
-  // These should be replaced with actual 'state' calls when smart contracts are deployed to live and testnet is no longer needed
-  const isCompetitionLive = false
-  const hasCompetitionFinished = false
+  const isCompetitionLive = competitionPhase.state === LIVE
+  console.log('isCompetitionLive: ', isCompetitionLive)
+  const hasCompetitionFinished = competitionPhase.state === FINISHED
+  console.log('hasCompetitionFinished: ', hasCompetitionFinished)
+  console.log('competitionPhase: ', competitionPhase.state)
 
   const onRegisterSuccess = () => {
     setRegistrationSuccessful(true)
@@ -88,6 +91,7 @@ const TradingCompetition = () => {
   useEffect(() => {
     const fetchCompetitionInfo = async () => {
       const competitionStatus = await tradingCompetitionContract.methods.currentStatus().call()
+      setCompetitionPhase(SmartContractStates[competitionStatus])
     }
 
     const fetchUser = async () => {
@@ -123,14 +127,71 @@ const TradingCompetition = () => {
     !isLoading && account && !userTradingInformation.hasRegistered && (isCompetitionLive || hasCompetitionFinished)
 
   return (
-    <CompetitionCountdownContextProvider>
-      <CompetitionPage>
-        <Section
-          backgroundStyle={DARKBG}
-          svgFill={DARKFILL}
-          index={4}
-          intersectComponent={
-            shouldHideCta ? null : (
+    <CompetitionPage>
+      <Section
+        backgroundStyle={DARKBG}
+        svgFill={DARKFILL}
+        index={4}
+        intersectComponent={
+          shouldHideCta ? null : (
+            <BattleCta
+              userTradingInformation={userTradingInformation}
+              account={account}
+              isCompetitionLive={isCompetitionLive}
+              hasCompetitionFinished={hasCompetitionFinished}
+              profile={profile}
+              isLoading={isLoading}
+              onRegisterSuccess={onRegisterSuccess}
+              onClaimSuccess={onClaimSuccess}
+            />
+          )
+        }
+      >
+        <BannerFlex mb={shouldHideCta ? '0px' : '48px'}>
+          <Countdown competitionPhase={competitionPhase} />
+          <BattleBanner />
+        </BannerFlex>
+      </Section>
+      <Section
+        backgroundStyle={isDark ? MIDBLUEBG_DARK : MIDBLUEBG}
+        svgFill={isDark ? MIDBLUEFILL_DARK : MIDBLUEFILL}
+        index={3}
+        intersectComponent={
+          <RibbonWithImage imageComponent={<PrizesIcon width="175px" />} ribbonDirection="up">
+            Prizes
+          </RibbonWithImage>
+        }
+      >
+        <Box mt={shouldHideCta ? '0px' : '54px'}>
+          {/* If competition has not yet started, render HowToJoin component - if not, render YourScore */}
+          {!isCompetitionLive ? <HowToJoin /> : <div />}
+        </Box>
+      </Section>
+      <Section
+        backgroundStyle={isDark ? LIGHTBLUEBG_DARK : LIGHTBLUEBG}
+        svgFill={isDark ? LIGHTBLUEFILL_DARK : LIGHTBLUEFILL}
+        index={2}
+        noIntersection
+      >
+        <Box mb="78px">
+          <PrizesInfo />
+        </Box>
+      </Section>
+      <Section
+        index={3}
+        intersectionPosition="top"
+        intersectComponent={
+          <RibbonWithImage imageComponent={<RulesIcon width="175px" />} ribbonDirection="up">
+            Rules
+          </RibbonWithImage>
+        }
+      >
+        <Rules />
+      </Section>
+      <Section backgroundStyle={DARKBG} svgFill={DARKFILL} index={4} intersectionPosition="top">
+        <Flex alignItems="center">
+          {shouldHideCta ? null : (
+            <Flex height="fit-content">
               <BattleCta
                 userTradingInformation={userTradingInformation}
                 account={account}
@@ -141,75 +202,14 @@ const TradingCompetition = () => {
                 onRegisterSuccess={onRegisterSuccess}
                 onClaimSuccess={onClaimSuccess}
               />
-            )
-          }
-        >
-          <BannerFlex mb={shouldHideCta ? '0px' : '48px'}>
-            <Countdown />
-            <BattleBanner />
-          </BannerFlex>
-        </Section>
-        <Section
-          backgroundStyle={isDark ? MIDBLUEBG_DARK : MIDBLUEBG}
-          svgFill={isDark ? MIDBLUEFILL_DARK : MIDBLUEFILL}
-          index={3}
-          intersectComponent={
-            <RibbonWithImage imageComponent={<PrizesIcon width="175px" />} ribbonDirection="up">
-              Prizes
-            </RibbonWithImage>
-          }
-        >
-          {/* If competition has not yet started, render HowToJoin component - 
-          if not, render trading competition rankings
-          */}
-          <Box mt={shouldHideCta ? '0px' : '54px'}>
-            {!isCompetitionLive && !hasCompetitionFinished ? <HowToJoin /> : <div />}
-          </Box>
-        </Section>
-        <Section
-          backgroundStyle={isDark ? LIGHTBLUEBG_DARK : LIGHTBLUEBG}
-          svgFill={isDark ? LIGHTBLUEFILL_DARK : LIGHTBLUEFILL}
-          index={2}
-          noIntersection
-        >
-          <Box mb="78px">
-            <PrizesInfo />
-          </Box>
-        </Section>
-        <Section
-          index={3}
-          intersectionPosition="top"
-          intersectComponent={
-            <RibbonWithImage imageComponent={<RulesIcon width="175px" />} ribbonDirection="up">
-              Rules
-            </RibbonWithImage>
-          }
-        >
-          <Rules />
-        </Section>
-        <Section backgroundStyle={DARKBG} svgFill={DARKFILL} index={4} intersectionPosition="top">
-          <Flex alignItems="center">
-            {shouldHideCta ? null : (
-              <Flex height="fit-content">
-                <BattleCta
-                  userTradingInformation={userTradingInformation}
-                  account={account}
-                  isCompetitionLive={isCompetitionLive}
-                  hasCompetitionFinished={hasCompetitionFinished}
-                  profile={profile}
-                  isLoading={isLoading}
-                  onRegisterSuccess={onRegisterSuccess}
-                  onClaimSuccess={onClaimSuccess}
-                />
-              </Flex>
-            )}
-            <BottomBunnyWrapper>
-              <Image src={StormBunny} width={147} height={200} />
-            </BottomBunnyWrapper>
-          </Flex>
-        </Section>
-      </CompetitionPage>
-    </CompetitionCountdownContextProvider>
+            </Flex>
+          )}
+          <BottomBunnyWrapper>
+            <Image src={StormBunny} width={147} height={200} />
+          </BottomBunnyWrapper>
+        </Flex>
+      </Section>
+    </CompetitionPage>
   )
 }
 

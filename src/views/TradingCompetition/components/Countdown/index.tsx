@@ -1,11 +1,11 @@
-import React, { useContext } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Flex, Skeleton, PocketWatchIcon, Text } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
+import useGetBlockCountdown from 'hooks/useGetBlockCountdown'
 import getTimePeriods from 'utils/getTimePeriods'
 import { Heading2Text } from '../CompetitionHeadingText'
-import { CompetitionSteps, FINISHED, LIVE } from '../../config'
-import { CompetitionCountdownContext } from '../../contexts/CompetitionCountdownContext'
+import { CompetitionSteps, FINISHED, LIVE, CompetitionStateInstance } from '../../config'
 import ProgressStepper from './ProgressStepper'
 import Timer from './Timer'
 import { GOLDGRADIENT } from '../Section/sectionStyles'
@@ -59,11 +59,17 @@ const TimerBodyComponent = ({ children }) => (
   </Text>
 )
 
-const Countdown = () => {
+const Countdown: React.FC<{ competitionPhase: CompetitionStateInstance }> = ({ competitionPhase }) => {
   const TranslateString = useI18n()
-  const { competitionState, timeUntilNextEvent, isLoading } = useContext(CompetitionCountdownContext)
-  const { minutes, hours, days } = getTimePeriods(timeUntilNextEvent)
-  const targetBlockNumber = competitionState && competitionState.startBlock
+  const [secondsUntilNextEvent, setSecondsUntilNextEvent] = useState(0)
+  const targetBlockNumber = competitionPhase.startBlock
+  const secondsUntilTargetBlock = useGetBlockCountdown(targetBlockNumber)
+
+  const { minutes, hours, days } = getTimePeriods(secondsUntilNextEvent)
+
+  useEffect(() => {
+    setSecondsUntilNextEvent(secondsUntilTargetBlock)
+  }, [secondsUntilTargetBlock])
 
   return (
     <Wrapper>
@@ -71,14 +77,14 @@ const Countdown = () => {
         <PocketWatchIcon />
       </PocketWatchWrapper>
       <Flex flexDirection="column" justifyContent="center">
-        {isLoading ? (
+        {!secondsUntilNextEvent ? (
           <Skeleton height={26} width={190} mb="24px" />
         ) : (
-          competitionState.state !== FINISHED && (
+          competitionPhase.state !== FINISHED && (
             <Flex mb="24px">
               <Timer
                 timerStage={
-                  competitionState.state === LIVE
+                  competitionPhase.state === LIVE
                     ? `${TranslateString(410, 'End')}:`
                     : `${TranslateString(1212, 'Start')}:`
                 }
@@ -93,10 +99,10 @@ const Countdown = () => {
             </Flex>
           )
         )}
-        {isLoading ? (
+        {!secondsUntilNextEvent ? (
           <Skeleton height={42} width={190} />
         ) : (
-          <ProgressStepper steps={CompetitionSteps} activeStepIndex={competitionState.step.index} />
+          <ProgressStepper steps={CompetitionSteps} activeStepIndex={competitionPhase.step.index} />
         )}
       </Flex>
     </Wrapper>
