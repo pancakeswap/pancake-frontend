@@ -948,6 +948,24 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://www.dfuture.com/home',
   },
+  gum: {
+    symbol: 'GUM',
+    address: {
+      56: '0xc53708664b99DF348dd27C3Ac0759d2DA9c40462',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://gourmetgalaxy.io/',
+  },
+  dego: {
+    symbol: 'DEGO',
+    address: {
+      56: '0x3fda9383a84c05ec8f7630fe10adf1fac13241cc',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://bsc.dego.finance/home',
+  },
 }
 
 export default tokens
