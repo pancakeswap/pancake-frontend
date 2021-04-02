@@ -75,10 +75,7 @@ const TradingCompetition = () => {
   })
 
   const isCompetitionLive = currentPhase.state === LIVE
-  console.log('isCompetitionLive: ', isCompetitionLive)
   const hasCompetitionFinished = currentPhase.state === FINISHED
-  console.log('hasCompetitionFinished: ', hasCompetitionFinished)
-  console.log('CompetitionPhases: ', currentPhase.state)
 
   const onRegisterSuccess = () => {
     setRegistrationSuccessful(true)
