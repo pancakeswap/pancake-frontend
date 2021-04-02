@@ -12,13 +12,13 @@ it("renders correctly", () => {
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
       <div
-        class="sc-iBPRYJ bQXnUd"
+        class="sc-dlfnbm sc-jrAGrp bdsndq kLDEA-d"
       >
         <div
-          class="sc-fubCfw jzwLMm"
+          class="sc-iBPRYJ gkBMOR"
         >
           <div
-            class="sc-dlfnbm sc-hKgILt sc-pFZIQ isWJdv dRpfYw ePMCIJ"
+            class="sc-dlfnbm sc-hKgILt sc-fubCfw isWJdv dRpfYw kApDsK"
           >
             <h2
               class="sc-bdfBwQ sc-gsTCUz gWEhOj euWWbB"
@@ -46,7 +46,7 @@ it("renders correctly", () => {
           </button>
         </div>
         <div
-          class="sc-dlfnbm sc-hKgILt claMmV AmOVA"
+          class="sc-dlfnbm sc-hKgILt sc-pFZIQ claMmV dRpfYw eFqsAA"
         >
           body
         </div>

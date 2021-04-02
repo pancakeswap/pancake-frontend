@@ -9,13 +9,13 @@ it("renders ConnectModal correctly", () => {
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
       <div
-        class="sc-fubCfw cNFQaY"
+        class="sc-eCssSg sc-kEjbxe Ozdtv bdUZCS"
       >
         <div
-          class="sc-pFZIQ idVZsR"
+          class="sc-fubCfw kITuMA"
         >
           <div
-            class="sc-eCssSg sc-jSgupP sc-jrAGrp jnvqfy cjuMmG eYDuGd"
+            class="sc-eCssSg sc-jSgupP sc-pFZIQ jnvqfy cjuMmG ePMCIJ"
           >
             <h2
               class="sc-bdfBwQ sc-hKgILt gWEhOj bCnOmg"
@@ -43,7 +43,7 @@ it("renders ConnectModal correctly", () => {
           </button>
         </div>
         <div
-          class="sc-eCssSg sc-jSgupP eYcDys jMcUDu"
+          class="sc-eCssSg sc-jSgupP sc-jrAGrp eYcDys cjuMmG eRPoVE"
         >
           <button
             class="sc-gKsewC hLJvid"
@@ -433,7 +433,7 @@ it("renders ConnectModal correctly", () => {
             </svg>
           </button>
           <a
-            class="sc-bdfBwQ sc-gsTCUz eiaRqE djpNeP sc-crrsfI dwTIxE"
+            class="sc-bdfBwQ sc-gsTCUz eiaRqE djpNeP sc-dQppl dICEdq"
             color="primary"
             href="https://docs.pancakeswap.finance/guides/faq#how-do-i-set-up-my-wallet-on-binance-smart-chain"
             rel="noreferrer noopener"
@@ -465,13 +465,13 @@ it("renders AccountModal correctly", () => {
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
       <div
-        class="sc-fubCfw cNFQaY"
+        class="sc-eCssSg sc-kEjbxe Ozdtv bdUZCS"
       >
         <div
-          class="sc-pFZIQ idVZsR"
+          class="sc-fubCfw kITuMA"
         >
           <div
-            class="sc-eCssSg sc-jSgupP sc-jrAGrp jnvqfy cjuMmG eYDuGd"
+            class="sc-eCssSg sc-jSgupP sc-pFZIQ jnvqfy cjuMmG ePMCIJ"
           >
             <h2
               class="sc-bdfBwQ sc-hKgILt gWEhOj bCnOmg"
@@ -499,7 +499,7 @@ it("renders AccountModal correctly", () => {
           </button>
         </div>
         <div
-          class="sc-eCssSg sc-jSgupP eYcDys jMcUDu"
+          class="sc-eCssSg sc-jSgupP sc-jrAGrp eYcDys cjuMmG eRPoVE"
         >
           <div
             class="sc-bdfBwQ krzIlW"
@@ -533,7 +533,7 @@ it("renders AccountModal correctly", () => {
               </svg>
             </a>
             <div
-              class="sc-bdfBwQ sc-dQppl czOnMt bIwdCo"
+              class="sc-bdfBwQ sc-bqyKva czOnMt jYrnsj"
               color="text"
               role="button"
             >
@@ -550,7 +550,7 @@ it("renders AccountModal correctly", () => {
                 />
               </svg>
               <div
-                class="sc-bqyKva idsmeh"
+                class="sc-kstrdz kDtgKX"
               >
                 Copied
               </div>
