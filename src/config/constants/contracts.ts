@@ -41,6 +41,6 @@ export default {
   },
   bunnySpecial: {
     56: '0xFee8A195570a18461146F401d6033f5ab3380849',
-    97: '0x24ec6962dbe874F6B67B5C50857565667fA0854F',
+    97: '0x7b7b1583De1DeB32Ce6605F6deEbF24A0671c17C',
   },
 }
