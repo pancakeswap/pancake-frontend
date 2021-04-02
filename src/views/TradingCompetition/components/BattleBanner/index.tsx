@@ -51,7 +51,7 @@ const BattleBanner = () => {
         {TranslateString(999, '$200,000 in Prizes!')}
       </StyledHeading2Text>
       <StyledHeading size="md" color="inputSecondary" mt="16px">
-        {TranslateString(999, 'Compete with other teams for the highest trading volume!')}
+        {TranslateString(999, 'Compete with other teams to win CAKE, collectible NFTs, achievements & more!')}
       </StyledHeading>
     </Flex>
   )

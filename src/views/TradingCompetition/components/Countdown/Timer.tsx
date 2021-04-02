@@ -10,8 +10,8 @@ export interface TimerProps {
   days?: number
   showTooltip?: boolean
   blockNumber?: number
-  HeadingTextComponent?: any
-  BodyTextComponent?: any
+  HeadingTextComponent?: React.ElementType
+  BodyTextComponent?: React.ElementType
 }
 
 const StyledTimerFlex = styled(Flex)<{ showTooltip?: boolean }>`
@@ -50,8 +50,8 @@ const Wrapper: React.FC<TimerProps> = ({
   minutes,
   hours,
   days,
-  showTooltip,
   blockNumber,
+  showTooltip = true,
   HeadingTextComponent = DefaultHeadingTextComponent,
   BodyTextComponent = DefaultBodyTextComponent,
 }) => {

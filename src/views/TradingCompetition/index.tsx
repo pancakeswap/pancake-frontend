@@ -80,6 +80,10 @@ const TradingCompetition = () => {
   }
 
   useEffect(() => {
+    // const fetchCompetitionInfo = async () => {
+    //   const competitionStatus = await tradingCompetitionContract.methods.currentStatus().call()
+    // }
+
     const fetchUser = async () => {
       const user = await tradingCompetitionContract.methods.claimInformation(account).call()
       const userObject = {
@@ -104,6 +108,8 @@ const TradingCompetition = () => {
         canClaimNFT: false,
       })
     }
+
+    // fetchCompetitionInfo()
   }, [account, registrationSuccessful, claimSuccessful, tradingCompetitionContract])
 
   // Don't hide when loading. Hide if the account is connected, the user hasn't registered and the competition is live or finished

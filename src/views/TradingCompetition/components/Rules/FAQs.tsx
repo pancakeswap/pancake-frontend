@@ -104,7 +104,7 @@ const FAQ = () => {
             <Text fontSize="14px" color="textSubtle">
               {TranslateString(
                 999,
-                'Sorry, no. You need to register during the registration period, before the start of the event.',
+                'At the top of the page, the text in the button “I Want to Battle” will change to “Registered”.',
               )}
             </Text>
           </FoldableText>

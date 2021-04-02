@@ -2,6 +2,10 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Flex, Text, ChevronDownIcon, ChevronUpIcon } from '@pancakeswap-libs/uikit'
 
+interface FoldableTextProps {
+  title?: string
+}
+
 const Wrapper = styled(Flex)`
   cursor: pointer;
 `
@@ -20,11 +24,11 @@ const StyledChildrenFlex = styled(Flex)<{ isExpanded?: boolean }>`
   border-bottom: 1px solid ${({ theme }) => theme.colors.inputSecondary};
 `
 
-const FoldableText: React.FC<{ title?: string }> = ({ title, children }) => {
+const FoldableText: React.FC<FoldableTextProps> = ({ title, children }) => {
   const [isExpanded, setIsExpanded] = useState(false)
 
   return (
-    <Wrapper flexDirection="column" onClick={() => setIsExpanded(!isExpanded)} mt="24px">
+    <Wrapper flexDirection="column" onClick={() => setIsExpanded(!isExpanded)}>
       <Flex justifyContent="space-between">
         <Text fontWeight="bold" mb="16px">
           {title}
