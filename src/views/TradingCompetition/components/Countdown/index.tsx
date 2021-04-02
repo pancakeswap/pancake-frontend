@@ -8,6 +8,7 @@ import { CompetitionSteps, FINISHED, LIVE } from '../../config'
 import { CompetitionCountdownContext } from '../../contexts/CompetitionCountdownContext'
 import ProgressStepper from './ProgressStepper'
 import Timer from './Timer'
+import { GOLDGRADIENT } from '../Section/sectionStyles'
 
 const Wrapper = styled(Flex)`
   width: fit-content;
@@ -47,7 +48,7 @@ const StyledHeading = styled(Heading2Text)`
 `
 
 const TimerHeadingComponent = ({ children }) => (
-  <StyledHeading background="linear-gradient(180deg, #FFD800 0%, #EB8C00 100%)" fill>
+  <StyledHeading background={GOLDGRADIENT} fill>
     {children}
   </StyledHeading>
 )
