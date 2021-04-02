@@ -92,7 +92,7 @@ const CardFooter: React.FC<Props> = ({
   endBlock,
   poolCategory,
 }) => {
-  const { blockNumber: currentBlock } = useBlock()
+  const { currentBlock } = useBlock()
   const [isOpen, setIsOpen] = useState(false)
   const TranslateString = useI18n()
   const Icon = isOpen ? ChevronUp : ChevronDown

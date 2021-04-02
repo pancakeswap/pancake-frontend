@@ -4,11 +4,11 @@ import UnlockButton from 'components/UnlockButton'
 import { YourScoreProps } from '../../types'
 import CardUserInfo from './CardUserInfo'
 
-const ScoreCard: React.FC<YourScoreProps> = ({ registered, account, profile }) => {
+const ScoreCard: React.FC<YourScoreProps> = ({ hasRegistered, account, profile }) => {
   return (
     <Card>
       <CardBody>
-        <CardUserInfo registered={registered} account={account} profile={profile} />
+        <CardUserInfo hasRegistered={hasRegistered} account={account} profile={profile} />
         {!account && (
           <Flex mt="24px" justifyContent="center">
             <UnlockButton />

@@ -6,7 +6,7 @@ import { getMulticallAddress } from 'utils/addressHelpers'
 
 interface Call {
   address: string // Address of the contract
-  name: string // Function name on the contract (exemple: balanceOf)
+  name: string // Function name on the contract (example: balanceOf)
   params?: any[] // Function params
 }
 

@@ -48,7 +48,7 @@ const PastLotterySearcher: React.FC<PastLotterySearcherProps> = ({ initialLotter
   const handleChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(evt.currentTarget.value, 10)
 
-    // The max value will always be the initialLotterNumber which equals
+    // The max value will always be the initialLotteryNumber which equals
     // the latest lottery round
     setIsError(value > initialLotteryNumber)
     setLotteryNumber(value)

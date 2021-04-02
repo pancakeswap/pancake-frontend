@@ -17,18 +17,18 @@ const ScoreCardWrapper = styled.div`
   margin-top: 24px;
 `
 
-const YourScore: React.FC<YourScoreProps> = ({ registered = false, account, profile }) => {
+const YourScore: React.FC<YourScoreProps> = ({ hasRegistered = false, account, profile }) => {
   const TranslateString = useI18n()
 
   return (
     <Wrapper>
-      {registered && (
+      {hasRegistered && (
         <RibbonWithImage imageComponent={<ScoreProfile profile={profile} />} ribbonDirection="down" isCardHeader>
           {TranslateString(999, 'Your Score')}
         </RibbonWithImage>
       )}
       <ScoreCardWrapper>
-        <ScoreCard registered={registered} account={account} profile={profile} />
+        <ScoreCard hasRegistered={hasRegistered} account={account} profile={profile} />
       </ScoreCardWrapper>
     </Wrapper>
   )

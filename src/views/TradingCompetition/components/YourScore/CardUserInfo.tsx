@@ -3,14 +3,14 @@ import { Text, Heading, Flex, Skeleton } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import { YourScoreProps } from '../../types'
 
-const CardUserInfo: React.FC<YourScoreProps> = ({ registered, account, profile }) => {
+const CardUserInfo: React.FC<YourScoreProps> = ({ hasRegistered, account, profile }) => {
   const TranslateString = useI18n()
 
   const getHeadingText = () => {
     if (!account) {
       return 'Check your Rank'
     }
-    if (!registered) {
+    if (!hasRegistered) {
       return 'You’re not participating this time.'
     }
     if (profile) {
@@ -23,7 +23,7 @@ const CardUserInfo: React.FC<YourScoreProps> = ({ registered, account, profile }
     if (!account) {
       return 'Connect wallet to view'
     }
-    if (!registered) {
+    if (!hasRegistered) {
       return 'Sorry, you needed to register during the “entry” period!'
     }
     if (profile) {

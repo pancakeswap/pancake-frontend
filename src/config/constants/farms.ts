@@ -23,6 +23,66 @@ const farms: FarmConfig[] = [
     quoteToken: tokens.wbnb,
   },
   {
+    pid: 114,
+    lpSymbol: 'DEGO-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x17F0b998B81cE75074a7CDAdAe6D63Da3cb23572',
+    },
+    token: tokens.dego,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 113,
+    lpSymbol: 'GUM-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x155645cDF8e4B28d5B7790b65d9f79efc222740C',
+    },
+    token: tokens.gum,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 112,
+    lpSymbol: 'pBTC-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0xb5f6f7dad23132d40d778085d795bd0fd4b859cd',
+    },
+    token: tokens.pbtc,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 111,
+    lpSymbol: 'DFT-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x8FbCbD7e30b1733965a8980bf7Ae2ca1c0C456cc',
+    },
+    token: tokens.dft,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 110,
+    lpSymbol: 'SWTH-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x8c5cFfad6cddb96Ee33DA685D0d50a37e030E115',
+    },
+    token: tokens.swth,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 109,
+    lpSymbol: 'LIEN-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0xcd14855150335AAE984aa6D281E090c27035C692',
+    },
+    token: tokens.lien,
+    quoteToken: tokens.wbnb,
+  },
+  {
     pid: 108,
     lpSymbol: 'ZIL-BNB LP',
     lpAddresses: {

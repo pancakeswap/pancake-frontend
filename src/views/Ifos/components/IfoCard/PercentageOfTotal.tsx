@@ -12,11 +12,11 @@ interface PercentageOfTotalProps {
 const PercentageOfTotal: React.FC<PercentageOfTotalProps> = ({ userAmount, totalAmount }) => {
   const TranslateString = useI18n()
   const percentOfUserContribution = userAmount.div(totalAmount).times(100).toNumber()
-  const percentofUserDisplay = percentOfUserContribution.toLocaleString(undefined, { maximumFractionDigits: 5 })
+  const percentOfUserDisplay = percentOfUserContribution.toLocaleString(undefined, { maximumFractionDigits: 5 })
 
   return (
     <Text fontSize="14px" color="textSubtle">
-      {TranslateString(999, `${percentofUserDisplay}% of total`, { num: percentofUserDisplay })}
+      {TranslateString(999, `${percentOfUserDisplay}% of total`, { num: percentOfUserDisplay })}
     </Text>
   )
 }
