@@ -14,17 +14,17 @@ import {
 } from '@pancakeswap-libs/uikit'
 import { useProfile } from 'state/hooks'
 import useI18n from 'hooks/useI18n'
+import useGetWalletNfts from 'hooks/useGetWalletNfts'
 import { Nft } from 'config/constants/types'
 import InfoRow from '../InfoRow'
 import TransferNftModal from '../TransferNftModal'
 import ClaimNftModal from '../ClaimNftModal'
 import Preview from './Preview'
 
-interface NftCardProps {
+export interface NftCardProps {
   nft: Nft
   canClaim?: boolean
   tokenIds?: number[]
-  onSuccess: () => void
 }
 
 const Header = styled(InfoRow)`
@@ -48,10 +48,11 @@ const InfoBlock = styled.div`
   padding: 24px;
 `
 
-const NftCard: React.FC<NftCardProps> = ({ nft, onSuccess, canClaim = false, tokenIds = [] }) => {
+const NftCard: React.FC<NftCardProps> = ({ nft, canClaim = false, tokenIds = [] }) => {
   const [isOpen, setIsOpen] = useState(false)
   const TranslateString = useI18n()
   const { profile } = useProfile()
+  const { refresh } = useGetWalletNfts()
   const { bunnyId, name, description } = nft
   const walletOwnsNft = tokenIds.length > 0
   const Icon = isOpen ? ChevronUpIcon : ChevronDownIcon
@@ -60,11 +61,17 @@ const NftCard: React.FC<NftCardProps> = ({ nft, onSuccess, canClaim = false, tok
     setIsOpen(!isOpen)
   }
 
-  const [onPresentTransferModal] = useModal(<TransferNftModal nft={nft} tokenIds={tokenIds} onSuccess={onSuccess} />)
-  const [onPresentClaimModal] = useModal(<ClaimNftModal nft={nft} onSuccess={onSuccess} />)
+  const handleSuccess = () => {
+    refresh()
+  }
+
+  const [onPresentTransferModal] = useModal(
+    <TransferNftModal nft={nft} tokenIds={tokenIds} onSuccess={handleSuccess} />,
+  )
+  const [onPresentClaimModal] = useModal(<ClaimNftModal nft={nft} onSuccess={handleSuccess} />)
 
   return (
-    <Card isActive={walletOwnsNft || canClaim}>
+    <Card isActive={walletOwnsNft}>
       <Preview nft={nft} isOwned={walletOwnsNft} />
       <CardBody>
         <Header>
