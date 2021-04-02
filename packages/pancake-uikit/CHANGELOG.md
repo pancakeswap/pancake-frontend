@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.20.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap-libs/uikit@0.19.0...@pancakeswap-libs/uikit@0.20.0) (2021-04-02)
+
+
+### Bug Fixes
+
+* Set panel z index to 0 on desktop ([#45](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/45)) ([6cde36e](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/6cde36ee73b2075de85ef809bed3f959e46de6e2))
+
+
+### Features
+
+* Stepper ([#42](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/42)) ([8b1b72e](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/8b1b72e00bcf012df258becd1048770af2498221))
+
+
+
+
+
 # [0.19.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap-libs/uikit@0.18.0...@pancakeswap-libs/uikit@0.19.0) (2021-03-31)
 
 
