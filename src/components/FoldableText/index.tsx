@@ -1,16 +1,19 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { Flex, Text, ChevronDownIcon, ChevronUpIcon } from '@pancakeswap-libs/uikit'
-import useI18n from 'hooks/useI18n'
+import { Flex, Text, BoxProps, ExpandableLabel } from '@pancakeswap-libs/uikit'
+
+interface FoldableTextProps extends BoxProps {
+  title?: string
+}
 
 const Wrapper = styled(Flex)`
   cursor: pointer;
 `
 
-const StyledExpandButton = styled(Flex)`
-  svg {
-    margin-top: 2px;
-    fill: ${({ theme }) => theme.colors.primary};
+const StyledExpandableLabelWrapper = styled(Flex)`
+  button {
+    align-items: flex-start;
+    justify-content: flex-start;
   }
 `
 
@@ -21,22 +24,20 @@ const StyledChildrenFlex = styled(Flex)<{ isExpanded?: boolean }>`
   border-bottom: 1px solid ${({ theme }) => theme.colors.inputSecondary};
 `
 
-const FoldableText: React.FC<{ title?: string }> = ({ title, children }) => {
+const FoldableText: React.FC<FoldableTextProps> = ({ title, children, ...props }) => {
   const [isExpanded, setIsExpanded] = useState(false)
-  const TranslateString = useI18n()
 
   return (
-    <Wrapper flexDirection="column" onClick={() => setIsExpanded(!isExpanded)} mt="24px">
+    <Wrapper {...props} flexDirection="column" onClick={() => setIsExpanded((prev) => !prev)}>
       <Flex justifyContent="space-between">
         <Text fontWeight="bold" mb="16px">
           {title}
         </Text>
-        <StyledExpandButton justifyContent="flex-start" alignItems="flex-start">
-          <Text fontWeight="bold" color="primary">
-            {isExpanded ? TranslateString(1066, 'Hide') : TranslateString(658, 'Details')}
-          </Text>
-          {isExpanded ? <ChevronUpIcon /> : <ChevronDownIcon />}
-        </StyledExpandButton>
+        <StyledExpandableLabelWrapper>
+          <ExpandableLabel expanded={isExpanded} onClick={() => setIsExpanded((prev) => !prev)}>
+            {isExpanded ? 'Hide' : 'Details'}
+          </ExpandableLabel>
+        </StyledExpandableLabelWrapper>
       </Flex>
       <StyledChildrenFlex isExpanded={isExpanded} flexDirection="column">
         {children}
