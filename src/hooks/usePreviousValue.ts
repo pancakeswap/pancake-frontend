@@ -5,7 +5,7 @@ import { useEffect, useRef } from 'react'
  *
  * @see https://reactjs.org/docs/hooks-faq.html#how-to-get-the-previous-props-or-state
  */
-const usePrevious = (value: any) => {
+const usePreviousValue = (value: any) => {
   const ref = useRef()
 
   useEffect(() => {
@@ -15,4 +15,4 @@ const usePrevious = (value: any) => {
   return ref.current
 }
 
-export default usePrevious
+export default usePreviousValue
