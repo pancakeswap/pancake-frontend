@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { Flex, Text, BoxProps, ExpandableLabel } from '@pancakeswap-libs/uikit'
+import { Flex, Text, FlexProps, ExpandableLabel } from '@pancakeswap-libs/uikit'
 
-interface FoldableTextProps extends BoxProps {
+interface FoldableTextProps extends FlexProps {
   title?: string
 }
 
@@ -28,7 +28,7 @@ const FoldableText: React.FC<FoldableTextProps> = ({ title, children, ...props }
   const [isExpanded, setIsExpanded] = useState(false)
 
   return (
-    <Wrapper {...props} flexDirection="column" onClick={() => setIsExpanded(!isExpanded)}>
+    <Wrapper {...props} flexDirection="column" onClick={() => setIsExpanded((prev) => !prev)}>
       <Flex justifyContent="space-between">
         <Text fontWeight="bold" mb="16px">
           {title}

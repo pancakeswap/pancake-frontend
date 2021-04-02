@@ -51,7 +51,7 @@ const Wrapper: React.FC<TimerProps> = ({
   hours,
   days,
   blockNumber,
-  showTooltip = true,
+  showTooltip = false,
   HeadingTextComponent = DefaultHeadingTextComponent,
   BodyTextComponent = DefaultBodyTextComponent,
 }) => {
