@@ -33,7 +33,7 @@ const FAQ = () => {
           <Heading size="lg">Details</Heading>
         </CardHeader>
         <StyledCardbody>
-          <FoldableText title={TranslateString(999, 'Eligible trading pairs')}>
+          <FoldableText title={TranslateString(999, 'Eligible trading pairs')} mt="24px">
             <Text fontSize="14px" color="textSubtle">
               {TranslateString(
                 999,
@@ -41,7 +41,7 @@ const FAQ = () => {
               )}
             </Text>
           </FoldableText>
-          <FoldableText title={TranslateString(999, 'Calculating team ranks and winners')}>
+          <FoldableText title={TranslateString(999, 'Calculating team ranks and winners')} mt="24px">
             <Text fontSize="14px" color="textSubtle">
               -{' '}
               {TranslateString(
@@ -57,7 +57,7 @@ const FAQ = () => {
               )}
             </Text>
           </FoldableText>
-          <FoldableText title={TranslateString(999, 'Prize distribution')}>
+          <FoldableText title={TranslateString(999, 'Prize distribution')} mt="24px">
             <Text fontSize="14px" color="textSubtle">
               -{' '}
               {TranslateString(
@@ -76,7 +76,7 @@ const FAQ = () => {
               - {TranslateString(999, 'Every participant will win at least one prize at the end of the competition')}
             </Text>
           </FoldableText>
-          <FoldableText title={TranslateString(999, 'Fine print')}>
+          <FoldableText title={TranslateString(999, 'Fine print')} mt="24px">
             <Text fontSize="14px" color="textSubtle">
               -{' '}
               {TranslateString(
@@ -92,7 +92,7 @@ const FAQ = () => {
               )}
             </Text>
           </FoldableText>
-          <FoldableText title={TranslateString(999, 'Can I join the battle after it starts?')}>
+          <FoldableText title={TranslateString(999, 'Can I join the battle after it starts?')} mt="24px">
             <Text fontSize="14px" color="textSubtle">
               {TranslateString(
                 999,
@@ -100,7 +100,7 @@ const FAQ = () => {
               )}
             </Text>
           </FoldableText>
-          <FoldableText title={TranslateString(999, 'How do I know if I successfully registered?')}>
+          <FoldableText title={TranslateString(999, 'How do I know if I successfully registered?')} mt="24px">
             <Text fontSize="14px" color="textSubtle">
               {TranslateString(
                 999,
@@ -108,7 +108,7 @@ const FAQ = () => {
               )}
             </Text>
           </FoldableText>
-          <FoldableText title={TranslateString(999, 'How can I see my current rank?')}>
+          <FoldableText title={TranslateString(999, 'How can I see my current rank?')} mt="24px">
             <Text fontSize="14px" color="textSubtle">
               {TranslateString(
                 999,
@@ -116,7 +116,7 @@ const FAQ = () => {
               )}
             </Text>
           </FoldableText>
-          <FoldableText title={TranslateString(999, 'How do I claim my prize(s)?')}>
+          <FoldableText title={TranslateString(999, 'How do I claim my prize(s)?')} mt="24px">
             <Text fontSize="14px" color="textSubtle">
               {TranslateString(
                 999,

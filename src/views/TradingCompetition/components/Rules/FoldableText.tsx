@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { Flex, Text, ChevronDownIcon, ChevronUpIcon } from '@pancakeswap-libs/uikit'
+import { Flex, Text, BoxProps, ExpandableLabel } from '@pancakeswap-libs/uikit'
 
-interface FoldableTextProps {
+interface FoldableTextProps extends BoxProps {
   title?: string
 }
 
@@ -10,10 +10,10 @@ const Wrapper = styled(Flex)`
   cursor: pointer;
 `
 
-const StyledExpandButton = styled(Flex)`
-  svg {
-    margin-top: 2px;
-    fill: ${({ theme }) => theme.colors.primary};
+const StyledExpandableLabelWrapper = styled(Flex)`
+  button {
+    align-items: flex-start;
+    justify-content: flex-start;
   }
 `
 
@@ -24,21 +24,20 @@ const StyledChildrenFlex = styled(Flex)<{ isExpanded?: boolean }>`
   border-bottom: 1px solid ${({ theme }) => theme.colors.inputSecondary};
 `
 
-const FoldableText: React.FC<FoldableTextProps> = ({ title, children }) => {
+const FoldableText: React.FC<FoldableTextProps> = ({ title, children, ...props }) => {
   const [isExpanded, setIsExpanded] = useState(false)
 
   return (
-    <Wrapper flexDirection="column" onClick={() => setIsExpanded(!isExpanded)}>
+    <Wrapper {...props} flexDirection="column" onClick={() => setIsExpanded(!isExpanded)}>
       <Flex justifyContent="space-between">
         <Text fontWeight="bold" mb="16px">
           {title}
         </Text>
-        <StyledExpandButton justifyContent="flex-start" alignItems="flex-start">
-          <Text fontWeight="bold" color="primary">
+        <StyledExpandableLabelWrapper>
+          <ExpandableLabel expanded={isExpanded} onClick={() => setIsExpanded((prev) => !prev)}>
             {isExpanded ? 'Hide' : 'Details'}
-          </Text>
-          {isExpanded ? <ChevronUpIcon /> : <ChevronDownIcon />}
-        </StyledExpandButton>
+          </ExpandableLabel>
+        </StyledExpandableLabelWrapper>
       </Flex>
       <StyledChildrenFlex isExpanded={isExpanded} flexDirection="column">
         {children}
