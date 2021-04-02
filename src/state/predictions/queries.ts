@@ -4,6 +4,7 @@ export interface UserResponse {
   block: string
   totalBets: string
   totalBNB: string
+  bets?: BetResponse[]
 }
 
 export interface BetResponse {
@@ -12,7 +13,21 @@ export interface BetResponse {
   amount: string
   position: string
   claimed: boolean
-  user: UserResponse
+  user?: UserResponse
+  round?: RoundResponse
+}
+
+export interface HistoricalBetResponse {
+  id: string
+  hash: string
+  amount: string
+  position: string
+  claimed: boolean
+  user?: UserResponse
+  round: {
+    id: string
+    epoch: string
+  }
 }
 
 export interface RoundResponse {
@@ -104,6 +119,45 @@ export const getRoundQuery = (id: string) => {
           totalBets
           totalBNB
         }
+      }
+    }
+  `
+}
+
+export const getUserPositionsQuery = (id: string) => {
+  return `
+    user(id: "${id.toLocaleLowerCase()}") {
+      bets {
+        id
+        hash  
+        amount
+        position
+        claimed
+        round {
+          id
+          epoch
+          startAt
+          startBlock
+          lockAt
+          lockBlock
+          lockPrice
+          endAt
+          endBlock
+          closePrice
+          totalBets
+          totalAmount
+          bullBets
+          bullAmount
+          bearBets
+          bearAmount
+        }
+        user {
+          id
+          address
+          block
+          totalBets
+          totalBNB
+        } 
       }
     }
   `

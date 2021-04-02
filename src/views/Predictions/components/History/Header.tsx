@@ -8,7 +8,7 @@ import { getBubbleGumBackground } from '../../helpers'
 
 const StyledHeader = styled(Box)`
   background: ${({ theme }) => getBubbleGumBackground(theme)};
-
+  flex: none;
   padding: 16px;
 `
 

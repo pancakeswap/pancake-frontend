@@ -1,11 +1,11 @@
 import { request, gql } from 'graphql-request'
 import { GRAPH_API_PREDICTIONS } from 'config/constants/endpoints'
-import { BetPosition, PredictionStatus, Round, RoundData } from 'state/types'
+import { Bet, BetPosition, PredictionStatus, Round, RoundData } from 'state/types'
 import { getPredictionsContract } from 'utils/contractHelpers'
 import makeBatchRequest from 'utils/makeBatchRequest'
-import { getRoundQuery, getRoundsQuery, RoundResponse } from './queries'
+import { BetResponse, getRoundQuery, getRoundsQuery, getUserPositionsQuery, RoundResponse } from './queries'
 
-const numberOrNull = (value: string) => {
+export const numberOrNull = (value: string) => {
   if (value === null) {
     return null
   }
@@ -37,6 +37,29 @@ export const makeFutureRoundResponse = (epoch: number, startBlock: number): Roun
   }
 }
 
+export const transformBetResponse = (betResponse: BetResponse): Bet => {
+  const bet = {
+    id: betResponse.id,
+    hash: betResponse.hash,
+    amount: betResponse.amount ? parseFloat(betResponse.amount) : 0,
+    position: betResponse.position === 'Bull' ? BetPosition.BULL : BetPosition.BEAR,
+    claimed: betResponse.claimed,
+    user: {
+      id: betResponse.user.id,
+      address: betResponse.user.address,
+      block: numberOrNull(betResponse.user.block),
+      totalBets: numberOrNull(betResponse.user.totalBets),
+      totalBNB: numberOrNull(betResponse.user.totalBNB),
+    },
+  } as Bet
+
+  if (betResponse.round) {
+    bet.round = transformRoundResponse(betResponse.round)
+  }
+
+  return bet
+}
+
 export const transformRoundResponse = (roundResponse: RoundResponse): Round => {
   const {
     id,
@@ -52,9 +75,8 @@ export const transformRoundResponse = (roundResponse: RoundResponse): Round => {
     bullBets,
     bearAmount,
     bullAmount,
-    bets,
+    bets = [],
   } = roundResponse
-
   return {
     id,
     epoch: numberOrNull(epoch),
@@ -69,20 +91,7 @@ export const transformRoundResponse = (roundResponse: RoundResponse): Round => {
     bullBets: numberOrNull(bullBets),
     bearAmount: numberOrNull(bearAmount),
     bullAmount: numberOrNull(bullAmount),
-    bets: bets.map((betResponse) => ({
-      id: betResponse.id,
-      hash: betResponse.hash,
-      amount: betResponse.amount ? parseFloat(betResponse.amount) : 0,
-      position: betResponse.position === 'Bull' ? BetPosition.BULL : BetPosition.BEAR,
-      claimed: betResponse.claimed,
-      user: {
-        id: betResponse.user.id,
-        address: betResponse.user.address,
-        block: numberOrNull(betResponse.user.block),
-        totalBets: numberOrNull(betResponse.user.totalBets),
-        totalBNB: numberOrNull(betResponse.user.totalBNB),
-      },
-    })),
+    bets: bets.map(transformBetResponse),
   }
 }
 
@@ -139,4 +148,16 @@ export const getRound = async (id: string) => {
   `,
   )
   return response.round
+}
+
+export const getUserPositions = async (account: string): Promise<BetResponse[]> => {
+  const response = await request(
+    GRAPH_API_PREDICTIONS,
+    gql`
+      {
+        ${getUserPositionsQuery(account)}
+      }
+  `,
+  )
+  return response.user.bets
 }

@@ -1,20 +1,28 @@
 /* eslint-disable no-param-reassign */
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { maxBy } from 'lodash'
-import { PredictionsState, PredictionStatus, Round, RoundData } from 'state/types'
-import { getRound, makeFutureRoundResponse, transformRoundResponse } from './helpers'
+import { Bet, PredictionsState, PredictionStatus, Round, RoundData } from 'state/types'
+import {
+  getRound,
+  makeFutureRoundResponse,
+  transformRoundResponse,
+  getUserPositions,
+  transformBetResponse,
+} from './helpers'
 
 const initialState: PredictionsState = {
   status: PredictionStatus.INITIAL,
   isLoading: false,
   isHistoryPaneOpen: false,
   isChartPaneOpen: false,
+  isFetchingHistory: false,
   currentEpoch: 0,
   currentRoundStartBlockNumber: 0,
   intervalBlocks: 100,
   bufferBlocks: 2,
   minBetAmount: '1000000000000000',
   rounds: {},
+  bets: [],
 }
 
 // Thunks
@@ -24,6 +32,16 @@ export const updateRound = createAsyncThunk<Round, { id: string }>('predictions/
 
   return round
 })
+
+export const showHistory = createAsyncThunk<Bet[], { account: string }>(
+  'predictions/fetchHistory',
+  async ({ account }) => {
+    const response = await getUserPositions(account)
+    const bets = response.map(transformBetResponse)
+
+    return bets
+  },
+)
 
 export const predictionsSlice = createSlice({
   name: 'predictions',
@@ -64,9 +82,23 @@ export const predictionsSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    // Update Round
     builder.addCase(updateRound.fulfilled, (state, action) => {
       const { payload: round } = action
       state.rounds[round.id] = round
+    })
+
+    // Show History
+    builder.addCase(showHistory.pending, (state) => {
+      state.isFetchingHistory = true
+    })
+    builder.addCase(showHistory.rejected, (state) => {
+      state.isFetchingHistory = false
+    })
+    builder.addCase(showHistory.fulfilled, (state, action) => {
+      state.isFetchingHistory = false
+      state.isHistoryPaneOpen = true
+      state.bets = action.payload
     })
   },
 })

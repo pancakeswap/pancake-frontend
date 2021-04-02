@@ -1,20 +1,22 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
-import { HistoryIcon, IconButton } from '@pancakeswap-libs/uikit'
-import { setHistoryPaneState } from 'state/predictions'
-import { useIsHistoryPaneOpen } from 'state/hooks'
+import { AutoRenewIcon, HistoryIcon, IconButton } from '@pancakeswap-libs/uikit'
+import { showHistory } from 'state/predictions'
+import { useGetIsFetchingHistory } from 'state/hooks'
+import { useWeb3React } from '@web3-react/core'
 
 const HistoryButton = () => {
-  const isHistoryPaneOpen = useIsHistoryPaneOpen()
+  const { account } = useWeb3React()
+  const isFetchingHistory = useGetIsFetchingHistory()
   const dispatch = useDispatch()
 
   const handleClick = () => {
-    dispatch(setHistoryPaneState(!isHistoryPaneOpen))
+    dispatch(showHistory({ account }))
   }
 
   return (
-    <IconButton variant="subtle" ml="8px" onClick={handleClick}>
-      <HistoryIcon width="24px" color="white" />
+    <IconButton variant="subtle" ml="8px" onClick={handleClick} isLoading={isFetchingHistory}>
+      {isFetchingHistory ? <AutoRenewIcon spin color="white" /> : <HistoryIcon width="24px" color="white" />}
     </IconButton>
   )
 }
