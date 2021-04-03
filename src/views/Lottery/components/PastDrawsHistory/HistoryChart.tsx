@@ -6,7 +6,6 @@ import Loading from '../Loading'
 
 const Line = lazy(() => import('./LineChartWrapper'))
 
-
 const InnerWrapper = styled.div`
   width: 100%;
   height: 100%;
@@ -17,25 +16,23 @@ const InnerWrapper = styled.div`
 
 const HistoryChart: React.FC = () => {
   const { historyData, historyError } = useContext(PastLotteryDataContext)
-  const [seriesLine, setSeriesLine] = useState([]);
-  const [optionsLine, setOptionsLine] = useState({});  
-  const [runonce, setRunonce] = useState(false);
+  const [seriesLine, setSeriesLine] = useState([])
+  const [optionsLine, setOptionsLine] = useState({})
+  const [runonce, setRunonce] = useState(false)
 
   const genData = () => {
-    
-    if ((runonce) || (historyError) || (historyData.length < 1))
-      return;
+    if (runonce || historyError || historyData.length < 1) return
 
     const se = [
-      { name: 'Pool size', data:[] },
-      { name: 'Burned', data:[] }
-    ];
+      { name: 'Pool size', data: [] },
+      { name: 'Burned', data: [] },
+    ]
 
     for (let i = historyData.length - 1; i >= 0; i--) {
-      se[0].data.push([historyData[i].lotteryNumber, historyData[i].poolSize]);
-      se[1].data.push([historyData[i].lotteryNumber, historyData[i].burned]);
+      se[0].data.push([historyData[i].lotteryNumber, historyData[i].poolSize])
+      se[1].data.push([historyData[i].lotteryNumber, historyData[i].burned])
     }
-    setSeriesLine(se);
+    setSeriesLine(se)
 
     setOptionsLine({
       chart: {
@@ -46,21 +43,21 @@ const HistoryChart: React.FC = () => {
         zoom: {
           type: 'x',
           enabled: true,
-          autoScaleYaxis: true
+          autoScaleYaxis: true,
         },
         toolbar: {
           autoSelected: 'zoom',
           tools: {
             download: false,
-          }
-        }
+          },
+        },
       },
       stroke: {
         width: 2,
         curve: 'smooth',
       },
       dataLabels: {
-        enabled: false
+        enabled: false,
       },
       legend: {
         position: 'top',
@@ -71,22 +68,22 @@ const HistoryChart: React.FC = () => {
       markers: {
         size: 0,
       },
-      colors: ["#8f80ba", "#1FC7D4"],
+      colors: ['#8f80ba', '#1FC7D4'],
       fill: {
-        colors: ["#8f80ba", "#1FC7D4"],
+        colors: ['#8f80ba', '#1FC7D4'],
         type: 'gradient',
         gradient: {
           shadeIntensity: 1,
           inverseColors: false,
           opacityFrom: 0.6,
           opacityTo: 0.2,
-          stops: [10, 50, 100]
+          stops: [10, 50, 100],
         },
       },
       yaxis: {
         labels: {
-          style : {
-            colors:["#8f80ba"]
+          style: {
+            colors: ['#8f80ba'],
           },
         },
       },
@@ -94,27 +91,38 @@ const HistoryChart: React.FC = () => {
         // type: 'datetime',
         tickAmount: 10,
         labels: {
-          style : {
-            colors:["#8f80ba", "#8f80ba", "#8f80ba", "#8f80ba", "#8f80ba", "#8f80ba", "#8f80ba", "#8f80ba", "#8f80ba", "#8f80ba", "#8f80ba"]
+          style: {
+            colors: [
+              '#8f80ba',
+              '#8f80ba',
+              '#8f80ba',
+              '#8f80ba',
+              '#8f80ba',
+              '#8f80ba',
+              '#8f80ba',
+              '#8f80ba',
+              '#8f80ba',
+              '#8f80ba',
+              '#8f80ba',
+            ],
           },
-        }
+        },
       },
       tooltip: {
         shared: true,
         // fillSeriesColor: true,
-        theme: "dark",
-      }
+        theme: 'dark',
+      },
     })
-  
+
     setRunonce(true)
   }
-  
+
   // init
   useEffect(() => {
-    
-    genData();
-  
-  // eslint-disable-next-line react-hooks/exhaustive-deps  
+    genData()
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [historyData])
 
   return (
@@ -126,21 +134,11 @@ const HistoryChart: React.FC = () => {
       )}
       {!historyError && historyData.length > 1 ? (
         <Suspense fallback={<div>Loading...</div>}>
-
-        <div id="wrapper">
-
-          <div id="chart-line">
-            {seriesLine.length &&
-              <Line 
-                options={optionsLine} 
-                series={seriesLine} 
-                type="area" 
-                height={350} 
-              />
-            }
+          <div id="wrapper">
+            <div id="chart-line">
+              {seriesLine.length && <Line options={optionsLine} series={seriesLine} type="area" height={350} />}
+            </div>
           </div>
-        </div>
-
         </Suspense>
       ) : (
         <InnerWrapper>
