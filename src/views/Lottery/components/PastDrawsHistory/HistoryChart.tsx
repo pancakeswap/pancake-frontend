@@ -1,10 +1,11 @@
-import React, { lazy, Suspense, useContext } from 'react'
+import React, { lazy, Suspense, useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Text } from '@pancakeswap-libs/uikit'
 import PastLotteryDataContext from 'contexts/PastLotteryDataContext'
 import Loading from '../Loading'
 
 const Line = lazy(() => import('./LineChartWrapper'))
+
 
 const InnerWrapper = styled.div`
   width: 100%;
@@ -16,87 +17,105 @@ const InnerWrapper = styled.div`
 
 const HistoryChart: React.FC = () => {
   const { historyData, historyError } = useContext(PastLotteryDataContext)
-  const getDataArray = (kind) => {
-    return historyData
-      .map((dataPoint) => {
-        return dataPoint[kind]
-      })
-      .reverse()
-  }
+  const [seriesLine, setSeriesLine] = useState([]);
+  const [optionsLine, setOptionsLine] = useState({});  
+  const [runonce, setRunonce] = useState(false);
 
-  const lineStyles = ({ color }) => {
-    return {
-      borderColor: color,
-      fill: false,
-      borderWidth: 2,
-      pointRadius: 0,
-      pointHitRadius: 10,
+  const genData = () => {
+    
+    if ((runonce) || (historyError) || (historyData.length < 1))
+      return;
+
+    const se = [
+      { name: 'Pool size', data:[] },
+      { name: 'Burned', data:[] }
+    ];
+
+    for (let i = historyData.length - 1; i >= 0; i--) {
+      se[0].data.push([historyData[i].lotteryNumber, historyData[i].poolSize]);
+      se[1].data.push([historyData[i].lotteryNumber, historyData[i].burned]);
     }
-  }
+    setSeriesLine(se);
 
-  const chartData = {
-    labels: getDataArray('lotteryNumber'),
-    datasets: [
-      {
-        label: 'Pool Size',
-        data: getDataArray('poolSize'),
-        yAxisID: 'y-axis-pool',
-        ...lineStyles({ color: '#8F80BA' }),
+    setOptionsLine({
+      chart: {
+        foreColor: '#8f80ba',
+        type: 'area',
+        stacked: false,
+        height: 350,
+        zoom: {
+          type: 'x',
+          enabled: true,
+          autoScaleYaxis: true
+        },
+        toolbar: {
+          autoSelected: 'zoom',
+          tools: {
+            download: false,
+          }
+        }
       },
-      {
-        label: 'Burned',
-        data: getDataArray('burned'),
-        yAxisID: 'y-axis-burned',
-        ...lineStyles({ color: '#1FC7D4' }),
+      stroke: {
+        width: 2,
+        curve: 'smooth',
       },
-    ],
-  }
-
-  const axesStyles = ({ color, lineHeight }) => {
-    return {
-      borderCapStyle: 'round',
-      gridLines: { display: false },
-      ticks: {
-        fontFamily: 'Kanit, sans-serif',
-        fontColor: color,
-        fontSize: 14,
-        lineHeight,
-        maxRotation: 0,
-        beginAtZero: true,
-        autoSkipPadding: 15,
-        userCallback: (value) => {
-          return value.toLocaleString()
+      dataLabels: {
+        enabled: false
+      },
+      legend: {
+        position: 'top',
+        labels: {
+          useSeriesColors: false,
         },
       },
-    }
+      markers: {
+        size: 0,
+      },
+      colors: ["#8f80ba", "#1FC7D4"],
+      fill: {
+        colors: ["#8f80ba", "#1FC7D4"],
+        type: 'gradient',
+        gradient: {
+          shadeIntensity: 1,
+          inverseColors: false,
+          opacityFrom: 0.6,
+          opacityTo: 0.2,
+          stops: [10, 50, 100]
+        },
+      },
+      yaxis: {
+        labels: {
+          style : {
+            colors:["#8f80ba"]
+          },
+        },
+      },
+      xaxis: {
+        // type: 'datetime',
+        tickAmount: 10,
+        labels: {
+          style : {
+            colors:["#8f80ba", "#8f80ba", "#8f80ba", "#8f80ba", "#8f80ba", "#8f80ba", "#8f80ba", "#8f80ba", "#8f80ba", "#8f80ba", "#8f80ba"]
+          },
+        }
+      },
+      tooltip: {
+        shared: true,
+        // fillSeriesColor: true,
+        theme: "dark",
+      }
+    })
+  
+    setRunonce(true)
   }
-
-  const options = {
-    legend: { display: false },
-    scales: {
-      yAxes: [
-        {
-          type: 'linear',
-          display: true,
-          position: 'left',
-          id: 'y-axis-pool',
-          ...axesStyles({ color: '#8f80ba', lineHeight: 1.6 }),
-        },
-        {
-          type: 'linear',
-          display: true,
-          position: 'right',
-          id: 'y-axis-burned',
-          ...axesStyles({ color: '#1FC7D4', lineHeight: 1.5 }),
-        },
-      ],
-      xAxes: [
-        {
-          ...axesStyles({ color: '#452A7A', lineHeight: 1 }),
-        },
-      ],
-    },
-  }
+  
+  // init
+  useEffect(() => {
+    
+    genData();
+  
+  // eslint-disable-next-line react-hooks/exhaustive-deps  
+  }, [historyData])
 
   return (
     <>
@@ -107,7 +126,21 @@ const HistoryChart: React.FC = () => {
       )}
       {!historyError && historyData.length > 1 ? (
         <Suspense fallback={<div>Loading...</div>}>
-          <Line data={chartData} options={options} type="line" />
+
+        <div id="wrapper">
+
+          <div id="chart-line">
+            {seriesLine.length &&
+              <Line 
+                options={optionsLine} 
+                series={seriesLine} 
+                type="area" 
+                height={350} 
+              />
+            }
+          </div>
+        </div>
+
         </Suspense>
       ) : (
         <InnerWrapper>
