@@ -38,11 +38,6 @@ const Rules = () => {
             {TranslateString(999, 'The higher your team’s rank, the better your prizes!')}
           </Text>
         </RulesCard>
-        <RulesCard title={TranslateString(999, 'Everyone’s a winner!')}>
-          <Text textAlign="center" fontSize="14px" color="textSubtle">
-            {TranslateString(999, 'Trade the minimum amount required and you’re guaranteed a prize!')}
-          </Text>
-        </RulesCard>
       </StyledCardWrapper>
       <FAQs />
     </Wrapper>
