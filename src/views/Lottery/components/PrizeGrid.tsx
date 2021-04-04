@@ -49,7 +49,11 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({
   const twoMatchesAmount = +((lotteryPrizeAmount / 100) * 10).toFixed(0)
   const burnAmount = +((lotteryPrizeAmount / 100) * 20).toFixed(0)
   const TranslateString = useI18n()
-  const cakeBusd = usePriceCakeBusd()
+  const cakeBusdPrice = usePriceCakeBusd()
+
+  const getCakeBusdValue = (amount: number) => {
+    return new BigNumber(amount).multipliedBy(cakeBusdPrice).toNumber()
+  }
 
   return (
     <Grid pastDraw={pastDraw}>
@@ -82,9 +86,7 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({
       <GridItem>
         <RightAlignedHeading size="md">
           {fourMatchesAmount.toLocaleString()}
-          {!cakeBusd.eq(0) && (
-            <CardBusdValue value={new BigNumber(fourMatchesAmount).multipliedBy(cakeBusd).toNumber()} />
-          )}
+          {!cakeBusdPrice.eq(0) && <CardBusdValue value={getCakeBusdValue(fourMatchesAmount)} />}
         </RightAlignedHeading>
       </GridItem>
       {/* 3 matches row */}
@@ -99,9 +101,7 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({
       <GridItem>
         <RightAlignedText>
           {threeMatchesAmount.toLocaleString()}
-          {!cakeBusd.eq(0) && (
-            <CardBusdValue value={new BigNumber(threeMatchesAmount).multipliedBy(cakeBusd).toNumber()} />
-          )}
+          {!cakeBusdPrice.eq(0) && <CardBusdValue value={getCakeBusdValue(threeMatchesAmount)} />}
         </RightAlignedText>
       </GridItem>
       {/* 2 matches row */}
@@ -116,9 +116,7 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({
       <GridItem>
         <RightAlignedText>
           {twoMatchesAmount.toLocaleString()}
-          {!cakeBusd.eq(0) && (
-            <CardBusdValue value={new BigNumber(twoMatchesAmount).multipliedBy(cakeBusd).toNumber()} />
-          )}
+          {!cakeBusdPrice.eq(0) && <CardBusdValue value={getCakeBusdValue(twoMatchesAmount)} />}
         </RightAlignedText>
       </GridItem>
       {/* Burn row */}
