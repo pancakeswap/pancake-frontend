@@ -9,20 +9,20 @@ const CardUserInfo: React.FC<YourScoreProps> = ({ hasRegistered, account, profil
 
   const getHeadingText = () => {
     if (!account) {
-      return 'Check your Rank'
+      return TranslateString(999, 'Check your Rank')
     }
     if (!hasRegistered) {
-      return 'You’re not participating this time.'
+      return TranslateString(999, 'You’re not participating this time.')
     }
     return `@${profile.username}`
   }
 
   const getSubHeadingText = () => {
     if (!account) {
-      return 'Connect wallet to view'
+      return TranslateString(999, 'Connect wallet to view')
     }
     if (!hasRegistered) {
-      return 'Sorry, you needed to register during the “entry” period!'
+      return TranslateString(999, 'Sorry, you needed to register during the “entry” period!')
     }
     return `${profile.team.name}`
   }

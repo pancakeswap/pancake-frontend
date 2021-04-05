@@ -11,8 +11,8 @@ const Wrapper = styled.div`
   align-items: center;
 `
 
-const LaurelWrapper = styled.div<{ dir?: 'l' | 'r' }>`
-  transform: ${({ dir }) => (dir === 'l' ? 'rotate(30deg)' : 'rotate(-30deg)')};
+const LaurelWrapper = styled.div<{ dir?: 'left' | 'right' }>`
+  transform: ${({ dir }) => (dir === 'left' ? 'rotate(30deg)' : 'rotate(-30deg)')};
   svg {
     fill: #27262c;
     opacity: 0.5;
@@ -37,7 +37,7 @@ const StyledNoProfileAvatarIcon = styled(NoProfileAvatarIcon)`
 const ScoreHeader: React.FC<YourScoreProps> = ({ profile, isLoading }) => {
   return (
     <Wrapper>
-      <LaurelWrapper dir="l">
+      <LaurelWrapper dir="left">
         <LaurelLeftIcon />
       </LaurelWrapper>
       {isLoading ? (
@@ -48,7 +48,7 @@ const ScoreHeader: React.FC<YourScoreProps> = ({ profile, isLoading }) => {
         </ProfileWrapper>
       )}
 
-      <LaurelWrapper dir="r">
+      <LaurelWrapper dir="right">
         <LaurelRightIcon />
       </LaurelWrapper>
     </Wrapper>

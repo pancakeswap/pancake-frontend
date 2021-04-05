@@ -27,7 +27,7 @@ const TextWrapper = styled(Flex)`
   background-color: #7645d9;
 `
 
-const LaurelWrapper = styled.div<{ dir?: 'l' | 'r' }>`
+const LaurelWrapper = styled.div<{ dir?: 'left' | 'right' }>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -35,7 +35,7 @@ const LaurelWrapper = styled.div<{ dir?: 'l' | 'r' }>`
   z-index: 2;
   top: 50%;
   transform: translate(0, -50%);
-  ${({ dir }) => (dir === 'l' ? `left: 0;` : `right: 0;`)}
+  ${({ dir }) => (dir === 'left' ? `left: 0;` : `right: 0;`)}
 
   svg {
     height: 20px;
@@ -51,7 +51,7 @@ const Ribbon: React.FC<RibbonProps> = ({ children, ribbonDirection }) => {
     return (
       <Wrapper ribbonDirection={ribbonDirection}>
         <RibbonDownLeftSide width="32px" />
-        <LaurelWrapper dir="l">
+        <LaurelWrapper dir="left">
           <LaurelLeftIcon />
         </LaurelWrapper>
         <div>
@@ -61,7 +61,7 @@ const Ribbon: React.FC<RibbonProps> = ({ children, ribbonDirection }) => {
         <TextWrapper>
           <Heading2Text p="0 30px">{children}</Heading2Text>
         </TextWrapper>
-        <LaurelWrapper dir="r">
+        <LaurelWrapper dir="right">
           <LaurelRightIcon />
         </LaurelWrapper>
         <RibbonDownRightSide width="32px" />
@@ -73,7 +73,7 @@ const Ribbon: React.FC<RibbonProps> = ({ children, ribbonDirection }) => {
     return (
       <Wrapper ribbonDirection={ribbonDirection}>
         <RibbonUpLeftSide width="32px" />
-        <LaurelWrapper dir="l">
+        <LaurelWrapper dir="left">
           <LaurelLeftIcon />
         </LaurelWrapper>
         <div>
@@ -83,7 +83,7 @@ const Ribbon: React.FC<RibbonProps> = ({ children, ribbonDirection }) => {
         <TextWrapper>
           <Heading2Text p="0 30px">{children}</Heading2Text>
         </TextWrapper>
-        <LaurelWrapper dir="r">
+        <LaurelWrapper dir="right">
           <LaurelRightIcon />
         </LaurelWrapper>
         <RibbonUpRightSide width="32px" />
