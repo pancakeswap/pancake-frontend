@@ -7,4 +7,10 @@ export const DEFAULT_META: PageMeta = {
   image: 'https://pancakeswap.finance/hero.png',
 }
 
-export const customMeta: { [key: string]: PageMeta } = {}
+export const customMeta: { [key: string]: PageMeta } = {
+  '/competition': {
+    title: 'PancakeSwap Easter Battle',
+    description: 'Register now for the PancakeSwap Easter battle!',
+    image: 'https://pancakeswap.finance/images/easter-battle.png',
+  },
+}
