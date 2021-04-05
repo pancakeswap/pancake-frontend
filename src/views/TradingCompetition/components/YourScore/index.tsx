@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import useI18n from 'hooks/useI18n'
 import ScoreCard from './ScoreCard'
-import ScoreProfile from './ScoreProfile'
+import ScoreHeader from './ScoreHeader'
 import RibbonWithImage from '../RibbonWithImage'
 import { YourScoreProps } from '../../types'
 
@@ -10,26 +10,26 @@ const Wrapper = styled.div`
   position: relative;
   width: 100%;
   margin: 24px auto 0;
-  max-width: 680px;
+  max-width: 768px;
 `
 
-const ScoreCardWrapper = styled.div`
-  margin-top: 24px;
-`
-
-const YourScore: React.FC<YourScoreProps> = ({ hasRegistered = false, account, profile }) => {
+const YourScore: React.FC<YourScoreProps> = ({ hasRegistered = false, account, profile, isLoading }) => {
   const TranslateString = useI18n()
+  const showRibbon = !account || hasRegistered
 
   return (
     <Wrapper>
-      {hasRegistered && (
-        <RibbonWithImage imageComponent={<ScoreProfile profile={profile} />} ribbonDirection="down" isCardHeader>
+      {showRibbon && (
+        <RibbonWithImage
+          imageComponent={<ScoreHeader profile={profile} isLoading={isLoading} />}
+          ribbonDirection="down"
+          isCardHeader
+        >
           {TranslateString(999, 'Your Score')}
         </RibbonWithImage>
       )}
-      <ScoreCardWrapper>
-        <ScoreCard hasRegistered={hasRegistered} account={account} profile={profile} />
-      </ScoreCardWrapper>
+
+      <ScoreCard hasRegistered={hasRegistered} account={account} profile={profile} isLoading={isLoading} />
     </Wrapper>
   )
 }

@@ -1,13 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
-import { NoProfileAvatarIcon, LaurelLeftIcon, LaurelRightIcon } from '@pancakeswap-libs/uikit'
-import { Profile } from 'state/types'
+import { NoProfileAvatarIcon, LaurelLeftIcon, LaurelRightIcon, Skeleton } from '@pancakeswap-libs/uikit'
+import { YourScoreProps } from '../../types'
 import ProfileAvatar from '../../../Profile/components/ProfileAvatar'
 import Sticker from '../Sticker'
-
-interface ScoreHeaderProps {
-  profile: Profile
-}
 
 const Wrapper = styled.div`
   display: flex;
@@ -19,6 +15,7 @@ const LaurelWrapper = styled.div<{ dir?: 'l' | 'r' }>`
   transform: ${({ dir }) => (dir === 'l' ? 'rotate(30deg)' : 'rotate(-30deg)')};
   svg {
     fill: #27262c;
+    opacity: 0.5;
     height: 32px;
     width: auto;
     ${({ theme }) => theme.mediaQueries.sm} {
@@ -28,27 +25,29 @@ const LaurelWrapper = styled.div<{ dir?: 'l' | 'r' }>`
 `
 
 const ProfileWrapper = styled.div`
-  z-index: 2;
-  svg {
-    height: 64px;
-    width: 64px;
-
-    ${({ theme }) => theme.mediaQueries.sm} {
-      height: 128px;
-      width: 128px;
-    }
-  }
+  height: 96px;
+  width: 96px;
 `
 
-const ScoreHeader: React.FC<ScoreHeaderProps> = ({ profile }) => {
+const StyledNoProfileAvatarIcon = styled(NoProfileAvatarIcon)`
+  width: 100%;
+  height: 100%;
+`
+
+const ScoreHeader: React.FC<YourScoreProps> = ({ profile, isLoading }) => {
   return (
     <Wrapper>
       <LaurelWrapper dir="l">
         <LaurelLeftIcon />
       </LaurelWrapper>
-      <ProfileWrapper>
-        <Sticker>{profile ? <ProfileAvatar profile={profile} /> : <NoProfileAvatarIcon />}</Sticker>
-      </ProfileWrapper>
+      {isLoading ? (
+        <Skeleton height="96px" width="96px" variant="circle" />
+      ) : (
+        <ProfileWrapper>
+          <Sticker>{profile ? <ProfileAvatar profile={profile} /> : <StyledNoProfileAvatarIcon />}</Sticker>
+        </ProfileWrapper>
+      )}
+
       <LaurelWrapper dir="r">
         <LaurelRightIcon />
       </LaurelWrapper>

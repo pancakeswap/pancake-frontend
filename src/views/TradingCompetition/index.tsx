@@ -166,7 +166,12 @@ const TradingCompetition = () => {
           {/* If competition has not yet started, render HowToJoin component - if not, render YourScore */}
           {/* REINSTATE THIS TERNARY FOR PRODUCTION */}
           {/* {!isCompetitionLive ? <HowToJoin /> : <div />} */}
-          <YourScore hasRegistered={userTradingInformation.hasRegistered} account={account} profile={profile} />
+          <YourScore
+            hasRegistered={userTradingInformation.hasRegistered}
+            account={account}
+            profile={profile}
+            isLoading={isLoading}
+          />
         </Box>
       </Section>
       <Section

@@ -18,7 +18,9 @@ const Spacer = styled.div`
 `
 
 const AbsoluteImageWrapper = styled.div`
+  z-index: 2;
   position: absolute;
+  bottom: -8px;
 `
 
 const RibbonWrapper = styled(Flex)<{ ribbonDirection?: string }>`

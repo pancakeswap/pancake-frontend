@@ -1,21 +1,32 @@
 import React from 'react'
-import { Card, CardBody, Flex } from '@pancakeswap-libs/uikit'
+import styled from 'styled-components'
+import { Card, CardBody, Flex, Skeleton } from '@pancakeswap-libs/uikit'
 import UnlockButton from 'components/UnlockButton'
 import { YourScoreProps } from '../../types'
 import CardUserInfo from './CardUserInfo'
 
-const ScoreCard: React.FC<YourScoreProps> = ({ hasRegistered, account, profile }) => {
+const StyledCard = styled(Card)`
+  min-width: 380px;
+`
+
+const ScoreCard: React.FC<YourScoreProps> = ({ hasRegistered, account, profile, isLoading }) => {
   return (
-    <Card>
+    <StyledCard mt="24px">
       <CardBody>
-        <CardUserInfo hasRegistered={hasRegistered} account={account} profile={profile} />
-        {!account && (
-          <Flex mt="24px" justifyContent="center">
-            <UnlockButton />
-          </Flex>
+        {isLoading ? (
+          <Skeleton width="100%" height="60px" />
+        ) : (
+          <>
+            <CardUserInfo hasRegistered={hasRegistered} account={account} profile={profile} />
+            {!account && (
+              <Flex mt="24px" justifyContent="center">
+                <UnlockButton />
+              </Flex>
+            )}
+          </>
         )}
       </CardBody>
-    </Card>
+    </StyledCard>
   )
 }
 
