@@ -59,6 +59,7 @@
     "react-countup": "^4.3.3",
     "react-dom": "^17.0.1",
     "react-feather": "^2.0.8",
+    "react-helmet-async": "^1.0.9",
     "react-redux": "^7.2.2",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.1",
