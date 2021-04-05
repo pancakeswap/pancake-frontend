@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { useWeb3React } from '@web3-react/core'
 import { useLottery } from 'hooks/useContract'
 import { getLotteryStatus } from 'utils/lotteryUtils'
 
