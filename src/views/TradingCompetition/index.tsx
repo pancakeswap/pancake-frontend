@@ -20,6 +20,7 @@ import {
 } from './components/Section/sectionStyles'
 import { SmartContractPhases, CompetitionPhases, LIVE, FINISHED } from './config'
 import Countdown from './components/Countdown'
+import YourScore from './components/YourScore'
 import StormBunny from './pngs/storm.png'
 import RibbonWithImage from './components/RibbonWithImage'
 import HowToJoin from './components/HowToJoin'
@@ -62,7 +63,7 @@ const TradingCompetition = () => {
   const { profile, isLoading } = useProfile()
   const { isDark } = useTheme()
   const tradingCompetitionContract = useTradingCompetitionContract()
-  const [currentPhase, setCurrentPhase] = useState(CompetitionPhases.REGISTRATION)
+  const [currentPhase, setCurrentPhase] = useState(CompetitionPhases.LIVE)
   const [registrationSuccessful, setRegistrationSuccessful] = useState(false)
   const [claimSuccessful, setClaimSuccessful] = useState(false)
   const [userTradingInformation, setUserTradingInformation] = useState({
@@ -74,7 +75,9 @@ const TradingCompetition = () => {
     canClaimNFT: false,
   })
 
-  const isCompetitionLive = currentPhase.state === LIVE
+  // REINSTATE THIS EVALUATION IN PROD
+  // const isCompetitionLive = currentPhase.state === LIVE
+  const isCompetitionLive = true
   const hasCompetitionFinished = currentPhase.state === FINISHED
 
   const onRegisterSuccess = () => {
@@ -161,7 +164,9 @@ const TradingCompetition = () => {
       >
         <Box mt={shouldHideCta ? '0px' : '54px'}>
           {/* If competition has not yet started, render HowToJoin component - if not, render YourScore */}
-          {!isCompetitionLive ? <HowToJoin /> : <div />}
+          {/* REINSTATE THIS TERNARY FOR PRODUCTION */}
+          {/* {!isCompetitionLive ? <HowToJoin /> : <div />} */}
+          <YourScore hasRegistered={userTradingInformation.hasRegistered} account={account} profile={profile} />
         </Box>
       </Section>
       <Section

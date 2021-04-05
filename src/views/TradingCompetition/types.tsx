@@ -29,7 +29,7 @@ export interface CompetitionProps extends UserRewardsProps {
 }
 
 export interface YourScoreProps extends CompetitionProps {
-  test?: boolean
+  hasRegistered?: boolean
 }
 export interface RibbonProps {
   ribbonDirection?: 'up' | 'down'
