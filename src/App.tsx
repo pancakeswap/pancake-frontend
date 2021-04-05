@@ -4,7 +4,6 @@ import { ResetCSS } from '@pancakeswap-libs/uikit'
 import BigNumber from 'bignumber.js'
 import useEagerConnect from 'hooks/useEagerConnect'
 import { useFetchPriceList, useFetchProfile, useFetchPublicData } from 'state/hooks'
-import useGetDocumentTitlePrice from './hooks/useGetDocumentTitlePrice'
 import GlobalStyle from './style/Global'
 import Menu from './components/Menu'
 import SuspenseWithChunkError from './components/SuspenseWithChunkError'
@@ -45,7 +44,6 @@ const App: React.FC = () => {
   useFetchPublicData()
   useFetchProfile()
   useFetchPriceList()
-  useGetDocumentTitlePrice()
 
   return (
     <Router history={history}>

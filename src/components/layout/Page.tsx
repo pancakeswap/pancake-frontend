@@ -1,7 +1,9 @@
+import React from 'react'
 import styled from 'styled-components'
+import PageMeta from './PageMeta'
 import Container from './Container'
 
-const Page = styled(Container)`
+const StyledPage = styled(Container)`
   min-height: calc(100vh - 64px);
   padding-top: 16px;
   padding-bottom: 16px;
@@ -16,5 +18,14 @@ const Page = styled(Container)`
     padding-bottom: 32px;
   }
 `
+
+const Page: React.FC = ({ children }) => {
+  return (
+    <>
+      <PageMeta />
+      <StyledPage>{children}</StyledPage>
+    </>
+  )
+}
 
 export default Page

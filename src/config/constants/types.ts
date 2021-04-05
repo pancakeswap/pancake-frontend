@@ -119,3 +119,9 @@ export type Campaign = {
   description?: TranslatableText
   badge?: string
 }
+
+export type PageMeta = {
+  title: string
+  description: string
+  image: string
+}
