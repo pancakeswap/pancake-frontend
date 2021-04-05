@@ -45,7 +45,7 @@ const PageMeta = () => {
   )
 }
 
-const Page: React.FC = ({ children, ...props }) => {
+const Page: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ children, ...props }) => {
   return (
     <>
       <PageMeta />
