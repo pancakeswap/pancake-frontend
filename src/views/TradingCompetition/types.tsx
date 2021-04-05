@@ -31,8 +31,8 @@ export interface CompetitionProps extends UserRewardsProps {
 export interface YourScoreProps extends CompetitionProps {
   hasRegistered?: boolean
   userLeaderboardInformation?: {
-    global?: number
-    team?: number
+    global?: number | string
+    team?: number | string
     volume?: number
   }
 }

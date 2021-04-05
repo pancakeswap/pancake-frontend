@@ -78,7 +78,11 @@ const TradingCompetition = () => {
     userPointReward: '0',
     canClaimNFT: false,
   })
-  const [userLeaderboardInformation, setUserLeaderboardInformation] = useState(null)
+  const [userLeaderboardInformation, setUserLeaderboardInformation] = useState({
+    global: '???',
+    team: '???',
+    volume: 0,
+  })
   const [globalLeaderboardInformation, setGlobalLeaderboardInformation] = useState(null)
   // 1. Syrup Storm
   const [team1LeaderboardInformation, setTeam1LeaderboardInformation] = useState(null)

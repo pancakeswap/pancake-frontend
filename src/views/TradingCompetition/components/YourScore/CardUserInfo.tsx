@@ -1,11 +1,55 @@
 import React from 'react'
-import { Text, Heading, Flex, Skeleton } from '@pancakeswap-libs/uikit'
+import {
+  Text,
+  Heading,
+  Flex,
+  Skeleton,
+  MedalBronzeIcon,
+  MedalGoldIcon,
+  MedalPurpleIcon,
+  MedalSilverIcon,
+  MedalTealIcon,
+} from '@pancakeswap-libs/uikit'
+import styled from 'styled-components'
 import useI18n from 'hooks/useI18n'
 import { YourScoreProps } from '../../types'
 import UserRankBox from './UserRankBox'
 
+const TeamRankTextWrapper = styled(Flex)`
+  svg {
+    width: 24px;
+  }
+`
+
 const CardUserInfo: React.FC<YourScoreProps> = ({ hasRegistered, account, profile, userLeaderboardInformation }) => {
   const TranslateString = useI18n()
+  const { global, team, volume } = userLeaderboardInformation
+  const showRanks = account && hasRegistered
+  const isLoading = !userLeaderboardInformation
+
+  const userMedal = () => {
+    if (team === '???') {
+      return null
+    }
+
+    if (team === 1) {
+      return <MedalGoldIcon />
+    }
+
+    if (team <= 10) {
+      return <MedalSilverIcon />
+    }
+
+    if (team <= 100) {
+      return <MedalBronzeIcon />
+    }
+
+    if (team <= 500) {
+      return <MedalPurpleIcon />
+    }
+
+    return <MedalTealIcon />
+  }
 
   const getHeadingText = () => {
     if (!account) {
@@ -29,8 +73,6 @@ const CardUserInfo: React.FC<YourScoreProps> = ({ hasRegistered, account, profil
 
   const headingText = getHeadingText()
   const subHeadingText = getSubHeadingText()
-  const showRanks = account && hasRegistered
-  const isLoading = !userLeaderboardInformation
 
   return (
     <Flex flexDirection="column" alignItems="center" mt="16px">
@@ -45,18 +87,18 @@ const CardUserInfo: React.FC<YourScoreProps> = ({ hasRegistered, account, profil
           <UserRankBox
             flex="1"
             title={TranslateString(999, 'Rank in team').toUpperCase()}
-            footer={`${TranslateString(
-              999,
-              `#${!isLoading && userLeaderboardInformation.global.toLocaleString()} Overall`,
-            )}`}
+            footer={`${TranslateString(999, `#${!isLoading && global.toLocaleString()} Overall`)}`}
             mr="8px"
           >
             {isLoading ? (
               <Skeleton height="26px" width="110px" />
             ) : (
-              <Heading textAlign="center" size="lg">
-                {userLeaderboardInformation.team} ico
-              </Heading>
+              <TeamRankTextWrapper>
+                <Heading textAlign="center" size="lg" mr="8px">
+                  #{team}
+                </Heading>
+                {userMedal()}
+              </TeamRankTextWrapper>
             )}
           </UserRankBox>
           <UserRankBox
@@ -68,7 +110,7 @@ const CardUserInfo: React.FC<YourScoreProps> = ({ hasRegistered, account, profil
               <Skeleton height="26px" width="110px" />
             ) : (
               <Heading textAlign="center" size="lg">
-                ${!isLoading && userLeaderboardInformation.volume.toLocaleString()}
+                ${!isLoading && volume.toLocaleString()}
               </Heading>
             )}
           </UserRankBox>
