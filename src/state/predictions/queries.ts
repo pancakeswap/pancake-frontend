@@ -124,10 +124,14 @@ export const getRoundQuery = (id: string) => {
   `
 }
 
-export const getUserPositionsQuery = (id: string) => {
+export type UserPositionWhereClause = {
+  claimed?: boolean
+}
+
+export const getUserPositionsQuery = (id: string, first: number, whereClaus: UserPositionWhereClause = {}) => {
   return `
     user(id: "${id.toLocaleLowerCase()}") {
-      bets {
+      bets(first: ${first}, where: ${JSON.stringify(whereClaus)}) {
         id
         hash  
         amount

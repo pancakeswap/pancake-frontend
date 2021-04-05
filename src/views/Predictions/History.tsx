@@ -1,3 +1,4 @@
+import { orderBy } from 'lodash'
 import React from 'react'
 import { useGetBets } from 'state/hooks'
 import styled from 'styled-components'
@@ -24,7 +25,7 @@ const History = () => {
       <Header />
       <BetWrapper>
         {bets &&
-          bets.map((bet) => {
+          orderBy(bets, ['round.epoch'], ['desc']).map((bet) => {
             return <HistoricalBet key={bet.id} bet={bet} />
           })}
       </BetWrapper>

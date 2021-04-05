@@ -5,7 +5,6 @@ import {
   ModalContainer,
   ModalBody,
   ModalTitle,
-  ModalCloseButton,
   ModalHeader,
   InjectedModalProps,
   Button,

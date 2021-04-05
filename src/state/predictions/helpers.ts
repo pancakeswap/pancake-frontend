@@ -1,9 +1,16 @@
 import { request, gql } from 'graphql-request'
 import { GRAPH_API_PREDICTIONS } from 'config/constants/endpoints'
 import { Bet, BetPosition, PredictionStatus, Round, RoundData } from 'state/types'
-import { getPredictionsContract } from 'utils/contractHelpers'
 import makeBatchRequest from 'utils/makeBatchRequest'
-import { BetResponse, getRoundQuery, getRoundsQuery, getUserPositionsQuery, RoundResponse } from './queries'
+import { getPredictionsContract } from 'utils/contractHelpers'
+import {
+  BetResponse,
+  getRoundQuery,
+  getRoundsQuery,
+  getUserPositionsQuery,
+  RoundResponse,
+  UserPositionWhereClause,
+} from './queries'
 
 export const numberOrNull = (value: string) => {
   if (value === null) {
@@ -150,12 +157,16 @@ export const getRound = async (id: string) => {
   return response.round
 }
 
-export const getUserPositions = async (account: string): Promise<BetResponse[]> => {
+export const getUserPositions = async (
+  account: string,
+  first = 1000,
+  whereClause: UserPositionWhereClause = {},
+): Promise<BetResponse[]> => {
   const response = await request(
     GRAPH_API_PREDICTIONS,
     gql`
       {
-        ${getUserPositionsQuery(account)}
+        ${getUserPositionsQuery(account, first, whereClause)}
       }
   `,
   )
