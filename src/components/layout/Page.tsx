@@ -45,11 +45,11 @@ const PageMeta = () => {
   )
 }
 
-const Page: React.FC<{ className?: string }> = ({ children, className }) => {
+const Page: React.FC = ({ children, ...props }) => {
   return (
     <>
       <PageMeta />
-      <StyledPage className={className}>{children}</StyledPage>
+      <StyledPage {...props}>{children}</StyledPage>
     </>
   )
 }
