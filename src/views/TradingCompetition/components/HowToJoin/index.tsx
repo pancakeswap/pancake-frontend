@@ -27,7 +27,6 @@ const HowToJoin = () => {
       </HowToCard>
       <HowToCard number={2} title={TranslateString(999, 'Battle Time')}>
         <Text fontSize="14px" color="textSubtle">
-          Pancake Profile
           {TranslateString(
             999,
             'Trade BNB/BUSD, CAKE/BNB, ETH/BNB and BTCB/BNB during the battle period to raise both your and your team’s score. See the Rules section below for more.',

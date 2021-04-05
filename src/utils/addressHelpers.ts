@@ -47,3 +47,6 @@ export const getBunnySpecialAddress = () => {
 export const getTradingCompetitionAddress = () => {
   return getAddress(addresses.tradingCompetition)
 }
+export const getEasterNftAddress = () => {
+  return getAddress(addresses.easterNft)
+}
