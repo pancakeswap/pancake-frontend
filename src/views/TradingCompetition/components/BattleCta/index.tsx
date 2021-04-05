@@ -64,14 +64,7 @@ const BattleCta: React.FC<CompetitionProps> = ({
     false,
   )
 
-  const {
-    hasRegistered,
-    hasUserClaimed,
-    userRewardGroup,
-    userCakeRewards,
-    userPointReward,
-    canClaimNFT,
-  } = userTradingInformation
+  const { hasRegistered, hasUserClaimed, userCakeRewards, userPointReward, canClaimNFT } = userTradingInformation
 
   const userCanClaimPrizes = !hasUserClaimed && (userCakeRewards !== '0' || userPointReward !== '0' || canClaimNFT)
   const registeredAndNotStarted = hasRegistered && !isCompetitionLive && !hasCompetitionFinished
