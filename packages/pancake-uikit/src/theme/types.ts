@@ -41,6 +41,7 @@ export type Colors = {
   failure: string;
   warning: string;
   contrast: string;
+  dropdown: string;
   invertedContrast: string;
   input: string;
   inputSecondary: string;
