@@ -44,7 +44,7 @@ export default {
     97: '0x7b7b1583De1DeB32Ce6605F6deEbF24A0671c17C',
   },
   easterNft: {
-    56: '',
+    56: '0x23c41D28A239dDCAABd1bb1deF8d057189510066',
     97: '0x24ec6962dbe874F6B67B5C50857565667fA0854F',
   },
 }
