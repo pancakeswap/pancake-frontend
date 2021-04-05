@@ -14,6 +14,7 @@ import {
   getPointCenterIfoContract,
   getSouschefContract,
   getClaimRefundContract,
+  getEasterNftContract,
 } from 'utils/contractHelpers'
 
 /**
@@ -83,4 +84,9 @@ export const useBunnySpecialContract = () => {
 export const useClaimRefundContract = () => {
   const web3 = useWeb3()
   return useMemo(() => getClaimRefundContract(web3), [web3])
+}
+
+export const useEasterNftContract = () => {
+  const web3 = useWeb3()
+  return useMemo(() => getEasterNftContract(web3), [web3])
 }
