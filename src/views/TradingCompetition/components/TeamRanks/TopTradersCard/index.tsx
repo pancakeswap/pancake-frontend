@@ -1,7 +1,7 @@
 import React from 'react'
 
 const TopTradersCard = () => {
-  return <div>ssss</div>
+  return <div />
 }
 
 export default TopTradersCard
