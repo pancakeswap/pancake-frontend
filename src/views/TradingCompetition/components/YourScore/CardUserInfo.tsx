@@ -1,7 +1,8 @@
 import React from 'react'
-import { Text, Heading, Flex, Skeleton } from '@pancakeswap-libs/uikit'
+import { Text, Heading, Flex } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import { YourScoreProps } from '../../types'
+import UserRank from './UserRank'
 
 const CardUserInfo: React.FC<YourScoreProps> = ({ hasRegistered, account, profile }) => {
   const TranslateString = useI18n()
@@ -13,10 +14,7 @@ const CardUserInfo: React.FC<YourScoreProps> = ({ hasRegistered, account, profil
     if (!hasRegistered) {
       return 'You’re not participating this time.'
     }
-    if (profile) {
-      return `@${profile.username}`
-    }
-    return ''
+    return `@${profile.username}`
   }
 
   const getSubHeadingText = () => {
@@ -26,23 +24,33 @@ const CardUserInfo: React.FC<YourScoreProps> = ({ hasRegistered, account, profil
     if (!hasRegistered) {
       return 'Sorry, you needed to register during the “entry” period!'
     }
-    if (profile) {
-      return `${profile.team.name}`
-    }
-    return ''
+    return `${profile.team.name}`
   }
 
   const headingText = getHeadingText()
   const subHeadingText = getSubHeadingText()
 
   return (
-    <Flex flexDirection="column" alignItems="center" mt="12px">
+    <Flex flexDirection="column" alignItems="center" mt="16px">
       <Heading size="lg" textAlign="center">
-        {headingText ? TranslateString(999, headingText) : <Skeleton height={25} width={110} />}
+        {TranslateString(999, headingText)}
       </Heading>
       <Text textAlign="center" fontSize="14px" color="textSubtle" mt="4px">
-        {subHeadingText ? TranslateString(999, subHeadingText) : <Skeleton height={15} width={80} />}
+        {TranslateString(999, subHeadingText)}
       </Text>
+      <Flex width="100%" mt="24px">
+        <UserRank
+          flex="1"
+          title={TranslateString(999, 'Rank in team')}
+          footer={`somenum ${TranslateString(999, 'Overall')}`}
+          mr="8px"
+        >
+          A num
+        </UserRank>
+        <UserRank flex="1" title={TranslateString(999, 'Your volume')} footer={TranslateString(999, 'Since start')}>
+          A num
+        </UserRank>
+      </Flex>
     </Flex>
   )
 }

@@ -28,7 +28,6 @@ const YourScore: React.FC<YourScoreProps> = ({ hasRegistered = false, account, p
           {TranslateString(999, 'Your Score')}
         </RibbonWithImage>
       )}
-
       <ScoreCard hasRegistered={hasRegistered} account={account} profile={profile} isLoading={isLoading} />
     </Wrapper>
   )
