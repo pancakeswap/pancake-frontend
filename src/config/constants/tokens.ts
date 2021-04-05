@@ -975,6 +975,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://nerve.fi/',
   },
+  easy: {
+    symbol: 'EASY',
+    address: {
+      56: '0x7c17c8bed8d14bacce824d020f994f4880d6ab3b',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://easyfi.network/',
+  },
 }
 
 export default tokens
