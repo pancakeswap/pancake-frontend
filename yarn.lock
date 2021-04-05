@@ -2014,12 +2014,12 @@
     eslint-plugin-react "^7.21.5"
     eslint-plugin-react-hooks "^4.0.0"
 
-"@pancakeswap-libs/uikit@^0.19.0":
-  version "0.19.0"
-  resolved "https://registry.yarnpkg.com/@pancakeswap-libs/uikit/-/uikit-0.19.0.tgz#eecb70a8a7fb167de429923be0d01f8554231742"
-  integrity sha512-88Oa0JGNph02/LxmXElywM2SL+TzAWdDwaATPMFsrwu/DmyddT/T+sgrbI0OGb7Thzc5dgGmB/WqTsAHKOBdiA==
+"@pancakeswap-libs/uikit@^0.20.1":
+  version "0.20.1"
+  resolved "https://registry.yarnpkg.com/@pancakeswap-libs/uikit/-/uikit-0.20.1.tgz#b101c475e6bf4d5d735d9a64cf4c04ba5881fbf9"
+  integrity sha512-/4odoQwDex/Bcxp1PGjWxhBEN3DnahXv8ASwvFijA/wKjucazwa+coH9WYNtK1Nu1F8dvZmq97c+CiK6rBzSBg==
   dependencies:
-    "@types/lodash" "^4.14.162"
+    "@types/lodash" "^4.14.168"
     "@types/styled-system" "^5.1.10"
     lodash "^4.17.20"
     react-transition-group "^4.4.1"
@@ -2453,7 +2453,7 @@
   resolved "https://registry.yarnpkg.com/@types/json5/-/json5-0.0.29.tgz#ee28707ae94e11d2b827bcbe5270bcea7f3e71ee"
   integrity sha1-7ihweulOEdK4J7y+UnC86n8+ce4=
 
-"@types/lodash@^4.14.162":
+"@types/lodash@^4.14.168":
   version "4.14.168"
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.168.tgz#fe24632e79b7ade3f132891afff86caa5e5ce008"
   integrity sha512-oVfRvqHV/V6D1yifJbVRU3TMp8OT6o6BG+U9MkwuJ3U8/CsDHvalRpsxBqivn71ztOFZBTfJMvETbqHiaNSj7Q==
