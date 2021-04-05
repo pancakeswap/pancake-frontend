@@ -44,13 +44,12 @@ const CardUserInfo: React.FC<YourScoreProps> = ({ hasRegistered, account, profil
         <Flex width="100%" mt="24px">
           <UserRankBox
             flex="1"
-            title={TranslateString(999, 'Rank in team')}
+            title={TranslateString(999, 'Rank in team').toUpperCase()}
             footer={`${TranslateString(
               999,
               `#${!isLoading && userLeaderboardInformation.global.toLocaleString()} Overall`,
             )}`}
             mr="8px"
-            isLoading={isLoading}
           >
             {isLoading ? (
               <Skeleton height="26px" width="110px" />
@@ -62,9 +61,8 @@ const CardUserInfo: React.FC<YourScoreProps> = ({ hasRegistered, account, profil
           </UserRankBox>
           <UserRankBox
             flex="1"
-            title={TranslateString(999, 'Your volume')}
+            title={TranslateString(999, 'Your volume').toUpperCase()}
             footer={TranslateString(999, 'Since start')}
-            isLoading={isLoading}
           >
             {isLoading ? (
               <Skeleton height="26px" width="110px" />

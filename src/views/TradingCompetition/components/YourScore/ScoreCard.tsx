@@ -22,7 +22,9 @@ const ScoreCard: React.FC<YourScoreProps> = ({
     <StyledCard mt="24px">
       <CardBody>
         {isLoading ? (
-          <Skeleton width="100%" height="60px" />
+          <Flex mt="24px" justifyContent="center" alignItems="center">
+            <Skeleton width="100%" height="60px" />
+          </Flex>
         ) : (
           <>
             <CardUserInfo

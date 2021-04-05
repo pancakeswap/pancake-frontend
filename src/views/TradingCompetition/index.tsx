@@ -5,7 +5,7 @@ import { Flex, Box, Image } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
 import { useTradingCompetitionContract } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
-import { PrizesIcon, RulesIcon } from './svgs'
+import { PrizesIcon, RanksIcon, RulesIcon } from './svgs'
 import {
   DARKBG,
   DARKFILL,
@@ -29,6 +29,7 @@ import Section from './components/Section'
 import BattleCta from './components/BattleCta'
 import PrizesInfo from './components/PrizesInfo'
 import Rules from './components/Rules'
+import TeamRanks from './components/TeamRanks'
 
 const CompetitionPage = styled.div`
   min-height: calc(100vh - 64px);
@@ -79,8 +80,11 @@ const TradingCompetition = () => {
   })
   const [userLeaderboardInformation, setUserLeaderboardInformation] = useState(null)
   const [globalLeaderboardInformation, setGlobalLeaderboardInformation] = useState(null)
+  // 1. Syrup Storm
   const [team1LeaderboardInformation, setTeam1LeaderboardInformation] = useState(null)
+  // 2. Flippers
   const [team2LeaderboardInformation, setTeam2LeaderboardInformation] = useState(null)
+  // 3. Cakers
   const [team3LeaderboardInformation, setTeam3LeaderboardInformation] = useState(null)
 
   // REINSTATE THIS EVALUATION IN PROD
@@ -203,10 +207,10 @@ const TradingCompetition = () => {
       <Section
         backgroundStyle={isDark ? MIDBLUEBG_DARK : MIDBLUEBG}
         svgFill={isDark ? MIDBLUEFILL_DARK : MIDBLUEFILL}
-        index={3}
+        index={4}
         intersectComponent={
-          <RibbonWithImage imageComponent={<PrizesIcon width="175px" />} ribbonDirection="up">
-            Prizes
+          <RibbonWithImage imageComponent={<RanksIcon width="175px" />} ribbonDirection="up">
+            Team Ranks
           </RibbonWithImage>
         }
       >
@@ -222,6 +226,16 @@ const TradingCompetition = () => {
             userLeaderboardInformation={userLeaderboardInformation}
           />
         </Box>
+      </Section>
+      <Section
+        index={3}
+        intersectComponent={
+          <RibbonWithImage imageComponent={<PrizesIcon width="175px" />} ribbonDirection="up">
+            Prizes
+          </RibbonWithImage>
+        }
+      >
+        <TeamRanks />
       </Section>
       <Section
         backgroundStyle={isDark ? LIGHTBLUEBG_DARK : LIGHTBLUEBG}
