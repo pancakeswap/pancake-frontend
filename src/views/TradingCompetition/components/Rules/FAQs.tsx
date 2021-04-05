@@ -53,7 +53,7 @@ const FAQ = () => {
               -{' '}
               {TranslateString(
                 999,
-                'The final winning team will be the team with the highest total volume score at the end of the competition period.',
+                'The final winning team will be the team with the highest total combined volume of their top 500 members at the end of the competition period.',
               )}
             </Text>
           </FoldableText>
