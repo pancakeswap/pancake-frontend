@@ -31,7 +31,10 @@ const PrizesText = () => {
         {TranslateString(999, 'The better your team performs, the better the prizes!')}
       </Heading>
       <Text>
-        {TranslateString(999, 'The winning team is decided by total volume traded at the end of the competition.')}
+        {TranslateString(
+          999,
+          'The final winning team will be the team with the highest total combined volume of their top 500 members at the end of the competition period.',
+        )}
       </Text>
       <ImageWrapper>
         <Image src={FlipperBunny} alt="Flipper bunny" responsive width={499} height={400} />
