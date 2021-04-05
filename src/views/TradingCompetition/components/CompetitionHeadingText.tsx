@@ -1,7 +1,7 @@
 import { Heading } from '@pancakeswap-libs/uikit'
-import styled from 'styled-components'
+import styled, { DefaultTheme } from 'styled-components'
 
-const H1SizeStyles = (theme) => `
+const H1SizeStyles = (theme: DefaultTheme) => `
   font-size: 48px;
   line-height: 110%;
   white-space: nowrap;
@@ -11,7 +11,7 @@ const H1SizeStyles = (theme) => `
   }
 `
 
-const H2SizeStyles = (theme) => `
+const H2SizeStyles = (theme: DefaultTheme) => `
   font-size: 32px;
   line-height: 110%;
   white-space: nowrap;
@@ -21,7 +21,7 @@ const H2SizeStyles = (theme) => `
   }
 `
 
-const sharedStyles = (props) => `
+const sharedStyles = (props: HeadingProps) => `
   color: ${props.textColor ? props.textColor : '#ffffff'};
   background:  ${props.background ? props.background : 'linear-gradient(#7645d9 0%, #452a7a 100%)'};
   background-clip: text;
