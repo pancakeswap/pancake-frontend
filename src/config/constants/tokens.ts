@@ -957,6 +957,24 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://gourmetgalaxy.io/',
   },
+  dego: {
+    symbol: 'DEGO',
+    address: {
+      56: '0x3fda9383a84c05ec8f7630fe10adf1fac13241cc',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://bsc.dego.finance/home',
+  },
+  nrv: {
+    symbol: 'NRV',
+    address: {
+      56: '0x42f6f551ae042cbe50c739158b4f0cac0edb9096',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://nerve.fi/',
+  },
 }
 
 export default tokens

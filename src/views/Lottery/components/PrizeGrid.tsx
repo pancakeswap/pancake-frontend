@@ -2,6 +2,9 @@ import React from 'react'
 import styled from 'styled-components'
 import useI18n from 'hooks/useI18n'
 import { Heading, Text } from '@pancakeswap-libs/uikit'
+import { BigNumber } from 'bignumber.js'
+import { usePriceCakeBusd } from 'state/hooks'
+import CardBusdValue from '../../Home/components/CardBusdValue'
 
 export interface PrizeGridProps {
   lotteryPrizeAmount?: number
@@ -46,6 +49,11 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({
   const twoMatchesAmount = +((lotteryPrizeAmount / 100) * 10).toFixed(0)
   const burnAmount = +((lotteryPrizeAmount / 100) * 20).toFixed(0)
   const TranslateString = useI18n()
+  const cakeBusdPrice = usePriceCakeBusd()
+
+  const getCakeBusdValue = (amount: number) => {
+    return new BigNumber(amount).multipliedBy(cakeBusdPrice).toNumber()
+  }
 
   return (
     <Grid pastDraw={pastDraw}>
@@ -76,7 +84,10 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({
         </PastDrawGridItem>
       )}
       <GridItem>
-        <RightAlignedHeading size="md">{fourMatchesAmount.toLocaleString()}</RightAlignedHeading>
+        <RightAlignedHeading size="md">
+          {fourMatchesAmount.toLocaleString()}
+          {!pastDraw && !cakeBusdPrice.eq(0) && <CardBusdValue value={getCakeBusdValue(fourMatchesAmount)} />}
+        </RightAlignedHeading>
       </GridItem>
       {/* 3 matches row */}
       <GridItem>
@@ -88,7 +99,10 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({
         </PastDrawGridItem>
       )}
       <GridItem>
-        <RightAlignedText>{threeMatchesAmount.toLocaleString()}</RightAlignedText>
+        <RightAlignedText>
+          {threeMatchesAmount.toLocaleString()}
+          {!pastDraw && !cakeBusdPrice.eq(0) && <CardBusdValue value={getCakeBusdValue(threeMatchesAmount)} />}
+        </RightAlignedText>
       </GridItem>
       {/* 2 matches row */}
       <GridItem>
@@ -100,7 +114,10 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({
         </PastDrawGridItem>
       )}
       <GridItem>
-        <RightAlignedText>{twoMatchesAmount.toLocaleString()}</RightAlignedText>
+        <RightAlignedText>
+          {twoMatchesAmount.toLocaleString()}
+          {!pastDraw && !cakeBusdPrice.eq(0) && <CardBusdValue value={getCakeBusdValue(twoMatchesAmount)} />}
+        </RightAlignedText>
       </GridItem>
       {/* Burn row */}
       <GridItem marginBottom="0">

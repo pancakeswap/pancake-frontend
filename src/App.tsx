@@ -12,7 +12,7 @@ import ToastListener from './components/ToastListener'
 import PageLoader from './components/PageLoader'
 import EasterEgg from './components/EasterEgg'
 import Pools from './views/Pools'
-import GlobalCheckBullHiccupClaimStatus from './views/Collectibles/components/GlobalCheckBullHiccupClaimStatus'
+import GlobalCheckClaimStatus from './views/Collectibles/components/GlobalCheckClaimStatus'
 import history from './routerHistory'
 
 // Route-based code splitting
@@ -26,6 +26,7 @@ const Collectibles = lazy(() => import('./views/Collectibles'))
 const Teams = lazy(() => import('./views/Teams'))
 const Team = lazy(() => import('./views/Teams/Team'))
 const Profile = lazy(() => import('./views/Profile'))
+const TradingCompetition = lazy(() => import('./views/TradingCompetition'))
 
 // This config is required for number formating
 BigNumber.config({
@@ -80,6 +81,9 @@ const App: React.FC = () => {
             <Route path="/profile">
               <Profile />
             </Route>
+            <Route path="/competition">
+              <TradingCompetition />
+            </Route>
             {/* Redirect */}
             <Route path="/staking">
               <Redirect to="/pools" />
@@ -97,7 +101,7 @@ const App: React.FC = () => {
       </Menu>
       <EasterEgg iterations={2} />
       <ToastListener />
-      <GlobalCheckBullHiccupClaimStatus />
+      <GlobalCheckClaimStatus excludeLocations={['/collectibles']} />
     </Router>
   )
 }
