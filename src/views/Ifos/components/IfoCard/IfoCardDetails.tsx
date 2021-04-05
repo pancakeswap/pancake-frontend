@@ -46,7 +46,7 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ ifo, publicIfoData }) =
           isOpen ? <ChevronUpIcon color="primary" width="24px" /> : <ChevronDownIcon color="primary" width="24px" />
         }
       >
-        {isOpen ? TranslateString(1066, 'Hide') : TranslateString(658, 'Details')}
+        {isOpen ? TranslateString(999, 'Hide') : TranslateString(658, 'Details')}
       </Button>
       {isOpen && (
         <>
