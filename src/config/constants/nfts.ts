@@ -2,6 +2,42 @@ import { Nft } from './types'
 
 const Nfts: Nft[] = [
   {
+    name: "Cakeston Easter '21",
+    description: 'Melting Easter eggs and melting hearts!',
+    images: {
+      lg: 'cakeston-easter-21-lg.png',
+      md: 'cakeston-easter-21-md.png',
+      sm: 'cakeston-easter-21-sm.png',
+      ipfs: 'https://gateway.pinata.cloud/ipfs/QmZGqWaovULNEMKxBCGnGjh27JQkAyadS6AW4J4Lzf3XBp/easter-caker.png',
+    },
+    sortOrder: 999,
+    bunnyId: 14,
+  },
+  {
+    name: "Flipsie Easter '21",
+    description: 'Watch out for Flipsie’s spatula smash!',
+    images: {
+      lg: 'flipsie-easter-21-lg.png',
+      md: 'flipsie-easter-21-md.png',
+      sm: 'flipsie-easter-21-sm.png',
+      ipfs: 'https://gateway.pinata.cloud/ipfs/QmZGqWaovULNEMKxBCGnGjh27JQkAyadS6AW4J4Lzf3XBp/easter-flipper.png',
+    },
+    sortOrder: 999,
+    bunnyId: 13,
+  },
+  {
+    name: "Stormy Easter '21",
+    description: 'Do you like chocolate with your syrup? Go long!',
+    images: {
+      lg: 'stormy-easter-21-lg.png',
+      md: 'stormy-easter-21-md.png',
+      sm: 'stormy-easter-21-sm.png',
+      ipfs: 'https://gateway.pinata.cloud/ipfs/QmZGqWaovULNEMKxBCGnGjh27JQkAyadS6AW4J4Lzf3XBp/easter-storm.png',
+    },
+    sortOrder: 999,
+    bunnyId: 12,
+  },
+  {
     name: 'Bullish',
     description: 'Happy Niu Year! This bunny’s excited for the year of the bull (market!)',
     images: {

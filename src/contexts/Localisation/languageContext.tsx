@@ -35,7 +35,7 @@ const fetchTranslationsForSelectedLanguage = (selectedLanguage) => {
 }
 
 const LanguageContextProvider = ({ children }) => {
-  const [selectedLanguage, setSelectedLanguage] = useState<any>(EN)
+  const [selectedLanguage, setSelectedLanguage] = useState<any>(null)
   const [translatedLanguage, setTranslatedLanguage] = useState<any>(EN)
   const [translations, setTranslations] = useState<Array<any>>([])
 
@@ -71,7 +71,7 @@ const LanguageContextProvider = ({ children }) => {
           console.error('Error while loading translations', e)
         })
     }
-  }, [selectedLanguage, setTranslations])
+  }, [selectedLanguage])
 
   const handleLanguageSelect = (langObject: LangType) => {
     setSelectedLanguage(langObject)

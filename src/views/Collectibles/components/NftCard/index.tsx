@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import { PromiEvent } from 'web3-core'
+import { Contract } from 'web3-eth-contract'
 import styled from 'styled-components'
 import {
   Card,
@@ -20,11 +22,13 @@ import TransferNftModal from '../TransferNftModal'
 import ClaimNftModal from '../ClaimNftModal'
 import Preview from './Preview'
 
-interface NftCardProps {
+export interface NftCardProps {
   nft: Nft
   canClaim?: boolean
   tokenIds?: number[]
-  onSuccess: () => void
+  onClaim: () => PromiEvent<Contract>
+  lastUpdated: number
+  refresh: () => void
 }
 
 const Header = styled(InfoRow)`
@@ -48,7 +52,7 @@ const InfoBlock = styled.div`
   padding: 24px;
 `
 
-const NftCard: React.FC<NftCardProps> = ({ nft, onSuccess, canClaim = false, tokenIds = [] }) => {
+const NftCard: React.FC<NftCardProps> = ({ nft, canClaim = false, tokenIds = [], onClaim, refresh }) => {
   const [isOpen, setIsOpen] = useState(false)
   const TranslateString = useI18n()
   const { profile } = useProfile()
@@ -60,11 +64,17 @@ const NftCard: React.FC<NftCardProps> = ({ nft, onSuccess, canClaim = false, tok
     setIsOpen(!isOpen)
   }
 
-  const [onPresentTransferModal] = useModal(<TransferNftModal nft={nft} tokenIds={tokenIds} onSuccess={onSuccess} />)
-  const [onPresentClaimModal] = useModal(<ClaimNftModal nft={nft} onSuccess={onSuccess} />)
+  const handleSuccess = () => {
+    refresh()
+  }
+
+  const [onPresentTransferModal] = useModal(
+    <TransferNftModal nft={nft} tokenIds={tokenIds} onSuccess={handleSuccess} />,
+  )
+  const [onPresentClaimModal] = useModal(<ClaimNftModal nft={nft} onSuccess={handleSuccess} onClaim={onClaim} />)
 
   return (
-    <Card isActive={walletOwnsNft || canClaim}>
+    <Card isActive={walletOwnsNft}>
       <Preview nft={nft} isOwned={walletOwnsNft} />
       <CardBody>
         <Header>
