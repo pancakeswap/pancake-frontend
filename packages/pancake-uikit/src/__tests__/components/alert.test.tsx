@@ -7,14 +7,66 @@ it("renders correctly", () => {
 
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
-      <div
-        class="sc-eCImvq sc-jRQAMF sc-pVTma bvbNmj hCaNlo kiiDNf"
+      .c3 {
+      fill: currentColor;
+      -webkit-flex-shrink: 0;
+      -ms-flex-negative: 0;
+      flex-shrink: 0;
+    }
+
+    .c5 {
+      color: #452A7A;
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 1.5;
+    }
+
+    .c6 {
+      color: #452A7A;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.5;
+    }
+
+    .c0 {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+    }
+
+    .c2 {
+      background-color: #7645D9;
+      border-radius: 16px 0 0 16px;
+      color: #FFFFFF;
+      padding: 12px;
+    }
+
+    .c4 {
+      -webkit-flex: 1;
+      -ms-flex: 1;
+      flex: 1;
+      padding-bottom: 12px;
+      padding-left: 12px;
+      padding-right: 12px;
+      padding-top: 12px;
+    }
+
+    .c1 {
+      position: relative;
+      background-color: #FFFFFF;
+      border-radius: 16px;
+      box-shadow: 0px 20px 36px -8px rgba(14,14,44,0.1),0px 1px 1px rgba(0,0,0,0.05);
+    }
+
+    <div
+        class="c0 c1"
       >
         <div
-          class="sc-gKckTs bRlQtq"
+          class="c2"
         >
           <svg
-            class="sc-bdvvaa ekSmlT"
+            class="c3"
             color="currentColor"
             viewBox="0 0 24 24"
             width="24px"
@@ -26,16 +78,16 @@ it("renders correctly", () => {
           </svg>
         </div>
         <div
-          class="sc-iCfLBT fSnOLT"
+          class="c4"
         >
           <div
-            class="sc-gsDJrp bRnxSN"
+            class="c5"
             color="text"
           >
             Alert title
           </div>
           <p
-            class="sc-gsDJrp iTStsT"
+            class="c6"
             color="text"
           >
             Description

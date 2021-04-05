@@ -6,8 +6,15 @@ it("renders correctly", () => {
   const { asFragment } = renderWithTheme(<Text>pancake</Text>);
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
-      <div
-        class="sc-bdvvaa glhoNp"
+      .c0 {
+      color: #452A7A;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.5;
+    }
+
+    <div
+        class="c0"
         color="text"
       >
         pancake

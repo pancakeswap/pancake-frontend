@@ -10,8 +10,15 @@ it("renders correctly", () => {
   );
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
-      <svg
-        class="sc-bdvvaa jFbviQ"
+      .c0 {
+      fill: #452A7A;
+      -webkit-flex-shrink: 0;
+      -ms-flex-negative: 0;
+      flex-shrink: 0;
+    }
+
+    <svg
+        class="c0"
         color="text"
         viewBox="0 0 24 24"
         width="20px"

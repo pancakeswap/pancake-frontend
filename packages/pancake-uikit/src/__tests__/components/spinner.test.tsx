@@ -6,11 +6,41 @@ it("renders correctly", () => {
   const { asFragment } = renderWithTheme(<Spinner />);
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
-      <div
-        class="sc-gsDJrp dmkRxm"
+      .c1 {
+      fill: #452A7A;
+      -webkit-flex-shrink: 0;
+      -ms-flex-negative: 0;
+      flex-shrink: 0;
+    }
+
+    .c0 {
+      position: relative;
+    }
+
+    .c2 {
+      position: absolute;
+      top: 0;
+      left: 0;
+      -webkit-animation: fvtopB 2s linear infinite;
+      animation: fvtopB 2s linear infinite;
+      -webkit-transform: translate3d(0,0,0);
+      -ms-transform: translate3d(0,0,0);
+      transform: translate3d(0,0,0);
+    }
+
+    .c3 {
+      -webkit-animation: fIyWYW 6s ease-in-out infinite;
+      animation: fIyWYW 6s ease-in-out infinite;
+      -webkit-transform: translate3d(0,0,0);
+      -ms-transform: translate3d(0,0,0);
+      transform: translate3d(0,0,0);
+    }
+
+    <div
+        class="c0"
       >
         <svg
-          class="sc-bdvvaa jFbviQ sc-dkPtyc cafWiq"
+          class="c1 c2"
           color="text"
           viewBox="0 0 128 128"
           width="64px"
@@ -44,7 +74,7 @@ it("renders correctly", () => {
           </svg>
         </svg>
         <svg
-          class="sc-bdvvaa jFbviQ sc-hKwCoD lkaLNa"
+          class="c1 c3"
           color="text"
           viewBox="0 0 256 256"
           width="128px"

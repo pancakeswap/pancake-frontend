@@ -45,22 +45,584 @@ it("renders correctly", () => {
 
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
-      <div
-        class="sc-jJoQpE dgDyVw"
+      .c27 {
+      position: fixed;
+      top: 0px;
+      left: 0px;
+      width: 100%;
+      height: 100%;
+      background-color: #452a7a;
+      -webkit-transition: opacity 0.4s;
+      transition: opacity 0.4s;
+      opacity: 0;
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    .c2 {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+    }
+
+    .c5 {
+      fill: #8f80ba;
+      -webkit-flex-shrink: 0;
+      -ms-flex-negative: 0;
+      flex-shrink: 0;
+    }
+
+    .c7 {
+      fill: #452A7A;
+      -webkit-flex-shrink: 0;
+      -ms-flex-negative: 0;
+      flex-shrink: 0;
+    }
+
+    .c13 {
+      fill: #452A7A;
+      -webkit-flex-shrink: 0;
+      -ms-flex-negative: 0;
+      flex-shrink: 0;
+      margin-right: 8px;
+    }
+
+    .c3 {
+      -webkit-align-items: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      border: 0;
+      border-radius: 16px;
+      box-shadow: 0px -1px 0px 0px rgba(14,14,44,0.4) inset;
+      cursor: pointer;
+      display: -webkit-inline-box;
+      display: -webkit-inline-flex;
+      display: -ms-inline-flexbox;
+      display: inline-flex;
+      font-family: inherit;
+      font-size: 16px;
+      font-weight: 600;
+      -webkit-box-pack: center;
+      -webkit-justify-content: center;
+      -ms-flex-pack: center;
+      justify-content: center;
+      -webkit-letter-spacing: 0.03em;
+      -moz-letter-spacing: 0.03em;
+      -ms-letter-spacing: 0.03em;
+      letter-spacing: 0.03em;
+      line-height: 1;
+      opacity: 1;
+      outline: 0;
+      -webkit-transition: background-color 0.2s,opacity 0.2s;
+      transition: background-color 0.2s,opacity 0.2s;
+      height: 48px;
+      padding: 0 24px;
+      background-color: transparent;
+      color: #1FC7D4;
+      box-shadow: none;
+      width: sm;
+      height: sm;
+      margin-right: 24px;
+    }
+
+    .c3:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
+      opacity: 0.65;
+    }
+
+    .c3:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
+      opacity: 0.85;
+    }
+
+    .c3:disabled,
+    .c3.pancake-button--disabled {
+      background-color: #E9EAEB;
+      border-color: #E9EAEB;
+      box-shadow: none;
+      color: #BDC2C4;
+      cursor: not-allowed;
+    }
+
+    .c8 {
+      -webkit-align-items: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      border: 0;
+      border-radius: 16px;
+      box-shadow: 0px -1px 0px 0px rgba(14,14,44,0.4) inset;
+      cursor: pointer;
+      display: -webkit-inline-box;
+      display: -webkit-inline-flex;
+      display: -ms-inline-flexbox;
+      display: inline-flex;
+      font-family: inherit;
+      font-size: 16px;
+      font-weight: 600;
+      -webkit-box-pack: center;
+      -webkit-justify-content: center;
+      -ms-flex-pack: center;
+      justify-content: center;
+      -webkit-letter-spacing: 0.03em;
+      -moz-letter-spacing: 0.03em;
+      -ms-letter-spacing: 0.03em;
+      letter-spacing: 0.03em;
+      line-height: 1;
+      opacity: 1;
+      outline: 0;
+      -webkit-transition: background-color 0.2s,opacity 0.2s;
+      transition: background-color 0.2s,opacity 0.2s;
+      height: 32px;
+      padding: 0 16px;
+      background-color: #EFF4F5;
+      box-shadow: none;
+      color: #1FC7D4;
+    }
+
+    .c8:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
+      opacity: 0.65;
+    }
+
+    .c8:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
+      opacity: 0.85;
+    }
+
+    .c8:disabled,
+    .c8.pancake-button--disabled {
+      background-color: #E9EAEB;
+      border-color: #E9EAEB;
+      box-shadow: none;
+      color: #BDC2C4;
+      cursor: not-allowed;
+    }
+
+    .c24 {
+      -webkit-align-items: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      border: 0;
+      border-radius: 16px;
+      box-shadow: 0px -1px 0px 0px rgba(14,14,44,0.4) inset;
+      cursor: pointer;
+      display: -webkit-inline-box;
+      display: -webkit-inline-flex;
+      display: -ms-inline-flexbox;
+      display: inline-flex;
+      font-family: inherit;
+      font-size: 16px;
+      font-weight: 600;
+      -webkit-box-pack: center;
+      -webkit-justify-content: center;
+      -ms-flex-pack: center;
+      justify-content: center;
+      -webkit-letter-spacing: 0.03em;
+      -moz-letter-spacing: 0.03em;
+      -ms-letter-spacing: 0.03em;
+      letter-spacing: 0.03em;
+      line-height: 1;
+      opacity: 1;
+      outline: 0;
+      -webkit-transition: background-color 0.2s,opacity 0.2s;
+      transition: background-color 0.2s,opacity 0.2s;
+      height: 48px;
+      padding: 0 24px;
+      background-color: transparent;
+      color: #1FC7D4;
+      box-shadow: none;
+    }
+
+    .c24:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
+      opacity: 0.65;
+    }
+
+    .c24:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
+      opacity: 0.85;
+    }
+
+    .c24:disabled,
+    .c24.pancake-button--disabled {
+      background-color: #E9EAEB;
+      border-color: #E9EAEB;
+      box-shadow: none;
+      color: #BDC2C4;
+      cursor: not-allowed;
+    }
+
+    .c4 {
+      color: #452A7A;
+      padding: 0 8px;
+      border-radius: 8px;
+    }
+
+    .c6 {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-align-items: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+    }
+
+    .c6 .mobile-icon {
+      width: 32px;
+    }
+
+    .c6 .desktop-icon {
+      width: 156px;
+      display: none;
+    }
+
+    .c18 {
+      color: #ED4B9E;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.5;
+      font-size: 14px;
+    }
+
+    .c20 {
+      color: #FFB237;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.5;
+      font-size: 14px;
+    }
+
+    .c14 {
+      color: transparent;
+      -webkit-transition: color 0.4s;
+      transition: color 0.4s;
+      -webkit-box-flex: 1;
+      -webkit-flex-grow: 1;
+      -ms-flex-positive: 1;
+      flex-grow: 1;
+    }
+
+    .c12 {
+      cursor: pointer;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-align-items: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      height: 48px;
+      padding: 0 16px;
+      font-size: 16px;
+      background-color: transparent;
+      color: #8f80ba;
+      box-shadow: inset 4px 0px 0px #1FC7D4;
+      -webkit-flex-shrink: 0;
+      -ms-flex-negative: 0;
+      flex-shrink: 0;
+    }
+
+    .c12 a {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-align-items: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      width: 100%;
+      height: 100%;
+    }
+
+    .c12 svg {
+      fill: #8f80ba;
+    }
+
+    .c12:hover {
+      background-color: #EFF4F5;
+    }
+
+    .c12.rainbow {
+      background-clip: text;
+      -webkit-animation: fKQuCC 3s ease-in-out infinite;
+      animation: fKQuCC 3s ease-in-out infinite;
+      background: linear-gradient(139.73deg,#E6FDFF 0%,#F3EFFF 100%);
+      background-size: 400% 100%;
+    }
+
+    .c16 {
+      cursor: pointer;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-align-items: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      height: 48px;
+      padding: 0 16px;
+      font-size: 16px;
+      background-color: transparent;
+      color: #8f80ba;
+      box-shadow: none;
+      -webkit-flex-shrink: 0;
+      -ms-flex-negative: 0;
+      flex-shrink: 0;
+    }
+
+    .c16 a {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-align-items: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      width: 100%;
+      height: 100%;
+    }
+
+    .c16 svg {
+      fill: #8f80ba;
+    }
+
+    .c16:hover {
+      background-color: #EFF4F5;
+    }
+
+    .c16.rainbow {
+      background-clip: text;
+      -webkit-animation: fKQuCC 3s ease-in-out infinite;
+      animation: fKQuCC 3s ease-in-out infinite;
+      background: linear-gradient(139.73deg,#E6FDFF 0%,#F3EFFF 100%);
+      background-size: 400% 100%;
+    }
+
+    .c19 {
+      border-radius: 16px;
+      padding: 0 8px;
+      border: 2px solid;
+      border-color: #ED4B9E;
+      box-shadow: none;
+      color: #ED4B9E;
+    }
+
+    .c21 {
+      border-radius: 16px;
+      padding: 0 8px;
+      border: 2px solid;
+      border-color: #FFB237;
+      box-shadow: none;
+      color: #FFB237;
+    }
+
+    .c15 {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+      flex-direction: column;
+      -webkit-flex-shrink: 0;
+      -ms-flex-negative: 0;
+      flex-shrink: 0;
+    }
+
+    .c17 {
+      max-height: 0;
+      -webkit-transition: max-height 0.3s ease-out;
+      transition: max-height 0.3s ease-out;
+      overflow: hidden;
+      border-color: transparent;
+      border-style: solid;
+      border-width: 1px 0;
+    }
+
+    .c22 {
+      max-height: 48px;
+      -webkit-transition: max-height 0.3s ease-out;
+      transition: max-height 0.3s ease-out;
+      overflow: hidden;
+      border-color: transparent;
+      border-style: solid;
+      border-width: 1px 0;
+    }
+
+    .c11 {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+      flex-direction: column;
+      overflow-y: auto;
+      overflow-x: hidden;
+      height: 100%;
+    }
+
+    .c25 {
+      padding: 0;
+      width: 48px;
+    }
+
+    .c23 {
+      -webkit-flex: none;
+      -ms-flex: none;
+      flex: none;
+      padding: 8px 4px;
+      background-color: #FFFFFF;
+      border-top: solid 2px rgba(133,133,133,0.1);
+    }
+
+    .c10 {
+      position: fixed;
+      padding-top: 80px;
+      top: 0;
+      left: 0;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+      flex-direction: column;
+      -webkit-box-pack: justify;
+      -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+      justify-content: space-between;
+      -webkit-flex-shrink: 0;
+      -ms-flex-negative: 0;
+      flex-shrink: 0;
+      background-color: #FFFFFF;
+      width: 0;
+      height: 100vh;
+      -webkit-transition: padding-top 0.2s,width 0.2s;
+      transition: padding-top 0.2s,width 0.2s;
+      border-right: 0;
+      z-index: 11;
+      overflow: hidden;
+      -webkit-transform: translate3d(0,0,0);
+      -ms-transform: translate3d(0,0,0);
+      transform: translate3d(0,0,0);
+    }
+
+    .c0 {
+      position: relative;
+      width: 100%;
+    }
+
+    .c1 {
+      position: fixed;
+      top: 0;
+      left: 0;
+      -webkit-transition: top 0.2s;
+      transition: top 0.2s;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-pack: justify;
+      -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+      justify-content: space-between;
+      -webkit-align-items: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      padding-left: 8px;
+      padding-right: 16px;
+      width: 100%;
+      height: 64px;
+      background-color: #FFFFFF;
+      border-bottom: solid 2px rgba(133,133,133,0.1);
+      z-index: 20;
+      -webkit-transform: translate3d(0,0,0);
+      -ms-transform: translate3d(0,0,0);
+      transform: translate3d(0,0,0);
+    }
+
+    .c9 {
+      position: relative;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+    }
+
+    .c26 {
+      -webkit-box-flex: 1;
+      -webkit-flex-grow: 1;
+      -ms-flex-positive: 1;
+      flex-grow: 1;
+      margin-top: 64px;
+      -webkit-transition: margin-top 0.2s;
+      transition: margin-top 0.2s;
+      -webkit-transform: translate3d(0,0,0);
+      -ms-transform: translate3d(0,0,0);
+      transform: translate3d(0,0,0);
+      max-width: 100%;
+    }
+
+    .c28 {
+      position: fixed;
+      height: 100%;
+    }
+
+    @media screen and (min-width:968px) {
+      .c6 .mobile-icon {
+        display: none;
+      }
+    }
+
+    @media screen and (min-width:968px) {
+      .c6 .desktop-icon {
+        display: block;
+      }
+    }
+
+    @media screen and (min-width:968px) {
+      .c10 {
+        z-index: initial;
+        border-right: 2px solid rgba(133,133,133,0.1);
+        width: 56px;
+      }
+    }
+
+    @media screen and (min-width:968px) {
+      .c26 {
+        margin-left: 56px;
+        max-width: calc(100% - 56px);
+      }
+    }
+
+    @media screen and (min-width:968px) {
+      .c28 {
+        display: none;
+      }
+    }
+
+    <div
+        class="c0"
       >
         <nav
-          class="sc-hiCivh jBQJpB"
+          class="c1"
         >
           <div
-            class="sc-gsDJrp sc-dkPtyc cXGWwC hpwXYq"
+            class="c2"
           >
             <button
               aria-label="Toggle menu"
-              class="sc-eCImvq iMHvYU sc-jRQAMF gULwoh"
+              class="c3 c4"
               scale="md"
             >
               <svg
-                class="sc-hKwCoD hUdSir"
+                class="c5"
                 color="textSubtle"
                 viewBox="0 0 24 24"
                 width="24px"
@@ -73,11 +635,11 @@ it("renders correctly", () => {
             </button>
             <a
               aria-label="Pancake home page"
-              class="sc-gKckTs kWNmQG"
+              class="c6"
               href="/"
             >
               <svg
-                class="sc-hKwCoD XCmWa mobile-icon"
+                class="c7 mobile-icon"
                 color="text"
                 viewBox="0 0 32 32"
                 width="20px"
@@ -109,7 +671,7 @@ it("renders correctly", () => {
                 />
               </svg>
               <svg
-                class="sc-hKwCoD XCmWa desktop-icon"
+                class="c7 desktop-icon"
                 color="text"
                 viewBox="0 0 160 26"
                 width="20px"
@@ -187,11 +749,11 @@ it("renders correctly", () => {
             </a>
           </div>
           <div
-            class="sc-gsDJrp sc-dkPtyc cXGWwC hpwXYq"
+            class="c2"
           >
             <div>
               <button
-                class="sc-eCImvq Uwmsa"
+                class="c8"
                 scale="sm"
               >
                 0xbd...c980
@@ -200,16 +762,16 @@ it("renders correctly", () => {
           </div>
         </nav>
         <div
-          class="sc-gWXaA-D zUGuN"
+          class="c9"
         >
           <div
-            class="sc-kfPtPH fFQlxo"
+            class="c10"
           >
             <div
-              class="sc-crHlIS hkAIej"
+              class="c11"
             >
               <div
-                class="sc-pVTma bksIWH"
+                class="c12"
                 role="button"
               >
                 <a
@@ -218,7 +780,7 @@ it("renders correctly", () => {
                   href="/"
                 >
                   <svg
-                    class="sc-hKwCoD fRKnfU"
+                    class="c13"
                     color="text"
                     viewBox="0 0 24 24"
                     width="24px"
@@ -229,21 +791,21 @@ it("renders correctly", () => {
                     />
                   </svg>
                   <div
-                    class="sc-furvIG dJtlHT"
+                    class="c14"
                   >
                     Home
                   </div>
                 </a>
               </div>
               <div
-                class="sc-kDThTU SlzOh"
+                class="c15"
               >
                 <div
-                  class="sc-pVTma iwOxw"
+                  class="c16"
                   role="button"
                 >
                   <svg
-                    class="sc-hKwCoD fRKnfU"
+                    class="c13"
                     color="text"
                     viewBox="0 0 24 24"
                     width="24px"
@@ -256,12 +818,12 @@ it("renders correctly", () => {
                     />
                   </svg>
                   <div
-                    class="sc-furvIG dJtlHT"
+                    class="c14"
                   >
                     Trade
                   </div>
                   <svg
-                    class="sc-hKwCoD XCmWa"
+                    class="c7"
                     color="text"
                     viewBox="0 0 24 24"
                     width="20px"
@@ -273,18 +835,18 @@ it("renders correctly", () => {
                   </svg>
                 </div>
                 <div
-                  class="sc-iqsfdx kLASmk"
+                  class="c17"
                 />
               </div>
               <div
-                class="sc-pVTma iwOxw"
+                class="c16"
                 role="button"
               >
                 <a
                   href="/farms"
                 >
                   <svg
-                    class="sc-hKwCoD fRKnfU"
+                    class="c13"
                     color="text"
                     viewBox="0 0 24 24"
                     width="24px"
@@ -308,12 +870,12 @@ it("renders correctly", () => {
                     />
                   </svg>
                   <div
-                    class="sc-furvIG dJtlHT"
+                    class="c14"
                   >
                     Farms
                   </div>
                   <div
-                    class="sc-iCfLBT sc-jrQzUz gqBKhL fnHqsS"
+                    class="c18 c19"
                     color="failure"
                     font-size="14px"
                   >
@@ -322,14 +884,14 @@ it("renders correctly", () => {
                 </a>
               </div>
               <div
-                class="sc-pVTma iwOxw"
+                class="c16"
                 role="button"
               >
                 <a
                   href="/syrup"
                 >
                   <svg
-                    class="sc-hKwCoD fRKnfU"
+                    class="c13"
                     color="text"
                     viewBox="0 0 24 24"
                     width="24px"
@@ -345,21 +907,21 @@ it("renders correctly", () => {
                     />
                   </svg>
                   <div
-                    class="sc-furvIG dJtlHT"
+                    class="c14"
                   >
                     Pools
                   </div>
                 </a>
               </div>
               <div
-                class="sc-pVTma iwOxw"
+                class="c16"
                 role="button"
               >
                 <a
                   href="/lottery"
                 >
                   <svg
-                    class="sc-hKwCoD fRKnfU"
+                    class="c13"
                     color="text"
                     viewBox="0 0 24 24"
                     width="24px"
@@ -372,21 +934,21 @@ it("renders correctly", () => {
                     />
                   </svg>
                   <div
-                    class="sc-furvIG dJtlHT"
+                    class="c14"
                   >
                     Lottery
                   </div>
                 </a>
               </div>
               <div
-                class="sc-pVTma iwOxw"
+                class="c16"
                 role="button"
               >
                 <a
                   href="/nft"
                 >
                   <svg
-                    class="sc-hKwCoD fRKnfU"
+                    class="c13"
                     color="text"
                     viewBox="0 0 24 24"
                     width="24px"
@@ -397,21 +959,21 @@ it("renders correctly", () => {
                     />
                   </svg>
                   <div
-                    class="sc-furvIG dJtlHT"
+                    class="c14"
                   >
                     NFT
                   </div>
                 </a>
               </div>
               <div
-                class="sc-pVTma iwOxw"
+                class="c16"
                 role="button"
               >
                 <a
                   href="/competition"
                 >
                   <svg
-                    class="sc-hKwCoD fRKnfU"
+                    class="c13"
                     color="text"
                     viewBox="0 0 24 24"
                     width="24px"
@@ -422,12 +984,12 @@ it("renders correctly", () => {
                     />
                   </svg>
                   <div
-                    class="sc-furvIG dJtlHT"
+                    class="c14"
                   >
                     Team Battle
                   </div>
                   <div
-                    class="sc-iCfLBT sc-jrQzUz iyUvcw iGKzHq"
+                    class="c20 c21"
                     color="warning"
                     font-size="14px"
                   >
@@ -436,14 +998,14 @@ it("renders correctly", () => {
                 </a>
               </div>
               <div
-                class="sc-kDThTU SlzOh"
+                class="c15"
               >
                 <div
-                  class="sc-pVTma bksIWH rainbow"
+                  class="c12 rainbow"
                   role="button"
                 >
                   <svg
-                    class="sc-hKwCoD fRKnfU"
+                    class="c13"
                     color="text"
                     viewBox="0 0 24 24"
                     width="24px"
@@ -454,12 +1016,12 @@ it("renders correctly", () => {
                     />
                   </svg>
                   <div
-                    class="sc-furvIG dJtlHT"
+                    class="c14"
                   >
                     Profile & Teams
                   </div>
                   <svg
-                    class="sc-hKwCoD XCmWa"
+                    class="c7"
                     color="text"
                     viewBox="0 0 24 24"
                     width="20px"
@@ -471,18 +1033,18 @@ it("renders correctly", () => {
                   </svg>
                 </div>
                 <div
-                  class="sc-iqsfdx jPpmls"
+                  class="c22"
                 />
               </div>
               <div
-                class="sc-kDThTU SlzOh"
+                class="c15"
               >
                 <div
-                  class="sc-pVTma iwOxw"
+                  class="c16"
                   role="button"
                 >
                   <svg
-                    class="sc-hKwCoD fRKnfU"
+                    class="c13"
                     color="text"
                     viewBox="0 0 24 24"
                     width="24px"
@@ -498,12 +1060,12 @@ it("renders correctly", () => {
                     />
                   </svg>
                   <div
-                    class="sc-furvIG dJtlHT"
+                    class="c14"
                   >
                     Info
                   </div>
                   <svg
-                    class="sc-hKwCoD XCmWa"
+                    class="c7"
                     color="text"
                     viewBox="0 0 24 24"
                     width="20px"
@@ -515,18 +1077,18 @@ it("renders correctly", () => {
                   </svg>
                 </div>
                 <div
-                  class="sc-iqsfdx kLASmk"
+                  class="c17"
                 />
               </div>
               <div
-                class="sc-kDThTU SlzOh"
+                class="c15"
               >
                 <div
-                  class="sc-pVTma iwOxw"
+                  class="c16"
                   role="button"
                 >
                   <svg
-                    class="sc-hKwCoD fRKnfU"
+                    class="c13"
                     color="text"
                     viewBox="0 0 24 24"
                     width="24px"
@@ -537,12 +1099,12 @@ it("renders correctly", () => {
                     />
                   </svg>
                   <div
-                    class="sc-furvIG dJtlHT"
+                    class="c14"
                   >
                     IFO
                   </div>
                   <svg
-                    class="sc-hKwCoD XCmWa"
+                    class="c7"
                     color="text"
                     viewBox="0 0 24 24"
                     width="20px"
@@ -554,18 +1116,18 @@ it("renders correctly", () => {
                   </svg>
                 </div>
                 <div
-                  class="sc-iqsfdx kLASmk"
+                  class="c17"
                 />
               </div>
               <div
-                class="sc-kDThTU SlzOh"
+                class="c15"
               >
                 <div
-                  class="sc-pVTma iwOxw"
+                  class="c16"
                   role="button"
                 >
                   <svg
-                    class="sc-hKwCoD fRKnfU"
+                    class="c13"
                     color="text"
                     viewBox="0 0 24 24"
                     width="24px"
@@ -576,12 +1138,12 @@ it("renders correctly", () => {
                     />
                   </svg>
                   <div
-                    class="sc-furvIG dJtlHT"
+                    class="c14"
                   >
                     More
                   </div>
                   <svg
-                    class="sc-hKwCoD XCmWa"
+                    class="c7"
                     color="text"
                     viewBox="0 0 24 24"
                     width="20px"
@@ -593,19 +1155,19 @@ it("renders correctly", () => {
                   </svg>
                 </div>
                 <div
-                  class="sc-iqsfdx kLASmk"
+                  class="c17"
                 />
               </div>
             </div>
             <div
-              class="sc-dJjZJu jWSDaX"
+              class="c23"
             >
               <button
-                class="sc-eCImvq hbmHCd sc-egiSv gidiHe"
+                class="c24 c25"
                 scale="md"
               >
                 <svg
-                  class="sc-hKwCoD XCmWa"
+                  class="c7"
                   color="text"
                   viewBox="0 0 24 24"
                   width="20px"
@@ -619,12 +1181,12 @@ it("renders correctly", () => {
             </div>
           </div>
           <div
-            class="sc-cCcYRi gUEOah"
+            class="c26"
           >
             body
           </div>
           <div
-            class="sc-bdvvaa sc-cidCJl eKvJQn jznpel"
+            class="c27 c28"
             role="presentation"
           />
         </div>

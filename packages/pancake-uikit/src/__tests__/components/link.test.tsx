@@ -6,8 +6,34 @@ it("renders link correctly", () => {
   const { asFragment } = renderWithTheme(<Link href="https://pancakeswap.finance">Link</Link>);
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
-      <a
-        class="sc-bdvvaa sc-gsDJrp idxVps iZzBHB"
+      .c0 {
+      color: #1FC7D4;
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 1.5;
+    }
+
+    .c1 {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-align-items: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      width: -webkit-fit-content;
+      width: -moz-fit-content;
+      width: fit-content;
+    }
+
+    .c1:hover {
+      -webkit-text-decoration: underline;
+      text-decoration: underline;
+    }
+
+    <a
+        class="c0 c1"
         color="primary"
         href="https://pancakeswap.finance"
       >
@@ -21,8 +47,42 @@ it("renders link external link correctly", () => {
   const { asFragment } = renderWithTheme(<LinkExternal href="https://pancakeswap.finance">Link</LinkExternal>);
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
-      <a
-        class="sc-bdvvaa sc-gsDJrp idxVps iZzBHB"
+      .c0 {
+      color: #1FC7D4;
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 1.5;
+    }
+
+    .c1 {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-align-items: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      width: -webkit-fit-content;
+      width: -moz-fit-content;
+      width: fit-content;
+    }
+
+    .c1:hover {
+      -webkit-text-decoration: underline;
+      text-decoration: underline;
+    }
+
+    .c2 {
+      fill: #1FC7D4;
+      -webkit-flex-shrink: 0;
+      -ms-flex-negative: 0;
+      flex-shrink: 0;
+      margin-left: 4px;
+    }
+
+    <a
+        class="c0 c1"
         color="primary"
         href="https://pancakeswap.finance"
         rel="noreferrer noopener"
@@ -30,7 +90,7 @@ it("renders link external link correctly", () => {
       >
         Link
         <svg
-          class="sc-dkPtyc jAAMdt"
+          class="c2"
           color="primary"
           viewBox="0 0 24 24"
           width="20px"
