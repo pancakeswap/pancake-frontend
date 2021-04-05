@@ -83,7 +83,7 @@ Guidelines for bug reports:
 3. **Isolate the problem** &mdash; create a [reduced test
    case](http://css-tricks.com/reduced-test-cases/) and a live example.
 
-4. **Add attachments**  &mdash; add photos or videos 
+4. **Add attachments** &mdash; add photos or videos
 
 A good bug report shouldn't leave others needing to chase you up for more
 information. Please try to be as detailed as possible in your report. What is
@@ -92,15 +92,16 @@ experience the problem? What would you expect to be the outcome? All these
 details will help people to fix any potential bugs.
 
 Template:
+
 ```
 **Environment:**
 Device and OS:
 Browser:
 Reproducibility rate:
 
-**Steps to reproduce:** 
-1. 
-2. 
+**Steps to reproduce:**
+1.
+2.
 3.
 
 **Expected result:**
