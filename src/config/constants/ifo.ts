@@ -21,6 +21,7 @@ const ifos: Ifo[] = [
     tokenSymbol: 'BELT',
     releaseBlockNumber: 5493919,
     campaignId: '511080000',
+    isSingle: true,
   },
   {
     id: 'watch',
@@ -42,6 +43,7 @@ const ifos: Ifo[] = [
     tokenSymbol: 'WATCH',
     releaseBlockNumber: 5294924,
     campaignId: '511070000',
+    isSingle: true,
   },
   {
     id: 'berry',
@@ -63,6 +65,7 @@ const ifos: Ifo[] = [
     tokenSymbol: 'BRY',
     releaseBlockNumber: 4750968,
     campaignId: '511060000',
+    isSingle: true,
   },
   {
     id: 'soteria',
@@ -84,6 +87,7 @@ const ifos: Ifo[] = [
     tokenSymbol: 'wSOTE',
     releaseBlockNumber: 4086064,
     campaignId: '511050000',
+    isSingle: true,
   },
   {
     id: 'helmet',
@@ -105,6 +109,7 @@ const ifos: Ifo[] = [
     tokenSymbol: 'Helmet',
     releaseBlockNumber: 3771926,
     campaignId: '511040000',
+    isSingle: true,
   },
   {
     id: 'tenet',
@@ -126,6 +131,7 @@ const ifos: Ifo[] = [
     tokenSymbol: 'TEN',
     releaseBlockNumber: 3483883,
     campaignId: '511030000',
+    isSingle: true,
   },
   {
     id: 'ditto',
@@ -147,6 +153,7 @@ const ifos: Ifo[] = [
     tokenSymbol: 'DITTO',
     releaseBlockNumber: 3279767,
     campaignId: '511020000',
+    isSingle: true,
   },
   {
     id: 'blink',
@@ -168,6 +175,7 @@ const ifos: Ifo[] = [
     tokenSymbol: 'blink',
     releaseBlockNumber: 3279767,
     campaignId: '511010000',
+    isSingle: true,
   },
 ]
 

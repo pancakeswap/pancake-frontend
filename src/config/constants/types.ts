@@ -21,6 +21,7 @@ export interface Ifo {
   tokenSymbol: string
   releaseBlockNumber: number
   campaignId?: string
+  isSingle?: boolean
 }
 
 export enum PoolCategory {

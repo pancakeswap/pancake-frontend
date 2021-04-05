@@ -3,9 +3,9 @@ import styled from 'styled-components'
 import { Text, Heading, BaseLayout, Button, LinkExternal, Flex, Image } from '@pancakeswap-libs/uikit'
 import { ifosConfig } from 'config/constants'
 import useI18n from 'hooks/useI18n'
-import IfoCard from './components/IfoCard'
+import IfoFoldableCard from './components/IfoFoldableCard'
 import Title from './components/Title'
-import IfoCards from './components/IfoCards'
+import IfoCardsLayout from './components/IfoCardsLayout'
 
 const LaunchIfoCallout = styled(BaseLayout)`
   border-top: 2px solid ${({ theme }) => theme.colors.textSubtle};
@@ -40,9 +40,9 @@ const Ifo = () => {
 
   return (
     <div>
-      <IfoCards isSingle>
-        <IfoCard ifo={activeIfo} />
-      </IfoCards>
+      <IfoCardsLayout>
+        <IfoFoldableCard ifo={activeIfo} isInitiallyVisible />
+      </IfoCardsLayout>
       <LaunchIfoCallout>
         <div>
           <Title as="h2">{TranslateString(592, 'How to take part')}</Title>
