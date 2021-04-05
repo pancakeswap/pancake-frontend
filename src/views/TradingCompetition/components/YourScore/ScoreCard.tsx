@@ -6,10 +6,18 @@ import { YourScoreProps } from '../../types'
 import CardUserInfo from './CardUserInfo'
 
 const StyledCard = styled(Card)`
-  min-width: 380px;
+  ${({ theme }) => theme.mediaQueries.xs} {
+    min-width: 380px;
+  }
 `
 
-const ScoreCard: React.FC<YourScoreProps> = ({ hasRegistered, account, profile, isLoading }) => {
+const ScoreCard: React.FC<YourScoreProps> = ({
+  hasRegistered,
+  account,
+  profile,
+  isLoading,
+  userLeaderboardInformation,
+}) => {
   return (
     <StyledCard mt="24px">
       <CardBody>
@@ -17,7 +25,12 @@ const ScoreCard: React.FC<YourScoreProps> = ({ hasRegistered, account, profile, 
           <Skeleton width="100%" height="60px" />
         ) : (
           <>
-            <CardUserInfo hasRegistered={hasRegistered} account={account} profile={profile} />
+            <CardUserInfo
+              hasRegistered={hasRegistered}
+              account={account}
+              profile={profile}
+              userLeaderboardInformation={userLeaderboardInformation}
+            />
             {!account && (
               <Flex mt="24px" justifyContent="center">
                 <UnlockButton />

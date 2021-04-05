@@ -5,6 +5,7 @@ import { Flex, Text, Skeleton, FlexProps } from '@pancakeswap-libs/uikit'
 interface UserRankProps extends FlexProps {
   title?: string
   footer?: string
+  isLoading?: boolean
 }
 
 const Wrapper = styled(Flex)`
@@ -16,15 +17,15 @@ const Wrapper = styled(Flex)`
   padding: 8px 24px;
 `
 
-const UserRank: React.FC<UserRankProps> = ({ title = '', footer, children, ...props }) => {
+const UserRank: React.FC<UserRankProps> = ({ title = '', footer, isLoading, children, ...props }) => {
   return (
     <Wrapper {...props}>
       <Text mb="8px" fontSize="12px" fontWeight={600}>
-        {title.toUpperCase()}
+        {isLoading ? <Skeleton width="50px" height="18px" /> : title.toUpperCase()}
       </Text>
       {children}
-      <Text mt="8px" fontSize="12px" color="textSubtle">
-        {footer}
+      <Text mt="8px" fontSize="12px" color="textSubtle" textAlign="center">
+        {isLoading ? <Skeleton width="50px" height="18px" /> : footer}
       </Text>
     </Wrapper>
   )

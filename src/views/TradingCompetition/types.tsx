@@ -30,6 +30,11 @@ export interface CompetitionProps extends UserRewardsProps {
 
 export interface YourScoreProps extends CompetitionProps {
   hasRegistered?: boolean
+  userLeaderboardInformation?: {
+    global?: number
+    team?: number
+    volume?: number
+  }
 }
 export interface RibbonProps {
   ribbonDirection?: 'up' | 'down'

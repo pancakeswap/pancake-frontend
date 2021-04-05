@@ -13,7 +13,13 @@ const Wrapper = styled.div`
   max-width: 768px;
 `
 
-const YourScore: React.FC<YourScoreProps> = ({ hasRegistered = false, account, profile, isLoading }) => {
+const YourScore: React.FC<YourScoreProps> = ({
+  hasRegistered = false,
+  account,
+  profile,
+  isLoading,
+  userLeaderboardInformation,
+}) => {
   const TranslateString = useI18n()
   const showRibbon = !account || hasRegistered
 
@@ -28,7 +34,13 @@ const YourScore: React.FC<YourScoreProps> = ({ hasRegistered = false, account, p
           {TranslateString(999, 'Your Score')}
         </RibbonWithImage>
       )}
-      <ScoreCard hasRegistered={hasRegistered} account={account} profile={profile} isLoading={isLoading} />
+      <ScoreCard
+        hasRegistered={hasRegistered}
+        account={account}
+        profile={profile}
+        isLoading={isLoading}
+        userLeaderboardInformation={userLeaderboardInformation}
+      />
     </Wrapper>
   )
 }

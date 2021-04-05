@@ -59,6 +59,9 @@ const BottomBunnyWrapper = styled(Box)`
 `
 
 const TradingCompetition = () => {
+  // REINSTATE THIS CONST IN PROD
+  // const profileApiUrl = process.env.REACT_APP_API_PROFILE
+  const profileApiUrl = 'https://pancake-profile-api-git-develop-pancakeswap.vercel.app'
   const { account } = useWeb3React()
   const { profile, isLoading } = useProfile()
   const { isDark } = useTheme()
@@ -74,6 +77,11 @@ const TradingCompetition = () => {
     userPointReward: '0',
     canClaimNFT: false,
   })
+  const [userLeaderboardInformation, setUserLeaderboardInformation] = useState(null)
+  const [globalLeaderboardInformation, setGlobalLeaderboardInformation] = useState(null)
+  const [team1LeaderboardInformation, setTeam1LeaderboardInformation] = useState(null)
+  const [team2LeaderboardInformation, setTeam2LeaderboardInformation] = useState(null)
+  const [team3LeaderboardInformation, setTeam3LeaderboardInformation] = useState(null)
 
   // REINSTATE THIS EVALUATION IN PROD
   // const isCompetitionLive = currentPhase.state === LIVE
@@ -89,12 +97,12 @@ const TradingCompetition = () => {
   }
 
   useEffect(() => {
-    const fetchCompetitionInfo = async () => {
+    const fetchCompetitionInfoContract = async () => {
       const competitionStatus = await tradingCompetitionContract.methods.currentStatus().call()
       setCurrentPhase(SmartContractPhases[competitionStatus])
     }
 
-    const fetchUser = async () => {
+    const fetchUserContract = async () => {
       const user = await tradingCompetitionContract.methods.claimInformation(account).call()
       const userObject = {
         hasRegistered: user[0],
@@ -106,8 +114,9 @@ const TradingCompetition = () => {
       }
       setUserTradingInformation(userObject)
     }
+
     if (account) {
-      fetchUser()
+      fetchUserContract()
     } else {
       setUserTradingInformation({
         hasRegistered: false,
@@ -118,9 +127,48 @@ const TradingCompetition = () => {
         canClaimNFT: false,
       })
     }
-
-    fetchCompetitionInfo()
+    fetchCompetitionInfoContract()
   }, [account, registrationSuccessful, claimSuccessful, tradingCompetitionContract])
+
+  useEffect(() => {
+    const fetchUserTradingStats = async () => {
+      const res = await fetch(`${profileApiUrl}/api/users/${account}`)
+      const data = await res.json()
+      setUserLeaderboardInformation(data.leaderboard)
+    }
+
+    const fetchGlobalLeaderboardStats = async () => {
+      const res = await fetch(`${profileApiUrl}/api/leaderboard/global`)
+      const data = await res.json()
+      setGlobalLeaderboardInformation(data)
+    }
+
+    const fetchTeamsLeaderboardStats = async (teamId, callBack) => {
+      try {
+        const res = await fetch(`${profileApiUrl}/api/leaderboard/team/${teamId}`)
+        const data = await res.json()
+        callBack(data)
+      } catch (e) {
+        console.error(e)
+      }
+    }
+
+    if (account) {
+      fetchUserTradingStats()
+    }
+
+    fetchTeamsLeaderboardStats(1, (data) => setTeam1LeaderboardInformation(data))
+    // CURRENTLY NO TEAM 2 DATA - SO IT BORKS
+    // fetchTeamsLeaderboardStats(2, (data) => setTeam2LeaderboardInformation(data))
+    fetchTeamsLeaderboardStats(3, (data) => setTeam3LeaderboardInformation(data))
+
+    fetchGlobalLeaderboardStats()
+  }, [account, profileApiUrl])
+
+  console.log('team 1: ', team1LeaderboardInformation)
+  console.log('team 3: ', team3LeaderboardInformation)
+  console.log('global: ', globalLeaderboardInformation)
+  console.log('user:', userLeaderboardInformation)
 
   // Don't hide when loading. Hide if the account is connected, the user hasn't registered and the competition is live or finished
   const shouldHideCta =
@@ -171,6 +219,7 @@ const TradingCompetition = () => {
             account={account}
             profile={profile}
             isLoading={isLoading}
+            userLeaderboardInformation={userLeaderboardInformation}
           />
         </Box>
       </Section>
