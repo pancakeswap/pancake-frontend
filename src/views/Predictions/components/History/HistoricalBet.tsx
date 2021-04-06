@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
-import { Box, Button, ChevronDownIcon, ChevronUpIcon, Flex, IconButton, Text, useModal } from '@pancakeswap-libs/uikit'
+import { Box, ChevronDownIcon, ChevronUpIcon, Flex, IconButton, Text } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
 import { Bet, BetPosition } from 'state/types'
 import useI18n from 'hooks/useI18n'
 import { formatBnb } from '../../helpers'
-import CollectRoundWinningsModal from '../CollectRoundWinningsModal'
+import CollectWinningsButton from '../CollectWinningsButton'
 import BetDetails from './BetDetails'
 
 interface BetProps {
@@ -25,10 +25,6 @@ const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
   const { amount, claimed, position, round } = bet
 
   const TranslateString = useI18n()
-  const [onPresentCollectWinningsModal] = useModal(
-    <CollectRoundWinningsModal bnbToCollect={bet.amount} epoch={round.epoch} roundId={round.id} />,
-    false,
-  )
   const roundResultPosition = round.closePrice > round.lockPrice ? BetPosition.BULL : BetPosition.BEAR
   const isWinner = position === roundResultPosition
   const resultTextColor = isWinner ? 'success' : 'failure'
@@ -57,15 +53,15 @@ const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
           </Text>
         </YourResult>
         {isWinner && !claimed && (
-          <Button scale="sm" mr="8px" onClick={onPresentCollectWinningsModal}>
+          <CollectWinningsButton bet={bet} scale="sm" mr="8px">
             {TranslateString(999, 'Collect')}
-          </Button>
+          </CollectWinningsButton>
         )}
         <IconButton variant="text" scale="sm" onClick={toggleOpen}>
           {isOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}
         </IconButton>
       </StyledBet>
-      {isOpen && <BetDetails bet={bet} />}
+      {isOpen && <BetDetails bet={bet} isWinner={isWinner} />}
     </>
   )
 }
