@@ -37,7 +37,7 @@ const CardUserInfo: React.FC<YourScoreProps> = ({ hasRegistered, account, profil
   const TranslateString = useI18n()
   // eslint-disable-next-line camelcase
   const { global, team, volume, next_rank } = userLeaderboardInformation
-  const showRanks = account && hasRegistered
+  const shouldShowUserRanks = account && hasRegistered
 
   const getMedal = (currentRank: ReactText) => {
     if (currentRank === 1) {
@@ -115,20 +115,20 @@ const CardUserInfo: React.FC<YourScoreProps> = ({ hasRegistered, account, profil
 
   const getHeadingText = () => {
     if (!account) {
-      return TranslateString(999, 'Check your Rank')
+      return TranslateString(1218, 'Check your Rank')
     }
     if (!hasRegistered) {
-      return TranslateString(999, 'You’re not participating this time.')
+      return TranslateString(1220, 'You’re not participating this time.')
     }
     return `@${profile.username}`
   }
 
   const getSubHeadingText = () => {
     if (!account) {
-      return TranslateString(999, 'Connect wallet to view')
+      return TranslateString(1214, 'Connect wallet to view')
     }
     if (!hasRegistered) {
-      return TranslateString(999, 'Sorry, you needed to register during the “entry” period!')
+      return TranslateString(1216, 'Sorry, you needed to register during the “entry” period!')
     }
     return `${profile.team.name}`
   }
@@ -141,17 +141,17 @@ const CardUserInfo: React.FC<YourScoreProps> = ({ hasRegistered, account, profil
   return (
     <Flex flexDirection="column" alignItems="center" mt="16px">
       <Heading size="lg" textAlign="center">
-        {TranslateString(999, headingText)}
+        {headingText}
       </Heading>
       <Text textAlign="center" fontSize="14px" color="textSubtle" mt="4px">
-        {TranslateString(999, subHeadingText)}
+        {subHeadingText}
       </Text>
-      {showRanks && (
+      {shouldShowUserRanks && (
         <RanksWrapper>
           <Flex>
             <UserRankBox
               flex="1"
-              title={TranslateString(999, 'Rank in team').toUpperCase()}
+              title={TranslateString(1222, 'Rank in team').toUpperCase()}
               footer={`${TranslateString(999, `#${userLeaderboardInformation && global.toLocaleString()} Overall`)}`}
               mr="8px"
             >
@@ -168,8 +168,8 @@ const CardUserInfo: React.FC<YourScoreProps> = ({ hasRegistered, account, profil
             </UserRankBox>
             <UserRankBox
               flex="1"
-              title={TranslateString(999, 'Your volume').toUpperCase()}
-              footer={TranslateString(999, 'Since start')}
+              title={TranslateString(1224, 'Your volume').toUpperCase()}
+              footer={TranslateString(1226, 'Since start')}
               mr={{ _: '0', sm: '8px' }}
             >
               {!userLeaderboardInformation ? (
@@ -200,7 +200,7 @@ const CardUserInfo: React.FC<YourScoreProps> = ({ hasRegistered, account, profil
               currentMedal={medal.current}
               nextMedal={medal.next}
             >
-              <Heading size="lg">+${localiseTradingVolume(next_rank)}</Heading>
+              <Heading size="lg">+${userLeaderboardInformation && localiseTradingVolume(next_rank)}</Heading>
             </NextRankBox>
           )}
         </RanksWrapper>

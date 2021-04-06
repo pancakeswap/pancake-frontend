@@ -31,7 +31,7 @@ const YourScore: React.FC<YourScoreProps> = ({
           ribbonDirection="down"
           isCardHeader
         >
-          {TranslateString(999, 'Your Score')}
+          {TranslateString(1228, 'Your Score')}
         </RibbonWithImage>
       )}
       <ScoreCard

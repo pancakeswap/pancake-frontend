@@ -60,9 +60,7 @@ const BottomBunnyWrapper = styled(Box)`
 `
 
 const TradingCompetition = () => {
-  // REINSTATE THIS CONST IN PROD
-  // const profileApiUrl = process.env.REACT_APP_API_PROFILE
-  const profileApiUrl = 'https://pancake-profile-api-git-develop-pancakeswap.vercel.app'
+  const profileApiUrl = process.env.REACT_APP_API_PROFILE
   const { account } = useWeb3React()
   const { profile, isLoading } = useProfile()
   const { isDark } = useTheme()
@@ -78,12 +76,13 @@ const TradingCompetition = () => {
     userPointReward: '0',
     canClaimNFT: false,
   })
-  const [userLeaderboardInformation, setUserLeaderboardInformation] = useState({
-    global: '???',
-    team: '???',
-    volume: 0,
-  })
   const [globalLeaderboardInformation, setGlobalLeaderboardInformation] = useState(null)
+  const [userLeaderboardInformation, setUserLeaderboardInformation] = useState({
+    global: 0,
+    team: 0,
+    volume: 0,
+    next_rank: 0,
+  })
   // 1. Storm
   const [team1LeaderboardInformation, setTeam1LeaderboardInformation] = useState({ teamId: 1, leaderboardData: null })
   // 2. Flippers
