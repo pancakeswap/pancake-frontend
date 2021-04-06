@@ -1,17 +1,30 @@
 import React from 'react'
-import { Heading, Text } from '@pancakeswap-libs/uikit'
+import { Heading, Text, Flex } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
 import { LeaderboardDataItem } from '../../../types'
 import { localiseTradingVolume, accountEllipsis } from '../../../helpers'
 import { LeaderboardStorm, LeaderboardFlippers, LeaderboardCakers } from '../../../svgs'
 
-const Grid = styled.div`
+const Wrapper = styled.div`
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-
+  grid-template-columns: auto repeat(3, 1fr);
+  border-bottom: 1px solid ${({ theme }) => theme.colors.textDisabled};
   svg {
     height: 80px;
     width: auto;
+  }
+`
+
+const Item = styled(Flex)`
+  align-items: center;
+  justify-content: center;
+
+  ${({ theme }) => theme.mediaQueries.xs} {
+    min-width: 40px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    min-width: 80px;
   }
 `
 
@@ -28,12 +41,18 @@ const GridItem: React.FC<{ traderData?: LeaderboardDataItem }> = ({ traderData }
 
   //   accountEllipsis
   return (
-    <Grid>
-      <Heading>#{rank}</Heading>
-      <Text>${localiseTradingVolume(volume)}</Text>
-      <Text>{accountEllipsis(address)}</Text>
+    <Wrapper>
+      <Item>
+        <Heading color="secondary">#{rank}</Heading>
+      </Item>
+      <Item>
+        <Text bold>${localiseTradingVolume(volume)}</Text>
+      </Item>
+      <Item>
+        <Text color="primary">{accountEllipsis(address)}</Text>
+      </Item>
       {icon[teamId]}
-    </Grid>
+    </Wrapper>
   )
 }
 
