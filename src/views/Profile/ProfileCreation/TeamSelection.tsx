@@ -7,12 +7,6 @@ import SelectionCard from '../components/SelectionCard'
 import NextStepButton from '../components/NextStepButton'
 import useProfileCreation from './contexts/hook'
 
-interface Team {
-  name: string
-  description: string
-  isJoinable: boolean
-}
-
 const Team: React.FC = () => {
   const { teamId: currentTeamId, actions } = useProfileCreation()
   const TranslateString = useI18n()
