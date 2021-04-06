@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Flex, Image } from '@pancakeswap-libs/uikit'
+import { Flex, Image, Skeleton } from '@pancakeswap-libs/uikit'
 import Sticker from '../../Sticker'
 
 const Wrapper = styled(Flex)<{ imageSize?: number }>`
@@ -25,9 +25,13 @@ const TeamPodiumIcon: React.FC<{ teamId?: number; teamPosition?: number }> = ({ 
 
   return (
     <Wrapper imageSize={imageSize()}>
-      <Sticker backgroundColor={teamData[teamId].stickerCol} borderColor={teamData[teamId].stickerCol}>
-        <Image src={`/images/teams/${teamData[teamId].imgSrc}`} width={imageSize()} height={imageSize()} />
-      </Sticker>
+      {!teamId ? (
+        <Skeleton variant="circle" width="100%" height="100%" />
+      ) : (
+        <Sticker backgroundColor={teamData[teamId].stickerCol} borderColor={teamData[teamId].stickerCol}>
+          <Image src={`/images/teams/${teamData[teamId].imgSrc}`} width={imageSize()} height={imageSize()} />
+        </Sticker>
+      )}
     </Wrapper>
   )
 }

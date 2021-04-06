@@ -58,11 +58,14 @@ const TeamRanks: React.FC<TeamRanksProps> = ({
     <Wrapper>
       <StyledPodiumWrapper flexDirection="column">
         <Podium
-          teamsSortedByVolume={getTeamsSortedByVolume([
-            team1LeaderboardInformation,
-            team2LeaderboardInformation,
-            team3LeaderboardInformation,
-          ])}
+          teamsSortedByVolume={
+            isTeamLeaderboardDataComplete &&
+            getTeamsSortedByVolume([
+              team1LeaderboardInformation,
+              team2LeaderboardInformation,
+              team3LeaderboardInformation,
+            ])
+          }
         />
         <BunnyImageWrapper>
           <Image src={CakerBunny} width={200} height={205} />
