@@ -15,8 +15,9 @@ const Wrapper = styled(Flex)`
 `
 
 const StyledPodiumWrapper = styled(Flex)`
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   margin: 0 0 40px 0;
   ${({ theme }) => theme.mediaQueries.md} {
     flex: 1;
@@ -35,7 +36,8 @@ const BunnyImageWrapper = styled(Box)`
 `
 
 const StyledTopTradersWrapper = styled(Flex)`
-  flex: 1;
+  width: 100%;
+  /* flex: 1; */
   ${({ theme }) => theme.mediaQueries.md} {
     flex: 2;
   }
@@ -61,7 +63,7 @@ const TeamRanks: React.FC<TeamRanksProps> = ({
 
   return (
     <Wrapper>
-      <StyledPodiumWrapper flexDirection="column">
+      <StyledPodiumWrapper>
         <Podium
           teamsSortedByVolume={
             isTeamLeaderboardDataComplete &&
@@ -72,7 +74,7 @@ const TeamRanks: React.FC<TeamRanksProps> = ({
             ])
           }
         />
-        <BunnyImageWrapper>
+        <BunnyImageWrapper mt="24px">
           <Image src={CakerBunny} width={200} height={205} />
         </BunnyImageWrapper>
       </StyledPodiumWrapper>

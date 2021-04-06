@@ -50,21 +50,24 @@ const TopTradersCard: React.FC<TeamRanksProps> = ({
 
   return (
     <Card>
-      <CardHeader>
-        <Heading color="secondary" size="lg">
-          {TranslateString(999, 'Top Traders')}
-        </Heading>
-        <Text fontSize="14px" color="textSubtle">
-          {TranslateString(999, 'Since start of competition')}
-        </Text>
-      </CardHeader>
-      <Box mt="16px">
-        <TabMenu activeIndex={activeTab} onItemClick={handleItemClick}>
-          {tabs.map((tabText) => {
-            return <Tab key={tabText}>{tabText}</Tab>
-          })}
-        </TabMenu>
-        <TopTradersGrid data={topTradersGridData} />
+      <Box width="100%">
+        <CardHeader>
+          <Heading color="secondary" size="lg">
+            {TranslateString(999, 'Top Traders')}
+          </Heading>
+          <Text fontSize="14px" color="textSubtle">
+            {TranslateString(999, 'Since start of competition')}
+          </Text>
+        </CardHeader>
+        <Box mt="16px">
+          <TabMenu activeIndex={activeTab} onItemClick={handleItemClick}>
+            {tabs.map((tabText) => {
+              return <Tab key={tabText}>{tabText}</Tab>
+            })}
+          </TabMenu>
+          <TopTradersGrid data={topTradersGridData} />
+        </Box>
+        <CardFooter />
       </Box>
     </Card>
   )

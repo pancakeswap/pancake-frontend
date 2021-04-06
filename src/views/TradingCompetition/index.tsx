@@ -250,12 +250,14 @@ const TradingCompetition = () => {
           </RibbonWithImage>
         }
       >
-        <TeamRanks
-          team1LeaderboardInformation={team1LeaderboardInformation}
-          team2LeaderboardInformation={team2LeaderboardInformation}
-          team3LeaderboardInformation={team3LeaderboardInformation}
-          globalLeaderboardInformation={globalLeaderboardInformation}
-        />
+        <Box mt="54px">
+          <TeamRanks
+            team1LeaderboardInformation={team1LeaderboardInformation}
+            team2LeaderboardInformation={team2LeaderboardInformation}
+            team3LeaderboardInformation={team3LeaderboardInformation}
+            globalLeaderboardInformation={globalLeaderboardInformation}
+          />
+        </Box>
       </Section>
       <Section
         backgroundStyle={isDark ? LIGHTBLUEBG_DARK : LIGHTBLUEBG}
