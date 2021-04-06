@@ -13,7 +13,6 @@ const TooltipContent = styled.div`
   color: ${({ theme }) => theme.tooltip.text};
   width: max-content;
   display: none;
-  padding: 16px;
   max-height: 500px;
   z-index: ${({ theme }) => theme.zIndices.modal};
   position: absolute;
