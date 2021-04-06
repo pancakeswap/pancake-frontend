@@ -71,7 +71,7 @@ const TimerHeadingComponent = ({ children }) => (
 )
 
 const TimerBodyComponent = ({ children }) => (
-  <Text bold color="#ffff" fontSize="16px" mr={{ _: '10px', sm: '16px' }}>
+  <Text bold color="#ffff" fontSize="16px" mr={{ _: '8px', sm: '16px' }}>
     {children}
   </Text>
 )
