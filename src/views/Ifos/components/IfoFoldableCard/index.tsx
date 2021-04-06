@@ -4,7 +4,8 @@ import { Card, CardHeader, CardBody, CardRibbon, ExpandableButton, Progress } fr
 import { Ifo, IfoStatus } from 'config/constants/types'
 import useI18n from 'hooks/useI18n'
 import useGetPublicIfoData from 'hooks/useGetPublicIfoData'
-import IfoCard from './IfoCard'
+import IfoCard from '../IfoCard'
+import Timer from './Timer'
 
 interface IfoFoldableCardProps {
   ifo: Ifo
@@ -63,6 +64,7 @@ const IfoFoldableCard: React.FC<IfoFoldableCardProps> = ({ ifo, isInitiallyVisib
           <Progress variant="flat" primaryStep={publicIfoData.progress} />
         )}
         <CardBody>
+          {publicIfoData.status !== 'finished' && ifo.isActive && <Timer publicIfoData={publicIfoData} />}
           <CardWrapper>
             <IfoCard ifo={ifo} />
             <IfoCard ifo={ifo} />

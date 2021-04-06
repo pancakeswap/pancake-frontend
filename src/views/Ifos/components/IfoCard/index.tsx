@@ -8,7 +8,6 @@ import UnlockButton from 'components/UnlockButton'
 import IfoCardHeader from './IfoCardHeader'
 import IfoCardDetails from './IfoCardDetails'
 import IfoCardActions from './IfoCardActions'
-import IfoCardTime from './IfoCardTime'
 
 export interface IfoCardProps {
   ifo: Ifo
@@ -31,14 +30,6 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
       <CardHeader>Header</CardHeader>
       <CardBody>
         <IfoCardHeader ifoId={id} name={name} subTitle={subTitle} />
-        {publicIfoData.status !== 'finished' && ifo.isActive && (
-          <IfoCardTime
-            status={publicIfoData.status}
-            secondsUntilStart={publicIfoData.secondsUntilStart}
-            secondsUntilEnd={publicIfoData.secondsUntilEnd}
-            block={publicIfoData.startBlockNum}
-          />
-        )}
         {account ? <IfoCardActions ifo={ifo} publicIfoData={publicIfoData} /> : <UnlockButton width="100%" />}
       </CardBody>
       <IfoCardDetails ifo={ifo} publicIfoData={publicIfoData} />
