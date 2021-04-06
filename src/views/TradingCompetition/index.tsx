@@ -198,7 +198,7 @@ const TradingCompetition = () => {
       <Section
         backgroundStyle={DARKBG}
         svgFill={DARKFILL}
-        index={4}
+        index={5}
         intersectComponent={
           shouldHideCta ? null : (
             <BattleCta
