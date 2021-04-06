@@ -37,7 +37,7 @@ const BunnyImageWrapper = styled(Box)`
 
 const StyledTopTradersWrapper = styled(Flex)`
   width: 100%;
-  /* flex: 1; */
+
   ${({ theme }) => theme.mediaQueries.md} {
     flex: 2;
   }

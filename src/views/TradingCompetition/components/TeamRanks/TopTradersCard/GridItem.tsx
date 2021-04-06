@@ -29,8 +29,6 @@ const Item = styled(Flex)`
 `
 
 const GridItem: React.FC<{ traderData?: LeaderboardDataItem }> = ({ traderData }) => {
-  //   debugger // eslint-disable-line
-
   const { rank, address, volume, teamId } = traderData
 
   const icon = {
@@ -39,7 +37,6 @@ const GridItem: React.FC<{ traderData?: LeaderboardDataItem }> = ({ traderData }
     3: <LeaderboardCakers />,
   }
 
-  //   accountEllipsis
   return (
     <Wrapper>
       <Item>

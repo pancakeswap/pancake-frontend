@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Flex, Text, Skeleton, FlexProps } from '@pancakeswap-libs/uikit'
+import { Flex, Text, FlexProps } from '@pancakeswap-libs/uikit'
 
 interface UserRankProps extends FlexProps {
   title?: string
@@ -13,13 +13,21 @@ const Wrapper = styled(Flex)`
   align-items: center;
   border: 1px solid ${({ theme }) => theme.colors.inputSecondary};
   border-radius: ${({ theme }) => theme.radii.default};
-  padding: 8px 24px;
+  padding: 8px 8px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    padding: 8px 18px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    padding: 8px 24px;
+  }
 `
 
 const UserRank: React.FC<UserRankProps> = ({ title = '', footer, children, ...props }) => {
   return (
     <Wrapper {...props}>
-      <Text mb="8px" fontSize="12px" fontWeight={600}>
+      <Text mb="8px" fontSize="12px" bold>
         {title}
       </Text>
       {children}

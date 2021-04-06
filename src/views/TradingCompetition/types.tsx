@@ -1,3 +1,4 @@
+import { ReactText } from 'react'
 import { Profile } from 'state/types'
 
 export interface UserRewardsProps {
@@ -58,9 +59,11 @@ export interface CompetitionProps extends UserRewardsProps {
 export interface YourScoreProps extends CompetitionProps {
   hasRegistered?: boolean
   userLeaderboardInformation?: {
-    global?: number | string
-    team?: number | string
+    global?: ReactText
+    team?: ReactText
     volume?: number
+    // eslint-disable-next-line camelcase
+    next_rank?: number
   }
 }
 export interface RibbonProps {

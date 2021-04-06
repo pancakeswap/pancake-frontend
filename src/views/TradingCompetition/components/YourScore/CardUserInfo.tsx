@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactText } from 'react'
 import {
   Text,
   Heading,
@@ -14,6 +14,8 @@ import styled from 'styled-components'
 import useI18n from 'hooks/useI18n'
 import { YourScoreProps } from '../../types'
 import UserRankBox from './UserRankBox'
+import NextRankBox from './NextRankBox'
+import { localiseTradingVolume } from '../../helpers'
 
 const TeamRankTextWrapper = styled(Flex)`
   svg {
@@ -21,34 +23,85 @@ const TeamRankTextWrapper = styled(Flex)`
   }
 `
 
+const RanksWrapper = styled(Flex)`
+  width: 100%;
+  margin-top: 24px;
+  flex-direction: column;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    flex-direction: row;
+  }
+`
+
 const CardUserInfo: React.FC<YourScoreProps> = ({ hasRegistered, account, profile, userLeaderboardInformation }) => {
   const TranslateString = useI18n()
-  const { global, team, volume } = userLeaderboardInformation
+  // eslint-disable-next-line camelcase
+  const { global, team, volume, next_rank } = userLeaderboardInformation
   const showRanks = account && hasRegistered
-  const isLoading = !userLeaderboardInformation
 
-  const userMedal = () => {
-    if (team === '???') {
+  const getMedal = (currentRank: ReactText) => {
+    if (currentRank === 1) {
+      return {
+        current: <MedalGoldIcon />,
+        next: null,
+      }
+    }
+    if (currentRank <= 10) {
+      return {
+        current: <MedalSilverIcon />,
+        next: <MedalGoldIcon />,
+      }
+    }
+    if (currentRank <= 100) {
+      return {
+        current: <MedalBronzeIcon />,
+        next: <MedalSilverIcon />,
+      }
+    }
+    if (currentRank <= 500) {
+      return {
+        current: <MedalPurpleIcon />,
+        next: <MedalBronzeIcon />,
+      }
+    }
+    if (currentRank > 500) {
+      return {
+        current: <MedalTealIcon />,
+        next: <MedalPurpleIcon />,
+      }
+    }
+    return null
+  }
+
+  const getNextTier = (currentRank: ReactText) => {
+    if (currentRank === 1) {
       return null
     }
-
-    if (team === 1) {
-      return <MedalGoldIcon />
+    if (currentRank <= 10) {
+      return {
+        color: 'GOLD',
+        rank: 1,
+      }
     }
-
-    if (team <= 10) {
-      return <MedalSilverIcon />
+    if (currentRank <= 100) {
+      return {
+        color: 'SILVER',
+        rank: 10,
+      }
     }
-
-    if (team <= 100) {
-      return <MedalBronzeIcon />
+    if (currentRank <= 500) {
+      return {
+        color: 'BRONZE',
+        rank: 100,
+      }
     }
-
-    if (team <= 500) {
-      return <MedalPurpleIcon />
+    if (currentRank > 500) {
+      return {
+        color: 'PURPLE',
+        rank: 500,
+      }
     }
-
-    return <MedalTealIcon />
+    return null
   }
 
   const getHeadingText = () => {
@@ -73,6 +126,8 @@ const CardUserInfo: React.FC<YourScoreProps> = ({ hasRegistered, account, profil
 
   const headingText = getHeadingText()
   const subHeadingText = getSubHeadingText()
+  const nextTier = userLeaderboardInformation && getNextTier(team)
+  const medal = userLeaderboardInformation && getMedal(team)
 
   return (
     <Flex flexDirection="column" alignItems="center" mt="16px">
@@ -83,38 +138,50 @@ const CardUserInfo: React.FC<YourScoreProps> = ({ hasRegistered, account, profil
         {TranslateString(999, subHeadingText)}
       </Text>
       {showRanks && (
-        <Flex width="100%" mt="24px">
-          <UserRankBox
-            flex="1"
-            title={TranslateString(999, 'Rank in team').toUpperCase()}
-            footer={`${TranslateString(999, `#${!isLoading && global.toLocaleString()} Overall`)}`}
-            mr="8px"
-          >
-            {isLoading ? (
-              <Skeleton height="26px" width="110px" />
-            ) : (
-              <TeamRankTextWrapper>
-                <Heading textAlign="center" size="lg" mr="8px">
-                  #{team}
+        <RanksWrapper>
+          <Flex>
+            <UserRankBox
+              flex="1"
+              title={TranslateString(999, 'Rank in team').toUpperCase()}
+              footer={`${TranslateString(999, `#${userLeaderboardInformation && global.toLocaleString()} Overall`)}`}
+              mr="8px"
+            >
+              {!userLeaderboardInformation ? (
+                <Skeleton height="26px" width="110px" />
+              ) : (
+                <TeamRankTextWrapper>
+                  <Heading textAlign="center" size="lg" mr="8px">
+                    #{team}
+                  </Heading>
+                  {medal.current}
+                </TeamRankTextWrapper>
+              )}
+            </UserRankBox>
+            <UserRankBox
+              flex="1"
+              title={TranslateString(999, 'Your volume').toUpperCase()}
+              footer={TranslateString(999, 'Since start')}
+              mr={{ _: '0', sm: '8px' }}
+            >
+              {!userLeaderboardInformation ? (
+                <Skeleton height="26px" width="110px" />
+              ) : (
+                <Heading textAlign="center" size="lg">
+                  ${userLeaderboardInformation && localiseTradingVolume(volume)}
                 </Heading>
-                {userMedal()}
-              </TeamRankTextWrapper>
-            )}
-          </UserRankBox>
-          <UserRankBox
-            flex="1"
-            title={TranslateString(999, 'Your volume').toUpperCase()}
-            footer={TranslateString(999, 'Since start')}
+              )}
+            </UserRankBox>
+          </Flex>
+          <NextRankBox
+            flex="2"
+            title={`${TranslateString(999, 'Next tier').toUpperCase()}: ${nextTier.color}`}
+            footer={`${TranslateString(999, 'to become')} #${nextTier.rank} ${TranslateString(999, 'in team')}`}
+            currentMedal={medal.current}
+            nextMedal={medal.next}
           >
-            {isLoading ? (
-              <Skeleton height="26px" width="110px" />
-            ) : (
-              <Heading textAlign="center" size="lg">
-                ${!isLoading && volume.toLocaleString()}
-              </Heading>
-            )}
-          </UserRankBox>
-        </Flex>
+            <Heading size="lg">+${localiseTradingVolume(next_rank)}</Heading>
+          </NextRankBox>
+        </RanksWrapper>
       )}
     </Flex>
   )
