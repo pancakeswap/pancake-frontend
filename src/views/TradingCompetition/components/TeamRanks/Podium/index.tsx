@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Flex, Box, Text, Skeleton } from '@pancakeswap-libs/uikit'
 import TeamPodiumIcon from './TeamPodiumIcon'
-import PodiumBase from '../../../svgs/PodiumBase'
+import { PodiumBase } from '../../../svgs'
 import { TeamLeaderboardProps } from '../../../types'
 import { localiseTradingVolume } from '../../../helpers'
 

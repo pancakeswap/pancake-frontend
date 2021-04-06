@@ -11,11 +11,11 @@ const Wrapper = styled(Flex)<{ imageSize?: number }>`
     border-radius: 50%;
   }
 
-  /* Podium is about 75% of initial height on xs devices  */
+  /* Podium is about 75% of initial size on xs devices  */
   width: ${({ imageSize }) => imageSize * 0.75 + 4}px;
   height: ${({ imageSize }) => imageSize * 0.75 + 4}px;
 
-  /* Podium is about 80% of initial height on sm devices  */
+  /* Podium is about 80% of initial size on sm devices  */
   ${({ theme }) => theme.mediaQueries.xs} {
     width: ${({ imageSize }) => imageSize * 0.8 + 4}px;
     height: ${({ imageSize }) => imageSize * 0.8 + 4}px;

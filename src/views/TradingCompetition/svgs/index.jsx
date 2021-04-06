@@ -1,4 +1,8 @@
 export { default as Intersect } from './Intersect'
+export { default as LeaderboardCakers } from './LeaderboardCakers'
+export { default as LeaderboardFlippers } from './LeaderboardFlippers'
+export { default as LeaderboardStorm } from './LeaderboardStorm'
+export { default as PodiumBase } from './PodiumBase'
 export { default as RibbonDownMid } from './RibbonDownMid'
 export { default as RibbonDownSide } from './RibbonDownSide'
 export { default as RibbonUpMid } from './RibbonUpMid'

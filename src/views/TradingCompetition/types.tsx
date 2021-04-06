@@ -16,11 +16,12 @@ export interface UserTradingInformationProps {
   canClaimNFT?: boolean
 }
 
-interface LeaderboardDataItem {
+export interface LeaderboardDataItem {
   rank?: number
   address?: string
   username?: string
   volume?: number
+  teamId?: number
 }
 
 interface LeaderboardData {
@@ -39,6 +40,7 @@ export interface TeamRanksProps {
   team2LeaderboardInformation?: TeamLeaderboardProps
   team3LeaderboardInformation?: TeamLeaderboardProps
   globalLeaderboardInformation?: LeaderboardData
+  isGlobalLeaderboardDataComplete?: boolean
 }
 
 export interface CompetitionProps extends UserRewardsProps {

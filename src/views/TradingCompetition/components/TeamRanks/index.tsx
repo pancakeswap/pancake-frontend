@@ -47,10 +47,13 @@ const TeamRanks: React.FC<TeamRanksProps> = ({
   team3LeaderboardInformation,
   globalLeaderboardInformation,
 }) => {
-  const isTeamLeaderboardDataComplete =
+  const isTeamLeaderboardDataComplete = Boolean(
     team1LeaderboardInformation.leaderboardData &&
-    team2LeaderboardInformation.leaderboardData &&
-    team3LeaderboardInformation.leaderboardData
+      team2LeaderboardInformation.leaderboardData &&
+      team3LeaderboardInformation.leaderboardData,
+  )
+
+  const isGlobalLeaderboardDataComplete = Boolean(isTeamLeaderboardDataComplete && globalLeaderboardInformation)
 
   const getTeamsSortedByVolume = (arrayOfTeams) => {
     return arrayOfTeams.sort((teamA, teamB) => teamB.leaderboardData.volume - teamA.leaderboardData.volume)
@@ -74,7 +77,13 @@ const TeamRanks: React.FC<TeamRanksProps> = ({
         </BunnyImageWrapper>
       </StyledPodiumWrapper>
       <StyledTopTradersWrapper>
-        <TopTradersCard />
+        <TopTradersCard
+          team1LeaderboardInformation={team1LeaderboardInformation}
+          team2LeaderboardInformation={team2LeaderboardInformation}
+          team3LeaderboardInformation={team3LeaderboardInformation}
+          globalLeaderboardInformation={globalLeaderboardInformation}
+          isGlobalLeaderboardDataComplete={isGlobalLeaderboardDataComplete}
+        />
       </StyledTopTradersWrapper>
     </Wrapper>
   )

@@ -84,7 +84,7 @@ const TradingCompetition = () => {
     volume: 0,
   })
   const [globalLeaderboardInformation, setGlobalLeaderboardInformation] = useState(null)
-  // 1. Syrup Storm
+  // 1. Storm
   const [team1LeaderboardInformation, setTeam1LeaderboardInformation] = useState({ teamId: 1, leaderboardData: null })
   // 2. Flippers
   const [team2LeaderboardInformation, setTeam2LeaderboardInformation] = useState({ teamId: 2, leaderboardData: null })
@@ -187,7 +187,7 @@ const TradingCompetition = () => {
   // console.log('team 2: ', team2LeaderboardInformation)
   // console.log('team 3: ', team3LeaderboardInformation)
   // console.log('global: ', globalLeaderboardInformation)
-  console.log('user:', userLeaderboardInformation)
+  // console.log('user:', userLeaderboardInformation)
 
   // Don't hide when loading. Hide if the account is connected, the user hasn't registered and the competition is live or finished
   const shouldHideCta =
