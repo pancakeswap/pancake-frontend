@@ -65,9 +65,6 @@ const StyledHeading = styled(Heading2Text)`
 `
 
 const StyledTimerText = styled(Text)`
-  color: #ffff;
-  font-weight: 600;
-  font-size: 16px;
   margin-right: 10px;
 
   ${({ theme }) => theme.mediaQueries.sm} {
@@ -82,7 +79,7 @@ const TimerHeadingComponent = ({ children }) => (
 )
 
 const TimerBodyComponent = ({ children }) => (
-  <StyledTimerText color="#ffff" fontWeight="600" fontSize="16px" mr="16px">
+  <StyledTimerText bold color="#ffff" fontSize="16px">
     {children}
   </StyledTimerText>
 )
