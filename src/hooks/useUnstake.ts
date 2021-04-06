@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 import { useWeb3React } from '@web3-react/core'
-import { useDispatch } from 'react-redux'
+import { useAppDispatch } from 'state'
 import {
   fetchFarmUserDataAsync,
   updateUserStakedBalance,
@@ -11,7 +11,7 @@ import { unstake, sousUnstake, sousEmergencyUnstake } from 'utils/callHelpers'
 import { useMasterchef, useSousChef } from './useContract'
 
 const useUnstake = (pid: number) => {
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const { account } = useWeb3React()
   const masterChefContract = useMasterchef()
 
@@ -30,7 +30,7 @@ const useUnstake = (pid: number) => {
 const SYRUPIDS = [5, 6, 3, 1, 22, 23, 78]
 
 export const useSousUnstake = (sousId) => {
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const { account } = useWeb3React()
   const masterChefContract = useMasterchef()
   const sousChefContract = useSousChef(sousId)

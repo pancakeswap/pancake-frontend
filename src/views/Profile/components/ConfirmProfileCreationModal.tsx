@@ -1,6 +1,6 @@
 import React from 'react'
 import { Modal, Flex, Text } from '@pancakeswap-libs/uikit'
-import { useDispatch } from 'react-redux'
+import { useAppDispatch } from 'state'
 import BigNumber from 'bignumber.js'
 import useI18n from 'hooks/useI18n'
 import { useCake, usePancakeRabbits, useProfile } from 'hooks/useContract'
@@ -31,7 +31,7 @@ const ConfirmProfileCreationModal: React.FC<Props> = ({
   const TranslateString = useI18n()
   const profileContract = useProfile()
   const pancakeRabbitsContract = usePancakeRabbits()
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const { toastSuccess } = useToast()
   const cakeContract = useCake()
 
