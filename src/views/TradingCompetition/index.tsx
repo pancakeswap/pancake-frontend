@@ -90,9 +90,7 @@ const TradingCompetition = () => {
   // 3. Cakers
   const [team3LeaderboardInformation, setTeam3LeaderboardInformation] = useState({ teamId: 3, leaderboardData: null })
 
-  // REINSTATE THIS EVALUATION IN PROD
-  // const isCompetitionLive = currentPhase.state === LIVE
-  const isCompetitionLive = true
+  const isCompetitionLive = currentPhase.state === LIVE
   const hasCompetitionFinished = currentPhase.state === FINISHED
 
   const onRegisterSuccess = () => {
@@ -226,15 +224,17 @@ const TradingCompetition = () => {
       >
         <Box mt={shouldHideCta ? '0px' : '54px'}>
           {/* If competition has not yet started, render HowToJoin component - if not, render YourScore */}
-          {/* REINSTATE THIS TERNARY FOR PRODUCTION */}
-          {/* {!isCompetitionLive ? <HowToJoin /> : <div />} */}
-          <YourScore
-            hasRegistered={userTradingInformation.hasRegistered}
-            account={account}
-            profile={profile}
-            isLoading={isLoading}
-            userLeaderboardInformation={userLeaderboardInformation}
-          />
+          {!isCompetitionLive ? (
+            <HowToJoin />
+          ) : (
+            <YourScore
+              hasRegistered={userTradingInformation.hasRegistered}
+              account={account}
+              profile={profile}
+              isLoading={isLoading}
+              userLeaderboardInformation={userLeaderboardInformation}
+            />
+          )}
         </Box>
       </Section>
       <Section
