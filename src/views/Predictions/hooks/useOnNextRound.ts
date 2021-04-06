@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { useDispatch } from 'react-redux'
+import { useAppDispatch } from 'state'
 import { useGetCurrentEpoch, useGetSortedRounds } from 'state/hooks'
 import useSwiper from './useSwiper'
 
@@ -8,7 +8,7 @@ const useOnNextRound = () => {
   const rounds = useGetSortedRounds()
   const previousEpoch = useRef(currentEpoch)
   const { swiper } = useSwiper()
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
     if (currentEpoch !== previousEpoch.current) {

@@ -1,5 +1,4 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import {
   ArrowBackIcon,
@@ -10,6 +9,7 @@ import {
   HistoryIcon,
   IconButton,
 } from '@pancakeswap-libs/uikit'
+import { useAppDispatch } from 'state'
 import { useIsChartPaneOpen, useIsHistoryPaneOpen } from 'state/hooks'
 import { setChartPaneState, setHistoryPaneState } from 'state/predictions'
 import useSwiper from '../hooks/useSwiper'
@@ -53,7 +53,7 @@ const MobileNavigation = () => {
   const isHistoryOpen = useIsHistoryPaneOpen()
   const isChartOpen = useIsChartPaneOpen()
   const activeIndex = getActiveIndex(isHistoryOpen, isChartOpen)
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   const handleItemClick = (index: number) => {
     switch (index) {

@@ -1,6 +1,6 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
 import { ArrowForwardIcon, Box, Button, Flex, Heading, Text } from '@pancakeswap-libs/uikit'
+import { useAppDispatch } from 'state'
 import { setHistoryPaneState } from 'state/predictions'
 import useI18n from 'hooks/useI18n'
 import styled from 'styled-components'
@@ -14,7 +14,7 @@ const StyledHeader = styled(Box)`
 
 const Header = () => {
   const TranslateString = useI18n()
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   const handleClick = () => {
     dispatch(setHistoryPaneState(false))

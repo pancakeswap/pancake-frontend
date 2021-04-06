@@ -1,6 +1,6 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
 import { AutoRenewIcon, HistoryIcon, IconButton } from '@pancakeswap-libs/uikit'
+import { useAppDispatch } from 'state'
 import { showHistory } from 'state/predictions'
 import { useGetIsFetchingHistory } from 'state/hooks'
 import { useWeb3React } from '@web3-react/core'
@@ -8,7 +8,7 @@ import { useWeb3React } from '@web3-react/core'
 const HistoryButton = () => {
   const { account } = useWeb3React()
   const isFetchingHistory = useGetIsFetchingHistory()
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   const handleClick = () => {
     dispatch(showHistory({ account }))

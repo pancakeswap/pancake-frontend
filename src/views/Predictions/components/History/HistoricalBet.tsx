@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
 import { Box, ChevronDownIcon, ChevronUpIcon, Flex, IconButton, Text } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
+import { useAppDispatch } from 'state'
 import { updateBet } from 'state/predictions'
 import { Bet, BetPosition } from 'state/types'
 import useI18n from 'hooks/useI18n'
@@ -33,7 +33,7 @@ const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
   const resultTextPrefix = isWinner ? '' : '-'
   const toggleOpen = () => setIsOpen(!isOpen)
   const payout = getPayout(bet)
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   const handleSuccess = async () => {
     await dispatch(updateBet({ id: bet.id }))

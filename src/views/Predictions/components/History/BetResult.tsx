@@ -1,6 +1,6 @@
 import React from 'react'
 import { Box, Flex, Heading, Text, PrizeIcon, BlockIcon } from '@pancakeswap-libs/uikit'
-import { useDispatch } from 'react-redux'
+import { useAppDispatch } from 'state'
 import useI18n from 'hooks/useI18n'
 import styled from 'styled-components'
 import { Bet, BetPosition } from 'state/types'
@@ -24,7 +24,7 @@ const StyledBetResult = styled(Box)`
 const BetResult: React.FC<BetResultProps> = ({ bet, isWinner }) => {
   const TranslateString = useI18n()
   const payout = getPayout(bet)
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const headerColor = isWinner ? 'warning' : 'textSubtle'
 
   const handleSuccess = async () => {

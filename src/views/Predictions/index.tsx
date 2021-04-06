@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import { useAppDispatch } from 'state'
 import { useMatchBreakpoints } from '@pancakeswap-libs/uikit'
 import { useGetPredictionsStatus, useInitialBlock } from 'state/hooks'
 import {
@@ -22,7 +22,7 @@ const FUTURE_ROUND_COUNT = 2 // the number of rounds in the future to show
 const Predictions = () => {
   const { isLg, isXl } = useMatchBreakpoints()
   const status = useGetPredictionsStatus()
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const initialBlock = useInitialBlock()
   const isDesktop = isLg || isXl
 

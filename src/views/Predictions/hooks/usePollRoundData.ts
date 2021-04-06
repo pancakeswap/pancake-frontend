@@ -1,6 +1,6 @@
 import { useWeb3React } from '@web3-react/core'
 import { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import { useAppDispatch } from 'state'
 import { updateRounds } from 'state/predictions'
 import { getLatestRounds, makeRoundData } from 'state/predictions/helpers'
 import { RoundResponse } from 'state/predictions/queries'
@@ -8,7 +8,7 @@ import { RoundResponse } from 'state/predictions/queries'
 const POLL_TIME_IN_SECONDS = 15
 
 const usePollRoundData = () => {
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const { account } = useWeb3React()
 
   useEffect(() => {

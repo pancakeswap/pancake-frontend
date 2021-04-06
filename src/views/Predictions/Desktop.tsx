@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { useDispatch } from 'react-redux'
+import { useAppDispatch } from 'state'
 import { ArrowDownIcon, Button, ChartIcon } from '@pancakeswap-libs/uikit'
 import { useIsChartPaneOpen, useIsHistoryPaneOpen } from 'state/hooks'
 import { setChartPaneState } from 'state/predictions'
@@ -69,7 +69,7 @@ const StyledDesktop = styled.div`
 const Desktop: React.FC = () => {
   const isHistoryPaneOpen = useIsHistoryPaneOpen()
   const isChartPaneOpen = useIsChartPaneOpen()
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const TranslateString = useI18n()
 
   const toggleChartPane = () => {

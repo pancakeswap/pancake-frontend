@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
 import { CardBody, PlayCircleOutlineIcon, Button } from '@pancakeswap-libs/uikit'
+import { useAppDispatch } from 'state'
 import useI18n from 'hooks/useI18n'
 import { BetPosition, Round } from 'state/types'
 import { useGetTotalIntervalBlocks, useToast } from 'state/hooks'
@@ -45,7 +45,7 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
   })
   const TranslateString = useI18n()
   const interval = useGetTotalIntervalBlocks()
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const { toastSuccess } = useToast()
   const { isSettingPosition, position, hasEnteredPosition } = state
 

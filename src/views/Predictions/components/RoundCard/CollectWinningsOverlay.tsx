@@ -1,7 +1,7 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import { Flex, TrophyGoldIcon } from '@pancakeswap-libs/uikit'
+import { useAppDispatch } from 'state'
 import { useGetBetByRoundId } from 'state/hooks'
 import useI18n from 'hooks/useI18n'
 import { updateRound } from 'state/predictions'
@@ -35,7 +35,7 @@ const Wrapper = styled(Flex)<{ isBottom: CollectWinningsOverlayProps['isBottom']
 const CollectWinningsOverlay: React.FC<CollectWinningsOverlayProps> = ({ roundId, isBottom = false, ...props }) => {
   const bet = useGetBetByRoundId(roundId)
   const TranslateString = useI18n()
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const payout = getPayout(bet)
 
   const handleSuccess = async () => {
