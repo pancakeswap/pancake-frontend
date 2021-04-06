@@ -161,17 +161,15 @@ const TradingCompetition = () => {
       }
     }
 
-    if (account) {
+    if (account && userTradingInformation.hasRegistered) {
       fetchUserTradingStats()
     }
 
     fetchTeamsLeaderboardStats(1, (data) => setTeam1LeaderboardInformation(data))
-    // CURRENTLY NO TEAM 2 DATA - SO IT BORKS
-    // fetchTeamsLeaderboardStats(2, (data) => setTeam2LeaderboardInformation(data))
+    fetchTeamsLeaderboardStats(2, (data) => setTeam2LeaderboardInformation(data))
     fetchTeamsLeaderboardStats(3, (data) => setTeam3LeaderboardInformation(data))
-
     fetchGlobalLeaderboardStats()
-  }, [account, profileApiUrl])
+  }, [account, userTradingInformation, profileApiUrl])
 
   console.log('team 1: ', team1LeaderboardInformation)
   console.log('team 3: ', team3LeaderboardInformation)
