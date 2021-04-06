@@ -5,6 +5,7 @@ import makeBatchRequest from 'utils/makeBatchRequest'
 import { getPredictionsContract } from 'utils/contractHelpers'
 import {
   BetResponse,
+  getBetQuery,
   getRoundQuery,
   getRoundsQuery,
   getUserPositionsQuery,
@@ -171,4 +172,16 @@ export const getUserPositions = async (
   `,
   )
   return response.user.bets
+}
+
+export const getBet = async (betId: string): Promise<BetResponse> => {
+  const response = await request(
+    GRAPH_API_PREDICTIONS,
+    gql`
+      {
+        ${getBetQuery(betId)}
+      }
+  `,
+  )
+  return response.bet
 }

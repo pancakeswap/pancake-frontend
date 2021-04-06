@@ -166,3 +166,40 @@ export const getUserPositionsQuery = (id: string, first: number, whereClaus: Use
     }
   `
 }
+
+export const getBetQuery = (id: string) => {
+  return `
+    bet(id: "${id.toLocaleLowerCase()}") {
+      id
+      hash  
+      amount
+      position
+      claimed
+      round {
+        id
+        epoch
+        startAt
+        startBlock
+        lockAt
+        lockBlock
+        lockPrice
+        endAt
+        endBlock
+        closePrice
+        totalBets
+        totalAmount
+        bullBets
+        bullAmount
+        bearBets
+        bearAmount
+      }
+      user {
+        id
+        address
+        block
+        totalBets
+        totalBNB
+      } 
+    }
+  `
+}

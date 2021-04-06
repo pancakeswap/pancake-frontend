@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { useDispatch } from 'react-redux'
 import {
   ModalContainer,
   ModalBody,
@@ -16,15 +15,14 @@ import {
 } from '@pancakeswap-libs/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { useToast } from 'state/hooks'
-import { showHistory, updateRound } from 'state/predictions'
 import useI18n from 'hooks/useI18n'
 import { usePredictionsContract } from 'hooks/useContract'
 import { formatBnb } from '../helpers'
 
 interface CollectRoundWinningsModalProps extends InjectedModalProps {
-  bnbToCollect: number
+  payout: number
   epoch: number
-  roundId: string
+  onSuccess?: () => Promise<void>
 }
 
 const BunnyDecoration = styled.div`
@@ -36,34 +34,34 @@ const BunnyDecoration = styled.div`
 `
 
 const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
-  bnbToCollect,
+  payout,
   epoch,
-  roundId,
   onDismiss,
+  onSuccess,
 }) => {
   const [isPendingTx, setIsPendingTx] = useState(false)
   const { account } = useWeb3React()
   const TranslateString = useI18n()
   const { toastSuccess, toastError } = useToast()
   const predictionsContract = usePredictionsContract()
-  const dispatch = useDispatch()
 
   const handleClick = () => {
     predictionsContract.methods
       .claim(epoch)
       .send({ from: account })
-      .on('sending', () => {
+      .once('sending', () => {
         setIsPendingTx(true)
       })
-      .on('receipt', async () => {
-        // Update round and history data
-        await Promise.all([dispatch(updateRound({ id: roundId })), dispatch(showHistory({ account }))])
+      .once('receipt', async () => {
+        if (onSuccess) {
+          await onSuccess()
+        }
 
         setIsPendingTx(false)
         onDismiss()
         toastSuccess(TranslateString(999, 'Winnings collected!'))
       })
-      .on('error', (error) => {
+      .once('error', (error) => {
         setIsPendingTx(false)
         toastError('Error', error?.message)
         console.error(error)
@@ -84,7 +82,7 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
         <TrophyGoldIcon width="96px" mx="auto" mb="24px" />
         <Flex alignItems="center" justifyContent="space-between" mb="24px">
           <Text>{TranslateString(999, 'Collecting')}</Text>
-          <Text>{formatBnb(bnbToCollect)}</Text>
+          <Text>{formatBnb(payout)}</Text>
         </Flex>
         <Button
           width="100%"

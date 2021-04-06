@@ -1,16 +1,15 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useDispatch } from 'react-redux'
-import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
-import { Button, Flex, TrophyGoldIcon } from '@pancakeswap-libs/uikit'
+import { Flex, TrophyGoldIcon } from '@pancakeswap-libs/uikit'
+import { useGetBetByRoundId } from 'state/hooks'
 import useI18n from 'hooks/useI18n'
-import { usePredictionsContract } from 'hooks/useContract'
-import { useToast } from 'state/hooks'
 import { updateRound } from 'state/predictions'
+import CollectWinningsButton from '../CollectWinningsButton'
+import { getPayout } from '../../helpers'
 
 interface CollectWinningsOverlayProps {
   roundId: string
-  epoch: number
   isBottom?: boolean
 }
 
@@ -33,44 +32,28 @@ const Wrapper = styled(Flex)<{ isBottom: CollectWinningsOverlayProps['isBottom']
   }}
 `
 
-const CollectWinningsOverlay: React.FC<CollectWinningsOverlayProps> = ({
-  roundId,
-  epoch,
-  isBottom = false,
-  ...props
-}) => {
-  const [isPendingTx, setIsPendingTx] = useState(false)
+const CollectWinningsOverlay: React.FC<CollectWinningsOverlayProps> = ({ roundId, isBottom = false, ...props }) => {
+  const bet = useGetBetByRoundId(roundId)
   const TranslateString = useI18n()
-  const predictionsContract = usePredictionsContract()
-  const { account } = useWeb3React()
-  const { toastSuccess, toastError } = useToast()
   const dispatch = useDispatch()
+  const payout = getPayout(bet)
 
-  const handleClick = () => {
-    predictionsContract.methods
-      .claim(epoch)
-      .send({ from: account })
-      .on('sending', () => {
-        setIsPendingTx(true)
-      })
-      .on('receipt', async () => {
-        await dispatch(updateRound({ id: roundId }))
-        setIsPendingTx(false)
-        toastSuccess(TranslateString(999, 'Winnings collected!'))
-      })
-      .on('error', (error) => {
-        setIsPendingTx(false)
-        toastError('Error', error?.message)
-        console.error(error)
-      })
+  const handleSuccess = async () => {
+    await dispatch(updateRound({ id: roundId }))
   }
 
   return (
     <Wrapper alignItems="center" p="16px" isBottom={isBottom} {...props}>
       <TrophyGoldIcon width="64px" style={{ flex: 'none' }} mr="8px" />
-      <Button width="100%" onClick={handleClick} isLoading={isPendingTx}>
+      <CollectWinningsButton
+        payout={payout}
+        epoch={bet.round.epoch}
+        hasClaimed={bet.claimed}
+        width="100%"
+        onSuccess={handleSuccess}
+      >
         {TranslateString(556, 'Collect Winnings')}
-      </Button>
+      </CollectWinningsButton>
     </Wrapper>
   )
 }

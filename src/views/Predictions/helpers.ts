@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js'
-import { Round } from 'state/types'
+import { Bet, BetPosition, Round } from 'state/types'
 import { DefaultTheme } from 'styled-components'
 import { getBalanceAmount } from 'utils/formatBalance'
 import getTimePeriods from 'utils/getTimePeriods'
@@ -43,6 +43,15 @@ export const getMultiplier = (total: number, amount: number) => {
   }
 
   return total / amount
+}
+
+/**
+ * Calculates the total payout given a bet
+ */
+export const getPayout = (bet: Bet) => {
+  const { bullAmount, bearAmount, totalAmount } = bet.round
+  const multiplier = getMultiplier(totalAmount, bet.position === BetPosition.BULL ? bullAmount : bearAmount)
+  return bet.amount * multiplier
 }
 
 // TODO: Move this to the UI Kit

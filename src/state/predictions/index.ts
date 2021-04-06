@@ -8,6 +8,7 @@ import {
   transformRoundResponse,
   getUserPositions,
   transformBetResponse,
+  getBet,
 } from './helpers'
 
 const initialState: PredictionsState = {
@@ -31,6 +32,12 @@ export const updateRound = createAsyncThunk<Round, { id: string }>('predictions/
   const round = transformRoundResponse(response)
 
   return round
+})
+
+export const updateBet = createAsyncThunk<Bet, { id: string }>('predictions/updateBet', async ({ id }) => {
+  const response = await getBet(id)
+  const bet = transformBetResponse(response)
+  return bet
 })
 
 export const showHistory = createAsyncThunk<Bet[], { account: string }>(
@@ -86,6 +93,11 @@ export const predictionsSlice = createSlice({
     builder.addCase(updateRound.fulfilled, (state, action) => {
       const { payload: round } = action
       state.rounds[round.id] = round
+    })
+
+    // Update Bet
+    builder.addCase(updateBet.fulfilled, (state, action) => {
+      state.bets = [...state.bets.filter((bet) => bet.id !== action.payload.id), action.payload]
     })
 
     // Show History

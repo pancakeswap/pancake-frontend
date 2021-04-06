@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { Box, ChevronDownIcon, ChevronUpIcon, Flex, IconButton, Text } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
+import { updateBet } from 'state/predictions'
 import { Bet, BetPosition } from 'state/types'
 import useI18n from 'hooks/useI18n'
-import { formatBnb } from '../../helpers'
+import { formatBnb, getPayout } from '../../helpers'
 import CollectWinningsButton from '../CollectWinningsButton'
 import BetDetails from './BetDetails'
 
@@ -30,6 +32,12 @@ const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
   const resultTextColor = isWinner ? 'success' : 'failure'
   const resultTextPrefix = isWinner ? '' : '-'
   const toggleOpen = () => setIsOpen(!isOpen)
+  const payout = getPayout(bet)
+  const dispatch = useDispatch()
+
+  const handleSuccess = async () => {
+    await dispatch(updateBet({ id: bet.id }))
+  }
 
   return (
     <>
@@ -53,7 +61,14 @@ const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
           </Text>
         </YourResult>
         {isWinner && !claimed && (
-          <CollectWinningsButton bet={bet} scale="sm" mr="8px">
+          <CollectWinningsButton
+            onSuccess={handleSuccess}
+            hasClaimed={bet.claimed}
+            epoch={bet.round.epoch}
+            payout={payout}
+            scale="sm"
+            mr="8px"
+          >
             {TranslateString(999, 'Collect')}
           </CollectWinningsButton>
         )}

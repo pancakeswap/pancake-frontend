@@ -1,9 +1,11 @@
 import React from 'react'
 import { Box, Flex, Heading, Text } from '@pancakeswap-libs/uikit'
+import { useDispatch } from 'react-redux'
 import useI18n from 'hooks/useI18n'
 import styled from 'styled-components'
 import { Bet, BetPosition } from 'state/types'
-import { formatBnb, getMultiplier } from '../../helpers'
+import { updateBet } from 'state/predictions'
+import { formatBnb, getPayout } from '../../helpers'
 import CollectWinningsButton from '../CollectWinningsButton'
 import PositionTag from '../PositionTag'
 
@@ -21,15 +23,26 @@ const StyledBetResult = styled(Box)`
 
 const BetResult: React.FC<BetResultProps> = ({ bet, isWinner }) => {
   const TranslateString = useI18n()
-  const { bullAmount, bearAmount, totalAmount } = bet.round
-  const resultMultiplier = getMultiplier(totalAmount, bet.position === BetPosition.BULL ? bullAmount : bearAmount)
+  const payout = getPayout(bet)
+  const dispatch = useDispatch()
+
+  const handleSuccess = async () => {
+    await dispatch(updateBet({ id: bet.id }))
+  }
 
   return (
     <>
       <Heading mb="8px">{TranslateString(999, 'Your History')}</Heading>
       <StyledBetResult>
         {isWinner && !bet.claimed && (
-          <CollectWinningsButton bet={bet} width="100%" mb="16px">
+          <CollectWinningsButton
+            payout={payout}
+            epoch={bet.round.epoch}
+            hasClaimed={bet.claimed}
+            width="100%"
+            mb="16px"
+            onSuccess={handleSuccess}
+          >
             {TranslateString(999, 'Collect Winnings')}
           </CollectWinningsButton>
         )}
@@ -45,7 +58,7 @@ const BetResult: React.FC<BetResultProps> = ({ bet, isWinner }) => {
         </Flex>
         <Flex alignItems="center" justifyContent="space-between">
           <Text bold>{TranslateString(999, 'Your Result')}</Text>
-          <Text bold>{`${formatBnb(bet.amount * resultMultiplier)} BNB`}</Text>
+          <Text bold color={isWinner ? 'success' : 'failure'}>{`${isWinner ? '+' : '-'}${formatBnb(payout)} BNB`}</Text>
         </Flex>
       </StyledBetResult>
     </>
