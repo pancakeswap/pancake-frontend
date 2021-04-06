@@ -143,14 +143,20 @@ const TradingCompetition = () => {
       const data = await res.json()
       setUserLeaderboardInformation(data.leaderboard)
     }
+    // If user has not registered, user trading information will not be displayed and should not be fetched
+    if (account && userTradingInformation.hasRegistered) {
+      fetchUserTradingStats()
+    }
+  }, [account, userTradingInformation, profileApiUrl])
 
+  useEffect(() => {
     const fetchGlobalLeaderboardStats = async () => {
       const res = await fetch(`${profileApiUrl}/api/leaderboard/global`)
       const data = await res.json()
       setGlobalLeaderboardInformation(data)
     }
 
-    const fetchTeamsLeaderboardStats = async (teamId, callBack) => {
+    const fetchTeamsLeaderboardStats = async (teamId: number, callBack: (data: any) => void) => {
       try {
         const res = await fetch(`${profileApiUrl}/api/leaderboard/team/${teamId}`)
         const data = await res.json()
@@ -158,10 +164,6 @@ const TradingCompetition = () => {
       } catch (e) {
         console.error(e)
       }
-    }
-
-    if (account && userTradingInformation.hasRegistered) {
-      fetchUserTradingStats()
     }
 
     fetchTeamsLeaderboardStats(1, (data) =>
@@ -180,13 +182,7 @@ const TradingCompetition = () => {
       }),
     )
     fetchGlobalLeaderboardStats()
-  }, [account, userTradingInformation, profileApiUrl])
-
-  // console.log('team 1: ', team1LeaderboardInformation)
-  // console.log('team 2: ', team2LeaderboardInformation)
-  // console.log('team 3: ', team3LeaderboardInformation)
-  // console.log('global: ', globalLeaderboardInformation)
-  // console.log('user:', userLeaderboardInformation)
+  }, [profileApiUrl])
 
   // Don't hide when loading. Hide if the account is connected, the user hasn't registered and the competition is live or finished
   const shouldHideCta =
