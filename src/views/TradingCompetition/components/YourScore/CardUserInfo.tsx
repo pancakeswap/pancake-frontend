@@ -75,7 +75,10 @@ const CardUserInfo: React.FC<YourScoreProps> = ({ hasRegistered, account, profil
 
   const getNextTier = (currentRank: ReactText) => {
     if (currentRank === 1) {
-      return null
+      return {
+        color: null,
+        rank: null,
+      }
     }
     if (currentRank <= 10) {
       return {
@@ -172,15 +175,28 @@ const CardUserInfo: React.FC<YourScoreProps> = ({ hasRegistered, account, profil
               )}
             </UserRankBox>
           </Flex>
-          <NextRankBox
-            flex="2"
-            title={`${TranslateString(999, 'Next tier').toUpperCase()}: ${nextTier.color}`}
-            footer={`${TranslateString(999, 'to become')} #${nextTier.rank} ${TranslateString(999, 'in team')}`}
-            currentMedal={medal.current}
-            nextMedal={medal.next}
-          >
-            <Heading size="lg">+${localiseTradingVolume(next_rank)}</Heading>
-          </NextRankBox>
+          {team === 1 ? (
+            // If user is first
+            <NextRankBox
+              flex="2"
+              title={`${TranslateString(999, 'Your tier: gold').toUpperCase()}`}
+              footer={`${TranslateString(999, 'Love, The Chefs x')}`}
+              currentMedal={medal.current}
+              hideArrow
+            >
+              <Heading size="lg">{TranslateString(999, 'HECK YES!')}</Heading>
+            </NextRankBox>
+          ) : (
+            <NextRankBox
+              flex="2"
+              title={`${TranslateString(999, 'Next tier').toUpperCase()}: ${nextTier.color}`}
+              footer={`${TranslateString(999, 'to become')} #${nextTier.rank} ${TranslateString(999, 'in team')}`}
+              currentMedal={medal.current}
+              nextMedal={medal.next}
+            >
+              <Heading size="lg">+${localiseTradingVolume(next_rank)}</Heading>
+            </NextRankBox>
+          )}
         </RanksWrapper>
       )}
     </Flex>

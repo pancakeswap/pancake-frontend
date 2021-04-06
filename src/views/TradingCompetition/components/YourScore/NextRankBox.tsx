@@ -5,6 +5,7 @@ import { Flex, Text, Skeleton, FlexProps, ArrowForwardIcon } from '@pancakeswap-
 interface NextRankProps extends FlexProps {
   title?: string
   footer?: string
+  hideArrow?: boolean
   nextMedal?: ReactElement
   currentMedal?: ReactElement
 }
@@ -20,10 +21,6 @@ const Wrapper = styled(Flex)`
 
   ${({ theme }) => theme.mediaQueries.sm} {
     margin-top: 0;
-  }
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    min-width: 300px;
   }
 `
 
@@ -43,7 +40,15 @@ const ArrowWrapper = styled(Flex)`
   }
 `
 
-const NextRank: React.FC<NextRankProps> = ({ title = '', footer, currentMedal, nextMedal, children, ...props }) => {
+const NextRank: React.FC<NextRankProps> = ({
+  title = '',
+  footer,
+  currentMedal,
+  nextMedal,
+  hideArrow = false,
+  children,
+  ...props
+}) => {
   return (
     <Wrapper {...props}>
       <Flex flexDirection="column" mr="24px">
@@ -58,9 +63,11 @@ const NextRank: React.FC<NextRankProps> = ({ title = '', footer, currentMedal, n
       <Flex flexDirection="column">
         <MedalsWrapper>
           {currentMedal}
-          <ArrowWrapper>
-            <ArrowForwardIcon />
-          </ArrowWrapper>
+          {hideArrow ? null : (
+            <ArrowWrapper>
+              <ArrowForwardIcon />
+            </ArrowWrapper>
+          )}
           {nextMedal}
         </MedalsWrapper>
       </Flex>
