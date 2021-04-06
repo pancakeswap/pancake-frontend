@@ -60,8 +60,6 @@ const useGetWalletNfts = () => {
         const balanceOf = await pancakeRabbitsContract.methods.balanceOf(account).call()
 
         if (balanceOf > 0) {
-          let nfts: NftMap = {}
-
           const getTokenIdAndBunnyId = async (index: number) => {
             try {
               const { tokenOfOwnerByIndex, getBunnyId, tokenURI } = pancakeRabbitsContract.methods
@@ -82,7 +80,7 @@ const useGetWalletNfts = () => {
 
           const tokenIdsOwnedByWallet = await Promise.all(tokenIdPromises)
 
-          nfts = tokenIdsOwnedByWallet.reduce((accum, association) => {
+          const nfts: NftMap = tokenIdsOwnedByWallet.reduce((accum, association) => {
             if (!association) {
               return accum
             }

@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { Flex, Skeleton, PocketWatchIcon, Text } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
-import useGetBlockCountdown from 'hooks/useGetBlockCountdown'
 import getTimePeriods from 'utils/getTimePeriods'
 import { Heading2Text } from '../CompetitionHeadingText'
 import { CompetitionSteps, FINISHED, LIVE, CompetitionPhaseProps } from '../../config'
 import ProgressStepper from './ProgressStepper'
-import Timer from './Timer'
+import Timer from '../../../../components/Timer'
 import { GOLDGRADIENT } from '../Section/sectionStyles'
 
 const Wrapper = styled(Flex)`
@@ -61,15 +60,11 @@ const TimerBodyComponent = ({ children }) => (
 
 const Countdown: React.FC<{ currentPhase: CompetitionPhaseProps }> = ({ currentPhase }) => {
   const TranslateString = useI18n()
-  const [secondsUntilNextEvent, setSecondsUntilNextEvent] = useState(0)
-  const targetBlockNumber = currentPhase.ends
-  const secondsUntilTargetBlock = useGetBlockCountdown(targetBlockNumber)
+  const finishMs = currentPhase.ends
+  const currentMs = Date.now()
+  const secondsUntilNextEvent = (finishMs - currentMs) / 1000
 
   const { minutes, hours, days } = getTimePeriods(secondsUntilNextEvent)
-
-  useEffect(() => {
-    setSecondsUntilNextEvent(secondsUntilTargetBlock)
-  }, [secondsUntilTargetBlock])
 
   return (
     <Wrapper>
@@ -89,8 +84,6 @@ const Countdown: React.FC<{ currentPhase: CompetitionPhaseProps }> = ({ currentP
                 minutes={minutes}
                 hours={hours}
                 days={days}
-                blockNumber={targetBlockNumber}
-                showTooltip
                 HeadingTextComponent={TimerHeadingComponent}
                 BodyTextComponent={TimerBodyComponent}
               />

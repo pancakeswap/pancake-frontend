@@ -1,8 +1,6 @@
 import React from 'react'
 import { Box, BoxProps, Text } from '@pancakeswap-libs/uikit'
 
-type MetaLabel = BoxProps
-
 const MetaLabel: React.FC<BoxProps> = ({ children, ...props }) => {
   return (
     <Box minHeight="18px" {...props}>
