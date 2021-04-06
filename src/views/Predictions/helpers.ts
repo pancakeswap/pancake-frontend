@@ -37,6 +37,14 @@ export const formatRoundTime = (secondsBetweenBlocks: number) => {
   return minutesSeconds
 }
 
+export const getMultiplier = (total: number, amount: number) => {
+  if (total === 0 || amount === 0) {
+    return 0
+  }
+
+  return total / amount
+}
+
 // TODO: Move this to the UI Kit
 export const getBubbleGumBackground = (theme: DefaultTheme) => {
   if (theme.isDark) {

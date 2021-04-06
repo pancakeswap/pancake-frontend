@@ -3,7 +3,7 @@ import { Box, Flex, Heading, Text } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import styled from 'styled-components'
 import { Bet, BetPosition } from 'state/types'
-import { formatBnb } from '../../helpers'
+import { formatBnb, getMultiplier } from '../../helpers'
 import CollectWinningsButton from '../CollectWinningsButton'
 import PositionTag from '../PositionTag'
 
@@ -21,6 +21,8 @@ const StyledBetResult = styled(Box)`
 
 const BetResult: React.FC<BetResultProps> = ({ bet, isWinner }) => {
   const TranslateString = useI18n()
+  const { bullAmount, bearAmount, totalAmount } = bet.round
+  const resultMultiplier = getMultiplier(totalAmount, bet.position === BetPosition.BULL ? bullAmount : bearAmount)
 
   return (
     <>
@@ -43,7 +45,7 @@ const BetResult: React.FC<BetResultProps> = ({ bet, isWinner }) => {
         </Flex>
         <Flex alignItems="center" justifyContent="space-between">
           <Text bold>{TranslateString(999, 'Your Result')}</Text>
-          <Text bold>{`${formatBnb(bet.amount)} BNB`}</Text>
+          <Text bold>{`${formatBnb(bet.amount * resultMultiplier)} BNB`}</Text>
         </Flex>
       </StyledBetResult>
     </>

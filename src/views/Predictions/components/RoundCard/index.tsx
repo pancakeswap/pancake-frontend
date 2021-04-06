@@ -1,7 +1,8 @@
-import { useWeb3React } from '@web3-react/core'
 import React from 'react'
+import { useWeb3React } from '@web3-react/core'
 import { useGetCurrentEpoch, useGetUserBetByRound } from 'state/hooks'
 import { BetPosition, Round } from 'state/types'
+import { getMultiplier } from '../../helpers'
 import ExpiredRoundCard from './ExpiredRoundCard'
 import LiveRoundCard from './LiveRoundCard'
 import OpenRoundCard from './OpenRoundCard'
@@ -9,14 +10,6 @@ import SoonRoundCard from './SoonRoundCard'
 
 interface RoundCardProps {
   round: Round
-}
-
-const getMultiplier = (total: number, amount: number) => {
-  if (total === 0 || amount === 0) {
-    return 0
-  }
-
-  return total / amount
 }
 
 const RoundCard: React.FC<RoundCardProps> = ({ round }) => {

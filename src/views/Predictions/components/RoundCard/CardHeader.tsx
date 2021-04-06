@@ -42,7 +42,7 @@ const getTextColorByStatus = (status: Status, fallback: FallbackColor): TextColo
 }
 
 const StyledCardHeader = styled.div<{ status: Status }>`
-  align-item: center;
+  align-items: center;
   background-color: ${({ theme, status }) => theme.colors[getBackgroundColor(status)]};
   border-radius: 16px 16px 0 0;
   display: grid;
@@ -56,7 +56,6 @@ const Round = styled.div`
 
 const CardHeader: React.FC<CardHeaderProps> = ({ status, title, epoch, icon }) => {
   const textColor = getTextColorByStatus(status, 'text')
-
   const isLive = status === 'live'
 
   return (
