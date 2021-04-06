@@ -166,9 +166,9 @@ const PrizesGrid = () => {
                   </BoldTd>
                   <Td>
                     <Flex alignItems="center" flexWrap="wrap" justifyContent="center" width="100%">
-                      {champion && <CrownIcon mr={{ sm: '2px', md: '4px' }} />}
-                      {teamPlayer && <TeamPlayerIcon mr={{ sm: '2px', md: '4px' }} />}
-                      <TrophyGoldIcon mr={{ sm: '2px', md: '4px' }} />
+                      {champion && <CrownIcon mr={{ _: '2px', md: '4px' }} />}
+                      {teamPlayer && <TeamPlayerIcon mr={{ _: '2px', md: '4px' }} />}
+                      <TrophyGoldIcon mr={{ _: '2px', md: '4px' }} />
                       <Text fontSize="12px" color="textSubtle">
                         {`+${getTotalAchievementPoints(row.achievements).toLocaleString(undefined, {
                           minimumFractionDigits: 0,

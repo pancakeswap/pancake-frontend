@@ -64,14 +64,6 @@ const StyledHeading = styled(Heading2Text)`
   }
 `
 
-const StyledTimerText = styled(Text)`
-  margin-right: 10px;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    margin-right: 16px;
-  }
-`
-
 const TimerHeadingComponent = ({ children }) => (
   <StyledHeading background={GOLDGRADIENT} fill>
     {children}
@@ -79,9 +71,9 @@ const TimerHeadingComponent = ({ children }) => (
 )
 
 const TimerBodyComponent = ({ children }) => (
-  <StyledTimerText bold color="#ffff" fontSize="16px">
+  <Text bold color="#ffff" fontSize="16px" mr={{ _: '10px', sm: '16px' }}>
     {children}
-  </StyledTimerText>
+  </Text>
 )
 
 const Countdown: React.FC<{ currentPhase: CompetitionPhaseProps }> = ({ currentPhase }) => {
