@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.21.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap-libs/uikit@0.20.1...@pancakeswap-libs/uikit@0.21.0) (2021-04-06)
+
+
+### Bug Fixes
+
+* Included setupTests.js and updated snap tests ([#50](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/50)) ([b6ab0ee](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/b6ab0ee48e82c8ac88b288e1f790e1c91babb93d))
+
+
+### Features
+
+* **uikit:** Dropdown color ([#52](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/52)) ([52aae47](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/52aae470bc0067f5ac130df3bdb562c2911cb5cc))
+
+
+
+
+
 ## [0.20.1](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap-libs/uikit@0.20.0...@pancakeswap-libs/uikit@0.20.1) (2021-04-02)
 
 **Note:** Version bump only for package @pancakeswap-libs/uikit
