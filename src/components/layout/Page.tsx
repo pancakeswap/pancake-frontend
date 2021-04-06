@@ -25,19 +25,19 @@ const StyledPage = styled(Container)`
 const PageMeta = () => {
   const { pathname } = useLocation()
   const cakePriceUsd = usePriceCakeBusd()
-  const cakePriceUsdDisplay =
-    cakePriceUsd.gt(0) &&
-    `$${cakePriceUsd.toNumber().toLocaleString(undefined, {
-      minimumFractionDigits: 3,
-      maximumFractionDigits: 3,
-    })}`
+  const cakePriceUsdDisplay = cakePriceUsd.eq(0)
+    ? ''
+    : `$${cakePriceUsd.toNumber().toLocaleString(undefined, {
+        minimumFractionDigits: 3,
+        maximumFractionDigits: 3,
+      })}`
   const pageMeta = customMeta[pathname] || {}
   const { title, description, image } = { ...DEFAULT_META, ...pageMeta }
-  const titleWithPrice = [title, cakePriceUsdDisplay].join(' - ')
+  const pageTitle = cakePriceUsdDisplay ? [title, cakePriceUsdDisplay].join(' - ') : title
 
   return (
     <Helmet>
-      <title>{titleWithPrice}</title>
+      <title>{pageTitle}</title>
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
       <meta property="og:image" content={image} />
