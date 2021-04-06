@@ -112,7 +112,7 @@ const CardFooter: React.FC<Props> = ({
           <Tag />
         </FlexFull>
         <StyledDetailsButton onClick={handleClick}>
-          {isOpen ? TranslateString(999, 'Hide') : TranslateString(658, 'Details')} <Icon />
+          {isOpen ? TranslateString(1066, 'Hide') : TranslateString(658, 'Details')} <Icon />
         </StyledDetailsButton>
       </Row>
       {isOpen && (
