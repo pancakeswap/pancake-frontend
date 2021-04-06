@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback, useState } from 'react'
 import { Route, useRouteMatch, useLocation } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useAppDispatch } from 'state'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import { Image, Heading, RowType, Toggle, Text } from '@pancakeswap-libs/uikit'
@@ -121,7 +121,7 @@ const Farms: React.FC = () => {
   const [sortOption, setSortOption] = useState('hot')
   const prices = useGetApiPrices()
 
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const { fastRefresh } = useRefresh()
   useEffect(() => {
     if (account) {

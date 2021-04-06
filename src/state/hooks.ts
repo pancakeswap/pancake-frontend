@@ -3,7 +3,8 @@ import BigNumber from 'bignumber.js'
 import { kebabCase } from 'lodash'
 import { useWeb3React } from '@web3-react/core'
 import { Toast, toastTypes } from '@pancakeswap-libs/uikit'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
+import { useAppDispatch } from 'state'
 import { Team } from 'config/constants/types'
 import { getWeb3NoAccount } from 'utils/web3'
 import useRefresh from 'hooks/useRefresh'
@@ -23,7 +24,7 @@ import { fetchAchievements } from './achievements'
 import { fetchPrices } from './prices'
 
 export const useFetchPublicData = () => {
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const { slowRefresh } = useRefresh()
   useEffect(() => {
     dispatch(fetchFarmsPublicDataAsync())
@@ -73,7 +74,7 @@ export const useFarmUser = (pid) => {
 
 export const usePools = (account): Pool[] => {
   const { fastRefresh } = useRefresh()
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   useEffect(() => {
     if (account) {
       dispatch(fetchPoolsUserDataAsync(account))
@@ -91,7 +92,7 @@ export const usePoolFromPid = (sousId): Pool => {
 
 // Toasts
 export const useToast = () => {
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const helpers = useMemo(() => {
     const push = (toast: Toast) => dispatch(pushToast(toast))
 
@@ -121,7 +122,7 @@ export const useToast = () => {
 
 export const useFetchProfile = () => {
   const { account } = useWeb3React()
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
     dispatch(fetchProfile(account))
@@ -137,7 +138,7 @@ export const useProfile = () => {
 
 export const useTeam = (id: number) => {
   const team: Team = useSelector((state: State) => state.teams.data[id])
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
     dispatch(fetchTeam(id))
@@ -148,7 +149,7 @@ export const useTeam = (id: number) => {
 
 export const useTeams = () => {
   const { isInitialized, isLoading, data }: TeamsState = useSelector((state: State) => state.teams)
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
     dispatch(fetchTeams())
@@ -161,7 +162,7 @@ export const useTeams = () => {
 
 export const useFetchAchievements = () => {
   const { account } = useWeb3React()
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
     if (account) {
@@ -178,7 +179,7 @@ export const useAchievements = () => {
 // Prices
 export const useFetchPriceList = () => {
   const { slowRefresh } = useRefresh()
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
     dispatch(fetchPrices())
