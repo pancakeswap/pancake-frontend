@@ -15,6 +15,8 @@ const Wrapper = styled(Flex)`
 `
 
 const StyledPodiumWrapper = styled(Flex)`
+  align-items: center;
+  justify-content: center;
   margin: 0 0 40px 0;
   ${({ theme }) => theme.mediaQueries.md} {
     flex: 1;
