@@ -984,6 +984,24 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://easyfi.network/',
   },
+  oddz: {
+    symbol: 'ODDZ',
+    address: {
+      56: '0xcd40f2670cf58720b694968698a5514e924f742d',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://oddz.fi/',
+  },
+  hoo: {
+    symbol: 'HOO',
+    address: {
+      56: '0xe1d1f66215998786110ba0102ef558b22224c016',
+      97: '',
+    },
+    decimals: 8,
+    projectLink: 'https://hoo.com/',
+  },
 }
 
 export default tokens
