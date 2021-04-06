@@ -2,8 +2,13 @@ import React from 'react'
 import styled from 'styled-components'
 import { Flex } from '@pancakeswap-libs/uikit'
 import TeamPodiumIcon from './TeamPodiumIcon'
+import { TeamLeaderboardProps } from '../../../types'
 
-const Podium = () => {
+interface PodiumProps {
+  teamsSortedByVolume?: Array<TeamLeaderboardProps>
+}
+
+const Podium: React.FC<PodiumProps> = ({ teamsSortedByVolume }) => {
   return (
     <Flex>
       <TeamPodiumIcon teamId={2} teamPosition={2} />

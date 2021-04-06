@@ -13,7 +13,7 @@ const Ranks: React.FC<SvgProps> = (props) => {
         strokeWidth="3"
         strokeLinecap="round"
       />
-      <g filter="url(#filter0_d)">
+      <g filter="url(#ranks_filter0_d)">
         <path
           d="M152.943 39.4074C154.597 36.8175 153.257 33.3671 150.289 32.5718C147.864 31.9221 145.372 33.3609 144.723 35.7853L142.436 44.3198C141.981 46.0162 142.988 47.7599 144.685 48.2145C146.024 48.5734 147.442 48.023 148.188 46.8543L152.943 39.4074Z"
           fill="#E7974D"
@@ -106,7 +106,7 @@ const Ranks: React.FC<SvgProps> = (props) => {
         strokeWidth="3"
         strokeLinecap="round"
       />
-      <g filter="url(#filter1_d)">
+      <g filter="url(#ranks_filter1_d)">
         <path
           d="M32.7708 34.2105C32.908 31.1407 30.0225 28.8224 27.0544 29.6177C24.6299 30.2673 23.1912 32.7593 23.8408 35.1838L26.1276 43.7182C26.5822 45.4147 28.3259 46.4214 30.0223 45.9668C31.3618 45.6079 32.3142 44.4225 32.3761 43.0372L32.7708 34.2105Z"
           fill="#B2B2B2"
@@ -234,7 +234,7 @@ const Ranks: React.FC<SvgProps> = (props) => {
         strokeWidth="3"
         strokeLinecap="round"
       />
-      <g filter="url(#filter2_d)">
+      <g filter="url(#ranks_filter2_d)">
         <path
           d="M100.278 13.8119C101.874 8.76997 98.1097 3.63086 92.8213 3.63086C88.5017 3.63086 85 7.13259 85 11.4522L85 26.658C85 29.6806 87.4503 32.1309 90.4728 32.1309C92.8593 32.1309 94.9706 30.5845 95.6906 28.3092L100.278 13.8119Z"
           fill="#FFD800"
@@ -332,7 +332,7 @@ const Ranks: React.FC<SvgProps> = (props) => {
       </g>
       <defs>
         <filter
-          id="filter0_d"
+          id="ranks_filter0_d"
           x="114.519"
           y="29.3848"
           width="48.5135"
@@ -348,7 +348,7 @@ const Ranks: React.FC<SvgProps> = (props) => {
           <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
         </filter>
         <filter
-          id="filter1_d"
+          id="ranks_filter1_d"
           x="3.28589"
           y="29.46"
           width="48.5135"
@@ -364,7 +364,7 @@ const Ranks: React.FC<SvgProps> = (props) => {
           <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
         </filter>
         <filter
-          id="filter2_d"
+          id="ranks_filter2_d"
           x="40.1174"
           y="3.63086"
           width="85.7651"

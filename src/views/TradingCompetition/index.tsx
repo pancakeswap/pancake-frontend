@@ -85,11 +85,11 @@ const TradingCompetition = () => {
   })
   const [globalLeaderboardInformation, setGlobalLeaderboardInformation] = useState(null)
   // 1. Syrup Storm
-  const [team1LeaderboardInformation, setTeam1LeaderboardInformation] = useState(null)
+  const [team1LeaderboardInformation, setTeam1LeaderboardInformation] = useState({ teamId: 1, leaderboardData: null })
   // 2. Flippers
-  const [team2LeaderboardInformation, setTeam2LeaderboardInformation] = useState(null)
+  const [team2LeaderboardInformation, setTeam2LeaderboardInformation] = useState({ teamId: 2, leaderboardData: null })
   // 3. Cakers
-  const [team3LeaderboardInformation, setTeam3LeaderboardInformation] = useState(null)
+  const [team3LeaderboardInformation, setTeam3LeaderboardInformation] = useState({ teamId: 3, leaderboardData: null })
 
   // REINSTATE THIS EVALUATION IN PROD
   // const isCompetitionLive = currentPhase.state === LIVE
@@ -165,15 +165,28 @@ const TradingCompetition = () => {
       fetchUserTradingStats()
     }
 
-    fetchTeamsLeaderboardStats(1, (data) => setTeam1LeaderboardInformation(data))
-    fetchTeamsLeaderboardStats(2, (data) => setTeam2LeaderboardInformation(data))
-    fetchTeamsLeaderboardStats(3, (data) => setTeam3LeaderboardInformation(data))
+    fetchTeamsLeaderboardStats(1, (data) =>
+      setTeam1LeaderboardInformation((prevState) => {
+        return { ...prevState, leaderboardData: data }
+      }),
+    )
+    fetchTeamsLeaderboardStats(2, (data) =>
+      setTeam2LeaderboardInformation((prevState) => {
+        return { ...prevState, leaderboardData: data }
+      }),
+    )
+    fetchTeamsLeaderboardStats(3, (data) =>
+      setTeam3LeaderboardInformation((prevState) => {
+        return { ...prevState, leaderboardData: data }
+      }),
+    )
     fetchGlobalLeaderboardStats()
   }, [account, userTradingInformation, profileApiUrl])
 
-  console.log('team 1: ', team1LeaderboardInformation)
-  console.log('team 3: ', team3LeaderboardInformation)
-  console.log('global: ', globalLeaderboardInformation)
+  // console.log('team 1: ', team1LeaderboardInformation)
+  // console.log('team 2: ', team2LeaderboardInformation)
+  // console.log('team 3: ', team3LeaderboardInformation)
+  // console.log('global: ', globalLeaderboardInformation)
   console.log('user:', userLeaderboardInformation)
 
   // Don't hide when loading. Hide if the account is connected, the user hasn't registered and the competition is live or finished
@@ -237,7 +250,12 @@ const TradingCompetition = () => {
           </RibbonWithImage>
         }
       >
-        <TeamRanks />
+        <TeamRanks
+          team1LeaderboardInformation={team1LeaderboardInformation}
+          team2LeaderboardInformation={team2LeaderboardInformation}
+          team3LeaderboardInformation={team3LeaderboardInformation}
+          globalLeaderboardInformation={globalLeaderboardInformation}
+        />
       </Section>
       <Section
         backgroundStyle={isDark ? LIGHTBLUEBG_DARK : LIGHTBLUEBG}
