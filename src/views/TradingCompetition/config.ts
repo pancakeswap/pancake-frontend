@@ -19,14 +19,14 @@ export interface CompetitionPhaseProps {
 export const CompetitionPhases = {
   REGISTRATION: {
     state: REGISTRATION,
-    // ~ Wed 7th 16:00 SGT
-    ends: 6351450,
+    // Wed 7th 16:00 SGT
+    ends: 1617782400000,
     step: { index: 0, text: 'Entry', translationId: 999 },
   },
   LIVE: {
     state: LIVE,
     // ~ Wed 14th 16:00 SGT
-    ends: 6546530,
+    ends: 1618387200000,
     step: { index: 1, text: 'Live', translationId: 1198 },
   },
   FINISHED: {

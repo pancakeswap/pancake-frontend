@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Flex, Text, FlexProps, ExpandableLabel } from '@pancakeswap-libs/uikit'
+import useI18n from 'hooks/useI18n'
 
 interface FoldableTextProps extends FlexProps {
   title?: string
@@ -25,6 +26,7 @@ const StyledChildrenFlex = styled(Flex)<{ isExpanded?: boolean }>`
 `
 
 const FoldableText: React.FC<FoldableTextProps> = ({ title, children, ...props }) => {
+  const TranslateString = useI18n()
   const [isExpanded, setIsExpanded] = useState(false)
 
   return (
@@ -35,7 +37,7 @@ const FoldableText: React.FC<FoldableTextProps> = ({ title, children, ...props }
         </Text>
         <StyledExpandableLabelWrapper>
           <ExpandableLabel expanded={isExpanded} onClick={() => setIsExpanded(!isExpanded)}>
-            {isExpanded ? 'Hide' : 'Details'}
+            {isExpanded ? TranslateString(1066, 'Hide') : TranslateString(658, 'Details')}
           </ExpandableLabel>
         </StyledExpandableLabelWrapper>
       </Flex>

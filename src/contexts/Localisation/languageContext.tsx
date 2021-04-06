@@ -31,7 +31,7 @@ const stringTranslationsApi = new StringTranslations({
 })
 
 const fetchTranslationsForSelectedLanguage = (selectedLanguage) => {
-  return stringTranslationsApi.listLanguageTranslations(projectId, selectedLanguage.code, undefined, fileId, 200)
+  return stringTranslationsApi.listLanguageTranslations(projectId, selectedLanguage.code, undefined, fileId, 400)
 }
 
 const LanguageContextProvider = ({ children }) => {

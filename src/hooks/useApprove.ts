@@ -2,14 +2,14 @@ import { useCallback } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { Contract } from 'web3-eth-contract'
 import { ethers } from 'ethers'
-import { useDispatch } from 'react-redux'
+import { useAppDispatch } from 'state'
 import { updateUserAllowance, fetchFarmUserDataAsync } from 'state/actions'
 import { approve } from 'utils/callHelpers'
 import { useMasterchef, useCake, useSousChef, useLottery } from './useContract'
 
 // Approve a Farm
 export const useApprove = (lpContract: Contract) => {
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const { account } = useWeb3React()
   const masterChefContract = useMasterchef()
 
@@ -28,7 +28,7 @@ export const useApprove = (lpContract: Contract) => {
 
 // Approve a Pool
 export const useSousApprove = (lpContract: Contract, sousId) => {
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const { account } = useWeb3React()
   const sousChefContract = useSousChef(sousId)
 
