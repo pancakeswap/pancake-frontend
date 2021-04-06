@@ -13,7 +13,7 @@ const StyledTag = styled(Flex)<{ bg: TagProps['bg'] }>`
   display: inline-flex;
 `
 
-const Tag: React.FC<TagProps> = ({ bg = 'success', startIcon, children, onClick, ...props }) => {
+export const Tag: React.FC<TagProps> = ({ bg = 'success', startIcon, children, onClick, ...props }) => {
   const icon = startIcon || <ArrowUpIcon color="white" />
 
   return (
@@ -40,7 +40,7 @@ interface PositionTagProps extends FlexProps {
   betPosition: BetPosition
 }
 
-export const PositionTag: React.FC<PositionTagProps> = ({ betPosition, children, ...props }) => {
+const PositionTag: React.FC<PositionTagProps> = ({ betPosition, children, ...props }) => {
   const isUpPosition = betPosition === BetPosition.BULL
   const icon = isUpPosition ? <ArrowUpIcon color="white" /> : <ArrowDownIcon color="white" />
 
@@ -51,4 +51,4 @@ export const PositionTag: React.FC<PositionTagProps> = ({ betPosition, children,
   )
 }
 
-export default Tag
+export default PositionTag

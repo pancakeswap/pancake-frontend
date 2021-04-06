@@ -5,9 +5,9 @@ import { Round, BetPosition } from 'state/types'
 import { useGetCurrentEpoch, useGetTotalIntervalBlocks } from 'state/hooks'
 import { formatRoundTime } from '../../helpers'
 import useRoundCountdown from '../../hooks/useRoundCountdown'
+import { RoundResultBox } from '../RoundResult'
 import MultiplierArrow from './MultiplierArrow'
 import Card from './Card'
-import RoundInfoBox from './RoundInfoBox'
 import CardHeader from './CardHeader'
 
 interface SoonRoundCardProps {
@@ -33,14 +33,14 @@ const SoonRoundCard: React.FC<SoonRoundCardProps> = ({ round }) => {
       />
       <CardBody p="16px">
         <MultiplierArrow isDisabled />
-        <RoundInfoBox>
+        <RoundResultBox>
           <Text textAlign="center">
             <Text bold>{TranslateString(999, 'Entry starts')}</Text>
             <Text fontSize="24px" bold>
               {`~${countdown}`}
             </Text>
           </Text>
-        </RoundInfoBox>
+        </RoundResultBox>
         <MultiplierArrow betPosition={BetPosition.BEAR} isDisabled />
       </CardBody>
     </Card>

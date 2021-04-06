@@ -1,15 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
-import { BlockIcon, CardBody, Flex, Text } from '@pancakeswap-libs/uikit'
+import { BlockIcon, CardBody } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import { Round, BetPosition } from 'state/types'
-import { formatRoundPriceDifference, formatUsd } from '../../helpers'
+import { RoundResult } from '../RoundResult'
 import MultiplierArrow from './MultiplierArrow'
 import Card from './Card'
-import RoundInfoBox from './RoundInfoBox'
-import { PositionTag } from './Tag'
 import CardHeader from './CardHeader'
-import RoundInfo from './RoundInfo'
 import CollectWinningsOverlay from './CollectWinningsOverlay'
 
 interface ExpiredRoundCardProps {
@@ -41,9 +38,8 @@ const ExpiredRoundCard: React.FC<ExpiredRoundCardProps> = ({
   userBetPosition,
 }) => {
   const TranslateString = useI18n()
-  const { id, epoch, endBlock, lockPrice, closePrice, totalAmount } = round
+  const { id, epoch, endBlock, lockPrice, closePrice } = round
   const betPosition = closePrice > lockPrice ? BetPosition.BULL : BetPosition.BEAR
-  const isPositionUp = betPosition === BetPosition.BULL
   const hasEnteredRound = hasEnteredUp || hasEnteredDown
   const canClaim = userBetPosition === betPosition && !claimed
 
@@ -63,16 +59,7 @@ const ExpiredRoundCard: React.FC<ExpiredRoundCardProps> = ({
           isActive={betPosition === BetPosition.BULL}
           hasEntered={hasEnteredUp}
         />
-        <RoundInfoBox betPosition={betPosition}>
-          <Text color="textSubtle" fontSize="12px" bold textTransform="uppercase" mb="8px">
-            {TranslateString(999, 'Closed Price')}
-          </Text>
-          <Flex alignItems="center" justifyContent="space-between" mb="16px">
-            <Text color={isPositionUp ? 'success' : 'failure'} bold fontSize="24px">{`${formatUsd(closePrice)}`}</Text>
-            <PositionTag betPosition={betPosition}>{formatRoundPriceDifference(lockPrice, closePrice)}</PositionTag>
-          </Flex>
-          <RoundInfo lockPrice={lockPrice} totalAmount={totalAmount} />
-        </RoundInfoBox>
+        <RoundResult round={round} />
         <MultiplierArrow
           multiplier={bearMultiplier}
           betPosition={BetPosition.BEAR}

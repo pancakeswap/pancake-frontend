@@ -23,10 +23,10 @@ import { usePredictionsContract } from 'hooks/useContract'
 import { BetPosition } from 'state/types'
 import { getDecimalAmount } from 'utils/formatBalance'
 import UnlockButton from 'components/UnlockButton'
+import PositionTag from '../PositionTag'
 import { getBnbAmount } from '../../helpers'
 import useSwiper from '../../hooks/useSwiper'
 import FlexRow from '../FlexRow'
-import { PositionTag } from './Tag'
 import Card from './Card'
 
 interface SetPositionCardProps {

@@ -17,10 +17,10 @@ const PositionsPane = styled.div`
 `
 
 const HistoryPane = styled.div<{ isHistoryPaneOpen: boolean }>`
-  max-width: 384px;
+  flex: none;
   overflow: hidden;
   transition: width 200ms ease-in-out;
-  width: ${({ isHistoryPaneOpen }) => (isHistoryPaneOpen ? '100%' : 0)};
+  width: ${({ isHistoryPaneOpen }) => (isHistoryPaneOpen ? '384px' : 0)};
 `
 
 const ChartPane = styled.div<{ isChartPaneOpen: boolean }>`

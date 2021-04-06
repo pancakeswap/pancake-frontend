@@ -6,12 +6,11 @@ import { BetPosition, Round } from 'state/types'
 import { useGetTotalIntervalBlocks, useToast } from 'state/hooks'
 import { updateRound } from 'state/predictions'
 import CardFlip from '../CardFlip'
+import { RoundResultBox, PrizePoolRow } from '../RoundResult'
 import MultiplierArrow from './MultiplierArrow'
 import Card from './Card'
-import RoundInfoBox from './RoundInfoBox'
 import CardHeader from './CardHeader'
 import SetPositionCard from './SetPositionCard'
-import PrizePoolRow from './PrizePoolRow'
 
 interface OpenRoundCardProps {
   round: Round
@@ -106,7 +105,7 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
         />
         <CardBody p="16px">
           <MultiplierArrow multiplier={bullMultiplier} hasEntered={hasEnteredUp} />
-          <RoundInfoBox isNext={canEnterPosition} isLive={!canEnterPosition}>
+          <RoundResultBox isNext={canEnterPosition} isLive={!canEnterPosition}>
             {canEnterPosition && !hasEnteredPosition ? (
               <>
                 <PrizePoolRow totalAmount={round.totalAmount} mb="8px" />
@@ -136,7 +135,7 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
                 <PrizePoolRow totalAmount={round.totalAmount} />
               </>
             )}
-          </RoundInfoBox>
+          </RoundResultBox>
           <MultiplierArrow multiplier={bearMultiplier} betPosition={BetPosition.BEAR} hasEntered={hasEnteredDown} />
         </CardBody>
       </Card>
