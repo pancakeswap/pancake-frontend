@@ -15,6 +15,7 @@ const StyledExpandableLabelWrapper = styled(Flex)`
   button {
     align-items: flex-start;
     justify-content: flex-start;
+    padding-right: 0;
   }
 `
 
