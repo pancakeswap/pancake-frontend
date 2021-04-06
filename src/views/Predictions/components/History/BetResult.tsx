@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Flex, Heading, Text } from '@pancakeswap-libs/uikit'
+import { Box, Flex, Heading, Text, PrizeIcon, BlockIcon } from '@pancakeswap-libs/uikit'
 import { useDispatch } from 'react-redux'
 import useI18n from 'hooks/useI18n'
 import styled from 'styled-components'
@@ -25,6 +25,7 @@ const BetResult: React.FC<BetResultProps> = ({ bet, isWinner }) => {
   const TranslateString = useI18n()
   const payout = getPayout(bet)
   const dispatch = useDispatch()
+  const headerColor = isWinner ? 'warning' : 'textSubtle'
 
   const handleSuccess = async () => {
     await dispatch(updateBet({ id: bet.id }))
@@ -32,7 +33,15 @@ const BetResult: React.FC<BetResultProps> = ({ bet, isWinner }) => {
 
   return (
     <>
-      <Heading mb="8px">{TranslateString(999, 'Your History')}</Heading>
+      <Flex alignItems="center" justifyContent="space-between">
+        <Heading mb="8px">{TranslateString(999, 'Your History')}</Heading>
+        <Flex alignItems="center">
+          <Heading as="h3" color={headerColor} textTransform="uppercase" bold mr="4px">
+            {isWinner ? TranslateString(999, 'Win') : TranslateString(999, 'Lose')}
+          </Heading>
+          {isWinner ? <PrizeIcon color={headerColor} /> : <BlockIcon color={headerColor} />}
+        </Flex>
+      </Flex>
       <StyledBetResult>
         {isWinner && !bet.claimed && (
           <CollectWinningsButton
