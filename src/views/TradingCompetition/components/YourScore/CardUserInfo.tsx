@@ -70,7 +70,10 @@ const CardUserInfo: React.FC<YourScoreProps> = ({ hasRegistered, account, profil
         next: <MedalPurpleIcon />,
       }
     }
-    return null
+    return {
+      current: null,
+      next: null,
+    }
   }
 
   const getNextTier = (currentRank: ReactText) => {
@@ -104,7 +107,10 @@ const CardUserInfo: React.FC<YourScoreProps> = ({ hasRegistered, account, profil
         rank: 500,
       }
     }
-    return null
+    return {
+      color: null,
+      rank: null,
+    }
   }
 
   const getHeadingText = () => {
