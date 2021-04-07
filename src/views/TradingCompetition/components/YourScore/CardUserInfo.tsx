@@ -9,6 +9,7 @@ import {
   MedalPurpleIcon,
   MedalSilverIcon,
   MedalTealIcon,
+  BlockIcon,
 } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
 import useI18n from 'hooks/useI18n'
@@ -70,8 +71,8 @@ const CardUserInfo: React.FC<YourScoreProps> = ({ hasRegistered, account, profil
       }
     }
     return {
-      current: null,
-      next: null,
+      current: <BlockIcon />,
+      next: <MedalTealIcon />,
     }
   }
 
@@ -107,8 +108,8 @@ const CardUserInfo: React.FC<YourScoreProps> = ({ hasRegistered, account, profil
       }
     }
     return {
-      color: null,
-      rank: null,
+      color: '',
+      rank: 500,
     }
   }
 
@@ -148,23 +149,25 @@ const CardUserInfo: React.FC<YourScoreProps> = ({ hasRegistered, account, profil
       {shouldShowUserRanks && (
         <RanksWrapper>
           <Flex>
-            <UserRankBox
-              flex="1"
-              title={TranslateString(1222, 'Rank in team').toUpperCase()}
-              footer={`${TranslateString(999, `#${userLeaderboardInformation && global.toLocaleString()} Overall`)}`}
-              mr="8px"
-            >
-              {!userLeaderboardInformation ? (
-                <Skeleton height="26px" width="110px" />
-              ) : (
-                <TeamRankTextWrapper>
-                  <Heading textAlign="center" size="lg" mr="8px">
-                    #{team}
-                  </Heading>
-                  {medal.current}
-                </TeamRankTextWrapper>
-              )}
-            </UserRankBox>
+            {volume > 0 ? (
+              <UserRankBox
+                flex="1"
+                title={TranslateString(1222, 'Rank in team').toUpperCase()}
+                footer={`${TranslateString(999, `#${userLeaderboardInformation && global.toLocaleString()} Overall`)}`}
+                mr="8px"
+              >
+                {!userLeaderboardInformation ? (
+                  <Skeleton height="26px" width="110px" />
+                ) : (
+                  <TeamRankTextWrapper>
+                    <Heading textAlign="center" size="lg" mr="8px">
+                      #{team}
+                    </Heading>
+                    {medal.current}
+                  </TeamRankTextWrapper>
+                )}
+              </UserRankBox>
+            ) : null}
             <UserRankBox
               flex="1"
               title={TranslateString(1224, 'Your volume').toUpperCase()}
