@@ -59,6 +59,7 @@ export { default as Ticket } from "./Icons/Ticket";
 export { default as TicketRound } from "./Icons/TicketRound";
 export { default as TimerIcon } from "./Icons/Timer";
 export { default as TrophyGoldIcon } from "./Icons/TrophyGold";
+export { default as TuneIcon } from "./Icons/Tune";
 export { default as SearchIcon } from "./Icons/Search";
 export { default as SwapVertIcon } from "./Icons/SwapVert";
 export { default as SyncAltIcon } from "./Icons/SyncAlt";
