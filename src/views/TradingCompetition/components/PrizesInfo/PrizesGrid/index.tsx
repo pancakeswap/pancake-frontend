@@ -79,7 +79,11 @@ const tierStyleMap = {
 
 const Td = styled.td`
   border-bottom: 2px solid ${({ theme }) => theme.colors.borderColor};
-  padding: 8px;
+  padding: 4px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    padding: 8px;
+  }
 `
 const BoldTd = styled(Td)`
   font-weight: 600;
@@ -96,8 +100,16 @@ const PrizeTable = styled.table`
 
   & > thead th {
     font-size: 12px;
-    padding: 16px;
+    padding: 16px 4px;
     text-transform: uppercase;
+
+    ${({ theme }) => theme.mediaQueries.xs} {
+      padding: 16px 8px;
+    }
+
+    ${({ theme }) => theme.mediaQueries.sm} {
+      padding: 16px;
+    }
   }
 `
 
@@ -154,9 +166,9 @@ const PrizesGrid = () => {
                   </BoldTd>
                   <Td>
                     <Flex alignItems="center" flexWrap="wrap" justifyContent="center" width="100%">
-                      {champion && <CrownIcon mr="4px" />}
-                      {teamPlayer && <TeamPlayerIcon mr="4px" />}
-                      <TrophyGoldIcon mr="4px" />
+                      {champion && <CrownIcon mr={{ _: '2px', md: '4px' }} />}
+                      {teamPlayer && <TeamPlayerIcon mr={{ _: '2px', md: '4px' }} />}
+                      <TrophyGoldIcon mr={{ _: '2px', md: '4px' }} />
                       <Text fontSize="12px" color="textSubtle">
                         {`+${getTotalAchievementPoints(row.achievements).toLocaleString(undefined, {
                           minimumFractionDigits: 0,

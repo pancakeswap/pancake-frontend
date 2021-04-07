@@ -15,6 +15,7 @@ const StyledExpandableLabelWrapper = styled(Flex)`
   button {
     align-items: flex-start;
     justify-content: flex-start;
+    padding-right: 0;
   }
 `
 
@@ -32,7 +33,7 @@ const FoldableText: React.FC<FoldableTextProps> = ({ title, children, ...props }
   return (
     <Wrapper {...props} flexDirection="column" onClick={() => setIsExpanded(!isExpanded)}>
       <Flex justifyContent="space-between">
-        <Text fontWeight="bold" mb="16px">
+        <Text bold mb="16px">
           {title}
         </Text>
         <StyledExpandableLabelWrapper>
