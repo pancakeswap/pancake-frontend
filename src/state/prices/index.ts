@@ -19,7 +19,7 @@ export const fetchPrices = createAsyncThunk<PriceApiThunk>('prices/fetch', async
     data: Object.keys(data.data).reduce((accum, token) => {
       return {
         ...accum,
-        [data.data[token].symbol.toLowerCase()]: parseFloat(data.data[token].price),
+        [token.toLowerCase()]: parseFloat(data.data[token].price),
       }
     }, {}),
   }
