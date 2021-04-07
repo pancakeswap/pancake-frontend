@@ -28,8 +28,9 @@ const Item = styled(Flex)`
   }
 `
 
-const GridItem: React.FC<{ traderData?: LeaderboardDataItem }> = ({ traderData }) => {
-  const { rank, address, volume, teamId } = traderData
+const GridItem: React.FC<{ traderData?: LeaderboardDataItem; index: number }> = ({ traderData, index }) => {
+  // reinstate 'rank' instead of index when rank is accurate
+  const { address, volume, teamId } = traderData
 
   const icon = {
     1: <LeaderboardStorm />,
@@ -40,7 +41,7 @@ const GridItem: React.FC<{ traderData?: LeaderboardDataItem }> = ({ traderData }
   return (
     <Wrapper>
       <Item>
-        <Heading color="secondary">#{rank}</Heading>
+        <Heading color="secondary">#{index + 1}</Heading>
       </Item>
       <Item>
         <Text bold>${localiseTradingVolume(volume)}</Text>

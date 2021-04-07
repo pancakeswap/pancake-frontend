@@ -21,8 +21,8 @@ const TopTradersGrid: React.FC<{ data?: Array<LeaderboardDataItem> }> = ({ data 
   return (
     <Box>
       {data ? (
-        topFive.map((traderData) => {
-          return <GridItem key={traderData.address} traderData={traderData} />
+        topFive.map((traderData, index) => {
+          return <GridItem key={traderData.address} traderData={traderData} index={index} />
         })
       ) : (
         <SkeletonLoader />
