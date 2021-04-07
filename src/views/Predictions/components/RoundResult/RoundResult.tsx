@@ -15,6 +15,7 @@ const RoundResult: React.FC<RoundResultProps> = ({ round, ...props }) => {
   const betPosition = closePrice > lockPrice ? BetPosition.BULL : BetPosition.BEAR
   const isPositionUp = betPosition === BetPosition.BULL
   const TranslateString = useI18n()
+  const { value } = formatRoundPriceDifference(closePrice, lockPrice)
 
   return (
     <RoundResultBox betPosition={betPosition} {...props}>
@@ -23,7 +24,7 @@ const RoundResult: React.FC<RoundResultProps> = ({ round, ...props }) => {
       </Text>
       <Flex alignItems="center" justifyContent="space-between" mb="16px">
         <Text color={isPositionUp ? 'success' : 'failure'} bold fontSize="24px">{`${formatUsd(closePrice)}`}</Text>
-        <PositionTag betPosition={betPosition}>{formatRoundPriceDifference(lockPrice, closePrice)}</PositionTag>
+        <PositionTag betPosition={betPosition}>{value}</PositionTag>
       </Flex>
       {lockPrice && <LockPriceRow lockPrice={lockPrice} />}
       <PrizePoolRow totalAmount={totalAmount} />

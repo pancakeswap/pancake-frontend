@@ -45,6 +45,7 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
   const isBull = stream?.lastPrice > lockPrice
   const priceColor = isBull ? 'success' : 'failure'
   const estimatedEndBlock = lockBlock + interval
+  const { value } = formatRoundPriceDifference(stream?.lastPrice, lockPrice)
 
   return (
     <GradientBorder>
@@ -69,9 +70,7 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
                   <Text bold color={priceColor} fontSize="24px" style={{ minHeight: '36px' }}>
                     {formatUsd(stream.lastPrice)}
                   </Text>
-                  <PositionTag betPosition={isBull ? BetPosition.BULL : BetPosition.BEAR}>
-                    {formatRoundPriceDifference(lockPrice, stream.lastPrice)}
-                  </PositionTag>
+                  <PositionTag betPosition={isBull ? BetPosition.BULL : BetPosition.BEAR}>{value}</PositionTag>
                 </>
               )}
             </Flex>

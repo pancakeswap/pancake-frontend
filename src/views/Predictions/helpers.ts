@@ -20,8 +20,13 @@ export const formatBnbFromBigNumber = (bnbBn: BigNumber) => {
   return formatBnb(getBnbAmount(bnbBn).toNumber())
 }
 
-export const formatRoundPriceDifference = (lockPrice: Round['lockPrice'], closePrice: Round['closePrice']) => {
-  return formatUsd(closePrice - lockPrice)
+/**
+ * Returns the absolute value and a flag if it was negative or not
+ */
+export const formatRoundPriceDifference = (value: number, secondaryValue: number) => {
+  const diff = value - secondaryValue
+
+  return { isNegative: diff < 0, value: `${formatUsd(Math.abs(diff))}` }
 }
 
 export const padTime = (num: number) => num.toString().padStart(2, '0')

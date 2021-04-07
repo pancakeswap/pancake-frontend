@@ -106,6 +106,7 @@ export const predictionsSlice = createSlice({
     })
     builder.addCase(showHistory.rejected, (state) => {
       state.isFetchingHistory = false
+      state.isHistoryPaneOpen = true
     })
     builder.addCase(showHistory.fulfilled, (state, action) => {
       state.isFetchingHistory = false
