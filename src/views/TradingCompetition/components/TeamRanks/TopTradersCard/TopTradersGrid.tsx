@@ -6,11 +6,11 @@ import GridItem from './GridItem'
 const SkeletonLoader = () => {
   return (
     <Box width="100%">
-      <Skeleton width="100%" height="76px" mt="3px" mb="3px" />
-      <Skeleton width="100%" height="76px" mt="3px" mb="3px" />
-      <Skeleton width="100%" height="76px" mt="3px" mb="3px" />
-      <Skeleton width="100%" height="76px" mt="3px" mb="3px" />
-      <Skeleton width="100%" height="76px" mt="3px" mb="3px" />
+      <Skeleton width="100%" height="76px" m="3px" />
+      <Skeleton width="100%" height="76px" m="3px" />
+      <Skeleton width="100%" height="76px" m="3px" />
+      <Skeleton width="100%" height="76px" m="3px" />
+      <Skeleton width="100%" height="76px" m="3px" />
     </Box>
   )
 }

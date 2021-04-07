@@ -13,14 +13,16 @@ const Wrapper = styled(Flex)`
   align-items: center;
   border: 1px solid ${({ theme }) => theme.colors.inputSecondary};
   border-radius: ${({ theme }) => theme.radii.default};
-  padding: 8px 8px;
+  padding: 8px;
 
   ${({ theme }) => theme.mediaQueries.sm} {
-    padding: 8px 18px;
+    padding-left: 18px;
+    padding-right: 18px;
   }
 
   ${({ theme }) => theme.mediaQueries.md} {
-    padding: 8px 24px;
+    padding-left: 24px;
+    padding-right: 24px;
   }
 `
 

@@ -35,8 +35,7 @@ const RanksWrapper = styled(Flex)`
 
 const CardUserInfo: React.FC<YourScoreProps> = ({ hasRegistered, account, profile, userLeaderboardInformation }) => {
   const TranslateString = useI18n()
-  // eslint-disable-next-line camelcase
-  const { global, team, volume, next_rank } = userLeaderboardInformation
+  const { global, team, volume, next_rank: nextRank } = userLeaderboardInformation
   const shouldShowUserRanks = account && hasRegistered
 
   const getMedal = (currentRank: ReactText) => {
@@ -200,7 +199,7 @@ const CardUserInfo: React.FC<YourScoreProps> = ({ hasRegistered, account, profil
               currentMedal={medal.current}
               nextMedal={medal.next}
             >
-              <Heading size="lg">+${userLeaderboardInformation && localiseTradingVolume(next_rank)}</Heading>
+              <Heading size="lg">+${userLeaderboardInformation && localiseTradingVolume(nextRank)}</Heading>
             </NextRankBox>
           )}
         </RanksWrapper>

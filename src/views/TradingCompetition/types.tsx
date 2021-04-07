@@ -28,7 +28,7 @@ export interface LeaderboardDataItem {
 interface LeaderboardData {
   total?: number
   volume?: number
-  data?: Array<LeaderboardDataItem>
+  data?: LeaderboardDataItem[]
 }
 
 export interface TeamLeaderboardProps {
