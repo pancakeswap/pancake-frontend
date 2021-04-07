@@ -17,12 +17,12 @@ const pools: PoolConfig[] = [
     isFinished: false,
   },
   {
-    sousId: 94,
+    sousId: 95,
     stakingToken: tokens.cake,
     earningToken: tokens.apys,
     contractAddress: {
       97: '',
-      56: '',
+      56: '0x46530d79b238f809e80313e73715b160c66677aF',
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
