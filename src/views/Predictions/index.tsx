@@ -10,7 +10,7 @@ import {
 } from 'state/predictions/helpers'
 import { initialize } from 'state/predictions'
 import { RoundResponse } from 'state/predictions/queries'
-import { PredictionsState, PredictionStatus } from 'state/types'
+import { HistoryFilter, PredictionsState, PredictionStatus } from 'state/types'
 import PageLoader from 'components/PageLoader'
 import Container from './components/Container'
 import SwiperProvider from './context/SwiperProvider'
@@ -48,8 +48,10 @@ const Predictions = () => {
       dispatch(
         initialize({
           ...staticPredictionsData,
+          historyFilter: HistoryFilter.ALL,
           currentRoundStartBlockNumber: currentRoundStartBlock,
           rounds: roundData,
+          bets: {},
         }),
       )
     }

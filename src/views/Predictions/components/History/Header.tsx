@@ -1,10 +1,20 @@
 import React from 'react'
-import { ArrowForwardIcon, Box, Button, Flex, Heading, Text } from '@pancakeswap-libs/uikit'
+import { useWeb3React } from '@web3-react/core'
+import { ArrowForwardIcon, Box, Button, Radio, Flex, Heading, Text } from '@pancakeswap-libs/uikit'
 import { useAppDispatch } from 'state'
-import { setHistoryPaneState } from 'state/predictions'
+import { HistoryFilter } from 'state/types'
+import { setHistoryFilter, setHistoryPaneState, showHistory } from 'state/predictions'
+import { useGetHistoryFilter, useGetIsFetchingHistory } from 'state/hooks'
 import useI18n from 'hooks/useI18n'
 import styled from 'styled-components'
 import { getBubbleGumBackground } from '../../helpers'
+
+const Filter = styled.label`
+  align-items: center;
+  cursor: pointer;
+  display: inline-flex;
+  margin-right: 16px;
+`
 
 const StyledHeader = styled(Box)`
   background: ${({ theme }) => getBubbleGumBackground(theme)};
@@ -12,12 +22,34 @@ const StyledHeader = styled(Box)`
   padding: 16px;
 `
 
+const getClaimParam = (historyFilter: HistoryFilter) => {
+  switch (historyFilter) {
+    case HistoryFilter.COLLECTED:
+      return true
+    case HistoryFilter.UNCOLLECTED:
+      return false
+    case HistoryFilter.ALL:
+    default:
+      return undefined
+  }
+}
+
 const Header = () => {
+  const historyFilter = useGetHistoryFilter()
+  const isFetchingHistory = useGetIsFetchingHistory()
   const TranslateString = useI18n()
   const dispatch = useAppDispatch()
+  const { account } = useWeb3React()
 
   const handleClick = () => {
     dispatch(setHistoryPaneState(false))
+  }
+
+  const handleChange = (newFilter: HistoryFilter) => async () => {
+    if (newFilter !== historyFilter) {
+      await dispatch(showHistory({ account, claimed: getClaimParam(newFilter) }))
+      dispatch(setHistoryFilter(newFilter))
+    }
   }
 
   return (
@@ -33,20 +65,35 @@ const Header = () => {
       <Text color="textSubtle" fontSize="12px" mb="8px">
         {TranslateString(999, 'Filter')}
       </Text>
-      {/* <Flex alignItems="center">
-        <Label htmlFor="collected">
-          <Checkbox scale="sm" checked />
-          <Text ml="8px">{TranslateString(999, 'Collected')}</Text>
-        </Label>
-        <Label htmlFor="won">
-          <Checkbox scale="sm" />
-          <Text ml="8px">{TranslateString(999, 'Won')}</Text>
-        </Label>
-        <Label htmlFor="lost">
-          <Checkbox scale="sm" />
-          <Text ml="8px">{TranslateString(999, 'Lost')}</Text>
-        </Label>
-      </Flex> */}
+      <Flex alignItems="center">
+        <Filter>
+          <Radio
+            scale="sm"
+            checked={historyFilter === HistoryFilter.ALL}
+            disabled={isFetchingHistory}
+            onChange={handleChange(HistoryFilter.ALL)}
+          />
+          <Text ml="4px">{TranslateString(999, 'All')}</Text>
+        </Filter>
+        <Filter>
+          <Radio
+            scale="sm"
+            checked={historyFilter === HistoryFilter.COLLECTED}
+            disabled={isFetchingHistory}
+            onChange={handleChange(HistoryFilter.COLLECTED)}
+          />
+          <Text ml="4px">{TranslateString(999, 'Collected')}</Text>
+        </Filter>
+        <Filter>
+          <Radio
+            scale="sm"
+            checked={historyFilter === HistoryFilter.UNCOLLECTED}
+            disabled={isFetchingHistory}
+            onChange={handleChange(HistoryFilter.UNCOLLECTED)}
+          />
+          <Text ml="4px">{TranslateString(999, 'Uncollected')}</Text>
+        </Filter>
+      </Flex>
     </StyledHeader>
   )
 }

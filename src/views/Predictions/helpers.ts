@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js'
-import { Bet, BetPosition, Round } from 'state/types'
+import { Bet, BetPosition } from 'state/types'
 import { DefaultTheme } from 'styled-components'
 import { getBalanceAmount } from 'utils/formatBalance'
 import getTimePeriods from 'utils/getTimePeriods'

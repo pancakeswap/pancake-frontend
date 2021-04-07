@@ -45,6 +45,7 @@ export interface RoundResponse {
   bullBets: string
   bearAmount: string
   bullAmount: string
+  position: string
   bets: BetResponse[]
 }
 
@@ -69,6 +70,7 @@ export const getRoundsQuery = (first = 5, orderBy = 'epoch', orderDirection: Sor
       bullAmount
       bearBets
       bearAmount
+      position
       bets {
         id
         hash  
@@ -124,14 +126,16 @@ export const getRoundQuery = (id: string) => {
   `
 }
 
-export type UserPositionWhereClause = {
-  claimed?: boolean
-}
+export const getUserPositionsQuery = (id: string, first: number, claimed: boolean) => {
+  const whereClause = []
 
-export const getUserPositionsQuery = (id: string, first: number, whereClaus: UserPositionWhereClause = {}) => {
+  if (claimed !== undefined) {
+    whereClause.push(`claimed: ${claimed}`)
+  }
+
   return `
     user(id: "${id.toLocaleLowerCase()}") {
-      bets(first: ${first}, where: ${JSON.stringify(whereClaus)}) {
+      bets(first: ${first}, where: {${whereClause.join(',')}}) {
         id
         hash  
         amount
@@ -154,6 +158,7 @@ export const getUserPositionsQuery = (id: string, first: number, whereClaus: Use
           bullAmount
           bearBets
           bearAmount
+          position
         }
         user {
           id
@@ -192,6 +197,7 @@ export const getBetQuery = (id: string) => {
         bullAmount
         bearBets
         bearAmount
+        position
       }
       user {
         id

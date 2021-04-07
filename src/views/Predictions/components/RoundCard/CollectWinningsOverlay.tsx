@@ -1,4 +1,5 @@
 import React from 'react'
+import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
 import { Flex, TrophyGoldIcon } from '@pancakeswap-libs/uikit'
 import { useAppDispatch } from 'state'
@@ -33,7 +34,8 @@ const Wrapper = styled(Flex)<{ isBottom: CollectWinningsOverlayProps['isBottom']
 `
 
 const CollectWinningsOverlay: React.FC<CollectWinningsOverlayProps> = ({ roundId, isBottom = false, ...props }) => {
-  const bet = useGetBetByRoundId(roundId)
+  const { account } = useWeb3React()
+  const bet = useGetBetByRoundId(roundId, account)
   const TranslateString = useI18n()
   const dispatch = useAppDispatch()
   const payout = getPayout(bet)

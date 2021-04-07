@@ -10,7 +10,6 @@ import {
   getRoundsQuery,
   getUserPositionsQuery,
   RoundResponse,
-  UserPositionWhereClause,
 } from './queries'
 
 export const numberOrNull = (value: string) => {
@@ -41,6 +40,7 @@ export const makeFutureRoundResponse = (epoch: number, startBlock: number): Roun
     bullBets: '0',
     bearAmount: '0',
     bullAmount: '0',
+    position: null,
     bets: [],
   }
 }
@@ -83,8 +83,16 @@ export const transformRoundResponse = (roundResponse: RoundResponse): Round => {
     bullBets,
     bearAmount,
     bullAmount,
+    position,
     bets = [],
   } = roundResponse
+
+  let roundPosition = null
+
+  if (position) {
+    roundPosition = position === 'bull' ? BetPosition.BULL : BetPosition.BEAR
+  }
+
   return {
     id,
     epoch: numberOrNull(epoch),
@@ -99,6 +107,7 @@ export const transformRoundResponse = (roundResponse: RoundResponse): Round => {
     bullBets: numberOrNull(bullBets),
     bearAmount: numberOrNull(bearAmount),
     bullAmount: numberOrNull(bullAmount),
+    position: roundPosition,
     bets: bets.map(transformBetResponse),
   }
 }
@@ -158,16 +167,12 @@ export const getRound = async (id: string) => {
   return response.round
 }
 
-export const getUserPositions = async (
-  account: string,
-  first = 1000,
-  whereClause: UserPositionWhereClause = {},
-): Promise<BetResponse[]> => {
+export const getUserPositions = async (account: string, first: number, claimed: boolean): Promise<BetResponse[]> => {
   const response = await request(
     GRAPH_API_PREDICTIONS,
     gql`
       {
-        ${getUserPositionsQuery(account, first, whereClause)}
+        ${getUserPositionsQuery(account, first, claimed)}
       }
   `,
   )

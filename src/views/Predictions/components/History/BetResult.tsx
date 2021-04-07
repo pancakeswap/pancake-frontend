@@ -1,4 +1,5 @@
 import React from 'react'
+import { useWeb3React } from '@web3-react/core'
 import { Box, Flex, Heading, Text, PrizeIcon, BlockIcon } from '@pancakeswap-libs/uikit'
 import { useAppDispatch } from 'state'
 import useI18n from 'hooks/useI18n'
@@ -26,9 +27,10 @@ const BetResult: React.FC<BetResultProps> = ({ bet, isWinner }) => {
   const payout = getPayout(bet)
   const dispatch = useAppDispatch()
   const headerColor = isWinner ? 'warning' : 'textSubtle'
+  const { account } = useWeb3React()
 
   const handleSuccess = async () => {
-    await dispatch(updateBet({ id: bet.id }))
+    await dispatch(updateBet({ account, id: bet.id }))
   }
 
   return (

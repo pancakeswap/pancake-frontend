@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useWeb3React } from '@web3-react/core'
 import { Box, ChevronDownIcon, ChevronUpIcon, Flex, IconButton, Text } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
 import { useAppDispatch } from 'state'
@@ -27,6 +28,7 @@ const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
   const { amount, claimed, position, round } = bet
 
   const TranslateString = useI18n()
+  const { account } = useWeb3React()
   const roundResultPosition = round.closePrice > round.lockPrice ? BetPosition.BULL : BetPosition.BEAR
   const isWinner = position === roundResultPosition
   const resultTextColor = isWinner ? 'success' : 'failure'
@@ -36,7 +38,7 @@ const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
   const dispatch = useAppDispatch()
 
   const handleSuccess = async () => {
-    await dispatch(updateBet({ id: bet.id }))
+    await dispatch(updateBet({ account, id: bet.id }))
   }
 
   return (

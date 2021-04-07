@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { maxBy } from 'lodash'
-import { Bet, PredictionsState, PredictionStatus, Round, RoundData } from 'state/types'
+import { Bet, HistoryFilter, PredictionsState, PredictionStatus, Round, RoundData } from 'state/types'
 import {
   getRound,
   makeFutureRoundResponse,
@@ -17,13 +17,16 @@ const initialState: PredictionsState = {
   isHistoryPaneOpen: false,
   isChartPaneOpen: false,
   isFetchingHistory: false,
+  historyFilter: HistoryFilter.ALL,
   currentEpoch: 0,
   currentRoundStartBlockNumber: 0,
   intervalBlocks: 100,
   bufferBlocks: 2,
   minBetAmount: '1000000000000000',
   rounds: {},
-  bets: [],
+
+  // History
+  bets: {},
 }
 
 // Thunks
@@ -34,19 +37,22 @@ export const updateRound = createAsyncThunk<Round, { id: string }>('predictions/
   return round
 })
 
-export const updateBet = createAsyncThunk<Bet, { id: string }>('predictions/updateBet', async ({ id }) => {
-  const response = await getBet(id)
-  const bet = transformBetResponse(response)
-  return bet
-})
+export const updateBet = createAsyncThunk<{ account: string; bet: Bet }, { account: string; id: string }>(
+  'predictions/updateBet',
+  async ({ account, id }) => {
+    const response = await getBet(id)
+    const bet = transformBetResponse(response)
+    return { account, bet }
+  },
+)
 
-export const showHistory = createAsyncThunk<Bet[], { account: string }>(
-  'predictions/fetchHistory',
-  async ({ account }) => {
-    const response = await getUserPositions(account)
+export const showHistory = createAsyncThunk<{ account: string; bets: Bet[] }, { account: string; claimed?: boolean }>(
+  'predictions/showHistory',
+  async ({ account, claimed }) => {
+    const response = await getUserPositions(account, 1000, claimed)
     const bets = response.map(transformBetResponse)
 
-    return bets
+    return { account, bets }
   },
 )
 
@@ -56,9 +62,13 @@ export const predictionsSlice = createSlice({
   reducers: {
     setHistoryPaneState: (state, action: PayloadAction<boolean>) => {
       state.isHistoryPaneOpen = action.payload
+      state.historyFilter = HistoryFilter.ALL
     },
     setChartPaneState: (state, action: PayloadAction<boolean>) => {
       state.isChartPaneOpen = action.payload
+    },
+    setHistoryFilter: (state, action: PayloadAction<HistoryFilter>) => {
+      state.historyFilter = action.payload
     },
     initialize: (state, action: PayloadAction<PredictionsState>) => {
       return action.payload
@@ -97,7 +107,8 @@ export const predictionsSlice = createSlice({
 
     // Update Bet
     builder.addCase(updateBet.fulfilled, (state, action) => {
-      state.bets = [...state.bets.filter((bet) => bet.id !== action.payload.id), action.payload]
+      const { account, bet } = action.payload
+      state.bets[account] = [...state.bets[account].filter((currentBet) => currentBet.id !== bet.id), bet]
     })
 
     // Show History
@@ -109,20 +120,23 @@ export const predictionsSlice = createSlice({
       state.isHistoryPaneOpen = true
     })
     builder.addCase(showHistory.fulfilled, (state, action) => {
+      const { account, bets } = action.payload
+
       state.isFetchingHistory = false
       state.isHistoryPaneOpen = true
-      state.bets = action.payload
+      state.bets[account] = bets
     })
   },
 })
 
 // Actions
 export const {
+  initialize,
   setChartPaneState,
+  setCurrentEpoch,
+  setHistoryFilter,
   setHistoryPaneState,
   updateRounds,
-  setCurrentEpoch,
-  initialize,
 } = predictionsSlice.actions
 
 export default predictionsSlice.reducer
