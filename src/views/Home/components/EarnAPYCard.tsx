@@ -7,6 +7,7 @@ import useI18n from 'hooks/useI18n'
 import BigNumber from 'bignumber.js'
 import { getFarmApy } from 'utils/apy'
 import { useFarms, usePriceCakeBusd, useGetApiPrices } from 'state/hooks'
+import { getAddress } from '../../../utils/addressHelpers'
 
 const StyledFarmStakingCard = styled(Card)`
   margin-left: auto;
@@ -33,7 +34,7 @@ const EarnAPYCard = () => {
       .filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
       .map((farm) => {
         if (farm.lpTotalInQuoteToken && prices) {
-          const quoteTokenPriceUsd = prices[farm.quoteToken.symbol.toLowerCase()]
+          const quoteTokenPriceUsd = prices[getAddress(farm.quoteToken.address).toLowerCase()]
           const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(quoteTokenPriceUsd)
           return getFarmApy(farm.poolWeight, cakePrice, totalLiquidity)
         }
