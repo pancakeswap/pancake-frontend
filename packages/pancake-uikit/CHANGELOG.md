@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.22.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap-libs/uikit@0.21.0...@pancakeswap-libs/uikit@0.22.0) (2021-04-07)
+
+
+### Features
+
+* Add Tune icon ([#54](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/54)) ([54702ac](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/54702ac31f6ff7ea0eeb7483363841eb0a2262d6))
+
+
+
+
+
 # [0.21.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap-libs/uikit@0.20.1...@pancakeswap-libs/uikit@0.21.0) (2021-04-06)
 
 
