@@ -8,6 +8,7 @@ import { useAppDispatch } from 'state'
 import { Team } from 'config/constants/types'
 import { getWeb3NoAccount } from 'utils/web3'
 import useRefresh from 'hooks/useRefresh'
+import { getCakeAddress } from 'utils/addressHelpers'
 import {
   fetchFarmsPublicDataAsync,
   fetchPoolsPublicDataAsync,
@@ -203,13 +204,8 @@ export const useGetApiPrice = (token: string) => {
 
 export const usePriceCakeBusd = (): BigNumber => {
   const ZERO = new BigNumber(0)
-  const cakeBnbFarm = useFarmFromPid(1)
-  const bnbBusdFarm = useFarmFromPid(2)
-
-  const bnbBusdPrice = bnbBusdFarm.tokenPriceVsQuote ? new BigNumber(1).div(bnbBusdFarm.tokenPriceVsQuote) : ZERO
-  const cakeBusdPrice = cakeBnbFarm.tokenPriceVsQuote ? bnbBusdPrice.times(cakeBnbFarm.tokenPriceVsQuote) : ZERO
-
-  return cakeBusdPrice
+  const cakeBusdPriceNumber = useGetApiPrice(getCakeAddress())
+  return cakeBusdPriceNumber ? new BigNumber(cakeBusdPriceNumber) : ZERO
 }
 
 // Block
