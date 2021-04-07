@@ -9,22 +9,24 @@ const Wrapper = styled.div`
   display: grid;
   grid-template-columns: auto repeat(3, 1fr);
   border-bottom: 1px solid ${({ theme }) => theme.colors.textDisabled};
+  grid-gap: 8px;
+
+  ${({ theme }) => theme.mediaQueries.xs} {
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 16px;
+  }
+
   svg {
     height: 80px;
     width: auto;
   }
 `
 
-const Item = styled(Flex)`
-  align-items: center;
-  justify-content: center;
-
-  ${({ theme }) => theme.mediaQueries.xs} {
-    min-width: 40px;
-  }
+const RankItem = styled(Flex)`
+  margin-left: 8px;
 
   ${({ theme }) => theme.mediaQueries.sm} {
-    min-width: 80px;
+    margin-left: 16px;
   }
 `
 
@@ -39,15 +41,15 @@ const GridItem: React.FC<{ traderData?: LeaderboardDataItem }> = ({ traderData }
 
   return (
     <Wrapper>
-      <Item>
+      <RankItem alignItems="center" justifyContent="flex-start">
         <Heading color="secondary">#{rank}</Heading>
-      </Item>
-      <Item>
+      </RankItem>
+      <Flex alignItems="center" justifyContent="flex-start">
         <Text bold>${localiseTradingVolume(volume)}</Text>
-      </Item>
-      <Item>
+      </Flex>
+      <Flex alignItems="center" justifyContent="flex-start">
         <Text color="primary">{accountEllipsis(address)}</Text>
-      </Item>
+      </Flex>
       {icon[teamId]}
     </Wrapper>
   )

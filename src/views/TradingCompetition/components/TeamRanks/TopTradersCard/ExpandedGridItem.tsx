@@ -8,24 +8,24 @@ import { LeaderboardStorm, LeaderboardFlippers, LeaderboardCakers } from '../../
 const Wrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr) 3fr;
+  grid-gap: 8px;
   border-bottom: 1px solid ${({ theme }) => theme.colors.textDisabled};
   svg {
     height: 44px;
     width: auto;
   }
-`
-
-const Item = styled(Flex)`
-  align-items: center;
-  justify-content: center;
-  /* 
-  ${({ theme }) => theme.mediaQueries.xs} {
-    min-width: 40px;
-  }
 
   ${({ theme }) => theme.mediaQueries.sm} {
-    min-width: 80px;
-  } */
+    grid-gap: 16px;
+  }
+`
+
+const RankItem = styled(Flex)`
+  margin-left: 8px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    margin-left: 16px;
+  }
 `
 
 const GridItem: React.FC<{ traderData?: LeaderboardDataItem }> = ({ traderData }) => {
@@ -39,21 +39,21 @@ const GridItem: React.FC<{ traderData?: LeaderboardDataItem }> = ({ traderData }
 
   return (
     <Wrapper>
-      <Item>
-        <Text mx="16px" fontSize="16px" bold color="secondary">
+      <RankItem alignItems="center" justifyContent="flex-start">
+        <Text fontSize="16px" bold color="secondary">
           #{rank}
         </Text>
-      </Item>
-      <Item>
-        <Text fontSize="12px" mr="16px" bold>
+      </RankItem>
+      <Flex alignItems="center" justifyContent="flex-start">
+        <Text fontSize="12px" bold>
           ${localiseTradingVolume(volume)}
         </Text>
-      </Item>
-      <Item>
-        <Text color="primary" mr="16px" fontSize="12px">
+      </Flex>
+      <Flex alignItems="center" justifyContent="flex-start">
+        <Text color="primary" fontSize="12px">
           {accountEllipsis(address)}
         </Text>
-      </Item>
+      </Flex>
       <Flex justifyContent="flex-end">{icon[teamId]}</Flex>
     </Wrapper>
   )
