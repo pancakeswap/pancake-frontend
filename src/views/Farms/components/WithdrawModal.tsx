@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js'
 import React, { useCallback, useMemo, useState } from 'react'
-import { Button, Modal } from '@pancakeswap-libs/uikit'
+import { Button, Modal, AutoRenewIcon } from '@pancakeswap-libs/uikit'
 import ModalActions from 'components/ModalActions'
 import ModalInput from 'components/ModalInput'
 import useI18n from 'hooks/useI18n'
@@ -15,7 +15,7 @@ interface WithdrawModalProps {
 
 const WithdrawModal: React.FC<WithdrawModalProps> = ({ onConfirm, onDismiss, max, tokenName = '' }) => {
   const [val, setVal] = useState('')
-  const [pendingTx, setPendingTx] = useState(false)
+  const [isConfirming, setIsConfirming] = useState(false)
   const TranslateString = useI18n()
   const fullBalance = useMemo(() => {
     return getFullDisplayBalance(max)
@@ -47,16 +47,18 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ onConfirm, onDismiss, max
           {TranslateString(462, 'Cancel')}
         </Button>
         <Button
-          disabled={pendingTx}
+          disabled={isConfirming}
           onClick={async () => {
-            setPendingTx(true)
+            setIsConfirming(true)
             await onConfirm(val)
-            setPendingTx(false)
+            setIsConfirming(false)
             onDismiss()
           }}
+          isLoading={isConfirming}
+          endIcon={isConfirming ? <AutoRenewIcon color="currentColor" spin /> : null}
           width="100%"
         >
-          {pendingTx ? TranslateString(488, 'Pending Confirmation') : TranslateString(464, 'Confirm')}
+          {isConfirming ? TranslateString(802, 'Confirming') : TranslateString(464, 'Confirm')}
         </Button>
       </ModalActions>
     </Modal>

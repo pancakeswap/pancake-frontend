@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import Web3 from 'web3'
 import { useWeb3React } from '@web3-react/core'
-import { Button, Input, Modal, Text } from '@pancakeswap-libs/uikit'
+import { Button, Input, Modal, Text, AutoRenewIcon } from '@pancakeswap-libs/uikit'
 import { useToast } from 'state/hooks'
 import { Nft } from 'config/constants/types'
 import useI18n from 'hooks/useI18n'
@@ -38,7 +38,7 @@ const Label = styled.label`
 `
 
 const TransferNftModal: React.FC<TransferNftModalProps> = ({ nft, tokenIds, onSuccess, onDismiss }) => {
-  const [isLoading, setIsLoading] = useState(false)
+  const [isConfirming, setIsConfirming] = useState(false)
   const [value, setValue] = useState('')
   const [error, setError] = useState(null)
   const TranslateString = useI18n()
@@ -57,7 +57,7 @@ const TransferNftModal: React.FC<TransferNftModalProps> = ({ nft, tokenIds, onSu
           .transferFrom(account, value, tokenIds[0])
           .send({ from: account })
           .on('sending', () => {
-            setIsLoading(true)
+            setIsConfirming(true)
           })
           .on('receipt', () => {
             onDismiss()
@@ -67,7 +67,7 @@ const TransferNftModal: React.FC<TransferNftModalProps> = ({ nft, tokenIds, onSu
           .on('error', () => {
             console.error(error)
             setError('Unable to transfer NFT')
-            setIsLoading(false)
+            setIsConfirming(false)
           })
       }
     } catch (err) {
@@ -101,15 +101,21 @@ const TransferNftModal: React.FC<TransferNftModalProps> = ({ nft, tokenIds, onSu
           value={value}
           onChange={handleChange}
           isWarning={error}
-          disabled={isLoading}
+          disabled={isConfirming}
         />
       </ModalContent>
       <Actions>
         <Button width="100%" variant="secondary" onClick={onDismiss}>
           {TranslateString(462, 'Cancel')}
         </Button>
-        <Button width="100%" onClick={handleConfirm} disabled={!account || isLoading || !value}>
-          {TranslateString(464, 'Confirm')}
+        <Button
+          width="100%"
+          onClick={handleConfirm}
+          disabled={!account || !value || isConfirming}
+          isLoading={isConfirming}
+          endIcon={isConfirming ? <AutoRenewIcon color="currentColor" spin /> : null}
+        >
+          {isConfirming ? TranslateString(802, 'Confirming') : TranslateString(464, 'Confirm')}
         </Button>
       </Actions>
     </Modal>

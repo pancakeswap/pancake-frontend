@@ -62,11 +62,11 @@ const ClaimNftModal: React.FC<ClaimNftModalProps> = ({ nft, onSuccess, onClaim, 
         <Button
           width="100%"
           onClick={handleConfirm}
-          disabled={!account}
+          disabled={!account || isConfirming}
           isLoading={isConfirming}
           endIcon={isConfirming ? <AutoRenewIcon color="currentColor" spin /> : null}
         >
-          {TranslateString(464, 'Confirm')}
+          {isConfirming ? TranslateString(802, 'Confirming') : TranslateString(464, 'Confirm')}
         </Button>
       </Actions>
     </Modal>

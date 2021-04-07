@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js'
 import React, { useCallback, useMemo, useState } from 'react'
-import { Button, Modal, LinkExternal } from '@pancakeswap-libs/uikit'
+import { Button, Modal, LinkExternal, AutoRenewIcon } from '@pancakeswap-libs/uikit'
 import ModalActions from 'components/ModalActions'
 import ModalInput from 'components/ModalInput'
 import useI18n from 'hooks/useI18n'
@@ -16,7 +16,7 @@ interface DepositModalProps {
 
 const DepositModal: React.FC<DepositModalProps> = ({ max, onConfirm, onDismiss, tokenName = '', addLiquidityUrl }) => {
   const [val, setVal] = useState('')
-  const [pendingTx, setPendingTx] = useState(false)
+  const [isConfirming, setIsConfirming] = useState(false)
   const TranslateString = useI18n()
   const fullBalance = useMemo(() => {
     return getFullDisplayBalance(max)
@@ -50,15 +50,17 @@ const DepositModal: React.FC<DepositModalProps> = ({ max, onConfirm, onDismiss, 
         </Button>
         <Button
           width="100%"
-          disabled={pendingTx || fullBalance === '0' || val === '0'}
+          disabled={isConfirming || fullBalance === '0' || val === '0'}
+          isLoading={isConfirming}
+          endIcon={isConfirming ? <AutoRenewIcon color="currentColor" spin /> : null}
           onClick={async () => {
-            setPendingTx(true)
+            setIsConfirming(true)
             await onConfirm(val)
-            setPendingTx(false)
+            setIsConfirming(false)
             onDismiss()
           }}
         >
-          {pendingTx ? TranslateString(488, 'Pending Confirmation') : TranslateString(464, 'Confirm')}
+          {isConfirming ? TranslateString(802, 'Confirming') : TranslateString(464, 'Confirm')}
         </Button>
       </ModalActions>
       <LinkExternal href={addLiquidityUrl} style={{ alignSelf: 'center' }}>
