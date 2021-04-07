@@ -35,6 +35,7 @@ const MedalsWrapper = styled(Flex)`
 
 const ArrowWrapper = styled(Flex)`
   svg {
+    height: 10px;
     width: 10px;
     fill: ${({ theme }) => theme.colors.textSubtle};
   }
