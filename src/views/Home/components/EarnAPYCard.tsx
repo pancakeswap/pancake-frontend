@@ -6,6 +6,7 @@ import { NavLink } from 'react-router-dom'
 import useI18n from 'hooks/useI18n'
 import BigNumber from 'bignumber.js'
 import { getFarmApy } from 'utils/apy'
+import { getAddress } from 'utils/addressHelpers'
 import { useFarms, usePriceCakeBusd, useGetApiPrices } from 'state/hooks'
 
 const StyledFarmStakingCard = styled(Card)`
@@ -33,7 +34,7 @@ const EarnAPYCard = () => {
       .filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
       .map((farm) => {
         if (farm.lpTotalInQuoteToken && prices) {
-          const quoteTokenPriceUsd = prices[farm.quoteToken.symbol.toLowerCase()]
+          const quoteTokenPriceUsd = prices[getAddress(farm.quoteToken.address).toLowerCase()]
           const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(quoteTokenPriceUsd)
           return getFarmApy(farm.poolWeight, cakePrice, totalLiquidity)
         }
