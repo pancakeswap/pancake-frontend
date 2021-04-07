@@ -1,7 +1,9 @@
 import React from 'react'
 import { Box, Skeleton } from '@pancakeswap-libs/uikit'
+import styled from 'styled-components'
 import { LeaderboardDataItem } from '../../../types'
 import GridItem from './GridItem'
+import ExpandedGridItem from './ExpandedGridItem'
 
 const SkeletonLoader = () => {
   return (
@@ -15,15 +17,27 @@ const SkeletonLoader = () => {
   )
 }
 
-const TopTradersGrid: React.FC<{ data?: Array<LeaderboardDataItem> }> = ({ data }) => {
+const ExpandedWrapper = styled.div``
+
+const TopTradersGrid: React.FC<{ data?: LeaderboardDataItem[]; isExpanded: boolean }> = ({ data, isExpanded }) => {
   const topFive = data && data.slice(0, 5)
+  const nextTwenty = data && data.slice(5, 20)
 
   return (
     <Box>
       {data ? (
-        topFive.map((traderData, index) => {
-          return <GridItem key={traderData.address} traderData={traderData} index={index} />
-        })
+        <>
+          {topFive.map((traderData) => {
+            return <GridItem key={traderData.address} traderData={traderData} />
+          })}
+          {isExpanded && (
+            <ExpandedWrapper>
+              {nextTwenty.map((traderData) => {
+                return <ExpandedGridItem key={traderData.address} traderData={traderData} />
+              })}
+            </ExpandedWrapper>
+          )}
+        </>
       ) : (
         <SkeletonLoader />
       )}
