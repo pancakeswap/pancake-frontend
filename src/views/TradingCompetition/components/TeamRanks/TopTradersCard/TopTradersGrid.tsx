@@ -17,7 +17,17 @@ const SkeletonLoader = () => {
   )
 }
 
-const ExpandedWrapper = styled.div``
+const ExpandedWrapper = styled.div`
+  ${({ theme }) => theme.mediaQueries.sm} {
+    display: grid;
+    grid-template-rows: repeat(5, 1fr);
+    grid-auto-flow: column;
+  }
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    display: block;
+  }
+`
 
 const TopTradersGrid: React.FC<{ data?: LeaderboardDataItem[]; isExpanded: boolean }> = ({ data, isExpanded }) => {
   const topFive = data && data.slice(0, 5)

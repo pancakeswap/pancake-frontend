@@ -6,24 +6,38 @@ import { localiseTradingVolume, accountEllipsis } from '../../../helpers'
 import { LeaderboardStorm, LeaderboardFlippers, LeaderboardCakers } from '../../../svgs'
 
 const Wrapper = styled.div`
+  overflow-x: hidden;
   display: grid;
   grid-template-columns: auto repeat(3, 1fr);
   border-bottom: 1px solid ${({ theme }) => theme.colors.textDisabled};
-  grid-gap: 8px;
-
-  ${({ theme }) => theme.mediaQueries.xs} {
-    grid-template-columns: repeat(4, 1fr);
-    grid-gap: 16px;
+  grid-gap: 4px;
+  svg {
+    height: 55px;
+    width: auto;
   }
 
-  svg {
-    height: 80px;
-    width: auto;
+  ${({ theme }) => theme.mediaQueries.xs} {
+    grid-gap: 8px;
+    svg {
+      height: 70px;
+    }
+  }
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 16px;
+    svg {
+      height: 75px;
+    }
   }
 `
 
 const RankItem = styled(Flex)`
-  margin-left: 8px;
+  margin-left: 4px;
+
+  ${({ theme }) => theme.mediaQueries.xs} {
+    margin-left: 8px;
+  }
 
   ${({ theme }) => theme.mediaQueries.sm} {
     margin-left: 16px;
@@ -50,7 +64,7 @@ const GridItem: React.FC<{ traderData?: LeaderboardDataItem }> = ({ traderData }
       <Flex alignItems="center" justifyContent="flex-start">
         <Text color="primary">{accountEllipsis(address)}</Text>
       </Flex>
-      {icon[teamId]}
+      <Flex justifyContent="flex-end">{icon[teamId]}</Flex>
     </Wrapper>
   )
 }
