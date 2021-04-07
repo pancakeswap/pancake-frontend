@@ -204,8 +204,8 @@ export const useGetApiPrice = (token: string) => {
 
 export const usePriceCakeBusd = (): BigNumber => {
   const ZERO = new BigNumber(0)
-  const cakeBusdPriceNumber = useGetApiPrice(getCakeAddress())
-  return cakeBusdPriceNumber ? new BigNumber(cakeBusdPriceNumber) : ZERO
+  const cakeBusdPrice = useGetApiPrice(getCakeAddress())
+  return cakeBusdPrice ? new BigNumber(cakeBusdPrice) : ZERO
 }
 
 // Block
