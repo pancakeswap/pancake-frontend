@@ -65,7 +65,7 @@ const Icon: React.FC<SvgProps> = (props) => {
         fillRule="evenodd"
         clipRule="evenodd"
         d="M12.214 18.272C12.214 20.9856 14.0269 23.4161 16.8871 25.0513L14.9054 28.7844L14.9059 28.7847H14.9054V38.2326C14.9054 39.4819 15.8366 40.4947 16.9853 40.4947C18.134 40.4947 19.0652 39.4819 19.0652 38.2326V30.7188L21.1972 26.7024C22.5605 27.0169 24.0238 27.1876 25.5468 27.1876C32.9103 27.1876 38.8796 23.196 38.8796 18.272C38.8796 13.3481 32.9103 9.35645 25.5468 9.35645C18.1833 9.35645 12.214 13.3481 12.214 18.272Z"
-        fill="url(#paint0_linear)"
+        fill="url(#paint0_linear_pancakes)"
       />
       <path
         fillRule="evenodd"
@@ -94,7 +94,7 @@ const Icon: React.FC<SvgProps> = (props) => {
       />
       <defs>
         <linearGradient
-          id="paint0_linear"
+          id="paint0_linear_pancakes"
           x1="25.691"
           y1="9.6549"
           x2="25.691"

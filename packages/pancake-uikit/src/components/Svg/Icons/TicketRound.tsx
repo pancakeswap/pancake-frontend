@@ -5,7 +5,7 @@ import { SvgProps } from "../types";
 const Icon: React.FC<SvgProps> = (props) => {
   return (
     <Svg viewBox="0 0 48 48" {...props}>
-      <circle cx="24" cy="24" r="24" fill="url(#paint0_linear)" />
+      <circle cx="24" cy="24" r="24" fill="url(#paint0_linear_ticketround)" />
       <path
         d="M39.0623 18.9777C39.3983 19.3138 39.4447 19.8426 39.1721 20.232C34.1862 27.3557 28.0207 33.576 20.9413 38.6248L20.3823 39.0235C19.9723 39.3159 19.4111 39.2692 19.055 38.9132L16.5383 36.3964C18.024 34.858 18.0077 32.4065 16.4893 30.8881C14.971 29.3698 12.5194 29.3535 10.981 30.8392L8.66608 28.5242C8.22585 28.084 8.28655 27.3538 8.79343 26.9923L9.35284 26.5933C16.261 21.6665 22.2775 15.5966 27.1429 8.64507C27.4837 8.15815 28.1816 8.09702 28.6019 8.51729L30.958 10.8734C29.4778 12.4121 29.496 14.8595 31.0125 16.3759C32.5289 17.8924 34.9762 17.9105 36.515 16.4304L39.0623 18.9777Z"
         fill="#DBCDF9"
@@ -89,7 +89,7 @@ const Icon: React.FC<SvgProps> = (props) => {
         fill="#53DEE9"
       />
       <defs>
-        <linearGradient id="paint0_linear" x1="24" y1="0" x2="24" y2="48" gradientUnits="userSpaceOnUse">
+        <linearGradient id="paint0_linear_ticketround" x1="24" y1="0" x2="24" y2="48" gradientUnits="userSpaceOnUse">
           <stop stopColor="#54DADE" />
           <stop offset="0.762157" stopColor="#24C7D6" />
         </linearGradient>

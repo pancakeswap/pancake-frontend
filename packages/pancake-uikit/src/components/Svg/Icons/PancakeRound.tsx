@@ -5,7 +5,7 @@ import { SvgProps } from "../types";
 const Icon: React.FC<SvgProps> = (props) => {
   return (
     <Svg viewBox="0 0 90 90" {...props}>
-      <circle cx="45" cy="45" r="45" fill="url(#paint0_linear)" />
+      <circle cx="45" cy="45" r="45" fill="url(#paint0_linear_pancakeround)" />
       <path
         fillRule="evenodd"
         clipRule="evenodd"
@@ -66,7 +66,7 @@ const Icon: React.FC<SvgProps> = (props) => {
         fillRule="evenodd"
         clipRule="evenodd"
         d="M25.4361 31.9044C25.4361 34.3714 27.2287 36.5809 30.0567 38.0676L28.0973 41.4614L28.0977 41.4617H28.0973V50.0509C28.0973 51.1867 29.018 52.1075 30.1538 52.1075C31.2896 52.1075 32.2104 51.1867 32.2104 50.0509V43.22L34.3184 39.5686C35.6663 39.8545 37.1133 40.0097 38.6192 40.0097C45.9 40.0097 51.8022 36.3808 51.8022 31.9044C51.8022 27.428 45.9 23.7991 38.6192 23.7991C31.3383 23.7991 25.4361 27.428 25.4361 31.9044Z"
-        fill="url(#paint1_linear)"
+        fill="url(#paint1_linear_pancakeround)"
       />
       <path
         fillRule="evenodd"
@@ -94,12 +94,12 @@ const Icon: React.FC<SvgProps> = (props) => {
         fill="#633001"
       />
       <defs>
-        <linearGradient id="paint0_linear" x1="45" y1="0" x2="45" y2="90" gradientUnits="userSpaceOnUse">
+        <linearGradient id="paint0_linear_pancakeround" x1="45" y1="0" x2="45" y2="90" gradientUnits="userSpaceOnUse">
           <stop stopColor="#54DADE" />
           <stop offset="0.762157" stopColor="#24C7D6" />
         </linearGradient>
         <linearGradient
-          id="paint1_linear"
+          id="paint1_linear_pancakeround"
           x1="38.7618"
           y1="24.0704"
           x2="38.7618"

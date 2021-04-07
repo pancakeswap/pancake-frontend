@@ -5,7 +5,7 @@ import { SvgProps } from "../types";
 const Icon: React.FC<SvgProps> = (props) => {
   return (
     <Svg viewBox="0 0 64 64" {...props}>
-      <g clipPath="url(#clip0)">
+      <g clipPath="url(#clip-won)">
         <path
           fillRule="evenodd"
           clipRule="evenodd"
@@ -34,7 +34,7 @@ const Icon: React.FC<SvgProps> = (props) => {
         />
         <path
           d="M51.0823 29.9055C50.3505 27.1742 47.543 25.5533 44.8116 26.2851L17.6112 33.5735C14.8798 34.3053 13.2589 37.1128 13.9908 39.8441L18.546 56.8444C19.2778 59.5758 22.0853 61.1967 24.8167 60.4648L52.0171 53.1765C54.7485 52.4446 56.3694 49.6371 55.6375 46.9058L51.0823 29.9055Z"
-          fill="url(#paint0_linear)"
+          fill="url(#paint0_linear_won)"
         />
         <path
           fillRule="evenodd"
@@ -54,7 +54,7 @@ const Icon: React.FC<SvgProps> = (props) => {
         </g>
         <path
           d="M54.8306 24.9448C55.3795 22.8962 54.1638 20.7906 52.1153 20.2417L17.4965 10.9657C15.448 10.4168 13.3424 11.6324 12.7935 13.681L11.8824 17.081C11.3335 19.1295 12.5492 21.2351 14.5977 21.784L49.2165 31.0601C51.265 31.609 53.3706 30.3933 53.9195 28.3448L54.8306 24.9448Z"
-          fill="url(#paint1_linear)"
+          fill="url(#paint1_linear_won)"
         />
         <path
           fillRule="evenodd"
@@ -74,7 +74,7 @@ const Icon: React.FC<SvgProps> = (props) => {
       </g>
       <defs>
         <linearGradient
-          id="paint0_linear"
+          id="paint0_linear_won"
           x1="31.2114"
           y1="29.9293"
           x2="38.4169"
@@ -85,7 +85,7 @@ const Icon: React.FC<SvgProps> = (props) => {
           <stop offset="1" stopColor="#1FC7D4" />
         </linearGradient>
         <linearGradient
-          id="paint1_linear"
+          id="paint1_linear_won"
           x1="34.8059"
           y1="15.6037"
           x2="31.9071"
@@ -95,7 +95,7 @@ const Icon: React.FC<SvgProps> = (props) => {
           <stop stopColor="#53DEE9" />
           <stop offset="1" stopColor="#1FC7D4" />
         </linearGradient>
-        <clipPath id="clip0">
+        <clipPath id="clip-won">
           <rect width="64" height="64" fill="white" />
         </clipPath>
       </defs>
