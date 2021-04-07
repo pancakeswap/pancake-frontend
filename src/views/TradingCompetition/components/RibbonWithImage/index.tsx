@@ -18,7 +18,10 @@ const Spacer = styled.div`
 `
 
 const AbsoluteImageWrapper = styled.div`
+  z-index: 2;
   position: absolute;
+  /* When the absolute image wrapper is used - offset the image slightly to overlap the ribbon */
+  bottom: -8px;
 `
 
 const RibbonWrapper = styled(Flex)<{ ribbonDirection?: string }>`

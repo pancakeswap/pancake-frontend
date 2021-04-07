@@ -4,12 +4,12 @@ import { Svg, SvgProps } from '@pancakeswap-libs/uikit'
 const Prizes: React.FC<SvgProps> = (props) => {
   return (
     <Svg viewBox="0 0 1200 66" {...props}>
-      <g filter="url(#filter0_d)">
+      <g filter="url(#intersect_filter0_d)">
         <path d="M1200 23.9232C1050.53 39.6633 837.034 49.5127 600 49.5127C362.965 49.5127 149.466 39.6633 0 23.9232V0.512695H1200V23.9232Z" />
       </g>
       <defs>
         <filter
-          id="filter0_d"
+          id="intersect_filter0_d"
           x="-12"
           y="-7.4873"
           width="1224"

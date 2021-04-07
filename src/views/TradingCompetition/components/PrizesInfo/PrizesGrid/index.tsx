@@ -137,10 +137,10 @@ const PrizesGrid = () => {
         <PrizeTable>
           <thead>
             <tr>
-              <th>{TranslateString(999, 'Rank in team')}</th>
+              <th>{TranslateString(1222, 'Rank in team')}</th>
               <th>{TranslateString(999, 'Tier')}</th>
               <th>{TranslateString(999, 'CAKE Prizes (Split)')}</th>
-              <th>{TranslateString(999, 'Achievements')}</th>
+              <th>{TranslateString(1092, 'Achievements')}</th>
               <th>{TranslateString(999, 'NFT')}</th>
             </tr>
           </thead>

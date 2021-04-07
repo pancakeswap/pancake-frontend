@@ -1,3 +1,4 @@
+import { ReactText } from 'react'
 import { Profile } from 'state/types'
 
 export interface UserRewardsProps {
@@ -16,6 +17,33 @@ export interface UserTradingInformationProps {
   canClaimNFT?: boolean
 }
 
+export interface LeaderboardDataItem {
+  rank?: number
+  address?: string
+  username?: string
+  volume?: number
+  teamId?: number
+}
+
+interface LeaderboardData {
+  total?: number
+  volume?: number
+  data?: LeaderboardDataItem[]
+}
+
+export interface TeamLeaderboardProps {
+  teamId?: number
+  leaderboardData?: LeaderboardData
+}
+
+export interface TeamRanksProps {
+  team1LeaderboardInformation?: TeamLeaderboardProps
+  team2LeaderboardInformation?: TeamLeaderboardProps
+  team3LeaderboardInformation?: TeamLeaderboardProps
+  globalLeaderboardInformation?: LeaderboardData
+  isGlobalLeaderboardDataComplete?: boolean
+}
+
 export interface CompetitionProps extends UserRewardsProps {
   userTradingInformation?: UserTradingInformationProps
   account?: string
@@ -29,7 +57,14 @@ export interface CompetitionProps extends UserRewardsProps {
 }
 
 export interface YourScoreProps extends CompetitionProps {
-  test?: boolean
+  hasRegistered?: boolean
+  userLeaderboardInformation?: {
+    global?: ReactText
+    team?: ReactText
+    volume?: number
+    // eslint-disable-next-line camelcase
+    next_rank?: number
+  }
 }
 export interface RibbonProps {
   ribbonDirection?: 'up' | 'down'
