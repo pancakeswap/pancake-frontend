@@ -149,7 +149,7 @@ const CardUserInfo: React.FC<YourScoreProps> = ({ hasRegistered, account, profil
       {shouldShowUserRanks && (
         <RanksWrapper>
           <Flex>
-            {volume !== 0 ? (
+            {volume > 0 ? (
               <UserRankBox
                 flex="1"
                 title={TranslateString(1222, 'Rank in team').toUpperCase()}
