@@ -20,7 +20,6 @@ export interface UserTradingInformationProps {
 export interface LeaderboardDataItem {
   rank?: number
   address?: string
-  username?: string
   volume?: number
   teamId?: number
 }
