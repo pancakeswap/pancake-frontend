@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { useWeb3React } from '@web3-react/core'
 import {
   ArrowBackIcon,
   ArrowForwardIcon,
@@ -54,6 +55,7 @@ const MobileNavigation = () => {
   const isChartOpen = useIsChartPaneOpen()
   const activeIndex = getActiveIndex(isHistoryOpen, isChartOpen)
   const dispatch = useAppDispatch()
+  const { account } = useWeb3React()
 
   const handleItemClick = (index: number) => {
     switch (index) {
@@ -86,7 +88,7 @@ const MobileNavigation = () => {
           <ButtonMenuItem>
             <ChartIcon color="currentColor" />
           </ButtonMenuItem>
-          <ButtonMenuItem>
+          <ButtonMenuItem disabled={!account}>
             <HistoryIcon color="currentColor" />
           </ButtonMenuItem>
         </ButtonMenu>

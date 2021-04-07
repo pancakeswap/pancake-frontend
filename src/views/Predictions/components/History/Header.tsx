@@ -70,7 +70,7 @@ const Header = () => {
           <Radio
             scale="sm"
             checked={historyFilter === HistoryFilter.ALL}
-            disabled={isFetchingHistory}
+            disabled={isFetchingHistory || !account}
             onChange={handleChange(HistoryFilter.ALL)}
           />
           <Text ml="4px">{TranslateString(999, 'All')}</Text>
@@ -79,7 +79,7 @@ const Header = () => {
           <Radio
             scale="sm"
             checked={historyFilter === HistoryFilter.COLLECTED}
-            disabled={isFetchingHistory}
+            disabled={isFetchingHistory || !account}
             onChange={handleChange(HistoryFilter.COLLECTED)}
           />
           <Text ml="4px">{TranslateString(999, 'Collected')}</Text>
@@ -88,7 +88,7 @@ const Header = () => {
           <Radio
             scale="sm"
             checked={historyFilter === HistoryFilter.UNCOLLECTED}
-            disabled={isFetchingHistory}
+            disabled={isFetchingHistory || !account}
             onChange={handleChange(HistoryFilter.UNCOLLECTED)}
           />
           <Text ml="4px">{TranslateString(999, 'Uncollected')}</Text>
