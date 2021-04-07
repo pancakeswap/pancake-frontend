@@ -1002,6 +1002,33 @@ const tokens = {
     decimals: 8,
     projectLink: 'https://hoo.com/',
   },
+  apys: {
+    symbol: 'APYS',
+    address: {
+      56: '0x37dfACfaeDA801437Ff648A1559d73f4C40aAcb7',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://apyswap.com/',
+  },
+  bondly: {
+    symbol: 'BONDLY',
+    address: {
+      56: '0x96058f8c3e16576d9bd68766f3836d9a33158f89',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://www.bondly.finance/',
+  },
+  tko: {
+    symbol: 'TKO',
+    address: {
+      56: '0x9f589e3eabe42ebc94a44727b3f3531c0c877809',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://www.tokocrypto.com/',
+  },
 }
 
 export default tokens

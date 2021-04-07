@@ -16,9 +16,14 @@ const Wrapper = styled(Flex)`
   border: 1px solid #7645d9;
   box-sizing: border-box;
   border-radius: 0px 0px 24px 24px;
-  padding: 16px 24px;
+  padding: 16px 18px;
   margin: -30px auto 50px;
   justify-content: space-around;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    padding: 16px 24px;
+  }
+
   ${({ theme }) => theme.mediaQueries.xl} {
     flex-direction: column;
     margin: -38px 0 0 36px;
@@ -28,11 +33,20 @@ const Wrapper = styled(Flex)`
 const PocketWatchWrapper = styled(Flex)`
   align-items: center;
   justify-content: center;
-  margin-right: 24px;
+  margin-right: 12px;
 
   svg {
-    height: 64px;
-    width: 64px;
+    height: 48px;
+    width: 48px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    margin-right: 24px;
+
+    svg {
+      height: 64px;
+      width: 64px;
+    }
   }
 
   ${({ theme }) => theme.mediaQueries.xl} {
@@ -43,7 +57,11 @@ const PocketWatchWrapper = styled(Flex)`
 
 const StyledHeading = styled(Heading2Text)`
   font-size: 24px;
-  margin-right: 4px;
+  margin-right: 2px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    margin-right: 4px;
+  }
 `
 
 const TimerHeadingComponent = ({ children }) => (
@@ -53,7 +71,7 @@ const TimerHeadingComponent = ({ children }) => (
 )
 
 const TimerBodyComponent = ({ children }) => (
-  <Text color="#ffff" fontWeight="600" fontSize="16px" mr="16px">
+  <Text bold color="#ffff" fontSize="16px" mr={{ _: '8px', sm: '16px' }}>
     {children}
   </Text>
 )
