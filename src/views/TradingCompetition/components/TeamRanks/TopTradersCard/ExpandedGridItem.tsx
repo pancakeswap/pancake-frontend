@@ -11,6 +11,7 @@ const Wrapper = styled.div`
   grid-gap: 8px;
   grid-template-columns: 1fr 4fr auto;
 
+  /* Specific styles for between 576 - 852px where the expanded wrapper shows as a three-column grid */
   ${({ theme }) => theme.mediaQueries.sm} {
     grid-gap: 4px;
     grid-template-columns: auto 1fr auto;
@@ -43,22 +44,25 @@ const VolumeAddressWrapper = styled(Box)`
   display: grid;
   grid-template-columns: 1fr 2fr;
 
+  /* Between 576 - 852px the expanded wrapper shows as a three-column grid and these elements are stacked */
   ${({ theme }) => theme.mediaQueries.sm} {
     display: flex;
     flex-direction: column;
   }
 
   ${({ theme }) => theme.mediaQueries.md} {
-    grid-template-columns: 1fr 2fr;
     display: grid;
   }
 `
 
 const VolumeText = styled(Text)`
   margin-right: 8px;
+
+  /* Specific style for between 576 - 852px where the expanded wrapper shows as a three-column grid */
   ${({ theme }) => theme.mediaQueries.sm} {
     margin-right: 0;
   }
+
   ${({ theme }) => theme.mediaQueries.md} {
     margin-right: 16px;
   }

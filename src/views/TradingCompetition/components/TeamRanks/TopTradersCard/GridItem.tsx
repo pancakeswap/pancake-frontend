@@ -11,6 +11,7 @@ const Wrapper = styled.div`
   grid-template-columns: auto repeat(3, 1fr);
   border-bottom: 1px solid ${({ theme }) => theme.colors.textDisabled};
   grid-gap: 4px;
+
   svg {
     height: 55px;
     width: auto;
@@ -18,17 +19,27 @@ const Wrapper = styled.div`
 
   ${({ theme }) => theme.mediaQueries.xs} {
     grid-gap: 8px;
+
     svg {
-      height: 70px;
+      height: 65px;
     }
   }
 
-  ${({ theme }) => theme.mediaQueries.md} {
+  ${({ theme }) => theme.mediaQueries.sm} {
     grid-template-columns: repeat(4, 1fr);
+  }
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    grid-template-columns: auto repeat(3, 1fr);
     grid-gap: 16px;
+
     svg {
-      height: 75px;
+      height: 72px;
     }
+  }
+
+  ${({ theme }) => theme.mediaQueries.xl} {
+    grid-template-columns: repeat(4, 1fr);
   }
 `
 

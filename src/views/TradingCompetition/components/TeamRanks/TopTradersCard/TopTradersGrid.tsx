@@ -18,6 +18,7 @@ const SkeletonLoader = () => {
 }
 
 const ExpandedWrapper = styled.div`
+  /* Between 576 - 852px the expanded wrapper shows as a three-column grid */
   ${({ theme }) => theme.mediaQueries.sm} {
     display: grid;
     grid-template-rows: repeat(5, 1fr);
