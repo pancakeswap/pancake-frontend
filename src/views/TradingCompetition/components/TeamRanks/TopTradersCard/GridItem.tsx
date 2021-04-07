@@ -28,7 +28,7 @@ const Item = styled(Flex)`
   }
 `
 
-const GridItem: React.FC<{ traderData?: LeaderboardDataItem; index?: number }> = ({ traderData, index }) => {
+const GridItem: React.FC<{ traderData?: LeaderboardDataItem; index: number }> = ({ traderData, index }) => {
   // reinstate 'rank' instead of index when rank is accurate
   const { address, volume, teamId } = traderData
 
