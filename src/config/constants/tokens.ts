@@ -1027,7 +1027,7 @@ const tokens = {
       97: '',
     },
     decimals: 18,
-    projectLink: 'http://www.tokocrypto.com/',
+    projectLink: 'https://www.tokocrypto.com/',
   },
 }
 
