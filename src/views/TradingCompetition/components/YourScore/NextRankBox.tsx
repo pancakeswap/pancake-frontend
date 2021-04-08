@@ -11,8 +11,7 @@ interface NextRankProps extends FlexProps {
 }
 
 const Wrapper = styled(Flex)`
-  /* This is the cardHeaderBackground.default. Being used more & more in designs. Maybe we should export from uikit? */
-  background: linear-gradient(111.68deg, #f2ecf2 0%, #e8f2f6 100%);
+  background: ${({ theme }) => theme.card.cardHeaderBackground.default};
   justify-content: center;
   align-items: center;
   border-radius: ${({ theme }) => theme.radii.default};
