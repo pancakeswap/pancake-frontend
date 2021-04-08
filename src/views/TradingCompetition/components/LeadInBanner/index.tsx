@@ -60,7 +60,7 @@ const LeadInBanner = () => {
           </LaurelWrapper>
           <Box px={['8px', '16px', null, '0']}>
             <Header>{TranslateString(999, 'Easter Battle')}</Header>
-            <SubHeader background={GOLDGRADIENT} fill>
+            <SubHeader background={GOLDGRADIENT} $fill>
               {TranslateString(999, '$200,000 in Prizes!')}
             </SubHeader>
             <LearnMoreLink id="hp-learn-more-cta" to="/competition">

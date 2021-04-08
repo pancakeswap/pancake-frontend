@@ -1,6 +1,5 @@
 import { Heading } from '@pancakeswap-libs/uikit'
 import styled, { DefaultTheme } from 'styled-components'
-import React from 'react'
 
 const H1SizeStyles = (theme: DefaultTheme) => `
   font-size: 48px;
@@ -28,7 +27,7 @@ const sharedStyles = (props: HeadingProps) => `
   background-clip: text;
   -webkit-background-clip: text;
   ${
-    props.fill
+    props.$fill
       ? `-webkit-text-fill-color: transparent;`
       : `-webkit-text-stroke: 4px transparent;
        text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);`
@@ -43,28 +42,25 @@ const sharedVisiblyHiddenStyles = `
 interface HeadingProps {
   textColor?: string
   background?: string
-  fill?: boolean
+  $fill?: boolean
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const HeadingUi = ({ textColor, background, fill, ...props }) => <Heading {...props} />
-
-export const Heading1Text = styled(HeadingUi)<HeadingProps>`
+export const Heading1Text = styled(Heading)<HeadingProps>`
   ${({ theme }) => H1SizeStyles(theme)}
   ${(props) => sharedStyles(props)}
 `
 
-export const Heading2Text = styled(HeadingUi)<HeadingProps>`
+export const Heading2Text = styled(Heading)<HeadingProps>`
   ${({ theme }) => H2SizeStyles(theme)}
   ${(props) => sharedStyles(props)}
 `
 
-export const VisuallyHiddenHeading1Text = styled(HeadingUi)`
+export const VisuallyHiddenHeading1Text = styled(Heading)`
   ${({ theme }) => H1SizeStyles(theme)}
   ${sharedVisiblyHiddenStyles}
 `
 
-export const VisuallyHiddenHeading2Text = styled(HeadingUi)`
+export const VisuallyHiddenHeading2Text = styled(Heading)`
   ${({ theme }) => H2SizeStyles(theme)}
   ${sharedVisiblyHiddenStyles}
 `

@@ -30,7 +30,7 @@ const BattleBanner = () => {
         <Image src={AllBunniesImage} alt="all the bunnies" width={1208} height={659} responsive />
       </ImageWrapper>
       <StyledHeading1Text>{TranslateString(999, 'Easter Battle')}</StyledHeading1Text>
-      <StyledHeading2Text background="linear-gradient(180deg, #FFD800 0%, #EB8C00 100%)" fill>
+      <StyledHeading2Text background="linear-gradient(180deg, #FFD800 0%, #EB8C00 100%)" $fill>
         {TranslateString(999, '$200,000 in Prizes!')}
       </StyledHeading2Text>
       <StyledHeading size="md" color="inputSecondary" mt="16px">
