@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react'
-import { Modal, Flex, Button, Text } from '@pancakeswap-libs/uikit'
+import { Modal, Flex, Button, Text, Skeleton } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
 import useI18n from 'hooks/useI18n'
 import FlippersShare from '../pngs/flippers-share.png'
@@ -63,9 +63,13 @@ const ShareImageModal: React.FC<YourScoreProps> = ({ onDismiss, profile, userLea
   return (
     <Modal title={`${TranslateString(999, 'Share Your Score')}`} onDismiss={onDismiss}>
       <Flex flexDirection="column" alignItems="center" maxWidth="460px">
-        <Flex alignItems="center" justifyContent="center">
-          <StyledCanvas ref={canvas} width="1600px" />
-        </Flex>
+        {bgImage && profileImage ? (
+          <Flex alignItems="center" justifyContent="center">
+            <StyledCanvas ref={canvas} width="1600px" />
+          </Flex>
+        ) : (
+          <Skeleton width="100%" height="258px" />
+        )}
         <Text p="24px 16px" color="textSubtle" textAlign="center">
           {TranslateString(999, 'Brag to your friends and annoy your rivals with your custom scorecard!')}
         </Text>
