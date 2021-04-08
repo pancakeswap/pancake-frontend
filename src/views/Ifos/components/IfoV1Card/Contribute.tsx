@@ -5,8 +5,7 @@ import { Box, Button, Flex, Text, useModal } from '@pancakeswap-libs/uikit'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { Ifo } from 'config/constants/types'
 import useI18n from 'hooks/useI18n'
-import { UserInfo } from 'hooks/useGetWalletIfoData'
-import { PublicIfoState } from 'hooks/useGetPublicIfoData'
+import { UserInfo, PublicIfoData } from 'hooks/ifo/v1/types'
 import { useToast } from 'state/hooks'
 import ContributeModal from './ContributeModal'
 import PercentageOfTotal from './PercentageOfTotal'
@@ -16,7 +15,7 @@ interface ContributeProps {
   contract: Contract
   userInfo: UserInfo
   isPendingTx: boolean
-  publicIfoData: PublicIfoState
+  publicIfoData: PublicIfoData
   addUserContributedAmount: (amount: BigNumber) => void
 }
 const Contribute: React.FC<ContributeProps> = ({

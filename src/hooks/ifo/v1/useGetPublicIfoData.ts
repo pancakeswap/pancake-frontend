@@ -5,18 +5,7 @@ import { useBlock } from 'state/hooks'
 import { useIfoContract } from 'hooks/useContract'
 import { useEffect, useState } from 'react'
 import makeBatchRequest from 'utils/makeBatchRequest'
-
-export interface PublicIfoState {
-  status: IfoStatus
-  blocksRemaining: number
-  secondsUntilStart: number
-  progress: number
-  secondsUntilEnd: number
-  raisingAmount: BigNumber
-  totalAmount: BigNumber
-  startBlockNum: number
-  endBlockNum: number
-}
+import { PublicIfoData } from './types'
 
 const getStatus = (currentBlock: number, startBlock: number, endBlock: number): IfoStatus => {
   // Add an extra check to currentBlock because it takes awhile to fetch so the initial value is 0
@@ -43,9 +32,9 @@ const getStatus = (currentBlock: number, startBlock: number, endBlock: number): 
 /**
  * Gets all public data of an IFO
  */
-const useGetPublicIfoData = (ifo: Ifo) => {
+const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
   const { address, releaseBlockNumber } = ifo
-  const [state, setState] = useState<PublicIfoState>({
+  const [state, setState] = useState<PublicIfoData>({
     status: 'idle',
     blocksRemaining: 0,
     secondsUntilStart: 0,

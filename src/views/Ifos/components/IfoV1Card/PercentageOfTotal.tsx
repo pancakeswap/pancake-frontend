@@ -1,7 +1,7 @@
 import React from 'react'
 import BigNumber from 'bignumber.js'
 import { Text } from '@pancakeswap-libs/uikit'
-import { UserInfo } from 'hooks/useGetWalletIfoData'
+import { UserInfo } from 'hooks/ifo/v1/types'
 import useI18n from 'hooks/useI18n'
 
 interface PercentageOfTotalProps {

@@ -5,23 +5,12 @@ import { Ifo } from 'config/constants/types'
 import { useERC20, useIfoContract } from 'hooks/useContract'
 import { useIfoAllowance } from 'hooks/useAllowance'
 import makeBatchRequest from 'utils/makeBatchRequest'
-
-export interface UserInfo {
-  amount: BigNumber
-  claimed: boolean
-}
-
-export interface WalletIfoState {
-  isPendingTx: boolean
-  offeringTokenBalance: BigNumber
-  refundingAmount: BigNumber
-  userInfo: UserInfo
-}
+import { UserInfo, WalletIfoState, WalletIfoData } from './types'
 
 /**
  * Gets all data from an IFO related to a wallet
  */
-const useGetWalletIfoData = (ifo: Ifo) => {
+const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
   const [state, setState] = useState<WalletIfoState>({
     isPendingTx: false,
     offeringTokenBalance: new BigNumber(0),

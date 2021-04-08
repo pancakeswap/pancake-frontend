@@ -1,10 +1,10 @@
 import styled from 'styled-components'
 
-interface IfoCardWrapperProps {
+interface IfoCardLayoutProps {
   isSingle?: boolean
 }
 
-const IfoCardWrapper = styled.div<IfoCardWrapperProps>`
+const IfoCardLayout = styled.div<IfoCardLayoutProps>`
   align-items: start;
   border-top: 2px solid ${({ theme }) => theme.colors.textSubtle};
   display: grid;
@@ -18,8 +18,8 @@ const IfoCardWrapper = styled.div<IfoCardWrapperProps>`
   }
 `
 
-IfoCardWrapper.defaultProps = {
+IfoCardLayout.defaultProps = {
   isSingle: false,
 }
 
-export default IfoCardWrapper
+export default IfoCardLayout

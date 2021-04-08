@@ -3,9 +3,8 @@ import styled from 'styled-components'
 import { Text, Heading, BaseLayout, Button, LinkExternal, Flex, Image } from '@pancakeswap-libs/uikit'
 import { ifosConfig } from 'config/constants'
 import useI18n from 'hooks/useI18n'
-import IfoCard from './components/IfoCard'
-import Title from './components/Title'
-import IfoCards from './components/IfoCards'
+import IfoCard from './components/IfoV1Card'
+import IfoCardLayout from './components/IfoCardLayout'
 
 const LaunchIfoCallout = styled(BaseLayout)`
   border-top: 2px solid ${({ theme }) => theme.colors.textSubtle};
@@ -40,12 +39,14 @@ const Ifo = () => {
 
   return (
     <div>
-      <IfoCards isSingle>
+      <IfoCardLayout isSingle>
         <IfoCard ifo={activeIfo} />
-      </IfoCards>
+      </IfoCardLayout>
       <LaunchIfoCallout>
         <div>
-          <Title as="h2">{TranslateString(592, 'How to take part')}</Title>
+          <Heading as="h2" size="lg" color="secondary" mb="16px">
+            {TranslateString(592, 'How to take part')}
+          </Heading>
           <Heading mb="16px">{TranslateString(594, 'Before Sale')}:</Heading>
           <List>
             <li>{TranslateString(596, 'Buy CAKE and BNB tokens')}</li>
@@ -81,7 +82,9 @@ const Ifo = () => {
         <div>
           <Image src="/images/ifo-bunny.svg" alt="ifo bunny" width={436} height={406} responsive />
           <div>
-            <Title as="h2">{TranslateString(512, 'Want to launch your own IFO?')}</Title>
+            <Heading as="h2" size="lg" color="secondary" mb="16px">
+              {TranslateString(512, 'Want to launch your own IFO?')}
+            </Heading>
             <Text mb={3}>
               {TranslateString(
                 514,

@@ -1,15 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
-import { useWeb3React } from '@web3-react/core'
-import { Card, CardBody, CardRibbon } from '@pancakeswap-libs/uikit'
+import { Card, CardBody, CardRibbon, Box, Progress } from '@pancakeswap-libs/uikit'
 import { Ifo, IfoStatus } from 'config/constants/types'
 import useI18n from 'hooks/useI18n'
-import useGetPublicIfoData from 'hooks/useGetPublicIfoData'
-import UnlockButton from 'components/UnlockButton'
+import useGetPublicIfoData from 'hooks/ifo/v1/useGetPublicIfoData'
+import useGetWalletIfoData from 'hooks/ifo/v1/useGetWalletIfoData'
 import IfoCardHeader from './IfoCardHeader'
 import IfoCardDetails from './IfoCardDetails'
 import IfoCardActions from './IfoCardActions'
-import IfoCardProgress from './IfoCardProgress'
 import IfoCardTime from './IfoCardTime'
 
 export interface IfoCardProps {
@@ -39,19 +37,21 @@ const getRibbonComponent = (status: IfoStatus, TranslateString: (translationId: 
 }
 
 const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
-  const { id, name, subTitle } = ifo
   const publicIfoData = useGetPublicIfoData(ifo)
-  const { account } = useWeb3React()
+  const walletIfoData = useGetWalletIfoData(ifo)
   const TranslateString = useI18n()
-  const Ribbon = getRibbonComponent(publicIfoData.status, TranslateString)
 
+  const { id, name, subTitle } = ifo
+  const Ribbon = getRibbonComponent(publicIfoData.status, TranslateString)
   return (
     <StyledIfoCard ifoId={id} ribbon={Ribbon} isActive={publicIfoData.status === 'live'}>
       <CardBody>
         <IfoCardHeader ifoId={id} name={name} subTitle={subTitle} />
         {publicIfoData.status !== 'finished' && ifo.isActive && (
           <>
-            <IfoCardProgress progress={publicIfoData.progress} />
+            <Box mb="16px">
+              <Progress primaryStep={publicIfoData.progress} />
+            </Box>
             <IfoCardTime
               status={publicIfoData.status}
               secondsUntilStart={publicIfoData.secondsUntilStart}
@@ -60,7 +60,7 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
             />
           </>
         )}
-        {account ? <IfoCardActions ifo={ifo} publicIfoData={publicIfoData} /> : <UnlockButton width="100%" />}
+        <IfoCardActions ifo={ifo} publicIfoData={publicIfoData} walletIfoData={walletIfoData} />
       </CardBody>
       <IfoCardDetails ifo={ifo} publicIfoData={publicIfoData} />
     </StyledIfoCard>
