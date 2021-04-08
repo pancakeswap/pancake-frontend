@@ -107,7 +107,7 @@ const Earned: React.FC<EarnedProps> = ({
       <Flex justifyContent="space-between" alignItems="center">
         <Flex flexDirection="column">
           <Flex>
-            <Decimals value={getBalanceNumber(earnings, earningTokenDecimals)} decimalPlaces={3} fontSize="20px" bold />
+            <Decimals value="15.2222" decimalPlaces={3} fontSize="20px" bold />
           </Flex>
           <Flex>
             <Balance
