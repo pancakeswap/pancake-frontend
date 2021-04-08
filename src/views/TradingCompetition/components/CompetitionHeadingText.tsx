@@ -1,5 +1,6 @@
 import { Heading } from '@pancakeswap-libs/uikit'
 import styled, { DefaultTheme } from 'styled-components'
+import React from 'react'
 
 const H1SizeStyles = (theme: DefaultTheme) => `
   font-size: 48px;
@@ -45,22 +46,26 @@ interface HeadingProps {
   fill?: boolean
 }
 
-export const Heading1Text = styled(Heading)<HeadingProps>`
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const Heading1Text = styled(({ textColor, background, fill, ...props }) => <Heading {...props} />)<HeadingProps>`
   ${({ theme }) => H1SizeStyles(theme)}
   ${(props) => sharedStyles(props)}
 `
 
-export const Heading2Text = styled(Heading)<HeadingProps>`
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const Heading2Text = styled(({ textColor, background, fill, ...props }) => <Heading {...props} />)<HeadingProps>`
   ${({ theme }) => H2SizeStyles(theme)}
   ${(props) => sharedStyles(props)}
 `
 
-export const VisuallyHiddenHeading1Text = styled(Heading)`
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const VisuallyHiddenHeading1Text = styled(({ textColor, background, fill, ...props }) => <Heading {...props} />)`
   ${({ theme }) => H1SizeStyles(theme)}
   ${sharedVisiblyHiddenStyles}
 `
 
-export const VisuallyHiddenHeading2Text = styled(Heading)`
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const VisuallyHiddenHeading2Text = styled(({ textColor, background, fill, ...props }) => <Heading {...props} />)`
   ${({ theme }) => H2SizeStyles(theme)}
   ${sharedVisiblyHiddenStyles}
 `
