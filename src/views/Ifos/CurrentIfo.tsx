@@ -40,7 +40,7 @@ const Ifo = () => {
   return (
     <div>
       <IfoCardLayout>
-        <IfoV2Card ifo={activeIfo} />
+        <IfoV2Card ifo={activeIfo} isInitiallyVisible />
       </IfoCardLayout>
       <LaunchIfoCallout>
         <div>

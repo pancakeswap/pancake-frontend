@@ -5,7 +5,6 @@ import { Ifo } from 'config/constants/types'
 import UnlockButton from 'components/UnlockButton'
 import Contribute from './Contribute'
 import Claim from './Claim'
-import { ActiveSkeleton, InactiveSkeleton } from './Skeleton'
 
 export interface Props {
   ifo: Ifo
@@ -32,8 +31,6 @@ const IfoCardActions: React.FC<Props> = ({ ifo, publicIfoData, walletIfoData }) 
 
   return (
     <>
-      {ifo.isActive && publicIfoData.status === 'idle' && <ActiveSkeleton />}
-      {!ifo.isActive && publicIfoData.status === 'idle' && <InactiveSkeleton />}
       {publicIfoData.status === 'live' && (
         <Contribute
           ifo={ifo}

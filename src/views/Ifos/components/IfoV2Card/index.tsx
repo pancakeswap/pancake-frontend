@@ -1,29 +1,18 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
-import { Card, CardBody, CardRibbon, Box, Progress } from '@pancakeswap-libs/uikit'
+import { Card, CardHeader, CardBody, CardRibbon, ExpandableButton, Progress } from '@pancakeswap-libs/uikit'
 import { Ifo, IfoStatus } from 'config/constants/types'
 import useI18n from 'hooks/useI18n'
 import useGetPublicIfoData from 'hooks/ifo/v1/useGetPublicIfoData'
 import useGetWalletIfoData from 'hooks/ifo/v1/useGetWalletIfoData'
-import IfoCardHeader from './IfoCardHeader'
-import IfoCardDetails from './IfoCardDetails'
-import IfoCardActions from './IfoCardActions'
-import IfoCardTime from './IfoCardTime'
+import IfoCard from './SmallCard'
+import Timer from './Timer'
 
-export interface IfoCardProps {
+interface IfoFoldableCardProps {
   ifo: Ifo
+  isInitiallyVisible: boolean
 }
 
-const StyledIfoCard = styled(Card)<{ ifoId: string }>`
-  background-image: ${({ ifoId }) => `url('/images/ifos/${ifoId}-bg.svg')`};
-  background-repeat: no-repeat;
-  background-size: contain;
-  padding-top: 112px;
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 437px;
-  width: 100%;
-`
 const getRibbonComponent = (status: IfoStatus, TranslateString: (translationId: number, fallback: string) => any) => {
   if (status === 'coming_soon') {
     return <CardRibbon variantColor="textDisabled" text={TranslateString(999, 'Coming Soon')} />
@@ -36,35 +25,56 @@ const getRibbonComponent = (status: IfoStatus, TranslateString: (translationId: 
   return null
 }
 
-const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
+const Header = styled(CardHeader)<{ ifoId: string }>`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  height: 112px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-image: ${({ ifoId }) => `url('/images/ifos/${ifoId}-bg.svg')`};
+`
+
+const FoldableContent = styled.div<{ isVisible: boolean }>`
+  display: ${({ isVisible }) => (isVisible ? 'block' : 'none')};
+`
+
+const CardWrapper = styled.div`
+  display: grid;
+  grid-gap: 32px;
+  grid-template-columns: 1fr;
+  ${({ theme }) => theme.mediaQueries.md} {
+    grid-template-columns: 1fr 1fr;
+  }
+`
+
+const IfoFoldableCard: React.FC<IfoFoldableCardProps> = ({ ifo, isInitiallyVisible }) => {
+  const [isVisible, setIsVisible] = useState(isInitiallyVisible)
+  const TranslateString = useI18n()
   const publicIfoData = useGetPublicIfoData(ifo)
   const walletIfoData = useGetWalletIfoData(ifo)
-  const TranslateString = useI18n()
 
-  const { id, name, subTitle } = ifo
   const Ribbon = getRibbonComponent(publicIfoData.status, TranslateString)
+  const isInProgress = publicIfoData.status !== 'finished' && ifo.isActive
+
   return (
-    <StyledIfoCard ifoId={id} ribbon={Ribbon} isActive={publicIfoData.status === 'live'}>
-      <CardBody>
-        <IfoCardHeader ifoId={id} name={name} subTitle={subTitle} />
-        {publicIfoData.status !== 'finished' && ifo.isActive && (
-          <>
-            <Box mb="16px">
-              <Progress primaryStep={publicIfoData.progress} />
-            </Box>
-            <IfoCardTime
-              status={publicIfoData.status}
-              secondsUntilStart={publicIfoData.secondsUntilStart}
-              secondsUntilEnd={publicIfoData.secondsUntilEnd}
-              block={publicIfoData.startBlockNum}
-            />
-          </>
-        )}
-        <IfoCardActions ifo={ifo} publicIfoData={publicIfoData} walletIfoData={walletIfoData} />
-      </CardBody>
-      <IfoCardDetails ifo={ifo} publicIfoData={publicIfoData} />
-    </StyledIfoCard>
+    <Card ribbon={Ribbon}>
+      <Header ifoId={ifo.id}>
+        <ExpandableButton expanded={isVisible} onClick={() => setIsVisible((prev) => !prev)} />
+      </Header>
+      <FoldableContent isVisible={isVisible}>
+        {isInProgress && <Progress variant="flat" primaryStep={publicIfoData.progress} />}
+        <CardBody>
+          {isInProgress && <Timer publicIfoData={publicIfoData} />}
+          <CardWrapper>
+            <IfoCard cardType="basic" ifo={ifo} publicIfoData={publicIfoData} walletIfoData={walletIfoData} />
+            <IfoCard cardType="unlimited" ifo={ifo} publicIfoData={publicIfoData} walletIfoData={walletIfoData} />
+          </CardWrapper>
+        </CardBody>
+      </FoldableContent>
+    </Card>
   )
 }
 
-export default IfoCard
+export default IfoFoldableCard
