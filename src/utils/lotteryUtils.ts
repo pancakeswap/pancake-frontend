@@ -187,7 +187,8 @@ export const getMatchingRewardLength = async (lotteryContract, matchNumber) => {
   }
   try {
     const amount = await lotteryContract.methods.historyAmount(issueIndex, 5 - matchNumber).call()
-    return amount / 1e18 / LOTTERY_TICKET_PRICE
+
+    return new BigNumber(amount).div(new BigNumber(10).pow(18)).div(LOTTERY_TICKET_PRICE).toNumber()
   } catch (err) {
     console.error(err)
   }
