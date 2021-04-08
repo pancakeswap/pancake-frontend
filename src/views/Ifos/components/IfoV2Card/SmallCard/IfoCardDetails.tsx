@@ -11,12 +11,13 @@ import {
   ChevronUpIcon,
 } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
-import { PublicIfoData } from 'hooks/ifo/v1/types'
 import { Ifo } from 'config/constants/types'
+import BigNumber from 'bignumber.js'
 
 export interface IfoCardDetailsProps {
   ifo: Ifo
-  publicIfoData: PublicIfoData
+  raisingAmount: BigNumber
+  totalAmount: BigNumber
 }
 
 const Item = styled.div`
@@ -29,11 +30,10 @@ const Display = styled(Text)`
   flex: 1;
 `
 
-const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ ifo, publicIfoData }) => {
+const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ ifo, raisingAmount, totalAmount }) => {
   const [isOpen, setIsOpen] = useState(false)
   const TranslateString = useI18n()
   const { description, cakeToBurn, projectSiteUrl, launchDate, launchTime, saleAmount, raiseAmount } = ifo
-  const { raisingAmount, totalAmount } = publicIfoData
   const handleToggle = () => setIsOpen(!isOpen)
 
   return (

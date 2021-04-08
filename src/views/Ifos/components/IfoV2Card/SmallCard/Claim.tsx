@@ -5,7 +5,7 @@ import { Contract } from 'web3-eth-contract'
 import { AutoRenewIcon, Box, Button, Flex, Text } from '@pancakeswap-libs/uikit'
 import { useToast } from 'state/hooks'
 import useI18n from 'hooks/useI18n'
-import { UserInfo, WalletIfoState } from 'hooks/ifo/v1/types'
+import { UserPoolCharacteristics } from 'hooks/ifo/v2/types'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { Ifo } from 'config/constants/types'
 import BalanceInUsd from './BalanceInUsd'
@@ -14,11 +14,8 @@ import MetaLabel from './MetaLabel'
 interface ClaimProps {
   ifo: Ifo
   contract: Contract
-  userInfo: UserInfo
-  isPendingTx: WalletIfoState['isPendingTx']
+  userPoolCharacteristics: UserPoolCharacteristics
   setPendingTx: (status: boolean) => void
-  offeringTokenBalance: WalletIfoState['offeringTokenBalance']
-  refundingAmount: WalletIfoState['refundingAmount']
   setIsClaimed: () => void
 }
 
@@ -31,24 +28,18 @@ const AmountGrid = styled.div`
 
 const DISPLAY_DECIMALS = 4
 
-const Claim: React.FC<ClaimProps> = ({
-  ifo,
-  contract,
-  userInfo,
-  isPendingTx,
-  setPendingTx,
-  offeringTokenBalance,
-  refundingAmount,
-  setIsClaimed,
-}) => {
+const Claim: React.FC<ClaimProps> = ({ ifo, contract, userPoolCharacteristics, setPendingTx, setIsClaimed }) => {
   const TranslateString = useI18n()
   const { account } = useWeb3React()
-  const didContribute = userInfo.amount.gt(0)
-  const canClaim = !userInfo.claimed
-  const contributedBalance = getBalanceNumber(userInfo.amount)
-  const refundedBalance = getBalanceNumber(refundingAmount).toFixed(userInfo.amount.eq(0) ? 0 : DISPLAY_DECIMALS)
+  const { amountTokenCommittedInLP, refundingAmountInLP, offeringAmountInToken, isPendingTx } = userPoolCharacteristics
+  const didContribute = amountTokenCommittedInLP.isGreaterThan(0)
+  const canClaim = !userPoolCharacteristics.hasClaimed
+  const contributedBalance = getBalanceNumber(amountTokenCommittedInLP)
+  const refundedBalance = getBalanceNumber(refundingAmountInLP).toFixed(
+    amountTokenCommittedInLP.eq(0) ? 0 : DISPLAY_DECIMALS,
+  )
   const { token } = ifo
-  const rewardBalance = getBalanceNumber(offeringTokenBalance, token.decimals)
+  const rewardBalance = getBalanceNumber(offeringAmountInToken, token.decimals)
   const { toastError, toastSuccess } = useToast()
 
   const handleClaim = async () => {
@@ -77,8 +68,8 @@ const Claim: React.FC<ClaimProps> = ({
               Committed
             </Text>
           </Flex>
-          <Text fontSize="20px" bold color={offeringTokenBalance.gt(0) ? 'text' : 'textDisabled'}>
-            {contributedBalance.toFixed(userInfo.amount.eq(0) ? 0 : DISPLAY_DECIMALS)}
+          <Text fontSize="20px" bold color={offeringAmountInToken.gt(0) ? 'text' : 'textDisabled'}>
+            {contributedBalance.toFixed(amountTokenCommittedInLP.eq(0) ? 0 : DISPLAY_DECIMALS)}
           </Text>
           <MetaLabel>
             {canClaim
@@ -101,8 +92,8 @@ const Claim: React.FC<ClaimProps> = ({
               </Text>
             )}
           </Flex>
-          <Text fontSize="20px" bold color={offeringTokenBalance.gt(0) ? 'text' : 'textDisabled'}>
-            {rewardBalance.toFixed(offeringTokenBalance.eq(0) ? 0 : DISPLAY_DECIMALS)}
+          <Text fontSize="20px" bold color={offeringAmountInToken.gt(0) ? 'text' : 'textDisabled'}>
+            {rewardBalance.toFixed(offeringAmountInToken.eq(0) ? 0 : DISPLAY_DECIMALS)}
           </Text>
           {canClaim && <BalanceInUsd token={token.symbol} balance={rewardBalance} />}
         </Box>

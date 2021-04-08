@@ -6,7 +6,7 @@ import { getBalanceNumber } from 'utils/formatBalance'
 import { getAddress } from 'utils/addressHelpers'
 import { Ifo } from 'config/constants/types'
 import useI18n from 'hooks/useI18n'
-import { UserInfo, PublicIfoData } from 'hooks/ifo/v1/types'
+import { UserPoolCharacteristics } from 'hooks/ifo/v2/types'
 import { useToast } from 'state/hooks'
 import ContributeModal from './ContributeModal'
 import PercentageOfTotal from './PercentageOfTotal'
@@ -14,23 +14,21 @@ import PercentageOfTotal from './PercentageOfTotal'
 interface ContributeProps {
   ifo: Ifo
   contract: Contract
-  userInfo: UserInfo
-  isPendingTx: boolean
-  publicIfoData: PublicIfoData
+  userPoolCharacteristics: UserPoolCharacteristics
+  totalAmountPool: BigNumber
   addUserContributedAmount: (amount: BigNumber) => void
 }
 const Contribute: React.FC<ContributeProps> = ({
   ifo,
   contract,
-  userInfo,
-  isPendingTx,
-  publicIfoData,
+  userPoolCharacteristics,
+  totalAmountPool,
   addUserContributedAmount,
 }) => {
   const { currency } = ifo
-  const { totalAmount } = publicIfoData
+  const { amountTokenCommittedInLP, isPendingTx } = userPoolCharacteristics
   const TranslateString = useI18n()
-  const contributedBalance = getBalanceNumber(userInfo.amount)
+  const contributedBalance = getBalanceNumber(amountTokenCommittedInLP)
   const { toastSuccess } = useToast()
 
   const handleContributeSuccess = (amount: BigNumber) => {
@@ -68,7 +66,7 @@ const Contribute: React.FC<ContributeProps> = ({
           {TranslateString(999, 'Contribute')}
         </Button>
       </Flex>
-      <PercentageOfTotal userAmount={userInfo.amount} totalAmount={totalAmount} />
+      <PercentageOfTotal userAmount={amountTokenCommittedInLP} totalAmount={totalAmountPool} />
     </Box>
   )
 }

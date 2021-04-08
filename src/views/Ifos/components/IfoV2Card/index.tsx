@@ -3,9 +3,10 @@ import styled from 'styled-components'
 import { Card, CardHeader, CardBody, CardRibbon, ExpandableButton, Progress } from '@pancakeswap-libs/uikit'
 import { Ifo, IfoStatus } from 'config/constants/types'
 import useI18n from 'hooks/useI18n'
-import useGetPublicIfoData from 'hooks/ifo/v1/useGetPublicIfoData'
-import useGetWalletIfoData from 'hooks/ifo/v1/useGetWalletIfoData'
-import IfoCard from './SmallCard'
+import useGetPublicIfoV2Data from 'hooks/ifo/v2/useGetPublicIfoData'
+import useGetWalletIfoV2Data from 'hooks/ifo/v2/useGetWalletIfoData'
+import { PoolIds } from 'hooks/ifo/v2/types'
+import SmallCard from './SmallCard'
 import Timer from './Timer'
 
 interface IfoFoldableCardProps {
@@ -52,8 +53,8 @@ const CardWrapper = styled.div`
 const IfoFoldableCard: React.FC<IfoFoldableCardProps> = ({ ifo, isInitiallyVisible }) => {
   const [isVisible, setIsVisible] = useState(isInitiallyVisible)
   const TranslateString = useI18n()
-  const publicIfoData = useGetPublicIfoData(ifo)
-  const walletIfoData = useGetWalletIfoData(ifo)
+  const publicIfoData = useGetPublicIfoV2Data(ifo)
+  const walletIfoData = useGetWalletIfoV2Data(ifo)
 
   const Ribbon = getRibbonComponent(publicIfoData.status, TranslateString)
   const isInProgress = publicIfoData.status !== 'finished' && ifo.isActive
@@ -68,8 +69,18 @@ const IfoFoldableCard: React.FC<IfoFoldableCardProps> = ({ ifo, isInitiallyVisib
         <CardBody>
           {isInProgress && <Timer publicIfoData={publicIfoData} />}
           <CardWrapper>
-            <IfoCard cardType="basic" ifo={ifo} publicIfoData={publicIfoData} walletIfoData={walletIfoData} />
-            <IfoCard cardType="unlimited" ifo={ifo} publicIfoData={publicIfoData} walletIfoData={walletIfoData} />
+            <SmallCard
+              poolId={PoolIds.poolBasic}
+              ifo={ifo}
+              publicIfoData={publicIfoData}
+              walletIfoData={walletIfoData}
+            />
+            <SmallCard
+              poolId={PoolIds.poolUnlimited}
+              ifo={ifo}
+              publicIfoData={publicIfoData}
+              walletIfoData={walletIfoData}
+            />
           </CardWrapper>
         </CardBody>
       </FoldableContent>

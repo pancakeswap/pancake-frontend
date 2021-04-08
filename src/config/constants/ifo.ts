@@ -11,7 +11,7 @@ const cakeBnbLpToken: Token = {
 const ifos: Ifo[] = [
   {
     id: 'belt',
-    address: '0xc9FBedC033a1c479a6AD451ffE463025E92a1d38',
+    address: '0x13c51c38c53454dBA1bD489F5adED7496f074eA3',
     isActive: true,
     name: 'Usagi (USG)',
     subTitle: 'Cute rabbits',
