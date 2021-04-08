@@ -4,6 +4,8 @@ import { Card, CardHeader, CardBody, CardRibbon, ExpandableButton, Progress } fr
 import { Ifo, IfoStatus } from 'config/constants/types'
 import useI18n from 'hooks/useI18n'
 import useGetPublicIfoData from 'hooks/useGetPublicIfoData'
+import useGetWalletIfoData from 'hooks/useGetWalletIfoData'
+import { getBalanceNumber } from 'utils/formatBalance'
 import IfoCard from '../IfoCard'
 import Timer from './Timer'
 
@@ -50,8 +52,10 @@ const CardWrapper = styled.div`
 
 const IfoFoldableCard: React.FC<IfoFoldableCardProps> = ({ ifo, isInitiallyVisible }) => {
   const [isVisible, setIsVisible] = useState(isInitiallyVisible)
-  const publicIfoData = useGetPublicIfoData(ifo)
   const TranslateString = useI18n()
+  const publicIfoData = useGetPublicIfoData(ifo)
+  const userIfoData = useGetWalletIfoData(ifo)
+
   const Ribbon = getRibbonComponent(publicIfoData.status, TranslateString)
 
   return (
@@ -66,8 +70,8 @@ const IfoFoldableCard: React.FC<IfoFoldableCardProps> = ({ ifo, isInitiallyVisib
         <CardBody>
           {publicIfoData.status !== 'finished' && ifo.isActive && <Timer publicIfoData={publicIfoData} />}
           <CardWrapper>
-            <IfoCard ifo={ifo} />
-            <IfoCard ifo={ifo} />
+            <IfoCard cardType="basic" ifo={ifo} publicIfoData={publicIfoData} userIfoData={userIfoData} />
+            <IfoCard cardType="unlimited" ifo={ifo} publicIfoData={publicIfoData} userIfoData={userIfoData} />
           </CardWrapper>
         </CardBody>
       </FoldableContent>

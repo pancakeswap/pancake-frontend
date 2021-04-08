@@ -6,8 +6,6 @@ import { Ifo } from 'config/constants/types'
 import UnlockButton from 'components/UnlockButton'
 import Contribute from './Contribute'
 import Claim from './Claim'
-import ActiveSkeleton from './ActiveSkeleton'
-import InactiveSkeleton from './InactiveSkeleton'
 
 export interface Props {
   ifo: Ifo
@@ -15,49 +13,33 @@ export interface Props {
 }
 
 const IfoCardActions: React.FC<Props> = ({ ifo, publicIfoData }) => {
-  const {
-    isPendingTx,
-    offeringTokenBalance,
-    refundingAmount,
-    userInfo,
-    contract,
-    setPendingTx,
-    addUserContributedAmount,
-    setIsClaimed,
-  } = useGetWalletIfoData(ifo)
+  const { isPendingTx, userInfo, contract, setPendingTx, addUserContributedAmount, setIsClaimed } = useGetWalletIfoData(
+    ifo,
+  )
   const { account } = useWeb3React()
 
-  if (!account) {
-    return <UnlockButton />
-  }
-
-  return (
+  return account ? (
     <>
-      {ifo.isActive && publicIfoData.status === 'idle' && <ActiveSkeleton />}
-      {!ifo.isActive && publicIfoData.status === 'idle' && <InactiveSkeleton />}
       {publicIfoData.status === 'live' && (
         <Contribute
           ifo={ifo}
           contract={contract}
-          userInfo={userInfo}
           isPendingTx={isPendingTx}
-          publicIfoData={publicIfoData}
           addUserContributedAmount={addUserContributedAmount}
         />
       )}
       {publicIfoData.status === 'finished' && (
         <Claim
-          ifo={ifo}
           contract={contract}
           userInfo={userInfo}
           isPendingTx={isPendingTx}
           setPendingTx={setPendingTx}
-          offeringTokenBalance={offeringTokenBalance}
-          refundingAmount={refundingAmount}
           setIsClaimed={setIsClaimed}
         />
       )}
     </>
+  ) : (
+    <UnlockButton width="100%" />
   )
 }
 

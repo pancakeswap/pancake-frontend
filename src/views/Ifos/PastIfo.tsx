@@ -9,9 +9,9 @@ const inactiveIfo: Ifo[] = ifosConfig.filter((ifo) => !ifo.isActive)
 const PastIfo = () => {
   return (
     <IfoCardsLayout>
-      {inactiveIfo.map((ifo) => (
-        <IfoCard key={ifo.id} ifo={ifo} />
-      ))}
+      {/* {inactiveIfo.map((ifo) => (
+        <IfoCard key={ifo.id} ifo={ifo} cardType="unlimited" />
+      ))} */}
     </IfoCardsLayout>
   )
 }
