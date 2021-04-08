@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Button, InjectedModalProps, Skeleton, Text } from '@pancakeswap-libs/uikit'
 import { useWeb3React } from '@web3-react/core'
-import { useDispatch } from 'react-redux'
+import { useAppDispatch } from 'state'
 import nftList from 'config/constants/nfts'
 import { useProfile, useToast } from 'state/hooks'
 import useI18n from 'hooks/useI18n'
@@ -19,7 +19,7 @@ const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss }
   const [tokenId, setTokenId] = useState(null)
   const TranslateString = useI18n()
   const { isLoading, nfts: nftsInWallet } = useGetWalletNfts()
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const { profile } = useProfile()
   const pancakeRabbitsContract = usePancakeRabbits()
   const profileContract = useProfileContract()

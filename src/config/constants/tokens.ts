@@ -939,6 +939,96 @@ const tokens = {
     decimals: 8,
     projectLink: 'https://switcheo.network/',
   },
+  dft: {
+    symbol: 'DFT',
+    address: {
+      56: '0x42712dF5009c20fee340B245b510c0395896cF6e',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://www.dfuture.com/home',
+  },
+  gum: {
+    symbol: 'GUM',
+    address: {
+      56: '0xc53708664b99DF348dd27C3Ac0759d2DA9c40462',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://gourmetgalaxy.io/',
+  },
+  dego: {
+    symbol: 'DEGO',
+    address: {
+      56: '0x3fda9383a84c05ec8f7630fe10adf1fac13241cc',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://bsc.dego.finance/home',
+  },
+  nrv: {
+    symbol: 'NRV',
+    address: {
+      56: '0x42f6f551ae042cbe50c739158b4f0cac0edb9096',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://nerve.fi/',
+  },
+  easy: {
+    symbol: 'EASY',
+    address: {
+      56: '0x7c17c8bed8d14bacce824d020f994f4880d6ab3b',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://easyfi.network/',
+  },
+  oddz: {
+    symbol: 'ODDZ',
+    address: {
+      56: '0xcd40f2670cf58720b694968698a5514e924f742d',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://oddz.fi/',
+  },
+  hoo: {
+    symbol: 'HOO',
+    address: {
+      56: '0xe1d1f66215998786110ba0102ef558b22224c016',
+      97: '',
+    },
+    decimals: 8,
+    projectLink: 'https://hoo.com/',
+  },
+  apys: {
+    symbol: 'APYS',
+    address: {
+      56: '0x37dfACfaeDA801437Ff648A1559d73f4C40aAcb7',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://apyswap.com/',
+  },
+  bondly: {
+    symbol: 'BONDLY',
+    address: {
+      56: '0x96058f8c3e16576d9bd68766f3836d9a33158f89',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://www.bondly.finance/',
+  },
+  tko: {
+    symbol: 'TKO',
+    address: {
+      56: '0x9f589e3eabe42ebc94a44727b3f3531c0c877809',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://www.tokocrypto.com/',
+  },
 }
 
 export default tokens

@@ -8,16 +8,14 @@ import { useSousUnstake } from 'hooks/useUnstake'
 import useTheme from 'hooks/useTheme'
 import BigNumber from 'bignumber.js'
 import { getFullDisplayBalance } from 'utils/formatBalance'
-import { Address } from 'config/constants/types'
+import { Token } from 'config/constants/types'
 import { useGetApiPrice, useToast } from 'state/hooks'
 import ConfirmButton from './ConfirmButton'
 
 interface StakeModalProps {
   sousId: number
   isBnbPool: boolean
-  stakingTokenDecimals?: number
-  stakingTokenName: string
-  stakingTokenAddress?: Address
+  stakingToken: Token
   max: BigNumber
   isStaking?: boolean
   onDismiss?: () => void
@@ -35,15 +33,14 @@ const StyledButton = styled(Button)`
 const StakeModal: React.FC<StakeModalProps> = ({
   sousId,
   isBnbPool,
-  stakingTokenName,
-  stakingTokenDecimals = 18,
+  stakingToken,
   isStaking = true,
   max,
   onDismiss,
 }) => {
   const TranslateString = useI18n()
 
-  const tokenPrice = useGetApiPrice(stakingTokenName.toLowerCase())
+  const tokenPrice = useGetApiPrice(stakingToken.symbol.toLowerCase())
   const { onStake } = useSousStake(sousId, isBnbPool)
   const { onUnstake } = useSousUnstake(sousId)
   const { theme } = useTheme()
@@ -60,7 +57,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
     setStakeAmount(event.target.value)
 
     const percentage = Math.floor(
-      new BigNumber(new BigNumber(value).multipliedBy(new BigNumber(10).pow(stakingTokenDecimals)))
+      new BigNumber(new BigNumber(value).multipliedBy(new BigNumber(10).pow(stakingToken.decimals)))
         .dividedBy(max)
         .multipliedBy(new BigNumber(100))
         .toNumber(),
@@ -94,7 +91,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
 
     if (isStaking) {
       try {
-        await onStake(stakeAmount, stakingTokenDecimals)
+        await onStake(stakeAmount, stakingToken.decimals)
         setConfirmedTx(true)
         toastSuccess(
           `${TranslateString(1074, 'Staked')}!`,
@@ -111,7 +108,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
       }
     } else {
       try {
-        await onUnstake(stakeAmount, stakingTokenDecimals)
+        await onUnstake(stakeAmount, stakingToken.decimals)
         setConfirmedTx(true)
         toastSuccess(
           `${TranslateString(999, 'Unstaked')}!`,
@@ -134,8 +131,8 @@ const StakeModal: React.FC<StakeModalProps> = ({
       parseFloat(
         getFullDisplayBalance(
           max.multipliedBy(new BigNumber(value).dividedBy(new BigNumber(100))),
-          stakingTokenDecimals,
-          stakingTokenDecimals,
+          stakingToken.decimals,
+          stakingToken.decimals,
         ),
       ).toString(),
     )
@@ -152,7 +149,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
       <Flex alignItems="center" justifyContent="space-between" mb="8px">
         <Text bold>{isStaking ? TranslateString(316, 'Stake') : TranslateString(588, 'Unstake')}:</Text>
         <Flex alignItems="center" minWidth="70px">
-          <Image src={`/images/tokens/${stakingTokenName}.png`} width={24} height={24} alt="Cake" />
+          <Image src={`/images/tokens/${stakingToken.symbol}.png`} width={24} height={24} alt="Cake" />
           <Text ml="4px" bold>
             CAKE
           </Text>
@@ -194,7 +191,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
       </ConfirmButton>
       {isStaking && (
         <Button mt="8px" as="a" external href={BASE_EXCHANGE_URL} variant="secondary">
-          {TranslateString(999, 'Get')} {stakingTokenName}
+          {TranslateString(999, 'Get')} {stakingToken.symbol}
         </Button>
       )}
     </Modal>

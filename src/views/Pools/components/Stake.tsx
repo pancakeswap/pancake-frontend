@@ -50,9 +50,7 @@ const Stake: React.FC<StakeProps> = ({ pool, isOldSyrup, isBnbPool }) => {
     <StakeModal
       isBnbPool={isBnbPool}
       sousId={sousId}
-      stakingTokenDecimals={stakingToken.decimals}
-      stakingTokenName={stakingToken.symbol}
-      stakingTokenAddress={stakingToken.address}
+      stakingToken={stakingToken}
       max={stakingLimit && stakingTokenBalance.isGreaterThan(convertedLimit) ? convertedLimit : stakingTokenBalance}
     />,
     false,
@@ -62,9 +60,7 @@ const Stake: React.FC<StakeProps> = ({ pool, isOldSyrup, isBnbPool }) => {
     <StakeModal
       isBnbPool={isBnbPool}
       sousId={sousId}
-      stakingTokenDecimals={stakingToken.decimals}
-      stakingTokenName={stakingToken.symbol}
-      stakingTokenAddress={stakingToken.address}
+      stakingToken={stakingToken}
       isStaking={false}
       max={stakedBalance}
     />,
@@ -158,6 +154,7 @@ const Stake: React.FC<StakeProps> = ({ pool, isOldSyrup, isBnbPool }) => {
               fontSize="12px"
               prefix="~"
               bold={false}
+              color="textSubtle"
               unit=" USD"
             />
           </Box>

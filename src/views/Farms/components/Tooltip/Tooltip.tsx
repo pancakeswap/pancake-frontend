@@ -7,6 +7,7 @@ export interface TooltipProps {
   content: React.ReactNode
   position?: TooltipPosition
   offset?: string
+  className?: string
 }
 
 const getPosition = (position: TooltipPosition, offset: string, isMobile = false) => {
@@ -84,7 +85,6 @@ const TooltipContent = styled.div<{ position: TooltipPosition; offset: string }>
   color: ${({ theme }) => theme.tooltip.text};
   width: max-content;
   display: block;
-  padding: 16px;
   max-height: 500px;
   z-index: ${({ theme }) => theme.zIndices.modal};
   position: absolute;
@@ -121,11 +121,17 @@ const Container = styled.div`
   }
 `
 
-const Tooltip: React.FunctionComponent<TooltipProps> = ({ content, children, position = 'top', offset = '12px' }) => {
+const Tooltip: React.FunctionComponent<TooltipProps> = ({
+  content,
+  children,
+  className,
+  position = 'top',
+  offset = '12px',
+}) => {
   return (
     <Container>
       {children}
-      <TooltipContent position={position} offset={offset}>
+      <TooltipContent position={position} offset={offset} className={className}>
         {content}
       </TooltipContent>
     </Container>

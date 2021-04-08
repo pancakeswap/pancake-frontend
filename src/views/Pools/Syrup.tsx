@@ -14,6 +14,7 @@ import Select, { OptionProps } from 'views/Farms/components/Select/Select'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { getPoolApy } from 'utils/apy'
 import { Pool } from 'state/types'
+import { getAddress } from 'utils/addressHelpers'
 
 import Coming from './components/Coming'
 import PoolCard from './components/PoolCard'
@@ -52,8 +53,18 @@ const Syrup: React.FC = () => {
 
   let pools = usePools(account).map((pool) => {
     const { earningToken, stakingToken } = pool
-    const stakingTokenPrice = prices ? prices[stakingToken.symbol.toLowerCase()] : null
-    const rewardTokenPrice = prices ? prices[earningToken.symbol.toLowerCase()] : null
+    let stakingTokenPrice = null
+    let rewardTokenPrice = null
+
+    if (prices) {
+      if (stakingToken.address) {
+        stakingTokenPrice = prices[getAddress(stakingToken.address).toLowerCase()]
+      }
+
+      if (earningToken.address) {
+        rewardTokenPrice = prices[getAddress(earningToken.address).toLowerCase()]
+      }
+    }
 
     const apr = getPoolApy(
       stakingTokenPrice,

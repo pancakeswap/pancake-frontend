@@ -23,6 +23,116 @@ const farms: FarmConfig[] = [
     quoteToken: tokens.wbnb,
   },
   {
+    pid: 121,
+    lpSymbol: 'BONDLY-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x67581bfb4fc13bb73c71489b504e9b5354769063',
+    },
+    token: tokens.bondly,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 120,
+    lpSymbol: 'TKO-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x496a8b716A3A3410B16e71E3c906968CE4488e52',
+    },
+    token: tokens.tko,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 119,
+    lpSymbol: 'APYS-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0xE5783Cc9dFb3E7e474B81B07369a008e80F1cEdb',
+    },
+    token: tokens.apys,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 118,
+    lpSymbol: 'HOO-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0x3c9e55edbd937ae0ad8c084a1a8302110612a371',
+    },
+    token: tokens.hoo,
+    quoteToken: tokens.busd,
+  },
+  {
+    pid: 117,
+    lpSymbol: 'ODDZ-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x61376b56ff33c618b115131712a4138f98810a6a',
+    },
+    token: tokens.oddz,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 116,
+    lpSymbol: 'EASY-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0xbd1ec00b0d1cca9d5b28fbe0bb7d664238af2ffa',
+    },
+    token: tokens.easy,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 115,
+    lpSymbol: 'NRV-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x5a805994a2e30ac710e7376ccc0211285bd4dd92',
+    },
+    token: tokens.nrv,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 114,
+    lpSymbol: 'DEGO-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x17F0b998B81cE75074a7CDAdAe6D63Da3cb23572',
+    },
+    token: tokens.dego,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 113,
+    lpSymbol: 'GUM-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x155645cDF8e4B28d5B7790b65d9f79efc222740C',
+    },
+    token: tokens.gum,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 112,
+    lpSymbol: 'pBTC-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0xb5f6f7dad23132d40d778085d795bd0fd4b859cd',
+    },
+    token: tokens.pbtc,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 111,
+    lpSymbol: 'DFT-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x8FbCbD7e30b1733965a8980bf7Ae2ca1c0C456cc',
+    },
+    token: tokens.dft,
+    quoteToken: tokens.wbnb,
+  },
+  {
     pid: 110,
     lpSymbol: 'SWTH-BNB LP',
     lpAddresses: {

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { AutoRenewIcon, Button, Checkbox, Flex, InjectedModalProps, Text } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import useGetProfileCosts from 'hooks/useGetProfileCosts'
-import { useDispatch } from 'react-redux'
+import { useAppDispatch } from 'state'
 import { useProfile, useToast } from 'state/hooks'
 import { fetchProfile } from 'state/profile'
 import { getBalanceNumber } from 'utils/formatBalance'
@@ -20,7 +20,7 @@ const PauseProfilePage: React.FC<PauseProfilePageProps> = ({ onDismiss }) => {
   const pancakeProfileContract = useProfileContract()
   const { account } = useWeb3React()
   const { toastSuccess, toastError } = useToast()
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   const handleChange = () => setIsAcknowledged(!isAcknowledged)
 
@@ -65,7 +65,7 @@ const PauseProfilePage: React.FC<PauseProfilePageProps> = ({ onDismiss }) => {
       <label htmlFor="acknowledgement" style={{ cursor: 'pointer', display: 'block', marginBottom: '24px' }}>
         <Flex alignItems="center">
           <Checkbox id="acknowledgement" checked={isAcknowledged} onChange={handleChange} scale="sm" />
-          <Text ml="8px">{TranslateString(999, 'I understand')}</Text>
+          <Text ml="8px">{TranslateString(476, 'I understand')}</Text>
         </Flex>
       </label>
       <Button
@@ -76,7 +76,7 @@ const PauseProfilePage: React.FC<PauseProfilePageProps> = ({ onDismiss }) => {
         onClick={handleDeactivateProfile}
         mb="8px"
       >
-        {TranslateString(999, 'Confirm')}
+        {TranslateString(464, 'Confirm')}
       </Button>
       <Button variant="text" width="100%" onClick={onDismiss}>
         {TranslateString(999, 'Close Window')}

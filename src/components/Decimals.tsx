@@ -1,7 +1,7 @@
 import React from 'react'
 import { Text, Flex } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
-import Tooltip from 'views/Farms/components/Tooltip/Tooltip'
+import { Tooltip } from 'components/Tooltip'
 
 interface TextProps {
   isDisabled?: boolean

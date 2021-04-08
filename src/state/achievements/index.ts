@@ -18,7 +18,7 @@ export const achievementSlice = createSlice({
       state.data.push(action.payload)
     },
     addAchievements: (state, action: PayloadAction<Achievement[]>) => {
-      state.data.concat(action.payload)
+      state.data = [...state.data, ...action.payload]
     },
     setAchievements: (state, action: PayloadAction<Achievement[]>) => {
       state.data = action.payload

@@ -6,46 +6,45 @@ import BigNumber from 'bignumber.js'
 import { getBalanceNumber } from 'utils/formatBalance'
 import Balance from 'components/Balance'
 import Decimals from 'components/Decimals'
-
+import { Token } from 'config/constants/types'
+import { getAddress } from 'utils/addressHelpers'
 import CollectModal from './CollectModal'
 
 interface EarnedProps {
   isFinished: boolean
   sousId: number
-  earningTokenName: string
   stakingTokenName: string
   harvest: boolean
   isOldSyrup: boolean
   earnings: BigNumber
   isBnbPool: boolean
-  earningTokenDecimals: number
+  earningToken: Token
 }
 
 const Earned: React.FC<EarnedProps> = ({
   isFinished,
   sousId,
-  earningTokenName,
   stakingTokenName,
   isOldSyrup,
   harvest,
   earnings,
   isBnbPool,
-  earningTokenDecimals,
+  earningToken,
 }) => {
   const TranslateString = useI18n()
-  const tokenPrice = useGetApiPrice(earningTokenName.toLowerCase())
-  const earningsBusd = new BigNumber(getBalanceNumber(earnings, earningTokenDecimals))
+  const tokenPrice = useGetApiPrice(getAddress(earningToken.address).toLowerCase())
+  const earningsBusd = new BigNumber(getBalanceNumber(earnings, earningToken.decimals))
     .multipliedBy(tokenPrice)
     .toNumber()
 
   const [onPresentCollect, onDismissCollect] = useModal(
     <CollectModal
       earnings={earnings}
-      earningTokenDecimals={earningTokenDecimals}
+      earningTokenDecimals={earningToken.decimals}
       earningsBusd={earningsBusd}
       sousId={sousId}
       isBnbPool={isBnbPool}
-      earningTokenName={earningTokenName}
+      earningTokenName={earningToken.symbol}
       onDismiss={() => onDismissCollect()}
     />,
     false,
@@ -54,11 +53,11 @@ const Earned: React.FC<EarnedProps> = ({
   const [onPresentHarvest, onDismissHarvest] = useModal(
     <CollectModal
       earnings={earnings}
-      earningTokenDecimals={earningTokenDecimals}
+      earningTokenDecimals={earningToken.decimals}
       earningsBusd={earningsBusd}
       sousId={sousId}
       isBnbPool={isBnbPool}
-      earningTokenName={earningTokenName}
+      earningTokenName={earningToken.symbol}
       onDismiss={() => onDismissHarvest()}
       harvest
     />,
@@ -74,7 +73,7 @@ const Earned: React.FC<EarnedProps> = ({
       )
     }
 
-    if (earningTokenName === stakingTokenName) {
+    if (earningToken.symbol === stakingTokenName) {
       return (
         <Button onClick={onPresentCollect} minWidth="116px" disabled={!earnings.toNumber()}>
           Collect
@@ -97,7 +96,7 @@ const Earned: React.FC<EarnedProps> = ({
     <Flex flexDirection="column" mt="20px">
       <Flex mb="4px">
         <Text color="secondary" fontSize="12px" bold>
-          {earningTokenName}
+          {earningToken.symbol}
         </Text>
         &nbsp;
         <Text color="textSubtle" textTransform="uppercase" fontSize="12px" bold>

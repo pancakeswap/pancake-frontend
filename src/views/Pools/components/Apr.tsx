@@ -21,7 +21,7 @@ const Apr: React.FC<AprProps> = ({ tokenName, isFinished, apy, isOldSyrup }) => 
       <Text>{TranslateString(736, 'APR')}:</Text>
       <Flex alignItems="center">
         {isFinished || isOldSyrup || !apy ? (
-          '0%'
+          <Text color="textDisabled">0%</Text>
         ) : (
           <Balance fontSize="16px" isDisabled={isFinished} value={apy} decimals={2} unit="%" bold={false} />
         )}

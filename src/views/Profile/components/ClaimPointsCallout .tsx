@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { sumBy } from 'lodash'
-import { useDispatch } from 'react-redux'
+import { useAppDispatch } from 'state'
 import { useWeb3React } from '@web3-react/core'
 import { Card, CardBody, CardHeader, Flex, Heading, PrizeIcon } from '@pancakeswap-libs/uikit'
 import { useProfile } from 'state/hooks'
@@ -14,7 +14,7 @@ import AchievementRow from './AchievementRow'
 const ClaimPointsCallout = () => {
   const [claimableAchievements, setClaimableAchievement] = useState<Achievement[]>([])
   const TranslateString = useI18n()
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const { profile } = useProfile()
   const { account } = useWeb3React()
 

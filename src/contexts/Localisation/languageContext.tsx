@@ -31,11 +31,11 @@ const stringTranslationsApi = new StringTranslations({
 })
 
 const fetchTranslationsForSelectedLanguage = (selectedLanguage) => {
-  return stringTranslationsApi.listLanguageTranslations(projectId, selectedLanguage.code, undefined, fileId, 200)
+  return stringTranslationsApi.listLanguageTranslations(projectId, selectedLanguage.code, undefined, fileId, 400)
 }
 
 const LanguageContextProvider = ({ children }) => {
-  const [selectedLanguage, setSelectedLanguage] = useState<any>(EN)
+  const [selectedLanguage, setSelectedLanguage] = useState<any>(null)
   const [translatedLanguage, setTranslatedLanguage] = useState<any>(EN)
   const [translations, setTranslations] = useState<Array<any>>([])
 
@@ -71,7 +71,7 @@ const LanguageContextProvider = ({ children }) => {
           console.error('Error while loading translations', e)
         })
     }
-  }, [selectedLanguage, setTranslations])
+  }, [selectedLanguage])
 
   const handleLanguageSelect = (langObject: LangType) => {
     setSelectedLanguage(langObject)
