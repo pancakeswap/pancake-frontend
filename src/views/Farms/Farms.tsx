@@ -24,6 +24,7 @@ import { RowProps } from './components/FarmTable/Row'
 import ToggleView from './components/ToggleView/ToggleView'
 import { DesktopColumnSchema, ViewMode } from './components/types'
 import Select, { OptionProps } from './components/Select/Select'
+import { getAddress } from '../../utils/addressHelpers'
 
 const ControlContainer = styled.div`
   display: flex;
@@ -169,7 +170,7 @@ const Farms: React.FC = () => {
           return farm
         }
 
-        const quoteTokenPriceUsd = prices[farm.quoteToken.symbol.toLowerCase()]
+        const quoteTokenPriceUsd = prices[getAddress(farm.quoteToken.address).toLowerCase()]
         const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(quoteTokenPriceUsd)
         const apy = isActive ? getFarmApy(farm.poolWeight, cakePrice, totalLiquidity) : 0
 

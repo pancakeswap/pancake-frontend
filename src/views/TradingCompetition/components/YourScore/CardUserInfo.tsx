@@ -19,6 +19,8 @@ import NextRankBox from './NextRankBox'
 import { localiseTradingVolume } from '../../helpers'
 
 const TeamRankTextWrapper = styled(Flex)`
+  align-items: center;
+  justify-content: center;
   svg {
     width: 24px;
   }

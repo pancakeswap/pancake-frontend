@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { PriceApiResponse, PriceState } from 'state/types'
+import { PriceApiResponse, PriceApiThunk, PriceState } from 'state/types'
 
 const initialState: PriceState = {
   isLoading: false,
@@ -9,17 +9,17 @@ const initialState: PriceState = {
 }
 
 // Thunks
-export const fetchPrices = createAsyncThunk<PriceApiResponse>('prices/fetch', async () => {
-  const response = await fetch('https://api.pancakeswap.com/api/v1/price')
+export const fetchPrices = createAsyncThunk<PriceApiThunk>('prices/fetch', async () => {
+  const response = await fetch('https://api.pancakeswap.info/api/tokens')
   const data = (await response.json()) as PriceApiResponse
 
   // Return normalized token names
   return {
-    update_at: data.update_at,
-    prices: Object.keys(data.prices).reduce((accum, token) => {
+    updated_at: data.updated_at,
+    data: Object.keys(data.data).reduce((accum, token) => {
       return {
         ...accum,
-        [token.toLowerCase()]: data.prices[token],
+        [token.toLowerCase()]: parseFloat(data.data[token].price),
       }
     }, {}),
   }
@@ -33,10 +33,10 @@ export const pricesSlice = createSlice({
     builder.addCase(fetchPrices.pending, (state) => {
       state.isLoading = true
     })
-    builder.addCase(fetchPrices.fulfilled, (state, action: PayloadAction<PriceApiResponse>) => {
+    builder.addCase(fetchPrices.fulfilled, (state, action: PayloadAction<PriceApiThunk>) => {
       state.isLoading = false
-      state.lastUpdated = action.payload.update_at
-      state.data = action.payload.prices
+      state.lastUpdated = action.payload.updated_at
+      state.data = action.payload.data
     })
   },
 })
