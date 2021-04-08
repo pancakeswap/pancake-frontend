@@ -84,7 +84,7 @@ const VolumeText = styled(Text)`
   }
 `
 
-const IconWrapper = styled(Flex)`
+const TeamImageWrapper = styled(Flex)`
   ${({ theme }) => theme.mediaQueries.xl} {
     position: absolute;
     right: 0;
@@ -92,7 +92,10 @@ const IconWrapper = styled(Flex)`
   }
 `
 
-const GridItem: React.FC<{ traderData?: LeaderboardDataItem; icons?: React.ReactNode[] }> = ({ traderData, icons }) => {
+const GridItem: React.FC<{ traderData?: LeaderboardDataItem; teamImages?: React.ReactNode[] }> = ({
+  traderData,
+  teamImages,
+}) => {
   const { address, volume, teamId, rank } = traderData
 
   return (
@@ -114,7 +117,7 @@ const GridItem: React.FC<{ traderData?: LeaderboardDataItem; icons?: React.React
           </Text>
         </Flex>
       </VolumeAddressWrapper>
-      <IconWrapper justifyContent="flex-end">{icons[teamId - 1]}</IconWrapper>
+      <TeamImageWrapper justifyContent="flex-end">{teamImages[teamId - 1]}</TeamImageWrapper>
     </Wrapper>
   )
 }

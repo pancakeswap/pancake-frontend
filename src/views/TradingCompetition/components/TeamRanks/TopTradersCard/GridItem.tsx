@@ -5,7 +5,7 @@ import { LeaderboardDataItem } from '../../../types'
 import { localiseTradingVolume, accountEllipsis } from '../../../helpers'
 
 const Wrapper = styled.div`
-  overflow-x: hidden;
+  position: relative;
   display: grid;
   grid-template-columns: auto repeat(3, 1fr);
   border-bottom: 1px solid ${({ theme }) => theme.colors.textDisabled};
@@ -37,8 +37,10 @@ const Wrapper = styled.div`
     }
   }
 
+  /* Between 968 - 1080px the team image is absolute positioned so it becomes a 3-column grid */
   ${({ theme }) => theme.mediaQueries.lg} {
-    grid-template-columns: auto repeat(2, 1fr) auto;
+    grid-template-columns: auto auto 1fr;
+    min-height: 72px;
   }
 
   ${({ theme }) => theme.mediaQueries.xl} {
@@ -58,7 +60,23 @@ const RankItem = styled(Flex)`
   }
 `
 
-const GridItem: React.FC<{ traderData?: LeaderboardDataItem; icons?: React.ReactNode[] }> = ({ traderData, icons }) => {
+const TeamImageWrapper = styled(Flex)`
+  /* Between 968 - 1080px the grid is narrow so absolute position the team image */
+  ${({ theme }) => theme.mediaQueries.lg} {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+  }
+
+  ${({ theme }) => theme.mediaQueries.xl} {
+    position: relative;
+  }
+`
+
+const GridItem: React.FC<{ traderData?: LeaderboardDataItem; teamImages?: React.ReactNode[] }> = ({
+  traderData,
+  teamImages,
+}) => {
   const { address, volume, teamId, rank } = traderData
 
   return (
@@ -72,7 +90,7 @@ const GridItem: React.FC<{ traderData?: LeaderboardDataItem; icons?: React.React
       <Flex alignItems="center" justifyContent="flex-start">
         <Text color="primary">{accountEllipsis(address)}</Text>
       </Flex>
-      <Flex justifyContent="flex-end">{icons[teamId - 1]}</Flex>
+      <TeamImageWrapper justifyContent="flex-end">{teamImages[teamId - 1]}</TeamImageWrapper>
     </Wrapper>
   )
 }
