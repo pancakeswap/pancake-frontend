@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
 import { Ifo } from 'config/constants/types'
-import { useERC20, useIfoContract } from 'hooks/useContract'
+import { useERC20, useIfoV1Contract } from 'hooks/useContract'
 import { useIfoAllowance } from 'hooks/useAllowance'
 import makeBatchRequest from 'utils/makeBatchRequest'
+import { getAddress } from 'utils/addressHelpers'
 import { UserInfo, WalletIfoState, WalletIfoData } from './types'
 
 /**
@@ -21,12 +22,12 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
     },
   })
 
-  const { address, currencyAddress } = ifo
+  const { address, currency } = ifo
   const { isPendingTx } = state
 
   const { account } = useWeb3React()
-  const contract = useIfoContract(address)
-  const currencyContract = useERC20(currencyAddress)
+  const contract = useIfoV1Contract(address)
+  const currencyContract = useERC20(getAddress(currency.address))
   const allowance = useIfoAllowance(currencyContract, address, isPendingTx)
 
   const setPendingTx = (status: boolean) =>

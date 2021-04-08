@@ -2,7 +2,7 @@ import BigNumber from 'bignumber.js'
 import { BSC_BLOCK_TIME } from 'config'
 import { Ifo, IfoStatus } from 'config/constants/types'
 import { useBlock } from 'state/hooks'
-import { useIfoContract } from 'hooks/useContract'
+import { useIfoV1Contract } from 'hooks/useContract'
 import { useEffect, useState } from 'react'
 import makeBatchRequest from 'utils/makeBatchRequest'
 import { PublicIfoData } from './types'
@@ -46,7 +46,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
     endBlockNum: 0,
   })
   const { currentBlock } = useBlock()
-  const contract = useIfoContract(address)
+  const contract = useIfoV1Contract(address)
 
   useEffect(() => {
     const fetchProgress = async () => {

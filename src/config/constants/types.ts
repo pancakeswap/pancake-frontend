@@ -1,5 +1,17 @@
 import { TranslatableText } from 'state/types'
 
+export interface Address {
+  97?: string
+  56: string
+}
+
+export interface Token {
+  symbol: string
+  address?: Address
+  decimals?: number
+  projectLink?: string
+}
+
 export type IfoStatus = 'idle' | 'coming_soon' | 'live' | 'finished'
 
 export interface Ifo {
@@ -15,30 +27,17 @@ export interface Ifo {
   raiseAmount: string
   cakeToBurn: string
   projectSiteUrl: string
-  currency: string
-  currencyAddress: string
-  tokenDecimals: number
-  tokenSymbol: string
+  currency: Token
+  token: Token
   releaseBlockNumber: number
   campaignId?: string
+  isV1?: boolean
 }
 
 export enum PoolCategory {
   'COMMUNITY' = 'Community',
   'CORE' = 'Core',
   'BINANCE' = 'Binance', // Pools using native BNB behave differently than pools using a token
-}
-
-export interface Address {
-  97?: string
-  56: string
-}
-
-export interface Token {
-  symbol: string
-  address?: Address
-  decimals?: number
-  projectLink?: string
 }
 
 export interface FarmConfig {

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { Text, Heading, BaseLayout, Button, LinkExternal, Flex, Image } from '@pancakeswap-libs/uikit'
 import { ifosConfig } from 'config/constants'
 import useI18n from 'hooks/useI18n'
-import IfoCard from './components/IfoV1Card'
+import IfoV2Card from './components/IfoV2Card'
 import IfoCardLayout from './components/IfoCardLayout'
 
 const LaunchIfoCallout = styled(BaseLayout)`
@@ -39,8 +39,8 @@ const Ifo = () => {
 
   return (
     <div>
-      <IfoCardLayout isSingle>
-        <IfoCard ifo={activeIfo} />
+      <IfoCardLayout>
+        <IfoV2Card ifo={activeIfo} />
       </IfoCardLayout>
       <LaunchIfoCallout>
         <div>
