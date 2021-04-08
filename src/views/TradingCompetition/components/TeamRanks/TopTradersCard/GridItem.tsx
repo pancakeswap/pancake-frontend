@@ -3,7 +3,6 @@ import { Heading, Text, Flex } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
 import { LeaderboardDataItem } from '../../../types'
 import { localiseTradingVolume, accountEllipsis } from '../../../helpers'
-import { LeaderboardStorm, LeaderboardFlippers, LeaderboardCakers } from '../../../svgs'
 
 const Wrapper = styled.div`
   overflow-x: hidden;
@@ -59,14 +58,8 @@ const RankItem = styled(Flex)`
   }
 `
 
-const GridItem: React.FC<{ traderData?: LeaderboardDataItem }> = ({ traderData }) => {
+const GridItem: React.FC<{ traderData?: LeaderboardDataItem; icons?: React.ReactNode[] }> = ({ traderData, icons }) => {
   const { address, volume, teamId, rank } = traderData
-
-  const icon = {
-    1: <LeaderboardStorm />,
-    2: <LeaderboardFlippers />,
-    3: <LeaderboardCakers />,
-  }
 
   return (
     <Wrapper>
@@ -79,7 +72,7 @@ const GridItem: React.FC<{ traderData?: LeaderboardDataItem }> = ({ traderData }
       <Flex alignItems="center" justifyContent="flex-start">
         <Text color="primary">{accountEllipsis(address)}</Text>
       </Flex>
-      <Flex justifyContent="flex-end">{icon[teamId]}</Flex>
+      <Flex justifyContent="flex-end">{icons[teamId - 1]}</Flex>
     </Wrapper>
   )
 }
