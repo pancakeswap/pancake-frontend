@@ -38,6 +38,10 @@ const Wrapper = styled.div`
     }
   }
 
+  ${({ theme }) => theme.mediaQueries.lg} {
+    grid-template-columns: auto repeat(2, 1fr) auto;
+  }
+
   ${({ theme }) => theme.mediaQueries.xl} {
     grid-template-columns: repeat(4, 1fr);
   }
