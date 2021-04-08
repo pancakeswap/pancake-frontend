@@ -54,19 +54,16 @@ export const Heading1Text = styled(HeadingUi)<HeadingProps>`
   ${(props) => sharedStyles(props)}
 `
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const Heading2Text = styled(HeadingUi)<HeadingProps>`
   ${({ theme }) => H2SizeStyles(theme)}
   ${(props) => sharedStyles(props)}
 `
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const VisuallyHiddenHeading1Text = styled(HeadingUi)`
   ${({ theme }) => H1SizeStyles(theme)}
   ${sharedVisiblyHiddenStyles}
 `
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const VisuallyHiddenHeading2Text = styled(HeadingUi)`
   ${({ theme }) => H2SizeStyles(theme)}
   ${sharedVisiblyHiddenStyles}
