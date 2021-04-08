@@ -542,7 +542,7 @@ it("renders ConnectModal correctly", () => {
               </g>
               <defs>
                 <clippath
-                  id="clip0"
+                  id="clip-trustwallet"
                 >
                   <rect
                     fill="white"
