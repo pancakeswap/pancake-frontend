@@ -5,6 +5,7 @@ import useI18n from 'hooks/useI18n'
 import FlippersShare from '../pngs/flippers-share.png'
 import StormShare from '../pngs/storm-share.png'
 import CakersShare from '../pngs/cakers-share.png'
+import ProfileMask from '../pngs/share-profile-mask.png'
 import { localiseTradingVolume } from '../helpers'
 import { YourScoreProps } from '../types'
 
@@ -31,6 +32,7 @@ const ShareImageModal: React.FC<YourScoreProps> = ({ onDismiss, profile, userLea
   const { global, team, volume } = userLeaderboardInformation
   const [bgImage, setBgImage] = useState(null)
   const [profileImage, setProfileImage] = useState(null)
+  const [profileOverlayImage, setProfileOverlayImage] = useState(null)
   const [imageFromCanvas, setImageFromCanvas] = useState(null)
   const canvas = useRef(null)
 
@@ -43,10 +45,14 @@ const ShareImageModal: React.FC<YourScoreProps> = ({ onDismiss, profile, userLea
     const profileImageEl = new Image()
     profileImageEl.src = `/images/nfts/${profile.nft?.images?.lg}`
     profileImageEl.onload = () => setProfileImage(profileImageEl)
+
+    const profileImageOverlayEl = new Image()
+    profileImageOverlayEl.src = ProfileMask
+    profileImageOverlayEl.onload = () => setProfileOverlayImage(profileImageOverlayEl)
   }, [profile])
 
   useEffect(() => {
-    if (canvas && bgImage && profileImage) {
+    if (canvas && bgImage && profileImage && profileOverlayImage) {
       const canvasWidth = canvas.current.width
       canvas.current.height = canvasWidth * 0.5625
       const canvasHeight = canvas.current.height
@@ -54,7 +60,8 @@ const ShareImageModal: React.FC<YourScoreProps> = ({ onDismiss, profile, userLea
       const ctx = canvas.current.getContext('2d')
 
       ctx.drawImage(bgImage, 0, 0, canvasWidth, canvasHeight)
-      ctx.drawImage(profileImage, canvasWidth * 0.0325, canvasHeight * 0.07, canvasWidth * 0.19, canvasWidth * 0.19)
+      ctx.drawImage(profileImage, canvasWidth * 0.0315, canvasHeight * 0.07, canvasWidth * 0.19, canvasWidth * 0.19)
+      ctx.drawImage(profileOverlayImage, 0, 0, canvasWidth * 0.235, canvasWidth * 0.235)
 
       ctx.font = 'bold 84px Kanit'
       ctx.fillStyle = 'white'
@@ -67,7 +74,7 @@ const ShareImageModal: React.FC<YourScoreProps> = ({ onDismiss, profile, userLea
 
       setImageFromCanvas(canvas.current.toDataURL('image/png'))
     }
-  }, [canvas, bgImage, profileImage, team, global, volume, profile])
+  }, [canvas, bgImage, profileImage, team, global, volume, profile, profileOverlayImage])
 
   const downloadImage = () => {
     const link = document.createElement('a')
@@ -96,7 +103,7 @@ const ShareImageModal: React.FC<YourScoreProps> = ({ onDismiss, profile, userLea
           <>
             <StyledButton onClick={downloadImage}>{TranslateString(999, 'Download Image')}</StyledButton>
             <MobileText p="0 16px 18px 16px" bold textAlign="center">
-              {TranslateString(999, 'Screenshot or press & hold the image to share!')}
+              {TranslateString(999, 'Screenshot or press & hold on the image to share!')}
             </MobileText>
           </>
         )}
