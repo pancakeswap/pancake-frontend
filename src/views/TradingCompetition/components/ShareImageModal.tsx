@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react'
-import { Modal, Flex, Button, Text, Skeleton } from '@pancakeswap-libs/uikit'
+import { Modal, Flex, Button, Text, Skeleton, Box } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
 import useI18n from 'hooks/useI18n'
 import FlippersShare from '../pngs/flippers-share.png'
@@ -12,11 +12,16 @@ const StyledCanvas = styled.canvas`
   width: 100%;
 `
 
+const HiddenWrapper = styled(Box)`
+  height: 0px;
+`
+
 const ShareImageModal: React.FC<YourScoreProps> = ({ onDismiss, profile, userLeaderboardInformation }) => {
   const TranslateString = useI18n()
   const { global, team, volume } = userLeaderboardInformation
   const [bgImage, setBgImage] = useState(null)
   const [profileImage, setProfileImage] = useState(null)
+  const [imageFromCanvas, setImageFromCanvas] = useState(null)
   const canvas = useRef(null)
 
   useEffect(() => {
@@ -49,23 +54,27 @@ const ShareImageModal: React.FC<YourScoreProps> = ({ onDismiss, profile, userLea
       ctx.fillText(`# ${team.toLocaleString()}`, canvasWidth * 0.18, canvasHeight * 0.69)
       ctx.fillText(`# ${global.toLocaleString()}`, canvasWidth * 0.18, canvasHeight * 0.79)
       ctx.fillText(`$ ${localiseTradingVolume(volume)}`, canvasWidth * 0.18, canvasHeight * 0.89)
+
+      setImageFromCanvas(canvas.current.toDataURL('image/png'))
     }
   }, [canvas, bgImage, profileImage, team, global, volume, profile])
 
   const downloadImage = () => {
-    const url = canvas.current.toDataURL('image/png')
     const link = document.createElement('a')
     link.download = `easter-battle-${profile.username}.png`
-    link.href = url
+    link.href = imageFromCanvas
     link.click()
   }
 
   return (
-    <Modal title={`${TranslateString(999, 'Share Your Score')}`} onDismiss={onDismiss}>
+    <Modal title={`${TranslateString(999, 'Share Your Score')}`} onDismiss={onDismiss} minWidth="280px">
       <Flex flexDirection="column" alignItems="center" maxWidth="460px">
         {bgImage && profileImage ? (
-          <Flex alignItems="center" justifyContent="center">
-            <StyledCanvas ref={canvas} width="1600px" />
+          <Flex alignItems="center" justifyContent="center" minHeight="258px">
+            <HiddenWrapper>
+              <StyledCanvas ref={canvas} width="1600px" />
+            </HiddenWrapper>
+            {imageFromCanvas && <img alt="your shareable score" src={`${imageFromCanvas}`} />}
           </Flex>
         ) : (
           <Skeleton width="100%" height="258px" />
@@ -73,7 +82,7 @@ const ShareImageModal: React.FC<YourScoreProps> = ({ onDismiss, profile, userLea
         <Text p="24px 16px" color="textSubtle" textAlign="center">
           {TranslateString(999, 'Brag to your friends and annoy your rivals with your custom scorecard!')}
         </Text>
-        <Button onClick={downloadImage}>{TranslateString(999, 'Download Image')}</Button>
+        {imageFromCanvas && <Button onClick={downloadImage}>{TranslateString(999, 'Download Image')}</Button>}
       </Flex>
     </Modal>
   )
