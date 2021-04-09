@@ -12,8 +12,18 @@ const StyledCanvas = styled.canvas`
   width: 100%;
 `
 
-const HiddenWrapper = styled(Box)`
-  height: 0px;
+const StyledButton = styled(Button)`
+  display: none;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    display: block;
+  }
+`
+
+const MobileText = styled(Text)`
+  display: block;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    display: none;
+  }
 `
 
 const ShareImageModal: React.FC<YourScoreProps> = ({ onDismiss, profile, userLeaderboardInformation }) => {
@@ -71,9 +81,9 @@ const ShareImageModal: React.FC<YourScoreProps> = ({ onDismiss, profile, userLea
       <Flex flexDirection="column" alignItems="center" maxWidth="460px">
         {bgImage && profileImage ? (
           <Flex alignItems="center" justifyContent="center" minHeight="258px">
-            <HiddenWrapper>
+            <Box height="0px">
               <StyledCanvas ref={canvas} width="1600px" />
-            </HiddenWrapper>
+            </Box>
             {imageFromCanvas && <img alt="your shareable score" src={`${imageFromCanvas}`} />}
           </Flex>
         ) : (
@@ -82,7 +92,14 @@ const ShareImageModal: React.FC<YourScoreProps> = ({ onDismiss, profile, userLea
         <Text p="24px 16px" color="textSubtle" textAlign="center">
           {TranslateString(999, 'Brag to your friends and annoy your rivals with your custom scorecard!')}
         </Text>
-        {imageFromCanvas && <Button onClick={downloadImage}>{TranslateString(999, 'Download Image')}</Button>}
+        {imageFromCanvas && (
+          <>
+            <StyledButton onClick={downloadImage}>{TranslateString(999, 'Download Image')}</StyledButton>
+            <MobileText p="0 16px 18px 16px" bold textAlign="center">
+              {TranslateString(999, 'Screenshot or press & hold the image to share!')}
+            </MobileText>
+          </>
+        )}
       </Flex>
     </Modal>
   )
