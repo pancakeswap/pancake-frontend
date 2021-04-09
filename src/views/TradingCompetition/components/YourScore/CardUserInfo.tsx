@@ -10,12 +10,15 @@ import {
   MedalSilverIcon,
   MedalTealIcon,
   BlockIcon,
+  Button,
+  useModal,
 } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
 import useI18n from 'hooks/useI18n'
 import { YourScoreProps } from '../../types'
 import UserRankBox from './UserRankBox'
 import NextRankBox from './NextRankBox'
+import ShareImageModal from '../ShareImageModal'
 import { localiseTradingVolume } from '../../helpers'
 
 const TeamRankTextWrapper = styled(Flex)`
@@ -38,6 +41,10 @@ const RanksWrapper = styled(Flex)`
 
 const CardUserInfo: React.FC<YourScoreProps> = ({ hasRegistered, account, profile, userLeaderboardInformation }) => {
   const TranslateString = useI18n()
+  const [onPresentShareModal] = useModal(
+    <ShareImageModal profile={profile} userLeaderboardInformation={userLeaderboardInformation} />,
+    false,
+  )
   const { global, team, volume, next_rank: nextRank } = userLeaderboardInformation
   const shouldShowUserRanks = account && hasRegistered
 
@@ -149,65 +156,75 @@ const CardUserInfo: React.FC<YourScoreProps> = ({ hasRegistered, account, profil
         {subHeadingText}
       </Text>
       {shouldShowUserRanks && (
-        <RanksWrapper>
-          <Flex>
-            {volume > 0 ? (
+        <>
+          {profile.nft && volume > 0 && (
+            <Button mt="12px" variant="secondary" scale="sm" onClick={onPresentShareModal}>
+              {TranslateString(999, 'Share Score')}
+            </Button>
+          )}
+          <RanksWrapper>
+            <Flex>
+              {volume > 0 && (
+                <UserRankBox
+                  flex="1"
+                  title={TranslateString(1222, 'Rank in team').toUpperCase()}
+                  footer={`${TranslateString(
+                    999,
+                    `#${userLeaderboardInformation && global.toLocaleString()} Overall`,
+                  )}`}
+                  mr="8px"
+                >
+                  {!userLeaderboardInformation ? (
+                    <Skeleton height="26px" width="110px" />
+                  ) : (
+                    <TeamRankTextWrapper>
+                      <Heading textAlign="center" size="lg" mr="8px">
+                        #{team}
+                      </Heading>
+                      {medal.current}
+                    </TeamRankTextWrapper>
+                  )}
+                </UserRankBox>
+              )}
               <UserRankBox
                 flex="1"
-                title={TranslateString(1222, 'Rank in team').toUpperCase()}
-                footer={`${TranslateString(999, `#${userLeaderboardInformation && global.toLocaleString()} Overall`)}`}
-                mr="8px"
+                title={TranslateString(1224, 'Your volume').toUpperCase()}
+                footer={TranslateString(1226, 'Since start')}
+                mr={[0, null, '8px']}
               >
                 {!userLeaderboardInformation ? (
                   <Skeleton height="26px" width="110px" />
                 ) : (
-                  <TeamRankTextWrapper>
-                    <Heading textAlign="center" size="lg" mr="8px">
-                      #{team}
-                    </Heading>
-                    {medal.current}
-                  </TeamRankTextWrapper>
+                  <Heading textAlign="center" size="lg">
+                    ${userLeaderboardInformation && localiseTradingVolume(volume)}
+                  </Heading>
                 )}
               </UserRankBox>
-            ) : null}
-            <UserRankBox
-              flex="1"
-              title={TranslateString(1224, 'Your volume').toUpperCase()}
-              footer={TranslateString(1226, 'Since start')}
-              mr={{ _: '0', sm: '8px' }}
-            >
-              {!userLeaderboardInformation ? (
-                <Skeleton height="26px" width="110px" />
-              ) : (
-                <Heading textAlign="center" size="lg">
-                  ${userLeaderboardInformation && localiseTradingVolume(volume)}
-                </Heading>
-              )}
-            </UserRankBox>
-          </Flex>
-          {team === 1 ? (
-            // If user is first
-            <NextRankBox
-              flex="2"
-              title={`${TranslateString(999, 'Your tier: gold').toUpperCase()}`}
-              footer={`${TranslateString(999, 'Love, The Chefs x')}`}
-              currentMedal={medal.current}
-              hideArrow
-            >
-              <Heading size="lg">{TranslateString(999, 'HECK YES!')}</Heading>
-            </NextRankBox>
-          ) : (
-            <NextRankBox
-              flex="2"
-              title={`${TranslateString(999, 'Next tier').toUpperCase()}: ${nextTier.color}`}
-              footer={`${TranslateString(999, 'to become')} #${nextTier.rank} ${TranslateString(999, 'in team')}`}
-              currentMedal={medal.current}
-              nextMedal={medal.next}
-            >
-              <Heading size="lg">+${userLeaderboardInformation && localiseTradingVolume(nextRank)}</Heading>
-            </NextRankBox>
-          )}
-        </RanksWrapper>
+            </Flex>
+            {team === 1 ? (
+              // If user is first
+              <NextRankBox
+                flex="2"
+                title={`${TranslateString(999, 'Your tier: gold').toUpperCase()}`}
+                footer={`${TranslateString(999, 'Love, The Chefs x')}`}
+                currentMedal={medal.current}
+                hideArrow
+              >
+                <Heading size="lg">{TranslateString(999, 'HECK YES!')}</Heading>
+              </NextRankBox>
+            ) : (
+              <NextRankBox
+                flex="2"
+                title={`${TranslateString(999, 'Next tier').toUpperCase()}: ${nextTier.color}`}
+                footer={`${TranslateString(999, 'to become')} #${nextTier.rank} ${TranslateString(999, 'in team')}`}
+                currentMedal={medal.current}
+                nextMedal={medal.next}
+              >
+                <Heading size="lg">+${userLeaderboardInformation && localiseTradingVolume(nextRank)}</Heading>
+              </NextRankBox>
+            )}
+          </RanksWrapper>
+        </>
       )}
     </Flex>
   )
