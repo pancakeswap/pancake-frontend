@@ -1,5 +1,16 @@
 import React, { useState, useEffect } from 'react'
-import { Card, CardFooter, CardHeader, Heading, Text, TabMenu, Tab, Box } from '@pancakeswap-libs/uikit'
+import {
+  Card,
+  CardFooter,
+  CardHeader,
+  Heading,
+  Text,
+  TabMenu,
+  Tab,
+  Box,
+  Flex,
+  ExpandableLabel,
+} from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import { TeamRanksProps } from '../../../types'
 import TopTradersGrid from './TopTradersGrid'
@@ -13,6 +24,7 @@ const TopTradersCard: React.FC<TeamRanksProps> = ({
 }) => {
   const TranslateString = useI18n()
   const [activeTab, setActiveTab] = useState(0)
+  const [isExpanded, setIsExpanded] = useState(false)
   const [topTradersGridData, setTopTradersGridData] = useState(null)
   const handleItemClick = (index: number) => setActiveTab(index)
   const tabs = [`${TranslateString(408, 'Total')}`, 'Storm', 'Flippers', 'Cakers']
@@ -65,9 +77,15 @@ const TopTradersCard: React.FC<TeamRanksProps> = ({
               return <Tab key={tabText}>{tabText}</Tab>
             })}
           </TabMenu>
-          <TopTradersGrid data={topTradersGridData} />
+          <TopTradersGrid data={topTradersGridData} isExpanded={isExpanded} />
         </Box>
-        <CardFooter />
+        <CardFooter p="0px">
+          <Flex alignItems="center" justifyContent="center">
+            <ExpandableLabel expanded={isExpanded} onClick={() => setIsExpanded(!isExpanded)}>
+              {isExpanded ? TranslateString(1066, 'Hide') : TranslateString(999, 'Show More')}
+            </ExpandableLabel>
+          </Flex>
+        </CardFooter>
       </Box>
     </Card>
   )
