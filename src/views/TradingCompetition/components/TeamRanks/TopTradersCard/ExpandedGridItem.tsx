@@ -34,18 +34,6 @@ const Wrapper = styled.div`
   }
 `
 
-const RankItem = styled(Flex)`
-  margin-left: 4px;
-
-  ${({ theme }) => theme.mediaQueries.xs} {
-    margin-left: 8px;
-  }
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    margin-left: 16px;
-  }
-`
-
 const VolumeAddressWrapper = styled(Box)`
   display: grid;
   grid-template-columns: 1fr 2fr;
@@ -92,19 +80,19 @@ const TeamImageWrapper = styled(Flex)`
   }
 `
 
-const GridItem: React.FC<{ traderData?: LeaderboardDataItem; teamImages?: React.ReactNode[] }> = ({
-  traderData,
+const GridItem: React.FC<{ traderData?: LeaderboardDataItem; teamImages: React.ReactNode[] }> = ({
+  traderData = { address: '', volume: 0, teamId: 0, rank: 0 },
   teamImages,
 }) => {
   const { address, volume, teamId, rank } = traderData
 
   return (
     <Wrapper>
-      <RankItem alignItems="center" justifyContent="flex-start">
+      <Flex ml={['4px', '8px', '16px']} alignItems="center" justifyContent="flex-start">
         <Text fontSize="16px" bold color="secondary">
           #{rank}
         </Text>
-      </RankItem>
+      </Flex>
       <VolumeAddressWrapper>
         <Flex alignItems="center" justifyContent="flex-start">
           <VolumeText fontSize="12px" bold>

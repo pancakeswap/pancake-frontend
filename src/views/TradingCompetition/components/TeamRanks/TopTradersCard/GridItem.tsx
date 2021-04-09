@@ -48,18 +48,6 @@ const Wrapper = styled.div`
   }
 `
 
-const RankItem = styled(Flex)`
-  margin-left: 4px;
-
-  ${({ theme }) => theme.mediaQueries.xs} {
-    margin-left: 8px;
-  }
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    margin-left: 16px;
-  }
-`
-
 const TeamImageWrapper = styled(Flex)`
   /* Between 968 - 1080px the grid is narrow so absolute position the team image */
   ${({ theme }) => theme.mediaQueries.lg} {
@@ -73,17 +61,17 @@ const TeamImageWrapper = styled(Flex)`
   }
 `
 
-const GridItem: React.FC<{ traderData?: LeaderboardDataItem; teamImages?: React.ReactNode[] }> = ({
-  traderData,
-  teamImages,
-}) => {
+const GridItem: React.FC<{
+  traderData?: LeaderboardDataItem
+  teamImages: React.ReactNode[]
+}> = ({ traderData = { address: '', volume: 0, teamId: 0, rank: 0 }, teamImages }) => {
   const { address, volume, teamId, rank } = traderData
 
   return (
     <Wrapper>
-      <RankItem alignItems="center" justifyContent="flex-start">
+      <Flex ml={['4px', '8px', '16px']} alignItems="center" justifyContent="flex-start">
         <Heading color="secondary">#{rank}</Heading>
-      </RankItem>
+      </Flex>
       <Flex alignItems="center" justifyContent="flex-start">
         <Text bold>${localiseTradingVolume(volume)}</Text>
       </Flex>
