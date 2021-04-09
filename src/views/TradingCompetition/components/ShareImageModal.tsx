@@ -6,6 +6,12 @@ import FlippersShare from '../pngs/flippers-share.png'
 import StormShare from '../pngs/storm-share.png'
 import CakersShare from '../pngs/cakers-share.png'
 import ProfileMask from '../pngs/share-profile-mask.png'
+import MedalGold from '../pngs/medals/medal-gold.png'
+import MedalSilver from '../pngs/medals/medal-silver.png'
+import MedalBronze from '../pngs/medals/medal-bronze.png'
+import MedalPurple from '../pngs/medals/medal-purple.png'
+import MedalTeal from '../pngs/medals/medal-teal.png'
+
 import { localiseTradingVolume } from '../helpers'
 import { YourScoreProps } from '../types'
 
@@ -33,8 +39,26 @@ const ShareImageModal: React.FC<YourScoreProps> = ({ onDismiss, profile, userLea
   const [bgImage, setBgImage] = useState(null)
   const [profileImage, setProfileImage] = useState(null)
   const [profileOverlayImage, setProfileOverlayImage] = useState(null)
+  const [medalImage, setMedalImage] = useState(null)
+
   const [imageFromCanvas, setImageFromCanvas] = useState(null)
   const canvas = useRef(null)
+
+  const getMedal = (rank: React.ReactText) => {
+    if (rank === 1) {
+      return MedalGold
+    }
+    if (rank <= 10) {
+      return MedalSilver
+    }
+    if (rank <= 100) {
+      return MedalBronze
+    }
+    if (rank <= 500) {
+      return MedalPurple
+    }
+    return MedalTeal
+  }
 
   useEffect(() => {
     const bgImages = [StormShare, FlippersShare, CakersShare]
@@ -49,10 +73,14 @@ const ShareImageModal: React.FC<YourScoreProps> = ({ onDismiss, profile, userLea
     const profileImageOverlayEl = new Image()
     profileImageOverlayEl.src = ProfileMask
     profileImageOverlayEl.onload = () => setProfileOverlayImage(profileImageOverlayEl)
-  }, [profile])
+
+    const medalImageEl = new Image()
+    medalImageEl.src = getMedal(team)
+    medalImageEl.onload = () => setMedalImage(medalImageEl)
+  }, [profile, team])
 
   useEffect(() => {
-    if (canvas && bgImage && profileImage && profileOverlayImage) {
+    if (canvas && bgImage && profileImage && profileOverlayImage && medalImage) {
       const canvasWidth = canvas.current.width
       canvas.current.height = canvasWidth * 0.5625
       const canvasHeight = canvas.current.height
@@ -62,6 +90,7 @@ const ShareImageModal: React.FC<YourScoreProps> = ({ onDismiss, profile, userLea
       ctx.drawImage(bgImage, 0, 0, canvasWidth, canvasHeight)
       ctx.drawImage(profileImage, canvasWidth * 0.0315, canvasHeight * 0.07, canvasWidth * 0.19, canvasWidth * 0.19)
       ctx.drawImage(profileOverlayImage, 0, 0, canvasWidth * 0.235, canvasWidth * 0.235)
+      ctx.drawImage(medalImage, canvasWidth * 0.15, canvasHeight * 0.32, canvasWidth * 0.06, canvasWidth * 0.06)
 
       ctx.font = 'bold 84px Kanit'
       ctx.fillStyle = 'white'
@@ -74,7 +103,7 @@ const ShareImageModal: React.FC<YourScoreProps> = ({ onDismiss, profile, userLea
 
       setImageFromCanvas(canvas.current.toDataURL('image/png'))
     }
-  }, [canvas, bgImage, profileImage, team, global, volume, profile, profileOverlayImage])
+  }, [canvas, bgImage, profileImage, team, global, volume, profile, profileOverlayImage, medalImage])
 
   const downloadImage = () => {
     const link = document.createElement('a')
