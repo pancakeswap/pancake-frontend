@@ -7,7 +7,7 @@ import RibbonWithImage from '../RibbonWithImage'
 import { YourScoreProps } from '../../types'
 
 const Wrapper = styled.div`
-  position: relative;
+  /* position: relative; */
   width: 100%;
   margin: 24px auto 0;
   max-width: 768px;
@@ -31,7 +31,7 @@ const YourScore: React.FC<YourScoreProps> = ({
           ribbonDirection="down"
           isCardHeader
         >
-          {TranslateString(1228, 'Your Score')}
+          {TranslateString(999, 'Your Score')}
         </RibbonWithImage>
       )}
       <ScoreCard

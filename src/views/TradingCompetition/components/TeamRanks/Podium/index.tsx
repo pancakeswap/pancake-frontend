@@ -11,7 +11,7 @@ interface PodiumProps {
 }
 
 const Wrapper = styled(Flex)`
-  width: 290px;
+  width: 260px;
 
   ${({ theme }) => theme.mediaQueries.xs} {
     width: 320px;
@@ -55,7 +55,7 @@ const MiddleBox = styled(Box)`
 
 const RightBox = styled(Box)`
   position: absolute;
-  bottom: -36px;
+  bottom: -34px;
   right: 6px;
 
   ${({ theme }) => theme.mediaQueries.xs} {

@@ -15,8 +15,12 @@ const Wrapper = styled(Flex)`
   justify-content: center;
   align-items: center;
   border-radius: ${({ theme }) => theme.radii.default};
-  padding: 8px 24px;
+  padding: 8px;
   margin-top: 8px;
+
+  ${({ theme }) => theme.mediaQueries.xs} {
+    padding: 8px 24px;
+  }
 
   ${({ theme }) => theme.mediaQueries.sm} {
     margin-top: 0;
@@ -51,7 +55,7 @@ const NextRank: React.FC<NextRankProps> = ({
 }) => {
   return (
     <Wrapper {...props}>
-      <Flex flexDirection="column" mr="24px">
+      <Flex flexDirection="column" mr={['8px', '24px']}>
         <Text mb="8px" fontSize="12px" bold color="textSubtle">
           {title}
         </Text>

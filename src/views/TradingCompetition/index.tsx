@@ -222,7 +222,7 @@ const TradingCompetition = () => {
           </RibbonWithImage>
         }
       >
-        <Box mt={shouldHideCta ? '0px' : '54px'}>
+        <Box mt={shouldHideCta ? '0px' : ['94px', null, '54px']} mb={['24px', null, '0']}>
           {/* If competition has not yet started, render HowToJoin component - if not, render YourScore */}
           {!isCompetitionLive ? (
             <HowToJoin />
