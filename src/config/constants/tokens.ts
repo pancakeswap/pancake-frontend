@@ -1029,6 +1029,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://www.tokocrypto.com/',
   },
+  itam: {
+    symbol: 'ITAM',
+    address: {
+      56: '0x04c747b40be4d535fc83d09939fb0f626f32800b',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://itam.network/',
+  },
 }
 
 export default tokens
