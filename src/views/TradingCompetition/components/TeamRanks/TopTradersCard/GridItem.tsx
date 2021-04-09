@@ -53,7 +53,7 @@ const Wrapper = styled.div`
 `
 
 const TeamImageWrapper = styled(Flex)`
-  /* Between 0 - 370px the grid is narrow so absolute position teh team image */
+  /* Between 0 - 370px the grid is narrow so absolute position the team image */
   position: absolute;
   right: 0;
   bottom: 0;

@@ -22,7 +22,7 @@ const H2SizeStyles = (theme: DefaultTheme) => `
 `
 
 const sharedStyles = (props: HeadingProps) => `
-  color: #ffffff;
+  color: ${props.textColor ? props.textColor : '#ffffff'};
   background:  ${props.background ? props.background : 'linear-gradient(#7645d9 0%, #452a7a 100%)'};
   background-clip: text;
   -webkit-background-clip: text;
@@ -40,6 +40,7 @@ const sharedVisiblyHiddenStyles = `
 `
 
 interface HeadingProps {
+  textColor?: string
   background?: string
   fill?: boolean
 }
