@@ -13,7 +13,8 @@ import CardBusdValue from './CardBusdValue'
 const CakeWalletBalance = () => {
   const TranslateString = useI18n()
   const cakeBalance = useTokenBalance(getCakeAddress())
-  const busdBalance = new BigNumber(getBalanceNumber(cakeBalance)).multipliedBy(usePriceCakeBusd()).toNumber()
+  const cakePriceBusd = usePriceCakeBusd()
+  const busdBalance = new BigNumber(getBalanceNumber(cakeBalance)).multipliedBy(cakePriceBusd).toNumber()
   const { account } = useWeb3React()
 
   if (!account) {
@@ -27,7 +28,7 @@ const CakeWalletBalance = () => {
   return (
     <>
       <CardValue value={getBalanceNumber(cakeBalance)} decimals={4} fontSize="24px" lineHeight="36px" />
-      <CardBusdValue value={busdBalance} />
+      {!cakePriceBusd.eq(0) ? <CardBusdValue value={busdBalance} /> : <br />}
     </>
   )
 }
