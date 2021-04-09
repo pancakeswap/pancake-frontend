@@ -1038,6 +1038,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://itam.network/',
   },
+  arpa: {
+    symbol: 'ARPA',
+    address: {
+      56: '0x6f769e65c14ebd1f68817f5f1dcdb61cfa2d6f7e',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://arpachain.io/',
+  },
 }
 
 export default tokens
