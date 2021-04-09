@@ -135,7 +135,7 @@ it("renders correctly", () => {
 
     .c3 {
       background-color: transparent;
-      color: #1FC7D4;
+      color: #8f80ba;
     }
 
     .c3:hover:not(:disabled):not(:active) {

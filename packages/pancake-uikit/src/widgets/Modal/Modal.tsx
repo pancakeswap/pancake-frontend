@@ -11,7 +11,7 @@ const Modal: React.FC<ModalProps> = ({
   hideCloseButton = false,
   bodyPadding = "24px",
   headerBackground = "transparent",
-  minWidth = "360px",
+  minWidth = "320px",
   ...props
 }) => (
   <ModalContainer minWidth={minWidth} {...props}>
