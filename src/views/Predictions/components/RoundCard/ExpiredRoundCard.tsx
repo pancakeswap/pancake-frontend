@@ -15,8 +15,6 @@ interface ExpiredRoundCardProps {
   hasEnteredDown: boolean
   bullMultiplier: number
   bearMultiplier: number
-  claimed: boolean
-  userBetPosition: BetPosition | null
 }
 
 const StyledExpiredRoundCard = styled(Card)`
@@ -34,14 +32,11 @@ const ExpiredRoundCard: React.FC<ExpiredRoundCardProps> = ({
   hasEnteredDown,
   bullMultiplier,
   bearMultiplier,
-  claimed,
-  userBetPosition,
 }) => {
   const TranslateString = useI18n()
   const { id, endBlock, lockPrice, closePrice } = round
   const betPosition = closePrice > lockPrice ? BetPosition.BULL : BetPosition.BEAR
-  const hasEnteredRound = hasEnteredUp || hasEnteredDown
-  const canClaim = userBetPosition === betPosition && !claimed
+  const hasEntered = hasEnteredUp || hasEnteredDown
 
   return (
     <StyledExpiredRoundCard>
@@ -53,7 +48,7 @@ const ExpiredRoundCard: React.FC<ExpiredRoundCardProps> = ({
         epoch={round.epoch}
       />
       <CardBody p="16px" style={{ position: 'relative' }}>
-        {hasEnteredRound && canClaim && <CollectWinningsOverlay roundId={id} isBottom={hasEnteredDown} />}
+        <CollectWinningsOverlay roundId={id} hasEntered={hasEntered} isBottom={hasEnteredDown} />
         <MultiplierArrow
           multiplier={bullMultiplier}
           isActive={betPosition === BetPosition.BULL}

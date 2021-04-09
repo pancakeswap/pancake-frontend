@@ -49,40 +49,52 @@ export interface RoundResponse {
   bets: BetResponse[]
 }
 
+const getRoundBaseFields = () => `
+  id
+  epoch
+  startAt
+  startBlock
+  lockAt
+  lockBlock
+  lockPrice
+  endAt
+  endBlock
+  closePrice
+  totalBets
+  totalAmount
+  bullBets
+  bullAmount
+  bearBets
+  bearAmount
+  position
+`
+
+const getBetBaseFields = () => `
+  id
+  hash  
+  amount
+  position
+  claimed
+`
+
+const getUserBaseFields = () => `
+  id
+  address
+  block
+  totalBets
+  totalBNB
+`
+
 type SortOrder = 'desc' | 'asc'
 
 export const getRoundsQuery = (first = 5, orderBy = 'epoch', orderDirection: SortOrder = 'desc') => {
   return `
     rounds(first: ${first}, orderBy: ${orderBy}, orderDirection: ${orderDirection}) {
-      id
-      epoch
-      startAt
-      startBlock
-      lockAt
-      lockBlock
-      lockPrice
-      endAt
-      endBlock
-      closePrice
-      totalBets
-      totalAmount
-      bullBets
-      bullAmount
-      bearBets
-      bearAmount
-      position
+      ${getRoundBaseFields()}
       bets {
-        id
-        hash  
-        amount
-        position
-        claimed
+        ${getBetBaseFields()}
         user {
-          id
-          address
-          block
-          totalBets
-          totalBNB
+          ${getUserBaseFields()}
         }
       }
     }
@@ -92,82 +104,44 @@ export const getRoundsQuery = (first = 5, orderBy = 'epoch', orderDirection: Sor
 export const getRoundQuery = (id: string) => {
   return `
     round(id: "${id}") {
-      id
-      epoch
-      startAt
-      startBlock
-      lockAt
-      lockBlock
-      lockPrice
-      endAt
-      endBlock
-      closePrice
-      totalBets
-      totalAmount
-      bullBets
-      bullAmount
-      bearBets
-      bearAmount
+      ${getRoundBaseFields()}
       bets {
-        id
-        hash  
-        amount
-        position
-        claimed
+       ${getBetBaseFields()}
         user {
-          id
-          address
-          block
-          totalBets
-          totalBNB
+         ${getUserBaseFields()}
         }
       }
     }
   `
 }
 
-export const getUserPositionsQuery = (id: string, first: number, claimed: boolean) => {
-  const whereClause = []
+export type BetHistoryWhereClause = {
+  user?: string
+  round?: string
+  claimed?: boolean
+}
 
-  if (claimed !== undefined) {
-    whereClause.push(`claimed: ${claimed}`)
-  }
+export const getBetHistoryQuery = (whereClause: BetHistoryWhereClause = {}, first: number, skip: number) => {
+  // Note: The graphql API won't accept JSON.stringify because of the quotes
+  const whereClauseArr = Object.keys(whereClause).reduce((accum, key) => {
+    const value = whereClause[key]
+
+    if (value === undefined) {
+      return accum
+    }
+
+    return [...accum, `${key}: ${typeof value === 'boolean' ? value : `"${value.toLowerCase()}"`}`]
+  }, [])
 
   return `
-    user(id: "${id.toLocaleLowerCase()}") {
-      bets(first: ${first}, where: {${whereClause.join(',')}}) {
-        id
-        hash  
-        amount
-        position
-        claimed
-        round {
-          id
-          epoch
-          startAt
-          startBlock
-          lockAt
-          lockBlock
-          lockPrice
-          endAt
-          endBlock
-          closePrice
-          totalBets
-          totalAmount
-          bullBets
-          bullAmount
-          bearBets
-          bearAmount
-          position
-        }
-        user {
-          id
-          address
-          block
-          totalBets
-          totalBNB
-        } 
+    bets(first: ${first}, skip: ${skip}, where: {${whereClauseArr.join(',')}}) {
+      ${getBetBaseFields()}
+      round {
+        ${getRoundBaseFields()}
       }
+      user {
+        ${getUserBaseFields()}
+      } 
     }
   `
 }
@@ -175,36 +149,12 @@ export const getUserPositionsQuery = (id: string, first: number, claimed: boolea
 export const getBetQuery = (id: string) => {
   return `
     bet(id: "${id.toLocaleLowerCase()}") {
-      id
-      hash  
-      amount
-      position
-      claimed
+      ${getBetBaseFields()}
       round {
-        id
-        epoch
-        startAt
-        startBlock
-        lockAt
-        lockBlock
-        lockPrice
-        endAt
-        endBlock
-        closePrice
-        totalBets
-        totalAmount
-        bullBets
-        bullAmount
-        bearBets
-        bearAmount
-        position
+        ${getRoundBaseFields()}
       }
       user {
-        id
-        address
-        block
-        totalBets
-        totalBNB
+        ${getUserBaseFields()}
       } 
     }
   `

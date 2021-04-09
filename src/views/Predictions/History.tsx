@@ -2,12 +2,12 @@ import React, { useEffect } from 'react'
 import { Box, Heading, Spinner, Text } from '@pancakeswap-libs/uikit'
 import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
-import { showHistory } from 'state/predictions'
+import { fetchHistory } from 'state/predictions'
 import { HistoryFilter } from 'state/types'
 import useI18n from 'hooks/useI18n'
 import { orderBy } from 'lodash'
 import { useAppDispatch } from 'state'
-import { useGetBetsByAccount, useGetHistoryFilter, useGetIsFetchingHistory, useIsHistoryPaneOpen } from 'state/hooks'
+import { useGetHistoryByAccount, useGetHistoryFilter, useGetIsFetchingHistory, useIsHistoryPaneOpen } from 'state/hooks'
 import { Header, HistoricalBet } from './components/History'
 
 const StyledHistory = styled.div`
@@ -43,16 +43,16 @@ const History = () => {
   const isHistoryPaneOpen = useIsHistoryPaneOpen()
   const isFetchingHistory = useGetIsFetchingHistory()
   const historyFilter = useGetHistoryFilter()
-  const bets = useGetBetsByAccount(account)
+  const bets = useGetHistoryByAccount(account)
 
   useEffect(() => {
     if (account && isHistoryPaneOpen) {
-      dispatch(showHistory({ account }))
+      dispatch(fetchHistory({ account }))
     }
   }, [account, isHistoryPaneOpen, dispatch])
 
   // Currently the api cannot filter by unclaimed AND won so we do it here
-  // when the user has selected Uncollected
+  // when the user has selected Uncollected only include positions they won
   const results =
     historyFilter === HistoryFilter.UNCOLLECTED
       ? bets.filter((bet) => {

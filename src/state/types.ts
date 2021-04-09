@@ -230,7 +230,7 @@ export interface PredictionsState {
   bufferBlocks: number
   minBetAmount: string
   rounds: RoundData
-  bets: BetData
+  history: BetData
 }
 
 // Global state

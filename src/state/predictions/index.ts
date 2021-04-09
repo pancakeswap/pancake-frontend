@@ -6,7 +6,7 @@ import {
   getRound,
   makeFutureRoundResponse,
   transformRoundResponse,
-  getUserPositions,
+  getBetHistory,
   transformBetResponse,
   getBet,
 } from './helpers'
@@ -24,9 +24,7 @@ const initialState: PredictionsState = {
   bufferBlocks: 2,
   minBetAmount: '1000000000000000',
   rounds: {},
-
-  // History
-  bets: {},
+  history: {},
 }
 
 // Thunks
@@ -37,8 +35,8 @@ export const updateRound = createAsyncThunk<Round, { id: string }>('predictions/
   return round
 })
 
-export const updateBet = createAsyncThunk<{ account: string; bet: Bet }, { account: string; id: string }>(
-  'predictions/updateBet',
+export const fetchBet = createAsyncThunk<{ account: string; bet: Bet }, { account: string; id: string }>(
+  'predictions/fetchBet',
   async ({ account, id }) => {
     const response = await getBet(id)
     const bet = transformBetResponse(response)
@@ -46,10 +44,13 @@ export const updateBet = createAsyncThunk<{ account: string; bet: Bet }, { accou
   },
 )
 
-export const showHistory = createAsyncThunk<{ account: string; bets: Bet[] }, { account: string; claimed?: boolean }>(
-  'predictions/showHistory',
+export const fetchHistory = createAsyncThunk<{ account: string; bets: Bet[] }, { account: string; claimed?: boolean }>(
+  'predictions/fetchHistory',
   async ({ account, claimed }) => {
-    const response = await getUserPositions(account, 1000, claimed)
+    const response = await getBetHistory({
+      user: account,
+      claimed,
+    })
     const bets = response.map(transformBetResponse)
 
     return { account, bets }
@@ -106,25 +107,25 @@ export const predictionsSlice = createSlice({
     })
 
     // Update Bet
-    builder.addCase(updateBet.fulfilled, (state, action) => {
+    builder.addCase(fetchBet.fulfilled, (state, action) => {
       const { account, bet } = action.payload
-      state.bets[account] = [...state.bets[account].filter((currentBet) => currentBet.id !== bet.id), bet]
+      state.history[account] = [...state.history[account].filter((currentBet) => currentBet.id !== bet.id), bet]
     })
 
     // Show History
-    builder.addCase(showHistory.pending, (state) => {
+    builder.addCase(fetchHistory.pending, (state) => {
       state.isFetchingHistory = true
     })
-    builder.addCase(showHistory.rejected, (state) => {
+    builder.addCase(fetchHistory.rejected, (state) => {
       state.isFetchingHistory = false
       state.isHistoryPaneOpen = true
     })
-    builder.addCase(showHistory.fulfilled, (state, action) => {
+    builder.addCase(fetchHistory.fulfilled, (state, action) => {
       const { account, bets } = action.payload
 
       state.isFetchingHistory = false
       state.isHistoryPaneOpen = true
-      state.bets[account] = bets
+      state.history[account] = bets
     })
   },
 })

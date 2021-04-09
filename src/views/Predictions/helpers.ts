@@ -54,6 +54,10 @@ export const getMultiplier = (total: number, amount: number) => {
  * Calculates the total payout given a bet
  */
 export const getPayout = (bet: Bet) => {
+  if (!bet || !bet.round) {
+    return 0
+  }
+
   const { bullAmount, bearAmount, totalAmount } = bet.round
   const multiplier = getMultiplier(totalAmount, bet.position === BetPosition.BULL ? bullAmount : bearAmount)
   return bet.amount * multiplier

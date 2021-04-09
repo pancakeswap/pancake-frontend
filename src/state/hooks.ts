@@ -275,18 +275,13 @@ export const useGetIsFetchingHistory = () => {
   return useSelector((state: State) => state.predictions.isFetchingHistory)
 }
 
-export const useGetBets = () => {
-  return useSelector((state: State) => state.predictions.bets)
+export const useGetHistory = () => {
+  return useSelector((state: State) => state.predictions.history)
 }
 
-export const useGetBetsByAccount = (account: string) => {
-  const bets = useGetBets()
+export const useGetHistoryByAccount = (account: string) => {
+  const bets = useGetHistory()
   return bets ? bets[account] : []
-}
-
-export const useGetBetByRoundId = (roundId: string, account: string) => {
-  const accountBets = useGetBetsByAccount(account)
-  return accountBets.find((bet) => bet.round.id === roundId)
 }
 
 // Collectibles

@@ -3,7 +3,7 @@ import { useWeb3React } from '@web3-react/core'
 import { ArrowForwardIcon, Box, Button, Radio, Flex, Heading, Text } from '@pancakeswap-libs/uikit'
 import { useAppDispatch } from 'state'
 import { HistoryFilter } from 'state/types'
-import { setHistoryFilter, setHistoryPaneState, showHistory } from 'state/predictions'
+import { setHistoryFilter, setHistoryPaneState, fetchHistory } from 'state/predictions'
 import { useGetHistoryFilter, useGetIsFetchingHistory } from 'state/hooks'
 import useI18n from 'hooks/useI18n'
 import styled from 'styled-components'
@@ -47,7 +47,7 @@ const Header = () => {
 
   const handleChange = (newFilter: HistoryFilter) => async () => {
     if (newFilter !== historyFilter) {
-      await dispatch(showHistory({ account, claimed: getClaimParam(newFilter) }))
+      await dispatch(fetchHistory({ account, claimed: getClaimParam(newFilter) }))
       dispatch(setHistoryFilter(newFilter))
     }
   }

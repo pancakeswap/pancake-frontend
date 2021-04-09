@@ -3,7 +3,7 @@ import { useWeb3React } from '@web3-react/core'
 import { Box, ChevronDownIcon, ChevronUpIcon, Flex, IconButton, Text } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
 import { useAppDispatch } from 'state'
-import { updateBet } from 'state/predictions'
+import { fetchBet } from 'state/predictions'
 import { Bet, BetPosition } from 'state/types'
 import useI18n from 'hooks/useI18n'
 import { formatBnb, getPayout } from '../../helpers'
@@ -38,7 +38,7 @@ const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
   const dispatch = useAppDispatch()
 
   const handleSuccess = async () => {
-    await dispatch(updateBet({ account, id: bet.id }))
+    await dispatch(fetchBet({ account, id: bet.id }))
   }
 
   return (

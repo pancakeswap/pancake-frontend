@@ -5,7 +5,7 @@ import { useAppDispatch } from 'state'
 import useI18n from 'hooks/useI18n'
 import styled from 'styled-components'
 import { Bet, BetPosition } from 'state/types'
-import { updateBet } from 'state/predictions'
+import { fetchBet } from 'state/predictions'
 import { formatBnb, getPayout } from '../../helpers'
 import CollectWinningsButton from '../CollectWinningsButton'
 import PositionTag from '../PositionTag'
@@ -30,13 +30,13 @@ const BetResult: React.FC<BetResultProps> = ({ bet, isWinner }) => {
   const { account } = useWeb3React()
 
   const handleSuccess = async () => {
-    await dispatch(updateBet({ account, id: bet.id }))
+    await dispatch(fetchBet({ account, id: bet.id }))
   }
 
   return (
     <>
-      <Flex alignItems="center" justifyContent="space-between">
-        <Heading mb="8px">{TranslateString(999, 'Your History')}</Heading>
+      <Flex alignItems="center" justifyContent="space-between" mb="8px">
+        <Heading>{TranslateString(999, 'Your History')}</Heading>
         <Flex alignItems="center">
           <Heading as="h3" color={headerColor} textTransform="uppercase" bold mr="4px">
             {isWinner ? TranslateString(999, 'Win') : TranslateString(999, 'Lose')}

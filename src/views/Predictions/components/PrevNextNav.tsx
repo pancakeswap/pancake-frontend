@@ -1,6 +1,7 @@
 import React from 'react'
 import { ArrowBackIcon, ArrowForwardIcon, Card, IconButton } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
+import { useGetCurrentEpoch, useGetSortedRounds } from 'state/hooks'
 import BunnyCards from '../icons/BunnyCards'
 import useSwiper from '../hooks/useSwiper'
 
@@ -26,6 +27,8 @@ const Icon = styled.div`
 
 const PrevNextNav = () => {
   const { swiper } = useSwiper()
+  const currentEpoch = useGetCurrentEpoch()
+  const rounds = useGetSortedRounds()
 
   const handlePrevSlide = () => {
     swiper.slidePrev()
@@ -36,7 +39,10 @@ const PrevNextNav = () => {
   }
 
   const handleSlideToLive = () => {
-    return 1
+    const currentEpochIndex = rounds.findIndex((round) => round.epoch === currentEpoch)
+
+    swiper.slideTo(currentEpochIndex - 1)
+    swiper.update()
   }
 
   return (
