@@ -164,7 +164,7 @@ const CardUserInfo: React.FC<YourScoreProps> = ({ hasRegistered, account, profil
           )}
           <RanksWrapper>
             <Flex>
-              {volume > 0 ? (
+              {volume > 0 && (
                 <UserRankBox
                   flex="1"
                   title={TranslateString(1222, 'Rank in team').toUpperCase()}
@@ -185,12 +185,12 @@ const CardUserInfo: React.FC<YourScoreProps> = ({ hasRegistered, account, profil
                     </TeamRankTextWrapper>
                   )}
                 </UserRankBox>
-              ) : null}
+              )}
               <UserRankBox
                 flex="1"
                 title={TranslateString(1224, 'Your volume').toUpperCase()}
                 footer={TranslateString(1226, 'Since start')}
-                mr={{ _: '0', sm: '8px' }}
+                mr={[0, null, '8px']}
               >
                 {!userLeaderboardInformation ? (
                   <Skeleton height="26px" width="110px" />
