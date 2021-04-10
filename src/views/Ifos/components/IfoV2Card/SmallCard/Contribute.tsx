@@ -1,7 +1,7 @@
 import React from 'react'
 import BigNumber from 'bignumber.js'
 import { Contract } from 'web3-eth-contract'
-import { Box, Button, Flex, Text, useModal } from '@pancakeswap-libs/uikit'
+import { Button, useModal } from '@pancakeswap-libs/uikit'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { getAddress } from 'utils/addressHelpers'
 import { Ifo } from 'config/constants/types'
@@ -9,26 +9,22 @@ import useI18n from 'hooks/useI18n'
 import { UserPoolCharacteristics } from 'hooks/ifo/v2/types'
 import { useToast } from 'state/hooks'
 import ContributeModal from './ContributeModal'
-import PercentageOfTotal from './PercentageOfTotal'
 
 interface ContributeProps {
   ifo: Ifo
   contract: Contract
   userPoolCharacteristics: UserPoolCharacteristics
-  totalAmountPool: BigNumber
   addUserContributedAmount: (amount: BigNumber) => void
 }
 const Contribute: React.FC<ContributeProps> = ({
   ifo,
   contract,
   userPoolCharacteristics,
-  totalAmountPool,
   addUserContributedAmount,
 }) => {
   const { currency } = ifo
-  const { amountTokenCommittedInLP, isPendingTx } = userPoolCharacteristics
+  const { isPendingTx } = userPoolCharacteristics
   const TranslateString = useI18n()
-  const contributedBalance = getBalanceNumber(amountTokenCommittedInLP)
   const { toastSuccess } = useToast()
 
   const handleContributeSuccess = (amount: BigNumber) => {
@@ -47,27 +43,9 @@ const Contribute: React.FC<ContributeProps> = ({
   )
 
   return (
-    <Box>
-      <Flex mb="4px">
-        <Text as="span" bold fontSize="12px" mr="4px" textTransform="uppercase">
-          CAKE-BNB LP
-        </Text>
-        <Text as="span" color="textSubtle" fontSize="12px" textTransform="uppercase" bold>
-          Committed
-        </Text>
-      </Flex>
-      <Flex alignItems="center">
-        <Box style={{ flex: 1 }} pr="8px">
-          <Text bold fontSize="20px">
-            {contributedBalance.toFixed(4)}
-          </Text>
-        </Box>
-        <Button onClick={onPresentContributeModal} disabled={isPendingTx}>
-          {TranslateString(999, 'Contribute')}
-        </Button>
-      </Flex>
-      <PercentageOfTotal userAmount={amountTokenCommittedInLP} totalAmount={totalAmountPool} />
-    </Box>
+    <Button onClick={onPresentContributeModal} width="100%" disabled={isPendingTx}>
+      {TranslateString(999, 'Contribute')}
+    </Button>
   )
 }
 

@@ -9,13 +9,38 @@ const cakeBnbLpToken: Token = {
 }
 
 const ifos: Ifo[] = [
+  // Testing : start
+  // Pending
+  // {
+  //   id: 'belt',
+  //   address: '0x4e72301A1EA3893C18496d48A2C0848518908F51',
+  //   isActive: true,
+  //   name: 'Usagi (USG)',
+  //   launchDate: 'Mar. 10',
+  //   launchTime: '5PM SGT',
+  //   saleAmount: '150,000 BELT',
+  //   raiseAmount: '$3,000,000',
+  //   cakeToBurn: '$1,500,000',
+  //   projectSiteUrl: 'https://beta.belt.fi/',
+  //   currency: cakeBnbLpToken,
+  //   token: {
+  //     symbol: 'belt',
+  //     address: {
+  //       '56': '',
+  //       '97': '0xDD2EF17be8852A2C0e2D8Cc904f6dC73eBf44C56',
+  //     },
+  //     decimals: 18,
+  //   },
+  //   releaseBlockNumber: 5493919,
+  //   campaignId: '511080000',
+  //   isV1: false,
+  // },
+  // In progress
   {
     id: 'belt',
-    address: '0x13c51c38c53454dBA1bD489F5adED7496f074eA3',
+    address: '0xBF27AD06c0d9cd26cA022D9817D0596C8ba01F24',
     isActive: true,
     name: 'Usagi (USG)',
-    subTitle: 'Cute rabbits',
-    description: 'Cute rabbits again and again',
     launchDate: 'Mar. 10',
     launchTime: '5PM SGT',
     saleAmount: '150,000 BELT',
@@ -23,11 +48,37 @@ const ifos: Ifo[] = [
     cakeToBurn: '$1,500,000',
     projectSiteUrl: 'https://beta.belt.fi/',
     currency: cakeBnbLpToken,
-    token: tokens.belt,
+    token: {
+      symbol: 'belt',
+      address: {
+        '56': '',
+        '97': '0x39Fc82a3c852c5FdeC10b12c741b7D6eea3F7fE4',
+      },
+      decimals: 18,
+    },
     releaseBlockNumber: 5493919,
     campaignId: '511080000',
     isV1: false,
   },
+  // Finished
+  // {
+  //   id: 'belt',
+  //   address: '0x13c51c38c53454dBA1bD489F5adED7496f074eA3',
+  //   isActive: true,
+  //   name: 'Usagi (USG)',
+  //   launchDate: 'Mar. 10',
+  //   launchTime: '5PM SGT',
+  //   saleAmount: '150,000 BELT',
+  //   raiseAmount: '$3,000,000',
+  //   cakeToBurn: '$1,500,000',
+  //   projectSiteUrl: 'https://beta.belt.fi/',
+  //   currency: cakeBnbLpToken,
+  //   token: tokens.belt,
+  //   releaseBlockNumber: 5493919,
+  //   campaignId: '511080000',
+  //   isV1: false,
+  // },
+  // Testing : end
   {
     id: 'belt',
     address: '0xc9FBedC033a1c479a6AD451ffE463025E92a1d38',

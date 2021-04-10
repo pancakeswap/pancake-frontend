@@ -1,6 +1,16 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { Card, CardHeader, CardBody, CardRibbon, ExpandableButton, Progress } from '@pancakeswap-libs/uikit'
+import {
+  Card,
+  CardHeader,
+  CardBody,
+  CardFooter,
+  CardRibbon,
+  ExpandableButton,
+  Progress,
+  Button,
+  ChevronUpIcon,
+} from '@pancakeswap-libs/uikit'
 import { Ifo, IfoStatus } from 'config/constants/types'
 import useI18n from 'hooks/useI18n'
 import useGetPublicIfoV2Data from 'hooks/ifo/v2/useGetPublicIfoData'
@@ -16,15 +26,21 @@ interface IfoFoldableCardProps {
 
 const getRibbonComponent = (status: IfoStatus, TranslateString: (translationId: number, fallback: string) => any) => {
   if (status === 'coming_soon') {
-    return <CardRibbon variantColor="textDisabled" text={TranslateString(999, 'Coming Soon')} />
+    return <CardRibbon variantColor="textDisabled" ribbonPosition="left" text={TranslateString(999, 'Coming Soon')} />
   }
 
   if (status === 'live') {
-    return <CardRibbon variantColor="primary" text={TranslateString(999, 'LIVE NOW!')} />
+    return <CardRibbon variantColor="primary" ribbonPosition="left" text={TranslateString(999, 'LIVE NOW!')} />
   }
 
   return null
 }
+
+const StyledCard = styled(Card)`
+  max-width: 736px;
+  width: 100%;
+  margin: auto;
+`
 
 const Header = styled(CardHeader)<{ ifoId: string }>`
   display: flex;
@@ -60,7 +76,7 @@ const IfoFoldableCard: React.FC<IfoFoldableCardProps> = ({ ifo, isInitiallyVisib
   const isInProgress = publicIfoData.status !== 'finished' && ifo.isActive
 
   return (
-    <Card ribbon={Ribbon}>
+    <StyledCard ribbon={Ribbon}>
       <Header ifoId={ifo.id}>
         <ExpandableButton expanded={isVisible} onClick={() => setIsVisible((prev) => !prev)} />
       </Header>
@@ -83,8 +99,13 @@ const IfoFoldableCard: React.FC<IfoFoldableCardProps> = ({ ifo, isInitiallyVisib
             />
           </CardWrapper>
         </CardBody>
+        <CardFooter style={{ textAlign: 'center' }}>
+          <Button variant="text" endIcon={<ChevronUpIcon color="primary" />} onClick={() => setIsVisible(false)}>
+            Close
+          </Button>
+        </CardFooter>
       </FoldableContent>
-    </Card>
+    </StyledCard>
   )
 }
 

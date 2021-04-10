@@ -26,10 +26,10 @@ import { fetchPrices } from './prices'
 export const useFetchPublicData = () => {
   const dispatch = useAppDispatch()
   const { slowRefresh } = useRefresh()
-  useEffect(() => {
-    dispatch(fetchFarmsPublicDataAsync())
-    dispatch(fetchPoolsPublicDataAsync())
-  }, [dispatch, slowRefresh])
+  // useEffect(() => {
+  //   dispatch(fetchFarmsPublicDataAsync())
+  //   dispatch(fetchPoolsPublicDataAsync())
+  // }, [dispatch, slowRefresh])
 
   useEffect(() => {
     const web3 = getWeb3NoAccount()
