@@ -30,10 +30,10 @@ const ProgressStepper: React.FC<CountdownProps> = ({ steps, activeStepIndex }) =
           const stepText = TranslateString(step.translationId, step.text).toUpperCase()
 
           return (
-            <>
+            <React.Fragment key={`ProgressStep${index + 1}`}>
               <Step stepText={stepText} index={index} activeStepIndex={activeStepIndex} />
               {index + 1 < steps.length && <Spacer isPastSpacer={isPastSpacer} />}
-            </>
+            </React.Fragment>
           )
         })}
       </Flex>
