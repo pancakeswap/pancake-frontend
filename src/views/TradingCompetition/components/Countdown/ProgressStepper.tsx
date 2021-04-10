@@ -6,8 +6,6 @@ import useI18n from 'hooks/useI18n'
 import { CountdownProps } from '../../types'
 import Step from './Step'
 
-const Wrapper = styled.div``
-
 const Spacer = styled.div<{ isPastSpacer?: boolean }>`
   margin: 12px 8px 0 8px;
   width: 28px;
@@ -24,21 +22,19 @@ const Spacer = styled.div<{ isPastSpacer?: boolean }>`
 const ProgressStepper: React.FC<CountdownProps> = ({ steps, activeStepIndex }) => {
   const TranslateString = useI18n()
   return (
-    <Wrapper>
-      <Flex>
-        {steps.map((step, index) => {
-          const isPastSpacer = index < activeStepIndex
-          const stepText = TranslateString(step.translationId, step.text).toUpperCase()
+    <Flex>
+      {steps.map((step, index) => {
+        const isPastSpacer = index < activeStepIndex
+        const stepText = TranslateString(step.translationId, step.text).toUpperCase()
 
-          return (
-            <React.Fragment key={_uniqueId('ProgressStep-')}>
-              <Step stepText={stepText} index={index} activeStepIndex={activeStepIndex} />
-              {index + 1 < steps.length && <Spacer isPastSpacer={isPastSpacer} />}
-            </React.Fragment>
-          )
-        })}
-      </Flex>
-    </Wrapper>
+        return (
+          <React.Fragment key={_uniqueId('ProgressStep-')}>
+            <Step stepText={stepText} index={index} activeStepIndex={activeStepIndex} />
+            {index + 1 < steps.length && <Spacer isPastSpacer={isPastSpacer} />}
+          </React.Fragment>
+        )
+      })}
+    </Flex>
   )
 }
 
