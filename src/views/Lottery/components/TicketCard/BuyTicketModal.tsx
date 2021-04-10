@@ -25,11 +25,17 @@ const BuyTicketModal: React.FC<BuyTicketModalProps> = ({ max, onDismiss }) => {
     return getFullDisplayBalance(max)
   }, [max])
 
+  const regexNumber = /^[0-9\b]+$/
+
   const maxTickets = useMemo(() => {
     return parseInt(getFullDisplayBalance(max.div(LOTTERY_TICKET_PRICE)), 10)
   }, [max])
 
-  const handleChange = (e: React.FormEvent<HTMLInputElement>) => setVal(e.currentTarget.value)
+  const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
+    if (e.currentTarget.value === '' || regexNumber.test(e.currentTarget.value)) {
+      setVal(e.currentTarget.value)
+    }
+  }
 
   const { onMultiBuy } = useMultiBuyLottery()
   const maxNumber = useMaxNumber()
@@ -97,6 +103,7 @@ const BuyTicketModal: React.FC<BuyTicketModalProps> = ({ max, onDismiss }) => {
           width="100%"
           disabled={
             pendingTx ||
+            !Number.isInteger(parseInt(val)) ||
             parseInt(val) > Number(maxTickets) ||
             parseInt(val) > LOTTERY_MAX_NUMBER_OF_TICKETS ||
             parseInt(val) < 1
