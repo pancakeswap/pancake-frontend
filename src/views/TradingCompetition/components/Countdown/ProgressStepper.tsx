@@ -1,4 +1,5 @@
 import React from 'react'
+import _uniqueId from 'lodash/uniqueId'
 import styled from 'styled-components'
 import { Flex } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
@@ -30,7 +31,7 @@ const ProgressStepper: React.FC<CountdownProps> = ({ steps, activeStepIndex }) =
           const stepText = TranslateString(step.translationId, step.text).toUpperCase()
 
           return (
-            <React.Fragment key={`ProgressStep${index + 1}`}>
+            <React.Fragment key={_uniqueId('ProgressStep-')}>
               <Step stepText={stepText} index={index} activeStepIndex={activeStepIndex} />
               {index + 1 < steps.length && <Spacer isPastSpacer={isPastSpacer} />}
             </React.Fragment>
