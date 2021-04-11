@@ -63,6 +63,9 @@ const PastLotterySearcher: React.FC<PastLotterySearcherProps> = ({ initialLotter
             <Input
               value={lotteryNumber}
               type="number"
+              pattern="\d*"
+              min="0"
+              step="1"
               isWarning={isError}
               max={initialLotteryNumber}
               onChange={handleChange}
