@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.22.2](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap-libs/uikit@0.22.1...@pancakeswap-libs/uikit@0.22.2) (2021-04-11)
+
+
+### Bug Fixes
+
+* Stepper connector visibility ([#66](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/66)) ([629be7b](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/629be7b33cc3c7d95499ca67b7a175a29f3f7225))
+
+
+
+
+
 ## [0.22.1](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap-libs/uikit@0.22.0...@pancakeswap-libs/uikit@0.22.1) (2021-04-10)
 
 
