@@ -18,7 +18,7 @@ const TicketInput: React.FC<TokenInputProps> = ({ max, symbol, availableSymbol, 
   return (
     <StyledTokenInput>
       <Flex alignItems="center">
-        <Input pattern="\d*" onChange={onChange} placeholder="0" value={value} />
+        <Input type="number" pattern="\d*" min="0" step="1" onChange={onChange} placeholder="0" value={value} />
         <StyledTokenAdornmentWrapper>
           <StyledTokenSymbol>{symbol}</StyledTokenSymbol>
           <StyledSpacer />
