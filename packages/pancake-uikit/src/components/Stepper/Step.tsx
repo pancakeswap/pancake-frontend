@@ -20,7 +20,6 @@ const Connector = styled.div<StatusProps>`
   height: 100%;
   top: 50%;
   left: calc(50% - 2px);
-  z-index: -1;
   background-color: ${({ theme, status }) => theme.colors[status === "past" ? "success" : "textDisabled"]};
 `;
 
@@ -64,6 +63,7 @@ export const StepNumber = styled.div<StatusProps>`
   font-size: 32px;
   width: 48px;
   height: 48px;
+  z-index: 1;
   ${({ theme }) => theme.mediaQueries.md} {
     font-size: 40px;
     width: 80px;
