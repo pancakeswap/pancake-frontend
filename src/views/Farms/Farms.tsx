@@ -3,7 +3,7 @@ import { Route, useRouteMatch, useLocation } from 'react-router-dom'
 import { useAppDispatch } from 'state'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
-import { Image, Heading, RowType, Toggle, Text } from '@pancakeswap-libs/uikit'
+import { Image, Heading, RowType, Toggle, Text, Button } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
 import FlexLayout from 'components/layout/Flex'
 import Page from 'components/layout/Page'
@@ -110,6 +110,51 @@ const Header = styled.div`
   }
 `
 
+const Pagination = styled.div`
+  display: flex;
+  flex-basis: 32%;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 0;
+  filter: ${({ theme }) => theme.card.dropShadow};
+  width: 100%;
+  background: ${({ theme }) => theme.card.background};
+  border-radius: 16px;
+  margin: 16px 0px;
+  flex-direction: column;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    flex-direction: row;
+  }
+`
+
+const PaginationShowingItems = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-left: 0;
+  margin-bottom: 20px;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    padding-left: 20px;
+    margin-bottom: 0;
+  }
+`
+
+const PaginationButtonWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+
+const PaginationRowsPerPageWrapper = styled.div`
+  display: none;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    margin-right: 20px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+`
+
 const Farms: React.FC = () => {
   const { path } = useRouteMatch()
   const { pathname } = useLocation()
@@ -189,6 +234,7 @@ const Farms: React.FC = () => {
   )
 
   const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setCurrentPage(0)
     setQuery(event.target.value)
   }
 
@@ -238,6 +284,13 @@ const Farms: React.FC = () => {
     return row
   })
 
+  const [currentPageIndex, setCurrentPage] = useState(0)
+  const [itemsPerPage, setItemsPerPage] = useState(6)
+  const numOfPages = Math.ceil(rowData.length / itemsPerPage)
+  const pages = Array(numOfPages)
+    .fill(0)
+    .map((_, i) => i + 1)
+
   const renderContent = (): JSX.Element => {
     if (viewMode === ViewMode.TABLE && rowData.length) {
       const columnSchema = DesktopColumnSchema
@@ -265,7 +318,54 @@ const Farms: React.FC = () => {
         sortable: column.sortable,
       }))
 
-      return <Table data={rowData} columns={columns} />
+      return (
+        <>
+          <Table
+            data={rowData.slice(currentPageIndex * itemsPerPage, currentPageIndex * itemsPerPage + itemsPerPage)}
+            columns={columns}
+          />
+          <Pagination>
+            <PaginationShowingItems>
+              <div style={{ marginBottom: '5px' }}>Showing items:</div>
+              <div>
+                {currentPageIndex * itemsPerPage + 1} -{' '}
+                {currentPageIndex * itemsPerPage + itemsPerPage < rowData.length
+                  ? currentPageIndex * itemsPerPage + itemsPerPage
+                  : rowData.length}{' '}
+                of {rowData.length}
+              </div>
+            </PaginationShowingItems>
+            <PaginationButtonWrapper>
+              <Button disabled={currentPageIndex - 1 < 0} onClick={() => setCurrentPage(currentPageIndex - 1)}>
+                {'<'}
+              </Button>
+
+              <Button
+                disabled={currentPageIndex + 1 > pages.length - 1}
+                onClick={() => setCurrentPage(currentPageIndex + 1)}
+              >
+                {'>'}
+              </Button>
+            </PaginationButtonWrapper>
+            <PaginationRowsPerPageWrapper>
+              <LabelWrapper>
+                <Text>ROWS PER PAGE</Text>
+                <Select
+                  onChange={(selectedOption) => {
+                    setCurrentPage(0)
+                    setItemsPerPage(Number(selectedOption.value))
+                  }}
+                  options={[
+                    { label: '6', value: '6' },
+                    { label: '12', value: '12' },
+                    { label: '24', value: '24' },
+                  ]}
+                />
+              </LabelWrapper>
+            </PaginationRowsPerPageWrapper>
+          </Pagination>
+        </>
+      )
     }
 
     return (
@@ -287,6 +387,7 @@ const Farms: React.FC = () => {
   }
 
   const handleSortOptionChange = (option: OptionProps): void => {
+    setCurrentPage(0)
     setSortOption(option.value)
   }
 
