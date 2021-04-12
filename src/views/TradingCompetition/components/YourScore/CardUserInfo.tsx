@@ -163,7 +163,7 @@ const CardUserInfo: React.FC<YourScoreProps> = ({ hasRegistered, account, profil
             </Button>
           )}
           <RanksWrapper>
-            <Flex>
+            <Flex flexDirection={['column', 'row']}>
               {volume > 0 && (
                 <UserRankBox
                   flex="1"
@@ -172,7 +172,8 @@ const CardUserInfo: React.FC<YourScoreProps> = ({ hasRegistered, account, profil
                     999,
                     `#${userLeaderboardInformation && global.toLocaleString()} Overall`,
                   )}`}
-                  mr="8px"
+                  mr={[0, '8px']}
+                  mb={['8px', 0]}
                 >
                   {!userLeaderboardInformation ? (
                     <Skeleton height="26px" width="110px" />

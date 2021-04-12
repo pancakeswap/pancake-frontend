@@ -7,7 +7,6 @@ import { localiseTradingVolume, accountEllipsis } from '../../../helpers'
 const Wrapper = styled.div`
   position: relative;
   display: grid;
-  grid-template-columns: auto repeat(3, 1fr);
   border-bottom: 1px solid ${({ theme }) => theme.colors.textDisabled};
   grid-gap: 4px;
 
@@ -16,7 +15,12 @@ const Wrapper = styled.div`
     width: auto;
   }
 
+  /* Between 0 - 370px the team image is absolutely positioned so it starts as a 3-column grid */
+  grid-template-columns: repeat(3, auto);
+  min-height: 55px;
+
   ${({ theme }) => theme.mediaQueries.xs} {
+    grid-template-columns: auto repeat(3, 1fr);
     grid-gap: 8px;
 
     svg {
@@ -37,7 +41,7 @@ const Wrapper = styled.div`
     }
   }
 
-  /* Between 968 - 1080px the team image is absolute positioned so it becomes a 3-column grid */
+  /* Between 968 - 1080px the team image is absolute positioned so it returns to a 3-column grid */
   ${({ theme }) => theme.mediaQueries.lg} {
     grid-template-columns: auto auto 1fr;
     min-height: 72px;
@@ -49,11 +53,18 @@ const Wrapper = styled.div`
 `
 
 const TeamImageWrapper = styled(Flex)`
+  /* Between 0 - 370px the grid is narrow so absolute position the team image */
+  position: absolute;
+  right: 0;
+  bottom: 0;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    position: relative;
+  }
+
   /* Between 968 - 1080px the grid is narrow so absolute position the team image */
   ${({ theme }) => theme.mediaQueries.lg} {
     position: absolute;
-    right: 0;
-    bottom: 0;
   }
 
   ${({ theme }) => theme.mediaQueries.xl} {
