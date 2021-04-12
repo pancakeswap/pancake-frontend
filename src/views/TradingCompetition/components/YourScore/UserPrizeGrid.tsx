@@ -10,7 +10,6 @@ import {
   TrophyGoldIcon,
 } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
-import easterPrizes from 'config/constants/trading-competition/easter'
 import { UserTradingInformationProps } from '../../types'
 import { UseCompetitionCakeRewards, getRewardGroupAchievements } from '../../helpers'
 
