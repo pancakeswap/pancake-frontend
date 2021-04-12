@@ -113,6 +113,11 @@ export const Ribbon: React.FC = () => {
           <CardBody style={{ height: "150px" }}>Any Color in the theme</CardBody>
         </Card>
       </Row>
+      <Row>
+        <Card ribbon={<CardRibbon variantColor="failure" text="Failure" ribbonPosition="left" />}>
+          <CardBody style={{ height: "150px" }}>Any Color in the theme</CardBody>
+        </Card>
+      </Row>
     </div>
   );
 };
