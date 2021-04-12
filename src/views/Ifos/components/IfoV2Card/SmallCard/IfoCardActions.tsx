@@ -16,13 +16,14 @@ interface Props {
   publicIfoData: PublicIfoData
   walletIfoData: WalletIfoData
   hasProfile: boolean
+  isLoading: boolean
 }
 
-const IfoCardActions: React.FC<Props> = ({ currency, poolId, publicIfoData, walletIfoData, hasProfile }) => {
+const IfoCardActions: React.FC<Props> = ({ currency, poolId, publicIfoData, walletIfoData, hasProfile, isLoading }) => {
   const { account } = useWeb3React()
   const userPoolCharacteristics = walletIfoData[poolId]
 
-  if (publicIfoData.status === 'idle') {
+  if (isLoading) {
     return <SkeletonCardActions />
   }
 

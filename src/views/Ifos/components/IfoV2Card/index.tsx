@@ -21,7 +21,6 @@ import Timer from './Timer'
 
 interface IfoFoldableCardProps {
   ifo: Ifo
-  hasProfile?: boolean
   isInitiallyVisible: boolean
 }
 
@@ -67,7 +66,7 @@ const CardWrapper = styled.div`
   }
 `
 
-const IfoFoldableCard: React.FC<IfoFoldableCardProps> = ({ ifo, hasProfile, isInitiallyVisible }) => {
+const IfoFoldableCard: React.FC<IfoFoldableCardProps> = ({ ifo, isInitiallyVisible }) => {
   const [isVisible, setIsVisible] = useState(isInitiallyVisible)
   const TranslateString = useI18n()
   const publicIfoData = useGetPublicIfoV2Data(ifo)
@@ -91,14 +90,12 @@ const IfoFoldableCard: React.FC<IfoFoldableCardProps> = ({ ifo, hasProfile, isIn
               ifo={ifo}
               publicIfoData={publicIfoData}
               walletIfoData={walletIfoData}
-              hasProfile={hasProfile}
             />
             <SmallCard
               poolId={PoolIds.poolUnlimited}
               ifo={ifo}
               publicIfoData={publicIfoData}
               walletIfoData={walletIfoData}
-              hasProfile={hasProfile}
             />
           </CardWrapper>
         </CardBody>

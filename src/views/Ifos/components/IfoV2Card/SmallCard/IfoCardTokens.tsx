@@ -1,5 +1,6 @@
 import React from 'react'
 import { Text, Flex, Box, Image, CheckmarkCircleIcon, FlexProps } from '@pancakeswap-libs/uikit'
+import { useWeb3React } from '@web3-react/core'
 import { Ifo, IfoStatus } from 'config/constants/types'
 import { PoolCharacteristics, UserPoolCharacteristics } from 'hooks/ifo/v2/types'
 import useI18n from 'hooks/useI18n'
@@ -27,6 +28,7 @@ interface IfoCardTokensProps {
   publicPoolCharacteristics: PoolCharacteristics
   userPoolCharacteristics: UserPoolCharacteristics
   hasProfile: boolean
+  isLoading: boolean
 }
 
 const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
@@ -36,16 +38,18 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
   userPoolCharacteristics,
   publicPoolCharacteristics,
   hasProfile,
+  isLoading,
 }) => {
+  const { account } = useWeb3React()
   const TranslateString = useI18n()
   const { currency, token, saleAmount } = ifo
   const { hasClaimed } = userPoolCharacteristics
 
   const renderTokensectioon = () => {
-    if (status === 'idle') {
+    if (isLoading) {
       return <SkeletonCardTokens />
     }
-    if (!hasProfile) {
+    if (account && !hasProfile) {
       return (
         <Text textAlign="center">
           {TranslateString(999, 'You need an active PancakeSwap Profile to take part in an IFO!')}

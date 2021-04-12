@@ -1,5 +1,4 @@
 import React from 'react'
-import { useProfile } from 'state/hooks'
 import { ifosConfig } from 'config/constants'
 import IfoV2Card from './components/IfoV2Card'
 import IfoCardLayout from './components/IfoCardLayout'
@@ -12,11 +11,10 @@ import IfoQuestions from './components/IfoQuestions'
 const activeIfo = ifosConfig.find((ifo) => ifo.isActive)
 
 const Ifo = () => {
-  const { hasProfile } = useProfile()
   return (
     <IfoCardLayout>
-      <IfoV2Card ifo={activeIfo} hasProfile={hasProfile} isInitiallyVisible />
-      <IfoSteps hasProfile={hasProfile} currency={activeIfo.currency} />
+      <IfoV2Card ifo={activeIfo} isInitiallyVisible />
+      <IfoSteps currency={activeIfo.currency} />
       <IfoQuestions />
     </IfoCardLayout>
   )

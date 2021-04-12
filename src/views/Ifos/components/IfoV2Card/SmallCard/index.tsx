@@ -1,6 +1,7 @@
 import React from 'react'
 import { Card, CardBody, CardHeader, Text } from '@pancakeswap-libs/uikit'
 import { Ifo } from 'config/constants/types'
+import { useProfile } from 'state/hooks'
 import { PublicIfoData, WalletIfoData, PoolIds } from 'hooks/ifo/v2/types'
 import IfoCardTokens from './IfoCardTokens'
 import IfoCardActions from './IfoCardActions'
@@ -11,7 +12,6 @@ interface IfoCardProps {
   poolId: PoolIds
   publicIfoData: PublicIfoData
   walletIfoData: WalletIfoData
-  hasProfile?: boolean
 }
 
 interface CardConfig {
@@ -36,10 +36,13 @@ const cardConfig: CardConfig = {
   },
 }
 
-const SmallCard: React.FC<IfoCardProps> = ({ ifo, publicIfoData, walletIfoData, poolId, hasProfile }) => {
+const SmallCard: React.FC<IfoCardProps> = ({ ifo, publicIfoData, walletIfoData, poolId }) => {
+  const { hasProfile, isLoading: isProfileLoading } = useProfile()
   const config = cardConfig[poolId]
   const publicPoolCharacteristics = publicIfoData[poolId]
   const userPoolCharacteristics = walletIfoData[poolId]
+
+  const isLoading = isProfileLoading || publicIfoData.status === 'idle'
 
   return (
     <Card>
@@ -56,6 +59,7 @@ const SmallCard: React.FC<IfoCardProps> = ({ ifo, publicIfoData, walletIfoData, 
           publicPoolCharacteristics={publicPoolCharacteristics}
           userPoolCharacteristics={userPoolCharacteristics}
           hasProfile={hasProfile}
+          isLoading={isLoading}
         />
         <IfoCardActions
           currency={ifo.currency}
@@ -63,6 +67,7 @@ const SmallCard: React.FC<IfoCardProps> = ({ ifo, publicIfoData, walletIfoData, 
           walletIfoData={walletIfoData}
           poolId={poolId}
           hasProfile={hasProfile}
+          isLoading={isLoading}
         />
         <IfoCardDetails poolId={poolId} ifo={ifo} publicIfoData={publicIfoData} />
       </CardBody>

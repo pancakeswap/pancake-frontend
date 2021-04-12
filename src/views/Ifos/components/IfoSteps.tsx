@@ -5,12 +5,12 @@ import { Stepper, Step, StepStatus, Card, CardBody, Heading, Text } from '@panca
 import useI18n from 'hooks/useI18n'
 import useTokenBalance from 'hooks/useTokenBalance'
 import Container from 'components/layout/Container'
+import { useProfile } from 'state/hooks'
 import { Token } from 'config/constants/types'
 import { getAddress } from 'utils/addressHelpers'
 
 interface Props {
   currency: Token
-  hasProfile: boolean
 }
 
 const Wrapper = styled(Container)`
@@ -26,7 +26,8 @@ const Wrapper = styled(Container)`
   }
 `
 
-const IfoSteps: React.FC<Props> = ({ currency, hasProfile }) => {
+const IfoSteps: React.FC<Props> = ({ currency }) => {
+  const { hasProfile } = useProfile()
   const TranslateString = useI18n()
   const balance = useTokenBalance(getAddress(currency.address))
   const stepsValidationStatus = [hasProfile, balance.isGreaterThan(0), false, false]

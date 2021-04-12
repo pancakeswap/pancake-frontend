@@ -2017,10 +2017,17 @@
     eslint-plugin-react "^7.21.5"
     eslint-plugin-react-hooks "^4.0.0"
 
+<<<<<<< HEAD
 "@pancakeswap-libs/uikit@^0.24.0":
   version "0.24.1"
   resolved "https://registry.yarnpkg.com/@pancakeswap-libs/uikit/-/uikit-0.24.1.tgz#a3fea39c5b6a87eedb418cc3b074800ea0fc9352"
   integrity sha512-8OdpIlt6MXtq6iPhhZdseZewXIW8a7GHRPcV5/OyQkV5FC4FGzq2gunRol8WlJqj8bClOhXLuNpLqKjORGQi3g==
+=======
+"@pancakeswap-libs/uikit@^0.23.2":
+  version "0.23.2"
+  resolved "https://registry.yarnpkg.com/@pancakeswap-libs/uikit/-/uikit-0.23.2.tgz#2119c62ddbd8d2e02be8b7e2204bce91a8ffa27f"
+  integrity sha512-yNn2aTXiNVGuEaDel7Oqm/wgWTuw/0JpvyBpHrd2OQU/OAqBorYbauZCrKBq/TY4juhUnYBm1mOuDw2eB/xxdQ==
+>>>>>>> fix: Visual glicthes
   dependencies:
     "@popperjs/core" "^2.9.2"
     "@types/lodash" "^4.14.168"
@@ -11643,6 +11650,14 @@ react-is@^17.0.1:
   version "17.0.2"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.2.tgz#e691d4a8e9c789365655539ab372762b0efb54f0"
   integrity sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==
+
+react-popper@^2.2.5:
+  version "2.2.5"
+  resolved "https://registry.yarnpkg.com/react-popper/-/react-popper-2.2.5.tgz#1214ef3cec86330a171671a4fbcbeeb65ee58e96"
+  integrity sha512-kxGkS80eQGtLl18+uig1UIf9MKixFSyPxglsgLBxlYnyDf65BiY9B3nZSc6C9XUNDgStROB0fMQlTEz1KxGddw==
+  dependencies:
+    react-fast-compare "^3.0.1"
+    warning "^4.0.2"
 
 react-popper@^2.2.5:
   version "2.2.5"
