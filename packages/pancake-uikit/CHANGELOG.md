@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.23.2](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap-libs/uikit@0.23.1...@pancakeswap-libs/uikit@0.23.2) (2021-04-12)
+
+
+### Bug Fixes
+
+* Stepper alignement ([#69](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/69)) ([25df26a](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/25df26a9c9e6668c4e0ccd8171df6f748b41dccf))
+
+
+
+
+
 ## [0.23.1](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap-libs/uikit@0.23.0...@pancakeswap-libs/uikit@0.23.1) (2021-04-12)
 
 **Note:** Version bump only for package @pancakeswap-libs/uikit
