@@ -1,12 +1,11 @@
 import React, { useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
-import BigNumber from 'bignumber.js'
 import { Modal, Button, Flex, AutoRenewIcon, Heading, Text, Image } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import { useTradingCompetitionContract } from 'hooks/useContract'
 import { useToast } from 'state/hooks'
-import { getBalanceNumber } from 'utils/formatBalance'
+import { UseCompetitionCakeRewards } from '../../helpers'
 import { CompetitionProps } from '../../types'
 import NftBunnies from '../../pngs/cakers-nft.png'
 
@@ -28,8 +27,7 @@ const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, use
 
   const { userRewardGroup, userCakeRewards, userPointReward, canClaimNFT } = userTradingInformation
 
-  const cakeAsBigNumber = new BigNumber(userCakeRewards as string)
-  const cakeToDisplay = getBalanceNumber(cakeAsBigNumber).toFixed(2)
+  const { cakeReward } = UseCompetitionCakeRewards(userCakeRewards)
 
   const handleClaimClick = () => {
     tradingCompetitionContract.methods
@@ -64,7 +62,7 @@ const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, use
         </Flex>
         {/* cake */}
         <Heading mt="16px" size="md" mb={canClaimNFT ? '16px' : '0px'}>
-          {cakeToDisplay} CAKE
+          {cakeReward.toFixed(2)} CAKE
         </Heading>
         {/* NFT */}
         {canClaimNFT ? (

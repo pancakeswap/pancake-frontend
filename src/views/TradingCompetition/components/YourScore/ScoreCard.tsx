@@ -12,9 +12,10 @@ import {
   CheckmarkCircleIcon,
   useModal,
 } from '@pancakeswap-libs/uikit'
-import { CLAIM, OVER } from 'config/constants/trading-competition/easterPhases'
+import { CLAIM } from 'config/constants/trading-competition/easterPhases'
 import UnlockButton from 'components/UnlockButton'
 import useI18n from 'hooks/useI18n'
+import UserPrizeGrid from './UserPrizeGrid'
 import ClaimModal from '../ClaimModal'
 import { YourScoreProps } from '../../types'
 import CardUserInfo from './CardUserInfo'
@@ -100,6 +101,7 @@ const ScoreCard: React.FC<YourScoreProps> = ({
               userLeaderboardInformation={userLeaderboardInformation}
               currentPhase={currentPhase}
             />
+            <UserPrizeGrid userTradingInformation={userTradingInformation} />
             {!account && (
               <Flex mt="24px" justifyContent="center">
                 <UnlockButton />
