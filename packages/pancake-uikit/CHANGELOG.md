@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.23.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap-libs/uikit@0.22.2...@pancakeswap-libs/uikit@0.23.0) (2021-04-12)
+
+
+### Bug Fixes
+
+* **tab-menu:** Fix scroll overflow and tighten padding on sm phones ([#62](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/62)) ([ef0cd3d](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/ef0cd3d8896b34968e3610c2a078842dfe7142bf))
+
+
+### Features
+
+* Add left position for card ribbon ([#68](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/68)) ([0edaf8e](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/0edaf8e7a1dfa76be1fa858d3e534471a533b512))
+
+
+
+
+
 ## [0.22.2](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap-libs/uikit@0.22.1...@pancakeswap-libs/uikit@0.22.2) (2021-04-11)
 
 
