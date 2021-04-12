@@ -88,7 +88,7 @@ const BattleCta: React.FC<CompetitionProps> = ({
     if (currentPhase.state === FINISHED) {
       return `${TranslateString(999, 'Calculating prizes')}...`
     }
-    // All competition finished state
+    // All competition finished states
     if (hasCompetitionEnded) {
       return `${TranslateString(388, 'Finished')}!`
     }
