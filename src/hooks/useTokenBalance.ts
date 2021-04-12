@@ -5,7 +5,7 @@ import { getBep20Contract, getCakeContract } from 'utils/contractHelpers'
 import useWeb3 from './useWeb3'
 import useRefresh from './useRefresh'
 
-export const useTokenBalance = (tokenAddress: string) => {
+const useTokenBalance = (tokenAddress: string) => {
   const [balance, setBalance] = useState(new BigNumber(0))
   const { account } = useWeb3React()
   const web3 = useWeb3()
