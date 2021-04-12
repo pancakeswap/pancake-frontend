@@ -5,8 +5,7 @@ import { TabMenuProps } from "./types";
 
 const Wrapper = styled(Flex)`
   border-bottom: 2px solid ${({ theme }) => theme.colors.textSubtle};
-  padding: 0 16px;
-  overflow-y: scroll;
+  overflow-x: scroll;
 
   ::-webkit-scrollbar {
     display: none;
@@ -30,7 +29,7 @@ const Inner = styled(Flex)`
 
 const ButtonMenu: React.FC<TabMenuProps> = ({ activeIndex = 0, onItemClick, children }) => {
   return (
-    <Wrapper>
+    <Wrapper p={["0 4px", "0 16px"]}>
       <Inner>
         {Children.map(children, (child: ReactElement, index) => {
           return cloneElement(child, {

@@ -14,16 +14,19 @@ it("renders correctly", () => {
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
       .c0 {
+      padding: 0 4px;
+    }
+
+    .c1 {
       display: -webkit-box;
       display: -webkit-flex;
       display: -ms-flexbox;
       display: flex;
     }
 
-    .c1 {
+    .c2 {
       border-bottom: 2px solid #8f80ba;
-      padding: 0 16px;
-      overflow-y: scroll;
+      overflow-x: scroll;
       -ms-overflow-style: none;
       -webkit-scrollbar-width: none;
       -moz-scrollbar-width: none;
@@ -31,11 +34,11 @@ it("renders correctly", () => {
       scrollbar-width: none;
     }
 
-    .c1::-webkit-scrollbar {
+    .c2::-webkit-scrollbar {
       display: none;
     }
 
-    .c2 {
+    .c3 {
       -webkit-box-pack: justify;
       -webkit-justify-content: space-between;
       -ms-flex-pack: justify;
@@ -46,11 +49,11 @@ it("renders correctly", () => {
       flex-grow: 1;
     }
 
-    .c2 > button + button {
+    .c3 > button + button {
       margin-left: 4px;
     }
 
-    .c3 {
+    .c4 {
       display: -webkit-inline-box;
       display: -webkit-inline-flex;
       display: -ms-inline-flexbox;
@@ -72,7 +75,7 @@ it("renders correctly", () => {
       background-color: #8f80ba;
     }
 
-    .c5 {
+    .c6 {
       display: -webkit-inline-box;
       display: -webkit-inline-flex;
       display: -ms-inline-flexbox;
@@ -94,7 +97,7 @@ it("renders correctly", () => {
       background-color: #eeeaf4;
     }
 
-    .c4 {
+    .c5 {
       color: #FFFFFF;
       font-size: 16px;
       font-weight: 400;
@@ -102,7 +105,7 @@ it("renders correctly", () => {
       font-weight: 600;
     }
 
-    .c6 {
+    .c7 {
       color: #8f80ba;
       font-size: 16px;
       font-weight: 400;
@@ -110,12 +113,9 @@ it("renders correctly", () => {
       font-weight: 600;
     }
 
-    @media screen and (min-width:852px) {
-      .c2 {
-        -webkit-box-flex: 0;
-        -webkit-flex-grow: 0;
-        -ms-flex-positive: 0;
-        flex-grow: 0;
+    @media screen and (min-width:370px) {
+      .c0 {
+        padding: 0 16px;
       }
     }
 
@@ -125,12 +125,21 @@ it("renders correctly", () => {
         -webkit-flex-grow: 0;
         -ms-flex-positive: 0;
         flex-grow: 0;
+      }
+    }
+
+    @media screen and (min-width:852px) {
+      .c4 {
+        -webkit-box-flex: 0;
+        -webkit-flex-grow: 0;
+        -ms-flex-positive: 0;
+        flex-grow: 0;
         padding: 8px 12px;
       }
     }
 
     @media screen and (min-width:852px) {
-      .c5 {
+      .c6 {
         -webkit-box-flex: 0;
         -webkit-flex-grow: 0;
         -ms-flex-positive: 0;
@@ -140,17 +149,17 @@ it("renders correctly", () => {
     }
 
     <div
-        class="c0 c1"
+        class="c0 c1 c2"
       >
         <div
-          class="c0 c2"
+          class="c1 c3"
         >
           <button
-            class="c3"
+            class="c4"
             color="card"
           >
             <div
-              class="c4"
+              class="c5"
               color="card"
               font-weight="600"
             >
@@ -158,11 +167,11 @@ it("renders correctly", () => {
             </div>
           </button>
           <button
-            class="c5"
+            class="c6"
             color="textSubtle"
           >
             <div
-              class="c6"
+              class="c7"
               color="textSubtle"
               font-weight="600"
             >
