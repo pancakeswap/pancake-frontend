@@ -8,6 +8,7 @@ import { WalletIfoData, PublicIfoData, PoolIds } from 'hooks/ifo/v2/types'
 import UnlockButton from 'components/UnlockButton'
 import ContributeButton from './ContributeButton'
 import ClaimButton from './ClaimButton'
+import { SkeletonCardActions } from './Skeletons'
 
 interface Props {
   poolId: PoolIds
@@ -20,6 +21,10 @@ interface Props {
 const IfoCardActions: React.FC<Props> = ({ currency, poolId, publicIfoData, walletIfoData, hasProfile }) => {
   const { account } = useWeb3React()
   const userPoolCharacteristics = walletIfoData[poolId]
+
+  if (publicIfoData.status === 'idle') {
+    return <SkeletonCardActions />
+  }
 
   if (!account) {
     return <UnlockButton width="100%" />

@@ -36,7 +36,7 @@ const cardConfig: CardConfig = {
   },
 }
 
-const IfoCard: React.FC<IfoCardProps> = ({ ifo, publicIfoData, walletIfoData, poolId, hasProfile }) => {
+const SmallCard: React.FC<IfoCardProps> = ({ ifo, publicIfoData, walletIfoData, poolId, hasProfile }) => {
   const config = cardConfig[poolId]
   const publicPoolCharacteristics = publicIfoData[poolId]
   const userPoolCharacteristics = walletIfoData[poolId]
@@ -70,4 +70,4 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo, publicIfoData, walletIfoData, po
   )
 }
 
-export default IfoCard
+export default SmallCard

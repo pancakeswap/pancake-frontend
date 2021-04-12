@@ -97,7 +97,8 @@ const IfoSteps: React.FC<Props> = ({ currency, hasProfile }) => {
       </Heading>
       <Stepper>
         {stepsValidationStatus.map((_, index) => (
-          <Step index={index} status={getStatusProp(index)}>
+          // eslint-disable-next-line react/no-array-index-key
+          <Step key={index} index={index} status={getStatusProp(index)}>
             <Card>{renderCardBody(index)}</Card>
           </Step>
         ))}

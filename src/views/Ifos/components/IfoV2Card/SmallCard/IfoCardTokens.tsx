@@ -1,21 +1,17 @@
 import React from 'react'
-import { Text, Skeleton, Flex, Box, Image, CheckmarkCircleIcon } from '@pancakeswap-libs/uikit'
+import { Text, Flex, Box, Image, CheckmarkCircleIcon, FlexProps } from '@pancakeswap-libs/uikit'
 import { Ifo, IfoStatus } from 'config/constants/types'
 import { PoolCharacteristics, UserPoolCharacteristics } from 'hooks/ifo/v2/types'
 import useI18n from 'hooks/useI18n'
 import { getBalanceNumber } from 'utils/formatBalance'
 import PercentageOfTotal from './PercentageOfTotal'
+import { SkeletonCardTokens } from './Skeletons'
 
-interface Props {
-  ifo: Ifo
-  status: IfoStatus
-  distribution: number
-  publicPoolCharacteristics: PoolCharacteristics
-  userPoolCharacteristics: UserPoolCharacteristics
-  hasProfile: boolean
+interface TokenSectionProps extends FlexProps {
+  img: string
 }
 
-const TokenSection: React.FC<{ img: string }> = ({ img, children, ...props }) => {
+const TokenSection: React.FC<TokenSectionProps> = ({ img, children, ...props }) => {
   return (
     <Flex {...props}>
       <Image src={img} width={32} height={32} mr="16px" />
@@ -24,7 +20,16 @@ const TokenSection: React.FC<{ img: string }> = ({ img, children, ...props }) =>
   )
 }
 
-const IfoCardTokens: React.FC<Props> = ({
+interface IfoCardTokensProps {
+  ifo: Ifo
+  status: IfoStatus
+  distribution: number
+  publicPoolCharacteristics: PoolCharacteristics
+  userPoolCharacteristics: UserPoolCharacteristics
+  hasProfile: boolean
+}
+
+const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
   ifo,
   status,
   distribution,
@@ -37,6 +42,9 @@ const IfoCardTokens: React.FC<Props> = ({
   const { hasClaimed } = userPoolCharacteristics
 
   const renderTokensectioon = () => {
+    if (status === 'idle') {
+      return <SkeletonCardTokens />
+    }
     if (!hasProfile) {
       return (
         <Text textAlign="center">
@@ -62,7 +70,7 @@ const IfoCardTokens: React.FC<Props> = ({
     if (status === 'live') {
       return (
         <>
-          <TokenSection img="/images/farms/cake-bnb.svg">
+          <TokenSection img="/images/farms/cake-bnb.svg" mb="24px">
             <Text bold fontSize="12px" color="secondary">
               {`Your ${currency.symbol} committed`}
             </Text>
@@ -93,7 +101,7 @@ const IfoCardTokens: React.FC<Props> = ({
         </Flex>
       ) : (
         <>
-          <TokenSection img="/images/farms/cake-bnb.svg">
+          <TokenSection img="/images/farms/cake-bnb.svg" mb="24px">
             <Text bold fontSize="12px" color="secondary">
               {hasClaimed ? `Your ${currency.symbol} RECLAIMED` : `Your ${currency.symbol} TO RECLAIM`}
             </Text>
@@ -122,7 +130,7 @@ const IfoCardTokens: React.FC<Props> = ({
         </>
       )
     }
-    return <Skeleton />
+    return null
   }
   return <Box mb="24px">{renderTokensectioon()}</Box>
 }

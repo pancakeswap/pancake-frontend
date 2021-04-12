@@ -1,9 +1,10 @@
 import React from 'react'
-import { Text, Flex, Skeleton, Box } from '@pancakeswap-libs/uikit'
+import { Text, Flex, Box } from '@pancakeswap-libs/uikit'
 import { PublicIfoData, PoolIds } from 'hooks/ifo/v2/types'
 import useI18n from 'hooks/useI18n'
 import { Ifo } from 'config/constants/types'
 import { getBalanceNumber } from 'utils/formatBalance'
+import { SkeletonCardDetails } from './Skeletons'
 
 export interface IfoCardDetailsProps {
   poolId: PoolIds
@@ -89,7 +90,7 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoD
         </>
       )
     }
-    return <Skeleton />
+    return <SkeletonCardDetails />
   }
 
   return <Box mt="24px">{renderBasedOnIfoSttatus()}</Box>
