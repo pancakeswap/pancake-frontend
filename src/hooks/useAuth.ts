@@ -13,8 +13,11 @@ import { ConnectorNames, connectorLocalStorageKey } from '@pancakeswap-libs/uiki
 import { useToast } from 'state/hooks'
 import { connectorsByName } from 'utils/web3React'
 import { setupNetwork } from 'utils/wallet'
+import { useDispatch } from 'react-redux'
+import { profileClear } from 'state/profile'
 
 const useAuth = () => {
+  const dispatch = useDispatch()
   const { activate, deactivate } = useWeb3React()
   const { toastError } = useToast()
 
@@ -51,7 +54,12 @@ const useAuth = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  return { login, logout: deactivate }
+  const logout = useCallback(() => {
+    dispatch(profileClear())
+    deactivate()
+  }, [deactivate, dispatch])
+
+  return { login, logout }
 }
 
 export default useAuth
