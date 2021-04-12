@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import every from 'lodash/every'
 import { Stepper, Step, StepStatus, Card, CardBody, Heading, Text } from '@pancakeswap-libs/uikit'
-import { useProfile } from 'state/hooks'
+import useI18n from 'hooks/useI18n'
 import useTokenBalance from 'hooks/useTokenBalance'
 import Container from 'components/layout/Container'
 import { Token } from 'config/constants/types'
@@ -10,6 +10,7 @@ import { getAddress } from 'utils/addressHelpers'
 
 interface Props {
   currency: Token
+  hasProfile: boolean
 }
 
 const Wrapper = styled(Container)`
@@ -25,8 +26,8 @@ const Wrapper = styled(Container)`
   }
 `
 
-const IfoSteps: React.FC<Props> = ({ currency }) => {
-  const { hasProfile } = useProfile()
+const IfoSteps: React.FC<Props> = ({ currency, hasProfile }) => {
+  const TranslateString = useI18n()
   const balance = useTokenBalance(getAddress(currency.address))
   const stepsValidationStatus = [hasProfile, balance.isGreaterThan(0), false, false]
 
@@ -92,7 +93,7 @@ const IfoSteps: React.FC<Props> = ({ currency }) => {
   return (
     <Wrapper>
       <Heading as="h2" size="xl" color="secondary" mb="24px" textAlign="center">
-        How to Take Part
+        {TranslateString(999, 'How to Take Part')}
       </Heading>
       <Stepper>
         {stepsValidationStatus.map((_, index) => (

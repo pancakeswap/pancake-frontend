@@ -21,6 +21,7 @@ import Timer from './Timer'
 
 interface IfoFoldableCardProps {
   ifo: Ifo
+  hasProfile?: boolean
   isInitiallyVisible: boolean
 }
 
@@ -30,7 +31,7 @@ const getRibbonComponent = (status: IfoStatus, TranslateString: (translationId: 
   }
 
   if (status === 'live') {
-    return <CardRibbon variantColor="primary" ribbonPosition="left" text={TranslateString(999, 'LIVE NOW!')} />
+    return <CardRibbon variantColor="primary" ribbonPosition="left" text={TranslateString(999, 'LIVE!')} />
   }
 
   return null
@@ -66,7 +67,7 @@ const CardWrapper = styled.div`
   }
 `
 
-const IfoFoldableCard: React.FC<IfoFoldableCardProps> = ({ ifo, isInitiallyVisible }) => {
+const IfoFoldableCard: React.FC<IfoFoldableCardProps> = ({ ifo, hasProfile, isInitiallyVisible }) => {
   const [isVisible, setIsVisible] = useState(isInitiallyVisible)
   const TranslateString = useI18n()
   const publicIfoData = useGetPublicIfoV2Data(ifo)
@@ -90,18 +91,20 @@ const IfoFoldableCard: React.FC<IfoFoldableCardProps> = ({ ifo, isInitiallyVisib
               ifo={ifo}
               publicIfoData={publicIfoData}
               walletIfoData={walletIfoData}
+              hasProfile={hasProfile}
             />
             <SmallCard
               poolId={PoolIds.poolUnlimited}
               ifo={ifo}
               publicIfoData={publicIfoData}
               walletIfoData={walletIfoData}
+              hasProfile={hasProfile}
             />
           </CardWrapper>
         </CardBody>
         <CardFooter style={{ textAlign: 'center' }}>
           <Button variant="text" endIcon={<ChevronUpIcon color="primary" />} onClick={() => setIsVisible(false)}>
-            Close
+            {TranslateString(999, 'Close')}
           </Button>
         </CardFooter>
       </FoldableContent>

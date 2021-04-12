@@ -3,29 +3,31 @@ import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
 import { Modal, LinkExternal, Box, Text } from '@pancakeswap-libs/uikit'
+import { Token } from 'config/constants/types'
 import BalanceInput from 'components/BalanceInput'
-import { useTokenBalance } from 'hooks/useTokenBalance'
+import useTokenBalance from 'hooks/useTokenBalance'
 import { PoolIds } from 'hooks/ifo/v2/types'
-import { getBalanceNumber } from 'utils/formatBalance'
 import useI18n from 'hooks/useI18n'
+import { getBalanceNumber } from 'utils/formatBalance'
+import { getAddress } from 'utils/addressHelpers'
 import ApproveConfirmButtons from 'views/Profile/components/ApproveConfirmButtons'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useERC20 } from 'hooks/useContract'
 
 interface Props {
   poolId: PoolIds
-  currency: string
+  currency: Token
   contract: any
-  currencyAddress: string
+  maxValue?: BigNumber
   onSuccess: (amount: BigNumber) => void
   onDismiss?: () => void
 }
 
-const ContributeModal: React.FC<Props> = ({ currency, poolId, contract, currencyAddress, onDismiss, onSuccess }) => {
+const ContributeModal: React.FC<Props> = ({ currency, poolId, contract, onDismiss, onSuccess, maxValue }) => {
   const [value, setValue] = useState('')
   const { account } = useWeb3React()
-  const raisingTokenContract = useERC20(currencyAddress)
-  const balance = getBalanceNumber(useTokenBalance(currencyAddress))
+  const raisingTokenContract = useERC20(getAddress(currency.address))
+  const balance = useTokenBalance(getAddress(currency.address))
   const TranslateString = useI18n()
   const valueWithTokenDecimals = new BigNumber(value).times(new BigNumber(10).pow(18))
   const {
@@ -61,16 +63,18 @@ const ContributeModal: React.FC<Props> = ({ currency, poolId, contract, currency
     },
   })
 
+  const max = maxValue && maxValue.isLessThanOrEqualTo(balance) ? getBalanceNumber(maxValue) : getBalanceNumber(balance)
+
   return (
-    <Modal title={`Contribute ${currency}`} onDismiss={onDismiss}>
+    <Modal title={`Contribute ${currency.symbol}`} onDismiss={onDismiss}>
       <Box maxWidth="400px">
         <BalanceInput
           title={TranslateString(999, 'Contribute')}
           value={value}
           onChange={(e) => setValue(e.currentTarget.value)}
-          symbol={currency}
-          max={balance}
-          onSelectMax={() => setValue(balance.toString())}
+          symbol={currency.symbol}
+          max={max}
+          onSelectMax={() => setValue(max.toString())}
           mb="24px"
         />
         <Text as="p" mb="24px">
@@ -93,7 +97,7 @@ const ContributeModal: React.FC<Props> = ({ currency, poolId, contract, currency
           href="https://exchange.pancakeswap.finance/#/add/BNB/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82"
           style={{ margin: '16px auto 0' }}
         >
-          {`Get ${currency}`}
+          {`Get ${currency.symbol}`}
         </LinkExternal>
       </Box>
     </Modal>

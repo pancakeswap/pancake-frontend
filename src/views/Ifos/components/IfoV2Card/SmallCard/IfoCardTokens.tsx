@@ -2,6 +2,7 @@ import React from 'react'
 import { Text, Skeleton, Flex, Box, Image, CheckmarkCircleIcon } from '@pancakeswap-libs/uikit'
 import { Ifo, IfoStatus } from 'config/constants/types'
 import { PoolCharacteristics, UserPoolCharacteristics } from 'hooks/ifo/v2/types'
+import useI18n from 'hooks/useI18n'
 import { getBalanceNumber } from 'utils/formatBalance'
 import PercentageOfTotal from './PercentageOfTotal'
 
@@ -11,6 +12,7 @@ interface Props {
   distribution: number
   publicPoolCharacteristics: PoolCharacteristics
   userPoolCharacteristics: UserPoolCharacteristics
+  hasProfile: boolean
 }
 
 const TokenSection: React.FC<{ img: string }> = ({ img, children, ...props }) => {
@@ -28,17 +30,26 @@ const IfoCardTokens: React.FC<Props> = ({
   distribution,
   userPoolCharacteristics,
   publicPoolCharacteristics,
+  hasProfile,
 }) => {
+  const TranslateString = useI18n()
   const { currency, token, saleAmount } = ifo
   const { hasClaimed } = userPoolCharacteristics
 
   const renderTokensectioon = () => {
+    if (!hasProfile) {
+      return (
+        <Text textAlign="center">
+          {TranslateString(999, 'You need an active PancakeSwap Profile to take part in an IFO!')}
+        </Text>
+      )
+    }
     if (status === 'coming_soon') {
       return (
         <>
           <TokenSection img="/images/bunny-placeholder.svg">
             <Text bold fontSize="12px" color="secondary">
-              On sale
+              {TranslateString(999, 'On sale')}
             </Text>
             <Text bold fontSize="20px">
               {saleAmount}
@@ -78,7 +89,7 @@ const IfoCardTokens: React.FC<Props> = ({
       return userPoolCharacteristics.amountTokenCommittedInLP.isEqualTo(0) ? (
         <Flex flexDirection="column" alignItems="center">
           <Image src="/images/bunny-placeholder.svg" width={80} height={80} mb="16px" />
-          <Text>You didn’t participate in this sale!</Text>
+          <Text>{TranslateString(999, 'You didn’t participate in this sale!')}</Text>
         </Flex>
       ) : (
         <>
