@@ -1048,7 +1048,7 @@ const tokens = {
     projectLink: 'https://arpachain.io/',
   },
   eps: {
-    symbol: 'Ellipsis',
+    symbol: 'EPS',
     address: {
       56: '0xa7f552078dcc247c2684336020c03648500c6d9f',
       97: '',
