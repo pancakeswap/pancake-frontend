@@ -1,26 +1,18 @@
-import React, { ReactText } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import {
   BlockIcon,
-  Box,
   CheckmarkCircleIcon,
   Flex,
-  MedalBronzeIcon,
-  MedalGoldIcon,
-  MedalPurpleIcon,
-  MedalSilverIcon,
-  MedalTealIcon,
   CrownIcon,
-  Tab,
-  TabMenu,
   Text,
   TeamPlayerIcon,
   TrophyGoldIcon,
 } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
-import easterPrizes, { Achievement } from 'config/constants/trading-competition/easter'
+import easterPrizes from 'config/constants/trading-competition/easter'
 import { UserTradingInformationProps } from '../../types'
-import { UseCompetitionCakeRewards } from '../../helpers'
+import { UseCompetitionCakeRewards, getRewardGroupAchievements } from '../../helpers'
 
 const Td = styled.td`
   padding: 4px 0;
@@ -67,15 +59,7 @@ const UserPrizeGrid: React.FC<{ userTradingInformation?: UserTradingInformationP
   const TranslateString = useI18n()
   const { userRewardGroup, userCakeRewards, userPointReward, canClaimNFT } = userTradingInformation
   const { cakeReward, dollarValueOfCakeReward } = UseCompetitionCakeRewards(userCakeRewards)
-
-  // [1] is just accessing the first team in the config.
-  // As we use userPointReward to get points - we only use this config to get achievements. These are constant across teams regardless of team position.
-  const userGroup = easterPrizes[1].filter((prizeGroup) => {
-    return prizeGroup.group === userRewardGroup
-  })[0]
-
-  const userAchievements = userGroup && userGroup.achievements
-  const { champion, teamPlayer } = userAchievements
+  const { champion, teamPlayer } = getRewardGroupAchievements(userRewardGroup)
 
   return (
     <PrizeTable>

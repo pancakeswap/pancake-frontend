@@ -1,11 +1,22 @@
 import React, { useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
-import { Modal, Button, Flex, AutoRenewIcon, Heading, Text, Image } from '@pancakeswap-libs/uikit'
+import {
+  Modal,
+  Button,
+  Flex,
+  AutoRenewIcon,
+  Heading,
+  Text,
+  Image,
+  CrownIcon,
+  TrophyGoldIcon,
+  TeamPlayerIcon,
+} from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import { useTradingCompetitionContract } from 'hooks/useContract'
 import { useToast } from 'state/hooks'
-import { UseCompetitionCakeRewards } from '../../helpers'
+import { UseCompetitionCakeRewards, getRewardGroupAchievements } from '../../helpers'
 import { CompetitionProps } from '../../types'
 import NftBunnies from '../../pngs/cakers-nft.png'
 
@@ -26,8 +37,8 @@ const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, use
   const TranslateString = useI18n()
 
   const { userRewardGroup, userCakeRewards, userPointReward, canClaimNFT } = userTradingInformation
-
   const { cakeReward } = UseCompetitionCakeRewards(userCakeRewards)
+  const { champion, teamPlayer } = getRewardGroupAchievements(userRewardGroup)
 
   const handleClaimClick = () => {
     tradingCompetitionContract.methods
@@ -49,14 +60,16 @@ const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, use
 
   return (
     <Modal title="Collect Winnings" onDismiss={onDismiss}>
-      <Flex flexDirection="column" alignItems="center" maxWidth="400px">
+      <Flex width="100%" flexDirection="column" alignItems="center" justifyContent="center" maxWidth="360px">
         <Text color="secondary" bold fontSize="16px">
-          {TranslateString(999, 'Congratulations, you won')}
+          {TranslateString(999, 'Congratulations! You won')}:
         </Text>
         <Flex mt="16px">
           {/* achievements */}
-          <Text mr="10px">achievements icons for group {userRewardGroup}</Text>
-          <Text>
+          <TrophyGoldIcon mr={[0, '4px']} />
+          {champion && <CrownIcon mr={[0, '4px']} />}
+          {teamPlayer && <TeamPlayerIcon mr={[0, '4px']} />}
+          <Text ml={['4px', '8px']}>
             +{userPointReward} {TranslateString(999, 'Points')}
           </Text>
         </Flex>
@@ -75,20 +88,20 @@ const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, use
             </Text>
           </Flex>
         ) : null}
+        <Button
+          mt="24px"
+          width="100%"
+          onClick={handleClaimClick}
+          disabled={isConfirming}
+          isLoading={isConfirming}
+          endIcon={isConfirming ? <AutoRenewIcon spin color="currentColor" /> : null}
+        >
+          {TranslateString(464, 'Confirm')}
+        </Button>
+        <Text mt="24px" fontSize="12px" color="textSubtle" textAlign="center">
+          {TranslateString(999, 'All prizes will be sent directly to your wallet and user account.')}
+        </Text>
       </Flex>
-      <Button
-        mt="24px"
-        width="100%"
-        onClick={handleClaimClick}
-        disabled={isConfirming}
-        isLoading={isConfirming}
-        endIcon={isConfirming ? <AutoRenewIcon spin color="currentColor" /> : null}
-      >
-        {TranslateString(464, 'Confirm')}
-      </Button>
-      <Text mt="24px" fontSize="12px" color="textSubtle">
-        {TranslateString(999, 'All prizes will be sent directly to your wallet and user account.')}
-      </Text>
     </Modal>
   )
 }
