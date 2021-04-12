@@ -83,7 +83,7 @@ const ModalInput: React.FC<ModalInputProps> = ({
           <StyledInput
             type="number"
             inputMode="decimal"
-            step="0.0001"
+            step="any"
             min="0"
             onChange={onChange}
             placeholder="0"
