@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import every from 'lodash/every'
 import { Stepper, Step, StepStatus, Card, CardBody, Heading, Text } from '@pancakeswap-libs/uikit'
 import { useProfile } from 'state/hooks'
 import useTokenBalance from 'hooks/useTokenBalance'
@@ -27,10 +28,65 @@ const Wrapper = styled(Container)`
 const IfoSteps: React.FC<Props> = ({ currency }) => {
   const { hasProfile } = useProfile()
   const balance = useTokenBalance(getAddress(currency.address))
+  const stepsValidationStatus = [hasProfile, balance.isGreaterThan(0), false, false]
 
-  const hasStepBeenValidated = [hasProfile, balance.isGreaterThan(0), false, false]
-  const getStatus = (step: number): StepStatus => {
-    return hasStepBeenValidated[step] ? 'past' : 'future'
+  const getStatusProp = (index: number): StepStatus => {
+    const arePreviousValid = index === 0 ? true : every(stepsValidationStatus.slice(0, index), Boolean)
+    if (stepsValidationStatus[index]) {
+      return arePreviousValid ? 'past' : 'future'
+    }
+    return arePreviousValid ? 'current' : 'future'
+  }
+
+  const renderCardBody = (step) => {
+    switch (step) {
+      case 0:
+        return (
+          <CardBody>
+            <Heading as="h4" color="secondary" mb="16px">
+              Activate your Profile
+            </Heading>
+            <Text color="textSubtle">You’ll need an active PancakeSwap Profile to take part in an IFO!</Text>
+          </CardBody>
+        )
+      case 1:
+        return (
+          <CardBody>
+            <Heading as="h4" color="secondary" mb="16px">
+              Get CAKE-BNB LP Tokens
+            </Heading>
+            <Text color="textSubtle">
+              Stake CAKE and BNB in the liquidity pool to get LP tokens. You’ll spend them to buy IFO sale tokens.
+            </Text>
+          </CardBody>
+        )
+      case 2:
+        return (
+          <CardBody>
+            <Heading as="h4" color="secondary" mb="16px">
+              Commit LP Tokens
+            </Heading>
+            <Text color="textSubtle">
+              When the IFO sales are live, you can “commit” your LP tokens to buy the tokens being sold. We recommend
+              committing to the Basic Sale first, but you can do both if you want.
+            </Text>
+          </CardBody>
+        )
+      case 3:
+        return (
+          <CardBody>
+            <Heading as="h4" color="secondary" mb="16px">
+              Claim your tokens and achievement
+            </Heading>
+            <Text color="textSubtle">
+              After the IFO sales finish, you can claim any IFO tokens that you bought, and any unspent CAKE-BNB LP
+              tokens will be returned to your wallet.
+            </Text>
+          </CardBody>
+        )
+      default:
+        return null
+    }
   }
 
   return (
@@ -39,54 +95,11 @@ const IfoSteps: React.FC<Props> = ({ currency }) => {
         How to Take Part
       </Heading>
       <Stepper>
-        <Step index={0} status={getStatus(0)}>
-          <Card>
-            <CardBody>
-              <Heading as="h4" color="secondary" mb="16px">
-                Activate your Profile
-              </Heading>
-              <Text color="textSubtle">You’ll need an active PancakeSwap Profile to take part in an IFO!</Text>
-            </CardBody>
-          </Card>
-        </Step>
-        <Step index={1} status={getStatus(1)}>
-          <Card>
-            <CardBody>
-              <Heading as="h4" color="secondary" mb="16px">
-                Get CAKE-BNB LP Tokens
-              </Heading>
-              <Text color="textSubtle">
-                Stake CAKE and BNB in the liquidity pool to get LP tokens. You’ll spend them to buy IFO sale tokens.
-              </Text>
-            </CardBody>
-          </Card>
-        </Step>
-        <Step index={2} status={getStatus(2)}>
-          <Card>
-            <CardBody>
-              <Heading as="h4" color="secondary" mb="16px">
-                Commit LP Tokens
-              </Heading>
-              <Text color="textSubtle">
-                When the IFO sales are live, you can “commit” your LP tokens to buy the tokens being sold. We recommend
-                committing to the Basic Sale first, but you can do both if you want.
-              </Text>
-            </CardBody>
-          </Card>
-        </Step>
-        <Step index={3} status={getStatus(3)}>
-          <Card>
-            <CardBody>
-              <Heading as="h4" color="secondary" mb="16px">
-                Claim your tokens and achievement
-              </Heading>
-              <Text color="textSubtle">
-                After the IFO sales finish, you can claim any IFO tokens that you bought, and any unspent CAKE-BNB LP
-                tokens will be returned to your wallet.
-              </Text>
-            </CardBody>
-          </Card>
-        </Step>
+        {stepsValidationStatus.map((_, index) => (
+          <Step index={index} status={getStatusProp(index)}>
+            <Card>{renderCardBody(index)}</Card>
+          </Step>
+        ))}
       </Stepper>
     </Wrapper>
   )

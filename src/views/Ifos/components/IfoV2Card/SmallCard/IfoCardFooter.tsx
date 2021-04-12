@@ -4,7 +4,6 @@ import { PublicIfoData, PoolIds } from 'hooks/ifo/v2/types'
 import useI18n from 'hooks/useI18n'
 import { Ifo } from 'config/constants/types'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { isBinaryExpression } from 'typescript'
 
 export interface IfoCardFooterProps {
   poolId: PoolIds

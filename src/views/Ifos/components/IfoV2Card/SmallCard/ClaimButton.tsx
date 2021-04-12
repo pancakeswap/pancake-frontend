@@ -2,29 +2,27 @@ import React from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { Contract } from 'web3-eth-contract'
 import { AutoRenewIcon, Button } from '@pancakeswap-libs/uikit'
+import { PoolIds } from 'hooks/ifo/v2/types'
 import { useToast } from 'state/hooks'
 import useI18n from 'hooks/useI18n'
-import { UserPoolCharacteristics } from 'hooks/ifo/v2/types'
 
-interface ClaimProps {
+interface Props {
+  poolId: PoolIds
   contract: Contract
-  userPoolCharacteristics: UserPoolCharacteristics
+  isPendingTx: boolean
   setPendingTx: (status: boolean) => void
   setIsClaimed: () => void
 }
 
-const Claim: React.FC<ClaimProps> = ({ contract, userPoolCharacteristics, setPendingTx, setIsClaimed }) => {
+const ClaimButton: React.FC<Props> = ({ poolId, contract, isPendingTx, setPendingTx, setIsClaimed }) => {
   const TranslateString = useI18n()
   const { account } = useWeb3React()
   const { toastError, toastSuccess } = useToast()
-  const { amountTokenCommittedInLP, isPendingTx } = userPoolCharacteristics
-  const hasSomethingToClaim = amountTokenCommittedInLP.isGreaterThan(0)
-  const canClaim = !userPoolCharacteristics.hasClaimed
 
   const handleClaim = async () => {
     try {
       setPendingTx(true)
-      await contract.methods.harvest().send({ from: account })
+      await contract.methods.harvestPool(poolId === PoolIds.poolBasic ? 0 : 1).send({ from: account })
       setIsClaimed()
       toastSuccess('Success!', 'You have successfully claimed your rewards.')
     } catch (error) {
@@ -35,21 +33,17 @@ const Claim: React.FC<ClaimProps> = ({ contract, userPoolCharacteristics, setPen
     }
   }
 
-  return hasSomethingToClaim ? (
+  return (
     <Button
       onClick={handleClaim}
-      disabled={isPendingTx || !canClaim}
+      disabled={isPendingTx}
       width="100%"
       isLoading={isPendingTx}
       endIcon={isPendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
     >
-      {canClaim ? TranslateString(999, 'Claim') : TranslateString(999, 'Claimed')}
-    </Button>
-  ) : (
-    <Button disabled width="100%">
-      {TranslateString(999, 'Nothing to Claim')}
+      {TranslateString(999, 'Claim')}
     </Button>
   )
 }
 
-export default Claim
+export default ClaimButton

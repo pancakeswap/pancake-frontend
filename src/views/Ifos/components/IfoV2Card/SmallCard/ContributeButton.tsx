@@ -6,24 +6,19 @@ import { getBalanceNumber } from 'utils/formatBalance'
 import { getAddress } from 'utils/addressHelpers'
 import { Ifo } from 'config/constants/types'
 import useI18n from 'hooks/useI18n'
-import { UserPoolCharacteristics } from 'hooks/ifo/v2/types'
+import { PoolIds } from 'hooks/ifo/v2/types'
 import { useToast } from 'state/hooks'
 import ContributeModal from './ContributeModal'
 
-interface ContributeProps {
+interface Props {
+  poolId: PoolIds
   ifo: Ifo
   contract: Contract
-  userPoolCharacteristics: UserPoolCharacteristics
+  isPendingTx: boolean
   addUserContributedAmount: (amount: BigNumber) => void
 }
-const Contribute: React.FC<ContributeProps> = ({
-  ifo,
-  contract,
-  userPoolCharacteristics,
-  addUserContributedAmount,
-}) => {
+const ContributeButton: React.FC<Props> = ({ ifo, poolId, contract, isPendingTx, addUserContributedAmount }) => {
   const { currency } = ifo
-  const { isPendingTx } = userPoolCharacteristics
   const TranslateString = useI18n()
   const { toastSuccess } = useToast()
 
@@ -34,6 +29,7 @@ const Contribute: React.FC<ContributeProps> = ({
 
   const [onPresentContributeModal] = useModal(
     <ContributeModal
+      poolId={poolId}
       currency={currency.symbol}
       contract={contract}
       currencyAddress={getAddress(currency.address)}
@@ -49,4 +45,4 @@ const Contribute: React.FC<ContributeProps> = ({
   )
 }
 
-export default Contribute
+export default ContributeButton

@@ -4,7 +4,8 @@ import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
 import { Modal, LinkExternal, Box, Text } from '@pancakeswap-libs/uikit'
 import BalanceInput from 'components/BalanceInput'
-import useTokenBalance from 'hooks/useTokenBalance'
+import { useTokenBalance } from 'hooks/useTokenBalance'
+import { PoolIds } from 'hooks/ifo/v2/types'
 import { getBalanceNumber } from 'utils/formatBalance'
 import useI18n from 'hooks/useI18n'
 import ApproveConfirmButtons from 'views/Profile/components/ApproveConfirmButtons'
@@ -12,6 +13,7 @@ import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useERC20 } from 'hooks/useContract'
 
 interface Props {
+  poolId: PoolIds
   currency: string
   contract: any
   currencyAddress: string
@@ -19,7 +21,7 @@ interface Props {
   onDismiss?: () => void
 }
 
-const ContributeModal: React.FC<Props> = ({ currency, contract, currencyAddress, onDismiss, onSuccess }) => {
+const ContributeModal: React.FC<Props> = ({ currency, poolId, contract, currencyAddress, onDismiss, onSuccess }) => {
   const [value, setValue] = useState('')
   const { account } = useWeb3React()
   const raisingTokenContract = useERC20(currencyAddress)
@@ -49,7 +51,9 @@ const ContributeModal: React.FC<Props> = ({ currency, contract, currencyAddress,
         .send({ from: account })
     },
     onConfirm: () => {
-      return contract.methods.deposit(valueWithTokenDecimals.toString()).send({ from: account })
+      return contract.methods
+        .depositPool(valueWithTokenDecimals.toString(), poolId === PoolIds.poolBasic ? 0 : 1)
+        .send({ from: account })
     },
     onSuccess: async () => {
       onDismiss()
