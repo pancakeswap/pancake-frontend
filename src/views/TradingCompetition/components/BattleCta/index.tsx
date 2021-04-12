@@ -53,6 +53,9 @@ const BattleCta: React.FC<CompetitionProps> = ({
   account,
   isCompetitionLive,
   profile,
+  userCanClaimPrizes,
+  finishedAndPrizesClaimed,
+  finishedAndNothingToClaim,
   isLoading,
   hasCompetitionEnded,
   onRegisterSuccess,
@@ -69,15 +72,12 @@ const BattleCta: React.FC<CompetitionProps> = ({
     <ClaimModal userTradingInformation={userTradingInformation} onClaimSuccess={onClaimSuccess} />,
     false,
   )
-  const { hasRegistered, hasUserClaimed, userCakeRewards, userPointReward, canClaimNFT } = userTradingInformation
-
-  const userCanClaimPrizes = !hasUserClaimed && (userCakeRewards !== '0' || userPointReward !== '0' || canClaimNFT)
+  const { hasRegistered, hasUserClaimed } = userTradingInformation
   const registeredAndNotStarted = hasRegistered && !isCompetitionLive && !hasCompetitionEnded
-  const finishedAndPrizesClaimed = hasCompetitionEnded && account && hasUserClaimed
-  const finishedAndNothingToClaim = hasCompetitionEnded && account && !userCanClaimPrizes
 
-  const isButtonDisabled = () =>
-    isLoading || registeredAndNotStarted || finishedAndPrizesClaimed || finishedAndNothingToClaim
+  const isButtonDisabled = Boolean(
+    isLoading || registeredAndNotStarted || finishedAndPrizesClaimed || finishedAndNothingToClaim,
+  )
 
   const getHeadingText = () => {
     // Competition live
@@ -171,7 +171,7 @@ const BattleCta: React.FC<CompetitionProps> = ({
           {currentPhase.state !== FINISHED && (
             <Flex alignItems="flex-end">
               <LaurelLeftIcon />
-              <StyledButton disabled={isButtonDisabled()} onClick={() => handleCtaClick()}>
+              <StyledButton disabled={isButtonDisabled} onClick={() => handleCtaClick()}>
                 {getButtonText()}
               </StyledButton>
               <LaurelRightIcon />
