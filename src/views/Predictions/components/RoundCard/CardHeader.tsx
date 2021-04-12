@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react'
 import { Flex, Text } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
 
-type Status = 'expired' | 'live' | 'next' | 'soon'
+type Status = 'expired' | 'live' | 'next' | 'soon' | 'canceled'
 
 interface CardHeaderProps {
   status: Status
@@ -16,6 +16,8 @@ const getBackgroundColor = (status: Status) => {
   switch (status) {
     case 'live':
       return 'transparent'
+    case 'canceled':
+      return 'warning'
     case 'next':
       return 'secondary'
     case 'expired':
@@ -36,6 +38,8 @@ const getTextColorByStatus = (status: Status, fallback: FallbackColor): TextColo
       return 'white'
     case 'live':
       return 'secondary'
+    case 'canceled':
+      return 'text'
     default:
       return fallback
   }

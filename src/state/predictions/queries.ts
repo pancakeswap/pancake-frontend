@@ -34,6 +34,7 @@ export interface RoundResponse {
   id: string
   epoch: string
   startBlock: string
+  startAt: string
   lockAt: string
   lockBlock: string
   lockPrice: string

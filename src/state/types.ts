@@ -171,6 +171,7 @@ export interface Round {
   id: string
   epoch: number
   startBlock: number
+  startAt: number
   lockAt: number | null
   lockBlock: number | null
   lockPrice: number | null
