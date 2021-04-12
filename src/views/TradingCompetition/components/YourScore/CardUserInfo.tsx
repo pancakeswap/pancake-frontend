@@ -15,6 +15,7 @@ import {
 } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
 import useI18n from 'hooks/useI18n'
+import { LIVE } from 'config/constants/trading-competition/easterPhases'
 import { YourScoreProps } from '../../types'
 import UserRankBox from './UserRankBox'
 import NextRankBox from './NextRankBox'
@@ -39,7 +40,13 @@ const RanksWrapper = styled(Flex)`
   }
 `
 
-const CardUserInfo: React.FC<YourScoreProps> = ({ hasRegistered, account, profile, userLeaderboardInformation }) => {
+const CardUserInfo: React.FC<YourScoreProps> = ({
+  hasRegistered,
+  account,
+  profile,
+  userLeaderboardInformation,
+  currentPhase,
+}) => {
   const TranslateString = useI18n()
   const [onPresentShareModal] = useModal(
     <ShareImageModal profile={profile} userLeaderboardInformation={userLeaderboardInformation} />,
@@ -202,28 +209,30 @@ const CardUserInfo: React.FC<YourScoreProps> = ({ hasRegistered, account, profil
                 )}
               </UserRankBox>
             </Flex>
-            {team === 1 ? (
-              // If user is first
-              <NextRankBox
-                flex="2"
-                title={`${TranslateString(999, 'Your tier: gold').toUpperCase()}`}
-                footer={`${TranslateString(999, 'Love, The Chefs x')}`}
-                currentMedal={medal.current}
-                hideArrow
-              >
-                <Heading size="lg">{TranslateString(999, 'HECK YES!')}</Heading>
-              </NextRankBox>
-            ) : (
-              <NextRankBox
-                flex="2"
-                title={`${TranslateString(999, 'Next tier').toUpperCase()}: ${nextTier.color}`}
-                footer={`${TranslateString(999, 'to become')} #${nextTier.rank} ${TranslateString(999, 'in team')}`}
-                currentMedal={medal.current}
-                nextMedal={medal.next}
-              >
-                <Heading size="lg">+${userLeaderboardInformation && localiseTradingVolume(nextRank)}</Heading>
-              </NextRankBox>
-            )}
+            {/* Show next ranks if competition is LIVE */}
+            {currentPhase.state === LIVE &&
+              (team === 1 ? (
+                // If user is first
+                <NextRankBox
+                  flex="2"
+                  title={`${TranslateString(999, 'Your tier: gold').toUpperCase()}`}
+                  footer={`${TranslateString(999, 'Love, The Chefs x')}`}
+                  currentMedal={medal.current}
+                  hideArrow
+                >
+                  <Heading size="lg">{TranslateString(999, 'HECK YES!')}</Heading>
+                </NextRankBox>
+              ) : (
+                <NextRankBox
+                  flex="2"
+                  title={`${TranslateString(999, 'Next tier').toUpperCase()}: ${nextTier.color}`}
+                  footer={`${TranslateString(999, 'to become')} #${nextTier.rank} ${TranslateString(999, 'in team')}`}
+                  currentMedal={medal.current}
+                  nextMedal={medal.next}
+                >
+                  <Heading size="lg">+${userLeaderboardInformation && localiseTradingVolume(nextRank)}</Heading>
+                </NextRankBox>
+              ))}
           </RanksWrapper>
         </>
       )}

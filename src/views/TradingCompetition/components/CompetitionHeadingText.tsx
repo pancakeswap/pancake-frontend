@@ -3,7 +3,6 @@ import styled, { DefaultTheme } from 'styled-components'
 
 const H1SizeStyles = (theme: DefaultTheme) => `
   font-size: 48px;
-  line-height: 110%;
   white-space: nowrap;
 
   ${theme.mediaQueries.sm} {
@@ -13,7 +12,6 @@ const H1SizeStyles = (theme: DefaultTheme) => `
 
 const H2SizeStyles = (theme: DefaultTheme) => `
   font-size: 32px;
-  line-height: 110%;
   white-space: nowrap;
 
   ${theme.mediaQueries.sm} {
@@ -22,6 +20,8 @@ const H2SizeStyles = (theme: DefaultTheme) => `
 `
 
 const sharedStyles = (props: HeadingProps) => `
+  text-align: center;
+  line-height: 110%;
   color: #ffffff;
   background:  ${props.background ? props.background : 'linear-gradient(#7645d9 0%, #452a7a 100%)'};
   background-clip: text;

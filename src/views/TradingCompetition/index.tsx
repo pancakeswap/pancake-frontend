@@ -12,6 +12,7 @@ import {
   FINISHED,
   CLAIM,
   OVER,
+  REGISTRATION,
 } from 'config/constants/trading-competition/easterPhases'
 import { PrizesIcon, RanksIcon, RulesIcon } from './svgs'
 import {
@@ -98,7 +99,7 @@ const TradingCompetition = () => {
   const [team3LeaderboardInformation, setTeam3LeaderboardInformation] = useState({ teamId: 3, leaderboardData: null })
 
   const isCompetitionLive = currentPhase.state === LIVE
-  const hasCompetitionFinished =
+  const hasCompetitionEnded =
     currentPhase.state === FINISHED || currentPhase.state === CLAIM || currentPhase.state === OVER
 
   const onRegisterSuccess = () => {
@@ -114,7 +115,7 @@ const TradingCompetition = () => {
       // REVERT COMMENTED CODE BEFORE MERGE
       // const competitionStatus = await tradingCompetitionContract.methods.currentStatus().call()
       // setCurrentPhase(SmartContractPhases[competitionStatus])
-      setCurrentPhase(SmartContractPhases[3])
+      setCurrentPhase(SmartContractPhases[2])
     }
 
     const fetchUserContract = async () => {
@@ -192,9 +193,9 @@ const TradingCompetition = () => {
     fetchGlobalLeaderboardStats()
   }, [profileApiUrl])
 
-  // Don't hide when loading. Hide if the account is connected, the user hasn't registered and the competition is live or finished
+  // Don't hide when loading. Hide if the account is connected && the user hasn't registered && the competition is live or finished
   const shouldHideCta =
-    !isLoading && account && !userTradingInformation.hasRegistered && (isCompetitionLive || hasCompetitionFinished)
+    !isLoading && account && !userTradingInformation.hasRegistered && (isCompetitionLive || hasCompetitionEnded)
 
   return (
     <CompetitionPage>
@@ -209,7 +210,7 @@ const TradingCompetition = () => {
               currentPhase={currentPhase}
               account={account}
               isCompetitionLive={isCompetitionLive}
-              hasCompetitionFinished={hasCompetitionFinished}
+              hasCompetitionEnded={hasCompetitionEnded}
               profile={profile}
               isLoading={isLoading}
               onRegisterSuccess={onRegisterSuccess}
@@ -219,7 +220,7 @@ const TradingCompetition = () => {
         }
       >
         <BannerFlex mb={shouldHideCta ? '0px' : '48px'}>
-          <Countdown currentPhase={currentPhase} />
+          <Countdown currentPhase={currentPhase} hasCompetitionEnded={hasCompetitionEnded} />
           <BattleBanner />
         </BannerFlex>
       </Section>
@@ -233,12 +234,13 @@ const TradingCompetition = () => {
           </RibbonWithImage>
         }
       >
-        <Box mt={shouldHideCta ? '0px' : ['94px', null, '54px']} mb={['24px', null, '0']}>
+        <Box mt={shouldHideCta ? '0px' : ['94px', null, '36px']} mb={['24px', null, '0']}>
           {/* If competition has not yet started, render HowToJoin component - if not, render YourScore */}
-          {!isCompetitionLive ? (
+          {currentPhase.state === REGISTRATION ? (
             <HowToJoin />
           ) : (
             <YourScore
+              currentPhase={currentPhase}
               hasRegistered={userTradingInformation.hasRegistered}
               account={account}
               profile={profile}
@@ -295,7 +297,7 @@ const TradingCompetition = () => {
                 currentPhase={currentPhase}
                 account={account}
                 isCompetitionLive={isCompetitionLive}
-                hasCompetitionFinished={hasCompetitionFinished}
+                hasCompetitionEnded={hasCompetitionEnded}
                 profile={profile}
                 isLoading={isLoading}
                 onRegisterSuccess={onRegisterSuccess}
