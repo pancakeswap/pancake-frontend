@@ -23,7 +23,9 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ onConfirm, onDismiss, max
 
   const handleChange = useCallback(
     (e: React.FormEvent<HTMLInputElement>) => {
-      setVal(e.currentTarget.value)
+      if (e.currentTarget.validity.valid) {
+        setVal(e.currentTarget.value)
+      }
     },
     [setVal],
   )
@@ -47,7 +49,7 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ onConfirm, onDismiss, max
           {TranslateString(462, 'Cancel')}
         </Button>
         <Button
-          disabled={pendingTx}
+          disabled={pendingTx || !Number.isFinite(parseInt(val)) || parseFloat(val) > parseFloat(fullBalance)}
           onClick={async () => {
             setPendingTx(true)
             await onConfirm(val)
