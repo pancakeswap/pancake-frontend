@@ -19,7 +19,8 @@ const CakeWinnings = () => {
   const { account } = useWeb3React()
   const { claimAmount } = useTotalClaim()
   const cakeAmount = getBalanceNumber(claimAmount)
-  const claimAmountBusd = new BigNumber(cakeAmount).multipliedBy(usePriceCakeBusd()).toNumber()
+  const cakePriceBusd = usePriceCakeBusd()
+  const claimAmountBusd = new BigNumber(cakeAmount).multipliedBy(cakePriceBusd).toNumber()
 
   if (!account) {
     return (
@@ -32,7 +33,7 @@ const CakeWinnings = () => {
   return (
     <Block>
       <CardValue value={cakeAmount} lineHeight="1.5" />
-      {claimAmountBusd !== 0 && <CardBusdValue value={claimAmountBusd} decimals={2} />}
+      {!cakePriceBusd.eq(0) && <CardBusdValue value={claimAmountBusd} decimals={2} />}
     </Block>
   )
 }
