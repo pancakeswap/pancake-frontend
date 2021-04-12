@@ -65,7 +65,7 @@ const StyledHeading = styled(Heading2Text)`
 `
 
 const TimerHeadingComponent = ({ children }) => (
-  <StyledHeading background={GOLDGRADIENT} fill>
+  <StyledHeading background={GOLDGRADIENT} $fill>
     {children}
   </StyledHeading>
 )

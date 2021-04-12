@@ -27,7 +27,7 @@ const sharedStyles = (props: HeadingProps) => `
   background-clip: text;
   -webkit-background-clip: text;
   ${
-    props.fill
+    props.$fill
       ? `-webkit-text-fill-color: transparent;`
       : `-webkit-text-stroke: 4px transparent;
        text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);`
@@ -42,7 +42,7 @@ const sharedVisiblyHiddenStyles = `
 interface HeadingProps {
   textColor?: string
   background?: string
-  fill?: boolean
+  $fill?: boolean
 }
 
 export const Heading1Text = styled(Heading)<HeadingProps>`
