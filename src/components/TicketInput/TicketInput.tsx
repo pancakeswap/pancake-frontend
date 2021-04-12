@@ -16,7 +16,7 @@ const TicketInput: React.FC<TokenInputProps> = ({ max, symbol, availableSymbol, 
   const TranslateString = useI18n()
 
   return (
-    <StyledTokenInput>
+    <>
       <Flex alignItems="center">
         <Input onChange={onChange} placeholder="0" value={value} />
         <StyledTokenAdornmentWrapper>
@@ -30,11 +30,9 @@ const TicketInput: React.FC<TokenInputProps> = ({ max, symbol, availableSymbol, 
         </StyledTokenAdornmentWrapper>
       </Flex>
       <StyledMaxText>{TranslateString(454, `${max.toLocaleString()} ${availableSymbol} Available`)}</StyledMaxText>
-    </StyledTokenInput>
+    </>
   )
 }
-
-const StyledTokenInput = styled.div``
 
 const StyledSpacer = styled.div`
   width: ${(props) => props.theme.spacing[3]}px;

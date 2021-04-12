@@ -27,9 +27,7 @@ const TotalValueLockedCard = () => {
             <Text color="textSubtle">{TranslateString(764, 'Across all LPs and Syrup Pools')}</Text>
           </>
         ) : (
-          <>
-            <Skeleton height={66} />
-          </>
+          <Skeleton height={66} />
         )}
       </CardBody>
     </StyledTotalValueLockedCard>

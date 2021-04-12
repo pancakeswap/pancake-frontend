@@ -46,9 +46,7 @@ const NextDrawPage: React.FC = () => {
   return (
     <>
       <Cards>
-        <div>
-          <TotalPrizesCard />
-        </div>
+        <TotalPrizesCard />
         <SecondCardColumnWrapper isAWin={isAWin}>
           {!account ? (
             <UnlockWalletCard />
