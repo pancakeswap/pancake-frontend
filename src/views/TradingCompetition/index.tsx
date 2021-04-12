@@ -18,7 +18,7 @@ import {
   LIGHTBLUEFILL,
   LIGHTBLUEFILL_DARK,
 } from './components/Section/sectionStyles'
-import { SmartContractPhases, CompetitionPhases, LIVE, FINISHED } from './config'
+import { SmartContractPhases, CompetitionPhases, LIVE, FINISHED, CLAIM, OVER } from './config'
 import Countdown from './components/Countdown'
 import YourScore from './components/YourScore'
 import StormBunny from './pngs/storm.png'
@@ -91,7 +91,8 @@ const TradingCompetition = () => {
   const [team3LeaderboardInformation, setTeam3LeaderboardInformation] = useState({ teamId: 3, leaderboardData: null })
 
   const isCompetitionLive = currentPhase.state === LIVE
-  const hasCompetitionFinished = currentPhase.state === FINISHED
+  const hasCompetitionFinished =
+    currentPhase.state === FINISHED || currentPhase.state === CLAIM || currentPhase.state === OVER
 
   const onRegisterSuccess = () => {
     setRegistrationSuccessful(true)
@@ -105,6 +106,7 @@ const TradingCompetition = () => {
     const fetchCompetitionInfoContract = async () => {
       const competitionStatus = await tradingCompetitionContract.methods.currentStatus().call()
       setCurrentPhase(SmartContractPhases[competitionStatus])
+      setCurrentPhase(SmartContractPhases[3])
     }
 
     const fetchUserContract = async () => {
