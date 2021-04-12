@@ -1,6 +1,7 @@
 import { DefaultTheme } from "styled-components";
 import { dark as darkAlert } from "../components/Alert/theme";
 import { dark as darkCard } from "../components/Card/theme";
+import { dark as darkPancakeToggle } from "../components/PancakeToggle/theme";
 import { dark as darkRadio } from "../components/Radio/theme";
 import { dark as darkToggle } from "../components/Toggle/theme";
 import { dark as darkNav } from "../widgets/Menu/theme";
@@ -18,6 +19,7 @@ const darkTheme: DefaultTheme = {
   toggle: darkToggle,
   nav: darkNav,
   modal: darkModal,
+  pancakeToggle: darkPancakeToggle,
   radio: darkRadio,
   tooltip: darkTooltip,
 };

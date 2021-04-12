@@ -15,6 +15,7 @@ export * from "./components/Input";
 export * from "./components/Layouts";
 export * from "./components/Link";
 export * from "./components/NotificationDot";
+export * from "./components/PancakeToggle";
 export * from "./components/Progress";
 export * from "./components/Radio";
 export * from "./components/Slider";
