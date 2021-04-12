@@ -13,7 +13,7 @@ import {
 } from '@pancakeswap-libs/uikit'
 import useAuth from 'hooks/useAuth'
 import useI18n from 'hooks/useI18n'
-import { FINISHED } from 'config/constants/trading-competition/easterPhases'
+import { FINISHED, OVER } from 'config/constants/trading-competition/easterPhases'
 import RegisterModal from '../RegisterModal'
 import ClaimModal from '../ClaimModal'
 import { Heading2Text } from '../CompetitionHeadingText'
@@ -76,7 +76,11 @@ const BattleCta: React.FC<CompetitionProps> = ({
   const registeredAndNotStarted = hasRegistered && !isCompetitionLive && !hasCompetitionEnded
 
   const isButtonDisabled = Boolean(
-    isLoading || registeredAndNotStarted || finishedAndPrizesClaimed || finishedAndNothingToClaim,
+    isLoading ||
+      currentPhase.state === OVER ||
+      registeredAndNotStarted ||
+      finishedAndPrizesClaimed ||
+      finishedAndNothingToClaim,
   )
 
   const getHeadingText = () => {
@@ -112,6 +116,10 @@ const BattleCta: React.FC<CompetitionProps> = ({
 
     // User registered and competition finished
     if (hasCompetitionEnded) {
+      // Claim period has ended
+      if (currentPhase.state === OVER) {
+        return TranslateString(999, 'Claim period over')
+      }
       // User has prizes to claim
       if (userCanClaimPrizes) {
         return TranslateString(999, 'Claim prizes')

@@ -38,6 +38,15 @@ const StyledCardFooter = styled(CardFooter)`
   }
 `
 
+const StyledButton = styled(Button)`
+  svg {
+    margin-right: 4px;
+    height: 20px;
+    width: auto;
+    fill: ${({ theme }) => theme.colors.textDisabled};
+  }
+`
+
 const ScoreCard: React.FC<YourScoreProps> = ({
   hasRegistered,
   account,
@@ -99,12 +108,12 @@ const ScoreCard: React.FC<YourScoreProps> = ({
           </>
         )}
       </CardBody>
-      {hasRegistered && (currentPhase.state === CLAIM || currentPhase.state === OVER) && (
+      {hasRegistered && currentPhase.state === CLAIM && (
         <StyledCardFooter>
           <LaurelLeftIcon />
-          <Button disabled={isClaimButtonDisabled} mx="18px" onClick={() => onPresentClaimModal()}>
+          <StyledButton disabled={isClaimButtonDisabled} mx="18px" onClick={() => onPresentClaimModal()}>
             {getClaimButtonText()}
-          </Button>
+          </StyledButton>
           <LaurelRightIcon />
         </StyledCardFooter>
       )}

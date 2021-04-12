@@ -103,7 +103,10 @@ const TradingCompetition = () => {
     currentPhase.state === FINISHED || currentPhase.state === CLAIM || currentPhase.state === OVER
 
   const { hasUserClaimed, userCakeRewards, userPointReward, canClaimNFT } = userTradingInformation
-  const userCanClaimPrizes = !hasUserClaimed && (userCakeRewards !== '0' || userPointReward !== '0' || canClaimNFT)
+  const userCanClaimPrizes =
+    currentPhase.state === CLAIM &&
+    !hasUserClaimed &&
+    (userCakeRewards !== '0' || userPointReward !== '0' || canClaimNFT)
   const finishedAndPrizesClaimed = hasCompetitionEnded && account && hasUserClaimed
   const finishedAndNothingToClaim = hasCompetitionEnded && account && !userCanClaimPrizes
 
