@@ -5,6 +5,14 @@ import { Flex, Box, Image } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
 import { useTradingCompetitionContract } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
+import {
+  SmartContractPhases,
+  CompetitionPhases,
+  LIVE,
+  FINISHED,
+  CLAIM,
+  OVER,
+} from 'config/constants/trading-competition/easterPhases'
 import { PrizesIcon, RanksIcon, RulesIcon } from './svgs'
 import {
   DARKBG,
@@ -18,7 +26,6 @@ import {
   LIGHTBLUEFILL,
   LIGHTBLUEFILL_DARK,
 } from './components/Section/sectionStyles'
-import { SmartContractPhases, CompetitionPhases, LIVE, FINISHED, CLAIM, OVER } from './config'
 import Countdown from './components/Countdown'
 import YourScore from './components/YourScore'
 import StormBunny from './pngs/storm.png'
@@ -104,8 +111,9 @@ const TradingCompetition = () => {
 
   useEffect(() => {
     const fetchCompetitionInfoContract = async () => {
-      const competitionStatus = await tradingCompetitionContract.methods.currentStatus().call()
-      setCurrentPhase(SmartContractPhases[competitionStatus])
+      // REVERT COMMENTED CODE BEFORE MERGE
+      // const competitionStatus = await tradingCompetitionContract.methods.currentStatus().call()
+      // setCurrentPhase(SmartContractPhases[competitionStatus])
       setCurrentPhase(SmartContractPhases[3])
     }
 
@@ -198,6 +206,7 @@ const TradingCompetition = () => {
           shouldHideCta ? null : (
             <BattleCta
               userTradingInformation={userTradingInformation}
+              currentPhase={currentPhase}
               account={account}
               isCompetitionLive={isCompetitionLive}
               hasCompetitionFinished={hasCompetitionFinished}
@@ -283,6 +292,7 @@ const TradingCompetition = () => {
             <Flex height="fit-content">
               <BattleCta
                 userTradingInformation={userTradingInformation}
+                currentPhase={currentPhase}
                 account={account}
                 isCompetitionLive={isCompetitionLive}
                 hasCompetitionFinished={hasCompetitionFinished}

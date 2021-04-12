@@ -44,6 +44,7 @@ const StyledButton = styled(Button)`
 
 const BattleCta: React.FC<CompetitionProps> = ({
   userTradingInformation,
+  currentPhase,
   account,
   isCompetitionLive,
   profile,

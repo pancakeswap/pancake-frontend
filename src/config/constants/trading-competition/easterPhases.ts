@@ -4,18 +4,6 @@ export const FINISHED = 'FINISHED'
 export const CLAIM = 'CLAIM'
 export const OVER = 'OVER'
 
-interface CompetitionStepProps {
-  index?: number
-  text?: string
-  translationId: number
-}
-
-export interface CompetitionPhaseProps {
-  state?: string
-  ends?: number | null
-  step?: CompetitionStepProps
-}
-
 export const CompetitionPhases = {
   REGISTRATION: {
     state: REGISTRATION,
