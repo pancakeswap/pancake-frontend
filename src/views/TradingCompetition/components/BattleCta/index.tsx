@@ -13,7 +13,7 @@ import {
 } from '@pancakeswap-libs/uikit'
 import useAuth from 'hooks/useAuth'
 import useI18n from 'hooks/useI18n'
-import { REGISTRATION, LIVE, FINISHED, CLAIM, OVER } from 'config/constants/trading-competition/easterPhases'
+import { FINISHED } from 'config/constants/trading-competition/easterPhases'
 import RegisterModal from '../RegisterModal'
 import ClaimModal from '../ClaimModal'
 import { Heading2Text } from '../CompetitionHeadingText'
