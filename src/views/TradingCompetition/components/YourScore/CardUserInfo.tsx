@@ -170,7 +170,7 @@ const CardUserInfo: React.FC<YourScoreProps> = ({
             </Button>
           )}
           <RanksWrapper>
-            <Flex flexDirection={['column', 'row']}>
+            <Flex width="100%" flexDirection={['column', 'row']}>
               {volume > 0 && (
                 <UserRankBox
                   flex="1"
@@ -198,7 +198,8 @@ const CardUserInfo: React.FC<YourScoreProps> = ({
                 flex="1"
                 title={TranslateString(1224, 'Your volume').toUpperCase()}
                 footer={TranslateString(1226, 'Since start')}
-                mr={[0, null, '8px']}
+                // Add responsive mr if competition is LIVE
+                mr={currentPhase.state === LIVE ? [0, null, '8px'] : 0}
               >
                 {!userLeaderboardInformation ? (
                   <Skeleton height="26px" width="110px" />

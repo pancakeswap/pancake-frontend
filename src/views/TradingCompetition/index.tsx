@@ -112,8 +112,10 @@ const TradingCompetition = () => {
 
   useEffect(() => {
     const fetchCompetitionInfoContract = async () => {
-      const competitionStatus = await tradingCompetitionContract.methods.currentStatus().call()
-      setCurrentPhase(SmartContractPhases[competitionStatus])
+      // REVERT COMMENTED CODE BEFORE MERGE
+      // const competitionStatus = await tradingCompetitionContract.methods.currentStatus().call()
+      // setCurrentPhase(SmartContractPhases[competitionStatus])
+      setCurrentPhase(SmartContractPhases[2])
     }
 
     const fetchUserContract = async () => {

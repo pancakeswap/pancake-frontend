@@ -6,7 +6,9 @@ import { YourScoreProps } from '../../types'
 import CardUserInfo from './CardUserInfo'
 
 const StyledCard = styled(Card)`
-  min-width: 240px;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    min-width: 380px;
+  }
 `
 
 const ScoreCard: React.FC<YourScoreProps> = ({
