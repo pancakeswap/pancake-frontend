@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js'
 import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
-import { Button, IconButton, useModal, AddIcon } from '@pancakeswap-libs/uikit'
+import { Button, IconButton, useModal, AddIcon, Box } from '@pancakeswap-libs/uikit'
 import { useWeb3React } from '@web3-react/core'
 import UnlockButton from 'components/UnlockButton'
 import Label from 'components/Label'
@@ -19,6 +19,7 @@ import { PoolCategory } from 'config/constants/types'
 import tokens from 'config/constants/tokens'
 import { Pool } from 'state/types'
 import { useGetApiPrice } from 'state/hooks'
+import PoolFinishedSash from './PoolFinishedSash'
 import DepositModal from './DepositModal'
 import WithdrawModal from './WithdrawModal'
 import CompoundModal from './CompoundModal'
@@ -117,8 +118,13 @@ const PoolCard: React.FC<{ pool: Pool }> = ({ pool }) => {
         poolImage={poolImage}
         earningTokenSymbol={earningToken.symbol}
         stakingTokenSymbol={stakingToken.symbol}
+        isFinished={isFinished && sousId !== 0}
       />
-      {isFinished && sousId !== 0 && <PoolFinishedSash />}
+      {isFinished && sousId !== 0 && (
+        <Box position="absolute" top={0} right={0}>
+          <PoolFinishedSash />
+        </Box>
+      )}
       <div style={{ padding: '24px' }}>
         <div style={{ marginBottom: '8px', display: 'flex', alignItems: 'center' }}>
           {account && harvest && !isOldSyrup && (
@@ -215,17 +221,6 @@ const PoolCard: React.FC<{ pool: Pool }> = ({ pool }) => {
     </StyledCard>
   )
 }
-
-const PoolFinishedSash = styled.div`
-  background-image: url('/images/pool-finished-sash.svg');
-  background-position: top right;
-  background-repeat: not-repeat;
-  height: 135px;
-  position: absolute;
-  right: -24px;
-  top: -24px;
-  width: 135px;
-`
 
 const StyledCardActions = styled.div`
   display: flex;
