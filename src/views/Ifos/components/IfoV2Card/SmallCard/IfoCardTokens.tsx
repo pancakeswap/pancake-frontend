@@ -21,6 +21,8 @@ const TokenSection: React.FC<TokenSectionProps> = ({ img, children, ...props }) 
   )
 }
 
+const Label = (props) => <Text bold fontSize="12px" color="secondary" textTransform="uppercase" {...props} />
+
 interface IfoCardTokensProps {
   ifo: Ifo
   status: IfoStatus
@@ -45,7 +47,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
   const { currency, token, saleAmount } = ifo
   const { hasClaimed } = userPoolCharacteristics
 
-  const renderTokensectioon = () => {
+  const renderTokenSection = () => {
     if (isLoading) {
       return <SkeletonCardTokens />
     }
@@ -60,14 +62,12 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
       return (
         <>
           <TokenSection img="/images/bunny-placeholder.svg">
-            <Text bold fontSize="12px" color="secondary">
-              {TranslateString(999, 'On sale')}
-            </Text>
+            <Label>{TranslateString(999, 'On sale')}</Label>
             <Text bold fontSize="20px">
               {saleAmount}
             </Text>
           </TokenSection>
-          <Text fontSize="14px" color="textSubtle" pl="48px">{`${distribution * 100}%`}</Text>
+          <Text fontSize="14px" color="textSubtle" pl="48px">{`${distribution * 100}% of total sale`}</Text>
         </>
       )
     }
@@ -75,9 +75,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
       return (
         <>
           <TokenSection img="/images/farms/cake-bnb.svg" mb="24px">
-            <Text bold fontSize="12px" color="secondary">
-              {`Your ${currency.symbol} committed`}
-            </Text>
+            <Label>{`Your ${currency.symbol} committed`}</Label>
             <Text bold fontSize="20px">
               {getBalanceNumber(userPoolCharacteristics.amountTokenCommittedInLP, currency.decimals)}
             </Text>
@@ -87,9 +85,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
             />
           </TokenSection>
           <TokenSection img={`/images/tokens/${token.symbol.toLocaleLowerCase()}.png`}>
-            <Text bold fontSize="12px" color="secondary">
-              {`${token.symbol} to received`}
-            </Text>
+            <Label>{`${token.symbol} to received`}</Label>
             <Text bold fontSize="20px">
               {getBalanceNumber(userPoolCharacteristics.offeringAmountInToken, token.decimals)}
             </Text>
@@ -106,9 +102,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
       ) : (
         <>
           <TokenSection img="/images/farms/cake-bnb.svg" mb="24px">
-            <Text bold fontSize="12px" color="secondary">
-              {hasClaimed ? `Your ${currency.symbol} RECLAIMED` : `Your ${currency.symbol} TO RECLAIM`}
-            </Text>
+            <Label>{hasClaimed ? `Your ${currency.symbol} RECLAIMED` : `Your ${currency.symbol} TO RECLAIM`}</Label>
             <Flex alignItems="center">
               <Text bold fontSize="20px">
                 {getBalanceNumber(userPoolCharacteristics.refundingAmountInLP, currency.decimals)}
@@ -121,9 +115,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
             />
           </TokenSection>
           <TokenSection img={`/images/tokens/${token.symbol.toLocaleLowerCase()}.png`}>
-            <Text bold fontSize="12px" color="secondary">
-              {hasClaimed ? `${token.symbol} received` : `${token.symbol} to received`}
-            </Text>
+            <Label>{hasClaimed ? `${token.symbol} received` : `${token.symbol} to received`}</Label>
             <Flex alignItems="center">
               <Text bold fontSize="20px">
                 {getBalanceNumber(userPoolCharacteristics.offeringAmountInToken, token.decimals)}
@@ -136,7 +128,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
     }
     return null
   }
-  return <Box mb="24px">{renderTokensectioon()}</Box>
+  return <Box pb="24px">{renderTokenSection()}</Box>
 }
 
 export default IfoCardTokens

@@ -53,7 +53,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
       raisingAmountPool: new BigNumber(0),
       offeringAmountPool: new BigNumber(0),
       limitPerUserInLP: new BigNumber(0),
-      hasTax: false,
+      taxRate: 0,
       totalAmountPool: new BigNumber(0),
       sumTaxesOverflow: new BigNumber(0),
     },
@@ -61,7 +61,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
       raisingAmountPool: new BigNumber(0),
       offeringAmountPool: new BigNumber(0),
       limitPerUserInLP: new BigNumber(0),
-      hasTax: true,
+      taxRate: 0,
       totalAmountPool: new BigNumber(0),
       sumTaxesOverflow: new BigNumber(0),
     },
@@ -73,12 +73,13 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
 
   useEffect(() => {
     const fetchProgress = async () => {
-      const [startBlock, endBlock, poolBasic, poolUnlimited] = (await makeBatchRequest([
+      const [startBlock, endBlock, poolBasic, poolUnlimited, taxRate] = (await makeBatchRequest([
         contract.methods.startBlock().call,
         contract.methods.endBlock().call,
         contract.methods.viewPoolInformation(0).call,
         contract.methods.viewPoolInformation(1).call,
-      ])) as [string, string, PoolCharacteristics, PoolCharacteristics]
+        contract.methods.viewPoolTaxRateOverflow(1).call,
+      ])) as [string, string, PoolCharacteristics, PoolCharacteristics, number]
 
       const startBlockNum = parseInt(startBlock, 10)
       const endBlockNum = parseInt(endBlock, 10)
@@ -96,8 +97,8 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
       setState({
         secondsUntilEnd: blocksRemaining * BSC_BLOCK_TIME,
         secondsUntilStart: (startBlockNum - currentBlock) * BSC_BLOCK_TIME,
-        poolBasic: formatPool(poolBasic),
-        poolUnlimited: formatPool(poolUnlimited),
+        poolBasic: { ...formatPool(poolBasic), taxRate: 0 },
+        poolUnlimited: { ...formatPool(poolUnlimited), taxRate: taxRate / 1000000 },
         status,
         progress,
         blocksRemaining,

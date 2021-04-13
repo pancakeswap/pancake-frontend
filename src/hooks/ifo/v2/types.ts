@@ -12,7 +12,7 @@ export interface PoolCharacteristics {
   raisingAmountPool: BigNumber
   offeringAmountPool: BigNumber
   limitPerUserInLP: BigNumber
-  hasTax: boolean
+  taxRate: number
   totalAmountPool: BigNumber
   sumTaxesOverflow: BigNumber
 }

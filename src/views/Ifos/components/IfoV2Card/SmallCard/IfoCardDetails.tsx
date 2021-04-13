@@ -4,6 +4,7 @@ import { PublicIfoData, PoolIds } from 'hooks/ifo/v2/types'
 import useI18n from 'hooks/useI18n'
 import { Ifo } from 'config/constants/types'
 import { getBalanceNumber } from 'utils/formatBalance'
+import { useGetApiPrice } from 'state/hooks'
 import { SkeletonCardDetails } from './Skeletons'
 
 export interface IfoCardDetailsProps {
@@ -32,20 +33,33 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoD
   const TranslateString = useI18n()
   const { status } = publicIfoData
   const poolCharacteristic = publicIfoData[poolId]
+  const tokenPriceUsd = useGetApiPrice(ifo.token.symbol)
+
+  /* Format start */
+  const maxLpTokens = getBalanceNumber(poolCharacteristic.limitPerUserInLP, ifo.currency.decimals)
+  const tokenPriceFormatted = tokenPriceUsd
+    ? `$${tokenPriceUsd.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+    : '?'
+  const taxRate = `${poolCharacteristic.taxRate}%`
+
+  const totalCommittedPercent = poolCharacteristic.totalAmountPool
+    .div(poolCharacteristic.raisingAmountPool)
+    .times(100)
+    .toFixed(2)
+  const totalLPCommitted = getBalanceNumber(poolCharacteristic.totalAmountPool, ifo.currency.decimals)
+  const totalCommitted = `${totalLPCommitted} (${totalCommittedPercent}%)`
+  /* Format end */
 
   const renderBasedOnIfoSttatus = () => {
     if (status === 'coming_soon') {
       return (
         <>
           {poolId === PoolIds.poolBasic && (
-            <FooterEntry
-              label={TranslateString(999, 'Max. LP token entry')}
-              value={getBalanceNumber(poolCharacteristic.limitPerUserInLP, ifo.currency.decimals)}
-            />
+            <FooterEntry label={TranslateString(999, 'Max. LP token entry')} value={maxLpTokens} />
           )}
           <FooterEntry label={TranslateString(999, 'Funds to raise:')} value={ifo.raiseAmount} />
           <FooterEntry label={TranslateString(999, 'CAKE to burn:')} value={ifo.cakeToBurn} />
-          <FooterEntry label={TranslateString(999, 'Price per XYZ:')} value="??" />
+          <FooterEntry label={`Price per ${ifo.token.symbol}: `} value={tokenPriceFormatted} />
         </>
       )
     }
@@ -53,18 +67,12 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoD
       return (
         <>
           {poolId === PoolIds.poolBasic && (
-            <FooterEntry
-              label={TranslateString(999, 'Max. LP token entry')}
-              value={getBalanceNumber(poolCharacteristic.limitPerUserInLP, ifo.currency.decimals)}
-            />
+            <FooterEntry label={TranslateString(999, 'Max. LP token entry')} value={maxLpTokens} />
           )}
           {poolId === PoolIds.poolUnlimited && (
-            <FooterEntry label={TranslateString(999, 'Additional fee:')} value="5%" />
+            <FooterEntry label={TranslateString(999, 'Additional fee:')} value={taxRate} />
           )}
-          <FooterEntry
-            label={TranslateString(999, 'Total committed:')}
-            value={getBalanceNumber(poolCharacteristic.totalAmountPool, ifo.currency.decimals)}
-          />
+          <FooterEntry label={TranslateString(999, 'Total committed:')} value={totalCommitted} />
         </>
       )
     }
@@ -72,28 +80,22 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoD
       return (
         <>
           {poolId === PoolIds.poolBasic && (
-            <FooterEntry
-              label={TranslateString(999, 'Max. LP token entry')}
-              value={getBalanceNumber(poolCharacteristic.limitPerUserInLP, ifo.currency.decimals)}
-            />
+            <FooterEntry label={TranslateString(999, 'Max. LP token entry')} value={maxLpTokens} />
           )}
           {poolId === PoolIds.poolUnlimited && (
-            <FooterEntry label={TranslateString(999, 'Additional fee:')} value="5%" />
+            <FooterEntry label={TranslateString(999, 'Additional fee:')} value={taxRate} />
           )}
-          <FooterEntry
-            label={TranslateString(999, 'Total committed:')}
-            value={getBalanceNumber(poolCharacteristic.totalAmountPool, ifo.currency.decimals)}
-          />
+          <FooterEntry label={TranslateString(999, 'Total committed:')} value={totalCommitted} />
           <FooterEntry label={TranslateString(999, 'Funds raised:')} value="??" />
           <FooterEntry label={TranslateString(999, 'CAKE burned:')} value="??" />
-          <FooterEntry label={TranslateString(999, 'Price per XYZ:')} value="??" />
+          <FooterEntry label={`Price per ${ifo.token.symbol}: `} value={tokenPriceFormatted} />
         </>
       )
     }
     return <SkeletonCardDetails />
   }
 
-  return <Box mt="24px">{renderBasedOnIfoSttatus()}</Box>
+  return <Box paddingTop="24px">{renderBasedOnIfoSttatus()}</Box>
 }
 
 export default IfoCardDetails

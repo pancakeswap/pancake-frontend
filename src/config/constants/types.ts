@@ -19,10 +19,6 @@ export interface Ifo {
   isActive: boolean
   address: string
   name: string
-  subTitle?: string
-  description?: string
-  launchDate: string
-  launchTime: string
   saleAmount: string
   raiseAmount: string
   cakeToBurn: string
@@ -32,6 +28,11 @@ export interface Ifo {
   releaseBlockNumber: number
   campaignId?: string
   isV1?: boolean
+  // V1 only - To be removed when old card are migrated
+  subTitle?: string
+  description?: string
+  launchDate?: string
+  launchTime?: string
 }
 
 export enum PoolCategory {
