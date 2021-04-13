@@ -1,7 +1,6 @@
 import React from 'react'
-import styled from 'styled-components'
 import { useRouteMatch, Link } from 'react-router-dom'
-import { ButtonMenu, ButtonMenuItem, Toggle, Text } from '@pancakeswap-libs/uikit'
+import { ButtonMenu, ButtonMenuItem, Toggle, Text, Flex } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 
 const PoolTabButtons = ({ stakedOnly, setStakedOnly }) => {
@@ -9,11 +8,7 @@ const PoolTabButtons = ({ stakedOnly, setStakedOnly }) => {
   const TranslateString = useI18n()
 
   return (
-    <Wrapper>
-      <ToggleWrapper>
-        <Toggle checked={stakedOnly} onChange={() => setStakedOnly(!stakedOnly)} />
-        <Text> {TranslateString(999, 'Staked only')}</Text>
-      </ToggleWrapper>
+    <Flex alignItems="center" justifyContent="center" mb="32px">
       <ButtonMenu activeIndex={isExact ? 0 : 1} scale="sm" variant="subtle">
         <ButtonMenuItem as={Link} to={`${url}`}>
           {TranslateString(1198, 'Live')}
@@ -22,26 +17,14 @@ const PoolTabButtons = ({ stakedOnly, setStakedOnly }) => {
           {TranslateString(388, 'Finished')}
         </ButtonMenuItem>
       </ButtonMenu>
-    </Wrapper>
+      <Flex ml="24px" justifyContent="center" alignItems="center">
+        <Toggle scale="sm" checked={stakedOnly} onChange={() => setStakedOnly(!stakedOnly)} />
+        <Text ml="8px" color={`${stakedOnly ? 'body' : 'textDisabled'}`}>
+          {TranslateString(999, 'Staked only')}
+        </Text>
+      </Flex>
+    </Flex>
   )
 }
 
 export default PoolTabButtons
-
-const Wrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 32px;
-`
-
-const ToggleWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-right: 32px;
-
-  ${Text} {
-    margin-left: 8px;
-  }
-`

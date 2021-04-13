@@ -7,6 +7,7 @@ import { Image, Heading, RowType, Toggle, Text } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
 import FlexLayout from 'components/layout/Flex'
 import Page from 'components/layout/Page'
+import PageHeader from 'components/PageHeader'
 import { useFarms, usePriceCakeBusd, useGetApiPrices } from 'state/hooks'
 import useRefresh from 'hooks/useRefresh'
 import { fetchFarmUserDataAsync } from 'state/actions'
@@ -95,19 +96,6 @@ const StyledImage = styled(Image)`
   margin-left: auto;
   margin-right: auto;
   margin-top: 58px;
-`
-
-const Header = styled.div`
-  padding: 32px 0px;
-  background: ${({ theme }) => theme.colors.gradients.bubblegum};
-
-  padding-left: 16px;
-  padding-right: 16px;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    padding-left: 24px;
-    padding-right: 24px;
-  }
 `
 
 const Farms: React.FC = () => {
@@ -292,14 +280,14 @@ const Farms: React.FC = () => {
 
   return (
     <>
-      <Header>
+      <PageHeader>
         <Heading as="h1" size="xxl" color="secondary" mb="24px">
           {TranslateString(674, 'Farms')}
         </Heading>
         <Heading size="lg" color="text">
           {TranslateString(999, 'Stake Liquidity Pool (LP) tokens to earn.')}
         </Heading>
-      </Header>
+      </PageHeader>
       <Page>
         <ControlContainer>
           <ViewControls>
