@@ -56,7 +56,7 @@ const DepositModal: React.FC<DepositModalProps> = ({ max, onConfirm, onDismiss, 
             pendingTx ||
             parseFloat(fullBalance) === 0 ||
             !Number.isFinite(parseFloat(val)) ||
-            parseFloat(val) > parseFloat(fullBalance)
+            new BigNumber(val).gt(new BigNumber(fullBalance))
           }
           onClick={async () => {
             setPendingTx(true)
