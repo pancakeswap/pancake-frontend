@@ -80,7 +80,15 @@ const ModalInput: React.FC<ModalInputProps> = ({
           </Text>
         </Flex>
         <Flex alignItems="flex-end" justifyContent="space-around">
-          <StyledInput onChange={onChange} placeholder="0" value={value} />
+          <StyledInput
+            type="number"
+            inputMode="decimal"
+            step="any"
+            min="0"
+            onChange={onChange}
+            placeholder="0"
+            value={value}
+          />
           <Button scale="sm" onClick={onSelectMax} mr="8px">
             {TranslateString(452, 'Max')}
           </Button>
