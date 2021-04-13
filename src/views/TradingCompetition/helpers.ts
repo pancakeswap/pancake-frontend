@@ -11,10 +11,9 @@ export const localiseTradingVolume = (value: number, decimals = 0) => {
 export const accountEllipsis = (account: string) =>
   `${account.substring(0, 4)}...${account.substring(account.length - 4)}`
 
-export const UseCompetitionCakeRewards = (userCakeReward: ReactText) => {
+export const useCompetitionCakeRewards = (userCakeReward: ReactText) => {
   const cakeAsBigNumber = new BigNumber(userCakeReward as string)
   const cakeBalance = getBalanceNumber(cakeAsBigNumber)
-  // Would we expect this to return 0 on test net?
   const cakePriceBusd = usePriceCakeBusd()
   return { cakeReward: cakeBalance, dollarValueOfCakeReward: cakeBalance * cakePriceBusd.toNumber() }
 }
@@ -28,8 +27,7 @@ export const getRewardGroupAchievements = (userRewardGroup: string, teamRank = 1
     return prizeGroup.group === userRewardGroup
   })[0]
   const userAchievements = userGroup && userGroup.achievements
-  const { champion, teamPlayer, trophy } = userAchievements
-  return { champion, teamPlayer, trophy }
+  return userAchievements
 }
 
 export default localiseTradingVolume

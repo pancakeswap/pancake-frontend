@@ -11,45 +11,11 @@ import {
 } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import { UserTradingInformationProps } from '../../types'
-import { UseCompetitionCakeRewards, getRewardGroupAchievements } from '../../helpers'
+import { useCompetitionCakeRewards, getRewardGroupAchievements } from '../../helpers'
+import { BoldTd, Td, StyledPrizeTable } from '../StyledPrizeTable'
 
-const Td = styled.td`
-  padding: 4px 0;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    padding: 8px;
-  }
-`
-const BoldTd = styled(Td)`
-  font-weight: 600;
-`
-
-const PrizeTable = styled.table`
-  width: 100%;
-
-  thead {
-    border-bottom: 2px solid ${({ theme }) => theme.colors.borderColor};
-  }
-
-  th,
-  td {
-    text-align: center;
-    vertical-align: middle;
-  }
-
-  & > thead th {
-    font-size: 12px;
-    padding: 16px 0;
-    text-transform: uppercase;
-
-    ${({ theme }) => theme.mediaQueries.xs} {
-      padding: 16px 8px;
-    }
-
-    ${({ theme }) => theme.mediaQueries.sm} {
-      padding: 16px;
-    }
-  }
+const StyledThead = styled.thead`
+  border-bottom: 2px solid ${({ theme }) => theme.colors.borderColor};
 `
 
 const UserPrizeGrid: React.FC<{ userTradingInformation?: UserTradingInformationProps }> = ({
@@ -57,18 +23,18 @@ const UserPrizeGrid: React.FC<{ userTradingInformation?: UserTradingInformationP
 }) => {
   const TranslateString = useI18n()
   const { userRewardGroup, userCakeRewards, userPointReward, canClaimNFT } = userTradingInformation
-  const { cakeReward, dollarValueOfCakeReward } = UseCompetitionCakeRewards(userCakeRewards)
+  const { cakeReward, dollarValueOfCakeReward } = useCompetitionCakeRewards(userCakeRewards)
   const { champion, teamPlayer } = getRewardGroupAchievements(userRewardGroup)
 
   return (
-    <PrizeTable>
-      <thead>
+    <StyledPrizeTable>
+      <StyledThead>
         <tr>
           <th>{TranslateString(999, 'CAKE Prizes ')}</th>
           <th>{TranslateString(1092, 'Achievements')}</th>
           <th>{TranslateString(999, 'NFT')}</th>
         </tr>
-      </thead>
+      </StyledThead>
       <tbody>
         <tr>
           <BoldTd>
@@ -92,7 +58,7 @@ const UserPrizeGrid: React.FC<{ userTradingInformation?: UserTradingInformationP
           <Td>{canClaimNFT ? <CheckmarkCircleIcon color="success" /> : <BlockIcon color="textDisabled" />}</Td>
         </tr>
       </tbody>
-    </PrizeTable>
+    </StyledPrizeTable>
   )
 }
 

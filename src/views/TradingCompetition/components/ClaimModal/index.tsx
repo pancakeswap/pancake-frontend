@@ -16,7 +16,7 @@ import {
 import useI18n from 'hooks/useI18n'
 import { useTradingCompetitionContract } from 'hooks/useContract'
 import { useToast } from 'state/hooks'
-import { UseCompetitionCakeRewards, getRewardGroupAchievements } from '../../helpers'
+import { useCompetitionCakeRewards, getRewardGroupAchievements } from '../../helpers'
 import { CompetitionProps } from '../../types'
 import NftBunnies from '../../pngs/cakers-nft.png'
 
@@ -37,7 +37,7 @@ const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, use
   const TranslateString = useI18n()
 
   const { userRewardGroup, userCakeRewards, userPointReward, canClaimNFT } = userTradingInformation
-  const { cakeReward } = UseCompetitionCakeRewards(userCakeRewards)
+  const { cakeReward } = useCompetitionCakeRewards(userCakeRewards)
   const { champion, teamPlayer } = getRewardGroupAchievements(userRewardGroup)
 
   const handleClaimClick = () => {
