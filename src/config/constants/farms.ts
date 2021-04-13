@@ -23,7 +23,7 @@ const farms: FarmConfig[] = [
     quoteToken: tokens.wbnb,
   },
   {
-    pid: 126,
+    pid: 127,
     lpSymbol: 'TLM-BNB LP',
     lpAddresses: {
       97: '',
