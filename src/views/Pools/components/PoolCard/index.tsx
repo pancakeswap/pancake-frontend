@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js'
 import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
-import { Button, IconButton, useModal, AddIcon, Box } from '@pancakeswap-libs/uikit'
+import { Button, IconButton, useModal, AddIcon, CardBody } from '@pancakeswap-libs/uikit'
 import { useWeb3React } from '@web3-react/core'
 import UnlockButton from 'components/UnlockButton'
 import Label from 'components/Label'
@@ -19,7 +19,7 @@ import { PoolCategory } from 'config/constants/types'
 import tokens from 'config/constants/tokens'
 import { Pool } from 'state/types'
 import { useGetApiPrice } from 'state/hooks'
-import PoolFinishedSash from './PoolFinishedSash'
+import AprRow from './AprRow'
 import DepositModal from './DepositModal'
 import WithdrawModal from './WithdrawModal'
 import CompoundModal from './CompoundModal'
@@ -120,12 +120,9 @@ const PoolCard: React.FC<{ pool: Pool }> = ({ pool }) => {
         stakingTokenSymbol={stakingToken.symbol}
         isFinished={isFinished && sousId !== 0}
       />
-      {isFinished && sousId !== 0 && (
-        <Box position="absolute" top={0} right={0}>
-          <PoolFinishedSash />
-        </Box>
-      )}
-      <div style={{ padding: '24px' }}>
+      <CardBody>
+        <AprRow isFinished={isFinished} isOldSyrup={isOldSyrup} apy={apy} />
+
         <div style={{ marginBottom: '8px', display: 'flex', alignItems: 'center' }}>
           {account && harvest && !isOldSyrup && (
             <HarvestButton
@@ -189,14 +186,7 @@ const PoolCard: React.FC<{ pool: Pool }> = ({ pool }) => {
               </>
             ))}
         </StyledCardActions>
-        <StyledDetails>
-          <div>{TranslateString(736, 'APR')}:</div>
-          {isFinished || isOldSyrup || !apy ? (
-            '-'
-          ) : (
-            <Balance fontSize="14px" isDisabled={isFinished} value={apy} decimals={2} unit="%" />
-          )}
-        </StyledDetails>
+
         <StyledDetails>
           <div>{TranslateString(384, 'Your Stake')}:</div>
           <Balance
@@ -205,7 +195,7 @@ const PoolCard: React.FC<{ pool: Pool }> = ({ pool }) => {
             value={getBalanceNumber(stakedBalance, stakingToken.decimals)}
           />
         </StyledDetails>
-      </div>
+      </CardBody>
       <CardFooter
         projectLink={earningToken.projectLink}
         decimals={stakingToken.decimals}
