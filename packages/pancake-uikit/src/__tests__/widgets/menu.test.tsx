@@ -588,7 +588,6 @@ it("renders correctly", () => {
 
     @media screen and (min-width:968px) {
       .c10 {
-        z-index: initial;
         border-right: 2px solid rgba(133,133,133,0.1);
         width: 56px;
       }
