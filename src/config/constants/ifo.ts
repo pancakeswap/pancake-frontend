@@ -11,34 +11,9 @@ const cakeBnbLpToken: Token = {
 const ifos: Ifo[] = [
   // Testing : start
   // Pending
-  // {
-  //   id: 'belt',
-  //   address: '0x4e72301A1EA3893C18496d48A2C0848518908F51',
-  //   isActive: true,
-  //   name: 'Usagi (USG)',
-  //   launchDate: 'Mar. 10',
-  //   launchTime: '5PM SGT',
-  //   saleAmount: '150,000 BELT',
-  //   raiseAmount: '$3,000,000',
-  //   cakeToBurn: '$1,500,000',
-  //   projectSiteUrl: 'https://beta.belt.fi/',
-  //   currency: cakeBnbLpToken,
-  //   token: {
-  //     symbol: 'belt',
-  //     address: {
-  //       '56': '',
-  //       '97': '0xDD2EF17be8852A2C0e2D8Cc904f6dC73eBf44C56',
-  //     },
-  //     decimals: 18,
-  //   },
-  //   releaseBlockNumber: 5493919,
-  //   campaignId: '511080000',
-  //   isV1: false,
-  // },
-  // In progress
   {
     id: 'belt',
-    address: '0xBF27AD06c0d9cd26cA022D9817D0596C8ba01F24',
+    address: '0x4e72301A1EA3893C18496d48A2C0848518908F51',
     isActive: true,
     name: 'Usagi (USG)',
     launchDate: 'Mar. 10',
@@ -52,7 +27,7 @@ const ifos: Ifo[] = [
       symbol: 'belt',
       address: {
         '56': '',
-        '97': '0x39Fc82a3c852c5FdeC10b12c741b7D6eea3F7fE4',
+        '97': '0xDD2EF17be8852A2C0e2D8Cc904f6dC73eBf44C56',
       },
       decimals: 18,
     },
@@ -60,7 +35,57 @@ const ifos: Ifo[] = [
     campaignId: '511080000',
     isV1: false,
   },
-  // Finished
+  // In progress
+  // {
+  //   id: 'belt',
+  //   address: '0xBF27AD06c0d9cd26cA022D9817D0596C8ba01F24',
+  //   isActive: true,
+  //   name: 'Usagi (USG)',
+  //   launchDate: 'Mar. 10',
+  //   launchTime: '5PM SGT',
+  //   saleAmount: '150,000 BELT',
+  //   raiseAmount: '$3,000,000',
+  //   cakeToBurn: '$1,500,000',
+  //   projectSiteUrl: 'https://beta.belt.fi/',
+  //   currency: cakeBnbLpToken,
+  //   token: {
+  //     symbol: 'belt',
+  //     address: {
+  //       '56': '',
+  //       '97': '0x39Fc82a3c852c5FdeC10b12c741b7D6eea3F7fE4',
+  //     },
+  //     decimals: 18,
+  //   },
+  //   releaseBlockNumber: 5493919,
+  //   campaignId: '511080000',
+  //   isV1: false,
+  // },
+  // Finished - claimed
+  // {
+  //   id: 'belt',
+  //   address: '0xC665fF0a389d68AD235F0fd7D86feC965e6e84fB',
+  //   isActive: true,
+  //   name: 'Usagi (USG)',
+  //   launchDate: 'Mar. 10',
+  //   launchTime: '5PM SGT',
+  //   saleAmount: '150,000 BELT',
+  //   raiseAmount: '$3,000,000',
+  //   cakeToBurn: '$1,500,000',
+  //   projectSiteUrl: 'https://beta.belt.fi/',
+  //   currency: cakeBnbLpToken,
+  //   token: {
+  //     symbol: 'belt',
+  //     address: {
+  //       '56': '',
+  //       '97': '0x39Fc82a3c852c5FdeC10b12c741b7D6eea3F7fE4',
+  //     },
+  //     decimals: 18,
+  //   },
+  //   releaseBlockNumber: 5493919,
+  //   campaignId: '511080000',
+  //   isV1: false,
+  // },
+  // Finished - nothing to claim
   // {
   //   id: 'belt',
   //   address: '0x13c51c38c53454dBA1bD489F5adED7496f074eA3',

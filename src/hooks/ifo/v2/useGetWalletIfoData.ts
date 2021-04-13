@@ -79,17 +79,17 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
         poolBasic: {
           ...prevState.poolBasic,
           amountTokenCommittedInLP: new BigNumber(userInfo[0][0]),
-          offeringAmountInToken: new BigNumber(amounts[0][1]),
-          refundingAmountInLP: new BigNumber(amounts[0][2]),
-          taxAmountInLP: new BigNumber(amounts[0][3]),
+          offeringAmountInToken: new BigNumber(amounts[0][0]),
+          refundingAmountInLP: new BigNumber(amounts[0][1]),
+          taxAmountInLP: new BigNumber(amounts[0][2]),
           hasClaimed: userInfo[1][0],
         },
         poolUnlimited: {
           ...prevState.poolUnlimited,
           amountTokenCommittedInLP: new BigNumber(userInfo[0][1]),
-          offeringAmountInToken: new BigNumber(amounts[1][1]),
-          refundingAmountInLP: new BigNumber(amounts[1][2]),
-          taxAmountInLP: new BigNumber(amounts[1][3]),
+          offeringAmountInToken: new BigNumber(amounts[1][0]),
+          refundingAmountInLP: new BigNumber(amounts[1][1]),
+          taxAmountInLP: new BigNumber(amounts[1][2]),
           hasClaimed: userInfo[1][1],
         },
       }))

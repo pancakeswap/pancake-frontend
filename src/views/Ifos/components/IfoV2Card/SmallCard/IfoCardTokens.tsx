@@ -122,7 +122,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
           </TokenSection>
           <TokenSection img={`/images/tokens/${token.symbol.toLocaleLowerCase()}.png`}>
             <Text bold fontSize="12px" color="secondary">
-              {`${token.symbol} to received`}
+              {hasClaimed ? `${token.symbol} received` : `${token.symbol} to received`}
             </Text>
             <Flex alignItems="center">
               <Text bold fontSize="20px">

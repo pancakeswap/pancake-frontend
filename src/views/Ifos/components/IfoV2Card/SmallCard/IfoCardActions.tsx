@@ -39,6 +39,10 @@ const IfoCardActions: React.FC<Props> = ({ currency, poolId, publicIfoData, wall
     )
   }
 
+  if (userPoolCharacteristics.hasClaimed) {
+    return null
+  }
+
   return (
     <>
       {publicIfoData.status === 'live' && (
