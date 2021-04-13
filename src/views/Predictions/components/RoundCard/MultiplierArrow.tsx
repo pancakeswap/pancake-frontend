@@ -63,7 +63,7 @@ const MultiplierArrow: React.FC<MultiplierArrowProps> = ({
   const multiplierText = (
     <Flex>
       <Text color={textColor} bold lineHeight="21px">
-        {multiplier !== undefined ? `${multiplier}x` : '-'}
+        {multiplier !== undefined ? `${multiplier.toLocaleString(undefined, { maximumFractionDigits: 2 })}x` : '-'}
       </Text>
       <Text color={textColor} lineHeight="21px" ml="4px">
         {TranslateString(999, 'Payout')}
