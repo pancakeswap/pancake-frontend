@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Text, Link } from '@pancakeswap-libs/uikit'
-import Tooltip from '../../views/Farms/components/Tooltip/Tooltip'
+import Tooltip from 'views/Farms/components/Tooltip/Tooltip'
 
 const StyledTooltip = styled(Tooltip)`
   bottom: -9px;

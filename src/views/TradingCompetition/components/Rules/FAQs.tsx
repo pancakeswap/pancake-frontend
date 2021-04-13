@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Card, CardBody, CardHeader, Heading, Text, Flex } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
-import FoldableText from './FoldableText'
+import FoldableText from 'components/FoldableText'
 
 const Wrapper = styled(Flex)`
   margin-top: 16px;

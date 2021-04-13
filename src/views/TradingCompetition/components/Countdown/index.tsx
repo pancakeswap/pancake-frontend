@@ -2,12 +2,12 @@ import React from 'react'
 import styled from 'styled-components'
 import { Flex, Skeleton, PocketWatchIcon, Text } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
+import Timer from 'components/Timer'
 import getTimePeriods from 'utils/getTimePeriods'
 import { CompetitionSteps, LIVE } from 'config/constants/trading-competition/easterPhases'
 import { Heading2Text } from '../CompetitionHeadingText'
 import { CompetitionPhaseProps } from '../../types'
 import ProgressStepper from './ProgressStepper'
-import Timer from '../../../../components/Timer'
 import { GOLDGRADIENT } from '../Section/sectionStyles'
 
 const Wrapper = styled(Flex)`

@@ -1056,6 +1056,24 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://ellipsis.finance/',
   },
+  jgn: {
+    symbol: 'JGN',
+    address: {
+      56: '0xc13b7a43223bb9bf4b69bd68ab20ca1b79d81c75',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://jgndefi.com/',
+  },
+  tlm: {
+    symbol: 'TLM',
+    address: {
+      56: '0x2222227e22102fe3322098e4cbfe18cfebd57c95',
+      97: '',
+    },
+    decimals: 4,
+    projectLink: 'https://alienworlds.io/',
+  },
 }
 
 export default tokens

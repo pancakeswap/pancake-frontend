@@ -7,7 +7,7 @@ import useI18n from 'hooks/useI18n'
 import BigNumber from 'bignumber.js'
 import { getFarmApy } from 'utils/apy'
 import { useFarms, usePriceCakeBusd, useGetApiPrices } from 'state/hooks'
-import { getAddress } from '../../../utils/addressHelpers'
+import { getAddress } from 'utils/addressHelpers'
 
 const StyledFarmStakingCard = styled(Card)`
   margin-left: auto;
