@@ -2,8 +2,9 @@ import React, { useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
-import { Modal, LinkExternal, Box, Text } from '@pancakeswap-libs/uikit'
+import { Modal, ModalBody, LinkExternal, Box, Text, Image, Button, Link, OpenNewIcon } from '@pancakeswap-libs/uikit'
 import { Token } from 'config/constants/types'
+import { BASE_ADD_LIQUIDITY_URL } from 'config'
 import BalanceInput from 'components/BalanceInput'
 import useTokenBalance from 'hooks/useTokenBalance'
 import { PoolIds } from 'hooks/ifo/v2/types'
@@ -30,6 +31,7 @@ const ContributeModal: React.FC<Props> = ({ currency, poolId, contract, onDismis
   const balance = useTokenBalance(getAddress(currency.address))
   const TranslateString = useI18n()
   const valueWithTokenDecimals = new BigNumber(value).times(new BigNumber(10).pow(18))
+  const max = maxValue && maxValue.isLessThanOrEqualTo(balance) ? getBalanceNumber(maxValue) : getBalanceNumber(balance)
   const {
     isApproving,
     isApproved,
@@ -63,7 +65,38 @@ const ContributeModal: React.FC<Props> = ({ currency, poolId, contract, onDismis
     },
   })
 
-  const max = maxValue && maxValue.isLessThanOrEqualTo(balance) ? getBalanceNumber(maxValue) : getBalanceNumber(balance)
+  if (balance.isEqualTo(0)) {
+    return (
+      <Modal title="LP Tokens required" onDismiss={onDismiss}>
+        <ModalBody maxWidth="288px">
+          <Image
+            src={`/images/farms/${currency.symbol.split(' ')[0].toLocaleLowerCase()}.svg`}
+            width={72}
+            height={72}
+            margin="auto"
+            mb="24px"
+          />
+          <Text mb="16px">
+            You’ll need{' '}
+            <Text as="span" bold>
+              CAKE-BNB LP
+            </Text>{' '}
+            tokens to participate in the IFO!
+          </Text>
+          <Text mb="24px">Get LP tokens, or make sure your tokens aren’t staked somewhere else.</Text>
+          <Button
+            as={Link}
+            external
+            href={`${BASE_ADD_LIQUIDITY_URL}/BNB/0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82`}
+            endIcon={<OpenNewIcon color="white" />}
+            minWidth="100%" // Bypass the width="fit-content" on Links
+          >
+            Get LP tokens
+          </Button>
+        </ModalBody>
+      </Modal>
+    )
+  }
 
   return (
     <Modal title={`Contribute ${currency.symbol}`} onDismiss={onDismiss}>
