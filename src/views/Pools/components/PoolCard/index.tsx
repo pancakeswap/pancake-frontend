@@ -23,7 +23,6 @@ import DepositModal from './DepositModal'
 import WithdrawModal from './WithdrawModal'
 import CompoundModal from './CompoundModal'
 import StyledCard from './StyledCard'
-import OldSyrupTitle from './OldSyrupTitle'
 import HarvestButton from './HarvestButton'
 import CardFooter from './CardFooter'
 import StyledCardHeader from './StyledCardHeader'
@@ -146,7 +145,8 @@ const PoolCard: React.FC<{ pool: Pool }> = ({ pool }) => {
             )}
           </BalanceAndCompound>
         ) : (
-          <OldSyrupTitle hasBalance={accountHasStakedBalance} />
+          <span>Is old syrup</span>
+          // <OldSyrupTitle hasBalance={accountHasStakedBalance} />
         )}
         <Label isFinished={isFinished && sousId !== 0} text={TranslateString(330, `${earningToken.symbol} earned`)} />
         <StyledCardActions>
