@@ -75,6 +75,7 @@ const LinkStatus = styled(Text)<{ color: keyof Colors }>`
   border-color: ${({ theme, color }) => theme.colors[color]};
   box-shadow: none;
   color: ${({ theme, color }) => theme.colors[color]};
+  margin-left: 8px;
 `;
 
 const LinkLabelMemo = React.memo(LinkLabel, (prev, next) => prev.isPushed === next.isPushed);

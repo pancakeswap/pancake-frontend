@@ -66,6 +66,8 @@ const StyledButton = styled.button<BaseButtonProps>`
 
   &:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
     opacity: 0.85;
+    transform: translateY(1px);
+    box-shadow: none;
   }
 
   ${getDisabledStyles}

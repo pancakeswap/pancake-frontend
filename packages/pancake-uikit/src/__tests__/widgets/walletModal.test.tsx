@@ -133,6 +133,10 @@ it("renders ConnectModal correctly", () => {
 
     .c7:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
       opacity: 0.85;
+      -webkit-transform: translateY(1px);
+      -ms-transform: translateY(1px);
+      transform: translateY(1px);
+      box-shadow: none;
     }
 
     .c7:disabled,
@@ -188,6 +192,10 @@ it("renders ConnectModal correctly", () => {
 
     .c12:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
       opacity: 0.85;
+      -webkit-transform: translateY(1px);
+      -ms-transform: translateY(1px);
+      transform: translateY(1px);
+      box-shadow: none;
     }
 
     .c12:disabled,
@@ -243,6 +251,10 @@ it("renders ConnectModal correctly", () => {
 
     .c15:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
       opacity: 0.85;
+      -webkit-transform: translateY(1px);
+      -ms-transform: translateY(1px);
+      transform: translateY(1px);
+      box-shadow: none;
     }
 
     .c15:disabled,

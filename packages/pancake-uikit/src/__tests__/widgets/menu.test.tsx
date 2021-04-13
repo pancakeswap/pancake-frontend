@@ -133,6 +133,10 @@ it("renders correctly", () => {
 
     .c3:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
       opacity: 0.85;
+      -webkit-transform: translateY(1px);
+      -ms-transform: translateY(1px);
+      transform: translateY(1px);
+      box-shadow: none;
     }
 
     .c3:disabled,
@@ -186,6 +190,10 @@ it("renders correctly", () => {
 
     .c8:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
       opacity: 0.85;
+      -webkit-transform: translateY(1px);
+      -ms-transform: translateY(1px);
+      transform: translateY(1px);
+      box-shadow: none;
     }
 
     .c8:disabled,
@@ -239,6 +247,10 @@ it("renders correctly", () => {
 
     .c24:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
       opacity: 0.85;
+      -webkit-transform: translateY(1px);
+      -ms-transform: translateY(1px);
+      transform: translateY(1px);
+      box-shadow: none;
     }
 
     .c24:disabled,
@@ -274,6 +286,24 @@ it("renders correctly", () => {
     .c6 .desktop-icon {
       width: 156px;
       display: none;
+    }
+
+    .c6 .right-eye {
+      -webkit-animation-delay: 20ms;
+      animation-delay: 20ms;
+    }
+
+    .c6:hover .left-eye,
+    .c6:hover .right-eye {
+      -webkit-transform-origin: center 60%;
+      -ms-transform-origin: center 60%;
+      transform-origin: center 60%;
+      -webkit-animation-name: beoKdG;
+      animation-name: beoKdG;
+      -webkit-animation-duration: 350ms;
+      animation-duration: 350ms;
+      -webkit-animation-iteration-count: 1;
+      animation-iteration-count: 1;
     }
 
     .c18 {
@@ -409,6 +439,7 @@ it("renders correctly", () => {
       border-color: #ED4B9E;
       box-shadow: none;
       color: #ED4B9E;
+      margin-left: 8px;
     }
 
     .c21 {
@@ -418,6 +449,7 @@ it("renders correctly", () => {
       border-color: #FFB237;
       box-shadow: none;
       color: #FFB237;
+      margin-left: 8px;
     }
 
     .c15 {
@@ -502,14 +534,15 @@ it("renders correctly", () => {
       background-color: #FFFFFF;
       width: 0;
       height: 100vh;
-      -webkit-transition: padding-top 0.2s,width 0.2s;
-      transition: padding-top 0.2s,width 0.2s;
+      -webkit-transition: padding-top 0.2s,width 0.2s cubic-bezier(0.4,0,0.2,1);
+      transition: padding-top 0.2s,width 0.2s cubic-bezier(0.4,0,0.2,1);
       border-right: 0;
       z-index: 11;
       overflow: hidden;
       -webkit-transform: translate3d(0,0,0);
       -ms-transform: translate3d(0,0,0);
       transform: translate3d(0,0,0);
+      white-space: nowrap;
     }
 
     .c0 {
@@ -561,8 +594,8 @@ it("renders correctly", () => {
       -ms-flex-positive: 1;
       flex-grow: 1;
       margin-top: 64px;
-      -webkit-transition: margin-top 0.2s;
-      transition: margin-top 0.2s;
+      -webkit-transition: margin-top 0.2s,margin-left 0.2s cubic-bezier(0.4,0,0.2,1);
+      transition: margin-top 0.2s,margin-left 0.2s cubic-bezier(0.4,0,0.2,1);
       -webkit-transform: translate3d(0,0,0);
       -ms-transform: translate3d(0,0,0);
       transform: translate3d(0,0,0);
@@ -661,10 +694,12 @@ it("renders correctly", () => {
                   fill-rule="evenodd"
                 />
                 <path
+                  class="left-eye"
                   d="M11.9595 18.9091C11.9595 20.248 11.2359 21.3333 10.3433 21.3333C9.45075 21.3333 8.72717 20.248 8.72717 18.9091C8.72717 17.5702 9.45075 16.4849 10.3433 16.4849C11.2359 16.4849 11.9595 17.5702 11.9595 18.9091Z"
                   fill="#633001"
                 />
                 <path
+                  class="right-eye"
                   d="M23.1111 18.9091C23.1111 20.248 22.3875 21.3333 21.4949 21.3333C20.6024 21.3333 19.8788 20.248 19.8788 18.9091C19.8788 17.5702 20.6024 16.4849 21.4949 16.4849C22.3875 16.4849 23.1111 17.5702 23.1111 18.9091Z"
                   fill="#633001"
                 />
@@ -737,10 +772,12 @@ it("renders correctly", () => {
                   fill-rule="evenodd"
                 />
                 <path
+                  class="left-eye"
                   d="M9.11817 15.2485C9.11817 16.2833 8.55896 17.1221 7.86914 17.1221C7.17932 17.1221 6.62012 16.2833 6.62012 15.2485C6.62012 14.2138 7.17932 13.375 7.86914 13.375C8.55896 13.375 9.11817 14.2138 9.11817 15.2485Z"
                   fill="#633001"
                 />
                 <path
+                  class="right-eye"
                   d="M17.7363 15.2485C17.7363 16.2833 17.1771 17.1221 16.4873 17.1221C15.7975 17.1221 15.2383 16.2833 15.2383 15.2485C15.2383 14.2138 15.7975 13.375 16.4873 13.375C17.1771 13.375 17.7363 14.2138 17.7363 15.2485Z"
                   fill="#633001"
                 />

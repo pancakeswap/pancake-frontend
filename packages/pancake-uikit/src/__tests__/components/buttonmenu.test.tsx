@@ -69,6 +69,10 @@ it("renders correctly", () => {
 
     .c1:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
       opacity: 0.85;
+      -webkit-transform: translateY(1px);
+      -ms-transform: translateY(1px);
+      transform: translateY(1px);
+      box-shadow: none;
     }
 
     .c1:disabled,
@@ -122,6 +126,10 @@ it("renders correctly", () => {
 
     .c2:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
       opacity: 0.85;
+      -webkit-transform: translateY(1px);
+      -ms-transform: translateY(1px);
+      transform: translateY(1px);
+      box-shadow: none;
     }
 
     .c2:disabled,
