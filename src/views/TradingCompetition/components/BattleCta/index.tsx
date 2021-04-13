@@ -13,7 +13,7 @@ import {
 } from '@pancakeswap-libs/uikit'
 import useAuth from 'hooks/useAuth'
 import useI18n from 'hooks/useI18n'
-import { FINISHED } from 'config/constants/trading-competition/easterPhases'
+import { FINISHED, OVER } from 'config/constants/trading-competition/easterPhases'
 import RegisterModal from '../RegisterModal'
 import ClaimModal from '../ClaimModal'
 import { Heading2Text } from '../CompetitionHeadingText'
@@ -53,6 +53,9 @@ const BattleCta: React.FC<CompetitionProps> = ({
   account,
   isCompetitionLive,
   profile,
+  userCanClaimPrizes,
+  finishedAndPrizesClaimed,
+  finishedAndNothingToClaim,
   isLoading,
   hasCompetitionEnded,
   onRegisterSuccess,
@@ -69,15 +72,16 @@ const BattleCta: React.FC<CompetitionProps> = ({
     <ClaimModal userTradingInformation={userTradingInformation} onClaimSuccess={onClaimSuccess} />,
     false,
   )
-  const { hasRegistered, hasUserClaimed, userCakeRewards, userPointReward, canClaimNFT } = userTradingInformation
-
-  const userCanClaimPrizes = !hasUserClaimed && (userCakeRewards !== '0' || userPointReward !== '0' || canClaimNFT)
+  const { hasRegistered, hasUserClaimed } = userTradingInformation
   const registeredAndNotStarted = hasRegistered && !isCompetitionLive && !hasCompetitionEnded
-  const finishedAndPrizesClaimed = hasCompetitionEnded && account && hasUserClaimed
-  const finishedAndNothingToClaim = hasCompetitionEnded && account && !userCanClaimPrizes
 
-  const isButtonDisabled = () =>
-    isLoading || registeredAndNotStarted || finishedAndPrizesClaimed || finishedAndNothingToClaim
+  const isButtonDisabled = Boolean(
+    isLoading ||
+      currentPhase.state === OVER ||
+      registeredAndNotStarted ||
+      finishedAndPrizesClaimed ||
+      finishedAndNothingToClaim,
+  )
 
   const getHeadingText = () => {
     // Competition live
@@ -112,6 +116,10 @@ const BattleCta: React.FC<CompetitionProps> = ({
 
     // User registered and competition finished
     if (hasCompetitionEnded) {
+      // Claim period has ended
+      if (currentPhase.state === OVER) {
+        return TranslateString(999, 'Claim period over')
+      }
       // User has prizes to claim
       if (userCanClaimPrizes) {
         return TranslateString(999, 'Claim prizes')
@@ -171,7 +179,7 @@ const BattleCta: React.FC<CompetitionProps> = ({
           {currentPhase.state !== FINISHED && (
             <Flex alignItems="flex-end">
               <LaurelLeftIcon />
-              <StyledButton disabled={isButtonDisabled()} onClick={() => handleCtaClick()}>
+              <StyledButton disabled={isButtonDisabled} onClick={() => handleCtaClick()}>
                 {getButtonText()}
               </StyledButton>
               <LaurelRightIcon />
