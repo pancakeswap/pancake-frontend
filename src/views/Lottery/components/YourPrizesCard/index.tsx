@@ -32,15 +32,12 @@ const YourPrizesCard: React.FC = () => {
   const winnings = getBalanceNumber(claimAmount)
   const isAWin = winnings > 0
 
-  const [, setClaimDone] = useState(false)
-
-  useEffect(() => {
-    setClaimDone(false)
-  }, [])
+  const [, updateState] = useState<any>()
+  const forceUpdate = useCallback(() => updateState({}), [])
 
   const afterClaim = useCallback(() => {
-    setClaimDone(true)
-  }, [setClaimDone])
+    forceUpdate()
+  }, [forceUpdate])
 
   return (
     <StyledCard isDisabled={!isAWin} isActive={isAWin}>
