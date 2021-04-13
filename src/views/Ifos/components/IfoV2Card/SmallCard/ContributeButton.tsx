@@ -16,6 +16,7 @@ interface Props {
   maxValue?: BigNumber
   isPendingTx: boolean
   addUserContributedAmount: (amount: BigNumber) => void
+  disabled: boolean
 }
 const ContributeButton: React.FC<Props> = ({
   currency,
@@ -24,6 +25,7 @@ const ContributeButton: React.FC<Props> = ({
   maxValue,
   isPendingTx,
   addUserContributedAmount,
+  disabled,
 }) => {
   const TranslateString = useI18n()
   const { toastSuccess } = useToast()
@@ -45,8 +47,8 @@ const ContributeButton: React.FC<Props> = ({
   )
 
   return (
-    <Button onClick={onPresentContributeModal} width="100%" disabled={isPendingTx}>
-      {TranslateString(999, 'Contribute')}
+    <Button onClick={onPresentContributeModal} width="100%" disabled={isPendingTx || disabled}>
+      {disabled ? TranslateString(999, 'Max. Committed') : TranslateString(999, 'Commit LP Tokens')}
     </Button>
   )
 }

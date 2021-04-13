@@ -22,6 +22,7 @@ interface Props {
 const IfoCardActions: React.FC<Props> = ({ currency, poolId, publicIfoData, walletIfoData, hasProfile, isLoading }) => {
   const { account } = useWeb3React()
   const userPoolCharacteristics = walletIfoData[poolId]
+  const publicPoolCharacteristics = publicIfoData[poolId]
 
   if (isLoading) {
     return <SkeletonCardActions />
@@ -39,10 +40,6 @@ const IfoCardActions: React.FC<Props> = ({ currency, poolId, publicIfoData, wall
     )
   }
 
-  if (userPoolCharacteristics.hasClaimed) {
-    return null
-  }
-
   return (
     <>
       {publicIfoData.status === 'live' && (
@@ -53,17 +50,25 @@ const IfoCardActions: React.FC<Props> = ({ currency, poolId, publicIfoData, wall
           isPendingTx={userPoolCharacteristics.isPendingTx}
           addUserContributedAmount={(amount: BigNumber) => walletIfoData.addUserContributedAmount(amount, poolId)}
           maxValue={publicIfoData[poolId].limitPerUserInLP}
+          disabled={
+            publicPoolCharacteristics.limitPerUserInLP.isGreaterThan(0) &&
+            userPoolCharacteristics.amountTokenCommittedInLP.isGreaterThanOrEqualTo(
+              publicPoolCharacteristics.limitPerUserInLP,
+            )
+          }
         />
       )}
-      {publicIfoData.status === 'finished' && userPoolCharacteristics.offeringAmountInToken.isGreaterThan(0) && (
-        <ClaimButton
-          poolId={poolId}
-          contract={walletIfoData.contract}
-          isPendingTx={userPoolCharacteristics.isPendingTx}
-          setPendingTx={(isPending: boolean) => walletIfoData.setPendingTx(isPending, poolId)}
-          setIsClaimed={() => walletIfoData.setIsClaimed(poolId)}
-        />
-      )}
+      {publicIfoData.status === 'finished' &&
+        userPoolCharacteristics.offeringAmountInToken.isGreaterThan(0) &&
+        !userPoolCharacteristics.hasClaimed && (
+          <ClaimButton
+            poolId={poolId}
+            contract={walletIfoData.contract}
+            isPendingTx={userPoolCharacteristics.isPendingTx}
+            setPendingTx={(isPending: boolean) => walletIfoData.setPendingTx(isPending, poolId)}
+            setIsClaimed={() => walletIfoData.setIsClaimed(poolId)}
+          />
+        )}
     </>
   )
 }
