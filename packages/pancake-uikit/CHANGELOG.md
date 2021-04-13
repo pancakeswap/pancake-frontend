@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.24.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap-libs/uikit@0.23.2...@pancakeswap-libs/uikit@0.24.0) (2021-04-13)
+
+
+### Bug Fixes
+
+* :fire: UI updates: button click animation, menu closing fix, men… ([#63](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/63)) ([3d9ba48](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/3d9ba489f642939cfdf54d6939c0fdd7309ed86b))
+* Z index breaking language switcher ([#67](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/67)) ([7179eb1](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/7179eb16d1125c517362cf953a04659d8d12dd1d))
+
+
+### Features
+
+* **colors:** Add card gradients to colors theme  ([#61](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/61)) ([4c7a8ac](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/4c7a8acfb328b80d203ba39eccac92dbf64ca674))
+
+
+
+
+
 ## [0.23.2](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap-libs/uikit@0.23.1...@pancakeswap-libs/uikit@0.23.2) (2021-04-12)
 
 
