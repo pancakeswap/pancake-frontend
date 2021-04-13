@@ -7,21 +7,24 @@ import PrizesWonContent from './PrizesWonContent'
 import NoPrizesContent from './NoPrizesContent'
 
 const StyledCard = styled(Card)`
+  margin-top: 16px;
+
+  ${(props) => `
+    ${props.theme.mediaQueries.sm} {
+      margin-top: 24px;
+    }
+  
+    ${props.theme.mediaQueries.lg} {
+      margin-top: 32px;
+    }
+`}
+
   ${(props) =>
     props.isDisabled
-      ? `  
-        margin-top: 16px;
+      ? `
         background-color: unset;
         box-shadow: unset;
         border: 1px solid ${props.theme.colors.textDisabled};
-
-        ${props.theme.mediaQueries.sm} {
-          margin-top: 24px;
-        }
-
-        ${props.theme.mediaQueries.lg} {
-          margin-top: 32px;
-        }
         `
       : ``}
 `
