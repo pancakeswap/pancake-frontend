@@ -3,8 +3,8 @@ import styled from 'styled-components'
 import { Image, Button } from '@pancakeswap-libs/uikit'
 import { CommunityTag } from 'components/Tags'
 import useI18n from 'hooks/useI18n'
-import Card from './Card'
-import CardTitle from './CardTitle'
+import Card from './PoolCard/StyledCard'
+import CardTitle from './PoolCard/CardTitle'
 
 const Balance = styled.div`
   color: ${({ theme }) => theme.colors.text};

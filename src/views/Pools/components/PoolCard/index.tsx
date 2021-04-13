@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js'
 import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
-import { Button, IconButton, useModal, AddIcon, Image } from '@pancakeswap-libs/uikit'
+import { Button, IconButton, useModal, AddIcon } from '@pancakeswap-libs/uikit'
 import { useWeb3React } from '@web3-react/core'
 import UnlockButton from 'components/UnlockButton'
 import Label from 'components/Label'
@@ -22,17 +22,13 @@ import { useGetApiPrice } from 'state/hooks'
 import DepositModal from './DepositModal'
 import WithdrawModal from './WithdrawModal'
 import CompoundModal from './CompoundModal'
-import CardTitle from './CardTitle'
-import Card from './Card'
+import StyledCard from './StyledCard'
 import OldSyrupTitle from './OldSyrupTitle'
 import HarvestButton from './HarvestButton'
 import CardFooter from './CardFooter'
+import StyledCardHeader from './StyledCardHeader'
 
-interface HarvestProps {
-  pool: Pool
-}
-
-const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
+const PoolCard: React.FC<{ pool: Pool }> = ({ pool }) => {
   const {
     sousId,
     stakingToken,
@@ -117,16 +113,15 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
   }, [onApprove, setRequestedApproval])
 
   return (
-    <Card isActive={isCardActive} isFinished={isFinished && sousId !== 0}>
+    <StyledCard isActive={isCardActive} isFinished={isFinished && sousId !== 0}>
+      <StyledCardHeader
+        poolImage={poolImage}
+        earningTokenSymbol={earningToken.symbol}
+        stakingTokenSymbol={stakingToken.symbol}
+      />
       {isFinished && sousId !== 0 && <PoolFinishedSash />}
       <div style={{ padding: '24px' }}>
-        <CardTitle isFinished={isFinished && sousId !== 0}>
-          {isOldSyrup && '[OLD]'} {earningToken.symbol} {TranslateString(348, 'Pool')}
-        </CardTitle>
         <div style={{ marginBottom: '8px', display: 'flex', alignItems: 'center' }}>
-          <div style={{ flex: 1 }}>
-            <Image src={`/images/pools/${poolImage}`} alt={earningToken.symbol} width={64} height={64} />
-          </div>
           {account && harvest && !isOldSyrup && (
             <HarvestButton
               disabled={!earnings.toNumber() || pendingTx}
@@ -217,7 +212,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
         tokenAddress={earningToken.address ? getAddress(earningToken.address) : ''}
         tokenDecimals={earningToken.decimals}
       />
-    </Card>
+    </StyledCard>
   )
 }
 

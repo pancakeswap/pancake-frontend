@@ -14,7 +14,6 @@ import PageHeader from 'components/PageHeader'
 import Coming from './components/Coming'
 import PoolCard from './components/PoolCard'
 import PoolTabButtons from './components/PoolTabButtons'
-import Divider from './components/Divider'
 
 const ButtonText = styled(Text)`
   display: none;
@@ -70,7 +69,6 @@ const Syrup: React.FC = () => {
       </PageHeader>
       <Page>
         <PoolTabButtons stakedOnly={stakedOnly} setStakedOnly={setStakedOnly} />
-        <Divider />
         <FlexLayout>
           <Route exact path={`${path}`}>
             <>
