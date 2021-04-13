@@ -5,30 +5,34 @@ import { Button, useModal } from '@pancakeswap-libs/uikit'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { Token } from 'config/constants/types'
 import useI18n from 'hooks/useI18n'
+import useTokenBalance from 'hooks/useTokenBalance'
+import { getAddress } from 'utils/addressHelpers'
 import { PoolIds } from 'hooks/ifo/v2/types'
 import { useToast } from 'state/hooks'
 import ContributeModal from './ContributeModal'
+import GetLpModal from './GetLpModal'
 
 interface Props {
   poolId: PoolIds
   currency: Token
   contract: Contract
-  maxValue?: BigNumber
+  limitContributionPerUser: BigNumber
+  userContribution: BigNumber
   isPendingTx: boolean
   addUserContributedAmount: (amount: BigNumber) => void
-  disabled: boolean
 }
 const ContributeButton: React.FC<Props> = ({
   currency,
   poolId,
   contract,
-  maxValue,
+  limitContributionPerUser,
+  userContribution,
   isPendingTx,
   addUserContributedAmount,
-  disabled,
 }) => {
   const TranslateString = useI18n()
   const { toastSuccess } = useToast()
+  const userCurrencyBalance = useTokenBalance(getAddress(currency.address))
 
   const handleContributeSuccess = (amount: BigNumber) => {
     toastSuccess('Success!', `You have contributed ${getBalanceNumber(amount)} CAKE-BNB LP tokens to this IFO!`)
@@ -41,14 +45,26 @@ const ContributeButton: React.FC<Props> = ({
       currency={currency}
       contract={contract}
       onSuccess={handleContributeSuccess}
-      maxValue={maxValue}
+      limitContributionPerUser={limitContributionPerUser}
+      userContribution={userContribution}
+      userCurrencyBalance={userCurrencyBalance}
     />,
     false,
   )
 
+  const [onPresentGetLpModal] = useModal(<GetLpModal currency={currency} />, false)
+
+  const isDisabled =
+    isPendingTx ||
+    (limitContributionPerUser.isGreaterThan(0) && userContribution.isGreaterThanOrEqualTo(limitContributionPerUser))
+
   return (
-    <Button onClick={onPresentContributeModal} width="100%" disabled={isPendingTx || disabled}>
-      {disabled ? TranslateString(999, 'Max. Committed') : TranslateString(999, 'Commit LP Tokens')}
+    <Button
+      onClick={userCurrencyBalance.isEqualTo(0) ? onPresentGetLpModal : onPresentContributeModal}
+      width="100%"
+      disabled={isDisabled}
+    >
+      {isDisabled ? TranslateString(999, 'Max. Committed') : TranslateString(999, 'Commit LP Tokens')}
     </Button>
   )
 }
