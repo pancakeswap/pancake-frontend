@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Card, CardBody } from '@pancakeswap-libs/uikit'
 import { getBalanceNumber } from 'utils/formatBalance'
@@ -32,9 +32,19 @@ const YourPrizesCard: React.FC = () => {
   const winnings = getBalanceNumber(claimAmount)
   const isAWin = winnings > 0
 
+  const [, setClaimDone] = useState(false)
+
+  useEffect(() => {
+    setClaimDone(false)
+  }, [])
+
+  const afterClaim = useCallback(() => {
+    setClaimDone(true)
+  }, [setClaimDone])
+
   return (
     <StyledCard isDisabled={!isAWin} isActive={isAWin}>
-      <CardBody>{isAWin ? <PrizesWonContent /> : <NoPrizesContent />}</CardBody>
+      <CardBody>{isAWin ? <PrizesWonContent afterClaim={afterClaim} /> : <NoPrizesContent />}</CardBody>
     </StyledCard>
   )
 }
