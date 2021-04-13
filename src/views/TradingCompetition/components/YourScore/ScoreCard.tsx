@@ -17,6 +17,7 @@ const ScoreCard: React.FC<YourScoreProps> = ({
   profile,
   isLoading,
   userLeaderboardInformation,
+  currentPhase,
 }) => {
   return (
     <StyledCard mt="24px">
@@ -32,6 +33,7 @@ const ScoreCard: React.FC<YourScoreProps> = ({
               account={account}
               profile={profile}
               userLeaderboardInformation={userLeaderboardInformation}
+              currentPhase={currentPhase}
             />
             {!account && (
               <Flex mt="24px" justifyContent="center">

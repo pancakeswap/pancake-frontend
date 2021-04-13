@@ -4,8 +4,9 @@ import { Flex, Skeleton, PocketWatchIcon, Text } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import Timer from 'components/Timer'
 import getTimePeriods from 'utils/getTimePeriods'
+import { CompetitionSteps, LIVE } from 'config/constants/trading-competition/easterPhases'
 import { Heading2Text } from '../CompetitionHeadingText'
-import { CompetitionSteps, FINISHED, LIVE, CompetitionPhaseProps } from '../../config'
+import { CompetitionPhaseProps } from '../../types'
 import ProgressStepper from './ProgressStepper'
 import { GOLDGRADIENT } from '../Section/sectionStyles'
 
@@ -76,13 +77,38 @@ const TimerBodyComponent = ({ children }) => (
   </Text>
 )
 
-const Countdown: React.FC<{ currentPhase: CompetitionPhaseProps }> = ({ currentPhase }) => {
+const Countdown: React.FC<{ currentPhase: CompetitionPhaseProps; hasCompetitionEnded: boolean }> = ({
+  currentPhase,
+  hasCompetitionEnded,
+}) => {
   const TranslateString = useI18n()
   const finishMs = currentPhase.ends
   const currentMs = Date.now()
   const secondsUntilNextEvent = (finishMs - currentMs) / 1000
 
   const { minutes, hours, days } = getTimePeriods(secondsUntilNextEvent)
+
+  const renderTimer = () => {
+    if (hasCompetitionEnded) {
+      return (
+        <StyledHeading background={GOLDGRADIENT} $fill>
+          {TranslateString(388, 'Finished')}!
+        </StyledHeading>
+      )
+    }
+    return (
+      <Timer
+        timerStage={
+          currentPhase.state === LIVE ? `${TranslateString(410, 'End')}:` : `${TranslateString(1212, 'Start')}:`
+        }
+        minutes={minutes}
+        hours={hours}
+        days={days}
+        HeadingTextComponent={TimerHeadingComponent}
+        BodyTextComponent={TimerBodyComponent}
+      />
+    )
+  }
 
   return (
     <Wrapper>
@@ -93,20 +119,9 @@ const Countdown: React.FC<{ currentPhase: CompetitionPhaseProps }> = ({ currentP
         {!secondsUntilNextEvent ? (
           <Skeleton height={26} width={190} mb="24px" />
         ) : (
-          currentPhase.state !== FINISHED && (
-            <Flex mb="24px">
-              <Timer
-                timerStage={
-                  currentPhase.state === LIVE ? `${TranslateString(410, 'End')}:` : `${TranslateString(1212, 'Start')}:`
-                }
-                minutes={minutes}
-                hours={hours}
-                days={days}
-                HeadingTextComponent={TimerHeadingComponent}
-                BodyTextComponent={TimerBodyComponent}
-              />
-            </Flex>
-          )
+          <Flex mb="24px" justifyContent="center" alignItems="center">
+            {renderTimer()}
+          </Flex>
         )}
         {!secondsUntilNextEvent ? (
           <Skeleton height={42} width={190} />

@@ -13,6 +13,7 @@ import {
 } from '@pancakeswap-libs/uikit'
 import useAuth from 'hooks/useAuth'
 import useI18n from 'hooks/useI18n'
+import { FINISHED } from 'config/constants/trading-competition/easterPhases'
 import RegisterModal from '../RegisterModal'
 import ClaimModal from '../ClaimModal'
 import { Heading2Text } from '../CompetitionHeadingText'
@@ -42,13 +43,18 @@ const StyledButton = styled(Button)`
   }
 `
 
+const StyledHeadingText = styled(Heading2Text)`
+  white-space: normal;
+`
+
 const BattleCta: React.FC<CompetitionProps> = ({
   userTradingInformation,
+  currentPhase,
   account,
   isCompetitionLive,
   profile,
   isLoading,
-  hasCompetitionFinished,
+  hasCompetitionEnded,
   onRegisterSuccess,
   onClaimSuccess,
 }) => {
@@ -63,13 +69,12 @@ const BattleCta: React.FC<CompetitionProps> = ({
     <ClaimModal userTradingInformation={userTradingInformation} onClaimSuccess={onClaimSuccess} />,
     false,
   )
-
   const { hasRegistered, hasUserClaimed, userCakeRewards, userPointReward, canClaimNFT } = userTradingInformation
 
   const userCanClaimPrizes = !hasUserClaimed && (userCakeRewards !== '0' || userPointReward !== '0' || canClaimNFT)
-  const registeredAndNotStarted = hasRegistered && !isCompetitionLive && !hasCompetitionFinished
-  const finishedAndPrizesClaimed = hasCompetitionFinished && account && hasUserClaimed
-  const finishedAndNothingToClaim = hasCompetitionFinished && account && !userCanClaimPrizes
+  const registeredAndNotStarted = hasRegistered && !isCompetitionLive && !hasCompetitionEnded
+  const finishedAndPrizesClaimed = hasCompetitionEnded && account && hasUserClaimed
+  const finishedAndNothingToClaim = hasCompetitionEnded && account && !userCanClaimPrizes
 
   const isButtonDisabled = () =>
     isLoading || registeredAndNotStarted || finishedAndPrizesClaimed || finishedAndNothingToClaim
@@ -79,9 +84,13 @@ const BattleCta: React.FC<CompetitionProps> = ({
     if (isCompetitionLive) {
       return TranslateString(999, 'Now Live!')
     }
-    // Competition finished
-    if (hasCompetitionFinished) {
-      return TranslateString(999, 'Finished!')
+    // Competition finished. Rewards being calculated
+    if (currentPhase.state === FINISHED) {
+      return `${TranslateString(999, 'Calculating prizes')}...`
+    }
+    // All competition finished states
+    if (hasCompetitionEnded) {
+      return `${TranslateString(388, 'Finished')}!`
     }
     // Competition not started
     return TranslateString(999, 'Starting Soon')
@@ -102,7 +111,7 @@ const BattleCta: React.FC<CompetitionProps> = ({
     }
 
     // User registered and competition finished
-    if (hasCompetitionFinished) {
+    if (hasCompetitionEnded) {
       // User has prizes to claim
       if (userCanClaimPrizes) {
         return TranslateString(999, 'Claim prizes')
@@ -148,7 +157,7 @@ const BattleCta: React.FC<CompetitionProps> = ({
       window.location.href = 'https://exchange.pancakeswap.finance/#/swap'
     }
     // Registered and competition has finished
-    if (hasRegistered && hasCompetitionFinished) {
+    if (hasRegistered && hasCompetitionEnded) {
       onPresentClaimModal()
     }
   }
@@ -157,14 +166,17 @@ const BattleCta: React.FC<CompetitionProps> = ({
     <StyledCard>
       <CardBody>
         <Flex flexDirection="column" justifyContent="center" alignItems="center">
-          <Heading2Text>{getHeadingText()}</Heading2Text>
-          <Flex alignItems="flex-end">
-            <LaurelLeftIcon />
-            <StyledButton disabled={isButtonDisabled()} onClick={() => handleCtaClick()}>
-              {getButtonText()}
-            </StyledButton>
-            <LaurelRightIcon />
-          </Flex>
+          <StyledHeadingText>{getHeadingText()}</StyledHeadingText>
+          {/* Hide button if in the pre-claim, FINISHED phase */}
+          {currentPhase.state !== FINISHED && (
+            <Flex alignItems="flex-end">
+              <LaurelLeftIcon />
+              <StyledButton disabled={isButtonDisabled()} onClick={() => handleCtaClick()}>
+                {getButtonText()}
+              </StyledButton>
+              <LaurelRightIcon />
+            </Flex>
+          )}
         </Flex>
       </CardBody>
     </StyledCard>

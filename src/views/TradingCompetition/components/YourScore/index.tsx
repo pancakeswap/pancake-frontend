@@ -19,6 +19,7 @@ const YourScore: React.FC<YourScoreProps> = ({
   profile,
   isLoading,
   userLeaderboardInformation,
+  currentPhase,
 }) => {
   const TranslateString = useI18n()
   const showRibbon = !account || hasRegistered
@@ -40,6 +41,7 @@ const YourScore: React.FC<YourScoreProps> = ({
         profile={profile}
         isLoading={isLoading}
         userLeaderboardInformation={userLeaderboardInformation}
+        currentPhase={currentPhase}
       />
     </Wrapper>
   )
