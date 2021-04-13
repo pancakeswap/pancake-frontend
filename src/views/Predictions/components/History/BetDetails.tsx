@@ -27,8 +27,8 @@ const BetDetails: React.FC<BetDetailsProps> = ({ bet, isWinner }) => {
       <RoundResult round={bet.round} mb="24px" />
       <Flex alignItems="center" justifyContent="space-between" mb="8px">
         <Text>{TranslateString(999, 'Opening Block')}</Text>
-        <Link href={`https://bscscan.com/block/${bet.round.startBlock}`} external>
-          {bet.round.startBlock}
+        <Link href={`https://bscscan.com/block/${bet.round.lockBlock}`} external>
+          {bet.round.lockBlock}
         </Link>
       </Flex>
       <Flex alignItems="center" justifyContent="space-between">
