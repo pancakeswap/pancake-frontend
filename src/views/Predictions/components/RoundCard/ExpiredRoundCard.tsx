@@ -8,6 +8,7 @@ import MultiplierArrow from './MultiplierArrow'
 import Card from './Card'
 import CardHeader from './CardHeader'
 import CollectWinningsOverlay from './CollectWinningsOverlay'
+import CanceledRoundCard from './CanceledRoundCard'
 
 interface ExpiredRoundCardProps {
   round: Round
@@ -37,6 +38,11 @@ const ExpiredRoundCard: React.FC<ExpiredRoundCardProps> = ({
   const { id, endBlock, lockPrice, closePrice } = round
   const betPosition = closePrice > lockPrice ? BetPosition.BULL : BetPosition.BEAR
   const hasEntered = hasEnteredUp || hasEnteredDown
+  const isRoundStopped = closePrice === null
+
+  if (isRoundStopped) {
+    return <CanceledRoundCard round={round} />
+  }
 
   return (
     <StyledExpiredRoundCard>
