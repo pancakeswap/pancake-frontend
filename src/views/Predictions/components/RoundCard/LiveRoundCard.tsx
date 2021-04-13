@@ -6,6 +6,7 @@ import { Round, BetPosition } from 'state/types'
 import { useBlock, useGetTotalIntervalBlocks } from 'state/hooks'
 import { useBnbUsdtTicker } from 'hooks/ticker'
 import { formatRoundPriceDifference, formatUsd, getBubbleGumBackground } from '../../helpers'
+import useIsRoundCanceled from '../../hooks/useIsRoundCanceled'
 import PositionTag from '../PositionTag'
 import { RoundResultBox, LockPriceRow, PrizePoolRow } from '../RoundResult'
 import MultiplierArrow from './MultiplierArrow'
@@ -40,17 +41,16 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
   bearMultiplier,
 }) => {
   const TranslateString = useI18n()
-  const { currentBlock } = useBlock()
   const { lockPrice, lockBlock, totalAmount } = round
   const { stream } = useBnbUsdtTicker()
-  const interval = useGetTotalIntervalBlocks()
+  const totalInterval = useGetTotalIntervalBlocks()
   const isBull = stream?.lastPrice > lockPrice
   const priceColor = isBull ? 'success' : 'failure'
-  const estimatedEndBlock = lockBlock + interval
+  const estimatedEndBlock = lockBlock + totalInterval
   const { value } = formatRoundPriceDifference(stream?.lastPrice, lockPrice)
-  const isRoundStopped = currentBlock - lockBlock > interval
+  const isRoundCanceled = useIsRoundCanceled(round)
 
-  if (isRoundStopped) {
+  if (isRoundCanceled) {
     return <CanceledRoundCard round={round} />
   }
 

@@ -22,6 +22,7 @@ const RoundCard: React.FC<RoundCardProps> = ({ round }) => {
   const bullMultiplier = getMultiplier(totalAmount, bullAmount)
   const bearMultiplier = getMultiplier(totalAmount, bearAmount)
 
+  // Next (open) round
   if (epoch === currentEpoch && lockPrice === null) {
     return (
       <OpenRoundCard
@@ -34,6 +35,7 @@ const RoundCard: React.FC<RoundCardProps> = ({ round }) => {
     )
   }
 
+  // Live round
   if (closePrice === null && epoch === currentEpoch - 1) {
     return (
       <LiveRoundCard
@@ -46,10 +48,12 @@ const RoundCard: React.FC<RoundCardProps> = ({ round }) => {
     )
   }
 
+  // Fake future rounds
   if (epoch > currentEpoch) {
     return <SoonRoundCard round={round} />
   }
 
+  // Past rounds
   return (
     <ExpiredRoundCard
       round={round}

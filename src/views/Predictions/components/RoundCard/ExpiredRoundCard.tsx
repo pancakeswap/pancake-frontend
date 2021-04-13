@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { BlockIcon, CardBody } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import { Round, BetPosition } from 'state/types'
+import useIsRoundCanceled from '../../hooks/useIsRoundCanceled'
 import { RoundResult } from '../RoundResult'
 import MultiplierArrow from './MultiplierArrow'
 import Card from './Card'
@@ -38,9 +39,9 @@ const ExpiredRoundCard: React.FC<ExpiredRoundCardProps> = ({
   const { id, endBlock, lockPrice, closePrice } = round
   const betPosition = closePrice > lockPrice ? BetPosition.BULL : BetPosition.BEAR
   const hasEntered = hasEnteredUp || hasEnteredDown
-  const isRoundStopped = closePrice === null
+  const isRoundCanceled = useIsRoundCanceled(round)
 
-  if (isRoundStopped) {
+  if (isRoundCanceled) {
     return <CanceledRoundCard round={round} />
   }
 
