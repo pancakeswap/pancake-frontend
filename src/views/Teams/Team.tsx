@@ -6,7 +6,6 @@ import PageLoader from 'components/PageLoader'
 import teams from 'config/constants/teams'
 import useI18n from 'hooks/useI18n'
 import { useTeam } from 'state/hooks'
-import PromotionalBanner from 'components/PromotionalBanner'
 import TeamCard from './components/TeamCard'
 import TeamHeader from './components/TeamHeader'
 
@@ -26,21 +25,18 @@ const Team = () => {
   }
 
   return (
-    <>
-      <PromotionalBanner />
-      <Page>
-        <TeamHeader />
-        <Flex mb="24px">
-          <Link to="/teams">
-            <Flex alignItems="center">
-              <ChevronLeftIcon color="primary" />
-              <Text color="primary">{TranslateString(1038, 'Teams Overview')}</Text>
-            </Flex>
-          </Link>
-        </Flex>
-        <TeamCard team={team} />
-      </Page>
-    </>
+    <Page>
+      <TeamHeader />
+      <Flex mb="24px">
+        <Link to="/teams">
+          <Flex alignItems="center">
+            <ChevronLeftIcon color="primary" />
+            <Text color="primary">{TranslateString(1038, 'Teams Overview')}</Text>
+          </Flex>
+        </Link>
+      </Flex>
+      <TeamCard team={team} />
+    </Page>
   )
 }
 
