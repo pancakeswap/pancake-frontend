@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { ReactNode, useState } from 'react'
 import { AutoRenewIcon, Button, ButtonProps } from '@pancakeswap-libs/uikit'
 import { useWeb3React } from '@web3-react/core'
 import useI18n from 'hooks/useI18n'
@@ -8,9 +8,10 @@ import { useToast } from 'state/hooks'
 interface ReclaimPositionButtonProps extends ButtonProps {
   epoch: number
   onSuccess?: () => Promise<void>
+  children?: ReactNode
 }
 
-const ReclaimPositionButton: React.FC<ReclaimPositionButtonProps> = ({ epoch, onSuccess, ...props }) => {
+const ReclaimPositionButton: React.FC<ReclaimPositionButtonProps> = ({ epoch, onSuccess, children, ...props }) => {
   const [isPendingTx, setIsPendingTx] = useState(false)
   const TranslateString = useI18n()
   const { account } = useWeb3React()
@@ -45,7 +46,7 @@ const ReclaimPositionButton: React.FC<ReclaimPositionButtonProps> = ({ epoch, on
       endIcon={isPendingTx ? <AutoRenewIcon spin color="white" /> : null}
       {...props}
     >
-      {TranslateString(999, 'Reclaim Position')}
+      {children || TranslateString(999, 'Reclaim Position')}
     </Button>
   )
 }

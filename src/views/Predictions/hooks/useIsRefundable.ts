@@ -14,6 +14,8 @@ const useIsRefundable = (epoch: number) => {
       if (canClaim) {
         const refundable = await predictionsContract.methods.refundable(epoch, account).call()
         setIsRefundable(refundable)
+      } else {
+        setIsRefundable(false)
       }
     }
 

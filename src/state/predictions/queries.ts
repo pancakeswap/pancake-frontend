@@ -116,11 +116,7 @@ export const getRoundQuery = (id: string) => {
   `
 }
 
-export type BetHistoryWhereClause = {
-  user?: string
-  round?: string
-  claimed?: boolean
-}
+export type BetHistoryWhereClause = Record<string, string | number | boolean>
 
 export const getBetHistoryQuery = (whereClause: BetHistoryWhereClause = {}, first: number, skip: number) => {
   // Note: The graphql API won't accept JSON.stringify because of the quotes
@@ -131,7 +127,7 @@ export const getBetHistoryQuery = (whereClause: BetHistoryWhereClause = {}, firs
       return accum
     }
 
-    return [...accum, `${key}: ${typeof value === 'boolean' ? value : `"${value.toLowerCase()}"`}`]
+    return [...accum, `${key}: ${typeof value === 'boolean' ? value : `"${String(value).toLowerCase()}"`}`]
   }, [])
 
   return `

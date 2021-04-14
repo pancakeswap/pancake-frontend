@@ -4,11 +4,11 @@ import { Bet } from 'state/types'
 import useI18n from 'hooks/useI18n'
 import { Flex, Text, Link, Heading } from '@pancakeswap-libs/uikit'
 import { RoundResult } from '../RoundResult'
-import BetResult from './BetResult'
+import BetResult, { Result } from './BetResult'
 
 interface BetDetailsProps {
   bet: Bet
-  isWinner: boolean
+  result: Result
 }
 
 const StyledBetDetails = styled.div`
@@ -17,12 +17,20 @@ const StyledBetDetails = styled.div`
   padding: 24px;
 `
 
-const BetDetails: React.FC<BetDetailsProps> = ({ bet, isWinner }) => {
+const BetDetails: React.FC<BetDetailsProps> = ({ bet, result }) => {
   const TranslateString = useI18n()
 
   return (
     <StyledBetDetails>
-      <BetResult bet={bet} isWinner={isWinner} />
+      {result === Result.CANCELED && (
+        <Text as="p" color="failure" mb="24px">
+          {TranslateString(
+            999,
+            'This round was automatically canceled due to an error. Please reclaim your funds via the “Reclaim Position” button below.',
+          )}
+        </Text>
+      )}
+      <BetResult bet={bet} result={result} />
       <Heading mb="8px">{TranslateString(999, 'Round History')}</Heading>
       <RoundResult round={bet.round} mb="24px" />
       <Flex alignItems="center" justifyContent="space-between" mb="8px">

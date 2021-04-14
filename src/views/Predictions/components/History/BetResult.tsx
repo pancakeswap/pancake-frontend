@@ -6,13 +6,21 @@ import useI18n from 'hooks/useI18n'
 import styled from 'styled-components'
 import { Bet, BetPosition } from 'state/types'
 import { fetchBet } from 'state/predictions'
+import useIsRefundable from '../../hooks/useIsRefundable'
 import { formatBnb, getPayout } from '../../helpers'
 import CollectWinningsButton from '../CollectWinningsButton'
 import PositionTag from '../PositionTag'
+import ReclaimPositionButton from '../ReclaimPositionButton'
+
+export enum Result {
+  WIN = 'win',
+  LOSE = 'lose',
+  CANCELED = 'canceled',
+}
 
 interface BetResultProps {
   bet: Bet
-  isWinner: boolean
+  result: Result
 }
 
 const StyledBetResult = styled(Box)`
@@ -22,12 +30,64 @@ const StyledBetResult = styled(Box)`
   padding: 16px;
 `
 
-const BetResult: React.FC<BetResultProps> = ({ bet, isWinner }) => {
+const BetResult: React.FC<BetResultProps> = ({ bet, result }) => {
   const TranslateString = useI18n()
-  const payout = getPayout(bet)
   const dispatch = useAppDispatch()
-  const headerColor = isWinner ? 'warning' : 'textSubtle'
   const { account } = useWeb3React()
+  const { isRefundable } = useIsRefundable(bet.round.epoch)
+
+  // Winners get the payout, otherwise the claim what they put it if it was canceled
+  const payout = result === Result.WIN ? getPayout(bet) : bet.amount
+
+  const getHeaderColor = () => {
+    switch (result) {
+      case Result.WIN:
+        return 'warning'
+      case Result.LOSE:
+        return 'textSubtle'
+      case Result.CANCELED:
+        return 'textDisabled'
+      default:
+        return 'text'
+    }
+  }
+
+  const getHeaderText = () => {
+    switch (result) {
+      case Result.WIN:
+        return TranslateString(999, 'Win')
+      case Result.LOSE:
+        return TranslateString(999, 'Lose')
+      case Result.CANCELED:
+        return TranslateString(999, 'Canceled')
+      default:
+        return ''
+    }
+  }
+
+  const getHeaderIcon = () => {
+    switch (result) {
+      case Result.WIN:
+        return <PrizeIcon color={getHeaderColor()} />
+      case Result.LOSE:
+      case Result.CANCELED:
+        return <BlockIcon color={getHeaderColor()} />
+      default:
+        return null
+    }
+  }
+
+  const getResultColor = () => {
+    switch (result) {
+      case Result.WIN:
+        return 'success'
+      case Result.LOSE:
+        return 'failure'
+      case Result.CANCELED:
+      default:
+        return 'text'
+    }
+  }
 
   const handleSuccess = async () => {
     await dispatch(fetchBet({ account, id: bet.id }))
@@ -38,14 +98,14 @@ const BetResult: React.FC<BetResultProps> = ({ bet, isWinner }) => {
       <Flex alignItems="center" justifyContent="space-between" mb="8px">
         <Heading>{TranslateString(999, 'Your History')}</Heading>
         <Flex alignItems="center">
-          <Heading as="h3" color={headerColor} textTransform="uppercase" bold mr="4px">
-            {isWinner ? TranslateString(999, 'Win') : TranslateString(999, 'Lose')}
+          <Heading as="h3" color={getHeaderColor()} textTransform="uppercase" bold mr="4px">
+            {getHeaderText()}
           </Heading>
-          {isWinner ? <PrizeIcon color={headerColor} /> : <BlockIcon color={headerColor} />}
+          {getHeaderIcon()}
         </Flex>
       </Flex>
       <StyledBetResult>
-        {isWinner && !bet.claimed && (
+        {result === Result.WIN && !bet.claimed && (
           <CollectWinningsButton
             payout={payout}
             epoch={bet.round.epoch}
@@ -56,6 +116,9 @@ const BetResult: React.FC<BetResultProps> = ({ bet, isWinner }) => {
           >
             {TranslateString(999, 'Collect Winnings')}
           </CollectWinningsButton>
+        )}
+        {result === Result.CANCELED && isRefundable && (
+          <ReclaimPositionButton epoch={bet.round.epoch} width="100%" mb="16px" />
         )}
         <Flex alignItems="center" justifyContent="space-between" mb="16px">
           <Text>{TranslateString(999, 'Your direction')}</Text>
@@ -69,7 +132,7 @@ const BetResult: React.FC<BetResultProps> = ({ bet, isWinner }) => {
         </Flex>
         <Flex alignItems="center" justifyContent="space-between">
           <Text bold>{TranslateString(999, 'Your Result')}</Text>
-          <Text bold color={isWinner ? 'success' : 'failure'}>{`${isWinner ? '+' : '-'}${formatBnb(payout)} BNB`}</Text>
+          <Text bold color={getResultColor()}>{`${result === Result.LOSE ? '-' : '+'}${formatBnb(payout)} BNB`}</Text>
         </Flex>
       </StyledBetResult>
     </>

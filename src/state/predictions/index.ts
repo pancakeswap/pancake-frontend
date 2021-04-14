@@ -98,6 +98,18 @@ export const predictionsSlice = createSlice({
     setCurrentEpoch: (state, action: PayloadAction<number>) => {
       state.currentEpoch = action.payload
     },
+    markBetAsCollected: (state, action: PayloadAction<{ account: string; betId: string }>) => {
+      const { account, betId } = action.payload
+      const history = state.history[account]
+
+      if (history) {
+        const betIndex = history.findIndex((bet) => bet.id === betId)
+
+        if (betIndex >= 0) {
+          history[betIndex].claimed = true
+        }
+      }
+    },
   },
   extraReducers: (builder) => {
     // Update Round
@@ -138,6 +150,7 @@ export const {
   setHistoryFilter,
   setHistoryPaneState,
   updateRounds,
+  markBetAsCollected,
 } = predictionsSlice.actions
 
 export default predictionsSlice.reducer

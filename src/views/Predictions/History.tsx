@@ -7,7 +7,13 @@ import { HistoryFilter } from 'state/types'
 import useI18n from 'hooks/useI18n'
 import { orderBy } from 'lodash'
 import { useAppDispatch } from 'state'
-import { useGetHistoryByAccount, useGetHistoryFilter, useGetIsFetchingHistory, useIsHistoryPaneOpen } from 'state/hooks'
+import {
+  useGetCurrentEpoch,
+  useGetHistoryByAccount,
+  useGetHistoryFilter,
+  useGetIsFetchingHistory,
+  useIsHistoryPaneOpen,
+} from 'state/hooks'
 import { Header, HistoricalBet } from './components/History'
 
 const StyledHistory = styled.div`
@@ -43,13 +49,14 @@ const History = () => {
   const isHistoryPaneOpen = useIsHistoryPaneOpen()
   const isFetchingHistory = useGetIsFetchingHistory()
   const historyFilter = useGetHistoryFilter()
+  const currentEpoch = useGetCurrentEpoch()
   const bets = useGetHistoryByAccount(account)
 
   useEffect(() => {
     if (account && isHistoryPaneOpen) {
       dispatch(fetchHistory({ account }))
     }
-  }, [account, isHistoryPaneOpen, dispatch])
+  }, [account, currentEpoch, isHistoryPaneOpen, dispatch])
 
   // Currently the api cannot filter by unclaimed AND won so we do it here
   // when the user has selected Uncollected only include positions they won
@@ -60,18 +67,27 @@ const History = () => {
         })
       : bets
 
+  // The bet api returns all bets, even ones where the round is still active
+  // so we need to filter out the latest 2 rounds
+  const finalResults = results
+    ? results.filter((bet) => {
+        return bet.round.epoch < currentEpoch - 1
+      })
+    : []
+
   return (
     <StyledHistory>
       <Header />
       <BetWrapper>
-        {isFetchingHistory && (
-          <SpinnerWrapper>
-            <Spinner size={72} />
-          </SpinnerWrapper>
-        )}
+        {isFetchingHistory ||
+          (!bets && (
+            <SpinnerWrapper>
+              <Spinner size={72} />
+            </SpinnerWrapper>
+          ))}
 
-        {results ? (
-          orderBy(results, ['round.epoch'], ['desc']).map((bet) => {
+        {finalResults ? (
+          orderBy(finalResults, ['round.epoch'], ['desc']).map((bet) => {
             return <HistoricalBet key={bet.id} bet={bet} />
           })
         ) : (
