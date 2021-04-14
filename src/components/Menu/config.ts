@@ -44,7 +44,10 @@ const config: MenuEntry[] = [
     label: 'Team Battle',
     icon: 'TeamBattleIcon',
     href: '/competition',
-    status: menuStatus.LIVE,
+    status: {
+      text: 'CALCULATING',
+      color: 'warning',
+    },
   },
   {
     label: 'Teams & Profile',
