@@ -45,7 +45,7 @@ const config: MenuEntry[] = [
     icon: 'TeamBattleIcon',
     href: '/competition',
     status: {
-      text: 'CLAIM',
+      text: 'CALCULATING',
       color: 'warning',
     },
   },
