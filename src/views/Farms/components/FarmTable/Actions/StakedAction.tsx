@@ -43,11 +43,11 @@ const Staked: React.FunctionComponent<FarmWithStakedValue> = ({ pid, lpSymbol, l
   const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
 
   const displayBalance = useCallback(() => {
-    const balanceNumberLocale = getBalanceNumber(stakedBalance).toLocaleString()
-    if (stakedBalance.gt(0) && balanceNumberLocale === '0') {
+    const stakedBalanceNumber = getBalanceNumber(stakedBalance)
+    if (stakedBalanceNumber > 0 && stakedBalanceNumber < 0.0001) {
       return getFullDisplayBalance(stakedBalance).toLocaleString()
     }
-    return balanceNumberLocale
+    return stakedBalanceNumber.toLocaleString()
   }, [stakedBalance])
 
   const [onPresentDeposit] = useModal(
