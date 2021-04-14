@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.24.1](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap-libs/uikit@0.24.0...@pancakeswap-libs/uikit@0.24.1) (2021-04-14)
+
+
+### Bug Fixes
+
+* Add z-index 10 to StyledTooltip ([#70](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/70)) ([24941ff](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/24941ff7234e4ad89a4fa0c10c85e2f73e8f72aa))
+
+
+
+
+
 # [0.24.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap-libs/uikit@0.23.2...@pancakeswap-libs/uikit@0.24.0) (2021-04-13)
 
 
