@@ -53,8 +53,9 @@ const IfoCardActions: React.FC<Props> = ({ currency, poolId, publicIfoData, wall
         />
       )}
       {publicIfoData.status === 'finished' &&
-        userPoolCharacteristics.offeringAmountInToken.isGreaterThan(0) &&
-        !userPoolCharacteristics.hasClaimed && (
+        !userPoolCharacteristics.hasClaimed &&
+        (userPoolCharacteristics.offeringAmountInToken.isGreaterThan(0) ||
+          userPoolCharacteristics.refundingAmountInLP.isGreaterThan(0)) && (
           <ClaimButton
             poolId={poolId}
             contract={walletIfoData.contract}

@@ -24,7 +24,9 @@ const FooterEntry: React.FC<FooterEntryProps> = ({ label, value }) => {
       <Text small color="textSubtle">
         {label}
       </Text>
-      <Text small>{value}</Text>
+      <Text small textAlign="right">
+        {value}
+      </Text>
     </Flex>
   )
 }
@@ -47,7 +49,7 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoD
     .times(100)
     .toFixed(2)
   const totalLPCommitted = getBalanceNumber(poolCharacteristic.totalAmountPool, ifo.currency.decimals)
-  const totalCommitted = `${totalLPCommitted} (${totalCommittedPercent}%)`
+  const totalCommitted = `${totalLPCommitted.toFixed(2)} (${totalCommittedPercent}%)`
   /* Format end */
 
   const renderBasedOnIfoSttatus = () => {
@@ -87,7 +89,7 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoD
           )}
           <FooterEntry label={TranslateString(999, 'Total committed:')} value={totalCommitted} />
           <FooterEntry label={TranslateString(999, 'Funds raised:')} value="??" />
-          <FooterEntry label={TranslateString(999, 'CAKE burned:')} value="??" />
+          <FooterEntry label={TranslateString(999, 'CAKE burned:')} value={ifo.cakeToBurn} />
           <FooterEntry label={`Price per ${ifo.token.symbol}: `} value={tokenPriceFormatted} />
         </>
       )

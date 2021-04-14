@@ -1,7 +1,19 @@
 import React from 'react'
 import styled from 'styled-components'
 import every from 'lodash/every'
-import { Stepper, Step, StepStatus, Card, CardBody, Heading, Text } from '@pancakeswap-libs/uikit'
+import {
+  Stepper,
+  Step,
+  StepStatus,
+  Card,
+  CardBody,
+  Heading,
+  Text,
+  Button,
+  Link,
+  OpenNewIcon,
+} from '@pancakeswap-libs/uikit'
+import { BASE_ADD_LIQUIDITY_URL } from 'config'
 import useI18n from 'hooks/useI18n'
 import useTokenBalance from 'hooks/useTokenBalance'
 import Container from 'components/layout/Container'
@@ -40,7 +52,8 @@ const IfoSteps: React.FC<Props> = ({ currency }) => {
     return arePreviousValid ? 'current' : 'future'
   }
 
-  const renderCardBody = (step) => {
+  const renderCardBody = (step: number) => {
+    const isStepValid = stepsValidationStatus[step]
     switch (step) {
       case 0:
         return (
@@ -48,7 +61,18 @@ const IfoSteps: React.FC<Props> = ({ currency }) => {
             <Heading as="h4" color="secondary" mb="16px">
               Activate your Profile
             </Heading>
-            <Text color="textSubtle">You’ll need an active PancakeSwap Profile to take part in an IFO!</Text>
+            <Text color="textSubtle" small mb="16px">
+              You’ll need an active PancakeSwap Profile to take part in an IFO!
+            </Text>
+            {isStepValid ? (
+              <Text color="success" bold>
+                {TranslateString(999, 'Profile Active!')}
+              </Text>
+            ) : (
+              <Button as={Link} href="/profile">
+                {TranslateString(999, 'Activate you profile')}
+              </Button>
+            )}
           </CardBody>
         )
       case 1:
@@ -57,9 +81,19 @@ const IfoSteps: React.FC<Props> = ({ currency }) => {
             <Heading as="h4" color="secondary" mb="16px">
               Get CAKE-BNB LP Tokens
             </Heading>
-            <Text color="textSubtle">
-              Stake CAKE and BNB in the liquidity pool to get LP tokens. You’ll spend them to buy IFO sale tokens.
+            <Text color="textSubtle" small>
+              Stake CAKE and BNB in the liquidity pool to get LP tokens. <br />
+              You’ll spend them to buy IFO sale tokens.
             </Text>
+            <Button
+              as={Link}
+              external
+              href={`${BASE_ADD_LIQUIDITY_URL}/BNB/0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82`}
+              endIcon={<OpenNewIcon color="white" />}
+              mt="16px"
+            >
+              {TranslateString(999, 'Get LP tokens')}
+            </Button>
           </CardBody>
         )
       case 2:
@@ -68,9 +102,9 @@ const IfoSteps: React.FC<Props> = ({ currency }) => {
             <Heading as="h4" color="secondary" mb="16px">
               Commit LP Tokens
             </Heading>
-            <Text color="textSubtle">
-              When the IFO sales are live, you can “commit” your LP tokens to buy the tokens being sold. We recommend
-              committing to the Basic Sale first, but you can do both if you want.
+            <Text color="textSubtle" small>
+              When the IFO sales are live, you can “commit” your LP tokens to buy the tokens being sold. <br />
+              We recommend committing to the Basic Sale first, but you can do both if you want.
             </Text>
           </CardBody>
         )
@@ -80,7 +114,7 @@ const IfoSteps: React.FC<Props> = ({ currency }) => {
             <Heading as="h4" color="secondary" mb="16px">
               Claim your tokens and achievement
             </Heading>
-            <Text color="textSubtle">
+            <Text color="textSubtle" small>
               After the IFO sales finish, you can claim any IFO tokens that you bought, and any unspent CAKE-BNB LP
               tokens will be returned to your wallet.
             </Text>

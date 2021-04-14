@@ -18,6 +18,7 @@ import useGetWalletIfoV2Data from 'hooks/ifo/v2/useGetWalletIfoData'
 import { PoolIds } from 'hooks/ifo/v2/types'
 import SmallCard from './SmallCard'
 import Timer from './Timer'
+import Achievement from './Achievement'
 
 interface IfoFoldableCardProps {
   ifo: Ifo
@@ -58,10 +59,11 @@ const FoldableContent = styled.div<{ isVisible: boolean; isActive: boolean }>`
   background: ${({ isActive, theme }) => (isActive ? theme.colors.gradients.bubblegum : theme.colors.dropdown)};
 `
 
-const CardWrapper = styled.div`
+const CardsWrapper = styled.div`
   display: grid;
   grid-gap: 32px;
   grid-template-columns: 1fr;
+  margin-bottom: 32px;
   ${({ theme }) => theme.mediaQueries.md} {
     grid-template-columns: 1fr 1fr;
   }
@@ -91,7 +93,7 @@ const IfoFoldableCard: React.FC<IfoFoldableCardProps> = ({ ifo, isInitiallyVisib
         {isActive && <Progress variant="flat" primaryStep={publicIfoData.progress} />}
         <CardBody>
           {isActive && <Timer publicIfoData={publicIfoData} />}
-          <CardWrapper>
+          <CardsWrapper>
             <SmallCard
               poolId={PoolIds.poolBasic}
               ifo={ifo}
@@ -104,7 +106,8 @@ const IfoFoldableCard: React.FC<IfoFoldableCardProps> = ({ ifo, isInitiallyVisib
               publicIfoData={publicIfoData}
               walletIfoData={walletIfoData}
             />
-          </CardWrapper>
+          </CardsWrapper>
+          <Achievement ifo={ifo} />
         </CardBody>
         <StyledCardFooter>
           <Button variant="text" endIcon={<ChevronUpIcon color="primary" />} onClick={() => setIsVisible(false)}>
