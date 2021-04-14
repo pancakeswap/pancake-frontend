@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.25.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap-libs/uikit@0.24.1...@pancakeswap-libs/uikit@0.25.0) (2021-04-14)
+
+
+### Bug Fixes
+
+* Theme config key name ([#71](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/71)) ([d55e4bc](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/d55e4bc76486d9c04df62b7e1359b394a8b89dd8))
+
+
+
+
+
 ## [0.24.1](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap-libs/uikit@0.24.0...@pancakeswap-libs/uikit@0.24.1) (2021-04-14)
 
 
