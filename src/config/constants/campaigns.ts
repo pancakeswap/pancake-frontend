@@ -11,6 +11,12 @@ import { Campaign } from './types'
 
 const campaigns: Campaign[] = [
   {
+    id: '511090000',
+    type: 'ifo',
+    title: 'Horizen',
+    badge: 'ifo-hzn.svg',
+  },
+  {
     id: '511080000',
     type: 'ifo',
     title: 'Belt',
@@ -57,6 +63,96 @@ const campaigns: Campaign[] = [
     type: 'ifo',
     title: 'Blink',
     badge: 'ifo-blk.svg',
+  },
+  {
+    id: '512010001',
+    type: 'teambattle',
+    title: 'Easter Champion: Gold',
+    badge: 'easter-champion-gold.svg',
+  },
+  {
+    id: '512010002',
+    type: 'teambattle',
+    title: 'Easter Top 500: Gold',
+    badge: 'easter-top-500-gold.svg',
+  },
+  {
+    id: '512010003',
+    type: 'teambattle',
+    title: 'Easter Top 500: Gold',
+    badge: 'easter-top-500-gold.svg',
+  },
+  {
+    id: '512010004',
+    type: 'teambattle',
+    title: 'Easter Top 500: Gold',
+    badge: 'easter-top-500-gold.svg',
+  },
+  {
+    id: '512010005',
+    type: 'teambattle',
+    title: 'Easter Participant: Gold',
+    badge: 'easter-participant-gold.svg',
+  },
+  {
+    id: '512010006',
+    type: 'teambattle',
+    title: 'Easter Champion: Silver',
+    badge: 'easter-champion-silver.svg',
+  },
+  {
+    id: '512010007',
+    type: 'teambattle',
+    title: 'Easter Top 500: Silver',
+    badge: 'easter-top-500-silver.svg',
+  },
+  {
+    id: '512010008',
+    type: 'teambattle',
+    title: 'Easter Top 500: Silver',
+    badge: 'easter-top-500-silver.svg',
+  },
+  {
+    id: '512010009',
+    type: 'teambattle',
+    title: 'Easter Top 500: Silver',
+    badge: 'easter-top-500-silver.svg',
+  },
+  {
+    id: '512010010',
+    type: 'teambattle',
+    title: 'Easter Participant: Silver',
+    badge: 'easter-participant-silver.svg',
+  },
+  {
+    id: '512010011',
+    type: 'teambattle',
+    title: 'Easter Champion: Bronze',
+    badge: 'easter-champion-bronze.svg',
+  },
+  {
+    id: '512010012',
+    type: 'teambattle',
+    title: 'Easter Top 500: Bronze',
+    badge: 'easter-top-500-bronze.svg',
+  },
+  {
+    id: '512010013',
+    type: 'teambattle',
+    title: 'Easter Top 500: Bronze',
+    badge: 'easter-top-500-bronze.svg',
+  },
+  {
+    id: '512010014',
+    type: 'teambattle',
+    title: 'Easter Top 500: Bronze',
+    badge: 'easter-top-500-bronze.svg',
+  },
+  {
+    id: '512010015',
+    type: 'teambattle',
+    title: 'Easter Participant: Bronze',
+    badge: 'easter-participant-bronze.svg',
   },
 ]
 
