@@ -30,6 +30,10 @@ const Nfts: Nft[] = [
     },
     sortOrder: 999,
     bunnyId: 14,
+    address: {
+      56: '0xDf7952B35f24aCF7fC0487D01c8d5690a60DBa07',
+      97: '0x60935F36e4631F73f0f407e68642144e07aC7f5E',
+    },
   },
   {
     name: "Flipsie Easter '21",
@@ -42,6 +46,10 @@ const Nfts: Nft[] = [
     },
     sortOrder: 999,
     bunnyId: 13,
+    address: {
+      56: '0xDf7952B35f24aCF7fC0487D01c8d5690a60DBa07',
+      97: '0x60935F36e4631F73f0f407e68642144e07aC7f5E',
+    },
   },
   {
     name: "Stormy Easter '21",
@@ -54,6 +62,10 @@ const Nfts: Nft[] = [
     },
     sortOrder: 999,
     bunnyId: 12,
+    address: {
+      56: '0xDf7952B35f24aCF7fC0487D01c8d5690a60DBa07',
+      97: '0x60935F36e4631F73f0f407e68642144e07aC7f5E',
+    },
   },
   {
     name: 'Bullish',
@@ -70,6 +82,10 @@ const Nfts: Nft[] = [
     },
     sortOrder: 999,
     bunnyId: 11,
+    address: {
+      56: '0xDf7952B35f24aCF7fC0487D01c8d5690a60DBa07',
+      97: '0x60935F36e4631F73f0f407e68642144e07aC7f5E',
+    },
   },
   {
     name: 'Hiccup',
@@ -82,6 +98,10 @@ const Nfts: Nft[] = [
     },
     sortOrder: 999,
     bunnyId: 10,
+    address: {
+      56: '0xDf7952B35f24aCF7fC0487D01c8d5690a60DBa07',
+      97: '0x60935F36e4631F73f0f407e68642144e07aC7f5E',
+    },
   },
   {
     name: 'Sleepy',
@@ -95,6 +115,10 @@ const Nfts: Nft[] = [
     },
     sortOrder: 999,
     bunnyId: 5,
+    address: {
+      56: '0xDf7952B35f24aCF7fC0487D01c8d5690a60DBa07',
+      97: '0x60935F36e4631F73f0f407e68642144e07aC7f5E',
+    },
   },
   {
     name: 'Sunny',
@@ -108,6 +132,10 @@ const Nfts: Nft[] = [
     },
     sortOrder: 999,
     bunnyId: 9,
+    address: {
+      56: '0xDf7952B35f24aCF7fC0487D01c8d5690a60DBa07',
+      97: '0x60935F36e4631F73f0f407e68642144e07aC7f5E',
+    },
   },
   {
     name: 'Churro',
@@ -121,6 +149,10 @@ const Nfts: Nft[] = [
     },
     sortOrder: 999,
     bunnyId: 8,
+    address: {
+      56: '0xDf7952B35f24aCF7fC0487D01c8d5690a60DBa07',
+      97: '0x60935F36e4631F73f0f407e68642144e07aC7f5E',
+    },
   },
   {
     name: 'Dollop',
@@ -134,6 +166,10 @@ const Nfts: Nft[] = [
     },
     sortOrder: 999,
     bunnyId: 6,
+    address: {
+      56: '0xDf7952B35f24aCF7fC0487D01c8d5690a60DBa07',
+      97: '0x60935F36e4631F73f0f407e68642144e07aC7f5E',
+    },
   },
   {
     name: 'Twinkle',
@@ -147,6 +183,10 @@ const Nfts: Nft[] = [
     },
     sortOrder: 999,
     bunnyId: 7,
+    address: {
+      56: '0xDf7952B35f24aCF7fC0487D01c8d5690a60DBa07',
+      97: '0x60935F36e4631F73f0f407e68642144e07aC7f5E',
+    },
   },
   {
     name: 'Swapsies',
@@ -160,6 +200,10 @@ const Nfts: Nft[] = [
     },
     sortOrder: 999,
     bunnyId: 0,
+    address: {
+      56: '0xDf7952B35f24aCF7fC0487D01c8d5690a60DBa07',
+      97: '0x60935F36e4631F73f0f407e68642144e07aC7f5E',
+    },
   },
   {
     name: 'Drizzle',
@@ -173,6 +217,10 @@ const Nfts: Nft[] = [
     },
     sortOrder: 999,
     bunnyId: 1,
+    address: {
+      56: '0xDf7952B35f24aCF7fC0487D01c8d5690a60DBa07',
+      97: '0x60935F36e4631F73f0f407e68642144e07aC7f5E',
+    },
   },
   {
     name: 'Blueberries',
@@ -186,6 +234,10 @@ const Nfts: Nft[] = [
     },
     sortOrder: 999,
     bunnyId: 2,
+    address: {
+      56: '0xDf7952B35f24aCF7fC0487D01c8d5690a60DBa07',
+      97: '0x60935F36e4631F73f0f407e68642144e07aC7f5E',
+    },
   },
   {
     name: 'Circular',
@@ -199,6 +251,10 @@ const Nfts: Nft[] = [
     },
     sortOrder: 999,
     bunnyId: 3,
+    address: {
+      56: '0xDf7952B35f24aCF7fC0487D01c8d5690a60DBa07',
+      97: '0x60935F36e4631F73f0f407e68642144e07aC7f5E',
+    },
   },
   {
     name: 'Sparkle',
@@ -212,6 +268,10 @@ const Nfts: Nft[] = [
     },
     sortOrder: 999,
     bunnyId: 4,
+    address: {
+      56: '0xDf7952B35f24aCF7fC0487D01c8d5690a60DBa07',
+      97: '0x60935F36e4631F73f0f407e68642144e07aC7f5E',
+    },
   },
 ]
 
