@@ -1074,6 +1074,15 @@ const tokens = {
     decimals: 4,
     projectLink: 'https://alienworlds.io/',
   },
+  perl: {
+    symbol: 'PERL',
+    address: {
+      56: '0x0f9e4d49f25de22c2202af916b681fbb3790497b',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://perlinx.finance/',
+  },
 }
 
 export default tokens

@@ -11,7 +11,6 @@ import ToastListener from './components/ToastListener'
 import PageLoader from './components/PageLoader'
 import EasterEgg from './components/EasterEgg'
 import Pools from './views/Pools'
-import GlobalCheckClaimStatus from './views/Collectibles/components/GlobalCheckClaimStatus'
 import history from './routerHistory'
 
 // Route-based code splitting
@@ -99,7 +98,6 @@ const App: React.FC = () => {
       </Menu>
       <EasterEgg iterations={2} />
       <ToastListener />
-      <GlobalCheckClaimStatus excludeLocations={['/collectibles']} />
     </Router>
   )
 }
