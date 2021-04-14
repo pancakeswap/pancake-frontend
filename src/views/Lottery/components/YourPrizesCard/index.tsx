@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { Card, CardBody } from '@pancakeswap-libs/uikit'
 import { getBalanceNumber } from 'utils/formatBalance'
