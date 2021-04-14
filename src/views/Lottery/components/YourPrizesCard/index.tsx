@@ -9,6 +9,14 @@ import NoPrizesContent from './NoPrizesContent'
 const StyledCard = styled(Card)`
   margin-top: 16px;
 
+  ${({ theme }) => theme.mediaQueries.sm} {
+    margin-top: 24px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    margin-top: 32px;
+  }
+
   ${(props) => `
     ${props.theme.mediaQueries.sm} {
       margin-top: 24px;
