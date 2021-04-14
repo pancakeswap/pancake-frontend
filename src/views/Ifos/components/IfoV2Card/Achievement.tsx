@@ -5,9 +5,10 @@ import { Ifo } from 'config/constants/types'
 
 interface Props {
   ifo: Ifo
+  minLpForAchievement: number
 }
 
-const Achievement: React.FC<Props> = ({ ifo }) => {
+const Achievement: React.FC<Props> = ({ ifo, minLpForAchievement }) => {
   const TranslateString = useI18n()
   const tokenName = ifo.token.symbol.toLowerCase()
   return (
@@ -26,7 +27,7 @@ const Achievement: React.FC<Props> = ({ ifo }) => {
             </Flex>
           </Flex>
           <Text color="textSubtle" fontSize="12px">
-            Commit -- LP in total to earn!
+            {`Commit ${minLpForAchievement} LP in total to earn!`}
           </Text>
         </Flex>
       </Flex>

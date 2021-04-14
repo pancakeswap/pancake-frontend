@@ -20,6 +20,7 @@ interface Props {
   userContribution: BigNumber
   isPendingTx: boolean
   addUserContributedAmount: (amount: BigNumber) => void
+  currencyPriceInUSD: BigNumber
 }
 const ContributeButton: React.FC<Props> = ({
   currency,
@@ -29,6 +30,7 @@ const ContributeButton: React.FC<Props> = ({
   userContribution,
   isPendingTx,
   addUserContributedAmount,
+  currencyPriceInUSD,
 }) => {
   const TranslateString = useI18n()
   const { toastSuccess } = useToast()
@@ -48,6 +50,7 @@ const ContributeButton: React.FC<Props> = ({
       limitContributionPerUser={limitContributionPerUser}
       userContribution={userContribution}
       userCurrencyBalance={userCurrencyBalance}
+      currencyPriceInUSD={currencyPriceInUSD}
     />,
     false,
   )

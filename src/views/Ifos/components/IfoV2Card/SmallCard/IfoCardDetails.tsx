@@ -3,8 +3,8 @@ import { Text, Flex, Box } from '@pancakeswap-libs/uikit'
 import { PublicIfoData, PoolIds } from 'hooks/ifo/v2/types'
 import useI18n from 'hooks/useI18n'
 import { Ifo } from 'config/constants/types'
-import { getBalanceNumber } from 'utils/formatBalance'
 import { useGetApiPrice } from 'state/hooks'
+import { getBalanceNumber, formatNumber } from 'utils/formatBalance'
 import { SkeletonCardDetails } from './Skeletons'
 
 export interface IfoCardDetailsProps {
@@ -33,15 +33,13 @@ const FooterEntry: React.FC<FooterEntryProps> = ({ label, value }) => {
 
 const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoData }) => {
   const TranslateString = useI18n()
-  const { status } = publicIfoData
+  const { status, currencyPriceInUSD } = publicIfoData
   const poolCharacteristic = publicIfoData[poolId]
   const tokenPriceUsd = useGetApiPrice(ifo.token.symbol)
 
   /* Format start */
   const maxLpTokens = getBalanceNumber(poolCharacteristic.limitPerUserInLP, ifo.currency.decimals)
-  const tokenPriceFormatted = tokenPriceUsd
-    ? `$${tokenPriceUsd.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
-    : '?'
+  const tokenPriceFormatted = tokenPriceUsd ? `$${formatNumber(tokenPriceUsd)}` : '?'
   const taxRate = `${poolCharacteristic.taxRate}%`
 
   const totalCommittedPercent = poolCharacteristic.totalAmountPool
@@ -49,7 +47,8 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoD
     .times(100)
     .toFixed(2)
   const totalLPCommitted = getBalanceNumber(poolCharacteristic.totalAmountPool, ifo.currency.decimals)
-  const totalCommitted = `${totalLPCommitted.toFixed(2)} (${totalCommittedPercent}%)`
+  const totalLPCommittedInUSD = currencyPriceInUSD.times(totalLPCommitted)
+  const totalCommitted = `${formatNumber(totalLPCommittedInUSD.toNumber())} (${totalCommittedPercent}%)`
   /* Format end */
 
   const renderBasedOnIfoSttatus = () => {

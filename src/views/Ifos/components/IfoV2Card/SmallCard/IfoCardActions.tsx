@@ -50,6 +50,7 @@ const IfoCardActions: React.FC<Props> = ({ currency, poolId, publicIfoData, wall
           addUserContributedAmount={(amount: BigNumber) => walletIfoData.addUserContributedAmount(amount, poolId)}
           userContribution={userPoolCharacteristics.amountTokenCommittedInLP}
           limitContributionPerUser={publicIfoData[poolId].limitPerUserInLP}
+          currencyPriceInUSD={publicIfoData.currencyPriceInUSD}
         />
       )}
       {publicIfoData.status === 'finished' &&

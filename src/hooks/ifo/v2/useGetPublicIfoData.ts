@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js'
 import { BSC_BLOCK_TIME } from 'config'
 import { Ifo, IfoStatus } from 'config/constants/types'
-import { useBlock } from 'state/hooks'
+import { useBlock, useLpTokenPrice } from 'state/hooks'
 import { useIfoV2Contract } from 'hooks/useContract'
 import { useEffect, useState } from 'react'
 import makeBatchRequest from 'utils/makeBatchRequest'
@@ -47,8 +47,10 @@ const formatPool = (pool) => ({
  */
 const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
   const { address, releaseBlockNumber } = ifo
-  const [state, setState] = useState<PublicIfoData>({
-    status: 'idle',
+  const lpTokenPriceInUsd = useLpTokenPrice(ifo.currency.symbol)
+
+  const [state, setState] = useState({
+    status: 'idle' as IfoStatus,
     blocksRemaining: 0,
     secondsUntilStart: 0,
     progress: 5,
@@ -98,7 +100,8 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
           ? ((currentBlock - startBlockNum) / totalBlocks) * 100
           : ((currentBlock - releaseBlockNumber) / (startBlockNum - releaseBlockNumber)) * 100
 
-      setState({
+      setState((prev) => ({
+        ...prev,
         secondsUntilEnd: blocksRemaining * BSC_BLOCK_TIME,
         secondsUntilStart: (startBlockNum - currentBlock) * BSC_BLOCK_TIME,
         poolBasic: { ...formatPool(poolBasic), taxRate: 0 },
@@ -108,13 +111,13 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
         blocksRemaining,
         startBlockNum,
         endBlockNum,
-      })
+      }))
     }
 
     fetchProgress()
-  }, [address, currentBlock, contract, releaseBlockNumber, setState])
+  }, [contract, currentBlock, releaseBlockNumber])
 
-  return state
+  return { ...state, currencyPriceInUSD: lpTokenPriceInUsd }
 }
 
 export default useGetPublicIfoData

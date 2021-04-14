@@ -70,6 +70,14 @@ export const useFarmUser = (pid) => {
   }
 }
 
+export const useLpTokenPrice = (symbol: string) => {
+  const farm = useFarmFromSymbol(symbol)
+  const tokenPriceInUsd = useGetApiPrice(farm.token.symbol)
+  return farm.lpTotalSupply && farm.lpTotalInQuoteToken
+    ? farm.lpTotalSupply.div(farm.lpTotalInQuoteToken).times(tokenPriceInUsd)
+    : new BigNumber(0)
+}
+
 // Pools
 
 export const usePools = (account): Pool[] => {

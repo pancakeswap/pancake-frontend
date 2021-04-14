@@ -26,6 +26,7 @@ export interface PublicIfoData {
   secondsUntilEnd: number
   startBlockNum: number
   endBlockNum: number
+  currencyPriceInUSD: BigNumber
   [PoolIds.poolBasic]: PoolCharacteristics
   [PoolIds.poolUnlimited]: PoolCharacteristics
 }

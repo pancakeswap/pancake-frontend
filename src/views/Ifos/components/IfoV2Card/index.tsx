@@ -20,6 +20,8 @@ import SmallCard from './SmallCard'
 import Timer from './Timer'
 import Achievement from './Achievement'
 
+const MIN_DOLLAR_FOR_ACHIEVEMENT = 5
+
 interface IfoFoldableCardProps {
   ifo: Ifo
   isInitiallyVisible: boolean
@@ -107,7 +109,10 @@ const IfoFoldableCard: React.FC<IfoFoldableCardProps> = ({ ifo, isInitiallyVisib
               walletIfoData={walletIfoData}
             />
           </CardsWrapper>
-          <Achievement ifo={ifo} />
+          <Achievement
+            ifo={ifo}
+            minLpForAchievement={publicIfoData.currencyPriceInUSD.times(MIN_DOLLAR_FOR_ACHIEVEMENT).toNumber()}
+          />
         </CardBody>
         <StyledCardFooter>
           <Button variant="text" endIcon={<ChevronUpIcon color="primary" />} onClick={() => setIsVisible(false)}>

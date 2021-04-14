@@ -6,7 +6,7 @@ import { Modal, ModalBody, Text, Image, Button, BalanceInput, Flex } from '@panc
 import { Token } from 'config/constants/types'
 import { PoolIds } from 'hooks/ifo/v2/types'
 import useI18n from 'hooks/useI18n'
-import { getBalanceNumber } from 'utils/formatBalance'
+import { getBalanceNumber, formatNumber } from 'utils/formatBalance'
 import { getAddress } from 'utils/addressHelpers'
 import ApproveConfirmButtons from 'views/Profile/components/ApproveConfirmButtons'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
@@ -19,6 +19,7 @@ interface Props {
   limitContributionPerUser: BigNumber
   userContribution: BigNumber
   userCurrencyBalance: BigNumber
+  currencyPriceInUSD: BigNumber
   onSuccess: (amount: BigNumber) => void
   onDismiss?: () => void
 }
@@ -29,11 +30,12 @@ const ContributeModal: React.FC<Props> = ({
   currency,
   poolId,
   contract,
-  onDismiss,
-  onSuccess,
   limitContributionPerUser,
   userContribution,
   userCurrencyBalance,
+  currencyPriceInUSD,
+  onDismiss,
+  onSuccess,
 }) => {
   const [value, setValue] = useState('')
   const { account } = useWeb3React()
@@ -105,13 +107,13 @@ const ContributeModal: React.FC<Props> = ({
         </Flex>
         <BalanceInput
           value={value}
-          currencyValue={value}
+          currencyValue={currencyPriceInUSD.times(value || 0).toFixed(2)}
           onChange={(e) => setValue(e.currentTarget.value)}
           isWarning={valueWithTokenDecimals.isGreaterThan(maximumLpCommitable)}
           mb="8px"
         />
         <Text color="textSubtle" textAlign="right" fontSize="12px" mb="16px">
-          Balance: {getBalanceNumber(userCurrencyBalance, currency.decimals)}
+          Balance: {formatNumber(getBalanceNumber(userCurrencyBalance, currency.decimals), 2, 5)}
         </Text>
         <Flex justifyContent="space-between" mb="16px">
           {multiplierValues.map((multiplierValue, index) => (
