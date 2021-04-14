@@ -156,11 +156,11 @@ it("renders correctly", () => {
         >
           <button
             class="c4"
-            color="card"
+            color="backgroundAlt"
           >
             <div
               class="c5"
-              color="card"
+              color="backgroundAlt"
               font-weight="600"
             >
               Item 1

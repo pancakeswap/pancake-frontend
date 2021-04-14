@@ -50,11 +50,11 @@ export type Colors = {
   inputSecondary: string;
   background: string;
   backgroundDisabled: string;
+  backgroundAlt: string;
   text: string;
   textDisabled: string;
   textSubtle: string;
   borderColor: string;
-  card: string;
 
   // Gradients
   gradients: Gradients;

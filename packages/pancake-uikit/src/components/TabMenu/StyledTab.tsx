@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 interface StyledTabProps {
-  color: "card" | "textSubtle";
+  color: "backgroundAlt" | "textSubtle";
   bgColor: "textSubtle" | "input";
 }
 
