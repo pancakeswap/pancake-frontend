@@ -11,7 +11,6 @@ import TotalValueLockedCard from 'views/Home/components/TotalValueLockedCard'
 import EarnAPYCard from 'views/Home/components/EarnAPYCard'
 import EarnAssetCard from 'views/Home/components/EarnAssetCard'
 import WinCard from 'views/Home/components/WinCard'
-import LeadInBanner from 'views/TradingCompetition/components/LeadInBanner'
 
 const Hero = styled.div`
   align-items: center;
@@ -83,9 +82,7 @@ const Home: React.FC = () => {
 
   return (
     <>
-      <PromotionalBanner>
-        <LeadInBanner />
-      </PromotionalBanner>
+      <PromotionalBanner />
       <Page>
         <Hero>
           <Heading as="h1" size="xl" mb="24px" color="secondary">
