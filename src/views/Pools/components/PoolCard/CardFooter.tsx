@@ -3,22 +3,13 @@ import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import { getBalanceNumber } from 'utils/formatBalance'
 import useI18n from 'hooks/useI18n'
-import { ChevronDown, ChevronUp } from 'react-feather'
-import { Flex, MetamaskIcon } from '@pancakeswap-libs/uikit'
+import { Flex, MetamaskIcon, CardFooter, ExpandableLabel, Text, LinkExternal, TimerIcon } from '@pancakeswap-libs/uikit'
 import Balance from 'components/Balance'
-import { CommunityTag, CoreTag, BinanceTag } from 'components/Tags'
 import { useBlock } from 'state/hooks'
-import { PoolCategory } from 'config/constants/types'
 import { registerToken } from 'utils/wallet'
 import { BASE_URL } from 'config'
 
-const tags = {
-  [PoolCategory.BINANCE]: BinanceTag,
-  [PoolCategory.CORE]: CoreTag,
-  [PoolCategory.COMMUNITY]: CommunityTag,
-}
-
-interface Props {
+interface FooterProps {
   projectLink: string
   decimals: number
   totalStaked: BigNumber
@@ -28,59 +19,17 @@ interface Props {
   startBlock: number
   endBlock: number
   isFinished: boolean
-  poolCategory: PoolCategory
+  stakingTokenSymbol: string
 }
 
-const StyledFooter = styled.div<{ isFinished: boolean }>`
-  border-top: 1px solid ${({ theme }) => (theme.isDark ? '#524B63' : '#E9EAEB')};
-  color: ${({ isFinished, theme }) => theme.colors[isFinished ? 'textDisabled2' : 'primary2']};
-  padding: 24px;
-`
-
-const StyledDetailsButton = styled.button`
-  align-items: center;
-  background-color: transparent;
-  border: 0;
-  color: ${(props) => props.theme.colors.primary};
-  cursor: pointer;
-  display: inline-flex;
-  font-size: 16px;
-  font-weight: 600;
-  height: 32px;
-  justify-content: center;
-  outline: 0;
-  padding: 0;
-  &:hover {
-    opacity: 0.9;
-  }
-
-  & > svg {
-    margin-left: 4px;
+const ExpandedWrapper = styled(Flex)`
+  svg {
+    height: 14px;
+    width: 14px;
   }
 `
 
-const Details = styled.div`
-  margin-top: 24px;
-`
-
-const Row = styled(Flex)`
-  align-items: center;
-`
-
-const FlexFull = styled.div`
-  flex: 1;
-`
-const Label = styled.div`
-  font-size: 14px;
-`
-const TokenLink = styled.a`
-  font-size: 14px;
-  text-decoration: none;
-  color: ${(props) => props.theme.colors.primary};
-  cursor: pointer;
-`
-
-const CardFooter: React.FC<Props> = ({
+const Footer: React.FC<FooterProps> = ({
   projectLink,
   decimals,
   tokenAddress,
@@ -90,75 +39,76 @@ const CardFooter: React.FC<Props> = ({
   isFinished,
   startBlock,
   endBlock,
-  poolCategory,
+  stakingTokenSymbol,
 }) => {
   const { currentBlock } = useBlock()
-  const [isOpen, setIsOpen] = useState(false)
+  const [isExpanded, setIsExpanded] = useState(false)
   const TranslateString = useI18n()
-  const Icon = isOpen ? ChevronUp : ChevronDown
-
-  const handleClick = () => setIsOpen(!isOpen)
-  const Tag = tags[poolCategory]
 
   const blocksUntilStart = Math.max(startBlock - currentBlock, 0)
   const blocksRemaining = Math.max(endBlock - currentBlock, 0)
 
   const imageSrc = `${BASE_URL}/images/tokens/${tokenName.toLowerCase()}.png`
 
+  const hasPoolStarted = blocksUntilStart === 0 && blocksRemaining > 0
+
   return (
-    <StyledFooter isFinished={isFinished}>
-      <Row>
-        <FlexFull>
-          <Tag />
-        </FlexFull>
-        <StyledDetailsButton onClick={handleClick}>
-          {isOpen ? TranslateString(1066, 'Hide') : TranslateString(658, 'Details')} <Icon />
-        </StyledDetailsButton>
-      </Row>
-      {isOpen && (
-        <Details>
-          <Row mb="4px">
-            <FlexFull>
-              <Label>
-                <span role="img" aria-label="syrup">
-                  🥞{' '}
-                </span>
-                {TranslateString(408, 'Total')}
-              </Label>
-            </FlexFull>
-            <Balance fontSize="14px" isDisabled={isFinished} value={getBalanceNumber(totalStaked, decimals)} />
-          </Row>
-          {blocksUntilStart > 0 && (
-            <Row mb="4px">
-              <FlexFull>
-                <Label>{TranslateString(1212, 'Start')}:</Label>
-              </FlexFull>
-              <Balance fontSize="14px" isDisabled={isFinished} value={blocksUntilStart} decimals={0} />
-            </Row>
-          )}
-          {blocksUntilStart === 0 && blocksRemaining > 0 && (
-            <Row mb="4px">
-              <FlexFull>
-                <Label>{TranslateString(410, 'End')}:</Label>
-              </FlexFull>
-              <Balance fontSize="14px" isDisabled={isFinished} value={blocksRemaining} decimals={0} />
-            </Row>
-          )}
+    <CardFooter>
+      <Flex>
+        <ExpandableLabel expanded={isExpanded} onClick={() => setIsExpanded(!isExpanded)}>
+          {isExpanded ? TranslateString(1066, 'Hide') : TranslateString(658, 'Details')}
+        </ExpandableLabel>
+      </Flex>
+      {isExpanded && (
+        <ExpandedWrapper flexDirection="column">
+          <Flex justifyContent="space-between" alignItems="center">
+            <Text fontSize="14px">{TranslateString(999, 'Total staked:')}</Text>
+            <Flex alignItems="flex-start">
+              <Balance fontSize="14px" isDisabled={isFinished} value={getBalanceNumber(totalStaked, decimals)} />
+              <Text ml="4px" fontSize="14px">
+                {stakingTokenSymbol}
+              </Text>
+            </Flex>
+          </Flex>
+          <Flex justifyContent="space-between" alignItems="center">
+            <Text fontSize="14px">
+              {hasPoolStarted ? TranslateString(410, 'End') : TranslateString(1212, 'Start')}:
+            </Text>
+            <Flex alignItems="center">
+              <Balance
+                color="primary"
+                fontSize="14px"
+                isDisabled={isFinished}
+                value={hasPoolStarted ? blocksRemaining : blocksUntilStart}
+                decimals={0}
+              />
+              <Text ml="4px" color="primary" fontSize="14px">
+                {TranslateString(999, 'blocks')}
+              </Text>
+              <TimerIcon ml="4px" color="primary" />
+            </Flex>
+          </Flex>
+          <Flex mb="4px" justifyContent="flex-end">
+            <LinkExternal bold={false} fontSize="14px" href={projectLink} target="_blank">
+              {TranslateString(412, 'View project site')}
+            </LinkExternal>
+          </Flex>
           {tokenAddress && (
-            <Flex mb="4px">
-              <TokenLink onClick={() => registerToken(tokenAddress, tokenName, tokenDecimals, imageSrc)}>
-                Add {tokenName} to Metamask
-              </TokenLink>
-              <MetamaskIcon height={15} width={15} ml="4px" />
+            <Flex justifyContent="flex-end">
+              <Text
+                color="primary"
+                fontSize="14px"
+                onClick={() => registerToken(tokenAddress, tokenName, tokenDecimals, imageSrc)}
+              >
+                Add to Metamask
+              </Text>
+              <MetamaskIcon ml="4px" />
             </Flex>
           )}
-          <TokenLink href={projectLink} target="_blank">
-            {TranslateString(412, 'View project site')}
-          </TokenLink>
-        </Details>
+        </ExpandedWrapper>
       )}
-    </StyledFooter>
+    </CardFooter>
   )
 }
 
-export default React.memo(CardFooter)
+export default React.memo(Footer)

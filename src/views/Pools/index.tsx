@@ -21,7 +21,7 @@ const ButtonText = styled(Text)`
   }
 `
 
-const Syrup: React.FC = () => {
+const Pools: React.FC = () => {
   const { path } = useRouteMatch()
   const TranslateString = useI18n()
   const { account } = useWeb3React()
@@ -87,4 +87,4 @@ const Syrup: React.FC = () => {
   )
 }
 
-export default Syrup
+export default Pools

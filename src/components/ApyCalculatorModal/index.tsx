@@ -7,9 +7,9 @@ import { cakeEarnedPerThousandDollarsCompounding, getRoi } from 'utils/compoundA
 
 interface ApyCalculatorModalProps {
   onDismiss?: () => void
+  cakePrice: BigNumber
+  apr: number
   lpLabel?: string
-  cakePrice?: BigNumber
-  apr?: number
   addLiquidityUrl?: string
 }
 
@@ -31,10 +31,10 @@ const Description = styled(Text)`
 
 const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
   onDismiss,
-  lpLabel,
   cakePrice,
   apr,
-  addLiquidityUrl,
+  lpLabel = '',
+  addLiquidityUrl = '',
 }) => {
   const TranslateString = useI18n()
   const oneThousandDollarsWorthOfCake = 1000 / cakePrice.toNumber()
