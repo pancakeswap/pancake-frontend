@@ -65,7 +65,7 @@ const campaigns: Campaign[] = [
     badge: 'ifo-blk.svg',
   },
   {
-    id: '512010001',
+    id: '5120007',
     type: 'teambattle',
     title: 'Easter Champion: Gold',
     badge: 'easter-champion-gold.svg',
