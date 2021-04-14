@@ -64,7 +64,7 @@ const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, use
         <Text color="secondary" bold fontSize="16px">
           {TranslateString(999, 'Congratulations! You won')}:
         </Text>
-        <Flex mt="16px">
+        <Flex mt="16px" alignItems="center">
           {/* achievements */}
           <TrophyGoldIcon mr={[0, '4px']} />
           {champion && <CrownIcon mr={[0, '4px']} />}
