@@ -1090,7 +1090,7 @@ const tokens = {
       97: '',
     },
     decimals: 18,
-    projectLink: 'https://perlinx.finance/',
+    projectLink: 'https://bsc.alpaca.city/',
   },
 }
 
