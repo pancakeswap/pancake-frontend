@@ -1,4 +1,4 @@
-import { MenuEntry, menuStatus } from '@pancakeswap-libs/uikit'
+import { MenuEntry } from '@pancakeswap-libs/uikit'
 
 const config: MenuEntry[] = [
   {
@@ -45,7 +45,7 @@ const config: MenuEntry[] = [
     icon: 'TeamBattleIcon',
     href: '/competition',
     status: {
-      text: 'CALCULATING',
+      text: 'CLAIM',
       color: 'warning',
     },
   },
