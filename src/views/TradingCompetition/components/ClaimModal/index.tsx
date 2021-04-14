@@ -18,7 +18,7 @@ import { useTradingCompetitionContract } from 'hooks/useContract'
 import { useToast } from 'state/hooks'
 import { useCompetitionCakeRewards, getRewardGroupAchievements } from '../../helpers'
 import { CompetitionProps } from '../../types'
-import NftBunnies from '../../pngs/cakers-nft.png'
+import NftBunnies from '../../pngs/syrup-nft.png'
 
 const ImageWrapper = styled(Flex)`
   justify-content: center;
