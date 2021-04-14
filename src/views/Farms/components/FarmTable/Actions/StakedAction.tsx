@@ -1,6 +1,5 @@
 import React, { useState, useCallback } from 'react'
 import styled from 'styled-components'
-import { BigNumber } from 'bignumber.js'
 import { Button, useModal, IconButton, AddIcon, MinusIcon } from '@pancakeswap-libs/uikit'
 import UnlockButton from 'components/UnlockButton'
 import { useWeb3React } from '@web3-react/core'

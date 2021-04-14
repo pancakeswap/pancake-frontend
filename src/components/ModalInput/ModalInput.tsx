@@ -2,8 +2,6 @@ import React from 'react'
 import styled from 'styled-components'
 import { Text, Button, Input, InputProps, Flex, Link } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
-import { BigNumber } from 'bignumber.js'
-import { getBalanceNumber, getFullDisplayBalance } from '../../utils/formatBalance'
 
 interface ModalInputProps {
   max: string
