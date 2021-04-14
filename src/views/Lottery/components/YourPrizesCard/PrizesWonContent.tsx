@@ -77,7 +77,7 @@ const PrizesWonContent: React.FC = () => {
               {winnings}
             </Heading>
             <Heading as="h4" size="lg">
-              CAKE
+              TEA
             </Heading>
           </WinningsWrapper>
         </>

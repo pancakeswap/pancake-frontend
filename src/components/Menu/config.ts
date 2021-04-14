@@ -6,20 +6,20 @@ const config: MenuEntry[] = [
     icon: 'HomeIcon',
     href: '/',
   },
-  // {
-  //   label: 'Trade',
-  //   icon: 'TradeIcon',
-  //   items: [
-  //     {
-  //       label: 'Exchange',
-  //       href: 'https://exchange.pancakeswap.finance',
-  //     },
-  //     {
-  //       label: 'Liquidity',
-  //       href: 'https://exchange.pancakeswap.finance/#/pool',
-  //     },
-  //   ],
-  // },
+  {
+    label: 'Trade',
+    icon: 'TradeIcon',
+    items: [
+      {
+        label: 'Exchange',
+        href: 'https://exchange.greenteaswap.dev',
+      },
+      {
+        label: 'Liquidity',
+        href: 'https://exchange.greenteaswap.dev/#/pool',
+      },
+    ],
+  },
   // {
   //   label: 'Farms',
   //   icon: 'FarmIcon',

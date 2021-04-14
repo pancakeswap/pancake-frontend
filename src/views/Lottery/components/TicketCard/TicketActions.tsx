@@ -42,7 +42,7 @@ const TicketCard: React.FC = () => {
             {TranslateString(432, 'View your tickets')}
           </Button>
           <Button width="100%" disabled={requestedApproval} onClick={handleApprove}>
-            {TranslateString(494, 'Approve CAKE')}
+            {TranslateString(494, 'Approve TEA')}
           </Button>
         </>
       )
