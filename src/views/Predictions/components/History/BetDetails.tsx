@@ -26,7 +26,7 @@ const BetDetails: React.FC<BetDetailsProps> = ({ bet, result }) => {
         <Text as="p" color="failure" mb="24px">
           {TranslateString(
             999,
-            'This round was automatically canceled due to an error. Please reclaim your funds via the “Reclaim Position” button below.',
+            'This round was automatically canceled due to an error. If you entered a position, please reclaim your funds below.',
           )}
         </Text>
       )}
