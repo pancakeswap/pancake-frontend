@@ -39,10 +39,10 @@ const StyledButton = styled(Button)`
 `
 
 interface PrizesWonContentProps {
-  afterClaim: () => void
+  onSuccess: () => void
 }
 
-const PrizesWonContent: React.FC<PrizesWonContentProps> = ({ afterClaim }) => {
+const PrizesWonContent: React.FC<PrizesWonContentProps> = ({ onSuccess }) => {
   const [requestedClaim, setRequestedClaim] = useState(false)
   const TranslateString = useI18n()
   const { claimLoading, claimAmount } = useTotalClaim()
@@ -56,13 +56,13 @@ const PrizesWonContent: React.FC<PrizesWonContentProps> = ({ afterClaim }) => {
       const txHash = await onMultiClaim()
       // user rejected tx or didn't go thru
       if (txHash) {
-        afterClaim()
+        onSuccess()
         setRequestedClaim(false)
       }
     } catch (e) {
       console.error(e)
     }
-  }, [onMultiClaim, setRequestedClaim, afterClaim])
+  }, [onMultiClaim, setRequestedClaim, onSuccess])
 
   const winnings = getBalanceNumber(claimAmount).toFixed(2)
 

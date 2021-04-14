@@ -35,13 +35,13 @@ const YourPrizesCard: React.FC = () => {
   const [, updateState] = useState<any>()
   const forceUpdate = useCallback(() => updateState({}), [])
 
-  const handleAfterClaim = useCallback(() => {
+  const handleSuccess = useCallback(() => {
     forceUpdate()
   }, [forceUpdate])
 
   return (
     <StyledCard isDisabled={!isAWin} isActive={isAWin}>
-      <CardBody>{isAWin ? <PrizesWonContent afterClaim={handleAfterClaim} /> : <NoPrizesContent />}</CardBody>
+      <CardBody>{isAWin ? <PrizesWonContent onSuccess={handleSuccess} /> : <NoPrizesContent />}</CardBody>
     </StyledCard>
   )
 }
