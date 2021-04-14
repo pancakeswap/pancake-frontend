@@ -8,7 +8,6 @@ import useI18n from 'hooks/useI18n'
 import { useTeam } from 'state/hooks'
 import TeamCard from './components/TeamCard'
 import TeamHeader from './components/TeamHeader'
-import LeadInBanner from '../TradingCompetition/components/LeadInBanner'
 
 const Team = () => {
   const { id: idStr }: { id: string } = useParams()
@@ -26,21 +25,18 @@ const Team = () => {
   }
 
   return (
-    <>
-      <LeadInBanner />
-      <Page>
-        <TeamHeader />
-        <Flex mb="24px">
-          <Link to="/teams">
-            <Flex alignItems="center">
-              <ChevronLeftIcon color="primary" />
-              <Text color="primary">{TranslateString(1038, 'Teams Overview')}</Text>
-            </Flex>
-          </Link>
-        </Flex>
-        <TeamCard team={team} />
-      </Page>
-    </>
+    <Page>
+      <TeamHeader />
+      <Flex mb="24px">
+        <Link to="/teams">
+          <Flex alignItems="center">
+            <ChevronLeftIcon color="primary" />
+            <Text color="primary">{TranslateString(1038, 'Teams Overview')}</Text>
+          </Flex>
+        </Link>
+      </Flex>
+      <TeamCard team={team} />
+    </Page>
   )
 }
 
