@@ -53,8 +53,9 @@ const Header = styled(CardHeader)<{ ifoId: string }>`
   background-image: ${({ ifoId }) => `url('/images/ifos/${ifoId}-bg.svg')`};
 `
 
-const FoldableContent = styled.div<{ isVisible: boolean }>`
+const FoldableContent = styled.div<{ isVisible: boolean; isActive: boolean }>`
   display: ${({ isVisible }) => (isVisible ? 'block' : 'none')};
+  background: ${({ isActive, theme }) => (isActive ? theme.colors.gradients.bubblegum : theme.colors.dropdown)};
 `
 
 const CardWrapper = styled.div`
@@ -66,6 +67,12 @@ const CardWrapper = styled.div`
   }
 `
 
+const StyledCardFooter = styled(CardFooter)`
+  text-align: center;
+  padding: 8px;
+  background: ${({ theme }) => theme.colors.backgroundAlt};
+`
+
 const IfoFoldableCard: React.FC<IfoFoldableCardProps> = ({ ifo, isInitiallyVisible }) => {
   const [isVisible, setIsVisible] = useState(isInitiallyVisible)
   const TranslateString = useI18n()
@@ -73,17 +80,17 @@ const IfoFoldableCard: React.FC<IfoFoldableCardProps> = ({ ifo, isInitiallyVisib
   const walletIfoData = useGetWalletIfoV2Data(ifo)
 
   const Ribbon = getRibbonComponent(publicIfoData.status, TranslateString)
-  const isInProgress = publicIfoData.status !== 'finished' && ifo.isActive
+  const isActive = publicIfoData.status !== 'finished' && ifo.isActive
 
   return (
     <StyledCard ribbon={Ribbon}>
       <Header ifoId={ifo.id}>
         <ExpandableButton expanded={isVisible} onClick={() => setIsVisible((prev) => !prev)} />
       </Header>
-      <FoldableContent isVisible={isVisible}>
-        {isInProgress && <Progress variant="flat" primaryStep={publicIfoData.progress} />}
+      <FoldableContent isVisible={isVisible} isActive={publicIfoData.status !== 'idle' && isActive}>
+        {isActive && <Progress variant="flat" primaryStep={publicIfoData.progress} />}
         <CardBody>
-          {isInProgress && <Timer publicIfoData={publicIfoData} />}
+          {isActive && <Timer publicIfoData={publicIfoData} />}
           <CardWrapper>
             <SmallCard
               poolId={PoolIds.poolBasic}
@@ -99,11 +106,11 @@ const IfoFoldableCard: React.FC<IfoFoldableCardProps> = ({ ifo, isInitiallyVisib
             />
           </CardWrapper>
         </CardBody>
-        <CardFooter style={{ textAlign: 'center' }}>
+        <StyledCardFooter>
           <Button variant="text" endIcon={<ChevronUpIcon color="primary" />} onClick={() => setIsVisible(false)}>
             {TranslateString(999, 'Close')}
           </Button>
-        </CardFooter>
+        </StyledCardFooter>
       </FoldableContent>
     </StyledCard>
   )

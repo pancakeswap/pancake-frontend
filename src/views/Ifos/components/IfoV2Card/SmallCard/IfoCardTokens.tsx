@@ -85,7 +85,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
             />
           </TokenSection>
           <TokenSection img={`/images/tokens/${token.symbol.toLocaleLowerCase()}.png`}>
-            <Label>{`${token.symbol} to received`}</Label>
+            <Label>{`${token.symbol} to receive`}</Label>
             <Text bold fontSize="20px">
               {getBalanceNumber(userPoolCharacteristics.offeringAmountInToken, token.decimals)}
             </Text>

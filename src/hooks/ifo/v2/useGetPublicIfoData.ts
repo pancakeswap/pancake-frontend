@@ -7,6 +7,10 @@ import { useEffect, useState } from 'react'
 import makeBatchRequest from 'utils/makeBatchRequest'
 import { PublicIfoData, PoolCharacteristics } from './types'
 
+// https://github.com/pancakeswap/pancake-contracts/blob/master/projects/ifo/contracts/IFOV2.sol#L431
+// 1,000,000,000 / 100
+const TAX_PRECISION = 10000000
+
 const getStatus = (currentBlock: number, startBlock: number, endBlock: number): IfoStatus => {
   // Add an extra check to currentBlock because it takes awhile to fetch so the initial value is 0
   // making the UI change to an inaccurate status
@@ -98,7 +102,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
         secondsUntilEnd: blocksRemaining * BSC_BLOCK_TIME,
         secondsUntilStart: (startBlockNum - currentBlock) * BSC_BLOCK_TIME,
         poolBasic: { ...formatPool(poolBasic), taxRate: 0 },
-        poolUnlimited: { ...formatPool(poolUnlimited), taxRate: taxRate / 1000000 },
+        poolUnlimited: { ...formatPool(poolUnlimited), taxRate: taxRate / TAX_PRECISION },
         status,
         progress,
         blocksRemaining,

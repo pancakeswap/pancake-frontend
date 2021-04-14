@@ -58,7 +58,6 @@ const IfoQuestions = () => {
                 })}
               </FoldableText>
             ))}
-            )
           </CardBody>
         </Card>
       </DetailsWrapper>

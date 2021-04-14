@@ -27,6 +27,7 @@ export interface Ifo {
   token: Token
   releaseBlockNumber: number
   campaignId?: string
+  link: string
   isV1?: boolean
   // V1 only - To be removed when old card are migrated
   subTitle?: string

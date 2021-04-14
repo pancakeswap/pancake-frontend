@@ -11,28 +11,29 @@ const cakeBnbLpToken: Token = {
 const ifos: Ifo[] = [
   // Testing : start
   // live testing
-  // {
-  //   id: 'belt',
-  //   address: '0x8A8043C1F77a7f9CAD796544e17B70389DF5F005',
-  //   isActive: true,
-  //   name: 'Usagi (USG)',
-  //   saleAmount: '150,000 BELT',
-  //   raiseAmount: '$3,000,000',
-  //   cakeToBurn: '$1,500,000',
-  //   projectSiteUrl: 'https://beta.belt.fi/',
-  //   currency: cakeBnbLpToken,
-  //   token: {
-  //     symbol: 'belt',
-  //     address: {
-  //       '56': '',
-  //       '97': '0xDD2EF17be8852A2C0e2D8Cc904f6dC73eBf44C56',
-  //     },
-  //     decimals: 18,
-  //   },
-  //   releaseBlockNumber: 5493919,
-  //   campaignId: '511080000',
-  //   isV1: false,
-  // },
+  {
+    id: 'belt',
+    address: '0x002b3a8A13abf233514fc67556D51A78D0FfDf99',
+    isActive: true,
+    name: 'Usagi (USG)',
+    saleAmount: '150,000 BELT',
+    raiseAmount: '$3,000,000',
+    cakeToBurn: '$1,500,000',
+    projectSiteUrl: 'https://beta.belt.fi/',
+    currency: cakeBnbLpToken,
+    token: {
+      symbol: 'belt',
+      address: {
+        '56': '',
+        '97': '0xDD2EF17be8852A2C0e2D8Cc904f6dC73eBf44C56',
+      },
+      decimals: 18,
+    },
+    releaseBlockNumber: 5493919,
+    campaignId: '511080000',
+    link: 'https://pancakeswap.finance/',
+    isV1: false,
+  },
   // Pending
   // {
   //   id: 'belt',
@@ -54,31 +55,33 @@ const ifos: Ifo[] = [
   //   },
   //   releaseBlockNumber: 5493919,
   //   campaignId: '511080000',
+  //   link: 'https://pancakeswap.finance/',
   //   isV1: false,
   // },
   // In progress
-  {
-    id: 'belt',
-    address: '0xBF27AD06c0d9cd26cA022D9817D0596C8ba01F24',
-    isActive: true,
-    name: 'Usagi (USG)',
-    saleAmount: '150,000 BELT',
-    raiseAmount: '$3,000,000',
-    cakeToBurn: '$1,500,000',
-    projectSiteUrl: 'https://beta.belt.fi/',
-    currency: cakeBnbLpToken,
-    token: {
-      symbol: 'belt',
-      address: {
-        '56': '',
-        '97': '0x39Fc82a3c852c5FdeC10b12c741b7D6eea3F7fE4',
-      },
-      decimals: 18,
-    },
-    releaseBlockNumber: 5493919,
-    campaignId: '511080000',
-    isV1: false,
-  },
+  // {
+  //   id: 'belt',
+  //   address: '0xBF27AD06c0d9cd26cA022D9817D0596C8ba01F24',
+  //   isActive: true,
+  //   name: 'Usagi (USG)',
+  //   saleAmount: '150,000 BELT',
+  //   raiseAmount: '$3,000,000',
+  //   cakeToBurn: '$1,500,000',
+  //   projectSiteUrl: 'https://beta.belt.fi/',
+  //   currency: cakeBnbLpToken,
+  //   token: {
+  //     symbol: 'belt',
+  //     address: {
+  //       '56': '',
+  //       '97': '0x39Fc82a3c852c5FdeC10b12c741b7D6eea3F7fE4',
+  //     },
+  //     decimals: 18,
+  //   },
+  //   releaseBlockNumber: 5493919,
+  //   campaignId: '511080000',
+  //   link: 'https://pancakeswap.finance/',
+  //   isV1: false,
+  // },
   // Finished - claimed
   // {
   //   id: 'belt',
@@ -100,6 +103,7 @@ const ifos: Ifo[] = [
   //   },
   //   releaseBlockNumber: 5493919,
   //   campaignId: '511080000',
+  //   link: 'https://pancakeswap.finance/',
   //   isV1: false,
   // },
   // Finished - nothing to claim
@@ -116,6 +120,7 @@ const ifos: Ifo[] = [
   //   token: tokens.belt,
   //   releaseBlockNumber: 5493919,
   //   campaignId: '511080000',
+  //   link: 'https://pancakeswap.finance/',
   //   isV1: false,
   // },
   // Testing : end
@@ -137,6 +142,7 @@ const ifos: Ifo[] = [
     token: tokens.belt,
     releaseBlockNumber: 5493919,
     campaignId: '511080000',
+    link: 'https://pancakeswap.medium.com/belt-fi-belt-ifo-to-be-hosted-on-pancakeswap-353585117e32',
     isV1: true,
   },
   {
@@ -157,6 +163,7 @@ const ifos: Ifo[] = [
     token: tokens.watch,
     releaseBlockNumber: 5294924,
     campaignId: '511070000',
+    link: 'https://pancakeswap.medium.com/yieldwatch-watch-ifo-to-be-hosted-on-pancakeswap-d24301f17241',
     isV1: true,
   },
   {
@@ -177,6 +184,7 @@ const ifos: Ifo[] = [
     token: tokens.bry,
     releaseBlockNumber: 4750968,
     campaignId: '511060000',
+    link: 'https://pancakeswap.medium.com/berry-bry-ifo-to-be-hosted-on-pancakeswap-b4f9095e9cdb',
     isV1: true,
   },
   {
@@ -197,6 +205,7 @@ const ifos: Ifo[] = [
     token: tokens.wsote,
     releaseBlockNumber: 4086064,
     campaignId: '511050000',
+    link: 'https://pancakeswap.medium.com/soteria-sota-ifo-to-be-hosted-on-pancakeswap-64b727c272ae',
     isV1: true,
   },
   {
@@ -217,6 +226,7 @@ const ifos: Ifo[] = [
     token: tokens.helmet,
     releaseBlockNumber: 3771926,
     campaignId: '511040000',
+    link: 'https://pancakeswap.medium.com/1-000-000-helmet-helmet-ifo-to-be-hosted-on-pancakeswap-3379a2a89a67',
     isV1: true,
   },
   {
@@ -237,6 +247,7 @@ const ifos: Ifo[] = [
     token: tokens.ten,
     releaseBlockNumber: 3483883,
     campaignId: '511030000',
+    link: 'https://pancakeswap.medium.com/tenet-ten-ifo-to-be-hosted-on-pancakeswap-b7e1eb4cb272',
     isV1: true,
   },
   {
@@ -257,6 +268,7 @@ const ifos: Ifo[] = [
     token: tokens.ditto,
     releaseBlockNumber: 3279767,
     campaignId: '511020000',
+    link: 'https://pancakeswap.medium.com/ditto-money-ditto-ifo-to-be-hosted-on-pancakeswap-342da3059a66',
     isV1: true,
   },
   {
@@ -277,6 +289,7 @@ const ifos: Ifo[] = [
     token: tokens.blink,
     releaseBlockNumber: 3279767,
     campaignId: '511010000',
+    link: 'https://medium.com/pancakeswap/1-000-000-ifo-blink-joins-pancakeswap-15841800bdd8',
     isV1: true,
   },
 ]
