@@ -17,16 +17,6 @@ const StyledCard = styled(Card)`
     margin-top: 32px;
   }
 
-  ${(props) => `
-    ${props.theme.mediaQueries.sm} {
-      margin-top: 24px;
-    }
-  
-    ${props.theme.mediaQueries.lg} {
-      margin-top: 32px;
-    }
-`}
-
   ${(props) =>
     props.isDisabled
       ? `
