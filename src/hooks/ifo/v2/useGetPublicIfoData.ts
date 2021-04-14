@@ -9,7 +9,7 @@ import { PublicIfoData, PoolCharacteristics } from './types'
 
 // https://github.com/pancakeswap/pancake-contracts/blob/master/projects/ifo/contracts/IFOV2.sol#L431
 // 1,000,000,000 / 100
-const TAX_PRECISION = 10000000
+const TAX_PRECISION = 10000000000
 
 const getStatus = (currentBlock: number, startBlock: number, endBlock: number): IfoStatus => {
   // Add an extra check to currentBlock because it takes awhile to fetch so the initial value is 0
