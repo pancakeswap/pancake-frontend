@@ -90,7 +90,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
               totalAmount={publicPoolCharacteristics.totalAmountPool}
             />
           </TokenSection>
-          <TokenSection img={`/images/tokens/${token.symbol.toLocaleLowerCase()}.png`}>
+          <TokenSection img={`/images/ifos/${ifo.id}.svg`}>
             <Label>{`${token.symbol} to receive`}</Label>
             <Text bold fontSize="20px">
               {getBalanceNumber(userPoolCharacteristics.offeringAmountInToken, token.decimals)}
@@ -120,7 +120,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
               totalAmount={publicPoolCharacteristics.totalAmountPool}
             />
           </TokenSection>
-          <TokenSection img={`/images/tokens/${token.symbol.toLocaleLowerCase()}.png`}>
+          <TokenSection img={`/images/ifos/${ifo.id}.svg`}>
             <Label>{hasClaimed ? `${token.symbol} received` : `${token.symbol} to received`}</Label>
             <Flex alignItems="center">
               <Text bold fontSize="20px">
