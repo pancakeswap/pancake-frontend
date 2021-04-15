@@ -1083,6 +1083,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://perlinx.finance/',
   },
+  alpa: {
+    symbol: 'ALPA',
+    address: {
+      56: '0xc5e6689c9c8b02be7c49912ef19e79cf24977f03',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://bsc.alpaca.city/',
+  },
 }
 
 export default tokens
