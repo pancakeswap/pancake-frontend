@@ -209,7 +209,7 @@ export const useGetApiPrice = (address: string) => {
     return null
   }
 
-  return prices[address]
+  return prices[address.toLowerCase()]
 }
 
 export const usePriceCakeBusd = (): BigNumber => {
