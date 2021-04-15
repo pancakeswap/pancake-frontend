@@ -13,7 +13,7 @@ const ifos: Ifo[] = [
   // live testing
   {
     id: 'belt',
-    address: '0x9236d750CEE911F27DED7Ffd318E9F9C3C69A4fe',
+    address: '0xC0c922567c8f73825853726768c10340cD881016',
     isActive: true,
     name: 'Usagi (USG)',
     currency: cakeBnbLpToken,
@@ -29,11 +29,13 @@ const ifos: Ifo[] = [
       saleAmount: '150,000 BELT',
       raiseAmount: '$3,000,000',
       cakeToBurn: '$1,500,000',
+      distributionRatio: 0.3,
     },
     poolUnlimited: {
       saleAmount: '150,000 BELT',
       raiseAmount: '$3,000,000',
       cakeToBurn: '$1,500,000',
+      distributionRatio: 0.7,
     },
     releaseBlockNumber: 5493919,
     campaignId: '511080000',

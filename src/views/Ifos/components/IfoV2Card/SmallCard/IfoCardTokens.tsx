@@ -1,8 +1,8 @@
 import React from 'react'
 import { Text, Flex, Box, Image, CheckmarkCircleIcon, FlexProps, HelpIcon, useTooltip } from '@pancakeswap-libs/uikit'
 import { useWeb3React } from '@web3-react/core'
-import { Ifo, IfoStatus, PoolIds } from 'config/constants/types'
-import { PoolCharacteristics, UserPoolCharacteristics } from 'hooks/ifo/v2/types'
+import { Ifo, PoolIds } from 'config/constants/types'
+import { PublicIfoData, WalletIfoData } from 'hooks/ifo/v2/types'
 import useI18n from 'hooks/useI18n'
 import { getBalanceNumber } from 'utils/formatBalance'
 import PercentageOfTotal from './PercentageOfTotal'
@@ -24,25 +24,21 @@ const TokenSection: React.FC<TokenSectionProps> = ({ img, children, ...props }) 
 const Label = (props) => <Text bold fontSize="12px" color="secondary" textTransform="uppercase" {...props} />
 
 interface IfoCardTokensProps {
+  poolId: PoolIds
   ifo: Ifo
-  status: IfoStatus
-  distribution: number
-  publicPoolCharacteristics: PoolCharacteristics
-  userPoolCharacteristics: UserPoolCharacteristics
+  publicIfoData: PublicIfoData
+  walletIfoData: WalletIfoData
   hasProfile: boolean
   isLoading: boolean
-  poolId: PoolIds
 }
 
 const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
+  poolId,
   ifo,
-  status,
-  distribution,
-  userPoolCharacteristics,
-  publicPoolCharacteristics,
+  publicIfoData,
+  walletIfoData,
   hasProfile,
   isLoading,
-  poolId,
 }) => {
   const { account } = useWeb3React()
   const TranslateString = useI18n()
@@ -50,8 +46,12 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
     'Sorry, you didn’t contribute enough LP tokens to meet the minimum threshold. You didn’t buy anything in this sale, but you can still reclaim your LP tokens.',
     'bottom',
   )
+
+  const publicPoolCharacteristics = publicIfoData[poolId]
+  const userPoolCharacteristics = walletIfoData[poolId]
   const { currency, token } = ifo
   const { hasClaimed } = userPoolCharacteristics
+  const distributionRatio = ifo[poolId].distributionRatio * 100
 
   const renderTokenSection = () => {
     if (isLoading) {
@@ -64,7 +64,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
         </Text>
       )
     }
-    if (status === 'coming_soon') {
+    if (publicIfoData.status === 'coming_soon') {
       return (
         <>
           <TokenSection img="/images/bunny-placeholder.svg">
@@ -73,11 +73,11 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
               {ifo[poolId].saleAmount}
             </Text>
           </TokenSection>
-          <Text fontSize="14px" color="textSubtle" pl="48px">{`${distribution * 100}% of total sale`}</Text>
+          <Text fontSize="14px" color="textSubtle" pl="48px">{`${distributionRatio}% of total sale`}</Text>
         </>
       )
     }
-    if (status === 'live') {
+    if (publicIfoData.status === 'live') {
       return (
         <>
           <TokenSection img="/images/farms/cake-bnb.svg" mb="24px">
@@ -99,7 +99,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
         </>
       )
     }
-    if (status === 'finished') {
+    if (publicIfoData.status === 'finished') {
       return userPoolCharacteristics.amountTokenCommittedInLP.isEqualTo(0) ? (
         <Flex flexDirection="column" alignItems="center">
           <Image src="/images/bunny-placeholder.svg" width={80} height={80} mb="16px" />

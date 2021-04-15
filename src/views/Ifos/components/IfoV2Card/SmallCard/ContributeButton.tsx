@@ -1,9 +1,9 @@
 import React from 'react'
 import BigNumber from 'bignumber.js'
-import { Contract } from 'web3-eth-contract'
 import { Button, useModal } from '@pancakeswap-libs/uikit'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { Token, PoolIds } from 'config/constants/types'
+import { Ifo, PoolIds } from 'config/constants/types'
+import { WalletIfoData, PublicIfoData } from 'hooks/ifo/v2/types'
 import useI18n from 'hooks/useI18n'
 import useTokenBalance from 'hooks/useTokenBalance'
 import { getAddress } from 'utils/addressHelpers'
@@ -13,52 +13,41 @@ import GetLpModal from './GetLpModal'
 
 interface Props {
   poolId: PoolIds
-  currency: Token
-  contract: Contract
-  limitContributionPerUser: BigNumber
-  userContribution: BigNumber
-  isPendingTx: boolean
-  addUserContributedAmount: (amount: BigNumber, poolId: PoolIds) => void
-  currencyPriceInUSD: BigNumber
+  ifo: Ifo
+  publicIfoData: PublicIfoData
+  walletIfoData: WalletIfoData
 }
-const ContributeButton: React.FC<Props> = ({
-  currency,
-  poolId,
-  contract,
-  limitContributionPerUser,
-  userContribution,
-  isPendingTx,
-  addUserContributedAmount,
-  currencyPriceInUSD,
-}) => {
+const ContributeButton: React.FC<Props> = ({ poolId, ifo, publicIfoData, walletIfoData }) => {
+  const publicPoolCharacteristics = publicIfoData[poolId]
+  const userPoolCharacteristics = walletIfoData[poolId]
+  const { isPendingTx, amountTokenCommittedInLP } = userPoolCharacteristics
+  const { limitPerUserInLP } = publicPoolCharacteristics
   const TranslateString = useI18n()
   const { toastSuccess } = useToast()
-  const userCurrencyBalance = useTokenBalance(getAddress(currency.address))
+  const userCurrencyBalance = useTokenBalance(getAddress(ifo.currency.address))
 
   const handleContributeSuccess = (amount: BigNumber) => {
     toastSuccess('Success!', `You have contributed ${getBalanceNumber(amount)} CAKE-BNB LP tokens to this IFO!`)
-    addUserContributedAmount(amount, poolId)
+    walletIfoData.addUserContributedAmount(amount, poolId)
   }
 
   const [onPresentContributeModal] = useModal(
     <ContributeModal
       poolId={poolId}
-      currency={currency}
-      contract={contract}
+      ifo={ifo}
+      publicIfoData={publicIfoData}
+      walletIfoData={walletIfoData}
       onSuccess={handleContributeSuccess}
-      limitContributionPerUser={limitContributionPerUser}
-      userContribution={userContribution}
       userCurrencyBalance={userCurrencyBalance}
-      currencyPriceInUSD={currencyPriceInUSD}
     />,
     false,
   )
 
-  const [onPresentGetLpModal] = useModal(<GetLpModal currency={currency} />, false)
+  const [onPresentGetLpModal] = useModal(<GetLpModal currency={ifo.currency} />, false)
 
   const isDisabled =
     isPendingTx ||
-    (limitContributionPerUser.isGreaterThan(0) && userContribution.isGreaterThanOrEqualTo(limitContributionPerUser))
+    (limitPerUserInLP.isGreaterThan(0) && amountTokenCommittedInLP.isGreaterThanOrEqualTo(limitPerUserInLP))
 
   return (
     <Button

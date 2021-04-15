@@ -3,7 +3,8 @@ import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
 import { Modal, ModalBody, Text, Image, Button, BalanceInput, Flex } from '@pancakeswap-libs/uikit'
-import { Token, PoolIds } from 'config/constants/types'
+import { PoolIds, Ifo } from 'config/constants/types'
+import { WalletIfoData, PublicIfoData } from 'hooks/ifo/v2/types'
 import useI18n from 'hooks/useI18n'
 import { getBalanceNumber, formatNumber } from 'utils/formatBalance'
 import { getAddress } from 'utils/addressHelpers'
@@ -13,12 +14,10 @@ import { useERC20 } from 'hooks/useContract'
 
 interface Props {
   poolId: PoolIds
-  currency: Token
-  contract: any
-  limitContributionPerUser: BigNumber
-  userContribution: BigNumber
+  ifo: Ifo
+  publicIfoData: PublicIfoData
+  walletIfoData: WalletIfoData
   userCurrencyBalance: BigNumber
-  currencyPriceInUSD: BigNumber
   onSuccess: (amount: BigNumber) => void
   onDismiss?: () => void
 }
@@ -26,16 +25,21 @@ interface Props {
 const multiplierValues = [0.1, 0.25, 0.5, 0.75, 1]
 
 const ContributeModal: React.FC<Props> = ({
-  currency,
   poolId,
-  contract,
-  limitContributionPerUser,
-  userContribution,
+  ifo,
+  publicIfoData,
+  walletIfoData,
   userCurrencyBalance,
-  currencyPriceInUSD,
   onDismiss,
   onSuccess,
 }) => {
+  const publicPoolCharacteristics = publicIfoData[poolId]
+  const userPoolCharacteristics = walletIfoData[poolId]
+
+  const { currency } = ifo
+  const { limitPerUserInLP } = publicPoolCharacteristics
+  const { amountTokenCommittedInLP } = userPoolCharacteristics
+  const { contract } = walletIfoData
   const [value, setValue] = useState('')
   const { account } = useWeb3React()
   const raisingTokenContract = useERC20(getAddress(currency.address))
@@ -76,9 +80,9 @@ const ContributeModal: React.FC<Props> = ({
   })
 
   const maximumLpCommitable = (() => {
-    if (limitContributionPerUser.isGreaterThan(0)) {
-      return limitContributionPerUser.minus(userContribution).isLessThanOrEqualTo(userCurrencyBalance)
-        ? limitContributionPerUser
+    if (limitPerUserInLP.isGreaterThan(0)) {
+      return limitPerUserInLP.minus(amountTokenCommittedInLP).isLessThanOrEqualTo(userCurrencyBalance)
+        ? limitPerUserInLP
         : userCurrencyBalance
     }
     return userCurrencyBalance
@@ -87,10 +91,10 @@ const ContributeModal: React.FC<Props> = ({
   return (
     <Modal title={`Contribute ${currency.symbol}`} onDismiss={onDismiss}>
       <ModalBody maxWidth="320px">
-        {limitContributionPerUser.isGreaterThan(0) && (
+        {limitPerUserInLP.isGreaterThan(0) && (
           <Flex justifyContent="space-between" mb="16px">
             <Text>{TranslateString(999, 'Max. LP token entry')}</Text>
-            <Text>{getBalanceNumber(limitContributionPerUser, currency.decimals)}</Text>
+            <Text>{getBalanceNumber(limitPerUserInLP, currency.decimals)}</Text>
           </Flex>
         )}
         <Flex justifyContent="space-between" mb="8px">
@@ -106,7 +110,7 @@ const ContributeModal: React.FC<Props> = ({
         </Flex>
         <BalanceInput
           value={value}
-          currencyValue={currencyPriceInUSD.times(value || 0).toFixed(2)}
+          currencyValue={publicIfoData.currencyPriceInUSD.times(value || 0).toFixed(2)}
           onChange={(e) => setValue(e.currentTarget.value)}
           isWarning={valueWithTokenDecimals.isGreaterThan(maximumLpCommitable)}
           mb="8px"

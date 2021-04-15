@@ -8,8 +8,8 @@ import IfoCardActions from './IfoCardActions'
 import IfoCardDetails from './IfoCardDetails'
 
 interface IfoCardProps {
-  ifo: Ifo
   poolId: PoolIds
+  ifo: Ifo
   publicIfoData: PublicIfoData
   walletIfoData: WalletIfoData
 }
@@ -18,7 +18,6 @@ interface CardConfig {
   [key: string]: {
     title: string
     variant: 'blue' | 'violet'
-    distribution: number
     tooltip: string
   }
 }
@@ -28,23 +27,19 @@ const cardConfig: CardConfig = {
   [PoolIds.poolBasic]: {
     title: 'Basic Sale',
     variant: 'blue',
-    distribution: 0.3,
     tooltip: 'Every person can only commit a limited amount, but may expect a higher return per token committed.',
   },
   [PoolIds.poolUnlimited]: {
     title: 'Unlimited Sale',
     variant: 'violet',
-    distribution: 0.7,
     tooltip: 'No limits on the amount you can commit. Additional fee applies when claiming.',
   },
 }
 
-const SmallCard: React.FC<IfoCardProps> = ({ ifo, publicIfoData, walletIfoData, poolId }) => {
+const SmallCard: React.FC<IfoCardProps> = ({ poolId, ifo, publicIfoData, walletIfoData }) => {
   const config = cardConfig[poolId]
   const { hasProfile, isLoading: isProfileLoading } = useProfile()
   const { targetRef, tooltip, tooltipVisible } = useTooltip(config.tooltip, 'bottom')
-  const publicPoolCharacteristics = publicIfoData[poolId]
-  const userPoolCharacteristics = walletIfoData[poolId]
 
   const isLoading = isProfileLoading || publicIfoData.status === 'idle'
 
@@ -64,20 +59,18 @@ const SmallCard: React.FC<IfoCardProps> = ({ ifo, publicIfoData, walletIfoData, 
         </CardHeader>
         <CardBody>
           <IfoCardTokens
-            ifo={ifo}
-            distribution={config.distribution}
-            status={publicIfoData.status}
-            publicPoolCharacteristics={publicPoolCharacteristics}
-            userPoolCharacteristics={userPoolCharacteristics}
-            hasProfile={hasProfile}
-            isLoading={isLoading}
             poolId={poolId}
-          />
-          <IfoCardActions
-            currency={ifo.currency}
+            ifo={ifo}
             publicIfoData={publicIfoData}
             walletIfoData={walletIfoData}
+            hasProfile={hasProfile}
+            isLoading={isLoading}
+          />
+          <IfoCardActions
             poolId={poolId}
+            ifo={ifo}
+            publicIfoData={publicIfoData}
+            walletIfoData={walletIfoData}
             hasProfile={hasProfile}
             isLoading={isLoading}
           />

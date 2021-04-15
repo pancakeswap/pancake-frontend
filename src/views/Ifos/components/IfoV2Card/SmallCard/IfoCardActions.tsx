@@ -2,7 +2,7 @@ import React from 'react'
 import { Button } from '@pancakeswap-libs/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { Link } from 'react-router-dom'
-import { Token, PoolIds } from 'config/constants/types'
+import { Ifo, PoolIds } from 'config/constants/types'
 import { WalletIfoData, PublicIfoData } from 'hooks/ifo/v2/types'
 import UnlockButton from 'components/UnlockButton'
 import ContributeButton from './ContributeButton'
@@ -11,14 +11,14 @@ import { SkeletonCardActions } from './Skeletons'
 
 interface Props {
   poolId: PoolIds
-  currency: Token
+  ifo: Ifo
   publicIfoData: PublicIfoData
   walletIfoData: WalletIfoData
   hasProfile: boolean
   isLoading: boolean
 }
 
-const IfoCardActions: React.FC<Props> = ({ currency, poolId, publicIfoData, walletIfoData, hasProfile, isLoading }) => {
+const IfoCardActions: React.FC<Props> = ({ poolId, ifo, publicIfoData, walletIfoData, hasProfile, isLoading }) => {
   const { account } = useWeb3React()
   const userPoolCharacteristics = walletIfoData[poolId]
 
@@ -41,28 +41,13 @@ const IfoCardActions: React.FC<Props> = ({ currency, poolId, publicIfoData, wall
   return (
     <>
       {publicIfoData.status === 'live' && (
-        <ContributeButton
-          poolId={poolId}
-          currency={currency}
-          contract={walletIfoData.contract}
-          isPendingTx={userPoolCharacteristics.isPendingTx}
-          addUserContributedAmount={walletIfoData.addUserContributedAmount}
-          userContribution={userPoolCharacteristics.amountTokenCommittedInLP}
-          limitContributionPerUser={publicIfoData[poolId].limitPerUserInLP}
-          currencyPriceInUSD={publicIfoData.currencyPriceInUSD}
-        />
+        <ContributeButton poolId={poolId} ifo={ifo} publicIfoData={publicIfoData} walletIfoData={walletIfoData} />
       )}
       {publicIfoData.status === 'finished' &&
         !userPoolCharacteristics.hasClaimed &&
         (userPoolCharacteristics.offeringAmountInToken.isGreaterThan(0) ||
           userPoolCharacteristics.refundingAmountInLP.isGreaterThan(0)) && (
-          <ClaimButton
-            poolId={poolId}
-            contract={walletIfoData.contract}
-            isPendingTx={userPoolCharacteristics.isPendingTx}
-            setPendingTx={(isPending: boolean) => walletIfoData.setPendingTx(isPending, poolId)}
-            setIsClaimed={() => walletIfoData.setIsClaimed(poolId)}
-          />
+          <ClaimButton poolId={poolId} walletIfoData={walletIfoData} />
         )}
     </>
   )

@@ -1,29 +1,29 @@
 import React from 'react'
 import { useWeb3React } from '@web3-react/core'
-import { Contract } from 'web3-eth-contract'
 import { AutoRenewIcon, Button } from '@pancakeswap-libs/uikit'
 import { PoolIds } from 'config/constants/types'
+import { WalletIfoData } from 'hooks/ifo/v2/types'
 import { useToast } from 'state/hooks'
 import useI18n from 'hooks/useI18n'
 
 interface Props {
   poolId: PoolIds
-  contract: Contract
-  isPendingTx: boolean
-  setPendingTx: (status: boolean) => void
-  setIsClaimed: () => void
+  walletIfoData: WalletIfoData
 }
 
-const ClaimButton: React.FC<Props> = ({ poolId, contract, isPendingTx, setPendingTx, setIsClaimed }) => {
+const ClaimButton: React.FC<Props> = ({ poolId, walletIfoData }) => {
+  const userPoolCharacteristics = walletIfoData[poolId]
   const TranslateString = useI18n()
   const { account } = useWeb3React()
   const { toastError, toastSuccess } = useToast()
 
+  const setPendingTx = (isPending: boolean) => walletIfoData.setPendingTx(isPending, poolId)
+
   const handleClaim = async () => {
     try {
       setPendingTx(true)
-      await contract.methods.harvestPool(poolId === PoolIds.poolBasic ? 0 : 1).send({ from: account })
-      setIsClaimed()
+      await walletIfoData.contract.methods.harvestPool(poolId === PoolIds.poolBasic ? 0 : 1).send({ from: account })
+      walletIfoData.setIsClaimed(poolId)
       toastSuccess('Success!', 'You have successfully claimed your rewards.')
     } catch (error) {
       toastError('Error', error?.message)
@@ -36,10 +36,10 @@ const ClaimButton: React.FC<Props> = ({ poolId, contract, isPendingTx, setPendin
   return (
     <Button
       onClick={handleClaim}
-      disabled={isPendingTx}
+      disabled={userPoolCharacteristics.isPendingTx}
       width="100%"
-      isLoading={isPendingTx}
-      endIcon={isPendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
+      isLoading={userPoolCharacteristics.isPendingTx}
+      endIcon={userPoolCharacteristics.isPendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
     >
       {TranslateString(999, 'Claim')}
     </Button>
