@@ -2,13 +2,14 @@ import React from 'react'
 import styled from 'styled-components'
 import { HelpIcon, Text, useTooltip } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
+import BigNumber from 'bignumber.js'
 
 const ReferenceElement = styled.div`
   display: inline-block;
 `
 
 export interface LiquidityProps {
-  liquidity: number
+  liquidity: BigNumber
 }
 
 const LiquidityWrapper = styled.div`
