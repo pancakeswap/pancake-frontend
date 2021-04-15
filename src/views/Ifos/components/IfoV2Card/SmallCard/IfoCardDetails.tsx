@@ -87,8 +87,8 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoD
             <FooterEntry label={TranslateString(999, 'Additional fee:')} value={taxRate} />
           )}
           <FooterEntry label={TranslateString(999, 'Total committed:')} value={totalCommitted} />
-          <FooterEntry label={TranslateString(999, 'Funds raised:')} value="??" />
-          <FooterEntry label={TranslateString(999, 'CAKE burned:')} value={ifo.cakeToBurn} />
+          <FooterEntry label={TranslateString(999, 'Funds to raise:')} value={ifo.raiseAmount} />
+          <FooterEntry label={TranslateString(999, 'CAKE to burn:')} value={ifo.cakeToBurn} />
           <FooterEntry label={`Price per ${ifo.token.symbol}: `} value={tokenPriceFormatted} />
         </>
       )
