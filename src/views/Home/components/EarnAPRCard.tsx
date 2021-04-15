@@ -5,7 +5,7 @@ import max from 'lodash/max'
 import { NavLink } from 'react-router-dom'
 import useI18n from 'hooks/useI18n'
 import BigNumber from 'bignumber.js'
-import { getFarmApy } from 'utils/apy'
+import { getFarmApr } from 'utils/apr'
 import { useFarms, usePriceCakeBusd, useGetApiPrices } from 'state/hooks'
 import { getAddress } from 'utils/addressHelpers'
 
@@ -22,27 +22,27 @@ const StyledFarmStakingCard = styled(Card)`
 const CardMidContent = styled(Heading).attrs({ size: 'xl' })`
   line-height: 44px;
 `
-const EarnAPYCard = () => {
+const EarnAPRCard = () => {
   const TranslateString = useI18n()
   const farmsLP = useFarms()
   const prices = useGetApiPrices()
   const cakePrice = usePriceCakeBusd()
 
-  const highestApy = useMemo(() => {
-    const apys = farmsLP
-      // Filter inactive farms, because their theoretical APY is super high. In practice, it's 0.
+  const highestApr = useMemo(() => {
+    const aprs = farmsLP
+      // Filter inactive farms, because their theoretical APR is super high. In practice, it's 0.
       .filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
       .map((farm) => {
         if (farm.lpTotalInQuoteToken && prices) {
           const quoteTokenPriceUsd = prices[getAddress(farm.quoteToken.address).toLowerCase()]
           const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(quoteTokenPriceUsd)
-          return getFarmApy(farm.poolWeight, cakePrice, totalLiquidity)
+          return getFarmApr(farm.poolWeight, cakePrice, totalLiquidity)
         }
         return null
       })
 
-    const maxApy = max(apys)
-    return maxApy?.toLocaleString('en-US', { maximumFractionDigits: 2 })
+    const maxApr = max(aprs)
+    return maxApr?.toLocaleString('en-US', { maximumFractionDigits: 2 })
   }, [cakePrice, farmsLP, prices])
 
   return (
@@ -52,8 +52,8 @@ const EarnAPYCard = () => {
           Earn up to
         </Heading>
         <CardMidContent color="#7645d9">
-          {highestApy ? (
-            `${highestApy}% ${TranslateString(736, 'APR')}`
+          {highestApr ? (
+            `${highestApr}% ${TranslateString(736, 'APR')}`
           ) : (
             <Skeleton animation="pulse" variant="rect" height="44px" />
           )}
@@ -62,7 +62,7 @@ const EarnAPYCard = () => {
           <Heading color="contrast" size="lg">
             in Farms
           </Heading>
-          <NavLink exact activeClassName="active" to="/farms" id="farm-apy-cta">
+          <NavLink exact activeClassName="active" to="/farms" id="farm-apr-cta">
             <ArrowForwardIcon mt={30} color="primary" />
           </NavLink>
         </Flex>
@@ -71,4 +71,4 @@ const EarnAPYCard = () => {
   )
 }
 
-export default EarnAPYCard
+export default EarnAPRCard

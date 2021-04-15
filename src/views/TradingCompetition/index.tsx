@@ -102,6 +102,15 @@ const TradingCompetition = () => {
   const hasCompetitionEnded =
     currentPhase.state === FINISHED || currentPhase.state === CLAIM || currentPhase.state === OVER
 
+  const { hasUserClaimed, userCakeRewards, userPointReward, canClaimNFT } = userTradingInformation
+
+  const userCanClaimPrizes =
+    currentPhase.state === CLAIM &&
+    !hasUserClaimed &&
+    (userCakeRewards !== '0' || userPointReward !== '0' || canClaimNFT)
+  const finishedAndPrizesClaimed = hasCompetitionEnded && account && hasUserClaimed
+  const finishedAndNothingToClaim = hasCompetitionEnded && account && !userCanClaimPrizes
+
   const onRegisterSuccess = () => {
     setRegistrationSuccessful(true)
   }
@@ -209,6 +218,9 @@ const TradingCompetition = () => {
               account={account}
               isCompetitionLive={isCompetitionLive}
               hasCompetitionEnded={hasCompetitionEnded}
+              userCanClaimPrizes={userCanClaimPrizes}
+              finishedAndPrizesClaimed={finishedAndPrizesClaimed}
+              finishedAndNothingToClaim={finishedAndNothingToClaim}
               profile={profile}
               isLoading={isLoading}
               onRegisterSuccess={onRegisterSuccess}
@@ -240,10 +252,15 @@ const TradingCompetition = () => {
             <YourScore
               currentPhase={currentPhase}
               hasRegistered={userTradingInformation.hasRegistered}
+              userTradingInformation={userTradingInformation}
               account={account}
               profile={profile}
               isLoading={isLoading}
               userLeaderboardInformation={userLeaderboardInformation}
+              userCanClaimPrizes={userCanClaimPrizes}
+              finishedAndPrizesClaimed={finishedAndPrizesClaimed}
+              finishedAndNothingToClaim={finishedAndNothingToClaim}
+              onClaimSuccess={onClaimSuccess}
             />
           )}
         </Box>
@@ -296,6 +313,9 @@ const TradingCompetition = () => {
                 account={account}
                 isCompetitionLive={isCompetitionLive}
                 hasCompetitionEnded={hasCompetitionEnded}
+                userCanClaimPrizes={userCanClaimPrizes}
+                finishedAndPrizesClaimed={finishedAndPrizesClaimed}
+                finishedAndNothingToClaim={finishedAndNothingToClaim}
                 profile={profile}
                 isLoading={isLoading}
                 onRegisterSuccess={onRegisterSuccess}

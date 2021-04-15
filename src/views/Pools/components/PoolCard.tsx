@@ -11,7 +11,7 @@ import useI18n from 'hooks/useI18n'
 import { useSousStake } from 'hooks/useStake'
 import { useSousUnstake } from 'hooks/useUnstake'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { getPoolApy } from 'utils/apy'
+import { getPoolApr } from 'utils/apr'
 import { getAddress } from 'utils/addressHelpers'
 import { useSousHarvest } from 'hooks/useHarvest'
 import Balance from 'components/Balance'
@@ -57,10 +57,10 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
   const { onUnstake } = useSousUnstake(sousId)
   const { onReward } = useSousHarvest(sousId, isBnbPool)
 
-  // APY
+  // APR
   const rewardTokenPrice = useGetApiPrice(earningToken.address ? getAddress(earningToken.address) : '')
   const stakingTokenPrice = useGetApiPrice(stakingToken.address ? getAddress(stakingToken.address) : '')
-  const apy = getPoolApy(
+  const apr = getPoolApr(
     stakingTokenPrice,
     rewardTokenPrice,
     getBalanceNumber(pool.totalStaked, stakingToken.decimals),
@@ -190,10 +190,10 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
         </StyledCardActions>
         <StyledDetails>
           <div>{TranslateString(736, 'APR')}:</div>
-          {isFinished || isOldSyrup || !apy ? (
+          {isFinished || isOldSyrup || !apr ? (
             '-'
           ) : (
-            <Balance fontSize="14px" isDisabled={isFinished} value={apy} decimals={2} unit="%" />
+            <Balance fontSize="14px" isDisabled={isFinished} value={apr} decimals={2} unit="%" />
           )}
         </StyledDetails>
         <StyledDetails>

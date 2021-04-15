@@ -16,10 +16,15 @@ const Wrapper = styled.div`
 const YourScore: React.FC<YourScoreProps> = ({
   hasRegistered = false,
   account,
+  userTradingInformation,
   profile,
   isLoading,
   userLeaderboardInformation,
   currentPhase,
+  userCanClaimPrizes,
+  finishedAndPrizesClaimed,
+  finishedAndNothingToClaim,
+  onClaimSuccess,
 }) => {
   const TranslateString = useI18n()
   const showRibbon = !account || hasRegistered
@@ -38,10 +43,15 @@ const YourScore: React.FC<YourScoreProps> = ({
       <ScoreCard
         hasRegistered={hasRegistered}
         account={account}
+        userTradingInformation={userTradingInformation}
         profile={profile}
         isLoading={isLoading}
         userLeaderboardInformation={userLeaderboardInformation}
         currentPhase={currentPhase}
+        userCanClaimPrizes={userCanClaimPrizes}
+        finishedAndPrizesClaimed={finishedAndPrizesClaimed}
+        finishedAndNothingToClaim={finishedAndNothingToClaim}
+        onClaimSuccess={onClaimSuccess}
       />
     </Wrapper>
   )

@@ -1074,6 +1074,24 @@ const tokens = {
     decimals: 4,
     projectLink: 'https://alienworlds.io/',
   },
+  perl: {
+    symbol: 'PERL',
+    address: {
+      56: '0x0f9e4d49f25de22c2202af916b681fbb3790497b',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://perlinx.finance/',
+  },
+  alpa: {
+    symbol: 'ALPA',
+    address: {
+      56: '0xc5e6689c9c8b02be7c49912ef19e79cf24977f03',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://bsc.alpaca.city/',
+  },
 }
 
 export default tokens

@@ -110,7 +110,7 @@ export type Team = {
   textColor: string
 }
 
-export type CampaignType = 'ifo'
+export type CampaignType = 'ifo' | 'teambattle'
 
 export type Campaign = {
   id: string

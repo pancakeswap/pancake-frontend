@@ -3,13 +3,13 @@ import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import { Modal, Text, LinkExternal, Flex } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
-import { calculateCakeEarnedPerThousandDollars, apyModalRoi } from 'utils/compoundApyHelpers'
+import { cakeEarnedPerThousandDollarsCompounding, getRoi } from 'utils/compoundApyHelpers'
 
 interface ApyCalculatorModalProps {
   onDismiss?: () => void
   lpLabel?: string
   cakePrice?: BigNumber
-  apy?: number
+  apr?: number
   addLiquidityUrl?: string
 }
 
@@ -33,18 +33,22 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
   onDismiss,
   lpLabel,
   cakePrice,
-  apy,
+  apr,
   addLiquidityUrl,
 }) => {
   const TranslateString = useI18n()
   const oneThousandDollarsWorthOfCake = 1000 / cakePrice.toNumber()
 
-  const cakeEarnedPerThousand1D = calculateCakeEarnedPerThousandDollars({ numberOfDays: 1, farmApy: apy, cakePrice })
-  const cakeEarnedPerThousand7D = calculateCakeEarnedPerThousandDollars({ numberOfDays: 7, farmApy: apy, cakePrice })
-  const cakeEarnedPerThousand30D = calculateCakeEarnedPerThousandDollars({ numberOfDays: 30, farmApy: apy, cakePrice })
-  const cakeEarnedPerThousand365D = calculateCakeEarnedPerThousandDollars({
+  const cakeEarnedPerThousand1D = cakeEarnedPerThousandDollarsCompounding({ numberOfDays: 1, farmApr: apr, cakePrice })
+  const cakeEarnedPerThousand7D = cakeEarnedPerThousandDollarsCompounding({ numberOfDays: 7, farmApr: apr, cakePrice })
+  const cakeEarnedPerThousand30D = cakeEarnedPerThousandDollarsCompounding({
+    numberOfDays: 30,
+    farmApr: apr,
+    cakePrice,
+  })
+  const cakeEarnedPerThousand365D = cakeEarnedPerThousandDollarsCompounding({
     numberOfDays: 365,
-    farmApy: apy,
+    farmApr: apr,
     cakePrice,
   })
 
@@ -72,7 +76,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
         </GridItem>
         <GridItem>
           <Text>
-            {apyModalRoi({ amountEarned: cakeEarnedPerThousand1D, amountInvested: oneThousandDollarsWorthOfCake })}%
+            {getRoi({ amountEarned: cakeEarnedPerThousand1D, amountInvested: oneThousandDollarsWorthOfCake })}%
           </Text>
         </GridItem>
         <GridItem>
@@ -84,7 +88,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
         </GridItem>
         <GridItem>
           <Text>
-            {apyModalRoi({ amountEarned: cakeEarnedPerThousand7D, amountInvested: oneThousandDollarsWorthOfCake })}%
+            {getRoi({ amountEarned: cakeEarnedPerThousand7D, amountInvested: oneThousandDollarsWorthOfCake })}%
           </Text>
         </GridItem>
         <GridItem>
@@ -96,7 +100,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
         </GridItem>
         <GridItem>
           <Text>
-            {apyModalRoi({ amountEarned: cakeEarnedPerThousand30D, amountInvested: oneThousandDollarsWorthOfCake })}%
+            {getRoi({ amountEarned: cakeEarnedPerThousand30D, amountInvested: oneThousandDollarsWorthOfCake })}%
           </Text>
         </GridItem>
         <GridItem>
@@ -108,7 +112,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
         </GridItem>
         <GridItem>
           <Text>
-            {apyModalRoi({ amountEarned: cakeEarnedPerThousand365D, amountInvested: oneThousandDollarsWorthOfCake })}%
+            {getRoi({ amountEarned: cakeEarnedPerThousand365D, amountInvested: oneThousandDollarsWorthOfCake })}%
           </Text>
         </GridItem>
         <GridItem>

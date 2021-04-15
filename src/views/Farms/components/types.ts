@@ -21,7 +21,7 @@ export type ScrollBarProps = {
 
 export type TableDataTypes = {
   POOL: string
-  APY: string
+  APR: string
   EARNED: string
   STAKED: string
   DETAILS: string
