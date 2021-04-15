@@ -1092,6 +1092,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://bsc.alpaca.city/',
   },
+  hzn: {
+    symbol: 'HZN',
+    address: {
+      56: '0xc0eff7749b125444953ef89682201fb8c6a917cd',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://horizonprotocol.com/',
+  },
 }
 
 export default tokens
