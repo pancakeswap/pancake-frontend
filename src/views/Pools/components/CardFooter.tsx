@@ -105,7 +105,7 @@ const CardFooter: React.FC<Props> = ({
 
   const imageSrc = `${BASE_URL}/images/tokens/${tokenName.toLowerCase()}.png`
 
-  const isMetaMaskInScope = !!Reflect.get(window, 'ethereum')?.isMetaMask
+  const isMetaMaskInScope = !!(window as WindowChain).ethereum?.isMetaMask
 
   return (
     <StyledFooter isFinished={isFinished}>
