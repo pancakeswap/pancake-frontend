@@ -3,10 +3,10 @@ import BigNumber from 'bignumber.js'
 import { Contract } from 'web3-eth-contract'
 import { Box, Button, Flex, Text, useModal } from '@pancakeswap-libs/uikit'
 import { getBalanceNumber } from 'utils/formatBalance'
+import { getAddress } from 'utils/addressHelpers'
 import { Ifo } from 'config/constants/types'
 import useI18n from 'hooks/useI18n'
-import { UserInfo } from 'hooks/useGetWalletIfoData'
-import { PublicIfoState } from 'hooks/useGetPublicIfoData'
+import { UserInfo, PublicIfoData } from 'hooks/ifo/v1/types'
 import { useToast } from 'state/hooks'
 import ContributeModal from './ContributeModal'
 import PercentageOfTotal from './PercentageOfTotal'
@@ -16,7 +16,7 @@ interface ContributeProps {
   contract: Contract
   userInfo: UserInfo
   isPendingTx: boolean
-  publicIfoData: PublicIfoState
+  publicIfoData: PublicIfoData
   addUserContributedAmount: (amount: BigNumber) => void
 }
 const Contribute: React.FC<ContributeProps> = ({
@@ -27,7 +27,7 @@ const Contribute: React.FC<ContributeProps> = ({
   publicIfoData,
   addUserContributedAmount,
 }) => {
-  const { currency, currencyAddress } = ifo
+  const { currency } = ifo
   const { totalAmount } = publicIfoData
   const TranslateString = useI18n()
   const contributedBalance = getBalanceNumber(userInfo.amount)
@@ -40,9 +40,9 @@ const Contribute: React.FC<ContributeProps> = ({
 
   const [onPresentContributeModal] = useModal(
     <ContributeModal
-      currency={currency}
+      currency={currency.symbol}
       contract={contract}
-      currencyAddress={currencyAddress}
+      currencyAddress={getAddress(currency.address)}
       onSuccess={handleContributeSuccess}
     />,
     false,

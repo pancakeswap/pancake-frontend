@@ -11,12 +11,12 @@ import {
   ChevronUpIcon,
 } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
-import { PublicIfoState } from 'hooks/useGetPublicIfoData'
+import { PublicIfoData } from 'hooks/ifo/v1/types'
 import { Ifo } from 'config/constants/types'
 
 export interface IfoCardDetailsProps {
   ifo: Ifo
-  publicIfoData: PublicIfoState
+  publicIfoData: PublicIfoData
 }
 
 const Item = styled.div`

@@ -1,20 +1,19 @@
 import React from 'react'
 import { useWeb3React } from '@web3-react/core'
-import useGetWalletIfoData from 'hooks/useGetWalletIfoData'
-import { PublicIfoState } from 'hooks/useGetPublicIfoData'
+import { PublicIfoData, WalletIfoData } from 'hooks/ifo/v1/types'
 import { Ifo } from 'config/constants/types'
 import UnlockButton from 'components/UnlockButton'
 import Contribute from './Contribute'
 import Claim from './Claim'
-import ActiveSkeleton from './ActiveSkeleton'
-import InactiveSkeleton from './InactiveSkeleton'
+import { ActiveSkeleton, InactiveSkeleton } from './Skeleton'
 
 export interface Props {
   ifo: Ifo
-  publicIfoData: PublicIfoState
+  publicIfoData: PublicIfoData
+  walletIfoData: WalletIfoData
 }
 
-const IfoCardActions: React.FC<Props> = ({ ifo, publicIfoData }) => {
+const IfoCardActions: React.FC<Props> = ({ ifo, publicIfoData, walletIfoData }) => {
   const {
     isPendingTx,
     offeringTokenBalance,
@@ -24,11 +23,11 @@ const IfoCardActions: React.FC<Props> = ({ ifo, publicIfoData }) => {
     setPendingTx,
     addUserContributedAmount,
     setIsClaimed,
-  } = useGetWalletIfoData(ifo)
+  } = walletIfoData
   const { account } = useWeb3React()
 
   if (!account) {
-    return <UnlockButton />
+    return <UnlockButton width="100%" />
   }
 
   return (

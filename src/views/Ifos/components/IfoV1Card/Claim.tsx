@@ -5,7 +5,7 @@ import { Contract } from 'web3-eth-contract'
 import { AutoRenewIcon, Box, Button, Flex, Text } from '@pancakeswap-libs/uikit'
 import { useToast } from 'state/hooks'
 import useI18n from 'hooks/useI18n'
-import { UserInfo, WalletIfoState } from 'hooks/useGetWalletIfoData'
+import { UserInfo, WalletIfoState } from 'hooks/ifo/v1/types'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { Ifo } from 'config/constants/types'
 import BalanceInUsd from './BalanceInUsd'
@@ -47,8 +47,8 @@ const Claim: React.FC<ClaimProps> = ({
   const canClaim = !userInfo.claimed
   const contributedBalance = getBalanceNumber(userInfo.amount)
   const refundedBalance = getBalanceNumber(refundingAmount).toFixed(userInfo.amount.eq(0) ? 0 : DISPLAY_DECIMALS)
-  const { tokenSymbol, tokenDecimals } = ifo
-  const rewardBalance = getBalanceNumber(offeringTokenBalance, tokenDecimals)
+  const { token } = ifo
+  const rewardBalance = getBalanceNumber(offeringTokenBalance, token.decimals)
   const { toastError, toastSuccess } = useToast()
 
   const handleClaim = async () => {
@@ -89,7 +89,7 @@ const Claim: React.FC<ClaimProps> = ({
         <Box>
           <Flex mb="4px">
             <Text as="span" bold fontSize="12px" mr="4px" textTransform="uppercase">
-              {tokenSymbol}
+              {token.symbol}
             </Text>
             {!canClaim ? (
               <Text as="span" color="textSubtle" fontSize="12px" textTransform="uppercase" bold>
@@ -104,7 +104,7 @@ const Claim: React.FC<ClaimProps> = ({
           <Text fontSize="20px" bold color={offeringTokenBalance.gt(0) ? 'text' : 'textDisabled'}>
             {rewardBalance.toFixed(offeringTokenBalance.eq(0) ? 0 : DISPLAY_DECIMALS)}
           </Text>
-          {canClaim && <BalanceInUsd token={tokenSymbol} balance={rewardBalance} />}
+          {canClaim && <BalanceInUsd token={token.symbol} balance={rewardBalance} />}
         </Box>
       </AmountGrid>
       {didContribute ? (
