@@ -1,7 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Flex, Heading, Text } from '@pancakeswap-libs/uikit'
-import TimerTooltip from './TimerTooltip'
+import { Flex, Heading, Text, Link, useTooltip } from '@pancakeswap-libs/uikit'
 
 export interface TimerProps {
   timerStage?: string
@@ -45,6 +44,17 @@ const DefaultBodyTextComponent = ({ children, ...props }) => (
   </Text>
 )
 
+const TooltipContent = ({ blockNumber }) => (
+  <>
+    <Text color="body" mb="10px" fontWeight="600">
+      Block {blockNumber}
+    </Text>
+    <Link external href={`https://bscscan.com/block/${blockNumber}`}>
+      View on BscScan
+    </Link>
+  </>
+)
+
 const Wrapper: React.FC<TimerProps> = ({
   timerStage,
   minutes,
@@ -55,21 +65,12 @@ const Wrapper: React.FC<TimerProps> = ({
   HeadingTextComponent = DefaultHeadingTextComponent,
   BodyTextComponent = DefaultBodyTextComponent,
 }) => {
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(<TooltipContent blockNumber={blockNumber} />, 'bottom')
+  const shouldDisplayTooltip = showTooltip && tooltipVisible
   return (
     <Flex alignItems="flex-end" position="relative">
       <BodyTextComponent mr="16px">{timerStage}</BodyTextComponent>
-      {showTooltip ? (
-        <TimerTooltip blockNumber={blockNumber}>
-          <Timer
-            minutes={minutes}
-            hours={hours}
-            days={days}
-            HeadingTextComponent={HeadingTextComponent}
-            BodyTextComponent={BodyTextComponent}
-            showTooltip={showTooltip}
-          />
-        </TimerTooltip>
-      ) : (
+      <div ref={targetRef}>
         <Timer
           minutes={minutes}
           hours={hours}
@@ -78,7 +79,8 @@ const Wrapper: React.FC<TimerProps> = ({
           BodyTextComponent={BodyTextComponent}
           showTooltip={showTooltip}
         />
-      )}
+        {shouldDisplayTooltip && tooltip}
+      </div>
     </Flex>
   )
 }
