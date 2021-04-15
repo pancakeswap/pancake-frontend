@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 import { useWeb3React } from '@web3-react/core'
-import { ConnectorNames } from '@pancakeswap-libs/uikit'
+import { ConnectorNames } from 'greenteaswap-ui-kit'
 import { useToast } from 'state/hooks'
 import { connectorsByName } from 'utils/web3React'
 

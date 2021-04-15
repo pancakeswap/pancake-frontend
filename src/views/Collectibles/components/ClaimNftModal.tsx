@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
 import { useBunnySpecialContract } from 'hooks/useContract'
 import { useToast } from 'state/hooks'
-import { Button, InjectedModalProps, Modal, Text, Flex } from '@pancakeswap-libs/uikit'
+import { Button, InjectedModalProps, Modal, Text, Flex } from 'greenteaswap-ui-kit'
 import { Nft } from 'config/constants/types'
 import useI18n from 'hooks/useI18n'
 

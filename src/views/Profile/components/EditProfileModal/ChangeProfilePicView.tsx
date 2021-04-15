@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, InjectedModalProps, Skeleton, Text } from '@pancakeswap-libs/uikit'
+import { Button, InjectedModalProps, Skeleton, Text } from 'greenteaswap-ui-kit'
 import { useWeb3React } from '@web3-react/core'
 import { useDispatch } from 'react-redux'
 import nftList from 'config/constants/nfts'

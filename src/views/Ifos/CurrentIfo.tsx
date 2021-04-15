@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Text, Heading, BaseLayout, Button, LinkExternal, Flex, Image } from '@pancakeswap-libs/uikit'
+import { Text, Heading, BaseLayout, Button, LinkExternal, Flex, Image } from 'greenteaswap-ui-kit'
 import { ifosConfig } from 'config/constants'
 import useI18n from 'hooks/useI18n'
 import IfoCard from './components/IfoCard'

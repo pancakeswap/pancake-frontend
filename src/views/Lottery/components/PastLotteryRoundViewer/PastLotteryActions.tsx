@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Button, LinkExternal, useModal } from '@pancakeswap-libs/uikit'
+import { Button, LinkExternal, useModal } from 'greenteaswap-ui-kit'
 import useI18n from 'hooks/useI18n'
 import { useWeb3React } from '@web3-react/core'
 import useTickets from 'hooks/useTickets'

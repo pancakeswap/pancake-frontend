@@ -9,7 +9,7 @@ import {
   Button,
   ChevronDownIcon,
   ChevronUpIcon,
-} from '@pancakeswap-libs/uikit'
+} from 'greenteaswap-ui-kit'
 import useI18n from 'hooks/useI18n'
 import { Ifo } from 'config/constants/types'
 import { PublicIfoState } from '../../hooks/useGetPublicIfoData'

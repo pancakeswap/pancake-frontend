@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react'
 import styled from 'styled-components'
-import { Heading, Card, CardBody, Button, useModal } from '@pancakeswap-libs/uikit'
+import { Heading, Card, CardBody, Button, useModal } from 'greenteaswap-ui-kit'
 import { getCakeAddress } from 'utils/addressHelpers'
 import { getBalanceNumber } from 'utils/formatBalance'
 import useI18n from 'hooks/useI18n'

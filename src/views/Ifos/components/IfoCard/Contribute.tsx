@@ -1,7 +1,7 @@
 import React from 'react'
 import BigNumber from 'bignumber.js'
 import { Contract } from 'web3-eth-contract'
-import { Box, Button, Flex, Text, useModal } from '@pancakeswap-libs/uikit'
+import { Box, Button, Flex, Text, useModal } from 'greenteaswap-ui-kit'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { Ifo } from 'config/constants/types'
 import useI18n from 'hooks/useI18n'

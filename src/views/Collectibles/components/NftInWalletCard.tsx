@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, CardBody, Heading, Text } from '@pancakeswap-libs/uikit'
+import { Card, CardBody, Heading, Text } from 'greenteaswap-ui-kit'
 import useI18n from 'hooks/useI18n'
 import CardContent from './CardContent'
 

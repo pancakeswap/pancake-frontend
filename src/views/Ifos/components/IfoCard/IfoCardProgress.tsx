@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Progress } from '@pancakeswap-libs/uikit'
+import { Box, Progress } from 'greenteaswap-ui-kit'
 
 interface IfoCardProgressProps {
   progress: number

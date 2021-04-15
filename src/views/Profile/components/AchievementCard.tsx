@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Flex, PrizeIcon, Text } from '@pancakeswap-libs/uikit'
+import { Flex, PrizeIcon, Text } from 'greenteaswap-ui-kit'
 import { Achievement } from 'state/types'
 import AchievementAvatar from './AchievementAvatar'
 import AchievementTitle from './AchievementTitle'

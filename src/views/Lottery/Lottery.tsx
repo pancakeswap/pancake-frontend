@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { ButtonMenu, ButtonMenuItem } from '@pancakeswap-libs/uikit'
+import { ButtonMenu, ButtonMenuItem } from 'greenteaswap-ui-kit'
 import { useWeb3React } from '@web3-react/core'
 import PastLotteryDataContext from 'contexts/PastLotteryDataContext'
 import { getLotteryIssueIndex } from 'utils/lotteryUtils'

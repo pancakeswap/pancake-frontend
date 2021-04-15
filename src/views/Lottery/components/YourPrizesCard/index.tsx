@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Card, CardBody } from '@pancakeswap-libs/uikit'
+import { Card, CardBody } from 'greenteaswap-ui-kit'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useTotalClaim } from 'hooks/useTickets'
 import PrizesWonContent from './PrizesWonContent'

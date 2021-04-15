@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Heading, Text } from '@pancakeswap-libs/uikit'
+import { Heading, Text } from 'greenteaswap-ui-kit'
 import Container from 'components/layout/Container'
 import useI18n from 'hooks/useI18n'
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Button, Flex, Input, InputProps } from '@pancakeswap-libs/uikit'
+import { Button, Flex, Input, InputProps } from 'greenteaswap-ui-kit'
 import useI18n from '../../hooks/useI18n'
 
 interface TokenInputProps extends InputProps {

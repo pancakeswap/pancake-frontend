@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
-import { Image, Card, CardBody } from '@pancakeswap-libs/uikit'
+import { Image, Card, CardBody } from 'greenteaswap-ui-kit'
 import { useWinningNumbers, useMatchingRewardLength } from 'hooks/useTickets'
 import useI18n from 'hooks/useI18n'
 import useGetLotteryHasDrawn from 'hooks/useGetLotteryHasDrawn'

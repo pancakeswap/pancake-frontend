@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { useLocation } from 'react-router-dom'
 import { useWeb3React } from '@web3-react/core'
-import { useModal } from '@pancakeswap-libs/uikit'
+import { useModal } from 'greenteaswap-ui-kit'
 import useGetBullHiccupClaimableStatus from '../hooks/useGetBullHiccupClaimableStatus'
 import ClaimBullHiccupNftModal from './ClaimBullHiccupNftModal'
 

@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
-import { BaseLayout } from '@pancakeswap-libs/uikit'
+import { BaseLayout } from 'greenteaswap-ui-kit'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useTotalClaim } from 'hooks/useTickets'
 import YourPrizesCard from './components/YourPrizesCard'

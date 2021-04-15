@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Heading, Card, CardBody, Flex, ArrowForwardIcon } from '@pancakeswap-libs/uikit'
+import { Heading, Card, CardBody, Flex, ArrowForwardIcon } from 'greenteaswap-ui-kit'
 import { NavLink } from 'react-router-dom'
 import useLotteryTotalPrizesUsd from 'hooks/useLotteryTotalPrizesUsd'
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Button, Box, BoxProps, Flex, Input, Text } from '@pancakeswap-libs/uikit'
+import { Button, Box, BoxProps, Flex, Input, Text } from 'greenteaswap-ui-kit'
 import useI18n from 'hooks/useI18n'
 
 export interface BalanceInputProps extends BoxProps {
