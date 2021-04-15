@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState } from 'react'
+import React, { useEffect, useCallback, useState, useMemo, useRef } from 'react'
 import { Route, useRouteMatch, useLocation } from 'react-router-dom'
 import { useAppDispatch } from 'state'
 import BigNumber from 'bignumber.js'
@@ -132,25 +132,6 @@ const Farms: React.FC = () => {
     (farm) => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0),
   )
 
-  const sortFarms = (farms: FarmWithStakedValue[]): FarmWithStakedValue[] => {
-    switch (sortOption) {
-      case 'apr':
-        return orderBy(farms, (farm: FarmWithStakedValue) => farm.apr, 'desc')
-      case 'multiplier':
-        return orderBy(
-          farms,
-          (farm: FarmWithStakedValue) => (farm.multiplier ? Number(farm.multiplier.slice(0, -1)) : 0),
-          'desc',
-        )
-      case 'earned':
-        return orderBy(farms, (farm: FarmWithStakedValue) => (farm.userData ? farm.userData.earnings : 0), 'desc')
-      case 'liquidity':
-        return orderBy(farms, (farm: FarmWithStakedValue) => Number(farm.liquidity), 'desc')
-      default:
-        return farms
-    }
-  }
-
   const farmsList = useCallback(
     (farmsToDisplay: Farm[]): FarmWithStakedValue[] => {
       let farmsToDisplayWithAPR: FarmWithStakedValue[] = farmsToDisplay.map((farm) => {
@@ -180,16 +161,73 @@ const Farms: React.FC = () => {
     setQuery(event.target.value)
   }
 
-  let farmsStaked = []
-  if (isActive) {
-    farmsStaked = stakedOnly ? farmsList(stakedOnlyFarms) : farmsList(activeFarms)
-  } else {
-    farmsStaked = stakedOnly ? farmsList(stakedInactiveFarms) : farmsList(inactiveFarms)
-  }
+  const loadMoreRef = useRef<HTMLDivElement>(null)
 
-  farmsStaked = sortFarms(farmsStaked)
+  const [numberOfItemsToShow, setNumberOfItemsToShow] = useState(12)
+  const [observerIsSet, setObserverIsSet] = useState<boolean>()
 
-  const rowData = farmsStaked.map((farm) => {
+  const farmsStakedMemoized = useMemo(() => {
+    let farmsStaked = []
+
+    const sortFarms = (farms: FarmWithStakedValue[]): FarmWithStakedValue[] => {
+      switch (sortOption) {
+        case 'apr':
+          return orderBy(farms, (farm: FarmWithStakedValue) => farm.apr, 'desc')
+        case 'multiplier':
+          return orderBy(
+            farms,
+            (farm: FarmWithStakedValue) => (farm.multiplier ? Number(farm.multiplier.slice(0, -1)) : 0),
+            'desc',
+          )
+        case 'earned':
+          return orderBy(farms, (farm: FarmWithStakedValue) => (farm.userData ? farm.userData.earnings : 0), 'desc')
+        case 'liquidity':
+          return orderBy(farms, (farm: FarmWithStakedValue) => Number(farm.liquidity), 'desc')
+        default:
+          return farms
+      }
+    }
+
+    if (isActive) {
+      farmsStaked = stakedOnly ? farmsList(stakedOnlyFarms) : farmsList(activeFarms)
+    } else {
+      farmsStaked = stakedOnly ? farmsList(stakedInactiveFarms) : farmsList(inactiveFarms)
+    }
+
+    return sortFarms(farmsStaked).slice(0, numberOfItemsToShow)
+  }, [
+    sortOption,
+    activeFarms,
+    farmsList,
+    inactiveFarms,
+    isActive,
+    stakedInactiveFarms,
+    stakedOnly,
+    stakedOnlyFarms,
+    numberOfItemsToShow,
+  ])
+
+  useEffect(() => {
+    const options = {
+      rootMargin: '0px',
+      threshold: 1,
+    }
+
+    const callbackFunction = (entries) => {
+      const [entry] = entries
+      if (entry.isIntersecting) {
+        setNumberOfItemsToShow((currentlyShowing) => currentlyShowing + 12)
+      }
+    }
+
+    if (!observerIsSet) {
+      const newObserver = new IntersectionObserver(callbackFunction, options)
+      newObserver.observe(loadMoreRef.current)
+      setObserverIsSet(true)
+    }
+  }, [farmsStakedMemoized, observerIsSet])
+
+  const rowData = farmsStakedMemoized.map((farm) => {
     const { token, quoteToken } = farm
     const tokenAddress = token.address
     const quoteTokenAddress = quoteToken.address
@@ -260,12 +298,12 @@ const Farms: React.FC = () => {
       <div>
         <FlexLayout>
           <Route exact path={`${path}`}>
-            {farmsStaked.map((farm) => (
+            {farmsStakedMemoized.map((farm) => (
               <FarmCard key={farm.pid} farm={farm} cakePrice={cakePrice} account={account} removed={false} />
             ))}
           </Route>
           <Route exact path={`${path}/history`}>
-            {farmsStaked.map((farm) => (
+            {farmsStakedMemoized.map((farm) => (
               <FarmCard key={farm.pid} farm={farm} cakePrice={cakePrice} account={account} removed />
             ))}
           </Route>
@@ -334,6 +372,7 @@ const Farms: React.FC = () => {
           </FilterContainer>
         </ControlContainer>
         {renderContent()}
+        <div ref={loadMoreRef} />
         <StyledImage src="/images/3dpan.png" alt="Pancake illustration" width={120} height={103} />
       </Page>
     </>
