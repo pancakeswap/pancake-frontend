@@ -1,4 +1,5 @@
 import React from 'react'
+import styled from 'styled-components'
 import { Flex, LinkExternal, Image, Text, PrizeIcon } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import { Ifo } from 'config/constants/types'
@@ -8,11 +9,28 @@ interface Props {
   minLpForAchievement: number
 }
 
+const Container = styled(Flex)`
+  justify-content: space-between;
+  flex-direction: column;
+  align-items: center;
+  ${({ theme }) => theme.mediaQueries.md} {
+    flex-direction: row;
+    align-items: initial;
+  }
+`
+
+const StyledLinkExternal = styled(LinkExternal)`
+  margin-top: 32px;
+  ${({ theme }) => theme.mediaQueries.md} {
+    margin-top: 0;
+  }
+`
+
 const Achievement: React.FC<Props> = ({ ifo, minLpForAchievement }) => {
   const TranslateString = useI18n()
   const tokenName = ifo.token.symbol.toLowerCase()
   return (
-    <Flex justifyContent="space-between">
+    <Container>
       <Flex alignItems="center" flexGrow={1}>
         <Image src={`/images/achievements/ifo-${tokenName}.svg`} width={56} height={56} mr="8px" />
         <Flex flexDirection="column">
@@ -31,8 +49,8 @@ const Achievement: React.FC<Props> = ({ ifo, minLpForAchievement }) => {
           </Text>
         </Flex>
       </Flex>
-      <LinkExternal href={ifo.link}>{`Learn more about ${ifo.token.symbol}`}</LinkExternal>
-    </Flex>
+      <StyledLinkExternal href={ifo.link}>{`Learn more about ${ifo.token.symbol}`}</StyledLinkExternal>
+    </Container>
   )
 }
 
