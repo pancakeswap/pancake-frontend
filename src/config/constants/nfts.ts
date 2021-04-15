@@ -29,7 +29,9 @@ const Nfts: Nft[] = [
       mp4: 'https://gateway.pinata.cloud/ipfs/QmWFQdggxnAkgFNBWixT6v7nrgEnYfYDxG5A9u42aHhU6U/easter-champion-storm.mp4',
     },
     sortOrder: 999,
-    bunnyId: 15,
+    identifier: 'easter-champion-storm',
+    type: NftType.PANCAKE,
+    variationId: 15,
   },
   {
     name: "Cakeston Easter '21",
