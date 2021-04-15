@@ -22,7 +22,6 @@ interface CardConfig {
   }
 }
 
-// TODO replace the distribution by a ratio in parent component
 const cardConfig: CardConfig = {
   [PoolIds.poolBasic]: {
     title: 'Basic Sale',
