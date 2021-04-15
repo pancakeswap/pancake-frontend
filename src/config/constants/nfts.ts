@@ -10,9 +10,30 @@ export const nftSources: NftSource = {
     },
     identifierKey: 'image',
   },
+  [NftType.MIXIE]: {
+    address: {
+      56: '0xa251b5EAa9E67F2Bc8b33F33e20E91552Bf85566',
+      97: '',
+    },
+    identifierKey: 'image',
+  },
 }
 
 const Nfts: Nft[] = [
+  {
+    name: 'Mixie #2',
+    description: "Stories were told, and songs were sung, about Chef Mixie's pancakes and her big syrup gun!",
+    images: {
+      lg: '002-chef-mixie-lg.png',
+      md: '002-chef-mixie-md.png',
+      sm: '002-chef-mixie-sm.png',
+      ipfs: 'https://gateway.pinata.cloud/ipfs/QmUmLpNH5C2F5rQQg1Hh6mbE7bQFqse9R2YCwMznRPCUTq/002-Chef-Mixie.png',
+    },
+    sortOrder: 999,
+    identifier: '002-Chef-Mixie',
+    type: NftType.MIXIE,
+    variationId: 2,
+  },
   {
     name: 'Easter ‘21 Champions',
     description: 'Eggscellent! Celebrating Syrup Storm winning the Easter Battle!',
