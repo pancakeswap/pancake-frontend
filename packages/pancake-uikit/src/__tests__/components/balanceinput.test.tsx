@@ -102,7 +102,7 @@ it("renders correctly", () => {
           class="c1 c2"
           placeholder="0.0"
           scale="md"
-          type="text"
+          type="number"
           value="14"
         />
         <div
