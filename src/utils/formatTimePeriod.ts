@@ -2,6 +2,7 @@ import getTimePeriods from './getTimePeriods'
 
 /**
  * @param {Object} periods Return value from getTimePeriods
+ * @param excludePeriods Exclude periods for given object value
  * @return {string} '14h 3m 4s'
  */
 const formatTimePeriod = (periods: ReturnType<typeof getTimePeriods>, excludePeriods = []) => {
