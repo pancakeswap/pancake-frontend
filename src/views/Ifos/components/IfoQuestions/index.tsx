@@ -51,7 +51,7 @@ const IfoQuestions = () => {
               >
                 {description.map(({ id, fallback }) => {
                   return (
-                    <Text color="textSubtle" as="p">
+                    <Text key={fallback} color="textSubtle" as="p">
                       {TranslateString(id, fallback)}
                     </Text>
                   )

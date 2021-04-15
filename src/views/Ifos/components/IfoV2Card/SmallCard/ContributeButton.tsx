@@ -19,7 +19,7 @@ interface Props {
   limitContributionPerUser: BigNumber
   userContribution: BigNumber
   isPendingTx: boolean
-  addUserContributedAmount: (amount: BigNumber) => void
+  addUserContributedAmount: (amount: BigNumber, poolId: PoolIds) => void
   currencyPriceInUSD: BigNumber
 }
 const ContributeButton: React.FC<Props> = ({
@@ -38,7 +38,7 @@ const ContributeButton: React.FC<Props> = ({
 
   const handleContributeSuccess = (amount: BigNumber) => {
     toastSuccess('Success!', `You have contributed ${getBalanceNumber(amount)} CAKE-BNB LP tokens to this IFO!`)
-    addUserContributedAmount(amount)
+    addUserContributedAmount(amount, poolId)
   }
 
   const [onPresentContributeModal] = useModal(

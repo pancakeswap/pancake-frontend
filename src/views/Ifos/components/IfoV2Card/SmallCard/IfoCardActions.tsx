@@ -1,5 +1,4 @@
 import React from 'react'
-import BigNumber from 'bignumber.js'
 import { Button } from '@pancakeswap-libs/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { Link } from 'react-router-dom'
@@ -47,7 +46,7 @@ const IfoCardActions: React.FC<Props> = ({ currency, poolId, publicIfoData, wall
           currency={currency}
           contract={walletIfoData.contract}
           isPendingTx={userPoolCharacteristics.isPendingTx}
-          addUserContributedAmount={(amount: BigNumber) => walletIfoData.addUserContributedAmount(amount, poolId)}
+          addUserContributedAmount={walletIfoData.addUserContributedAmount}
           userContribution={userPoolCharacteristics.amountTokenCommittedInLP}
           limitContributionPerUser={publicIfoData[poolId].limitPerUserInLP}
           currencyPriceInUSD={publicIfoData.currencyPriceInUSD}

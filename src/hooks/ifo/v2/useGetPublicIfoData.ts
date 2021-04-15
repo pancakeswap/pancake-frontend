@@ -3,6 +3,7 @@ import { BSC_BLOCK_TIME } from 'config'
 import { Ifo, IfoStatus } from 'config/constants/types'
 import { useBlock, useLpTokenPrice } from 'state/hooks'
 import { useIfoV2Contract } from 'hooks/useContract'
+import useRefresh from 'hooks/useRefresh'
 import { useEffect, useState } from 'react'
 import makeBatchRequest from 'utils/makeBatchRequest'
 import { PublicIfoData, PoolCharacteristics } from './types'
@@ -48,6 +49,7 @@ const formatPool = (pool) => ({
 const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
   const { address, releaseBlockNumber } = ifo
   const lpTokenPriceInUsd = useLpTokenPrice(ifo.currency.symbol)
+  const { fastRefresh } = useRefresh()
 
   const [state, setState] = useState({
     status: 'idle' as IfoStatus,
@@ -115,7 +117,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
     }
 
     fetchProgress()
-  }, [contract, currentBlock, releaseBlockNumber])
+  }, [contract, currentBlock, releaseBlockNumber, fastRefresh])
 
   return { ...state, currencyPriceInUSD: lpTokenPriceInUsd }
 }

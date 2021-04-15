@@ -4,6 +4,7 @@ import BigNumber from 'bignumber.js'
 import { Ifo } from 'config/constants/types'
 import { useERC20, useIfoV2Contract } from 'hooks/useContract'
 import { useIfoAllowance } from 'hooks/useAllowance'
+import useRefresh from 'hooks/useRefresh'
 import makeBatchRequest from 'utils/makeBatchRequest'
 import { getAddress } from 'utils/addressHelpers'
 import { WalletIfoState, WalletIfoData, PoolIds } from './types'
@@ -12,6 +13,7 @@ import { WalletIfoState, WalletIfoData, PoolIds } from './types'
  * Gets all data from an IFO related to a wallet
  */
 const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
+  const { fastRefresh } = useRefresh()
   const [state, setState] = useState<WalletIfoState>({
     poolBasic: {
       amountTokenCommittedInLP: new BigNumber(0),
@@ -47,12 +49,16 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
       },
     }))
 
-  const addUserContributedAmount = (amount: BigNumber, poolId: PoolIds) => {
+  const addUserContributedAmount = async (amount: BigNumber, poolId: PoolIds) => {
+    const [[offeringAmountInToken]] = await contract.methods
+      .viewUserOfferingAndRefundingAmountsForPools(account, [poolId === PoolIds.poolBasic ? 0 : 1])
+      .call()
     setState((prevState) => ({
       ...prevState,
       [poolId]: {
         ...prevState[poolId],
         amountTokenCommittedInLP: prevState[poolId].amountTokenCommittedInLP.plus(amount),
+        offeringAmountInToken,
       },
     }))
   }
@@ -98,7 +104,7 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
     if (account) {
       fetchIfoData()
     }
-  }, [account, contract, setState])
+  }, [account, contract, fastRefresh])
 
   return { ...state, allowance, contract, setPendingTx, addUserContributedAmount, setIsClaimed }
 }
