@@ -10,7 +10,7 @@ import { useApprove } from 'hooks/useApprove'
 import { getBep20Contract } from 'utils/contractHelpers'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
-import { getBalanceNumber } from 'utils/formatBalance'
+import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
 import useStake from 'hooks/useStake'
 import useUnstake from 'hooks/useUnstake'
 import useWeb3 from 'hooks/useWeb3'
@@ -40,8 +40,14 @@ const Staked: React.FunctionComponent<FarmWithStakedValue> = ({ pid, lpSymbol, l
     tokenAddress: token.address,
   })
   const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
-  const rawStakedBalance = getBalanceNumber(stakedBalance)
-  const displayBalance = rawStakedBalance.toLocaleString()
+
+  const displayBalance = useCallback(() => {
+    const stakedBalanceNumber = getBalanceNumber(stakedBalance)
+    if (stakedBalanceNumber > 0 && stakedBalanceNumber < 0.0001) {
+      return getFullDisplayBalance(stakedBalance).toLocaleString()
+    }
+    return stakedBalanceNumber.toLocaleString()
+  }, [stakedBalance])
 
   const [onPresentDeposit] = useModal(
     <DepositModal max={tokenBalance} onConfirm={onStake} tokenName={lpSymbol} addLiquidityUrl={addLiquidityUrl} />,
@@ -76,7 +82,7 @@ const Staked: React.FunctionComponent<FarmWithStakedValue> = ({ pid, lpSymbol, l
   }
 
   if (isApproved) {
-    if (rawStakedBalance) {
+    if (stakedBalance) {
       return (
         <ActionContainer>
           <ActionTitles>
@@ -85,7 +91,7 @@ const Staked: React.FunctionComponent<FarmWithStakedValue> = ({ pid, lpSymbol, l
           </ActionTitles>
           <ActionContent>
             <div>
-              <Earned>{displayBalance}</Earned>
+              <Earned>{displayBalance()}</Earned>
             </div>
             <IconButtonWrapper>
               <IconButton variant="secondary" onClick={onPresentWithdraw} mr="6px">
