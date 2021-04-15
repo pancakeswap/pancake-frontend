@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { Button, InjectedModalProps, Skeleton, Text } from '@pancakeswap-libs/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { useAppDispatch } from 'state'
-import nftList from 'config/constants/nfts'
 import { useProfile, useToast } from 'state/hooks'
 import useI18n from 'hooks/useI18n'
 import { fetchProfile } from 'state/profile'
@@ -16,9 +15,9 @@ import ApproveConfirmButtons from '../ApproveConfirmButtons'
 type ChangeProfilePicPageProps = InjectedModalProps
 
 const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss }) => {
-  const [tokenId, setTokenId] = useState(null)
+  const [tokenId, setTokenId] = useState<number>(null)
   const TranslateString = useI18n()
-  const { isLoading, nfts: nftsInWallet } = useGetWalletNfts()
+  const { isLoading, getNftsInWallet, getTokenIdsByIdentifier } = useGetWalletNfts()
   const dispatch = useAppDispatch()
   const { profile } = useProfile()
   const pancakeRabbitsContract = usePancakeRabbits()
@@ -51,8 +50,7 @@ const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss }
       onDismiss()
     },
   })
-  const bunnyIds = Object.keys(nftsInWallet).map((nftWalletItem) => Number(nftWalletItem))
-  const walletNfts = nftList.filter((nft) => bunnyIds.includes(nft.bunnyId))
+  const nftsInWallet = getNftsInWallet()
 
   return (
     <>
@@ -62,13 +60,13 @@ const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss }
       {isLoading ? (
         <Skeleton height="80px" mb="16px" />
       ) : (
-        walletNfts.map((walletNft) => {
-          const [firstTokenId] = nftsInWallet[walletNft.bunnyId].tokenIds
+        nftsInWallet.map((walletNft) => {
+          const [firstTokenId] = getTokenIdsByIdentifier(walletNft.identifier)
 
           return (
             <SelectionCard
               name="profilePicture"
-              key={walletNft.bunnyId}
+              key={walletNft.identifier}
               value={firstTokenId}
               image={`/images/nfts/${walletNft.images.md}`}
               isChecked={firstTokenId === tokenId}
@@ -80,7 +78,7 @@ const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss }
           )
         })
       )}
-      {!isLoading && walletNfts.length === 0 && (
+      {!isLoading && nftsInWallet.length === 0 && (
         <>
           <Text as="p" color="textSubtle" mb="16px">
             {TranslateString(999, 'Sorry! You don’t have any eligible Collectibles in your wallet to use!')}

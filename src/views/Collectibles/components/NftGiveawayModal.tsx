@@ -41,8 +41,10 @@ const getClaimableNft = (profile: Profile): Nft => {
     return null
   }
 
-  const bunnyId = Object.keys(teamNftMap).find((mapBunnyId) => teamNftMap[mapBunnyId] === profile.team.id)
-  return nftList.find((nft) => nft.bunnyId === Number(bunnyId))
+  const identifier = Object.keys(teamNftMap).find(
+    (mapNftIdentifier) => teamNftMap[mapNftIdentifier] === profile.team.id,
+  )
+  return nftList.find((nft) => nft.identifier === identifier)
 }
 
 const NftGiveawayModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {

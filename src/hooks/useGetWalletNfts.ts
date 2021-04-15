@@ -1,38 +1,36 @@
 import { useWeb3React } from '@web3-react/core'
+import Nfts, { nftSources } from 'config/constants/nfts'
+import { Nft, NftType } from 'config/constants/types'
 import { useEffect, useReducer } from 'react'
-import { getPancakeRabbitContract } from 'utils/contractHelpers'
-import makeBatchRequest from 'utils/makeBatchRequest'
+import { getAddress } from 'utils/addressHelpers'
+import { getNftByTokenId } from 'utils/collectibles'
+import { getErc721Contract } from 'utils/contractHelpers'
 
-const pancakeRabbitsContract = getPancakeRabbitContract()
-
-export type NftMap = {
-  [key: number]: {
-    tokenUri: string
-    tokenIds: number[]
-  }
+export type NftDataMap = {
+  [key: string]: number[]
 }
 
-type Action = { type: 'set_nfts'; data: NftMap } | { type: 'reset' } | { type: 'refresh'; timestamp: number }
+type Action = { type: 'set_nfts'; data: NftDataMap } | { type: 'reset' } | { type: 'refresh'; timestamp: number }
 
 type State = {
   isLoading: boolean
-  nfts: NftMap
+  tokenIds: NftDataMap
   lastUpdated: number
 }
 
 const initialState: State = {
   isLoading: true,
-  nfts: {},
+  tokenIds: {},
   lastUpdated: Date.now(),
 }
 
-const reducer = (state: State, action: Action) => {
+const reducer = (state: State, action: Action): State => {
   switch (action.type) {
     case 'set_nfts':
       return {
-        ...initialState,
+        ...state,
         isLoading: false,
-        nfts: action.data,
+        tokenIds: action.data,
       }
     case 'refresh':
       return {
@@ -54,66 +52,84 @@ const useGetWalletNfts = () => {
   const { account } = useWeb3React()
   const { lastUpdated } = state
 
+  /**
+   * Helper function to get tokenIds by identifier
+   */
+  const getTokenIdsByIdentifier = (identifier: Nft['identifier']) => {
+    return state.tokenIds[identifier] || []
+  }
+
+  /**
+   * Helper function to return all nfts in the config that are in the tokenIds
+   */
+  const getNftsInWallet = () => {
+    const identifiers = Object.keys(state.tokenIds)
+    return Nfts.filter((nft) => identifiers.includes(nft.identifier))
+  }
+
   useEffect(() => {
-    const fetchNfts = async () => {
-      try {
-        const balanceOf = await pancakeRabbitsContract.methods.balanceOf(account).call()
+    const fetchCollectibles = async () => {
+      // For each nft source get nft data
+      Object.keys(nftSources).forEach(async (nftSourceType) => {
+        const { address: addressObj } = nftSources[nftSourceType as NftType]
+        const address = getAddress(addressObj)
+        const contract = getErc721Contract(address)
 
-        if (balanceOf > 0) {
-          const getTokenIdAndBunnyId = async (index: number) => {
-            try {
-              const { tokenOfOwnerByIndex, getBunnyId, tokenURI } = pancakeRabbitsContract.methods
-              const tokenId = await tokenOfOwnerByIndex(account, index).call()
-              const [bunnyId, tokenUri] = await makeBatchRequest([getBunnyId(tokenId).call, tokenURI(tokenId).call])
-
-              return [Number(bunnyId), Number(tokenId), tokenUri]
-            } catch (error) {
-              return null
-            }
+        const getTokenIdAndData = async (index: number) => {
+          try {
+            const tokenId = await contract.methods.tokenOfOwnerByIndex(account, index).call()
+            const walletNft = await getNftByTokenId(address, tokenId)
+            return [Number(tokenId), walletNft.identifier]
+          } catch (error) {
+            console.error('getTokenIdAndData', error)
+            return null
           }
+        }
 
-          const tokenIdPromises = []
+        try {
+          const balanceOfResponse = await contract.methods.balanceOf(account).call()
+          const balanceOf = Number(balanceOfResponse)
 
-          for (let i = 0; i < balanceOf; i++) {
-            tokenIdPromises.push(getTokenIdAndBunnyId(i))
+          if (balanceOf > 0) {
+            const nftDataFetchPromises = []
+
+            // For each index get the tokenId and data associated with it
+            for (let i = 0; i < balanceOf; i++) {
+              nftDataFetchPromises.push(getTokenIdAndData(i))
+            }
+
+            const walletNftData = await Promise.all(nftDataFetchPromises)
+
+            // Format final values and add them to state
+            const nftTokenIdsByIdentifier: NftDataMap = walletNftData.reduce((accum, association) => {
+              if (!association) {
+                return accum
+              }
+
+              const [tokenId, identifier] = association as [number, Nft['identifier']]
+
+              return {
+                ...accum,
+                [identifier]: accum[identifier] ? [...accum[identifier].tokenIds, tokenId] : [tokenId],
+              }
+            }, {})
+
+            dispatch({ type: 'set_nfts', data: nftTokenIdsByIdentifier })
           }
-
-          const tokenIdsOwnedByWallet = await Promise.all(tokenIdPromises)
-
-          const nfts: NftMap = tokenIdsOwnedByWallet.reduce((accum, association) => {
-            if (!association) {
-              return accum
-            }
-
-            const [bunnyId, tokenId, tokenUri] = association
-
-            return {
-              ...accum,
-              [bunnyId]: {
-                tokenUri,
-                tokenIds: accum[bunnyId] ? [...accum[bunnyId].tokenIds, tokenId] : [tokenId],
-              },
-            }
-          }, {})
-
-          dispatch({ type: 'set_nfts', data: nfts })
-        } else {
-          // Reset it in case of wallet change
+        } catch {
           dispatch({ type: 'reset' })
         }
-      } catch (error) {
-        dispatch({ type: 'reset' })
-      }
+      })
     }
 
     if (account) {
-      fetchNfts()
+      fetchCollectibles()
     }
   }, [account, lastUpdated, dispatch])
 
   const refresh = () => dispatch({ type: 'refresh', timestamp: Date.now() })
 
-  return { ...state, refresh }
+  return { ...state, refresh, getTokenIdsByIdentifier, getNftsInWallet }
 }
 
 export default useGetWalletNfts

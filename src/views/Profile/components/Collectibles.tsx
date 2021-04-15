@@ -2,7 +2,6 @@ import React from 'react'
 import { Heading, Text, Flex, ChevronRightIcon } from '@pancakeswap-libs/uikit'
 import { Link } from 'react-router-dom'
 import useI18n from 'hooks/useI18n'
-import nfts from 'config/constants/nfts'
 import useGetWalletNfts from 'hooks/useGetWalletNfts'
 import styled from 'styled-components'
 import CollectibleCard from './CollectibleCard'
@@ -30,9 +29,8 @@ const CollectibleList = styled.div`
 
 const Collectibles = () => {
   const TranslateString = useI18n()
-  const { nfts: tokenIdsInWallet } = useGetWalletNfts()
-  const bunnyIds = Object.keys(tokenIdsInWallet).map((nftWalletItem) => Number(nftWalletItem))
-  const nftsInWallet = nfts.filter((nft) => bunnyIds.includes(nft.bunnyId))
+  const { getNftsInWallet } = useGetWalletNfts()
+  const nftsInWallet = getNftsInWallet()
 
   return (
     <>
@@ -54,7 +52,7 @@ const Collectibles = () => {
       {nftsInWallet.length > 0 && (
         <CollectibleList>
           {nftsInWallet.map((nftInWallet) => (
-            <CollectibleCard key={nftInWallet.bunnyId} nft={nftInWallet} />
+            <CollectibleCard key={nftInWallet.identifier} nft={nftInWallet} />
           ))}
         </CollectibleList>
       )}

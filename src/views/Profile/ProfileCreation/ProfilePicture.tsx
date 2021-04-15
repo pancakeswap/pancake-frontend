@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import { AutoRenewIcon, Button, Card, CardBody, Heading, Skeleton, Text } from '@pancakeswap-libs/uikit'
 import { Link as RouterLink } from 'react-router-dom'
 import { useWeb3React } from '@web3-react/core'
-import nftList from 'config/constants/nfts'
 import useI18n from 'hooks/useI18n'
 import { useToast } from 'state/hooks'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
@@ -26,12 +25,11 @@ const ProfilePicture: React.FC = () => {
   const [isApproving, setIsApproving] = useState(false)
   const { tokenId, actions } = useContext(ProfileCreationContext)
   const TranslateString = useI18n()
-  const { isLoading, nfts: nftsInWallet } = useGetWalletNfts()
+  const { isLoading, getNftsInWallet, getTokenIdsByIdentifier } = useGetWalletNfts()
   const pancakeRabbitsContract = usePancakeRabbits()
   const { account } = useWeb3React()
   const { toastError } = useToast()
-  const bunnyIds = Object.keys(nftsInWallet).map((nftWalletItem) => Number(nftWalletItem))
-  const walletNfts = nftList.filter((nft) => bunnyIds.includes(nft.bunnyId))
+  const walletNfts = getNftsInWallet()
 
   const handleApprove = () => {
     pancakeRabbitsContract.methods
@@ -99,12 +97,12 @@ const ProfilePicture: React.FC = () => {
               <Skeleton height="80px" mb="16px" />
             ) : (
               walletNfts.map((walletNft) => {
-                const [firstTokenId] = nftsInWallet[walletNft.bunnyId].tokenIds
+                const [firstTokenId] = getTokenIdsByIdentifier(walletNft.identifier)
 
                 return (
                   <SelectionCard
                     name="profilePicture"
-                    key={walletNft.bunnyId}
+                    key={walletNft.identifier}
                     value={firstTokenId}
                     image={`/images/nfts/${walletNft.images.md}`}
                     isChecked={firstTokenId === tokenId}

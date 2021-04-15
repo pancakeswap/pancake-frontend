@@ -41,6 +41,7 @@ export const profileSlice = createSlice({
 export const { profileFetchStart, profileFetchSucceeded, profileFetchFailed, addPoints } = profileSlice.actions
 
 // Thunks
+// TODO: this should be an AsyncThunk
 export const fetchProfile = (address: string) => async (dispatch) => {
   try {
     dispatch(profileFetchStart())

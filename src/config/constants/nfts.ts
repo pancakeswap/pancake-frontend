@@ -1,4 +1,16 @@
-import { Nft } from './types'
+import { Nft, NftSource, NftType } from './types'
+
+export const IPFS_GATEWAY = 'https://gateway.pinata.cloud'
+
+export const nftSources: NftSource = {
+  [NftType.PANCAKE]: {
+    address: {
+      56: '0xDf7952B35f24aCF7fC0487D01c8d5690a60DBa07',
+      97: '0x60935F36e4631F73f0f407e68642144e07aC7f5E',
+    },
+    identifierKey: 'image',
+  },
+}
 
 const Nfts: Nft[] = [
   {
@@ -29,11 +41,9 @@ const Nfts: Nft[] = [
       ipfs: 'https://gateway.pinata.cloud/ipfs/QmZGqWaovULNEMKxBCGnGjh27JQkAyadS6AW4J4Lzf3XBp/easter-caker.png',
     },
     sortOrder: 999,
-    bunnyId: 14,
-    address: {
-      56: '0xDf7952B35f24aCF7fC0487D01c8d5690a60DBa07',
-      97: '0x60935F36e4631F73f0f407e68642144e07aC7f5E',
-    },
+    identifier: 'easter-caker',
+    type: NftType.PANCAKE,
+    variationId: 15,
   },
   {
     name: "Flipsie Easter '21",
@@ -45,11 +55,9 @@ const Nfts: Nft[] = [
       ipfs: 'https://gateway.pinata.cloud/ipfs/QmZGqWaovULNEMKxBCGnGjh27JQkAyadS6AW4J4Lzf3XBp/easter-flipper.png',
     },
     sortOrder: 999,
-    bunnyId: 13,
-    address: {
-      56: '0xDf7952B35f24aCF7fC0487D01c8d5690a60DBa07',
-      97: '0x60935F36e4631F73f0f407e68642144e07aC7f5E',
-    },
+    identifier: 'easter-flipper',
+    type: NftType.PANCAKE,
+    variationId: 14,
   },
   {
     name: "Stormy Easter '21",
@@ -61,11 +69,9 @@ const Nfts: Nft[] = [
       ipfs: 'https://gateway.pinata.cloud/ipfs/QmZGqWaovULNEMKxBCGnGjh27JQkAyadS6AW4J4Lzf3XBp/easter-storm.png',
     },
     sortOrder: 999,
-    bunnyId: 12,
-    address: {
-      56: '0xDf7952B35f24aCF7fC0487D01c8d5690a60DBa07',
-      97: '0x60935F36e4631F73f0f407e68642144e07aC7f5E',
-    },
+    identifier: 'easter-storm',
+    type: NftType.PANCAKE,
+    variationId: 12,
   },
   {
     name: 'Bullish',
@@ -81,11 +87,9 @@ const Nfts: Nft[] = [
       mp4: 'https://gateway.pinata.cloud/ipfs/QmNS1A5HsRW1JvFWtGkm4o9TgZVe2P7kA8TB4yxvS6A7ms/bullish.mp4',
     },
     sortOrder: 999,
-    bunnyId: 11,
-    address: {
-      56: '0xDf7952B35f24aCF7fC0487D01c8d5690a60DBa07',
-      97: '0x60935F36e4631F73f0f407e68642144e07aC7f5E',
-    },
+    identifier: 'bullish',
+    type: NftType.PANCAKE,
+    variationId: 11,
   },
   {
     name: 'Hiccup',
@@ -97,11 +101,9 @@ const Nfts: Nft[] = [
       ipfs: 'https://gateway.pinata.cloud/ipfs/QmQ6EE6gkVzAQUdQLLM7CyrnME6LZHCoy92ZERW8HXmyjw/hiccup.png',
     },
     sortOrder: 999,
-    bunnyId: 10,
-    address: {
-      56: '0xDf7952B35f24aCF7fC0487D01c8d5690a60DBa07',
-      97: '0x60935F36e4631F73f0f407e68642144e07aC7f5E',
-    },
+    identifier: 'hiccup',
+    type: NftType.PANCAKE,
+    variationId: 10,
   },
   {
     name: 'Sleepy',
@@ -114,11 +116,9 @@ const Nfts: Nft[] = [
       blur: 'sleepy-blur.png',
     },
     sortOrder: 999,
-    bunnyId: 5,
-    address: {
-      56: '0xDf7952B35f24aCF7fC0487D01c8d5690a60DBa07',
-      97: '0x60935F36e4631F73f0f407e68642144e07aC7f5E',
-    },
+    identifier: 'sleepy',
+    type: NftType.PANCAKE,
+    variationId: 5,
   },
   {
     name: 'Sunny',
@@ -131,11 +131,9 @@ const Nfts: Nft[] = [
       blur: 'sunny-blur.png',
     },
     sortOrder: 999,
-    bunnyId: 9,
-    address: {
-      56: '0xDf7952B35f24aCF7fC0487D01c8d5690a60DBa07',
-      97: '0x60935F36e4631F73f0f407e68642144e07aC7f5E',
-    },
+    identifier: 'sunny',
+    type: NftType.PANCAKE,
+    variationId: 9,
   },
   {
     name: 'Churro',
@@ -148,11 +146,9 @@ const Nfts: Nft[] = [
       blur: 'churro-blur.png',
     },
     sortOrder: 999,
-    bunnyId: 8,
-    address: {
-      56: '0xDf7952B35f24aCF7fC0487D01c8d5690a60DBa07',
-      97: '0x60935F36e4631F73f0f407e68642144e07aC7f5E',
-    },
+    identifier: 'churro',
+    type: NftType.PANCAKE,
+    variationId: 8,
   },
   {
     name: 'Dollop',
@@ -165,11 +161,9 @@ const Nfts: Nft[] = [
       blur: 'dollop-blur.png',
     },
     sortOrder: 999,
-    bunnyId: 6,
-    address: {
-      56: '0xDf7952B35f24aCF7fC0487D01c8d5690a60DBa07',
-      97: '0x60935F36e4631F73f0f407e68642144e07aC7f5E',
-    },
+    identifier: 'dollup',
+    type: NftType.PANCAKE,
+    variationId: 6,
   },
   {
     name: 'Twinkle',
@@ -182,11 +176,9 @@ const Nfts: Nft[] = [
       blur: 'twinkle-blur.png',
     },
     sortOrder: 999,
-    bunnyId: 7,
-    address: {
-      56: '0xDf7952B35f24aCF7fC0487D01c8d5690a60DBa07',
-      97: '0x60935F36e4631F73f0f407e68642144e07aC7f5E',
-    },
+    identifier: 'twinkle',
+    type: NftType.PANCAKE,
+    variationId: 7,
   },
   {
     name: 'Swapsies',
@@ -199,11 +191,9 @@ const Nfts: Nft[] = [
       blur: 'swapsies-blur.png',
     },
     sortOrder: 999,
-    bunnyId: 0,
-    address: {
-      56: '0xDf7952B35f24aCF7fC0487D01c8d5690a60DBa07',
-      97: '0x60935F36e4631F73f0f407e68642144e07aC7f5E',
-    },
+    identifier: 'swapsies',
+    type: NftType.PANCAKE,
+    variationId: 0,
   },
   {
     name: 'Drizzle',
@@ -216,11 +206,9 @@ const Nfts: Nft[] = [
       blur: 'drizzle-blur.png',
     },
     sortOrder: 999,
-    bunnyId: 1,
-    address: {
-      56: '0xDf7952B35f24aCF7fC0487D01c8d5690a60DBa07',
-      97: '0x60935F36e4631F73f0f407e68642144e07aC7f5E',
-    },
+    identifier: 'drizzle',
+    type: NftType.PANCAKE,
+    variationId: 1,
   },
   {
     name: 'Blueberries',
@@ -233,11 +221,9 @@ const Nfts: Nft[] = [
       blur: 'blueberries-blur.png',
     },
     sortOrder: 999,
-    bunnyId: 2,
-    address: {
-      56: '0xDf7952B35f24aCF7fC0487D01c8d5690a60DBa07',
-      97: '0x60935F36e4631F73f0f407e68642144e07aC7f5E',
-    },
+    identifier: 'blueberries',
+    type: NftType.PANCAKE,
+    variationId: 2,
   },
   {
     name: 'Circular',
@@ -250,11 +236,9 @@ const Nfts: Nft[] = [
       blur: 'circular-blur.png',
     },
     sortOrder: 999,
-    bunnyId: 3,
-    address: {
-      56: '0xDf7952B35f24aCF7fC0487D01c8d5690a60DBa07',
-      97: '0x60935F36e4631F73f0f407e68642144e07aC7f5E',
-    },
+    identifier: 'circular',
+    type: NftType.PANCAKE,
+    variationId: 3,
   },
   {
     name: 'Sparkle',
@@ -267,11 +251,9 @@ const Nfts: Nft[] = [
       blur: 'sparkle-blur.png',
     },
     sortOrder: 999,
-    bunnyId: 4,
-    address: {
-      56: '0xDf7952B35f24aCF7fC0487D01c8d5690a60DBa07',
-      97: '0x60935F36e4631F73f0f407e68642144e07aC7f5E',
-    },
+    identifier: 'sparkle',
+    type: NftType.PANCAKE,
+    variationId: 4,
   },
 ]
 
