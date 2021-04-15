@@ -57,6 +57,7 @@ export const StepNumber = styled.div<StatusProps>`
   border-radius: ${({ theme }) => theme.radii.circle};
   color: ${getStepNumberFontColor};
   display: flex;
+  justify-content: center;
   align-items: center;
   font-weight: 600;
   font-size: 32px;
@@ -64,7 +65,6 @@ export const StepNumber = styled.div<StatusProps>`
   height: 48px;
   z-index: 1;
   ${({ theme }) => theme.mediaQueries.md} {
-    justify-content: center;
     font-size: 40px;
     width: 80px;
     height: 80px;
@@ -78,7 +78,7 @@ export const StepNumber = styled.div<StatusProps>`
 export const Step: React.FC<StepProps> = ({ index, status, numberOfSteps = 0, children }) => {
   const isIndexPair = index % 2 === 0;
   return (
-    <Flex justifyContent="center" mb={index < numberOfSteps - 1 ? "16px" : 0}>
+    <Flex justifyContent={{ md: "center" }} mb={index < numberOfSteps - 1 ? "16px" : 0}>
       <ChildrenLeftWrapper isVisible={!isIndexPair}>{children}</ChildrenLeftWrapper>
       <Wrapper>
         <StepNumber status={status}>{index + 1}</StepNumber>
