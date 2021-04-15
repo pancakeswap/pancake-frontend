@@ -82,7 +82,7 @@ const Staked: React.FunctionComponent<FarmWithStakedValue> = ({ pid, lpSymbol, l
   }
 
   if (isApproved) {
-    if (stakedBalance) {
+    if (stakedBalance.gt(0)) {
       return (
         <ActionContainer>
           <ActionTitles>
