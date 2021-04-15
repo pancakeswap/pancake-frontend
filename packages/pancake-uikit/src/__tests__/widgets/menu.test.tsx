@@ -67,6 +67,9 @@ it("renders correctly", () => {
     }
 
     .c5 {
+      -webkit-align-self: center;
+      -ms-flex-item-align: center;
+      align-self: center;
       fill: #8f80ba;
       -webkit-flex-shrink: 0;
       -ms-flex-negative: 0;
@@ -74,6 +77,9 @@ it("renders correctly", () => {
     }
 
     .c7 {
+      -webkit-align-self: center;
+      -ms-flex-item-align: center;
+      align-self: center;
       fill: #452A7A;
       -webkit-flex-shrink: 0;
       -ms-flex-negative: 0;
@@ -81,6 +87,9 @@ it("renders correctly", () => {
     }
 
     .c13 {
+      -webkit-align-self: center;
+      -ms-flex-item-align: center;
+      align-self: center;
       fill: #452A7A;
       -webkit-flex-shrink: 0;
       -ms-flex-negative: 0;

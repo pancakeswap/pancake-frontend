@@ -74,6 +74,9 @@ it("renders link external link correctly", () => {
     }
 
     .c2 {
+      -webkit-align-self: center;
+      -ms-flex-item-align: center;
+      align-self: center;
       fill: #1FC7D4;
       -webkit-flex-shrink: 0;
       -ms-flex-negative: 0;

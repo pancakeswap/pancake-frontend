@@ -57,7 +57,6 @@ export const StepNumber = styled.div<StatusProps>`
   border-radius: ${({ theme }) => theme.radii.circle};
   color: ${getStepNumberFontColor};
   display: flex;
-  justify-content: center;
   align-items: center;
   font-weight: 600;
   font-size: 32px;
@@ -65,6 +64,7 @@ export const StepNumber = styled.div<StatusProps>`
   height: 48px;
   z-index: 1;
   ${({ theme }) => theme.mediaQueries.md} {
+    justify-content: center;
     font-size: 40px;
     width: 80px;
     height: 80px;
