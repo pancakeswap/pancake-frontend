@@ -27,7 +27,7 @@ const Achievement: React.FC<Props> = ({ ifo, minLpForAchievement }) => {
             </Flex>
           </Flex>
           <Text color="textSubtle" fontSize="12px">
-            {`Commit ${minLpForAchievement} LP in total to earn!`}
+            {`Commit ~${minLpForAchievement} LP in total to earn!`}
           </Text>
         </Flex>
       </Flex>
