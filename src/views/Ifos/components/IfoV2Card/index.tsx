@@ -11,6 +11,7 @@ import {
   Button,
   ChevronUpIcon,
 } from '@pancakeswap-libs/uikit'
+import BigNumber from 'bignumber.js'
 import { Ifo, IfoStatus, PoolIds } from 'config/constants/types'
 import useI18n from 'hooks/useI18n'
 import useGetPublicIfoV2Data from 'hooks/ifo/v2/useGetPublicIfoData'
@@ -19,7 +20,7 @@ import SmallCard from './SmallCard'
 import Timer from './Timer'
 import Achievement from './Achievement'
 
-const MIN_DOLLAR_FOR_ACHIEVEMENT = 5
+const MIN_DOLLAR_FOR_ACHIEVEMENT = new BigNumber(10)
 
 interface IfoFoldableCardProps {
   ifo: Ifo
@@ -110,7 +111,7 @@ const IfoFoldableCard: React.FC<IfoFoldableCardProps> = ({ ifo, isInitiallyVisib
           </CardsWrapper>
           <Achievement
             ifo={ifo}
-            minLpForAchievement={publicIfoData.currencyPriceInUSD.times(MIN_DOLLAR_FOR_ACHIEVEMENT).toNumber()}
+            minLpForAchievement={MIN_DOLLAR_FOR_ACHIEVEMENT.div(publicIfoData.currencyPriceInUSD).toNumber()}
           />
         </CardBody>
         <StyledCardFooter>
