@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.25.3](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap-libs/uikit@0.25.2...@pancakeswap-libs/uikit@0.25.3) (2021-04-15)
+
+
+### Bug Fixes
+
+* Make BalanceInputt a type="number" ([#74](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/74)) ([e6e6915](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/e6e69151a79c35f9c736b1fb996cebb99ce526fc))
+
+
+
+
+
 ## [0.25.2](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap-libs/uikit@0.25.1...@pancakeswap-libs/uikit@0.25.2) (2021-04-15)
 
 
