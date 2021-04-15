@@ -13,7 +13,7 @@ const campaigns: Campaign[] = [
   {
     id: '511090000',
     type: 'ifo',
-    title: 'Horizen',
+    title: 'Horizon Protocol',
     badge: 'ifo-hzn.svg',
   },
   {
