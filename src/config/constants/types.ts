@@ -12,28 +12,41 @@ export interface Token {
   projectLink?: string
 }
 
+export enum PoolIds {
+  poolBasic = 'poolBasic',
+  poolUnlimited = 'poolUnlimited',
+}
+
 export type IfoStatus = 'idle' | 'coming_soon' | 'live' | 'finished'
+
+interface IfoPoolInfo {
+  saleAmount: string
+  raiseAmount: string
+  cakeToBurn: string
+}
 
 export interface Ifo {
   id: string
   isActive: boolean
   address: string
   name: string
-  saleAmount: string
-  raiseAmount: string
-  cakeToBurn: string
-  projectSiteUrl: string
   currency: Token
   token: Token
   releaseBlockNumber: number
   campaignId?: string
   link: string
+  [PoolIds.poolBasic]?: IfoPoolInfo
+  [PoolIds.poolUnlimited]?: IfoPoolInfo
   isV1?: boolean
   // V1 only - To be removed when old card are migrated
   subTitle?: string
   description?: string
   launchDate?: string
   launchTime?: string
+  saleAmount?: string
+  raiseAmount?: string
+  cakeToBurn?: string
+  projectSiteUrl?: string
 }
 
 export enum PoolCategory {

@@ -1,8 +1,8 @@
 import React from 'react'
 import { Card, CardBody, CardHeader, Text, useTooltip, HelpIcon, Flex } from '@pancakeswap-libs/uikit'
-import { Ifo } from 'config/constants/types'
+import { Ifo, PoolIds } from 'config/constants/types'
 import { useProfile } from 'state/hooks'
-import { PublicIfoData, WalletIfoData, PoolIds } from 'hooks/ifo/v2/types'
+import { PublicIfoData, WalletIfoData } from 'hooks/ifo/v2/types'
 import IfoCardTokens from './IfoCardTokens'
 import IfoCardActions from './IfoCardActions'
 import IfoCardDetails from './IfoCardDetails'
@@ -71,6 +71,7 @@ const SmallCard: React.FC<IfoCardProps> = ({ ifo, publicIfoData, walletIfoData, 
             userPoolCharacteristics={userPoolCharacteristics}
             hasProfile={hasProfile}
             isLoading={isLoading}
+            poolId={poolId}
           />
           <IfoCardActions
             currency={ifo.currency}

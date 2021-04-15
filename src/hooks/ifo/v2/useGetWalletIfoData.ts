@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
-import { Ifo } from 'config/constants/types'
+import { Ifo, PoolIds } from 'config/constants/types'
 import { useERC20, useIfoV2Contract } from 'hooks/useContract'
 import { useIfoAllowance } from 'hooks/useAllowance'
 import useRefresh from 'hooks/useRefresh'
 import makeBatchRequest from 'utils/makeBatchRequest'
 import { getAddress } from 'utils/addressHelpers'
-import { WalletIfoState, WalletIfoData, PoolIds } from './types'
+import { WalletIfoState, WalletIfoData } from './types'
 
 /**
  * Gets all data from an IFO related to a wallet

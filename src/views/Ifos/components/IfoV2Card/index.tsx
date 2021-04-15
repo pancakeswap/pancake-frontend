@@ -11,11 +11,10 @@ import {
   Button,
   ChevronUpIcon,
 } from '@pancakeswap-libs/uikit'
-import { Ifo, IfoStatus } from 'config/constants/types'
+import { Ifo, IfoStatus, PoolIds } from 'config/constants/types'
 import useI18n from 'hooks/useI18n'
 import useGetPublicIfoV2Data from 'hooks/ifo/v2/useGetPublicIfoData'
 import useGetWalletIfoV2Data from 'hooks/ifo/v2/useGetWalletIfoData'
-import { PoolIds } from 'hooks/ifo/v2/types'
 import SmallCard from './SmallCard'
 import Timer from './Timer'
 import Achievement from './Achievement'

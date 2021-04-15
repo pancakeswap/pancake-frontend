@@ -1,7 +1,7 @@
 import React from 'react'
 import { Text, Flex, Box, Image, CheckmarkCircleIcon, FlexProps, HelpIcon, useTooltip } from '@pancakeswap-libs/uikit'
 import { useWeb3React } from '@web3-react/core'
-import { Ifo, IfoStatus } from 'config/constants/types'
+import { Ifo, IfoStatus, PoolIds } from 'config/constants/types'
 import { PoolCharacteristics, UserPoolCharacteristics } from 'hooks/ifo/v2/types'
 import useI18n from 'hooks/useI18n'
 import { getBalanceNumber } from 'utils/formatBalance'
@@ -31,6 +31,7 @@ interface IfoCardTokensProps {
   userPoolCharacteristics: UserPoolCharacteristics
   hasProfile: boolean
   isLoading: boolean
+  poolId: PoolIds
 }
 
 const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
@@ -41,6 +42,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
   publicPoolCharacteristics,
   hasProfile,
   isLoading,
+  poolId,
 }) => {
   const { account } = useWeb3React()
   const TranslateString = useI18n()
@@ -48,7 +50,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
     'Sorry, you didn’t contribute enough LP tokens to meet the minimum threshold. You didn’t buy anything in this sale, but you can still reclaim your LP tokens.',
     'bottom',
   )
-  const { currency, token, saleAmount } = ifo
+  const { currency, token } = ifo
   const { hasClaimed } = userPoolCharacteristics
 
   const renderTokenSection = () => {
@@ -68,7 +70,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
           <TokenSection img="/images/bunny-placeholder.svg">
             <Label>{TranslateString(999, 'On sale')}</Label>
             <Text bold fontSize="20px">
-              {saleAmount}
+              {ifo[poolId].saleAmount}
             </Text>
           </TokenSection>
           <Text fontSize="14px" color="textSubtle" pl="48px">{`${distribution * 100}% of total sale`}</Text>

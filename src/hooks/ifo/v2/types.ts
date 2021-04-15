@@ -1,11 +1,6 @@
 import BigNumber from 'bignumber.js'
 import { Contract } from 'web3-eth-contract'
-import { IfoStatus } from 'config/constants/types'
-
-export enum PoolIds {
-  poolBasic = 'poolBasic',
-  poolUnlimited = 'poolUnlimited',
-}
+import { IfoStatus, PoolIds } from 'config/constants/types'
 
 // PoolCharacteristics retrieved from the contract
 export interface PoolCharacteristics {

@@ -2,7 +2,7 @@ import React from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { Contract } from 'web3-eth-contract'
 import { AutoRenewIcon, Button } from '@pancakeswap-libs/uikit'
-import { PoolIds } from 'hooks/ifo/v2/types'
+import { PoolIds } from 'config/constants/types'
 import { useToast } from 'state/hooks'
 import useI18n from 'hooks/useI18n'
 

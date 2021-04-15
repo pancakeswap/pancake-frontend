@@ -16,10 +16,6 @@ const ifos: Ifo[] = [
     address: '0x9236d750CEE911F27DED7Ffd318E9F9C3C69A4fe',
     isActive: true,
     name: 'Usagi (USG)',
-    saleAmount: '150,000 BELT',
-    raiseAmount: '$3,000,000',
-    cakeToBurn: '$1,500,000',
-    projectSiteUrl: 'https://beta.belt.fi/',
     currency: cakeBnbLpToken,
     token: {
       symbol: 'belt',
@@ -28,6 +24,16 @@ const ifos: Ifo[] = [
         '97': '0xDD2EF17be8852A2C0e2D8Cc904f6dC73eBf44C56',
       },
       decimals: 18,
+    },
+    poolBasic: {
+      saleAmount: '150,000 BELT',
+      raiseAmount: '$3,000,000',
+      cakeToBurn: '$1,500,000',
+    },
+    poolUnlimited: {
+      saleAmount: '150,000 BELT',
+      raiseAmount: '$3,000,000',
+      cakeToBurn: '$1,500,000',
     },
     releaseBlockNumber: 5493919,
     campaignId: '511080000',

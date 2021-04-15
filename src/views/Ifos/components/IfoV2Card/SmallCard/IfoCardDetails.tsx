@@ -1,8 +1,8 @@
 import React from 'react'
 import { Text, Flex, Box } from '@pancakeswap-libs/uikit'
-import { PublicIfoData, PoolIds } from 'hooks/ifo/v2/types'
+import { PublicIfoData } from 'hooks/ifo/v2/types'
 import useI18n from 'hooks/useI18n'
-import { Ifo } from 'config/constants/types'
+import { Ifo, PoolIds } from 'config/constants/types'
 import { useGetApiPrice } from 'state/hooks'
 import { getBalanceNumber, formatNumber } from 'utils/formatBalance'
 import { SkeletonCardDetails } from './Skeletons'
@@ -58,8 +58,8 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoD
           {poolId === PoolIds.poolBasic && (
             <FooterEntry label={TranslateString(999, 'Max. LP token entry')} value={maxLpTokens} />
           )}
-          <FooterEntry label={TranslateString(999, 'Funds to raise:')} value={ifo.raiseAmount} />
-          <FooterEntry label={TranslateString(999, 'CAKE to burn:')} value={ifo.cakeToBurn} />
+          <FooterEntry label={TranslateString(999, 'Funds to raise:')} value={ifo[poolId].raiseAmount} />
+          <FooterEntry label={TranslateString(999, 'CAKE to burn:')} value={ifo[poolId].cakeToBurn} />
           <FooterEntry label={`Price per ${ifo.token.symbol}: `} value={tokenPriceFormatted} />
         </>
       )
@@ -87,8 +87,8 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoD
             <FooterEntry label={TranslateString(999, 'Additional fee:')} value={taxRate} />
           )}
           <FooterEntry label={TranslateString(999, 'Total committed:')} value={totalCommitted} />
-          <FooterEntry label={TranslateString(999, 'Funds to raise:')} value={ifo.raiseAmount} />
-          <FooterEntry label={TranslateString(999, 'CAKE to burn:')} value={ifo.cakeToBurn} />
+          <FooterEntry label={TranslateString(999, 'Funds to raise:')} value={ifo[poolId].raiseAmount} />
+          <FooterEntry label={TranslateString(999, 'CAKE to burn:')} value={ifo[poolId].cakeToBurn} />
           <FooterEntry label={`Price per ${ifo.token.symbol}: `} value={tokenPriceFormatted} />
         </>
       )
