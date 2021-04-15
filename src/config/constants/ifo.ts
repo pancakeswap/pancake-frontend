@@ -13,7 +13,7 @@ const ifos: Ifo[] = [
   // live testing
   {
     id: 'belt',
-    address: '0x1732334eB03109ACE0241e83930610D2070d6460',
+    address: '0x9236d750CEE911F27DED7Ffd318E9F9C3C69A4fe',
     isActive: true,
     name: 'Usagi (USG)',
     saleAmount: '150,000 BELT',

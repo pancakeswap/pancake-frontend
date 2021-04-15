@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, Flex, Box, Image, CheckmarkCircleIcon, FlexProps } from '@pancakeswap-libs/uikit'
+import { Text, Flex, Box, Image, CheckmarkCircleIcon, FlexProps, HelpIcon, useTooltip } from '@pancakeswap-libs/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { Ifo, IfoStatus } from 'config/constants/types'
 import { PoolCharacteristics, UserPoolCharacteristics } from 'hooks/ifo/v2/types'
@@ -44,6 +44,10 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
 }) => {
   const { account } = useWeb3React()
   const TranslateString = useI18n()
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(
+    'Sorry, you didn’t contribute enough LP tokens to meet the minimum threshold. You didn’t buy anything in this sale, but you can still reclaim your LP tokens.',
+    'bottom',
+  )
   const { currency, token, saleAmount } = ifo
   const { hasClaimed } = userPoolCharacteristics
 
@@ -120,6 +124,11 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
               <Text bold fontSize="20px">
                 {getBalanceNumber(userPoolCharacteristics.offeringAmountInToken, token.decimals)}
               </Text>
+              {!hasClaimed && userPoolCharacteristics.offeringAmountInToken.isEqualTo(0) && (
+                <div ref={targetRef} style={{ display: 'flex', marginLeft: '8px' }}>
+                  <HelpIcon />
+                </div>
+              )}
               {hasClaimed && <CheckmarkCircleIcon color="success" ml="8px" />}
             </Flex>
           </TokenSection>
@@ -128,7 +137,12 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
     }
     return null
   }
-  return <Box pb="24px">{renderTokenSection()}</Box>
+  return (
+    <Box pb="24px">
+      {tooltipVisible && tooltip}
+      {renderTokenSection()}
+    </Box>
+  )
 }
 
 export default IfoCardTokens
