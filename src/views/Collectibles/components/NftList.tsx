@@ -28,16 +28,7 @@ const NftList = () => {
     <NftGrid>
       {orderBy(nfts, 'sortOrder').map((nft) => {
         const tokenIds = getTokenIdsByIdentifier(nft.identifier)
-
-        const getNftCardComponent = (sortedNft: Nft): FunctionComponent<NftCardProps> => {
-          if (!nftComponents[sortedNft.identifier]) {
-            return NftCard
-          }
-
-          return nftComponents[sortedNft.identifier]
-        }
-
-        const Card = getNftCardComponent(nft)
+        const Card = nftComponents[nft.identifier] ?? NftCard
 
         return (
           <div key={nft.name}>

@@ -110,7 +110,7 @@ const useGetWalletNfts = () => {
 
               return {
                 ...accum,
-                [identifier]: accum[identifier] ? [...accum[identifier].tokenIds, tokenId] : [tokenId],
+                [identifier]: accum[identifier] ? [...accum[identifier], tokenId] : [tokenId],
               }
             }, {})
 
