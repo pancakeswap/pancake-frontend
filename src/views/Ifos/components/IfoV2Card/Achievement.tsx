@@ -1,12 +1,16 @@
 import React from 'react'
 import styled from 'styled-components'
+import BigNumber from 'bignumber.js'
 import { Flex, LinkExternal, Image, Text, PrizeIcon } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
+import { PublicIfoData } from 'hooks/ifo/v2/types'
 import { Ifo } from 'config/constants/types'
+
+const MIN_DOLLAR_FOR_ACHIEVEMENT = new BigNumber(10)
 
 interface Props {
   ifo: Ifo
-  minLpForAchievement: number
+  publicIfoData: PublicIfoData
 }
 
 const Container = styled(Flex)`
@@ -26,9 +30,10 @@ const StyledLinkExternal = styled(LinkExternal)`
   }
 `
 
-const Achievement: React.FC<Props> = ({ ifo, minLpForAchievement }) => {
+const Achievement: React.FC<Props> = ({ ifo, publicIfoData }) => {
   const TranslateString = useI18n()
   const tokenName = ifo.token.symbol.toLowerCase()
+  const minLpForAchievement = MIN_DOLLAR_FOR_ACHIEVEMENT.div(publicIfoData.currencyPriceInUSD).toNumber()
   return (
     <Container>
       <Flex alignItems="center" flexGrow={1}>
@@ -41,7 +46,7 @@ const Achievement: React.FC<Props> = ({ ifo, minLpForAchievement }) => {
             <Text bold mr="8px">{`${TranslateString(999, 'IFO Shopper:')} ${tokenName}`}</Text>
             <Flex>
               <PrizeIcon color="textSubtle" width="16px" mr="4px" />
-              <Text color="textSubtle">20</Text>
+              <Text color="textSubtle">{publicIfoData.numberPoints}</Text>
             </Flex>
           </Flex>
           <Text color="textSubtle" fontSize="12px">
@@ -49,7 +54,7 @@ const Achievement: React.FC<Props> = ({ ifo, minLpForAchievement }) => {
           </Text>
         </Flex>
       </Flex>
-      <StyledLinkExternal href={ifo.link}>{`Learn more about ${ifo.token.symbol}`}</StyledLinkExternal>
+      <StyledLinkExternal href={ifo.articleUrl}>{`Learn more about ${ifo.token.symbol}`}</StyledLinkExternal>
     </Container>
   )
 }

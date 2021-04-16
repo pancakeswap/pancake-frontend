@@ -75,19 +75,21 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
     },
     startBlockNum: 0,
     endBlockNum: 0,
+    numberPoints: 0,
   })
   const { currentBlock } = useBlock()
   const contract = useIfoV2Contract(address)
 
   useEffect(() => {
     const fetchProgress = async () => {
-      const [startBlock, endBlock, poolBasic, poolUnlimited, taxRate] = (await makeBatchRequest([
+      const [startBlock, endBlock, poolBasic, poolUnlimited, taxRate, numberPoints] = (await makeBatchRequest([
         contract.methods.startBlock().call,
         contract.methods.endBlock().call,
         contract.methods.viewPoolInformation(0).call,
         contract.methods.viewPoolInformation(1).call,
         contract.methods.viewPoolTaxRateOverflow(1).call,
-      ])) as [string, string, PoolCharacteristics, PoolCharacteristics, number]
+        contract.methods.numberPoints().call,
+      ])) as [string, string, PoolCharacteristics, PoolCharacteristics, number, number]
 
       const poolBasicFormatted = formatPool(poolBasic)
       const poolUnlimitedFormatted = formatPool(poolUnlimited)
@@ -118,6 +120,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
           blocksRemaining,
           startBlockNum,
           endBlockNum,
+          numberPoints,
         }))
       }
     }
