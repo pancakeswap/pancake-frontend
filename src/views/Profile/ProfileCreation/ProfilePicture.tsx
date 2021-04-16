@@ -3,10 +3,11 @@ import styled from 'styled-components'
 import { AutoRenewIcon, Button, Card, CardBody, Heading, Skeleton, Text } from '@pancakeswap-libs/uikit'
 import { Link as RouterLink } from 'react-router-dom'
 import { useWeb3React } from '@web3-react/core'
+import { getAddressByType } from 'utils/collectibles'
+import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import useI18n from 'hooks/useI18n'
 import { useToast } from 'state/hooks'
-import { getPancakeProfileAddress } from 'utils/addressHelpers'
-import { usePancakeRabbits } from 'hooks/useContract'
+import { useERC721 } from 'hooks/useContract'
 import useGetWalletNfts from 'hooks/useGetWalletNfts'
 import SelectionCard from '../components/SelectionCard'
 import NextStepButton from '../components/NextStepButton'
@@ -23,26 +24,26 @@ const NftWrapper = styled.div`
 const ProfilePicture: React.FC = () => {
   const [isApproved, setIsApproved] = useState(false)
   const [isApproving, setIsApproving] = useState(false)
-  const { tokenId, actions } = useContext(ProfileCreationContext)
+  const { selectedNft, actions } = useContext(ProfileCreationContext)
   const TranslateString = useI18n()
   const { isLoading, getNftsInWallet, getTokenIdsByIdentifier } = useGetWalletNfts()
-  const pancakeRabbitsContract = usePancakeRabbits()
+  const contract = useERC721(selectedNft.nftAddress)
   const { account } = useWeb3React()
   const { toastError } = useToast()
   const walletNfts = getNftsInWallet()
 
   const handleApprove = () => {
-    pancakeRabbitsContract.methods
-      .approve(getPancakeProfileAddress(), tokenId)
+    contract.methods
+      .approve(getPancakeProfileAddress(), selectedNft.tokenId)
       .send({ from: account })
-      .on('sending', () => {
+      .once('sending', () => {
         setIsApproving(true)
       })
-      .on('receipt', () => {
+      .once('receipt', () => {
         setIsApproving(false)
         setIsApproved(true)
       })
-      .on('error', (error) => {
+      .once('error', (error) => {
         toastError('Error', error?.message)
         setIsApproving(false)
       })
@@ -98,6 +99,7 @@ const ProfilePicture: React.FC = () => {
             ) : (
               walletNfts.map((walletNft) => {
                 const [firstTokenId] = getTokenIdsByIdentifier(walletNft.identifier)
+                const address = getAddressByType(walletNft.type)
 
                 return (
                   <SelectionCard
@@ -105,8 +107,8 @@ const ProfilePicture: React.FC = () => {
                     key={walletNft.identifier}
                     value={firstTokenId}
                     image={`/images/nfts/${walletNft.images.md}`}
-                    isChecked={firstTokenId === tokenId}
-                    onChange={(value: string) => actions.setTokenId(parseInt(value, 10))}
+                    isChecked={firstTokenId === selectedNft.tokenId}
+                    onChange={(value: string) => actions.setSelectedNft(parseInt(value, 10), address)}
                   >
                     <Text bold>{walletNft.name}</Text>
                   </SelectionCard>
@@ -125,7 +127,7 @@ const ProfilePicture: React.FC = () => {
           </Text>
           <Button
             isLoading={isApproving}
-            disabled={isApproved || isApproving || tokenId === null}
+            disabled={isApproved || isApproving || selectedNft.tokenId === null}
             onClick={handleApprove}
             endIcon={isApproving ? <AutoRenewIcon spin color="currentColor" /> : undefined}
           >
@@ -133,7 +135,7 @@ const ProfilePicture: React.FC = () => {
           </Button>
         </CardBody>
       </Card>
-      <NextStepButton onClick={actions.nextStep} disabled={tokenId === null || !isApproved || isApproving}>
+      <NextStepButton onClick={actions.nextStep} disabled={selectedNft.tokenId === null || !isApproved || isApproving}>
         {TranslateString(798, 'Next Step')}
       </NextStepButton>
     </>

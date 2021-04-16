@@ -80,7 +80,7 @@ const Mint: React.FC = () => {
             {TranslateString(999, `Cost: ${MINT_COST} CAKE`, { num: MINT_COST })}
           </Text>
           {nfts.map((nft) => {
-            const handleChange = (value: string) => setVariationId(value)
+            const handleChange = (value: string) => setVariationId(Number(value))
 
             return (
               <SelectionCard
