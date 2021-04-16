@@ -61,6 +61,9 @@ export const predictionsSlice = createSlice({
   name: 'predictions',
   initialState,
   reducers: {
+    setPredictionStatus: (state, action: PayloadAction<PredictionStatus>) => {
+      state.status = action.payload
+    },
     setHistoryPaneState: (state, action: PayloadAction<boolean>) => {
       state.isHistoryPaneOpen = action.payload
       state.historyFilter = HistoryFilter.ALL
@@ -151,6 +154,7 @@ export const {
   setHistoryPaneState,
   updateRounds,
   markBetAsCollected,
+  setPredictionStatus,
 } = predictionsSlice.actions
 
 export default predictionsSlice.reducer

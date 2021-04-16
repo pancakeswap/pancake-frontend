@@ -67,14 +67,6 @@ const History = () => {
         })
       : bets
 
-  // The bet api returns all bets, even ones where the round is still active
-  // so we need to filter out the latest 2 rounds
-  const finalResults = results
-    ? results.filter((bet) => {
-        return bet.round.epoch < currentEpoch - 1
-      })
-    : []
-
   return (
     <StyledHistory>
       <Header />
@@ -86,8 +78,8 @@ const History = () => {
             </SpinnerWrapper>
           ))}
 
-        {finalResults ? (
-          orderBy(finalResults, ['round.epoch'], ['desc']).map((bet) => {
+        {results ? (
+          orderBy(results, ['round.epoch'], ['desc']).map((bet) => {
             return <HistoricalBet key={bet.id} bet={bet} />
           })
         ) : (

@@ -2,10 +2,12 @@ import React from 'react'
 import styled from 'styled-components'
 import { useAppDispatch } from 'state'
 import { ArrowDownIcon, Button, ChartIcon } from '@pancakeswap-libs/uikit'
-import { useIsChartPaneOpen, useIsHistoryPaneOpen } from 'state/hooks'
+import { useGetPredictionsStatus, useIsChartPaneOpen, useIsHistoryPaneOpen } from 'state/hooks'
 import { setChartPaneState } from 'state/predictions'
+import { PredictionStatus } from 'state/types'
 import useI18n from 'hooks/useI18n'
 import TradingView from './components/TradingView'
+import { ErrorNotification } from './components/Notification'
 import History from './History'
 import Positions from './Positions'
 
@@ -51,10 +53,12 @@ const ExpandChartButton = styled(Button)`
 
 const ContentWrapper = styled.div`
   display: flex;
+  flex: 1;
   flex-direction: column;
   height: 100%;
   overflow-x: hidden;
   overflow-y: auto;
+  position: relative;
 `
 
 const StyledDesktop = styled.div`
@@ -71,6 +75,7 @@ const Desktop: React.FC = () => {
   const isChartPaneOpen = useIsChartPaneOpen()
   const dispatch = useAppDispatch()
   const TranslateString = useI18n()
+  const status = useGetPredictionsStatus()
 
   const toggleChartPane = () => {
     dispatch(setChartPaneState(!isChartPaneOpen))
@@ -79,20 +84,25 @@ const Desktop: React.FC = () => {
   return (
     <StyledDesktop>
       <ContentWrapper>
-        <PositionsPane>
-          <Positions />
-        </PositionsPane>
-        <ChartPane isChartPaneOpen={isChartPaneOpen}>
-          <ExpandChartButton
-            variant="tertiary"
-            scale="sm"
-            startIcon={isChartPaneOpen ? <ArrowDownIcon /> : <ChartIcon />}
-            onClick={toggleChartPane}
-          >
-            {isChartPaneOpen ? TranslateString(438, 'Close') : TranslateString(999, 'Charts')}
-          </ExpandChartButton>
-          <TradingView />
-        </ChartPane>
+        {status === PredictionStatus.ERROR && <ErrorNotification />}
+        {status === PredictionStatus.LIVE && (
+          <>
+            <PositionsPane>
+              <Positions />
+            </PositionsPane>
+            <ChartPane isChartPaneOpen={isChartPaneOpen}>
+              <ExpandChartButton
+                variant="tertiary"
+                scale="sm"
+                startIcon={isChartPaneOpen ? <ArrowDownIcon /> : <ChartIcon />}
+                onClick={toggleChartPane}
+              >
+                {isChartPaneOpen ? TranslateString(438, 'Close') : TranslateString(999, 'Charts')}
+              </ExpandChartButton>
+              <TradingView />
+            </ChartPane>
+          </>
+        )}
       </ContentWrapper>
       <HistoryPane isHistoryPaneOpen={isHistoryPaneOpen}>
         <History />
