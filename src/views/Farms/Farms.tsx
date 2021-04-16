@@ -97,6 +97,7 @@ const StyledImage = styled(Image)`
   margin-right: auto;
   margin-top: 58px;
 `
+const NUMBER_OF_FARMS_VISIBLE = 12
 
 const Farms: React.FC = () => {
   const { path } = useRouteMatch()
@@ -163,8 +164,8 @@ const Farms: React.FC = () => {
 
   const loadMoreRef = useRef<HTMLDivElement>(null)
 
-  const [numberOfItemsToShow, setNumberOfItemsToShow] = useState(12)
-  const [observerIsSet, setObserverIsSet] = useState<boolean>()
+  const [numberOfFarmsVisible, setNumberOfFarmsVisible] = useState(NUMBER_OF_FARMS_VISIBLE)
+  const [observerIsSet, setObserverIsSet] = useState(false)
 
   const farmsStakedMemoized = useMemo(() => {
     let farmsStaked = []
@@ -194,7 +195,7 @@ const Farms: React.FC = () => {
       farmsStaked = stakedOnly ? farmsList(stakedInactiveFarms) : farmsList(inactiveFarms)
     }
 
-    return sortFarms(farmsStaked).slice(0, numberOfItemsToShow)
+    return sortFarms(farmsStaked).slice(0, numberOfFarmsVisible)
   }, [
     sortOption,
     activeFarms,
@@ -204,25 +205,23 @@ const Farms: React.FC = () => {
     stakedInactiveFarms,
     stakedOnly,
     stakedOnlyFarms,
-    numberOfItemsToShow,
+    numberOfFarmsVisible,
   ])
 
   useEffect(() => {
-    const options = {
-      rootMargin: '0px',
-      threshold: 1,
-    }
-
-    const callbackFunction = (entries) => {
+    const showMoreFarms = (entries) => {
       const [entry] = entries
       if (entry.isIntersecting) {
-        setNumberOfItemsToShow((currentlyShowing) => currentlyShowing + 12)
+        setNumberOfFarmsVisible((farmsCurrentlyVisible) => farmsCurrentlyVisible + NUMBER_OF_FARMS_VISIBLE)
       }
     }
 
     if (!observerIsSet) {
-      const newObserver = new IntersectionObserver(callbackFunction, options)
-      newObserver.observe(loadMoreRef.current)
+      const loadMoreObserver = new IntersectionObserver(showMoreFarms, {
+        rootMargin: '0px',
+        threshold: 1,
+      })
+      loadMoreObserver.observe(loadMoreRef.current)
       setObserverIsSet(true)
     }
   }, [farmsStakedMemoized, observerIsSet])
