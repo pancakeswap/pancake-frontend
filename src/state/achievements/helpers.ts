@@ -19,7 +19,7 @@ export const getUserPointIncreaseEvents = async (account: string): Promise<UserP
     const { user } = await request(
       profileSubgraphApi,
       gql`
-        query($account: ID!) {
+        query getUserPointIncreaseEvents($account: ID!) {
           user(id: $account) {
             points {
               id
