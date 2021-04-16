@@ -34,11 +34,13 @@ export interface Ifo {
   currency: Token
   token: Token
   releaseBlockNumber: number
+  articleUrl: string
   campaignId?: string
-  link: string
+  isV1?: boolean
+  // V2 only - to become mandatory after the V1 is removoed
+  tokenOfferingPrice?: number
   [PoolIds.poolBasic]?: IfoPoolInfo
   [PoolIds.poolUnlimited]?: IfoPoolInfo
-  isV1?: boolean
   // V1 only - To be removed when old card are migrated
   subTitle?: string
   description?: string

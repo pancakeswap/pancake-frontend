@@ -3,7 +3,6 @@ import { Text, Flex, Box } from '@pancakeswap-libs/uikit'
 import { PublicIfoData } from 'hooks/ifo/v2/types'
 import useI18n from 'hooks/useI18n'
 import { Ifo, PoolIds } from 'config/constants/types'
-import { useGetApiPrice } from 'state/hooks'
 import { getBalanceNumber, formatNumber } from 'utils/formatBalance'
 import { SkeletonCardDetails } from './Skeletons'
 
@@ -35,11 +34,9 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoD
   const TranslateString = useI18n()
   const { status, currencyPriceInUSD } = publicIfoData
   const poolCharacteristic = publicIfoData[poolId]
-  const tokenPriceUsd = useGetApiPrice(ifo.token.symbol)
 
   /* Format start */
   const maxLpTokens = getBalanceNumber(poolCharacteristic.limitPerUserInLP, ifo.currency.decimals)
-  const tokenPriceFormatted = tokenPriceUsd ? `$${formatNumber(tokenPriceUsd)}` : '?'
   const taxRate = `${poolCharacteristic.taxRate}%`
 
   const totalCommittedPercent = poolCharacteristic.totalAmountPool
@@ -61,7 +58,7 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoD
           )}
           <FooterEntry label={TranslateString(999, 'Funds to raise:')} value={ifo[poolId].raiseAmount} />
           <FooterEntry label={TranslateString(999, 'CAKE to burn:')} value={ifo[poolId].cakeToBurn} />
-          <FooterEntry label={`Price per ${ifo.token.symbol}: `} value={tokenPriceFormatted} />
+          <FooterEntry label={`Price per ${ifo.token.symbol}: `} value={`$${ifo.tokenOfferingPrice}`} />
         </>
       )
     }
@@ -90,7 +87,7 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoD
           <FooterEntry label={TranslateString(999, 'Total committed:')} value={totalCommitted} />
           <FooterEntry label={TranslateString(999, 'Funds to raise:')} value={ifo[poolId].raiseAmount} />
           <FooterEntry label={TranslateString(999, 'CAKE to burn:')} value={ifo[poolId].cakeToBurn} />
-          <FooterEntry label={`Price per ${ifo.token.symbol}: `} value={tokenPriceFormatted} />
+          <FooterEntry label={`Price per ${ifo.token.symbol}: `} value={`$${ifo.tokenOfferingPrice}`} />
         </>
       )
     }
