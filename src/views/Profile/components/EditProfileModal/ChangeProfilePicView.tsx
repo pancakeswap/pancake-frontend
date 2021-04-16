@@ -5,9 +5,10 @@ import { useAppDispatch } from 'state'
 import { useProfile, useToast } from 'state/hooks'
 import useI18n from 'hooks/useI18n'
 import { fetchProfile } from 'state/profile'
+import { getAddressByType } from 'utils/collectibles'
 import useGetWalletNfts from 'hooks/useGetWalletNfts'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
-import { usePancakeRabbits, useProfile as useProfileContract } from 'hooks/useContract'
+import { useERC721, useProfile as useProfileContract } from 'hooks/useContract'
 import { getPancakeProfileAddress, getPancakeRabbitsAddress } from 'utils/addressHelpers'
 import SelectionCard from '../SelectionCard'
 import ApproveConfirmButtons from '../ApproveConfirmButtons'
@@ -15,12 +16,15 @@ import ApproveConfirmButtons from '../ApproveConfirmButtons'
 type ChangeProfilePicPageProps = InjectedModalProps
 
 const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss }) => {
-  const [tokenId, setTokenId] = useState<number>(null)
+  const [selectedNft, setSelectedNft] = useState({
+    tokenId: null,
+    nftAddress: null,
+  })
   const TranslateString = useI18n()
   const { isLoading, getNftsInWallet, getTokenIdsByIdentifier } = useGetWalletNfts()
   const dispatch = useAppDispatch()
   const { profile } = useProfile()
-  const pancakeRabbitsContract = usePancakeRabbits()
+  const contract = useERC721(selectedNft.nftAddress)
   const profileContract = useProfileContract()
   const { account } = useWeb3React()
   const { toastSuccess } = useToast()
@@ -33,14 +37,18 @@ const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss }
     handleConfirm,
   } = useApproveConfirmTransaction({
     onApprove: () => {
-      return pancakeRabbitsContract.methods.approve(getPancakeProfileAddress(), tokenId).send({ from: account })
+      return contract.methods.approve(getPancakeProfileAddress(), selectedNft.tokenId).send({ from: account })
     },
     onConfirm: () => {
       if (!profile.isActive) {
-        return profileContract.methods.reactivateProfile(getPancakeRabbitsAddress(), tokenId).send({ from: account })
+        return profileContract.methods
+          .reactivateProfile(getPancakeRabbitsAddress(), selectedNft.tokenId)
+          .send({ from: account })
       }
 
-      return profileContract.methods.updateProfile(getPancakeRabbitsAddress(), tokenId).send({ from: account })
+      return profileContract.methods
+        .updateProfile(getPancakeRabbitsAddress(), selectedNft.tokenId)
+        .send({ from: account })
     },
     onSuccess: async () => {
       // Re-fetch profile
@@ -62,6 +70,12 @@ const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss }
       ) : (
         nftsInWallet.map((walletNft) => {
           const [firstTokenId] = getTokenIdsByIdentifier(walletNft.identifier)
+          const handleChange = (value: string) => {
+            setSelectedNft({
+              tokenId: Number(value),
+              nftAddress: getAddressByType(walletNft.type),
+            })
+          }
 
           return (
             <SelectionCard
@@ -69,8 +83,8 @@ const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss }
               key={walletNft.identifier}
               value={firstTokenId}
               image={`/images/nfts/${walletNft.images.md}`}
-              isChecked={firstTokenId === tokenId}
-              onChange={(value: string) => setTokenId(parseInt(value, 10))}
+              isChecked={firstTokenId === selectedNft.tokenId}
+              onChange={handleChange}
               disabled={isApproving || isConfirming || isConfirmed}
             >
               <Text bold>{walletNft.name}</Text>
@@ -89,9 +103,9 @@ const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss }
         </>
       )}
       <ApproveConfirmButtons
-        isApproveDisabled={isConfirmed || isConfirming || isApproved || tokenId === null}
+        isApproveDisabled={isConfirmed || isConfirming || isApproved || selectedNft.tokenId === null}
         isApproving={isApproving}
-        isConfirmDisabled={!isApproved || isConfirmed || tokenId === null}
+        isConfirmDisabled={!isApproved || isConfirmed || selectedNft.tokenId === null}
         isConfirming={isConfirming}
         onApprove={handleApprove}
         onConfirm={handleConfirm}
