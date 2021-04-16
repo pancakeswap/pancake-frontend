@@ -1,5 +1,5 @@
 import Nfts, { IPFS_GATEWAY, nftSources } from 'config/constants/nfts'
-import { Nft } from 'config/constants/types'
+import { Nft, NftType } from 'config/constants/types'
 import { getAddress } from './addressHelpers'
 import { getErc721Contract } from './contractHelpers'
 
@@ -25,6 +25,10 @@ export const getTokenUrl = (tokenUri: string) => {
   }
 
   return tokenUri
+}
+
+export const getAddressByType = (type: NftType) => {
+  return getAddress(nftSources[type].address)
 }
 
 export const getTokenUriData = async (nftAddress: string, tokenId: number) => {
