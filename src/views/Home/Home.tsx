@@ -10,7 +10,6 @@ import TotalValueLockedCard from 'views/Home/components/TotalValueLockedCard'
 import EarnAPRCard from 'views/Home/components/EarnAPRCard'
 import EarnAssetCard from 'views/Home/components/EarnAssetCard'
 import WinCard from 'views/Home/components/WinCard'
-import LeadInBanner from 'views/TradingCompetition/components/LeadInBanner'
 
 const Hero = styled.div`
   align-items: center;
@@ -81,32 +80,29 @@ const Home: React.FC = () => {
   const TranslateString = useI18n()
 
   return (
-    <>
-      <LeadInBanner />
-      <Page>
-        <Hero>
-          <Heading as="h1" size="xl" mb="24px" color="secondary">
-            {TranslateString(576, 'PancakeSwap')}
-          </Heading>
-          <Text>{TranslateString(578, 'The #1 AMM and yield farm on Binance Smart Chain.')}</Text>
-        </Hero>
-        <div>
-          <Cards>
-            <FarmStakingCard />
-            <LotteryCard />
-          </Cards>
-          <CTACards>
-            <EarnAPRCard />
-            <EarnAssetCard />
-            <WinCard />
-          </CTACards>
-          <Cards>
-            <CakeStats />
-            <TotalValueLockedCard />
-          </Cards>
-        </div>
-      </Page>
-    </>
+    <Page>
+      <Hero>
+        <Heading as="h1" size="xl" mb="24px" color="secondary">
+          {TranslateString(576, 'PancakeSwap')}
+        </Heading>
+        <Text>{TranslateString(578, 'The #1 AMM and yield farm on Binance Smart Chain.')}</Text>
+      </Hero>
+      <div>
+        <Cards>
+          <FarmStakingCard />
+          <LotteryCard />
+        </Cards>
+        <CTACards>
+          <EarnAPRCard />
+          <EarnAssetCard />
+          <WinCard />
+        </CTACards>
+        <Cards>
+          <CakeStats />
+          <TotalValueLockedCard />
+        </Cards>
+      </div>
+    </Page>
   )
 }
 
