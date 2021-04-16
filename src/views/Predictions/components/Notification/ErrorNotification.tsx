@@ -15,9 +15,9 @@ const ErrorNotification = () => {
   return (
     <Notification title={TranslateString(999, 'Error')}>
       <Text as="p" mb="24px">
-        {TranslateString(999, 'An error occurred. Please refresh')}
+        {TranslateString(999, 'An error occurred. Blame someone else')}
       </Text>
-      <Button variant="tertiary" width="100%" onClick={handleOpenHistory}>
+      <Button variant="primary" width="100%" onClick={handleOpenHistory}>
         {TranslateString(999, 'Show History')}
       </Button>
     </Notification>

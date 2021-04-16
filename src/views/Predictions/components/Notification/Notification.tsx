@@ -16,7 +16,6 @@ interface NotificationProps {
 
 const Wrapper = styled.div`
   align-items: center;
-  background: ${({ theme }) => theme.colors.text}CC;
   display: flex;
   height: 100%;
   justify-content: center;
