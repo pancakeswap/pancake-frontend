@@ -1,6 +1,7 @@
 import { useWeb3React } from '@web3-react/core'
 import Nfts, { nftSources } from 'config/constants/nfts'
 import { Nft, NftType } from 'config/constants/types'
+import { merge } from 'lodash'
 import { useEffect, useReducer } from 'react'
 import { getAddress } from 'utils/addressHelpers'
 import { getNftByTokenId } from 'utils/collectibles'
@@ -30,7 +31,7 @@ const reducer = (state: State, action: Action): State => {
       return {
         ...state,
         isLoading: false,
-        tokenIds: action.data,
+        tokenIds: merge({}, state.tokenIds, action.data),
       }
     case 'refresh':
       return {
