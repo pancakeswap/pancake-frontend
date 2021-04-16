@@ -8,6 +8,9 @@ export interface CompetitionProps extends UserRewardsProps {
   profile?: Profile
   isCompetitionLive?: boolean
   hasCompetitionEnded?: boolean
+  userCanClaimPrizes?: boolean
+  finishedAndPrizesClaimed?: boolean
+  finishedAndNothingToClaim?: boolean
   isLoading?: boolean
   onDismiss?: () => void
   onRegisterSuccess?: () => void

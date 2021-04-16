@@ -105,6 +105,8 @@ const CardFooter: React.FC<Props> = ({
 
   const imageSrc = `${BASE_URL}/images/tokens/${tokenName.toLowerCase()}.png`
 
+  const isMetaMaskInScope = !!(window as WindowChain).ethereum?.isMetaMask
+
   return (
     <StyledFooter isFinished={isFinished}>
       <Row>
@@ -144,10 +146,10 @@ const CardFooter: React.FC<Props> = ({
               <Balance fontSize="14px" isDisabled={isFinished} value={blocksRemaining} decimals={0} />
             </Row>
           )}
-          {tokenAddress && (
+          {isMetaMaskInScope && tokenAddress && (
             <Flex mb="4px">
               <TokenLink onClick={() => registerToken(tokenAddress, tokenName, tokenDecimals, imageSrc)}>
-                Add {tokenName} to Metamask
+                Add {tokenName} to MetaMask
               </TokenLink>
               <MetamaskIcon height={15} width={15} ml="4px" />
             </Flex>

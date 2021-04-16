@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import styled from 'styled-components'
 import {
   BlockIcon,
   Box,
@@ -19,6 +18,7 @@ import {
 } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import easterPrizes, { Tiers, Rank } from 'config/constants/trading-competition/easter'
+import { Td, BoldTd, StyledPrizeTable } from '../../StyledPrizeTable'
 
 const COLOR_GOLD = '#FFBF33'
 const COLOR_SILVER = '#C1C1C1'
@@ -77,42 +77,6 @@ const tierStyleMap = {
   },
 }
 
-const Td = styled.td`
-  border-bottom: 2px solid ${({ theme }) => theme.colors.borderColor};
-  padding: 4px 0;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    padding: 8px;
-  }
-`
-const BoldTd = styled(Td)`
-  font-weight: 600;
-`
-
-const PrizeTable = styled.table`
-  width: 100%;
-
-  th,
-  td {
-    text-align: center;
-    vertical-align: middle;
-  }
-
-  & > thead th {
-    font-size: 12px;
-    padding: 16px 0;
-    text-transform: uppercase;
-
-    ${({ theme }) => theme.mediaQueries.xs} {
-      padding: 16px 8px;
-    }
-
-    ${({ theme }) => theme.mediaQueries.sm} {
-      padding: 16px;
-    }
-  }
-`
-
 const getTotalAchievementPoints = (achievements: Rank['achievements']) => {
   return Object.values(achievements).reduce((accum, achievement) => {
     return achievement ? accum + achievement : accum
@@ -134,7 +98,7 @@ const PrizesGrid = () => {
         })}
       </TabMenu>
       <Box minWidth="288px" overflowX="auto" maxWidth="100%">
-        <PrizeTable>
+        <StyledPrizeTable>
           <thead>
             <tr>
               <th>{TranslateString(1222, 'Rank in team')}</th>
@@ -182,7 +146,7 @@ const PrizesGrid = () => {
               )
             })}
           </tbody>
-        </PrizeTable>
+        </StyledPrizeTable>
       </Box>
     </Box>
   )

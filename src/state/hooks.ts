@@ -7,6 +7,8 @@ import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
 import { Team } from 'config/constants/types'
 import { getWeb3NoAccount } from 'utils/web3'
+import { getAddress } from 'utils/addressHelpers'
+import { getBalanceNumber } from 'utils/formatBalance'
 import useRefresh from 'hooks/useRefresh'
 import {
   fetchFarmsPublicDataAsync,
@@ -68,6 +70,15 @@ export const useFarmUser = (pid) => {
     stakedBalance: farm.userData ? new BigNumber(farm.userData.stakedBalance) : new BigNumber(0),
     earnings: farm.userData ? new BigNumber(farm.userData.earnings) : new BigNumber(0),
   }
+}
+
+export const useLpTokenPrice = (symbol: string) => {
+  const farm = useFarmFromSymbol(symbol)
+  const tokenPriceInUsd = useGetApiPrice(getAddress(farm.token.address))
+
+  return farm.lpTotalSupply && farm.lpTotalInQuoteToken
+    ? new BigNumber(getBalanceNumber(farm.lpTotalSupply)).div(farm.lpTotalInQuoteToken).times(tokenPriceInUsd).times(2)
+    : new BigNumber(0)
 }
 
 // Pools
@@ -191,14 +202,14 @@ export const useGetApiPrices = () => {
   return prices
 }
 
-export const useGetApiPrice = (token: string) => {
+export const useGetApiPrice = (address: string) => {
   const prices = useGetApiPrices()
 
   if (!prices) {
     return null
   }
 
-  return prices[token.toLowerCase()]
+  return prices[address.toLowerCase()]
 }
 
 export const usePriceCakeBusd = (): BigNumber => {
