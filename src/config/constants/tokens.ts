@@ -1110,8 +1110,8 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://shield.suterusu.io/',
   },
-  pcgg: {
-    symbol: 'pCGG',
+  cgg: {
+    symbol: 'CGG',
     address: {
       56: '0x1613957159e9b0ac6c80e824f7eea748a32a0ae2',
       97: '',
