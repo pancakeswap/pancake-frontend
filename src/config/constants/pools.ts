@@ -22,7 +22,7 @@ const pools: PoolConfig[] = [
     earningToken: tokens.suter,
     contractAddress: {
       97: '',
-      56: 'TBD',
+      56: '0xc1E70edd0141c454b834Deac7ddDeA413424aEf9',
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
