@@ -9,7 +9,7 @@ import { getAddressByType } from 'utils/collectibles'
 import useGetWalletNfts from 'hooks/useGetWalletNfts'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useERC721, useProfile as useProfileContract } from 'hooks/useContract'
-import { getPancakeProfileAddress, getPancakeRabbitsAddress } from 'utils/addressHelpers'
+import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import SelectionCard from '../SelectionCard'
 import ApproveConfirmButtons from '../ApproveConfirmButtons'
 
@@ -42,13 +42,11 @@ const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss }
     onConfirm: () => {
       if (!profile.isActive) {
         return profileContract.methods
-          .reactivateProfile(getPancakeRabbitsAddress(), selectedNft.tokenId)
+          .reactivateProfile(selectedNft.nftAddress, selectedNft.tokenId)
           .send({ from: account })
       }
 
-      return profileContract.methods
-        .updateProfile(getPancakeRabbitsAddress(), selectedNft.tokenId)
-        .send({ from: account })
+      return profileContract.methods.updateProfile(selectedNft.nftAddress, selectedNft.tokenId).send({ from: account })
     },
     onSuccess: async () => {
       // Re-fetch profile
