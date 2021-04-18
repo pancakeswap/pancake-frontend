@@ -13,7 +13,7 @@ const Wrapper = styled(Flex)`
 
 const StyledExpandableLabelWrapper = styled(Flex)`
   button {
-    align-items: flex-start;
+    align-items: center;
     justify-content: flex-start;
   }
 `
@@ -31,8 +31,8 @@ const FoldableText: React.FC<FoldableTextProps> = ({ title, children, ...props }
 
   return (
     <Wrapper {...props} flexDirection="column" onClick={() => setIsExpanded(!isExpanded)}>
-      <Flex justifyContent="space-between">
-        <Text fontWeight="bold" mb="16px">
+      <Flex justifyContent="space-between" alignItems="center" pb="16px">
+        <Text fontWeight="bold">
           {title}
         </Text>
         <StyledExpandableLabelWrapper>
