@@ -341,7 +341,7 @@ const Farms: React.FC = () => {
             </LabelWrapper>
             <LabelWrapper style={{ marginLeft: 16 }}>
               <Text>SEARCH</Text>
-              <SearchInput onChange={handleChangeQuery} value={query} />
+              <SearchInput onChange={handleChangeQuery} />
             </LabelWrapper>
           </FilterContainer>
         </ControlContainer>
