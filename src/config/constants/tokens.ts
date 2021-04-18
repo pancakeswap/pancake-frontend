@@ -487,7 +487,7 @@ const tokens = {
       97: '',
     },
     decimals: 18,
-    projectLink: 'https://stablexswap.com/',
+    projectLink: 'http://stablexswap.com/',
   },
   nar: {
     symbol: 'NAR',
@@ -685,7 +685,7 @@ const tokens = {
       97: '',
     },
     decimals: 18,
-    projectLink: 'https://www.makerdao.com/',
+    projectLink: 'http://www.makerdao.com/',
   },
   ada: {
     symbol: 'ADA',
@@ -793,7 +793,7 @@ const tokens = {
       97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
     },
     decimals: 18,
-    projectLink: 'https://bch.info/',
+    projectLink: 'http://bch.info/',
   },
   yfi: {
     symbol: 'YFI',
@@ -1100,6 +1100,33 @@ const tokens = {
     },
     decimals: 18,
     projectLink: 'https://horizonprotocol.com/',
+  },
+  suter: {
+    symbol: 'SUTER',
+    address: {
+      56: '0x4cfbbdfbd5bf0814472ff35c72717bd095ada055',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://shield.suterusu.io/',
+  },
+  cgg: {
+    symbol: 'CGG',
+    address: {
+      56: '0x1613957159e9b0ac6c80e824f7eea748a32a0ae2',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://chainguardians.io/',
+  },
+  mix: {
+    symbol: 'MIX',
+    address: {
+      56: '0xB67754f5b4C704A24d2db68e661b2875a4dDD197',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://mixie.chainguardians.io/',
   },
 }
 
