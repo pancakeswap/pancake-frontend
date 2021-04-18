@@ -20,13 +20,12 @@ const TicketInput: React.FC<TokenInputProps> = ({ max, symbol, availableSymbol, 
       <Flex alignItems="center">
         <Input type="number" inputMode="numeric" min="0" onChange={onChange} placeholder="0" value={value} />
         <StyledTokenAdornmentWrapper>
+          <StyledSpacer />
           <StyledTokenSymbol>{symbol}</StyledTokenSymbol>
           <StyledSpacer />
-          <div>
-            <Button size="sm" onClick={onSelectMax}>
-              {TranslateString(452, 'Max')}
-            </Button>
-          </div>
+          <Button size="sm" onClick={onSelectMax}>
+            {TranslateString(452, 'Max')}
+          </Button>
         </StyledTokenAdornmentWrapper>
       </Flex>
       <StyledMaxText>{TranslateString(454, `${max.toLocaleString()} ${availableSymbol} Available`)}</StyledMaxText>
