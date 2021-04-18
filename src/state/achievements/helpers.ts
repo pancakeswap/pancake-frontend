@@ -16,11 +16,11 @@ const profileSubgraphApi = process.env.REACT_APP_SUBGRAPH_PROFILE
  */
 export const getUserPointIncreaseEvents = async (account: string): Promise<UserPointIncreaseEvent[]> => {
   try {
-    const data = await request(
+    const { user } = await request(
       profileSubgraphApi,
       gql`
-        {
-          user(id: "${account.toLowerCase()}") {
+        query getUserPointIncreaseEvents($account: ID!) {
+          user(id: $account) {
             points {
               id
               campaignId
@@ -29,8 +29,12 @@ export const getUserPointIncreaseEvents = async (account: string): Promise<UserP
           }
         }
       `,
+      {
+        account: account.toLowerCase(),
+      },
     )
-    return data.user.points
+
+    return user.points
   } catch (error) {
     return null
   }
