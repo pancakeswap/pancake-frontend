@@ -487,7 +487,7 @@ const tokens = {
       97: '',
     },
     decimals: 18,
-    projectLink: 'https://stablexswap.com/',
+    projectLink: 'http://stablexswap.com/',
   },
   nar: {
     symbol: 'NAR',
@@ -685,7 +685,7 @@ const tokens = {
       97: '',
     },
     decimals: 18,
-    projectLink: 'https://www.makerdao.com/',
+    projectLink: 'http://www.makerdao.com/',
   },
   ada: {
     symbol: 'ADA',
@@ -793,7 +793,7 @@ const tokens = {
       97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
     },
     decimals: 18,
-    projectLink: 'https://bch.info/',
+    projectLink: 'http://bch.info/',
   },
   yfi: {
     symbol: 'YFI',
