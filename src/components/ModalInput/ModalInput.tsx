@@ -90,7 +90,7 @@ const ModalInput: React.FC<ModalInputProps> = ({
         </Flex>
         <Flex alignItems="flex-end" justifyContent="space-around">
           <StyledInput
-            type="number"
+            pattern="^[0-9]*[.,]?[0-9]*$"
             inputMode="decimal"
             step="any"
             min="0"

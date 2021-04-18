@@ -27,7 +27,7 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ onConfirm, onDismiss, max
   const handleChange = useCallback(
     (e: React.FormEvent<HTMLInputElement>) => {
       if (e.currentTarget.validity.valid) {
-        setVal(e.currentTarget.value)
+        setVal(e.currentTarget.value.replace(/,/g, '.'))
       }
     },
     [setVal],
