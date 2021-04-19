@@ -16,7 +16,7 @@ const PoolFinishedSash = () => {
 
   return (
     <Box position="relative">
-      <StyledText color="card" fontSize="16px" bold>
+      <StyledText color="backgroundAlt" fontSize="16px" bold>
         {TranslateString(388, 'Finished')}
       </StyledText>
       <SashVector height="112px" width="112px" />

@@ -41,11 +41,15 @@ const PoolCard: React.FC<{ pool: Pool }> = ({ pool }) => {
     isFinished,
     userData,
     stakingLimit,
+    contractAddress,
   } = pool
 
   // Pools using native BNB behave differently than pools using a token
   const isBnbPool = poolCategory === PoolCategory.BINANCE
+
   const TranslateString = useI18n()
+  const [requestedApproval, setRequestedApproval] = useState(false)
+  const [pendingTx, setPendingTx] = useState(false)
   const stakingTokenContract = useERC20(stakingToken.address ? getAddress(stakingToken.address) : '')
   const { account } = useWeb3React()
   const { onApprove } = useSousApprove(stakingTokenContract, sousId)
@@ -64,9 +68,6 @@ const PoolCard: React.FC<{ pool: Pool }> = ({ pool }) => {
     parseFloat(pool.tokenPerBlock),
   )
 
-  const [requestedApproval, setRequestedApproval] = useState(false)
-  const [pendingTx, setPendingTx] = useState(false)
-
   const allowance = new BigNumber(userData?.allowance || 0)
   const stakingTokenBalance = new BigNumber(userData?.stakingTokenBalance || 0)
   const stakedBalance = new BigNumber(userData?.stakedBalance || 0)
@@ -76,6 +77,8 @@ const PoolCard: React.FC<{ pool: Pool }> = ({ pool }) => {
   const accountHasStakedBalance = stakedBalance?.toNumber() > 0
   const needsApproval = !accountHasStakedBalance && !allowance.toNumber() && !isBnbPool
   const isCardActive = isFinished && accountHasStakedBalance
+
+  const poolContractAddress = contractAddress[process.env.REACT_APP_CHAIN_ID]
 
   const convertedLimit = new BigNumber(stakingLimit).multipliedBy(new BigNumber(10).pow(earningToken.decimals))
   const [onPresentDeposit] = useModal(
@@ -207,6 +210,7 @@ const PoolCard: React.FC<{ pool: Pool }> = ({ pool }) => {
         tokenAddress={earningToken.address ? getAddress(earningToken.address) : ''}
         tokenDecimals={earningToken.decimals}
         stakingTokenSymbol={stakingToken.symbol}
+        poolContractAddress={poolContractAddress}
       />
     </StyledCard>
   )

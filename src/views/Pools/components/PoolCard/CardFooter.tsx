@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
+import { useWeb3React } from '@web3-react/core'
 import { getBalanceNumber } from 'utils/formatBalance'
 import useI18n from 'hooks/useI18n'
 import { Flex, MetamaskIcon, CardFooter, ExpandableLabel, Text, LinkExternal, TimerIcon } from '@pancakeswap-libs/uikit'
@@ -20,12 +21,19 @@ interface FooterProps {
   endBlock: number
   isFinished: boolean
   stakingTokenSymbol: string
+  poolContractAddress: string
 }
 
 const ExpandedWrapper = styled(Flex)`
   svg {
     height: 14px;
     width: 14px;
+  }
+`
+
+const ExpandableButtonWrapper = styled(Flex)`
+  button {
+    padding: 0;
   }
 `
 
@@ -40,28 +48,30 @@ const Footer: React.FC<FooterProps> = ({
   startBlock,
   endBlock,
   stakingTokenSymbol,
+  poolContractAddress,
 }) => {
-  const { currentBlock } = useBlock()
-  const [isExpanded, setIsExpanded] = useState(false)
   const TranslateString = useI18n()
+  const [isExpanded, setIsExpanded] = useState(false)
+  const { account } = useWeb3React()
+  const { currentBlock } = useBlock()
+  const imageSrc = `${BASE_URL}/images/tokens/${tokenName.toLowerCase()}.png`
+  const isMetaMaskInScope = !!(window as WindowChain).ethereum?.isMetaMask
 
+  const shouldShowBlockCountdown = Boolean(startBlock && endBlock)
   const blocksUntilStart = Math.max(startBlock - currentBlock, 0)
   const blocksRemaining = Math.max(endBlock - currentBlock, 0)
-
-  const imageSrc = `${BASE_URL}/images/tokens/${tokenName.toLowerCase()}.png`
-
   const hasPoolStarted = blocksUntilStart === 0 && blocksRemaining > 0
 
   return (
     <CardFooter>
-      <Flex>
+      <ExpandableButtonWrapper>
         <ExpandableLabel expanded={isExpanded} onClick={() => setIsExpanded(!isExpanded)}>
           {isExpanded ? TranslateString(1066, 'Hide') : TranslateString(658, 'Details')}
         </ExpandableLabel>
-      </Flex>
+      </ExpandableButtonWrapper>
       {isExpanded && (
         <ExpandedWrapper flexDirection="column">
-          <Flex justifyContent="space-between" alignItems="center">
+          <Flex mb="2px" justifyContent="space-between" alignItems="center">
             <Text fontSize="14px">{TranslateString(999, 'Total staked:')}</Text>
             <Flex alignItems="flex-start">
               <Balance fontSize="14px" isDisabled={isFinished} value={getBalanceNumber(totalStaked, decimals)} />
@@ -70,30 +80,56 @@ const Footer: React.FC<FooterProps> = ({
               </Text>
             </Flex>
           </Flex>
-          <Flex justifyContent="space-between" alignItems="center">
-            <Text fontSize="14px">
-              {hasPoolStarted ? TranslateString(410, 'End') : TranslateString(1212, 'Start')}:
-            </Text>
-            <Flex alignItems="center">
-              <Balance
-                color="primary"
-                fontSize="14px"
-                isDisabled={isFinished}
-                value={hasPoolStarted ? blocksRemaining : blocksUntilStart}
-                decimals={0}
-              />
-              <Text ml="4px" color="primary" fontSize="14px">
-                {TranslateString(999, 'blocks')}
+          {shouldShowBlockCountdown && (
+            <Flex mb="2px" justifyContent="space-between" alignItems="center">
+              <Text fontSize="14px">
+                {hasPoolStarted ? TranslateString(410, 'End') : TranslateString(1212, 'Start')}:
               </Text>
-              <TimerIcon ml="4px" color="primary" />
+              <Flex alignItems="center">
+                <Balance
+                  color="primary"
+                  fontSize="14px"
+                  isDisabled={isFinished}
+                  value={hasPoolStarted ? blocksRemaining : blocksUntilStart}
+                  decimals={0}
+                />
+                <Text ml="4px" color="primary" fontSize="14px">
+                  {TranslateString(999, 'blocks')}
+                </Text>
+                <TimerIcon ml="4px" color="primary" />
+              </Flex>
             </Flex>
-          </Flex>
-          <Flex mb="4px" justifyContent="flex-end">
+          )}
+          <Flex mb="2px" justifyContent="flex-end">
             <LinkExternal bold={false} fontSize="14px" href={projectLink} target="_blank">
               {TranslateString(412, 'View project site')}
             </LinkExternal>
           </Flex>
+          {poolContractAddress && (
+            <Flex mb="2px" justifyContent="flex-end">
+              <LinkExternal
+                bold={false}
+                fontSize="14px"
+                href={`https://bscscan.com/address/${poolContractAddress}`}
+                target="_blank"
+              >
+                {TranslateString(412, 'View contract')}
+              </LinkExternal>
+            </Flex>
+          )}
           {tokenAddress && (
+            <Flex mb="2px" justifyContent="flex-end">
+              <LinkExternal
+                bold={false}
+                fontSize="14px"
+                href={`https://pancakeswap.info/token/${tokenAddress}`}
+                target="_blank"
+              >
+                {TranslateString(412, 'Info site')}
+              </LinkExternal>
+            </Flex>
+          )}
+          {account && isMetaMaskInScope && tokenAddress && (
             <Flex justifyContent="flex-end">
               <Text
                 color="primary"
