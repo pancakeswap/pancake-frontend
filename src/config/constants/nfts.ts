@@ -21,6 +21,48 @@ export const nftSources: NftSource = {
 
 const Nfts: Nft[] = [
   {
+    name: 'Mixie v1',
+    description: 'Stories were told, and songs were sung, about Chef Mixie’s pancakes and her big Syrup gun.',
+    images: {
+      lg: 'mixie-1-lg.png',
+      md: 'mixie-1-md.png',
+      sm: 'mixie-1-sm.png',
+      ipfs: 'https://gateway.pinata.cloud/ipfs/QmQiRpr7ZMkzV7qbqVaUZ1LiuHTTdpWmapUhaY6ZGmVLQ4/001-Chef-Mixie.png',
+    },
+    sortOrder: 999,
+    identifier: '001-Chef-Mixie',
+    type: NftType.MIXIE,
+    variationId: 1,
+  },
+  {
+    name: 'Mixie v2',
+    description: 'Stories were told, and songs were sung, about Chef Mixie’s pancakes and her big Syrup gun.',
+    images: {
+      lg: 'mixie-2-lg.png',
+      md: 'mixie-2-md.png',
+      sm: 'mixie-2-sm.png',
+      ipfs: 'https://gateway.pinata.cloud/ipfs/QmQiRpr7ZMkzV7qbqVaUZ1LiuHTTdpWmapUhaY6ZGmVLQ4/002-Chef-Mixie.png',
+    },
+    sortOrder: 999,
+    identifier: '002-Chef-Mixie',
+    type: NftType.MIXIE,
+    variationId: 2,
+  },
+  {
+    name: 'Mixie v3',
+    description: 'Stories were told, and songs were sung, about Chef Mixie’s pancakes and her big Syrup gun.',
+    images: {
+      lg: 'mixie-3-lg.png',
+      md: 'mixie-3-md.png',
+      sm: 'mixie-3-sm.png',
+      ipfs: 'https://gateway.pinata.cloud/ipfs/QmQiRpr7ZMkzV7qbqVaUZ1LiuHTTdpWmapUhaY6ZGmVLQ4/003-Chef-Mixie.png',
+    },
+    sortOrder: 999,
+    identifier: '003-Chef-Mixie',
+    type: NftType.MIXIE,
+    variationId: 3,
+  },
+  {
     name: 'Easter ‘21 Champions',
     description: 'Eggscellent! Celebrating Syrup Storm winning the Easter Battle!',
     images: {
