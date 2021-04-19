@@ -3,15 +3,7 @@ import { GRAPH_API_PREDICTIONS } from 'config/constants/endpoints'
 import { Bet, BetPosition, PredictionStatus, Round, RoundData } from 'state/types'
 import makeBatchRequest from 'utils/makeBatchRequest'
 import { getPredictionsContract } from 'utils/contractHelpers'
-import {
-  BetResponse,
-  getBetQuery,
-  getRoundQuery,
-  getRoundsQuery,
-  getBetHistoryQuery,
-  RoundResponse,
-  BetHistoryWhereClause,
-} from './queries'
+import { BetResponse, getRoundBaseFields, getBetBaseFields, getUserBaseFields, RoundResponse } from './queries'
 
 export const numberOrNull = (value: string) => {
   if (value === null) {
@@ -157,10 +149,18 @@ export const getLatestRounds = async () => {
   const response = await request(
     GRAPH_API_PREDICTIONS,
     gql`
-      {
-        ${getRoundsQuery()}
+      query getLatestRounds {
+        rounds(first: 5, order: epoch, orderDirection: desc) {
+          ${getRoundBaseFields()}
+          bets {
+            ${getBetBaseFields()}
+            user {
+              ${getUserBaseFields()}
+            }
+          }
+        }
       }
-  `,
+    `,
   )
   return response.rounds
 }
@@ -169,26 +169,46 @@ export const getRound = async (id: string) => {
   const response = await request(
     GRAPH_API_PREDICTIONS,
     gql`
-      {
-        ${getRoundQuery(id)}
+      query getRound($id: ID!) {
+        round(id: $id) {
+          ${getRoundBaseFields()}
+          bets {
+           ${getBetBaseFields()}
+            user {
+             ${getUserBaseFields()}
+            }
+          }
+        }
       }
   `,
+    { id },
   )
   return response.round
 }
 
+type BetHistoryWhereClause = Record<string, string | number | boolean>
+
 export const getBetHistory = async (
-  whereClause: BetHistoryWhereClause = {},
+  where: BetHistoryWhereClause = {},
   first = 100,
   skip = 0,
 ): Promise<BetResponse[]> => {
   const response = await request(
     GRAPH_API_PREDICTIONS,
     gql`
-      {
-        ${getBetHistoryQuery(whereClause, first, skip)}
+      query getBetHistory {
+        bets(first: $first, skip: $skip, where: $where) {
+          ${getBetBaseFields()}
+          round {
+            ${getRoundBaseFields()}
+          }
+          user {
+            ${getUserBaseFields()}
+          } 
+        }
       }
-  `,
+    `,
+    { first, skip, where },
   )
   return response.bets
 }
@@ -197,10 +217,21 @@ export const getBet = async (betId: string): Promise<BetResponse> => {
   const response = await request(
     GRAPH_API_PREDICTIONS,
     gql`
-      {
-        ${getBetQuery(betId)}
+      query getBet($id: ID!) {
+        bet(id: $id) {
+          ${getBetBaseFields()}
+          round {
+            ${getRoundBaseFields()}
+          }
+          user {
+            ${getUserBaseFields()}
+          } 
+        }
       }
   `,
+    {
+      id: betId.toLowerCase(),
+    },
   )
   return response.bet
 }

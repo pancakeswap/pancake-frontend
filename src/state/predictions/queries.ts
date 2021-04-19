@@ -50,7 +50,7 @@ export interface RoundResponse {
   bets: BetResponse[]
 }
 
-const getRoundBaseFields = () => `
+export const getRoundBaseFields = () => `
   id
   epoch
   startAt
@@ -70,7 +70,7 @@ const getRoundBaseFields = () => `
   position
 `
 
-const getBetBaseFields = () => `
+export const getBetBaseFields = () => `
   id
   hash  
   amount
@@ -78,81 +78,10 @@ const getBetBaseFields = () => `
   claimed
 `
 
-const getUserBaseFields = () => `
+export const getUserBaseFields = () => `
   id
   address
   block
   totalBets
   totalBNB
 `
-
-type SortOrder = 'desc' | 'asc'
-
-export const getRoundsQuery = (first = 5, orderBy = 'epoch', orderDirection: SortOrder = 'desc') => {
-  return `
-    rounds(first: ${first}, orderBy: ${orderBy}, orderDirection: ${orderDirection}) {
-      ${getRoundBaseFields()}
-      bets {
-        ${getBetBaseFields()}
-        user {
-          ${getUserBaseFields()}
-        }
-      }
-    }
-  `
-}
-
-export const getRoundQuery = (id: string) => {
-  return `
-    round(id: "${id}") {
-      ${getRoundBaseFields()}
-      bets {
-       ${getBetBaseFields()}
-        user {
-         ${getUserBaseFields()}
-        }
-      }
-    }
-  `
-}
-
-export type BetHistoryWhereClause = Record<string, string | number | boolean>
-
-export const getBetHistoryQuery = (whereClause: BetHistoryWhereClause = {}, first: number, skip: number) => {
-  // Note: The graphql API won't accept JSON.stringify because of the quotes
-  const whereClauseArr = Object.keys(whereClause).reduce((accum, key) => {
-    const value = whereClause[key]
-
-    if (value === undefined) {
-      return accum
-    }
-
-    return [...accum, `${key}: ${typeof value === 'boolean' ? value : `"${String(value).toLowerCase()}"`}`]
-  }, [])
-
-  return `
-    bets(first: ${first}, skip: ${skip}, where: {${whereClauseArr.join(',')}}) {
-      ${getBetBaseFields()}
-      round {
-        ${getRoundBaseFields()}
-      }
-      user {
-        ${getUserBaseFields()}
-      } 
-    }
-  `
-}
-
-export const getBetQuery = (id: string) => {
-  return `
-    bet(id: "${id.toLocaleLowerCase()}") {
-      ${getBetBaseFields()}
-      round {
-        ${getRoundBaseFields()}
-      }
-      user {
-        ${getUserBaseFields()}
-      } 
-    }
-  `
-}
