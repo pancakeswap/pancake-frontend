@@ -16,10 +16,50 @@ const farms: FarmConfig[] = [
     pid: 1,
     lpSymbol: 'CAKE-BNB LP',
     lpAddresses: {
-      97: '0xe70b7523f4bffa1f2e88d2ba709afd026030f412',
+      97: '0x3ed8936cAFDF85cfDBa29Fbe5940A5b0524824F4',
       56: '0xA527a61703D82139F8a06Bc30097cC9CAA2df5A6',
     },
     token: tokens.cake,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 132,
+    lpSymbol: 'SUTER-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x6Ff75C20656A0E4745E7c114972D361F483AFa5f',
+    },
+    token: tokens.suter,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 131,
+    lpSymbol: 'bROOBEE-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x9e6f9f3382f9edc683203b528222c554c92382c2',
+    },
+    token: tokens.broobee,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 130,
+    lpSymbol: 'HZN-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0xee4ca18e91012bf87fefde3dd6723a8834347a4d',
+    },
+    token: tokens.hzn,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 129,
+    lpSymbol: 'ALPA-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x837cd42282801e340f1f17aadf3166fee99fb07c',
+    },
+    token: tokens.alpa,
     quoteToken: tokens.wbnb,
   },
   {

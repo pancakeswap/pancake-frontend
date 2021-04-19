@@ -5,19 +5,20 @@ import { useWeb3React } from '@web3-react/core'
 import useI18n from 'hooks/useI18n'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useCake, useBunnyFactory } from 'hooks/useContract'
+import { Nft } from 'config/constants/types'
 import useHasCakeBalance from 'hooks/useHasCakeBalance'
 import nftList from 'config/constants/nfts'
 import SelectionCard from '../components/SelectionCard'
 import NextStepButton from '../components/NextStepButton'
 import ApproveConfirmButtons from '../components/ApproveConfirmButtons'
 import useProfileCreation from './contexts/hook'
-import { MINT_COST, STARTER_BUNNY_IDS } from './config'
+import { MINT_COST, STARTER_BUNNY_IDENTIFIERS } from './config'
 
-const nfts = nftList.filter((nft) => STARTER_BUNNY_IDS.includes(nft.bunnyId))
+const nfts = nftList.filter((nft) => STARTER_BUNNY_IDENTIFIERS.includes(nft.identifier))
 const minimumCakeBalanceToMint = new BigNumber(MINT_COST).multipliedBy(new BigNumber(10).pow(18))
 
 const Mint: React.FC = () => {
-  const [bunnyId, setBunnyId] = useState(null)
+  const [variationId, setVariationId] = useState<Nft['variationId']>(null)
   const { actions, minimumCakeRequired, allowance } = useProfileCreation()
 
   const { account } = useWeb3React()
@@ -49,7 +50,7 @@ const Mint: React.FC = () => {
         .send({ from: account })
     },
     onConfirm: () => {
-      return bunnyFactoryContract.methods.mintNFT(bunnyId).send({ from: account })
+      return bunnyFactoryContract.methods.mintNFT(variationId).send({ from: account })
     },
     onSuccess: () => actions.nextStep(),
   })
@@ -79,15 +80,15 @@ const Mint: React.FC = () => {
             {TranslateString(999, `Cost: ${MINT_COST} CAKE`, { num: MINT_COST })}
           </Text>
           {nfts.map((nft) => {
-            const handleChange = (value: string) => setBunnyId(parseInt(value, 10))
+            const handleChange = (value: string) => setVariationId(Number(value))
 
             return (
               <SelectionCard
-                key={nft.bunnyId}
+                key={nft.identifier}
                 name="mintStarter"
-                value={nft.bunnyId}
+                value={nft.variationId}
                 image={`/images/nfts/${nft.images.md}`}
-                isChecked={bunnyId === nft.bunnyId}
+                isChecked={variationId === nft.variationId}
                 onChange={handleChange}
                 disabled={isApproving || isConfirming || isConfirmed || !hasMinimumCakeRequired}
               >
@@ -101,7 +102,7 @@ const Mint: React.FC = () => {
             </Text>
           )}
           <ApproveConfirmButtons
-            isApproveDisabled={bunnyId === null || isConfirmed || isConfirming || isApproved}
+            isApproveDisabled={variationId === null || isConfirmed || isConfirming || isApproved}
             isApproving={isApproving}
             isConfirmDisabled={!isApproved || isConfirmed || !hasMinimumCakeRequired}
             isConfirming={isConfirming}

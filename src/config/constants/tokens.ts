@@ -1083,6 +1083,51 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://perlinx.finance/',
   },
+  alpa: {
+    symbol: 'ALPA',
+    address: {
+      56: '0xc5e6689c9c8b02be7c49912ef19e79cf24977f03',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://bsc.alpaca.city/',
+  },
+  hzn: {
+    symbol: 'HZN',
+    address: {
+      56: '0xc0eff7749b125444953ef89682201fb8c6a917cd',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://horizonprotocol.com/',
+  },
+  suter: {
+    symbol: 'SUTER',
+    address: {
+      56: '0x4cfbbdfbd5bf0814472ff35c72717bd095ada055',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://shield.suterusu.io/',
+  },
+  cgg: {
+    symbol: 'CGG',
+    address: {
+      56: '0x1613957159e9b0ac6c80e824f7eea748a32a0ae2',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://chainguardians.io/',
+  },
+  mix: {
+    symbol: 'MIX',
+    address: {
+      56: '0xB67754f5b4C704A24d2db68e661b2875a4dDD197',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://mixie.chainguardians.io/',
+  },
 }
 
 export default tokens

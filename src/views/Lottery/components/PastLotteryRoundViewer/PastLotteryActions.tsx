@@ -45,14 +45,10 @@ const TicketCard: React.FC<{ contractLink?: string; lotteryNumber?: number }> = 
 
   return (
     <Wrapper>
-      <div>
-        <Button disabled={ticketsLength === 0} onClick={onPresentMyTickets} width="100%">
-          {TranslateString(432, 'View your tickets')}
-        </Button>
-      </div>
-      <div>
-        <ExternalLinkWrap href={contractLink}>{TranslateString(356, 'View on BscScan')}</ExternalLinkWrap>
-      </div>
+      <Button disabled={ticketsLength === 0} onClick={onPresentMyTickets} width="100%">
+        {TranslateString(432, 'View your tickets')}
+      </Button>
+      <ExternalLinkWrap href={contractLink}>{TranslateString(356, 'View on BscScan')}</ExternalLinkWrap>
     </Wrapper>
   )
 }

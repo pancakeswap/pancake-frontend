@@ -12,7 +12,10 @@ const initialState: State = {
   isInitialized: false,
   currentStep: 0,
   teamId: null,
-  tokenId: null,
+  selectedNft: {
+    nftAddress: null,
+    tokenId: null,
+  },
   userName: '',
   minimumCakeRequired: new BigNumber(totalCost).multipliedBy(new BigNumber(10).pow(18)),
   allowance: new BigNumber(allowance).multipliedBy(new BigNumber(10).pow(18)),
@@ -36,10 +39,13 @@ const reducer = (state: State, action: Actions): State => {
         ...state,
         teamId: action.teamId,
       }
-    case 'set_tokenid':
+    case 'set_selected_nft':
       return {
         ...state,
-        tokenId: action.tokenId,
+        selectedNft: {
+          tokenId: action.tokenId,
+          nftAddress: action.nftAddress,
+        },
       }
     case 'set_username':
       return {
@@ -85,7 +91,8 @@ const ProfileCreationProvider: React.FC = ({ children }) => {
     () => ({
       nextStep: () => dispatch({ type: 'next_step' }),
       setTeamId: (teamId: number) => dispatch({ type: 'set_team', teamId }),
-      setTokenId: (tokenId: number) => dispatch({ type: 'set_tokenid', tokenId }),
+      setSelectedNft: (tokenId: number, nftAddress: string) =>
+        dispatch({ type: 'set_selected_nft', tokenId, nftAddress }),
       setUserName: (userName: string) => dispatch({ type: 'set_username', userName }),
     }),
     [dispatch],

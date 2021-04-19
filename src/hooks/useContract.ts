@@ -7,7 +7,8 @@ import {
   getBunnySpecialContract,
   getPancakeRabbitContract,
   getProfileContract,
-  getIfoContract,
+  getIfoV1Contract,
+  getIfoV2Contract,
   getLotteryContract,
   getLotteryTicketContract,
   getMasterchefContract,
@@ -16,20 +17,34 @@ import {
   getClaimRefundContract,
   getTradingCompetitionContract,
   getEasterNftContract,
+  getErc721Contract,
 } from 'utils/contractHelpers'
 
 /**
  * Helper hooks to get specific contracts (by ABI)
  */
 
-export const useIfoContract = (address: string) => {
+export const useIfoV1Contract = (address: string) => {
   const web3 = useWeb3()
-  return useMemo(() => getIfoContract(address, web3), [address, web3])
+  return useMemo(() => getIfoV1Contract(address, web3), [address, web3])
+}
+
+export const useIfoV2Contract = (address: string) => {
+  const web3 = useWeb3()
+  return useMemo(() => getIfoV2Contract(address, web3), [address, web3])
 }
 
 export const useERC20 = (address: string) => {
   const web3 = useWeb3()
   return useMemo(() => getBep20Contract(address, web3), [address, web3])
+}
+
+/**
+ * @see https://docs.openzeppelin.com/contracts/3.x/api/token/erc721
+ */
+export const useERC721 = (address: string) => {
+  const web3 = useWeb3()
+  return useMemo(() => getErc721Contract(address, web3), [address, web3])
 }
 
 export const useCake = () => {

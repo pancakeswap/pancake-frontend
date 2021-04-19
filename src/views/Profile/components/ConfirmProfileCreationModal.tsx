@@ -3,16 +3,17 @@ import { Modal, Flex, Text } from '@pancakeswap-libs/uikit'
 import { useAppDispatch } from 'state'
 import BigNumber from 'bignumber.js'
 import useI18n from 'hooks/useI18n'
-import { useCake, usePancakeRabbits, useProfile } from 'hooks/useContract'
+import { useCake, useProfile } from 'hooks/useContract'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { fetchProfile } from 'state/profile'
 import { useToast } from 'state/hooks'
 import { REGISTER_COST } from '../ProfileCreation/config'
 import ApproveConfirmButtons from './ApproveConfirmButtons'
+import { State } from '../ProfileCreation/contexts/types'
 
 interface Props {
   userName: string
-  tokenId: number
+  selectedNft: State['selectedNft']
   account: string
   teamId: number
   minimumCakeRequired: BigNumber
@@ -23,14 +24,13 @@ interface Props {
 const ConfirmProfileCreationModal: React.FC<Props> = ({
   account,
   teamId,
-  tokenId,
+  selectedNft,
   minimumCakeRequired,
   allowance,
   onDismiss,
 }) => {
   const TranslateString = useI18n()
   const profileContract = useProfile()
-  const pancakeRabbitsContract = usePancakeRabbits()
   const dispatch = useAppDispatch()
   const { toastSuccess } = useToast()
   const cakeContract = useCake()
@@ -57,7 +57,7 @@ const ConfirmProfileCreationModal: React.FC<Props> = ({
     },
     onConfirm: () => {
       return profileContract.methods
-        .createProfile(teamId, pancakeRabbitsContract.options.address, tokenId)
+        .createProfile(teamId, selectedNft.nftAddress, selectedNft.tokenId)
         .send({ from: account })
     },
     onSuccess: async () => {

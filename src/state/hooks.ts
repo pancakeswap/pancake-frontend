@@ -6,7 +6,10 @@ import { Toast, toastTypes } from '@pancakeswap-libs/uikit'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
 import { Team } from 'config/constants/types'
+import Nfts from 'config/constants/nfts'
 import { getWeb3NoAccount } from 'utils/web3'
+import { getAddress } from 'utils/addressHelpers'
+import { getBalanceNumber } from 'utils/formatBalance'
 import useRefresh from 'hooks/useRefresh'
 import {
   fetchFarmsPublicDataAsync,
@@ -22,6 +25,7 @@ import { fetchProfile } from './profile'
 import { fetchTeam, fetchTeams } from './teams'
 import { fetchAchievements } from './achievements'
 import { fetchPrices } from './prices'
+import { fetchWalletNfts } from './collectibles'
 
 export const useFetchPublicData = () => {
   const dispatch = useAppDispatch()
@@ -68,6 +72,15 @@ export const useFarmUser = (pid) => {
     stakedBalance: farm.userData ? new BigNumber(farm.userData.stakedBalance) : new BigNumber(0),
     earnings: farm.userData ? new BigNumber(farm.userData.earnings) : new BigNumber(0),
   }
+}
+
+export const useLpTokenPrice = (symbol: string) => {
+  const farm = useFarmFromSymbol(symbol)
+  const tokenPriceInUsd = useGetApiPrice(getAddress(farm.token.address))
+
+  return farm.lpTotalSupply && farm.lpTotalInQuoteToken
+    ? new BigNumber(getBalanceNumber(farm.lpTotalSupply)).div(farm.lpTotalInQuoteToken).times(tokenPriceInUsd).times(2)
+    : new BigNumber(0)
 }
 
 // Pools
@@ -191,14 +204,14 @@ export const useGetApiPrices = () => {
   return prices
 }
 
-export const useGetApiPrice = (token: string) => {
+export const useGetApiPrice = (address: string) => {
   const prices = useGetApiPrices()
 
   if (!prices) {
     return null
   }
 
-  return prices[token.toLowerCase()]
+  return prices[address.toLowerCase()]
 }
 
 export const usePriceCakeBusd = (): BigNumber => {
@@ -219,4 +232,26 @@ export const useBlock = () => {
 
 export const useInitialBlock = () => {
   return useSelector((state: State) => state.block.initialBlock)
+}
+
+// Collectibles
+export const useGetCollectibles = () => {
+  const { account } = useWeb3React()
+  const dispatch = useAppDispatch()
+  const { isInitialized, isLoading, data } = useSelector((state: State) => state.collectibles)
+  const identifiers = Object.keys(data)
+
+  useEffect(() => {
+    // Fetch nfts only if we have not done so already
+    if (!isInitialized) {
+      dispatch(fetchWalletNfts(account))
+    }
+  }, [isInitialized, account, dispatch])
+
+  return {
+    isInitialized,
+    isLoading,
+    tokenIds: data,
+    nftsInWallet: Nfts.filter((nft) => identifiers.includes(nft.identifier)),
+  }
 }

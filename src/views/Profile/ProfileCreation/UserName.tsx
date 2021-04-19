@@ -58,7 +58,7 @@ const Indicator = styled(Flex)`
 
 const UserName: React.FC = () => {
   const [isAcknowledged, setIsAcknowledged] = useState(false)
-  const { teamId, tokenId, userName, actions, minimumCakeRequired, allowance } = useProfileCreation()
+  const { teamId, selectedNft, userName, actions, minimumCakeRequired, allowance } = useProfileCreation()
   const TranslateString = useI18n()
   const { account, library } = useWeb3React()
   const { toastError } = useToast()
@@ -71,7 +71,7 @@ const UserName: React.FC = () => {
   const [onPresentConfirmProfileCreation] = useModal(
     <ConfirmProfileCreationModal
       userName={userName}
-      tokenId={tokenId}
+      selectedNft={selectedNft}
       account={account}
       teamId={teamId}
       minimumCakeRequired={minimumCakeRequired}

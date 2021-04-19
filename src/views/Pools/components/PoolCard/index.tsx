@@ -11,7 +11,7 @@ import useI18n from 'hooks/useI18n'
 import { useSousStake } from 'hooks/useStake'
 import { useSousUnstake } from 'hooks/useUnstake'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { getPoolApy } from 'utils/apy'
+import { getPoolApr } from 'utils/apr'
 import { getAddress } from 'utils/addressHelpers'
 import { useSousHarvest } from 'hooks/useHarvest'
 import Balance from 'components/Balance'
@@ -54,10 +54,10 @@ const PoolCard: React.FC<{ pool: Pool }> = ({ pool }) => {
   const { onReward } = useSousHarvest(sousId, isBnbPool)
   const cakePrice = usePriceCakeBusd()
 
-  // APY
+  // APR
   const rewardTokenPrice = useGetApiPrice(earningToken.address ? getAddress(earningToken.address) : '')
   const stakingTokenPrice = useGetApiPrice(stakingToken.address ? getAddress(stakingToken.address) : '')
-  const apy = getPoolApy(
+  const apr = getPoolApr(
     stakingTokenPrice,
     rewardTokenPrice,
     getBalanceNumber(pool.totalStaked, stakingToken.decimals),
@@ -122,7 +122,7 @@ const PoolCard: React.FC<{ pool: Pool }> = ({ pool }) => {
         isFinished={isFinished && sousId !== 0}
       />
       <CardBody>
-        <AprRow isFinished={isFinished} isOldSyrup={isOldSyrup} apr={apy} cakePrice={cakePrice} />
+        <AprRow isFinished={isFinished} isOldSyrup={isOldSyrup} apr={apr} cakePrice={cakePrice} />
 
         <div style={{ marginBottom: '8px', display: 'flex', alignItems: 'center' }}>
           {account && harvest && !isOldSyrup && (
@@ -143,7 +143,7 @@ const PoolCard: React.FC<{ pool: Pool }> = ({ pool }) => {
             {sousId === 0 && account && harvest && (
               <HarvestButton
                 disabled={!earnings.toNumber() || pendingTx}
-                text={pendingTx ? TranslateString(999, 'Compounding') : TranslateString(704, 'Compound')}
+                text={TranslateString(704, 'Compound')}
                 onClick={onPresentCompound}
               />
             )}
@@ -187,7 +187,6 @@ const PoolCard: React.FC<{ pool: Pool }> = ({ pool }) => {
               </>
             ))}
         </StyledCardActions>
-
         <StyledDetails>
           <div>{TranslateString(384, 'Your Stake')}:</div>
           <Balance

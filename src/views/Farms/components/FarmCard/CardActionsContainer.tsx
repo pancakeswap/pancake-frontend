@@ -17,7 +17,7 @@ const Action = styled.div`
   padding-top: 16px;
 `
 export interface FarmWithStakedValue extends Farm {
-  apy?: number
+  apr?: number
 }
 
 interface FarmCardActionsProps {
