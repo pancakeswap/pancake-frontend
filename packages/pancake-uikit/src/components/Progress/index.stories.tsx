@@ -29,6 +29,10 @@ export const Default: React.FC = () => {
           </Box>
         );
       })}
+      <Heading size="md" mb="8px">
+        Small
+      </Heading>
+      <Progress scale="sm" primaryStep={progress} />
       <div style={{ marginTop: "32px" }}>
         <Button type="button" scale="sm" onClick={handleClick}>
           Random Progress

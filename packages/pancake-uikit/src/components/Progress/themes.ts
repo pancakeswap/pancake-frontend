@@ -1,4 +1,4 @@
-import { variants } from "./types";
+import { variants, scales } from "./types";
 
 export const styleVariants = {
   [variants.ROUND]: {
@@ -6,6 +6,15 @@ export const styleVariants = {
   },
   [variants.FLAT]: {
     borderRadius: 0,
+  },
+};
+
+export const styleScales = {
+  [scales.MD]: {
+    height: "16px",
+  },
+  [scales.SM]: {
+    height: "8px",
   },
 };
 

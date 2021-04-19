@@ -11,7 +11,7 @@ it("renders correctly", () => {
       top: 0;
       left: 0;
       background-color: #7645D9;
-      height: 16px;
+      height: 100%;
       -webkit-transition: width 200ms ease;
       transition: width 200ms ease;
     }
@@ -20,9 +20,9 @@ it("renders correctly", () => {
       position: relative;
       background-color: #eeeaf4;
       box-shadow: inset 0px 2px 2px -1px rgba(74,74,104,0.1);
-      height: 16px;
       overflow: hidden;
       border-radius: 32px;
+      height: 16px;
     }
 
     .c0 .c1 {
@@ -32,6 +32,7 @@ it("renders correctly", () => {
 
     <div
         class="c0"
+        scale="md"
       >
         <div
           class="c1 c2"
