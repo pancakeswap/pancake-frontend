@@ -8,19 +8,19 @@ import NftCard, { NftCardProps } from './index'
 
 /**
  * A map of NFT bunny Ids to Team ids
- * [bunnyId]: teamId
+ * [identifier]: teamId
  */
 export const teamNftMap = {
-  12: 1,
-  13: 2,
-  14: 3,
+  'easter-storm': 1,
+  'easter-flipper': 2,
+  'easter-caker': 3,
 }
 
-const EasterNftCard: React.FC<NftCardProps> = ({ nft, lastUpdated, ...props }) => {
+const EasterNftCard: React.FC<NftCardProps> = ({ nft, ...props }) => {
   const [isClaimable, setIsClaimable] = useState(false)
   const { account } = useWeb3React()
   const { profile } = useProfile()
-  const { bunnyId } = nft
+  const { identifier } = nft
   const { team } = profile ?? {}
   const easterNftContract = useEasterNftContract()
 
@@ -33,15 +33,15 @@ const EasterNftCard: React.FC<NftCardProps> = ({ nft, lastUpdated, ...props }) =
       const canClaim = await easterNftContract.methods.canClaim(account).call()
 
       // Wallet can claim if it is claimable and the nft being displayed is mapped to the wallet's team
-      setIsClaimable(canClaim ? team.id === teamNftMap[bunnyId] : false)
+      setIsClaimable(canClaim ? team.id === teamNftMap[identifier] : false)
     }
 
     if (account && team) {
       fetchClaimStatus()
     }
-  }, [account, bunnyId, team, lastUpdated, easterNftContract, setIsClaimable])
+  }, [account, identifier, team, easterNftContract, setIsClaimable])
 
-  return <NftCard nft={nft} lastUpdated={lastUpdated} {...props} canClaim={isClaimable} onClaim={handleClaim} />
+  return <NftCard nft={nft} {...props} canClaim={isClaimable} onClaim={handleClaim} />
 }
 
 export default EasterNftCard

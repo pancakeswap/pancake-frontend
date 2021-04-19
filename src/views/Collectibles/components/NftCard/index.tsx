@@ -26,8 +26,7 @@ export interface NftCardProps {
   nft: Nft
   canClaim?: boolean
   tokenIds?: number[]
-  onClaim: () => PromiEvent<Contract>
-  lastUpdated: number
+  onClaim?: () => PromiEvent<Contract>
   refresh: () => void
 }
 
@@ -56,7 +55,7 @@ const NftCard: React.FC<NftCardProps> = ({ nft, canClaim = false, tokenIds = [],
   const [isOpen, setIsOpen] = useState(false)
   const TranslateString = useI18n()
   const { profile } = useProfile()
-  const { bunnyId, name, description } = nft
+  const { identifier, name, description } = nft
   const walletOwnsNft = tokenIds.length > 0
   const Icon = isOpen ? ChevronUpIcon : ChevronDownIcon
 
@@ -84,7 +83,7 @@ const NftCard: React.FC<NftCardProps> = ({ nft, canClaim = false, tokenIds = [],
               {TranslateString(728, 'In Wallet')}
             </Tag>
           )}
-          {profile?.nft?.bunnyId === bunnyId && (
+          {profile?.nft?.identifier === identifier && (
             <Tag outline variant="success">
               {TranslateString(999, 'Profile Pic')}
             </Tag>

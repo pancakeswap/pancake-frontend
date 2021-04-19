@@ -41,7 +41,10 @@ export const useIfoAllowance = (tokenContract: Contract, spenderAddress: string,
         console.error(e)
       }
     }
-    fetch()
+
+    if (account) {
+      fetch()
+    }
   }, [account, spenderAddress, tokenContract, dependency])
 
   return allowance

@@ -1,9 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
+import { Box } from '@pancakeswap-libs/uikit'
 import Container from '../layout/Container'
 
-const Outer = styled.div<{ background?: string }>`
-  background: ${({ theme, background }) => (!background ? theme.colors.gradients.bubblegum : background)};
+const Outer = styled(Box)<{ background?: string }>`
+  background: ${({ theme, background }) => background || theme.colors.gradients.bubblegum};
 `
 
 const Inner = styled(Container)`
