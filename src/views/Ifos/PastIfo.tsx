@@ -1,8 +1,8 @@
 import React from 'react'
 import { ifosConfig } from 'config/constants'
 import { Ifo } from 'config/constants/types'
-import IfoV1Card from './components/IfoV1Card'
-import IfoV2Card from './components/IfoV2Card'
+import IfoCardV2Data from './components/IfoCardV2Data'
+import IfoCardV1Data from './components/IfoCardV1Data'
 import IfoCardLayout from './components/IfoCardLayout'
 
 const inactiveIfo: Ifo[] = ifosConfig.filter((ifo) => !ifo.isActive)
@@ -12,9 +12,9 @@ const PastIfo = () => {
     <IfoCardLayout>
       {inactiveIfo.map((ifo) =>
         ifo.isV1 ? (
-          <IfoV1Card key={ifo.id} ifo={ifo} />
+          <IfoCardV1Data key={ifo.id} ifo={ifo} />
         ) : (
-          <IfoV2Card key={ifo.id} ifo={ifo} isInitiallyVisible={false} />
+          <IfoCardV2Data key={ifo.id} ifo={ifo} isInitiallyVisible={false} />
         ),
       )}
     </IfoCardLayout>

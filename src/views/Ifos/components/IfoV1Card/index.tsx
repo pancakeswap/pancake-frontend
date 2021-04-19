@@ -3,8 +3,7 @@ import styled from 'styled-components'
 import { Card, CardBody, CardRibbon, Box, Progress } from '@pancakeswap-libs/uikit'
 import { Ifo, IfoStatus } from 'config/constants/types'
 import useI18n from 'hooks/useI18n'
-import useGetPublicIfoData from 'hooks/ifo/v1/useGetPublicIfoData'
-import useGetWalletIfoData from 'hooks/ifo/v1/useGetWalletIfoData'
+import { PublicIfoData, WalletIfoData } from 'hooks/ifo/v1/types'
 import IfoCardHeader from './IfoCardHeader'
 import IfoCardDetails from './IfoCardDetails'
 import IfoCardActions from './IfoCardActions'
@@ -12,6 +11,8 @@ import IfoCardTime from './IfoCardTime'
 
 export interface IfoCardProps {
   ifo: Ifo
+  publicIfoData: PublicIfoData
+  walletIfoData: WalletIfoData
 }
 
 const StyledIfoCard = styled(Card)<{ ifoId: string }>`
@@ -36,9 +37,7 @@ const getRibbonComponent = (status: IfoStatus, TranslateString: (translationId: 
   return null
 }
 
-const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
-  const publicIfoData = useGetPublicIfoData(ifo)
-  const walletIfoData = useGetWalletIfoData(ifo)
+const IfoCard: React.FC<IfoCardProps> = ({ ifo, publicIfoData, walletIfoData }) => {
   const TranslateString = useI18n()
 
   const { id, name, subTitle } = ifo

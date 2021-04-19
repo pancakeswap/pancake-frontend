@@ -12,15 +12,16 @@ import {
   ChevronUpIcon,
 } from '@pancakeswap-libs/uikit'
 import { Ifo, IfoStatus, PoolIds } from 'config/constants/types'
+import { PublicIfoData, WalletIfoData } from 'hooks/ifo/v2/types'
 import useI18n from 'hooks/useI18n'
-import useGetPublicIfoV2Data from 'hooks/ifo/v2/useGetPublicIfoData'
-import useGetWalletIfoV2Data from 'hooks/ifo/v2/useGetWalletIfoData'
-import SmallCard from './SmallCard'
+import IfoPoolCard from './IfoPoolCard'
 import Timer from './Timer'
 import Achievement from './Achievement'
 
 interface IfoFoldableCardProps {
   ifo: Ifo
+  publicIfoData: PublicIfoData
+  walletIfoData: WalletIfoData
   isInitiallyVisible: boolean
 }
 
@@ -74,11 +75,9 @@ const StyledCardFooter = styled(CardFooter)`
   background: ${({ theme }) => theme.colors.backgroundAlt};
 `
 
-const IfoFoldableCard: React.FC<IfoFoldableCardProps> = ({ ifo, isInitiallyVisible }) => {
+const IfoFoldableCard: React.FC<IfoFoldableCardProps> = ({ ifo, publicIfoData, walletIfoData, isInitiallyVisible }) => {
   const [isVisible, setIsVisible] = useState(isInitiallyVisible)
   const TranslateString = useI18n()
-  const publicIfoData = useGetPublicIfoV2Data(ifo)
-  const walletIfoData = useGetWalletIfoV2Data(ifo)
 
   const Ribbon = getRibbonComponent(publicIfoData.status, TranslateString)
   const isActive = publicIfoData.status !== 'finished' && ifo.isActive
@@ -93,13 +92,13 @@ const IfoFoldableCard: React.FC<IfoFoldableCardProps> = ({ ifo, isInitiallyVisib
         <CardBody>
           {isActive && <Timer publicIfoData={publicIfoData} />}
           <CardsWrapper>
-            <SmallCard
+            <IfoPoolCard
               poolId={PoolIds.poolBasic}
               ifo={ifo}
               publicIfoData={publicIfoData}
               walletIfoData={walletIfoData}
             />
-            <SmallCard
+            <IfoPoolCard
               poolId={PoolIds.poolUnlimited}
               ifo={ifo}
               publicIfoData={publicIfoData}
