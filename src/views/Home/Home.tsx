@@ -13,7 +13,7 @@ import WinCard from 'views/Home/components/WinCard'
 
 const Hero = styled.div`
   align-items: center;
-  background-image: url('/images/pan-bg-mobile.svg');
+  background-image: url('/images/greentea-mobile-bg.svg');
   background-repeat: no-repeat;
   background-position: top center;
   display: flex;
@@ -25,9 +25,9 @@ const Hero = styled.div`
   text-align: center;
 
   ${({ theme }) => theme.mediaQueries.lg} {
-    background-image: url('/images/pan-bg2.svg'), url('/images/pan-bg.svg');
+    background-image: url('/images/greentea-home-cat-hold-coins.svg'), url('/images/greentea-home-cat-call.svg');
     background-position: left center, right center;
-    height: 165px;
+    height: 250px;
     padding-top: 0;
   }
 `
@@ -82,10 +82,10 @@ const Home: React.FC = () => {
   return (
     <Page>
       <Hero>
-        <Heading as="h1" size="xl" mb="24px" color="secondary">
+        <Heading as="h1" size="xl" mb="24px" color="primary">
           {TranslateString(576, 'GreenTeaSwap')}
         </Heading>
-        <Text>{TranslateString(578, 'Lottery on Binance Smart Chain.')}</Text>
+        <Text>{TranslateString(578, 'The Lottery #1 on Binance Smart Chain.')}</Text>
       </Hero>
       <div>
         <Cards>

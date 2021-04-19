@@ -28,14 +28,14 @@ const HowItWorks = () => {
 
   return (
     <LayoutWrapper>
-      <StyledImage src="/images/pancake-lottery-bunny.png" alt="lottery bunny" width={163} height={140} />
+      <StyledImage src="/images/greentea-lottery-coins-over-cat.png" alt="lottery bunny" width={158} height={170} />
       <StyledHeading size="lg" as="h3" color="secondary">
-        {TranslateString(632, 'How it works')}
+        {TranslateString(632, 'Lottery ทำงานอย่างไร')}
       </StyledHeading>
       <Text fontSize="16px">
         {TranslateString(
           999,
-          'Spend TEA to buy tickets, contributing to the lottery pot. Win prizes if 2, 3, or 4 of your ticket numbers match the winning numbers and their exact order!',
+          'ซื้อ Ticket ด้วย เหรียญ TEA, 1 Ticket มูลค่าเท่ากับ 1 TEA หรือประมาณ 1 USD, ใน Ticket จะประกอบด้วยตัวเลข 4 ตัว ถูก Random โดย SmartContract Code ถ้าเลข 4 ตัวใน Ticket ตำแหน่งเลข 4, 3 หรือ 2 หลัก ตรงตามเลขรางวัลที่ชนะรับเงินรางวัลตามสัดส่วนที่ชนะ ประกาศผลทุก 6 ชั่วโมง ขอให้คุณโชคดี  ^_^',
         )}
       </Text>
       <StyledLink href="https://docs.pancakeswap.finance/lottery-1">Read more</StyledLink>

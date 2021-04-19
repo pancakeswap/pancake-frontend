@@ -38,7 +38,7 @@ const WinningNumbers: React.FC = () => {
                 </TicketNumberBox>
               ))}
             </Row>
-            <RabbitRow>
+            {/* <RabbitRow>
               <RabbitBox>
                 <CardImageFirst>
                   <Image src="/images/sign bunny 1@2x.png" alt="Number 1" width={200} height={150} responsive />
@@ -59,8 +59,8 @@ const WinningNumbers: React.FC = () => {
                   <Image src="/images/sign bunny 4@2x.png" alt="Number 4" width={200} height={150} responsive />
                 </CardImage>
               </RabbitBox>
-            </RabbitRow>
-            <RabbitRowSmall>
+            </RabbitRow> */}
+            {/* <RabbitRowSmall>
               <RabbitBoxSmall>
                 <CardImageFirst>
                   <Image src="/images/sign bunny 1@2x.png" alt="Number 1" width={200} height={150} responsive />
@@ -81,7 +81,7 @@ const WinningNumbers: React.FC = () => {
                   <Image src="/images/sign bunny 4@2x.png" alt="Number 4" width={200} height={150} responsive />
                 </CardImage>
               </RabbitBoxSmall>
-            </RabbitRowSmall>
+            </RabbitRowSmall> */}
             <Column>
               <RowNoPadding>
                 <CenteredTextWithPadding>{TranslateString(442, 'Tickets matching 4 numbers:')}</CenteredTextWithPadding>
@@ -114,7 +114,7 @@ const WinningNumbers: React.FC = () => {
 const Link = styled.a`
   margin-top: 1em;
   text-decoration: none;
-  color: #25beca;
+  color: #8BC156;
 `
 
 const Row = styled.div`
@@ -187,7 +187,7 @@ const CenteredTextWithPadding = styled.div`
 const TicketNumberBox = styled.div`
   padding: 10px;
   border-radius: 12px;
-  background: linear-gradient(180deg, #54dade 0%, #24c7d6 76.22%);
+  background: linear-gradient(180deg, #8BC156 0%, #8BC156 76.22%);
   color: white;
   font-size: 20px;
   font-weight: 900;

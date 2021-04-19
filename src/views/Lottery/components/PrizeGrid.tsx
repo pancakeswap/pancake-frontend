@@ -76,7 +76,7 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({
         </PastDrawGridItem>
       )}
       <GridItem>
-        <RightAlignedHeading size="md">{fourMatchesAmount.toLocaleString()}</RightAlignedHeading>
+        <RightAlignedHeading size="md">{fourMatchesAmount.toLocaleString()} TEA</RightAlignedHeading>
       </GridItem>
       {/* 3 matches row */}
       <GridItem>
@@ -88,7 +88,7 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({
         </PastDrawGridItem>
       )}
       <GridItem>
-        <RightAlignedText>{threeMatchesAmount.toLocaleString()}</RightAlignedText>
+        <RightAlignedText>{threeMatchesAmount.toLocaleString()} TEA</RightAlignedText>
       </GridItem>
       {/* 2 matches row */}
       <GridItem>
@@ -100,7 +100,7 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({
         </PastDrawGridItem>
       )}
       <GridItem>
-        <RightAlignedText>{twoMatchesAmount.toLocaleString()}</RightAlignedText>
+        <RightAlignedText>{twoMatchesAmount.toLocaleString()} TEA</RightAlignedText>
       </GridItem>
       {/* Burn row */}
       <GridItem marginBottom="0">
@@ -110,12 +110,12 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({
         <>
           <GridItem marginBottom="0" />
           <GridItem marginBottom="0">
-            <RightAlignedText>{burnAmount.toLocaleString()}</RightAlignedText>
+            <RightAlignedText>{burnAmount.toLocaleString()} TEA</RightAlignedText>
           </GridItem>
         </>
       ) : (
         <GridItem marginBottom="0">
-          <RightAlignedText>{burnAmount.toLocaleString()}</RightAlignedText>
+          <RightAlignedText>{burnAmount.toLocaleString()} TEA</RightAlignedText>
         </GridItem>
       )}
     </Grid>

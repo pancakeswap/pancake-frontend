@@ -34,6 +34,13 @@ const BottomTextWrapper = styled.div`
 const StyledPrimaryText = styled(Text)`
   margin-right: 16px;
 `
+
+const TextDetail = styled.div`
+  color: ${({ theme }) => theme.colors.primary};
+  font-size: 20px;
+  font-weight: bold;
+`
+
 const LotteryProgress = () => {
   const TranslateString = useI18n()
   const lotteryHasDrawn = useGetLotteryHasDrawn()
@@ -48,15 +55,15 @@ const LotteryProgress = () => {
         <StyledPrimaryText fontSize="20px" bold color="contrast">
           {lotteryHasDrawn ? timeUntilTicketSale : timeUntilLotteryDraw}
         </StyledPrimaryText>
-        <Text fontSize="20px" bold color="invertedContrast">
+        <TextDetail>
           {lotteryHasDrawn ? TranslateString(0, 'Until ticket sale') : TranslateString(0, 'Until lottery draw')}
-        </Text>
+        </TextDetail>
       </TopTextWrapper>
       {lotteryHasDrawn && (
         <BottomTextWrapper>
-          <Text color="invertedContrast">
+          <TextDetail >
             {timeUntilLotteryDraw} {TranslateString(0, 'Until lottery draw')}
-          </Text>
+          </TextDetail>
         </BottomTextWrapper>
       )}
     </ProgressWrapper>
