@@ -3,7 +3,7 @@ import { Route, useRouteMatch } from 'react-router-dom'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
-import { Heading, Flex, Button, Text, HelpIcon } from '@pancakeswap-libs/uikit'
+import { Heading, Flex, Button, Text, HelpIcon, Link } from '@pancakeswap-libs/uikit'
 import orderBy from 'lodash/orderBy'
 import partition from 'lodash/partition'
 import useI18n from 'hooks/useI18n'
@@ -22,6 +22,11 @@ const ButtonText = styled(Text)`
   ${({ theme }) => theme.mediaQueries.lg} {
     display: block;
   }
+`
+
+const StyledLink = styled(Link)`
+  display: inline;
+  height: fit-content;
 `
 
 const Syrup: React.FC = () => {
@@ -56,17 +61,16 @@ const Syrup: React.FC = () => {
               {TranslateString(999, 'High APR, low risk.')}
             </Heading>
           </Flex>
-          <Button
-            px={['14px', null, null, null, '24px']}
-            variant="subtle"
-            as="a"
-            href="https://docs.pancakeswap.finance/syrup-pools/syrup-pool"
-          >
-            <ButtonText color="card" bold fontSize="16px">
-              {TranslateString(999, 'Help')}
-            </ButtonText>
-            <HelpIcon color="card" ml={[null, null, null, 0, '6px']} />
-          </Button>
+          <Flex>
+            <StyledLink color="backgroundAlt" href="https://docs.pancakeswap.finance/syrup-pools/syrup-pool" external>
+              <Button px={['14px', null, null, null, '24px']} variant="subtle">
+                <ButtonText color="backgroundAlt" fontSize="16px" bold>
+                  {TranslateString(999, 'Help')}
+                </ButtonText>
+                <HelpIcon color="backgroundAlt" ml={[null, null, null, 0, '6px']} />
+              </Button>
+            </StyledLink>
+          </Flex>
         </Flex>
       </PageHeader>
       <Page>
