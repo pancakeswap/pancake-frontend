@@ -6,6 +6,7 @@ import { Toast, toastTypes } from '@pancakeswap-libs/uikit'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
 import { Team } from 'config/constants/types'
+import Nfts from 'config/constants/nfts'
 import { getWeb3NoAccount } from 'utils/web3'
 import { getAddress } from 'utils/addressHelpers'
 import { getBalanceNumber } from 'utils/formatBalance'
@@ -24,6 +25,7 @@ import { fetchProfile } from './profile'
 import { fetchTeam, fetchTeams } from './teams'
 import { fetchAchievements } from './achievements'
 import { fetchPrices } from './prices'
+import { fetchWalletNfts } from './collectibles'
 
 export const useFetchPublicData = () => {
   const dispatch = useAppDispatch()
@@ -230,4 +232,26 @@ export const useBlock = () => {
 
 export const useInitialBlock = () => {
   return useSelector((state: State) => state.block.initialBlock)
+}
+
+// Collectibles
+export const useGetCollectibles = () => {
+  const { account } = useWeb3React()
+  const dispatch = useAppDispatch()
+  const { isInitialized, isLoading, data } = useSelector((state: State) => state.collectibles)
+  const identifiers = Object.keys(data)
+
+  useEffect(() => {
+    // Fetch nfts only if we have not done so already
+    if (!isInitialized) {
+      dispatch(fetchWalletNfts(account))
+    }
+  }, [isInitialized, account, dispatch])
+
+  return {
+    isInitialized,
+    isLoading,
+    tokenIds: data,
+    nftsInWallet: Nfts.filter((nft) => identifiers.includes(nft.identifier)),
+  }
 }

@@ -2,11 +2,10 @@ import React, { useState } from 'react'
 import { Button, InjectedModalProps, Skeleton, Text } from '@pancakeswap-libs/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { useAppDispatch } from 'state'
-import { useProfile, useToast } from 'state/hooks'
+import { useGetCollectibles, useProfile, useToast } from 'state/hooks'
 import useI18n from 'hooks/useI18n'
 import { fetchProfile } from 'state/profile'
 import { getAddressByType } from 'utils/collectibles'
-import useGetWalletNfts from 'hooks/useGetWalletNfts'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useERC721, useProfile as useProfileContract } from 'hooks/useContract'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
@@ -21,7 +20,7 @@ const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss }
     nftAddress: null,
   })
   const TranslateString = useI18n()
-  const { isLoading, getNftsInWallet, getTokenIdsByIdentifier } = useGetWalletNfts()
+  const { isLoading, tokenIds, nftsInWallet } = useGetCollectibles()
   const dispatch = useAppDispatch()
   const { profile } = useProfile()
   const contract = useERC721(selectedNft.nftAddress)
@@ -56,7 +55,6 @@ const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss }
       onDismiss()
     },
   })
-  const nftsInWallet = getNftsInWallet()
 
   return (
     <>
@@ -67,7 +65,7 @@ const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss }
         <Skeleton height="80px" mb="16px" />
       ) : (
         nftsInWallet.map((walletNft) => {
-          const [firstTokenId] = getTokenIdsByIdentifier(walletNft.identifier)
+          const [firstTokenId] = tokenIds[walletNft.identifier]
           const handleChange = (value: string) => {
             setSelectedNft({
               tokenId: Number(value),

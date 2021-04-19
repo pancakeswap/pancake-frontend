@@ -27,7 +27,6 @@ export interface NftCardProps {
   canClaim?: boolean
   tokenIds?: number[]
   onClaim?: () => PromiEvent<Contract>
-  lastUpdated: number
   refresh: () => void
 }
 

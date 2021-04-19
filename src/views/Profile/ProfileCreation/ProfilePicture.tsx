@@ -6,9 +6,8 @@ import { useWeb3React } from '@web3-react/core'
 import { getAddressByType } from 'utils/collectibles'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import useI18n from 'hooks/useI18n'
-import { useToast } from 'state/hooks'
+import { useGetCollectibles, useToast } from 'state/hooks'
 import { useERC721 } from 'hooks/useContract'
-import useGetWalletNfts from 'hooks/useGetWalletNfts'
 import SelectionCard from '../components/SelectionCard'
 import NextStepButton from '../components/NextStepButton'
 import { ProfileCreationContext } from './contexts/ProfileCreationProvider'
@@ -26,11 +25,10 @@ const ProfilePicture: React.FC = () => {
   const [isApproving, setIsApproving] = useState(false)
   const { selectedNft, actions } = useContext(ProfileCreationContext)
   const TranslateString = useI18n()
-  const { isLoading, getNftsInWallet, getTokenIdsByIdentifier } = useGetWalletNfts()
+  const { isLoading, nftsInWallet, tokenIds } = useGetCollectibles()
   const contract = useERC721(selectedNft.nftAddress)
   const { account } = useWeb3React()
   const { toastError } = useToast()
-  const walletNfts = getNftsInWallet()
 
   const handleApprove = () => {
     contract.methods
@@ -49,7 +47,7 @@ const ProfilePicture: React.FC = () => {
       })
   }
 
-  if (!isLoading && walletNfts.length === 0) {
+  if (!isLoading && nftsInWallet.length === 0) {
     return (
       <>
         <Heading size="xl" mb="24px">
@@ -97,8 +95,8 @@ const ProfilePicture: React.FC = () => {
             {isLoading ? (
               <Skeleton height="80px" mb="16px" />
             ) : (
-              walletNfts.map((walletNft) => {
-                const [firstTokenId] = getTokenIdsByIdentifier(walletNft.identifier)
+              nftsInWallet.map((walletNft) => {
+                const [firstTokenId] = tokenIds[walletNft.identifier]
                 const address = getAddressByType(walletNft.type)
 
                 return (

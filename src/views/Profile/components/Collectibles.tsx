@@ -2,7 +2,7 @@ import React from 'react'
 import { Heading, Text, Flex, ChevronRightIcon } from '@pancakeswap-libs/uikit'
 import { Link } from 'react-router-dom'
 import useI18n from 'hooks/useI18n'
-import useGetWalletNfts from 'hooks/useGetWalletNfts'
+import { useGetCollectibles } from 'state/hooks'
 import styled from 'styled-components'
 import CollectibleCard from './CollectibleCard'
 
@@ -29,8 +29,7 @@ const CollectibleList = styled.div`
 
 const Collectibles = () => {
   const TranslateString = useI18n()
-  const { getNftsInWallet } = useGetWalletNfts()
-  const nftsInWallet = getNftsInWallet()
+  const { nftsInWallet } = useGetCollectibles()
 
   return (
     <>

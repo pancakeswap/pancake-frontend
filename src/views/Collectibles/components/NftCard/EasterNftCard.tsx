@@ -16,7 +16,7 @@ export const teamNftMap = {
   'easter-caker': 3,
 }
 
-const EasterNftCard: React.FC<NftCardProps> = ({ nft, lastUpdated, ...props }) => {
+const EasterNftCard: React.FC<NftCardProps> = ({ nft, ...props }) => {
   const [isClaimable, setIsClaimable] = useState(false)
   const { account } = useWeb3React()
   const { profile } = useProfile()
@@ -39,9 +39,9 @@ const EasterNftCard: React.FC<NftCardProps> = ({ nft, lastUpdated, ...props }) =
     if (account && team) {
       fetchClaimStatus()
     }
-  }, [account, identifier, team, lastUpdated, easterNftContract, setIsClaimable])
+  }, [account, identifier, team, easterNftContract, setIsClaimable])
 
-  return <NftCard nft={nft} lastUpdated={lastUpdated} {...props} canClaim={isClaimable} onClaim={handleClaim} />
+  return <NftCard nft={nft} {...props} canClaim={isClaimable} onClaim={handleClaim} />
 }
 
 export default EasterNftCard
