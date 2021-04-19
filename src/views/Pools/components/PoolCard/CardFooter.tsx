@@ -4,7 +4,16 @@ import styled from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
 import { getBalanceNumber } from 'utils/formatBalance'
 import useI18n from 'hooks/useI18n'
-import { Flex, MetamaskIcon, CardFooter, ExpandableLabel, Text, LinkExternal, TimerIcon } from '@pancakeswap-libs/uikit'
+import {
+  Flex,
+  MetamaskIcon,
+  CardFooter,
+  ExpandableLabel,
+  Text,
+  LinkExternal,
+  TimerIcon,
+  Skeleton,
+} from '@pancakeswap-libs/uikit'
 import Balance from 'components/Balance'
 import { useBlock } from 'state/hooks'
 import { registerToken } from 'utils/wallet'
@@ -74,10 +83,16 @@ const Footer: React.FC<FooterProps> = ({
           <Flex mb="2px" justifyContent="space-between" alignItems="center">
             <Text fontSize="14px">{TranslateString(999, 'Total staked:')}</Text>
             <Flex alignItems="flex-start">
-              <Balance fontSize="14px" isDisabled={isFinished} value={getBalanceNumber(totalStaked, decimals)} />
-              <Text ml="4px" fontSize="14px">
-                {stakingTokenSymbol}
-              </Text>
+              {totalStaked ? (
+                <>
+                  <Balance fontSize="14px" isDisabled={isFinished} value={getBalanceNumber(totalStaked, decimals)} />
+                  <Text ml="4px" fontSize="14px">
+                    {stakingTokenSymbol}
+                  </Text>
+                </>
+              ) : (
+                <Skeleton width="90px" height="21px" />
+              )}
             </Flex>
           </Flex>
           {shouldShowBlockCountdown && (
