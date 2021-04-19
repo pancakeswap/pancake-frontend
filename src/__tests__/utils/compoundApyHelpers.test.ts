@@ -1,14 +1,14 @@
-import { cakeEarnedPerThousandDollarsCompounding, getRoi } from 'utils/compoundApyHelpers'
+import { tokenEarnedPerThousandDollarsCompounding, getRoi } from 'utils/compoundApyHelpers'
 
 it.each([
-  [{ numberOfDays: 1, farmApr: 365, cakePrice: 1 }, 10],
-  [{ numberOfDays: 7, farmApr: 20, cakePrice: 0.8 }, 4.8],
-  [{ numberOfDays: 40, farmApr: 212.21, cakePrice: 1.2 }, 217.48],
-  [{ numberOfDays: 330, farmApr: 45.12, cakePrice: 5 }, 100.67],
-  [{ numberOfDays: 365, farmApr: 100, cakePrice: 0.2 }, 8572.84],
-  [{ numberOfDays: 365, farmApr: 20, cakePrice: 1 }, 221.34],
-])('calculate cake earned with values %o', ({ numberOfDays, farmApr, cakePrice }, expected) => {
-  expect(cakeEarnedPerThousandDollarsCompounding({ numberOfDays, farmApr, cakePrice })).toEqual(expected)
+  [{ numberOfDays: 1, farmApr: 365, tokenPrice: 1 }, 10],
+  [{ numberOfDays: 7, farmApr: 20, tokenPrice: 0.8 }, 4.8],
+  [{ numberOfDays: 40, farmApr: 212.21, tokenPrice: 1.2 }, 217.48],
+  [{ numberOfDays: 330, farmApr: 45.12, tokenPrice: 5 }, 100.67],
+  [{ numberOfDays: 365, farmApr: 100, tokenPrice: 0.2 }, 8572.84],
+  [{ numberOfDays: 365, farmApr: 20, tokenPrice: 1 }, 221.34],
+])('calculate cake earned with values %o', ({ numberOfDays, farmApr, tokenPrice }, expected) => {
+  expect(tokenEarnedPerThousandDollarsCompounding({ numberOfDays, farmApr, tokenPrice })).toEqual(expected)
 })
 
 it.each([

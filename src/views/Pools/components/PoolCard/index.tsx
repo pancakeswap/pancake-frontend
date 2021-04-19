@@ -18,7 +18,7 @@ import Balance from 'components/Balance'
 import { PoolCategory } from 'config/constants/types'
 import tokens from 'config/constants/tokens'
 import { Pool } from 'state/types'
-import { useGetApiPrice, usePriceCakeBusd } from 'state/hooks'
+import { useGetApiPrice } from 'state/hooks'
 import AprRow from './AprRow'
 import DepositModal from './DepositModal'
 import WithdrawModal from './WithdrawModal'
@@ -56,7 +56,6 @@ const PoolCard: React.FC<{ pool: Pool }> = ({ pool }) => {
   const { onStake } = useSousStake(sousId, isBnbPool)
   const { onUnstake } = useSousUnstake(sousId)
   const { onReward } = useSousHarvest(sousId, isBnbPool)
-  const cakePrice = usePriceCakeBusd()
 
   // APR
   const rewardTokenPrice = useGetApiPrice(earningToken.address ? getAddress(earningToken.address) : '')
@@ -125,7 +124,14 @@ const PoolCard: React.FC<{ pool: Pool }> = ({ pool }) => {
         isFinished={isFinished && sousId !== 0}
       />
       <CardBody>
-        <AprRow isFinished={isFinished} isOldSyrup={isOldSyrup} apr={apr} cakePrice={cakePrice} />
+        <AprRow
+          isFinished={isFinished}
+          isOldSyrup={isOldSyrup}
+          apr={apr}
+          rewardTokenPrice={rewardTokenPrice}
+          stakingToken={stakingToken}
+          earningTokenSymbol={earningToken.symbol}
+        />
 
         <div style={{ marginBottom: '8px', display: 'flex', alignItems: 'center' }}>
           {account && harvest && !isOldSyrup && (
