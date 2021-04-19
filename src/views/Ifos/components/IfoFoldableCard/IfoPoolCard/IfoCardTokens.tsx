@@ -2,7 +2,7 @@ import React from 'react'
 import { Text, Flex, Box, Image, CheckmarkCircleIcon, FlexProps, HelpIcon, useTooltip } from '@pancakeswap-libs/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { Ifo, PoolIds } from 'config/constants/types'
-import { PublicIfoData, WalletIfoData } from 'hooks/ifo/v2/types'
+import { PublicIfoData, WalletIfoData } from 'hooks/ifo/types'
 import useI18n from 'hooks/useI18n'
 import { getBalanceNumber } from 'utils/formatBalance'
 import PercentageOfTotal from './PercentageOfTotal'
@@ -51,6 +51,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
 
   const publicPoolCharacteristics = publicIfoData[poolId]
   const userPoolCharacteristics = walletIfoData[poolId]
+
   const { currency, token } = ifo
   const { hasClaimed } = userPoolCharacteristics
   const distributionRatio = ifo[poolId].distributionRatio * 100

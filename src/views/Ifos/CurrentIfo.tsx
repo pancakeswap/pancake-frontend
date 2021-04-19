@@ -1,7 +1,7 @@
 import React from 'react'
 import { ifosConfig } from 'config/constants'
 import IfoCardV2Data from './components/IfoCardV2Data'
-import IfoCardLayout from './components/IfoCardLayout'
+import IfoLayout from './components/IfoLayout'
 import IfoSteps from './components/IfoSteps'
 import IfoQuestions from './components/IfoQuestions'
 
@@ -12,11 +12,11 @@ const activeIfo = ifosConfig.find((ifo) => ifo.isActive)
 
 const Ifo = () => {
   return (
-    <IfoCardLayout>
+    <IfoLayout>
       <IfoCardV2Data ifo={activeIfo} isInitiallyVisible />
       <IfoSteps currency={activeIfo.currency} />
       <IfoQuestions />
-    </IfoCardLayout>
+    </IfoLayout>
   )
 }
 

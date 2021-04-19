@@ -6,33 +6,12 @@ import { useIfoV2Contract } from 'hooks/useContract'
 import useRefresh from 'hooks/useRefresh'
 import { useEffect, useState } from 'react'
 import makeBatchRequest from 'utils/makeBatchRequest'
-import { PublicIfoData, PoolCharacteristics } from './types'
+import { PublicIfoData, PoolCharacteristics } from '../types'
+import { getStatus } from '../helpers'
 
 // https://github.com/pancakeswap/pancake-contracts/blob/master/projects/ifo/contracts/IFOV2.sol#L431
 // 1,000,000,000 / 100
 const TAX_PRECISION = 10000000000
-
-const getStatus = (currentBlock: number, startBlock: number, endBlock: number): IfoStatus => {
-  // Add an extra check to currentBlock because it takes awhile to fetch so the initial value is 0
-  // making the UI change to an inaccurate status
-  if (currentBlock === 0) {
-    return 'idle'
-  }
-
-  if (currentBlock < startBlock) {
-    return 'coming_soon'
-  }
-
-  if (currentBlock >= startBlock && currentBlock <= endBlock) {
-    return 'live'
-  }
-
-  if (currentBlock > endBlock) {
-    return 'finished'
-  }
-
-  return 'idle'
-}
 
 const formatPool = (pool) => ({
   raisingAmountPool: new BigNumber(pool[0]),

@@ -12,7 +12,7 @@ import {
   ChevronUpIcon,
 } from '@pancakeswap-libs/uikit'
 import { Ifo, IfoStatus, PoolIds } from 'config/constants/types'
-import { PublicIfoData, WalletIfoData } from 'hooks/ifo/v2/types'
+import { PublicIfoData, WalletIfoData } from 'hooks/ifo/types'
 import useI18n from 'hooks/useI18n'
 import IfoPoolCard from './IfoPoolCard'
 import Timer from './Timer'
@@ -59,13 +59,21 @@ const FoldableContent = styled.div<{ isVisible: boolean; isActive: boolean }>`
   background: ${({ isActive, theme }) => (isActive ? theme.colors.gradients.bubblegum : theme.colors.dropdown)};
 `
 
-const CardsWrapper = styled.div`
+const CardsWrapper = styled.div<{ singleCard: boolean }>`
   display: grid;
   grid-gap: 32px;
   grid-template-columns: 1fr;
   margin-bottom: 32px;
   ${({ theme }) => theme.mediaQueries.md} {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: ${({ singleCard }) => (singleCard ? '1fr' : '1fr 1fr')};
+    justify-items: ${({ singleCard }) => (singleCard ? 'center' : 'unset')};
+  }
+`
+
+const StyledCardBody = styled(CardBody)`
+  padding: 24px 16px;
+  ${({ theme }) => theme.mediaQueries.md} {
+    padding: 24px;
   }
 `
 
@@ -89,15 +97,17 @@ const IfoFoldableCard: React.FC<IfoFoldableCardProps> = ({ ifo, publicIfoData, w
       </Header>
       <FoldableContent isVisible={isVisible} isActive={publicIfoData.status !== 'idle' && isActive}>
         {isActive && <Progress variant="flat" primaryStep={publicIfoData.progress} />}
-        <CardBody>
+        <StyledCardBody>
           {isActive && <Timer publicIfoData={publicIfoData} />}
-          <CardsWrapper>
-            <IfoPoolCard
-              poolId={PoolIds.poolBasic}
-              ifo={ifo}
-              publicIfoData={publicIfoData}
-              walletIfoData={walletIfoData}
-            />
+          <CardsWrapper singleCard={!publicIfoData.poolBasic || !walletIfoData.poolBasic}>
+            {publicIfoData.poolBasic && walletIfoData.poolBasic && (
+              <IfoPoolCard
+                poolId={PoolIds.poolBasic}
+                ifo={ifo}
+                publicIfoData={publicIfoData}
+                walletIfoData={walletIfoData}
+              />
+            )}
             <IfoPoolCard
               poolId={PoolIds.poolUnlimited}
               ifo={ifo}
@@ -106,7 +116,7 @@ const IfoFoldableCard: React.FC<IfoFoldableCardProps> = ({ ifo, publicIfoData, w
             />
           </CardsWrapper>
           <Achievement ifo={ifo} publicIfoData={publicIfoData} />
-        </CardBody>
+        </StyledCardBody>
         <StyledCardFooter>
           <Button variant="text" endIcon={<ChevronUpIcon color="primary" />} onClick={() => setIsVisible(false)}>
             {TranslateString(999, 'Close')}
