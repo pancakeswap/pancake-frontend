@@ -22,7 +22,7 @@ const pools: PoolConfig[] = [
     earningToken: tokens.cgg,
     contractAddress: {
       97: '',
-      56: '0xc4465FC425b5Fc3987b23FcAA6A8d5B1B905bd4b',
+      56: '0xdf75f38dbc98f9f26377414e567abcb8d57cca33',
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
@@ -35,7 +35,7 @@ const pools: PoolConfig[] = [
     earningToken: tokens.mix,
     contractAddress: {
       97: '',
-      56: '0xdd88d6332FAcdBaf157A800080B83fb8feFb441A',
+      56: '0xbfa28e5f99b7542ae17ed7d330c614c0b45b89bc',
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
