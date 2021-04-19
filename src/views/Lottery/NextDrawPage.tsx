@@ -1,8 +1,7 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import styled from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
 import { BaseLayout } from '@pancakeswap-libs/uikit'
-import { getBalanceNumber } from 'utils/formatBalance'
 import { useTotalClaim } from 'hooks/useTickets'
 import YourPrizesCard from './components/YourPrizesCard'
 import UnlockWalletCard from './components/UnlockWalletCard'
@@ -10,6 +9,7 @@ import TicketCard from './components/TicketCard'
 import TotalPrizesCard from './components/TotalPrizesCard'
 import WinningNumbers from './components/WinningNumbers'
 import HowItWorks from './components/HowItWorks'
+import { getBalanceNumber } from '../../utils/formatBalance'
 
 const Cards = styled(BaseLayout)`
   align-items: start;
@@ -39,9 +39,13 @@ const SecondCardColumnWrapper = styled.div<{ isAWin?: boolean }>`
 
 const NextDrawPage: React.FC = () => {
   const { account } = useWeb3React()
-  const { claimAmount } = useTotalClaim()
+  const { claimAmount, setLastUpdated } = useTotalClaim()
   const winnings = getBalanceNumber(claimAmount)
   const isAWin = winnings > 0
+
+  const handleSuccess = useCallback(() => {
+    setLastUpdated()
+  }, [setLastUpdated])
 
   return (
     <>
@@ -52,7 +56,7 @@ const NextDrawPage: React.FC = () => {
             <UnlockWalletCard />
           ) : (
             <>
-              <YourPrizesCard />
+              <YourPrizesCard isAWin={isAWin} onSuccess={handleSuccess} />
               <TicketCard isSecondCard={isAWin} />
             </>
           )}

@@ -52,7 +52,7 @@ const LotteryCard = () => {
   const TranslateString = useI18n()
   const allowance = useLotteryAllowance()
   const [onPresentApprove] = useModal(<PurchaseWarningModal />)
-  const { claimAmount } = useTotalClaim()
+  const { claimAmount, setLastUpdated } = useTotalClaim()
   const { onMultiClaim } = useMultiClaimLottery()
   const cakeBalance = useTokenBalance(getCakeAddress())
   const { handleApprove, requestedApproval } = useApproval(onPresentApprove)
@@ -64,11 +64,12 @@ const LotteryCard = () => {
       // user rejected tx or didn't go thru
       if (txHash) {
         setRequestedClaim(false)
+        setLastUpdated()
       }
     } catch (e) {
       console.error(e)
     }
-  }, [onMultiClaim, setRequestedClaim])
+  }, [onMultiClaim, setRequestedClaim, setLastUpdated])
 
   const renderLotteryTicketButtonBuyOrApprove = () => {
     if (!allowance.toNumber()) {
@@ -96,7 +97,7 @@ const LotteryCard = () => {
         <CardImage src="/images/ticket.svg" alt="cake logo" width={64} height={64} />
         <Block>
           <Label>{TranslateString(552, 'CAKE to Collect')}:</Label>
-          <CakeWinnings />
+          <CakeWinnings claimAmount={claimAmount} />
         </Block>
         <Block>
           <Label>{TranslateString(554, 'Total jackpot this round')}:</Label>
