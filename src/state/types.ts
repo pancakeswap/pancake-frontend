@@ -146,6 +146,16 @@ export interface BlockState {
   initialBlock: number
 }
 
+// Collectibles
+
+export interface CollectiblesState {
+  isInitialized: boolean
+  isLoading: boolean
+  data: {
+    [key: string]: number[]
+  }
+}
+
 // Global state
 
 export interface State {
@@ -157,4 +167,5 @@ export interface State {
   teams: TeamsState
   achievements: AchievementState
   block: BlockState
+  collectibles: CollectiblesState
 }

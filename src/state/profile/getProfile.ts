@@ -1,13 +1,12 @@
 import Cookies from 'js-cookie'
-import { getProfileContract, getPancakeRabbitContract } from 'utils/contractHelpers'
+import { getProfileContract } from 'utils/contractHelpers'
 import { Nft } from 'config/constants/types'
+import { getNftByTokenId } from 'utils/collectibles'
 import { Profile } from 'state/types'
 import { getTeam } from 'state/teams/helpers'
-import nfts from 'config/constants/nfts'
 import { transformProfileResponse } from './helpers'
 
 const profileContract = getProfileContract()
-const rabbitContract = getPancakeRabbitContract()
 const profileApi = process.env.REACT_APP_API_PROFILE
 
 export interface GetProfileResponse {
@@ -48,15 +47,14 @@ const getProfile = async (address: string): Promise<GetProfileResponse> => {
     // so only fetch the nft data if active
     let nft: Nft
     if (isActive) {
-      const bunnyId = await rabbitContract.methods.getBunnyId(tokenId).call()
-      nft = nfts.find((nftItem) => nftItem.bunnyId === Number(bunnyId))
+      nft = await getNftByTokenId(nftAddress, tokenId)
 
       // Save the preview image in a cookie so it can be used on the exchange
       Cookies.set(
         `profile_${address}`,
         {
           username,
-          avatar: `https://pancakeswap.finance/images/nfts/${nft.images.sm}`,
+          avatar: `https://pancakeswap.finance/images/nfts/${nft?.images.sm}`,
         },
         { domain: 'pancakeswap.finance', secure: true, expires: 30 },
       )
