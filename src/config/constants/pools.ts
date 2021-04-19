@@ -35,12 +35,12 @@ const pools: PoolConfig[] = [
     earningToken: tokens.mix,
     contractAddress: {
       97: '',
-      56: '0xbfa28e5f99b7542ae17ed7d330c614c0b45b89bc',
+      56: '0xce64a930884b2c68cd93fc1c7c7cdc221d427692',
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
     sortOrder: 999,
-    tokenPerBlock: '0.24807',
+    tokenPerBlock: '0.3721',
   },
   {
     sousId: 107,
