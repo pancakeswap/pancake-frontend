@@ -95,6 +95,8 @@ const PublicProfile = () => {
 
   const { username, team, isActive, points } = profile
 
+  const Icon = usernameVisibilityToggled ? VisibilityOff : VisibilityOn
+
   return (
     <>
       <Menu activeIndex={1} />
@@ -106,11 +108,7 @@ const PublicProfile = () => {
               <Content>
                 <Flex alignItems="center">
                   <Username>@{usernameVisibilityToggled ? username : username.replace(/./g, '*')}</Username>
-                  {usernameVisibilityToggled ? (
-                    <VisibilityOff ml="4px" onClick={toggleUsernameVisibility} cursor="pointer" />
-                  ) : (
-                    <VisibilityOn ml="4px" onClick={toggleUsernameVisibility} cursor="pointer" />
-                  )}
+                  <Icon ml="4px" onClick={toggleUsernameVisibility} cursor="pointer" />
                 </Flex>
                 <Flex alignItems="center">
                   <AddressLink href={`https://bscscan.com/address/${account}`} color="text" external>
