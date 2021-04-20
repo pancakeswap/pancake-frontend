@@ -212,7 +212,7 @@ const Nfts: Nft[] = [
       blur: 'dollop-blur.png',
     },
     sortOrder: 999,
-    identifier: 'dollup',
+    identifier: 'dollop',
     type: NftType.PANCAKE,
     variationId: 6,
   },
