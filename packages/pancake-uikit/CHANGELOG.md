@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.26.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap-libs/uikit@0.25.3...@pancakeswap-libs/uikit@0.26.0) (2021-04-20)
+
+
+### Features
+
+* **progress:** Scale ([#79](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/79)) ([1adc8f2](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/1adc8f255af8b0d61ab3f847468de36667385af6))
+
+
+
+
+
 ## [0.25.3](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap-libs/uikit@0.25.2...@pancakeswap-libs/uikit@0.25.3) (2021-04-15)
 
 
