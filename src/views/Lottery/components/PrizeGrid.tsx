@@ -10,7 +10,6 @@ export interface PrizeGridProps {
   lotteryPrizeAmount?: number
   pastDraw?: boolean
   jackpotMatches?: number
-  oneTicketMatches?: number
   twoTicketMatches?: number
   threeTicketMatches?: number
 }

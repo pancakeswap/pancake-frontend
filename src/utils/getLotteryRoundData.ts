@@ -6,7 +6,6 @@ export type DataResponse = {
   burned: number
   contractLink: string
   jackpotTicket: number
-  match1Ticket: number | null
   match2Ticket: number
   match3Ticket: number
   match4Ticket: number
