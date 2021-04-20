@@ -1128,6 +1128,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://mixie.chainguardians.io/',
   },
+  hakka: {
+    symbol: 'HAKKA',
+    address: {
+      56: '0x1d1eb8e8293222e1a29d2c0e4ce6c0acfd89aaac',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://hakka.finance/',
+  },
 }
 
 export default tokens
