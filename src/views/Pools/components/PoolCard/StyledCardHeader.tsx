@@ -9,11 +9,12 @@ const Wrapper = styled(CardHeader)<{ isFinished?: boolean }>`
 `
 
 const StyledCardHeader: React.FC<{
-  poolImageSrc: string
   earningTokenSymbol: string
   stakingTokenSymbol: string
   isFinished?: boolean
-}> = ({ poolImageSrc, earningTokenSymbol, stakingTokenSymbol, isFinished = false }) => {
+}> = ({ earningTokenSymbol, stakingTokenSymbol, isFinished = false }) => {
+  const poolImageSrc = `${earningTokenSymbol}-${stakingTokenSymbol}.svg`.toLocaleLowerCase()
+
   return (
     <>
       <Wrapper isFinished={isFinished}>

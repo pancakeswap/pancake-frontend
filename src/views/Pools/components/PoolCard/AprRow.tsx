@@ -58,6 +58,7 @@ const AprRow: React.FC<AprRowProps> = ({
     <Flex alignItems="center" justifyContent="space-between">
       <Text fontSize="16px">{TranslateString(736, 'APR')}:</Text>
       {isFinished || isOldSyrup || !apr ? (
+        // IS OLD SYRUP CONDITIONAL
         <Skeleton width="82px" height="32px" />
       ) : (
         <Flex alignItems="center">
