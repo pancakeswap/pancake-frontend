@@ -127,6 +127,8 @@ const CardActions: React.FC<{
 
       <StakingActions
         stakingToken={stakingToken}
+        stakedBalance={stakedBalance}
+        earningTokenSymbol={earningToken.symbol}
         needsApproval={needsApproval}
         isOldSyrup={isOldSyrup}
         isFinished={isFinished}
