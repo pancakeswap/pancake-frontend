@@ -28,7 +28,7 @@ const HowItWorks = () => {
 
   return (
     <LayoutWrapper>
-      <StyledImage src="/images/greentea-lottery-coins-over-cat.png" alt="lottery bunny" width={158} height={170} />
+      <StyledImage src="/images/greentea-lottery-coins-over-cat.svg" alt="lottery bunny" width={158} height={170} />
       <StyledHeading size="lg" as="h3" color="secondary">
         {TranslateString(632, 'Lottery ทำงานอย่างไร')}
       </StyledHeading>

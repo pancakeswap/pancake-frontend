@@ -98,7 +98,7 @@ const StyledImage = styled(Image)`
 
 const Header = styled.div`
   padding: 32px 0px;
-  background: ${({ theme }) => theme.colors.gradients.bubblegum};
+
 
   padding-left: 16px;
   padding-right: 16px;
@@ -405,7 +405,7 @@ const Farms: React.FC = () => {
           </FilterContainer>
         </ControlContainer>
         {renderContent()}
-        <StyledImage src="/images/3dpan.png" alt="Pancake illustration" width={120} height={103} />
+        <StyledImage src="/images/greentea-farm-cat.svg" alt="Pancake illustration" width={200} height={183} />
       </Page>
     </>
   )
