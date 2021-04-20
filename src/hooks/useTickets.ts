@@ -10,6 +10,7 @@ import {
   getWinningNumbers,
   getTickets,
 } from '../utils/lotteryUtils'
+import useLastUpdated from './useLastUpdated'
 
 const useTickets = (lotteryNumber = null) => {
   const [tickets, setTickets] = useState([])
@@ -57,6 +58,7 @@ export const useTotalClaim = () => {
   const { account } = useWeb3React()
   const ticketsContract = useLotteryTicket()
   const lotteryContract = useLottery()
+  const { lastUpdated, setLastUpdated } = useLastUpdated()
 
   const fetchBalance = useCallback(async () => {
     setClaimLoading(true)
@@ -69,9 +71,9 @@ export const useTotalClaim = () => {
     if (account && lotteryContract && ticketsContract) {
       fetchBalance()
     }
-  }, [account, fetchBalance, lotteryContract, ticketsContract])
+  }, [account, fetchBalance, lotteryContract, ticketsContract, lastUpdated])
 
-  return { claimLoading, claimAmount }
+  return { claimLoading, claimAmount, setLastUpdated }
 }
 
 export const useWinningNumbers = () => {
