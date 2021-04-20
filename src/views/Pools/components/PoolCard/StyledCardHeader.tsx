@@ -9,11 +9,11 @@ const Wrapper = styled(CardHeader)<{ isFinished?: boolean }>`
 `
 
 const StyledCardHeader: React.FC<{
-  poolImage: string
+  poolImageSrc: string
   earningTokenSymbol: string
   stakingTokenSymbol: string
   isFinished?: boolean
-}> = ({ poolImage, earningTokenSymbol, stakingTokenSymbol, isFinished = false }) => {
+}> = ({ poolImageSrc, earningTokenSymbol, stakingTokenSymbol, isFinished = false }) => {
   return (
     <>
       <Wrapper isFinished={isFinished}>
@@ -24,7 +24,7 @@ const StyledCardHeader: React.FC<{
             </Heading>
             <Text color={isFinished ? 'textDisabled' : 'textSubtle'}>Stake {stakingTokenSymbol}</Text>
           </Flex>
-          <Image src={`/images/pools/${poolImage}`} alt={earningTokenSymbol} width={64} height={64} />
+          <Image src={`/images/pools/${poolImageSrc}`} alt={earningTokenSymbol} width={64} height={64} />
         </Flex>
       </Wrapper>
       {isFinished && (

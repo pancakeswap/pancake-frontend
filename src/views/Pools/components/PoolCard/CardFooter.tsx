@@ -14,10 +14,11 @@ import {
   TimerIcon,
   Skeleton,
 } from '@pancakeswap-libs/uikit'
-import Balance from 'components/Balance'
+import { BASE_URL } from 'config'
+import { Address } from 'config/constants/types'
 import { useBlock } from 'state/hooks'
 import { registerToken } from 'utils/wallet'
-import { BASE_URL } from 'config'
+import Balance from 'components/Balance'
 
 interface FooterProps {
   projectLink: string
@@ -30,7 +31,7 @@ interface FooterProps {
   endBlock: number
   isFinished: boolean
   stakingTokenSymbol: string
-  poolContractAddress: string
+  contractAddress: Address
 }
 
 const ExpandedWrapper = styled(Flex)`
@@ -57,7 +58,7 @@ const Footer: React.FC<FooterProps> = ({
   startBlock,
   endBlock,
   stakingTokenSymbol,
-  poolContractAddress,
+  contractAddress,
 }) => {
   const TranslateString = useI18n()
   const [isExpanded, setIsExpanded] = useState(false)
@@ -70,6 +71,7 @@ const Footer: React.FC<FooterProps> = ({
   const blocksUntilStart = Math.max(startBlock - currentBlock, 0)
   const blocksRemaining = Math.max(endBlock - currentBlock, 0)
   const hasPoolStarted = blocksUntilStart === 0 && blocksRemaining > 0
+  const poolContractAddress = contractAddress[process.env.REACT_APP_CHAIN_ID]
 
   return (
     <CardFooter>
@@ -117,7 +119,7 @@ const Footer: React.FC<FooterProps> = ({
           )}
           <Flex mb="2px" justifyContent="flex-end">
             <LinkExternal bold={false} fontSize="14px" href={projectLink} target="_blank">
-              {TranslateString(412, 'View project site')}
+              {TranslateString(412, 'View Project Site')}
             </LinkExternal>
           </Flex>
           {poolContractAddress && (
@@ -128,7 +130,7 @@ const Footer: React.FC<FooterProps> = ({
                 href={`https://bscscan.com/address/${poolContractAddress}`}
                 target="_blank"
               >
-                {TranslateString(412, 'View contract')}
+                {TranslateString(412, 'View Contract')}
               </LinkExternal>
             </Flex>
           )}
@@ -140,7 +142,7 @@ const Footer: React.FC<FooterProps> = ({
                 href={`https://pancakeswap.info/token/${tokenAddress}`}
                 target="_blank"
               >
-                {TranslateString(412, 'Info site')}
+                {TranslateString(412, 'View Pool Info')}
               </LinkExternal>
             </Flex>
           )}
