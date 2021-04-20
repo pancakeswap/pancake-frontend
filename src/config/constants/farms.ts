@@ -23,6 +23,16 @@ const farms: FarmConfig[] = [
     quoteToken: tokens.wbnb,
   },
   {
+    pid: 134,
+    lpSymbol: 'HAKKA-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0x56bc8de6e90a8454cb2614b33e750d960aecdf12',
+    },
+    token: tokens.hakka,
+    quoteToken: tokens.busd,
+  },
+  {
     pid: 133,
     lpSymbol: 'CGG-BNB LP',
     lpAddresses: {
