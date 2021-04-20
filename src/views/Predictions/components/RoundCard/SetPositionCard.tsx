@@ -127,14 +127,14 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
 
     predictionsContract.methods[betMethod]()
       .send({ from: account, value: decimalValue })
-      .on('sending', () => {
+      .once('sending', () => {
         setIsTxPending(true)
       })
-      .on('receipt', async () => {
+      .once('receipt', async () => {
         setIsTxPending(false)
         await onSuccess()
       })
-      .on('error', (error) => {
+      .once('error', (error) => {
         const errorMsg = TranslateString(999, 'An error occurred, unable to enter your position')
 
         toastError('Error!', error?.message)
@@ -163,7 +163,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
 
   return (
     <Card onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}>
-      <CardHeader p="8px">
+      <CardHeader py="8px" px="4px">
         <Flex alignItems="center">
           <IconButton variant="text" onClick={handleGoBack}>
             <ArrowBackIcon width="24px" />
@@ -225,6 +225,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
                 variant="tertiary"
                 onClick={handleClick}
                 disabled={!account || isTxPending}
+                style={{ flex: 1 }}
               >
                 {`${percent}%`}
               </Button>

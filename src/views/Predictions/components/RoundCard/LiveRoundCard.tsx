@@ -64,7 +64,7 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
           epoch={round.epoch}
           blockNumber={estimatedEndBlock}
         />
-        <LiveRoundProgress startBlock={lockBlock} endBlock={estimatedEndBlock} />
+        <LiveRoundProgress scale="sm" startBlock={lockBlock} endBlock={estimatedEndBlock} />
         <CardBody p="16px">
           <MultiplierArrow multiplier={bullMultiplier} hasEntered={hasEnteredUp} isActive={isBull} />
           <RoundResultBox betPosition={isBull ? BetPosition.BULL : BetPosition.BEAR}>
