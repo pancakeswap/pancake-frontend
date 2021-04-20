@@ -111,7 +111,7 @@ const ContributeModal: React.FC<Props> = ({
         <BalanceInput
           value={value}
           currencyValue={publicIfoData.currencyPriceInUSD.times(value || 0).toFixed(2)}
-          onChange={(e) => setValue(e.currentTarget.value)}
+          onUserInput={(input) => setValue(input)}
           isWarning={valueWithTokenDecimals.isGreaterThan(maximumLpCommitable)}
           mb="8px"
         />
