@@ -16,8 +16,8 @@ import useI18n from 'hooks/useI18n'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { getFarmApr } from 'utils/apr'
 import { orderBy } from 'lodash'
-
 import { getAddress } from 'utils/addressHelpers'
+import PageHeader from 'components/PageHeader'
 import FarmCard, { FarmWithStakedValue } from './components/FarmCard/FarmCard'
 import Table from './components/FarmTable/FarmTable'
 import FarmTabButtons from './components/FarmTabButtons'
@@ -96,19 +96,6 @@ const StyledImage = styled(Image)`
   margin-left: auto;
   margin-right: auto;
   margin-top: 58px;
-`
-
-const Header = styled.div`
-  padding: 32px 0px;
-  background: ${({ theme }) => theme.colors.gradients.bubblegum};
-
-  padding-left: 16px;
-  padding-right: 16px;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    padding-left: 24px;
-    padding-right: 24px;
-  }
 `
 
 const Farms: React.FC = () => {
@@ -293,14 +280,14 @@ const Farms: React.FC = () => {
 
   return (
     <>
-      <Header>
+      <PageHeader>
         <Heading as="h1" size="xxl" color="secondary" mb="24px">
           {TranslateString(674, 'Farms')}
         </Heading>
         <Heading size="lg" color="text">
           {TranslateString(999, 'Stake Liquidity Pool (LP) tokens to earn.')}
         </Heading>
-      </Header>
+      </PageHeader>
       <Page>
         <ControlContainer>
           <ViewControls>
