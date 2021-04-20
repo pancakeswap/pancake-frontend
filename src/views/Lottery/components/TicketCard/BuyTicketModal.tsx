@@ -11,9 +11,7 @@ import { LOTTERY_MAX_NUMBER_OF_TICKETS, LOTTERY_TICKET_PRICE } from 'config'
 
 interface BuyTicketModalProps {
   max: BigNumber
-  onConfirm?: (amount: string, numbers: Array<number>) => void
   onDismiss?: () => void
-  tokenName?: string
 }
 
 const BuyTicketModal: React.FC<BuyTicketModalProps> = ({ max, onDismiss }) => {
