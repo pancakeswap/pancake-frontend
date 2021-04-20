@@ -9,7 +9,12 @@ export const getBnbAmount = (bnbBn: BigNumber) => {
 }
 
 export const formatUsd = (usd: number) => {
-  return usd ? `$${usd.toLocaleString(undefined, { minimumFractionDigits: 3, maximumFractionDigits: 3 })}` : '0'
+  new Intl.NumberFormat(undefined, {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 3,
+    maximumFractionDigits: 3,
+  }).format(usd || 0)
 }
 
 export const formatBnb = (bnb: number) => {
