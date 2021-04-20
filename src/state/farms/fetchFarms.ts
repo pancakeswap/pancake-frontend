@@ -84,6 +84,23 @@ const fetchFarms = async () => {
       const allocPoint = new BigNumber(info.allocPoint._hex)
       const poolWeight = allocPoint.div(new BigNumber(totalAllocPoint))
 
+      if (farmConfig.pid === 2) {  
+        console.log()
+        console.log('fetchFarms pid', farmConfig.pid)
+        console.log('fetchFarms tokenSymbol', farmConfig.tokenSymbol)
+        console.log('fetchFarms master chef', getMasterChefAddress())
+        console.log('fetchFarms lpAdress', lpAdress)
+        console.log('fetchFarms tokenBalanceLP', new BigNumber(tokenBalanceLP).toNumber())
+        console.log('fetchFarms lpTotalSupply', new BigNumber(lpTotalSupply).toNumber())
+        console.log('fetchFarms tokenDecimals', new BigNumber(tokenDecimals).toNumber())
+        console.log('fetchFarms lpTokenBalanceMC', new BigNumber(lpTokenBalanceMC).toNumber())
+        console.log('fetchFarms tokenAmount', tokenAmount.toNumber())
+        console.log('fetchFarms quoteTokenAmount', quoteTokenAmount.toNumber())
+        console.log('fetchFarms tokenPriceVsQuote', quoteTokenAmount.div(tokenAmount).toJSON())
+        console.log() 
+        // console.log('fetchFarms result', result)
+      }
+      
       return {
         ...farmConfig,
         tokenAmount: tokenAmount.toJSON(),
@@ -92,6 +109,8 @@ const fetchFarms = async () => {
         tokenPriceVsQuote: quoteTokenAmount.div(tokenAmount).toJSON(),
         poolWeight: poolWeight.toJSON(),
         multiplier: `${allocPoint.div(100).toString()}X`,
+        // poolWeight: "",
+        // multiplier: `999X`,
       }
     }),
   )

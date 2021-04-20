@@ -20,6 +20,7 @@ export const farmsSlice = createSlice({
       const liveFarmsData: Farm[] = action.payload
       state.data = state.data.map((farm) => {
         const liveFarmData = liveFarmsData.find((f) => f.pid === farm.pid)
+        console.log('liveFarmData', liveFarmData)
         return { ...farm, ...liveFarmData }
       })
     },

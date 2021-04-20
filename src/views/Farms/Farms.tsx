@@ -114,6 +114,7 @@ const Farms: React.FC = () => {
   const { pathname } = useLocation()
   const TranslateString = useI18n()
   const farmsLP = useFarms()
+  console.log('FarmsOnly', farmsLP)
   const cakePrice = usePriceCakeBusd()
   const bnbPrice = usePriceBnbBusd()
   const [query, setQuery] = useState('')
@@ -121,6 +122,10 @@ const Farms: React.FC = () => {
   const ethPriceUsd = usePriceEthBusd()
   const { account } = useWeb3React()
   const [sortOption, setSortOption] = useState('hot')
+
+  console.log('FarmsOnly cakePrice', cakePrice.toNumber())
+  console.log('FarmsOnly bnbPrice', bnbPrice.toNumber())
+
 
   const dispatch = useDispatch()
   const { fastRefresh } = useRefresh()
@@ -162,6 +167,7 @@ const Farms: React.FC = () => {
   const farmsList = useCallback(
     (farmsToDisplay): FarmWithStakedValue[] => {
       const cakePriceVsBNB = new BigNumber(farmsLP.find((farm) => farm.pid === CAKE_POOL_PID)?.tokenPriceVsQuote || 0)
+      console.log('farmsList', cakePriceVsBNB.toNumber(), CAKE_POOL_PID)
       let farmsToDisplayWithAPY: FarmWithStakedValue[] = farmsToDisplay.map((farm) => {
         if (!farm.tokenAmount || !farm.lpTotalInQuoteToken || !farm.lpTotalInQuoteToken) {
           return farm
@@ -197,10 +203,12 @@ const Farms: React.FC = () => {
           liquidity = null
         }
         if (farm.quoteTokenSymbol === QuoteToken.BNB) {
-          liquidity = bnbPrice.times(farm.lpTotalInQuoteToken)
+          liquidity = bnbPrice.times(farm.lpTotalInQuoteToken) 
+          console.log('farmsList liquidity QuoteToken.BNB', liquidity.toNumber())
         }
-        if (farm.quoteTokenSymbol === QuoteToken.CAKE) {
+        if (farm.quoteTokenSymbol === QuoteToken.TEA) {
           liquidity = cakePrice.times(farm.lpTotalInQuoteToken)
+          console.log('farmsList liquidity QuoteToken.TEA', liquidity.toNumber())
         }
 
         return { ...farm, apy, liquidity }

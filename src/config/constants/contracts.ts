@@ -1,15 +1,18 @@
 export default {
   cake: {
     97: '0x60927aD95938133B76aD3C0DEC786d2250D2F5BC',
+    // 97: '0x9c21123d94b93361a29b2c2efb3d5cd8b17e0a9e', // PANCAKESWAP TEST
     56: '',
   },
   syrup: {
-    97: '0xfE1e507CeB712BDe086f3579d2c03248b2dB77f9',
+    97: '0xB81414b8F5E1C05ae25e7b88B868573bb7914e59',
+    // 97: '0xfE1e507CeB712BDe086f3579d2c03248b2dB77f9', // PANCAKESWAP TEST
     56: '0x009cF7bC57584b7998236eff51b98A168DceA9B0',
   },
   masterChef: {
-    97: '0x1d32c2945C8FDCBc7156c553B7cEa4325a17f4f9',
-    56: '0x73feaa1eE314F8c655E354234017bE2193C9E24E',
+    97: '0xeCa1C2b1d5830f5f6Ee5AbF13C7Ff7aDf0f96a13', 
+    // 97: '0x1d32c2945C8FDCBc7156c553B7cEa4325a17f4f9', // PANCAKESWAP TEST
+    56: '' // '0x73feaa1eE314F8c655E354234017bE2193C9E24E',
   },
   sousChef: {
     97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
@@ -27,13 +30,13 @@ export default {
     97: '0xcBDE86f19f5C27D8884f6aF89a2f81CFBa29D575',
     56: '',
   },
-  mulltiCall: {
+  mulltiCall: { 
     56: '0x1ee38d535d541c55c9dae27b12edf090c608e6fb',
     97: '0x67ADCB4dF3931b0C5Da724058ADC2174a9844412',
   },
   busd: {
     56: '0xe9e7cea3dedca5984780bafc599bd69add087d56',
-    97: '',
+    97: '0xeD24FC36d5Ee211Ea25A80239Fb8C4Cfd80f12Ee',
   },
   ust: {
     56: '0x23396cF899Ca06c4472205fC903bDB4de249D6fC',
