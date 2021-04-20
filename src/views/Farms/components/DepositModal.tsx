@@ -22,9 +22,14 @@ const DepositModal: React.FC<DepositModalProps> = ({ max, onConfirm, onDismiss, 
     return getFullDisplayBalance(max)
   }, [max])
 
+  const valNumber = new BigNumber(val)
+  const fullBalanceNumber = new BigNumber(fullBalance)
+
   const handleChange = useCallback(
     (e: React.FormEvent<HTMLInputElement>) => {
-      setVal(e.currentTarget.value)
+      if (e.currentTarget.validity.valid) {
+        setVal(e.currentTarget.value.replace(/,/g, '.'))
+      }
     },
     [setVal],
   )
@@ -50,7 +55,7 @@ const DepositModal: React.FC<DepositModalProps> = ({ max, onConfirm, onDismiss, 
         </Button>
         <Button
           width="100%"
-          disabled={pendingTx || fullBalance === '0' || val === '0'}
+          disabled={pendingTx || !valNumber.isFinite() || valNumber.eq(0) || valNumber.gt(fullBalanceNumber)}
           onClick={async () => {
             setPendingTx(true)
             await onConfirm(val)
