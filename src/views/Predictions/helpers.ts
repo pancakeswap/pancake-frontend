@@ -9,7 +9,7 @@ export const getBnbAmount = (bnbBn: BigNumber) => {
 }
 
 export const formatUsd = (usd: number) => {
-  new Intl.NumberFormat(undefined, {
+  return new Intl.NumberFormat(undefined, {
     style: 'currency',
     currency: 'USD',
     minimumFractionDigits: 3,
@@ -23,15 +23,6 @@ export const formatBnb = (bnb: number) => {
 
 export const formatBnbFromBigNumber = (bnbBn: BigNumber) => {
   return formatBnb(getBnbAmount(bnbBn).toNumber())
-}
-
-/**
- * Returns the absolute value and a flag if it was negative or not
- */
-export const formatRoundPriceDifference = (value: number, secondaryValue: number) => {
-  const diff = value - secondaryValue
-
-  return { isNegative: diff < 0, value: `${formatUsd(Math.abs(diff))}` }
 }
 
 export const padTime = (num: number) => num.toString().padStart(2, '0')

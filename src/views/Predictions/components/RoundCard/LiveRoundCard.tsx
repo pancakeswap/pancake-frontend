@@ -5,7 +5,7 @@ import useI18n from 'hooks/useI18n'
 import { Round, BetPosition } from 'state/types'
 import { useGetTotalIntervalBlocks } from 'state/hooks'
 import { useBnbUsdtTicker } from 'hooks/ticker'
-import { formatRoundPriceDifference, formatUsd, getBubbleGumBackground } from '../../helpers'
+import { formatUsd, getBubbleGumBackground } from '../../helpers'
 import useIsRoundCanceled from '../../hooks/useIsRoundCanceled'
 import PositionTag from '../PositionTag'
 import { RoundResultBox, LockPriceRow, PrizePoolRow } from '../RoundResult'
@@ -47,7 +47,7 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
   const isBull = stream?.lastPrice > lockPrice
   const priceColor = isBull ? 'success' : 'failure'
   const estimatedEndBlock = lockBlock + totalInterval
-  const { value } = formatRoundPriceDifference(stream?.lastPrice, lockPrice)
+  const priceDifference = stream?.lastPrice - lockPrice
   const isRoundCanceled = useIsRoundCanceled(round)
 
   if (isRoundCanceled) {
@@ -64,7 +64,7 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
           epoch={round.epoch}
           blockNumber={estimatedEndBlock}
         />
-        <LiveRoundProgress scale="sm" startBlock={lockBlock} endBlock={estimatedEndBlock} />
+        <LiveRoundProgress startBlock={lockBlock} endBlock={estimatedEndBlock} />
         <CardBody p="16px">
           <MultiplierArrow multiplier={bullMultiplier} hasEntered={hasEnteredUp} isActive={isBull} />
           <RoundResultBox betPosition={isBull ? BetPosition.BULL : BetPosition.BEAR}>
@@ -77,7 +77,9 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
                   <Text bold color={priceColor} fontSize="24px" style={{ minHeight: '36px' }}>
                     {formatUsd(stream.lastPrice)}
                   </Text>
-                  <PositionTag betPosition={isBull ? BetPosition.BULL : BetPosition.BEAR}>{value}</PositionTag>
+                  <PositionTag betPosition={isBull ? BetPosition.BULL : BetPosition.BEAR}>
+                    {formatUsd(priceDifference)}
+                  </PositionTag>
                 </>
               )}
             </Flex>

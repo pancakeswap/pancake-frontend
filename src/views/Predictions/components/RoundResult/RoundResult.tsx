@@ -2,7 +2,7 @@ import React from 'react'
 import { BoxProps, Flex, Text } from '@pancakeswap-libs/uikit'
 import { BetPosition, Round } from 'state/types'
 import useI18n from 'hooks/useI18n'
-import { formatRoundPriceDifference, formatUsd } from '../../helpers'
+import { formatUsd } from '../../helpers'
 import useIsRoundCanceled from '../../hooks/useIsRoundCanceled'
 import PositionTag from '../PositionTag'
 import { LockPriceRow, PrizePoolRow, RoundResultBox } from './styles'
@@ -16,7 +16,7 @@ const RoundResult: React.FC<RoundResultProps> = ({ round, ...props }) => {
   const betPosition = closePrice > lockPrice ? BetPosition.BULL : BetPosition.BEAR
   const isPositionUp = betPosition === BetPosition.BULL
   const TranslateString = useI18n()
-  const { value } = formatRoundPriceDifference(closePrice, lockPrice)
+  const priceDifference = closePrice - lockPrice
   const isRoundCanceled = useIsRoundCanceled(round)
 
   return (
@@ -31,7 +31,7 @@ const RoundResult: React.FC<RoundResultProps> = ({ round, ...props }) => {
       ) : (
         <Flex alignItems="center" justifyContent="space-between" mb="16px">
           <Text color={isPositionUp ? 'success' : 'failure'} bold fontSize="24px">{`${formatUsd(closePrice)}`}</Text>
-          <PositionTag betPosition={betPosition}>{value}</PositionTag>
+          <PositionTag betPosition={betPosition}>{formatUsd(priceDifference)}</PositionTag>
         </Flex>
       )}
       {lockPrice && <LockPriceRow lockPrice={lockPrice} />}

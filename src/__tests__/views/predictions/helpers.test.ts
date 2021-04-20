@@ -2,7 +2,6 @@ import BigNumber from 'bignumber.js'
 import { BetPosition } from 'state/types'
 import {
   formatBnb,
-  formatRoundPriceDifference,
   formatRoundTime,
   formatUsd,
   getBnbAmount,
@@ -50,16 +49,6 @@ describe('formatBnb', () => {
 
   it('returns 0 if BNB is undefined', () => {
     expect(formatBnb(undefined)).toEqual('0')
-  })
-})
-
-describe('formatRoundPriceDifference', () => {
-  it.each([
-    [20, 19, { isNegative: false, value: '$1.000' }],
-    [3, 7, { isNegative: true, value: '$4.000' }],
-    [45.24, 20.01, { isNegative: false, value: '$25.230' }],
-  ])('return correct difference (%i, %i) with formatted value', (value, value2, expected) => {
-    expect(formatRoundPriceDifference(value, value2)).toEqual(expected)
   })
 })
 
