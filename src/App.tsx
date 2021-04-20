@@ -39,8 +39,8 @@ const App: React.FC = () => {
     console.warn = () => null
   }, [])
 
-  // useEagerConnect()
-  // useFetchPublicData()
+  useEagerConnect()
+  useFetchPublicData()
   // useFetchProfile()
   // useFetchPriceList()
   // useGetDocumentTitlePrice()
