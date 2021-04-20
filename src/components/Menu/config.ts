@@ -34,6 +34,10 @@ const config: MenuEntry[] = [
     label: 'Lottery',
     icon: 'TicketIcon',
     href: '/lottery',
+    status: {
+      text: 'WIN',
+      color: 'warning',
+    },
   },
   {
     label: 'Collectibles',
@@ -44,10 +48,6 @@ const config: MenuEntry[] = [
     label: 'Team Battle',
     icon: 'TeamBattleIcon',
     href: '/competition',
-    status: {
-      text: 'CLAIM',
-      color: 'warning',
-    },
   },
   {
     label: 'Teams & Profile',

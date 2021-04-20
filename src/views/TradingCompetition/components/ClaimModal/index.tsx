@@ -59,7 +59,7 @@ const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, use
   }
 
   return (
-    <Modal title="Collect Winnings" onDismiss={onDismiss}>
+    <Modal title={TranslateString(556, 'Collect Winnings')} onDismiss={onDismiss}>
       <Flex width="100%" flexDirection="column" alignItems="center" justifyContent="center" maxWidth="360px">
         <Text color="secondary" bold fontSize="16px">
           {TranslateString(999, 'Congratulations! You won')}:

@@ -1,57 +1,54 @@
 import { useEffect, useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
-import { Ifo } from 'config/constants/types'
+import { Ifo, PoolIds } from 'config/constants/types'
 import { useERC20, useIfoV1Contract } from 'hooks/useContract'
 import { useIfoAllowance } from 'hooks/useAllowance'
 import makeBatchRequest from 'utils/makeBatchRequest'
 import { getAddress } from 'utils/addressHelpers'
-import { UserInfo, WalletIfoState, WalletIfoData } from './types'
+import { WalletIfoState, WalletIfoData } from '../types'
+
+interface UserInfo {
+  amount: BigNumber
+  claimed: boolean
+}
 
 /**
  * Gets all data from an IFO related to a wallet
  */
 const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
   const [state, setState] = useState<WalletIfoState>({
-    isPendingTx: false,
-    offeringTokenBalance: new BigNumber(0),
-    refundingAmount: new BigNumber(0),
-    userInfo: {
-      amount: new BigNumber(0),
-      claimed: false,
+    [PoolIds.poolUnlimited]: {
+      amountTokenCommittedInLP: new BigNumber(0),
+      hasClaimed: false,
+      isPendingTx: false,
+      offeringAmountInToken: new BigNumber(0),
+      refundingAmountInLP: new BigNumber(0),
+      taxAmountInLP: new BigNumber(0), // Not used
     },
   })
 
   const { address, currency } = ifo
-  const { isPendingTx } = state
+  const { poolUnlimited } = state
 
   const { account } = useWeb3React()
   const contract = useIfoV1Contract(address)
   const currencyContract = useERC20(getAddress(currency.address))
-  const allowance = useIfoAllowance(currencyContract, address, isPendingTx)
+  const allowance = useIfoAllowance(currencyContract, address, poolUnlimited.isPendingTx)
 
   const setPendingTx = (status: boolean) =>
     setState((prevState) => ({
-      ...prevState,
-      isPendingTx: status,
-    }))
-
-  const addUserContributedAmount = (amount: BigNumber) => {
-    setState((prevState) => ({
-      ...prevState,
-      userInfo: {
-        ...prevState.userInfo,
-        amount: prevState.userInfo.amount.plus(amount),
+      [PoolIds.poolUnlimited]: {
+        ...prevState.poolUnlimited,
+        isPendingTx: status,
       },
     }))
-  }
 
   const setIsClaimed = () => {
     setState((prevState) => ({
-      ...prevState,
-      userInfo: {
-        ...prevState.userInfo,
-        claimed: true,
+      [PoolIds.poolUnlimited]: {
+        ...prevState.poolUnlimited,
+        hasClaimed: true,
       },
     }))
   }
@@ -65,12 +62,12 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
       ])) as [string, UserInfo, string]
 
       setState((prevState) => ({
-        ...prevState,
-        offeringTokenBalance: new BigNumber(offeringAmount),
-        refundingAmount: new BigNumber(refundingAmount),
-        userInfo: {
-          amount: new BigNumber(userInfoResponse.amount),
-          claimed: userInfoResponse.claimed,
+        [PoolIds.poolUnlimited]: {
+          ...prevState.poolUnlimited,
+          amountTokenCommittedInLP: new BigNumber(userInfoResponse.amount),
+          hasClaimed: userInfoResponse.claimed,
+          offeringAmountInToken: new BigNumber(offeringAmount),
+          refundingAmountInLP: new BigNumber(refundingAmount),
         },
       }))
     }
@@ -80,7 +77,7 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
     }
   }, [account, contract, setState])
 
-  return { ...state, allowance, contract, setPendingTx, addUserContributedAmount, setIsClaimed }
+  return { ...state, allowance, contract, setPendingTx, addUserContributedAmount: () => null, setIsClaimed }
 }
 
 export default useGetWalletIfoData

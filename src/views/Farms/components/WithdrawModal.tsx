@@ -21,9 +21,14 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ onConfirm, onDismiss, max
     return getFullDisplayBalance(max)
   }, [max])
 
+  const valNumber = new BigNumber(val)
+  const fullBalanceNumber = new BigNumber(fullBalance)
+
   const handleChange = useCallback(
     (e: React.FormEvent<HTMLInputElement>) => {
-      setVal(e.currentTarget.value)
+      if (e.currentTarget.validity.valid) {
+        setVal(e.currentTarget.value.replace(/,/g, '.'))
+      }
     },
     [setVal],
   )
@@ -47,7 +52,7 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ onConfirm, onDismiss, max
           {TranslateString(462, 'Cancel')}
         </Button>
         <Button
-          disabled={pendingTx}
+          disabled={pendingTx || !valNumber.isFinite() || valNumber.eq(0) || valNumber.gt(fullBalanceNumber)}
           onClick={async () => {
             setPendingTx(true)
             await onConfirm(val)

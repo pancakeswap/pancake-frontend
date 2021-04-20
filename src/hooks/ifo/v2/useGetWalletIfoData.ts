@@ -7,7 +7,7 @@ import { useIfoAllowance } from 'hooks/useAllowance'
 import useRefresh from 'hooks/useRefresh'
 import makeBatchRequest from 'utils/makeBatchRequest'
 import { getAddress } from 'utils/addressHelpers'
-import { WalletIfoState, WalletIfoData } from './types'
+import { WalletIfoState, WalletIfoData } from '../types'
 
 /**
  * Gets all data from an IFO related to a wallet
