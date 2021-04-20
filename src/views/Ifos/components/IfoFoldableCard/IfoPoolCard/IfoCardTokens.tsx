@@ -2,7 +2,7 @@ import React from 'react'
 import { Text, Flex, Box, Image, CheckmarkCircleIcon, FlexProps, HelpIcon, useTooltip } from '@pancakeswap-libs/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { Ifo, PoolIds } from 'config/constants/types'
-import { PublicIfoData, WalletIfoData } from 'hooks/ifo/v2/types'
+import { PublicIfoData, WalletIfoData } from 'hooks/ifo/types'
 import useI18n from 'hooks/useI18n'
 import { getBalanceNumber } from 'utils/formatBalance'
 import PercentageOfTotal from './PercentageOfTotal'
@@ -51,9 +51,11 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
 
   const publicPoolCharacteristics = publicIfoData[poolId]
   const userPoolCharacteristics = walletIfoData[poolId]
+
   const { currency, token } = ifo
   const { hasClaimed } = userPoolCharacteristics
   const distributionRatio = ifo[poolId].distributionRatio * 100
+  const tokenImage = `/images/tokens/${ifo.token.symbol.toLowerCase()}.png`
 
   const renderTokenSection = () => {
     if (isLoading) {
@@ -88,7 +90,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
               totalAmount={publicPoolCharacteristics.totalAmountPool}
             />
           </TokenSection>
-          <TokenSection img={`/images/ifos/${ifo.id}.svg`}>
+          <TokenSection img={tokenImage}>
             <Label>{`${token.symbol} to receive`}</Label>
             <Value>{getBalanceNumber(userPoolCharacteristics.offeringAmountInToken, token.decimals)}</Value>
           </TokenSection>
@@ -114,7 +116,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
               totalAmount={publicPoolCharacteristics.totalAmountPool}
             />
           </TokenSection>
-          <TokenSection img={`/images/ifos/${ifo.id}.svg`}>
+          <TokenSection img={tokenImage}>
             <Label>{hasClaimed ? `${token.symbol} received` : `${token.symbol} to received`}</Label>
             <Flex alignItems="center">
               <Value>{getBalanceNumber(userPoolCharacteristics.offeringAmountInToken, token.decimals)}</Value>

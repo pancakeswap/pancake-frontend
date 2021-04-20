@@ -1,7 +1,7 @@
 import React from 'react'
 import { Flex, Link, PocketWatchIcon, Text, Skeleton } from '@pancakeswap-libs/uikit'
 import getTimePeriods from 'utils/getTimePeriods'
-import { PublicIfoData } from 'hooks/ifo/v2/types'
+import { PublicIfoData } from 'hooks/ifo/types'
 
 interface Props {
   publicIfoData: PublicIfoData

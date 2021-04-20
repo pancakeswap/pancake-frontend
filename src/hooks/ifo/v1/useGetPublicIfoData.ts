@@ -1,49 +1,36 @@
 import BigNumber from 'bignumber.js'
 import { BSC_BLOCK_TIME } from 'config'
-import { Ifo, IfoStatus } from 'config/constants/types'
-import { useBlock } from 'state/hooks'
+import { Ifo, IfoStatus, PoolIds } from 'config/constants/types'
+import { useBlock, useLpTokenPrice } from 'state/hooks'
 import { useIfoV1Contract } from 'hooks/useContract'
 import { useEffect, useState } from 'react'
 import makeBatchRequest from 'utils/makeBatchRequest'
-import { PublicIfoData } from './types'
-
-const getStatus = (currentBlock: number, startBlock: number, endBlock: number): IfoStatus => {
-  // Add an extra check to currentBlock because it takes awhile to fetch so the initial value is 0
-  // making the UI change to an inaccurate status
-  if (currentBlock === 0) {
-    return 'idle'
-  }
-
-  if (currentBlock < startBlock) {
-    return 'coming_soon'
-  }
-
-  if (currentBlock >= startBlock && currentBlock <= endBlock) {
-    return 'live'
-  }
-
-  if (currentBlock > endBlock) {
-    return 'finished'
-  }
-
-  return 'idle'
-}
+import { PublicIfoData } from '../types'
+import { getStatus } from '../helpers'
 
 /**
  * Gets all public data of an IFO
  */
 const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
   const { address, releaseBlockNumber } = ifo
-  const [state, setState] = useState<PublicIfoData>({
-    status: 'idle',
+  const lpTokenPriceInUsd = useLpTokenPrice(ifo.currency.symbol)
+  const [state, setState] = useState({
+    status: 'idle' as IfoStatus,
     blocksRemaining: 0,
     secondsUntilStart: 0,
     progress: 5,
     secondsUntilEnd: 0,
-    raisingAmount: new BigNumber(0),
-    totalAmount: new BigNumber(0),
     startBlockNum: 0,
     endBlockNum: 0,
+    numberPoints: null,
+    [PoolIds.poolUnlimited]: {
+      raisingAmountPool: new BigNumber(0),
+      totalAmountPool: new BigNumber(0),
+      offeringAmountPool: new BigNumber(0), // Not know
+      limitPerUserInLP: new BigNumber(0), //  Not used
+      taxRate: 0, //  Not used
+      sumTaxesOverflow: new BigNumber(0), //  Not used
+    },
   })
   const { currentBlock } = useBlock()
   const contract = useIfoV1Contract(address)
@@ -70,23 +57,28 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
           ? ((currentBlock - startBlockNum) / totalBlocks) * 100
           : ((currentBlock - releaseBlockNumber) / (startBlockNum - releaseBlockNumber)) * 100
 
-      setState({
-        secondsUntilEnd: blocksRemaining * BSC_BLOCK_TIME,
-        secondsUntilStart: (startBlockNum - currentBlock) * BSC_BLOCK_TIME,
-        raisingAmount: new BigNumber(raisingAmount),
-        totalAmount: new BigNumber(totalAmount),
+      setState((prev) => ({
         status,
-        progress,
         blocksRemaining,
+        secondsUntilStart: (startBlockNum - currentBlock) * BSC_BLOCK_TIME,
+        progress,
+        secondsUntilEnd: blocksRemaining * BSC_BLOCK_TIME,
         startBlockNum,
         endBlockNum,
-      })
+        currencyPriceInUSD: null,
+        numberPoints: null,
+        [PoolIds.poolUnlimited]: {
+          ...prev.poolUnlimited,
+          raisingAmountPool: new BigNumber(raisingAmount),
+          totalAmountPool: new BigNumber(totalAmount),
+        },
+      }))
     }
 
     fetchProgress()
   }, [address, currentBlock, contract, releaseBlockNumber, setState])
 
-  return state
+  return { ...state, currencyPriceInUSD: lpTokenPriceInUsd }
 }
 
 export default useGetPublicIfoData

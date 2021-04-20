@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
 import { Flex, LinkExternal, Image, Text, PrizeIcon } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
-import { PublicIfoData } from 'hooks/ifo/v2/types'
+import { PublicIfoData } from 'hooks/ifo/types'
 import { Ifo } from 'config/constants/types'
 
 const MIN_DOLLAR_FOR_ACHIEVEMENT = new BigNumber(10)

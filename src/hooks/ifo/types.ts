@@ -23,7 +23,7 @@ export interface PublicIfoData {
   endBlockNum: number
   currencyPriceInUSD: BigNumber
   numberPoints: number
-  [PoolIds.poolBasic]: PoolCharacteristics
+  [PoolIds.poolBasic]?: PoolCharacteristics
   [PoolIds.poolUnlimited]: PoolCharacteristics
 }
 
@@ -39,7 +39,7 @@ export interface UserPoolCharacteristics {
 
 // Use only inside the useGetWalletIfoData hook
 export interface WalletIfoState {
-  [PoolIds.poolBasic]: UserPoolCharacteristics
+  [PoolIds.poolBasic]?: UserPoolCharacteristics
   [PoolIds.poolUnlimited]: UserPoolCharacteristics
 }
 

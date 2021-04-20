@@ -12,15 +12,16 @@ import {
   ChevronUpIcon,
 } from '@pancakeswap-libs/uikit'
 import { Ifo, IfoStatus, PoolIds } from 'config/constants/types'
+import { PublicIfoData, WalletIfoData } from 'hooks/ifo/types'
 import useI18n from 'hooks/useI18n'
-import useGetPublicIfoV2Data from 'hooks/ifo/v2/useGetPublicIfoData'
-import useGetWalletIfoV2Data from 'hooks/ifo/v2/useGetWalletIfoData'
-import SmallCard from './SmallCard'
+import IfoPoolCard from './IfoPoolCard'
 import Timer from './Timer'
 import Achievement from './Achievement'
 
 interface IfoFoldableCardProps {
   ifo: Ifo
+  publicIfoData: PublicIfoData
+  walletIfoData: WalletIfoData
   isInitiallyVisible: boolean
 }
 
@@ -58,13 +59,21 @@ const FoldableContent = styled.div<{ isVisible: boolean; isActive: boolean }>`
   background: ${({ isActive, theme }) => (isActive ? theme.colors.gradients.bubblegum : theme.colors.dropdown)};
 `
 
-const CardsWrapper = styled.div`
+const CardsWrapper = styled.div<{ singleCard: boolean }>`
   display: grid;
   grid-gap: 32px;
   grid-template-columns: 1fr;
   margin-bottom: 32px;
   ${({ theme }) => theme.mediaQueries.md} {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: ${({ singleCard }) => (singleCard ? '1fr' : '1fr 1fr')};
+    justify-items: ${({ singleCard }) => (singleCard ? 'center' : 'unset')};
+  }
+`
+
+const StyledCardBody = styled(CardBody)`
+  padding: 24px 16px;
+  ${({ theme }) => theme.mediaQueries.md} {
+    padding: 24px;
   }
 `
 
@@ -74,11 +83,9 @@ const StyledCardFooter = styled(CardFooter)`
   background: ${({ theme }) => theme.colors.backgroundAlt};
 `
 
-const IfoFoldableCard: React.FC<IfoFoldableCardProps> = ({ ifo, isInitiallyVisible }) => {
+const IfoFoldableCard: React.FC<IfoFoldableCardProps> = ({ ifo, publicIfoData, walletIfoData, isInitiallyVisible }) => {
   const [isVisible, setIsVisible] = useState(isInitiallyVisible)
   const TranslateString = useI18n()
-  const publicIfoData = useGetPublicIfoV2Data(ifo)
-  const walletIfoData = useGetWalletIfoV2Data(ifo)
 
   const Ribbon = getRibbonComponent(publicIfoData.status, TranslateString)
   const isActive = publicIfoData.status !== 'finished' && ifo.isActive
@@ -90,16 +97,18 @@ const IfoFoldableCard: React.FC<IfoFoldableCardProps> = ({ ifo, isInitiallyVisib
       </Header>
       <FoldableContent isVisible={isVisible} isActive={publicIfoData.status !== 'idle' && isActive}>
         {isActive && <Progress variant="flat" primaryStep={publicIfoData.progress} />}
-        <CardBody>
+        <StyledCardBody>
           {isActive && <Timer publicIfoData={publicIfoData} />}
-          <CardsWrapper>
-            <SmallCard
-              poolId={PoolIds.poolBasic}
-              ifo={ifo}
-              publicIfoData={publicIfoData}
-              walletIfoData={walletIfoData}
-            />
-            <SmallCard
+          <CardsWrapper singleCard={!publicIfoData.poolBasic || !walletIfoData.poolBasic}>
+            {publicIfoData.poolBasic && walletIfoData.poolBasic && (
+              <IfoPoolCard
+                poolId={PoolIds.poolBasic}
+                ifo={ifo}
+                publicIfoData={publicIfoData}
+                walletIfoData={walletIfoData}
+              />
+            )}
+            <IfoPoolCard
               poolId={PoolIds.poolUnlimited}
               ifo={ifo}
               publicIfoData={publicIfoData}
@@ -107,7 +116,7 @@ const IfoFoldableCard: React.FC<IfoFoldableCardProps> = ({ ifo, isInitiallyVisib
             />
           </CardsWrapper>
           <Achievement ifo={ifo} publicIfoData={publicIfoData} />
-        </CardBody>
+        </StyledCardBody>
         <StyledCardFooter>
           <Button variant="text" endIcon={<ChevronUpIcon color="primary" />} onClick={() => setIsVisible(false)}>
             {TranslateString(999, 'Close')}

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Text, Flex, Box } from '@pancakeswap-libs/uikit'
-import { PublicIfoData } from 'hooks/ifo/v2/types'
+import { PublicIfoData } from 'hooks/ifo/types'
 import useI18n from 'hooks/useI18n'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { getBalanceNumber, formatNumber } from 'utils/formatBalance'
@@ -87,7 +87,10 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoD
           <FooterEntry label={TranslateString(999, 'Total committed:')} value={totalCommitted} />
           <FooterEntry label={TranslateString(999, 'Funds to raise:')} value={ifo[poolId].raiseAmount} />
           <FooterEntry label={TranslateString(999, 'CAKE to burn:')} value={ifo[poolId].cakeToBurn} />
-          <FooterEntry label={`Price per ${ifo.token.symbol}: `} value={`$${ifo.tokenOfferingPrice}`} />
+          <FooterEntry
+            label={`Price per ${ifo.token.symbol}: `}
+            value={`$${ifo.tokenOfferingPrice ? ifo.tokenOfferingPrice : '?'}`}
+          />
         </>
       )
     }
