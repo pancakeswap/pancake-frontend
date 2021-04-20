@@ -55,6 +55,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
   const { currency, token } = ifo
   const { hasClaimed } = userPoolCharacteristics
   const distributionRatio = ifo[poolId].distributionRatio * 100
+  const tokenImage = `/images/tokens/${ifo.token.symbol.toLowerCase()}.png`
 
   const renderTokenSection = () => {
     if (isLoading) {
@@ -89,7 +90,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
               totalAmount={publicPoolCharacteristics.totalAmountPool}
             />
           </TokenSection>
-          <TokenSection img={`/images/ifos/${ifo.id}.svg`}>
+          <TokenSection img={tokenImage}>
             <Label>{`${token.symbol} to receive`}</Label>
             <Value>{getBalanceNumber(userPoolCharacteristics.offeringAmountInToken, token.decimals)}</Value>
           </TokenSection>
@@ -115,7 +116,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
               totalAmount={publicPoolCharacteristics.totalAmountPool}
             />
           </TokenSection>
-          <TokenSection img={`/images/ifos/${ifo.id}.svg`}>
+          <TokenSection img={tokenImage}>
             <Label>{hasClaimed ? `${token.symbol} received` : `${token.symbol} to received`}</Label>
             <Flex alignItems="center">
               <Value>{getBalanceNumber(userPoolCharacteristics.offeringAmountInToken, token.decimals)}</Value>
