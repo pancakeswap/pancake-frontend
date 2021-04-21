@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useContext } from 'react'
+import React, { lazy, Suspense, useContext, useMemo } from 'react'
 import styled from 'styled-components'
 import { Text } from '@pancakeswap-libs/uikit'
 import PastLotteryDataContext from 'contexts/PastLotteryDataContext'
@@ -73,7 +73,7 @@ const HistoryChart: React.FC = () => {
     }
   }
 
-  const getOptions = () => {
+  const options = useMemo(() => {
     return {
       legend: { display: false },
       scales: {
@@ -100,7 +100,7 @@ const HistoryChart: React.FC = () => {
         ],
       },
     }
-  }
+  }, [isDark])
 
   return (
     <>
@@ -111,7 +111,7 @@ const HistoryChart: React.FC = () => {
       )}
       {!historyError && historyData.length > 1 ? (
         <Suspense fallback={<div>Loading...</div>}>
-          <Line data={chartData} options={getOptions()} type="line" />
+          <Line data={chartData} options={options} type="line" />
         </Suspense>
       ) : (
         <InnerWrapper>
