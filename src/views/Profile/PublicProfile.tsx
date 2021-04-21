@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
 import {
@@ -18,6 +18,7 @@ import {
 } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import { useProfile } from 'state/hooks'
+import { usePersistState } from 'use-persist'
 import Menu from './components/Menu'
 import CardHeader from './components/CardHeader'
 import Collectibles from './components/Collectibles'
@@ -82,7 +83,7 @@ const Section = styled.div`
 const PublicProfile = () => {
   const { account } = useWeb3React()
   const { profile } = useProfile()
-  const [usernameVisibilityToggled, setUsernameVisibility] = useState(false)
+  const [usernameVisibilityToggled, setUsernameVisibility] = usePersistState(false)
   const TranslateString = useI18n()
 
   if (!account) {
