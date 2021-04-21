@@ -33,7 +33,7 @@ describe('formatUsd', () => {
   })
 
   it('returns 0 if USD is undefined', () => {
-    expect(formatUsd(undefined)).toEqual('0')
+    expect(formatUsd(undefined)).toEqual('$0.000')
   })
 })
 
@@ -101,6 +101,8 @@ describe('getPayout', () => {
     round: {
       id: 'round',
       epoch: 4,
+      startAt: 0,
+      position: BetPosition.BEAR,
       startBlock: 1000,
       endBlock: 1000,
       bullAmount: 400,
@@ -133,6 +135,8 @@ describe('getPayout', () => {
     round: {
       id: 'round',
       epoch: 4,
+      startAt: 0,
+      position: BetPosition.BEAR,
       startBlock: 1000,
       endBlock: 1000,
       bullAmount: 400,
@@ -165,6 +169,8 @@ describe('getPayout', () => {
     round: {
       id: 'round',
       epoch: 4,
+      startAt: 0,
+      position: BetPosition.BEAR,
       startBlock: 1000,
       endBlock: 1000,
       bullAmount: 2000,
@@ -197,6 +203,8 @@ describe('getPayout', () => {
     round: {
       id: 'round',
       epoch: 4,
+      startAt: 0,
+      position: BetPosition.BEAR,
       startBlock: 1000,
       endBlock: 1000,
       bullAmount: 2000,
