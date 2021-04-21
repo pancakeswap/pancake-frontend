@@ -33,6 +33,13 @@ const ApprovalAction: React.FC<ApprovalActionProps> = ({ stakingToken, earningTo
         setRequestedApproval(false)
       } else {
         // user rejected tx or didn't go thru
+        toastError(
+          `${TranslateString(999, 'Error')}`,
+          `${TranslateString(
+            999,
+            `Please try again. Confirm the transaction and make sure you are paying enough gas!`,
+          )}`,
+        )
         setRequestedApproval(false)
       }
     } catch (e) {
