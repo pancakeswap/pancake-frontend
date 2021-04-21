@@ -4,6 +4,7 @@ import { useWeb3React } from '@web3-react/core'
 import { getBep20Contract, getCakeContract } from 'utils/contractHelpers'
 import useWeb3 from './useWeb3'
 import useRefresh from './useRefresh'
+import { getWeb3NoAccount } from 'utils/web3'
 
 const useTokenBalance = (tokenAddress: string) => {
   const [balance, setBalance] = useState(new BigNumber(0))
@@ -57,6 +58,26 @@ export const useBurnedBalance = (tokenAddress: string) => {
 
     fetchBalance()
   }, [web3, tokenAddress, slowRefresh])
+
+  return balance
+}
+
+export const useGetBnbBalance = () => {
+  const [balance, setBalance] = useState(new BigNumber(0))
+  const { account } = useWeb3React()
+  const { slowRefresh } = useRefresh()
+
+  useEffect(() => {
+    const fetchBalance = async () => {
+      const web3 = getWeb3NoAccount()
+      const walletBalance = await web3.eth.getBalance(account)
+      setBalance(new BigNumber(walletBalance))
+    }
+
+    if (account) {
+      fetchBalance()
+    }
+  }, [account, slowRefresh, setBalance])
 
   return balance
 }
