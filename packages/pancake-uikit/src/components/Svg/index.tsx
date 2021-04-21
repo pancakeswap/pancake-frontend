@@ -63,6 +63,8 @@ export { default as TuneIcon } from "./Icons/Tune";
 export { default as SearchIcon } from "./Icons/Search";
 export { default as SwapVertIcon } from "./Icons/SwapVert";
 export { default as SyncAltIcon } from "./Icons/SyncAlt";
+export { default as VisibilityOff } from "./Icons/VisibilityOff";
+export { default as VisibilityOn } from "./Icons/VisibilityOn";
 export { default as VolumeOffIcon } from "./Icons/VolumeOff";
 export { default as VolumeUpIcon } from "./Icons/VolumeUp";
 export { default as WarningIcon } from "./Icons/Warning";
