@@ -1,5 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit'
+import BigNumber from 'bignumber.js'
 import farmsConfig from 'config/constants/farms'
 import isArchivedPid from 'utils/farmHelpers'
 import fetchFarms from './fetchFarms'
@@ -13,7 +14,17 @@ import { FarmsState, Farm } from '../types'
 
 const nonArchivedFarms = farmsConfig.filter(({ pid }) => !isArchivedPid(pid))
 
-const initialState: FarmsState = { data: [...farmsConfig], loadArchivedFarmsData: false }
+const noAccountFarmConfig = farmsConfig.map((farm) => ({
+  ...farm,
+  userData: {
+    allowance: '0',
+    tokenBalance: '0',
+    stakedBalance: '0',
+    earnings: '0',
+  },
+}))
+
+const initialState: FarmsState = { data: noAccountFarmConfig, loadArchivedFarmsData: false }
 
 export const farmsSlice = createSlice({
   name: 'Farms',
