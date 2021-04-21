@@ -8,6 +8,7 @@ module.exports = {
     hardhat: {
       forking: {
         url: 'https://bsc-dataseed1.ninicoin.io',
+        blockNumber: 6771269,
       },
     },
   },
