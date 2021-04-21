@@ -99,8 +99,8 @@ const PublicProfile = () => {
                 <Flex alignItems="center">
                   <AddressLink href={`https://bscscan.com/address/${account}`} color="text" external>
                     {account}
+                    <OpenNewIcon ml="4px" />
                   </AddressLink>
-                  <OpenNewIcon ml="4px" />
                 </Flex>
                 <ResponsiveText bold>{profile.team.name}</ResponsiveText>
               </Content>
