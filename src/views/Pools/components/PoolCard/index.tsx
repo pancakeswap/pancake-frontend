@@ -29,8 +29,6 @@ const PoolCard: React.FC<{ pool: Pool }> = ({ pool }) => {
   const TranslateString = useI18n()
   const stakedBalance = new BigNumber(userData?.stakedBalance || 0)
   const accountHasStakedBalance = stakedBalance?.toNumber() > 0
-  // IS OLD SYRUP CONDITION
-  const isOldSyrup = stakingToken.symbol === tokens.syrup.symbol
 
   return (
     <StyledCard isStaking={!isFinished && accountHasStakedBalance} isFinished={isFinished && sousId !== 0}>
@@ -42,7 +40,6 @@ const PoolCard: React.FC<{ pool: Pool }> = ({ pool }) => {
       <CardBody>
         <AprRow
           isFinished={isFinished}
-          isOldSyrup={isOldSyrup}
           stakingToken={stakingToken}
           earningToken={earningToken}
           totalStaked={pool.totalStaked}
@@ -50,12 +47,7 @@ const PoolCard: React.FC<{ pool: Pool }> = ({ pool }) => {
         />
         <Flex mt="24px" flexDirection="column">
           {account ? (
-            <CardActions
-              pool={pool}
-              isOldSyrup={isOldSyrup}
-              stakedBalance={stakedBalance}
-              accountHasStakedBalance={accountHasStakedBalance}
-            />
+            <CardActions pool={pool} stakedBalance={stakedBalance} accountHasStakedBalance={accountHasStakedBalance} />
           ) : (
             <>
               <Text mb="10px" textTransform="uppercase" fontSize="12px" color="textSubtle" bold>

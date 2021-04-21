@@ -11,7 +11,6 @@ import Balance from 'components/Balance'
 import ApyCalculatorModal from 'components/ApyCalculatorModal'
 
 interface AprRowProps {
-  isOldSyrup?: boolean
   isFinished: boolean
   stakingToken: Token
   earningToken: Token
@@ -19,14 +18,7 @@ interface AprRowProps {
   tokenPerBlock: string
 }
 
-const AprRow: React.FC<AprRowProps> = ({
-  isOldSyrup = false,
-  isFinished,
-  stakingToken,
-  earningToken,
-  totalStaked,
-  tokenPerBlock,
-}) => {
+const AprRow: React.FC<AprRowProps> = ({ isFinished, stakingToken, earningToken, totalStaked, tokenPerBlock }) => {
   const rewardTokenPrice = useGetApiPrice(earningToken.address ? getAddress(earningToken.address) : '')
   const stakingTokenPrice = useGetApiPrice(stakingToken.address ? getAddress(stakingToken.address) : '')
   const apr = getPoolApr(
@@ -57,8 +49,7 @@ const AprRow: React.FC<AprRowProps> = ({
   return (
     <Flex alignItems="center" justifyContent="space-between">
       <Text fontSize="16px">{TranslateString(736, 'APR')}:</Text>
-      {isFinished || isOldSyrup || !apr ? (
-        // IS OLD SYRUP CONDITIONAL
+      {isFinished || !apr ? (
         <Skeleton width="82px" height="32px" />
       ) : (
         <Flex alignItems="center">

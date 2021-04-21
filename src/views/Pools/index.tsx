@@ -59,10 +59,10 @@ const Pools: React.FC = () => {
             as="a"
             href="https://docs.pancakeswap.finance/syrup-pools/syrup-pool"
           >
-            <ButtonText color="card" bold fontSize="16px">
+            <ButtonText color="backgroundAlt" bold fontSize="16px">
               {TranslateString(999, 'Help')}
             </ButtonText>
-            <HelpIcon color="card" ml={[null, null, null, 0, '6px']} />
+            <HelpIcon color="backgroundAlt" ml={[null, null, null, 0, '6px']} />
           </Button>
         </Flex>
       </PageHeader>
