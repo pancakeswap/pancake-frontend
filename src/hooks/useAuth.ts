@@ -10,11 +10,14 @@ import {
   WalletConnectConnector,
 } from '@web3-react/walletconnect-connector'
 import { ConnectorNames, connectorLocalStorageKey } from '@pancakeswap-libs/uikit'
-import { useToast } from 'state/hooks'
 import { connectorsByName } from 'utils/web3React'
 import { setupNetwork } from 'utils/wallet'
+import { useToast } from 'state/hooks'
+import { profileClear } from 'state/profile'
+import { useAppDispatch } from 'state'
 
 const useAuth = () => {
+  const dispatch = useAppDispatch()
   const { activate, deactivate } = useWeb3React()
   const { toastError } = useToast()
 
@@ -51,7 +54,12 @@ const useAuth = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  return { login, logout: deactivate }
+  const logout = useCallback(() => {
+    dispatch(profileClear())
+    deactivate()
+  }, [deactivate, dispatch])
+
+  return { login, logout }
 }
 
 export default useAuth

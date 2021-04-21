@@ -32,7 +32,6 @@ const PastRoundCardDetails: React.FC<PastRoundCardDetailsProps> = ({ data }) => 
     lotteryDate,
     lotteryNumber,
     lotteryNumbers,
-    match1Ticket,
     match2Ticket,
     match3Ticket,
     poolSize,
@@ -66,7 +65,6 @@ const PastRoundCardDetails: React.FC<PastRoundCardDetailsProps> = ({ data }) => 
           <PrizeGrid
             lotteryPrizeAmount={poolSize}
             jackpotMatches={jackpotTicket}
-            oneTicketMatches={match1Ticket}
             twoTicketMatches={match2Ticket}
             threeTicketMatches={match3Ticket}
             pastDraw
