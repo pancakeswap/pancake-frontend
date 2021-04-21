@@ -2,6 +2,7 @@ import React, { lazy, Suspense, useContext } from 'react'
 import styled from 'styled-components'
 import { Text } from '@pancakeswap-libs/uikit'
 import PastLotteryDataContext from 'contexts/PastLotteryDataContext'
+import useI18n from 'hooks/useI18n'
 import Loading from '../Loading'
 
 const Line = lazy(() => import('./LineChartWrapper'))
@@ -15,6 +16,7 @@ const InnerWrapper = styled.div`
 `
 
 const HistoryChart: React.FC = () => {
+  const TranslateString = useI18n()
   const { historyData, historyError } = useContext(PastLotteryDataContext)
   const getDataArray = (kind) => {
     return historyData
@@ -102,11 +104,11 @@ const HistoryChart: React.FC = () => {
     <>
       {historyError && (
         <InnerWrapper>
-          <Text>Error fetching data</Text>
+          <Text>{TranslateString(1078, 'Error fetching data')}</Text>
         </InnerWrapper>
       )}
       {!historyError && historyData.length > 1 ? (
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<div>{TranslateString(656, 'Loading...')}</div>}>
           <Line data={chartData} options={options} type="line" />
         </Suspense>
       ) : (
