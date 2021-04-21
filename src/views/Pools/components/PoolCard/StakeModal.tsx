@@ -7,9 +7,9 @@ import { useSousStake } from 'hooks/useStake'
 import { useSousUnstake } from 'hooks/useUnstake'
 import useTheme from 'hooks/useTheme'
 import BigNumber from 'bignumber.js'
-import { getFullDisplayBalance } from 'utils/formatBalance'
+import { getFullDisplayBalance, formatNumber } from 'utils/formatBalance'
 import { Token } from 'config/constants/types'
-import { useGetApiPrice, useToast } from 'state/hooks'
+import { useToast } from 'state/hooks'
 import ConfirmButton from './ConfirmButton'
 
 interface StakeModalProps {
@@ -17,6 +17,7 @@ interface StakeModalProps {
   isBnbPool: boolean
   stakingToken: Token
   stakingMax: BigNumber
+  stakingTokenPrice: number
   isStaking?: boolean
   onDismiss?: () => void
 }
@@ -31,6 +32,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
   stakingToken,
   isStaking = true,
   stakingMax,
+  stakingTokenPrice,
   onDismiss,
 }) => {
   const TranslateString = useI18n()
@@ -43,7 +45,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
   const [stakeAmount, setStakeAmount] = useState('')
   const [percent, setPercent] = useState(0)
 
-  const tokenPrice = useGetApiPrice(stakingToken.symbol)
+  const usdValueStaked = formatNumber(parseFloat(stakeAmount) * stakingTokenPrice)
 
   const handleStakeInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = event.target.value ? event.target.value : '0'
@@ -115,7 +117,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
       <BalanceInput
         value={stakeAmount}
         onChange={handleStakeInputChange}
-        currencyValue={`~${new BigNumber(stakeAmount).multipliedBy(tokenPrice).toNumber() || 0} USD`}
+        currencyValue={`~${usdValueStaked || 0} USD`}
       />
       <Text mt="8px" ml="auto" color="textSubtle" fontSize="12px" mb="8px">
         Balance: {getFullDisplayBalance(stakingMax, stakingToken.decimals)}

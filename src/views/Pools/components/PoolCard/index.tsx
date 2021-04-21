@@ -6,6 +6,7 @@ import UnlockButton from 'components/UnlockButton'
 import useI18n from 'hooks/useI18n'
 import { getAddress } from 'utils/addressHelpers'
 import tokens from 'config/constants/tokens'
+import { useGetApiPrice } from 'state/hooks'
 import { Pool } from 'state/types'
 import AprRow from './AprRow'
 import StyledCard from './StyledCard'
@@ -29,6 +30,7 @@ const PoolCard: React.FC<{ pool: Pool }> = ({ pool }) => {
   const TranslateString = useI18n()
   const stakedBalance = new BigNumber(userData?.stakedBalance || 0)
   const accountHasStakedBalance = stakedBalance?.toNumber() > 0
+  const stakingTokenPrice = useGetApiPrice(stakingToken.address ? getAddress(stakingToken.address) : '')
 
   return (
     <StyledCard isStaking={!isFinished && accountHasStakedBalance} isFinished={isFinished && sousId !== 0}>
@@ -41,13 +43,19 @@ const PoolCard: React.FC<{ pool: Pool }> = ({ pool }) => {
         <AprRow
           isFinished={isFinished}
           stakingToken={stakingToken}
+          stakingTokenPrice={stakingTokenPrice}
           earningToken={earningToken}
           totalStaked={pool.totalStaked}
           tokenPerBlock={pool.tokenPerBlock}
         />
         <Flex mt="24px" flexDirection="column">
           {account ? (
-            <CardActions pool={pool} stakedBalance={stakedBalance} accountHasStakedBalance={accountHasStakedBalance} />
+            <CardActions
+              pool={pool}
+              stakedBalance={stakedBalance}
+              stakingTokenPrice={stakingTokenPrice}
+              accountHasStakedBalance={accountHasStakedBalance}
+            />
           ) : (
             <>
               <Text mb="10px" textTransform="uppercase" fontSize="12px" color="textSubtle" bold>

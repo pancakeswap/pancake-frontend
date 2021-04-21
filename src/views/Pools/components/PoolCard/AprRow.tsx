@@ -16,11 +16,18 @@ interface AprRowProps {
   earningToken: Token
   totalStaked: BigNumber
   tokenPerBlock: string
+  stakingTokenPrice: number
 }
 
-const AprRow: React.FC<AprRowProps> = ({ isFinished, stakingToken, earningToken, totalStaked, tokenPerBlock }) => {
+const AprRow: React.FC<AprRowProps> = ({
+  isFinished,
+  stakingToken,
+  earningToken,
+  totalStaked,
+  tokenPerBlock,
+  stakingTokenPrice,
+}) => {
   const rewardTokenPrice = useGetApiPrice(earningToken.address ? getAddress(earningToken.address) : '')
-  const stakingTokenPrice = useGetApiPrice(stakingToken.address ? getAddress(stakingToken.address) : '')
   const apr = getPoolApr(
     stakingTokenPrice,
     rewardTokenPrice,

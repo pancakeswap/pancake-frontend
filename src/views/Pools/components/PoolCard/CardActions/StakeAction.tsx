@@ -16,6 +16,7 @@ import ApprovalAction from './ApprovalAction'
 
 interface StakeActionsProps {
   stakingTokenBalance: BigNumber
+  stakingTokenPrice: number
   stakingToken: Token
   earningToken: Token
   stakedBalance: BigNumber
@@ -30,6 +31,7 @@ const InlineText = styled(Text)`
 
 const StakeAction: React.FC<StakeActionsProps> = ({
   stakingTokenBalance,
+  stakingTokenPrice,
   stakingToken,
   earningToken,
   stakedBalance,
@@ -58,6 +60,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({
       isBnbPool={isBnbPool}
       sousId={sousId}
       stakingToken={stakingToken}
+      stakingTokenPrice={stakingTokenPrice}
     />,
   )
 

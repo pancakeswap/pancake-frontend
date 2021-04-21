@@ -32,7 +32,8 @@ const CardActions: React.FC<{
   pool: Pool
   stakedBalance: BigNumber
   accountHasStakedBalance: boolean
-}> = ({ pool, stakedBalance, accountHasStakedBalance }) => {
+  stakingTokenPrice: number
+}> = ({ pool, stakedBalance, accountHasStakedBalance, stakingTokenPrice }) => {
   const { sousId, stakingToken, earningToken, harvest, poolCategory, isFinished, userData, stakingLimit } = pool
 
   // Pools using native BNB behave differently than pools using a token
@@ -104,6 +105,7 @@ const CardActions: React.FC<{
         ) : (
           <StakeAction
             stakingTokenBalance={stakingTokenBalance}
+            stakingTokenPrice={stakingTokenPrice}
             stakingToken={stakingToken}
             earningToken={earningToken}
             stakedBalance={stakedBalance}
