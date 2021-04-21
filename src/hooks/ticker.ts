@@ -81,6 +81,7 @@ export const useTokenPairTicker = (tokenPair: TokenPair, connectOnMount: boolean
 
       ws.onerror = (error) => {
         console.error('Ticker:', error)
+        throw new Error('Ticker: An error occurred')
       }
 
       ws.onmessage = (evt) => {
