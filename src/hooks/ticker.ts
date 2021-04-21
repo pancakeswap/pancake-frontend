@@ -70,7 +70,7 @@ export const useTokenPairTicker = (tokenPair: TokenPair, connectOnMount: boolean
   // Use a ref instead of state so we mark the connection as closed immediately without
   // triggering a re-render
   const isConnected = useRef(false)
-  const [stream, setStream] = useState(null)
+  const [stream, setStream] = useState<TickerStream>(null)
   const websocket = useRef<WebSocket>(null)
 
   const connect = useCallback(() => {
