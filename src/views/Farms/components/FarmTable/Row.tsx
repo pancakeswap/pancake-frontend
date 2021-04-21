@@ -24,6 +24,10 @@ export interface RowProps {
   details: FarmWithStakedValue
 }
 
+interface RowPropsWithLoading extends RowProps {
+  userDataReady: boolean
+}
+
 const cells = {
   apr: Apr,
   farm: Farm,
@@ -63,8 +67,8 @@ const FarmMobileCell = styled.td`
   padding-top: 24px;
 `
 
-const Row: React.FunctionComponent<RowProps> = (props) => {
-  const { details } = props
+const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
+  const { details, userDataReady } = props
   const hasStakedAmount = !!useFarmUser(details.pid).stakedBalance.toNumber()
   const [actionPanelToggled, setActionPanelToggled] = useState(hasStakedAmount)
   const TranslateString = useI18n()
@@ -121,7 +125,7 @@ const Row: React.FunctionComponent<RowProps> = (props) => {
                       <CellLayout
                         label={TranslateString(tableSchema[columnIndex].translationId, tableSchema[columnIndex].label)}
                       >
-                        {React.createElement(cells[key], props[key])}
+                        {React.createElement(cells[key], { ...props[key], userDataReady })}
                       </CellLayout>
                     </CellInner>
                   </td>
@@ -145,7 +149,7 @@ const Row: React.FunctionComponent<RowProps> = (props) => {
           <tr>
             <EarnedMobileCell>
               <CellLayout label={TranslateString(1072, 'Earned')}>
-                <Earned {...props.earned} />
+                <Earned {...props.earned} userDataReady={userDataReady} />
               </CellLayout>
             </EarnedMobileCell>
             <AprMobileCell>

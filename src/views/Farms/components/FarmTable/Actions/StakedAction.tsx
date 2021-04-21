@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react'
 import styled from 'styled-components'
-import { Button, useModal, IconButton, AddIcon, MinusIcon } from '@pancakeswap-libs/uikit'
+import { Button, useModal, IconButton, AddIcon, MinusIcon, Skeleton } from '@pancakeswap-libs/uikit'
 import { useLocation } from 'react-router-dom'
 import UnlockButton from 'components/UnlockButton'
 import { useWeb3React } from '@web3-react/core'
@@ -24,7 +24,18 @@ const IconButtonWrapper = styled.div`
   display: flex;
 `
 
-const Staked: React.FunctionComponent<FarmWithStakedValue> = ({ pid, lpSymbol, lpAddresses, quoteToken, token }) => {
+interface StackedActionProps extends FarmWithStakedValue {
+  userDataReady: boolean
+}
+
+const Staked: React.FunctionComponent<StackedActionProps> = ({
+  pid,
+  lpSymbol,
+  lpAddresses,
+  quoteToken,
+  token,
+  userDataReady,
+}) => {
   const TranslateString = useI18n()
   const { account } = useWeb3React()
   const [requestedApproval, setRequestedApproval] = useState(false)
@@ -123,6 +134,19 @@ const Staked: React.FunctionComponent<FarmWithStakedValue> = ({ pid, lpSymbol, l
           >
             {TranslateString(999, 'Stake LP')}
           </Button>
+        </ActionContent>
+      </ActionContainer>
+    )
+  }
+
+  if (!userDataReady) {
+    return (
+      <ActionContainer>
+        <ActionTitles>
+          <Subtle>{TranslateString(999, 'START FARMING')}</Subtle>
+        </ActionTitles>
+        <ActionContent>
+          <Skeleton width={180} marginBottom={28} marginTop={14} />
         </ActionContent>
       </ActionContainer>
     )

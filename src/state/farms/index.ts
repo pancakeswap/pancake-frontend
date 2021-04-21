@@ -24,7 +24,7 @@ const noAccountFarmConfig = farmsConfig.map((farm) => ({
   },
 }))
 
-const initialState: FarmsState = { data: noAccountFarmConfig, loadArchivedFarmsData: false }
+const initialState: FarmsState = { data: noAccountFarmConfig, loadArchivedFarmsData: false, userDataLoaded: false }
 
 export const farmsSlice = createSlice({
   name: 'Farms',
@@ -44,6 +44,7 @@ export const farmsSlice = createSlice({
         const index = state.data.findIndex((farm) => farm.pid === pid)
         state.data[index] = { ...state.data[index], userData: userDataEl }
       })
+      state.userDataLoaded = true
     },
     setLoadArchivedFarmsData: (state, action) => {
       const loadArchivedFarmsData = action.payload

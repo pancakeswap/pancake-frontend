@@ -17,6 +17,7 @@ export interface ActionPanelProps {
   multiplier: MultiplierProps
   liquidity: LiquidityProps
   details: FarmWithStakedValue
+  userDataReady: boolean
 }
 
 const Container = styled.div`
@@ -99,7 +100,13 @@ const ValueWrapper = styled.div`
   margin: 4px 0px;
 `
 
-const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({ details, apr, multiplier, liquidity }) => {
+const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({
+  details,
+  apr,
+  multiplier,
+  liquidity,
+  userDataReady,
+}) => {
   const farm = details
 
   const TranslateString = useI18n()
@@ -146,8 +153,8 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({ details, apr, 
         </ValueWrapper>
       </ValueContainer>
       <ActionContainer>
-        <HarvestAction {...farm} />
-        <StakedAction {...farm} />
+        <HarvestAction {...farm} userDataReady={userDataReady} />
+        <StakedAction {...farm} userDataReady={userDataReady} />
       </ActionContainer>
     </Container>
   )

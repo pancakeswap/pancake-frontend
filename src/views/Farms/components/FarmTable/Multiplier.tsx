@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { HelpIcon, useTooltip } from '@pancakeswap-libs/uikit'
+import { HelpIcon, Skeleton, useTooltip } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 
 const ReferenceElement = styled.div`
@@ -29,7 +29,7 @@ const Container = styled.div`
 `
 
 const Multiplier: React.FunctionComponent<MultiplierProps> = ({ multiplier }) => {
-  const displayMultiplier = multiplier ? multiplier.toLowerCase() : '-'
+  const displayMultiplier = multiplier ? multiplier.toLowerCase() : <Skeleton width={30} />
   const TranslateString = useI18n()
   const tooltipContent = (
     <div>
