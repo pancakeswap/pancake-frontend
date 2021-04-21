@@ -1146,7 +1146,7 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://www.exeedme.com/',
   },
-  τBTC: {
+  τbtc: {
     symbol: 'τBTC',
     address: {
       56: '0x2cd1075682b0fccaadd0ca629e138e64015ba11c',

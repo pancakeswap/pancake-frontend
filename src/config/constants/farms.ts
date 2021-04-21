@@ -29,7 +29,7 @@ const farms: FarmConfig[] = [
       97: '',
       56: '0x2d4e52c48fd18ee06d3959e82ab0f773c41b9277',
     },
-    token: tokens.τBTC,
+    token: tokens.τbtc,
     quoteToken: tokens.wbnb,
   },
   {

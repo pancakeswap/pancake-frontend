@@ -19,7 +19,7 @@ const pools: PoolConfig[] = [
   {
     sousId: 113,
     stakingToken: tokens.cake,
-    earningToken: tokens.τBTC,
+    earningToken: tokens.τbtc,
     contractAddress: {
       97: '',
       56: '0x2c6017269b4324d016ca5d8e3267368652c18905',
