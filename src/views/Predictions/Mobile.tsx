@@ -1,11 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Box, Flex } from '@pancakeswap-libs/uikit'
-import { useIsChartPaneOpen, useIsHistoryPaneOpen } from 'state/hooks'
+import { useGetPredictionsStatus, useIsChartPaneOpen, useIsHistoryPaneOpen } from 'state/hooks'
+import { PredictionStatus } from 'state/types'
 import MobileMenu from './components/MobileMenu'
 import History from './History'
 import Positions from './Positions'
 import Chart from './Chart'
+import { ErrorNotification } from './components/Notification'
 
 enum PageView {
   POSITIONS = 'positions',
@@ -40,13 +42,14 @@ const Mobile: React.FC = () => {
   const isHistoryPaneOpen = useIsHistoryPaneOpen()
   const isChartPaneOpen = useIsChartPaneOpen()
   const view = getView(isHistoryPaneOpen, isChartPaneOpen)
+  const status = useGetPredictionsStatus()
 
   return (
     <StyledMobile>
       <Box height="100%">
         {view === PageView.POSITIONS && (
           <Flex alignItems="center" height="100%">
-            <Positions />
+            {status === PredictionStatus.LIVE ? <Positions /> : <ErrorNotification />}
           </Flex>
         )}
         {view === PageView.CHART && <Chart />}

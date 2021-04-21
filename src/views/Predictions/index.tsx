@@ -13,6 +13,7 @@ import { RoundResponse } from 'state/predictions/queries'
 import { HistoryFilter, PredictionsState, PredictionStatus } from 'state/types'
 import PageLoader from 'components/PageLoader'
 import Container from './components/Container'
+import CollectWinningsPopup from './components/CollectWinningsPopup'
 import SwiperProvider from './context/SwiperProvider'
 import Desktop from './Desktop'
 import Mobile from './Mobile'
@@ -74,7 +75,10 @@ const Predictions = () => {
 
   return (
     <SwiperProvider>
-      <Container>{isDesktop ? <Desktop /> : <Mobile />}</Container>
+      <Container>
+        {isDesktop ? <Desktop /> : <Mobile />}
+        <CollectWinningsPopup />
+      </Container>
     </SwiperProvider>
   )
 }

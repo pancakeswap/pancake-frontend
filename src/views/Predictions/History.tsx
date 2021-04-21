@@ -71,14 +71,13 @@ const History = () => {
     <StyledHistory>
       <Header />
       <BetWrapper>
-        {isFetchingHistory ||
-          (!bets && (
-            <SpinnerWrapper>
-              <Spinner size={72} />
-            </SpinnerWrapper>
-          ))}
+        {isFetchingHistory && (
+          <SpinnerWrapper>
+            <Spinner size={72} />
+          </SpinnerWrapper>
+        )}
 
-        {results ? (
+        {results.length > 0 ? (
           orderBy(results, ['round.epoch'], ['desc']).map((bet) => {
             return <HistoricalBet key={bet.id} bet={bet} />
           })

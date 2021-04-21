@@ -11,7 +11,8 @@ import {
   IconButton,
 } from '@pancakeswap-libs/uikit'
 import { useAppDispatch } from 'state'
-import { useIsChartPaneOpen, useIsHistoryPaneOpen } from 'state/hooks'
+import { PredictionStatus } from 'state/types'
+import { useGetPredictionsStatus, useIsChartPaneOpen, useIsHistoryPaneOpen } from 'state/hooks'
 import { setChartPaneState, setHistoryPaneState } from 'state/predictions'
 import useSwiper from '../hooks/useSwiper'
 import CardsIcon from '../icons/CardsIcon'
@@ -53,6 +54,7 @@ const MobileNavigation = () => {
   const { swiper } = useSwiper()
   const isHistoryOpen = useIsHistoryPaneOpen()
   const isChartOpen = useIsChartPaneOpen()
+  const status = useGetPredictionsStatus()
   const activeIndex = getActiveIndex(isHistoryOpen, isChartOpen)
   const dispatch = useAppDispatch()
   const { account } = useWeb3React()
@@ -76,7 +78,7 @@ const MobileNavigation = () => {
   return (
     <StyledMobileNavigation>
       <ButtonNav>
-        <IconButton variant="text" onClick={() => swiper.slidePrev()}>
+        <IconButton variant="text" onClick={() => swiper.slidePrev()} disabled={status !== PredictionStatus.LIVE}>
           <ArrowBackIcon width="24px" color="primary" />
         </IconButton>
       </ButtonNav>
@@ -94,7 +96,7 @@ const MobileNavigation = () => {
         </ButtonMenu>
       </TabNav>
       <ButtonNav>
-        <IconButton variant="text" onClick={() => swiper.slideNext()}>
+        <IconButton variant="text" onClick={() => swiper.slideNext()} disabled={status !== PredictionStatus.LIVE}>
           <ArrowForwardIcon width="24px" color="primary" />
         </IconButton>
       </ButtonNav>

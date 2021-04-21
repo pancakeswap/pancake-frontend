@@ -48,7 +48,7 @@ export const fetchHistory = createAsyncThunk<{ account: string; bets: Bet[] }, {
   'predictions/fetchHistory',
   async ({ account, claimed }) => {
     const response = await getBetHistory({
-      user: account,
+      user: account.toLowerCase(),
       claimed,
     })
     const bets = response.map(transformBetResponse)
