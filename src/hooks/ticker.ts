@@ -60,13 +60,7 @@ export interface TickerStream {
   totalNumberOfTrades: number
 }
 
-export const useTokenPairTicker = (tokenPair: TokenPair, connectOnMount: boolean, retryCount = 3) => {
-  const retriesRemaining = useRef(retryCount)
-
-  // Chrome always returns an event code of 1006 so we have to keep track whether we closed the
-  // connection manually or not (1000)
-  const isManualClose = useRef(false)
-
+export const useTokenPairTicker = (tokenPair: TokenPair, connectOnMount: boolean) => {
   // Use a ref instead of state so we mark the connection as closed immediately without
   // triggering a re-render
   const isConnected = useRef(false)
@@ -83,13 +77,6 @@ export const useTokenPairTicker = (tokenPair: TokenPair, connectOnMount: boolean
 
       ws.onclose = () => {
         isConnected.current = false
-
-        if (retriesRemaining.current > 0 && !isManualClose.current && !isConnected.current) {
-          setTimeout(() => {
-            connect()
-            retriesRemaining.current -= 1
-          }, 5000)
-        }
       }
 
       ws.onerror = (error) => {
@@ -132,20 +119,17 @@ export const useTokenPairTicker = (tokenPair: TokenPair, connectOnMount: boolean
         }
       }
 
-      retriesRemaining.current = retryCount
-      isManualClose.current = false
       websocket.current = ws
     }
-  }, [websocket, tokenPair, isConnected, isManualClose, retriesRemaining, retryCount, setStream])
+  }, [websocket, tokenPair, isConnected, setStream])
 
   const disconnect = useCallback(() => {
     isConnected.current = false
-    isManualClose.current = true
 
     if (websocket.current) {
       websocket.current.close()
     }
-  }, [isConnected, isManualClose, websocket])
+  }, [isConnected, websocket])
 
   useEffect(() => {
     if (connectOnMount) {
