@@ -63,8 +63,8 @@ export interface TickerStream {
 export const useTokenPairTicker = (tokenPair: TokenPair, connectOnMount: boolean, retryCount = 3) => {
   const retriesRemaining = useRef(retryCount)
 
-  // Binance's API always returns an event code of 1006 so there is no way
-  // to know if the connection was closed manually or by the server
+  // Chrome always returns an event code of 1006 so we have to keep track whether we closed the
+  // connection manually or not (1000)
   const isManualClose = useRef(false)
 
   // Use a ref instead of state so we mark the connection as closed immediately without
