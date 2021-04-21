@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
 import { useMatchBreakpoints } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
+import { useFarmUser } from 'state/hooks'
 
 import Apr, { AprProps } from './Apr'
 import Farm, { FarmProps } from './Farm'
@@ -64,12 +65,17 @@ const FarmMobileCell = styled.td`
 
 const Row: React.FunctionComponent<RowProps> = (props) => {
   const { details } = props
-  const [actionPanelToggled, setActionPanelToggled] = useState(false)
+  const hasStakedAmount = !!useFarmUser(details.pid).stakedBalance.toNumber()
+  const [actionPanelToggled, setActionPanelToggled] = useState(hasStakedAmount)
   const TranslateString = useI18n()
 
   const toggleActionPanel = () => {
     setActionPanelToggled(!actionPanelToggled)
   }
+
+  useEffect(() => {
+    setActionPanelToggled(hasStakedAmount)
+  }, [hasStakedAmount])
 
   const { isXl, isXs } = useMatchBreakpoints()
 
