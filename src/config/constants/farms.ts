@@ -23,6 +23,16 @@ const farms: FarmConfig[] = [
     quoteToken: tokens.wbnb,
   },
   {
+    pid: 136,
+    lpSymbol: 'τBTC-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x2d4e52c48fd18ee06d3959e82ab0f773c41b9277',
+    },
+    token: tokens.τBTC,
+    quoteToken: tokens.wbnb,
+  },
+  {
     pid: 76,
     lpSymbol: 'SWINGBY-BNB LP',
     lpAddresses: {
