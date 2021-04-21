@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
+import { getWeb3NoAccount } from 'utils/web3'
 import { getBep20Contract, getCakeContract } from 'utils/contractHelpers'
 import useWeb3 from './useWeb3'
 import useRefresh from './useRefresh'
-import { getWeb3NoAccount } from 'utils/web3'
 
 const useTokenBalance = (tokenAddress: string) => {
   const [balance, setBalance] = useState(new BigNumber(0))
