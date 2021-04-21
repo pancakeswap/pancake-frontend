@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { ProfileState } from 'state/types'
+import type { AppDispatch } from 'state'
 import getProfile, { GetProfileResponse } from './getProfile'
 
 const initialState: ProfileState = {
@@ -17,7 +18,7 @@ export const profileSlice = createSlice({
     profileFetchStart: (state) => {
       state.isLoading = true
     },
-    profileFetchSucceeded: (state, action: PayloadAction<GetProfileResponse>) => {
+    profileFetchSucceeded: (_state, action: PayloadAction<GetProfileResponse>) => {
       const { profile, hasRegistered } = action.payload
 
       return {
@@ -31,6 +32,10 @@ export const profileSlice = createSlice({
       state.isLoading = false
       state.isInitialized = true
     },
+    profileClear: () => ({
+      ...initialState,
+      isLoading: false,
+    }),
     addPoints: (state, action: PayloadAction<number>) => {
       state.data.points += action.payload
     },
@@ -38,11 +43,17 @@ export const profileSlice = createSlice({
 })
 
 // Actions
-export const { profileFetchStart, profileFetchSucceeded, profileFetchFailed, addPoints } = profileSlice.actions
+export const {
+  profileFetchStart,
+  profileFetchSucceeded,
+  profileFetchFailed,
+  profileClear,
+  addPoints,
+} = profileSlice.actions
 
 // Thunks
 // TODO: this should be an AsyncThunk
-export const fetchProfile = (address: string) => async (dispatch) => {
+export const fetchProfile = (address: string) => async (dispatch: AppDispatch) => {
   try {
     dispatch(profileFetchStart())
     const response = await getProfile(address)
