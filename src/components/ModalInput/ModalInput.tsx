@@ -44,7 +44,7 @@ const StyledInput = styled(Input)`
   }
 
   ${({ theme }) => theme.mediaQueries.sm} {
-    width: auto;
+    width: 120px;
   }
 `
 

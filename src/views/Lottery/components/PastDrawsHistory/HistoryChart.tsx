@@ -15,17 +15,22 @@ const InnerWrapper = styled.div`
   align-items: center;
   justify-content: center;
 `
+interface HistoryChartProps {
+  showLast: 'max' | number
+}
 
-const HistoryChart: React.FC = () => {
+const HistoryChart: React.FC<HistoryChartProps> = ({ showLast }) => {
   const TranslateString = useI18n()
   const { isDark } = useTheme()
   const { historyData, historyError } = useContext(PastLotteryDataContext)
   const getDataArray = (kind) => {
-    return historyData
+    const rawData = historyData
       .map((dataPoint) => {
         return dataPoint[kind]
       })
       .reverse()
+
+    return showLast === 'max' ? rawData : rawData.slice(Number(showLast) * -1)
   }
 
   const lineStyles = ({ color }) => {
