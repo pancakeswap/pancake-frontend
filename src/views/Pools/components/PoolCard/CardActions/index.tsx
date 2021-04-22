@@ -1,19 +1,10 @@
 import BigNumber from 'bignumber.js'
-import React, { useCallback, useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
-import { Button, IconButton, useModal, AddIcon, Flex, Text, Box } from '@pancakeswap-libs/uikit'
-import Label from 'components/Label'
+import { Flex, Text, Box } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
-import { useSousUnstake } from 'hooks/useUnstake'
-import { getBalanceNumber } from 'utils/formatBalance'
-import { useSousHarvest } from 'hooks/useHarvest'
-import { useSousStake } from 'hooks/useStake'
-import Balance from 'components/Balance'
 import { PoolCategory } from 'config/constants/types'
 import { Pool } from 'state/types'
-import WithdrawModal from '../WithdrawModal'
-import CompoundModal from '../CompoundModal'
-import HarvestButton from '../HarvestButton'
 import ApprovalAction from './ApprovalAction'
 import StakeActions from './StakeActions'
 import HarvestActions from './HarvestActions'
@@ -29,49 +20,17 @@ const CardActions: React.FC<{
   stakingTokenPrice: number
 }> = ({ pool, stakedBalance, accountHasStakedBalance, stakingTokenPrice }) => {
   const { sousId, stakingToken, earningToken, harvest, poolCategory, isFinished, userData, stakingLimit } = pool
-
   // Pools using native BNB behave differently than pools using a token
   const isBnbPool = poolCategory === PoolCategory.BINANCE
-
   const TranslateString = useI18n()
-
-  const [pendingTx, setPendingTx] = useState(false)
-  const { onUnstake } = useSousUnstake(sousId)
-  const { onReward } = useSousHarvest(sousId, isBnbPool)
-  const { onStake } = useSousStake(sousId, isBnbPool)
-
   const allowance = new BigNumber(userData?.allowance || 0)
   const stakingTokenBalance = new BigNumber(userData?.stakingTokenBalance || 0)
   const earnings = new BigNumber(userData?.pendingReward || 0)
   const needsApproval = !accountHasStakedBalance && !allowance.toNumber() && !isBnbPool
   const isStaked = stakedBalance.toNumber() > 0
 
-  const [onPresentCompound] = useModal(
-    <CompoundModal earnings={earnings} onConfirm={onStake} tokenName={stakingToken.symbol} />,
-  )
-  const [onPresentWithdraw] = useModal(
-    <WithdrawModal
-      max={stakedBalance}
-      onConfirm={onUnstake}
-      tokenName={stakingToken.symbol}
-      stakingTokenDecimals={stakingToken.decimals}
-    />,
-  )
-
   return (
     <Flex flexDirection="column">
-      {/* {harvest && (
-        <HarvestButton
-          disabled={!earnings.toNumber() || pendingTx}
-          text={pendingTx ? TranslateString(999, 'Collecting') : TranslateString(562, 'Harvest')}
-          onClick={async () => {
-            setPendingTx(true)
-            await onReward()
-            setPendingTx(false)
-          }}
-        />
-      )} */}
-
       <Flex flexDirection="column">
         {harvest && (
           <>

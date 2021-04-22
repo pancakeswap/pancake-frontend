@@ -48,6 +48,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({
       sousId={sousId}
       stakingToken={stakingToken}
       stakingTokenPrice={stakingTokenPrice}
+      earningTokenSymbol={earningToken.symbol}
     />,
   )
 
@@ -59,6 +60,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({
       stakingToken={stakingToken}
       stakingTokenPrice={stakingTokenPrice}
       isRemovingStake
+      earningTokenSymbol={earningToken.symbol}
     />,
   )
 

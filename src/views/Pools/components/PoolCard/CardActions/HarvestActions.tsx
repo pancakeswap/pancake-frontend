@@ -1,14 +1,11 @@
 import React from 'react'
-import styled from 'styled-components'
-import { Flex, Text, Button, Box, MinusIcon, Heading, useModal } from '@pancakeswap-libs/uikit'
+import { Flex, Text, Button, Heading, useModal } from '@pancakeswap-libs/uikit'
 import BigNumber from 'bignumber.js'
 import { Token } from 'config/constants/types'
 import { getAddress } from 'utils/addressHelpers'
 import useI18n from 'hooks/useI18n'
-import { getBalanceNumber, formatNumber } from 'utils/formatBalance'
-
+import { getFullDisplayBalance, getBalanceNumber, formatNumber } from 'utils/formatBalance'
 import { useGetApiPrice } from 'state/hooks'
-import NotEnoughTokensModal from '../NotEnoughTokensModal'
 import CollectModal from '../CollectModal'
 
 interface HarvestActionsProps {
@@ -21,6 +18,7 @@ interface HarvestActionsProps {
 const HarvestActions: React.FC<HarvestActionsProps> = ({ earnings, earningToken, sousId, isBnbPool }) => {
   const TranslateString = useI18n()
   const earningTokenPrice = useGetApiPrice(earningToken.address ? getAddress(earningToken.address) : '')
+  const fullBalance = getFullDisplayBalance(earnings, earningToken.decimals)
   const formattedBalance = formatNumber(getBalanceNumber(earnings, earningToken.decimals), 3, 3)
   const earningsDollarValue = formatNumber(
     getBalanceNumber(earnings.multipliedBy(earningTokenPrice), earningToken.decimals),
@@ -30,8 +28,9 @@ const HarvestActions: React.FC<HarvestActionsProps> = ({ earnings, earningToken,
 
   const [onPresentCollect] = useModal(
     <CollectModal
-      tokenSymbol={earningToken.symbol}
       formattedBalance={formattedBalance}
+      fullBalance={fullBalance}
+      earningToken={earningToken}
       earningsDollarValue={earningsDollarValue}
       sousId={sousId}
       isBnbPool={isBnbPool}

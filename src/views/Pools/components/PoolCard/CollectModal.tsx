@@ -3,7 +3,6 @@ import {
   Modal,
   Text,
   Button,
-  OpenNewIcon,
   Heading,
   Flex,
   AutoRenewIcon,
@@ -16,11 +15,14 @@ import {
 import useI18n from 'hooks/useI18n'
 import useTheme from 'hooks/useTheme'
 import { useSousHarvest } from 'hooks/useHarvest'
+import { useSousStake } from 'hooks/useStake'
 import { useToast } from 'state/hooks'
+import { Token } from 'config/constants/types'
 
 interface CollectModalProps {
-  tokenSymbol: string
   formattedBalance: string
+  fullBalance: string
+  earningToken: Token
   earningsDollarValue: string
   sousId: number
   isBnbPool: boolean
@@ -29,8 +31,9 @@ interface CollectModalProps {
 }
 
 const CollectModal: React.FC<CollectModalProps> = ({
-  tokenSymbol,
   formattedBalance,
+  fullBalance,
+  earningToken,
   earningsDollarValue,
   sousId,
   isBnbPool,
@@ -40,12 +43,13 @@ const CollectModal: React.FC<CollectModalProps> = ({
   const TranslateString = useI18n()
   const { theme } = useTheme()
   const { toastSuccess, toastError } = useToast()
+  const { onReward } = useSousHarvest(sousId, isBnbPool)
+  const { onStake } = useSousStake(sousId, isBnbPool)
   const [pendingTx, setPendingTx] = useState(false)
   const [shouldCompound, setShouldCompound] = useState(isCompoundPool)
-  const { onReward } = useSousHarvest(sousId, isBnbPool)
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <>
-      <Box>{TranslateString(999, 'Compound: collect and restake CAKE into pool.')}</Box>
+      <Box mb="12px">{TranslateString(999, 'Compound: collect and restake CAKE into pool.')}</Box>
       <Box>{TranslateString(999, 'Harvest: collect CAKE and send to wallet')}</Box>
     </>,
     'bottom-end',
@@ -57,27 +61,44 @@ const CollectModal: React.FC<CollectModalProps> = ({
 
   const handleHarvestConfirm = async () => {
     setPendingTx(true)
-
-    try {
-      await onReward()
-      toastSuccess(
-        `${TranslateString(999, 'Harvested')}!`,
-        TranslateString(999, 'Your earnings have been sent to your wallet!'),
-      )
-      setPendingTx(false)
-      onDismiss()
-    } catch (e) {
-      toastError(
-        TranslateString(999, 'Canceled'),
-        TranslateString(999, 'Please try again and confirm the transaction.'),
-      )
-      setPendingTx(false)
+    if (shouldCompound) {
+      try {
+        await onStake(fullBalance, earningToken.decimals)
+        toastSuccess(
+          `${TranslateString(999, 'Compounded')}!`,
+          TranslateString(999, `Your ${earningToken.symbol} earnings have been re-invested into the pool!`),
+        )
+        setPendingTx(false)
+        onDismiss()
+      } catch (e) {
+        toastError(
+          TranslateString(999, 'Canceled'),
+          TranslateString(999, 'Please try again and confirm the transaction.'),
+        )
+        setPendingTx(false)
+      }
+    } else {
+      try {
+        await onReward()
+        toastSuccess(
+          `${TranslateString(999, 'Harvested')}!`,
+          TranslateString(999, `Your ${earningToken.symbol} earnings have been sent to your wallet!`),
+        )
+        setPendingTx(false)
+        onDismiss()
+      } catch (e) {
+        toastError(
+          TranslateString(999, 'Canceled'),
+          TranslateString(999, 'Please try again and confirm the transaction.'),
+        )
+        setPendingTx(false)
+      }
     }
   }
 
   return (
     <Modal
-      title={`${tokenSymbol} ${TranslateString(562, 'Harvest')}`}
+      title={`${earningToken.symbol} ${TranslateString(562, 'Harvest')}`}
       onDismiss={onDismiss}
       headerBackground={theme.colors.gradients.cardHeader}
     >
@@ -103,7 +124,7 @@ const CollectModal: React.FC<CollectModalProps> = ({
         <Text>{shouldCompound ? TranslateString(999, 'Compounding') : TranslateString(999, 'Harvesting')}:</Text>
         <Flex flexDirection="column">
           <Heading>
-            {formattedBalance} {tokenSymbol}
+            {formattedBalance} {earningToken.symbol}
           </Heading>
           <Text fontSize="12px" color="textSubtle">{`~${earningsDollarValue || 0} USD`}</Text>
         </Flex>

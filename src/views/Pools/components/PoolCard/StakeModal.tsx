@@ -19,6 +19,7 @@ interface StakeModalProps {
   stakingMax: BigNumber
   stakingTokenPrice: number
   isRemovingStake?: boolean
+  earningTokenSymbol: string
   onDismiss?: () => void
 }
 
@@ -33,6 +34,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
   stakingMax,
   stakingTokenPrice,
   isRemovingStake = false,
+  earningTokenSymbol,
   onDismiss,
 }) => {
   const TranslateString = useI18n()
@@ -71,7 +73,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
         await onUnstake(stakeAmount, stakingToken.decimals)
         toastSuccess(
           `${TranslateString(999, 'Unstaked')}!`,
-          TranslateString(999, 'Your earnings have also been harvested to your wallet!'),
+          TranslateString(999, `Your ${earningTokenSymbol} earnings have also been harvested to your wallet!`),
         )
         setPendingTx(false)
         onDismiss()
@@ -87,7 +89,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
         await onStake(stakeAmount, stakingToken.decimals)
         toastSuccess(
           `${TranslateString(1074, 'Staked')}!`,
-          TranslateString(999, 'Your funds have been staked in the pool!'),
+          TranslateString(999, `Your ${stakingToken.symbol} funds have been staked in the pool!`),
         )
         setPendingTx(false)
         onDismiss()

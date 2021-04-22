@@ -1,7 +1,6 @@
 import React from 'react'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
-import { useWeb3React } from '@web3-react/core'
 import { getBalanceNumber } from 'utils/formatBalance'
 import useI18n from 'hooks/useI18n'
 import { Flex, MetamaskIcon, Text, LinkExternal, TimerIcon, Skeleton } from '@pancakeswap-libs/uikit'
