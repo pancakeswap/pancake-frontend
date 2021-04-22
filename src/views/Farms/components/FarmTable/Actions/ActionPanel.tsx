@@ -1,5 +1,5 @@
 import React from 'react'
-import styled from 'styled-components'
+import styled, { keyframes, css } from 'styled-components'
 import useI18n from 'hooks/useI18n'
 import { LinkExternal, Text } from '@pancakeswap-libs/uikit'
 import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
@@ -18,9 +18,37 @@ export interface ActionPanelProps {
   liquidity: LiquidityProps
   details: FarmWithStakedValue
   userDataReady: boolean
+  expanded: boolean
 }
 
-const Container = styled.div`
+const expandAnimation = keyframes`
+  from {
+    max-height: 0px;
+  }
+  to {
+    max-height: 500px;
+  }
+`
+
+const collapseAnimation = keyframes`
+  from {
+    max-height: 500px;
+  }
+  to {
+    max-height: 0px;
+  }
+`
+
+const Container = styled.div<{ expanded }>`
+  animation: ${({ expanded }) =>
+    expanded
+      ? css`
+          ${expandAnimation} 300ms linear forwards
+        `
+      : css`
+          ${collapseAnimation} 300ms linear forwards
+        `};
+  overflow: hidden;
   background: ${({ theme }) => theme.colors.background};
   display: flex;
   width: 100%;
@@ -106,6 +134,7 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({
   multiplier,
   liquidity,
   userDataReady,
+  expanded,
 }) => {
   const farm = details
 
@@ -122,7 +151,7 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({
   const info = `https://pancakeswap.info/pair/${lpAddress}`
 
   return (
-    <Container>
+    <Container expanded={expanded}>
       <InfoContainer>
         {isActive && (
           <StakeContainer>
