@@ -3,9 +3,9 @@ import { CardHeader, Heading, Text, Flex, Image, Box } from '@pancakeswap-libs/u
 import styled from 'styled-components'
 import PoolFinishedSash from './PoolFinishedSash'
 
-const Wrapper = styled(CardHeader)<{ isFinished?: boolean }>`
-  background: ${({ isFinished, theme }) =>
-    isFinished ? theme.colors.backgroundDisabled : theme.card.cardHeaderBackground.default};
+const Wrapper = styled(CardHeader)<{ isFinished?: boolean; activeBackground?: string }>`
+  background: ${({ isFinished, activeBackground, theme }) =>
+    isFinished ? theme.colors.backgroundDisabled : theme.colors.gradients[activeBackground]};
 `
 
 const StyledCardHeader: React.FC<{
@@ -14,10 +14,12 @@ const StyledCardHeader: React.FC<{
   isFinished?: boolean
 }> = ({ earningTokenSymbol, stakingTokenSymbol, isFinished = false }) => {
   const poolImageSrc = `${earningTokenSymbol}-${stakingTokenSymbol}.svg`.toLocaleLowerCase()
+  const isPromoted = earningTokenSymbol === 'CAKE'
+  const activeBackground = isPromoted ? 'bubblegum' : 'cardHeader'
 
   return (
     <>
-      <Wrapper isFinished={isFinished}>
+      <Wrapper isFinished={isFinished} activeBackground={activeBackground}>
         <Flex alignItems="center" justifyContent="space-between">
           <Flex flexDirection="column">
             <Heading color={isFinished ? 'textDisabled' : 'body'} size="lg">

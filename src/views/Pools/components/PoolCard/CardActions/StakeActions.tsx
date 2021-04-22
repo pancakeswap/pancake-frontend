@@ -4,8 +4,8 @@ import BigNumber from 'bignumber.js'
 import { Token } from 'config/constants/types'
 import useI18n from 'hooks/useI18n'
 import { getBalanceNumber, formatNumber } from 'utils/formatBalance'
-import NotEnoughTokensModal from '../NotEnoughTokensModal'
-import StakeModal from '../StakeModal'
+import NotEnoughTokensModal from '../Modals/NotEnoughTokensModal'
+import StakeModal from '../Modals/StakeModal'
 
 interface StakeActionsProps {
   stakingTokenBalance: BigNumber

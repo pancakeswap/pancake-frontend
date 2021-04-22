@@ -10,7 +10,7 @@ import BigNumber from 'bignumber.js'
 import { getFullDisplayBalance, formatNumber } from 'utils/formatBalance'
 import { Token } from 'config/constants/types'
 import { useToast } from 'state/hooks'
-import ConfirmButton from './ConfirmButton'
+import ConfirmButton from '../ConfirmButton'
 
 interface StakeModalProps {
   sousId: number

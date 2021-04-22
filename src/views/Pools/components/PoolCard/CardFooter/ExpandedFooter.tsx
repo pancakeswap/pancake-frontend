@@ -49,7 +49,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({
   const TranslateString = useI18n()
   const imageSrc = `${BASE_URL}/images/tokens/${tokenSymbol.toLowerCase()}.png`
   const isMetaMaskInScope = !!(window as WindowChain).ethereum?.isMetaMask
-  const shouldShowBlockCountdown = Boolean(startBlock && endBlock)
+  const shouldShowBlockCountdown = Boolean(!isFinished && startBlock && endBlock)
   const { currentBlock } = useBlock()
   const blocksUntilStart = Math.max(startBlock - currentBlock, 0)
   const blocksRemaining = Math.max(endBlock - currentBlock, 0)
@@ -63,7 +63,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({
         <Flex alignItems="flex-start">
           {totalStaked ? (
             <>
-              <Balance fontSize="14px" isDisabled={isFinished} value={getBalanceNumber(totalStaked, decimals)} />
+              <Balance fontSize="14px" value={getBalanceNumber(totalStaked, decimals)} />
               <Text ml="4px" fontSize="14px">
                 {stakingTokenSymbol}
               </Text>
@@ -80,7 +80,6 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({
             <Balance
               color="primary"
               fontSize="14px"
-              isDisabled={isFinished}
               value={hasPoolStarted ? blocksRemaining : blocksUntilStart}
               decimals={0}
             />

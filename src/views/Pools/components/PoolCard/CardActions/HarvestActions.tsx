@@ -6,7 +6,7 @@ import { getAddress } from 'utils/addressHelpers'
 import useI18n from 'hooks/useI18n'
 import { getFullDisplayBalance, getBalanceNumber, formatNumber } from 'utils/formatBalance'
 import { useGetApiPrice } from 'state/hooks'
-import CollectModal from '../CollectModal'
+import CollectModal from '../Modals/CollectModal'
 
 interface HarvestActionsProps {
   earnings: BigNumber
