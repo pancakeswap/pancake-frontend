@@ -1,8 +1,9 @@
-import React, { lazy, Suspense, useContext } from 'react'
+import React, { lazy, Suspense, useContext, useMemo } from 'react'
 import styled from 'styled-components'
 import { Text } from '@pancakeswap-libs/uikit'
 import PastLotteryDataContext from 'contexts/PastLotteryDataContext'
 import useI18n from 'hooks/useI18n'
+import useTheme from 'hooks/useTheme'
 import Loading from '../Loading'
 
 const Line = lazy(() => import('./LineChartWrapper'))
@@ -17,6 +18,7 @@ const InnerWrapper = styled.div`
 
 const HistoryChart: React.FC = () => {
   const TranslateString = useI18n()
+  const { isDark } = useTheme()
   const { historyData, historyError } = useContext(PastLotteryDataContext)
   const getDataArray = (kind) => {
     return historyData
@@ -73,32 +75,34 @@ const HistoryChart: React.FC = () => {
     }
   }
 
-  const options = {
-    legend: { display: false },
-    scales: {
-      yAxes: [
-        {
-          type: 'linear',
-          display: true,
-          position: 'left',
-          id: 'y-axis-pool',
-          ...axesStyles({ color: '#8f80ba', lineHeight: 1.6 }),
-        },
-        {
-          type: 'linear',
-          display: true,
-          position: 'right',
-          id: 'y-axis-burned',
-          ...axesStyles({ color: '#1FC7D4', lineHeight: 1.5 }),
-        },
-      ],
-      xAxes: [
-        {
-          ...axesStyles({ color: '#452A7A', lineHeight: 1 }),
-        },
-      ],
-    },
-  }
+  const options = useMemo(() => {
+    return {
+      legend: { display: false },
+      scales: {
+        yAxes: [
+          {
+            type: 'linear',
+            display: true,
+            position: 'left',
+            id: 'y-axis-pool',
+            ...axesStyles({ color: '#8f80ba', lineHeight: 1.6 }),
+          },
+          {
+            type: 'linear',
+            display: true,
+            position: 'right',
+            id: 'y-axis-burned',
+            ...axesStyles({ color: '#1FC7D4', lineHeight: 1.5 }),
+          },
+        ],
+        xAxes: [
+          {
+            ...axesStyles({ color: isDark ? '#FFFFFF' : '#452A7A', lineHeight: 1 }),
+          },
+        ],
+      },
+    }
+  }, [isDark])
 
   return (
     <>
