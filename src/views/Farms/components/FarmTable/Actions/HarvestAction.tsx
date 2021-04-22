@@ -45,10 +45,6 @@ const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({ pid, userD
     updateValue.current(earningsBusd)
   }, [earningsBusd, updateValue])
 
-  // Harvesting is disabled if
-  // 1. Wallet is not connected (earningsBigNumber.isZero() === true, earnings remains null)
-  // 2. Wallet is connected but we're waiting for the userData
-  // 3. There is pending transaction
   return (
     <ActionContainer>
       <ActionTitles>
