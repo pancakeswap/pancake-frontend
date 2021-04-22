@@ -121,8 +121,11 @@ const Farms: React.FC = () => {
     }
   }, [account, dispatch, fastRefresh])
 
-  const [stakedOnly, setStakedOnly] = usePersistState(false, 'pancake_farm_staked')
   const isActive = !pathname.includes('history')
+  const [stakedOnly, setStakedOnly] = useState(!isActive)
+  useEffect(() => {
+    setStakedOnly(!isActive)
+  }, [isActive])
 
   const activeFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
   const inactiveFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X')
