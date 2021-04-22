@@ -1,81 +1,55 @@
 import React from 'react'
-import { Flex, Text, Button, IconButton, AddIcon, MinusIcon, Heading, useModal } from '@pancakeswap-libs/uikit'
+import styled from 'styled-components'
+import { Flex, Text, Button, Box, MinusIcon, Heading, useModal } from '@pancakeswap-libs/uikit'
 import BigNumber from 'bignumber.js'
 import { Token } from 'config/constants/types'
+import { getAddress } from 'utils/addressHelpers'
 import useI18n from 'hooks/useI18n'
 import { getBalanceNumber, formatNumber } from 'utils/formatBalance'
+
+import { useGetApiPrice } from 'state/hooks'
 import NotEnoughTokensModal from '../NotEnoughTokensModal'
-import StakeModal from '../StakeModal'
+import CollectModal from '../CollectModal'
 
 interface HarvestActionsProps {
-  stakingTokenBalance: BigNumber
-  stakingTokenPrice: number
-  stakingToken: Token
+  earnings: BigNumber
   earningToken: Token
-  stakedBalance: BigNumber
-  stakingLimit?: number
   sousId: number
   isBnbPool: boolean
-  isStaked: ConstrainBoolean
 }
 
-const HarvestActions: React.FC<HarvestActionsProps> = ({
-  stakingTokenBalance,
-  stakingTokenPrice,
-  stakingToken,
-  earningToken,
-  stakedBalance,
-  stakingLimit,
-  sousId,
-  isBnbPool,
-  isStaked,
-}) => {
+const HarvestActions: React.FC<HarvestActionsProps> = ({ earnings, earningToken, sousId, isBnbPool }) => {
   const TranslateString = useI18n()
-  const convertedLimit = new BigNumber(stakingLimit).multipliedBy(new BigNumber(10).pow(earningToken.decimals))
-  const stakingMax =
-    stakingLimit && stakingTokenBalance.isGreaterThan(convertedLimit) ? convertedLimit : stakingTokenBalance
-  const formattedBalance = formatNumber(getBalanceNumber(stakedBalance, stakingToken.decimals), 3, 3)
-  const stakingMaxDollarValue = formatNumber(
-    getBalanceNumber(stakedBalance.multipliedBy(stakingTokenPrice), stakingToken.decimals),
+  const earningTokenPrice = useGetApiPrice(earningToken.address ? getAddress(earningToken.address) : '')
+  const formattedBalance = formatNumber(getBalanceNumber(earnings, earningToken.decimals), 3, 3)
+  const earningsDollarValue = formatNumber(
+    getBalanceNumber(earnings.multipliedBy(earningTokenPrice), earningToken.decimals),
   )
+  const hasEarnings = earnings.toNumber() > 0
 
-  const [onPresentTokenRequired] = useModal(<NotEnoughTokensModal tokenSymbol={stakingToken.symbol} />)
-
-  const [onPresentStake] = useModal(
-    <StakeModal
-      stakingMax={stakingMax}
-      isBnbPool={isBnbPool}
+  const [onPresentHarvest] = useModal(
+    <CollectModal
+      tokenSymbol={earningToken.symbol}
+      formattedBalance={formattedBalance}
+      earningsDollarValue={earningsDollarValue}
       sousId={sousId}
-      stakingToken={stakingToken}
-      stakingTokenPrice={stakingTokenPrice}
-    />,
-  )
-
-  const [onPresentUnstake] = useModal(
-    <StakeModal
-      stakingMax={stakedBalance}
       isBnbPool={isBnbPool}
-      sousId={sousId}
-      stakingToken={stakingToken}
-      stakingTokenPrice={stakingTokenPrice}
-      isRemovingStake
     />,
   )
 
   return (
-    <Flex flexDirection="column">
+    <Flex flexDirection="column" mb="16px">
       <Flex justifyContent="space-between" alignItems="center">
         <Flex flexDirection="column">
-          <Heading>{formattedBalance}</Heading>
-          <Text fontSize="12px" color="textSubtle">{`~${stakingMaxDollarValue || 0} USD`}</Text>
+          <Heading color={hasEarnings ? 'body' : 'textDisabled'}>{hasEarnings ? formattedBalance : 0}</Heading>
+          <Text fontSize="12px" color={hasEarnings ? 'textSubtle' : 'textDisabled'}>{`~${
+            hasEarnings ? earningsDollarValue : 0
+          } USD`}</Text>
         </Flex>
         <Flex>
-          <IconButton variant="secondary" onClick={onPresentUnstake} mr="6px">
-            <MinusIcon color="primary" width="24px" />
-          </IconButton>
-          <IconButton variant="secondary" onClick={onPresentStake}>
-            <AddIcon color="primary" width="24px" height="24px" />
-          </IconButton>
+          <Button disabled={!hasEarnings} onClick={onPresentHarvest}>
+            {TranslateString(562, 'Harvest')}
+          </Button>
         </Flex>
       </Flex>
     </Flex>

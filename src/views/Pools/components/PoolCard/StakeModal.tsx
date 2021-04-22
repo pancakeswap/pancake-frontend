@@ -153,7 +153,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
         onClick={handleConfirmClick}
         mt="24px"
       >
-        {pendingTx ? TranslateString(464, 'Confirming') : TranslateString(464, 'Confirm')}
+        {pendingTx ? TranslateString(802, 'Confirming') : TranslateString(464, 'Confirm')}
       </ConfirmButton>
       {!isRemovingStake && (
         <Button mt="8px" as="a" external href={BASE_EXCHANGE_URL} variant="secondary">

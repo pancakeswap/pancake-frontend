@@ -18,13 +18,6 @@ import ApprovalAction from './ApprovalAction'
 import StakeActions from './StakeActions'
 import HarvestActions from './HarvestActions'
 
-const BalanceAndCompound = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-direction: row;
-`
-
 const InlineText = styled(Text)`
   display: inline;
 `
@@ -67,16 +60,7 @@ const CardActions: React.FC<{
 
   return (
     <Flex flexDirection="column">
-      <Box display="inline">
-        <InlineText color="secondary" textTransform="uppercase" bold fontSize="12px">
-          {`${earningToken.symbol} `}
-        </InlineText>
-        <InlineText color="textSubtle" textTransform="uppercase" bold fontSize="12px">
-          {TranslateString(1072, `earned`)}
-        </InlineText>
-      </Box>
-
-      {harvest && (
+      {/* {harvest && (
         <HarvestButton
           disabled={!earnings.toNumber() || pendingTx}
           text={pendingTx ? TranslateString(999, 'Collecting') : TranslateString(562, 'Harvest')}
@@ -86,29 +70,30 @@ const CardActions: React.FC<{
             setPendingTx(false)
           }}
         />
-      )}
+      )} */}
 
       <Flex flexDirection="column">
+        {harvest && (
+          <>
+            <Box display="inline">
+              <InlineText color="secondary" textTransform="uppercase" bold fontSize="12px">
+                {`${earningToken.symbol} `}
+              </InlineText>
+              <InlineText color="textSubtle" textTransform="uppercase" bold fontSize="12px">
+                {TranslateString(1072, `earned`)}
+              </InlineText>
+            </Box>
+            <HarvestActions earnings={earnings} earningToken={earningToken} sousId={sousId} isBnbPool={isBnbPool} />
+          </>
+        )}
         <Box display="inline">
           <InlineText color={isStaked ? 'secondary' : 'textSubtle'} textTransform="uppercase" bold fontSize="12px">
-            {isStaked ? stakingToken.symbol : TranslateString(1070, `stake`)}
+            {isStaked ? stakingToken.symbol : TranslateString(1070, `stake`)}{' '}
           </InlineText>
           <InlineText color={isStaked ? 'textSubtle' : 'secondary'} textTransform="uppercase" bold fontSize="12px">
-            {' '}
-            {isStaked ? TranslateString(999, `staked`) : stakingToken.symbol}
+            {isStaked ? TranslateString(1074, `staked`) : `${stakingToken.symbol}`}
           </InlineText>
         </Box>
-        <HarvestActions
-          stakingTokenBalance={stakingTokenBalance}
-          stakingTokenPrice={stakingTokenPrice}
-          stakingToken={stakingToken}
-          earningToken={earningToken}
-          stakedBalance={stakedBalance}
-          stakingLimit={stakingLimit}
-          sousId={sousId}
-          isBnbPool={isBnbPool}
-          isStaked={isStaked}
-        />
         {needsApproval ? (
           <ApprovalAction
             stakingToken={stakingToken}
@@ -130,47 +115,6 @@ const CardActions: React.FC<{
           />
         )}
       </Flex>
-      {/* <Flex flexDirection="column">
-        {needsApproval && !isOldSyrup ? (
-          // IS OLD SYRUP CONDITIONAL
-          <Button disabled={isFinished || requestedApproval} onClick={handleApprove} width="100%">
-            {TranslateString(999, 'Enable')}
-          </Button>
-        ) : (
-          <>
-            <Button
-              disabled={stakedBalance.eq(new BigNumber(0)) || pendingTx}
-              onClick={
-                isOldSyrup
-                  ? // IS OLD SYRUP CONDITIONAL
-                    async () => {
-                      setPendingTx(true)
-                      await onUnstake('0', stakingToken.decimals)
-                      setPendingTx(false)
-                    }
-                  : onPresentWithdraw
-              }
-            >
-              {`Unstake ${stakingToken.symbol}`}
-            </Button>
-            <StyledActionSpacer />
-            {!isOldSyrup && (
-              // IS OLD SYRUP CONDITIONAL
-              <IconButton disabled={isFinished && sousId !== 0} onClick={onPresentDeposit}>
-                <AddIcon color="white" />
-              </IconButton>
-            )}
-          </>
-        )}
-      </Flex>
-      <StyledDetails>
-        <div>{TranslateString(384, 'Your Stake')}:</div>
-        <Balance
-          fontSize="14px"
-          isDisabled={isFinished}
-          value={getBalanceNumber(stakedBalance, stakingToken.decimals)}
-        />
-      </StyledDetails> */}
     </Flex>
   )
 }

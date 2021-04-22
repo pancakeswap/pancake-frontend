@@ -19,7 +19,7 @@ interface StakeActionsProps {
   isStaked: ConstrainBoolean
 }
 
-const StakeActions: React.FC<StakeActionsProps> = ({
+const StakeAction: React.FC<StakeActionsProps> = ({
   stakingTokenBalance,
   stakingTokenPrice,
   stakingToken,
@@ -88,4 +88,4 @@ const StakeActions: React.FC<StakeActionsProps> = ({
   )
 }
 
-export default StakeActions
+export default StakeAction
