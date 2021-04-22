@@ -13,6 +13,1119 @@ const farms: FarmConfig[] = [
     quoteToken: tokens.wbnb,
   },
   {
+    pid: 139,
+    lpSymbol: 'CAKE-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.cake,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 250,
+    lpSymbol: 'τBTC-BTCB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.τbtc,
+    quoteToken: tokens.btcb,
+  },
+  {
+    pid: 193,
+    lpSymbol: 'SWINGBY-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.swingby,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 249,
+    lpSymbol: 'XED-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.xed,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 248,
+    lpSymbol: 'HAKKA-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.hakka,
+    quoteToken: tokens.busd,
+  },
+  {
+    pid: 247,
+    lpSymbol: 'CGG-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.cgg,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 246,
+    lpSymbol: 'SUTER-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.suter,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 245,
+    lpSymbol: 'bROOBEE-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.broobee,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 244,
+    lpSymbol: 'HZN-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.hzn,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 243,
+    lpSymbol: 'ALPA-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.alpa,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 242,
+    lpSymbol: 'PERL-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.perl,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 241,
+    lpSymbol: 'TLM-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.tlm,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 240,
+    lpSymbol: 'JGN-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.jgn,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 239,
+    lpSymbol: 'EPS-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.eps,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 238,
+    lpSymbol: 'ARPA-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.arpa,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 237,
+    lpSymbol: 'ITAM-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.itam,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 236,
+    lpSymbol: 'BONDLY-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.bondly,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 235,
+    lpSymbol: 'TKO-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.tko,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 234,
+    lpSymbol: 'APYS-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.apys,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 233,
+    lpSymbol: 'HOO-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.hoo,
+    quoteToken: tokens.busd,
+  },
+  {
+    pid: 232,
+    lpSymbol: 'ODDZ-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.oddz,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 231,
+    lpSymbol: 'EASY-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.easy,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 230,
+    lpSymbol: 'NRV-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.nrv,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 229,
+    lpSymbol: 'DEGO-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.dego,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 228,
+    lpSymbol: 'GUM-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.gum,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 227,
+    lpSymbol: 'pBTC-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.pbtc,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 226,
+    lpSymbol: 'DFT-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.dft,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 225,
+    lpSymbol: 'SWTH-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.swth,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 224,
+    lpSymbol: 'LIEN-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.lien,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 223,
+    lpSymbol: 'ZIL-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.zil,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 222,
+    lpSymbol: 'pCWS-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.pcws,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 221,
+    lpSymbol: 'bBADGER-BTCB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.bbadger,
+    quoteToken: tokens.btcb,
+  },
+  {
+    pid: 220,
+    lpSymbol: 'bDIGG-BTCB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.bdigg,
+    quoteToken: tokens.btcb,
+  },
+  {
+    pid: 219,
+    lpSymbol: 'LTO-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.lto,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 218,
+    lpSymbol: 'MIR-UST LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.mir,
+    quoteToken: tokens.ust,
+  },
+  {
+    pid: 217,
+    lpSymbol: 'TRADE-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.trade,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 216,
+    lpSymbol: 'DUSK-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.dusk,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 215,
+    lpSymbol: 'BIFI-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.bifi,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 214,
+    lpSymbol: 'TXL-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.txl,
+    quoteToken: tokens.busd,
+  },
+  {
+    pid: 213,
+    lpSymbol: 'COS-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.cos,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 212,
+    lpSymbol: 'BUNNY-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.bunny,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 211,
+    lpSymbol: 'ALICE-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.alice,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 210,
+    lpSymbol: 'FOR-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.for,
+    quoteToken: tokens.busd,
+  },
+  {
+    pid: 209,
+    lpSymbol: 'BUX-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.bux,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 208,
+    lpSymbol: 'NULS-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.nuls,
+    quoteToken: tokens.busd,
+  },
+  {
+    pid: 207,
+    lpSymbol: 'BELT-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.belt,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 206,
+    lpSymbol: 'RAMP-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.ramp,
+    quoteToken: tokens.busd,
+  },
+  {
+    pid: 205,
+    lpSymbol: 'BFI-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.bfi,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 204,
+    lpSymbol: 'DEXE-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.dexe,
+    quoteToken: tokens.busd,
+  },
+  {
+    pid: 203,
+    lpSymbol: 'BEL-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.bel,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 202,
+    lpSymbol: 'TPT-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.tpt,
+    quoteToken: tokens.busd,
+  },
+  {
+    pid: 201,
+    lpSymbol: 'WATCH-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.watch,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 200,
+    lpSymbol: 'xMARK-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.xmark,
+    quoteToken: tokens.busd,
+  },
+  {
+    pid: 199,
+    lpSymbol: 'bMXX-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.bmxx,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 198,
+    lpSymbol: 'IOTX-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.iotx,
+    quoteToken: tokens.busd,
+  },
+  {
+    pid: 197,
+    lpSymbol: 'BOR-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.bor,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 196,
+    lpSymbol: 'bOPEN-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.bopen,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 195,
+    lpSymbol: 'SUSHI-ETH LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.sushi,
+    quoteToken: tokens.eth,
+  },
+  {
+    pid: 194,
+    lpSymbol: 'DODO-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.dodo,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 192,
+    lpSymbol: 'BRY-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.bry,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 191,
+    lpSymbol: 'ZEE-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.zee,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 190,
+    lpSymbol: 'SWGb-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.swgb,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 189,
+    lpSymbol: 'COMP-ETH LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.comp,
+    quoteToken: tokens.eth,
+  },
+  {
+    pid: 188,
+    lpSymbol: 'SFP-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.sfp,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 187,
+    lpSymbol: 'LINA-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.lina,
+    quoteToken: tokens.busd,
+  },
+  {
+    pid: 186,
+    lpSymbol: 'LIT-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.lit,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 185,
+    lpSymbol: 'HGET-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.hget,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 184,
+    lpSymbol: 'BDO-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.bdo,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 183,
+    lpSymbol: 'EGLD-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.egld,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 182,
+    lpSymbol: 'UST-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.ust,
+    quoteToken: tokens.busd,
+  },
+  {
+    pid: 181,
+    lpSymbol: 'mAMZN-UST LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.mamzn,
+    quoteToken: tokens.ust,
+  },
+  {
+    pid: 180,
+    lpSymbol: 'mGOOGL-UST LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.mgoogl,
+    quoteToken: tokens.ust,
+  },
+  {
+    pid: 179,
+    lpSymbol: 'mNFLX-UST LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.mnflx,
+    quoteToken: tokens.ust,
+  },
+  {
+    pid: 178,
+    lpSymbol: 'mTSLA-UST LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.mtsla,
+    quoteToken: tokens.ust,
+  },
+  {
+    pid: 177,
+    lpSymbol: 'wSOTE-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.wsote,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 176,
+    lpSymbol: 'FRONT-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.front,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 175,
+    lpSymbol: 'Helmet-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.helmet,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 174,
+    lpSymbol: 'BTCST-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.btcst,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 173,
+    lpSymbol: 'LTC-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.ltc,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 172,
+    lpSymbol: 'USDC-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.usdc,
+    quoteToken: tokens.busd,
+  },
+  {
+    pid: 171,
+    lpSymbol: 'DAI-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.dai,
+    quoteToken: tokens.busd,
+  },
+  {
+    pid: 170,
+    lpSymbol: 'BSCX-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.bscx,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 169,
+    lpSymbol: 'TEN-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.ten,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 168,
+    lpSymbol: 'bALBT-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.balbt,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 167,
+    lpSymbol: 'REEF-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.reef,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 166,
+    lpSymbol: 'Ditto-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.ditto,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 165,
+    lpSymbol: 'VAI-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.vai,
+    quoteToken: tokens.busd,
+  },
+  {
+    pid: 164,
+    lpSymbol: 'BLK-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.blink,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 162,
+    lpSymbol: 'HARD-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.hard,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 161,
+    lpSymbol: 'CTK-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.ctk,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 160,
+    lpSymbol: 'SXP-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.sxp,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 159,
+    lpSymbol: 'INJ-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.inj,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 158,
+    lpSymbol: 'FIL-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.fil,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 157,
+    lpSymbol: 'UNI-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.uni,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 156,
+    lpSymbol: 'YFI-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.yfi,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 155,
+    lpSymbol: 'YFII-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.yfii,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 154,
+    lpSymbol: 'ATOM-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.atom,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 153,
+    lpSymbol: 'XRP-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.xrp,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 152,
+    lpSymbol: 'USDT-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.usdt,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 151,
+    lpSymbol: 'ALPHA-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.alpha,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 150,
+    lpSymbol: 'BTCB-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.btcb,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 149,
+    lpSymbol: 'ETH-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.eth,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 148,
+    lpSymbol: 'XVS-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.xvs,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 147,
+    lpSymbol: 'TWT-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.twt,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 146,
+    lpSymbol: 'USDT-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.usdt,
+    quoteToken: tokens.busd,
+  },
+  {
+    pid: 145,
+    lpSymbol: 'LINK-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.link,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 144,
+    lpSymbol: 'EOS-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.eos,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 143,
+    lpSymbol: 'DOT-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.dot,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 142,
+    lpSymbol: 'BAND-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.band,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 141,
+    lpSymbol: 'ADA-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.ada,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 140,
+    lpSymbol: 'BUSD-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '',
+    },
+    token: tokens.busd,
+    quoteToken: tokens.wbnb,
+  },
+  /**
+   * All farms below here are from v1 and are to be set to 0x
+   */
+  {
     pid: 1,
     lpSymbol: 'CAKE-BNB LP',
     lpAddresses: {
