@@ -69,7 +69,4 @@ const Accordion: React.FC<Props> = ({
   );
 };
 
-export default React.memo(
-  Accordion,
-  (prev, next) => prev.isPushed === next.isPushed && prev.isActive === next.isActive
-);
+export default Accordion;
