@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
-import { useAppDispatch } from 'state'
+import { Helmet } from 'react-helmet-async'
 import { useMatchBreakpoints } from '@pancakeswap-libs/uikit'
+import { useAppDispatch } from 'state'
 import { useGetPredictionsStatus, useInitialBlock } from 'state/hooks'
 import {
   getLatestRounds,
@@ -74,12 +75,17 @@ const Predictions = () => {
   }
 
   return (
-    <SwiperProvider>
-      <Container>
-        {isDesktop ? <Desktop /> : <Mobile />}
-        <CollectWinningsPopup />
-      </Container>
-    </SwiperProvider>
+    <>
+      <Helmet>
+        <script src="https://s3.tradingview.com/tv.js" type="text/javascript" id="tradingViewWidget" />
+      </Helmet>
+      <SwiperProvider>
+        <Container>
+          {isDesktop ? <Desktop /> : <Mobile />}
+          <CollectWinningsPopup />
+        </Container>
+      </SwiperProvider>
+    </>
   )
 }
 
