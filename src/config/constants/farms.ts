@@ -27,7 +27,7 @@ const farms: FarmConfig[] = [
     lpSymbol: 'τBTC-BTCB LP',
     lpAddresses: {
       97: '',
-      56: '',
+      56: '0xFD09CDbd6A7dCAd8AC47df4F139443a729264763',
     },
     token: tokens.τbtc,
     quoteToken: tokens.btcb,
@@ -47,7 +47,7 @@ const farms: FarmConfig[] = [
     lpSymbol: 'XED-BNB LP',
     lpAddresses: {
       97: '',
-      56: '',
+      56: '0xBbE20dA99db94Fa1077F1C9A5d256761dAf89C60',
     },
     token: tokens.xed,
     quoteToken: tokens.wbnb,
@@ -57,7 +57,7 @@ const farms: FarmConfig[] = [
     lpSymbol: 'HAKKA-BUSD LP',
     lpAddresses: {
       97: '',
-      56: '',
+      56: '0x9ed1ca73AA8F1ccdc3c3a174E77014f8900411CE',
     },
     token: tokens.hakka,
     quoteToken: tokens.busd,
@@ -67,7 +67,7 @@ const farms: FarmConfig[] = [
     lpSymbol: 'CGG-BNB LP',
     lpAddresses: {
       97: '',
-      56: '',
+      56: '0xB9aA8B0d67DE546aaa82091065a64B7F1C4B1a1F',
     },
     token: tokens.cgg,
     quoteToken: tokens.wbnb,
@@ -77,7 +77,7 @@ const farms: FarmConfig[] = [
     lpSymbol: 'SUTER-BNB LP',
     lpAddresses: {
       97: '',
-      56: '',
+      56: '0x6f41c9226fa89a552009c3AC087BA74b83772C52',
     },
     token: tokens.suter,
     quoteToken: tokens.wbnb,
@@ -87,7 +87,7 @@ const farms: FarmConfig[] = [
     lpSymbol: 'bROOBEE-BNB LP',
     lpAddresses: {
       97: '',
-      56: '',
+      56: '0x5Ac5184eA06dE24ce8ED2133f58b4Aa2CEd2dC3b',
     },
     token: tokens.broobee,
     quoteToken: tokens.wbnb,
@@ -97,7 +97,7 @@ const farms: FarmConfig[] = [
     lpSymbol: 'HZN-BNB LP',
     lpAddresses: {
       97: '',
-      56: '',
+      56: '0xF7fcD7e7B3853bf59bCA9183476F218ED07eD3B0',
     },
     token: tokens.hzn,
     quoteToken: tokens.wbnb,
@@ -107,7 +107,7 @@ const farms: FarmConfig[] = [
     lpSymbol: 'ALPA-BNB LP',
     lpAddresses: {
       97: '',
-      56: '',
+      56: '0xBB41898A3051A6b6D4A36a1c43e906b05799B744',
     },
     token: tokens.alpa,
     quoteToken: tokens.wbnb,
@@ -117,7 +117,7 @@ const farms: FarmConfig[] = [
     lpSymbol: 'PERL-BNB LP',
     lpAddresses: {
       97: '',
-      56: '',
+      56: '0xB1C2e08A992a619DA570425E78828A8508654f4F',
     },
     token: tokens.perl,
     quoteToken: tokens.wbnb,
@@ -127,7 +127,7 @@ const farms: FarmConfig[] = [
     lpSymbol: 'TLM-BNB LP',
     lpAddresses: {
       97: '',
-      56: '',
+      56: '0x25f15Cb3D3B3753702E1d5c4E5f6F0720b197843',
     },
     token: tokens.tlm,
     quoteToken: tokens.wbnb,
@@ -137,7 +137,7 @@ const farms: FarmConfig[] = [
     lpSymbol: 'JGN-BNB LP',
     lpAddresses: {
       97: '',
-      56: '',
+      56: '0x8fD5ca41B2B44e4713590584f97c85f9FF59F00D',
     },
     token: tokens.jgn,
     quoteToken: tokens.wbnb,
@@ -147,7 +147,7 @@ const farms: FarmConfig[] = [
     lpSymbol: 'EPS-BNB LP',
     lpAddresses: {
       97: '',
-      56: '',
+      56: '0x43bc6C256240e657Ad84aFb86825E21B48FEDe78',
     },
     token: tokens.eps,
     quoteToken: tokens.wbnb,
