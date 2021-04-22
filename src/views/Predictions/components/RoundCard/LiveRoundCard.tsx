@@ -5,6 +5,7 @@ import useI18n from 'hooks/useI18n'
 import { Round, BetPosition } from 'state/types'
 import { useGetTotalIntervalBlocks } from 'state/hooks'
 import { useBnbUsdtTicker } from 'hooks/ticker'
+import BlockProgress from 'components/BlockProgress'
 import { formatUsd, getBubbleGumBackground } from '../../helpers'
 import useIsRoundCanceled from '../../hooks/useIsRoundCanceled'
 import PositionTag from '../PositionTag'
@@ -12,7 +13,6 @@ import { RoundResultBox, LockPriceRow, PrizePoolRow } from '../RoundResult'
 import MultiplierArrow from './MultiplierArrow'
 import Card from './Card'
 import CardHeader from './CardHeader'
-import LiveRoundProgress from './RoundProgress'
 import CanceledRoundCard from './CanceledRoundCard'
 
 interface LiveRoundCardProps {
@@ -64,7 +64,7 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
           epoch={round.epoch}
           blockNumber={estimatedEndBlock}
         />
-        <LiveRoundProgress startBlock={lockBlock} endBlock={estimatedEndBlock} />
+        <BlockProgress variant="flat" scale="sm" startBlock={lockBlock} endBlock={estimatedEndBlock} />
         <CardBody p="16px">
           <MultiplierArrow multiplier={bullMultiplier} hasEntered={hasEnteredUp} isActive={isBull} />
           <RoundResultBox betPosition={isBull ? BetPosition.BULL : BetPosition.BEAR}>

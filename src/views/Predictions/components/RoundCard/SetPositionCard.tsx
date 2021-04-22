@@ -18,8 +18,8 @@ import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import { useGetMinBetAmount, useToast } from 'state/hooks'
 import useI18n from 'hooks/useI18n'
-import useGetBnbBalance from 'hooks/useGetBnbBalance'
 import { usePredictionsContract } from 'hooks/useContract'
+import { useGetBnbBalance } from 'hooks/useTokenBalance'
 import { BetPosition } from 'state/types'
 import { getDecimalAmount } from 'utils/formatBalance'
 import UnlockButton from 'components/UnlockButton'
@@ -72,7 +72,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
   const [errorMessage, setErrorMessage] = useState(null)
   const { account } = useWeb3React()
   const { swiper } = useSwiper()
-  const bnbBalance = useGetBnbBalance()
+  const { balance: bnbBalance } = useGetBnbBalance()
   const minBetAmount = useGetMinBetAmount()
   const TranslateString = useI18n()
   const { toastError } = useToast()

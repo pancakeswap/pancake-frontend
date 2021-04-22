@@ -77,7 +77,7 @@ const History = () => {
           </SpinnerWrapper>
         )}
 
-        {results.length > 0 ? (
+        {results && results.length > 0 ? (
           orderBy(results, ['round.epoch'], ['desc']).map((bet) => {
             return <HistoricalBet key={bet.id} bet={bet} />
           })
