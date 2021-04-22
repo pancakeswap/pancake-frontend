@@ -18,6 +18,10 @@ const config: MenuEntry[] = [
         label: 'Liquidity',
         href: 'https://exchange.pancakeswap.finance/#/pool',
       },
+      {
+        label: 'Migration',
+        href: 'https://exchange.pancakeswap.finance/#//migrate',
+      },
     ],
   },
   {
