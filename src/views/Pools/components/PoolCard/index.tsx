@@ -1,7 +1,6 @@
 import BigNumber from 'bignumber.js'
 import React from 'react'
 import { CardBody, Flex, Text } from '@pancakeswap-libs/uikit'
-import { useWeb3React } from '@web3-react/core'
 import UnlockButton from 'components/UnlockButton'
 import useI18n from 'hooks/useI18n'
 import { getAddress } from 'utils/addressHelpers'
@@ -14,7 +13,7 @@ import CardFooter from './CardFooter'
 import StyledCardHeader from './StyledCardHeader'
 import CardActions from './CardActions'
 
-const PoolCard: React.FC<{ pool: Pool }> = ({ pool }) => {
+const PoolCard: React.FC<{ pool: Pool; account: string }> = ({ pool, account }) => {
   const {
     sousId,
     stakingToken,
@@ -26,7 +25,6 @@ const PoolCard: React.FC<{ pool: Pool }> = ({ pool }) => {
     userData,
     contractAddress,
   } = pool
-  const { account } = useWeb3React()
   const TranslateString = useI18n()
   const stakedBalance = new BigNumber(userData?.stakedBalance || 0)
   const accountHasStakedBalance = stakedBalance?.toNumber() > 0
@@ -78,6 +76,7 @@ const PoolCard: React.FC<{ pool: Pool }> = ({ pool }) => {
         tokenDecimals={earningToken.decimals}
         stakingTokenSymbol={stakingToken.symbol}
         contractAddress={contractAddress}
+        account={account}
       />
     </StyledCard>
   )

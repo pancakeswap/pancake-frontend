@@ -18,6 +18,7 @@ interface FooterProps {
   isFinished: boolean
   stakingTokenSymbol: string
   contractAddress: Address
+  account: string
 }
 
 const ExpandableButtonWrapper = styled(Flex)`
@@ -38,6 +39,7 @@ const Footer: React.FC<FooterProps> = ({
   endBlock,
   stakingTokenSymbol,
   contractAddress,
+  account,
 }) => {
   const TranslateString = useI18n()
   const [isExpanded, setIsExpanded] = useState(false)
@@ -62,6 +64,7 @@ const Footer: React.FC<FooterProps> = ({
           tokenDecimals={tokenDecimals}
           stakingTokenSymbol={stakingTokenSymbol}
           contractAddress={contractAddress}
+          account={account}
         />
       )}
     </CardFooter>

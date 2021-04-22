@@ -80,7 +80,7 @@ const CardActions: React.FC<{
                 {`${earningToken.symbol} `}
               </InlineText>
               <InlineText color="textSubtle" textTransform="uppercase" bold fontSize="12px">
-                {TranslateString(1072, `earned`)}
+                {TranslateString(330, `earned`)}
               </InlineText>
             </Box>
             <HarvestActions earnings={earnings} earningToken={earningToken} sousId={sousId} isBnbPool={isBnbPool} />

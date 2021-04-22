@@ -11,6 +11,7 @@ interface CollectModalProps {
   earningsDollarValue: string
   sousId: number
   isBnbPool: boolean
+  isCompoundPool: boolean
   onDismiss?: () => void
 }
 
@@ -20,6 +21,7 @@ const CollectModal: React.FC<CollectModalProps> = ({
   earningsDollarValue,
   sousId,
   isBnbPool,
+  isCompoundPool,
   onDismiss,
 }) => {
   const TranslateString = useI18n()

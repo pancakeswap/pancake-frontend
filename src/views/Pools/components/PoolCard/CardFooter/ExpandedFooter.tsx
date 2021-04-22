@@ -11,7 +11,7 @@ import { useBlock } from 'state/hooks'
 import { registerToken } from 'utils/wallet'
 import Balance from 'components/Balance'
 
-interface FooterProps {
+interface ExpandedFooterProps {
   projectLink: string
   decimals: number
   totalStaked: BigNumber
@@ -23,6 +23,7 @@ interface FooterProps {
   isFinished: boolean
   stakingTokenSymbol: string
   contractAddress: Address
+  account: string
 }
 
 const ExpandedWrapper = styled(Flex)`
@@ -32,7 +33,7 @@ const ExpandedWrapper = styled(Flex)`
   }
 `
 
-const ExpandedFooter: React.FC<FooterProps> = ({
+const ExpandedFooter: React.FC<ExpandedFooterProps> = ({
   projectLink,
   decimals,
   tokenAddress,
@@ -44,9 +45,9 @@ const ExpandedFooter: React.FC<FooterProps> = ({
   endBlock,
   stakingTokenSymbol,
   contractAddress,
+  account,
 }) => {
   const TranslateString = useI18n()
-  const { account } = useWeb3React()
   const imageSrc = `${BASE_URL}/images/tokens/${tokenSymbol.toLowerCase()}.png`
   const isMetaMaskInScope = !!(window as WindowChain).ethereum?.isMetaMask
   const shouldShowBlockCountdown = Boolean(startBlock && endBlock)
