@@ -2,6 +2,7 @@ import React, { lazy, Suspense, useContext, useMemo } from 'react'
 import styled from 'styled-components'
 import { Text } from '@pancakeswap-libs/uikit'
 import PastLotteryDataContext from 'contexts/PastLotteryDataContext'
+import useI18n from 'hooks/useI18n'
 import useTheme from 'hooks/useTheme'
 import Loading from '../Loading'
 
@@ -16,6 +17,7 @@ const InnerWrapper = styled.div`
 `
 
 const HistoryChart: React.FC = () => {
+  const TranslateString = useI18n()
   const { isDark } = useTheme()
   const { historyData, historyError } = useContext(PastLotteryDataContext)
   const getDataArray = (kind) => {
@@ -106,11 +108,11 @@ const HistoryChart: React.FC = () => {
     <>
       {historyError && (
         <InnerWrapper>
-          <Text>Error fetching data</Text>
+          <Text>{TranslateString(1078, 'Error fetching data')}</Text>
         </InnerWrapper>
       )}
       {!historyError && historyData.length > 1 ? (
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<div>{TranslateString(656, 'Loading...')}</div>}>
           <Line data={chartData} options={options} type="line" />
         </Suspense>
       ) : (
