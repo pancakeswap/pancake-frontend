@@ -35,11 +35,13 @@ const ControlContainer = styled.div`
 
   justify-content: space-between;
   flex-direction: column;
+  margin-bottom: 32px;
 
   ${({ theme }) => theme.mediaQueries.sm} {
     flex-direction: row;
     flex-wrap: wrap;
     padding: 16px 32px;
+    margin-bottom: 0;
   }
 `
 
