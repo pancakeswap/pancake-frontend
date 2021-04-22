@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.27.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap-libs/uikit@0.26.0...@pancakeswap-libs/uikit@0.27.0) (2021-04-22)
+
+
+### Features
+
+* **modal-bg:** Add overflow hidden prop to Modal container and update storybook ([#82](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/82)) ([2233499](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/22334997bf9dde0dcfb551bc26e78a3a92c8e5db))
+* Add VisibilityOn and VisibilityOff icons ([#81](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/81)) ([6635681](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/6635681402de7c43fa429808a46b733fb415ac5f))
+
+
+
+
+
 # [0.26.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap-libs/uikit@0.25.3...@pancakeswap-libs/uikit@0.26.0) (2021-04-20)
 
 
