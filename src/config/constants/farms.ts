@@ -23,6 +23,26 @@ const farms: FarmConfig[] = [
     quoteToken: tokens.wbnb,
   },
   {
+    pid: 136,
+    lpSymbol: 'τBTC-BTCB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x2d4e52c48fd18ee06d3959e82ab0f773c41b9277',
+    },
+    token: tokens.τbtc,
+    quoteToken: tokens.btcb,
+  },
+  {
+    pid: 76,
+    lpSymbol: 'SWINGBY-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x4576C456AF93a37a096235e5d83f812AC9aeD027',
+    },
+    token: tokens.swingby,
+    quoteToken: tokens.wbnb,
+  },
+  {
     pid: 135,
     lpSymbol: 'XED-BNB LP',
     lpAddresses: {
@@ -590,16 +610,6 @@ const farms: FarmConfig[] = [
       56: '0x9e642d174b14faea31d842dc83037c42b53236e6',
     },
     token: tokens.dodo,
-    quoteToken: tokens.wbnb,
-  },
-  {
-    pid: 76,
-    lpSymbol: 'SWINGBY-BNB LP',
-    lpAddresses: {
-      97: '',
-      56: '0x4576C456AF93a37a096235e5d83f812AC9aeD027',
-    },
-    token: tokens.swingby,
     quoteToken: tokens.wbnb,
   },
   {
