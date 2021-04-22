@@ -18,7 +18,7 @@ interface StakeModalProps {
   stakingToken: Token
   stakingMax: BigNumber
   stakingTokenPrice: number
-  isStaking?: boolean
+  isRemovingStake?: boolean
   onDismiss?: () => void
 }
 
@@ -30,7 +30,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
   sousId,
   isBnbPool,
   stakingToken,
-  isStaking = true,
+  isRemovingStake = false,
   stakingMax,
   stakingTokenPrice,
   onDismiss,
@@ -65,23 +65,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
   const handleConfirmClick = async () => {
     setPendingTx(true)
 
-    if (isStaking) {
-      try {
-        await onStake(stakeAmount, stakingToken.decimals)
-        toastSuccess(
-          `${TranslateString(1074, 'Staked')}!`,
-          TranslateString(999, 'Your funds have been staked in the pool!'),
-        )
-        setPendingTx(false)
-        onDismiss()
-      } catch (e) {
-        toastError(
-          TranslateString(999, 'Canceled'),
-          TranslateString(999, 'Please try again and confirm the transaction.'),
-        )
-        setPendingTx(false)
-      }
-    } else {
+    if (isRemovingStake) {
       try {
         await onUnstake(stakeAmount, stakingToken.decimals)
         toastSuccess(
@@ -97,16 +81,32 @@ const StakeModal: React.FC<StakeModalProps> = ({
         )
         setPendingTx(false)
       }
+    } else {
+      try {
+        await onStake(stakeAmount, stakingToken.decimals)
+        toastSuccess(
+          `${TranslateString(1074, 'Staked')}!`,
+          TranslateString(999, 'Your funds have been staked in the pool!'),
+        )
+        setPendingTx(false)
+        onDismiss()
+      } catch (e) {
+        toastError(
+          TranslateString(999, 'Canceled'),
+          TranslateString(999, 'Please try again and confirm the transaction.'),
+        )
+        setPendingTx(false)
+      }
     }
   }
 
   return (
     <Modal
-      title={isStaking ? TranslateString(999, 'Stake in Pool') : TranslateString(588, 'Unstake')}
+      title={isRemovingStake ? TranslateString(588, 'Unstake') : TranslateString(999, 'Stake in Pool')}
       onDismiss={onDismiss}
     >
       <Flex alignItems="center" justifyContent="space-between" mb="8px">
-        <Text bold>{isStaking ? TranslateString(316, 'Stake') : TranslateString(588, 'Unstake')}:</Text>
+        <Text bold>{isRemovingStake ? TranslateString(588, 'Unstake') : TranslateString(316, 'Stake')}:</Text>
         <Flex alignItems="center" minWidth="70px">
           <Image src={`/images/tokens/${stakingToken.symbol}.png`} width={24} height={24} alt={stakingToken.symbol} />
           <Text ml="4px" bold>
@@ -117,7 +117,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
       <BalanceInput
         value={stakeAmount}
         onChange={handleStakeInputChange}
-        currencyValue={`~${usdValueStaked || 0} USD`}
+        currencyValue={`~${new BigNumber(stakeAmount).multipliedBy(stakingTokenPrice).toNumber() || 0} USD`}
       />
       <Text mt="8px" ml="auto" color="textSubtle" fontSize="12px" mb="8px">
         Balance: {getFullDisplayBalance(stakingMax, stakingToken.decimals)}
@@ -153,7 +153,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
       >
         {pendingTx ? TranslateString(464, 'Confirming') : TranslateString(464, 'Confirm')}
       </ConfirmButton>
-      {isStaking && (
+      {!isRemovingStake && (
         <Button mt="8px" as="a" external href={BASE_EXCHANGE_URL} variant="secondary">
           {TranslateString(999, 'Get')} {stakingToken.symbol}
         </Button>

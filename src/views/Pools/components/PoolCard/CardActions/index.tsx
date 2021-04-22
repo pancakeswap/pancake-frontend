@@ -50,6 +50,7 @@ const CardActions: React.FC<{
   const stakingTokenBalance = new BigNumber(userData?.stakingTokenBalance || 0)
   const earnings = new BigNumber(userData?.pendingReward || 0)
   const needsApproval = !accountHasStakedBalance && !allowance.toNumber() && !isBnbPool
+  const isStaked = stakedBalance.toNumber() > 0
 
   const [onPresentCompound] = useModal(
     <CompoundModal earnings={earnings} onConfirm={onStake} tokenName={stakingToken.symbol} />,
@@ -88,11 +89,12 @@ const CardActions: React.FC<{
 
       <Flex flexDirection="column">
         <Box display="inline">
-          <InlineText color="textSubtle" textTransform="uppercase" bold fontSize="12px">
-            {TranslateString(1070, `stake`)}
+          <InlineText color={isStaked ? 'secondary' : 'textSubtle'} textTransform="uppercase" bold fontSize="12px">
+            {isStaked ? stakingToken.symbol : TranslateString(1070, `stake`)}
           </InlineText>
-          <InlineText color="secondary" textTransform="uppercase" bold fontSize="12px">
-            {` ${stakingToken.symbol}`}
+          <InlineText color={isStaked ? 'textSubtle' : 'secondary'} textTransform="uppercase" bold fontSize="12px">
+            {' '}
+            {isStaked ? TranslateString(999, `staked`) : stakingToken.symbol}
           </InlineText>
         </Box>
         {needsApproval ? (
@@ -112,6 +114,7 @@ const CardActions: React.FC<{
             stakingLimit={stakingLimit}
             sousId={sousId}
             isBnbPool={isBnbPool}
+            isStaked={isStaked}
           />
         )}
       </Flex>

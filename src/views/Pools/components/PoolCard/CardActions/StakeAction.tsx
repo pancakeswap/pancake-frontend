@@ -1,18 +1,10 @@
-import React, { useState, useCallback } from 'react'
-import { Flex, Box, Text, Button, AutoRenewIcon, useModal } from '@pancakeswap-libs/uikit'
+import React from 'react'
+import { Flex, Box, Text, Button, IconButton, AddIcon, MinusIcon, Heading, useModal } from '@pancakeswap-libs/uikit'
 import BigNumber from 'bignumber.js'
-import styled from 'styled-components'
 import { Token } from 'config/constants/types'
-import { useSousStake } from 'hooks/useStake'
-import { useSousApprove } from 'hooks/useApprove'
 import useI18n from 'hooks/useI18n'
-import { useERC20 } from 'hooks/useContract'
-import { useToast } from 'state/hooks'
-import { getAddress } from 'utils/addressHelpers'
-import DepositModal from '../DepositModal'
+import { getBalanceNumber, formatNumber } from 'utils/formatBalance'
 import StakeModal from '../StakeModal'
-
-import ApprovalAction from './ApprovalAction'
 
 interface StakeActionsProps {
   stakingTokenBalance: BigNumber
@@ -23,11 +15,8 @@ interface StakeActionsProps {
   stakingLimit?: number
   sousId: number
   isBnbPool: boolean
+  isStaked: ConstrainBoolean
 }
-
-const InlineText = styled(Text)`
-  display: inline;
-`
 
 const StakeAction: React.FC<StakeActionsProps> = ({
   stakingTokenBalance,
@@ -38,25 +27,20 @@ const StakeAction: React.FC<StakeActionsProps> = ({
   stakingLimit,
   sousId,
   isBnbPool,
+  isStaked,
 }) => {
   const TranslateString = useI18n()
-  const { onStake } = useSousStake(sousId, isBnbPool)
   const convertedLimit = new BigNumber(stakingLimit).multipliedBy(new BigNumber(10).pow(earningToken.decimals))
-
-  const [onPresentDeposit] = useModal(
-    <DepositModal
-      max={stakingLimit && stakingTokenBalance.isGreaterThan(convertedLimit) ? convertedLimit : stakingTokenBalance}
-      onConfirm={onStake}
-      tokenName={stakingLimit ? `${stakingToken.symbol} (${stakingLimit} max)` : stakingToken.symbol}
-      stakingTokenDecimals={stakingToken.decimals}
-    />,
+  const stakingMax =
+    stakingLimit && stakingTokenBalance.isGreaterThan(convertedLimit) ? convertedLimit : stakingTokenBalance
+  const formattedBalance = formatNumber(getBalanceNumber(stakingMax, stakingToken.decimals), 3, 3)
+  const stakingMaxDollarValue = formatNumber(
+    getBalanceNumber(stakingMax.multipliedBy(stakingTokenPrice), stakingToken.decimals),
   )
 
   const [onPresentStake] = useModal(
     <StakeModal
-      stakingMax={
-        stakingLimit && stakingTokenBalance.isGreaterThan(convertedLimit) ? convertedLimit : stakingTokenBalance
-      }
+      stakingMax={stakingMax}
       isBnbPool={isBnbPool}
       sousId={sousId}
       stakingToken={stakingToken}
@@ -64,12 +48,36 @@ const StakeAction: React.FC<StakeActionsProps> = ({
     />,
   )
 
+  const [onPresentUnstake] = useModal(
+    <StakeModal
+      stakingMax={stakingMax}
+      isBnbPool={isBnbPool}
+      sousId={sousId}
+      stakingToken={stakingToken}
+      stakingTokenPrice={stakingTokenPrice}
+      isRemovingStake
+    />,
+  )
+
   return (
     <Flex flexDirection="column">
-      {stakedBalance.toNumber() === 0 ? (
-        <Button onClick={onPresentStake}>{TranslateString(1070, 'Stake')}</Button>
+      {isStaked ? (
+        <Flex justifyContent="space-between" alignItems="center">
+          <Flex flexDirection="column">
+            <Heading>{formattedBalance}</Heading>
+            <Text fontSize="12px" color="textSubtle">{`~${stakingMaxDollarValue || 0} USD`}</Text>
+          </Flex>
+          <Flex>
+            <IconButton variant="secondary" onClick={onPresentUnstake} mr="6px">
+              <MinusIcon color="primary" width="24px" />
+            </IconButton>
+            <IconButton variant="secondary" onClick={onPresentStake}>
+              <AddIcon color="primary" width="24px" height="24px" />
+            </IconButton>
+          </Flex>
+        </Flex>
       ) : (
-        <Button>Stuff is staked</Button>
+        <Button onClick={onPresentStake}>{TranslateString(1070, 'Stake')}</Button>
       )}
     </Flex>
   )
