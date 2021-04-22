@@ -46,7 +46,7 @@ const Mobile: React.FC = () => {
 
   return (
     <StyledMobile>
-      <Box height="100%">
+      <Box height="100%" overflow="hidden">
         {view === PageView.POSITIONS && (
           <Flex alignItems="center" height="100%">
             {status === PredictionStatus.LIVE ? <Positions /> : <ErrorNotification />}
