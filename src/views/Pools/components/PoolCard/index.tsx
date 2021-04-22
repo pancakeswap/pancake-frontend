@@ -73,7 +73,7 @@ const PoolCard: React.FC<{ pool: Pool }> = ({ pool }) => {
         startBlock={startBlock}
         endBlock={endBlock}
         isFinished={isFinished}
-        tokenName={earningToken.symbol}
+        tokenSymbol={earningToken.symbol}
         tokenAddress={earningToken.address ? getAddress(earningToken.address) : ''}
         tokenDecimals={earningToken.decimals}
         stakingTokenSymbol={stakingToken.symbol}

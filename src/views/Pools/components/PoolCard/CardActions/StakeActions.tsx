@@ -1,9 +1,10 @@
 import React from 'react'
-import { Flex, Box, Text, Button, IconButton, AddIcon, MinusIcon, Heading, useModal } from '@pancakeswap-libs/uikit'
+import { Flex, Text, Button, IconButton, AddIcon, MinusIcon, Heading, useModal } from '@pancakeswap-libs/uikit'
 import BigNumber from 'bignumber.js'
 import { Token } from 'config/constants/types'
 import useI18n from 'hooks/useI18n'
 import { getBalanceNumber, formatNumber } from 'utils/formatBalance'
+import NotEnoughTokensModal from '../NotEnoughTokensModal'
 import StakeModal from '../StakeModal'
 
 interface StakeActionsProps {
@@ -18,7 +19,7 @@ interface StakeActionsProps {
   isStaked: ConstrainBoolean
 }
 
-const StakeAction: React.FC<StakeActionsProps> = ({
+const StakeActions: React.FC<StakeActionsProps> = ({
   stakingTokenBalance,
   stakingTokenPrice,
   stakingToken,
@@ -33,10 +34,12 @@ const StakeAction: React.FC<StakeActionsProps> = ({
   const convertedLimit = new BigNumber(stakingLimit).multipliedBy(new BigNumber(10).pow(earningToken.decimals))
   const stakingMax =
     stakingLimit && stakingTokenBalance.isGreaterThan(convertedLimit) ? convertedLimit : stakingTokenBalance
-  const formattedBalance = formatNumber(getBalanceNumber(stakingMax, stakingToken.decimals), 3, 3)
+  const formattedBalance = formatNumber(getBalanceNumber(stakedBalance, stakingToken.decimals), 3, 3)
   const stakingMaxDollarValue = formatNumber(
-    getBalanceNumber(stakingMax.multipliedBy(stakingTokenPrice), stakingToken.decimals),
+    getBalanceNumber(stakedBalance.multipliedBy(stakingTokenPrice), stakingToken.decimals),
   )
+
+  const [onPresentTokenRequired] = useModal(<NotEnoughTokensModal tokenSymbol={stakingToken.symbol} />)
 
   const [onPresentStake] = useModal(
     <StakeModal
@@ -50,7 +53,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({
 
   const [onPresentUnstake] = useModal(
     <StakeModal
-      stakingMax={stakingMax}
+      stakingMax={stakedBalance}
       isBnbPool={isBnbPool}
       sousId={sousId}
       stakingToken={stakingToken}
@@ -77,10 +80,12 @@ const StakeAction: React.FC<StakeActionsProps> = ({
           </Flex>
         </Flex>
       ) : (
-        <Button onClick={onPresentStake}>{TranslateString(1070, 'Stake')}</Button>
+        <Button onClick={stakingTokenBalance.toNumber() > 0 ? onPresentStake : onPresentTokenRequired}>
+          {TranslateString(1070, 'Stake')}
+        </Button>
       )}
     </Flex>
   )
 }
 
-export default StakeAction
+export default StakeActions

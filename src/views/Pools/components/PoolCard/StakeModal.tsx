@@ -30,22 +30,23 @@ const StakeModal: React.FC<StakeModalProps> = ({
   sousId,
   isBnbPool,
   stakingToken,
-  isRemovingStake = false,
   stakingMax,
   stakingTokenPrice,
+  isRemovingStake = false,
   onDismiss,
 }) => {
   const TranslateString = useI18n()
+  const { theme } = useTheme()
+
   const { onStake } = useSousStake(sousId, isBnbPool)
   const { onUnstake } = useSousUnstake(sousId)
-  const { theme } = useTheme()
   const { toastSuccess, toastError } = useToast()
 
   const [pendingTx, setPendingTx] = useState(false)
   const [stakeAmount, setStakeAmount] = useState('')
   const [percent, setPercent] = useState(0)
 
-  const usdValueStaked = formatNumber(parseFloat(stakeAmount) * stakingTokenPrice)
+  const usdValueStaked = stakeAmount && formatNumber(parseFloat(stakeAmount) * stakingTokenPrice)
 
   const handleStakeInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = event.target.value ? event.target.value : '0'
@@ -104,6 +105,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
     <Modal
       title={isRemovingStake ? TranslateString(588, 'Unstake') : TranslateString(999, 'Stake in Pool')}
       onDismiss={onDismiss}
+      headerBackground={theme.colors.gradients.cardHeader}
     >
       <Flex alignItems="center" justifyContent="space-between" mb="8px">
         <Text bold>{isRemovingStake ? TranslateString(588, 'Unstake') : TranslateString(316, 'Stake')}:</Text>
@@ -117,7 +119,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
       <BalanceInput
         value={stakeAmount}
         onChange={handleStakeInputChange}
-        currencyValue={`~${new BigNumber(stakeAmount).multipliedBy(stakingTokenPrice).toNumber() || 0} USD`}
+        currencyValue={`~${usdValueStaked || 0} USD`}
       />
       <Text mt="8px" ml="auto" color="textSubtle" fontSize="12px" mb="8px">
         Balance: {getFullDisplayBalance(stakingMax, stakingToken.decimals)}

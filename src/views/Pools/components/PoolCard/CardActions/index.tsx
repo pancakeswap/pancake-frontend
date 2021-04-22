@@ -15,7 +15,8 @@ import WithdrawModal from '../WithdrawModal'
 import CompoundModal from '../CompoundModal'
 import HarvestButton from '../HarvestButton'
 import ApprovalAction from './ApprovalAction'
-import StakeAction from './StakeAction'
+import StakeActions from './StakeActions'
+import HarvestActions from './HarvestActions'
 
 const BalanceAndCompound = styled.div`
   display: flex;
@@ -97,6 +98,17 @@ const CardActions: React.FC<{
             {isStaked ? TranslateString(999, `staked`) : stakingToken.symbol}
           </InlineText>
         </Box>
+        <HarvestActions
+          stakingTokenBalance={stakingTokenBalance}
+          stakingTokenPrice={stakingTokenPrice}
+          stakingToken={stakingToken}
+          earningToken={earningToken}
+          stakedBalance={stakedBalance}
+          stakingLimit={stakingLimit}
+          sousId={sousId}
+          isBnbPool={isBnbPool}
+          isStaked={isStaked}
+        />
         {needsApproval ? (
           <ApprovalAction
             stakingToken={stakingToken}
@@ -105,7 +117,7 @@ const CardActions: React.FC<{
             sousId={sousId}
           />
         ) : (
-          <StakeAction
+          <StakeActions
             stakingTokenBalance={stakingTokenBalance}
             stakingTokenPrice={stakingTokenPrice}
             stakingToken={stakingToken}
