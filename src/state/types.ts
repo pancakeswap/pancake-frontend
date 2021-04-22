@@ -181,6 +181,7 @@ export interface Round {
   totalBets: number
   totalAmount: number
   bullBets: number
+  bearBets: number
   bearAmount: number
   bullAmount: number
   position: BetPosition

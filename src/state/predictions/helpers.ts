@@ -10,7 +10,8 @@ export const numberOrNull = (value: string) => {
     return null
   }
 
-  return Number(value)
+  const valueNum = Number(value)
+  return Number.isNaN(valueNum) ? null : valueNum
 }
 
 export const generateIdFromEpoch = (epoch: number) => {
@@ -76,6 +77,7 @@ export const transformRoundResponse = (roundResponse: RoundResponse): Round => {
     totalBets,
     totalAmount,
     bullBets,
+    bearBets,
     bearAmount,
     bullAmount,
     position,
@@ -107,6 +109,7 @@ export const transformRoundResponse = (roundResponse: RoundResponse): Round => {
     totalBets: numberOrNull(totalBets),
     totalAmount: totalAmount ? parseFloat(totalAmount) : 0,
     bullBets: numberOrNull(bullBets),
+    bearBets: numberOrNull(bearBets),
     bearAmount: numberOrNull(bearAmount),
     bullAmount: numberOrNull(bullAmount),
     position: getRoundPosition(position),
