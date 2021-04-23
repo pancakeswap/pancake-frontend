@@ -27,7 +27,6 @@ const LabelWrapper = styled.div`
 
   > ${Text} {
     font-size: 12px;
-    text-transform: uppercase;
   }
 `
 
@@ -45,7 +44,7 @@ const PastDrawsHistoryCard: React.FC = () => {
         <Wrapper>
           <Legend />
           <LabelWrapper>
-            <Text>{TranslateString(999, 'Show Last')}</Text>
+            <Text textTransform="uppercase">{TranslateString(999, 'Show Last')}</Text>
             <Select
               options={[
                 {
