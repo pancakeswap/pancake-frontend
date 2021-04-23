@@ -12,6 +12,10 @@ const farms: FarmConfig[] = [
     token: tokens.syrup,
     quoteToken: tokens.wbnb,
   },
+
+  /**
+   * V2 farms: We cannot remove these from the site until users have unstaked
+   */
   {
     pid: 139,
     lpSymbol: 'CAKE-BNB LP',
