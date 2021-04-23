@@ -280,7 +280,7 @@ const Farms: React.FC = () => {
       },
       farm: {
         image: farm.lpSymbol.split(' ')[0].toLocaleLowerCase(),
-        label: lpLabel + farm.pid.toString(),
+        label: lpLabel,
         pid: farm.pid,
       },
       earned: {
