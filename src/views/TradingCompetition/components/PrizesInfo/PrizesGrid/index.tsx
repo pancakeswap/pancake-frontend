@@ -16,7 +16,7 @@ import {
   TeamPlayerIcon,
   TrophyGoldIcon,
 } from '@pancakeswap-libs/uikit'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import easterPrizes, { Tiers, Rank } from 'config/constants/trading-competition/easter'
 import { Td, BoldTd, StyledPrizeTable } from '../../StyledPrizeTable'
 
@@ -30,48 +30,42 @@ const tierStyleMap = {
   [Tiers.GOLD]: {
     icon: MedalGoldIcon,
     label: {
-      id: 999,
-      fallback: 'Gold',
+      text: 'Gold',
     },
     color: COLOR_GOLD,
   },
   [Tiers.SILVER]: {
     icon: MedalSilverIcon,
     label: {
-      id: 999,
-      fallback: 'Silver',
+      text: 'Silver',
     },
     color: COLOR_SILVER,
   },
   [Tiers.BRONZE]: {
     icon: MedalBronzeIcon,
     label: {
-      id: 999,
-      fallback: 'Bronze',
+      text: 'Bronze',
     },
     color: COLOR_BRONZE,
   },
   [Tiers.SILVER]: {
     icon: MedalSilverIcon,
     label: {
-      id: 999,
-      fallback: 'Silver',
+      text: 'Silver',
     },
     color: COLOR_SILVER,
   },
   [Tiers.PURPLE]: {
     icon: MedalPurpleIcon,
     label: {
-      id: 999,
-      fallback: 'Purple',
+      text: 'Purple',
     },
     color: COLOR_PURPLE,
   },
   [Tiers.TEAL]: {
     icon: MedalTealIcon,
     label: {
-      id: 999,
-      fallback: 'Teal',
+      text: 'Teal',
     },
     color: COLOR_TEAL,
   },
@@ -85,7 +79,7 @@ const getTotalAchievementPoints = (achievements: Rank['achievements']) => {
 
 const PrizesGrid = () => {
   const [tab, setTab] = useState(0)
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const rows = easterPrizes[tab + 1]
 
   const handleItemClick = (index: number) => setTab(index)
@@ -94,18 +88,18 @@ const PrizesGrid = () => {
     <Box pt="24px">
       <TabMenu activeIndex={tab} onItemClick={handleItemClick}>
         {Object.keys(easterPrizes).map((team) => {
-          return <Tab key={team}>{TranslateString(999, `#${team} Team`, { num: team })}</Tab>
+          return <Tab key={team}>{t(`#${team} Team`, { num: team })}</Tab>
         })}
       </TabMenu>
       <Box minWidth="288px" overflowX="auto" maxWidth="100%">
         <StyledPrizeTable>
           <thead>
             <tr>
-              <th>{TranslateString(1222, 'Rank in team')}</th>
-              <th>{TranslateString(999, 'Tier')}</th>
-              <th>{TranslateString(999, 'CAKE Prizes (Split)')}</th>
-              <th>{TranslateString(1092, 'Achievements')}</th>
-              <th>{TranslateString(999, 'NFT')}</th>
+              <th>{t('Rank in team')}</th>
+              <th>{t('Tier')}</th>
+              <th>{t('CAKE Prizes (Split)')}</th>
+              <th>{t('Achievements')}</th>
+              <th>{t('NFT')}</th>
             </tr>
           </thead>
           <tbody>
@@ -119,7 +113,7 @@ const PrizesGrid = () => {
                   <Td>
                     <Icon />
                     <Text color={color} fontSize="12px" bold textTransform="uppercase">
-                      {TranslateString(label.id, label.fallback)}
+                      {t(label.text)}
                     </Text>
                   </Td>
                   <BoldTd>

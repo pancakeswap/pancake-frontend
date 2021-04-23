@@ -3,7 +3,7 @@ import { Text, Flex, Box, Image, CheckmarkCircleIcon, FlexProps, HelpIcon, useTo
 import { useWeb3React } from '@web3-react/core'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { PublicIfoData, WalletIfoData } from 'hooks/ifo/types'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import { getBalanceNumber } from 'utils/formatBalance'
 import PercentageOfTotal from './PercentageOfTotal'
 import { SkeletonCardTokens } from './Skeletons'
@@ -43,7 +43,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
   isLoading,
 }) => {
   const { account } = useWeb3React()
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     'Sorry, you didn’t contribute enough LP tokens to meet the minimum threshold. You didn’t buy anything in this sale, but you can still reclaim your LP tokens.',
     'bottom',
@@ -62,17 +62,13 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
       return <SkeletonCardTokens />
     }
     if (account && !hasProfile) {
-      return (
-        <Text textAlign="center">
-          {TranslateString(999, 'You need an active PancakeSwap Profile to take part in an IFO!')}
-        </Text>
-      )
+      return <Text textAlign="center">{t('You need an active PancakeSwap Profile to take part in an IFO!')}</Text>
     }
     if (publicIfoData.status === 'coming_soon') {
       return (
         <>
           <TokenSection img="/images/bunny-placeholder.svg">
-            <Label>{TranslateString(999, 'On sale')}</Label>
+            <Label>{t('On sale')}</Label>
             <Value>{ifo[poolId].saleAmount}</Value>
           </TokenSection>
           <Text fontSize="14px" color="textSubtle" pl="48px">{`${distributionRatio}% of total sale`}</Text>
@@ -101,7 +97,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
       return userPoolCharacteristics.amountTokenCommittedInLP.isEqualTo(0) ? (
         <Flex flexDirection="column" alignItems="center">
           <Image src="/images/bunny-placeholder.svg" width={80} height={80} mb="16px" />
-          <Text>{TranslateString(999, 'You didn’t participate in this sale!')}</Text>
+          <Text>{t('You didn’t participate in this sale!')}</Text>
         </Flex>
       ) : (
         <>

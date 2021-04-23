@@ -4,7 +4,7 @@ import { Link, Redirect, useParams } from 'react-router-dom'
 import { ChevronLeftIcon, Flex, Text } from '@pancakeswap-libs/uikit'
 import PageLoader from 'components/PageLoader'
 import teams from 'config/constants/teams'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import { useTeam } from 'state/hooks'
 import TeamCard from './components/TeamCard'
 import TeamHeader from './components/TeamHeader'
@@ -12,7 +12,7 @@ import TeamHeader from './components/TeamHeader'
 const Team = () => {
   const { id: idStr }: { id: string } = useParams()
   const id = Number(idStr)
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const isValidTeamId = teams.findIndex((team) => team.id === id) !== -1
   const team = useTeam(id)
 
@@ -31,7 +31,7 @@ const Team = () => {
         <Link to="/teams">
           <Flex alignItems="center">
             <ChevronLeftIcon color="primary" />
-            <Text color="primary">{TranslateString(1038, 'Teams Overview')}</Text>
+            <Text color="primary">{t('Teams Overview')}</Text>
           </Flex>
         </Link>
       </Flex>

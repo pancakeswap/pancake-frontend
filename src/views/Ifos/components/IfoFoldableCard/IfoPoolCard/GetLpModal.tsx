@@ -2,7 +2,7 @@ import React from 'react'
 import { Modal, ModalBody, Text, Image, Button, Link, OpenNewIcon } from '@pancakeswap-libs/uikit'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
 import { Token } from 'config/constants/types'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 
 interface Props {
   currency: Token
@@ -10,7 +10,7 @@ interface Props {
 }
 
 const GetLpModal: React.FC<Partial<Props>> = ({ currency, onDismiss }) => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   return (
     <Modal title="LP Tokens required" onDismiss={onDismiss}>
       <ModalBody maxWidth="288px">
@@ -28,9 +28,7 @@ const GetLpModal: React.FC<Partial<Props>> = ({ currency, onDismiss }) => {
           </Text>{' '}
           tokens to participate in the IFO!
         </Text>
-        <Text mb="24px">
-          {TranslateString(999, 'Get LP tokens, or make sure your tokens aren’t staked somewhere else.')}
-        </Text>
+        <Text mb="24px">{t('Get LP tokens, or make sure your tokens aren’t staked somewhere else.')}</Text>
         <Button
           as={Link}
           external
@@ -38,7 +36,7 @@ const GetLpModal: React.FC<Partial<Props>> = ({ currency, onDismiss }) => {
           endIcon={<OpenNewIcon color="white" />}
           minWidth="100%" // Bypass the width="fit-content" on Links
         >
-          {TranslateString(999, 'Get LP tokens')}
+          {t('Get LP tokens')}
         </Button>
       </ModalBody>
     </Modal>

@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Text } from '@pancakeswap-libs/uikit'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 
 const Wrapper = styled.div`
   display: flex;
@@ -23,17 +23,17 @@ const Circle = styled.div<{ isPoolSize?: boolean }>`
 `
 
 const Legend = () => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
 
   return (
     <Wrapper>
       <LegendItem>
         <Circle isPoolSize />
-        <Text>{TranslateString(748, 'Pool Size')}</Text>
+        <Text>{t('Pool Size')}</Text>
       </LegendItem>
       <LegendItem>
         <Circle />
-        <Text>{TranslateString(750, 'Burned')}</Text>
+        <Text>{t('Burned')}</Text>
       </LegendItem>
     </Wrapper>
   )

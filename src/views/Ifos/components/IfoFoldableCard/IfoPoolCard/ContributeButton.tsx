@@ -4,7 +4,7 @@ import { Button, useModal } from '@pancakeswap-libs/uikit'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { WalletIfoData, PublicIfoData } from 'hooks/ifo/types'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import useTokenBalance from 'hooks/useTokenBalance'
 import { getAddress } from 'utils/addressHelpers'
 import useToast from 'hooks/useToast'
@@ -22,7 +22,7 @@ const ContributeButton: React.FC<Props> = ({ poolId, ifo, publicIfoData, walletI
   const userPoolCharacteristics = walletIfoData[poolId]
   const { isPendingTx, amountTokenCommittedInLP } = userPoolCharacteristics
   const { limitPerUserInLP } = publicPoolCharacteristics
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const { toastSuccess } = useToast()
   const userCurrencyBalance = useTokenBalance(getAddress(ifo.currency.address))
 
@@ -56,7 +56,7 @@ const ContributeButton: React.FC<Props> = ({ poolId, ifo, publicIfoData, walletI
       width="100%"
       disabled={isDisabled}
     >
-      {isDisabled ? TranslateString(999, 'Max. Committed') : TranslateString(999, 'Commit LP Tokens')}
+      {isDisabled ? t('Max. Committed') : t('Commit LP Tokens')}
     </Button>
   )
 }

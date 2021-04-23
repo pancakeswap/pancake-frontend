@@ -24,7 +24,7 @@ export const LanguageProvider: React.FC = ({ children }) => {
       currentLanguage: languages[codeFromStorage],
     }
   })
-  const { isFetching, currentLanguage } = state
+  const { currentLanguage } = state
 
   useEffect(() => {
     const fetchInitialLocales = async () => {

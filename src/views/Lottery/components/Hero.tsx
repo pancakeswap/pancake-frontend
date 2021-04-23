@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Heading, Text, LinkExternal } from '@pancakeswap-libs/uikit'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import Container from 'components/layout/Container'
 
 const Title = styled(Heading).attrs({ as: 'h1', size: 'xl' })`
@@ -77,21 +77,21 @@ const RightWrapper = styled.div`
 `
 
 const Hero = () => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
 
   return (
     <StyledHero>
       <StyledContainer>
         <LeftWrapper>
-          <Title>{TranslateString(999, 'The Lottery Is Changing!')}</Title>
-          <ComeBack>{TranslateString(999, 'Come back soon!')}</ComeBack>
+          <Title>{t('The Lottery Is Changing!')}</Title>
+          <ComeBack>{t('Come back soon!')}</ComeBack>
           <LinkExternal
             bold
             mt={20}
             external
             href="https://voting.pancakeswap.finance/#/pancake/proposal/QmU8pcbmBrfbfVQXMMxmkExDq3mYq4s5cbBuFe6uCZzdmX"
           >
-            {TranslateString(999, 'Learn more')}
+            {t('Learn more')}
           </LinkExternal>
         </LeftWrapper>
         <RightWrapper>
