@@ -45,6 +45,10 @@ const Syrup: React.FC = () => {
     () => openPools.filter((pool) => pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0)),
     [openPools],
   )
+  const hasStakeInFinishedPools = useMemo(
+    () => finishedPools.some((pool) => pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0)),
+    [finishedPools],
+  )
 
   return (
     <>
@@ -74,7 +78,11 @@ const Syrup: React.FC = () => {
         </Flex>
       </PageHeader>
       <Page>
-        <PoolTabButtons stakedOnly={stakedOnly} setStakedOnly={setStakedOnly} />
+        <PoolTabButtons
+          stakedOnly={stakedOnly}
+          setStakedOnly={setStakedOnly}
+          hasStakeInFinishedPools={hasStakeInFinishedPools}
+        />
         <Divider />
         <FlexLayout>
           <Route exact path={`${path}`}>
