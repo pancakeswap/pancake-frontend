@@ -1,32 +1,22 @@
 import React from 'react'
-import BigNumber from 'bignumber.js'
 import { Flex, Text, IconButton, useModal, CalculateIcon, Skeleton } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
-import { Token } from 'config/constants/types'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { getPoolApr } from 'utils/apr'
 import { getAddress } from 'utils/addressHelpers'
 import { useGetApiPrice } from 'state/hooks'
 import Balance from 'components/Balance'
 import ApyCalculatorModal from 'components/ApyCalculatorModal'
+import { Pool } from 'state/types'
 
 interface AprRowProps {
-  isFinished: boolean
-  stakingToken: Token
-  earningToken: Token
-  totalStaked: BigNumber
-  tokenPerBlock: string
+  pool: Pool
   stakingTokenPrice: number
 }
 
-const AprRow: React.FC<AprRowProps> = ({
-  isFinished,
-  stakingToken,
-  earningToken,
-  totalStaked,
-  tokenPerBlock,
-  stakingTokenPrice,
-}) => {
+const AprRow: React.FC<AprRowProps> = ({ pool, stakingTokenPrice }) => {
+  const { stakingToken, earningToken, totalStaked, isFinished, tokenPerBlock } = pool
+
   const rewardTokenPrice = useGetApiPrice(earningToken.address ? getAddress(earningToken.address) : '')
   const apr = getPoolApr(
     stakingTokenPrice,

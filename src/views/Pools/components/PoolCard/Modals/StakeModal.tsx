@@ -8,18 +8,16 @@ import { useSousUnstake } from 'hooks/useUnstake'
 import useTheme from 'hooks/useTheme'
 import BigNumber from 'bignumber.js'
 import { getFullDisplayBalance, formatNumber } from 'utils/formatBalance'
-import { Token } from 'config/constants/types'
 import { useToast } from 'state/hooks'
+import { Pool } from 'state/types'
 import ConfirmButton from '../ConfirmButton'
 
 interface StakeModalProps {
-  sousId: number
   isBnbPool: boolean
-  stakingToken: Token
+  pool: Pool
   stakingMax: BigNumber
   stakingTokenPrice: number
   isRemovingStake?: boolean
-  earningTokenSymbol: string
   onDismiss?: () => void
 }
 
@@ -28,15 +26,14 @@ const StyledButton = styled(Button)`
 `
 
 const StakeModal: React.FC<StakeModalProps> = ({
-  sousId,
   isBnbPool,
-  stakingToken,
+  pool,
   stakingMax,
   stakingTokenPrice,
   isRemovingStake = false,
-  earningTokenSymbol,
   onDismiss,
 }) => {
+  const { sousId, stakingToken, earningToken } = pool
   const TranslateString = useI18n()
   const { theme } = useTheme()
 
@@ -60,7 +57,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
 
   const handleChangePercent = (sliderPercent: number) => {
     const percentageOfStakingMax = stakingMax.dividedBy(100).multipliedBy(sliderPercent)
-    const amountToStake = getFullDisplayBalance(percentageOfStakingMax, stakingToken.decimals)
+    const amountToStake = getFullDisplayBalance(percentageOfStakingMax, stakingToken.decimals, stakingToken.decimals)
     setStakeAmount(amountToStake)
     setPercent(sliderPercent)
   }
@@ -73,7 +70,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
         await onUnstake(stakeAmount, stakingToken.decimals)
         toastSuccess(
           `${TranslateString(999, 'Unstaked')}!`,
-          TranslateString(999, `Your ${earningTokenSymbol} earnings have also been harvested to your wallet!`),
+          TranslateString(999, `Your ${earningToken.symbol} earnings have also been harvested to your wallet!`),
         )
         setPendingTx(false)
         onDismiss()

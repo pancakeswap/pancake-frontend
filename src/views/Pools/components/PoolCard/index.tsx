@@ -13,17 +13,7 @@ import StyledCardHeader from './StyledCardHeader'
 import CardActions from './CardActions'
 
 const PoolCard: React.FC<{ pool: Pool; account: string }> = ({ pool, account }) => {
-  const {
-    sousId,
-    stakingToken,
-    earningToken,
-    totalStaked,
-    startBlock,
-    endBlock,
-    isFinished,
-    userData,
-    contractAddress,
-  } = pool
+  const { sousId, stakingToken, earningToken, isFinished, userData } = pool
   const TranslateString = useI18n()
   const stakedBalance = new BigNumber(userData?.stakedBalance || 0)
   const accountHasStakedBalance = stakedBalance?.toNumber() > 0
@@ -37,14 +27,7 @@ const PoolCard: React.FC<{ pool: Pool; account: string }> = ({ pool, account }) 
         isFinished={isFinished && sousId !== 0}
       />
       <CardBody>
-        <AprRow
-          isFinished={isFinished}
-          stakingToken={stakingToken}
-          stakingTokenPrice={stakingTokenPrice}
-          earningToken={earningToken}
-          totalStaked={pool.totalStaked}
-          tokenPerBlock={pool.tokenPerBlock}
-        />
+        <AprRow pool={pool} stakingTokenPrice={stakingTokenPrice} />
         <Flex mt="24px" flexDirection="column">
           {account ? (
             <CardActions
@@ -63,20 +46,7 @@ const PoolCard: React.FC<{ pool: Pool; account: string }> = ({ pool, account }) 
           )}
         </Flex>
       </CardBody>
-      <CardFooter
-        projectLink={earningToken.projectLink}
-        decimals={stakingToken.decimals}
-        totalStaked={totalStaked}
-        startBlock={startBlock}
-        endBlock={endBlock}
-        isFinished={isFinished}
-        tokenSymbol={earningToken.symbol}
-        tokenAddress={earningToken.address ? getAddress(earningToken.address) : ''}
-        tokenDecimals={earningToken.decimals}
-        stakingTokenSymbol={stakingToken.symbol}
-        contractAddress={contractAddress}
-        account={account}
-      />
+      <CardFooter pool={pool} account={account} />
     </StyledCard>
   )
 }

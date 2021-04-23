@@ -5,16 +5,14 @@ import useI18n from 'hooks/useI18n'
 import { useERC20 } from 'hooks/useContract'
 import { useToast } from 'state/hooks'
 import { getAddress } from 'utils/addressHelpers'
-import { Token } from 'config/constants/types'
+import { Pool } from 'state/types'
 
 interface ApprovalActionProps {
-  stakingToken: Token
-  earningTokenSymbol: string
-  isFinished: boolean
-  sousId: number
+  pool: Pool
 }
 
-const ApprovalAction: React.FC<ApprovalActionProps> = ({ stakingToken, earningTokenSymbol, isFinished, sousId }) => {
+const ApprovalAction: React.FC<ApprovalActionProps> = ({ pool }) => {
+  const { sousId, stakingToken, earningToken, isFinished } = pool
   const TranslateString = useI18n()
   const stakingTokenContract = useERC20(stakingToken.address ? getAddress(stakingToken.address) : '')
   const [requestedApproval, setRequestedApproval] = useState(false)
@@ -28,7 +26,7 @@ const ApprovalAction: React.FC<ApprovalActionProps> = ({ stakingToken, earningTo
       if (txHash) {
         toastSuccess(
           `${TranslateString(999, 'Contract Enabled')}`,
-          `${TranslateString(999, `You can now stake in the ${earningTokenSymbol} pool!`)}`,
+          `${TranslateString(999, `You can now stake in the ${earningToken.symbol} pool!`)}`,
         )
         setRequestedApproval(false)
       } else {
@@ -46,7 +44,7 @@ const ApprovalAction: React.FC<ApprovalActionProps> = ({ stakingToken, earningTo
       console.error(e)
       toastError('Error', e?.message)
     }
-  }, [onApprove, setRequestedApproval, toastSuccess, toastError, TranslateString, earningTokenSymbol])
+  }, [onApprove, setRequestedApproval, toastSuccess, toastError, TranslateString, earningToken])
 
   return (
     <Button

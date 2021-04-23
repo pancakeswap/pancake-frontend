@@ -1,27 +1,17 @@
 import React from 'react'
-import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import { getBalanceNumber } from 'utils/formatBalance'
 import useI18n from 'hooks/useI18n'
 import { Flex, MetamaskIcon, Text, LinkExternal, TimerIcon, Skeleton } from '@pancakeswap-libs/uikit'
 import { BASE_URL } from 'config'
-import { Address } from 'config/constants/types'
 import { useBlock } from 'state/hooks'
+import { Pool } from 'state/types'
+import { getAddress } from 'utils/addressHelpers'
 import { registerToken } from 'utils/wallet'
 import Balance from 'components/Balance'
 
 interface ExpandedFooterProps {
-  projectLink: string
-  decimals: number
-  totalStaked: BigNumber
-  tokenSymbol: string
-  tokenAddress: string
-  tokenDecimals: number
-  startBlock: number
-  endBlock: number
-  isFinished: boolean
-  stakingTokenSymbol: string
-  contractAddress: Address
+  pool: Pool
   account: string
 }
 
@@ -32,29 +22,20 @@ const ExpandedWrapper = styled(Flex)`
   }
 `
 
-const ExpandedFooter: React.FC<ExpandedFooterProps> = ({
-  projectLink,
-  decimals,
-  tokenAddress,
-  totalStaked,
-  tokenSymbol,
-  tokenDecimals,
-  isFinished,
-  startBlock,
-  endBlock,
-  stakingTokenSymbol,
-  contractAddress,
-  account,
-}) => {
+const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
   const TranslateString = useI18n()
-  const imageSrc = `${BASE_URL}/images/tokens/${tokenSymbol.toLowerCase()}.png`
-  const isMetaMaskInScope = !!(window as WindowChain).ethereum?.isMetaMask
-  const shouldShowBlockCountdown = Boolean(!isFinished && startBlock && endBlock)
   const { currentBlock } = useBlock()
+  const { stakingToken, earningToken, totalStaked, startBlock, endBlock, isFinished, contractAddress } = pool
+
+  const tokenAddress = earningToken.address ? getAddress(earningToken.address) : ''
+  const poolContractAddress = contractAddress[process.env.REACT_APP_CHAIN_ID]
+  const imageSrc = `${BASE_URL}/images/tokens/${earningToken.symbol.toLowerCase()}.png`
+  const isMetaMaskInScope = !!(window as WindowChain).ethereum?.isMetaMask
+
+  const shouldShowBlockCountdown = Boolean(!isFinished && startBlock && endBlock)
   const blocksUntilStart = Math.max(startBlock - currentBlock, 0)
   const blocksRemaining = Math.max(endBlock - currentBlock, 0)
   const hasPoolStarted = blocksUntilStart === 0 && blocksRemaining > 0
-  const poolContractAddress = contractAddress[process.env.REACT_APP_CHAIN_ID]
 
   return (
     <ExpandedWrapper flexDirection="column">
@@ -63,9 +44,9 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({
         <Flex alignItems="flex-start">
           {totalStaked ? (
             <>
-              <Balance fontSize="14px" value={getBalanceNumber(totalStaked, decimals)} />
+              <Balance fontSize="14px" value={getBalanceNumber(totalStaked, stakingToken.decimals)} />
               <Text ml="4px" fontSize="14px">
-                {stakingTokenSymbol}
+                {stakingToken.symbol}
               </Text>
             </>
           ) : (
@@ -77,12 +58,16 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({
         <Flex mb="2px" justifyContent="space-between" alignItems="center">
           <Text fontSize="14px">{hasPoolStarted ? TranslateString(410, 'End') : TranslateString(1212, 'Start')}:</Text>
           <Flex alignItems="center">
-            <Balance
-              color="primary"
-              fontSize="14px"
-              value={hasPoolStarted ? blocksRemaining : blocksUntilStart}
-              decimals={0}
-            />
+            {blocksRemaining || blocksUntilStart ? (
+              <Balance
+                color="primary"
+                fontSize="14px"
+                value={hasPoolStarted ? blocksRemaining : blocksUntilStart}
+                decimals={0}
+              />
+            ) : (
+              <Skeleton width="54px" height="21px" />
+            )}
             <Text ml="4px" color="primary" fontSize="14px">
               {TranslateString(999, 'blocks')}
             </Text>
@@ -91,7 +76,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({
         </Flex>
       )}
       <Flex mb="2px" justifyContent="flex-end">
-        <LinkExternal bold={false} fontSize="14px" href={projectLink} target="_blank">
+        <LinkExternal bold={false} fontSize="14px" href={earningToken.projectLink} target="_blank">
           {TranslateString(412, 'View Project Site')}
         </LinkExternal>
       </Flex>
@@ -107,24 +92,12 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({
           </LinkExternal>
         </Flex>
       )}
-      {tokenAddress && (
-        <Flex mb="2px" justifyContent="flex-end">
-          <LinkExternal
-            bold={false}
-            fontSize="14px"
-            href={`https://pancakeswap.info/token/${tokenAddress}`}
-            target="_blank"
-          >
-            {TranslateString(412, 'View Pool Info')}
-          </LinkExternal>
-        </Flex>
-      )}
       {account && isMetaMaskInScope && tokenAddress && (
         <Flex justifyContent="flex-end">
           <Text
             color="primary"
             fontSize="14px"
-            onClick={() => registerToken(tokenAddress, tokenSymbol, tokenDecimals, imageSrc)}
+            onClick={() => registerToken(tokenAddress, earningToken.symbol, earningToken.decimals, imageSrc)}
           >
             Add to Metamask
           </Text>

@@ -19,7 +19,7 @@ const CardActions: React.FC<{
   accountHasStakedBalance: boolean
   stakingTokenPrice: number
 }> = ({ pool, stakedBalance, accountHasStakedBalance, stakingTokenPrice }) => {
-  const { sousId, stakingToken, earningToken, harvest, poolCategory, isFinished, userData, stakingLimit } = pool
+  const { sousId, stakingToken, earningToken, harvest, poolCategory, userData } = pool
   // Pools using native BNB behave differently than pools using a token
   const isBnbPool = poolCategory === PoolCategory.BINANCE
   const TranslateString = useI18n()
@@ -54,21 +54,13 @@ const CardActions: React.FC<{
           </InlineText>
         </Box>
         {needsApproval ? (
-          <ApprovalAction
-            stakingToken={stakingToken}
-            earningTokenSymbol={earningToken.symbol}
-            isFinished={isFinished}
-            sousId={sousId}
-          />
+          <ApprovalAction pool={pool} />
         ) : (
           <StakeActions
+            pool={pool}
             stakingTokenBalance={stakingTokenBalance}
             stakingTokenPrice={stakingTokenPrice}
-            stakingToken={stakingToken}
-            earningToken={earningToken}
             stakedBalance={stakedBalance}
-            stakingLimit={stakingLimit}
-            sousId={sousId}
             isBnbPool={isBnbPool}
             isStaked={isStaked}
           />
