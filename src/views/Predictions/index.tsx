@@ -4,13 +4,12 @@ import { useMatchBreakpoints } from '@pancakeswap-libs/uikit'
 import { useAppDispatch } from 'state'
 import { useGetPredictionsStatus, useInitialBlock } from 'state/hooks'
 import {
-  getLatestRounds,
+  getMarketData,
   getStaticPredictionsData,
   makeFutureRoundResponse,
   makeRoundData,
 } from 'state/predictions/helpers'
 import { initialize, setPredictionStatus } from 'state/predictions'
-import { RoundResponse } from 'state/predictions/queries'
 import { HistoryFilter, PredictionsState, PredictionStatus } from 'state/types'
 import PageLoader from 'components/PageLoader'
 import Container from './components/Container'
@@ -30,16 +29,13 @@ const Predictions = () => {
 
   useEffect(() => {
     const fetchInitialData = async () => {
-      const [staticPredictionsData, latestRounds] = (await Promise.all([
-        getStaticPredictionsData(),
-        getLatestRounds(),
-      ])) as [Omit<PredictionsState, 'rounds'>, RoundResponse[]]
-
+      const [staticPredictionsData, marketData] = await Promise.all([getStaticPredictionsData(), getMarketData()])
       const { currentEpoch, intervalBlocks, bufferBlocks } = staticPredictionsData
-      const latestRound = latestRounds.find((roundResponse) => roundResponse.epoch === currentEpoch.toString())
+      const latestRound = marketData.rounds.find((round) => round.epoch === currentEpoch)
 
-      // If that latest epoch from the API does not match the latest epoch from the contract we have an unrecoverable error
-      if (latestRound && latestRound.epoch === currentEpoch.toString()) {
+      if (marketData.market.paused) {
+        dispatch(setPredictionStatus(PredictionStatus.PAUSED))
+      } else if (latestRound && latestRound.epoch === currentEpoch) {
         const currentRoundStartBlock = Number(latestRound.startBlock)
         const futureRounds = []
         const halfInterval = (intervalBlocks + bufferBlocks) / 2
@@ -48,11 +44,11 @@ const Predictions = () => {
           futureRounds.push(makeFutureRoundResponse(currentEpoch + i, (currentRoundStartBlock + halfInterval) * i))
         }
 
-        const roundData = makeRoundData([...latestRounds, ...futureRounds])
+        const roundData = makeRoundData([...marketData.rounds, ...futureRounds])
 
         dispatch(
           initialize({
-            ...staticPredictionsData,
+            ...(staticPredictionsData as Omit<PredictionsState, 'rounds'>),
             historyFilter: HistoryFilter.ALL,
             currentRoundStartBlockNumber: currentRoundStartBlock,
             rounds: roundData,
@@ -60,6 +56,7 @@ const Predictions = () => {
           }),
         )
       } else {
+        // If the latest epoch from the API does not match the latest epoch from the contract we have an unrecoverable error
         dispatch(setPredictionStatus(PredictionStatus.ERROR))
       }
     }

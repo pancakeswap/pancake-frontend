@@ -7,7 +7,7 @@ import MobileMenu from './components/MobileMenu'
 import History from './History'
 import Positions from './Positions'
 import Chart from './Chart'
-import { ErrorNotification } from './components/Notification'
+import { ErrorNotification, PauseNotification } from './components/Notification'
 
 enum PageView {
   POSITIONS = 'positions',
@@ -49,7 +49,9 @@ const Mobile: React.FC = () => {
       <Box height="100%" overflow="hidden">
         {view === PageView.POSITIONS && (
           <Flex alignItems="center" height="100%">
-            {status === PredictionStatus.LIVE ? <Positions /> : <ErrorNotification />}
+            {status === PredictionStatus.ERROR && <ErrorNotification />}
+            {status === PredictionStatus.PAUSED && <PauseNotification />}
+            {status === PredictionStatus.LIVE && <Positions />}
           </Flex>
         )}
         {view === PageView.CHART && <Chart />}

@@ -1,9 +1,8 @@
 import { useWeb3React } from '@web3-react/core'
 import { useEffect } from 'react'
 import { useAppDispatch } from 'state'
-import { updateRounds } from 'state/predictions'
-import { getLatestRounds, makeRoundData } from 'state/predictions/helpers'
-import { RoundResponse } from 'state/predictions/queries'
+import { updateMarketData } from 'state/predictions'
+import { getMarketData } from 'state/predictions/helpers'
 
 const POLL_TIME_IN_SECONDS = 15
 
@@ -13,9 +12,9 @@ const usePollRoundData = () => {
 
   useEffect(() => {
     const timer = setInterval(async () => {
-      const latestRounds = (await getLatestRounds()) as RoundResponse[]
-      const roundData = makeRoundData(latestRounds)
-      dispatch(updateRounds(roundData))
+      const marketData = await getMarketData()
+
+      dispatch(updateMarketData(marketData))
     }, POLL_TIME_IN_SECONDS * 1000)
 
     return () => {

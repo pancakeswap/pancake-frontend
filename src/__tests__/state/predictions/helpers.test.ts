@@ -1,4 +1,9 @@
-import { makeFutureRoundResponse, numberOrNull, transformBetResponse } from 'state/predictions/helpers'
+import {
+  makeFutureRoundResponse,
+  numberOrNull,
+  transformBetResponse,
+  transformMarketResponse,
+} from 'state/predictions/helpers'
 
 describe('numberOrNull', () => {
   it.each([
@@ -14,8 +19,9 @@ describe('numberOrNull', () => {
 describe('makeFutureRoundResponse', () => {
   it('returns a correctly transformed future round response', () => {
     expect(makeFutureRoundResponse(200, 500)).toEqual({
-      id: '0xc8',
+      id: '200',
       epoch: '200',
+      failed: null,
       startBlock: '500',
       startAt: null,
       lockAt: null,
@@ -79,8 +85,9 @@ describe('transformBetResponse', () => {
       claimed: false,
       user: userResponse,
       round: {
-        id: '0xc8',
+        id: '200',
         epoch: '200',
+        failed: false,
         startBlock: '500',
         startAt: '1000',
         lockAt: '1000',
@@ -106,8 +113,9 @@ describe('transformBetResponse', () => {
       position: 'Bull',
       claimed: false,
       round: {
-        id: '0xc8',
+        id: '200',
         epoch: 200,
+        failed: false,
         startBlock: 500,
         startAt: 1000,
         lockAt: 1000,
@@ -131,6 +139,23 @@ describe('transformBetResponse', () => {
         totalBets: 20,
         totalBNB: 43,
       },
+    })
+  })
+})
+
+describe('transformMarketResponse', () => {
+  it('returns a correctly transformed market response', () => {
+    const marketResponse = {
+      id: '1',
+      paused: true,
+      epoch: {
+        epoch: '200',
+      },
+    }
+    expect(transformMarketResponse(marketResponse)).toEqual({
+      id: '1',
+      paused: true,
+      epoch: 200,
     })
   })
 })

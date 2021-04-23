@@ -33,6 +33,7 @@ export interface HistoricalBetResponse {
 export interface RoundResponse {
   id: string
   epoch: string
+  failed: boolean
   startBlock: string
   startAt: string
   lockAt: string
@@ -50,9 +51,18 @@ export interface RoundResponse {
   bets: BetResponse[]
 }
 
+export interface MarketResponse {
+  id: string
+  paused: boolean
+  epoch: {
+    epoch: string
+  }
+}
+
 export const getRoundBaseFields = () => `
   id
   epoch
+  failed
   startAt
   startBlock
   lockAt

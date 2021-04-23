@@ -1,9 +1,16 @@
 import { request, gql } from 'graphql-request'
 import { GRAPH_API_PREDICTIONS } from 'config/constants/endpoints'
-import { Bet, BetPosition, PredictionStatus, Round, RoundData } from 'state/types'
+import { Bet, BetPosition, Market, PredictionStatus, Round, RoundData } from 'state/types'
 import makeBatchRequest from 'utils/makeBatchRequest'
 import { getPredictionsContract } from 'utils/contractHelpers'
-import { BetResponse, getRoundBaseFields, getBetBaseFields, getUserBaseFields, RoundResponse } from './queries'
+import {
+  BetResponse,
+  getRoundBaseFields,
+  getBetBaseFields,
+  getUserBaseFields,
+  RoundResponse,
+  MarketResponse,
+} from './queries'
 
 export const numberOrNull = (value: string) => {
   if (value === null) {
@@ -14,15 +21,12 @@ export const numberOrNull = (value: string) => {
   return Number.isNaN(valueNum) ? null : valueNum
 }
 
-export const generateIdFromEpoch = (epoch: number) => {
-  return `0x${epoch.toString(16)}`
-}
-
 export const makeFutureRoundResponse = (epoch: number, startBlock: number): RoundResponse => {
   return {
-    id: generateIdFromEpoch(epoch),
+    id: epoch.toString(),
     epoch: epoch.toString(),
     startBlock: startBlock.toString(),
+    failed: null,
     startAt: null,
     lockAt: null,
     lockBlock: null,
@@ -67,6 +71,7 @@ export const transformRoundResponse = (roundResponse: RoundResponse): Round => {
   const {
     id,
     epoch,
+    failed,
     startBlock,
     startAt,
     lockAt,
@@ -98,6 +103,7 @@ export const transformRoundResponse = (roundResponse: RoundResponse): Round => {
 
   return {
     id,
+    failed,
     epoch: numberOrNull(epoch),
     startBlock: numberOrNull(startBlock),
     startAt: numberOrNull(startAt),
@@ -117,11 +123,19 @@ export const transformRoundResponse = (roundResponse: RoundResponse): Round => {
   }
 }
 
-export const makeRoundData = (roundResponses: RoundResponse[]): RoundData => {
-  return roundResponses.reduce((accum, roundResponse) => {
+export const transformMarketResponse = (marketResponse: MarketResponse): Market => {
+  return {
+    id: marketResponse.id,
+    paused: marketResponse.paused,
+    epoch: Number(marketResponse.epoch.epoch),
+  }
+}
+
+export const makeRoundData = (rounds: Round[]): RoundData => {
+  return rounds.reduce((accum, round) => {
     return {
       ...accum,
-      [roundResponse.id]: transformRoundResponse(roundResponse),
+      [round.id]: round,
     }
   }, {})
 }
@@ -148,11 +162,14 @@ export const getStaticPredictionsData = async () => {
   }
 }
 
-export const getLatestRounds = async () => {
-  const response = await request(
+export const getMarketData = async (): Promise<{
+  rounds: Round[]
+  market: Market
+}> => {
+  const response = (await request(
     GRAPH_API_PREDICTIONS,
     gql`
-      query getLatestRounds {
+      query getMarketData {
         rounds(first: 5, order: epoch, orderDirection: desc) {
           ${getRoundBaseFields()}
           bets {
@@ -162,10 +179,21 @@ export const getLatestRounds = async () => {
             }
           }
         }
+        market(id: 1) {
+          id
+          paused
+          epoch {
+            epoch
+          }
+        }
       }
     `,
-  )
-  return response.rounds
+  )) as { rounds: RoundResponse[]; market: MarketResponse }
+
+  return {
+    rounds: response.rounds.map(transformRoundResponse),
+    market: transformMarketResponse(response.market),
+  }
 }
 
 export const getRound = async (id: string) => {

@@ -171,6 +171,7 @@ export enum PredictionStatus {
 export interface Round {
   id: string
   epoch: number
+  failed?: boolean
   startBlock: number
   startAt: number
   lockAt: number | null
@@ -186,6 +187,12 @@ export interface Round {
   bullAmount: number
   position: BetPosition
   bets?: Bet[]
+}
+
+export interface Market {
+  id: string
+  paused: boolean
+  epoch: number
 }
 
 export interface Bet {

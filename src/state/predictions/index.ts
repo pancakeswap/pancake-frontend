@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { maxBy } from 'lodash'
-import { Bet, HistoryFilter, PredictionsState, PredictionStatus, Round, RoundData } from 'state/types'
+import { Bet, HistoryFilter, Market, PredictionsState, PredictionStatus, Round } from 'state/types'
 import {
   getRound,
   makeFutureRoundResponse,
@@ -9,6 +9,7 @@ import {
   getBetHistory,
   transformBetResponse,
   getBet,
+  makeRoundData,
 } from './helpers'
 
 const initialState: PredictionsState = {
@@ -77,16 +78,16 @@ export const predictionsSlice = createSlice({
     initialize: (state, action: PayloadAction<PredictionsState>) => {
       return action.payload
     },
-    updateRounds: (state, action: PayloadAction<RoundData>) => {
-      const newRoundData = { ...state.rounds, ...action.payload }
-      const incomingRounds = Object.values(action.payload)
-      const incomingCurrentRound = maxBy(incomingRounds, 'epoch')
+    updateMarketData: (state, action: PayloadAction<{ rounds: Round[]; market: Market }>) => {
+      const { rounds, market } = action.payload
+      const newRoundData = { ...state.rounds, ...makeRoundData(rounds) }
+      const incomingCurrentRound = maxBy(rounds, 'epoch')
 
       if (state.currentEpoch !== incomingCurrentRound.epoch) {
-        const rounds = Object.values(newRoundData)
+        const updatedRounds = Object.values(newRoundData)
 
         // Add new round
-        const newestRound = maxBy(rounds, 'epoch')
+        const newestRound = maxBy(updatedRounds, 'epoch')
         const futureRound = transformRoundResponse(
           makeFutureRoundResponse(newestRound.epoch + 1, newestRound.startBlock + state.intervalBlocks),
         )
@@ -96,6 +97,7 @@ export const predictionsSlice = createSlice({
 
       state.currentEpoch = incomingCurrentRound.epoch
       state.currentRoundStartBlockNumber = incomingCurrentRound.startBlock
+      state.status = market.paused ? PredictionStatus.PAUSED : PredictionStatus.LIVE
       state.rounds = newRoundData
     },
     setCurrentEpoch: (state, action: PayloadAction<number>) => {
@@ -152,7 +154,7 @@ export const {
   setCurrentEpoch,
   setHistoryFilter,
   setHistoryPaneState,
-  updateRounds,
+  updateMarketData,
   markBetAsCollected,
   setPredictionStatus,
 } = predictionsSlice.actions

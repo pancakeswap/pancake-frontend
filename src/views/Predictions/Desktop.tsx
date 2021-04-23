@@ -7,7 +7,7 @@ import { setChartPaneState } from 'state/predictions'
 import { PredictionStatus } from 'state/types'
 import useI18n from 'hooks/useI18n'
 import TradingView from './components/TradingView'
-import { ErrorNotification } from './components/Notification'
+import { ErrorNotification, PauseNotification } from './components/Notification'
 import History from './History'
 import Positions from './Positions'
 
@@ -85,6 +85,7 @@ const Desktop: React.FC = () => {
     <StyledDesktop>
       <ContentWrapper>
         {status === PredictionStatus.ERROR && <ErrorNotification />}
+        {status === PredictionStatus.PAUSED && <PauseNotification />}
         {status === PredictionStatus.LIVE && (
           <>
             <PositionsPane>

@@ -24,7 +24,7 @@ const Wrapper = styled.div`
 
 const CardWrapper = styled.div`
   position: relative;
-  width: 288px;
+  width: 320px;
 `
 
 const BunnyDecoration = styled.div`
