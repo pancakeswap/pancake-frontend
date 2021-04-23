@@ -82,6 +82,10 @@ const HistoryChart: React.FC<HistoryChartProps> = ({ showLast }) => {
 
   const options = useMemo(() => {
     return {
+      tooltips: {
+        mode: 'index',
+        intersect: false,
+      },
       legend: { display: false },
       scales: {
         yAxes: [
