@@ -9,6 +9,10 @@ const config: MenuEntry[] = [
   {
     label: 'Trade',
     icon: 'TradeIcon',
+    status: {
+      text: 'MIGRATE',
+      color: 'warning',
+    },
     items: [
       {
         label: 'Exchange',
@@ -38,10 +42,6 @@ const config: MenuEntry[] = [
     label: 'Lottery',
     icon: 'TicketIcon',
     href: '/lottery',
-    status: {
-      text: 'WIN',
-      color: 'warning',
-    },
   },
   {
     label: 'Collectibles',
