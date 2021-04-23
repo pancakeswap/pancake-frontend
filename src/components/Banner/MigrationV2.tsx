@@ -22,7 +22,7 @@ const MigrationV2 = () => {
         <Text color="white" mb="16px">
           If you already migrated to V2 LP tokens, please unstake your V2 LP tokens.
         </Text>
-        <Button as="a" href="https://exchange.pancakeswap.finance/#/pool">
+        <Button variant="danger" as="a" href="https://exchange.pancakeswap.finance/#/pool">
           Remove V2 liquidity
         </Button>
       </Box>
