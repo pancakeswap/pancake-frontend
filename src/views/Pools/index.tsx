@@ -37,6 +37,10 @@ const Pools: React.FC = () => {
     () => openPools.filter((pool) => pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0)),
     [openPools],
   )
+  const hasStakeInFinishedPools = useMemo(
+    () => finishedPools.some((pool) => pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0)),
+    [finishedPools],
+  )
 
   return (
     <>
@@ -67,7 +71,11 @@ const Pools: React.FC = () => {
         </Flex>
       </PageHeader>
       <Page>
-        <PoolTabButtons stakedOnly={stakedOnly} setStakedOnly={setStakedOnly} />
+        <PoolTabButtons
+          stakedOnly={stakedOnly}
+          setStakedOnly={setStakedOnly}
+          hasStakeInFinishedPools={hasStakeInFinishedPools}
+        />
         <FlexLayout>
           <Route exact path={`${path}`}>
             <>
