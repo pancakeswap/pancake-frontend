@@ -19,7 +19,7 @@ import { orderBy } from 'lodash'
 import { getAddress } from 'utils/addressHelpers'
 import isArchivedPid from 'utils/farmHelpers'
 import PageHeader from 'components/PageHeader'
-import { setLoadArchivedFarmsData } from 'state/farms'
+import { fetchFarmsPublicDataAsync, setLoadArchivedFarmsData } from 'state/farms'
 import FarmCard, { FarmWithStakedValue } from './components/FarmCard/FarmCard'
 import Table from './components/FarmTable/FarmTable'
 import FarmTabButtons from './components/FarmTabButtons'
@@ -132,8 +132,18 @@ const Farms: React.FC = () => {
   }, [isActive])
 
   useEffect(() => {
+    // Makes the main scheduled fetching to request archived farms data
     dispatch(setLoadArchivedFarmsData(isArchived))
-  }, [isArchived, dispatch])
+
+    // Immediately request data for archived farms so users don't have to wait
+    // 60 seconds for public data and 10 seconds for user data
+    if (isArchived) {
+      dispatch(fetchFarmsPublicDataAsync())
+      if (account) {
+        dispatch(fetchFarmUserDataAsync(account))
+      }
+    }
+  }, [isArchived, dispatch, account])
 
   const activeFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X' && !isArchivedPid(farm.pid))
   const inactiveFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X' && !isArchivedPid(farm.pid))
