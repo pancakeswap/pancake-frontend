@@ -15,6 +15,10 @@ const config: MenuEntry[] = [
     },
     items: [
       {
+        label: 'LP Migration',
+        href: 'https://v1exchange.pancakeswap.finance/#/migrate',
+      },
+      {
         label: 'Exchange',
         href: 'https://exchange.pancakeswap.finance',
       },
@@ -23,8 +27,8 @@ const config: MenuEntry[] = [
         href: 'https://exchange.pancakeswap.finance/#/pool',
       },
       {
-        label: 'Migration',
-        href: 'https://v1exchange.pancakeswap.finance/#/migrate',
+        label: 'V1 Liquidity (Old)',
+        href: 'https://v1exchange.pancakeswap.finance/#/pool',
       },
     ],
   },
