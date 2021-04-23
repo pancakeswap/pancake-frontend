@@ -6,9 +6,10 @@ import useI18n from 'hooks/useI18n'
 
 interface FarmTabButtonsProps {
   hasStakeInFinishedFarms: boolean
+  hasStakeInArchivedFarms: boolean
 }
 
-const FarmTabButtons: React.FC<FarmTabButtonsProps> = ({ hasStakeInFinishedFarms }) => {
+const FarmTabButtons: React.FC<FarmTabButtonsProps> = ({ hasStakeInFinishedFarms, hasStakeInArchivedFarms }) => {
   const { url } = useRouteMatch()
   const location = useLocation()
   const TranslateString = useI18n()
@@ -40,9 +41,11 @@ const FarmTabButtons: React.FC<FarmTabButtonsProps> = ({ hasStakeInFinishedFarms
             {TranslateString(388, 'Finished')}
           </ButtonMenuItem>
         </NotificationDot>
-        <ButtonMenuItem as={Link} to={`${url}/archived`}>
-          {TranslateString(999, 'Archived')}
-        </ButtonMenuItem>
+        <NotificationDot show={hasStakeInArchivedFarms}>
+          <ButtonMenuItem as={Link} to={`${url}/archived`}>
+            {TranslateString(999, 'Archived')}
+          </ButtonMenuItem>
+        </NotificationDot>
       </ButtonMenu>
     </Wrapper>
   )

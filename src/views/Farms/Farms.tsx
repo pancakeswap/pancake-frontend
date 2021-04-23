@@ -369,7 +369,10 @@ const Farms: React.FC = () => {
               <Toggle checked={stakedOnly} onChange={() => setStakedOnly(!stakedOnly)} scale="sm" />
               <Text> {TranslateString(1116, 'Staked only')}</Text>
             </ToggleWrapper>
-            <FarmTabButtons hasStakeInFinishedFarms={stakedInactiveFarms.length > 0} />
+            <FarmTabButtons
+              hasStakeInFinishedFarms={stakedInactiveFarms.length > 0}
+              hasStakeInArchivedFarms={stakedArchivedFarms.length > 0}
+            />
           </ViewControls>
           <FilterContainer>
             <LabelWrapper>
