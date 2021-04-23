@@ -14,6 +14,7 @@ import {
   OVER,
   REGISTRATION,
 } from 'config/constants/trading-competition/easterPhases'
+import MigrationV2 from 'components/Banner/MigrationV2'
 import { PrizesIcon, RanksIcon, RulesIcon } from './svgs'
 import {
   DARKBG,
@@ -205,108 +206,17 @@ const TradingCompetition = () => {
     !isLoading && account && !userTradingInformation.hasRegistered && (isCompetitionLive || hasCompetitionEnded)
 
   return (
-    <CompetitionPage>
-      <Section
-        backgroundStyle={DARKBG}
-        svgFill={DARKFILL}
-        index={5}
-        intersectComponent={
-          shouldHideCta ? null : (
-            <BattleCta
-              userTradingInformation={userTradingInformation}
-              currentPhase={currentPhase}
-              account={account}
-              isCompetitionLive={isCompetitionLive}
-              hasCompetitionEnded={hasCompetitionEnded}
-              userCanClaimPrizes={userCanClaimPrizes}
-              finishedAndPrizesClaimed={finishedAndPrizesClaimed}
-              finishedAndNothingToClaim={finishedAndNothingToClaim}
-              profile={profile}
-              isLoading={isLoading}
-              onRegisterSuccess={onRegisterSuccess}
-              onClaimSuccess={onClaimSuccess}
-            />
-          )
-        }
-      >
-        <BannerFlex mb={shouldHideCta ? '0px' : '48px'}>
-          <Countdown currentPhase={currentPhase} hasCompetitionEnded={hasCompetitionEnded} />
-          <BattleBanner />
-        </BannerFlex>
-      </Section>
-      <Section
-        backgroundStyle={isDark ? MIDBLUEBG_DARK : MIDBLUEBG}
-        svgFill={isDark ? MIDBLUEFILL_DARK : MIDBLUEFILL}
-        index={4}
-        intersectComponent={
-          <RibbonWithImage imageComponent={<RanksIcon width="175px" />} ribbonDirection="up">
-            Team Ranks
-          </RibbonWithImage>
-        }
-      >
-        <Box mt={shouldHideCta ? '0px' : ['94px', null, '36px']} mb={['24px', null, '0']}>
-          {/* If competition has not yet started, render HowToJoin component - if not, render YourScore */}
-          {currentPhase.state === REGISTRATION ? (
-            <HowToJoin />
-          ) : (
-            <YourScore
-              currentPhase={currentPhase}
-              hasRegistered={userTradingInformation.hasRegistered}
-              userTradingInformation={userTradingInformation}
-              account={account}
-              profile={profile}
-              isLoading={isLoading}
-              userLeaderboardInformation={userLeaderboardInformation}
-              userCanClaimPrizes={userCanClaimPrizes}
-              finishedAndPrizesClaimed={finishedAndPrizesClaimed}
-              finishedAndNothingToClaim={finishedAndNothingToClaim}
-              onClaimSuccess={onClaimSuccess}
-            />
-          )}
-        </Box>
-      </Section>
-      <Section
-        index={3}
-        intersectComponent={
-          <RibbonWithImage imageComponent={<PrizesIcon width="175px" />} ribbonDirection="up">
-            Prizes
-          </RibbonWithImage>
-        }
-      >
-        <Box mt="54px">
-          <TeamRanks
-            team1LeaderboardInformation={team1LeaderboardInformation}
-            team2LeaderboardInformation={team2LeaderboardInformation}
-            team3LeaderboardInformation={team3LeaderboardInformation}
-            globalLeaderboardInformation={globalLeaderboardInformation}
-          />
-        </Box>
-      </Section>
-      <Section
-        backgroundStyle={isDark ? LIGHTBLUEBG_DARK : LIGHTBLUEBG}
-        svgFill={isDark ? LIGHTBLUEFILL_DARK : LIGHTBLUEFILL}
-        index={2}
-        noIntersection
-      >
-        <Box mb="78px">
-          <PrizesInfo />
-        </Box>
-      </Section>
-      <Section
-        index={3}
-        intersectionPosition="top"
-        intersectComponent={
-          <RibbonWithImage imageComponent={<RulesIcon width="175px" />} ribbonDirection="up">
-            Rules
-          </RibbonWithImage>
-        }
-      >
-        <Rules />
-      </Section>
-      <Section backgroundStyle={DARKBG} svgFill={DARKFILL} index={4} intersectionPosition="top">
-        <Flex alignItems="center">
-          {shouldHideCta ? null : (
-            <Flex height="fit-content">
+    <>
+      <Box pb={[null, '32px', null, '42px', null, '52px']}>
+        <MigrationV2 />
+      </Box>
+      <CompetitionPage>
+        <Section
+          backgroundStyle={DARKBG}
+          svgFill={DARKFILL}
+          index={5}
+          intersectComponent={
+            shouldHideCta ? null : (
               <BattleCta
                 userTradingInformation={userTradingInformation}
                 currentPhase={currentPhase}
@@ -321,14 +231,110 @@ const TradingCompetition = () => {
                 onRegisterSuccess={onRegisterSuccess}
                 onClaimSuccess={onClaimSuccess}
               />
-            </Flex>
-          )}
-          <BottomBunnyWrapper>
-            <Image src={StormBunny} width={147} height={200} />
-          </BottomBunnyWrapper>
-        </Flex>
-      </Section>
-    </CompetitionPage>
+            )
+          }
+        >
+          <BannerFlex mb={shouldHideCta ? '0px' : '48px'}>
+            <Countdown currentPhase={currentPhase} hasCompetitionEnded={hasCompetitionEnded} />
+            <BattleBanner />
+          </BannerFlex>
+        </Section>
+        <Section
+          backgroundStyle={isDark ? MIDBLUEBG_DARK : MIDBLUEBG}
+          svgFill={isDark ? MIDBLUEFILL_DARK : MIDBLUEFILL}
+          index={4}
+          intersectComponent={
+            <RibbonWithImage imageComponent={<RanksIcon width="175px" />} ribbonDirection="up">
+              Team Ranks
+            </RibbonWithImage>
+          }
+        >
+          <Box mt={shouldHideCta ? '0px' : ['94px', null, '36px']} mb={['24px', null, '0']}>
+            {/* If competition has not yet started, render HowToJoin component - if not, render YourScore */}
+            {currentPhase.state === REGISTRATION ? (
+              <HowToJoin />
+            ) : (
+              <YourScore
+                currentPhase={currentPhase}
+                hasRegistered={userTradingInformation.hasRegistered}
+                userTradingInformation={userTradingInformation}
+                account={account}
+                profile={profile}
+                isLoading={isLoading}
+                userLeaderboardInformation={userLeaderboardInformation}
+                userCanClaimPrizes={userCanClaimPrizes}
+                finishedAndPrizesClaimed={finishedAndPrizesClaimed}
+                finishedAndNothingToClaim={finishedAndNothingToClaim}
+                onClaimSuccess={onClaimSuccess}
+              />
+            )}
+          </Box>
+        </Section>
+        <Section
+          index={3}
+          intersectComponent={
+            <RibbonWithImage imageComponent={<PrizesIcon width="175px" />} ribbonDirection="up">
+              Prizes
+            </RibbonWithImage>
+          }
+        >
+          <Box mt="54px">
+            <TeamRanks
+              team1LeaderboardInformation={team1LeaderboardInformation}
+              team2LeaderboardInformation={team2LeaderboardInformation}
+              team3LeaderboardInformation={team3LeaderboardInformation}
+              globalLeaderboardInformation={globalLeaderboardInformation}
+            />
+          </Box>
+        </Section>
+        <Section
+          backgroundStyle={isDark ? LIGHTBLUEBG_DARK : LIGHTBLUEBG}
+          svgFill={isDark ? LIGHTBLUEFILL_DARK : LIGHTBLUEFILL}
+          index={2}
+          noIntersection
+        >
+          <Box mb="78px">
+            <PrizesInfo />
+          </Box>
+        </Section>
+        <Section
+          index={3}
+          intersectionPosition="top"
+          intersectComponent={
+            <RibbonWithImage imageComponent={<RulesIcon width="175px" />} ribbonDirection="up">
+              Rules
+            </RibbonWithImage>
+          }
+        >
+          <Rules />
+        </Section>
+        <Section backgroundStyle={DARKBG} svgFill={DARKFILL} index={4} intersectionPosition="top">
+          <Flex alignItems="center">
+            {shouldHideCta ? null : (
+              <Flex height="fit-content">
+                <BattleCta
+                  userTradingInformation={userTradingInformation}
+                  currentPhase={currentPhase}
+                  account={account}
+                  isCompetitionLive={isCompetitionLive}
+                  hasCompetitionEnded={hasCompetitionEnded}
+                  userCanClaimPrizes={userCanClaimPrizes}
+                  finishedAndPrizesClaimed={finishedAndPrizesClaimed}
+                  finishedAndNothingToClaim={finishedAndNothingToClaim}
+                  profile={profile}
+                  isLoading={isLoading}
+                  onRegisterSuccess={onRegisterSuccess}
+                  onClaimSuccess={onClaimSuccess}
+                />
+              </Flex>
+            )}
+            <BottomBunnyWrapper>
+              <Image src={StormBunny} width={147} height={200} />
+            </BottomBunnyWrapper>
+          </Flex>
+        </Section>
+      </CompetitionPage>
+    </>
   )
 }
 
