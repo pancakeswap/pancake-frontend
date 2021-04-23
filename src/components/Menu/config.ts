@@ -24,7 +24,7 @@ const config: MenuEntry[] = [
       },
       {
         label: 'Migration',
-        href: 'https://exchange.pancakeswap.finance/#//migrate',
+        href: 'https://v1exchange.pancakeswap.finance/#/migrate',
       },
     ],
   },
