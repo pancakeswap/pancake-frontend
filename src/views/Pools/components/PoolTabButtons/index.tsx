@@ -1,6 +1,6 @@
 import React from 'react'
 import { useRouteMatch, Link } from 'react-router-dom'
-import { ButtonMenu, ButtonMenuItem, Toggle, Text, Flex } from '@pancakeswap-libs/uikit'
+import { ButtonMenu, ButtonMenuItem, Toggle, Text, Flex, NotificationDot } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 
 const PoolTabButtons = ({ stakedOnly, setStakedOnly }) => {
@@ -13,9 +13,11 @@ const PoolTabButtons = ({ stakedOnly, setStakedOnly }) => {
         <ButtonMenuItem as={Link} to={`${url}`}>
           {TranslateString(1198, 'Live')}
         </ButtonMenuItem>
-        <ButtonMenuItem as={Link} to={`${url}/history`}>
-          {TranslateString(388, 'Finished')}
-        </ButtonMenuItem>
+        <NotificationDot show>
+          <ButtonMenuItem as={Link} to={`${url}/history`}>
+            {TranslateString(388, 'Finished')}
+          </ButtonMenuItem>
+        </NotificationDot>
       </ButtonMenu>
       <Flex ml="24px" justifyContent="center" alignItems="center">
         <Toggle scale="sm" checked={stakedOnly} onChange={() => setStakedOnly(!stakedOnly)} />

@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useRouteMatch, Link } from 'react-router-dom'
-import { ButtonMenu, ButtonMenuItem } from '@pancakeswap-libs/uikit'
+import { ButtonMenu, ButtonMenuItem, NotificationDot } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 
 const FarmTabButtons = () => {
@@ -14,9 +14,11 @@ const FarmTabButtons = () => {
         <ButtonMenuItem as={Link} to={`${url}`}>
           {TranslateString(1198, 'Live')}
         </ButtonMenuItem>
-        <ButtonMenuItem as={Link} to={`${url}/history`}>
-          {TranslateString(388, 'Finished')}
-        </ButtonMenuItem>
+        <NotificationDot show>
+          <ButtonMenuItem as={Link} to={`${url}/history`}>
+            {TranslateString(388, 'Finished')}
+          </ButtonMenuItem>
+        </NotificationDot>
       </ButtonMenu>
     </Wrapper>
   )
