@@ -17,7 +17,9 @@ import { getBalanceNumber } from 'utils/formatBalance'
 import { getFarmApr } from 'utils/apr'
 import { orderBy } from 'lodash'
 import { getAddress } from 'utils/addressHelpers'
+import isArchivedPid from 'utils/farmHelpers'
 import PageHeader from 'components/PageHeader'
+import { setLoadArchivedFarmsData } from 'state/farms'
 import FarmCard, { FarmWithStakedValue } from './components/FarmCard/FarmCard'
 import Table from './components/FarmTable/FarmTable'
 import FarmTabButtons from './components/FarmTabButtons'
@@ -101,15 +103,11 @@ const StyledImage = styled(Image)`
 `
 const NUMBER_OF_FARMS_VISIBLE = 12
 
-const ARCHIVED_FARMS_START_PID = 139
-const ARCHIVED_FARMS_END_PID = 250
-const isArchivedPid = (pid: number) => pid >= ARCHIVED_FARMS_START_PID && pid <= ARCHIVED_FARMS_END_PID
-
 const Farms: React.FC = () => {
   const { path } = useRouteMatch()
   const { pathname } = useLocation()
   const TranslateString = useI18n()
-  const farmsLP = useFarms()
+  const { data: farmsLP } = useFarms()
   const cakePrice = usePriceCakeBusd()
   const [query, setQuery] = useState('')
   const [viewMode, setViewMode] = usePersistState(ViewMode.TABLE, 'pancake_farm_view')
@@ -133,7 +131,11 @@ const Farms: React.FC = () => {
     setStakedOnly(!isActive)
   }, [isActive])
 
-  const activeFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
+  useEffect(() => {
+    dispatch(setLoadArchivedFarmsData(isArchived))
+  }, [isArchived, dispatch])
+
+  const activeFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X' && !isArchivedPid(farm.pid))
   const inactiveFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X' && !isArchivedPid(farm.pid))
   const archivedFarms = farmsLP.filter((farm) => isArchivedPid(farm.pid))
 
@@ -268,7 +270,7 @@ const Farms: React.FC = () => {
       },
       farm: {
         image: farm.lpSymbol.split(' ')[0].toLocaleLowerCase(),
-        label: lpLabel,
+        label: lpLabel + farm.pid.toString(),
         pid: farm.pid,
       },
       earned: {
