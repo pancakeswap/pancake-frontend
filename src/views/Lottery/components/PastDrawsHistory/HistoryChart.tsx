@@ -7,6 +7,7 @@ import useTheme from 'hooks/useTheme'
 import Loading from '../Loading'
 
 const Line = lazy(() => import('./LineChartWrapper'))
+const Bar = lazy(() => import('./BarChartWrapper'))
 
 const InnerWrapper = styled.div`
   width: 100%;
@@ -120,7 +121,11 @@ const HistoryChart: React.FC<HistoryChartProps> = ({ showLast }) => {
       )}
       {!historyError && historyData.length > 1 ? (
         <Suspense fallback={<div>{TranslateString(656, 'Loading...')}</div>}>
-          <Line data={chartData} options={options} type="line" />
+          {showLast === 50 || showLast === 100 ? (
+            <Bar data={chartData} options={options} />
+          ) : (
+            <Line data={chartData} options={options} type="line" />
+          )}
         </Suspense>
       ) : (
         <InnerWrapper>
