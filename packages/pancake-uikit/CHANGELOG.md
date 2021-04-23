@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.28.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap-libs/uikit@0.27.1...@pancakeswap-libs/uikit@0.28.0) (2021-04-23)
+
+
+### Bug Fixes
+
+* Accordion menu not showing new result when children changed ([#77](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/77)) ([57ff149](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/57ff1493987c0928d7d9f3cf04fc013331f65ab5))
+
+
+### Features
+
+* **menu:** Add support for top level tags on accordion ([#84](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/84)) ([a15257b](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/a15257ba0460d116bfeaa5ffdad1b9e2c20b4872))
+
+
+
+
+
 ## [0.27.1](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap-libs/uikit@0.27.0...@pancakeswap-libs/uikit@0.27.1) (2021-04-22)
 
 **Note:** Version bump only for package @pancakeswap-libs/uikit
