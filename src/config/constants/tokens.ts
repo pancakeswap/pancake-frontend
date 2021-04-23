@@ -1146,6 +1146,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://www.exeedme.com/',
   },
+  τbtc: {
+    symbol: 'τBTC',
+    address: {
+      56: '0x2cd1075682b0fccaadd0ca629e138e64015ba11c',
+      97: '',
+    },
+    decimals: 9,
+    projectLink: 'https://www.btcst.finance/',
+  },
 }
 
 export default tokens
