@@ -29,7 +29,8 @@ export const farmsSlice = createSlice({
     setFarmUserData: (state, action) => {
       const { arrayOfUserDataObjects } = action.payload
       arrayOfUserDataObjects.forEach((userDataEl) => {
-        const { index } = userDataEl
+        const { pid } = userDataEl
+        const index = state.data.findIndex((farm) => farm.pid === pid)
         state.data[index] = { ...state.data[index], userData: userDataEl }
       })
     },
@@ -60,7 +61,7 @@ export const fetchFarmUserDataAsync = (account: string) => async (dispatch, getS
 
   const arrayOfUserDataObjects = userFarmAllowances.map((farmAllowance, index) => {
     return {
-      index,
+      pid: farmsToFetch[index].pid,
       allowance: userFarmAllowances[index],
       tokenBalance: userFarmTokenBalances[index],
       stakedBalance: userStakedBalances[index],
