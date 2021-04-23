@@ -567,7 +567,7 @@ const farms: FarmConfig[] = [
     quoteToken: tokens.busd,
   },
   {
-    pid: 197,
+    pid: 308,
     lpSymbol: 'BOR-BNB LP',
     lpAddresses: {
       97: '',
@@ -611,7 +611,7 @@ const farms: FarmConfig[] = [
     lpSymbol: 'BRY-BNB LP',
     lpAddresses: {
       97: '',
-      56: '0x4Fd6D315bEf387fAD2322fbc64368fC443F0886D',
+      56: '0x21dD71aB78EDE3033c976948f769D506E4F489eE',
     },
     token: tokens.bry,
     quoteToken: tokens.wbnb,
@@ -621,7 +621,7 @@ const farms: FarmConfig[] = [
     lpSymbol: 'ZEE-BNB LP',
     lpAddresses: {
       97: '',
-      56: '0x21dD71aB78EDE3033c976948f769D506E4F489eE',
+      56: '0x8e799cB0737525CeB8A6C6Ad07f748535fF6377B',
     },
     token: tokens.zee,
     quoteToken: tokens.wbnb,
@@ -974,16 +974,6 @@ const farms: FarmConfig[] = [
       56: '0xCE383277847f8217392eeA98C5a8B4a7D27811b0',
     },
     token: tokens.yfi,
-    quoteToken: tokens.wbnb,
-  },
-  {
-    pid: 267,
-    lpSymbol: 'YFII-BNB LP',
-    lpAddresses: {
-      97: '',
-      56: '0xCE383277847f8217392eeA98C5a8B4a7D27811b0',
-    },
-    token: tokens.yfii,
     quoteToken: tokens.wbnb,
   },
   {
