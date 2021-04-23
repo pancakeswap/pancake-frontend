@@ -19,14 +19,15 @@ const Wrapper = styled.div`
 `
 
 const LabelWrapper = styled.div`
-  > ${Text} {
-    font-size: 12px;
-  }
-
   margin-top: 24px;
 
   ${({ theme }) => theme.mediaQueries.sm} {
     margin-top: 0;
+  }
+
+  > ${Text} {
+    font-size: 12px;
+    text-transform: uppercase;
   }
 `
 
@@ -44,7 +45,7 @@ const PastDrawsHistoryCard: React.FC = () => {
         <Wrapper>
           <Legend />
           <LabelWrapper>
-            <Text>{TranslateString(999, 'SHOW LAST')}</Text>
+            <Text>{TranslateString(999, 'Show Last')}</Text>
             <Select
               options={[
                 {
