@@ -68,7 +68,7 @@ const HistoryChart: React.FC<HistoryChartProps> = ({ showLast }) => {
       ticks: {
         fontFamily: 'Kanit, sans-serif',
         fontColor: color,
-        fontSize: 14,
+        fontSize: 12,
         lineHeight,
         maxRotation: 0,
         beginAtZero: true,
