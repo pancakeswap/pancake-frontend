@@ -1065,6 +1065,13 @@ it("renders correctly", () => {
                   >
                     Profile & Teams
                   </div>
+                  <div
+                    class="c18 c19"
+                    color="failure"
+                    font-size="14px"
+                  >
+                    LIVE
+                  </div>
                   <svg
                     class="c7"
                     color="text"
