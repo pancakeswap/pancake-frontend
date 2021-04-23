@@ -91,14 +91,12 @@ const HistoryChart: React.FC<HistoryChartProps> = ({ showLast }) => {
         yAxes: [
           {
             type: 'linear',
-            display: true,
             position: 'left',
             id: 'y-axis-pool',
             ...axesStyles({ color: '#8f80ba', lineHeight: 1.6 }),
           },
           {
             type: 'linear',
-            display: true,
             position: 'right',
             id: 'y-axis-burned',
             ...axesStyles({ color: '#1FC7D4', lineHeight: 1.5 }),
