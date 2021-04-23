@@ -3,7 +3,7 @@ import { useRouteMatch, Link } from 'react-router-dom'
 import { ButtonMenu, ButtonMenuItem, Toggle, Text, Flex, NotificationDot } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 
-const PoolTabButtons = ({ stakedOnly, setStakedOnly }) => {
+const PoolTabButtons = ({ stakedOnly, setStakedOnly, hasStakeInFinishedPools }) => {
   const { url, isExact } = useRouteMatch()
   const TranslateString = useI18n()
 
@@ -13,7 +13,7 @@ const PoolTabButtons = ({ stakedOnly, setStakedOnly }) => {
         <ButtonMenuItem as={Link} to={`${url}`}>
           {TranslateString(1198, 'Live')}
         </ButtonMenuItem>
-        <NotificationDot show>
+        <NotificationDot show={hasStakeInFinishedPools}>
           <ButtonMenuItem as={Link} to={`${url}/history`}>
             {TranslateString(388, 'Finished')}
           </ButtonMenuItem>
