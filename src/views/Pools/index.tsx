@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import { Route, useRouteMatch } from 'react-router-dom'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
@@ -7,6 +7,7 @@ import { Heading, Flex, Button, HelpIcon, Text, Image } from '@pancakeswap-libs/
 import orderBy from 'lodash/orderBy'
 import partition from 'lodash/partition'
 import useI18n from 'hooks/useI18n'
+import usePersistState from 'hooks/usePersistState'
 import { usePools, useBlock } from 'state/hooks'
 import FlexLayout from 'components/layout/Flex'
 import Page from 'components/layout/Page'
@@ -27,7 +28,7 @@ const Pools: React.FC = () => {
   const { account } = useWeb3React()
   const pools = usePools(account)
   const { currentBlock } = useBlock()
-  const [stakedOnly, setStakedOnly] = useState(false)
+  const [stakedOnly, setStakedOnly] = usePersistState(false, 'pancake_pool_staked')
 
   const [finishedPools, openPools] = useMemo(
     () => partition(pools, (pool) => pool.isFinished || currentBlock > pool.endBlock),
