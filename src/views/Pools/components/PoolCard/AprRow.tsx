@@ -17,13 +17,16 @@ interface AprRowProps {
 const AprRow: React.FC<AprRowProps> = ({ pool, stakingTokenPrice }) => {
   const { stakingToken, earningToken, totalStaked, isFinished, tokenPerBlock } = pool
 
-  const rewardTokenPrice = useGetApiPrice(earningToken.address ? getAddress(earningToken.address) : '')
+  const earningTokenPrice = useGetApiPrice(earningToken.address ? getAddress(earningToken.address) : '')
   const apr = getPoolApr(
     stakingTokenPrice,
-    rewardTokenPrice,
+    earningTokenPrice,
     getBalanceNumber(totalStaked, stakingToken.decimals),
     parseFloat(tokenPerBlock),
   )
+
+  // // special handling for tokens like tBTC or BIFI where the daily token rewards for $1000 dollars will be less than 0.001 of that token
+  const isHighValueToken = Math.round(earningTokenPrice / 1000) > 0
 
   const TranslateString = useI18n()
 
@@ -35,11 +38,12 @@ const AprRow: React.FC<AprRowProps> = ({ pool, stakingTokenPrice }) => {
 
   const [onPresentApyModal] = useModal(
     <ApyCalculatorModal
-      tokenPrice={rewardTokenPrice}
+      tokenPrice={earningTokenPrice}
       apr={apr}
       linkLabel={`${TranslateString(999, 'Get')} ${stakingToken.symbol}`}
       linkHref={apyModalLink || 'https://exchange.pancakeswap.finance'}
       earningTokenSymbol={earningToken.symbol}
+      roundingDecimals={isHighValueToken ? 4 : 2}
     />,
   )
 
