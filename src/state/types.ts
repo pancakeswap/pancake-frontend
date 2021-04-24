@@ -60,6 +60,7 @@ export interface ToastsState {
 
 export interface FarmsState {
   data: Farm[]
+  loadArchivedFarmsData: boolean
 }
 
 export interface PoolsState {

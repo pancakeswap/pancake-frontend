@@ -1,11 +1,12 @@
 import React, { useState, useCallback } from 'react'
 import styled from 'styled-components'
 import { provider as ProviderType } from 'web3-core'
+import BigNumber from 'bignumber.js'
+import { useLocation } from 'react-router-dom'
 import { getAddress } from 'utils/addressHelpers'
 import { getBep20Contract } from 'utils/contractHelpers'
 import { Button, Flex, Text } from '@pancakeswap-libs/uikit'
 import { Farm } from 'state/types'
-import { useFarmFromSymbol, useFarmUser } from 'state/hooks'
 import useI18n from 'hooks/useI18n'
 import useWeb3 from 'hooks/useWeb3'
 import { useApprove } from 'hooks/useApprove'
@@ -30,12 +31,22 @@ interface FarmCardActionsProps {
 const CardActions: React.FC<FarmCardActionsProps> = ({ farm, account, addLiquidityUrl }) => {
   const TranslateString = useI18n()
   const [requestedApproval, setRequestedApproval] = useState(false)
-  const { pid, lpAddresses } = useFarmFromSymbol(farm.lpSymbol)
-  const { allowance, tokenBalance, stakedBalance, earnings } = useFarmUser(pid)
+  const { pid, lpAddresses } = farm
+  const {
+    allowance: allowanceAsString = 0,
+    tokenBalance: tokenBalanceAsString = 0,
+    stakedBalance: stakedBalanceAsString = 0,
+    earnings: earningsAsString = 0,
+  } = farm.userData || {}
+  const allowance = new BigNumber(allowanceAsString)
+  const tokenBalance = new BigNumber(tokenBalanceAsString)
+  const stakedBalance = new BigNumber(stakedBalanceAsString)
+  const earnings = new BigNumber(earningsAsString)
   const lpAddress = getAddress(lpAddresses)
   const lpName = farm.lpSymbol.toUpperCase()
   const isApproved = account && allowance && allowance.isGreaterThan(0)
   const web3 = useWeb3()
+  const location = useLocation()
 
   const lpContract = getBep20Contract(lpAddress, web3)
 
@@ -61,7 +72,12 @@ const CardActions: React.FC<FarmCardActionsProps> = ({ farm, account, addLiquidi
         addLiquidityUrl={addLiquidityUrl}
       />
     ) : (
-      <Button mt="8px" width="100%" disabled={requestedApproval} onClick={handleApprove}>
+      <Button
+        mt="8px"
+        width="100%"
+        disabled={requestedApproval || location.pathname.includes('archived')}
+        onClick={handleApprove}
+      >
         {TranslateString(758, 'Approve Contract')}
       </Button>
     )
