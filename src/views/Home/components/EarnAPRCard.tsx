@@ -24,7 +24,7 @@ const CardMidContent = styled(Heading).attrs({ size: 'xl' })`
 `
 const EarnAPRCard = () => {
   const TranslateString = useI18n()
-  const farmsLP = useFarms()
+  const { data: farmsLP } = useFarms()
   const prices = useGetApiPrices()
   const cakePrice = usePriceCakeBusd()
 
