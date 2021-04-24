@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react'
-import { Button, AutoRenewIcon } from '@pancakeswap-libs/uikit'
+import { Button, AutoRenewIcon, Skeleton } from '@pancakeswap-libs/uikit'
 import { useSousApprove } from 'hooks/useApprove'
 import useI18n from 'hooks/useI18n'
 import { useERC20 } from 'hooks/useContract'
@@ -9,9 +9,10 @@ import { Pool } from 'state/types'
 
 interface ApprovalActionProps {
   pool: Pool
+  isLoading?: boolean
 }
 
-const ApprovalAction: React.FC<ApprovalActionProps> = ({ pool }) => {
+const ApprovalAction: React.FC<ApprovalActionProps> = ({ pool, isLoading = false }) => {
   const { sousId, stakingToken, earningToken, isFinished } = pool
   const TranslateString = useI18n()
   const stakingTokenContract = useERC20(stakingToken.address ? getAddress(stakingToken.address) : '')
@@ -47,15 +48,21 @@ const ApprovalAction: React.FC<ApprovalActionProps> = ({ pool }) => {
   }, [onApprove, setRequestedApproval, toastSuccess, toastError, TranslateString, earningToken])
 
   return (
-    <Button
-      isLoading={requestedApproval}
-      endIcon={requestedApproval ? <AutoRenewIcon spin color="currentColor" /> : null}
-      disabled={isFinished || requestedApproval}
-      onClick={handleApprove}
-      width="100%"
-    >
-      {TranslateString(999, 'Enable')}
-    </Button>
+    <>
+      {isLoading ? (
+        <Skeleton width="100%" height="52px" />
+      ) : (
+        <Button
+          isLoading={requestedApproval}
+          endIcon={requestedApproval ? <AutoRenewIcon spin color="currentColor" /> : null}
+          disabled={isFinished || requestedApproval}
+          onClick={handleApprove}
+          width="100%"
+        >
+          {TranslateString(999, 'Enable')}
+        </Button>
+      )}
+    </>
   )
 }
 

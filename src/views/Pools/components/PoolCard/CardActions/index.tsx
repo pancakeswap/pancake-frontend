@@ -28,6 +28,7 @@ const CardActions: React.FC<{
   const earnings = new BigNumber(userData?.pendingReward || 0)
   const needsApproval = !accountHasStakedBalance && !allowance.toNumber() && !isBnbPool
   const isStaked = stakedBalance.toNumber() > 0
+  const isLoading = !userData
 
   return (
     <Flex flexDirection="column">
@@ -42,7 +43,13 @@ const CardActions: React.FC<{
                 {TranslateString(330, `earned`)}
               </InlineText>
             </Box>
-            <HarvestActions earnings={earnings} earningToken={earningToken} sousId={sousId} isBnbPool={isBnbPool} />
+            <HarvestActions
+              earnings={earnings}
+              earningToken={earningToken}
+              sousId={sousId}
+              isBnbPool={isBnbPool}
+              isLoading={isLoading}
+            />
           </>
         )}
         <Box display="inline">
@@ -54,9 +61,10 @@ const CardActions: React.FC<{
           </InlineText>
         </Box>
         {needsApproval ? (
-          <ApprovalAction pool={pool} />
+          <ApprovalAction pool={pool} isLoading={isLoading} />
         ) : (
           <StakeActions
+            isLoading={isLoading}
             pool={pool}
             stakingTokenBalance={stakingTokenBalance}
             stakingTokenPrice={stakingTokenPrice}
