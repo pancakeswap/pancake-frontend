@@ -10,20 +10,20 @@ const MigrationV2 = () => {
         <Flex alignItems="center">
           <ErrorIcon color="white" width="32px" mr="16px" />
           <Text color="white" fontSize="24px" bold>
-            MIGRATION DELAYED
+            ACTION REQUIRED for all LP token holders
           </Text>
         </Flex>
       }
     >
       <Box ml="48px">
         <Text color="warning" bold>
-          The Migration to V2 will be delayed by several hours.
+          You must complete migration if you want to keep earning from any PancakeSwap LP tokens and PancakeSwap farms.
         </Text>
         <Text color="white" mb="16px">
-          If you already migrated to V2 LP tokens, please unstake your V2 LP tokens.
+          All LPs will be migrated to a new, upgraded contract, over several hours starting from now.
         </Text>
-        <Button as="a" href="https://hiccup.pancakeswap.finance/#/pool">
-          Remove V2 liquidity
+        <Button as="a" href="https://v1exchange.pancakeswap.finance/#/migrate">
+          Migrate Now
         </Button>
       </Box>
     </Banner>
