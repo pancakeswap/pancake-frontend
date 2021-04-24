@@ -3,7 +3,7 @@ import { Route, useRouteMatch } from 'react-router-dom'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
-import { Heading, Flex, Button, HelpIcon, Text } from '@pancakeswap-libs/uikit'
+import { Heading, Flex, Button, HelpIcon, Text, Image } from '@pancakeswap-libs/uikit'
 import orderBy from 'lodash/orderBy'
 import partition from 'lodash/partition'
 import useI18n from 'hooks/useI18n'
@@ -94,6 +94,14 @@ const Pools: React.FC = () => {
             ))}
           </Route>
         </FlexLayout>
+        <Image
+          mx="auto"
+          mt="12px"
+          src="/images/3d-syrup-bunnies.png"
+          alt="Pancake illustration"
+          width={192}
+          height={184.5}
+        />
       </Page>
     </>
   )
