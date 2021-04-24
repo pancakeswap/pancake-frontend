@@ -66,6 +66,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
     setPendingTx(true)
 
     if (isRemovingStake) {
+      // unstaking
       try {
         await onUnstake(stakeAmount, stakingToken.decimals)
         toastSuccess(
@@ -83,6 +84,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
       }
     } else {
       try {
+        // staking
         await onStake(stakeAmount, stakingToken.decimals)
         toastSuccess(
           `${TranslateString(1074, 'Staked')}!`,

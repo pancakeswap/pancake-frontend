@@ -61,6 +61,7 @@ const CollectModal: React.FC<CollectModalProps> = ({
 
   const handleHarvestConfirm = async () => {
     setPendingTx(true)
+    // compounding
     if (shouldCompound) {
       try {
         await onStake(fullBalance, earningToken.decimals)
@@ -78,6 +79,7 @@ const CollectModal: React.FC<CollectModalProps> = ({
         setPendingTx(false)
       }
     } else {
+      // harvesting
       try {
         await onReward()
         toastSuccess(
