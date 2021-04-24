@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react'
 import styled from 'styled-components'
 import { Button, useModal, IconButton, AddIcon, MinusIcon } from '@pancakeswap-libs/uikit'
+import { useLocation } from 'react-router-dom'
 import UnlockButton from 'components/UnlockButton'
 import { useWeb3React } from '@web3-react/core'
 import { useFarmUser } from 'state/hooks'
@@ -31,6 +32,7 @@ const Staked: React.FunctionComponent<FarmWithStakedValue> = ({ pid, lpSymbol, l
   const { onStake } = useStake(pid)
   const { onUnstake } = useUnstake(pid)
   const web3 = useWeb3()
+  const location = useLocation()
 
   const isApproved = account && allowance && allowance.isGreaterThan(0)
 
@@ -113,7 +115,12 @@ const Staked: React.FunctionComponent<FarmWithStakedValue> = ({ pid, lpSymbol, l
           <Title>{lpSymbol}</Title>
         </ActionTitles>
         <ActionContent>
-          <Button width="100%" onClick={onPresentDeposit} variant="secondary">
+          <Button
+            width="100%"
+            onClick={onPresentDeposit}
+            variant="secondary"
+            disabled={location.pathname.includes('archived')}
+          >
             {TranslateString(999, 'Stake LP')}
           </Button>
         </ActionContent>
@@ -127,7 +134,12 @@ const Staked: React.FunctionComponent<FarmWithStakedValue> = ({ pid, lpSymbol, l
         <Subtle>{TranslateString(999, 'ENABLE FARM')}</Subtle>
       </ActionTitles>
       <ActionContent>
-        <Button width="100%" disabled={requestedApproval} onClick={handleApprove} variant="secondary">
+        <Button
+          width="100%"
+          disabled={requestedApproval || location.pathname.includes('archived')}
+          onClick={handleApprove}
+          variant="secondary"
+        >
           {TranslateString(999, 'Enable')}
         </Button>
       </ActionContent>
