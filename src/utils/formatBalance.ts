@@ -5,8 +5,8 @@ export const getBalanceNumber = (balance: BigNumber, decimals = 18) => {
   return displayBalance.toNumber()
 }
 
-export const getFullDisplayBalance = (balance: BigNumber, decimals = 18) => {
-  return balance.dividedBy(new BigNumber(10).pow(decimals)).toFixed()
+export const getFullDisplayBalance = (balance: BigNumber, decimals = 18, decimalsToAppear?: number) => {
+  return balance.dividedBy(new BigNumber(10).pow(decimals)).toFixed(decimalsToAppear)
 }
 
 export const formatNumber = (number: number, minPrecision = 2, maxPrecision = 2) => {
