@@ -10,7 +10,7 @@ import {
   CheckmarkCircleIcon,
   useWalletModal,
   useModal,
-} from '@pancakeswap-libs/uikit'
+} from '@rootswap-libs/uikit'
 import useAuth from 'hooks/useAuth'
 import useI18n from 'hooks/useI18n'
 import { FINISHED, OVER } from 'config/constants/trading-competition/easterPhases'

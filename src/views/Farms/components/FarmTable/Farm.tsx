@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { useFarmUser } from 'state/hooks'
 import useI18n from 'hooks/useI18n'
-import { Text, Image } from '@pancakeswap-libs/uikit'
+import { Text, Image } from '@rootswap-libs/uikit'
 import { getBalanceNumber } from 'utils/formatBalance'
 
 export interface FarmProps {

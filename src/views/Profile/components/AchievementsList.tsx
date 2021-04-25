@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Flex, Heading } from '@pancakeswap-libs/uikit'
+import { Flex, Heading } from '@rootswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import { useAchievements } from 'state/hooks'
 import AchievementCard from './AchievementCard'

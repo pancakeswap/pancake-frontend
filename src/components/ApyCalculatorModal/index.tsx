@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Modal, Text, LinkExternal, Flex } from '@pancakeswap-libs/uikit'
+import { Modal, Text, LinkExternal, Flex } from '@rootswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import { tokenEarnedPerThousandDollarsCompounding, getRoi } from 'utils/compoundApyHelpers'
 
