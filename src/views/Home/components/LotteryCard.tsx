@@ -19,6 +19,7 @@ import LotteryJackpot from './LotteryJackpot'
 
 const StyledLotteryCard = styled(Card)`
   background-image: url('/images/ticket-bg.svg');
+  background-size: 230px 230px;
   background-repeat: no-repeat;
   background-position: top right;
   min-height: 376px;
