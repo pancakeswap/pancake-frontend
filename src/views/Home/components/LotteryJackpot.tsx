@@ -20,7 +20,7 @@ const LotteryJackpot = () => {
   return (
     <>
       <Text bold fontSize="24px" style={{ lineHeight: '1.5' }}>
-        {t(`${lotteryPrizeAmountCake} CAKE`, { amount: lotteryPrizeAmountCake })}
+        {t(`%amount% CAKE`, { amount: lotteryPrizeAmountCake })}
       </Text>
       {!cakePriceBusd.eq(0) ? <CardBusdValue value={lotteryPrizeAmountBusd} /> : <br />}
     </>
