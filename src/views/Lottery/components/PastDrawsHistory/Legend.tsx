@@ -5,7 +5,7 @@ import useI18n from 'hooks/useI18n'
 
 const Wrapper = styled.div`
   display: flex;
-  margin: 36px 0 28px;
+  margin: 24px 0 24px;
 `
 
 const LegendItem = styled.div`
