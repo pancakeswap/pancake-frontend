@@ -4,6 +4,7 @@ import useI18n from 'hooks/useI18n'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { getPoolApr } from 'utils/apr'
 import { getAddress } from 'utils/addressHelpers'
+import { tokenEarnedPerThousandDollarsCompounding, getRoi } from 'utils/compoundApyHelpers'
 import { useGetApiPrice } from 'state/hooks'
 import Balance from 'components/Balance'
 import ApyCalculatorModal from 'components/ApyCalculatorModal'
@@ -12,21 +13,44 @@ import { Pool } from 'state/types'
 interface AprRowProps {
   pool: Pool
   stakingTokenPrice: number
+  autoVault?: boolean
+  compoundFrequency?: number
 }
 
-const AprRow: React.FC<AprRowProps> = ({ pool, stakingTokenPrice }) => {
+const AprRow: React.FC<AprRowProps> = ({ pool, stakingTokenPrice, autoVault = false, compoundFrequency = 1 }) => {
   const TranslateString = useI18n()
   const { stakingToken, earningToken, totalStaked, isFinished, tokenPerBlock } = pool
 
   const earningTokenPrice = useGetApiPrice(earningToken.address ? getAddress(earningToken.address) : '')
+
   const apr = getPoolApr(
     stakingTokenPrice,
     earningTokenPrice,
     getBalanceNumber(totalStaked, stakingToken.decimals),
     parseFloat(tokenPerBlock),
   )
+
   // // special handling for tokens like tBTC or BIFI where the daily token rewards for $1000 dollars will be less than 0.001 of that token
   const isHighValueToken = Math.round(earningTokenPrice / 1000) > 0
+  const roundingDecimals = isHighValueToken ? 4 : 2
+
+  const earningsPercentageToDisplay = () => {
+    if (autoVault) {
+      const oneThousandDollarsWorthOfToken = 1000 / earningTokenPrice
+      const tokenEarnedPerThousand365D = tokenEarnedPerThousandDollarsCompounding({
+        numberOfDays: 365,
+        farmApr: apr,
+        tokenPrice: earningTokenPrice,
+        roundingDecimals,
+        compoundFrequency,
+      })
+      return getRoi({
+        amountEarned: tokenEarnedPerThousand365D,
+        amountInvested: oneThousandDollarsWorthOfToken,
+      })
+    }
+    return apr
+  }
 
   const apyModalLink =
     stakingToken.address &&
@@ -42,17 +66,24 @@ const AprRow: React.FC<AprRowProps> = ({ pool, stakingTokenPrice }) => {
       linkHref={apyModalLink || 'https://exchange.pancakeswap.finance'}
       earningTokenSymbol={earningToken.symbol}
       roundingDecimals={isHighValueToken ? 4 : 2}
+      compoundFrequency={compoundFrequency}
     />,
   )
 
   return (
     <Flex alignItems="center" justifyContent="space-between">
-      <Text fontSize="16px">{TranslateString(736, 'APR')}:</Text>
+      <Text fontSize="16px">{autoVault ? TranslateString(999, 'APY') : TranslateString(736, 'APR')}:</Text>
       {isFinished || !apr ? (
         <Skeleton width="82px" height="32px" />
       ) : (
         <Flex alignItems="center">
-          <Balance fontSize="16px" isDisabled={isFinished} value={apr} decimals={2} unit="%" />
+          <Balance
+            fontSize="16px"
+            isDisabled={isFinished}
+            value={earningsPercentageToDisplay()}
+            decimals={2}
+            unit="%"
+          />
           <IconButton onClick={onPresentApyModal} variant="text" scale="sm">
             <CalculateIcon color="textSubtle" width="18px" />
           </IconButton>

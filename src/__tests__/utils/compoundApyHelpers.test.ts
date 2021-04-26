@@ -12,11 +12,11 @@ it.each([
 })
 
 it.each([
-  [{ amountEarned: 10, amountInvested: 1000 }, '1.00'],
-  [{ amountEarned: 4.8, amountInvested: 10 }, '48.00'],
-  [{ amountEarned: 217.48, amountInvested: 950 }, '22.89'],
-  [{ amountEarned: 100.67, amountInvested: 100 }, '100.67'],
-  [{ amountEarned: 8572.84, amountInvested: 20000 }, '42.86'],
+  [{ amountEarned: 10, amountInvested: 1000 }, 1],
+  [{ amountEarned: 4.8, amountInvested: 10 }, 48],
+  [{ amountEarned: 217.48, amountInvested: 950 }, 22.892631578947366],
+  [{ amountEarned: 100.67, amountInvested: 100 }, 100.66999999999999],
+  [{ amountEarned: 8572.84, amountInvested: 20000 }, 42.864200000000004],
 ])('calculate roi % with values %o', ({ amountEarned, amountInvested }, expected) => {
   expect(getRoi({ amountEarned, amountInvested })).toEqual(expected)
 })
