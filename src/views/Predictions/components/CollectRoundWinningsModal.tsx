@@ -25,6 +25,10 @@ interface CollectRoundWinningsModalProps extends InjectedModalProps {
   onSuccess?: () => Promise<void>
 }
 
+const Modal = styled(ModalContainer)`
+  overflow: visible;
+`
+
 const BunnyDecoration = styled.div`
   position: absolute;
   top: -116px; // line up bunny at the top of the modal
@@ -69,7 +73,7 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
   }
 
   return (
-    <ModalContainer minWidth="288px" position="relative" overflowY="visible" mt="124px">
+    <Modal minWidth="288px" position="relative" mt="124px">
       <BunnyDecoration>
         <img src="/images/decorations/prize-bunny.png" alt="bunny decoration" height="124px" width="168px" />
       </BunnyDecoration>
@@ -97,7 +101,7 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
           {TranslateString(999, 'Close Window')}
         </Button>
       </ModalBody>
-    </ModalContainer>
+    </Modal>
   )
 }
 

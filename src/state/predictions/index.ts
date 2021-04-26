@@ -80,7 +80,7 @@ export const predictionsSlice = createSlice({
     },
     updateMarketData: (state, action: PayloadAction<{ rounds: Round[]; market: Market }>) => {
       const { rounds, market } = action.payload
-      const newRoundData = { ...state.rounds, ...makeRoundData(rounds) }
+      const newRoundData = makeRoundData(rounds)
       const incomingCurrentRound = maxBy(rounds, 'epoch')
 
       if (state.currentEpoch !== incomingCurrentRound.epoch) {
@@ -98,7 +98,7 @@ export const predictionsSlice = createSlice({
       state.currentEpoch = incomingCurrentRound.epoch
       state.currentRoundStartBlockNumber = incomingCurrentRound.startBlock
       state.status = market.paused ? PredictionStatus.PAUSED : PredictionStatus.LIVE
-      state.rounds = newRoundData
+      state.rounds = { ...state.rounds, ...newRoundData }
     },
     setCurrentEpoch: (state, action: PayloadAction<number>) => {
       state.currentEpoch = action.payload
