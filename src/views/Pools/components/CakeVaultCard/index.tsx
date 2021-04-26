@@ -33,7 +33,6 @@ const CakeVaultCard: React.FC<{ pool: Pool; account: string }> = ({ pool, accoun
     //   user-specific contract fetches
     const fetchUserVaultInfo = async () => {
       const userInfo = await cakeVaultContract.methods.userInfo(account).call()
-      debugger //eslint-disable-line
       setLastDepositedTime(userInfo.lastDepositedTime)
       setUserShares(userInfo.shares)
     }

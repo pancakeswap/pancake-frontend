@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import useI18n from 'hooks/useI18n'
 import { Flex, CardFooter, ExpandableLabel } from '@pancakeswap-libs/uikit'
 import { Pool } from 'state/types'
+import { CompoundingPoolTag, ManualPoolTag } from 'components/Tags'
 import ExpandedFooter from './ExpandedFooter'
 
 interface FooterProps {
@@ -14,19 +15,20 @@ interface FooterProps {
 
 const ExpandableButtonWrapper = styled(Flex)`
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   button {
     padding: 0;
   }
 `
 
-const Footer: React.FC<FooterProps> = ({ pool, account, isAutoVault = false }) => {
+const Footer: React.FC<FooterProps> = ({ pool, account, performanceFee, isAutoVault = false }) => {
   const TranslateString = useI18n()
   const [isExpanded, setIsExpanded] = useState(false)
 
   return (
     <CardFooter>
       <ExpandableButtonWrapper>
+        {isAutoVault ? <CompoundingPoolTag /> : <ManualPoolTag />}
         <ExpandableLabel expanded={isExpanded} onClick={() => setIsExpanded(!isExpanded)}>
           {isExpanded ? TranslateString(1066, 'Hide') : TranslateString(658, 'Details')}
         </ExpandableLabel>

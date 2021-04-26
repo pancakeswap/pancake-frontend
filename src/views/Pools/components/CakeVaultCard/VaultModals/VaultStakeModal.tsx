@@ -79,7 +79,6 @@ const VaultStakeModal: React.FC<StakeModalProps> = ({
         onDismiss()
       })
       .on('error', (e) => {
-        debugger // eslint-disable-line
         toastError(TranslateString(999, 'Error'), TranslateString(999, 'Please try again and confirm the transaction.'))
         setPendingTx(false)
       })
