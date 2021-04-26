@@ -22,8 +22,10 @@ interface VaultStakeActionsProps {
   stakingTokenBalance: BigNumber
   stakingTokenPrice: number
   userShares: number
+  lastDepositedTime: number
   accountHasSharesStaked: boolean
   isLoading?: boolean
+  account: string
 }
 
 const VaultStakeActions: React.FC<VaultStakeActionsProps> = ({
@@ -31,12 +33,13 @@ const VaultStakeActions: React.FC<VaultStakeActionsProps> = ({
   stakingTokenBalance,
   stakingTokenPrice,
   userShares,
+  lastDepositedTime,
   accountHasSharesStaked,
   isLoading = false,
+  account,
 }) => {
   const { stakingToken, earningToken } = pool
   const TranslateString = useI18n()
-  const stakingMax = stakingTokenBalance
   const formattedBalance = formatNumber(getBalanceNumber(stakingTokenBalance, stakingToken.decimals), 3, 3)
   const stakingMaxDollarValue = formatNumber(
     getBalanceNumber(stakingTokenBalance.multipliedBy(stakingTokenPrice), stakingToken.decimals),
@@ -45,12 +48,23 @@ const VaultStakeActions: React.FC<VaultStakeActionsProps> = ({
   const [onPresentTokenRequired] = useModal(<NotEnoughTokensModal tokenSymbol={stakingToken.symbol} />)
 
   const [onPresentStake] = useModal(
-    <VaultStakeModal stakingMax={stakingMax} pool={pool} stakingTokenPrice={stakingTokenPrice} />,
+    <VaultStakeModal
+      account={account}
+      stakingMax={stakingTokenBalance}
+      pool={pool}
+      stakingTokenPrice={stakingTokenPrice}
+    />,
   )
 
   const [onPresentUnstake] = useModal(
     // This needs to be changed to userShares / staked CAKE
-    <VaultStakeModal stakingMax={stakingMax} pool={pool} stakingTokenPrice={stakingTokenPrice} isRemovingStake />,
+    <VaultStakeModal
+      account={account}
+      stakingMax={stakingTokenBalance}
+      pool={pool}
+      stakingTokenPrice={stakingTokenPrice}
+      isRemovingStake
+    />,
   )
 
   const renderStakeAction = () => {

@@ -8,6 +8,8 @@ import ExpandedFooter from './ExpandedFooter'
 interface FooterProps {
   pool: Pool
   account: string
+  performanceFee?: number
+  isAutoVault?: boolean
 }
 
 const ExpandableButtonWrapper = styled(Flex)`
@@ -18,7 +20,7 @@ const ExpandableButtonWrapper = styled(Flex)`
   }
 `
 
-const Footer: React.FC<FooterProps> = ({ pool, account }) => {
+const Footer: React.FC<FooterProps> = ({ pool, account, isAutoVault = false }) => {
   const TranslateString = useI18n()
   const [isExpanded, setIsExpanded] = useState(false)
 

@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { Modal, Text, Flex, Image, Button, Slider, BalanceInput, AutoRenewIcon } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import { BASE_EXCHANGE_URL } from 'config'
+import { useCakeVaultContract } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
 import BigNumber from 'bignumber.js'
 import { getFullDisplayBalance, formatNumber } from 'utils/formatBalance'
@@ -14,6 +15,7 @@ interface StakeModalProps {
   stakingMax: BigNumber
   stakingTokenPrice: number
   isRemovingStake?: boolean
+  account: string
   onDismiss?: () => void
 }
 
@@ -26,9 +28,11 @@ const VaultStakeModal: React.FC<StakeModalProps> = ({
   stakingMax,
   stakingTokenPrice,
   isRemovingStake = false,
+  account,
   onDismiss,
 }) => {
   const { stakingToken, earningToken } = pool
+  const cakeVaultContract = useCakeVaultContract()
   const TranslateString = useI18n()
   const { theme } = useTheme()
 
@@ -56,43 +60,29 @@ const VaultStakeModal: React.FC<StakeModalProps> = ({
   }
 
   const handleConfirmClick = async () => {
+    const convertedStakeAmount = new BigNumber(stakeAmount).multipliedBy(new BigNumber(10).pow(stakingToken.decimals))
     setPendingTx(true)
 
-    if (isRemovingStake) {
-      // unstaking
-      try {
-        // unstake call
-        toastSuccess(
-          `${TranslateString(999, 'Unstaked')}!`,
-          TranslateString(999, `Your ${earningToken.symbol} earnings have also been harvested to your wallet!`),
-        )
+    // if (isRemovingStake) {
+    //   // unstaking
+    //   }
+    // } else {
+    cakeVaultContract.methods
+      .deposit(convertedStakeAmount)
+      .send({ from: account })
+      .on('sending', () => {
+        setPendingTx(true)
+      })
+      .on('receipt', async () => {
+        toastSuccess(TranslateString(999, 'Staked!'), TranslateString(999, 'Your funds have been staked in the pool'))
         setPendingTx(false)
         onDismiss()
-      } catch (e) {
-        toastError(
-          TranslateString(999, 'Canceled'),
-          TranslateString(999, 'Please try again and confirm the transaction.'),
-        )
+      })
+      .on('error', (e) => {
+        debugger // eslint-disable-line
+        toastError(TranslateString(999, 'Error'), TranslateString(999, 'Please try again and confirm the transaction.'))
         setPendingTx(false)
-      }
-    } else {
-      try {
-        // staking
-        //  staking call
-        toastSuccess(
-          `${TranslateString(1074, 'Staked')}!`,
-          TranslateString(999, `Your ${stakingToken.symbol} funds have been staked in the pool!`),
-        )
-        setPendingTx(false)
-        onDismiss()
-      } catch (e) {
-        toastError(
-          TranslateString(999, 'Canceled'),
-          TranslateString(999, 'Please try again and confirm the transaction.'),
-        )
-        setPendingTx(false)
-      }
-    }
+      })
   }
 
   return (

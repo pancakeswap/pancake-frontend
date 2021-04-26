@@ -13,11 +13,11 @@ import { Pool } from 'state/types'
 interface AprRowProps {
   pool: Pool
   stakingTokenPrice: number
-  autoVault?: boolean
+  isAutoVault?: boolean
   compoundFrequency?: number
 }
 
-const AprRow: React.FC<AprRowProps> = ({ pool, stakingTokenPrice, autoVault = false, compoundFrequency = 1 }) => {
+const AprRow: React.FC<AprRowProps> = ({ pool, stakingTokenPrice, isAutoVault = false, compoundFrequency = 1 }) => {
   const TranslateString = useI18n()
   const { stakingToken, earningToken, totalStaked, isFinished, tokenPerBlock } = pool
 
@@ -35,7 +35,7 @@ const AprRow: React.FC<AprRowProps> = ({ pool, stakingTokenPrice, autoVault = fa
   const roundingDecimals = isHighValueToken ? 4 : 2
 
   const earningsPercentageToDisplay = () => {
-    if (autoVault) {
+    if (isAutoVault) {
       const oneThousandDollarsWorthOfToken = 1000 / earningTokenPrice
       const tokenEarnedPerThousand365D = tokenEarnedPerThousandDollarsCompounding({
         numberOfDays: 365,
@@ -72,7 +72,7 @@ const AprRow: React.FC<AprRowProps> = ({ pool, stakingTokenPrice, autoVault = fa
 
   return (
     <Flex alignItems="center" justifyContent="space-between">
-      <Text fontSize="16px">{autoVault ? TranslateString(999, 'APY') : TranslateString(736, 'APR')}:</Text>
+      <Text fontSize="16px">{isAutoVault ? TranslateString(999, 'APY') : TranslateString(736, 'APR')}:</Text>
       {isFinished || !apr ? (
         <Skeleton width="82px" height="32px" />
       ) : (

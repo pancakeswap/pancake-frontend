@@ -17,6 +17,8 @@ const CakeVaultCard: React.FC<{ pool: Pool; account: string }> = ({ pool, accoun
   const TranslateString = useI18n()
   const cakeVaultContract = useCakeVaultContract()
   const [userShares, setUserShares] = useState(null)
+  const [totalShares, setTotalShares] = useState(null)
+  const [performanceFee, setPerformanceFee] = useState(null)
   const [lastDepositedTime, setLastDepositedTime] = useState(null)
   const [pricePerFullShare, setPricePerFullShare] = useState(null)
 
@@ -28,8 +30,10 @@ const CakeVaultCard: React.FC<{ pool: Pool; account: string }> = ({ pool, accoun
   const stakingTokenPrice = useGetApiPrice(stakingToken.address ? getAddress(stakingToken.address) : '')
 
   useEffect(() => {
+    //   user-specific contract fetches
     const fetchUserVaultInfo = async () => {
       const userInfo = await cakeVaultContract.methods.userInfo(account).call()
+      debugger //eslint-disable-line
       setLastDepositedTime(userInfo.lastDepositedTime)
       setUserShares(userInfo.shares)
     }
@@ -40,27 +44,44 @@ const CakeVaultCard: React.FC<{ pool: Pool; account: string }> = ({ pool, accoun
   }, [account, cakeVaultContract])
 
   useEffect(() => {
+    //   generic contract fetches
     const getPricePerShare = async () => {
       const sharePrice = await cakeVaultContract.methods.getPricePerFullShare().call()
       setPricePerFullShare(new BigNumber(sharePrice))
     }
-
+    const getTotalShares = async () => {
+      const shares = await cakeVaultContract.methods.totalShares().call()
+      setTotalShares(new BigNumber(shares))
+    }
+    const getFees = async () => {
+      const perfFee = await cakeVaultContract.methods.performanceFee().call()
+      setPerformanceFee(perfFee)
+    }
     getPricePerShare()
+    getTotalShares()
+    getFees()
   }, [cakeVaultContract])
 
   return (
     <StyledCard isStaking={accountHasSharesStaked}>
-      <StyledCardHeader autoVault earningTokenSymbol="CAKE" stakingTokenSymbol="CAKE" />
+      <StyledCardHeader isAutoVault earningTokenSymbol="CAKE" stakingTokenSymbol="CAKE" />
       <CardBody>
-        <AprRow pool={pool} stakingTokenPrice={stakingTokenPrice} autoVault compoundFrequency={timesCompoundedDaily} />
+        <AprRow
+          pool={pool}
+          stakingTokenPrice={stakingTokenPrice}
+          isAutoVault
+          compoundFrequency={timesCompoundedDaily}
+        />
         <Flex mt="24px" flexDirection="column">
           {account ? (
             <VaultCardActions
               pool={pool}
               userShares={userShares}
+              lastDepositedTime={lastDepositedTime}
               pricePerFullShare={pricePerFullShare}
               stakingTokenPrice={stakingTokenPrice}
               accountHasSharesStaked={accountHasSharesStaked}
+              account={account}
             />
           ) : (
             <>
@@ -73,7 +94,7 @@ const CakeVaultCard: React.FC<{ pool: Pool; account: string }> = ({ pool, accoun
         </Flex>
       </CardBody>
       {/* At the moment all footer info is coming from the CAKE - CAKE pool */}
-      <CardFooter pool={pool} account={account} />
+      <CardFooter pool={pool} account={account} performanceFee={performanceFee} isAutoVault />
     </StyledCard>
   )
 }

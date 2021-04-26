@@ -16,9 +16,19 @@ const CakeVaultCardActions: React.FC<{
   pool: Pool
   userShares: number
   pricePerFullShare: BigNumber
+  lastDepositedTime: number
   stakingTokenPrice: number
   accountHasSharesStaked: boolean
-}> = ({ pool, userShares, pricePerFullShare, stakingTokenPrice, accountHasSharesStaked }) => {
+  account: string
+}> = ({
+  pool,
+  userShares,
+  pricePerFullShare,
+  lastDepositedTime,
+  stakingTokenPrice,
+  accountHasSharesStaked,
+  account,
+}) => {
   const { stakingToken, earningToken, userData } = pool
   const TranslateString = useI18n()
   const stakingTokenBalance = new BigNumber(userData?.stakingTokenBalance || 0)
@@ -26,7 +36,7 @@ const CakeVaultCardActions: React.FC<{
 
   // Is there an approval call on the contract? Should we use the existing sousPool approval with the cake pool id?
   const needsApproval = false
-  const isLoading = !userShares && !userData
+  const isLoading = !userData || !userShares
 
   return (
     <Flex flexDirection="column">
@@ -58,7 +68,9 @@ const CakeVaultCardActions: React.FC<{
             stakingTokenBalance={stakingTokenBalance}
             stakingTokenPrice={stakingTokenPrice}
             userShares={userShares}
+            lastDepositedTime={lastDepositedTime}
             accountHasSharesStaked={accountHasSharesStaked}
+            account={account}
           />
         )}
       </Flex>
