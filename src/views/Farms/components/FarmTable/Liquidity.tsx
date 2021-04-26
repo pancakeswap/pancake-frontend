@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { HelpIcon, Text, useTooltip } from '@pancakeswap-libs/uikit'
+import { HelpIcon, Text, Skeleton, useTooltip } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import BigNumber from 'bignumber.js'
 
@@ -30,9 +30,11 @@ const Container = styled.div`
 `
 
 const Liquidity: React.FunctionComponent<LiquidityProps> = ({ liquidity }) => {
-  const displayLiquidity = liquidity
-    ? `$${Number(liquidity).toLocaleString(undefined, { maximumFractionDigits: 0 })}`
-    : '-'
+  const displayLiquidity = liquidity ? (
+    `$${Number(liquidity).toLocaleString(undefined, { maximumFractionDigits: 0 })}`
+  ) : (
+    <Skeleton width={60} />
+  )
   const TranslateString = useI18n()
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     TranslateString(999, 'The total value of the funds in this farm’s liquidity pool'),

@@ -13,7 +13,17 @@ import { FarmsState, Farm } from '../types'
 
 const nonArchivedFarms = farmsConfig.filter(({ pid }) => !isArchivedPid(pid))
 
-const initialState: FarmsState = { data: [...farmsConfig], loadArchivedFarmsData: false }
+const noAccountFarmConfig = farmsConfig.map((farm) => ({
+  ...farm,
+  userData: {
+    allowance: '0',
+    tokenBalance: '0',
+    stakedBalance: '0',
+    earnings: '0',
+  },
+}))
+
+const initialState: FarmsState = { data: noAccountFarmConfig, loadArchivedFarmsData: false, userDataLoaded: false }
 
 export const farmsSlice = createSlice({
   name: 'Farms',
@@ -33,6 +43,7 @@ export const farmsSlice = createSlice({
         const index = state.data.findIndex((farm) => farm.pid === pid)
         state.data[index] = { ...state.data[index], userData: userDataEl }
       })
+      state.userDataLoaded = true
     },
     setLoadArchivedFarmsData: (state, action) => {
       const loadArchivedFarmsData = action.payload
