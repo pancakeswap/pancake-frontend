@@ -79,8 +79,11 @@ const LotteryCard = () => {
         </Button>
       )
     }
+    if (lotteryHasDrawn) {
+      return <Button disabled> {TranslateString(874, 'On sale soon')}</Button>
+    }
     return (
-      <Button id="dashboard-buy-tickets" variant="secondary" onClick={onPresentBuy} disabled={lotteryHasDrawn}>
+      <Button id="dashboard-buy-tickets" variant="secondary" onClick={onPresentBuy}>
         {TranslateString(558, 'Buy Tickets')}
       </Button>
     )

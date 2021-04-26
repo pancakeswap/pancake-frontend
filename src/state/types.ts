@@ -20,10 +20,10 @@ export interface Farm extends FarmConfig {
   tokenPriceVsQuote?: BigNumber
   poolWeight?: BigNumber
   userData?: {
-    allowance: BigNumber
-    tokenBalance: BigNumber
-    stakedBalance: BigNumber
-    earnings: BigNumber
+    allowance: string
+    tokenBalance: string
+    stakedBalance: string
+    earnings: string
   }
 }
 
@@ -60,6 +60,8 @@ export interface ToastsState {
 
 export interface FarmsState {
   data: Farm[]
+  loadArchivedFarmsData: boolean
+  userDataLoaded: boolean
 }
 
 export interface PoolsState {

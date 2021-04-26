@@ -3,11 +3,11 @@ import erc20 from 'config/abi/erc20.json'
 import masterchefABI from 'config/abi/masterchef.json'
 import multicall from 'utils/multicall'
 import { getAddress, getMasterChefAddress } from 'utils/addressHelpers'
-import farmsConfig from 'config/constants/farms'
+import { FarmConfig } from 'config/constants/types'
 
-const fetchFarms = async () => {
+const fetchFarms = async (farmsToFetch: FarmConfig[]) => {
   const data = await Promise.all(
-    farmsConfig.map(async (farmConfig) => {
+    farmsToFetch.map(async (farmConfig) => {
       const lpAddress = getAddress(farmConfig.lpAddresses)
       const calls = [
         // Balance of token in the LP contract

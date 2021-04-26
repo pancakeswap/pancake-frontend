@@ -17,7 +17,9 @@ import { getBalanceNumber } from 'utils/formatBalance'
 import { getFarmApr } from 'utils/apr'
 import { orderBy } from 'lodash'
 import { getAddress } from 'utils/addressHelpers'
+import isArchivedPid from 'utils/farmHelpers'
 import PageHeader from 'components/PageHeader'
+import { fetchFarmsPublicDataAsync, setLoadArchivedFarmsData } from 'state/farms'
 import Select, { OptionProps } from 'components/Select/Select'
 import FarmCard, { FarmWithStakedValue } from './components/FarmCard/FarmCard'
 import Table from './components/FarmTable/FarmTable'
@@ -105,7 +107,7 @@ const Farms: React.FC = () => {
   const { path } = useRouteMatch()
   const { pathname } = useLocation()
   const TranslateString = useI18n()
-  const farmsLP = useFarms()
+  const { data: farmsLP, userDataLoaded } = useFarms()
   const cakePrice = usePriceCakeBusd()
   const [query, setQuery] = useState('')
   const [viewMode, setViewMode] = usePersistState(ViewMode.TABLE, 'pancake_farm_view')
@@ -121,20 +123,46 @@ const Farms: React.FC = () => {
     }
   }, [account, dispatch, fastRefresh])
 
-  const isActive = !pathname.includes('history')
+  const isArchived = pathname.includes('archived')
+  const isInactive = pathname.includes('history')
+  const isActive = !isInactive && !isArchived
+
+  // Users with no wallet connected should see 0 as Earned amount
+  // Connected users should see loading indicator until first userData has loaded
+  const userDataReady = !account || (!!account && userDataLoaded)
+
   const [stakedOnly, setStakedOnly] = useState(!isActive)
   useEffect(() => {
     setStakedOnly(!isActive)
   }, [isActive])
 
-  const activeFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
-  const inactiveFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X')
+  useEffect(() => {
+    // Makes the main scheduled fetching to request archived farms data
+    dispatch(setLoadArchivedFarmsData(isArchived))
+
+    // Immediately request data for archived farms so users don't have to wait
+    // 60 seconds for public data and 10 seconds for user data
+    if (isArchived) {
+      dispatch(fetchFarmsPublicDataAsync())
+      if (account) {
+        dispatch(fetchFarmUserDataAsync(account))
+      }
+    }
+  }, [isArchived, dispatch, account])
+
+  const activeFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X' && !isArchivedPid(farm.pid))
+  const inactiveFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X' && !isArchivedPid(farm.pid))
+  const archivedFarms = farmsLP.filter((farm) => isArchivedPid(farm.pid))
 
   const stakedOnlyFarms = activeFarms.filter(
     (farm) => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0),
   )
 
   const stakedInactiveFarms = inactiveFarms.filter(
+    (farm) => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0),
+  )
+
+  const stakedArchivedFarms = archivedFarms.filter(
     (farm) => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0),
   )
 
@@ -196,8 +224,12 @@ const Farms: React.FC = () => {
 
     if (isActive) {
       farmsStaked = stakedOnly ? farmsList(stakedOnlyFarms) : farmsList(activeFarms)
-    } else {
+    }
+    if (isInactive) {
       farmsStaked = stakedOnly ? farmsList(stakedInactiveFarms) : farmsList(inactiveFarms)
+    }
+    if (isArchived) {
+      farmsStaked = stakedOnly ? farmsList(stakedArchivedFarms) : farmsList(archivedFarms)
     }
 
     return sortFarms(farmsStaked).slice(0, numberOfFarmsVisible)
@@ -206,7 +238,11 @@ const Farms: React.FC = () => {
     activeFarms,
     farmsList,
     inactiveFarms,
+    archivedFarms,
     isActive,
+    isInactive,
+    isArchived,
+    stakedArchivedFarms,
     stakedInactiveFarms,
     stakedOnly,
     stakedOnlyFarms,
@@ -253,7 +289,7 @@ const Farms: React.FC = () => {
         pid: farm.pid,
       },
       earned: {
-        earnings: farm.userData ? getBalanceNumber(new BigNumber(farm.userData.earnings)) : null,
+        earnings: getBalanceNumber(new BigNumber(farm.userData.earnings)),
         pid: farm.pid,
       },
       liquidity: {
@@ -295,7 +331,7 @@ const Farms: React.FC = () => {
         sortable: column.sortable,
       }))
 
-      return <Table data={rowData} columns={columns} />
+      return <Table data={rowData} columns={columns} userDataReady={userDataReady} />
     }
 
     return (
@@ -307,6 +343,11 @@ const Farms: React.FC = () => {
             ))}
           </Route>
           <Route exact path={`${path}/history`}>
+            {farmsStakedMemoized.map((farm) => (
+              <FarmCard key={farm.pid} farm={farm} cakePrice={cakePrice} account={account} removed />
+            ))}
+          </Route>
+          <Route exact path={`${path}/archived`}>
             {farmsStakedMemoized.map((farm) => (
               <FarmCard key={farm.pid} farm={farm} cakePrice={cakePrice} account={account} removed />
             ))}
@@ -338,7 +379,10 @@ const Farms: React.FC = () => {
               <Toggle checked={stakedOnly} onChange={() => setStakedOnly(!stakedOnly)} scale="sm" />
               <Text> {TranslateString(1116, 'Staked only')}</Text>
             </ToggleWrapper>
-            <FarmTabButtons />
+            <FarmTabButtons
+              hasStakeInFinishedFarms={stakedInactiveFarms.length > 0}
+              hasStakeInArchivedFarms={stakedArchivedFarms.length > 0}
+            />
           </ViewControls>
           <FilterContainer>
             <LabelWrapper>
