@@ -10,7 +10,6 @@ import BigNumber from 'bignumber.js'
 import { getFullDisplayBalance, formatNumber } from 'utils/formatBalance'
 import { useToast } from 'state/hooks'
 import { Pool } from 'state/types'
-import ConfirmButton from '../ConfirmButton'
 
 interface StakeModalProps {
   isBnbPool: boolean
@@ -148,14 +147,14 @@ const StakeModal: React.FC<StakeModalProps> = ({
           MAX
         </StyledButton>
       </Flex>
-      <ConfirmButton
+      <Button
         isLoading={pendingTx}
         endIcon={pendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
         onClick={handleConfirmClick}
         mt="24px"
       >
         {pendingTx ? TranslateString(802, 'Confirming') : TranslateString(464, 'Confirm')}
-      </ConfirmButton>
+      </Button>
       {!isRemovingStake && (
         <Button mt="8px" as="a" external href={BASE_EXCHANGE_URL} variant="secondary">
           {TranslateString(999, 'Get')} {stakingToken.symbol}
