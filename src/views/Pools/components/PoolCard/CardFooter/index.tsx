@@ -33,7 +33,9 @@ const Footer: React.FC<FooterProps> = ({ pool, account, performanceFee, isAutoVa
           {isExpanded ? TranslateString(1066, 'Hide') : TranslateString(658, 'Details')}
         </ExpandableLabel>
       </ExpandableButtonWrapper>
-      {isExpanded && <ExpandedFooter pool={pool} account={account} />}
+      {isExpanded && (
+        <ExpandedFooter pool={pool} account={account} performanceFee={performanceFee} isAutoVault={isAutoVault} />
+      )}
     </CardFooter>
   )
 }

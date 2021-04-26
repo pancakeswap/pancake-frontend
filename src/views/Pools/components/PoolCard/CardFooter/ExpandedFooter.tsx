@@ -13,6 +13,8 @@ import Balance from 'components/Balance'
 interface ExpandedFooterProps {
   pool: Pool
   account: string
+  performanceFee?: number
+  isAutoVault?: boolean
 }
 
 const ExpandedWrapper = styled(Flex)`
@@ -22,7 +24,7 @@ const ExpandedWrapper = styled(Flex)`
   }
 `
 
-const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
+const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account, performanceFee, isAutoVault = false }) => {
   const TranslateString = useI18n()
   const { currentBlock } = useBlock()
   const { stakingToken, earningToken, totalStaked, startBlock, endBlock, isFinished, contractAddress } = pool
@@ -42,6 +44,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
       <Flex mb="2px" justifyContent="space-between" alignItems="center">
         <Text fontSize="14px">{TranslateString(999, 'Total staked:')}</Text>
         <Flex alignItems="flex-start">
+          {/* For autoVault, should totalStaked come from total shares, or the CAKE pool? */}
           {totalStaked ? (
             <>
               <Balance fontSize="14px" value={getBalanceNumber(totalStaked, stakingToken.decimals)} />
@@ -75,12 +78,22 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
           </Flex>
         </Flex>
       )}
+      {isAutoVault && (
+        <Flex mb="2px" justifyContent="space-between" alignItems="center">
+          <Text fontSize="14px">{TranslateString(999, 'Performance Fee')}</Text>
+          <Flex alignItems="center">
+            <Text ml="4px" fontSize="14px">
+              {performanceFee / 100}%
+            </Text>
+          </Flex>
+        </Flex>
+      )}
       <Flex mb="2px" justifyContent="flex-end">
         <LinkExternal bold={false} fontSize="14px" href={earningToken.projectLink} target="_blank">
           {TranslateString(412, 'View Project Site')}
         </LinkExternal>
       </Flex>
-      {poolContractAddress && (
+      {!isAutoVault && poolContractAddress && (
         <Flex mb="2px" justifyContent="flex-end">
           <LinkExternal
             bold={false}

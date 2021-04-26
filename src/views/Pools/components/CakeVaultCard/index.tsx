@@ -92,7 +92,6 @@ const CakeVaultCard: React.FC<{ pool: Pool; account: string }> = ({ pool, accoun
           )}
         </Flex>
       </CardBody>
-      {/* At the moment all footer info is coming from the CAKE - CAKE pool */}
       <CardFooter pool={pool} account={account} performanceFee={performanceFee} isAutoVault />
     </StyledCard>
   )
