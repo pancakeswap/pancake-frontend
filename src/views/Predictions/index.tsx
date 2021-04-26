@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { Helmet } from 'react-helmet-async'
-import { useMatchBreakpoints } from '@pancakeswap-libs/uikit'
+import { useMatchBreakpoints, useModal } from '@pancakeswap-libs/uikit'
 import { useAppDispatch } from 'state'
 import { useGetPredictionsStatus, useInitialBlock } from 'state/hooks'
 import {
@@ -11,21 +11,35 @@ import {
 } from 'state/predictions/helpers'
 import { initialize, setPredictionStatus } from 'state/predictions'
 import { HistoryFilter, PredictionsState, PredictionStatus } from 'state/types'
+import usePersistState from 'hooks/usePersistState'
 import PageLoader from 'components/PageLoader'
 import Container from './components/Container'
 import CollectWinningsPopup from './components/CollectWinningsPopup'
 import SwiperProvider from './context/SwiperProvider'
 import Desktop from './Desktop'
 import Mobile from './Mobile'
+import RiskDisclaimer from './components/RiskDisclaimer'
 
 const FUTURE_ROUND_COUNT = 2 // the number of rounds in the future to show
 
 const Predictions = () => {
   const { isLg, isXl } = useMatchBreakpoints()
+  const [hasAcceptedRisk, setHasAcceptedRisk] = usePersistState(false, 'pancake_predictions_accepted_risk')
   const status = useGetPredictionsStatus()
   const dispatch = useAppDispatch()
   const initialBlock = useInitialBlock()
   const isDesktop = isLg || isXl
+  const handleAcceptRiskSuccess = () => setHasAcceptedRisk(true)
+  const [onPresentRiskDisclaimer] = useModal(<RiskDisclaimer onSuccess={handleAcceptRiskSuccess} />, false)
+
+  // TODO: memoize modal's handlers
+  const onPresentRiskDisclaimerRef = useRef(onPresentRiskDisclaimer)
+
+  useEffect(() => {
+    if (!hasAcceptedRisk) {
+      onPresentRiskDisclaimerRef.current()
+    }
+  }, [hasAcceptedRisk, onPresentRiskDisclaimerRef])
 
   useEffect(() => {
     const fetchInitialData = async () => {
