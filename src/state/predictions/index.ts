@@ -87,7 +87,7 @@ export const predictionsSlice = createSlice({
         const updatedRounds = Object.values(newRoundData)
 
         // Add new round
-        const newestRound = maxBy(updatedRounds, 'epoch')
+        const newestRound = maxBy(updatedRounds, 'epoch') as Round
         const futureRound = transformRoundResponse(
           makeFutureRoundResponse(newestRound.epoch + 1, newestRound.startBlock + state.intervalBlocks),
         )
