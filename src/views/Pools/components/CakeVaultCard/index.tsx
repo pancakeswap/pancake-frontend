@@ -11,21 +11,27 @@ import AprRow from '../PoolCard/AprRow'
 import StyledCard from '../PoolCard/StyledCard'
 import CardFooter from '../PoolCard/CardFooter'
 import StyledCardHeader from '../PoolCard/StyledCardHeader'
-import CardActions from '../PoolCard/CardActions'
+import VaultCardActions from './VaultCardActions'
 
 const CakeVaultCard: React.FC<{ pool: Pool; account: string }> = ({ pool, account }) => {
-  const { sousId, stakingToken, earningToken, userData } = pool
   const TranslateString = useI18n()
   const cakeVaultContract = useCakeVaultContract()
-  const accountHasStakedBalance = false
-  const stakingTokenPrice = useGetApiPrice(stakingToken.address ? getAddress(stakingToken.address) : '')
+  const [userShares, setUserShares] = useState(null)
+  const [lastDepositedTime, setLastDepositedTime] = useState(null)
+  const [pricePerFullShare, setPricePerFullShare] = useState(null)
+
+  const { stakingToken } = pool
+
+  //   Estimate & manual for now. We can change once we have a better sense of this
   const timesCompoundedDaily = 24
-  const [vaultUserInfo, setVaultUserInfo] = useState({ shares: null, lastDepositedTime: null })
+  const accountHasSharesStaked = userShares > 0
+  const stakingTokenPrice = useGetApiPrice(stakingToken.address ? getAddress(stakingToken.address) : '')
 
   useEffect(() => {
     const fetchUserVaultInfo = async () => {
       const userInfo = await cakeVaultContract.methods.userInfo(account).call()
-      setVaultUserInfo(userInfo)
+      setLastDepositedTime(userInfo.lastDepositedTime)
+      setUserShares(userInfo.shares)
     }
 
     if (account) {
@@ -33,18 +39,28 @@ const CakeVaultCard: React.FC<{ pool: Pool; account: string }> = ({ pool, accoun
     }
   }, [account, cakeVaultContract])
 
+  useEffect(() => {
+    const getPricePerShare = async () => {
+      const sharePrice = await cakeVaultContract.methods.getPricePerFullShare().call()
+      setPricePerFullShare(new BigNumber(sharePrice))
+    }
+
+    getPricePerShare()
+  }, [cakeVaultContract])
+
   return (
-    <StyledCard isStaking={accountHasStakedBalance}>
+    <StyledCard isStaking={accountHasSharesStaked}>
       <StyledCardHeader autoVault earningTokenSymbol="CAKE" stakingTokenSymbol="CAKE" />
       <CardBody>
         <AprRow pool={pool} stakingTokenPrice={stakingTokenPrice} autoVault compoundFrequency={timesCompoundedDaily} />
-        {/*   <Flex mt="24px" flexDirection="column">
+        <Flex mt="24px" flexDirection="column">
           {account ? (
-            <CardActions
+            <VaultCardActions
               pool={pool}
-              stakedBalance={stakedBalance}
+              userShares={userShares}
+              pricePerFullShare={pricePerFullShare}
               stakingTokenPrice={stakingTokenPrice}
-              accountHasStakedBalance={accountHasStakedBalance}
+              accountHasSharesStaked={accountHasSharesStaked}
             />
           ) : (
             <>
@@ -54,9 +70,10 @@ const CakeVaultCard: React.FC<{ pool: Pool; account: string }> = ({ pool, accoun
               <UnlockButton />
             </>
           )}
-        </Flex> */}
+        </Flex>
       </CardBody>
-      {/* <CardFooter pool={pool} account={account} /> */}
+      {/* At the moment all footer info is coming from the CAKE - CAKE pool */}
+      <CardFooter pool={pool} account={account} />
     </StyledCard>
   )
 }
