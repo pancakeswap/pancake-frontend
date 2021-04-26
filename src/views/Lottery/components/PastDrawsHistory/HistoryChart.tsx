@@ -7,6 +7,7 @@ import useTheme from 'hooks/useTheme'
 import Loading from '../Loading'
 
 const Line = lazy(() => import('./LineChartWrapper'))
+const Bar = lazy(() => import('./BarChartWrapper'))
 
 const InnerWrapper = styled.div`
   width: 100%;
@@ -15,17 +16,22 @@ const InnerWrapper = styled.div`
   align-items: center;
   justify-content: center;
 `
+interface HistoryChartProps {
+  showLast: 'max' | number
+}
 
-const HistoryChart: React.FC = () => {
+const HistoryChart: React.FC<HistoryChartProps> = ({ showLast }) => {
   const TranslateString = useI18n()
   const { isDark } = useTheme()
   const { historyData, historyError } = useContext(PastLotteryDataContext)
   const getDataArray = (kind) => {
-    return historyData
+    const rawData = historyData
       .map((dataPoint) => {
         return dataPoint[kind]
       })
       .reverse()
+
+    return showLast === 'max' ? rawData : rawData.slice(Number(showLast) * -1)
   }
 
   const lineStyles = ({ color }) => {
@@ -63,7 +69,7 @@ const HistoryChart: React.FC = () => {
       ticks: {
         fontFamily: 'Kanit, sans-serif',
         fontColor: color,
-        fontSize: 14,
+        fontSize: 12,
         lineHeight,
         maxRotation: 0,
         beginAtZero: true,
@@ -77,19 +83,21 @@ const HistoryChart: React.FC = () => {
 
   const options = useMemo(() => {
     return {
+      tooltips: {
+        mode: 'index',
+        intersect: false,
+      },
       legend: { display: false },
       scales: {
         yAxes: [
           {
             type: 'linear',
-            display: true,
             position: 'left',
             id: 'y-axis-pool',
             ...axesStyles({ color: '#8f80ba', lineHeight: 1.6 }),
           },
           {
             type: 'linear',
-            display: true,
             position: 'right',
             id: 'y-axis-burned',
             ...axesStyles({ color: '#1FC7D4', lineHeight: 1.5 }),
@@ -113,7 +121,11 @@ const HistoryChart: React.FC = () => {
       )}
       {!historyError && historyData.length > 1 ? (
         <Suspense fallback={<div>{TranslateString(656, 'Loading...')}</div>}>
-          <Line data={chartData} options={options} type="line" />
+          {showLast === 50 || showLast === 100 ? (
+            <Bar data={chartData} options={options} />
+          ) : (
+            <Line data={chartData} options={options} type="line" />
+          )}
         </Suspense>
       ) : (
         <InnerWrapper>
