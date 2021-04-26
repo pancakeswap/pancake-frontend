@@ -5,7 +5,7 @@ import { getWeb3NoAccount } from 'utils/web3'
 import MultiCallAbi from 'config/abi/Multicall.json'
 import ticketAbi from 'config/abi/lotteryNft.json'
 import lotteryAbi from 'config/abi/lottery.json'
-import { LOTTERY_TICKET_PRICE } from 'config'
+import { DEFAULT_TOKEN_DECIMAL, LOTTERY_TICKET_PRICE } from 'config'
 import { AbiItem } from 'web3-utils'
 import { getMulticallAddress } from './addressHelpers'
 
@@ -34,7 +34,7 @@ export const multiCall = async (abi, calls) => {
 export const multiBuy = async (lotteryContract, price, numbersList, account) => {
   try {
     return lotteryContract.methods
-      .multiBuy(new BigNumber(price).times(new BigNumber(10).pow(18)).toString(), numbersList)
+      .multiBuy(new BigNumber(price).times(DEFAULT_TOKEN_DECIMAL).toString(), numbersList)
       .send({ from: account })
       .on('transactionHash', (tx) => {
         return tx.transactionHash
@@ -188,7 +188,7 @@ export const getMatchingRewardLength = async (lotteryContract, matchNumber) => {
   try {
     const amount = await lotteryContract.methods.historyAmount(issueIndex, 5 - matchNumber).call()
 
-    return new BigNumber(amount).div(new BigNumber(10).pow(18)).div(LOTTERY_TICKET_PRICE).toNumber()
+    return new BigNumber(amount).div(DEFAULT_TOKEN_DECIMAL).div(LOTTERY_TICKET_PRICE).toNumber()
   } catch (err) {
     console.error(err)
   }

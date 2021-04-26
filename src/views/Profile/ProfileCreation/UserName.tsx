@@ -22,6 +22,7 @@ import { useToast } from 'state/hooks'
 import useWeb3 from 'hooks/useWeb3'
 import useI18n from 'hooks/useI18n'
 import useHasCakeBalance from 'hooks/useHasCakeBalance'
+import { DEFAULT_TOKEN_DECIMAL } from 'config'
 import debounce from 'lodash/debounce'
 import ConfirmProfileCreationModal from '../components/ConfirmProfileCreationModal'
 import useProfileCreation from './contexts/hook'
@@ -34,7 +35,7 @@ enum ExistingUserState {
 }
 
 const profileApiUrl = process.env.REACT_APP_API_PROFILE
-const minimumCakeToRegister = new BigNumber(REGISTER_COST).multipliedBy(new BigNumber(10).pow(18))
+const minimumCakeToRegister = new BigNumber(REGISTER_COST).multipliedBy(DEFAULT_TOKEN_DECIMAL)
 
 const InputWrap = styled.div`
   position: relative;
