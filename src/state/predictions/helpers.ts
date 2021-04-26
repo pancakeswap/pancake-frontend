@@ -170,7 +170,7 @@ export const getMarketData = async (): Promise<{
     GRAPH_API_PREDICTIONS,
     gql`
       query getMarketData {
-        rounds(first: 5, order: epoch, orderDirection: desc) {
+        rounds(first: 5, orderBy: epoch, orderDirection: desc) {
           ${getRoundBaseFields()}
           bets {
             ${getBetBaseFields()}
