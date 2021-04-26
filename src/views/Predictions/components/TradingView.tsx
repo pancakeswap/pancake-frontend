@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react'
 import { Box } from '@pancakeswap-libs/uikit'
 import { useTheme } from 'styled-components'
+import { useIsChartPaneOpen } from 'state/hooks'
 
 const TradingView = () => {
   const theme = useTheme()
+  const isChartPaneOpen = useIsChartPaneOpen()
 
   useEffect(() => {
     // @ts-ignore
@@ -26,7 +28,7 @@ const TradingView = () => {
         container_id: 'tradingview_b239c',
       })
     }
-  }, [theme])
+  }, [theme, isChartPaneOpen])
 
   return (
     <Box overflow="hidden" className="tradingview_container">
