@@ -4,6 +4,7 @@ import { Card, CardBody, Heading, Text } from '@pancakeswap-libs/uikit'
 import { useWeb3React } from '@web3-react/core'
 import useI18n from 'hooks/useI18n'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
+import { DEFAULT_TOKEN_DECIMAL } from 'config'
 import { useCake, useBunnyFactory } from 'hooks/useContract'
 import { Nft } from 'config/constants/types'
 import useHasCakeBalance from 'hooks/useHasCakeBalance'
@@ -15,7 +16,7 @@ import useProfileCreation from './contexts/hook'
 import { MINT_COST, STARTER_BUNNY_IDENTIFIERS } from './config'
 
 const nfts = nftList.filter((nft) => STARTER_BUNNY_IDENTIFIERS.includes(nft.identifier))
-const minimumCakeBalanceToMint = new BigNumber(MINT_COST).multipliedBy(new BigNumber(10).pow(18))
+const minimumCakeBalanceToMint = new BigNumber(MINT_COST).multipliedBy(DEFAULT_TOKEN_DECIMAL)
 
 const Mint: React.FC = () => {
   const [variationId, setVariationId] = useState<Nft['variationId']>(null)

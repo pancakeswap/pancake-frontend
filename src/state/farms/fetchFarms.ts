@@ -4,6 +4,7 @@ import masterchefABI from 'config/abi/masterchef.json'
 import multicall from 'utils/multicall'
 import { getAddress, getMasterChefAddress } from 'utils/addressHelpers'
 import { FarmConfig } from 'config/constants/types'
+import { DEFAULT_TOKEN_DECIMAL } from 'config'
 
 const fetchFarms = async (farmsToFetch: FarmConfig[]) => {
   const data = await Promise.all(
@@ -59,7 +60,7 @@ const fetchFarms = async (farmsToFetch: FarmConfig[]) => {
 
       // Total value in staking in quote token value
       const lpTotalInQuoteToken = new BigNumber(quoteTokenBalanceLP)
-        .div(new BigNumber(10).pow(18))
+        .div(DEFAULT_TOKEN_DECIMAL)
         .times(new BigNumber(2))
         .times(lpTokenRatio)
 

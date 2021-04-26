@@ -6,6 +6,7 @@ import useI18n from 'hooks/useI18n'
 import useAllEarnings from 'hooks/useAllEarnings'
 import { usePriceCakeBusd } from 'state/hooks'
 import styled from 'styled-components'
+import { DEFAULT_TOKEN_DECIMAL } from 'config'
 import CardValue from './CardValue'
 import CardBusdValue from './CardBusdValue'
 
@@ -18,7 +19,11 @@ const CakeHarvestBalance = () => {
   const { account } = useWeb3React()
   const allEarnings = useAllEarnings()
   const earningsSum = allEarnings.reduce((accum, earning) => {
-    return accum + new BigNumber(earning).div(new BigNumber(10).pow(18)).toNumber()
+    const earningNumber = new BigNumber(earning)
+    if (earningNumber.eq(0)) {
+      return accum
+    }
+    return accum + earningNumber.div(DEFAULT_TOKEN_DECIMAL).toNumber()
   }, 0)
   const cakePriceBusd = usePriceCakeBusd()
   const earningsBusd = new BigNumber(earningsSum).multipliedBy(cakePriceBusd).toNumber()

@@ -10,6 +10,7 @@ import { getBalanceNumber, formatNumber } from 'utils/formatBalance'
 import { getAddress } from 'utils/addressHelpers'
 import ApproveConfirmButtons from 'views/Profile/components/ApproveConfirmButtons'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
+import { DEFAULT_TOKEN_DECIMAL } from 'config'
 import { useERC20 } from 'hooks/useContract'
 
 interface Props {
@@ -44,7 +45,7 @@ const ContributeModal: React.FC<Props> = ({
   const { account } = useWeb3React()
   const raisingTokenContract = useERC20(getAddress(currency.address))
   const TranslateString = useI18n()
-  const valueWithTokenDecimals = new BigNumber(value).times(new BigNumber(10).pow(18))
+  const valueWithTokenDecimals = new BigNumber(value).times(DEFAULT_TOKEN_DECIMAL)
 
   const {
     isApproving,
