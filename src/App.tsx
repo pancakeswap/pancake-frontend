@@ -82,7 +82,7 @@ const App: React.FC = () => {
             <Route path="/competition">
               <TradingCompetition />
             </Route>
-            <Route path="/predictions">
+            <Route path="/prediction">
               <Predictions />
             </Route>
             {/* Redirect */}

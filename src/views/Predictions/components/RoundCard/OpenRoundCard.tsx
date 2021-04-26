@@ -79,7 +79,7 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
 
     setState((prevState) => ({
       ...prevState,
-      hasEnteredPosition: false,
+      hasEnteredPosition: true,
     }))
 
     await dispatch(updateRound({ id: round.id }))
@@ -94,7 +94,7 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
   }
 
   return (
-    <CardFlip isFlipped={isSettingPosition} height="436px">
+    <CardFlip isFlipped={isSettingPosition} height="404px">
       <Card>
         <CardHeader
           status="next"

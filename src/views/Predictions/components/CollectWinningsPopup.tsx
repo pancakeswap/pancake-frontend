@@ -5,7 +5,7 @@ import { Button, CloseIcon, IconButton, TrophyGoldIcon } from '@pancakeswap-libs
 import { CSSTransition } from 'react-transition-group'
 import useI18n from 'hooks/useI18n'
 import { getBetHistory } from 'state/predictions/helpers'
-import { useGetPredictionsStatus } from 'state/hooks'
+import { useGetPredictionsStatus, useIsHistoryPaneOpen } from 'state/hooks'
 import { useAppDispatch } from 'state'
 import { setHistoryPaneState } from 'state/predictions'
 
@@ -125,6 +125,7 @@ const CollectWinningsPopup = () => {
   const timer = useRef(null)
   const { account } = useWeb3React()
   const predictionStatus = useGetPredictionsStatus()
+  const isHistoryPaneOpen = useIsHistoryPaneOpen()
   const dispatch = useAppDispatch()
 
   const handleOpenHistory = () => {
@@ -147,14 +148,23 @@ const CollectWinningsPopup = () => {
         return bet.position === bet.round.position
       })
 
-      setIsOpen(winnerBets.length > 0)
+      if (!isHistoryPaneOpen) {
+        setIsOpen(winnerBets.length > 0)
+      }
     }, 30000)
     // }
 
     return () => {
       clearInterval(timer.current)
     }
-  }, [account, timer, predictionStatus, setIsOpen])
+  }, [account, timer, predictionStatus, setIsOpen, isHistoryPaneOpen])
+
+  // Any time the history pane is open make sure the popup closes
+  useEffect(() => {
+    if (isHistoryPaneOpen) {
+      setIsOpen(false)
+    }
+  }, [isHistoryPaneOpen, setIsOpen])
 
   return (
     <CSSTransition in={isOpen} unmountOnExit nodeRef={ref} timeout={1000} classNames="popup">

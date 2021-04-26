@@ -163,9 +163,9 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
 
   return (
     <Card onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}>
-      <CardHeader py="8px" px="4px">
+      <CardHeader p="16px">
         <Flex alignItems="center">
-          <IconButton variant="text" onClick={handleGoBack}>
+          <IconButton variant="text" scale="sm" onClick={handleGoBack} mr="8px">
             <ArrowBackIcon width="24px" />
           </IconButton>
           <FlexRow>

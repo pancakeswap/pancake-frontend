@@ -67,6 +67,13 @@ const History = () => {
         })
       : bets
 
+  // API returns the open and live rounds so we need to filter them from this list.
+  const finalResults = results
+    ? results.filter((result) => {
+        return result.round.epoch < currentEpoch - 2
+      })
+    : []
+
   return (
     <StyledHistory>
       <Header />
@@ -78,7 +85,7 @@ const History = () => {
         )}
 
         {results && results.length > 0 ? (
-          orderBy(results, ['round.epoch'], ['desc']).map((bet) => {
+          orderBy(finalResults, ['round.epoch'], ['desc']).map((bet) => {
             return <HistoricalBet key={bet.id} bet={bet} />
           })
         ) : (
