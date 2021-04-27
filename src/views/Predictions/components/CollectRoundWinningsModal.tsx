@@ -14,6 +14,7 @@ import {
   Heading,
   Box,
   LinkExternal,
+  ModalCloseButton,
 } from '@pancakeswap-libs/uikit'
 import { useWeb3React } from '@web3-react/core'
 import useI18n from 'hooks/useI18n'
@@ -95,6 +96,7 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
         <ModalTitle>
           <Heading>{TranslateString(556, 'Collect Winnings')}</Heading>
         </ModalTitle>
+        <ModalCloseButton onDismiss={onDismiss} />
       </ModalHeader>
       <ModalBody p="24px">
         <TrophyGoldIcon width="96px" mx="auto" mb="24px" />
