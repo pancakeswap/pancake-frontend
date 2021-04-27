@@ -18,6 +18,7 @@ import { getFarmApr } from 'utils/apr'
 import { orderBy } from 'lodash'
 import { getAddress } from 'utils/addressHelpers'
 import isArchivedPid from 'utils/farmHelpers'
+import { latinise } from 'utils/latinise'
 import PageHeader from 'components/PageHeader'
 import { fetchFarmsPublicDataAsync, setLoadArchivedFarmsData } from 'state/farms'
 import Select, { OptionProps } from 'components/Select/Select'
@@ -28,7 +29,6 @@ import SearchInput from './components/SearchInput'
 import { RowProps } from './components/FarmTable/Row'
 import ToggleView from './components/ToggleView/ToggleView'
 import { DesktopColumnSchema, ViewMode } from './components/types'
-import { latinise } from '../../utils/latinise'
 
 const ControlContainer = styled.div`
   display: flex;
