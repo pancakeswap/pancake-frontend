@@ -63,7 +63,7 @@ const History = () => {
   const results =
     historyFilter === HistoryFilter.UNCOLLECTED
       ? bets.filter((bet) => {
-          return bet.position === bet.round.position
+          return bet.position === bet.round.position || bet.round.failed === true
         })
       : bets
 
