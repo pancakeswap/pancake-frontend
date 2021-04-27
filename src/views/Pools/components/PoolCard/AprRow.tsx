@@ -83,6 +83,7 @@ const AprRow: React.FC<AprRowProps> = ({ pool, stakingTokenPrice, isAutoVault = 
             value={earningsPercentageToDisplay()}
             decimals={2}
             unit="%"
+            bold
           />
           <IconButton onClick={onPresentApyModal} variant="text" scale="sm">
             <CalculateIcon color="textSubtle" width="18px" />

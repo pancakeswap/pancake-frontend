@@ -7,8 +7,10 @@ import { useCakeVaultContract } from 'hooks/useContract'
 import { getAddress } from 'utils/addressHelpers'
 import { useGetApiPrice } from 'state/hooks'
 import useLastUpdated from 'hooks/useLastUpdated'
+import useVaultUserInfo from 'hooks/cakeVault/useVaultUserInfo'
 import { Pool } from 'state/types'
 import { getFullDisplayBalance } from 'utils/formatBalance'
+import { convertSharesToCake } from 'views/Pools/helpers'
 import AprRow from '../PoolCard/AprRow'
 import StyledCard from '../PoolCard/StyledCard'
 import CardFooter from '../PoolCard/CardFooter'
@@ -21,13 +23,9 @@ const CakeVaultCard: React.FC<{ pool: Pool; account: string }> = ({ pool, accoun
   const cakeVaultContract = useCakeVaultContract()
   const [totalShares, setTotalShares] = useState(null)
   const { lastUpdated, setLastUpdated } = useLastUpdated()
-  const [userInfo, setUserInfo] = useState({
-    shares: null,
-    cakeAtLastUserAction: null,
-    lastDepositedTime: null,
-    lastUserActionTime: null,
-  })
+  const userInfo = useVaultUserInfo(lastUpdated)
   const [performanceFee, setPerformanceFee] = useState(null)
+  const [totalCakeInVault, setTotalCakeInVault] = useState(null)
   const [pricePerFullShare, setPricePerFullShare] = useState(null)
 
   const { stakingToken } = pool
@@ -40,41 +38,29 @@ const CakeVaultCard: React.FC<{ pool: Pool; account: string }> = ({ pool, accoun
   console.log('user shares: ', userInfo.shares && userInfo.shares.toNumber())
 
   useEffect(() => {
-    //   user-specific contract fetches
-    const fetchUserVaultInfo = async () => {
-      const userContractInfo = await cakeVaultContract.methods.userInfo(account).call()
-
-      setUserInfo({
-        shares: new BigNumber(userContractInfo.shares),
-        cakeAtLastUserAction: new BigNumber(userContractInfo.cakeAtLastUserAction),
-        lastDepositedTime: userContractInfo.lastDepositedTime,
-        lastUserActionTime: userContractInfo.lastUserActionTime,
-      })
-    }
-
-    if (account) {
-      fetchUserVaultInfo()
-    }
-  }, [account, cakeVaultContract, lastUpdated])
-
-  useEffect(() => {
     //   generic contract fetches
     const getPricePerShare = async () => {
       const sharePrice = await cakeVaultContract.methods.getPricePerFullShare().call()
       setPricePerFullShare(new BigNumber(sharePrice))
-    }
-    const getTotalShares = async () => {
-      const shares = await cakeVaultContract.methods.totalShares().call()
-      setTotalShares(new BigNumber(shares))
     }
     const getFees = async () => {
       const perfFee = await cakeVaultContract.methods.performanceFee().call()
       setPerformanceFee(perfFee)
     }
     getPricePerShare()
-    getTotalShares()
     getFees()
   }, [cakeVaultContract, lastUpdated])
+
+  useEffect(() => {
+    const getTotalShares = async () => {
+      const shares = await cakeVaultContract.methods.totalShares().call()
+      const { cakeAsBigNumber } = convertSharesToCake(new BigNumber(shares), pricePerFullShare)
+      setTotalShares(new BigNumber(shares))
+      setTotalCakeInVault(cakeAsBigNumber)
+    }
+
+    getTotalShares()
+  }, [cakeVaultContract, lastUpdated, pricePerFullShare])
 
   return (
     <StyledCard isStaking={accountHasSharesStaked}>
@@ -109,7 +95,13 @@ const CakeVaultCard: React.FC<{ pool: Pool; account: string }> = ({ pool, accoun
           <PerformanceFeeRow performanceFee={performanceFee} lastDepositedTime={userInfo.lastDepositedTime} />
         </Flex>
       </CardBody>
-      <CardFooter pool={pool} account={account} performanceFee={performanceFee} isAutoVault />
+      <CardFooter
+        pool={pool}
+        account={account}
+        performanceFee={performanceFee}
+        isAutoVault
+        totalCakeInVault={totalCakeInVault}
+      />
     </StyledCard>
   )
 }

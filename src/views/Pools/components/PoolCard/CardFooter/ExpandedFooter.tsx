@@ -1,4 +1,5 @@
 import React from 'react'
+import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import { getBalanceNumber } from 'utils/formatBalance'
 import useI18n from 'hooks/useI18n'
@@ -15,6 +16,7 @@ interface ExpandedFooterProps {
   account: string
   performanceFee?: number
   isAutoVault?: boolean
+  totalCakeInVault?: BigNumber
 }
 
 const ExpandedWrapper = styled(Flex)`
@@ -24,7 +26,13 @@ const ExpandedWrapper = styled(Flex)`
   }
 `
 
-const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account, performanceFee, isAutoVault = false }) => {
+const ExpandedFooter: React.FC<ExpandedFooterProps> = ({
+  pool,
+  account,
+  performanceFee = 0,
+  isAutoVault = false,
+  totalCakeInVault,
+}) => {
   const TranslateString = useI18n()
   const { currentBlock } = useBlock()
   const { stakingToken, earningToken, totalStaked, startBlock, endBlock, isFinished, contractAddress } = pool
@@ -47,7 +55,14 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account, performa
           {/* For autoVault, should totalStaked come from total shares, or the CAKE pool? */}
           {totalStaked ? (
             <>
-              <Balance fontSize="14px" value={getBalanceNumber(totalStaked, stakingToken.decimals)} />
+              <Balance
+                fontSize="14px"
+                value={
+                  isAutoVault
+                    ? getBalanceNumber(totalCakeInVault, stakingToken.decimals)
+                    : getBalanceNumber(totalStaked, stakingToken.decimals)
+                }
+              />
               <Text ml="4px" fontSize="14px">
                 {stakingToken.symbol}
               </Text>
