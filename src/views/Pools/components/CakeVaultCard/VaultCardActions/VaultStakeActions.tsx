@@ -41,6 +41,7 @@ const VaultStakeActions: React.FC<VaultStakeActionsProps> = ({
       account={account}
       stakingMax={stakingTokenBalance}
       stakingTokenPrice={stakingTokenPrice}
+      userInfo={userInfo}
       pool={pool}
       setLastUpdated={setLastUpdated}
     />,

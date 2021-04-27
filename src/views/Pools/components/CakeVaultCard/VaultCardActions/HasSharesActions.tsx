@@ -40,6 +40,7 @@ const HasSharesActions: React.FC<HasStakeActionProps> = ({
       account={account}
       stakingMax={stakingTokenBalance}
       pool={pool}
+      userInfo={userInfo}
       stakingTokenPrice={stakingTokenPrice}
       setLastUpdated={setLastUpdated}
     />,

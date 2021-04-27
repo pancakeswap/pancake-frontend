@@ -14,14 +14,14 @@ import { VaultUser } from 'views/Pools/types'
 import { convertCakeToShares } from '../../../helpers'
 import FeeSummary from './FeeSummary'
 
-interface StakeModalProps {
+interface VaultStakeModalProps {
   pool: Pool
   stakingMax: BigNumber
   stakingTokenPrice: number
+  account: string
+  userInfo: VaultUser
   isRemovingStake?: boolean
   pricePerFullShare?: BigNumber
-  account: string
-  userInfo?: VaultUser
   performanceFee?: number
   setLastUpdated: () => void
   onDismiss?: () => void
@@ -31,14 +31,14 @@ const StyledButton = styled(Button)`
   flex-grow: 1;
 `
 
-const VaultStakeModal: React.FC<StakeModalProps> = ({
+const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
   pool,
   stakingMax,
   stakingTokenPrice,
-  isRemovingStake = false,
   pricePerFullShare,
   account,
   userInfo,
+  isRemovingStake = false,
   performanceFee = 200,
   onDismiss,
   setLastUpdated,
@@ -90,10 +90,10 @@ const VaultStakeModal: React.FC<StakeModalProps> = ({
           onDismiss()
           setLastUpdated()
         })
-        .on('error', (e) => {
-          console.log(e)
+        .on('error', (error) => {
+          console.error(error)
           // Remove message from toast before prod
-          toastError(TranslateString(999, 'Error'), TranslateString(999, `${e.message} - Please try again.`))
+          toastError(TranslateString(999, 'Error'), TranslateString(999, `${error.message} - Please try again.`))
           setPendingTx(false)
         })
     } else {
@@ -110,10 +110,10 @@ const VaultStakeModal: React.FC<StakeModalProps> = ({
           onDismiss()
           setLastUpdated()
         })
-        .on('error', (e) => {
-          console.log(e)
+        .on('error', (error) => {
+          console.error(error)
           // Remove message from toast before prod
-          toastError(TranslateString(999, 'Error'), TranslateString(999, `${e.message} - Please try again.`))
+          toastError(TranslateString(999, 'Error'), TranslateString(999, `${error.message} - Please try again.`))
           setPendingTx(false)
         })
     }

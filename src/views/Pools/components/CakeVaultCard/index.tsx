@@ -34,10 +34,7 @@ const CakeVaultCard: React.FC<{ pool: Pool; account: string }> = ({ pool, accoun
   const accountHasSharesStaked = userInfo.shares && userInfo.shares.gt(0)
   const stakingTokenPrice = useGetApiPrice(stakingToken.address ? getAddress(stakingToken.address) : '')
 
-  console.log('user shares: ', userInfo.shares && userInfo.shares.toNumber())
-
   useEffect(() => {
-    //   generic contract fetches
     const getPricePerShare = async () => {
       const sharePrice = await cakeVaultContract.methods.getPricePerFullShare().call()
       setPricePerFullShare(new BigNumber(sharePrice))
