@@ -14,15 +14,17 @@ import {
   OpenNewIcon,
 } from '@pancakeswap-libs/uikit'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
+import { Ifo } from 'config/constants/types'
+import { WalletIfoData } from 'hooks/ifo/types'
 import useI18n from 'hooks/useI18n'
 import useTokenBalance from 'hooks/useTokenBalance'
 import Container from 'components/layout/Container'
 import { useProfile } from 'state/hooks'
-import { Token } from 'config/constants/types'
 import { getAddress } from 'utils/addressHelpers'
 
 interface Props {
-  currency: Token
+  ifo: Ifo
+  walletIfoData: WalletIfoData
 }
 
 const Wrapper = styled(Container)`
@@ -38,11 +40,17 @@ const Wrapper = styled(Container)`
   }
 `
 
-const IfoSteps: React.FC<Props> = ({ currency }) => {
+const IfoSteps: React.FC<Props> = ({ ifo, walletIfoData }) => {
+  const { poolBasic, poolUnlimited } = walletIfoData
   const { hasProfile } = useProfile()
   const TranslateString = useI18n()
-  const balance = useTokenBalance(getAddress(currency.address))
-  const stepsValidationStatus = [hasProfile, balance.isGreaterThan(0), false, false]
+  const balance = useTokenBalance(getAddress(ifo.currency.address))
+  const stepsValidationStatus = [
+    hasProfile,
+    balance.isGreaterThan(0),
+    poolBasic.amountTokenCommittedInLP.isGreaterThan(0) || poolUnlimited.amountTokenCommittedInLP.isGreaterThan(0),
+    poolBasic.hasClaimed || poolUnlimited.hasClaimed,
+  ]
 
   const getStatusProp = (index: number): StepStatus => {
     const arePreviousValid = index === 0 ? true : every(stepsValidationStatus.slice(0, index), Boolean)

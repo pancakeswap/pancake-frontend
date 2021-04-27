@@ -45,7 +45,7 @@ const Achievement: React.FC<Props> = ({ ifo, publicIfoData }) => {
           </Text>
           <Flex>
             <Text bold mr="8px">{`${TranslateString(999, 'IFO Shopper:')} ${campaignTitle}`}</Text>
-            <Flex>
+            <Flex alignItems="center" mr="8px">
               <PrizeIcon color="textSubtle" width="16px" mr="4px" />
               <Text color="textSubtle">{publicIfoData.numberPoints}</Text>
             </Flex>
