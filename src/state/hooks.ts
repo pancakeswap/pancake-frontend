@@ -10,6 +10,7 @@ import Nfts from 'config/constants/nfts'
 import { getWeb3NoAccount } from 'utils/web3'
 import { getAddress } from 'utils/addressHelpers'
 import { getBalanceNumber } from 'utils/formatBalance'
+import { ZERO } from 'utils/bigNumber'
 import useRefresh from 'hooks/useRefresh'
 import {
   fetchFarmsPublicDataAsync,
@@ -67,10 +68,10 @@ export const useFarmUser = (pid) => {
   const farm = useFarmFromPid(pid)
 
   return {
-    allowance: farm.userData ? new BigNumber(farm.userData.allowance) : new BigNumber(0),
-    tokenBalance: farm.userData ? new BigNumber(farm.userData.tokenBalance) : new BigNumber(0),
-    stakedBalance: farm.userData ? new BigNumber(farm.userData.stakedBalance) : new BigNumber(0),
-    earnings: farm.userData ? new BigNumber(farm.userData.earnings) : new BigNumber(0),
+    allowance: farm.userData ? new BigNumber(farm.userData.allowance) : ZERO,
+    tokenBalance: farm.userData ? new BigNumber(farm.userData.tokenBalance) : ZERO,
+    stakedBalance: farm.userData ? new BigNumber(farm.userData.stakedBalance) : ZERO,
+    earnings: farm.userData ? new BigNumber(farm.userData.earnings) : ZERO,
   }
 }
 
@@ -80,7 +81,7 @@ export const useLpTokenPrice = (symbol: string) => {
 
   return farm.lpTotalSupply && farm.lpTotalInQuoteToken
     ? new BigNumber(getBalanceNumber(farm.lpTotalSupply)).div(farm.lpTotalInQuoteToken).times(tokenPriceInUsd).times(2)
-    : new BigNumber(0)
+    : ZERO
 }
 
 // Pools
@@ -215,7 +216,6 @@ export const useGetApiPrice = (address: string) => {
 }
 
 export const usePriceCakeBusd = (): BigNumber => {
-  const ZERO = new BigNumber(0)
   const cakeBnbFarm = useFarmFromPid(1)
   const bnbBusdFarm = useFarmFromPid(2)
 

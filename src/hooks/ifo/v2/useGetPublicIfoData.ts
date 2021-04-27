@@ -6,6 +6,7 @@ import { useIfoV2Contract } from 'hooks/useContract'
 import useRefresh from 'hooks/useRefresh'
 import { useEffect, useState } from 'react'
 import makeBatchRequest from 'utils/makeBatchRequest'
+import { ZERO } from 'utils/bigNumber'
 import { PublicIfoData, PoolCharacteristics } from '../types'
 import { getStatus } from '../helpers'
 
@@ -37,20 +38,20 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
     progress: 5,
     secondsUntilEnd: 0,
     poolBasic: {
-      raisingAmountPool: new BigNumber(0),
-      offeringAmountPool: new BigNumber(0),
-      limitPerUserInLP: new BigNumber(0),
+      raisingAmountPool: ZERO,
+      offeringAmountPool: ZERO,
+      limitPerUserInLP: ZERO,
       taxRate: 0,
-      totalAmountPool: new BigNumber(0),
-      sumTaxesOverflow: new BigNumber(0),
+      totalAmountPool: ZERO,
+      sumTaxesOverflow: ZERO,
     },
     poolUnlimited: {
-      raisingAmountPool: new BigNumber(0),
-      offeringAmountPool: new BigNumber(0),
-      limitPerUserInLP: new BigNumber(0),
+      raisingAmountPool: ZERO,
+      offeringAmountPool: ZERO,
+      limitPerUserInLP: ZERO,
       taxRate: 0,
-      totalAmountPool: new BigNumber(0),
-      sumTaxesOverflow: new BigNumber(0),
+      totalAmountPool: ZERO,
+      sumTaxesOverflow: ZERO,
     },
     startBlockNum: 0,
     endBlockNum: 0,
