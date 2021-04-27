@@ -4,7 +4,7 @@ import { useAppDispatch } from 'state'
 import { updateMarketData } from 'state/predictions'
 import { getMarketData } from 'state/predictions/helpers'
 
-const POLL_TIME_IN_SECONDS = 15
+const POLL_TIME_IN_SECONDS = 10
 
 const usePollRoundData = () => {
   const dispatch = useAppDispatch()
