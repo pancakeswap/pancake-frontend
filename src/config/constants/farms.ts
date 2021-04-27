@@ -12,11 +12,9 @@ const farms: FarmConfig[] = [
     token: tokens.syrup,
     quoteToken: tokens.wbnb,
   },
-
   /**
    * V3
    */
-
   {
     pid: 251,
     lpSymbol: 'CAKE-BNB LP',
