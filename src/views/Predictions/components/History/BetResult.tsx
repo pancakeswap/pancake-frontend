@@ -16,6 +16,7 @@ export enum Result {
   WIN = 'win',
   LOSE = 'lose',
   CANCELED = 'canceled',
+  LIVE = 'live',
 }
 
 interface BetResultProps {

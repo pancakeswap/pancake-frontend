@@ -45,7 +45,7 @@ const config: MenuEntry[] = [
   {
     label: 'Prediction',
     icon: 'PredictionsIcon',
-    href: '/Prediction',
+    href: '/prediction',
     status: {
       text: 'BETA',
       color: 'warning',

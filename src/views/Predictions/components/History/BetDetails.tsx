@@ -30,7 +30,7 @@ const BetDetails: React.FC<BetDetailsProps> = ({ bet, result }) => {
           )}
         </Text>
       )}
-      <BetResult bet={bet} result={result} />
+      {result !== Result.LIVE && <BetResult bet={bet} result={result} />}
       <Heading mb="8px">{TranslateString(999, 'Round History')}</Heading>
       <RoundResult round={bet.round} mb="24px" />
       <Flex alignItems="center" justifyContent="space-between" mb="8px">

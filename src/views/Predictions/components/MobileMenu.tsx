@@ -26,7 +26,7 @@ const TabNav = styled.div`
   text-align: center;
 `
 
-const StyledMobileNavigation = styled.div`
+const StyledMobileMenu = styled.div`
   align-items: center;
   background-color: ${({ theme }) => theme.card.background};
   display: flex;
@@ -50,7 +50,7 @@ const getActiveIndex = (isHistoryOpen: boolean, isChartOpen: boolean) => {
   return 0
 }
 
-const MobileNavigation = () => {
+const MobileMenu = () => {
   const { swiper } = useSwiper()
   const isHistoryOpen = useIsHistoryPaneOpen()
   const isChartOpen = useIsChartPaneOpen()
@@ -76,7 +76,7 @@ const MobileNavigation = () => {
   }
 
   return (
-    <StyledMobileNavigation>
+    <StyledMobileMenu>
       <ButtonNav>
         <IconButton variant="text" onClick={() => swiper.slidePrev()} disabled={status !== PredictionStatus.LIVE}>
           <ArrowBackIcon width="24px" color="primary" />
@@ -100,8 +100,8 @@ const MobileNavigation = () => {
           <ArrowForwardIcon width="24px" color="primary" />
         </IconButton>
       </ButtonNav>
-    </StyledMobileNavigation>
+    </StyledMobileMenu>
   )
 }
 
-export default MobileNavigation
+export default MobileMenu

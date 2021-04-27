@@ -70,7 +70,7 @@ const History = () => {
   // API returns the open and live rounds so we need to filter them from this list.
   const finalResults = results
     ? results.filter((result) => {
-        return result.round.epoch < currentEpoch - 1
+        return result.round.epoch < currentEpoch
       })
     : []
 
