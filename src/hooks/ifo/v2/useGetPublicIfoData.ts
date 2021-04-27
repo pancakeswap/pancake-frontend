@@ -1,10 +1,10 @@
+import { useEffect, useState, useCallback } from 'react'
 import BigNumber from 'bignumber.js'
 import { BSC_BLOCK_TIME } from 'config'
 import { Ifo, IfoStatus } from 'config/constants/types'
 import { useBlock, useLpTokenPrice } from 'state/hooks'
 import { useIfoV2Contract } from 'hooks/useContract'
 import useRefresh from 'hooks/useRefresh'
-import { useEffect, useState } from 'react'
 import makeBatchRequest from 'utils/makeBatchRequest'
 import { PublicIfoData, PoolCharacteristics } from '../types'
 import { getStatus } from '../helpers'
@@ -59,52 +59,52 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
   const { currentBlock } = useBlock()
   const contract = useIfoV2Contract(address)
 
+  const fetchIfoData = useCallback(async () => {
+    const [startBlock, endBlock, poolBasic, poolUnlimited, taxRate, numberPoints] = (await makeBatchRequest([
+      contract.methods.startBlock().call,
+      contract.methods.endBlock().call,
+      contract.methods.viewPoolInformation(0).call,
+      contract.methods.viewPoolInformation(1).call,
+      contract.methods.viewPoolTaxRateOverflow(1).call,
+      contract.methods.numberPoints().call,
+    ])) as [string, string, PoolCharacteristics, PoolCharacteristics, number, number]
+
+    const poolBasicFormatted = formatPool(poolBasic)
+    const poolUnlimitedFormatted = formatPool(poolUnlimited)
+
+    const startBlockNum = parseInt(startBlock, 10)
+    const endBlockNum = parseInt(endBlock, 10)
+
+    const status = getStatus(currentBlock, startBlockNum, endBlockNum)
+    const totalBlocks = endBlockNum - startBlockNum
+    const blocksRemaining = endBlockNum - currentBlock
+
+    // Calculate the total progress until finished or until start
+    const progress =
+      currentBlock > startBlockNum
+        ? ((currentBlock - startBlockNum) / totalBlocks) * 100
+        : ((currentBlock - releaseBlockNumber) / (startBlockNum - releaseBlockNumber)) * 100
+
+    setState((prev) => ({
+      ...prev,
+      secondsUntilEnd: blocksRemaining * BSC_BLOCK_TIME,
+      secondsUntilStart: (startBlockNum - currentBlock) * BSC_BLOCK_TIME,
+      poolBasic: { ...poolBasicFormatted, taxRate: 0 },
+      poolUnlimited: { ...poolUnlimitedFormatted, taxRate: taxRate / TAX_PRECISION },
+      status,
+      progress,
+      blocksRemaining,
+      startBlockNum,
+      endBlockNum,
+      numberPoints,
+    }))
+  }, [contract, currentBlock, releaseBlockNumber])
+
   useEffect(() => {
-    const fetchProgress = async () => {
-      const [startBlock, endBlock, poolBasic, poolUnlimited, taxRate, numberPoints] = (await makeBatchRequest([
-        contract.methods.startBlock().call,
-        contract.methods.endBlock().call,
-        contract.methods.viewPoolInformation(0).call,
-        contract.methods.viewPoolInformation(1).call,
-        contract.methods.viewPoolTaxRateOverflow(1).call,
-        contract.methods.numberPoints().call,
-      ])) as [string, string, PoolCharacteristics, PoolCharacteristics, number, number]
+    fetchIfoData()
+  }, [fetchIfoData, fastRefresh])
 
-      const poolBasicFormatted = formatPool(poolBasic)
-      const poolUnlimitedFormatted = formatPool(poolUnlimited)
-
-      const startBlockNum = parseInt(startBlock, 10)
-      const endBlockNum = parseInt(endBlock, 10)
-
-      const status = getStatus(currentBlock, startBlockNum, endBlockNum)
-      const totalBlocks = endBlockNum - startBlockNum
-      const blocksRemaining = endBlockNum - currentBlock
-
-      // Calculate the total progress until finished or until start
-      const progress =
-        currentBlock > startBlockNum
-          ? ((currentBlock - startBlockNum) / totalBlocks) * 100
-          : ((currentBlock - releaseBlockNumber) / (startBlockNum - releaseBlockNumber)) * 100
-
-      setState((prev) => ({
-        ...prev,
-        secondsUntilEnd: blocksRemaining * BSC_BLOCK_TIME,
-        secondsUntilStart: (startBlockNum - currentBlock) * BSC_BLOCK_TIME,
-        poolBasic: { ...poolBasicFormatted, taxRate: 0 },
-        poolUnlimited: { ...poolUnlimitedFormatted, taxRate: taxRate / TAX_PRECISION },
-        status,
-        progress,
-        blocksRemaining,
-        startBlockNum,
-        endBlockNum,
-        numberPoints,
-      }))
-    }
-
-    fetchProgress()
-  }, [contract, currentBlock, releaseBlockNumber, fastRefresh])
-
-  return { ...state, currencyPriceInUSD: lpTokenPriceInUsd }
+  return { ...state, currencyPriceInUSD: lpTokenPriceInUsd, fetchIfoData }
 }
 
 export default useGetPublicIfoData

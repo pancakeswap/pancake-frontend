@@ -1,7 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { useDispatch } from 'react-redux'
 import farmsReducer from './farms'
-import toastsReducer from './toasts'
 import poolsReducer from './pools'
 import pricesReducer from './prices'
 import profileReducer from './profile'
@@ -14,7 +13,6 @@ const store = configureStore({
   devTools: process.env.NODE_ENV !== 'production',
   reducer: {
     farms: farmsReducer,
-    toasts: toastsReducer,
     pools: poolsReducer,
     prices: pricesReducer,
     profile: profileReducer,

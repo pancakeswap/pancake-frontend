@@ -3,8 +3,8 @@ import { useWeb3React } from '@web3-react/core'
 import { AutoRenewIcon, Button } from '@pancakeswap-libs/uikit'
 import { PoolIds } from 'config/constants/types'
 import { WalletIfoData } from 'hooks/ifo/types'
-import { useToast } from 'state/hooks'
 import useI18n from 'hooks/useI18n'
+import useToast from 'hooks/useToast'
 
 interface Props {
   poolId: PoolIds
