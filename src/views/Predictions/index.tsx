@@ -13,6 +13,7 @@ import { initialize, setPredictionStatus } from 'state/predictions'
 import { HistoryFilter, PredictionsState, PredictionStatus } from 'state/types'
 import usePersistState from 'hooks/usePersistState'
 import PageLoader from 'components/PageLoader'
+import usePollRoundData from './hooks/usePollRoundData'
 import Container from './components/Container'
 import CollectWinningsPopup from './components/CollectWinningsPopup'
 import SwiperProvider from './context/SwiperProvider'
@@ -80,6 +81,8 @@ const Predictions = () => {
       fetchInitialData()
     }
   }, [initialBlock, dispatch])
+
+  usePollRoundData()
 
   if (status === PredictionStatus.INITIAL) {
     return <PageLoader />

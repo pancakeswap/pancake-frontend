@@ -8,7 +8,6 @@ import 'swiper/swiper.min.css'
 import RoundCard from './components/RoundCard'
 import Menu from './components/Menu'
 import useSwiper from './hooks/useSwiper'
-import usePollRoundData from './hooks/usePollRoundData'
 import useOnNextRound from './hooks/useOnNextRound'
 
 SwiperCore.use([Keyboard, Mousewheel])
@@ -28,7 +27,6 @@ const Positions: React.FC = () => {
   const rounds = useGetSortedRounds()
   const initialIndex = Math.floor(rounds.length / 2)
 
-  usePollRoundData()
   useOnNextRound()
 
   return (
