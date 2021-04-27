@@ -9,12 +9,14 @@ import BigNumber from 'bignumber.js'
 import { getFullDisplayBalance, formatNumber } from 'utils/formatBalance'
 import { useToast } from 'state/hooks'
 import { Pool } from 'state/types'
+import { convertCakeToShares } from '../../../helpers'
 
 interface StakeModalProps {
   pool: Pool
   stakingMax: BigNumber
   stakingTokenPrice: number
   isRemovingStake?: boolean
+  pricePerFullShare?: BigNumber
   account: string
   onDismiss?: () => void
 }
@@ -28,6 +30,7 @@ const VaultStakeModal: React.FC<StakeModalProps> = ({
   stakingMax,
   stakingTokenPrice,
   isRemovingStake = false,
+  pricePerFullShare,
   account,
   onDismiss,
 }) => {
@@ -35,9 +38,7 @@ const VaultStakeModal: React.FC<StakeModalProps> = ({
   const cakeVaultContract = useCakeVaultContract()
   const TranslateString = useI18n()
   const { theme } = useTheme()
-
   const { toastSuccess, toastError } = useToast()
-
   const [pendingTx, setPendingTx] = useState(false)
   const [stakeAmount, setStakeAmount] = useState('')
   const [percent, setPercent] = useState(0)
@@ -62,27 +63,55 @@ const VaultStakeModal: React.FC<StakeModalProps> = ({
   const handleConfirmClick = async () => {
     const convertedStakeAmount = new BigNumber(stakeAmount).multipliedBy(new BigNumber(10).pow(stakingToken.decimals))
     setPendingTx(true)
-
-    // if (isRemovingStake) {
-    //   // unstaking
-    //   }
-    // } else {
-    cakeVaultContract.methods
-      .deposit(convertedStakeAmount)
-      .send({ from: account })
-      .on('sending', () => {
-        setPendingTx(true)
-      })
-      .on('receipt', async () => {
-        toastSuccess(TranslateString(999, 'Staked!'), TranslateString(999, 'Your funds have been staked in the pool'))
-        setPendingTx(false)
-        onDismiss()
-      })
-      .on('error', (e) => {
-        debugger // eslint-disable-line
-        toastError(TranslateString(999, 'Error'), TranslateString(999, 'Please try again and confirm the transaction.'))
-        setPendingTx(false)
-      })
+    if (isRemovingStake) {
+      // unstaking
+      const { sharesAsBigNumber } = convertCakeToShares(convertedStakeAmount, pricePerFullShare)
+      console.log('unstaking shares:', sharesAsBigNumber.toNumber())
+      // debugger // eslint-disable-line
+      cakeVaultContract.methods
+        .withdraw(sharesAsBigNumber)
+        .send({ from: account })
+        .on('sending', () => {
+          setPendingTx(true)
+        })
+        .on('receipt', async () => {
+          toastSuccess(
+            TranslateString(999, 'Unstaked!'),
+            TranslateString(999, 'Your earnings have also been harvested to your wallet'),
+          )
+          setPendingTx(false)
+          onDismiss()
+        })
+        .on('error', (e) => {
+          debugger // eslint-disable-line
+          toastError(
+            TranslateString(999, 'Error'),
+            TranslateString(999, 'Please try again and confirm the transaction.'),
+          )
+          setPendingTx(false)
+        })
+    } else {
+      // staking
+      cakeVaultContract.methods
+        .deposit(convertedStakeAmount)
+        .send({ from: account })
+        .on('sending', () => {
+          setPendingTx(true)
+        })
+        .on('receipt', async () => {
+          toastSuccess(TranslateString(999, 'Staked!'), TranslateString(999, 'Your funds have been staked in the pool'))
+          setPendingTx(false)
+          onDismiss()
+        })
+        .on('error', (e) => {
+          // debugger // eslint-disable-line
+          toastError(
+            TranslateString(999, 'Error'),
+            TranslateString(999, 'Please try again and confirm the transaction.'),
+          )
+          setPendingTx(false)
+        })
+    }
   }
 
   return (

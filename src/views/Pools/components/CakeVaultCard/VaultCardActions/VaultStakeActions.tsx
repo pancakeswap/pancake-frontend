@@ -12,18 +12,19 @@ import {
 } from '@pancakeswap-libs/uikit'
 import BigNumber from 'bignumber.js'
 import useI18n from 'hooks/useI18n'
-import { getBalanceNumber, formatNumber } from 'utils/formatBalance'
 import { Pool } from 'state/types'
+import { VaultUser } from '../../../types'
 import NotEnoughTokensModal from '../../PoolCard/Modals/NotEnoughTokensModal'
 import VaultStakeModal from '../VaultModals/VaultStakeModal'
+import HasStakeAction from './HasStakeAction'
 
 interface VaultStakeActionsProps {
   pool: Pool
   stakingTokenBalance: BigNumber
   stakingTokenPrice: number
-  userShares: number
-  lastDepositedTime: number
+  userInfo: VaultUser
   accountHasSharesStaked: boolean
+  pricePerFullShare: BigNumber
   isLoading?: boolean
   account: string
 }
@@ -32,18 +33,14 @@ const VaultStakeActions: React.FC<VaultStakeActionsProps> = ({
   pool,
   stakingTokenBalance,
   stakingTokenPrice,
-  userShares,
-  lastDepositedTime,
+  userInfo,
   accountHasSharesStaked,
+  pricePerFullShare,
   isLoading = false,
   account,
 }) => {
-  const { stakingToken, earningToken } = pool
+  const { stakingToken } = pool
   const TranslateString = useI18n()
-  const formattedBalance = formatNumber(getBalanceNumber(stakingTokenBalance, stakingToken.decimals), 3, 3)
-  const stakingMaxDollarValue = formatNumber(
-    getBalanceNumber(stakingTokenBalance.multipliedBy(stakingTokenPrice), stakingToken.decimals),
-  )
 
   const [onPresentTokenRequired] = useModal(<NotEnoughTokensModal tokenSymbol={stakingToken.symbol} />)
 
@@ -56,33 +53,16 @@ const VaultStakeActions: React.FC<VaultStakeActionsProps> = ({
     />,
   )
 
-  const [onPresentUnstake] = useModal(
-    // This needs to be changed to userShares / staked CAKE
-    <VaultStakeModal
-      account={account}
-      stakingMax={stakingTokenBalance}
-      pool={pool}
-      stakingTokenPrice={stakingTokenPrice}
-      isRemovingStake
-    />,
-  )
-
   const renderStakeAction = () => {
     return accountHasSharesStaked ? (
-      <Flex justifyContent="space-between" alignItems="center">
-        <Flex flexDirection="column">
-          <Heading>{formattedBalance}</Heading>
-          <Text fontSize="12px" color="textSubtle">{`~${stakingMaxDollarValue || 0} USD`}</Text>
-        </Flex>
-        <Flex>
-          <IconButton variant="secondary" onClick={onPresentUnstake} mr="6px">
-            <MinusIcon color="primary" width="24px" />
-          </IconButton>
-          <IconButton variant="secondary" onClick={onPresentStake}>
-            <AddIcon color="primary" width="24px" height="24px" />
-          </IconButton>
-        </Flex>
-      </Flex>
+      <HasStakeAction
+        pool={pool}
+        stakingTokenBalance={stakingTokenBalance}
+        stakingTokenPrice={stakingTokenPrice}
+        userInfo={userInfo}
+        pricePerFullShare={pricePerFullShare}
+        account={account}
+      />
     ) : (
       <Button onClick={stakingTokenBalance.toNumber() > 0 ? onPresentStake : onPresentTokenRequired}>
         {TranslateString(1070, 'Stake')}

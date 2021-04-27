@@ -1,11 +1,9 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState } from 'react'
 import { Button, AutoRenewIcon, Skeleton } from '@pancakeswap-libs/uikit'
 import { ethers } from 'ethers'
-import { useSousApprove } from 'hooks/useApprove'
 import useI18n from 'hooks/useI18n'
-import { useERC20, useCake, useCakeVaultContract } from 'hooks/useContract'
+import { useCake, useCakeVaultContract } from 'hooks/useContract'
 import { useToast } from 'state/hooks'
-import { getAddress } from 'utils/addressHelpers'
 import { Pool } from 'state/types'
 
 interface ApprovalActionProps {
@@ -16,11 +14,10 @@ interface ApprovalActionProps {
 }
 
 const ApprovalAction: React.FC<ApprovalActionProps> = ({ pool, account, isLoading = false, setLastUpdated }) => {
-  const { sousId, stakingToken, earningToken, isFinished } = pool
+  const { stakingToken } = pool
   const cakeVaultContract = useCakeVaultContract()
   const cakeContract = useCake()
   const TranslateString = useI18n()
-  const stakingTokenContract = useERC20(stakingToken.address ? getAddress(stakingToken.address) : '')
   const [requestedApproval, setRequestedApproval] = useState(false)
   const { toastSuccess, toastError } = useToast()
 
@@ -60,7 +57,7 @@ const ApprovalAction: React.FC<ApprovalActionProps> = ({ pool, account, isLoadin
         <Button
           isLoading={requestedApproval}
           endIcon={requestedApproval ? <AutoRenewIcon spin color="currentColor" /> : null}
-          disabled={isFinished || requestedApproval}
+          disabled={requestedApproval}
           onClick={handleApprove}
           width="100%"
         >

@@ -6,6 +6,7 @@ import useI18n from 'hooks/useI18n'
 import useLastUpdated from 'hooks/useLastUpdated'
 import { useCake, useCakeVaultContract } from 'hooks/useContract'
 import { Pool } from 'state/types'
+import { VaultUser } from '../../../types'
 import VaultApprovalAction from './VaultApprovalAction'
 import VaultStakeActions from './VaultStakeActions'
 
@@ -15,22 +16,13 @@ const InlineText = styled(Text)`
 
 const CakeVaultCardActions: React.FC<{
   pool: Pool
-  userShares: number
+  userInfo: VaultUser
   pricePerFullShare: BigNumber
-  lastDepositedTime: number
   stakingTokenPrice: number
   accountHasSharesStaked: boolean
   account: string
-}> = ({
-  pool,
-  userShares,
-  pricePerFullShare,
-  lastDepositedTime,
-  stakingTokenPrice,
-  accountHasSharesStaked,
-  account,
-}) => {
-  const { stakingToken, earningToken, userData } = pool
+}> = ({ pool, userInfo, pricePerFullShare, stakingTokenPrice, accountHasSharesStaked, account }) => {
+  const { stakingToken, userData } = pool
   const [isVaultApproved, setIsVaultApproved] = useState(false)
   const { lastUpdated, setLastUpdated } = useLastUpdated()
   const cakeContract = useCake()
@@ -39,7 +31,7 @@ const CakeVaultCardActions: React.FC<{
   const stakingTokenBalance = new BigNumber(userData?.stakingTokenBalance || 0)
   // const earnings = new BigNumber(userData?.pendingReward || 0)
 
-  const isLoading = !userData || !userShares
+  const isLoading = !userData || !userInfo.shares
 
   useEffect(() => {
     const checkApprovalStatus = async () => {
@@ -73,7 +65,7 @@ const CakeVaultCardActions: React.FC<{
             bold
             fontSize="12px"
           >
-            {accountHasSharesStaked ? TranslateString(1074, `staked`) : `${stakingToken.symbol}`}
+            {accountHasSharesStaked ? TranslateString(1074, `staked (compounding)`) : `${stakingToken.symbol}`}
           </InlineText>
         </Box>
         {isVaultApproved ? (
@@ -82,8 +74,8 @@ const CakeVaultCardActions: React.FC<{
             pool={pool}
             stakingTokenBalance={stakingTokenBalance}
             stakingTokenPrice={stakingTokenPrice}
-            userShares={userShares}
-            lastDepositedTime={lastDepositedTime}
+            userInfo={userInfo}
+            pricePerFullShare={pricePerFullShare}
             accountHasSharesStaked={accountHasSharesStaked}
             account={account}
           />

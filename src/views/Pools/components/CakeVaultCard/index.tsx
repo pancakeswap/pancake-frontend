@@ -17,28 +17,35 @@ import VaultCardActions from './VaultCardActions'
 const CakeVaultCard: React.FC<{ pool: Pool; account: string }> = ({ pool, account }) => {
   const TranslateString = useI18n()
   const cakeVaultContract = useCakeVaultContract()
-  const [userShares, setUserShares] = useState(null)
   const [totalShares, setTotalShares] = useState(null)
+  const [userInfo, setUserInfo] = useState({
+    shares: null,
+    cakeAtLastUserAction: null,
+    lastDepositedTime: null,
+    lastUserActionTime: null,
+  })
   const [performanceFee, setPerformanceFee] = useState(null)
-  const [lastDepositedTime, setLastDepositedTime] = useState(null)
   const [pricePerFullShare, setPricePerFullShare] = useState(null)
 
   const { stakingToken } = pool
 
   //   Estimate & manual for now. We can change once we have a better sense of this
   const timesCompoundedDaily = 24
-  const accountHasSharesStaked = userShares > 0
+  const accountHasSharesStaked = userInfo.shares && userInfo.shares.gt(0)
   const stakingTokenPrice = useGetApiPrice(stakingToken.address ? getAddress(stakingToken.address) : '')
+
+  console.log('user shares: ', userInfo.shares && userInfo.shares.toNumber())
 
   useEffect(() => {
     //   user-specific contract fetches
     const fetchUserVaultInfo = async () => {
-      const userInfo = await cakeVaultContract.methods.userInfo(account).call()
-      console.log(new BigNumber(userInfo.shares))
-      console.log(new BigNumber(userInfo.cakeAtLastUserAction))
-      console.log(getFullDisplayBalance(new BigNumber(userInfo.shares)))
-      setLastDepositedTime(userInfo.lastDepositedTime)
-      setUserShares(userInfo.shares)
+      const userContractInfo = await cakeVaultContract.methods.userInfo(account).call()
+      setUserInfo({
+        shares: new BigNumber(userContractInfo.shares),
+        cakeAtLastUserAction: new BigNumber(userContractInfo.cakeAtLastUserAction),
+        lastDepositedTime: userContractInfo.lastDepositedTime,
+        lastUserActionTime: userContractInfo.lastUserActionTime,
+      })
     }
 
     if (account) {
@@ -79,8 +86,7 @@ const CakeVaultCard: React.FC<{ pool: Pool; account: string }> = ({ pool, accoun
           {account ? (
             <VaultCardActions
               pool={pool}
-              userShares={userShares}
-              lastDepositedTime={lastDepositedTime}
+              userInfo={userInfo}
               pricePerFullShare={pricePerFullShare}
               stakingTokenPrice={stakingTokenPrice}
               accountHasSharesStaked={accountHasSharesStaked}
