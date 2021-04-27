@@ -1,9 +1,8 @@
 import React, { useMemo } from 'react'
 import { Route, useRouteMatch } from 'react-router-dom'
 import BigNumber from 'bignumber.js'
-import styled from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
-import { Heading, Flex, Button, HelpIcon, Text, Image } from '@pancakeswap-libs/uikit'
+import { Heading, Flex, Image } from '@pancakeswap-libs/uikit'
 import orderBy from 'lodash/orderBy'
 import partition from 'lodash/partition'
 import useI18n from 'hooks/useI18n'
@@ -14,13 +13,6 @@ import Page from 'components/layout/Page'
 import PageHeader from 'components/PageHeader'
 import PoolCard from './components/PoolCard'
 import PoolTabButtons from './components/PoolTabButtons'
-
-const ButtonText = styled(Text)`
-  display: none;
-  ${({ theme }) => theme.mediaQueries.lg} {
-    display: block;
-  }
-`
 
 const Pools: React.FC = () => {
   const { path } = useRouteMatch()
@@ -58,17 +50,6 @@ const Pools: React.FC = () => {
               {TranslateString(999, 'High APR, low risk.')}
             </Heading>
           </Flex>
-          <Button
-            px={['14px', null, null, null, '24px']}
-            variant="subtle"
-            as="a"
-            href="https://docs.pancakeswap.finance/syrup-pools/syrup-pool"
-          >
-            <ButtonText color="backgroundAlt" bold fontSize="16px">
-              {TranslateString(999, 'Help')}
-            </ButtonText>
-            <HelpIcon color="backgroundAlt" ml={[null, null, null, 0, '6px']} />
-          </Button>
         </Flex>
       </PageHeader>
       <Page>
