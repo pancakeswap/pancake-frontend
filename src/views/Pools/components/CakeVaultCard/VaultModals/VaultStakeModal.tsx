@@ -12,7 +12,7 @@ import { useToast } from 'state/hooks'
 import { Pool } from 'state/types'
 import { VaultUser } from 'views/Pools/types'
 import { convertCakeToShares } from '../../../helpers'
-import PerformanceFeeCountdownRow from '../PerformanceFeeCountdownRow'
+import FeeSummary from './FeeSummary'
 
 interface StakeModalProps {
   pool: Pool
@@ -22,6 +22,7 @@ interface StakeModalProps {
   pricePerFullShare?: BigNumber
   account: string
   userInfo?: VaultUser
+  performanceFee?: number
   setLastUpdated: () => void
   onDismiss?: () => void
 }
@@ -38,6 +39,7 @@ const VaultStakeModal: React.FC<StakeModalProps> = ({
   pricePerFullShare,
   account,
   userInfo,
+  performanceFee = 200,
   onDismiss,
   setLastUpdated,
 }) => {
@@ -50,7 +52,6 @@ const VaultStakeModal: React.FC<StakeModalProps> = ({
   const [stakeAmount, setStakeAmount] = useState('')
   const [percent, setPercent] = useState(0)
   const { hasPerformanceFee } = usePerformanceFeeTimer(parseInt(userInfo.lastDepositedTime))
-
   const usdValueStaked = stakeAmount && formatNumber(parseFloat(stakeAmount) * stakingTokenPrice)
 
   const handleStakeInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -165,9 +166,12 @@ const VaultStakeModal: React.FC<StakeModalProps> = ({
         </StyledButton>
       </Flex>
       {isRemovingStake && hasPerformanceFee && (
-        <>
-          <PerformanceFeeCountdownRow performanceFee={200} lastDepositedTime={userInfo.lastDepositedTime} />
-        </>
+        <FeeSummary
+          stakingTokenSymbol={stakingToken.symbol}
+          lastDepositedTime={userInfo.lastDepositedTime}
+          performanceFee={performanceFee}
+          stakeAmount={stakeAmount}
+        />
       )}
       <Button
         isLoading={pendingTx}

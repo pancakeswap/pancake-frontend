@@ -21,6 +21,7 @@ const CakeVaultCardActions: React.FC<{
   accountHasSharesStaked: boolean
   account: string
   lastUpdated: number
+  performanceFee: number
   setLastUpdated: () => void
 }> = ({
   pool,
@@ -30,6 +31,7 @@ const CakeVaultCardActions: React.FC<{
   accountHasSharesStaked,
   account,
   lastUpdated,
+  performanceFee,
   setLastUpdated,
 }) => {
   const { stakingToken, userData } = pool
@@ -81,6 +83,7 @@ const CakeVaultCardActions: React.FC<{
             pool={pool}
             stakingTokenBalance={stakingTokenBalance}
             stakingTokenPrice={stakingTokenPrice}
+            performanceFee={performanceFee}
             userInfo={userInfo}
             pricePerFullShare={pricePerFullShare}
             accountHasSharesStaked={accountHasSharesStaked}

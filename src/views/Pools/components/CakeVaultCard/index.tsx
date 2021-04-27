@@ -9,7 +9,6 @@ import { useGetApiPrice } from 'state/hooks'
 import useLastUpdated from 'hooks/useLastUpdated'
 import useVaultUserInfo from 'hooks/cakeVault/useVaultUserInfo'
 import { Pool } from 'state/types'
-import { getFullDisplayBalance } from 'utils/formatBalance'
 import { convertSharesToCake } from 'views/Pools/helpers'
 import AprRow from '../PoolCard/AprRow'
 import StyledCard from '../PoolCard/StyledCard'
@@ -21,7 +20,7 @@ import PerformanceFeeCountdownRow from './PerformanceFeeCountdownRow'
 const CakeVaultCard: React.FC<{ pool: Pool; account: string }> = ({ pool, account }) => {
   const TranslateString = useI18n()
   const cakeVaultContract = useCakeVaultContract()
-  const [totalShares, setTotalShares] = useState(null)
+  const [, setTotalShares] = useState(null)
   const { lastUpdated, setLastUpdated } = useLastUpdated()
   const userInfo = useVaultUserInfo(lastUpdated)
   const [performanceFee, setPerformanceFee] = useState(null)
@@ -78,6 +77,7 @@ const CakeVaultCard: React.FC<{ pool: Pool; account: string }> = ({ pool, accoun
               pool={pool}
               userInfo={userInfo}
               pricePerFullShare={pricePerFullShare}
+              performanceFee={performanceFee}
               stakingTokenPrice={stakingTokenPrice}
               accountHasSharesStaked={accountHasSharesStaked}
               account={account}
