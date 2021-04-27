@@ -59,7 +59,7 @@ const Header = () => {
           {TranslateString(999, 'Your History')}
         </Heading>
         <Button onClick={handleClick} variant="text" endIcon={<ArrowForwardIcon color="primary" />} px="0">
-          {TranslateString(999, 'Close Pane')}
+          {TranslateString(438, 'Close')}
         </Button>
       </Flex>
       <Text color="textSubtle" fontSize="12px" mb="8px">

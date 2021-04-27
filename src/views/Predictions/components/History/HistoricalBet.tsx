@@ -103,7 +103,7 @@ const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
         <Flex alignItems="center">
           <PlayCircleOutlineIcon color="primary" mr="6px" width="24px" />
           <Text color="primary" bold>
-            {TranslateString(999, 'Open Now')}
+            {TranslateString(999, 'Starting Soon')}
           </Text>
         </Flex>
       )
