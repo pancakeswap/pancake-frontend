@@ -51,6 +51,7 @@ const HasSharesActions: React.FC<HasStakeActionProps> = ({
       stakingTokenPrice={stakingTokenPrice}
       pricePerFullShare={pricePerFullShare}
       isRemovingStake
+      userInfo={userInfo}
       setLastUpdated={setLastUpdated}
     />,
   )

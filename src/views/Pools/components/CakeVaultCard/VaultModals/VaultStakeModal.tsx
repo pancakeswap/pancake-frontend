@@ -5,11 +5,14 @@ import useI18n from 'hooks/useI18n'
 import { BASE_EXCHANGE_URL } from 'config'
 import { useCakeVaultContract } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
+import usePerformanceFeeTimer from 'hooks/cakeVault/usePerformanceFeeTimer'
 import BigNumber from 'bignumber.js'
 import { getFullDisplayBalance, formatNumber } from 'utils/formatBalance'
 import { useToast } from 'state/hooks'
 import { Pool } from 'state/types'
+import { VaultUser } from 'views/Pools/types'
 import { convertCakeToShares } from '../../../helpers'
+import PerformanceFeeCountdownRow from '../PerformanceFeeCountdownRow'
 
 interface StakeModalProps {
   pool: Pool
@@ -18,6 +21,7 @@ interface StakeModalProps {
   isRemovingStake?: boolean
   pricePerFullShare?: BigNumber
   account: string
+  userInfo?: VaultUser
   setLastUpdated: () => void
   onDismiss?: () => void
 }
@@ -33,10 +37,11 @@ const VaultStakeModal: React.FC<StakeModalProps> = ({
   isRemovingStake = false,
   pricePerFullShare,
   account,
+  userInfo,
   onDismiss,
   setLastUpdated,
 }) => {
-  const { stakingToken, earningToken } = pool
+  const { stakingToken } = pool
   const cakeVaultContract = useCakeVaultContract()
   const TranslateString = useI18n()
   const { theme } = useTheme()
@@ -44,6 +49,7 @@ const VaultStakeModal: React.FC<StakeModalProps> = ({
   const [pendingTx, setPendingTx] = useState(false)
   const [stakeAmount, setStakeAmount] = useState('')
   const [percent, setPercent] = useState(0)
+  const { hasPerformanceFee } = usePerformanceFeeTimer(parseInt(userInfo.lastDepositedTime))
 
   const usdValueStaked = stakeAmount && formatNumber(parseFloat(stakeAmount) * stakingTokenPrice)
 
@@ -158,6 +164,11 @@ const VaultStakeModal: React.FC<StakeModalProps> = ({
           MAX
         </StyledButton>
       </Flex>
+      {isRemovingStake && hasPerformanceFee && (
+        <>
+          <PerformanceFeeCountdownRow performanceFee={200} lastDepositedTime={userInfo.lastDepositedTime} />
+        </>
+      )}
       <Button
         isLoading={pendingTx}
         endIcon={pendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}

@@ -2,7 +2,7 @@ import React from 'react'
 import { Text } from '@pancakeswap-libs/uikit'
 import getTimePeriods from 'utils/getTimePeriods'
 
-const PerformanceFeeCountdown: React.FC<{ secondsRemaining: number }> = ({ secondsRemaining }) => {
+const PerformanceFeeTimer: React.FC<{ secondsRemaining: number }> = ({ secondsRemaining }) => {
   const { days, hours, minutes } = getTimePeriods(secondsRemaining)
 
   return (
@@ -12,4 +12,4 @@ const PerformanceFeeCountdown: React.FC<{ secondsRemaining: number }> = ({ secon
   )
 }
 
-export default PerformanceFeeCountdown
+export default PerformanceFeeTimer

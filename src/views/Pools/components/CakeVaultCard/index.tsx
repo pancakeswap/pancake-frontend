@@ -16,7 +16,7 @@ import StyledCard from '../PoolCard/StyledCard'
 import CardFooter from '../PoolCard/CardFooter'
 import StyledCardHeader from '../PoolCard/StyledCardHeader'
 import VaultCardActions from './VaultCardActions'
-import PerformanceFeeRow from './PerformanceFeeRow'
+import PerformanceFeeCountdownRow from './PerformanceFeeCountdownRow'
 
 const CakeVaultCard: React.FC<{ pool: Pool; account: string }> = ({ pool, account }) => {
   const TranslateString = useI18n()
@@ -92,7 +92,7 @@ const CakeVaultCard: React.FC<{ pool: Pool; account: string }> = ({ pool, accoun
               <UnlockButton />
             </>
           )}
-          <PerformanceFeeRow performanceFee={performanceFee} lastDepositedTime={userInfo.lastDepositedTime} />
+          <PerformanceFeeCountdownRow performanceFee={performanceFee} lastDepositedTime={userInfo.lastDepositedTime} />
         </Flex>
       </CardBody>
       <CardFooter
