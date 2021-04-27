@@ -18,7 +18,7 @@ import {
 } from '@pancakeswap-libs/uikit'
 import { parseISO, formatDistance } from 'date-fns'
 import { useWeb3React } from '@web3-react/core'
-import { useToast } from 'state/hooks'
+import useToast from 'hooks/useToast'
 import useWeb3 from 'hooks/useWeb3'
 import useI18n from 'hooks/useI18n'
 import useHasCakeBalance from 'hooks/useHasCakeBalance'

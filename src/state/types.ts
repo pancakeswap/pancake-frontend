@@ -1,4 +1,3 @@
-import { Toast } from '@pancakeswap-libs/uikit'
 import BigNumber from 'bignumber.js'
 import { CampaignType, FarmConfig, Nft, PoolConfig, Team } from 'config/constants/types'
 
@@ -53,10 +52,6 @@ export interface Profile {
 }
 
 // Slices states
-
-export interface ToastsState {
-  data: Toast[]
-}
 
 export interface FarmsState {
   data: Farm[]
@@ -162,7 +157,6 @@ export interface CollectiblesState {
 
 export interface State {
   farms: FarmsState
-  toasts: ToastsState
   prices: PriceState
   pools: PoolsState
   profile: ProfileState

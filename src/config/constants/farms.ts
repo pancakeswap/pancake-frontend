@@ -2,6 +2,9 @@ import tokens from './tokens'
 import { FarmConfig } from './types'
 
 const farms: FarmConfig[] = [
+  /**
+   * These 3 farms (PID 0, 251, 252) should always be at the top of the file.
+   */
   {
     pid: 0,
     lpSymbol: 'CAKE',
@@ -12,19 +15,48 @@ const farms: FarmConfig[] = [
     token: tokens.syrup,
     quoteToken: tokens.wbnb,
   },
-
-  /**
-   * V3
-   */
   {
     pid: 251,
     lpSymbol: 'CAKE-BNB LP',
     lpAddresses: {
-      97: '',
+      97: '0x3ed8936cAFDF85cfDBa29Fbe5940A5b0524824F4',
       56: '0x0eD7e52944161450477ee417DE9Cd3a859b14fD0',
     },
     token: tokens.cake,
     quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 252,
+    lpSymbol: 'BUSD-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x58F876857a02D6762E0101bb5C46A8c1ED44Dc16',
+    },
+    token: tokens.busd,
+    quoteToken: tokens.wbnb,
+  },
+  /**
+   * V3
+   */
+  {
+    pid: 363,
+    lpSymbol: 'DFD-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0x029d66f9c0469450b7b4834b8ddc6a1118cec3e1',
+    },
+    token: tokens.dfd,
+    quoteToken: tokens.busd,
+  },
+  {
+    pid: 362,
+    lpSymbol: 'ALPACA-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0x7752e1fa9f3a2e860856458517008558deb989e3',
+    },
+    token: tokens.alpaca,
+    quoteToken: tokens.busd,
   },
   {
     pid: 361,
@@ -1116,17 +1148,6 @@ const farms: FarmConfig[] = [
     token: tokens.ada,
     quoteToken: tokens.wbnb,
   },
-  {
-    pid: 252,
-    lpSymbol: 'BUSD-BNB LP',
-    lpAddresses: {
-      97: '',
-      56: '0x58F876857a02D6762E0101bb5C46A8c1ED44Dc16',
-    },
-    token: tokens.busd,
-    quoteToken: tokens.wbnb,
-  },
-
   /**
    * V2 farms, set to be removed once unstaked
    */
