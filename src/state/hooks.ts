@@ -1,8 +1,6 @@
-import { useEffect, useMemo } from 'react'
+import { useEffect } from 'react'
 import BigNumber from 'bignumber.js'
-import { kebabCase } from 'lodash'
 import { useWeb3React } from '@web3-react/core'
-import { Toast, toastTypes } from '@pancakeswap-libs/uikit'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
 import { Team } from 'config/constants/types'
@@ -11,15 +9,7 @@ import { getWeb3NoAccount } from 'utils/web3'
 import { getAddress } from 'utils/addressHelpers'
 import { getBalanceNumber } from 'utils/formatBalance'
 import useRefresh from 'hooks/useRefresh'
-import {
-  fetchFarmsPublicDataAsync,
-  fetchPoolsPublicDataAsync,
-  fetchPoolsUserDataAsync,
-  push as pushToast,
-  remove as removeToast,
-  clear as clearToast,
-  setBlock,
-} from './actions'
+import { fetchFarmsPublicDataAsync, fetchPoolsPublicDataAsync, fetchPoolsUserDataAsync, setBlock } from './actions'
 import { State, Farm, FarmsState, Pool, ProfileState, TeamsState, AchievementState, PriceState } from './types'
 import { fetchProfile } from './profile'
 import { fetchTeam, fetchTeams } from './teams'
@@ -101,34 +91,6 @@ export const usePools = (account): Pool[] => {
 export const usePoolFromPid = (sousId): Pool => {
   const pool = useSelector((state: State) => state.pools.data.find((p) => p.sousId === sousId))
   return pool
-}
-
-// Toasts
-export const useToast = () => {
-  const dispatch = useAppDispatch()
-  const helpers = useMemo(() => {
-    const push = (toast: Toast) => dispatch(pushToast(toast))
-
-    return {
-      toastError: (title: string, description?: string) => {
-        return push({ id: kebabCase(title), type: toastTypes.DANGER, title, description })
-      },
-      toastInfo: (title: string, description?: string) => {
-        return push({ id: kebabCase(title), type: toastTypes.INFO, title, description })
-      },
-      toastSuccess: (title: string, description?: string) => {
-        return push({ id: kebabCase(title), type: toastTypes.SUCCESS, title, description })
-      },
-      toastWarning: (title: string, description?: string) => {
-        return push({ id: kebabCase(title), type: toastTypes.WARNING, title, description })
-      },
-      push,
-      remove: (id: string) => dispatch(removeToast(id)),
-      clear: () => dispatch(clearToast()),
-    }
-  }, [dispatch])
-
-  return helpers
 }
 
 // Profile
