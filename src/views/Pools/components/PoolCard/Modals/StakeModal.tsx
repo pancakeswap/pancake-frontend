@@ -8,7 +8,7 @@ import { useSousUnstake } from 'hooks/useUnstake'
 import useTheme from 'hooks/useTheme'
 import BigNumber from 'bignumber.js'
 import { getFullDisplayBalance, formatNumber } from 'utils/formatBalance'
-import { useToast } from 'state/hooks'
+import useToast from 'hooks/useToast'
 import { Pool } from 'state/types'
 
 interface StakeModalProps {

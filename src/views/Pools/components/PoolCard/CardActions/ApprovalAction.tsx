@@ -3,7 +3,7 @@ import { Button, AutoRenewIcon, Skeleton } from '@pancakeswap-libs/uikit'
 import { useSousApprove } from 'hooks/useApprove'
 import useI18n from 'hooks/useI18n'
 import { useERC20 } from 'hooks/useContract'
-import { useToast } from 'state/hooks'
+import useToast from 'hooks/useToast'
 import { getAddress } from 'utils/addressHelpers'
 import { Pool } from 'state/types'
 

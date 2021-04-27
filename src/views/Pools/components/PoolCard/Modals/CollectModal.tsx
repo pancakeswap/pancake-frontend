@@ -16,7 +16,7 @@ import useI18n from 'hooks/useI18n'
 import useTheme from 'hooks/useTheme'
 import { useSousHarvest } from 'hooks/useHarvest'
 import { useSousStake } from 'hooks/useStake'
-import { useToast } from 'state/hooks'
+import useToast from 'hooks/useToast'
 import { Token } from 'config/constants/types'
 
 interface CollectModalProps {
