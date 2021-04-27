@@ -91,10 +91,48 @@ const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
   const roundResult = getRoundResult()
   const resultTextColor = getRoundColor(roundResult)
   const resultTextPrefix = getRoundPrefix(roundResult)
+  const isOpenRound = round.epoch === currentEpoch
   const isLiveRound = status === PredictionStatus.LIVE && round.epoch === currentEpoch - 1
 
   // Winners get the payout, otherwise the claim what they put it if it was canceled
   const payout = roundResult === Result.WIN ? getPayout(bet) : amount
+
+  const renderBetLabel = () => {
+    if (isOpenRound) {
+      return (
+        <Flex alignItems="center">
+          <PlayCircleOutlineIcon color="primary" mr="6px" width="24px" />
+          <Text color="primary" bold>
+            {TranslateString(999, 'Open Now')}
+          </Text>
+        </Flex>
+      )
+    }
+
+    if (isLiveRound) {
+      return (
+        <Flex alignItems="center">
+          <PlayCircleOutlineIcon color="secondary" mr="6px" width="24px" />
+          <Text color="secondary" bold>
+            {TranslateString(999, 'Live Now')}
+          </Text>
+        </Flex>
+      )
+    }
+
+    return (
+      <>
+        <Text fontSize="12px" color="textSubtle">
+          {TranslateString(999, 'Your Result')}
+        </Text>
+        <Text bold color={resultTextColor} lineHeight={1}>
+          {roundResult === Result.CANCELED
+            ? TranslateString(999, 'Canceled')
+            : `${resultTextPrefix}${formatBnb(payout)}`}
+        </Text>
+      </>
+    )
+  }
 
   return (
     <>
@@ -109,27 +147,7 @@ const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
             </Text>
           </Text>
         </Box>
-        <YourResult px="24px">
-          {isLiveRound ? (
-            <Flex alignItems="center">
-              <PlayCircleOutlineIcon color="secondary" mr="6px" width="24px" />
-              <Text color="secondary" bold>
-                {TranslateString(999, 'Live Now')}
-              </Text>
-            </Flex>
-          ) : (
-            <>
-              <Text fontSize="12px" color="textSubtle">
-                {TranslateString(999, 'Your Result')}
-              </Text>
-              <Text bold color={resultTextColor} lineHeight={1}>
-                {roundResult === Result.CANCELED
-                  ? TranslateString(999, 'Canceled')
-                  : `${resultTextPrefix}${formatBnb(payout)}`}
-              </Text>
-            </>
-          )}
-        </YourResult>
+        <YourResult px="24px">{renderBetLabel()}</YourResult>
         {roundResult === Result.WIN && !claimed && (
           <CollectWinningsButton
             onSuccess={handleSuccess}
@@ -147,9 +165,11 @@ const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
             {TranslateString(999, 'Reclaim')}
           </ReclaimPositionButton>
         )}
-        <IconButton variant="text" scale="sm" onClick={toggleOpen} disabled={isLiveRound}>
-          {isOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}
-        </IconButton>
+        {!isOpenRound && !isLiveRound && (
+          <IconButton variant="text" scale="sm" onClick={toggleOpen}>
+            {isOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}
+          </IconButton>
+        )}
       </StyledBet>
       {isOpen && <BetDetails bet={bet} result={getRoundResult()} />}
     </>
