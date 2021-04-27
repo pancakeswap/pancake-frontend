@@ -13,6 +13,7 @@ import CanceledRoundCard from './CanceledRoundCard'
 
 interface ExpiredRoundCardProps {
   round: Round
+  betAmount?: number
   hasEnteredUp: boolean
   hasEnteredDown: boolean
   bullMultiplier: number
@@ -30,6 +31,7 @@ const StyledExpiredRoundCard = styled(Card)`
 
 const ExpiredRoundCard: React.FC<ExpiredRoundCardProps> = ({
   round,
+  betAmount,
   hasEnteredUp,
   hasEnteredDown,
   bullMultiplier,
@@ -57,12 +59,14 @@ const ExpiredRoundCard: React.FC<ExpiredRoundCardProps> = ({
       <CardBody p="16px" style={{ position: 'relative' }}>
         <CollectWinningsOverlay roundId={id} hasEntered={hasEntered} isBottom={hasEnteredDown} />
         <MultiplierArrow
+          amount={betAmount}
           multiplier={bullMultiplier}
           isActive={betPosition === BetPosition.BULL}
           hasEntered={hasEnteredUp}
         />
         <RoundResult round={round} />
         <MultiplierArrow
+          amount={betAmount}
           multiplier={bearMultiplier}
           betPosition={BetPosition.BEAR}
           isActive={betPosition === BetPosition.BEAR}

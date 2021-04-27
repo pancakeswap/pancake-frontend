@@ -14,6 +14,7 @@ import SetPositionCard from './SetPositionCard'
 
 interface OpenRoundCardProps {
   round: Round
+  betAmount?: number
   hasEnteredUp: boolean
   hasEnteredDown: boolean
   bullMultiplier: number
@@ -28,6 +29,7 @@ interface State {
 
 const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
   round,
+  betAmount,
   hasEnteredUp,
   hasEnteredDown,
   bullMultiplier,
@@ -104,7 +106,7 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
           title={TranslateString(999, 'Next')}
         />
         <CardBody p="16px">
-          <MultiplierArrow multiplier={bullMultiplier} hasEntered={hasEnteredUp} />
+          <MultiplierArrow amount={betAmount} multiplier={bullMultiplier} hasEntered={hasEnteredUp} />
           <RoundResultBox isNext={canEnterPosition} isLive={!canEnterPosition}>
             {canEnterPosition && !hasEnteredPosition ? (
               <>
@@ -136,7 +138,12 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
               </>
             )}
           </RoundResultBox>
-          <MultiplierArrow multiplier={bearMultiplier} betPosition={BetPosition.BEAR} hasEntered={hasEnteredDown} />
+          <MultiplierArrow
+            amount={betAmount}
+            multiplier={bearMultiplier}
+            betPosition={BetPosition.BEAR}
+            hasEntered={hasEnteredDown}
+          />
         </CardBody>
       </Card>
       <SetPositionCard

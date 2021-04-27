@@ -27,6 +27,7 @@ const RoundCard: React.FC<RoundCardProps> = ({ round }) => {
     return (
       <OpenRoundCard
         round={round}
+        betAmount={bet?.amount}
         hasEnteredUp={hasEnteredUp}
         hasEnteredDown={hasEnteredDown}
         bullMultiplier={bullMultiplier}
@@ -39,6 +40,7 @@ const RoundCard: React.FC<RoundCardProps> = ({ round }) => {
   if (closePrice === null && epoch === currentEpoch - 1) {
     return (
       <LiveRoundCard
+        betAmount={bet?.amount}
         round={round}
         hasEnteredUp={hasEnteredUp}
         hasEnteredDown={hasEnteredDown}
@@ -57,6 +59,7 @@ const RoundCard: React.FC<RoundCardProps> = ({ round }) => {
   return (
     <ExpiredRoundCard
       round={round}
+      betAmount={bet?.amount}
       hasEnteredUp={hasEnteredUp}
       hasEnteredDown={hasEnteredDown}
       bullMultiplier={bullMultiplier}

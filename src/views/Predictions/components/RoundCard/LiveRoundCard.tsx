@@ -17,6 +17,7 @@ import CanceledRoundCard from './CanceledRoundCard'
 
 interface LiveRoundCardProps {
   round: Round
+  betAmount?: number
   hasEnteredUp: boolean
   hasEnteredDown: boolean
   bullMultiplier: number
@@ -35,6 +36,7 @@ const GradientCard = styled(Card)`
 
 const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
   round,
+  betAmount,
   hasEnteredUp,
   hasEnteredDown,
   bullMultiplier,
@@ -66,7 +68,7 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
         />
         <BlockProgress variant="flat" scale="sm" startBlock={lockBlock} endBlock={estimatedEndBlock} />
         <CardBody p="16px">
-          <MultiplierArrow multiplier={bullMultiplier} hasEntered={hasEnteredUp} isActive={isBull} />
+          <MultiplierArrow amount={betAmount} multiplier={bullMultiplier} hasEntered={hasEnteredUp} isActive={isBull} />
           <RoundResultBox betPosition={isBull ? BetPosition.BULL : BetPosition.BEAR}>
             <Text color="textSubtle" fontSize="12px" bold textTransform="uppercase" mb="8px">
               {TranslateString(999, 'Last Price')}
@@ -87,6 +89,7 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
             <PrizePoolRow totalAmount={totalAmount} />
           </RoundResultBox>
           <MultiplierArrow
+            amount={betAmount}
             multiplier={bearMultiplier}
             betPosition={BetPosition.BEAR}
             hasEntered={hasEnteredDown}

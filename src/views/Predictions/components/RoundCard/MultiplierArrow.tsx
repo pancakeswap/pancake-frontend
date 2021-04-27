@@ -1,5 +1,5 @@
 import React from 'react'
-import styled from 'styled-components'
+import styled, { CSSProperties } from 'styled-components'
 import { Box, Flex, Text } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import { BetPosition } from 'state/types'
@@ -7,6 +7,7 @@ import { MultiplierDown, MultiplierUp } from '../../icons/MultiplierIcon'
 import EnteredTag from './EnteredTag'
 
 interface MultiplierArrowProps {
+  amount?: number
   multiplier?: number
   hasEntered?: boolean
   betPosition?: BetPosition
@@ -50,6 +51,7 @@ const getTextColor = (fallback = 'textSubtle') => (isActive: boolean, isDisabled
 }
 
 const MultiplierArrow: React.FC<MultiplierArrowProps> = ({
+  amount,
   multiplier,
   hasEntered = false,
   betPosition = BetPosition.BULL,
@@ -71,16 +73,24 @@ const MultiplierArrow: React.FC<MultiplierArrowProps> = ({
     </Flex>
   )
 
+  const getEnteredTag = (position: CSSProperties) => {
+    if (!hasEntered) {
+      return null
+    }
+
+    return (
+      <EnteredTagWrapper style={position}>
+        <EnteredTag amount={amount} />
+      </EnteredTagWrapper>
+    )
+  }
+
   if (betPosition === BetPosition.BEAR) {
     return (
       <Box position="relative">
         <ArrowWrapper>
           <MultiplierDown isActive={isActive} />
-          {hasEntered && (
-            <EnteredTagWrapper style={{ right: 0, bottom: 0 }}>
-              <EnteredTag />
-            </EnteredTagWrapper>
-          )}
+          {getEnteredTag({ bottom: 0, right: 0 })}
           <Content>
             {multiplierText}
             <Text bold fontSize="24px" lineHeight="26px" mb="8px" color={downColor} textTransform="uppercase">
@@ -96,11 +106,7 @@ const MultiplierArrow: React.FC<MultiplierArrowProps> = ({
     <Box position="relative">
       <ArrowWrapper>
         <MultiplierUp isActive={isActive} />
-        {hasEntered && (
-          <EnteredTagWrapper style={{ left: 0, top: 0 }}>
-            <EnteredTag />
-          </EnteredTagWrapper>
-        )}
+        {getEnteredTag({ top: 0, left: 0 })}
         <Content>
           <Text bold fontSize="24px" lineHeight="26px" color={upColor} textTransform="uppercase">
             {TranslateString(999, 'Up')}

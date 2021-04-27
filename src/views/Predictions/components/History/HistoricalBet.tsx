@@ -32,7 +32,6 @@ const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
 
   const TranslateString = useI18n()
   const { account } = useWeb3React()
-  const payout = getPayout(bet)
   const dispatch = useAppDispatch()
   const isRoundCanceled = useIsRoundCanceled(round)
 
@@ -81,6 +80,9 @@ const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
   const resultTextColor = getRoundColor(roundResult)
   const resultTextPrefix = getRoundPrefix(roundResult)
 
+  // Winners get the payout, otherwise the claim what they put it if it was canceled
+  const payout = roundResult === Result.WIN ? getPayout(bet) : amount
+
   return (
     <>
       <StyledBet>
@@ -101,7 +103,7 @@ const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
           <Text bold color={resultTextColor} lineHeight={1}>
             {roundResult === Result.CANCELED
               ? TranslateString(999, 'Cancelled')
-              : `${resultTextPrefix}${formatBnb(amount)}`}
+              : `${resultTextPrefix}${formatBnb(payout)}`}
           </Text>
         </YourResult>
         {roundResult === Result.WIN && !claimed && (
