@@ -12,10 +12,12 @@ import {
   Text,
   Flex,
   Heading,
+  Box,
+  LinkExternal,
 } from '@pancakeswap-libs/uikit'
 import { useWeb3React } from '@web3-react/core'
-import { useToast } from 'state/hooks'
 import useI18n from 'hooks/useI18n'
+import useToast from 'hooks/useToast'
 import { usePredictionsContract } from 'hooks/useContract'
 import { formatBnb } from '../helpers'
 
@@ -56,14 +58,26 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
       .once('sending', () => {
         setIsPendingTx(true)
       })
-      .once('receipt', async () => {
+      .once('receipt', async (result) => {
         if (onSuccess) {
           await onSuccess()
         }
 
         setIsPendingTx(false)
         onDismiss()
-        toastSuccess(TranslateString(999, 'Winnings collected!'))
+        toastSuccess(
+          TranslateString(999, 'Winnings collected!'),
+          <Box>
+            <Text as="p" mb="8px">
+              {TranslateString(999, 'Your prizes have been sent to your wallet')}
+            </Text>
+            {result.transactionHash && (
+              <LinkExternal href={`https://bscscan.com/tx/${result.transactionHash}`}>
+                {TranslateString(356, 'View on BscScan')}
+              </LinkExternal>
+            )}
+          </Box>,
+        )
       })
       .once('error', (error) => {
         setIsPendingTx(false)

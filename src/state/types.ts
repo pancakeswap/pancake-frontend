@@ -254,6 +254,5 @@ export interface State {
   predictions: PredictionsState
   profile: ProfileState
   teams: TeamsState
-  toasts: ToastsState
   collectibles: CollectiblesState
 }

@@ -21,7 +21,6 @@ const store = configureStore({
     predictions: predictionsReducer,
     profile: profileReducer,
     teams: teamsReducer,
-    toasts: toastsReducer,
     collectibles: collectiblesReducer,
   },
 })
