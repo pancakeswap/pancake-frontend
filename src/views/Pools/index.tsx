@@ -14,6 +14,7 @@ import PageHeader from 'components/PageHeader'
 import PoolCard from './components/PoolCard'
 import CakeVaultCard from './components/CakeVaultCard'
 import PoolTabButtons from './components/PoolTabButtons'
+import BountyCard from './components/BountyCard'
 
 const Pools: React.FC = () => {
   const { path } = useRouteMatch()
@@ -51,6 +52,9 @@ const Pools: React.FC = () => {
             <Heading size="md" color="text">
               {TranslateString(999, 'High APR, low risk.')}
             </Heading>
+          </Flex>
+          <Flex height="fit-content" justifyContent="center" alignItems="center">
+            <BountyCard />
           </Flex>
         </Flex>
       </PageHeader>
