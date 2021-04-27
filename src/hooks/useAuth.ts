@@ -12,7 +12,7 @@ import {
 import { ConnectorNames, connectorLocalStorageKey } from '@pancakeswap-libs/uikit'
 import { connectorsByName } from 'utils/web3React'
 import { setupNetwork } from 'utils/wallet'
-import { useToast } from 'state/hooks'
+import useToast from 'hooks/useToast'
 import { profileClear } from 'state/profile'
 import { useAppDispatch } from 'state'
 

@@ -7,7 +7,7 @@ import { WalletIfoData, PublicIfoData } from 'hooks/ifo/types'
 import useI18n from 'hooks/useI18n'
 import useTokenBalance from 'hooks/useTokenBalance'
 import { getAddress } from 'utils/addressHelpers'
-import { useToast } from 'state/hooks'
+import useToast from 'hooks/useToast'
 import ContributeModal from './ContributeModal'
 import GetLpModal from './GetLpModal'
 

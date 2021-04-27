@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import BigNumber from 'bignumber.js'
 import { getProfileContract } from 'utils/contractHelpers'
 import makeBatchRequest from 'utils/makeBatchRequest'
-import { useToast } from 'state/hooks'
+import useToast from './useToast'
 
 const useGetProfileCosts = () => {
   const [costs, setCosts] = useState({

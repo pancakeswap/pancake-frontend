@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { Button, Heading, Text, Flex, Checkbox, AutoRenewIcon } from '@pancakeswap-libs/uikit'
 import { useTradingCompetitionContract } from 'hooks/useContract'
 import useI18n from 'hooks/useI18n'
-import { useToast } from 'state/hooks'
+import useToast from 'hooks/useToast'
 import { CompetitionProps } from '../../types'
 
 const StyledCheckbox = styled(Checkbox)`
