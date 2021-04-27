@@ -111,9 +111,6 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
         >
           {TranslateString(464, 'Confirm')}
         </Button>
-        <Button variant="text" width="100%" onClick={onDismiss}>
-          {TranslateString(999, 'Close Window')}
-        </Button>
       </ModalBody>
     </Modal>
   )
