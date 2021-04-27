@@ -3,7 +3,7 @@ import { Button, AutoRenewIcon, Skeleton } from '@pancakeswap-libs/uikit'
 import { ethers } from 'ethers'
 import useI18n from 'hooks/useI18n'
 import { useCake, useCakeVaultContract } from 'hooks/useContract'
-import { useToast } from 'state/hooks'
+import useToast from 'hooks/useToast'
 import { Pool } from 'state/types'
 
 interface ApprovalActionProps {
