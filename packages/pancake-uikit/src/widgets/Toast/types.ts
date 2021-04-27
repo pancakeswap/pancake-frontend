@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 export const types = {
   SUCCESS: "success",
   DANGER: "danger",
@@ -7,17 +9,11 @@ export const types = {
 
 export type Types = typeof types[keyof typeof types];
 
-export interface ToastAction {
-  text: string;
-  url: string;
-}
-
 export interface Toast {
   id: string;
   type: Types;
   title: string;
-  description?: string;
-  action?: ToastAction;
+  description?: ReactNode;
 }
 
 export interface ToastContainerProps {
