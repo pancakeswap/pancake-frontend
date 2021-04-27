@@ -7,7 +7,6 @@ import { useGetTotalIntervalBlocks } from 'state/hooks'
 import { useBnbUsdtTicker } from 'hooks/ticker'
 import BlockProgress from 'components/BlockProgress'
 import { formatUsd, getBubbleGumBackground } from '../../helpers'
-import useIsRoundCanceled from '../../hooks/useIsRoundCanceled'
 import PositionTag from '../PositionTag'
 import { RoundResultBox, LockPriceRow, PrizePoolRow } from '../RoundResult'
 import MultiplierArrow from './MultiplierArrow'
@@ -50,9 +49,8 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
   const priceColor = isBull ? 'success' : 'failure'
   const estimatedEndBlock = lockBlock + totalInterval
   const priceDifference = stream?.lastPrice - lockPrice
-  const isRoundCanceled = useIsRoundCanceled(round)
 
-  if (isRoundCanceled) {
+  if (round.failed) {
     return <CanceledRoundCard round={round} />
   }
 

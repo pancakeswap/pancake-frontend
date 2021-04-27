@@ -16,7 +16,6 @@ import { Bet, BetPosition } from 'state/types'
 import { useGetCurrentEpoch } from 'state/hooks'
 import useI18n from 'hooks/useI18n'
 import { formatBnb, getPayout } from '../../helpers'
-import useIsRoundCanceled from '../../hooks/useIsRoundCanceled'
 import CollectWinningsButton from '../CollectWinningsButton'
 import ReclaimPositionButton from '../ReclaimPositionButton'
 import BetDetails from './BetDetails'
@@ -42,14 +41,13 @@ const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
   const TranslateString = useI18n()
   const { account } = useWeb3React()
   const dispatch = useAppDispatch()
-  const isRoundCanceled = useIsRoundCanceled(round)
   const currentEpoch = useGetCurrentEpoch()
   const roundResultPosition = round.closePrice > round.lockPrice ? BetPosition.BULL : BetPosition.BEAR
 
   const toggleOpen = () => setIsOpen(!isOpen)
 
   const getRoundResult = () => {
-    if (isRoundCanceled) {
+    if (round.failed) {
       return Result.CANCELED
     }
 

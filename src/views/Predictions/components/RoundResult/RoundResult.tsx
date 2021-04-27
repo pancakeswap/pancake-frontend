@@ -3,7 +3,6 @@ import { BoxProps, Flex, Text } from '@pancakeswap-libs/uikit'
 import { BetPosition, Round } from 'state/types'
 import useI18n from 'hooks/useI18n'
 import { formatUsd } from '../../helpers'
-import useIsRoundCanceled from '../../hooks/useIsRoundCanceled'
 import PositionTag from '../PositionTag'
 import { LockPriceRow, PrizePoolRow, RoundResultBox } from './styles'
 
@@ -17,14 +16,13 @@ const RoundResult: React.FC<RoundResultProps> = ({ round, ...props }) => {
   const isPositionUp = betPosition === BetPosition.BULL
   const TranslateString = useI18n()
   const priceDifference = closePrice - lockPrice
-  const isRoundCanceled = useIsRoundCanceled(round)
 
   return (
     <RoundResultBox betPosition={betPosition} {...props}>
       <Text color="textSubtle" fontSize="12px" bold textTransform="uppercase" mb="8px">
         {TranslateString(999, 'Closed Price')}
       </Text>
-      {isRoundCanceled ? (
+      {round.failed ? (
         <Text bold textTransform="uppercase" color="textDisabled" mb="16px" fontSize="24px">
           {TranslateString(999, 'Canceled')}
         </Text>
