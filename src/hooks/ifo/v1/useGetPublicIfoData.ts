@@ -5,7 +5,7 @@ import { Ifo, IfoStatus, PoolIds } from 'config/constants/types'
 import { useBlock, useLpTokenPrice } from 'state/hooks'
 import { useIfoV1Contract } from 'hooks/useContract'
 import makeBatchRequest from 'utils/makeBatchRequest'
-import { ZERO } from 'utils/bigNumber'
+import { BIG_ZERO } from 'utils/bigNumber'
 import { PublicIfoData } from '../types'
 import { getStatus } from '../helpers'
 
@@ -25,12 +25,12 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
     endBlockNum: 0,
     numberPoints: null,
     [PoolIds.poolUnlimited]: {
-      raisingAmountPool: ZERO,
-      totalAmountPool: ZERO,
-      offeringAmountPool: ZERO, // Not know
-      limitPerUserInLP: ZERO, //  Not used
+      raisingAmountPool: BIG_ZERO,
+      totalAmountPool: BIG_ZERO,
+      offeringAmountPool: BIG_ZERO, // Not know
+      limitPerUserInLP: BIG_ZERO, //  Not used
       taxRate: 0, //  Not used
-      sumTaxesOverflow: ZERO, //  Not used
+      sumTaxesOverflow: BIG_ZERO, //  Not used
     },
   })
   const { currentBlock } = useBlock()

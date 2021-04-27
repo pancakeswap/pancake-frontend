@@ -7,7 +7,7 @@ import { useIfoAllowance } from 'hooks/useAllowance'
 import useRefresh from 'hooks/useRefresh'
 import makeBatchRequest from 'utils/makeBatchRequest'
 import { getAddress } from 'utils/addressHelpers'
-import { ZERO } from 'utils/bigNumber'
+import { BIG_ZERO } from 'utils/bigNumber'
 import { WalletIfoState, WalletIfoData } from '../types'
 
 /**
@@ -17,18 +17,18 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
   const { fastRefresh } = useRefresh()
   const [state, setState] = useState<WalletIfoState>({
     poolBasic: {
-      amountTokenCommittedInLP: ZERO,
-      offeringAmountInToken: ZERO,
-      refundingAmountInLP: ZERO,
-      taxAmountInLP: ZERO,
+      amountTokenCommittedInLP: BIG_ZERO,
+      offeringAmountInToken: BIG_ZERO,
+      refundingAmountInLP: BIG_ZERO,
+      taxAmountInLP: BIG_ZERO,
       hasClaimed: false,
       isPendingTx: false,
     },
     poolUnlimited: {
-      amountTokenCommittedInLP: ZERO,
-      offeringAmountInToken: ZERO,
-      refundingAmountInLP: ZERO,
-      taxAmountInLP: ZERO,
+      amountTokenCommittedInLP: BIG_ZERO,
+      offeringAmountInToken: BIG_ZERO,
+      refundingAmountInLP: BIG_ZERO,
+      taxAmountInLP: BIG_ZERO,
       hasClaimed: false,
       isPendingTx: false,
     },

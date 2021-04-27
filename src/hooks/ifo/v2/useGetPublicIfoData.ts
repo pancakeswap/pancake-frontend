@@ -6,7 +6,7 @@ import { useBlock, useLpTokenPrice } from 'state/hooks'
 import { useIfoV2Contract } from 'hooks/useContract'
 import useRefresh from 'hooks/useRefresh'
 import makeBatchRequest from 'utils/makeBatchRequest'
-import { ZERO } from 'utils/bigNumber'
+import { BIG_ZERO } from 'utils/bigNumber'
 import { PublicIfoData, PoolCharacteristics } from '../types'
 import { getStatus } from '../helpers'
 
@@ -38,20 +38,20 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
     progress: 5,
     secondsUntilEnd: 0,
     poolBasic: {
-      raisingAmountPool: ZERO,
-      offeringAmountPool: ZERO,
-      limitPerUserInLP: ZERO,
+      raisingAmountPool: BIG_ZERO,
+      offeringAmountPool: BIG_ZERO,
+      limitPerUserInLP: BIG_ZERO,
       taxRate: 0,
-      totalAmountPool: ZERO,
-      sumTaxesOverflow: ZERO,
+      totalAmountPool: BIG_ZERO,
+      sumTaxesOverflow: BIG_ZERO,
     },
     poolUnlimited: {
-      raisingAmountPool: ZERO,
-      offeringAmountPool: ZERO,
-      limitPerUserInLP: ZERO,
+      raisingAmountPool: BIG_ZERO,
+      offeringAmountPool: BIG_ZERO,
+      limitPerUserInLP: BIG_ZERO,
       taxRate: 0,
-      totalAmountPool: ZERO,
-      sumTaxesOverflow: ZERO,
+      totalAmountPool: BIG_ZERO,
+      sumTaxesOverflow: BIG_ZERO,
     },
     startBlockNum: 0,
     endBlockNum: 0,

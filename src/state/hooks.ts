@@ -8,7 +8,7 @@ import Nfts from 'config/constants/nfts'
 import { getWeb3NoAccount } from 'utils/web3'
 import { getAddress } from 'utils/addressHelpers'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { ZERO } from 'utils/bigNumber'
+import { BIG_ZERO } from 'utils/bigNumber'
 import useRefresh from 'hooks/useRefresh'
 import { fetchFarmsPublicDataAsync, fetchPoolsPublicDataAsync, fetchPoolsUserDataAsync, setBlock } from './actions'
 import { State, Farm, FarmsState, Pool, ProfileState, TeamsState, AchievementState, PriceState } from './types'
@@ -58,10 +58,10 @@ export const useFarmUser = (pid) => {
   const farm = useFarmFromPid(pid)
 
   return {
-    allowance: farm.userData ? new BigNumber(farm.userData.allowance) : ZERO,
-    tokenBalance: farm.userData ? new BigNumber(farm.userData.tokenBalance) : ZERO,
-    stakedBalance: farm.userData ? new BigNumber(farm.userData.stakedBalance) : ZERO,
-    earnings: farm.userData ? new BigNumber(farm.userData.earnings) : ZERO,
+    allowance: farm.userData ? new BigNumber(farm.userData.allowance) : BIG_ZERO,
+    tokenBalance: farm.userData ? new BigNumber(farm.userData.tokenBalance) : BIG_ZERO,
+    stakedBalance: farm.userData ? new BigNumber(farm.userData.stakedBalance) : BIG_ZERO,
+    earnings: farm.userData ? new BigNumber(farm.userData.earnings) : BIG_ZERO,
   }
 }
 
@@ -71,7 +71,7 @@ export const useLpTokenPrice = (symbol: string) => {
 
   return farm.lpTotalSupply && farm.lpTotalInQuoteToken
     ? new BigNumber(getBalanceNumber(farm.lpTotalSupply)).div(farm.lpTotalInQuoteToken).times(tokenPriceInUsd).times(2)
-    : ZERO
+    : BIG_ZERO
 }
 
 // Pools
@@ -181,8 +181,8 @@ export const usePriceCakeBusd = (): BigNumber => {
   const cakeBnbFarm = useFarmFromPid(1)
   const bnbBusdFarm = useFarmFromPid(2)
 
-  const bnbBusdPrice = bnbBusdFarm.tokenPriceVsQuote ? new BigNumber(1).div(bnbBusdFarm.tokenPriceVsQuote) : ZERO
-  const cakeBusdPrice = cakeBnbFarm.tokenPriceVsQuote ? bnbBusdPrice.times(cakeBnbFarm.tokenPriceVsQuote) : ZERO
+  const bnbBusdPrice = bnbBusdFarm.tokenPriceVsQuote ? new BigNumber(1).div(bnbBusdFarm.tokenPriceVsQuote) : BIG_ZERO
+  const cakeBusdPrice = cakeBnbFarm.tokenPriceVsQuote ? bnbBusdPrice.times(cakeBnbFarm.tokenPriceVsQuote) : BIG_ZERO
 
   return cakeBusdPrice
 }

@@ -4,9 +4,9 @@ import { Flex, LinkExternal, Image, Text, PrizeIcon } from '@pancakeswap-libs/ui
 import useI18n from 'hooks/useI18n'
 import { PublicIfoData } from 'hooks/ifo/types'
 import { Ifo } from 'config/constants/types'
-import { TEN } from 'utils/bigNumber'
+import { BIG_TEN } from 'utils/bigNumber'
 
-const MIN_DOLLAR_FOR_ACHIEVEMENT = TEN
+const MIN_DOLLAR_FOR_ACHIEVEMENT = BIG_TEN
 
 interface Props {
   ifo: Ifo
