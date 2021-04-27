@@ -10,8 +10,8 @@ export const convertSharesToCake = (
   const sharePriceAsNumber = getBalanceNumber(cakePerFullShare)
   const amountCake = new BigNumber(shares.multipliedBy(sharePriceAsNumber))
   const cakeAsNumberBalance = getBalanceNumber(amountCake, decimals)
+  const cakeAsBigNumber = new BigNumber(cakeAsNumberBalance).multipliedBy(new BigNumber(10).pow(decimals))
   const cakeAsDisplayBalance = getFullDisplayBalance(amountCake, decimals, decimalsToRound)
-  const cakeAsBigNumber = new BigNumber(amountCake)
   return { cakeAsNumberBalance, cakeAsBigNumber, cakeAsDisplayBalance }
 }
 
@@ -24,8 +24,8 @@ export const convertCakeToShares = (
   const sharePriceAsNumber = getBalanceNumber(cakePerFullShare)
   const amountShares = new BigNumber(cake.dividedBy(sharePriceAsNumber))
   const sharesAsNumberBalance = getBalanceNumber(amountShares, decimals)
+  const sharesAsBigNumber = new BigNumber(sharesAsNumberBalance).multipliedBy(new BigNumber(10).pow(decimals))
   const sharesAsDisplayBalance = getFullDisplayBalance(amountShares, decimals, decimalsToRound)
-  const sharesAsBigNumber = new BigNumber(amountShares)
   return { sharesAsNumberBalance, sharesAsBigNumber, sharesAsDisplayBalance }
 }
 

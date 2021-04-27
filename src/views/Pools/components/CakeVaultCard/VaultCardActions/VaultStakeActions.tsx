@@ -1,22 +1,12 @@
 import React from 'react'
-import {
-  Flex,
-  Text,
-  Button,
-  IconButton,
-  AddIcon,
-  MinusIcon,
-  Heading,
-  useModal,
-  Skeleton,
-} from '@pancakeswap-libs/uikit'
+import { Flex, Button, useModal, Skeleton } from '@pancakeswap-libs/uikit'
 import BigNumber from 'bignumber.js'
 import useI18n from 'hooks/useI18n'
 import { Pool } from 'state/types'
-import { VaultUser } from '../../../types'
+import { VaultUser } from 'views/Pools/types'
 import NotEnoughTokensModal from '../../PoolCard/Modals/NotEnoughTokensModal'
 import VaultStakeModal from '../VaultModals/VaultStakeModal'
-import HasStakeAction from './HasStakeAction'
+import HasSharesActions from './HasSharesActions'
 
 interface VaultStakeActionsProps {
   pool: Pool
@@ -27,6 +17,7 @@ interface VaultStakeActionsProps {
   pricePerFullShare: BigNumber
   isLoading?: boolean
   account: string
+  setLastUpdated: () => void
 }
 
 const VaultStakeActions: React.FC<VaultStakeActionsProps> = ({
@@ -38,6 +29,7 @@ const VaultStakeActions: React.FC<VaultStakeActionsProps> = ({
   pricePerFullShare,
   isLoading = false,
   account,
+  setLastUpdated,
 }) => {
   const { stakingToken } = pool
   const TranslateString = useI18n()
@@ -50,18 +42,20 @@ const VaultStakeActions: React.FC<VaultStakeActionsProps> = ({
       stakingMax={stakingTokenBalance}
       pool={pool}
       stakingTokenPrice={stakingTokenPrice}
+      setLastUpdated={setLastUpdated}
     />,
   )
 
   const renderStakeAction = () => {
     return accountHasSharesStaked ? (
-      <HasStakeAction
+      <HasSharesActions
         pool={pool}
         stakingTokenBalance={stakingTokenBalance}
         stakingTokenPrice={stakingTokenPrice}
         userInfo={userInfo}
         pricePerFullShare={pricePerFullShare}
         account={account}
+        setLastUpdated={setLastUpdated}
       />
     ) : (
       <Button onClick={stakingTokenBalance.toNumber() > 0 ? onPresentStake : onPresentTokenRequired}>

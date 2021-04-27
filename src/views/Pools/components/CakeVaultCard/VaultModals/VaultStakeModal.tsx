@@ -18,6 +18,7 @@ interface StakeModalProps {
   isRemovingStake?: boolean
   pricePerFullShare?: BigNumber
   account: string
+  setLastUpdated: () => void
   onDismiss?: () => void
 }
 
@@ -33,6 +34,7 @@ const VaultStakeModal: React.FC<StakeModalProps> = ({
   pricePerFullShare,
   account,
   onDismiss,
+  setLastUpdated,
 }) => {
   const { stakingToken, earningToken } = pool
   const cakeVaultContract = useCakeVaultContract()
@@ -66,8 +68,6 @@ const VaultStakeModal: React.FC<StakeModalProps> = ({
     if (isRemovingStake) {
       // unstaking
       const { sharesAsBigNumber } = convertCakeToShares(convertedStakeAmount, pricePerFullShare)
-      console.log('unstaking shares:', sharesAsBigNumber.toNumber())
-      // debugger // eslint-disable-line
       cakeVaultContract.methods
         .withdraw(sharesAsBigNumber)
         .send({ from: account })
@@ -81,13 +81,12 @@ const VaultStakeModal: React.FC<StakeModalProps> = ({
           )
           setPendingTx(false)
           onDismiss()
+          setLastUpdated()
         })
         .on('error', (e) => {
-          debugger // eslint-disable-line
-          toastError(
-            TranslateString(999, 'Error'),
-            TranslateString(999, 'Please try again and confirm the transaction.'),
-          )
+          console.log(e)
+          // Remove message from toast before prod
+          toastError(TranslateString(999, 'Error'), TranslateString(999, `${e.message} - Please try again.`))
           setPendingTx(false)
         })
     } else {
@@ -102,13 +101,12 @@ const VaultStakeModal: React.FC<StakeModalProps> = ({
           toastSuccess(TranslateString(999, 'Staked!'), TranslateString(999, 'Your funds have been staked in the pool'))
           setPendingTx(false)
           onDismiss()
+          setLastUpdated()
         })
         .on('error', (e) => {
-          // debugger // eslint-disable-line
-          toastError(
-            TranslateString(999, 'Error'),
-            TranslateString(999, 'Please try again and confirm the transaction.'),
-          )
+          console.log(e)
+          // Remove message from toast before prod
+          toastError(TranslateString(999, 'Error'), TranslateString(999, `${e.message} - Please try again.`))
           setPendingTx(false)
         })
     }

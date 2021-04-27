@@ -3,10 +3,9 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Flex, Text, Box } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
-import useLastUpdated from 'hooks/useLastUpdated'
 import { useCake, useCakeVaultContract } from 'hooks/useContract'
 import { Pool } from 'state/types'
-import { VaultUser } from '../../../types'
+import { VaultUser } from 'views/Pools/types'
 import VaultApprovalAction from './VaultApprovalAction'
 import VaultStakeActions from './VaultStakeActions'
 
@@ -21,16 +20,24 @@ const CakeVaultCardActions: React.FC<{
   stakingTokenPrice: number
   accountHasSharesStaked: boolean
   account: string
-}> = ({ pool, userInfo, pricePerFullShare, stakingTokenPrice, accountHasSharesStaked, account }) => {
+  lastUpdated: number
+  setLastUpdated: () => void
+}> = ({
+  pool,
+  userInfo,
+  pricePerFullShare,
+  stakingTokenPrice,
+  accountHasSharesStaked,
+  account,
+  lastUpdated,
+  setLastUpdated,
+}) => {
   const { stakingToken, userData } = pool
   const [isVaultApproved, setIsVaultApproved] = useState(false)
-  const { lastUpdated, setLastUpdated } = useLastUpdated()
   const cakeContract = useCake()
   const cakeVaultContract = useCakeVaultContract()
   const TranslateString = useI18n()
   const stakingTokenBalance = new BigNumber(userData?.stakingTokenBalance || 0)
-  // const earnings = new BigNumber(userData?.pendingReward || 0)
-
   const isLoading = !userData || !userInfo.shares
 
   useEffect(() => {
@@ -78,6 +85,7 @@ const CakeVaultCardActions: React.FC<{
             pricePerFullShare={pricePerFullShare}
             accountHasSharesStaked={accountHasSharesStaked}
             account={account}
+            setLastUpdated={setLastUpdated}
           />
         ) : (
           <VaultApprovalAction pool={pool} account={account} isLoading={isLoading} setLastUpdated={setLastUpdated} />

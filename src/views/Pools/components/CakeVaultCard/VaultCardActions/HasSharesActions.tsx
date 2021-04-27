@@ -3,8 +3,8 @@ import { Flex, Text, IconButton, AddIcon, MinusIcon, Heading, useModal } from '@
 import BigNumber from 'bignumber.js'
 import { getBalanceNumber, formatNumber } from 'utils/formatBalance'
 import { Pool } from 'state/types'
+import { VaultUser } from 'views/Pools/types'
 import { convertSharesToCake } from '../../../helpers'
-import { VaultUser } from '../../../types'
 import VaultStakeModal from '../VaultModals/VaultStakeModal'
 
 interface HasStakeActionProps {
@@ -14,15 +14,17 @@ interface HasStakeActionProps {
   userInfo: VaultUser
   pricePerFullShare: BigNumber
   account: string
+  setLastUpdated: () => void
 }
 
-const HasStakeAction: React.FC<HasStakeActionProps> = ({
+const HasSharesActions: React.FC<HasStakeActionProps> = ({
   pool,
   stakingTokenBalance,
   stakingTokenPrice,
   userInfo,
   pricePerFullShare,
   account,
+  setLastUpdated,
 }) => {
   const { stakingToken } = pool
   const { cakeAsBigNumber, cakeAsDisplayBalance } = convertSharesToCake(userInfo.shares, pricePerFullShare)
@@ -37,6 +39,7 @@ const HasStakeAction: React.FC<HasStakeActionProps> = ({
       stakingMax={stakingTokenBalance}
       pool={pool}
       stakingTokenPrice={stakingTokenPrice}
+      setLastUpdated={setLastUpdated}
     />,
   )
 
@@ -48,6 +51,7 @@ const HasStakeAction: React.FC<HasStakeActionProps> = ({
       stakingTokenPrice={stakingTokenPrice}
       pricePerFullShare={pricePerFullShare}
       isRemovingStake
+      setLastUpdated={setLastUpdated}
     />,
   )
 
@@ -69,4 +73,4 @@ const HasStakeAction: React.FC<HasStakeActionProps> = ({
   )
 }
 
-export default HasStakeAction
+export default HasSharesActions

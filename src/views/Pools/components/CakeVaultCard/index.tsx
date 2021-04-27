@@ -6,6 +6,7 @@ import useI18n from 'hooks/useI18n'
 import { useCakeVaultContract } from 'hooks/useContract'
 import { getAddress } from 'utils/addressHelpers'
 import { useGetApiPrice } from 'state/hooks'
+import useLastUpdated from 'hooks/useLastUpdated'
 import { Pool } from 'state/types'
 import { getFullDisplayBalance } from 'utils/formatBalance'
 import AprRow from '../PoolCard/AprRow'
@@ -13,11 +14,13 @@ import StyledCard from '../PoolCard/StyledCard'
 import CardFooter from '../PoolCard/CardFooter'
 import StyledCardHeader from '../PoolCard/StyledCardHeader'
 import VaultCardActions from './VaultCardActions'
+import PerformanceFeeRow from './PerformanceFeeRow'
 
 const CakeVaultCard: React.FC<{ pool: Pool; account: string }> = ({ pool, account }) => {
   const TranslateString = useI18n()
   const cakeVaultContract = useCakeVaultContract()
   const [totalShares, setTotalShares] = useState(null)
+  const { lastUpdated, setLastUpdated } = useLastUpdated()
   const [userInfo, setUserInfo] = useState({
     shares: null,
     cakeAtLastUserAction: null,
@@ -40,6 +43,7 @@ const CakeVaultCard: React.FC<{ pool: Pool; account: string }> = ({ pool, accoun
     //   user-specific contract fetches
     const fetchUserVaultInfo = async () => {
       const userContractInfo = await cakeVaultContract.methods.userInfo(account).call()
+
       setUserInfo({
         shares: new BigNumber(userContractInfo.shares),
         cakeAtLastUserAction: new BigNumber(userContractInfo.cakeAtLastUserAction),
@@ -51,7 +55,7 @@ const CakeVaultCard: React.FC<{ pool: Pool; account: string }> = ({ pool, accoun
     if (account) {
       fetchUserVaultInfo()
     }
-  }, [account, cakeVaultContract])
+  }, [account, cakeVaultContract, lastUpdated])
 
   useEffect(() => {
     //   generic contract fetches
@@ -70,7 +74,7 @@ const CakeVaultCard: React.FC<{ pool: Pool; account: string }> = ({ pool, accoun
     getPricePerShare()
     getTotalShares()
     getFees()
-  }, [cakeVaultContract])
+  }, [cakeVaultContract, lastUpdated])
 
   return (
     <StyledCard isStaking={accountHasSharesStaked}>
@@ -91,6 +95,8 @@ const CakeVaultCard: React.FC<{ pool: Pool; account: string }> = ({ pool, accoun
               stakingTokenPrice={stakingTokenPrice}
               accountHasSharesStaked={accountHasSharesStaked}
               account={account}
+              lastUpdated={lastUpdated}
+              setLastUpdated={setLastUpdated}
             />
           ) : (
             <>
@@ -100,6 +106,7 @@ const CakeVaultCard: React.FC<{ pool: Pool; account: string }> = ({ pool, accoun
               <UnlockButton />
             </>
           )}
+          <PerformanceFeeRow performanceFee={performanceFee} lastDepositedTime={userInfo.lastDepositedTime} />
         </Flex>
       </CardBody>
       <CardFooter pool={pool} account={account} performanceFee={performanceFee} isAutoVault />
