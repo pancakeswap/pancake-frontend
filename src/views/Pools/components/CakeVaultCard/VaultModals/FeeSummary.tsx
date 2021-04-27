@@ -17,7 +17,7 @@ const FeeSummary: React.FC<FeeSummaryProps> = ({
   stakeAmount,
 }) => {
   const TranslateString = useI18n()
-  const feeAsDecimal = performanceFee / 1000
+  const feeAsDecimal = performanceFee / 100
   const feeInCake = (parseFloat(stakeAmount) * (feeAsDecimal / 100)).toFixed(4)
 
   return (

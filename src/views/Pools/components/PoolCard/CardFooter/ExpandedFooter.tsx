@@ -98,7 +98,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({
           <Text fontSize="14px">{TranslateString(999, 'Performance Fee')}</Text>
           <Flex alignItems="center">
             <Text ml="4px" fontSize="14px">
-              {performanceFee / 1000}%
+              {performanceFee / 100}%
             </Text>
           </Flex>
         </Flex>

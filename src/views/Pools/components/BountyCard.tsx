@@ -25,9 +25,17 @@ const BountyCard = () => {
   const cakeVaultContract = useCakeVaultContract()
   const { fastRefresh } = useRefresh()
   const [estimatedBountyReward, setEstimatedBountyReward] = useState(null)
-  const [dollarsToDisplay, setDollarsToDisplay] = useState(null)
-  const [cakeToDisplay, setCaketoDisplay] = useState(null)
-  const [onPresentBountyModal] = useModal(<BountyModal />)
+  const [dollarBountyToDisplay, setDollarBountyToDisplay] = useState(null)
+  const [cakeBountyToDisplay, setCakeBountyToDisplay] = useState(null)
+  const [callFee, setCallFee] = useState(null)
+  const [onPresentBountyModal] = useModal(
+    <BountyModal
+      estimatedBountyReward={estimatedBountyReward}
+      cakeBountyToDisplay={cakeBountyToDisplay}
+      dollarBountyToDisplay={dollarBountyToDisplay}
+      callFee={callFee}
+    />,
+  )
 
   const stakingTokenPrice = useGetApiPrice(getCakeAddress())
 
@@ -40,13 +48,21 @@ const BountyCard = () => {
   }, [cakeVaultContract, fastRefresh])
 
   useEffect(() => {
+    const getCallFee = async () => {
+      const contractCallFee = await cakeVaultContract.methods.callFee().call()
+      setCallFee(contractCallFee)
+    }
+    getCallFee()
+  }, [cakeVaultContract])
+
+  useEffect(() => {
     if (estimatedBountyReward && stakingTokenPrice) {
       // Reduce decimals for production
       const estimatedDollars = getFullDisplayBalance(estimatedBountyReward.multipliedBy(stakingTokenPrice), 18, 4)
       // Reduce decimals for production
       const estimatedCake = getFullDisplayBalance(estimatedBountyReward, 18, 8)
-      setDollarsToDisplay(estimatedDollars)
-      setCaketoDisplay(estimatedCake)
+      setDollarBountyToDisplay(estimatedDollars)
+      setCakeBountyToDisplay(estimatedCake)
     }
   }, [stakingTokenPrice, estimatedBountyReward])
 
@@ -63,12 +79,16 @@ const BountyCard = () => {
         </Flex>
         <Flex alignItems="center" justifyContent="space-between">
           <Flex flexDirection="column" mr="12px">
-            <Heading>{cakeToDisplay || <Skeleton height={20} width={96} mb="2px" />}</Heading>
+            <Heading>{cakeBountyToDisplay || <Skeleton height={20} width={96} mb="2px" />}</Heading>
             <InlineText fontSize="12px" color="textSubtle">
-              {dollarsToDisplay ? `~ ${dollarsToDisplay} USD` : <Skeleton height={16} width={62} />}
+              {dollarBountyToDisplay ? `~ ${dollarBountyToDisplay} USD` : <Skeleton height={16} width={62} />}
             </InlineText>
           </Flex>
-          <Button onClick={onPresentBountyModal} scale="sm">
+          <Button
+            disabled={!dollarBountyToDisplay || !cakeBountyToDisplay || !callFee}
+            onClick={onPresentBountyModal}
+            scale="sm"
+          >
             {TranslateString(999, 'Claim')}
           </Button>
         </Flex>

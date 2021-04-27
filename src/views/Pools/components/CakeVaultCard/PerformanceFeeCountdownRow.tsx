@@ -19,7 +19,7 @@ const PerformanceFeeCountdownRow: React.FC<PerformanceFeeCountdownRowProps> = ({
   return (
     <Flex mt="8px" alignItems="center" justifyContent="space-between">
       <Text fontSize="14px">
-        {performanceFee / 1000 || '-'}% {TranslateString(999, 'unstaking fee')}{' '}
+        {performanceFee / 100 || '-'}% {TranslateString(999, 'unstaking fee')}{' '}
         {lastDepositedTime && hasPerformanceFee && TranslateString(999, 'until')}
       </Text>
       {lastDepositedTime && hasPerformanceFee && <PerformanceFeeTimer secondsRemaining={secondsRemaining} />}
