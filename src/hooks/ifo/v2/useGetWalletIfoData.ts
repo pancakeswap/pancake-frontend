@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
 import { Ifo, PoolIds } from 'config/constants/types'
@@ -49,20 +49,6 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
       },
     }))
 
-  const addUserContributedAmount = async (amount: BigNumber, poolId: PoolIds) => {
-    const [[offeringAmountInToken]] = await contract.methods
-      .viewUserOfferingAndRefundingAmountsForPools(account, [poolId === PoolIds.poolBasic ? 0 : 1])
-      .call()
-    setState((prevState) => ({
-      ...prevState,
-      [poolId]: {
-        ...prevState[poolId],
-        amountTokenCommittedInLP: prevState[poolId].amountTokenCommittedInLP.plus(amount),
-        offeringAmountInToken,
-      },
-    }))
-  }
-
   const setIsClaimed = (poolId: PoolIds) => {
     setState((prevState) => ({
       ...prevState,
@@ -73,40 +59,40 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
     }))
   }
 
+  const fetchIfoData = useCallback(async () => {
+    const [userInfo, amounts] = await makeBatchRequest([
+      contract.methods.viewUserInfo(account, [0, 1]).call,
+      contract.methods.viewUserOfferingAndRefundingAmountsForPools(account, [0, 1]).call,
+    ])
+
+    setState((prevState) => ({
+      ...prevState,
+      poolBasic: {
+        ...prevState.poolBasic,
+        amountTokenCommittedInLP: new BigNumber(userInfo[0][0]),
+        offeringAmountInToken: new BigNumber(amounts[0][0]),
+        refundingAmountInLP: new BigNumber(amounts[0][1]),
+        taxAmountInLP: new BigNumber(amounts[0][2]),
+        hasClaimed: userInfo[1][0],
+      },
+      poolUnlimited: {
+        ...prevState.poolUnlimited,
+        amountTokenCommittedInLP: new BigNumber(userInfo[0][1]),
+        offeringAmountInToken: new BigNumber(amounts[1][0]),
+        refundingAmountInLP: new BigNumber(amounts[1][1]),
+        taxAmountInLP: new BigNumber(amounts[1][2]),
+        hasClaimed: userInfo[1][1],
+      },
+    }))
+  }, [account, contract])
+
   useEffect(() => {
-    const fetchIfoData = async () => {
-      const [userInfo, amounts] = await makeBatchRequest([
-        contract.methods.viewUserInfo(account, [0, 1]).call,
-        contract.methods.viewUserOfferingAndRefundingAmountsForPools(account, [0, 1]).call,
-      ])
-
-      setState((prevState) => ({
-        ...prevState,
-        poolBasic: {
-          ...prevState.poolBasic,
-          amountTokenCommittedInLP: new BigNumber(userInfo[0][0]),
-          offeringAmountInToken: new BigNumber(amounts[0][0]),
-          refundingAmountInLP: new BigNumber(amounts[0][1]),
-          taxAmountInLP: new BigNumber(amounts[0][2]),
-          hasClaimed: userInfo[1][0],
-        },
-        poolUnlimited: {
-          ...prevState.poolUnlimited,
-          amountTokenCommittedInLP: new BigNumber(userInfo[0][1]),
-          offeringAmountInToken: new BigNumber(amounts[1][0]),
-          refundingAmountInLP: new BigNumber(amounts[1][1]),
-          taxAmountInLP: new BigNumber(amounts[1][2]),
-          hasClaimed: userInfo[1][1],
-        },
-      }))
-    }
-
     if (account) {
       fetchIfoData()
     }
-  }, [account, contract, fastRefresh])
+  }, [account, fetchIfoData, fastRefresh])
 
-  return { ...state, allowance, contract, setPendingTx, addUserContributedAmount, setIsClaimed }
+  return { ...state, allowance, contract, setPendingTx, setIsClaimed, fetchIfoData }
 }
 
 export default useGetWalletIfoData

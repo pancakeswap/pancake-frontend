@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
 import { Ifo, PoolIds } from 'config/constants/types'
@@ -53,31 +53,31 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
     }))
   }
 
+  const fetchIfoData = useCallback(async () => {
+    const [offeringAmount, userInfoResponse, refundingAmount] = (await makeBatchRequest([
+      contract.methods.getOfferingAmount(account).call,
+      contract.methods.userInfo(account).call,
+      contract.methods.getRefundingAmount(account).call,
+    ])) as [string, UserInfo, string]
+
+    setState((prevState) => ({
+      [PoolIds.poolUnlimited]: {
+        ...prevState.poolUnlimited,
+        amountTokenCommittedInLP: new BigNumber(userInfoResponse.amount),
+        hasClaimed: userInfoResponse.claimed,
+        offeringAmountInToken: new BigNumber(offeringAmount),
+        refundingAmountInLP: new BigNumber(refundingAmount),
+      },
+    }))
+  }, [account, contract])
+
   useEffect(() => {
-    const fetchIfoData = async () => {
-      const [offeringAmount, userInfoResponse, refundingAmount] = (await makeBatchRequest([
-        contract.methods.getOfferingAmount(account).call,
-        contract.methods.userInfo(account).call,
-        contract.methods.getRefundingAmount(account).call,
-      ])) as [string, UserInfo, string]
-
-      setState((prevState) => ({
-        [PoolIds.poolUnlimited]: {
-          ...prevState.poolUnlimited,
-          amountTokenCommittedInLP: new BigNumber(userInfoResponse.amount),
-          hasClaimed: userInfoResponse.claimed,
-          offeringAmountInToken: new BigNumber(offeringAmount),
-          refundingAmountInLP: new BigNumber(refundingAmount),
-        },
-      }))
-    }
-
     if (account) {
       fetchIfoData()
     }
-  }, [account, contract, setState])
+  }, [account, fetchIfoData])
 
-  return { ...state, allowance, contract, setPendingTx, addUserContributedAmount: () => null, setIsClaimed }
+  return { ...state, allowance, contract, setPendingTx, setIsClaimed, fetchIfoData }
 }
 
 export default useGetWalletIfoData
