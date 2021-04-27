@@ -1,11 +1,12 @@
 import BigNumber from 'bignumber.js'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Flex, Text, Box } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
-import { PoolCategory } from 'config/constants/types'
+import useLastUpdated from 'hooks/useLastUpdated'
+import { useCake, useCakeVaultContract } from 'hooks/useContract'
 import { Pool } from 'state/types'
-import ApprovalAction from '../../PoolCard/CardActions/ApprovalAction'
+import VaultApprovalAction from './VaultApprovalAction'
 import VaultStakeActions from './VaultStakeActions'
 
 const InlineText = styled(Text)`
@@ -30,13 +31,29 @@ const CakeVaultCardActions: React.FC<{
   account,
 }) => {
   const { stakingToken, earningToken, userData } = pool
+  const [isVaultApproved, setIsVaultApproved] = useState(false)
+  const { lastUpdated, setLastUpdated } = useLastUpdated()
+  const cakeContract = useCake()
+  const cakeVaultContract = useCakeVaultContract()
   const TranslateString = useI18n()
   const stakingTokenBalance = new BigNumber(userData?.stakingTokenBalance || 0)
   // const earnings = new BigNumber(userData?.pendingReward || 0)
 
-  // Is there an approval call on the contract? Should we use the existing sousPool approval with the cake pool id?
-  const needsApproval = false
   const isLoading = !userData || !userShares
+
+  useEffect(() => {
+    const checkApprovalStatus = async () => {
+      try {
+        const response = await cakeContract.methods.allowance(account, cakeVaultContract.options.address).call()
+        const currentAllowance = new BigNumber(response)
+        setIsVaultApproved(currentAllowance.gt(0))
+      } catch (error) {
+        setIsVaultApproved(false)
+      }
+    }
+
+    checkApprovalStatus()
+  }, [account, cakeContract, cakeVaultContract, lastUpdated])
 
   return (
     <Flex flexDirection="column">
@@ -59,9 +76,7 @@ const CakeVaultCardActions: React.FC<{
             {accountHasSharesStaked ? TranslateString(1074, `staked`) : `${stakingToken.symbol}`}
           </InlineText>
         </Box>
-        {needsApproval ? (
-          <ApprovalAction pool={pool} isLoading={isLoading} />
-        ) : (
+        {isVaultApproved ? (
           <VaultStakeActions
             isLoading={isLoading}
             pool={pool}
@@ -72,6 +87,8 @@ const CakeVaultCardActions: React.FC<{
             accountHasSharesStaked={accountHasSharesStaked}
             account={account}
           />
+        ) : (
+          <VaultApprovalAction pool={pool} account={account} isLoading={isLoading} setLastUpdated={setLastUpdated} />
         )}
       </Flex>
     </Flex>

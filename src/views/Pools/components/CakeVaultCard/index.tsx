@@ -7,6 +7,7 @@ import { useCakeVaultContract } from 'hooks/useContract'
 import { getAddress } from 'utils/addressHelpers'
 import { useGetApiPrice } from 'state/hooks'
 import { Pool } from 'state/types'
+import { getFullDisplayBalance } from 'utils/formatBalance'
 import AprRow from '../PoolCard/AprRow'
 import StyledCard from '../PoolCard/StyledCard'
 import CardFooter from '../PoolCard/CardFooter'
@@ -33,6 +34,9 @@ const CakeVaultCard: React.FC<{ pool: Pool; account: string }> = ({ pool, accoun
     //   user-specific contract fetches
     const fetchUserVaultInfo = async () => {
       const userInfo = await cakeVaultContract.methods.userInfo(account).call()
+      console.log(new BigNumber(userInfo.shares))
+      console.log(new BigNumber(userInfo.cakeAtLastUserAction))
+      console.log(getFullDisplayBalance(new BigNumber(userInfo.shares)))
       setLastDepositedTime(userInfo.lastDepositedTime)
       setUserShares(userInfo.shares)
     }

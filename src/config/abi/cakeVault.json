@@ -261,6 +261,19 @@
   },
   {
     "inputs": [],
+    "name": "calculateEstimateRewards",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "callFee",
     "outputs": [
       {
@@ -572,6 +585,16 @@
       {
         "internalType": "uint256",
         "name": "lastDepositedTime",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "cakeAtLastUserAction",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "lastUserActionTime",
         "type": "uint256"
       }
     ],
