@@ -29,8 +29,8 @@ const CakeVaultCard: React.FC<{ pool: Pool; account: string }> = ({ pool, accoun
 
   const { stakingToken } = pool
 
-  //   Estimate & manual for now. We can change once we have a better sense of this
-  const timesCompoundedDaily = 24
+  //   Estimate & manual for now. 288 = once every 5 mins. We can change once we have a better sense of this
+  const timesCompoundedDaily = 288
   const accountHasSharesStaked = userInfo.shares && userInfo.shares.gt(0)
   const stakingTokenPrice = useGetApiPrice(stakingToken.address ? getAddress(stakingToken.address) : '')
 
