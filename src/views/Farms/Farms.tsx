@@ -28,6 +28,7 @@ import SearchInput from './components/SearchInput'
 import { RowProps } from './components/FarmTable/Row'
 import ToggleView from './components/ToggleView/ToggleView'
 import { DesktopColumnSchema, ViewMode } from './components/types'
+import { latinise } from '../../utils/latinise'
 
 const ControlContainer = styled.div`
   display: flex;
@@ -181,9 +182,9 @@ const Farms: React.FC = () => {
       })
 
       if (query) {
-        const lowercaseQuery = query.toLowerCase()
+        const lowercaseQuery = latinise(query.toLowerCase())
         farmsToDisplayWithAPR = farmsToDisplayWithAPR.filter((farm: FarmWithStakedValue) => {
-          return farm.lpSymbol.toLowerCase().includes(lowercaseQuery)
+          return latinise(farm.lpSymbol.toLowerCase()).includes(lowercaseQuery)
         })
       }
       return farmsToDisplayWithAPR
