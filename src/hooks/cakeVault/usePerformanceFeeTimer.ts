@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 const usePerformanceFeeTimer = (lastDepositedTime: number) => {
   const [secondsRemaining, setSecondsRemaining] = useState(null)
-  const [hasPerformanceFee, setHasPerformanceFee] = useState(true)
+  const [hasPerformanceFee, setHasPerformanceFee] = useState(false)
 
   useEffect(() => {
     const threeDaysFromDeposit = lastDepositedTime + 259200
