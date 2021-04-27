@@ -12,8 +12,8 @@ import {
 import styled from 'styled-components'
 import { useAppDispatch } from 'state'
 import { markBetAsCollected } from 'state/predictions'
-import { Bet, BetPosition } from 'state/types'
-import { useGetCurrentEpoch } from 'state/hooks'
+import { Bet, BetPosition, PredictionStatus } from 'state/types'
+import { useGetCurrentEpoch, useGetPredictionsStatus } from 'state/hooks'
 import useI18n from 'hooks/useI18n'
 import { formatBnb, getPayout } from '../../helpers'
 import CollectWinningsButton from '../CollectWinningsButton'
@@ -42,6 +42,7 @@ const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
   const { account } = useWeb3React()
   const dispatch = useAppDispatch()
   const currentEpoch = useGetCurrentEpoch()
+  const status = useGetPredictionsStatus()
   const roundResultPosition = round.closePrice > round.lockPrice ? BetPosition.BULL : BetPosition.BEAR
 
   const toggleOpen = () => setIsOpen(!isOpen)
@@ -90,7 +91,7 @@ const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
   const roundResult = getRoundResult()
   const resultTextColor = getRoundColor(roundResult)
   const resultTextPrefix = getRoundPrefix(roundResult)
-  const isLiveRound = round.epoch === currentEpoch - 1
+  const isLiveRound = status === PredictionStatus.LIVE && round.epoch === currentEpoch - 1
 
   // Winners get the payout, otherwise the claim what they put it if it was canceled
   const payout = roundResult === Result.WIN ? getPayout(bet) : amount
@@ -123,7 +124,7 @@ const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
               </Text>
               <Text bold color={resultTextColor} lineHeight={1}>
                 {roundResult === Result.CANCELED
-                  ? TranslateString(999, 'Cancelled')
+                  ? TranslateString(999, 'Canceled')
                   : `${resultTextPrefix}${formatBnb(payout)}`}
               </Text>
             </>
