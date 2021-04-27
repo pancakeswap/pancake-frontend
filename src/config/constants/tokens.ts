@@ -1155,6 +1155,24 @@ const tokens = {
     decimals: 9,
     projectLink: 'https://www.btcst.finance/',
   },
+  alpaca: {
+    symbol: 'ALPACA',
+    address: {
+      56: '0x8f0528ce5ef7b51152a59745befdd91d97091d2f',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://www.alpacafinance.org/',
+  },
+  dfd: {
+    symbol: 'DFD',
+    address: {
+      56: '0x9899a98b222fcb2f3dbee7df45d943093a4ff9ff',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://dusd.finance/',
+  },
 }
 
 export default tokens

@@ -12,7 +12,6 @@ const farms: FarmConfig[] = [
     token: tokens.syrup,
     quoteToken: tokens.wbnb,
   },
-
   /**
    * V3
    */
@@ -25,6 +24,16 @@ const farms: FarmConfig[] = [
     },
     token: tokens.cake,
     quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 362,
+    lpSymbol: 'ALPACA-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0x7752e1fa9f3a2e860856458517008558deb989e3',
+    },
+    token: tokens.alpaca,
+    quoteToken: tokens.busd,
   },
   {
     pid: 361,
