@@ -4,7 +4,7 @@ import { PromiEvent } from 'web3-core'
 import { Contract } from 'web3-eth-contract'
 import { useWeb3React } from '@web3-react/core'
 import { useToast } from 'state/hooks'
-import { Button, InjectedModalProps, Modal, Text, Flex, AutoRenewIcon } from '@pancakeswap-libs/uikit'
+import { Button, InjectedModalProps, Modal, Text, Flex, AutoRenewIcon } from '@rootswap-libs/uikit'
 import { Nft } from 'config/constants/types'
 import useI18n from 'hooks/useI18n'
 

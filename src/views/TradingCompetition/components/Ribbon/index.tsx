@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Flex, LaurelLeftIcon, LaurelRightIcon } from '@pancakeswap-libs/uikit'
+import { Flex, LaurelLeftIcon, LaurelRightIcon } from '@rootswap-libs/uikit'
 import { RibbonProps } from '../../types'
 import {
   RibbonDownMidExpanding,

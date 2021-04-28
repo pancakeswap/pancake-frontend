@@ -1,7 +1,7 @@
 import React from 'react'
 import _uniqueId from 'lodash/uniqueId'
 import styled from 'styled-components'
-import { Flex } from '@pancakeswap-libs/uikit'
+import { Flex } from '@rootswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import { CountdownProps } from '../../types'
 import Step from './Step'

@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import styled from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
-import { BaseLayout } from '@pancakeswap-libs/uikit'
+import { BaseLayout } from '@rootswap-libs/uikit'
 import { useTotalClaim } from 'hooks/useTickets'
 import YourPrizesCard from './components/YourPrizesCard'
 import UnlockWalletCard from './components/UnlockWalletCard'

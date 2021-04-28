@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Text, Heading, Link, Image } from '@pancakeswap-libs/uikit'
+import { Text, Heading, Link, Image } from '@rootswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 
 const LayoutWrapper = styled.div`

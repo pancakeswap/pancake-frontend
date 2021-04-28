@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, TextProps } from '@pancakeswap-libs/uikit'
+import { Text, TextProps } from '@rootswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import { TranslatableText as AchievementDescriptionType } from 'state/types'
 import styled from 'styled-components'

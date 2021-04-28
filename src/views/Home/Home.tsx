@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Heading, Text, BaseLayout } from '@pancakeswap-libs/uikit'
+import { Heading, Text, BaseLayout } from '@rootswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import Page from 'components/layout/Page'
 import FarmStakingCard from 'views/Home/components/FarmStakingCard'
@@ -14,6 +14,7 @@ import WinCard from 'views/Home/components/WinCard'
 const Hero = styled.div`
   align-items: center;
   background-image: url('/images/pan-bg-mobile.svg');
+  background-size: 116px 116px;
   background-repeat: no-repeat;
   background-position: top center;
   display: flex;
@@ -27,6 +28,7 @@ const Hero = styled.div`
   ${({ theme }) => theme.mediaQueries.lg} {
     background-image: url('/images/pan-bg2.svg'), url('/images/pan-bg.svg');
     background-position: left center, right center;
+    background-size: 165px 165px;
     height: 165px;
     padding-top: 0;
   }
@@ -83,9 +85,9 @@ const Home: React.FC = () => {
     <Page>
       <Hero>
         <Heading as="h1" size="xl" mb="24px" color="secondary">
-          {TranslateString(576, 'PancakeSwap')}
+          {TranslateString(576, 'RootSwap')}
         </Heading>
-        <Text>{TranslateString(578, 'The #1 AMM and yield farm on Binance Smart Chain.')}</Text>
+        <Text>{TranslateString(578, 'The #1 AMM and yield farm on Rootstock.')}</Text>
       </Hero>
       <div>
         <Cards>
