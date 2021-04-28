@@ -5,7 +5,7 @@ import useI18n from 'hooks/useI18n'
 import { Pool } from 'state/types'
 import { VaultUser } from 'views/Pools/types'
 import NotEnoughTokensModal from '../../PoolCard/Modals/NotEnoughTokensModal'
-import VaultStakeModal from '../VaultModals/VaultStakeModal'
+import VaultStakeModal from '../VaultStakeModal'
 import HasSharesActions from './HasSharesActions'
 
 interface VaultStakeActionsProps {
@@ -60,7 +60,7 @@ const VaultStakeActions: React.FC<VaultStakeActionsProps> = ({
         withdrawalFee={withdrawalFee}
       />
     ) : (
-      <Button onClick={stakingTokenBalance.toNumber() > 0 ? onPresentStake : onPresentTokenRequired}>
+      <Button onClick={stakingTokenBalance.gt(0) ? onPresentStake : onPresentTokenRequired}>
         {TranslateString(1070, 'Stake')}
       </Button>
     )

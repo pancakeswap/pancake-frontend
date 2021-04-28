@@ -1,7 +1,7 @@
 import React from 'react'
 import { Text, Flex } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
-import UnstakingFeeCountdownRow from '../UnstakingFeeCountdownRow'
+import UnstakingFeeCountdownRow from './UnstakingFeeCountdownRow'
 
 interface FeeSummaryProps {
   stakingTokenSymbol: string

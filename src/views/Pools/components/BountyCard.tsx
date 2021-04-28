@@ -1,17 +1,14 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import styled from 'styled-components'
-import BigNumber from 'bignumber.js'
 import { Card, CardBody, Text, Flex, HelpIcon, Button, Heading, Skeleton, useModal } from '@pancakeswap-libs/uikit'
-import { useGetApiPrice } from 'state/hooks'
 import useI18n from 'hooks/useI18n'
 import useRefresh from 'hooks/useRefresh'
 import useGetVaultFees, { FeeFunctions } from 'hooks/cakeVault/useGetVaultFees'
 import useGetVaultBountyInfo from 'hooks/cakeVault/useGetVaultBountyInfo'
-import { getFullDisplayBalance } from 'utils/formatBalance'
-import { getCakeAddress } from 'utils/addressHelpers'
 import BountyModal from './BountyModal'
 
 const StyledCard = styled(Card)`
+  width: 100%;
   ${({ theme }) => theme.mediaQueries.sm} {
     min-width: 240px;
   }

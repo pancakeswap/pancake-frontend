@@ -11,7 +11,7 @@ import { getFullDisplayBalance, formatNumber, getDecimalAmount } from 'utils/for
 import useToast from 'hooks/useToast'
 import { Pool } from 'state/types'
 import { VaultUser } from 'views/Pools/types'
-import { convertCakeToShares } from '../../../helpers'
+import { convertCakeToShares } from '../../helpers'
 import FeeSummary from './FeeSummary'
 
 interface VaultStakeModalProps {

@@ -41,7 +41,7 @@ const Pools: React.FC = () => {
   return (
     <>
       <PageHeader>
-        <Flex justifyContent="space-between">
+        <Flex justifyContent="space-between" flexDirection={['column', null, 'row']}>
           <Flex flexDirection="column" mr={['8px', 0]}>
             <Heading as="h1" size="xxl" color="secondary" mb="24px">
               {TranslateString(999, 'Syrup Pools')}
@@ -53,7 +53,7 @@ const Pools: React.FC = () => {
               {TranslateString(999, 'High APR, low risk.')}
             </Heading>
           </Flex>
-          <Flex height="fit-content" justifyContent="center" alignItems="center">
+          <Flex height="fit-content" justifyContent="center" alignItems="center" mt={['24px', null, '0']}>
             <BountyCard />
           </Flex>
         </Flex>

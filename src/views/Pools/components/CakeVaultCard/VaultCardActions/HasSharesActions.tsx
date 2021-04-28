@@ -4,8 +4,9 @@ import BigNumber from 'bignumber.js'
 import { getBalanceNumber, formatNumber } from 'utils/formatBalance'
 import { Pool } from 'state/types'
 import { VaultUser } from 'views/Pools/types'
+import NotEnoughTokensModal from '../../PoolCard/Modals/NotEnoughTokensModal'
 import { convertSharesToCake } from '../../../helpers'
-import VaultStakeModal from '../VaultModals/VaultStakeModal'
+import VaultStakeModal from '../VaultStakeModal'
 
 interface HasStakeActionProps {
   pool: Pool
@@ -34,6 +35,8 @@ const HasSharesActions: React.FC<HasStakeActionProps> = ({
   const stakedDollarValue = formatNumber(
     getBalanceNumber(cakeAsBigNumber.multipliedBy(stakingTokenPrice), stakingToken.decimals),
   )
+
+  const [onPresentTokenRequired] = useModal(<NotEnoughTokensModal tokenSymbol={stakingToken.symbol} />)
 
   const [onPresentStake] = useModal(
     <VaultStakeModal
@@ -70,7 +73,7 @@ const HasSharesActions: React.FC<HasStakeActionProps> = ({
         <IconButton variant="secondary" onClick={onPresentUnstake} mr="6px">
           <MinusIcon color="primary" width="24px" />
         </IconButton>
-        <IconButton variant="secondary" onClick={onPresentStake}>
+        <IconButton variant="secondary" onClick={stakingTokenBalance.gt(0) ? onPresentStake : onPresentTokenRequired}>
           <AddIcon color="primary" width="24px" height="24px" />
         </IconButton>
       </Flex>
