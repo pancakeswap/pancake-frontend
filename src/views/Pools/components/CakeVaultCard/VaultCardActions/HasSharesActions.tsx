@@ -1,5 +1,5 @@
 import React from 'react'
-import { Flex, Text, IconButton, AddIcon, MinusIcon, Heading, useModal } from '@pancakeswap-libs/uikit'
+import { Flex, Text, IconButton, AddIcon, MinusIcon, Heading, useModal, Skeleton } from '@pancakeswap-libs/uikit'
 import BigNumber from 'bignumber.js'
 import { getBalanceNumber, formatNumber } from 'utils/formatBalance'
 import { Pool } from 'state/types'
@@ -68,7 +68,9 @@ const HasSharesActions: React.FC<HasStakeActionProps> = ({
     <Flex justifyContent="space-between" alignItems="center">
       <Flex flexDirection="column">
         <Heading>{cakeAsDisplayBalance}</Heading>
-        <Text fontSize="12px" color="textSubtle">{`~${stakedDollarValue || 0} USD`}</Text>
+        <Text fontSize="12px" color="textSubtle">{`~${
+          stakingTokenPrice ? stakedDollarValue : <Skeleton mt="1px" height={16} width={64} />
+        } USD`}</Text>
       </Flex>
       <Flex>
         <IconButton variant="secondary" onClick={onPresentUnstake} mr="6px">
