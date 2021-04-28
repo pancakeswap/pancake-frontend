@@ -69,8 +69,13 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
     setPercent(sliderPercent)
   }
 
+  const convertStakeAmount = () => {
+    return new BigNumber(stakeAmount).multipliedBy(new BigNumber(10).pow(stakingToken.decimals))
+  }
+
   const handleConfirmClick = async () => {
-    const convertedStakeAmount = new BigNumber(stakeAmount).multipliedBy(new BigNumber(10).pow(stakingToken.decimals))
+    const convertedStakeAmount = convertStakeAmount()
+
     setPendingTx(true)
     if (isRemovingStake) {
       // unstaking

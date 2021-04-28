@@ -40,11 +40,11 @@ const BountyCard = () => {
   const stakingTokenPrice = useGetApiPrice(getCakeAddress())
 
   useEffect(() => {
-    const getPricePerShare = async () => {
+    const calculateEstimateRewards = async () => {
       const estimatedRewards = await cakeVaultContract.methods.calculateEstimateRewards().call()
       setEstimatedBountyReward(new BigNumber(estimatedRewards))
     }
-    getPricePerShare()
+    calculateEstimateRewards()
   }, [cakeVaultContract, fastRefresh])
 
   useEffect(() => {
