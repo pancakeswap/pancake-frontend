@@ -57,7 +57,13 @@ const Menu = () => {
             <TimerLabel interval="5m" />
           </TimerLabelWrapper>
           <HelpButtonWrapper>
-            <IconButton variant="subtle">
+            <IconButton
+              variant="subtle"
+              as="a"
+              href="https://docs.pancakeswap.finance/products/prediction"
+              target="_blank"
+              rel="noreferrer noopener"
+            >
               <HelpIcon width="24px" color="white" />
             </IconButton>
           </HelpButtonWrapper>
