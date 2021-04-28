@@ -8,6 +8,8 @@ export { default as ArrowUpIcon } from "./Icons/ArrowUp";
 export { default as AutoRenewIcon } from "./Icons/AutoRenew";
 export { default as BinanceIcon } from "./Icons/Binance";
 export { default as BlockIcon } from "./Icons/Block";
+export { default as BnbUsdtPairTokenIcon } from "./Icons/BnbUsdtPairToken";
+export { default as BunnyCardsIcon } from "./Icons/BunnyCards";
 export { default as BunnyPlaceholderIcon } from "./Icons/BunnyPlaceholder";
 export { default as Cards } from "./Icons/Cards";
 export { default as CardViewIcon } from "./Icons/CardView";
