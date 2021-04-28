@@ -7,11 +7,19 @@ import WithdrawalFeeTimer from './WithdrawalFeeTimer'
 interface UnstakingFeeCountdownRowProps {
   withdrawalFee: number
   lastDepositedTime: string
+  withdrawalFeePeriod?: string
 }
 
-const UnstakingFeeCountdownRow: React.FC<UnstakingFeeCountdownRowProps> = ({ withdrawalFee, lastDepositedTime }) => {
+const UnstakingFeeCountdownRow: React.FC<UnstakingFeeCountdownRowProps> = ({
+  withdrawalFee,
+  lastDepositedTime,
+  withdrawalFeePeriod = '259200',
+}) => {
   const TranslateString = useI18n()
-  const { secondsRemaining, hasPerformanceFee } = useWithdrawalFeeTimer(parseInt(lastDepositedTime))
+  const { secondsRemaining, hasPerformanceFee } = useWithdrawalFeeTimer(
+    parseInt(lastDepositedTime),
+    parseInt(withdrawalFeePeriod),
+  )
 
   return (
     <Flex alignItems="center" justifyContent="space-between">

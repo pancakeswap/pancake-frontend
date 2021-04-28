@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
 
-const useWithdrawalFeeTimer = (lastDepositedTime: number) => {
+const useWithdrawalFeeTimer = (lastDepositedTime: number, withdrawalFeePeriod = 259200) => {
   const [secondsRemaining, setSecondsRemaining] = useState(null)
   const [hasPerformanceFee, setHasPerformanceFee] = useState(false)
 
   useEffect(() => {
-    const threeDaysFromDeposit = lastDepositedTime + 259200
+    const threeDaysFromDeposit = lastDepositedTime + withdrawalFeePeriod
     const now = Math.floor(Date.now() / 1000)
     const secondsRemainingCalc = threeDaysFromDeposit - now
     const doesPerformanceFeeApply = secondsRemainingCalc > 0
@@ -13,7 +13,7 @@ const useWithdrawalFeeTimer = (lastDepositedTime: number) => {
       setSecondsRemaining(secondsRemainingCalc)
       setHasPerformanceFee(true)
     }
-  }, [lastDepositedTime, setSecondsRemaining])
+  }, [lastDepositedTime, withdrawalFeePeriod, setSecondsRemaining])
 
   return { hasPerformanceFee, secondsRemaining }
 }

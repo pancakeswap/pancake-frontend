@@ -3,7 +3,7 @@ import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import { useCakeVaultContract } from 'hooks/useContract'
 
-const useVaultUserInfo = (lastUpdated?: number) => {
+const useGetVaultUserInfo = (lastUpdated?: number) => {
   const { account } = useWeb3React()
   const cakeVaultContract = useCakeVaultContract()
   const [userInfo, setUserInfo] = useState({
@@ -34,4 +34,4 @@ const useVaultUserInfo = (lastUpdated?: number) => {
   return userInfo
 }
 
-export default useVaultUserInfo
+export default useGetVaultUserInfo

@@ -7,7 +7,7 @@ import { useCakeVaultContract } from 'hooks/useContract'
 import { getAddress } from 'utils/addressHelpers'
 import { useGetApiPrice } from 'state/hooks'
 import useLastUpdated from 'hooks/useLastUpdated'
-import useVaultUserInfo from 'hooks/cakeVault/useVaultUserInfo'
+import useGetVaultUserInfo from 'hooks/cakeVault/useGetVaultUserInfo'
 import { Pool } from 'state/types'
 import { convertSharesToCake } from 'views/Pools/helpers'
 import AprRow from '../PoolCard/AprRow'
@@ -21,7 +21,7 @@ const CakeVaultCard: React.FC<{ pool: Pool; account: string }> = ({ pool, accoun
   const TranslateString = useI18n()
   const { lastUpdated, setLastUpdated } = useLastUpdated()
   const cakeVaultContract = useCakeVaultContract()
-  const userInfo = useVaultUserInfo(lastUpdated)
+  const userInfo = useGetVaultUserInfo(lastUpdated)
   const [, setTotalShares] = useState(null)
   const [performanceFee, setPerformanceFee] = useState(null)
   const [withdrawalFee, setWithdrawalFee] = useState(null)
@@ -63,7 +63,6 @@ const CakeVaultCard: React.FC<{ pool: Pool; account: string }> = ({ pool, accoun
       setTotalShares(new BigNumber(shares))
       setTotalCakeInVault(cakeAsBigNumber)
     }
-
     getTotalShares()
   }, [cakeVaultContract, lastUpdated, pricePerFullShare])
 
@@ -81,6 +80,7 @@ const CakeVaultCard: React.FC<{ pool: Pool; account: string }> = ({ pool, accoun
           <UnstakingFeeCountdownRow
             withdrawalFee={withdrawalFee}
             lastDepositedTime={accountHasSharesStaked && userInfo.lastDepositedTime}
+            withdrawalFeePeriod={withdrawalFeePeriod}
           />
         </Flex>
         <Flex mt="24px" flexDirection="column">
