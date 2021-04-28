@@ -174,11 +174,11 @@ export interface Round {
   failed?: boolean
   startBlock: number
   startAt: number
-  lockAt: number | null
-  lockBlock: number | null
-  lockPrice: number | null
-  endBlock: number | null
-  closePrice: number | null
+  lockAt: number
+  lockBlock: number
+  lockPrice: number
+  endBlock: number
+  closePrice: number
   totalBets: number
   totalAmount: number
   bullBets: number
