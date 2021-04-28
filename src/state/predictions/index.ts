@@ -25,6 +25,7 @@ const initialState: PredictionsState = {
   minBetAmount: '1000000000000000',
   rounds: {},
   history: {},
+  bets: {},
 }
 
 // Thunks
@@ -36,6 +37,25 @@ export const fetchBet = createAsyncThunk<{ account: string; bet: Bet }, { accoun
     return { account, bet }
   },
 )
+
+export const fetchRoundBet = createAsyncThunk<
+  { account: string; roundId: string; bet: Bet },
+  { account: string; roundId: string }
+>('predictions/fetchRoundBet', async ({ account, roundId }) => {
+  const betResponses = await getBetHistory({
+    user: account.toLowerCase(),
+    round: roundId,
+  })
+
+  // This should always return 0 or 1 bet because a user can only place
+  // one bet per round
+  if (betResponses && betResponses.length === 1) {
+    const [betResponse] = betResponses
+    return { account, roundId, bet: transformBetResponse(betResponse) }
+  }
+
+  return { account, roundId, bet: null }
+})
 
 export const fetchHistory = createAsyncThunk<{ account: string; bets: Bet[] }, { account: string; claimed?: boolean }>(
   'predictions/fetchHistory',
@@ -70,8 +90,12 @@ export const predictionsSlice = createSlice({
     initialize: (state, action: PayloadAction<PredictionsState>) => {
       return action.payload
     },
-    updateMarketData: (state, action: PayloadAction<{ rounds: Round[]; market: Market }>) => {
-      const { rounds, market } = action.payload
+    updateMarketData: (
+      state,
+      action: PayloadAction<{ marketData: { rounds: Round[]; market: Market }; account?: string }>,
+    ) => {
+      const { marketData, account } = action.payload
+      const { rounds, market } = marketData
       const newRoundData = makeRoundData(rounds)
       const incomingCurrentRound = maxBy(rounds, 'epoch')
 
@@ -83,6 +107,31 @@ export const predictionsSlice = createSlice({
         )
 
         newRoundData[futureRound.id] = futureRound
+      }
+
+      // For each round, loop through the bets and save them to the bets namespace
+      // if they match the current account
+      if (account) {
+        const betData = rounds.reduce((accum, polledRound) => {
+          const userBet = polledRound.bets.find((bet) => bet.user.address.toLowerCase() === account.toLowerCase())
+
+          if (userBet) {
+            return {
+              ...accum,
+              [polledRound.id]: userBet,
+            }
+          }
+
+          return accum
+        }, {})
+
+        state.bets = {
+          ...state.bets,
+          [account]: {
+            ...state.bets[account],
+            ...betData,
+          },
+        }
       }
 
       state.currentEpoch = incomingCurrentRound.epoch
@@ -107,6 +156,21 @@ export const predictionsSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    // Get round bet
+    builder.addCase(fetchRoundBet.fulfilled, (state, action) => {
+      const { account, roundId, bet } = action.payload
+
+      if (bet) {
+        state.bets = {
+          ...state.bets,
+          [account]: {
+            ...state.bets[account],
+            [roundId]: bet,
+          },
+        }
+      }
+    })
+
     // Update Bet
     builder.addCase(fetchBet.fulfilled, (state, action) => {
       const { account, bet } = action.payload
