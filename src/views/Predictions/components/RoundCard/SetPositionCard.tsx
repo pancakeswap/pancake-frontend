@@ -154,7 +154,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
     } else if (bnValue.gt(0) && bnValue.lt(minBetAmountBalance)) {
       setErrorMessage({
         id: 999,
-        fallback: `A minumum amount of ${minBetAmountBalance} BNB is required`,
+        fallback: `A minimum amount of ${minBetAmountBalance} BNB is required`,
         data: { num: minBetAmountBalance, token: 'BNB' },
       })
     } else {
@@ -209,6 +209,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
           max={maxBalance}
           value={valueAsBn.lte(maxBalance) ? valueAsBn.toNumber() : 0}
           onValueChanged={handleSliderChange}
+          step={0.000000000000001}
           valueLabel={account ? percentageDisplay : ''}
           disabled={!account || isTxPending}
           mb="4px"

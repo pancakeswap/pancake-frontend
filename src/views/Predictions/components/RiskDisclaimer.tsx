@@ -10,6 +10,7 @@ import {
   ModalHeader,
   ModalTitle,
   Heading,
+  Box,
 } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import styled from 'styled-components'
@@ -50,44 +51,42 @@ const RiskDisclaimer: React.FC<RiskDisclaimerProps> = ({ onSuccess, onDismiss })
         </ModalTitle>
       </GradientModalHeader>
       <ModalBody p="24px" maxWidth="400px">
-        <Heading as="h3" mb="24px">
-          {TranslateString(556, 'This Product is still in beta (testing) phase.')}
-        </Heading>
-        <Text as="p" color="textSubtle">
-          {TranslateString(999, 'Before you use this product, make sure you fully understand the risks involved.')}
-        </Text>
-        <Text as="p" color="textSubtle">
-          {TranslateString(999, 'Once you enter a position, you cannot cancel or adjust it.')}
-        </Text>
-        <Text as="p" color="textSubtle" mb="24px">
-          {TranslateString(999, 'All losses are final.')}
-        </Text>
-        <label htmlFor="checkbox" style={{ display: 'block', cursor: 'pointer', marginBottom: '24px' }}>
-          <Flex alignItems="center">
-            <div style={{ flex: 'none' }}>
-              <Checkbox id="checkbox" scale="sm" checked={acknowledgeRisk} onChange={handleSetAcknowledgeRisk} />
-            </div>
-            <Text ml="8px">
-              {TranslateString(
-                999,
-                'I understand that I am using this product at my own risk. Any losses incurred due to my actions are my own responsibility.',
-              )}
-            </Text>
-          </Flex>
-        </label>
-        <label htmlFor="checkbox1" style={{ display: 'block', cursor: 'pointer', marginBottom: '24px' }}>
-          <Flex alignItems="center">
-            <div style={{ flex: 'none' }}>
-              <Checkbox id="checkbox1" scale="sm" checked={acknowledgeBeta} onChange={handleSetAcknowledgeBeta} />
-            </div>
-            <Text ml="8px">
-              {TranslateString(
-                999,
-                'I understand that this product is still in beta. I am participating at my own risk',
-              )}
-            </Text>
-          </Flex>
-        </label>
+        <Box maxHeight="300px" overflowY="auto">
+          <Heading as="h3" mb="24px">
+            {TranslateString(999, 'This Product is in beta.')}
+          </Heading>
+
+          <Text as="p" color="textSubtle" mb="24px">
+            {TranslateString(999, 'Once you enter a position, you cannot cancel or adjust it.')}
+          </Text>
+
+          <label htmlFor="checkbox" style={{ display: 'block', cursor: 'pointer', marginBottom: '24px' }}>
+            <Flex alignItems="center">
+              <div style={{ flex: 'none' }}>
+                <Checkbox id="checkbox" scale="sm" checked={acknowledgeRisk} onChange={handleSetAcknowledgeRisk} />
+              </div>
+              <Text ml="8px">
+                {TranslateString(
+                  999,
+                  'I understand that I am using this product at my own risk. Any losses incurred due to my actions are my own responsibility.',
+                )}
+              </Text>
+            </Flex>
+          </label>
+          <label htmlFor="checkbox1" style={{ display: 'block', cursor: 'pointer', marginBottom: '24px' }}>
+            <Flex alignItems="center">
+              <div style={{ flex: 'none' }}>
+                <Checkbox id="checkbox1" scale="sm" checked={acknowledgeBeta} onChange={handleSetAcknowledgeBeta} />
+              </div>
+              <Text ml="8px">
+                {TranslateString(
+                  999,
+                  'I understand that this product is still in beta. I am participating at my own risk',
+                )}
+              </Text>
+            </Flex>
+          </label>
+        </Box>
         <Button width="100%" onClick={handleConfirm} disabled={!acknowledgeRisk || !acknowledgeBeta}>
           {TranslateString(999, 'Continue')}
         </Button>
