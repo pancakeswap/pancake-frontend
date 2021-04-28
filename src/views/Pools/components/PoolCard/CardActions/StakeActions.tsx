@@ -36,7 +36,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({
   isStaked,
   isLoading = false,
 }) => {
-  const { stakingToken, earningToken, stakingLimit } = pool
+  const { stakingToken, earningToken, stakingLimit, isFinished } = pool
   const TranslateString = useI18n()
   const convertedLimit = getDecimalAmount(new BigNumber(stakingLimit), earningToken.decimals)
   const stakingMax =
@@ -73,13 +73,13 @@ const StakeAction: React.FC<StakeActionsProps> = ({
           <IconButton variant="secondary" onClick={onPresentUnstake} mr="6px">
             <MinusIcon color="primary" width="24px" />
           </IconButton>
-          <IconButton variant="secondary" onClick={onPresentStake}>
+          <IconButton variant="secondary" onClick={onPresentStake} disabled={isFinished}>
             <AddIcon color="primary" width="24px" height="24px" />
           </IconButton>
         </Flex>
       </Flex>
     ) : (
-      <Button onClick={stakingTokenBalance.gt(0) ? onPresentStake : onPresentTokenRequired}>
+      <Button disabled={isFinished} onClick={stakingTokenBalance.gt(0) ? onPresentStake : onPresentTokenRequired}>
         {TranslateString(1070, 'Stake')}
       </Button>
     )
