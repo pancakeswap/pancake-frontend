@@ -8,6 +8,7 @@ import {
   getStaticPredictionsData,
   makeFutureRoundResponse,
   makeRoundData,
+  transformRoundResponse,
 } from 'state/predictions/helpers'
 import { initialize, setPredictionStatus } from 'state/predictions'
 import { HistoryFilter, PredictionsState, PredictionStatus } from 'state/types'
@@ -59,7 +60,7 @@ const Predictions = () => {
           futureRounds.push(makeFutureRoundResponse(currentEpoch + i, (currentRoundStartBlock + halfInterval) * i))
         }
 
-        const roundData = makeRoundData([...marketData.rounds, ...futureRounds])
+        const roundData = makeRoundData([...marketData.rounds, ...futureRounds.map(transformRoundResponse)])
 
         dispatch(
           initialize({

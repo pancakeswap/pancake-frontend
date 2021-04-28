@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { CardBody, Flex, PlayCircleOutlineIcon, Text } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import { Round, BetPosition } from 'state/types'
-import { useGetTotalIntervalBlocks } from 'state/hooks'
+import { useGetBufferBlocks, useGetIntervalBlocks } from 'state/hooks'
 import { useBnbUsdtTicker } from 'hooks/ticker'
 import BlockProgress from 'components/BlockProgress'
 import { formatUsd, getBubbleGumBackground } from '../../helpers'
@@ -44,10 +44,11 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
   const TranslateString = useI18n()
   const { lockPrice, lockBlock, totalAmount } = round
   const { stream } = useBnbUsdtTicker()
-  const totalInterval = useGetTotalIntervalBlocks()
+  const totalInterval = useGetIntervalBlocks()
+  const bufferBlocks = useGetBufferBlocks()
   const isBull = stream?.lastPrice > lockPrice
   const priceColor = isBull ? 'success' : 'failure'
-  const estimatedEndBlock = lockBlock + totalInterval
+  const estimatedEndBlock = lockBlock + totalInterval + bufferBlocks / 2
   const priceDifference = stream?.lastPrice - lockPrice
 
   if (round.failed) {
