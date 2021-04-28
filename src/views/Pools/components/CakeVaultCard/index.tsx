@@ -1,4 +1,5 @@
 import React from 'react'
+import styled from 'styled-components'
 import { Box, CardBody, Flex, Text } from '@pancakeswap-libs/uikit'
 import UnlockButton from 'components/UnlockButton'
 import useI18n from 'hooks/useI18n'
@@ -16,6 +17,10 @@ import StyledCardHeader from '../PoolCard/StyledCardHeader'
 import VaultCardActions from './VaultCardActions'
 import UnstakingFeeCountdownRow from './UnstakingFeeCountdownRow'
 
+const StyledCardBody = styled(CardBody)<{ isLoading: boolean }>`
+  min-height: ${({ isLoading }) => (isLoading ? '0' : '254px')};
+`
+
 const CakeVaultCard: React.FC<{ pool: Pool; account: string }> = ({ pool, account }) => {
   const TranslateString = useI18n()
   const { lastUpdated, setLastUpdated } = useLastUpdated()
@@ -31,11 +36,12 @@ const CakeVaultCard: React.FC<{ pool: Pool; account: string }> = ({ pool, accoun
   const timesCompoundedDaily = 288
   const accountHasSharesStaked = userInfo.shares && userInfo.shares.gt(0)
   const stakingTokenPrice = useGetApiPrice(stakingToken.address ? getAddress(stakingToken.address) : '')
+  const isLoading = !pool.userData || !userInfo.shares
 
   return (
     <StyledCard isStaking={accountHasSharesStaked}>
       <StyledCardHeader isAutoVault earningTokenSymbol="CAKE" stakingTokenSymbol="CAKE" />
-      <CardBody>
+      <StyledCardBody isLoading={isLoading}>
         <AprRow
           pool={pool}
           stakingTokenPrice={stakingTokenPrice}
@@ -55,12 +61,13 @@ const CakeVaultCard: React.FC<{ pool: Pool; account: string }> = ({ pool, accoun
               pool={pool}
               userInfo={userInfo}
               pricePerFullShare={pricePerFullShare}
-              withdrawalFee={vaultFees.withdrawalFee}
+              vaultFees={vaultFees}
               stakingTokenPrice={stakingTokenPrice}
               accountHasSharesStaked={accountHasSharesStaked}
               account={account}
               lastUpdated={lastUpdated}
               setLastUpdated={setLastUpdated}
+              isLoading={isLoading}
             />
           ) : (
             <>
@@ -71,7 +78,7 @@ const CakeVaultCard: React.FC<{ pool: Pool; account: string }> = ({ pool, accoun
             </>
           )}
         </Flex>
-      </CardBody>
+      </StyledCardBody>
       <CardFooter
         pool={pool}
         account={account}

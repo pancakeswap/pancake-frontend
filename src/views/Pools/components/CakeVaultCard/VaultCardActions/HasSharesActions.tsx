@@ -3,6 +3,7 @@ import { Flex, Text, IconButton, AddIcon, MinusIcon, Heading, useModal } from '@
 import BigNumber from 'bignumber.js'
 import { getBalanceNumber, formatNumber } from 'utils/formatBalance'
 import { Pool } from 'state/types'
+import { VaultFees } from 'hooks/cakeVault/useGetVaultFees'
 import { VaultUser } from 'views/Pools/types'
 import NotEnoughTokensModal from '../../PoolCard/Modals/NotEnoughTokensModal'
 import { convertSharesToCake } from '../../../helpers'
@@ -15,7 +16,7 @@ interface HasStakeActionProps {
   userInfo: VaultUser
   pricePerFullShare: BigNumber
   account: string
-  withdrawalFee: number
+  vaultFees: VaultFees
   setLastUpdated: () => void
 }
 
@@ -26,7 +27,7 @@ const HasSharesActions: React.FC<HasStakeActionProps> = ({
   userInfo,
   pricePerFullShare,
   account,
-  withdrawalFee,
+  vaultFees,
   setLastUpdated,
 }) => {
   const { stakingToken } = pool
@@ -57,7 +58,7 @@ const HasSharesActions: React.FC<HasStakeActionProps> = ({
       stakingTokenPrice={stakingTokenPrice}
       pricePerFullShare={pricePerFullShare}
       userInfo={userInfo}
-      withdrawalFee={withdrawalFee}
+      vaultFees={vaultFees}
       setLastUpdated={setLastUpdated}
       isRemovingStake
     />,
