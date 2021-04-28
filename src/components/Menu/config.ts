@@ -43,6 +43,15 @@ const config: MenuEntry[] = [
     href: '/pools',
   },
   {
+    label: 'Prediction',
+    icon: 'PredictionsIcon',
+    href: '/prediction',
+    status: {
+      text: 'BETA',
+      color: 'warning',
+    },
+  },
+  {
     label: 'Lottery',
     icon: 'TicketIcon',
     href: '/lottery',

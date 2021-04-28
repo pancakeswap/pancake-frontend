@@ -50,3 +50,6 @@ export const getTradingCompetitionAddress = () => {
 export const getEasterNftAddress = () => {
   return getAddress(addresses.easterNft)
 }
+export const getPredictionsAddress = () => {
+  return getAddress(addresses.predictions)
+}

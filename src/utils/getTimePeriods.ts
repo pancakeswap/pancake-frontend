@@ -10,7 +10,7 @@ const YEAR_IN_SECONDS = 31557600
  * @param seconds
  */
 const getTimePeriods = (seconds: number) => {
-  let delta = seconds
+  let delta = Math.abs(seconds)
   const timeLeft = {
     years: 0,
     months: 0,

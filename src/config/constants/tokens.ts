@@ -1173,6 +1173,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://dusd.finance/',
   },
+  lmt: {
+    symbol: 'LMT',
+    address: {
+      56: '0x9617857e191354dbea0b714d78bc59e57c411087',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://lympo.io/lmt/',
+  },
 }
 
 export default tokens
