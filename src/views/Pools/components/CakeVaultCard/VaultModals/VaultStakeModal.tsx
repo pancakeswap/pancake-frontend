@@ -5,7 +5,7 @@ import useI18n from 'hooks/useI18n'
 import { BASE_EXCHANGE_URL } from 'config'
 import { useCakeVaultContract } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
-import usePerformanceFeeTimer from 'hooks/cakeVault/usePerformanceFeeTimer'
+import useWithdrawalFeeTimer from 'hooks/cakeVault/useWithdrawalFeeTimer'
 import BigNumber from 'bignumber.js'
 import { getFullDisplayBalance, formatNumber, getDecimalAmount } from 'utils/formatBalance'
 import useToast from 'hooks/useToast'
@@ -22,7 +22,7 @@ interface VaultStakeModalProps {
   userInfo: VaultUser
   isRemovingStake?: boolean
   pricePerFullShare?: BigNumber
-  performanceFee?: number
+  withdrawalFee?: number
   setLastUpdated: () => void
   onDismiss?: () => void
 }
@@ -39,7 +39,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
   account,
   userInfo,
   isRemovingStake = false,
-  performanceFee = 200,
+  withdrawalFee = 200,
   onDismiss,
   setLastUpdated,
 }) => {
@@ -51,7 +51,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
   const [pendingTx, setPendingTx] = useState(false)
   const [stakeAmount, setStakeAmount] = useState('')
   const [percent, setPercent] = useState(0)
-  const { hasPerformanceFee } = usePerformanceFeeTimer(parseInt(userInfo.lastDepositedTime))
+  const { hasPerformanceFee } = useWithdrawalFeeTimer(parseInt(userInfo.lastDepositedTime))
   const usdValueStaked = stakeAmount && formatNumber(parseFloat(stakeAmount) * stakingTokenPrice)
 
   const handleStakeInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -70,6 +70,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
   }
 
   const sanitiseWithdrawalBalance = (shares) => {
+    // in case of 100% withdrawal - the convertCakeToShares helper returns a fractionaly larger number of shares than are availble to be withdrawn
     if (shares.gt(userInfo.shares)) {
       return userInfo.shares
     }
@@ -182,7 +183,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
         <FeeSummary
           stakingTokenSymbol={stakingToken.symbol}
           lastDepositedTime={userInfo.lastDepositedTime}
-          performanceFee={performanceFee}
+          withdrawalFee={withdrawalFee}
           stakeAmount={stakeAmount}
         />
       )}

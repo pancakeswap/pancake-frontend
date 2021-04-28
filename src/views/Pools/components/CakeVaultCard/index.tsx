@@ -15,15 +15,17 @@ import StyledCard from '../PoolCard/StyledCard'
 import CardFooter from '../PoolCard/CardFooter'
 import StyledCardHeader from '../PoolCard/StyledCardHeader'
 import VaultCardActions from './VaultCardActions'
-import PerformanceFeeCountdownRow from './PerformanceFeeCountdownRow'
+import UnstakingFeeCountdownRow from './UnstakingFeeCountdownRow'
 
 const CakeVaultCard: React.FC<{ pool: Pool; account: string }> = ({ pool, account }) => {
   const TranslateString = useI18n()
-  const cakeVaultContract = useCakeVaultContract()
-  const [, setTotalShares] = useState(null)
   const { lastUpdated, setLastUpdated } = useLastUpdated()
+  const cakeVaultContract = useCakeVaultContract()
   const userInfo = useVaultUserInfo(lastUpdated)
+  const [, setTotalShares] = useState(null)
   const [performanceFee, setPerformanceFee] = useState(null)
+  const [withdrawalFee, setWithdrawalFee] = useState(null)
+  const [withdrawalFeePeriod, setWithdrawalFeePeriod] = useState(null)
   const [totalCakeInVault, setTotalCakeInVault] = useState(null)
   const [pricePerFullShare, setPricePerFullShare] = useState(null)
 
@@ -39,13 +41,20 @@ const CakeVaultCard: React.FC<{ pool: Pool; account: string }> = ({ pool, accoun
       const sharePrice = await cakeVaultContract.methods.getPricePerFullShare().call()
       setPricePerFullShare(new BigNumber(sharePrice))
     }
-    const getFees = async () => {
-      const perfFee = await cakeVaultContract.methods.performanceFee().call()
-      setPerformanceFee(perfFee)
-    }
     getPricePerShare()
-    getFees()
   }, [cakeVaultContract, lastUpdated])
+
+  useEffect(() => {
+    const getFees = async () => {
+      const contractPerformanceFee = await cakeVaultContract.methods.performanceFee().call()
+      const contractWithdrawalFee = await cakeVaultContract.methods.withdrawFee().call()
+      const contractWithdrawalFeeTimePeriod = await cakeVaultContract.methods.withdrawFeePeriod().call()
+      setPerformanceFee(contractPerformanceFee)
+      setWithdrawalFee(contractWithdrawalFee)
+      setWithdrawalFeePeriod(contractWithdrawalFeeTimePeriod)
+    }
+    getFees()
+  }, [cakeVaultContract])
 
   useEffect(() => {
     const getTotalShares = async () => {
@@ -68,13 +77,19 @@ const CakeVaultCard: React.FC<{ pool: Pool; account: string }> = ({ pool, accoun
           isAutoVault
           compoundFrequency={timesCompoundedDaily}
         />
+        <Flex mt="24px" alignItems="center">
+          <UnstakingFeeCountdownRow
+            withdrawalFee={withdrawalFee}
+            lastDepositedTime={accountHasSharesStaked && userInfo.lastDepositedTime}
+          />
+        </Flex>
         <Flex mt="24px" flexDirection="column">
           {account ? (
             <VaultCardActions
               pool={pool}
               userInfo={userInfo}
               pricePerFullShare={pricePerFullShare}
-              performanceFee={performanceFee}
+              withdrawalFee={withdrawalFee}
               stakingTokenPrice={stakingTokenPrice}
               accountHasSharesStaked={accountHasSharesStaked}
               account={account}
@@ -89,7 +104,6 @@ const CakeVaultCard: React.FC<{ pool: Pool; account: string }> = ({ pool, accoun
               <UnlockButton />
             </>
           )}
-          <PerformanceFeeCountdownRow performanceFee={performanceFee} lastDepositedTime={userInfo.lastDepositedTime} />
         </Flex>
       </CardBody>
       <CardFooter

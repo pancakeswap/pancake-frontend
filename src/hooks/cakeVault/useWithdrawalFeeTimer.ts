@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-const usePerformanceFeeTimer = (lastDepositedTime: number) => {
+const useWithdrawalFeeTimer = (lastDepositedTime: number) => {
   const [secondsRemaining, setSecondsRemaining] = useState(null)
   const [hasPerformanceFee, setHasPerformanceFee] = useState(false)
 
@@ -18,4 +18,4 @@ const usePerformanceFeeTimer = (lastDepositedTime: number) => {
   return { hasPerformanceFee, secondsRemaining }
 }
 
-export default usePerformanceFeeTimer
+export default useWithdrawalFeeTimer

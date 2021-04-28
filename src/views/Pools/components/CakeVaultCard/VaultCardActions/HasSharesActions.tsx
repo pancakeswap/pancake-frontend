@@ -14,7 +14,7 @@ interface HasStakeActionProps {
   userInfo: VaultUser
   pricePerFullShare: BigNumber
   account: string
-  performanceFee: number
+  withdrawalFee: number
   setLastUpdated: () => void
 }
 
@@ -25,7 +25,7 @@ const HasSharesActions: React.FC<HasStakeActionProps> = ({
   userInfo,
   pricePerFullShare,
   account,
-  performanceFee,
+  withdrawalFee,
   setLastUpdated,
 }) => {
   const { stakingToken } = pool
@@ -54,7 +54,7 @@ const HasSharesActions: React.FC<HasStakeActionProps> = ({
       stakingTokenPrice={stakingTokenPrice}
       pricePerFullShare={pricePerFullShare}
       userInfo={userInfo}
-      performanceFee={performanceFee}
+      withdrawalFee={withdrawalFee}
       setLastUpdated={setLastUpdated}
       isRemovingStake
     />,

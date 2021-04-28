@@ -17,7 +17,7 @@ interface VaultStakeActionsProps {
   pricePerFullShare: BigNumber
   isLoading?: boolean
   account: string
-  performanceFee: number
+  withdrawalFee: number
   setLastUpdated: () => void
 }
 
@@ -30,7 +30,7 @@ const VaultStakeActions: React.FC<VaultStakeActionsProps> = ({
   pricePerFullShare,
   isLoading = false,
   account,
-  performanceFee,
+  withdrawalFee,
   setLastUpdated,
 }) => {
   const { stakingToken } = pool
@@ -57,7 +57,7 @@ const VaultStakeActions: React.FC<VaultStakeActionsProps> = ({
         pricePerFullShare={pricePerFullShare}
         account={account}
         setLastUpdated={setLastUpdated}
-        performanceFee={performanceFee}
+        withdrawalFee={withdrawalFee}
       />
     ) : (
       <Button onClick={stakingTokenBalance.toNumber() > 0 ? onPresentStake : onPresentTokenRequired}>

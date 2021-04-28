@@ -1,23 +1,23 @@
 import React from 'react'
 import { Text, Flex } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
-import PerformanceFeeCountdownRow from '../PerformanceFeeCountdownRow'
+import UnstakingFeeCountdownRow from '../UnstakingFeeCountdownRow'
 
 interface FeeSummaryProps {
   stakingTokenSymbol: string
   lastDepositedTime: string
-  performanceFee: number
+  withdrawalFee: number
   stakeAmount: string
 }
 
 const FeeSummary: React.FC<FeeSummaryProps> = ({
   stakingTokenSymbol,
   lastDepositedTime,
-  performanceFee,
+  withdrawalFee,
   stakeAmount,
 }) => {
   const TranslateString = useI18n()
-  const feeAsDecimal = performanceFee / 100
+  const feeAsDecimal = withdrawalFee / 100
   const feeInCake = (parseFloat(stakeAmount) * (feeAsDecimal / 100)).toFixed(4)
 
   return (
@@ -28,7 +28,7 @@ const FeeSummary: React.FC<FeeSummaryProps> = ({
           {stakeAmount ? feeInCake : '-'} {stakingTokenSymbol}
         </Text>
       </Flex>
-      <PerformanceFeeCountdownRow performanceFee={performanceFee} lastDepositedTime={lastDepositedTime} />
+      <UnstakingFeeCountdownRow withdrawalFee={withdrawalFee} lastDepositedTime={lastDepositedTime} />
     </>
   )
 }

@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import { Card } from '@pancakeswap-libs/uikit'
 
 const StyledCard = styled(Card)<{ isStaking?: boolean; isFinished?: boolean }>`
+  height: 100%;
   max-width: 352px;
   margin: 0 8px 24px;
   background: ${(props) => props.theme.card.background};
