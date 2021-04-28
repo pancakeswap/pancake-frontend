@@ -15,6 +15,11 @@ const StyledFarmStakingCard = styled(Card)`
     margin: 0;
     max-width: none;
   }
+
+  transition: opacity 200ms;
+  &:hover {
+    opacity: 0.65;
+  }
 `
 const CardMidContent = styled(Heading).attrs({ size: 'xl' })`
   line-height: 44px;
@@ -28,20 +33,20 @@ const assets = ['CAKE', ...latestPools.map((pool) => pool.earningToken.symbol)].
 const EarnAssetCard = () => {
   return (
     <StyledFarmStakingCard>
-      <CardBody>
-        <Heading color="contrast" size="lg">
-          Earn
-        </Heading>
-        <CardMidContent color="invertedContrast">{assets}</CardMidContent>
-        <Flex justifyContent="space-between">
+      <NavLink exact activeClassName="active" to="/syrup" id="pool-cta">
+        <CardBody>
           <Heading color="contrast" size="lg">
-            in Pools
+            Earn
           </Heading>
-          <NavLink exact activeClassName="active" to="/syrup" id="pool-cta">
+          <CardMidContent color="invertedContrast">{assets}</CardMidContent>
+          <Flex justifyContent="space-between">
+            <Heading color="contrast" size="lg">
+              in Pools
+            </Heading>
             <ArrowForwardIcon mt={30} color="primary" />
-          </NavLink>
-        </Flex>
-      </CardBody>
+          </Flex>
+        </CardBody>
+      </NavLink>
     </StyledFarmStakingCard>
   )
 }
