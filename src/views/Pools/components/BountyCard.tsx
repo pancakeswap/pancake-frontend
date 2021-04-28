@@ -6,6 +6,7 @@ import { useGetApiPrice } from 'state/hooks'
 import useI18n from 'hooks/useI18n'
 import { useCakeVaultContract } from 'hooks/useContract'
 import useRefresh from 'hooks/useRefresh'
+import useGetVaultFees, { FeeFunctions } from 'hooks/cakeVault/useGetVaultFees'
 import { getFullDisplayBalance } from 'utils/formatBalance'
 import { getCakeAddress } from 'utils/addressHelpers'
 import BountyModal from './BountyModal'
@@ -27,7 +28,7 @@ const BountyCard = () => {
   const [estimatedBountyReward, setEstimatedBountyReward] = useState(null)
   const [dollarBountyToDisplay, setDollarBountyToDisplay] = useState(null)
   const [cakeBountyToDisplay, setCakeBountyToDisplay] = useState(null)
-  const [callFee, setCallFee] = useState(null)
+  const { callFee } = useGetVaultFees([FeeFunctions.callFee])
   const [onPresentBountyModal] = useModal(
     <BountyModal
       estimatedBountyReward={estimatedBountyReward}
@@ -46,14 +47,6 @@ const BountyCard = () => {
     }
     calculateEstimateRewards()
   }, [cakeVaultContract, fastRefresh])
-
-  useEffect(() => {
-    const getCallFee = async () => {
-      const contractCallFee = await cakeVaultContract.methods.callFee().call()
-      setCallFee(contractCallFee)
-    }
-    getCallFee()
-  }, [cakeVaultContract])
 
   useEffect(() => {
     if (estimatedBountyReward && stakingTokenPrice) {
