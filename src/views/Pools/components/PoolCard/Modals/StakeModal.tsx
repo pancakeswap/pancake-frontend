@@ -6,9 +6,9 @@ import { BASE_EXCHANGE_URL } from 'config'
 import { useSousStake } from 'hooks/useStake'
 import { useSousUnstake } from 'hooks/useUnstake'
 import useTheme from 'hooks/useTheme'
+import useToast from 'hooks/useToast'
 import BigNumber from 'bignumber.js'
 import { getFullDisplayBalance, formatNumber } from 'utils/formatBalance'
-import useToast from 'hooks/useToast'
 import { Pool } from 'state/types'
 
 interface StakeModalProps {
@@ -151,6 +151,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
         isLoading={pendingTx}
         endIcon={pendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
         onClick={handleConfirmClick}
+        disabled={!stakeAmount || parseFloat(stakeAmount) === 0}
         mt="24px"
       >
         {pendingTx ? TranslateString(802, 'Confirming') : TranslateString(464, 'Confirm')}
