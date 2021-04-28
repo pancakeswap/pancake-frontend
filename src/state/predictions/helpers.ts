@@ -172,7 +172,7 @@ export const getMarketData = async (): Promise<{
       query getMarketData {
         rounds(first: 5, orderBy: epoch, orderDirection: desc) {
           ${getRoundBaseFields()}
-          bets {
+          bets(first: 1000) {
             ${getBetBaseFields()}
             user {
               ${getUserBaseFields()}
