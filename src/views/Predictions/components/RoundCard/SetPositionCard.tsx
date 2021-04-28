@@ -209,6 +209,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
           max={maxBalance}
           value={valueAsBn.lte(maxBalance) ? valueAsBn.toNumber() : 0}
           onValueChanged={handleSliderChange}
+          step={0.000000000000001}
           valueLabel={account ? percentageDisplay : ''}
           disabled={!account || isTxPending}
           mb="4px"
