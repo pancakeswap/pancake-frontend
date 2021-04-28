@@ -8,6 +8,7 @@ import { useGetApiPrice } from 'state/hooks'
 import Balance from 'components/Balance'
 import ApyCalculatorModal from 'components/ApyCalculatorModal'
 import { Pool } from 'state/types'
+import { BASE_EXCHANGE_URL } from 'config'
 
 interface AprRowProps {
   pool: Pool
@@ -30,7 +31,7 @@ const AprRow: React.FC<AprRowProps> = ({ pool, stakingTokenPrice }) => {
 
   const apyModalLink =
     stakingToken.address &&
-    `https://exchange.pancakeswap.finance/#/swap?outputCurrency=
+    `${BASE_EXCHANGE_URL}/#/swap?outputCurrency=
  ${stakingToken.address[process.env.REACT_APP_CHAIN_ID]}
    `
 
@@ -39,7 +40,7 @@ const AprRow: React.FC<AprRowProps> = ({ pool, stakingTokenPrice }) => {
       tokenPrice={earningTokenPrice}
       apr={apr}
       linkLabel={`${TranslateString(999, 'Get')} ${stakingToken.symbol}`}
-      linkHref={apyModalLink || 'https://exchange.pancakeswap.finance'}
+      linkHref={apyModalLink || BASE_EXCHANGE_URL}
       earningTokenSymbol={earningToken.symbol}
       roundingDecimals={isHighValueToken ? 4 : 2}
     />,

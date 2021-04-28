@@ -10,6 +10,7 @@ import {
   Text,
   Flex,
   NotificationDot,
+  Link as UiKitLink,
 } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 
@@ -18,6 +19,10 @@ const ButtonText = styled(Text)`
   ${({ theme }) => theme.mediaQueries.lg} {
     display: block;
   }
+`
+
+const StyledLink = styled(UiKitLink)`
+  width: 100%;
 `
 
 const PoolTabButtons = ({ stakedOnly, setStakedOnly, hasStakeInFinishedPools }) => {
@@ -38,24 +43,21 @@ const PoolTabButtons = ({ stakedOnly, setStakedOnly, hasStakeInFinishedPools }) 
           </NotificationDot>
         </ButtonMenu>
         <Flex ml="24px" justifyContent="center" alignItems="center">
-          <Toggle scale="sm" checked={stakedOnly} onChange={() => setStakedOnly(!stakedOnly)} />
+          <Toggle scale="sm" checked={stakedOnly} onChange={(prev) => setStakedOnly(!prev)} />
           <Text ml="8px" color={`${stakedOnly ? 'body' : 'textDisabled'}`}>
             {TranslateString(999, 'Staked only')}
           </Text>
         </Flex>
       </Flex>
       <Flex ml="24px" alignItems="center" justifyContent="flex-end">
-        <Button
-          px={['14px', null, null, null, '20px']}
-          variant="subtle"
-          as="a"
-          href="https://docs.pancakeswap.finance/syrup-pools/syrup-pool"
-        >
-          <ButtonText color="backgroundAlt" bold fontSize="16px">
-            {TranslateString(999, 'Help')}
-          </ButtonText>
-          <HelpIcon color="backgroundAlt" ml={[null, null, null, 0, '6px']} />
-        </Button>
+        <StyledLink external href="https://docs.pancakeswap.finance/syrup-pools/syrup-pool">
+          <Button px={['14px', null, null, null, '20px']} variant="subtle">
+            <ButtonText color="backgroundAlt" bold fontSize="16px">
+              {TranslateString(999, 'Help')}
+            </ButtonText>
+            <HelpIcon color="backgroundAlt" ml={[null, null, null, 0, '6px']} />
+          </Button>
+        </StyledLink>
       </Flex>
     </Flex>
   )

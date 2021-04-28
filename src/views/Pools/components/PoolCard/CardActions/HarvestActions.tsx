@@ -54,9 +54,9 @@ const HarvestActions: React.FC<HarvestActionsProps> = ({
           ) : (
             <>
               <Heading color={hasEarnings ? 'text' : 'textDisabled'}>{hasEarnings ? formattedBalance : 0}</Heading>
-              <Text fontSize="12px" color={hasEarnings ? 'textSubtle' : 'textDisabled'}>{`~${
-                hasEarnings ? earningsDollarValue : 0
-              } USD`}</Text>
+              <Text fontSize="12px" color={hasEarnings ? 'textSubtle' : 'textDisabled'}>
+                {`~${hasEarnings ? earningsDollarValue : 0} USD`}
+              </Text>
             </>
           )}
         </Flex>

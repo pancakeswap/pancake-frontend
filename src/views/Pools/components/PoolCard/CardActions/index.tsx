@@ -13,12 +13,19 @@ const InlineText = styled(Text)`
   display: inline;
 `
 
-const CardActions: React.FC<{
+interface CardActionsProps {
   pool: Pool
   stakedBalance: BigNumber
   accountHasStakedBalance: boolean
   stakingTokenPrice: number
-}> = ({ pool, stakedBalance, accountHasStakedBalance, stakingTokenPrice }) => {
+}
+
+const CardActions: React.FC<CardActionsProps> = ({
+  pool,
+  stakedBalance,
+  accountHasStakedBalance,
+  stakingTokenPrice,
+}) => {
   const { sousId, stakingToken, earningToken, harvest, poolCategory, userData } = pool
   // Pools using native BNB behave differently than pools using a token
   const isBnbPool = poolCategory === PoolCategory.BINANCE
@@ -26,8 +33,8 @@ const CardActions: React.FC<{
   const allowance = new BigNumber(userData?.allowance || 0)
   const stakingTokenBalance = new BigNumber(userData?.stakingTokenBalance || 0)
   const earnings = new BigNumber(userData?.pendingReward || 0)
-  const needsApproval = !accountHasStakedBalance && !allowance.toNumber() && !isBnbPool
-  const isStaked = stakedBalance.toNumber() > 0
+  const needsApproval = !accountHasStakedBalance && !allowance.gt(0) && !isBnbPool
+  const isStaked = stakedBalance.gt(0)
   const isLoading = !userData
 
   return (

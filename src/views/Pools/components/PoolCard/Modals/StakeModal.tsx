@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { Modal, Text, Flex, Image, Button, Slider, BalanceInput, AutoRenewIcon } from '@pancakeswap-libs/uikit'
+import { Modal, Text, Flex, Image, Button, Slider, BalanceInput, AutoRenewIcon, Link } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import { BASE_EXCHANGE_URL } from 'config'
 import { useSousStake } from 'hooks/useStake'
@@ -8,8 +8,9 @@ import { useSousUnstake } from 'hooks/useUnstake'
 import useTheme from 'hooks/useTheme'
 import useToast from 'hooks/useToast'
 import BigNumber from 'bignumber.js'
-import { getFullDisplayBalance, formatNumber } from 'utils/formatBalance'
+import { getFullDisplayBalance, formatNumber, getDecimalAmount } from 'utils/formatBalance'
 import { Pool } from 'state/types'
+import PercentageButton from './PercentageButton'
 
 interface StakeModalProps {
   isBnbPool: boolean
@@ -20,8 +21,8 @@ interface StakeModalProps {
   onDismiss?: () => void
 }
 
-const StyledButton = styled(Button)`
-  flex-grow: 1;
+const StyledLink = styled(Link)`
+  width: 100%;
 `
 
 const StakeModal: React.FC<StakeModalProps> = ({
@@ -44,14 +45,14 @@ const StakeModal: React.FC<StakeModalProps> = ({
   const [stakeAmount, setStakeAmount] = useState('')
   const [percent, setPercent] = useState(0)
 
-  const usdValueStaked = stakeAmount && formatNumber(parseFloat(stakeAmount) * stakingTokenPrice)
+  const usdValueStaked = stakeAmount && formatNumber(new BigNumber(stakeAmount).times(stakingTokenPrice).toNumber())
 
   const handleStakeInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = event.target.value ? event.target.value : '0'
-    const convertedInput = new BigNumber(inputValue).multipliedBy(new BigNumber(10).pow(stakingToken.decimals))
+    const convertedInput = getDecimalAmount(new BigNumber(inputValue), stakingToken.decimals)
     const percentage = Math.floor(convertedInput.dividedBy(stakingMax).multipliedBy(100).toNumber())
     setStakeAmount(inputValue)
-    setPercent(percentage > 100 ? 100 : percentage)
+    setPercent(Math.min(percentage, 100))
   }
 
   const handleChangePercent = (sliderPercent: number) => {
@@ -134,18 +135,10 @@ const StakeModal: React.FC<StakeModalProps> = ({
         step={1}
       />
       <Flex alignItems="center" justifyContent="space-between" mt="8px">
-        <StyledButton scale="xs" mx="2px" p="4px 16px" variant="tertiary" onClick={() => handleChangePercent(25)}>
-          25%
-        </StyledButton>
-        <StyledButton scale="xs" mx="2px" p="4px 16px" variant="tertiary" onClick={() => handleChangePercent(50)}>
-          50%
-        </StyledButton>
-        <StyledButton scale="xs" mx="2px" p="4px 16px" variant="tertiary" onClick={() => handleChangePercent(75)}>
-          75%
-        </StyledButton>
-        <StyledButton scale="xs" mx="2px" p="4px 16px" variant="tertiary" onClick={() => handleChangePercent(100)}>
-          MAX
-        </StyledButton>
+        <PercentageButton onClick={() => handleChangePercent(25)}>25%</PercentageButton>
+        <PercentageButton onClick={() => handleChangePercent(50)}>50%</PercentageButton>
+        <PercentageButton onClick={() => handleChangePercent(75)}>75%</PercentageButton>
+        <PercentageButton onClick={() => handleChangePercent(100)}>MAX</PercentageButton>
       </Flex>
       <Button
         isLoading={pendingTx}
@@ -157,9 +150,11 @@ const StakeModal: React.FC<StakeModalProps> = ({
         {pendingTx ? TranslateString(802, 'Confirming') : TranslateString(464, 'Confirm')}
       </Button>
       {!isRemovingStake && (
-        <Button mt="8px" as="a" external href={BASE_EXCHANGE_URL} variant="secondary">
-          {TranslateString(999, 'Get')} {stakingToken.symbol}
-        </Button>
+        <StyledLink external href={BASE_EXCHANGE_URL}>
+          <Button width="100%" mt="8px" variant="secondary">
+            {TranslateString(999, 'Get')} {stakingToken.symbol}
+          </Button>
+        </StyledLink>
       )}
     </Modal>
   )

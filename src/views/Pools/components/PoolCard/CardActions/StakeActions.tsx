@@ -12,7 +12,7 @@ import {
 } from '@pancakeswap-libs/uikit'
 import BigNumber from 'bignumber.js'
 import useI18n from 'hooks/useI18n'
-import { getBalanceNumber, formatNumber } from 'utils/formatBalance'
+import { getBalanceNumber, formatNumber, getDecimalAmount } from 'utils/formatBalance'
 import { Pool } from 'state/types'
 import NotEnoughTokensModal from '../Modals/NotEnoughTokensModal'
 import StakeModal from '../Modals/StakeModal'
@@ -38,7 +38,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({
 }) => {
   const { stakingToken, earningToken, stakingLimit } = pool
   const TranslateString = useI18n()
-  const convertedLimit = new BigNumber(stakingLimit).multipliedBy(new BigNumber(10).pow(earningToken.decimals))
+  const convertedLimit = getDecimalAmount(new BigNumber(stakingLimit), earningToken.decimals)
   const stakingMax =
     stakingLimit && stakingTokenBalance.isGreaterThan(convertedLimit) ? convertedLimit : stakingTokenBalance
   const formattedBalance = formatNumber(getBalanceNumber(stakedBalance, stakingToken.decimals), 3, 3)
@@ -79,7 +79,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({
         </Flex>
       </Flex>
     ) : (
-      <Button onClick={stakingTokenBalance.toNumber() > 0 ? onPresentStake : onPresentTokenRequired}>
+      <Button onClick={stakingTokenBalance.gt(0) ? onPresentStake : onPresentTokenRequired}>
         {TranslateString(1070, 'Stake')}
       </Button>
     )
