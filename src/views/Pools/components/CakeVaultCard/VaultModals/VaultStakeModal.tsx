@@ -177,6 +177,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
         isLoading={pendingTx}
         endIcon={pendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
         onClick={handleConfirmClick}
+        disabled={!stakeAmount || parseFloat(stakeAmount) === 0}
         mt="24px"
       >
         {pendingTx ? TranslateString(802, 'Confirming') : TranslateString(464, 'Confirm')}

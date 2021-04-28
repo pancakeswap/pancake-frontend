@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { BSC_BLOCK_TIME } from 'config'
-import { useBlock } from 'state/hooks'
+import { getWeb3NoAccount } from 'utils/web3'
 
 /**
  * Returns a countdown in seconds of a given block
@@ -8,22 +8,24 @@ import { useBlock } from 'state/hooks'
 const useBlockCountdown = (blockNumber: number) => {
   const timer = useRef<ReturnType<typeof setTimeout>>(null)
   const [secondsRemaining, setSecondsRemaining] = useState(0)
-  const { currentBlock } = useBlock()
 
   useEffect(() => {
-    if (currentBlock > 0) {
-      const secondsBetweenBlocks = (blockNumber - currentBlock) * BSC_BLOCK_TIME
+    const startCountdown = async () => {
+      const web3 = getWeb3NoAccount()
+      const currentBlock = await web3.eth.getBlockNumber()
 
-      // Only start a countdown if the provided block number is greater than the current block
       if (blockNumber > currentBlock) {
-        clearInterval(timer.current)
-        setSecondsRemaining(secondsBetweenBlocks)
+        setSecondsRemaining((blockNumber - currentBlock) * BSC_BLOCK_TIME)
+
+        // Clear previous interval
+        if (timer.current) {
+          clearInterval(timer.current)
+        }
 
         timer.current = setInterval(() => {
           setSecondsRemaining((prevSecondsRemaining) => {
-            if (prevSecondsRemaining === 0) {
+            if (prevSecondsRemaining === 1) {
               clearInterval(timer.current)
-              return 0
             }
 
             return prevSecondsRemaining - 1
@@ -32,10 +34,12 @@ const useBlockCountdown = (blockNumber: number) => {
       }
     }
 
+    startCountdown()
+
     return () => {
       clearInterval(timer.current)
     }
-  }, [currentBlock, blockNumber, timer, setSecondsRemaining])
+  }, [setSecondsRemaining, blockNumber, timer])
 
   return secondsRemaining
 }

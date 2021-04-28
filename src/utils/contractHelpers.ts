@@ -20,6 +20,7 @@ import {
   getTradingCompetitionAddress,
   getEasterNftAddress,
   getCakeVaultAddress,
+  getPredictionsAddress,
 } from 'utils/addressHelpers'
 
 // ABI
@@ -43,6 +44,7 @@ import claimRefundAbi from 'config/abi/claimRefund.json'
 import tradingCompetitionAbi from 'config/abi/tradingCompetition.json'
 import easterNftAbi from 'config/abi/easterNft.json'
 import cakeVaultAbi from 'config/abi/cakeVault.json'
+import predictionsAbi from 'config/abi/predictions.json'
 
 const getContract = (abi: any, address: string, web3?: Web3) => {
   const _web3 = web3 ?? web3NoAccount
@@ -107,4 +109,7 @@ export const getEasterNftContract = (web3?: Web3) => {
 }
 export const getCakeVaultContract = (web3?: Web3) => {
   return getContract(cakeVaultAbi, getCakeVaultAddress(), web3)
+}
+export const getPredictionsContract = (web3?: Web3) => {
+  return getContract(predictionsAbi, getPredictionsAddress(), web3)
 }

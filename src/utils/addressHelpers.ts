@@ -53,3 +53,6 @@ export const getEasterNftAddress = () => {
 export const getCakeVaultAddress = () => {
   return getAddress(addresses.cakeVault)
 }
+export const getPredictionsAddress = () => {
+  return getAddress(addresses.predictions)
+}
