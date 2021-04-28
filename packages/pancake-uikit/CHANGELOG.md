@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.29.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap-libs/uikit@0.28.1...@pancakeswap-libs/uikit@0.29.0) (2021-04-28)
+
+
+### Features
+
+* **uikit:** Prediction icons ([#87](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/87)) ([25b03ce](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/25b03ce2eb2bab14fc48cd8d8b5de212e12e3ee4))
+
+
+
+
+
 ## [0.28.1](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap-libs/uikit@0.28.0...@pancakeswap-libs/uikit@0.28.1) (2021-04-27)
 
 **Note:** Version bump only for package @pancakeswap-libs/uikit
