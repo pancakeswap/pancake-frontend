@@ -6,6 +6,7 @@ import {
   ArrowForwardIcon,
   ButtonMenu,
   ButtonMenuItem,
+  Cards,
   ChartIcon,
   HistoryIcon,
   IconButton,
@@ -15,7 +16,6 @@ import { PredictionStatus } from 'state/types'
 import { useGetPredictionsStatus, useIsChartPaneOpen, useIsHistoryPaneOpen } from 'state/hooks'
 import { setChartPaneState, setHistoryPaneState } from 'state/predictions'
 import useSwiper from '../hooks/useSwiper'
-import CardsIcon from '../icons/CardsIcon'
 
 const ButtonNav = styled.div`
   flex: none;
@@ -85,7 +85,7 @@ const MobileMenu = () => {
       <TabNav>
         <ButtonMenu activeIndex={activeIndex} scale="sm" variant="subtle" onItemClick={handleItemClick}>
           <ButtonMenuItem>
-            <CardsIcon color="currentColor" />
+            <Cards color="currentColor" />
           </ButtonMenuItem>
           <ButtonMenuItem>
             <ChartIcon color="currentColor" />

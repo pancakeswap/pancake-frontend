@@ -1,10 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Box, Card, Text } from '@pancakeswap-libs/uikit'
+import { BnbUsdtPairTokenIcon, Box, Card, PocketWatchIcon, Text } from '@pancakeswap-libs/uikit'
 import { useBnbUsdtTicker } from 'hooks/ticker'
 import useI18n from 'hooks/useI18n'
-import BnbUsdtPairToken from '../icons/BnbUsdtPairToken'
-import PocketWatch from '../icons/PocketWatch'
 import { formatRoundTime } from '../helpers'
 import useRoundCountdown from '../hooks/useRoundCountdown'
 
@@ -79,7 +77,7 @@ export const PricePairLabel: React.FC = () => {
   return (
     <Box pl="24px" position="relative" display="inline-block">
       <Token left={0}>
-        <BnbUsdtPairToken />
+        <BnbUsdtPairTokenIcon />
       </Token>
       <Label dir="left">
         <Title bold textTransform="uppercase">
@@ -112,7 +110,7 @@ export const TimerLabel: React.FC<TimerLabelProps> = ({ interval }) => {
         <Interval fontSize="12px">{interval}</Interval>
       </Label>
       <Token right={0}>
-        <PocketWatch />
+        <PocketWatchIcon />
       </Token>
     </Box>
   )
