@@ -3,7 +3,7 @@ import styled, { CSSProperties } from 'styled-components'
 import { Box, Flex, Text } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import { BetPosition } from 'state/types'
-import { MultiplierDown, MultiplierUp } from '../../icons/MultiplierIcon'
+import { RoundMultiplierDownArrow, RoundMultiplierUpArrow } from '../../RoundMultiplierArrows'
 import EnteredTag from './EnteredTag'
 
 interface MultiplierArrowProps {
@@ -89,7 +89,7 @@ const MultiplierArrow: React.FC<MultiplierArrowProps> = ({
     return (
       <Box position="relative">
         <ArrowWrapper>
-          <MultiplierDown isActive={isActive} />
+          <RoundMultiplierDownArrow isActive={isActive} />
           {getEnteredTag({ bottom: 0, right: 0 })}
           <Content>
             {multiplierText}
@@ -105,7 +105,7 @@ const MultiplierArrow: React.FC<MultiplierArrowProps> = ({
   return (
     <Box position="relative">
       <ArrowWrapper>
-        <MultiplierUp isActive={isActive} />
+        <RoundMultiplierUpArrow isActive={isActive} />
         {getEnteredTag({ top: 0, left: 0 })}
         <Content>
           <Text bold fontSize="24px" lineHeight="26px" color={upColor} textTransform="uppercase">

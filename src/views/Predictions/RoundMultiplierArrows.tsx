@@ -6,7 +6,7 @@ interface MultiplierProps extends SvgProps {
   isActive: boolean
 }
 
-export const MultiplierDown: React.FC<MultiplierProps> = ({ isActive, ...props }) => {
+export const RoundMultiplierDownArrow: React.FC<MultiplierProps> = ({ isActive, ...props }) => {
   const theme = useTheme()
   const fill = theme.colors[isActive ? 'failure' : 'tertiary']
 
@@ -47,7 +47,7 @@ export const MultiplierDown: React.FC<MultiplierProps> = ({ isActive, ...props }
   )
 }
 
-export const MultiplierUp: React.FC<MultiplierProps> = ({ isActive, ...props }) => {
+export const RoundMultiplierUpArrow: React.FC<MultiplierProps> = ({ isActive, ...props }) => {
   const theme = useTheme()
   const fill = theme.colors[isActive ? 'success' : 'tertiary']
 
