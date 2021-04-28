@@ -56,7 +56,6 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
 
   const handleStakeInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = event.target.value ? event.target.value : '0'
-    console.log('input value - ', inputValue)
     const convertedInput = new BigNumber(inputValue).multipliedBy(new BigNumber(10).pow(stakingToken.decimals))
     const percentage = Math.floor(convertedInput.dividedBy(stakingMax).multipliedBy(100).toNumber())
     setStakeAmount(inputValue)
@@ -70,24 +69,26 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
     setPercent(sliderPercent)
   }
 
-  const convertStakeAmount = () => {
-    console.log('stakeAmount -', stakeAmount)
-    const stakeAmountAsBigNumber = new BigNumber(stakeAmount)
-    return getDecimalAmount(stakeAmountAsBigNumber, stakingToken.decimals)
+  const sanitiseWithdrawalBalance = (shares) => {
+    if (shares.gt(userInfo.shares)) {
+      return userInfo.shares
+    }
+    return shares
   }
 
   const handleConfirmClick = async () => {
-    const convertedStakeAmount = convertStakeAmount()
-    console.log('converted stake amount - ', convertedStakeAmount)
+    const convertedStakeAmount = getDecimalAmount(new BigNumber(stakeAmount), stakingToken.decimals)
 
     setPendingTx(true)
+    // unstaking
     if (isRemovingStake) {
-      // unstaking
       const { sharesAsBigNumber } = convertCakeToShares(convertedStakeAmount, pricePerFullShare)
+      const safeWithdrawalBalance = sanitiseWithdrawalBalance(sharesAsBigNumber)
+
       cakeVaultContract.methods
-        // .toString() being called to debug a BigNumber error in prod
+        .withdraw(safeWithdrawalBalance.toString())
+        // .toString() being called to fix a BigNumber error in prod
         // as suggested here https://github.com/ChainSafe/web3.js/issues/2077
-        .withdraw(sharesAsBigNumber.toString())
         .send({ from: account })
         .on('sending', () => {
           setPendingTx(true)
@@ -108,11 +109,10 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
           setPendingTx(false)
         })
     } else {
-      console.log('toString ', convertedStakeAmount.toString())
       cakeVaultContract.methods
-        // .toString() being called to debug a BigNumber error in prod
-        // as suggested here https://github.com/ChainSafe/web3.js/issues/2077
         .deposit(convertedStakeAmount.toString())
+        // .toString() being called to fix a BigNumber error in prod
+        // as suggested here https://github.com/ChainSafe/web3.js/issues/2077
         .send({ from: account })
         .on('sending', () => {
           setPendingTx(true)
