@@ -1,10 +1,8 @@
 import React, { useState } from 'react'
 import { CardBody, PlayCircleOutlineIcon, Button } from '@pancakeswap-libs/uikit'
-import { useAppDispatch } from 'state'
 import useI18n from 'hooks/useI18n'
 import { BetPosition, Round } from 'state/types'
 import { useGetTotalIntervalBlocks } from 'state/hooks'
-import { updateRound } from 'state/predictions'
 import useToast from 'hooks/useToast'
 import CardFlip from '../CardFlip'
 import { RoundResultBox, PrizePoolRow } from '../RoundResult'
@@ -48,7 +46,6 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
   })
   const TranslateString = useI18n()
   const interval = useGetTotalIntervalBlocks()
-  const dispatch = useAppDispatch()
   const { toastSuccess } = useToast()
   const { isSettingPosition, position, hasEnteredPosition } = state
 
@@ -85,7 +82,6 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
       hasEnteredPosition: true,
     }))
 
-    await dispatch(updateRound({ id: round.id }))
     handleBack()
 
     toastSuccess(

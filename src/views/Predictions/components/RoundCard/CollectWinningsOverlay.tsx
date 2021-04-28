@@ -5,8 +5,8 @@ import { Flex, TrophyGoldIcon } from '@pancakeswap-libs/uikit'
 import { useAppDispatch } from 'state'
 import { useGetCurrentEpoch } from 'state/hooks'
 import { getBetHistory, transformBetResponse } from 'state/predictions/helpers'
+import { markBetAsCollected } from 'state/predictions'
 import useI18n from 'hooks/useI18n'
-import { updateRound } from 'state/predictions'
 import CollectWinningsButton from '../CollectWinningsButton'
 import { getPayout } from '../../helpers'
 
@@ -41,7 +41,8 @@ const CollectWinningsOverlay: React.FC<CollectWinningsOverlayProps> = ({
   isBottom = false,
   ...props
 }) => {
-  const [state, setState] = useState<{ epoch: number; payout: number }>({
+  const [state, setState] = useState<{ betId: string; epoch: number; payout: number }>({
+    betId: null,
     epoch: null,
     payout: 0,
   })
@@ -62,6 +63,7 @@ const CollectWinningsOverlay: React.FC<CollectWinningsOverlayProps> = ({
 
         if (bet.position === bet.round.position) {
           setState({
+            betId: bet.id,
             epoch: bet.round.epoch,
             payout: getPayout(bet),
           })
@@ -79,8 +81,8 @@ const CollectWinningsOverlay: React.FC<CollectWinningsOverlayProps> = ({
   }
 
   const handleSuccess = async () => {
-    await dispatch(updateRound({ id: roundId }))
-    setState({ epoch: null, payout: 0 })
+    dispatch(markBetAsCollected({ betId: state.betId, account }))
+    setState({ betId: null, epoch: null, payout: 0 })
   }
 
   return (
