@@ -53,17 +53,13 @@ const RiskDisclaimer: React.FC<RiskDisclaimerProps> = ({ onSuccess, onDismiss })
       <ModalBody p="24px" maxWidth="400px">
         <Box maxHeight="300px" overflowY="auto">
           <Heading as="h3" mb="24px">
-            {TranslateString(556, 'This Product is still in beta (testing) phase.')}
+            {TranslateString(999, 'This Product is in beta.')}
           </Heading>
-          <Text as="p" color="textSubtle">
-            {TranslateString(999, 'Before you use this product, make sure you fully understand the risks involved.')}
-          </Text>
-          <Text as="p" color="textSubtle">
+
+          <Text as="p" color="textSubtle" mb="24px">
             {TranslateString(999, 'Once you enter a position, you cannot cancel or adjust it.')}
           </Text>
-          <Text as="p" color="textSubtle" mb="24px">
-            {TranslateString(999, 'All losses are final.')}
-          </Text>
+
           <label htmlFor="checkbox" style={{ display: 'block', cursor: 'pointer', marginBottom: '24px' }}>
             <Flex alignItems="center">
               <div style={{ flex: 'none' }}>
