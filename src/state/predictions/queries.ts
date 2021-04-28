@@ -59,6 +59,9 @@ export interface MarketResponse {
   }
 }
 
+/**
+ * Base fields are the all the top-level fields available in the api. Used in multiple queries
+ */
 export const getRoundBaseFields = () => `
   id
   epoch
