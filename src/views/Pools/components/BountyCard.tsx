@@ -4,9 +4,9 @@ import BigNumber from 'bignumber.js'
 import { Card, CardBody, Text, Flex, HelpIcon, Button, Heading, Skeleton, useModal } from '@pancakeswap-libs/uikit'
 import { useGetApiPrice } from 'state/hooks'
 import useI18n from 'hooks/useI18n'
-import { useCakeVaultContract } from 'hooks/useContract'
 import useRefresh from 'hooks/useRefresh'
 import useGetVaultFees, { FeeFunctions } from 'hooks/cakeVault/useGetVaultFees'
+import useGetVaultBountyInfo from 'hooks/cakeVault/useGetVaultBountyInfo'
 import { getFullDisplayBalance } from 'utils/formatBalance'
 import { getCakeAddress } from 'utils/addressHelpers'
 import BountyModal from './BountyModal'
@@ -23,11 +23,8 @@ const InlineText = styled(Text)`
 
 const BountyCard = () => {
   const TranslateString = useI18n()
-  const cakeVaultContract = useCakeVaultContract()
   const { fastRefresh } = useRefresh()
-  const [estimatedBountyReward, setEstimatedBountyReward] = useState(null)
-  const [dollarBountyToDisplay, setDollarBountyToDisplay] = useState(null)
-  const [cakeBountyToDisplay, setCakeBountyToDisplay] = useState(null)
+  const { estimatedBountyReward, dollarBountyToDisplay, cakeBountyToDisplay } = useGetVaultBountyInfo(fastRefresh)
   const { callFee } = useGetVaultFees([FeeFunctions.callFee])
   const [onPresentBountyModal] = useModal(
     <BountyModal
@@ -37,27 +34,6 @@ const BountyCard = () => {
       callFee={callFee}
     />,
   )
-
-  const stakingTokenPrice = useGetApiPrice(getCakeAddress())
-
-  useEffect(() => {
-    const calculateEstimateRewards = async () => {
-      const estimatedRewards = await cakeVaultContract.methods.calculateEstimateRewards().call()
-      setEstimatedBountyReward(new BigNumber(estimatedRewards))
-    }
-    calculateEstimateRewards()
-  }, [cakeVaultContract, fastRefresh])
-
-  useEffect(() => {
-    if (estimatedBountyReward && stakingTokenPrice) {
-      // Reduce decimals for production
-      const estimatedDollars = getFullDisplayBalance(estimatedBountyReward.multipliedBy(stakingTokenPrice), 18, 4)
-      // Reduce decimals for production
-      const estimatedCake = getFullDisplayBalance(estimatedBountyReward, 18, 8)
-      setDollarBountyToDisplay(estimatedDollars)
-      setCakeBountyToDisplay(estimatedCake)
-    }
-  }, [stakingTokenPrice, estimatedBountyReward])
 
   return (
     <StyledCard>
