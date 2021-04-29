@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { HelpIcon, useTooltip } from '@rootswap-libs/uikit'
+import { HelpIcon, useTooltip } from '@rootswap-libs-dev/uikit'
 import useI18n from 'hooks/useI18n'
 
 const ReferenceElement = styled.div`

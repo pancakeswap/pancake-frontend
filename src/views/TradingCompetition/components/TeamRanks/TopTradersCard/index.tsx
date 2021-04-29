@@ -10,7 +10,7 @@ import {
   Box,
   Flex,
   ExpandableLabel,
-} from '@rootswap-libs/uikit'
+} from '@rootswap-libs-dev/uikit'
 import useI18n from 'hooks/useI18n'
 import { TeamRanksProps } from '../../../types'
 import TopTradersGrid from './TopTradersGrid'

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, InjectedModalProps, Skeleton, Text } from '@rootswap-libs/uikit'
+import { Button, InjectedModalProps, Skeleton, Text } from '@rootswap-libs-dev/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { useAppDispatch } from 'state'
 import { useGetCollectibles, useProfile, useToast } from 'state/hooks'

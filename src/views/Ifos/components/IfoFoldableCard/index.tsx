@@ -10,7 +10,7 @@ import {
   Progress,
   Button,
   ChevronUpIcon,
-} from '@rootswap-libs/uikit'
+} from '@rootswap-libs-dev/uikit'
 import { Ifo, IfoStatus, PoolIds } from 'config/constants/types'
 import { PublicIfoData, WalletIfoData } from 'hooks/ifo/types'
 import useI18n from 'hooks/useI18n'

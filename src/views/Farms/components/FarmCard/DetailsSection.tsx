@@ -1,7 +1,7 @@
 import React from 'react'
 import useI18n from 'hooks/useI18n'
 import styled from 'styled-components'
-import { Text, Flex, LinkExternal } from '@rootswap-libs/uikit'
+import { Text, Flex, LinkExternal } from '@rootswap-libs-dev/uikit'
 
 export interface ExpandableSectionProps {
   bscScanAddress?: string

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Flex, Text } from '@rootswap-libs/uikit'
+import { Flex, Text } from '@rootswap-libs-dev/uikit'
 import styled from 'styled-components'
 import useI18n from 'hooks/useI18n'
 import RulesCard from './RulesCard'

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Flex, Heading, Image } from '@rootswap-libs/uikit'
+import { Flex, Heading, Image } from '@rootswap-libs-dev/uikit'
 import styled from 'styled-components'
 import useI18n from 'hooks/useI18n'
 import AllBunniesImage from '../../pngs/all-bunnies.png'

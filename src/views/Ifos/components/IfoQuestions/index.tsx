@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Text, Heading, Card, CardHeader, CardBody, Flex } from '@rootswap-libs/uikit'
+import { Text, Heading, Card, CardHeader, CardBody, Flex } from '@rootswap-libs-dev/uikit'
 import useI18n from 'hooks/useI18n'
 import FoldableText from 'components/FoldableText'
 import config from './config'

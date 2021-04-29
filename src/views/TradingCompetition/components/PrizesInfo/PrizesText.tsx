@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Flex, Text, Heading, Image } from '@rootswap-libs/uikit'
+import { Flex, Text, Heading, Image } from '@rootswap-libs-dev/uikit'
 import useI18n from 'hooks/useI18n'
 import FlipperBunny from '../../pngs/flippers.png'
 

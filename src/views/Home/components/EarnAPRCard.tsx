@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
-import { Heading, Card, CardBody, Flex, ArrowForwardIcon, Skeleton } from '@rootswap-libs/uikit'
+import { Heading, Card, CardBody, Flex, ArrowForwardIcon, Skeleton } from '@rootswap-libs-dev/uikit'
 import max from 'lodash/max'
 import { NavLink } from 'react-router-dom'
 import useI18n from 'hooks/useI18n'

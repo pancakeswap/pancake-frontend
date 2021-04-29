@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { Card, CardBody, CommunityIcon, Flex, Heading, Text } from '@rootswap-libs/uikit'
+import { Card, CardBody, CommunityIcon, Flex, Heading, Text } from '@rootswap-libs-dev/uikit'
 import shuffle from 'lodash/shuffle'
 import { useTeams } from 'state/hooks'
 import useI18n from 'hooks/useI18n'

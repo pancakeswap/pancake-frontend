@@ -1,6 +1,6 @@
 import React from 'react'
 import BigNumber from 'bignumber.js'
-import { Text, TextProps } from '@rootswap-libs/uikit'
+import { Text, TextProps } from '@rootswap-libs-dev/uikit'
 import useI18n from 'hooks/useI18n'
 
 interface PercentageOfTotalProps extends TextProps {

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core'
-import { Button } from '@rootswap-libs/uikit'
+import { Button } from '@rootswap-libs-dev/uikit'
 import BigNumber from 'bignumber.js'
 import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
 import { getBalanceNumber } from 'utils/formatBalance'

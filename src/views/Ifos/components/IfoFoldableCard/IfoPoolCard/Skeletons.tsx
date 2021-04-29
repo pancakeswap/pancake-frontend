@@ -1,5 +1,5 @@
 import React from 'react'
-import { Flex, Skeleton } from '@rootswap-libs/uikit'
+import { Flex, Skeleton } from '@rootswap-libs-dev/uikit'
 
 export const SkeletonCardActions = () => {
   return <Skeleton height="48px" />

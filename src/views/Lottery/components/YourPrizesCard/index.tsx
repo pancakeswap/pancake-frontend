@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Card, CardBody } from '@rootswap-libs/uikit'
+import { Card, CardBody } from '@rootswap-libs-dev/uikit'
 import PrizesWonContent from './PrizesWonContent'
 import NoPrizesContent from './NoPrizesContent'
 

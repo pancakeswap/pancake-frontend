@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { useModal } from '@rootswap-libs/uikit'
+import { useModal } from '@rootswap-libs-dev/uikit'
 import EditProfileModal from './EditProfileModal'
 import ProfileAvatar, { ProfileAvatarProps } from './ProfileAvatar'
 

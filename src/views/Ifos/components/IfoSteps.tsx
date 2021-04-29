@@ -12,7 +12,7 @@ import {
   Button,
   Link,
   OpenNewIcon,
-} from '@rootswap-libs/uikit'
+} from '@rootswap-libs-dev/uikit'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
 import useI18n from 'hooks/useI18n'
 import useTokenBalance from 'hooks/useTokenBalance'

@@ -8,7 +8,7 @@ import {
   Text,
   TeamPlayerIcon,
   TrophyGoldIcon,
-} from '@rootswap-libs/uikit'
+} from '@rootswap-libs-dev/uikit'
 import useI18n from 'hooks/useI18n'
 import { UserTradingInformationProps } from '../../types'
 import { useCompetitionCakeRewards, getRewardGroupAchievements } from '../../helpers'

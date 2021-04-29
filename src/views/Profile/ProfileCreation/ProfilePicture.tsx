@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react'
 import styled from 'styled-components'
-import { AutoRenewIcon, Button, Card, CardBody, Heading, Skeleton, Text } from '@rootswap-libs/uikit'
+import { AutoRenewIcon, Button, Card, CardBody, Heading, Skeleton, Text } from '@rootswap-libs-dev/uikit'
 import { Link as RouterLink } from 'react-router-dom'
 import { useWeb3React } from '@web3-react/core'
 import { getAddressByType } from 'utils/collectibles'

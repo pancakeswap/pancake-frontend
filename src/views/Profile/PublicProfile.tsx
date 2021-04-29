@@ -15,7 +15,7 @@ import {
   BlockIcon,
   VisibilityOn,
   VisibilityOff,
-} from '@rootswap-libs/uikit'
+} from '@rootswap-libs-dev/uikit'
 import useI18n from 'hooks/useI18n'
 import { useProfile } from 'state/hooks'
 import usePersistState from 'hooks/usePersistState'

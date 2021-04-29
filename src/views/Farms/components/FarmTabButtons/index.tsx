@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useRouteMatch, Link } from 'react-router-dom'
-import { ButtonMenu, ButtonMenuItem } from '@rootswap-libs/uikit'
+import { ButtonMenu, ButtonMenuItem } from '@rootswap-libs-dev/uikit'
 import useI18n from 'hooks/useI18n'
 
 const FarmTabButtons = () => {

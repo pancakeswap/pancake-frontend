@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Text, Button, Input, InputProps, Flex, Link } from '@rootswap-libs/uikit'
+import { Text, Button, Input, InputProps, Flex, Link } from '@rootswap-libs-dev/uikit'
 import useI18n from 'hooks/useI18n'
 
 interface ModalInputProps {

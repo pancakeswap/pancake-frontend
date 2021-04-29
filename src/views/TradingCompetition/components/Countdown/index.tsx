@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Flex, Skeleton, PocketWatchIcon, Text } from '@rootswap-libs/uikit'
+import { Flex, Skeleton, PocketWatchIcon, Text } from '@rootswap-libs-dev/uikit'
 import useI18n from 'hooks/useI18n'
 import Timer from 'components/Timer'
 import getTimePeriods from 'utils/getTimePeriods'

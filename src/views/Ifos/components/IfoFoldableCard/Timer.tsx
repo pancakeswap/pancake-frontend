@@ -1,5 +1,5 @@
 import React from 'react'
-import { Flex, Link, PocketWatchIcon, Text, Skeleton } from '@rootswap-libs/uikit'
+import { Flex, Link, PocketWatchIcon, Text, Skeleton } from '@rootswap-libs-dev/uikit'
 import getTimePeriods from 'utils/getTimePeriods'
 import { PublicIfoData } from 'hooks/ifo/types'
 

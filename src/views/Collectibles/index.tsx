@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Heading } from '@rootswap-libs/uikit'
+import { Heading } from '@rootswap-libs-dev/uikit'
 import useI18n from 'hooks/useI18n'
 import Page from 'components/layout/Page'
 import NftList from './components/NftList'

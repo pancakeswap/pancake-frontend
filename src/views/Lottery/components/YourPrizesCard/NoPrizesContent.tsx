@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Text, Button, useModal } from '@rootswap-libs/uikit'
+import { Text, Button, useModal } from '@rootswap-libs-dev/uikit'
 import useI18n from 'hooks/useI18n'
 import useTickets from 'hooks/useTickets'
 import MyTicketsModal from '../TicketCard/UserTicketsModal'

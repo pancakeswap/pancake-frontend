@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Heading, Card, CardBody, Flex, ArrowForwardIcon, Skeleton } from '@rootswap-libs/uikit'
+import { Heading, Card, CardBody, Flex, ArrowForwardIcon, Skeleton } from '@rootswap-libs-dev/uikit'
 import { NavLink } from 'react-router-dom'
 import useLotteryTotalPrizesUsd from 'hooks/useLotteryTotalPrizesUsd'
 

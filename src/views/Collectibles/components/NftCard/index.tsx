@@ -13,7 +13,7 @@ import {
   Text,
   CardFooter,
   useModal,
-} from '@rootswap-libs/uikit'
+} from '@rootswap-libs-dev/uikit'
 import { useProfile } from 'state/hooks'
 import useI18n from 'hooks/useI18n'
 import { Nft } from 'config/constants/types'

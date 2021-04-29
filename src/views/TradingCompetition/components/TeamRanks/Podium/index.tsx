@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Flex, Box, Text, Skeleton } from '@rootswap-libs/uikit'
+import { Flex, Box, Text, Skeleton } from '@rootswap-libs-dev/uikit'
 import TeamPodiumIcon from './TeamPodiumIcon'
 import { PodiumBase } from '../../../svgs'
 import { TeamLeaderboardProps } from '../../../types'

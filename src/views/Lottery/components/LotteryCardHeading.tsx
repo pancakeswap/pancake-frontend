@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Flex, Heading, Text } from '@rootswap-libs/uikit'
+import { Flex, Heading, Text } from '@rootswap-libs-dev/uikit'
 
 interface HeadingProps {
   valueToDisplay?: string

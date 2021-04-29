@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Flex, Text, FlexProps } from '@rootswap-libs/uikit'
+import { Flex, Text, FlexProps } from '@rootswap-libs-dev/uikit'
 
 interface UserRankProps extends FlexProps {
   title?: string

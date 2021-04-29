@@ -1,4 +1,4 @@
-import { MenuEntry } from '@rootswap-libs/uikit'
+import { MenuEntry } from '@rootswap-libs-dev/uikit'
 
 const config: MenuEntry[] = [
   {

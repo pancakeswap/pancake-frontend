@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import BigNumber from 'bignumber.js'
-import { Card, CardBody, Heading, Text } from '@rootswap-libs/uikit'
+import { Card, CardBody, Heading, Text } from '@rootswap-libs-dev/uikit'
 import { useWeb3React } from '@web3-react/core'
 import useI18n from 'hooks/useI18n'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'

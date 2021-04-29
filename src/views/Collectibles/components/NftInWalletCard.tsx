@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, CardBody, Heading, Text } from '@rootswap-libs/uikit'
+import { Card, CardBody, Heading, Text } from '@rootswap-libs-dev/uikit'
 import useI18n from 'hooks/useI18n'
 import CardContent from './CardContent'
 

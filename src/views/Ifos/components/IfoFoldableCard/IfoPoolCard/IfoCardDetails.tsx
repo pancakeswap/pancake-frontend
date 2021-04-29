@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, Flex, Box } from '@rootswap-libs/uikit'
+import { Text, Flex, Box } from '@rootswap-libs-dev/uikit'
 import { PublicIfoData } from 'hooks/ifo/types'
 import useI18n from 'hooks/useI18n'
 import { Ifo, PoolIds } from 'config/constants/types'
