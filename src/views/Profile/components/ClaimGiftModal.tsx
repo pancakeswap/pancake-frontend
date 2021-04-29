@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { Modal, Text, InjectedModalProps, Button, AutoRenewIcon } from '@pancakeswap-libs/uikit'
 import { useWeb3React } from '@web3-react/core'
-import { useToast } from 'state/hooks'
+import useToast from 'hooks/useToast'
 import { useClaimRefundContract } from 'hooks/useContract'
 import useI18n from 'hooks/useI18n'
 import { getClaimRefundContract } from 'utils/contractHelpers'

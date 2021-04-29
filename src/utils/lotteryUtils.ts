@@ -5,9 +5,10 @@ import { getWeb3NoAccount } from 'utils/web3'
 import MultiCallAbi from 'config/abi/Multicall.json'
 import ticketAbi from 'config/abi/lotteryNft.json'
 import lotteryAbi from 'config/abi/lottery.json'
-import { LOTTERY_TICKET_PRICE } from 'config'
+import { DEFAULT_TOKEN_DECIMAL, LOTTERY_TICKET_PRICE } from 'config'
 import { AbiItem } from 'web3-utils'
 import { getMulticallAddress } from './addressHelpers'
+import { BIG_ZERO } from './bigNumber'
 
 export const multiCall = async (abi, calls) => {
   const web3 = getWeb3NoAccount()
@@ -34,7 +35,7 @@ export const multiCall = async (abi, calls) => {
 export const multiBuy = async (lotteryContract, price, numbersList, account) => {
   try {
     return lotteryContract.methods
-      .multiBuy(new BigNumber(price).times(new BigNumber(10).pow(18)).toString(), numbersList)
+      .multiBuy(new BigNumber(price).times(DEFAULT_TOKEN_DECIMAL).toString(), numbersList)
       .send({ from: account })
       .on('transactionHash', (tx) => {
         return tx.transactionHash
@@ -152,13 +153,13 @@ export const getTotalClaim = async (lotteryContract, ticketsContract, account) =
     const calls4 = finalTokenIds.map((id) => [lotteryContract.options.address, 'getRewardView', [id]])
 
     const rewards = await multiCall(lotteryAbi, calls4)
-    const claim = rewards.reduce((p, c) => BigNumber.sum(p, c), new BigNumber(0))
+    const claim = rewards.reduce((p, c) => BigNumber.sum(p, c), BIG_ZERO)
 
     return claim
   } catch (err) {
     console.error(err)
   }
-  return new BigNumber(0)
+  return BIG_ZERO
 }
 
 export const getTotalRewards = async (lotteryContract) => {
@@ -188,7 +189,7 @@ export const getMatchingRewardLength = async (lotteryContract, matchNumber) => {
   try {
     const amount = await lotteryContract.methods.historyAmount(issueIndex, 5 - matchNumber).call()
 
-    return new BigNumber(amount).div(new BigNumber(10).pow(18)).div(LOTTERY_TICKET_PRICE).toNumber()
+    return new BigNumber(amount).div(DEFAULT_TOKEN_DECIMAL).div(LOTTERY_TICKET_PRICE).toNumber()
   } catch (err) {
     console.error(err)
   }

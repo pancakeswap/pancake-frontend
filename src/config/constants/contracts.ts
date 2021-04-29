@@ -15,7 +15,7 @@ export default {
     97: '0x8175c10383511b3a1C68f9dB222dc14A19CC950e',
     56: '0x5e74094Cd416f55179DBd0E45b1a8ED030e396A1',
   },
-  mulltiCall: {
+  multiCall: {
     56: '0x1ee38d535d541c55c9dae27b12edf090c608e6fb',
     97: '0x67ADCB4dF3931b0C5Da724058ADC2174a9844412',
   },
@@ -50,5 +50,9 @@ export default {
   easterNft: {
     56: '0x23c41D28A239dDCAABd1bb1deF8d057189510066',
     97: '0x24ec6962dbe874F6B67B5C50857565667fA0854F',
+  },
+  predictions: {
+    56: '0x516ffd7D1e0Ca40b1879935B2De87cb20Fc1124b',
+    97: '0x4f3140C74789F1D809420343ea83BcE52B7bbAA5',
   },
 }

@@ -28,6 +28,18 @@ const BackgroundColorWrapper = styled(Flex)<SectionProps>`
 
 const ChildrenWrapper = styled(Page)`
   min-height: auto;
+  padding-top: 16px;
+  padding-bottom: 16px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    padding-top: 24px;
+    padding-bottom: 24px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
 `
 
 const Section: React.FC<SectionProps> = ({

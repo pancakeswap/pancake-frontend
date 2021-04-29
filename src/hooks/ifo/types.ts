@@ -23,6 +23,7 @@ export interface PublicIfoData {
   endBlockNum: number
   currencyPriceInUSD: BigNumber
   numberPoints: number
+  fetchIfoData: () => void
   [PoolIds.poolBasic]?: PoolCharacteristics
   [PoolIds.poolUnlimited]: PoolCharacteristics
 }
@@ -48,6 +49,6 @@ export interface WalletIfoData extends WalletIfoState {
   allowance: BigNumber
   contract: Contract
   setPendingTx: (status: boolean, poolId: PoolIds) => void
-  addUserContributedAmount: (amount: BigNumber, poolId: PoolIds) => void
   setIsClaimed: (poolId: PoolIds) => void
+  fetchIfoData: () => void
 }

@@ -1137,6 +1137,51 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://hakka.finance/',
   },
+  xed: {
+    symbol: 'XED',
+    address: {
+      56: '0x5621b5a3f4a8008c4ccdd1b942b121c8b1944f1f',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://www.exeedme.com/',
+  },
+  τbtc: {
+    symbol: 'τBTC',
+    address: {
+      56: '0x2cd1075682b0fccaadd0ca629e138e64015ba11c',
+      97: '',
+    },
+    decimals: 9,
+    projectLink: 'https://www.btcst.finance/',
+  },
+  alpaca: {
+    symbol: 'ALPACA',
+    address: {
+      56: '0x8f0528ce5ef7b51152a59745befdd91d97091d2f',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://www.alpacafinance.org/',
+  },
+  dfd: {
+    symbol: 'DFD',
+    address: {
+      56: '0x9899a98b222fcb2f3dbee7df45d943093a4ff9ff',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://dusd.finance/',
+  },
+  lmt: {
+    symbol: 'LMT',
+    address: {
+      56: '0x9617857e191354dbea0b714d78bc59e57c411087',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://lympo.io/lmt/',
+  },
 }
 
 export default tokens
