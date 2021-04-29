@@ -97,7 +97,10 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
         .on('error', (error) => {
           console.error(error)
           // Remove message from toast before prod
-          toastError(TranslateString(999, 'Error'), TranslateString(999, `${error.message} - Please try again.`))
+          toastError(
+            TranslateString(999, 'Error'),
+            TranslateString(999, 'Please try again. Confirm the transaction and make sure you are paying enough gas!'),
+          )
           setPendingTx(false)
         })
     } else {
@@ -120,8 +123,10 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
         })
         .on('error', (error) => {
           console.error(error)
-          // Remove message from toast before prod
-          toastError(TranslateString(999, 'Error'), TranslateString(999, `${error.message} - Please try again.`))
+          toastError(
+            TranslateString(999, 'Error'),
+            TranslateString(999, 'Please try again. Confirm the transaction and make sure you are paying enough gas!'),
+          )
           setPendingTx(false)
         })
     }
@@ -144,8 +149,10 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
       })
       .on('error', (error) => {
         console.error(error)
-        // Remove message from toast before prod
-        toastError(TranslateString(999, 'Error'), TranslateString(999, `${error.message} - Please try again.`))
+        toastError(
+          TranslateString(999, 'Error'),
+          TranslateString(999, 'Please try again. Confirm the transaction and make sure you are paying enough gas!'),
+        )
         setPendingTx(false)
       })
   }
