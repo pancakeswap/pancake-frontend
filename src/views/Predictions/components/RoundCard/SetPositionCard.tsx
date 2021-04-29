@@ -15,6 +15,7 @@ import {
   AutoRenewIcon,
 } from '@pancakeswap-libs/uikit'
 import BigNumber from 'bignumber.js'
+import { DEFAULT_TOKEN_DECIMAL } from 'config'
 import { useWeb3React } from '@web3-react/core'
 import { useGetMinBetAmount } from 'state/hooks'
 import useI18n from 'hooks/useI18n'
@@ -37,7 +38,7 @@ interface SetPositionCardProps {
   onSuccess: (decimalValue: BigNumber, hash: string) => Promise<void>
 }
 
-const dust = new BigNumber(0.01).times(new BigNumber(10).pow(18))
+const dust = new BigNumber(0.01).times(DEFAULT_TOKEN_DECIMAL)
 const percentShortcuts = [10, 25, 50, 75]
 
 const getPercentDisplay = (percentage: number) => {
