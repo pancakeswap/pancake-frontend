@@ -1,11 +1,14 @@
 import React from "react";
+import uniqueId from "lodash/uniqueId";
 import Svg from "../../../components/Svg/Svg";
 import { SvgProps } from "../../../components/Svg/types";
 
 const Icon: React.FC<SvgProps> = (props) => {
+  const id = uniqueId("svg");
+
   return (
     <Svg viewBox="0 0 96 96" {...props}>
-      <g clipPath="url(#clip-trustwallet)">
+      <g clipPath={`url(#${id})`}>
         <path
           d="M48.0048 96.0097C74.5172 96.0097 96.0097 74.5172 96.0097 48.0048C96.0097 21.4925 74.5172 0 48.0048 0C21.4925 0 0 21.4925 0 48.0048C0 74.5172 21.4925 96.0097 48.0048 96.0097Z"
           fill="#3375BB"
@@ -16,7 +19,7 @@ const Icon: React.FC<SvgProps> = (props) => {
         />
       </g>
       <defs>
-        <clipPath id="clip-trustwallet">
+        <clipPath id={id}>
           <rect width="96" height="96" fill="white" />
         </clipPath>
       </defs>

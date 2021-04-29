@@ -1,11 +1,14 @@
 import React from "react";
+import uniqueId from "lodash/uniqueId";
 import Svg from "../Svg";
 import { SvgProps } from "../types";
 
 const Icon: React.FC<SvgProps> = (props) => {
+  const id = uniqueId("svg");
+
   return (
     <Svg viewBox="0 0 48 48" {...props}>
-      <g clipPath="url(#clip-pocketwatch)">
+      <g clipPath={`url(#${id})`}>
         <path
           fillRule="evenodd"
           clipRule="evenodd"
@@ -90,7 +93,7 @@ const Icon: React.FC<SvgProps> = (props) => {
         />
       </g>
       <defs>
-        <clipPath id="clip-pocketwatch">
+        <clipPath id={id}>
           <rect width="48" height="48" fill="white" transform="matrix(-1 0 0 1 48 0)" />
         </clipPath>
       </defs>

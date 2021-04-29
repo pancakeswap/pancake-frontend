@@ -551,7 +551,7 @@ it("renders ConnectModal correctly", () => {
               xmlns="http://www.w3.org/2000/svg"
             >
               <g
-                clip-path="url(#clip-trustwallet)"
+                clip-path="url(#svg1)"
               >
                 <path
                   d="M48.0048 96.0097C74.5172 96.0097 96.0097 74.5172 96.0097 48.0048C96.0097 21.4925 74.5172 0 48.0048 0C21.4925 0 0 21.4925 0 48.0048C0 74.5172 21.4925 96.0097 48.0048 96.0097Z"
@@ -564,7 +564,7 @@ it("renders ConnectModal correctly", () => {
               </g>
               <defs>
                 <clippath
-                  id="clip-trustwallet"
+                  id="svg1"
                 >
                   <rect
                     fill="white"
