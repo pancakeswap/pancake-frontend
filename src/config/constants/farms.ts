@@ -39,6 +39,16 @@ const farms: FarmConfig[] = [
    * V3
    */
   {
+    pid: 364,
+    lpSymbol: 'LMT-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x8271d7eafeeb8f24d7c9fe1acce2ae20611972e5',
+    },
+    token: tokens.lmt,
+    quoteToken: tokens.wbnb,
+  },
+  {
     pid: 363,
     lpSymbol: 'DFD-BUSD LP',
     lpAddresses: {

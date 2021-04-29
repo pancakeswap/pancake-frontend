@@ -4,7 +4,6 @@ import { Helmet } from 'react-helmet-async'
 import { useLocation } from 'react-router'
 import { customMeta, DEFAULT_META } from 'config/constants/meta'
 import { usePriceCakeBusd } from 'state/hooks'
-import { MigrationV2 } from 'components/Banner'
 import Container from './Container'
 
 const StyledPage = styled(Container)`
@@ -50,7 +49,6 @@ const Page: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ children, ...pro
   return (
     <>
       <PageMeta />
-      <MigrationV2 />
       <StyledPage {...props}>{children}</StyledPage>
     </>
   )
