@@ -72,10 +72,12 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
 
   const handleWithdrawal = async (convertedStakeAmount: BigNumber) => {
     setPendingTx(true)
-    const { sharesAsBigNumber } = convertCakeToShares(convertedStakeAmount, pricePerFullShare)
-    const isWithdrawingAll = sharesAsBigNumber.gte(userInfo.shares)
+    const shareStakeToWithdraw = convertCakeToShares(convertedStakeAmount, pricePerFullShare)
+    // trigger withdrawAll function if the withdrawal will leave 0.000000000000200000 CAKE or less
+    const triggerWithdrawAllThreshold = new BigNumber(200000)
+    const sharesRemaining = userInfo.shares.minus(shareStakeToWithdraw.sharesAsBigNumber)
+    const isWithdrawingAll = sharesRemaining.lte(triggerWithdrawAllThreshold)
 
-    // in case of 100% withdrawal - use different method
     if (isWithdrawingAll) {
       cakeVaultContract.methods
         .withdrawAll()
@@ -100,7 +102,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
         })
     } else {
       cakeVaultContract.methods
-        .withdraw(sharesAsBigNumber.toString())
+        .withdraw(shareStakeToWithdraw.sharesAsBigNumber.toString())
         // .toString() being called to fix a BigNumber error in prod
         // as suggested here https://github.com/ChainSafe/web3.js/issues/2077
         .send({ from: account })
@@ -154,6 +156,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
     // unstaking
     if (isRemovingStake) {
       handleWithdrawal(convertedStakeAmount)
+      // staking
     } else {
       handleDeposit(convertedStakeAmount)
     }

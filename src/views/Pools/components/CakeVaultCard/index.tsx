@@ -57,7 +57,7 @@ const CakeVaultCard: React.FC<{ pool: Pool; account: string }> = ({ pool, accoun
             pricePerFullShare={pricePerFullShare}
           />
         </Box>
-        <Box mt="24px">
+        <Box mt="8px">
           <UnstakingFeeCountdownRow
             account={account}
             withdrawalFee={vaultFees.withdrawalFee}
