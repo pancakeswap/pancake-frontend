@@ -6,6 +6,7 @@ import { useERC20, useIfoV1Contract } from 'hooks/useContract'
 import { useIfoAllowance } from 'hooks/useAllowance'
 import makeBatchRequest from 'utils/makeBatchRequest'
 import { getAddress } from 'utils/addressHelpers'
+import { BIG_ZERO } from 'utils/bigNumber'
 import { WalletIfoState, WalletIfoData } from '../types'
 
 interface UserInfo {
@@ -19,12 +20,12 @@ interface UserInfo {
 const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
   const [state, setState] = useState<WalletIfoState>({
     [PoolIds.poolUnlimited]: {
-      amountTokenCommittedInLP: new BigNumber(0),
+      amountTokenCommittedInLP: BIG_ZERO,
       hasClaimed: false,
       isPendingTx: false,
-      offeringAmountInToken: new BigNumber(0),
-      refundingAmountInLP: new BigNumber(0),
-      taxAmountInLP: new BigNumber(0), // Not used
+      offeringAmountInToken: BIG_ZERO,
+      refundingAmountInLP: BIG_ZERO,
+      taxAmountInLP: BIG_ZERO, // Not used
     },
   })
 

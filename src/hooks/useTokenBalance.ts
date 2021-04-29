@@ -2,12 +2,13 @@ import { useEffect, useState } from 'react'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import { getBep20Contract, getCakeContract } from 'utils/contractHelpers'
+import { BIG_ZERO } from 'utils/bigNumber'
 import useWeb3 from './useWeb3'
 import useRefresh from './useRefresh'
 import useLastUpdated from './useLastUpdated'
 
 const useTokenBalance = (tokenAddress: string) => {
-  const [balance, setBalance] = useState(new BigNumber(0))
+  const [balance, setBalance] = useState(BIG_ZERO)
   const { account } = useWeb3React()
   const web3 = useWeb3()
   const { fastRefresh } = useRefresh()
@@ -45,7 +46,7 @@ export const useTotalSupply = () => {
 }
 
 export const useBurnedBalance = (tokenAddress: string) => {
-  const [balance, setBalance] = useState(new BigNumber(0))
+  const [balance, setBalance] = useState(BIG_ZERO)
   const { slowRefresh } = useRefresh()
   const web3 = useWeb3()
 
@@ -63,7 +64,7 @@ export const useBurnedBalance = (tokenAddress: string) => {
 }
 
 export const useGetBnbBalance = () => {
-  const [balance, setBalance] = useState(new BigNumber(0))
+  const [balance, setBalance] = useState(BIG_ZERO)
   const { account } = useWeb3React()
   const { lastUpdated, setLastUpdated } = useLastUpdated()
   const web3 = useWeb3()

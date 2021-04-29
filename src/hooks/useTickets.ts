@@ -2,6 +2,7 @@ import { useCallback, useState, useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
 import { useLottery, useLotteryTicket } from 'hooks/useContract'
+import { BIG_ZERO } from 'utils/bigNumber'
 import useRefresh from './useRefresh'
 import {
   getTotalRewards,
@@ -34,7 +35,7 @@ const useTickets = (lotteryNumber = null) => {
 }
 
 export const useTotalRewards = () => {
-  const [rewards, setRewards] = useState(new BigNumber(0))
+  const [rewards, setRewards] = useState(BIG_ZERO)
   const lotteryContract = useLottery()
   const { fastRefresh } = useRefresh()
 
@@ -53,7 +54,7 @@ export const useTotalRewards = () => {
 }
 
 export const useTotalClaim = () => {
-  const [claimAmount, setClaimAmount] = useState(new BigNumber(0))
+  const [claimAmount, setClaimAmount] = useState(BIG_ZERO)
   const [claimLoading, setClaimLoading] = useState(false)
   const { account } = useWeb3React()
   const ticketsContract = useLotteryTicket()
