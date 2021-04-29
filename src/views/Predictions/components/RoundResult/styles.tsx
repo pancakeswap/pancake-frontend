@@ -40,7 +40,7 @@ export const LockPriceRow: React.FC<LockPriceRowProps> = ({ lockPrice, ...props 
   return (
     <Flex alignItems="center" justifyContent="space-between" {...props}>
       <Text fontSize="14px">{TranslateString(999, 'Locked Price')}:</Text>
-      <Text fontSize="14px">{`${formatUsd(lockPrice)}`}</Text>
+      <Text fontSize="14px">{formatUsd(lockPrice)}</Text>
     </Flex>
   )
 }

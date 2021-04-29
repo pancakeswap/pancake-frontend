@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js'
 import { Bet, BetPosition } from 'state/types'
 import { DefaultTheme } from 'styled-components'
-import { getBalanceAmount } from 'utils/formatBalance'
+import { formatNumber, getBalanceAmount } from 'utils/formatBalance'
 import getTimePeriods from 'utils/getTimePeriods'
 
 export const getBnbAmount = (bnbBn: BigNumber) => {
@@ -9,12 +9,7 @@ export const getBnbAmount = (bnbBn: BigNumber) => {
 }
 
 export const formatUsd = (usd: number) => {
-  return new Intl.NumberFormat(undefined, {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 3,
-    maximumFractionDigits: 3,
-  }).format(usd || 0)
+  return `$${formatNumber(usd || 0, 3, 3)}`
 }
 
 export const formatBnb = (bnb: number) => {

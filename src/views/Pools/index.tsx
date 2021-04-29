@@ -1,35 +1,20 @@
 import React, { useMemo } from 'react'
 import { Route, useRouteMatch } from 'react-router-dom'
 import BigNumber from 'bignumber.js'
-import styled from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
-import { Heading, Flex, Button, Text, HelpIcon, Link } from '@pancakeswap-libs/uikit'
+import { Heading, Flex, Image } from '@pancakeswap-libs/uikit'
 import orderBy from 'lodash/orderBy'
 import partition from 'lodash/partition'
 import useI18n from 'hooks/useI18n'
 import usePersistState from 'hooks/usePersistState'
 import { usePools, useBlock } from 'state/hooks'
-import PageHeader from 'components/PageHeader'
 import FlexLayout from 'components/layout/Flex'
 import Page from 'components/layout/Page'
-import Coming from './components/Coming'
+import PageHeader from 'components/PageHeader'
 import PoolCard from './components/PoolCard'
 import PoolTabButtons from './components/PoolTabButtons'
-import Divider from './components/Divider'
 
-const ButtonText = styled(Text)`
-  display: none;
-  ${({ theme }) => theme.mediaQueries.lg} {
-    display: block;
-  }
-`
-
-const StyledLink = styled(Link)`
-  display: inline;
-  height: fit-content;
-`
-
-const Syrup: React.FC = () => {
+const Pools: React.FC = () => {
   const { path } = useRouteMatch()
   const TranslateString = useI18n()
   const { account } = useWeb3React()
@@ -65,16 +50,6 @@ const Syrup: React.FC = () => {
               {TranslateString(999, 'High APR, low risk.')}
             </Heading>
           </Flex>
-          <Flex>
-            <StyledLink color="backgroundAlt" href="https://docs.pancakeswap.finance/syrup-pools/syrup-pool" external>
-              <Button px={['14px', null, null, null, '24px']} variant="subtle">
-                <ButtonText color="backgroundAlt" fontSize="16px" bold>
-                  {TranslateString(999, 'Help')}
-                </ButtonText>
-                <HelpIcon color="backgroundAlt" ml={[null, null, null, 0, '6px']} />
-              </Button>
-            </StyledLink>
-          </Flex>
         </Flex>
       </PageHeader>
       <Page>
@@ -83,25 +58,35 @@ const Syrup: React.FC = () => {
           setStakedOnly={setStakedOnly}
           hasStakeInFinishedPools={hasStakeInFinishedPools}
         />
-        <Divider />
         <FlexLayout>
           <Route exact path={`${path}`}>
             <>
               {stakedOnly
-                ? orderBy(stakedOnlyPools, ['sortOrder']).map((pool) => <PoolCard key={pool.sousId} pool={pool} />)
-                : orderBy(openPools, ['sortOrder']).map((pool) => <PoolCard key={pool.sousId} pool={pool} />)}
-              <Coming />
+                ? orderBy(stakedOnlyPools, ['sortOrder']).map((pool) => (
+                    <PoolCard key={pool.sousId} pool={pool} account={account} />
+                  ))
+                : orderBy(openPools, ['sortOrder']).map((pool) => (
+                    <PoolCard key={pool.sousId} pool={pool} account={account} />
+                  ))}
             </>
           </Route>
           <Route path={`${path}/history`}>
             {orderBy(finishedPools, ['sortOrder']).map((pool) => (
-              <PoolCard key={pool.sousId} pool={pool} />
+              <PoolCard key={pool.sousId} pool={pool} account={account} />
             ))}
           </Route>
         </FlexLayout>
+        <Image
+          mx="auto"
+          mt="12px"
+          src="/images/3d-syrup-bunnies.png"
+          alt="Pancake illustration"
+          width={192}
+          height={184.5}
+        />
       </Page>
     </>
   )
 }
 
-export default Syrup
+export default Pools

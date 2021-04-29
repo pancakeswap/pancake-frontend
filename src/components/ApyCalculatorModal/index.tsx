@@ -11,6 +11,7 @@ interface ApyCalculatorModalProps {
   linkLabel: string
   linkHref: string
   earningTokenSymbol?: string
+  roundingDecimals?: number
 }
 
 const Grid = styled.div`
@@ -36,6 +37,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
   linkLabel,
   linkHref,
   earningTokenSymbol = 'CAKE',
+  roundingDecimals = 2,
 }) => {
   const TranslateString = useI18n()
   const oneThousandDollarsWorthOfToken = 1000 / tokenPrice
@@ -44,21 +46,25 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
     numberOfDays: 1,
     farmApr: apr,
     tokenPrice,
+    roundingDecimals,
   })
   const tokenEarnedPerThousand7D = tokenEarnedPerThousandDollarsCompounding({
     numberOfDays: 7,
     farmApr: apr,
     tokenPrice,
+    roundingDecimals,
   })
   const tokenEarnedPerThousand30D = tokenEarnedPerThousandDollarsCompounding({
     numberOfDays: 30,
     farmApr: apr,
     tokenPrice,
+    roundingDecimals,
   })
   const tokenEarnedPerThousand365D = tokenEarnedPerThousandDollarsCompounding({
     numberOfDays: 365,
     farmApr: apr,
     tokenPrice,
+    roundingDecimals,
   })
 
   return (
