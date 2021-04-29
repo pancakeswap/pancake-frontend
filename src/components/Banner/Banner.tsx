@@ -6,6 +6,7 @@ import usePersistState from 'hooks/usePersistState'
 interface Props {
   id: string
   title: React.ReactNode
+  defaultVisible?: boolean
 }
 
 const Wrapper = styled(Box)<{ isVisible: boolean }>`
@@ -21,8 +22,8 @@ const Content = styled.div<{ isVisible: boolean }>`
   display: ${({ isVisible }) => (isVisible ? 'block' : 'none')};
 `
 
-const Banner: React.FC<Props> = ({ id, title, children, ...props }) => {
-  const [isVisible, setIsVisible] = usePersistState(true, `banner-${id}`)
+const Banner: React.FC<Props> = ({ id, title, defaultVisible = true, children, ...props }) => {
+  const [isVisible, setIsVisible] = usePersistState(defaultVisible, `banner-${id}`)
   return (
     <Wrapper isVisible={isVisible} {...props}>
       <Flex justifyContent="space-between" flexDirection={['column', 'row']}>
