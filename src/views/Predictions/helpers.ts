@@ -9,7 +9,7 @@ export const getBnbAmount = (bnbBn: BigNumber) => {
 }
 
 export const formatUsd = (usd: number) => {
-  return formatNumber(usd, 3, 3)
+  return `$${formatNumber(usd || 0, 3, 3)}`
 }
 
 export const formatBnb = (bnb: number) => {
