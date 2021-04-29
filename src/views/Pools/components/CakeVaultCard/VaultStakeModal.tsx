@@ -70,27 +70,15 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
     setPercent(sliderPercent)
   }
 
-  const sanitiseWithdrawalBalance = (shares) => {
-    // in case of 100% withdrawal - the convertCakeToShares helper returns a fractionaly larger number of shares than are availble to be withdrawn
-    if (shares.gt(userInfo.shares)) {
-      return userInfo.shares
-    }
-    return shares
-  }
-
-  const handleConfirmClick = async () => {
-    const convertedStakeAmount = getDecimalAmount(new BigNumber(stakeAmount), stakingToken.decimals)
-
+  const handleWithdrawal = async (convertedStakeAmount: BigNumber) => {
     setPendingTx(true)
-    // unstaking
-    if (isRemovingStake) {
-      const { sharesAsBigNumber } = convertCakeToShares(convertedStakeAmount, pricePerFullShare)
-      const safeWithdrawalBalance = sanitiseWithdrawalBalance(sharesAsBigNumber)
+    const { sharesAsBigNumber } = convertCakeToShares(convertedStakeAmount, pricePerFullShare)
+    const isWithdrawingAll = sharesAsBigNumber.gte(userInfo.shares)
 
+    // in case of 100% withdrawal - use different method
+    if (isWithdrawingAll) {
       cakeVaultContract.methods
-        .withdraw(safeWithdrawalBalance.toString())
-        // .toString() being called to fix a BigNumber error in prod
-        // as suggested here https://github.com/ChainSafe/web3.js/issues/2077
+        .withdrawAll()
         .send({ from: account })
         .on('sending', () => {
           setPendingTx(true)
@@ -112,7 +100,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
         })
     } else {
       cakeVaultContract.methods
-        .deposit(convertedStakeAmount.toString())
+        .withdraw(sharesAsBigNumber.toString())
         // .toString() being called to fix a BigNumber error in prod
         // as suggested here https://github.com/ChainSafe/web3.js/issues/2077
         .send({ from: account })
@@ -120,7 +108,10 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
           setPendingTx(true)
         })
         .on('receipt', async () => {
-          toastSuccess(TranslateString(999, 'Staked!'), TranslateString(999, 'Your funds have been staked in the pool'))
+          toastSuccess(
+            TranslateString(999, 'Unstaked!'),
+            TranslateString(999, 'Your earnings have also been harvested to your wallet'),
+          )
           setPendingTx(false)
           onDismiss()
           setLastUpdated()
@@ -131,6 +122,40 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
           toastError(TranslateString(999, 'Error'), TranslateString(999, `${error.message} - Please try again.`))
           setPendingTx(false)
         })
+    }
+  }
+
+  const handleDeposit = async (convertedStakeAmount: BigNumber) => {
+    cakeVaultContract.methods
+      .deposit(convertedStakeAmount.toString())
+      // .toString() being called to fix a BigNumber error in prod
+      // as suggested here https://github.com/ChainSafe/web3.js/issues/2077
+      .send({ from: account })
+      .on('sending', () => {
+        setPendingTx(true)
+      })
+      .on('receipt', async () => {
+        toastSuccess(TranslateString(999, 'Staked!'), TranslateString(999, 'Your funds have been staked in the pool'))
+        setPendingTx(false)
+        onDismiss()
+        setLastUpdated()
+      })
+      .on('error', (error) => {
+        console.error(error)
+        // Remove message from toast before prod
+        toastError(TranslateString(999, 'Error'), TranslateString(999, `${error.message} - Please try again.`))
+        setPendingTx(false)
+      })
+  }
+
+  const handleConfirmClick = async () => {
+    const convertedStakeAmount = getDecimalAmount(new BigNumber(stakeAmount), stakingToken.decimals)
+    setPendingTx(true)
+    // unstaking
+    if (isRemovingStake) {
+      handleWithdrawal(convertedStakeAmount)
+    } else {
+      handleDeposit(convertedStakeAmount)
     }
   }
 
