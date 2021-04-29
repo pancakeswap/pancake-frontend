@@ -14,7 +14,7 @@ const usePollRoundData = () => {
     const timer = setInterval(async () => {
       const marketData = await getMarketData()
 
-      dispatch(updateMarketData({ marketData, account }))
+      dispatch(updateMarketData(marketData))
     }, POLL_TIME_IN_SECONDS * 1000)
 
     return () => {

@@ -90,12 +90,8 @@ export const predictionsSlice = createSlice({
     initialize: (state, action: PayloadAction<PredictionsState>) => {
       return action.payload
     },
-    updateMarketData: (
-      state,
-      action: PayloadAction<{ marketData: { rounds: Round[]; market: Market }; account?: string }>,
-    ) => {
-      const { marketData, account } = action.payload
-      const { rounds, market } = marketData
+    updateMarketData: (state, action: PayloadAction<{ rounds: Round[]; market: Market }>) => {
+      const { rounds, market } = action.payload
       const newRoundData = makeRoundData(rounds)
       const incomingCurrentRound = maxBy(rounds, 'epoch')
 
@@ -107,31 +103,6 @@ export const predictionsSlice = createSlice({
         )
 
         newRoundData[futureRound.id] = futureRound
-      }
-
-      // For each round, loop through the bets and save them to the bets namespace
-      // if they match the current account
-      if (account) {
-        const betData = rounds.reduce((accum, polledRound) => {
-          const userBet = polledRound.bets.find((bet) => bet.user.address.toLowerCase() === account.toLowerCase())
-
-          if (userBet) {
-            return {
-              ...accum,
-              [polledRound.id]: userBet,
-            }
-          }
-
-          return accum
-        }, {})
-
-        state.bets = {
-          ...state.bets,
-          [account]: {
-            ...state.bets[account],
-            ...betData,
-          },
-        }
       }
 
       state.currentEpoch = incomingCurrentRound.epoch
