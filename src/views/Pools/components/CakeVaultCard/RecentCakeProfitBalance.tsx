@@ -17,7 +17,7 @@ const RecentCakeProfitBalance: React.FC<RecentCakeProfitBalanceProps> = ({
 }) => {
   const currentSharesAsCake = convertSharesToCake(userShares, pricePerFullShare)
   const cakeProfit = currentSharesAsCake.cakeAsBigNumber.minus(cakeAtLastUserAction)
-  const cakeToDisplay = getFullDisplayBalance(cakeProfit, 18, 5)
+  const cakeToDisplay = cakeProfit.gte(0) ? getFullDisplayBalance(cakeProfit, 18, 5) : '0'
 
   return <Text fontSize="14px">{cakeToDisplay}</Text>
 }
