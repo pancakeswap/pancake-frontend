@@ -217,8 +217,14 @@ export interface RoundData {
   [key: string]: Round
 }
 
-export interface BetData {
+export interface HistoryData {
   [key: string]: Bet[]
+}
+
+export interface BetData {
+  [key: string]: {
+    [key: string]: Partial<Bet>
+  }
 }
 
 export enum HistoryFilter {
@@ -240,7 +246,8 @@ export interface PredictionsState {
   bufferBlocks: number
   minBetAmount: string
   rounds: RoundData
-  history: BetData
+  history: HistoryData
+  bets: BetData
 }
 
 // Global state
