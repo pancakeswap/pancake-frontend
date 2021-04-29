@@ -3,6 +3,7 @@ import { useWeb3React } from '@web3-react/core'
 import { Box, Flex, Heading, Text, PrizeIcon, BlockIcon } from '@pancakeswap-libs/uikit'
 import { useAppDispatch } from 'state'
 import useI18n from 'hooks/useI18n'
+import { usePriceBnbBusd } from 'state/hooks'
 import styled from 'styled-components'
 import { Bet, BetPosition } from 'state/types'
 import { fetchBet } from 'state/predictions'
@@ -36,6 +37,7 @@ const BetResult: React.FC<BetResultProps> = ({ bet, result }) => {
   const dispatch = useAppDispatch()
   const { account } = useWeb3React()
   const { isRefundable } = useIsRefundable(bet.round.epoch)
+  const bnbBusdPrice = usePriceBnbBusd()
 
   // Winners get the payout, otherwise the claim what they put it if it was canceled
   const payout = result === Result.WIN ? getPayout(bet) : bet.amount
@@ -131,9 +133,14 @@ const BetResult: React.FC<BetResultProps> = ({ bet, result }) => {
           <Text>{TranslateString(999, 'Your position')}</Text>
           <Text>{`${formatBnb(bet.amount)} BNB`}</Text>
         </Flex>
-        <Flex alignItems="center" justifyContent="space-between">
+        <Flex alignItems="start" justifyContent="space-between">
           <Text bold>{TranslateString(999, 'Your Result')}</Text>
-          <Text bold color={getResultColor()}>{`${result === Result.LOSE ? '-' : '+'}${formatBnb(payout)} BNB`}</Text>
+          <Box style={{ textAlign: 'right' }}>
+            <Text bold color={getResultColor()}>{`${result === Result.LOSE ? '-' : '+'}${formatBnb(payout)} BNB`}</Text>
+            <Text fontSize="12px" color="textSubtle">
+              {`~$${formatBnb(bnbBusdPrice.times(payout).toNumber())}`}
+            </Text>
+          </Box>
         </Flex>
       </StyledBetResult>
     </>
