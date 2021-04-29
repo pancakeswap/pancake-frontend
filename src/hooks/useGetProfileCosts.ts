@@ -2,13 +2,14 @@ import { useEffect, useState } from 'react'
 import BigNumber from 'bignumber.js'
 import { getProfileContract } from 'utils/contractHelpers'
 import makeBatchRequest from 'utils/makeBatchRequest'
+import { BIG_ZERO } from 'utils/bigNumber'
 import useToast from './useToast'
 
 const useGetProfileCosts = () => {
   const [costs, setCosts] = useState({
-    numberCakeToReactivate: new BigNumber(0),
-    numberCakeToRegister: new BigNumber(0),
-    numberCakeToUpdate: new BigNumber(0),
+    numberCakeToReactivate: BIG_ZERO,
+    numberCakeToRegister: BIG_ZERO,
+    numberCakeToUpdate: BIG_ZERO,
   })
   const { toastError } = useToast()
 

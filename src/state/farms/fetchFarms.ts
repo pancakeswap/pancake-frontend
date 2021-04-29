@@ -2,6 +2,7 @@ import BigNumber from 'bignumber.js'
 import erc20 from 'config/abi/erc20.json'
 import masterchefABI from 'config/abi/masterchef.json'
 import multicall from 'utils/multicall'
+import { BIG_TEN } from 'utils/bigNumber'
 import { getAddress, getMasterChefAddress } from 'utils/addressHelpers'
 import { FarmConfig } from 'config/constants/types'
 import { DEFAULT_TOKEN_DECIMAL } from 'config'
@@ -65,9 +66,9 @@ const fetchFarms = async (farmsToFetch: FarmConfig[]) => {
         .times(lpTokenRatio)
 
       // Amount of token in the LP that are considered staking (i.e amount of token * lp ratio)
-      const tokenAmount = new BigNumber(tokenBalanceLP).div(new BigNumber(10).pow(tokenDecimals)).times(lpTokenRatio)
+      const tokenAmount = new BigNumber(tokenBalanceLP).div(BIG_TEN.pow(tokenDecimals)).times(lpTokenRatio)
       const quoteTokenAmount = new BigNumber(quoteTokenBalanceLP)
-        .div(new BigNumber(10).pow(quoteTokenDecimals))
+        .div(BIG_TEN.pow(quoteTokenDecimals))
         .times(lpTokenRatio)
 
       const [info, totalAllocPoint] = await multicall(masterchefABI, [

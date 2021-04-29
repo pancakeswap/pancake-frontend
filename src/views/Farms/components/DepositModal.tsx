@@ -50,7 +50,7 @@ const DepositModal: React.FC<DepositModalProps> = ({ max, onConfirm, onDismiss, 
         inputTitle={TranslateString(1070, 'Stake')}
       />
       <ModalActions>
-        <Button variant="secondary" onClick={onDismiss} width="100%">
+        <Button variant="secondary" onClick={onDismiss} width="100%" disabled={pendingTx}>
           {TranslateString(462, 'Cancel')}
         </Button>
         <Button
