@@ -130,7 +130,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
             width="100%"
             onClick={onPresentDeposit}
             variant="secondary"
-            disabled={location.pathname.includes('history') || location.pathname.includes('archived')}
+            disabled={['history', 'archived'].some((item) => location.pathname.includes(item))}
           >
             {TranslateString(999, 'Stake LP')}
           </Button>
