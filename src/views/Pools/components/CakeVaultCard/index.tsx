@@ -16,6 +16,7 @@ import CardFooter from '../PoolCard/CardFooter'
 import StyledCardHeader from '../PoolCard/StyledCardHeader'
 import VaultCardActions from './VaultCardActions'
 import UnstakingFeeCountdownRow from './UnstakingFeeCountdownRow'
+import RecentCakeProfitRow from './RecentCakeProfitRow'
 
 const StyledCardBody = styled(CardBody)<{ isLoading: boolean }>`
   min-height: ${({ isLoading }) => (isLoading ? '0' : '254px')};
@@ -48,6 +49,13 @@ const CakeVaultCard: React.FC<{ pool: Pool; account: string }> = ({ pool, accoun
           isAutoVault
           compoundFrequency={timesCompoundedDaily}
         />
+        <Box mt="24px">
+          <RecentCakeProfitRow
+            cakeAtLastUserAction={userInfo.cakeAtLastUserAction}
+            userShares={userInfo.shares}
+            pricePerFullShare={pricePerFullShare}
+          />
+        </Box>
         <Box mt="24px">
           <UnstakingFeeCountdownRow
             withdrawalFee={vaultFees.withdrawalFee}
