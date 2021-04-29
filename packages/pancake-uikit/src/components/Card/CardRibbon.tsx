@@ -7,6 +7,7 @@ interface StyledCardRibbonProps extends CardRibbonProps {
 }
 
 const StyledCardRibbon = styled.div<Partial<StyledCardRibbonProps>>`
+  z-index: 1;
   background-color: ${({ variantColor = "secondary", theme }) => theme.colors[variantColor]};
   color: white;
   margin: 0;
@@ -51,9 +52,9 @@ const StyledCardRibbon = styled.div<Partial<StyledCardRibbonProps>>`
   }
 `;
 
-const CardRibbon: React.FC<CardRibbonProps> = ({ variantColor, text, ribbonPosition }) => {
+const CardRibbon: React.FC<CardRibbonProps> = ({ variantColor, text, ribbonPosition, ...props }) => {
   return (
-    <StyledCardRibbon variantColor={variantColor} ribbonPosition={ribbonPosition}>
+    <StyledCardRibbon variantColor={variantColor} ribbonPosition={ribbonPosition} {...props}>
       <div title={text}>{text}</div>
     </StyledCardRibbon>
   );

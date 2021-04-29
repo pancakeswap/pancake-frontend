@@ -2,7 +2,7 @@ import { HTMLAttributes } from "react";
 import { SpaceProps } from "styled-system";
 import { Colors } from "../../theme/types";
 
-export interface CardRibbonProps {
+export interface CardRibbonProps extends SpaceProps, HTMLAttributes<HTMLDivElement> {
   variantColor?: keyof Colors;
   text: string;
   ribbonPosition?: "right" | "left";
