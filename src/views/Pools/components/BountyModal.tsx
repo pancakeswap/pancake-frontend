@@ -9,10 +9,10 @@ import { getFullDisplayBalance } from 'utils/formatBalance'
 import useTheme from 'hooks/useTheme'
 import useToast from 'hooks/useToast'
 
-interface NotEnoughTokensModalProps {
-  estimatedBountyReward: BigNumber
-  cakeBountyToDisplay: string
-  dollarBountyToDisplay: string
+interface BountyModalProps {
+  cakeCallBountyToDisplay: string
+  dollarCallBountyToDisplay: string
+  totalPendingCakeRewards: BigNumber
   callFee: number
   onDismiss?: () => void
 }
@@ -24,10 +24,10 @@ const Divider = styled.div`
   width: 100%;
 `
 
-const NotEnoughTokensModal: React.FC<NotEnoughTokensModalProps> = ({
-  estimatedBountyReward,
-  cakeBountyToDisplay,
-  dollarBountyToDisplay,
+const BountyModal: React.FC<BountyModalProps> = ({
+  cakeCallBountyToDisplay,
+  dollarCallBountyToDisplay,
+  totalPendingCakeRewards,
   callFee,
   onDismiss,
 }) => {
@@ -38,8 +38,7 @@ const NotEnoughTokensModal: React.FC<NotEnoughTokensModalProps> = ({
   const cakeVaultContract = useCakeVaultContract()
   const [pendingTx, setPendingTx] = useState(false)
   const callFeeAsDecimal = callFee / 100
-  const totalPendingYield = estimatedBountyReward.multipliedBy(100 / callFeeAsDecimal)
-  const totalYieldToDisplay = getFullDisplayBalance(totalPendingYield, 18, 3)
+  const totalYieldToDisplay = getFullDisplayBalance(totalPendingCakeRewards, 18, 3)
 
   const handleConfirmClick = async () => {
     cakeVaultContract.methods
@@ -78,9 +77,9 @@ const NotEnoughTokensModal: React.FC<NotEnoughTokensModalProps> = ({
       <Flex alignItems="flex-start" justifyContent="space-between">
         <Text>{TranslateString(999, "You'll claim")}</Text>
         <Flex flexDirection="column">
-          <Text bold>{cakeBountyToDisplay} CAKE</Text>
+          <Text bold>{cakeCallBountyToDisplay} CAKE</Text>
           <Text fontSize="12px" color="textSubtle">
-            ~ {dollarBountyToDisplay} USD
+            ~ {dollarCallBountyToDisplay} USD
           </Text>
         </Flex>
       </Flex>
@@ -119,4 +118,4 @@ const NotEnoughTokensModal: React.FC<NotEnoughTokensModalProps> = ({
   )
 }
 
-export default NotEnoughTokensModal
+export default BountyModal

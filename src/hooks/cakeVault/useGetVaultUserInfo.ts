@@ -17,7 +17,7 @@ const useGetVaultUserInfo = (lastUpdated?: number) => {
     //   user-specific vault contract fetches
     const fetchUserVaultInfo = async () => {
       const userContractInfo = await cakeVaultContract.methods.userInfo(account).call()
-
+      debugger // eslint-disable-line
       setUserInfo({
         shares: new BigNumber(userContractInfo.shares),
         cakeAtLastUserAction: new BigNumber(userContractInfo.cakeAtLastUserAction),

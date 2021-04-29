@@ -21,13 +21,15 @@ const InlineText = styled(Text)`
 const BountyCard = () => {
   const TranslateString = useI18n()
   const { fastRefresh } = useRefresh()
-  const { estimatedBountyReward, dollarBountyToDisplay, cakeBountyToDisplay } = useGetVaultBountyInfo(fastRefresh)
+  const { dollarCallBountyToDisplay, cakeCallBountyToDisplay, totalPendingCakeRewards } = useGetVaultBountyInfo(
+    fastRefresh,
+  )
   const { callFee } = useGetVaultFees([FeeFunctions.callFee])
   const [onPresentBountyModal] = useModal(
     <BountyModal
-      estimatedBountyReward={estimatedBountyReward}
-      cakeBountyToDisplay={cakeBountyToDisplay}
-      dollarBountyToDisplay={dollarBountyToDisplay}
+      cakeCallBountyToDisplay={cakeCallBountyToDisplay}
+      dollarCallBountyToDisplay={dollarCallBountyToDisplay}
+      totalPendingCakeRewards={totalPendingCakeRewards}
       callFee={callFee}
     />,
   )
@@ -45,13 +47,13 @@ const BountyCard = () => {
         </Flex>
         <Flex alignItems="center" justifyContent="space-between">
           <Flex flexDirection="column" mr="12px">
-            <Heading>{cakeBountyToDisplay || <Skeleton height={20} width={96} mb="2px" />}</Heading>
+            <Heading>{cakeCallBountyToDisplay || <Skeleton height={20} width={96} mb="2px" />}</Heading>
             <InlineText fontSize="12px" color="textSubtle">
-              {dollarBountyToDisplay ? `~ ${dollarBountyToDisplay} USD` : <Skeleton height={16} width={62} />}
+              {dollarCallBountyToDisplay ? `~ ${dollarCallBountyToDisplay} USD` : <Skeleton height={16} width={62} />}
             </InlineText>
           </Flex>
           <Button
-            disabled={!dollarBountyToDisplay || !cakeBountyToDisplay || !callFee}
+            disabled={!dollarCallBountyToDisplay || !cakeCallBountyToDisplay || !callFee}
             onClick={onPresentBountyModal}
             scale="sm"
           >
