@@ -21,6 +21,7 @@ export const BASE_URL = 'https://pancakeswap.finance'
 export const BASE_EXCHANGE_URL = 'https://exchange.pancakeswap.finance'
 export const BASE_ADD_LIQUIDITY_URL = `${BASE_EXCHANGE_URL}/#/add`
 export const BASE_LIQUIDITY_POOL_URL = `${BASE_EXCHANGE_URL}/#/pool`
+export const BASE_BSC_SCAN_URL = 'https://bscscan.com'
 export const LOTTERY_MAX_NUMBER_OF_TICKETS = 50
 export const LOTTERY_TICKET_PRICE = 1
 export const DEFAULT_TOKEN_DECIMAL = new BigNumber(10).pow(18)

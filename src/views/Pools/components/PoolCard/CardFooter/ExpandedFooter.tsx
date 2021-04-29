@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { getBalanceNumber } from 'utils/formatBalance'
 import useI18n from 'hooks/useI18n'
 import { Flex, MetamaskIcon, Text, LinkExternal, TimerIcon, Skeleton } from '@pancakeswap-libs/uikit'
-import { BASE_URL } from 'config'
+import { BASE_BSC_SCAN_URL, BASE_URL } from 'config'
 import { useBlock } from 'state/hooks'
 import { Pool } from 'state/types'
 import { getAddress } from 'utils/addressHelpers'
@@ -38,7 +38,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({
   const { stakingToken, earningToken, totalStaked, startBlock, endBlock, isFinished, contractAddress } = pool
 
   const tokenAddress = earningToken.address ? getAddress(earningToken.address) : ''
-  const poolContractAddress = contractAddress[process.env.REACT_APP_CHAIN_ID]
+  const poolContractAddress = getAddress(contractAddress)
   const imageSrc = `${BASE_URL}/images/tokens/${earningToken.symbol.toLowerCase()}.png`
   const isMetaMaskInScope = !!(window as WindowChain).ethereum?.isMetaMask
 
@@ -104,18 +104,13 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({
         </Flex>
       )}
       <Flex mb="2px" justifyContent="flex-end">
-        <LinkExternal bold={false} fontSize="14px" href={earningToken.projectLink} target="_blank">
+        <LinkExternal bold={false} fontSize="14px" href={earningToken.projectLink}>
           {TranslateString(412, 'View Project Site')}
         </LinkExternal>
       </Flex>
       {!isAutoVault && poolContractAddress && (
         <Flex mb="2px" justifyContent="flex-end">
-          <LinkExternal
-            bold={false}
-            fontSize="14px"
-            href={`https://bscscan.com/address/${poolContractAddress}`}
-            target="_blank"
-          >
+          <LinkExternal bold={false} fontSize="14px" href={`${BASE_BSC_SCAN_URL}/address/${poolContractAddress}`}>
             {TranslateString(412, 'View Contract')}
           </LinkExternal>
         </Flex>

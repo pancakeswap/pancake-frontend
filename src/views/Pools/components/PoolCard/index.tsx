@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js'
 import React from 'react'
-import { CardBody, Flex, Text } from '@pancakeswap-libs/uikit'
+import { CardBody, Flex, Text, CardRibbon } from '@pancakeswap-libs/uikit'
 import UnlockButton from 'components/UnlockButton'
 import useI18n from 'hooks/useI18n'
 import { getAddress } from 'utils/addressHelpers'
@@ -20,7 +20,11 @@ const PoolCard: React.FC<{ pool: Pool; account: string }> = ({ pool, account }) 
   const stakingTokenPrice = useGetApiPrice(stakingToken.address ? getAddress(stakingToken.address) : '')
 
   return (
-    <StyledCard isStaking={!isFinished && accountHasStakedBalance} isFinished={isFinished && sousId !== 0}>
+    <StyledCard
+      isStaking={!isFinished && accountHasStakedBalance}
+      isFinished={isFinished && sousId !== 0}
+      ribbon={isFinished && <CardRibbon variantColor="textDisabled" text={`${TranslateString(388, 'Finished')}`} />}
+    >
       <StyledCardHeader
         earningTokenSymbol={earningToken.symbol}
         stakingTokenSymbol={stakingToken.symbol}
