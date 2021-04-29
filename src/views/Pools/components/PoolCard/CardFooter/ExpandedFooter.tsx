@@ -52,7 +52,6 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({
       <Flex mb="2px" justifyContent="space-between" alignItems="center">
         <Text fontSize="14px">{TranslateString(999, 'Total staked:')}</Text>
         <Flex alignItems="flex-start">
-          {/* For autoVault, should totalStaked come from total shares, or the CAKE pool? */}
           {totalStaked ? (
             <>
               <Balance

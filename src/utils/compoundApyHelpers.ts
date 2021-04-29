@@ -17,7 +17,6 @@ export const tokenEarnedPerThousandDollarsCompounding = ({
   // To get the TOKEN amount earned, deduct the amount after compounding (finalAmount) from the starting TOKEN balance (principal)
   const interestEarned = finalAmount - principal
 
-  // debugger // eslint-disable-line
   return parseFloat(interestEarned.toFixed(roundingDecimals))
 }
 

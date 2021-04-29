@@ -23,7 +23,6 @@ const AprRow: React.FC<AprRowProps> = ({ pool, stakingTokenPrice, isAutoVault = 
   const { stakingToken, earningToken, totalStaked, isFinished, tokenPerBlock } = pool
 
   const earningTokenPrice = useGetApiPrice(earningToken.address ? getAddress(earningToken.address) : '')
-
   const apr = getPoolApr(
     stakingTokenPrice,
     earningTokenPrice,

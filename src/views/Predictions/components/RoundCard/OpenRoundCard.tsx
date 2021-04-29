@@ -1,10 +1,15 @@
 import React, { useState } from 'react'
+import BigNumber from 'bignumber.js'
+import { useWeb3React } from '@web3-react/core'
 import { CardBody, PlayCircleOutlineIcon, Button } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
+import { useAppDispatch } from 'state'
 import { BetPosition, Round } from 'state/types'
 import { useGetTotalIntervalBlocks } from 'state/hooks'
+import { markPositionAsEntered } from 'state/predictions'
 import useToast from 'hooks/useToast'
 import CardFlip from '../CardFlip'
+import { getBnbAmount } from '../../helpers'
 import { RoundResultBox, PrizePoolRow } from '../RoundResult'
 import MultiplierArrow from './MultiplierArrow'
 import Card from './Card'
@@ -23,7 +28,6 @@ interface OpenRoundCardProps {
 interface State {
   isSettingPosition: boolean
   position: BetPosition
-  hasEnteredPosition: boolean
 }
 
 const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
@@ -38,16 +42,13 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
   const [state, setState] = useState<State>({
     isSettingPosition: false,
     position: BetPosition.BULL,
-
-    // We keep this flag in state because it is possible despite polling for new round data
-    // after a user enters a position it returns without the position data. So we want
-    // to be able to update it immediately
-    hasEnteredPosition: false,
   })
   const TranslateString = useI18n()
   const interval = useGetTotalIntervalBlocks()
   const { toastSuccess } = useToast()
-  const { isSettingPosition, position, hasEnteredPosition } = state
+  const { account } = useWeb3React()
+  const dispatch = useAppDispatch()
+  const { isSettingPosition, position } = state
 
   // Bettable rounds do not have an endblock set so we approximate it by adding the block interval
   // to the start block
@@ -74,13 +75,21 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
     }))
   }
 
-  const handleSuccess = async () => {
+  const handleSuccess = async (decimalValue: BigNumber, hash: string) => {
     const positionDisplay = position === BetPosition.BULL ? 'UP' : 'DOWN'
 
-    setState((prevState) => ({
-      ...prevState,
-      hasEnteredPosition: true,
-    }))
+    // Optimistically set the user bet so we see the entered position immediately.
+    dispatch(
+      markPositionAsEntered({
+        account,
+        roundId: round.id,
+        partialBet: {
+          hash,
+          position,
+          amount: getBnbAmount(decimalValue).toNumber(),
+        },
+      }),
+    )
 
     handleBack()
 
@@ -105,7 +114,7 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
         <CardBody p="16px">
           <MultiplierArrow amount={betAmount} multiplier={bullMultiplier} hasEntered={hasEnteredUp} />
           <RoundResultBox isNext={canEnterPosition} isLive={!canEnterPosition}>
-            {canEnterPosition && !hasEnteredPosition ? (
+            {canEnterPosition ? (
               <>
                 <PrizePoolRow totalAmount={round.totalAmount} mb="8px" />
                 <Button
