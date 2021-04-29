@@ -1,5 +1,6 @@
 import BigNumber from 'bignumber.js'
 import { getPoolApr, getFarmApr } from 'utils/apr'
+import { BIG_TEN, BIG_ZERO } from 'utils/bigNumber'
 
 describe('getPoolApr', () => {
   it(`returns null when parameters are missing`, () => {
@@ -22,11 +23,11 @@ describe('getFarmApr', () => {
     expect(apr).toBeNull()
   })
   it(`returns null when APR is infinite`, () => {
-    const apr = getFarmApr(new BigNumber(0), new BigNumber(0), new BigNumber(0))
+    const apr = getFarmApr(BIG_ZERO, BIG_ZERO, BIG_ZERO)
     expect(apr).toBeNull()
   })
   it(`get the correct pool APR`, () => {
-    const apr = getFarmApr(new BigNumber(10), new BigNumber(1), new BigNumber(100000))
+    const apr = getFarmApr(BIG_TEN, new BigNumber(1), new BigNumber(100000))
     expect(apr).toEqual(4204800)
   })
 })

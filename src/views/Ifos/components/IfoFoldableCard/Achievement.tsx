@@ -1,12 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
-import BigNumber from 'bignumber.js'
 import { Flex, LinkExternal, Image, Text, PrizeIcon } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import { PublicIfoData } from 'hooks/ifo/types'
 import { Ifo } from 'config/constants/types'
+import { BIG_TEN } from 'utils/bigNumber'
 
-const MIN_DOLLAR_FOR_ACHIEVEMENT = new BigNumber(10)
+const MIN_DOLLAR_FOR_ACHIEVEMENT = BIG_TEN
 
 interface Props {
   ifo: Ifo
@@ -45,7 +45,7 @@ const Achievement: React.FC<Props> = ({ ifo, publicIfoData }) => {
           </Text>
           <Flex>
             <Text bold mr="8px">{`${TranslateString(999, 'IFO Shopper:')} ${campaignTitle}`}</Text>
-            <Flex>
+            <Flex alignItems="center" mr="8px">
               <PrizeIcon color="textSubtle" width="16px" mr="4px" />
               <Text color="textSubtle">{publicIfoData.numberPoints}</Text>
             </Flex>

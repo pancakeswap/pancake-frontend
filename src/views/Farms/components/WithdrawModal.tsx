@@ -48,7 +48,7 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ onConfirm, onDismiss, max
         inputTitle={TranslateString(588, 'Unstake')}
       />
       <ModalActions>
-        <Button variant="secondary" onClick={onDismiss} width="100%">
+        <Button variant="secondary" onClick={onDismiss} width="100%" disabled={pendingTx}>
           {TranslateString(462, 'Cancel')}
         </Button>
         <Button

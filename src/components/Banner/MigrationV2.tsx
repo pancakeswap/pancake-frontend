@@ -14,6 +14,7 @@ const MigrationV2 = () => {
           </Text>
         </Flex>
       }
+      defaultVisible={false}
     >
       <Box ml="48px">
         <Text color="warning" bold>

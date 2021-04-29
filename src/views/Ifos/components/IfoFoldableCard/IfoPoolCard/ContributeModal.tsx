@@ -75,8 +75,8 @@ const ContributeModal: React.FC<Props> = ({
         .send({ from: account })
     },
     onSuccess: async () => {
+      await onSuccess(valueWithTokenDecimals)
       onDismiss()
-      onSuccess(valueWithTokenDecimals)
     },
   })
 
