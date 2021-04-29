@@ -7,7 +7,7 @@ import { Flex, MetamaskIcon, Text, LinkExternal, TimerIcon, Skeleton } from '@pa
 import { BASE_BSC_SCAN_URL, BASE_URL } from 'config'
 import { useBlock } from 'state/hooks'
 import { Pool } from 'state/types'
-import { getAddress } from 'utils/addressHelpers'
+import { getAddress, getCakeVaultAddress } from 'utils/addressHelpers'
 import { registerToken } from 'utils/wallet'
 import Balance from 'components/Balance'
 
@@ -39,6 +39,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({
 
   const tokenAddress = earningToken.address ? getAddress(earningToken.address) : ''
   const poolContractAddress = getAddress(contractAddress)
+  const cakeVaultContractAddress = getCakeVaultAddress()
   const imageSrc = `${BASE_URL}/images/tokens/${earningToken.symbol.toLowerCase()}.png`
   const isMetaMaskInScope = !!(window as WindowChain).ethereum?.isMetaMask
 
@@ -50,7 +51,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({
   return (
     <ExpandedWrapper flexDirection="column">
       <Flex mb="2px" justifyContent="space-between" alignItems="center">
-        <Text fontSize="14px">{TranslateString(999, 'Total staked:')}</Text>
+        <Text small>{TranslateString(999, 'Total staked:')}</Text>
         <Flex alignItems="flex-start">
           {totalStaked ? (
             <>
@@ -73,7 +74,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({
       </Flex>
       {shouldShowBlockCountdown && (
         <Flex mb="2px" justifyContent="space-between" alignItems="center">
-          <Text fontSize="14px">{hasPoolStarted ? TranslateString(410, 'End') : TranslateString(1212, 'Start')}:</Text>
+          <Text small>{hasPoolStarted ? TranslateString(410, 'End') : TranslateString(1212, 'Start')}:</Text>
           <Flex alignItems="center">
             {blocksRemaining || blocksUntilStart ? (
               <Balance
@@ -85,7 +86,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({
             ) : (
               <Skeleton width="54px" height="21px" />
             )}
-            <Text ml="4px" color="primary" fontSize="14px">
+            <Text ml="4px" color="primary" small>
               {TranslateString(999, 'blocks')}
             </Text>
             <TimerIcon ml="4px" color="primary" />
@@ -94,22 +95,26 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({
       )}
       {isAutoVault && (
         <Flex mb="2px" justifyContent="space-between" alignItems="center">
-          <Text fontSize="14px">{TranslateString(999, 'Performance Fee')}</Text>
+          <Text small>{TranslateString(999, 'Performance Fee')}</Text>
           <Flex alignItems="center">
-            <Text ml="4px" fontSize="14px">
+            <Text ml="4px" small>
               {performanceFee / 100}%
             </Text>
           </Flex>
         </Flex>
       )}
       <Flex mb="2px" justifyContent="flex-end">
-        <LinkExternal bold={false} fontSize="14px" href={earningToken.projectLink}>
+        <LinkExternal bold={false} small href={earningToken.projectLink}>
           {TranslateString(412, 'View Project Site')}
         </LinkExternal>
       </Flex>
-      {!isAutoVault && poolContractAddress && (
+      {poolContractAddress && (
         <Flex mb="2px" justifyContent="flex-end">
-          <LinkExternal bold={false} fontSize="14px" href={`${BASE_BSC_SCAN_URL}/address/${poolContractAddress}`}>
+          <LinkExternal
+            bold={false}
+            small
+            href={`${BASE_BSC_SCAN_URL}/address/${isAutoVault ? cakeVaultContractAddress : poolContractAddress}`}
+          >
             {TranslateString(412, 'View Contract')}
           </LinkExternal>
         </Flex>
@@ -118,7 +123,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({
         <Flex justifyContent="flex-end">
           <Text
             color="primary"
-            fontSize="14px"
+            small
             onClick={() => registerToken(tokenAddress, earningToken.symbol, earningToken.decimals, imageSrc)}
           >
             Add to Metamask

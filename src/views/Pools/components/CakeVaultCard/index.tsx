@@ -8,7 +8,7 @@ import { useGetApiPrice } from 'state/hooks'
 import useLastUpdated from 'hooks/useLastUpdated'
 import useGetVaultUserInfo from 'hooks/cakeVault/useGetVaultUserInfo'
 import useGetVaultSharesInfo from 'hooks/cakeVault/useGetVaultSharesInfo'
-import useGetVaultFees, { FeeFunctions } from 'hooks/cakeVault/useGetVaultFees'
+import useGetVaultFees from 'hooks/cakeVault/useGetVaultFees'
 import { Pool } from 'state/types'
 import AprRow from '../PoolCard/AprRow'
 import StyledCard from '../PoolCard/StyledCard'
@@ -26,11 +26,7 @@ const CakeVaultCard: React.FC<{ pool: Pool; account: string }> = ({ pool, accoun
   const TranslateString = useI18n()
   const { lastUpdated, setLastUpdated } = useLastUpdated()
   const userInfo = useGetVaultUserInfo(lastUpdated)
-  const vaultFees = useGetVaultFees([
-    FeeFunctions.performanceFee,
-    FeeFunctions.withdrawalFee,
-    FeeFunctions.withdrawalFeePeriod,
-  ])
+  const vaultFees = useGetVaultFees()
   const { totalCakeInVault, pricePerFullShare } = useGetVaultSharesInfo()
   const { stakingToken } = pool
   //   Estimate & manual for now. 288 = once every 5 mins. We can change once we have a better sense of this

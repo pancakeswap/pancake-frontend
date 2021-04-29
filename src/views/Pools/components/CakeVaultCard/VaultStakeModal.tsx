@@ -53,10 +53,10 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
   const [stakeAmount, setStakeAmount] = useState('')
   const [percent, setPercent] = useState(0)
   const { hasPerformanceFee } = useWithdrawalFeeTimer(parseInt(userInfo.lastDepositedTime))
-  const usdValueStaked = stakeAmount && formatNumber(parseFloat(stakeAmount) * stakingTokenPrice)
+  const usdValueStaked = stakeAmount && formatNumber(new BigNumber(stakeAmount).times(stakingTokenPrice).toNumber())
 
   const handleStakeInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const inputValue = event.target.value ? event.target.value : '0'
+    const inputValue = event.target.value || '0'
     const convertedInput = new BigNumber(inputValue).multipliedBy(new BigNumber(10).pow(stakingToken.decimals))
     const percentage = Math.floor(convertedInput.dividedBy(stakingMax).multipliedBy(100).toNumber())
     setStakeAmount(inputValue)
@@ -85,7 +85,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
         .on('sending', () => {
           setPendingTx(true)
         })
-        .on('receipt', async () => {
+        .on('receipt', () => {
           toastSuccess(
             TranslateString(999, 'Unstaked!'),
             TranslateString(999, 'Your earnings have also been harvested to your wallet'),
@@ -109,7 +109,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
         .on('sending', () => {
           setPendingTx(true)
         })
-        .on('receipt', async () => {
+        .on('receipt', () => {
           toastSuccess(
             TranslateString(999, 'Unstaked!'),
             TranslateString(999, 'Your earnings have also been harvested to your wallet'),
@@ -136,7 +136,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
       .on('sending', () => {
         setPendingTx(true)
       })
-      .on('receipt', async () => {
+      .on('receipt', () => {
         toastSuccess(TranslateString(999, 'Staked!'), TranslateString(999, 'Your funds have been staked in the pool'))
         setPendingTx(false)
         onDismiss()

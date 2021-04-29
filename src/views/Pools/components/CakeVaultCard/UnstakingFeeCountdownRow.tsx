@@ -19,8 +19,8 @@ const UnstakingFeeCountdownRow: React.FC<UnstakingFeeCountdownRowProps> = ({
 }) => {
   const TranslateString = useI18n()
   const { secondsRemaining, hasPerformanceFee } = useWithdrawalFeeTimer(
-    parseInt(lastDepositedTime),
-    parseInt(withdrawalFeePeriod),
+    parseInt(lastDepositedTime, 10),
+    parseInt(withdrawalFeePeriod, 10),
   )
 
   const shouldShowTimer = account && lastDepositedTime && hasPerformanceFee

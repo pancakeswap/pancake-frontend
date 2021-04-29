@@ -47,7 +47,7 @@ const BountyModal: React.FC<BountyModalProps> = ({
       .on('sending', () => {
         setPendingTx(true)
       })
-      .on('receipt', async () => {
+      .on('receipt', () => {
         toastSuccess(
           TranslateString(999, 'Bounty collected!'),
           TranslateString(999, 'CAKE bounty has been sent to your wallet.'),

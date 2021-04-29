@@ -70,7 +70,7 @@ const AprRow: React.FC<AprRowProps> = ({ pool, stakingTokenPrice, isAutoVault = 
 
   return (
     <Flex alignItems="center" justifyContent="space-between">
-      <Text fontSize="16px">{isAutoVault ? TranslateString(999, 'APY') : TranslateString(736, 'APR')}:</Text>
+      <Text>{isAutoVault ? TranslateString(999, 'APY') : TranslateString(736, 'APR')}:</Text>
       {isFinished || !apr ? (
         <Skeleton width="82px" height="32px" />
       ) : (

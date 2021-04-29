@@ -77,16 +77,6 @@ export interface PoolConfig {
   isFinished?: boolean
 }
 
-export interface VaultConfig {
-  earningToken: Token
-  stakingToken: Token
-  contractAddress: Address
-  poolCategory: PoolCategory
-  tokenPerBlock: string
-  sortOrder?: number
-  isFinished?: boolean
-}
-
 export type Images = {
   lg: string
   md: string
