@@ -5,18 +5,21 @@ import useI18n from 'hooks/useI18n'
 import RecentCakeProfitBalance from './RecentCakeProfitBalance'
 
 interface RecentCakeProfitRowProps {
+  account: string
   cakeAtLastUserAction: BigNumber
   userShares: BigNumber
   pricePerFullShare: BigNumber
 }
 
 const RecentCakeProfitCountdownRow: React.FC<RecentCakeProfitRowProps> = ({
+  account,
   cakeAtLastUserAction,
   userShares,
   pricePerFullShare,
 }) => {
   const TranslateString = useI18n()
-  const shouldDisplayCakeProfit = cakeAtLastUserAction && cakeAtLastUserAction.gt(0) && userShares && userShares.gt(0)
+  const shouldDisplayCakeProfit =
+    account && cakeAtLastUserAction && cakeAtLastUserAction.gt(0) && userShares && userShares.gt(0)
 
   return (
     <Flex alignItems="center" justifyContent="space-between">

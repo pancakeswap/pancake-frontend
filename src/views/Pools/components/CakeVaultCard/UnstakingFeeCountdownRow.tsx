@@ -5,12 +5,14 @@ import useWithdrawalFeeTimer from 'hooks/cakeVault/useWithdrawalFeeTimer'
 import WithdrawalFeeTimer from './WithdrawalFeeTimer'
 
 interface UnstakingFeeCountdownRowProps {
+  account?: string
   withdrawalFee: string
   lastDepositedTime: string
   withdrawalFeePeriod?: string
 }
 
 const UnstakingFeeCountdownRow: React.FC<UnstakingFeeCountdownRowProps> = ({
+  account = true,
   withdrawalFee,
   lastDepositedTime,
   withdrawalFeePeriod = '259200',
@@ -21,13 +23,15 @@ const UnstakingFeeCountdownRow: React.FC<UnstakingFeeCountdownRowProps> = ({
     parseInt(withdrawalFeePeriod),
   )
 
+  const shouldShowTimer = account && lastDepositedTime && hasPerformanceFee
+
   return (
     <Flex alignItems="center" justifyContent="space-between">
       <Text fontSize="14px">
         {parseInt(withdrawalFee) / 100 || '-'}% {TranslateString(999, 'unstaking fee')}{' '}
-        {lastDepositedTime && hasPerformanceFee && TranslateString(999, 'until')}
+        {shouldShowTimer && TranslateString(999, 'until')}
       </Text>
-      {lastDepositedTime && hasPerformanceFee && <WithdrawalFeeTimer secondsRemaining={secondsRemaining} />}
+      {shouldShowTimer && <WithdrawalFeeTimer secondsRemaining={secondsRemaining} />}
     </Flex>
   )
 }
