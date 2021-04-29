@@ -13,7 +13,7 @@ const StyledCardHeader: React.FC<{
   isFinished?: boolean
 }> = ({ earningTokenSymbol, stakingTokenSymbol, isFinished = false }) => {
   const poolImageSrc = `${earningTokenSymbol}-${stakingTokenSymbol}.svg`.toLocaleLowerCase()
-  const isPromoted = earningTokenSymbol === 'CAKE'
+  const isPromoted = earningTokenSymbol === 'CAKE' && stakingTokenSymbol === 'CAKE'
   const activeBackground = isPromoted ? 'bubblegum' : 'cardHeader'
 
   return (

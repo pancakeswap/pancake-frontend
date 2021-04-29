@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { Button } from '@pancakeswap-libs/uikit'
 
 interface PercentageButtonProps {
-  onClick?: () => void
+  onClick: () => void
 }
 
 const StyledButton = styled(Button)`
