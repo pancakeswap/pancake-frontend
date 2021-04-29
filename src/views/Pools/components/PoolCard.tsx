@@ -13,6 +13,7 @@ import { useSousUnstake } from 'hooks/useUnstake'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { getPoolApr } from 'utils/apr'
 import { getAddress } from 'utils/addressHelpers'
+import { BIG_ZERO } from 'utils/bigNumber'
 import { useSousHarvest } from 'hooks/useHarvest'
 import Balance from 'components/Balance'
 import { PoolCategory } from 'config/constants/types'
@@ -166,7 +167,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
             ) : (
               <>
                 <Button
-                  disabled={stakedBalance.eq(new BigNumber(0)) || pendingTx}
+                  disabled={stakedBalance.eq(BIG_ZERO) || pendingTx}
                   onClick={
                     isOldSyrup
                       ? async () => {
