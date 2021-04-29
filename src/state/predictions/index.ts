@@ -125,6 +125,20 @@ export const predictionsSlice = createSlice({
         }
       }
     },
+    markPositionAsEntered: (
+      state,
+      action: PayloadAction<{ account: string; roundId: string; partialBet: Partial<Bet> }>,
+    ) => {
+      const { account, roundId, partialBet } = action.payload
+
+      state.bets = {
+        ...state.bets,
+        [account]: {
+          ...state.bets[account],
+          [roundId]: partialBet,
+        },
+      }
+    },
   },
   extraReducers: (builder) => {
     // Get round bet
@@ -176,6 +190,7 @@ export const {
   updateMarketData,
   markBetAsCollected,
   setPredictionStatus,
+  markPositionAsEntered,
 } = predictionsSlice.actions
 
 export default predictionsSlice.reducer

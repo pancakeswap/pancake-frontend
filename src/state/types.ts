@@ -223,7 +223,7 @@ export interface HistoryData {
 
 export interface BetData {
   [key: string]: {
-    [key: string]: Bet
+    [key: string]: Partial<Bet>
   }
 }
 
