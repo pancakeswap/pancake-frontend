@@ -172,12 +172,6 @@ export const getMarketData = async (): Promise<{
       query getMarketData {
         rounds(first: 5, orderBy: epoch, orderDirection: desc) {
           ${getRoundBaseFields()}
-          bets(first: 1000) {
-            ${getBetBaseFields()}
-            user {
-              ${getUserBaseFields()}
-            }
-          }
         }
         market(id: 1) {
           id
@@ -221,7 +215,7 @@ type BetHistoryWhereClause = Record<string, string | number | boolean>
 
 export const getBetHistory = async (
   where: BetHistoryWhereClause = {},
-  first = 100,
+  first = 1000,
   skip = 0,
 ): Promise<BetResponse[]> => {
   const response = await request(

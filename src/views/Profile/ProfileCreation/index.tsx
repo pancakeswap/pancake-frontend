@@ -1,15 +1,15 @@
 import React from 'react'
-import Container from 'components/layout/Container'
+import Page from 'components/layout/Page'
 import Header from './Header'
 import ProfileCreationProvider from './contexts/ProfileCreationProvider'
 import Steps from './Steps'
 
 const ProfileCreation = () => (
   <ProfileCreationProvider>
-    <Container>
+    <Page>
       <Header />
       <Steps />
-    </Container>
+    </Page>
   </ProfileCreationProvider>
 )
 

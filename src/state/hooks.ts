@@ -11,7 +11,7 @@ import { getAddress } from 'utils/addressHelpers'
 import { getBalanceNumber } from 'utils/formatBalance'
 import useRefresh from 'hooks/useRefresh'
 import { fetchFarmsPublicDataAsync, fetchPoolsPublicDataAsync, fetchPoolsUserDataAsync, setBlock } from './actions'
-import { State, Farm, Pool, ProfileState, TeamsState, AchievementState, PriceState, FarmsState, Bet } from './types'
+import { State, Farm, Pool, ProfileState, TeamsState, AchievementState, PriceState, FarmsState } from './types'
 import { fetchProfile } from './profile'
 import { fetchTeam, fetchTeams } from './teams'
 import { fetchAchievements } from './achievements'
@@ -177,12 +177,17 @@ export const useGetApiPrice = (address: string) => {
   return prices[address.toLowerCase()]
 }
 
+export const usePriceBnbBusd = (): BigNumber => {
+  const ZERO = new BigNumber(0)
+  const bnbBusdFarm = useFarmFromPid(2)
+  return bnbBusdFarm.tokenPriceVsQuote ? new BigNumber(1).div(bnbBusdFarm.tokenPriceVsQuote) : ZERO
+}
+
 export const usePriceCakeBusd = (): BigNumber => {
   const ZERO = new BigNumber(0)
   const cakeBnbFarm = useFarmFromPid(1)
-  const bnbBusdFarm = useFarmFromPid(2)
+  const bnbBusdPrice = usePriceBnbBusd()
 
-  const bnbBusdPrice = bnbBusdFarm.tokenPriceVsQuote ? new BigNumber(1).div(bnbBusdFarm.tokenPriceVsQuote) : ZERO
   const cakeBusdPrice = cakeBnbFarm.tokenPriceVsQuote ? bnbBusdPrice.times(cakeBnbFarm.tokenPriceVsQuote) : ZERO
 
   return cakeBusdPrice
@@ -261,16 +266,6 @@ export const useGetMinBetAmount = () => {
   return useMemo(() => new BigNumber(minBetAmount), [minBetAmount])
 }
 
-export const useGetUserBetByRound = (id: string, account: string): Bet => {
-  const round = useGetRound(id)
-
-  if (!account) {
-    return undefined
-  }
-
-  return round.bets.find((bet) => bet.user.address.toLowerCase() === account.toLocaleLowerCase())
-}
-
 export const useGetIsFetchingHistory = () => {
   return useSelector((state: State) => state.predictions.isFetchingHistory)
 }
@@ -282,6 +277,20 @@ export const useGetHistory = () => {
 export const useGetHistoryByAccount = (account: string) => {
   const bets = useGetHistory()
   return bets ? bets[account] : []
+}
+
+export const useGetBetByRoundId = (account: string, roundId: string) => {
+  const bets = useSelector((state: State) => state.predictions.bets)
+
+  if (!bets[account]) {
+    return null
+  }
+
+  if (!bets[account][roundId]) {
+    return null
+  }
+
+  return bets[account][roundId]
 }
 
 // Collectibles

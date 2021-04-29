@@ -34,7 +34,7 @@ interface SetPositionCardProps {
   position: BetPosition
   togglePosition: () => void
   onBack: () => void
-  onSuccess: () => Promise<void>
+  onSuccess: (decimalValue: BigNumber, hash: string) => Promise<void>
 }
 
 const dust = new BigNumber(0.01).times(new BigNumber(10).pow(18))
@@ -131,9 +131,9 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
       .once('sending', () => {
         setIsTxPending(true)
       })
-      .once('receipt', async () => {
+      .once('receipt', async (result) => {
         setIsTxPending(false)
-        await onSuccess()
+        onSuccess(decimalValue, result.transactionHash as string)
       })
       .once('error', (error) => {
         const errorMsg = TranslateString(999, 'An error occurred, unable to enter your position')

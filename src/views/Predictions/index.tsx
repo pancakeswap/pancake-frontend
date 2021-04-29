@@ -69,6 +69,7 @@ const Predictions = () => {
             currentRoundStartBlockNumber: currentRoundStartBlock,
             rounds: roundData,
             history: {},
+            bets: {},
           }),
         )
       } else {
