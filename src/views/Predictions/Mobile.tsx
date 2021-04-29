@@ -26,6 +26,15 @@ const StyledMobile = styled.div`
   }
 `
 
+const View = styled.div<{ isVisible: boolean }>`
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  visibility: ${({ isVisible }) => (isVisible ? 'visible' : 'hidden')};
+`
+
 const getView = (isHistoryPaneOpen: boolean, isChartPaneOpen: boolean): PageView => {
   if (isHistoryPaneOpen) {
     return PageView.HISTORY
@@ -46,16 +55,20 @@ const Mobile: React.FC = () => {
 
   return (
     <StyledMobile>
-      <Box height="100%" overflow="hidden">
-        {view === PageView.POSITIONS && (
+      <Box height="100%" overflow="hidden" position="relative">
+        <View isVisible={view === PageView.POSITIONS}>
           <Flex alignItems="center" height="100%">
             {status === PredictionStatus.ERROR && <ErrorNotification />}
             {status === PredictionStatus.PAUSED && <PauseNotification />}
             {status === PredictionStatus.LIVE && <Positions />}
           </Flex>
-        )}
-        {view === PageView.CHART && <Chart />}
-        {view === PageView.HISTORY && <History />}
+        </View>
+        <View isVisible={view === PageView.CHART}>
+          <Chart />
+        </View>
+        <View isVisible={view === PageView.HISTORY}>
+          <History />
+        </View>
       </Box>
       <MobileMenu />
     </StyledMobile>
