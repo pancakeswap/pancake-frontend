@@ -1,16 +1,17 @@
 import { useEffect, useState } from 'react'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
+import { BIG_ZERO } from 'utils/bigNumber'
 import { useCakeVaultContract } from 'hooks/useContract'
 
 const useGetVaultUserInfo = (lastUpdated?: number) => {
   const { account } = useWeb3React()
   const cakeVaultContract = useCakeVaultContract()
   const [userInfo, setUserInfo] = useState({
-    shares: null,
-    cakeAtLastUserAction: null,
-    lastDepositedTime: null,
-    lastUserActionTime: null,
+    shares: BIG_ZERO,
+    cakeAtLastUserAction: BIG_ZERO,
+    lastDepositedTime: '',
+    lastUserActionTime: '',
   })
 
   useEffect(() => {

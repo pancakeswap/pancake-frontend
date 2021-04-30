@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { Box, CardBody, Flex, LinkExternal, PlayCircleOutlineIcon, Text, useTooltip } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import { Round, BetPosition } from 'state/types'
-import { useGetBufferBlocks, useGetIntervalBlocks } from 'state/hooks'
+import { useBlock, useGetIntervalBlocks } from 'state/hooks'
 import { useBnbUsdtTicker } from 'hooks/ticker'
 import BlockProgress from 'components/BlockProgress'
 import { formatUsd, getBubbleGumBackground } from '../../helpers'
@@ -13,6 +13,7 @@ import MultiplierArrow from './MultiplierArrow'
 import Card from './Card'
 import CardHeader from './CardHeader'
 import CanceledRoundCard from './CanceledRoundCard'
+import CalculatingCard from './CalculatingCard'
 
 interface LiveRoundCardProps {
   round: Round
@@ -44,11 +45,11 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
   const TranslateString = useI18n()
   const { lockPrice, lockBlock, totalAmount } = round
   const { stream } = useBnbUsdtTicker()
+  const { currentBlock } = useBlock()
   const totalInterval = useGetIntervalBlocks()
-  const bufferBlocks = useGetBufferBlocks()
   const isBull = stream?.lastPrice > lockPrice
   const priceColor = isBull ? 'success' : 'failure'
-  const estimatedEndBlock = lockBlock + totalInterval + bufferBlocks / 2
+  const estimatedEndBlock = lockBlock + totalInterval
   const priceDifference = stream?.lastPrice - lockPrice
 
   const tooltipContent = (
@@ -66,6 +67,10 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
 
   if (round.failed) {
     return <CanceledRoundCard round={round} />
+  }
+
+  if (currentBlock > estimatedEndBlock) {
+    return <CalculatingCard round={round} />
   }
 
   return (

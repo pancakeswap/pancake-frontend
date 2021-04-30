@@ -48,7 +48,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
   const usdValueStaked = stakeAmount && formatNumber(new BigNumber(stakeAmount).times(stakingTokenPrice).toNumber())
 
   const handleStakeInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const inputValue = event.target.value ? event.target.value : '0'
+    const inputValue = event.target.value || '0'
     const convertedInput = getDecimalAmount(new BigNumber(inputValue), stakingToken.decimals)
     const percentage = Math.floor(convertedInput.dividedBy(stakingMax).multipliedBy(100).toNumber())
     setStakeAmount(inputValue)

@@ -36,7 +36,8 @@ const Pools: React.FC = () => {
     () => finishedPools.some((pool) => pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0)),
     [finishedPools],
   )
-  const cakePool = useMemo(() => openPools.filter((pool) => pool.sousId === 0)[0], [openPools])
+  // This pool is passed explicitly to the cake vault
+  const cakePoolData = useMemo(() => openPools.find((pool) => pool.sousId === 0), [openPools])
 
   return (
     <>
@@ -67,7 +68,7 @@ const Pools: React.FC = () => {
         <FlexLayout>
           <Route exact path={`${path}`}>
             <>
-              <CakeVaultCard pool={cakePool} account={account} />
+              <CakeVaultCard pool={cakePoolData} account={account} />
               {stakedOnly
                 ? orderBy(stakedOnlyPools, ['sortOrder']).map((pool) => (
                     <PoolCard key={pool.sousId} pool={pool} account={account} />

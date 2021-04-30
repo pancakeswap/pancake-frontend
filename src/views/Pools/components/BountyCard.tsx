@@ -15,7 +15,7 @@ import {
 } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import useRefresh from 'hooks/useRefresh'
-import useGetVaultFees, { FeeFunctions } from 'hooks/cakeVault/useGetVaultFees'
+import useGetVaultFees from 'hooks/cakeVault/useGetVaultFees'
 import useGetVaultBountyInfo from 'hooks/cakeVault/useGetVaultBountyInfo'
 import BountyModal from './BountyModal'
 
@@ -52,7 +52,7 @@ const BountyCard = () => {
       </Box>
     </Box>
   )
-  const { callFee } = useGetVaultFees([FeeFunctions.callFee])
+  const { callFee } = useGetVaultFees()
   const [onPresentBountyModal] = useModal(
     <BountyModal
       cakeCallBountyToDisplay={cakeCallBountyToDisplay}

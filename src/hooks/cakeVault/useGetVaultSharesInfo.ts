@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import BigNumber from 'bignumber.js'
 import { convertSharesToCake } from 'views/Pools/helpers'
 import { useCakeVaultContract } from 'hooks/useContract'
+import makeBatchRequest from 'utils/makeBatchRequest'
 
 const useGetVaultSharesInfo = (lastUpdated?: number) => {
   const cakeVaultContract = useCakeVaultContract()
@@ -10,22 +11,20 @@ const useGetVaultSharesInfo = (lastUpdated?: number) => {
   const [pricePerFullShare, setPricePerFullShare] = useState(null)
 
   useEffect(() => {
-    const getPricePerShare = async () => {
-      const sharePrice = await cakeVaultContract.methods.getPricePerFullShare().call()
-      setPricePerFullShare(new BigNumber(sharePrice))
-    }
-    getPricePerShare()
-  }, [cakeVaultContract, lastUpdated])
-
-  useEffect(() => {
     const getTotalShares = async () => {
-      const shares = await cakeVaultContract.methods.totalShares().call()
-      const { cakeAsBigNumber } = convertSharesToCake(new BigNumber(shares), pricePerFullShare)
-      setTotalShares(new BigNumber(shares))
-      setTotalCakeInVault(cakeAsBigNumber)
+      const [sharePrice, shares] = await makeBatchRequest([
+        cakeVaultContract.methods.getPricePerFullShare().call,
+        cakeVaultContract.methods.totalShares().call,
+      ])
+      const sharePriceAsBigNumber = new BigNumber(sharePrice as string)
+      const totalSharesAsBigNumber = new BigNumber(shares as string)
+      const totalCakeInVaultEstimate = convertSharesToCake(totalSharesAsBigNumber, sharePriceAsBigNumber)
+      setPricePerFullShare(sharePriceAsBigNumber)
+      setTotalShares(totalSharesAsBigNumber)
+      setTotalCakeInVault(totalCakeInVaultEstimate.cakeAsBigNumber)
     }
     getTotalShares()
-  }, [cakeVaultContract, lastUpdated, pricePerFullShare])
+  }, [cakeVaultContract, lastUpdated])
 
   return { totalShares, totalCakeInVault, pricePerFullShare }
 }

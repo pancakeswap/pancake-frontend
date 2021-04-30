@@ -35,8 +35,8 @@ const UnstakingFeeCountdownRow: React.FC<UnstakingFeeCountdownRowProps> = ({
   )
 
   const { secondsRemaining, hasPerformanceFee } = useWithdrawalFeeTimer(
-    parseInt(lastDepositedTime),
-    parseInt(withdrawalFeePeriod),
+    parseInt(lastDepositedTime, 10),
+    parseInt(withdrawalFeePeriod, 10),
   )
 
   const shouldShowTimer = account && lastDepositedTime && hasPerformanceFee
@@ -45,8 +45,10 @@ const UnstakingFeeCountdownRow: React.FC<UnstakingFeeCountdownRowProps> = ({
     <Flex alignItems="center" justifyContent="space-between">
       {tooltipVisible && tooltip}
       <Text ref={targetRef} fontSize="14px">
-        {feeAsDecimal || '-'}% {TranslateString(999, 'unstaking fee')}{' '}
-        {shouldShowTimer && TranslateString(999, 'until')}
+        {parseInt(withdrawalFee) / 100 || '-'}%{' '}
+        {shouldShowTimer
+          ? TranslateString(999, 'unstaking fee until')
+          : TranslateString(999, 'unstaking fee if withdrawn within 72h')}
       </Text>
       {shouldShowTimer && <WithdrawalFeeTimer secondsRemaining={secondsRemaining} />}
     </Flex>

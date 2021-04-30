@@ -3,6 +3,7 @@ import BigNumber from 'bignumber.js'
 import { useGetApiPrice } from 'state/hooks'
 import { useCakeVaultContract } from 'hooks/useContract'
 import { getFullDisplayBalance } from 'utils/formatBalance'
+import makeBatchRequest from 'utils/makeBatchRequest'
 import { getCakeAddress } from 'utils/addressHelpers'
 
 const useGetVaultBountyInfo = (refresh?: number) => {
@@ -12,37 +13,31 @@ const useGetVaultBountyInfo = (refresh?: number) => {
   const [dollarCallBountyToDisplay, setDollarBountyToDisplay] = useState(null)
   const [cakeCallBountyToDisplay, setCakeBountyToDisplay] = useState(null)
 
-  const stakingTokenPrice = useGetApiPrice(getCakeAddress())
+  const cakePrice = useGetApiPrice(getCakeAddress())
 
   useEffect(() => {
     // Call contract to get estimated rewards
-    const calculateHarvestCakeRewards = async () => {
-      const estimatedRewards = await cakeVaultContract.methods.calculateHarvestCakeRewards().call()
-      setEstimatedCallBountyReward(new BigNumber(estimatedRewards))
+    const fetchRewards = async () => {
+      const [estimatedRewards, pendingCakeRewards] = await makeBatchRequest([
+        cakeVaultContract.methods.calculateHarvestCakeRewards().call,
+        cakeVaultContract.methods.calculateTotalPendingCakeRewards().call,
+      ])
+      setEstimatedCallBountyReward(new BigNumber(estimatedRewards as string))
+      setTotalPendingCakeRewards(new BigNumber(pendingCakeRewards as string))
     }
-    calculateHarvestCakeRewards()
+    fetchRewards()
   }, [cakeVaultContract, refresh])
 
   useEffect(() => {
-    // Call contract to get total pending cake rewards (doesn't update on refresh)
-    const calculateTotalPendingCakeRewards = async () => {
-      const pendingCakeRewards = await cakeVaultContract.methods.calculateTotalPendingCakeRewards().call()
-      setTotalPendingCakeRewards(new BigNumber(pendingCakeRewards))
-    }
-    calculateTotalPendingCakeRewards()
-  }, [cakeVaultContract])
-
-  useEffect(() => {
     // Convert estimated rewards to dollars and a cake display value
-    if (estimatedCallBountyReward && stakingTokenPrice) {
-      // Reduce decimals for production
-      const estimatedDollars = getFullDisplayBalance(estimatedCallBountyReward.multipliedBy(stakingTokenPrice), 18, 4)
-      // Reduce decimals for production
-      const estimatedCake = getFullDisplayBalance(estimatedCallBountyReward, 18, 8)
+    if (estimatedCallBountyReward && cakePrice) {
+      const dollarValueOfReward = estimatedCallBountyReward.multipliedBy(cakePrice)
+      const estimatedDollars = getFullDisplayBalance(dollarValueOfReward, 18, 2)
+      const estimatedCake = getFullDisplayBalance(estimatedCallBountyReward, 18, 3)
       setDollarBountyToDisplay(estimatedDollars)
       setCakeBountyToDisplay(estimatedCake)
     }
-  }, [stakingTokenPrice, estimatedCallBountyReward])
+  }, [cakePrice, estimatedCallBountyReward])
 
   return { estimatedCallBountyReward, dollarCallBountyToDisplay, cakeCallBountyToDisplay, totalPendingCakeRewards }
 }
