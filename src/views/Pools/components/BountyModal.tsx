@@ -8,6 +8,8 @@ import { useCakeVaultContract } from 'hooks/useContract'
 import { getFullDisplayBalance } from 'utils/formatBalance'
 import useTheme from 'hooks/useTheme'
 import useToast from 'hooks/useToast'
+import UnlockButton from '../../../components/UnlockButton'
+import { ActionContent } from '../../Farms/components/FarmTable/Actions/styles'
 
 interface BountyModalProps {
   cakeCallBountyToDisplay: string
@@ -104,14 +106,18 @@ const BountyModal: React.FC<BountyModalProps> = ({
           {callFeeAsDecimal}%
         </Text>
       </Flex>
-      <Button
-        isLoading={pendingTx}
-        endIcon={pendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
-        onClick={handleConfirmClick}
-        mb="28px"
-      >
-        {TranslateString(464, 'Confirm')}
-      </Button>
+      {!account ? (
+        <UnlockButton width="100%" />
+      ) : (
+        <Button
+          isLoading={pendingTx}
+          endIcon={pendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
+          onClick={handleConfirmClick}
+          mb="28px"
+        >
+          {TranslateString(464, 'Confirm')}
+        </Button>
+      )}
       <Flex ref={targetRef} justifyContent="center" alignItems="center">
         <Text fontSize="16px" bold color="textSubtle" mr="4px">
           {TranslateString(999, "What's this?")}
