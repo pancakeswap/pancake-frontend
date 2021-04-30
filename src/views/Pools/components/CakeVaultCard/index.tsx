@@ -22,7 +22,11 @@ const StyledCardBody = styled(CardBody)<{ isLoading: boolean }>`
   min-height: ${({ isLoading }) => (isLoading ? '0' : '254px')};
 `
 
-const CakeVaultCard: React.FC<{ pool: Pool; account: string }> = ({ pool, account }) => {
+const CakeVaultCard: React.FC<{ pool: Pool; account: string; showStakedOnly: boolean }> = ({
+  pool,
+  account,
+  showStakedOnly,
+}) => {
   const TranslateString = useI18n()
   const { lastUpdated, setLastUpdated } = useLastUpdated()
   const userInfo = useGetVaultUserInfo(lastUpdated)
@@ -35,65 +39,69 @@ const CakeVaultCard: React.FC<{ pool: Pool; account: string }> = ({ pool, accoun
   const stakingTokenPrice = useGetApiPrice(stakingToken.address ? getAddress(stakingToken.address) : '')
   const isLoading = !pool.userData || !userInfo.shares
 
-  return (
-    <StyledCard isStaking={accountHasSharesStaked}>
-      <StyledCardHeader isAutoVault earningTokenSymbol="CAKE" stakingTokenSymbol="CAKE" />
-      <StyledCardBody isLoading={isLoading}>
-        <AprRow
-          pool={pool}
-          stakingTokenPrice={stakingTokenPrice}
-          isAutoVault
-          compoundFrequency={timesCompoundedDaily}
-        />
-        <Box mt="24px">
-          <RecentCakeProfitRow
-            account={account}
-            cakeAtLastUserAction={userInfo.cakeAtLastUserAction}
-            userShares={userInfo.shares}
-            pricePerFullShare={pricePerFullShare}
+  if ((showStakedOnly && accountHasSharesStaked) || !showStakedOnly) {
+    return (
+      <StyledCard isStaking={accountHasSharesStaked}>
+        <StyledCardHeader isAutoVault earningTokenSymbol="CAKE" stakingTokenSymbol="CAKE" />
+        <StyledCardBody isLoading={isLoading}>
+          <AprRow
+            pool={pool}
+            stakingTokenPrice={stakingTokenPrice}
+            isAutoVault
+            compoundFrequency={timesCompoundedDaily}
           />
-        </Box>
-        <Box mt="8px">
-          <UnstakingFeeCountdownRow
-            account={account}
-            withdrawalFee={vaultFees.withdrawalFee}
-            withdrawalFeePeriod={vaultFees.withdrawalFeePeriod}
-            lastDepositedTime={accountHasSharesStaked && userInfo.lastDepositedTime}
-          />
-        </Box>
-        <Flex mt="24px" flexDirection="column">
-          {account ? (
-            <VaultCardActions
-              pool={pool}
-              userInfo={userInfo}
-              pricePerFullShare={pricePerFullShare}
-              vaultFees={vaultFees}
-              stakingTokenPrice={stakingTokenPrice}
-              accountHasSharesStaked={accountHasSharesStaked}
+          <Box mt="24px">
+            <RecentCakeProfitRow
               account={account}
-              lastUpdated={lastUpdated}
-              setLastUpdated={setLastUpdated}
-              isLoading={isLoading}
+              cakeAtLastUserAction={userInfo.cakeAtLastUserAction}
+              userShares={userInfo.shares}
+              pricePerFullShare={pricePerFullShare}
             />
-          ) : (
-            <>
-              <Text mb="10px" textTransform="uppercase" fontSize="12px" color="textSubtle" bold>
-                {TranslateString(999, 'Start earning')}
-              </Text>
-              <UnlockButton />
-            </>
-          )}
-        </Flex>
-      </StyledCardBody>
-      <CardFooter
-        pool={pool}
-        account={account}
-        performanceFee={vaultFees.performanceFee}
-        isAutoVault
-        totalCakeInVault={totalCakeInVault}
-      />
-    </StyledCard>
-  )
+          </Box>
+          <Box mt="8px">
+            <UnstakingFeeCountdownRow
+              account={account}
+              withdrawalFee={vaultFees.withdrawalFee}
+              withdrawalFeePeriod={vaultFees.withdrawalFeePeriod}
+              lastDepositedTime={accountHasSharesStaked && userInfo.lastDepositedTime}
+            />
+          </Box>
+          <Flex mt="24px" flexDirection="column">
+            {account ? (
+              <VaultCardActions
+                pool={pool}
+                userInfo={userInfo}
+                pricePerFullShare={pricePerFullShare}
+                vaultFees={vaultFees}
+                stakingTokenPrice={stakingTokenPrice}
+                accountHasSharesStaked={accountHasSharesStaked}
+                account={account}
+                lastUpdated={lastUpdated}
+                setLastUpdated={setLastUpdated}
+                isLoading={isLoading}
+              />
+            ) : (
+              <>
+                <Text mb="10px" textTransform="uppercase" fontSize="12px" color="textSubtle" bold>
+                  {TranslateString(999, 'Start earning')}
+                </Text>
+                <UnlockButton />
+              </>
+            )}
+          </Flex>
+        </StyledCardBody>
+        <CardFooter
+          pool={pool}
+          account={account}
+          performanceFee={vaultFees.performanceFee}
+          isAutoVault
+          totalCakeInVault={totalCakeInVault}
+        />
+      </StyledCard>
+    )
+  }
+
+  return <></>
 }
 
 export default CakeVaultCard
