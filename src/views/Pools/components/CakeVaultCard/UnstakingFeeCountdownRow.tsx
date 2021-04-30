@@ -1,6 +1,5 @@
 import React from 'react'
 import { Flex, Text } from '@pancakeswap-libs/uikit'
-import { useWeb3React } from '@web3-react/core'
 import useI18n from 'hooks/useI18n'
 import useWithdrawalFeeTimer from 'hooks/cakeVault/useWithdrawalFeeTimer'
 import WithdrawalFeeTimer from './WithdrawalFeeTimer'
