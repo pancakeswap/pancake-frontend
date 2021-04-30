@@ -1,5 +1,5 @@
 import React from 'react'
-import { Flex, Text } from '@pancakeswap-libs/uikit'
+import { Flex, Text, useTooltip, Box } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import useWithdrawalFeeTimer from 'hooks/cakeVault/useWithdrawalFeeTimer'
 import WithdrawalFeeTimer from './WithdrawalFeeTimer'
@@ -18,6 +18,22 @@ const UnstakingFeeCountdownRow: React.FC<UnstakingFeeCountdownRowProps> = ({
   withdrawalFeePeriod = '259200',
 }) => {
   const TranslateString = useI18n()
+  const feeAsDecimal = parseInt(withdrawalFee) / 100 || '-'
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(
+    <Box>
+      <Box style={{ fontWeight: 'bold' }} mb="4px">
+        {`${TranslateString(999, `Unstaking fee:`)} ${feeAsDecimal}%`}
+      </Box>
+      <Box>
+        {TranslateString(
+          999,
+          'Only applies within 3 days of staking. Unstaking after 3 days will not include a fee. Timer resets every time you stake new CAKE in the pool.',
+        )}
+      </Box>
+    </Box>,
+    'bottom-end',
+  )
+
   const { secondsRemaining, hasPerformanceFee } = useWithdrawalFeeTimer(
     parseInt(lastDepositedTime, 10),
     parseInt(withdrawalFeePeriod, 10),
@@ -27,7 +43,8 @@ const UnstakingFeeCountdownRow: React.FC<UnstakingFeeCountdownRowProps> = ({
 
   return (
     <Flex alignItems="center" justifyContent="space-between">
-      <Text fontSize="14px">
+      {tooltipVisible && tooltip}
+      <Text ref={targetRef} fontSize="14px">
         {parseInt(withdrawalFee) / 100 || '-'}%{' '}
         {shouldShowTimer
           ? TranslateString(999, 'unstaking fee until')
