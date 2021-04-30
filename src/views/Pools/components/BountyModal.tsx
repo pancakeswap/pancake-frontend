@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
-import { Modal, Text, Flex, Button, HelpIcon, AutoRenewIcon } from '@pancakeswap-libs/uikit'
+import { Modal, Text, Flex, Button, HelpIcon, AutoRenewIcon, useTooltip } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import { useCakeVaultContract } from 'hooks/useContract'
 import { getFullDisplayBalance } from 'utils/formatBalance'
@@ -15,6 +15,7 @@ interface BountyModalProps {
   totalPendingCakeRewards: BigNumber
   callFee: number
   onDismiss?: () => void
+  TooltipComponent: React.ElementType
 }
 
 const Divider = styled.div`
@@ -30,6 +31,7 @@ const BountyModal: React.FC<BountyModalProps> = ({
   totalPendingCakeRewards,
   callFee,
   onDismiss,
+  TooltipComponent,
 }) => {
   const TranslateString = useI18n()
   const { account } = useWeb3React()
@@ -39,6 +41,7 @@ const BountyModal: React.FC<BountyModalProps> = ({
   const [pendingTx, setPendingTx] = useState(false)
   const callFeeAsDecimal = callFee / 100
   const totalYieldToDisplay = getFullDisplayBalance(totalPendingCakeRewards, 18, 3)
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(<TooltipComponent />, 'bottom-end')
 
   const handleConfirmClick = async () => {
     cakeVaultContract.methods
@@ -74,6 +77,7 @@ const BountyModal: React.FC<BountyModalProps> = ({
       onDismiss={onDismiss}
       headerBackground={theme.colors.gradients.cardHeader}
     >
+      {tooltipVisible && tooltip}
       <Flex alignItems="flex-start" justifyContent="space-between">
         <Text>{TranslateString(999, "You'll claim")}</Text>
         <Flex flexDirection="column">
@@ -108,7 +112,7 @@ const BountyModal: React.FC<BountyModalProps> = ({
       >
         {TranslateString(464, 'Confirm')}
       </Button>
-      <Flex justifyContent="center" alignItems="center">
+      <Flex ref={targetRef} justifyContent="center" alignItems="center">
         <Text fontSize="16px" bold color="textSubtle" mr="4px">
           {TranslateString(999, "What's this?")}
         </Text>

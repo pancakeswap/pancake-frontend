@@ -3,7 +3,7 @@ import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import { getBalanceNumber } from 'utils/formatBalance'
 import useI18n from 'hooks/useI18n'
-import { Flex, MetamaskIcon, Text, LinkExternal, TimerIcon, Skeleton } from '@pancakeswap-libs/uikit'
+import { Flex, MetamaskIcon, Text, LinkExternal, TimerIcon, Skeleton, useTooltip } from '@pancakeswap-libs/uikit'
 import { BASE_BSC_SCAN_URL, BASE_URL } from 'config'
 import { useBlock } from 'state/hooks'
 import { Pool } from 'state/types'
@@ -47,6 +47,11 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({
   const blocksUntilStart = Math.max(startBlock - currentBlock, 0)
   const blocksRemaining = Math.max(endBlock - currentBlock, 0)
   const hasPoolStarted = blocksUntilStart === 0 && blocksRemaining > 0
+
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(
+    TranslateString(999, 'Subtracted automatically from each yield harvest and burned.'),
+    'bottom-end',
+  )
 
   return (
     <ExpandedWrapper flexDirection="column">
@@ -95,7 +100,10 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({
       )}
       {isAutoVault && (
         <Flex mb="2px" justifyContent="space-between" alignItems="center">
-          <Text small>{TranslateString(999, 'Performance Fee')}</Text>
+          {tooltipVisible && tooltip}
+          <Text ref={targetRef} fontSize="14px">
+            {TranslateString(999, 'Performance Fee')}
+          </Text>
           <Flex alignItems="center">
             <Text ml="4px" small>
               {performanceFee / 100}%

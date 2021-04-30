@@ -1,7 +1,8 @@
 import React from 'react'
 import BigNumber from 'bignumber.js'
-import { Text } from '@pancakeswap-libs/uikit'
+import { Text, useTooltip } from '@pancakeswap-libs/uikit'
 import { getFullDisplayBalance } from 'utils/formatBalance'
+import useI18n from 'hooks/useI18n'
 import { convertSharesToCake } from '../../helpers'
 
 interface RecentCakeProfitBalanceProps {
@@ -19,7 +20,21 @@ const RecentCakeProfitBalance: React.FC<RecentCakeProfitBalanceProps> = ({
   const cakeProfit = currentSharesAsCake.cakeAsBigNumber.minus(cakeAtLastUserAction)
   const cakeToDisplay = cakeProfit.gte(0) ? getFullDisplayBalance(cakeProfit, 18, 5) : '0'
 
-  return <Text fontSize="14px">{cakeToDisplay}</Text>
+  const TranslateString = useI18n()
+
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(
+    TranslateString(999, 'Your estimated earnings since last manual stake or unstake:'),
+    'bottom-end',
+  )
+
+  return (
+    <>
+      {tooltipVisible && tooltip}
+      <Text ref={targetRef} fontSize="14px">
+        {cakeToDisplay}
+      </Text>
+    </>
+  )
 }
 
 export default RecentCakeProfitBalance

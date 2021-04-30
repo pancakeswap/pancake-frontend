@@ -1,5 +1,5 @@
 import React from 'react'
-import { Flex, Text, IconButton, useModal, CalculateIcon, Skeleton } from '@pancakeswap-libs/uikit'
+import { Flex, Text, IconButton, useModal, CalculateIcon, Skeleton, useTooltip } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { getPoolApr } from 'utils/apr'
@@ -21,6 +21,13 @@ interface AprRowProps {
 const AprRow: React.FC<AprRowProps> = ({ pool, stakingTokenPrice, isAutoVault = false, compoundFrequency = 1 }) => {
   const TranslateString = useI18n()
   const { stakingToken, earningToken, totalStaked, isFinished, tokenPerBlock } = pool
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(
+    TranslateString(
+      999,
+      'APY includes compounding, APR doesn’t. This pool’s CAKE is compounded automatically, so we show APY.',
+    ),
+    'bottom-end',
+  )
 
   const earningTokenPrice = useGetApiPrice(earningToken.address ? getAddress(earningToken.address) : '')
   const apr = getPoolApr(
@@ -70,7 +77,10 @@ const AprRow: React.FC<AprRowProps> = ({ pool, stakingTokenPrice, isAutoVault = 
 
   return (
     <Flex alignItems="center" justifyContent="space-between">
-      <Text>{isAutoVault ? TranslateString(999, 'APY') : TranslateString(736, 'APR')}:</Text>
+      {tooltipVisible && tooltip}
+      <Text ref={targetRef} fontSize="16px">
+        {isAutoVault ? TranslateString(999, 'APY') : TranslateString(736, 'APR')}:
+      </Text>
       {isFinished || !apr ? (
         <Skeleton width="82px" height="32px" />
       ) : (
