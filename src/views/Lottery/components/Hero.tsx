@@ -18,11 +18,6 @@ const ComeBack = styled(Text)`
   -webkit-text-fill-color: transparent;
 `
 
-const LearnMore = styled(Text)`
-  color: ${({ theme }) => theme.colors.primary};
-  font-weight: 600;
-`
-
 const LearnMoreLink = styled(Link)`
   font-weight: 600;
   margin-top: 20px;
@@ -96,15 +91,15 @@ const Hero = () => {
         <LeftWrapper>
           <Title>{TranslateString(999, 'The Lottery Is Changing!')}</Title>
           <ComeBack>{TranslateString(999, 'Come back soon!')}</ComeBack>
-          <LearnMore>
-            <LearnMoreLink
-              external
-              href="https://voting.pancakeswap.finance/#/pancake/proposal/QmU8pcbmBrfbfVQXMMxmkExDq3mYq4s5cbBuFe6uCZzdmX"
-            >
+          <LearnMoreLink
+            external
+            href="https://voting.pancakeswap.finance/#/pancake/proposal/QmU8pcbmBrfbfVQXMMxmkExDq3mYq4s5cbBuFe6uCZzdmX"
+          >
+            <Text bold color="primary">
               {TranslateString(999, 'Learn more')}
-              <ArrowForwardIcon color="primary" />
-            </LearnMoreLink>
-          </LearnMore>
+            </Text>
+            <ArrowForwardIcon color="primary" />
+          </LearnMoreLink>
         </LeftWrapper>
         <RightWrapper>
           <img src="/images/tombola.png" alt="lottery bunny" />
