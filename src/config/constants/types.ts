@@ -149,6 +149,6 @@ export type Campaign = {
 
 export type PageMeta = {
   title: string
-  description: string
-  image: string
+  description?: string
+  image?: string
 }
