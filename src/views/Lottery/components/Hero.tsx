@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Heading, Text, ArrowForwardIcon, useMatchBreakpoints } from '@pancakeswap-libs/uikit'
+import { Heading, Text, ArrowForwardIcon, Link } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import Container from 'components/layout/Container'
 
@@ -23,7 +23,7 @@ const LearnMore = styled(Text)`
   font-weight: 600;
 `
 
-const LearnMoreLink = styled.a`
+const LearnMoreLink = styled(Link)`
   font-weight: 600;
   margin-top: 20px;
   display: flex;
@@ -97,7 +97,10 @@ const Hero = () => {
           <Title>{TranslateString(999, 'The Lottery Is Changing!')}</Title>
           <ComeBack>{TranslateString(999, 'Come back soon!')}</ComeBack>
           <LearnMore>
-            <LearnMoreLink href="https://voting.pancakeswap.finance/#/pancake/proposal/QmU8pcbmBrfbfVQXMMxmkExDq3mYq4s5cbBuFe6uCZzdmX">
+            <LearnMoreLink
+              external
+              href="https://voting.pancakeswap.finance/#/pancake/proposal/QmU8pcbmBrfbfVQXMMxmkExDq3mYq4s5cbBuFe6uCZzdmX"
+            >
               {TranslateString(999, 'Learn more')}
               <ArrowForwardIcon color="primary" />
             </LearnMoreLink>
