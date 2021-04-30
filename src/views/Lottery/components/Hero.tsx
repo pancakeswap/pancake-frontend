@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Heading, Text, ArrowForwardIcon, Link } from '@pancakeswap-libs/uikit'
+import { Heading, Text, LinkExternal } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import Container from 'components/layout/Container'
 
@@ -85,17 +85,14 @@ const Hero = () => {
         <LeftWrapper>
           <Title>{TranslateString(999, 'The Lottery Is Changing!')}</Title>
           <ComeBack>{TranslateString(999, 'Come back soon!')}</ComeBack>
-          <Link
+          <LinkExternal
             bold
             mt={20}
             external
             href="https://voting.pancakeswap.finance/#/pancake/proposal/QmU8pcbmBrfbfVQXMMxmkExDq3mYq4s5cbBuFe6uCZzdmX"
           >
-            <Text bold color="primary">
-              {TranslateString(999, 'Learn more')}
-            </Text>
-            <ArrowForwardIcon color="primary" />
-          </Link>
+            {TranslateString(999, 'Learn more')}
+          </LinkExternal>
         </LeftWrapper>
         <RightWrapper>
           <img src="/images/tombola.png" alt="lottery bunny" />
