@@ -164,7 +164,10 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
         </Text>
         {performanceFee && (
           <Text mt="14px" fontSize="12px" color="textSubtle">
-            {TranslateString(999, `All rates factor in this pool's ${performanceFee}% performance fee`)}
+            {TranslateString(
+              999,
+              `All estimated rates take into account this pool's ${performanceFee}% performance fee`,
+            )}
           </Text>
         )}
       </Box>
