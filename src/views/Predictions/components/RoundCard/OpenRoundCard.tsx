@@ -15,7 +15,6 @@ import MultiplierArrow from './MultiplierArrow'
 import Card from './Card'
 import CardHeader from './CardHeader'
 import SetPositionCard from './SetPositionCard'
-import CalculatingCard from './CalculatingCard'
 
 interface OpenRoundCardProps {
   round: Round
@@ -117,10 +116,6 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
     )
   }
 
-  if (isBufferPhase) {
-    return <CalculatingCard round={round} />
-  }
-
   return (
     <CardFlip isFlipped={isSettingPosition} height="404px">
       <Card>
@@ -142,7 +137,7 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
                   width="100%"
                   onClick={() => handleSetPosition(BetPosition.BULL)}
                   mb="4px"
-                  disabled={!canEnterPosition}
+                  disabled={!canEnterPosition || isBufferPhase}
                 >
                   {TranslateString(999, 'Enter UP')}
                 </Button>
@@ -150,7 +145,7 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
                   variant="danger"
                   width="100%"
                   onClick={() => handleSetPosition(BetPosition.BEAR)}
-                  disabled={!canEnterPosition}
+                  disabled={!canEnterPosition || isBufferPhase}
                 >
                   {TranslateString(999, 'Enter DOWN')}
                 </Button>
