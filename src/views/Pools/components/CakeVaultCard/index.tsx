@@ -1,8 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Box, CardBody, Flex, Text } from '@pancakeswap-libs/uikit'
+import { useTranslation } from 'contexts/Localization'
 import UnlockButton from 'components/UnlockButton'
-import useI18n from 'hooks/useI18n'
 import { getAddress } from 'utils/addressHelpers'
 import { useGetApiPrice } from 'state/hooks'
 import useLastUpdated from 'hooks/useLastUpdated'
@@ -23,7 +23,7 @@ const StyledCardBody = styled(CardBody)<{ isLoading: boolean }>`
 `
 
 const CakeVaultCard: React.FC<{ pool: Pool; account: string }> = ({ pool, account }) => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const { lastUpdated, setLastUpdated } = useLastUpdated()
   const userInfo = useGetVaultUserInfo(lastUpdated)
   const vaultFees = useGetVaultFees()
@@ -80,7 +80,7 @@ const CakeVaultCard: React.FC<{ pool: Pool; account: string }> = ({ pool, accoun
           ) : (
             <>
               <Text mb="10px" textTransform="uppercase" fontSize="12px" color="textSubtle" bold>
-                {TranslateString(999, 'Start earning')}
+                {t('Start earning')}
               </Text>
               <UnlockButton />
             </>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Button, AutoRenewIcon, Skeleton } from '@pancakeswap-libs/uikit'
 import { ethers } from 'ethers'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import { useCake, useCakeVaultContract } from 'hooks/useContract'
 import useToast from 'hooks/useToast'
 import { Pool } from 'state/types'
@@ -17,7 +17,7 @@ const ApprovalAction: React.FC<ApprovalActionProps> = ({ pool, account, isLoadin
   const { stakingToken } = pool
   const cakeVaultContract = useCakeVaultContract()
   const cakeContract = useCake()
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const [requestedApproval, setRequestedApproval] = useState(false)
   const { toastSuccess, toastError } = useToast()
 
@@ -30,8 +30,8 @@ const ApprovalAction: React.FC<ApprovalActionProps> = ({ pool, account, isLoadin
       })
       .on('receipt', () => {
         toastSuccess(
-          `${TranslateString(999, 'Contract Enabled')}`,
-          `${TranslateString(999, `You can now stake in the ${stakingToken.symbol} vault!`)}`,
+          `${t('Contract Enabled')}`,
+          `${t(`You can now stake in the %symbol %vault!`, { symbol: stakingToken.symbol })}`,
         )
         setLastUpdated()
         setRequestedApproval(false)
@@ -39,11 +39,8 @@ const ApprovalAction: React.FC<ApprovalActionProps> = ({ pool, account, isLoadin
       .on('error', (error) => {
         console.error(error)
         toastError(
-          `${TranslateString(999, 'Error')}`,
-          `${TranslateString(
-            999,
-            `Please try again. Confirm the transaction and make sure you are paying enough gas!`,
-          )}`,
+          `${t('Error')}`,
+          `${t(`Please try again. Confirm the transaction and make sure you are paying enough gas!`)}`,
         )
         setRequestedApproval(false)
       })
@@ -61,7 +58,7 @@ const ApprovalAction: React.FC<ApprovalActionProps> = ({ pool, account, isLoadin
           onClick={handleApprove}
           width="100%"
         >
-          {TranslateString(999, 'Enable')}
+          {t('Enable')}
         </Button>
       )}
     </>

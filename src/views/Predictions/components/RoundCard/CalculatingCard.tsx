@@ -1,6 +1,6 @@
 import React from 'react'
 import { CardBody, Flex, Spinner, WaitIcon } from '@pancakeswap-libs/uikit'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import { Round, BetPosition } from 'state/types'
 import { useGetTotalIntervalBlocks } from 'state/hooks'
 import { RoundResultBox } from '../RoundResult'
@@ -13,7 +13,7 @@ interface CalculatingCardProps {
 }
 
 const CalculatingCard: React.FC<CalculatingCardProps> = ({ round }) => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const interval = useGetTotalIntervalBlocks()
   const estimatedEndBlock = round.startBlock + interval
 
@@ -22,7 +22,7 @@ const CalculatingCard: React.FC<CalculatingCardProps> = ({ round }) => {
       <CardHeader
         status="calculating"
         icon={<WaitIcon mr="4px" width="21px" />}
-        title={TranslateString(999, 'Calculating')}
+        title={t('Calculating')}
         epoch={round.epoch}
         blockNumber={estimatedEndBlock}
       />

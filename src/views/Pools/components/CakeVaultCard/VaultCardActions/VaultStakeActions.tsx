@@ -1,7 +1,7 @@
 import React from 'react'
 import { Flex, Button, useModal, Skeleton } from '@pancakeswap-libs/uikit'
 import BigNumber from 'bignumber.js'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import { Pool } from 'state/types'
 import { VaultFees } from 'hooks/cakeVault/useGetVaultFees'
 import { VaultUser } from 'views/Pools/types'
@@ -35,7 +35,7 @@ const VaultStakeActions: React.FC<VaultStakeActionsProps> = ({
   setLastUpdated,
 }) => {
   const { stakingToken } = pool
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const [onPresentTokenRequired] = useModal(<NotEnoughTokensModal tokenSymbol={stakingToken.symbol} />)
   const [onPresentStake] = useModal(
     <VaultStakeModal
@@ -61,9 +61,7 @@ const VaultStakeActions: React.FC<VaultStakeActionsProps> = ({
         vaultFees={vaultFees}
       />
     ) : (
-      <Button onClick={stakingTokenBalance.gt(0) ? onPresentStake : onPresentTokenRequired}>
-        {TranslateString(1070, 'Stake')}
-      </Button>
+      <Button onClick={stakingTokenBalance.gt(0) ? onPresentStake : onPresentTokenRequired}>{t('Stake')}</Button>
     )
   }
 
