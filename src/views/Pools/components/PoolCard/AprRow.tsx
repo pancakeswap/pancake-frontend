@@ -28,10 +28,22 @@ const AprRow: React.FC<AprRowProps> = ({
 }) => {
   const { t } = useTranslation()
   const { stakingToken, earningToken, totalStaked, isFinished, tokenPerBlock } = pool
+<<<<<<< HEAD
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     t('APY includes compounding, APR doesn’t. This pool’s CAKE is compounded automatically, so we show APY.'),
     { placement: 'bottom-end' },
   )
+=======
+
+  const tooltipText = isAutoVault
+    ? TranslateString(
+        999,
+        'APY includes compounding, APR doesn’t. This pool’s CAKE is compounded automatically, so we show APY.',
+      )
+    : TranslateString(999, "This pool's rewards aren't compounded automatically, so we show APR")
+
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipText, 'bottom-end')
+>>>>>>> chore(apr-row): Make tooltip text conditional depending on whether it's an auto vault
 
   const earningTokenPrice = useGetApiPrice(earningToken.address ? getAddress(earningToken.address) : '')
   const apr = getPoolApr(
