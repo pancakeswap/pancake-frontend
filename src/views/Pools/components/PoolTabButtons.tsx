@@ -44,9 +44,7 @@ const PoolTabButtons = ({ stakedOnly, setStakedOnly, hasStakeInFinishedPools }) 
         </ButtonMenu>
         <Flex mt={['4px', null, 0, null]} ml={[0, null, '24px', null]} justifyContent="center" alignItems="center">
           <Toggle scale="sm" checked={stakedOnly} onChange={() => setStakedOnly((prev) => !prev)} />
-          <Text ml="8px" color={`${stakedOnly ? 'body' : 'textDisabled'}`}>
-            {TranslateString(999, 'Staked only')}
-          </Text>
+          <Text ml="8px">{TranslateString(999, 'Staked only')}</Text>
         </Flex>
       </Flex>
       <Flex ml="24px" alignItems="center" justifyContent="flex-end">
