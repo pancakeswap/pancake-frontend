@@ -40,7 +40,7 @@ const CakeVaultCard: React.FC<{ pool: Pool; account: string; showStakedOnly: boo
   const isLoading = !pool.userData || !userInfo.shares
 
   if (showStakedOnly && !accountHasSharesStaked) {
-    return <></>
+    return null
   }
 
   return (
