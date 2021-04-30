@@ -22,11 +22,13 @@ const StyledCardBody = styled(CardBody)<{ isLoading: boolean }>`
   min-height: ${({ isLoading }) => (isLoading ? '0' : '254px')};
 `
 
-const CakeVaultCard: React.FC<{ pool: Pool; account: string; showStakedOnly: boolean }> = ({
-  pool,
-  account,
-  showStakedOnly,
-}) => {
+interface CakeVaultProps {
+  pool: Pool
+  account: string
+  showStakedOnly: boolean
+}
+
+const CakeVaultCard: React.FC<CakeVaultProps> = ({ pool, account, showStakedOnly }) => {
   const TranslateString = useI18n()
   const { lastUpdated, setLastUpdated } = useLastUpdated()
   const userInfo = useGetVaultUserInfo(lastUpdated)
