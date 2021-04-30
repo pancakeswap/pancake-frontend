@@ -34,6 +34,7 @@ const CakeVaultCard: React.FC<{ pool: Pool; account: string }> = ({ pool, accoun
   const accountHasSharesStaked = userInfo.shares && userInfo.shares.gt(0)
   const stakingTokenPrice = useGetApiPrice(stakingToken.address ? getAddress(stakingToken.address) : '')
   const isLoading = !pool.userData || !userInfo.shares
+  const performanceFeeAsDecimal = vaultFees.performanceFee && parseInt(vaultFees.performanceFee, 10) / 100
 
   return (
     <StyledCard isStaking={accountHasSharesStaked}>
@@ -44,6 +45,7 @@ const CakeVaultCard: React.FC<{ pool: Pool; account: string }> = ({ pool, accoun
           stakingTokenPrice={stakingTokenPrice}
           isAutoVault
           compoundFrequency={timesCompoundedDaily}
+          performanceFee={performanceFeeAsDecimal}
         />
         <Box mt="24px">
           <RecentCakeProfitRow
