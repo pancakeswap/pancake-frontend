@@ -137,7 +137,7 @@ const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
 
   return (
     <>
-      <StyledBet onClick={toggleOpen}>
+      <StyledBet onClick={toggleOpen} aria-role="button">
         <Box width="48px">
           <Text textAlign="center">
             <Text fontSize="12px" color="textSubtle">
