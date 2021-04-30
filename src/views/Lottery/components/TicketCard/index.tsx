@@ -54,8 +54,8 @@ const TicketCard: React.FC<CardProps> = ({ isSecondCard = false }) => {
   const tickets = useTickets()
   const ticketsLength = tickets.length
 
-  const currentMillis = useCurrentTime()
-  const timeUntilTicketSale = lotteryHasDrawn && getTicketSaleTime(currentMillis)
+  // const currentMillis = useCurrentTime()
+  // const timeUntilTicketSale = lotteryHasDrawn && getTicketSaleTime(currentMillis)
 
   return (
     <StyledCard isSecondCard={isSecondCard}>
@@ -69,7 +69,8 @@ const TicketCard: React.FC<CardProps> = ({ isSecondCard = false }) => {
               <Text fontSize="14px" color="textSubtle">
                 {TranslateString(870, 'Until ticket sale:')}
               </Text>
-              <Heading size="lg">{timeUntilTicketSale}</Heading>
+              {/* TODO: Temporary change should be reverted after new lottery comes */}
+              <Heading size="lg">{TranslateString(999, 'Come back soon!')}</Heading>
             </TicketCountWrapper>
           ) : (
             <TicketCountWrapper>
