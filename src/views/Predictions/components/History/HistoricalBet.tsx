@@ -28,6 +28,7 @@ interface BetProps {
 const StyledBet = styled(Flex).attrs({ alignItems: 'center', p: '16px' })`
   background-color: ${({ theme }) => theme.card.background};
   border-bottom: 2px solid ${({ theme }) => theme.colors.borderColor};
+  cursor: pointer;
 `
 
 const YourResult = styled(Box)`
@@ -136,7 +137,7 @@ const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
 
   return (
     <>
-      <StyledBet>
+      <StyledBet onClick={toggleOpen} role="button">
         <Box width="48px">
           <Text textAlign="center">
             <Text fontSize="12px" color="textSubtle">
@@ -166,7 +167,7 @@ const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
           </ReclaimPositionButton>
         )}
         {!isOpenRound && !isLiveRound && (
-          <IconButton variant="text" scale="sm" onClick={toggleOpen}>
+          <IconButton variant="text" scale="sm">
             {isOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}
           </IconButton>
         )}

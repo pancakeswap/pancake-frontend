@@ -1,7 +1,14 @@
 import React, { useState } from 'react'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
-import { CardBody, PlayCircleOutlineIcon, Button } from '@pancakeswap-libs/uikit'
+import {
+  CardBody,
+  PlayCircleOutlineIcon,
+  Button,
+  useTooltip,
+  ArrowUpIcon,
+  ArrowDownIcon,
+} from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import { useAppDispatch } from 'state'
 import { BetPosition, Round } from 'state/types'
@@ -9,7 +16,7 @@ import { useBlock, useGetIntervalBlocks } from 'state/hooks'
 import { markPositionAsEntered } from 'state/predictions'
 import useToast from 'hooks/useToast'
 import CardFlip from '../CardFlip'
-import { getBnbAmount } from '../../helpers'
+import { formatBnb, getBnbAmount } from '../../helpers'
 import { RoundResultBox, PrizePoolRow } from '../RoundResult'
 import MultiplierArrow from './MultiplierArrow'
 import Card from './Card'
@@ -50,6 +57,12 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
   const { currentBlock } = useBlock()
   const { isSettingPosition, position } = state
   const isBufferPhase = currentBlock >= round.startBlock + interval
+  const positionDisplay = position === BetPosition.BULL ? 'UP' : 'DOWN'
+  const { targetRef, tooltipVisible, tooltip } = useTooltip(
+    <div style={{ whiteSpace: 'nowrap' }}>{`${formatBnb(betAmount)} BNB`}</div>,
+    'top',
+    'hover',
+  )
 
   // Bettable rounds do not have an lockBlock set so we approximate it by adding the block interval
   // to the start block
@@ -91,8 +104,6 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
   }
 
   const handleSuccess = async (decimalValue: BigNumber, hash: string) => {
-    const positionDisplay = position === BetPosition.BULL ? 'UP' : 'DOWN'
-
     // Optimistically set the user bet so we see the entered position immediately.
     dispatch(
       markPositionAsEntered({
@@ -114,6 +125,10 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
         position: positionDisplay,
       }),
     )
+  }
+
+  const getPositionEnteredIcon = () => {
+    return position === BetPosition.BULL ? <ArrowUpIcon color="currentColor" /> : <ArrowDownIcon color="currentColor" />
   }
 
   return (
@@ -152,10 +167,13 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
               </>
             ) : (
               <>
-                <Button disabled startIcon={<PlayCircleOutlineIcon color="currentColor" />} width="100%" mb="8px">
-                  {TranslateString(999, 'Position Entered')}
-                </Button>
+                <div ref={targetRef}>
+                  <Button disabled startIcon={getPositionEnteredIcon()} width="100%" mb="8px">
+                    {TranslateString(999, `${positionDisplay} Entered`, { position: positionDisplay })}
+                  </Button>
+                </div>
                 <PrizePoolRow totalAmount={round.totalAmount} />
+                {tooltipVisible && tooltip}
               </>
             )}
           </RoundResultBox>
