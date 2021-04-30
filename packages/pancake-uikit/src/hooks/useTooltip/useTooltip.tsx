@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { Placement, Padding } from "@popperjs/core";
 import { usePopper } from "react-popper";
 import { StyledTooltip, Arrow } from "./StyledTooltip";
@@ -21,18 +21,51 @@ const useTooltip = (
   const [arrowElement, setArrowElement] = useState<HTMLElement | null>(null);
 
   const [visible, setVisible] = useState(false);
+  const tooltipHoverRef = useRef(false);
+  const tooltipHoverTimeoutRef = useRef<number>();
 
-  const hideTooltip = useCallback((e: Event) => {
-    e.stopPropagation();
-    e.preventDefault();
-    setVisible(false);
-  }, []);
+  const hideTooltip = useCallback(
+    (e: Event) => {
+      const hide = () => {
+        e.stopPropagation();
+        e.preventDefault();
+        setVisible(false);
+      };
 
-  const showTooltip = useCallback((e: Event) => {
-    e.stopPropagation();
-    e.preventDefault();
-    setVisible(true);
-  }, []);
+      if (trigger === "hover") {
+        clearTimeout(tooltipHoverTimeoutRef.current);
+        if (e.target === targetElement) {
+          tooltipHoverTimeoutRef.current = window.setTimeout(() => {
+            if (!tooltipHoverRef.current) {
+              hide();
+            }
+          }, 500);
+        } else if (e.target === tooltipElement) {
+          tooltipHoverRef.current = false;
+          hide();
+        }
+      } else {
+        hide();
+      }
+    },
+    [targetElement, tooltipElement, trigger]
+  );
+
+  const showTooltip = useCallback(
+    (e: Event) => {
+      e.stopPropagation();
+      e.preventDefault();
+      setVisible(true);
+      if (trigger === "hover") {
+        if (e.target === targetElement) {
+          clearTimeout(tooltipHoverTimeoutRef.current);
+        } else if (e.target === tooltipElement) {
+          tooltipHoverRef.current = true;
+        }
+      }
+    },
+    [tooltipElement, targetElement, trigger]
+  );
 
   const toggleTooltip = useCallback(
     (e: Event) => {
