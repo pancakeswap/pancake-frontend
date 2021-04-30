@@ -5,7 +5,7 @@ import { CardBody, PlayCircleOutlineIcon, Button } from '@pancakeswap-libs/uikit
 import useI18n from 'hooks/useI18n'
 import { useAppDispatch } from 'state'
 import { BetPosition, Round } from 'state/types'
-import { useGetTotalIntervalBlocks } from 'state/hooks'
+import { useBlock, useGetIntervalBlocks } from 'state/hooks'
 import { markPositionAsEntered } from 'state/predictions'
 import useToast from 'hooks/useToast'
 import CardFlip from '../CardFlip'
@@ -15,6 +15,7 @@ import MultiplierArrow from './MultiplierArrow'
 import Card from './Card'
 import CardHeader from './CardHeader'
 import SetPositionCard from './SetPositionCard'
+import CalculatingCard from './CalculatingCard'
 
 interface OpenRoundCardProps {
   round: Round
@@ -38,21 +39,36 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
   bullMultiplier,
   bearMultiplier,
 }) => {
-  const canEnterPosition = round.lockPrice === null && !hasEnteredUp && !hasEnteredDown
   const [state, setState] = useState<State>({
     isSettingPosition: false,
     position: BetPosition.BULL,
   })
   const TranslateString = useI18n()
-  const interval = useGetTotalIntervalBlocks()
+  const interval = useGetIntervalBlocks()
   const { toastSuccess } = useToast()
   const { account } = useWeb3React()
   const dispatch = useAppDispatch()
+  const { currentBlock } = useBlock()
   const { isSettingPosition, position } = state
+  const isBufferPhase = currentBlock >= round.startBlock + interval
 
-  // Bettable rounds do not have an endblock set so we approximate it by adding the block interval
+  // Bettable rounds do not have an lockBlock set so we approximate it by adding the block interval
   // to the start block
-  const endBlock = round.startBlock + interval
+  const estimatedLockBlock = round.startBlock + interval
+
+  const getCanEnterPosition = () => {
+    if (hasEnteredUp || hasEnteredDown) {
+      return false
+    }
+
+    if (round.lockPrice !== null) {
+      return false
+    }
+
+    return true
+  }
+
+  const canEnterPosition = getCanEnterPosition()
 
   const handleBack = () =>
     setState((prevState) => ({
@@ -101,13 +117,17 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
     )
   }
 
+  if (isBufferPhase) {
+    return <CalculatingCard round={round} />
+  }
+
   return (
     <CardFlip isFlipped={isSettingPosition} height="404px">
       <Card>
         <CardHeader
           status="next"
           epoch={round.epoch}
-          blockNumber={endBlock}
+          blockNumber={estimatedLockBlock}
           icon={<PlayCircleOutlineIcon color="white" mr="4px" width="21px" />}
           title={TranslateString(999, 'Next')}
         />

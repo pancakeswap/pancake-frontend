@@ -92,7 +92,7 @@ const MultiplierArrow: React.FC<MultiplierArrowProps> = ({
           <RoundMultiplierDownArrow isActive={isActive} />
           {getEnteredTag({ bottom: 0, right: 0 })}
           <Content>
-            {multiplierText}
+            {!isDisabled && multiplierText}
             <Text bold fontSize="24px" lineHeight="26px" mb="8px" color={downColor} textTransform="uppercase">
               {TranslateString(999, 'Down')}
             </Text>
@@ -111,7 +111,7 @@ const MultiplierArrow: React.FC<MultiplierArrowProps> = ({
           <Text bold fontSize="24px" lineHeight="26px" color={upColor} textTransform="uppercase">
             {TranslateString(999, 'Up')}
           </Text>
-          {multiplierText}
+          {!isDisabled && multiplierText}
         </Content>
       </ArrowWrapper>
     </Box>
