@@ -17,6 +17,8 @@ import useI18n from 'hooks/useI18n'
 import useRefresh from 'hooks/useRefresh'
 import useGetVaultFees from 'hooks/cakeVault/useGetVaultFees'
 import useGetVaultBountyInfo from 'hooks/cakeVault/useGetVaultBountyInfo'
+import { useWeb3React } from '@web3-react/core'
+import UnlockButton from 'components/UnlockButton'
 import BountyModal from './BountyModal'
 
 const StyledCard = styled(Card)`
@@ -32,6 +34,7 @@ const InlineText = styled(Text)`
 
 const BountyCard = () => {
   const TranslateString = useI18n()
+  const { account } = useWeb3React()
   const { fastRefresh } = useRefresh()
   const { dollarCallBountyToDisplay, cakeCallBountyToDisplay, totalPendingCakeRewards } = useGetVaultBountyInfo(
     fastRefresh,
@@ -80,21 +83,29 @@ const BountyCard = () => {
               </Box>
             </Flex>
           </Flex>
-          <Flex alignItems="center" justifyContent="space-between">
-            <Flex flexDirection="column" mr="12px">
-              <Heading>{cakeCallBountyToDisplay || <Skeleton height={20} width={96} mb="2px" />}</Heading>
-              <InlineText fontSize="12px" color="textSubtle">
-                {dollarCallBountyToDisplay ? `~ ${dollarCallBountyToDisplay} USD` : <Skeleton height={16} width={62} />}
-              </InlineText>
+          {!account ? (
+            <UnlockButton width="100%" />
+          ) : (
+            <Flex alignItems="center" justifyContent="space-between">
+              <Flex flexDirection="column" mr="12px">
+                <Heading>{cakeCallBountyToDisplay || <Skeleton height={20} width={96} mb="2px" />}</Heading>
+                <InlineText fontSize="12px" color="textSubtle">
+                  {dollarCallBountyToDisplay ? (
+                    `~ ${dollarCallBountyToDisplay} USD`
+                  ) : (
+                    <Skeleton height={16} width={62} />
+                  )}
+                </InlineText>
+              </Flex>
+              <Button
+                disabled={!dollarCallBountyToDisplay || !cakeCallBountyToDisplay || !callFee}
+                onClick={onPresentBountyModal}
+                scale="sm"
+              >
+                {TranslateString(999, 'Claim')}
+              </Button>
             </Flex>
-            <Button
-              disabled={!dollarCallBountyToDisplay || !cakeCallBountyToDisplay || !callFee}
-              onClick={onPresentBountyModal}
-              scale="sm"
-            >
-              {TranslateString(999, 'Claim')}
-            </Button>
-          </Flex>
+          )}
         </CardBody>
       </StyledCard>
     </>
