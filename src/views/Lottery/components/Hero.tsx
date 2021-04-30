@@ -1,31 +1,36 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Heading, Text } from '@pancakeswap-libs/uikit'
+import { Heading, Text, LinkExternal } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import Container from 'components/layout/Container'
-import LotteryProgress from './LotteryProgress'
 
 const Title = styled(Heading).attrs({ as: 'h1', size: 'xl' })`
-  color: ${({ theme }) => theme.colors.secondary};
+  color: #ffffff;
   margin-bottom: 24px;
+  text-shadow: 2px 2px 2px #00000040;
 `
 
-const Blurb = styled(Text)`
-  color: #ffffff;
-  font-size: 20px;
+const ComeBack = styled(Text)`
+  background: -webkit-linear-gradient(#ffd800, #eb8c00);
+  font-size: 24px;
   font-weight: 600;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 `
 
 const StyledHero = styled.div`
-  background-image: linear-gradient(180deg, #53dee9 0%, #1fc7d4 100%);
-  padding-bottom: 40px;
-  padding-top: 40px;
+  background-image: linear-gradient(#7645d9, #452a7a);
+  max-height: max-content;
+  overflow: hidden;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    max-height: 256px;
+  }
 `
 
 const StyledContainer = styled(Container)`
   display: flex;
 
-  flex-direction: column;
+  flex-direction: column-reverse;
 
   ${({ theme }) => theme.mediaQueries.sm} {
     flex-direction: row;
@@ -35,6 +40,8 @@ const StyledContainer = styled(Container)`
 const LeftWrapper = styled.div`
   flex: 1;
   padding-right: 0;
+  padding-bottom: 40px;
+  padding-top: 40px;
 
   ${({ theme }) => theme.mediaQueries.sm} {
     padding-right: 24px;
@@ -51,7 +58,10 @@ const RightWrapper = styled.div`
   justify-content: center;
   flex: 1;
   padding-left: 0;
-  margin-top: 16px;
+
+  & img {
+    width: 80%;
+  }
 
   ${({ theme }) => theme.mediaQueries.sm} {
     margin-top: 0;
@@ -60,6 +70,9 @@ const RightWrapper = styled.div`
 
   ${({ theme }) => theme.mediaQueries.lg} {
     padding-left: 32px;
+    & img {
+      margin-top: -25px;
+    }
   }
 `
 
@@ -70,12 +83,19 @@ const Hero = () => {
     <StyledHero>
       <StyledContainer>
         <LeftWrapper>
-          <Title>{TranslateString(708, 'The CAKE Lottery')}</Title>
-          <Blurb>{TranslateString(710, 'Buy tickets with CAKE')}</Blurb>
-          <Blurb>{TranslateString(712, 'Win if 2, 3, or 4 of your ticket numbers match!')}</Blurb>
+          <Title>{TranslateString(999, 'The Lottery Is Changing!')}</Title>
+          <ComeBack>{TranslateString(999, 'Come back soon!')}</ComeBack>
+          <LinkExternal
+            bold
+            mt={20}
+            external
+            href="https://voting.pancakeswap.finance/#/pancake/proposal/QmU8pcbmBrfbfVQXMMxmkExDq3mYq4s5cbBuFe6uCZzdmX"
+          >
+            {TranslateString(999, 'Learn more')}
+          </LinkExternal>
         </LeftWrapper>
         <RightWrapper>
-          <LotteryProgress />
+          <img src="/images/tombola.png" alt="lottery bunny" />
         </RightWrapper>
       </StyledContainer>
     </StyledHero>
