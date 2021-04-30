@@ -35,6 +35,14 @@ const ExpandedWrapper = styled(Flex)`
   }
 `
 
+const MetaMaskWrapper = styled(Flex)`
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+    text-decoration-color: ${({ theme }) => theme.colors.primary};
+  }
+`
+
 const ExpandedFooter: React.FC<ExpandedFooterProps> = ({
   pool,
   account,
@@ -137,7 +145,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({
         </Flex>
       )}
       {account && isMetaMaskInScope && tokenAddress && (
-        <Flex justifyContent="flex-end" style={{ cursor: 'pointer' }}>
+        <MetaMaskWrapper justifyContent="flex-end">
           <Text
             color="primary"
             small
@@ -146,7 +154,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({
             Add to Metamask
           </Text>
           <MetamaskIcon ml="4px" />
-        </Flex>
+        </MetaMaskWrapper>
       )}
     </ExpandedWrapper>
   )
