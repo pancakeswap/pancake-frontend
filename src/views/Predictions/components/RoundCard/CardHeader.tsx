@@ -1,8 +1,8 @@
 import React, { ReactElement } from 'react'
 import { Flex, Text } from '@pancakeswap-libs/uikit'
-import styled from 'styled-components'
+import styled, { DefaultTheme } from 'styled-components'
 
-type Status = 'expired' | 'live' | 'next' | 'soon' | 'canceled'
+type Status = 'expired' | 'live' | 'next' | 'soon' | 'canceled' | 'calculating'
 
 interface CardHeaderProps {
   status: Status
@@ -12,18 +12,20 @@ interface CardHeaderProps {
   icon?: ReactElement
 }
 
-const getBackgroundColor = (status: Status) => {
+const getBackgroundColor = (theme: DefaultTheme, status: Status) => {
   switch (status) {
+    case 'calculating':
+      return theme.colors.gradients.cardHeader
     case 'live':
       return 'transparent'
     case 'canceled':
-      return 'warning'
+      return theme.colors.warning
     case 'next':
-      return 'secondary'
+      return theme.colors.secondary
     case 'expired':
     case 'soon':
     default:
-      return 'borderColor'
+      return theme.colors.borderColor
   }
 }
 
@@ -39,6 +41,7 @@ const getTextColorByStatus = (status: Status, fallback: FallbackColor): TextColo
     case 'live':
       return 'secondary'
     case 'canceled':
+    case 'calculating':
       return 'text'
     default:
       return fallback
@@ -47,7 +50,7 @@ const getTextColorByStatus = (status: Status, fallback: FallbackColor): TextColo
 
 const StyledCardHeader = styled.div<{ status: Status }>`
   align-items: center;
-  background-color: ${({ theme, status }) => theme.colors[getBackgroundColor(status)]};
+  background: ${({ theme, status }) => getBackgroundColor(theme, status)};
   border-radius: 16px 16px 0 0;
   display: grid;
   grid-template-columns: 1fr 40px 1fr;
