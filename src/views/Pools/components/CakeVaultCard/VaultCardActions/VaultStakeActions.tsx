@@ -17,7 +17,6 @@ interface VaultStakeActionsProps {
   accountHasSharesStaked: boolean
   pricePerFullShare: BigNumber
   isLoading?: boolean
-  account: string
   vaultFees: VaultFees
   setLastUpdated: () => void
 }
@@ -30,7 +29,6 @@ const VaultStakeActions: React.FC<VaultStakeActionsProps> = ({
   accountHasSharesStaked,
   pricePerFullShare,
   isLoading = false,
-  account,
   vaultFees,
   setLastUpdated,
 }) => {
@@ -39,7 +37,6 @@ const VaultStakeActions: React.FC<VaultStakeActionsProps> = ({
   const [onPresentTokenRequired] = useModal(<NotEnoughTokensModal tokenSymbol={stakingToken.symbol} />)
   const [onPresentStake] = useModal(
     <VaultStakeModal
-      account={account}
       stakingMax={stakingTokenBalance}
       stakingTokenPrice={stakingTokenPrice}
       userInfo={userInfo}
@@ -56,7 +53,6 @@ const VaultStakeActions: React.FC<VaultStakeActionsProps> = ({
         stakingTokenPrice={stakingTokenPrice}
         userInfo={userInfo}
         pricePerFullShare={pricePerFullShare}
-        account={account}
         setLastUpdated={setLastUpdated}
         vaultFees={vaultFees}
       />

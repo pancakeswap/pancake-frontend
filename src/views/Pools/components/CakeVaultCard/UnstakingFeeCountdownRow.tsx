@@ -1,23 +1,23 @@
 import React from 'react'
 import { Flex, Text, TooltipText, useTooltip } from '@pancakeswap-libs/uikit'
 import { useTranslation } from 'contexts/Localization'
+import { useWeb3React } from '@web3-react/core'
 import useWithdrawalFeeTimer from 'hooks/cakeVault/useWithdrawalFeeTimer'
 import WithdrawalFeeTimer from './WithdrawalFeeTimer'
 
 interface UnstakingFeeCountdownRowProps {
-  account?: string
   withdrawalFee: string
   lastDepositedTime: string
   withdrawalFeePeriod?: string
 }
 
 const UnstakingFeeCountdownRow: React.FC<UnstakingFeeCountdownRowProps> = ({
-  account = true,
   withdrawalFee,
   lastDepositedTime,
   withdrawalFeePeriod = '259200',
 }) => {
   const { t } = useTranslation()
+  const { account } = useWeb3React()
   const feeAsDecimal = parseInt(withdrawalFee) / 100 || '-'
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <>
