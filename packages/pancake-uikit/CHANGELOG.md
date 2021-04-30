@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.29.2](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap-libs/uikit@0.29.1...@pancakeswap-libs/uikit@0.29.2) (2021-04-30)
+
+
+### Bug Fixes
+
+* Tooltip on hover disappear immediately when mouse leaves target element ([#90](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/90)) ([97642eb](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/97642eb9f5b9d58a23107e692219362c83711917))
+
+
+
+
+
 ## [0.29.1](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap-libs/uikit@0.29.0...@pancakeswap-libs/uikit@0.29.1) (2021-04-29)
 
 
