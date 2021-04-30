@@ -12,6 +12,7 @@ interface ApyCalculatorModalProps {
   linkHref: string
   earningTokenSymbol?: string
   roundingDecimals?: number
+  compoundFrequency?: number
 }
 
 const Grid = styled.div`
@@ -38,6 +39,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
   linkHref,
   earningTokenSymbol = 'CAKE',
   roundingDecimals = 2,
+  compoundFrequency = 1,
 }) => {
   const TranslateString = useI18n()
   const oneThousandDollarsWorthOfToken = 1000 / tokenPrice
@@ -47,24 +49,28 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
     farmApr: apr,
     tokenPrice,
     roundingDecimals,
+    compoundFrequency,
   })
   const tokenEarnedPerThousand7D = tokenEarnedPerThousandDollarsCompounding({
     numberOfDays: 7,
     farmApr: apr,
     tokenPrice,
     roundingDecimals,
+    compoundFrequency,
   })
   const tokenEarnedPerThousand30D = tokenEarnedPerThousandDollarsCompounding({
     numberOfDays: 30,
     farmApr: apr,
     tokenPrice,
     roundingDecimals,
+    compoundFrequency,
   })
   const tokenEarnedPerThousand365D = tokenEarnedPerThousandDollarsCompounding({
     numberOfDays: 365,
     farmApr: apr,
     tokenPrice,
     roundingDecimals,
+    compoundFrequency,
   })
 
   return (
@@ -91,7 +97,10 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
         </GridItem>
         <GridItem>
           <Text>
-            {getRoi({ amountEarned: tokenEarnedPerThousand1D, amountInvested: oneThousandDollarsWorthOfToken })}%
+            {getRoi({ amountEarned: tokenEarnedPerThousand1D, amountInvested: oneThousandDollarsWorthOfToken }).toFixed(
+              roundingDecimals,
+            )}
+            %
           </Text>
         </GridItem>
         <GridItem>
@@ -103,7 +112,10 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
         </GridItem>
         <GridItem>
           <Text>
-            {getRoi({ amountEarned: tokenEarnedPerThousand7D, amountInvested: oneThousandDollarsWorthOfToken })}%
+            {getRoi({ amountEarned: tokenEarnedPerThousand7D, amountInvested: oneThousandDollarsWorthOfToken }).toFixed(
+              roundingDecimals,
+            )}
+            %
           </Text>
         </GridItem>
         <GridItem>
@@ -115,7 +127,11 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
         </GridItem>
         <GridItem>
           <Text>
-            {getRoi({ amountEarned: tokenEarnedPerThousand30D, amountInvested: oneThousandDollarsWorthOfToken })}%
+            {getRoi({
+              amountEarned: tokenEarnedPerThousand30D,
+              amountInvested: oneThousandDollarsWorthOfToken,
+            }).toFixed(roundingDecimals)}
+            %
           </Text>
         </GridItem>
         <GridItem>
@@ -127,7 +143,11 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
         </GridItem>
         <GridItem>
           <Text>
-            {getRoi({ amountEarned: tokenEarnedPerThousand365D, amountInvested: oneThousandDollarsWorthOfToken })}%
+            {getRoi({
+              amountEarned: tokenEarnedPerThousand365D,
+              amountInvested: oneThousandDollarsWorthOfToken,
+            }).toFixed(roundingDecimals)}
+            %
           </Text>
         </GridItem>
         <GridItem>
@@ -136,8 +156,8 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
       </Grid>
       <Description fontSize="12px" color="textSubtle">
         {TranslateString(
-          866,
-          'Calculated based on current rates. Compounding once daily. Rates are estimates provided for your convenience only, and by no means represent guaranteed returns.',
+          999,
+          `Calculated based on current rates. Compounding ${compoundFrequency.toLocaleString()}x daily. Rates are estimates provided for your convenience only, and by no means represent guaranteed returns.`,
         )}
       </Description>
       <Flex justifyContent="center">

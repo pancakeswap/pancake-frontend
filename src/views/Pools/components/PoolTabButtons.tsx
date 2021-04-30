@@ -31,7 +31,7 @@ const PoolTabButtons = ({ stakedOnly, setStakedOnly, hasStakeInFinishedPools }) 
 
   return (
     <Flex alignItems="center" justifyContent="center" mb="32px">
-      <Flex alignItems="center">
+      <Flex alignItems="center" flexDirection={['column', null, 'row', null]}>
         <ButtonMenu activeIndex={isExact ? 0 : 1} scale="sm" variant="subtle">
           <ButtonMenuItem as={Link} to={`${url}`}>
             {TranslateString(1198, 'Live')}
@@ -42,7 +42,7 @@ const PoolTabButtons = ({ stakedOnly, setStakedOnly, hasStakeInFinishedPools }) 
             </ButtonMenuItem>
           </NotificationDot>
         </ButtonMenu>
-        <Flex ml="24px" justifyContent="center" alignItems="center">
+        <Flex mt={['4px', null, 0, null]} ml={[0, null, '24px', null]} justifyContent="center" alignItems="center">
           <Toggle scale="sm" checked={stakedOnly} onChange={() => setStakedOnly((prev) => !prev)} />
           <Text ml="8px" color={`${stakedOnly ? 'body' : 'textDisabled'}`}>
             {TranslateString(999, 'Staked only')}
