@@ -28,8 +28,10 @@ const UnstakingFeeCountdownRow: React.FC<UnstakingFeeCountdownRowProps> = ({
   return (
     <Flex alignItems="center" justifyContent="space-between">
       <Text fontSize="14px">
-        {parseInt(withdrawalFee) / 100 || '-'}% {TranslateString(999, 'unstaking fee')}{' '}
-        {shouldShowTimer && TranslateString(999, 'until')}
+        {parseInt(withdrawalFee) / 100 || '-'}%{' '}
+        {shouldShowTimer
+          ? TranslateString(999, 'unstaking fee until')
+          : TranslateString(999, 'unstaking fee if withdrawn within 72h')}
       </Text>
       {shouldShowTimer && <WithdrawalFeeTimer secondsRemaining={secondsRemaining} />}
     </Flex>
