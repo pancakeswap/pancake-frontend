@@ -41,7 +41,7 @@ const StyledHero = styled.div`
 const StyledContainer = styled(Container)`
   display: flex;
 
-  flex-direction: column;
+  flex-direction: column-reverse;
 
   ${({ theme }) => theme.mediaQueries.sm} {
     flex-direction: row;
@@ -89,43 +89,26 @@ const RightWrapper = styled.div`
 
 const Hero = () => {
   const TranslateString = useI18n()
-  const { isXs, isSm } = useMatchBreakpoints()
 
-  const text = (
-    <LeftWrapper>
-      <Title>{TranslateString(999, 'The Lottery Is Changing!')}</Title>
-      <ComeBack>{TranslateString(999, 'Come back soon!')}</ComeBack>
-      <LearnMore>
-        <LearnMoreLink href="https://voting.pancakeswap.finance/#/pancake/proposal/QmU8pcbmBrfbfVQXMMxmkExDq3mYq4s5cbBuFe6uCZzdmX">
-          {TranslateString(999, 'Learn more')}
-          <ArrowForwardIcon color="primary" />
-        </LearnMoreLink>
-      </LearnMore>
-    </LeftWrapper>
-  )
-
-  const bunny = (
-    <RightWrapper>
-      <img src="/images/tombola.png" alt="lottery bunny" />
-    </RightWrapper>
-  )
-
-  let layout = (
-    <StyledContainer>
-      {text}
-      {bunny}
-    </StyledContainer>
-  )
-  if (isXs || isSm) {
-    layout = (
+  return (
+    <StyledHero>
       <StyledContainer>
-        {bunny}
-        {text}
+        <LeftWrapper>
+          <Title>{TranslateString(999, 'The Lottery Is Changing!')}</Title>
+          <ComeBack>{TranslateString(999, 'Come back soon!')}</ComeBack>
+          <LearnMore>
+            <LearnMoreLink href="https://voting.pancakeswap.finance/#/pancake/proposal/QmU8pcbmBrfbfVQXMMxmkExDq3mYq4s5cbBuFe6uCZzdmX">
+              {TranslateString(999, 'Learn more')}
+              <ArrowForwardIcon color="primary" />
+            </LearnMoreLink>
+          </LearnMore>
+        </LeftWrapper>
+        <RightWrapper>
+          <img src="/images/tombola.png" alt="lottery bunny" />
+        </RightWrapper>
       </StyledContainer>
-    )
-  }
-
-  return <StyledHero>{layout}</StyledHero>
+    </StyledHero>
+  )
 }
 
 export default Hero
