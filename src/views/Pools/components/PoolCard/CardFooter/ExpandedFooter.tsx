@@ -137,7 +137,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({
         </Flex>
       )}
       {account && isMetaMaskInScope && tokenAddress && (
-        <Flex justifyContent="flex-end">
+        <Flex justifyContent="flex-end" style={{ cursor: 'pointer' }}>
           <Text
             color="primary"
             small
