@@ -78,7 +78,7 @@ const AprRow: React.FC<AprRowProps> = ({ pool, stakingTokenPrice, isAutoVault = 
   return (
     <Flex alignItems="center" justifyContent="space-between">
       {tooltipVisible && tooltip}
-      <Text ref={targetRef} fontSize="16px">
+      <Text ref={targetRef} hasTooltip>
         {isAutoVault ? TranslateString(999, 'APY') : TranslateString(736, 'APR')}:
       </Text>
       {isFinished || !apr ? (

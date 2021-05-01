@@ -101,7 +101,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({
       {isAutoVault && (
         <Flex mb="2px" justifyContent="space-between" alignItems="center">
           {tooltipVisible && tooltip}
-          <Text ref={targetRef} fontSize="14px">
+          <Text ref={targetRef} small hasTooltip>
             {TranslateString(999, 'Performance Fee')}
           </Text>
           <Flex alignItems="center">
