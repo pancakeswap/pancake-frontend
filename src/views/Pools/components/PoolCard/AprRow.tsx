@@ -1,5 +1,5 @@
 import React from 'react'
-import { Flex, Text, IconButton, useModal, CalculateIcon, Skeleton, useTooltip } from '@pancakeswap-libs/uikit'
+import { Flex, TooltipText, IconButton, useModal, CalculateIcon, Skeleton, useTooltip } from '@pancakeswap-libs/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { getPoolApr } from 'utils/apr'
@@ -84,9 +84,7 @@ const AprRow: React.FC<AprRowProps> = ({
   return (
     <Flex alignItems="center" justifyContent="space-between">
       {tooltipVisible && tooltip}
-      <Text ref={targetRef} fontSize="16px">
-        {isAutoVault ? t('APY') : t('APR')}:
-      </Text>
+      <TooltipText ref={targetRef}>{isAutoVault ? t('APY') : t('APR')}:</TooltipText>
       {isFinished || !apr ? (
         <Skeleton width="82px" height="32px" />
       ) : (
