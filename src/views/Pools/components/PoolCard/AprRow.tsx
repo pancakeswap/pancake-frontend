@@ -30,7 +30,7 @@ const AprRow: React.FC<AprRowProps> = ({
   const { stakingToken, earningToken, totalStaked, isFinished, tokenPerBlock } = pool
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     t('APY includes compounding, APR doesn’t. This pool’s CAKE is compounded automatically, so we show APY.'),
-    'bottom-end',
+    { placement: 'bottom-end' },
   )
 
   const earningTokenPrice = useGetApiPrice(earningToken.address ? getAddress(earningToken.address) : '')

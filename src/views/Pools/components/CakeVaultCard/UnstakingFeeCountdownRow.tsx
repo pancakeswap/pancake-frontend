@@ -30,7 +30,7 @@ const UnstakingFeeCountdownRow: React.FC<UnstakingFeeCountdownRowProps> = ({
         )}
       </Box>
     </Box>,
-    'bottom-end',
+    { placement: 'bottom-end' },
   )
 
   const { secondsRemaining, hasPerformanceFee } = useWithdrawalFeeTimer(

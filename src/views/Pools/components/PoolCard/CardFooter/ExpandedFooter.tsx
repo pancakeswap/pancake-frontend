@@ -50,7 +50,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     t('Subtracted automatically from each yield harvest and burned.'),
-    'bottom-end',
+    { placement: 'bottom-end' },
   )
 
   return (

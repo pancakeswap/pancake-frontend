@@ -26,7 +26,7 @@ const FeeSummary: React.FC<FeeSummaryProps> = ({ stakingTokenSymbol, lastDeposit
         )}
       </Box>
     </Box>,
-    'bottom-end',
+    { placement: 'bottom-end' },
   )
 
   return (

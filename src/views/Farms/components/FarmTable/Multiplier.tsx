@@ -39,10 +39,10 @@ const Multiplier: React.FunctionComponent<MultiplierProps> = ({ multiplier }) =>
       {t('For example, if a 1x farm was getting 1 CAKE per block, a 40x farm would be getting 40 CAKE per block.')}
     </div>
   )
-  const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipContent, 'top-end', 'hover', undefined, undefined, [
-    20,
-    10,
-  ])
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipContent, {
+    placement: 'top-end',
+    tooltipOffset: [20, 10],
+  })
 
   return (
     <Container>

@@ -24,7 +24,7 @@ const RecentCakeProfitBalance: React.FC<RecentCakeProfitBalanceProps> = ({
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     t('Your estimated earnings since last manual stake or unstake:'),
-    'bottom-end',
+    { placement: 'bottom-end' },
   )
 
   return (
