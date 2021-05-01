@@ -26,7 +26,7 @@ const AprRow: React.FC<AprRowProps> = ({ pool, stakingTokenPrice, isAutoVault = 
       999,
       'APY includes compounding, APR doesn’t. This pool’s CAKE is compounded automatically, so we show APY.',
     ),
-    'bottom-end',
+    { placement: 'bottom-end' },
   )
 
   const earningTokenPrice = useGetApiPrice(earningToken.address ? getAddress(earningToken.address) : '')
