@@ -10,7 +10,6 @@ import {
   ButtonMenuItem,
   HelpIcon,
   useTooltip,
-  Box,
 } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import useTheme from 'hooks/useTheme'
@@ -49,14 +48,10 @@ const CollectModal: React.FC<CollectModalProps> = ({
   const [shouldCompound, setShouldCompound] = useState(isCompoundPool)
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <>
-      <Box mb="12px">{TranslateString(999, 'Compound: collect and restake CAKE into pool.')}</Box>
-      <Box>{TranslateString(999, 'Harvest: collect CAKE and send to wallet')}</Box>
+      <Text mb="12px">{TranslateString(999, 'Compound: collect and restake CAKE into pool.')}</Text>
+      <Text>{TranslateString(999, 'Harvest: collect CAKE and send to wallet')}</Text>
     </>,
-    'bottom-end',
-    'hover',
-    undefined,
-    undefined,
-    [20, 10],
+    { placement: 'bottom-end', tooltipOffset: [20, 10] },
   )
 
   const handleHarvestConfirm = async () => {
