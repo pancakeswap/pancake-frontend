@@ -215,7 +215,11 @@ const Farms: React.FC = () => {
             'desc',
           )
         case 'earned':
-          return orderBy(farms, (farm: FarmWithStakedValue) => (farm.userData ? farm.userData.earnings : 0), 'desc')
+          return orderBy(
+            farms,
+            (farm: FarmWithStakedValue) => (farm.userData ? Number(farm.userData.earnings) : 0),
+            'desc',
+          )
         case 'liquidity':
           return orderBy(farms, (farm: FarmWithStakedValue) => Number(farm.liquidity), 'desc')
         default:
