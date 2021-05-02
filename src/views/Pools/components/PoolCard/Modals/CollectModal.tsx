@@ -95,7 +95,9 @@ const CollectModal: React.FC<CollectModalProps> = ({
 
   return (
     <Modal
-      title={`${earningToken.symbol} ${TranslateString(562, 'Harvest')}`}
+      title={`${earningToken.symbol} ${
+        isCompoundPool ? TranslateString(1056, 'Collect') : TranslateString(562, 'Harvest')
+      } `}
       onDismiss={onDismiss}
       headerBackground={theme.colors.gradients.cardHeader}
     >
