@@ -16,9 +16,16 @@ interface AprRowProps {
   stakingTokenPrice: number
   isAutoVault?: boolean
   compoundFrequency?: number
+  performanceFee?: number
 }
 
-const AprRow: React.FC<AprRowProps> = ({ pool, stakingTokenPrice, isAutoVault = false, compoundFrequency = 1 }) => {
+const AprRow: React.FC<AprRowProps> = ({
+  pool,
+  stakingTokenPrice,
+  isAutoVault = false,
+  compoundFrequency = 1,
+  performanceFee = 0,
+}) => {
   const TranslateString = useI18n()
   const { stakingToken, earningToken, totalStaked, isFinished, tokenPerBlock } = pool
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
@@ -50,6 +57,7 @@ const AprRow: React.FC<AprRowProps> = ({ pool, stakingTokenPrice, isAutoVault = 
         tokenPrice: earningTokenPrice,
         roundingDecimals,
         compoundFrequency,
+        performanceFee,
       })
       return getRoi({
         amountEarned: tokenEarnedPerThousand365D,
@@ -72,6 +80,7 @@ const AprRow: React.FC<AprRowProps> = ({ pool, stakingTokenPrice, isAutoVault = 
       earningTokenSymbol={earningToken.symbol}
       roundingDecimals={isHighValueToken ? 4 : 2}
       compoundFrequency={compoundFrequency}
+      performanceFee={performanceFee}
     />,
   )
 
