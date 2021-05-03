@@ -45,8 +45,10 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
   const { account } = useWeb3React()
   const { t } = useTranslation()
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    'Sorry, you didn’t contribute enough LP tokens to meet the minimum threshold. You didn’t buy anything in this sale, but you can still reclaim your LP tokens.',
-    'bottom',
+    t(
+      'Sorry, you didn’t contribute enough LP tokens to meet the minimum threshold. You didn’t buy anything in this sale, but you can still reclaim your LP tokens.',
+    ),
+    { placement: 'bottom' },
   )
 
   const publicPoolCharacteristics = publicIfoData[poolId]

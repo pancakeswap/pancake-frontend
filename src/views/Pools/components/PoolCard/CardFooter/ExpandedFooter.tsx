@@ -3,7 +3,16 @@ import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useTranslation } from 'contexts/Localization'
-import { Flex, MetamaskIcon, Text, LinkExternal, TimerIcon, Skeleton, useTooltip } from '@pancakeswap-libs/uikit'
+import {
+  Flex,
+  MetamaskIcon,
+  Text,
+  TooltipText,
+  LinkExternal,
+  TimerIcon,
+  Skeleton,
+  useTooltip,
+} from '@pancakeswap-libs/uikit'
 import { BASE_BSC_SCAN_URL, BASE_URL } from 'config'
 import { useBlock } from 'state/hooks'
 import { Pool } from 'state/types'
@@ -50,7 +59,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     t('Subtracted automatically from each yield harvest and burned.'),
-    'bottom-end',
+    { placement: 'bottom-end' },
   )
 
   return (
@@ -101,9 +110,9 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({
       {isAutoVault && (
         <Flex mb="2px" justifyContent="space-between" alignItems="center">
           {tooltipVisible && tooltip}
-          <Text ref={targetRef} fontSize="14px">
+          <TooltipText ref={targetRef} small>
             {t('Performance Fee')}
-          </Text>
+          </TooltipText>
           <Flex alignItems="center">
             <Text ml="4px" small>
               {performanceFee / 100}%
