@@ -1,10 +1,9 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
 import { Flex, TrophyGoldIcon } from '@pancakeswap-libs/uikit'
 import { useAppDispatch } from 'state'
-import { useGetCurrentEpoch } from 'state/hooks'
-import useStateWithPromise from 'hooks/useStateWithPromise'
+import { useGetBetByRoundId, useGetCurrentEpoch } from 'state/hooks'
 import { getBetHistory, transformBetResponse } from 'state/predictions/helpers'
 import { markBetAsCollected } from 'state/predictions'
 import { useTranslation } from 'contexts/Localization'
@@ -42,7 +41,7 @@ const CollectWinningsOverlay: React.FC<CollectWinningsOverlayProps> = ({
   isBottom = false,
   ...props
 }) => {
-  const [state, setState] = useStateWithPromise({
+  const [state, setState] = useState<{ betId: string; epoch: number; payout: number }>({
     betId: null,
     epoch: null,
     payout: 0,
@@ -51,6 +50,7 @@ const CollectWinningsOverlay: React.FC<CollectWinningsOverlayProps> = ({
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const currentEpoch = useGetCurrentEpoch()
+  const [claimedLocal, setClaimedLocal] = useState(false)
 
   // Check if the wallet can collect the bet
   // We do it here because it is not gaurenteed the bet info will be in the history
@@ -62,12 +62,14 @@ const CollectWinningsOverlay: React.FC<CollectWinningsOverlayProps> = ({
         const [firstBetResponse] = bets
         const bet = transformBetResponse(firstBetResponse)
 
-        if (bet.position === bet.round.position) {
-          setState({
-            betId: bet.id,
-            epoch: bet.round.epoch,
-            payout: getPayout(bet),
-          })
+        if (!claimedLocal) {
+          if (bet.position === bet.round.position) {
+            setState({
+              betId: bet.id,
+              epoch: bet.round.epoch,
+              payout: getPayout(bet),
+            })
+          }
         }
       }
     }
@@ -75,7 +77,7 @@ const CollectWinningsOverlay: React.FC<CollectWinningsOverlayProps> = ({
     if (account && hasEntered) {
       fetchBet()
     }
-  }, [account, roundId, hasEntered, currentEpoch, setState])
+  }, [account, roundId, hasEntered, currentEpoch, setState, claimedLocal])
 
   if (!state.epoch) {
     return null
@@ -83,7 +85,8 @@ const CollectWinningsOverlay: React.FC<CollectWinningsOverlayProps> = ({
 
   const handleSuccess = async () => {
     dispatch(markBetAsCollected({ betId: state.betId, account }))
-    await setState({ betId: null, epoch: null, payout: 0 })
+    setState({ betId: null, epoch: null, payout: 0 })
+    setClaimedLocal(true)
   }
 
   return (
