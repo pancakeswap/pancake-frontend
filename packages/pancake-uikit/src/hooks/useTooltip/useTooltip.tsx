@@ -1,28 +1,36 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
-import { Placement, Padding } from "@popperjs/core";
 import { usePopper } from "react-popper";
+import { ThemeProvider, DefaultTheme } from "styled-components";
+import { light, dark } from "../../theme";
 import { StyledTooltip, Arrow } from "./StyledTooltip";
-import { TooltipRefs, TriggerType } from "./types";
+import { TooltipOptions, TooltipRefs } from "./types";
 
 function isTouchDevice() {
   return "ontouchstart" in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
 }
 
-const useTooltip = (
-  content: React.ReactNode,
-  placement: Placement = "auto",
-  trigger: TriggerType = "hover",
-  arrowPadding?: Padding,
-  tooltipPadding?: Padding,
-  tooltipOffset?: [number, number]
-): TooltipRefs => {
+const invertTheme = (currentTheme: DefaultTheme) => {
+  if (currentTheme.isDark) {
+    return light;
+  }
+  return dark;
+};
+
+const useTooltip = (content: React.ReactNode, options: TooltipOptions): TooltipRefs => {
+  const {
+    placement = "auto",
+    trigger = "hover",
+    arrowPadding = 16,
+    tooltipPadding = { left: 16, right: 16 },
+    tooltipOffset = [0, 10],
+  } = options;
   const [targetElement, setTargetElement] = useState<HTMLElement | null>(null);
   const [tooltipElement, setTooltipElement] = useState<HTMLElement | null>(null);
   const [arrowElement, setArrowElement] = useState<HTMLElement | null>(null);
 
   const [visible, setVisible] = useState(false);
-  const tooltipHoverRef = useRef(false);
-  const tooltipHoverTimeoutRef = useRef<number>();
+  const isHoveringOverTooltip = useRef(false);
+  const hideTimeout = useRef<number>();
 
   const hideTooltip = useCallback(
     (e: Event) => {
@@ -33,22 +41,24 @@ const useTooltip = (
       };
 
       if (trigger === "hover") {
-        clearTimeout(tooltipHoverTimeoutRef.current);
-        if (e.target === targetElement) {
-          tooltipHoverTimeoutRef.current = window.setTimeout(() => {
-            if (!tooltipHoverRef.current) {
+        if (hideTimeout.current) {
+          window.clearTimeout(hideTimeout.current);
+        }
+        if (e.target === tooltipElement) {
+          isHoveringOverTooltip.current = false;
+        }
+        if (!isHoveringOverTooltip.current) {
+          hideTimeout.current = window.setTimeout(() => {
+            if (!isHoveringOverTooltip.current) {
               hide();
             }
-          }, 500);
-        } else if (e.target === tooltipElement) {
-          tooltipHoverRef.current = false;
-          hide();
+          }, 100);
         }
       } else {
         hide();
       }
     },
-    [targetElement, tooltipElement, trigger]
+    [tooltipElement, trigger]
   );
 
   const showTooltip = useCallback(
@@ -58,9 +68,12 @@ const useTooltip = (
       setVisible(true);
       if (trigger === "hover") {
         if (e.target === targetElement) {
-          clearTimeout(tooltipHoverTimeoutRef.current);
-        } else if (e.target === tooltipElement) {
-          tooltipHoverRef.current = true;
+          // If we were about to close the tooltip and got back to it
+          // then prevent closing it.
+          clearTimeout(hideTimeout.current);
+        }
+        if (e.target === tooltipElement) {
+          isHoveringOverTooltip.current = true;
         }
       }
     },
@@ -163,16 +176,16 @@ const useTooltip = (
     modifiers: [
       {
         name: "arrow",
-        options: { element: arrowElement, padding: arrowPadding || 16 },
+        options: { element: arrowElement, padding: arrowPadding },
       },
-      { name: "offset", options: { offset: tooltipOffset || [0, 10] } },
-      { name: "preventOverflow", options: { padding: tooltipPadding || { left: 16, right: 16 } } },
+      { name: "offset", options: { offset: tooltipOffset } },
+      { name: "preventOverflow", options: { padding: tooltipPadding } },
     ],
   });
 
   const tooltip = (
     <StyledTooltip ref={setTooltipElement} style={styles.popper} {...attributes.popper}>
-      {content}
+      <ThemeProvider theme={invertTheme}>{content}</ThemeProvider>
       <Arrow ref={setArrowElement} style={styles.arrow} />
     </StyledTooltip>
   );

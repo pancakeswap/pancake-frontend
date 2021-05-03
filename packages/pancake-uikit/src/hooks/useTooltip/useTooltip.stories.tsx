@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Input from "../../components/Input/Input";
+import Toggle from "../../components/Toggle/Toggle";
 import Text from "../../components/Text/Text";
 import HelpIcon from "../../components/Svg/Icons/Help";
 import useTooltip from "./useTooltip";
+import BalanceInput from "../../components/BalanceInput/BalanceInput";
 
 const GridCell = styled.div`
   display: flex;
@@ -47,30 +49,39 @@ export default {
 };
 
 export const Placement: React.FC = () => {
+  // Trigger doesn't matter in this story, it just shows tooltips no matter what
   // TOP
-  const { targetRef: targetRefTopStart, tooltip: tooltipTopStart } = useTooltip("top-start", "top-start", "click");
-  const { targetRef: targetRefTop, tooltip: tooltipTop } = useTooltip("top", "top", "click");
-  const { targetRef: targetRefTopEnd, tooltip: tooltipTopEnd } = useTooltip("top-end", "top-end", "click");
+  const { targetRef: targetRefTopStart, tooltip: tooltipTopStart } = useTooltip("top-start", {
+    placement: "top-start",
+  });
+  const { targetRef: targetRefTop, tooltip: tooltipTop } = useTooltip("top", { placement: "top" });
+  const { targetRef: targetRefTopEnd, tooltip: tooltipTopEnd } = useTooltip("top-end", {
+    placement: "top-end",
+  });
   // LEFT
-  const { targetRef: targetRefLeftStart, tooltip: tooltipLeftStart } = useTooltip("left-start", "left-start", "click");
-  const { targetRef: targetRefLeft, tooltip: tooltipLeft } = useTooltip("left", "left", "click");
-  const { targetRef: targetRefLeftEnd, tooltip: tooltipLeftEnd } = useTooltip("left-end", "left-end", "click");
+  const { targetRef: targetRefLeftStart, tooltip: tooltipLeftStart } = useTooltip("left-start", {
+    placement: "left-start",
+  });
+  const { targetRef: targetRefLeft, tooltip: tooltipLeft } = useTooltip("left", {
+    placement: "left",
+  });
+  const { targetRef: targetRefLeftEnd, tooltip: tooltipLeftEnd } = useTooltip("left-end", { placement: "left-end" });
   // RIGHT
-  const { targetRef: targetRefRightStart, tooltip: tooltipRightStart } = useTooltip(
-    "right-start",
-    "right-start",
-    "click"
-  );
-  const { targetRef: targetRefRight, tooltip: tooltipRight } = useTooltip("right", "right", "click");
-  const { targetRef: targetRefRightEnd, tooltip: tooltipRightEnd } = useTooltip("right-end", "right-end", "click");
+  const { targetRef: targetRefRightStart, tooltip: tooltipRightStart } = useTooltip("right-start", {
+    placement: "right-start",
+  });
+  const { targetRef: targetRefRight, tooltip: tooltipRight } = useTooltip("right", { placement: "right" });
+  const { targetRef: targetRefRightEnd, tooltip: tooltipRightEnd } = useTooltip("right-end", {
+    placement: "right-end",
+  });
   // BOTTOM
-  const { targetRef: targetRefBottomStart, tooltip: tooltipBottomStart } = useTooltip(
-    "bottom-start",
-    "bottom-start",
-    "click"
-  );
-  const { targetRef: targetRefBottom, tooltip: tooltipBottom } = useTooltip("bottom", "bottom", "click");
-  const { targetRef: targetRefBottomEnd, tooltip: tooltipBottomEnd } = useTooltip("bottom-end", "bottom-end", "click");
+  const { targetRef: targetRefBottomStart, tooltip: tooltipBottomStart } = useTooltip("bottom-start", {
+    placement: "bottom-start",
+  });
+  const { targetRef: targetRefBottom, tooltip: tooltipBottom } = useTooltip("bottom", { placement: "bottom" });
+  const { targetRef: targetRefBottomEnd, tooltip: tooltipBottomEnd } = useTooltip("bottom-end", {
+    placement: "bottom-end",
+  });
 
   return (
     <Container>
@@ -130,22 +141,22 @@ export const Placement: React.FC = () => {
 };
 
 export const Triggers: React.FC = () => {
-  const { tooltipVisible: tooltipVisibleClick, targetRef: targetRefClick, tooltip: tooltipClick } = useTooltip(
-    "You clicked me!",
-    "right",
-    "click"
-  );
-  const { tooltipVisible: tooltipVisibleHover, targetRef: targetRefHover, tooltip: tooltipHover } = useTooltip(
-    "Hovering",
-    "right",
-    "hover"
-  );
+  const {
+    tooltipVisible: tooltipVisibleClick,
+    targetRef: targetRefClick,
+    tooltip: tooltipClick,
+  } = useTooltip("You clicked me!", { placement: "right", trigger: "click" });
+  const {
+    tooltipVisible: tooltipVisibleHover,
+    targetRef: targetRefHover,
+    tooltip: tooltipHover,
+  } = useTooltip("Hovering", { placement: "right", trigger: "hover" });
 
-  const { tooltipVisible: tooltipVisibleFocus, targetRef: targetRefFocus, tooltip: tooltipFocus } = useTooltip(
-    "You focused me!",
-    "right",
-    "focus"
-  );
+  const {
+    tooltipVisible: tooltipVisibleFocus,
+    targetRef: targetRefFocus,
+    tooltip: tooltipFocus,
+  } = useTooltip("You focused me!", { placement: "right", trigger: "focus" });
   return (
     <div
       style={{
@@ -169,16 +180,16 @@ export const Triggers: React.FC = () => {
 export const EventPropagationAndMobile: React.FC = () => {
   const [showExpandedClick, setShowExpandedClick] = useState(false);
   const [showExpandedHover, setShowExpandedHover] = useState(false);
-  const { tooltipVisible: tooltipVisibleClick, targetRef: targetRefClick, tooltip: tooltipClick } = useTooltip(
-    "You clicked on the help icon but the card did not expand",
-    "right",
-    "click"
-  );
-  const { tooltipVisible: tooltipVisibleHover, targetRef: targetRefHover, tooltip: tooltipHover } = useTooltip(
-    "You hovered over the help icon",
-    "right",
-    "hover"
-  );
+  const {
+    tooltipVisible: tooltipVisibleClick,
+    targetRef: targetRefClick,
+    tooltip: tooltipClick,
+  } = useTooltip("You clicked on the help icon but the card did not expand", { placement: "right", trigger: "click" });
+  const {
+    tooltipVisible: tooltipVisibleHover,
+    targetRef: targetRefHover,
+    tooltip: tooltipHover,
+  } = useTooltip("You hovered over the help icon", { placement: "right", trigger: "hover" });
   return (
     <div
       style={{
@@ -230,16 +241,20 @@ export const EventPropagationAndMobile: React.FC = () => {
 };
 
 export const FineTuning: React.FC = () => {
-  const { tooltipVisible: tooltipVisibleDefault, targetRef: targetRefDefault, tooltip: tooltipDefault } = useTooltip(
-    "Just default tooltip",
-    "top-start",
-    "hover"
-  );
+  const {
+    tooltipVisible: tooltipVisibleDefault,
+    targetRef: targetRefDefault,
+    tooltip: tooltipDefault,
+  } = useTooltip("Just default tooltip", { placement: "top-start" });
   const {
     tooltipVisible: tooltipVisibleFineTuned,
     targetRef: targetRefFineTuned,
     tooltip: tooltipFineTuned,
-  } = useTooltip("Didn't you know that 6 comes before 7?", "top-start", "hover", { right: 221 }, undefined, [0, -8]);
+  } = useTooltip("Didn't you know that 6 comes before 7?", {
+    placement: "top-start",
+    arrowPadding: { right: 221 },
+    tooltipOffset: [0, -8],
+  });
   return (
     <div style={{ width: "500px", height: "500px" }}>
       <Text fontSize="20px">Hover over inputs</Text>
@@ -254,7 +269,7 @@ export const FineTuning: React.FC = () => {
 };
 
 export const Flipping: React.FC = () => {
-  const { targetRef, tooltip } = useTooltip("All tooltips flip automatically when you scroll", "top", "hover");
+  const { targetRef, tooltip } = useTooltip("All tooltips flip automatically when you scroll", { placement: "top" });
   return (
     <div style={{ padding: "200px", width: "500px", height: "2000px" }}>
       <ReferenceElement ref={targetRef} />
@@ -264,21 +279,21 @@ export const Flipping: React.FC = () => {
 };
 
 export const ScreenEdges: React.FC = () => {
-  const { targetRef: targetRefLeft, tooltip: tooltipLeft, tooltipVisible: leftVisible } = useTooltip(
-    "I should not touch the edge of the screen",
-    "top",
-    "click"
-  );
-  const { targetRef: targetRefRight, tooltip: tooltipRight, tooltipVisible: rightVisible } = useTooltip(
-    "I should not touch the edge of the screen",
-    "top",
-    "click"
-  );
-  const { targetRef: targetRefMiddle, tooltip: tooltipMiddle, tooltipVisible: middleVisible } = useTooltip(
-    "I should not touch the edge of the screen",
-    "top",
-    "click"
-  );
+  const {
+    targetRef: targetRefLeft,
+    tooltip: tooltipLeft,
+    tooltipVisible: leftVisible,
+  } = useTooltip("I should not touch the edge of the screen", { placement: "top", trigger: "click" });
+  const {
+    targetRef: targetRefRight,
+    tooltip: tooltipRight,
+    tooltipVisible: rightVisible,
+  } = useTooltip("I should not touch the edge of the screen", { placement: "top", trigger: "click" });
+  const {
+    targetRef: targetRefMiddle,
+    tooltip: tooltipMiddle,
+    tooltipVisible: middleVisible,
+  } = useTooltip("I should not touch the edge of the screen", { placement: "top", trigger: "click" });
   return (
     <div style={{ padding: "16px", height: "800px", backgroundColor: "#EEE" }}>
       <Text>
@@ -300,6 +315,32 @@ export const ScreenEdges: React.FC = () => {
         </span>
         {rightVisible && tooltipRight}
       </div>
+    </div>
+  );
+};
+
+export const ThemeInversion: React.FC = () => {
+  const tooltipContent = (
+    <>
+      <Text>Tooltips have inverted theme</Text>
+      <Toggle />
+      <BalanceInput value="1.0" currencyValue="~623.45 USD" placeholder="0.0" />
+    </>
+  );
+  const { targetRef, tooltip } = useTooltip(tooltipContent, { placement: "bottom" });
+  return (
+    <div style={{ padding: "60px 25px", width: "550px", display: "flex", gap: "15px" }}>
+      <div style={{ flex: "1" }}>
+        <Text>Current theme looks like this</Text>
+        <Toggle />
+        <BalanceInput value="1.0" currencyValue="~623.45 USD" placeholder="0.0" />
+      </div>
+      <div style={{ flex: "1", textAlign: "center" }}>
+        <span ref={targetRef}>
+          <HelpIcon />
+        </span>
+      </div>
+      {tooltip}
     </div>
   );
 };
