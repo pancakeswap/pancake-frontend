@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Button, useModal } from '@pancakeswap-libs/uikit'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import useGetLotteryHasDrawn from 'hooks/useGetLotteryHasDrawn'
 import { useLotteryAllowance } from 'hooks/useAllowance'
 import useTickets from 'hooks/useTickets'
@@ -23,7 +23,7 @@ const CardActions = styled.div`
 `
 
 const TicketCard: React.FC = () => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const allowance = useLotteryAllowance()
   const lotteryHasDrawn = useGetLotteryHasDrawn()
   const cakeBalance = useTokenBalance(getCakeAddress())
@@ -39,10 +39,10 @@ const TicketCard: React.FC = () => {
       return (
         <>
           <Button width="100%" disabled>
-            {TranslateString(432, 'View your tickets')}
+            {t('View your tickets')}
           </Button>
           <Button width="100%" disabled={requestedApproval} onClick={handleApprove}>
-            {TranslateString(494, 'Approve CAKE')}
+            {t('Approve CAKE')}
           </Button>
         </>
       )
@@ -56,10 +56,10 @@ const TicketCard: React.FC = () => {
           variant="secondary"
           onClick={onPresentMyTickets}
         >
-          {TranslateString(432, 'View your tickets')}
+          {t('View your tickets')}
         </Button>
         <Button id="lottery-buy-start" width="100%" onClick={onPresentBuy}>
-          {TranslateString(430, 'Buy ticket')}
+          {t('Buy ticket')}
         </Button>
       </>
     )
@@ -67,11 +67,7 @@ const TicketCard: React.FC = () => {
 
   return (
     <CardActions>
-      {lotteryHasDrawn ? (
-        <Button disabled> {TranslateString(874, 'On sale soon')}</Button>
-      ) : (
-        renderLotteryTicketButtons()
-      )}
+      {lotteryHasDrawn ? <Button disabled> {t('On sale soon')}</Button> : renderLotteryTicketButtons()}
     </CardActions>
   )
 }

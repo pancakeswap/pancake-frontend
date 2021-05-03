@@ -3,7 +3,7 @@ import { Flex, Text, Button, Heading, useModal, Skeleton } from '@pancakeswap-li
 import BigNumber from 'bignumber.js'
 import { Token } from 'config/constants/types'
 import { getAddress } from 'utils/addressHelpers'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import { getFullDisplayBalance, getBalanceNumber, formatNumber } from 'utils/formatBalance'
 import { useGetApiPrice } from 'state/hooks'
 import CollectModal from '../Modals/CollectModal'
@@ -23,7 +23,7 @@ const HarvestActions: React.FC<HarvestActionsProps> = ({
   isBnbPool,
   isLoading = false,
 }) => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const earningTokenPrice = useGetApiPrice(earningToken.address ? getAddress(earningToken.address) : '')
   const fullBalance = getFullDisplayBalance(earnings, earningToken.decimals)
   const formattedBalance = formatNumber(getBalanceNumber(earnings, earningToken.decimals), 3, 3)
@@ -62,7 +62,7 @@ const HarvestActions: React.FC<HarvestActionsProps> = ({
         </Flex>
         <Flex>
           <Button disabled={!hasEarnings} onClick={onPresentCollect}>
-            {isCompoundPool ? TranslateString(1056, 'Collect') : TranslateString(562, 'Harvest')}
+            {isCompoundPool ? t('Collect') : t('Harvest')}
           </Button>
         </Flex>
       </Flex>

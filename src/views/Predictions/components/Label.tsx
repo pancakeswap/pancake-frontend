@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { BnbUsdtPairTokenIcon, Box, Card, PocketWatchIcon, Text } from '@pancakeswap-libs/uikit'
 import { useBnbUsdtTicker } from 'hooks/ticker'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import { formatRoundTime } from '../helpers'
 import useRoundCountdown from '../hooks/useRoundCountdown'
 
@@ -99,13 +99,13 @@ interface TimerLabelProps {
 export const TimerLabel: React.FC<TimerLabelProps> = ({ interval }) => {
   const seconds = useRoundCountdown()
   const countdown = formatRoundTime(seconds)
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
 
   return (
     <Box pr="24px" position="relative">
       <Label dir="right">
         <Title bold color="secondary">
-          {seconds === 0 ? TranslateString(999, 'Closing') : countdown}
+          {seconds === 0 ? t('Closing') : countdown}
         </Title>
         <Interval fontSize="12px">{interval}</Interval>
       </Label>

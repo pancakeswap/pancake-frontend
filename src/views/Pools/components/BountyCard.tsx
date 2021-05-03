@@ -13,7 +13,7 @@ import {
   Box,
   useTooltip,
 } from '@pancakeswap-libs/uikit'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import useRefresh from 'hooks/useRefresh'
 import useGetVaultFees from 'hooks/cakeVault/useGetVaultFees'
 import useGetVaultBountyInfo from 'hooks/cakeVault/useGetVaultBountyInfo'
@@ -31,24 +31,21 @@ const InlineText = styled(Text)`
 `
 
 const BountyCard = () => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const { fastRefresh } = useRefresh()
   const { dollarCallBountyToDisplay, cakeCallBountyToDisplay, totalPendingCakeRewards } = useGetVaultBountyInfo(
     fastRefresh,
   )
   const TooltipComponent = () => (
     <Box>
+      <Box mb="16px">{`${t(`This bounty is given as a reward for providing a service to other users.`)}`}</Box>
       <Box mb="16px">
-        {`${TranslateString(999, `This bounty is given as a reward for providing a service to other users.`)}`}
-      </Box>
-      <Box mb="16px">
-        {TranslateString(
-          999,
+        {t(
           'Whenever you successfully claim the bounty, you’re also helping out by activating the Auto CAKE Pool’s compounding function for everyone.',
         )}
       </Box>
       <Box style={{ fontWeight: 'bold' }}>
-        {TranslateString(999, `Auto-Compound Bounty: ${callFee / 100}% of all Auto CAKE pool users’ pending yield`)}
+        {t(`Auto-Compound Bounty: %fee%% of all Auto CAKE pool users’ pending yield`, { fee: callFee / 100 })}
       </Box>
     </Box>
   )
@@ -73,7 +70,7 @@ const BountyCard = () => {
           <Flex flexDirection="column">
             <Flex alignItems="center" mb="12px">
               <Text fontSize="16px" bold color="textSubtle" mr="4px">
-                {TranslateString(999, 'Auto CAKE Bounty')}
+                {t('Auto CAKE Bounty')}
               </Text>
               <Box ref={targetRef}>
                 <HelpIcon color="textSubtle" />
@@ -92,7 +89,7 @@ const BountyCard = () => {
               onClick={onPresentBountyModal}
               scale="sm"
             >
-              {TranslateString(999, 'Claim')}
+              {t('Claim')}
             </Button>
           </Flex>
         </CardBody>

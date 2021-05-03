@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Flex, Text, Heading, Image } from '@pancakeswap-libs/uikit'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import FlipperBunny from '../../pngs/flippers.png'
 
 const StyledFlex = styled(Flex)`
@@ -20,19 +20,16 @@ const ImageWrapper = styled.div`
 `
 
 const PrizesText = () => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
 
   return (
     <StyledFlex flexDirection="column" mb="32px">
-      <Text mb="24px">
-        {TranslateString(999, 'Every eligible participant will win prizes at the end of the competition.')}
-      </Text>
+      <Text mb="24px">{t('Every eligible participant will win prizes at the end of the competition.')}</Text>
       <Heading color="secondary" mb="24px" size="lg">
-        {TranslateString(999, 'The better your team performs, the better the prizes!')}
+        {t('The better your team performs, the better the prizes!')}
       </Heading>
       <Text>
-        {TranslateString(
-          999,
+        {t(
           'The final winning team will be the team with the highest total combined volume of their top 500 members at the end of the competition period.',
         )}
       </Text>

@@ -1,7 +1,7 @@
 import React from 'react'
 import BigNumber from 'bignumber.js'
 import { Text, TextProps } from '@pancakeswap-libs/uikit'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import { BIG_ZERO } from 'utils/bigNumber'
 
 interface PercentageOfTotalProps extends TextProps {
@@ -10,7 +10,7 @@ interface PercentageOfTotalProps extends TextProps {
 }
 
 const PercentageOfTotal: React.FC<PercentageOfTotalProps> = ({ userAmount, totalAmount, ...props }) => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const percentOfUserContribution = totalAmount.isGreaterThan(0)
     ? userAmount.div(totalAmount).times(100).toNumber()
     : BIG_ZERO
@@ -18,7 +18,7 @@ const PercentageOfTotal: React.FC<PercentageOfTotalProps> = ({ userAmount, total
 
   return (
     <Text fontSize="14px" color="textSubtle" {...props}>
-      {TranslateString(999, `${percentOfUserDisplay}% of total`, { num: percentOfUserDisplay })}
+      {t(`%num% of total`, { num: percentOfUserDisplay })}
     </Text>
   )
 }

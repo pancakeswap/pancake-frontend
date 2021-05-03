@@ -3,12 +3,12 @@ import { AutoRenewIcon, Flex, Heading } from '@pancakeswap-libs/uikit'
 import orderBy from 'lodash/orderBy'
 import { useTeams } from 'state/hooks'
 import Page from 'components/layout/Page'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import TeamListCard from './components/TeamListCard'
 import TeamHeader from './components/TeamHeader'
 
 const Teams = () => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const { teams, isLoading } = useTeams()
   const teamList = Object.values(teams)
   const topTeams = orderBy(teamList, ['points', 'id', 'name'], ['desc', 'asc', 'asc'])
@@ -17,7 +17,7 @@ const Teams = () => {
     <Page>
       <TeamHeader />
       <Flex alignItems="center" justifyContent="space-between" mb="32px">
-        <Heading size="xl">{TranslateString(1040, 'Teams')}</Heading>
+        <Heading size="xl">{t('Teams')}</Heading>
         {isLoading && <AutoRenewIcon spin />}
       </Flex>
       {topTeams.map((team, index) => (

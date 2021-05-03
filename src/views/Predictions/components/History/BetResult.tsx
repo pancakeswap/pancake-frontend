@@ -2,7 +2,7 @@ import React from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { Box, Flex, Heading, Text, PrizeIcon, BlockIcon } from '@pancakeswap-libs/uikit'
 import { useAppDispatch } from 'state'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import { usePriceBnbBusd } from 'state/hooks'
 import styled from 'styled-components'
 import { Bet, BetPosition } from 'state/types'
@@ -33,7 +33,7 @@ const StyledBetResult = styled(Box)`
 `
 
 const BetResult: React.FC<BetResultProps> = ({ bet, result }) => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const { account } = useWeb3React()
   const { isRefundable } = useIsRefundable(bet.round.epoch)
@@ -58,11 +58,11 @@ const BetResult: React.FC<BetResultProps> = ({ bet, result }) => {
   const getHeaderText = () => {
     switch (result) {
       case Result.WIN:
-        return TranslateString(999, 'Win')
+        return t('Win')
       case Result.LOSE:
-        return TranslateString(999, 'Lose')
+        return t('Lose')
       case Result.CANCELED:
-        return TranslateString(999, 'Canceled')
+        return t('Canceled')
       default:
         return ''
     }
@@ -99,7 +99,7 @@ const BetResult: React.FC<BetResultProps> = ({ bet, result }) => {
   return (
     <>
       <Flex alignItems="center" justifyContent="space-between" mb="8px">
-        <Heading>{TranslateString(999, 'Your History')}</Heading>
+        <Heading>{t('Your History')}</Heading>
         <Flex alignItems="center">
           <Heading as="h3" color={getHeaderColor()} textTransform="uppercase" bold mr="4px">
             {getHeaderText()}
@@ -117,24 +117,24 @@ const BetResult: React.FC<BetResultProps> = ({ bet, result }) => {
             mb="16px"
             onSuccess={handleSuccess}
           >
-            {TranslateString(999, 'Collect Winnings')}
+            {t('Collect Winnings')}
           </CollectWinningsButton>
         )}
         {result === Result.CANCELED && isRefundable && (
           <ReclaimPositionButton epoch={bet.round.epoch} width="100%" mb="16px" />
         )}
         <Flex alignItems="center" justifyContent="space-between" mb="16px">
-          <Text>{TranslateString(999, 'Your direction')}</Text>
+          <Text>{t('Your direction')}</Text>
           <PositionTag betPosition={bet.position}>
-            {bet.position === BetPosition.BULL ? TranslateString(999, 'Up') : TranslateString(999, 'Down')}
+            {bet.position === BetPosition.BULL ? t('Up') : t('Down')}
           </PositionTag>
         </Flex>
         <Flex alignItems="center" justifyContent="space-between" mb="16px">
-          <Text>{TranslateString(999, 'Your position')}</Text>
+          <Text>{t('Your position')}</Text>
           <Text>{`${formatBnb(bet.amount)} BNB`}</Text>
         </Flex>
         <Flex alignItems="start" justifyContent="space-between">
-          <Text bold>{TranslateString(999, 'Your Result')}</Text>
+          <Text bold>{t('Your Result')}</Text>
           <Box style={{ textAlign: 'right' }}>
             <Text bold color={getResultColor()}>{`${result === Result.LOSE ? '-' : '+'}${formatBnb(payout)} BNB`}</Text>
             <Text fontSize="12px" color="textSubtle">

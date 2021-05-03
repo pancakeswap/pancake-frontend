@@ -1,6 +1,6 @@
 import React from 'react'
 import { Flex, Text, IconButton, useModal, CalculateIcon, Skeleton, useTooltip } from '@pancakeswap-libs/uikit'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { getPoolApr } from 'utils/apr'
 import { getAddress } from 'utils/addressHelpers'
@@ -26,13 +26,10 @@ const AprRow: React.FC<AprRowProps> = ({
   compoundFrequency = 1,
   performanceFee = 0,
 }) => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const { stakingToken, earningToken, totalStaked, isFinished, tokenPerBlock } = pool
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    TranslateString(
-      999,
-      'APY includes compounding, APR doesn’t. This pool’s CAKE is compounded automatically, so we show APY.',
-    ),
+    t('APY includes compounding, APR doesn’t. This pool’s CAKE is compounded automatically, so we show APY.'),
     'bottom-end',
   )
 
@@ -75,7 +72,7 @@ const AprRow: React.FC<AprRowProps> = ({
     <ApyCalculatorModal
       tokenPrice={earningTokenPrice}
       apr={apr}
-      linkLabel={`${TranslateString(999, 'Get')} ${stakingToken.symbol}`}
+      linkLabel={`${t('Get')} ${stakingToken.symbol}`}
       linkHref={apyModalLink || BASE_EXCHANGE_URL}
       earningTokenSymbol={earningToken.symbol}
       roundingDecimals={isHighValueToken ? 4 : 2}
@@ -88,7 +85,7 @@ const AprRow: React.FC<AprRowProps> = ({
     <Flex alignItems="center" justifyContent="space-between">
       {tooltipVisible && tooltip}
       <Text ref={targetRef} fontSize="16px">
-        {isAutoVault ? TranslateString(999, 'APY') : TranslateString(736, 'APR')}:
+        {isAutoVault ? t('APY') : t('APR')}:
       </Text>
       {isFinished || !apr ? (
         <Skeleton width="82px" height="32px" />

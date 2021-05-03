@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import ScoreCard from './ScoreCard'
 import ScoreHeader from './ScoreHeader'
 import RibbonWithImage from '../RibbonWithImage'
@@ -26,7 +26,7 @@ const YourScore: React.FC<YourScoreProps> = ({
   finishedAndNothingToClaim,
   onClaimSuccess,
 }) => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const showRibbon = !account || hasRegistered
 
   return (
@@ -37,7 +37,7 @@ const YourScore: React.FC<YourScoreProps> = ({
           ribbonDirection="down"
           isCardHeader
         >
-          {TranslateString(1228, 'Your Score')}
+          {t('Your Score')}
         </RibbonWithImage>
       )}
       <ScoreCard

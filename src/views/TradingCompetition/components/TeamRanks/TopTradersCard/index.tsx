@@ -11,7 +11,7 @@ import {
   Flex,
   ExpandableLabel,
 } from '@pancakeswap-libs/uikit'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import { TeamRanksProps } from '../../../types'
 import TopTradersGrid from './TopTradersGrid'
 
@@ -22,12 +22,12 @@ const TopTradersCard: React.FC<TeamRanksProps> = ({
   globalLeaderboardInformation,
   isGlobalLeaderboardDataComplete,
 }) => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const [activeTab, setActiveTab] = useState(0)
   const [isExpanded, setIsExpanded] = useState(false)
   const [topTradersGridData, setTopTradersGridData] = useState(null)
   const handleItemClick = (index: number) => setActiveTab(index)
-  const tabs = [`${TranslateString(408, 'Total')}`, 'Storm', 'Flippers', 'Cakers']
+  const tabs = [`${t('Total')}`, 'Storm', 'Flippers', 'Cakers']
 
   useEffect(() => {
     const getData = () => {
@@ -65,10 +65,10 @@ const TopTradersCard: React.FC<TeamRanksProps> = ({
       <Box width="100%">
         <CardHeader>
           <Heading color="secondary" size="lg">
-            {TranslateString(999, 'Top Traders')}
+            {t('Top Traders')}
           </Heading>
           <Text fontSize="14px" color="textSubtle">
-            {TranslateString(999, 'Since start of competition')}
+            {t('Since start of competition')}
           </Text>
         </CardHeader>
         <Box mt="16px">
@@ -82,7 +82,7 @@ const TopTradersCard: React.FC<TeamRanksProps> = ({
         <CardFooter p="0px">
           <Flex alignItems="center" justifyContent="center">
             <ExpandableLabel expanded={isExpanded} onClick={() => setIsExpanded(!isExpanded)}>
-              {isExpanded ? TranslateString(1066, 'Hide') : TranslateString(999, 'Show More')}
+              {isExpanded ? t('Hide') : t('Show More')}
             </ExpandableLabel>
           </Flex>
         </CardFooter>

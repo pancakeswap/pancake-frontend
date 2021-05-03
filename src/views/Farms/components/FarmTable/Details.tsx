@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { ChevronDownIcon, useMatchBreakpoints } from '@pancakeswap-libs/uikit'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 
 interface DetailsProps {
   actionPanelToggled: boolean
@@ -25,13 +25,13 @@ const ArrowIcon = styled(ChevronDownIcon)<{ toggled: boolean }>`
 `
 
 const Details: React.FC<DetailsProps> = ({ actionPanelToggled }) => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
 
   return (
     <Container>
-      {!isMobile && TranslateString(658, 'Details')}
+      {!isMobile && t('Details')}
       <ArrowIcon color="primary" toggled={actionPanelToggled} />
     </Container>
   )

@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Button, LinkExternal, useModal } from '@pancakeswap-libs/uikit'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
 import useTickets from 'hooks/useTickets'
 import UnlockButton from 'components/UnlockButton'
@@ -29,7 +29,7 @@ const ExternalLinkWrap = styled(LinkExternal)`
 `
 
 const TicketCard: React.FC<{ contractLink?: string; lotteryNumber?: number }> = ({ contractLink, lotteryNumber }) => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const tickets = useTickets(lotteryNumber)
   const ticketsLength = tickets.length
   const [onPresentMyTickets] = useModal(<MyTicketsModal myTicketNumbers={tickets} from="buy" />)
@@ -46,9 +46,9 @@ const TicketCard: React.FC<{ contractLink?: string; lotteryNumber?: number }> = 
   return (
     <Wrapper>
       <Button disabled={ticketsLength === 0} onClick={onPresentMyTickets} width="100%">
-        {TranslateString(432, 'View your tickets')}
+        {t('View your tickets')}
       </Button>
-      <ExternalLinkWrap href={contractLink}>{TranslateString(356, 'View on BscScan')}</ExternalLinkWrap>
+      <ExternalLinkWrap href={contractLink}>{t('View on BscScan')}</ExternalLinkWrap>
     </Wrapper>
   )
 }

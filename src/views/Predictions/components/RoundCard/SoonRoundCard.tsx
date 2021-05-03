@@ -1,6 +1,6 @@
 import React from 'react'
 import { CardBody, Text, WaitIcon } from '@pancakeswap-libs/uikit'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import { Round, BetPosition } from 'state/types'
 import { useGetCurrentEpoch, useGetTotalIntervalBlocks } from 'state/hooks'
 import { formatRoundTime } from '../../helpers'
@@ -15,7 +15,7 @@ interface SoonRoundCardProps {
 }
 
 const SoonRoundCard: React.FC<SoonRoundCardProps> = ({ round }) => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const interval = useGetTotalIntervalBlocks()
   const currentEpoch = useGetCurrentEpoch()
   const estimatedEndBlock = round.startBlock + interval
@@ -27,7 +27,7 @@ const SoonRoundCard: React.FC<SoonRoundCardProps> = ({ round }) => {
       <CardHeader
         status="soon"
         icon={<WaitIcon mr="4px" width="21px" />}
-        title={TranslateString(999, 'Later')}
+        title={t('Later')}
         epoch={round.epoch}
         blockNumber={estimatedEndBlock}
       />
@@ -35,7 +35,7 @@ const SoonRoundCard: React.FC<SoonRoundCardProps> = ({ round }) => {
         <MultiplierArrow isDisabled />
         <RoundResultBox>
           <Text textAlign="center">
-            <Text bold>{TranslateString(999, 'Entry starts')}</Text>
+            <Text bold>{t('Entry starts')}</Text>
             <Text fontSize="24px" bold>
               {`~${countdown}`}
             </Text>

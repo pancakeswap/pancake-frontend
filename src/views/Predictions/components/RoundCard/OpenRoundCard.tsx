@@ -9,7 +9,7 @@ import {
   ArrowUpIcon,
   ArrowDownIcon,
 } from '@pancakeswap-libs/uikit'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import { useAppDispatch } from 'state'
 import { BetPosition, Round } from 'state/types'
 import { useBlock, useGetIntervalBlocks } from 'state/hooks'
@@ -49,7 +49,7 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
     isSettingPosition: false,
     position: BetPosition.BULL,
   })
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const interval = useGetIntervalBlocks()
   const { toastSuccess } = useToast()
   const { account } = useWeb3React()
@@ -121,7 +121,7 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
 
     toastSuccess(
       'Success!',
-      TranslateString(999, `${positionDisplay} position entered`, {
+      t(`${positionDisplay} position entered`, {
         position: positionDisplay,
       }),
     )
@@ -139,7 +139,7 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
           epoch={round.epoch}
           blockNumber={estimatedLockBlock}
           icon={<PlayCircleOutlineIcon color="white" mr="4px" width="21px" />}
-          title={TranslateString(999, 'Next')}
+          title={t('Next')}
         />
         <CardBody p="16px">
           <MultiplierArrow amount={betAmount} multiplier={bullMultiplier} hasEntered={hasEnteredUp} />
@@ -154,7 +154,7 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
                   mb="4px"
                   disabled={!canEnterPosition || isBufferPhase}
                 >
-                  {TranslateString(999, 'Enter UP')}
+                  {t('Enter UP')}
                 </Button>
                 <Button
                   variant="danger"
@@ -162,14 +162,14 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
                   onClick={() => handleSetPosition(BetPosition.BEAR)}
                   disabled={!canEnterPosition || isBufferPhase}
                 >
-                  {TranslateString(999, 'Enter DOWN')}
+                  {t('Enter DOWN')}
                 </Button>
               </>
             ) : (
               <>
                 <div ref={targetRef}>
                   <Button disabled startIcon={getPositionEnteredIcon()} width="100%" mb="8px">
-                    {TranslateString(999, `${positionDisplay} Entered`, { position: positionDisplay })}
+                    {t('%position% Entered', { position: positionDisplay })}
                   </Button>
                 </div>
                 <PrizePoolRow totalAmount={round.totalAmount} />

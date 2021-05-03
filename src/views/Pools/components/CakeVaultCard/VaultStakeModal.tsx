@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Modal, Text, Flex, Image, Button, Slider, BalanceInput, AutoRenewIcon } from '@pancakeswap-libs/uikit'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import { BASE_EXCHANGE_URL } from 'config'
 import { useCakeVaultContract } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
@@ -46,7 +46,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
 }) => {
   const { stakingToken } = pool
   const cakeVaultContract = useCakeVaultContract()
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const { theme } = useTheme()
   const { toastSuccess, toastError } = useToast()
   const [pendingTx, setPendingTx] = useState(false)
@@ -86,10 +86,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
           setPendingTx(true)
         })
         .on('receipt', () => {
-          toastSuccess(
-            TranslateString(999, 'Unstaked!'),
-            TranslateString(999, 'Your earnings have also been harvested to your wallet'),
-          )
+          toastSuccess(t('Unstaked!'), t('Your earnings have also been harvested to your wallet'))
           setPendingTx(false)
           onDismiss()
           setLastUpdated()
@@ -97,7 +94,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
         .on('error', (error) => {
           console.error(error)
           // Remove message from toast before prod
-          toastError(TranslateString(999, 'Error'), TranslateString(999, `${error.message} - Please try again.`))
+          toastError(t('Error'), t(`${error.message} - Please try again.`))
           setPendingTx(false)
         })
     } else {
@@ -110,10 +107,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
           setPendingTx(true)
         })
         .on('receipt', () => {
-          toastSuccess(
-            TranslateString(999, 'Unstaked!'),
-            TranslateString(999, 'Your earnings have also been harvested to your wallet'),
-          )
+          toastSuccess(t('Unstaked!'), t('Your earnings have also been harvested to your wallet'))
           setPendingTx(false)
           onDismiss()
           setLastUpdated()
@@ -121,7 +115,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
         .on('error', (error) => {
           console.error(error)
           // Remove message from toast before prod
-          toastError(TranslateString(999, 'Error'), TranslateString(999, `${error.message} - Please try again.`))
+          toastError(t('Error'), t(`${error.message} - Please try again.`))
           setPendingTx(false)
         })
     }
@@ -137,7 +131,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
         setPendingTx(true)
       })
       .on('receipt', () => {
-        toastSuccess(TranslateString(999, 'Staked!'), TranslateString(999, 'Your funds have been staked in the pool'))
+        toastSuccess(t('Staked!'), t('Your funds have been staked in the pool'))
         setPendingTx(false)
         onDismiss()
         setLastUpdated()
@@ -145,7 +139,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
       .on('error', (error) => {
         console.error(error)
         // Remove message from toast before prod
-        toastError(TranslateString(999, 'Error'), TranslateString(999, `${error.message} - Please try again.`))
+        toastError(t('Error'), t(`${error.message} - Please try again.`))
         setPendingTx(false)
       })
   }
@@ -164,12 +158,12 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
 
   return (
     <Modal
-      title={isRemovingStake ? TranslateString(588, 'Unstake') : TranslateString(999, 'Stake in Pool')}
+      title={isRemovingStake ? t('Unstake') : t('Stake in Pool')}
       onDismiss={onDismiss}
       headerBackground={theme.colors.gradients.cardHeader}
     >
       <Flex alignItems="center" justifyContent="space-between" mb="8px">
-        <Text bold>{isRemovingStake ? TranslateString(588, 'Unstake') : TranslateString(316, 'Stake')}:</Text>
+        <Text bold>{isRemovingStake ? t('Unstake') : t('Stake')}:</Text>
         <Flex alignItems="center" minWidth="70px">
           <Image src={`/images/tokens/${stakingToken.symbol}.png`} width={24} height={24} alt={stakingToken.symbol} />
           <Text ml="4px" bold>
@@ -223,11 +217,11 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
         disabled={!stakeAmount || parseFloat(stakeAmount) === 0}
         mt="24px"
       >
-        {pendingTx ? TranslateString(802, 'Confirming') : TranslateString(464, 'Confirm')}
+        {pendingTx ? t('Confirming') : t('Confirm')}
       </Button>
       {!isRemovingStake && (
         <Button mt="8px" as="a" external href={BASE_EXCHANGE_URL} variant="secondary">
-          {TranslateString(999, 'Get')} {stakingToken.symbol}
+          {t('Get')} {stakingToken.symbol}
         </Button>
       )}
     </Modal>

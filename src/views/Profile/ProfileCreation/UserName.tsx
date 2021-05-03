@@ -20,7 +20,7 @@ import { parseISO, formatDistance } from 'date-fns'
 import { useWeb3React } from '@web3-react/core'
 import useToast from 'hooks/useToast'
 import useWeb3 from 'hooks/useWeb3'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import useHasCakeBalance from 'hooks/useHasCakeBalance'
 import { DEFAULT_TOKEN_DECIMAL } from 'config'
 import debounce from 'lodash/debounce'
@@ -60,7 +60,7 @@ const Indicator = styled(Flex)`
 const UserName: React.FC = () => {
   const [isAcknowledged, setIsAcknowledged] = useState(false)
   const { teamId, selectedNft, userName, actions, minimumCakeRequired, allowance } = useProfileCreation()
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const { account, library } = useWeb3React()
   const { toastError } = useToast()
   const web3 = useWeb3()
@@ -171,25 +171,21 @@ const UserName: React.FC = () => {
   return (
     <>
       <Text fontSize="20px" color="textSubtle" bold>
-        {TranslateString(999, `Step ${4}`)}
+        {t(`Step ${4}`)}
       </Text>
       <Heading as="h3" size="xl" mb="24px">
-        {TranslateString(1110, 'Set Your Name')}
+        {t('Set Your Name')}
       </Heading>
       <Text as="p" mb="24px">
-        {TranslateString(
-          999,
-          'This name will be shown in team leaderboards and search results as long as your profile is active.',
-        )}
+        {t('This name will be shown in team leaderboards and search results as long as your profile is active.')}
       </Text>
       <Card mb="24px">
         <CardBody>
           <Heading as="h4" size="lg" mb="8px">
-            {TranslateString(1110, 'Set Your Name')}
+            {t('Set Your Name')}
           </Heading>
           <Text as="p" color="textSubtle" mb="24px">
-            {TranslateString(
-              840,
+            {t(
               'Your name must be at least 3 and at most 15 standard letters and numbers long. You can’t change this once you click Confirm.',
             )}
           </Text>
@@ -204,7 +200,7 @@ const UserName: React.FC = () => {
                 minLength={USERNAME_MIN_LENGTH}
                 maxLength={USERNAME_MAX_LENGTH}
                 disabled={isUserCreated}
-                placeholder={TranslateString(1094, 'Enter your name...')}
+                placeholder={t('Enter your name...')}
                 value={userName}
               />
               <Indicator>
@@ -218,8 +214,7 @@ const UserName: React.FC = () => {
             {message}
           </Text>
           <Text as="p" color="failure" mb="8px">
-            {TranslateString(
-              1100,
+            {t(
               "Only reuse a name from other social media if you're OK with people viewing your wallet. You can't change your name once you click Confirm.",
             )}
           </Text>
@@ -228,22 +223,20 @@ const UserName: React.FC = () => {
               <div style={{ flex: 'none' }}>
                 <Checkbox id="checkbox" scale="sm" checked={isAcknowledged} onChange={handleAcknowledge} />
               </div>
-              <Text ml="8px">
-                {TranslateString(1096, 'I understand that people can view my wallet if they know my username')}
-              </Text>
+              <Text ml="8px">{t('I understand that people can view my wallet if they know my username')}</Text>
             </Flex>
           </label>
           <Button onClick={handleConfirm} disabled={!isValid || isUserCreated || isLoading || !isAcknowledged}>
-            {TranslateString(464, 'Confirm')}
+            {t('Confirm')}
           </Button>
         </CardBody>
       </Card>
       <Button onClick={onPresentConfirmProfileCreation} disabled={!isValid || !isUserCreated}>
-        {TranslateString(842, 'Complete Profile')}
+        {t('Complete Profile')}
       </Button>
       {!hasMinimumCakeRequired && (
         <Text color="failure" mt="16px">
-          {TranslateString(1098, `A minimum of ${REGISTER_COST} CAKE is required`, { num: REGISTER_COST })}
+          {t('A minimum of %num% CAKE is required', { num: REGISTER_COST })}
         </Text>
       )}
     </>

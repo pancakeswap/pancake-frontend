@@ -14,7 +14,7 @@ import { useAppDispatch } from 'state'
 import { markBetAsCollected } from 'state/predictions'
 import { Bet, BetPosition, PredictionStatus } from 'state/types'
 import { useGetCurrentEpoch, useGetPredictionsStatus } from 'state/hooks'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import { formatBnb, getPayout } from '../../helpers'
 import CollectWinningsButton from '../CollectWinningsButton'
 import ReclaimPositionButton from '../ReclaimPositionButton'
@@ -39,7 +39,7 @@ const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
   const [isOpen, setIsOpen] = useState(false)
   const { amount, claimed, position, round } = bet
 
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const { account } = useWeb3React()
   const dispatch = useAppDispatch()
   const currentEpoch = useGetCurrentEpoch()
@@ -104,7 +104,7 @@ const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
         <Flex alignItems="center">
           <PlayCircleOutlineIcon color="primary" mr="6px" width="24px" />
           <Text color="primary" bold>
-            {TranslateString(999, 'Starting Soon')}
+            {t('Starting Soon')}
           </Text>
         </Flex>
       )
@@ -115,7 +115,7 @@ const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
         <Flex alignItems="center">
           <PlayCircleOutlineIcon color="secondary" mr="6px" width="24px" />
           <Text color="secondary" bold>
-            {TranslateString(999, 'Live Now')}
+            {t('Live Now')}
           </Text>
         </Flex>
       )
@@ -124,12 +124,10 @@ const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
     return (
       <>
         <Text fontSize="12px" color="textSubtle">
-          {TranslateString(999, 'Your Result')}
+          {t('Your Result')}
         </Text>
         <Text bold color={resultTextColor} lineHeight={1}>
-          {roundResult === Result.CANCELED
-            ? TranslateString(999, 'Canceled')
-            : `${resultTextPrefix}${formatBnb(payout)}`}
+          {roundResult === Result.CANCELED ? t('Canceled') : `${resultTextPrefix}${formatBnb(payout)}`}
         </Text>
       </>
     )
@@ -141,7 +139,7 @@ const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
         <Box width="48px">
           <Text textAlign="center">
             <Text fontSize="12px" color="textSubtle">
-              {TranslateString(999, 'Round')}
+              {t('Round')}
             </Text>
             <Text bold lineHeight={1}>
               {round.epoch.toLocaleString()}
@@ -158,12 +156,12 @@ const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
             scale="sm"
             mr="8px"
           >
-            {TranslateString(999, 'Collect')}
+            {t('Collect')}
           </CollectWinningsButton>
         )}
         {roundResult === Result.CANCELED && !claimed && (
           <ReclaimPositionButton onSuccess={handleSuccess} epoch={bet.round.epoch} scale="sm" mr="8px">
-            {TranslateString(999, 'Reclaim')}
+            {t('Reclaim')}
           </ReclaimPositionButton>
         )}
         {!isOpenRound && !isLiveRound && (
