@@ -78,12 +78,7 @@ export const LanguageProvider: React.FC = ({ children }) => {
       const translationSet = languageMap.has(currentLanguage.code)
         ? languageMap.get(currentLanguage.code)
         : languageMap.get(EN.code)
-      const translatedText = translationSet[key]
-
-      if (!translatedText) {
-        return key
-      }
-
+      const translatedText = translationSet[key] || key
       const includesVariable = translatedText.includes('%')
 
       if (includesVariable) {
