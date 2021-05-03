@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Text, Button, useModal } from '@pancakeswap-libs/uikit'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import useTickets from 'hooks/useTickets'
 import MyTicketsModal from '../TicketCard/UserTicketsModal'
 
@@ -31,7 +31,7 @@ const StyledButton = styled(Button)`
 `
 
 const NoPrizesContent: React.FC = () => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const tickets = useTickets()
   const [onPresentMyTickets] = useModal(<MyTicketsModal myTicketNumbers={tickets} from="buy" />)
 
@@ -39,9 +39,9 @@ const NoPrizesContent: React.FC = () => {
     <Wrapper>
       <Image src="/images/no-prize.svg" alt="no prizes won" />
       <TextWrapper>
-        <StyledText color="textDisabled">{TranslateString(726, 'Sorry, no prizes to collect')}</StyledText>
+        <StyledText color="textDisabled">{t('Sorry, no prizes to collect')}</StyledText>
         <StyledButton variant="text" onClick={onPresentMyTickets}>
-          {TranslateString(432, 'View your tickets')}
+          {t('View your tickets')}
         </StyledButton>
       </TextWrapper>
     </Wrapper>

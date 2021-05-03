@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import BigNumber from 'bignumber.js'
 import { Card, CardBody, Heading, Text } from '@pancakeswap-libs/uikit'
 import { useWeb3React } from '@web3-react/core'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { DEFAULT_TOKEN_DECIMAL } from 'config'
 import { useCake, useBunnyFactory } from 'hooks/useContract'
@@ -25,7 +25,7 @@ const Mint: React.FC = () => {
   const { account } = useWeb3React()
   const cakeContract = useCake()
   const bunnyFactoryContract = useBunnyFactory()
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const hasMinimumCakeRequired = useHasCakeBalance(minimumCakeBalanceToMint)
   const {
     isApproving,
@@ -59,26 +59,26 @@ const Mint: React.FC = () => {
   return (
     <>
       <Text fontSize="20px" color="textSubtle" bold>
-        {TranslateString(999, `Step ${1}`)}
+        {t(`Step ${1}`)}
       </Text>
       <Heading as="h3" size="xl" mb="24px">
-        {TranslateString(776, 'Get Starter Collectible')}
+        {t('Get Starter Collectible')}
       </Heading>
-      <Text as="p">{TranslateString(786, 'Every profile starts by making a “starter” collectible (NFT).')}</Text>
-      <Text as="p">{TranslateString(788, 'This starter will also become your first profile picture.')}</Text>
+      <Text as="p">{t('Every profile starts by making a “starter” collectible (NFT).')}</Text>
+      <Text as="p">{t('This starter will also become your first profile picture.')}</Text>
       <Text as="p" mb="24px">
-        {TranslateString(790, 'You can change your profile pic later if you get another approved Pancake Collectible.')}
+        {t('You can change your profile pic later if you get another approved Pancake Collectible.')}
       </Text>
       <Card mb="24px">
         <CardBody>
           <Heading as="h4" size="lg" mb="8px">
-            {TranslateString(792, 'Choose your Starter!')}
+            {t('Choose your Starter!')}
           </Heading>
           <Text as="p" color="textSubtle">
-            {TranslateString(794, 'Choose wisely: you can only ever make one starter collectible!')}
+            {t('Choose wisely: you can only ever make one starter collectible!')}
           </Text>
           <Text as="p" mb="24px" color="textSubtle">
-            {TranslateString(999, `Cost: ${MINT_COST} CAKE`, { num: MINT_COST })}
+            {t(`Cost: ${MINT_COST} CAKE`, { num: MINT_COST })}
           </Text>
           {nfts.map((nft) => {
             const handleChange = (value: string) => setVariationId(Number(value))
@@ -99,7 +99,7 @@ const Mint: React.FC = () => {
           })}
           {!hasMinimumCakeRequired && (
             <Text color="failure" mb="16px">
-              {TranslateString(1098, `A minimum of ${MINT_COST} CAKE is required`)}
+              {t('A minimum of %num% CAKE is required', { num: MINT_COST })}
             </Text>
           )}
           <ApproveConfirmButtons
@@ -113,7 +113,7 @@ const Mint: React.FC = () => {
         </CardBody>
       </Card>
       <NextStepButton onClick={actions.nextStep} disabled={!isConfirmed}>
-        {TranslateString(798, 'Next Step')}
+        {t('Next Step')}
       </NextStepButton>
     </>
   )

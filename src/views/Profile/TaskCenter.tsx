@@ -1,13 +1,13 @@
 import React from 'react'
 import { Card, CardBody, CardHeader, Flex, Heading, Text } from '@pancakeswap-libs/uikit'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import AchievementsList from './components/AchievementsList'
 import ClaimPointsCallout from './components/ClaimPointsCallout '
 import ComingSoon from './components/ComingSoon'
 import Menu from './components/Menu'
 
 const TaskCenter = () => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
 
   return (
     <>
@@ -18,9 +18,9 @@ const TaskCenter = () => {
           <Flex alignItems="center" justifyContent="space-between">
             <div>
               <Heading size="lg" mb="8px">
-                {TranslateString(1092, 'Achievements')}
+                {t('Achievements')}
               </Heading>
-              <Text as="p">{TranslateString(1084, 'Earn more points for completing larger quests!')}</Text>
+              <Text as="p">{t('Earn more points for completing larger quests!')}</Text>
             </div>
           </Flex>
         </CardHeader>
@@ -33,12 +33,10 @@ const TaskCenter = () => {
           <Flex alignItems="center" justifyContent="space-between">
             <div>
               <Heading size="lg" mb="8px">
-                {TranslateString(1090, 'Task Center')}
+                {t('Task Center')}
               </Heading>
-              <Text as="p">{TranslateString(1088, 'Earn points by completing regular tasks!')}</Text>
-              <Text as="p">
-                {TranslateString(1086, 'Collecting points for these tasks makes them available again.')}
-              </Text>
+              <Text as="p">{t('Earn points by completing regular tasks!')}</Text>
+              <Text as="p">{t('Collecting points for these tasks makes them available again.')}</Text>
             </div>
           </Flex>
         </CardHeader>

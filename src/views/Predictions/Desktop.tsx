@@ -5,7 +5,7 @@ import { ArrowDownIcon, Button, ChartIcon } from '@pancakeswap-libs/uikit'
 import { useGetPredictionsStatus, useIsChartPaneOpen, useIsHistoryPaneOpen } from 'state/hooks'
 import { setChartPaneState } from 'state/predictions'
 import { PredictionStatus } from 'state/types'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import TradingView from './components/TradingView'
 import { ErrorNotification, PauseNotification } from './components/Notification'
 import History from './History'
@@ -74,7 +74,7 @@ const Desktop: React.FC = () => {
   const isHistoryPaneOpen = useIsHistoryPaneOpen()
   const isChartPaneOpen = useIsChartPaneOpen()
   const dispatch = useAppDispatch()
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const status = useGetPredictionsStatus()
 
   const toggleChartPane = () => {
@@ -98,7 +98,7 @@ const Desktop: React.FC = () => {
                 startIcon={isChartPaneOpen ? <ArrowDownIcon /> : <ChartIcon />}
                 onClick={toggleChartPane}
               >
-                {isChartPaneOpen ? TranslateString(438, 'Close') : TranslateString(999, 'Charts')}
+                {isChartPaneOpen ? t('Close') : t('Charts')}
               </ExpandChartButton>
               <TradingView />
             </ChartPane>

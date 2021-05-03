@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Text, Input, Button } from '@pancakeswap-libs/uikit'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 
 interface PastLotterySearcherProps {
   initialLotteryNumber: number
@@ -38,7 +38,7 @@ const ButtonWrapper = styled.div`
 const PastLotterySearcher: React.FC<PastLotterySearcherProps> = ({ initialLotteryNumber, onSubmit }) => {
   const [lotteryNumber, setLotteryNumber] = useState(initialLotteryNumber)
   const [isError, setIsError] = useState(false)
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
 
   const handleSubmit = (evt: React.FormEvent<HTMLFormElement>) => {
     evt.preventDefault()
@@ -60,7 +60,7 @@ const PastLotterySearcher: React.FC<PastLotterySearcherProps> = ({ initialLotter
 
   return (
     <Wrapper>
-      <Text>{TranslateString(742, 'Select lottery number:')}</Text>
+      <Text>{t('Select lottery number:')}</Text>
       <form onSubmit={handleSubmit}>
         <SearchWrapper>
           <InputWrapper>
@@ -76,7 +76,7 @@ const PastLotterySearcher: React.FC<PastLotterySearcherProps> = ({ initialLotter
           </InputWrapper>
           <ButtonWrapper>
             <Button type="submit" scale="sm" disabled={isError}>
-              {TranslateString(744, 'Search')}
+              {t('Search')}
             </Button>
           </ButtonWrapper>
         </SearchWrapper>

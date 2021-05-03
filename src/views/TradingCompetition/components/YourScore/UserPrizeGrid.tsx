@@ -9,7 +9,7 @@ import {
   TeamPlayerIcon,
   TrophyGoldIcon,
 } from '@pancakeswap-libs/uikit'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import { UserTradingInformationProps } from '../../types'
 import { useCompetitionCakeRewards, getRewardGroupAchievements } from '../../helpers'
 import { BoldTd, Td, StyledPrizeTable } from '../StyledPrizeTable'
@@ -21,7 +21,7 @@ const StyledThead = styled.thead`
 const UserPrizeGrid: React.FC<{ userTradingInformation?: UserTradingInformationProps }> = ({
   userTradingInformation,
 }) => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const { userRewardGroup, userCakeRewards, userPointReward, canClaimNFT } = userTradingInformation
   const { cakeReward, dollarValueOfCakeReward } = useCompetitionCakeRewards(userCakeRewards)
   const { champion, teamPlayer } = getRewardGroupAchievements(userRewardGroup)
@@ -30,9 +30,9 @@ const UserPrizeGrid: React.FC<{ userTradingInformation?: UserTradingInformationP
     <StyledPrizeTable>
       <StyledThead>
         <tr>
-          <th>{TranslateString(999, 'CAKE Prizes ')}</th>
-          <th>{TranslateString(1092, 'Achievements')}</th>
-          <th>{TranslateString(999, 'NFT')}</th>
+          <th>{t('CAKE Prizes ')}</th>
+          <th>{t('Achievements')}</th>
+          <th>{t('NFT')}</th>
         </tr>
       </StyledThead>
       <tbody>
@@ -51,7 +51,7 @@ const UserPrizeGrid: React.FC<{ userTradingInformation?: UserTradingInformationP
               {teamPlayer && <TeamPlayerIcon mr={[0, '4px']} />}
               <TrophyGoldIcon mr={[0, '4px']} />
               <Text fontSize="12px" color="textSubtle">
-                + {userPointReward} {TranslateString(999, 'points')}
+                + {userPointReward} {t('points')}
               </Text>
             </Flex>
           </Td>

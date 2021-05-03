@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Box, Heading, Text } from '@pancakeswap-libs/uikit'
 import Container from 'components/layout/Container'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 
 const getGradient = (isDark: boolean) => {
   if (isDark) {
@@ -26,17 +26,17 @@ const CurtainBottom = styled.div`
 `
 
 const Hero = () => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
 
   return (
     <Box mb="32px">
       <StyledHero>
         <Container>
           <Heading as="h1" size="xl" mb="24px">
-            {TranslateString(500, 'IFO: Initial Farm Offerings')}
+            {t('IFO: Initial Farm Offerings')}
           </Heading>
           <Text bold fontSize="20px">
-            {TranslateString(502, 'Buy new tokens with a brand new token sale model.')}
+            {t('Buy new tokens with a brand new token sale model.')}
           </Text>
         </Container>
       </StyledHero>

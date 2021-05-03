@@ -2,7 +2,7 @@ import BigNumber from 'bignumber.js'
 import React from 'react'
 import styled from 'styled-components'
 import { Flex, Text, Box } from '@pancakeswap-libs/uikit'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import { PoolCategory } from 'config/constants/types'
 import { Pool } from 'state/types'
 import ApprovalAction from './ApprovalAction'
@@ -29,7 +29,7 @@ const CardActions: React.FC<CardActionsProps> = ({
   const { sousId, stakingToken, earningToken, harvest, poolCategory, userData } = pool
   // Pools using native BNB behave differently than pools using a token
   const isBnbPool = poolCategory === PoolCategory.BINANCE
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const allowance = new BigNumber(userData?.allowance || 0)
   const stakingTokenBalance = new BigNumber(userData?.stakingTokenBalance || 0)
   const earnings = new BigNumber(userData?.pendingReward || 0)
@@ -47,7 +47,7 @@ const CardActions: React.FC<CardActionsProps> = ({
                 {`${earningToken.symbol} `}
               </InlineText>
               <InlineText color="textSubtle" textTransform="uppercase" bold fontSize="12px">
-                {TranslateString(330, `earned`)}
+                {t(`earned`)}
               </InlineText>
             </Box>
             <HarvestActions
@@ -61,10 +61,10 @@ const CardActions: React.FC<CardActionsProps> = ({
         )}
         <Box display="inline">
           <InlineText color={isStaked ? 'secondary' : 'textSubtle'} textTransform="uppercase" bold fontSize="12px">
-            {isStaked ? stakingToken.symbol : TranslateString(1070, `stake`)}{' '}
+            {isStaked ? stakingToken.symbol : t(`stake`)}{' '}
           </InlineText>
           <InlineText color={isStaked ? 'textSubtle' : 'secondary'} textTransform="uppercase" bold fontSize="12px">
-            {isStaked ? TranslateString(1074, `staked`) : `${stakingToken.symbol}`}
+            {isStaked ? t(`staked`) : `${stakingToken.symbol}`}
           </InlineText>
         </Box>
         {needsApproval ? (

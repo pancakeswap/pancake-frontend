@@ -1,15 +1,22 @@
 import React, { useState } from 'react'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
-import { CardBody, PlayCircleOutlineIcon, Button } from '@pancakeswap-libs/uikit'
-import useI18n from 'hooks/useI18n'
+import {
+  CardBody,
+  PlayCircleOutlineIcon,
+  Button,
+  useTooltip,
+  ArrowUpIcon,
+  ArrowDownIcon,
+} from '@pancakeswap-libs/uikit'
+import { useTranslation } from 'contexts/Localization'
 import { useAppDispatch } from 'state'
 import { BetPosition, Round } from 'state/types'
-import { useGetTotalIntervalBlocks } from 'state/hooks'
+import { useBlock, useGetIntervalBlocks } from 'state/hooks'
 import { markPositionAsEntered } from 'state/predictions'
 import useToast from 'hooks/useToast'
 import CardFlip from '../CardFlip'
-import { getBnbAmount } from '../../helpers'
+import { formatBnb, getBnbAmount } from '../../helpers'
 import { RoundResultBox, PrizePoolRow } from '../RoundResult'
 import MultiplierArrow from './MultiplierArrow'
 import Card from './Card'
@@ -38,21 +45,42 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
   bullMultiplier,
   bearMultiplier,
 }) => {
-  const canEnterPosition = round.lockPrice === null && !hasEnteredUp && !hasEnteredDown
   const [state, setState] = useState<State>({
     isSettingPosition: false,
     position: BetPosition.BULL,
   })
-  const TranslateString = useI18n()
-  const interval = useGetTotalIntervalBlocks()
+  const { t } = useTranslation()
+  const interval = useGetIntervalBlocks()
   const { toastSuccess } = useToast()
   const { account } = useWeb3React()
   const dispatch = useAppDispatch()
+  const { currentBlock } = useBlock()
   const { isSettingPosition, position } = state
+  const isBufferPhase = currentBlock >= round.startBlock + interval
+  const positionDisplay = position === BetPosition.BULL ? 'UP' : 'DOWN'
+  const { targetRef, tooltipVisible, tooltip } = useTooltip(
+    <div style={{ whiteSpace: 'nowrap' }}>{`${formatBnb(betAmount)} BNB`}</div>,
+    'top',
+    'hover',
+  )
 
-  // Bettable rounds do not have an endblock set so we approximate it by adding the block interval
+  // Bettable rounds do not have an lockBlock set so we approximate it by adding the block interval
   // to the start block
-  const endBlock = round.startBlock + interval
+  const estimatedLockBlock = round.startBlock + interval
+
+  const getCanEnterPosition = () => {
+    if (hasEnteredUp || hasEnteredDown) {
+      return false
+    }
+
+    if (round.lockPrice !== null) {
+      return false
+    }
+
+    return true
+  }
+
+  const canEnterPosition = getCanEnterPosition()
 
   const handleBack = () =>
     setState((prevState) => ({
@@ -76,8 +104,6 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
   }
 
   const handleSuccess = async (decimalValue: BigNumber, hash: string) => {
-    const positionDisplay = position === BetPosition.BULL ? 'UP' : 'DOWN'
-
     // Optimistically set the user bet so we see the entered position immediately.
     dispatch(
       markPositionAsEntered({
@@ -95,10 +121,14 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
 
     toastSuccess(
       'Success!',
-      TranslateString(999, `${positionDisplay} position entered`, {
+      t(`${positionDisplay} position entered`, {
         position: positionDisplay,
       }),
     )
+  }
+
+  const getPositionEnteredIcon = () => {
+    return position === BetPosition.BULL ? <ArrowUpIcon color="currentColor" /> : <ArrowDownIcon color="currentColor" />
   }
 
   return (
@@ -107,9 +137,9 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
         <CardHeader
           status="next"
           epoch={round.epoch}
-          blockNumber={endBlock}
+          blockNumber={estimatedLockBlock}
           icon={<PlayCircleOutlineIcon color="white" mr="4px" width="21px" />}
-          title={TranslateString(999, 'Next')}
+          title={t('Next')}
         />
         <CardBody p="16px">
           <MultiplierArrow amount={betAmount} multiplier={bullMultiplier} hasEntered={hasEnteredUp} />
@@ -122,25 +152,28 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
                   width="100%"
                   onClick={() => handleSetPosition(BetPosition.BULL)}
                   mb="4px"
-                  disabled={!canEnterPosition}
+                  disabled={!canEnterPosition || isBufferPhase}
                 >
-                  {TranslateString(999, 'Enter UP')}
+                  {t('Enter UP')}
                 </Button>
                 <Button
                   variant="danger"
                   width="100%"
                   onClick={() => handleSetPosition(BetPosition.BEAR)}
-                  disabled={!canEnterPosition}
+                  disabled={!canEnterPosition || isBufferPhase}
                 >
-                  {TranslateString(999, 'Enter DOWN')}
+                  {t('Enter DOWN')}
                 </Button>
               </>
             ) : (
               <>
-                <Button disabled startIcon={<PlayCircleOutlineIcon color="currentColor" />} width="100%" mb="8px">
-                  {TranslateString(999, 'Position Entered')}
-                </Button>
+                <div ref={targetRef}>
+                  <Button disabled startIcon={getPositionEnteredIcon()} width="100%" mb="8px">
+                    {t('%position% Entered', { position: positionDisplay })}
+                  </Button>
+                </div>
                 <PrizePoolRow totalAmount={round.totalAmount} />
+                {tooltipVisible && tooltip}
               </>
             )}
           </RoundResultBox>

@@ -46,6 +46,7 @@ export enum PoolCategory {
   'COMMUNITY' = 'Community',
   'CORE' = 'Core',
   'BINANCE' = 'Binance', // Pools using native BNB behave differently than pools using a token
+  'AUTO' = 'Auto',
 }
 
 export interface FarmConfig {
@@ -148,6 +149,6 @@ export type Campaign = {
 
 export type PageMeta = {
   title: string
-  description: string
-  image: string
+  description?: string
+  image?: string
 }

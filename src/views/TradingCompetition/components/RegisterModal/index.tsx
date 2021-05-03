@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Modal, Button, NoProfileAvatarIcon, Flex } from '@pancakeswap-libs/uikit'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import { CompetitionProps } from '../../types'
 import MakeProfile from './MakeProfile'
 import ReactivateProfile from './ReactivateProfile'
@@ -20,7 +20,7 @@ const StyledNoProfileAvatarIcon = styled(NoProfileAvatarIcon)`
 `
 
 const RegisterModal: React.FC<CompetitionProps> = ({ onDismiss, profile, onRegisterSuccess }) => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
 
   const modalInner = () => {
     // No profile created
@@ -44,7 +44,7 @@ const RegisterModal: React.FC<CompetitionProps> = ({ onDismiss, profile, onRegis
         {modalInner()}
       </Flex>
       <Button variant="text" onClick={onDismiss}>
-        {TranslateString(999, 'Close Window')}
+        {t('Close Window')}
       </Button>
     </Modal>
   )

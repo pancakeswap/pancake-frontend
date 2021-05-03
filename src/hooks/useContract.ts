@@ -18,6 +18,7 @@ import {
   getTradingCompetitionContract,
   getEasterNftContract,
   getErc721Contract,
+  getCakeVaultContract,
   getPredictionsContract,
 } from 'utils/contractHelpers'
 
@@ -111,6 +112,11 @@ export const useTradingCompetitionContract = () => {
 export const useEasterNftContract = () => {
   const web3 = useWeb3()
   return useMemo(() => getEasterNftContract(web3), [web3])
+}
+
+export const useCakeVaultContract = () => {
+  const web3 = useWeb3()
+  return useMemo(() => getCakeVaultContract(web3), [web3])
 }
 
 export const usePredictionsContract = () => {

@@ -1,5 +1,5 @@
 import React from 'react'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import styled from 'styled-components'
 import { Modal, Text, Button, OpenNewIcon, Link } from '@pancakeswap-libs/uikit'
 import { BASE_EXCHANGE_URL } from 'config'
@@ -15,33 +15,35 @@ const StyledLink = styled(Link)`
 `
 
 const NotEnoughTokensModal: React.FC<NotEnoughTokensModalProps> = ({ tokenSymbol, onDismiss }) => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const { theme } = useTheme()
 
   return (
     <Modal
-      title={`${tokenSymbol} ${TranslateString(999, 'required')}`}
+      title={`${tokenSymbol} ${t('required')}`}
       onDismiss={onDismiss}
       headerBackground={theme.colors.gradients.cardHeader}
     >
       <Text color="failure" bold>
-        {TranslateString(999, 'Insufficient')} {tokenSymbol} {TranslateString(1120, 'balance')}
+        {t('Insufficient %tokensymbol% balance', { tokensymbol: tokenSymbol })}
       </Text>
-      <Text mt="24px">{TranslateString(999, `You’ll need ${tokenSymbol} to stake in this pool!`)}</Text>
+      <Text mt="24px">{t(`You’ll need %tokensymbol% to stake in this pool!`, { tokensymbol: tokenSymbol })}</Text>
       <Text>
-        {TranslateString(999, `Buy some ${tokenSymbol}, or make sure your ${tokenSymbol} isn’t in another pool or LP.`)}
+        {t(`Buy some %tokensymbol%, or make sure your %tokensymbol% isn’t in another pool or LP.`, {
+          tokensymbol: tokenSymbol,
+        })}
       </Text>
       <Button mt="24px" as="a" external href={BASE_EXCHANGE_URL}>
-        {TranslateString(999, 'Buy')} {tokenSymbol}
+        {t('Buy')} {tokenSymbol}
       </Button>
       <StyledLink href="https://yieldwatch.net" external>
         <Button variant="secondary" mt="8px" width="100%">
-          {TranslateString(999, 'Locate Assets')}
+          {t('Locate Assets')}
           <OpenNewIcon color="primary" ml="4px" />
         </Button>
       </StyledLink>
       <Button variant="text" onClick={onDismiss}>
-        {TranslateString(999, 'Close window')}
+        {t('Close window')}
       </Button>
     </Modal>
   )

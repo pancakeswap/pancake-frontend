@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { AutoRenewIcon, Button, Flex, InjectedModalProps, Text } from '@pancakeswap-libs/uikit'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import { useCake } from 'hooks/useContract'
 import useToast from 'hooks/useToast'
 import { useProfile } from 'state/hooks'
@@ -17,7 +17,7 @@ interface ApproveCakePageProps extends InjectedModalProps {
 const ApproveCakePage: React.FC<ApproveCakePageProps> = ({ goToChange, onDismiss }) => {
   const [isApproving, setIsApproving] = useState(false)
   const { profile } = useProfile()
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const { account } = useWeb3React()
   const { numberCakeToUpdate, numberCakeToReactivate } = useGetProfileCosts()
   const cakeContract = useCake()
@@ -47,10 +47,8 @@ const ApproveCakePage: React.FC<ApproveCakePageProps> = ({ goToChange, onDismiss
   return (
     <Flex flexDirection="column">
       <Flex alignItems="center" justifyContent="space-between" mb="24px">
-        <Text>
-          {profile.isActive ? TranslateString(999, 'Cost to update:') : TranslateString(999, 'Cost to reactivate:')}
-        </Text>
-        <Text>{TranslateString(999, `${getFullDisplayBalance(cost)} CAKE`)}</Text>
+        <Text>{profile.isActive ? t('Cost to update:') : t('Cost to reactivate:')}</Text>
+        <Text>{t(`${getFullDisplayBalance(cost)} CAKE`)}</Text>
       </Flex>
       <Button
         disabled={isApproving}
@@ -60,10 +58,10 @@ const ApproveCakePage: React.FC<ApproveCakePageProps> = ({ goToChange, onDismiss
         mb="8px"
         onClick={handleApprove}
       >
-        {TranslateString(999, 'Approve')}
+        {t('Approve')}
       </Button>
       <Button variant="text" width="100%" onClick={onDismiss} disabled={isApproving}>
-        {TranslateString(999, 'Close Window')}
+        {t('Close Window')}
       </Button>
     </Flex>
   )

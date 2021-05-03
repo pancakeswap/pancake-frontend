@@ -16,7 +16,7 @@ import {
   VisibilityOn,
   VisibilityOff,
 } from '@pancakeswap-libs/uikit'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import { useProfile } from 'state/hooks'
 import usePersistState from 'hooks/usePersistState'
 import Menu from './components/Menu'
@@ -84,7 +84,7 @@ const PublicProfile = () => {
   const { account } = useWeb3React()
   const { profile } = useProfile()
   const [usernameVisibilityToggled, setUsernameVisibility] = usePersistState(false, 'username_visibility_toggled')
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
 
   if (!account) {
     return <WalletNotConnected />
@@ -123,20 +123,20 @@ const PublicProfile = () => {
             <Status>
               {isActive ? (
                 <Tag startIcon={<CheckmarkCircleIcon width="18px" />} outline>
-                  {TranslateString(698, 'Active')}
+                  {t('Active')}
                 </Tag>
               ) : (
                 <Tag variant="failure" startIcon={<BlockIcon width="18px" />} outline>
-                  {TranslateString(999, 'Paused')}
+                  {t('Paused')}
                 </Tag>
               )}
             </Status>
           </CardHeader>
           <CardBody>
-            <StatBox icon={PrizeIcon} title={points} subtitle={TranslateString(999, 'Points')} mb="24px" />
+            <StatBox icon={PrizeIcon} title={points} subtitle={t('Points')} mb="24px" />
             <Section>
               <Heading as="h4" size="md" mb="16px">
-                {TranslateString(1092, 'Achievements')}
+                {t('Achievements')}
               </Heading>
               <AchievementsList />
             </Section>

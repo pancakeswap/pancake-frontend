@@ -2,7 +2,7 @@ import React, { lazy, Suspense, useContext, useMemo } from 'react'
 import styled from 'styled-components'
 import { Text } from '@pancakeswap-libs/uikit'
 import PastLotteryDataContext from 'contexts/PastLotteryDataContext'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'
 import Loading from '../Loading'
 
@@ -21,7 +21,7 @@ interface HistoryChartProps {
 }
 
 const HistoryChart: React.FC<HistoryChartProps> = ({ showLast }) => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const { isDark } = useTheme()
   const { historyData, historyError } = useContext(PastLotteryDataContext)
   const getDataArray = (kind) => {
@@ -116,11 +116,11 @@ const HistoryChart: React.FC<HistoryChartProps> = ({ showLast }) => {
     <>
       {historyError && (
         <InnerWrapper>
-          <Text>{TranslateString(1078, 'Error fetching data')}</Text>
+          <Text>{t('Error fetching data')}</Text>
         </InnerWrapper>
       )}
       {!historyError && historyData.length > 1 ? (
-        <Suspense fallback={<div>{TranslateString(656, 'Loading...')}</div>}>
+        <Suspense fallback={<div>{t('Loading...')}</div>}>
           {showLast === 50 || showLast === 100 ? (
             <Bar data={chartData} options={options} />
           ) : (

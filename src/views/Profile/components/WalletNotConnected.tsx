@@ -1,18 +1,18 @@
 import React from 'react'
 import { Heading, Text } from '@pancakeswap-libs/uikit'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import UnlockButton from 'components/UnlockButton'
 
 const WalletNotConnected = () => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
 
   return (
     <div>
       <Heading size="xl" mb="8px">
-        {TranslateString(852, 'Oops!')}
+        {t('Oops!')}
       </Heading>
       <Text as="p" mb="16px">
-        {TranslateString(999, 'Please connect your wallet to continue')}
+        {t('Please connect your wallet to continue')}
       </Text>
       <UnlockButton />
     </div>
