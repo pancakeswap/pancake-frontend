@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
 import { Flex, TrophyGoldIcon } from '@pancakeswap-libs/uikit'
 import { useAppDispatch } from 'state'
 import { useGetCurrentEpoch } from 'state/hooks'
+import useStateWithPromise from 'hooks/useStateWithPromise'
 import { getBetHistory, transformBetResponse } from 'state/predictions/helpers'
 import { markBetAsCollected } from 'state/predictions'
 import { useTranslation } from 'contexts/Localization'
@@ -41,11 +42,10 @@ const CollectWinningsOverlay: React.FC<CollectWinningsOverlayProps> = ({
   isBottom = false,
   ...props
 }) => {
-  const [state, setState] = useState<{ betId: string; epoch: number; payout: number; claimed: boolean }>({
+  const [state, setState] = useStateWithPromise({
     betId: null,
     epoch: null,
     payout: 0,
-    claimed: false,
   })
   const { account } = useWeb3React()
   const { t } = useTranslation()
@@ -67,7 +67,6 @@ const CollectWinningsOverlay: React.FC<CollectWinningsOverlayProps> = ({
             betId: bet.id,
             epoch: bet.round.epoch,
             payout: getPayout(bet),
-            claimed: bet.claimed,
           })
         }
       }
@@ -83,8 +82,8 @@ const CollectWinningsOverlay: React.FC<CollectWinningsOverlayProps> = ({
   }
 
   const handleSuccess = async () => {
+    await setState({ betId: null, epoch: null, payout: 0 })
     dispatch(markBetAsCollected({ betId: state.betId, account }))
-    setState({ betId: null, epoch: null, payout: 0, claimed: true })
   }
 
   return (
@@ -93,7 +92,7 @@ const CollectWinningsOverlay: React.FC<CollectWinningsOverlayProps> = ({
       <CollectWinningsButton
         payout={state.payout}
         epoch={state.epoch}
-        hasClaimed={state.claimed}
+        hasClaimed={false}
         width="100%"
         onSuccess={handleSuccess}
       >
