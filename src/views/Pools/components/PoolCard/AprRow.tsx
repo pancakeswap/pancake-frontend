@@ -1,6 +1,6 @@
 import React from 'react'
 import { Flex, Text, IconButton, useModal, CalculateIcon, Skeleton, useTooltip } from '@pancakeswap-libs/uikit'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { getPoolApr } from 'utils/apr'
 import { getAddress } from 'utils/addressHelpers'
@@ -26,14 +26,11 @@ const AprRow: React.FC<AprRowProps> = ({
   compoundFrequency = 1,
   performanceFee = 0,
 }) => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const { stakingToken, earningToken, totalStaked, isFinished, tokenPerBlock } = pool
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    TranslateString(
-      999,
-      'APY includes compounding, APR doesn’t. This pool’s CAKE is compounded automatically, so we show APY.',
-    ),
-    { placement: 'bottom-end' },
+    t('APY includes compounding, APR doesn’t. This pool’s CAKE is compounded automatically, so we show APY.'),
+    'bottom-end',
   )
 
   const earningTokenPrice = useGetApiPrice(earningToken.address ? getAddress(earningToken.address) : '')
@@ -75,7 +72,7 @@ const AprRow: React.FC<AprRowProps> = ({
     <ApyCalculatorModal
       tokenPrice={earningTokenPrice}
       apr={apr}
-      linkLabel={`${TranslateString(999, 'Get')} ${stakingToken.symbol}`}
+      linkLabel={`${t('Get')} ${stakingToken.symbol}`}
       linkHref={apyModalLink || BASE_EXCHANGE_URL}
       earningTokenSymbol={earningToken.symbol}
       roundingDecimals={isHighValueToken ? 4 : 2}
@@ -87,8 +84,8 @@ const AprRow: React.FC<AprRowProps> = ({
   return (
     <Flex alignItems="center" justifyContent="space-between">
       {tooltipVisible && tooltip}
-      <Text ref={targetRef} hasTooltip>
-        {isAutoVault ? TranslateString(999, 'APY') : TranslateString(736, 'APR')}:
+      <Text ref={targetRef} fontSize="16px">
+        {isAutoVault ? t('APY') : t('APR')}:
       </Text>
       {isFinished || !apr ? (
         <Skeleton width="82px" height="32px" />

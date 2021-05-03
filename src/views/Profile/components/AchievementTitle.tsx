@@ -1,6 +1,6 @@
 import React from 'react'
 import { Text, TextProps } from '@pancakeswap-libs/uikit'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import { TranslatableText as AchievementTitleType } from 'state/types'
 
 interface AchievementTitleProps extends TextProps {
@@ -8,7 +8,7 @@ interface AchievementTitleProps extends TextProps {
 }
 
 const AchievementTitle: React.FC<AchievementTitleProps> = ({ title, ...props }) => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
 
   if (typeof title === 'string') {
     return (
@@ -18,11 +18,11 @@ const AchievementTitle: React.FC<AchievementTitleProps> = ({ title, ...props }) 
     )
   }
 
-  const { id, fallback, data = {} } = title
+  const { key, data = {} } = title
 
   return (
     <Text bold {...props}>
-      {TranslateString(id, fallback, data)}
+      {t(key, data)}
     </Text>
   )
 }

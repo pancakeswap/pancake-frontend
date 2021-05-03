@@ -18,7 +18,7 @@ import {
 } from '@pancakeswap-libs/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { usePriceBnbBusd } from 'state/hooks'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import useToast from 'hooks/useToast'
 import { usePredictionsContract } from 'hooks/useContract'
 import { formatBnb } from '../helpers'
@@ -49,7 +49,7 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
 }) => {
   const [isPendingTx, setIsPendingTx] = useState(false)
   const { account } = useWeb3React()
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const { toastSuccess, toastError } = useToast()
   const predictionsContract = usePredictionsContract()
   const bnbBusdPrice = usePriceBnbBusd()
@@ -69,14 +69,14 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
         setIsPendingTx(false)
         onDismiss()
         toastSuccess(
-          TranslateString(999, 'Winnings collected!'),
+          t('Winnings collected!'),
           <Box>
             <Text as="p" mb="8px">
-              {TranslateString(999, 'Your prizes have been sent to your wallet')}
+              {t('Your prizes have been sent to your wallet')}
             </Text>
             {result.transactionHash && (
               <LinkExternal href={`https://bscscan.com/tx/${result.transactionHash}`}>
-                {TranslateString(356, 'View on BscScan')}
+                {t('View on BscScan')}
               </LinkExternal>
             )}
           </Box>,
@@ -96,14 +96,14 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
       </BunnyDecoration>
       <ModalHeader>
         <ModalTitle>
-          <Heading>{TranslateString(556, 'Collect Winnings')}</Heading>
+          <Heading>{t('Collect Winnings')}</Heading>
         </ModalTitle>
         <ModalCloseButton onDismiss={onDismiss} />
       </ModalHeader>
       <ModalBody p="24px">
         <TrophyGoldIcon width="96px" mx="auto" mb="24px" />
         <Flex alignItems="start" justifyContent="space-between" mb="24px">
-          <Text>{TranslateString(999, 'Collecting')}</Text>
+          <Text>{t('Collecting')}</Text>
           <Box style={{ textAlign: 'right' }}>
             <Text>{formatBnb(payout)}</Text>
             <Text fontSize="12px" color="textSubtle">
@@ -118,7 +118,7 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
           isLoading={isPendingTx}
           endIcon={isPendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
         >
-          {TranslateString(464, 'Confirm')}
+          {t('Confirm')}
         </Button>
       </ModalBody>
     </Modal>

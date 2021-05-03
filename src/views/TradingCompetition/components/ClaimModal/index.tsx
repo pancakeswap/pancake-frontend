@@ -13,7 +13,7 @@ import {
   TrophyGoldIcon,
   TeamPlayerIcon,
 } from '@pancakeswap-libs/uikit'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import { useTradingCompetitionContract } from 'hooks/useContract'
 import useToast from 'hooks/useToast'
 import { useCompetitionCakeRewards, getRewardGroupAchievements } from '../../helpers'
@@ -34,7 +34,7 @@ const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, use
   const tradingCompetitionContract = useTradingCompetitionContract()
   const { account } = useWeb3React()
   const { toastSuccess, toastError } = useToast()
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
 
   const { userRewardGroup, userCakeRewards, userPointReward, canClaimNFT } = userTradingInformation
   const { cakeReward } = useCompetitionCakeRewards(userCakeRewards)
@@ -59,10 +59,10 @@ const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, use
   }
 
   return (
-    <Modal title={TranslateString(556, 'Collect Winnings')} onDismiss={onDismiss}>
+    <Modal title={t('Collect Winnings')} onDismiss={onDismiss}>
       <Flex width="100%" flexDirection="column" alignItems="center" justifyContent="center" maxWidth="360px">
         <Text color="secondary" bold fontSize="16px">
-          {TranslateString(999, 'Congratulations! You won')}:
+          {t('Congratulations! You won')}:
         </Text>
         <Flex mt="16px" alignItems="center">
           {/* achievements */}
@@ -70,7 +70,7 @@ const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, use
           {champion && <CrownIcon mr={[0, '4px']} />}
           {teamPlayer && <TeamPlayerIcon mr={[0, '4px']} />}
           <Text ml={['4px', '8px']}>
-            +{userPointReward} {TranslateString(999, 'Points')}
+            +{userPointReward} {t('Points')}
           </Text>
         </Flex>
         {/* cake */}
@@ -84,7 +84,7 @@ const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, use
               <Image src={NftBunnies} width={128} height={128} />
             </ImageWrapper>
             <Text mt="8px" fontSize="16px">
-              {TranslateString(999, 'Collectible NFT')}
+              {t('Collectible NFT')}
             </Text>
           </Flex>
         ) : null}
@@ -96,10 +96,10 @@ const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, use
           isLoading={isConfirming}
           endIcon={isConfirming ? <AutoRenewIcon spin color="currentColor" /> : null}
         >
-          {TranslateString(464, 'Confirm')}
+          {t('Confirm')}
         </Button>
         <Text mt="24px" fontSize="12px" color="textSubtle" textAlign="center">
-          {TranslateString(999, 'All prizes will be sent directly to your wallet and user account.')}
+          {t('All prizes will be sent directly to your wallet and user account.')}
         </Text>
       </Flex>
     </Modal>

@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { AutoRenewIcon, Button, Flex } from '@pancakeswap-libs/uikit'
 import { Achievement } from 'state/types'
 import useToast from 'hooks/useToast'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import { usePointCenterIfoContract } from 'hooks/useContract'
 import ActionColumn from '../ActionColumn'
 import PointsLabel from './PointsLabel'
@@ -40,7 +40,7 @@ const Body = styled(Flex)`
 
 const AchievementRow: React.FC<AchievementRowProps> = ({ achievement, onCollectSuccess }) => {
   const [isCollecting, setIsCollecting] = useState(false)
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const pointCenterContract = usePointCenterIfoContract()
   const { account } = useWeb3React()
   const { toastError, toastSuccess } = useToast()
@@ -80,7 +80,7 @@ const AchievementRow: React.FC<AchievementRowProps> = ({ achievement, onCollectS
             disabled={isCollecting}
             variant="secondary"
           >
-            {TranslateString(999, 'Collect')}
+            {t('Collect')}
           </Button>
         </ActionColumn>
       </Body>

@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { useLocation, Link, useRouteMatch } from 'react-router-dom'
 import { ButtonMenu, ButtonMenuItem, NotificationDot } from '@pancakeswap-libs/uikit'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 
 interface FarmTabButtonsProps {
   hasStakeInFinishedFarms: boolean
@@ -12,7 +12,7 @@ interface FarmTabButtonsProps {
 const FarmTabButtons: React.FC<FarmTabButtonsProps> = ({ hasStakeInFinishedFarms, hasStakeInArchivedFarms }) => {
   const { url } = useRouteMatch()
   const location = useLocation()
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
 
   let activeIndex
   switch (location.pathname) {
@@ -34,16 +34,16 @@ const FarmTabButtons: React.FC<FarmTabButtonsProps> = ({ hasStakeInFinishedFarms
     <Wrapper>
       <ButtonMenu activeIndex={activeIndex} scale="sm" variant="subtle">
         <ButtonMenuItem as={Link} to={`${url}`}>
-          {TranslateString(1198, 'Live')}
+          {t('Live')}
         </ButtonMenuItem>
         <NotificationDot show={hasStakeInFinishedFarms}>
           <ButtonMenuItem as={Link} to={`${url}/history`}>
-            {TranslateString(388, 'Finished')}
+            {t('Finished')}
           </ButtonMenuItem>
         </NotificationDot>
         <NotificationDot show={hasStakeInArchivedFarms}>
           <ButtonMenuItem as={Link} to={`${url}/archived`}>
-            {TranslateString(999, 'Discontinued')}
+            {t('Discontinued')}
           </ButtonMenuItem>
         </NotificationDot>
       </ButtonMenu>

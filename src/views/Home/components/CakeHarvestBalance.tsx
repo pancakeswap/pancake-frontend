@@ -2,7 +2,7 @@ import React from 'react'
 import { Text } from '@pancakeswap-libs/uikit'
 import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import useAllEarnings from 'hooks/useAllEarnings'
 import { usePriceCakeBusd } from 'state/hooks'
 import styled from 'styled-components'
@@ -15,7 +15,7 @@ const Block = styled.div`
 `
 
 const CakeHarvestBalance = () => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const { account } = useWeb3React()
   const allEarnings = useAllEarnings()
   const earningsSum = allEarnings.reduce((accum, earning) => {
@@ -31,7 +31,7 @@ const CakeHarvestBalance = () => {
   if (!account) {
     return (
       <Text color="textDisabled" style={{ lineHeight: '76px' }}>
-        {TranslateString(298, 'Locked')}
+        {t('Locked')}
       </Text>
     )
   }

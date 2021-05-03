@@ -1,7 +1,7 @@
 import React from 'react'
 import { CardHeader, Heading, Text, Flex, Image } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 
 const Wrapper = styled(CardHeader)<{ isFinished?: boolean; background?: string }>`
   background: ${({ isFinished, background, theme }) =>
@@ -14,7 +14,7 @@ const StyledCardHeader: React.FC<{
   isAutoVault?: boolean
   isFinished?: boolean
 }> = ({ earningTokenSymbol, stakingTokenSymbol, isFinished = false, isAutoVault = false }) => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const poolImageSrc = isAutoVault
     ? `cake-cakevault.svg`
     : `${earningTokenSymbol}-${stakingTokenSymbol}.svg`.toLocaleLowerCase()
@@ -24,24 +24,24 @@ const StyledCardHeader: React.FC<{
   const getHeadingPrefix = () => {
     if (isAutoVault) {
       // vault
-      return `${TranslateString(999, 'Auto')}`
+      return `${t('Auto')}`
     }
     if (isCakePool) {
       // manual cake
-      return `${TranslateString(999, 'Manual')}`
+      return `${t('Manual')}`
     }
     // all other pools
-    return `${TranslateString(318, 'Earn')}`
+    return `${t('Earn')}`
   }
 
   const getSubHeading = () => {
     if (isAutoVault) {
-      return `${TranslateString(999, 'Automatic restaking')}`
+      return `${t('Automatic restaking')}`
     }
     if (isCakePool) {
-      return `${TranslateString(999, 'Earn CAKE, stake CAKE')}`
+      return `${t('Earn CAKE, stake CAKE')}`
     }
-    return `${TranslateString(1070, 'Stake')} ${stakingTokenSymbol}`
+    return `${t('Stake')} ${stakingTokenSymbol}`
   }
 
   return (

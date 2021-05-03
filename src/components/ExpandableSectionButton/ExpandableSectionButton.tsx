@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { ChevronDownIcon, ChevronUpIcon, Text } from '@pancakeswap-libs/uikit'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 
 export interface ExpandableSectionButtonProps {
   onClick?: () => void
@@ -20,12 +20,12 @@ const Wrapper = styled.div`
 `
 
 const ExpandableSectionButton: React.FC<ExpandableSectionButtonProps> = ({ onClick, expanded }) => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
 
   return (
     <Wrapper aria-label="Hide or show expandable content" role="button" onClick={() => onClick()}>
       <Text color="primary" bold>
-        {expanded ? TranslateString(1066, 'Hide') : TranslateString(658, 'Details')}
+        {expanded ? t('Hide') : t('Details')}
       </Text>
       {expanded ? <ChevronUpIcon /> : <ChevronDownIcon />}
     </Wrapper>

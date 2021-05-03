@@ -2,7 +2,7 @@ import React from 'react'
 import styled, { DefaultTheme } from 'styled-components'
 import { Link } from 'react-router-dom'
 import { Button, Card, CommunityIcon, Flex, Heading, PrizeIcon, Text } from '@pancakeswap-libs/uikit'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import { Team } from 'config/constants/types'
 
 interface TeamCardProps {
@@ -91,7 +91,7 @@ const StyledTeamCard = styled(Card)`
 `
 
 const TeamCard: React.FC<TeamCardProps> = ({ rank, team }) => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const avatar = <Avatar src={`/images/teams/${team.images.md}`} alt="team avatar" />
 
   return (
@@ -128,7 +128,7 @@ const TeamCard: React.FC<TeamCardProps> = ({ rank, team }) => {
           </Flex>
         </Info>
         <Button as={Link} to={`/teams/${team?.id}`} variant="secondary" scale="sm">
-          {TranslateString(1042, 'See More')}
+          {t('See More')}
         </Button>
         <DesktopAvatar>{avatar}</DesktopAvatar>
       </Body>

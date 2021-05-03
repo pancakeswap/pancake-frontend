@@ -1,7 +1,7 @@
 import React from 'react'
 import { Flex, Text, Heading, Image } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import AllBunniesImage from '../../pngs/all-bunnies.png'
 import { Heading1Text, Heading2Text } from '../CompetitionHeadingText'
 import { GOLDGRADIENT } from '../Section/sectionStyles'
@@ -38,21 +38,21 @@ const StyledHeading = styled(Heading)`
 `
 
 const BattleBanner = () => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   return (
     <Flex flexDirection="column">
       <ImageWrapper>
         <Image src={AllBunniesImage} alt="all the bunnies" width={1208} height={659} responsive />
       </ImageWrapper>
       <StyledText mb="16px" color="textSubtle" bold>
-        {TranslateString(999, 'April')} 07—14, 2021
+        {t('April')} 07—14, 2021
       </StyledText>
-      <StyledHeading1Text>{TranslateString(999, 'Easter Battle')}</StyledHeading1Text>
+      <StyledHeading1Text>{t('Easter Battle')}</StyledHeading1Text>
       <StyledHeading2Text background={GOLDGRADIENT} $fill>
-        {TranslateString(999, '$200,000 in Prizes!')}
+        {t('$200,000 in Prizes!')}
       </StyledHeading2Text>
       <StyledHeading size="md" color="inputSecondary" mt="16px">
-        {TranslateString(999, 'Compete with other teams to win CAKE, collectible NFTs, achievements & more!')}
+        {t('Compete with other teams to win CAKE, collectible NFTs, achievements & more!')}
       </StyledHeading>
     </Flex>
   )

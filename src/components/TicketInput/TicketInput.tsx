@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Button, Flex, Input, InputProps } from '@pancakeswap-libs/uikit'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 
 interface TokenInputProps extends InputProps {
   max: number | string
@@ -13,7 +13,7 @@ interface TokenInputProps extends InputProps {
 }
 
 const TicketInput: React.FC<TokenInputProps> = ({ max, symbol, availableSymbol, onChange, onSelectMax, value }) => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
 
   return (
     <>
@@ -24,11 +24,13 @@ const TicketInput: React.FC<TokenInputProps> = ({ max, symbol, availableSymbol, 
           <StyledTokenSymbol>{symbol}</StyledTokenSymbol>
           <StyledSpacer />
           <Button size="sm" onClick={onSelectMax}>
-            {TranslateString(452, 'Max')}
+            {t('Max')}
           </Button>
         </StyledTokenAdornmentWrapper>
       </Flex>
-      <StyledMaxText>{TranslateString(454, `${max.toLocaleString()} ${availableSymbol} Available`)}</StyledMaxText>
+      <StyledMaxText>
+        {t('%num% %symbol% Available', { num: max.toLocaleString(), symbol: availableSymbol })}
+      </StyledMaxText>
     </>
   )
 }

@@ -2,7 +2,7 @@ import React, { useCallback } from 'react'
 import { Button, Modal } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
 import { useWinningNumbers } from 'hooks/useTickets'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 
 interface UserTicketsModalProps {
   myTicketNumbers: Array<any>
@@ -12,7 +12,7 @@ interface UserTicketsModalProps {
 
 const UserTicketsModal: React.FC<UserTicketsModalProps> = ({ myTicketNumbers, onDismiss, from }) => {
   const winNumbers = useWinningNumbers()
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const rewardMatch = useCallback(
     (number) => {
       let n = 0
@@ -42,15 +42,12 @@ const UserTicketsModal: React.FC<UserTicketsModalProps> = ({ myTicketNumbers, on
   })
 
   return (
-    <Modal
-      title={TranslateString(490, `My Tickets (Total: ${myTicketNumbers.length})`, { TICKETS: myTicketNumbers.length })}
-      onDismiss={onDismiss}
-    >
+    <Modal title={t('My Tickets (Total: %TICKETS%)', { TICKETS: myTicketNumbers.length })} onDismiss={onDismiss}>
       <TicketsList>
         <h2>{listItems}</h2>
       </TicketsList>
       <StyledButton variant="secondary" onClick={onDismiss}>
-        {TranslateString(438, 'Close')}
+        {t('Close')}
       </StyledButton>
     </Modal>
   )

@@ -1,7 +1,7 @@
 import React from 'react'
 import BigNumber from 'bignumber.js'
 import { Flex, Text } from '@pancakeswap-libs/uikit'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import RecentCakeProfitBalance from './RecentCakeProfitBalance'
 
 interface RecentCakeProfitRowProps {
@@ -17,13 +17,13 @@ const RecentCakeProfitCountdownRow: React.FC<RecentCakeProfitRowProps> = ({
   userShares,
   pricePerFullShare,
 }) => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const shouldDisplayCakeProfit =
     account && cakeAtLastUserAction && cakeAtLastUserAction.gt(0) && userShares && userShares.gt(0)
 
   return (
     <Flex alignItems="center" justifyContent="space-between">
-      <Text fontSize="14px">{TranslateString(999, 'Recent CAKE profit:')}</Text>
+      <Text fontSize="14px">{t('Recent CAKE profit:')}</Text>
       {shouldDisplayCakeProfit && (
         <RecentCakeProfitBalance
           cakeAtLastUserAction={cakeAtLastUserAction}

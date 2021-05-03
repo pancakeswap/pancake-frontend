@@ -1,7 +1,7 @@
 import React from 'react'
 import { Flex, Heading, Image } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import AllBunniesImage from '../../pngs/all-bunnies.png'
 import { Heading1Text, Heading2Text } from '../CompetitionHeadingText'
 
@@ -23,18 +23,18 @@ const StyledHeading = styled(Heading)`
 `
 
 const BattleBanner = () => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   return (
     <Flex flexDirection="column" justifyContent="center" alignItems="center">
       <ImageWrapper>
         <Image src={AllBunniesImage} alt="all the bunnies" width={1208} height={659} responsive />
       </ImageWrapper>
-      <StyledHeading1Text>{TranslateString(999, 'Easter Battle')}</StyledHeading1Text>
+      <StyledHeading1Text>{t('Easter Battle')}</StyledHeading1Text>
       <StyledHeading2Text background="linear-gradient(180deg, #FFD800 0%, #EB8C00 100%)" $fill>
-        {TranslateString(999, '$200,000 in Prizes!')}
+        {t('$200,000 in Prizes!')}
       </StyledHeading2Text>
       <StyledHeading size="md" color="inputSecondary" mt="16px">
-        {TranslateString(999, 'Registration starting April 5th')}
+        {t('Registration starting April 5th')}
       </StyledHeading>
     </Flex>
   )

@@ -5,7 +5,7 @@ import { useAppDispatch } from 'state'
 import { HistoryFilter } from 'state/types'
 import { setHistoryFilter, setHistoryPaneState, fetchHistory } from 'state/predictions'
 import { useGetHistoryFilter, useGetIsFetchingHistory } from 'state/hooks'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import styled from 'styled-components'
 import { getBubbleGumBackground } from '../../helpers'
 
@@ -37,7 +37,7 @@ const getClaimParam = (historyFilter: HistoryFilter) => {
 const Header = () => {
   const historyFilter = useGetHistoryFilter()
   const isFetchingHistory = useGetIsFetchingHistory()
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const { account } = useWeb3React()
 
@@ -56,14 +56,14 @@ const Header = () => {
     <StyledHeader>
       <Flex alignItems="center" justifyContent="space-between" mb="16px">
         <Heading as="h3" size="md">
-          {TranslateString(999, 'Your History')}
+          {t('Your History')}
         </Heading>
         <Button onClick={handleClick} variant="text" endIcon={<ArrowForwardIcon color="primary" />} px="0">
-          {TranslateString(438, 'Close')}
+          {t('Close')}
         </Button>
       </Flex>
       <Text color="textSubtle" fontSize="12px" mb="8px">
-        {TranslateString(999, 'Filter')}
+        {t('Filter')}
       </Text>
       <Flex alignItems="center">
         <Filter>
@@ -73,7 +73,7 @@ const Header = () => {
             disabled={isFetchingHistory || !account}
             onChange={handleChange(HistoryFilter.ALL)}
           />
-          <Text ml="4px">{TranslateString(999, 'All')}</Text>
+          <Text ml="4px">{t('All')}</Text>
         </Filter>
         <Filter>
           <Radio
@@ -82,7 +82,7 @@ const Header = () => {
             disabled={isFetchingHistory || !account}
             onChange={handleChange(HistoryFilter.COLLECTED)}
           />
-          <Text ml="4px">{TranslateString(999, 'Collected')}</Text>
+          <Text ml="4px">{t('Collected')}</Text>
         </Filter>
         <Filter>
           <Radio
@@ -91,7 +91,7 @@ const Header = () => {
             disabled={isFetchingHistory || !account}
             onChange={handleChange(HistoryFilter.UNCOLLECTED)}
           />
-          <Text ml="4px">{TranslateString(999, 'Uncollected')}</Text>
+          <Text ml="4px">{t('Uncollected')}</Text>
         </Filter>
       </Flex>
     </StyledHeader>

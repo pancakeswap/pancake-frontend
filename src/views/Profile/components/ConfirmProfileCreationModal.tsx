@@ -2,7 +2,7 @@ import React from 'react'
 import { Modal, Flex, Text } from '@pancakeswap-libs/uikit'
 import { useAppDispatch } from 'state'
 import BigNumber from 'bignumber.js'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import { useCake, useProfile } from 'hooks/useContract'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { fetchProfile } from 'state/profile'
@@ -29,7 +29,7 @@ const ConfirmProfileCreationModal: React.FC<Props> = ({
   allowance,
   onDismiss,
 }) => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const profileContract = useProfile()
   const dispatch = useAppDispatch()
   const { toastSuccess } = useToast()
@@ -70,11 +70,11 @@ const ConfirmProfileCreationModal: React.FC<Props> = ({
   return (
     <Modal title="Complete Profile" onDismiss={onDismiss}>
       <Text color="textSubtle" mb="8px">
-        {TranslateString(999, 'Submitting NFT to contract and confirming User Name and Team.')}
+        {t('Submitting NFT to contract and confirming User Name and Team.')}
       </Text>
       <Flex justifyContent="space-between" mb="16px">
-        <Text>{TranslateString(999, 'Cost')}</Text>
-        <Text>{TranslateString(999, `${REGISTER_COST} CAKE`, { num: REGISTER_COST })}</Text>
+        <Text>{t('Cost')}</Text>
+        <Text>{t(`${REGISTER_COST} CAKE`, { num: REGISTER_COST })}</Text>
       </Flex>
       <ApproveConfirmButtons
         isApproveDisabled={isConfirmed || isConfirming || isApproved}
