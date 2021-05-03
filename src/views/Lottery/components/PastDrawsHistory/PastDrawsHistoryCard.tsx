@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Heading, Card, CardBody, Text } from '@pancakeswap-libs/uikit'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import styled from 'styled-components'
 import Select, { OptionProps } from 'components/Select/Select'
 import HistoryChart from './HistoryChart'
@@ -31,7 +31,7 @@ const LabelWrapper = styled.div`
 `
 
 const PastDrawsHistoryCard: React.FC = () => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const [showLast, setShowLast] = useState<'max' | number>(50)
   const handleShowLastChange = (option: OptionProps): void => {
     setShowLast(option.value)
@@ -40,11 +40,11 @@ const PastDrawsHistoryCard: React.FC = () => {
   return (
     <Card>
       <CardBody>
-        <Heading size="md">{TranslateString(746, 'History')}</Heading>
+        <Heading size="md">{t('History')}</Heading>
         <Wrapper>
           <Legend />
           <LabelWrapper>
-            <Text textTransform="uppercase">{TranslateString(999, 'Show Last')}</Text>
+            <Text textTransform="uppercase">{t('Show Last')}</Text>
             <Select
               options={[
                 {

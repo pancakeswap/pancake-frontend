@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Text, Heading, Card, CardHeader, CardBody, Flex } from '@pancakeswap-libs/uikit'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import FoldableText from 'components/FoldableText'
 import config from './config'
 
@@ -27,7 +27,7 @@ const DetailsWrapper = styled.div`
 `
 
 const IfoQuestions = () => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
 
   return (
     <Flex alignItems={['center', null, null, 'start']} flexDirection={['column', null, null, 'row']}>
@@ -38,21 +38,16 @@ const IfoQuestions = () => {
         <Card>
           <CardHeader>
             <Heading size="lg" color="secondary">
-              {TranslateString(999, 'Details')}
+              {t('Details')}
             </Heading>
           </CardHeader>
           <CardBody>
             {config.map(({ title, description }) => (
-              <FoldableText
-                key={title.fallback}
-                id={title.fallback}
-                mb="24px"
-                title={TranslateString(title.id, title.fallback)}
-              >
-                {description.map(({ id, fallback }) => {
+              <FoldableText key={title.fallback} id={title.fallback} mb="24px" title={t(title.fallback)}>
+                {description.map(({ fallback }) => {
                   return (
                     <Text key={fallback} color="textSubtle" as="p">
-                      {TranslateString(id, fallback)}
+                      {t(fallback)}
                     </Text>
                   )
                 })}

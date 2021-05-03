@@ -12,7 +12,7 @@ import {
   useModal,
 } from '@pancakeswap-libs/uikit'
 import useAuth from 'hooks/useAuth'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import { FINISHED, OVER } from 'config/constants/trading-competition/easterPhases'
 import RegisterModal from '../RegisterModal'
 import ClaimModal from '../ClaimModal'
@@ -61,7 +61,7 @@ const BattleCta: React.FC<CompetitionProps> = ({
   onRegisterSuccess,
   onClaimSuccess,
 }) => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const { login, logout } = useAuth()
   const { onPresentConnectModal } = useWalletModal(login, logout)
   const [onPresentRegisterModal] = useModal(
@@ -86,61 +86,61 @@ const BattleCta: React.FC<CompetitionProps> = ({
   const getHeadingText = () => {
     // Competition live
     if (isCompetitionLive) {
-      return TranslateString(999, 'Now Live!')
+      return t('Now Live!')
     }
     // Competition finished. Rewards being calculated
     if (currentPhase.state === FINISHED) {
-      return `${TranslateString(999, 'Calculating prizes')}...`
+      return `${t('Calculating prizes')}...`
     }
     // All competition finished states
     if (hasCompetitionEnded) {
-      return `${TranslateString(388, 'Finished')}!`
+      return `${t('Finished')}!`
     }
     // Competition not started
-    return TranslateString(999, 'Starting Soon')
+    return t('Starting Soon')
   }
 
   const getButtonText = () => {
     // No wallet connected
     if (!account) {
-      return TranslateString(292, 'Unlock Wallet')
+      return t('Unlock Wallet')
     }
     // User not registered
     if (!hasRegistered) {
-      return TranslateString(999, 'I want to Battle!')
+      return t('I want to Battle!')
     }
     // User registered and competition live
     if (isCompetitionLive) {
-      return TranslateString(999, 'Trade Now')
+      return t('Trade Now')
     }
 
     // User registered and competition finished
     if (hasCompetitionEnded) {
       // Claim period has ended
       if (currentPhase.state === OVER) {
-        return TranslateString(999, 'Claim period over')
+        return t('Claim period over')
       }
       // User has prizes to claim
       if (userCanClaimPrizes) {
-        return TranslateString(999, 'Claim prizes')
+        return t('Claim prizes')
       }
       // User has already claimed prizes
       if (hasUserClaimed) {
         return (
           <>
-            <CheckmarkCircleIcon /> {TranslateString(999, 'Prizes Claimed!')}
+            <CheckmarkCircleIcon /> {t('Prizes Claimed!')}
           </>
         )
       }
       // User has nothing to claim
-      return TranslateString(999, 'Nothing to claim')
+      return t('Nothing to claim')
     }
 
     // User registered but competition has not started
     if (!isCompetitionLive) {
       return (
         <>
-          <CheckmarkCircleIcon /> {TranslateString(999, 'Registered!')}
+          <CheckmarkCircleIcon /> {t('Registered!')}
         </>
       )
     }

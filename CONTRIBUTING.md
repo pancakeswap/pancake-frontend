@@ -46,13 +46,13 @@ _In order for the Crowdin API queries to work - you will need `REACT_APP_CROWDIN
 A hook expose the function you need to translate content.
 
 ```
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 
 ...
-const TranslateString = useI18n()
+const { t } =  useTranslation()
 ...
 
-TranslateString(id, 'fallback', data)
+t(id, 'fallback', data)
 ```
 
 - **id** is the crowdin id of the string you want to translate.
@@ -64,7 +64,7 @@ TranslateString(id, 'fallback', data)
 If a Crowdin translation like this `You have %num% left in your wallet` - would look something like:
 
 ```
-TranslateString(675, `You have ${cakeBalance} left in your wallet`, { num: cakeBalance })
+t(675, `You have ${cakeBalance} left in your wallet`, { num: cakeBalance })
 ```
 
 ## Issue reports

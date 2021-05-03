@@ -5,7 +5,7 @@ import { Text } from '@pancakeswap-libs/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { BigNumber } from 'bignumber.js'
 import styled from 'styled-components'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import CardValue from './CardValue'
 import CardBusdValue from './CardBusdValue'
 
@@ -18,7 +18,7 @@ interface CakeWinningsProps {
 }
 
 const CakeWinnings: React.FC<CakeWinningsProps> = ({ claimAmount }) => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const { account } = useWeb3React()
   const cakeAmount = getBalanceNumber(claimAmount)
   const cakePriceBusd = usePriceCakeBusd()
@@ -27,7 +27,7 @@ const CakeWinnings: React.FC<CakeWinningsProps> = ({ claimAmount }) => {
   if (!account) {
     return (
       <Text color="textDisabled" style={{ lineHeight: '76px' }}>
-        {TranslateString(298, 'Locked')}
+        {t('Locked')}
       </Text>
     )
   }

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
 import { Button, Flex, Heading, IconButton, AddIcon, MinusIcon, useModal } from '@pancakeswap-libs/uikit'
 import { useLocation } from 'react-router-dom'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import useStake from 'hooks/useStake'
 import useUnstake from 'hooks/useUnstake'
 import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
@@ -32,7 +32,7 @@ const StakeAction: React.FC<FarmCardActionsProps> = ({
   pid,
   addLiquidityUrl,
 }) => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const { onStake } = useStake(pid)
   const { onUnstake } = useUnstake(pid)
   const location = useLocation()
@@ -55,7 +55,7 @@ const StakeAction: React.FC<FarmCardActionsProps> = ({
   const renderStakingButtons = () => {
     return stakedBalance.eq(0) ? (
       <Button onClick={onPresentDeposit} disabled={location.pathname.includes('archived')}>
-        {TranslateString(999, 'Stake LP')}
+        {t('Stake LP')}
       </Button>
     ) : (
       <IconButtonWrapper>

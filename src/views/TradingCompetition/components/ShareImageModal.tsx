@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react'
 import { Modal, Flex, Button, Text, Skeleton, Box } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import FlippersShare from '../pngs/flippers-share.png'
 import StormShare from '../pngs/storm-share.png'
 import CakersShare from '../pngs/cakers-share.png'
@@ -34,7 +34,7 @@ const MobileText = styled(Text)`
 `
 
 const ShareImageModal: React.FC<YourScoreProps> = ({ onDismiss, profile, userLeaderboardInformation }) => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const { global, team, volume } = userLeaderboardInformation
   const [bgImage, setBgImage] = useState(null)
   const [profileImage, setProfileImage] = useState(null)
@@ -113,7 +113,7 @@ const ShareImageModal: React.FC<YourScoreProps> = ({ onDismiss, profile, userLea
   }
 
   return (
-    <Modal title={`${TranslateString(999, 'Share Your Score')}`} onDismiss={onDismiss} minWidth="280px">
+    <Modal title={`${t('Share Your Score')}`} onDismiss={onDismiss} minWidth="280px">
       <Flex flexDirection="column" alignItems="center" maxWidth="460px">
         {bgImage && profileImage ? (
           <Flex alignItems="center" justifyContent="center" minHeight="258px">
@@ -126,13 +126,13 @@ const ShareImageModal: React.FC<YourScoreProps> = ({ onDismiss, profile, userLea
           <Skeleton width="100%" height="258px" />
         )}
         <Text p="24px 16px" color="textSubtle" textAlign="center">
-          {TranslateString(999, 'Brag to your friends and annoy your rivals with your custom scorecard!')}
+          {t('Brag to your friends and annoy your rivals with your custom scorecard!')}
         </Text>
         {imageFromCanvas && (
           <>
-            <StyledButton onClick={downloadImage}>{TranslateString(999, 'Download Image')}</StyledButton>
+            <StyledButton onClick={downloadImage}>{t('Download Image')}</StyledButton>
             <MobileText p="0 16px 18px 16px" bold textAlign="center">
-              {TranslateString(999, 'Screenshot or press & hold on the image to share!')}
+              {t('Screenshot or press & hold on the image to share!')}
             </MobileText>
           </>
         )}

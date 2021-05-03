@@ -8,7 +8,7 @@ import {
   Box,
   Flex,
 } from '@pancakeswap-libs/uikit'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 
 interface ApproveConfirmButtonsProps {
   isApproveDisabled: boolean
@@ -66,7 +66,7 @@ const ApproveConfirmButtons: React.FC<ApproveConfirmButtonsProps> = ({
   onApprove,
   onConfirm,
 }) => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
 
   return (
     <StyledApproveConfirmButtons>
@@ -77,7 +77,7 @@ const ApproveConfirmButtons: React.FC<ApproveConfirmButtonsProps> = ({
           endIcon={isApproving ? spinnerIcon : undefined}
           isLoading={isApproving}
         >
-          {isApproving ? TranslateString(800, 'Approving') : TranslateString(564, 'Approve')}
+          {isApproving ? t('Approving') : t('Approve')}
         </Button>
       </Box>
       <Flex justifyContent="center">
@@ -91,7 +91,7 @@ const ApproveConfirmButtons: React.FC<ApproveConfirmButtonsProps> = ({
           isLoading={isConfirming}
           endIcon={isConfirming ? spinnerIcon : undefined}
         >
-          {isConfirming ? TranslateString(802, 'Confirming') : TranslateString(464, 'Confirm')}
+          {isConfirming ? t('Confirming') : t('Confirm')}
         </Button>
       </Box>
     </StyledApproveConfirmButtons>

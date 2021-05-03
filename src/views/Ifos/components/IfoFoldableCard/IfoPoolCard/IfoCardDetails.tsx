@@ -1,7 +1,7 @@
 import React from 'react'
 import { Text, Flex, Box } from '@pancakeswap-libs/uikit'
 import { PublicIfoData } from 'hooks/ifo/types'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { getBalanceNumber, formatNumber } from 'utils/formatBalance'
 import { SkeletonCardDetails } from './Skeletons'
@@ -31,7 +31,7 @@ const FooterEntry: React.FC<FooterEntryProps> = ({ label, value }) => {
 }
 
 const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoData }) => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const { status, currencyPriceInUSD } = publicIfoData
   const poolCharacteristic = publicIfoData[poolId]
 
@@ -53,11 +53,9 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoD
     if (status === 'coming_soon') {
       return (
         <>
-          {poolId === PoolIds.poolBasic && (
-            <FooterEntry label={TranslateString(999, 'Max. LP token entry')} value={maxLpTokens} />
-          )}
-          <FooterEntry label={TranslateString(999, 'Funds to raise:')} value={ifo[poolId].raiseAmount} />
-          <FooterEntry label={TranslateString(999, 'CAKE to burn:')} value={ifo[poolId].cakeToBurn} />
+          {poolId === PoolIds.poolBasic && <FooterEntry label={t('Max. LP token entry')} value={maxLpTokens} />}
+          <FooterEntry label={t('Funds to raise:')} value={ifo[poolId].raiseAmount} />
+          <FooterEntry label={t('CAKE to burn:')} value={ifo[poolId].cakeToBurn} />
           <FooterEntry label={`Price per ${ifo.token.symbol}: `} value={`$${ifo.tokenOfferingPrice}`} />
         </>
       )
@@ -65,28 +63,20 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoD
     if (status === 'live') {
       return (
         <>
-          {poolId === PoolIds.poolBasic && (
-            <FooterEntry label={TranslateString(999, 'Max. LP token entry')} value={maxLpTokens} />
-          )}
-          {poolId === PoolIds.poolUnlimited && (
-            <FooterEntry label={TranslateString(999, 'Additional fee:')} value={taxRate} />
-          )}
-          <FooterEntry label={TranslateString(999, 'Total committed:')} value={totalCommitted} />
+          {poolId === PoolIds.poolBasic && <FooterEntry label={t('Max. LP token entry')} value={maxLpTokens} />}
+          {poolId === PoolIds.poolUnlimited && <FooterEntry label={t('Additional fee:')} value={taxRate} />}
+          <FooterEntry label={t('Total committed:')} value={totalCommitted} />
         </>
       )
     }
     if (status === 'finished') {
       return (
         <>
-          {poolId === PoolIds.poolBasic && (
-            <FooterEntry label={TranslateString(999, 'Max. LP token entry')} value={maxLpTokens} />
-          )}
-          {poolId === PoolIds.poolUnlimited && (
-            <FooterEntry label={TranslateString(999, 'Additional fee:')} value={taxRate} />
-          )}
-          <FooterEntry label={TranslateString(999, 'Total committed:')} value={totalCommitted} />
-          <FooterEntry label={TranslateString(999, 'Funds to raise:')} value={ifo[poolId].raiseAmount} />
-          <FooterEntry label={TranslateString(999, 'CAKE to burn:')} value={ifo[poolId].cakeToBurn} />
+          {poolId === PoolIds.poolBasic && <FooterEntry label={t('Max. LP token entry')} value={maxLpTokens} />}
+          {poolId === PoolIds.poolUnlimited && <FooterEntry label={t('Additional fee:')} value={taxRate} />}
+          <FooterEntry label={t('Total committed:')} value={totalCommitted} />
+          <FooterEntry label={t('Funds to raise:')} value={ifo[poolId].raiseAmount} />
+          <FooterEntry label={t('CAKE to burn:')} value={ifo[poolId].cakeToBurn} />
           <FooterEntry
             label={`Price per ${ifo.token.symbol}: `}
             value={`$${ifo.tokenOfferingPrice ? ifo.tokenOfferingPrice : '?'}`}

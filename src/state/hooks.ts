@@ -1,16 +1,18 @@
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
+import { orderBy } from 'lodash'
 import { Team } from 'config/constants/types'
 import Nfts from 'config/constants/nfts'
 import { getWeb3NoAccount } from 'utils/web3'
 import { getAddress } from 'utils/addressHelpers'
 import { getBalanceNumber } from 'utils/formatBalance'
+import { BIG_ZERO } from 'utils/bigNumber'
 import useRefresh from 'hooks/useRefresh'
 import { fetchFarmsPublicDataAsync, fetchPoolsPublicDataAsync, fetchPoolsUserDataAsync, setBlock } from './actions'
-import { State, Farm, FarmsState, Pool, ProfileState, TeamsState, AchievementState, PriceState } from './types'
+import { State, Farm, Pool, ProfileState, TeamsState, AchievementState, PriceState, FarmsState } from './types'
 import { fetchProfile } from './profile'
 import { fetchTeam, fetchTeams } from './teams'
 import { fetchAchievements } from './achievements'
@@ -57,10 +59,10 @@ export const useFarmUser = (pid) => {
   const farm = useFarmFromPid(pid)
 
   return {
-    allowance: farm.userData ? new BigNumber(farm.userData.allowance) : new BigNumber(0),
-    tokenBalance: farm.userData ? new BigNumber(farm.userData.tokenBalance) : new BigNumber(0),
-    stakedBalance: farm.userData ? new BigNumber(farm.userData.stakedBalance) : new BigNumber(0),
-    earnings: farm.userData ? new BigNumber(farm.userData.earnings) : new BigNumber(0),
+    allowance: farm.userData ? new BigNumber(farm.userData.allowance) : BIG_ZERO,
+    tokenBalance: farm.userData ? new BigNumber(farm.userData.tokenBalance) : BIG_ZERO,
+    stakedBalance: farm.userData ? new BigNumber(farm.userData.stakedBalance) : BIG_ZERO,
+    earnings: farm.userData ? new BigNumber(farm.userData.earnings) : BIG_ZERO,
   }
 }
 
@@ -70,7 +72,7 @@ export const useLpTokenPrice = (symbol: string) => {
 
   return farm.lpTotalSupply && farm.lpTotalInQuoteToken
     ? new BigNumber(getBalanceNumber(farm.lpTotalSupply)).div(farm.lpTotalInQuoteToken).times(tokenPriceInUsd).times(2)
-    : new BigNumber(0)
+    : BIG_ZERO
 }
 
 // Pools
@@ -176,13 +178,16 @@ export const useGetApiPrice = (address: string) => {
   return prices[address.toLowerCase()]
 }
 
-export const usePriceCakeBusd = (): BigNumber => {
-  const ZERO = new BigNumber(0)
-  const cakeBnbFarm = useFarmFromPid(1)
+export const usePriceBnbBusd = (): BigNumber => {
   const bnbBusdFarm = useFarmFromPid(2)
+  return bnbBusdFarm.tokenPriceVsQuote ? new BigNumber(1).div(bnbBusdFarm.tokenPriceVsQuote) : BIG_ZERO
+}
 
-  const bnbBusdPrice = bnbBusdFarm.tokenPriceVsQuote ? new BigNumber(1).div(bnbBusdFarm.tokenPriceVsQuote) : ZERO
-  const cakeBusdPrice = cakeBnbFarm.tokenPriceVsQuote ? bnbBusdPrice.times(cakeBnbFarm.tokenPriceVsQuote) : ZERO
+export const usePriceCakeBusd = (): BigNumber => {
+  const cakeBnbFarm = useFarmFromPid(1)
+  const bnbBusdPrice = usePriceBnbBusd()
+
+  const cakeBusdPrice = cakeBnbFarm.tokenPriceVsQuote ? bnbBusdPrice.times(cakeBnbFarm.tokenPriceVsQuote) : BIG_ZERO
 
   return cakeBusdPrice
 }
@@ -194,6 +199,97 @@ export const useBlock = () => {
 
 export const useInitialBlock = () => {
   return useSelector((state: State) => state.block.initialBlock)
+}
+
+// Predictions
+export const useIsHistoryPaneOpen = () => {
+  return useSelector((state: State) => state.predictions.isHistoryPaneOpen)
+}
+
+export const useIsChartPaneOpen = () => {
+  return useSelector((state: State) => state.predictions.isChartPaneOpen)
+}
+
+export const useGetRounds = () => {
+  return useSelector((state: State) => state.predictions.rounds)
+}
+
+export const useGetSortedRounds = () => {
+  const roundData = useGetRounds()
+  return orderBy(Object.values(roundData), ['epoch'], ['asc'])
+}
+
+export const useGetCurrentEpoch = () => {
+  return useSelector((state: State) => state.predictions.currentEpoch)
+}
+
+export const useGetIntervalBlocks = () => {
+  return useSelector((state: State) => state.predictions.intervalBlocks)
+}
+
+export const useGetBufferBlocks = () => {
+  return useSelector((state: State) => state.predictions.bufferBlocks)
+}
+
+export const useGetTotalIntervalBlocks = () => {
+  const intervalBlocks = useGetIntervalBlocks()
+  const bufferBlocks = useGetBufferBlocks()
+  return intervalBlocks + bufferBlocks
+}
+
+export const useGetRound = (id: string) => {
+  const rounds = useGetRounds()
+  return rounds[id]
+}
+
+export const useGetCurrentRound = () => {
+  const currentEpoch = useGetCurrentEpoch()
+  const rounds = useGetSortedRounds()
+  return rounds.find((round) => round.epoch === currentEpoch)
+}
+
+export const useGetPredictionsStatus = () => {
+  return useSelector((state: State) => state.predictions.status)
+}
+
+export const useGetHistoryFilter = () => {
+  return useSelector((state: State) => state.predictions.historyFilter)
+}
+
+export const useGetCurrentRoundBlockNumber = () => {
+  return useSelector((state: State) => state.predictions.currentRoundStartBlockNumber)
+}
+
+export const useGetMinBetAmount = () => {
+  const minBetAmount = useSelector((state: State) => state.predictions.minBetAmount)
+  return useMemo(() => new BigNumber(minBetAmount), [minBetAmount])
+}
+
+export const useGetIsFetchingHistory = () => {
+  return useSelector((state: State) => state.predictions.isFetchingHistory)
+}
+
+export const useGetHistory = () => {
+  return useSelector((state: State) => state.predictions.history)
+}
+
+export const useGetHistoryByAccount = (account: string) => {
+  const bets = useGetHistory()
+  return bets ? bets[account] : []
+}
+
+export const useGetBetByRoundId = (account: string, roundId: string) => {
+  const bets = useSelector((state: State) => state.predictions.bets)
+
+  if (!bets[account]) {
+    return null
+  }
+
+  if (!bets[account][roundId]) {
+    return null
+  }
+
+  return bets[account][roundId]
 }
 
 // Collectibles
