@@ -1,6 +1,6 @@
 import React from 'react'
 import BigNumber from 'bignumber.js'
-import { Text, useTooltip } from '@pancakeswap-libs/uikit'
+import { TooltipText, useTooltip } from '@pancakeswap-libs/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { getFullDisplayBalance } from 'utils/formatBalance'
 import { convertSharesToCake } from '../../helpers'
@@ -24,15 +24,15 @@ const RecentCakeProfitBalance: React.FC<RecentCakeProfitBalanceProps> = ({
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     t('Your estimated earnings since last manual stake or unstake:'),
-    'bottom-end',
+    { placement: 'bottom-end' },
   )
 
   return (
     <>
       {tooltipVisible && tooltip}
-      <Text ref={targetRef} fontSize="14px">
+      <TooltipText ref={targetRef} small>
         {cakeToDisplay}
-      </Text>
+      </TooltipText>
     </>
   )
 }

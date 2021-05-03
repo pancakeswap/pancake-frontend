@@ -60,8 +60,7 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
   const positionDisplay = position === BetPosition.BULL ? 'UP' : 'DOWN'
   const { targetRef, tooltipVisible, tooltip } = useTooltip(
     <div style={{ whiteSpace: 'nowrap' }}>{`${formatBnb(betAmount)} BNB`}</div>,
-    'top',
-    'hover',
+    { placement: 'top' },
   )
 
   // Bettable rounds do not have an lockBlock set so we approximate it by adding the block interval
