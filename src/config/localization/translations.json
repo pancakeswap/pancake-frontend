@@ -322,5 +322,6 @@
   "Enabling": "Enabling",
   "%amount% CAKE": "%amount% CAKE",
   "IFO Shopper: %title%": "IFO Shopper: %title%",
-  "%num% of total": "%num% of total"
+  "%num% of total": "%num% of total",
+  "All estimated rates take into account this pool's %fee%% performance fee": "All estimated rates take into account this pool's %fee%% performance fee"
 }

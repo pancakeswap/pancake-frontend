@@ -38,17 +38,14 @@ const BountyCard = () => {
   )
   const TooltipComponent = () => (
     <Box>
+      <Box mb="16px">{`${t(`This bounty is given as a reward for providing a service to other users.`)}`}</Box>
       <Box mb="16px">
-        {`${TranslateString(999, `This bounty is given as a reward for providing a service to other users.`)}`}
-      </Box>
-      <Box mb="16px">
-        {TranslateString(
-          999,
+        {t(
           'Whenever you successfully claim the bounty, you’re also helping out by activating the Auto CAKE Pool’s compounding function for everyone.',
         )}
       </Box>
       <Box style={{ fontWeight: 'bold' }}>
-        {TranslateString(999, `Auto-Compound Bounty: ${callFee / 100}% of all Auto CAKE pool users’ pending yield`)}
+        {t(`Auto-Compound Bounty: %fee%% of all Auto CAKE pool users’ pending yield`, { fee: callFee / 100 })}
       </Box>
     </Box>
   )
@@ -92,7 +89,7 @@ const BountyCard = () => {
               onClick={onPresentBountyModal}
               scale="sm"
             >
-              {TranslateString(999, 'Claim')}
+              {t('Claim')}
             </Button>
           </Flex>
         </CardBody>
