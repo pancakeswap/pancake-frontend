@@ -1,10 +1,11 @@
 import React, { useState, useCallback } from 'react'
 import styled from 'styled-components'
 import { Heading, Card, CardBody, Button } from '@pancakeswap/uikit'
+import { harvest } from 'utils/callHelpers'
 import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'contexts/Localization'
-import { useAllHarvest } from 'hooks/useHarvest'
 import useFarmsWithBalance from 'hooks/useFarmsWithBalance'
+import { useMasterchef } from 'hooks/useContract'
 import UnlockButton from 'components/UnlockButton'
 import CakeHarvestBalance from './CakeHarvestBalance'
 import CakeWalletBalance from './CakeWalletBalance'
@@ -38,20 +39,22 @@ const FarmedStakingCard = () => {
   const { account } = useWeb3React()
   const { t } = useTranslation()
   const farmsWithBalance = useFarmsWithBalance()
+  const masterChefContract = useMasterchef()
   const balancesWithValue = farmsWithBalance.filter((balanceType) => balanceType.balance.toNumber() > 0)
-
-  const { onReward } = useAllHarvest(balancesWithValue.map((farmWithBalance) => farmWithBalance.pid))
 
   const harvestAllFarms = useCallback(async () => {
     setPendingTx(true)
-    try {
-      await onReward()
-    } catch (error) {
-      // TODO: find a way to handle when the user rejects transaction or it fails
-    } finally {
-      setPendingTx(false)
+    // eslint-disable-next-line no-restricted-syntax
+    for (const farmWithBalance of balancesWithValue) {
+      try {
+        // eslint-disable-next-line no-await-in-loop
+        await harvest(masterChefContract, farmWithBalance.pid, account)
+      } catch (error) {
+        // TODO: find a way to handle when the user rejects transaction or it fails
+      }
     }
-  }, [onReward])
+    setPendingTx(false)
+  }, [account, balancesWithValue, masterChefContract])
 
   return (
     <StyledFarmStakingCard>
