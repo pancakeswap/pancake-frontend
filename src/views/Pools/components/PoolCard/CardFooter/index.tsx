@@ -39,9 +39,10 @@ const Footer: React.FC<FooterProps> = ({
     'Any funds you stake in this pool will be automagically harvested and restaked (compounded) for you.',
   )
 
-  const { targetRef, tooltip, tooltipVisible } = useTooltip(isAutoVault ? autoTooltipText : manualTooltipText, {
-    placement: 'bottom-end',
-  })
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(
+    isAutoVault ? autoTooltipText : manualTooltipText,
+    'bottom-end',
+  )
 
   return (
     <CardFooter>

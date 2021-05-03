@@ -41,10 +41,7 @@ const BountyModal: React.FC<BountyModalProps> = ({
   const [pendingTx, setPendingTx] = useState(false)
   const callFeeAsDecimal = callFee / 100
   const totalYieldToDisplay = getFullDisplayBalance(totalPendingCakeRewards, 18, 3)
-  const { targetRef, tooltip, tooltipVisible } = useTooltip(<TooltipComponent />, {
-    placement: 'bottom',
-    tooltipPadding: { right: 15 },
-  })
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(<TooltipComponent />, 'bottom-end')
 
   const handleConfirmClick = async () => {
     cakeVaultContract.methods
@@ -115,13 +112,11 @@ const BountyModal: React.FC<BountyModalProps> = ({
       >
         {TranslateString(464, 'Confirm')}
       </Button>
-      <Flex justifyContent="center" alignItems="center">
+      <Flex ref={targetRef} justifyContent="center" alignItems="center">
         <Text fontSize="16px" bold color="textSubtle" mr="4px">
           {TranslateString(999, "What's this?")}
         </Text>
-        <span ref={targetRef}>
-          <HelpIcon color="textSubtle" />
-        </span>
+        <HelpIcon color="textSubtle" />
       </Flex>
     </Modal>
   )

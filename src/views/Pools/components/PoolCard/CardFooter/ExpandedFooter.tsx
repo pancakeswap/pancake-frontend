@@ -50,7 +50,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     TranslateString(999, 'Subtracted automatically from each yield harvest and burned.'),
-    { placement: 'bottom-end' },
+    'bottom-end',
   )
 
   return (
@@ -101,7 +101,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({
       {isAutoVault && (
         <Flex mb="2px" justifyContent="space-between" alignItems="center">
           {tooltipVisible && tooltip}
-          <Text ref={targetRef} small hasTooltip>
+          <Text ref={targetRef} fontSize="14px">
             {TranslateString(999, 'Performance Fee')}
           </Text>
           <Flex alignItems="center">

@@ -38,7 +38,11 @@ const Liquidity: React.FunctionComponent<LiquidityProps> = ({ liquidity }) => {
   const TranslateString = useI18n()
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     TranslateString(999, 'The total value of the funds in this farm’s liquidity pool'),
-    { placement: 'top-end', tooltipOffset: [20, 10] },
+    'top-end',
+    'hover',
+    undefined,
+    undefined,
+    [20, 10],
   )
 
   return (

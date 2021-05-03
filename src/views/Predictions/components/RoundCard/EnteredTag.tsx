@@ -20,7 +20,8 @@ const EnteredTag: React.FC<EnteredTagProps> = ({ amount }) => {
   const TranslateString = useI18n()
   const { targetRef, tooltipVisible, tooltip } = useTooltip(
     <div style={{ whiteSpace: 'nowrap' }}>{`${formatBnb(amount)} BNB`}</div>,
-    { placement: 'bottom' },
+    'bottom',
+    'hover',
   )
 
   return (

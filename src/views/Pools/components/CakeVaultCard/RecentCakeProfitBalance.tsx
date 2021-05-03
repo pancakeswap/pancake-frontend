@@ -23,14 +23,14 @@ const RecentCakeProfitBalance: React.FC<RecentCakeProfitBalanceProps> = ({
   const TranslateString = useI18n()
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    TranslateString(999, 'Your estimated earnings since last manual stake or unstake'),
-    { placement: 'bottom-end' },
+    TranslateString(999, 'Your estimated earnings since last manual stake or unstake:'),
+    'bottom-end',
   )
 
   return (
     <>
       {tooltipVisible && tooltip}
-      <Text ref={targetRef} small hasTooltip>
+      <Text ref={targetRef} fontSize="14px">
         {cakeToDisplay}
       </Text>
     </>

@@ -33,7 +33,7 @@ const AprRow: React.FC<AprRowProps> = ({
       999,
       'APY includes compounding, APR doesn’t. This pool’s CAKE is compounded automatically, so we show APY.',
     ),
-    { placement: 'bottom-end' },
+    'bottom-end',
   )
 
   const earningTokenPrice = useGetApiPrice(earningToken.address ? getAddress(earningToken.address) : '')
@@ -87,7 +87,7 @@ const AprRow: React.FC<AprRowProps> = ({
   return (
     <Flex alignItems="center" justifyContent="space-between">
       {tooltipVisible && tooltip}
-      <Text ref={targetRef} hasTooltip>
+      <Text ref={targetRef} fontSize="16px">
         {isAutoVault ? TranslateString(999, 'APY') : TranslateString(736, 'APR')}:
       </Text>
       {isFinished || !apr ? (

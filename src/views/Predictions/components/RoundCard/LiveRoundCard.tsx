@@ -63,7 +63,7 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
       </LinkExternal>
     </Box>
   )
-  const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipContent, { placement: 'bottom' })
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipContent, 'bottom')
 
   if (round.failed) {
     return <CanceledRoundCard round={round} />
