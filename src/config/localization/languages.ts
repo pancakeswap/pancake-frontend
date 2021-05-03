@@ -5,7 +5,7 @@ export const EN: Language = { code: 'en', language: 'English' }
 export const DA: Language = { code: 'da', language: 'Dansk' }
 export const DE: Language = { code: 'de', language: 'Deutsch' }
 export const EL: Language = { code: 'el', language: 'Ελληνικά' }
-export const ESES: Language = { code: 'es-ES', language: 'Español' }
+export const ESES: Language = { code: 'es_ES', language: 'Español' }
 export const FI: Language = { code: 'fi', language: 'Suomalainen' }
 export const FIL: Language = { code: 'fil', language: 'Filipino' }
 export const FR: Language = { code: 'fr', language: 'Français' }
@@ -16,17 +16,17 @@ export const IT: Language = { code: 'it', language: 'Italiano' }
 export const JA: Language = { code: 'ja', language: '日本語' }
 export const KO: Language = { code: 'ko', language: '한국어' }
 export const NL: Language = { code: 'nl', language: 'Nederlands' }
-export const PTBR: Language = { code: 'pt-BR', language: 'Português' }
+export const PTBR: Language = { code: 'pt_BR', language: 'Português' }
 export const RO: Language = { code: 'ro', language: 'Română' }
 export const RU: Language = { code: 'ru', language: 'Русский' }
 export const SR: Language = { code: 'sr', language: 'Српски' }
-export const SVSE: Language = { code: 'sv-SE', language: 'Svenska' }
+export const SVSE: Language = { code: 'sv_SE', language: 'Svenska' }
 export const TA: Language = { code: 'ta', language: 'தமிழ்' }
 export const TR: Language = { code: 'tr', language: 'Türkçe' }
 export const UK: Language = { code: 'uk', language: 'Українська' }
 export const VI: Language = { code: 'vi', language: 'Tiếng Việt' }
-export const ZHCN: Language = { code: 'zh-CN', language: '简体中文' }
-export const ZHTW: Language = { code: 'zh-TW', language: '繁體中文' }
+export const ZHCN: Language = { code: 'zh_CN', language: '简体中文' }
+export const ZHTW: Language = { code: 'zh_TW', language: '繁體中文' }
 
 export const languages = {
   ar: AR,
@@ -36,7 +36,7 @@ export const languages = {
   da: DA,
   de: DE,
   el: EL,
-  'es-ES': ESES,
+  es_ES: ESES,
   fi: FI,
   fil: FIL,
   fr: FR,
@@ -47,17 +47,17 @@ export const languages = {
   ja: JA,
   ko: KO,
   nl: NL,
-  'pt-BR': PTBR,
+  pt_BR: PTBR,
   ro: RO,
   ru: RU,
   sr: SR,
-  'sv-SE': SVSE,
+  sv_SE: SVSE,
   ta: TA,
   tr: TR,
   uk: UK,
   vi: VI,
-  'zh-CN': ZHCN,
-  'zh-TW': ZHTW,
+  zh_CN: ZHCN,
+  zh_TW: ZHTW,
 }
 
 export const languageList = Object.values(languages)
