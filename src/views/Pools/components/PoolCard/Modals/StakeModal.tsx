@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Modal, Text, Flex, Image, Button, Slider, BalanceInput, AutoRenewIcon, Link } from '@pancakeswap-libs/uikit'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import { BASE_EXCHANGE_URL } from 'config'
 import { useSousStake } from 'hooks/useStake'
 import { useSousUnstake } from 'hooks/useUnstake'
@@ -34,7 +34,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
   onDismiss,
 }) => {
   const { sousId, stakingToken, earningToken } = pool
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const { theme } = useTheme()
 
   const { onStake } = useSousStake(sousId, isBnbPool)
@@ -70,33 +70,24 @@ const StakeModal: React.FC<StakeModalProps> = ({
       try {
         await onUnstake(stakeAmount, stakingToken.decimals)
         toastSuccess(
-          `${TranslateString(999, 'Unstaked')}!`,
-          TranslateString(999, `Your ${earningToken.symbol} earnings have also been harvested to your wallet!`),
+          `${t('Unstaked')}!`,
+          t(`Your ${earningToken.symbol} earnings have also been harvested to your wallet!`),
         )
         setPendingTx(false)
         onDismiss()
       } catch (e) {
-        toastError(
-          TranslateString(999, 'Canceled'),
-          TranslateString(999, 'Please try again and confirm the transaction.'),
-        )
+        toastError(t('Canceled'), t('Please try again and confirm the transaction.'))
         setPendingTx(false)
       }
     } else {
       try {
         // staking
         await onStake(stakeAmount, stakingToken.decimals)
-        toastSuccess(
-          `${TranslateString(1074, 'Staked')}!`,
-          TranslateString(999, `Your ${stakingToken.symbol} funds have been staked in the pool!`),
-        )
+        toastSuccess(`${t('Staked')}!`, t(`Your ${stakingToken.symbol} funds have been staked in the pool!`))
         setPendingTx(false)
         onDismiss()
       } catch (e) {
-        toastError(
-          TranslateString(999, 'Canceled'),
-          TranslateString(999, 'Please try again and confirm the transaction.'),
-        )
+        toastError(t('Canceled'), t('Please try again and confirm the transaction.'))
         setPendingTx(false)
       }
     }
@@ -104,12 +95,12 @@ const StakeModal: React.FC<StakeModalProps> = ({
 
   return (
     <Modal
-      title={isRemovingStake ? TranslateString(588, 'Unstake') : TranslateString(999, 'Stake in Pool')}
+      title={isRemovingStake ? t('Unstake') : t('Stake in Pool')}
       onDismiss={onDismiss}
       headerBackground={theme.colors.gradients.cardHeader}
     >
       <Flex alignItems="center" justifyContent="space-between" mb="8px">
-        <Text bold>{isRemovingStake ? TranslateString(588, 'Unstake') : TranslateString(316, 'Stake')}:</Text>
+        <Text bold>{isRemovingStake ? t('Unstake') : t('Stake')}:</Text>
         <Flex alignItems="center" minWidth="70px">
           <Image src={`/images/tokens/${stakingToken.symbol}.png`} width={24} height={24} alt={stakingToken.symbol} />
           <Text ml="4px" bold>
@@ -147,12 +138,12 @@ const StakeModal: React.FC<StakeModalProps> = ({
         disabled={!stakeAmount || parseFloat(stakeAmount) === 0}
         mt="24px"
       >
-        {pendingTx ? TranslateString(802, 'Confirming') : TranslateString(464, 'Confirm')}
+        {pendingTx ? t('Confirming') : t('Confirm')}
       </Button>
       {!isRemovingStake && (
         <StyledLink external href={BASE_EXCHANGE_URL}>
           <Button width="100%" mt="8px" variant="secondary">
-            {TranslateString(999, 'Get')} {stakingToken.symbol}
+            {t('Get')} {stakingToken.symbol}
           </Button>
         </StyledLink>
       )}

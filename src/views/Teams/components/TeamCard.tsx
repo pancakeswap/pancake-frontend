@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Card, CardHeader, CardBody, CommunityIcon, Heading, PrizeIcon, Text } from '@pancakeswap-libs/uikit'
 import { Team } from 'config/constants/types'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import ComingSoon from 'views/Profile/components/ComingSoon'
 import StatBox from 'views/Profile/components/StatBox'
 
@@ -74,7 +74,7 @@ const StatRow = styled.div`
 `
 
 const TeamCard: React.FC<TeamCardProps> = ({ team }) => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
 
   return (
     <Wrapper>
@@ -90,15 +90,10 @@ const TeamCard: React.FC<TeamCardProps> = ({ team }) => {
         </StyledCardHeader>
         <CardBody>
           <StatRow>
-            <StatBox icon={CommunityIcon} title={team.users} subtitle={TranslateString(1048, 'Active Members')} />
-            <StatBox
-              icon={PrizeIcon}
-              title={TranslateString(350, 'Coming Soon')}
-              subtitle={TranslateString(1046, 'Team Points')}
-              isDisabled
-            />
+            <StatBox icon={CommunityIcon} title={team.users} subtitle={t('Active Members')} />
+            <StatBox icon={PrizeIcon} title={t('Coming Soon')} subtitle={t('Team Points')} isDisabled />
           </StatRow>
-          <Heading as="h3">{TranslateString(1044, 'Team Achievements')}</Heading>
+          <Heading as="h3">{t('Team Achievements')}</Heading>
           <ComingSoon />
         </CardBody>
       </StyledCard>

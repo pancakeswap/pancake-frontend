@@ -9,28 +9,28 @@ export const CompetitionPhases = {
     state: REGISTRATION,
     // Wed 7th 16:00 SGT
     ends: 1617782400000,
-    step: { index: 0, text: 'Entry', translationId: 999 },
+    step: { index: 0, text: 'Entry' },
   },
   LIVE: {
     state: LIVE,
     // ~ Wed 14th 16:00 SGT
     ends: 1618387200000,
-    step: { index: 1, text: 'Live', translationId: 1198 },
+    step: { index: 1, text: 'Live' },
   },
   FINISHED: {
     state: FINISHED,
     ends: null,
-    step: { index: 2, text: 'End', translationId: 410 },
+    step: { index: 2, text: 'End' },
   },
   CLAIM: {
     state: CLAIM,
     ends: null,
-    step: { index: 2, text: 'End', translationId: 410 },
+    step: { index: 2, text: 'End' },
   },
   OVER: {
     state: OVER,
     ends: null,
-    step: { index: 2, text: 'End', translationId: 410 },
+    step: { index: 2, text: 'End' },
   },
 }
 

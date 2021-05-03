@@ -1,7 +1,7 @@
 import React, { useRef } from 'react'
 import styled from 'styled-components'
 import { useTable, Button, ChevronUpIcon, ColumnType } from '@pancakeswap-libs/uikit'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 
 import Row, { RowProps } from './Row'
 
@@ -59,7 +59,7 @@ const ScrollButtonContainer = styled.div`
 
 const FarmTable: React.FC<ITableProps> = (props) => {
   const tableWrapperEl = useRef<HTMLDivElement>(null)
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const { data, columns, userDataReady } = props
 
   const { rows } = useTable(columns, data, { sortable: true, sortColumn: 'farm' })
@@ -84,7 +84,7 @@ const FarmTable: React.FC<ITableProps> = (props) => {
         </TableWrapper>
         <ScrollButtonContainer>
           <Button variant="text" onClick={scrollToTop}>
-            {TranslateString(999, 'To Top')}
+            {t('To Top')}
             <ChevronUpIcon color="primary" />
           </Button>
         </ScrollButtonContainer>

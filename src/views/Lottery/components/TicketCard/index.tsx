@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Card, CardBody, TicketRound, Text, Heading } from '@pancakeswap-libs/uikit'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import useGetLotteryHasDrawn from 'hooks/useGetLotteryHasDrawn'
 import useTickets from 'hooks/useTickets'
 import { useCurrentTime } from 'hooks/useTimer'
@@ -48,7 +48,7 @@ const TicketCountWrapper = styled.div`
 `
 
 const TicketCard: React.FC<CardProps> = ({ isSecondCard = false }) => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const lotteryHasDrawn = useGetLotteryHasDrawn()
 
   const tickets = useTickets()
@@ -67,14 +67,14 @@ const TicketCard: React.FC<CardProps> = ({ isSecondCard = false }) => {
           {lotteryHasDrawn ? (
             <TicketCountWrapper>
               <Text fontSize="14px" color="textSubtle">
-                {TranslateString(870, 'Until ticket sale:')}
+                {t('Until ticket sale:')}
               </Text>
               <Heading size="lg">{timeUntilTicketSale}</Heading>
             </TicketCountWrapper>
           ) : (
             <TicketCountWrapper>
               <Text fontSize="14px" color="textSubtle">
-                {TranslateString(724, 'Your tickets for this round')}
+                {t('Your tickets for this round')}
               </Text>
               <Heading size="lg">{ticketsLength}</Heading>
             </TicketCountWrapper>

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Flex, Text } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import RulesCard from './RulesCard'
 import FAQs from './FAQs'
 
@@ -23,19 +23,19 @@ const StyledCardWrapper = styled(Flex)`
 `
 
 const Rules = () => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
 
   return (
     <Wrapper>
       <StyledCardWrapper>
-        <RulesCard title={TranslateString(999, 'Trade to increase your rank')}>
+        <RulesCard title={t('Trade to increase your rank')}>
           <Text textAlign="center" fontSize="14px" color="textSubtle">
-            {TranslateString(999, 'Eligible pairs: BNB/BUSD, CAKE/BNB, ETH/BNB and BTCB/BNB')}
+            {t('Eligible pairs: BNB/BUSD, CAKE/BNB, ETH/BNB and BTCB/BNB')}
           </Text>
         </RulesCard>
-        <RulesCard title={TranslateString(999, 'Play as a team')}>
+        <RulesCard title={t('Play as a team')}>
           <Text textAlign="center" fontSize="14px" color="textSubtle">
-            {TranslateString(999, 'The higher your team’s rank, the better your prizes!')}
+            {t('The higher your team’s rank, the better your prizes!')}
           </Text>
         </RulesCard>
       </StyledCardWrapper>

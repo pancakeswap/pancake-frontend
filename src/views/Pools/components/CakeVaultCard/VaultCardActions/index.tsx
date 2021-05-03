@@ -2,7 +2,7 @@ import BigNumber from 'bignumber.js'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Flex, Text, Box } from '@pancakeswap-libs/uikit'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import { useCake, useCakeVaultContract } from 'hooks/useContract'
 import { VaultFees } from 'hooks/cakeVault/useGetVaultFees'
 import { Pool } from 'state/types'
@@ -41,7 +41,7 @@ const CakeVaultCardActions: React.FC<{
   const [isVaultApproved, setIsVaultApproved] = useState(false)
   const cakeContract = useCake()
   const cakeVaultContract = useCakeVaultContract()
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const stakingTokenBalance = new BigNumber(userData?.stakingTokenBalance || 0)
 
   useEffect(() => {
@@ -68,7 +68,7 @@ const CakeVaultCardActions: React.FC<{
             bold
             fontSize="12px"
           >
-            {accountHasSharesStaked ? stakingToken.symbol : TranslateString(1070, `stake`)}{' '}
+            {accountHasSharesStaked ? stakingToken.symbol : t(`stake`)}{' '}
           </InlineText>
           <InlineText
             color={accountHasSharesStaked ? 'textSubtle' : 'secondary'}
@@ -76,7 +76,7 @@ const CakeVaultCardActions: React.FC<{
             bold
             fontSize="12px"
           >
-            {accountHasSharesStaked ? TranslateString(1074, `staked (compounding)`) : `${stakingToken.symbol}`}
+            {accountHasSharesStaked ? t(`staked (compounding)`) : `${stakingToken.symbol}`}
           </InlineText>
         </Box>
         {isVaultApproved ? (

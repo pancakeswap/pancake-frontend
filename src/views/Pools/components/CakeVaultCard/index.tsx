@@ -1,8 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Box, CardBody, Flex, Text } from '@pancakeswap-libs/uikit'
+import { useTranslation } from 'contexts/Localization'
 import UnlockButton from 'components/UnlockButton'
-import useI18n from 'hooks/useI18n'
 import { getAddress } from 'utils/addressHelpers'
 import { useGetApiPrice } from 'state/hooks'
 import useLastUpdated from 'hooks/useLastUpdated'
@@ -29,7 +29,7 @@ interface CakeVaultProps {
 }
 
 const CakeVaultCard: React.FC<CakeVaultProps> = ({ pool, account, showStakedOnly }) => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const { lastUpdated, setLastUpdated } = useLastUpdated()
   const userInfo = useGetVaultUserInfo(lastUpdated)
   const vaultFees = useGetVaultFees()
@@ -40,6 +40,7 @@ const CakeVaultCard: React.FC<CakeVaultProps> = ({ pool, account, showStakedOnly
   const accountHasSharesStaked = userInfo.shares && userInfo.shares.gt(0)
   const stakingTokenPrice = useGetApiPrice(stakingToken.address ? getAddress(stakingToken.address) : '')
   const isLoading = !pool.userData || !userInfo.shares
+  const performanceFeeAsDecimal = vaultFees.performanceFee && parseInt(vaultFees.performanceFee, 10) / 100
 
   if (showStakedOnly && !accountHasSharesStaked) {
     return null
@@ -54,6 +55,7 @@ const CakeVaultCard: React.FC<CakeVaultProps> = ({ pool, account, showStakedOnly
           stakingTokenPrice={stakingTokenPrice}
           isAutoVault
           compoundFrequency={timesCompoundedDaily}
+          performanceFee={performanceFeeAsDecimal}
         />
         <Box mt="24px">
           <RecentCakeProfitRow
@@ -88,7 +90,7 @@ const CakeVaultCard: React.FC<CakeVaultProps> = ({ pool, account, showStakedOnly
           ) : (
             <>
               <Text mb="10px" textTransform="uppercase" fontSize="12px" color="textSubtle" bold>
-                {TranslateString(999, 'Start earning')}
+                {t('Start earning')}
               </Text>
               <UnlockButton />
             </>

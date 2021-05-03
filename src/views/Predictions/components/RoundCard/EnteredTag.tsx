@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { CheckmarkCircleIcon, Tag, useTooltip } from '@pancakeswap-libs/uikit'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import { formatBnb } from '../../helpers'
 
 interface EnteredTagProps {
@@ -17,7 +17,7 @@ const StyledEnteredTag = styled(Tag).attrs({
 `
 
 const EnteredTag: React.FC<EnteredTagProps> = ({ amount }) => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const { targetRef, tooltipVisible, tooltip } = useTooltip(
     <div style={{ whiteSpace: 'nowrap' }}>{`${formatBnb(amount)} BNB`}</div>,
     'bottom',
@@ -27,7 +27,7 @@ const EnteredTag: React.FC<EnteredTagProps> = ({ amount }) => {
   return (
     <>
       <span ref={targetRef}>
-        <StyledEnteredTag>{TranslateString(999, 'Entered')}</StyledEnteredTag>{' '}
+        <StyledEnteredTag>{t('Entered')}</StyledEnteredTag>{' '}
       </span>{' '}
       {tooltipVisible && tooltip}
     </>

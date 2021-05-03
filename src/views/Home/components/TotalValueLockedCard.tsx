@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Card, CardBody, Heading, Skeleton, Text } from '@pancakeswap-libs/uikit'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import { useGetStats } from 'hooks/api'
 
 const StyledTotalValueLockedCard = styled(Card)`
@@ -11,7 +11,7 @@ const StyledTotalValueLockedCard = styled(Card)`
 `
 
 const TotalValueLockedCard = () => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const data = useGetStats()
   const tvl = data ? data.total_value_locked_all.toLocaleString('en-US', { maximumFractionDigits: 0 }) : null
 
@@ -19,12 +19,12 @@ const TotalValueLockedCard = () => {
     <StyledTotalValueLockedCard>
       <CardBody>
         <Heading size="lg" mb="24px">
-          {TranslateString(762, 'Total Value Locked (TVL)')}
+          {t('Total Value Locked (TVL)')}
         </Heading>
         {data ? (
           <>
             <Heading size="xl">{`$${tvl}`}</Heading>
-            <Text color="textSubtle">{TranslateString(764, 'Across all LPs and Syrup Pools')}</Text>
+            <Text color="textSubtle">{t('Across all LPs and Syrup Pools')}</Text>
           </>
         ) : (
           <Skeleton height={66} />

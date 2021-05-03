@@ -1,0 +1,3 @@
+files:
+  - source: /src/config/localization/translations.json
+    translation: /public/locales/%locale%.json

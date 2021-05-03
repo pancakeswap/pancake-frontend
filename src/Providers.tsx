@@ -4,8 +4,8 @@ import { Web3ReactProvider } from '@web3-react/core'
 import { HelmetProvider } from 'react-helmet-async'
 import { Provider } from 'react-redux'
 import { getLibrary } from 'utils/web3React'
-import { LanguageContextProvider } from 'contexts/Localisation/languageContext'
 import { ThemeContextProvider } from 'contexts/ThemeContext'
+import { LanguageProvider } from 'contexts/Localization'
 import { RefreshContextProvider } from 'contexts/RefreshContext'
 import { ToastsProvider } from 'contexts/ToastsContext'
 import store from 'state'
@@ -17,11 +17,11 @@ const Providers: React.FC = ({ children }) => {
         <ToastsProvider>
           <HelmetProvider>
             <ThemeContextProvider>
-              <LanguageContextProvider>
+              <LanguageProvider>
                 <RefreshContextProvider>
                   <ModalProvider>{children}</ModalProvider>
                 </RefreshContextProvider>
-              </LanguageContextProvider>
+              </LanguageProvider>
             </ThemeContextProvider>
           </HelmetProvider>
         </ToastsProvider>

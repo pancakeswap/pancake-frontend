@@ -1,6 +1,6 @@
 import React from 'react'
 import { Text, TextProps } from '@pancakeswap-libs/uikit'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import { TranslatableText as AchievementDescriptionType } from 'state/types'
 import styled from 'styled-components'
 
@@ -17,7 +17,7 @@ const Description = styled(Text).attrs({ as: 'p', fontSize: '14px' })`
 `
 
 const AchievementDescription: React.FC<AchievementDescriptionProps> = ({ description, ...props }) => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
 
   if (!description) {
     return null
@@ -31,11 +31,11 @@ const AchievementDescription: React.FC<AchievementDescriptionProps> = ({ descrip
     )
   }
 
-  const { id, fallback, data = {} } = description
+  const { key, data = {} } = description
 
   return (
     <Description color="textSubtle" {...props}>
-      {TranslateString(id, fallback, data)}
+      {t(key, data)}
     </Description>
   )
 }

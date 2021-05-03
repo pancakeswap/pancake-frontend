@@ -3,7 +3,7 @@ import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
 import { Button, Heading, Text, Flex, Checkbox, AutoRenewIcon } from '@pancakeswap-libs/uikit'
 import { useTradingCompetitionContract } from 'hooks/useContract'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import useToast from 'hooks/useToast'
 import { CompetitionProps } from '../../types'
 
@@ -21,7 +21,7 @@ const RegisterWithProfile: React.FC<CompetitionProps> = ({ profile, onDismiss, o
   const tradingCompetitionContract = useTradingCompetitionContract()
   const { account } = useWeb3React()
   const { toastSuccess, toastError } = useToast()
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
 
   const handleConfirmClick = () => {
     tradingCompetitionContract.methods
@@ -46,13 +46,10 @@ const RegisterWithProfile: React.FC<CompetitionProps> = ({ profile, onDismiss, o
       <Heading size="md" mb="24px">{`@${profile.username}`}</Heading>
       <Flex flexDirection="column">
         <Text bold>
-          {TranslateString(
-            999,
-            'Registering for the competition will make your wallet address publicly visible on the leaderboard.',
-          )}
+          {t('Registering for the competition will make your wallet address publicly visible on the leaderboard.')}
         </Text>
         <Text fontSize="14px" color="textSubtle" mb="24px">
-          {TranslateString(999, 'This decision cannot be reversed.')}
+          {t('This decision cannot be reversed.')}
         </Text>
         <StyledLabel htmlFor="acknowledgement">
           <Flex alignItems="center" justifyContent="space-between">
@@ -63,10 +60,7 @@ const RegisterWithProfile: React.FC<CompetitionProps> = ({ profile, onDismiss, o
               scale="sm"
             />
             <Text ml="16px">
-              {TranslateString(
-                999,
-                'I understand that my address may be displayed publicly throughout the competition.',
-              )}
+              {t('I understand that my address may be displayed publicly throughout the competition.')}
             </Text>
           </Flex>
         </StyledLabel>
@@ -79,7 +73,7 @@ const RegisterWithProfile: React.FC<CompetitionProps> = ({ profile, onDismiss, o
         isLoading={isConfirming}
         endIcon={isConfirming ? <AutoRenewIcon spin color="currentColor" /> : null}
       >
-        {TranslateString(464, 'Confirm')}
+        {t('Confirm')}
       </Button>
     </>
   )

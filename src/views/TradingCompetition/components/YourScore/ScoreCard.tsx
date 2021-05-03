@@ -14,7 +14,7 @@ import {
 } from '@pancakeswap-libs/uikit'
 import { CLAIM, OVER } from 'config/constants/trading-competition/easterPhases'
 import UnlockButton from 'components/UnlockButton'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import UserPrizeGrid from './UserPrizeGrid'
 import ClaimModal from '../ClaimModal'
 import { YourScoreProps } from '../../types'
@@ -61,7 +61,7 @@ const ScoreCard: React.FC<YourScoreProps> = ({
   finishedAndNothingToClaim,
   onClaimSuccess,
 }) => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const [onPresentClaimModal] = useModal(
     <ClaimModal userTradingInformation={userTradingInformation} onClaimSuccess={onClaimSuccess} />,
     false,
@@ -71,18 +71,18 @@ const ScoreCard: React.FC<YourScoreProps> = ({
 
   const getClaimButtonText = () => {
     if (userCanClaimPrizes) {
-      return TranslateString(999, 'Claim prizes')
+      return t('Claim prizes')
     }
     // User has already claimed prizes
     if (hasUserClaimed) {
       return (
         <>
-          <CheckmarkCircleIcon /> {TranslateString(999, 'Prizes Claimed!')}
+          <CheckmarkCircleIcon /> {t('Prizes Claimed!')}
         </>
       )
     }
     // User has nothing to claim
-    return TranslateString(999, 'Nothing to claim')
+    return t('Nothing to claim')
   }
 
   return (

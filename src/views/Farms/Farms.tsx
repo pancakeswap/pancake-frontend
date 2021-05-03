@@ -13,7 +13,7 @@ import useRefresh from 'hooks/useRefresh'
 import { fetchFarmUserDataAsync } from 'state/actions'
 import usePersistState from 'hooks/usePersistState'
 import { Farm } from 'state/types'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { getFarmApr } from 'utils/apr'
 import { orderBy } from 'lodash'
@@ -107,7 +107,7 @@ const NUMBER_OF_FARMS_VISIBLE = 12
 const Farms: React.FC = () => {
   const { path } = useRouteMatch()
   const { pathname } = useLocation()
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const { data: farmsLP, userDataLoaded } = useFarms()
   const cakePrice = usePriceCakeBusd()
   const [query, setQuery] = useState('')
@@ -215,7 +215,11 @@ const Farms: React.FC = () => {
             'desc',
           )
         case 'earned':
-          return orderBy(farms, (farm: FarmWithStakedValue) => (farm.userData ? farm.userData.earnings : 0), 'desc')
+          return orderBy(
+            farms,
+            (farm: FarmWithStakedValue) => (farm.userData ? Number(farm.userData.earnings) : 0),
+            'desc',
+          )
         case 'liquidity':
           return orderBy(farms, (farm: FarmWithStakedValue) => Number(farm.liquidity), 'desc')
         default:
@@ -366,10 +370,10 @@ const Farms: React.FC = () => {
     <>
       <PageHeader>
         <Heading as="h1" size="xxl" color="secondary" mb="24px">
-          {TranslateString(674, 'Farms')}
+          {t('Farms')}
         </Heading>
         <Heading size="lg" color="text">
-          {TranslateString(999, 'Stake Liquidity Pool (LP) tokens to earn.')}
+          {t('Stake Liquidity Pool (LP) tokens to earn.')}
         </Heading>
       </PageHeader>
       <MigrationV2 />
@@ -379,7 +383,7 @@ const Farms: React.FC = () => {
             <ToggleView viewMode={viewMode} onToggle={(mode: ViewMode) => setViewMode(mode)} />
             <ToggleWrapper>
               <Toggle checked={stakedOnly} onChange={() => setStakedOnly(!stakedOnly)} scale="sm" />
-              <Text> {TranslateString(1116, 'Staked only')}</Text>
+              <Text> {t('Staked only')}</Text>
             </ToggleWrapper>
             <FarmTabButtons
               hasStakeInFinishedFarms={stakedInactiveFarms.length > 0}

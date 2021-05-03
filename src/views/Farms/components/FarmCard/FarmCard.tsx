@@ -4,7 +4,7 @@ import styled, { keyframes } from 'styled-components'
 import { Flex, Text, Skeleton } from '@pancakeswap-libs/uikit'
 import { Farm } from 'state/types'
 import { provider as ProviderType } from 'web3-core'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import ExpandableSectionButton from 'components/ExpandableSectionButton'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
@@ -91,7 +91,7 @@ interface FarmCardProps {
 }
 
 const FarmCard: React.FC<FarmCardProps> = ({ farm, removed, cakePrice, account }) => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
 
   const [showExpandableSection, setShowExpandableSection] = useState(false)
 
@@ -127,7 +127,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed, cakePrice, account }
       />
       {!removed && (
         <Flex justifyContent="space-between" alignItems="center">
-          <Text>{TranslateString(736, 'APR')}:</Text>
+          <Text>{t('APR')}:</Text>
           <Text bold style={{ display: 'flex', alignItems: 'center' }}>
             {farm.apr ? (
               <>
@@ -141,7 +141,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed, cakePrice, account }
         </Flex>
       )}
       <Flex justifyContent="space-between">
-        <Text>{TranslateString(318, 'Earn')}:</Text>
+        <Text>{t('Earn')}:</Text>
         <Text bold>{earnLabel}</Text>
       </Flex>
       <CardActionsContainer farm={farm} account={account} addLiquidityUrl={addLiquidityUrl} />

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { AutoRenewIcon, Button, Checkbox, Flex, InjectedModalProps, Text } from '@pancakeswap-libs/uikit'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import useGetProfileCosts from 'hooks/useGetProfileCosts'
 import { useAppDispatch } from 'state'
 import { useProfile } from 'state/hooks'
@@ -17,7 +17,7 @@ const PauseProfilePage: React.FC<PauseProfilePageProps> = ({ onDismiss }) => {
   const [isConfirming, setIsConfirming] = useState(false)
   const { profile } = useProfile()
   const { numberCakeToReactivate } = useGetProfileCosts()
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const pancakeProfileContract = useProfileContract()
   const { account } = useWeb3React()
   const { toastSuccess, toastError } = useToast()
@@ -52,21 +52,20 @@ const PauseProfilePage: React.FC<PauseProfilePageProps> = ({ onDismiss }) => {
   return (
     <>
       <Text as="p" color="failure" mb="24px">
-        {TranslateString(999, 'This will suspend your profile and send your Collectible back to your wallet')}
+        {t('This will suspend your profile and send your Collectible back to your wallet')}
       </Text>
       <Text as="p" color="textSubtle" mb="24px">
-        {TranslateString(
-          999,
+        {t(
           "While your profile is suspended, you won't be able to earn points, but your achievements and points will stay associated with your profile",
         )}
       </Text>
       <Text as="p" color="textSubtle" mb="24px">
-        {TranslateString(999, `Cost to reactivate in future: ${getBalanceNumber(numberCakeToReactivate)} CAKE`)}
+        {t(`Cost to reactivate in future: ${getBalanceNumber(numberCakeToReactivate)} CAKE`)}
       </Text>
       <label htmlFor="acknowledgement" style={{ cursor: 'pointer', display: 'block', marginBottom: '24px' }}>
         <Flex alignItems="center">
           <Checkbox id="acknowledgement" checked={isAcknowledged} onChange={handleChange} scale="sm" />
-          <Text ml="8px">{TranslateString(476, 'I understand')}</Text>
+          <Text ml="8px">{t('I understand')}</Text>
         </Flex>
       </label>
       <Button
@@ -77,10 +76,10 @@ const PauseProfilePage: React.FC<PauseProfilePageProps> = ({ onDismiss }) => {
         onClick={handleDeactivateProfile}
         mb="8px"
       >
-        {TranslateString(464, 'Confirm')}
+        {t('Confirm')}
       </Button>
       <Button variant="text" width="100%" onClick={onDismiss}>
-        {TranslateString(999, 'Close Window')}
+        {t('Close Window')}
       </Button>
     </>
   )

@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Modal, Text, LinkExternal, Flex } from '@pancakeswap-libs/uikit'
-import useI18n from 'hooks/useI18n'
+import { Modal, Text, LinkExternal, Flex, Box } from '@pancakeswap-libs/uikit'
+import { useTranslation } from 'contexts/Localization'
 import { tokenEarnedPerThousandDollarsCompounding, getRoi } from 'utils/compoundApyHelpers'
 
 interface ApyCalculatorModalProps {
@@ -13,6 +13,7 @@ interface ApyCalculatorModalProps {
   earningTokenSymbol?: string
   roundingDecimals?: number
   compoundFrequency?: number
+  performanceFee?: number
 }
 
 const Grid = styled.div`
@@ -26,11 +27,6 @@ const GridItem = styled.div`
   margin-bottom: '10px';
 `
 
-const Description = styled(Text)`
-  max-width: 320px;
-  margin-bottom: 28px;
-`
-
 const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
   onDismiss,
   tokenPrice,
@@ -40,8 +36,9 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
   earningTokenSymbol = 'CAKE',
   roundingDecimals = 2,
   compoundFrequency = 1,
+  performanceFee = 0,
 }) => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const oneThousandDollarsWorthOfToken = 1000 / tokenPrice
 
   const tokenEarnedPerThousand1D = tokenEarnedPerThousandDollarsCompounding({
@@ -50,6 +47,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
     tokenPrice,
     roundingDecimals,
     compoundFrequency,
+    performanceFee,
   })
   const tokenEarnedPerThousand7D = tokenEarnedPerThousandDollarsCompounding({
     numberOfDays: 7,
@@ -57,6 +55,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
     tokenPrice,
     roundingDecimals,
     compoundFrequency,
+    performanceFee,
   })
   const tokenEarnedPerThousand30D = tokenEarnedPerThousandDollarsCompounding({
     numberOfDays: 30,
@@ -64,6 +63,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
     tokenPrice,
     roundingDecimals,
     compoundFrequency,
+    performanceFee,
   })
   const tokenEarnedPerThousand365D = tokenEarnedPerThousandDollarsCompounding({
     numberOfDays: 365,
@@ -71,6 +71,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
     tokenPrice,
     roundingDecimals,
     compoundFrequency,
+    performanceFee,
   })
 
   return (
@@ -78,17 +79,17 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
       <Grid>
         <GridItem>
           <Text fontSize="12px" bold color="textSubtle" textTransform="uppercase" mb="20px">
-            {TranslateString(860, 'Timeframe')}
+            {t('Timeframe')}
           </Text>
         </GridItem>
         <GridItem>
           <Text fontSize="12px" bold color="textSubtle" textTransform="uppercase" mb="20px">
-            {TranslateString(858, 'ROI')}
+            {t('ROI')}
           </Text>
         </GridItem>
         <GridItem>
           <Text fontSize="12px" bold color="textSubtle" textTransform="uppercase" mb="20px">
-            {earningTokenSymbol} {TranslateString(999, 'per')} $1000
+            {earningTokenSymbol} {t('per')} $1000
           </Text>
         </GridItem>
         {/* 1 day row */}
@@ -154,12 +155,19 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
           <Text>{tokenEarnedPerThousand365D}</Text>
         </GridItem>
       </Grid>
-      <Description fontSize="12px" color="textSubtle">
-        {TranslateString(
-          999,
-          `Calculated based on current rates. Compounding ${compoundFrequency.toLocaleString()}x daily. Rates are estimates provided for your convenience only, and by no means represent guaranteed returns.`,
+      <Box mb="28px" maxWidth="280px">
+        <Text fontSize="12px" color="textSubtle">
+          {t(
+            `Calculated based on current rates. Compounding %freq%x daily. Rates are estimates provided for your convenience only, and by no means represent guaranteed returns.`,
+            { fee: compoundFrequency.toLocaleString() },
+          )}
+        </Text>
+        {performanceFee && (
+          <Text mt="14px" fontSize="12px" color="textSubtle">
+            {t(`All estimated rates take into account this pool's %fee%% performance fee`, { fee: performanceFee })}
+          </Text>
         )}
-      </Description>
+      </Box>
       <Flex justifyContent="center">
         <LinkExternal href={linkHref}>{linkLabel}</LinkExternal>
       </Flex>
