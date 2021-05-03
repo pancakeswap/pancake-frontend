@@ -323,5 +323,13 @@
   "%amount% CAKE": "%amount% CAKE",
   "IFO Shopper: %title%": "IFO Shopper: %title%",
   "%num% of total": "%num% of total",
-  "All estimated rates take into account this pool's %fee%% performance fee": "All estimated rates take into account this pool's %fee%% performance fee"
+  "All estimated rates take into account this pool's %fee%% performance fee": "All estimated rates take into account this pool's %fee%% performance fee",
+  "Sorry, you didn’t contribute enough LP tokens to meet the minimum threshold. You didn’t buy anything in this sale, but you can still reclaim your LP tokens.": "Sorry, you didn’t contribute enough LP tokens to meet the minimum threshold. You didn’t buy anything in this sale, but you can still reclaim your LP tokens.",
+  "Only applies within 3 days of staking. Unstaking after 3 days will not include a fee. Timer resets every time you stake new CAKE in the pool.": "Only applies within 3 days of staking. Unstaking after 3 days will not include a fee. Timer resets every time you stake new CAKE in the pool.",
+  "unstaking fee until": "unstaking fee until",
+  "unstaking fee if withdrawn within 72h": "unstaking fee if withdrawn within 72h",
+  "Unstaking fee: %fee%%": "Unstaking fee: %fee%%",
+  "Performance Fee": "Performance Fee",
+  "Compound: collect and restake CAKE into pool.": "Compound: collect and restake CAKE into pool.",
+  "Harvest: collect CAKE and send to wallet": "Harvest: collect CAKE and send to wallet"
 }
