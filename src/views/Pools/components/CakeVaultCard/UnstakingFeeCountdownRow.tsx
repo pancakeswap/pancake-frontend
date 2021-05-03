@@ -33,12 +33,12 @@ const UnstakingFeeCountdownRow: React.FC<UnstakingFeeCountdownRowProps> = ({
     { placement: 'bottom-start' },
   )
 
-  const { secondsRemaining, hasPerformanceFee } = useWithdrawalFeeTimer(
+  const { secondsRemaining, hasUnstakingFee } = useWithdrawalFeeTimer(
     parseInt(lastDepositedTime, 10),
     parseInt(withdrawalFeePeriod, 10),
   )
 
-  const shouldShowTimer = account && lastDepositedTime && hasPerformanceFee
+  const shouldShowTimer = account && lastDepositedTime && hasUnstakingFee
 
   return (
     <Flex alignItems="center" justifyContent="space-between">
