@@ -52,7 +52,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
   const [pendingTx, setPendingTx] = useState(false)
   const [stakeAmount, setStakeAmount] = useState('')
   const [percent, setPercent] = useState(0)
-  const { hasPerformanceFee } = useWithdrawalFeeTimer(parseInt(userInfo.lastDepositedTime))
+  const { hasUnstakingFee } = useWithdrawalFeeTimer(parseInt(userInfo.lastDepositedTime))
   const usdValueStaked = stakeAmount && formatNumber(new BigNumber(stakeAmount).times(stakingTokenPrice).toNumber())
 
   const handleStakeInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -202,7 +202,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
           MAX
         </StyledButton>
       </Flex>
-      {isRemovingStake && hasPerformanceFee && (
+      {isRemovingStake && hasUnstakingFee && (
         <FeeSummary
           stakingTokenSymbol={stakingToken.symbol}
           lastDepositedTime={userInfo.lastDepositedTime}
