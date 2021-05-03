@@ -2,7 +2,7 @@ import { EN, LanguageCode } from '../../config/localization/languages'
 
 const publicUrl = process.env.PUBLIC_URL
 
-export const LS_KEY = 'pancakeswap_lang'
+export const LS_KEY = 'pancakeswap_language'
 
 export const fetchLocale = async (code: LanguageCode) => {
   const response = await fetch(`${publicUrl}/locales/${code}.json`)
