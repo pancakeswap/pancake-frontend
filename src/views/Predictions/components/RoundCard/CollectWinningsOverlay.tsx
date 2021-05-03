@@ -41,10 +41,11 @@ const CollectWinningsOverlay: React.FC<CollectWinningsOverlayProps> = ({
   isBottom = false,
   ...props
 }) => {
-  const [state, setState] = useState<{ betId: string; epoch: number; payout: number }>({
+  const [state, setState] = useState<{ betId: string; epoch: number; payout: number; claimed: boolean }>({
     betId: null,
     epoch: null,
     payout: 0,
+    claimed: false,
   })
   const { account } = useWeb3React()
   const { t } = useTranslation()
@@ -66,6 +67,7 @@ const CollectWinningsOverlay: React.FC<CollectWinningsOverlayProps> = ({
             betId: bet.id,
             epoch: bet.round.epoch,
             payout: getPayout(bet),
+            claimed: bet.claimed,
           })
         }
       }
@@ -82,7 +84,7 @@ const CollectWinningsOverlay: React.FC<CollectWinningsOverlayProps> = ({
 
   const handleSuccess = async () => {
     dispatch(markBetAsCollected({ betId: state.betId, account }))
-    setState({ betId: null, epoch: null, payout: 0 })
+    setState({ betId: null, epoch: null, payout: 0, claimed: true })
   }
 
   return (
@@ -91,7 +93,7 @@ const CollectWinningsOverlay: React.FC<CollectWinningsOverlayProps> = ({
       <CollectWinningsButton
         payout={state.payout}
         epoch={state.epoch}
-        hasClaimed={false}
+        hasClaimed={state.claimed}
         width="100%"
         onSuccess={handleSuccess}
       >
