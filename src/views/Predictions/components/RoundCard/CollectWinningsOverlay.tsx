@@ -82,8 +82,8 @@ const CollectWinningsOverlay: React.FC<CollectWinningsOverlayProps> = ({
   }
 
   const handleSuccess = async () => {
-    await setState({ betId: null, epoch: null, payout: 0 })
     dispatch(markBetAsCollected({ betId: state.betId, account }))
+    await setState({ betId: null, epoch: null, payout: 0 })
   }
 
   return (
