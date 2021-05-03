@@ -42,10 +42,10 @@ const Multiplier: React.FunctionComponent<MultiplierProps> = ({ multiplier }) =>
       )}
     </div>
   )
-  const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipContent, {
-    placement: 'top-end',
-    tooltipOffset: [20, 10],
-  })
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipContent, 'top-end', 'hover', undefined, undefined, [
+    20,
+    10,
+  ])
 
   return (
     <Container>
