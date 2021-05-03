@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { BlockIcon, CardBody } from '@pancakeswap-libs/uikit'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import { Round, BetPosition } from 'state/types'
 import { RoundResult } from '../RoundResult'
 import MultiplierArrow from './MultiplierArrow'
@@ -36,7 +36,7 @@ const ExpiredRoundCard: React.FC<ExpiredRoundCardProps> = ({
   bullMultiplier,
   bearMultiplier,
 }) => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const { id, endBlock, lockPrice, closePrice } = round
   const betPosition = closePrice > lockPrice ? BetPosition.BULL : BetPosition.BEAR
   const hasEntered = hasEnteredUp || hasEnteredDown
@@ -50,7 +50,7 @@ const ExpiredRoundCard: React.FC<ExpiredRoundCardProps> = ({
       <CardHeader
         status="expired"
         icon={<BlockIcon mr="4px" width="21px" color="textDisabled" />}
-        title={TranslateString(999, 'Expired')}
+        title={t('Expired')}
         blockNumber={endBlock}
         epoch={round.epoch}
       />

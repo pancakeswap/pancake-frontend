@@ -2,7 +2,7 @@ import React from 'react'
 import _uniqueId from 'lodash/uniqueId'
 import styled from 'styled-components'
 import { Flex } from '@pancakeswap-libs/uikit'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import { CountdownProps } from '../../types'
 import Step from './Step'
 
@@ -20,12 +20,12 @@ const Spacer = styled.div<{ isPastSpacer?: boolean }>`
 `
 
 const ProgressStepper: React.FC<CountdownProps> = ({ steps, activeStepIndex }) => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   return (
     <Flex>
       {steps.map((step, index) => {
         const isPastSpacer = index < activeStepIndex
-        const stepText = TranslateString(step.translationId, step.text).toUpperCase()
+        const stepText = t(step.text).toUpperCase()
 
         return (
           <React.Fragment key={_uniqueId('ProgressStep-')}>

@@ -13,7 +13,7 @@ import {
 } from '@pancakeswap-libs/uikit'
 import { Ifo, IfoStatus, PoolIds } from 'config/constants/types'
 import { PublicIfoData, WalletIfoData } from 'hooks/ifo/types'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import IfoPoolCard from './IfoPoolCard'
 import Timer from './Timer'
 import Achievement from './Achievement'
@@ -25,13 +25,13 @@ interface IfoFoldableCardProps {
   isInitiallyVisible: boolean
 }
 
-const getRibbonComponent = (status: IfoStatus, TranslateString: (translationId: number, fallback: string) => any) => {
+const getRibbonComponent = (status: IfoStatus, t: any) => {
   if (status === 'coming_soon') {
-    return <CardRibbon variantColor="textDisabled" ribbonPosition="left" text={TranslateString(999, 'Coming Soon')} />
+    return <CardRibbon variantColor="textDisabled" ribbonPosition="left" text={t('Coming Soon')} />
   }
 
   if (status === 'live') {
-    return <CardRibbon variantColor="primary" ribbonPosition="left" text={TranslateString(999, 'LIVE!')} />
+    return <CardRibbon variantColor="primary" ribbonPosition="left" text={t('LIVE!')} />
   }
 
   return null
@@ -85,9 +85,9 @@ const StyledCardFooter = styled(CardFooter)`
 
 const IfoFoldableCard: React.FC<IfoFoldableCardProps> = ({ ifo, publicIfoData, walletIfoData, isInitiallyVisible }) => {
   const [isVisible, setIsVisible] = useState(isInitiallyVisible)
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
 
-  const Ribbon = getRibbonComponent(publicIfoData.status, TranslateString)
+  const Ribbon = getRibbonComponent(publicIfoData.status, t)
   const isActive = publicIfoData.status !== 'finished' && ifo.isActive
 
   return (
@@ -119,7 +119,7 @@ const IfoFoldableCard: React.FC<IfoFoldableCardProps> = ({ ifo, publicIfoData, w
         </StyledCardBody>
         <StyledCardFooter>
           <Button variant="text" endIcon={<ChevronUpIcon color="primary" />} onClick={() => setIsVisible(false)}>
-            {TranslateString(999, 'Close')}
+            {t('Close')}
           </Button>
         </StyledCardFooter>
       </FoldableContent>

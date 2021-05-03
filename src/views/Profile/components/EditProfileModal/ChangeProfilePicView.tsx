@@ -3,7 +3,7 @@ import { Button, InjectedModalProps, Skeleton, Text } from '@pancakeswap-libs/ui
 import { useWeb3React } from '@web3-react/core'
 import { useAppDispatch } from 'state'
 import { useGetCollectibles, useProfile } from 'state/hooks'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import useToast from 'hooks/useToast'
 import { fetchProfile } from 'state/profile'
 import { getAddressByType } from 'utils/collectibles'
@@ -20,7 +20,7 @@ const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss }
     tokenId: null,
     nftAddress: null,
   })
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const { isLoading, tokenIds, nftsInWallet } = useGetCollectibles()
   const dispatch = useAppDispatch()
   const { profile } = useProfile()
@@ -60,7 +60,7 @@ const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss }
   return (
     <>
       <Text as="p" color="textSubtle" mb="24px">
-        {TranslateString(999, 'Choose a new Collectible to use as your profile pic.')}
+        {t('Choose a new Collectible to use as your profile pic.')}
       </Text>
       {isLoading ? (
         <Skeleton height="80px" mb="16px" />
@@ -92,10 +92,10 @@ const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss }
       {!isLoading && nftsInWallet.length === 0 && (
         <>
           <Text as="p" color="textSubtle" mb="16px">
-            {TranslateString(999, 'Sorry! You don’t have any eligible Collectibles in your wallet to use!')}
+            {t('Sorry! You don’t have any eligible Collectibles in your wallet to use!')}
           </Text>
           <Text as="p" color="textSubtle" mb="24px">
-            {TranslateString(999, 'Make sure you have a Pancake Collectible in your wallet and try again!')}
+            {t('Make sure you have a Pancake Collectible in your wallet and try again!')}
           </Text>
         </>
       )}
@@ -108,7 +108,7 @@ const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss }
         onConfirm={handleConfirm}
       />
       <Button variant="text" width="100%" onClick={onDismiss} disabled={isApproving || isConfirming}>
-        {TranslateString(999, 'Close Window')}
+        {t('Close Window')}
       </Button>
     </>
   )

@@ -4,7 +4,7 @@ import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
 import { fetchHistory } from 'state/predictions'
 import { HistoryFilter } from 'state/types'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import { orderBy } from 'lodash'
 import { useAppDispatch } from 'state'
 import {
@@ -43,7 +43,7 @@ const SpinnerWrapper = styled.div`
 `
 
 const History = () => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const { account } = useWeb3React()
   const dispatch = useAppDispatch()
   const isHistoryPaneOpen = useIsHistoryPaneOpen()
@@ -84,11 +84,10 @@ const History = () => {
         ) : (
           <Box p="24px">
             <Heading size="lg" textAlign="center" mb="8px">
-              {TranslateString(999, 'No predictions history available')}
+              {t('No predictions history available')}
             </Heading>
             <Text as="p" textAlign="center">
-              {TranslateString(
-                999,
+              {t(
                 'If you are sure you should see history here, make sure you’re connected to the correct wallet and try again.',
               )}
             </Text>

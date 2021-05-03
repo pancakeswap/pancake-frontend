@@ -6,7 +6,7 @@ import { useAppDispatch } from 'state'
 import { useGetCurrentEpoch } from 'state/hooks'
 import { getBetHistory, transformBetResponse } from 'state/predictions/helpers'
 import { markBetAsCollected } from 'state/predictions'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import CollectWinningsButton from '../CollectWinningsButton'
 import { getPayout } from '../../helpers'
 
@@ -47,7 +47,7 @@ const CollectWinningsOverlay: React.FC<CollectWinningsOverlayProps> = ({
     payout: 0,
   })
   const { account } = useWeb3React()
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const currentEpoch = useGetCurrentEpoch()
 
@@ -95,7 +95,7 @@ const CollectWinningsOverlay: React.FC<CollectWinningsOverlayProps> = ({
         width="100%"
         onSuccess={handleSuccess}
       >
-        {TranslateString(556, 'Collect Winnings')}
+        {t('Collect Winnings')}
       </CollectWinningsButton>
     </Wrapper>
   )

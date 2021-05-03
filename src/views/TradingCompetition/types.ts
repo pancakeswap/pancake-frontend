@@ -20,7 +20,6 @@ export interface CompetitionProps extends UserRewardsProps {
 export interface CompetitionStepProps {
   index?: number
   text?: string
-  translationId: number
 }
 
 export interface CompetitionPhaseProps {
@@ -30,7 +29,7 @@ export interface CompetitionPhaseProps {
 }
 
 export interface CountdownProps {
-  steps?: Array<{ text: string; translationId: number }>
+  steps?: Array<{ text: string }>
   activeStepIndex?: number
   stepText?: string
   index?: number

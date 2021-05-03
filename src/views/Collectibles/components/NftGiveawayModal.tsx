@@ -4,7 +4,7 @@ import confetti from 'canvas-confetti'
 import { Modal, Text, Button, Flex, InjectedModalProps } from '@pancakeswap-libs/uikit'
 import history from 'routerHistory'
 import { delay } from 'lodash'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import nftList from 'config/constants/nfts'
 import { Nft } from 'config/constants/types'
 import { useProfile } from 'state/hooks'
@@ -48,7 +48,7 @@ const getClaimableNft = (profile: Profile): Nft => {
 }
 
 const NftGiveawayModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const { profile } = useProfile()
   const nft = getClaimableNft(profile)
 
@@ -63,13 +63,13 @@ const NftGiveawayModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
   }, [])
 
   return (
-    <Modal title={TranslateString(999, 'Congratulations!')} onDismiss={onDismiss}>
+    <Modal title={t('Congratulations!')} onDismiss={onDismiss}>
       <Flex flexDirection="column" alignItems="center" justifyContent="center">
         {nft && <NftImage src={`/images/nfts/${nft.images.md}`} />}
         <Text bold color="secondary" fontSize="24px" mb="24px">
-          {TranslateString(999, 'You won a collectible!')}
+          {t('You won a collectible!')}
         </Text>
-        <Button onClick={handleClick}>{TranslateString(999, 'Claim now')}</Button>
+        <Button onClick={handleClick}>{t('Claim now')}</Button>
       </Flex>
     </Modal>
   )

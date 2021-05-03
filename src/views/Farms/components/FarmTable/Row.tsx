@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
 import { useMatchBreakpoints } from '@pancakeswap-libs/uikit'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import useDelayedUnmount from 'hooks/useDelayedUnmount'
 import { useFarmUser } from 'state/hooks'
 
@@ -73,7 +73,7 @@ const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
   const hasStakedAmount = !!useFarmUser(details.pid).stakedBalance.toNumber()
   const [actionPanelExpanded, setActionPanelExpanded] = useState(hasStakedAmount)
   const shouldRenderChild = useDelayedUnmount(actionPanelExpanded, 300)
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
 
   const toggleActionPanel = () => {
     setActionPanelExpanded(!actionPanelExpanded)
@@ -114,7 +114,7 @@ const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
                 return (
                   <td key={key}>
                     <CellInner>
-                      <CellLayout label={TranslateString(736, 'APR')}>
+                      <CellLayout label={t('APR')}>
                         <Apr {...props.apr} hideButton={isMobile} />
                       </CellLayout>
                     </CellInner>
@@ -124,9 +124,7 @@ const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
                 return (
                   <td key={key}>
                     <CellInner>
-                      <CellLayout
-                        label={TranslateString(tableSchema[columnIndex].translationId, tableSchema[columnIndex].label)}
-                      >
+                      <CellLayout label={t(tableSchema[columnIndex].label)}>
                         {React.createElement(cells[key], { ...props[key], userDataReady })}
                       </CellLayout>
                     </CellInner>
@@ -150,12 +148,12 @@ const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
           </tr>
           <tr>
             <EarnedMobileCell>
-              <CellLayout label={TranslateString(1072, 'Earned')}>
+              <CellLayout label={t('Earned')}>
                 <Earned {...props.earned} userDataReady={userDataReady} />
               </CellLayout>
             </EarnedMobileCell>
             <AprMobileCell>
-              <CellLayout label={TranslateString(736, 'APR')}>
+              <CellLayout label={t('APR')}>
                 <Apr {...props.apr} hideButton />
               </CellLayout>
             </AprMobileCell>

@@ -1,9 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Box, CardBody, Flex, LinkExternal, PlayCircleOutlineIcon, Text, useTooltip } from '@pancakeswap-libs/uikit'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import { Round, BetPosition } from 'state/types'
-import { useGetBufferBlocks, useGetIntervalBlocks } from 'state/hooks'
+import { useBlock, useGetIntervalBlocks } from 'state/hooks'
 import { useBnbUsdtTicker } from 'hooks/ticker'
 import BlockProgress from 'components/BlockProgress'
 import { formatUsd, getBubbleGumBackground } from '../../helpers'
@@ -13,6 +13,7 @@ import MultiplierArrow from './MultiplierArrow'
 import Card from './Card'
 import CardHeader from './CardHeader'
 import CanceledRoundCard from './CanceledRoundCard'
+import CalculatingCard from './CalculatingCard'
 
 interface LiveRoundCardProps {
   round: Round
@@ -41,31 +42,32 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
   bullMultiplier,
   bearMultiplier,
 }) => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const { lockPrice, lockBlock, totalAmount } = round
   const { stream } = useBnbUsdtTicker()
+  const { currentBlock } = useBlock()
   const totalInterval = useGetIntervalBlocks()
-  const bufferBlocks = useGetBufferBlocks()
   const isBull = stream?.lastPrice > lockPrice
   const priceColor = isBull ? 'success' : 'failure'
-  const estimatedEndBlock = lockBlock + totalInterval + bufferBlocks / 2
+  const estimatedEndBlock = lockBlock + totalInterval
   const priceDifference = stream?.lastPrice - lockPrice
 
   const tooltipContent = (
     <Box width="256px">
-      {TranslateString(
-        999,
-        'The final price at the end of a round may be different from the price shown on the live feed.',
-      )}
+      {t('The final price at the end of a round may be different from the price shown on the live feed.')}
       <LinkExternal href="https://docs.pancakeswap.finance/products/prediction" mt="8px">
-        {TranslateString(999, 'Learn More')}
+        {t('Learn More')}
       </LinkExternal>
     </Box>
   )
-  const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipContent, 'bottom')
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipContent, { placement: 'bottom' })
 
   if (round.failed) {
     return <CanceledRoundCard round={round} />
+  }
+
+  if (currentBlock > estimatedEndBlock) {
+    return <CalculatingCard round={round} />
   }
 
   return (
@@ -74,7 +76,7 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
         <CardHeader
           status="live"
           icon={<PlayCircleOutlineIcon mr="4px" width="24px" color="secondary" />}
-          title={TranslateString(1198, 'Live')}
+          title={t('Live')}
           epoch={round.epoch}
           blockNumber={estimatedEndBlock}
         />
@@ -83,7 +85,7 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
           <MultiplierArrow amount={betAmount} multiplier={bullMultiplier} hasEntered={hasEnteredUp} isActive={isBull} />
           <RoundResultBox betPosition={isBull ? BetPosition.BULL : BetPosition.BEAR}>
             <Text color="textSubtle" fontSize="12px" bold textTransform="uppercase" mb="8px">
-              {TranslateString(999, 'Last Price')}
+              {t('Last Price')}
             </Text>
             <Flex alignItems="center" justifyContent="space-between" mb="16px" height="36px">
               {stream && (

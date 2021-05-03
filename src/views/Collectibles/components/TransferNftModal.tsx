@@ -5,7 +5,7 @@ import { useWeb3React } from '@web3-react/core'
 import { Button, Input, Modal, Text } from '@pancakeswap-libs/uikit'
 import { getAddressByType } from 'utils/collectibles'
 import { Nft } from 'config/constants/types'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import useToast from 'hooks/useToast'
 import { useERC721 } from 'hooks/useContract'
 import InfoRow from './InfoRow'
@@ -42,7 +42,7 @@ const TransferNftModal: React.FC<TransferNftModalProps> = ({ nft, tokenIds, onSu
   const [isLoading, setIsLoading] = useState(false)
   const [value, setValue] = useState('')
   const [error, setError] = useState(null)
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const { account } = useWeb3React()
   const contract = useERC721(getAddressByType(nft.type))
   const { toastSuccess } = useToast()
@@ -52,7 +52,7 @@ const TransferNftModal: React.FC<TransferNftModalProps> = ({ nft, tokenIds, onSu
       const isValidAddress = Web3.utils.isAddress(value)
 
       if (!isValidAddress) {
-        setError(TranslateString(999, 'Please enter a valid wallet address'))
+        setError(t('Please enter a valid wallet address'))
       } else {
         await contract.methods
           .transferFrom(account, value, tokenIds[0])
@@ -82,7 +82,7 @@ const TransferNftModal: React.FC<TransferNftModalProps> = ({ nft, tokenIds, onSu
   }
 
   return (
-    <Modal title={TranslateString(999, 'Transfer NFT')} onDismiss={onDismiss}>
+    <Modal title={t('Transfer NFT')} onDismiss={onDismiss}>
       <ModalContent>
         {error && (
           <Text color="failure" mb="8px">
@@ -90,15 +90,15 @@ const TransferNftModal: React.FC<TransferNftModalProps> = ({ nft, tokenIds, onSu
           </Text>
         )}
         <InfoRow>
-          <Text>{TranslateString(999, 'Transferring')}:</Text>
+          <Text>{t('Transferring')}:</Text>
           <Value>{`1x "${nft.name}" NFT`}</Value>
         </InfoRow>
-        <Label htmlFor="transferAddress">{TranslateString(999, 'Receiving address')}:</Label>
+        <Label htmlFor="transferAddress">{t('Receiving address')}:</Label>
         <Input
           id="transferAddress"
           name="address"
           type="text"
-          placeholder={TranslateString(999, 'Paste address')}
+          placeholder={t('Paste address')}
           value={value}
           onChange={handleChange}
           isWarning={error}
@@ -107,10 +107,10 @@ const TransferNftModal: React.FC<TransferNftModalProps> = ({ nft, tokenIds, onSu
       </ModalContent>
       <Actions>
         <Button width="100%" variant="secondary" onClick={onDismiss}>
-          {TranslateString(462, 'Cancel')}
+          {t('Cancel')}
         </Button>
         <Button width="100%" onClick={handleConfirm} disabled={!account || isLoading || !value}>
-          {TranslateString(464, 'Confirm')}
+          {t('Confirm')}
         </Button>
       </Actions>
     </Modal>

@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Flex, Skeleton, PocketWatchIcon, Text } from '@pancakeswap-libs/uikit'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import Timer from 'components/Timer'
 import getTimePeriods from 'utils/getTimePeriods'
 import { CompetitionSteps, LIVE } from 'config/constants/trading-competition/easterPhases'
@@ -81,7 +81,7 @@ const Countdown: React.FC<{ currentPhase: CompetitionPhaseProps; hasCompetitionE
   currentPhase,
   hasCompetitionEnded,
 }) => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const finishMs = currentPhase.ends
   const currentMs = Date.now()
   const secondsUntilNextEvent = (finishMs - currentMs) / 1000
@@ -92,15 +92,13 @@ const Countdown: React.FC<{ currentPhase: CompetitionPhaseProps; hasCompetitionE
     if (hasCompetitionEnded) {
       return (
         <StyledHeading background={GOLDGRADIENT} $fill>
-          {TranslateString(388, 'Finished')}!
+          {t('Finished')}!
         </StyledHeading>
       )
     }
     return (
       <Timer
-        timerStage={
-          currentPhase.state === LIVE ? `${TranslateString(410, 'End')}:` : `${TranslateString(1212, 'Start')}:`
-        }
+        timerStage={currentPhase.state === LIVE ? `${t('End')}:` : `${t('Start')}:`}
         minutes={minutes}
         hours={hours}
         days={days}

@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import { Heading, Text } from '@pancakeswap-libs/uikit'
 import { BigNumber } from 'bignumber.js'
 import { usePriceCakeBusd } from 'state/hooks'
@@ -47,7 +47,7 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({
   const threeMatchesAmount = +((lotteryPrizeAmount / 100) * 20).toFixed(0)
   const twoMatchesAmount = +((lotteryPrizeAmount / 100) * 10).toFixed(0)
   const burnAmount = +((lotteryPrizeAmount / 100) * 20).toFixed(0)
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const cakeBusdPrice = usePriceCakeBusd()
 
   const getCakeBusdValue = (amount: number) => {
@@ -58,19 +58,19 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({
     <Grid pastDraw={pastDraw}>
       <GridItem>
         <Text fontSize="14px" color="textSubtle">
-          {TranslateString(756, 'No. Matched')}
+          {t('No. Matched')}
         </Text>
       </GridItem>
       {pastDraw && (
         <PastDrawGridItem>
           <RightAlignedText fontSize="14px" color="textSubtle">
-            {TranslateString(754, 'Winners')}
+            {t('Winners')}
           </RightAlignedText>
         </PastDrawGridItem>
       )}
       <GridItem>
         <RightAlignedText fontSize="14px" color="textSubtle">
-          {TranslateString(752, 'Prize Pot')}
+          {t('Prize Pot')}
         </RightAlignedText>
       </GridItem>
       {/* 4 matches row */}
@@ -120,7 +120,7 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({
       </GridItem>
       {/* Burn row */}
       <GridItem marginBottom="0">
-        <Text>{TranslateString(999, `${pastDraw ? 'Burned' : 'To burn'}`)}:</Text>
+        <Text>{t(`${pastDraw ? 'Burned' : 'To burn'}`)}:</Text>
       </GridItem>
       {pastDraw ? (
         <>

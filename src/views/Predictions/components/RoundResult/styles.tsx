@@ -2,7 +2,7 @@ import React from 'react'
 import styled, { DefaultTheme } from 'styled-components'
 import { Box, Flex, FlexProps, Text } from '@pancakeswap-libs/uikit'
 import { formatBnb, formatUsd } from 'views/Predictions/helpers'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import { BetPosition, Round } from 'state/types'
 
 // PrizePoolRow
@@ -19,11 +19,11 @@ const getPrizePoolAmount = (totalAmount: PrizePoolRowProps['totalAmount']) => {
 }
 
 export const PrizePoolRow: React.FC<PrizePoolRowProps> = ({ totalAmount, ...props }) => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
 
   return (
     <Flex alignItems="center" justifyContent="space-between" {...props}>
-      <Text bold>{TranslateString(999, 'Prize Pool')}:</Text>
+      <Text bold>{t('Prize Pool')}:</Text>
       <Text bold>{`${getPrizePoolAmount(totalAmount)} BNB`}</Text>
     </Flex>
   )
@@ -35,11 +35,11 @@ interface LockPriceRowProps extends FlexProps {
 }
 
 export const LockPriceRow: React.FC<LockPriceRowProps> = ({ lockPrice, ...props }) => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
 
   return (
     <Flex alignItems="center" justifyContent="space-between" {...props}>
-      <Text fontSize="14px">{TranslateString(999, 'Locked Price')}:</Text>
+      <Text fontSize="14px">{t('Locked Price')}:</Text>
       <Text fontSize="14px">{formatUsd(lockPrice)}</Text>
     </Flex>
   )
