@@ -19,21 +19,6 @@ export const useHarvest = (farmPid: number) => {
   return { onReward: handleHarvest }
 }
 
-export const useAllHarvest = (farmPids: number[]) => {
-  const { account } = useWeb3React()
-  const masterChefContract = useMasterchef()
-
-  const handleHarvest = useCallback(async () => {
-    const harvestPromises = farmPids.reduce((accum, pid) => {
-      return [...accum, harvest(masterChefContract, pid, account)]
-    }, [])
-
-    return Promise.all(harvestPromises)
-  }, [account, farmPids, masterChefContract])
-
-  return { onReward: handleHarvest }
-}
-
 export const useSousHarvest = (sousId, isUsingBnb = false) => {
   const dispatch = useAppDispatch()
   const { account } = useWeb3React()
