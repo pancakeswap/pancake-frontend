@@ -49,7 +49,7 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoD
 
   /* Format end */
 
-  const renderBasedOnIfoSttatus = () => {
+  const renderBasedOnIfoStatus = () => {
     if (status === 'coming_soon') {
       return (
         <>
@@ -87,7 +87,7 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoD
     return <SkeletonCardDetails />
   }
 
-  return <Box paddingTop="24px">{renderBasedOnIfoSttatus()}</Box>
+  return <Box paddingTop="24px">{renderBasedOnIfoStatus()}</Box>
 }
 
 export default IfoCardDetails

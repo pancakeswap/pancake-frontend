@@ -5,7 +5,7 @@ import { Contract } from 'web3-eth-contract'
 import { useBunnySpecialContract } from 'hooks/useContract'
 import NftCard, { NftCardProps } from './index'
 
-const BunnySpeciaCard: React.FC<NftCardProps> = ({ nft, ...props }) => {
+const BunnySpecialCard: React.FC<NftCardProps> = ({ nft, ...props }) => {
   const [isClaimable, setIsClaimable] = useState(false)
   const { account } = useWeb3React()
   const bunnySpecialContract = useBunnySpecialContract()
@@ -29,4 +29,4 @@ const BunnySpeciaCard: React.FC<NftCardProps> = ({ nft, ...props }) => {
   return <NftCard nft={nft} {...props} canClaim={isClaimable} onClaim={handleClaim} />
 }
 
-export default BunnySpeciaCard
+export default BunnySpecialCard
