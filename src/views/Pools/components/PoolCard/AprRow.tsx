@@ -28,22 +28,12 @@ const AprRow: React.FC<AprRowProps> = ({
 }) => {
   const { t } = useTranslation()
   const { stakingToken, earningToken, totalStaked, isFinished, tokenPerBlock } = pool
-<<<<<<< HEAD
-  const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    t('APY includes compounding, APR doesn’t. This pool’s CAKE is compounded automatically, so we show APY.'),
-    { placement: 'bottom-end' },
-  )
-=======
 
   const tooltipText = isAutoVault
-    ? TranslateString(
-        999,
-        'APY includes compounding, APR doesn’t. This pool’s CAKE is compounded automatically, so we show APY.',
-      )
-    : TranslateString(999, "This pool's rewards aren't compounded automatically, so we show APR")
+    ? t('APY includes compounding, APR doesn’t. This pool’s CAKE is compounded automatically, so we show APY.')
+    : t("This pool's rewards aren't compounded automatically, so we show APR")
 
-  const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipText, 'bottom-end')
->>>>>>> chore(apr-row): Make tooltip text conditional depending on whether it's an auto vault
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipText, { placement: 'bottom-end' })
 
   const earningTokenPrice = useGetApiPrice(earningToken.address ? getAddress(earningToken.address) : '')
   const apr = getPoolApr(
@@ -53,7 +43,7 @@ const AprRow: React.FC<AprRowProps> = ({
     parseFloat(tokenPerBlock),
   )
 
-  // // special handling for tokens like tBTC or BIFI where the daily token rewards for $1000 dollars will be less than 0.001 of that token
+  // special handling for tokens like tBTC or BIFI where the daily token rewards for $1000 dollars will be less than 0.001 of that token
   const isHighValueToken = Math.round(earningTokenPrice / 1000) > 0
   const roundingDecimals = isHighValueToken ? 4 : 2
 
