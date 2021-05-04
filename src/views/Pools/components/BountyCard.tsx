@@ -12,7 +12,7 @@ import {
   useModal,
   Box,
   useTooltip,
-} from '@pancakeswap-libs/uikit'
+} from '@rug-zombie-libs/uikit'
 import { useTranslation } from 'contexts/Localization'
 import useRefresh from 'hooks/useRefresh'
 import useGetVaultFees from 'hooks/cakeVault/useGetVaultFees'

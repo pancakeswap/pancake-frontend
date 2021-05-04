@@ -1,5 +1,5 @@
 import React from 'react'
-import { BunnyPlaceholderIcon, Flex, Heading } from '@pancakeswap-libs/uikit'
+import { BunnyPlaceholderIcon, Flex, Heading } from '@rug-zombie-libs/uikit'
 import { useTranslation } from 'contexts/Localization'
 
 interface ComingSoonProps {

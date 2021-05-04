@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react'
-import { Button, AutoRenewIcon, Skeleton } from '@pancakeswap-libs/uikit'
+import { Button, AutoRenewIcon, Skeleton } from '@rug-zombie-libs/uikit'
 import { useSousApprove } from 'hooks/useApprove'
 import { useTranslation } from 'contexts/Localization'
 import { useERC20 } from 'hooks/useContract'

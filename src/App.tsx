@@ -1,6 +1,6 @@
 import React, { useEffect, lazy } from 'react'
 import { Router, Redirect, Route, Switch } from 'react-router-dom'
-import { ResetCSS } from '@pancakeswap-libs/uikit'
+import { ResetCSS } from '@rug-zombie-libs/uikit'
 import BigNumber from 'bignumber.js'
 import useEagerConnect from 'hooks/useEagerConnect'
 import { useFetchPriceList, useFetchProfile, useFetchPublicData } from 'state/hooks'
@@ -52,48 +52,48 @@ const App: React.FC = () => {
       <Menu>
         <SuspenseWithChunkError fallback={<PageLoader />}>
           <Switch>
-            <Route path="/" exact>
+            <Route path='/' exact>
               <Home />
             </Route>
-            <Route path="/farms">
+            <Route path='/farms'>
               <Farms />
             </Route>
-            <Route path="/pools">
-              <Pools />
-            </Route>
-            <Route path="/lottery">
-              <Lottery />
-            </Route>
-            <Route path="/ifo">
-              <Ifos />
-            </Route>
-            <Route path="/collectibles">
+            {/* <Route path="/pools"> */}
+            {/*  <Pools /> */}
+            {/* </Route> */}
+            {/* <Route path="/lottery"> */}
+            {/*  <Lottery /> */}
+            {/* </Route> */}
+            {/* <Route path="/ifo"> */}
+            {/*  <Ifos /> */}
+            {/* </Route> */}
+            <Route path='/collectibles'>
               <Collectibles />
             </Route>
-            <Route exact path="/teams">
-              <Teams />
-            </Route>
-            <Route path="/teams/:id">
-              <Team />
-            </Route>
-            <Route path="/profile">
+            {/* <Route exact path='/teams'> */}
+            {/*  <Teams /> */}
+            {/* </Route> */}
+            {/* <Route path='/teams/:id'> */}
+            {/*  <Team /> */}
+            {/* </Route> */}
+            <Route path='/profile'>
               <Profile />
             </Route>
-            <Route path="/competition">
-              <TradingCompetition />
-            </Route>
-            <Route path="/prediction">
-              <Predictions />
-            </Route>
+            {/* <Route path='/competition'> */}
+            {/*  <TradingCompetition /> */}
+            {/* </Route> */}
+            {/* <Route path='/prediction'> */}
+            {/*  <Predictions /> */}
+            {/* </Route> */}
             {/* Redirect */}
-            <Route path="/staking">
-              <Redirect to="/pools" />
+            <Route path='/staking'>
+              <Redirect to='/pools' />
             </Route>
-            <Route path="/syrup">
-              <Redirect to="/pools" />
-            </Route>
-            <Route path="/nft">
-              <Redirect to="/collectibles" />
+            {/* <Route path='/syrup'> */}
+            {/*  <Redirect to='/pools' /> */}
+            {/* </Route> */}
+            <Route path='/nft'>
+              <Redirect to='/collectibles' />
             </Route>
             {/* 404 */}
             <Route component={NotFound} />

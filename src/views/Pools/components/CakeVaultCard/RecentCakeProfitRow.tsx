@@ -1,6 +1,6 @@
 import React from 'react'
 import BigNumber from 'bignumber.js'
-import { Flex, Text } from '@pancakeswap-libs/uikit'
+import { Flex, Text } from '@rug-zombie-libs/uikit'
 import { useTranslation } from 'contexts/Localization'
 import RecentCakeProfitBalance from './RecentCakeProfitBalance'
 

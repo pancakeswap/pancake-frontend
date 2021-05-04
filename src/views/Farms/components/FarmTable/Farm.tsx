@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { useFarmUser } from 'state/hooks'
 import { useTranslation } from 'contexts/Localization'
-import { Text, Image } from '@pancakeswap-libs/uikit'
+import { Text, Image } from '@rug-zombie-libs/uikit'
 import { getBalanceNumber } from 'utils/formatBalance'
 
 export interface FarmProps {

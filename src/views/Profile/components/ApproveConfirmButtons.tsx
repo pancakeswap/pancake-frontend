@@ -7,7 +7,7 @@ import {
   ChevronDownIcon,
   Box,
   Flex,
-} from '@pancakeswap-libs/uikit'
+} from '@rug-zombie-libs/uikit'
 import { useTranslation } from 'contexts/Localization'
 
 interface ApproveConfirmButtonsProps {

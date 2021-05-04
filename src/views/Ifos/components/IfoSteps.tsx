@@ -12,7 +12,7 @@ import {
   Button,
   Link,
   OpenNewIcon,
-} from '@pancakeswap-libs/uikit'
+} from '@rug-zombie-libs/uikit'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
 import { Ifo } from 'config/constants/types'
 import { WalletIfoData } from 'hooks/ifo/types'
