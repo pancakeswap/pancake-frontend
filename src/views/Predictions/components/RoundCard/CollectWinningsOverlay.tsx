@@ -62,19 +62,17 @@ const CollectWinningsOverlay: React.FC<CollectWinningsOverlayProps> = ({
         const [firstBetResponse] = bets
         const bet = transformBetResponse(firstBetResponse)
 
-        if (!claimedLocal) {
-          if (bet.position === bet.round.position) {
-            setState({
-              betId: bet.id,
-              epoch: bet.round.epoch,
-              payout: getPayout(bet),
-            })
-          }
+        if (bet.position === bet.round.position) {
+          setState({
+            betId: bet.id,
+            epoch: bet.round.epoch,
+            payout: getPayout(bet),
+          })
         }
       }
     }
 
-    if (account && hasEntered) {
+    if (account && hasEntered && !claimedLocal) {
       fetchBet()
     }
   }, [account, roundId, hasEntered, currentEpoch, setState, claimedLocal])
