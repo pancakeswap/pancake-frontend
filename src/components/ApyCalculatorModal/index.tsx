@@ -159,10 +159,10 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
         <Text fontSize="12px" color="textSubtle">
           {t(
             `Calculated based on current rates. Compounding %freq%x daily. Rates are estimates provided for your convenience only, and by no means represent guaranteed returns.`,
-            { fee: compoundFrequency.toLocaleString() },
+            { freq: compoundFrequency.toLocaleString() },
           )}
         </Text>
-        {performanceFee && (
+        {performanceFee > 0 && (
           <Text mt="14px" fontSize="12px" color="textSubtle">
             {t(`All estimated rates take into account this pool's %fee%% performance fee`, { fee: performanceFee })}
           </Text>
