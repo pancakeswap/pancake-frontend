@@ -38,9 +38,11 @@ const UnstakingFeeCountdownRow: React.FC<UnstakingFeeCountdownRowProps> = ({
     parseInt(withdrawalFeePeriod, 10),
   )
 
-  const shouldShowTimer = account && lastDepositedTime && hasUnstakingFee
   // Hide the fee countdown row if a user has made a deposit, but has no fee
   const hideFeeRow = lastDepositedTime && !hasUnstakingFee
+
+  // Show the timer if a user is connected, has deposited, and has an unstaking fee
+  const shouldShowTimer = account && lastDepositedTime && hasUnstakingFee
 
   return (
     <>
