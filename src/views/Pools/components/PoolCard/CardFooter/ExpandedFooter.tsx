@@ -42,8 +42,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account, isAutoVa
     fees: { performanceFee },
   } = useCakeVault()
 
-  const { stakingToken, earningToken, totalStaked, startBlock, endBlock, contractAddress, sousId } = pool
-  const isPoolFinished = pool.isFinished || currentBlock > pool.endBlock
+  const { stakingToken, earningToken, totalStaked, startBlock, endBlock, isFinished, contractAddress, sousId } = pool
 
   const tokenAddress = earningToken.address ? getAddress(earningToken.address) : ''
   const poolContractAddress = getAddress(contractAddress)
@@ -52,7 +51,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account, isAutoVa
   const isMetaMaskInScope = !!(window as WindowChain).ethereum?.isMetaMask
   const isManualCakePool = sousId === 0
 
-  const shouldShowBlockCountdown = Boolean(!isPoolFinished && startBlock && endBlock)
+  const shouldShowBlockCountdown = Boolean(!isFinished && startBlock && endBlock)
   const blocksUntilStart = Math.max(startBlock - currentBlock, 0)
   const blocksRemaining = Math.max(endBlock - currentBlock, 0)
   const hasPoolStarted = blocksUntilStart === 0 && blocksRemaining > 0

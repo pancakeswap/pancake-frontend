@@ -33,11 +33,12 @@ import { fetchPoolsStakingLimitsAsync } from './pools'
 export const useFetchPublicData = () => {
   const dispatch = useAppDispatch()
   const { slowRefresh } = useRefresh()
+  const { currentBlock } = useBlock()
   useEffect(() => {
     dispatch(fetchFarmsPublicDataAsync())
-    dispatch(fetchPoolsPublicDataAsync())
+    dispatch(fetchPoolsPublicDataAsync(currentBlock))
     dispatch(fetchPoolsStakingLimitsAsync())
-  }, [dispatch, slowRefresh])
+  }, [dispatch, slowRefresh, currentBlock])
 
   useEffect(() => {
     const web3 = getWeb3NoAccount()

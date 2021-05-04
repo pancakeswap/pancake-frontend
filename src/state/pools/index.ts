@@ -38,17 +38,20 @@ const initialState: PoolsState = {
 }
 
 // Thunks
-export const fetchPoolsPublicDataAsync = () => async (dispatch) => {
+export const fetchPoolsPublicDataAsync = (currentBlock) => async (dispatch) => {
   const blockLimits = await fetchPoolsBlockLimits()
   const totalStakings = await fetchPoolsTotalStaking()
 
   const liveData = poolsConfig.map((pool) => {
     const blockLimit = blockLimits.find((entry) => entry.sousId === pool.sousId)
     const totalStaking = totalStakings.find((entry) => entry.sousId === pool.sousId)
+    const isPoolFinished =
+      pool.isFinished || (currentBlock > 0 && blockLimit ? currentBlock > Number(blockLimit.endBlock) : false)
 
     return {
       ...blockLimit,
       ...totalStaking,
+      isFinished: isPoolFinished,
     }
   })
 
