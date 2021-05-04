@@ -79,11 +79,11 @@ export const LanguageProvider: React.FC = ({ children }) => {
         ? languageMap.get(currentLanguage.code)
         : languageMap.get(EN.code)
       const translatedText = translationSet[key] || key
-      const includesVariable = translatedText.includes('%')
 
-      if (includesVariable) {
+      // Check the existence of at least one combination of %%, separated by 1 or more non space characters
+      const includesVariable = translatedText.match(/%\S+?%/gm)
+      if (includesVariable && data) {
         let interpolatedText = translatedText
-
         Object.keys(data).forEach((dataKey) => {
           const templateKey = new RegExp(`%${dataKey}%`, 'g')
           interpolatedText = interpolatedText.replace(templateKey, data[dataKey].toString())
