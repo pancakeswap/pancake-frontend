@@ -65,6 +65,7 @@ export const LanguageProvider: React.FC = ({ children }) => {
         currentLanguage: language,
       }))
     } else {
+      localStorage.setItem(LS_KEY, language.code)
       setState((prevState) => ({
         ...prevState,
         isFetching: false,
