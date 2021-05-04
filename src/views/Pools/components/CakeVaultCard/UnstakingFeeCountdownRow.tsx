@@ -38,25 +38,30 @@ const UnstakingFeeCountdownRow: React.FC<UnstakingFeeCountdownRowProps> = ({
     parseInt(withdrawalFeePeriod, 10),
   )
 
-  // Hide the fee countdown row if a user has made a deposit, but has no fee
-  const hideFeeRow = lastDepositedTime && !hasUnstakingFee
+  // The user has made a deposit, but has no fee
+  const feeTimeExpired = lastDepositedTime && !hasUnstakingFee
 
   // Show the timer if a user is connected, has deposited, and has an unstaking fee
   const shouldShowTimer = account && lastDepositedTime && hasUnstakingFee
 
+  const getRowText = () => {
+    if (feeTimeExpired) {
+      return t('unstaking fee')
+    }
+    if (shouldShowTimer) {
+      return t('unstaking fee until')
+    }
+    return t('unstaking fee if withdrawn within 72h')
+  }
+
   return (
-    <>
-      {hideFeeRow ? null : (
-        <Flex alignItems="center" justifyContent="space-between">
-          {tooltipVisible && tooltip}
-          <TooltipText ref={targetRef} small>
-            {parseInt(withdrawalFee) / 100 || '-'}%{' '}
-            {shouldShowTimer ? t('unstaking fee until') : t('unstaking fee if withdrawn within 72h')}
-          </TooltipText>
-          {shouldShowTimer && <WithdrawalFeeTimer secondsRemaining={secondsRemaining} />}
-        </Flex>
-      )}
-    </>
+    <Flex alignItems="center" justifyContent="space-between">
+      {tooltipVisible && tooltip}
+      <TooltipText ref={targetRef} small>
+        {feeTimeExpired ? '0' : feeAsDecimal}% {getRowText()}
+      </TooltipText>
+      {shouldShowTimer && <WithdrawalFeeTimer secondsRemaining={secondsRemaining} />}
+    </Flex>
   )
 }
 
