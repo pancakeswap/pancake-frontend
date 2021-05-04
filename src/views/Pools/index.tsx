@@ -7,7 +7,7 @@ import orderBy from 'lodash/orderBy'
 import partition from 'lodash/partition'
 import { useTranslation } from 'contexts/Localization'
 import usePersistState from 'hooks/usePersistState'
-import { usePools, useBlock, useFetchCakeVault } from 'state/hooks'
+import { usePools, useFetchCakeVault } from 'state/hooks'
 import FlexLayout from 'components/layout/Flex'
 import Page from 'components/layout/Page'
 import PageHeader from 'components/PageHeader'
@@ -24,16 +24,12 @@ const Pools: React.FC = () => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const pools = usePools(account)
-  const { currentBlock } = useBlock()
   const [stakedOnly, setStakedOnly] = usePersistState(false, 'pancake_pool_staked')
   const [numberOfPoolsVisible, setNumberOfPoolsVisible] = useState(NUMBER_OF_POOLS_VISIBLE)
   const [observerIsSet, setObserverIsSet] = useState(false)
   const loadMoreRef = useRef<HTMLDivElement>(null)
 
-  const [finishedPools, openPools] = useMemo(
-    () => partition(pools, (pool) => pool.isFinished || currentBlock > pool.endBlock),
-    [currentBlock, pools],
-  )
+  const [finishedPools, openPools] = useMemo(() => partition(pools, (pool) => pool.isFinished), [pools])
   const stakedOnlyFinishedPools = useMemo(
     () => finishedPools.filter((pool) => pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0)),
     [finishedPools],
