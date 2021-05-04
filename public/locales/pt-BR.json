@@ -325,12 +325,12 @@
   "%num% of total": "Total de %num%",
   "All estimated rates take into account this pool's %fee%% performance fee": "Todas as taxas estimadas levam em conta a taxa de desempenho de %fee%% desta reserva",
   "Sorry, you didn’t contribute enough LP tokens to meet the minimum threshold. You didn’t buy anything in this sale, but you can still reclaim your LP tokens.": "Sinto muito, você não contribuiu com tokens LP suficientes para alcançar o limite mínimo. Você não comprou nada nesta venda, mas ainda dá tempo de obter seus tokens LP de volta.",
-  "Only applies within 3 days of staking. Unstaking after 3 days will not include a fee. Timer resets every time you stake new CAKE in the pool.": "Only applies within 3 days of staking. Unstaking after 3 days will not include a fee. Timer resets every time you stake new CAKE in the pool.",
-  "unstaking fee until": "unstaking fee until",
-  "unstaking fee if withdrawn within 72h": "unstaking fee if withdrawn within 72h",
-  "Unstaking fee: %fee%%": "Unstaking fee: %fee%%",
-  "Performance Fee": "Performance Fee",
-  "Compound: collect and restake CAKE into pool.": "Compound: collect and restake CAKE into pool.",
-  "Harvest: collect CAKE and send to wallet": "Harvest: collect CAKE and send to wallet",
-  "%position% Entered": "%position% Entered"
+  "Only applies within 3 days of staking. Unstaking after 3 days will not include a fee. Timer resets every time you stake new CAKE in the pool.": "Só se aplica dentro de 3 dias após o stake. A retirada do stake após 3 dias não terá uma taxa inclusa. O temporizador é reinicializado sempre que você realizar stake de um novo CAKE no reserva.",
+  "unstaking fee until": "taxa de retirada de stake até",
+  "unstaking fee if withdrawn within 72h": "taxa de retirada de stake se a retirada ocorrer dentro de 72h",
+  "Unstaking fee: %fee%%": "Taxa de retirada de stake: %fee%%",
+  "Performance Fee": "Taxa de desempenho",
+  "Compound: collect and restake CAKE into pool.": "Composto: colete e faça novamente o stake de CAKE na reserva.",
+  "Harvest: collect CAKE and send to wallet": "Colheita: colete o CAKE e envie para a carteira",
+  "%position% Entered": "%position% Inserido"
 }
