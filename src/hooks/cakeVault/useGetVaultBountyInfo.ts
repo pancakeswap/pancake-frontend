@@ -19,8 +19,12 @@ const useGetVaultBountyInfo = (refresh?: number) => {
         cakeVaultContract.methods.calculateHarvestCakeRewards().call,
         cakeVaultContract.methods.calculateTotalPendingCakeRewards().call,
       ])
-      const dollarValueOfClaimableReward = new BigNumber(estimatedClaimableCakeReward as string).multipliedBy(cakePrice)
-      setEstimatedDollarBountyReward(dollarValueOfClaimableReward)
+      if (cakePrice) {
+        const dollarValueOfClaimableReward = new BigNumber(estimatedClaimableCakeReward as string).multipliedBy(
+          cakePrice,
+        )
+        setEstimatedDollarBountyReward(dollarValueOfClaimableReward)
+      }
       setEstimatedCakeBountyReward(new BigNumber(estimatedClaimableCakeReward as string))
       setTotalPendingCakeHarvest(new BigNumber(pendingTotalCakeHarvest as string))
     }
