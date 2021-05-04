@@ -46,7 +46,6 @@ export const LanguageProvider: React.FC = ({ children }) => {
   }, [setState])
 
   const setLanguage = async (language: Language) => {
-    localStorage.setItem(LS_KEY, language.code)
     if (!languageMap.has(language.code)) {
       setState((prevState) => ({
         ...prevState,
@@ -58,6 +57,7 @@ export const LanguageProvider: React.FC = ({ children }) => {
 
       // Merge the EN locale to ensure that any locale fetched has all the keys
       languageMap.set(language.code, { ...enLocale, ...locale })
+      localStorage.setItem(LS_KEY, language.code)
 
       setState((prevState) => ({
         ...prevState,
@@ -65,6 +65,7 @@ export const LanguageProvider: React.FC = ({ children }) => {
         currentLanguage: language,
       }))
     } else {
+      localStorage.setItem(LS_KEY, language.code)
       setState((prevState) => ({
         ...prevState,
         isFetching: false,
