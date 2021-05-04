@@ -331,5 +331,6 @@
   "Unstaking fee: %fee%%": "Unstaking fee: %fee%%",
   "Performance Fee": "Performance Fee",
   "Compound: collect and restake CAKE into pool.": "Compound: collect and restake CAKE into pool.",
-  "Harvest: collect CAKE and send to wallet": "Harvest: collect CAKE and send to wallet"
+  "Harvest: collect CAKE and send to wallet": "Harvest: collect CAKE and send to wallet",
+  "%position% Entered": "%position% Entered"
 }
