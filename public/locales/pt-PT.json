@@ -329,8 +329,8 @@
   "unstaking fee until": "unstaking fee until",
   "unstaking fee if withdrawn within 72h": "unstaking fee if withdrawn within 72h",
   "Unstaking fee: %fee%%": "Unstaking fee: %fee%%",
-  "Performance Fee": "Performance Fee",
-  "Compound: collect and restake CAKE into pool.": "Compound: collect and restake CAKE into pool.",
-  "Harvest: collect CAKE and send to wallet": "Harvest: collect CAKE and send to wallet",
+  "Performance Fee": "Comissão de desempenho",
+  "Compound: collect and restake CAKE into pool.": "Composto: receber e voltar a colocar o CAKE no pool.",
+  "Harvest: collect CAKE and send to wallet": "Colheita: recolher CAKE e enviar para a carteira",
   "%position% Entered": "%position% Entered"
 }
