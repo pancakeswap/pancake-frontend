@@ -46,7 +46,6 @@ const CardActions: React.FC<FarmCardActionsProps> = ({ farm, account, addLiquidi
   const lpName = farm.lpSymbol.toUpperCase()
   const isApproved = account && allowance && allowance.isGreaterThan(0)
   const web3 = useWeb3()
-  const location = useLocation()
 
   const lpContract = getBep20Contract(lpAddress, web3)
 
@@ -72,12 +71,7 @@ const CardActions: React.FC<FarmCardActionsProps> = ({ farm, account, addLiquidi
         addLiquidityUrl={addLiquidityUrl}
       />
     ) : (
-      <Button
-        mt="8px"
-        width="100%"
-        disabled={requestedApproval || location.pathname.includes('archived')}
-        onClick={handleApprove}
-      >
+      <Button mt="8px" width="100%" disabled={requestedApproval} onClick={handleApprove}>
         {t('Approve Contract')}
       </Button>
     )

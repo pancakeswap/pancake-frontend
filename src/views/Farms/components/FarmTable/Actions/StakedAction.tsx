@@ -158,12 +158,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
         <Subtle>{t('ENABLE FARM')}</Subtle>
       </ActionTitles>
       <ActionContent>
-        <Button
-          width="100%"
-          disabled={requestedApproval || location.pathname.includes('archived')}
-          onClick={handleApprove}
-          variant="secondary"
-        >
+        <Button width="100%" disabled={requestedApproval} onClick={handleApprove} variant="secondary">
           {t('Enable')}
         </Button>
       </ActionContent>
