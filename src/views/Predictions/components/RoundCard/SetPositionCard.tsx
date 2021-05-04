@@ -81,7 +81,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
   const predictionsContract = usePredictionsContract()
 
   const balanceDisplay = getBnbAmount(bnbBalance).toNumber()
-  const maxBalance = getBnbAmount(bnbBalance.minus(dust)).toNumber()
+  const maxBalance = getBnbAmount(bnbBalance.gt(dust) ? bnbBalance.minus(dust) : bnbBalance).toNumber()
   const valueAsBn = new BigNumber(value)
 
   const percentageOfMaxBalance = valueAsBn.div(maxBalance).times(100).toNumber()
