@@ -22,12 +22,12 @@ const pools: PoolConfig[] = [
     earningToken: tokens.dec18,
     contractAddress: {
       97: '',
-      56: '0xf1e15b5ded1f9149d9e368f0b714e74566c5aca7',
+      56: '0x7c32e71f72d53aa7f9d620f60a6779cda8c00ae7',
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
     sortOrder: 999,
-    tokenPerBlock: '0.001',
+    tokenPerBlock: '1',
     isFinished: false,
   },
   {
@@ -36,12 +36,12 @@ const pools: PoolConfig[] = [
     earningToken: tokens.dec12,
     contractAddress: {
       97: '',
-      56: '0x259a8ca10ba5acc4e298d83d627b39b6e7df341f',
+      56: '0xf51cb61c85648365face9cb011ffd9517b26f403',
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
     sortOrder: 999,
-    tokenPerBlock: '1000',
+    tokenPerBlock: '1',
     isFinished: false,
   },
   {
@@ -50,12 +50,12 @@ const pools: PoolConfig[] = [
     earningToken: tokens.dec6,
     contractAddress: {
       97: '',
-      56: '0x469ff4A38dFa02BA854576F82F444Ab71F659224',
+      56: '0x79e2200bb8cc81fd89bd0e14671eec14c168daa2',
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
     sortOrder: 999,
-    tokenPerBlock: '1000000000',
+    tokenPerBlock: '1',
     isFinished: false,
   },
   {
