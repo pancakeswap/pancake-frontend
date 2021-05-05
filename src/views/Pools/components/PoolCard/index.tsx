@@ -4,6 +4,7 @@ import { CardBody, Flex, Text, CardRibbon } from '@pancakeswap-libs/uikit'
 import UnlockButton from 'components/UnlockButton'
 import { useTranslation } from 'contexts/Localization'
 import { getAddress } from 'utils/addressHelpers'
+import { BIG_ZERO } from 'utils/bigNumber'
 import { useGetApiPrice } from 'state/hooks'
 import { Pool } from 'state/types'
 import AprRow from './AprRow'
@@ -15,7 +16,7 @@ import CardActions from './CardActions'
 const PoolCard: React.FC<{ pool: Pool; account: string }> = ({ pool, account }) => {
   const { sousId, stakingToken, earningToken, isFinished, userData } = pool
   const { t } = useTranslation()
-  const stakedBalance = new BigNumber(userData?.stakedBalance || 0)
+  const stakedBalance = userData?.stakedBalance ? new BigNumber(userData.stakedBalance) : BIG_ZERO
   const accountHasStakedBalance = stakedBalance?.toNumber() > 0
   const stakingTokenPrice = useGetApiPrice(stakingToken.address ? getAddress(stakingToken.address) : '')
 
