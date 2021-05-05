@@ -23,6 +23,10 @@ const ButtonText = styled(Text)`
 
 const StyledLink = styled(UiKitLink)`
   width: 100%;
+
+  &:hover {
+    text-decoration: none;
+  }
 `
 
 const PoolTabButtons = ({ stakedOnly, setStakedOnly, hasStakeInFinishedPools }) => {
