@@ -52,7 +52,7 @@ const CollectWinningsOverlay: React.FC<CollectWinningsOverlayProps> = ({
   const currentEpoch = useGetCurrentEpoch()
 
   // Check if the wallet can collect the bet
-  // We do it here because it is not gaurenteed the bet info will be in the history
+  // We do it here because it is not guaranteed the bet info will be in the history
   useEffect(() => {
     const fetchBet = async () => {
       const bets = await getBetHistory({ user: account.toLowerCase(), round: roundId, claimed: false })
