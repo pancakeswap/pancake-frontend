@@ -62,6 +62,9 @@ export const PoolsSlice = createSlice({
       const fees = action.payload
       state.cakeVault = { ...state.cakeVault, fees }
     },
+    setCakeVaultPublicData: (state, action: PayloadAction<CakeVault>) => {
+      state.cakeVault = action.payload
+    },
   },
 })
 
