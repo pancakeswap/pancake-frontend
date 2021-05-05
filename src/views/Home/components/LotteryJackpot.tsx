@@ -5,7 +5,6 @@ import { useTotalRewards } from 'hooks/useTickets'
 import { useTranslation } from 'contexts/Localization'
 import { usePriceCakeBusd } from 'state/hooks'
 import { BigNumber } from 'bignumber.js'
-import CardBusdValue from './CardBusdValue'
 
 const LotteryJackpot = () => {
   const { t } = useTranslation()
@@ -20,9 +19,9 @@ const LotteryJackpot = () => {
   return (
     <>
       <Text bold fontSize="24px" style={{ lineHeight: '1.5' }}>
-        {t(`%amount% CAKE`, { amount: lotteryPrizeAmountCake })}
+        {t('Coming Soon')}
       </Text>
-      {!cakePriceBusd.eq(0) ? <CardBusdValue value={lotteryPrizeAmountBusd} /> : <br />}
+      <br />
     </>
   )
 }
