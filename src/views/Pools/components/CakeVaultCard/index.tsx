@@ -23,7 +23,12 @@ const StyledCardBody = styled(CardBody)<{ isLoading: boolean }>`
   min-height: ${({ isLoading }) => (isLoading ? '0' : '254px')};
 `
 
-const CakeVaultCard: React.FC<{ pool: Pool }> = ({ pool }) => {
+interface CakeVaultProps {
+  pool: Pool
+  showStakedOnly: boolean
+}
+
+const CakeVaultCard: React.FC<CakeVaultProps> = ({ pool, showStakedOnly }) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const { lastUpdated, setLastUpdated } = useLastUpdated()
@@ -37,6 +42,10 @@ const CakeVaultCard: React.FC<{ pool: Pool }> = ({ pool }) => {
   const stakingTokenPrice = useGetApiPrice(stakingToken.address ? getAddress(stakingToken.address) : '')
   const isLoading = !pool.userData || !userInfo.shares
   const performanceFeeAsDecimal = vaultFees.performanceFee && parseInt(vaultFees.performanceFee, 10) / 100
+
+  if (showStakedOnly && !accountHasSharesStaked) {
+    return null
+  }
 
   return (
     <StyledCard isStaking={accountHasSharesStaked}>
