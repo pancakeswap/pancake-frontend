@@ -15,7 +15,6 @@ interface HasStakeActionProps {
   stakingTokenPrice: number
   userInfo: VaultUser
   pricePerFullShare: BigNumber
-  account: string
   vaultFees: VaultFees
   setLastUpdated: () => void
 }
@@ -26,7 +25,6 @@ const HasSharesActions: React.FC<HasStakeActionProps> = ({
   stakingTokenPrice,
   userInfo,
   pricePerFullShare,
-  account,
   vaultFees,
   setLastUpdated,
 }) => {
@@ -41,7 +39,6 @@ const HasSharesActions: React.FC<HasStakeActionProps> = ({
 
   const [onPresentStake] = useModal(
     <VaultStakeModal
-      account={account}
       stakingMax={stakingTokenBalance}
       pool={pool}
       userInfo={userInfo}
@@ -52,7 +49,6 @@ const HasSharesActions: React.FC<HasStakeActionProps> = ({
 
   const [onPresentUnstake] = useModal(
     <VaultStakeModal
-      account={account}
       stakingMax={cakeAsBigNumber}
       pool={pool}
       stakingTokenPrice={stakingTokenPrice}

@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Box, CardBody, Flex, Text } from '@pancakeswap-libs/uikit'
 import { useTranslation } from 'contexts/Localization'
+import { useWeb3React } from '@web3-react/core'
 import UnlockButton from 'components/UnlockButton'
 import { getAddress } from 'utils/addressHelpers'
 import { useGetApiPrice } from 'state/hooks'
@@ -24,12 +25,12 @@ const StyledCardBody = styled(CardBody)<{ isLoading: boolean }>`
 
 interface CakeVaultProps {
   pool: Pool
-  account: string
   showStakedOnly: boolean
 }
 
-const CakeVaultCard: React.FC<CakeVaultProps> = ({ pool, account, showStakedOnly }) => {
+const CakeVaultCard: React.FC<CakeVaultProps> = ({ pool, showStakedOnly }) => {
   const { t } = useTranslation()
+  const { account } = useWeb3React()
   const { lastUpdated, setLastUpdated } = useLastUpdated()
   const userInfo = useGetVaultUserInfo(lastUpdated)
   const vaultFees = useGetVaultFees()
@@ -59,7 +60,6 @@ const CakeVaultCard: React.FC<CakeVaultProps> = ({ pool, account, showStakedOnly
         />
         <Box mt="24px">
           <RecentCakeProfitRow
-            account={account}
             cakeAtLastUserAction={userInfo.cakeAtLastUserAction}
             userShares={userInfo.shares}
             pricePerFullShare={pricePerFullShare}
@@ -67,7 +67,6 @@ const CakeVaultCard: React.FC<CakeVaultProps> = ({ pool, account, showStakedOnly
         </Box>
         <Box mt="8px">
           <UnstakingFeeCountdownRow
-            account={account}
             withdrawalFee={vaultFees.withdrawalFee}
             withdrawalFeePeriod={vaultFees.withdrawalFeePeriod}
             lastDepositedTime={accountHasSharesStaked && userInfo.lastDepositedTime}
@@ -82,7 +81,6 @@ const CakeVaultCard: React.FC<CakeVaultProps> = ({ pool, account, showStakedOnly
               vaultFees={vaultFees}
               stakingTokenPrice={stakingTokenPrice}
               accountHasSharesStaked={accountHasSharesStaked}
-              account={account}
               lastUpdated={lastUpdated}
               setLastUpdated={setLastUpdated}
               isLoading={isLoading}
