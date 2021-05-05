@@ -22,7 +22,7 @@ const pools: PoolConfig[] = [
     earningToken: tokens.ramp,
     contractAddress: {
       97: '',
-      56: '',
+      56: '0xa90a894e5bc20ab2be46c7e033a38f8b8eaa771a',
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
@@ -36,7 +36,7 @@ const pools: PoolConfig[] = [
     earningToken: tokens.hakka,
     contractAddress: {
       97: '',
-      56: '',
+      56: '0x34ac807e34e534fe426da1e11f816422774aae1c',
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
@@ -50,7 +50,7 @@ const pools: PoolConfig[] = [
     earningToken: tokens.pbtc,
     contractAddress: {
       97: '',
-      56: '',
+      56: '0x31fa2f516b77c4273168b284ac6d9def5aa6dafb',
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
@@ -64,7 +64,7 @@ const pools: PoolConfig[] = [
     earningToken: tokens.lien,
     contractAddress: {
       97: '',
-      56: '',
+      56: '0x7112f8988f075c7784666ab071927ae4109a8076',
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
@@ -78,7 +78,7 @@ const pools: PoolConfig[] = [
     earningToken: tokens.bbadger,
     contractAddress: {
       97: '',
-      56: '',
+      56: '0x126dfbcef85c5bf335f8be99ca4006037f417892',
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
@@ -92,7 +92,7 @@ const pools: PoolConfig[] = [
     earningToken: tokens.bdigg,
     contractAddress: {
       97: '',
-      56: '',
+      56: '0x4f0ad2332b1f9983e8f63cbee617523bb7de5031',
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
@@ -106,7 +106,7 @@ const pools: PoolConfig[] = [
     earningToken: tokens.bondly,
     contractAddress: {
       97: '',
-      56: '',
+      56: '0x9483ca44324de06802576866b9d296f7614f45ac',
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
@@ -120,7 +120,7 @@ const pools: PoolConfig[] = [
     earningToken: tokens.xed,
     contractAddress: {
       97: '',
-      56: '',
+      56: '0x72ceec6e2a142678e703ab0710de78bc819f4ce0',
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
@@ -134,7 +134,7 @@ const pools: PoolConfig[] = [
     earningToken: tokens.cgg,
     contractAddress: {
       97: '',
-      56: '',
+      56: '0x1c6ed21d3313822ae73ed0d94811ffbbe543f341',
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
@@ -148,7 +148,7 @@ const pools: PoolConfig[] = [
     earningToken: tokens.perl,
     contractAddress: {
       97: '',
-      56: '',
+      56: '0x1ac0d0333640f57327c83053c581340ebc829e30',
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
@@ -162,7 +162,7 @@ const pools: PoolConfig[] = [
     earningToken: tokens.arpa,
     contractAddress: {
       97: '',
-      56: '',
+      56: '0xc707e5589aeb1dc117b0bb5a3622362f1812d4fc',
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
@@ -176,7 +176,7 @@ const pools: PoolConfig[] = [
     earningToken: tokens.oddz,
     contractAddress: {
       97: '',
-      56: '',
+      56: '0x22106cdcf9787969e1672d8e6a9c03a889cda9c5',
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
@@ -190,7 +190,7 @@ const pools: PoolConfig[] = [
     earningToken: tokens.dexe,
     contractAddress: {
       97: '',
-      56: '',
+      56: '0x999b86e8bba3d4f05afb8155963999db70afa97f',
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
