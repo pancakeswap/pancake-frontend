@@ -38,7 +38,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
   const { theme } = useTheme()
 
   const { onStake } = useSousStake(sousId, isBnbPool)
-  const { onUnstake } = useSousUnstake(sousId)
+  const { onUnstake } = useSousUnstake(sousId, pool.enableEmergencyWithdraw)
   const { toastSuccess, toastError } = useToast()
 
   const [pendingTx, setPendingTx] = useState(false)
