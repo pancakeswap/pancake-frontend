@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Button, AutoRenewIcon, Skeleton } from '@pancakeswap-libs/uikit'
+import { useWeb3React } from '@web3-react/core'
 import { ethers } from 'ethers'
 import { useTranslation } from 'contexts/Localization'
 import { useCake, useCakeVaultContract } from 'hooks/useContract'
@@ -8,12 +9,12 @@ import { Pool } from 'state/types'
 
 interface ApprovalActionProps {
   pool: Pool
-  account: string
   setLastUpdated: () => void
   isLoading?: boolean
 }
 
-const ApprovalAction: React.FC<ApprovalActionProps> = ({ pool, account, isLoading = false, setLastUpdated }) => {
+const ApprovalAction: React.FC<ApprovalActionProps> = ({ pool, isLoading = false, setLastUpdated }) => {
+  const { account } = useWeb3React()
   const { stakingToken } = pool
   const cakeVaultContract = useCakeVaultContract()
   const cakeContract = useCake()
