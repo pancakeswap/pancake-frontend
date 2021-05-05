@@ -2092,7 +2092,7 @@
 
 "@rug-zombie-libs/uikit@https://github.com/Rug-Zombie/rug-zombie-uikit.git":
   version "0.29.3"
-  resolved "https://github.com/Rug-Zombie/rug-zombie-uikit.git#4dd0e907e091f9bfcbd62623391aaac5540400e2"
+  resolved "https://github.com/Rug-Zombie/rug-zombie-uikit.git#e2681e3302142cff071cb9505cf440f5c5521fe8"
   dependencies:
     "@popperjs/core" "^2.9.2"
     "@types/lodash" "^4.14.168"

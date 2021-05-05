@@ -33,43 +33,43 @@ const config: MenuEntry[] = [
     icon: 'FarmIcon',
     href: '/farms',
   },
-  {
-    label: 'Pools',
-    icon: 'PoolIcon',
-    href: '/pools',
-  },
-  {
-    label: 'Prediction',
-    icon: 'PredictionsIcon',
-    href: '/prediction',
-    status: {
-      text: 'BETA',
-      color: 'warning',
-    },
-  },
-  {
-    label: 'Lottery',
-    icon: 'TicketIcon',
-    href: '/lottery',
-  },
+  // {
+  //   label: 'Pools',
+  //   icon: 'PoolIcon',
+  //   href: '/pools',
+  // },
+  // {
+  //   label: 'Prediction',
+  //   icon: 'PredictionsIcon',
+  //   href: '/prediction',
+  //   status: {
+  //     text: 'BETA',
+  //     color: 'warning',
+  //   },
+  // },
+  // {
+  //   label: 'Lottery',
+  //   icon: 'TicketIcon',
+  //   href: '/lottery',
+  // },
   {
     label: 'Collectibles',
     icon: 'NftIcon',
     href: '/collectibles',
   },
+  // {
+  //   label: 'Team Battle',
+  //   icon: 'TeamBattleIcon',
+  //   href: '/competition',
+  // },
   {
-    label: 'Team Battle',
-    icon: 'TeamBattleIcon',
-    href: '/competition',
-  },
-  {
-    label: 'Teams & Profile',
+    label: 'Profile',
     icon: 'GroupsIcon',
     items: [
-      {
-        label: 'Leaderboard',
-        href: '/teams',
-      },
+      // {
+      //   label: 'Leaderboard',
+      //   href: '/teams',
+      // },
       {
         label: 'Task Center',
         href: '/profile/tasks',
@@ -102,11 +102,11 @@ const config: MenuEntry[] = [
       },
     ],
   },
-  {
-    label: 'IFO',
-    icon: 'IfoIcon',
-    href: '/ifo',
-  },
+  // {
+  //   label: 'IFO',
+  //   icon: 'IfoIcon',
+  //   href: '/ifo',
+  // },
   {
     label: 'More',
     icon: 'MoreIcon',
@@ -121,7 +121,7 @@ const config: MenuEntry[] = [
       },
       {
         label: 'Github',
-        href: 'https://github.com/pancakeswap',
+        href: 'https://github.com/RugZombie',
       },
       {
         label: 'Docs',
