@@ -5,6 +5,7 @@ import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
 import { BASE_EXCHANGE_URL } from 'config'
 import { BIG_TEN } from 'utils/bigNumber'
+import { useCakeVault } from 'state/hooks'
 import { useCakeVaultContract } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
 import useWithdrawalFeeTimer from 'hooks/cakeVault/useWithdrawalFeeTimer'
@@ -22,7 +23,6 @@ interface VaultStakeModalProps {
   stakingTokenPrice: number
   userInfo: VaultUser
   isRemovingStake?: boolean
-  pricePerFullShare?: BigNumber
   setLastUpdated: () => void
   onDismiss?: () => void
 }
@@ -35,15 +35,16 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
   pool,
   stakingMax,
   stakingTokenPrice,
-  pricePerFullShare,
   userInfo,
   isRemovingStake = false,
   onDismiss,
   setLastUpdated,
 }) => {
-  const { account } = useWeb3React()
   const { stakingToken } = pool
+  const { account } = useWeb3React()
   const cakeVaultContract = useCakeVaultContract()
+  const { pricePerFullShare: pricePerFullShareAsString } = useCakeVault()
+  const pricePerFullShare = new BigNumber(pricePerFullShareAsString)
   const { t } = useTranslation()
   const { theme } = useTheme()
   const { toastSuccess, toastError } = useToast()

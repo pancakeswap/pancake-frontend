@@ -15,7 +15,7 @@ import {
   Button,
 } from '@pancakeswap/uikit'
 import { BASE_BSC_SCAN_URL, BASE_URL } from 'config'
-import { useBlock } from 'state/hooks'
+import { useBlock, useCakeVault } from 'state/hooks'
 import { Pool } from 'state/types'
 import { getAddress, getCakeVaultAddress } from 'utils/addressHelpers'
 import { registerToken } from 'utils/wallet'
@@ -24,9 +24,7 @@ import Balance from 'components/Balance'
 interface ExpandedFooterProps {
   pool: Pool
   account: string
-  performanceFee?: number
   isAutoVault?: boolean
-  totalCakeInVault?: BigNumber
 }
 
 const ExpandedWrapper = styled(Flex)`
@@ -36,15 +34,14 @@ const ExpandedWrapper = styled(Flex)`
   }
 `
 
-const ExpandedFooter: React.FC<ExpandedFooterProps> = ({
-  pool,
-  account,
-  performanceFee = 0,
-  isAutoVault = false,
-  totalCakeInVault,
-}) => {
+const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account, isAutoVault = false }) => {
   const { t } = useTranslation()
   const { currentBlock } = useBlock()
+  const {
+    totalCakeInVault: totalCakeInVaultAsString,
+    fees: { performanceFee },
+  } = useCakeVault()
+  const totalCakeInVault = new BigNumber(totalCakeInVaultAsString)
 
   const { stakingToken, earningToken, totalStaked, startBlock, endBlock, isFinished, contractAddress, sousId } = pool
 

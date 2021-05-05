@@ -36,7 +36,6 @@ export const fetchVaultFees = async () => {
       cakeVaultContract.methods.withdrawFee().call,
       cakeVaultContract.methods.withdrawFeePeriod().call,
     ])
-
     return {
       performanceFee: parseInt(performanceFee as string, 10),
       callFee: parseInt(callFee as string, 10),

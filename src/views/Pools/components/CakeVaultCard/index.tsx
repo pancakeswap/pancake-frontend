@@ -8,7 +8,6 @@ import { getAddress } from 'utils/addressHelpers'
 import { useCakeVault, useGetApiPrice } from 'state/hooks'
 import useLastUpdated from 'hooks/useLastUpdated'
 import useGetVaultUserInfo from 'hooks/cakeVault/useGetVaultUserInfo'
-import useGetVaultSharesInfo from 'hooks/cakeVault/useGetVaultSharesInfo'
 import { Pool } from 'state/types'
 import AprRow from '../PoolCard/AprRow'
 import { StyledCard, StyledCardInner } from '../PoolCard/StyledCard'
@@ -33,9 +32,8 @@ const CakeVaultCard: React.FC<CakeVaultProps> = ({ pool, showStakedOnly }) => {
   const { lastUpdated, setLastUpdated } = useLastUpdated()
   const userInfo = useGetVaultUserInfo(lastUpdated)
   const {
-    fees: { callFee, performanceFee },
+    fees: { performanceFee },
   } = useCakeVault()
-  const { totalCakeInVault, pricePerFullShare } = useGetVaultSharesInfo()
   const { stakingToken } = pool
   //   Estimate & manual for now. 288 = once every 5 mins. We can change once we have a better sense of this
   const timesCompoundedDaily = 288
@@ -67,11 +65,7 @@ const CakeVaultCard: React.FC<CakeVaultProps> = ({ pool, showStakedOnly }) => {
             performanceFee={performanceFeeAsDecimal}
           />
           <Box mt="24px">
-            <RecentCakeProfitRow
-              cakeAtLastUserAction={userInfo.cakeAtLastUserAction}
-              userShares={userInfo.shares}
-              pricePerFullShare={pricePerFullShare}
-            />
+            <RecentCakeProfitRow cakeAtLastUserAction={userInfo.cakeAtLastUserAction} userShares={userInfo.shares} />
           </Box>
           <Box mt="8px">
             <UnstakingFeeCountdownRow lastDepositedTime={accountHasSharesStaked && userInfo.lastDepositedTime} />
@@ -81,7 +75,6 @@ const CakeVaultCard: React.FC<CakeVaultProps> = ({ pool, showStakedOnly }) => {
               <VaultCardActions
                 pool={pool}
                 userInfo={userInfo}
-                pricePerFullShare={pricePerFullShare}
                 stakingTokenPrice={stakingTokenPrice}
                 accountHasSharesStaked={accountHasSharesStaked}
                 lastUpdated={lastUpdated}
@@ -98,13 +91,7 @@ const CakeVaultCard: React.FC<CakeVaultProps> = ({ pool, showStakedOnly }) => {
             )}
           </Flex>
         </StyledCardBody>
-        <CardFooter
-          pool={pool}
-          account={account}
-          performanceFee={performanceFee}
-          isAutoVault
-          totalCakeInVault={totalCakeInVault}
-        />
+        <CardFooter pool={pool} account={account} isAutoVault />
       </StyledCardInner>
     </StyledCard>
   )
