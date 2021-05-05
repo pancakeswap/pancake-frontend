@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Modal, Text, Flex, Image, Button, Slider, BalanceInput, AutoRenewIcon } from '@pancakeswap-libs/uikit'
 import { useTranslation } from 'contexts/Localization'
+import { useWeb3React } from '@web3-react/core'
 import { BASE_EXCHANGE_URL } from 'config'
 import { BIG_TEN } from 'utils/bigNumber'
 import { useCakeVaultContract } from 'hooks/useContract'
@@ -20,7 +21,6 @@ interface VaultStakeModalProps {
   pool: Pool
   stakingMax: BigNumber
   stakingTokenPrice: number
-  account: string
   userInfo: VaultUser
   isRemovingStake?: boolean
   pricePerFullShare?: BigNumber
@@ -38,13 +38,13 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
   stakingMax,
   stakingTokenPrice,
   pricePerFullShare,
-  account,
   userInfo,
   isRemovingStake = false,
   vaultFees,
   onDismiss,
   setLastUpdated,
 }) => {
+  const { account } = useWeb3React()
   const { stakingToken } = pool
   const cakeVaultContract = useCakeVaultContract()
   const { t } = useTranslation()
