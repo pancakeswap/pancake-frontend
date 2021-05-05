@@ -1182,6 +1182,33 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://lympo.io/lmt/',
   },
+  dec6: {
+    symbol: '6Dec',
+    address: {
+      56: '0xbf3e03c378a77c7a4d0c64a3ac940194ee8869b5',
+      97: '',
+    },
+    decimals: 6,
+    projectLink: 'https://lympo.io/lmt/',
+  },
+  dec12: {
+    symbol: '12Dec',
+    address: {
+      56: '0xe76ba59a63a2a8dcab7b3ad28d35537882d303b3',
+      97: '',
+    },
+    decimals: 12,
+    projectLink: 'https://lympo.io/lmt/',
+  },
+  dec18: {
+    symbol: '18Dec',
+    address: {
+      56: '0xec35bfca7d150d8adf54a965dd1c952f448399aa',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://lympo.io/lmt/',
+  },
 }
 
 export default tokens
