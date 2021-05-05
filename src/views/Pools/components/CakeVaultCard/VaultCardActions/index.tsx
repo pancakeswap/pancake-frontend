@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Flex, Text, Box } from '@pancakeswap-libs/uikit'
 import { useTranslation } from 'contexts/Localization'
+import { useWeb3React } from '@web3-react/core'
 import { useCake, useCakeVaultContract } from 'hooks/useContract'
 import { VaultFees } from 'hooks/cakeVault/useGetVaultFees'
 import { Pool } from 'state/types'
@@ -20,7 +21,6 @@ const CakeVaultCardActions: React.FC<{
   pricePerFullShare: BigNumber
   stakingTokenPrice: number
   accountHasSharesStaked: boolean
-  account: string
   lastUpdated: number
   vaultFees: VaultFees
   isLoading: boolean
@@ -31,12 +31,12 @@ const CakeVaultCardActions: React.FC<{
   pricePerFullShare,
   stakingTokenPrice,
   accountHasSharesStaked,
-  account,
   lastUpdated,
   vaultFees,
   isLoading,
   setLastUpdated,
 }) => {
+  const { account } = useWeb3React()
   const { stakingToken, userData } = pool
   const [isVaultApproved, setIsVaultApproved] = useState(false)
   const cakeContract = useCake()
@@ -89,11 +89,10 @@ const CakeVaultCardActions: React.FC<{
             userInfo={userInfo}
             pricePerFullShare={pricePerFullShare}
             accountHasSharesStaked={accountHasSharesStaked}
-            account={account}
             setLastUpdated={setLastUpdated}
           />
         ) : (
-          <VaultApprovalAction pool={pool} account={account} isLoading={isLoading} setLastUpdated={setLastUpdated} />
+          <VaultApprovalAction pool={pool} isLoading={isLoading} setLastUpdated={setLastUpdated} />
         )}
       </Flex>
     </Flex>
