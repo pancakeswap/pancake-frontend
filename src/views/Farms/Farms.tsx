@@ -19,6 +19,7 @@ import { getFarmApr } from 'utils/apr'
 import { orderBy } from 'lodash'
 import { getAddress } from 'utils/addressHelpers'
 import isArchivedPid from 'utils/farmHelpers'
+import { latinise } from 'utils/latinise'
 import PageHeader from 'components/PageHeader'
 import { fetchFarmsPublicDataAsync, setLoadArchivedFarmsData } from 'state/farms'
 import Select, { OptionProps } from 'components/Select/Select'
@@ -182,9 +183,9 @@ const Farms: React.FC = () => {
       })
 
       if (query) {
-        const lowercaseQuery = query.toLowerCase()
+        const lowercaseQuery = latinise(query.toLowerCase())
         farmsToDisplayWithAPR = farmsToDisplayWithAPR.filter((farm: FarmWithStakedValue) => {
-          return farm.lpSymbol.toLowerCase().includes(lowercaseQuery)
+          return latinise(farm.lpSymbol.toLowerCase()).includes(lowercaseQuery)
         })
       }
       return farmsToDisplayWithAPR
