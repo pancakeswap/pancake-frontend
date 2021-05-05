@@ -12,6 +12,7 @@ import {
   TimerIcon,
   Skeleton,
   useTooltip,
+  Button,
 } from '@pancakeswap-libs/uikit'
 import { BASE_BSC_SCAN_URL, BASE_URL } from 'config'
 import { useBlock } from 'state/hooks'
@@ -32,14 +33,6 @@ const ExpandedWrapper = styled(Flex)`
   svg {
     height: 14px;
     width: 14px;
-  }
-`
-
-const MetaMaskWrapper = styled(Flex)`
-  cursor: pointer;
-  &:hover {
-    text-decoration: underline;
-    text-decoration-color: ${({ theme }) => theme.colors.primary};
   }
 `
 
@@ -145,16 +138,19 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({
         </Flex>
       )}
       {account && isMetaMaskInScope && tokenAddress && (
-        <MetaMaskWrapper justifyContent="flex-end">
-          <Text
-            color="primary"
-            small
+        <Flex justifyContent="flex-end">
+          <Button
+            variant="text"
+            p="0"
+            height="auto"
             onClick={() => registerToken(tokenAddress, earningToken.symbol, earningToken.decimals, imageSrc)}
           >
-            Add to Metamask
-          </Text>
-          <MetamaskIcon ml="4px" />
-        </MetaMaskWrapper>
+            <Text color="primary" fontSize="14px">
+              Add to Metamask
+            </Text>
+            <MetamaskIcon ml="4px" />
+          </Button>
+        </Flex>
       )}
     </ExpandedWrapper>
   )
