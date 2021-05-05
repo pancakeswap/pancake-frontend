@@ -32,7 +32,7 @@ const ApprovalAction: React.FC<ApprovalActionProps> = ({ pool, isLoading = false
       .on('receipt', () => {
         toastSuccess(
           `${t('Contract Enabled')}`,
-          `${t(`You can now stake in the %symbol %vault!`, { symbol: stakingToken.symbol })}`,
+          `${t(`You can now stake in the %symbol% vault!`, { symbol: stakingToken.symbol })}`,
         )
         setLastUpdated()
         setRequestedApproval(false)
