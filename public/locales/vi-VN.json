@@ -325,7 +325,7 @@
   "%num% of total": "%num% trong tổng số",
   "All estimated rates take into account this pool's %fee%% performance fee": "Tất các tỉ lệ ước tính đều suy xét đến %fee%% phí hiệu năng của nhóm này",
   "Sorry, you didn’t contribute enough LP tokens to meet the minimum threshold. You didn’t buy anything in this sale, but you can still reclaim your LP tokens.": "Rất tiếc, bạn không đóng góp đủ token LP để đáp ứng ngưỡng tối thiểu. Bạn đã không mua bất cứ thứ gì trong đợt bán này, nhưng bạn vẫn có thể lấy lại được token LP của mình.",
-  "Only applies within 3 days of staking. Unstaking after 3 days will not include a fee. Timer resets every time you stake new CAKE in the pool.": "Only applies within 3 days of staking. Unstaking after 3 days will not include a fee. Timer resets every time you stake new CAKE in the pool.",
+  "Only applies within 3 days of staking. Unstaking after 3 days will not include a fee. Timer resets every time you stake new CAKE in the pool.": "Chỉ áp dụng trong vòng 3 ngày đặc cọc. Huỷ cọc sau 3 ngày sẽ không bao gồm phí. Bộ định giờ sẽ đặt lại mỗi lần bạn đặt cọc CAKE mới trong nhóm.",
   "unstaking fee until": "unstaking fee until",
   "unstaking fee if withdrawn within 72h": "unstaking fee if withdrawn within 72h",
   "Unstaking fee: %fee%%": "Unstaking fee: %fee%%",
