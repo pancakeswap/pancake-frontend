@@ -16,6 +16,7 @@ import {
   fetchPoolsPublicDataAsync,
   fetchPoolsUserDataAsync,
   fetchCakeVaultPublicData,
+  fetchCakeVaultFees,
   setBlock,
 } from './actions'
 import { State, Farm, Pool, ProfileState, TeamsState, AchievementState, PriceState, FarmsState } from './types'
@@ -106,10 +107,15 @@ export const usePoolFromPid = (sousId: number): Pool => {
 }
 
 export const useFetchCakeVault = () => {
+  const { fastRefresh } = useRefresh()
   const dispatch = useAppDispatch()
 
   useEffect(() => {
     dispatch(fetchCakeVaultPublicData())
+  }, [dispatch, fastRefresh])
+
+  useEffect(() => {
+    dispatch(fetchCakeVaultFees())
   }, [dispatch])
 }
 

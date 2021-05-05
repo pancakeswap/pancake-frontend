@@ -10,7 +10,7 @@ import {
   fetchUserStakeBalances,
   fetchUserPendingRewards,
 } from './fetchPoolsUser'
-import { fetchPublicVaultData } from './fetchVaultPublic'
+import { fetchPublicVaultData, fetchVaultFees } from './fetchVaultPublic'
 
 const initialState: PoolsState = {
   data: [...poolsConfig],
@@ -18,12 +18,14 @@ const initialState: PoolsState = {
     totalShares: null,
     pricePerFullShare: null,
     totalCakeInVault: null,
-    performanceFee: null,
-    callFee: null,
-    withdrawalFee: null,
-    withdrawalFeePeriod: null,
     estimatedCallBountyReward: null,
     totalPendingCakeRewards: null,
+    fees: {
+      performanceFee: null,
+      callFee: null,
+      withdrawalFee: null,
+      withdrawalFeePeriod: null,
+    },
   },
 }
 
@@ -54,7 +56,7 @@ export const PoolsSlice = createSlice({
       }
     },
     setCakeVaultPublicData: (state, action: PayloadAction<CakeVault>) => {
-      state.cakeVault = action.payload
+      state.cakeVault = { ...state.cakeVault, ...action.payload }
     },
   },
 })
@@ -141,6 +143,11 @@ export const updateUserPendingReward = (sousId: number, account: string) => asyn
 export const fetchCakeVaultPublicData = () => async (dispatch) => {
   const publicVaultInfo = await fetchPublicVaultData()
   dispatch(setCakeVaultPublicData(publicVaultInfo))
+}
+
+export const fetchCakeVaultFees = () => async (dispatch) => {
+  const vaultFees = await fetchVaultFees()
+  dispatch(setCakeVaultPublicData({ fees: vaultFees }))
 }
 
 export default PoolsSlice.reducer

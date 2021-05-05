@@ -7,22 +7,9 @@ const cakeVaultContract = getCakeVaultContract()
 
 export const fetchPublicVaultData = async () => {
   try {
-    const [
-      sharePrice,
-      shares,
-      performanceFee,
-      callFee,
-      withdrawalFee,
-      withdrawalFeePeriod,
-      estimatedCallBountyReward,
-      totalPendingCakeRewards,
-    ] = await makeBatchRequest([
+    const [sharePrice, shares, estimatedCakeBountyReward, totalPendingCakeHarvest] = await makeBatchRequest([
       cakeVaultContract.methods.getPricePerFullShare().call,
       cakeVaultContract.methods.totalShares().call,
-      cakeVaultContract.methods.performanceFee().call,
-      cakeVaultContract.methods.withdrawFeePeriod().call,
-      cakeVaultContract.methods.callFee().call,
-      cakeVaultContract.methods.withdrawFee().call,
       cakeVaultContract.methods.calculateHarvestCakeRewards().call,
       cakeVaultContract.methods.calculateTotalPendingCakeRewards().call,
     ])
@@ -33,12 +20,27 @@ export const fetchPublicVaultData = async () => {
       totalShares: totalSharesAsBigNumber.toJSON(),
       pricePerFullShare: sharePriceAsBigNumber.toJSON(),
       totalCakeInVault: totalCakeInVaultEstimate.cakeAsBigNumber.toJSON(),
+      estimatedCakeBountyReward: new BigNumber(estimatedCakeBountyReward as string).toJSON(),
+      totalPendingCakeHarvest: new BigNumber(totalPendingCakeHarvest as string).toJSON(),
+    }
+  } catch (error) {
+    return null
+  }
+}
+
+export const fetchVaultFees = async () => {
+  try {
+    const [performanceFee, callFee, withdrawalFee, withdrawalFeePeriod] = await makeBatchRequest([
+      cakeVaultContract.methods.performanceFee().call,
+      cakeVaultContract.methods.withdrawFeePeriod().call,
+      cakeVaultContract.methods.callFee().call,
+      cakeVaultContract.methods.withdrawFee().call,
+    ])
+    return {
       performanceFee: performanceFee as string,
       callFee: callFee as string,
       withdrawalFee: withdrawalFee as string,
       withdrawalFeePeriod: withdrawalFeePeriod as string,
-      estimatedCallBountyReward: new BigNumber(estimatedCallBountyReward as string).toJSON(),
-      totalPendingCakeRewards: new BigNumber(totalPendingCakeRewards as string).toJSON(),
     }
   } catch (error) {
     return null

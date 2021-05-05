@@ -60,18 +60,20 @@ export interface FarmsState {
 }
 
 export interface CakeVault {
-  // When the BigNumber typed props are required, it throws an error after serialising the BigNumber with .toJSON(): Type 'string' is not assignable to type 'BigNumber'
-  // Making them optional fixes the error.
-  totalShares: string
-  pricePerFullShare: string
-  totalCakeInVault: string
-  performanceFee: string
-  callFee: string
-  withdrawalFee: string
-  withdrawalFeePeriod: string
-  estimatedCallBountyReward: string
-  totalPendingCakeRewards: string
+  // When the balance strings are typed as BigNumbers, it throws an error after serialising the BigNumber with .toJSON(): Type 'string' is not assignable to type 'BigNumber'
+  totalShares?: string
+  pricePerFullShare?: string
+  totalCakeInVault?: string
+  estimatedCakeBountyReward?: string
+  totalPendingCakeHarvest?: string
+  fees?: {
+    performanceFee: string
+    callFee: string
+    withdrawalFee: string
+    withdrawalFeePeriod: string
+  }
 }
+
 export interface PoolsState {
   data: Pool[]
   cakeVault: CakeVault
