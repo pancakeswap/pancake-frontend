@@ -1,7 +1,8 @@
 /* eslint-disable no-param-reassign */
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import poolsConfig from 'config/constants/pools'
 import { BIG_ZERO } from 'utils/bigNumber'
+import { PoolsState, Pool, CakeVault } from 'state/types'
 import { fetchPoolsBlockLimits, fetchPoolsStakingLimits, fetchPoolsTotalStaking } from './fetchPools'
 import {
   fetchPoolsAllowance,
@@ -9,9 +10,16 @@ import {
   fetchUserStakeBalances,
   fetchUserPendingRewards,
 } from './fetchPoolsUser'
-import { PoolsState, Pool } from '../types'
+import { getVaultSharesInfo } from './getVaultSharesInfo'
 
-const initialState: PoolsState = { data: [...poolsConfig] }
+const initialState: PoolsState = {
+  data: [...poolsConfig],
+  cakeVault: {
+    totalShares: null,
+    totalCakeInVault: null,
+    pricePerFullShare: null,
+  },
+}
 
 export const PoolsSlice = createSlice({
   name: 'Pools',
@@ -39,11 +47,14 @@ export const PoolsSlice = createSlice({
         state.data[index] = { ...state.data[index], userData: { ...state.data[index].userData, [field]: value } }
       }
     },
+    setCakeVaultPublicData: (state, action: PayloadAction<CakeVault>) => {
+      state.cakeVault = action.payload
+    },
   },
 })
 
 // Actions
-export const { setPoolsPublicData, setPoolsUserData, updatePoolsUserData } = PoolsSlice.actions
+export const { setPoolsPublicData, setPoolsUserData, updatePoolsUserData, setCakeVaultPublicData } = PoolsSlice.actions
 
 // Thunks
 export const fetchPoolsPublicDataAsync = () => async (dispatch) => {
@@ -119,6 +130,11 @@ export const updateUserStakedBalance = (sousId: number, account: string) => asyn
 export const updateUserPendingReward = (sousId: number, account: string) => async (dispatch) => {
   const pendingRewards = await fetchUserPendingRewards(account)
   dispatch(updatePoolsUserData({ sousId, field: 'pendingReward', value: pendingRewards[sousId] }))
+}
+
+export const fetchCakeVaultPublicData = () => async (dispatch) => {
+  const vaultSharesInfo = await getVaultSharesInfo()
+  dispatch(setCakeVaultPublicData(vaultSharesInfo))
 }
 
 export default PoolsSlice.reducer

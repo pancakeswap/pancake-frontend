@@ -45,13 +45,15 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({
 }) => {
   const { t } = useTranslation()
   const { currentBlock } = useBlock()
-  const { stakingToken, earningToken, totalStaked, startBlock, endBlock, isFinished, contractAddress } = pool
+
+  const { stakingToken, earningToken, totalStaked, startBlock, endBlock, isFinished, contractAddress, sousId } = pool
 
   const tokenAddress = earningToken.address ? getAddress(earningToken.address) : ''
   const poolContractAddress = getAddress(contractAddress)
   const cakeVaultContractAddress = getCakeVaultAddress()
   const imageSrc = `${BASE_URL}/images/tokens/${earningToken.symbol.toLowerCase()}.png`
   const isMetaMaskInScope = !!(window as WindowChain).ethereum?.isMetaMask
+  const isManualCakePool = sousId === 0
 
   const shouldShowBlockCountdown = Boolean(!isFinished && startBlock && endBlock)
   const blocksUntilStart = Math.max(startBlock - currentBlock, 0)
@@ -63,6 +65,13 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({
     { placement: 'bottom-end' },
   )
 
+  const getTotalStakedBalance = () => {
+    if (isAutoVault) {
+      return getBalanceNumber(totalCakeInVault, stakingToken.decimals)
+    }
+    return getBalanceNumber(totalStaked, stakingToken.decimals)
+  }
+
   return (
     <ExpandedWrapper flexDirection="column">
       <Flex mb="2px" justifyContent="space-between" alignItems="center">
@@ -70,14 +79,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({
         <Flex alignItems="flex-start">
           {totalStaked ? (
             <>
-              <Balance
-                fontSize="14px"
-                value={
-                  isAutoVault
-                    ? getBalanceNumber(totalCakeInVault, stakingToken.decimals)
-                    : getBalanceNumber(totalStaked, stakingToken.decimals)
-                }
-              />
+              <Balance fontSize="14px" value={getTotalStakedBalance()} />
               <Text ml="4px" fontSize="14px">
                 {stakingToken.symbol}
               </Text>

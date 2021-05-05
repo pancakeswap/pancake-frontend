@@ -59,8 +59,14 @@ export interface FarmsState {
   userDataLoaded: boolean
 }
 
+export interface CakeVault {
+  totalShares: BigNumber
+  totalCakeInVault: BigNumber
+  pricePerFullShare: BigNumber
+}
 export interface PoolsState {
   data: Pool[]
+  cakeVault: CakeVault
 }
 
 export interface ProfileState {
