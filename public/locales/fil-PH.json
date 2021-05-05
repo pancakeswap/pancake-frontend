@@ -1,5 +1,5 @@
 {
-  "Farm": "Sakahan",
+  "Farm": "Farm",
   "Staking": "Pag-stake",
   "Syrup Pool": "Syrup Pool",
   "Exchange": "Palitan",
@@ -383,9 +383,9 @@
   "Profile Active!": "Aktibo ang Profile!",
   "Get CAKE-BNB LP Tokens": "Kuhanin ang mga CAKE-BNB LP Token",
   "Stake CAKE and BNB in the liquidity pool to get LP tokens.": "I-stake ang CAKE at BNB sa liquidity pool upang makakuha ng mga token ng LP.",
-  "You’ll spend them to buy IFO sale tokens.": "You’ll spend them to buy IFO sale tokens.",
-  "Commit LP Tokens": "Commit LP Tokens",
-  "When the IFO sales are live, you can “commit” your LP tokens to buy the tokens being sold.": "We recommend committing to the Basic Sale first, but you can do both if you want.",
-  "Claim your tokens and achievement": "Claim your tokens and achievement",
-  "After the IFO sales finish, you can claim any IFO tokens that you bought, and any unspent CAKE-BNB LP tokens will be returned to your wallet.": "After the IFO sales finish, you can claim any IFO tokens that you bought, and any unspent CAKE-BNB LP tokens will be returned to your wallet."
+  "You’ll spend them to buy IFO sale tokens.": "Gagastusin mo ang mga ito upang bumili ng mga token sa pagbebenta ng IFO.",
+  "Commit LP Tokens": "Kumuha ng mga Token ng LP",
+  "When the IFO sales are live, you can “commit” your LP tokens to buy the tokens being sold.": "Inirerekumenda naming kumuha muna sa Pangunahing Sale, ngunit maaari mong gawin ang pareho kung nais mo.",
+  "Claim your tokens and achievement": "I-claim ang iyong mga token at matagumpay na nakamit",
+  "After the IFO sales finish, you can claim any IFO tokens that you bought, and any unspent CAKE-BNB LP tokens will be returned to your wallet.": "Matapos ang sales finish ng IFO, maaari kang mag-claim ng anumang mga token ng IFO na iyong binili, at ang anumang mga hindi nagamit na token ng CAKE-BNB LP ay ibabalik sa iyong wallet."
 }
