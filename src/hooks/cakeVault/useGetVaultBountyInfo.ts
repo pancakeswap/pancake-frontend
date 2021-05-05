@@ -2,10 +2,12 @@ import { useState, useEffect } from 'react'
 import BigNumber from 'bignumber.js'
 import { useGetApiPrice } from 'state/hooks'
 import { useCakeVaultContract } from 'hooks/useContract'
+import useRefresh from 'hooks/useRefresh'
 import makeBatchRequest from 'utils/makeBatchRequest'
 import { getCakeAddress } from 'utils/addressHelpers'
 
-const useGetVaultBountyInfo = (refresh?: number) => {
+const useGetVaultBountyInfo = () => {
+  const { fastRefresh } = useRefresh()
   const cakeVaultContract = useCakeVaultContract()
   const [estimatedDollarBountyReward, setEstimatedDollarBountyReward] = useState(null)
   const [estimatedCakeBountyReward, setEstimatedCakeBountyReward] = useState(null)
@@ -29,7 +31,7 @@ const useGetVaultBountyInfo = (refresh?: number) => {
       setTotalPendingCakeHarvest(new BigNumber(pendingTotalCakeHarvest as string))
     }
     fetchRewards()
-  }, [cakeVaultContract, cakePrice, refresh])
+  }, [cakeVaultContract, cakePrice, fastRefresh])
 
   return { estimatedCakeBountyReward, estimatedDollarBountyReward, totalPendingCakeHarvest }
 }
