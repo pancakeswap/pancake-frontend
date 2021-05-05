@@ -60,7 +60,6 @@ export interface FarmsState {
 }
 
 export interface CakeVault {
-  // When the balance strings are typed as BigNumbers, it throws an error after serialising the BigNumber with .toJSON(): Type 'string' is not assignable to type 'BigNumber'
   totalShares?: string
   pricePerFullShare?: string
   totalCakeInVault?: string
