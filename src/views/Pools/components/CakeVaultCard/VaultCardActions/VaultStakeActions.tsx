@@ -3,7 +3,6 @@ import { Flex, Button, useModal, Skeleton } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
 import { Pool } from 'state/types'
-import { VaultFees } from 'hooks/cakeVault/useGetVaultFees'
 import { VaultUser } from 'views/Pools/types'
 import NotEnoughTokensModal from '../../PoolCard/Modals/NotEnoughTokensModal'
 import VaultStakeModal from '../VaultStakeModal'
@@ -17,7 +16,6 @@ interface VaultStakeActionsProps {
   accountHasSharesStaked: boolean
   pricePerFullShare: BigNumber
   isLoading?: boolean
-  vaultFees: VaultFees
   setLastUpdated: () => void
 }
 
@@ -29,7 +27,6 @@ const VaultStakeActions: React.FC<VaultStakeActionsProps> = ({
   accountHasSharesStaked,
   pricePerFullShare,
   isLoading = false,
-  vaultFees,
   setLastUpdated,
 }) => {
   const { stakingToken } = pool
@@ -54,7 +51,6 @@ const VaultStakeActions: React.FC<VaultStakeActionsProps> = ({
         userInfo={userInfo}
         pricePerFullShare={pricePerFullShare}
         setLastUpdated={setLastUpdated}
-        vaultFees={vaultFees}
       />
     ) : (
       <Button onClick={stakingTokenBalance.gt(0) ? onPresentStake : onPresentTokenRequired}>{t('Stake')}</Button>

@@ -67,10 +67,10 @@ export interface CakeVault {
   estimatedCakeBountyReward?: string
   totalPendingCakeHarvest?: string
   fees?: {
-    performanceFee: string
-    callFee: string
-    withdrawalFee: string
-    withdrawalFeePeriod: string
+    performanceFee: number
+    callFee: number
+    withdrawalFee: number
+    withdrawalFeePeriod: number
   }
 }
 

@@ -8,7 +8,6 @@ import { BIG_TEN } from 'utils/bigNumber'
 import { useCakeVaultContract } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
 import useWithdrawalFeeTimer from 'hooks/cakeVault/useWithdrawalFeeTimer'
-import { VaultFees } from 'hooks/cakeVault/useGetVaultFees'
 import BigNumber from 'bignumber.js'
 import { getFullDisplayBalance, formatNumber, getDecimalAmount } from 'utils/formatBalance'
 import useToast from 'hooks/useToast'
@@ -24,7 +23,6 @@ interface VaultStakeModalProps {
   userInfo: VaultUser
   isRemovingStake?: boolean
   pricePerFullShare?: BigNumber
-  vaultFees?: VaultFees
   setLastUpdated: () => void
   onDismiss?: () => void
 }
@@ -40,7 +38,6 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
   pricePerFullShare,
   userInfo,
   isRemovingStake = false,
-  vaultFees,
   onDismiss,
   setLastUpdated,
 }) => {
@@ -214,7 +211,6 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
         <FeeSummary
           stakingTokenSymbol={stakingToken.symbol}
           lastDepositedTime={userInfo.lastDepositedTime}
-          vaultFees={vaultFees}
           stakeAmount={stakeAmount}
         />
       )}

@@ -5,8 +5,6 @@ import { Flex, Text, Box } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
 import { useCake, useCakeVaultContract } from 'hooks/useContract'
-import { BIG_ZERO } from 'utils/bigNumber'
-import { VaultFees } from 'hooks/cakeVault/useGetVaultFees'
 import { Pool } from 'state/types'
 import { VaultUser } from 'views/Pools/types'
 import VaultApprovalAction from './VaultApprovalAction'
@@ -23,7 +21,6 @@ const CakeVaultCardActions: React.FC<{
   stakingTokenPrice: number
   accountHasSharesStaked: boolean
   lastUpdated: number
-  vaultFees: VaultFees
   isLoading: boolean
   setLastUpdated: () => void
 }> = ({
@@ -33,7 +30,6 @@ const CakeVaultCardActions: React.FC<{
   stakingTokenPrice,
   accountHasSharesStaked,
   lastUpdated,
-  vaultFees,
   isLoading,
   setLastUpdated,
 }) => {
@@ -86,7 +82,6 @@ const CakeVaultCardActions: React.FC<{
             pool={pool}
             stakingTokenBalance={stakingTokenBalance}
             stakingTokenPrice={stakingTokenPrice}
-            vaultFees={vaultFees}
             userInfo={userInfo}
             pricePerFullShare={pricePerFullShare}
             accountHasSharesStaked={accountHasSharesStaked}

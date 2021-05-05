@@ -14,8 +14,8 @@ import {
   useTooltip,
 } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import useGetVaultFees from 'hooks/cakeVault/useGetVaultFees'
 import { getFullDisplayBalance } from 'utils/formatBalance'
+import { useCakeVault } from 'state/hooks'
 import useGetVaultBountyInfo from 'hooks/cakeVault/useGetVaultBountyInfo'
 import BountyModal from './BountyModal'
 
@@ -33,7 +33,6 @@ const InlineText = styled(Text)`
 const BountyCard = () => {
   const { t } = useTranslation()
   const { estimatedCakeBountyReward, estimatedDollarBountyReward, totalPendingCakeHarvest } = useGetVaultBountyInfo()
-  const { callFee } = useGetVaultFees()
   const [bounties, setBounties] = useState({
     modalCakeBountyToDisplay: '',
     cardCakeBountyToDisplay: '',
@@ -49,6 +48,9 @@ const BountyCard = () => {
       })
     }
   }, [estimatedCakeBountyReward, estimatedDollarBountyReward, totalPendingCakeHarvest])
+  const {
+    fees: { callFee },
+  } = useCakeVault()
 
   const TooltipComponent = () => (
     <>

@@ -32,15 +32,16 @@ export const fetchVaultFees = async () => {
   try {
     const [performanceFee, callFee, withdrawalFee, withdrawalFeePeriod] = await makeBatchRequest([
       cakeVaultContract.methods.performanceFee().call,
-      cakeVaultContract.methods.withdrawFeePeriod().call,
       cakeVaultContract.methods.callFee().call,
       cakeVaultContract.methods.withdrawFee().call,
+      cakeVaultContract.methods.withdrawFeePeriod().call,
     ])
+
     return {
-      performanceFee: performanceFee as string,
-      callFee: callFee as string,
-      withdrawalFee: withdrawalFee as string,
-      withdrawalFeePeriod: withdrawalFeePeriod as string,
+      performanceFee: parseInt(performanceFee as string, 10),
+      callFee: parseInt(callFee as string, 10),
+      withdrawalFee: parseInt(withdrawalFee as string, 10),
+      withdrawalFeePeriod: parseInt(withdrawalFeePeriod as string, 10),
     }
   } catch (error) {
     return null
