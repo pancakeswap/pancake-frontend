@@ -1,5 +1,6 @@
 import React, { createContext, useCallback, useEffect, useState } from 'react'
-import { EN, languages, Language } from '../../config/localization/languages'
+import { Language } from '@pancakeswap-libs/uikit'
+import { EN, languages } from '../../config/localization/languages'
 import translations from '../../config/localization/translations.json'
 import { ContextApi, ContextData, ProviderState } from './types'
 import { LS_KEY, fetchLocale, getLanguageCodeFromLS } from './helpers'
@@ -10,8 +11,8 @@ const initialState: ProviderState = {
 }
 
 // Export the translations directly
-export const languageMap = new Map<Language['code'], Record<string, string>>()
-languageMap.set(EN.code, translations)
+export const languageMap = new Map<Language['locale'], Record<string, string>>()
+languageMap.set(EN.locale, translations)
 
 export const LanguageContext = createContext<ContextApi>(undefined)
 
@@ -30,8 +31,8 @@ export const LanguageProvider: React.FC = ({ children }) => {
     const fetchInitialLocales = async () => {
       const codeFromStorage = getLanguageCodeFromLS()
 
-      if (codeFromStorage !== EN.code) {
-        const enLocale = languageMap.get(EN.code)
+      if (codeFromStorage !== EN.locale) {
+        const enLocale = languageMap.get(EN.locale)
         const currentLocale = await fetchLocale(codeFromStorage)
         languageMap.set(codeFromStorage, { ...enLocale, ...currentLocale })
       }
@@ -46,18 +47,18 @@ export const LanguageProvider: React.FC = ({ children }) => {
   }, [setState])
 
   const setLanguage = async (language: Language) => {
-    if (!languageMap.has(language.code)) {
+    if (!languageMap.has(language.locale)) {
       setState((prevState) => ({
         ...prevState,
         isFetching: true,
       }))
 
-      const locale = await fetchLocale(language.code)
-      const enLocale = languageMap.get(EN.code)
+      const locale = await fetchLocale(language.locale)
+      const enLocale = languageMap.get(EN.locale)
 
       // Merge the EN locale to ensure that any locale fetched has all the keys
-      languageMap.set(language.code, { ...enLocale, ...locale })
-      localStorage.setItem(LS_KEY, language.code)
+      languageMap.set(language.locale, { ...enLocale, ...locale })
+      localStorage.setItem(LS_KEY, language.locale)
 
       setState((prevState) => ({
         ...prevState,
@@ -65,7 +66,7 @@ export const LanguageProvider: React.FC = ({ children }) => {
         currentLanguage: language,
       }))
     } else {
-      localStorage.setItem(LS_KEY, language.code)
+      localStorage.setItem(LS_KEY, language.locale)
       setState((prevState) => ({
         ...prevState,
         isFetching: false,
@@ -76,13 +77,14 @@ export const LanguageProvider: React.FC = ({ children }) => {
 
   const translate = useCallback(
     (key: string, data?: ContextData) => {
-      const translationSet = languageMap.has(currentLanguage.code)
-        ? languageMap.get(currentLanguage.code)
-        : languageMap.get(EN.code)
+      const translationSet = languageMap.has(currentLanguage.locale)
+        ? languageMap.get(currentLanguage.locale)
+        : languageMap.get(EN.locale)
       const translatedText = translationSet[key] || key
 
       // Check the existence of at least one combination of %%, separated by 1 or more non space characters
       const includesVariable = translatedText.match(/%\S+?%/gm)
+
       if (includesVariable && data) {
         let interpolatedText = translatedText
         Object.keys(data).forEach((dataKey) => {
