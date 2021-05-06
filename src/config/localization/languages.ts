@@ -1,10 +1,7 @@
 import { Language } from '@pancakeswap-libs/uikit'
 
 export const AR: Language = { locale: 'ar-SA', language: 'العربية', code: 'ar' }
-// export const CA: Language = { locale: 'ca', language: 'Català', code: 'ca' }
-// export const CS: Language = { locale: 'cs', language: 'Čeština', code: 'cs' }
 export const EN: Language = { locale: 'en-US', language: 'English', code: 'en' }
-// export const DA: Language = { locale: 'da', language: 'Dansk', code: 'da' }
 export const DE: Language = { locale: 'de-DE', language: 'Deutsch', code: 'de' }
 export const EL: Language = { locale: 'el-GR', language: 'Ελληνικά', code: 'el' }
 export const ESES: Language = { locale: 'es-ES', language: 'Español', code: 'es-ES' }
@@ -21,7 +18,6 @@ export const NL: Language = { locale: 'nl-NL', language: 'Nederlands', code: 'nl
 export const PTBR: Language = { locale: 'pt-BR', language: 'Português (Brazil)', code: 'pt-br' }
 export const RO: Language = { locale: 'ro-RO', language: 'Română', code: 'ro' }
 export const RU: Language = { locale: 'ru-RU', language: 'Русский', code: 'ru' }
-// export const SR: Language = { locale: 'sr', language: 'Српски', code: 'sr' }
 export const SVSE: Language = { locale: 'sv-SE', language: 'Svenska', code: 'sv' }
 export const TA: Language = { locale: 'ta-IN', language: 'தமிழ்', code: 'ta' }
 export const TR: Language = { locale: 'tr-TR', language: 'Türkçe', code: 'tr' }
