@@ -18,14 +18,49 @@ const getPrizePoolAmount = (totalAmount: PrizePoolRowProps['totalAmount']) => {
   return formatBnb(totalAmount)
 }
 
+const Row = ({ children, ...props }) => {
+  return (
+    <Flex alignItems="center" justifyContent="space-between" {...props}>
+      {children}
+    </Flex>
+  )
+}
+
 export const PrizePoolRow: React.FC<PrizePoolRowProps> = ({ totalAmount, ...props }) => {
   const { t } = useTranslation()
 
   return (
-    <Flex alignItems="center" justifyContent="space-between" {...props}>
+    <Row {...props}>
       <Text bold>{t('Prize Pool')}:</Text>
       <Text bold>{`${getPrizePoolAmount(totalAmount)} BNB`}</Text>
-    </Flex>
+    </Row>
+  )
+}
+
+// Payout Row
+interface PayoutRowProps extends FlexProps {
+  positionLabel: string
+  multiplier: number
+  amount: number
+}
+
+export const PayoutRow: React.FC<PayoutRowProps> = ({ positionLabel, multiplier, amount, ...props }) => {
+  const { t } = useTranslation()
+  const formattedMultiplier = `${multiplier.toLocaleString(undefined, { maximumFractionDigits: 2 })}x`
+
+  return (
+    <Row height="18px" {...props}>
+      <Text fontSize="12px" textTransform="uppercase">
+        {positionLabel}:
+      </Text>
+      <Flex alignItems="center">
+        <Text fontSize="12px" lineHeight="18px" bold>
+          {t('%multiplier% Payout', { multiplier: formattedMultiplier })}
+        </Text>
+        <Text mx="4px">|</Text>
+        <Text fontSize="12px" lineHeight="18px">{`${formatBnb(amount)} BNB`}</Text>
+      </Flex>
+    </Row>
   )
 }
 
@@ -38,10 +73,10 @@ export const LockPriceRow: React.FC<LockPriceRowProps> = ({ lockPrice, ...props 
   const { t } = useTranslation()
 
   return (
-    <Flex alignItems="center" justifyContent="space-between" {...props}>
+    <Row {...props}>
       <Text fontSize="14px">{t('Locked Price')}:</Text>
       <Text fontSize="14px">{formatUsd(lockPrice)}</Text>
-    </Flex>
+    </Row>
   )
 }
 
