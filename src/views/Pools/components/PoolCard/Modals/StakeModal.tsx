@@ -110,7 +110,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
       </Flex>
       <BalanceInput
         value={stakeAmount}
-        onUserInput={(input) => handleStakeInputChange(input)}
+        onUserInput={handleStakeInputChange}
         currencyValue={`~${usdValueStaked || 0} USD`}
       />
       <Text mt="8px" ml="auto" color="textSubtle" fontSize="12px" mb="8px">

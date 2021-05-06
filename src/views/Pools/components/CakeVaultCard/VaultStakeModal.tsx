@@ -56,8 +56,8 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
   const { hasUnstakingFee } = useWithdrawalFeeTimer(parseInt(userInfo.lastDepositedTime))
   const usdValueStaked = stakeAmount && formatNumber(new BigNumber(stakeAmount).times(stakingTokenPrice).toNumber())
 
-  const handleStakeInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const inputValue = event.target.value || '0'
+  const handleStakeInputChange = (input: string) => {
+    const inputValue = input || '0'
     const convertedInput = new BigNumber(inputValue).multipliedBy(BIG_TEN.pow(stakingToken.decimals))
     const percentage = Math.floor(convertedInput.dividedBy(stakingMax).multipliedBy(100).toNumber())
     setStakeAmount(inputValue)
@@ -174,7 +174,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
       </Flex>
       <BalanceInput
         value={stakeAmount}
-        onChange={handleStakeInputChange}
+        onUserInput={handleStakeInputChange}
         currencyValue={`~${usdValueStaked || 0} USD`}
       />
       <Text mt="8px" ml="auto" color="textSubtle" fontSize="12px" mb="8px">

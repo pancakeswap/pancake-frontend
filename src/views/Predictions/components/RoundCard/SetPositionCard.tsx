@@ -1,4 +1,4 @@
-import React, { ChangeEventHandler, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   ArrowBackIcon,
   CardBody,
@@ -190,8 +190,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
         </Flex>
         <BalanceInput
           value={value}
-          onUserInput={(input) => handleChange(input)}
-          onChange={handleChange}
+          onUserInput={handleChange}
           isWarning={showFieldWarning}
           inputProps={{ disabled: !account || isTxPending }}
         />
