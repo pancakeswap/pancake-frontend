@@ -344,7 +344,7 @@
   "Enter %direction%": "Introducir %direction%",
   "Prize Pool:": "Pool del premio:",
   "Charts": "Gráficas",
-  "Your History": "Su historial",
+  "Your History": "Tu historial",
   "All": "Todo",
   "Collected": "Recogido",
   "Uncollected": "No recogido",
@@ -364,7 +364,7 @@
   "Automatic restaking": "Reinversión automática",
   "Manual CAKE": "CAKE manual",
   "Auto CAKE": "CAKE automático",
-  "Auto CAKE Bounty": "Recompensa del CAKE automático",
+  "Auto CAKE Bounty": "Premio del CAKE automático",
   "Claim": "Cobrar",
   "Any funds you stake in this pool will be automagically harvested and restaked (compounded) for you.": "Cualquier fondo que inviertas en este pool será automáticamente cosechado y se volverá a invertir (cálculo del interés compuesto) para ti.",
   "Total staked": "Total invertido",
@@ -387,5 +387,6 @@
   "Commit LP Tokens": "Asigna tokens LP",
   "When the IFO sales are live, you can “commit” your LP tokens to buy the tokens being sold.": "Recomendamos que le asignes primero la Venta básica, pero puedes hacer ambas cosas si lo deseas.",
   "Claim your tokens and achievement": "Cobra tus tokens y logros",
-  "After the IFO sales finish, you can claim any IFO tokens that you bought, and any unspent CAKE-BNB LP tokens will be returned to your wallet.": "Después de terminar las ventas de IFO, podrás cobrar cualquier token de IFO que hayas comprado, y cualquier token LP CAKE-BNB que no hayas gastado se te devolverá a tu monedero."
+  "After the IFO sales finish, you can claim any IFO tokens that you bought, and any unspent CAKE-BNB LP tokens will be returned to your wallet.": "Después de terminar las ventas de IFO, podrás cobrar cualquier token de IFO que hayas comprado, y cualquier token LP CAKE-BNB que no hayas gastado se te devolverá a tu monedero.",
+  "This round's closing transaction has been submitted to the blockchain, and is waiting to be confirmed.": "This round's closing transaction has been submitted to the blockchain, and is waiting to be confirmed."
 }
