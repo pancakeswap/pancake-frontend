@@ -6,7 +6,7 @@ import Heading from "../../components/Heading/Heading";
 import Text from "../../components/Text/Text";
 import { MenuEntry } from "./components/MenuEntry";
 import Menu from "./Menu";
-import { LangType } from "./types";
+import { Language } from "./types";
 import { links } from "./config";
 
 export default {
@@ -15,7 +15,7 @@ export default {
   argTypes: {},
 };
 
-const langs: LangType[] = [...Array(20)].map((_, i) => ({ code: `en${i}`, language: `English${i}` }));
+const langs: Language[] = [...Array(20)].map((_, i) => ({ code: `en${i}`, language: `English${i}` }));
 
 // This hook is used to simulate a props change, and force a re rendering
 const useProps = () => {
