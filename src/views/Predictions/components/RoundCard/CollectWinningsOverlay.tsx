@@ -50,32 +50,38 @@ const CollectWinningsOverlay: React.FC<CollectWinningsOverlayProps> = ({
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const currentEpoch = useGetCurrentEpoch()
-  const [claimedLocal, setClaimedLocal] = useState(false)
 
   // Check if the wallet can collect the bet
   // We do it here because it is not guaranteed the bet info will be in the history
   useEffect(() => {
+    let isCancelled = false
+
     const fetchBet = async () => {
       const bets = await getBetHistory({ user: account.toLowerCase(), round: roundId, claimed: false })
+      if (!isCancelled) {
+        if (bets.length === 1) {
+          const [firstBetResponse] = bets
+          const bet = transformBetResponse(firstBetResponse)
 
-      if (bets.length === 1) {
-        const [firstBetResponse] = bets
-        const bet = transformBetResponse(firstBetResponse)
-
-        if (bet.position === bet.round.position) {
-          setState({
-            betId: bet.id,
-            epoch: bet.round.epoch,
-            payout: getPayout(bet),
-          })
+          if (bet.position === bet.round.position) {
+            setState({
+              betId: bet.id,
+              epoch: bet.round.epoch,
+              payout: getPayout(bet),
+            })
+          }
         }
       }
     }
 
-    if (account && hasEntered && !claimedLocal) {
+    if (account && hasEntered) {
       fetchBet()
     }
-  }, [account, roundId, hasEntered, currentEpoch, setState, claimedLocal])
+
+    return () => {
+      isCancelled = true
+    }
+  }, [account, roundId, hasEntered, currentEpoch, setState])
 
   if (!state.epoch) {
     return null
@@ -84,7 +90,6 @@ const CollectWinningsOverlay: React.FC<CollectWinningsOverlayProps> = ({
   const handleSuccess = async () => {
     dispatch(markBetAsCollected({ betId: state.betId, account }))
     setState({ betId: null, epoch: null, payout: 0 })
-    setClaimedLocal(true)
   }
 
   return (
