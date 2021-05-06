@@ -2,7 +2,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import poolsConfig from 'config/constants/pools'
 import { BIG_ZERO } from 'utils/bigNumber'
-import { PoolsState, Pool, CakeVault } from 'state/types'
+import { PoolsState, Pool, CakeVault, VaultFees } from 'state/types'
 import { fetchPoolsBlockLimits, fetchPoolsStakingLimits, fetchPoolsTotalStaking } from './fetchPools'
 import {
   fetchPoolsAllowance,
@@ -58,11 +58,21 @@ export const PoolsSlice = createSlice({
     setCakeVaultPublicData: (state, action: PayloadAction<CakeVault>) => {
       state.cakeVault = { ...state.cakeVault, ...action.payload }
     },
+    setCakeVaultFees: (state, action: PayloadAction<VaultFees>) => {
+      const fees = action.payload
+      state.cakeVault = { ...state.cakeVault, fees }
+    },
   },
 })
 
 // Actions
-export const { setPoolsPublicData, setPoolsUserData, updatePoolsUserData, setCakeVaultPublicData } = PoolsSlice.actions
+export const {
+  setPoolsPublicData,
+  setPoolsUserData,
+  updatePoolsUserData,
+  setCakeVaultPublicData,
+  setCakeVaultFees,
+} = PoolsSlice.actions
 
 // Thunks
 export const fetchPoolsPublicDataAsync = () => async (dispatch) => {
@@ -147,7 +157,7 @@ export const fetchCakeVaultPublicData = () => async (dispatch) => {
 
 export const fetchCakeVaultFees = () => async (dispatch) => {
   const vaultFees = await fetchVaultFees()
-  dispatch(setCakeVaultPublicData({ fees: vaultFees }))
+  dispatch(setCakeVaultFees(vaultFees))
 }
 
 export default PoolsSlice.reducer
