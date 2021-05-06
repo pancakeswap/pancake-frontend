@@ -387,5 +387,6 @@
   "Commit LP Tokens": "Gắn kết token LP",
   "When the IFO sales are live, you can “commit” your LP tokens to buy the tokens being sold.": "Chúng tôi đề xuất nên gắn kết trước tiên với Bán cơ bản, nhưng bạn có thể làm cả hai nếu muốn.",
   "Claim your tokens and achievement": "Nhận lấy token và thành tựu của bạn",
-  "After the IFO sales finish, you can claim any IFO tokens that you bought, and any unspent CAKE-BNB LP tokens will be returned to your wallet.": "Sau đợt bán IFO này, bạn có thể nhận lấy bất kì token IFO nào mà bạn mua, và bất kì token LP chưa tiêu nào của CAKE-BNB đều sẽ được trả về ví bạn."
+  "After the IFO sales finish, you can claim any IFO tokens that you bought, and any unspent CAKE-BNB LP tokens will be returned to your wallet.": "Sau đợt bán IFO này, bạn có thể nhận lấy bất kì token IFO nào mà bạn mua, và bất kì token LP chưa tiêu nào của CAKE-BNB đều sẽ được trả về ví bạn.",
+  "This round's closing transaction has been submitted to the blockchain, and is waiting to be confirmed.": "This round's closing transaction has been submitted to the blockchain, and is waiting to be confirmed."
 }

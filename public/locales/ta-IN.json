@@ -387,5 +387,6 @@
   "Commit LP Tokens": "LP டோக்கன்களை கமிட் செய்க",
   "When the IFO sales are live, you can “commit” your LP tokens to buy the tokens being sold.": "முதலில் அடிப்படை விற்பனைக்கு கமிட் செய்ய பரிந்துரைக்கிறோம், ஆனால் நீங்கள் விரும்பினால் இரண்டையும் செய்யலாம்.",
   "Claim your tokens and achievement": "உங்கள் டோக்கன்களையும் சாதனையையும் கிளைம் செய்க",
-  "After the IFO sales finish, you can claim any IFO tokens that you bought, and any unspent CAKE-BNB LP tokens will be returned to your wallet.": "IFO விற்பனை முடிந்த பிறகு, நீங்கள் வாங்கிய IFO டோக்கன்கள் எவற்றையும் கிளைம் செய்யலாம் மற்றும் செலவிடாத CAKE-BNB LP டோக்கன்கள் எவையும் உங்கள் வாலெட்டிற்கு ரிட்டர்ன் செய்யப்படும்."
+  "After the IFO sales finish, you can claim any IFO tokens that you bought, and any unspent CAKE-BNB LP tokens will be returned to your wallet.": "IFO விற்பனை முடிந்த பிறகு, நீங்கள் வாங்கிய IFO டோக்கன்கள் எவற்றையும் கிளைம் செய்யலாம் மற்றும் செலவிடாத CAKE-BNB LP டோக்கன்கள் எவையும் உங்கள் வாலெட்டிற்கு ரிட்டர்ன் செய்யப்படும்.",
+  "This round's closing transaction has been submitted to the blockchain, and is waiting to be confirmed.": "This round's closing transaction has been submitted to the blockchain, and is waiting to be confirmed."
 }

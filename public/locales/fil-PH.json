@@ -387,5 +387,6 @@
   "Commit LP Tokens": "Kumuha ng mga Token ng LP",
   "When the IFO sales are live, you can “commit” your LP tokens to buy the tokens being sold.": "Inirerekumenda naming kumuha muna sa Pangunahing Sale, ngunit maaari mong gawin ang pareho kung nais mo.",
   "Claim your tokens and achievement": "I-claim ang iyong mga token at matagumpay na nakamit",
-  "After the IFO sales finish, you can claim any IFO tokens that you bought, and any unspent CAKE-BNB LP tokens will be returned to your wallet.": "Matapos ang sales finish ng IFO, maaari kang mag-claim ng anumang mga token ng IFO na iyong binili, at ang anumang mga hindi nagamit na token ng CAKE-BNB LP ay ibabalik sa iyong wallet."
+  "After the IFO sales finish, you can claim any IFO tokens that you bought, and any unspent CAKE-BNB LP tokens will be returned to your wallet.": "Matapos ang sales finish ng IFO, maaari kang mag-claim ng anumang mga token ng IFO na iyong binili, at ang anumang mga hindi nagamit na token ng CAKE-BNB LP ay ibabalik sa iyong wallet.",
+  "This round's closing transaction has been submitted to the blockchain, and is waiting to be confirmed.": "This round's closing transaction has been submitted to the blockchain, and is waiting to be confirmed."
 }

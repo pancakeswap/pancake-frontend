@@ -387,5 +387,6 @@
   "Commit LP Tokens": "提交 LP 代币",
   "When the IFO sales are live, you can “commit” your LP tokens to buy the tokens being sold.": "我们建议您先参与基础销售，但是如果您愿意，可以同时参与两者。",
   "Claim your tokens and achievement": "领取您的代币和成就",
-  "After the IFO sales finish, you can claim any IFO tokens that you bought, and any unspent CAKE-BNB LP tokens will be returned to your wallet.": "在 IFO 销售完成后，您可以领取您购买的任何 IFO 代币，任何未花费的 CAKE-BNB LP 代币都将退回您的钱包。"
+  "After the IFO sales finish, you can claim any IFO tokens that you bought, and any unspent CAKE-BNB LP tokens will be returned to your wallet.": "在 IFO 销售完成后，您可以领取您购买的任何 IFO 代币，任何未花费的 CAKE-BNB LP 代币都将退回您的钱包。",
+  "This round's closing transaction has been submitted to the blockchain, and is waiting to be confirmed.": "This round's closing transaction has been submitted to the blockchain, and is waiting to be confirmed."
 }
