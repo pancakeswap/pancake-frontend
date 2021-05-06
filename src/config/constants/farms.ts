@@ -36,8 +36,18 @@ const farms: FarmConfig[] = [
     quoteToken: tokens.wbnb,
   },
   /**
-   * V3
+   * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
+  {
+    pid: 311,
+    lpSymbol: 'xMARK-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0xAa40f1AC20AAFcFEE8595Da606D78C503C7e70A3',
+    },
+    token: tokens.xmark,
+    quoteToken: tokens.busd,
+  },
   {
     pid: 365,
     lpSymbol: 'BTCB-BUSD LP',
@@ -587,16 +597,6 @@ const farms: FarmConfig[] = [
     },
     token: tokens.watch,
     quoteToken: tokens.wbnb,
-  },
-  {
-    pid: 311,
-    lpSymbol: 'xMARK-BUSD LP',
-    lpAddresses: {
-      97: '',
-      56: '0xAa40f1AC20AAFcFEE8595Da606D78C503C7e70A3',
-    },
-    token: tokens.xmark,
-    quoteToken: tokens.busd,
   },
   {
     pid: 310,
