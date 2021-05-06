@@ -1,5 +1,5 @@
 import React from 'react'
-import { CardBody, Flex, Spinner, WaitIcon } from '@pancakeswap-libs/uikit'
+import { CardBody, Flex, Spinner, WaitIcon, TooltipText, useTooltip, InfoIcon } from '@pancakeswap-libs/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { Round, BetPosition } from 'state/types'
 import { useGetTotalIntervalBlocks } from 'state/hooks'
@@ -16,26 +16,39 @@ const CalculatingCard: React.FC<CalculatingCardProps> = ({ round }) => {
   const { t } = useTranslation()
   const interval = useGetTotalIntervalBlocks()
   const estimatedEndBlock = round.startBlock + interval
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(
+    t("This round's closing transaction has been submitted to the blockchain, and is waiting to be confirmed."),
+    { placement: 'bottom' },
+  )
 
   return (
-    <Card>
-      <CardHeader
-        status="calculating"
-        icon={<WaitIcon mr="4px" width="21px" />}
-        title={t('Calculating')}
-        epoch={round.epoch}
-        blockNumber={estimatedEndBlock}
-      />
-      <CardBody p="16px">
-        <MultiplierArrow isDisabled />
-        <RoundResultBox>
-          <Flex alignItems="center" justifyContent="center">
-            <Spinner size={96} />
-          </Flex>
-        </RoundResultBox>
-        <MultiplierArrow betPosition={BetPosition.BEAR} isDisabled />
-      </CardBody>
-    </Card>
+    <>
+      <Card>
+        <CardHeader
+          status="calculating"
+          icon={<WaitIcon mr="4px" width="21px" />}
+          title={t('Calculating')}
+          epoch={round.epoch}
+          blockNumber={estimatedEndBlock}
+        />
+        <CardBody p="16px">
+          <MultiplierArrow isDisabled />
+          <RoundResultBox>
+            <Flex alignItems="center" justifyContent="center" flexDirection="column">
+              <Spinner size={96} />
+              <Flex mt="8px">
+                <TooltipText>{t('Calculating')}</TooltipText>
+                <span ref={targetRef}>
+                  <InfoIcon />
+                </span>
+              </Flex>
+            </Flex>
+          </RoundResultBox>
+          <MultiplierArrow betPosition={BetPosition.BEAR} isDisabled />
+        </CardBody>
+      </Card>
+      {tooltipVisible && tooltip}
+    </>
   )
 }
 

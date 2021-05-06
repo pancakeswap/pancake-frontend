@@ -18,6 +18,11 @@ const StyledFarmStakingCard = styled(Card)`
     margin: 0;
     max-width: none;
   }
+
+  transition: opacity 200ms;
+  &:hover {
+    opacity: 0.65;
+  }
 `
 const CardMidContent = styled(Heading).attrs({ size: 'xl' })`
   line-height: 44px;
@@ -47,22 +52,22 @@ const EarnAPRCard = () => {
 
   return (
     <StyledFarmStakingCard>
-      <CardBody>
-        <Heading color="contrast" size="lg">
-          Earn up to
-        </Heading>
-        <CardMidContent color="#7645d9">
-          {highestApr ? `${highestApr}% ${t('APR')}` : <Skeleton animation="pulse" variant="rect" height="44px" />}
-        </CardMidContent>
-        <Flex justifyContent="space-between">
+      <NavLink exact activeClassName="active" to="/farms" id="farm-apr-cta">
+        <CardBody>
           <Heading color="contrast" size="lg">
-            in Farms
+            Earn up to
           </Heading>
-          <NavLink exact activeClassName="active" to="/farms" id="farm-apr-cta">
+          <CardMidContent color="#7645d9">
+            {highestApr ? `${highestApr}% ${t('APR')}` : <Skeleton animation="pulse" variant="rect" height="44px" />}
+          </CardMidContent>
+          <Flex justifyContent="space-between">
+            <Heading color="contrast" size="lg">
+              in Farms
+            </Heading>
             <ArrowForwardIcon mt={30} color="primary" />
-          </NavLink>
-        </Flex>
-      </CardBody>
+          </Flex>
+        </CardBody>
+      </NavLink>
     </StyledFarmStakingCard>
   )
 }

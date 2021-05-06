@@ -870,7 +870,7 @@ const tokens = {
   pnt: {
     symbol: 'PNT',
     address: {
-      56: '0x7a1da9f49224ef98389b071b8a3294d1cc5e3e6a',
+      56: '0xdaacb0ab6fb34d24e8a67bfa14bf4d95d4c7af92',
       97: '',
     },
     decimals: 18,

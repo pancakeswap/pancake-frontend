@@ -1,32 +1,30 @@
-export const AR: Language = { code: 'ar-SA', language: 'العربية' }
-// export const CA: Language = { code: 'ca', language: 'Català' }
-// export const CS: Language = { code: 'cs', language: 'Čeština' }
-export const EN: Language = { code: 'en-US', language: 'English' }
-// export const DA: Language = { code: 'da', language: 'Dansk' }
-export const DE: Language = { code: 'de-DE', language: 'Deutsch' }
-export const EL: Language = { code: 'el-GR', language: 'Ελληνικά' }
-export const ESES: Language = { code: 'es-ES', language: 'Español' }
-export const FI: Language = { code: 'fi-FI', language: 'Suomalainen' }
-export const FIL: Language = { code: 'fil-PH', language: 'Filipino' }
-export const FR: Language = { code: 'fr-FR', language: 'Français' }
-export const HI: Language = { code: 'hi-IN', language: 'हिंदी' }
-export const HU: Language = { code: 'hu-HU', language: 'Magyar' }
-export const ID: Language = { code: 'id-ID', language: 'Bahasa Indonesia' }
-export const IT: Language = { code: 'it-IT', language: 'Italiano' }
-export const JA: Language = { code: 'ja-JP', language: '日本語' }
-export const KO: Language = { code: 'ko-KR', language: '한국어' }
-export const NL: Language = { code: 'nl-NL', language: 'Nederlands' }
-export const PTBR: Language = { code: 'pt-BR', language: 'Português' }
-export const RO: Language = { code: 'ro-RO', language: 'Română' }
-export const RU: Language = { code: 'ru-RU', language: 'Русский' }
-// export const SR: Language = { code: 'sr', language: 'Српски' }
-export const SVSE: Language = { code: 'sv-SE', language: 'Svenska' }
-export const TA: Language = { code: 'ta-IN', language: 'தமிழ்' }
-export const TR: Language = { code: 'tr-TR', language: 'Türkçe' }
-export const UK: Language = { code: 'uk-UA', language: 'Українська' }
-export const VI: Language = { code: 'vi-VN', language: 'Tiếng Việt' }
-export const ZHCN: Language = { code: 'zh-CN', language: '简体中文' }
-export const ZHTW: Language = { code: 'zh-TW', language: '繁體中文' }
+import { Language } from '@pancakeswap-libs/uikit'
+
+export const AR: Language = { locale: 'ar-SA', language: 'العربية', code: 'ar' }
+export const EN: Language = { locale: 'en-US', language: 'English', code: 'en' }
+export const DE: Language = { locale: 'de-DE', language: 'Deutsch', code: 'de' }
+export const EL: Language = { locale: 'el-GR', language: 'Ελληνικά', code: 'el' }
+export const ESES: Language = { locale: 'es-ES', language: 'Español', code: 'es-ES' }
+export const FI: Language = { locale: 'fi-FI', language: 'Suomalainen', code: 'fi' }
+export const FIL: Language = { locale: 'fil-PH', language: 'Filipino', code: 'fil' }
+export const FR: Language = { locale: 'fr-FR', language: 'Français', code: 'fr' }
+export const HI: Language = { locale: 'hi-IN', language: 'हिंदी', code: 'hi' }
+export const HU: Language = { locale: 'hu-HU', language: 'Magyar', code: 'hu' }
+export const ID: Language = { locale: 'id-ID', language: 'Bahasa Indonesia', code: 'id' }
+export const IT: Language = { locale: 'it-IT', language: 'Italiano', code: 'it' }
+export const JA: Language = { locale: 'ja-JP', language: '日本語', code: 'ja' }
+export const KO: Language = { locale: 'ko-KR', language: '한국어', code: 'ko' }
+export const NL: Language = { locale: 'nl-NL', language: 'Nederlands', code: 'nl' }
+export const PTBR: Language = { locale: 'pt-BR', language: 'Português (Brazil)', code: 'pt-br' }
+export const RO: Language = { locale: 'ro-RO', language: 'Română', code: 'ro' }
+export const RU: Language = { locale: 'ru-RU', language: 'Русский', code: 'ru' }
+export const SVSE: Language = { locale: 'sv-SE', language: 'Svenska', code: 'sv' }
+export const TA: Language = { locale: 'ta-IN', language: 'தமிழ்', code: 'ta' }
+export const TR: Language = { locale: 'tr-TR', language: 'Türkçe', code: 'tr' }
+export const UK: Language = { locale: 'uk-UA', language: 'Українська', code: 'uk' }
+export const VI: Language = { locale: 'vi-VN', language: 'Tiếng Việt', code: 'vi' }
+export const ZHCN: Language = { locale: 'zh-CN', language: '简体中文', code: 'zh-cn' }
+export const ZHTW: Language = { locale: 'zh-TW', language: '繁體中文', code: 'zh-tw' }
 
 export const languages = {
   'ar-SA': AR,
@@ -57,11 +55,3 @@ export const languages = {
 }
 
 export const languageList = Object.values(languages)
-
-// Export this here to avoid dependency cycle
-export type LanguageCode = keyof typeof languages
-
-export interface Language {
-  code: LanguageCode
-  language: string
-}

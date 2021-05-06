@@ -82,7 +82,13 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
         />
         <BlockProgress variant="flat" scale="sm" startBlock={lockBlock} endBlock={estimatedEndBlock} />
         <CardBody p="16px">
-          <MultiplierArrow amount={betAmount} multiplier={bullMultiplier} hasEntered={hasEnteredUp} isActive={isBull} />
+          <MultiplierArrow
+            totalAmount={round.bullAmount}
+            betAmount={betAmount}
+            multiplier={bullMultiplier}
+            hasEntered={hasEnteredUp}
+            isActive={isBull}
+          />
           <RoundResultBox betPosition={isBull ? BetPosition.BULL : BetPosition.BEAR}>
             <Text color="textSubtle" fontSize="12px" bold textTransform="uppercase" mb="8px">
               {t('Last Price')}
@@ -105,7 +111,8 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
             <PrizePoolRow totalAmount={totalAmount} />
           </RoundResultBox>
           <MultiplierArrow
-            amount={betAmount}
+            totalAmount={round.bearAmount}
+            betAmount={betAmount}
             multiplier={bearMultiplier}
             betPosition={BetPosition.BEAR}
             hasEntered={hasEnteredDown}

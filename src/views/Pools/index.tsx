@@ -68,7 +68,7 @@ const Pools: React.FC = () => {
         <FlexLayout>
           <Route exact path={`${path}`}>
             <>
-              <CakeVaultCard pool={cakePoolData} />
+              <CakeVaultCard pool={cakePoolData} showStakedOnly={stakedOnly} />
               {stakedOnly
                 ? orderBy(stakedOnlyPools, ['sortOrder']).map((pool) => (
                     <PoolCard key={pool.sousId} pool={pool} account={account} />
