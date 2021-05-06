@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.29.4](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap-libs/uikit@0.29.3...@pancakeswap-libs/uikit@0.29.4) (2021-05-06)
+
+
+### Bug Fixes
+
+* Copy clipboard on mobile devices ([#2](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/2)) ([a64bfd8](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/a64bfd8b998f9ab9ee4daac9b42fa8c7a7eb53a7))
+
+
+
+
+
 ## [0.29.3](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap-libs/uikit@0.29.2...@pancakeswap-libs/uikit@0.29.3) (2021-05-03)
 
 **Note:** Version bump only for package @pancakeswap-libs/uikit
