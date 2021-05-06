@@ -1,9 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Heading, Card, CardBody, Flex, ArrowForwardIcon, Skeleton } from '@pancakeswap-libs/uikit'
+import { Heading, Card, CardBody, Flex, ArrowForwardIcon } from '@pancakeswap-libs/uikit'
 import { NavLink } from 'react-router-dom'
-import useLotteryTotalPrizesUsd from 'hooks/useLotteryTotalPrizesUsd'
-import { useTranslation } from '../../../contexts/Localization'
+import { useTranslation } from 'contexts/Localization'
 
 const StyledFarmStakingCard = styled(Card)`
   margin-left: auto;
@@ -25,7 +24,6 @@ const CardMidContent = styled(Heading).attrs({ size: 'xl' })`
 `
 const WinCard = () => {
   const { t } = useTranslation()
-  const lotteryPrize = Math.round(useLotteryTotalPrizesUsd())
 
   return (
     <StyledFarmStakingCard>
