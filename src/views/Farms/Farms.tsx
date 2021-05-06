@@ -7,7 +7,6 @@ import { Image, Heading, RowType, Toggle, Text } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
 import FlexLayout from 'components/layout/Flex'
 import Page from 'components/layout/Page'
-import { MigrationV2 } from 'components/Banner'
 import { useFarms, usePriceCakeBusd, useGetApiPrices } from 'state/hooks'
 import useRefresh from 'hooks/useRefresh'
 import { fetchFarmUserDataAsync } from 'state/actions'
@@ -377,7 +376,6 @@ const Farms: React.FC = () => {
           {t('Stake Liquidity Pool (LP) tokens to earn.')}
         </Heading>
       </PageHeader>
-      <MigrationV2 />
       <Page>
         <ControlContainer>
           <ViewControls>
@@ -386,10 +384,7 @@ const Farms: React.FC = () => {
               <Toggle checked={stakedOnly} onChange={() => setStakedOnly(!stakedOnly)} scale="sm" />
               <Text> {t('Staked only')}</Text>
             </ToggleWrapper>
-            <FarmTabButtons
-              hasStakeInFinishedFarms={stakedInactiveFarms.length > 0}
-              hasStakeInArchivedFarms={stakedArchivedFarms.length > 0}
-            />
+            <FarmTabButtons hasStakeInFinishedFarms={stakedInactiveFarms.length > 0} />
           </ViewControls>
           <FilterContainer>
             <LabelWrapper>
