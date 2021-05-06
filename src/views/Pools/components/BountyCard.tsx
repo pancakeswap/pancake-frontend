@@ -33,16 +33,18 @@ const InlineText = styled(Text)`
 const BountyCard = () => {
   const { t } = useTranslation()
   const { estimatedCakeBountyReward, estimatedDollarBountyReward, totalPendingCakeHarvest } = useGetVaultBountyInfo()
-  const dollarBountyToDisplay = estimatedDollarBountyReward
-    ? getFullDisplayBalance(estimatedDollarBountyReward, 18, 2)
-    : ''
-  const modalCakeBountyToDisplay = estimatedCakeBountyReward
-    ? getFullDisplayBalance(estimatedCakeBountyReward, 18, 5)
-    : ''
-
-  const cardCakeBountyToDisplay = estimatedCakeBountyReward
-    ? getFullDisplayBalance(estimatedCakeBountyReward, 18, 3)
-    : ''
+  const dollarBountyToDisplay =
+    estimatedDollarBountyReward && estimatedDollarBountyReward.gt(0)
+      ? getFullDisplayBalance(estimatedDollarBountyReward, 18, 2)
+      : ''
+  const modalCakeBountyToDisplay =
+    estimatedCakeBountyReward && estimatedCakeBountyReward.gt(0)
+      ? getFullDisplayBalance(estimatedCakeBountyReward, 18, 5)
+      : ''
+  const cardCakeBountyToDisplay =
+    estimatedCakeBountyReward && estimatedCakeBountyReward.gt(0)
+      ? getFullDisplayBalance(estimatedCakeBountyReward, 18, 3)
+      : ''
   const {
     fees: { callFee },
   } = useCakeVault()

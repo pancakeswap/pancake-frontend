@@ -24,7 +24,13 @@ export const fetchPublicVaultData = async () => {
       totalPendingCakeHarvest: new BigNumber(totalPendingCakeHarvest as string).toJSON(),
     }
   } catch (error) {
-    return null
+    return {
+      totalShares: null,
+      pricePerFullShare: null,
+      totalCakeInVault: null,
+      estimatedCakeBountyReward: null,
+      totalPendingCakeHarvest: null,
+    }
   }
 }
 
@@ -43,7 +49,12 @@ export const fetchVaultFees = async () => {
       withdrawalFeePeriod: parseInt(withdrawalFeePeriod as string, 10),
     }
   } catch (error) {
-    return null
+    return {
+      performanceFee: null,
+      callFee: null,
+      withdrawalFee: null,
+      withdrawalFeePeriod: null,
+    }
   }
 }
 
