@@ -34,9 +34,7 @@ const WinCard = () => {
           </Heading>
           <CardMidContent color="#7645d9">{t('Coming Soon')}</CardMidContent>
           <Flex justifyContent="space-between">
-            <Heading color="contrast" size="lg">
-              up for grabs
-            </Heading>
+            <Heading color="contrast" size="lg" />
             <ArrowForwardIcon mt={30} color="primary" />
           </Flex>
         </CardBody>
