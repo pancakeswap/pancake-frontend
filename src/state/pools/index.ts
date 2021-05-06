@@ -18,8 +18,8 @@ const initialState: PoolsState = {
     totalShares: null,
     pricePerFullShare: null,
     totalCakeInVault: null,
-    estimatedCallBountyReward: null,
-    totalPendingCakeRewards: null,
+    estimatedCakeBountyReward: null,
+    totalPendingCakeHarvest: null,
     fees: {
       performanceFee: null,
       callFee: null,
