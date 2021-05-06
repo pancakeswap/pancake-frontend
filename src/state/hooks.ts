@@ -36,9 +36,12 @@ export const useFetchPublicData = () => {
   const { currentBlock } = useBlock()
   useEffect(() => {
     dispatch(fetchFarmsPublicDataAsync())
-    dispatch(fetchPoolsPublicDataAsync(currentBlock))
     dispatch(fetchPoolsStakingLimitsAsync())
-  }, [dispatch, slowRefresh, currentBlock])
+  }, [dispatch, slowRefresh])
+
+  useEffect(() => {
+    dispatch(fetchPoolsPublicDataAsync(currentBlock))
+  }, [dispatch, currentBlock])
 
   useEffect(() => {
     const web3 = getWeb3NoAccount()
