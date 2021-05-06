@@ -50,6 +50,7 @@ const CollectWinningsOverlay: React.FC<CollectWinningsOverlayProps> = ({
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const currentEpoch = useGetCurrentEpoch()
+  const [collectedSuccess, setCollectedSuccess] = useState(false)
 
   // Check if the wallet can collect the bet
   // We do it here because it is not guaranteed the bet info will be in the history
@@ -58,30 +59,28 @@ const CollectWinningsOverlay: React.FC<CollectWinningsOverlayProps> = ({
 
     const fetchBet = async () => {
       const bets = await getBetHistory({ user: account.toLowerCase(), round: roundId, claimed: false })
-      if (!isCancelled) {
-        if (bets.length === 1) {
-          const [firstBetResponse] = bets
-          const bet = transformBetResponse(firstBetResponse)
+      if (!isCancelled && bets.length === 1) {
+        const [firstBetResponse] = bets
+        const bet = transformBetResponse(firstBetResponse)
 
-          if (bet.position === bet.round.position) {
-            setState({
-              betId: bet.id,
-              epoch: bet.round.epoch,
-              payout: getPayout(bet),
-            })
-          }
+        if (bet.position === bet.round.position) {
+          setState({
+            betId: bet.id,
+            epoch: bet.round.epoch,
+            payout: getPayout(bet),
+          })
         }
       }
     }
 
-    if (account && hasEntered) {
+    if (account && hasEntered && !collectedSuccess) {
       fetchBet()
     }
 
     return () => {
       isCancelled = true
     }
-  }, [account, roundId, hasEntered, currentEpoch, setState])
+  }, [account, roundId, hasEntered, currentEpoch, setState, collectedSuccess])
 
   if (!state.epoch) {
     return null
@@ -90,6 +89,7 @@ const CollectWinningsOverlay: React.FC<CollectWinningsOverlayProps> = ({
   const handleSuccess = async () => {
     dispatch(markBetAsCollected({ betId: state.betId, account }))
     setState({ betId: null, epoch: null, payout: 0 })
+    setCollectedSuccess(true)
   }
 
   return (
