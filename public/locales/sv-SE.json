@@ -387,5 +387,6 @@
   "Commit LP Tokens": "Avsätt LP-tokens",
   "When the IFO sales are live, you can “commit” your LP tokens to buy the tokens being sold.": "Vi rekommenderar att du avsätter basförsäljningen först, men du kan göra båda om du vill.",
   "Claim your tokens and achievement": "Lös in dina tokens och prestationer",
-  "After the IFO sales finish, you can claim any IFO tokens that you bought, and any unspent CAKE-BNB LP tokens will be returned to your wallet.": "Efter att IFO-försäljningen avslutats kan du lösa in alla köpta IFO-tokens och alla CAKE-BNB LP-tokens som inte spenderats lämnas tillbaka till din plånbok."
+  "After the IFO sales finish, you can claim any IFO tokens that you bought, and any unspent CAKE-BNB LP tokens will be returned to your wallet.": "Efter att IFO-försäljningen avslutats kan du lösa in alla köpta IFO-tokens och alla CAKE-BNB LP-tokens som inte spenderats lämnas tillbaka till din plånbok.",
+  "This round's closing transaction has been submitted to the blockchain, and is waiting to be confirmed.": "This round's closing transaction has been submitted to the blockchain, and is waiting to be confirmed."
 }
