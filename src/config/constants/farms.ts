@@ -39,6 +39,16 @@ const farms: FarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 366,
+    lpSymbol: 'PNT-pBTC LP',
+    lpAddresses: {
+      97: '',
+      56: '0xdaa89d335926628367b47852989bb22ee62ca5de',
+    },
+    token: tokens.pnt,
+    quoteToken: tokens.pbtc,
+  },
+  {
     pid: 311,
     lpSymbol: 'xMARK-BUSD LP',
     lpAddresses: {
