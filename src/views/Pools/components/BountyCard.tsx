@@ -34,15 +34,15 @@ const BountyCard = () => {
   const { t } = useTranslation()
   const { estimatedCakeBountyReward, estimatedDollarBountyReward, totalPendingCakeHarvest } = useGetVaultBountyInfo()
   const dollarBountyToDisplay =
-    estimatedDollarBountyReward && estimatedDollarBountyReward.gt(0)
+    estimatedDollarBountyReward && estimatedDollarBountyReward.gte(0)
       ? getFullDisplayBalance(estimatedDollarBountyReward, 18, 2)
       : ''
   const modalCakeBountyToDisplay =
-    estimatedCakeBountyReward && estimatedCakeBountyReward.gt(0)
+    estimatedCakeBountyReward && estimatedCakeBountyReward.gte(0)
       ? getFullDisplayBalance(estimatedCakeBountyReward, 18, 5)
       : ''
   const cardCakeBountyToDisplay =
-    estimatedCakeBountyReward && estimatedCakeBountyReward.gt(0)
+    estimatedCakeBountyReward && estimatedCakeBountyReward.gte(0)
       ? getFullDisplayBalance(estimatedCakeBountyReward, 18, 3)
       : ''
   const {
