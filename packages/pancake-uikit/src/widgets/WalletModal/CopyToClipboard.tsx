@@ -30,17 +30,32 @@ const Tooltip = styled.div<{ isTooltipDisplayed: boolean }>`
 const CopyToClipboard: React.FC<Props> = ({ toCopy, children, ...props }) => {
   const [isTooltipDisplayed, setIsTooltipDisplayed] = useState(false);
 
+  const copyToClipboardWithCommand = (content: string) => {
+    const el = document.createElement("textarea");
+    el.value = content;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand("copy");
+    document.body.removeChild(el);
+  };
+
+  function displayTooltip() {
+    setIsTooltipDisplayed(true);
+    setTimeout(() => {
+      setIsTooltipDisplayed(false);
+    }, 1000);
+  }
+
   return (
     <StyleButton
       small
       bold
       onClick={() => {
-        if (navigator.clipboard) {
-          navigator.clipboard.writeText(toCopy);
-          setIsTooltipDisplayed(true);
-          setTimeout(() => {
-            setIsTooltipDisplayed(false);
-          }, 1000);
+        if (navigator.clipboard && navigator.permissions) {
+          navigator.clipboard.writeText(toCopy).then(() => displayTooltip());
+        } else if (document.queryCommandSupported("copy")) {
+          copyToClipboardWithCommand(toCopy);
+          displayTooltip();
         }
       }}
       {...props}
