@@ -52,8 +52,8 @@ const StyledCardHeader = styled.div<{ status: Status }>`
   align-items: center;
   background: ${({ theme, status }) => getBackgroundColor(theme, status)};
   border-radius: 16px 16px 0 0;
-  display: grid;
-  grid-template-columns: 1fr 40px 1fr;
+  display: flex;
+  justify-content: space-between;
   padding: ${({ status }) => (status === 'live' ? '16px' : '8px')};
 `
 
