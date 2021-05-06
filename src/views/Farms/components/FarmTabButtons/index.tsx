@@ -6,10 +6,9 @@ import { useTranslation } from 'contexts/Localization'
 
 interface FarmTabButtonsProps {
   hasStakeInFinishedFarms: boolean
-  hasStakeInArchivedFarms: boolean
 }
 
-const FarmTabButtons: React.FC<FarmTabButtonsProps> = ({ hasStakeInFinishedFarms, hasStakeInArchivedFarms }) => {
+const FarmTabButtons: React.FC<FarmTabButtonsProps> = ({ hasStakeInFinishedFarms }) => {
   const { url } = useRouteMatch()
   const location = useLocation()
   const { t } = useTranslation()
@@ -39,11 +38,6 @@ const FarmTabButtons: React.FC<FarmTabButtonsProps> = ({ hasStakeInFinishedFarms
         <NotificationDot show={hasStakeInFinishedFarms}>
           <ButtonMenuItem as={Link} to={`${url}/history`}>
             {t('Finished')}
-          </ButtonMenuItem>
-        </NotificationDot>
-        <NotificationDot show={hasStakeInArchivedFarms}>
-          <ButtonMenuItem as={Link} to={`${url}/archived`}>
-            {t('Discontinued')}
           </ButtonMenuItem>
         </NotificationDot>
       </ButtonMenu>
