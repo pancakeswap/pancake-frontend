@@ -5,6 +5,7 @@ import { Flex, Text, Box } from '@pancakeswap-libs/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
 import { useCake, useCakeVaultContract } from 'hooks/useContract'
+import { BIG_ZERO } from 'utils/bigNumber'
 import { VaultFees } from 'hooks/cakeVault/useGetVaultFees'
 import { Pool } from 'state/types'
 import { VaultUser } from 'views/Pools/types'
@@ -42,7 +43,7 @@ const CakeVaultCardActions: React.FC<{
   const cakeContract = useCake()
   const cakeVaultContract = useCakeVaultContract()
   const { t } = useTranslation()
-  const stakingTokenBalance = new BigNumber(userData?.stakingTokenBalance || 0)
+  const stakingTokenBalance = userData?.stakingTokenBalance ? new BigNumber(userData.stakingTokenBalance) : BIG_ZERO
 
   useEffect(() => {
     const checkApprovalStatus = async () => {

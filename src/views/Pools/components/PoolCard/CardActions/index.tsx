@@ -1,6 +1,7 @@
 import BigNumber from 'bignumber.js'
 import React from 'react'
 import styled from 'styled-components'
+import { BIG_ZERO } from 'utils/bigNumber'
 import { Flex, Text, Box } from '@pancakeswap-libs/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { PoolCategory } from 'config/constants/types'
@@ -16,24 +17,18 @@ const InlineText = styled(Text)`
 interface CardActionsProps {
   pool: Pool
   stakedBalance: BigNumber
-  accountHasStakedBalance: boolean
   stakingTokenPrice: number
 }
 
-const CardActions: React.FC<CardActionsProps> = ({
-  pool,
-  stakedBalance,
-  accountHasStakedBalance,
-  stakingTokenPrice,
-}) => {
+const CardActions: React.FC<CardActionsProps> = ({ pool, stakedBalance, stakingTokenPrice }) => {
   const { sousId, stakingToken, earningToken, harvest, poolCategory, userData } = pool
   // Pools using native BNB behave differently than pools using a token
   const isBnbPool = poolCategory === PoolCategory.BINANCE
   const { t } = useTranslation()
-  const allowance = new BigNumber(userData?.allowance || 0)
-  const stakingTokenBalance = new BigNumber(userData?.stakingTokenBalance || 0)
-  const earnings = new BigNumber(userData?.pendingReward || 0)
-  const needsApproval = !accountHasStakedBalance && !allowance.gt(0) && !isBnbPool
+  const allowance = userData?.allowance ? new BigNumber(userData.allowance) : BIG_ZERO
+  const stakingTokenBalance = userData?.stakingTokenBalance ? new BigNumber(userData.stakingTokenBalance) : BIG_ZERO
+  const earnings = userData?.pendingReward ? new BigNumber(userData.pendingReward) : BIG_ZERO
+  const needsApproval = !allowance.gt(0) && !isBnbPool
   const isStaked = stakedBalance.gt(0)
   const isLoading = !userData
 

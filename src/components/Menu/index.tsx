@@ -1,7 +1,7 @@
 import React from 'react'
 import { Menu as UikitMenu } from '@pancakeswap-libs/uikit'
 import { useWeb3React } from '@web3-react/core'
-import { languageList, Language } from 'config/localization/languages'
+import { languageList } from 'config/localization/languages'
 import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'
 import useAuth from 'hooks/useAuth'
@@ -25,9 +25,7 @@ const Menu = (props) => {
       toggleTheme={toggleTheme}
       currentLang={currentLanguage.code}
       langs={languageList}
-      setLang={(langType) => {
-        setLanguage(langType as Language)
-      }}
+      setLang={setLanguage}
       cakePriceUsd={cakePriceUsd.toNumber()}
       links={config}
       profile={{
