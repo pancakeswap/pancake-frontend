@@ -35,12 +35,7 @@ const PoolCard: React.FC<{ pool: Pool; account: string }> = ({ pool, account }) 
         <AprRow pool={pool} stakingTokenPrice={stakingTokenPrice} />
         <Flex mt="24px" flexDirection="column">
           {account ? (
-            <CardActions
-              pool={pool}
-              stakedBalance={stakedBalance}
-              stakingTokenPrice={stakingTokenPrice}
-              accountHasStakedBalance={accountHasStakedBalance}
-            />
+            <CardActions pool={pool} stakedBalance={stakedBalance} stakingTokenPrice={stakingTokenPrice} />
           ) : (
             <>
               <Text mb="10px" textTransform="uppercase" fontSize="12px" color="textSubtle" bold>
