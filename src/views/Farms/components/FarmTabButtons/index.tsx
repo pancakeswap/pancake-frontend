@@ -6,7 +6,6 @@ import { useTranslation } from 'contexts/Localization'
 
 interface FarmTabButtonsProps {
   hasStakeInFinishedFarms: boolean
-  hasStakeInArchivedFarms: boolean
 }
 
 const FarmTabButtons: React.FC<FarmTabButtonsProps> = ({ hasStakeInFinishedFarms }) => {
