@@ -20,6 +20,7 @@ import { Pool } from 'state/types'
 import { getAddress, getCakeVaultAddress } from 'utils/addressHelpers'
 import { registerToken } from 'utils/wallet'
 import Balance from 'components/Balance'
+import useGetVaultPublicData from 'hooks/cakeVault/useGetVaultPublicData'
 
 interface ExpandedFooterProps {
   pool: Pool
@@ -38,10 +39,9 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account, isAutoVa
   const { t } = useTranslation()
   const { currentBlock } = useBlock()
   const {
-    totalCakeInVault: totalCakeInVaultAsString,
     fees: { performanceFee },
   } = useCakeVault()
-  const totalCakeInVault = new BigNumber(totalCakeInVaultAsString)
+  const { totalCakeInVault } = useGetVaultPublicData()
 
   const { stakingToken, earningToken, totalStaked, startBlock, endBlock, isFinished, contractAddress, sousId } = pool
 
