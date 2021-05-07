@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Flex } from '@pancakeswap-libs/uikit'
+import { Flex } from '@pancakeswap/uikit'
 import Page from 'components/layout/Page'
 import { SectionProps } from '../../types'
 import IntersectionCurve from './IntersectionCurve'

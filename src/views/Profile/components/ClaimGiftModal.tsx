@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { Modal, Text, InjectedModalProps, Button, AutoRenewIcon } from '@pancakeswap-libs/uikit'
+import { Modal, Text, InjectedModalProps, Button, AutoRenewIcon } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import useToast from 'hooks/useToast'
 import { useClaimRefundContract } from 'hooks/useContract'

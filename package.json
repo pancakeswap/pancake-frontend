@@ -34,7 +34,7 @@
   "dependencies": {
     "@binance-chain/bsc-connector": "^1.0.0",
     "@ethersproject/abi": "^5.0.7",
-    "@pancakeswap-libs/uikit": "^0.29.4",
+    "@pancakeswap/uikit": "^0.29.4",
     "@reduxjs/toolkit": "^1.5.0",
     "@types/react": "^17.0.2",
     "@types/react-dom": "^17.0.1",
@@ -71,7 +71,7 @@
   "devDependencies": {
     "@commitlint/cli": "^11.0.0",
     "@commitlint/config-conventional": "^11.0.0",
-    "@pancakeswap-libs/eslint-config-pancake": "1.0.0",
+    "@pancakeswap/eslint-config-pancake": "^1.0.1",
     "@types/jest": "^26.0.19",
     "@types/react-redux": "^7.1.16",
     "@types/react-transition-group": "^4.4.1",

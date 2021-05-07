@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, CardBody, CardHeader, Text, useTooltip, HelpIcon, Flex } from '@pancakeswap-libs/uikit'
+import { Card, CardBody, CardHeader, Text, useTooltip, HelpIcon, Flex } from '@pancakeswap/uikit'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { useProfile } from 'state/hooks'
 import { PublicIfoData, WalletIfoData } from 'hooks/ifo/types'

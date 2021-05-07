@@ -1,15 +1,5 @@
 import React from 'react'
-import {
-  Flex,
-  Text,
-  Button,
-  IconButton,
-  AddIcon,
-  MinusIcon,
-  Heading,
-  useModal,
-  Skeleton,
-} from '@pancakeswap-libs/uikit'
+import { Flex, Text, Button, IconButton, AddIcon, MinusIcon, Heading, useModal, Skeleton } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
 import { getBalanceNumber, formatNumber, getDecimalAmount } from 'utils/formatBalance'

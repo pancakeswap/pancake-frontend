@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Flex, Text, Heading, Image } from '@pancakeswap-libs/uikit'
+import { Flex, Text, Heading, Image } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import FlipperBunny from '../../pngs/flippers.png'
 

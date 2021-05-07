@@ -1,4 +1,4 @@
-import { Language } from '@pancakeswap-libs/uikit'
+import { Language } from '@pancakeswap/uikit'
 
 export const AR: Language = { locale: 'ar-SA', language: 'العربية', code: 'ar' }
 export const EN: Language = { locale: 'en-US', language: 'English', code: 'en' }

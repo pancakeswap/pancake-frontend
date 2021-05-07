@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Flex, Box, Image } from '@pancakeswap-libs/uikit'
+import { Flex, Box, Image } from '@pancakeswap/uikit'
 import { TeamRanksProps } from '../../types'
 import CakerBunny from '../../pngs/cakers.png'
 import TopTradersCard from './TopTradersCard'

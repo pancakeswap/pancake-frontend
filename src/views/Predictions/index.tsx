@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import { Helmet } from 'react-helmet-async'
-import { useMatchBreakpoints, useModal } from '@pancakeswap-libs/uikit'
+import { useMatchBreakpoints, useModal } from '@pancakeswap/uikit'
 import { useAppDispatch } from 'state'
 import { useGetPredictionsStatus, useInitialBlock } from 'state/hooks'
 import {

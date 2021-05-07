@@ -1,6 +1,6 @@
 import React, { lazy, Suspense, useContext, useMemo } from 'react'
 import styled from 'styled-components'
-import { Text } from '@pancakeswap-libs/uikit'
+import { Text } from '@pancakeswap/uikit'
 import PastLotteryDataContext from 'contexts/PastLotteryDataContext'
 import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'

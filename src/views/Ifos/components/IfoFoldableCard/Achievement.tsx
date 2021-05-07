@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Flex, LinkExternal, Image, Text, PrizeIcon } from '@pancakeswap-libs/uikit'
+import { Flex, LinkExternal, Image, Text, PrizeIcon } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { PublicIfoData } from 'hooks/ifo/types'
 import { Ifo } from 'config/constants/types'

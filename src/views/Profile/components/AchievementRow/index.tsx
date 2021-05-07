@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
-import { AutoRenewIcon, Button, Flex } from '@pancakeswap-libs/uikit'
+import { AutoRenewIcon, Button, Flex } from '@pancakeswap/uikit'
 import { Achievement } from 'state/types'
 import useToast from 'hooks/useToast'
 import { useTranslation } from 'contexts/Localization'

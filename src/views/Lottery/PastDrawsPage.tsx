@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { BaseLayout } from '@pancakeswap-libs/uikit'
+import { BaseLayout } from '@pancakeswap/uikit'
 import PastLotteryRoundViewer from './components/PastLotteryRoundViewer'
 import PastDrawsHistoryCard from './components/PastDrawsHistory/PastDrawsHistoryCard'
 import ClaimPrizesCard from './components/ClaimPrizesCard'

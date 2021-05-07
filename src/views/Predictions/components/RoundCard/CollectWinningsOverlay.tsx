@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
-import { Flex, TrophyGoldIcon } from '@pancakeswap-libs/uikit'
+import { Flex, TrophyGoldIcon } from '@pancakeswap/uikit'
 import { useAppDispatch } from 'state'
 import { useGetCurrentEpoch } from 'state/hooks'
 import { getBetHistory, transformBetResponse } from 'state/predictions/helpers'

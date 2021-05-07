@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useAppDispatch } from 'state'
-import { ArrowDownIcon, Button, ChartIcon } from '@pancakeswap-libs/uikit'
+import { ArrowDownIcon, Button, ChartIcon } from '@pancakeswap/uikit'
 import { useGetPredictionsStatus, useIsChartPaneOpen, useIsHistoryPaneOpen } from 'state/hooks'
 import { setChartPaneState } from 'state/predictions'
 import { PredictionStatus } from 'state/types'
