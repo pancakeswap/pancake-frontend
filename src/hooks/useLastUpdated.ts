@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import usePreviousValue from './usePreviousValue'
 
 /**
@@ -9,11 +9,13 @@ const useLastUpdated = () => {
   const [lastUpdated, setStateLastUpdated] = useState(Date.now())
   const previousLastUpdated = usePreviousValue(lastUpdated)
 
-  const setLastUpdated = () => {
-    setStateLastUpdated(Date.now())
-  }
+  return useMemo(() => {
+    const setLastUpdated = () => {
+      setStateLastUpdated(Date.now())
+    }
 
-  return { lastUpdated, previousLastUpdated, setLastUpdated }
+    return { lastUpdated, previousLastUpdated, setLastUpdated }
+  }, [lastUpdated, previousLastUpdated, setStateLastUpdated])
 }
 
 export default useLastUpdated
