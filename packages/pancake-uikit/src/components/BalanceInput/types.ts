@@ -3,7 +3,7 @@ import { BoxProps } from "../Box";
 
 export interface BalanceInputProps extends BoxProps {
   value: ReactText;
-  onChange?: InputHTMLAttributes<HTMLInputElement>["onChange"];
+  onUserInput: (input: string) => void;
   currencyValue?: ReactNode;
   placeholder?: string;
   inputProps?: Omit<InputHTMLAttributes<HTMLInputElement>, "value" | "placeholder" | "onChange">;
