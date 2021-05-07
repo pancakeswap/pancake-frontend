@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { BlockIcon, CardBody } from '@pancakeswap/uikit'
+import { Box, BlockIcon, CardBody } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { Round, BetPosition } from 'state/types'
 import { RoundResult } from '../RoundResult'
@@ -46,34 +46,36 @@ const ExpiredRoundCard: React.FC<ExpiredRoundCardProps> = ({
   }
 
   return (
-    <StyledExpiredRoundCard>
-      <CardHeader
-        status="expired"
-        icon={<BlockIcon mr="4px" width="21px" color="textDisabled" />}
-        title={t('Expired')}
-        blockNumber={endBlock}
-        epoch={round.epoch}
-      />
-      <CardBody p="16px" style={{ position: 'relative' }}>
-        <CollectWinningsOverlay roundId={id} hasEntered={hasEntered} isBottom={hasEnteredDown} />
-        <MultiplierArrow
-          totalAmount={bullAmount}
-          betAmount={betAmount}
-          multiplier={bullMultiplier}
-          isActive={betPosition === BetPosition.BULL}
-          hasEntered={hasEnteredUp}
+    <Box position="relative">
+      <StyledExpiredRoundCard>
+        <CardHeader
+          status="expired"
+          icon={<BlockIcon mr="4px" width="21px" color="textDisabled" />}
+          title={t('Expired')}
+          blockNumber={endBlock}
+          epoch={round.epoch}
         />
-        <RoundResult round={round} />
-        <MultiplierArrow
-          totalAmount={bearAmount}
-          betAmount={betAmount}
-          multiplier={bearMultiplier}
-          betPosition={BetPosition.BEAR}
-          isActive={betPosition === BetPosition.BEAR}
-          hasEntered={hasEnteredDown}
-        />
-      </CardBody>
-    </StyledExpiredRoundCard>
+        <CardBody p="16px" style={{ position: 'relative' }}>
+          <MultiplierArrow
+            totalAmount={bullAmount}
+            betAmount={betAmount}
+            multiplier={bullMultiplier}
+            isActive={betPosition === BetPosition.BULL}
+            hasEntered={hasEnteredUp}
+          />
+          <RoundResult round={round} />
+          <MultiplierArrow
+            totalAmount={bearAmount}
+            betAmount={betAmount}
+            multiplier={bearMultiplier}
+            betPosition={BetPosition.BEAR}
+            isActive={betPosition === BetPosition.BEAR}
+            hasEntered={hasEnteredDown}
+          />
+        </CardBody>
+      </StyledExpiredRoundCard>
+      <CollectWinningsOverlay roundId={id} hasEntered={hasEntered} isBottom={hasEnteredDown} />
+    </Box>
   )
 }
 

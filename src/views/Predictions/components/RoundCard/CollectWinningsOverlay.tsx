@@ -30,7 +30,7 @@ const Wrapper = styled(Flex)<{ isBottom: CollectWinningsOverlayProps['isBottom']
       bottom: 0;
     `
       : `
-      top: 0;
+      top: 37px; // Card header height
     `
   }}
 `
