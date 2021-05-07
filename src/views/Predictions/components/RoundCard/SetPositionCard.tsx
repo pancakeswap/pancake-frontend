@@ -102,7 +102,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
     if (account) {
       fetchBalance()
     }
-  }, [account, fastRefresh, setBnbBalance, web3.eth])
+  }, [account, fastRefresh, setBnbBalance, web3])
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = (evt) => {
     const newValue = evt.target.value
