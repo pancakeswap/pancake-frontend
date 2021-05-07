@@ -21,6 +21,7 @@ import {
   getEasterNftAddress,
   getCakeVaultAddress,
   getPredictionsAddress,
+  getChainlinkOracleAddress,
 } from 'utils/addressHelpers'
 
 // ABI
@@ -46,6 +47,7 @@ import tradingCompetitionAbi from 'config/abi/tradingCompetition.json'
 import easterNftAbi from 'config/abi/easterNft.json'
 import cakeVaultAbi from 'config/abi/cakeVault.json'
 import predictionsAbi from 'config/abi/predictions.json'
+import chainlinkOracleAbi from 'config/abi/chainlinkOracle.json'
 
 const getContract = (abi: any, address: string, web3?: Web3) => {
   const _web3 = web3 ?? web3NoAccount
@@ -117,4 +119,7 @@ export const getCakeVaultContract = (web3?: Web3) => {
 }
 export const getPredictionsContract = (web3?: Web3) => {
   return getContract(predictionsAbi, getPredictionsAddress(), web3)
+}
+export const getChainlinkOracleContract = (web3?: Web3) => {
+  return getContract(chainlinkOracleAbi, getChainlinkOracleAddress(), web3)
 }
