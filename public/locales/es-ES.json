@@ -388,5 +388,7 @@
   "When the IFO sales are live, you can “commit” your LP tokens to buy the tokens being sold.": "Te recomendamos que primero asignes la Venta básica, pero puedes hacer ambas cosas si lo deseas.",
   "Claim your tokens and achievement": "Cobra tus tokens y logros",
   "After the IFO sales finish, you can claim any IFO tokens that you bought, and any unspent CAKE-BNB LP tokens will be returned to your wallet.": "Cuando concluyan las ventas de IFO, podrás cobrar cualquier token IFO que hayas comprado, y cualquier token CAKE-BNB LP que no hayas gastado se devolverá a tu monedero.",
-  "This round's closing transaction has been submitted to the blockchain, and is waiting to be confirmed.": "El cierre de la transacción para esta ronda se envió a la cadena de bloques y está en espera de la confirmación."
+  "This round's closing transaction has been submitted to the blockchain, and is waiting to be confirmed.": "El cierre de la transacción para esta ronda se envió a la cadena de bloques y está en espera de la confirmación.",
+  "No prediction history available": "No prediction history available",
+  "If you are sure you should see history here, make sure you’re connected to the correct wallet and try again.": "If you are sure you should see history here, make sure you’re connected to the correct wallet and try again."
 }

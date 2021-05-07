@@ -388,5 +388,7 @@
   "When the IFO sales are live, you can “commit” your LP tokens to buy the tokens being sold.": "প্রথমে মৌলিক বিক্রয়ে প্রতিশ্রুতি দেওয়া বাঞ্ছনীয়, কিন্তু আপনি চাইলে দুটিই করতে পারেন।",
   "Claim your tokens and achievement": "আপনার টোকেন ও কৃতিত্ব দাবি করুন",
   "After the IFO sales finish, you can claim any IFO tokens that you bought, and any unspent CAKE-BNB LP tokens will be returned to your wallet.": "IFO বিক্রয় শেষ হলে, আপনার কেনা যে কোনো IFO টোকেন দাবি করতে পারেন এবং খরচ না করা CAKE-BNB LP টোকেন আপনার ওয়ালেটে ফিরে আসবে।",
-  "This round's closing transaction has been submitted to the blockchain, and is waiting to be confirmed.": "এই রাউন্ডের শেষের লেনদেন ব্লকচেইনে জমা দেওয়া হয়েছে এবং নিশ্চিত করার জন্য অপেক্ষা করা হচ্ছে।"
+  "This round's closing transaction has been submitted to the blockchain, and is waiting to be confirmed.": "এই রাউন্ডের শেষের লেনদেন ব্লকচেইনে জমা দেওয়া হয়েছে এবং নিশ্চিত করার জন্য অপেক্ষা করা হচ্ছে।",
+  "No prediction history available": "No prediction history available",
+  "If you are sure you should see history here, make sure you’re connected to the correct wallet and try again.": "If you are sure you should see history here, make sure you’re connected to the correct wallet and try again."
 }
