@@ -21,6 +21,7 @@ const Lottery = lazy(() => import('./views/Lottery'))
 const Ifos = lazy(() => import('./views/Ifos'))
 const NotFound = lazy(() => import('./views/NotFound'))
 const Collectibles = lazy(() => import('./views/Collectibles'))
+const Pools = lazy(() => import('./views/Pools'))
 const Teams = lazy(() => import('./views/Teams'))
 const Team = lazy(() => import('./views/Teams/Team'))
 const Profile = lazy(() => import('./views/Profile'))
@@ -55,21 +56,21 @@ const App: React.FC = () => {
             <Route path='/' exact>
               <Home />
             </Route>
-            <Route path='/farms'>
-              <Farms />
-            </Route>
-            {/* <Route path="/pools"> */}
-            {/*  <Pools /> */}
+            {/* <Route path='/farms'> */}
+            {/*  <Farms /> */}
             {/* </Route> */}
+            <Route path='/graves'>
+              <Pools />
+            </Route>
             {/* <Route path="/lottery"> */}
             {/*  <Lottery /> */}
             {/* </Route> */}
             {/* <Route path="/ifo"> */}
             {/*  <Ifos /> */}
             {/* </Route> */}
-            <Route path='/collectibles'>
-              <Collectibles />
-            </Route>
+            {/* <Route path='/collectibles'> */}
+            {/*  <Collectibles /> */}
+            {/* </Route> */}
             {/* <Route exact path='/teams'> */}
             {/*  <Teams /> */}
             {/* </Route> */}
@@ -87,10 +88,13 @@ const App: React.FC = () => {
             {/* </Route> */}
             {/* Redirect */}
             <Route path='/staking'>
-              <Redirect to='/pools' />
+              <Redirect to='/graves' />
+            </Route>
+            <Route path='/pools'>
+              <Redirect to='/graves' />
             </Route>
             {/* <Route path='/syrup'> */}
-            {/*  <Redirect to='/pools' /> */}
+            {/*  <Redirect to='/graves' /> */}
             {/* </Route> */}
             <Route path='/nft'>
               <Redirect to='/collectibles' />

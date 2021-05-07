@@ -3,13 +3,13 @@ import styled from 'styled-components'
 import { Heading, Text, BaseLayout } from '@rug-zombie-libs/uikit'
 import { useTranslation } from 'contexts/Localization'
 import Page from 'components/layout/Page'
-import FarmStakingCard from 'views/Home/components/FarmStakingCard'
-import LotteryCard from 'views/Home/components/LotteryCard'
+import AnnouncementCard from 'views/Home/components/AnnouncementCard'
 import CakeStats from 'views/Home/components/CakeStats'
 import TotalValueLockedCard from 'views/Home/components/TotalValueLockedCard'
 import EarnAPRCard from 'views/Home/components/EarnAPRCard'
 import EarnAssetCard from 'views/Home/components/EarnAssetCard'
 import WinCard from 'views/Home/components/WinCard'
+import GraveStakingCard from './components/GraveStakingCard'
 
 const Hero = styled.div`
   align-items: center;
@@ -25,8 +25,9 @@ const Hero = styled.div`
   text-align: center;
 
   ${({ theme }) => theme.mediaQueries.lg} {
-    background-image: url('/images/pan-bg2.svg'), url('/images/pan-bg.svg');
+    background-image: url('/images/running-zombie-2.png'), url('/images/running-zombie-1.png');
     background-position: left center, right center;
+    background-size: 207px 142px, 207px 142px;
     height: 165px;
     padding-top: 0;
   }
@@ -75,7 +76,7 @@ const CTACards = styled(BaseLayout)`
     }
   }
 `
-
+const ImageURL = "https://storage.googleapis.com/rug-zombie/rug-zombie-home.png"
 const Home: React.FC = () => {
   const { t } = useTranslation()
 
@@ -83,14 +84,14 @@ const Home: React.FC = () => {
     <Page>
       <Hero>
         <Heading as="h1" size="xl" mb="24px" color="secondary">
-          {t('RugZombie')}
+          <img alt="" src={ImageURL} style={{ width: "250px" }} />
+          <Text>{t('Bringing your rugged tokens back from the dead.')}</Text>
         </Heading>
-        <Text>{t('Bringing your rugged tokens back from the dead.')}</Text>
       </Hero>
       <div>
         <Cards>
-          <FarmStakingCard />
-          <LotteryCard />
+          <GraveStakingCard />
+          <AnnouncementCard />
         </Cards>
         <CTACards>
           <EarnAPRCard />

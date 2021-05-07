@@ -28,16 +28,16 @@ const config: MenuEntry[] = [
       },
     ],
   },
-  {
-    label: 'Farms',
-    icon: 'FarmIcon',
-    href: '/farms',
-  },
   // {
-  //   label: 'Pools',
-  //   icon: 'PoolIcon',
-  //   href: '/pools',
+  //   label: 'Farms',
+  //   icon: 'FarmIcon',
+  //   href: '/farms',
   // },
+  {
+    label: 'Graves',
+    icon: 'PoolIcon',
+    href: '/graves',
+  },
   // {
   //   label: 'Prediction',
   //   icon: 'PredictionsIcon',
@@ -52,11 +52,11 @@ const config: MenuEntry[] = [
   //   icon: 'TicketIcon',
   //   href: '/lottery',
   // },
-  {
-    label: 'Collectibles',
-    icon: 'NftIcon',
-    href: '/collectibles',
-  },
+  // {
+  //   label: 'Collectibles',
+  //   icon: 'NftIcon',
+  //   href: '/collectibles',
+  // },
   // {
   //   label: 'Team Battle',
   //   icon: 'TeamBattleIcon',

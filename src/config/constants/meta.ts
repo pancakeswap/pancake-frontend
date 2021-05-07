@@ -1,44 +1,44 @@
 import { PageMeta } from './types'
 
 export const DEFAULT_META: PageMeta = {
-  title: 'PancakeSwap',
-  description:
-    'The most popular AMM on BSC by user count! Earn CAKE through yield farming or win it in the Lottery, then stake it in Syrup Pools to earn more tokens! Initial Farm Offerings (new token launch model pioneered by PancakeSwap), NFTs, and more, on a platform you can trust.',
-  image: 'https://pancakeswap.finance/images/hero.png',
+  title: 'RugZombie',
+  description: // TODO better description
+    'Bringing your rugged tokens back from the dead.',
+  image: 'https://storage.googleapis.com/rug-zombie/6.png',
 }
 
 export const customMeta: { [key: string]: PageMeta } = {
   '/': {
-    title: 'Home | PancakeSwap',
+    title: 'Home | RugZombie',
   },
   '/competition': {
-    title: 'Trading Battle | PancakeSwap',
+    title: 'Trading Battle | RugZombie',
   },
   '/prediction': {
-    title: 'Prediction | PancakeSwap',
+    title: 'Prediction | RugZombie',
   },
   '/farms': {
-    title: 'Farms | PancakeSwap',
+    title: 'Farms | RugZombie',
   },
-  '/pools': {
-    title: 'Pools | PancakeSwap',
+  '/graves': {
+    title: 'Graves | RugZombie',
   },
   '/lottery': {
-    title: 'Lottery | PancakeSwap',
+    title: 'Lottery | RugZombie',
   },
   '/collectibles': {
-    title: 'Collectibles | PancakeSwap',
+    title: 'Collectibles | RugZombie',
   },
   '/ifo': {
-    title: 'Initial Farm Offering | PancakeSwap',
+    title: 'Initial Farm Offering | RugZombie',
   },
   '/teams': {
-    title: 'Leaderboard | PancakeSwap',
+    title: 'Leaderboard | RugZombie',
   },
   '/profile/tasks': {
-    title: 'Task Center | PancakeSwap',
+    title: 'Task Center | RugZombie',
   },
   '/profile': {
-    title: 'Your Profile | PancakeSwap',
+    title: 'Your Profile | RugZombie',
   },
 }
