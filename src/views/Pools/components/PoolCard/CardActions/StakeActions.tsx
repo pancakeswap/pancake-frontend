@@ -1,9 +1,11 @@
 import React from 'react'
-import { Flex, Text, Button, IconButton, AddIcon, MinusIcon, Heading, useModal, Skeleton } from '@pancakeswap/uikit'
+import styled from 'styled-components'
+import { Flex, Text, Button, IconButton, AddIcon, MinusIcon, useModal, Skeleton } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
-import { getBalanceNumber, formatNumber, getDecimalAmount } from 'utils/formatBalance'
+import { getBalanceNumber, getDecimalAmount } from 'utils/formatBalance'
 import { Pool } from 'state/types'
+import Balance from 'components/Balance'
 import NotEnoughTokensModal from '../Modals/NotEnoughTokensModal'
 import StakeModal from '../Modals/StakeModal'
 
@@ -16,6 +18,10 @@ interface StakeActionsProps {
   isStaked: ConstrainBoolean
   isLoading?: boolean
 }
+
+const InlineBalance = styled(Balance)`
+  display: inline;
+`
 
 const StakeAction: React.FC<StakeActionsProps> = ({
   pool,
@@ -31,9 +37,10 @@ const StakeAction: React.FC<StakeActionsProps> = ({
   const convertedLimit = getDecimalAmount(new BigNumber(stakingLimit), earningToken.decimals)
   const stakingMax =
     stakingLimit && stakingTokenBalance.isGreaterThan(convertedLimit) ? convertedLimit : stakingTokenBalance
-  const formattedBalance = formatNumber(getBalanceNumber(stakedBalance, stakingToken.decimals), 3, 3)
-  const stakingMaxDollarValue = formatNumber(
-    getBalanceNumber(stakedBalance.multipliedBy(stakingTokenPrice), stakingToken.decimals),
+  const stakedTokenBalance = getBalanceNumber(stakedBalance, earningToken.decimals)
+  const stakedTokenDollarBalance = getBalanceNumber(
+    stakedBalance.multipliedBy(stakingTokenPrice),
+    stakingToken.decimals,
   )
 
   const [onPresentTokenRequired] = useModal(<NotEnoughTokensModal tokenSymbol={stakingToken.symbol} />)
@@ -56,8 +63,19 @@ const StakeAction: React.FC<StakeActionsProps> = ({
     return isStaked ? (
       <Flex justifyContent="space-between" alignItems="center">
         <Flex flexDirection="column">
-          <Heading>{formattedBalance}</Heading>
-          <Text fontSize="12px" color="textSubtle">{`~${stakingMaxDollarValue || 0} USD`}</Text>
+          <>
+            <Balance bold fontSize="20px" decimals={3} value={stakedTokenBalance} />
+            <Text fontSize="12px" color="textSubtle">
+              ~
+              <InlineBalance
+                fontSize="12px"
+                color="textSubtle"
+                decimals={2}
+                value={stakedTokenDollarBalance}
+                unit=" USD"
+              />
+            </Text>
+          </>
         </Flex>
         <Flex>
           <IconButton variant="secondary" onClick={onPresentUnstake} mr="6px">
