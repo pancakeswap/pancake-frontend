@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import { Helmet } from 'react-helmet-async'
+import BigNumber from 'bignumber.js'
 import { useMatchBreakpoints, useModal } from '@pancakeswap/uikit'
 import { useAppDispatch } from 'state'
 import { useGetPredictionsStatus, useInitialBlock } from 'state/hooks'
@@ -14,6 +15,7 @@ import { initialize, setPredictionStatus } from 'state/predictions'
 import { HistoryFilter, PredictionsState, PredictionStatus } from 'state/types'
 import usePersistState from 'hooks/usePersistState'
 import PageLoader from 'components/PageLoader'
+import usePollOraclePrice from './hooks/usePollOraclePrice'
 import usePollRoundData from './hooks/usePollRoundData'
 import Container from './components/Container'
 import CollectWinningsPopup from './components/CollectWinningsPopup'
@@ -68,6 +70,7 @@ const Predictions = () => {
             historyFilter: HistoryFilter.ALL,
             currentRoundStartBlockNumber: currentRoundStartBlock,
             rounds: roundData,
+            lastOraclePrice: new BigNumber(0).toJSON(),
             history: {},
             bets: {},
           }),
@@ -85,6 +88,7 @@ const Predictions = () => {
   }, [initialBlock, dispatch])
 
   usePollRoundData()
+  usePollOraclePrice()
 
   if (status === PredictionStatus.INITIAL) {
     return <PageLoader />
