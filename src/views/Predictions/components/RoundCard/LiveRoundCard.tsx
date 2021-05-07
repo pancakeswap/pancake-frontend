@@ -1,16 +1,7 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { useCountUp } from 'react-countup'
-import {
-  Box,
-  CardBody,
-  Flex,
-  LinkExternal,
-  PlayCircleOutlineIcon,
-  Skeleton,
-  Text,
-  useTooltip,
-} from '@pancakeswap/uikit'
+import { CardBody, Flex, PlayCircleOutlineIcon, Skeleton, Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { Round, BetPosition } from 'state/types'
 import { useBlock, useGetIntervalBlocks, useGetLastOraclePrice } from 'state/hooks'
@@ -66,15 +57,9 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
     duration: 1,
     decimals: 3,
   })
-  const tooltipContent = (
-    <Box width="256px">
-      {t('The final price at the end of a round may be different from the price shown on the live feed.')}
-      <LinkExternal href="https://docs.pancakeswap.finance/products/prediction" mt="8px">
-        {t('Learn More')}
-      </LinkExternal>
-    </Box>
-  )
-  const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipContent, { placement: 'bottom' })
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(t('Last price from Chainlink Oracle'), {
+    placement: 'bottom',
+  })
 
   useEffect(() => {
     update(price.toNumber())
@@ -113,9 +98,9 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
             </Text>
             <Flex alignItems="center" justifyContent="space-between" mb="16px" height="36px">
               <div ref={targetRef}>
-                <Text bold color={priceColor} fontSize="24px" style={{ minHeight: '36px' }}>
+                <TooltipText bold color={priceColor} fontSize="24px" style={{ minHeight: '36px' }}>
                   {price.gt(0) ? `$${countUp}` : <Skeleton height="36px" width="94px" />}
-                </Text>
+                </TooltipText>
               </div>
               <PositionTag betPosition={isBull ? BetPosition.BULL : BetPosition.BEAR}>
                 {formatUsd(priceDifference)}
