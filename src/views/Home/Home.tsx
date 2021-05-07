@@ -6,9 +6,6 @@ import Page from 'components/layout/Page'
 import AnnouncementCard from 'views/Home/components/AnnouncementCard'
 import CakeStats from 'views/Home/components/CakeStats'
 import TotalValueLockedCard from 'views/Home/components/TotalValueLockedCard'
-import EarnAPRCard from 'views/Home/components/EarnAPRCard'
-import EarnAssetCard from 'views/Home/components/EarnAssetCard'
-import WinCard from 'views/Home/components/WinCard'
 import GraveStakingCard from './components/GraveStakingCard'
 
 const Hero = styled.div`
@@ -93,11 +90,6 @@ const Home: React.FC = () => {
           <GraveStakingCard />
           <AnnouncementCard />
         </Cards>
-        <CTACards>
-          <EarnAPRCard />
-          <EarnAssetCard />
-          <WinCard />
-        </CTACards>
         <Cards>
           <CakeStats />
           <TotalValueLockedCard />

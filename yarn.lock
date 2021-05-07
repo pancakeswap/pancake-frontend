@@ -2090,19 +2090,9 @@
     estree-walker "^1.0.1"
     picomatch "^2.2.2"
 
-"@rug-zombie-libs/uikit@/Users/nnamdiarimah/Documents/JIGVO/CryptoScan/RugZombie/rug-zombie-toolkit/packages/rug-zombie-uikit":
+"@rug-zombie-libs/uikit@https://github.com/Rug-Zombie/rug-zombie-uikit.git":
   version "0.29.3"
-  dependencies:
-    "@popperjs/core" "^2.9.2"
-    "@types/lodash" "^4.14.168"
-    "@types/styled-system" "^5.1.10"
-    lodash "^4.17.20"
-    react-popper "^2.2.5"
-    react-transition-group "^4.4.1"
-    styled-system "^5.1.5"
-
-"@rug-zombie-libs/uikit@file:../rug-zombie-toolkit/packages/rug-zombie-uikit":
-  version "0.29.3"
+  resolved "https://github.com/Rug-Zombie/rug-zombie-uikit.git#84eea67f864eef23124dfb7d7ae1a1eb823105e2"
   dependencies:
     "@popperjs/core" "^2.9.2"
     "@types/lodash" "^4.14.168"
@@ -9119,6 +9109,11 @@ loader-utils@^1.1.0, loader-utils@^1.2.3, loader-utils@^1.4.0:
     emojis-list "^3.0.0"
     json5 "^1.0.1"
 
+loadjs@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/loadjs/-/loadjs-4.2.0.tgz#2a0336376397a6a43edf98c9ec3229ddd5abb6f6"
+  integrity sha512-AgQGZisAlTPbTEzrHPb6q+NYBMD+DP9uvGSIjSUM5uG+0jG15cb8axWpxuOIqrmQjn6scaaH8JwloiP27b2KXA==
+
 locate-path@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/locate-path/-/locate-path-2.0.0.tgz#2b568b265eec944c6d9c0de9c3dbbbca0354cd8e"
@@ -11795,6 +11790,13 @@ react-transition-group@^4.4.1:
     dom-helpers "^5.0.1"
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
+
+react-twitter-widgets@^1.10.0:
+  version "1.10.0"
+  resolved "https://registry.yarnpkg.com/react-twitter-widgets/-/react-twitter-widgets-1.10.0.tgz#f5395c25b954631b5a2532cdb48005f7db61d370"
+  integrity sha512-K7MAREhkKJxrhoiNWricKs1O++NyElnVpcplLzZ67gDrmeIsD3E4TUzlt0/nTZAHPOPPc86V4kEd4KIg4de7cQ==
+  dependencies:
+    loadjs "^4.2.0"
 
 react@^17.0.1:
   version "17.0.2"
