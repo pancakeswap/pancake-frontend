@@ -14442,7 +14442,7 @@ web3-utils@1.3.5:
     underscore "1.9.1"
     utf8 "3.0.0"
 
-web3@^1.3.1:
+web3@^1.3.5:
   version "1.3.5"
   resolved "https://registry.yarnpkg.com/web3/-/web3-1.3.5.tgz#ef4c3a2241fdd74f2f7794e839f30bc6f9814e46"
   integrity sha512-UyQW/MT5EIGBrXPCh/FDIaD7RtJTn5/rJUNw2FOglp0qoXnCQHNKvntiR1ylztk05fYxIF6UgsC76IrazlKJjw==
