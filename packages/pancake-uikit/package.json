@@ -1,5 +1,5 @@
 {
-  "name": "@pancakeswap-libs/uikit",
+  "name": "@pancakeswap/uikit",
   "version": "0.29.4",
   "description": "Set of UI components for pancake projects",
   "main": "dist/index.cjs.js",
@@ -18,7 +18,8 @@
     "format:write": "prettier --write 'src/**/*.{js,jsx,ts,tsx}'",
     "storybook": "start-storybook -p 6006",
     "storybook:build": "build-storybook",
-    "test": "jest"
+    "test": "jest",
+    "prepublishOnly": "yarn build"
   },
   "jest": {
     "setupFilesAfterEnv": [
