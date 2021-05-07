@@ -20,7 +20,9 @@ import { useWeb3React } from '@web3-react/core'
 import { useGetMinBetAmount } from 'state/hooks'
 import { useTranslation } from 'contexts/Localization'
 import { usePredictionsContract } from 'hooks/useContract'
-import { useGetBnbBalance } from 'hooks/useTokenBalance'
+import useRefresh from 'hooks/useRefresh'
+import { BIG_ZERO } from 'utils/bigNumber'
+import useWeb3 from 'hooks/useWeb3'
 import useToast from 'hooks/useToast'
 import { BetPosition } from 'state/types'
 import { getDecimalAmount } from 'utils/formatBalance'
@@ -70,11 +72,13 @@ const getButtonProps = (value: BigNumber, bnbBalance: BigNumber, minBetAmountBal
 
 const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosition, onBack, onSuccess }) => {
   const [value, setValue] = useState('')
+  const web3 = useWeb3()
+  const { fastRefresh } = useRefresh()
   const [isTxPending, setIsTxPending] = useState(false)
   const [errorMessage, setErrorMessage] = useState(null)
   const { account } = useWeb3React()
   const { swiper } = useSwiper()
-  const { balance: bnbBalance } = useGetBnbBalance()
+  const [bnbBalance, setBnbBalance] = useState(BIG_ZERO)
   const minBetAmount = useGetMinBetAmount()
   const { t } = useTranslation()
   const { toastError } = useToast()
@@ -88,6 +92,17 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
   const percentageDisplay = getPercentDisplay(percentageOfMaxBalance)
   const showFieldWarning = account && valueAsBn.gt(0) && errorMessage !== null
   const minBetAmountBalance = getBnbAmount(minBetAmount).toNumber()
+
+  useEffect(() => {
+    const fetchBalance = async () => {
+      const walletBalance = await web3.eth.getBalance(account)
+      setBnbBalance(new BigNumber(walletBalance))
+    }
+
+    if (account) {
+      fetchBalance()
+    }
+  }, [account, fastRefresh, setBnbBalance, web3.eth])
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = (evt) => {
     const newValue = evt.target.value
