@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
-import { Box, CardBody, Flex, LinkExternal, PlayCircleOutlineIcon, Text, useTooltip } from '@pancakeswap/uikit'
+import { useCountUp } from 'react-countup'
+import { CardBody, Flex, PlayCircleOutlineIcon, Skeleton, Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { Round, BetPosition } from 'state/types'
-import { useBlock, useGetIntervalBlocks } from 'state/hooks'
-import { useBnbUsdtTicker } from 'hooks/ticker'
+import { useBlock, useGetIntervalBlocks, useGetLastOraclePrice } from 'state/hooks'
 import BlockProgress from 'components/BlockProgress'
 import { formatUsd, getBubbleGumBackground } from '../../helpers'
 import PositionTag from '../PositionTag'
@@ -44,23 +44,26 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
 }) => {
   const { t } = useTranslation()
   const { lockPrice, lockBlock, totalAmount } = round
-  const { stream } = useBnbUsdtTicker()
   const { currentBlock } = useBlock()
   const totalInterval = useGetIntervalBlocks()
-  const isBull = stream?.lastPrice > lockPrice
+  const price = useGetLastOraclePrice()
+  const isBull = price.gt(lockPrice)
   const priceColor = isBull ? 'success' : 'failure'
   const estimatedEndBlock = lockBlock + totalInterval
-  const priceDifference = stream?.lastPrice - lockPrice
+  const priceDifference = price.minus(lockPrice).toNumber()
+  const { countUp, update } = useCountUp({
+    start: 0,
+    end: price.toNumber(),
+    duration: 1,
+    decimals: 3,
+  })
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(t('Last price from Chainlink Oracle'), {
+    placement: 'bottom',
+  })
 
-  const tooltipContent = (
-    <Box width="256px">
-      {t('The final price at the end of a round may be different from the price shown on the live feed.')}
-      <LinkExternal href="https://docs.pancakeswap.finance/products/prediction" mt="8px">
-        {t('Learn More')}
-      </LinkExternal>
-    </Box>
-  )
-  const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipContent, { placement: 'bottom' })
+  useEffect(() => {
+    update(price.toNumber())
+  }, [price, update])
 
   if (round.failed) {
     return <CanceledRoundCard round={round} />
@@ -94,18 +97,14 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
               {t('Last Price')}
             </Text>
             <Flex alignItems="center" justifyContent="space-between" mb="16px" height="36px">
-              {stream && (
-                <>
-                  <div ref={targetRef}>
-                    <Text bold color={priceColor} fontSize="24px" style={{ minHeight: '36px' }}>
-                      {formatUsd(stream.lastPrice)}
-                    </Text>
-                  </div>
-                  <PositionTag betPosition={isBull ? BetPosition.BULL : BetPosition.BEAR}>
-                    {formatUsd(priceDifference)}
-                  </PositionTag>
-                </>
-              )}
+              <div ref={targetRef}>
+                <TooltipText bold color={priceColor} fontSize="24px" style={{ minHeight: '36px' }}>
+                  {price.gt(0) ? `$${countUp}` : <Skeleton height="36px" width="94px" />}
+                </TooltipText>
+              </div>
+              <PositionTag betPosition={isBull ? BetPosition.BULL : BetPosition.BEAR}>
+                {formatUsd(priceDifference)}
+              </PositionTag>
             </Flex>
             {lockPrice && <LockPriceRow lockPrice={lockPrice} />}
             <PrizePoolRow totalAmount={totalAmount} />

@@ -292,6 +292,11 @@ export const useGetBetByRoundId = (account: string, roundId: string) => {
   return bets[account][roundId]
 }
 
+export const useGetLastOraclePrice = (): BigNumber => {
+  const lastOraclePrice = useSelector((state: State) => state.predictions.lastOraclePrice)
+  return new BigNumber(lastOraclePrice)
+}
+
 // Collectibles
 export const useGetCollectibles = () => {
   const { account } = useWeb3React()
