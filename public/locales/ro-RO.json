@@ -388,5 +388,7 @@
   "When the IFO sales are live, you can “commit” your LP tokens to buy the tokens being sold.": "Recomandăm depunerea Vânzării de bază mai întâi, dar le poți face pe ambele dacă vrei.",
   "Claim your tokens and achievement": "Revendică-ți jatoanele și realizarea",
   "After the IFO sales finish, you can claim any IFO tokens that you bought, and any unspent CAKE-BNB LP tokens will be returned to your wallet.": "După ce vânzările IFO se încheie, poți revendica orice jetoane IFO pe care le-ai cumpărat și orice jetoane CAKE-BNB LP necheltuite vor fi returnate în portofelul tău.",
-  "This round's closing transaction has been submitted to the blockchain, and is waiting to be confirmed.": "This round's closing transaction has been submitted to the blockchain, and is waiting to be confirmed."
+  "This round's closing transaction has been submitted to the blockchain, and is waiting to be confirmed.": "This round's closing transaction has been submitted to the blockchain, and is waiting to be confirmed.",
+  "No prediction history available": "No prediction history available",
+  "If you are sure you should see history here, make sure you’re connected to the correct wallet and try again.": "If you are sure you should see history here, make sure you’re connected to the correct wallet and try again."
 }
