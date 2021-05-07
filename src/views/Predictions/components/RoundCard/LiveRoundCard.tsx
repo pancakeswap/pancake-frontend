@@ -1,7 +1,16 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { useCountUp } from 'react-countup'
-import { Box, CardBody, Flex, LinkExternal, PlayCircleOutlineIcon, Text, useTooltip } from '@pancakeswap/uikit'
+import {
+  Box,
+  CardBody,
+  Flex,
+  LinkExternal,
+  PlayCircleOutlineIcon,
+  Skeleton,
+  Text,
+  useTooltip,
+} from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { Round, BetPosition } from 'state/types'
 import { useBlock, useGetIntervalBlocks, useGetLastOraclePrice } from 'state/hooks'
@@ -57,7 +66,6 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
     duration: 1,
     decimals: 3,
   })
-
   const tooltipContent = (
     <Box width="256px">
       {t('The final price at the end of a round may be different from the price shown on the live feed.')}
@@ -106,7 +114,7 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
             <Flex alignItems="center" justifyContent="space-between" mb="16px" height="36px">
               <div ref={targetRef}>
                 <Text bold color={priceColor} fontSize="24px" style={{ minHeight: '36px' }}>
-                  {`$${countUp}`}
+                  {price.gt(0) ? `$${countUp}` : <Skeleton height="36px" width="94px" />}
                 </Text>
               </div>
               <PositionTag betPosition={isBull ? BetPosition.BULL : BetPosition.BEAR}>

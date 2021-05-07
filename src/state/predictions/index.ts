@@ -90,7 +90,10 @@ export const predictionsSlice = createSlice({
       state.historyFilter = action.payload
     },
     initialize: (state, action: PayloadAction<PredictionsState>) => {
-      return action.payload
+      return {
+        ...state,
+        ...action.payload,
+      }
     },
     updateMarketData: (state, action: PayloadAction<{ rounds: Round[]; market: Market }>) => {
       const { rounds, market } = action.payload

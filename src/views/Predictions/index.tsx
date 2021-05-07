@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from 'react'
 import { Helmet } from 'react-helmet-async'
-import BigNumber from 'bignumber.js'
 import { useMatchBreakpoints, useModal } from '@pancakeswap/uikit'
 import { useAppDispatch } from 'state'
 import { useGetPredictionsStatus, useInitialBlock } from 'state/hooks'
@@ -70,7 +69,6 @@ const Predictions = () => {
             historyFilter: HistoryFilter.ALL,
             currentRoundStartBlockNumber: currentRoundStartBlock,
             rounds: roundData,
-            lastOraclePrice: new BigNumber(0).toJSON(),
             history: {},
             bets: {},
           }),

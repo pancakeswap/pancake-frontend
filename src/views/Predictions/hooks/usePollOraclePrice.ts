@@ -9,6 +9,7 @@ const usePollOraclePrice = (seconds = 30) => {
 
   // Poll for the oracle price
   useEffect(() => {
+    refresh()
     const timer = setInterval(() => {
       refresh()
     }, seconds * 1000)
