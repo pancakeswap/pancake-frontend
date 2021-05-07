@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import BigNumber from 'bignumber.js'
 import { maxBy } from 'lodash'
+import { BIG_ZERO } from 'utils/bigNumber'
 import { Bet, HistoryFilter, Market, PredictionsState, PredictionStatus, Round } from 'state/types'
 import {
   makeFutureRoundResponse,
@@ -24,7 +24,7 @@ const initialState: PredictionsState = {
   intervalBlocks: 100,
   bufferBlocks: 2,
   minBetAmount: '1000000000000000',
-  lastOraclePrice: new BigNumber(0).toJSON(),
+  lastOraclePrice: BIG_ZERO.toJSON(),
   rounds: {},
   history: {},
   bets: {},
