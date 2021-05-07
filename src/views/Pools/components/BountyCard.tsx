@@ -12,7 +12,7 @@ import {
   useModal,
   Box,
   useTooltip,
-} from '@pancakeswap-libs/uikit'
+} from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import useGetVaultFees from 'hooks/cakeVault/useGetVaultFees'
 import { getFullDisplayBalance } from 'utils/formatBalance'

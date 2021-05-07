@@ -1,5 +1,5 @@
 import React from 'react'
-import { BoxProps, Flex, Text } from '@pancakeswap-libs/uikit'
+import { BoxProps, Flex, Text } from '@pancakeswap/uikit'
 import { BetPosition, Round } from 'state/types'
 import { useTranslation } from 'contexts/Localization'
 import { formatUsd } from '../../helpers'

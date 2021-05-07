@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js'
 import React from 'react'
-import { CardBody, Flex, Text, CardRibbon } from '@pancakeswap-libs/uikit'
+import { CardBody, Flex, Text, CardRibbon } from '@pancakeswap/uikit'
 import UnlockButton from 'components/UnlockButton'
 import { useTranslation } from 'contexts/Localization'
 import { getAddress } from 'utils/addressHelpers'

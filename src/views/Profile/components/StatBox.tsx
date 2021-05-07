@@ -1,5 +1,5 @@
 import React, { ElementType, ReactNode } from 'react'
-import { Flex, Heading, Text, TextProps } from '@pancakeswap-libs/uikit'
+import { Flex, Heading, Text, TextProps } from '@pancakeswap/uikit'
 import SecondaryCard from './SecondaryCard'
 
 interface StatBoxProps extends TextProps {

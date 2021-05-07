@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button } from '@pancakeswap-libs/uikit'
+import { Button } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { Link } from 'react-router-dom'
 import { Ifo, PoolIds } from 'config/constants/types'

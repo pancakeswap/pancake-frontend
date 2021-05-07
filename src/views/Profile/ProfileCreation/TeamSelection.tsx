@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { Card, CardBody, CommunityIcon, Flex, Heading, Text } from '@pancakeswap-libs/uikit'
+import { Card, CardBody, CommunityIcon, Flex, Heading, Text } from '@pancakeswap/uikit'
 import shuffle from 'lodash/shuffle'
 import { useTeams } from 'state/hooks'
 import { useTranslation } from 'contexts/Localization'

@@ -13,7 +13,7 @@ import {
   Skeleton,
   useTooltip,
   Button,
-} from '@pancakeswap-libs/uikit'
+} from '@pancakeswap/uikit'
 import { BASE_BSC_SCAN_URL, BASE_URL } from 'config'
 import { useBlock } from 'state/hooks'
 import { Pool } from 'state/types'

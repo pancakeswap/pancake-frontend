@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Box, Heading, Spinner, Text } from '@pancakeswap-libs/uikit'
+import { Box, Heading, Spinner, Text } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
 import { fetchHistory } from 'state/predictions'
