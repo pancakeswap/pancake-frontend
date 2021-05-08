@@ -3,10 +3,6 @@ export default {
     97: '0x1d32c2945C8FDCBc7156c553B7cEa4325a17f4f9',
     56: '0x73feaa1eE314F8c655E354234017bE2193C9E24E',
   },
-  sousChef: {
-    97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
-    56: '0x6ab8463a4185b80905e05a9ff80a2d6b714b9e95',
-  },
   lottery: {
     97: '0x99c2EcD51d52c036B00130d882Bc65f20Fdecf9f',
     56: '0x3C3f2049cc17C136a604bE23cF7E42745edf3b91',
