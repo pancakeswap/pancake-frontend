@@ -16,8 +16,6 @@ import StyledCard from './StyledCard'
 import CardFooter from './CardFooter'
 import StyledCardHeader from './StyledCardHeader'
 import VaultCardActions from './VaultCardActions'
-import UnstakingFeeCountdownRow from './UnstakingFeeCountdownRow'
-import RecentCakeProfitRow from './RecentCakeProfitRow'
 
 const StyledCardBody = styled(CardBody)<{ isLoading: boolean }>`
   min-height: ${({ isLoading }) => (isLoading ? '0' : '254px')};
@@ -41,7 +39,7 @@ const TheMoonGraveCard: React.FC<{ pool: Pool; account: string }> = ({ pool, acc
     <StyledCard isStaking={accountHasSharesStaked} style={{
       maxWidth: "400px"
     }}>
-      <StyledCardHeader earningTokenSymbol="UndeadMoon" stakingTokenSymbol="TheMoon"/>
+      <StyledCardHeader earningTokenSymbol="UndeadMoon" stakingTokenSymbol="TheMoon" stakingTokenImageUrl="https://storage.googleapis.com/rug-zombie/TheMoon.png"/>
       <StyledCardBody isLoading={isLoading}>
         <NFTmrRow
           pool={pool}

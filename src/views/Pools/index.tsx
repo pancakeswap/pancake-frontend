@@ -79,9 +79,9 @@ const Pools: React.FC = () => {
             </>
           </Route>
           <Route path={`${path}/history`}>
-            {orderBy(finishedPools, ['sortOrder']).map((pool) => (
-              <PoolCard key={pool.sousId} pool={pool} account={account} />
-            ))}
+            {/* {orderBy(finishedPools, ['sortOrder']).map((pool) => ( */}
+            {/*  <PoolCard key={pool.sousId} pool={pool} account={account} /> */}
+            {/* ))} */}
           </Route>
         </FlexLayout>
         <Image

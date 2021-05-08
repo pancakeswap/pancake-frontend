@@ -11,11 +11,11 @@ const Wrapper = styled(CardHeader)<{ isFinished?: boolean; background?: string }
 const StyledCardHeader: React.FC<{
   earningTokenSymbol: string
   stakingTokenSymbol: string
+  stakingTokenImageUrl: string
   isAutoVault?: boolean
   isFinished?: boolean
-}> = ({ earningTokenSymbol, stakingTokenSymbol, isFinished = false, isAutoVault = false }) => {
+}> = ({ earningTokenSymbol, stakingTokenSymbol, stakingTokenImageUrl,isFinished = false, isAutoVault = false }) => {
   const { t } = useTranslation()
-  const poolImageSrc = `${stakingTokenSymbol}.png`.toLowerCase()
   const isCakePool = earningTokenSymbol === 'CAKE' && stakingTokenSymbol === 'CAKE'
 
   const getSubHeading = () => {
@@ -37,7 +37,7 @@ const StyledCardHeader: React.FC<{
           </Heading>
           <Text color={isFinished ? 'textDisabled' : 'textSubtle'}>{getSubHeading()}</Text>
         </Flex>
-        <Image src={`/images/pools/${poolImageSrc}`} alt={earningTokenSymbol} width={64} height={64} />
+        <Image src={stakingTokenImageUrl} alt={earningTokenSymbol} width={64} height={64} />
       </Flex>
     </Wrapper>
   )
