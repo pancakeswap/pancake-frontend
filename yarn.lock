@@ -2003,10 +2003,10 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
-"@pancakeswap-libs/eslint-config-pancake@1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@pancakeswap-libs/eslint-config-pancake/-/eslint-config-pancake-1.0.0.tgz#da5c17842d1cb0d575bca3de0c9404386c386151"
-  integrity sha512-/rE1jQsgDV+jUvYIJKzIlLGFSYwku8K67nprRMmsbhdG+FHdBJnclIyIbVY1NnVtuwGaP+uBQiS/tn6Zhiyx8w==
+"@pancakeswap-libs/eslint-config-pancake@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@pancakeswap-libs/eslint-config-pancake/-/eslint-config-pancake-1.0.1.tgz#f6e93e5462efe6a0dbf77c508fdf41bc5ac5542f"
+  integrity sha512-pMslyfo7dEL+Zi9dBZk1cU7iHAISHFnPd0LozY8+l8aqG6EEsoAM1EPD/mdsgS0raXlaAFc/+slVpb3UlQMxtg==
   dependencies:
     "@typescript-eslint/eslint-plugin" "^4.7.0"
     "@typescript-eslint/parser" "^4.7.0"
