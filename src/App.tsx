@@ -41,6 +41,10 @@ const App: React.FC = () => {
     console.warn = () => null
   }, [])
 
+  useEffect(() => {
+      document.title = 'RugZombie'
+    },
+  )
   useEagerConnect()
   useFetchPublicData()
   useFetchProfile()
