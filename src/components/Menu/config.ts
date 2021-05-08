@@ -129,11 +129,11 @@ const config: MenuEntry[] = [
       },
       {
         label: 'Voting (Coming Soon!)',
-        href: '/',
+        href: '',
       },
       {
         label: 'Merch (Coming Soon!)',
-        href: '/',
+        href: '',
       },
     ],
   },
