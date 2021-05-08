@@ -11,7 +11,6 @@ import config from './config'
 const Menu = (props) => {
   const { account } = useWeb3React()
   const { login, logout } = useAuth()
-  const { isDark, toggleTheme } = useTheme()
   const cakePriceUsd = usePriceCakeBusd()
   const { profile } = useProfile()
   const { currentLanguage, setLanguage } = useTranslation()
@@ -21,8 +20,7 @@ const Menu = (props) => {
       account={account}
       login={login}
       logout={logout}
-      isDark={isDark}
-      toggleTheme={toggleTheme}
+      isDark={false}
       currentLang={currentLanguage.code}
       langs={languageList}
       setLang={(langType) => {

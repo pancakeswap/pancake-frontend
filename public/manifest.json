@@ -1,10 +1,10 @@
 {
-  "short_name": "PancakeSwap",
-  "name": "PancakeSwap",
-  "description": "Farm CAKE with Pancake LP Tokens",
+  "short_name": "RugZombie",
+  "name": "RugZombie",
+  "description": "Bringing your rugged tokens back from the dead.",
   "icons": [
     {
-      "src": "favicon.ico",
+      "src": "zmbe-low-def.png",
       "type": "image/x-icon",
       "sizes": "256x256"
     }
