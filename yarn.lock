@@ -2090,19 +2090,9 @@
     estree-walker "^1.0.1"
     picomatch "^2.2.2"
 
-"@rug-zombie-libs/uikit@/Users/nnamdiarimah/Documents/JIGVO/CryptoScan/RugZombie/rug-zombie-toolkit/packages/rug-zombie-uikit":
+"@rug-zombie-libs/uikit@https://github.com/Rug-Zombie/rug-zombie-uikit.git":
   version "0.29.3"
-  dependencies:
-    "@popperjs/core" "^2.9.2"
-    "@types/lodash" "^4.14.168"
-    "@types/styled-system" "^5.1.10"
-    lodash "^4.17.20"
-    react-popper "^2.2.5"
-    react-transition-group "^4.4.1"
-    styled-system "^5.1.5"
-
-"@rug-zombie-libs/uikit@file:../rug-zombie-toolkit/packages/rug-zombie-uikit":
-  version "0.29.3"
+  resolved "https://github.com/Rug-Zombie/rug-zombie-uikit.git#2e95c6aba66b718783c32c798286dc7d50114e57"
   dependencies:
     "@popperjs/core" "^2.9.2"
     "@types/lodash" "^4.14.168"
