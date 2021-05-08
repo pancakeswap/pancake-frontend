@@ -87,7 +87,7 @@ const Pools: React.FC = () => {
         <Image
           mx="auto"
           mt="12px"
-          src="/images/running-zombie-1.png"
+          src="https://storage.googleapis.com/rug-zombie/running-zombie-1.png"
           alt="zombie running"
           width={207}
           height={142}

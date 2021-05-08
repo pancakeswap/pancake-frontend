@@ -22,7 +22,7 @@ const Hero = styled.div`
   text-align: center;
 
   ${({ theme }) => theme.mediaQueries.lg} {
-    background-image: url('/images/running-zombie-2.png'), url('/images/running-zombie-1.png');
+    background-image: url('https://storage.googleapis.com/rug-zombie/running-zombie-2.png'), url('https://storage.googleapis.com/rug-zombie/running-zombie-1.png');
     background-position: left center, right center;
     background-size: 207px 142px, 207px 142px;
     height: 165px;
