@@ -4,7 +4,7 @@ import { Heading, Text, BaseLayout } from '@rug-zombie-libs/uikit'
 import { useTranslation } from 'contexts/Localization'
 import Page from 'components/layout/Page'
 import AnnouncementCard from 'views/Home/components/AnnouncementCard'
-import CakeStats from 'views/Home/components/CakeStats'
+import ZmbeStats from 'views/Home/components/ZmbeStats'
 import TotalValueLockedCard from 'views/Home/components/TotalValueLockedCard'
 import GraveStakingCard from './components/GraveStakingCard'
 
@@ -91,7 +91,7 @@ const Home: React.FC = () => {
           <AnnouncementCard />
         </Cards>
         <Cards>
-          <CakeStats />
+          <ZmbeStats />
           <TotalValueLockedCard />
         </Cards>
       </div>

@@ -62,24 +62,24 @@ const config: MenuEntry[] = [
   //   icon: 'TeamBattleIcon',
   //   href: '/competition',
   // },
-  {
-    label: 'Profile',
-    icon: 'GroupsIcon',
-    items: [
-      // {
-      //   label: 'Leaderboard',
-      //   href: '/teams',
-      // },
-      {
-        label: 'Task Center',
-        href: '/profile/tasks',
-      },
-      {
-        label: 'Your Profile',
-        href: '/profile',
-      },
-    ],
-  },
+  // {
+  //   label: 'Profile',
+  //   icon: 'GroupsIcon',
+  //   items: [
+  //     // {
+  //     //   label: 'Leaderboard',
+  //     //   href: '/teams',
+  //     // },
+  //     {
+  //       label: 'Task Center',
+  //       href: '/profile/tasks',
+  //     },
+  //     {
+  //       label: 'Your Profile',
+  //       href: '/profile',
+  //     },
+  //   ],
+  // },
   {
     label: 'Info',
     icon: 'InfoIcon',
@@ -113,11 +113,7 @@ const config: MenuEntry[] = [
     items: [
       {
         label: 'Contact',
-        href: 'https://docs.pancakeswap.finance/contact-us',
-      },
-      {
-        label: 'Voting',
-        href: 'https://voting.pancakeswap.finance',
+        href: 'https://docs.rugzombie.io/contact-us',
       },
       {
         label: 'Github',
@@ -125,15 +121,19 @@ const config: MenuEntry[] = [
       },
       {
         label: 'Docs',
-        href: 'https://docs.pancakeswap.finance',
+        href: 'https://docs.rugzombie.io',
       },
       {
         label: 'Blog',
-        href: 'https://pancakeswap.medium.com',
+        href: 'https://rugzombie.medium.com',
       },
       {
-        label: 'Merch',
-        href: 'https://pancakeswap.creator-spring.com/',
+        label: 'Voting (Coming Soon!)',
+        href: '/',
+      },
+      {
+        label: 'Merch (Coming Soon!)',
+        href: '/',
       },
     ],
   },

@@ -12,7 +12,7 @@ import FlexLayout from 'components/layout/Flex'
 import Page from 'components/layout/Page'
 import PageHeader from 'components/PageHeader'
 import PoolCard from './components/PoolCard'
-import CakeVaultCard from './components/CakeVaultCard'
+import FirstGraveCard from './components/TheMoonGraveCard'
 import PoolTabButtons from './components/PoolTabButtons'
 import BountyCard from './components/BountyCard'
 
@@ -38,20 +38,20 @@ const Pools: React.FC = () => {
   )
   // This pool is passed explicitly to the cake vault
   const cakePoolData = useMemo(() => openPools.find((pool) => pool.sousId === 0), [openPools])
-
+  const backgroundColor = "#101820"
   return (
     <>
-      <PageHeader>
+      <PageHeader background={backgroundColor}>
         <Flex justifyContent="space-between" flexDirection={['column', null, 'row']}>
           <Flex flexDirection="column" mr={['8px', 0]}>
             <Heading as="h1" size="xxl" color="secondary" mb="24px">
-              {t('Syrup Pools')}
+              {t('Graves')}
             </Heading>
             <Heading size="md" color="text">
-              {t('Simply stake tokens to earn.')}
+              {t('Resurrect rugged tokens.')}
             </Heading>
             <Heading size="md" color="text">
-              {t('High APR, low risk.')}
+              {t('Stake them for NFT rewards.')}
             </Heading>
           </Flex>
           <Flex height="fit-content" justifyContent="center" alignItems="center" mt={['24px', null, '0']}>
@@ -68,14 +68,14 @@ const Pools: React.FC = () => {
         <FlexLayout>
           <Route exact path={`${path}`}>
             <>
-              <CakeVaultCard pool={cakePoolData} account={account} />
-              {stakedOnly
-                ? orderBy(stakedOnlyPools, ['sortOrder']).map((pool) => (
-                    <PoolCard key={pool.sousId} pool={pool} account={account} />
-                  ))
-                : orderBy(openPools, ['sortOrder']).map((pool) => (
-                    <PoolCard key={pool.sousId} pool={pool} account={account} />
-                  ))}
+              <FirstGraveCard pool={cakePoolData} account={account} />
+              {/* {stakedOnly */}
+              {/*  ? orderBy(stakedOnlyPools, ['sortOrder']).map((pool) => ( */}
+              {/*      <PoolCard key={pool.sousId} pool={pool} account={account} /> */}
+              {/*    )) */}
+              {/*  : orderBy(openPools, ['sortOrder']).map((pool) => ( */}
+              {/*      <PoolCard key={pool.sousId} pool={pool} account={account} /> */}
+              {/*    ))} */}
             </>
           </Route>
           <Route path={`${path}/history`}>
@@ -87,10 +87,10 @@ const Pools: React.FC = () => {
         <Image
           mx="auto"
           mt="12px"
-          src="/images/3d-syrup-bunnies.png"
-          alt="Pancake illustration"
-          width={192}
-          height={184.5}
+          src="/images/running-zombie-1.png"
+          alt="zombie running"
+          width={207}
+          height={142}
         />
       </Page>
     </>

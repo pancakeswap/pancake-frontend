@@ -20,33 +20,37 @@ const Row = styled.div`
   margin-bottom: 8px;
 `
 
-const CakeStats = () => {
+const ZmbeStats = () => {
   const { t } = useTranslation()
   const totalSupply = useTotalSupply()
   const burnedBalance = getBalanceNumber(useBurnedBalance(getCakeAddress()))
   const cakeSupply = totalSupply ? getBalanceNumber(totalSupply) - burnedBalance : 0
 
-  return (
+  return ( // TODO Set proper values for these cards
     <StyledCakeStats>
       <CardBody>
         <Heading size="xl" mb="24px">
-          {t('Cake Stats')}
+          {t('Zombie Stats')}
         </Heading>
         <Row>
-          <Text fontSize="14px">{t('Total CAKE Supply')}</Text>
+          <Text fontSize="14px">{t('Total ZMBE Supply')}</Text>
           {cakeSupply && <CardValue fontSize="14px" value={cakeSupply} />}
         </Row>
         <Row>
-          <Text fontSize="14px">{t('Total CAKE Burned')}</Text>
+          <Text fontSize="14px">{t('Total ZMBE Burned')}</Text>
           <CardValue fontSize="14px" decimals={0} value={burnedBalance} />
         </Row>
         <Row>
-          <Text fontSize="14px">{t('New CAKE/block')}</Text>
+          <Text fontSize="14px">{t('New ZMBE/block')}</Text>
           <CardValue fontSize="14px" decimals={0} value={22} />
+        </Row>
+        <Row>
+          <Text fontSize="14px">{t('Total NFT\'s Minted')}</Text>
+          <CardValue fontSize="14px" decimals={0} value={0} />
         </Row>
       </CardBody>
     </StyledCakeStats>
   )
 }
 
-export default CakeStats
+export default ZmbeStats

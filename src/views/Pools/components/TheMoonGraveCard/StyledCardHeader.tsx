@@ -25,7 +25,7 @@ const StyledCardHeader: React.FC<{
     if (isCakePool) {
       return `${t('Earn CAKE, stake CAKE')}`
     }
-    return `${t('Stake')} ${stakingTokenSymbol}`
+    return `${t('Stake')} ${stakingTokenSymbol} (example rug)`
   }
 
   return (

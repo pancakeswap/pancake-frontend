@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { Heading, Card, CardBody, Button } from '@rug-zombie-libs/uikit'
 import { useTranslation } from 'contexts/Localization'
@@ -8,12 +8,13 @@ const TwitterContainer = () => {
   return (
     <section className='twitterContainer'>
       <div className='twitter-embed' style={{
-        maxHeight: '300px',
+        maxHeight: '320px',
         overflow: 'scroll',
       }}>
         <Tweet
           options={{
-            height: '50px',
+            width: '100%',
+            height: '100%',
             theme: 'dark',
           }}
           tweetId='1384305958373892103'
