@@ -3,9 +3,10 @@ import styled from 'styled-components'
 import { Bet } from 'state/types'
 import { useTranslation } from 'contexts/Localization'
 import { Flex, Text, Link, Heading } from '@pancakeswap/uikit'
+import { Result } from 'state/predictions/helpers'
 import { getMultiplier } from '../../helpers'
 import { PayoutRow, RoundResult } from '../RoundResult'
-import BetResult, { Result } from './BetResult'
+import BetResult from './BetResult'
 
 interface BetDetailsProps {
   bet: Bet

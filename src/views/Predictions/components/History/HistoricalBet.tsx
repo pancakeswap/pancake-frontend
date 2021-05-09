@@ -11,14 +11,14 @@ import {
   WaitIcon,
 } from '@pancakeswap/uikit'
 import styled from 'styled-components'
-import { Bet, BetPosition, PredictionStatus } from 'state/types'
+import { Bet, PredictionStatus } from 'state/types'
 import { useBetCanClaim, useGetCurrentEpoch, useGetPredictionsStatus } from 'state/hooks'
+import { getRoundResult, Result } from 'state/predictions/helpers'
 import { useTranslation } from 'contexts/Localization'
 import { formatBnb, getPayout } from '../../helpers'
 import CollectWinningsButton from '../CollectWinningsButton'
 import ReclaimPositionButton from '../ReclaimPositionButton'
 import BetDetails from './BetDetails'
-import { Result } from './BetResult'
 
 interface BetProps {
   bet: Bet
@@ -36,27 +36,14 @@ const YourResult = styled(Box)`
 
 const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
   const [isOpen, setIsOpen] = useState(false)
-  const { amount, position, round } = bet
+  const { amount, round } = bet
 
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const currentEpoch = useGetCurrentEpoch()
   const status = useGetPredictionsStatus()
-  const roundResultPosition = round.closePrice > round.lockPrice ? BetPosition.BULL : BetPosition.BEAR
 
   const toggleOpen = () => setIsOpen(!isOpen)
-
-  const getRoundResult = () => {
-    if (round.failed) {
-      return Result.CANCELED
-    }
-
-    if (round.epoch >= currentEpoch - 1) {
-      return Result.LIVE
-    }
-
-    return position === roundResultPosition ? Result.WIN : Result.LOSE
-  }
 
   const getRoundColor = (result) => {
     switch (result) {
@@ -83,7 +70,7 @@ const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
     return ''
   }
 
-  const roundResult = getRoundResult()
+  const roundResult = getRoundResult(bet, currentEpoch)
   const resultTextColor = getRoundColor(roundResult)
   const resultTextPrefix = getRoundPrefix(roundResult)
   const isOpenRound = round.epoch === currentEpoch
@@ -165,7 +152,7 @@ const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
           </IconButton>
         )}
       </StyledBet>
-      {isOpen && <BetDetails bet={bet} result={getRoundResult()} />}
+      {isOpen && <BetDetails bet={bet} result={getRoundResult(bet, currentEpoch)} />}
     </>
   )
 }

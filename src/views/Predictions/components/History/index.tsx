@@ -1,2 +1,2 @@
 export { default as HistoricalBet } from './HistoricalBet'
-export { default as Header } from './Header'
+export { default as Header, HistoryTabs } from './Header'
