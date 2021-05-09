@@ -65,7 +65,11 @@ const StakeAction: React.FC<FarmCardActionsProps> = ({
         <IconButton variant="tertiary" onClick={onPresentWithdraw} mr="6px">
           <MinusIcon color="primary" width="14px" />
         </IconButton>
-        <IconButton variant="tertiary" onClick={onPresentDeposit}>
+        <IconButton
+          variant="tertiary"
+          onClick={onPresentDeposit}
+          disabled={['history', 'archived'].some((item) => location.pathname.includes(item))}
+        >
           <AddIcon color="primary" width="14px" />
         </IconButton>
       </IconButtonWrapper>
