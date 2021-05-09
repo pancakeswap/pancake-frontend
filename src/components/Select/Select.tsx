@@ -27,6 +27,7 @@ const DropDownListContainer = styled.div`
   transform: scaleY(0);
   transform-origin: top;
   opacity: 0;
+  width: 100%;
 
   ${({ theme }) => theme.mediaQueries.sm} {
     min-width: 168px;

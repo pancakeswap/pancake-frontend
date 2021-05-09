@@ -90,6 +90,7 @@ export interface CakeVault {
 export interface PoolsState {
   data: Pool[]
   cakeVault: CakeVault
+  userDataLoaded: boolean
 }
 
 export interface ProfileState {

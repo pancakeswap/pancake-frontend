@@ -1,0 +1,241 @@
+import React from 'react'
+import styled, { keyframes, css } from 'styled-components'
+import {
+  Box,
+  Button,
+  Flex,
+  HelpIcon,
+  Link,
+  LinkExternal,
+  MetamaskIcon,
+  Skeleton,
+  Text,
+  TimerIcon,
+  useTooltip,
+} from '@pancakeswap/uikit'
+import { BASE_BSC_SCAN_URL, BASE_URL } from 'config'
+import { useBlock, useCakeVault } from 'state/hooks'
+import BigNumber from 'bignumber.js'
+import { Pool } from 'state/types'
+import { useTranslation } from 'contexts/Localization'
+import Balance from 'components/Balance'
+import { CompoundingPoolTag, ManualPoolTag } from 'components/Tags'
+import { getAddress } from 'utils/addressHelpers'
+import { registerToken } from 'utils/wallet'
+import { getBalanceNumber } from 'utils/formatBalance'
+import Harvest from './Harvest'
+import Stake from './Stake'
+import Apr from '../Apr'
+
+const expandAnimation = keyframes`
+  from {
+    max-height: 0px;
+  }
+  to {
+    max-height: 500px;
+  }
+`
+
+const collapseAnimation = keyframes`
+  from {
+    max-height: 500px;
+  }
+  to {
+    max-height: 0px;
+  }
+`
+
+const StyledActionPanel = styled.div<{ expanded: boolean }>`
+  animation: ${({ expanded }) =>
+    expanded
+      ? css`
+          ${expandAnimation} 300ms linear forwards
+        `
+      : css`
+          ${collapseAnimation} 300ms linear forwards
+        `};
+  overflow: hidden;
+  background: ${({ theme }) => theme.colors.dropdown};
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: center;
+  padding: 24px;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    flex-direction: row;
+    padding: 16px 32px;
+  }
+`
+
+const ActionContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    flex-direction: row;
+    align-items: center;
+    flex-grow: 1;
+    flex-basis: 0;
+  }
+`
+
+type MediaBreakpoints = {
+  isXs: boolean
+  isSm: boolean
+  isMd: boolean
+  isLg: boolean
+  isXl: boolean
+}
+
+interface ActionPanelProps {
+  account: string
+  pool: Pool
+  isAutoVault: boolean
+  userDataLoaded: boolean
+  expanded: boolean
+  breakpoints: MediaBreakpoints
+}
+
+const InfoSection = styled(Box)`
+  flex: 0 0 210px;
+  padding: 8px 8px;
+  ${({ theme }) => theme.mediaQueries.lg} {
+    padding: 0;
+  }
+`
+
+const ActionPanel: React.FC<ActionPanelProps> = ({
+  account,
+  pool,
+  isAutoVault,
+  userDataLoaded,
+  expanded,
+  breakpoints,
+}) => {
+  const { sousId, stakingToken, earningToken, startBlock, totalStaked, endBlock, isFinished } = pool
+  const { t } = useTranslation()
+  const { currentBlock } = useBlock()
+  const { isXs, isSm, isMd } = breakpoints
+
+  const shouldShowBlockCountdown = Boolean(!isFinished && startBlock && endBlock)
+  const blocksUntilStart = Math.max(startBlock - currentBlock, 0)
+  const blocksRemaining = Math.max(endBlock - currentBlock, 0)
+  const hasPoolStarted = blocksUntilStart === 0 && blocksRemaining > 0
+  const blocksToDisplay = hasPoolStarted ? blocksRemaining : blocksUntilStart
+
+  const isMetaMaskInScope = !!(window as WindowChain).ethereum?.isMetaMask
+  const tokenAddress = earningToken.address ? getAddress(earningToken.address) : ''
+  const imageSrc = `${BASE_URL}/images/tokens/${earningToken.symbol.toLowerCase()}.png`
+
+  const {
+    totalCakeInVault,
+    fees: { performanceFee },
+  } = useCakeVault()
+
+  const performanceFeeAsDecimal = performanceFee && performanceFee / 100
+  const isManualCakePool = sousId === 0
+
+  const getTotalStakedBalance = () => {
+    if (isAutoVault) {
+      return getBalanceNumber(totalCakeInVault, stakingToken.decimals)
+    }
+    if (isManualCakePool) {
+      const manualCakeTotalMinusAutoVault = new BigNumber(totalStaked).minus(totalCakeInVault)
+      return getBalanceNumber(manualCakeTotalMinusAutoVault, stakingToken.decimals)
+    }
+    return getBalanceNumber(totalStaked, stakingToken.decimals)
+  }
+
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(
+    t('Total amount of %symbol% staked in this pool', { symbol: stakingToken.symbol }),
+    {
+      placement: 'bottom',
+    },
+  )
+
+  const blocksRow =
+    blocksRemaining || blocksUntilStart ? (
+      <Flex mb="8px" justifyContent="space-between">
+        <Text mr="4px">{t('Ends in')}:</Text>
+        <Flex>
+          <Link external href={`${BASE_BSC_SCAN_URL}/block/countdown/${endBlock}`}>
+            <Balance fontSize="16px" value={blocksToDisplay} decimals={0} color="primary" />
+            <Text ml="4px" color="primary">
+              {t('blocks')}
+            </Text>
+            <TimerIcon ml="4px" color="primary" />
+          </Link>
+        </Flex>
+      </Flex>
+    ) : (
+      <Skeleton width="56px" height="16px" />
+    )
+
+  const aprRow = (
+    <Flex justifyContent="space-between" alignItems="center" mb="8px">
+      <Text>{isAutoVault ? t('APY') : t('APR')}</Text>
+      <Apr pool={pool} isAutoVault={isAutoVault} performanceFee={isAutoVault ? performanceFeeAsDecimal : 0} />
+    </Flex>
+  )
+
+  const totalStakedRow = (
+    <Flex justifyContent="space-between" alignItems="center" mb="8px">
+      <Text maxWidth={['50px', '100%']}>{t('Total staked')}</Text>
+      <Flex alignItems="center">
+        {totalStaked ? (
+          <>
+            <Balance fontSize="16px" value={getTotalStakedBalance()} decimals={0} unit={` ${stakingToken.symbol}`} />
+            <span ref={targetRef}>
+              <HelpIcon color="textSubtle" width="20px" ml="6px" />
+            </span>
+          </>
+        ) : (
+          <Skeleton width="56px" height="16px" />
+        )}
+        {tooltipVisible && tooltip}
+      </Flex>
+    </Flex>
+  )
+
+  return (
+    <StyledActionPanel expanded={expanded}>
+      <InfoSection>
+        {(isXs || isSm) && aprRow}
+        {(isXs || isSm || isMd) && totalStakedRow}
+        {shouldShowBlockCountdown && blocksRow}
+        <Flex mb="8px" justifyContent={['flex-end', 'flex-end', 'flex-start']}>
+          <LinkExternal href="example.com" bold={false}>
+            {t('Info site')}
+          </LinkExternal>
+        </Flex>
+        <Flex mb="8px" justifyContent={['flex-end', 'flex-end', 'flex-start']}>
+          <LinkExternal href="example.com" bold={false}>
+            {t('Project site')}
+          </LinkExternal>
+        </Flex>
+        {account && isMetaMaskInScope && tokenAddress && (
+          <Flex mb="8px" justifyContent={['flex-end', 'flex-end', 'flex-start']}>
+            <Button
+              variant="text"
+              p="0"
+              height="auto"
+              onClick={() => registerToken(tokenAddress, earningToken.symbol, earningToken.decimals, imageSrc)}
+            >
+              <Text color="primary" fontSize="14px">
+                {t('Add to Metamask')}
+              </Text>
+              <MetamaskIcon ml="4px" />
+            </Button>
+          </Flex>
+        )}
+        {isAutoVault ? <CompoundingPoolTag /> : <ManualPoolTag />}
+      </InfoSection>
+      <ActionContainer>
+        <Harvest {...pool} isAutoVault={isAutoVault} userDataLoaded={userDataLoaded} />
+        <Stake pool={pool} isAutoVault={isAutoVault} userDataLoaded={userDataLoaded} />
+      </ActionContainer>
+    </StyledActionPanel>
+  )
+}
+
+export default ActionPanel

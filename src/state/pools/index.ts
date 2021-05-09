@@ -15,6 +15,7 @@ import fetchVaultUser from './fetchVaultUser'
 
 const initialState: PoolsState = {
   data: [...poolsConfig],
+  userDataLoaded: false,
   cakeVault: {
     totalShares: null,
     pricePerFullShare: null,
@@ -151,6 +152,7 @@ export const PoolsSlice = createSlice({
         const userPoolData = userData.find((entry) => entry.sousId === pool.sousId)
         return { ...pool, userData: userPoolData }
       })
+      state.userDataLoaded = true
     },
     updatePoolsUserData: (state, action) => {
       const { field, value, sousId } = action.payload

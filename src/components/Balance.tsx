@@ -8,6 +8,7 @@ interface BalanceProps extends TextProps {
   unit?: string
   isDisabled?: boolean
   prefix?: string
+  onClick?: (event: React.MouseEvent<HTMLElement>) => void
 }
 
 const Balance: React.FC<BalanceProps> = ({
@@ -17,6 +18,7 @@ const Balance: React.FC<BalanceProps> = ({
   isDisabled = false,
   unit,
   prefix,
+  onClick,
   ...props
 }) => {
   const previousValue = useRef(0)
@@ -29,7 +31,7 @@ const Balance: React.FC<BalanceProps> = ({
   const showUnit = Boolean(value && unit)
 
   return (
-    <Text color={isDisabled ? 'textDisabled' : color} {...props}>
+    <Text color={isDisabled ? 'textDisabled' : color} onClick={onClick} {...props}>
       {showPrefix && <span>{prefix}</span>}
       <CountUp start={previousValue.current} end={value} decimals={decimals} duration={1} separator="," />
       {showUnit && <span>{unit}</span>}
