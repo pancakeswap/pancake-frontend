@@ -21,7 +21,7 @@ const StyledMobile = styled.div`
   height: 100%;
   max-height: 100%;
 
-  ${({ theme }) => theme.mediaQueries.lg} {
+  ${({ theme }) => theme.mediaQueries.xl} {
     display: none;
   }
 `
