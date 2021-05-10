@@ -50,3 +50,20 @@ export const Default: React.FC = () => {
     </>
   );
 };
+
+export const Tabs: React.FC = () => {
+  return (
+    <>
+      <Row>
+        <Tab>Default</Tab>
+        <Tab color="primary" backgroundColor="secondary">
+          Custom colors
+        </Tab>
+      </Row>
+      <Row>
+        <Tab scale="md">Small scale (md)</Tab>
+        <Tab scale="lg">Large scale (lg)</Tab>
+      </Row>
+    </>
+  );
+};

@@ -32,9 +32,12 @@ const ButtonMenu: React.FC<TabMenuProps> = ({ activeIndex = 0, onItemClick, chil
     <Wrapper p={["0 4px", "0 16px"]}>
       <Inner>
         {Children.map(children, (child: ReactElement, index) => {
+          const isActive = activeIndex === index;
           return cloneElement(child, {
-            isActive: activeIndex === index,
+            isActive,
             onClick: onItemClick ? () => onItemClick(index) : undefined,
+            color: isActive ? "backgroundAlt" : "textSubtle",
+            backgroundColor: isActive ? "textSubtle" : "input",
           });
         })}
       </Inner>
