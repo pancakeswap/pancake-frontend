@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.31.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.30.0...@pancakeswap/uikit@0.31.0) (2021-05-10)
+
+
+### Features
+
+* Add new icons ([04cbe90](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/04cbe90e893ef7ed834edc1abd6bdb2e0ff23be2))
+
+
+
+
+
 # 0.30.0 (2021-05-07)
 
 
