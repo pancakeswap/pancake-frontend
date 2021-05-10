@@ -27,14 +27,14 @@ import ChartDisclaimer from './components/ChartDisclaimer'
 const FUTURE_ROUND_COUNT = 2 // the number of rounds in the future to show
 
 const Predictions = () => {
-  const { isLg, isXl } = useMatchBreakpoints()
+  const { isXl } = useMatchBreakpoints()
   const [hasAcceptedRisk, setHasAcceptedRisk] = usePersistState(false, 'pancake_predictions_accepted_risk')
   const [hasAcceptedChart, setHasAcceptedChart] = usePersistState(false, 'pancake_predictions_chart')
   const status = useGetPredictionsStatus()
   const isChartPaneOpen = useIsChartPaneOpen()
   const dispatch = useAppDispatch()
   const initialBlock = useInitialBlock()
-  const isDesktop = isLg || isXl
+  const isDesktop = isXl
   const handleAcceptRiskSuccess = () => setHasAcceptedRisk(true)
   const handleAcceptChart = () => setHasAcceptedChart(true)
   const [onPresentRiskDisclaimer] = useModal(<RiskDisclaimer onSuccess={handleAcceptRiskSuccess} />, false)
