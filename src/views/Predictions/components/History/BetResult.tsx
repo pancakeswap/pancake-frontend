@@ -1,6 +1,6 @@
 import React from 'react'
 import { useWeb3React } from '@web3-react/core'
-import { Box, Flex, Heading, Text, PrizeIcon, BlockIcon } from '@pancakeswap/uikit'
+import { Box, Flex, Heading, Text, PrizeIcon, BlockIcon, LinkExternal } from '@pancakeswap/uikit'
 import { useAppDispatch } from 'state'
 import { useTranslation } from 'contexts/Localization'
 import { useBetCanClaim, usePriceBnbBusd } from 'state/hooks'
@@ -113,8 +113,15 @@ const BetResult: React.FC<BetResultProps> = ({ bet, result }) => {
             mb="16px"
             onSuccess={handleSuccess}
           >
-            {t('Collect Winnings')}
+            {bet.claimed ? t('Already Collected') : t('Collect Winnings')}
           </CollectWinningsButton>
+        )}
+        {bet.claimed && (
+          <Flex justifyContent="center">
+            <LinkExternal href={`https://www.bscscan.com/tx/${bet.hash}`} mb="16px">
+              {t('Collected: View on BscScan')}
+            </LinkExternal>
+          </Flex>
         )}
         {result === Result.CANCELED && isRefundable && (
           <ReclaimPositionButton epoch={bet.round.epoch} width="100%" mb="16px" />
