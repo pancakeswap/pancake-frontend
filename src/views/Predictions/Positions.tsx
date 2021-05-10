@@ -30,7 +30,7 @@ const Positions: React.FC = () => {
   useOnNextRound()
 
   return (
-    <Box overflowX="hidden" overflowY="auto">
+    <Box overflow="hidden">
       <Menu />
       <StyledSwiper>
         <Swiper

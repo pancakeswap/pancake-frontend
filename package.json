@@ -62,6 +62,7 @@
     "react-redux": "^7.2.4",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.1",
+    "react-split-grid": "^1.0.3",
     "react-transition-group": "^4.4.1",
     "styled-components": "^5.3.0",
     "swiper": "^6.5.9",

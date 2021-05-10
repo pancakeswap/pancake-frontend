@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import Split from 'react-split-grid'
 import { useAppDispatch } from 'state'
 import { ArrowDownIcon, Button, ChartIcon } from '@pancakeswap/uikit'
 import { useGetPredictionsStatus, useIsChartPaneOpen, useIsHistoryPaneOpen } from 'state/hooks'
@@ -11,13 +12,6 @@ import { ErrorNotification, PauseNotification } from './components/Notification'
 import History from './History'
 import Positions from './Positions'
 
-const PositionsPane = styled.div`
-  align-items: center;
-  display: flex;
-  flex: 1;
-  min-height: 506px;
-`
-
 const HistoryPane = styled.div<{ isHistoryPaneOpen: boolean }>`
   flex: none;
   overflow: hidden;
@@ -25,8 +19,7 @@ const HistoryPane = styled.div<{ isHistoryPaneOpen: boolean }>`
   width: ${({ isHistoryPaneOpen }) => (isHistoryPaneOpen ? '384px' : 0)};
 `
 
-const ChartPane = styled.div<{ isChartPaneOpen: boolean }>`
-  height: ${({ isChartPaneOpen }) => (isChartPaneOpen ? '100%' : 0)};
+const ChartPane = styled.div`
   position: relative;
 `
 
@@ -51,14 +44,12 @@ const ExpandChartButton = styled(Button)`
   }
 `
 
-const ContentWrapper = styled.div`
-  display: flex;
+const SplitWrapper = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 12px 1fr;
   flex: 1;
-  flex-direction: column;
-  height: 100%;
-  overflow-x: hidden;
-  overflow-y: auto;
-  position: relative;
+  overflow: hidden;
 `
 
 const StyledDesktop = styled.div`
@@ -67,6 +58,38 @@ const StyledDesktop = styled.div`
   ${({ theme }) => theme.mediaQueries.lg} {
     display: flex;
     height: 100%;
+  }
+`
+
+const PositionPane = styled.div`
+  align-items: center;
+  display: flex;
+  max-width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  & > div {
+    flex: 1;
+    overflow: hidden;
+  }
+`
+
+const Gutter = styled.div`
+  background: ${({ theme }) => theme.colors.dropdown};
+  cursor: row-resize;
+  height: 12px;
+  position: relative;
+
+  &:before {
+    background-color: ${({ theme }) => theme.colors.secondary};
+    border-radius: 8px;
+    content: '';
+    height: 4px;
+    left: 50%;
+    margin-left: -32px;
+    position: absolute;
+    top: 4px;
+    width: 64px;
   }
 `
 
@@ -83,15 +106,18 @@ const Desktop: React.FC = () => {
 
   return (
     <StyledDesktop>
-      <ContentWrapper>
-        {status === PredictionStatus.ERROR && <ErrorNotification />}
-        {status === PredictionStatus.PAUSED && <PauseNotification />}
-        {status === PredictionStatus.LIVE && (
-          <>
-            <PositionsPane>
-              <Positions />
-            </PositionsPane>
-            <ChartPane isChartPaneOpen={isChartPaneOpen}>
+      <Split
+        render={({ getGridProps, getGutterProps }) => (
+          <SplitWrapper {...getGridProps()}>
+            <PositionPane>
+              <div>
+                {status === PredictionStatus.ERROR && <ErrorNotification />}
+                {status === PredictionStatus.PAUSED && <PauseNotification />}
+                {status === PredictionStatus.LIVE && <Positions />}
+              </div>
+            </PositionPane>
+            <Gutter {...getGutterProps('row', 1)} />
+            <ChartPane>
               <ExpandChartButton
                 variant="tertiary"
                 scale="sm"
@@ -102,9 +128,9 @@ const Desktop: React.FC = () => {
               </ExpandChartButton>
               <TradingView />
             </ChartPane>
-          </>
+          </SplitWrapper>
         )}
-      </ContentWrapper>
+      />
       <HistoryPane isHistoryPaneOpen={isHistoryPaneOpen}>
         <History />
       </HistoryPane>
