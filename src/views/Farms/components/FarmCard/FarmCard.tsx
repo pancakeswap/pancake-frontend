@@ -43,10 +43,10 @@ const StyledCardAccent = styled.div`
   z-index: -1;
 `
 
-const FCard = styled.div`
+const FCard = styled.div<{ isPromotedFarm: boolean }>`
   align-self: baseline;
   background: ${(props) => props.theme.card.background};
-  border-radius: 31px;
+  border-radius: ${({ theme, isPromotedFarm }) => (isPromotedFarm ? '31px' : theme.radii.card)};
   box-shadow: 0px 1px 4px rgba(25, 19, 38, 0.15);
   display: flex;
   flex-direction: column;
@@ -100,10 +100,11 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed, cakePrice, account }
   })
   const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
   const lpAddress = farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]
+  const isPromotedFarm = farm.token.symbol === 'CAKE'
 
   return (
-    <FCard>
-      {farm.token.symbol === 'CAKE' && <StyledCardAccent />}
+    <FCard isPromotedFarm={isPromotedFarm}>
+      {isPromotedFarm && <StyledCardAccent />}
       <CardHeading
         lpLabel={lpLabel}
         multiplier={farm.multiplier}
