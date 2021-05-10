@@ -2,15 +2,15 @@ import styled, { css, keyframes } from 'styled-components'
 import { Card, Box } from '@pancakeswap/uikit'
 
 const PromotedGradient = keyframes`
-    0% {
-      background-position: 47% 0%;
-    }
-    50% {
-      background-position: 54% 100%;
-    }
-    100% {
-      background-position: 47% 0%;
-    }
+  0% {
+    background-position: 47% 0%;
+  }
+  50% {
+    background-position: 54% 100%;
+  }
+  100% {
+    background-position: 47% 0%;
+  }
 `
 
 export const StyledCard = styled(Card)<{ isPromotedPool?: boolean; isFinished?: boolean }>`

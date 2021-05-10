@@ -18,16 +18,16 @@ export interface FarmWithStakedValue extends Farm {
   liquidity?: BigNumber
 }
 
-const AccentGradient = keyframes`
-    0% {
-      background-position: 47% 0%;
-    }
-    50% {
-      background-position: 54% 100%;
-    }
-    100% {
-      background-position: 47% 0%;
-    }
+const AccentGradient = keyframes`  
+  0% {
+    background-position: 47% 0%;
+  }
+  50% {
+    background-position: 54% 100%;
+  }
+  100% {
+    background-position: 47% 0%;
+  }
 `
 
 const StyledCardAccent = styled.div`
