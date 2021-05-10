@@ -136,12 +136,7 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
           title={t('Next')}
         />
         <CardBody p="16px">
-          <MultiplierArrow
-            totalAmount={round.bullAmount}
-            betAmount={betAmount}
-            multiplier={bullMultiplier}
-            hasEntered={hasEnteredUp}
-          />
+          <MultiplierArrow betAmount={betAmount} multiplier={bullMultiplier} hasEntered={hasEnteredUp} />
           <RoundResultBox isNext={canEnterPosition} isLive={!canEnterPosition}>
             {canEnterPosition ? (
               <>
@@ -177,7 +172,6 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
             )}
           </RoundResultBox>
           <MultiplierArrow
-            totalAmount={round.bearAmount}
             betAmount={betAmount}
             multiplier={bearMultiplier}
             betPosition={BetPosition.BEAR}
