@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js'
 import React, { useCallback, useMemo, useState } from 'react'
-import { Button, Modal, LinkExternal } from '@pancakeswap-libs/uikit'
+import { Button, Modal, LinkExternal } from '@pancakeswap/uikit'
 import ModalActions from 'components/ModalActions'
 import ModalInput from 'components/ModalInput'
 import { useTranslation } from 'contexts/Localization'

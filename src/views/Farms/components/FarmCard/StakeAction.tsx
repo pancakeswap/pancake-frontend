@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
-import { Button, Flex, Heading, IconButton, AddIcon, MinusIcon, useModal } from '@pancakeswap-libs/uikit'
+import { Button, Flex, Heading, IconButton, AddIcon, MinusIcon, useModal } from '@pancakeswap/uikit'
 import { useLocation } from 'react-router-dom'
 import { useTranslation } from 'contexts/Localization'
 import useStake from 'hooks/useStake'
@@ -65,7 +65,11 @@ const StakeAction: React.FC<FarmCardActionsProps> = ({
         <IconButton variant="tertiary" onClick={onPresentWithdraw} mr="6px">
           <MinusIcon color="primary" width="14px" />
         </IconButton>
-        <IconButton variant="tertiary" onClick={onPresentDeposit}>
+        <IconButton
+          variant="tertiary"
+          onClick={onPresentDeposit}
+          disabled={['history', 'archived'].some((item) => location.pathname.includes(item))}
+        >
           <AddIcon color="primary" width="14px" />
         </IconButton>
       </IconButtonWrapper>

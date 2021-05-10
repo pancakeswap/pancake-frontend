@@ -1,14 +1,6 @@
 import React, { useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
-import {
-  Box,
-  ChevronDownIcon,
-  ChevronUpIcon,
-  Flex,
-  IconButton,
-  PlayCircleOutlineIcon,
-  Text,
-} from '@pancakeswap-libs/uikit'
+import { Box, ChevronDownIcon, ChevronUpIcon, Flex, IconButton, PlayCircleOutlineIcon, Text } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useAppDispatch } from 'state'
 import { markBetAsCollected } from 'state/predictions'

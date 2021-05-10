@@ -1,5 +1,5 @@
 import React from 'react'
-import { ModalProvider } from '@pancakeswap-libs/uikit'
+import { ModalProvider } from '@pancakeswap/uikit'
 import { Web3ReactProvider } from '@web3-react/core'
 import { HelmetProvider } from 'react-helmet-async'
 import { Provider } from 'react-redux'

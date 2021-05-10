@@ -1,5 +1,5 @@
 import React from 'react'
-import { Menu as UikitMenu } from '@pancakeswap-libs/uikit'
+import { Menu as UikitMenu } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { languageList } from 'config/localization/languages'
 import { useTranslation } from 'contexts/Localization'

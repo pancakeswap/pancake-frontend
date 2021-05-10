@@ -20,6 +20,7 @@ import {
   getErc721Contract,
   getCakeVaultContract,
   getPredictionsContract,
+  getChainlinkOracleContract,
 } from 'utils/contractHelpers'
 
 /**
@@ -122,4 +123,9 @@ export const useCakeVaultContract = () => {
 export const usePredictionsContract = () => {
   const web3 = useWeb3()
   return useMemo(() => getPredictionsContract(web3), [web3])
+}
+
+export const useChainlinkOracleContract = () => {
+  const web3 = useWeb3()
+  return useMemo(() => getChainlinkOracleContract(web3), [web3])
 }

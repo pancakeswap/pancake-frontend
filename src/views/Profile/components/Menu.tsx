@@ -1,7 +1,7 @@
 import { useTranslation } from 'contexts/Localization'
 import React from 'react'
 import { Link as RouterLink } from 'react-router-dom'
-import { ChevronLeftIcon, Flex, Text, ButtonMenu, ButtonMenuItem } from '@pancakeswap-libs/uikit'
+import { ChevronLeftIcon, Flex, Text, ButtonMenu, ButtonMenuItem } from '@pancakeswap/uikit'
 
 interface MenuProps {
   activeIndex?: number

@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { maxBy } from 'lodash'
+import { BIG_ZERO } from 'utils/bigNumber'
 import { Bet, HistoryFilter, Market, PredictionsState, PredictionStatus, Round } from 'state/types'
 import {
   makeFutureRoundResponse,
@@ -23,6 +24,7 @@ const initialState: PredictionsState = {
   intervalBlocks: 100,
   bufferBlocks: 2,
   minBetAmount: '1000000000000000',
+  lastOraclePrice: BIG_ZERO.toJSON(),
   rounds: {},
   history: {},
   bets: {},
@@ -88,7 +90,10 @@ export const predictionsSlice = createSlice({
       state.historyFilter = action.payload
     },
     initialize: (state, action: PayloadAction<PredictionsState>) => {
-      return action.payload
+      return {
+        ...state,
+        ...action.payload,
+      }
     },
     updateMarketData: (state, action: PayloadAction<{ rounds: Round[]; market: Market }>) => {
       const { rounds, market } = action.payload
@@ -138,6 +143,9 @@ export const predictionsSlice = createSlice({
           [roundId]: partialBet,
         },
       }
+    },
+    setLastOraclePrice: (state, action: PayloadAction<string>) => {
+      state.lastOraclePrice = action.payload
     },
   },
   extraReducers: (builder) => {
@@ -191,6 +199,7 @@ export const {
   markBetAsCollected,
   setPredictionStatus,
   markPositionAsEntered,
+  setLastOraclePrice,
 } = predictionsSlice.actions
 
 export default predictionsSlice.reducer

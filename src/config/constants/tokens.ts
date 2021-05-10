@@ -1182,6 +1182,42 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://lympo.io/lmt/',
   },
+  btt: {
+    symbol: 'BTT',
+    address: {
+      56: '0x8595f9da7b868b1822194faed312235e43007b49',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://www.bittorrent.com/',
+  },
+  trx: {
+    symbol: 'TRX',
+    address: {
+      56: '0x85eac5ac2f758618dfa09bdbe0cf174e7d574d5b',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://tron.network/',
+  },
+  win: {
+    symbol: 'WIN',
+    address: {
+      56: '0xaef0d72a118ce24fee3cd1d43d383897d05b4e99',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://winklink.org/',
+  },
+  mcoin: {
+    symbol: 'mCOIN',
+    address: {
+      56: '0x49022089e78a8d46ec87a3af86a1db6c189afa6f',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://mirror.finance/',
+  },
 }
 
 export default tokens

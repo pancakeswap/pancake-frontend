@@ -22,9 +22,9 @@ export const useGetStats = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(`${baseUrl}/tvl`)
-        const responsedata: ApiTvlResponse = await response.json()
+        const responseData: ApiTvlResponse = await response.json()
 
-        setData(responsedata)
+        setData(responseData)
       } catch (error) {
         console.error('Unable to fetch data:', error)
       }

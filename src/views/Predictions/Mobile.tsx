@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Box, Flex } from '@pancakeswap-libs/uikit'
+import { Box, Flex } from '@pancakeswap/uikit'
 import { useGetPredictionsStatus, useIsChartPaneOpen, useIsHistoryPaneOpen } from 'state/hooks'
 import { PredictionStatus } from 'state/types'
 import MobileMenu from './components/MobileMenu'
@@ -21,7 +21,7 @@ const StyledMobile = styled.div`
   height: 100%;
   max-height: 100%;
 
-  ${({ theme }) => theme.mediaQueries.lg} {
+  ${({ theme }) => theme.mediaQueries.xl} {
     display: none;
   }
 `

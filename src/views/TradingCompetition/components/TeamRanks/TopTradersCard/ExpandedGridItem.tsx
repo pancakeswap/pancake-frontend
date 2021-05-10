@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, Flex, Box } from '@pancakeswap-libs/uikit'
+import { Text, Flex, Box } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { LeaderboardDataItem } from '../../../types'
 import { localiseTradingVolume, accountEllipsis } from '../../../helpers'

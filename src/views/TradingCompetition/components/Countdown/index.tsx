@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Flex, Skeleton, PocketWatchIcon, Text } from '@pancakeswap-libs/uikit'
+import { Flex, Skeleton, PocketWatchIcon, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import Timer from 'components/Timer'
 import getTimePeriods from 'utils/getTimePeriods'

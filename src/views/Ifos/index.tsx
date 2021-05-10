@@ -1,6 +1,6 @@
 import React from 'react'
 import { Route, useRouteMatch, Link } from 'react-router-dom'
-import { ButtonMenu, ButtonMenuItem, Flex } from '@pancakeswap-libs/uikit'
+import { ButtonMenu, ButtonMenuItem, Flex } from '@pancakeswap/uikit'
 import Container from 'components/layout/Container'
 import Hero from './components/Hero'
 import CurrentIfo from './CurrentIfo'

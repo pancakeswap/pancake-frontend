@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { ChevronDownIcon, ChevronUpIcon, Text } from '@pancakeswap-libs/uikit'
+import { ChevronDownIcon, ChevronUpIcon, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 
 export interface ExpandableSectionButtonProps {

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
-import { Button, Heading, Text, Flex, Checkbox, AutoRenewIcon } from '@pancakeswap-libs/uikit'
+import { Button, Heading, Text, Flex, Checkbox, AutoRenewIcon } from '@pancakeswap/uikit'
 import { useTradingCompetitionContract } from 'hooks/useContract'
 import { useTranslation } from 'contexts/Localization'
 import useToast from 'hooks/useToast'

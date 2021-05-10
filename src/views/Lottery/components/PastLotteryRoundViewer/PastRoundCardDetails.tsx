@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Heading, CardBody, CardFooter, PancakeRoundIcon, TicketRound } from '@pancakeswap-libs/uikit'
+import { Heading, CardBody, CardFooter, PancakeRoundIcon, TicketRound } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { DataResponse } from 'utils/getLotteryRoundData'
 import LotteryCardHeading from '../LotteryCardHeading'

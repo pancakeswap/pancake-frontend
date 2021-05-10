@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Heading, Text, LinkExternal } from '@pancakeswap-libs/uikit'
+import { Heading, Text, LinkExternal } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import Container from 'components/layout/Container'
 

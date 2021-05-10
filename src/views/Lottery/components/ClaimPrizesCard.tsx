@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { Box } from '@pancakeswap-libs/uikit'
+import { Box } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { useTotalClaim } from 'hooks/useTickets'
 import { getBalanceNumber } from 'utils/formatBalance'

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Flex, Heading, Image } from '@pancakeswap-libs/uikit'
+import { Flex, Heading, Image } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import AllBunniesImage from '../../pngs/all-bunnies.png'

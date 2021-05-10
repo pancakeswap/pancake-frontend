@@ -1,13 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import {
-  ChevronRightIcon,
-  Button as UIKitButton,
-  AutoRenewIcon,
-  ChevronDownIcon,
-  Box,
-  Flex,
-} from '@pancakeswap-libs/uikit'
+import { ChevronRightIcon, Button as UIKitButton, AutoRenewIcon, ChevronDownIcon, Box, Flex } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 
 interface ApproveConfirmButtonsProps {
