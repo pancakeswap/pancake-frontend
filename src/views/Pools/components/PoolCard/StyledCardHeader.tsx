@@ -3,10 +3,11 @@ import { CardHeader, Heading, Text, Flex, Image } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 
-const Wrapper = styled(CardHeader)<{ isFinished?: boolean; background?: string }>`
+const Wrapper = styled(CardHeader)<{ isFinished?: boolean; background?: string; isPromotedPool?: boolean }>`
   background: ${({ isFinished, background, theme }) =>
     isFinished ? theme.colors.backgroundDisabled : theme.colors.gradients[background]};
-  border-radius: 31px 31px 0 0;
+  border-radius: ${({ theme, isPromotedPool }) =>
+    isPromotedPool ? '31px 31px 0 0' : `${theme.radii.card} ${theme.radii.card} 0 0`};
 `
 
 const StyledCardHeader: React.FC<{
@@ -15,7 +16,15 @@ const StyledCardHeader: React.FC<{
   isAutoVault?: boolean
   isFinished?: boolean
   isStaking?: boolean
-}> = ({ earningTokenSymbol, stakingTokenSymbol, isFinished = false, isAutoVault = false, isStaking = false }) => {
+  isPromotedPool?: boolean
+}> = ({
+  earningTokenSymbol,
+  stakingTokenSymbol,
+  isFinished = false,
+  isAutoVault = false,
+  isStaking = false,
+  isPromotedPool = false,
+}) => {
   const { t } = useTranslation()
   const poolImageSrc = isAutoVault
     ? `cake-cakevault.svg`
@@ -47,7 +56,7 @@ const StyledCardHeader: React.FC<{
   }
 
   return (
-    <Wrapper isFinished={isFinished} background={background}>
+    <Wrapper isPromotedPool={isPromotedPool} isFinished={isFinished} background={background}>
       <Flex alignItems="center" justifyContent="space-between">
         <Flex flexDirection="column">
           <Heading color={isFinished ? 'textDisabled' : 'body'} size="lg">
