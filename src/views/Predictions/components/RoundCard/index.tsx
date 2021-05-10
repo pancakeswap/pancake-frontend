@@ -1,9 +1,7 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { useGetBetByRoundId, useGetCurrentEpoch } from 'state/hooks'
 import { BetPosition, Round } from 'state/types'
-import { fetchRoundBet } from 'state/predictions'
-import { useAppDispatch } from 'state'
 import { getMultiplier } from '../../helpers'
 import ExpiredRoundCard from './ExpiredRoundCard'
 import LiveRoundCard from './LiveRoundCard'
@@ -18,20 +16,12 @@ const RoundCard: React.FC<RoundCardProps> = ({ round }) => {
   const { id, epoch, lockPrice, closePrice, totalAmount, bullAmount, bearAmount } = round
   const currentEpoch = useGetCurrentEpoch()
   const { account } = useWeb3React()
-  const dispatch = useAppDispatch()
   const bet = useGetBetByRoundId(account, id)
   const hasEntered = bet !== null
   const hasEnteredUp = hasEntered && bet.position === BetPosition.BULL
   const hasEnteredDown = hasEntered && bet.position === BetPosition.BEAR
   const bullMultiplier = getMultiplier(totalAmount, bullAmount)
   const bearMultiplier = getMultiplier(totalAmount, bearAmount)
-
-  // Perform a one-time check to see if the user has placed a bet
-  useEffect(() => {
-    if (account) {
-      dispatch(fetchRoundBet({ account, roundId: id }))
-    }
-  }, [account, id, dispatch])
 
   // Next (open) round
   if (epoch === currentEpoch && lockPrice === null) {

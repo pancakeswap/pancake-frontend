@@ -141,6 +141,21 @@ export const makeRoundData = (rounds: Round[]): RoundData => {
 }
 
 /**
+ * Given a bet object, check if it is eligible to be claimed or refunded
+ */
+export const getCanClaim = (bet: Bet) => {
+  return !bet.claimed && (bet.position === bet.round.position || bet.round.failed === true)
+}
+
+/**
+ * Returns only bets where the user has won.
+ * This is necessary because the API currently cannot distinguish between an uncliamed bet that has won or lost
+ */
+export const getUnclaimedWinningBets = (bets: Bet[]): Bet[] => {
+  return bets.filter(getCanClaim)
+}
+
+/**
  * Gets static data from the contract
  */
 export const getStaticPredictionsData = async () => {
@@ -211,7 +226,7 @@ export const getRound = async (id: string) => {
   return response.round
 }
 
-type BetHistoryWhereClause = Record<string, string | number | boolean>
+type BetHistoryWhereClause = Record<string, string | number | boolean | string[]>
 
 export const getBetHistory = async (
   where: BetHistoryWhereClause = {},

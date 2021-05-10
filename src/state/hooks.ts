@@ -18,6 +18,7 @@ import { fetchTeam, fetchTeams } from './teams'
 import { fetchAchievements } from './achievements'
 import { fetchPrices } from './prices'
 import { fetchWalletNfts } from './collectibles'
+import { getCanClaim } from './predictions/helpers'
 
 export const useFetchPublicData = () => {
   const dispatch = useAppDispatch()
@@ -290,6 +291,16 @@ export const useGetBetByRoundId = (account: string, roundId: string) => {
   }
 
   return bets[account][roundId]
+}
+
+export const useBetCanClaim = (account: string, roundId: string) => {
+  const bet = useGetBetByRoundId(account, roundId)
+
+  if (!bet) {
+    return false
+  }
+
+  return getCanClaim(bet)
 }
 
 export const useGetLastOraclePrice = (): BigNumber => {

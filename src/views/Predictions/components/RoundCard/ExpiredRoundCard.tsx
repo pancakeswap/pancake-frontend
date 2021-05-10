@@ -1,9 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
+import { useWeb3React } from '@web3-react/core'
 import { Box, BlockIcon, CardBody } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { Round, BetPosition } from 'state/types'
+import { useGetBetByRoundId } from 'state/hooks'
 import { RoundResult } from '../RoundResult'
+import { getPayout } from '../../helpers'
 import MultiplierArrow from './MultiplierArrow'
 import Card from './Card'
 import CardHeader from './CardHeader'
@@ -37,9 +40,11 @@ const ExpiredRoundCard: React.FC<ExpiredRoundCardProps> = ({
   bearMultiplier,
 }) => {
   const { t } = useTranslation()
-  const { id, endBlock, lockPrice, closePrice, bearAmount, bullAmount } = round
+  const { account } = useWeb3React()
+  const { id, epoch, endBlock, lockPrice, closePrice, bearAmount, bullAmount } = round
   const betPosition = closePrice > lockPrice ? BetPosition.BULL : BetPosition.BEAR
-  const hasEntered = hasEnteredUp || hasEnteredDown
+  const bet = useGetBetByRoundId(account, round.id)
+  const payout = getPayout(bet)
 
   if (round.failed) {
     return <CanceledRoundCard round={round} />
@@ -74,7 +79,7 @@ const ExpiredRoundCard: React.FC<ExpiredRoundCardProps> = ({
           />
         </CardBody>
       </StyledExpiredRoundCard>
-      <CollectWinningsOverlay roundId={id} hasEntered={hasEntered} isBottom={hasEnteredDown} />
+      <CollectWinningsOverlay roundId={id} epoch={epoch} payout={payout} isBottom={hasEnteredDown} />
     </Box>
   )
 }
