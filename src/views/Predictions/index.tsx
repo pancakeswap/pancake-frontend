@@ -34,7 +34,7 @@ const Predictions = () => {
   const isChartPaneOpen = useIsChartPaneOpen()
   const dispatch = useAppDispatch()
   const initialBlock = useInitialBlock()
-  const isDesktop = isXl || false
+  const isDesktop = isXl
   const handleAcceptRiskSuccess = () => setHasAcceptedRisk(true)
   const handleAcceptChart = () => setHasAcceptedChart(true)
   const [onPresentRiskDisclaimer] = useModal(<RiskDisclaimer onSuccess={handleAcceptRiskSuccess} />, false)
