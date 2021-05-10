@@ -1209,6 +1209,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://winklink.org/',
   },
+  mcoin: {
+    symbol: 'mCOIN',
+    address: {
+      56: '0x49022089e78a8d46ec87a3af86a1db6c189afa6f',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://mirror.finance/',
+  },
 }
 
 export default tokens
