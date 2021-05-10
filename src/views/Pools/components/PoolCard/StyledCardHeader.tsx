@@ -6,6 +6,7 @@ import { useTranslation } from 'contexts/Localization'
 const Wrapper = styled(CardHeader)<{ isFinished?: boolean; background?: string }>`
   background: ${({ isFinished, background, theme }) =>
     isFinished ? theme.colors.backgroundDisabled : theme.colors.gradients[background]};
+  border-radius: 31px 31px 0 0;
 `
 
 const StyledCardHeader: React.FC<{
@@ -13,13 +14,14 @@ const StyledCardHeader: React.FC<{
   stakingTokenSymbol: string
   isAutoVault?: boolean
   isFinished?: boolean
-}> = ({ earningTokenSymbol, stakingTokenSymbol, isFinished = false, isAutoVault = false }) => {
+  isStaking?: boolean
+}> = ({ earningTokenSymbol, stakingTokenSymbol, isFinished = false, isAutoVault = false, isStaking = false }) => {
   const { t } = useTranslation()
   const poolImageSrc = isAutoVault
     ? `cake-cakevault.svg`
     : `${earningTokenSymbol}-${stakingTokenSymbol}.svg`.toLocaleLowerCase()
   const isCakePool = earningTokenSymbol === 'CAKE' && stakingTokenSymbol === 'CAKE'
-  const background = isCakePool ? 'bubblegum' : 'cardHeader'
+  const background = isStaking ? 'bubblegum' : 'cardHeader'
 
   const getHeadingPrefix = () => {
     if (isAutoVault) {
