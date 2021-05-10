@@ -57,11 +57,14 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
   const usdValueStaked = stakeAmount && formatNumber(new BigNumber(stakeAmount).times(stakingTokenPrice).toNumber())
 
   const handleStakeInputChange = (input: string) => {
-    const inputValue = input || '0'
-    const convertedInput = new BigNumber(inputValue).multipliedBy(BIG_TEN.pow(stakingToken.decimals))
-    const percentage = Math.floor(convertedInput.dividedBy(stakingMax).multipliedBy(100).toNumber())
-    setStakeAmount(inputValue)
-    setPercent(percentage > 100 ? 100 : percentage)
+    if (input) {
+      const convertedInput = new BigNumber(input).multipliedBy(BIG_TEN.pow(stakingToken.decimals))
+      const percentage = Math.floor(convertedInput.dividedBy(stakingMax).multipliedBy(100).toNumber())
+      setPercent(percentage > 100 ? 100 : percentage)
+    } else {
+      setPercent(0)
+    }
+    setStakeAmount(input)
   }
 
   const handleChangePercent = (sliderPercent: number) => {
