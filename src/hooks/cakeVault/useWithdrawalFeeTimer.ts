@@ -6,14 +6,6 @@ const useWithdrawalFeeTimer = (lastDepositedTime: number, withdrawalFeePeriod = 
   const [currentSeconds, setCurrentSeconds] = useState(Math.floor(Date.now() / 1000))
 
   useEffect(() => {
-    const tick = () => {
-      setCurrentSeconds((prevSeconds) => prevSeconds + 1)
-    }
-    const timerInterval = setInterval(() => tick(), 1000)
-    return () => clearInterval(timerInterval)
-  }, [])
-
-  useEffect(() => {
     const feeEndTime = lastDepositedTime + withdrawalFeePeriod
     const secondsRemainingCalc = feeEndTime - currentSeconds
     const doesUnstakingFeeApply = secondsRemainingCalc > 0
@@ -21,6 +13,11 @@ const useWithdrawalFeeTimer = (lastDepositedTime: number, withdrawalFeePeriod = 
       setSecondsRemaining(secondsRemainingCalc)
       setHasUnstakingFee(true)
     }
+    const tick = () => {
+      setCurrentSeconds((prevSeconds) => prevSeconds + 1)
+    }
+    const timerInterval = setInterval(() => tick(), 1000)
+    return () => clearInterval(timerInterval)
   }, [lastDepositedTime, withdrawalFeePeriod, setSecondsRemaining, currentSeconds])
 
   return { hasUnstakingFee, secondsRemaining }
