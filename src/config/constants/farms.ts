@@ -39,6 +39,16 @@ const farms: FarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 371,
+    lpSymbol: 'MATH-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0xb7cada0f120ca46745a024e6b9fe907b2fe10cf3',
+    },
+    token: tokens.math,
+    quoteToken: tokens.busd,
+  },
+  {
     pid: 370,
     lpSymbol: 'mCOIN-UST LP',
     lpAddresses: {
