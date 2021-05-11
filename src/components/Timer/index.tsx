@@ -34,7 +34,7 @@ const Timer = ({ minutes, hours, days, showTooltip, HeadingTextComponent, BodyTe
 }
 
 const DefaultHeadingTextComponent = ({ children, ...props }) => (
-  <Heading size="lg" {...props}>
+  <Heading scale="lg" {...props}>
     {children}
   </Heading>
 )

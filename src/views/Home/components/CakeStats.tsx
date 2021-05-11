@@ -29,7 +29,7 @@ const CakeStats = () => {
   return (
     <StyledCakeStats>
       <CardBody>
-        <Heading size="xl" mb="24px">
+        <Heading scale="xl" mb="24px">
           {t('Cake Stats')}
         </Heading>
         <Row>

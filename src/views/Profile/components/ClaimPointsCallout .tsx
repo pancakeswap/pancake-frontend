@@ -54,7 +54,7 @@ const ClaimPointsCallout = () => {
         <Flex flexDirection={['column', null, 'row']} justifyContent={['start', null, 'space-between']}>
           <Flex alignItems="center" mb={['16px', null, 0]}>
             <PrizeIcon width="32px" mr="8px" />
-            <Heading size="lg">{t(`${totalPointsToCollect} Points to Collect`, { num: totalPointsToCollect })}</Heading>
+            <Heading scale="lg">{t(`%num% Points to Collect`, { num: totalPointsToCollect })}</Heading>
           </Flex>
         </Flex>
       </CardHeader>

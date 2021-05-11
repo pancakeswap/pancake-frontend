@@ -17,7 +17,7 @@ const PrizesCard = () => {
   return (
     <StyledCard>
       <CardHeader>
-        <Heading size="lg" color="secondary">
+        <Heading scale="lg" color="secondary">
           {t('Prizes by Team')}
         </Heading>
         <Text color="textSubtle" fontSize="14px">

@@ -30,7 +30,7 @@ const FAQ = () => {
     <Wrapper>
       <Card>
         <CardHeader>
-          <Heading size="lg">Details</Heading>
+          <Heading scale="lg">Details</Heading>
         </CardHeader>
         <StyledCardbody>
           <FoldableText title={t('Eligible trading pairs')} mt="24px">

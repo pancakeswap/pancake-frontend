@@ -14,7 +14,7 @@ const TeamHeader = () => {
     <>
       {showProfileCallout && <NoProfileCard />}
       <HeaderWrapper>
-        <Heading as="h1" size="xxl" color="secondary">
+        <Heading as="h1" scale="xxl" color="secondary">
           {t('Teams & Profiles')}
         </Heading>
         <Text bold>

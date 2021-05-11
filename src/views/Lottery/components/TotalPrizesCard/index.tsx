@@ -82,7 +82,7 @@ const TotalPrizesCard = () => {
               <Text fontSize="14px" color="textSubtle">
                 {t('Total Pot:')}
               </Text>
-              <Heading size="lg">{lotteryPrizeWithCommaSeparators} CAKE</Heading>
+              <Heading scale="lg">{lotteryPrizeWithCommaSeparators} CAKE</Heading>
               {lotteryPrizeAmountBusd !== 0 && <CardBusdValue value={lotteryPrizeAmountBusd} />}
             </PrizeCountWrapper>
           </Left>

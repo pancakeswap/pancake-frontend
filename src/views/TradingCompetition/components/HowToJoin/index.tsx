@@ -14,7 +14,7 @@ const HowToJoin = () => {
 
   return (
     <Flex flexDirection="column" maxWidth="736px">
-      <Heading color="secondary" size="lg" mb="32px" textAlign="center">
+      <Heading color="secondary" scale="lg" mb="32px" textAlign="center">
         {t('How Can I Join?')}
       </Heading>
       <HowToCard number={1} title={t('Get Ready')}>

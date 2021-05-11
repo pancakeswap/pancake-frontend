@@ -75,15 +75,15 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({
       </GridItem>
       {/* 4 matches row */}
       <GridItem>
-        <Heading size="md">4</Heading>
+        <Heading scale="md">4</Heading>
       </GridItem>
       {pastDraw && (
         <PastDrawGridItem>
-          <RightAlignedHeading size="md">{jackpotMatches}</RightAlignedHeading>
+          <RightAlignedHeading scale="md">{jackpotMatches}</RightAlignedHeading>
         </PastDrawGridItem>
       )}
       <GridItem>
-        <RightAlignedHeading size="md">
+        <RightAlignedHeading scale="md">
           {fourMatchesAmount.toLocaleString()}
           {!pastDraw && !cakeBusdPrice.eq(0) && <CardBusdValue value={getCakeBusdValue(fourMatchesAmount)} />}
         </RightAlignedHeading>

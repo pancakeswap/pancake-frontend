@@ -17,7 +17,7 @@ const Teams = () => {
     <Page>
       <TeamHeader />
       <Flex alignItems="center" justifyContent="space-between" mb="32px">
-        <Heading size="xl">{t('Teams')}</Heading>
+        <Heading scale="xl">{t('Teams')}</Heading>
         {isLoading && <AutoRenewIcon spin />}
       </Flex>
       {topTeams.map((team, index) => (

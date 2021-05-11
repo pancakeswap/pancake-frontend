@@ -71,17 +71,17 @@ const PrizesWonContent: React.FC<PrizesWonContentProps> = ({ onSuccess }) => {
       <IconWrapper>
         <Won />
       </IconWrapper>
-      <Heading as="h3" size="lg" color="secondary">
+      <Heading as="h3" scale="lg" color="secondary">
         {t('You won!')}
       </Heading>
       {claimLoading && <Loading />}
       {!claimLoading && (
         <>
           <WinningsWrapper>
-            <Heading as="h4" size="xl" style={{ marginRight: '6px' }}>
+            <Heading as="h4" scale="xl" style={{ marginRight: '6px' }}>
               {winnings}
             </Heading>
-            <Heading as="h4" size="lg">
+            <Heading as="h4" scale="lg">
               CAKE
             </Heading>
           </WinningsWrapper>

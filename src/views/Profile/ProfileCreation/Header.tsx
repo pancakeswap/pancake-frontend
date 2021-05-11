@@ -18,10 +18,10 @@ const Header: React.FC = () => {
 
   return (
     <Wrapper>
-      <Heading as="h1" size="xxl" color="secondary" mb="8px">
+      <Heading as="h1" scale="xxl" color="secondary" mb="8px">
         {t('Profile Setup')}
       </Heading>
-      <Heading as="h2" size="lg" mb="8px">
+      <Heading as="h2" scale="lg" mb="8px">
         {t('Show off your stats and collectibles with your unique profile')}
       </Heading>
       <Text color="textSubtle" mb="24px">

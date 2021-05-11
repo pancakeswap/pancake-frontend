@@ -135,7 +135,7 @@ const PublicProfile = () => {
           <CardBody>
             <StatBox icon={PrizeIcon} title={points} subtitle={t('Points')} mb="24px" />
             <Section>
-              <Heading as="h4" size="md" mb="16px">
+              <Heading as="h4" scale="md" mb="16px">
                 {t('Achievements')}
               </Heading>
               <AchievementsList />

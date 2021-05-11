@@ -17,7 +17,7 @@ const TaskCenter = () => {
         <CardHeader>
           <Flex alignItems="center" justifyContent="space-between">
             <div>
-              <Heading size="lg" mb="8px">
+              <Heading scale="lg" mb="8px">
                 {t('Achievements')}
               </Heading>
               <Text as="p">{t('Earn more points for completing larger quests!')}</Text>
@@ -32,7 +32,7 @@ const TaskCenter = () => {
         <CardHeader>
           <Flex alignItems="center" justifyContent="space-between">
             <div>
-              <Heading size="lg" mb="8px">
+              <Heading scale="lg" mb="8px">
                 {t('Task Center')}
               </Heading>
               <Text as="p">{t('Earn points by completing regular tasks!')}</Text>

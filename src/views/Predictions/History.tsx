@@ -79,7 +79,7 @@ const History = () => {
           })
         ) : (
           <Box p="24px">
-            <Heading size="lg" textAlign="center" mb="8px">
+            <Heading scale="lg" textAlign="center" mb="8px">
               {t('No prediction history available')}
             </Heading>
             <Text as="p" textAlign="center">

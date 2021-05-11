@@ -19,7 +19,7 @@ const Team: React.FC = () => {
       <Text fontSize="20px" color="textSubtle" bold>
         {t(`Step ${3}`)}
       </Text>
-      <Heading as="h3" size="xl" mb="24px">
+      <Heading as="h3" scale="xl" mb="24px">
         {t('Join a Team')}
       </Heading>
       <Text as="p" mb="24px">
@@ -27,7 +27,7 @@ const Team: React.FC = () => {
       </Text>
       <Card mb="24px">
         <CardBody>
-          <Heading as="h4" size="lg" mb="8px">
+          <Heading as="h4" scale="lg" mb="8px">
             {t('Join a Team')}
           </Heading>
           <Text as="p" color="textSubtle" mb="24px">

@@ -43,7 +43,7 @@ const RegisterWithProfile: React.FC<CompetitionProps> = ({ profile, onDismiss, o
 
   return (
     <>
-      <Heading size="md" mb="24px">{`@${profile.username}`}</Heading>
+      <Heading scale="md" mb="24px">{`@${profile.username}`}</Heading>
       <Flex flexDirection="column">
         <Text bold>
           {t('Registering for the competition will make your wallet address publicly visible on the leaderboard.')}

@@ -124,7 +124,7 @@ const IfoSteps: React.FC<Props> = ({ ifo, walletIfoData }) => {
 
   return (
     <Wrapper>
-      <Heading as="h2" size="xl" color="secondary" mb="24px" textAlign="center">
+      <Heading as="h2" scale="xl" color="secondary" mb="24px" textAlign="center">
         {t('How to Take Part')}
       </Heading>
       <Stepper>

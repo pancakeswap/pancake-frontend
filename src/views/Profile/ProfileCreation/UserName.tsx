@@ -176,7 +176,7 @@ const UserName: React.FC = () => {
       <Text fontSize="20px" color="textSubtle" bold>
         {t(`Step ${4}`)}
       </Text>
-      <Heading as="h3" size="xl" mb="24px">
+      <Heading as="h3" scale="xl" mb="24px">
         {t('Set Your Name')}
       </Heading>
       <Text as="p" mb="24px">
@@ -184,7 +184,7 @@ const UserName: React.FC = () => {
       </Text>
       <Card mb="24px">
         <CardBody>
-          <Heading as="h4" size="lg" mb="8px">
+          <Heading as="h4" scale="lg" mb="8px">
             {t('Set Your Name')}
           </Heading>
           <Text as="p" color="textSubtle" mb="24px">
