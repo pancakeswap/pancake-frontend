@@ -59,10 +59,15 @@ const StakeModal: React.FC<StakeModalProps> = ({
   }
 
   const handleChangePercent = (sliderPercent: number) => {
-    const percentageOfStakingMax = stakingMax.dividedBy(100).multipliedBy(sliderPercent)
-    const amountToStake = getFullDisplayBalance(percentageOfStakingMax, stakingToken.decimals, stakingToken.decimals)
-    setStakeAmount(amountToStake)
-    setPercent(sliderPercent)
+    if (sliderPercent > 0) {
+      const percentageOfStakingMax = stakingMax.dividedBy(100).multipliedBy(sliderPercent)
+      const amountToStake = getFullDisplayBalance(percentageOfStakingMax, stakingToken.decimals, stakingToken.decimals)
+      setStakeAmount(amountToStake)
+      setPercent(sliderPercent)
+    } else {
+      setStakeAmount('')
+      setPercent(0)
+    }
   }
 
   const handleConfirmClick = async () => {
