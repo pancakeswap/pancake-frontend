@@ -25,7 +25,7 @@ it("renders correctly", () => {
     }
 
     .c2 {
-      border-bottom: 2px solid #8f80ba;
+      border-bottom: 2px solid #7A6EAA;
       overflow-x: scroll;
       -ms-overflow-style: none;
       -webkit-scrollbar-width: none;
@@ -74,7 +74,7 @@ it("renders correctly", () => {
       font-size: 16px;
       font-weight: 600;
       color: #FFFFFF;
-      background-color: #8f80ba;
+      background-color: #7A6EAA;
     }
 
     .c5 {
@@ -97,7 +97,7 @@ it("renders correctly", () => {
       border-radius: 16px 16px 0 0;
       font-size: 16px;
       font-weight: 600;
-      color: #8f80ba;
+      color: #7A6EAA;
       background-color: #eeeaf4;
     }
 

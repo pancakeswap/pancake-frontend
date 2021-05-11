@@ -74,7 +74,7 @@ it("renders correctly", () => {
       -webkit-align-self: center;
       -ms-flex-item-align: center;
       align-self: center;
-      fill: #8f80ba;
+      fill: #7A6EAA;
       -webkit-flex-shrink: 0;
       -ms-flex-negative: 0;
       flex-shrink: 0;
@@ -84,7 +84,7 @@ it("renders correctly", () => {
       -webkit-align-self: center;
       -ms-flex-item-align: center;
       align-self: center;
-      fill: #452A7A;
+      fill: #280D5F;
       -webkit-flex-shrink: 0;
       -ms-flex-negative: 0;
       flex-shrink: 0;
@@ -94,7 +94,7 @@ it("renders correctly", () => {
       -webkit-align-self: center;
       -ms-flex-item-align: center;
       align-self: center;
-      fill: #452A7A;
+      fill: #280D5F;
       -webkit-flex-shrink: 0;
       -ms-flex-negative: 0;
       flex-shrink: 0;
@@ -276,7 +276,7 @@ it("renders correctly", () => {
     }
 
     .c4 {
-      color: #452A7A;
+      color: #280D5F;
       padding: 0 8px;
       border-radius: 8px;
     }
@@ -359,7 +359,7 @@ it("renders correctly", () => {
       padding: 0 16px;
       font-size: 16px;
       background-color: transparent;
-      color: #8f80ba;
+      color: #7A6EAA;
       box-shadow: inset 4px 0px 0px #1FC7D4;
       -webkit-flex-shrink: 0;
       -ms-flex-negative: 0;
@@ -380,7 +380,7 @@ it("renders correctly", () => {
     }
 
     .c12 svg {
-      fill: #8f80ba;
+      fill: #7A6EAA;
     }
 
     .c12:hover {
@@ -391,7 +391,7 @@ it("renders correctly", () => {
       background-clip: text;
       -webkit-animation: fKQuCC 3s ease-in-out infinite;
       animation: fKQuCC 3s ease-in-out infinite;
-      background: linear-gradient(139.73deg,#E6FDFF 0%,#F3EFFF 100%);
+      background: linear-gradient(139.73deg,#E5FDFF 0%,#F3EFFF 100%);
       background-size: 400% 100%;
     }
 
@@ -409,7 +409,7 @@ it("renders correctly", () => {
       padding: 0 16px;
       font-size: 16px;
       background-color: transparent;
-      color: #8f80ba;
+      color: #7A6EAA;
       box-shadow: none;
       -webkit-flex-shrink: 0;
       -ms-flex-negative: 0;
@@ -430,7 +430,7 @@ it("renders correctly", () => {
     }
 
     .c16 svg {
-      fill: #8f80ba;
+      fill: #7A6EAA;
     }
 
     .c16:hover {
@@ -441,7 +441,7 @@ it("renders correctly", () => {
       background-clip: text;
       -webkit-animation: fKQuCC 3s ease-in-out infinite;
       animation: fKQuCC 3s ease-in-out infinite;
-      background: linear-gradient(139.73deg,#E6FDFF 0%,#F3EFFF 100%);
+      background: linear-gradient(139.73deg,#E5FDFF 0%,#F3EFFF 100%);
       background-size: 400% 100%;
     }
 

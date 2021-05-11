@@ -17,7 +17,7 @@ it("renders correctly", () => {
       border: 0px 2px 12px -8px rgba(25,19,38,0.1),0px 1px 1px rgba(25,19,38,0.05);
       border-radius: 32px;
       box-shadow: 0px 2px 12px -8px rgba(25,19,38,0.1),0px 1px 1px rgba(25,19,38,0.05);
-      color: #452A7A;
+      color: #280D5F;
       overflow: hidden;
       position: relative;
     }
