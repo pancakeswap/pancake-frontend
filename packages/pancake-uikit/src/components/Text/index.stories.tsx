@@ -52,6 +52,15 @@ export const Default: React.FC = () => {
         with text transform
       </Text>
       <Text textAlign="center">center</Text>
+      <Text display="inline" color="textSubtle" textTransform="uppercase">
+        Example of{" "}
+      </Text>
+      <Text display="inline" bold textTransform="uppercase">
+        inline{" "}
+      </Text>
+      <Text display="inline" color="textSubtle" textTransform="uppercase">
+        Text
+      </Text>
     </div>
   );
 };

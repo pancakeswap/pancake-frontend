@@ -11,10 +11,10 @@ export const Sizes: React.FC = () => {
   return (
     <div>
       <Heading>Default</Heading>
-      <Heading size="md">Size md</Heading>
-      <Heading size="lg">Size lg</Heading>
-      <Heading size="xl">Size xl</Heading>
-      <Heading size="xxl">Size xxl</Heading>
+      <Heading scale="md">Size md</Heading>
+      <Heading scale="lg">Size lg</Heading>
+      <Heading scale="xl">Size xl</Heading>
+      <Heading scale="xxl">Size xxl</Heading>
     </div>
   );
 };
