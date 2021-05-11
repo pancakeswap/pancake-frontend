@@ -297,7 +297,7 @@ it("renders correctly", () => {
     }
 
     .c6 .desktop-icon {
-      width: 156px;
+      width: 160px;
       display: none;
     }
 
