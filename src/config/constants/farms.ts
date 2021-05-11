@@ -39,6 +39,26 @@ const farms: FarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 373,
+    lpSymbol: 'KUN-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0xea61020e5a128d2bec67d48f7cfbe3408db7e391',
+    },
+    token: tokens.kun,
+    quoteToken: tokens.busd,
+  },
+  {
+    pid: 372,
+    lpSymbol: 'KUN-QSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0x4eafbf68a2d50291ffd163d4e00ad0f040aae707',
+    },
+    token: tokens.kun,
+    quoteToken: tokens.qsd,
+  },
+  {
     pid: 371,
     lpSymbol: 'MATH-BUSD LP',
     lpAddresses: {
