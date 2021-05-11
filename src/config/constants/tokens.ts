@@ -1218,6 +1218,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://mirror.finance/',
   },
+  math: {
+    symbol: 'MATH',
+    address: {
+      56: '0xf218184af829cf2b0019f8e6f0b2423498a36983',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://mathwallet.org/',
+  },
 }
 
 export default tokens
