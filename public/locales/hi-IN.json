@@ -393,5 +393,6 @@
   "If you are sure you should see history here, make sure you’re connected to the correct wallet and try again.": "यदि आपको लगता है कि आपको यहां पर हिस्ट्री दिखनी ही चाहिए, तो सुनिश्चित करें कि आप सही वॉलेट से कनेक्टेड हैं और फिर से ट्राई करें।",
   "Last price from Chainlink Oracle": "Last price from Chainlink Oracle",
   "Charts are provided for reference only, and do not reflect rounds’ final outcome.": "Charts are provided for reference only, and do not reflect rounds’ final outcome.",
-  "Please refer to the prices shown on the cards for the final outcome.": "Please refer to the prices shown on the cards for the final outcome."
+  "Please refer to the prices shown on the cards for the final outcome.": "Please refer to the prices shown on the cards for the final outcome.",
+  "%num% Points to Collect": "%num% Points to Collect"
 }
