@@ -17,7 +17,9 @@ import {
   ModalCloseButton,
 } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
+import { useAppDispatch } from 'state'
 import { usePriceBnbBusd } from 'state/hooks'
+import { markBetAsCollected } from 'state/predictions'
 import { useTranslation } from 'contexts/Localization'
 import useToast from 'hooks/useToast'
 import { usePredictionsContract } from 'hooks/useContract'
@@ -25,6 +27,7 @@ import { formatBnb } from '../helpers'
 
 interface CollectRoundWinningsModalProps extends InjectedModalProps {
   payout: number
+  roundId: string
   epoch: number
   onSuccess?: () => Promise<void>
 }
@@ -43,6 +46,7 @@ const BunnyDecoration = styled.div`
 
 const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
   payout,
+  roundId,
   epoch,
   onDismiss,
   onSuccess,
@@ -53,6 +57,7 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
   const { toastSuccess, toastError } = useToast()
   const predictionsContract = usePredictionsContract()
   const bnbBusdPrice = usePriceBnbBusd()
+  const dispatch = useAppDispatch()
 
   const handleClick = () => {
     predictionsContract.methods
@@ -66,8 +71,9 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
           await onSuccess()
         }
 
-        setIsPendingTx(false)
+        dispatch(markBetAsCollected({ account, roundId }))
         onDismiss()
+        setIsPendingTx(false)
         toastSuccess(
           t('Winnings collected!'),
           <Box>

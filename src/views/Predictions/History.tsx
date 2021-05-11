@@ -3,6 +3,7 @@ import { Box, Heading, Spinner, Text } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
 import { fetchHistory } from 'state/predictions'
+import { getUnclaimedWinningBets } from 'state/predictions/helpers'
 import { HistoryFilter } from 'state/types'
 import { useTranslation } from 'contexts/Localization'
 import { orderBy } from 'lodash'
@@ -60,12 +61,7 @@ const History = () => {
 
   // Currently the api cannot filter by unclaimed AND won so we do it here
   // when the user has selected Uncollected only include positions they won
-  const results =
-    historyFilter === HistoryFilter.UNCOLLECTED
-      ? bets.filter((bet) => {
-          return bet.position === bet.round.position || bet.round.failed === true
-        })
-      : bets
+  const results = historyFilter === HistoryFilter.UNCOLLECTED ? getUnclaimedWinningBets(bets) : bets
 
   return (
     <StyledHistory>

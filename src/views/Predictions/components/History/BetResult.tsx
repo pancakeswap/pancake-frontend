@@ -3,7 +3,7 @@ import { useWeb3React } from '@web3-react/core'
 import { Box, Flex, Heading, Text, PrizeIcon, BlockIcon } from '@pancakeswap/uikit'
 import { useAppDispatch } from 'state'
 import { useTranslation } from 'contexts/Localization'
-import { usePriceBnbBusd } from 'state/hooks'
+import { useBetCanClaim, usePriceBnbBusd } from 'state/hooks'
 import styled from 'styled-components'
 import { Bet, BetPosition } from 'state/types'
 import { fetchBet } from 'state/predictions'
@@ -38,6 +38,7 @@ const BetResult: React.FC<BetResultProps> = ({ bet, result }) => {
   const { account } = useWeb3React()
   const { isRefundable } = useIsRefundable(bet.round.epoch)
   const bnbBusdPrice = usePriceBnbBusd()
+  const canClaim = useBetCanClaim(account, bet.round.id)
 
   // Winners get the payout, otherwise the claim what they put it if it was canceled
   const payout = result === Result.WIN ? getPayout(bet) : bet.amount
@@ -108,11 +109,12 @@ const BetResult: React.FC<BetResultProps> = ({ bet, result }) => {
         </Flex>
       </Flex>
       <StyledBetResult>
-        {result === Result.WIN && !bet.claimed && (
+        {result === Result.WIN && !canClaim && (
           <CollectWinningsButton
             payout={payout}
+            roundId={bet.round.id}
             epoch={bet.round.epoch}
-            hasClaimed={bet.claimed}
+            hasClaimed={!canClaim}
             width="100%"
             mb="16px"
             onSuccess={handleSuccess}

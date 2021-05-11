@@ -101,10 +101,12 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
       markPositionAsEntered({
         account,
         roundId: round.id,
-        partialBet: {
+        bet: {
           hash,
+          round,
           position,
           amount: getBnbAmount(decimalValue).toNumber(),
+          claimed: false,
         },
       }),
     )

@@ -195,12 +195,12 @@ export interface Market {
 }
 
 export interface Bet {
-  id: string
-  hash: string
+  id?: string
+  hash?: string
   amount: number
   position: BetPosition
   claimed: boolean
-  user: PredictionUser
+  user?: PredictionUser
   round: Round
 }
 
@@ -222,7 +222,7 @@ export interface HistoryData {
 
 export interface BetData {
   [key: string]: {
-    [key: string]: Partial<Bet>
+    [key: string]: Bet
   }
 }
 
