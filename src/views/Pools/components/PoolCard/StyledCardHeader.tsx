@@ -59,7 +59,7 @@ const StyledCardHeader: React.FC<{
     <Wrapper isPromotedPool={isPromotedPool} isFinished={isFinished} background={background}>
       <Flex alignItems="center" justifyContent="space-between">
         <Flex flexDirection="column">
-          <Heading color={isFinished ? 'textDisabled' : 'body'} size="lg">
+          <Heading color={isFinished ? 'textDisabled' : 'body'} scale="lg">
             {`${getHeadingPrefix()} ${earningTokenSymbol}`}
           </Heading>
           <Text color={isFinished ? 'textDisabled' : 'textSubtle'}>{getSubHeading()}</Text>

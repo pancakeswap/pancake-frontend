@@ -51,7 +51,7 @@ const ProfilePicture: React.FC = () => {
   if (!isLoading && nftsInWallet.length === 0) {
     return (
       <>
-        <Heading size="xl" mb="24px">
+        <Heading scale="xl" mb="24px">
           {t('Oops!')}
         </Heading>
         <Text bold fontSize="20px" mb="24px">
@@ -71,12 +71,12 @@ const ProfilePicture: React.FC = () => {
       <Text fontSize="20px" color="textSubtle" bold>
         {t(`Step ${2}`)}
       </Text>
-      <Heading as="h3" size="xl" mb="24px">
+      <Heading as="h3" scale="xl" mb="24px">
         {t('Set Profile Picture')}
       </Heading>
       <Card mb="24px">
         <CardBody>
-          <Heading as="h4" size="lg" mb="8px">
+          <Heading as="h4" scale="lg" mb="8px">
             {t('Choose collectible')}
           </Heading>
           <Text as="p" color="textSubtle">
@@ -111,7 +111,7 @@ const ProfilePicture: React.FC = () => {
               })
             )}
           </NftWrapper>
-          <Heading as="h4" size="lg" mb="8px">
+          <Heading as="h4" scale="lg" mb="8px">
             {t('Allow collectible to be locked')}
           </Heading>
           <Text as="p" color="textSubtle" mb="16px">

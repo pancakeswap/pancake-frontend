@@ -47,7 +47,7 @@ const RiskDisclaimer: React.FC<RiskDisclaimerProps> = ({ onSuccess, onDismiss })
     <ModalContainer title={t('Welcome!')} minWidth="320px">
       <GradientModalHeader>
         <ModalTitle>
-          <Heading size="lg">{t('Welcome!')}</Heading>
+          <Heading scale="lg">{t('Welcome!')}</Heading>
         </ModalTitle>
       </GradientModalHeader>
       <ModalBody p="24px" maxWidth="400px">

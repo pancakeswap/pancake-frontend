@@ -19,7 +19,7 @@ const StyledFarmStakingCard = styled(Card)`
     opacity: 0.65;
   }
 `
-const CardMidContent = styled(Heading).attrs({ size: 'xl' })`
+const CardMidContent = styled(Heading).attrs({ scale: 'xl' })`
   line-height: 44px;
 `
 const WinCard = () => {
@@ -29,12 +29,12 @@ const WinCard = () => {
     <StyledFarmStakingCard>
       <NavLink exact activeClassName="active" to="/lottery" id="lottery-pot-cta">
         <CardBody>
-          <Heading color="contrast" size="lg">
+          <Heading color="contrast" scale="lg">
             {t('Lottery')}
           </Heading>
           <CardMidContent color="#7645d9">{t('Coming Soon')}</CardMidContent>
           <Flex justifyContent="space-between">
-            <Heading color="contrast" size="lg" />
+            <Heading color="contrast" scale="lg" />
             <ArrowForwardIcon mt={30} color="primary" />
           </Flex>
         </CardBody>

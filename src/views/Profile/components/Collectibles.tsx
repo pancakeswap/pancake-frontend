@@ -33,7 +33,7 @@ const Collectibles = () => {
 
   return (
     <>
-      <Heading as="h4" size="md" mb="8px">
+      <Heading as="h4" scale="md" mb="8px">
         {t('Pancake Collectibles')}
       </Heading>
       <Text as="p">

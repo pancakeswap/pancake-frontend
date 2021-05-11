@@ -8,7 +8,7 @@ const WalletNotConnected = () => {
 
   return (
     <div>
-      <Heading size="xl" mb="8px">
+      <Heading scale="xl" mb="8px">
         {t('Oops!')}
       </Heading>
       <Text as="p" mb="16px">

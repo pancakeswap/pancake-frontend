@@ -33,7 +33,7 @@ const UnlockWalletCard = () => {
           <Ticket />
         </IconWrapper>
         <div>
-          <StyledHeading size="md">{t('Unlock wallet to access lottery')}</StyledHeading>
+          <StyledHeading scale="md">{t('Unlock wallet to access lottery')}</StyledHeading>
           <UnlockButton />
         </div>
       </StyledCardBody>

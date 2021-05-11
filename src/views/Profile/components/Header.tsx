@@ -21,10 +21,10 @@ const ProfileHeader = () => {
         justifyContent="space-between"
       >
         <div>
-          <Heading as="h1" size="xxl" mb="8px" color="secondary">
+          <Heading as="h1" scale="xxl" mb="8px" color="secondary">
             {t('Your Profile')}
           </Heading>
-          <Heading as="h2" size="lg" mb="16px">
+          <Heading as="h2" scale="lg" mb="16px">
             {t('Check your stats and collect achievements')}
           </Heading>
           {hasProfile && <Button onClick={onEditProfileModal}>{t('Edit Profile')}</Button>}

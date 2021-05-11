@@ -156,7 +156,7 @@ const CardUserInfo: React.FC<YourScoreProps> = ({
 
   return (
     <Flex flexDirection="column" alignItems="center" mt="16px">
-      <Heading size="lg" textAlign="center">
+      <Heading scale="lg" textAlign="center">
         {headingText}
       </Heading>
       <Text textAlign="center" fontSize="14px" color="textSubtle" mt="4px">
@@ -183,7 +183,7 @@ const CardUserInfo: React.FC<YourScoreProps> = ({
                     <Skeleton height="26px" width="110px" />
                   ) : (
                     <TeamRankTextWrapper>
-                      <Heading textAlign="center" size="lg" mr="8px">
+                      <Heading textAlign="center" scale="lg" mr="8px">
                         #{team}
                       </Heading>
                       {medal.current}
@@ -201,7 +201,7 @@ const CardUserInfo: React.FC<YourScoreProps> = ({
                 {!userLeaderboardInformation ? (
                   <Skeleton height="26px" width="110px" />
                 ) : (
-                  <Heading textAlign="center" size="lg">
+                  <Heading textAlign="center" scale="lg">
                     ${userLeaderboardInformation && localiseTradingVolume(volume)}
                   </Heading>
                 )}
@@ -218,7 +218,7 @@ const CardUserInfo: React.FC<YourScoreProps> = ({
                   currentMedal={medal.current}
                   hideArrow
                 >
-                  <Heading size="lg">{t('HECK YES!')}</Heading>
+                  <Heading scale="lg">{t('HECK YES!')}</Heading>
                 </NextRankBox>
               ) : (
                 <NextRankBox
@@ -228,7 +228,7 @@ const CardUserInfo: React.FC<YourScoreProps> = ({
                   currentMedal={medal.current}
                   nextMedal={medal.next}
                 >
-                  <Heading size="lg">+${userLeaderboardInformation && localiseTradingVolume(nextRank)}</Heading>
+                  <Heading scale="lg">+${userLeaderboardInformation && localiseTradingVolume(nextRank)}</Heading>
                 </NextRankBox>
               ))}
           </RanksWrapper>

@@ -17,7 +17,7 @@ const Collectibles = () => {
   return (
     <Page>
       <StyledHero>
-        <Heading as="h1" size="xxl" color="secondary">
+        <Heading as="h1" scale="xxl" color="secondary">
           {t('Pancake Collectibles')}
         </Heading>
       </StyledHero>

@@ -4,7 +4,7 @@ import { Heading, Text, LinkExternal } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import Container from 'components/layout/Container'
 
-const Title = styled(Heading).attrs({ as: 'h1', size: 'xl' })`
+const Title = styled(Heading).attrs({ as: 'h1', scale: 'xl' })`
   color: #ffffff;
   margin-bottom: 24px;
   text-shadow: 2px 2px 2px #00000040;

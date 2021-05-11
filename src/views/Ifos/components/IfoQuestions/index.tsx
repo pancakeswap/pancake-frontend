@@ -37,7 +37,7 @@ const IfoQuestions = () => {
       <DetailsWrapper>
         <Card>
           <CardHeader>
-            <Heading size="lg" color="secondary">
+            <Heading scale="lg" color="secondary">
               {t('Details')}
             </Heading>
           </CardHeader>

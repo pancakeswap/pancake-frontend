@@ -32,7 +32,7 @@ const Hero = () => {
     <Box mb="32px">
       <StyledHero>
         <Container>
-          <Heading as="h1" size="xl" mb="24px">
+          <Heading as="h1" scale="xl" mb="24px">
             {t('IFO: Initial Farm Offerings')}
           </Heading>
           <Text bold fontSize="20px">

@@ -61,7 +61,7 @@ const Mint: React.FC = () => {
       <Text fontSize="20px" color="textSubtle" bold>
         {t(`Step ${1}`)}
       </Text>
-      <Heading as="h3" size="xl" mb="24px">
+      <Heading as="h3" scale="xl" mb="24px">
         {t('Get Starter Collectible')}
       </Heading>
       <Text as="p">{t('Every profile starts by making a “starter” collectible (NFT).')}</Text>
@@ -71,7 +71,7 @@ const Mint: React.FC = () => {
       </Text>
       <Card mb="24px">
         <CardBody>
-          <Heading as="h4" size="lg" mb="8px">
+          <Heading as="h4" scale="lg" mb="8px">
             {t('Choose your Starter!')}
           </Heading>
           <Text as="p" color="textSubtle">

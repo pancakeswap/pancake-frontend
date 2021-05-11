@@ -24,7 +24,7 @@ const StyledFarmStakingCard = styled(Card)`
     opacity: 0.65;
   }
 `
-const CardMidContent = styled(Heading).attrs({ size: 'xl' })`
+const CardMidContent = styled(Heading).attrs({ scale: 'xl' })`
   line-height: 44px;
 `
 const EarnAPRCard = () => {
@@ -54,14 +54,14 @@ const EarnAPRCard = () => {
     <StyledFarmStakingCard>
       <NavLink exact activeClassName="active" to="/farms" id="farm-apr-cta">
         <CardBody>
-          <Heading color="contrast" size="lg">
+          <Heading color="contrast" scale="lg">
             Earn up to
           </Heading>
           <CardMidContent color="#7645d9">
             {highestApr ? `${highestApr}% ${t('APR')}` : <Skeleton animation="pulse" variant="rect" height="44px" />}
           </CardMidContent>
           <Flex justifyContent="space-between">
-            <Heading color="contrast" size="lg">
+            <Heading color="contrast" scale="lg">
               in Farms
             </Heading>
             <ArrowForwardIcon mt={30} color="primary" />

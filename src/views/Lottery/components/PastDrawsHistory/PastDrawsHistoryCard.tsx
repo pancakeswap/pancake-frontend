@@ -40,7 +40,7 @@ const PastDrawsHistoryCard: React.FC = () => {
   return (
     <Card>
       <CardBody>
-        <Heading size="md">{t('History')}</Heading>
+        <Heading scale="md">{t('History')}</Heading>
         <Wrapper>
           <Legend />
           <LabelWrapper>

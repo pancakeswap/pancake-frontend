@@ -28,7 +28,7 @@ const LotteryCardHeading: React.FC<HeadingProps> = ({ valueToDisplay, children, 
         <Text fontSize="14px" color="textSubtle">
           {children}
         </Text>
-        <Heading size="lg">{valueToDisplay}</Heading>
+        <Heading scale="lg">{valueToDisplay}</Heading>
       </Flex>
     </Flex>
   )

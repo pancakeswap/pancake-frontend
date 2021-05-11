@@ -28,7 +28,7 @@ const AchievementsList = () => {
       </Grid>
       {achievements.length === 0 && (
         <Flex alignItems="center" justifyContent="center" style={{ height: '64px' }}>
-          <Heading as="h5" size="md" color="textDisabled">
+          <Heading as="h5" scale="md" color="textDisabled">
             {t('No achievements yet!')}
           </Heading>
         </Flex>

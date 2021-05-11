@@ -14,7 +14,7 @@ const MakeProfile: React.FC<CompetitionProps> = ({ onDismiss }) => {
 
   return (
     <>
-      <Heading size="md" mb="24px">
+      <Heading scale="md" mb="24px">
         {t('Make a profile!')}
       </Heading>
       <Text color="textSubtle">

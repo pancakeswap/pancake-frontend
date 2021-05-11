@@ -14,7 +14,7 @@ const ReactivateProfile: React.FC<CompetitionProps> = ({ onDismiss }) => {
 
   return (
     <>
-      <Heading size="md" mb="24px">
+      <Heading scale="md" mb="24px">
         {t('Reactivate your profile!')}
       </Heading>
       <Text color="textSubtle">

@@ -18,12 +18,12 @@ const TotalValueLockedCard = () => {
   return (
     <StyledTotalValueLockedCard>
       <CardBody>
-        <Heading size="lg" mb="24px">
+        <Heading scale="lg" mb="24px">
           {t('Total Value Locked (TVL)')}
         </Heading>
         {data ? (
           <>
-            <Heading size="xl">{`$${tvl}`}</Heading>
+            <Heading scale="xl">{`$${tvl}`}</Heading>
             <Text color="textSubtle">{t('Across all LPs and Syrup Pools')}</Text>
           </>
         ) : (

@@ -55,7 +55,7 @@ const Header = () => {
   return (
     <StyledHeader>
       <Flex alignItems="center" justifyContent="space-between" mb="16px">
-        <Heading as="h3" size="md">
+        <Heading as="h3" scale="md">
           {t('Your History')}
         </Heading>
         <Button onClick={handleClick} variant="text" endIcon={<ArrowForwardIcon color="primary" />} px="0">
