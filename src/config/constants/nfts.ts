@@ -69,12 +69,10 @@ const Nfts: Nft[] = [
       lg: 'easter-champion-storm-lg.png',
       md: 'easter-champion-storm-md.png',
       sm: 'easter-champion-storm-sm.png',
-      ipfs:
-        'https://gateway.pinata.cloud/ipfs/QmWFQdggxnAkgFNBWixT6v7nrgEnYfYDxG5A9u42aHhU6U/easter-champion-storm.png',
+      ipfs: 'https://gateway.pinata.cloud/ipfs/QmWFQdggxnAkgFNBWixT6v7nrgEnYfYDxG5A9u42aHhU6U/easter-champion-storm.png',
     },
     video: {
-      webm:
-        'https://gateway.pinata.cloud/ipfs/QmWFQdggxnAkgFNBWixT6v7nrgEnYfYDxG5A9u42aHhU6U/easter-champion-storm.webm',
+      webm: 'https://gateway.pinata.cloud/ipfs/QmWFQdggxnAkgFNBWixT6v7nrgEnYfYDxG5A9u42aHhU6U/easter-champion-storm.webm',
       mp4: 'https://gateway.pinata.cloud/ipfs/QmWFQdggxnAkgFNBWixT6v7nrgEnYfYDxG5A9u42aHhU6U/easter-champion-storm.mp4',
     },
     sortOrder: 999,

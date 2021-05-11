@@ -27,34 +27,28 @@ const Mint: React.FC = () => {
   const bunnyFactoryContract = useBunnyFactory()
   const { t } = useTranslation()
   const hasMinimumCakeRequired = useHasCakeBalance(minimumCakeBalanceToMint)
-  const {
-    isApproving,
-    isApproved,
-    isConfirmed,
-    isConfirming,
-    handleApprove,
-    handleConfirm,
-  } = useApproveConfirmTransaction({
-    onRequiresApproval: async () => {
-      // TODO: Move this to a helper, this check will be probably be used many times
-      try {
-        const response = await cakeContract.methods.allowance(account, bunnyFactoryContract.options.address).call()
-        const currentAllowance = new BigNumber(response)
-        return currentAllowance.gte(minimumCakeRequired)
-      } catch (error) {
-        return false
-      }
-    },
-    onApprove: () => {
-      return cakeContract.methods
-        .approve(bunnyFactoryContract.options.address, allowance.toJSON())
-        .send({ from: account })
-    },
-    onConfirm: () => {
-      return bunnyFactoryContract.methods.mintNFT(variationId).send({ from: account })
-    },
-    onSuccess: () => actions.nextStep(),
-  })
+  const { isApproving, isApproved, isConfirmed, isConfirming, handleApprove, handleConfirm } =
+    useApproveConfirmTransaction({
+      onRequiresApproval: async () => {
+        // TODO: Move this to a helper, this check will be probably be used many times
+        try {
+          const response = await cakeContract.methods.allowance(account, bunnyFactoryContract.options.address).call()
+          const currentAllowance = new BigNumber(response)
+          return currentAllowance.gte(minimumCakeRequired)
+        } catch (error) {
+          return false
+        }
+      },
+      onApprove: () => {
+        return cakeContract.methods
+          .approve(bunnyFactoryContract.options.address, allowance.toJSON())
+          .send({ from: account })
+      },
+      onConfirm: () => {
+        return bunnyFactoryContract.methods.mintNFT(variationId).send({ from: account })
+      },
+      onSuccess: () => actions.nextStep(),
+    })
 
   return (
     <>

@@ -47,38 +47,32 @@ const ContributeModal: React.FC<Props> = ({
   const { t } = useTranslation()
   const valueWithTokenDecimals = new BigNumber(value).times(DEFAULT_TOKEN_DECIMAL)
 
-  const {
-    isApproving,
-    isApproved,
-    isConfirmed,
-    isConfirming,
-    handleApprove,
-    handleConfirm,
-  } = useApproveConfirmTransaction({
-    onRequiresApproval: async () => {
-      try {
-        const response = await raisingTokenContract.methods.allowance(account, contract.options.address).call()
-        const currentAllowance = new BigNumber(response)
-        return currentAllowance.gt(0)
-      } catch (error) {
-        return false
-      }
-    },
-    onApprove: () => {
-      return raisingTokenContract.methods
-        .approve(contract.options.address, ethers.constants.MaxUint256)
-        .send({ from: account })
-    },
-    onConfirm: () => {
-      return contract.methods
-        .depositPool(valueWithTokenDecimals.toString(), poolId === PoolIds.poolBasic ? 0 : 1)
-        .send({ from: account })
-    },
-    onSuccess: async () => {
-      await onSuccess(valueWithTokenDecimals)
-      onDismiss()
-    },
-  })
+  const { isApproving, isApproved, isConfirmed, isConfirming, handleApprove, handleConfirm } =
+    useApproveConfirmTransaction({
+      onRequiresApproval: async () => {
+        try {
+          const response = await raisingTokenContract.methods.allowance(account, contract.options.address).call()
+          const currentAllowance = new BigNumber(response)
+          return currentAllowance.gt(0)
+        } catch (error) {
+          return false
+        }
+      },
+      onApprove: () => {
+        return raisingTokenContract.methods
+          .approve(contract.options.address, ethers.constants.MaxUint256)
+          .send({ from: account })
+      },
+      onConfirm: () => {
+        return contract.methods
+          .depositPool(valueWithTokenDecimals.toString(), poolId === PoolIds.poolBasic ? 0 : 1)
+          .send({ from: account })
+      },
+      onSuccess: async () => {
+        await onSuccess(valueWithTokenDecimals)
+        onDismiss()
+      },
+    })
 
   const maximumLpCommitable = (() => {
     if (limitPerUserInLP.isGreaterThan(0)) {

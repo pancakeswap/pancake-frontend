@@ -35,37 +35,31 @@ const ConfirmProfileCreationModal: React.FC<Props> = ({
   const { toastSuccess } = useToast()
   const cakeContract = useCake()
 
-  const {
-    isApproving,
-    isApproved,
-    isConfirmed,
-    isConfirming,
-    handleApprove,
-    handleConfirm,
-  } = useApproveConfirmTransaction({
-    onRequiresApproval: async () => {
-      try {
-        const response = await cakeContract.methods.allowance(account, profileContract.options.address).call()
-        const currentAllowance = new BigNumber(response)
-        return currentAllowance.gte(minimumCakeRequired)
-      } catch (error) {
-        return false
-      }
-    },
-    onApprove: () => {
-      return cakeContract.methods.approve(profileContract.options.address, allowance.toJSON()).send({ from: account })
-    },
-    onConfirm: () => {
-      return profileContract.methods
-        .createProfile(teamId, selectedNft.nftAddress, selectedNft.tokenId)
-        .send({ from: account })
-    },
-    onSuccess: async () => {
-      await dispatch(fetchProfile(account))
-      onDismiss()
-      toastSuccess('Profile created!')
-    },
-  })
+  const { isApproving, isApproved, isConfirmed, isConfirming, handleApprove, handleConfirm } =
+    useApproveConfirmTransaction({
+      onRequiresApproval: async () => {
+        try {
+          const response = await cakeContract.methods.allowance(account, profileContract.options.address).call()
+          const currentAllowance = new BigNumber(response)
+          return currentAllowance.gte(minimumCakeRequired)
+        } catch (error) {
+          return false
+        }
+      },
+      onApprove: () => {
+        return cakeContract.methods.approve(profileContract.options.address, allowance.toJSON()).send({ from: account })
+      },
+      onConfirm: () => {
+        return profileContract.methods
+          .createProfile(teamId, selectedNft.nftAddress, selectedNft.tokenId)
+          .send({ from: account })
+      },
+      onSuccess: async () => {
+        await dispatch(fetchProfile(account))
+        onDismiss()
+        toastSuccess('Profile created!')
+      },
+    })
 
   return (
     <Modal title="Complete Profile" onDismiss={onDismiss}>
