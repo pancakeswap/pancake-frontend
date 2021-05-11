@@ -11510,7 +11510,7 @@ prompts@^2.0.1:
     kleur "^3.0.3"
     sisteransi "^1.0.5"
 
-prop-types@^15.5.7, prop-types@^15.6.2, prop-types@^15.7.2:
+prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
@@ -11940,14 +11940,6 @@ react-scripts@^4.0.1:
     workbox-webpack-plugin "5.1.4"
   optionalDependencies:
     fsevents "^2.1.3"
-
-react-split-grid@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/react-split-grid/-/react-split-grid-1.0.3.tgz#f3b7e8a7aee6085870521c7b697b4b9147c46edf"
-  integrity sha512-iE7R7Ne6KOIstKH4hROG3pwPod3LGJ4TB1P2jmPY2/oYI9+Jw8K7Rj0z7C2ZkfDLgMK2vTc+vpYOkFzr/+eaIg==
-  dependencies:
-    prop-types "^15.5.7"
-    split-grid "^1.0.9"
 
 react-transition-group@^4.4.1:
   version "4.4.1"
@@ -13054,7 +13046,7 @@ spdy@^4.0.2:
     select-hose "^2.0.0"
     spdy-transport "^3.0.0"
 
-split-grid@^1.0.9:
+split-grid@^1.0.11:
   version "1.0.11"
   resolved "https://registry.yarnpkg.com/split-grid/-/split-grid-1.0.11.tgz#2df26ac4fd4153f23a42471ab2f618ade81b69fd"
   integrity sha512-ELtFtxc3r5we5GZfe6Fi0BFFxIi2M6BY1YEntBscKRDD3zx4JVHqx2VnTRSQu1BixCYSTH3MTjKd4esI2R7EgQ==

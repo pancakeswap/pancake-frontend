@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import styled from 'styled-components'
-import Split from 'react-split-grid'
-import { useAppDispatch } from 'state'
+import Split from 'split-grid'
 import { ArrowDownIcon, Button, ChartIcon } from '@pancakeswap/uikit'
+import debounce from 'lodash/debounce'
+import delay from 'lodash/delay'
+import { useAppDispatch } from 'state'
 import { useGetPredictionsStatus, useIsChartPaneOpen, useIsHistoryPaneOpen } from 'state/hooks'
 import { setChartPaneState } from 'state/predictions'
 import { PredictionStatus } from 'state/types'
@@ -12,26 +14,18 @@ import { ErrorNotification, PauseNotification } from './components/Notification'
 import History from './History'
 import Positions from './Positions'
 
-const HistoryPane = styled.div<{ isHistoryPaneOpen: boolean }>`
-  flex: none;
-  overflow: hidden;
-  transition: width 200ms ease-in-out;
-  width: ${({ isHistoryPaneOpen }) => (isHistoryPaneOpen ? '384px' : 0)};
-`
-
-const ChartPane = styled.div`
-  position: relative;
-`
+// The value to set the chart when the user clicks the chart tab at the bottom
+const GRID_TEMPLATE_ROW = '1.2fr 12px .8fr'
 
 const ExpandChartButton = styled(Button)`
   background-color: ${({ theme }) => theme.card.background};
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
+  bottom: 12px;
   color: ${({ theme }) => theme.colors.text};
   display: none;
   left: 32px;
   position: absolute;
-  top: -32px;
   z-index: 50;
 
   &:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
@@ -47,9 +41,21 @@ const ExpandChartButton = styled(Button)`
 const SplitWrapper = styled.div`
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 1fr 12px 1fr;
+  grid-template-rows: 1fr 12px 0;
   flex: 1;
   overflow: hidden;
+`
+
+const ChartPane = styled.div`
+  overflow: hidden;
+  position: relative;
+`
+
+const HistoryPane = styled.div<{ isHistoryPaneOpen: boolean }>`
+  flex: none;
+  overflow: hidden;
+  transition: width 200ms ease-in-out;
+  width: ${({ isHistoryPaneOpen }) => (isHistoryPaneOpen ? '384px' : 0)};
 `
 
 const StyledDesktop = styled.div`
@@ -94,6 +100,9 @@ const Gutter = styled.div`
 `
 
 const Desktop: React.FC = () => {
+  const splitWrapperRef = useRef<HTMLDivElement>()
+  const chartRef = useRef<HTMLDivElement>()
+  const gutterRef = useRef<HTMLDivElement>()
   const isHistoryPaneOpen = useIsHistoryPaneOpen()
   const isChartPaneOpen = useIsChartPaneOpen()
   const dispatch = useAppDispatch()
@@ -101,40 +110,79 @@ const Desktop: React.FC = () => {
   const status = useGetPredictionsStatus()
 
   const toggleChartPane = () => {
-    dispatch(setChartPaneState(!isChartPaneOpen))
+    const newChartPaneState = !isChartPaneOpen
+
+    if (newChartPaneState) {
+      splitWrapperRef.current.style.transition = 'grid-template-rows 150ms'
+      splitWrapperRef.current.style.gridTemplateRows = GRID_TEMPLATE_ROW
+
+      // Purely comedic: We only want to animate if we are clicking the open chart button
+      // If we keep the transition on the resizing becomes very choppy
+      delay(() => {
+        splitWrapperRef.current.style.transition = ''
+      }, 150)
+    }
+
+    dispatch(setChartPaneState(newChartPaneState))
   }
 
+  useEffect(() => {
+    const threshold = 100
+    const handleDrag = debounce(() => {
+      const { height } = chartRef.current.getBoundingClientRect()
+
+      // If the height of the chart pane goes below the "snapOffset" threshold mark the chart pane as closed
+      dispatch(setChartPaneState(height > threshold))
+    }, 50)
+
+    const split = Split({
+      dragInterval: 1,
+      snapOffset: threshold,
+      onDrag: handleDrag,
+      rowGutters: [
+        {
+          track: 1,
+          element: gutterRef.current,
+        },
+      ],
+    })
+
+    return () => {
+      split.destroy()
+    }
+  }, [gutterRef, chartRef, dispatch])
+
   return (
-    <StyledDesktop>
-      <Split
-        render={({ getGridProps, getGutterProps }) => (
-          <SplitWrapper {...getGridProps()}>
-            <PositionPane>
-              <div>
-                {status === PredictionStatus.ERROR && <ErrorNotification />}
-                {status === PredictionStatus.PAUSED && <PauseNotification />}
-                {status === PredictionStatus.LIVE && <Positions />}
-              </div>
-            </PositionPane>
-            <Gutter {...getGutterProps('row', 1)} />
-            <ChartPane>
-              <ExpandChartButton
-                variant="tertiary"
-                scale="sm"
-                startIcon={isChartPaneOpen ? <ArrowDownIcon /> : <ChartIcon />}
-                onClick={toggleChartPane}
-              >
-                {isChartPaneOpen ? t('Close') : t('Charts')}
-              </ExpandChartButton>
-              <TradingView />
-            </ChartPane>
-          </SplitWrapper>
-        )}
-      />
-      <HistoryPane isHistoryPaneOpen={isHistoryPaneOpen}>
-        <History />
-      </HistoryPane>
-    </StyledDesktop>
+    <>
+      {!isChartPaneOpen && (
+        <ExpandChartButton
+          variant="tertiary"
+          scale="sm"
+          startIcon={isChartPaneOpen ? <ArrowDownIcon /> : <ChartIcon />}
+          onClick={toggleChartPane}
+        >
+          {isChartPaneOpen ? t('Close') : t('Charts')}
+        </ExpandChartButton>
+      )}
+      <StyledDesktop>
+        <SplitWrapper ref={splitWrapperRef}>
+          <PositionPane>
+            <div>
+              {status === PredictionStatus.ERROR && <ErrorNotification />}
+              {status === PredictionStatus.PAUSED && <PauseNotification />}
+              {status === PredictionStatus.LIVE && <Positions />}
+            </div>
+          </PositionPane>
+          <Gutter ref={gutterRef} />
+          <ChartPane ref={chartRef}>
+            <TradingView />
+          </ChartPane>
+        </SplitWrapper>
+        <HistoryPane isHistoryPaneOpen={isHistoryPaneOpen}>
+          <History />
+        </HistoryPane>
+      </StyledDesktop>
+    </>
   )
 }
 
