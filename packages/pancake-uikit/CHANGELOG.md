@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.32.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.31.0...@pancakeswap/uikit@0.32.0) (2021-05-11)
+
+
+### Bug Fixes
+
+* Chrome blurs logo during scaling animation ([#98](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/98)) ([d3b79bc](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/d3b79bc67dab44e5f7b042f367211e902375b4eb))
+
+
+### Features
+
+* **text:** Add styled system { layout } style to Text ([#96](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/96)) ([2b619a1](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/2b619a15f4806b1eb92d4cbd08a36984777038d1))
+
+
+
+
+
 # [0.31.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.30.0...@pancakeswap/uikit@0.31.0) (2021-05-10)
 
 
