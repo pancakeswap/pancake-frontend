@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.32.2](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.32.1...@pancakeswap/uikit@0.32.2) (2021-05-11)
+
+
+### Bug Fixes
+
+* Dropdown colors ([#100](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/100)) ([5d66f62](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/5d66f62db5234bc8d59d836ba65713b79b5ecbbf))
+
+
+
+
+
 ## [0.32.1](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.32.0...@pancakeswap/uikit@0.32.1) (2021-05-11)
 
 **Note:** Version bump only for package @pancakeswap/uikit
