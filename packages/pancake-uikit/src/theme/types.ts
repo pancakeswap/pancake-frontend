@@ -63,8 +63,9 @@ export type Colors = {
   // Gradients
   gradients: Gradients;
 
-  // Brand colors
+  // Additional colors
   binance: string;
+  overlay: string;
 };
 
 export type ZIndices = {
