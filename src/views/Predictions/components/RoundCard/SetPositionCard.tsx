@@ -1,4 +1,4 @@
-import React, { ChangeEventHandler, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   ArrowBackIcon,
   CardBody,
@@ -89,9 +89,8 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
   const showFieldWarning = account && valueAsBn.gt(0) && errorMessage !== null
   const minBetAmountBalance = getBnbAmount(minBetAmount).toNumber()
 
-  const handleChange: ChangeEventHandler<HTMLInputElement> = (evt) => {
-    const newValue = evt.target.value
-    setValue(newValue)
+  const handleChange = (input) => {
+    setValue(input)
   }
 
   const handleSliderChange = (newValue: number) => {
@@ -191,7 +190,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
         </Flex>
         <BalanceInput
           value={value}
-          onChange={handleChange}
+          onUserInput={handleChange}
           isWarning={showFieldWarning}
           inputProps={{ disabled: !account || isTxPending }}
         />
