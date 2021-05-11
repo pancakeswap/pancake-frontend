@@ -72,11 +72,10 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
       const percentageOfStakingMax = stakingMax.dividedBy(100).multipliedBy(sliderPercent)
       const amountToStake = getFullDisplayBalance(percentageOfStakingMax, stakingToken.decimals, stakingToken.decimals)
       setStakeAmount(amountToStake)
-      setPercent(sliderPercent)
     } else {
       setStakeAmount('')
-      setPercent(0)
     }
+    setPercent(sliderPercent)
   }
 
   const handleWithdrawal = async (convertedStakeAmount: BigNumber) => {
