@@ -87,7 +87,7 @@ const Gutter = styled.div`
   position: relative;
 
   &:before {
-    background-color: ${({ theme }) => theme.colors.secondary};
+    background-color: ${({ theme }) => theme.colors.textSubtle};
     border-radius: 8px;
     content: '';
     height: 4px;
