@@ -1,9 +1,9 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { useAppDispatch } from 'state'
 import { fetchFarmUserDataAsync, updateUserStakedBalance, updateUserBalance } from 'state/actions'
 import { stake, sousStake, sousStakeBnb } from 'utils/callHelpers'
-import { useMasterchef, useSousChef, useSousChefV2 } from './useContract'
+import { useMasterchef, useSousChef } from './useContract'
 
 const useStake = (pid: number) => {
   const dispatch = useAppDispatch()
@@ -44,27 +44,6 @@ export const useSousStake = (sousId: number, isUsingBnb = false) => {
   )
 
   return { onStake: handleStake }
-}
-
-export const usePoolStakingLimit = (sousId: number) => {
-  const [poolLimit, setPoolLimit] = useState(0)
-  const sousChefV2Contract = useSousChefV2(sousId)
-
-  useEffect(() => {
-    const fetchPoolLimit = async () => {
-      try {
-        const limit = await sousChefV2Contract.methods.poolLimitPerUser().call()
-        setPoolLimit(parseInt(limit, 10))
-      } catch (error) {
-        // V1 pools do not contain "poolLimitPerUser" and is not supported
-        setPoolLimit(0)
-      }
-    }
-
-    fetchPoolLimit()
-  }, [setPoolLimit, sousChefV2Contract])
-
-  return poolLimit
 }
 
 export default useStake

@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Flex, Text, Button, IconButton, AddIcon, MinusIcon, useModal, Skeleton } from '@pancakeswap/uikit'
+import { Flex, Text, Button, IconButton, AddIcon, MinusIcon, useModal, Skeleton, useTooltip } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
 import { getBalanceNumber, getDecimalAmount } from 'utils/formatBalance'
@@ -32,9 +32,9 @@ const StakeAction: React.FC<StakeActionsProps> = ({
   isStaked,
   isLoading = false,
 }) => {
-  const { stakingToken, earningToken, stakingLimit, isFinished } = pool
+  const { stakingToken, earningToken, stakingLimit, isFinished, userData } = pool
   const { t } = useTranslation()
-  const convertedLimit = getDecimalAmount(new BigNumber(stakingLimit), earningToken.decimals)
+  const convertedLimit = getDecimalAmount(stakingLimit, earningToken.decimals)
   const stakingMax =
     stakingLimit && stakingTokenBalance.isGreaterThan(convertedLimit) ? convertedLimit : stakingTokenBalance
   const stakedTokenBalance = getBalanceNumber(stakedBalance, stakingToken.decimals)
@@ -42,7 +42,6 @@ const StakeAction: React.FC<StakeActionsProps> = ({
     stakedBalance.multipliedBy(stakingTokenPrice),
     stakingToken.decimals,
   )
-
   const [onPresentTokenRequired] = useModal(<NotEnoughTokensModal tokenSymbol={stakingToken.symbol} />)
 
   const [onPresentStake] = useModal(
@@ -57,6 +56,11 @@ const StakeAction: React.FC<StakeActionsProps> = ({
       stakingTokenPrice={stakingTokenPrice}
       isRemovingStake
     />,
+  )
+
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(
+    t("You've already staked the maximum amount you can stake in this pool!"),
+    { placement: 'bottom' },
   )
 
   const renderStakeAction = () => {
@@ -81,14 +85,23 @@ const StakeAction: React.FC<StakeActionsProps> = ({
           <IconButton variant="secondary" onClick={onPresentUnstake} mr="6px">
             <MinusIcon color="primary" width="24px" />
           </IconButton>
-          <IconButton
-            variant="secondary"
-            onClick={stakingTokenBalance.gt(0) ? onPresentStake : onPresentTokenRequired}
-            disabled={isFinished}
-          >
-            <AddIcon color="primary" width="24px" height="24px" />
-          </IconButton>
+          {userData.stakedBalance.gte(stakingLimit) ? (
+            <span ref={targetRef}>
+              <IconButton variant="secondary" disabled>
+                <AddIcon color="textDisabled" width="24px" height="24px" />
+              </IconButton>
+            </span>
+          ) : (
+            <IconButton
+              variant="secondary"
+              onClick={stakingTokenBalance.gt(0) ? onPresentStake : onPresentTokenRequired}
+              disabled={isFinished}
+            >
+              <AddIcon color="primary" width="24px" height="24px" />
+            </IconButton>
+          )}
         </Flex>
+        {tooltipVisible && tooltip}
       </Flex>
     ) : (
       <Button disabled={isFinished} onClick={stakingTokenBalance.gt(0) ? onPresentStake : onPresentTokenRequired}>

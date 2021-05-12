@@ -1,7 +1,8 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit'
 import poolsConfig from 'config/constants/pools'
-import { fetchPoolsBlockLimits, fetchPoolsTotalStaking } from './fetchPools'
+import { BIG_ZERO } from 'utils/bigNumber'
+import { fetchPoolsBlockLimits, fetchPoolsStakingLimits, fetchPoolsTotalStaking } from './fetchPools'
 import {
   fetchPoolsAllowance,
   fetchUserBalances,
@@ -33,7 +34,10 @@ export const PoolsSlice = createSlice({
     updatePoolsUserData: (state, action) => {
       const { field, value, sousId } = action.payload
       const index = state.data.findIndex((p) => p.sousId === sousId)
-      state.data[index] = { ...state.data[index], userData: { ...state.data[index].userData, [field]: value } }
+
+      if (index >= 0) {
+        state.data[index] = { ...state.data[index], userData: { ...state.data[index].userData, [field]: value } }
+      }
     },
   },
 })
@@ -45,13 +49,17 @@ export const { setPoolsPublicData, setPoolsUserData, updatePoolsUserData } = Poo
 export const fetchPoolsPublicDataAsync = () => async (dispatch) => {
   const blockLimits = await fetchPoolsBlockLimits()
   const totalStakings = await fetchPoolsTotalStaking()
+  const stakingLimits = await fetchPoolsStakingLimits()
 
   const liveData = poolsConfig.map((pool) => {
     const blockLimit = blockLimits.find((entry) => entry.sousId === pool.sousId)
     const totalStaking = totalStakings.find((entry) => entry.sousId === pool.sousId)
+    const stakingLimit = stakingLimits[pool.sousId] || BIG_ZERO
+
     return {
       ...blockLimit,
       ...totalStaking,
+      stakingLimit: stakingLimit.toJSON(),
     }
   })
 
