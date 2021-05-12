@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { Flex, Text, Button, IconButton, AddIcon, MinusIcon, useModal, Skeleton, useTooltip } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
-import { getBalanceNumber, getDecimalAmount } from 'utils/formatBalance'
+import { getBalanceNumber } from 'utils/formatBalance'
 import { Pool } from 'state/types'
 import Balance from 'components/Balance'
 import NotEnoughTokensModal from '../Modals/NotEnoughTokensModal'
@@ -32,11 +32,8 @@ const StakeAction: React.FC<StakeActionsProps> = ({
   isStaked,
   isLoading = false,
 }) => {
-  const { stakingToken, earningToken, stakingLimit, isFinished, userData } = pool
+  const { stakingToken, stakingLimit, isFinished, userData } = pool
   const { t } = useTranslation()
-  const convertedLimit = getDecimalAmount(stakingLimit, earningToken.decimals)
-  const stakingMax =
-    stakingLimit && stakingTokenBalance.isGreaterThan(convertedLimit) ? convertedLimit : stakingTokenBalance
   const stakedTokenBalance = getBalanceNumber(stakedBalance, stakingToken.decimals)
   const stakedTokenDollarBalance = getBalanceNumber(
     stakedBalance.multipliedBy(stakingTokenPrice),
@@ -45,12 +42,17 @@ const StakeAction: React.FC<StakeActionsProps> = ({
   const [onPresentTokenRequired] = useModal(<NotEnoughTokensModal tokenSymbol={stakingToken.symbol} />)
 
   const [onPresentStake] = useModal(
-    <StakeModal stakingMax={stakingMax} isBnbPool={isBnbPool} pool={pool} stakingTokenPrice={stakingTokenPrice} />,
+    <StakeModal
+      isBnbPool={isBnbPool}
+      pool={pool}
+      stakingTokenBalance={stakingTokenBalance}
+      stakingTokenPrice={stakingTokenPrice}
+    />,
   )
 
   const [onPresentUnstake] = useModal(
     <StakeModal
-      stakingMax={stakedBalance}
+      stakingTokenBalance={stakingTokenBalance}
       isBnbPool={isBnbPool}
       pool={pool}
       stakingTokenPrice={stakingTokenPrice}

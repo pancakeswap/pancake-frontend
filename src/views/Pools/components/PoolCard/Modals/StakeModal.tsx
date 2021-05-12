@@ -15,7 +15,7 @@ import PercentageButton from './PercentageButton'
 interface StakeModalProps {
   isBnbPool: boolean
   pool: Pool
-  stakingMax: BigNumber
+  stakingTokenBalance: BigNumber
   stakingTokenPrice: number
   isRemovingStake?: boolean
   onDismiss?: () => void
@@ -28,7 +28,7 @@ const StyledLink = styled(Link)`
 const StakeModal: React.FC<StakeModalProps> = ({
   isBnbPool,
   pool,
-  stakingMax,
+  stakingTokenBalance,
   stakingTokenPrice,
   isRemovingStake = false,
   onDismiss,
@@ -43,7 +43,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
   const [stakeAmount, setStakeAmount] = useState('')
   const [hasReachedStakeLimit, setHasReachedStakedLimit] = useState(false)
   const [percent, setPercent] = useState(0)
-
+  const calculatedStakingLimit = stakingTokenBalance.gt(stakingLimit) ? stakingLimit : stakingTokenBalance
   const usdValueStaked = stakeAmount && formatNumber(new BigNumber(stakeAmount).times(stakingTokenPrice).toNumber())
 
   useEffect(() => {
@@ -56,7 +56,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
   const handleStakeInputChange = (input: string) => {
     if (input) {
       const convertedInput = getDecimalAmount(new BigNumber(input), stakingToken.decimals)
-      const percentage = Math.floor(convertedInput.dividedBy(stakingMax).multipliedBy(100).toNumber())
+      const percentage = Math.floor(convertedInput.dividedBy(calculatedStakingLimit).multipliedBy(100).toNumber())
       setPercent(Math.min(percentage, 100))
     } else {
       setPercent(0)
@@ -66,7 +66,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
 
   const handleChangePercent = (sliderPercent: number) => {
     if (sliderPercent > 0) {
-      const percentageOfStakingMax = stakingMax.dividedBy(100).multipliedBy(sliderPercent)
+      const percentageOfStakingMax = calculatedStakingLimit.dividedBy(100).multipliedBy(sliderPercent)
       const amountToStake = getFullDisplayBalance(percentageOfStakingMax, stakingToken.decimals, stakingToken.decimals)
       setStakeAmount(amountToStake)
     } else {
@@ -113,7 +113,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
       headerBackground={theme.colors.gradients.cardHeader}
     >
       {stakingLimit.gt(0) && !isRemovingStake && (
-        <Text color="secondary" bold mb="24px">
+        <Text color="secondary" bold mb="24px" style={{ textAlign: 'center' }} fontSize="16px">
           {t('Max stake for this pool: %amount% %token%', {
             amount: getFullDisplayBalance(stakingLimit, stakingToken.decimals, 0),
             token: stakingToken.symbol,
@@ -144,7 +144,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
         </Text>
       )}
       <Text ml="auto" color="textSubtle" fontSize="12px" mb="8px">
-        Balance: {getFullDisplayBalance(stakingMax, stakingToken.decimals)}
+        Balance: {getFullDisplayBalance(calculatedStakingLimit, stakingToken.decimals)}
       </Text>
       <Slider
         min={0}
