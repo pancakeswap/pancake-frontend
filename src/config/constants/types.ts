@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js'
 import { TranslatableText } from 'state/types'
 
 export interface Address {
@@ -68,7 +69,7 @@ export interface PoolConfig {
   sousId: number
   earningToken: Token
   stakingToken: Token
-  stakingLimit?: number
+  stakingLimit?: BigNumber
   contractAddress: Address
   poolCategory: PoolCategory
   tokenPerBlock: string
