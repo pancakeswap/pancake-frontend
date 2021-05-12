@@ -39,6 +39,16 @@ const farms: FarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 374,
+    lpSymbol: 'HYFI-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x0716725d78081a9e0e1ff81516f5415b399e274d',
+    },
+    token: tokens.hyfi,
+    quoteToken: tokens.wbnb,
+  },
+  {
     pid: 373,
     lpSymbol: 'KUN-BUSD LP',
     lpAddresses: {

@@ -1245,6 +1245,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://chemix.io/home',
   },
+  hyfi: {
+    symbol: 'HYFI',
+    address: {
+      56: '0x9a319b959e33369C5eaA494a770117eE3e585318',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://hyfi.pro/#/',
+  },
 }
 
 export default tokens
