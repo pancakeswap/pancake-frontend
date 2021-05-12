@@ -28,14 +28,16 @@ const Pools: React.FC = () => {
     () => partition(pools, (pool) => pool.isFinished || currentBlock > pool.endBlock),
     [currentBlock, pools],
   )
-  const stakedOnlyPools = useMemo(
+  const stakedOnlyFinishedPools = useMemo(
+    () => finishedPools.filter((pool) => pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0)),
+    [finishedPools],
+  )
+  const stakedOnlyOpenPools = useMemo(
     () => openPools.filter((pool) => pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0)),
     [openPools],
   )
-  const hasStakeInFinishedPools = useMemo(
-    () => finishedPools.some((pool) => pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0)),
-    [finishedPools],
-  )
+  const hasStakeInFinishedPools = stakedOnlyFinishedPools.length > 0
+
   // This pool is passed explicitly to the cake vault
   const cakePoolData = useMemo(() => openPools.find((pool) => pool.sousId === 0), [openPools])
 
@@ -70,7 +72,7 @@ const Pools: React.FC = () => {
             <>
               <CakeVaultCard pool={cakePoolData} showStakedOnly={stakedOnly} />
               {stakedOnly
-                ? orderBy(stakedOnlyPools, ['sortOrder']).map((pool) => (
+                ? orderBy(stakedOnlyOpenPools, ['sortOrder']).map((pool) => (
                     <PoolCard key={pool.sousId} pool={pool} account={account} />
                   ))
                 : orderBy(openPools, ['sortOrder']).map((pool) => (
@@ -79,9 +81,13 @@ const Pools: React.FC = () => {
             </>
           </Route>
           <Route path={`${path}/history`}>
-            {orderBy(finishedPools, ['sortOrder']).map((pool) => (
-              <PoolCard key={pool.sousId} pool={pool} account={account} />
-            ))}
+            {stakedOnly
+              ? orderBy(stakedOnlyFinishedPools, ['sortOrder']).map((pool) => (
+                  <PoolCard key={pool.sousId} pool={pool} account={account} />
+                ))
+              : orderBy(finishedPools, ['sortOrder']).map((pool) => (
+                  <PoolCard key={pool.sousId} pool={pool} account={account} />
+                ))}
           </Route>
         </FlexLayout>
         <Image
