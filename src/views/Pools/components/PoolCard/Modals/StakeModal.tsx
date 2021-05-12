@@ -112,6 +112,14 @@ const StakeModal: React.FC<StakeModalProps> = ({
       onDismiss={onDismiss}
       headerBackground={theme.colors.gradients.cardHeader}
     >
+      {stakingLimit.gt(0) && !isRemovingStake && (
+        <Text color="secondary" bold mb="24px">
+          {t('Max stake for this pool: %amount% %token%', {
+            amount: getFullDisplayBalance(stakingLimit, stakingToken.decimals, 0),
+            token: stakingToken.symbol,
+          })}
+        </Text>
+      )}
       <Flex alignItems="center" justifyContent="space-between" mb="8px">
         <Text bold>{isRemovingStake ? t('Unstake') : t('Stake')}:</Text>
         <Flex alignItems="center" minWidth="70px">
