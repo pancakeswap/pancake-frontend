@@ -1,5 +1,5 @@
 import poolsConfig from 'config/constants/pools'
-import sousChefABI from 'config/abi/sousChef.json'
+import sousChefV2ABI from 'config/abi/sousChefV2.json'
 import cakeABI from 'config/abi/cake.json'
 import wbnbABI from 'config/abi/weth.json'
 import multicall from 'utils/multicall'
@@ -21,8 +21,8 @@ export const fetchPoolsBlockLimits = async () => {
     }
   })
 
-  const starts = await multicall(sousChefABI, callsStartBlock)
-  const ends = await multicall(sousChefABI, callsEndBlock)
+  const starts = await multicall(sousChefV2ABI, callsStartBlock)
+  const ends = await multicall(sousChefV2ABI, callsEndBlock)
 
   return poolsWithEnd.map((cakePoolConfig, index) => {
     const startBlock = starts[index]
