@@ -20,6 +20,7 @@ import { fetchPrices } from './prices'
 import { fetchWalletNfts } from './collectibles'
 import { getCanClaim } from './predictions/helpers'
 import { transformPool } from './pools/helpers'
+import { fetchPoolsStakingLimitsAsync } from './pools'
 
 export const useFetchPublicData = () => {
   const dispatch = useAppDispatch()
@@ -27,6 +28,7 @@ export const useFetchPublicData = () => {
   useEffect(() => {
     dispatch(fetchFarmsPublicDataAsync())
     dispatch(fetchPoolsPublicDataAsync())
+    dispatch(fetchPoolsStakingLimitsAsync())
   }, [dispatch, slowRefresh])
 
   useEffect(() => {

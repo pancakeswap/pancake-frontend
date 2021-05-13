@@ -49,21 +49,36 @@ export const { setPoolsPublicData, setPoolsUserData, updatePoolsUserData } = Poo
 export const fetchPoolsPublicDataAsync = () => async (dispatch) => {
   const blockLimits = await fetchPoolsBlockLimits()
   const totalStakings = await fetchPoolsTotalStaking()
-  const stakingLimits = await fetchPoolsStakingLimits()
 
   const liveData = poolsConfig.map((pool) => {
     const blockLimit = blockLimits.find((entry) => entry.sousId === pool.sousId)
     const totalStaking = totalStakings.find((entry) => entry.sousId === pool.sousId)
-    const stakingLimit = stakingLimits[pool.sousId] || BIG_ZERO
 
     return {
       ...blockLimit,
       ...totalStaking,
-      stakingLimit: stakingLimit.toJSON(),
     }
   })
 
   dispatch(setPoolsPublicData(liveData))
+}
+
+export const fetchPoolsStakingLimitsAsync = () => async (dispatch, getState) => {
+  const poolsWithStakingLimit = getState()
+    .pools.data.filter(({ stakingLimit }) => stakingLimit !== null && stakingLimit !== undefined)
+    .map((pool) => pool.sousId)
+
+  const stakingLimits = await fetchPoolsStakingLimits(poolsWithStakingLimit)
+
+  const stakingLimitData = poolsConfig.map((pool) => {
+    const stakingLimit = stakingLimits[pool.sousId] || BIG_ZERO
+    return {
+      sousId: pool.sousId,
+      stakingLimit: stakingLimit.toJSON(),
+    }
+  })
+
+  dispatch(setPoolsPublicData(stakingLimitData))
 }
 
 export const fetchPoolsUserDataAsync = (account) => async (dispatch) => {

@@ -82,8 +82,12 @@ export const fetchPoolStakingLimit = async (sousId: number): Promise<BigNumber> 
   }
 }
 
-export const fetchPoolsStakingLimits = async (): Promise<{ [key: string]: BigNumber }> => {
-  const validPools = poolsConfig.filter((p) => p.stakingToken.symbol !== 'BNB' && !p.isFinished)
+export const fetchPoolsStakingLimits = async (
+  poolsWithStakingLimit: number[],
+): Promise<{ [key: string]: BigNumber }> => {
+  const validPools = poolsConfig
+    .filter((p) => p.stakingToken.symbol !== 'BNB' && !p.isFinished)
+    .filter((p) => !poolsWithStakingLimit.includes(p.sousId))
 
   // Get the staking limit for each valid pool
   // Note: We cannot batch the calls via multicall because V1 pools do not have "poolLimitPerUser" and will throw an error
