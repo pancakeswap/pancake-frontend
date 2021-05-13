@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Modal, Text, Flex, Image, Button, Slider, BalanceInput, AutoRenewIcon, Link } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
@@ -15,7 +15,7 @@ import PercentageButton from './PercentageButton'
 interface StakeModalProps {
   isBnbPool: boolean
   pool: Pool
-  stakingMax: BigNumber
+  stakingTokenBalance: BigNumber
   stakingTokenPrice: number
   isRemovingStake?: boolean
   onDismiss?: () => void
@@ -28,29 +28,35 @@ const StyledLink = styled(Link)`
 const StakeModal: React.FC<StakeModalProps> = ({
   isBnbPool,
   pool,
-  stakingMax,
+  stakingTokenBalance,
   stakingTokenPrice,
   isRemovingStake = false,
   onDismiss,
 }) => {
-  const { sousId, stakingToken, earningToken } = pool
+  const { sousId, stakingToken, userData, stakingLimit, earningToken } = pool
   const { t } = useTranslation()
   const { theme } = useTheme()
-
   const { onStake } = useSousStake(sousId, isBnbPool)
   const { onUnstake } = useSousUnstake(sousId, pool.enableEmergencyWithdraw)
   const { toastSuccess, toastError } = useToast()
-
   const [pendingTx, setPendingTx] = useState(false)
   const [stakeAmount, setStakeAmount] = useState('')
+  const [hasReachedStakeLimit, setHasReachedStakedLimit] = useState(false)
   const [percent, setPercent] = useState(0)
-
+  const calculatedStakingLimit = stakingTokenBalance.gt(stakingLimit) ? stakingLimit : stakingTokenBalance
   const usdValueStaked = stakeAmount && formatNumber(new BigNumber(stakeAmount).times(stakingTokenPrice).toNumber())
+
+  useEffect(() => {
+    if (stakingLimit.gt(0) && !isRemovingStake) {
+      const fullDecimalStakeAmount = getDecimalAmount(new BigNumber(stakeAmount), stakingToken.decimals)
+      setHasReachedStakedLimit(fullDecimalStakeAmount.plus(userData.stakedBalance).gt(stakingLimit))
+    }
+  }, [stakeAmount, stakingLimit, userData, stakingToken, isRemovingStake, setHasReachedStakedLimit])
 
   const handleStakeInputChange = (input: string) => {
     if (input) {
       const convertedInput = getDecimalAmount(new BigNumber(input), stakingToken.decimals)
-      const percentage = Math.floor(convertedInput.dividedBy(stakingMax).multipliedBy(100).toNumber())
+      const percentage = Math.floor(convertedInput.dividedBy(calculatedStakingLimit).multipliedBy(100).toNumber())
       setPercent(Math.min(percentage, 100))
     } else {
       setPercent(0)
@@ -60,7 +66,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
 
   const handleChangePercent = (sliderPercent: number) => {
     if (sliderPercent > 0) {
-      const percentageOfStakingMax = stakingMax.dividedBy(100).multipliedBy(sliderPercent)
+      const percentageOfStakingMax = calculatedStakingLimit.dividedBy(100).multipliedBy(sliderPercent)
       const amountToStake = getFullDisplayBalance(percentageOfStakingMax, stakingToken.decimals, stakingToken.decimals)
       setStakeAmount(amountToStake)
     } else {
@@ -106,6 +112,14 @@ const StakeModal: React.FC<StakeModalProps> = ({
       onDismiss={onDismiss}
       headerBackground={theme.colors.gradients.cardHeader}
     >
+      {stakingLimit.gt(0) && !isRemovingStake && (
+        <Text color="secondary" bold mb="24px" style={{ textAlign: 'center' }} fontSize="16px">
+          {t('Max stake for this pool: %amount% %token%', {
+            amount: getFullDisplayBalance(stakingLimit, stakingToken.decimals, 0),
+            token: stakingToken.symbol,
+          })}
+        </Text>
+      )}
       <Flex alignItems="center" justifyContent="space-between" mb="8px">
         <Text bold>{isRemovingStake ? t('Unstake') : t('Stake')}:</Text>
         <Flex alignItems="center" minWidth="70px">
@@ -119,9 +133,18 @@ const StakeModal: React.FC<StakeModalProps> = ({
         value={stakeAmount}
         onUserInput={handleStakeInputChange}
         currencyValue={`~${usdValueStaked || 0} USD`}
+        isWarning={hasReachedStakeLimit}
       />
-      <Text mt="8px" ml="auto" color="textSubtle" fontSize="12px" mb="8px">
-        Balance: {getFullDisplayBalance(stakingMax, stakingToken.decimals)}
+      {hasReachedStakeLimit && (
+        <Text color="failure" fontSize="12px" style={{ textAlign: 'right' }} mt="4px">
+          {t('Maximum total stake: %amount% %token%', {
+            amount: getFullDisplayBalance(new BigNumber(stakingLimit), stakingToken.decimals, 0),
+            token: stakingToken.symbol,
+          })}
+        </Text>
+      )}
+      <Text ml="auto" color="textSubtle" fontSize="12px" mb="8px">
+        Balance: {getFullDisplayBalance(calculatedStakingLimit, stakingToken.decimals)}
       </Text>
       <Slider
         min={0}
@@ -142,7 +165,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
         isLoading={pendingTx}
         endIcon={pendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
         onClick={handleConfirmClick}
-        disabled={!stakeAmount || parseFloat(stakeAmount) === 0}
+        disabled={!stakeAmount || parseFloat(stakeAmount) === 0 || hasReachedStakeLimit}
         mt="24px"
       >
         {pendingTx ? t('Confirming') : t('Confirm')}

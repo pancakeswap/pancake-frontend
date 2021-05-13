@@ -21,6 +21,7 @@ import {
   getCakeVaultContract,
   getPredictionsContract,
   getChainlinkOracleContract,
+  getSouschefV2Contract,
 } from 'utils/contractHelpers'
 
 /**
@@ -88,6 +89,11 @@ export const useMasterchef = () => {
 export const useSousChef = (id) => {
   const web3 = useWeb3()
   return useMemo(() => getSouschefContract(id, web3), [id, web3])
+}
+
+export const useSousChefV2 = (id) => {
+  const web3 = useWeb3()
+  return useMemo(() => getSouschefV2Contract(id, web3), [id, web3])
 }
 
 export const usePointCenterIfoContract = () => {

@@ -22,7 +22,7 @@ const useStake = (pid: number) => {
   return { onStake: handleStake }
 }
 
-export const useSousStake = (sousId, isUsingBnb = false) => {
+export const useSousStake = (sousId: number, isUsingBnb = false) => {
   const dispatch = useAppDispatch()
   const { account } = useWeb3React()
   const masterChefContract = useMasterchef()

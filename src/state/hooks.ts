@@ -19,6 +19,7 @@ import { fetchAchievements } from './achievements'
 import { fetchPrices } from './prices'
 import { fetchWalletNfts } from './collectibles'
 import { getCanClaim } from './predictions/helpers'
+import { transformPool } from './pools/helpers'
 
 export const useFetchPublicData = () => {
   const dispatch = useAppDispatch()
@@ -88,12 +89,12 @@ export const usePools = (account): Pool[] => {
   }, [account, dispatch, fastRefresh])
 
   const pools = useSelector((state: State) => state.pools.data)
-  return pools
+  return pools.map(transformPool)
 }
 
-export const usePoolFromPid = (sousId): Pool => {
+export const usePoolFromPid = (sousId: number): Pool => {
   const pool = useSelector((state: State) => state.pools.data.find((p) => p.sousId === sousId))
-  return pool
+  return transformPool(pool)
 }
 
 // Profile
