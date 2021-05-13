@@ -71,6 +71,9 @@ export const fetchPoolsStakingLimitsAsync = () => async (dispatch, getState) => 
   const stakingLimits = await fetchPoolsStakingLimits(poolsWithStakingLimit)
 
   const stakingLimitData = poolsConfig.map((pool) => {
+    if (poolsWithStakingLimit.includes(pool.sousId)) {
+      return { sousId: pool.sousId }
+    }
     const stakingLimit = stakingLimits[pool.sousId] || BIG_ZERO
     return {
       sousId: pool.sousId,
