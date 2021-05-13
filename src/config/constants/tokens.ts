@@ -1254,6 +1254,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://hyfi.pro/#/',
   },
+  oin: {
+    symbol: 'OIN',
+    address: {
+      56: '0x658E64FFcF40D240A43D52CA9342140316Ae44fA',
+      97: '',
+    },
+    decimals: 8,
+    projectLink: 'https://oin.finance/',
+  },
 }
 
 export default tokens
