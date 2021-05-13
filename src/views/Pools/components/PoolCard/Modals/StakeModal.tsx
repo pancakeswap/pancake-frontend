@@ -47,7 +47,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
     if (isRemovingStake) {
       return userData.stakedBalance
     }
-    return stakingTokenBalance.gt(stakingLimit) && stakingLimit.gt(0) ? stakingLimit : stakingTokenBalance
+    return stakingLimit.gt(0) && stakingTokenBalance.gt(stakingLimit) ? stakingLimit : stakingTokenBalance
   }
 
   const usdValueStaked = stakeAmount && formatNumber(new BigNumber(stakeAmount).times(stakingTokenPrice).toNumber())
@@ -100,6 +100,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
       }
     } else {
       try {
+        debugger // eslint-disable-line
         // staking
         await onStake(stakeAmount, stakingToken.decimals)
         toastSuccess(`${t('Staked')}!`, t(`Your ${stakingToken.symbol} funds have been staked in the pool!`))
