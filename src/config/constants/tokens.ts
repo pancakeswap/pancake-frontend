@@ -1263,6 +1263,15 @@ const tokens = {
     decimals: 8,
     projectLink: 'https://oin.finance/',
   },
+  doge: {
+    symbol: 'DOGE',
+    address: {
+      56: '0xba2ae424d960c26247dd6c32edc70b295c744c43',
+      97: '',
+    },
+    decimals: 8,
+    projectLink: 'https://dogecoin.com/',
+  },
 }
 
 export default tokens
