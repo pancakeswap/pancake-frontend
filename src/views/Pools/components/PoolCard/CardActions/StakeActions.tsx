@@ -65,6 +65,8 @@ const StakeAction: React.FC<StakeActionsProps> = ({
     { placement: 'bottom' },
   )
 
+  const reachStakingLimit = stakingLimit.gt(0) && userData.stakedBalance.gte(stakingLimit)
+
   const renderStakeAction = () => {
     return isStaked ? (
       <Flex justifyContent="space-between" alignItems="center">
@@ -87,7 +89,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({
           <IconButton variant="secondary" onClick={onPresentUnstake} mr="6px">
             <MinusIcon color="primary" width="24px" />
           </IconButton>
-          {userData.stakedBalance.gte(stakingLimit) ? (
+          {reachStakingLimit ? (
             <span ref={targetRef}>
               <IconButton variant="secondary" disabled>
                 <AddIcon color="textDisabled" width="24px" height="24px" />
