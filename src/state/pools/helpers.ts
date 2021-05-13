@@ -1,5 +1,6 @@
 import BigNumber from 'bignumber.js'
 import { Pool } from 'state/types'
+import { BIG_ZERO } from 'utils/bigNumber'
 
 type UserData =
   | Pool['userData']
@@ -12,10 +13,10 @@ type UserData =
 
 export const transformUserData = (userData: UserData) => {
   return {
-    allowance: new BigNumber(userData?.allowance || 0),
-    stakingTokenBalance: new BigNumber(userData?.stakingTokenBalance || 0),
-    stakedBalance: new BigNumber(userData?.stakedBalance || 0),
-    pendingReward: new BigNumber(userData?.pendingReward || 0),
+    allowance: userData ? new BigNumber(userData.allowance) : BIG_ZERO,
+    stakingTokenBalance: userData ? new BigNumber(userData.stakingTokenBalance) : BIG_ZERO,
+    stakedBalance: userData ? new BigNumber(userData.stakedBalance) : BIG_ZERO,
+    pendingReward: userData ? new BigNumber(userData.pendingReward) : BIG_ZERO,
   }
 }
 
