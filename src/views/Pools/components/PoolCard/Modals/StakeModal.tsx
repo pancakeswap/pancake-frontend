@@ -43,7 +43,13 @@ const StakeModal: React.FC<StakeModalProps> = ({
   const [stakeAmount, setStakeAmount] = useState('')
   const [hasReachedStakeLimit, setHasReachedStakedLimit] = useState(false)
   const [percent, setPercent] = useState(0)
-  const calculatedStakingLimit = stakingTokenBalance.gt(stakingLimit) ? stakingLimit : stakingTokenBalance
+  const getCalculatedStakingLimit = () => {
+    if (isRemovingStake) {
+      return userData.stakedBalance
+    }
+    return stakingLimit.gt(0) && stakingTokenBalance.gt(stakingLimit) ? stakingLimit : stakingTokenBalance
+  }
+
   const usdValueStaked = stakeAmount && formatNumber(new BigNumber(stakeAmount).times(stakingTokenPrice).toNumber())
 
   useEffect(() => {
@@ -56,7 +62,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
   const handleStakeInputChange = (input: string) => {
     if (input) {
       const convertedInput = getDecimalAmount(new BigNumber(input), stakingToken.decimals)
-      const percentage = Math.floor(convertedInput.dividedBy(calculatedStakingLimit).multipliedBy(100).toNumber())
+      const percentage = Math.floor(convertedInput.dividedBy(getCalculatedStakingLimit()).multipliedBy(100).toNumber())
       setPercent(Math.min(percentage, 100))
     } else {
       setPercent(0)
@@ -66,7 +72,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
 
   const handleChangePercent = (sliderPercent: number) => {
     if (sliderPercent > 0) {
-      const percentageOfStakingMax = calculatedStakingLimit.dividedBy(100).multipliedBy(sliderPercent)
+      const percentageOfStakingMax = getCalculatedStakingLimit().dividedBy(100).multipliedBy(sliderPercent)
       const amountToStake = getFullDisplayBalance(percentageOfStakingMax, stakingToken.decimals, stakingToken.decimals)
       setStakeAmount(amountToStake)
     } else {
@@ -144,7 +150,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
         </Text>
       )}
       <Text ml="auto" color="textSubtle" fontSize="12px" mb="8px">
-        Balance: {getFullDisplayBalance(calculatedStakingLimit, stakingToken.decimals)}
+        Balance: {getFullDisplayBalance(getCalculatedStakingLimit(), stakingToken.decimals)}
       </Text>
       <Slider
         min={0}
