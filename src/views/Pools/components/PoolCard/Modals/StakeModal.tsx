@@ -100,7 +100,6 @@ const StakeModal: React.FC<StakeModalProps> = ({
       }
     } else {
       try {
-        debugger // eslint-disable-line
         // staking
         await onStake(stakeAmount, stakingToken.decimals)
         toastSuccess(`${t('Staked')}!`, t(`Your ${stakingToken.symbol} funds have been staked in the pool!`))
