@@ -28,34 +28,30 @@ const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss }
   const profileContract = useProfileContract()
   const { account } = useWeb3React()
   const { toastSuccess } = useToast()
-  const {
-    isApproving,
-    isApproved,
-    isConfirmed,
-    isConfirming,
-    handleApprove,
-    handleConfirm,
-  } = useApproveConfirmTransaction({
-    onApprove: () => {
-      return contract.methods.approve(getPancakeProfileAddress(), selectedNft.tokenId).send({ from: account })
-    },
-    onConfirm: () => {
-      if (!profile.isActive) {
+  const { isApproving, isApproved, isConfirmed, isConfirming, handleApprove, handleConfirm } =
+    useApproveConfirmTransaction({
+      onApprove: () => {
+        return contract.methods.approve(getPancakeProfileAddress(), selectedNft.tokenId).send({ from: account })
+      },
+      onConfirm: () => {
+        if (!profile.isActive) {
+          return profileContract.methods
+            .reactivateProfile(selectedNft.nftAddress, selectedNft.tokenId)
+            .send({ from: account })
+        }
+
         return profileContract.methods
-          .reactivateProfile(selectedNft.nftAddress, selectedNft.tokenId)
+          .updateProfile(selectedNft.nftAddress, selectedNft.tokenId)
           .send({ from: account })
-      }
+      },
+      onSuccess: async () => {
+        // Re-fetch profile
+        await dispatch(fetchProfile(account))
+        toastSuccess('Profile Updated!')
 
-      return profileContract.methods.updateProfile(selectedNft.nftAddress, selectedNft.tokenId).send({ from: account })
-    },
-    onSuccess: async () => {
-      // Re-fetch profile
-      await dispatch(fetchProfile(account))
-      toastSuccess('Profile Updated!')
-
-      onDismiss()
-    },
-  })
+        onDismiss()
+      },
+    })
 
   return (
     <>

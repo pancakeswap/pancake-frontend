@@ -40,17 +40,19 @@ const EnteredTagWrapper = styled.div`
   z-index: 10;
 `
 
-const getTextColor = (fallback = 'textSubtle') => (isActive: boolean, isDisabled: boolean) => {
-  if (isDisabled) {
-    return 'textDisabled'
-  }
+const getTextColor =
+  (fallback = 'textSubtle') =>
+  (isActive: boolean, isDisabled: boolean) => {
+    if (isDisabled) {
+      return 'textDisabled'
+    }
 
-  if (isActive) {
-    return 'white'
-  }
+    if (isActive) {
+      return 'white'
+    }
 
-  return fallback
-}
+    return fallback
+  }
 
 const MultiplierArrow: React.FC<MultiplierArrowProps> = ({
   totalAmount,

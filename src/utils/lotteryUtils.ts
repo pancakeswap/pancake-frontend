@@ -12,7 +12,7 @@ import { BIG_ZERO } from './bigNumber'
 
 export const multiCall = async (abi, calls) => {
   const web3 = getWeb3NoAccount()
-  const multi = new web3.eth.Contract((MultiCallAbi as unknown) as AbiItem, getMulticallAddress())
+  const multi = new web3.eth.Contract(MultiCallAbi as unknown as AbiItem, getMulticallAddress())
   const itf = new Interface(abi)
   let res = []
   if (calls.length > 100) {

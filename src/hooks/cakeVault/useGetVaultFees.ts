@@ -20,17 +20,13 @@ const useGetVaultFees = () => {
 
   useEffect(() => {
     const getFees = async () => {
-      const [
-        contractPerformanceFee,
-        contractWithdrawalFeeTimePeriod,
-        contractCallFee,
-        contractWithdrawalFee,
-      ] = await makeBatchRequest([
-        cakeVaultContract.methods.performanceFee().call,
-        cakeVaultContract.methods.withdrawFeePeriod().call,
-        cakeVaultContract.methods.callFee().call,
-        cakeVaultContract.methods.withdrawFee().call,
-      ])
+      const [contractPerformanceFee, contractWithdrawalFeeTimePeriod, contractCallFee, contractWithdrawalFee] =
+        await makeBatchRequest([
+          cakeVaultContract.methods.performanceFee().call,
+          cakeVaultContract.methods.withdrawFeePeriod().call,
+          cakeVaultContract.methods.callFee().call,
+          cakeVaultContract.methods.withdrawFee().call,
+        ])
 
       setFees({
         performanceFee: contractPerformanceFee as string,

@@ -43,13 +43,8 @@ export const profileSlice = createSlice({
 })
 
 // Actions
-export const {
-  profileFetchStart,
-  profileFetchSucceeded,
-  profileFetchFailed,
-  profileClear,
-  addPoints,
-} = profileSlice.actions
+export const { profileFetchStart, profileFetchSucceeded, profileFetchFailed, profileClear, addPoints } =
+  profileSlice.actions
 
 // Thunks
 // TODO: this should be an AsyncThunk
