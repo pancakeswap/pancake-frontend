@@ -28,7 +28,16 @@ const Slider: React.FC<SliderProps> = ({
 
   const progressPercentage = (value / max) * 100;
   const isMax = value === max;
-  const progressWidth = isMax ? "calc(100% - 16px)" : `${progressPercentage}%`;
+  let progressWidth: string;
+  if (progressPercentage <= 10) {
+    progressWidth = `${progressPercentage + 0.5}%`;
+  } else if (progressPercentage >= 90) {
+    progressWidth = `${progressPercentage - 4}%`;
+  } else if (progressPercentage >= 60) {
+    progressWidth = `${progressPercentage - 2.5}%`;
+  } else {
+    progressWidth = `${progressPercentage}%`;
+  }
   const labelProgress = isMax ? "calc(100% - 12px)" : `${progressPercentage}%`;
   const displayValueLabel = isMax ? "MAX" : valueLabel;
   return (
