@@ -12,10 +12,10 @@ type UserData =
 
 export const transformUserData = (userData: UserData) => {
   return {
-    allowance: new BigNumber(userData.allowance || 0),
-    stakingTokenBalance: new BigNumber(userData.stakingTokenBalance || 0),
-    stakedBalance: new BigNumber(userData.stakedBalance || 0),
-    pendingReward: new BigNumber(userData.pendingReward || 0),
+    allowance: new BigNumber(userData?.allowance || 0),
+    stakingTokenBalance: new BigNumber(userData?.stakingTokenBalance || 0),
+    stakedBalance: new BigNumber(userData?.stakedBalance || 0),
+    pendingReward: new BigNumber(userData?.pendingReward || 0),
   }
 }
 
