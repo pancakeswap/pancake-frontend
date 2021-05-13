@@ -7,18 +7,12 @@ import { useBetCanClaim, usePriceBnbBusd } from 'state/hooks'
 import styled from 'styled-components'
 import { Bet, BetPosition } from 'state/types'
 import { fetchBet } from 'state/predictions'
+import { Result } from 'state/predictions/helpers'
 import useIsRefundable from '../../hooks/useIsRefundable'
 import { formatBnb, getPayout } from '../../helpers'
 import CollectWinningsButton from '../CollectWinningsButton'
 import PositionTag from '../PositionTag'
 import ReclaimPositionButton from '../ReclaimPositionButton'
-
-export enum Result {
-  WIN = 'win',
-  LOSE = 'lose',
-  CANCELED = 'canceled',
-  LIVE = 'live',
-}
 
 interface BetResultProps {
   bet: Bet

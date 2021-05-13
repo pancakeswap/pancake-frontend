@@ -12,6 +12,13 @@ import {
   MarketResponse,
 } from './queries'
 
+export enum Result {
+  WIN = 'win',
+  LOSE = 'lose',
+  CANCELED = 'canceled',
+  LIVE = 'live',
+}
+
 export const numberOrNull = (value: string) => {
   if (value === null) {
     return null
@@ -138,6 +145,20 @@ export const makeRoundData = (rounds: Round[]): RoundData => {
       [round.id]: round,
     }
   }, {})
+}
+
+export const getRoundResult = (bet: Bet, currentEpoch: number): Result => {
+  const { round } = bet
+  if (round.failed) {
+    return Result.CANCELED
+  }
+
+  if (round.epoch >= currentEpoch - 1) {
+    return Result.LIVE
+  }
+  const roundResultPosition = round.closePrice > round.lockPrice ? BetPosition.BULL : BetPosition.BEAR
+
+  return bet.position === roundResultPosition ? Result.WIN : Result.LOSE
 }
 
 /**
