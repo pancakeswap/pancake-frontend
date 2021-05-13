@@ -404,5 +404,6 @@
   "Lost": "Lost",
   "Entered": "Entered",
   "Connect your wallet to view your prediction history": "Connect your wallet to view your prediction history",
-  "Best round: %roundId%": "Best round: %roundId%"
+  "Best round: %roundId%": "Best round: %roundId%",
+  "You've already staked the maximum amount you can stake in this pool!": "You've already staked the maximum amount you can stake in this pool!"
 }
