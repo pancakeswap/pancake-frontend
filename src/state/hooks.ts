@@ -142,9 +142,7 @@ export const useCakeVault = () => {
     },
   } = useSelector((state: State) => state.pools.cakeVault)
 
-  // debugger // eslint-disable-line
-
-  // TODO: Figure out why this needs to be memoised to prevent infinite loops
+  // TODO: Figure out why this needs to be memoised to prevent rerender loop within BountyCard effect
   const estimatedCakeBountyReward = useMemo(() => {
     return new BigNumber(estimatedCakeBountyRewardAsString)
   }, [estimatedCakeBountyRewardAsString])
