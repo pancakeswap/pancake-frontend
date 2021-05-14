@@ -1272,6 +1272,15 @@ const tokens = {
     decimals: 8,
     projectLink: 'https://dogecoin.com/',
   },
+  fine: {
+    symbol: 'FINE',
+    address: {
+      56: '0x4e6415a5727ea08aae4580057187923aec331227',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://refinable.com/',
+  },
 }
 
 export default tokens
