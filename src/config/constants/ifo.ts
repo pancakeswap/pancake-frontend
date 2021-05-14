@@ -10,6 +10,31 @@ const cakeBnbLpToken: Token = {
 
 const ifos: Ifo[] = [
   {
+    id: 'hotcross',
+    address: '',
+    isActive: true,
+    name: 'Hot Cross (HOTCROSS)',
+    poolBasic: {
+      saleAmount: '50,000,000 HOTCROSS',
+      raiseAmount: '$2,500,000',
+      cakeToBurn: '$375,000',
+      distributionRatio: 0.3,
+    },
+    poolUnlimited: {
+      saleAmount: '7,000,000 HZN',
+      raiseAmount: '$1,750,000',
+      cakeToBurn: '$875,000',
+      distributionRatio: 0.7,
+    },
+    currency: cakeBnbLpToken,
+    token: tokens.hzn,
+    releaseBlockNumber: 6581111,
+    campaignId: '511090000',
+    articleUrl: 'https://pancakeswap.medium.com/horizon-protocol-hzn-ifo-to-be-hosted-on-pancakeswap-51f79601c9d8',
+    tokenOfferingPrice: 0.25,
+    isV1: false,
+  },
+  {
     id: 'horizon',
     address: '0x6137B571f7F1E44839ae10310a08be86D1A4D03B',
     isActive: true,
