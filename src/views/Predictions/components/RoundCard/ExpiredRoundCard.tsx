@@ -40,6 +40,7 @@ const ExpiredRoundCard: React.FC<ExpiredRoundCardProps> = ({
   bearMultiplier,
 }) => {
   const { t } = useTranslation()
+  const { account } = useWeb3React()
   const { id, endBlock, lockPrice, closePrice } = round
   const betPosition = closePrice > lockPrice ? BetPosition.BULL : BetPosition.BEAR
   const bet = useGetBetByRoundId(account, round.id)
