@@ -16,6 +16,7 @@ import {
   fetchPoolsPublicDataAsync,
   fetchPoolsUserDataAsync,
   fetchCakeVaultPublicData,
+  fetchCakeVaultUserData,
   fetchCakeVaultFees,
   setBlock,
 } from './actions'
@@ -107,6 +108,7 @@ export const usePoolFromPid = (sousId: number): Pool => {
 }
 
 export const useFetchCakeVault = () => {
+  const { account } = useWeb3React()
   const { fastRefresh } = useRefresh()
   const dispatch = useAppDispatch()
 
@@ -115,12 +117,65 @@ export const useFetchCakeVault = () => {
   }, [dispatch, fastRefresh])
 
   useEffect(() => {
+    dispatch(fetchCakeVaultUserData({ account }))
+  }, [dispatch, fastRefresh, account])
+
+  useEffect(() => {
     dispatch(fetchCakeVaultFees())
   }, [dispatch])
 }
 
 export const useCakeVault = () => {
-  return useSelector((state: State) => state.pools.cakeVault)
+  const {
+    totalShares: totalSharesAsString,
+    pricePerFullShare: pricePerFullShareAsString,
+    totalCakeInVault: totalCakeInVaultAsString,
+    estimatedCakeBountyReward: estimatedCakeBountyRewardAsString,
+    totalPendingCakeHarvest: totalPendingCakeHarvestAsString,
+    fees: { performanceFee, callFee, withdrawalFee, withdrawalFeePeriod },
+    userData: {
+      isLoading,
+      userShares: userSharesAsString,
+      cakeAtLastUserAction: cakeAtLastUserActionAsString,
+      lastDepositedTime,
+      lastUserActionTime,
+    },
+  } = useSelector((state: State) => state.pools.cakeVault)
+
+  // debugger // eslint-disable-line
+
+  // TODO: Figure out why this needs to be memoised to prevent infinite loops
+  const estimatedCakeBountyReward = useMemo(() => {
+    return new BigNumber(estimatedCakeBountyRewardAsString)
+  }, [estimatedCakeBountyRewardAsString])
+
+  const totalShares = new BigNumber(totalSharesAsString)
+  const pricePerFullShare = new BigNumber(pricePerFullShareAsString)
+  const totalPendingCakeHarvest = new BigNumber(totalPendingCakeHarvestAsString)
+  const totalCakeInVault = new BigNumber(totalCakeInVaultAsString)
+  const userShares = new BigNumber(userSharesAsString)
+  const cakeAtLastUserAction = new BigNumber(cakeAtLastUserActionAsString)
+
+  return {
+    totalShares,
+    pricePerFullShare,
+    totalCakeInVault,
+    estimatedCakeBountyReward,
+    totalPendingCakeHarvest,
+    fees: {
+      performanceFee,
+      callFee,
+      withdrawalFee,
+      withdrawalFeePeriod,
+    },
+    userData: {
+      isLoading,
+      userShares,
+      cakeAtLastUserAction,
+      lastDepositedTime,
+      lastUserActionTime,
+    },
+  }
 }
 
 // Profile

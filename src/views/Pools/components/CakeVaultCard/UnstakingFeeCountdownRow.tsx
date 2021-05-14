@@ -6,14 +6,11 @@ import useWithdrawalFeeTimer from 'hooks/cakeVault/useWithdrawalFeeTimer'
 import { useCakeVault } from 'state/hooks'
 import WithdrawalFeeTimer from './WithdrawalFeeTimer'
 
-interface UnstakingFeeCountdownRowProps {
-  lastDepositedTime: string
-}
-
-const UnstakingFeeCountdownRow: React.FC<UnstakingFeeCountdownRowProps> = ({ lastDepositedTime }) => {
+const UnstakingFeeCountdownRow = () => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const {
+    userData: { lastDepositedTime },
     fees: { withdrawalFee, withdrawalFeePeriod },
   } = useCakeVault()
   const feeAsDecimal = withdrawalFee / 100 || '-'

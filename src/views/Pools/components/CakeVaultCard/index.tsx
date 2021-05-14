@@ -6,8 +6,6 @@ import { useWeb3React } from '@web3-react/core'
 import UnlockButton from 'components/UnlockButton'
 import { getAddress } from 'utils/addressHelpers'
 import { useCakeVault, useGetApiPrice } from 'state/hooks'
-import useLastUpdated from 'hooks/useLastUpdated'
-import useGetVaultUserInfo from 'hooks/cakeVault/useGetVaultUserInfo'
 import { Pool } from 'state/types'
 import AprRow from '../PoolCard/AprRow'
 import { StyledCard, StyledCardInner } from '../PoolCard/StyledCard'
@@ -29,17 +27,16 @@ interface CakeVaultProps {
 const CakeVaultCard: React.FC<CakeVaultProps> = ({ pool, showStakedOnly }) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
-  const { lastUpdated, setLastUpdated } = useLastUpdated()
-  const userInfo = useGetVaultUserInfo(lastUpdated)
   const {
+    userData: { userShares, isLoading: isVaultUserDataLoading },
     fees: { performanceFee },
   } = useCakeVault()
   const { stakingToken } = pool
   //   Estimate & manual for now. 288 = once every 5 mins. We can change once we have a better sense of this
   const timesCompoundedDaily = 288
-  const accountHasSharesStaked = userInfo.shares && userInfo.shares.gt(0)
+  const accountHasSharesStaked = userShares && userShares.gt(0)
   const stakingTokenPrice = useGetApiPrice(stakingToken.address ? getAddress(stakingToken.address) : '')
-  const isLoading = !pool.userData || !userInfo.shares
+  const isLoading = !pool.userData || isVaultUserDataLoading
   const performanceFeeAsDecimal = performanceFee && performanceFee / 100
 
   if (showStakedOnly && !accountHasSharesStaked) {
@@ -65,20 +62,17 @@ const CakeVaultCard: React.FC<CakeVaultProps> = ({ pool, showStakedOnly }) => {
             performanceFee={performanceFeeAsDecimal}
           />
           <Box mt="24px">
-            <RecentCakeProfitRow cakeAtLastUserAction={userInfo.cakeAtLastUserAction} userShares={userInfo.shares} />
+            <RecentCakeProfitRow />
           </Box>
           <Box mt="8px">
-            <UnstakingFeeCountdownRow lastDepositedTime={accountHasSharesStaked && userInfo.lastDepositedTime} />
+            <UnstakingFeeCountdownRow />
           </Box>
           <Flex mt="24px" flexDirection="column">
             {account ? (
               <VaultCardActions
                 pool={pool}
-                userInfo={userInfo}
                 stakingTokenPrice={stakingTokenPrice}
                 accountHasSharesStaked={accountHasSharesStaked}
-                lastUpdated={lastUpdated}
-                setLastUpdated={setLastUpdated}
                 isLoading={isLoading}
               />
             ) : (

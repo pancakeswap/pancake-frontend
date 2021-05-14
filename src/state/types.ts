@@ -66,6 +66,13 @@ export interface VaultFees {
   withdrawalFeePeriod: number
 }
 
+export interface VaultUser {
+  isLoading: boolean
+  userShares: string
+  cakeAtLastUserAction: string
+  lastDepositedTime: string
+  lastUserActionTime: string
+}
 export interface CakeVault {
   totalShares?: string
   pricePerFullShare?: string
@@ -73,6 +80,7 @@ export interface CakeVault {
   estimatedCakeBountyReward?: string
   totalPendingCakeHarvest?: string
   fees?: VaultFees
+  userData?: VaultUser
 }
 
 export interface PoolsState {

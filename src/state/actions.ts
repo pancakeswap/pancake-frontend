@@ -3,6 +3,7 @@ export {
   fetchPoolsPublicDataAsync,
   fetchPoolsUserDataAsync,
   fetchCakeVaultPublicData,
+  fetchCakeVaultUserData,
   fetchCakeVaultFees,
   updateUserAllowance,
   updateUserBalance,

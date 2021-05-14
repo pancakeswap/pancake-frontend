@@ -6,11 +6,10 @@ import UnstakingFeeCountdownRow from './UnstakingFeeCountdownRow'
 
 interface FeeSummaryProps {
   stakingTokenSymbol: string
-  lastDepositedTime: string
   stakeAmount: string
 }
 
-const FeeSummary: React.FC<FeeSummaryProps> = ({ stakingTokenSymbol, lastDepositedTime, stakeAmount }) => {
+const FeeSummary: React.FC<FeeSummaryProps> = ({ stakingTokenSymbol, stakeAmount }) => {
   const { t } = useTranslation()
   const {
     fees: { withdrawalFee },
@@ -42,7 +41,7 @@ const FeeSummary: React.FC<FeeSummaryProps> = ({ stakingTokenSymbol, lastDeposit
           {stakeAmount ? feeInCake : '-'} {stakingTokenSymbol}
         </Text>
       </Flex>
-      <UnstakingFeeCountdownRow lastDepositedTime={lastDepositedTime} />
+      <UnstakingFeeCountdownRow />
     </>
   )
 }
