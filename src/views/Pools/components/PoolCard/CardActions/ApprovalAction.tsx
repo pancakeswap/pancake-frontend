@@ -13,7 +13,7 @@ interface ApprovalActionProps {
 }
 
 const ApprovalAction: React.FC<ApprovalActionProps> = ({ pool, isLoading = false }) => {
-  const { sousId, stakingToken, earningToken, isFinished } = pool
+  const { sousId, stakingToken, earningToken } = pool
   const { t } = useTranslation()
   const stakingTokenContract = useERC20(stakingToken.address ? getAddress(stakingToken.address) : '')
   const [requestedApproval, setRequestedApproval] = useState(false)
@@ -49,7 +49,7 @@ const ApprovalAction: React.FC<ApprovalActionProps> = ({ pool, isLoading = false
         <Button
           isLoading={requestedApproval}
           endIcon={requestedApproval ? <AutoRenewIcon spin color="currentColor" /> : null}
-          disabled={isFinished || requestedApproval}
+          disabled={requestedApproval}
           onClick={handleApprove}
           width="100%"
         >
