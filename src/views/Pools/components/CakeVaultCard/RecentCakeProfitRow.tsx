@@ -8,14 +8,9 @@ import RecentCakeProfitBalance from './RecentCakeProfitBalance'
 interface RecentCakeProfitRowProps {
   cakeAtLastUserAction: BigNumber
   userShares: BigNumber
-  pricePerFullShare: BigNumber
 }
 
-const RecentCakeProfitCountdownRow: React.FC<RecentCakeProfitRowProps> = ({
-  cakeAtLastUserAction,
-  userShares,
-  pricePerFullShare,
-}) => {
+const RecentCakeProfitCountdownRow: React.FC<RecentCakeProfitRowProps> = ({ cakeAtLastUserAction, userShares }) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const shouldDisplayCakeProfit =
@@ -25,11 +20,7 @@ const RecentCakeProfitCountdownRow: React.FC<RecentCakeProfitRowProps> = ({
     <Flex alignItems="center" justifyContent="space-between">
       <Text fontSize="14px">{t('Recent CAKE profit:')}</Text>
       {shouldDisplayCakeProfit && (
-        <RecentCakeProfitBalance
-          cakeAtLastUserAction={cakeAtLastUserAction}
-          userShares={userShares}
-          pricePerFullShare={pricePerFullShare}
-        />
+        <RecentCakeProfitBalance cakeAtLastUserAction={cakeAtLastUserAction} userShares={userShares} />
       )}
     </Flex>
   )

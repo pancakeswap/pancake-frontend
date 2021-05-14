@@ -1,7 +1,8 @@
 /* eslint-disable no-param-reassign */
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import poolsConfig from 'config/constants/pools'
 import { BIG_ZERO } from 'utils/bigNumber'
+import { PoolsState, Pool, CakeVault, VaultFees } from 'state/types'
 import { fetchPoolsBlockLimits, fetchPoolsStakingLimits, fetchPoolsTotalStaking } from './fetchPools'
 import {
   fetchPoolsAllowance,
@@ -9,9 +10,24 @@ import {
   fetchUserStakeBalances,
   fetchUserPendingRewards,
 } from './fetchPoolsUser'
-import { PoolsState, Pool } from '../types'
+import { fetchPublicVaultData, fetchVaultFees } from './fetchVaultPublic'
 
-const initialState: PoolsState = { data: [...poolsConfig] }
+const initialState: PoolsState = {
+  data: [...poolsConfig],
+  cakeVault: {
+    totalShares: null,
+    pricePerFullShare: null,
+    totalCakeInVault: null,
+    estimatedCakeBountyReward: null,
+    totalPendingCakeHarvest: null,
+    fees: {
+      performanceFee: null,
+      callFee: null,
+      withdrawalFee: null,
+      withdrawalFeePeriod: null,
+    },
+  },
+}
 
 export const PoolsSlice = createSlice({
   name: 'Pools',
@@ -39,11 +55,19 @@ export const PoolsSlice = createSlice({
         state.data[index] = { ...state.data[index], userData: { ...state.data[index].userData, [field]: value } }
       }
     },
+    setCakeVaultPublicData: (state, action: PayloadAction<CakeVault>) => {
+      state.cakeVault = { ...state.cakeVault, ...action.payload }
+    },
+    setCakeVaultFees: (state, action: PayloadAction<VaultFees>) => {
+      const fees = action.payload
+      state.cakeVault = { ...state.cakeVault, fees }
+    },
   },
 })
 
 // Actions
-export const { setPoolsPublicData, setPoolsUserData, updatePoolsUserData } = PoolsSlice.actions
+export const { setPoolsPublicData, setPoolsUserData, updatePoolsUserData, setCakeVaultPublicData, setCakeVaultFees } =
+  PoolsSlice.actions
 
 // Thunks
 export const fetchPoolsPublicDataAsync = () => async (dispatch) => {
@@ -119,6 +143,16 @@ export const updateUserStakedBalance = (sousId: number, account: string) => asyn
 export const updateUserPendingReward = (sousId: number, account: string) => async (dispatch) => {
   const pendingRewards = await fetchUserPendingRewards(account)
   dispatch(updatePoolsUserData({ sousId, field: 'pendingReward', value: pendingRewards[sousId] }))
+}
+
+export const fetchCakeVaultPublicData = () => async (dispatch) => {
+  const publicVaultInfo = await fetchPublicVaultData()
+  dispatch(setCakeVaultPublicData(publicVaultInfo))
+}
+
+export const fetchCakeVaultFees = () => async (dispatch) => {
+  const vaultFees = await fetchVaultFees()
+  dispatch(setCakeVaultFees(vaultFees))
 }
 
 export default PoolsSlice.reducer

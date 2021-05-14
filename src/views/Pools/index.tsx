@@ -7,7 +7,7 @@ import orderBy from 'lodash/orderBy'
 import partition from 'lodash/partition'
 import { useTranslation } from 'contexts/Localization'
 import usePersistState from 'hooks/usePersistState'
-import { usePools, useBlock } from 'state/hooks'
+import { usePools, useBlock, useFetchCakeVault } from 'state/hooks'
 import FlexLayout from 'components/layout/Flex'
 import Page from 'components/layout/Page'
 import PageHeader from 'components/PageHeader'
@@ -17,6 +17,7 @@ import PoolTabButtons from './components/PoolTabButtons'
 import BountyCard from './components/BountyCard'
 
 const Pools: React.FC = () => {
+  useFetchCakeVault()
   const { path } = useRouteMatch()
   const { t } = useTranslation()
   const { account } = useWeb3React()

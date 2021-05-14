@@ -8,10 +8,10 @@ import { BIG_TEN } from 'utils/bigNumber'
 import { useCakeVaultContract } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
 import useWithdrawalFeeTimer from 'hooks/cakeVault/useWithdrawalFeeTimer'
-import { VaultFees } from 'hooks/cakeVault/useGetVaultFees'
 import BigNumber from 'bignumber.js'
 import { getFullDisplayBalance, formatNumber, getDecimalAmount } from 'utils/formatBalance'
 import useToast from 'hooks/useToast'
+import useGetVaultPublicData from 'hooks/cakeVault/useGetVaultPublicData'
 import { Pool } from 'state/types'
 import { VaultUser } from 'views/Pools/types'
 import { convertCakeToShares } from '../../helpers'
@@ -23,8 +23,6 @@ interface VaultStakeModalProps {
   stakingTokenPrice: number
   userInfo: VaultUser
   isRemovingStake?: boolean
-  pricePerFullShare?: BigNumber
-  vaultFees?: VaultFees
   setLastUpdated: () => void
   onDismiss?: () => void
 }
@@ -37,16 +35,15 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
   pool,
   stakingMax,
   stakingTokenPrice,
-  pricePerFullShare,
   userInfo,
   isRemovingStake = false,
-  vaultFees,
   onDismiss,
   setLastUpdated,
 }) => {
-  const { account } = useWeb3React()
   const { stakingToken } = pool
+  const { account } = useWeb3React()
   const cakeVaultContract = useCakeVaultContract()
+  const { pricePerFullShare } = useGetVaultPublicData()
   const { t } = useTranslation()
   const { theme } = useTheme()
   const { toastSuccess, toastError } = useToast()
@@ -214,7 +211,6 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
         <FeeSummary
           stakingTokenSymbol={stakingToken.symbol}
           lastDepositedTime={userInfo.lastDepositedTime}
-          vaultFees={vaultFees}
           stakeAmount={stakeAmount}
         />
       )}

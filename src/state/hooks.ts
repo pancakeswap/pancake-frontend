@@ -11,7 +11,14 @@ import { getAddress } from 'utils/addressHelpers'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { BIG_ZERO } from 'utils/bigNumber'
 import useRefresh from 'hooks/useRefresh'
-import { fetchFarmsPublicDataAsync, fetchPoolsPublicDataAsync, fetchPoolsUserDataAsync, setBlock } from './actions'
+import {
+  fetchFarmsPublicDataAsync,
+  fetchPoolsPublicDataAsync,
+  fetchPoolsUserDataAsync,
+  fetchCakeVaultPublicData,
+  fetchCakeVaultFees,
+  setBlock,
+} from './actions'
 import { State, Farm, Pool, ProfileState, TeamsState, AchievementState, PriceState, FarmsState } from './types'
 import { fetchProfile } from './profile'
 import { fetchTeam, fetchTeams } from './teams'
@@ -97,6 +104,23 @@ export const usePools = (account): Pool[] => {
 export const usePoolFromPid = (sousId: number): Pool => {
   const pool = useSelector((state: State) => state.pools.data.find((p) => p.sousId === sousId))
   return transformPool(pool)
+}
+
+export const useFetchCakeVault = () => {
+  const { fastRefresh } = useRefresh()
+  const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    dispatch(fetchCakeVaultPublicData())
+  }, [dispatch, fastRefresh])
+
+  useEffect(() => {
+    dispatch(fetchCakeVaultFees())
+  }, [dispatch])
+}
+
+export const useCakeVault = () => {
+  return useSelector((state: State) => state.pools.cakeVault)
 }
 
 // Profile

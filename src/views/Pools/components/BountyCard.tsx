@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import {
   Card,
@@ -14,8 +14,8 @@ import {
   useTooltip,
 } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import useGetVaultFees from 'hooks/cakeVault/useGetVaultFees'
 import { getFullDisplayBalance } from 'utils/formatBalance'
+import { useCakeVault } from 'state/hooks'
 import useGetVaultBountyInfo from 'hooks/cakeVault/useGetVaultBountyInfo'
 import BountyModal from './BountyModal'
 
@@ -33,22 +33,21 @@ const InlineText = styled(Text)`
 const BountyCard = () => {
   const { t } = useTranslation()
   const { estimatedCakeBountyReward, estimatedDollarBountyReward, totalPendingCakeHarvest } = useGetVaultBountyInfo()
-  const { callFee } = useGetVaultFees()
-  const [bounties, setBounties] = useState({
-    modalCakeBountyToDisplay: '',
-    cardCakeBountyToDisplay: '',
-    dollarBountyToDisplay: '',
-  })
-
-  useEffect(() => {
-    if (estimatedCakeBountyReward && estimatedDollarBountyReward && totalPendingCakeHarvest) {
-      setBounties({
-        modalCakeBountyToDisplay: getFullDisplayBalance(estimatedCakeBountyReward, 18, 5),
-        cardCakeBountyToDisplay: getFullDisplayBalance(estimatedCakeBountyReward, 18, 3),
-        dollarBountyToDisplay: getFullDisplayBalance(estimatedDollarBountyReward, 18, 2),
-      })
-    }
-  }, [estimatedCakeBountyReward, estimatedDollarBountyReward, totalPendingCakeHarvest])
+  const dollarBountyToDisplay =
+    estimatedDollarBountyReward && estimatedDollarBountyReward.gte(0)
+      ? getFullDisplayBalance(estimatedDollarBountyReward, 18, 2)
+      : ''
+  const modalCakeBountyToDisplay =
+    estimatedCakeBountyReward && estimatedCakeBountyReward.gte(0)
+      ? getFullDisplayBalance(estimatedCakeBountyReward, 18, 5)
+      : ''
+  const cardCakeBountyToDisplay =
+    estimatedCakeBountyReward && estimatedCakeBountyReward.gte(0)
+      ? getFullDisplayBalance(estimatedCakeBountyReward, 18, 3)
+      : ''
+  const {
+    fees: { callFee },
+  } = useCakeVault()
 
   const TooltipComponent = () => (
     <>
@@ -66,8 +65,8 @@ const BountyCard = () => {
 
   const [onPresentBountyModal] = useModal(
     <BountyModal
-      cakeBountyToDisplay={bounties.modalCakeBountyToDisplay}
-      dollarBountyToDisplay={bounties.dollarBountyToDisplay}
+      cakeBountyToDisplay={modalCakeBountyToDisplay}
+      dollarBountyToDisplay={dollarBountyToDisplay}
       totalPendingCakeHarvest={totalPendingCakeHarvest}
       callFee={callFee}
       TooltipComponent={TooltipComponent}
@@ -96,17 +95,13 @@ const BountyCard = () => {
           </Flex>
           <Flex alignItems="center" justifyContent="space-between">
             <Flex flexDirection="column" mr="12px">
-              <Heading>{bounties.cardCakeBountyToDisplay || <Skeleton height={20} width={96} mb="2px" />}</Heading>
+              <Heading>{cardCakeBountyToDisplay || <Skeleton height={20} width={96} mb="2px" />}</Heading>
               <InlineText fontSize="12px" color="textSubtle">
-                {bounties.dollarBountyToDisplay ? (
-                  `~ ${bounties.dollarBountyToDisplay} USD`
-                ) : (
-                  <Skeleton height={16} width={62} />
-                )}
+                {dollarBountyToDisplay ? `~ ${dollarBountyToDisplay} USD` : <Skeleton height={16} width={62} />}
               </InlineText>
             </Flex>
             <Button
-              disabled={!bounties.dollarBountyToDisplay || !bounties.cardCakeBountyToDisplay || !callFee}
+              disabled={!dollarBountyToDisplay || !cardCakeBountyToDisplay || !callFee}
               onClick={onPresentBountyModal}
               scale="sm"
             >
