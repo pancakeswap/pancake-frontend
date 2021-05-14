@@ -1290,6 +1290,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://www.bigone.com/',
   },
+  snowge: {
+    symbol: 'SNOWGE',
+    address: {
+      56: '0x5e9280d53f28281ce098c8f64e49f5f5dc9ea185',
+      97: '',
+    },
+    decimals: 9,
+    projectLink: 'https://www.snowgecoin.com/',
+  },
 }
 
 export default tokens
