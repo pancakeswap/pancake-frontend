@@ -39,6 +39,16 @@ const farms: FarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 378,
+    lpSymbol: 'ONE-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0x4d057f769d930eafd597b49d6fb2e1009a73a702',
+    },
+    token: tokens.one,
+    quoteToken: tokens.busd,
+  },
+  {
     pid: 377,
     lpSymbol: 'FINE-BNB LP',
     lpAddresses: {
