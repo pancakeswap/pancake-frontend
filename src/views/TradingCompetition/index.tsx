@@ -99,8 +99,11 @@ const TradingCompetition = () => {
   const [team3LeaderboardInformation, setTeam3LeaderboardInformation] = useState({ teamId: 3, leaderboardData: null })
 
   const isCompetitionLive = currentPhase.state === LIVE
-  const hasCompetitionEnded =
-    currentPhase.state === FINISHED || currentPhase.state === CLAIM || currentPhase.state === OVER
+  const hasCompetitionEnded = [
+    FINISHED,
+    CLAIM,
+    OVER
+  ].some((phasesItem) => phasesItem === currentPhase.state)
 
   const { hasUserClaimed, userCakeRewards, userPointReward, canClaimNFT } = userTradingInformation
 
@@ -201,8 +204,12 @@ const TradingCompetition = () => {
   }, [profileApiUrl])
 
   // Don't hide when loading. Hide if the account is connected && the user hasn't registered && the competition is live or finished
-  const shouldHideCta =
-    !isLoading && account && !userTradingInformation.hasRegistered && (isCompetitionLive || hasCompetitionEnded)
+  const shouldHideCta = [
+    !isLoading,
+    account,
+    !userTradingInformation.hasRegistered,
+    isCompetitionLive || hasCompetitionEnded
+  ].every(i => Boolean(i))
 
   return (
     <CompetitionPage>
