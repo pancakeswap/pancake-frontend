@@ -1290,6 +1290,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://www.bigone.com/',
   },
+  pmon: {
+    symbol: 'PMON',
+    address: {
+      56: '0x1796ae0b0fa4862485106a0de9b654eFE301D0b2',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://polkamon.com/',
+  },
 }
 
 export default tokens
