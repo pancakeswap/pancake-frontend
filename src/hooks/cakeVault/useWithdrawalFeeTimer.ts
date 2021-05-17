@@ -9,14 +9,17 @@ const useWithdrawalFeeTimer = (lastDepositedTime: number, withdrawalFeePeriod = 
     const feeEndTime = lastDepositedTime + withdrawalFeePeriod
     const secondsRemainingCalc = feeEndTime - currentSeconds
     const doesUnstakingFeeApply = secondsRemainingCalc > 0
-    if (doesUnstakingFeeApply) {
-      setSecondsRemaining(secondsRemainingCalc)
-      setHasUnstakingFee(true)
-    }
     const tick = () => {
       setCurrentSeconds((prevSeconds) => prevSeconds + 1)
     }
     const timerInterval = setInterval(() => tick(), 1000)
+    if (doesUnstakingFeeApply) {
+      setSecondsRemaining(secondsRemainingCalc)
+      setHasUnstakingFee(true)
+    } else {
+      setHasUnstakingFee(false)
+      clearInterval(timerInterval)
+    }
     return () => clearInterval(timerInterval)
   }, [lastDepositedTime, withdrawalFeePeriod, setSecondsRemaining, currentSeconds])
 

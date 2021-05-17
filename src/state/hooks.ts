@@ -142,17 +142,33 @@ export const useCakeVault = () => {
     },
   } = useSelector((state: State) => state.pools.cakeVault)
 
-  // TODO: Figure out why this needs to be memoised to prevent rerender loop within BountyCard effect
   const estimatedCakeBountyReward = useMemo(() => {
     return new BigNumber(estimatedCakeBountyRewardAsString)
   }, [estimatedCakeBountyRewardAsString])
 
-  const totalShares = new BigNumber(totalSharesAsString)
-  const pricePerFullShare = new BigNumber(pricePerFullShareAsString)
-  const totalPendingCakeHarvest = new BigNumber(totalPendingCakeHarvestAsString)
-  const totalCakeInVault = new BigNumber(totalCakeInVaultAsString)
-  const userShares = new BigNumber(userSharesAsString)
-  const cakeAtLastUserAction = new BigNumber(cakeAtLastUserActionAsString)
+  const totalPendingCakeHarvest = useMemo(() => {
+    return new BigNumber(totalPendingCakeHarvestAsString)
+  }, [totalPendingCakeHarvestAsString])
+
+  const totalShares = useMemo(() => {
+    return new BigNumber(totalSharesAsString)
+  }, [totalSharesAsString])
+
+  const pricePerFullShare = useMemo(() => {
+    return new BigNumber(pricePerFullShareAsString)
+  }, [pricePerFullShareAsString])
+
+  const totalCakeInVault = useMemo(() => {
+    return new BigNumber(totalCakeInVaultAsString)
+  }, [totalCakeInVaultAsString])
+
+  const userShares = useMemo(() => {
+    return new BigNumber(userSharesAsString)
+  }, [userSharesAsString])
+
+  const cakeAtLastUserAction = useMemo(() => {
+    return new BigNumber(cakeAtLastUserActionAsString)
+  }, [cakeAtLastUserActionAsString])
 
   return {
     totalShares,
