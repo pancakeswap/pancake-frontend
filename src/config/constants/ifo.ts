@@ -37,7 +37,7 @@ const ifos: Ifo[] = [
   {
     id: 'horizon',
     address: '0x6137B571f7F1E44839ae10310a08be86D1A4D03B',
-    isActive: true,
+    isActive: false,
     name: 'Horizon Protocol (HZN)',
     poolBasic: {
       saleAmount: '3,000,000 HZN',
