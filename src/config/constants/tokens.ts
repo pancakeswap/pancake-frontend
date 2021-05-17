@@ -1272,6 +1272,24 @@ const tokens = {
     decimals: 8,
     projectLink: 'https://dogecoin.com/',
   },
+  fine: {
+    symbol: 'FINE',
+    address: {
+      56: '0x4e6415a5727ea08aae4580057187923aec331227',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://refinable.com/',
+  },
+  one: {
+    symbol: 'ONE',
+    address: {
+      56: '0x04baf95fd4c52fd09a56d840baee0ab8d7357bf0',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://www.bigone.com/',
+  },
 }
 
 export default tokens

@@ -86,7 +86,6 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
         <BlockProgress variant="flat" scale="sm" startBlock={lockBlock} endBlock={estimatedEndBlock} />
         <CardBody p="16px">
           <MultiplierArrow
-            totalAmount={round.bullAmount}
             betAmount={betAmount}
             multiplier={bullMultiplier}
             hasEntered={hasEnteredUp}
@@ -110,7 +109,6 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
             <PrizePoolRow totalAmount={totalAmount} />
           </RoundResultBox>
           <MultiplierArrow
-            totalAmount={round.bearAmount}
             betAmount={betAmount}
             multiplier={bearMultiplier}
             betPosition={BetPosition.BEAR}

@@ -4,11 +4,9 @@ import { Box, Flex, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { BetPosition } from 'state/types'
 import { RoundMultiplierDownArrow, RoundMultiplierUpArrow } from '../../RoundMultiplierArrows'
-import { formatBnb } from '../../helpers'
 import EnteredTag from './EnteredTag'
 
 interface MultiplierArrowProps {
-  totalAmount?: number
   betAmount?: number
   multiplier?: number
   hasEntered?: boolean
@@ -55,7 +53,6 @@ const getTextColor =
   }
 
 const MultiplierArrow: React.FC<MultiplierArrowProps> = ({
-  totalAmount,
   betAmount,
   multiplier,
   hasEntered = false,
@@ -70,16 +67,13 @@ const MultiplierArrow: React.FC<MultiplierArrowProps> = ({
   const multiplierText = (
     <Box>
       <Flex justifyContent="center" height="14px">
-        <Text fontSize="12px" color={textColor} bold lineHeight="14x">
+        <Text fontSize="14px" color={textColor} bold lineHeight="14x">
           {multiplier !== undefined ? `${multiplier.toLocaleString(undefined, { maximumFractionDigits: 2 })}x` : '-'}
         </Text>
-        <Text fontSize="12px" color={textColor} lineHeight="14x" ml="4px">
+        <Text fontSize="14px" color={textColor} lineHeight="14x" ml="4px">
           {t('Payout')}
         </Text>
       </Flex>
-      <Text color={textColor} fontSize="12px" lineHeight="18px" textAlign="center">
-        {`${formatBnb(totalAmount)} BNB`}
-      </Text>
     </Box>
   )
 
@@ -103,7 +97,7 @@ const MultiplierArrow: React.FC<MultiplierArrowProps> = ({
           {getEnteredTag({ bottom: 0, right: 0 })}
           <Content>
             {!isDisabled && multiplierText}
-            <Text bold fontSize="20px" lineHeight="21px" mb="8px" color={downColor} textTransform="uppercase">
+            <Text bold fontSize="20px" mb="8px" color={downColor} textTransform="uppercase">
               {t('Down')}
             </Text>
           </Content>
