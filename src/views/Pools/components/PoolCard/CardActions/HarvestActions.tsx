@@ -1,6 +1,5 @@
 import React from 'react'
 import { Flex, Text, Button, Heading, useModal, Skeleton } from '@pancakeswap/uikit'
-import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
 import { Token } from 'config/constants/types'
 import { getAddress } from 'utils/addressHelpers'
@@ -17,10 +16,6 @@ interface HarvestActionsProps {
   isBnbPool: boolean
   isLoading?: boolean
 }
-
-const InlineBalance = styled(Balance)`
-  display: inline;
-`
 
 const HarvestActions: React.FC<HarvestActionsProps> = ({
   earnings,
@@ -67,7 +62,8 @@ const HarvestActions: React.FC<HarvestActionsProps> = ({
               <Text fontSize="12px" color={hasEarnings ? 'textSubtle' : 'textDisabled'}>
                 ~
                 {hasEarnings ? (
-                  <InlineBalance
+                  <Balance
+                    display="inline"
                     fontSize="12px"
                     color="textSubtle"
                     decimals={2}

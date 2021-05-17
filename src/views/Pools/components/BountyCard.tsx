@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import {
   Card,
@@ -14,9 +15,10 @@ import {
   useTooltip,
 } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import useGetVaultFees from 'hooks/cakeVault/useGetVaultFees'
-import { getFullDisplayBalance } from 'utils/formatBalance'
-import useGetVaultBountyInfo from 'hooks/cakeVault/useGetVaultBountyInfo'
+import { getBalanceNumber } from 'utils/formatBalance'
+import { getCakeAddress } from 'utils/addressHelpers'
+import { useCakeVault, useGetApiPrice } from 'state/hooks'
+import Balance from 'components/Balance'
 import BountyModal from './BountyModal'
 
 const StyledCard = styled(Card)`
@@ -26,29 +28,28 @@ const StyledCard = styled(Card)`
   }
 `
 
-const InlineText = styled(Text)`
-  display: inline;
-`
-
 const BountyCard = () => {
   const { t } = useTranslation()
-  const { estimatedCakeBountyReward, estimatedDollarBountyReward, totalPendingCakeHarvest } = useGetVaultBountyInfo()
-  const { callFee } = useGetVaultFees()
-  const [bounties, setBounties] = useState({
-    modalCakeBountyToDisplay: '',
-    cardCakeBountyToDisplay: '',
-    dollarBountyToDisplay: '',
-  })
+  const [estimatedDollarBountyReward, setEstimatedDollarBountyReward] = useState(null)
+  const {
+    estimatedCakeBountyReward,
+    totalPendingCakeHarvest,
+    fees: { callFee },
+  } = useCakeVault()
+
+  const cakePrice = useGetApiPrice(getCakeAddress())
 
   useEffect(() => {
-    if (estimatedCakeBountyReward && estimatedDollarBountyReward && totalPendingCakeHarvest) {
-      setBounties({
-        modalCakeBountyToDisplay: getFullDisplayBalance(estimatedCakeBountyReward, 18, 5),
-        cardCakeBountyToDisplay: getFullDisplayBalance(estimatedCakeBountyReward, 18, 3),
-        dollarBountyToDisplay: getFullDisplayBalance(estimatedDollarBountyReward, 18, 2),
-      })
+    if (cakePrice && estimatedCakeBountyReward) {
+      const dollarValueofClaimableReward = new BigNumber(estimatedCakeBountyReward).multipliedBy(cakePrice)
+      setEstimatedDollarBountyReward(dollarValueofClaimableReward)
     }
-  }, [estimatedCakeBountyReward, estimatedDollarBountyReward, totalPendingCakeHarvest])
+  }, [cakePrice, estimatedCakeBountyReward])
+
+  const hasFetchedDollarBounty = estimatedDollarBountyReward && estimatedDollarBountyReward.gte(0)
+  const hasFetchedCakeBounty = estimatedCakeBountyReward && estimatedCakeBountyReward.gte(0)
+  const dollarBountyToDisplay = hasFetchedDollarBounty ? getBalanceNumber(estimatedDollarBountyReward, 18) : 0
+  const cakeBountyToDisplay = hasFetchedCakeBounty ? getBalanceNumber(estimatedCakeBountyReward, 18) : 0
 
   const TooltipComponent = () => (
     <>
@@ -66,8 +67,8 @@ const BountyCard = () => {
 
   const [onPresentBountyModal] = useModal(
     <BountyModal
-      cakeBountyToDisplay={bounties.modalCakeBountyToDisplay}
-      dollarBountyToDisplay={bounties.dollarBountyToDisplay}
+      cakeBountyToDisplay={cakeBountyToDisplay}
+      dollarBountyToDisplay={dollarBountyToDisplay}
       totalPendingCakeHarvest={totalPendingCakeHarvest}
       callFee={callFee}
       TooltipComponent={TooltipComponent}
@@ -96,17 +97,28 @@ const BountyCard = () => {
           </Flex>
           <Flex alignItems="center" justifyContent="space-between">
             <Flex flexDirection="column" mr="12px">
-              <Heading>{bounties.cardCakeBountyToDisplay || <Skeleton height={20} width={96} mb="2px" />}</Heading>
-              <InlineText fontSize="12px" color="textSubtle">
-                {bounties.dollarBountyToDisplay ? (
-                  `~ ${bounties.dollarBountyToDisplay} USD`
+              <Heading>
+                {hasFetchedCakeBounty ? (
+                  <Balance fontSize="20px" bold value={cakeBountyToDisplay} decimals={3} />
                 ) : (
-                  <Skeleton height={16} width={62} />
+                  <Skeleton height={20} width={96} mb="2px" />
                 )}
-              </InlineText>
+              </Heading>
+              {hasFetchedDollarBounty ? (
+                <Balance
+                  fontSize="12px"
+                  color="textSubtle"
+                  value={dollarBountyToDisplay}
+                  decimals={2}
+                  unit=" USD"
+                  prefix="~"
+                />
+              ) : (
+                <Skeleton height={16} width={62} />
+              )}
             </Flex>
             <Button
-              disabled={!bounties.dollarBountyToDisplay || !bounties.cardCakeBountyToDisplay || !callFee}
+              disabled={!dollarBountyToDisplay || !cakeBountyToDisplay || !callFee}
               onClick={onPresentBountyModal}
               scale="sm"
             >

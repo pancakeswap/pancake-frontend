@@ -1,19 +1,20 @@
 import React from 'react'
 import { Text, Flex, useTooltip, TooltipText } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import { VaultFees } from 'hooks/cakeVault/useGetVaultFees'
+import { useCakeVault } from 'state/hooks'
 import UnstakingFeeCountdownRow from './UnstakingFeeCountdownRow'
 
 interface FeeSummaryProps {
   stakingTokenSymbol: string
-  lastDepositedTime: string
-  vaultFees: VaultFees
   stakeAmount: string
 }
 
-const FeeSummary: React.FC<FeeSummaryProps> = ({ stakingTokenSymbol, lastDepositedTime, vaultFees, stakeAmount }) => {
+const FeeSummary: React.FC<FeeSummaryProps> = ({ stakingTokenSymbol, stakeAmount }) => {
   const { t } = useTranslation()
-  const feeAsDecimal = parseInt(vaultFees.withdrawalFee) / 100
+  const {
+    fees: { withdrawalFee },
+  } = useCakeVault()
+  const feeAsDecimal = withdrawalFee / 100
   const feeInCake = (parseFloat(stakeAmount) * (feeAsDecimal / 100)).toFixed(4)
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <>
@@ -40,11 +41,7 @@ const FeeSummary: React.FC<FeeSummaryProps> = ({ stakingTokenSymbol, lastDeposit
           {stakeAmount ? feeInCake : '-'} {stakingTokenSymbol}
         </Text>
       </Flex>
-      <UnstakingFeeCountdownRow
-        withdrawalFee={vaultFees.withdrawalFee}
-        withdrawalFeePeriod={vaultFees.withdrawalFeePeriod}
-        lastDepositedTime={lastDepositedTime}
-      />
+      <UnstakingFeeCountdownRow />
     </>
   )
 }

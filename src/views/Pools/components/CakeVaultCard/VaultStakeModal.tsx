@@ -4,16 +4,17 @@ import { Modal, Text, Flex, Image, Button, Slider, BalanceInput, AutoRenewIcon }
 import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
 import { BASE_EXCHANGE_URL } from 'config'
+import { useAppDispatch } from 'state'
 import { BIG_TEN } from 'utils/bigNumber'
+import { useCakeVault } from 'state/hooks'
 import { useCakeVaultContract } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
 import useWithdrawalFeeTimer from 'hooks/cakeVault/useWithdrawalFeeTimer'
-import { VaultFees } from 'hooks/cakeVault/useGetVaultFees'
 import BigNumber from 'bignumber.js'
 import { getFullDisplayBalance, formatNumber, getDecimalAmount } from 'utils/formatBalance'
 import useToast from 'hooks/useToast'
+import { fetchCakeVaultUserData } from 'state/pools'
 import { Pool } from 'state/types'
-import { VaultUser } from 'views/Pools/types'
 import { convertCakeToShares } from '../../helpers'
 import FeeSummary from './FeeSummary'
 
@@ -21,11 +22,7 @@ interface VaultStakeModalProps {
   pool: Pool
   stakingMax: BigNumber
   stakingTokenPrice: number
-  userInfo: VaultUser
   isRemovingStake?: boolean
-  pricePerFullShare?: BigNumber
-  vaultFees?: VaultFees
-  setLastUpdated: () => void
   onDismiss?: () => void
 }
 
@@ -37,23 +34,24 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
   pool,
   stakingMax,
   stakingTokenPrice,
-  pricePerFullShare,
-  userInfo,
   isRemovingStake = false,
-  vaultFees,
   onDismiss,
-  setLastUpdated,
 }) => {
-  const { account } = useWeb3React()
+  const dispatch = useAppDispatch()
   const { stakingToken } = pool
+  const { account } = useWeb3React()
   const cakeVaultContract = useCakeVaultContract()
+  const {
+    userData: { lastDepositedTime, userShares },
+    pricePerFullShare,
+  } = useCakeVault()
   const { t } = useTranslation()
   const { theme } = useTheme()
   const { toastSuccess, toastError } = useToast()
   const [pendingTx, setPendingTx] = useState(false)
   const [stakeAmount, setStakeAmount] = useState('')
   const [percent, setPercent] = useState(0)
-  const { hasUnstakingFee } = useWithdrawalFeeTimer(parseInt(userInfo.lastDepositedTime))
+  const { hasUnstakingFee } = useWithdrawalFeeTimer(parseInt(lastDepositedTime))
   const usdValueStaked = stakeAmount && formatNumber(new BigNumber(stakeAmount).times(stakingTokenPrice).toNumber())
 
   const handleStakeInputChange = (input: string) => {
@@ -83,7 +81,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
     const shareStakeToWithdraw = convertCakeToShares(convertedStakeAmount, pricePerFullShare)
     // trigger withdrawAll function if the withdrawal will leave 0.000001 CAKE or less
     const triggerWithdrawAllThreshold = new BigNumber(1000000000000)
-    const sharesRemaining = userInfo.shares.minus(shareStakeToWithdraw.sharesAsBigNumber)
+    const sharesRemaining = userShares.minus(shareStakeToWithdraw.sharesAsBigNumber)
     const isWithdrawingAll = sharesRemaining.lte(triggerWithdrawAllThreshold)
 
     if (isWithdrawingAll) {
@@ -97,7 +95,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
           toastSuccess(t('Unstaked!'), t('Your earnings have also been harvested to your wallet'))
           setPendingTx(false)
           onDismiss()
-          setLastUpdated()
+          dispatch(fetchCakeVaultUserData({ account }))
         })
         .on('error', (error) => {
           console.error(error)
@@ -118,7 +116,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
           toastSuccess(t('Unstaked!'), t('Your earnings have also been harvested to your wallet'))
           setPendingTx(false)
           onDismiss()
-          setLastUpdated()
+          dispatch(fetchCakeVaultUserData({ account }))
         })
         .on('error', (error) => {
           console.error(error)
@@ -142,7 +140,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
         toastSuccess(t('Staked!'), t('Your funds have been staked in the pool'))
         setPendingTx(false)
         onDismiss()
-        setLastUpdated()
+        dispatch(fetchCakeVaultUserData({ account }))
       })
       .on('error', (error) => {
         console.error(error)
@@ -211,12 +209,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
         </StyledButton>
       </Flex>
       {isRemovingStake && hasUnstakingFee && (
-        <FeeSummary
-          stakingTokenSymbol={stakingToken.symbol}
-          lastDepositedTime={userInfo.lastDepositedTime}
-          vaultFees={vaultFees}
-          stakeAmount={stakeAmount}
-        />
+        <FeeSummary stakingTokenSymbol={stakingToken.symbol} stakeAmount={stakeAmount} />
       )}
       <Button
         isLoading={pendingTx}

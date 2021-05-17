@@ -1,7 +1,8 @@
 /* eslint-disable no-param-reassign */
-import { createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import poolsConfig from 'config/constants/pools'
 import { BIG_ZERO } from 'utils/bigNumber'
+import { PoolsState, Pool, CakeVault, VaultFees, VaultUser } from 'state/types'
 import { fetchPoolsBlockLimits, fetchPoolsStakingLimits, fetchPoolsTotalStaking } from './fetchPools'
 import {
   fetchPoolsAllowance,
@@ -9,41 +10,32 @@ import {
   fetchUserStakeBalances,
   fetchUserPendingRewards,
 } from './fetchPoolsUser'
-import { PoolsState, Pool } from '../types'
+import { fetchPublicVaultData, fetchVaultFees } from './fetchVaultPublic'
+import fetchVaultUser from './fetchVaultUser'
 
-const initialState: PoolsState = { data: [...poolsConfig] }
-
-export const PoolsSlice = createSlice({
-  name: 'Pools',
-  initialState,
-  reducers: {
-    setPoolsPublicData: (state, action) => {
-      const livePoolsData: Pool[] = action.payload
-      state.data = state.data.map((pool) => {
-        const livePoolData = livePoolsData.find((entry) => entry.sousId === pool.sousId)
-        return { ...pool, ...livePoolData }
-      })
+const initialState: PoolsState = {
+  data: [...poolsConfig],
+  cakeVault: {
+    totalShares: null,
+    pricePerFullShare: null,
+    totalCakeInVault: null,
+    estimatedCakeBountyReward: null,
+    totalPendingCakeHarvest: null,
+    fees: {
+      performanceFee: null,
+      callFee: null,
+      withdrawalFee: null,
+      withdrawalFeePeriod: null,
     },
-    setPoolsUserData: (state, action) => {
-      const userData = action.payload
-      state.data = state.data.map((pool) => {
-        const userPoolData = userData.find((entry) => entry.sousId === pool.sousId)
-        return { ...pool, userData: userPoolData }
-      })
-    },
-    updatePoolsUserData: (state, action) => {
-      const { field, value, sousId } = action.payload
-      const index = state.data.findIndex((p) => p.sousId === sousId)
-
-      if (index >= 0) {
-        state.data[index] = { ...state.data[index], userData: { ...state.data[index].userData, [field]: value } }
-      }
+    userData: {
+      isLoading: true,
+      userShares: null,
+      cakeAtLastUserAction: null,
+      lastDepositedTime: null,
+      lastUserActionTime: null,
     },
   },
-})
-
-// Actions
-export const { setPoolsPublicData, setPoolsUserData, updatePoolsUserData } = PoolsSlice.actions
+}
 
 // Thunks
 export const fetchPoolsPublicDataAsync = () => async (dispatch) => {
@@ -120,5 +112,72 @@ export const updateUserPendingReward = (sousId: number, account: string) => asyn
   const pendingRewards = await fetchUserPendingRewards(account)
   dispatch(updatePoolsUserData({ sousId, field: 'pendingReward', value: pendingRewards[sousId] }))
 }
+
+export const fetchCakeVaultPublicData = createAsyncThunk<CakeVault>('cakeVault/fetchPublicData', async () => {
+  const publicVaultInfo = await fetchPublicVaultData()
+  return publicVaultInfo
+})
+
+export const fetchCakeVaultFees = createAsyncThunk<VaultFees>('cakeVault/fetchFees', async () => {
+  const vaultFees = await fetchVaultFees()
+  return vaultFees
+})
+
+export const fetchCakeVaultUserData = createAsyncThunk<VaultUser, { account: string }>(
+  'cakeVault/fetchUser',
+  async ({ account }) => {
+    const userData = await fetchVaultUser(account)
+    return userData
+  },
+)
+
+export const PoolsSlice = createSlice({
+  name: 'Pools',
+  initialState,
+  reducers: {
+    setPoolsPublicData: (state, action) => {
+      const livePoolsData: Pool[] = action.payload
+      state.data = state.data.map((pool) => {
+        const livePoolData = livePoolsData.find((entry) => entry.sousId === pool.sousId)
+        return { ...pool, ...livePoolData }
+      })
+    },
+    setPoolsUserData: (state, action) => {
+      const userData = action.payload
+      state.data = state.data.map((pool) => {
+        const userPoolData = userData.find((entry) => entry.sousId === pool.sousId)
+        return { ...pool, userData: userPoolData }
+      })
+    },
+    updatePoolsUserData: (state, action) => {
+      const { field, value, sousId } = action.payload
+      const index = state.data.findIndex((p) => p.sousId === sousId)
+
+      if (index >= 0) {
+        state.data[index] = { ...state.data[index], userData: { ...state.data[index].userData, [field]: value } }
+      }
+    },
+  },
+  extraReducers: (builder) => {
+    // Vault public data that updates frequently
+    builder.addCase(fetchCakeVaultPublicData.fulfilled, (state, action: PayloadAction<CakeVault>) => {
+      state.cakeVault = { ...state.cakeVault, ...action.payload }
+    })
+    // Vault fees
+    builder.addCase(fetchCakeVaultFees.fulfilled, (state, action: PayloadAction<VaultFees>) => {
+      const fees = action.payload
+      state.cakeVault = { ...state.cakeVault, fees }
+    })
+    // Vault user data
+    builder.addCase(fetchCakeVaultUserData.fulfilled, (state, action: PayloadAction<VaultUser>) => {
+      const userData = action.payload
+      userData.isLoading = false
+      state.cakeVault = { ...state.cakeVault, userData }
+    })
+  },
+})
+
+// Actions
+export const { setPoolsPublicData, setPoolsUserData, updatePoolsUserData } = PoolsSlice.actions
 
 export default PoolsSlice.reducer
