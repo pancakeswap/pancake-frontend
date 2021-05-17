@@ -1299,6 +1299,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://polkamon.com/',
   },
+  τdoge: {
+    symbol: 'τDOGE',
+    address: {
+      56: '0xe550a593d09fbc8dcd557b5c88cea6946a8b404a',
+      97: '',
+    },
+    decimals: 8,
+    projectLink: 'https://www.btcst.finance/',
+  },
 }
 
 export default tokens
