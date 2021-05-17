@@ -1307,6 +1307,7 @@ const tokens = {
     },
     decimals: 18,
     projectLink: 'https://www.hotcross.com/',
+  },
   τdoge: {
     symbol: 'τDOGE',
     address: {
