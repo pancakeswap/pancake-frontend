@@ -47,3 +47,9 @@ export const SmartContractPhases = {
   3: CompetitionPhases.CLAIM,
   4: CompetitionPhases.OVER,
 }
+
+export const EndedPhasesSet = new Set([
+  FINISHED,
+  CLAIM,
+  OVER
+])

@@ -8,10 +8,9 @@ import useTheme from 'hooks/useTheme'
 import {
   SmartContractPhases,
   CompetitionPhases,
+  EndedPhasesSet,
   LIVE,
-  FINISHED,
   CLAIM,
-  OVER,
   REGISTRATION,
 } from 'config/constants/trading-competition/easterPhases'
 import { PrizesIcon, RanksIcon, RulesIcon } from './svgs'
@@ -99,12 +98,7 @@ const TradingCompetition = () => {
   const [team3LeaderboardInformation, setTeam3LeaderboardInformation] = useState({ teamId: 3, leaderboardData: null })
 
   const isCompetitionLive = currentPhase.state === LIVE
-  const hasCompetitionEnded = [
-    FINISHED,
-    CLAIM,
-    OVER
-  ].some((phasesItem) => phasesItem === currentPhase.state)
-
+  const hasCompetitionEnded = EndedPhasesSet.has(currentPhase.state);
   const { hasUserClaimed, userCakeRewards, userPointReward, canClaimNFT } = userTradingInformation
 
   const userCanClaimPrizes =
@@ -204,12 +198,19 @@ const TradingCompetition = () => {
   }, [profileApiUrl])
 
   // Don't hide when loading. Hide if the account is connected && the user hasn't registered && the competition is live or finished
-  const shouldHideCta = [
-    !isLoading,
-    account,
-    !userTradingInformation.hasRegistered,
-    isCompetitionLive || hasCompetitionEnded
-  ].every(i => Boolean(i))
+  const getCtaHideStatus = () => {
+    if (isLoading) return false
+
+    if (!account) return false
+
+    if (userTradingInformation.hasRegistered) return false
+
+    if (!(isCompetitionLive || hasCompetitionEnded)) return false
+
+    return true
+  }
+
+  const shouldHideCta = getCtaHideStatus();
 
   return (
     <CompetitionPage>
