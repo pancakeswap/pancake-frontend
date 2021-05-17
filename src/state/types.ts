@@ -59,8 +59,33 @@ export interface FarmsState {
   userDataLoaded: boolean
 }
 
+export interface VaultFees {
+  performanceFee: number
+  callFee: number
+  withdrawalFee: number
+  withdrawalFeePeriod: number
+}
+
+export interface VaultUser {
+  isLoading: boolean
+  userShares: string
+  cakeAtLastUserAction: string
+  lastDepositedTime: string
+  lastUserActionTime: string
+}
+export interface CakeVault {
+  totalShares?: string
+  pricePerFullShare?: string
+  totalCakeInVault?: string
+  estimatedCakeBountyReward?: string
+  totalPendingCakeHarvest?: string
+  fees?: VaultFees
+  userData?: VaultUser
+}
+
 export interface PoolsState {
   data: Pool[]
+  cakeVault: CakeVault
 }
 
 export interface ProfileState {

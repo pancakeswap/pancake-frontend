@@ -2,13 +2,12 @@ import BigNumber from 'bignumber.js'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Flex, Text, Box } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
+import { useTranslation } from 'contexts/Localization'
 import { useCake, useCakeVaultContract } from 'hooks/useContract'
-import { BIG_ZERO } from 'utils/bigNumber'
-import { VaultFees } from 'hooks/cakeVault/useGetVaultFees'
+import useLastUpdated from 'hooks/useLastUpdated'
 import { Pool } from 'state/types'
-import { VaultUser } from 'views/Pools/types'
+import { BIG_ZERO } from 'utils/bigNumber'
 import VaultApprovalAction from './VaultApprovalAction'
 import VaultStakeActions from './VaultStakeActions'
 
@@ -18,27 +17,13 @@ const InlineText = styled(Text)`
 
 const CakeVaultCardActions: React.FC<{
   pool: Pool
-  userInfo: VaultUser
-  pricePerFullShare: BigNumber
   stakingTokenPrice: number
   accountHasSharesStaked: boolean
-  lastUpdated: number
-  vaultFees: VaultFees
   isLoading: boolean
-  setLastUpdated: () => void
-}> = ({
-  pool,
-  userInfo,
-  pricePerFullShare,
-  stakingTokenPrice,
-  accountHasSharesStaked,
-  lastUpdated,
-  vaultFees,
-  isLoading,
-  setLastUpdated,
-}) => {
+}> = ({ pool, stakingTokenPrice, accountHasSharesStaked, isLoading }) => {
   const { account } = useWeb3React()
   const { stakingToken, userData } = pool
+  const { lastUpdated, setLastUpdated } = useLastUpdated()
   const [isVaultApproved, setIsVaultApproved] = useState(false)
   const cakeContract = useCake()
   const cakeVaultContract = useCakeVaultContract()
@@ -86,11 +71,7 @@ const CakeVaultCardActions: React.FC<{
             pool={pool}
             stakingTokenBalance={stakingTokenBalance}
             stakingTokenPrice={stakingTokenPrice}
-            vaultFees={vaultFees}
-            userInfo={userInfo}
-            pricePerFullShare={pricePerFullShare}
             accountHasSharesStaked={accountHasSharesStaked}
-            setLastUpdated={setLastUpdated}
           />
         ) : (
           <VaultApprovalAction pool={pool} isLoading={isLoading} setLastUpdated={setLastUpdated} />

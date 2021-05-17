@@ -1,37 +1,38 @@
 import React from 'react'
-import BigNumber from 'bignumber.js'
-import { TooltipText, useTooltip } from '@pancakeswap/uikit'
+import { Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import { getFullDisplayBalance } from 'utils/formatBalance'
-import { convertSharesToCake } from '../../helpers'
+import Balance from 'components/Balance'
 
 interface RecentCakeProfitBalanceProps {
-  cakeAtLastUserAction: BigNumber
-  userShares: BigNumber
-  pricePerFullShare: BigNumber
+  cakeToDisplay: number
+  dollarValueToDisplay: number
+  dateStringToDisplay: string
 }
 
 const RecentCakeProfitBalance: React.FC<RecentCakeProfitBalanceProps> = ({
-  cakeAtLastUserAction,
-  userShares,
-  pricePerFullShare,
+  cakeToDisplay,
+  dollarValueToDisplay,
+  dateStringToDisplay,
 }) => {
-  const currentSharesAsCake = convertSharesToCake(userShares, pricePerFullShare)
-  const cakeProfit = currentSharesAsCake.cakeAsBigNumber.minus(cakeAtLastUserAction)
-  const cakeToDisplay = cakeProfit.gte(0) ? getFullDisplayBalance(cakeProfit, 18, 5) : '0'
-
   const { t } = useTranslation()
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    t('Your estimated earnings since last manual stake or unstake:'),
-    { placement: 'bottom-end' },
+    <>
+      <Balance fontSize="16px" value={cakeToDisplay} decimals={3} bold unit=" CAKE" />
+      <Balance fontSize="16px" value={dollarValueToDisplay} decimals={2} bold prefix="~$" />
+      {t('Earned since your last action')}
+      <Text>{dateStringToDisplay}</Text>
+    </>,
+    {
+      placement: 'bottom-end',
+    },
   )
 
   return (
     <>
       {tooltipVisible && tooltip}
       <TooltipText ref={targetRef} small>
-        {cakeToDisplay}
+        <Balance fontSize="14px" value={cakeToDisplay} />
       </TooltipText>
     </>
   )

@@ -1,5 +1,4 @@
 import React from 'react'
-import styled from 'styled-components'
 import { Flex, Text, Button, IconButton, AddIcon, MinusIcon, useModal, Skeleton, useTooltip } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
@@ -18,10 +17,6 @@ interface StakeActionsProps {
   isStaked: ConstrainBoolean
   isLoading?: boolean
 }
-
-const InlineBalance = styled(Balance)`
-  display: inline;
-`
 
 const StakeAction: React.FC<StakeActionsProps> = ({
   pool,
@@ -74,12 +69,12 @@ const StakeAction: React.FC<StakeActionsProps> = ({
           <>
             <Balance bold fontSize="20px" decimals={3} value={stakedTokenBalance} />
             <Text fontSize="12px" color="textSubtle">
-              ~
-              <InlineBalance
+              <Balance
                 fontSize="12px"
                 color="textSubtle"
                 decimals={2}
                 value={stakedTokenDollarBalance}
+                prefix="~"
                 unit=" USD"
               />
             </Text>
