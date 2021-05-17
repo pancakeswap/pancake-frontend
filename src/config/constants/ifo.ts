@@ -21,7 +21,7 @@ const ifos: Ifo[] = [
       distributionRatio: 0.3,
     },
     poolUnlimited: {
-      saleAmount: '35,000,000 HZN',
+      saleAmount: '35,000,000 HOTCROSS',
       raiseAmount: '$1,750,000',
       cakeToBurn: '$875,000',
       distributionRatio: 0.7,
