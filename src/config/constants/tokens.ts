@@ -1299,6 +1299,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://polkamon.com/',
   },
+  hotcross: {
+    symbol: 'HOTCROSS',
+    address: {
+      56: '0x4FA7163E153419E0E1064e418dd7A99314Ed27b6',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://www.hotcross.com/',
+  },
   τdoge: {
     symbol: 'τDOGE',
     address: {
