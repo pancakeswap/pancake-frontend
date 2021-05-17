@@ -17,10 +17,9 @@ const InlineText = styled(Text)`
 
 const CakeVaultCardActions: React.FC<{
   pool: Pool
-  stakingTokenPrice: number
   accountHasSharesStaked: boolean
   isLoading: boolean
-}> = ({ pool, stakingTokenPrice, accountHasSharesStaked, isLoading }) => {
+}> = ({ pool, accountHasSharesStaked, isLoading }) => {
   const { account } = useWeb3React()
   const { stakingToken, userData } = pool
   const { lastUpdated, setLastUpdated } = useLastUpdated()
@@ -70,7 +69,6 @@ const CakeVaultCardActions: React.FC<{
             isLoading={isLoading}
             pool={pool}
             stakingTokenBalance={stakingTokenBalance}
-            stakingTokenPrice={stakingTokenPrice}
             accountHasSharesStaked={accountHasSharesStaked}
           />
         ) : (

@@ -6,7 +6,7 @@ import { useWeb3React } from '@web3-react/core'
 import { BASE_EXCHANGE_URL } from 'config'
 import { useAppDispatch } from 'state'
 import { BIG_TEN } from 'utils/bigNumber'
-import { useCakeVault } from 'state/hooks'
+import { useCakeVault, usePriceCakeBusd } from 'state/hooks'
 import { useCakeVaultContract } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
 import useWithdrawalFeeTimer from 'hooks/cakeVault/useWithdrawalFeeTimer'
@@ -21,7 +21,6 @@ import FeeSummary from './FeeSummary'
 interface VaultStakeModalProps {
   pool: Pool
   stakingMax: BigNumber
-  stakingTokenPrice: number
   isRemovingStake?: boolean
   onDismiss?: () => void
 }
@@ -30,13 +29,7 @@ const StyledButton = styled(Button)`
   flex-grow: 1;
 `
 
-const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
-  pool,
-  stakingMax,
-  stakingTokenPrice,
-  isRemovingStake = false,
-  onDismiss,
-}) => {
+const VaultStakeModal: React.FC<VaultStakeModalProps> = ({ pool, stakingMax, isRemovingStake = false, onDismiss }) => {
   const dispatch = useAppDispatch()
   const { stakingToken } = pool
   const { account } = useWeb3React()
@@ -52,7 +45,8 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
   const [stakeAmount, setStakeAmount] = useState('')
   const [percent, setPercent] = useState(0)
   const { hasUnstakingFee } = useWithdrawalFeeTimer(parseInt(lastDepositedTime))
-  const usdValueStaked = stakeAmount && formatNumber(new BigNumber(stakeAmount).times(stakingTokenPrice).toNumber())
+  const cakePriceBusd = usePriceCakeBusd()
+  const usdValueStaked = stakeAmount && formatNumber(new BigNumber(stakeAmount).times(cakePriceBusd).toNumber())
 
   const handleStakeInputChange = (input: string) => {
     if (input) {
