@@ -7,7 +7,6 @@ import { orderBy } from 'lodash'
 import { Team } from 'config/constants/types'
 import Nfts from 'config/constants/nfts'
 import { getWeb3NoAccount } from 'utils/web3'
-import { getAddress } from 'utils/addressHelpers'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { BIG_ZERO } from 'utils/bigNumber'
 import useRefresh from 'hooks/useRefresh'
@@ -66,7 +65,7 @@ export const useFarmFromPid = (pid): Farm => {
   return farm
 }
 
-export const useFarmFromSymbol = (lpSymbol: string): Farm => {
+export const useFarmFromLpSymbol = (lpSymbol: string): Farm => {
   const farm = useSelector((state: State) => state.farms.data.find((f) => f.lpSymbol === lpSymbol))
   return farm
 }
@@ -82,13 +81,40 @@ export const useFarmUser = (pid) => {
   }
 }
 
-export const useLpTokenPrice = (symbol: string) => {
-  const farm = useFarmFromSymbol(symbol)
-  const tokenPriceInUsd = useGetApiPrice(getAddress(farm.token.address))
+export const useFarmFromTokenSymbol = (tokenSymbol: string): Farm => {
+  const farm = useSelector((state: State) => state.farms.data.find((f) => f.token.symbol === tokenSymbol))
+  return farm
+}
 
-  return farm.lpTotalSupply && farm.lpTotalInQuoteToken
-    ? new BigNumber(getBalanceNumber(farm.lpTotalSupply)).div(farm.lpTotalInQuoteToken).times(tokenPriceInUsd).times(2)
-    : BIG_ZERO
+export const useTokenPriceBusd = (pid: number): BigNumber => {
+  // POSSIBLE QUOTE TOKENS: wbnb, busd, qsd, ust, pbtc, btcb, eth,
+  // No route back to unit of account: qsd
+
+  let quoteTokenPriceBusd
+  let tokenPriceBusd
+  const farm = useFarmFromPid(pid)
+
+  if (farm.quoteToken.symbol === 'BUSD') {
+    tokenPriceBusd = farm.tokenPriceVsQuote ? new BigNumber(farm.tokenPriceVsQuote) : BIG_ZERO
+  } else if (farm.quoteToken.symbol === 'wBNB') {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    quoteTokenPriceBusd = usePriceBnbBusd()
+    tokenPriceBusd = quoteTokenPriceBusd.gt(0) && quoteTokenPriceBusd.times(farm.tokenPriceVsQuote)
+  } else {
+    debugger // eslint-disable-line
+  }
+
+  return tokenPriceBusd
+}
+
+export const useLpTokenPrice = (symbol: string) => {
+  const farm = useFarmFromLpSymbol(symbol)
+  const farmTokenPriceInUsd = useTokenPriceBusd(farm.pid)
+  const lpTokenPrice = new BigNumber(getBalanceNumber(farm.lpTotalSupply))
+    .div(farm.lpTotalInQuoteToken)
+    .times(farmTokenPriceInUsd)
+    .times(2)
+  return farm.lpTotalSupply && farm.lpTotalInQuoteToken ? lpTokenPrice : BIG_ZERO
 }
 
 // Pools
