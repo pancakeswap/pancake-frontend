@@ -326,7 +326,7 @@
   "All estimated rates take into account this pool's %fee%% performance fee": "Tous les taux estimés tiennent compte des frais de performance de ce pool de %fee% %",
   "Sorry, you didn’t contribute enough LP tokens to meet the minimum threshold. You didn’t buy anything in this sale, but you can still reclaim your LP tokens.": "Nous sommes désolés, vous n'avez pas engagé suffisamment de jetons LP pour atteindre le seuil minimal. Vous n'avez rien acheté lors de cette vente, mais vous pouvez toujours récupérer vos jetons LP.",
   "Only applies within 3 days of staking. Unstaking after 3 days will not include a fee. Timer resets every time you stake new CAKE in the pool.": "S'applique uniquement dans les 3 jours suivant le staking. Le retrait du staking après 3 jours n'inclura pas de frais. Le délai est réinitialisé chaque fois que vous placez de nouveaux CAKE dans le pool.",
-  "unstaking fee until": "frais de retrait du staking jusqu'à",
+  "unstaking fee until": "de frais de retrait du staking jusqu'à",
   "unstaking fee if withdrawn within 72h": "frais applicable en cas de retrait de staking dans un délai de 72 h",
   "Unstaking fee: %fee%%": "Frais de retrait de staking : %fee% %",
   "Performance Fee": "Frais de performance",
