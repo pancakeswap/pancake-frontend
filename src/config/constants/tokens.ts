@@ -1305,8 +1305,8 @@ const tokens = {
       56: '0xe550a593d09fbc8dcd557b5c88cea6946a8b404a',
       97: '',
     },
-    decimals: 18,
-    projectLink: 'https://polkamon.com/',
+    decimals: 8,
+    projectLink: 'https://www.btcst.finance/',
   },
 }
 
