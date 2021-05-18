@@ -4,7 +4,7 @@ import { Box, CardBody, Flex, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
 import UnlockButton from 'components/UnlockButton'
-import { useCakeVault, usePriceCakeBusd } from 'state/hooks'
+import { useCakeVault } from 'state/hooks'
 import { Pool } from 'state/types'
 import AprRow from '../PoolCard/AprRow'
 import { StyledCard, StyledCardInner } from '../PoolCard/StyledCard'
@@ -33,7 +33,6 @@ const CakeVaultCard: React.FC<CakeVaultProps> = ({ pool, showStakedOnly }) => {
   //   Estimate & manual for now. 288 = once every 5 mins. We can change once we have a better sense of this
   const timesCompoundedDaily = 288
   const accountHasSharesStaked = userShares && userShares.gt(0)
-  const cakePriceBusd = usePriceCakeBusd()
   const isLoading = !pool.userData || isVaultUserDataLoading
   const performanceFeeAsDecimal = performanceFee && performanceFee / 100
 
@@ -54,7 +53,6 @@ const CakeVaultCard: React.FC<CakeVaultProps> = ({ pool, showStakedOnly }) => {
         <StyledCardBody isLoading={isLoading}>
           <AprRow
             pool={pool}
-            stakingTokenPrice={cakePriceBusd.toNumber()}
             isAutoVault
             compoundFrequency={timesCompoundedDaily}
             performanceFee={performanceFeeAsDecimal}

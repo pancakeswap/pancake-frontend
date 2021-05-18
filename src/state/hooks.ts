@@ -10,6 +10,7 @@ import { getWeb3NoAccount } from 'utils/web3'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { BIG_ZERO } from 'utils/bigNumber'
 import useRefresh from 'hooks/useRefresh'
+import { filterFarmsByQuoteToken } from 'utils/farmsPriceHelpers'
 import {
   fetchFarmsPublicDataAsync,
   fetchPoolsPublicDataAsync,
@@ -81,15 +82,16 @@ export const useFarmUser = (pid) => {
   }
 }
 
-export const useFarmFromTokenSymbol = (tokenSymbol: string): Farm => {
-  const farm = useSelector((state: State) => state.farms.data.find((f) => f.token.symbol === tokenSymbol))
-  return farm
+export const useFarmFromTokenSymbol = (tokenSymbol: string, preferredQuoteTokens?: string[]): Farm => {
+  const farms = useSelector((state: State) => state.farms.data.filter((f) => f.token.symbol === tokenSymbol))
+  const filteredFarm = filterFarmsByQuoteToken(farms, preferredQuoteTokens)
+  return filteredFarm
 }
 
 export const useTokenPriceBusd = (pid: number): BigNumber => {
   const farm = useFarmFromPid(pid)
   const bnbPriceBusd = usePriceBnbBusd()
-  const quoteTokenFarm = useFarmFromTokenSymbol(farm.quoteToken.symbol)
+  const quoteTokenFarm = useFarmFromTokenSymbol(farm.token.symbol)
 
   if (farm.quoteToken.symbol === 'BUSD') {
     return farm.tokenPriceVsQuote ? new BigNumber(farm.tokenPriceVsQuote) : BIG_ZERO
@@ -99,15 +101,19 @@ export const useTokenPriceBusd = (pid: number): BigNumber => {
     return bnbPriceBusd.gt(0) && bnbPriceBusd.times(farm.tokenPriceVsQuote)
   }
 
-  // Possible alternative farm quote tokens: UST, pBTC, BTCB, ETH, QSD
+  // Possible alternative farm quoteTokens:
+  // UST (MIR-UST), pBTC (PNT-pBTC), BTCB (bBADGER-BTCB), ETH (SUSHI-ETH)
   // If the farm's quote token isn't BUSD or wBNB, we then use the quote token farm's quote token
   // i.e. for farm PNT - pBTC
   // we find the pBTC farm, pBTC - BNB
   // from the BNB - pBTC BUSD price, we can get the PNT - BUSD price
 
+  if (!quoteTokenFarm) {
+    debugger // eslint-disable-line
+  }
   if (quoteTokenFarm.quoteToken.symbol === 'wBNB') {
     const quoteTokenInBusd = bnbPriceBusd.gt(0) && bnbPriceBusd.times(quoteTokenFarm.tokenPriceVsQuote)
-    return new BigNumber(farm.tokenPriceVsQuote).times(quoteTokenInBusd)
+    return farm.tokenPriceVsQuote ? new BigNumber(farm.tokenPriceVsQuote).times(quoteTokenInBusd) : BIG_ZERO
   }
 
   if (quoteTokenFarm.quoteToken.symbol === 'BUSD') {
@@ -115,9 +121,7 @@ export const useTokenPriceBusd = (pid: number): BigNumber => {
     return quoteTokenInBusd ? new BigNumber(farm.tokenPriceVsQuote).times(quoteTokenInBusd) : BIG_ZERO
   }
 
-  // if the quote token farm's quote token isn't BNB or BUSD
-  console.log('unmatched -', farm.quoteToken.symbol)
-  // No route back to unit of account: qsd
+  // Catch in case token does not have immediate or once-removed BUSD/wBNB quoteToken
   return BIG_ZERO
 }
 

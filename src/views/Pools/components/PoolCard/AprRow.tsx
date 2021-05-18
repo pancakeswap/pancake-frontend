@@ -12,19 +12,12 @@ import { BASE_EXCHANGE_URL } from 'config'
 
 interface AprRowProps {
   pool: Pool
-  stakingTokenPrice: number
   isAutoVault?: boolean
   compoundFrequency?: number
   performanceFee?: number
 }
 
-const AprRow: React.FC<AprRowProps> = ({
-  pool,
-  stakingTokenPrice,
-  isAutoVault = false,
-  compoundFrequency = 1,
-  performanceFee = 0,
-}) => {
+const AprRow: React.FC<AprRowProps> = ({ pool, isAutoVault = false, compoundFrequency = 1, performanceFee = 0 }) => {
   const { t } = useTranslation()
   const { stakingToken, earningToken, totalStaked, isFinished, tokenPerBlock } = pool
 
@@ -34,28 +27,32 @@ const AprRow: React.FC<AprRowProps> = ({
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipContent, { placement: 'bottom-end' })
 
-  const earningTokenFarm = useFarmFromTokenSymbol(earningToken.symbol)
-  const earningTokenFarmPrice = useTokenPriceBusd(earningTokenFarm.pid)
-  const earningTokenFarmPriceAsNumber = earningTokenFarmPrice && earningTokenFarmPrice.toNumber()
+  const earningTokenFarmForPriceCalc = useFarmFromTokenSymbol(earningToken.symbol)
+  const earningTokenPrice = useTokenPriceBusd(earningTokenFarmForPriceCalc.pid)
+  const earningTokenPriceAsNumber = earningTokenPrice && earningTokenPrice.toNumber()
+
+  const stakingTokenFarmForPriceCalc = useFarmFromTokenSymbol(stakingToken.symbol)
+  const stakingTokenPrice = useTokenPriceBusd(stakingTokenFarmForPriceCalc.pid)
+  const stakingTokenPriceAsNumber = stakingTokenPrice && stakingTokenPrice.toNumber()
 
   const apr = getPoolApr(
-    stakingTokenPrice,
-    earningTokenFarmPriceAsNumber,
+    stakingTokenPriceAsNumber,
+    earningTokenPriceAsNumber,
     getBalanceNumber(totalStaked, stakingToken.decimals),
     parseFloat(tokenPerBlock),
   )
 
   // special handling for tokens like tBTC or BIFI where the daily token rewards for $1000 dollars will be less than 0.001 of that token
-  const isHighValueToken = Math.round(earningTokenFarmPriceAsNumber / 1000) > 0
+  const isHighValueToken = Math.round(earningTokenPriceAsNumber / 1000) > 0
   const roundingDecimals = isHighValueToken ? 4 : 2
 
   const earningsPercentageToDisplay = () => {
     if (isAutoVault) {
-      const oneThousandDollarsWorthOfToken = 1000 / earningTokenFarmPriceAsNumber
+      const oneThousandDollarsWorthOfToken = 1000 / earningTokenPriceAsNumber
       const tokenEarnedPerThousand365D = tokenEarnedPerThousandDollarsCompounding({
         numberOfDays: 365,
         farmApr: apr,
-        tokenPrice: earningTokenFarmPriceAsNumber,
+        tokenPrice: earningTokenPriceAsNumber,
         roundingDecimals,
         compoundFrequency,
         performanceFee,
@@ -74,7 +71,7 @@ const AprRow: React.FC<AprRowProps> = ({
 
   const [onPresentApyModal] = useModal(
     <ApyCalculatorModal
-      tokenPrice={earningTokenFarmPriceAsNumber}
+      tokenPrice={earningTokenPriceAsNumber}
       apr={apr}
       linkLabel={t('Get %symbol%', { symbol: stakingToken.symbol })}
       linkHref={apyModalLink || BASE_EXCHANGE_URL}
