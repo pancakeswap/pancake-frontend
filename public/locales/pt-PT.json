@@ -402,7 +402,7 @@
   "Average position entered / round": "Posição média introduzida / ronda",
   "Won": "Ganhos",
   "Lost": "Perdas",
-  "Entered": "Entered",
+  "Entered": "Participação",
   "Connect your wallet to view your prediction history": "Associe a sua carteira para ver o seu histórico de previsão",
   "Best round: %roundId%": "Melhor ronda: %roundId%",
   "You've already staked the maximum amount you can stake in this pool!": "Já colocou o montante máximo possível de participação neste pool!",
@@ -417,7 +417,7 @@
   "Once you enter a position, you cannot cancel or adjust it.": "Uma vez inserida uma posição, não pode cancelá-la ou ajustá-la.",
   "All losses are final.": "Todas as perdas são definitivas.",
   "I understand that I am using this product at my own risk. Any loss incurred due to my actions are my own responsibility.": "Tenho conhecimento de que estou a utilizar este produto por minha conta e risco. Qualquer perda incorrida devido às minhas ações é da minha própria responsabilidade.",
-  "Stake CAKE and BNB in the liquidity pool to get LP tokens. You'll spend them to buy IFO sale tokens.": "Stake CAKE and BNB in the liquidity pool to get LP tokens. You'll spend them to buy IFO sale tokens.",
+  "Stake CAKE and BNB in the liquidity pool to get LP tokens. You'll spend them to buy IFO sale tokens.": "Participe no pool de liquidez com CAKE e BNB para obter tokens LP. Vai gastá-los para comprar os tokens da venda IFO.",
   "You'll need an active PancakeSwap Profile to take part in an IFO!": "Para participar numa IFO, necessitará de um Perfil PancakeSwap ativo!",
   "Your LP tokens committed": "Os seus tokens LP afetados",
   "%symbol% to receive": "%symbol% a receber",
@@ -426,6 +426,6 @@
   "Additional fee:": "Taxa adicional:",
   "Learn more about %symbol%": "Saiba mais sobre %symbol%",
   "Earned since your last action": "Ganho desde a sua última ação",
-  "Commit ~%amount% LP in total to earn!": "Commit ~%amount% LP in total to earn!",
+  "Commit ~%amount% LP in total to earn!": "Afete um total de ~%amount% a LP para ganhar!",
   "Learn more about %title%": "Saiba mais sobre %title%"
 }
