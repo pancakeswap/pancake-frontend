@@ -6,14 +6,14 @@ import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'
 import useAuth from 'hooks/useAuth'
 // import { usePriceCakeBusd, useProfile } from 'state/hooks'
-import { usePriceCakeBusd } from 'state/hooks'
+// import { usePriceCakeBusd } from 'state/hooks'
 import config from './config'
 
 const Menu = (props) => {
   const { account } = useWeb3React()
   const { login, logout } = useAuth()
   const { isDark, toggleTheme } = useTheme()
-  const cakePriceUsd = usePriceCakeBusd()
+//  const cakePriceUsd = usePriceCakeBusd()
 //  const { profile } = useProfile()
   const { currentLanguage, setLanguage } = useTranslation()
 
@@ -27,7 +27,7 @@ const Menu = (props) => {
       currentLang={currentLanguage.code}
       langs={languageList}
       setLang={setLanguage}
-      cakePriceUsd={cakePriceUsd.toNumber()}
+      cakePriceUsd={100}
       links={config}
 //      profile={{
 //        username: profile?.username,

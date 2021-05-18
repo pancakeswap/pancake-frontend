@@ -46,6 +46,10 @@ const farms: FarmConfig[] = [
       80001: '',
       137: '0x6405Ebc22cB0899FC21f414085Ac4044B4721a0d',
     },
+    jarAddresses: {
+      80001: '',
+      137: '0x796E0e64F3980B859F2c801795F25e433459cBe3',
+    },
     token: tokens.krill,
     quoteToken: tokens.usdc,
   },

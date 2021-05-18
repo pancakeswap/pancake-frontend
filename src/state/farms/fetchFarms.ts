@@ -1,9 +1,10 @@
 import BigNumber from 'bignumber.js'
 import erc20 from 'config/abi/erc20.json'
-import masterchefABI from 'config/abi/masterchef.json'
+// import masterchefABI from 'config/abi/masterchef.json'
 import multicall from 'utils/multicall'
 import { BIG_TEN } from 'utils/bigNumber'
-import { getAddress, getMasterChefAddress } from 'utils/addressHelpers'
+// import { getAddress, getMasterChefAddress } from 'utils/addressHelpers'
+import { getAddress } from 'utils/addressHelpers'
 import { FarmConfig } from 'config/constants/types'
 import { DEFAULT_TOKEN_DECIMAL } from 'config'
 
@@ -11,6 +12,7 @@ const fetchFarms = async (farmsToFetch: FarmConfig[]) => {
   const data = await Promise.all(
     farmsToFetch.map(async (farmConfig) => {
       const lpAddress = getAddress(farmConfig.lpAddresses)
+      const jarAddress = getAddress(farmConfig.jarAddresses)
       const calls = [
         // Balance of token in the LP contract
         {
@@ -28,7 +30,7 @@ const fetchFarms = async (farmsToFetch: FarmConfig[]) => {
         {
           address: lpAddress,
           name: 'balanceOf',
-          params: [getMasterChefAddress()],
+          params: [jarAddress],
         },
         // Total supply of LP tokens
         {
@@ -65,20 +67,20 @@ const fetchFarms = async (farmsToFetch: FarmConfig[]) => {
         .div(BIG_TEN.pow(quoteTokenDecimals))
         .times(lpTokenRatio)
 
-      const [info, totalAllocPoint] = await multicall(masterchefABI, [
-        {
-          address: getMasterChefAddress(),
-          name: 'poolInfo',
-          params: [farmConfig.pid],
-        },
-        {
-          address: getMasterChefAddress(),
-          name: 'totalAllocPoint',
-        },
-      ])
+  //    const [info, totalAllocPoint] = await multicall(masterchefABI, [
+  //      {
+  //        address: getMasterChefAddress(),
+  //        name: 'poolInfo',
+  //        params: [farmConfig.pid],
+  //      },
+  //      {
+  //        address: getMasterChefAddress(),
+  //        name: 'totalAllocPoint',
+  //      },
+  //    ])
 
-      const allocPoint = new BigNumber(info.allocPoint._hex)
-      const poolWeight = allocPoint.div(new BigNumber(totalAllocPoint))
+//      const allocPoint = new BigNumber(info.allocPoint._hex)
+//      const poolWeight = allocPoint.div(new BigNumber(totalAllocPoint))
 
       return {
         ...farmConfig,
@@ -87,8 +89,8 @@ const fetchFarms = async (farmsToFetch: FarmConfig[]) => {
         lpTotalSupply: new BigNumber(lpTotalSupply).toJSON(),
         lpTotalInQuoteToken: lpTotalInQuoteToken.toJSON(),
         tokenPriceVsQuote: quoteTokenAmount.div(tokenAmount).toJSON(),
-        poolWeight: poolWeight.toJSON(),
-        multiplier: `${allocPoint.div(100).toString()}X`,
+//        poolWeight: poolWeight.toJSON(),
+//        multiplier: `${allocPoint.div(100).toString()}X`,
       }
     }),
   )

@@ -1,16 +1,19 @@
 import BigNumber from 'bignumber.js'
 import erc20ABI from 'config/abi/erc20.json'
-import masterchefABI from 'config/abi/masterchef.json'
+// import masterchefABI from 'config/abi/masterchef.json'
+import GenericJarABI from 'config/abi/GenericJar.json'
 import multicall from 'utils/multicall'
-import { getAddress, getMasterChefAddress } from 'utils/addressHelpers'
+// import { getAddress, getMasterChefAddress } from 'utils/addressHelpers'
+import { getAddress } from 'utils/addressHelpers'
 import { FarmConfig } from 'config/constants/types'
 
 export const fetchFarmUserAllowances = async (account: string, farmsToFetch: FarmConfig[]) => {
-  const masterChefAddress = getMasterChefAddress()
+//  const masterChefAddress = getMasterChefAddress()
 
   const calls = farmsToFetch.map((farm) => {
     const lpContractAddress = getAddress(farm.lpAddresses)
-    return { address: lpContractAddress, name: 'allowance', params: [account, masterChefAddress] }
+    const jarContractAddress = getAddress(farm.jarAddresses)
+    return { address: lpContractAddress, name: 'allowance', params: [account, jarContractAddress] }
   })
 
   const rawLpAllowances = await multicall(erc20ABI, calls)
@@ -38,17 +41,18 @@ export const fetchFarmUserTokenBalances = async (account: string, farmsToFetch: 
 }
 
 export const fetchFarmUserStakedBalances = async (account: string, farmsToFetch: FarmConfig[]) => {
-  const masterChefAddress = getMasterChefAddress()
+//  const masterChefAddress = getMasterChefAddress()
 
   const calls = farmsToFetch.map((farm) => {
+    const jarContractAddress = getAddress(farm.jarAddresses)
     return {
-      address: masterChefAddress,
-      name: 'userInfo',
-      params: [farm.pid, account],
+      address: jarContractAddress,
+      name: 'balanceOf',
+      params: [account],
     }
   })
 
-  const rawStakedBalances = await multicall(masterchefABI, calls)
+  const rawStakedBalances = await multicall(GenericJarABI, calls)
   const parsedStakedBalances = rawStakedBalances.map((stakedBalance) => {
     return new BigNumber(stakedBalance[0]._hex).toJSON()
   })
@@ -56,17 +60,18 @@ export const fetchFarmUserStakedBalances = async (account: string, farmsToFetch:
 }
 
 export const fetchFarmUserEarnings = async (account: string, farmsToFetch: FarmConfig[]) => {
-  const masterChefAddress = getMasterChefAddress()
+//  const masterChefAddress = getMasterChefAddress()
 
   const calls = farmsToFetch.map((farm) => {
+    const jarContractAddress = getAddress(farm.jarAddresses)
     return {
-      address: masterChefAddress,
-      name: 'pendingCake',
-      params: [farm.pid, account],
+      address: jarContractAddress,
+      name: 'balanceOf',
+      params: [account],
     }
   })
 
-  const rawEarnings = await multicall(masterchefABI, calls)
+  const rawEarnings = await multicall(GenericJarABI, calls)
   const parsedEarnings = rawEarnings.map((earnings) => {
     return new BigNumber(earnings).toJSON()
   })

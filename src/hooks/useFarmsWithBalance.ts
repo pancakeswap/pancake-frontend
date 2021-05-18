@@ -2,8 +2,10 @@ import { useEffect, useState } from 'react'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import multicall from 'utils/multicall'
-import { getMasterChefAddress } from 'utils/addressHelpers'
-import masterChefABI from 'config/abi/masterchef.json'
+// import { getMasterChefAddress } from 'utils/addressHelpers'
+import { getAddress } from 'utils/addressHelpers'
+// import masterChefABI from 'config/abi/masterchef.json'
+import GenericJarABI from 'config/abi/GenericJar.json'
 import farmsConfig from 'config/constants'
 import { FarmConfig } from 'config/constants/types'
 import useRefresh from './useRefresh'
@@ -20,12 +22,12 @@ const useFarmsWithBalance = () => {
   useEffect(() => {
     const fetchBalances = async () => {
       const calls = farmsConfig.map((farm) => ({
-        address: getMasterChefAddress(),
-        name: 'pendingCake',
-        params: [farm.pid, account],
+        address: getAddress(farm.jarAddresses),
+        name: 'balanceOf',
+        params: [account],
       }))
 
-      const rawResults = await multicall(masterChefABI, calls)
+      const rawResults = await multicall(GenericJarABI, calls)
       const results = farmsConfig.map((farm, index) => ({ ...farm, balance: new BigNumber(rawResults[index]) }))
 
       setFarmsWithBalances(results)
