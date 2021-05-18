@@ -42,8 +42,13 @@ const IfoQuestions = () => {
             </Heading>
           </CardHeader>
           <CardBody>
-            {config.map(({ title, description }) => (
-              <FoldableText key={title.fallback} id={title.fallback} mb="24px" title={t(title.fallback)}>
+            {config.map(({ title, description }, i, { length }) => (
+              <FoldableText
+                key={title.fallback}
+                id={title.fallback}
+                mb={i + 1 === length ? '' : '24px'}
+                title={t(title.fallback)}
+              >
                 {description.map(({ fallback }) => {
                   return (
                     <Text key={fallback} color="textSubtle" as="p">
