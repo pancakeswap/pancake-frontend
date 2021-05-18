@@ -41,6 +41,7 @@ const DropDownContainer = styled.div<{ isOpen: boolean; width: number; height: n
   border-radius: 16px;
   height: 40px;
   min-width: 136px;
+  user-select: none;
 
   ${({ theme }) => theme.mediaQueries.sm} {
     min-width: 168px;
