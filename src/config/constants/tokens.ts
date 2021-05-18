@@ -1317,6 +1317,15 @@ const tokens = {
     decimals: 8,
     projectLink: 'https://www.btcst.finance/',
   },
+  btr: {
+    symbol: 'BTR',
+    address: {
+      56: '0x5a16E8cE8cA316407c6E6307095dc9540a8D62B3',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://www.bitrue.com/',
+  },
 }
 
 export default tokens
