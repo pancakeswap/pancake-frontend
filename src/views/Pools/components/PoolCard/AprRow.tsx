@@ -35,9 +35,10 @@ const AprRow: React.FC<AprRowProps> = ({
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipContent, { placement: 'bottom-end' })
 
-  const earningTokenFarm = useFarmFromTokenSymbol(earningToken.symbol)
   const earningTokenPrice = useGetApiPrice(earningToken.address ? getAddress(earningToken.address) : '')
+  const earningTokenFarm = useFarmFromTokenSymbol(earningToken.symbol)
   const earningTokenFarmPrice = useTokenPriceBusd(earningTokenFarm.pid)
+  const earningTokenFarmPriceAsNumber = earningTokenFarmPrice && earningTokenFarmPrice.toNumber()
 
   console.log(
     earningToken.symbol,
@@ -47,7 +48,7 @@ const AprRow: React.FC<AprRowProps> = ({
 
   const apr = getPoolApr(
     stakingTokenPrice,
-    earningTokenPrice,
+    earningTokenFarmPriceAsNumber,
     getBalanceNumber(totalStaked, stakingToken.decimals),
     parseFloat(tokenPerBlock),
   )

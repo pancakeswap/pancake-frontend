@@ -83,6 +83,9 @@ export const useFarmUser = (pid) => {
 
 export const useFarmFromTokenSymbol = (tokenSymbol: string): Farm => {
   const farm = useSelector((state: State) => state.farms.data.find((f) => f.token.symbol === tokenSymbol))
+  // if (tokenSymbol === 'pBTC') {
+  //   debugger //eslint-disable-line
+  // }
   return farm
 }
 
@@ -100,7 +103,9 @@ export const useTokenPriceBusd = (pid: number): BigNumber => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     quoteTokenPriceBusd = usePriceBnbBusd()
     tokenPriceBusd = quoteTokenPriceBusd.gt(0) && quoteTokenPriceBusd.times(farm.tokenPriceVsQuote)
-  } else {
+  } else if (farm.quoteToken.symbol === 'pBTC') {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const tokenFarm = useFarmFromTokenSymbol(farm.quoteToken.symbol)
     debugger // eslint-disable-line
   }
 
