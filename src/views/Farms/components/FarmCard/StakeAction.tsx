@@ -14,7 +14,8 @@ interface FarmCardActionsProps {
   stakedBalance?: BigNumber
   tokenBalance?: BigNumber
   tokenName?: string
-  pid?: number
+//  pid?: number
+  jarAddress?: string
   addLiquidityUrl?: string
 }
 
@@ -29,12 +30,13 @@ const StakeAction: React.FC<FarmCardActionsProps> = ({
   stakedBalance,
   tokenBalance,
   tokenName,
-  pid,
+//  pid,
+  jarAddress,
   addLiquidityUrl,
 }) => {
   const { t } = useTranslation()
-  const { onStake } = useStake(pid)
-  const { onUnstake } = useUnstake(pid)
+  const { onStake } = useStake(jarAddress)
+  const { onUnstake } = useUnstake(jarAddress)
   const location = useLocation()
 
   const displayBalance = useCallback(() => {
@@ -58,7 +60,7 @@ const StakeAction: React.FC<FarmCardActionsProps> = ({
         onClick={onPresentDeposit}
         disabled={['history', 'archived'].some((item) => location.pathname.includes(item))}
       >
-        {t('Stake LP')}
+        {t('Deposit LP')}
       </Button>
     ) : (
       <IconButtonWrapper>

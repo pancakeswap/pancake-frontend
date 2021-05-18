@@ -30,17 +30,16 @@ interface FarmCardActionsProps {
 const CardActions: React.FC<FarmCardActionsProps> = ({ farm, account, addLiquidityUrl }) => {
   const { t } = useTranslation()
   const [requestedApproval, setRequestedApproval] = useState(false)
-  const { pid, lpAddresses, jarAddresses} = farm
+  const { lpAddresses, jarAddresses} = farm
   const {
     allowance: allowanceAsString = 0,
     tokenBalance: tokenBalanceAsString = 0,
-    stakedBalance: stakedBalanceAsString = 0,
-    earnings: earningsAsString = 0,
+    stakedBalance: stakedBalanceAsString = 0
   } = farm.userData || {}
   const allowance = new BigNumber(allowanceAsString)
   const tokenBalance = new BigNumber(tokenBalanceAsString)
   const stakedBalance = new BigNumber(stakedBalanceAsString)
-  const earnings = new BigNumber(earningsAsString)
+//  const earnings = new BigNumber(earningsAsString)
   const lpAddress = getAddress(lpAddresses)
   const jarAddress = getAddress(jarAddresses)
   const lpName = farm.lpSymbol.toUpperCase()
@@ -68,7 +67,8 @@ const CardActions: React.FC<FarmCardActionsProps> = ({ farm, account, addLiquidi
         stakedBalance={stakedBalance}
         tokenBalance={tokenBalance}
         tokenName={lpName}
-        pid={pid}
+   //     pid={pid}
+        jarAddress={jarAddress}
         addLiquidityUrl={addLiquidityUrl}
       />
     ) : (
@@ -80,22 +80,22 @@ const CardActions: React.FC<FarmCardActionsProps> = ({ farm, account, addLiquidi
 
   return (
     <Action>
-      <Flex>
+{/*      <Flex>
         <Text bold textTransform="uppercase" color="secondary" fontSize="12px" pr="3px">
-          {/* TODO: Is there a way to get a dynamic value here from useFarmFromSymbol? */}
+          * TODO: Is there a way to get a dynamic value here from useFarmFromSymbol?
           CAKE
         </Text>
         <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px">
           {t('Earned')}
         </Text>
       </Flex>
-  {/*    <HarvestAction earnings={earnings} pid={pid} /> */}
+      <HarvestAction earnings={earnings} pid={pid} /> */}
       <Flex>
         <Text bold textTransform="uppercase" color="secondary" fontSize="12px" pr="3px">
           {lpName}
         </Text>
         <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px">
-          {t('Staked')}
+          {t('Deposited')}
         </Text>
       </Flex>
       {!account ? <UnlockButton mt="8px" width="100%" /> : renderApprovalOrStakeButton()}

@@ -127,10 +127,10 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed, cakePrice, account }
           </Text>
         </Flex>
       )}
-      <Flex justifyContent="space-between">
+{/*      <Flex justifyContent="space-between">
         <Text>{t('Earn')}:</Text>
         <Text bold>{earnLabel}</Text>
-      </Flex>
+      </Flex> */}
       <CardActionsContainer farm={farm} account={account} addLiquidityUrl={addLiquidityUrl} />
       <Divider />
       <ExpandableSectionButton
