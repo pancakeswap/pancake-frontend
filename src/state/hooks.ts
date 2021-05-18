@@ -91,7 +91,7 @@ export const useFarmFromTokenSymbol = (tokenSymbol: string, preferredQuoteTokens
 export const useTokenPriceBusd = (pid: number): BigNumber => {
   const farm = useFarmFromPid(pid)
   const bnbPriceBusd = usePriceBnbBusd()
-  const quoteTokenFarm = useFarmFromTokenSymbol(farm.token.symbol)
+  const quoteTokenFarm = useFarmFromTokenSymbol(farm.quoteToken.symbol)
 
   if (farm.quoteToken.symbol === 'BUSD') {
     return farm.tokenPriceVsQuote ? new BigNumber(farm.tokenPriceVsQuote) : BIG_ZERO
