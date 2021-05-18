@@ -321,7 +321,7 @@
   "Enable": "Inschakelen",
   "Enabling": "Inschakelen",
   "%amount% CAKE": "%amount% CAKE",
-  "IFO Shopper: %title%": "IFO Shopper: %title%",
+  "IFO Shopper: %title%": "IFO-shopper: %title%",
   "%num% of total": "%num% van totaal",
   "All estimated rates take into account this pool's %fee%% performance fee": "De uitvoeringskosten van %fee%% van deze pool zijn opgenomen in alle geschatte tarieven",
   "Sorry, you didn’t contribute enough LP tokens to meet the minimum threshold. You didn’t buy anything in this sale, but you can still reclaim your LP tokens.": "Sorry, je hebt niet genoeg LP-tokens bijgedragen om de minimumdrempel te halen. Je hebt niet gekocht deze verkoop, maar je kunt wel je LP-tokens terugvragen.",
@@ -424,5 +424,6 @@
   "Max. Committed": "Max. Committed",
   "Total committed:": "Total committed:",
   "Additional fee:": "Additional fee:",
-  "Learn more about %symbol%": "Learn more about %symbol%"
+  "Learn more about %symbol%": "Learn more about %symbol%",
+  "Earned since your last action": "Earned since your last action"
 }

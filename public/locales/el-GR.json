@@ -338,8 +338,8 @@
   "Calculating": "Υπολογίζει",
   "Next": "Επόμενο",
   "Later": "Αργότερα",
-  "Up": "Πάνω",
-  "Down": "Κάτω",
+  "Up": "Σε άνοδο",
+  "Down": "Σε πτώση",
   "%multiplier% Payout": "%multiplier% πληρωμή",
   "Enter %direction%": "Εισαγάγετε %direction%",
   "Prize Pool:": "Έπαθλο δεξαμενής:",
@@ -424,5 +424,6 @@
   "Max. Committed": "Max. Committed",
   "Total committed:": "Total committed:",
   "Additional fee:": "Additional fee:",
-  "Learn more about %symbol%": "Learn more about %symbol%"
+  "Learn more about %symbol%": "Learn more about %symbol%",
+  "Earned since your last action": "Earned since your last action"
 }

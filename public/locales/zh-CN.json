@@ -336,10 +336,10 @@
   "Sort by": "排序依据",
   "Expired": "已过期",
   "Calculating": "正在计算",
-  "Next": "Next",
+  "Next": "下一个",
   "Later": "Later",
-  "Up": "Up",
-  "Down": "Down",
+  "Up": "上升",
+  "Down": "下降",
   "%multiplier% Payout": "%multiplier% 支出",
   "Enter %direction%": "输入 %direction%",
   "Prize Pool:": "奖金池：",
@@ -424,5 +424,6 @@
   "Max. Committed": "Max. Committed",
   "Total committed:": "Total committed:",
   "Additional fee:": "Additional fee:",
-  "Learn more about %symbol%": "Learn more about %symbol%"
+  "Learn more about %symbol%": "Learn more about %symbol%",
+  "Earned since your last action": "Earned since your last action"
 }
