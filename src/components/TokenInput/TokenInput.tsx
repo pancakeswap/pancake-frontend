@@ -17,7 +17,7 @@ const TokenInput: React.FC<TokenInputProps> = ({ max, symbol, onChange, onSelect
     <Box>
       <Flex justifyContent="flex-end" minHeight="21px" mb="8px">
         <Text color="primary" fontSize="14px">
-          {max.toLocaleString()} {symbol} {t('Available')}
+          {t('%max% %symbol% Available', { max: max.toLocaleString(), symbol })}
         </Text>
       </Flex>
       <Flex alignItems="center">

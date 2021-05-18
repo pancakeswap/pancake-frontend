@@ -15,7 +15,7 @@ const ApyButton: React.FC<ApyButtonProps> = ({ lpLabel, cakePrice, apr, addLiqui
   const { t } = useTranslation()
   const [onPresentApyModal] = useModal(
     <ApyCalculatorModal
-      linkLabel={`${t('Get')} ${lpLabel}`}
+      linkLabel={t('Get %symbol%', { symbol: lpLabel })}
       tokenPrice={cakePrice.toNumber()}
       apr={apr}
       linkHref={addLiquidityUrl}

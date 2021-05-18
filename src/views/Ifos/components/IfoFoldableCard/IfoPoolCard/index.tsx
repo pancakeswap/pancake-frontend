@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from 'contexts/Localization'
 import { Card, CardBody, CardHeader, Text, useTooltip, HelpIcon, Flex } from '@pancakeswap/uikit'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { useProfile } from 'state/hooks'
@@ -36,9 +37,10 @@ const cardConfig: CardConfig = {
 }
 
 const SmallCard: React.FC<IfoCardProps> = ({ poolId, ifo, publicIfoData, walletIfoData }) => {
+  const { t } = useTranslation()
   const config = cardConfig[poolId]
   const { hasProfile, isLoading: isProfileLoading } = useProfile()
-  const { targetRef, tooltip, tooltipVisible } = useTooltip(config.tooltip, { placement: 'bottom' })
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(t(config.tooltip), { placement: 'bottom' })
 
   const isLoading = isProfileLoading || publicIfoData.status === 'idle'
 

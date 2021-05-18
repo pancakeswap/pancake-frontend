@@ -17,7 +17,7 @@ const UnstakingFeeCountdownRow = () => {
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <>
       <Text bold mb="4px">
-        {t(`Unstaking fee: %fee%%`, { fee: feeAsDecimal })}
+        {t('Unstaking fee: %fee%%', { fee: feeAsDecimal })}
       </Text>
       <Text>
         {t(
@@ -41,7 +41,7 @@ const UnstakingFeeCountdownRow = () => {
 
   const getRowText = () => {
     if (noFeeToPay) {
-      return t('unstaking fee')
+      return t('Unstaking fee').toLowerCase()
     }
     if (shouldShowTimer) {
       return t('unstaking fee until')

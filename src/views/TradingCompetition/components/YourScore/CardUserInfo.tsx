@@ -175,7 +175,7 @@ const CardUserInfo: React.FC<YourScoreProps> = ({
                 <UserRankBox
                   flex="1"
                   title={t('Rank in team').toUpperCase()}
-                  footer={`${t(`#${userLeaderboardInformation && global.toLocaleString()} Overall`)}`}
+                  footer={userLeaderboardInformation ? t('#%global% Overall', { global: global.toLocaleString() }) : ''}
                   mr={[0, '8px']}
                   mb={['8px', 0]}
                 >
@@ -213,8 +213,8 @@ const CardUserInfo: React.FC<YourScoreProps> = ({
                 // If user is first
                 <NextRankBox
                   flex="2"
-                  title={`${t('Your tier: gold').toUpperCase()}`}
-                  footer={`${t('Love, The Chefs x')}`}
+                  title={t('Your tier: gold').toUpperCase()}
+                  footer={t('Love, The Chefs x')}
                   currentMedal={medal.current}
                   hideArrow
                 >
@@ -224,7 +224,7 @@ const CardUserInfo: React.FC<YourScoreProps> = ({
                 <NextRankBox
                   flex="2"
                   title={`${t('Next tier').toUpperCase()}: ${nextTier.color}`}
-                  footer={`${t('to become')} #${nextTier.rank} ${t('in team')}`}
+                  footer={t('to become #%rank% in team', { rank: nextTier.rank })}
                   currentMedal={medal.current}
                   nextMedal={medal.next}
                 >

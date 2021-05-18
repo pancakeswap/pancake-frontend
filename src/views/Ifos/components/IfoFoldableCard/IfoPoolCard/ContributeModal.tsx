@@ -84,7 +84,7 @@ const ContributeModal: React.FC<Props> = ({
   })()
 
   return (
-    <Modal title={`Contribute ${currency.symbol}`} onDismiss={onDismiss}>
+    <Modal title={t('Contribute %symbol%', { symbol: currency.symbol })} onDismiss={onDismiss}>
       <ModalBody maxWidth="320px">
         {limitPerUserInLP.isGreaterThan(0) && (
           <Flex justifyContent="space-between" mb="16px">
@@ -93,7 +93,7 @@ const ContributeModal: React.FC<Props> = ({
           </Flex>
         )}
         <Flex justifyContent="space-between" mb="8px">
-          <Text>{t('Commit:')}</Text>
+          <Text>{t('Commit')}:</Text>
           <Flex flexGrow={1} justifyContent="flex-end">
             <Image
               src={`/images/farms/${currency.symbol.split(' ')[0].toLocaleLowerCase()}.svg`}
@@ -111,7 +111,9 @@ const ContributeModal: React.FC<Props> = ({
           mb="8px"
         />
         <Text color="textSubtle" textAlign="right" fontSize="12px" mb="16px">
-          Balance: {formatNumber(getBalanceNumber(userCurrencyBalance, currency.decimals), 2, 5)}
+          {t('Balance: %balance%', {
+            balance: formatNumber(getBalanceNumber(userCurrencyBalance, currency.decimals), 2, 5),
+          })}
         </Text>
         <Flex justifyContent="space-between" mb="16px">
           {multiplierValues.map((multiplierValue, index) => (
@@ -122,7 +124,7 @@ const ContributeModal: React.FC<Props> = ({
               onClick={() => setValue(getBalanceNumber(maximumLpCommitable.times(multiplierValue)).toString())}
               mr={index < multiplierValues.length - 1 ? '8px' : 0}
             >
-              {t(`${multiplierValue * 100}%`)}
+              {multiplierValue * 100}%
             </Button>
           ))}
         </Flex>

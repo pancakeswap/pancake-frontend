@@ -20,17 +20,17 @@ const NotEnoughTokensModal: React.FC<NotEnoughTokensModalProps> = ({ tokenSymbol
 
   return (
     <Modal
-      title={`${tokenSymbol} ${t('required')}`}
+      title={t('%symbol% required', { symbol: tokenSymbol })}
       onDismiss={onDismiss}
       headerBackground={theme.colors.gradients.cardHeader}
     >
       <Text color="failure" bold>
-        {t('Insufficient %tokensymbol% balance', { tokensymbol: tokenSymbol })}
+        {t('Insufficient %symbol% balance', { symbol: tokenSymbol })}
       </Text>
-      <Text mt="24px">{t(`You’ll need %tokensymbol% to stake in this pool!`, { tokensymbol: tokenSymbol })}</Text>
+      <Text mt="24px">{t('You’ll need %symbol% to stake in this pool!', { symbol: tokenSymbol })}</Text>
       <Text>
-        {t(`Buy some %tokensymbol%, or make sure your %tokensymbol% isn’t in another pool or LP.`, {
-          tokensymbol: tokenSymbol,
+        {t('Buy some %symbol%, or make sure your %symbol% isn’t in another pool or LP.', {
+          symbol: tokenSymbol,
         })}
       </Text>
       <Button mt="24px" as="a" external href={BASE_EXCHANGE_URL}>
@@ -43,7 +43,7 @@ const NotEnoughTokensModal: React.FC<NotEnoughTokensModalProps> = ({ tokenSymbol
         </Button>
       </StyledLink>
       <Button variant="text" onClick={onDismiss}>
-        {t('Close window')}
+        {t('Close Window')}
       </Button>
     </Modal>
   )

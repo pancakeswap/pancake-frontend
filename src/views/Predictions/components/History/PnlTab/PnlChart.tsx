@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from 'contexts/Localization'
 import { Text } from '@pancakeswap/uikit'
 import { SVG, WonSlice, LostSlice, Wrapper, Info } from './PnlChartStyles'
 
@@ -16,6 +17,7 @@ interface PnlChartProps {
 const CIRCUMFERENCE = 339.292
 
 const PnlChart: React.FC<PnlChartProps> = ({ lost, won }) => {
+  const { t } = useTranslation()
   const percentageWon = ((won * 100) / (lost + won)).toFixed(2)
   const paintLost = (lost / (won + lost)) * CIRCUMFERENCE
   const paintWon = CIRCUMFERENCE - paintLost
@@ -27,7 +29,7 @@ const PnlChart: React.FC<PnlChartProps> = ({ lost, won }) => {
       </SVG>
       <Info>
         <Text small lineHeight="1">
-          Won
+          {t('Won')}
         </Text>
         <Text bold fontSize="20px" lineHeight="1">
           {won}/{won + lost}

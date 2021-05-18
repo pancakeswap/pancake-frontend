@@ -40,7 +40,7 @@ const Farm: React.FunctionComponent<FarmProps> = ({ image, label, pid }) => {
     if (rawStakedBalance) {
       return (
         <Text color="secondary" fontSize="12px" bold>
-          {t('FARMING')}
+          {t('Farming').toUpperCase()}
         </Text>
       )
     }

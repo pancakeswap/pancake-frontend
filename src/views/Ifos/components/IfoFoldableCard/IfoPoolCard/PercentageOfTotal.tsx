@@ -18,7 +18,7 @@ const PercentageOfTotal: React.FC<PercentageOfTotalProps> = ({ userAmount, total
 
   return (
     <Text fontSize="14px" color="textSubtle" {...props}>
-      {t(`%num% of total`, { num: percentOfUserDisplay })}
+      {t('%num% of total', { num: percentOfUserDisplay })}
     </Text>
   )
 }

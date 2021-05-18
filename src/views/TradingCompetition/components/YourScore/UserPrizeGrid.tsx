@@ -30,7 +30,7 @@ const UserPrizeGrid: React.FC<{ userTradingInformation?: UserTradingInformationP
     <StyledPrizeTable>
       <StyledThead>
         <tr>
-          <th>{t('CAKE Prizes ')}</th>
+          <th>{t('CAKE Prizes')}</th>
           <th>{t('Achievements')}</th>
           <th>{t('NFT')}</th>
         </tr>
@@ -51,7 +51,7 @@ const UserPrizeGrid: React.FC<{ userTradingInformation?: UserTradingInformationP
               {teamPlayer && <TeamPlayerIcon mr={[0, '4px']} />}
               <TrophyGoldIcon mr={[0, '4px']} />
               <Text fontSize="12px" color="textSubtle">
-                + {userPointReward} {t('points')}
+                + {userPointReward} {t('Points').toLowerCase()}
               </Text>
             </Flex>
           </Td>

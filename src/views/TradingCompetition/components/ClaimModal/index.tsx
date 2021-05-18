@@ -53,7 +53,7 @@ const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, use
         onClaimSuccess()
       })
       .on('error', (error) => {
-        toastError('Error', error?.message)
+        toastError(t('Error'), error?.message)
         setIsConfirming(false)
       })
   }

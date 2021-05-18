@@ -31,7 +31,7 @@ const ProfileHeader = () => {
         </div>
         {canClaim && (
           <Button variant="tertiary" onClick={onPresentClaimGiftModal} startIcon={<Won />}>
-            {t("You've got a gift to claim!")}
+            {t('You’ve got a gift to claim!')}
           </Button>
         )}
       </Flex>

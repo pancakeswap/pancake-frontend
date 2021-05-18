@@ -57,18 +57,18 @@ const ConfirmProfileCreationModal: React.FC<Props> = ({
       onSuccess: async () => {
         await dispatch(fetchProfile(account))
         onDismiss()
-        toastSuccess('Profile created!')
+        toastSuccess(t('Profile created!'))
       },
     })
 
   return (
-    <Modal title="Complete Profile" onDismiss={onDismiss}>
+    <Modal title={t('Complete Profile')} onDismiss={onDismiss}>
       <Text color="textSubtle" mb="8px">
         {t('Submitting NFT to contract and confirming User Name and Team.')}
       </Text>
       <Flex justifyContent="space-between" mb="16px">
         <Text>{t('Cost')}</Text>
-        <Text>{t(`${REGISTER_COST} CAKE`, { num: REGISTER_COST })}</Text>
+        <Text>{t('%num% CAKE', { num: REGISTER_COST })}</Text>
       </Flex>
       <ApproveConfirmButtons
         isApproveDisabled={isConfirmed || isConfirming || isApproved}

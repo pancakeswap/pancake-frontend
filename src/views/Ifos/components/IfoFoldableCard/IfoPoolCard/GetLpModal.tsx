@@ -12,7 +12,7 @@ interface Props {
 const GetLpModal: React.FC<Partial<Props>> = ({ currency, onDismiss }) => {
   const { t } = useTranslation()
   return (
-    <Modal title="LP Tokens required" onDismiss={onDismiss}>
+    <Modal title={t('LP Tokens required')} onDismiss={onDismiss}>
       <ModalBody maxWidth="288px">
         <Image
           src={`/images/farms/${currency.symbol.split(' ')[0].toLocaleLowerCase()}.svg`}
@@ -21,13 +21,7 @@ const GetLpModal: React.FC<Partial<Props>> = ({ currency, onDismiss }) => {
           margin="auto"
           mb="24px"
         />
-        <Text mb="16px">
-          You’ll need{' '}
-          <Text as="span" bold>
-            CAKE-BNB LP
-          </Text>{' '}
-          tokens to participate in the IFO!
-        </Text>
+        <Text mb="16px">{t('You’ll need CAKE-BNB LP tokens to participate in the IFO!')}</Text>
         <Text mb="24px">{t('Get LP tokens, or make sure your tokens aren’t staked somewhere else.')}</Text>
         <Button
           as={Link}

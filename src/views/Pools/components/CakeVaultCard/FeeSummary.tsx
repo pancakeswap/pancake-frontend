@@ -19,7 +19,7 @@ const FeeSummary: React.FC<FeeSummaryProps> = ({ stakingTokenSymbol, stakeAmount
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <>
       <Text bold mb="4px">
-        {t(`Unstaking fee: %fee%%`, { fee: feeAsDecimal })}
+        {t('Unstaking fee: %fee%%', { fee: feeAsDecimal })}
       </Text>
       <Text>
         {t(

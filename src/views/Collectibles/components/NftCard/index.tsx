@@ -107,7 +107,7 @@ const NftCard: React.FC<NftCardProps> = ({ nft, canClaim = false, tokenIds = [],
         {isOpen && (
           <InfoBlock>
             <Text as="p" color="textSubtle" style={{ textAlign: 'center' }}>
-              {description}
+              {t(description)}
             </Text>
           </InfoBlock>
         )}

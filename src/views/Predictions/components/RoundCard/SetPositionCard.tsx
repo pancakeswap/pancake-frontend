@@ -59,13 +59,13 @@ const getPercentDisplay = (percentage: number) => {
 
 const getButtonProps = (value: BigNumber, bnbBalance: BigNumber, minBetAmountBalance: number) => {
   if (bnbBalance.eq(0)) {
-    return { id: 999, fallback: 'Insufficient BNB balance', disabled: true }
+    return { key: 'Insufficient BNB balance', disabled: true }
   }
 
   if (value.eq(0) || value.isNaN()) {
-    return { id: 999, fallback: 'Enter an amount', disabled: true }
+    return { key: 'Enter an amount', disabled: true }
   }
-  return { id: 464, fallback: 'Confirm', disabled: value.lt(minBetAmountBalance) }
+  return { key: 'Confirm', disabled: value.lt(minBetAmountBalance) }
 }
 
 const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosition, onBack, onSuccess }) => {
@@ -120,7 +120,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
     swiper.attachEvents()
   }
 
-  const { fallback, disabled } = getButtonProps(valueAsBn, bnbBalance, minBetAmountBalance)
+  const { key, disabled } = getButtonProps(valueAsBn, bnbBalance, minBetAmountBalance)
 
   const handleEnterPosition = () => {
     const betMethod = position === BetPosition.BULL ? 'betBull' : 'betBear'
@@ -138,7 +138,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
       .once('error', (error) => {
         const errorMsg = t('An error occurred, unable to enter your position')
 
-        toastError('Error!', error?.message)
+        toastError(t('Error'), error?.message)
         setIsTxPending(false)
         console.error(errorMsg, error)
       })
@@ -150,10 +150,10 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
     const hasSufficientBalance = bnValue.gt(0) && bnValue.lte(maxBalance)
 
     if (!hasSufficientBalance) {
-      setErrorMessage({ id: 999, fallback: 'Insufficient BNB balance' })
+      setErrorMessage({ key: 'Insufficient BNB balance' })
     } else if (bnValue.gt(0) && bnValue.lt(minBetAmountBalance)) {
       setErrorMessage({
-        fallback: 'A minimum amount of %num% %token% is required',
+        key: 'A minimum amount of %num% %token% is required',
         data: { num: minBetAmountBalance, token: 'BNB' },
       })
     } else {
@@ -196,11 +196,11 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
         />
         {showFieldWarning && (
           <Text color="failure" fontSize="12px" mt="4px" textAlign="right">
-            {t(errorMessage.fallback, errorMessage.data)}
+            {t(errorMessage.key, errorMessage.data)}
           </Text>
         )}
         <Text textAlign="right" mb="16px" color="textSubtle" fontSize="12px" style={{ height: '18px' }}>
-          {account && t(`Balance: ${balanceDisplay}`, { num: balanceDisplay })}
+          {account && t('Balance: %balance%', { balance: balanceDisplay })}
         </Text>
         <Slider
           name="balance"
@@ -245,14 +245,14 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
               isLoading={isTxPending}
               endIcon={isTxPending ? <AutoRenewIcon color="currentColor" spin /> : null}
             >
-              {t(fallback)}
+              {t(key)}
             </Button>
           ) : (
             <UnlockButton width="100%" />
           )}
         </Box>
         <Text as="p" fontSize="12px" lineHeight={1} color="textSubtle">
-          {t("You won't be able to remove or change your position once you enter it.")}
+          {t('You won’t be able to remove or change your position once you enter it.')}
         </Text>
       </CardBody>
     </Card>

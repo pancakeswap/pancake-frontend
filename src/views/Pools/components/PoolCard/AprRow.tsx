@@ -74,7 +74,7 @@ const AprRow: React.FC<AprRowProps> = ({
     <ApyCalculatorModal
       tokenPrice={earningTokenPrice}
       apr={apr}
-      linkLabel={`${t('Get')} ${stakingToken.symbol}`}
+      linkLabel={t('Get %symbol%', { symbol: stakingToken.symbol })}
       linkHref={apyModalLink || BASE_EXCHANGE_URL}
       earningTokenSymbol={earningToken.symbol}
       roundingDecimals={isHighValueToken ? 4 : 2}

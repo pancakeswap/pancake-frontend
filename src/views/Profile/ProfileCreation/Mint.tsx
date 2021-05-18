@@ -53,7 +53,7 @@ const Mint: React.FC = () => {
   return (
     <>
       <Text fontSize="20px" color="textSubtle" bold>
-        {t(`Step ${1}`)}
+        {t('Step %num%', { num: 1 })}
       </Text>
       <Heading as="h3" scale="xl" mb="24px">
         {t('Get Starter Collectible')}
@@ -72,7 +72,7 @@ const Mint: React.FC = () => {
             {t('Choose wisely: you can only ever make one starter collectible!')}
           </Text>
           <Text as="p" mb="24px" color="textSubtle">
-            {t(`Cost: ${MINT_COST} CAKE`, { num: MINT_COST })}
+            {t('Cost: %num% CAKE', { num: MINT_COST })}
           </Text>
           {nfts.map((nft) => {
             const handleChange = (value: string) => setVariationId(Number(value))

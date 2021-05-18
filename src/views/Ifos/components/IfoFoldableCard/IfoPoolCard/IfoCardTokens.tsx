@@ -73,7 +73,9 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
             <Label>{t('On sale')}</Label>
             <Value>{ifo[poolId].saleAmount}</Value>
           </TokenSection>
-          <Text fontSize="14px" color="textSubtle" pl="48px">{`${distributionRatio}% of total sale`}</Text>
+          <Text fontSize="14px" color="textSubtle" pl="48px">
+            {t('%ratio%% of total sale', { ratio: distributionRatio })}
+          </Text>
         </>
       )
     }
@@ -81,7 +83,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
       return (
         <>
           <TokenSection img="/images/farms/cake-bnb.svg" mb="24px">
-            <Label>{`Your ${currency.symbol} committed`}</Label>
+            <Label>{t('Your %symbol% committed', { symbol: currency.symbol })}</Label>
             <Value>{getBalanceNumber(userPoolCharacteristics.amountTokenCommittedInLP, currency.decimals)}</Value>
             <PercentageOfTotal
               userAmount={userPoolCharacteristics.amountTokenCommittedInLP}
@@ -89,7 +91,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
             />
           </TokenSection>
           <TokenSection img={tokenImage}>
-            <Label>{`${token.symbol} to receive`}</Label>
+            <Label>{t('%symbol% to receive', { symbol: token.symbol })}</Label>
             <Value>{getBalanceNumber(userPoolCharacteristics.offeringAmountInToken, token.decimals)}</Value>
           </TokenSection>
         </>
@@ -104,7 +106,9 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
       ) : (
         <>
           <TokenSection img="/images/farms/cake-bnb.svg" mb="24px">
-            <Label>{hasClaimed ? `Your ${currency.symbol} RECLAIMED` : `Your ${currency.symbol} TO RECLAIM`}</Label>
+            <Label>
+              {t(hasClaimed ? 'Your %symbol% RECLAIMED' : 'Your %symbol% TO RECLAIM', { symbol: currency.symbol })}
+            </Label>
             <Flex alignItems="center">
               <Value>{getBalanceNumber(userPoolCharacteristics.refundingAmountInLP, currency.decimals)}</Value>
               {hasClaimed && <CheckmarkCircleIcon color="success" ml="8px" />}
@@ -115,7 +119,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
             />
           </TokenSection>
           <TokenSection img={tokenImage}>
-            <Label>{hasClaimed ? `${token.symbol} received` : `${token.symbol} to received`}</Label>
+            <Label> {t(hasClaimed ? '%symbol% received' : '%symbol% to received', { symbol: currency.symbol })}</Label>
             <Flex alignItems="center">
               <Value>{getBalanceNumber(userPoolCharacteristics.offeringAmountInToken, token.decimals)}</Value>
               {!hasClaimed && userPoolCharacteristics.offeringAmountInToken.isEqualTo(0) && (

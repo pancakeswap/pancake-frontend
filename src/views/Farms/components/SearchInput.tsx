@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react'
+import { useTranslation } from 'contexts/Localization'
 import { Input } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import debounce from 'lodash/debounce'
@@ -23,6 +24,7 @@ interface Props {
 }
 
 const SearchInput: React.FC<Props> = ({ onChange: onChangeCallback }) => {
+  const { t } = useTranslation()
   const [toggled, setToggled] = useState(false)
   const [searchText, setSearchText] = useState('')
 
@@ -42,7 +44,7 @@ const SearchInput: React.FC<Props> = ({ onChange: onChangeCallback }) => {
         <StyledInput
           value={searchText}
           onChange={onChange}
-          placeholder="Search farms"
+          placeholder={t('Search Farms')}
           onBlur={() => setToggled(false)}
         />
       </InputWrapper>

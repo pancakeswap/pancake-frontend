@@ -75,7 +75,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account, isAutoVa
   return (
     <ExpandedWrapper flexDirection="column">
       <Flex mb="2px" justifyContent="space-between" alignItems="center">
-        <Text small>{t('Total staked:')}</Text>
+        <Text small>{t('Total staked')}:</Text>
         <Flex alignItems="flex-start">
           {totalStaked ? (
             <>
@@ -104,7 +104,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account, isAutoVa
               <Skeleton width="54px" height="21px" />
             )}
             <Text ml="4px" color="primary" small>
-              {t('blocks')}
+              {t('Blocks').toLowerCase()}
             </Text>
             <TimerIcon ml="4px" color="primary" />
           </Flex>
@@ -148,7 +148,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account, isAutoVa
             onClick={() => registerToken(tokenAddress, earningToken.symbol, earningToken.decimals, imageSrc)}
           >
             <Text color="primary" fontSize="14px">
-              Add to Metamask
+              {t('Add to Metamask')}
             </Text>
             <MetamaskIcon ml="4px" />
           </Button>

@@ -49,7 +49,7 @@ const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({ pid, userD
     <ActionContainer>
       <ActionTitles>
         <Title>CAKE </Title>
-        <Subtle>{t('EARNED')}</Subtle>
+        <Subtle>{t('Earned').toUpperCase()}</Subtle>
       </ActionTitles>
       <ActionContent>
         <div>

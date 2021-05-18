@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from 'contexts/Localization'
 import styled from 'styled-components'
 import { Flex, Box, Text, Skeleton } from '@pancakeswap/uikit'
 import TeamPodiumIcon from './TeamPodiumIcon'
@@ -87,6 +88,7 @@ const StyledVolumeText = styled(Text)`
 `
 
 const Podium: React.FC<PodiumProps> = ({ teamsSortedByVolume }) => {
+  const { t } = useTranslation()
   const firstTeam = teamsSortedByVolume && teamsSortedByVolume[0]
   const secondTeam = teamsSortedByVolume && teamsSortedByVolume[1]
   const thirdTeam = teamsSortedByVolume && teamsSortedByVolume[2]
@@ -114,7 +116,7 @@ const Podium: React.FC<PodiumProps> = ({ teamsSortedByVolume }) => {
               <Skeleton width="77px" height="24px" />
             )}
             <Text fontSize="12px" color="textSubtle">
-              Volume
+              {t('Volume')}
             </Text>
           </StyledVolumeFlex>
           <StyledVolumeFlex>
@@ -124,7 +126,7 @@ const Podium: React.FC<PodiumProps> = ({ teamsSortedByVolume }) => {
               <Skeleton width="77px" height="24px" />
             )}
             <Text fontSize="12px" color="textSubtle">
-              Volume
+              {t('Volume')}
             </Text>
           </StyledVolumeFlex>
           <StyledVolumeFlex>
@@ -134,7 +136,7 @@ const Podium: React.FC<PodiumProps> = ({ teamsSortedByVolume }) => {
               <Skeleton width="77px" height="24px" />
             )}
             <Text fontSize="12px" color="textSubtle">
-              Volume
+              {t('Volume')}
             </Text>
           </StyledVolumeFlex>
         </Flex>

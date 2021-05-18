@@ -31,7 +31,7 @@ const getRibbonComponent = (status: IfoStatus, t: any) => {
   }
 
   if (status === 'live') {
-    return <CardRibbon variantColor="primary" ribbonPosition="left" text={t('LIVE!')} />
+    return <CardRibbon variantColor="primary" ribbonPosition="left" text={`${t('Live').toUpperCase()}!`} />
   }
 
   return null

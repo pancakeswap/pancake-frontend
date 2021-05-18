@@ -43,7 +43,7 @@ const ProfilePicture: React.FC = () => {
         setIsApproved(true)
       })
       .once('error', (error) => {
-        toastError('Error', error?.message)
+        toastError(t('Error'), error?.message)
         setIsApproving(false)
       })
   }
@@ -69,7 +69,7 @@ const ProfilePicture: React.FC = () => {
   return (
     <>
       <Text fontSize="20px" color="textSubtle" bold>
-        {t(`Step ${2}`)}
+        {t('Step %num%', { num: 2 })}
       </Text>
       <Heading as="h3" scale="xl" mb="24px">
         {t('Set Profile Picture')}
