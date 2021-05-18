@@ -35,6 +35,7 @@ const Achievement: React.FC<Props> = ({ ifo, publicIfoData }) => {
   const tokenName = ifo.token.symbol.toLowerCase()
   const campaignTitle = ifo.name
   const minLpForAchievement = MIN_DOLLAR_FOR_ACHIEVEMENT.div(publicIfoData.currencyPriceInUSD).toNumber()
+
   return (
     <Container>
       <Flex alignItems="center" flexGrow={1}>
@@ -51,11 +52,13 @@ const Achievement: React.FC<Props> = ({ ifo, publicIfoData }) => {
             </Flex>
           </Flex>
           <Text color="textSubtle" fontSize="12px">
-            {`Commit ~${minLpForAchievement} LP in total to earn!`}
+            {t('Commit ~%amount% LP in total to earn!', { amount: minLpForAchievement.toFixed(3) })}
           </Text>
         </Flex>
       </Flex>
-      <StyledLinkExternal href={ifo.articleUrl}>{`Learn more about ${campaignTitle}`}</StyledLinkExternal>
+      <StyledLinkExternal href={ifo.articleUrl}>
+        {t('Learn more about %title%', { title: campaignTitle })}
+      </StyledLinkExternal>
     </Container>
   )
 }

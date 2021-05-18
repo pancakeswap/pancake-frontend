@@ -424,5 +424,6 @@
   "Max. Committed": "Max. Committed",
   "Total committed:": "Total committed:",
   "Additional fee:": "Additional fee:",
-  "Learn more about %symbol%": "Learn more about %symbol%"
+  "Learn more about %symbol%": "Learn more about %symbol%",
+  "Earned since your last action": "Earned since your last action"
 }
