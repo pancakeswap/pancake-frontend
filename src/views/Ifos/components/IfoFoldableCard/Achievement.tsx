@@ -56,7 +56,9 @@ const Achievement: React.FC<Props> = ({ ifo, publicIfoData }) => {
           </Text>
         </Flex>
       </Flex>
-      <StyledLinkExternal href={ifo.articleUrl}>{`Learn more about ${campaignTitle}`}</StyledLinkExternal>
+      <StyledLinkExternal href={ifo.articleUrl}>
+        {t('Learn more about %title%', { title: campaignTitle })}
+      </StyledLinkExternal>
     </Container>
   )
 }
