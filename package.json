@@ -78,7 +78,6 @@
     "@types/react-redux": "^7.1.16",
     "@types/react-transition-group": "^4.4.1",
     "eslint": "^7.26.0",
-    "husky": "^4.3.5",
     "prettier": "^2.3.0",
     "source-map-explorer": "^2.5.2",
     "ts-node": "^9.1.1"
