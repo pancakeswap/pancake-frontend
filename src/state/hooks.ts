@@ -108,9 +108,6 @@ export const useTokenPriceBusd = (pid: number): BigNumber => {
   // we find the pBTC farm, pBTC - BNB
   // from the BNB - pBTC BUSD price, we can get the PNT - BUSD price
 
-  if (!quoteTokenFarm) {
-    debugger // eslint-disable-line
-  }
   if (quoteTokenFarm.quoteToken.symbol === 'wBNB') {
     const quoteTokenInBusd = bnbPriceBusd.gt(0) && bnbPriceBusd.times(quoteTokenFarm.tokenPriceVsQuote)
     return farm.tokenPriceVsQuote ? new BigNumber(farm.tokenPriceVsQuote).times(quoteTokenInBusd) : BIG_ZERO
