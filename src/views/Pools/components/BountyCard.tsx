@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import {
@@ -16,8 +16,7 @@ import {
 } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { getCakeAddress } from 'utils/addressHelpers'
-import { useCakeVault, useGetApiPrice } from 'state/hooks'
+import { useCakeVault, usePriceCakeBusd } from 'state/hooks'
 import Balance from 'components/Balance'
 import BountyModal from './BountyModal'
 
@@ -30,21 +29,17 @@ const StyledCard = styled(Card)`
 
 const BountyCard = () => {
   const { t } = useTranslation()
-  const [estimatedDollarBountyReward, setEstimatedDollarBountyReward] = useState(null)
   const {
     estimatedCakeBountyReward,
     totalPendingCakeHarvest,
     fees: { callFee },
   } = useCakeVault()
+  const cakePriceBusd = usePriceCakeBusd()
+  const cakePriceBusdAsNumber = cakePriceBusd.toNumber()
 
-  const cakePrice = useGetApiPrice(getCakeAddress())
-
-  useEffect(() => {
-    if (cakePrice && estimatedCakeBountyReward) {
-      const dollarValueofClaimableReward = new BigNumber(estimatedCakeBountyReward).multipliedBy(cakePrice)
-      setEstimatedDollarBountyReward(dollarValueofClaimableReward)
-    }
-  }, [cakePrice, estimatedCakeBountyReward])
+  const estimatedDollarBountyReward = useMemo(() => {
+    return new BigNumber(estimatedCakeBountyReward).multipliedBy(cakePriceBusdAsNumber)
+  }, [cakePriceBusdAsNumber, estimatedCakeBountyReward])
 
   const hasFetchedDollarBounty = estimatedDollarBountyReward && estimatedDollarBountyReward.gte(0)
   const hasFetchedCakeBounty = estimatedCakeBountyReward && estimatedCakeBountyReward.gte(0)

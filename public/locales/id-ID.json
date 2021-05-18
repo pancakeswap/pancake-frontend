@@ -311,7 +311,7 @@
   "Live": "Aktif",
   "Start": "Mulai",
   "Connect wallet to view": "Hubungkan dompet untuk melihatnya",
-  "Sorry, you needed to register during the “entry” period!": "Maaf, Anda perlu mendaftar selama masa \"percobaan\"!",
+  "Sorry, you needed to register during the “entry” period!": "Maaf, Anda perlu mendaftar selama masa \"entri\"!",
   "Check your Rank": "Periksa Peringkat Anda",
   "You’re not participating this time.": "Anda tidak berpartisipasi kali ini.",
   "Rank in team": "Peringkat dalam tim",
@@ -340,7 +340,7 @@
   "Later": "Nanti",
   "Up": "Naik",
   "Down": "Turun",
-  "%multiplier% Payout": "Pembayaran %multiplier%",
+  "%multiplier% Payout": "%multiplier% Pembayaran",
   "Enter %direction%": "Masukkan %direction%",
   "Prize Pool:": "Pool Hadiah:",
   "Charts": "Grafik",
@@ -354,9 +354,9 @@
   "Your Result": "Hasil Anda",
   "Your direction": "Arah Anda",
   "Your position": "Posisi Anda",
-  "Lose": "Hilang",
-  "Entry starts": "Entri mulai",
-  "Locked Price": "Harga Dikunci",
+  "Lose": "Kalah",
+  "Entry starts": "Entri dimulai dalam",
+  "Locked Price": "Harga Tutup",
   "Last Price": "Harga Terakhir",
   "Closed Price": "Harga Ditutup",
   "Win": "Menang",
@@ -424,5 +424,6 @@
   "Max. Committed": "Max. Committed",
   "Total committed:": "Total committed:",
   "Additional fee:": "Additional fee:",
-  "Learn more about %symbol%": "Learn more about %symbol%"
+  "Learn more about %symbol%": "Learn more about %symbol%",
+  "Earned since your last action": "Earned since your last action"
 }

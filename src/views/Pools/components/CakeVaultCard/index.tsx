@@ -4,8 +4,7 @@ import { Box, CardBody, Flex, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
 import UnlockButton from 'components/UnlockButton'
-import { getAddress } from 'utils/addressHelpers'
-import { useCakeVault, useGetApiPrice } from 'state/hooks'
+import { useCakeVault, usePriceCakeBusd } from 'state/hooks'
 import { Pool } from 'state/types'
 import AprRow from '../PoolCard/AprRow'
 import { StyledCard, StyledCardInner } from '../PoolCard/StyledCard'
@@ -31,11 +30,10 @@ const CakeVaultCard: React.FC<CakeVaultProps> = ({ pool, showStakedOnly }) => {
     userData: { userShares, isLoading: isVaultUserDataLoading },
     fees: { performanceFee },
   } = useCakeVault()
-  const { stakingToken } = pool
   //   Estimate & manual for now. 288 = once every 5 mins. We can change once we have a better sense of this
   const timesCompoundedDaily = 288
   const accountHasSharesStaked = userShares && userShares.gt(0)
-  const stakingTokenPrice = useGetApiPrice(stakingToken.address ? getAddress(stakingToken.address) : '')
+  const cakePriceBusd = usePriceCakeBusd()
   const isLoading = !pool.userData || isVaultUserDataLoading
   const performanceFeeAsDecimal = performanceFee && performanceFee / 100
 
@@ -56,7 +54,7 @@ const CakeVaultCard: React.FC<CakeVaultProps> = ({ pool, showStakedOnly }) => {
         <StyledCardBody isLoading={isLoading}>
           <AprRow
             pool={pool}
-            stakingTokenPrice={stakingTokenPrice}
+            stakingTokenPrice={cakePriceBusd.toNumber()}
             isAutoVault
             compoundFrequency={timesCompoundedDaily}
             performanceFee={performanceFeeAsDecimal}
@@ -69,12 +67,7 @@ const CakeVaultCard: React.FC<CakeVaultProps> = ({ pool, showStakedOnly }) => {
           </Box>
           <Flex mt="24px" flexDirection="column">
             {account ? (
-              <VaultCardActions
-                pool={pool}
-                stakingTokenPrice={stakingTokenPrice}
-                accountHasSharesStaked={accountHasSharesStaked}
-                isLoading={isLoading}
-              />
+              <VaultCardActions pool={pool} accountHasSharesStaked={accountHasSharesStaked} isLoading={isLoading} />
             ) : (
               <>
                 <Text mb="10px" textTransform="uppercase" fontSize="12px" color="textSubtle" bold>
