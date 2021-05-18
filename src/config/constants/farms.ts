@@ -38,18 +38,16 @@ const farms: FarmConfig[] = [
   /**
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
-  /* Commenting out until 0x
-  / {
-  /   pid: 382,
-  /    lpSymbol: 'UBXT-BUSD LP',
-  /    lpAddresses: {
-  /     97: '',
-  /    56: '0x81fef06b20ca041041e6defeb59f79ed87e7eb0d',
-  /   },
-  /    token: tokens.ubxt,
-  /   quoteToken: tokens.busd,
-  / },
-  */
+  {
+    pid: 383,
+    lpSymbol: 'UBXT-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0x8d3ff27d2ad6a9556b7c4f82f4d602d20114bc90',
+    },
+    token: tokens.ubxt,
+    quoteToken: tokens.busd,
+  },
   {
     pid: 381,
     lpSymbol: 'BTR-BUSD LP',
