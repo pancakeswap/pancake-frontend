@@ -18,7 +18,7 @@ export interface FarmWithStakedValue extends Farm {
   liquidity?: BigNumber
 }
 
-const AccentGradient = keyframes`  
+const AccentGradient = keyframes`
   0% {
     background-position: 50% 0%;
   }
@@ -140,8 +140,8 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed, cakePrice, account }
       <ExpandingWrapper expanded={showExpandableSection}>
         <DetailsSection
           removed={removed}
-          bscScanAddress={`https://bscscan.com/address/${farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]}`}
-          infoAddress={`https://pancakeswap.info/pair/${lpAddress}`}
+          bscScanAddress={`https://explorer-mainnet.maticvigil.com/address/${farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]}`}
+          infoAddress={`https://info.quickswap.exchange/pair/${lpAddress}`}
           totalValueFormatted={totalValueFormatted}
           lpLabel={lpLabel}
           addLiquidityUrl={addLiquidityUrl}

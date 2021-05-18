@@ -147,8 +147,8 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({
     tokenAddress: token.address,
   })
   const lpAddress = farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]
-  const bsc = `https://bscscan.com/address/${lpAddress}`
-  const info = `https://pancakeswap.info/pair/${lpAddress}`
+  const bsc = `https://explorer-mainnet.maticvigil.com/address/${lpAddress}`
+  const info = `https://info.quickswap.exchange/pair/${lpAddress}`
 
   return (
     <Container expanded={expanded}>
