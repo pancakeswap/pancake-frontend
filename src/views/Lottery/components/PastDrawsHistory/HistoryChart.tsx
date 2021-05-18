@@ -51,7 +51,7 @@ const HistoryChart: React.FC<HistoryChartProps> = ({ showLast }) => {
         label: 'Pool Size',
         data: getDataArray('poolSize'),
         yAxisID: 'y-axis-pool',
-        ...lineStyles({ color: '#8F80BA' }),
+        ...lineStyles({ color: '#7A6EAA' }),
       },
       {
         label: 'Burned',
@@ -62,7 +62,7 @@ const HistoryChart: React.FC<HistoryChartProps> = ({ showLast }) => {
     ],
   }
 
-  const axesStyles = ({ color, lineHeight }) => {
+  const axesStyles = ({ color, lineHeight, prefix = '' }) => {
     return {
       borderCapStyle: 'round',
       gridLines: { display: false },
@@ -75,7 +75,7 @@ const HistoryChart: React.FC<HistoryChartProps> = ({ showLast }) => {
         beginAtZero: true,
         autoSkipPadding: 15,
         userCallback: (value) => {
-          return value.toLocaleString()
+          return `${prefix}${value.toLocaleString()}`
         },
       },
     }
@@ -86,6 +86,32 @@ const HistoryChart: React.FC<HistoryChartProps> = ({ showLast }) => {
       tooltips: {
         mode: 'index',
         intersect: false,
+        cornerRadius: 16,
+        backgroundColor: '#27262c',
+        xPadding: 16,
+        yPadding: 16,
+        caretSize: 6,
+        titleFontFamily: 'Kanit, sans-serif',
+        titleFontSize: 16,
+        titleMarginBottom: 8,
+        bodyFontFamily: 'Kanit, sans-serif',
+        bodyFontSize: 16,
+        bodySpacing: 8,
+        beforeBody: '##',
+        callbacks: {
+          title: (tooltipItem) => {
+            return `${t('Round #%num%', { num: tooltipItem[0].label })}`
+          },
+          label: (tooltipItem) => {
+            return ` ${tooltipItem.yLabel.toLocaleString()} CAKE`
+          },
+          labelColor: (tooltipItem, chart) => {
+            return {
+              borderColor: chart.config.data.datasets[tooltipItem.datasetIndex].borderColor,
+              backgroundColor: chart.config.data.datasets[tooltipItem.datasetIndex].borderColor,
+            }
+          },
+        },
       },
       legend: { display: false },
       scales: {
@@ -94,7 +120,7 @@ const HistoryChart: React.FC<HistoryChartProps> = ({ showLast }) => {
             type: 'linear',
             position: 'left',
             id: 'y-axis-pool',
-            ...axesStyles({ color: '#8f80ba', lineHeight: 1.6 }),
+            ...axesStyles({ color: '#7A6EAA', lineHeight: 1.6 }),
           },
           {
             type: 'linear',
@@ -105,12 +131,12 @@ const HistoryChart: React.FC<HistoryChartProps> = ({ showLast }) => {
         ],
         xAxes: [
           {
-            ...axesStyles({ color: isDark ? '#FFFFFF' : '#452A7A', lineHeight: 1 }),
+            ...axesStyles({ color: isDark ? '#FFFFFF' : '#452A7A', lineHeight: 1, prefix: '#' }),
           },
         ],
       },
     }
-  }, [isDark])
+  }, [isDark, t])
 
   return (
     <>
