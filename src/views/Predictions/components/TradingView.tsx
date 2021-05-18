@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react'
 import { Box } from '@pancakeswap/uikit'
 import { DefaultTheme, useTheme } from 'styled-components'
-import { LanguageContext } from 'contexts/Localization/Provider';
+import { LanguageContext } from 'contexts/Localization/Provider'
 
 /**
  * When the script tag is injected the TradingView object is not immediately
@@ -39,7 +39,7 @@ const initializeTradingView = (TradingViewObj: any, theme: DefaultTheme, localeC
 }
 
 const TradingView = () => {
-  const { currentLanguage } = useContext(LanguageContext);
+  const { currentLanguage } = useContext(LanguageContext)
   const theme = useTheme()
 
   useEffect(() => {
