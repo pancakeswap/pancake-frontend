@@ -9,6 +9,13 @@ export const approve = async (lpContract, masterChefContract, account) => {
     .send({ from: account })
 }
 
+export const jarApprove = async (lpContract, jarContractAddress, account) => {
+  return lpContract.methods
+    .approve(jarContractAddress, ethers.constants.MaxUint256)
+    .send({ from: account })
+}
+
+
 export const stake = async (masterChefContract, pid, amount, account) => {
   if (pid === 0) {
     return masterChefContract.methods
@@ -30,7 +37,7 @@ export const stake = async (masterChefContract, pid, amount, account) => {
 export const depositJar = async (jarContract, amount, account) => {
   return jarContract.methods
     .deposit(new BigNumber(amount).times(DEFAULT_TOKEN_DECIMAL).toString())
-    .send({ from: account, gas: 200000 })
+    .send({ from: account, gas: 500000 })
     .on('transactionHash', (tx) => {
       return tx.transactionHash
     })
@@ -74,8 +81,8 @@ export const unstake = async (masterChefContract, pid, amount, account) => {
 
 export const withdrawalJar = async (jarContract, amount, account) => {
   return jarContract.methods
-    .withdrawal(new BigNumber(amount).times(DEFAULT_TOKEN_DECIMAL).toString())
-    .send({ from: account, gas: 200000 })
+    .withdraw(new BigNumber(amount).times(DEFAULT_TOKEN_DECIMAL).toString())
+    .send({ from: account, gas: 300000 })
     .on('transactionHash', (tx) => {
       return tx.transactionHash
     })

@@ -72,7 +72,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
   const lpContract = getBep20Contract(lpAddress, web3)
   const jarContract = getBep20Contract(jarAddress, web3)
 
-  const { onApprove } = useApprove(lpContract, jarContract)
+  const { onApprove } = useApprove(lpContract, jarAddress)
 
   const handleApprove = useCallback(async () => {
     try {

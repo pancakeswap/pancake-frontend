@@ -9,20 +9,20 @@ import { approve } from 'utils/callHelpers'
 // import { useMasterchef } from './useContract'
 
 // Approve a Farm
-export const useApprove = (lpContract: Contract, jarContract: Contract) => {
+export const useApprove = (lpContract: Contract, jarContractAddress) => {
   const dispatch = useAppDispatch()
   const { account } = useWeb3React()
 //  const masterChefContract = useMasterchef()
 
   const handleApprove = useCallback(async () => {
     try {
-      const tx = await approve(lpContract, jarContract, account)
+      const tx = await approve(lpContract, jarContractAddress, account)
       dispatch(fetchFarmUserDataAsync(account))
       return tx
     } catch (e) {
       return false
     }
-  }, [account, dispatch, lpContract, jarContract])
+  }, [account, dispatch, lpContract, jarContractAddress])
 
   return { onApprove: handleApprove }
 }
