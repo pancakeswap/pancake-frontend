@@ -1326,6 +1326,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://www.bitrue.com/',
   },
+  ubxt: {
+    symbol: 'UBXT',
+    address: {
+      56: '0xbbeb90cfb6fafa1f69aa130b7341089abeef5811',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://upbots.com/',
+  },
 }
 
 export default tokens
