@@ -149,16 +149,6 @@ const farms: FarmConfig[] = [
     quoteToken: tokens.wbnb,
   },
   {
-    pid: 372,
-    lpSymbol: 'KUN-QSD LP',
-    lpAddresses: {
-      97: '',
-      56: '0x4eafbf68a2d50291ffd163d4e00ad0f040aae707',
-    },
-    token: tokens.kun,
-    quoteToken: tokens.qsd,
-  },
-  {
     pid: 373,
     lpSymbol: 'KUN-BUSD LP',
     lpAddresses: {
@@ -167,6 +157,16 @@ const farms: FarmConfig[] = [
     },
     token: tokens.kun,
     quoteToken: tokens.busd,
+  },
+  {
+    pid: 372,
+    lpSymbol: 'KUN-QSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0x4eafbf68a2d50291ffd163d4e00ad0f040aae707',
+    },
+    token: tokens.kun,
+    quoteToken: tokens.qsd,
   },
   {
     pid: 371,
