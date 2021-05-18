@@ -12,6 +12,7 @@ const Wrapper = styled.div`
 const TextWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
 `
 
 const StyledText = styled(Text)`
