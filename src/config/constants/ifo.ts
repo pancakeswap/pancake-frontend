@@ -11,7 +11,7 @@ const cakeBnbLpToken: Token = {
 const ifos: Ifo[] = [
   {
     id: 'hotcross',
-    address: '0x0fdd82987b724eC32C6f1Add369ec8DFe3C77e0a',
+    address: '0xb664cdbe385656F8c54031c0CB12Cea55b584b63',
     isActive: true,
     name: 'Hot Cross (HOTCROSS)',
     poolBasic: {
