@@ -47,7 +47,7 @@ const IfoCardActions: React.FC<Props> = ({ poolId, ifo, publicIfoData, walletIfo
         !userPoolCharacteristics.hasClaimed &&
         (userPoolCharacteristics.offeringAmountInToken.isGreaterThan(0) ||
           userPoolCharacteristics.refundingAmountInLP.isGreaterThan(0)) && (
-          <ClaimButton poolId={poolId} walletIfoData={walletIfoData} />
+          <ClaimButton poolId={poolId} ifoVersion={ifo.version} walletIfoData={walletIfoData} />
         )}
     </>
   )
