@@ -425,5 +425,7 @@
   "Total committed:": "Total committed:",
   "Additional fee:": "Additional fee:",
   "Learn more about %symbol%": "Learn more about %symbol%",
-  "Earned since your last action": "Earned since your last action"
+  "Earned since your last action": "Earned since your last action",
+  "Commit ~%amount% LP in total to earn!": "Commit ~%amount% LP in total to earn!",
+  "Learn more about %title%": "Learn more about %title%"
 }
