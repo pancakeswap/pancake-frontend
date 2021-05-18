@@ -170,12 +170,19 @@ const Farms: React.FC = () => {
   const farmsList = useCallback(
     (farmsToDisplay: Farm[]): FarmWithStakedValue[] => {
       let farmsToDisplayWithAPR: FarmWithStakedValue[] = farmsToDisplay.map((farm) => {
+/* DZ Hack
         if (!farm.lpTotalInQuoteToken || !prices) {
           return farm
         }
 
         const quoteTokenPriceUsd = prices[getAddress(farm.quoteToken.address).toLowerCase()]
         const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(quoteTokenPriceUsd)
+        const apr = isActive ? getFarmApr(farm.poolWeight, cakePrice, totalLiquidity) : 0
+*/
+        if (!farm.lpTotalInQuoteToken) {
+          return farm
+        }
+        const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken)
         const apr = isActive ? getFarmApr(farm.poolWeight, cakePrice, totalLiquidity) : 0
 
         return { ...farm, apr, liquidity: totalLiquidity }
@@ -189,7 +196,8 @@ const Farms: React.FC = () => {
       }
       return farmsToDisplayWithAPR
     },
-    [cakePrice, prices, query, isActive],
+//    [cakePrice, prices, query, isActive],
+    [cakePrice, query, isActive],
   )
 
   const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
