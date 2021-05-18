@@ -27,6 +27,15 @@ export const stake = async (masterChefContract, pid, amount, account) => {
     })
 }
 
+export const depositJar = async (jarContract, amount, account) => {
+  return jarContract.methods
+    .deposit(new BigNumber(amount).times(DEFAULT_TOKEN_DECIMAL).toString())
+    .send({ from: account, gas: 200000 })
+    .on('transactionHash', (tx) => {
+      return tx.transactionHash
+    })
+}
+
 export const sousStake = async (sousChefContract, amount, decimals = 18, account) => {
   return sousChefContract.methods
     .deposit(new BigNumber(amount).times(BIG_TEN.pow(decimals)).toString())

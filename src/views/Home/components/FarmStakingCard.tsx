@@ -3,10 +3,10 @@ import styled from 'styled-components'
 import { Heading, Card, CardBody, Button } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'contexts/Localization'
-import { useAllHarvest } from 'hooks/useHarvest'
+// import { useAllHarvest } from 'hooks/useHarvest'
 import useFarmsWithBalance from 'hooks/useFarmsWithBalance'
 import UnlockButton from 'components/UnlockButton'
-import CakeHarvestBalance from './CakeHarvestBalance'
+// import CakeHarvestBalance from './CakeHarvestBalance'
 import CakeWalletBalance from './CakeWalletBalance'
 
 const StyledFarmStakingCard = styled(Card)`
@@ -40,7 +40,7 @@ const FarmedStakingCard = () => {
   const farmsWithBalance = useFarmsWithBalance()
   const balancesWithValue = farmsWithBalance.filter((balanceType) => balanceType.balance.toNumber() > 0)
 
-  const { onReward } = useAllHarvest(balancesWithValue.map((farmWithBalance) => farmWithBalance.pid))
+/*  const { onReward } = useAllHarvest(balancesWithValue.map((farmWithBalance) => farmWithBalance.pid))
 
   const harvestAllFarms = useCallback(async () => {
     setPendingTx(true)
@@ -52,6 +52,7 @@ const FarmedStakingCard = () => {
       setPendingTx(false)
     }
   }, [onReward])
+*/
 
   return (
     <StyledFarmStakingCard>
@@ -60,15 +61,15 @@ const FarmedStakingCard = () => {
           {t('Farms & Staking')}
         </Heading>
         <CardImage src="/images/cake.svg" alt="cake logo" width={64} height={64} />
-        <Block>
+{/*        <Block>
           <Label>{t('CAKE to Harvest')}:</Label>
           <CakeHarvestBalance />
-        </Block>
+        </Block> */}
         <Block>
           <Label>{t('CAKE in Wallet')}:</Label>
           <CakeWalletBalance />
         </Block>
-        <Actions>
+{/*        <Actions>
           {account ? (
             <Button
               id="harvest-all"
@@ -85,7 +86,7 @@ const FarmedStakingCard = () => {
           ) : (
             <UnlockButton width="100%" />
           )}
-        </Actions>
+        </Actions> */}
       </CardBody>
     </StyledFarmStakingCard>
   )

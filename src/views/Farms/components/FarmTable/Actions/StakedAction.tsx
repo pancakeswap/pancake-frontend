@@ -32,6 +32,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
   pid,
   lpSymbol,
   lpAddresses,
+  jarAddresses,
   quoteToken,
   token,
   userDataReady,
@@ -48,6 +49,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
   const isApproved = account && allowance && allowance.isGreaterThan(0)
 
   const lpAddress = lpAddresses[process.env.REACT_APP_CHAIN_ID]
+  const jarAddress = jarAddresses[process.env.REACT_APP_CHAIN_ID]
   const liquidityUrlPathParts = getLiquidityUrlPathParts({
     quoteTokenAddress: quoteToken.address,
     tokenAddress: token.address,
@@ -68,8 +70,9 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
   const [onPresentWithdraw] = useModal(<WithdrawModal max={stakedBalance} onConfirm={onUnstake} tokenName={lpSymbol} />)
 
   const lpContract = getBep20Contract(lpAddress, web3)
+  const jarContract = getBep20Contract(jarAddress, web3)
 
-  const { onApprove } = useApprove(lpContract)
+  const { onApprove } = useApprove(lpContract, jarContract)
 
   const handleApprove = useCallback(async () => {
     try {

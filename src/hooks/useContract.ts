@@ -3,7 +3,8 @@ import useWeb3 from 'hooks/useWeb3'
 import {
   getBep20Contract,
   getCakeContract,
-  getMasterchefContract,
+  getJarContract,
+//  getMasterchefContract,
 } from 'utils/contractHelpers'
 
 /**
@@ -23,8 +24,9 @@ export const useCake = () => {
   return useMemo(() => getCakeContract(web3), [web3])
 }
 
+/* Jar */
 
-export const useMasterchef = () => {
+export const useJar = (address: string) => {
   const web3 = useWeb3()
-  return useMemo(() => getMasterchefContract(web3), [web3])
+  return useMemo(() => getJarContract(address, web3), [address, web3])
 }

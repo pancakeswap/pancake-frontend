@@ -7,20 +7,20 @@ import {
 // import { unstake, sousUnstake, sousEmergencyUnstake } from 'utils/callHelpers'
 import { unstake } from 'utils/callHelpers'
 // import { useMasterchef, useSousChef } from './useContract'
-import { useMasterchef } from './useContract'
+import { useJar } from './useContract'
 
 const useUnstake = (pid: number) => {
   const dispatch = useAppDispatch()
   const { account } = useWeb3React()
-  const masterChefContract = useMasterchef()
+  const jarContract = useJar('0x796E0e64F3980B859F2c801795F25e433459cBe3')
 
   const handleUnstake = useCallback(
     async (amount: string) => {
-      const txHash = await unstake(masterChefContract, pid, amount, account)
+      const txHash = await unstake(jarContract, pid, amount, account)
       dispatch(fetchFarmUserDataAsync(account))
       console.info(txHash)
     },
-    [account, dispatch, masterChefContract, pid],
+    [account, dispatch, jarContract, pid],
   )
 
   return { onUnstake: handleUnstake }

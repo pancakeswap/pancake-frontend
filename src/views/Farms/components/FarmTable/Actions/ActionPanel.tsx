@@ -6,7 +6,7 @@ import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import { CommunityTag, CoreTag, DualTag } from 'components/Tags'
 
-import HarvestAction from './HarvestAction'
+// import HarvestAction from './HarvestAction'
 import StakedAction from './StakedAction'
 import Apr, { AprProps } from '../Apr'
 import Multiplier, { MultiplierProps } from '../Multiplier'
@@ -182,7 +182,7 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({
         </ValueWrapper>
       </ValueContainer>
       <ActionContainer>
-        <HarvestAction {...farm} userDataReady={userDataReady} />
+  {/*      <HarvestAction {...farm} userDataReady={userDataReady} /> */}
         <StakedAction {...farm} userDataReady={userDataReady} />
       </ActionContainer>
     </Container>
