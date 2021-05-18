@@ -83,33 +83,42 @@ export const useFarmUser = (pid) => {
 
 export const useFarmFromTokenSymbol = (tokenSymbol: string): Farm => {
   const farm = useSelector((state: State) => state.farms.data.find((f) => f.token.symbol === tokenSymbol))
-  // if (tokenSymbol === 'pBTC') {
-  //   debugger //eslint-disable-line
-  // }
   return farm
 }
 
 export const useTokenPriceBusd = (pid: number): BigNumber => {
-  // POSSIBLE QUOTE TOKENS: wbnb, busd, qsd, ust, pbtc, btcb, eth,
-  // No route back to unit of account: qsd
-
-  let quoteTokenPriceBusd
-  let tokenPriceBusd
   const farm = useFarmFromPid(pid)
+  const bnbPriceBusd = usePriceBnbBusd()
+  const quoteTokenFarm = useFarmFromTokenSymbol(farm.quoteToken.symbol)
 
   if (farm.quoteToken.symbol === 'BUSD') {
-    tokenPriceBusd = farm.tokenPriceVsQuote ? new BigNumber(farm.tokenPriceVsQuote) : BIG_ZERO
-  } else if (farm.quoteToken.symbol === 'wBNB') {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    quoteTokenPriceBusd = usePriceBnbBusd()
-    tokenPriceBusd = quoteTokenPriceBusd.gt(0) && quoteTokenPriceBusd.times(farm.tokenPriceVsQuote)
-  } else if (farm.quoteToken.symbol === 'pBTC') {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const tokenFarm = useFarmFromTokenSymbol(farm.quoteToken.symbol)
-    debugger // eslint-disable-line
+    return farm.tokenPriceVsQuote ? new BigNumber(farm.tokenPriceVsQuote) : BIG_ZERO
   }
 
-  return tokenPriceBusd
+  if (farm.quoteToken.symbol === 'wBNB') {
+    return bnbPriceBusd.gt(0) && bnbPriceBusd.times(farm.tokenPriceVsQuote)
+  }
+
+  // Possible alternative farm quote tokens: UST, pBTC, BTCB, ETH, QSD
+  // If the farm's quote token isn't BUSD or wBNB, we then use the quote token farm's quote token
+  // i.e. for farm PNT - pBTC
+  // we find the pBTC farm, pBTC - BNB
+  // from the BNB - pBTC BUSD price, we can get the PNT - BUSD price
+
+  if (quoteTokenFarm.quoteToken.symbol === 'wBNB') {
+    const quoteTokenInBusd = bnbPriceBusd.gt(0) && bnbPriceBusd.times(quoteTokenFarm.tokenPriceVsQuote)
+    return new BigNumber(farm.tokenPriceVsQuote).times(quoteTokenInBusd)
+  }
+
+  if (quoteTokenFarm.quoteToken.symbol === 'BUSD') {
+    const quoteTokenInBusd = quoteTokenFarm.tokenPriceVsQuote
+    return quoteTokenInBusd ? new BigNumber(farm.tokenPriceVsQuote).times(quoteTokenInBusd) : BIG_ZERO
+  }
+
+  // if the quote token farm's quote token isn't BNB or BUSD
+  console.log('unmatched -', farm.quoteToken.symbol)
+  // No route back to unit of account: qsd
+  return BIG_ZERO
 }
 
 export const useLpTokenPrice = (symbol: string) => {

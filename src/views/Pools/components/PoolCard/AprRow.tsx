@@ -3,9 +3,8 @@ import { Flex, TooltipText, IconButton, useModal, CalculateIcon, Skeleton, useTo
 import { useTranslation } from 'contexts/Localization'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { getPoolApr } from 'utils/apr'
-import { getAddress } from 'utils/addressHelpers'
 import { tokenEarnedPerThousandDollarsCompounding, getRoi } from 'utils/compoundApyHelpers'
-import { useFarmFromTokenSymbol, useGetApiPrice, useTokenPriceBusd } from 'state/hooks'
+import { useFarmFromTokenSymbol, useTokenPriceBusd } from 'state/hooks'
 import Balance from 'components/Balance'
 import ApyCalculatorModal from 'components/ApyCalculatorModal'
 import { Pool } from 'state/types'
@@ -35,16 +34,9 @@ const AprRow: React.FC<AprRowProps> = ({
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipContent, { placement: 'bottom-end' })
 
-  const earningTokenPrice = useGetApiPrice(earningToken.address ? getAddress(earningToken.address) : '')
   const earningTokenFarm = useFarmFromTokenSymbol(earningToken.symbol)
   const earningTokenFarmPrice = useTokenPriceBusd(earningTokenFarm.pid)
   const earningTokenFarmPriceAsNumber = earningTokenFarmPrice && earningTokenFarmPrice.toNumber()
-
-  console.log(
-    earningToken.symbol,
-    ' ',
-    earningTokenFarmPrice && earningTokenFarmPrice.gt(0) && earningTokenFarmPrice.toNumber(),
-  )
 
   const apr = getPoolApr(
     stakingTokenPrice,
@@ -54,16 +46,16 @@ const AprRow: React.FC<AprRowProps> = ({
   )
 
   // special handling for tokens like tBTC or BIFI where the daily token rewards for $1000 dollars will be less than 0.001 of that token
-  const isHighValueToken = Math.round(earningTokenPrice / 1000) > 0
+  const isHighValueToken = Math.round(earningTokenFarmPriceAsNumber / 1000) > 0
   const roundingDecimals = isHighValueToken ? 4 : 2
 
   const earningsPercentageToDisplay = () => {
     if (isAutoVault) {
-      const oneThousandDollarsWorthOfToken = 1000 / earningTokenPrice
+      const oneThousandDollarsWorthOfToken = 1000 / earningTokenFarmPriceAsNumber
       const tokenEarnedPerThousand365D = tokenEarnedPerThousandDollarsCompounding({
         numberOfDays: 365,
         farmApr: apr,
-        tokenPrice: earningTokenPrice,
+        tokenPrice: earningTokenFarmPriceAsNumber,
         roundingDecimals,
         compoundFrequency,
         performanceFee,
@@ -82,7 +74,7 @@ const AprRow: React.FC<AprRowProps> = ({
 
   const [onPresentApyModal] = useModal(
     <ApyCalculatorModal
-      tokenPrice={earningTokenPrice}
+      tokenPrice={earningTokenFarmPriceAsNumber}
       apr={apr}
       linkLabel={t('Get %symbol%', { symbol: stakingToken.symbol })}
       linkHref={apyModalLink || BASE_EXCHANGE_URL}

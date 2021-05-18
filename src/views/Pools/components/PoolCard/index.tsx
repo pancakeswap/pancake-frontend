@@ -5,7 +5,7 @@ import UnlockButton from 'components/UnlockButton'
 import { useTranslation } from 'contexts/Localization'
 import { getAddress } from 'utils/addressHelpers'
 import { BIG_ZERO } from 'utils/bigNumber'
-import { useGetApiPrice } from 'state/hooks'
+import { useFarmFromTokenSymbol, useGetApiPrice } from 'state/hooks'
 import { Pool } from 'state/types'
 import AprRow from './AprRow'
 import { StyledCard, StyledCardInner } from './StyledCard'
@@ -19,6 +19,7 @@ const PoolCard: React.FC<{ pool: Pool; account: string }> = ({ pool, account }) 
   const stakedBalance = userData?.stakedBalance ? new BigNumber(userData.stakedBalance) : BIG_ZERO
   const accountHasStakedBalance = stakedBalance.gt(0)
   const stakingTokenPrice = useGetApiPrice(stakingToken.address ? getAddress(stakingToken.address) : '')
+  const earningTokenFarm = useFarmFromTokenSymbol(earningToken.symbol)
 
   return (
     <StyledCard
@@ -33,7 +34,7 @@ const PoolCard: React.FC<{ pool: Pool; account: string }> = ({ pool, account }) 
           isFinished={isFinished && sousId !== 0}
         />
         <CardBody>
-          <AprRow pool={pool} stakingTokenPrice={stakingTokenPrice} />
+          {earningTokenFarm && <AprRow pool={pool} stakingTokenPrice={stakingTokenPrice} />}
           <Flex mt="24px" flexDirection="column">
             {account ? (
               <CardActions pool={pool} stakedBalance={stakedBalance} stakingTokenPrice={stakingTokenPrice} />
