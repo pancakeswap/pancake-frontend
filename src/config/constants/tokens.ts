@@ -1335,6 +1335,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://upbots.com/',
   },
+  wmass: {
+    symbol: 'WMASS',
+    address: {
+      56: '0x7e396bfc8a2f84748701167c2d622f041a1d7a17',
+      97: '',
+    },
+    decimals: 8,
+    projectLink: 'https://massnet.org/en/',
+  },
 }
 
 export default tokens
