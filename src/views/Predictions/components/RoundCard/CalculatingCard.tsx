@@ -36,11 +36,9 @@ const CalculatingCard: React.FC<CalculatingCardProps> = ({ round }) => {
           <RoundResultBox>
             <Flex alignItems="center" justifyContent="center" flexDirection="column">
               <Spinner size={96} />
-              <Flex mt="8px">
-                <span ref={targetRef}>
-                  <TooltipText>{t('Calculating')}</TooltipText>
-                  <InfoIcon />
-                </span>
+              <Flex mt="8px" ref={targetRef}>
+                <TooltipText>{t('Calculating')}</TooltipText>
+                <InfoIcon ml="4px" />
               </Flex>
             </Flex>
           </RoundResultBox>
