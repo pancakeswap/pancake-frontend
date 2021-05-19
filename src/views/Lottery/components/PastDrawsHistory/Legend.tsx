@@ -18,7 +18,7 @@ const Circle = styled.div<{ isPoolSize?: boolean }>`
   width: 20px;
   height: 20px;
   border-radius: 10px;
-  background-color: ${({ isPoolSize, theme }) => theme.colors[isPoolSize ? 'textSubtle' : 'primary']};
+  background-color: ${({ isPoolSize, theme }) => (isPoolSize ? '#7A6EAA' : theme.colors.primary)};
   margin-right: 6px;
 `
 
