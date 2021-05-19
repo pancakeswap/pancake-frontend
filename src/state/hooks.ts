@@ -33,21 +33,25 @@ import { fetchPoolsStakingLimitsAsync } from './pools'
 export const useFetchPublicData = () => {
   const dispatch = useAppDispatch()
   const { slowRefresh } = useRefresh()
+  const web3 = getWeb3NoAccount()
   useEffect(() => {
+    const fetchPoolsPublicData = async () => {
+      const blockNumber = await web3.eth.getBlockNumber()
+      dispatch(fetchPoolsPublicDataAsync(blockNumber))
+    }
     dispatch(fetchFarmsPublicDataAsync())
-    dispatch(fetchPoolsPublicDataAsync())
+    fetchPoolsPublicData()
     dispatch(fetchPoolsStakingLimitsAsync())
-  }, [dispatch, slowRefresh])
+  }, [dispatch, slowRefresh, web3])
 
   useEffect(() => {
-    const web3 = getWeb3NoAccount()
     const interval = setInterval(async () => {
       const blockNumber = await web3.eth.getBlockNumber()
       dispatch(setBlock(blockNumber))
     }, 6000)
 
     return () => clearInterval(interval)
-  }, [dispatch])
+  }, [dispatch, web3])
 }
 
 // Farms
