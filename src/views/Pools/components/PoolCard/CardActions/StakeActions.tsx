@@ -4,7 +4,7 @@ import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { Pool } from 'state/types'
-import { useFarmFromTokenSymbol, useTokenPriceBusd } from 'state/hooks'
+import { useBusdPriceFromToken } from 'state/hooks'
 import Balance from 'components/Balance'
 import NotEnoughTokensModal from '../Modals/NotEnoughTokensModal'
 import StakeModal from '../Modals/StakeModal'
@@ -29,14 +29,12 @@ const StakeAction: React.FC<StakeActionsProps> = ({
   const { stakingToken, stakingLimit, isFinished, userData } = pool
   const { t } = useTranslation()
   const stakedTokenBalance = getBalanceNumber(stakedBalance, stakingToken.decimals)
-  const stakingTokenFarmForPriceCalc = useFarmFromTokenSymbol(stakingToken.symbol)
-  const stakingTokenPrice = useTokenPriceBusd(stakingTokenFarmForPriceCalc.pid)
+  const stakingTokenPrice = useBusdPriceFromToken(stakingToken.symbol)
   const stakingTokenPriceAsNumber = stakingTokenPrice && stakingTokenPrice.toNumber()
+  const stakedTokenDollarBalance =
+    stakingTokenPriceAsNumber &&
+    getBalanceNumber(stakedBalance.multipliedBy(stakingTokenPriceAsNumber), stakingToken.decimals)
 
-  const stakedTokenDollarBalance = getBalanceNumber(
-    stakedBalance.multipliedBy(stakingTokenPriceAsNumber),
-    stakingToken.decimals,
-  )
   const [onPresentTokenRequired] = useModal(<NotEnoughTokensModal tokenSymbol={stakingToken.symbol} />)
 
   const [onPresentStake] = useModal(

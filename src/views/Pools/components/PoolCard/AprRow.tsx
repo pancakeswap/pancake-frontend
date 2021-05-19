@@ -4,7 +4,7 @@ import { useTranslation } from 'contexts/Localization'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { getPoolApr } from 'utils/apr'
 import { tokenEarnedPerThousandDollarsCompounding, getRoi } from 'utils/compoundApyHelpers'
-import { useFarmFromTokenSymbol, useTokenPriceBusd } from 'state/hooks'
+import { useBusdPriceFromToken } from 'state/hooks'
 import Balance from 'components/Balance'
 import ApyCalculatorModal from 'components/ApyCalculatorModal'
 import { Pool } from 'state/types'
@@ -27,12 +27,10 @@ const AprRow: React.FC<AprRowProps> = ({ pool, isAutoVault = false, compoundFreq
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipContent, { placement: 'bottom-end' })
 
-  const earningTokenFarmForPriceCalc = useFarmFromTokenSymbol(earningToken.symbol)
-  const earningTokenPrice = useTokenPriceBusd(earningTokenFarmForPriceCalc.pid)
+  const earningTokenPrice = useBusdPriceFromToken(earningToken.symbol)
   const earningTokenPriceAsNumber = earningTokenPrice && earningTokenPrice.toNumber()
 
-  const stakingTokenFarmForPriceCalc = useFarmFromTokenSymbol(stakingToken.symbol)
-  const stakingTokenPrice = useTokenPriceBusd(stakingTokenFarmForPriceCalc.pid)
+  const stakingTokenPrice = useBusdPriceFromToken(stakingToken.symbol)
   const stakingTokenPriceAsNumber = stakingTokenPrice && stakingTokenPrice.toNumber()
 
   const apr = getPoolApr(

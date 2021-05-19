@@ -82,17 +82,24 @@ export const useFarmUser = (pid) => {
   }
 }
 
+// Return a farm for a given token symbol. The farm is filtered based on attempting to return a farm with a quote token from an array of preferred quote tokens
 export const useFarmFromTokenSymbol = (tokenSymbol: string, preferredQuoteTokens?: string[]): Farm => {
-  const farms = useSelector((state: State) => state.farms.data.filter((f) => f.token.symbol === tokenSymbol))
+  const farms = useSelector((state: State) => state.farms.data.filter((farm) => farm.token.symbol === tokenSymbol))
   const filteredFarm = filterFarmsByQuoteToken(farms, preferredQuoteTokens)
   return filteredFarm
 }
 
-export const useTokenPriceBusd = (pid: number): BigNumber => {
+export const useBusdPriceFromPid = (pid: number): BigNumber => {
   const farm = useFarmFromPid(pid)
   const bnbPriceBusd = usePriceBnbBusd()
-  const quoteTokenFarm = useFarmFromTokenSymbol(farm.quoteToken.symbol)
+  const quoteTokenFarm = useFarmFromTokenSymbol(farm?.quoteToken?.symbol)
 
+  // Catch in case a farm isn't found
+  if (!farm) {
+    return null
+  }
+
+  // With a quoteToken of BUSD or wBNB, it is straightforward to return the token price.
   if (farm.quoteToken.symbol === 'BUSD') {
     return farm.tokenPriceVsQuote ? new BigNumber(farm.tokenPriceVsQuote) : BIG_ZERO
   }
@@ -102,12 +109,11 @@ export const useTokenPriceBusd = (pid: number): BigNumber => {
   }
 
   // Possible alternative farm quoteTokens:
-  // UST (MIR-UST), pBTC (PNT-pBTC), BTCB (bBADGER-BTCB), ETH (SUSHI-ETH)
-  // If the farm's quote token isn't BUSD or wBNB, we then use the quote token farm's quote token
+  // UST (i.e. MIR-UST), pBTC (i.e. PNT-pBTC), BTCB (i.e. bBADGER-BTCB), ETH (i.e. SUSHI-ETH)
+  // If the farm's quote token isn't BUSD or wBNB, we then use the quote token, of the original farm's quote token
   // i.e. for farm PNT - pBTC
-  // we find the pBTC farm, pBTC - BNB
-  // from the BNB - pBTC BUSD price, we can get the PNT - BUSD price
-
+  // we find the pBTC farm (pBTC - BNB)'s quote token - BNB
+  // from the BNB - pBTC BUSD price, we can calculate the PNT - BUSD price
   if (quoteTokenFarm.quoteToken.symbol === 'wBNB') {
     const quoteTokenInBusd = bnbPriceBusd.gt(0) && bnbPriceBusd.times(quoteTokenFarm.tokenPriceVsQuote)
     return farm.tokenPriceVsQuote ? new BigNumber(farm.tokenPriceVsQuote).times(quoteTokenInBusd) : BIG_ZERO
@@ -122,9 +128,15 @@ export const useTokenPriceBusd = (pid: number): BigNumber => {
   return BIG_ZERO
 }
 
+export const useBusdPriceFromToken = (tokenSymbol: string) => {
+  const tokenFarmForPriceCalc = useFarmFromTokenSymbol(tokenSymbol)
+  const tokenPrice = useBusdPriceFromPid(tokenFarmForPriceCalc?.pid)
+  return tokenPrice
+}
+
 export const useLpTokenPrice = (symbol: string) => {
   const farm = useFarmFromLpSymbol(symbol)
-  const farmTokenPriceInUsd = useTokenPriceBusd(farm.pid)
+  const farmTokenPriceInUsd = useBusdPriceFromPid(farm.pid)
   const lpTokenPrice = new BigNumber(getBalanceNumber(farm.lpTotalSupply))
     .div(farm.lpTotalInQuoteToken)
     .times(farmTokenPriceInUsd)
