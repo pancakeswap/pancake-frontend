@@ -86,7 +86,7 @@ const AprRow: React.FC<AprRowProps> = ({
   return (
     <Flex alignItems="center" justifyContent="space-between">
       {tooltipVisible && tooltip}
-      <TooltipText ref={targetRef}>{isAutoVault ? t('APY') : t('APR')}:</TooltipText>
+      <TooltipText ref={targetRef}>{isAutoVault ? `${t('APY')}:` : `${t('APR')}:`}</TooltipText>
       {isFinished || !apr ? (
         <Skeleton width="82px" height="32px" />
       ) : (
