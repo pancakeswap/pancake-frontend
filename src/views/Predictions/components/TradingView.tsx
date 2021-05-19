@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { Box } from '@pancakeswap/uikit'
 import { DefaultTheme, useTheme } from 'styled-components'
+import { useTranslation } from 'contexts/Localization'
 
 /**
  * When the script tag is injected the TradingView object is not immediately
@@ -17,7 +18,7 @@ const tradingViewListener = async () =>
     }),
   )
 
-const initializeTradingView = (TradingViewObj: any, theme: DefaultTheme) => {
+const initializeTradingView = (TradingViewObj: any, theme: DefaultTheme, localeCode: string) => {
   /* eslint-disable new-cap */
   /* eslint-disable no-new */
   // @ts-ignore
@@ -29,7 +30,7 @@ const initializeTradingView = (TradingViewObj: any, theme: DefaultTheme) => {
     timezone: 'Etc/UTC',
     theme: theme.isDark ? 'dark' : 'light',
     style: '1',
-    locale: 'en',
+    locale: localeCode,
     toolbar_bg: '#f1f3f6',
     enable_publishing: false,
     allow_symbol_change: true,
@@ -38,19 +39,20 @@ const initializeTradingView = (TradingViewObj: any, theme: DefaultTheme) => {
 }
 
 const TradingView = () => {
+  const { currentLanguage } = useTranslation()
   const theme = useTheme()
 
   useEffect(() => {
     // @ts-ignore
     if (window.TradingView) {
       // @ts-ignore
-      initializeTradingView(window.TradingView, theme)
+      initializeTradingView(window.TradingView, theme, currentLanguage.code)
     } else {
       tradingViewListener().then((tv) => {
-        initializeTradingView(tv, theme)
+        initializeTradingView(tv, theme, currentLanguage.code)
       })
     }
-  }, [theme])
+  }, [theme, currentLanguage])
 
   return (
     <Box overflow="hidden" className="tradingview_container">
