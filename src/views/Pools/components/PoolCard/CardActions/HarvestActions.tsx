@@ -27,10 +27,9 @@ const HarvestActions: React.FC<HarvestActionsProps> = ({
   const earningTokenPrice = useBusdPriceFromToken(earningToken.symbol)
   const earningTokenPriceAsNumber = earningTokenPrice && earningTokenPrice.toNumber()
   const earningTokenBalance = getBalanceNumber(earnings, earningToken.decimals)
-  const earningTokenDollarBalance = getBalanceNumber(
-    earnings.multipliedBy(earningTokenPriceAsNumber),
-    earningToken.decimals,
-  )
+  const earningTokenDollarBalance =
+    earningTokenPriceAsNumber &&
+    getBalanceNumber(earnings.multipliedBy(earningTokenPriceAsNumber), earningToken.decimals)
   const fullBalance = getFullDisplayBalance(earnings, earningToken.decimals)
   const formattedBalance = formatNumber(earningTokenBalance, 3, 3)
   const earningsDollarValue = formatNumber(earningTokenDollarBalance)
