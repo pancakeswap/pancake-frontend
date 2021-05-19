@@ -39,6 +39,16 @@ const farms: FarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 384,
+    lpSymbol: 'WMASS-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0xec95ff6281c3ad8e27372fa6675eb337640b8e5e',
+    },
+    token: tokens.wmass,
+    quoteToken: tokens.busd,
+  },
+  {
     pid: 383,
     lpSymbol: 'UBXT-BUSD LP',
     lpAddresses: {
