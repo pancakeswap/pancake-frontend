@@ -24,15 +24,17 @@ const HarvestActions: React.FC<HarvestActionsProps> = ({
   isLoading = false,
 }) => {
   const { t } = useTranslation()
+  const earningTokenBalance = getBalanceNumber(earnings, earningToken.decimals)
+  const formattedBalance = formatNumber(earningTokenBalance, 3, 3)
+
   const earningTokenPrice = useBusdPriceFromToken(earningToken.symbol)
   const earningTokenPriceAsNumber = earningTokenPrice && earningTokenPrice.toNumber()
-  const earningTokenBalance = getBalanceNumber(earnings, earningToken.decimals)
   const earningTokenDollarBalance =
     earningTokenPriceAsNumber &&
     getBalanceNumber(earnings.multipliedBy(earningTokenPriceAsNumber), earningToken.decimals)
+  const earningsDollarValue = earningTokenDollarBalance && formatNumber(earningTokenDollarBalance)
+
   const fullBalance = getFullDisplayBalance(earnings, earningToken.decimals)
-  const formattedBalance = formatNumber(earningTokenBalance, 3, 3)
-  const earningsDollarValue = formatNumber(earningTokenDollarBalance)
   const hasEarnings = earnings.toNumber() > 0
   const isCompoundPool = sousId === 0
 
