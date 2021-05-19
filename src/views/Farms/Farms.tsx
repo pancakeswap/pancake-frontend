@@ -388,7 +388,7 @@ const Farms: React.FC = () => {
           </ViewControls>
           <FilterContainer>
             <LabelWrapper>
-              <Text>{t('Sort by').toUpperCase()}</Text>
+              <Text textTransform="uppercase">{t('Sort by')}</Text>
               <Select
                 options={[
                   {
@@ -416,7 +416,7 @@ const Farms: React.FC = () => {
               />
             </LabelWrapper>
             <LabelWrapper style={{ marginLeft: 16 }}>
-              <Text>{t('Search').toUpperCase()}</Text>
+              <Text textTransform="uppercase">{t('Search')}</Text>
               <SearchInput onChange={handleChangeQuery} />
             </LabelWrapper>
           </FilterContainer>

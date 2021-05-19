@@ -50,8 +50,8 @@ const UserPrizeGrid: React.FC<{ userTradingInformation?: UserTradingInformationP
               {champion && <CrownIcon mr={[0, '4px']} />}
               {teamPlayer && <TeamPlayerIcon mr={[0, '4px']} />}
               <TrophyGoldIcon mr={[0, '4px']} />
-              <Text fontSize="12px" color="textSubtle">
-                + {userPointReward} {t('Points').toLowerCase()}
+              <Text fontSize="12px" color="textSubtle" textTransform="lowercase">
+                + {userPointReward} {t('Points')}
               </Text>
             </Flex>
           </Td>
