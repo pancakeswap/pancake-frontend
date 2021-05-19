@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Flex, LinkExternal, Image, Text, PrizeIcon } from '@pancakeswap/uikit'
+import { Flex, LinkExternal, Image, Text, PrizeIcon, Skeleton } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { PublicIfoData } from 'hooks/ifo/types'
 import { Ifo } from 'config/constants/types'
@@ -53,9 +53,13 @@ const Achievement: React.FC<Props> = ({ ifo, publicIfoData }) => {
               <Text color="textSubtle">{publicIfoData.numberPoints}</Text>
             </Flex>
           </Flex>
-          <Text color="textSubtle" fontSize="12px">
-            {t('Commit ~%amount% LP in total to earn!', { amount: minLpForAchievement.toFixed(3) })}
-          </Text>
+          {publicIfoData.currencyPriceInUSD.gt(0) ? (
+            <Text color="textSubtle" fontSize="12px">
+              {t('Commit ~%amount% LP in total to earn!', { amount: minLpForAchievement.toFixed(3) })}
+            </Text>
+          ) : (
+            <Skeleton minHeight={18} width={80} />
+          )}
         </Flex>
       </Flex>
       <StyledLinkExternal href={ifo.articleUrl}>
