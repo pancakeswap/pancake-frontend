@@ -34,4 +34,11 @@ export const getFarmApr = (poolWeight: BigNumber, cakePriceUsd: BigNumber, poolL
   return apr.isNaN() || !apr.isFinite() ? null : apr.toNumber()
 }
 
+export const getMetaFarmApr = (poolWeight: number, numPerBlock: number, totalLiquidity: BigNumber, tokenPriceVsQuote: BigNumber): number => {
+  const yearlyRewardAllocation = BLOCKS_PER_YEAR.times(numPerBlock).times(poolWeight)
+  const apr = yearlyRewardAllocation.times(tokenPriceVsQuote).div(totalLiquidity).times(100)
+  return apr.isNaN() || !apr.isFinite() ? null : apr.toNumber()
+}
+
+
 export default null

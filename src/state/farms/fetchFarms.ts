@@ -12,6 +12,7 @@ const fetchFarms = async (farmsToFetch: FarmConfig[]) => {
   const data = await Promise.all(
     farmsToFetch.map(async (farmConfig) => {
       const lpAddress = getAddress(farmConfig.lpAddresses)
+      const masterChefAddress = getAddress(farmConfig.masterChefAddresses)
       const jarAddress = getAddress(farmConfig.jarAddresses)
       const calls = [
         // Balance of token in the LP contract
@@ -30,7 +31,7 @@ const fetchFarms = async (farmsToFetch: FarmConfig[]) => {
         {
           address: lpAddress,
           name: 'balanceOf',
-          params: [jarAddress],
+          params: [masterChefAddress],
         },
         // Total supply of LP tokens
         {

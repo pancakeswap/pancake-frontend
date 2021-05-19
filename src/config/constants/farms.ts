@@ -46,12 +46,19 @@ const farms: FarmConfig[] = [
       80001: '',
       137: '0x6405Ebc22cB0899FC21f414085Ac4044B4721a0d',
     },
+    masterChefAddresses: {
+      80001: '',
+      137: '0x34bc3D36845d8A7cA6964261FbD28737d0d6510f',
+    },
+    masterChefPid: 1,
     jarAddresses: {
       80001: '',
       137: '0x796E0e64F3980B859F2c801795F25e433459cBe3',
     },
     token: tokens.krill,
     quoteToken: tokens.usdc,
+    rewardPerBlock: 1,
+    poolWeightDesignate: 10000/21300,
   },
 /*  {
     pid: 2,

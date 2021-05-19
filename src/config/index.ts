@@ -6,7 +6,7 @@ BigNumber.config({
   DECIMAL_PLACES: 80,
 })
 
-export const BSC_BLOCK_TIME = 3
+export const BSC_BLOCK_TIME = 2.1
 
 // CAKE_PER_BLOCK details
 // 40 CAKE is minted per block

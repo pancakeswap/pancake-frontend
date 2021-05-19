@@ -54,8 +54,12 @@ export interface FarmConfig {
   lpSymbol: string
   lpAddresses: Address
   jarAddresses: Address
+  masterChefAddresses: Address
+  masterChefPid: number
   token: Token
   quoteToken: Token
+  rewardPerBlock: number
+  poolWeightDesignate: number
   multiplier?: string
   isCommunity?: boolean
   dual?: {
