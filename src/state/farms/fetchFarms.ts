@@ -68,6 +68,20 @@ const fetchFarms = async (farmsToFetch: FarmConfig[]) => {
         .div(BIG_TEN.pow(quoteTokenDecimals))
         .times(lpTokenRatio)
 
+      // Fetch total deposits
+    /*    const calls = farmsToFetch.map((farm) => {
+          const lpContractAddress = getAddress(farm.lpAddresses)
+          const jarContractAddress = getAddress(farm.jarAddresses)
+          return { address: lpContractAddress, name: 'allowance', params: [account, jarContractAddress] }
+        })
+
+        const rawLpAllowances = await multicall(erc20ABI, calls)
+        const parsedLpAllowances = rawLpAllowances.map((lpBalance) => {
+          return new BigNumber(lpBalance).toJSON()
+        })
+        return parsedLpAllowances
+      } */
+
   //    const [info, totalAllocPoint] = await multicall(masterchefABI, [
   //      {
   //        address: getMasterChefAddress(),
