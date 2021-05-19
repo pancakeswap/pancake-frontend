@@ -7,10 +7,10 @@ import { orderBy } from 'lodash'
 import { Team } from 'config/constants/types'
 import Nfts from 'config/constants/nfts'
 import { getWeb3NoAccount } from 'utils/web3'
-import { getAddress } from 'utils/addressHelpers'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { BIG_ZERO } from 'utils/bigNumber'
 import useRefresh from 'hooks/useRefresh'
+import { filterFarmsByQuoteToken } from 'utils/farmsPriceHelpers'
 import {
   fetchFarmsPublicDataAsync,
   fetchPoolsPublicDataAsync,
@@ -66,7 +66,7 @@ export const useFarmFromPid = (pid): Farm => {
   return farm
 }
 
-export const useFarmFromSymbol = (lpSymbol: string): Farm => {
+export const useFarmFromLpSymbol = (lpSymbol: string): Farm => {
   const farm = useSelector((state: State) => state.farms.data.find((f) => f.lpSymbol === lpSymbol))
   return farm
 }
@@ -82,13 +82,66 @@ export const useFarmUser = (pid) => {
   }
 }
 
-export const useLpTokenPrice = (symbol: string) => {
-  const farm = useFarmFromSymbol(symbol)
-  const tokenPriceInUsd = useGetApiPrice(getAddress(farm.token.address))
+// Return a farm for a given token symbol. The farm is filtered based on attempting to return a farm with a quote token from an array of preferred quote tokens
+export const useFarmFromTokenSymbol = (tokenSymbol: string, preferredQuoteTokens?: string[]): Farm => {
+  const farms = useSelector((state: State) => state.farms.data.filter((farm) => farm.token.symbol === tokenSymbol))
+  const filteredFarm = filterFarmsByQuoteToken(farms, preferredQuoteTokens)
+  return filteredFarm
+}
 
-  return farm.lpTotalSupply && farm.lpTotalInQuoteToken
-    ? new BigNumber(getBalanceNumber(farm.lpTotalSupply)).div(farm.lpTotalInQuoteToken).times(tokenPriceInUsd).times(2)
-    : BIG_ZERO
+export const useBusdPriceFromPid = (pid: number): BigNumber => {
+  const farm = useFarmFromPid(pid)
+  const bnbPriceBusd = usePriceBnbBusd()
+  const quoteTokenFarm = useFarmFromTokenSymbol(farm?.quoteToken?.symbol)
+
+  // Catch in case a farm isn't found
+  if (!farm) {
+    return null
+  }
+
+  // With a quoteToken of BUSD or wBNB, it is straightforward to return the token price.
+  if (farm.quoteToken.symbol === 'BUSD') {
+    return farm.tokenPriceVsQuote ? new BigNumber(farm.tokenPriceVsQuote) : BIG_ZERO
+  }
+
+  if (farm.quoteToken.symbol === 'wBNB') {
+    return bnbPriceBusd.gt(0) && bnbPriceBusd.times(farm.tokenPriceVsQuote)
+  }
+
+  // Possible alternative farm quoteTokens:
+  // UST (i.e. MIR-UST), pBTC (i.e. PNT-pBTC), BTCB (i.e. bBADGER-BTCB), ETH (i.e. SUSHI-ETH)
+  // If the farm's quote token isn't BUSD or wBNB, we then use the quote token, of the original farm's quote token
+  // i.e. for farm PNT - pBTC
+  // we find the pBTC farm (pBTC - BNB)'s quote token - BNB
+  // from the BNB - pBTC BUSD price, we can calculate the PNT - BUSD price
+  if (quoteTokenFarm.quoteToken.symbol === 'wBNB') {
+    const quoteTokenInBusd = bnbPriceBusd.gt(0) && bnbPriceBusd.times(quoteTokenFarm.tokenPriceVsQuote)
+    return farm.tokenPriceVsQuote ? new BigNumber(farm.tokenPriceVsQuote).times(quoteTokenInBusd) : BIG_ZERO
+  }
+
+  if (quoteTokenFarm.quoteToken.symbol === 'BUSD') {
+    const quoteTokenInBusd = quoteTokenFarm.tokenPriceVsQuote
+    return quoteTokenInBusd ? new BigNumber(farm.tokenPriceVsQuote).times(quoteTokenInBusd) : BIG_ZERO
+  }
+
+  // Catch in case token does not have immediate or once-removed BUSD/wBNB quoteToken
+  return BIG_ZERO
+}
+
+export const useBusdPriceFromToken = (tokenSymbol: string) => {
+  const tokenFarmForPriceCalc = useFarmFromTokenSymbol(tokenSymbol)
+  const tokenPrice = useBusdPriceFromPid(tokenFarmForPriceCalc?.pid)
+  return tokenPrice
+}
+
+export const useLpTokenPrice = (symbol: string) => {
+  const farm = useFarmFromLpSymbol(symbol)
+  const farmTokenPriceInUsd = useBusdPriceFromPid(farm.pid)
+  const lpTokenPrice = new BigNumber(getBalanceNumber(farm.lpTotalSupply))
+    .div(farm.lpTotalInQuoteToken)
+    .times(farmTokenPriceInUsd)
+    .times(2)
+  return farm.lpTotalSupply && farm.lpTotalInQuoteToken ? lpTokenPrice : BIG_ZERO
 }
 
 // Pools

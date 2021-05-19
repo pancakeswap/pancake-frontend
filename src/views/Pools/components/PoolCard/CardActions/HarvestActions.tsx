@@ -2,10 +2,9 @@ import React from 'react'
 import { Flex, Text, Button, Heading, useModal, Skeleton } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { Token } from 'config/constants/types'
-import { getAddress } from 'utils/addressHelpers'
 import { useTranslation } from 'contexts/Localization'
 import { getFullDisplayBalance, getBalanceNumber, formatNumber } from 'utils/formatBalance'
-import { useGetApiPrice } from 'state/hooks'
+import { useBusdPriceFromToken } from 'state/hooks'
 import Balance from 'components/Balance'
 import CollectModal from '../Modals/CollectModal'
 
@@ -25,12 +24,17 @@ const HarvestActions: React.FC<HarvestActionsProps> = ({
   isLoading = false,
 }) => {
   const { t } = useTranslation()
-  const earningTokenPrice = useGetApiPrice(earningToken.address ? getAddress(earningToken.address) : '')
   const earningTokenBalance = getBalanceNumber(earnings, earningToken.decimals)
-  const earningTokenDollarBalance = getBalanceNumber(earnings.multipliedBy(earningTokenPrice), earningToken.decimals)
-  const fullBalance = getFullDisplayBalance(earnings, earningToken.decimals)
   const formattedBalance = formatNumber(earningTokenBalance, 3, 3)
-  const earningsDollarValue = formatNumber(earningTokenDollarBalance)
+
+  const earningTokenPrice = useBusdPriceFromToken(earningToken.symbol)
+  const earningTokenPriceAsNumber = earningTokenPrice && earningTokenPrice.toNumber()
+  const earningTokenDollarBalance =
+    earningTokenPriceAsNumber &&
+    getBalanceNumber(earnings.multipliedBy(earningTokenPriceAsNumber), earningToken.decimals)
+  const earningsDollarValue = earningTokenDollarBalance && formatNumber(earningTokenDollarBalance)
+
+  const fullBalance = getFullDisplayBalance(earnings, earningToken.decimals)
   const hasEarnings = earnings.toNumber() > 0
   const isCompoundPool = sousId === 0
 

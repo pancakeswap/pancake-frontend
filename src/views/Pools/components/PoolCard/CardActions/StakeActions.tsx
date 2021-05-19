@@ -4,6 +4,7 @@ import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { Pool } from 'state/types'
+import { useBusdPriceFromToken } from 'state/hooks'
 import Balance from 'components/Balance'
 import NotEnoughTokensModal from '../Modals/NotEnoughTokensModal'
 import StakeModal from '../Modals/StakeModal'
@@ -11,7 +12,6 @@ import StakeModal from '../Modals/StakeModal'
 interface StakeActionsProps {
   pool: Pool
   stakingTokenBalance: BigNumber
-  stakingTokenPrice: number
   stakedBalance: BigNumber
   isBnbPool: boolean
   isStaked: ConstrainBoolean
@@ -21,7 +21,6 @@ interface StakeActionsProps {
 const StakeAction: React.FC<StakeActionsProps> = ({
   pool,
   stakingTokenBalance,
-  stakingTokenPrice,
   stakedBalance,
   isBnbPool,
   isStaked,
@@ -30,10 +29,12 @@ const StakeAction: React.FC<StakeActionsProps> = ({
   const { stakingToken, stakingLimit, isFinished, userData } = pool
   const { t } = useTranslation()
   const stakedTokenBalance = getBalanceNumber(stakedBalance, stakingToken.decimals)
-  const stakedTokenDollarBalance = getBalanceNumber(
-    stakedBalance.multipliedBy(stakingTokenPrice),
-    stakingToken.decimals,
-  )
+  const stakingTokenPrice = useBusdPriceFromToken(stakingToken.symbol)
+  const stakingTokenPriceAsNumber = stakingTokenPrice && stakingTokenPrice.toNumber()
+  const stakedTokenDollarBalance =
+    stakingTokenPriceAsNumber &&
+    getBalanceNumber(stakedBalance.multipliedBy(stakingTokenPriceAsNumber), stakingToken.decimals)
+
   const [onPresentTokenRequired] = useModal(<NotEnoughTokensModal tokenSymbol={stakingToken.symbol} />)
 
   const [onPresentStake] = useModal(
@@ -41,7 +42,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({
       isBnbPool={isBnbPool}
       pool={pool}
       stakingTokenBalance={stakingTokenBalance}
-      stakingTokenPrice={stakingTokenPrice}
+      stakingTokenPrice={stakingTokenPriceAsNumber}
     />,
   )
 
@@ -50,7 +51,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({
       stakingTokenBalance={stakingTokenBalance}
       isBnbPool={isBnbPool}
       pool={pool}
-      stakingTokenPrice={stakingTokenPrice}
+      stakingTokenPrice={stakingTokenPriceAsNumber}
       isRemovingStake
     />,
   )
