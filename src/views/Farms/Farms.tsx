@@ -388,27 +388,27 @@ const Farms: React.FC = () => {
           </ViewControls>
           <FilterContainer>
             <LabelWrapper>
-              <Text>SORT BY</Text>
+              <Text textTransform="uppercase">{t('Sort by')}</Text>
               <Select
                 options={[
                   {
-                    label: 'Hot',
+                    label: t('Hot'),
                     value: 'hot',
                   },
                   {
-                    label: 'APR',
+                    label: t('APR'),
                     value: 'apr',
                   },
                   {
-                    label: 'Multiplier',
+                    label: t('Multiplier'),
                     value: 'multiplier',
                   },
                   {
-                    label: 'Earned',
+                    label: t('Earned'),
                     value: 'earned',
                   },
                   {
-                    label: 'Liquidity',
+                    label: t('Liquidity'),
                     value: 'liquidity',
                   },
                 ]}
@@ -416,7 +416,7 @@ const Farms: React.FC = () => {
               />
             </LabelWrapper>
             <LabelWrapper style={{ marginLeft: 16 }}>
-              <Text>SEARCH</Text>
+              <Text textTransform="uppercase">{t('Search')}</Text>
               <SearchInput onChange={handleChangeQuery} />
             </LabelWrapper>
           </FilterContainer>

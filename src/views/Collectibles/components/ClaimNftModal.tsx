@@ -36,13 +36,13 @@ const ClaimNftModal: React.FC<ClaimNftModalProps> = ({ nft, onSuccess, onClaim, 
         setIsConfirming(true)
       })
       .once('receipt', () => {
-        toastSuccess('Successfully claimed!')
+        toastSuccess(t('Successfully claimed!'))
         onDismiss()
         onSuccess()
       })
       .once('error', (error) => {
         console.error('Unable to claim NFT', error)
-        toastError('Error', 'Unable to claim NFT, please try again.')
+        toastError(t('Error'), t('Unable to claim NFT, please try again.'))
         setIsConfirming(false)
       })
   }
@@ -52,7 +52,7 @@ const ClaimNftModal: React.FC<ClaimNftModalProps> = ({ nft, onSuccess, onClaim, 
       <ModalContent>
         <Flex alignItems="center" mb="8px" justifyContent="space-between">
           <Text>{t('You will receive')}:</Text>
-          <Text bold>{`1x "${nft.name}" Collectible`}</Text>
+          <Text bold>{t('1x %nftName% Collectible', { nftName: nft.name })}</Text>
         </Flex>
       </ModalContent>
       <Actions>

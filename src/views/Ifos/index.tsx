@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from 'contexts/Localization'
 import { Route, useRouteMatch, Link } from 'react-router-dom'
 import { ButtonMenu, ButtonMenuItem, Flex } from '@pancakeswap/uikit'
 import Container from 'components/layout/Container'
@@ -7,6 +8,7 @@ import CurrentIfo from './CurrentIfo'
 import PastIfo from './PastIfo'
 
 const Ifos = () => {
+  const { t } = useTranslation()
   const { path, url, isExact } = useRouteMatch()
 
   return (
@@ -16,10 +18,10 @@ const Ifos = () => {
         <Flex justifyContent="center" alignItems="center" mb="32px">
           <ButtonMenu activeIndex={!isExact ? 1 : 0} scale="sm" variant="subtle">
             <ButtonMenuItem as={Link} to={`${url}`}>
-              Next IFO
+              {t('Next IFO')}
             </ButtonMenuItem>
             <ButtonMenuItem as={Link} to={`${url}/history`}>
-              Past IFOs
+              {t('Past IFOs')}
             </ButtonMenuItem>
           </ButtonMenu>
         </Flex>

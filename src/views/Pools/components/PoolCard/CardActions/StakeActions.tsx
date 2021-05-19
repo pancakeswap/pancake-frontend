@@ -56,7 +56,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({
   )
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    t("You've already staked the maximum amount you can stake in this pool!"),
+    t('You’ve already staked the maximum amount you can stake in this pool!'),
     { placement: 'bottom' },
   )
 

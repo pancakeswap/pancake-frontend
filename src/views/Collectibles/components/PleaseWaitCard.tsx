@@ -11,7 +11,7 @@ const PleaseWaitCard = () => {
     <SecondaryCard>
       <CardContent imgSrc="/images/present-alt.svg">
         <Heading mb="8px">{t('Please wait...')}</Heading>
-        <Text>{t("The claiming period hasn't started yet. Check back soon.")}</Text>
+        <Text>{t('The claiming period hasn’t started yet. Check back soon.')}</Text>
       </CardContent>
     </SecondaryCard>
   )

@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from 'contexts/Localization'
 import { Button } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { Link } from 'react-router-dom'
@@ -19,6 +20,7 @@ interface Props {
 }
 
 const IfoCardActions: React.FC<Props> = ({ poolId, ifo, publicIfoData, walletIfoData, hasProfile, isLoading }) => {
+  const { t } = useTranslation()
   const { account } = useWeb3React()
   const userPoolCharacteristics = walletIfoData[poolId]
 
@@ -33,7 +35,7 @@ const IfoCardActions: React.FC<Props> = ({ poolId, ifo, publicIfoData, walletIfo
   if (!hasProfile) {
     return (
       <Button as={Link} to="/profile" width="100%">
-        Activate your profile
+        {t('Activate your profile')}
       </Button>
     )
   }

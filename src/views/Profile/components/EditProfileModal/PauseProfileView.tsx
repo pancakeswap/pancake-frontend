@@ -35,12 +35,12 @@ const PauseProfilePage: React.FC<PauseProfilePageProps> = ({ onDismiss }) => {
       .on('receipt', async () => {
         // Re-fetch profile
         await dispatch(fetchProfile(account))
-        toastSuccess('Profile Paused!')
+        toastSuccess(t('Profile Paused!'))
 
         onDismiss()
       })
       .on('error', (error) => {
-        toastError('Error', error?.message)
+        toastError(t('Error'), error?.message)
         setIsConfirming(false)
       })
   }
@@ -60,7 +60,7 @@ const PauseProfilePage: React.FC<PauseProfilePageProps> = ({ onDismiss }) => {
         )}
       </Text>
       <Text as="p" color="textSubtle" mb="24px">
-        {t(`Cost to reactivate in future: ${getBalanceNumber(numberCakeToReactivate)} CAKE`)}
+        {t('Cost to reactivate in future: %cost% CAKE', { cost: getBalanceNumber(numberCakeToReactivate) })}
       </Text>
       <label htmlFor="acknowledgement" style={{ cursor: 'pointer', display: 'block', marginBottom: '24px' }}>
         <Flex alignItems="center">

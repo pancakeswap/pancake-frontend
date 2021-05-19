@@ -94,7 +94,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({ pool, stakingMax, isR
         .on('error', (error) => {
           console.error(error)
           // Remove message from toast before prod
-          toastError(t('Error'), t(`${error.message} - Please try again.`))
+          toastError(t('Error'), t('%error% - Please try again.', { error: error.message }))
           setPendingTx(false)
         })
     } else {
@@ -115,7 +115,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({ pool, stakingMax, isR
         .on('error', (error) => {
           console.error(error)
           // Remove message from toast before prod
-          toastError(t('Error'), t(`${error.message} - Please try again.`))
+          toastError(t('Error'), t('%error% - Please try again.', { error: error.message }))
           setPendingTx(false)
         })
     }
@@ -139,7 +139,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({ pool, stakingMax, isR
       .on('error', (error) => {
         console.error(error)
         // Remove message from toast before prod
-        toastError(t('Error'), t(`${error.message} - Please try again.`))
+        toastError(t('Error'), t('%error% - Please try again.', { error: error.message }))
         setPendingTx(false)
       })
   }
@@ -177,7 +177,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({ pool, stakingMax, isR
         currencyValue={`~${usdValueStaked || 0} USD`}
       />
       <Text mt="8px" ml="auto" color="textSubtle" fontSize="12px" mb="8px">
-        Balance: {getFullDisplayBalance(stakingMax, stakingToken.decimals)}
+        {t('Balance: %balance%', { balance: getFullDisplayBalance(stakingMax, stakingToken.decimals) })}
       </Text>
       <Slider
         min={0}
@@ -216,7 +216,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({ pool, stakingMax, isR
       </Button>
       {!isRemovingStake && (
         <Button mt="8px" as="a" external href={BASE_EXCHANGE_URL} variant="secondary">
-          {t('Get')} {stakingToken.symbol}
+          {t('Get %symbol%', { symbol: stakingToken.symbol })}
         </Button>
       )}
     </Modal>

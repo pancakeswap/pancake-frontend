@@ -42,10 +42,12 @@ const Achievement: React.FC<Props> = ({ ifo, publicIfoData }) => {
         <Image src={`/images/achievements/ifo-${tokenName}.svg`} width={56} height={56} mr="8px" />
         <Flex flexDirection="column">
           <Text color="secondary" fontSize="12px">
-            {t('Achievement:')}
+            {`${t('Achievement')}:`}
           </Text>
           <Flex>
-            <Text bold mr="8px">{`${t('IFO Shopper:')} ${campaignTitle}`}</Text>
+            <Text bold mr="8px">
+              {t('IFO Shopper: %title%', { title: campaignTitle })}
+            </Text>
             <Flex alignItems="center" mr="8px">
               <PrizeIcon color="textSubtle" width="16px" mr="4px" />
               <Text color="textSubtle">{publicIfoData.numberPoints}</Text>

@@ -62,7 +62,7 @@ const CollectModal: React.FC<CollectModalProps> = ({
         await onStake(fullBalance, earningToken.decimals)
         toastSuccess(
           `${t('Compounded')}!`,
-          t(`Your ${earningToken.symbol} earnings have been re-invested into the pool!`),
+          t('Your %symbol% earnings have been re-invested into the pool!', { symbol: earningToken.symbol }),
         )
         setPendingTx(false)
         onDismiss()
@@ -74,7 +74,10 @@ const CollectModal: React.FC<CollectModalProps> = ({
       // harvesting
       try {
         await onReward()
-        toastSuccess(`${t('Harvested')}!`, t(`Your ${earningToken.symbol} earnings have been sent to your wallet!`))
+        toastSuccess(
+          `${t('Harvested')}!`,
+          t('Your %symbol% earnings have been sent to your wallet!', { symbol: earningToken.symbol }),
+        )
         setPendingTx(false)
         onDismiss()
       } catch (e) {
@@ -127,7 +130,7 @@ const CollectModal: React.FC<CollectModalProps> = ({
         {pendingTx ? t('Confirming') : t('Confirm')}
       </Button>
       <Button variant="text" onClick={onDismiss} pb="0px">
-        {t('Close window')}
+        {t('Close Window')}
       </Button>
     </Modal>
   )

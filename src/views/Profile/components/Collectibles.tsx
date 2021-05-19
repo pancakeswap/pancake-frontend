@@ -40,7 +40,7 @@ const Collectibles = () => {
         {t('Pancake Collectibles are special ERC-721 NFTs that can be used on the PancakeSwap platform.')}
       </Text>
       <Text as="p">
-        {t("NFTs in this user's wallet that aren't approved Pancake Collectibles won't be shown here.")}
+        {t('NFTs in this user’s wallet that aren’t approved Pancake Collectibles won’t be shown here.')}
       </Text>
       {nftsInWallet.length > 0 && (
         <CollectibleList>

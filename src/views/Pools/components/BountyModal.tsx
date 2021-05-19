@@ -64,7 +64,7 @@ const BountyModal: React.FC<BountyModalProps> = ({
         console.error(error)
         toastError(
           t('Could not be collected'),
-          t(`There may be an issue with your transaction, or another user claimed the bounty first.`),
+          t('There may be an issue with your transaction, or another user claimed the bounty first.'),
         )
         setPendingTx(false)
       })
@@ -74,7 +74,7 @@ const BountyModal: React.FC<BountyModalProps> = ({
     <Modal title={t('Claim Bounty')} onDismiss={onDismiss} headerBackground={theme.colors.gradients.cardHeader}>
       {tooltipVisible && tooltip}
       <Flex alignItems="flex-start" justifyContent="space-between">
-        <Text>{t("You'll claim")}</Text>
+        <Text>{t('You’ll claim')}</Text>
         <Flex flexDirection="column">
           <Balance bold value={cakeBountyToDisplay} decimals={7} unit=" CAKE" />
           <Text fontSize="12px" color="textSubtle">
@@ -118,7 +118,7 @@ const BountyModal: React.FC<BountyModalProps> = ({
       )}
       <Flex justifyContent="center" alignItems="center">
         <Text fontSize="16px" bold color="textSubtle" mr="4px">
-          {t("What's this?")}
+          {t('What’s this?')}
         </Text>
         <span ref={targetRef}>
           <HelpIcon color="textSubtle" />

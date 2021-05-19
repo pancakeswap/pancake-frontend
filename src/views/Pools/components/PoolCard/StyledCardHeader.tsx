@@ -35,24 +35,24 @@ const StyledCardHeader: React.FC<{
   const getHeadingPrefix = () => {
     if (isAutoVault) {
       // vault
-      return `${t('Auto')}`
+      return t('Auto')
     }
     if (isCakePool) {
       // manual cake
-      return `${t('Manual')}`
+      return t('Manual')
     }
     // all other pools
-    return `${t('Earn')}`
+    return t('Earn')
   }
 
   const getSubHeading = () => {
     if (isAutoVault) {
-      return `${t('Automatic restaking')}`
+      return t('Automatic restaking')
     }
     if (isCakePool) {
-      return `${t('Earn CAKE, stake CAKE')}`
+      return t('Earn CAKE, stake CAKE')
     }
-    return `${t('Stake')} ${stakingTokenSymbol}`
+    return t('Stake %symbol%', { symbol: stakingTokenSymbol })
   }
 
   return (

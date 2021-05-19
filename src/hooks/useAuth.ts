@@ -15,8 +15,10 @@ import { setupNetwork } from 'utils/wallet'
 import useToast from 'hooks/useToast'
 import { profileClear } from 'state/profile'
 import { useAppDispatch } from 'state'
+import { useTranslation } from 'contexts/Localization'
 
 const useAuth = () => {
+  const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const { activate, deactivate } = useWeb3React()
   const { toastError } = useToast()
@@ -33,7 +35,7 @@ const useAuth = () => {
         } else {
           window.localStorage.removeItem(connectorLocalStorageKey)
           if (error instanceof NoEthereumProviderError || error instanceof NoBscProviderError) {
-            toastError('Provider Error', 'No provider was found')
+            toastError(t('Provider Error'), t('No provider was found'))
           } else if (
             error instanceof UserRejectedRequestErrorInjected ||
             error instanceof UserRejectedRequestErrorWalletConnect
@@ -42,14 +44,14 @@ const useAuth = () => {
               const walletConnector = connector as WalletConnectConnector
               walletConnector.walletConnectProvider = null
             }
-            toastError('Authorization Error', 'Please authorize to access your account')
+            toastError(t('Authorization Error'), t('Please authorize to access your account'))
           } else {
             toastError(error.name, error.message)
           }
         }
       })
     } else {
-      toastError("Can't find connector", 'The connector config is wrong')
+      toastError(t('Can’t find connector'), t('The connector config is wrong'))
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])

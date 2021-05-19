@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'contexts/Localization'
 import BigNumber from 'bignumber.js'
 import { getProfileContract } from 'utils/contractHelpers'
 import makeBatchRequest from 'utils/makeBatchRequest'
@@ -6,6 +7,7 @@ import { BIG_ZERO } from 'utils/bigNumber'
 import useToast from './useToast'
 
 const useGetProfileCosts = () => {
+  const { t } = useTranslation()
   const [costs, setCosts] = useState({
     numberCakeToReactivate: BIG_ZERO,
     numberCakeToRegister: BIG_ZERO,
@@ -29,12 +31,12 @@ const useGetProfileCosts = () => {
           numberCakeToUpdate: new BigNumber(numberCakeToUpdate as string),
         })
       } catch (error) {
-        toastError('Error', 'Could not retrieve CAKE costs for profile')
+        toastError(t('Error'), t('Could not retrieve CAKE costs for profile'))
       }
     }
 
     fetchCosts()
-  }, [setCosts, toastError])
+  }, [setCosts, toastError, t])
 
   return costs
 }

@@ -44,22 +44,24 @@ const HistoryChart: React.FC<HistoryChartProps> = ({ showLast }) => {
     }
   }
 
-  const chartData = {
-    labels: getDataArray('lotteryNumber'),
-    datasets: [
-      {
-        label: 'Pool Size',
-        data: getDataArray('poolSize'),
-        yAxisID: 'y-axis-pool',
-        ...lineStyles({ color: '#7A6EAA' }),
-      },
-      {
-        label: 'Burned',
-        data: getDataArray('burned'),
-        yAxisID: 'y-axis-burned',
-        ...lineStyles({ color: '#1FC7D4' }),
-      },
-    ],
+  const chartData = (translate) => {
+    return {
+      labels: getDataArray('lotteryNumber'),
+      datasets: [
+        {
+          label: translate('Pool Size'),
+          data: getDataArray('poolSize'),
+          yAxisID: 'y-axis-pool',
+          ...lineStyles({ color: '#7A6EAA' }),
+        },
+        {
+          label: translate('Burned'),
+          data: getDataArray('burned'),
+          yAxisID: 'y-axis-burned',
+          ...lineStyles({ color: '#1FC7D4' }),
+        },
+      ],
+    }
   }
 
   const axesStyles = ({ color, lineHeight, prefix = '' }) => {
@@ -148,9 +150,9 @@ const HistoryChart: React.FC<HistoryChartProps> = ({ showLast }) => {
       {!historyError && historyData.length > 1 ? (
         <Suspense fallback={<div>{t('Loading...')}</div>}>
           {showLast === 50 || showLast === 100 ? (
-            <Bar data={chartData} options={options} />
+            <Bar data={chartData(t)} options={options} />
           ) : (
-            <Line data={chartData} options={options} type="line" />
+            <Line data={chartData(t)} options={options} type="line" />
           )}
         </Suspense>
       ) : (

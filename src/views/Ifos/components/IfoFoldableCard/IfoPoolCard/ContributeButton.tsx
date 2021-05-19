@@ -29,7 +29,10 @@ const ContributeButton: React.FC<Props> = ({ poolId, ifo, publicIfoData, walletI
   // Refetch all the data, and display a message when fetching is done
   const handleContributeSuccess = async (amount: BigNumber) => {
     await Promise.all([publicIfoData.fetchIfoData(), walletIfoData.fetchIfoData()])
-    toastSuccess('Success!', `You have contributed ${getBalanceNumber(amount)} CAKE-BNB LP tokens to this IFO!`)
+    toastSuccess(
+      t('Success!'),
+      t('You have contributed %amount% CAKE-BNB LP tokens to this IFO!', { amount: getBalanceNumber(amount) }),
+    )
   }
 
   const [onPresentContributeModal] = useModal(

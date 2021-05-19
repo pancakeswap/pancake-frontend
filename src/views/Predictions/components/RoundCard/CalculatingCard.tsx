@@ -17,7 +17,7 @@ const CalculatingCard: React.FC<CalculatingCardProps> = ({ round }) => {
   const interval = useGetTotalIntervalBlocks()
   const estimatedEndBlock = round.startBlock + interval
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    t("This round's closing transaction has been submitted to the blockchain, and is waiting to be confirmed."),
+    t('This round’s closing transaction has been submitted to the blockchain, and is waiting to be confirmed.'),
     { placement: 'bottom' },
   )
 

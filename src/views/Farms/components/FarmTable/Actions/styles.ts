@@ -33,6 +33,7 @@ export const Title = styled.span`
   color: ${({ theme }) => theme.colors.secondary};
 `
 
+// TODO: Use `Text` instead
 export const Subtle = styled.span`
   color: ${({ theme }) => theme.colors.textSubtle};
 `

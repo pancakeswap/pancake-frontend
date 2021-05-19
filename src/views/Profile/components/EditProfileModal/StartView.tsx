@@ -79,7 +79,7 @@ const StartPage: React.FC<StartPageProps> = ({ goToApprove, goToChange, goToRemo
       <Flex alignItems="center" style={{ height: '48px' }} justifyContent="center">
         <Text as="p" color="failure">
           {!hasMinimumCakeRequired &&
-            t(`${getFullDisplayBalance(minimumCakeRequired)} CAKE required to change profile pic`)}
+            t('%minimum% CAKE required to change profile pic', { minimum: getFullDisplayBalance(minimumCakeRequired) })}
         </Text>
       </Flex>
       {profile.isActive ? (

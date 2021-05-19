@@ -14,7 +14,7 @@ const Menu = (props) => {
   const { isDark, toggleTheme } = useTheme()
   const cakePriceUsd = usePriceCakeBusd()
   const { profile } = useProfile()
-  const { currentLanguage, setLanguage } = useTranslation()
+  const { currentLanguage, setLanguage, t } = useTranslation()
 
   return (
     <UikitMenu
@@ -27,7 +27,7 @@ const Menu = (props) => {
       langs={languageList}
       setLang={setLanguage}
       cakePriceUsd={cakePriceUsd.toNumber()}
-      links={config}
+      links={config(t)}
       profile={{
         username: profile?.username,
         image: profile?.nft ? `/images/nfts/${profile.nft?.images.sm}` : undefined,

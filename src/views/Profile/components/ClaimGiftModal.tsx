@@ -50,13 +50,13 @@ const ClaimGift: React.FC<ClaimGiftProps> = ({ onSuccess, onDismiss }) => {
         setIsConfirming(true)
       })
       .on('receipt', () => {
-        toastSuccess('Success!')
+        toastSuccess(t('Success!'))
         onSuccess()
         onDismiss()
       })
       .on('error', (error) => {
         setIsConfirming(false)
-        toastError('Error', error?.message)
+        toastError(t('Error'), error?.message)
       })
   }
 
@@ -69,9 +69,9 @@ const ClaimGift: React.FC<ClaimGiftProps> = ({ onSuccess, onDismiss }) => {
             "If you haven't already noticed, we made a mistake and the starter bunny you chose got mixed up and changed into another bunny. Oops!",
           )}
         </Text>
-        <Text as="p">{t("To make it up to you, we'll refund you the full 4 CAKE it cost to make your bunny.")}</Text>
+        <Text as="p">{t('To make it up to you, we’ll refund you the full 4 CAKE it cost to make your bunny.')}</Text>
         <Text as="p" mb="8px">
-          {t("We're also preparing an all-new collectible for you to claim (for free!) in the near future.")}
+          {t('We’re also preparing an all-new collectible for you to claim (for free!) in the near future.')}
         </Text>
         <Text as="p" mb="24px">
           {t(

@@ -55,10 +55,10 @@ const AchievementRow: React.FC<AchievementRowProps> = ({ achievement, onCollectS
       .on('receipt', () => {
         setIsCollecting(false)
         onCollectSuccess(achievement)
-        toastSuccess('Points Collected!')
+        toastSuccess(t('Points Collected!'))
       })
       .on('error', (error) => {
-        toastError('Error', error?.message)
+        toastError(t('Error'), error?.message)
         setIsCollecting(false)
       })
   }

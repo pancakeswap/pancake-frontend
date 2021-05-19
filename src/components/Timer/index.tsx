@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Flex, Heading, Text, Link, useTooltip } from '@pancakeswap/uikit'
+import { useTranslation } from 'contexts/Localization'
 
 export interface TimerProps {
   timerStage?: string
@@ -21,14 +22,16 @@ const StyledTimerFlex = styled(Flex)<{ showTooltip?: boolean }>`
 `
 
 const Timer = ({ minutes, hours, days, showTooltip, HeadingTextComponent, BodyTextComponent }) => {
+  const { t } = useTranslation()
+
   return (
     <StyledTimerFlex alignItems="flex-end" showTooltip={showTooltip}>
       <HeadingTextComponent mr="2px">{days}</HeadingTextComponent>
-      <BodyTextComponent mr="16px">d</BodyTextComponent>
+      <BodyTextComponent mr="16px">{t('d')}</BodyTextComponent>
       <HeadingTextComponent mr="2px">{hours}</HeadingTextComponent>
-      <BodyTextComponent mr="16px">h</BodyTextComponent>
+      <BodyTextComponent mr="16px">{t('h')}</BodyTextComponent>
       <HeadingTextComponent mr="2px">{minutes}</HeadingTextComponent>
-      <BodyTextComponent>m</BodyTextComponent>
+      <BodyTextComponent>{t('m')}</BodyTextComponent>
     </StyledTimerFlex>
   )
 }
@@ -44,13 +47,13 @@ const DefaultBodyTextComponent = ({ children, ...props }) => (
   </Text>
 )
 
-const TooltipContent = ({ blockNumber }) => (
+const TooltipContent = ({ blockNumber, translate }) => (
   <>
     <Text color="body" mb="10px" fontWeight="600">
-      Block {blockNumber}
+      {translate('Block %num%', { num: blockNumber })}
     </Text>
     <Link external href={`https://bscscan.com/block/${blockNumber}`}>
-      View on BscScan
+      {translate('View on BscScan')}
     </Link>
   </>
 )
@@ -65,9 +68,13 @@ const Wrapper: React.FC<TimerProps> = ({
   HeadingTextComponent = DefaultHeadingTextComponent,
   BodyTextComponent = DefaultBodyTextComponent,
 }) => {
-  const { targetRef, tooltip, tooltipVisible } = useTooltip(<TooltipContent blockNumber={blockNumber} />, {
-    placement: 'bottom',
-  })
+  const { t } = useTranslation()
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(
+    <TooltipContent blockNumber={blockNumber} translate={t} />,
+    {
+      placement: 'bottom',
+    },
+  )
   const shouldDisplayTooltip = showTooltip && tooltipVisible
   return (
     <Flex alignItems="flex-end" position="relative">

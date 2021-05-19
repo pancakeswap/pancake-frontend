@@ -31,12 +31,12 @@ const RegisterWithProfile: React.FC<CompetitionProps> = ({ profile, onDismiss, o
         setIsConfirming(true)
       })
       .on('receipt', async () => {
-        toastSuccess('You have registered for the competition!')
+        toastSuccess(t('You have registered for the competition!'))
         onDismiss()
         onRegisterSuccess()
       })
       .on('error', (error) => {
-        toastError('Error', error?.message)
+        toastError(t('Error'), error?.message)
         setIsConfirming(false)
       })
   }

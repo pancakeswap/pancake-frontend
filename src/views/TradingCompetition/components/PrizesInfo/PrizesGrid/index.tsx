@@ -88,7 +88,7 @@ const PrizesGrid = () => {
     <Box pt="24px">
       <TabMenu activeIndex={tab} onItemClick={handleItemClick}>
         {Object.keys(easterPrizes).map((team) => {
-          return <Tab key={team}>{t(`#${team} Team`, { num: team })}</Tab>
+          return <Tab key={team}>{t('#%team% Team', { team })}</Tab>
         })}
       </TabMenu>
       <Box minWidth="288px" overflowX="auto" maxWidth="100%">

@@ -113,7 +113,7 @@ const ShareImageModal: React.FC<YourScoreProps> = ({ onDismiss, profile, userLea
   }
 
   return (
-    <Modal title={`${t('Share Your Score')}`} onDismiss={onDismiss} minWidth="280px">
+    <Modal title={t('Share Your Score')} onDismiss={onDismiss} minWidth="280px">
       <Flex flexDirection="column" alignItems="center" maxWidth="460px">
         {bgImage && profileImage ? (
           <Flex alignItems="center" justifyContent="center" minHeight="258px">

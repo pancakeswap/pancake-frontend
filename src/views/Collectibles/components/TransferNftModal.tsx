@@ -63,11 +63,11 @@ const TransferNftModal: React.FC<TransferNftModalProps> = ({ nft, tokenIds, onSu
           .on('receipt', () => {
             onDismiss()
             onSuccess()
-            toastSuccess('NFT successfully transferred!')
+            toastSuccess(t('NFT successfully transferred!'))
           })
           .on('error', () => {
             console.error(error)
-            setError('Unable to transfer NFT')
+            setError(t('Unable to transfer NFT'))
             setIsLoading(false)
           })
       }
@@ -91,7 +91,7 @@ const TransferNftModal: React.FC<TransferNftModalProps> = ({ nft, tokenIds, onSu
         )}
         <InfoRow>
           <Text>{t('Transferring')}:</Text>
-          <Value>{`1x "${nft.name}" NFT`}</Value>
+          <Value>{t('1x %nftName% NFT', { nftName: nft.name })}</Value>
         </InfoRow>
         <Label htmlFor="transferAddress">{t('Receiving address')}:</Label>
         <Input

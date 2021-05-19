@@ -75,7 +75,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
   })
 
   return (
-    <Modal title="ROI" onDismiss={onDismiss}>
+    <Modal title={t('ROI')} onDismiss={onDismiss}>
       <Grid>
         <GridItem>
           <Text fontSize="12px" bold color="textSubtle" textTransform="uppercase" mb="20px">
@@ -89,12 +89,12 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
         </GridItem>
         <GridItem>
           <Text fontSize="12px" bold color="textSubtle" textTransform="uppercase" mb="20px">
-            {earningTokenSymbol} {t('per')} $1000
+            {t('%symbol% per $1000', { symbol: earningTokenSymbol })}
           </Text>
         </GridItem>
         {/* 1 day row */}
         <GridItem>
-          <Text>1d</Text>
+          <Text>{t('%num%d', { num: 1 })}</Text>
         </GridItem>
         <GridItem>
           <Text>
@@ -109,7 +109,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
         </GridItem>
         {/* 7 day row */}
         <GridItem>
-          <Text>7d</Text>
+          <Text>{t('%num%d', { num: 7 })}</Text>
         </GridItem>
         <GridItem>
           <Text>
@@ -124,7 +124,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
         </GridItem>
         {/* 30 day row */}
         <GridItem>
-          <Text>30d</Text>
+          <Text>{t('%num%d', { num: 30 })}</Text>
         </GridItem>
         <GridItem>
           <Text>
@@ -140,7 +140,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
         </GridItem>
         {/* 365 day / APY row */}
         <GridItem>
-          <Text>365d(APY)</Text>
+          <Text>{t('365d(APY)')}</Text>
         </GridItem>
         <GridItem>
           <Text>
@@ -158,13 +158,13 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
       <Box mb="28px" maxWidth="280px">
         <Text fontSize="12px" color="textSubtle">
           {t(
-            `Calculated based on current rates. Compounding %freq%x daily. Rates are estimates provided for your convenience only, and by no means represent guaranteed returns.`,
+            'Calculated based on current rates. Compounding %freq%x daily. Rates are estimates provided for your convenience only, and by no means represent guaranteed returns.',
             { freq: compoundFrequency.toLocaleString() },
           )}
         </Text>
         {performanceFee > 0 && (
           <Text mt="14px" fontSize="12px" color="textSubtle">
-            {t(`All estimated rates take into account this pool's %fee%% performance fee`, { fee: performanceFee })}
+            {t('All estimated rates take into account this pool’s %fee%% performance fee', { fee: performanceFee })}
           </Text>
         )}
       </Box>
