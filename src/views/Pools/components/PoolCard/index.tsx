@@ -4,7 +4,6 @@ import { CardBody, Flex, Text, CardRibbon } from '@pancakeswap/uikit'
 import UnlockButton from 'components/UnlockButton'
 import { useTranslation } from 'contexts/Localization'
 import { BIG_ZERO } from 'utils/bigNumber'
-import { useFarmFromTokenSymbol } from 'state/hooks'
 import { Pool } from 'state/types'
 import AprRow from './AprRow'
 import { StyledCard, StyledCardInner } from './StyledCard'
@@ -17,7 +16,6 @@ const PoolCard: React.FC<{ pool: Pool; account: string }> = ({ pool, account }) 
   const { t } = useTranslation()
   const stakedBalance = userData?.stakedBalance ? new BigNumber(userData.stakedBalance) : BIG_ZERO
   const accountHasStakedBalance = stakedBalance.gt(0)
-  const earningTokenFarm = useFarmFromTokenSymbol(earningToken.symbol)
 
   return (
     <StyledCard
@@ -32,8 +30,7 @@ const PoolCard: React.FC<{ pool: Pool; account: string }> = ({ pool, account }) 
           isFinished={isFinished && sousId !== 0}
         />
         <CardBody>
-          {earningTokenFarm && <AprRow pool={pool} />}
-
+          <AprRow pool={pool} />
           <Flex mt="24px" flexDirection="column">
             {account ? (
               <CardActions pool={pool} stakedBalance={stakedBalance} />
