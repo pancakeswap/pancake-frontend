@@ -12,7 +12,7 @@ import ApproveConfirmButtons from 'views/Profile/components/ApproveConfirmButton
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { DEFAULT_TOKEN_DECIMAL } from 'config'
 import { useERC20 } from 'hooks/useContract'
-import { BIG_TEN } from 'utils/bigNumber'
+import { BIG_NINE, BIG_TEN } from 'utils/bigNumber'
 
 interface Props {
   poolId: PoolIds
@@ -48,7 +48,8 @@ const ContributeModal: React.FC<Props> = ({
   const { t } = useTranslation()
   const valueWithTokenDecimals = new BigNumber(value).times(DEFAULT_TOKEN_DECIMAL)
 
-  const gasPrice = BIG_TEN.times(BIG_TEN.pow(new BigNumber(9))).toNumber()
+  // Default value for transaction setting, tweak based on BSC network congestion.
+  const gasPrice = BIG_TEN.times(BIG_TEN.pow(BIG_NINE)).toString()
 
   const { isApproving, isApproved, isConfirmed, isConfirming, handleApprove, handleConfirm } =
     useApproveConfirmTransaction({
