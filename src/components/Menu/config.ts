@@ -1,7 +1,7 @@
 import { MenuEntry } from '@pancakeswap/uikit'
-import { ContextData } from '../../contexts/Localization/types'
+import { ContextApi } from 'contexts/Localization/types'
 
-const config: (t: (key: string, data?: ContextData) => string) => MenuEntry[] = (t) => [
+const config: (t: ContextApi['t']) => MenuEntry[] = (t) => [
   {
     label: t('Home'),
     icon: 'HomeIcon',
