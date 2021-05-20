@@ -12,7 +12,6 @@ import { useTranslation } from 'contexts/Localization'
 import { convertSharesToCake } from 'views/Pools/helpers'
 import BaseCell, { CellContent } from './BaseCell'
 import CollectModal from '../../PoolCard/Modals/CollectModal'
-import VaultStakeModal from '../../CakeVaultCard/VaultStakeModal'
 
 interface EarningsCellProps {
   pool: Pool
@@ -97,15 +96,9 @@ const EarningsCell: React.FC<EarningsCellProps> = ({ pool, account, userDataLoad
     />,
   )
 
-  const [onPresentVaultUnstake] = useModal(<VaultStakeModal stakingMax={cakeAsBigNumber} pool={pool} isRemovingStake />)
-
   const handleEarningsClick = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation()
-    if (isAutoVault) {
-      onPresentVaultUnstake()
-    } else {
-      onPresentCollect()
-    }
+    onPresentCollect()
   }
 
   return (
@@ -120,7 +113,7 @@ const EarningsCell: React.FC<EarningsCellProps> = ({ pool, account, userDataLoad
           <>
             {tooltipVisible && tooltip}
             <Flex>
-              <Box mr="8px" height="32px" onClick={hasEarnings ? handleEarningsClick : undefined}>
+              <Box mr="8px" height="32px" onClick={!isAutoVault && hasEarnings ? handleEarningsClick : undefined}>
                 <Balance
                   mt="4px"
                   bold
