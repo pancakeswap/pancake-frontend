@@ -5,7 +5,6 @@ import multicall from 'utils/multicall'
 import { BIG_TEN } from 'utils/bigNumber'
 import { getAddress, getMasterChefAddress } from 'utils/addressHelpers'
 import { FarmConfig } from 'config/constants/types'
-import { DEFAULT_TOKEN_DECIMAL } from 'config'
 
 const fetchFarms = async (farmsToFetch: FarmConfig[]) => {
   const data = await Promise.all(
@@ -53,12 +52,6 @@ const fetchFarms = async (farmsToFetch: FarmConfig[]) => {
       // Ratio in % of LP tokens that are staked in the MC, vs the total number in circulation
       const lpTokenRatio = new BigNumber(lpTokenBalanceMC).div(new BigNumber(lpTotalSupply))
 
-      // Total value in staking in quote token value
-      const lpTotalInQuoteToken = new BigNumber(quoteTokenBalanceLP)
-        .div(DEFAULT_TOKEN_DECIMAL)
-        .times(new BigNumber(2))
-        .times(lpTokenRatio)
-
       // Raw amount of token in the LP, including those not staked
       const tokenAmountTotal = new BigNumber(tokenBalanceLP).div(BIG_TEN.pow(tokenDecimals))
       const quoteTokenAmountTotal = new BigNumber(quoteTokenBalanceLP).div(BIG_TEN.pow(quoteTokenDecimals))
@@ -66,6 +59,9 @@ const fetchFarms = async (farmsToFetch: FarmConfig[]) => {
       // Amount of token in the LP that are staked in the MC (i.e amount of token * lp ratio)
       const tokenAmountMc = tokenAmountTotal.times(lpTokenRatio)
       const quoteTokenAmountMc = quoteTokenAmountTotal.times(lpTokenRatio)
+
+      // Total staked in LP, in quote token value
+      const lpTotalInQuoteToken = quoteTokenAmountMc.times(new BigNumber(2))
 
       const [info, totalAllocPoint] = await multicall(masterchefABI, [
         {
