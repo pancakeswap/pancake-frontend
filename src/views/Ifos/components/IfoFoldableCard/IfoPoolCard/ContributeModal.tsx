@@ -64,7 +64,7 @@ const ContributeModal: React.FC<Props> = ({
       onApprove: () => {
         return raisingTokenContract.methods
           .approve(contract.options.address, ethers.constants.MaxUint256)
-          .send({ from: account })
+          .send({ from: account, gasPrice })
       },
       onConfirm: () => {
         return contract.methods
