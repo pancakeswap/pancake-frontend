@@ -119,7 +119,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
             />
           </TokenSection>
           <TokenSection img={tokenImage}>
-            <Label> {t(hasClaimed ? '%symbol% received' : '%symbol% to received', { symbol: currency.symbol })}</Label>
+            <Label> {t(hasClaimed ? '%symbol% received' : '%symbol% to receive', { symbol: token.symbol })}</Label>
             <Flex alignItems="center">
               <Value>{getBalanceNumber(userPoolCharacteristics.offeringAmountInToken, token.decimals)}</Value>
               {!hasClaimed && userPoolCharacteristics.offeringAmountInToken.isEqualTo(0) && (
