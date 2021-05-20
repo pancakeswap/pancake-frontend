@@ -11,15 +11,15 @@ import ApyCalculatorModal from 'components/ApyCalculatorModal'
 import { Pool } from 'state/types'
 import { BASE_EXCHANGE_URL } from 'config'
 
-interface AprRowProps {
+interface NFTmrRowProps {
   pool: Pool
   stakingTokenPrice: number
   isAutoVault?: boolean
   compoundFrequency?: number
   performanceFee?: number
 }
-
-const AprRow: React.FC<AprRowProps> = ({
+// NFT Minting Rate Row
+const NFTmrRow: React.FC<NFTmrRowProps> = ({
   pool,
   stakingTokenPrice,
   isAutoVault = false,
@@ -29,11 +29,11 @@ const AprRow: React.FC<AprRowProps> = ({
   const { t } = useTranslation()
   const { stakingToken, earningToken, totalStaked, isFinished, tokenPerBlock } = pool
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    t('APY includes compounding, APR doesn’t. This pool’s CAKE is compounded automatically, so we show APY.'),
+    t('NFT Mint Rate, is the number of NFT\'s created for this Grave every block.'),
     { placement: 'bottom-end' },
   )
 
-  const earningTokenPrice = 1.0 // TODO useGetApiPrice(earningToken.address ? getAddress(earningToken.address) : '')
+  const earningTokenPrice = useGetApiPrice(earningToken.address ? getAddress(earningToken.address) : '')
   const apr = getPoolApr(
     stakingTokenPrice,
     earningTokenPrice,
@@ -84,19 +84,12 @@ const AprRow: React.FC<AprRowProps> = ({
   return (
     <Flex alignItems="center" justifyContent="space-between">
       {tooltipVisible && tooltip}
-      <TooltipText ref={targetRef}>{isAutoVault ? t('APY') : t('APR')}:</TooltipText>
+      <TooltipText ref={targetRef}>{t('NFT Mint Rate')}:</TooltipText>
       {isFinished || !apr ? (
         <Skeleton width="82px" height="32px" />
       ) : (
         <Flex alignItems="center">
-          <Balance
-            fontSize="16px"
-            isDisabled={isFinished}
-            value={earningsPercentageToDisplay()}
-            decimals={2}
-            unit="%"
-            bold
-          />
+          N/A
           <IconButton onClick={onPresentApyModal} variant="text" scale="sm">
             <CalculateIcon color="textSubtle" width="18px" />
           </IconButton>
@@ -106,4 +99,4 @@ const AprRow: React.FC<AprRowProps> = ({
   )
 }
 
-export default AprRow
+export default NFTmrRow

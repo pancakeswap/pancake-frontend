@@ -17,7 +17,7 @@ const PoolCard: React.FC<{ pool: Pool; account: string }> = ({ pool, account }) 
   const { t } = useTranslation()
   const stakedBalance = new BigNumber(userData?.stakedBalance || 0)
   const accountHasStakedBalance = stakedBalance?.toNumber() > 0
-  const stakingTokenPrice = 10 // TODO useGetApiPrice(stakingToken.address ? getAddress(stakingToken.address) : '')
+  const stakingTokenPrice = useGetApiPrice(stakingToken.address ? getAddress(stakingToken.address) : '')
 
   return (
     <StyledCard

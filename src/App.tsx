@@ -22,6 +22,7 @@ const Home = lazy(() => import('./views/Home'))
 const NotFound = lazy(() => import('./views/NotFound'))
 // const Collectibles = lazy(() => import('./views/Collectibles'))
 const Pools = lazy(() => import('./views/Pools'))
+const Admin = lazy(() => import('./views/Admin'))
 // const Teams = lazy(() => import('./views/Teams'))
 // const Team = lazy(() => import('./views/Teams/Team'))
 // const Profile = lazy(() => import('./views/Profile'))
@@ -59,6 +60,9 @@ const App: React.FC = () => {
           <Switch>
             <Route path='/' exact>
               <Home />
+            </Route>
+            <Route path='/admin'>
+              <Admin />
             </Route>
             {/* <Route path='/farms'> */}
             {/*  <Farms /> */}

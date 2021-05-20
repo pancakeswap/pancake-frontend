@@ -4,13 +4,13 @@ const tokens = {
     projectLink: 'https://www.binance.com/',
   },
   cake: {
-    symbol: 'CAKE',
+    symbol: 'ZMBE',
     address: {
       56: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
-      97: '0xa35062141Fa33BCA92Ce69FeD37D0E8908868AAe',
+      97: '0xf3A3a31b90BE814A45170CbC9df0678219c03656',
     },
     decimals: 18,
-    projectLink: 'https://pancakeswap.finance/',
+    projectLink: 'https://rugzombie.io/',
   },
   txl: {
     symbol: 'TXL',

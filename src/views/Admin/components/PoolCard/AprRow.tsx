@@ -33,7 +33,7 @@ const AprRow: React.FC<AprRowProps> = ({
     { placement: 'bottom-end' },
   )
 
-  const earningTokenPrice = 1.0 // TODO useGetApiPrice(earningToken.address ? getAddress(earningToken.address) : '')
+  const earningTokenPrice = useGetApiPrice(earningToken.address ? getAddress(earningToken.address) : '')
   const apr = getPoolApr(
     stakingTokenPrice,
     earningTokenPrice,

@@ -78,10 +78,14 @@ export const useLpTokenPrice = (symbol: string) => {
 // Pools
 
 export const usePools = (account): Pool[] => {
+  console.log("use pools")
+  console.log(account)
   const { fastRefresh } = useRefresh()
   const dispatch = useAppDispatch()
   useEffect(() => {
+    console.log("use effect")
     if (account) {
+      console.log("account found")
       dispatch(fetchPoolsUserDataAsync(account))
     }
   }, [account, dispatch, fastRefresh])

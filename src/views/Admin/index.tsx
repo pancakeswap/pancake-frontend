@@ -69,13 +69,13 @@ const Pools: React.FC = () => {
           <Route exact path={`${path}`}>
             <>
               <FirstGraveCard pool={cakePoolData} account={account} />
-               {stakedOnly
-                ? orderBy(stakedOnlyPools, ['sortOrder']).map((pool) => (
-                    <PoolCard key={pool.sousId} pool={pool} account={account} />
-                  ))
-                : orderBy(openPools, ['sortOrder']).map((pool) => (
-                    <PoolCard key={pool.sousId} pool={pool} account={account} />
-                  ))}
+              {/* {stakedOnly */}
+              {/*  ? orderBy(stakedOnlyPools, ['sortOrder']).map((pool) => ( */}
+              {/*      <PoolCard key={pool.sousId} pool={pool} account={account} /> */}
+              {/*    )) */}
+              {/*  : orderBy(openPools, ['sortOrder']).map((pool) => ( */}
+              {/*      <PoolCard key={pool.sousId} pool={pool} account={account} /> */}
+              {/*    ))} */}
             </>
           </Route>
           <Route path={`${path}/history`}>
