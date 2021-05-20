@@ -32,12 +32,23 @@ const tokens = {
   },
   usdc: {
     symbol: 'USDC',
+    coingeico: 'usd-coin',
     address: {
       137: '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174',
       80001: '',
     },
     decimals: 18,
     projectLink: 'https://www.centre.io/usdc',
+  },
+  matic: {
+    symbol: 'MATIC',
+    coingeico: 'matic-network',
+    address: {
+      137: '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270',
+      80001: '',
+    },
+    decimals: 18,
+    projectLink: 'https://matic.network',
   },
 }
 

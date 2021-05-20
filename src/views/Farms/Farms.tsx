@@ -172,22 +172,15 @@ const Farms: React.FC = () => {
   const farmsList = useCallback(
     (farmsToDisplay: Farm[]): FarmWithStakedValue[] => {
       let farmsToDisplayWithAPR: FarmWithStakedValue[] = farmsToDisplay.map((farm) => {
-/* DZ Hack
-        if (!farm.lpTotalInQuoteToken || !prices) {
-          return farm
-        }
 
-        const quoteTokenPriceUsd = prices[getAddress(farm.quoteToken.address).toLowerCase()]
-        const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(quoteTokenPriceUsd)
-        const apr = isActive ? getFarmApr(farm.poolWeight, cakePrice, totalLiquidity) : 0
-*/
-        if (!farm.tokenPriceVsQuote) {
+        if (!farm.tokenPriceVsQuote || !prices) {
           return farm
         }
+        const quoteTokenPriceUsd = prices[farm.quoteToken.coingeico.toLowerCase()]
         const tokenPriceVsQuote = new BigNumber(farm.tokenPriceVsQuote)
 //        const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken)
         const totalLiquidity = new BigNumber(farm.quoteTokenAmount).times(2)
-        const totalDeposits = new BigNumber(farm.totalDeposits)
+        const totalDeposits = new BigNumber(farm.totalDeposits).times(new BigNumber(quoteTokenPriceUsd))
 
         const apr = isActive ? getMetaFarmApr(farm.poolWeightDesignate, farm.rewardPerBlock, totalLiquidity, tokenPriceVsQuote) : 0
 
@@ -203,7 +196,7 @@ const Farms: React.FC = () => {
       return farmsToDisplayWithAPR
     },
 //    [cakePrice, prices, query, isActive],
-    [query, isActive],
+    [query, prices, isActive],
   )
 
   const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -287,7 +280,7 @@ const Farms: React.FC = () => {
   }, [farmsStakedMemoized, observerIsSet])
 
   const rowData = farmsStakedMemoized.map((farm) => {
-    const { token, quoteToken } = farm
+//    const { token, quoteToken } = farm
 //    const tokenAddress = token.address
 //    const quoteTokenAddress = quoteToken.address
     const lpLabel = farm.lpSymbol && farm.lpSymbol.split(' ')[0].toUpperCase().replace('PANCAKE', '')

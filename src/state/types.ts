@@ -139,6 +139,14 @@ export interface PriceApiList {
   }
 }
 
+// API Price State
+export interface GeicoApiList {
+  /* eslint-disable camelcase */
+  [key: string]: {
+    usd: string
+  }
+}
+
 export interface PriceApiListThunk {
   /* eslint-disable camelcase */
   [key: string]: number
@@ -152,7 +160,7 @@ export interface PriceApiResponse {
 
 export interface PriceApiThunk {
   /* eslint-disable camelcase */
-  updated_at: string
+//  updated_at: string
   data: PriceApiListThunk
 }
 
