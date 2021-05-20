@@ -39,7 +39,7 @@ const farms: FarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
-    pid: 386,
+    pid: 385,
     lpSymbol: 'RFOX-BNB LP',
     lpAddresses: {
       97: '',
