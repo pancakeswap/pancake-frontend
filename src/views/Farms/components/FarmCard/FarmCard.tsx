@@ -129,7 +129,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed, account }) => {
         </Flex>
       )}
       <Flex justifyContent="space-between" alignItems="center">
-        <Text style={{textAlign: 'left'}}>{t('Auto-Compounding APY')}:</Text>
+        <Text style={{textAlign: 'left'}}>{t('APY')}:</Text>
         <Text bold style={{ display: 'flex', alignItems: 'center' }}>
           {farm.apr ? (
             <>

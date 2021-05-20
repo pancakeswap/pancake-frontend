@@ -60,6 +60,49 @@ const farms: FarmConfig[] = [
     rewardPerBlock: 1,
     poolWeightDesignate: 10000/21300,
   },
+
+  {
+    pid: 2,
+    lpSymbol: 'Krill-USDC LP',
+    lpAddresses: {
+      80001: '',
+      137: '0x6405Ebc22cB0899FC21f414085Ac4044B4721a0d',
+    },
+    masterChefAddresses: {
+      80001: '',
+      137: '0x34bc3D36845d8A7cA6964261FbD28737d0d6510f',
+    },
+    masterChefPid: 1,
+    jarAddresses: {
+      80001: '',
+      137: '0x2e7C8A535ca86869d432FEA2Dd7b3bb8022E5C4C',
+    },
+    token: tokens.krill,
+    quoteToken: tokens.usdc,
+    rewardPerBlock: 1,
+    poolWeightDesignate: 10000/21300,
+  },
+  {
+    pid: 3,
+    lpSymbol: 'Krill-USDC LP',
+    lpAddresses: {
+      80001: '',
+      137: '0x6405Ebc22cB0899FC21f414085Ac4044B4721a0d',
+    },
+    masterChefAddresses: {
+      80001: '',
+      137: '0x34bc3D36845d8A7cA6964261FbD28737d0d6510f',
+    },
+    masterChefPid: 1,
+    jarAddresses: {
+      80001: '',
+      137: '0x2e7C8A535ca86869d432FEA2Dd7b3bb8022E5C4C',
+    },
+    token: tokens.krill,
+    quoteToken: tokens.usdc,
+    rewardPerBlock: 1,
+    poolWeightDesignate: 10000/21300,
+  },
 /*  {
     pid: 2,
     lpSymbol: 'BUSD-BNB LP',
