@@ -7,6 +7,7 @@ const initialState: PriceState = {
   lastUpdated: null,
   data: null,
 }
+// https://api.coingecko.com/api/v3/simple/price?ids=usd-coin%2Cmatic-network&vs_currencies=usd
 
 // Thunks
 export const fetchPrices = createAsyncThunk<PriceApiThunk>('prices/fetch', async () => {

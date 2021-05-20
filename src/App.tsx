@@ -11,7 +11,7 @@ import Menu from './components/Menu'
 import SuspenseWithChunkError from './components/SuspenseWithChunkError'
 import ToastListener from './components/ToastListener'
 import PageLoader from './components/PageLoader'
-import EasterEgg from './components/EasterEgg'
+// import EasterEgg from './components/EasterEgg'
 // import Pools from './views/Pools'
 import history from './routerHistory'
 
@@ -49,12 +49,12 @@ const App: React.FC = () => {
         <SuspenseWithChunkError fallback={<PageLoader />}>
           <Switch>
             <Route path="/" exact>
-              <Home />
-            </Route>
-            <Route path="/farms">
               <Farms />
             </Route>
-{/*            <Route path="/pools">
+{/*             <Route path="/farms">
+              <Farms />
+            </Route>
+           <Route path="/pools">
               <Pools />
             </Route>
             <Route path="/lottery">
@@ -96,7 +96,7 @@ const App: React.FC = () => {
           </Switch>
         </SuspenseWithChunkError>
       </Menu>
-      <EasterEgg iterations={2} />
+{/*      <EasterEgg iterations={2} /> */}
       <ToastListener />
     </Router>
   )

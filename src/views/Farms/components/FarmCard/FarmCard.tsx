@@ -11,7 +11,7 @@ import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import DetailsSection from './DetailsSection'
 import CardHeading from './CardHeading'
 import CardActionsContainer from './CardActionsContainer'
-import ApyButton from './ApyButton'
+// import ApyButton from './ApyButton'
 
 export interface FarmWithStakedValue extends Farm {
   apr?: number
@@ -90,7 +90,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed, account }) => {
     : '-'
 
   const lpLabel = farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('PANCAKE', '')
-  const earnLabel = farm.dual ? farm.dual.earnLabel : 'CAKE'
+//  const earnLabel = farm.dual ? farm.dual.earnLabel : 'CAKE'
 
   const farmAPR = farm.apr && farm.apr.toLocaleString('en-US', { maximumFractionDigits: 2 })
   const farmAPY = ((Math.exp(farm.apr/100) - 1)*100).toLocaleString('en-US', { maximumFractionDigits: 2 })
@@ -108,7 +108,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed, account }) => {
       {isPromotedFarm && <StyledCardAccent />}
       <CardHeading
         lpLabel={lpLabel}
-        multiplier={farm.multiplier}
+//        multiplier={farm.multiplier}
         isCommunityFarm={farm.isCommunity}
         farmImage={farmImage}
         tokenSymbol={farm.token.symbol}

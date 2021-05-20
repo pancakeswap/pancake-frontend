@@ -47,7 +47,7 @@ const CardActions: React.FC<FarmCardActionsProps> = ({ farm, account, addLiquidi
   const web3 = useWeb3()
 
   const lpContract = getBep20Contract(lpAddress, web3)
-  const jarContract = getBep20Contract(jarAddress, web3)
+//  const jarContract = getBep20Contract(jarAddress, web3)
 
   const { onApprove } = useApprove(lpContract, jarAddress)
 

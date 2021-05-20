@@ -70,7 +70,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
   const [onPresentWithdraw] = useModal(<WithdrawModal max={stakedBalance} onConfirm={onUnstake} tokenName={lpSymbol} />)
 
   const lpContract = getBep20Contract(lpAddress, web3)
-  const jarContract = getBep20Contract(jarAddress, web3)
+//  const jarContract = getBep20Contract(jarAddress, web3)
 
   const { onApprove } = useApprove(lpContract, jarAddress)
 

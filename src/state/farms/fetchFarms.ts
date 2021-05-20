@@ -81,7 +81,8 @@ const fetchFarms = async (farmsToFetch: FarmConfig[]) => {
       ]
 
       const [totalDepositsVal] = await multicall(jarAbi, callDeposits)
-      const totalDeposits = tokenAmount.times(2).div(lpTotalSupplyNum).times(lpQuoteTokenNum).div(BIG_TEN.pow(quoteTokenDecimals))
+      const jarDeposits = new BigNumber(totalDepositsVal)
+      const totalDeposits = jarDeposits.times(2).div(lpTotalSupplyNum).times(lpQuoteTokenNum).div(BIG_TEN.pow(quoteTokenDecimals))
 
       // new BigNumber(totalDepositsVal).times(quoteTokenAmount).div(tokenAmount).div(BIG_TEN.pow(quoteTokenDecimals)).times(2)
 

@@ -10,7 +10,7 @@ import { CommunityTag, CoreTag, DualTag } from 'components/Tags'
 import StakedAction from './StakedAction'
 import Apr, { AprProps } from '../Apr'
 import Apy, { ApyProps } from '../Apy'
-import Multiplier, { MultiplierProps } from '../Multiplier'
+// import Multiplier, { MultiplierProps } from '../Multiplier'
 import Liquidity, { LiquidityProps } from '../Liquidity'
 
 export interface ActionPanelProps {

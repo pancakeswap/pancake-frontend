@@ -7,16 +7,18 @@ import { Image, Heading, RowType, Toggle, Text } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import FlexLayout from 'components/layout/Flex'
 import Page from 'components/layout/Page'
-import { useFarms, usePriceCakeBusd, useGetApiPrices } from 'state/hooks'
+// import { useFarms, usePriceCakeBusd, useGetApiPrices } from 'state/hooks'
+import { useFarms, useGetApiPrices } from 'state/hooks'
 import useRefresh from 'hooks/useRefresh'
 import { fetchFarmUserDataAsync } from 'state/actions'
 import usePersistState from 'hooks/usePersistState'
 import { Farm } from 'state/types'
 import { useTranslation } from 'contexts/Localization'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { getFarmApr, getMetaFarmApr } from 'utils/apr'
+// import { getFarmApr } from 'utils/apr'
+import { getMetaFarmApr } from 'utils/apr'
 import { orderBy } from 'lodash'
-import { getAddress } from 'utils/addressHelpers'
+// import { getAddress } from 'utils/addressHelpers'
 import isArchivedPid from 'utils/farmHelpers'
 import { latinise } from 'utils/latinise'
 import PageHeader from 'components/PageHeader'
@@ -109,7 +111,7 @@ const Farms: React.FC = () => {
   const { pathname } = useLocation()
   const { t } = useTranslation()
   const { data: farmsLP, userDataLoaded } = useFarms()
-  const cakePrice = usePriceCakeBusd()
+//  const cakePrice = usePriceCakeBusd()
   const [query, setQuery] = useState('')
   const [viewMode, setViewMode] = usePersistState(ViewMode.TABLE, 'pancake_farm_view')
   const { account } = useWeb3React()
@@ -286,26 +288,26 @@ const Farms: React.FC = () => {
 
   const rowData = farmsStakedMemoized.map((farm) => {
     const { token, quoteToken } = farm
-    const tokenAddress = token.address
-    const quoteTokenAddress = quoteToken.address
+//    const tokenAddress = token.address
+//    const quoteTokenAddress = quoteToken.address
     const lpLabel = farm.lpSymbol && farm.lpSymbol.split(' ')[0].toUpperCase().replace('PANCAKE', '')
 
     const row: RowProps = {
       apr: {
         value: farm.apr && farm.apr.toLocaleString('en-US', { maximumFractionDigits: 2 }),
 //        multiplier: farm.multiplier,
-        lpLabel,
-        tokenAddress,
-        quoteTokenAddress,
+//        lpLabel,
+//        tokenAddress,
+//        quoteTokenAddress,
 //        cakePrice,
         originalValue: farm.apr,
       },
       apy: {
         value: farm.apr && ((Math.exp(farm.apr/100) - 1)*100).toLocaleString('en-US', { maximumFractionDigits: 2 }),
 //        multiplier: farm.multiplier,
-        lpLabel,
-        tokenAddress,
-        quoteTokenAddress,
+//        lpLabel,
+//        tokenAddress,
+//        quoteTokenAddress,
 //        cakePrice,
         originalValue: ((Math.exp(farm.apr/100) - 1)*100),
       },
@@ -397,11 +399,11 @@ const Farms: React.FC = () => {
   return (
     <>
       <PageHeader>
-        <Heading as="h1" scale="xxl" color="secondary" mb="24px">
+{/*        <Heading as="h1" scale="xxl" color="secondary" mb="24px">
           {t('Farms')}
-        </Heading>
-        <Heading scale="lg" color="text">
-          {t('Stake Liquidity Pool (LP) tokens to earn.')}
+        </Heading> */}
+        <Heading scale="lg" color="text" textAlign="center">
+          {t('We auto-compound high APR farms on Polygon. No fees until June 3!')}
         </Heading>
       </PageHeader>
       <Page>

@@ -1,18 +1,18 @@
 import React from 'react'
 import styled from 'styled-components'
-import ApyButton from 'views/Farms/components/FarmCard/ApyButton'
-import { Address } from 'config/constants/types'
-import BigNumber from 'bignumber.js'
-import { BASE_ADD_LIQUIDITY_URL } from 'config'
-import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
+// import ApyButton from 'views/Farms/components/FarmCard/ApyButton'
+// import { Address } from 'config/constants/types'
+// import BigNumber from 'bignumber.js'
+// import { BASE_ADD_LIQUIDITY_URL } from 'config'
+// import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import { Skeleton } from '@pancakeswap/uikit'
 
 export interface ApyProps {
   value: string
 //  multiplier: string
-  lpLabel: string
-  tokenAddress?: Address
-  quoteTokenAddress?: Address
+//  lpLabel: string
+//  tokenAddress?: Address
+//  quoteTokenAddress?: Address
 //  cakePrice: BigNumber
   originalValue: number
   hideButton?: boolean
@@ -42,13 +42,13 @@ const ApyWrapper = styled.div`
 
 const Apy: React.FC<ApyProps> = ({
   value,
-  lpLabel,
-  tokenAddress,
-  quoteTokenAddress,
+//  lpLabel,
+//  tokenAddress,
+//  quoteTokenAddress,
   originalValue,
 }) => {
-  const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAddress, tokenAddress })
-  const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
+//  const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAddress, tokenAddress })
+//  const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
 
   return originalValue !== 0 ? (
     <Container>

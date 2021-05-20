@@ -59,14 +59,14 @@ const StyledTr = styled.tr`
   border-bottom: 2px solid ${({ theme }) => theme.colors.borderColor};
 `
 
-const EarnedMobileCell = styled.td`
-  padding: 16px 0 24px 16px;
-`
+// const EarnedMobileCell = styled.td`
+//  padding: 16px 0 24px 16px;
+// `
 
-const AprMobileCell = styled.td`
-  padding-top: 16px;
-  padding-bottom: 24px;
-`
+// const AprMobileCell = styled.td`
+//  padding-top: 16px;
+//  padding-bottom: 24px;
+// `
 
 const ApyMobileCell = styled.td`
   padding-top: 16px;
