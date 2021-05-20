@@ -67,6 +67,7 @@ const BountyModal: React.FC<BountyModalProps> = ({
           t('There may be an issue with your transaction, or another user claimed the bounty first.'),
         )
         setPendingTx(false)
+        onDismiss()
       })
   }
 
