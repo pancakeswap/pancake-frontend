@@ -45,7 +45,7 @@
   "Rewards are calculated per block.": "Rewards are calculated per block.",
   "Total": "Total",
   "End": "End",
-  "View project site": "View project site",
+  "View Project Site": "View Project Site",
   "Your Project? 👀": "Your Project? 👀",
   "Create a pool for your token": "Create a pool for your token",
   "Apply now": "Apply now",
@@ -504,6 +504,7 @@
   "Start earning": "Start earning",
   "Recent CAKE profit:": "Recent CAKE profit:",
   "Unstaked!": "Unstaked!",
+  "Unstaked": "Unstaked",
   "Staked!": "Staked!",
   "Your funds have been staked in the pool": "Your funds have been staked in the pool",
   "Your earnings have also been harvested to your wallet": "Your earnings have also been harvested to your wallet",
@@ -790,5 +791,8 @@
   "Contact": "Contact",
   "Merch": "Merch",
   "LP Migration": "LP Migration",
-  "V1 Liquidity (Old)": "V1 Liquidity (Old)"
+  "V1 Liquidity (Old)": "V1 Liquidity (Old)",
+  "Claim Collectible": "Claim Collectible",
+  "The higher your team’s rank, the better your prizes!": "The higher your team’s rank, the better your prizes!",
+  "Get Ready": "Get Ready"
 }
