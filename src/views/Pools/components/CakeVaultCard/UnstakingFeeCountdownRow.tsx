@@ -35,7 +35,7 @@ const UnstakingFeeCountdownRow = () => {
   )
 
   // The user has made a deposit, but has no fee
-  const noFeeToPay = lastDepositedTime && !hasUnstakingFee
+  const noFeeToPay = lastDepositedTime && !hasUnstakingFee && userShares.gt(0)
 
   // Show the timer if a user is connected, has deposited, and has an unstaking fee
   const shouldShowTimer = account && lastDepositedTime && hasUnstakingFee

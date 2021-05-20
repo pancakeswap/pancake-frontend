@@ -9,7 +9,8 @@ const useWithdrawalFeeTimer = (lastDepositedTime: number, userShares: BigNumber,
   useEffect(() => {
     const feeEndTime = lastDepositedTime + withdrawalFeePeriod
     const secondsRemainingCalc = feeEndTime - currentSeconds
-    const doesUnstakingFeeApply = userShares && secondsRemainingCalc > 0
+    const doesUnstakingFeeApply = userShares.gt(0) && secondsRemainingCalc > 0
+
     const tick = () => {
       setCurrentSeconds((prevSeconds) => prevSeconds + 1)
     }
