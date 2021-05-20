@@ -12,6 +12,7 @@ import ApproveConfirmButtons from 'views/Profile/components/ApproveConfirmButton
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { DEFAULT_TOKEN_DECIMAL } from 'config'
 import { useERC20 } from 'hooks/useContract'
+import { BIG_TEN } from 'utils/bigNumber'
 
 interface Props {
   poolId: PoolIds
@@ -47,6 +48,8 @@ const ContributeModal: React.FC<Props> = ({
   const { t } = useTranslation()
   const valueWithTokenDecimals = new BigNumber(value).times(DEFAULT_TOKEN_DECIMAL)
 
+  const gasPrice = BIG_TEN.times(BIG_TEN.pow(new BigNumber(9))).toNumber()
+
   const { isApproving, isApproved, isConfirmed, isConfirming, handleApprove, handleConfirm } =
     useApproveConfirmTransaction({
       onRequiresApproval: async () => {
@@ -61,12 +64,12 @@ const ContributeModal: React.FC<Props> = ({
       onApprove: () => {
         return raisingTokenContract.methods
           .approve(contract.options.address, ethers.constants.MaxUint256)
-          .send({ from: account })
+          .send({ from: account, gasPrice })
       },
       onConfirm: () => {
         return contract.methods
           .depositPool(valueWithTokenDecimals.toString(), poolId === PoolIds.poolBasic ? 0 : 1)
-          .send({ from: account })
+          .send({ from: account, gasPrice })
       },
       onSuccess: async () => {
         await onSuccess(valueWithTokenDecimals)
