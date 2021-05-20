@@ -17,7 +17,7 @@ export const config: MenuEntry[] = [
     href: '/',
   },
   {
-    label: 'Token',
+    label: 'KogeCoin Token',
     icon: 'TeamBattleIcon',
     href: 'https://kogecoin.io/',
   },
