@@ -10,7 +10,7 @@ const UnstakingFeeCountdownRow = () => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const {
-    userData: { lastDepositedTime },
+    userData: { lastDepositedTime, userShares },
     fees: { withdrawalFee, withdrawalFeePeriod },
   } = useCakeVault()
   const feeAsDecimal = withdrawalFee / 100 || '-'
@@ -30,6 +30,7 @@ const UnstakingFeeCountdownRow = () => {
 
   const { secondsRemaining, hasUnstakingFee } = useWithdrawalFeeTimer(
     parseInt(lastDepositedTime, 10),
+    userShares,
     withdrawalFeePeriod,
   )
 

@@ -44,7 +44,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({ pool, stakingMax, isR
   const [pendingTx, setPendingTx] = useState(false)
   const [stakeAmount, setStakeAmount] = useState('')
   const [percent, setPercent] = useState(0)
-  const { hasUnstakingFee } = useWithdrawalFeeTimer(parseInt(lastDepositedTime))
+  const { hasUnstakingFee } = useWithdrawalFeeTimer(parseInt(lastDepositedTime, 10), userShares)
   const cakePriceBusd = usePriceCakeBusd()
   const usdValueStaked = stakeAmount && formatNumber(new BigNumber(stakeAmount).times(cakePriceBusd).toNumber())
 
