@@ -1344,6 +1344,15 @@ const tokens = {
     decimals: 8,
     projectLink: 'https://massnet.org/en/',
   },
+  rfox: {
+    symbol: 'RFOX',
+    address: {
+      56: '0x0a3a21356793b49154fd3bbe91cbc2a16c0457f5',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://www.redfoxlabs.io/',
+  },
 }
 
 export default tokens

@@ -39,6 +39,16 @@ const farms: FarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 386,
+    lpSymbol: 'RFOX-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x8e04b3972b5c25766c681dfd30a8a1cbf6dcc8c1',
+    },
+    token: tokens.rfox,
+    quoteToken: tokens.wbnb,
+  },
+  {
     pid: 384,
     lpSymbol: 'WMASS-BUSD LP',
     lpAddresses: {
