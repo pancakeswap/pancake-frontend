@@ -1,6 +1,6 @@
 import React, { lazy, Suspense, useContext, useMemo } from 'react'
 import styled from 'styled-components'
-import { Text } from '@pancakeswap/uikit'
+import { Flex, Text } from '@pancakeswap/uikit'
 import PastLotteryDataContext from 'contexts/PastLotteryDataContext'
 import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'
@@ -148,7 +148,13 @@ const HistoryChart: React.FC<HistoryChartProps> = ({ showLast }) => {
         </InnerWrapper>
       )}
       {!historyError && historyData.length > 1 ? (
-        <Suspense fallback={<div>{t('Loading...')}</div>}>
+        <Suspense
+          fallback={
+            <Flex justifyContent="center">
+              <Loading />
+            </Flex>
+          }
+        >
           {showLast === 50 || showLast === 100 ? (
             <Bar data={chartData(t)} options={options} />
           ) : (
