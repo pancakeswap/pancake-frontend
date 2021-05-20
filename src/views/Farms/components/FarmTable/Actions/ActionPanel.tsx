@@ -9,12 +9,14 @@ import { CommunityTag, CoreTag, DualTag } from 'components/Tags'
 // import HarvestAction from './HarvestAction'
 import StakedAction from './StakedAction'
 import Apr, { AprProps } from '../Apr'
+import Apy, { ApyProps } from '../Apy'
 import Multiplier, { MultiplierProps } from '../Multiplier'
 import Liquidity, { LiquidityProps } from '../Liquidity'
 
 export interface ActionPanelProps {
   apr: AprProps
-  multiplier: MultiplierProps
+  apy: ApyProps
+//  multiplier: MultiplierProps
   liquidity: LiquidityProps
   details: FarmWithStakedValue
   userDataReady: boolean
@@ -131,7 +133,8 @@ const ValueWrapper = styled.div`
 const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({
   details,
   apr,
-  multiplier,
+  apy,
+//  multiplier,
   liquidity,
   userDataReady,
   expanded,
@@ -139,7 +142,7 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({
   const farm = details
 
   const { t } = useTranslation()
-  const isActive = farm.multiplier !== '0X'
+  const isActive = true
   const { quoteToken, token, dual } = farm
   const lpLabel = farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('PANCAKE', '')
   const liquidityUrlPathParts = getLiquidityUrlPathParts({
@@ -155,7 +158,7 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({
       <InfoContainer>
         {isActive && (
           <StakeContainer>
-            <StyledLinkExternal href={`https://exchange.pancakeswap.finance/#/add/${liquidityUrlPathParts}`}>
+            <StyledLinkExternal href={`https://quickswap.exchange/#/add/${liquidityUrlPathParts}`}>
               {t(`Get ${lpLabel}`, { name: lpLabel })}
             </StyledLinkExternal>
           </StakeContainer>
@@ -173,11 +176,15 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({
           <Apr {...apr} />
         </ValueWrapper>
         <ValueWrapper>
+          <Text>{t('APY')}</Text>
+          <Apy {...apy} />
+        </ValueWrapper>
+  {/*      <ValueWrapper>
           <Text>{t('Multiplier')}</Text>
           <Multiplier {...multiplier} />
-        </ValueWrapper>
+        </ValueWrapper> */}
         <ValueWrapper>
-          <Text>{t('Liquidity')}</Text>
+          <Text>{t('Total Deposited')}</Text>
           <Liquidity {...liquidity} />
         </ValueWrapper>
       </ValueContainer>

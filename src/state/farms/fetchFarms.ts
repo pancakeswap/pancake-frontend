@@ -1,5 +1,6 @@
 import BigNumber from 'bignumber.js'
 import erc20 from 'config/abi/erc20.json'
+import jarAbi from 'config/abi/GenericJar.json'
 // import masterchefABI from 'config/abi/masterchef.json'
 import multicall from 'utils/multicall'
 import { BIG_TEN } from 'utils/bigNumber'
@@ -54,21 +55,36 @@ const fetchFarms = async (farmsToFetch: FarmConfig[]) => {
         await multicall(erc20, calls)
 
       // Ratio in % a LP tokens that are in staking, vs the total number in circulation
-      const lpTokenRatio = new BigNumber(lpTokenBalanceMC).div(new BigNumber(lpTotalSupply))
+      const lpTotalSupplyNum = new BigNumber(lpTotalSupply)
+      const lpQuoteTokenNum = new BigNumber(quoteTokenBalanceLP)
+      const lpTokenRatio = new BigNumber(lpTokenBalanceMC).div(lpTotalSupplyNum)
 
       // Total value in staking in quote token value
-      const lpTotalInQuoteToken = new BigNumber(quoteTokenBalanceLP)
+      const lpTotalInQuoteToken = lpQuoteTokenNum
         .div(DEFAULT_TOKEN_DECIMAL)
         .times(new BigNumber(2))
         .times(lpTokenRatio)
 
       // Amount of token in the LP that are considered staking (i.e amount of token * lp ratio)
       const tokenAmount = new BigNumber(tokenBalanceLP).div(BIG_TEN.pow(tokenDecimals)).times(lpTokenRatio)
-      const quoteTokenAmount = new BigNumber(quoteTokenBalanceLP)
+      const quoteTokenAmount = lpQuoteTokenNum
         .div(BIG_TEN.pow(quoteTokenDecimals))
         .times(lpTokenRatio)
 
       // Fetch total deposits
+      const callDeposits = [
+        // Balance of tokens in our jar contract
+        {
+          address: jarAddress,
+          name: 'balance',
+        },
+      ]
+
+      const [totalDepositsVal] = await multicall(jarAbi, callDeposits)
+      const totalDeposits = tokenAmount.times(2).div(lpTotalSupplyNum).times(lpQuoteTokenNum).div(BIG_TEN.pow(quoteTokenDecimals))
+
+      // new BigNumber(totalDepositsVal).times(quoteTokenAmount).div(tokenAmount).div(BIG_TEN.pow(quoteTokenDecimals)).times(2)
+
     /*    const calls = farmsToFetch.map((farm) => {
           const lpContractAddress = getAddress(farm.lpAddresses)
           const jarContractAddress = getAddress(farm.jarAddresses)
@@ -104,6 +120,7 @@ const fetchFarms = async (farmsToFetch: FarmConfig[]) => {
         lpTotalSupply: new BigNumber(lpTotalSupply).toJSON(),
         lpTotalInQuoteToken: lpTotalInQuoteToken.toJSON(),
         tokenPriceVsQuote: quoteTokenAmount.div(tokenAmount).toJSON(),
+        totalDeposits: totalDeposits.toJSON(),
 //        poolWeight: poolWeight.toJSON(),
 //        multiplier: `${allocPoint.div(100).toString()}X`,
       }

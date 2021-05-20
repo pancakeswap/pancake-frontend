@@ -185,10 +185,11 @@ const Farms: React.FC = () => {
         const tokenPriceVsQuote = new BigNumber(farm.tokenPriceVsQuote)
 //        const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken)
         const totalLiquidity = new BigNumber(farm.quoteTokenAmount).times(2)
+        const totalDeposits = new BigNumber(farm.totalDeposits)
 
         const apr = isActive ? getMetaFarmApr(farm.poolWeightDesignate, farm.rewardPerBlock, totalLiquidity, tokenPriceVsQuote) : 0
 
-        return { ...farm, apr, liquidity: totalLiquidity }
+        return { ...farm, apr, liquidity: totalDeposits }
       })
 
       if (query) {
@@ -292,13 +293,23 @@ const Farms: React.FC = () => {
     const row: RowProps = {
       apr: {
         value: farm.apr && farm.apr.toLocaleString('en-US', { maximumFractionDigits: 2 }),
-        multiplier: farm.multiplier,
+//        multiplier: farm.multiplier,
         lpLabel,
         tokenAddress,
         quoteTokenAddress,
-        cakePrice,
+//        cakePrice,
         originalValue: farm.apr,
       },
+      apy: {
+        value: farm.apr && ((Math.exp(farm.apr/100) - 1)*100).toLocaleString('en-US', { maximumFractionDigits: 2 }),
+//        multiplier: farm.multiplier,
+        lpLabel,
+        tokenAddress,
+        quoteTokenAddress,
+//        cakePrice,
+        originalValue: ((Math.exp(farm.apr/100) - 1)*100),
+      },
+      test: 2341,
       farm: {
         image: farm.lpSymbol.split(' ')[0].toLocaleLowerCase(),
         label: lpLabel,
@@ -311,9 +322,9 @@ const Farms: React.FC = () => {
       liquidity: {
         liquidity: farm.liquidity,
       },
-      multiplier: {
+/*      multiplier: {
         multiplier: farm.multiplier,
-      },
+      }, */
       details: farm,
     }
 
@@ -338,6 +349,12 @@ const Farms: React.FC = () => {
               }
 
               return 0
+            case 'apy':
+                if (a.original.apr.value && b.original.apr.value) {
+                  return Number(a.original.apr.value) - Number(b.original.apr.value)
+                }
+
+                return 0
             case 'earned':
               return a.original.earned.earnings - b.original.earned.earnings
             default:
@@ -355,17 +372,17 @@ const Farms: React.FC = () => {
         <FlexLayout>
           <Route exact path={`${path}`}>
             {farmsStakedMemoized.map((farm) => (
-              <FarmCard key={farm.pid} farm={farm} cakePrice={new BigNumber(1)} account={account} removed={false} />
+              <FarmCard key={farm.pid} farm={farm} account={account} removed={false} />
             ))}
           </Route>
           <Route exact path={`${path}/history`}>
             {farmsStakedMemoized.map((farm) => (
-              <FarmCard key={farm.pid} farm={farm} cakePrice={new BigNumber(1)} account={account} removed />
+              <FarmCard key={farm.pid} farm={farm} account={account} removed />
             ))}
           </Route>
           <Route exact path={`${path}/archived`}>
             {farmsStakedMemoized.map((farm) => (
-              <FarmCard key={farm.pid} farm={farm} cakePrice={new BigNumber(1)} account={account} removed />
+              <FarmCard key={farm.pid} farm={farm} account={account} removed />
             ))}
           </Route>
         </FlexLayout>
@@ -410,14 +427,14 @@ const Farms: React.FC = () => {
                     label: 'APR',
                     value: 'apr',
                   },
-                  {
-                    label: 'Multiplier',
-                    value: 'multiplier',
-                  },
-                  {
-                    label: 'Earned',
-                    value: 'earned',
-                  },
+//                  {
+//                    label: 'Multiplier',
+//                    value: 'multiplier',
+//                  },
+//                  {
+//                    label: 'Earned',
+//                    value: 'earned',
+//                  },
                   {
                     label: 'Liquidity',
                     value: 'liquidity',

@@ -13,18 +13,18 @@ export interface ApyButtonProps {
 
 const ApyButton: React.FC<ApyButtonProps> = ({ lpLabel, cakePrice, apr, addLiquidityUrl }) => {
   const { t } = useTranslation()
-  const [onPresentApyModal] = useModal(
+/*  const [onPresentApyModal] = useModal(
     <ApyCalculatorModal
       linkLabel={`${t('Get')} ${lpLabel}`}
       tokenPrice={cakePrice.toNumber()}
       apr={apr}
       linkHref={addLiquidityUrl}
     />,
-  )
+  ) */
 
   const handleClickButton = (event): void => {
     event.stopPropagation()
-    onPresentApyModal()
+/*    onPresentApyModal() */
   }
 
   return (

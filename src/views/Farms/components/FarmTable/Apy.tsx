@@ -7,7 +7,7 @@ import { BASE_ADD_LIQUIDITY_URL } from 'config'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import { Skeleton } from '@pancakeswap/uikit'
 
-export interface AprProps {
+export interface ApyProps {
   value: string
 //  multiplier: string
   lpLabel: string
@@ -35,13 +35,12 @@ const Container = styled.div`
   }
 `
 
-const AprWrapper = styled.div`
+const ApyWrapper = styled.div`
   min-width: 60px;
   text-align: left;
-  text-decoration: line-through;
 `
 
-const Apr: React.FC<AprProps> = ({
+const Apy: React.FC<ApyProps> = ({
   value,
   lpLabel,
   tokenAddress,
@@ -55,19 +54,19 @@ const Apr: React.FC<AprProps> = ({
     <Container>
       {originalValue ? (
         <>
-          <AprWrapper>{value}%</AprWrapper>
+          <ApyWrapper>{value}%</ApyWrapper>
         </>
       ) : (
-        <AprWrapper>
+        <ApyWrapper>
           <Skeleton width={60} />
-        </AprWrapper>
+        </ApyWrapper>
       )}
     </Container>
   ) : (
     <Container>
-      <AprWrapper>{originalValue}%</AprWrapper>
+      <ApyWrapper>{originalValue}%</ApyWrapper>
     </Container>
   )
 }
 
-export default Apr
+export default Apy

@@ -71,12 +71,12 @@ const ExpandingWrapper = styled.div<{ expanded: boolean }>`
 interface FarmCardProps {
   farm: FarmWithStakedValue
   removed: boolean
-  cakePrice?: BigNumber
+//  cakePrice?: BigNumber
   provider?: ProviderType
   account?: string
 }
 
-const FarmCard: React.FC<FarmCardProps> = ({ farm, removed, cakePrice, account }) => {
+const FarmCard: React.FC<FarmCardProps> = ({ farm, removed, account }) => {
   const { t } = useTranslation()
 
   const [showExpandableSection, setShowExpandableSection] = useState(false)
@@ -93,6 +93,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed, cakePrice, account }
   const earnLabel = farm.dual ? farm.dual.earnLabel : 'CAKE'
 
   const farmAPR = farm.apr && farm.apr.toLocaleString('en-US', { maximumFractionDigits: 2 })
+  const farmAPY = ((Math.exp(farm.apr/100) - 1)*100).toLocaleString('en-US', { maximumFractionDigits: 2 })
 
   const liquidityUrlPathParts = getLiquidityUrlPathParts({
     quoteTokenAddress: farm.quoteToken.address,
@@ -115,10 +116,10 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed, cakePrice, account }
       {!removed && (
         <Flex justifyContent="space-between" alignItems="center">
           <Text>{t('APR')}:</Text>
-          <Text bold style={{ display: 'flex', alignItems: 'center' }}>
+          <Text bold style={{ display: 'flex', alignItems: 'center', textDecoration: 'line-through' }}>
             {farm.apr ? (
               <>
-                <ApyButton lpLabel={lpLabel} addLiquidityUrl={addLiquidityUrl} cakePrice={cakePrice} apr={farm.apr} />
+              {/*  <ApyButton lpLabel={lpLabel} addLiquidityUrl={addLiquidityUrl} cakePrice={cakePrice} apr={farm.apr} /> */}
                 {farmAPR}%
               </>
             ) : (
@@ -127,6 +128,20 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed, cakePrice, account }
           </Text>
         </Flex>
       )}
+      <Flex justifyContent="space-between" alignItems="center">
+        <Text style={{textAlign: 'left'}}>{t('Auto-Compounding APY')}:</Text>
+        <Text bold style={{ display: 'flex', alignItems: 'center' }}>
+          {farm.apr ? (
+            <>
+            {/*  <ApyButton lpLabel={lpLabel} addLiquidityUrl={addLiquidityUrl} cakePrice={cakePrice} apr={farm.apr} /> */}
+              {farmAPY}%
+            </>
+          ) : (
+            <Skeleton height={24} width={80} />
+          )}
+        </Text>
+      </Flex>
+
 {/*      <Flex justifyContent="space-between">
         <Text>{t('Earn')}:</Text>
         <Text bold>{earnLabel}</Text>

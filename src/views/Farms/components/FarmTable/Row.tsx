@@ -7,10 +7,11 @@ import useDelayedUnmount from 'hooks/useDelayedUnmount'
 import { useFarmUser } from 'state/hooks'
 
 import Apr, { AprProps } from './Apr'
+import Apy, { ApyProps } from './Apy'
 import Farm, { FarmProps } from './Farm'
 import Earned, { EarnedProps } from './Earned'
 import Details from './Details'
-import Multiplier, { MultiplierProps } from './Multiplier'
+// import Multiplier, { MultiplierProps } from './Multiplier'
 import Liquidity, { LiquidityProps } from './Liquidity'
 import ActionPanel from './Actions/ActionPanel'
 import CellLayout from './CellLayout'
@@ -20,7 +21,9 @@ export interface RowProps {
   apr: AprProps
   farm: FarmProps
   earned: EarnedProps
-  multiplier: MultiplierProps
+  test: number
+//  multiplier: MultiplierProps
+  apy: ApyProps
   liquidity: LiquidityProps
   details: FarmWithStakedValue
 }
@@ -31,10 +34,11 @@ interface RowPropsWithLoading extends RowProps {
 
 const cells = {
   apr: Apr,
+  apy: Apy,
   farm: Farm,
   earned: Earned,
   details: Details,
-  multiplier: Multiplier,
+//  multiplier: Multiplier,
   liquidity: Liquidity,
 }
 
@@ -60,6 +64,11 @@ const EarnedMobileCell = styled.td`
 `
 
 const AprMobileCell = styled.td`
+  padding-top: 16px;
+  padding-bottom: 24px;
+`
+
+const ApyMobileCell = styled.td`
   padding-top: 16px;
   padding-bottom: 24px;
 `
@@ -114,7 +123,7 @@ const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
                 return (
                   <td key={key}>
                     <CellInner>
-                      <CellLayout label={t('APR')}>
+                      <CellLayout label={t('APR')} >
                         <Apr {...props.apr} hideButton={isMobile} />
                       </CellLayout>
                     </CellInner>
@@ -147,16 +156,23 @@ const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
             </FarmMobileCell>
           </tr>
           <tr>
-            <EarnedMobileCell>
+{/*            <EarnedMobileCell>
               <CellLayout label={t('Earned')}>
                 <Earned {...props.earned} userDataReady={userDataReady} />
               </CellLayout>
             </EarnedMobileCell>
-            <AprMobileCell>
-              <CellLayout label={t('APR')}>
-                <Apr {...props.apr} hideButton />
+            value,
+            lpLabel,
+            tokenAddress,
+            quoteTokenAddress,
+            originalValue,{...props.apy}
+            <Apy value={props.apr.value} lpLabel={props.apr.lpLabel} tokenAddress={props.apr.tokenAddress} quoteTokenAddress={props.apr.quoteTokenAddress} originalValue={props.apr.originalValue} hideButton />
+ */}
+            <ApyMobileCell>
+              <CellLayout label={t('APY')}>
+              <Apy {...props.apy} hideButton />
               </CellLayout>
-            </AprMobileCell>
+            </ApyMobileCell>
           </tr>
         </td>
         <td>
