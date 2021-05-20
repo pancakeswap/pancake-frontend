@@ -48,7 +48,7 @@ const ContributeModal: React.FC<Props> = ({
   const { t } = useTranslation()
   const valueWithTokenDecimals = new BigNumber(value).times(DEFAULT_TOKEN_DECIMAL)
 
-  const gasPrice = BIG_TEN.times(new BigNumber(10).pow(new BigNumber(9))).toNumber()
+  const gasPrice = BIG_TEN.times(BIG_TEN.pow(new BigNumber(9))).toNumber()
 
   const { isApproving, isApproved, isConfirmed, isConfirming, handleApprove, handleConfirm } =
     useApproveConfirmTransaction({
