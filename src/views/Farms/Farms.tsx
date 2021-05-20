@@ -26,7 +26,7 @@ import { fetchFarmsPublicDataAsync, setLoadArchivedFarmsData } from 'state/farms
 import Select, { OptionProps } from 'components/Select/Select'
 import FarmCard, { FarmWithStakedValue } from './components/FarmCard/FarmCard'
 import Table from './components/FarmTable/FarmTable'
-import FarmTabButtons from './components/FarmTabButtons'
+// import FarmTabButtons from './components/FarmTabButtons'
 import SearchInput from './components/SearchInput'
 import { RowProps } from './components/FarmTable/Row'
 import ToggleView from './components/ToggleView/ToggleView'
@@ -172,6 +172,15 @@ const Farms: React.FC = () => {
   const farmsList = useCallback(
     (farmsToDisplay: Farm[]): FarmWithStakedValue[] => {
       let farmsToDisplayWithAPR: FarmWithStakedValue[] = farmsToDisplay.map((farm) => {
+/* DZ Hack
+        if (!farm.lpTotalInQuoteToken || !prices) {
+          return farm
+        }
+
+        const quoteTokenPriceUsd = prices[getAddress(farm.quoteToken.address).toLowerCase()]
+        const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(quoteTokenPriceUsd)
+        const apr = isActive ? getFarmApr(farm.poolWeight, cakePrice, totalLiquidity) : 0
+*/
 
         if (!farm.tokenPriceVsQuote || !prices) {
           return farm
@@ -304,7 +313,6 @@ const Farms: React.FC = () => {
 //        cakePrice,
         originalValue: ((Math.exp(farm.apr/100) - 1)*100),
       },
-      test: 2341,
       farm: {
         image: farm.lpSymbol.split(' ')[0].toLocaleLowerCase(),
         label: lpLabel,
@@ -407,19 +415,19 @@ const Farms: React.FC = () => {
               <Toggle checked={stakedOnly} onChange={() => setStakedOnly(!stakedOnly)} scale="sm" />
               <Text> {t('Staked only')}</Text>
             </ToggleWrapper>
-            <FarmTabButtons hasStakeInFinishedFarms={stakedInactiveFarms.length > 0} />
+  {/*          <FarmTabButtons hasStakeInFinishedFarms={stakedInactiveFarms.length > 0} /> */}
           </ViewControls>
           <FilterContainer>
             <LabelWrapper>
               <Text>SORT BY</Text>
               <Select
                 options={[
+//                  {
+//                    label: 'Hot',
+//                    value: 'hot',
+//                  },
                   {
-                    label: 'Hot',
-                    value: 'hot',
-                  },
-                  {
-                    label: 'APR',
+                    label: 'APY',
                     value: 'apr',
                   },
 //                  {
@@ -431,7 +439,7 @@ const Farms: React.FC = () => {
 //                    value: 'earned',
 //                  },
                   {
-                    label: 'Liquidity',
+                    label: 'Total Deposits',
                     value: 'liquidity',
                   },
                 ]}

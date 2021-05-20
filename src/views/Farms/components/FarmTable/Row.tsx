@@ -21,7 +21,6 @@ export interface RowProps {
   apr: AprProps
   farm: FarmProps
   earned: EarnedProps
-  test: number
 //  multiplier: MultiplierProps
   apy: ApyProps
   liquidity: LiquidityProps
