@@ -3,12 +3,16 @@ import { SNAPSHOT_API } from 'config/constants/endpoints'
 import { Proposal, ProposalState, ProposalType } from './types'
 import { ADMIN_ADDRESS } from './config'
 
+export const isCoreProposal = (proposal: Proposal) => {
+  return proposal.author.toLowerCase() === ADMIN_ADDRESS.toLowerCase()
+}
+
 export const filterProposalsByType = (proposals: Proposal[], proposalType: ProposalType) => {
   switch (proposalType) {
     case ProposalType.COMMUNITY:
-      return proposals.filter((proposal) => proposal.author.toLowerCase() !== ADMIN_ADDRESS.toLowerCase())
+      return proposals.filter((proposal) => !isCoreProposal(proposal))
     case ProposalType.CORE:
-      return proposals.filter((proposal) => proposal.author.toLowerCase() === ADMIN_ADDRESS.toLowerCase())
+      return proposals.filter((proposal) => isCoreProposal(proposal))
     case ProposalType.ALL:
     default:
       return proposals
@@ -45,5 +49,3 @@ export const getProposals = async (first = 5, skip = 0, state = ProposalState.AC
     throw new Error(error)
   }
 }
-
-export const getProposal = async (id: string) => id
