@@ -45,7 +45,7 @@
   "Rewards are calculated per block.": "Ang mga gantimpala ay kinakalkula kada block.",
   "Total": "Kabuuan",
   "End": "End",
-  "View project site": "Tingnan ang site ng proyekto",
+  "View Project Site": "View Project Site",
   "Your Project? 👀": "Ang iyong Proyekto? 👀",
   "Create a pool for your token": "Lumikha ng isang pool para sa iyong token",
   "Apply now": "Mag-apply ngayon",
@@ -504,6 +504,7 @@
   "Start earning": "Magsimulang kumita",
   "Recent CAKE profit:": "Kamakailang kita sa CAKE:",
   "Unstaked!": "I-unstake!",
+  "Unstaked": "Unstaked",
   "Staked!": "Na-stake!",
   "Your funds have been staked in the pool": "Ang iyong mga pondo ay na-stake sa pool",
   "Your earnings have also been harvested to your wallet": "Na-harvest na ang iyong mga kinita sa iyong wallet",
@@ -790,5 +791,10 @@
   "Contact": "Contact",
   "Merch": "Merch",
   "LP Migration": "LP Migration",
-  "V1 Liquidity (Old)": "V1 Liquidity (Old)"
+  "V1 Liquidity (Old)": "V1 Liquidity (Old)",
+  "Claim Collectible": "Claim Collectible",
+  "The higher your team’s rank, the better your prizes!": "The higher your team’s rank, the better your prizes!",
+  "Get Ready": "Get Ready",
+  "Earn up to %highestApr% APR in Farms": "Earn up to %highestApr% APR in Farms",
+  "Earn %assets% in Pools": "Earn %assets% in Pools"
 }
