@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import farmsConfig from 'config/constants/farms'
 import isArchivedPid from 'utils/farmHelpers'
 import fetchFarms from './fetchFarms'
+import fetchFarmsPrices from './fetchFarmsPrices'
 import {
   fetchFarmUserEarnings,
   fetchFarmUserAllowances,
@@ -60,7 +61,8 @@ export const fetchFarmsPublicDataAsync = () => async (dispatch, getState) => {
   const fetchArchived = getState().farms.loadArchivedFarmsData
   const farmsToFetch = fetchArchived ? farmsConfig : nonArchivedFarms
   const farms = await fetchFarms(farmsToFetch)
-  dispatch(setFarmsPublicData(farms))
+  const farmsWithPrices = await fetchFarmsPrices(farms)
+  dispatch(setFarmsPublicData(farmsWithPrices))
 }
 export const fetchFarmUserDataAsync = (account: string) => async (dispatch, getState) => {
   const fetchArchived = getState().farms.loadArchivedFarmsData
