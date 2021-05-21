@@ -14,17 +14,19 @@ interface PoolsTableProps {
 }
 
 const StyledTable = styled.div`
-  box-shadow: ${({ theme }) =>
-    theme.isDark
-      ? `rgba(217, 217, 226, 0.05) 0px 1px 0px, rgba(217, 217, 226, 0.3) 0px 0px 8px;`
-      : `rgba(17, 17, 26, 0.05) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 0px 8px;`}
-
   border-radius: ${({ theme }) => theme.radii.card};
 
   background-color: ${({ theme }) => theme.card.background};
   > div:not(:last-child) {
     border-bottom: 2px solid ${({ theme }) => theme.colors.borderColor};
   }
+`
+
+const StyledTableBorder = styled.div`
+  border-radius: ${({ theme }) => theme.radii.card};
+  background-color: ${({ theme }) => theme.colors.cardBorder};
+  padding: 1px 1px 3px 1px;
+  background-size: 400% 400%;
 `
 
 const ScrollButtonContainer = styled.div`
@@ -43,20 +45,22 @@ const PoolsTable: React.FC<PoolsTableProps> = ({ pools, userDataLoaded, cakeVaul
     })
   }
   return (
-    <StyledTable role="table" ref={tableWrapperEl}>
-      {!showFinishedPools && cakeVault && (
-        <PoolRow pool={cakeVault} account={account} userDataLoaded={userDataLoaded} isAutoVault />
-      )}
-      {pools.map((pool) => (
-        <PoolRow key={pool.sousId} pool={pool} account={account} userDataLoaded={userDataLoaded} />
-      ))}
-      <ScrollButtonContainer>
-        <Button variant="text" onClick={scrollToTop}>
-          {t('To Top')}
-          <ChevronUpIcon color="primary" />
-        </Button>
-      </ScrollButtonContainer>
-    </StyledTable>
+    <StyledTableBorder>
+      <StyledTable role="table" ref={tableWrapperEl}>
+        {!showFinishedPools && cakeVault && (
+          <PoolRow pool={cakeVault} account={account} userDataLoaded={userDataLoaded} isAutoVault />
+        )}
+        {pools.map((pool) => (
+          <PoolRow key={pool.sousId} pool={pool} account={account} userDataLoaded={userDataLoaded} />
+        ))}
+        <ScrollButtonContainer>
+          <Button variant="text" onClick={scrollToTop}>
+            {t('To Top')}
+            <ChevronUpIcon color="primary" />
+          </Button>
+        </ScrollButtonContainer>
+      </StyledTable>
+    </StyledTableBorder>
   )
 }
 

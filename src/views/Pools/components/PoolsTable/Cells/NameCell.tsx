@@ -25,7 +25,7 @@ const StyledCell = styled(BaseCell)`
 
 const NameCell: React.FC<NameCellProps> = ({ pool, isAutoVault }) => {
   const { t } = useTranslation()
-  const { sousId, stakingToken, earningToken, userData } = pool
+  const { sousId, stakingToken, earningToken, userData, isFinished } = pool
   const {
     userData: { userShares },
   } = useCakeVault()
@@ -57,7 +57,7 @@ const NameCell: React.FC<NameCellProps> = ({ pool, isAutoVault }) => {
       <Image src={`/images/pools/${iconFile}`} alt="icon" width={40} height={40} mr="8px" />
       <CellContent>
         {showStakedTag && (
-          <Text fontSize="12px" bold color="secondary" textTransform="uppercase">
+          <Text fontSize="12px" bold color={isFinished ? 'failure' : 'secondary'} textTransform="uppercase">
             {t('Staked')}
           </Text>
         )}

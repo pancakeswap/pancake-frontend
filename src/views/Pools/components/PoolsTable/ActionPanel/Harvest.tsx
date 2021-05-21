@@ -141,7 +141,7 @@ const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({
         </Flex>
         {isAutoVault ? (
           <Flex flex="1.3" flexDirection="column" alignSelf="flex-start" alignItems="flex-start">
-            <UnstakingFeeCountdownRow tableVariant />
+            <UnstakingFeeCountdownRow isTableVariant />
             <Flex mb="2px" justifyContent="space-between" alignItems="center">
               {tooltipVisible && tooltip}
               <TooltipText ref={targetRef} small>

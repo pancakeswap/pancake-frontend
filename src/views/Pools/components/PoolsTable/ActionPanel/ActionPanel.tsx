@@ -22,7 +22,7 @@ import Balance from 'components/Balance'
 import { CompoundingPoolTag, ManualPoolTag } from 'components/Tags'
 import { getAddress } from 'utils/addressHelpers'
 import { registerToken } from 'utils/wallet'
-import { getBalanceNumber } from 'utils/formatBalance'
+import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
 import Harvest from './Harvest'
 import Stake from './Stake'
 import Apr from '../Apr'
@@ -97,7 +97,7 @@ interface ActionPanelProps {
 }
 
 const InfoSection = styled(Box)`
-  flex: 0 0 210px;
+  flex: 0 0 230px;
   padding: 8px 8px;
   ${({ theme }) => theme.mediaQueries.lg} {
     padding: 0;
@@ -112,7 +112,7 @@ const ActionPanel: React.FC<ActionPanelProps> = ({
   expanded,
   breakpoints,
 }) => {
-  const { sousId, stakingToken, earningToken, startBlock, totalStaked, endBlock, isFinished } = pool
+  const { sousId, stakingToken, earningToken, startBlock, totalStaked, endBlock, stakingLimit, isFinished } = pool
   const { t } = useTranslation()
   const { currentBlock } = useBlock()
   const { isXs, isSm, isMd } = breakpoints
@@ -146,17 +146,38 @@ const ActionPanel: React.FC<ActionPanelProps> = ({
     return getBalanceNumber(totalStaked, stakingToken.decimals)
   }
 
-  const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    t('Total amount of %symbol% staked in this pool', { symbol: stakingToken.symbol }),
-    {
-      placement: 'bottom',
-    },
+  const {
+    targetRef: totalStakedTargetRef,
+    tooltip: totalStakedTooltip,
+    tooltipVisible: totalStakedTooltipVisible,
+  } = useTooltip(t('Total amount of %symbol% staked in this pool', { symbol: stakingToken.symbol }), {
+    placement: 'bottom',
+  })
+
+  const manualTooltipText = t('You must harvest and compound your earnings from this pool manually.')
+  const autoTooltipText = t(
+    'Any funds you stake in this pool will be automagically harvested and restaked (compounded) for you.',
   )
+
+  const {
+    targetRef: tagTargetRef,
+    tooltip: tagTooltip,
+    tooltipVisible: tagTooltipVisible,
+  } = useTooltip(isAutoVault ? autoTooltipText : manualTooltipText, {
+    placement: 'bottom-start',
+  })
+
+  const maxStakeRow = stakingLimit.gt(0) ? (
+    <Flex mb="8px" justifyContent="space-between">
+      <Text>{t('Max. stake per user')}:</Text>
+      <Text>{`${getFullDisplayBalance(stakingLimit, stakingToken.decimals, 0)} ${stakingToken.symbol}`}</Text>
+    </Flex>
+  ) : null
 
   const blocksRow =
     blocksRemaining || blocksUntilStart ? (
       <Flex mb="8px" justifyContent="space-between">
-        <Text mr="4px">{t('Ends in')}:</Text>
+        <Text>{t('Ends in')}:</Text>
         <Flex>
           <Link external href={`${BASE_BSC_SCAN_URL}/block/countdown/${endBlock}`}>
             <Balance fontSize="16px" value={blocksToDisplay} decimals={0} color="primary" />
@@ -185,14 +206,14 @@ const ActionPanel: React.FC<ActionPanelProps> = ({
         {totalStaked ? (
           <>
             <Balance fontSize="16px" value={getTotalStakedBalance()} decimals={0} unit={` ${stakingToken.symbol}`} />
-            <span ref={targetRef}>
+            <span ref={totalStakedTargetRef}>
               <HelpIcon color="textSubtle" width="20px" ml="6px" />
             </span>
           </>
         ) : (
           <Skeleton width="56px" height="16px" />
         )}
-        {tooltipVisible && tooltip}
+        {totalStakedTooltipVisible && totalStakedTooltip}
       </Flex>
     </Flex>
   )
@@ -200,6 +221,7 @@ const ActionPanel: React.FC<ActionPanelProps> = ({
   return (
     <StyledActionPanel expanded={expanded}>
       <InfoSection>
+        {maxStakeRow}
         {(isXs || isSm) && aprRow}
         {(isXs || isSm || isMd) && totalStakedRow}
         {shouldShowBlockCountdown && blocksRow}
@@ -221,14 +243,16 @@ const ActionPanel: React.FC<ActionPanelProps> = ({
               height="auto"
               onClick={() => registerToken(tokenAddress, earningToken.symbol, earningToken.decimals, imageSrc)}
             >
-              <Text color="primary" fontSize="14px">
-                {t('Add to Metamask')}
-              </Text>
+              <Text color="primary">{t('Add to Metamask')}</Text>
               <MetamaskIcon ml="4px" />
             </Button>
           </Flex>
         )}
         {isAutoVault ? <CompoundingPoolTag /> : <ManualPoolTag />}
+        {tagTooltipVisible && tagTooltip}
+        <span ref={tagTargetRef}>
+          <HelpIcon ml="4px" width="20px" height="20px" color="textSubtle" />
+        </span>
       </InfoSection>
       <ActionContainer>
         <Harvest {...pool} isAutoVault={isAutoVault} userDataLoaded={userDataLoaded} />

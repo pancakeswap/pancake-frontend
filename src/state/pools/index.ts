@@ -74,10 +74,6 @@ export const fetchPoolsPublicDataAsync = (currentBlock: number) => async (dispat
         )
       : 0
 
-    if (pool.sousId === 144) {
-      earningTokenPrice = 999.99
-    }
-
     return {
       ...blockLimit,
       ...totalStaking,

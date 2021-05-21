@@ -252,6 +252,11 @@ const Pools: React.FC = () => {
             </Flex>
           </SearchSortContainer>
         </PoolControls>
+        {showFinishedPools && (
+          <Text fontSize="20px" color="failure" pb="32px">
+            {t('These pools are no longer distributing rewards. Please unstake your tokens.')}
+          </Text>
+        )}
         {viewMode === ViewMode.CARD ? cardLayout : tableLayout}
         <div ref={loadMoreRef} />
         <Image
