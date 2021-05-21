@@ -45,7 +45,7 @@
   "Rewards are calculated per block.": "As recompensas são calculadas por bloco.",
   "Total": "Total",
   "End": "Fim",
-  "View Project Site": "View Project Site",
+  "View Project Site": "Ver site do projeto",
   "Your Project? 👀": "Este projeto é seu? 👀",
   "Create a pool for your token": "Crie um pool para seu token",
   "Apply now": "Inscreva-se agora",
@@ -504,7 +504,7 @@
   "Start earning": "Comece a ganhar",
   "Recent CAKE profit:": "Lucro recente do CAKE:",
   "Unstaked!": "Desafetado!",
-  "Unstaked": "Unstaked",
+  "Unstaked": "Não acumulado",
   "Staked!": "Afetado!",
   "Your funds have been staked in the pool": "Os seus fundos foram acumulados no pool",
   "Your earnings have also been harvested to your wallet": "Os seus ganhos também foram recolhidos na sua carteira",
@@ -792,9 +792,9 @@
   "Merch": "Mercadoria",
   "LP Migration": "Migração LP",
   "V1 Liquidity (Old)": "V1 Liquidez (Antiga)",
-  "Claim Collectible": "Claim Collectible",
-  "The higher your team’s rank, the better your prizes!": "The higher your team’s rank, the better your prizes!",
-  "Get Ready": "Get Ready",
-  "Earn up to %highestApr% APR in Farms": "Earn up to %highestApr% APR in Farms",
-  "Earn %assets% in Pools": "Earn %assets% in Pools"
+  "Claim Collectible": "Reclamar Colecionável",
+  "The higher your team’s rank, the better your prizes!": "Quanto mais alta for a classificação da sua equipa, melhores serão os seus prémios!",
+  "Get Ready": "Prepare-se",
+  "Earn up to %highestApr% APR in Farms": "Ganhe até %highestApr% APR em Quintas",
+  "Earn %assets% in Pools": "Ganhe %assets% em Pools"
 }
