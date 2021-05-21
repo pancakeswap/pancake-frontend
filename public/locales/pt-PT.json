@@ -790,5 +790,7 @@
   "Contact": "Contacto",
   "Merch": "Mercadoria",
   "LP Migration": "Migração LP",
-  "V1 Liquidity (Old)": "V1 Liquidez (Antiga)"
+  "V1 Liquidity (Old)": "V1 Liquidez (Antiga)",
+  "Earn up to %highestApr% APR in Farms": "Earn up to %highestApr% APR in Farms",
+  "Earn %assets% in Pools": "Earn %assets% in Pools"
 }
