@@ -1,4 +1,5 @@
 import React from 'react'
+import ReactDOM from 'react-dom'
 import styled from 'styled-components'
 import { HelpIcon, Text, Skeleton, useTooltip } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
@@ -49,7 +50,7 @@ const Liquidity: React.FunctionComponent<LiquidityProps> = ({ liquidity }) => {
       <ReferenceElement ref={targetRef}>
         <HelpIcon color="textSubtle" />
       </ReferenceElement>
-      {tooltipVisible && tooltip}
+      {tooltipVisible && ReactDOM.createPortal(tooltip, document.getElementById('root'))}
     </Container>
   )
 }

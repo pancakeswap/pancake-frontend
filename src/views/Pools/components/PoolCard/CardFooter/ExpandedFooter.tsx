@@ -1,4 +1,5 @@
 import React from 'react'
+import ReactDOM from 'react-dom'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import { getBalanceNumber } from 'utils/formatBalance'
@@ -112,7 +113,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account, isAutoVa
       )}
       {isAutoVault && (
         <Flex mb="2px" justifyContent="space-between" alignItems="center">
-          {tooltipVisible && tooltip}
+          {tooltipVisible && ReactDOM.createPortal(tooltip, document.getElementById('root'))}
           <TooltipText ref={targetRef} small>
             {t('Performance Fee')}
           </TooltipText>

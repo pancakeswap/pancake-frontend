@@ -1,4 +1,5 @@
 import React from 'react'
+import ReactDOM from 'react-dom'
 import { Text, Flex, Box, Image, CheckmarkCircleIcon, FlexProps, HelpIcon, useTooltip } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { Ifo, PoolIds } from 'config/constants/types'
@@ -137,7 +138,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
   }
   return (
     <Box pb="24px">
-      {tooltipVisible && tooltip}
+      {tooltipVisible && ReactDOM.createPortal(tooltip, document.getElementById('root'))}
       {renderTokenSection()}
     </Box>
   )

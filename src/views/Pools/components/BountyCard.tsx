@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react'
+import ReactDOM from 'react-dom'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import {
@@ -77,7 +78,7 @@ const BountyCard = () => {
 
   return (
     <>
-      {tooltipVisible && tooltip}
+      {tooltipVisible && ReactDOM.createPortal(tooltip, document.getElementById('root'))}
       <StyledCard>
         <CardBody>
           <Flex flexDirection="column">

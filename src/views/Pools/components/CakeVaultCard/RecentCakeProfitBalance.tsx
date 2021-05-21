@@ -1,4 +1,5 @@
 import React from 'react'
+import ReactDOM from 'react-dom'
 import { Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import Balance from 'components/Balance'
@@ -30,7 +31,7 @@ const RecentCakeProfitBalance: React.FC<RecentCakeProfitBalanceProps> = ({
 
   return (
     <>
-      {tooltipVisible && tooltip}
+      {tooltipVisible && ReactDOM.createPortal(tooltip, document.getElementById('root'))}
       <TooltipText ref={targetRef} small>
         <Balance fontSize="14px" value={cakeToDisplay} />
       </TooltipText>

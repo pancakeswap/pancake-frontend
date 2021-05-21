@@ -1,4 +1,5 @@
 import React from 'react'
+import ReactDOM from 'react-dom'
 import { Flex, Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
@@ -52,7 +53,7 @@ const UnstakingFeeCountdownRow = () => {
 
   return (
     <Flex alignItems="center" justifyContent="space-between">
-      {tooltipVisible && tooltip}
+      {tooltipVisible && ReactDOM.createPortal(tooltip, document.getElementById('root'))}
       <TooltipText ref={targetRef} small>
         {noFeeToPay ? '0' : feeAsDecimal}% {getRowText()}
       </TooltipText>

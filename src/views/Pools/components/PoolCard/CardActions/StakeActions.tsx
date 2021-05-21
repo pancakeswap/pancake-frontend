@@ -1,4 +1,5 @@
 import React from 'react'
+import ReactDOM from 'react-dom'
 import { Flex, Text, Button, IconButton, AddIcon, MinusIcon, useModal, Skeleton, useTooltip } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
@@ -101,7 +102,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({
             </IconButton>
           )}
         </Flex>
-        {tooltipVisible && tooltip}
+        {tooltipVisible && ReactDOM.createPortal(tooltip, document.getElementById('root'))}
       </Flex>
     ) : (
       <Button disabled={isFinished} onClick={stakingTokenBalance.gt(0) ? onPresentStake : onPresentTokenRequired}>

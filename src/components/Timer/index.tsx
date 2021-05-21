@@ -1,4 +1,5 @@
 import React from 'react'
+import ReactDOM from 'react-dom'
 import styled from 'styled-components'
 import { Flex, Heading, Text, Link, useTooltip } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
@@ -88,7 +89,7 @@ const Wrapper: React.FC<TimerProps> = ({
           BodyTextComponent={BodyTextComponent}
           showTooltip={showTooltip}
         />
-        {shouldDisplayTooltip && tooltip}
+        {shouldDisplayTooltip && ReactDOM.createPortal(tooltip, document.getElementById('root'))}
       </div>
     </Flex>
   )

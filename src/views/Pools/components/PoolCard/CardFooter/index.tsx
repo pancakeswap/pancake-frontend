@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import ReactDOM from 'react-dom'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
@@ -40,7 +41,7 @@ const Footer: React.FC<FooterProps> = ({ pool, account, isAutoVault = false }) =
       <ExpandableButtonWrapper>
         <Flex alignItems="center">
           {isAutoVault ? <CompoundingPoolTag /> : <ManualPoolTag />}
-          {tooltipVisible && tooltip}
+          {tooltipVisible && ReactDOM.createPortal(tooltip, document.getElementById('root'))}
           <Flex ref={targetRef}>
             <HelpIcon ml="4px" width="20px" height="20px" color="textSubtle" />
           </Flex>
