@@ -1353,6 +1353,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://www.redfoxlabs.io/',
   },
+  xend: {
+    symbol: 'XEND',
+    address: {
+      56: '0x4a080377f83D669D7bB83B3184a8A5E61B500608',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://xend.finance/',
+  },
 }
 
 export default tokens
