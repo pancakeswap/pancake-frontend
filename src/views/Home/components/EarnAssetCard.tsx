@@ -34,19 +34,19 @@ const assets = ['CAKE', ...latestPools.map((pool) => pool.earningToken.symbol)].
 const EarnAssetCard = () => {
   const { t } = useTranslation()
   const assetText = t('Earn %assets% in Pools', { assets })
-  const assetTextParts = assetText.split(assets)
+  const [earn, InPools] = assetText.split(assets)
 
   return (
     <StyledFarmStakingCard>
       <NavLink exact activeClassName="active" to="/syrup" id="pool-cta">
         <CardBody>
           <Heading color="contrast" scale="lg">
-            {assetTextParts[0]}
+            {earn}
           </Heading>
           <CardMidContent color="invertedContrast">{assets}</CardMidContent>
           <Flex justifyContent="space-between">
             <Heading color="contrast" scale="lg">
-              {assetTextParts[1]}
+              {InPools}
             </Heading>
             <ArrowForwardIcon mt={30} color="primary" />
           </Flex>
