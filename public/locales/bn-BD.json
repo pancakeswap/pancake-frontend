@@ -45,7 +45,7 @@
   "Rewards are calculated per block.": "পুরষ্কারগুলি প্রতি ব্লক এই গণনা করা হয়.",
   "Total": "মোট",
   "End": "সমাপ্তি",
-  "View project site": "প্রকল্প স্থান দেখুন",
+  "View Project Site": "View Project Site",
   "Your Project? 👀": "আপনার প্রকল্প? 👀",
   "Create a pool for your token": "আপনার টোকেনের জন্য একটি পুল তৈরি করুন",
   "Apply now": "এখনি আবেদন করুন",
@@ -504,6 +504,7 @@
   "Start earning": "Start earning",
   "Recent CAKE profit:": "Recent CAKE profit:",
   "Unstaked!": "Unstaked!",
+  "Unstaked": "Unstaked",
   "Staked!": "Staked!",
   "Your funds have been staked in the pool": "Your funds have been staked in the pool",
   "Your earnings have also been harvested to your wallet": "Your earnings have also been harvested to your wallet",
@@ -790,5 +791,10 @@
   "Contact": "Contact",
   "Merch": "Merch",
   "LP Migration": "LP Migration",
-  "V1 Liquidity (Old)": "V1 Liquidity (Old)"
+  "V1 Liquidity (Old)": "V1 Liquidity (Old)",
+  "Claim Collectible": "Claim Collectible",
+  "The higher your team’s rank, the better your prizes!": "The higher your team’s rank, the better your prizes!",
+  "Get Ready": "Get Ready",
+  "Earn up to %highestApr% APR in Farms": "Earn up to %highestApr% APR in Farms",
+  "Earn %assets% in Pools": "Earn %assets% in Pools"
 }
