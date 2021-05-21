@@ -5,6 +5,7 @@ import { useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import useDelayedUnmount from 'hooks/useDelayedUnmount'
 import { useFarmUser } from 'state/hooks'
+import BigNumber from 'bignumber.js'
 
 import Apr, { AprProps } from './Apr'
 import Apy, { ApyProps } from './Apy'
@@ -13,6 +14,7 @@ import Earned, { EarnedProps } from './Earned'
 import Details from './Details'
 // import Multiplier, { MultiplierProps } from './Multiplier'
 import Liquidity, { LiquidityProps } from './Liquidity'
+import UserValue, { UserValueProps } from './UserValue'
 import ActionPanel from './Actions/ActionPanel'
 import CellLayout from './CellLayout'
 import { DesktopColumnSchema, MobileColumnSchema } from '../types'
@@ -24,6 +26,7 @@ export interface RowProps {
 //  multiplier: MultiplierProps
   apy: ApyProps
   liquidity: LiquidityProps
+  userValue: UserValueProps
   details: FarmWithStakedValue
 }
 
@@ -39,6 +42,7 @@ const cells = {
   details: Details,
 //  multiplier: Multiplier,
   liquidity: Liquidity,
+  userValue: UserValue,
 }
 
 const CellInner = styled.div`
