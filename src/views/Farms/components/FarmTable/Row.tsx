@@ -5,7 +5,7 @@ import { useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import useDelayedUnmount from 'hooks/useDelayedUnmount'
 import { useFarmUser } from 'state/hooks'
-import BigNumber from 'bignumber.js'
+// import BigNumber from 'bignumber.js'
 
 import Apr, { AprProps } from './Apr'
 import Apy, { ApyProps } from './Apy'

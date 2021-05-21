@@ -187,11 +187,11 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({
           <Multiplier {...multiplier} />
         </ValueWrapper> */}
         <ValueWrapper>
-          <Text>{t('Total Deposited')}</Text>
+          <Text>{t('Total Staked')}</Text>
           <Liquidity {...liquidity} />
         </ValueWrapper>
         <ValueWrapper>
-          <Text>{t('User Deposited')}</Text>
+          <Text>{t('User Staked')}</Text>
           <UserValue {...userValue} />
         </ValueWrapper>
       </ValueContainer>

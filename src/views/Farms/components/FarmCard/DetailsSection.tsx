@@ -35,11 +35,11 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
   return (
     <Wrapper>
       <Flex justifyContent="space-between">
-        <Text>{t('User Deposited')}:</Text>
+        <Text>{t('User Staked')}:</Text>
         <Text>{userValueFormatted}</Text>
       </Flex>
       <Flex justifyContent="space-between">
-        <Text>{t('Total Deposited')}:</Text>
+        <Text>{t('Total Staked')}:</Text>
         <Text>{totalValueFormatted}</Text>
       </Flex>
       {!removed && (

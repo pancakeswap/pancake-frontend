@@ -101,14 +101,14 @@ export const DesktopColumnSchema: ColumnsDefTypes[] = [
     name: 'userValue',
     translationId: 99,
     sortable: true,
-    label: 'User Deposited',
+    label: 'User Staked',
   },
   {
     id: 6,
     name: 'liquidity',
     translationId: 999,
     sortable: true,
-    label: 'Total Deposited',
+    label: 'Total Staked',
   },
   {
     id: 7,

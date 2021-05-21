@@ -1,12 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
-import { HelpIcon, Text, Skeleton, useTooltip } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { Text, Skeleton } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 
-const ReferenceElement = styled.div`
-  display: inline-block;
-`
 
 export interface LiquidityProps {
   liquidity: BigNumber
@@ -35,21 +31,16 @@ const Liquidity: React.FunctionComponent<LiquidityProps> = ({ liquidity }) => {
   ) : (
     <Skeleton width={60} />
   )
-  const { t } = useTranslation()
-  const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    t('The total value of the funds deposited into this auto-compounding farm'),
-    { placement: 'top-end', tooltipOffset: [20, 10] },
-  )
 
   return (
     <Container>
       <LiquidityWrapper>
         <Text>{displayLiquidity}</Text>
       </LiquidityWrapper>
-      <ReferenceElement ref={targetRef}>
+{/*      <ReferenceElement ref={targetRef}>
         <HelpIcon color="textSubtle" />
       </ReferenceElement>
-      {tooltipVisible && tooltip}
+      {tooltipVisible && tooltip} */}
     </Container>
   )
 }

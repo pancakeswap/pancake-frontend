@@ -1,12 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
-import { HelpIcon, Text, Skeleton, useTooltip } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { Text, Skeleton } from '@pancakeswap/uikit'
+// import { useTranslation } from 'contexts/Localization'
 import BigNumber from 'bignumber.js'
 
-const ReferenceElement = styled.div`
-  display: inline-block;
-`
 
 export interface UserValueProps {
   userValue: BigNumber
@@ -35,21 +32,17 @@ const UserValue: React.FunctionComponent<UserValueProps> = ({ userValue }) => {
   ) : (
     <Skeleton width={60} />
   )
-  const { t } = useTranslation()
-  const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    t('The value of the funds the user deposited into this auto-compounding farm'),
-    { placement: 'top-end', tooltipOffset: [20, 10] },
-  )
+//  const { t } = useTranslation()
 
   return (
     <Container>
       <UserValueWrapper>
         <Text>{displayUserValue}</Text>
       </UserValueWrapper>
-      <ReferenceElement ref={targetRef}>
+{/*      <ReferenceElement ref={targetRef}>
         <HelpIcon color="textSubtle" />
       </ReferenceElement>
-      {tooltipVisible && tooltip}
+      {tooltipVisible && tooltip} */}
     </Container>
   )
 }
