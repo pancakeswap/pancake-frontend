@@ -7,6 +7,7 @@ import { filterProposalsByType, getProposals } from '../../helpers'
 import ProposalsLoading from './ProposalsLoading'
 import TabMenu from './TabMenu'
 import ProposalRow from './ProposalRow'
+import Filters from './Filters'
 
 enum LoadingState {
   IDLE = 'idle',
@@ -33,6 +34,11 @@ const Proposals = () => {
 
   useEffect(() => {
     const fetchProposals = async () => {
+      setState((prevState) => ({
+        ...prevState,
+        loadingState: LoadingState.LOADING,
+      }))
+
       const data = await getProposals(100, 0, filterState)
       setState((prevState) => ({
         ...prevState,
@@ -51,6 +57,13 @@ const Proposals = () => {
     }))
   }
 
+  const handleFilterChange = (newFilterState: ProposalState) => {
+    setState((prevState) => ({
+      ...prevState,
+      filterState: newFilterState,
+    }))
+  }
+
   const filteredProposals = filterProposalsByType(proposals, proposalType)
 
   return (
@@ -60,6 +73,11 @@ const Proposals = () => {
       </Heading>
       <Card>
         <TabMenu proposalType={proposalType} onTypeChange={handleProposalTypeChange} />
+        <Filters
+          filterState={filterState}
+          onFilterChange={handleFilterChange}
+          isLoading={loadingState === LoadingState.LOADING}
+        />
         {loadingState === LoadingState.LOADING && <ProposalsLoading />}
         {loadingState === LoadingState.IDLE &&
           filteredProposals.length > 0 &&
