@@ -1,10 +1,9 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowForwardIcon, Box, IconButton, Flex, LinkExternal, Text } from '@pancakeswap/uikit'
+import { ArrowForwardIcon, Box, IconButton, Flex, Text } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import { Proposal } from '../../types'
-import { IPFS_GATEWAY } from '../../config'
 import { isCoreProposal } from '../../helpers'
 import TimeFrame from './TimeFrame'
 import { ProposalStateTag, ProposalTypeTag } from './tags'
@@ -13,29 +12,28 @@ interface ProposalRowProps {
   proposal: Proposal
 }
 
-const TitleLink = styled(Link)`
-  display: block;
-  font-weight: 600;
-  margin-bottom: 8px;
-`
-
-const StyledProposalRow = styled(Flex)`
+const StyledProposalRow = styled(Link)`
   align-items: center;
   border-bottom: 1px solid ${({ theme }) => theme.colors.borderColor};
+  display: flex;
   padding: 16px 24px;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.dropdown};
+  }
 `
 
 const ProposalRow: React.FC<ProposalRowProps> = ({ proposal }) => {
   const { t } = useTranslation()
-  const proposalIpfsLink = `${IPFS_GATEWAY}/${proposal.id}`
   const votingLink = `/voting/${proposal.id}`
 
   return (
-    <StyledProposalRow>
+    <StyledProposalRow to={votingLink}>
       <Box style={{ flex: 1 }}>
-        <TitleLink to={votingLink}>{proposal.title}</TitleLink>
+        <Text bold mb="8px">
+          {proposal.title}
+        </Text>
         <Flex alignItems="center" mb="8px">
-          <LinkExternal href={proposalIpfsLink}>{`#${proposal.id.slice(0, 8)}`}</LinkExternal>
           <TimeFrame startDate={proposal.start} endDate={proposal.end} proposalState={proposal.state} />
         </Flex>
         <Flex alignItems="center">
@@ -44,9 +42,9 @@ const ProposalRow: React.FC<ProposalRowProps> = ({ proposal }) => {
           <Text fontSize="14px" color="textSubtle" ml="8px">
             {`${t('Creator')}:`}
           </Text>
-          <LinkExternal href={`https://bscscan.com/address/${proposal.author}`} ml="8px">
+          <Text bold ml="8px" fontSize="14px">
             {proposal.author.slice(0, 8)}
-          </LinkExternal>
+          </Text>
         </Flex>
       </Box>
       <IconButton as={Link} to={votingLink}>
