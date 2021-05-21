@@ -1,34 +1,7 @@
 import React from 'react'
-import { Tag } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { TagProps } from '@pancakeswap/uikit'
+import { ClosedTag, CommunityTag, CoreTag, SoonTag, VoteNowTag } from 'components/Tags'
 import { ProposalState } from '../../types'
-
-export const VoteNowTag = () => {
-  const { t } = useTranslation()
-  return (
-    <Tag scale="sm" variant="success">
-      {t('Vote Now')}
-    </Tag>
-  )
-}
-
-export const SoonTag = () => {
-  const { t } = useTranslation()
-  return (
-    <Tag scale="sm" variant="binance">
-      {t('Soon')}
-    </Tag>
-  )
-}
-
-export const ClosedTag = () => {
-  const { t } = useTranslation()
-  return (
-    <Tag scale="sm" variant="textDisabled">
-      {t('Closed')}
-    </Tag>
-  )
-}
 
 export const ProposalStateTag: React.FC<{ proposalState: ProposalState }> = ({ proposalState }) => {
   if (proposalState === ProposalState.ACTIVE) {
@@ -40,4 +13,15 @@ export const ProposalStateTag: React.FC<{ proposalState: ProposalState }> = ({ p
   }
 
   return <ClosedTag />
+}
+
+interface ProposalTypeTagProps extends TagProps {
+  isCoreProposal: boolean
+}
+
+export const ProposalTypeTag: React.FC<ProposalTypeTagProps> = ({ isCoreProposal, ...props }) => {
+  if (isCoreProposal) {
+    return <CoreTag {...props} />
+  }
+  return <CommunityTag {...props} />
 }
