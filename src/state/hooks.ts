@@ -7,7 +7,7 @@ import { orderBy } from 'lodash'
 import { Team } from 'config/constants/types'
 import Nfts from 'config/constants/nfts'
 import { getWeb3NoAccount } from 'utils/web3'
-import { getBalanceNumber } from 'utils/formatBalance'
+import { getBalanceAmount } from 'utils/formatBalance'
 import { BIG_ZERO } from 'utils/bigNumber'
 import useRefresh from 'hooks/useRefresh'
 import { filterFarmsByQuoteToken } from 'utils/farmsPriceHelpers'
@@ -137,11 +137,19 @@ export const useBusdPriceFromToken = (tokenSymbol: string) => {
 export const useLpTokenPrice = (symbol: string) => {
   const farm = useFarmFromLpSymbol(symbol)
   const farmTokenPriceInUsd = useBusdPriceFromPid(farm.pid)
-  const lpTokenPrice = new BigNumber(getBalanceNumber(farm.lpTotalSupply))
-    .div(farm.lpTotalInQuoteToken)
-    .times(farmTokenPriceInUsd)
-    .times(2)
-  return farm.lpTotalSupply && farm.lpTotalInQuoteToken ? lpTokenPrice : BIG_ZERO
+  let lpTokenPrice = BIG_ZERO
+
+  if (farm.lpTotalSupply && farm.lpTotalInQuoteToken) {
+    // Total value of base token in LP
+    const valueOfBaseTokenInFarm = farmTokenPriceInUsd.times(farm.tokenAmountTotal)
+    // Double it to get overall value in LP
+    const overallValueOfAllTokensInFarm = valueOfBaseTokenInFarm.times(2)
+    // Divide total value of all tokens, by the number of LP tokens
+    const totalLpTokens = getBalanceAmount(farm.lpTotalSupply)
+    lpTokenPrice = overallValueOfAllTokensInFarm.div(totalLpTokens)
+  }
+
+  return lpTokenPrice
 }
 
 // Pools
