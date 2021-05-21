@@ -25,3 +25,4 @@ TODO:
     - [x] added to Menu
 - [ ] swap public locals
 - [ ] swapout analytics
+- [ ] gitbook 
