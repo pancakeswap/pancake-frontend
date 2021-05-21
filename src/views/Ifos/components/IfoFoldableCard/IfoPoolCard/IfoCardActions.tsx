@@ -35,7 +35,7 @@ const IfoCardActions: React.FC<Props> = ({ poolId, ifo, publicIfoData, walletIfo
   if (!hasProfile) {
     return (
       <Button as={Link} to="/profile" width="100%">
-        {t('Activate your profile')}
+        {t('Activate your Profile')}
       </Button>
     )
   }

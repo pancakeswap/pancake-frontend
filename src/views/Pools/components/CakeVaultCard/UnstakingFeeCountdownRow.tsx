@@ -42,7 +42,7 @@ const UnstakingFeeCountdownRow = () => {
 
   const getRowText = () => {
     if (noFeeToPay) {
-      return t('Unstaking fee').toLowerCase()
+      return t('Unstaking Fee').toLowerCase()
     }
     if (shouldShowTimer) {
       return t('unstaking fee until')
