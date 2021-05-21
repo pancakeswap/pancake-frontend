@@ -39,6 +39,16 @@ const farms: FarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 296,
+    lpSymbol: 'HGET-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0xF74ee1e10e097dc326a2ad004F9Cc95CB71088d3',
+    },
+    token: tokens.hget,
+    quoteToken: tokens.wbnb,
+  },
+  {
     pid: 386,
     lpSymbol: 'HOTCROSS-BNB LP',
     lpAddresses: {
@@ -926,16 +936,6 @@ const farms: FarmConfig[] = [
       56: '0x1F37d4226d23d09044B8005c127C0517BD7e94fD',
     },
     token: tokens.lit,
-    quoteToken: tokens.wbnb,
-  },
-  {
-    pid: 296,
-    lpSymbol: 'HGET-BNB LP',
-    lpAddresses: {
-      97: '',
-      56: '0xF74ee1e10e097dc326a2ad004F9Cc95CB71088d3',
-    },
-    token: tokens.hget,
     quoteToken: tokens.wbnb,
   },
   {
