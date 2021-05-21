@@ -45,7 +45,7 @@
   "Rewards are calculated per block.": "리워드는 블록별로 계산됩니다.",
   "Total": "합계",
   "End": "종료",
-  "View project site": "프로젝트 사이트 보기",
+  "View Project Site": "View Project Site",
   "Your Project? 👀": "내 프로젝트? 👀",
   "Create a pool for your token": "내 토큰의 풀 만들기",
   "Apply now": "지금 적용",
@@ -504,6 +504,7 @@
   "Start earning": "Start earning",
   "Recent CAKE profit:": "Recent CAKE profit:",
   "Unstaked!": "Unstaked!",
+  "Unstaked": "Unstaked",
   "Staked!": "Staked!",
   "Your funds have been staked in the pool": "Your funds have been staked in the pool",
   "Your earnings have also been harvested to your wallet": "Your earnings have also been harvested to your wallet",
@@ -790,5 +791,10 @@
   "Contact": "Contact",
   "Merch": "Merch",
   "LP Migration": "LP Migration",
-  "V1 Liquidity (Old)": "V1 Liquidity (Old)"
+  "V1 Liquidity (Old)": "V1 Liquidity (Old)",
+  "Claim Collectible": "Claim Collectible",
+  "The higher your team’s rank, the better your prizes!": "The higher your team’s rank, the better your prizes!",
+  "Get Ready": "Get Ready",
+  "Earn up to %highestApr% APR in Farms": "Earn up to %highestApr% APR in Farms",
+  "Earn %assets% in Pools": "Earn %assets% in Pools"
 }
