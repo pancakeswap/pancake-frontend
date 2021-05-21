@@ -4,7 +4,7 @@ import BigNumber from 'bignumber.js'
 import { Button, useModal, IconButton, AddIcon, MinusIcon, Skeleton, useTooltip, Flex, Text } from '@pancakeswap/uikit'
 import UnlockButton from 'components/UnlockButton'
 import { useWeb3React } from '@web3-react/core'
-import { useCakeVault, useBusdPriceFromToken } from 'state/hooks'
+import { useCakeVault } from 'state/hooks'
 import { Pool } from 'state/types'
 import Balance from 'components/Balance'
 import { useTranslation } from 'contexts/Localization'
@@ -32,7 +32,8 @@ interface StackedActionProps {
 }
 
 const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoaded, isAutoVault }) => {
-  const { sousId, stakingToken, earningToken, stakingLimit, isFinished, poolCategory, userData } = pool
+  const { sousId, stakingToken, earningToken, stakingLimit, isFinished, poolCategory, userData, stakingTokenPrice } =
+    pool
   const { t } = useTranslation()
   const { account } = useWeb3React()
 
@@ -47,8 +48,6 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
   const isNotVaultAndHasStake = !isAutoVault && stakedBalance.gt(0)
 
   const stakingTokenBalance = userData?.stakingTokenBalance ? new BigNumber(userData.stakingTokenBalance) : BIG_ZERO
-  const stakingTokenPrice = useBusdPriceFromToken(stakingToken.symbol)
-  const stakingTokenPriceAsNumber = stakingTokenPrice && stakingTokenPrice.toNumber()
 
   const stakedTokenBalance = getBalanceNumber(stakedBalance, stakingToken.decimals)
   const stakedTokenDollarBalance = getBalanceNumber(
@@ -75,7 +74,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
       isBnbPool={isBnbPool}
       pool={pool}
       stakingTokenBalance={stakingTokenBalance}
-      stakingTokenPrice={stakingTokenPriceAsNumber}
+      stakingTokenPrice={stakingTokenPrice}
     />,
   )
 
@@ -86,7 +85,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
       stakingTokenBalance={stakingTokenBalance}
       isBnbPool={isBnbPool}
       pool={pool}
-      stakingTokenPrice={stakingTokenPriceAsNumber}
+      stakingTokenPrice={stakingTokenPrice}
       isRemovingStake
     />,
   )

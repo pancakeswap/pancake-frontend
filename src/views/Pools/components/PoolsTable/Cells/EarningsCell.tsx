@@ -7,7 +7,7 @@ import { PoolCategory } from 'config/constants/types'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { formatNumber, getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
 import Balance from 'components/Balance'
-import { useCakeVault, useBusdPriceFromToken } from 'state/hooks'
+import { useCakeVault } from 'state/hooks'
 import { useTranslation } from 'contexts/Localization'
 import { convertSharesToCake } from 'views/Pools/helpers'
 import BaseCell, { CellContent } from './BaseCell'
@@ -33,18 +33,13 @@ const HelpIconWrapper = styled.div`
 
 const EarningsCell: React.FC<EarningsCellProps> = ({ pool, account, userDataLoaded, isAutoVault }) => {
   const { t } = useTranslation()
-  const { sousId, earningToken, poolCategory, userData } = pool
+  const { sousId, earningToken, poolCategory, userData, earningTokenPrice } = pool
   const isManualCakePool = sousId === 0
 
   const earnings = userData?.pendingReward ? new BigNumber(userData.pendingReward) : BIG_ZERO
-  const earningTokenPrice = useBusdPriceFromToken(earningToken.symbol)
-  const earningTokenPriceAsNumber = earningTokenPrice && earningTokenPrice.toNumber()
   // These will be reassigned later if its Auto CAKE vault
   let earningTokenBalance = getBalanceNumber(earnings, earningToken.decimals)
-  let earningTokenDollarBalance = getBalanceNumber(
-    earnings.multipliedBy(earningTokenPriceAsNumber),
-    earningToken.decimals,
-  )
+  let earningTokenDollarBalance = getBalanceNumber(earnings.multipliedBy(earningTokenPrice), earningToken.decimals)
   let hasEarnings = account && earnings.gt(0)
   const fullBalance = getFullDisplayBalance(earnings, earningToken.decimals)
   const formattedBalance = formatNumber(earningTokenBalance, 3, 3)
@@ -62,7 +57,7 @@ const EarningsCell: React.FC<EarningsCellProps> = ({ pool, account, userDataLoad
   const cakeProfit = cakeAsBigNumber.minus(cakeAtLastUserAction)
   const cakeToDisplay = cakeProfit.gte(0) ? getBalanceNumber(cakeProfit, 18) : 0
 
-  const dollarValueOfCake = cakeProfit.times(earningTokenPriceAsNumber)
+  const dollarValueOfCake = cakeProfit.times(earningTokenPrice)
   const dollarValueToDisplay = dollarValueOfCake.gte(0) ? getBalanceNumber(dollarValueOfCake, 18) : 0
 
   const lastActionInMs = lastUserActionTime && parseInt(lastUserActionTime) * 1000

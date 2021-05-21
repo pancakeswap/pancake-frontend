@@ -127,8 +127,14 @@ const Pools: React.FC = () => {
       // to use them in the sorting function. Until we calculate all prices and put them in redux pool data
       // the only way to do that is to put hook for each pool in this component, which is obviously
       // not a proper way to handle this.
+      case 'apr':
+        return orderBy(poolsToSort, 'apr', 'desc')
       case 'earned':
-        return orderBy(poolsToSort, (pool: Pool) => (pool.userData ? Number(pool.userData.pendingReward) : 0), 'desc')
+        return orderBy(
+          poolsToSort,
+          (pool: Pool) => (pool.userData ? pool.userData.pendingReward.times(pool.earningTokenPrice).toNumber() : 0),
+          'desc',
+        )
       case 'totalStaked':
         return orderBy(poolsToSort, (pool: Pool) => Number(pool.totalStaked), 'desc')
       default:
@@ -219,10 +225,10 @@ const Pools: React.FC = () => {
                       label: 'Hot',
                       value: 'hot',
                     },
-                    // {
-                    //   label: 'APR',
-                    //   value: 'apr',
-                    // },
+                    {
+                      label: 'APR',
+                      value: 'apr',
+                    },
                     {
                       label: 'Earned',
                       value: 'earned',

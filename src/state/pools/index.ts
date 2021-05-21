@@ -1,8 +1,12 @@
 /* eslint-disable no-param-reassign */
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import BigNumber from 'bignumber.js'
 import poolsConfig from 'config/constants/pools'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { PoolsState, Pool, CakeVault, VaultFees, VaultUser } from 'state/types'
+import { getPoolApr } from 'utils/apr'
+import { getBalanceNumber } from 'utils/formatBalance'
+import { getAddress } from 'utils/addressHelpers'
 import { fetchPoolsBlockLimits, fetchPoolsStakingLimits, fetchPoolsTotalStaking } from './fetchPools'
 import {
   fetchPoolsAllowance,
@@ -39,9 +43,12 @@ const initialState: PoolsState = {
 }
 
 // Thunks
-export const fetchPoolsPublicDataAsync = (currentBlock: number) => async (dispatch) => {
+export const fetchPoolsPublicDataAsync = (currentBlock: number) => async (dispatch, getState) => {
   const blockLimits = await fetchPoolsBlockLimits()
   const totalStakings = await fetchPoolsTotalStaking()
+
+  // TODO: temporary solution, update to LP prices once its merged
+  const { isLoading: pircesAreLoading, data: pricesData } = getState().prices
 
   const liveData = poolsConfig.map((pool) => {
     const blockLimit = blockLimits.find((entry) => entry.sousId === pool.sousId)
@@ -49,9 +56,34 @@ export const fetchPoolsPublicDataAsync = (currentBlock: number) => async (dispat
     const isPoolEndBlockExceeded = currentBlock > 0 && blockLimit ? currentBlock > Number(blockLimit.endBlock) : false
     const isPoolFinished = pool.isFinished || isPoolEndBlockExceeded
 
+    // TODO: temporary solution, update to LP prices once its merged
+    const stakingTokenPrice =
+      !pircesAreLoading && pool.stakingToken.address
+        ? pricesData[getAddress(pool.stakingToken.address).toLowerCase()]
+        : 0
+    let earningTokenPrice =
+      !pircesAreLoading && pool.earningToken.address
+        ? pricesData[getAddress(pool.earningToken.address).toLowerCase()]
+        : 0
+    const apr = !isPoolFinished
+      ? getPoolApr(
+          stakingTokenPrice,
+          earningTokenPrice,
+          getBalanceNumber(new BigNumber(totalStaking.totalStaked), pool.stakingToken.decimals),
+          parseFloat(pool.tokenPerBlock),
+        )
+      : 0
+
+    if (pool.sousId === 144) {
+      earningTokenPrice = 999.99
+    }
+
     return {
       ...blockLimit,
       ...totalStaking,
+      stakingTokenPrice,
+      earningTokenPrice,
+      apr,
       isFinished: isPoolFinished,
     }
   })
