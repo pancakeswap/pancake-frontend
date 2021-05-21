@@ -578,8 +578,8 @@
   "Closing": "Nag-sasara",
   "Position reclaimed!": "Na-reclaim na ang posisyon!",
   "Reclaim Position": "I-reclaim ang Posisyon",
-  "This Product is in beta.": "This Product is in beta.",
-  "I understand that I am using this product at my own risk. Any losses incurred due to my actions are my own responsibility.": "I understand that I am using this product at my own risk. Any losses incurred due to my actions are my own responsibility.",
+  "This Product is in beta.": "Ang Produktong ito as beta pa rin.",
+  "I understand that I am using this product at my own risk. Any losses incurred due to my actions are my own responsibility.": "Nauunawaan ko na gumagamit ako ng produktong ito sa aking sariling panganib. Anumang pagkatalo na natamo dahil sa aking mga aksyon ay ang aking sariling responsibilidad.",
   "I understand that this product is still in beta. I am participating at my own risk": "I understand that this product is still in beta. I am participating at my own risk",
   "Continue": "Continue",
   "Points Collected!": "Points Collected!",
@@ -790,7 +790,5 @@
   "Contact": "Contact",
   "Merch": "Merch",
   "LP Migration": "LP Migration",
-  "V1 Liquidity (Old)": "V1 Liquidity (Old)",
-  "Earn up to %highestApr% APR in Farms": "Earn up to %highestApr% APR in Farms",
-  "Earn %assets% in Pools": "Earn %assets% in Pools"
+  "V1 Liquidity (Old)": "V1 Liquidity (Old)"
 }
