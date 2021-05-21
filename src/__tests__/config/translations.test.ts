@@ -23,8 +23,7 @@ describe('Check translations available', () => {
     })
   }
 
-  throughDirectory('src/views')
-  throughDirectory('src/components')
+  throughDirectory('src/')
 
   it.each(files)('Translation key should exist in translations json', (file) => {
     const regex = /\bt\('([^']*)'/gm
