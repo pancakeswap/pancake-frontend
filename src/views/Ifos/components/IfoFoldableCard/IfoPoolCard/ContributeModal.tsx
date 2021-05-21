@@ -26,6 +26,9 @@ interface Props {
 
 const multiplierValues = [0.1, 0.25, 0.5, 0.75, 1]
 
+// Default value for transaction setting, tweak based on BSC network congestion.
+const gasPrice = BIG_TEN.times(BIG_TEN.pow(BIG_NINE)).toString()
+
 const ContributeModal: React.FC<Props> = ({
   poolId,
   ifo,
@@ -47,9 +50,6 @@ const ContributeModal: React.FC<Props> = ({
   const raisingTokenContract = useERC20(getAddress(currency.address))
   const { t } = useTranslation()
   const valueWithTokenDecimals = new BigNumber(value).times(DEFAULT_TOKEN_DECIMAL)
-
-  // Default value for transaction setting, tweak based on BSC network congestion.
-  const gasPrice = BIG_TEN.times(BIG_TEN.pow(BIG_NINE)).toString()
 
   const { isApproving, isApproved, isConfirmed, isConfirming, handleApprove, handleConfirm } =
     useApproveConfirmTransaction({
