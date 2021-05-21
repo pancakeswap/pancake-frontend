@@ -32,7 +32,7 @@ const Footer: React.FC<FooterProps> = ({ pool, account, isAutoVault = false }) =
   )
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(isAutoVault ? autoTooltipText : manualTooltipText, {
-    placement: 'bottom-end',
+    placement: 'bottom',
   })
 
   return (
