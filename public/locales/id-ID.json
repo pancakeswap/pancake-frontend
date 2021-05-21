@@ -45,7 +45,7 @@
   "Rewards are calculated per block.": "Hadiah dihitung per blok.",
   "Total": "Total",
   "End": "Berakhir",
-  "View project site": "Lihat situs proyek",
+  "View Project Site": "View Project Site",
   "Your Project? 👀": "Proyek Anda? 👀",
   "Create a pool for your token": "Buat pool untuk token Anda",
   "Apply now": "Ajukan sekarang",
@@ -504,6 +504,7 @@
   "Start earning": "Start earning",
   "Recent CAKE profit:": "Recent CAKE profit:",
   "Unstaked!": "Unstaked!",
+  "Unstaked": "Unstaked",
   "Staked!": "Staked!",
   "Your funds have been staked in the pool": "Your funds have been staked in the pool",
   "Your earnings have also been harvested to your wallet": "Your earnings have also been harvested to your wallet",
@@ -790,5 +791,10 @@
   "Contact": "Contact",
   "Merch": "Merch",
   "LP Migration": "LP Migration",
-  "V1 Liquidity (Old)": "V1 Liquidity (Old)"
+  "V1 Liquidity (Old)": "V1 Liquidity (Old)",
+  "Claim Collectible": "Claim Collectible",
+  "The higher your team’s rank, the better your prizes!": "The higher your team’s rank, the better your prizes!",
+  "Get Ready": "Get Ready",
+  "Earn up to %highestApr% APR in Farms": "Earn up to %highestApr% APR in Farms",
+  "Earn %assets% in Pools": "Earn %assets% in Pools"
 }
