@@ -21,115 +21,183 @@ export const config: MenuEntry[] = [
     icon: 'TeamBattleIcon',
     href: 'https://kogecoin-io.gitbook.io/kogefarm/the-kogecoin-token',
   },
-/* {
-    label: 'Farms',
-    icon: 'FarmIcon',
-    href: '/farms',
-  },
   {
-    label: 'Pools',
-    icon: 'PoolIcon',
-    href: '/pools',
+    label: 'Twitter',
+    icon: 'TwitterIcon',
+    href: 'https://twitter.com/kogecoin',
   },
+  // {
+  // label: "Telegram",
+  //   icon: "TelegramIcon",
+  //   href: "https://t.me/kogecoin",
+  // }
   {
-    label: 'Prediction',
-    icon: 'PredictionsIcon',
-    href: '/prediction',
-    status: {
-      text: 'BETA',
-      color: 'warning',
+    label: "Telegram",
+    icon: "TelegramIcon",
+    items: [
+      {
+        label: "English",
+        href: "https://t.me/kogecoin",
+      },
+      {
+        label: "Bahasa Indonesia",
+        href: "https://t.me/kogecoinIndonesia",
+      },
+      {
+        label: "中文",
+        href: "https://t.me/kogecoin_CN",
+      },
+      {
+        label: "Tiếng Việt",
+        href: "https://t.me/kogecoinVN",
+      },
+      {
+        label: "Italiano",
+        href: "https://t.me/kogecoin_ita",
+      },
+      {
+        label: "русский",
+        href: "https://t.me/kogecoin_ru",
+      },
+      {
+        label: "Türkiye",
+        href: "https://t.me/kogecointurkiye",
+      },
+      {
+        label: "Português",
+        href: "https://t.me/kogecoinPortuguese",
+      },
+      {
+        label: "Español",
+        href: "https://t.me/kogecoinEs",
+      },
+      {
+        label: "日本語",
+        href: "https://t.me/kogecoinjp",
+      },
+      {
+        label: "Français",
+        href: "https://t.me/kogecoinfr",
+      },
+      {
+        label: "Announcements",
+        href: "https://t.me/kogecoinAnn",
+      },
+      {
+        label: "Whale Alert",
+        href: "https://t.me/kogecoinWhales",
+      },
+    ],
+  },
+  /* {
+      label: 'Farms',
+      icon: 'FarmIcon',
+      href: '/farms',
     },
-  },
-  {
-    label: 'Lottery',
-    icon: 'TicketIcon',
-    href: '/lottery',
-  },
-  {
-    label: 'Collectibles',
-    icon: 'NftIcon',
-    href: '/collectibles',
-  },
-  {
-    label: 'Team Battle',
-    icon: 'TeamBattleIcon',
-    href: '/competition',
-  },
-  {
-    label: 'Teams & Profile',
-    icon: 'GroupsIcon',
-    items: [
-      {
-        label: 'Leaderboard',
-        href: '/teams',
+    {
+      label: 'Pools',
+      icon: 'PoolIcon',
+      href: '/pools',
+    },
+    {
+      label: 'Prediction',
+      icon: 'PredictionsIcon',
+      href: '/prediction',
+      status: {
+        text: 'BETA',
+        color: 'warning',
       },
-      {
-        label: 'Task Center',
-        href: '/profile/tasks',
-      },
-      {
-        label: 'Your Profile',
-        href: '/profile',
-      },
-    ],
-  },
-  {
-    label: 'Info',
-    icon: 'InfoIcon',
-    items: [
-      {
-        label: 'Overview',
-        href: 'https://pancakeswap.info',
-      },
-      {
-        label: 'Tokens',
-        href: 'https://pancakeswap.info/tokens',
-      },
-      {
-        label: 'Pairs',
-        href: 'https://pancakeswap.info/pairs',
-      },
-      {
-        label: 'Accounts',
-        href: 'https://pancakeswap.info/accounts',
-      },
-    ],
-  },
-  {
-    label: 'IFO',
-    icon: 'IfoIcon',
-    href: '/ifo',
-  },
-  {
-    label: 'More',
-    icon: 'MoreIcon',
-    items: [
-      {
-        label: 'Contact',
-        href: 'https://docs.pancakeswap.finance/contact-us',
-      },
-      {
-        label: 'Voting',
-        href: 'https://voting.pancakeswap.finance',
-      },
-      {
-        label: 'Github',
-        href: 'https://github.com/pancakeswap',
-      },
-      {
-        label: 'Docs',
-        href: 'https://docs.pancakeswap.finance',
-      },
-      {
-        label: 'Blog',
-        href: 'https://pancakeswap.medium.com',
-      },
-      {
-        label: 'Merch',
-        href: 'https://pancakeswap.creator-spring.com/',
-      },
-    ],
-  }, */
+    },
+    {
+      label: 'Lottery',
+      icon: 'TicketIcon',
+      href: '/lottery',
+    },
+    {
+      label: 'Collectibles',
+      icon: 'NftIcon',
+      href: '/collectibles',
+    },
+    {
+      label: 'Team Battle',
+      icon: 'TeamBattleIcon',
+      href: '/competition',
+    },
+    {
+      label: 'Teams & Profile',
+      icon: 'GroupsIcon',
+      items: [
+        {
+          label: 'Leaderboard',
+          href: '/teams',
+        },
+        {
+          label: 'Task Center',
+          href: '/profile/tasks',
+        },
+        {
+          label: 'Your Profile',
+          href: '/profile',
+        },
+      ],
+    },
+    {
+      label: 'Info',
+      icon: 'InfoIcon',
+      items: [
+        {
+          label: 'Overview',
+          href: 'https://pancakeswap.info',
+        },
+        {
+          label: 'Tokens',
+          href: 'https://pancakeswap.info/tokens',
+        },
+        {
+          label: 'Pairs',
+          href: 'https://pancakeswap.info/pairs',
+        },
+        {
+          label: 'Accounts',
+          href: 'https://pancakeswap.info/accounts',
+        },
+      ],
+    },
+    {
+      label: 'IFO',
+      icon: 'IfoIcon',
+      href: '/ifo',
+    },
+    {
+      label: 'More',
+      icon: 'MoreIcon',
+      items: [
+        {
+          label: 'Contact',
+          href: 'https://docs.pancakeswap.finance/contact-us',
+        },
+        {
+          label: 'Voting',
+          href: 'https://voting.pancakeswap.finance',
+        },
+        {
+          label: 'Github',
+          href: 'https://github.com/pancakeswap',
+        },
+        {
+          label: 'Docs',
+          href: 'https://docs.pancakeswap.finance',
+        },
+        {
+          label: 'Blog',
+          href: 'https://pancakeswap.medium.com',
+        },
+        {
+          label: 'Merch',
+          href: 'https://pancakeswap.creator-spring.com/',
+        },
+      ],
+    }, */
 ]
 
 export const socials = [
@@ -139,61 +207,61 @@ export const socials = [
     items: [
       {
         label: "English",
-        href: "https://t.me/pancakeswap",
+        href: "https://t.me/kogecoin",
       },
       {
         label: "Bahasa Indonesia",
-        href: "https://t.me/PancakeSwapIndonesia",
+        href: "https://t.me/kogecoinIndonesia",
       },
       {
         label: "中文",
-        href: "https://t.me/PancakeSwap_CN",
+        href: "https://t.me/kogecoin_CN",
       },
       {
         label: "Tiếng Việt",
-        href: "https://t.me/PancakeSwapVN",
+        href: "https://t.me/kogecoinVN",
       },
       {
         label: "Italiano",
-        href: "https://t.me/pancakeswap_ita",
+        href: "https://t.me/kogecoin_ita",
       },
       {
         label: "русский",
-        href: "https://t.me/pancakeswap_ru",
+        href: "https://t.me/kogecoin_ru",
       },
       {
         label: "Türkiye",
-        href: "https://t.me/pancakeswapturkiye",
+        href: "https://t.me/kogecointurkiye",
       },
       {
         label: "Português",
-        href: "https://t.me/PancakeSwapPortuguese",
+        href: "https://t.me/kogecoinPortuguese",
       },
       {
         label: "Español",
-        href: "https://t.me/PancakeswapEs",
+        href: "https://t.me/kogecoinEs",
       },
       {
         label: "日本語",
-        href: "https://t.me/pancakeswapjp",
+        href: "https://t.me/kogecoinjp",
       },
       {
         label: "Français",
-        href: "https://t.me/pancakeswapfr",
+        href: "https://t.me/kogecoinfr",
       },
       {
         label: "Announcements",
-        href: "https://t.me/PancakeSwapAnn",
+        href: "https://t.me/kogecoinAnn",
       },
       {
         label: "Whale Alert",
-        href: "https://t.me/PancakeSwapWhales",
+        href: "https://t.me/kogecoinWhales",
       },
     ],
   },
   {
     label: "Twitter",
     icon: "TwitterIcon",
-    href: "https://twitter.com/pancakeswap",
+    href: "https://twitter.com/kogecoin",
   },
 ];

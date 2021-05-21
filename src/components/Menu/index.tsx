@@ -8,7 +8,7 @@ import useTheme from 'hooks/useTheme'
 import useAuth from 'hooks/useAuth'
 // import { usePriceCakeBusd, useProfile } from 'state/hooks'
 // import { usePriceCakeBusd } from 'state/hooks'
-import {config, socials} from './config'
+import { config } from './config'
 
 const Menu = (props) => {
   const { account } = useWeb3React()
