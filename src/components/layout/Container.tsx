@@ -1,16 +1,10 @@
-import styled from 'styled-components'
+import React from 'react'
+import { Box, BoxProps } from '@pancakeswap/uikit'
 
-const Container = styled.div`
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 1200px;
-  padding-left: 16px;
-  padding-right: 16px;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    padding-left: 24px;
-    padding-right: 24px;
-  }
-`
+const Container: React.FC<BoxProps> = ({ children, ...props }) => (
+  <Box px={['16px', '24px']} mx="auto" maxWidth="1200px" {...props}>
+    {children}
+  </Box>
+)
 
 export default Container
