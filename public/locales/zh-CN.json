@@ -45,7 +45,7 @@
   "Rewards are calculated per block.": "奖励按区块计算。",
   "Total": "总计",
   "End": "结束",
-  "View project site": "查看项目网站",
+  "View Project Site": "View Project Site",
   "Your Project? 👀": "您的项目？👀",
   "Create a pool for your token": "为您的代币创建资金池",
   "Apply now": "立即申请",
@@ -504,6 +504,7 @@
   "Start earning": "Start earning",
   "Recent CAKE profit:": "Recent CAKE profit:",
   "Unstaked!": "Unstaked!",
+  "Unstaked": "Unstaked",
   "Staked!": "Staked!",
   "Your funds have been staked in the pool": "Your funds have been staked in the pool",
   "Your earnings have also been harvested to your wallet": "Your earnings have also been harvested to your wallet",
@@ -790,5 +791,10 @@
   "Contact": "Contact",
   "Merch": "Merch",
   "LP Migration": "LP Migration",
-  "V1 Liquidity (Old)": "V1 Liquidity (Old)"
+  "V1 Liquidity (Old)": "V1 Liquidity (Old)",
+  "Claim Collectible": "Claim Collectible",
+  "The higher your team’s rank, the better your prizes!": "The higher your team’s rank, the better your prizes!",
+  "Get Ready": "Get Ready",
+  "Earn up to %highestApr% APR in Farms": "Earn up to %highestApr% APR in Farms",
+  "Earn %assets% in Pools": "Earn %assets% in Pools"
 }
