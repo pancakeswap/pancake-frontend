@@ -3,15 +3,15 @@ import { AbiItem } from 'web3-utils'
 import web3NoAccount from 'utils/web3'
 
 // Addresses
-import {
+// import {
 //  getAddress,
-  getCakeAddress,
-} from 'utils/addressHelpers'
+//  getCakeAddress,
+// } from 'utils/addressHelpers'
 
 // ABI
 import bep20Abi from 'config/abi/erc20.json'
 import lpTokenAbi from 'config/abi/lpToken.json'
-import cakeAbi from 'config/abi/cake.json'
+// import cakeAbi from 'config/abi/cake.json'
 // import masterChef from 'config/abi/masterchef.json'
 import GenericJarAbi from 'config/abi/GenericJar.json'
 
@@ -26,9 +26,6 @@ export const getBep20Contract = (address: string, web3?: Web3) => {
 }
 export const getLpContract = (address: string, web3?: Web3) => {
   return getContract(lpTokenAbi, address, web3)
-}
-export const getCakeContract = (web3?: Web3) => {
-  return getContract(cakeAbi, getCakeAddress(), web3)
 }
 export const getJarContract = (address: string, web3?: Web3) => {
   return getContract(GenericJarAbi, address, web3)

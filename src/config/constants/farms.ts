@@ -50,7 +50,7 @@ const farms: FarmConfig[] = [
       80001: '',
       137: '0x34bc3D36845d8A7cA6964261FbD28737d0d6510f',
     },
-    masterChefPid: 1,
+    masterChefPid: 0,
     jarAddresses: {
       80001: '',
       137: '0x2e7C8A535ca86869d432FEA2Dd7b3bb8022E5C4C',
@@ -63,43 +63,22 @@ const farms: FarmConfig[] = [
 
   {
     pid: 2,
-    lpSymbol: 'Krill-USDC LP',
+    lpSymbol: 'Fish-Matic LP',
     lpAddresses: {
       80001: '',
-      137: '0x6405Ebc22cB0899FC21f414085Ac4044B4721a0d',
+      137: '0x289cf2B63c5Edeeeab89663639674d9233E8668E',
     },
     masterChefAddresses: {
       80001: '',
-      137: '0x34bc3D36845d8A7cA6964261FbD28737d0d6510f',
+      137: '0x8CFD1B9B7478E7B0422916B72d1DB6A9D513D734',
     },
-    masterChefPid: 1,
+    masterChefPid: 0,
     jarAddresses: {
       80001: '',
-      137: '0x2e7C8A535ca86869d432FEA2Dd7b3bb8022E5C4C',
+      137: '0x923De0e1C7E8E27FD49aa0ef2fFf3163A024bDaF',
     },
-    token: tokens.krill,
-    quoteToken: tokens.usdc,
-    rewardPerBlock: 1,
-    poolWeightDesignate: 10000/21300,
-  },
-  {
-    pid: 3,
-    lpSymbol: 'Krill-USDC LP',
-    lpAddresses: {
-      80001: '',
-      137: '0x6405Ebc22cB0899FC21f414085Ac4044B4721a0d',
-    },
-    masterChefAddresses: {
-      80001: '',
-      137: '0x34bc3D36845d8A7cA6964261FbD28737d0d6510f',
-    },
-    masterChefPid: 1,
-    jarAddresses: {
-      80001: '',
-      137: '0x2e7C8A535ca86869d432FEA2Dd7b3bb8022E5C4C',
-    },
-    token: tokens.krill,
-    quoteToken: tokens.usdc,
+    token: tokens.fish,
+    quoteToken: tokens.matic,
     rewardPerBlock: 1,
     poolWeightDesignate: 10000/21300,
   },

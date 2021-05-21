@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import useWeb3 from 'hooks/useWeb3'
 import {
   getBep20Contract,
-  getCakeContract,
+//  getCakeContract,
   getJarContract,
 //  getMasterchefContract,
 } from 'utils/contractHelpers'
@@ -19,10 +19,10 @@ export const useERC20 = (address: string) => {
 /**
  * @see https://docs.openzeppelin.com/contracts/3.x/api/token/erc721
  */
-export const useCake = () => {
-  const web3 = useWeb3()
-  return useMemo(() => getCakeContract(web3), [web3])
-}
+// export const useCake = () => {
+//  const web3 = useWeb3()
+//  return useMemo(() => getCakeContract(web3), [web3])
+// }
 
 /* Jar */
 

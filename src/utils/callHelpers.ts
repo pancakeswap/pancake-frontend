@@ -20,7 +20,7 @@ export const stake = async (masterChefContract, pid, amount, account) => {
   if (pid === 0) {
     return masterChefContract.methods
       .enterStaking(new BigNumber(amount).times(DEFAULT_TOKEN_DECIMAL).toString())
-      .send({ from: account, gas: 200000 })
+      .send({ from: account, gas: 300000 })
       .on('transactionHash', (tx) => {
         return tx.transactionHash
       })
@@ -28,7 +28,7 @@ export const stake = async (masterChefContract, pid, amount, account) => {
 
   return masterChefContract.methods
     .deposit(pid, new BigNumber(amount).times(DEFAULT_TOKEN_DECIMAL).toString())
-    .send({ from: account, gas: 200000 })
+    .send({ from: account, gas: 300000 })
     .on('transactionHash', (tx) => {
       return tx.transactionHash
     })
@@ -37,7 +37,7 @@ export const stake = async (masterChefContract, pid, amount, account) => {
 export const depositJar = async (jarContract, amount, account) => {
   return jarContract.methods
     .deposit(new BigNumber(amount).times(DEFAULT_TOKEN_DECIMAL).toString())
-    .send({ from: account, gas: 500000 })
+    .send({ from: account, gas: 600000 })
     .on('transactionHash', (tx) => {
       return tx.transactionHash
     })

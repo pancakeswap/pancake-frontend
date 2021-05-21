@@ -3,8 +3,8 @@ import styled from 'styled-components'
 import { Heading, Text, BaseLayout } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import Page from 'components/layout/Page'
-import FarmStakingCard from 'views/Home/components/FarmStakingCard'
-import CakeStats from 'views/Home/components/CakeStats'
+// import FarmStakingCard from 'views/Home/components/FarmStakingCard'
+// import CakeStats from 'views/Home/components/CakeStats'
 import TotalValueLockedCard from 'views/Home/components/TotalValueLockedCard'
 import EarnAPRCard from 'views/Home/components/EarnAPRCard'
 
@@ -85,14 +85,14 @@ const Home: React.FC = () => {
         <Text>{t('The #1 AMM and yield farm on Binance Smart Chain.')}</Text>
       </Hero>
       <div>
-        <Cards>
+{/*        <Cards>
           <FarmStakingCard />
-        </Cards>
+        </Cards> */}
         <CTACards>
           <EarnAPRCard />
         </CTACards>
         <Cards>
-          <CakeStats />
+{/*          <CakeStats /> */}
           <TotalValueLockedCard />
         </Cards>
       </div>
