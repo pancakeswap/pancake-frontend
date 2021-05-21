@@ -1,5 +1,4 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
 import { Text, Flex, useTooltip, TooltipText } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useCakeVault } from 'state/hooks'
@@ -34,7 +33,7 @@ const FeeSummary: React.FC<FeeSummaryProps> = ({ stakingTokenSymbol, stakeAmount
   return (
     <>
       <Flex mt="24px" alignItems="center" justifyContent="space-between">
-        {tooltipVisible && ReactDOM.createPortal(tooltip, document.getElementById('root'))}
+        {tooltipVisible && tooltip}
         <TooltipText ref={targetRef} small>
           {t('Unstaking Fee')}
         </TooltipText>
