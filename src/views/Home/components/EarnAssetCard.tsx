@@ -5,6 +5,7 @@ import { Heading, Card, CardBody, Flex, ArrowForwardIcon } from '@pancakeswap/ui
 import { NavLink } from 'react-router-dom'
 import pools from 'config/constants/pools'
 import { Pool } from 'state/types'
+import { useTranslation } from 'contexts/Localization'
 
 const StyledFarmStakingCard = styled(Card)`
   background: linear-gradient(#53dee9, #7645d9);
@@ -31,17 +32,21 @@ const latestPools: Pool[] = orderBy(activeNonCakePools, ['sortOrder', 'pid'], ['
 const assets = ['CAKE', ...latestPools.map((pool) => pool.earningToken.symbol)].join(', ')
 
 const EarnAssetCard = () => {
+  const { t } = useTranslation()
+  const assetText = t('Earn %assets% in Pools', { assets })
+  const [earn, InPools] = assetText.split(assets)
+
   return (
     <StyledFarmStakingCard>
       <NavLink exact activeClassName="active" to="/syrup" id="pool-cta">
         <CardBody>
           <Heading color="contrast" scale="lg">
-            Earn
+            {earn}
           </Heading>
           <CardMidContent color="invertedContrast">{assets}</CardMidContent>
           <Flex justifyContent="space-between">
             <Heading color="contrast" scale="lg">
-              in Pools
+              {InPools}
             </Heading>
             <ArrowForwardIcon mt={30} color="primary" />
           </Flex>
