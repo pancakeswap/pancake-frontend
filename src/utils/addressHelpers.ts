@@ -1,5 +1,5 @@
 import addresses from 'config/constants/contracts'
-import tokens from 'config/constants/tokens'
+// import tokens from 'config/constants/tokens'
 import { Address } from 'config/constants/types'
 
 export const getAddress = (address: Address): string => {
@@ -8,12 +8,6 @@ export const getAddress = (address: Address): string => {
   return address[chainId] ? address[chainId] : address[mainNetChainId]
 }
 
-export const getCakeAddress = () => {
-  return getAddress(tokens.cake.address)
-}
 export const getMulticallAddress = () => {
   return getAddress(addresses.multiCall)
-}
-export const getWbnbAddress = () => {
-  return getAddress(tokens.wbnb.address)
 }
