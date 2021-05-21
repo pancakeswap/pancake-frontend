@@ -64,6 +64,9 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
       return <SkeletonCardTokens />
     }
     if (account && !hasProfile) {
+      if (publicIfoData.status === 'finished') {
+        return <Text textAlign="center">{t('Activate PancakeSwap Profile to take part in next IFO‘s!')}</Text>
+      }
       return <Text textAlign="center">{t('You need an active PancakeSwap Profile to take part in an IFO!')}</Text>
     }
     if (publicIfoData.status === 'coming_soon') {
