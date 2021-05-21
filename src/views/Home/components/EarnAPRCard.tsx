@@ -50,19 +50,23 @@ const EarnAPRCard = () => {
     return maxApr?.toLocaleString('en-US', { maximumFractionDigits: 2 })
   }, [cakePrice, farmsLP, prices])
 
+  const aprText = highestApr || '#placeholder#'
+  const earnAprText = t('Earn up to %highestApr% APR in Farms', { highestApr: aprText })
+  const aprTextParts = earnAprText.split(aprText)
+
   return (
     <StyledFarmStakingCard>
       <NavLink exact activeClassName="active" to="/farms" id="farm-apr-cta">
         <CardBody>
           <Heading color="contrast" scale="lg">
-            Earn up to
+            {aprTextParts[0]}
           </Heading>
           <CardMidContent color="#7645d9">
-            {highestApr ? `${highestApr}% ${t('APR')}` : <Skeleton animation="pulse" variant="rect" height="44px" />}
+            {highestApr ? `${highestApr}%` : <Skeleton animation="pulse" variant="rect" height="44px" />}
           </CardMidContent>
           <Flex justifyContent="space-between">
             <Heading color="contrast" scale="lg">
-              in Farms
+              {aprTextParts[1]}
             </Heading>
             <ArrowForwardIcon mt={30} color="primary" />
           </Flex>
