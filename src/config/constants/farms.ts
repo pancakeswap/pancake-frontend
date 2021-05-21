@@ -43,7 +43,7 @@ const farms: FarmConfig[] = [
     lpSymbol: 'XEND-BNB LP',
     lpAddresses: {
       97: '',
-      56: '0xf74ee1e10e097dc326a2ad004f9cc95cb71088d3',
+      56: '0xcecfc2789af72ed151589a96a59f3a1abc65c3b5',
     },
     token: tokens.xend,
     quoteToken: tokens.wbnb,
