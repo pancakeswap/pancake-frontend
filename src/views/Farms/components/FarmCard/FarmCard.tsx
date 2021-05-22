@@ -16,6 +16,7 @@ import CardActionsContainer from './CardActionsContainer'
 export interface FarmWithStakedValue extends Farm {
   apr?: number
   liquidity?: BigNumber
+  userValue?: BigNumber
 }
 
 const AccentGradient = keyframes`
@@ -91,6 +92,9 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed, account }) => {
 
   const lpLabel = farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('PANCAKE', '')
 //  const earnLabel = farm.dual ? farm.dual.earnLabel : 'CAKE'
+  const userValueFormatted = farm.userValue
+    ? `$${farm.userValue.toNumber().toLocaleString(undefined, { maximumFractionDigits: 0 })}`
+    : '-'
 
   const farmAPR = farm.apr && farm.apr.toLocaleString('en-US', { maximumFractionDigits: 2 })
   const farmAPY = ((Math.exp(farm.apr/100) - 1)*100).toLocaleString('en-US', { maximumFractionDigits: 2 })
@@ -158,6 +162,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed, account }) => {
           bscScanAddress={`https://explorer-mainnet.maticvigil.com/address/${farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]}`}
           infoAddress={`https://info.quickswap.exchange/pair/${lpAddress}`}
           totalValueFormatted={totalValueFormatted}
+          userValueFormatted={userValueFormatted}
           lpLabel={lpLabel}
           addLiquidityUrl={addLiquidityUrl}
         />

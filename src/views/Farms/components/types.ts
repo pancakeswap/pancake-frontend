@@ -89,13 +89,6 @@ export const DesktopColumnSchema: ColumnsDefTypes[] = [
     sortable: true,
     label: 'APY',
   },
-  {
-    id: 5,
-    name: 'liquidity',
-    translationId: 999,
-    sortable: true,
-    label: 'Total Deposits',
-  },
 /*  {
     id: 5,
     name: 'multiplier',
@@ -104,7 +97,21 @@ export const DesktopColumnSchema: ColumnsDefTypes[] = [
     label: 'Multiplier',
   }, */
   {
+    id: 5,
+    name: 'userValue',
+    translationId: 99,
+    sortable: true,
+    label: 'User Staked',
+  },
+  {
     id: 6,
+    name: 'liquidity',
+    translationId: 999,
+    sortable: true,
+    label: 'Total Staked',
+  },
+  {
+    id: 7,
     name: 'details',
     translationId: 999,
     sortable: true,

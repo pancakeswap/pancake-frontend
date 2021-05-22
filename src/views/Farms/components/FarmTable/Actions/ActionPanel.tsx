@@ -12,12 +12,14 @@ import Apr, { AprProps } from '../Apr'
 import Apy, { ApyProps } from '../Apy'
 // import Multiplier, { MultiplierProps } from '../Multiplier'
 import Liquidity, { LiquidityProps } from '../Liquidity'
+import UserValue, { UserValueProps } from '../UserValue'
 
 export interface ActionPanelProps {
   apr: AprProps
   apy: ApyProps
 //  multiplier: MultiplierProps
   liquidity: LiquidityProps
+  userValue: UserValueProps
   details: FarmWithStakedValue
   userDataReady: boolean
   expanded: boolean
@@ -136,6 +138,7 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({
   apy,
 //  multiplier,
   liquidity,
+  userValue,
   userDataReady,
   expanded,
 }) => {
@@ -184,8 +187,12 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({
           <Multiplier {...multiplier} />
         </ValueWrapper> */}
         <ValueWrapper>
-          <Text>{t('Total Deposited')}</Text>
+          <Text>{t('Total Staked')}</Text>
           <Liquidity {...liquidity} />
+        </ValueWrapper>
+        <ValueWrapper>
+          <Text>{t('User Staked')}</Text>
+          <UserValue {...userValue} />
         </ValueWrapper>
       </ValueContainer>
       <ActionContainer>

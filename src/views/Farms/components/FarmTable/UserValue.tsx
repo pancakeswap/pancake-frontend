@@ -1,14 +1,15 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Text, Skeleton } from '@pancakeswap/uikit'
+// import { useTranslation } from 'contexts/Localization'
 import BigNumber from 'bignumber.js'
 
 
-export interface LiquidityProps {
-  liquidity: BigNumber
+export interface UserValueProps {
+  userValue: BigNumber
 }
 
-const LiquidityWrapper = styled.div`
+const UserValueWrapper = styled.div`
   min-width: 110px;
   font-weight: 600;
   text-align: right;
@@ -25,18 +26,19 @@ const Container = styled.div`
   align-items: center;
 `
 
-const Liquidity: React.FunctionComponent<LiquidityProps> = ({ liquidity }) => {
-  const displayLiquidity = liquidity ? (
-    `$${Number(liquidity).toLocaleString(undefined, { maximumFractionDigits: 0 })}`
+const UserValue: React.FunctionComponent<UserValueProps> = ({ userValue }) => {
+  const displayUserValue = userValue ? (
+    `$${Number(userValue).toLocaleString(undefined, { maximumFractionDigits: 0 })}`
   ) : (
     <Skeleton width={60} />
   )
+//  const { t } = useTranslation()
 
   return (
     <Container>
-      <LiquidityWrapper>
-        <Text>{displayLiquidity}</Text>
-      </LiquidityWrapper>
+      <UserValueWrapper>
+        <Text>{displayUserValue}</Text>
+      </UserValueWrapper>
 {/*      <ReferenceElement ref={targetRef}>
         <HelpIcon color="textSubtle" />
       </ReferenceElement>
@@ -45,4 +47,4 @@ const Liquidity: React.FunctionComponent<LiquidityProps> = ({ liquidity }) => {
   )
 }
 
-export default Liquidity
+export default UserValue

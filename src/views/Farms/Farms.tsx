@@ -189,11 +189,14 @@ const Farms: React.FC = () => {
         const tokenPriceVsQuote = new BigNumber(farm.tokenPriceVsQuote)
 //        const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken)
         const totalLiquidity = new BigNumber(farm.quoteTokenAmount).times(2)
+        const jarLPDeposits = new BigNumber(farm.jarLPDeposits)
         const totalDeposits = new BigNumber(farm.totalDeposits).times(new BigNumber(quoteTokenPriceUsd))
+
+        const userDeposits = new BigNumber(farm.userData.stakedBalance).times(totalDeposits).div(jarLPDeposits)
 
         const apr = isActive ? getMetaFarmApr(farm.poolWeightDesignate, farm.rewardPerBlock, totalLiquidity, tokenPriceVsQuote) : 0
 
-        return { ...farm, apr, liquidity: totalDeposits }
+        return { ...farm, apr, liquidity: totalDeposits, userValue: userDeposits}
       })
 
       if (query) {
@@ -325,6 +328,9 @@ const Farms: React.FC = () => {
       liquidity: {
         liquidity: farm.liquidity,
       },
+      userValue: {
+        userValue: farm.userValue,
+      },
 /*      multiplier: {
         multiplier: farm.multiplier,
       }, */
@@ -397,6 +403,7 @@ const Farms: React.FC = () => {
     setSortOption(option.value)
   }
 
+
   return (
     <>
       <PageHeader>
@@ -404,7 +411,7 @@ const Farms: React.FC = () => {
           {t('Farms')}
         </Heading> */}
         <Heading scale="lg" color="text" textAlign="center">
-          {t('We auto-compound high APR farms on Polygon. No fees until June 3!')}
+          {t('We ')} <u><a href='https://kogecoin-io.gitbook.io/kogefarm/why-autocompound'>auto-compound</a></u> {t(' high APR farms on Polygon. No fees until June 3!')}
         </Heading>
       </PageHeader>
       <Page>
@@ -439,7 +446,7 @@ const Farms: React.FC = () => {
 //                    value: 'earned',
 //                  },
                   {
-                    label: 'Total Deposits',
+                    label: 'Total Staked',
                     value: 'liquidity',
                   },
                 ]}
