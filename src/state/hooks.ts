@@ -128,7 +128,7 @@ export const useBusdPriceFromPid = (pid: number): BigNumber => {
   return BIG_ZERO
 }
 
-export const useBusdPriceFromToken = (tokenSymbol: string) => {
+export const useBusdPriceFromToken = (tokenSymbol: string): BigNumber | null => {
   const tokenFarmForPriceCalc = useFarmFromTokenSymbol(tokenSymbol)
   const tokenPrice = useBusdPriceFromPid(tokenFarmForPriceCalc?.pid)
   return tokenPrice
