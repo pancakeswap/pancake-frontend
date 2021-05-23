@@ -25,7 +25,7 @@ const StyledProposalRow = styled(Link)`
 
 const ProposalRow: React.FC<ProposalRowProps> = ({ proposal }) => {
   const { t } = useTranslation()
-  const votingLink = `/voting/${proposal.id}`
+  const votingLink = `/voting/proposal/${proposal.id}`
 
   return (
     <StyledProposalRow to={votingLink}>

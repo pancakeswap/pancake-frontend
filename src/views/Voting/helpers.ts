@@ -49,3 +49,34 @@ export const getProposals = async (first = 5, skip = 0, state = ProposalState.AC
     throw new Error(error)
   }
 }
+
+export const getProposal = async (id: string): Promise<Proposal> => {
+  try {
+    const response: { proposal: Proposal } = await request(
+      SNAPSHOT_API,
+      gql`
+        query getProposal($id: String) {
+          proposal(id: $id) {
+            id
+            title
+            body
+            choices
+            start
+            end
+            snapshot
+            state
+            author
+            space {
+              id
+              name
+            }
+          }
+        }
+      `,
+      { id },
+    )
+    return response.proposal
+  } catch (error) {
+    throw new Error(error)
+  }
+}
