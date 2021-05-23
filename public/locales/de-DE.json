@@ -45,7 +45,7 @@
   "Rewards are calculated per block.": "Die Belohnungen werden pro Block berechnet.",
   "Total": "Gesamt",
   "End": "Ende",
-  "View project site": "Projektseite ansehen",
+  "View Project Site": "Projektseite ansehen",
   "Your Project? 👀": "Ihr Projekt?",
   "Create a pool for your token": "Erstellen Sie einen Pool für Ihren Token",
   "Apply now": "Jetzt bewerben",
@@ -504,6 +504,7 @@
   "Start earning": "Beginnen Sie zu verdienen",
   "Recent CAKE profit:": "Aktueller CAKE-Gewinn:",
   "Unstaked!": "Einsatz aufgehoben!",
+  "Unstaked": "Einsatz aufgehoben",
   "Staked!": "Eingesetzt!",
   "Your funds have been staked in the pool": "Ihr Guthaben ist in den Pool eingezahlt worden",
   "Your earnings have also been harvested to your wallet": "Ihr Verdienst wurde auch in Ihrem Wallet geerntet",
@@ -790,5 +791,10 @@
   "Contact": "Kontakt",
   "Merch": "Merch",
   "LP Migration": "LP-Migration",
-  "V1 Liquidity (Old)": "V1-Liquidität (alt)"
+  "V1 Liquidity (Old)": "V1-Liquidität (alt)",
+  "Claim Collectible": "Collectible beanspruchen",
+  "The higher your team’s rank, the better your prizes!": "Je höher der Rang Ihres Teams, desto besser Ihre Preise!",
+  "Get Ready": "Machen Sie sich bereit",
+  "Earn up to %highestApr% APR in Farms": "Verdienen Sie bis zu %highestApr% APR in Farms",
+  "Earn %assets% in Pools": "Verdienen Sie %assets% in Pools"
 }
