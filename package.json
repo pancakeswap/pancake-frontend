@@ -11,7 +11,8 @@
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
     "format:check": "prettier --check --loglevel error 'src/**/*.{js,jsx,ts,tsx}'",
     "format:write": "prettier --write 'src/**/*.{js,jsx,ts,tsx}'",
-    "generate:config": "ts-node --compiler-options '{\"module\":\"commonjs\"}' scripts/generateConfig"
+    "generate:config": "ts-node --compiler-options '{\"module\":\"commonjs\"}' scripts/generateConfig",
+    "postinstall": "patch-package"
   },
   "husky": {
     "hooks": {
@@ -53,6 +54,8 @@
     "js-cookie": "^2.2.1",
     "lodash": "^4.17.20",
     "node-fetch": "^2.6.1",
+    "patch-package": "^6.4.7",
+    "postinstall-postinstall": "^2.1.0",
     "quickswap-sdk": "^3.0.8",
     "react": "^17.0.1",
     "react-chartjs-2": "2.11.1",

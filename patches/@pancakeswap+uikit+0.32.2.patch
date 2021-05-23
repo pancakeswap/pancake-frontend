@@ -1,0 +1,46 @@
+diff --git a/node_modules/@pancakeswap/uikit/.DS_Store b/node_modules/@pancakeswap/uikit/.DS_Store
+new file mode 100644
+index 0000000..9d1c544
+Binary files /dev/null and b/node_modules/@pancakeswap/uikit/.DS_Store differ
+diff --git a/node_modules/@pancakeswap/uikit/dist/.DS_Store b/node_modules/@pancakeswap/uikit/dist/.DS_Store
+new file mode 100644
+index 0000000..557d87a
+Binary files /dev/null and b/node_modules/@pancakeswap/uikit/dist/.DS_Store differ
+diff --git a/node_modules/@pancakeswap/uikit/dist/hooks/.DS_Store b/node_modules/@pancakeswap/uikit/dist/hooks/.DS_Store
+new file mode 100644
+index 0000000..0b0e6dd
+Binary files /dev/null and b/node_modules/@pancakeswap/uikit/dist/hooks/.DS_Store differ
+diff --git a/node_modules/@pancakeswap/uikit/dist/index.cjs.js b/node_modules/@pancakeswap/uikit/dist/index.cjs.js
+index 94e2ef0..9121dec 100644
+--- a/node_modules/@pancakeswap/uikit/dist/index.cjs.js
++++ b/node_modules/@pancakeswap/uikit/dist/index.cjs.js
+@@ -3588,7 +3588,7 @@ var socials = [
+     {
+         label: "Twitter",
+         icon: "TwitterIcon",
+-        href: "https://twitter.com/pancakeswap",
++        href: "https://twitter.com/kogecoin",
+     },
+ ];
+ var MENU_HEIGHT = 64;
+diff --git a/node_modules/@pancakeswap/uikit/dist/index.esm.js b/node_modules/@pancakeswap/uikit/dist/index.esm.js
+index 0cb8985..84dfa14 100644
+--- a/node_modules/@pancakeswap/uikit/dist/index.esm.js
++++ b/node_modules/@pancakeswap/uikit/dist/index.esm.js
+@@ -3574,7 +3574,7 @@ var socials = [
+     {
+         label: "Twitter",
+         icon: "TwitterIcon",
+-        href: "https://twitter.com/pancakeswap",
++        href: "https://twitter.com/kogecoin",
+     },
+ ];
+ var MENU_HEIGHT = 64;
+diff --git a/node_modules/@pancakeswap/uikit/dist/widgets/.DS_Store b/node_modules/@pancakeswap/uikit/dist/widgets/.DS_Store
+new file mode 100644
+index 0000000..3db42cd
+Binary files /dev/null and b/node_modules/@pancakeswap/uikit/dist/widgets/.DS_Store differ
+diff --git a/node_modules/@pancakeswap/uikit/dist/widgets/Menu/.DS_Store b/node_modules/@pancakeswap/uikit/dist/widgets/Menu/.DS_Store
+new file mode 100644
+index 0000000..1ce1783
+Binary files /dev/null and b/node_modules/@pancakeswap/uikit/dist/widgets/Menu/.DS_Store differ
