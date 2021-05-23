@@ -18,6 +18,7 @@ export interface Farm extends FarmConfig {
   tokenPriceVsQuote?: BigNumber
   totalDeposits?: BigNumber
   jarLPDeposits?: BigNumber
+  jarRatio?: BigNumber
   poolWeight?: BigNumber
   userData?: {
     allowance: string

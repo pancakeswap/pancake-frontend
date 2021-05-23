@@ -78,10 +78,16 @@ const fetchFarms = async (farmsToFetch: FarmConfig[]) => {
           address: jarAddress,
           name: 'balance',
         },
+        // Ratio of tokens in our jar contract
+        {
+          address: jarAddress,
+          name: 'getRatio',
+        },
       ]
 
-      const [totalDepositsVal] = await multicall(jarAbi, callDeposits)
+      const [totalDepositsVal, jarRatioBal] = await multicall(jarAbi, callDeposits)
       const jarDeposits = new BigNumber(totalDepositsVal)
+      const jarRatioNum = new BigNumber(jarRatioBal)
       const totalDeposits = jarDeposits.times(2).div(lpTotalSupplyNum).times(lpQuoteTokenNum).div(BIG_TEN.pow(quoteTokenDecimals))
 
       // new BigNumber(totalDepositsVal).times(quoteTokenAmount).div(tokenAmount).div(BIG_TEN.pow(quoteTokenDecimals)).times(2)
@@ -122,6 +128,7 @@ const fetchFarms = async (farmsToFetch: FarmConfig[]) => {
         lpTotalInQuoteToken: lpTotalInQuoteToken.toJSON(),
         tokenPriceVsQuote: quoteTokenAmount.div(tokenAmount).toJSON(),
         jarLPDeposits: jarDeposits.toJSON(),
+        jarRatio: jarRatioNum.toJSON(),
         totalDeposits: totalDeposits.toJSON(),
 //        poolWeight: poolWeight.toJSON(),
 //        multiplier: `${allocPoint.div(100).toString()}X`,
