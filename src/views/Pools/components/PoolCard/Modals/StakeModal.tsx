@@ -145,7 +145,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
       <BalanceInput
         value={stakeAmount}
         onUserInput={handleStakeInputChange}
-        currencyValue={`~${usdValueStaked || 0} USD`}
+        currencyValue={stakingTokenPrice !== 0 && `~${usdValueStaked || 0} USD`}
         isWarning={hasReachedStakeLimit}
       />
       {hasReachedStakeLimit && (
