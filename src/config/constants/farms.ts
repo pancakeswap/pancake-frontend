@@ -39,30 +39,9 @@ const farms: FarmConfig[] = [
   /**
    * All farms below here are from v1 and are to be set to 0x
    */
-  {
-    pid: 1,
-    lpSymbol: 'Krill-USDC LP',
-    lpAddresses: {
-      80001: '',
-      137: '0x6405Ebc22cB0899FC21f414085Ac4044B4721a0d',
-    },
-    masterChefAddresses: {
-      80001: '',
-      137: '0x34bc3D36845d8A7cA6964261FbD28737d0d6510f',
-    },
-    masterChefPid: 0,
-    jarAddresses: {
-      80001: '',
-      137: '0x2e7C8A535ca86869d432FEA2Dd7b3bb8022E5C4C',
-    },
-    token: tokens.krill,
-    quoteToken: tokens.usdc,
-    rewardPerBlock: 1,
-    poolWeightDesignate: 10000/21300,
-  },
 
   {
-    pid: 2,
+    pid: 1,
     lpSymbol: 'Fish-Matic LP',
     lpAddresses: {
       80001: '',
@@ -75,13 +54,57 @@ const farms: FarmConfig[] = [
     masterChefPid: 0,
     jarAddresses: {
       80001: '',
-      137: '0x923De0e1C7E8E27FD49aa0ef2fFf3163A024bDaF',
+      137: '0x2bb510a979fe3f277636A94B86FA304c6631581C',
     },
     token: tokens.fish,
     quoteToken: tokens.matic,
     rewardPerBlock: 1,
     poolWeightDesignate: 10000/21300,
   },
+  {
+    pid: 2,
+    lpSymbol: 'Gaj-USDC LP',
+    lpAddresses: {
+      80001: '',
+      137: '0x99dADf889520b9cEBD9959d3ca1866DC2517Ea1d',
+    },
+    masterChefAddresses: {
+      80001: '',
+      137: '0xb03f95E649724dF6bA575C2c6eF062766a7fDb51',
+    },
+    masterChefPid: 0,
+    jarAddresses: {
+      80001: '',
+      137: '0x4929f3D8934640Fd93a21E89Cd22ddb4b2aff8c1',
+    },
+    token: tokens.gaj,
+    quoteToken: tokens.usdc,
+    rewardPerBlock: 0.5,
+    poolWeightDesignate: 10000/33650,
+  },
+
+  {
+    pid: 3,
+    lpSymbol: 'Gaj-MATIC LP',
+    lpAddresses: {
+      80001: '',
+      137: '0x8BaFdF3a3fAEF45A08D2bc065e736D3D8c6FDFE7',
+    },
+    masterChefAddresses: {
+      80001: '',
+      137: '0xb03f95E649724dF6bA575C2c6eF062766a7fDb51',
+    },
+    masterChefPid: 14,
+    jarAddresses: {
+      80001: '',
+      137: '0xE80D7246EcD89Cb8707001c61f652B90eeA0dbc4',
+    },
+    token: tokens.gaj,
+    quoteToken: tokens.matic,
+    rewardPerBlock: 0.5,
+    poolWeightDesignate: 10000/33650,
+  },
+
 /*  {
     pid: 2,
     lpSymbol: 'BUSD-BNB LP',
