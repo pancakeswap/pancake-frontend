@@ -24,3 +24,4 @@ TODO:
 - [ ] swapout analytics
 - [ ] gitbook
 - [x] favico dimensions warnming
+- [x] new koala graphics
