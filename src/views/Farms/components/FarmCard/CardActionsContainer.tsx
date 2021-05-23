@@ -30,7 +30,7 @@ interface FarmCardActionsProps {
 const CardActions: React.FC<FarmCardActionsProps> = ({ farm, account, addLiquidityUrl }) => {
   const { t } = useTranslation()
   const [requestedApproval, setRequestedApproval] = useState(false)
-  const { lpAddresses, jarAddresses} = farm
+  const { lpAddresses, jarAddresses, jarRatio} = farm
   const {
     allowance: allowanceAsString = 0,
     tokenBalance: tokenBalanceAsString = 0,
@@ -39,6 +39,7 @@ const CardActions: React.FC<FarmCardActionsProps> = ({ farm, account, addLiquidi
   const allowance = new BigNumber(allowanceAsString)
   const tokenBalance = new BigNumber(tokenBalanceAsString)
   const stakedBalance = new BigNumber(stakedBalanceAsString)
+//   const jarRatio = new BigNumber(farm.jarRatio)
 //  const earnings = new BigNumber(earningsAsString)
   const lpAddress = getAddress(lpAddresses)
   const jarAddress = getAddress(jarAddresses)
@@ -67,6 +68,7 @@ const CardActions: React.FC<FarmCardActionsProps> = ({ farm, account, addLiquidi
         stakedBalance={stakedBalance}
         tokenBalance={tokenBalance}
         tokenName={lpName}
+        jarRatio = {jarRatio}
    //     pid={pid}
         jarAddress={jarAddress}
         addLiquidityUrl={addLiquidityUrl}

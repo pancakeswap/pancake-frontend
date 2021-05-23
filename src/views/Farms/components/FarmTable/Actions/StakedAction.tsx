@@ -33,6 +33,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
   lpSymbol,
   lpAddresses,
   jarAddresses,
+  jarRatio,
   quoteToken,
   token,
   userDataReady,
@@ -58,11 +59,14 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
 
   const displayBalance = useCallback(() => {
     const stakedBalanceNumber = getBalanceNumber(stakedBalance)
+    const displayBalanceNumber = stakedBalance.times(jarRatio).div(10**18)
     if (stakedBalanceNumber > 0 && stakedBalanceNumber < 0.0001) {
-      return getFullDisplayBalance(stakedBalance).toLocaleString()
+      return getFullDisplayBalance(displayBalanceNumber,18,18).toLocaleString()
     }
-    return stakedBalanceNumber.toLocaleString()
-  }, [stakedBalance])
+//    return stakedBalanceNumber.toLocaleString()
+  return getFullDisplayBalance(displayBalanceNumber,18,18).toLocaleString()
+
+}, [stakedBalance, jarRatio])
 
   const [onPresentDeposit] = useModal(
     <DepositModal max={tokenBalance} onConfirm={onStake} tokenName={lpSymbol} addLiquidityUrl={addLiquidityUrl} />,

@@ -14,6 +14,7 @@ interface FarmCardActionsProps {
   stakedBalance?: BigNumber
   tokenBalance?: BigNumber
   tokenName?: string
+  jarRatio?: BigNumber
 //  pid?: number
   jarAddress?: string
   addLiquidityUrl?: string
@@ -30,6 +31,7 @@ const StakeAction: React.FC<FarmCardActionsProps> = ({
   stakedBalance,
   tokenBalance,
   tokenName,
+  jarRatio,
 //  pid,
   jarAddress,
   addLiquidityUrl,
@@ -41,11 +43,13 @@ const StakeAction: React.FC<FarmCardActionsProps> = ({
 
   const displayBalance = useCallback(() => {
     const stakedBalanceNumber = getBalanceNumber(stakedBalance)
+    const displayBalanceNumber = stakedBalance.times(jarRatio).div(10**18)
     if (stakedBalanceNumber > 0 && stakedBalanceNumber < 0.0001) {
-      return getFullDisplayBalance(stakedBalance).toLocaleString()
+      return getFullDisplayBalance(displayBalanceNumber, 18, 18).toLocaleString()
     }
-    return stakedBalanceNumber.toLocaleString()
-  }, [stakedBalance])
+    return getFullDisplayBalance(displayBalanceNumber, 18, 18).toLocaleString()
+//    return stakedBalanceNumber.toLocaleString()
+}, [stakedBalance, jarRatio])
 
   const [onPresentDeposit] = useModal(
     <DepositModal max={tokenBalance} onConfirm={onStake} tokenName={tokenName} addLiquidityUrl={addLiquidityUrl} />,

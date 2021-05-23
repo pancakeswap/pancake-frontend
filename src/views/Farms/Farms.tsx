@@ -190,10 +190,12 @@ const Farms: React.FC = () => {
 //        const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken)
         const totalLiquidity = new BigNumber(farm.quoteTokenAmount).times(2)
         const jarLPDeposits = new BigNumber(farm.jarLPDeposits)
+        const jarRatioNum = new BigNumber(farm.jarRatio)
         const totalDeposits = new BigNumber(farm.totalDeposits).times(new BigNumber(quoteTokenPriceUsd))
+        const farmRatio = new BigNumber(farm.jarRatio).div(10**18)
         let userDeposits
         if (jarLPDeposits>new BigNumber(0)){
-          userDeposits = new BigNumber(farm.userData.stakedBalance).times(totalDeposits).div(jarLPDeposits);
+          userDeposits = new BigNumber(farm.userData.stakedBalance).times(farmRatio).times(totalDeposits).div(jarLPDeposits).times(jarRatioNum).div(10**18);
         } else{
           userDeposits = new BigNumber(0);
         }
