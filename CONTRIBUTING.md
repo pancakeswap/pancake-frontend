@@ -1,13 +1,13 @@
-# Contributing to the KogeFarm ecosystem 🥞
+# Contributing to the KogeFarm ecosystem 🦥
 
-Thanks for taking the time to contribute !
+Thanks for taking the time to contribute!
 You can start by reading our [Contribution guidelines](https://docs.pancakeswap.finance/code/contributing) first.
 
 ## Setup
 
 Create a `.env.development.local` file at the root of the project. Add the following lines inside :
 
-```
+```shell
 REACT_APP_CROWDIN_APIKEY = ""
 REACT_APP_CROWDIN_PROJECTID = ""
 ```
@@ -45,7 +45,7 @@ _In order for the Crowdin API queries to work - you will need `REACT_APP_CROWDIN
 
 A hook expose the function you need to translate content.
 
-```
+```js
 import { useTranslation } from 'contexts/Localization'
 
 ...
@@ -63,7 +63,7 @@ t(id, 'fallback', data)
 
 If a Crowdin translation like this `You have %num% left in your wallet` - would look something like:
 
-```
+```js
 t(675, `You have ${cakeBalance} left in your wallet`, { num: cakeBalance })
 ```
 
@@ -93,16 +93,13 @@ details will help people to fix any potential bugs.
 
 Template:
 
-```
+```md
 **Environment:**
 Device and OS:
 Browser:
 Reproducibility rate:
 
-**Steps to reproduce:**
-1.
-2.
-3.
+**Steps to reproduce:** 1. 2. 3.
 
 **Expected result:**
 ```
