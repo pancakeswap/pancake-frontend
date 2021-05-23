@@ -11,10 +11,69 @@ new file mode 100644
 index 0000000..0b0e6dd
 Binary files /dev/null and b/node_modules/@pancakeswap/uikit/dist/hooks/.DS_Store differ
 diff --git a/node_modules/@pancakeswap/uikit/dist/index.cjs.js b/node_modules/@pancakeswap/uikit/dist/index.cjs.js
-index 94e2ef0..9121dec 100644
+index 94e2ef0..0c4a823 100644
 --- a/node_modules/@pancakeswap/uikit/dist/index.cjs.js
 +++ b/node_modules/@pancakeswap/uikit/dist/index.cjs.js
-@@ -3588,7 +3588,7 @@ var socials = [
+@@ -3530,65 +3530,12 @@ var socials = [
+     {
+         label: "Telegram",
+         icon: "TelegramIcon",
+-        items: [
+-            {
+-                label: "English",
+-                href: "https://t.me/pancakeswap",
+-            },
+-            {
+-                label: "Bahasa Indonesia",
+-                href: "https://t.me/PancakeSwapIndonesia",
+-            },
+-            {
+-                label: "中文",
+-                href: "https://t.me/PancakeSwap_CN",
+-            },
+-            {
+-                label: "Tiếng Việt",
+-                href: "https://t.me/PancakeSwapVN",
+-            },
+-            {
+-                label: "Italiano",
+-                href: "https://t.me/pancakeswap_ita",
+-            },
+-            {
+-                label: "русский",
+-                href: "https://t.me/pancakeswap_ru",
+-            },
+-            {
+-                label: "Türkiye",
+-                href: "https://t.me/pancakeswapturkiye",
+-            },
+-            {
+-                label: "Português",
+-                href: "https://t.me/PancakeSwapPortuguese",
+-            },
+-            {
+-                label: "Español",
+-                href: "https://t.me/PancakeswapEs",
+-            },
+-            {
+-                label: "日本語",
+-                href: "https://t.me/pancakeswapjp",
+-            },
+-            {
+-                label: "Français",
+-                href: "https://t.me/pancakeswapfr",
+-            },
+-            {
+-                label: "Announcements",
+-                href: "https://t.me/PancakeSwapAnn",
+-            },
+-            {
+-                label: "Whale Alert",
+-                href: "https://t.me/PancakeSwapWhales",
+-            },
+-        ],
++        href: "https://t.me/kogecoin",
+     },
      {
          label: "Twitter",
          icon: "TwitterIcon",
@@ -23,11 +82,85 @@ index 94e2ef0..9121dec 100644
      },
  ];
  var MENU_HEIGHT = 64;
+@@ -3773,11 +3720,9 @@ var PanelFooter = function (_a) {
+     }
+     return (React__default['default'].createElement(Container, null,
+         React__default['default'].createElement(SocialEntry, null,
+-            React__default['default'].createElement(CakePrice$1, { cakePriceUsd: cakePriceUsd }),
+-            React__default['default'].createElement(SocialLinks$1, null)),
+-        React__default['default'].createElement(SettingsEntry, null,
+-            React__default['default'].createElement(ThemeSwitcher$1, { isDark: isDark, toggleTheme: toggleTheme }),
+-            React__default['default'].createElement(LangSelector$1, { currentLang: currentLang, langs: langs, setLang: setLang }))));
++          React__default['default'].createElement(ThemeSwitcher$1, { isDark: isDark, toggleTheme: toggleTheme }),
++            React__default['default'].createElement(SocialLinks$1, null))
++    ));
+ };
+ var templateObject_1$8, templateObject_2$3, templateObject_3$1;
+ 
 diff --git a/node_modules/@pancakeswap/uikit/dist/index.esm.js b/node_modules/@pancakeswap/uikit/dist/index.esm.js
-index 0cb8985..84dfa14 100644
+index 0cb8985..3c02154 100644
 --- a/node_modules/@pancakeswap/uikit/dist/index.esm.js
 +++ b/node_modules/@pancakeswap/uikit/dist/index.esm.js
-@@ -3574,7 +3574,7 @@ var socials = [
+@@ -3516,65 +3516,12 @@ var socials = [
+     {
+         label: "Telegram",
+         icon: "TelegramIcon",
+-        items: [
+-            {
+-                label: "English",
+-                href: "https://t.me/pancakeswap",
+-            },
+-            {
+-                label: "Bahasa Indonesia",
+-                href: "https://t.me/PancakeSwapIndonesia",
+-            },
+-            {
+-                label: "中文",
+-                href: "https://t.me/PancakeSwap_CN",
+-            },
+-            {
+-                label: "Tiếng Việt",
+-                href: "https://t.me/PancakeSwapVN",
+-            },
+-            {
+-                label: "Italiano",
+-                href: "https://t.me/pancakeswap_ita",
+-            },
+-            {
+-                label: "русский",
+-                href: "https://t.me/pancakeswap_ru",
+-            },
+-            {
+-                label: "Türkiye",
+-                href: "https://t.me/pancakeswapturkiye",
+-            },
+-            {
+-                label: "Português",
+-                href: "https://t.me/PancakeSwapPortuguese",
+-            },
+-            {
+-                label: "Español",
+-                href: "https://t.me/PancakeswapEs",
+-            },
+-            {
+-                label: "日本語",
+-                href: "https://t.me/pancakeswapjp",
+-            },
+-            {
+-                label: "Français",
+-                href: "https://t.me/pancakeswapfr",
+-            },
+-            {
+-                label: "Announcements",
+-                href: "https://t.me/PancakeSwapAnn",
+-            },
+-            {
+-                label: "Whale Alert",
+-                href: "https://t.me/PancakeSwapWhales",
+-            },
+-        ],
++        href: "https://t.me/kogecoin",
+     },
      {
          label: "Twitter",
          icon: "TwitterIcon",
@@ -36,9 +169,24 @@ index 0cb8985..84dfa14 100644
      },
  ];
  var MENU_HEIGHT = 64;
+@@ -3759,11 +3706,9 @@ var PanelFooter = function (_a) {
+     }
+     return (React.createElement(Container, null,
+         React.createElement(SocialEntry, null,
+-            React.createElement(CakePrice$1, { cakePriceUsd: cakePriceUsd }),
+-            React.createElement(SocialLinks$1, null)),
+-        React.createElement(SettingsEntry, null,
+-            React.createElement(ThemeSwitcher$1, { isDark: isDark, toggleTheme: toggleTheme }),
+-            React.createElement(LangSelector$1, { currentLang: currentLang, langs: langs, setLang: setLang }))));
++          React.createElement(ThemeSwitcher$1, { isDark: isDark, toggleTheme: toggleTheme }),
++            React.createElement(SocialLinks$1, null))
++    ));
+ };
+ var templateObject_1$8, templateObject_2$3, templateObject_3$1;
+ 
 diff --git a/node_modules/@pancakeswap/uikit/dist/widgets/.DS_Store b/node_modules/@pancakeswap/uikit/dist/widgets/.DS_Store
 new file mode 100644
-index 0000000..3db42cd
+index 0000000..cfaacf6
 Binary files /dev/null and b/node_modules/@pancakeswap/uikit/dist/widgets/.DS_Store differ
 diff --git a/node_modules/@pancakeswap/uikit/dist/widgets/Menu/.DS_Store b/node_modules/@pancakeswap/uikit/dist/widgets/Menu/.DS_Store
 new file mode 100644
