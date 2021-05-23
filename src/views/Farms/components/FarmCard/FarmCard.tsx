@@ -159,7 +159,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed, account }) => {
       <ExpandingWrapper expanded={showExpandableSection}>
         <DetailsSection
           removed={removed}
-          bscScanAddress={`https://explorer-mainnet.maticvigil.com/address/${farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]}`}
+          bscScanAddress={`https://explorer-mainnet.maticvigil.com/address/${farm.jarAddresses[process.env.REACT_APP_CHAIN_ID]}`}
           infoAddress={`https://info.quickswap.exchange/pair/${lpAddress}`}
           totalValueFormatted={totalValueFormatted}
           userValueFormatted={userValueFormatted}

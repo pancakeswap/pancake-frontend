@@ -153,7 +153,8 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({
     tokenAddress: token.address,
   })
   const lpAddress = farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]
-  const bsc = `https://explorer-mainnet.maticvigil.com/address/${lpAddress}`
+  const jarAddress = farm.jarAddresses[process.env.REACT_APP_CHAIN_ID]
+  const bsc = `https://explorer-mainnet.maticvigil.com/address/${jarAddress}`
   const info = `https://info.quickswap.exchange/pair/${lpAddress}`
 
   return (

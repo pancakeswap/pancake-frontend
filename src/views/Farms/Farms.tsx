@@ -191,8 +191,12 @@ const Farms: React.FC = () => {
         const totalLiquidity = new BigNumber(farm.quoteTokenAmount).times(2)
         const jarLPDeposits = new BigNumber(farm.jarLPDeposits)
         const totalDeposits = new BigNumber(farm.totalDeposits).times(new BigNumber(quoteTokenPriceUsd))
-
-        const userDeposits = new BigNumber(farm.userData.stakedBalance).times(totalDeposits).div(jarLPDeposits)
+        let userDeposits
+        if (jarLPDeposits>new BigNumber(0)){
+          userDeposits = new BigNumber(farm.userData.stakedBalance).times(totalDeposits).div(jarLPDeposits);
+        } else{
+          userDeposits = new BigNumber(0);
+        }
 
         const apr = isActive ? getMetaFarmApr(farm.poolWeightDesignate, farm.rewardPerBlock, totalLiquidity, tokenPriceVsQuote) : 0
 

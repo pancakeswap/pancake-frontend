@@ -38,6 +38,16 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://polycat.finance',
   },
+  gaj: {
+    symbol: 'Gaj',
+    coingeico: '',
+    address: {
+      137: '0xF4B0903774532AEe5ee567C02aaB681a81539e92',
+      80001: '',
+    },
+    decimals: 18,
+    projectLink: 'https://polygaj.finance',
+  },
 }
 
 export default tokens
