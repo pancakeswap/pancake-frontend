@@ -26,6 +26,7 @@ const Container = styled.div`
   button {
     width: 20px;
     height: 20px;
+    margin-left: 0;
 
     svg {
       path {
@@ -37,7 +38,12 @@ const Container = styled.div`
 
 const AprWrapper = styled.div`
   min-width: 60px;
-  text-align: left;
+  text-align: right;
+  margin-right: 14px;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    text-align: left;
+  }
 `
 
 const Apr: React.FC<AprProps> = ({
