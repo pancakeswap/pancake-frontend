@@ -91,7 +91,7 @@ export const useFarmFromTokenSymbol = (tokenSymbol: string, preferredQuoteTokens
 // Return the base token price for a farm, from a given pid
 export const useBusdPriceFromPid = (pid: number): BigNumber => {
   const farm = useFarmFromPid(pid)
-  return farm && new BigNumber(farm.token.price)
+  return farm && new BigNumber(farm.token.busdPrice)
 }
 
 export const useBusdPriceFromToken = (tokenSymbol: string): BigNumber => {
@@ -324,16 +324,12 @@ export const useGetApiPrice = (address: string) => {
 
 export const usePriceBnbBusd = (): BigNumber => {
   const bnbBusdFarm = useFarmFromPid(252)
-  return bnbBusdFarm.tokenPriceVsQuote ? new BigNumber(1).div(bnbBusdFarm.tokenPriceVsQuote) : BIG_ZERO
+  return new BigNumber(bnbBusdFarm.token.busdPrice)
 }
 
 export const usePriceCakeBusd = (): BigNumber => {
   const cakeBnbFarm = useFarmFromPid(251)
-  const bnbBusdPrice = usePriceBnbBusd()
-
-  const cakeBusdPrice = cakeBnbFarm.tokenPriceVsQuote ? bnbBusdPrice.times(cakeBnbFarm.tokenPriceVsQuote) : BIG_ZERO
-
-  return cakeBusdPrice
+  return new BigNumber(cakeBnbFarm.token.busdPrice)
 }
 
 // Block
