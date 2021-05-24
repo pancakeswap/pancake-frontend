@@ -86,6 +86,15 @@ export const CardHeader: React.FC = () => {
           <CardFooter>Footer</CardFooter>
         </Card>
       </Row>
+      <Row>
+        <Card>
+          <UIKitCardHeader variant="bubblegum">
+            <Heading size="xl">Card Header</Heading>
+          </UIKitCardHeader>
+          <CardBody>Body</CardBody>
+          <CardFooter>Footer</CardFooter>
+        </Card>
+      </Row>
     </div>
   );
 };
