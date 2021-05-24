@@ -13,7 +13,11 @@ const PromotedGradient = keyframes`
   }
 `
 
-export const StyledCard = styled(Card)<{ isPromotedPool?: boolean; isFinished?: boolean }>`
+interface PromotedStyleCardProps {
+  isDesktop: boolean
+}
+
+export const StyledCard = styled(Card)<{ isPromoted?: PromotedStyleCardProps; isFinished?: boolean }>`
   max-width: 352px;
   margin: 0 8px 24px;
   display: flex;
@@ -23,15 +27,16 @@ export const StyledCard = styled(Card)<{ isPromotedPool?: boolean; isFinished?: 
   color: ${({ isFinished, theme }) => theme.colors[isFinished ? 'textDisabled' : 'secondary']};
   box-shadow: 0px 1px 4px rgba(25, 19, 38, 0.15);
 
-  ${({ isPromotedPool, theme }) =>
-    isPromotedPool
+  ${({ isPromoted, theme }) =>
+    isPromoted
       ? css`
           background: linear-gradient(180deg, ${theme.colors.primaryBright}, ${theme.colors.secondary});
           padding: 1px 1px 3px 1px;
           background-size: 400% 400%;
-          animation: ${PromotedGradient} 3s ease infinite;
         `
       : `background: ${(props) => props.theme.card.background};`}
+
+  ${({ isPromoted }) => isPromoted && isPromoted.isDesktop && `animation: ${PromotedGradient} 3s ease infinite;`}
 
   ${({ theme }) => theme.mediaQueries.sm} {
     margin: 0 12px 46px;
