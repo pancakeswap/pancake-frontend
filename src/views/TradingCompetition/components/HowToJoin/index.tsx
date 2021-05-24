@@ -21,7 +21,7 @@ const HowToJoin = () => {
         <Text fontSize="14px" color="textSubtle">
           {t('Set up your')} <StyledLink href="/profile">{t('Pancake Profile')}</StyledLink>
           {', '}
-          {t('then register for the competition by clicking the “I WANT TO BATTLE” button above.')}
+          {t('then register for the competition by clicking “I WANT TO BATTLE” button above.')}
         </Text>
       </HowToCard>
       <HowToCard number={2} title={t('Battle Time')}>
@@ -33,7 +33,7 @@ const HowToJoin = () => {
       </HowToCard>
       <HowToCard number={3} title={t('Prize Claim')}>
         <Text fontSize="14px" color="textSubtle">
-          {t('Teams and traders will be ranked in order of trading volume. Collect your prizes and celebrate!')}
+          {t('Teams and traders will be ranked in the order of trading volume. Collect your prizes and celebrate!')}
         </Text>
       </HowToCard>
     </Flex>

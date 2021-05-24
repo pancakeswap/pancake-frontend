@@ -89,7 +89,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
         </GridItem>
         <GridItem>
           <Text fontSize="12px" bold color="textSubtle" textTransform="uppercase" mb="20px">
-            {t('%symbol% per $1000', { symbol: earningTokenSymbol })}
+            {t('%symbol% per $1,000', { symbol: earningTokenSymbol })}
           </Text>
         </GridItem>
         {/* 1 day row */}

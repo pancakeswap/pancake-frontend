@@ -101,7 +101,7 @@ const IfoSteps: React.FC<Props> = ({ ifo, walletIfoData }) => {
             </Heading>
             <Text color="textSubtle" small>
               {t('When the IFO sales are live, you can “commit” your LP tokens to buy the tokens being sold.')} <br />
-              {t('We recommend committing to the Basic Sale first, but you can do both if you want.')}
+              {t('We recommend committing to the Basic Sale first, but you can do both if you like.')}
             </Text>
           </CardBody>
         )

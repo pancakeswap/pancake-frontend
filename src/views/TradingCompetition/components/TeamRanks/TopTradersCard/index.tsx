@@ -68,7 +68,7 @@ const TopTradersCard: React.FC<TeamRanksProps> = ({
             {t('Top Traders')}
           </Heading>
           <Text fontSize="14px" color="textSubtle">
-            {t('Since start of competition')}
+            {t('Since start of the competition')}
           </Text>
         </CardHeader>
         <Box mt="16px">
