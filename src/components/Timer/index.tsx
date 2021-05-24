@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Flex, Heading, Text, Link, useTooltip } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
+import { ContextApi } from 'contexts/Localization/types'
 
 export interface TimerProps {
   timerStage?: string
@@ -47,13 +48,13 @@ const DefaultBodyTextComponent = ({ children, ...props }) => (
   </Text>
 )
 
-const TooltipContent = ({ blockNumber, translate }) => (
+const TooltipContent = ({ blockNumber, t }: { blockNumber: number; t: ContextApi['t'] }): JSX.Element => (
   <>
     <Text color="body" mb="10px" fontWeight="600">
-      {translate('Block %num%', { num: blockNumber })}
+      {t('Block %num%', { num: blockNumber })}
     </Text>
     <Link external href={`https://bscscan.com/block/${blockNumber}`}>
-      {translate('View on BscScan')}
+      {t('View on BscScan')}
     </Link>
   </>
 )
@@ -69,12 +70,9 @@ const Wrapper: React.FC<TimerProps> = ({
   BodyTextComponent = DefaultBodyTextComponent,
 }) => {
   const { t } = useTranslation()
-  const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    <TooltipContent blockNumber={blockNumber} translate={t} />,
-    {
-      placement: 'bottom',
-    },
-  )
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(<TooltipContent blockNumber={blockNumber} t={t} />, {
+    placement: 'bottom',
+  })
   const shouldDisplayTooltip = showTooltip && tooltipVisible
   return (
     <Flex alignItems="flex-end" position="relative">
