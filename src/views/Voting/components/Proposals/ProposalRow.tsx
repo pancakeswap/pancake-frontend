@@ -42,9 +42,6 @@ const ProposalRow: React.FC<ProposalRowProps> = ({ proposal }) => {
           <Text fontSize="14px" color="textSubtle" ml="8px">
             {`${t('Creator')}:`}
           </Text>
-          <Text bold ml="8px" fontSize="14px">
-            {proposal.author.slice(0, 8)}
-          </Text>
         </Flex>
       </Box>
       <IconButton as={Link} to={votingLink}>
