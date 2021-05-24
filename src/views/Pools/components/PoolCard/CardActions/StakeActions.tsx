@@ -30,10 +30,11 @@ const StakeAction: React.FC<StakeActionsProps> = ({
   const { t } = useTranslation()
   const stakedTokenBalance = getBalanceNumber(stakedBalance, stakingToken.decimals)
   const stakingTokenPrice = useBusdPriceFromToken(stakingToken.symbol)
-  const stakingTokenPriceAsNumber = stakingTokenPrice && stakingTokenPrice.toNumber()
-  const stakedTokenDollarBalance =
-    stakingTokenPriceAsNumber &&
-    getBalanceNumber(stakedBalance.multipliedBy(stakingTokenPriceAsNumber), stakingToken.decimals)
+  const stakingTokenPriceAsNumber = stakingTokenPrice ? stakingTokenPrice.toNumber() : 0
+  const stakedTokenDollarBalance = getBalanceNumber(
+    stakedBalance.multipliedBy(stakingTokenPriceAsNumber),
+    stakingToken.decimals,
+  )
 
   const [onPresentTokenRequired] = useModal(<NotEnoughTokensModal tokenSymbol={stakingToken.symbol} />)
 
@@ -69,16 +70,18 @@ const StakeAction: React.FC<StakeActionsProps> = ({
         <Flex flexDirection="column">
           <>
             <Balance bold fontSize="20px" decimals={3} value={stakedTokenBalance} />
-            <Text fontSize="12px" color="textSubtle">
-              <Balance
-                fontSize="12px"
-                color="textSubtle"
-                decimals={2}
-                value={stakedTokenDollarBalance}
-                prefix="~"
-                unit=" USD"
-              />
-            </Text>
+            {stakingTokenPriceAsNumber !== 0 && (
+              <Text fontSize="12px" color="textSubtle">
+                <Balance
+                  fontSize="12px"
+                  color="textSubtle"
+                  decimals={2}
+                  value={stakedTokenDollarBalance}
+                  prefix="~"
+                  unit=" USD"
+                />
+              </Text>
+            )}
           </>
         </Flex>
         <Flex>

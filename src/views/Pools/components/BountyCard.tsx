@@ -41,8 +41,9 @@ const BountyCard = () => {
     return new BigNumber(estimatedCakeBountyReward).multipliedBy(cakePriceBusdAsNumber)
   }, [cakePriceBusdAsNumber, estimatedCakeBountyReward])
 
-  const hasFetchedDollarBounty = estimatedDollarBountyReward && estimatedDollarBountyReward.gte(0)
-  const hasFetchedCakeBounty = estimatedCakeBountyReward && estimatedCakeBountyReward.gte(0)
+  const hasFetchedDollarBounty =
+    cakePriceBusdAsNumber && estimatedDollarBountyReward ? estimatedDollarBountyReward.gte(0) : false
+  const hasFetchedCakeBounty = estimatedCakeBountyReward ? estimatedCakeBountyReward.gte(0) : false
   const dollarBountyToDisplay = hasFetchedDollarBounty ? getBalanceNumber(estimatedDollarBountyReward, 18) : 0
   const cakeBountyToDisplay = hasFetchedCakeBounty ? getBalanceNumber(estimatedCakeBountyReward, 18) : 0
 
