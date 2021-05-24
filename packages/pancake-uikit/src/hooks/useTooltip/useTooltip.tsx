@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
+import { createPortal } from "react-dom";
 import { usePopper } from "react-popper";
 import { ThemeProvider, DefaultTheme } from "styled-components";
 import { light, dark } from "../../theme";
@@ -15,6 +16,8 @@ const invertTheme = (currentTheme: DefaultTheme) => {
   }
   return dark;
 };
+
+const portalRoot = document.getElementById("portal-root");
 
 const useTooltip = (content: React.ReactNode, options: TooltipOptions): TooltipRefs => {
   const {
@@ -189,9 +192,12 @@ const useTooltip = (content: React.ReactNode, options: TooltipOptions): TooltipR
       <Arrow ref={setArrowElement} style={styles.arrow} />
     </StyledTooltip>
   );
+
+  const tooltipInPortal = portalRoot ? createPortal(tooltip, portalRoot) : null;
+
   return {
     targetRef: setTargetElement,
-    tooltip,
+    tooltip: tooltipInPortal ?? tooltip,
     tooltipVisible: visible,
   };
 };
