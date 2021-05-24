@@ -39,6 +39,16 @@ const farms: FarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 389,
+    lpSymbol: 'CAKE-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0x804678fa97d91B974ec2af3c843270886528a9E6',
+    },
+    token: tokens.cake,
+    quoteToken: tokens.busd,
+  },
+  {
     pid: 388,
     lpSymbol: 'CYC-BNB LP',
     lpAddresses: {
