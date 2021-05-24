@@ -10,6 +10,8 @@ import { ProposalStateTag, ProposalTypeTag } from '../components/Proposals/tags'
 import { getProposal, isCoreProposal } from '../helpers'
 import { Proposal as ProposalType } from '../types'
 import Details from './Details'
+import Vote from './Vote'
+import Votes from './Votes'
 
 const Layout = styled.div`
   align-items: start;
@@ -59,16 +61,20 @@ const Proposal = () => {
       </Box>
       <Layout>
         <Box>
-          <Flex alignItems="center" mb="8px">
-            <ProposalStateTag proposalState={proposal.state} />
-            <ProposalTypeTag isCoreProposal={isCoreProposal(proposal)} ml="8px" />
-          </Flex>
-          <Heading as="h1" scale="xl" mb="16px">
-            {proposal.title}
-          </Heading>
-          <Box>
-            <ReactMarkdown>{proposal.body}</ReactMarkdown>
+          <Box mb="32px">
+            <Flex alignItems="center" mb="8px">
+              <ProposalStateTag proposalState={proposal.state} />
+              <ProposalTypeTag isCoreProposal={isCoreProposal(proposal)} ml="8px" />
+            </Flex>
+            <Heading as="h1" scale="xl" mb="16px">
+              {proposal.title}
+            </Heading>
+            <Box>
+              <ReactMarkdown>{proposal.body}</ReactMarkdown>
+            </Box>
           </Box>
+          <Vote proposal={proposal} mb="16px" />
+          <Votes proposal={proposal} />
         </Box>
         <Details proposal={proposal} />
       </Layout>
