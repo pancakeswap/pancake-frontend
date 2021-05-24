@@ -1362,6 +1362,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://xend.finance/',
   },
+  cyc: {
+    symbol: 'CYC',
+    address: {
+      56: '0x810ee35443639348adbbc467b33310d2ab43c168',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://cyclone.xyz/',
+  },
 }
 
 export default tokens
