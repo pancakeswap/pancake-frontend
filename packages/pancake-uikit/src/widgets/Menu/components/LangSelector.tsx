@@ -7,7 +7,7 @@ import * as IconModule from "../icons";
 import { Language } from "../types";
 import MenuButton from "./MenuButton";
 
-const Icons = (IconModule as unknown) as { [key: string]: React.FC<SvgProps> };
+const Icons = IconModule as unknown as { [key: string]: React.FC<SvgProps> };
 const { LanguageIcon } = Icons;
 
 interface Props {

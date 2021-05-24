@@ -26,7 +26,7 @@ const Image: React.FC<ImageProps> = ({ src, alt, ...otherProps }) => {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    const img = (imgRef.current as unknown) as HTMLImageElement;
+    const img = imgRef.current as unknown as HTMLImageElement;
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         const { isIntersecting } = entry;

@@ -42,9 +42,11 @@ const scaleKeyValues = {
   },
 };
 
-const getScale = (property: ScaleKeys) => ({ scale = scales.MD }: PancakeToggleProps) => {
-  return scaleKeyValues[scale][property];
-};
+const getScale =
+  (property: ScaleKeys) =>
+  ({ scale = scales.MD }: PancakeToggleProps) => {
+    return scaleKeyValues[scale][property];
+  };
 
 export const PancakeStack = styled.div<HandleProps>`
   position: relative;
