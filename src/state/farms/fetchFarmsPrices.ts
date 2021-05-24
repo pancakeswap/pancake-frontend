@@ -1,6 +1,7 @@
 import BigNumber from 'bignumber.js'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { filterFarmsByQuoteToken } from 'utils/farmsPriceHelpers'
+import { getAddress } from 'utils/addressHelpers'
 import { Farm } from 'state/types'
 
 const getFarmFromTokenSymbol = (farms: Farm[], tokenSymbol: string, preferredQuoteTokens?: string[]): Farm => {
@@ -9,7 +10,7 @@ const getFarmFromTokenSymbol = (farms: Farm[], tokenSymbol: string, preferredQuo
   return filteredFarm
 }
 
-const getFarmBaseTokenPrice = (farm: Farm, quoteTokenFarm: Farm, bnbPriceBusd: BigNumber) => {
+const getFarmBaseTokenPrice = (farm: Farm, quoteTokenFarm: Farm, bnbPriceBusd: BigNumber): BigNumber => {
   const hasTokenPriceVsQuote = Boolean(farm.tokenPriceVsQuote)
 
   if (farm.quoteToken.symbol === 'BUSD') {
@@ -48,7 +49,7 @@ const getFarmBaseTokenPrice = (farm: Farm, quoteTokenFarm: Farm, bnbPriceBusd: B
   return BIG_ZERO
 }
 
-const getFarmQuoteTokenPrice = (farm: Farm, quoteTokenFarm: Farm, bnbPriceBusd: BigNumber) => {
+const getFarmQuoteTokenPrice = (farm: Farm, quoteTokenFarm: Farm, bnbPriceBusd: BigNumber): BigNumber => {
   if (farm.quoteToken.symbol === 'BUSD') {
     return new BigNumber(1)
   }
@@ -72,17 +73,29 @@ const getFarmQuoteTokenPrice = (farm: Farm, quoteTokenFarm: Farm, bnbPriceBusd: 
   return BIG_ZERO
 }
 
-const fetchFarmsPrices = async (farms) => {
+const fetchFarmsPrices = async (farms, getState) => {
   const bnbBusdFarm = farms.find((farm: Farm) => farm.pid === 252)
   const bnbPriceBusd = bnbBusdFarm.tokenPriceVsQuote ? new BigNumber(1).div(bnbBusdFarm.tokenPriceVsQuote) : BIG_ZERO
 
   const farmsWithPrices = farms.map((farm) => {
     const quoteTokenFarm = getFarmFromTokenSymbol(farms, farm.quoteToken.symbol)
-    const baseTokenPrice = getFarmBaseTokenPrice(farm, quoteTokenFarm, bnbPriceBusd).toJSON()
-    const quoteTokenPrice = getFarmQuoteTokenPrice(farm, quoteTokenFarm, bnbPriceBusd).toJSON()
+    let baseTokenPrice = getFarmBaseTokenPrice(farm, quoteTokenFarm, bnbPriceBusd)
+    let quoteTokenPrice = getFarmQuoteTokenPrice(farm, quoteTokenFarm, bnbPriceBusd)
 
-    const token = { ...farm.token, busdPrice: baseTokenPrice }
-    const quoteToken = { ...farm.quoteToken, busdPrice: quoteTokenPrice }
+    // Catches to use API price if price cannot be obtained from farm. As of 24.5.21 this is only KUN-QSD
+    if (!baseTokenPrice.gt(0)) {
+      const apiPriceData = getState().apiPrices.data
+      const tokenAddress = getAddress(farm.token.address)
+      baseTokenPrice = apiPriceData ? new BigNumber(apiPriceData[tokenAddress.toLowerCase()]) : BIG_ZERO
+    }
+    if (!quoteTokenPrice.gt(0)) {
+      const apiPriceData = getState().apiPrices.data
+      const quoteTokenAddress = getAddress(farm.quoteToken.address)
+      quoteTokenPrice = apiPriceData ? new BigNumber(apiPriceData[quoteTokenAddress.toLowerCase()]) : BIG_ZERO
+    }
+
+    const token = { ...farm.token, busdPrice: baseTokenPrice.toJSON() }
+    const quoteToken = { ...farm.quoteToken, busdPrice: quoteTokenPrice.toJSON() }
     return { ...farm, token, quoteToken }
   })
   return farmsWithPrices
