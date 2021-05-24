@@ -1,5 +1,5 @@
 import { request, gql } from 'graphql-request'
-import { GRAPH_API_PREDICTIONS } from 'config/constants/endpoints'
+import { GRAPH_API_PREDICTION } from 'config/constants/endpoints'
 import { Bet, BetPosition, Market, PredictionStatus, Round, RoundData } from 'state/types'
 import makeBatchRequest from 'utils/makeBatchRequest'
 import { getPredictionsContract } from 'utils/contractHelpers'
@@ -203,7 +203,7 @@ export const getMarketData = async (): Promise<{
   market: Market
 }> => {
   const response = (await request(
-    GRAPH_API_PREDICTIONS,
+    GRAPH_API_PREDICTION,
     gql`
       query getMarketData {
         rounds(first: 5, orderBy: epoch, orderDirection: desc) {
@@ -228,7 +228,7 @@ export const getMarketData = async (): Promise<{
 
 export const getRound = async (id: string) => {
   const response = await request(
-    GRAPH_API_PREDICTIONS,
+    GRAPH_API_PREDICTION,
     gql`
       query getRound($id: ID!) {
         round(id: $id) {
@@ -255,7 +255,7 @@ export const getBetHistory = async (
   skip = 0,
 ): Promise<BetResponse[]> => {
   const response = await request(
-    GRAPH_API_PREDICTIONS,
+    GRAPH_API_PREDICTION,
     gql`
       query getBetHistory($first: Int!, $skip: Int!, $where: Bet_filter) {
         bets(first: $first, skip: $skip, where: $where) {
@@ -276,7 +276,7 @@ export const getBetHistory = async (
 
 export const getBet = async (betId: string): Promise<BetResponse> => {
   const response = await request(
-    GRAPH_API_PREDICTIONS,
+    GRAPH_API_PREDICTION,
     gql`
       query getBet($id: ID!) {
         bet(id: $id) {
