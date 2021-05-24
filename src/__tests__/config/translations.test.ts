@@ -16,7 +16,7 @@ describe('Check translations available', () => {
     fs.readdirSync(directory).forEach((file) => {
       const absolute = Path.join(directory, file)
       if (fs.statSync(absolute).isDirectory()) return throughDirectory(absolute)
-      if (absolute.includes('.tsx')) {
+      if (absolute.includes('.tsx') || absolute.includes('.ts')) {
         return files.push(absolute)
       }
       return files.length

@@ -1,5 +1,5 @@
+import { ContextApi } from 'contexts/Localization/types'
 import { PageMeta } from './types'
-import { ContextApi } from '../../contexts/Localization/types'
 
 export const DEFAULT_META: PageMeta = {
   title: 'PancakeSwap',
