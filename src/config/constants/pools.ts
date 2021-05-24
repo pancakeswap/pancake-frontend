@@ -22,7 +22,7 @@ const pools: PoolConfig[] = [
     earningToken: tokens.cyc,
     contractAddress: {
       97: '',
-      56: '0xfd381a55ca8561661f1d0564c1add0ecb6ac9225',
+      56: '0xD714738837944C3c592477249E8edB724A76e068',
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
