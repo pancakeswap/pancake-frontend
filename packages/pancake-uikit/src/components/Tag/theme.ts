@@ -35,4 +35,7 @@ export const styleVariants = {
   [variants.FAILURE]: {
     backgroundColor: "failure",
   },
+  [variants.WARNING]: {
+    backgroundColor: "warning",
+  },
 };
