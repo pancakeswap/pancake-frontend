@@ -37,7 +37,7 @@ export interface Ifo {
   articleUrl: string
   campaignId: string
   tokenOfferingPrice: number
-  isV1: boolean
+  version: number
   [PoolIds.poolBasic]?: IfoPoolInfo
   [PoolIds.poolUnlimited]: IfoPoolInfo
 }
