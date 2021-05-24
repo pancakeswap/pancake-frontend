@@ -36,7 +36,12 @@ export const StyledCard = styled(Card)<{ isPromoted?: PromotedStyleCardProps; is
         `
       : `background: ${(props) => props.theme.card.background};`}
 
-  ${({ isPromoted }) => isPromoted && isPromoted.isDesktop && `animation: ${PromotedGradient} 3s ease infinite;`}
+  ${({ isPromoted }) =>
+    isPromoted &&
+    isPromoted.isDesktop &&
+    css`
+      animation: ${PromotedGradient} 3s ease infinite;
+    `}
 
   ${({ theme }) => theme.mediaQueries.sm} {
     margin: 0 12px 46px;
