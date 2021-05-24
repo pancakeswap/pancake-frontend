@@ -16,6 +16,16 @@ const farms: FarmConfig[] = [
     quoteToken: tokens.wbnb,
   },
   {
+    pid: 252,
+    lpSymbol: 'ZMBE-BNB LP',
+    lpAddresses: {
+      97: '0x9C21123D94b93361a29B2C2EFB3d5CD8B17e0A9e', // todo fix addresses
+      56: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
+    },
+    token: tokens.zmbe,
+    quoteToken: tokens.wbnb,
+  },
+  {
     pid: 251,
     lpSymbol: 'CAKE-BNB LP',
     lpAddresses: {

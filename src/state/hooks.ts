@@ -75,17 +75,13 @@ export const useLpTokenPrice = (symbol: string) => {
     : BIG_ZERO
 }
 
-// Pools
+// Graves
 
 export const usePools = (account): Pool[] => {
-  console.log("use pools")
-  console.log(account)
   const { fastRefresh } = useRefresh()
   const dispatch = useAppDispatch()
   useEffect(() => {
-    console.log("use effect")
     if (account) {
-      console.log("account found")
       dispatch(fetchPoolsUserDataAsync(account))
     }
   }, [account, dispatch, fastRefresh])
@@ -194,6 +190,16 @@ export const usePriceCakeBusd = (): BigNumber => {
   const cakeBusdPrice = cakeBnbFarm.tokenPriceVsQuote ? bnbBusdPrice.times(cakeBnbFarm.tokenPriceVsQuote) : BIG_ZERO
 
   return cakeBusdPrice
+}
+
+export const usePriceZombieBusd = (): BigNumber => {
+  const zombieBnbFarm = useFarmFromPid(252)
+  const bnbBusdPrice = usePriceBnbBusd()
+
+  const zombieBusdPrice = zombieBnbFarm.tokenPriceVsQuote ? bnbBusdPrice.times(zombieBnbFarm.tokenPriceVsQuote) : BIG_ZERO
+
+  // return zombieBusdPrice
+  return new BigNumber(5) // todo replace once we have zombie pool
 }
 
 // Block

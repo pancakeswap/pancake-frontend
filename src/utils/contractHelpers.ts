@@ -45,6 +45,7 @@ import tradingCompetitionAbi from 'config/abi/tradingCompetition.json'
 import easterNftAbi from 'config/abi/easterNft.json'
 import cakeVaultAbi from 'config/abi/cakeVault.json'
 import predictionsAbi from 'config/abi/predictions.json'
+import restorationChefAbi from 'config/abi/restorationChef.json'
 
 export const getContract = (abi: any, address: string, web3?: Web3) => {
   const _web3 = web3 ?? web3NoAccount
@@ -54,6 +55,11 @@ export const getContract = (abi: any, address: string, web3?: Web3) => {
 export const getBep20Contract = (address: string, web3?: Web3) => {
   return getContract(bep20Abi, address, web3)
 }
+
+export const getRestorationChefContract = (address: string, web3?: Web3) => {
+  return getContract(restorationChefAbi, address, web3)
+}
+
 export const getErc721Contract = (address: string, web3?: Web3) => {
   return getContract(erc721Abi, address, web3)
 }

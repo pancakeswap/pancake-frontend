@@ -3,6 +3,10 @@ export default {
     97: '0x61dd856CF7eC5627083BD4EED64592B5796f0300',
     56: '0x73feaa1eE314F8c655E354234017bE2193C9E24E',
   },
+  restorationChef: {
+    97: '0xf3a866B431daB1925A8085D3F189248BE53e5cbd',
+    56: '0x6ab8463a4185b80905e05a9ff80a2d6b714b9e95',
+  },
   sousChef: {
     97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
     56: '0x6ab8463a4185b80905e05a9ff80a2d6b714b9e95',

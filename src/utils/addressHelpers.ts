@@ -11,9 +11,15 @@ export const getAddress = (address: Address): string => {
 export const getCakeAddress = () => {
   return getAddress(tokens.cake.address)
 }
+
 export const getMasterChefAddress = () => {
   return getAddress(addresses.masterChef)
 }
+
+export const getRestorationChefAddress = () => {
+  return getAddress(addresses.restorationChef)
+}
+
 export const getMulticallAddress = () => {
   return getAddress(addresses.multiCall)
 }

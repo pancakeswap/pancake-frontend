@@ -28,15 +28,20 @@ const config: MenuEntry[] = [
       },
     ],
   },
-  // {
-  //   label: 'Farms',
-  //   icon: 'FarmIcon',
-  //   href: '/farms',
-  // },
   {
     label: 'Graves',
     icon: 'PoolIcon',
     href: '/graves',
+  },
+  {
+    label: 'Tombs',
+    icon: 'FarmIcon',
+    href: '/tombs',
+  },
+  {
+    label: 'Crypts',
+    icon: 'PoolIcon',
+    href: '/crypts',
   },
   // {
   //   label: 'Prediction',

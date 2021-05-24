@@ -1,4 +1,5 @@
 import { TranslatableText } from 'state/types'
+import BigNumber from 'bignumber.js'
 
 export interface Address {
   97?: string
@@ -45,7 +46,7 @@ export interface Ifo {
 export enum PoolCategory {
   'COMMUNITY' = 'Community',
   'CORE' = 'Core',
-  'BINANCE' = 'Binance', // Pools using native BNB behave differently than pools using a token
+  'BINANCE' = 'Binance', // Graves using native BNB behave differently than pools using a token
   'AUTO' = 'Auto',
 }
 
@@ -72,6 +73,25 @@ export interface PoolConfig {
   contractAddress: Address
   poolCategory: PoolCategory
   tokenPerBlock: string
+  sortOrder?: number
+  harvest?: boolean
+  isFinished?: boolean
+}
+
+export interface GraveConfig {
+  gid: number
+  nftName: string
+  rugName: string
+  nftSrc: string,
+  rugSrc: string,
+  contractAddress: Address
+  unlockingFee: number
+  minimumStakingTime: number
+  displayMinimumStakingTime: string
+  minimumStakingAmount: number
+  earlyWithdrawalFee: number
+  artistUrl: string
+  startBlock?: number
   sortOrder?: number
   harvest?: boolean
   isFinished?: boolean

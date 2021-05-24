@@ -10,18 +10,19 @@ import SuspenseWithChunkError from './components/SuspenseWithChunkError'
 import ToastListener from './components/ToastListener'
 import PageLoader from './components/PageLoader'
 import EasterEgg from './components/EasterEgg'
-// import Pools from './views/Pools'
+// import Graves from './views/Graves'
 import history from './routerHistory'
+import Crypts from './views/Crypts'
 
 // Route-based code splitting
 // Only pool is included in the main bundle because of it's the most visited page
 const Home = lazy(() => import('./views/Home'))
-// const Farms = lazy(() => import('./views/Farms'))
+const Farms = lazy(() => import('./views/Farms'))
 // const Lottery = lazy(() => import('./views/Lottery'))
 // const Ifos = lazy(() => import('./views/Ifos'))
 const NotFound = lazy(() => import('./views/NotFound'))
 // const Collectibles = lazy(() => import('./views/Collectibles'))
-const Pools = lazy(() => import('./views/Pools'))
+const Graves = lazy(() => import('./views/Graves'))
 const Admin = lazy(() => import('./views/Admin'))
 // const Teams = lazy(() => import('./views/Teams'))
 // const Team = lazy(() => import('./views/Teams/Team'))
@@ -64,11 +65,14 @@ const App: React.FC = () => {
             <Route path='/admin'>
               <Admin />
             </Route>
-            {/* <Route path='/farms'> */}
-            {/*  <Farms /> */}
-            {/* </Route> */}
+             <Route path='/tombs'>
+              <Farms />
+             </Route>
             <Route path='/graves'>
-              <Pools />
+              <Graves />
+            </Route>
+            <Route path='/crypts'>
+              <Crypts />
             </Route>
             {/* <Route path="/lottery"> */}
             {/*  <Lottery /> */}
@@ -99,11 +103,14 @@ const App: React.FC = () => {
               <Redirect to='/graves' />
             </Route>
             <Route path='/pools'>
-              <Redirect to='/graves' />
+              <Redirect to='/crypts' />
             </Route>
-            {/* <Route path='/syrup'> */}
-            {/*  <Redirect to='/graves' /> */}
-            {/* </Route> */}
+             <Route path='/undead'>
+              <Redirect to='/crypts' />
+             </Route>
+            <Route path='/farms'>
+              <Redirect to='/tombs' />
+            </Route>
             <Route path='/nft'>
               <Redirect to='/collectibles' />
             </Route>
