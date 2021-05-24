@@ -73,7 +73,7 @@ const getFarmQuoteTokenPrice = (farm: Farm, quoteTokenFarm: Farm, bnbPriceBusd: 
   return BIG_ZERO
 }
 
-const fetchFarmsPrices = async (farms, getState) => {
+const fetchFarmsPrices = async (farms, apiPriceData) => {
   const bnbBusdFarm = farms.find((farm: Farm) => farm.pid === 252)
   const bnbPriceBusd = bnbBusdFarm.tokenPriceVsQuote ? new BigNumber(1).div(bnbBusdFarm.tokenPriceVsQuote) : BIG_ZERO
 
@@ -84,12 +84,10 @@ const fetchFarmsPrices = async (farms, getState) => {
 
     // Catches to use API price if price cannot be obtained from farm. As of 24.5.21 this is only KUN-QSD
     if (!baseTokenPrice.gt(0)) {
-      const apiPriceData = getState().apiPrices.data
       const tokenAddress = getAddress(farm.token.address)
       baseTokenPrice = apiPriceData ? new BigNumber(apiPriceData[tokenAddress.toLowerCase()]) : BIG_ZERO
     }
     if (!quoteTokenPrice.gt(0)) {
-      const apiPriceData = getState().apiPrices.data
       const quoteTokenAddress = getAddress(farm.quoteToken.address)
       quoteTokenPrice = apiPriceData ? new BigNumber(apiPriceData[quoteTokenAddress.toLowerCase()]) : BIG_ZERO
     }

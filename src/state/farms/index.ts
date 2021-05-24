@@ -58,10 +58,12 @@ export const { setFarmsPublicData, setFarmUserData, setLoadArchivedFarmsData } =
 
 // Thunks
 export const fetchFarmsPublicDataAsync = () => async (dispatch, getState) => {
-  const fetchArchived = getState().farms.loadArchivedFarmsData
+  const state = getState()
+  const apiPriceData = state.apiPrices.data
+  const fetchArchived = state.farms.loadArchivedFarmsData
   const farmsToFetch = fetchArchived ? farmsConfig : nonArchivedFarms
   const farms = await fetchFarms(farmsToFetch)
-  const farmsWithPrices = await fetchFarmsPrices(farms, getState)
+  const farmsWithPrices = await fetchFarmsPrices(farms, apiPriceData)
   dispatch(setFarmsPublicData(farmsWithPrices))
 }
 export const fetchFarmUserDataAsync = (account: string) => async (dispatch, getState) => {
