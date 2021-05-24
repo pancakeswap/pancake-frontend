@@ -64,7 +64,7 @@ const CakeVaultCard: React.FC<CakeVaultProps> = ({ pool, showStakedOnly }) => {
           <Box mt="8px">
             <UnstakingFeeCountdownRow />
           </Box>
-          <Flex mt="24px" flexDirection="column">
+          <Flex mt="32px" flexDirection="column">
             {account ? (
               <VaultCardActions pool={pool} accountHasSharesStaked={accountHasSharesStaked} isLoading={isLoading} />
             ) : (
