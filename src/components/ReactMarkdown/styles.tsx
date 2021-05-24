@@ -15,7 +15,7 @@ const Table = styled.table`
 `
 
 const Title = (props) => {
-  return <Heading as="h4" scale="lg" mb="16px" {...props} />
+  return <Heading as="h4" scale="lg" my="16px" {...props} />
 }
 
 const markdownComponents: Partial<NormalComponents & SpecialComponents> = {
