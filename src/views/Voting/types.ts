@@ -27,3 +27,13 @@ export interface Proposal {
   state: ProposalState
   title: string
 }
+
+export interface Vote {
+  id: string
+  voter: string
+  created: number
+  space: Space
+  proposal: string
+  choice: number
+  metadata: string
+}

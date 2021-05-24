@@ -12,6 +12,7 @@ import { Proposal as ProposalType } from '../types'
 import Details from './Details'
 import Vote from './Vote'
 import Votes from './Votes'
+import useGetVotes from '../hooks/useGetVotes'
 
 const Layout = styled.div`
   align-items: start;
@@ -29,20 +30,21 @@ const Proposal = () => {
   const [notFound, setNotFound] = useState(false)
   const { id }: { id: string } = useParams()
   const { t } = useTranslation()
+  const { votes, isFinished } = useGetVotes(id)
 
   useEffect(() => {
-    const fetchProposal = async () => {
-      const response = await getProposal(id)
+    const fetchData = async () => {
+      const snapshotProposal = await getProposal(id)
 
-      if (response) {
-        setProposal(response)
+      if (snapshotProposal) {
+        setProposal(snapshotProposal)
       } else {
         setNotFound(true)
       }
     }
 
-    fetchProposal()
-  }, [id, setProposal, setNotFound])
+    fetchData()
+  }, [id, setNotFound, setProposal])
 
   if (notFound) {
     return <Redirect to="/voting" />
@@ -74,7 +76,7 @@ const Proposal = () => {
             </Box>
           </Box>
           <Vote proposal={proposal} mb="16px" />
-          <Votes proposal={proposal} />
+          <Votes votes={votes} isFinished={isFinished} />
         </Box>
         <Details proposal={proposal} />
       </Layout>

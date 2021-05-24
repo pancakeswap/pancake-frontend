@@ -1,6 +1,6 @@
 import { request, gql } from 'graphql-request'
 import { SNAPSHOT_API } from 'config/constants/endpoints'
-import { Proposal, ProposalState, ProposalType } from './types'
+import { Proposal, ProposalState, ProposalType, Vote } from './types'
 import { ADMIN_ADDRESS } from './config'
 
 export const isCoreProposal = (proposal: Proposal) => {
@@ -76,6 +76,46 @@ export const getProposal = async (id: string): Promise<Proposal> => {
       { id },
     )
     return response.proposal
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
+/* eslint-disable camelcase */
+/**
+ * @see https://hub.snapshot.page/graphql
+ */
+export interface VoteWhere {
+  id?: string
+  id_in?: string[]
+  voter?: string
+  voter_in?: string[]
+  proposal?: string
+  proposal_in?: string[]
+}
+
+export const getVotes = async (first: number, skip: number, where: VoteWhere): Promise<Vote[]> => {
+  try {
+    const response: { votes: Vote[] } = await request(
+      SNAPSHOT_API,
+      gql`
+        query getVotes($first: Int, $skip: Int, $where: VoteWhere) {
+          votes(first: $first, skip: $skip, where: $where) {
+            id
+            voter
+            created
+            proposal
+            choice
+            space {
+              id
+              name
+            }
+          }
+        }
+      `,
+      { first, skip, where },
+    )
+    return response.votes
   } catch (error) {
     throw new Error(error)
   }

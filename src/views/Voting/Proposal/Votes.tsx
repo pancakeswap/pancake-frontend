@@ -1,24 +1,67 @@
-import React from 'react'
-import { Card, CardHeader, Heading } from '@pancakeswap/uikit'
+import React, { useState } from 'react'
+import {
+  AutoRenewIcon,
+  Card,
+  CardHeader,
+  ChevronDownIcon,
+  Flex,
+  Heading,
+  Button,
+  ChevronUpIcon,
+} from '@pancakeswap/uikit'
+import orderBy from 'lodash/orderBy'
 import { useTranslation } from 'contexts/Localization'
 import VotesLoading from '../components/Proposal/VotesLoading'
-import { Proposal } from '../types'
+import { Vote } from '../types'
+import VoteRow from '../components/Proposal/VoteRow'
+
+const VOTES_PER_VIEW = 20
 
 interface VotesProps {
-  proposal: Proposal
+  votes: Vote[]
+  isFinished: boolean
 }
 
-const Votes: React.FC<VotesProps> = ({ proposal }) => {
+const Votes: React.FC<VotesProps> = ({ votes, isFinished }) => {
+  const [showAll, setShowAll] = useState(false)
   const { t } = useTranslation()
+  const displayVotes = showAll ? votes : votes.slice(0, VOTES_PER_VIEW)
+
+  const handleClick = () => {
+    setShowAll(!showAll)
+  }
 
   return (
     <Card>
       <CardHeader>
-        <Heading as="h3" scale="md">
-          {t('Votes (WIP)')}
-        </Heading>
+        <Flex alignItems="center" justifyContent="space-between">
+          <Heading as="h3" scale="md">
+            {t('Votes (%count%)', { count: votes.length.toLocaleString() })}
+          </Heading>
+          {!isFinished && <AutoRenewIcon spin width="22px" />}
+        </Flex>
       </CardHeader>
-      <VotesLoading />
+      {votes.length === 0 ? (
+        <VotesLoading />
+      ) : (
+        orderBy(displayVotes, ['created'], ['desc']).map((vote) => {
+          return <VoteRow key={vote.id} vote={vote} />
+        })
+      )}
+
+      <Flex alignItems="center" justifyContent="center" py="8px" px="24px">
+        <Button
+          width="100%"
+          onClick={handleClick}
+          variant="text"
+          endIcon={
+            showAll ? <ChevronUpIcon color="primary" width="21px" /> : <ChevronDownIcon color="primary" width="21px" />
+          }
+          disabled={!isFinished}
+        >
+          {showAll ? t('Hide') : t('See All')}
+        </Button>
+      </Flex>
     </Card>
   )
 }
