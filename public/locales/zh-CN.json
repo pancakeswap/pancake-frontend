@@ -796,5 +796,10 @@
   "The higher your team’s rank, the better your prizes!": "团队排名越高，奖金就越多！",
   "Get Ready": "准备好",
   "Earn up to %highestApr% APR in Farms": "在农场中赚取最高 %highestApr% APR",
-  "Earn %assets% in Pools": "在资金池中赚取 %assets%"
+  "Earn %assets% in Pools": "在资金池中赚取 %assets%",
+  "Activate PancakeSwap Profile to take part in next IFO‘s!": "Activate PancakeSwap Profile to take part in next IFO‘s!",
+  "Trading Battle": "Trading Battle",
+  "Prediction": "Prediction",
+  "Initial Farm Offering": "Initial Farm Offering",
+  "An error occurred confirming transaction": "An error occurred confirming transaction"
 }

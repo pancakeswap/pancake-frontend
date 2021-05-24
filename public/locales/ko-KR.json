@@ -796,5 +796,10 @@
   "The higher your team’s rank, the better your prizes!": "팀의 순위가 높을수록, 상금이 더 많습니다!",
   "Get Ready": "준비하세요",
   "Earn up to %highestApr% APR in Farms": "팜에서 최대 %highestApr% APR 획득",
-  "Earn %assets% in Pools": "풀에서 %assets% 획득"
+  "Earn %assets% in Pools": "풀에서 %assets% 획득",
+  "Activate PancakeSwap Profile to take part in next IFO‘s!": "Activate PancakeSwap Profile to take part in next IFO‘s!",
+  "Trading Battle": "Trading Battle",
+  "Prediction": "Prediction",
+  "Initial Farm Offering": "Initial Farm Offering",
+  "An error occurred confirming transaction": "An error occurred confirming transaction"
 }

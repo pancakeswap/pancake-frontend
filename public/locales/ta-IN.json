@@ -796,5 +796,10 @@
   "The higher your team’s rank, the better your prizes!": "உங்கள் அணியின் தரவரிசை எந்தளவு உயர்கிறதோ, உங்கள் பரிசுகள் அந்தளவு சிறப்பாயிருக்கும்!",
   "Get Ready": "தயாராகுக",
   "Earn up to %highestApr% APR in Farms": "பண்ணையில் %highestApr% APR வரை ஈட்டுக",
-  "Earn %assets% in Pools": "குளங்களில் %assets% ஈட்டுக"
+  "Earn %assets% in Pools": "குளங்களில் %assets% ஈட்டுக",
+  "Activate PancakeSwap Profile to take part in next IFO‘s!": "Activate PancakeSwap Profile to take part in next IFO‘s!",
+  "Trading Battle": "Trading Battle",
+  "Prediction": "Prediction",
+  "Initial Farm Offering": "Initial Farm Offering",
+  "An error occurred confirming transaction": "An error occurred confirming transaction"
 }
