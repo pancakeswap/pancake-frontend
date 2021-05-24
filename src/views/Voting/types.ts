@@ -21,6 +21,7 @@ export interface Proposal {
   choices: string[]
   end: number
   id: string
+  snapshot: string
   space: Space
   start: number
   state: ProposalState
