@@ -530,7 +530,7 @@
   "Your %symbol% earnings have also been harvested to your wallet!": "Thu nhập %symbol% của bạn cũng đã được thu hoạch vào ví của bạn!",
   "Your %symbol% funds have been staked in the pool!": "Tiền %symbol% của bạn đã được đặt cọc vào nhóm!",
   "Max stake for this pool: %amount% %token%": "Đặt cọc tối đa cho nhóm này: %amount% %token%",
-  "Maximum total stake: %amount% %token%": "Maximum total stake: %amount% %token%",
+  "Maximum total stake: %amount% %token%": "Tổng đặt cọc tối đa: %amount% %token%",
   "APY includes compounding, APR doesn’t. This pool’s CAKE is compounded automatically, so we show APY.": "APY includes compounding, APR doesn’t. This pool’s CAKE is compounded automatically, so we show APY.",
   "This pool’s rewards aren’t compounded automatically, so we show APR": "This pool’s rewards aren’t compounded automatically, so we show APR",
   "Auto": "Auto",
