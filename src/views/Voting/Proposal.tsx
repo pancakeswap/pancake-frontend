@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { ArrowBackIcon, Box, Button, Flex, Heading } from '@pancakeswap/uikit'
-import Container from 'components/layout/Container'
 import { Link, Redirect, useParams } from 'react-router-dom'
 import { useTranslation } from 'contexts/Localization'
+import Container from 'components/layout/Container'
+import ReactMarkdown from 'components/ReactMarkdown'
+import PageLoader from 'components/PageLoader'
 import { ProposalStateTag, ProposalTypeTag } from './components/Proposals/tags'
 import { getProposal, isCoreProposal } from './helpers'
 import { Proposal as ProposalType } from './types'
@@ -32,7 +34,7 @@ const Proposal = () => {
   }
 
   if (!proposal) {
-    return <div>loading...</div>
+    return <PageLoader />
   }
 
   return (
@@ -46,9 +48,12 @@ const Proposal = () => {
         <ProposalStateTag proposalState={proposal.state} />
         <ProposalTypeTag isCoreProposal={isCoreProposal(proposal)} ml="8px" />
       </Flex>
-      <Heading as="h1" scale="xl">
+      <Heading as="h1" scale="xl" mb="16px">
         {proposal.title}
       </Heading>
+      <Box>
+        <ReactMarkdown>{proposal.body}</ReactMarkdown>
+      </Box>
     </Container>
   )
 }
