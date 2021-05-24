@@ -34,7 +34,7 @@ const BattleBanner = () => {
         {t('$200,000 in Prizes!')}
       </StyledHeading2Text>
       <StyledHeading scale="md" color="inputSecondary" mt="16px">
-        {t('Registration starting April 5th')}
+        {t('Registration starting April 5')}
       </StyledHeading>
     </Flex>
   )

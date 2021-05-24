@@ -18,7 +18,7 @@ const ChartDisclaimer: React.FC<ChartDisclaimerProps> = ({ onSuccess, onDismiss 
     <ModalContainer title={t('Welcome!')} minWidth="320px">
       <ModalBody p="24px" maxWidth="400px">
         <Text as="p" mb="16px">
-          {t('Charts are provided for reference only, and do not reflect rounds’ final outcome.')}
+          {t('Charts are provided for reference only and do not reflect rounds’ final outcome.')}
         </Text>
         <Text as="p" mb="16px">
           {t('Please refer to the prices shown on the cards for the final outcome.')}

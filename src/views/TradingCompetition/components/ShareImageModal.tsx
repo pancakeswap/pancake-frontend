@@ -132,7 +132,7 @@ const ShareImageModal: React.FC<YourScoreProps> = ({ onDismiss, profile, userLea
           <>
             <StyledButton onClick={downloadImage}>{t('Download Image')}</StyledButton>
             <MobileText p="0 16px 18px 16px" bold textAlign="center">
-              {t('Screenshot or press & hold on the image to share!')}
+              {t('Screenshot or press & hold the image to share!')}
             </MobileText>
           </>
         )}

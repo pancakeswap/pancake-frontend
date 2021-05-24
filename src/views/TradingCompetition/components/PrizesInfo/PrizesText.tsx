@@ -26,7 +26,7 @@ const PrizesText = () => {
     <StyledFlex flexDirection="column" mb="32px">
       <Text mb="24px">{t('Every eligible participant will win prizes at the end of the competition.')}</Text>
       <Heading color="secondary" mb="24px" scale="lg">
-        {t('The better your team performs, the better the prizes!')}
+        {t('The better your team performs, the better prizes you will get!')}
       </Heading>
       <Text>
         {t(

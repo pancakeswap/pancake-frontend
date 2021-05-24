@@ -17,7 +17,7 @@ const PauseNotification = () => {
     <Notification title={t('Markets Paused')}>
       <Box mb="24px">
         <Text as="p">{t('Prediction markets have been paused due to an error.')}</Text>
-        <Text as="p">{t('All open positions have been cancelled.')}</Text>
+        <Text as="p">{t('All open positions have been canceled.')}</Text>
         <Text as="p">
           {t('You can reclaim any funds entered into existing positions via the History tab on this page.')}
         </Text>

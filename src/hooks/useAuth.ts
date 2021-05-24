@@ -51,7 +51,7 @@ const useAuth = () => {
         }
       })
     } else {
-      toastError(t('Can’t find connector'), t('The connector config is wrong'))
+      toastError(t('Unable to find connector'), t('The connector config is wrong'))
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])

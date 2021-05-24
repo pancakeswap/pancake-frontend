@@ -97,7 +97,7 @@ const FAQ = () => {
           </FoldableText>
           <FoldableText title={t('How can I see my current rank?')} mt="24px">
             <Text fontSize="14px" color="textSubtle">
-              {t('Check the Your Score section on the event page. You’ll need to connect your wallet, of course.')}
+              {t('Check Your Score section on the event page. You’ll need to connect your wallet, of course.')}
             </Text>
           </FoldableText>
           <FoldableText title={t('How do I claim my prize(s)?')} mt="24px">
