@@ -50,6 +50,7 @@ export { default as PancakeRoundIcon } from "./Icons/PancakeRound";
 export { default as PocketWatchIcon } from "./Icons/PocketWatch";
 export { default as PlayCircleOutlineIcon } from "./Icons/PlayCircleOutline";
 export { default as PrizeIcon } from "./Icons/Prize";
+export { default as ProposalIcon } from "./Icons/Proposal";
 export { default as RemoveIcon } from "./Icons/Remove";
 export { default as VerifiedIcon } from "./Icons/Verified";
 export { default as ProgressBunny } from "./Icons/ProgressBunny";
