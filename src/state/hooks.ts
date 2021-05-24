@@ -20,11 +20,11 @@ import {
   fetchCakeVaultFees,
   setBlock,
 } from './actions'
-import { State, Farm, Pool, ProfileState, TeamsState, AchievementState, PriceState, FarmsState } from './types'
+import { State, Farm, Pool, ProfileState, TeamsState, AchievementState, PriceApiState, FarmsState } from './types'
 import { fetchProfile } from './profile'
 import { fetchTeam, fetchTeams } from './teams'
 import { fetchAchievements } from './achievements'
-import { fetchPrices } from './prices'
+import { fetchApiPrices } from './apiPrices'
 import { fetchWalletNfts } from './collectibles'
 import { getCanClaim } from './predictions/helpers'
 import { transformPool } from './pools/helpers'
@@ -330,29 +330,29 @@ export const useAchievements = () => {
   return achievements
 }
 
-// Prices
-export const useFetchPriceList = () => {
+// API Prices
+export const useFetchApiPriceList = () => {
   const { slowRefresh } = useRefresh()
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    dispatch(fetchPrices())
+    dispatch(fetchApiPrices())
   }, [dispatch, slowRefresh])
 }
 
 export const useGetApiPrices = () => {
-  const prices: PriceState['data'] = useSelector((state: State) => state.prices.data)
-  return prices
+  const apiPrices: PriceApiState['data'] = useSelector((state: State) => state.apiPrices.data)
+  return apiPrices
 }
 
 export const useGetApiPrice = (address: string) => {
-  const prices = useGetApiPrices()
+  const apiPrices = useGetApiPrices()
 
-  if (!prices) {
+  if (!apiPrices) {
     return null
   }
 
-  return prices[address.toLowerCase()]
+  return apiPrices[address.toLowerCase()]
 }
 
 export const usePriceBnbBusd = (): BigNumber => {

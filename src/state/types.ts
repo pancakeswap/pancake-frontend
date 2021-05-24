@@ -18,7 +18,6 @@ export interface Farm extends FarmConfig {
   lpTotalInQuoteToken?: BigNumber
   lpTotalSupply?: BigNumber
   tokenPriceVsQuote?: BigNumber
-  tokenPriceVsBusd?: BigNumber
   poolWeight?: BigNumber
   userData?: {
     allowance: string
@@ -158,7 +157,7 @@ export interface PriceApiThunk {
   data: PriceApiListThunk
 }
 
-export interface PriceState {
+export interface PriceApiState {
   isLoading: boolean
   lastUpdated: string
   data: PriceApiListThunk
@@ -285,7 +284,7 @@ export interface State {
   achievements: AchievementState
   block: BlockState
   farms: FarmsState
-  prices: PriceState
+  apiPrices: PriceApiState
   pools: PoolsState
   predictions: PredictionsState
   profile: ProfileState
