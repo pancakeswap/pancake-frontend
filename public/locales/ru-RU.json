@@ -598,8 +598,8 @@
   "This will suspend your profile and send your Collectible back to your wallet": "Это приостановит действие вашего профиля и вернет ваш коллекционный токен в ваш кошелек",
   "While your profile is suspended, you won't be able to earn points, but your achievements and points will stay associated with your profile": "Пока действие вашего профиля приостановлено, вы не сможете зарабатывать очки, но ваши имеющиеся достижения и очки будут по-прежнему связаны с вашим профилем",
   "Cost to reactivate in future: %cost% CAKE": "Стоимость реактивации в будущем: %cost% CAKE",
-  "%minimum% CAKE required to change profile pic": "%minimum% CAKE required to change profile pic",
-  "Reactivate Profile": "Reactivate Profile",
+  "%minimum% CAKE required to change profile pic": "Для смены изображения в профиле требуется как минимум %minimum% CAKE",
+  "Reactivate Profile": "Реактивировать профиль",
   "No achievements yet!": "No achievements yet!",
   "Claim your Gift!": "Claim your Gift!",
   "Thank you for being a day-one user of Pancake Profiles!": "Thank you for being a day-one user of Pancake Profiles!",
@@ -674,7 +674,7 @@
   "The final winning team will be the team with the highest total combined volume of their top 500 members at the end of the competition period.": "Последней выигравшей командой считается та, у которой будет самый высокий общий совокупный объем их лучших 500 участников по состоянию на конец соревнования.",
   "Make a profile!": "Сделайте профиль!",
   "It looks like you’ve disabled your account by removing your Pancake Collectible (NFT) profile picture.": "It looks like you’ve disabled your account by removing your Pancake Collectible (NFT) profile picture.",
-  "Reactivate your profile!": "Активируйте свой профиль повторно!",
+  "Reactivate your profile!": "Реактивируйте свой профиль!",
   "You need to reactivate your profile by replacing your profile picture, in order to join the competition.": "You need to reactivate your profile by replacing your profile picture, in order to join the competition.",
   "Go to my profile": "Перейти к моему профилю",
   "You have registered for the competition!": "Вы зарегистрировались на соревнование!",
@@ -801,5 +801,5 @@
   "Trading Battle": "Trading Battle",
   "Prediction": "Prediction",
   "Initial Farm Offering": "Initial Farm Offering",
-  "An error occurred confirming transaction": "An error occurred confirming transaction"
+  "An error occurred confirming transaction": "При подтверждении транзакции произошла ошибка"
 }
