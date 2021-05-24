@@ -8,4 +8,3 @@ export const LIGHTBLUEBG = 'linear-gradient(139.73deg, #E6FDFF 0%, #F3EFFF 100%)
 export const LIGHTBLUEBG_DARK = 'linear-gradient(139.73deg, #313D5C 0%, #3D2A54 100%)'
 export const LIGHTBLUEFILL = '#F3EFFF'
 export const LIGHTBLUEFILL_DARK = '#3D2A54'
-export const GOLDGRADIENT = 'linear-gradient(180deg, #FFD800 0%, #EB8C00 100%)'

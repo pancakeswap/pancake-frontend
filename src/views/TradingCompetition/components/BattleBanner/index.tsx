@@ -4,7 +4,6 @@ import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import AllBunniesImage from '../../pngs/all-bunnies.png'
 import { Heading1Text, Heading2Text } from '../CompetitionHeadingText'
-import { GOLDGRADIENT } from '../Section/sectionStyles'
 
 const TextStyles = (theme) => `
   text-align: center;
@@ -39,6 +38,7 @@ const StyledHeading = styled(Heading)`
 
 const BattleBanner = () => {
   const { t } = useTranslation()
+
   return (
     <Flex flexDirection="column">
       <ImageWrapper>
@@ -48,7 +48,8 @@ const BattleBanner = () => {
         {t('April')} 07—14, 2021
       </StyledText>
       <StyledHeading1Text>{t('Easter Battle')}</StyledHeading1Text>
-      <StyledHeading2Text background={GOLDGRADIENT} $fill>
+      {/* TODO: Use uikit color here */}
+      <StyledHeading2Text background="linear-gradient(180deg, #FFD800 0%, #FDAB32 100%)" $fill>
         {t('$200,000 in Prizes!')}
       </StyledHeading2Text>
       <StyledHeading scale="md" color="inputSecondary" mt="16px">

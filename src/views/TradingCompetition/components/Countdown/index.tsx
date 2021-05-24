@@ -8,7 +8,6 @@ import { CompetitionSteps, LIVE } from 'config/constants/trading-competition/eas
 import { Heading2Text } from '../CompetitionHeadingText'
 import { CompetitionPhaseProps } from '../../types'
 import ProgressStepper from './ProgressStepper'
-import { GOLDGRADIENT } from '../Section/sectionStyles'
 
 const Wrapper = styled(Flex)`
   width: fit-content;
@@ -66,7 +65,8 @@ const StyledHeading = styled(Heading2Text)`
 `
 
 const TimerHeadingComponent = ({ children }) => (
-  <StyledHeading background={GOLDGRADIENT} $fill>
+  // TODO: Use uikit color here
+  <StyledHeading background="linear-gradient(180deg, #FFD800 0%, #FDAB32 100%)" $fill>
     {children}
   </StyledHeading>
 )
@@ -91,7 +91,8 @@ const Countdown: React.FC<{ currentPhase: CompetitionPhaseProps; hasCompetitionE
   const renderTimer = () => {
     if (hasCompetitionEnded) {
       return (
-        <StyledHeading background={GOLDGRADIENT} $fill>
+        // TODO: Use uikit color here
+        <StyledHeading background="linear-gradient(180deg, #FFD800 0%, #FDAB32 100%)" $fill>
           {t('Finished')}!
         </StyledHeading>
       )
