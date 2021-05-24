@@ -58,7 +58,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account, isAutoVa
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     t('Subtracted automatically from each yield harvest and burned.'),
-    { placement: 'bottom-end' },
+    { placement: 'bottom-start' },
   )
 
   const getTotalStakedBalance = () => {
