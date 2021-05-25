@@ -18,7 +18,7 @@ const StyledCardBody = styled(CardBody)<{ isLoading: boolean }>`
   min-height: ${({ isLoading }) => (isLoading ? '0' : '254px')};
 `
 
-const GraveCard: React.FC<{ grave: GraveConfig, zombiePrice: BigNumber, userData: any, gid: number; account: string, isLoading: boolean }> = ({ grave, zombiePrice, userData, gid, account, isLoading }) => {
+const GraveCard: React.FC<{ grave: GraveConfig, zombiePrice: BigNumber, userData: any, gid: number; account: string, balances: any, isLoading: boolean }> = ({ grave, zombiePrice, userData, gid, account,  balances, isLoading }) => {
   return (
     <StyledCard isStaking={false} style={{
       minWidth: '350px',
@@ -49,6 +49,7 @@ const GraveCard: React.FC<{ grave: GraveConfig, zombiePrice: BigNumber, userData
               userData={userData}
               zombiePrice={zombiePrice}
               unlockingFee={undefined}
+              balances={balances}
               accountHasSharesStaked={false}
               account={account}
               stakingTokenBalance={undefined}

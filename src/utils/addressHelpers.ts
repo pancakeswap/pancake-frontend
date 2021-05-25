@@ -12,6 +12,10 @@ export const getCakeAddress = () => {
   return getAddress(tokens.cake.address)
 }
 
+export const getZombieAddress = () => {
+  return getAddress(tokens.zmbe.address)
+}
+
 export const getMasterChefAddress = () => {
   return getAddress(addresses.masterChef)
 }

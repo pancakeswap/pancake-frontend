@@ -11,7 +11,7 @@ import BigNumber from 'bignumber.js'
 import { getFullDisplayBalance, formatNumber, getDecimalAmount } from 'utils/formatBalance'
 import useToast from 'hooks/useToast'
 import { Pool } from 'state/types'
-import { VaultUser } from 'views/Pools/types'
+import { VaultUser } from 'views/Graves/types'
 import { convertCakeToShares } from '../../helpers'
 import FeeSummary from './FeeSummary'
 

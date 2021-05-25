@@ -6,7 +6,7 @@ import { useTranslation } from 'contexts/Localization'
 import { useCake, useCakeVaultContract } from 'hooks/useContract'
 import { VaultFees } from 'hooks/cakeVault/useGetVaultFees'
 import { Pool } from 'state/types'
-import { VaultUser } from 'views/Pools/types'
+import { VaultUser } from 'views/Graves/types'
 import VaultApprovalAction from './VaultApprovalAction'
 import VaultStakeActions from './VaultStakeActions'
 

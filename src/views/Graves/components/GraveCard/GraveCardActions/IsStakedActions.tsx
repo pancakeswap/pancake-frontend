@@ -19,7 +19,6 @@ interface HasStakeActionProps {
   stakingMax: BigNumber
   userData: any
   account: string
-  setLastUpdated: () => void
 }
 
 const IsStakedActions: React.FC<HasStakeActionProps> = ({
@@ -29,7 +28,6 @@ const IsStakedActions: React.FC<HasStakeActionProps> = ({
   stakingMax,
   userData,
   account,
-  setLastUpdated,
 }) => {
 
   const stakedDollarValue = zombiePrice.times(userData.zombieStaked)
@@ -45,7 +43,6 @@ const IsStakedActions: React.FC<HasStakeActionProps> = ({
       userData={userData}
       stakingMax={stakingMax}
       stakingTokenPrice={zombiePrice}
-      setLastUpdated={setLastUpdated}
     />,
   )
 
@@ -56,7 +53,6 @@ const IsStakedActions: React.FC<HasStakeActionProps> = ({
       stakingMax={stakingMax}
       stakingTokenPrice={zombiePrice}
       userData={userData}
-      setLastUpdated={setLastUpdated}
       isRemovingStake
     />,
   )

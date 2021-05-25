@@ -13,6 +13,7 @@ interface VaultStakeActionsProps {
   userData: any
   zombiePrice: BigNumber
   stakingMax: BigNumber
+  balances: any
   isLoading?: boolean
   account: string
   setLastUpdated: () => void
@@ -24,10 +25,12 @@ const GraveStakeActions: React.FC<VaultStakeActionsProps> = ({
   zombiePrice,
   stakingMax,
   isLoading = false,
+  balances,
   account,
   setLastUpdated,
 }) => {
-  const zombieStaked = new BigNumber(userData.zombieStaked)
+  console.log(balances.zombie)
+  const zombieBalance = new BigNumber(balances.zombie)
   const { t } = useTranslation()
   const [onPresentTokenRequired] = useModal(<NotEnoughTokensModal tokenSymbol={tokens.zmbe.symbol} />)
   const [onPresentStake] = useModal(
@@ -37,27 +40,25 @@ const GraveStakeActions: React.FC<VaultStakeActionsProps> = ({
       stakingMax={stakingMax}
       userData={userData}
       grave={grave}
-      setLastUpdated={setLastUpdated}
     />,
   )
 
   const renderStakeAction = () => {
-    return zombieStaked.gt(0) ? (
+    return zombieBalance.gt(0) ? (
       <IsStakedActions
         grave={grave}
         userData={userData}
         stakingMax={stakingMax}
         zombiePrice={zombiePrice}
-        stakingTokenBalance={zombieStaked}
+        stakingTokenBalance={zombieBalance}
         account={account}
-        setLastUpdated={setLastUpdated}
       />
     ) : (
-      <Button onClick={zombieStaked.gt(0) ? onPresentStake : onPresentTokenRequired}>{t('Stake')}</Button>
+      <Button onClick={zombieBalance.gt(0) ? onPresentStake : onPresentTokenRequired}>{t('Stake')}</Button>
     )
   }
 
-  return <Flex flexDirection="column">{isLoading ? <Skeleton width="100%" height="52px" /> : renderStakeAction()}</Flex>
+  return <Flex flexDirection="column">{isLoading ? <Skeleton width="100%" height="52px" /> : <div />}</Flex>
 }
 
 export default GraveStakeActions

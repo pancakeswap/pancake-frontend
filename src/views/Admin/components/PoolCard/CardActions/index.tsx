@@ -27,7 +27,7 @@ const CardActions: React.FC<CardActionsProps> = ({
   stakingTokenPrice,
 }) => {
   const { sousId, stakingToken, earningToken, harvest, poolCategory, userData } = pool
-  // Pools using native BNB behave differently than pools using a token
+  // Graves using native BNB behave differently than pools using a token
   const isBnbPool = poolCategory === PoolCategory.BINANCE
   const { t } = useTranslation()
   const allowance = new BigNumber(userData?.allowance || 0)

@@ -46,7 +46,7 @@ const UnstakingFeeCountdownRow: React.FC<UnstakingFeeCountdownRowProps> = ({
       {tooltipVisible && tooltip}
       <TooltipText ref={targetRef} small>
         {grave.earlyWithdrawalFee || '-'}%{' '}
-        {shouldShowTimer ? t('unstaking fee until') : t('unstaking fee if withdrawn within 72h')}
+        {shouldShowTimer ? t('unstaking fee until') : t('unstaking fee if withdrawn within staking period')}
       </TooltipText>
       {shouldShowTimer && <WithdrawalFeeTimer secondsRemaining={secondsRemaining} />}
     </Flex>

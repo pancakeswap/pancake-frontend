@@ -16,16 +16,17 @@ import { convertCakeToShares } from '../../helpers'
 import FeeSummary from './FeeSummary'
 import { GraveConfig } from '../../../../config/constants/types'
 import tokens from '../../../../config/constants/tokens'
+import { getRestorationChefContract } from '../../../../utils/contractHelpers'
+import { getRestorationChefAddress } from '../../../../utils/addressHelpers'
 
 interface VaultStakeModalProps {
   grave: GraveConfig
-  userData: any
-  account: string
-  stakingTokenPrice: BigNumber
   stakingMax: BigNumber
+  stakingTokenPrice: BigNumber
+  account: string
+  userData: any
   isRemovingStake?: boolean
   pricePerFullShare?: BigNumber
-  setLastUpdated: () => void
   onDismiss?: () => void
 }
 
@@ -35,27 +36,24 @@ const StyledButton = styled(Button)`
 
 const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
   grave,
-  pricePerFullShare,
+  stakingMax,
+  stakingTokenPrice,
   account,
   userData,
-  stakingTokenPrice,
-  stakingMax,
   isRemovingStake = false,
   onDismiss,
-  setLastUpdated,
 }) => {
-  const cakeVaultContract = useCakeVaultContract()
+  const restorationChefContract = getRestorationChefContract(getRestorationChefAddress())
   const { t } = useTranslation()
   const { theme } = useTheme()
   const { toastSuccess, toastError } = useToast()
   const [pendingTx, setPendingTx] = useState(false)
   const [stakeAmount, setStakeAmount] = useState('')
   const [percent, setPercent] = useState(0)
+  const { withdrawalDate } = userData
+  const now = Date.now() / 1000
+  const hasUnstakingFee = withdrawalDate > now
   const usdValueStaked = stakeAmount && formatNumber(new BigNumber(stakeAmount).times(stakingTokenPrice).toNumber())
-
-  const hasUnstakingFee = () => {
-    return userData.withdrawalDate < (Date.now() / 1000)
-  }
 
   const handleStakeInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = event.target.value || '0'
@@ -74,15 +72,15 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
 
   const handleWithdrawal = async (convertedStakeAmount: BigNumber) => {
     setPendingTx(true)
-    const shareStakeToWithdraw = convertCakeToShares(convertedStakeAmount, pricePerFullShare)
+    // const shareStakeToWithdraw = convertCakeToShares(convertedStakeAmount, pricePerFullShare)
     // trigger withdrawAll function if the withdrawal will leave 0.000000000000200000 CAKE or less
     const triggerWithdrawAllThreshold = new BigNumber(200000)
-    const sharesRemaining = userData.zombieStaked
+    const sharesRemaining = new BigNumber(userData.zombieStaked).minus(convertedStakeAmount)
     const isWithdrawingAll = sharesRemaining.lte(triggerWithdrawAllThreshold)
 
     if (isWithdrawingAll) {
-      cakeVaultContract.methods
-        .withdrawAll()
+      restorationChefContract.methods
+        .withdrawAll(grave.gid)
         .send({ from: account })
         .on('sending', () => {
           setPendingTx(true)
@@ -91,7 +89,6 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
           toastSuccess(t('Unstaked!'), t('Your earnings have also been harvested to your wallet'))
           setPendingTx(false)
           onDismiss()
-          setLastUpdated()
         })
         .on('error', (error) => {
           console.error(error)
@@ -100,8 +97,8 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
           setPendingTx(false)
         })
     } else {
-      cakeVaultContract.methods
-        .withdraw(shareStakeToWithdraw.sharesAsBigNumber.toString())
+      restorationChefContract.methods
+        .withdrawZombie(grave.gid, convertedStakeAmount.toString())
         // .toString() being called to fix a BigNumber error in prod
         // as suggested here https://github.com/ChainSafe/web3.js/issues/2077
         .send({ from: account })
@@ -112,7 +109,6 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
           toastSuccess(t('Unstaked!'), t('Your earnings have also been harvested to your wallet'))
           setPendingTx(false)
           onDismiss()
-          setLastUpdated()
         })
         .on('error', (error) => {
           console.error(error)
@@ -124,8 +120,8 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
   }
 
   const handleDeposit = async (convertedStakeAmount: BigNumber) => {
-    cakeVaultContract.methods
-      .deposit(convertedStakeAmount.toString())
+    restorationChefContract.methods
+      .stakeZombie(grave.gid, convertedStakeAmount.toString())
       // .toString() being called to fix a BigNumber error in prod
       // as suggested here https://github.com/ChainSafe/web3.js/issues/2077
       .send({ from: account })
@@ -136,7 +132,6 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
         toastSuccess(t('Staked!'), t('Your funds have been staked in the pool'))
         setPendingTx(false)
         onDismiss()
-        setLastUpdated()
       })
       .on('error', (error) => {
         console.error(error)
@@ -206,9 +201,9 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
       </Flex>
       {isRemovingStake && hasUnstakingFee && (
         <FeeSummary
+          grave={grave}
           stakingTokenSymbol={tokens.zmbe.symbol}
           userData={userData}
-          grave={grave}
           stakeAmount={stakeAmount}
         />
       )}

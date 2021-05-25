@@ -21,7 +21,7 @@ const StyledCardBody = styled(CardBody)<{ isLoading: boolean }>`
   min-height: ${({ isLoading }) => (isLoading ? '0' : '254px')};
 `
 
-const TheMoonGraveCard: React.FC<{ pool: Pool; account: string }> = ({ pool, account }) => {
+const GraveCard: React.FC<{ pool: Pool; account: string }> = ({ pool, account }) => {
   const { t } = useTranslation()
   const { lastUpdated, setLastUpdated } = useLastUpdated()
   const userInfo = useGetVaultUserInfo(lastUpdated)
@@ -86,4 +86,4 @@ const TheMoonGraveCard: React.FC<{ pool: Pool; account: string }> = ({ pool, acc
   )
 }
 
-export default TheMoonGraveCard
+export default GraveCard

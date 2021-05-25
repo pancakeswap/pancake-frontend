@@ -7,6 +7,7 @@ import useToast from 'hooks/useToast'
 import { Pool } from 'state/types'
 import { GraveConfig } from '../../../../../config/constants/types'
 import tokens from '../../../../../config/constants/tokens'
+import { getAddress, getRestorationChefAddress } from '../../../../../utils/addressHelpers'
 
 interface ApprovalActionProps {
   grave: GraveConfig
@@ -24,7 +25,7 @@ const ApprovalAction: React.FC<ApprovalActionProps> = ({ grave, account, isLoadi
 
   const handleApprove = () => {
     cakeContract.methods
-      .approve(cakeVaultContract.options.address, ethers.constants.MaxUint256)
+      .approve(getRestorationChefAddress(), ethers.constants.MaxUint256)
       .send({ from: account })
       .on('sending', () => {
         setRequestedApproval(true)

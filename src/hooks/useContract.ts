@@ -19,7 +19,7 @@ import {
   getEasterNftContract,
   getErc721Contract,
   getCakeVaultContract,
-  getPredictionsContract,
+  getPredictionsContract, getZombieContract,
 } from 'utils/contractHelpers'
 
 /**
@@ -52,6 +52,11 @@ export const useERC721 = (address: string) => {
 export const useCake = () => {
   const web3 = useWeb3()
   return useMemo(() => getCakeContract(web3), [web3])
+}
+
+export const useZombie = () => {
+  const web3 = useWeb3()
+  return useMemo(() => getZombieContract(web3), [web3])
 }
 
 export const useBunnyFactory = () => {
