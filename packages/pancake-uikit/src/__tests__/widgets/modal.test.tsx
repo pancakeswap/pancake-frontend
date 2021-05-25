@@ -117,7 +117,7 @@ it("renders correctly", () => {
       -ms-flex-align: center;
       align-items: center;
       background: transparent;
-      border-bottom: 1px solid #E9EAEB;
+      border-bottom: 1px solid #E7E3EB;
       display: -webkit-box;
       display: -webkit-flex;
       display: -ms-flexbox;
@@ -145,7 +145,7 @@ it("renders correctly", () => {
       overflow: hidden;
       background: #FFFFFF;
       box-shadow: 0px 20px 36px -8px rgba(14,14,44,0.1),0px 1px 1px rgba(0,0,0,0.05);
-      border: 1px solid #E9EAEB;
+      border: 1px solid #E7E3EB;
       border-radius: 32px;
       width: 100%;
       z-index: 100;

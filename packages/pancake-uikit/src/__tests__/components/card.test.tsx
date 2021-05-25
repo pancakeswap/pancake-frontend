@@ -32,7 +32,7 @@ it("renders correctly", () => {
     }
 
     .c3 {
-      border-top: 1px solid #E9EAEB;
+      border-top: 1px solid #E7E3EB;
       padding: 24px;
     }
 
