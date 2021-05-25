@@ -2,6 +2,7 @@ import React from 'react'
 import { Flex, Text, Heading, Image } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
+import useTheme from 'hooks/useTheme'
 import AllBunniesImage from '../../pngs/all-bunnies.png'
 import { Heading1Text, Heading2Text } from '../CompetitionHeadingText'
 
@@ -38,6 +39,7 @@ const StyledHeading = styled(Heading)`
 
 const BattleBanner = () => {
   const { t } = useTranslation()
+  const { theme } = useTheme()
 
   return (
     <Flex flexDirection="column">
@@ -48,8 +50,7 @@ const BattleBanner = () => {
         {t('April')} 07—14, 2021
       </StyledText>
       <StyledHeading1Text>{t('Easter Battle')}</StyledHeading1Text>
-      {/* TODO: Use uikit color here */}
-      <StyledHeading2Text background="linear-gradient(180deg, #FFD800 0%, #FDAB32 100%)" $fill>
+      <StyledHeading2Text background={theme.colors.gradients.gold} $fill>
         {t('$200,000 in Prizes!')}
       </StyledHeading2Text>
       <StyledHeading scale="md" color="inputSecondary" mt="16px">
