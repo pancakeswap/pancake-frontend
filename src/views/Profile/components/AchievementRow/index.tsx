@@ -18,7 +18,7 @@ interface AchievementRowProps {
 }
 
 const StyledAchievementRow = styled(Flex)`
-  border-bottom: 1px solid ${({ theme }) => theme.colors.borderColor};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.cardBorder};
   padding-bottom: 16px;
   padding-top: 16px;
 `

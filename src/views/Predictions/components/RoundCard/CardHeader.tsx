@@ -25,7 +25,7 @@ const getBackgroundColor = (theme: DefaultTheme, status: Status) => {
     case 'expired':
     case 'soon':
     default:
-      return theme.colors.borderColor
+      return theme.colors.cardBorder
   }
 }
 
