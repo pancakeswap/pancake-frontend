@@ -54,7 +54,7 @@ const Accordion: React.FC<Props> = ({
 
   return (
     <Container>
-      <MenuEntry onClick={handleClick} className={className} isActive={isActive}>
+      <MenuEntry onClick={handleClick} className={className} isActive={isActive} role="button">
         {icon}
         <LinkLabel isPushed={isPushed}>{label}</LinkLabel>
         {status && (

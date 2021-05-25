@@ -821,12 +821,12 @@ it("renders correctly", () => {
             >
               <div
                 class="c12"
-                role="button"
               >
                 <a
                   aria-current="page"
                   class="active"
                   href="/"
+                  role="button"
                 >
                   <svg
                     class="c13"
@@ -889,10 +889,10 @@ it("renders correctly", () => {
               </div>
               <div
                 class="c16"
-                role="button"
               >
                 <a
                   href="/farms"
+                  role="button"
                 >
                   <svg
                     class="c13"
@@ -934,10 +934,10 @@ it("renders correctly", () => {
               </div>
               <div
                 class="c16"
-                role="button"
               >
                 <a
                   href="/syrup"
+                  role="button"
                 >
                   <svg
                     class="c13"
@@ -964,10 +964,10 @@ it("renders correctly", () => {
               </div>
               <div
                 class="c16"
-                role="button"
               >
                 <a
                   href="/lottery"
+                  role="button"
                 >
                   <svg
                     class="c13"
@@ -991,10 +991,10 @@ it("renders correctly", () => {
               </div>
               <div
                 class="c16"
-                role="button"
               >
                 <a
                   href="/nft"
+                  role="button"
                 >
                   <svg
                     class="c13"
@@ -1016,10 +1016,10 @@ it("renders correctly", () => {
               </div>
               <div
                 class="c16"
-                role="button"
               >
                 <a
                   href="/competition"
+                  role="button"
                 >
                   <svg
                     class="c13"
