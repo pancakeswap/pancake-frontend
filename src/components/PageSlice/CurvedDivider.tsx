@@ -3,12 +3,12 @@ import styled from 'styled-components'
 import { CurvedSvgTop, CurvedSvgBottom } from './svg/CurvedSvg'
 
 interface CurvedDividerProps extends WrapperProps {
-  svgFill: string
-  dividerComponent: React.ReactNode
+  svgFill?: string
+  dividerComponent?: React.ReactNode
 }
 interface WrapperProps {
   index: number
-  curvePosition: 'top' | 'bottom'
+  curvePosition?: 'top' | 'bottom'
 }
 
 const Wrapper = styled.div<WrapperProps>`
