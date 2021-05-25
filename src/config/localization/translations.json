@@ -835,5 +835,16 @@
   "in Beta": "in Beta",
   "Ended %date%": "Ended %date%",
   "Starts %date%": "Starts %date%",
-  "Ends %date%": "Ends %date%"
+  "Ends %date%": "Ends %date%",
+  "Closed": "Closed",
+  "Vote Now": "Vote Now",
+  "Soon": "Soon",
+  "No proposals found": "No proposals found",
+  "Creator": "Creator",
+  "Proposals": "Proposals",
+  "Make a Proposal": "Make a Proposal",
+  "Have your say in the future of the PancakeSwap Ecosystem": "Have your say in the future of the PancakeSwap Ecosystem",
+  "Got a suggestion?": "Got a suggestion?",
+  "Community proposals are a great way to see how the community feels about your ideas.": "Community proposals are a great way to see how the community feels about your ideas.",
+  "They won't necessarily be implemented if the community votes successful, but suggestions with a lot of community support may be made into Core proposals.": "They won't necessarily be implemented if the community votes successful, but suggestions with a lot of community support may be made into Core proposals."
 }
