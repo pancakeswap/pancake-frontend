@@ -1389,6 +1389,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://kalmar.io/',
   },
+  deri: {
+    symbol: 'DERI',
+    address: {
+      56: '0xe60eaf5A997DFAe83739e035b005A33AfdCc6df5',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://deri.finance/#/index',
+  },
 }
 
 export default tokens
