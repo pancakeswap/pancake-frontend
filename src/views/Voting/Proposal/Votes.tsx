@@ -41,27 +41,38 @@ const Votes: React.FC<VotesProps> = ({ votes, isFinished }) => {
           {!isFinished && <AutoRenewIcon spin width="22px" />}
         </Flex>
       </CardHeader>
-      {votes.length === 0 ? (
-        <VotesLoading />
-      ) : (
-        orderBy(displayVotes, ['created'], ['desc']).map((vote) => {
-          return <VoteRow key={vote.id} vote={vote} />
-        })
+      {!isFinished && <VotesLoading />}
+
+      {isFinished && displayVotes.length > 0 && (
+        <>
+          {orderBy(displayVotes, ['created'], ['desc']).map((vote) => {
+            return <VoteRow key={vote.id} vote={vote} />
+          })}
+          <Flex alignItems="center" justifyContent="center" py="8px" px="24px">
+            <Button
+              width="100%"
+              onClick={handleClick}
+              variant="text"
+              endIcon={
+                showAll ? (
+                  <ChevronUpIcon color="primary" width="21px" />
+                ) : (
+                  <ChevronDownIcon color="primary" width="21px" />
+                )
+              }
+              disabled={!isFinished}
+            >
+              {showAll ? t('Hide') : t('See All')}
+            </Button>
+          </Flex>
+        </>
       )}
 
-      <Flex alignItems="center" justifyContent="center" py="8px" px="24px">
-        <Button
-          width="100%"
-          onClick={handleClick}
-          variant="text"
-          endIcon={
-            showAll ? <ChevronUpIcon color="primary" width="21px" /> : <ChevronDownIcon color="primary" width="21px" />
-          }
-          disabled={!isFinished}
-        >
-          {showAll ? t('Hide') : t('See All')}
-        </Button>
-      </Flex>
+      {isFinished && displayVotes.length === 0 && (
+        <Flex alignItems="center" justifyContent="center" py="32px">
+          <Heading as="h5">{t('No votes found')}</Heading>
+        </Flex>
+      )}
     </Card>
   )
 }

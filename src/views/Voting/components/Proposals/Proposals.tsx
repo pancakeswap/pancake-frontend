@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Card, Flex, Heading, Text } from '@pancakeswap/uikit'
+import { Card, Flex, Heading } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import Container from 'components/layout/Container'
 import { Proposal, ProposalState, ProposalType } from '../../types'
@@ -86,7 +86,7 @@ const Proposals = () => {
           })}
         {loadingState === LoadingState.IDLE && filteredProposals.length === 0 && (
           <Flex alignItems="center" justifyContent="center" p="32px">
-            <Text fontSize="24px">{t('No proposals found')}</Text>
+            <Heading as="h5">{t('No proposals found')}</Heading>
           </Flex>
         )}
       </Card>
