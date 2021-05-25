@@ -39,7 +39,7 @@ const Container = styled.div`
 const AprWrapper = styled.div`
   min-width: 60px;
   text-align: right;
-  margin-right: 14px;
+  margin-right: 12px;
 
   ${({ theme }) => theme.mediaQueries.lg} {
     text-align: left;
