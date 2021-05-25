@@ -1,7 +1,7 @@
 import React, { createContext, useCallback, useEffect, useState } from 'react'
 import { Language } from '@pancakeswap/uikit'
-import { EN, languages } from '../../config/localization/languages'
-import translations from '../../config/localization/translations.json'
+import { EN, languages } from 'config/localization/languages'
+import translations from 'config/localization/translations.json'
 import { ContextApi, ContextData, ProviderState } from './types'
 import { LS_KEY, fetchLocale, getLanguageCodeFromLS } from './helpers'
 
