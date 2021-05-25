@@ -43,6 +43,11 @@ export const useFetchPublicData = () => {
     fetchPoolsPublicData()
     dispatch(fetchPoolsStakingLimitsAsync())
   }, [dispatch, slowRefresh, web3])
+}
+
+export const usePollBlockNumber = () => {
+  const dispatch = useAppDispatch()
+  const web3 = getWeb3NoAccount()
 
   useEffect(() => {
     const interval = setInterval(async () => {
