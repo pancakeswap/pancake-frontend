@@ -30,7 +30,7 @@ Run tests with `yarn test`.
 
 ## Localisation
 
-Keys should be added to translation.json file, in order to be translated to other languages. 
+Keys should be added to translation.json file, in order to be translated to other languages.
 
 ### Adding translations
 
