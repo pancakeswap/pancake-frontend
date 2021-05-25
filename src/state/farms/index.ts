@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit'
 import farmsConfig from 'config/constants/farms'
+import priceHelperLpsConfig from 'config/constants/priceHelperLps'
 import isArchivedPid from 'utils/farmHelpers'
 import fetchFarms from './fetchFarms'
 import fetchFarmsPrices from './fetchFarmsPrices'
@@ -58,12 +59,12 @@ export const { setFarmsPublicData, setFarmUserData, setLoadArchivedFarmsData } =
 
 // Thunks
 export const fetchFarmsPublicDataAsync = () => async (dispatch, getState) => {
-  const state = getState()
-  const apiPriceData = state.apiPrices.data
-  const fetchArchived = state.farms.loadArchivedFarmsData
+  const fetchArchived = getState().farms.loadArchivedFarmsData
   const farmsToFetch = fetchArchived ? farmsConfig : nonArchivedFarms
   const farms = await fetchFarms(farmsToFetch)
-  const farmsWithPrices = await fetchFarmsPrices(farms, apiPriceData)
+  const priceHelperLps = await fetchFarms(priceHelperLpsConfig)
+  const farmsForPriceCalc = farms.concat(priceHelperLps)
+  const farmsWithPrices = await fetchFarmsPrices(farmsForPriceCalc)
   dispatch(setFarmsPublicData(farmsWithPrices))
 }
 export const fetchFarmUserDataAsync = (account: string) => async (dispatch, getState) => {
