@@ -1,13 +1,6 @@
 import { useEffect, useState } from 'react'
 
-/* eslint-disable camelcase */
 export interface DeBankTvlResponse {
-  id: string
-  chain: string
-  name: string
-  site_url: string
-  logo_url: string
-  has_supported_portfolio: boolean
   tvl: number
 }
 
