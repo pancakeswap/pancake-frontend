@@ -85,9 +85,10 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed, cakePrice, account }
   // NAR-CAKE LP. The images should be cake-bnb.svg, link-bnb.svg, nar-cake.svg
   const farmImage = farm.lpSymbol.split(' ')[0].toLocaleLowerCase()
 
-  const totalValueFormatted = farm.liquidity
-    ? `$${farm.liquidity.toNumber().toLocaleString(undefined, { maximumFractionDigits: 0 })}`
-    : '-'
+  const totalValueFormatted =
+    farm.liquidity && farm.liquidity.gt(0)
+      ? `$${farm.liquidity.toNumber().toLocaleString(undefined, { maximumFractionDigits: 0 })}`
+      : ''
 
   const lpLabel = farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('PANCAKE', '')
   const earnLabel = farm.dual ? farm.dual.earnLabel : 'CAKE'
