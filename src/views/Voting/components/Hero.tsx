@@ -3,6 +3,7 @@ import { Box, Button, Heading } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import Container from 'components/layout/Container'
+import { Link } from 'react-router-dom'
 
 const StyledHero = styled(Box)`
   background: ${({ theme }) => theme.colors.gradients.bubblegum};
@@ -23,7 +24,9 @@ const Hero = () => {
           <Heading as="h3" scale="lg" mb="16px">
             {t('Have your say in the future of the PancakeSwap Ecosystem')}
           </Heading>
-          <Button>{t('Make a Proposal')}</Button>
+          <Button as={Link} to="/voting/proposal/create">
+            {t('Make a Proposal')}
+          </Button>
         </Box>
       </Container>
     </StyledHero>

@@ -28,6 +28,7 @@ const TradingCompetition = lazy(() => import('./views/TradingCompetition'))
 const Predictions = lazy(() => import('./views/Predictions'))
 const Voting = lazy(() => import('./views/Voting'))
 const Proposal = lazy(() => import('./views/Voting/Proposal'))
+const CreateProposal = lazy(() => import('./views/Voting/CreateProposal'))
 
 // This config is required for number formatting
 BigNumber.config({
@@ -83,6 +84,9 @@ const App: React.FC = () => {
             </Route>
             <Route exact path="/voting">
               <Voting />
+            </Route>
+            <Route exact path="/voting/proposal/create">
+              <CreateProposal />
             </Route>
             <Route path="/voting/proposal/:id">
               <Proposal />
