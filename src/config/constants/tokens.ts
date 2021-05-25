@@ -1371,6 +1371,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://cyclone.xyz/',
   },
+  chr: {
+    symbol: 'CHR',
+    address: {
+      56: '0xf9CeC8d50f6c8ad3Fb6dcCEC577e05aA32B224FE',
+      97: '',
+    },
+    decimals: 6,
+    projectLink: 'https://chromia.com/',
+  },
 }
 
 export default tokens
