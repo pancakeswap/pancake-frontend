@@ -12,7 +12,7 @@ const AddressCol = styled.div`
 `
 
 const StyledVoteRow = styled(Flex)`
-  border-bottom: 1px solid ${({ theme }) => theme.colors.borderColor};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.cardBorder};
 
   padding: 16px 24px;
 `
