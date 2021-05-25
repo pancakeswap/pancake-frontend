@@ -1380,6 +1380,15 @@ const tokens = {
     decimals: 6,
     projectLink: 'https://chromia.com/',
   },
+  kalm: {
+    symbol: 'KALM',
+    address: {
+      56: '0x4BA0057f784858a48fe351445C672FF2a3d43515',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://kalmar.io/',
+  },
 }
 
 export default tokens
