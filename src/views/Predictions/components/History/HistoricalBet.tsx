@@ -26,7 +26,7 @@ interface BetProps {
 
 const StyledBet = styled(Flex).attrs({ alignItems: 'center', p: '16px' })`
   background-color: ${({ theme }) => theme.card.background};
-  border-bottom: 2px solid ${({ theme }) => theme.colors.borderColor};
+  border-bottom: 2px solid ${({ theme }) => theme.colors.cardBorder};
   cursor: pointer;
 `
 
