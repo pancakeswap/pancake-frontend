@@ -1,29 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { ArrowBackIcon, Box, Button, Flex, Heading } from '@pancakeswap/uikit'
 import { Link, Redirect, useParams } from 'react-router-dom'
-import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import Container from 'components/layout/Container'
 import ReactMarkdown from 'components/ReactMarkdown'
 import PageLoader from 'components/PageLoader'
-import { ProposalStateTag, ProposalTypeTag } from '../components/Proposals/tags'
 import { getProposal, isCoreProposal } from '../helpers'
 import { Proposal as ProposalType } from '../types'
+import useGetVotes from '../hooks/useGetVotes'
+import { ProposalStateTag, ProposalTypeTag } from '../components/Proposals/tags'
+import Layout from '../components/Layout'
 import Details from './Details'
 import Vote from './Vote'
 import Votes from './Votes'
-import useGetVotes from '../hooks/useGetVotes'
-
-const Layout = styled.div`
-  align-items: start;
-  display: grid;
-  grid-gap: 32px;
-  grid-template-columns: 1fr;
-
-  ${({ theme }) => theme.mediaQueries.lg} {
-    grid-template-columns: 1fr minmax(auto, 332px);
-  }
-`
 
 const Proposal = () => {
   const [proposal, setProposal] = useState<ProposalType | null>(null)
