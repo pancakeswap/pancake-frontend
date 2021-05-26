@@ -10,15 +10,27 @@ export type TranslatableText =
       }
     }
 
+export interface FarmPublicData {
+  tokenAmountMc: string
+  quoteTokenAmountMc: string
+  tokenAmountTotal: string
+  quoteTokenAmountTotal: string
+  lpTotalSupply: string
+  lpTotalInQuoteToken: string
+  tokenPriceVsQuote: string
+  poolWeight: string
+  multiplier: string
+}
+
 export interface Farm extends FarmConfig {
-  tokenAmountMc?: BigNumber
-  quoteTokenAmountMc?: BigNumber
-  tokenAmountTotal?: BigNumber
-  quoteTokenAmountTotal?: BigNumber
-  lpTotalInQuoteToken?: BigNumber
-  lpTotalSupply?: BigNumber
-  tokenPriceVsQuote?: BigNumber
-  poolWeight?: BigNumber
+  tokenAmountMc?: string
+  quoteTokenAmountMc?: string
+  tokenAmountTotal?: string
+  quoteTokenAmountTotal?: string
+  lpTotalInQuoteToken?: string
+  lpTotalSupply?: string
+  tokenPriceVsQuote?: string
+  poolWeight?: string
   userData?: {
     allowance: string
     tokenBalance: string
