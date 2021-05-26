@@ -1,23 +1,23 @@
 import BigNumber from 'bignumber.js'
-import { FarmConfig } from 'config/constants/types'
+import { Address, Token } from 'config/constants/types'
 import masterchefABI from 'config/abi/masterchef.json'
 import erc20 from 'config/abi/erc20.json'
 import { getAddress, getMasterChefAddress } from 'utils/addressHelpers'
 import { BIG_TEN } from 'utils/bigNumber'
 import multicall from 'utils/multicall'
 
-const fetchFarm = async (farm: FarmConfig) => {
-  const lpAddress = getAddress(farm.lpAddresses)
+const fetchFarm = async (pid: number, lpAddresses: Address, token: Token, quoteToken: Token) => {
+  const lpAddress = getAddress(lpAddresses)
   const calls = [
     // Balance of token in the LP contract
     {
-      address: getAddress(farm.token.address),
+      address: getAddress(token.address),
       name: 'balanceOf',
       params: [lpAddress],
     },
     // Balance of quote token on LP contract
     {
-      address: getAddress(farm.quoteToken.address),
+      address: getAddress(quoteToken.address),
       name: 'balanceOf',
       params: [lpAddress],
     },
@@ -34,12 +34,12 @@ const fetchFarm = async (farm: FarmConfig) => {
     },
     // Token decimals
     {
-      address: getAddress(farm.token.address),
+      address: getAddress(token.address),
       name: 'decimals',
     },
     // Quote token decimals
     {
-      address: getAddress(farm.quoteToken.address),
+      address: getAddress(quoteToken.address),
       name: 'decimals',
     },
   ]
@@ -65,7 +65,7 @@ const fetchFarm = async (farm: FarmConfig) => {
     {
       address: getMasterChefAddress(),
       name: 'poolInfo',
-      params: [farm.pid],
+      params: [pid],
     },
     {
       address: getMasterChefAddress(),
@@ -77,7 +77,6 @@ const fetchFarm = async (farm: FarmConfig) => {
   const poolWeight = allocPoint.div(new BigNumber(totalAllocPoint))
 
   return {
-    ...farm,
     tokenAmountMc: tokenAmountMc.toJSON(),
     quoteTokenAmountMc: quoteTokenAmountMc.toJSON(),
     tokenAmountTotal: tokenAmountTotal.toJSON(),
