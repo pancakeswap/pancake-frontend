@@ -776,7 +776,7 @@ it("renders ConnectModal correctly", () => {
           <a
             class="c16 c17 c18"
             color="primary"
-            href="https://docs.pancakeswap.finance/guides/faq#how-do-i-set-up-my-wallet-on-binance-smart-chain"
+            href="https://docs.pancakeswap.finance/help/faq#how-do-i-connect-my-wallet-to-pancakeswap"
             rel="noreferrer noopener"
             target="_blank"
           >
