@@ -1398,6 +1398,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://deri.finance/#/index',
   },
+  well: {
+    symbol: 'WELL',
+    address: {
+      56: '0xf07a32eb035b786898c00bb1c64d8c6f8e7a46d5',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://www.bitwellex.com/',
+  },
 }
 
 export default tokens
