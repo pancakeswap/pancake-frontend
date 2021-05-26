@@ -801,5 +801,7 @@
   "Trading Battle": "Battle Perdagangan",
   "Prediction": "Prediksi",
   "Initial Farm Offering": "Tawaran Perdana Farm (IFO)",
-  "An error occurred confirming transaction": "Eror terjadi saat mengonfirmasi transaksi"
+  "An error occurred confirming transaction": "Eror terjadi saat mengonfirmasi transaksi",
+  "Successfully Enabled!": "Successfully Enabled!",
+  "You can now participate in the %symbol% IFO.": "You can now participate in the %symbol% IFO."
 }
