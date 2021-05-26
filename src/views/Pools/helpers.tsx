@@ -34,7 +34,7 @@ export const convertCakeToShares = (
 const AUTO_VAULT_COMPOUND_FREQUENCY = 288
 const MANUAL_POOL_COMPOUND_FREQUENCY = 1
 
-export const aprToDisplay = (pool: Pool, performanceFee: number) => {
+export const getAprData = (pool: Pool, performanceFee: number) => {
   const { isAutoVault, earningTokenPrice, apr } = pool
   // special handling for tokens like tBTC or BIFI where the daily token rewards for $1000 dollars will be less than 0.001 of that token
   const isHighValueToken = Math.round(earningTokenPrice / 1000) > 0
@@ -53,12 +53,13 @@ export const aprToDisplay = (pool: Pool, performanceFee: number) => {
       compoundFrequency,
       performanceFee,
     })
-    return getRoi({
+    const autoApr = getRoi({
       amountEarned: tokenEarnedPerThousand365D,
       amountInvested: oneThousandDollarsWorthOfToken,
     })
+    return { apr: autoApr, isHighValueToken, roundingDecimals, compoundFrequency }
   }
-  return apr
+  return { apr, isHighValueToken, roundingDecimals, compoundFrequency }
 }
 
 export const getCakeVaultEarnings = (
@@ -77,4 +78,14 @@ export const getCakeVaultEarnings = (
   const autoUsdProfit = autoCakeProfit.times(earningTokenPrice)
   const autoUsdToDisplay = autoUsdProfit.gte(0) ? getBalanceNumber(autoUsdProfit, 18) : 0
   return { hasAutoEarnings, autoCakeToDisplay, autoUsdToDisplay }
+}
+
+export const getPoolBlockInfo = (pool: Pool, currentBlock: number) => {
+  const { startBlock, endBlock, isFinished } = pool
+  const shouldShowBlockCountdown = Boolean(!isFinished && startBlock && endBlock)
+  const blocksUntilStart = Math.max(startBlock - currentBlock, 0)
+  const blocksRemaining = Math.max(endBlock - currentBlock, 0)
+  const hasPoolStarted = blocksUntilStart === 0 && blocksRemaining > 0
+  const blocksToDisplay = hasPoolStarted ? blocksRemaining : blocksUntilStart
+  return { shouldShowBlockCountdown, blocksUntilStart, blocksRemaining, hasPoolStarted, blocksToDisplay }
 }

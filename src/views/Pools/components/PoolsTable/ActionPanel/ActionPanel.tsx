@@ -23,6 +23,7 @@ import { CompoundingPoolTag, ManualPoolTag } from 'components/Tags'
 import { getAddress } from 'utils/addressHelpers'
 import { registerToken } from 'utils/wallet'
 import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
+import { getPoolBlockInfo } from 'views/Pools/helpers'
 import Harvest from './Harvest'
 import Stake from './Stake'
 import Apr from '../Apr'
@@ -90,7 +91,6 @@ type MediaBreakpoints = {
 interface ActionPanelProps {
   account: string
   pool: Pool
-  isAutoVault: boolean
   userDataLoaded: boolean
   expanded: boolean
   breakpoints: MediaBreakpoints
@@ -104,24 +104,14 @@ const InfoSection = styled(Box)`
   }
 `
 
-const ActionPanel: React.FC<ActionPanelProps> = ({
-  account,
-  pool,
-  isAutoVault,
-  userDataLoaded,
-  expanded,
-  breakpoints,
-}) => {
-  const { sousId, stakingToken, earningToken, startBlock, totalStaked, endBlock, stakingLimit, isFinished } = pool
+const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded, expanded, breakpoints }) => {
+  const { sousId, stakingToken, earningToken, totalStaked, endBlock, stakingLimit, isAutoVault } = pool
   const { t } = useTranslation()
   const { currentBlock } = useBlock()
   const { isXs, isSm, isMd } = breakpoints
 
-  const shouldShowBlockCountdown = Boolean(!isFinished && startBlock && endBlock)
-  const blocksUntilStart = Math.max(startBlock - currentBlock, 0)
-  const blocksRemaining = Math.max(endBlock - currentBlock, 0)
-  const hasPoolStarted = blocksUntilStart === 0 && blocksRemaining > 0
-  const blocksToDisplay = hasPoolStarted ? blocksRemaining : blocksUntilStart
+  const { shouldShowBlockCountdown, blocksUntilStart, blocksRemaining, hasPoolStarted, blocksToDisplay } =
+    getPoolBlockInfo(pool, currentBlock)
 
   const isMetaMaskInScope = !!(window as WindowChain).ethereum?.isMetaMask
   const tokenAddress = earningToken.address ? getAddress(earningToken.address) : ''
@@ -177,7 +167,7 @@ const ActionPanel: React.FC<ActionPanelProps> = ({
   const blocksRow =
     blocksRemaining || blocksUntilStart ? (
       <Flex mb="8px" justifyContent="space-between">
-        <Text>{t('Ends in')}:</Text>
+        <Text>{hasPoolStarted ? t('Ends in') : t('Starts in')}:</Text>
         <Flex>
           <Link external href={`${BASE_BSC_SCAN_URL}/block/countdown/${endBlock}`}>
             <Balance fontSize="16px" value={blocksToDisplay} decimals={0} color="primary" />
@@ -195,7 +185,7 @@ const ActionPanel: React.FC<ActionPanelProps> = ({
   const aprRow = (
     <Flex justifyContent="space-between" alignItems="center" mb="8px">
       <Text>{isAutoVault ? t('APY') : t('APR')}</Text>
-      <Apr pool={pool} isAutoVault={isAutoVault} performanceFee={isAutoVault ? performanceFeeAsDecimal : 0} />
+      <Apr pool={pool} performanceFee={isAutoVault ? performanceFeeAsDecimal : 0} />
     </Flex>
   )
 
@@ -255,8 +245,8 @@ const ActionPanel: React.FC<ActionPanelProps> = ({
         </span>
       </InfoSection>
       <ActionContainer>
-        <Harvest {...pool} isAutoVault={isAutoVault} userDataLoaded={userDataLoaded} />
-        <Stake pool={pool} isAutoVault={isAutoVault} userDataLoaded={userDataLoaded} />
+        <Harvest {...pool} userDataLoaded={userDataLoaded} />
+        <Stake pool={pool} userDataLoaded={userDataLoaded} />
       </ActionContainer>
     </StyledActionPanel>
   )

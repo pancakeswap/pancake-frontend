@@ -4,7 +4,6 @@ import BigNumber from 'bignumber.js'
 import { Token } from 'config/constants/types'
 import { useTranslation } from 'contexts/Localization'
 import { getFullDisplayBalance, getBalanceNumber, formatNumber } from 'utils/formatBalance'
-import { useBusdPriceFromToken } from 'state/hooks'
 import Balance from 'components/Balance'
 import CollectModal from '../Modals/CollectModal'
 
@@ -12,6 +11,7 @@ interface HarvestActionsProps {
   earnings: BigNumber
   earningToken: Token
   sousId: number
+  earningTokenPrice: number
   isBnbPool: boolean
   isLoading?: boolean
 }
@@ -21,18 +21,14 @@ const HarvestActions: React.FC<HarvestActionsProps> = ({
   earningToken,
   sousId,
   isBnbPool,
+  earningTokenPrice,
   isLoading = false,
 }) => {
   const { t } = useTranslation()
   const earningTokenBalance = getBalanceNumber(earnings, earningToken.decimals)
   const formattedBalance = formatNumber(earningTokenBalance, 3, 3)
 
-  const earningTokenPrice = useBusdPriceFromToken(earningToken.symbol)
-  const earningTokenPriceAsNumber = earningTokenPrice && earningTokenPrice.gt(0) ? earningTokenPrice.toNumber() : 0
-  const earningTokenDollarBalance = getBalanceNumber(
-    earnings.multipliedBy(earningTokenPriceAsNumber),
-    earningToken.decimals,
-  )
+  const earningTokenDollarBalance = getBalanceNumber(earnings.multipliedBy(earningTokenPrice), earningToken.decimals)
   const earningsDollarValue = formatNumber(earningTokenDollarBalance)
 
   const fullBalance = getFullDisplayBalance(earnings, earningToken.decimals)
@@ -64,7 +60,7 @@ const HarvestActions: React.FC<HarvestActionsProps> = ({
               ) : (
                 <Heading color="textDisabled">0</Heading>
               )}
-              {earningTokenPriceAsNumber !== 0 && (
+              {earningTokenPrice !== 0 && (
                 <Text fontSize="12px" color={hasEarnings ? 'textSubtle' : 'textDisabled'}>
                   ~
                   {hasEarnings ? (

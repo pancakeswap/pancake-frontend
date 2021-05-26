@@ -17,7 +17,6 @@ interface EarningsCellProps {
   pool: Pool
   account: string
   userDataLoaded: boolean
-  isAutoVault?: boolean
 }
 
 const StyledCell = styled(BaseCell)`
@@ -31,9 +30,9 @@ const HelpIconWrapper = styled.div`
   align-self: center;
 `
 
-const EarningsCell: React.FC<EarningsCellProps> = ({ pool, account, userDataLoaded, isAutoVault }) => {
+const EarningsCell: React.FC<EarningsCellProps> = ({ pool, account, userDataLoaded }) => {
   const { t } = useTranslation()
-  const { sousId, earningToken, poolCategory, userData, earningTokenPrice } = pool
+  const { sousId, earningToken, poolCategory, userData, earningTokenPrice, isAutoVault } = pool
   const isManualCakePool = sousId === 0
 
   const earnings = userData?.pendingReward ? new BigNumber(userData.pendingReward) : BIG_ZERO

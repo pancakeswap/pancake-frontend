@@ -51,7 +51,6 @@ const PoolsTable: React.FC<PoolsTableProps> = ({ pools, userDataLoaded, account 
             pool={pool}
             account={account}
             userDataLoaded={userDataLoaded}
-            isAutoVault={pool.isAutoVault}
           />
         ))}
         <ScrollButtonContainer>

@@ -20,11 +20,11 @@ import { Pool } from 'state/types'
 import { getAddress, getCakeVaultAddress } from 'utils/addressHelpers'
 import { registerToken } from 'utils/wallet'
 import Balance from 'components/Balance'
+import { getPoolBlockInfo } from 'views/Pools/helpers'
 
 interface ExpandedFooterProps {
   pool: Pool
   account: string
-  isAutoVault?: boolean
 }
 
 const ExpandedWrapper = styled(Flex)`
@@ -34,7 +34,7 @@ const ExpandedWrapper = styled(Flex)`
   }
 `
 
-const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account, isAutoVault = false }) => {
+const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
   const { t } = useTranslation()
   const { currentBlock } = useBlock()
   const {
@@ -42,7 +42,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account, isAutoVa
     fees: { performanceFee },
   } = useCakeVault()
 
-  const { stakingToken, earningToken, totalStaked, startBlock, endBlock, isFinished, contractAddress, sousId } = pool
+  const { stakingToken, earningToken, totalStaked, contractAddress, sousId, isAutoVault } = pool
 
   const tokenAddress = earningToken.address ? getAddress(earningToken.address) : ''
   const poolContractAddress = getAddress(contractAddress)
@@ -51,10 +51,8 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account, isAutoVa
   const isMetaMaskInScope = !!(window as WindowChain).ethereum?.isMetaMask
   const isManualCakePool = sousId === 0
 
-  const shouldShowBlockCountdown = Boolean(!isFinished && startBlock && endBlock)
-  const blocksUntilStart = Math.max(startBlock - currentBlock, 0)
-  const blocksRemaining = Math.max(endBlock - currentBlock, 0)
-  const hasPoolStarted = blocksUntilStart === 0 && blocksRemaining > 0
+  const { shouldShowBlockCountdown, blocksUntilStart, blocksRemaining, hasPoolStarted, blocksToDisplay } =
+    getPoolBlockInfo(pool, currentBlock)
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     t('Subtracted automatically from each yield harvest and burned.'),
@@ -94,12 +92,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account, isAutoVa
           <Text small>{hasPoolStarted ? t('End') : t('Start')}:</Text>
           <Flex alignItems="center">
             {blocksRemaining || blocksUntilStart ? (
-              <Balance
-                color="primary"
-                fontSize="14px"
-                value={hasPoolStarted ? blocksRemaining : blocksUntilStart}
-                decimals={0}
-              />
+              <Balance color="primary" fontSize="14px" value={blocksToDisplay} decimals={0} />
             ) : (
               <Skeleton width="54px" height="21px" />
             )}

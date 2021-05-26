@@ -10,7 +10,6 @@ import BaseCell, { CellContent } from './BaseCell'
 
 interface NameCellProps {
   pool: Pool
-  isAutoVault: boolean
 }
 
 const StyledCell = styled(BaseCell)`
@@ -23,9 +22,9 @@ const StyledCell = styled(BaseCell)`
   }
 `
 
-const NameCell: React.FC<NameCellProps> = ({ pool, isAutoVault }) => {
+const NameCell: React.FC<NameCellProps> = ({ pool }) => {
   const { t } = useTranslation()
-  const { sousId, stakingToken, earningToken, userData, isFinished } = pool
+  const { sousId, stakingToken, earningToken, userData, isFinished, isAutoVault } = pool
   const {
     userData: { userShares },
   } = useCakeVault()

@@ -6,6 +6,7 @@ import { Pool } from 'state/types'
 import { useBlock } from 'state/hooks'
 import Balance from 'components/Balance'
 import { useTranslation } from 'contexts/Localization'
+import { getPoolBlockInfo } from 'views/Pools/helpers'
 import BaseCell, { CellContent } from './BaseCell'
 
 interface FinishCellProps {
@@ -17,15 +18,12 @@ const StyledCell = styled(BaseCell)`
 `
 
 const EndsInCell: React.FC<FinishCellProps> = ({ pool }) => {
-  const { sousId, totalStaked, startBlock, endBlock, isFinished } = pool
+  const { sousId, totalStaked, endBlock, isFinished } = pool
   const { currentBlock } = useBlock()
   const { t } = useTranslation()
 
-  const shouldShowBlockCountdown = Boolean(!isFinished && startBlock && endBlock)
-  const blocksUntilStart = Math.max(startBlock - currentBlock, 0)
-  const blocksRemaining = Math.max(endBlock - currentBlock, 0)
-  const hasPoolStarted = blocksUntilStart === 0 && blocksRemaining > 0
-  const blocksToDisplay = hasPoolStarted ? blocksRemaining : blocksUntilStart
+  const { shouldShowBlockCountdown, blocksUntilStart, blocksRemaining, hasPoolStarted, blocksToDisplay } =
+    getPoolBlockInfo(pool, currentBlock)
 
   const isCakePool = sousId === 0
 
@@ -56,7 +54,7 @@ const EndsInCell: React.FC<FinishCellProps> = ({ pool }) => {
     <StyledCell role="cell">
       <CellContent>
         <Text fontSize="12px" color="textSubtle" textAlign="left">
-          {t('Ends in')}
+          {hasPoolStarted || !shouldShowBlockCountdown ? t('Ends in') : t('Starts in')}
         </Text>
         {showLoading ? <Skeleton width="80px" height="16px" /> : renderBlocks}
       </CellContent>

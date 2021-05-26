@@ -2,7 +2,7 @@ import React from 'react'
 import { Button, Text, useModal, Flex, TooltipText, useTooltip, Skeleton } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
-import { convertSharesToCake } from 'views/Pools/helpers'
+import { getCakeVaultEarnings } from 'views/Pools/helpers'
 import { PoolCategory } from 'config/constants/types'
 import { formatNumber, getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
 import { useTranslation } from 'contexts/Localization'
@@ -16,7 +16,6 @@ import CollectModal from '../../PoolCard/Modals/CollectModal'
 import UnstakingFeeCountdownRow from '../../CakeVaultCard/UnstakingFeeCountdownRow'
 
 interface HarvestActionProps extends Pool {
-  isAutoVault: boolean
   userDataLoaded: boolean
 }
 
@@ -49,17 +48,17 @@ const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({
     pricePerFullShare,
     fees: { performanceFee },
   } = useCakeVault()
-  const hasAutoEarnings =
-    account && cakeAtLastUserAction && cakeAtLastUserAction.gt(0) && userShares && userShares.gt(0)
-  const { cakeAsBigNumber } = convertSharesToCake(userShares, pricePerFullShare)
-  const cakeProfit = cakeAsBigNumber.minus(cakeAtLastUserAction)
-  const cakeToDisplay = cakeProfit.gte(0) ? getBalanceNumber(cakeProfit, 18) : 0
-  const dollarValueOfCake = cakeProfit.times(earningTokenPrice)
-  const dollarValueToDisplay = dollarValueOfCake.gte(0) ? getBalanceNumber(dollarValueOfCake, 18) : 0
+  const { hasAutoEarnings, autoCakeToDisplay, autoUsdToDisplay } = getCakeVaultEarnings(
+    account,
+    cakeAtLastUserAction,
+    userShares,
+    pricePerFullShare,
+    earningTokenPrice,
+  )
 
-  earningTokenBalance = isAutoVault ? cakeToDisplay : earningTokenBalance
+  earningTokenBalance = isAutoVault ? autoCakeToDisplay : earningTokenBalance
   hasEarnings = isAutoVault ? hasAutoEarnings : hasEarnings
-  earningTokenDollarBalance = isAutoVault ? dollarValueToDisplay : earningTokenDollarBalance
+  earningTokenDollarBalance = isAutoVault ? autoUsdToDisplay : earningTokenDollarBalance
 
   const displayBalance = hasEarnings ? earningTokenBalance : 0
   const [onPresentCollect] = useModal(

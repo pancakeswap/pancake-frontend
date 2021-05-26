@@ -4,7 +4,6 @@ import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { Pool } from 'state/types'
-import { useBusdPriceFromToken } from 'state/hooks'
 import Balance from 'components/Balance'
 import NotEnoughTokensModal from '../Modals/NotEnoughTokensModal'
 import StakeModal from '../Modals/StakeModal'
@@ -26,13 +25,11 @@ const StakeAction: React.FC<StakeActionsProps> = ({
   isStaked,
   isLoading = false,
 }) => {
-  const { stakingToken, stakingLimit, isFinished, userData } = pool
+  const { stakingToken, stakingTokenPrice, stakingLimit, isFinished, userData } = pool
   const { t } = useTranslation()
   const stakedTokenBalance = getBalanceNumber(stakedBalance, stakingToken.decimals)
-  const stakingTokenPrice = useBusdPriceFromToken(stakingToken.symbol)
-  const stakingTokenPriceAsNumber = stakingTokenPrice && stakingTokenPrice.gt(0) ? stakingTokenPrice.toNumber() : 0
   const stakedTokenDollarBalance = getBalanceNumber(
-    stakedBalance.multipliedBy(stakingTokenPriceAsNumber),
+    stakedBalance.multipliedBy(stakingTokenPrice),
     stakingToken.decimals,
   )
 
@@ -43,7 +40,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({
       isBnbPool={isBnbPool}
       pool={pool}
       stakingTokenBalance={stakingTokenBalance}
-      stakingTokenPrice={stakingTokenPriceAsNumber}
+      stakingTokenPrice={stakingTokenPrice}
     />,
   )
 
@@ -52,7 +49,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({
       stakingTokenBalance={stakingTokenBalance}
       isBnbPool={isBnbPool}
       pool={pool}
-      stakingTokenPrice={stakingTokenPriceAsNumber}
+      stakingTokenPrice={stakingTokenPrice}
       isRemovingStake
     />,
   )
@@ -70,7 +67,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({
         <Flex flexDirection="column">
           <>
             <Balance bold fontSize="20px" decimals={3} value={stakedTokenBalance} />
-            {stakingTokenPriceAsNumber !== 0 && (
+            {stakingTokenPrice !== 0 && (
               <Text fontSize="12px" color="textSubtle">
                 <Balance
                   fontSize="12px"

@@ -16,7 +16,6 @@ interface PoolRowProps {
   pool: Pool
   account: string
   userDataLoaded: boolean
-  isAutoVault?: boolean
 }
 
 const StyledRow = styled.div`
@@ -25,7 +24,7 @@ const StyledRow = styled.div`
   cursor: pointer;
 `
 
-const PoolRow: React.FC<PoolRowProps> = ({ pool, account, userDataLoaded, isAutoVault }) => {
+const PoolRow: React.FC<PoolRowProps> = ({ pool, account, userDataLoaded }) => {
   const { isXs, isSm, isMd, isLg, isXl } = useMatchBreakpoints()
   const [expanded, setExpanded] = useState(false)
   const shouldRenderActionPanel = useDelayedUnmount(expanded, 300)
@@ -42,12 +41,10 @@ const PoolRow: React.FC<PoolRowProps> = ({ pool, account, userDataLoaded, isAuto
   return (
     <>
       <StyledRow role="row" onClick={toggleExpanded}>
-        <NameCell pool={pool} isAutoVault={isAutoVault} />
-        <EarningsCell pool={pool} account={account} isAutoVault={isAutoVault} userDataLoaded={userDataLoaded} />
-        {(isMd || isLg || isXl) && (
-          <AprCell pool={pool} isAutoVault={isAutoVault} performanceFee={performanceFeeAsDecimal} />
-        )}
-        {(isLg || isXl) && <TotalStakedCell pool={pool} isAutoVault={isAutoVault} />}
+        <NameCell pool={pool} />
+        <EarningsCell pool={pool} account={account} userDataLoaded={userDataLoaded} />
+        {(isMd || isLg || isXl) && <AprCell pool={pool} performanceFee={performanceFeeAsDecimal} />}
+        {(isLg || isXl) && <TotalStakedCell pool={pool} />}
         {isXl && <EndsInCell pool={pool} />}
         <ExpandActionCell expanded={expanded} isFullLayout={isMd || isLg || isXl} />
       </StyledRow>
@@ -55,7 +52,6 @@ const PoolRow: React.FC<PoolRowProps> = ({ pool, account, userDataLoaded, isAuto
         <ActionPanel
           account={account}
           pool={pool}
-          isAutoVault={isAutoVault}
           userDataLoaded={userDataLoaded}
           expanded={expanded}
           breakpoints={{ isXs, isSm, isMd, isLg, isXl }}

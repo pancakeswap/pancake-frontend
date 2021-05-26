@@ -1,25 +1,20 @@
 import React from 'react'
 import { Flex, TooltipText, IconButton, useModal, CalculateIcon, Skeleton, useTooltip } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import { getBalanceNumber } from 'utils/formatBalance'
-import { getPoolApr } from 'utils/apr'
-import { tokenEarnedPerThousandDollarsCompounding, getRoi } from 'utils/compoundApyHelpers'
-import { useBusdPriceFromToken } from 'state/hooks'
 import Balance from 'components/Balance'
 import ApyCalculatorModal from 'components/ApyCalculatorModal'
 import { Pool } from 'state/types'
 import { BASE_EXCHANGE_URL } from 'config'
+import { getAprData } from 'views/Pools/helpers'
 
 interface AprRowProps {
   pool: Pool
-  isAutoVault?: boolean
-  compoundFrequency?: number
   performanceFee?: number
 }
 
-const AprRow: React.FC<AprRowProps> = ({ pool, isAutoVault = false, compoundFrequency = 1, performanceFee = 0 }) => {
+const AprRow: React.FC<AprRowProps> = ({ pool, performanceFee = 0 }) => {
   const { t } = useTranslation()
-  const { stakingToken, earningToken, totalStaked, isFinished, tokenPerBlock } = pool
+  const { stakingToken, earningToken, isFinished, apr, earningTokenPrice, isAutoVault } = pool
 
   const tooltipContent = isAutoVault
     ? t('APY includes compounding, APR doesn’t. This pool’s CAKE is compounded automatically, so we show APY.')
@@ -27,41 +22,7 @@ const AprRow: React.FC<AprRowProps> = ({ pool, isAutoVault = false, compoundFreq
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipContent, { placement: 'bottom-start' })
 
-  const earningTokenPrice = useBusdPriceFromToken(earningToken.symbol)
-  const earningTokenPriceAsNumber = earningTokenPrice && earningTokenPrice.toNumber()
-
-  const stakingTokenPrice = useBusdPriceFromToken(stakingToken.symbol)
-  const stakingTokenPriceAsNumber = stakingTokenPrice && stakingTokenPrice.toNumber()
-
-  const apr = getPoolApr(
-    stakingTokenPriceAsNumber,
-    earningTokenPriceAsNumber,
-    getBalanceNumber(totalStaked, stakingToken.decimals),
-    parseFloat(tokenPerBlock),
-  )
-
-  // special handling for tokens like tBTC or BIFI where the daily token rewards for $1000 dollars will be less than 0.001 of that token
-  const isHighValueToken = Math.round(earningTokenPriceAsNumber / 1000) > 0
-  const roundingDecimals = isHighValueToken ? 4 : 2
-
-  const earningsPercentageToDisplay = () => {
-    if (isAutoVault) {
-      const oneThousandDollarsWorthOfToken = 1000 / earningTokenPriceAsNumber
-      const tokenEarnedPerThousand365D = tokenEarnedPerThousandDollarsCompounding({
-        numberOfDays: 365,
-        farmApr: apr,
-        tokenPrice: earningTokenPriceAsNumber,
-        roundingDecimals,
-        compoundFrequency,
-        performanceFee,
-      })
-      return getRoi({
-        amountEarned: tokenEarnedPerThousand365D,
-        amountInvested: oneThousandDollarsWorthOfToken,
-      })
-    }
-    return apr
-  }
+  const { apr: earningsPercentageToDisplay, roundingDecimals, compoundFrequency } = getAprData(pool, performanceFee)
 
   const apyModalLink =
     stakingToken.address &&
@@ -69,12 +30,12 @@ const AprRow: React.FC<AprRowProps> = ({ pool, isAutoVault = false, compoundFreq
 
   const [onPresentApyModal] = useModal(
     <ApyCalculatorModal
-      tokenPrice={earningTokenPriceAsNumber}
+      tokenPrice={earningTokenPrice}
       apr={apr}
       linkLabel={t('Get %symbol%', { symbol: stakingToken.symbol })}
       linkHref={apyModalLink || BASE_EXCHANGE_URL}
       earningTokenSymbol={earningToken.symbol}
-      roundingDecimals={isHighValueToken ? 4 : 2}
+      roundingDecimals={roundingDecimals}
       compoundFrequency={compoundFrequency}
       performanceFee={performanceFee}
     />,
@@ -91,7 +52,7 @@ const AprRow: React.FC<AprRowProps> = ({ pool, isAutoVault = false, compoundFreq
           <Balance
             fontSize="16px"
             isDisabled={isFinished}
-            value={earningsPercentageToDisplay()}
+            value={earningsPercentageToDisplay}
             decimals={2}
             unit="%"
             bold

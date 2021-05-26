@@ -23,7 +23,7 @@ import BountyCard from './components/BountyCard'
 import HelpButton from './components/HelpButton'
 import PoolsTable from './components/PoolsTable/PoolsTable'
 import { ViewMode } from './components/ToggleView/ToggleView'
-import { aprToDisplay, getCakeVaultEarnings } from './helpers'
+import { getAprData, getCakeVaultEarnings } from './helpers'
 
 const CardLayout = styled(FlexLayout)`
   justify-content: space-around;
@@ -139,7 +139,7 @@ const Pools: React.FC = () => {
         // Ternary is needed to prevent pools without APR (like MIX) getting top spot
         return orderBy(
           poolsToSort,
-          (pool: Pool) => (pool.apr ? aprToDisplay(pool, performanceFeeAsDecimal) : 0),
+          (pool: Pool) => (pool.apr ? getAprData(pool, performanceFeeAsDecimal).apr : 0),
           'desc',
         )
       case 'earned':

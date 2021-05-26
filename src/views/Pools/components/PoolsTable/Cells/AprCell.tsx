@@ -8,7 +8,6 @@ import Apr from '../Apr'
 
 interface AprCellProps {
   pool: Pool
-  isAutoVault: boolean
   performanceFee: number
 }
 
@@ -19,20 +18,16 @@ const StyledCell = styled(BaseCell)`
   }
 `
 
-const AprCell: React.FC<AprCellProps> = ({ pool, isAutoVault, performanceFee }) => {
+const AprCell: React.FC<AprCellProps> = ({ pool, performanceFee }) => {
   const { t } = useTranslation()
+  const { isAutoVault } = pool
   return (
     <StyledCell role="cell">
       <CellContent>
         <Text fontSize="12px" color="textSubtle" textAlign="left">
           {isAutoVault ? t('APY') : t('APR')}
         </Text>
-        <Apr
-          pool={pool}
-          isAutoVault={isAutoVault}
-          performanceFee={isAutoVault ? performanceFee : 0}
-          alignItems="flex-start"
-        />
+        <Apr pool={pool} performanceFee={isAutoVault ? performanceFee : 0} alignItems="flex-start" />
       </CellContent>
     </StyledCell>
   )

@@ -10,15 +10,14 @@ import BaseCell, { CellContent } from './BaseCell'
 
 interface TotalStakedCellProps {
   pool: Pool
-  isAutoVault?: boolean
 }
 
 const StyledCell = styled(BaseCell)`
   flex: 2 0 100px;
 `
 
-const TotalStakedCell: React.FC<TotalStakedCellProps> = ({ pool, isAutoVault }) => {
-  const { sousId, stakingToken, totalStaked } = pool
+const TotalStakedCell: React.FC<TotalStakedCellProps> = ({ pool }) => {
+  const { sousId, stakingToken, totalStaked, isAutoVault } = pool
   const { totalCakeInVault } = useCakeVault()
 
   const isManualCakePool = sousId === 0
