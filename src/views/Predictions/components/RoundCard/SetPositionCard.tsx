@@ -41,6 +41,7 @@ interface SetPositionCardProps {
 
 // /!\ TEMPORARY /!\
 // Set default gasPrice (6 gwei) when calling BetBull/BetBear before new contract is released fixing this 'issue'.
+// TODO: Remove on beta-v2 smart contract release.
 const gasPrice = new BigNumber(6).times(BIG_TEN.pow(BIG_NINE)).toString()
 
 const dust = new BigNumber(0.01).times(DEFAULT_TOKEN_DECIMAL)
