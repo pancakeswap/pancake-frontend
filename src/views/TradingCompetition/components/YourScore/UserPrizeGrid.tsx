@@ -8,6 +8,7 @@ import {
   Text,
   TeamPlayerIcon,
   TrophyGoldIcon,
+  Skeleton,
 } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { UserTradingInformationProps } from '../../types'
@@ -40,9 +41,13 @@ const UserPrizeGrid: React.FC<{ userTradingInformation?: UserTradingInformationP
           <BoldTd>
             <Flex flexDirection="column">
               <Text bold>{cakeReward.toFixed(2)}</Text>
-              <Text fontSize="12px" color="textSubtle">
-                ~{dollarValueOfCakeReward} USD
-              </Text>
+              {dollarValueOfCakeReward ? (
+                <Text fontSize="12px" color="textSubtle">
+                  ~{dollarValueOfCakeReward} USD
+                </Text>
+              ) : (
+                <Skeleton height={24} width={80} />
+              )}
             </Flex>
           </BoldTd>
           <Td>

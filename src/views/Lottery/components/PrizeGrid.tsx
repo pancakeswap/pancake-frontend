@@ -85,7 +85,7 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({
       <GridItem>
         <RightAlignedHeading scale="md">
           {fourMatchesAmount.toLocaleString()}
-          {!pastDraw && !cakeBusdPrice.eq(0) && <CardBusdValue value={getCakeBusdValue(fourMatchesAmount)} />}
+          {!pastDraw && cakeBusdPrice.gt(0) && <CardBusdValue value={getCakeBusdValue(fourMatchesAmount)} />}
         </RightAlignedHeading>
       </GridItem>
       {/* 3 matches row */}
@@ -100,7 +100,7 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({
       <GridItem>
         <RightAlignedText>
           {threeMatchesAmount.toLocaleString()}
-          {!pastDraw && !cakeBusdPrice.eq(0) && <CardBusdValue value={getCakeBusdValue(threeMatchesAmount)} />}
+          {!pastDraw && cakeBusdPrice.gt(0) && <CardBusdValue value={getCakeBusdValue(threeMatchesAmount)} />}
         </RightAlignedText>
       </GridItem>
       {/* 2 matches row */}
@@ -115,7 +115,7 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({
       <GridItem>
         <RightAlignedText>
           {twoMatchesAmount.toLocaleString()}
-          {!pastDraw && !cakeBusdPrice.eq(0) && <CardBusdValue value={getCakeBusdValue(twoMatchesAmount)} />}
+          {!pastDraw && cakeBusdPrice.gt(0) && <CardBusdValue value={getCakeBusdValue(twoMatchesAmount)} />}
         </RightAlignedText>
       </GridItem>
       {/* Burn row */}

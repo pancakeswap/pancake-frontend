@@ -46,7 +46,8 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({ pool, stakingMax, isR
   const [percent, setPercent] = useState(0)
   const { hasUnstakingFee } = useWithdrawalFeeTimer(parseInt(lastDepositedTime, 10), userShares)
   const cakePriceBusd = usePriceCakeBusd()
-  const usdValueStaked = stakeAmount && formatNumber(new BigNumber(stakeAmount).times(cakePriceBusd).toNumber())
+  const usdValueStaked =
+    cakePriceBusd.gt(0) && stakeAmount ? formatNumber(new BigNumber(stakeAmount).times(cakePriceBusd).toNumber()) : ''
 
   const handleStakeInputChange = (input: string) => {
     if (input) {
@@ -174,7 +175,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({ pool, stakingMax, isR
       <BalanceInput
         value={stakeAmount}
         onUserInput={handleStakeInputChange}
-        currencyValue={`~${usdValueStaked || 0} USD`}
+        currencyValue={cakePriceBusd.gt(0) && `~${usdValueStaked || 0} USD`}
       />
       <Text mt="8px" ml="auto" color="textSubtle" fontSize="12px" mb="8px">
         {t('Balance: %balance%', { balance: getFullDisplayBalance(stakingMax, stakingToken.decimals) })}

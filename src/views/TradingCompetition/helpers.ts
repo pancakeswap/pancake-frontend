@@ -12,7 +12,10 @@ export const useCompetitionCakeRewards = (userCakeReward: ReactText) => {
   const cakeAsBigNumber = new BigNumber(userCakeReward as string)
   const cakeBalance = getBalanceNumber(cakeAsBigNumber)
   const cakePriceBusd = usePriceCakeBusd()
-  return { cakeReward: cakeBalance, dollarValueOfCakeReward: cakeBalance * cakePriceBusd.toNumber() }
+  return {
+    cakeReward: cakeBalance,
+    dollarValueOfCakeReward: cakePriceBusd.gt(0) ? cakeBalance * cakePriceBusd.toNumber() : null,
+  }
 }
 
 // 1 is a reasonable teamRank default: accessing the first team in the config.

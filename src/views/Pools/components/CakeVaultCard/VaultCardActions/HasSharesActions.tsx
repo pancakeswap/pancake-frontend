@@ -22,7 +22,9 @@ const HasSharesActions: React.FC<HasStakeActionProps> = ({ pool, stakingTokenBal
   const { stakingToken } = pool
   const { cakeAsBigNumber, cakeAsNumberBalance } = convertSharesToCake(userShares, pricePerFullShare)
   const cakePriceBusd = usePriceCakeBusd()
-  const stakedDollarValue = getBalanceNumber(cakeAsBigNumber.multipliedBy(cakePriceBusd), stakingToken.decimals)
+  const stakedDollarValue = cakePriceBusd.gt(0)
+    ? getBalanceNumber(cakeAsBigNumber.multipliedBy(cakePriceBusd), stakingToken.decimals)
+    : 0
 
   const [onPresentTokenRequired] = useModal(<NotEnoughTokensModal tokenSymbol={stakingToken.symbol} />)
   const [onPresentStake] = useModal(<VaultStakeModal stakingMax={stakingTokenBalance} pool={pool} />)
