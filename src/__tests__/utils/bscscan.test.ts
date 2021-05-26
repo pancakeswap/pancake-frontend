@@ -1,5 +1,5 @@
 import { BASE_BSC_SCAN_URL } from 'config'
-import { getBscScanAddressUrl, getBscScanTransactionUrl, getBscScanBlocknUrl } from 'utils/bscscan'
+import { getBscScanAddressUrl, getBscScanTransactionUrl, getBscScanBlockNumberUrl } from 'utils/bscscan'
 
 describe('getBscScanAddressUrl', () => {
   it.each([
@@ -39,11 +39,11 @@ describe('getBscScanTransactionUrl', () => {
   })
 })
 
-describe('getBscScanBlocknUrl', () => {
+describe('getBscScanBlockNumberUrl', () => {
   it.each([
     ['7737334', `${BASE_BSC_SCAN_URL}/block/7737334`],
     [7737334, `${BASE_BSC_SCAN_URL}/block/7737334`],
   ])('returns correct bscscan url given block number %s', (block, expected) => {
-    expect(getBscScanBlocknUrl(block)).toEqual(expected)
+    expect(getBscScanBlockNumberUrl(block)).toEqual(expected)
   })
 })

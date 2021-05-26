@@ -8,6 +8,6 @@ export const getBscScanTransactionUrl = (transactionHash: string) => {
   return `${BASE_BSC_SCAN_URL}/tx/${transactionHash}`
 }
 
-export const getBscScanBlocknUrl = (block: string | number) => {
+export const getBscScanBlockNumberUrl = (block: string | number) => {
   return `${BASE_BSC_SCAN_URL}/block/${block}`
 }
