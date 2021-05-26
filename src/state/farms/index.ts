@@ -64,7 +64,11 @@ export const fetchFarmsPublicDataAsync = () => async (dispatch, getState) => {
   const farmsWithPriceHelpers = farmsToFetch.concat(priceHelperLpsConfig)
   const farms = await fetchFarms(farmsWithPriceHelpers)
   const farmsWithPrices = await fetchFarmsPrices(farms)
-  dispatch(setFarmsPublicData(farmsWithPrices))
+  // Filter out price helper LP config farms
+  const farmsWithoutHelperLps = farmsWithPrices.filter((farm: Farm) => {
+    return farm.pid || farm.pid === 0
+  })
+  dispatch(setFarmsPublicData(farmsWithoutHelperLps))
 }
 export const fetchFarmUserDataAsync = (account: string) => async (dispatch, getState) => {
   const fetchArchived = getState().farms.loadArchivedFarmsData
