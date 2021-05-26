@@ -51,7 +51,7 @@ const Apr: React.FC<AprProps> = ({ pool, isAutoVault, performanceFee = 0, ...pro
     <ApyCalculatorModal
       tokenPrice={earningTokenPrice}
       apr={apr}
-      linkLabel={`${t('Get')} ${stakingToken.symbol}`}
+      linkLabel={t('Get %asset%', { asset: stakingToken.symbol })}
       linkHref={apyModalLink || BASE_EXCHANGE_URL}
       earningTokenSymbol={earningToken.symbol}
       roundingDecimals={isHighValueToken ? 4 : 2}

@@ -181,8 +181,8 @@ const ActionPanel: React.FC<ActionPanelProps> = ({
         <Flex>
           <Link external href={`${BASE_BSC_SCAN_URL}/block/countdown/${endBlock}`}>
             <Balance fontSize="16px" value={blocksToDisplay} decimals={0} color="primary" />
-            <Text ml="4px" color="primary">
-              {t('blocks')}
+            <Text ml="4px" color="primary" textTransform="lowercase">
+              {t('Blocks')}
             </Text>
             <TimerIcon ml="4px" color="primary" />
           </Link>
