@@ -56,6 +56,13 @@ const BannerFlex = styled(Flex)`
   }
 `
 
+const PrizesSection = styled(PageSection)`
+  margin: -32px 0;
+  ${({ theme }) => theme.mediaQueries.lg} {
+    margin: -64px 0;
+  }
+`
+
 const BottomBunnyWrapper = styled(Box)`
   display: none;
 
@@ -282,16 +289,16 @@ const TradingCompetition = () => {
           />
         </Box>
       </PageSection>
-      <PageSection
+      <PrizesSection
         background={isDark ? LIGHTBLUEBG_DARK : LIGHTBLUEBG}
         svgFill={isDark ? LIGHTBLUEFILL_DARK : LIGHTBLUEFILL}
         index={2}
         hasCurvedDivider={false}
       >
-        <Box mb="78px">
+        <Box my="64px">
           <PrizesInfo />
         </Box>
-      </PageSection>
+      </PrizesSection>
       <PageSection
         index={3}
         curvePosition="top"
