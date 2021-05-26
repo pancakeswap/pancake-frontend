@@ -8,9 +8,7 @@ import PoolRow from './PoolRow'
 interface PoolsTableProps {
   pools: Pool[]
   userDataLoaded: boolean
-  cakeVault?: Pool
   account: string
-  showFinishedPools: boolean
 }
 
 const StyledTable = styled.div`
@@ -36,7 +34,7 @@ const ScrollButtonContainer = styled.div`
   padding-bottom: 5px;
 `
 
-const PoolsTable: React.FC<PoolsTableProps> = ({ pools, userDataLoaded, cakeVault, account, showFinishedPools }) => {
+const PoolsTable: React.FC<PoolsTableProps> = ({ pools, userDataLoaded, account }) => {
   const { t } = useTranslation()
   const tableWrapperEl = useRef<HTMLDivElement>(null)
   const scrollToTop = (): void => {
@@ -47,11 +45,14 @@ const PoolsTable: React.FC<PoolsTableProps> = ({ pools, userDataLoaded, cakeVaul
   return (
     <StyledTableBorder>
       <StyledTable role="table" ref={tableWrapperEl}>
-        {!showFinishedPools && cakeVault && (
-          <PoolRow pool={cakeVault} account={account} userDataLoaded={userDataLoaded} isAutoVault />
-        )}
         {pools.map((pool) => (
-          <PoolRow key={pool.sousId} pool={pool} account={account} userDataLoaded={userDataLoaded} />
+          <PoolRow
+            key={pool.isAutoVault ? 'auto-cake' : pool.sousId}
+            pool={pool}
+            account={account}
+            userDataLoaded={userDataLoaded}
+            isAutoVault={pool.isAutoVault}
+          />
         ))}
         <ScrollButtonContainer>
           <Button variant="text" onClick={scrollToTop}>

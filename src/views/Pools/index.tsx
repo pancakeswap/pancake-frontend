@@ -23,6 +23,7 @@ import BountyCard from './components/BountyCard'
 import HelpButton from './components/HelpButton'
 import PoolsTable from './components/PoolsTable/PoolsTable'
 import { ViewMode } from './components/ToggleView/ToggleView'
+import { aprToDisplay, getCakeVaultEarnings } from './helpers'
 
 const CardLayout = styled(FlexLayout)`
   justify-content: space-around;
@@ -53,7 +54,7 @@ const Pools: React.FC = () => {
   const location = useLocation()
   const { t } = useTranslation()
   const { account } = useWeb3React()
-  const { pools, userDataLoaded } = usePools(account)
+  const { pools: poolsWithoutAutoVault, userDataLoaded } = usePools(account)
   const [stakedOnly, setStakedOnly] = usePersistState(false, 'pancake_pool_staked')
   const [numberOfPoolsVisible, setNumberOfPoolsVisible] = useState(NUMBER_OF_POOLS_VISIBLE)
   const [observerIsSet, setObserverIsSet] = useState(false)
@@ -62,24 +63,43 @@ const Pools: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('')
   const [sortOption, setSortOption] = useState('hot')
   const {
-    userData: { userShares },
+    userData: { cakeAtLastUserAction, userShares },
+    fees: { performanceFee },
+    pricePerFullShare,
+    totalCakeInVault,
   } = useCakeVault()
   const accountHasVaultShares = userShares && userShares.gt(0)
+  const performanceFeeAsDecimal = performanceFee && performanceFee / 100
+
+  const pools = useMemo(() => {
+    const cakePool = poolsWithoutAutoVault.find((pool) => pool.sousId === 0)
+    const cakeAutoVault = { ...cakePool, isAutoVault: true }
+    return [cakeAutoVault, ...poolsWithoutAutoVault]
+  }, [poolsWithoutAutoVault])
 
   // TODO aren't arrays in dep array checked just by reference, i.e. it will rerender every time reference changes?
   const [finishedPools, openPools] = useMemo(() => partition(pools, (pool) => pool.isFinished), [pools])
   const stakedOnlyFinishedPools = useMemo(
-    () => finishedPools.filter((pool) => pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0)),
-    [finishedPools],
+    () =>
+      finishedPools.filter((pool) => {
+        if (pool.isAutoVault) {
+          return accountHasVaultShares
+        }
+        return pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0)
+      }),
+    [finishedPools, accountHasVaultShares],
   )
   const stakedOnlyOpenPools = useMemo(
-    () => openPools.filter((pool) => pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0)),
-    [openPools],
+    () =>
+      openPools.filter((pool) => {
+        if (pool.isAutoVault) {
+          return accountHasVaultShares
+        }
+        return pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0)
+      }),
+    [openPools, accountHasVaultShares],
   )
   const hasStakeInFinishedPools = stakedOnlyFinishedPools.length > 0
-
-  // This pool is passed explicitly to the cake vault
-  const cakePoolData = useMemo(() => openPools.find((pool) => pool.sousId === 0), [openPools])
 
   useFetchCakeVault()
   useFetchPublicPoolsData()
@@ -117,18 +137,36 @@ const Pools: React.FC = () => {
     switch (sortOption) {
       case 'apr':
         // Ternary is needed to prevent pools without APR (like MIX) getting top spot
-        return orderBy(poolsToSort, (pool: Pool) => (pool.apr ? pool.apr : 0), 'desc')
+        return orderBy(
+          poolsToSort,
+          (pool: Pool) => (pool.apr ? aprToDisplay(pool, performanceFeeAsDecimal) : 0),
+          'desc',
+        )
       case 'earned':
         return orderBy(
           poolsToSort,
-          (pool: Pool) =>
-            pool.userData && pool.earningTokenPrice
-              ? pool.userData.pendingReward.times(pool.earningTokenPrice).toNumber()
-              : 0,
+          (pool: Pool) => {
+            if (!pool.userData || !pool.earningTokenPrice) {
+              return 0
+            }
+            return pool.isAutoVault
+              ? getCakeVaultEarnings(
+                  account,
+                  cakeAtLastUserAction,
+                  userShares,
+                  pricePerFullShare,
+                  pool.earningTokenPrice,
+                ).autoUsdToDisplay
+              : pool.userData.pendingReward.times(pool.earningTokenPrice).toNumber()
+          },
           'desc',
         )
       case 'totalStaked':
-        return orderBy(poolsToSort, (pool: Pool) => Number(pool.totalStaked), 'desc')
+        return orderBy(
+          poolsToSort,
+          (pool: Pool) => (pool.isAutoVault ? totalCakeInVault.toNumber() : pool.totalStaked.toNumber()),
+          'desc',
+        )
       default:
         return poolsToSort
     }
@@ -152,28 +190,19 @@ const Pools: React.FC = () => {
     return sortPools(chosenPools).slice(0, numberOfPoolsVisible)
   }
 
-  const hideUnstakedCakeVault = stakedOnly && !accountHasVaultShares
-  const cakeVaultNotInSearchQuery = searchQuery && !'cake'.includes(searchQuery.toLowerCase())
-  const hideCakeVault = hideUnstakedCakeVault || cakeVaultNotInSearchQuery
-
   const cardLayout = (
     <CardLayout>
-      {!showFinishedPools && !hideCakeVault && <CakeVaultCard pool={cakePoolData} showStakedOnly={stakedOnly} />}
-      {poolsToShow().map((pool) => (
-        <PoolCard key={pool.sousId} pool={pool} account={account} />
-      ))}
+      {poolsToShow().map((pool) =>
+        pool.isAutoVault ? (
+          <CakeVaultCard key="auto-cake" pool={pool} showStakedOnly={stakedOnly} />
+        ) : (
+          <PoolCard key={pool.sousId} pool={pool} account={account} />
+        ),
+      )}
     </CardLayout>
   )
 
-  const tableLayout = (
-    <PoolsTable
-      pools={poolsToShow()}
-      cakeVault={hideCakeVault ? null : cakePoolData}
-      account={account}
-      userDataLoaded={userDataLoaded}
-      showFinishedPools={showFinishedPools}
-    />
-  )
+  const tableLayout = <PoolsTable pools={poolsToShow()} account={account} userDataLoaded={userDataLoaded} />
 
   return (
     <>

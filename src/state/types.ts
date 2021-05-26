@@ -37,6 +37,7 @@ export interface Pool extends PoolConfig {
   apr?: number
   stakingTokenPrice?: number
   earningTokenPrice?: number
+  isAutoVault?: boolean
   userData?: {
     allowance: BigNumber
     stakingTokenBalance: BigNumber

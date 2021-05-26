@@ -9,7 +9,7 @@ import { formatNumber, getBalanceNumber, getFullDisplayBalance } from 'utils/for
 import Balance from 'components/Balance'
 import { useCakeVault } from 'state/hooks'
 import { useTranslation } from 'contexts/Localization'
-import { convertSharesToCake } from 'views/Pools/helpers'
+import { getCakeVaultEarnings } from 'views/Pools/helpers'
 import BaseCell, { CellContent } from './BaseCell'
 import CollectModal from '../../PoolCard/Modals/CollectModal'
 
@@ -51,28 +51,27 @@ const EarningsCell: React.FC<EarningsCellProps> = ({ pool, account, userDataLoad
     userData: { cakeAtLastUserAction, userShares, lastUserActionTime },
     pricePerFullShare,
   } = useCakeVault()
-  const hasAutoEarnings =
-    account && cakeAtLastUserAction && cakeAtLastUserAction.gt(0) && userShares && userShares.gt(0)
-  const { cakeAsBigNumber } = convertSharesToCake(userShares, pricePerFullShare)
-  const cakeProfit = cakeAsBigNumber.minus(cakeAtLastUserAction)
-  const cakeToDisplay = cakeProfit.gte(0) ? getBalanceNumber(cakeProfit, 18) : 0
-
-  const dollarValueOfCake = cakeProfit.times(earningTokenPrice)
-  const dollarValueToDisplay = dollarValueOfCake.gte(0) ? getBalanceNumber(dollarValueOfCake, 18) : 0
+  const { hasAutoEarnings, autoCakeToDisplay, autoUsdToDisplay } = getCakeVaultEarnings(
+    account,
+    cakeAtLastUserAction,
+    userShares,
+    pricePerFullShare,
+    earningTokenPrice,
+  )
 
   const lastActionInMs = lastUserActionTime && parseInt(lastUserActionTime) * 1000
   const dateTimeLastAction = new Date(lastActionInMs)
   const dateStringToDisplay = dateTimeLastAction.toLocaleString()
 
   const labelText = isAutoVault ? t('Recent CAKE profit') : t('%asset% Earned', { asset: earningToken.symbol })
-  earningTokenBalance = isAutoVault ? cakeToDisplay : earningTokenBalance
+  earningTokenBalance = isAutoVault ? autoCakeToDisplay : earningTokenBalance
   hasEarnings = isAutoVault ? hasAutoEarnings : hasEarnings
-  earningTokenDollarBalance = isAutoVault ? dollarValueToDisplay : earningTokenDollarBalance
+  earningTokenDollarBalance = isAutoVault ? autoUsdToDisplay : earningTokenDollarBalance
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <>
-      <Balance fontSize="16px" value={cakeToDisplay} decimals={3} bold unit=" CAKE" />
-      <Balance fontSize="16px" value={dollarValueToDisplay} decimals={2} bold prefix="~$" />
+      <Balance fontSize="16px" value={autoCakeToDisplay} decimals={3} bold unit=" CAKE" />
+      <Balance fontSize="16px" value={autoUsdToDisplay} decimals={2} bold prefix="~$" />
       {t('Earned since your last action')}
       <Text>{dateStringToDisplay}</Text>
     </>,
