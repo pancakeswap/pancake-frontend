@@ -1,8 +1,9 @@
 import React from 'react'
 import { Heading, Text, Flex } from '@pancakeswap/uikit'
 import styled from 'styled-components'
+import truncateWalletAddress from 'utils/truncateWalletAddress'
 import { LeaderboardDataItem } from '../../../types'
-import { localiseTradingVolume, accountEllipsis } from '../../../helpers'
+import { localiseTradingVolume } from '../../../helpers'
 
 const Wrapper = styled.div`
   position: relative;
@@ -87,7 +88,7 @@ const GridItem: React.FC<{
         <Text bold>${localiseTradingVolume(volume)}</Text>
       </Flex>
       <Flex alignItems="center" justifyContent="flex-start">
-        <Text color="primary">{accountEllipsis(address)}</Text>
+        <Text color="primary">{truncateWalletAddress(address)}</Text>
       </Flex>
       <TeamImageWrapper justifyContent="flex-end">{teamImages[teamId - 1]}</TeamImageWrapper>
     </Wrapper>
