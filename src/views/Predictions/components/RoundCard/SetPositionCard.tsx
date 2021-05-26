@@ -25,6 +25,7 @@ import useToast from 'hooks/useToast'
 import { BetPosition } from 'state/types'
 import { getDecimalAmount } from 'utils/formatBalance'
 import UnlockButton from 'components/UnlockButton'
+import { BIG_NINE, BIG_TEN } from 'utils/bigNumber'
 import PositionTag from '../PositionTag'
 import { getBnbAmount } from '../../helpers'
 import useSwiper from '../../hooks/useSwiper'
@@ -37,6 +38,11 @@ interface SetPositionCardProps {
   onBack: () => void
   onSuccess: (decimalValue: BigNumber, hash: string) => Promise<void>
 }
+
+// /!\ TEMPORARY /!\
+// Set default gasPrice (6 gwei) when calling BetBull/BetBear before new contract is released fixing this 'issue'.
+// TODO: Remove on beta-v2 smart contract release.
+const gasPrice = new BigNumber(6).times(BIG_TEN.pow(BIG_NINE)).toString()
 
 const dust = new BigNumber(0.01).times(DEFAULT_TOKEN_DECIMAL)
 const percentShortcuts = [10, 25, 50, 75]
@@ -127,7 +133,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
     const decimalValue = getDecimalAmount(valueAsBn)
 
     predictionsContract.methods[betMethod]()
-      .send({ from: account, value: decimalValue })
+      .send({ from: account, value: decimalValue, gasPrice })
       .once('sending', () => {
         setIsTxPending(true)
       })
