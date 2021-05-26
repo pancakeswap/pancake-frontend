@@ -29,6 +29,7 @@ import { fetchWalletNfts } from './collectibles'
 import { getCanClaim } from './predictions/helpers'
 import { transformPool } from './pools/helpers'
 import { fetchPoolsStakingLimitsAsync } from './pools'
+import { fetchFarmData, fetchFarmsData } from './farms'
 
 export const useFetchPublicData = () => {
   const dispatch = useAppDispatch()
@@ -55,6 +56,37 @@ export const usePollBlockNumber = () => {
 
 // Farms
 
+// Fetches farms' data once
+export const useGetFarmsData = () => {
+  const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    dispatch(fetchFarmsData())
+  }, [dispatch])
+}
+
+export const useFastFarmPolling = (pid: number) => {
+  const { fastRefresh } = useRefresh()
+  const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    if (pid) {
+      dispatch(fetchFarmData(pid))
+    }
+  }, [pid, fastRefresh, dispatch])
+}
+
+export const useSlowFarmPolling = (pid: number) => {
+  const { slowRefresh } = useRefresh()
+  const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    if (pid) {
+      dispatch(fetchFarmData(pid))
+    }
+  }, [pid, slowRefresh, dispatch])
+}
+
 export const useFarms = (): FarmsState => {
   const farms = useSelector((state: State) => state.farms)
   return farms
@@ -69,7 +101,6 @@ export const useFarmFromLpSymbol = (lpSymbol: string): Farm => {
   const farm = useSelector((state: State) => state.farms.data.find((f) => f.lpSymbol === lpSymbol))
   return farm
 }
-
 export const useFarmUser = (pid) => {
   const farm = useFarmFromPid(pid)
 
@@ -91,6 +122,9 @@ export const useFarmFromTokenSymbol = (tokenSymbol: string, preferredQuoteTokens
 // Return the base token price for a farm, from a given pid
 export const useBusdPriceFromPid = (pid: number): BigNumber => {
   const farm = useFarmFromPid(pid)
+
+  useSlowFarmPolling(pid)
+
   return farm && new BigNumber(farm.token.busdPrice)
 }
 
@@ -111,7 +145,7 @@ export const useLpTokenPrice = (symbol: string) => {
     // Double it to get overall value in LP
     const overallValueOfAllTokensInFarm = valueOfBaseTokenInFarm.times(2)
     // Divide total value of all tokens, by the number of LP tokens
-    const totalLpTokens = getBalanceAmount(farm.lpTotalSupply)
+    const totalLpTokens = getBalanceAmount(new BigNumber(farm.lpTotalSupply))
     lpTokenPrice = overallValueOfAllTokensInFarm.div(totalLpTokens)
   }
 
@@ -323,12 +357,20 @@ export const useGetApiPrice = (address: string) => {
 }
 
 export const usePriceBnbBusd = (): BigNumber => {
-  const bnbBusdFarm = useFarmFromPid(252)
+  const bnbBusdFarmPid = 252
+  const bnbBusdFarm = useFarmFromPid(bnbBusdFarmPid)
+
+  useFastFarmPolling(bnbBusdFarmPid)
+
   return new BigNumber(bnbBusdFarm.quoteToken.busdPrice)
 }
 
 export const usePriceCakeBusd = (): BigNumber => {
-  const cakeBnbFarm = useFarmFromPid(251)
+  const bnbBusdFarmPid = 251
+  const cakeBnbFarm = useFarmFromPid(bnbBusdFarmPid)
+
+  useFastFarmPolling(bnbBusdFarmPid)
+
   return new BigNumber(cakeBnbFarm.token.busdPrice)
 }
 

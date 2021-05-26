@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Heading, Text, BaseLayout } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
+import { useGetFarmsData } from 'state/hooks'
 import Page from 'components/layout/Page'
 import FarmStakingCard from 'views/Home/components/FarmStakingCard'
 import LotteryCard from 'views/Home/components/LotteryCard'
@@ -86,6 +87,8 @@ const CTACards = styled(BaseLayout)`
 
 const Home: React.FC = () => {
   const { t } = useTranslation()
+
+  useGetFarmsData()
 
   return (
     <Page>

@@ -1,10 +1,12 @@
 /* eslint-disable no-param-reassign */
-import { createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import farmsConfig from 'config/constants/farms'
 import priceHelperLpsConfig from 'config/constants/priceHelperLps'
+import { FarmConfig } from 'config/constants/types'
 import isArchivedPid from 'utils/farmHelpers'
 import fetchFarms from './fetchFarms'
 import fetchFarmsPrices from './fetchFarmsPrices'
+import fetchFarm from './fetchFarm'
 import {
   fetchFarmUserEarnings,
   fetchFarmUserAllowances,
@@ -26,6 +28,22 @@ const noAccountFarmConfig = farmsConfig.map((farm) => ({
 }))
 
 const initialState: FarmsState = { data: noAccountFarmConfig, loadArchivedFarmsData: false, userDataLoaded: false }
+
+// Async thunks
+
+export const fetchFarmsData = createAsyncThunk('farms/fetchFarmsData', async () => {
+  const farmsData = await fetchFarms(nonArchivedFarms)
+  return farmsData
+})
+
+export const fetchFarmData = createAsyncThunk<{ pid: number; data: Farm }, number>(
+  'farms/fetchFarmData',
+  async (pid) => {
+    const farm = farmsConfig.find((farmConfig) => farmConfig.pid === pid)
+    const farmData = await fetchFarm(farm)
+    return { pid: farm.pid, data: farmData }
+  },
+)
 
 export const farmsSlice = createSlice({
   name: 'Farms',
@@ -51,6 +69,28 @@ export const farmsSlice = createSlice({
       const loadArchivedFarmsData = action.payload
       state.loadArchivedFarmsData = loadArchivedFarmsData
     },
+  },
+  extraReducers: (builder) => {
+    // Same as "setFarmsPublicData" above
+    builder.addCase(fetchFarmsData.fulfilled, (state, action) => {
+      const liveFarmsData = action.payload as FarmConfig[]
+
+      state.data = state.data.map((farm) => {
+        const liveFarmData = liveFarmsData.find((f) => f.pid === farm.pid)
+        return { ...farm, ...liveFarmData }
+      })
+    })
+
+    // Updating a single farm
+    builder.addCase(fetchFarmData.fulfilled, (state, action) => {
+      const { pid, data } = action.payload
+      const farmIndex = state.data.findIndex((farm) => farm.pid === pid)
+
+      if (farmIndex >= 0) {
+        const newFarmData = { ...state.data[farmIndex], ...data }
+        state.data[farmIndex] = newFarmData
+      }
+    })
   },
 })
 
