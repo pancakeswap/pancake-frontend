@@ -801,5 +801,7 @@
   "Trading Battle": "트레이딩 배틀",
   "Prediction": "예측",
   "Initial Farm Offering": "초기 팜 오퍼링",
-  "An error occurred confirming transaction": "트랜잭션을 확인하는 중에 오류가 발생했습니다"
+  "An error occurred confirming transaction": "트랜잭션을 확인하는 중에 오류가 발생했습니다",
+  "Successfully Enabled!": "Successfully Enabled!",
+  "You can now participate in the %symbol% IFO.": "You can now participate in the %symbol% IFO."
 }

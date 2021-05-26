@@ -801,5 +801,7 @@
   "Trading Battle": "Kereskedési csata",
   "Prediction": "Előrejelzés",
   "Initial Farm Offering": "Induló gazdálkodási felajánlás (IFO)",
-  "An error occurred confirming transaction": "Hiba történt a tranzakció jóváhagyása során"
+  "An error occurred confirming transaction": "Hiba történt a tranzakció jóváhagyása során",
+  "Successfully Enabled!": "Successfully Enabled!",
+  "You can now participate in the %symbol% IFO.": "You can now participate in the %symbol% IFO."
 }

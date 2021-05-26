@@ -801,5 +801,7 @@
   "Trading Battle": "Bataille de trading",
   "Prediction": "Prédiction",
   "Initial Farm Offering": "Intitial Farm Offering",
-  "An error occurred confirming transaction": "Une erreur s'est produite lors de la confirmation de la transaction"
+  "An error occurred confirming transaction": "Une erreur s'est produite lors de la confirmation de la transaction",
+  "Successfully Enabled!": "Successfully Enabled!",
+  "You can now participate in the %symbol% IFO.": "You can now participate in the %symbol% IFO."
 }

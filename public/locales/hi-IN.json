@@ -801,5 +801,7 @@
   "Trading Battle": "ट्रेडिंग बैटल",
   "Prediction": "पूर्वानुमान",
   "Initial Farm Offering": "फार्म संबंधी आरंभिक पेशकश",
-  "An error occurred confirming transaction": "लेनदेन को कन्फ़र्म करते हुए गड़बड़ी हुई"
+  "An error occurred confirming transaction": "लेनदेन को कन्फ़र्म करते हुए गड़बड़ी हुई",
+  "Successfully Enabled!": "Successfully Enabled!",
+  "You can now participate in the %symbol% IFO.": "You can now participate in the %symbol% IFO."
 }

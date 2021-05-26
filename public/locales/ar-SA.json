@@ -801,5 +801,7 @@
   "Trading Battle": "معركة التداول",
   "Prediction": "التنبؤ",
   "Initial Farm Offering": "العرض الأولي للمزرعة",
-  "An error occurred confirming transaction": "حدث خطأ في أثناء تأكيد المعاملة"
+  "An error occurred confirming transaction": "حدث خطأ في أثناء تأكيد المعاملة",
+  "Successfully Enabled!": "Successfully Enabled!",
+  "You can now participate in the %symbol% IFO.": "You can now participate in the %symbol% IFO."
 }
