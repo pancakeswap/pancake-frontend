@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.34.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.33.2...@pancakeswap/uikit@0.34.0) (2021-05-26)
+
+
+### Features
+
+* Message component ([#120](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/120)) ([0584b7d](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/0584b7d59dd84273c36f81b19077a1eca1fd0bee))
+
+
+
+
+
 ## [0.33.2](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.33.1...@pancakeswap/uikit@0.33.2) (2021-05-26)
 
 
