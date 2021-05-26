@@ -324,7 +324,7 @@ export const useGetApiPrice = (address: string) => {
 
 export const usePriceBnbBusd = (): BigNumber => {
   const bnbBusdFarm = useFarmFromPid(252)
-  return new BigNumber(bnbBusdFarm.token.busdPrice)
+  return new BigNumber(bnbBusdFarm.quoteToken.busdPrice)
 }
 
 export const usePriceCakeBusd = (): BigNumber => {
