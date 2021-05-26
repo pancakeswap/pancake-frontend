@@ -1,19 +1,20 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Flex } from '@pancakeswap/uikit'
+import { Flex, FlexProps } from '@pancakeswap/uikit'
 import Container from 'components/layout/Container'
 import CurvedDivider from './CurvedDivider'
 
 interface PageSectionProps extends BackgroundColorProps {
   svgFill?: string
   dividerComponent?: React.ReactNode
-}
-
-interface BackgroundColorProps {
-  index: number
-  background?: string
   hasCurvedDivider?: boolean
   curvePosition?: 'top' | 'bottom'
+}
+
+interface BackgroundColorProps extends FlexProps {
+  index: number
+  background?: string
+  hasZeroMargin?: boolean
 }
 
 const BackgroundColor = styled(Flex)<BackgroundColorProps>`
@@ -21,16 +22,13 @@ const BackgroundColor = styled(Flex)<BackgroundColorProps>`
   flex-direction: column;
   z-index: ${({ index }) => index - 1};
   background: ${({ background, theme }) => background || theme.colors.background};
-  padding: ${({ hasCurvedDivider }) => (hasCurvedDivider ? '48px 0' : '96px 0 24px')};
-  margin: ${({ curvePosition }) => (curvePosition === 'top' ? '0' : '-34px')} 0;
+  padding: 48px 0;
+  margin: ${({ hasZeroMargin }) => (hasZeroMargin ? '0' : '-32px')} 0;
   ${({ theme }) => theme.mediaQueries.sm} {
-    margin: ${({ curvePosition }) => (curvePosition === 'top' ? '0' : '-42px')} 0;
-  }
-  ${({ theme }) => theme.mediaQueries.xl} {
-    margin: ${({ curvePosition }) => (curvePosition === 'top' ? '0' : '-52px')} 0;
+    margin: ${({ hasZeroMargin }) => (hasZeroMargin ? '0' : '-52px')} 0;
   }
   @media screen and (min-width: 1920px) {
-    margin: ${({ curvePosition }) => (curvePosition === 'top' ? '0' : '-72px')} 0;
+    margin: ${({ hasZeroMargin }) => (hasZeroMargin ? '0' : '-72px')} 0;
   }
 `
 
@@ -40,13 +38,13 @@ const ChildrenWrapper = styled(Container)`
   padding-bottom: 16px;
 
   ${({ theme }) => theme.mediaQueries.sm} {
-    padding-top: 24px;
-    padding-bottom: 24px;
+    padding-top: 32px;
+    padding-bottom: 32px;
   }
 
   ${({ theme }) => theme.mediaQueries.lg} {
-    padding-top: 32px;
-    padding-bottom: 32px;
+    padding-top: 48px;
+    padding-bottom: 48px;
   }
 `
 
@@ -58,7 +56,10 @@ const PageSection: React.FC<PageSectionProps> = ({
   dividerComponent,
   curvePosition = 'bottom',
   hasCurvedDivider = true,
+  ...props
 }) => {
+  const hasZeroMargin = !hasCurvedDivider || curvePosition === 'top'
+
   return (
     <>
       {hasCurvedDivider && curvePosition === 'top' && (
@@ -69,12 +70,7 @@ const PageSection: React.FC<PageSectionProps> = ({
           dividerComponent={dividerComponent}
         />
       )}
-      <BackgroundColor
-        background={background}
-        index={index}
-        curvePosition={curvePosition}
-        hasCurvedDivider={hasCurvedDivider}
-      >
+      <BackgroundColor background={background} index={index} hasZeroMargin={hasZeroMargin} {...props}>
         <ChildrenWrapper>{children}</ChildrenWrapper>
       </BackgroundColor>
       {hasCurvedDivider && curvePosition === 'bottom' && (
