@@ -95,7 +95,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
           <Text fontSize="14px" color="textSubtle" pl="48px">
             {t('%ratio%% of total sale', { ratio: distributionRatio })}
           </Text>
-          {enableStatus !== EnableStatus.ENABLED && (
+          {enableStatus !== EnableStatus.ENABLED && account && (
             <Button
               width="100%"
               mt="16px"
