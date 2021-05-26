@@ -1,5 +1,10 @@
 import { BASE_BSC_SCAN_URL } from 'config'
-import { getBscScanAddressUrl, getBscScanTransactionUrl, getBscScanBlockNumberUrl } from 'utils/bscscan'
+import {
+  getBscScanAddressUrl,
+  getBscScanTransactionUrl,
+  getBscScanBlockNumberUrl,
+  getBscScanBlockCountdownUrl,
+} from 'utils/bscscan'
 
 describe('getBscScanAddressUrl', () => {
   it.each([
@@ -45,5 +50,14 @@ describe('getBscScanBlockNumberUrl', () => {
     [7737334, `${BASE_BSC_SCAN_URL}/block/7737334`],
   ])('returns correct bscscan url given block number %s', (block, expected) => {
     expect(getBscScanBlockNumberUrl(block)).toEqual(expected)
+  })
+})
+
+describe('getBscScanBlockCountdownUrl', () => {
+  it.each([
+    ['7737334', `${BASE_BSC_SCAN_URL}/block/countdown/7737334`],
+    [7737334, `${BASE_BSC_SCAN_URL}/block/countdown/7737334`],
+  ])('returns correct bscscan url given block number %s', (block, expected) => {
+    expect(getBscScanBlockCountdownUrl(block)).toEqual(expected)
   })
 })

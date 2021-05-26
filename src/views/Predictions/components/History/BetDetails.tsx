@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Bet } from 'state/types'
 import { useTranslation } from 'contexts/Localization'
+import { getBscScanBlockNumberUrl } from 'utils/bscscan'
 import { Flex, Text, Link, Heading } from '@pancakeswap/uikit'
 import { Result } from 'state/predictions/helpers'
 import { getMultiplier } from '../../helpers'
@@ -42,13 +43,13 @@ const BetDetails: React.FC<BetDetailsProps> = ({ bet, result }) => {
       </RoundResult>
       <Flex alignItems="center" justifyContent="space-between" mb="8px">
         <Text>{t('Opening Block')}</Text>
-        <Link href={`https://bscscan.com/block/${bet.round.lockBlock}`} external>
+        <Link href={getBscScanBlockNumberUrl(bet.round.lockBlock)} external>
           {bet.round.lockBlock}
         </Link>
       </Flex>
       <Flex alignItems="center" justifyContent="space-between">
         <Text>{t('Closing Block')}</Text>
-        <Link href={`https://bscscan.com/block/${bet.round.endBlock}`} external>
+        <Link href={getBscScanBlockNumberUrl(bet.round.endBlock)} external>
           {bet.round.endBlock}
         </Link>
       </Flex>
