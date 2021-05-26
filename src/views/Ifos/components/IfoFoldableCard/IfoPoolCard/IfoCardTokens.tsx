@@ -1,10 +1,22 @@
 import React from 'react'
-import { Text, Flex, Box, Image, CheckmarkCircleIcon, FlexProps, HelpIcon, useTooltip } from '@pancakeswap/uikit'
+import {
+  Text,
+  Flex,
+  Box,
+  Image,
+  CheckmarkCircleIcon,
+  FlexProps,
+  HelpIcon,
+  useTooltip,
+  Button,
+  AutoRenewIcon,
+} from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { PublicIfoData, WalletIfoData } from 'hooks/ifo/types'
 import { useTranslation } from 'contexts/Localization'
 import { getBalanceNumber } from 'utils/formatBalance'
+import { EnableStatus } from '../types'
 import PercentageOfTotal from './PercentageOfTotal'
 import { SkeletonCardTokens } from './Skeletons'
 
@@ -32,6 +44,8 @@ interface IfoCardTokensProps {
   walletIfoData: WalletIfoData
   hasProfile: boolean
   isLoading: boolean
+  onApprove: () => Promise<any>
+  enableStatus: EnableStatus
 }
 
 const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
@@ -41,6 +55,8 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
   walletIfoData,
   hasProfile,
   isLoading,
+  onApprove,
+  enableStatus,
 }) => {
   const { account } = useWeb3React()
   const { t } = useTranslation()
@@ -79,6 +95,17 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
           <Text fontSize="14px" color="textSubtle" pl="48px">
             {t('%ratio%% of total sale', { ratio: distributionRatio })}
           </Text>
+          {enableStatus !== EnableStatus.ENABLED && account && (
+            <Button
+              width="100%"
+              mt="16px"
+              onClick={onApprove}
+              isLoading={enableStatus === EnableStatus.IS_ENABLING}
+              endIcon={enableStatus === EnableStatus.IS_ENABLING ? <AutoRenewIcon spin color="currentColor" /> : null}
+            >
+              {t('Enable')}
+            </Button>
+          )}
         </>
       )
     }
