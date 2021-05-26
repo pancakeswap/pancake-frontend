@@ -37,6 +37,11 @@ export const useFetchPublicData = () => {
   useEffect(() => {
     dispatch(fetchFarmsPublicDataAsync())
   }, [dispatch, slowRefresh, web3])
+}
+
+export const usePollBlockNumber = () => {
+  const dispatch = useAppDispatch()
+  const web3 = getWeb3NoAccount()
 
   useEffect(() => {
     const interval = setInterval(async () => {
