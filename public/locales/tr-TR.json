@@ -801,5 +801,7 @@
   "Trading Battle": "Takas Savaşı",
   "Prediction": "Tahmin",
   "Initial Farm Offering": "İlk Farm Arzı",
-  "An error occurred confirming transaction": "İşlem onaylanırken bir hata oluştu"
+  "An error occurred confirming transaction": "İşlem onaylanırken bir hata oluştu",
+  "Successfully Enabled!": "Successfully Enabled!",
+  "You can now participate in the %symbol% IFO.": "You can now participate in the %symbol% IFO."
 }
