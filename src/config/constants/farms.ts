@@ -39,6 +39,16 @@ const farms: FarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 335,
+    lpSymbol: 'LIEN-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0xa4963B38b271c0D714593063497Fc786Fa4029Ce',
+    },
+    token: tokens.lien,
+    quoteToken: tokens.wbnb,
+  },
+  {
     pid: 392,
     lpSymbol: 'WELL-BUSD LP',
     lpAddresses: {
@@ -636,16 +646,6 @@ const farms: FarmConfig[] = [
       56: '0x123D475E13aA54A43a7421d94CAa4459dA021c77',
     },
     token: tokens.swth,
-    quoteToken: tokens.wbnb,
-  },
-  {
-    pid: 335,
-    lpSymbol: 'LIEN-BNB LP',
-    lpAddresses: {
-      97: '',
-      56: '0xa4963B38b271c0D714593063497Fc786Fa4029Ce',
-    },
-    token: tokens.lien,
     quoteToken: tokens.wbnb,
   },
   {
