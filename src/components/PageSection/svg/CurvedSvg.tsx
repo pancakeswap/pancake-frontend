@@ -1,7 +1,18 @@
 import React from 'react'
+import styled from 'styled-components'
 import { Svg, SvgProps } from '@pancakeswap/uikit'
 
-const Prizes: React.FC<SvgProps> = (props) => {
+interface StyledSvgProps {
+  svgFill?: string
+}
+
+const sharedStyles = `
+svg {
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  }
+`
+
+const CurvedSvg: React.FC<SvgProps> = (props) => {
   return (
     <Svg viewBox="0 0 1200 66" {...props}>
       <g filter="url(#intersect_filter0_d)">
@@ -30,4 +41,16 @@ const Prizes: React.FC<SvgProps> = (props) => {
   )
 }
 
-export default Prizes
+export default CurvedSvg
+
+export const CurvedSvgTop = styled(CurvedSvg)<StyledSvgProps>`
+  ${sharedStyles}
+  transform: rotate(180deg);
+  margin-bottom: -2px;
+  fill: ${({ svgFill, theme }) => svgFill || theme.colors.background};
+`
+
+export const CurvedSvgBottom = styled(CurvedSvg)<StyledSvgProps>`
+  ${sharedStyles}
+  fill: ${({ svgFill, theme }) => svgFill || theme.colors.background};
+`

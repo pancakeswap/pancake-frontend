@@ -14,7 +14,7 @@ import {
   OVER,
   REGISTRATION,
 } from 'config/constants/trading-competition/easterPhases'
-import { PrizesIcon, RanksIcon, RulesIcon } from './svgs'
+import PageSection from 'components/PageSection'
 import {
   DARKBG,
   DARKFILL,
@@ -26,14 +26,14 @@ import {
   LIGHTBLUEBG_DARK,
   LIGHTBLUEFILL,
   LIGHTBLUEFILL_DARK,
-} from './components/Section/sectionStyles'
+} from './pageSectionStyles'
+import { PrizesIcon, RanksIcon, RulesIcon } from './svgs'
 import Countdown from './components/Countdown'
 import YourScore from './components/YourScore'
 import StormBunny from './pngs/storm.png'
 import RibbonWithImage from './components/RibbonWithImage'
 import HowToJoin from './components/HowToJoin'
 import BattleBanner from './components/BattleBanner'
-import Section from './components/Section'
 import BattleCta from './components/BattleCta'
 import PrizesInfo from './components/PrizesInfo'
 import Rules from './components/Rules'
@@ -206,11 +206,11 @@ const TradingCompetition = () => {
 
   return (
     <CompetitionPage>
-      <Section
-        backgroundStyle={DARKBG}
+      <PageSection
+        background={DARKBG}
         svgFill={DARKFILL}
         index={5}
-        intersectComponent={
+        dividerComponent={
           shouldHideCta ? null : (
             <BattleCta
               userTradingInformation={userTradingInformation}
@@ -233,12 +233,12 @@ const TradingCompetition = () => {
           <Countdown currentPhase={currentPhase} hasCompetitionEnded={hasCompetitionEnded} />
           <BattleBanner />
         </BannerFlex>
-      </Section>
-      <Section
-        backgroundStyle={isDark ? MIDBLUEBG_DARK : MIDBLUEBG}
+      </PageSection>
+      <PageSection
+        background={isDark ? MIDBLUEBG_DARK : MIDBLUEBG}
         svgFill={isDark ? MIDBLUEFILL_DARK : MIDBLUEFILL}
         index={4}
-        intersectComponent={
+        dividerComponent={
           <RibbonWithImage imageComponent={<RanksIcon width="175px" />} ribbonDirection="up">
             Team Ranks
           </RibbonWithImage>
@@ -264,10 +264,10 @@ const TradingCompetition = () => {
             />
           )}
         </Box>
-      </Section>
-      <Section
+      </PageSection>
+      <PageSection
         index={3}
-        intersectComponent={
+        dividerComponent={
           <RibbonWithImage imageComponent={<PrizesIcon width="175px" />} ribbonDirection="up">
             Prizes
           </RibbonWithImage>
@@ -281,29 +281,29 @@ const TradingCompetition = () => {
             globalLeaderboardInformation={globalLeaderboardInformation}
           />
         </Box>
-      </Section>
-      <Section
-        backgroundStyle={isDark ? LIGHTBLUEBG_DARK : LIGHTBLUEBG}
+      </PageSection>
+      <PageSection
+        background={isDark ? LIGHTBLUEBG_DARK : LIGHTBLUEBG}
         svgFill={isDark ? LIGHTBLUEFILL_DARK : LIGHTBLUEFILL}
         index={2}
-        noIntersection
+        hasCurvedDivider={false}
       >
         <Box mb="78px">
           <PrizesInfo />
         </Box>
-      </Section>
-      <Section
+      </PageSection>
+      <PageSection
         index={3}
-        intersectionPosition="top"
-        intersectComponent={
+        curvePosition="top"
+        dividerComponent={
           <RibbonWithImage imageComponent={<RulesIcon width="175px" />} ribbonDirection="up">
             Rules
           </RibbonWithImage>
         }
       >
         <Rules />
-      </Section>
-      <Section backgroundStyle={DARKBG} svgFill={DARKFILL} index={4} intersectionPosition="top">
+      </PageSection>
+      <PageSection background={DARKBG} svgFill={DARKFILL} index={4} curvePosition="top">
         <Flex alignItems="center">
           {shouldHideCta ? null : (
             <Flex height="fit-content">
@@ -327,7 +327,7 @@ const TradingCompetition = () => {
             <Image src={StormBunny} width={147} height={200} />
           </BottomBunnyWrapper>
         </Flex>
-      </Section>
+      </PageSection>
     </CompetitionPage>
   )
 }

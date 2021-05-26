@@ -5,10 +5,10 @@ import { useTranslation } from 'contexts/Localization'
 import Timer from 'components/Timer'
 import getTimePeriods from 'utils/getTimePeriods'
 import { CompetitionSteps, LIVE } from 'config/constants/trading-competition/easterPhases'
+import useTheme from 'hooks/useTheme'
 import { Heading2Text } from '../CompetitionHeadingText'
 import { CompetitionPhaseProps } from '../../types'
 import ProgressStepper from './ProgressStepper'
-import { GOLDGRADIENT } from '../Section/sectionStyles'
 
 const Wrapper = styled(Flex)`
   width: fit-content;
@@ -65,22 +65,11 @@ const StyledHeading = styled(Heading2Text)`
   }
 `
 
-const TimerHeadingComponent = ({ children }) => (
-  <StyledHeading background={GOLDGRADIENT} $fill>
-    {children}
-  </StyledHeading>
-)
-
-const TimerBodyComponent = ({ children }) => (
-  <Text bold color="#ffff" fontSize="16px" mr={{ _: '8px', sm: '16px' }}>
-    {children}
-  </Text>
-)
-
 const Countdown: React.FC<{ currentPhase: CompetitionPhaseProps; hasCompetitionEnded: boolean }> = ({
   currentPhase,
   hasCompetitionEnded,
 }) => {
+  const { theme } = useTheme()
   const { t } = useTranslation()
   const finishMs = currentPhase.ends
   const currentMs = Date.now()
@@ -91,7 +80,7 @@ const Countdown: React.FC<{ currentPhase: CompetitionPhaseProps; hasCompetitionE
   const renderTimer = () => {
     if (hasCompetitionEnded) {
       return (
-        <StyledHeading background={GOLDGRADIENT} $fill>
+        <StyledHeading background={theme.colors.gradients.gold} $fill>
           {t('Finished')}!
         </StyledHeading>
       )
@@ -102,8 +91,16 @@ const Countdown: React.FC<{ currentPhase: CompetitionPhaseProps; hasCompetitionE
         minutes={minutes}
         hours={hours}
         days={days}
-        HeadingTextComponent={TimerHeadingComponent}
-        BodyTextComponent={TimerBodyComponent}
+        HeadingTextComponent={({ children }) => (
+          <StyledHeading background={theme.colors.gradients.gold} $fill>
+            {children}
+          </StyledHeading>
+        )}
+        BodyTextComponent={({ children }) => (
+          <Text bold color="#ffff" fontSize="16px" mr={{ _: '8px', sm: '16px' }}>
+            {children}
+          </Text>
+        )}
       />
     )
   }
