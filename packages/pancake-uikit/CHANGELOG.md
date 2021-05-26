@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.33.2](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.33.1...@pancakeswap/uikit@0.33.2) (2021-05-26)
+
+
+### Bug Fixes
+
+* Add border to button menu ([#117](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/117)) ([ddccc89](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/ddccc894873fc029e085df3fddc95adfc2cd4488))
+* Card radius ([#116](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/116)) ([beb881a](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/beb881a8829496a0949f1ae073e88759f131f801))
+* Change help link of connect modal to point connect ([#118](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/118)) ([486e7d3](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/486e7d375b8abaa9a4fabfc079c9872c2925c929))
+
+
+
+
+
 ## [0.33.1](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.33.0...@pancakeswap/uikit@0.33.1) (2021-05-25)
 
 
