@@ -115,24 +115,16 @@ const Pools: React.FC = () => {
 
   const sortPools = (poolsToSort: Pool[]) => {
     switch (sortOption) {
-      // TODO: At the moment sorting by APR would be incredibly expensive due to the fact that we
-      // would need to calculate APR for each pool here and then it will be recalculated in the pool
-      // card or table row. APR handling should be refactored to pre-populate APR for each pool beforehand
-      // instead of doing it ad-hoc in the pool card/row.
-      // case 'apr':
-      //   return orderBy(poolsToSort, (pool: Pool) => pool.apr, 'desc')
-
-      // TODO: Sorting by earned is also not possible with current data architecture
-      // We have hooks to retrieve price like useBusdPriceFromToken, but they are hooks, its not possible
-      // to use them in the sorting function. Until we calculate all prices and put them in redux pool data
-      // the only way to do that is to put hook for each pool in this component, which is obviously
-      // not a proper way to handle this.
       case 'apr':
-        return orderBy(poolsToSort, 'apr', 'desc')
+        // Ternary is needed to prevent pools without APR (like MIX) getting top spot
+        return orderBy(poolsToSort, (pool: Pool) => (pool.apr ? pool.apr : 0), 'desc')
       case 'earned':
         return orderBy(
           poolsToSort,
-          (pool: Pool) => (pool.userData ? pool.userData.pendingReward.times(pool.earningTokenPrice).toNumber() : 0),
+          (pool: Pool) =>
+            pool.userData && pool.earningTokenPrice
+              ? pool.userData.pendingReward.times(pool.earningTokenPrice).toNumber()
+              : 0,
           'desc',
         )
       case 'totalStaked':

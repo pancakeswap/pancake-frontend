@@ -1,5 +1,6 @@
 import BigNumber from 'bignumber.js'
-import { Pool } from 'state/types'
+import { Farm, Pool } from 'state/types'
+import { getAddress } from 'utils/addressHelpers'
 import { BIG_ZERO } from 'utils/bigNumber'
 
 type UserData =
@@ -29,4 +30,20 @@ export const transformPool = (pool: Pool): Pool => {
     totalStaked: new BigNumber(totalStaked),
     stakingLimit: new BigNumber(stakingLimit),
   } as Pool
+}
+
+export const getTokenPricesFromFarm = (farms: Farm[]) => {
+  return farms.reduce((prices, farm) => {
+    const quoteTokenAddress = getAddress(farm.quoteToken.address).toLocaleLowerCase()
+    const tokenAddress = getAddress(farm.token.address).toLocaleLowerCase()
+    /* eslint-disable no-param-reassign */
+    if (!prices[quoteTokenAddress]) {
+      prices[quoteTokenAddress] = new BigNumber(farm.quoteToken.busdPrice).toNumber()
+    }
+    if (!prices[tokenAddress]) {
+      prices[tokenAddress] = new BigNumber(farm.token.busdPrice).toNumber()
+    }
+    /* eslint-enable no-param-reassign */
+    return prices
+  }, {})
 }

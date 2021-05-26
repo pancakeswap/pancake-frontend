@@ -16,6 +16,7 @@ import {
 } from './fetchPoolsUser'
 import { fetchPublicVaultData, fetchVaultFees } from './fetchVaultPublic'
 import fetchVaultUser from './fetchVaultUser'
+import { getTokenPricesFromFarm } from './helpers'
 
 const initialState: PoolsState = {
   data: [...poolsConfig],
@@ -47,8 +48,7 @@ export const fetchPoolsPublicDataAsync = (currentBlock: number) => async (dispat
   const blockLimits = await fetchPoolsBlockLimits()
   const totalStakings = await fetchPoolsTotalStaking()
 
-  // TODO: temporary solution, update to LP prices once its merged
-  const { isLoading: pircesAreLoading, data: pricesData } = getState().prices
+  const prices = getTokenPricesFromFarm(getState().farms.data)
 
   const liveData = poolsConfig.map((pool) => {
     const blockLimit = blockLimits.find((entry) => entry.sousId === pool.sousId)
@@ -56,15 +56,11 @@ export const fetchPoolsPublicDataAsync = (currentBlock: number) => async (dispat
     const isPoolEndBlockExceeded = currentBlock > 0 && blockLimit ? currentBlock > Number(blockLimit.endBlock) : false
     const isPoolFinished = pool.isFinished || isPoolEndBlockExceeded
 
-    // TODO: temporary solution, update to LP prices once its merged
-    const stakingTokenPrice =
-      !pircesAreLoading && pool.stakingToken.address
-        ? pricesData[getAddress(pool.stakingToken.address).toLowerCase()]
-        : 0
-    let earningTokenPrice =
-      !pircesAreLoading && pool.earningToken.address
-        ? pricesData[getAddress(pool.earningToken.address).toLowerCase()]
-        : 0
+    const stakingTokenAddress = pool.stakingToken.address ? getAddress(pool.stakingToken.address).toLowerCase() : null
+    const stakingTokenPrice = stakingTokenAddress ? prices[stakingTokenAddress] : 0
+
+    const earningTokenAddress = pool.earningToken.address ? getAddress(pool.earningToken.address).toLowerCase() : null
+    const earningTokenPrice = earningTokenAddress ? prices[earningTokenAddress] : 0
     const apr = !isPoolFinished
       ? getPoolApr(
           stakingTokenPrice,
