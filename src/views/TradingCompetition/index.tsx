@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
 import { useProfile } from 'state/hooks'
 import { Flex, Box, Image } from '@pancakeswap/uikit'
@@ -70,6 +71,7 @@ const BottomBunnyWrapper = styled(Box)`
 const TradingCompetition = () => {
   const profileApiUrl = process.env.REACT_APP_API_PROFILE
   const { account } = useWeb3React()
+  const { t } = useTranslation()
   const { profile, isLoading } = useProfile()
   const { isDark } = useTheme()
   const tradingCompetitionContract = useTradingCompetitionContract()
@@ -240,7 +242,7 @@ const TradingCompetition = () => {
         index={4}
         intersectComponent={
           <RibbonWithImage imageComponent={<RanksIcon width="175px" />} ribbonDirection="up">
-            Team Ranks
+            {t('Team Ranks')}
           </RibbonWithImage>
         }
       >
@@ -269,7 +271,7 @@ const TradingCompetition = () => {
         index={3}
         intersectComponent={
           <RibbonWithImage imageComponent={<PrizesIcon width="175px" />} ribbonDirection="up">
-            Prizes
+            {t('Prizes')}
           </RibbonWithImage>
         }
       >
@@ -297,7 +299,7 @@ const TradingCompetition = () => {
         intersectionPosition="top"
         intersectComponent={
           <RibbonWithImage imageComponent={<RulesIcon width="175px" />} ribbonDirection="up">
-            Rules
+            {t('Rules')}
           </RibbonWithImage>
         }
       >
