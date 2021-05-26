@@ -4,7 +4,7 @@ import { Flex } from '@pancakeswap/uikit'
 import Container from 'components/layout/Container'
 import CurvedDivider from './CurvedDivider'
 
-interface PageSliceProps extends BackgroundColorProps {
+interface PageSectionProps extends BackgroundColorProps {
   svgFill?: string
   dividerComponent?: React.ReactNode
 }
@@ -50,7 +50,7 @@ const ChildrenWrapper = styled(Container)`
   }
 `
 
-const PageSlice: React.FC<PageSliceProps> = ({
+const PageSection: React.FC<PageSectionProps> = ({
   children,
   background,
   svgFill,
@@ -89,4 +89,4 @@ const PageSlice: React.FC<PageSliceProps> = ({
   )
 }
 
-export default PageSlice
+export default PageSection

@@ -14,7 +14,7 @@ import {
   OVER,
   REGISTRATION,
 } from 'config/constants/trading-competition/easterPhases'
-import PageSlice from 'components/PageSlice'
+import PageSection from 'components/PageSection'
 import {
   DARKBG,
   DARKFILL,
@@ -26,7 +26,7 @@ import {
   LIGHTBLUEBG_DARK,
   LIGHTBLUEFILL,
   LIGHTBLUEFILL_DARK,
-} from './pageSliceStyles'
+} from './pageSectionStyles'
 import { PrizesIcon, RanksIcon, RulesIcon } from './svgs'
 import Countdown from './components/Countdown'
 import YourScore from './components/YourScore'
@@ -206,7 +206,7 @@ const TradingCompetition = () => {
 
   return (
     <CompetitionPage>
-      <PageSlice
+      <PageSection
         background={DARKBG}
         svgFill={DARKFILL}
         index={5}
@@ -233,8 +233,8 @@ const TradingCompetition = () => {
           <Countdown currentPhase={currentPhase} hasCompetitionEnded={hasCompetitionEnded} />
           <BattleBanner />
         </BannerFlex>
-      </PageSlice>
-      <PageSlice
+      </PageSection>
+      <PageSection
         background={isDark ? MIDBLUEBG_DARK : MIDBLUEBG}
         svgFill={isDark ? MIDBLUEFILL_DARK : MIDBLUEFILL}
         index={4}
@@ -264,8 +264,8 @@ const TradingCompetition = () => {
             />
           )}
         </Box>
-      </PageSlice>
-      <PageSlice
+      </PageSection>
+      <PageSection
         index={3}
         dividerComponent={
           <RibbonWithImage imageComponent={<PrizesIcon width="175px" />} ribbonDirection="up">
@@ -281,8 +281,8 @@ const TradingCompetition = () => {
             globalLeaderboardInformation={globalLeaderboardInformation}
           />
         </Box>
-      </PageSlice>
-      <PageSlice
+      </PageSection>
+      <PageSection
         background={isDark ? LIGHTBLUEBG_DARK : LIGHTBLUEBG}
         svgFill={isDark ? LIGHTBLUEFILL_DARK : LIGHTBLUEFILL}
         index={2}
@@ -291,8 +291,8 @@ const TradingCompetition = () => {
         <Box mb="78px">
           <PrizesInfo />
         </Box>
-      </PageSlice>
-      <PageSlice
+      </PageSection>
+      <PageSection
         index={3}
         curvePosition="top"
         dividerComponent={
@@ -302,8 +302,8 @@ const TradingCompetition = () => {
         }
       >
         <Rules />
-      </PageSlice>
-      <PageSlice background={DARKBG} svgFill={DARKFILL} index={4} curvePosition="top">
+      </PageSection>
+      <PageSection background={DARKBG} svgFill={DARKFILL} index={4} curvePosition="top">
         <Flex alignItems="center">
           {shouldHideCta ? null : (
             <Flex height="fit-content">
@@ -327,7 +327,7 @@ const TradingCompetition = () => {
             <Image src={StormBunny} width={147} height={200} />
           </BottomBunnyWrapper>
         </Flex>
-      </PageSlice>
+      </PageSection>
     </CompetitionPage>
   )
 }
