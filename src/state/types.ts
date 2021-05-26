@@ -284,7 +284,6 @@ export interface State {
   achievements: AchievementState
   block: BlockState
   farms: FarmsState
-  apiPrices: PriceApiState
   pools: PoolsState
   predictions: PredictionsState
   profile: ProfileState

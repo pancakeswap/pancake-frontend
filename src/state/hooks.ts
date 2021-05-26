@@ -24,7 +24,6 @@ import { State, Farm, Pool, ProfileState, TeamsState, AchievementState, PriceApi
 import { fetchProfile } from './profile'
 import { fetchTeam, fetchTeams } from './teams'
 import { fetchAchievements } from './achievements'
-import { fetchApiPrices } from './apiPrices'
 import { fetchWalletNfts } from './collectibles'
 import { getCanClaim } from './predictions/helpers'
 import { transformPool } from './pools/helpers'
@@ -295,31 +294,6 @@ export const useFetchAchievements = () => {
 export const useAchievements = () => {
   const achievements: AchievementState['data'] = useSelector((state: State) => state.achievements.data)
   return achievements
-}
-
-// API Prices
-export const useFetchApiPriceList = () => {
-  const { slowRefresh } = useRefresh()
-  const dispatch = useAppDispatch()
-
-  useEffect(() => {
-    dispatch(fetchApiPrices())
-  }, [dispatch, slowRefresh])
-}
-
-export const useGetApiPrices = () => {
-  const apiPrices: PriceApiState['data'] = useSelector((state: State) => state.apiPrices.data)
-  return apiPrices
-}
-
-export const useGetApiPrice = (address: string) => {
-  const apiPrices = useGetApiPrices()
-
-  if (!apiPrices) {
-    return null
-  }
-
-  return apiPrices[address.toLowerCase()]
 }
 
 export const usePriceBnbBusd = (): BigNumber => {
