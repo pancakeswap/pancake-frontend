@@ -6,8 +6,7 @@ import { NavLink } from 'react-router-dom'
 import { useTranslation } from 'contexts/Localization'
 import BigNumber from 'bignumber.js'
 import { getFarmApr } from 'utils/apr'
-import { useFarms, usePriceCakeBusd, useGetApiPrices } from 'state/hooks'
-import { getAddress } from 'utils/addressHelpers'
+import { useFarms, usePriceCakeBusd } from 'state/hooks'
 
 const StyledFarmStakingCard = styled(Card)`
   margin-left: auto;
@@ -30,15 +29,13 @@ const CardMidContent = styled(Heading).attrs({ scale: 'xl' })`
 const EarnAPRCard = () => {
   const { t } = useTranslation()
   const { data: farmsLP } = useFarms()
-  const prices = useGetApiPrices()
   const cakePrice = usePriceCakeBusd()
 
   const highestApr = useMemo(() => {
     const aprs = farmsLP.map((farm) => {
       // Filter inactive farms, because their theoretical APR is super high. In practice, it's 0.
-      if (farm.pid !== 0 && farm.multiplier !== '0X' && farm.lpTotalInQuoteToken && prices) {
-        const quoteTokenPriceUsd = prices[getAddress(farm.quoteToken.address).toLowerCase()]
-        const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(quoteTokenPriceUsd)
+      if (farm.pid !== 0 && farm.multiplier !== '0X' && farm.lpTotalInQuoteToken && farm.quoteToken.busdPrice) {
+        const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(farm.quoteToken.busdPrice)
         return getFarmApr(farm.poolWeight, cakePrice, totalLiquidity)
       }
       return null
@@ -46,7 +43,7 @@ const EarnAPRCard = () => {
 
     const maxApr = max(aprs)
     return maxApr?.toLocaleString('en-US', { maximumFractionDigits: 2 })
-  }, [cakePrice, farmsLP, prices])
+  }, [cakePrice, farmsLP])
 
   const aprText = highestApr || '-'
   const earnAprText = t('Earn up to %highestApr% APR in Farms', { highestApr: aprText })

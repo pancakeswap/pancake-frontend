@@ -2,7 +2,7 @@ import { configureStore } from '@reduxjs/toolkit'
 import { useDispatch } from 'react-redux'
 import farmsReducer from './farms'
 import poolsReducer from './pools'
-import pricesReducer from './prices'
+import apiPricesReducer from './apiPrices'
 import predictionsReducer from './predictions'
 import profileReducer from './profile'
 import teamsReducer from './teams'
@@ -17,7 +17,7 @@ const store = configureStore({
     block: blockReducer,
     farms: farmsReducer,
     pools: poolsReducer,
-    prices: pricesReducer,
+    apiPrices: apiPricesReducer,
     predictions: predictionsReducer,
     profile: profileReducer,
     teams: teamsReducer,

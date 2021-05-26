@@ -1,7 +1,7 @@
 import React from 'react'
 import { useTranslation } from 'contexts/Localization'
 import styled from 'styled-components'
-import { Text, Flex, LinkExternal } from '@pancakeswap/uikit'
+import { Text, Flex, LinkExternal, Skeleton } from '@pancakeswap/uikit'
 
 export interface ExpandableSectionProps {
   bscScanAddress?: string
@@ -34,7 +34,7 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
     <Wrapper>
       <Flex justifyContent="space-between">
         <Text>{t('Total Liquidity')}:</Text>
-        <Text>{totalValueFormatted}</Text>
+        {totalValueFormatted ? <Text>{totalValueFormatted}</Text> : <Skeleton width={75} height={25} />}
       </Flex>
       {!removed && (
         <StyledLinkExternal href={addLiquidityUrl}>{t('Get %symbol%', { symbol: lpLabel })}</StyledLinkExternal>

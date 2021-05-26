@@ -3,7 +3,7 @@ import { Address, Token } from 'config/constants/types'
 import masterchefABI from 'config/abi/masterchef.json'
 import erc20 from 'config/abi/erc20.json'
 import { getAddress, getMasterChefAddress } from 'utils/addressHelpers'
-import { BIG_TEN } from 'utils/bigNumber'
+import { BIG_TEN, BIG_ZERO } from 'utils/bigNumber'
 import multicall from 'utils/multicall'
 
 const fetchFarm = async (pid: number, lpAddresses: Address, token: Token, quoteToken: Token) => {
@@ -61,20 +61,24 @@ const fetchFarm = async (pid: number, lpAddresses: Address, token: Token, quoteT
   // Total staked in LP, in quote token value
   const lpTotalInQuoteToken = quoteTokenAmountMc.times(new BigNumber(2))
 
-  const [info, totalAllocPoint] = await multicall(masterchefABI, [
-    {
-      address: getMasterChefAddress(),
-      name: 'poolInfo',
-      params: [pid],
-    },
-    {
-      address: getMasterChefAddress(),
-      name: 'totalAllocPoint',
-    },
-  ])
+  // Only make masterchef calls if farm has pid
+  const [info, totalAllocPoint] =
+    pid || pid === 0
+      ? await multicall(masterchefABI, [
+          {
+            address: getMasterChefAddress(),
+            name: 'poolInfo',
+            params: [pid],
+          },
+          {
+            address: getMasterChefAddress(),
+            name: 'totalAllocPoint',
+          },
+        ])
+      : [null, null]
 
-  const allocPoint = new BigNumber(info.allocPoint._hex)
-  const poolWeight = allocPoint.div(new BigNumber(totalAllocPoint))
+  const allocPoint = info ? new BigNumber(info.allocPoint?._hex) : BIG_ZERO
+  const poolWeight = totalAllocPoint ? allocPoint.div(new BigNumber(totalAllocPoint)) : BIG_ZERO
 
   return {
     tokenAmountMc: tokenAmountMc.toJSON(),

@@ -20,11 +20,11 @@ import {
   fetchCakeVaultFees,
   setBlock,
 } from './actions'
-import { State, Farm, Pool, ProfileState, TeamsState, AchievementState, PriceState, FarmsState } from './types'
+import { State, Farm, Pool, ProfileState, TeamsState, AchievementState, PriceApiState, FarmsState } from './types'
 import { fetchProfile } from './profile'
 import { fetchTeam, fetchTeams } from './teams'
 import { fetchAchievements } from './achievements'
-import { fetchPrices } from './prices'
+import { fetchApiPrices } from './apiPrices'
 import { fetchWalletNfts } from './collectibles'
 import { getCanClaim } from './predictions/helpers'
 import { transformPool } from './pools/helpers'
@@ -88,48 +88,15 @@ export const useFarmFromTokenSymbol = (tokenSymbol: string, preferredQuoteTokens
   return filteredFarm
 }
 
+// Return the base token price for a farm, from a given pid
 export const useBusdPriceFromPid = (pid: number): BigNumber => {
   const farm = useFarmFromPid(pid)
-  const bnbPriceBusd = usePriceBnbBusd()
-  const quoteTokenFarm = useFarmFromTokenSymbol(farm?.quoteToken?.symbol)
-
-  // Catch in case a farm isn't found
-  if (!farm) {
-    return null
-  }
-
-  // With a quoteToken of BUSD or wBNB, it is straightforward to return the token price.
-  if (farm.quoteToken.symbol === 'BUSD') {
-    return farm.tokenPriceVsQuote ? new BigNumber(farm.tokenPriceVsQuote) : BIG_ZERO
-  }
-
-  if (farm.quoteToken.symbol === 'wBNB') {
-    return bnbPriceBusd.gt(0) ? bnbPriceBusd.times(farm.tokenPriceVsQuote) : BIG_ZERO
-  }
-
-  // Possible alternative farm quoteTokens:
-  // UST (i.e. MIR-UST), pBTC (i.e. PNT-pBTC), BTCB (i.e. bBADGER-BTCB), ETH (i.e. SUSHI-ETH)
-  // If the farm's quote token isn't BUSD or wBNB, we then use the quote token, of the original farm's quote token
-  // i.e. for farm PNT - pBTC
-  // we find the pBTC farm (pBTC - BNB)'s quote token - BNB
-  // from the BNB - pBTC BUSD price, we can calculate the PNT - BUSD price
-  if (quoteTokenFarm.quoteToken.symbol === 'wBNB') {
-    const quoteTokenInBusd = bnbPriceBusd.gt(0) && bnbPriceBusd.times(quoteTokenFarm.tokenPriceVsQuote)
-    return farm.tokenPriceVsQuote ? new BigNumber(farm.tokenPriceVsQuote).times(quoteTokenInBusd) : BIG_ZERO
-  }
-
-  if (quoteTokenFarm.quoteToken.symbol === 'BUSD') {
-    const quoteTokenInBusd = quoteTokenFarm.tokenPriceVsQuote
-    return quoteTokenInBusd ? new BigNumber(farm.tokenPriceVsQuote).times(quoteTokenInBusd) : BIG_ZERO
-  }
-
-  // Catch in case token does not have immediate or once-removed BUSD/wBNB quoteToken
-  return BIG_ZERO
+  return farm && new BigNumber(farm.token.busdPrice)
 }
 
-export const useBusdPriceFromToken = (tokenSymbol: string): BigNumber | null => {
-  const tokenFarmForPriceCalc = useFarmFromTokenSymbol(tokenSymbol)
-  const tokenPrice = useBusdPriceFromPid(tokenFarmForPriceCalc?.pid)
+export const useBusdPriceFromToken = (tokenSymbol: string): BigNumber => {
+  const tokenFarm = useFarmFromTokenSymbol(tokenSymbol)
+  const tokenPrice = useBusdPriceFromPid(tokenFarm?.pid)
   return tokenPrice
 }
 
@@ -330,43 +297,39 @@ export const useAchievements = () => {
   return achievements
 }
 
-// Prices
-export const useFetchPriceList = () => {
+// API Prices
+export const useFetchApiPriceList = () => {
   const { slowRefresh } = useRefresh()
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    dispatch(fetchPrices())
+    dispatch(fetchApiPrices())
   }, [dispatch, slowRefresh])
 }
 
 export const useGetApiPrices = () => {
-  const prices: PriceState['data'] = useSelector((state: State) => state.prices.data)
-  return prices
+  const apiPrices: PriceApiState['data'] = useSelector((state: State) => state.apiPrices.data)
+  return apiPrices
 }
 
 export const useGetApiPrice = (address: string) => {
-  const prices = useGetApiPrices()
+  const apiPrices = useGetApiPrices()
 
-  if (!prices) {
+  if (!apiPrices) {
     return null
   }
 
-  return prices[address.toLowerCase()]
+  return apiPrices[address.toLowerCase()]
 }
 
 export const usePriceBnbBusd = (): BigNumber => {
   const bnbBusdFarm = useFarmFromPid(252)
-  return bnbBusdFarm.tokenPriceVsQuote ? new BigNumber(1).div(bnbBusdFarm.tokenPriceVsQuote) : BIG_ZERO
+  return new BigNumber(bnbBusdFarm.token.busdPrice)
 }
 
 export const usePriceCakeBusd = (): BigNumber => {
   const cakeBnbFarm = useFarmFromPid(251)
-  const bnbBusdPrice = usePriceBnbBusd()
-
-  const cakeBusdPrice = cakeBnbFarm.tokenPriceVsQuote ? bnbBusdPrice.times(cakeBnbFarm.tokenPriceVsQuote) : BIG_ZERO
-
-  return cakeBusdPrice
+  return new BigNumber(cakeBnbFarm.token.busdPrice)
 }
 
 // Block

@@ -1,8 +1,10 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit'
 import farmsConfig from 'config/constants/farms'
+import priceHelperLpsConfig from 'config/constants/priceHelperLps'
 import isArchivedPid from 'utils/farmHelpers'
 import fetchFarms from './fetchFarms'
+import fetchFarmsPrices from './fetchFarmsPrices'
 import {
   fetchFarmUserEarnings,
   fetchFarmUserAllowances,
@@ -59,8 +61,14 @@ export const { setFarmsPublicData, setFarmUserData, setLoadArchivedFarmsData } =
 export const fetchFarmsPublicDataAsync = () => async (dispatch, getState) => {
   const fetchArchived = getState().farms.loadArchivedFarmsData
   const farmsToFetch = fetchArchived ? farmsConfig : nonArchivedFarms
-  const farms = await fetchFarms(farmsToFetch)
-  dispatch(setFarmsPublicData(farms))
+  const farmsWithPriceHelpers = farmsToFetch.concat(priceHelperLpsConfig)
+  const farms = await fetchFarms(farmsWithPriceHelpers)
+  const farmsWithPrices = await fetchFarmsPrices(farms)
+  // Filter out price helper LP config farms
+  const farmsWithoutHelperLps = farmsWithPrices.filter((farm: Farm) => {
+    return farm.pid || farm.pid === 0
+  })
+  dispatch(setFarmsPublicData(farmsWithoutHelperLps))
 }
 export const fetchFarmUserDataAsync = (account: string) => async (dispatch, getState) => {
   const fetchArchived = getState().farms.loadArchivedFarmsData
