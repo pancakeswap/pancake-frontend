@@ -30,6 +30,7 @@ import { getCanClaim } from './predictions/helpers'
 import { transformPool } from './pools/helpers'
 import { fetchPoolsStakingLimitsAsync } from './pools'
 import { fetchFarmUserDataAsync, nonArchivedFarms } from './farms'
+import { fetchPublicLotteryData, fetchLotteryById } from './lottery'
 
 export const usePollFarmsData = (includeArchive = false) => {
   const dispatch = useAppDispatch()
@@ -497,4 +498,73 @@ export const useGetVotingStateLoadingStatus = () => {
 export const useGetProposalLoadingStatus = () => {
   const votingStatus = useSelector((state: State) => state.voting.proposalLoadingStatus)
   return votingStatus
+}
+
+// Lottery
+export const useFetchLottery = () => {
+  const { fastRefresh } = useRefresh()
+  const dispatch = useAppDispatch()
+  const lotteryId = useGetCurrentLotteryId()
+
+  useEffect(() => {
+    dispatch(fetchPublicLotteryData())
+  }, [dispatch])
+
+  useEffect(() => {
+    if (lotteryId) {
+      dispatch(fetchLotteryById({ lotteryId }))
+    }
+  }, [dispatch, lotteryId, fastRefresh])
+}
+
+export const useGetCurrentLotteryId = () => {
+  return useSelector((state: State) => state.lottery.currentLotteryId)
+}
+
+export const useLottery = () => {
+  const currentRound = useSelector((state: State) => state.lottery.currentRound)
+  const currentLotteryId = useGetCurrentLotteryId()
+  const maxNumberTicketsPerBuyAsString = useSelector((state: State) => state.lottery.maxNumberTicketsPerBuy)
+
+  const {
+    status,
+    startTime,
+    endTime,
+    priceTicketInCake: priceTicketInCakeAsString,
+    discountDivisor,
+    treasuryFee,
+    firstTicketId,
+    lastTicketId,
+    amountCollectedInCake: amountCollectedInCakeAsString,
+    finalNumber,
+  } = currentRound
+
+  const maxNumberTicketsPerBuy = useMemo(() => {
+    return new BigNumber(maxNumberTicketsPerBuyAsString)
+  }, [maxNumberTicketsPerBuyAsString])
+
+  const priceTicketInCake = useMemo(() => {
+    return new BigNumber(priceTicketInCakeAsString)
+  }, [priceTicketInCakeAsString])
+
+  const amountCollectedInCake = useMemo(() => {
+    return new BigNumber(amountCollectedInCakeAsString)
+  }, [amountCollectedInCakeAsString])
+
+  return {
+    currentLotteryId,
+    maxNumberTicketsPerBuy,
+    currentRound: {
+      status,
+      startTime,
+      endTime,
+      priceTicketInCake,
+      discountDivisor,
+      treasuryFee,
+      firstTicketId,
+      lastTicketId,
+      amountCollectedInCake,
+      finalNumber,
+    },
+  }
 }
