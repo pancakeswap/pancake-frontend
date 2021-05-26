@@ -1,6 +1,6 @@
 import Path from 'path'
 import fs from 'fs'
-import translations from '../../config/localization/translations.json'
+import translations from 'config/localization/translations.json'
 
 describe('Check translations integrity', () => {
   it.each(Object.keys(translations))('Translation key value should be equal', (key) => {

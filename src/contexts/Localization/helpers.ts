@@ -1,4 +1,4 @@
-import { EN } from '../../config/localization/languages'
+import { EN } from 'config/localization/languages'
 
 const publicUrl = process.env.PUBLIC_URL
 
