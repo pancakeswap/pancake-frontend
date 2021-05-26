@@ -639,7 +639,7 @@
   "$200,000 in Prizes!": "200.000 $ Ödül!",
   "Compete with other teams to win CAKE, collectible NFTs, achievements & more!": "CAKE, koleksiyonluk NFT, başarılar ve daha birçok şey kazanmak için diğer takımlarla yarış!",
   "Now Live!": "Şimdi Yayında!",
-  "Calculating prizes": "Ödülleri hesaplama",
+  "Calculating prizes": "Ödüller hesaplanıyor",
   "I want to Battle!": "Savaşmak istiyorum!",
   "Trade Now": "Şimdi Takas Yap",
   "Claim period over": "Alma dönemi bitti",
@@ -802,6 +802,6 @@
   "Prediction": "Tahmin",
   "Initial Farm Offering": "İlk Farm Arzı",
   "An error occurred confirming transaction": "İşlem onaylanırken bir hata oluştu",
-  "Successfully Enabled!": "Successfully Enabled!",
-  "You can now participate in the %symbol% IFO.": "You can now participate in the %symbol% IFO."
+  "Successfully Enabled!": "Başarıyla Etkinleştirildi!",
+  "You can now participate in the %symbol% IFO.": "%symbol% IFO'suna artık katılabilirsiniz."
 }
