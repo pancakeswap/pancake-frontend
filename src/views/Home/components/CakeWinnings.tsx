@@ -35,7 +35,7 @@ const CakeWinnings: React.FC<CakeWinningsProps> = ({ claimAmount }) => {
   return (
     <Block>
       <CardValue value={cakeAmount} lineHeight="1.5" />
-      {!cakePriceBusd.eq(0) && <CardBusdValue value={claimAmountBusd} decimals={2} />}
+      {cakePriceBusd.gt(0) && <CardBusdValue value={claimAmountBusd} decimals={2} />}
     </Block>
   )
 }

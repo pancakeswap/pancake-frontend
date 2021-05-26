@@ -56,7 +56,8 @@ const TotalPrizesCard = () => {
   const { account } = useWeb3React()
   const [showFooter, setShowFooter] = useState(false)
   const lotteryPrizeAmount = +getBalanceNumber(useTotalRewards()).toFixed(0)
-  const lotteryPrizeAmountBusd = new BigNumber(lotteryPrizeAmount).multipliedBy(usePriceCakeBusd()).toNumber()
+  const cakePrice = usePriceCakeBusd()
+  const lotteryPrizeAmountBusd = new BigNumber(lotteryPrizeAmount).multipliedBy(cakePrice)
   const lotteryPrizeWithCommaSeparators = lotteryPrizeAmount.toLocaleString()
   const { currentLotteryNumber } = useContext(PastLotteryDataContext)
 
@@ -83,7 +84,7 @@ const TotalPrizesCard = () => {
                 {t('Total Pot:')}
               </Text>
               <Heading scale="lg">{lotteryPrizeWithCommaSeparators} CAKE</Heading>
-              {lotteryPrizeAmountBusd !== 0 && <CardBusdValue value={lotteryPrizeAmountBusd} />}
+              {cakePrice.gt(0) && <CardBusdValue value={lotteryPrizeAmountBusd.toNumber()} />}
             </PrizeCountWrapper>
           </Left>
           <Right>

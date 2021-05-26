@@ -39,7 +39,7 @@ const CakeHarvestBalance = () => {
   return (
     <Block>
       <CardValue value={earningsSum} lineHeight="1.5" />
-      {!cakePriceBusd.eq(0) && <CardBusdValue value={earningsBusd} />}
+      {cakePriceBusd.gt(0) && <CardBusdValue value={earningsBusd} />}
     </Block>
   )
 }

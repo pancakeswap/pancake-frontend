@@ -32,17 +32,20 @@ const EarnAPRCard = () => {
   const cakePrice = usePriceCakeBusd()
 
   const highestApr = useMemo(() => {
-    const aprs = farmsLP.map((farm) => {
-      // Filter inactive farms, because their theoretical APR is super high. In practice, it's 0.
-      if (farm.pid !== 0 && farm.multiplier !== '0X' && farm.lpTotalInQuoteToken && farm.quoteToken.busdPrice) {
-        const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(farm.quoteToken.busdPrice)
-        return getFarmApr(farm.poolWeight, cakePrice, totalLiquidity)
-      }
-      return null
-    })
+    if (cakePrice.gt(0)) {
+      const aprs = farmsLP.map((farm) => {
+        // Filter inactive farms, because their theoretical APR is super high. In practice, it's 0.
+        if (farm.pid !== 0 && farm.multiplier !== '0X' && farm.lpTotalInQuoteToken && farm.quoteToken.busdPrice) {
+          const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(farm.quoteToken.busdPrice)
+          return getFarmApr(farm.poolWeight, cakePrice, totalLiquidity)
+        }
+        return null
+      })
 
-    const maxApr = max(aprs)
-    return maxApr?.toLocaleString('en-US', { maximumFractionDigits: 2 })
+      const maxApr = max(aprs)
+      return maxApr?.toLocaleString('en-US', { maximumFractionDigits: 2 })
+    }
+    return null
   }, [cakePrice, farmsLP])
 
   const aprText = highestApr || '-'
