@@ -14,6 +14,7 @@ export * from "./components/Image";
 export * from "./components/Input";
 export * from "./components/Layouts";
 export * from "./components/Link";
+export * from "./components/Message";
 export * from "./components/NotificationDot";
 export * from "./components/PancakeToggle";
 export * from "./components/Progress";
