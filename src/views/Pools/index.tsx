@@ -7,7 +7,7 @@ import orderBy from 'lodash/orderBy'
 import partition from 'lodash/partition'
 import { useTranslation } from 'contexts/Localization'
 import usePersistState from 'hooks/usePersistState'
-import { usePools, useFetchCakeVault } from 'state/hooks'
+import { usePools, useFetchCakeVault, useFetchPublicPoolsData } from 'state/hooks'
 import FlexLayout from 'components/layout/Flex'
 import Page from 'components/layout/Page'
 import PageHeader from 'components/PageHeader'
@@ -19,7 +19,6 @@ import BountyCard from './components/BountyCard'
 const NUMBER_OF_POOLS_VISIBLE = 12
 
 const Pools: React.FC = () => {
-  useFetchCakeVault()
   const { path } = useRouteMatch()
   const { t } = useTranslation()
   const { account } = useWeb3React()
@@ -42,6 +41,9 @@ const Pools: React.FC = () => {
 
   // This pool is passed explicitly to the cake vault
   const cakePoolData = useMemo(() => openPools.find((pool) => pool.sousId === 0), [openPools])
+
+  useFetchCakeVault()
+  useFetchPublicPoolsData()
 
   useEffect(() => {
     const showMorePools = (entries) => {

@@ -35,13 +35,7 @@ export const useFetchPublicData = () => {
   const { slowRefresh } = useRefresh()
   const web3 = getWeb3NoAccount()
   useEffect(() => {
-    const fetchPoolsPublicData = async () => {
-      const blockNumber = await web3.eth.getBlockNumber()
-      dispatch(fetchPoolsPublicDataAsync(blockNumber))
-    }
     dispatch(fetchFarmsPublicDataAsync())
-    fetchPoolsPublicData()
-    dispatch(fetchPoolsStakingLimitsAsync())
   }, [dispatch, slowRefresh, web3])
 
   useEffect(() => {
@@ -153,6 +147,22 @@ export const useLpTokenPrice = (symbol: string) => {
 }
 
 // Pools
+
+export const useFetchPublicPoolsData = () => {
+  const dispatch = useAppDispatch()
+  const { slowRefresh } = useRefresh()
+  const web3 = getWeb3NoAccount()
+
+  useEffect(() => {
+    const fetchPoolsPublicData = async () => {
+      const blockNumber = await web3.eth.getBlockNumber()
+      dispatch(fetchPoolsPublicDataAsync(blockNumber))
+    }
+
+    fetchPoolsPublicData()
+    dispatch(fetchPoolsStakingLimitsAsync())
+  }, [dispatch, slowRefresh, web3])
+}
 
 export const usePools = (account): Pool[] => {
   const { fastRefresh } = useRefresh()
