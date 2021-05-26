@@ -801,5 +801,7 @@
   "Trading Battle": "交易大戰",
   "Prediction": "預測",
   "Initial Farm Offering": "首次挖礦發行",
-  "An error occurred confirming transaction": "確認交易時發生錯誤"
+  "An error occurred confirming transaction": "確認交易時發生錯誤",
+  "Successfully Enabled!": "Successfully Enabled!",
+  "You can now participate in the %symbol% IFO.": "You can now participate in the %symbol% IFO."
 }
