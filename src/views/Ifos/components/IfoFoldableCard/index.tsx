@@ -103,10 +103,10 @@ const IfoFoldableCard: React.FC<IfoFoldableCardProps> = ({ ifo, publicIfoData, w
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const raisingTokenContract = useERC20(getAddress(ifo.currency.address))
-  const onApprove = useIfoApprove(raisingTokenContract, account)
   const Ribbon = getRibbonComponent(ifo, publicIfoData.status, t)
   const isActive = publicIfoData.status !== 'finished' && ifo.isActive
   const { contract } = walletIfoData
+  const onApprove = useIfoApprove(raisingTokenContract, contract.options.address)
   const { toastSuccess } = useToast()
 
   const handleApprove = async () => {
