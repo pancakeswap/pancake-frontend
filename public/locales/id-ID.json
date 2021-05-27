@@ -803,5 +803,9 @@
   "Initial Farm Offering": "Tawaran Perdana Farm (IFO)",
   "An error occurred confirming transaction": "Eror terjadi saat mengonfirmasi transaksi",
   "Successfully Enabled!": "Successfully Enabled!",
-  "You can now participate in the %symbol% IFO.": "You can now participate in the %symbol% IFO."
+  "You can now participate in the %symbol% IFO.": "You can now participate in the %symbol% IFO.",
+  "Team Ranks": "Team Ranks",
+  "Prizes": "Prizes",
+  "Rules": "Rules",
+  "Entry": "Entry"
 }

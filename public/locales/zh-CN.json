@@ -803,5 +803,9 @@
   "Initial Farm Offering": "首次挖矿发行",
   "An error occurred confirming transaction": "确认交易时发生错误",
   "Successfully Enabled!": "已成功启用！",
-  "You can now participate in the %symbol% IFO.": "您现在可以参与 %symbol% IFO 了。"
+  "You can now participate in the %symbol% IFO.": "您现在可以参与 %symbol% IFO 了。",
+  "Team Ranks": "Team Ranks",
+  "Prizes": "Prizes",
+  "Rules": "Rules",
+  "Entry": "Entry"
 }

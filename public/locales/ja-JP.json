@@ -803,5 +803,9 @@
   "Initial Farm Offering": "イニシャルファームオファリング",
   "An error occurred confirming transaction": "取引確認中にエラーが発生しました",
   "Successfully Enabled!": "Successfully Enabled!",
-  "You can now participate in the %symbol% IFO.": "You can now participate in the %symbol% IFO."
+  "You can now participate in the %symbol% IFO.": "You can now participate in the %symbol% IFO.",
+  "Team Ranks": "Team Ranks",
+  "Prizes": "Prizes",
+  "Rules": "Rules",
+  "Entry": "Entry"
 }
