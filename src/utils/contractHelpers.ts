@@ -14,6 +14,7 @@ import {
   getCakeAddress,
   getLotteryAddress,
   getLotteryTicketAddress,
+  getLotteryV2Address,
   getMasterChefAddress,
   getPointCenterIfoAddress,
   getClaimRefundAddress,
@@ -38,6 +39,7 @@ import ifoV2Abi from 'config/abi/ifoV2.json'
 import pointCenterIfo from 'config/abi/pointCenterIfo.json'
 import lotteryAbi from 'config/abi/lottery.json'
 import lotteryTicketAbi from 'config/abi/lotteryNft.json'
+import lotteryV2Abi from 'config/abi/lotteryV2.json'
 import masterChef from 'config/abi/masterchef.json'
 import sousChef from 'config/abi/sousChef.json'
 import sousChefV2 from 'config/abi/sousChefV2.json'
@@ -101,6 +103,9 @@ export const getLotteryContract = (web3?: Web3) => {
 }
 export const getLotteryTicketContract = (web3?: Web3) => {
   return getContract(lotteryTicketAbi, getLotteryTicketAddress(), web3)
+}
+export const getLotteryV2Contract = (web3?: Web3) => {
+  return getContract(lotteryV2Abi, getLotteryV2Address(), web3)
 }
 export const getMasterchefContract = (web3?: Web3) => {
   return getContract(masterChef, getMasterChefAddress(), web3)

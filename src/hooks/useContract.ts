@@ -22,6 +22,7 @@ import {
   getPredictionsContract,
   getChainlinkOracleContract,
   getSouschefV2Contract,
+  getLotteryV2Contract,
 } from 'utils/contractHelpers'
 
 /**
@@ -79,6 +80,11 @@ export const useLottery = () => {
 export const useLotteryTicket = () => {
   const web3 = useWeb3()
   return useMemo(() => getLotteryTicketContract(web3), [web3])
+}
+
+export const useLotteryV2Contract = () => {
+  const web3 = useWeb3()
+  return useMemo(() => getLotteryV2Contract(web3), [web3])
 }
 
 export const useMasterchef = () => {
