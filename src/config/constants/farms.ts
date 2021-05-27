@@ -46,7 +46,7 @@ const farms: FarmConfig[] = [
       56: '0x1090c996fd1490d15dd7906322ee676a5cc3cf82',
     },
     token: tokens.popen,
-    quoteToken: tokens.busd,
+    quoteToken: tokens.wbnb,
   },
   {
     pid: 335,
