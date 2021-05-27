@@ -1407,6 +1407,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://www.bitwellex.com/',
   },
+  popen: {
+    symbol: 'pOPEN',
+    address: {
+      56: '0xabae871b7e3b67aeec6b46ae9fe1a91660aadac5',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://opendao.io/',
+  },
 }
 
 export default tokens
