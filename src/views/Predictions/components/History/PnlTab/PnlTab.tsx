@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
 import { Box, Flex, Heading, Text, Button, Link, OpenNewIcon } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
+import { getBscScanAddressUrl } from 'utils/bscscan'
 import { useGetCurrentEpoch, usePriceBnbBusd } from 'state/hooks'
 import { Bet, BetPosition } from 'state/types'
 import { formatBnb, getMultiplier, getPayout } from 'views/Predictions/helpers'
@@ -183,7 +184,7 @@ const PnlTab: React.FC<PnlTabProps> = ({ hasBetHistory, bets }) => {
         <SummaryRow type="entered" summary={summary} bnbBusdPrice={bnbBusdPrice} />
 
         <Flex justifyContent="center" mt="24px">
-          <Link href={`https://bscscan.com/address/${account}#internaltx`} mb="16px" external>
+          <Link href={`${getBscScanAddressUrl(account)}#internaltx`} mb="16px" external>
             <Button mt="8px" width="100%">
               {t('View Reclaimed & Won')}
               <OpenNewIcon color="white" ml="4px" />
