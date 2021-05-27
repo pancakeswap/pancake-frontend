@@ -802,10 +802,10 @@
   "Prediction": "予測",
   "Initial Farm Offering": "イニシャルファームオファリング",
   "An error occurred confirming transaction": "取引確認中にエラーが発生しました",
-  "Successfully Enabled!": "Successfully Enabled!",
-  "You can now participate in the %symbol% IFO.": "You can now participate in the %symbol% IFO.",
-  "Team Ranks": "Team Ranks",
-  "Prizes": "Prizes",
-  "Rules": "Rules",
-  "Entry": "Entry"
+  "Successfully Enabled!": "正常に有効化されました！",
+  "You can now participate in the %symbol% IFO.": "%symbol%のIFOに参加できるようなりました。",
+  "Team Ranks": "チームのランク",
+  "Prizes": "賞金",
+  "Rules": "ルール",
+  "Entry": "エントリー"
 }
