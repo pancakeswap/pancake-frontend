@@ -1,16 +1,13 @@
 import BigNumber from 'bignumber.js'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { Flex, Text, Box } from '@pancakeswap/uikit'
-import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'contexts/Localization'
-import { useCake, useCakeVaultContract } from 'hooks/useContract'
-import useLastUpdated from 'hooks/useLastUpdated'
+import { useCheckVaultApprovalStatus } from 'hooks/useApprove'
 import { Pool } from 'state/types'
 import { BIG_ZERO } from 'utils/bigNumber'
 import VaultApprovalAction from './VaultApprovalAction'
 import VaultStakeActions from './VaultStakeActions'
-import { useCheckVaultApprovalStatus } from 'hooks/useApprove'
 
 const InlineText = styled(Text)`
   display: inline;
