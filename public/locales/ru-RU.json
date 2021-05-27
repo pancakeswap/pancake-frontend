@@ -802,10 +802,10 @@
   "Prediction": "Прогноз",
   "Initial Farm Offering": "Первичное предложение фермы",
   "An error occurred confirming transaction": "При подтверждении транзакции произошла ошибка",
-  "Successfully Enabled!": "Successfully Enabled!",
-  "You can now participate in the %symbol% IFO.": "You can now participate in the %symbol% IFO.",
-  "Team Ranks": "Team Ranks",
-  "Prizes": "Prizes",
-  "Rules": "Rules",
+  "Successfully Enabled!": "Успешно активировано!",
+  "You can now participate in the %symbol% IFO.": "Теперь вы можете участвовать в %symbol% IFO.",
+  "Team Ranks": "Рейтинги команд",
+  "Prizes": "Призы",
+  "Rules": "Правила",
   "Entry": "Entry"
 }
