@@ -7,7 +7,7 @@ import orderBy from 'lodash/orderBy'
 import partition from 'lodash/partition'
 import { useTranslation } from 'contexts/Localization'
 import usePersistState from 'hooks/usePersistState'
-import { usePools, useFetchCakeVault, useFetchPublicPoolsData } from 'state/hooks'
+import { usePools, useFetchCakeVault, useFetchPublicPoolsData, usePollFarmsData } from 'state/hooks'
 import FlexLayout from 'components/layout/Flex'
 import Page from 'components/layout/Page'
 import PageHeader from 'components/PageHeader'
@@ -44,6 +44,7 @@ const Pools: React.FC = () => {
 
   useFetchCakeVault()
   useFetchPublicPoolsData()
+  usePollFarmsData()
 
   useEffect(() => {
     const showMorePools = (entries) => {

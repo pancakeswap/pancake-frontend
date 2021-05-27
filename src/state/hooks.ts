@@ -6,6 +6,7 @@ import { useAppDispatch } from 'state'
 import { orderBy } from 'lodash'
 import { Team } from 'config/constants/types'
 import Nfts from 'config/constants/nfts'
+import { farmsConfig } from 'config/constants'
 import { getWeb3NoAccount } from 'utils/web3'
 import { getBalanceAmount } from 'utils/formatBalance'
 import { BIG_ZERO } from 'utils/bigNumber'
@@ -29,14 +30,39 @@ import { fetchWalletNfts } from './collectibles'
 import { getCanClaim } from './predictions/helpers'
 import { transformPool } from './pools/helpers'
 import { fetchPoolsStakingLimitsAsync } from './pools'
+import { fetchFarmUserDataAsync, nonArchivedFarms } from './farms'
 
-export const useFetchPublicData = () => {
+export const usePollFarmsData = (includeArchive = false) => {
   const dispatch = useAppDispatch()
   const { slowRefresh } = useRefresh()
   const web3 = getWeb3NoAccount()
+  const { account } = useWeb3React()
+
   useEffect(() => {
-    dispatch(fetchFarmsPublicDataAsync())
-  }, [dispatch, slowRefresh, web3])
+    const farmsToFetch = includeArchive ? farmsConfig : nonArchivedFarms
+    const pids = farmsToFetch.map((farmToFetch) => farmToFetch.pid)
+
+    dispatch(fetchFarmsPublicDataAsync(pids))
+
+    if (account) {
+      dispatch(fetchFarmUserDataAsync({ account, pids }))
+    }
+  }, [includeArchive, dispatch, slowRefresh, web3, account])
+}
+
+/**
+ * Fetches the "core" farm data used globally
+ * 251 = CAKE-BNB LP
+ * 252 = BUSD-BNB LP
+ */
+export const usePollCoreFarmData = () => {
+  const dispatch = useAppDispatch()
+  const { fastRefresh } = useRefresh()
+  const web3 = getWeb3NoAccount()
+
+  useEffect(() => {
+    dispatch(fetchFarmsPublicDataAsync([251, 252]))
+  }, [dispatch, fastRefresh, web3])
 }
 
 export const usePollBlockNumber = () => {
@@ -111,7 +137,7 @@ export const useLpTokenPrice = (symbol: string) => {
     // Double it to get overall value in LP
     const overallValueOfAllTokensInFarm = valueOfBaseTokenInFarm.times(2)
     // Divide total value of all tokens, by the number of LP tokens
-    const totalLpTokens = getBalanceAmount(farm.lpTotalSupply)
+    const totalLpTokens = getBalanceAmount(new BigNumber(farm.lpTotalSupply))
     lpTokenPrice = overallValueOfAllTokensInFarm.div(totalLpTokens)
   }
 

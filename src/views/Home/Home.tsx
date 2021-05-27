@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { Heading, Text, BaseLayout } from '@pancakeswap/uikit'
+import { useAppDispatch } from 'state'
+import { fetchFarmsPublicDataAsync, nonArchivedFarms } from 'state/farms'
 import { useTranslation } from 'contexts/Localization'
 import Page from 'components/layout/Page'
 import FarmStakingCard from 'views/Home/components/FarmStakingCard'
@@ -86,6 +88,12 @@ const CTACards = styled(BaseLayout)`
 
 const Home: React.FC = () => {
   const { t } = useTranslation()
+  const dispatch = useAppDispatch()
+
+  // Fetch farm data once to get the max APR
+  useEffect(() => {
+    dispatch(fetchFarmsPublicDataAsync(nonArchivedFarms.map((nonArchivedFarm) => nonArchivedFarm.pid)))
+  }, [dispatch])
 
   return (
     <Page>
