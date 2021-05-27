@@ -5,7 +5,7 @@ import priceHelperLpsConfig from 'config/constants/priceHelperLps'
 import { FarmConfig } from 'config/constants/types'
 import isArchivedPid from 'utils/farmHelpers'
 import fetchFarms from './fetchFarms'
-import fetchFarmsPrices from './fetchFarmsPrices'
+import getFarmsPrices from './getFarmsPrices'
 import fetchFarm from './fetchFarm'
 import {
   fetchFarmUserEarnings,
@@ -27,13 +27,22 @@ const noAccountFarmConfig = farmsConfig.map((farm) => ({
   },
 }))
 
+/**
+ * Filters out farms uses as price helpers
+ */
+const filterPriceHelpers = (farms: Farm[]) =>
+  farms.filter((farm: Farm) => {
+    return farm.pid || farm.pid === 0
+  })
+
 const initialState: FarmsState = { data: noAccountFarmConfig, loadArchivedFarmsData: false, userDataLoaded: false }
 
 // Async thunks
 
 export const fetchFarmsData = createAsyncThunk('farms/fetchFarmsData', async () => {
   const farmsData = await fetchFarms(nonArchivedFarms)
-  return farmsData
+  const farmsWithPrices = getFarmsPrices(farmsData)
+  return filterPriceHelpers(farmsWithPrices)
 })
 
 export const fetchFarmData = createAsyncThunk<{ pid: number; data: Farm }, number>(
@@ -41,7 +50,8 @@ export const fetchFarmData = createAsyncThunk<{ pid: number; data: Farm }, numbe
   async (pid) => {
     const farm = farmsConfig.find((farmConfig) => farmConfig.pid === pid)
     const farmData = await fetchFarm(farm)
-    return { pid: farm.pid, data: farmData }
+    const [farmwithPrice] = getFarmsPrices([farmData])
+    return { pid: farm.pid, data: farmwithPrice }
   },
 )
 
@@ -103,12 +113,9 @@ export const fetchFarmsPublicDataAsync = () => async (dispatch, getState) => {
   const farmsToFetch = fetchArchived ? farmsConfig : nonArchivedFarms
   const farmsWithPriceHelpers = farmsToFetch.concat(priceHelperLpsConfig)
   const farms = await fetchFarms(farmsWithPriceHelpers)
-  const farmsWithPrices = await fetchFarmsPrices(farms)
-  // Filter out price helper LP config farms
-  const farmsWithoutHelperLps = farmsWithPrices.filter((farm: Farm) => {
-    return farm.pid || farm.pid === 0
-  })
-  dispatch(setFarmsPublicData(farmsWithoutHelperLps))
+  const farmsWithPrices = getFarmsPrices(farms)
+
+  dispatch(setFarmsPublicData(filterPriceHelpers(farmsWithPrices)))
 }
 export const fetchFarmUserDataAsync = (account: string) => async (dispatch, getState) => {
   const fetchArchived = getState().farms.loadArchivedFarmsData

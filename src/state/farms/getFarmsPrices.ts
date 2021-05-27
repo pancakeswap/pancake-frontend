@@ -72,8 +72,8 @@ const getFarmQuoteTokenPrice = (farm: Farm, quoteTokenFarm: Farm, bnbPriceBusd: 
   return BIG_ZERO
 }
 
-const fetchFarmsPrices = async (farms) => {
-  const bnbBusdFarm = farms.find((farm: Farm) => farm.pid === 252)
+const getFarmsPrices = (farms: Farm[]) => {
+  const bnbBusdFarm = farms.find((farm) => farm.pid === 252)
   const bnbPriceBusd = bnbBusdFarm.tokenPriceVsQuote ? new BigNumber(1).div(bnbBusdFarm.tokenPriceVsQuote) : BIG_ZERO
 
   const farmsWithPrices = farms.map((farm) => {
@@ -88,4 +88,4 @@ const fetchFarmsPrices = async (farms) => {
   return farmsWithPrices
 }
 
-export default fetchFarmsPrices
+export default getFarmsPrices
