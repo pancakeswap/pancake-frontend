@@ -1,11 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { Button, Skeleton } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
+import { useWeb3React } from '@web3-react/core'
 import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
 import { getBalanceNumber } from 'utils/formatBalance'
+import { useAppDispatch } from 'state'
+import { fetchFarmUserDataAsync } from 'state/farms'
+import { usePriceCakeBusd } from 'state/hooks'
 import { useHarvest } from 'hooks/useHarvest'
 import { useTranslation } from 'contexts/Localization'
-import { usePriceCakeBusd } from 'state/hooks'
 import { useCountUp } from 'react-countup'
 
 import { ActionContainer, ActionTitles, Title, Subtle, ActionContent, Earned, Staked } from './styles'
@@ -31,7 +34,8 @@ const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({ pid, userD
   const [pendingTx, setPendingTx] = useState(false)
   const { onReward } = useHarvest(pid)
   const { t } = useTranslation()
-
+  const dispatch = useAppDispatch()
+  const { account } = useWeb3React()
   const { countUp, update } = useCountUp({
     start: 0,
     end: earningsBusd,
@@ -61,6 +65,8 @@ const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({ pid, userD
           onClick={async () => {
             setPendingTx(true)
             await onReward()
+            dispatch(fetchFarmUserDataAsync({ account, pids: [pid] }))
+
             setPendingTx(false)
           }}
           ml="4px"
