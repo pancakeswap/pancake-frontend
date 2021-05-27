@@ -804,8 +804,8 @@
   "An error occurred confirming transaction": "Ocorreu um erro ao confirmar a transação",
   "Successfully Enabled!": "Ativado com sucesso!",
   "You can now participate in the %symbol% IFO.": "Agora você pode praticar na IFO de %symbol%.",
-  "Team Ranks": "Team Ranks",
-  "Prizes": "Prizes",
-  "Rules": "Rules",
-  "Entry": "Entry"
+  "Team Ranks": "Classificações da equipe",
+  "Prizes": "Prêmios",
+  "Rules": "Regras",
+  "Entry": "Entrada"
 }
