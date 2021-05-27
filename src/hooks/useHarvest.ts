@@ -12,7 +12,7 @@ export const useHarvest = (farmPid: number) => {
 
   const handleHarvest = useCallback(async () => {
     const txHash = await harvest(masterChefContract, farmPid, account)
-    dispatch(fetchFarmUserDataAsync(account))
+    dispatch(fetchFarmUserDataAsync({ account, pids: [farmPid] }))
     return txHash
   }, [account, dispatch, farmPid, masterChefContract])
 
