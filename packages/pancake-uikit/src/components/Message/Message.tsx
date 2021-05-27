@@ -17,6 +17,10 @@ const MessageContainer = styled.div<MessageProps>`
   border-radius: 16px;
   border: solid 1px;
 
+  svg {
+    align-self: flex-start;
+  }
+
   ${space}
   ${systemVariant({
     variants,
