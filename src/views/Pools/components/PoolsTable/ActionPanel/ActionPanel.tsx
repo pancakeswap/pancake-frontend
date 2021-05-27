@@ -13,7 +13,8 @@ import {
   TimerIcon,
   useTooltip,
 } from '@pancakeswap/uikit'
-import { BASE_BSC_SCAN_URL, BASE_URL } from 'config'
+import { BASE_URL } from 'config'
+import { getBscScanBlockCountdownUrl } from 'utils/bscscan'
 import { useBlock, useCakeVault } from 'state/hooks'
 import BigNumber from 'bignumber.js'
 import { Pool } from 'state/types'
@@ -169,7 +170,7 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
       <Flex mb="8px" justifyContent="space-between">
         <Text>{hasPoolStarted ? t('Ends in') : t('Starts in')}:</Text>
         <Flex>
-          <Link external href={`${BASE_BSC_SCAN_URL}/block/countdown/${endBlock}`}>
+          <Link external href={getBscScanBlockCountdownUrl(endBlock)}>
             <Balance fontSize="16px" value={blocksToDisplay} decimals={0} color="primary" />
             <Text ml="4px" color="primary" textTransform="lowercase">
               {t('Blocks')}

@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Flex, Link, Skeleton, Text, TimerIcon } from '@pancakeswap/uikit'
-import { BASE_BSC_SCAN_URL } from 'config'
+import { getBscScanBlockCountdownUrl } from 'utils/bscscan'
 import { Pool } from 'state/types'
 import { useBlock } from 'state/hooks'
 import Balance from 'components/Balance'
@@ -36,7 +36,7 @@ const EndsInCell: React.FC<FinishCellProps> = ({ pool }) => {
         </Text>
       </Flex>
       <Flex flex="1">
-        <Link external href={`${BASE_BSC_SCAN_URL}/block/countdown/${endBlock}`} onClick={(e) => e.stopPropagation()}>
+        <Link external href={getBscScanBlockCountdownUrl(endBlock)} onClick={(e) => e.stopPropagation()}>
           <TimerIcon ml="4px" />
         </Link>
       </Flex>
