@@ -804,8 +804,8 @@
   "An error occurred confirming transaction": "Virhe vahvistettaessa transaktiota",
   "Successfully Enabled!": "Käyttöönotto onnistui!",
   "You can now participate in the %symbol% IFO.": "Nyt voit osallistua %symbol%-IFO:hon.",
-  "Team Ranks": "Team Ranks",
-  "Prizes": "Prizes",
-  "Rules": "Rules",
-  "Entry": "Entry"
+  "Team Ranks": "Tiimien sijoitukset",
+  "Prizes": "Palkinnot",
+  "Rules": "Säännöt",
+  "Entry": "Kirjaus"
 }
