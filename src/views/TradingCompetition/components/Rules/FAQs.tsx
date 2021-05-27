@@ -103,7 +103,7 @@ const FAQ = () => {
           <FoldableText title={t('How do I claim my prize(s)?')} mt="24px">
             <Text fontSize="14px" color="textSubtle">
               {t(
-                'After the battle ends, visit the event page and click the “Claim Prizes” button in the top section or in the “Your Score” section. Once you claim your prizes successfully, the button text will change to “Prizes Claimed”.',
+                'After the battle ends, visit the event page and click the “Claim Prizes” button in the top section or in “Your Score” section. Once you claim your prizes successfully, the button text will change to “Prizes Claimed”.',
               )}
             </Text>
           </FoldableText>

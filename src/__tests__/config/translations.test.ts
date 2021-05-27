@@ -26,11 +26,16 @@ describe('Check translations available', () => {
   throughDirectory('src/')
 
   it.each(files)('Translation key should exist in translations json', (file) => {
-    const regex = /\bt\('([^']*)'/gm
+    const regexWithoutCarriageReturn = /\bt\('([^']*)'/gm
+    const regexWithCarriageReturn = /\bt\([\r\n]\s+'([^']*)'/gm
     const data = fs.readFileSync(file, { encoding: 'utf8', flag: 'r' })
     let match
-    // eslint-disable-next-line no-cond-assign
-    while ((match = regex.exec(data)) !== null) {
+    while (
+      // eslint-disable-next-line no-cond-assign
+      (match = regexWithoutCarriageReturn.exec(data)) !== null ||
+      // eslint-disable-next-line no-cond-assign
+      (match = regexWithCarriageReturn.exec(data)) !== null
+    ) {
       if (match[1].trim()) {
         const includes = translationKeys.includes(match[1])
         try {
