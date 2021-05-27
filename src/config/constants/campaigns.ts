@@ -14,7 +14,7 @@ const campaigns: Campaign[] = [
     id: '511110000',
     type: 'ifo',
     title: 'Kalmar',
-    badge: 'ifo-kalmar.svg',
+    badge: 'ifo-kalm.svg',
   },
   {
     id: '511100000',
