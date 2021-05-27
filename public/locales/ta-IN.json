@@ -803,5 +803,9 @@
   "Initial Farm Offering": "இனிஷியல் ஃபார்ம் ஆஃபரிங்",
   "An error occurred confirming transaction": "பரிவர்த்தனையை உறுதிசெய்வதில் பிழை நிகழ்ந்தது",
   "Successfully Enabled!": "வெற்றிகரமாக இயக்கப்பட்டது!",
-  "You can now participate in the %symbol% IFO.": "நீங்கள் இப்போது %symbol% IFOல் பங்கேற்கலாம்."
+  "You can now participate in the %symbol% IFO.": "நீங்கள் இப்போது %symbol% IFOல் பங்கேற்கலாம்.",
+  "Team Ranks": "Team Ranks",
+  "Prizes": "Prizes",
+  "Rules": "Rules",
+  "Entry": "Entry"
 }
