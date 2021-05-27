@@ -10,15 +10,17 @@ export type TranslatableText =
       }
     }
 
+export type SerializedBigNumber = string
+
 export interface Farm extends FarmConfig {
-  tokenAmountMc?: string
-  quoteTokenAmountMc?: string
-  tokenAmountTotal?: string
-  quoteTokenAmountTotal?: string
-  lpTotalInQuoteToken?: string
-  lpTotalSupply?: string
-  tokenPriceVsQuote?: string
-  poolWeight?: string
+  tokenAmountMc?: SerializedBigNumber
+  quoteTokenAmountMc?: SerializedBigNumber
+  tokenAmountTotal?: SerializedBigNumber
+  quoteTokenAmountTotal?: SerializedBigNumber
+  lpTotalInQuoteToken?: SerializedBigNumber
+  lpTotalSupply?: SerializedBigNumber
+  tokenPriceVsQuote?: SerializedBigNumber
+  poolWeight?: SerializedBigNumber
   userData?: {
     allowance: string
     tokenBalance: string
