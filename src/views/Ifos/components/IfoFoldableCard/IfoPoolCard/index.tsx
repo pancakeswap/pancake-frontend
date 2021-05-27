@@ -54,7 +54,7 @@ const SmallCard: React.FC<IfoCardProps> = ({ poolId, ifo, publicIfoData, walletI
         <CardHeader variant={config.variant}>
           <Flex justifyContent="space-between" alignItems="center">
             <Text bold fontSize="20px">
-              {config.title}
+              {t(config.title)}
             </Text>
             <div ref={targetRef}>
               <HelpIcon />
