@@ -6,11 +6,13 @@ import { useAppDispatch } from 'state'
 import { orderBy } from 'lodash'
 import { Team } from 'config/constants/types'
 import Nfts from 'config/constants/nfts'
+import { farmsConfig } from 'config/constants'
 import { getWeb3NoAccount } from 'utils/web3'
 import { getBalanceAmount } from 'utils/formatBalance'
 import { BIG_ZERO } from 'utils/bigNumber'
 import useRefresh from 'hooks/useRefresh'
 import { filterFarmsByQuoteToken } from 'utils/farmsPriceHelpers'
+import isArchivedPid from 'utils/farmHelpers'
 import {
   fetchFarmsPublicDataAsync,
   fetchPoolsPublicDataAsync,
@@ -29,14 +31,39 @@ import { fetchWalletNfts } from './collectibles'
 import { getCanClaim } from './predictions/helpers'
 import { transformPool } from './pools/helpers'
 import { fetchPoolsStakingLimitsAsync } from './pools'
+import { fetchFarmUserDataAsync } from './farms'
 
-export const useFetchPublicData = () => {
+export const usePollFarmsData = (includeArchive = false) => {
   const dispatch = useAppDispatch()
   const { slowRefresh } = useRefresh()
   const web3 = getWeb3NoAccount()
+  const { account } = useWeb3React()
+
   useEffect(() => {
-    dispatch(fetchFarmsPublicDataAsync())
-  }, [dispatch, slowRefresh, web3])
+    const farmsToFetch = includeArchive ? farmsConfig : farmsConfig.filter(({ pid }) => !isArchivedPid(pid))
+    const pids = farmsToFetch.map((farmToFetch) => farmToFetch.pid)
+
+    dispatch(fetchFarmsPublicDataAsync(pids))
+
+    if (account) {
+      dispatch(fetchFarmUserDataAsync({ account, pids }))
+    }
+  }, [includeArchive, dispatch, slowRefresh, web3, account])
+}
+
+/**
+ * Fetches the "core" farm data used globally
+ * 251 = CAKE-BNB LP
+ * 252 = BUSD-BNB LP
+ */
+export const usePollCoreFarmData = () => {
+  const dispatch = useAppDispatch()
+  const { fastRefresh } = useRefresh()
+  const web3 = getWeb3NoAccount()
+
+  useEffect(() => {
+    dispatch(fetchFarmsPublicDataAsync([251, 252]))
+  }, [dispatch, fastRefresh, web3])
 }
 
 export const usePollBlockNumber = () => {
