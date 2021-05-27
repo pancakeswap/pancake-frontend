@@ -803,5 +803,9 @@
   "Initial Farm Offering": "İlk Farm Arzı",
   "An error occurred confirming transaction": "İşlem onaylanırken bir hata oluştu",
   "Successfully Enabled!": "Başarıyla Etkinleştirildi!",
-  "You can now participate in the %symbol% IFO.": "%symbol% IFO'suna artık katılabilirsiniz."
+  "You can now participate in the %symbol% IFO.": "%symbol% IFO'suna artık katılabilirsiniz.",
+  "Team Ranks": "Team Ranks",
+  "Prizes": "Prizes",
+  "Rules": "Rules",
+  "Entry": "Entry"
 }
