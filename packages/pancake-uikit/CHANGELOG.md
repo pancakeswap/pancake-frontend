@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.35.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.34.0...@pancakeswap/uikit@0.35.0) (2021-05-27)
+
+
+### Features
+
+* Add text ellipsis ([#121](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/121)) ([17d1bfa](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/17d1bfadef5b8c78a2f7f8400e3942e5bb6a419a))
+
+
+
+
+
 # [0.34.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.33.2...@pancakeswap/uikit@0.34.0) (2021-05-26)
 
 
