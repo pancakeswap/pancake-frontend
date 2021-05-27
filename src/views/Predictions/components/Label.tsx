@@ -101,9 +101,10 @@ export const PricePairLabel: React.FC = () => {
 
 interface TimerLabelProps {
   interval: string
+  unit: 'm' | 'h' | 'd'
 }
 
-export const TimerLabel: React.FC<TimerLabelProps> = ({ interval }) => {
+export const TimerLabel: React.FC<TimerLabelProps> = ({ interval, unit }) => {
   const seconds = useRoundCountdown()
   const countdown = formatRoundTime(seconds)
   const { t } = useTranslation()
@@ -114,7 +115,7 @@ export const TimerLabel: React.FC<TimerLabelProps> = ({ interval }) => {
         <Title bold color="secondary">
           {seconds === 0 ? t('Closing') : countdown}
         </Title>
-        <Interval fontSize="12px">{interval}</Interval>
+        <Interval fontSize="12px">{`${interval}${t(unit)}`}</Interval>
       </Label>
       <Token right={0}>
         <PocketWatchIcon />
