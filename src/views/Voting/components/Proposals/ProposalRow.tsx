@@ -14,7 +14,7 @@ interface ProposalRowProps {
 
 const StyledProposalRow = styled(Link)`
   align-items: center;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.borderColor};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.cardBorder};
   display: flex;
   padding: 16px 24px;
 
