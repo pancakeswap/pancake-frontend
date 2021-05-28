@@ -1,12 +1,14 @@
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { Heading, Card, CardBody, Flex, ArrowForwardIcon, Skeleton } from '@pancakeswap/uikit'
 import max from 'lodash/max'
 import { NavLink } from 'react-router-dom'
-import { useTranslation } from 'contexts/Localization'
 import BigNumber from 'bignumber.js'
-import { getFarmApr } from 'utils/apr'
+import { useTranslation } from 'contexts/Localization'
+import { useAppDispatch } from 'state'
 import { useFarms, usePriceCakeBusd } from 'state/hooks'
+import { fetchFarmsPublicDataAsync, nonArchivedFarms } from 'state/farms'
+import { getFarmApr } from 'utils/apr'
 
 const StyledFarmStakingCard = styled(Card)`
   margin-left: auto;
@@ -27,9 +29,24 @@ const CardMidContent = styled(Heading).attrs({ scale: 'xl' })`
   line-height: 44px;
 `
 const EarnAPRCard = () => {
+  const [isFetchingFarmData, setIsFetchingFarmData] = useState(true)
   const { t } = useTranslation()
   const { data: farmsLP } = useFarms()
   const cakePrice = usePriceCakeBusd()
+  const dispatch = useAppDispatch()
+
+  // Fetch farm data once to get the max APR
+  useEffect(() => {
+    const fetchFarmData = async () => {
+      try {
+        await dispatch(fetchFarmsPublicDataAsync(nonArchivedFarms.map((nonArchivedFarm) => nonArchivedFarm.pid)))
+      } finally {
+        setIsFetchingFarmData(false)
+      }
+    }
+
+    fetchFarmData()
+  }, [dispatch, setIsFetchingFarmData])
 
   const highestApr = useMemo(() => {
     if (cakePrice.gt(0)) {
@@ -60,7 +77,11 @@ const EarnAPRCard = () => {
             {earnUpTo}
           </Heading>
           <CardMidContent color="#7645d9">
-            {highestApr ? `${highestApr}%` : <Skeleton animation="pulse" variant="rect" height="44px" />}
+            {highestApr && !isFetchingFarmData ? (
+              `${highestApr}%`
+            ) : (
+              <Skeleton animation="pulse" variant="rect" height="44px" />
+            )}
           </CardMidContent>
           <Flex justifyContent="space-between">
             <Heading color="contrast" scale="lg">
