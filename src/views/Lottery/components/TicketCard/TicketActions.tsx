@@ -26,7 +26,7 @@ const TicketCard: React.FC = () => {
   const { t } = useTranslation()
   const allowance = useLotteryAllowance()
   const lotteryHasDrawn = useGetLotteryHasDrawn()
-  const cakeBalance = useTokenBalance(getCakeAddress())
+  const { balance: cakeBalance } = useTokenBalance(getCakeAddress())
   const tickets = useTickets()
   const ticketsLength = tickets.length
   const [onPresentMyTickets] = useModal(<MyTicketsModal myTicketNumbers={tickets} from="buy" />)

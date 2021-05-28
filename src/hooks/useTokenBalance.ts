@@ -8,7 +8,7 @@ import useRefresh from './useRefresh'
 import useLastUpdated from './useLastUpdated'
 
 const useTokenBalance = (tokenAddress: string) => {
-  const [balance, setBalance] = useState(BIG_ZERO)
+  const [balanceState, setBalanceState] = useState({ balance: BIG_ZERO, hasFetchedBalance: false })
   const { account } = useWeb3React()
   const web3 = useWeb3()
   const { fastRefresh } = useRefresh()
@@ -16,8 +16,12 @@ const useTokenBalance = (tokenAddress: string) => {
   useEffect(() => {
     const fetchBalance = async () => {
       const contract = getBep20Contract(tokenAddress, web3)
-      const res = await contract.methods.balanceOf(account).call()
-      setBalance(new BigNumber(res))
+      try {
+        const res = await contract.methods.balanceOf(account).call()
+        setBalanceState({ balance: new BigNumber(res), hasFetchedBalance: true })
+      } catch (e) {
+        console.error(e)
+      }
     }
 
     if (account) {
@@ -25,7 +29,7 @@ const useTokenBalance = (tokenAddress: string) => {
     }
   }, [account, tokenAddress, web3, fastRefresh])
 
-  return balance
+  return { ...balanceState }
 }
 
 export const useTotalSupply = () => {

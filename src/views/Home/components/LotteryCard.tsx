@@ -54,7 +54,7 @@ const LotteryCard = () => {
   const [onPresentApprove] = useModal(<PurchaseWarningModal />)
   const { claimAmount, setLastUpdated } = useTotalClaim()
   const { onMultiClaim } = useMultiClaimLottery()
-  const cakeBalance = useTokenBalance(getCakeAddress())
+  const { balance: cakeBalance } = useTokenBalance(getCakeAddress())
   const { handleApprove, requestedApproval } = useApproval(onPresentApprove)
 
   const handleClaim = useCallback(async () => {
