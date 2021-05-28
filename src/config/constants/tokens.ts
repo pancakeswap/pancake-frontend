@@ -1416,6 +1416,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://opendao.io/',
   },
+  ez: {
+    symbol: 'EZ',
+    address: {
+      56: '0x5512014efa6cd57764fa743756f7a6ce3358cc83',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://easyfi.network/',
+  },
 }
 
 export default tokens
