@@ -23,7 +23,7 @@ const config = [
   {
     title: 'Where does the participation fee go?',
     description: [
-      'We burn it. The CAKE-BNB LP tokens from the participation fee will be decomposed, then we use the BNB portion to market buy the CAKE equivalent, then finally throw all of the CAKE into the weekly token burn.',
+      'We burn it. The CAKE-BNB LP tokens from the participation fee will be decomposed. We will then use the BNB portion to market buy the CAKE equivalent, and finally throw all of the CAKE into the weekly token burn.',
     ],
   },
   {
