@@ -4,6 +4,7 @@ import { Heading, Flex, Image, Button, Input } from '@rug-zombie-libs/uikit'
 import { useTranslation } from 'contexts/Localization'
 import Page from 'components/layout/Page'
 import PageHeader from 'components/PageHeader'
+import { useWeb3React } from '@web3-react/core'
 import GraveAbi from './abis/GraveAbi.json'
 import TokenAbi from './abis/TokenAbi.json'
 import MasterChefAbi from './abis/MasterChef.json'
@@ -13,7 +14,6 @@ import useWeb3 from '../../hooks/useWeb3'
 import { BIG_TEN } from '../../utils/bigNumber'
 import { getRestorationChefAddress } from '../../utils/addressHelpers'
 
-const TestWallet = '' // TODO Change to get wallet address from browser
 const ZombieContract = '0xf3A3a31b90BE814A45170CbC9df0678219c03656'
 const RuggedTokenContract = '0x3F70d41e27a46C31f7304954306c7DCb1503e3A9'
 const BusdContract = '0xed24fc36d5ee211ea25a80239fb8c4cfd80f12ee'
@@ -32,24 +32,26 @@ let restorationChef
 let ruggedTokenAmount
 let zombieAmount
 let stakingAmount
-
+let accountAddress
 const ONE = BIG_TEN.pow(18)
 
 async function InitWeb3() {
   web3 = useWeb3()
+   const { account } = useWeb3React()
+  accountAddress = account
   // grave = getContract(GraveAbi, GraveContract, web3)
   // zombie = getContract(TokenAbi, ZombieContract, web3)
   // ruggedToken = getContract(TokenAbi, RuggedTokenContract, web3)
-  // busd = getContract(TokenAbi, BusdContract, web3)
+  busd = getContract(TokenAbi, BusdContract, web3)
   // masterChef = getContract(MasterChefAbi, MasterChefContract, web3)
   // busd = getContract(TokenAbi, BusdContract, web3)
   // undeadBar = getContract(UndeadBarAbi, UndeadBarContract, web3)
-  restorationChef = getContract(RestorationChefAbi,"0xf3a866B431daB1925A8085D3F189248BE53e5cbd", web3)
+  restorationChef = getContract(RestorationChefAbi,getRestorationChefAddress(), web3)
 }
 
 //
 // async function MintZombie() {
-//   await zombie.methods.mint(TestWallet, ONE.times(10000)).send({ from: TestWallet })
+//   await zombie.methods.mint(account, ONE.times(10000)).send({ from: account })
 //     .then(() => {
 //       console.log('Minted Zombie')
 //     })
@@ -59,7 +61,7 @@ async function InitWeb3() {
 // }
 //
 // async function MintRuggedToken() {
-//   await ruggedToken.methods.mint(TestWallet, ONE.times(1000)).send({ from: TestWallet })
+//   await ruggedToken.methods.mint(account, ONE.times(1000)).send({ from: account })
 //     .then(() => {
 //       console.log('Minted RuggedToken')
 //     })
@@ -69,7 +71,7 @@ async function InitWeb3() {
 // }
 //
 // async function ApproveZombie() {
-//   await zombie.methods.approve(GraveContract, ONE.times(999999)).send({ from: TestWallet })
+//   await zombie.methods.approve(GraveContract, ONE.times(999999)).send({ from: account })
 //     .then(() => {
 //       console.log('Approved Zombie for grave')
 //     })
@@ -79,7 +81,7 @@ async function InitWeb3() {
 // }
 //
 // async function ApproveZombieMasterChef() {
-//   await zombie.methods.approve(MasterChefContract, ONE.times(999999)).send({ from: TestWallet })
+//   await zombie.methods.approve(MasterChefContract, ONE.times(999999)).send({ from: account })
 //     .then(() => {
 //       console.log('Approved Zombie for masterchef')
 //     })
@@ -89,7 +91,7 @@ async function InitWeb3() {
 // }
 //
 // async function ApproveRug() {
-//   await ruggedToken.methods.approve(GraveContract, ONE.times(999999)).send({ from: TestWallet })
+//   await ruggedToken.methods.approve(GraveContract, ONE.times(999999)).send({ from: account })
 //     .then(() => {
 //       console.log('Approved rugged token for grave')
 //     })
@@ -99,18 +101,18 @@ async function InitWeb3() {
 // }
 //
 //
-// async function ApproveBusd() {
-//   await busd.methods.approve(GraveContract, ONE.times(999999)).send({ from: TestWallet })
-//     .then(() => {
-//       console.log('Approved busd for grave')
-//     })
-//     .catch(() => {
-//       console.log('Failed to approve busd')
-//     })
-// }
+async function ApproveBusd() {
+  await busd.methods.approve(getRestorationChefAddress(), ONE.times(999999)).send({ from: accountAddress })
+    .then(() => {
+      console.log('Approved busd for grave')
+    })
+    .catch(() => {
+      console.log('Failed to approve busd')
+    })
+}
 //
 // async function PayUnlockFee() {
-//   await grave.methods.unlock().send({ from: TestWallet })
+//   await grave.methods.unlock().send({ from: account })
 //     .then(() => {
 //       console.log('Grave successfully unlocked')
 //     })
@@ -119,28 +121,28 @@ async function InitWeb3() {
 //     })
 // }
 //
-// async function DepositRuggedToken() {
-//   await grave.methods.depositRug(ONE.times(ruggedTokenAmount)).send({ from: TestWallet })
-//     .then(() => {
-//       console.log('Deposited RuggedToken')
-//     })
-//     .catch((res) => {
-//       console.log(res)
-//     })
-// }
-//
-// async function StakeZombie() {
-//   await grave.methods.stakeZombie(ONE.times(zombieAmount)).send({ from: TestWallet })
-//     .then(() => {
-//       console.log('Stake Zombie')
-//     })
-//     .catch((res) => {
-//       console.log(res)
-//     })
-// }
-//
+async function DepositRuggedToken() {
+  await restorationChef.methods.depositRug(0, ONE.times(ruggedTokenAmount)).send({ from: accountAddress })
+    .then(() => {
+      console.log('Deposited RuggedToken')
+    })
+    .catch((res) => {
+      console.log(res)
+    })
+}
+
+async function StakeZombie() {
+  await restorationChef.methods.stakeZombie(0, ONE.times(zombieAmount)).send({ from: accountAddress })
+    .then(() => {
+      console.log('Stake Zombie')
+    })
+    .catch((res) => {
+      console.log(res)
+    })
+}
+
 // async function WithdrawZombie() {
-//   await grave.methods.withdrawZombie().send({ from: TestWallet })
+//   await grave.methods.withdrawZombie().send({ from: account })
 //     .then(() => {
 //       console.log('Withdrew Zombie')
 //     })
@@ -150,7 +152,7 @@ async function InitWeb3() {
 // }
 //
 // async function WithdrawZombieEarly() {
-//   await grave.methods.withdrawZombieEarly().send({ from: TestWallet })
+//   await grave.methods.withdrawZombieEarly().send({ from: account })
 //     .then(() => {
 //       console.log('Withdraw Zombie')
 //     })
@@ -160,7 +162,7 @@ async function InitWeb3() {
 // }
 //
 // async function MintNft() {
-//   await grave.methods.mintNft().send({ from: TestWallet })
+//   await grave.methods.mintNft().send({ from: account })
 //     .then(() => {
 //       console.log('Minted Nft')
 //     })
@@ -169,18 +171,20 @@ async function InitWeb3() {
 //     })
 // }
 //
-// async function getAmountOfRugDeposited(setState) {
-//   grave.methods.amountOfRugDeposited(TestWallet).call()
-//     .then((amount) => {
-//       setState(amount / 10 ** 18)
-//     })
-//     .catch(() => {
-//       console.log('Failed to get amount of rug deposited')
-//     })
-// }
-//
+async function getUserInfo(setState) {
+  if(typeof accountAddress !== "undefined")
+  await restorationChef.methods.userInfo(0, accountAddress).call()
+    .then((data) => {
+      setState(data)
+      console.log(data)
+    })
+    .catch(() => {
+      console.log('Failed to get amount of rug deposited')
+    })
+}
+
 // async function getAmountOfZombieDeposited(setState) {
-//   grave.methods.amountOfZombieStaked(TestWallet).call()
+//   grave.methods.amountOfZombieStaked(account).call()
 //     .then((amount) => {
 //       setState(amount / 10 ** 18)
 //     })
@@ -190,7 +194,7 @@ async function InitWeb3() {
 // }
 //
 // async function getWithdrawalDate(setState) {
-//   grave.methods.withdrawalDate(TestWallet).call()
+//   grave.methods.withdrawalDate(account).call()
 //     .then((amount) => {
 //       setState(amount)
 //     })
@@ -230,7 +234,7 @@ async function InitWeb3() {
 // }
 //
 // async function getZombieAllowance(setState) {
-//   zombie.methods.allowance(TestWallet, GraveContract).call()
+//   zombie.methods.allowance(account, GraveContract).call()
 //     .then((amount) => {
 //       setState(amount / 10 ** 18)
 //     })
@@ -240,7 +244,7 @@ async function InitWeb3() {
 // }
 //
 // async function TransferOwnership() {
-//   await zombie.methods.transferOwnership(MasterChefContract).send({ from: TestWallet })
+//   await zombie.methods.transferOwnership(MasterChefContract).send({ from: account })
 //     .then(() => {
 //       console.log('Zombie ownership transferred to masterchef')
 //     })
@@ -248,7 +252,7 @@ async function InitWeb3() {
 //       console.log('Failed to transfer ownership')
 //     })
 //
-//   await undeadBar.methods.transferOwnership(MasterChefContract).send({ from: TestWallet })
+//   await undeadBar.methods.transferOwnership(MasterChefContract).send({ from: account })
 //     .then(() => {
 //       console.log('UndeadBar ownership transferred to masterchef')
 //     })
@@ -258,7 +262,7 @@ async function InitWeb3() {
 // }
 //
 // async function EnterStaking() {
-//   await masterChef.methods.enterStaking(ONE.times(stakingAmount)).send({ from: TestWallet })
+//   await masterChef.methods.enterStaking(ONE.times(stakingAmount)).send({ from: account })
 //     .then(() => {
 //       console.log('entered staking')
 //     })
@@ -268,7 +272,7 @@ async function InitWeb3() {
 // }
 //
 // async function LeaveStaking() {
-//   await masterChef.methods.leaveStaking(ONE.times(stakingAmount)).send({ from: TestWallet })
+//   await masterChef.methods.leaveStaking(ONE.times(stakingAmount)).send({ from: account })
 //     .then(() => {
 //       console.log('left staking')
 //     })
@@ -278,7 +282,7 @@ async function InitWeb3() {
 // }
 //
 // async function UpdatePool() {
-//   await masterChef.methods.updatePool(0).send({ from: TestWallet })
+//   await masterChef.methods.updatePool(0).send({ from: account })
 //     .then(() => {
 //       console.log('updated pool')
 //     })
@@ -294,7 +298,7 @@ async function AddGrave() {
     500,
     2592000, // 30 days
     '0x1b709Eb1a00DD8b77D759cEF81Ef75Bdd0e55128',
-  ).send({ from: TestWallet })
+  ).send({ from: accountAddress })
     .then((res) => {
       console.log('created grave')
       console.log(res)
@@ -305,7 +309,7 @@ async function AddGrave() {
 }
 
 // function getUserInfo() {
-//   restorationChef.methods.userInfo(0, TestWallet).call()
+//   restorationChef.methods.userInfo(0, account).call()
 //     .then((data) => {
 //       // setState(data)
 //       console.log('itworked')
@@ -320,8 +324,8 @@ function getgraveInfo() {
   restorationChef.methods.graveInfo(0).call()
     .then((data) => {
       // setState(data)
-      console.log('itworked')
-      console.log(data)
+      // console.log('itworked')
+      // console.log(data)
     })
     .catch((res) => {
       console.log(res)
@@ -350,7 +354,7 @@ function getgraveInfo() {
 // }
 //
 // async function getPendingRewards(setState) {
-//   masterChef.methods.pendingCake(0, TestWallet).call()
+//   masterChef.methods.pendingCake(0, account).call()
 //     .then((amount) => {
 //       setState(amount / 10 ** 18)
 //     })
@@ -360,7 +364,7 @@ function getgraveInfo() {
 // }
 //
 // async function getAmountStaked(setState) {
-//   masterChef.methods.pendingCake(0, TestWallet).call()
+//   masterChef.methods.pendingCake(0, account).call()
 //     .then((amount) => {
 //       setState(amount / 10 ** 18)
 //     })
@@ -383,21 +387,23 @@ const onChangeStakingAmount = (e) => {
 
 const Admin: React.FC = () => {
   const { t } = useTranslation()
-  const [resultRugDeposited, setResultRugDeposited] = useState(0)
   const [resultZombieDeposited, setResultZombieDeposited] = useState(0)
   const [withdrawDate, setWithdrawDate] = useState(0)
   const [treasury, setTreasury] = useState(0)
   const [minimumStake, setMinimumStake] = useState(0)
   const [unlockingFee, setUnlockingFee] = useState(0)
   const [zombieAllowance, setZombieAllowance] = useState(0)
-  const [userInfo, setUserInfo] = useState({})
+  const [userInfo, setUserInfo] = useState({
+    rugDeposited: 0,
+    zombieStaked: 0,
+  })
   const [poolInfo, setPoolInfo] = useState(0)
   const [pendingRewards, setPendingRewards] = useState(1)
 
   InitWeb3()
   // getUserInfo()
-  getgraveInfo()
-  // getAmountOfRugDeposited(setResultRugDeposited)
+  // getgraveInfo()
+  // getUserInfo(setUserInfo)
   // getAmountOfZombieDeposited(setResultZombieDeposited)
   // getTreasury(setTreasury)
   // getWithdrawalDate(setWithdrawDate)
@@ -465,11 +471,11 @@ const Admin: React.FC = () => {
         {/*    Grave */}
         {/*  </Heading> */}
         {/*  <br/> */}
-        {/*  <Flex justifyContent='space-between'> */}
-        {/*    <Heading>Rug Deposited: {resultRugDeposited}</Heading> */}
-        {/*    <Heading>Zombie Deposited: {resultZombieDeposited}</Heading> */}
-        {/*  </Flex> */}
-        {/*  <br /> */}
+          <Flex justifyContent='space-between'>
+            <Heading>Rug Deposited: {userInfo.rugDeposited / 10 ** 18}</Heading>
+            <Heading>Zombie Deposited: {resultZombieDeposited}</Heading>
+          </Flex>
+          <br />
         {/*  <Flex justifyContent='space-between'> */}
         {/*    <Heading>Treasury: {treasury}</Heading> */}
         {/*    <Heading>Withdraw Date: {withdrawDate}</Heading> */}
@@ -486,31 +492,31 @@ const Admin: React.FC = () => {
         {/*    <Button onClick={MintRuggedToken}>MINT RUGGED TOKEN</Button> */}
         {/*  </Flex> */}
         {/*  <br /> */}
-        {/*  <Flex justifyContent='space-between'> */}
-        {/*    <Button onClick={ApproveRug}>APPROVE RUGGED TOKEN</Button> */}
-        {/*    <Button onClick={ApproveZombie}>APPROVE ZOMBIE</Button> */}
-        {/*    <Button onClick={ApproveBusd}>APPROVE BUSD</Button> */}
-        {/*  </Flex> */}
-        {/*  <br /> */}
-        {/*  <Flex justifyContent='space-between'> */}
-        {/*    <Button onClick={DepositRuggedToken}>DEPOSIT RUGGED TOKEN</Button> */}
-        {/*    <Input style={{ width: '300px' }} type='number' inputMode='numeric' min='0' */}
-        {/*           onChange={onChangeRuggedTokenAmount} */}
-        {/*           placeholder='Amount of Rug' */}
-        {/*    /> */}
-        {/*  </Flex> */}
-        {/*  <br /> */}
+          <Flex justifyContent='space-between'>
+            {/* <Button onClick={ApproveRug}>APPROVE RUGGED TOKEN</Button> */}
+            {/* <Button onClick={ApproveZombie}>APPROVE ZOMBIE</Button> */}
+            <Button onClick={ApproveBusd}>APPROVE BUSD</Button>
+          </Flex>
+          <br />
+          <Flex justifyContent='space-between'>
+            <Button onClick={DepositRuggedToken}>DEPOSIT RUGGED TOKEN</Button>
+            <Input style={{ width: '300px' }} type='number' inputMode='numeric' min='0'
+                   onChange={onChangeRuggedTokenAmount}
+                   placeholder='Amount of Rug'
+            />
+          </Flex>
+          <br />
         {/*  <Flex justifyContent='space-between'> */}
         {/*    <Button onClick={PayUnlockFee}>PAY UNLOCK FEE</Button> */}
         {/*  </Flex> */}
         {/*  <br /> */}
-        {/*  <Flex justifyContent='space-between'> */}
-        {/*    <Button onClick={StakeZombie}>STAKE ZOMBIE</Button> */}
-        {/*    <Input style={{ width: '300px' }} type='number' inputMode='numeric' min='0' onChange={onChangeZombieAmount} */}
-        {/*           placeholder='Amount of Zombie Stake' */}
-        {/*    /> */}
-        {/*  </Flex> */}
-        {/*  <br /> */}
+          <Flex justifyContent='space-between'>
+            <Button onClick={StakeZombie}>STAKE ZOMBIE</Button>
+            <Input style={{ width: '300px' }} type='number' inputMode='numeric' min='0' onChange={onChangeZombieAmount}
+                   placeholder='Amount of Zombie Stake'
+            />
+          </Flex>
+          <br />
         {/*  <Flex justifyContent='space-between'> */}
         {/*    <Button onClick={WithdrawZombie}>WITHDRAW ZOMBIE</Button> */}
         {/*    <Button onClick={WithdrawZombieEarly}>WITHDRAW ZOMBIE EARLY</Button> */}

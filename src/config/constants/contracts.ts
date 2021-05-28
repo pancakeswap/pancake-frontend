@@ -4,7 +4,7 @@ export default {
     56: '0x73feaa1eE314F8c655E354234017bE2193C9E24E',
   },
   restorationChef: {
-    97: '0xf3a866B431daB1925A8085D3F189248BE53e5cbd',
+    97: '0x98E01bFa5682c24E1415003671eeA0C7f5aA7103',
     56: '0x6ab8463a4185b80905e05a9ff80a2d6b714b9e95',
   },
   sousChef: {

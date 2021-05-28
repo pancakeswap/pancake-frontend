@@ -12,6 +12,7 @@ import GraveStakeModal from '../GraveStakeModal'
 import { GraveConfig } from '../../../../../config/constants/types'
 import tokens from '../../../../../config/constants/tokens'
 import { BIG_TEN } from '../../../../../utils/bigNumber'
+import GraveWithdrawModal from '../GraveWithdrawModal'
 
 interface HasStakeActionProps {
   grave: GraveConfig
@@ -23,7 +24,7 @@ interface HasStakeActionProps {
   web3: Web3
 }
 
-const IsStakedActions: React.FC<HasStakeActionProps> = ({
+const WithdrawAction: React.FC<HasStakeActionProps> = ({
   grave,
   stakingTokenBalance,
   zombiePrice,
@@ -39,22 +40,11 @@ const IsStakedActions: React.FC<HasStakeActionProps> = ({
 
   const zombieAsDisplayBalance = new BigNumber(userData.zombieStaked)
 
-  const [onPresentStake] = useModal(
-    <GraveStakeModal
-      account={account}
-      grave={grave}
-      userData={userData}
-      stakingMax={stakingMax}
-      stakingTokenPrice={zombiePrice}
-      web3={web3}
-    />,
-  )
-
   const [onPresentUnstake] = useModal(
-    <GraveStakeModal
+    <GraveWithdrawModal
       account={account}
       grave={grave}
-      stakingMax={stakingMax}
+      stakingMax={new BigNumber(userData.zombieStaked)}
       stakingTokenPrice={zombiePrice}
       userData={userData}
       isRemovingStake
@@ -73,12 +63,9 @@ const IsStakedActions: React.FC<HasStakeActionProps> = ({
         <IconButton variant="secondary" onClick={onPresentUnstake} mr="6px">
           <MinusIcon color="primary" width="24px" />
         </IconButton>
-        <IconButton variant="secondary" onClick={stakingTokenBalance.gt(0) ? onPresentStake : onPresentTokenRequired}>
-          <AddIcon color="primary" width="24px" height="24px" />
-        </IconButton>
        </Flex>
     </Flex>
   )
 }
 
-export default IsStakedActions
+export default WithdrawAction

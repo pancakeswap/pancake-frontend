@@ -5,29 +5,29 @@ import { useTranslation } from 'contexts/Localization'
 import { useCake, useCakeVaultContract } from 'hooks/useContract'
 import useToast from 'hooks/useToast'
 import { Pool } from 'state/types'
-import { GraveConfig, Token } from '../../../../../config/constants/types'
+import Web3 from 'web3'
+import { GraveConfig } from '../../../../../config/constants/types'
 import tokens from '../../../../../config/constants/tokens'
 import { getAddress, getRestorationChefAddress } from '../../../../../utils/addressHelpers'
-import { getBep20Contract, getContract } from '../../../../../utils/contractHelpers'
-import Web3 from 'web3'
+import { getBep20Contract } from '../../../../../utils/contractHelpers'
 
 interface ApprovalActionProps {
   grave: GraveConfig
   account: string
   setLastUpdated: () => void
   isLoading?: boolean
-  token: Token
   web3: Web3
 }
 
-const ApprovalAction: React.FC<ApprovalActionProps> = ({ grave, account, isLoading = false, setLastUpdated, token, web3 }) => {
-  const tokenContract = getBep20Contract(getAddress(token.address), web3)
+const RuggedTokenApprovalAction: React.FC<ApprovalActionProps> = ({ grave, account, isLoading = false, setLastUpdated, web3 }) => {
+  const cakeVaultContract = useCakeVaultContract()
+  const ruggedTokenContract = getBep20Contract(getAddress(grave.ruggedToken.address), web3)
   const { t } = useTranslation()
   const [requestedApproval, setRequestedApproval] = useState(false)
   const { toastSuccess, toastError } = useToast()
 
   const handleApprove = () => {
-    tokenContract.methods
+    ruggedTokenContract.methods
       .approve(getRestorationChefAddress(), ethers.constants.MaxUint256)
       .send({ from: account })
       .on('sending', () => {
@@ -36,7 +36,7 @@ const ApprovalAction: React.FC<ApprovalActionProps> = ({ grave, account, isLoadi
       .on('receipt', () => {
         toastSuccess(
           `${t('Contract Enabled')}`,
-          token === tokens.zmbe ? `You can now stake your ${token.symbol} in the grave!` : `You can now spend ${token.symbol} in the grave!`,
+          `${t(`You can now stake in the %symbol %vault!`, { symbol: grave.ruggedToken.symbol })}`,
         )
         setLastUpdated()
         setRequestedApproval(false)
@@ -63,11 +63,11 @@ const ApprovalAction: React.FC<ApprovalActionProps> = ({ grave, account, isLoadi
           onClick={handleApprove}
           width="100%"
         >
-          {`Approve ${token.symbol}`}
+          {`Approve ${grave.ruggedToken.symbol}`}
         </Button>
       )}
     </>
   )
 }
 
-export default ApprovalAction
+export default RuggedTokenApprovalAction

@@ -69,11 +69,11 @@ function getgraveInfo(gid, setState) {
     })
 }
 
-const Admin: React.FC = () => {
+const Graves: React.FC = () => {
   const { path } = useRouteMatch()
   const { account } = useWeb3React()
   const [stakedOnly, setStakedOnly] = usePersistState(false, 'pancake_pool_staked')
-  const zombiePriceInBusd = usePriceZombieBusd()
+  const zombiePriceInBusd = usePriceZombieBusd() // todo fix
   InitWeb3(account)
   getUserInfo(0, account)
   const zombieBalance = useTokenBalance(getZombieAddress())
@@ -111,7 +111,17 @@ const Admin: React.FC = () => {
               <>
                 {openGraves.map(grave => {
                   const user = (typeof userData[grave.gid]) === "undefined" ? defaultUser : userData[grave.gid]
-                  return <GraveCard grave={grave} zombiePrice={zombiePriceInBusd} balances={{ zombie: zombieBalance }} userData={user} gid={grave.gid} account={account} isLoading={isLoading} />
+
+                  return <GraveCard
+                    gid={grave.gid}
+                    grave={grave}
+                    zombiePrice={zombiePriceInBusd}
+                    balances={{ zombie: zombieBalance}}
+                    userData={user}
+                    account={account}
+                    isLoading={isLoading}
+                    web3={web3}
+                  />
                 })}
               </>
             </Route>
@@ -134,4 +144,4 @@ const Admin: React.FC = () => {
   )
 }
 
-export default Admin
+export default Graves

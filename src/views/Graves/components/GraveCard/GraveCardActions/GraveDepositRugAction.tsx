@@ -8,11 +8,13 @@ import GraveStakeModal from '../GraveStakeModal'
 import IsStakedActions from './IsStakedActions'
 import { GraveConfig } from '../../../../../config/constants/types'
 import tokens from '../../../../../config/constants/tokens'
+import GraveDepositRugModal from '../GraveDepositRugModal'
+import IsRugDepositedActions from './IsRugDepositedActions'
 
 interface VaultStakeActionsProps {
   grave: GraveConfig
   userData: any
-  zombiePrice: BigNumber
+  ruggedTokenPrice: BigNumber
   stakingMax: BigNumber
   balances: any
   isLoading?: boolean
@@ -21,23 +23,23 @@ interface VaultStakeActionsProps {
   web3: Web3
 }
 
-const GraveStakeActions: React.FC<VaultStakeActionsProps> = ({
+const GraveDepositRugAction: React.FC<VaultStakeActionsProps> = ({
   grave,
   userData,
-  zombiePrice,
+  ruggedTokenPrice,
   stakingMax,
   isLoading = false,
   balances,
   account,
   web3
 }) => {
-  const zombieBalance = new BigNumber(balances.zombie)
+  const ruggedTokenBalance = new BigNumber(balances.ruggedToken)
   const { t } = useTranslation()
-  const [onPresentTokenRequired] = useModal(<NotEnoughTokensModal tokenSymbol={tokens.zmbe.symbol} />)
+  const [onPresentTokenRequired] = useModal(<NotEnoughTokensModal tokenSymbol={grave.ruggedToken.symbol} />)
   const [onPresentStake] = useModal(
-    <GraveStakeModal
+    <GraveDepositRugModal
       account={account}
-      stakingTokenPrice={zombiePrice}
+      stakingTokenPrice={ruggedTokenPrice}
       stakingMax={stakingMax}
       userData={userData}
       grave={grave}
@@ -46,22 +48,22 @@ const GraveStakeActions: React.FC<VaultStakeActionsProps> = ({
   )
 
   const renderStakeAction = () => {
-    return zombieBalance.gt(0) ? (
-      <IsStakedActions
+    return ruggedTokenBalance.gt(0) ? (
+      <IsRugDepositedActions
         grave={grave}
         userData={userData}
         stakingMax={stakingMax}
-        zombiePrice={zombiePrice}
-        stakingTokenBalance={zombieBalance}
+        zombiePrice={ruggedTokenPrice}
+        stakingTokenBalance={ruggedTokenBalance}
         account={account}
         web3={web3}
       />
     ) : (
-      <Button onClick={zombieBalance.gt(0) ? onPresentStake : onPresentTokenRequired}>{t('Stake')}</Button>
+      <Button onClick={ruggedTokenBalance.gt(0) ? onPresentStake : onPresentTokenRequired}>{t('Stake')}</Button>
     )
   }
 
   return <Flex flexDirection="column">{isLoading ? <Skeleton width="100%" height="52px" /> : renderStakeAction()}</Flex>
 }
 
-export default GraveStakeActions
+export default GraveDepositRugAction

@@ -12,6 +12,7 @@ import { getFullDisplayBalance, formatNumber, getDecimalAmount } from 'utils/for
 import useToast from 'hooks/useToast'
 import { Pool } from 'state/types'
 import { VaultUser } from 'views/Graves/types'
+import Web3 from 'web3'
 import { convertCakeToShares } from '../../helpers'
 import FeeSummary from './FeeSummary'
 import { GraveConfig } from '../../../../config/constants/types'
@@ -28,13 +29,13 @@ interface VaultStakeModalProps {
   isRemovingStake?: boolean
   pricePerFullShare?: BigNumber
   onDismiss?: () => void
+  web3: Web3
 }
 
 const StyledButton = styled(Button)`
   flex-grow: 1;
 `
-
-const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
+const GraveStakeModal: React.FC<VaultStakeModalProps> = ({
   grave,
   stakingMax,
   stakingTokenPrice,
@@ -42,8 +43,9 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
   userData,
   isRemovingStake = false,
   onDismiss,
+  web3
 }) => {
-  const restorationChefContract = getRestorationChefContract(getRestorationChefAddress())
+  const restorationChefContract = getRestorationChefContract(getRestorationChefAddress(), web3)
   const { t } = useTranslation()
   const { theme } = useTheme()
   const { toastSuccess, toastError } = useToast()
@@ -54,7 +56,6 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
   const now = Date.now() / 1000
   const hasUnstakingFee = withdrawalDate > now
   const usdValueStaked = stakeAmount && formatNumber(new BigNumber(stakeAmount).times(stakingTokenPrice).toNumber())
-
   const handleStakeInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = event.target.value || '0'
     const convertedInput = new BigNumber(inputValue).multipliedBy(new BigNumber(10).pow(tokens.zmbe.decimals))
@@ -120,6 +121,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
   }
 
   const handleDeposit = async (convertedStakeAmount: BigNumber) => {
+    console.log(convertedStakeAmount.toString())
     restorationChefContract.methods
       .stakeZombie(grave.gid, convertedStakeAmount.toString())
       // .toString() being called to fix a BigNumber error in prod
@@ -225,4 +227,4 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
   )
 }
 
-export default VaultStakeModal
+export default GraveStakeModal

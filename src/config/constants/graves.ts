@@ -5,7 +5,8 @@ const graves: GraveConfig[] = [
   {
     gid: 0,
     nftName: 'UndeadMoon',
-    rugName: 'TheMoon',
+    ruggedToken: tokens.rug100,
+    unlockingToken: tokens.busd,
     nftSrc: 'https://storage.googleapis.com/rug-zombie/running-zombie-1.png',
     rugSrc: 'https://storage.googleapis.com/rug-zombie/TheMoon.png',
     unlockingFee: 10,

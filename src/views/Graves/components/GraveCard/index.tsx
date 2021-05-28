@@ -3,8 +3,7 @@ import styled from 'styled-components'
 import { CardBody, Flex, Image, Text } from '@rug-zombie-libs/uikit'
 import UnlockButton from 'components/UnlockButton'
 import BigNumber from 'bignumber.js'
-import { getContract, getRestorationChefContract } from 'utils/contractHelpers'
-import { getAddress, getRestorationChefAddress } from 'utils/addressHelpers'
+import Web3 from 'web3'
 import MinimumStake from './MinimumStake'
 import StyledCard from './StyledCard'
 import StyledCardHeader from './StyledCardHeader'
@@ -13,17 +12,31 @@ import MinimumStakingTime from './MinimumStakingTime'
 import GraveCardActions from './GraveCardActions'
 import CardFooter from './CardFooter'
 import { BIG_TEN } from '../../../../utils/bigNumber'
+import useTokenBalance from '../../../../hooks/useTokenBalance'
+import { getAddress, getZombieAddress } from '../../../../utils/addressHelpers'
 
 const StyledCardBody = styled(CardBody)<{ isLoading: boolean }>`
   min-height: ${({ isLoading }) => (isLoading ? '0' : '254px')};
 `
 
-const GraveCard: React.FC<{ grave: GraveConfig, zombiePrice: BigNumber, userData: any, gid: number; account: string, balances: any, isLoading: boolean }> = ({ grave, zombiePrice, userData, gid, account,  balances, isLoading }) => {
+const GraveCard: React.FC<{
+  grave: GraveConfig,
+  zombiePrice: BigNumber,
+  userData: any,
+  gid: number;
+  account: string,
+  balances: any,
+  isLoading: boolean
+  web3: Web3
+}> = ({ grave, zombiePrice, userData, gid, account,  balances, isLoading, web3 }) => {
+  const allBalances = balances
+  allBalances.ruggedToken = useTokenBalance(getAddress(grave.ruggedToken.address))
+  const ruggedTokenPrice = BIG_TEN // todo fix
   return (
     <StyledCard isStaking={false} style={{
       minWidth: '350px',
     }}>
-      <StyledCardHeader earningTokenSymbol={grave.nftName} stakingTokenSymbol={grave.rugName}
+      <StyledCardHeader earningTokenSymbol={grave.nftName} stakingTokenSymbol={grave.ruggedToken.symbol}
                         stakingTokenImageUrl={grave.rugSrc} />
       <StyledCardBody isLoading={isLoading}>
         <MinimumStake
@@ -48,12 +61,14 @@ const GraveCard: React.FC<{ grave: GraveConfig, zombiePrice: BigNumber, userData
               grave={grave}
               userData={userData}
               zombiePrice={zombiePrice}
+              ruggedTokenPrice={ruggedTokenPrice}
               unlockingFee={undefined}
-              balances={balances}
+              balances={allBalances}
               accountHasSharesStaked={false}
               account={account}
               stakingTokenBalance={undefined}
               isLoading={isLoading}
+              web3={web3}
             />
           ) : (
             <>
@@ -68,7 +83,7 @@ const GraveCard: React.FC<{ grave: GraveConfig, zombiePrice: BigNumber, userData
       <CardFooter
         account={account}
         grave={grave}
-        totalZombieInGrave={BIG_TEN}
+        totalZombieInGrave={BIG_TEN} // todo fix
       />
     </StyledCard>
   )

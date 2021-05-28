@@ -5,41 +5,40 @@ import { useTranslation } from 'contexts/Localization'
 import { useCake, useCakeVaultContract } from 'hooks/useContract'
 import useToast from 'hooks/useToast'
 import { Pool } from 'state/types'
-import { GraveConfig, Token } from '../../../../../config/constants/types'
+import { GraveConfig } from '../../../../../config/constants/types'
 import tokens from '../../../../../config/constants/tokens'
 import { getAddress, getRestorationChefAddress } from '../../../../../utils/addressHelpers'
-import { getBep20Contract, getContract } from '../../../../../utils/contractHelpers'
-import Web3 from 'web3'
+import { getRestorationChefContract } from '../../../../../utils/contractHelpers'
 
 interface ApprovalActionProps {
   grave: GraveConfig
   account: string
   setLastUpdated: () => void
   isLoading?: boolean
-  token: Token
-  web3: Web3
+  web3
 }
 
-const ApprovalAction: React.FC<ApprovalActionProps> = ({ grave, account, isLoading = false, setLastUpdated, token, web3 }) => {
-  const tokenContract = getBep20Contract(getAddress(token.address), web3)
+const UnlockingAction: React.FC<ApprovalActionProps> = ({ grave, account, isLoading = false, setLastUpdated, web3 }) => {
+  const restorationChef = getRestorationChefContract(getRestorationChefAddress(), web3)
+  const cakeContract = useCake()
   const { t } = useTranslation()
-  const [requestedApproval, setRequestedApproval] = useState(false)
+  const [graveUnlocked, setGraveUnlocked] = useState(false)
   const { toastSuccess, toastError } = useToast()
 
-  const handleApprove = () => {
-    tokenContract.methods
-      .approve(getRestorationChefAddress(), ethers.constants.MaxUint256)
+  const handleUnlock = () => {
+    restorationChef.methods
+      .unlock(grave.gid)
       .send({ from: account })
       .on('sending', () => {
-        setRequestedApproval(true)
+        setGraveUnlocked(true)
       })
       .on('receipt', () => {
         toastSuccess(
-          `${t('Contract Enabled')}`,
-          token === tokens.zmbe ? `You can now stake your ${token.symbol} in the grave!` : `You can now spend ${token.symbol} in the grave!`,
+          `${t('Grave Unlocked')}`,
+          `${t(`You can now stake in the %symbol %vault!`, { symbol: tokens.zmbe.symbol })}`,
         )
         setLastUpdated()
-        setRequestedApproval(false)
+        setGraveUnlocked(false)
       })
       .on('error', (error) => {
         console.error(error)
@@ -47,7 +46,7 @@ const ApprovalAction: React.FC<ApprovalActionProps> = ({ grave, account, isLoadi
           `${t('Error')}`,
           `${t(`Please try again. Confirm the transaction and make sure you are paying enough gas!`)}`,
         )
-        setRequestedApproval(false)
+        setGraveUnlocked(false)
       })
   }
 
@@ -57,17 +56,17 @@ const ApprovalAction: React.FC<ApprovalActionProps> = ({ grave, account, isLoadi
         <Skeleton width="100%" height="52px" />
       ) : (
         <Button
-          isLoading={requestedApproval}
-          endIcon={requestedApproval ? <AutoRenewIcon spin color="currentColor" /> : null}
-          disabled={requestedApproval}
-          onClick={handleApprove}
+          isLoading={graveUnlocked}
+          endIcon={graveUnlocked ? <AutoRenewIcon spin color="currentColor" /> : null}
+          disabled={graveUnlocked}
+          onClick={handleUnlock}
           width="100%"
         >
-          {`Approve ${token.symbol}`}
+          {t('Unlock Grave ($10)')}
         </Button>
       )}
     </>
   )
 }
 
-export default ApprovalAction
+export default UnlockingAction

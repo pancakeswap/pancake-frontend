@@ -81,7 +81,8 @@ export interface PoolConfig {
 export interface GraveConfig {
   gid: number
   nftName: string
-  rugName: string
+  ruggedToken: Token
+  unlockingToken: Token
   nftSrc: string,
   rugSrc: string,
   contractAddress: Address

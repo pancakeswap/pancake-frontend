@@ -12,6 +12,7 @@ import GraveStakeModal from '../GraveStakeModal'
 import { GraveConfig } from '../../../../../config/constants/types'
 import tokens from '../../../../../config/constants/tokens'
 import { BIG_TEN } from '../../../../../utils/bigNumber'
+import GraveDepositRugModal from '../GraveDepositRugModal'
 
 interface HasStakeActionProps {
   grave: GraveConfig
@@ -23,7 +24,7 @@ interface HasStakeActionProps {
   web3: Web3
 }
 
-const IsStakedActions: React.FC<HasStakeActionProps> = ({
+const IsRugDepositedActions: React.FC<HasStakeActionProps> = ({
   grave,
   stakingTokenBalance,
   zombiePrice,
@@ -40,7 +41,7 @@ const IsStakedActions: React.FC<HasStakeActionProps> = ({
   const zombieAsDisplayBalance = new BigNumber(userData.zombieStaked)
 
   const [onPresentStake] = useModal(
-    <GraveStakeModal
+    <GraveDepositRugModal
       account={account}
       grave={grave}
       userData={userData}
@@ -61,6 +62,7 @@ const IsStakedActions: React.FC<HasStakeActionProps> = ({
       web3={web3}
     />,
   )
+
   return (
     <Flex justifyContent="space-between" alignItems="center">
       <Flex flexDirection="column">
@@ -81,4 +83,4 @@ const IsStakedActions: React.FC<HasStakeActionProps> = ({
   )
 }
 
-export default IsStakedActions
+export default IsRugDepositedActions
