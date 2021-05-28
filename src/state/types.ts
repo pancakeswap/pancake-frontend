@@ -131,40 +131,6 @@ export interface AchievementState {
   data: Achievement[]
 }
 
-// API Price State
-export interface PriceApiList {
-  /* eslint-disable camelcase */
-  [key: string]: {
-    name: string
-    symbol: string
-    price: string
-    price_BNB: string
-  }
-}
-
-export interface PriceApiListThunk {
-  /* eslint-disable camelcase */
-  [key: string]: number
-}
-
-export interface PriceApiResponse {
-  /* eslint-disable camelcase */
-  updated_at: string
-  data: PriceApiList
-}
-
-export interface PriceApiThunk {
-  /* eslint-disable camelcase */
-  updated_at: string
-  data: PriceApiListThunk
-}
-
-export interface PriceApiState {
-  isLoading: boolean
-  lastUpdated: string
-  data: PriceApiListThunk
-}
-
 // Block
 
 export interface BlockState {
@@ -286,7 +252,6 @@ export interface State {
   achievements: AchievementState
   block: BlockState
   farms: FarmsState
-  apiPrices: PriceApiState
   pools: PoolsState
   predictions: PredictionsState
   profile: ProfileState
