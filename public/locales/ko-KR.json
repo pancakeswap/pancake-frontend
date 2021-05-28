@@ -804,8 +804,8 @@
   "An error occurred confirming transaction": "트랜잭션을 확인하는 중에 오류가 발생했습니다",
   "Successfully Enabled!": "활성화 성공!",
   "You can now participate in the %symbol% IFO.": "이제 %symbol% IFO에 참여할 수 있습니다.",
-  "Team Ranks": "Team Ranks",
-  "Prizes": "Prizes",
-  "Rules": "Rules",
-  "Entry": "Entry"
+  "Team Ranks": "팀 순위",
+  "Prizes": "상금",
+  "Rules": "규칙",
+  "Entry": "엔트리"
 }

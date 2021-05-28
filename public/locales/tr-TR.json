@@ -804,8 +804,8 @@
   "An error occurred confirming transaction": "İşlem onaylanırken bir hata oluştu",
   "Successfully Enabled!": "Başarıyla Etkinleştirildi!",
   "You can now participate in the %symbol% IFO.": "%symbol% IFO'suna artık katılabilirsiniz.",
-  "Team Ranks": "Team Ranks",
-  "Prizes": "Prizes",
-  "Rules": "Rules",
-  "Entry": "Entry"
+  "Team Ranks": "Takım Sıralamaları",
+  "Prizes": "Ödüller",
+  "Rules": "Kurallar",
+  "Entry": "Giriş"
 }
