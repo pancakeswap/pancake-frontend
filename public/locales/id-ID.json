@@ -391,7 +391,7 @@
   "Everyone can only commit a limited amount, but may expect a higher return per token committed.": "Setiap orang bisa menggunakan jumlah kecil saja, namun mungkin untuk mengharapkan imbal hasil yang lebih tinggi per token yang digunakan.",
   "Unlimited Sale": "Penjualan Tanpa Batas",
   "No limits on the amount you can commit. Additional fee applies when claiming.": "Tidak ada batasan jumlah yang dapat Anda gunakan. Biaya tambahan berlaku saat melakukan klaim.",
-  "Every person can only commit a limited amount, but may expect a higher return per token committed.": "Every person can only commit a limited amount, but may expect a higher return per token committed.",
+  "Every person can only commit a limited amount, but may expect a higher return per token committed.": "Setiap orang bisa menggunakan jumlah kecil saja, namun mungkin untuk mengharapkan imbal hasil yang lebih tinggi per token yang digunakan.",
   "You didn’t participate in this sale!": "Anda belum berpartisipasi dalam penjualan ini!",
   "Max. LP token entry": "Entri token LP maks.",
   "How to Take Part": "Cara Berpartisipasi",
@@ -803,10 +803,10 @@
   "Prediction": "Prediksi",
   "Initial Farm Offering": "Tawaran Perdana Farm (IFO)",
   "An error occurred confirming transaction": "Eror terjadi saat mengonfirmasi transaksi",
-  "Successfully Enabled!": "Successfully Enabled!",
-  "You can now participate in the %symbol% IFO.": "You can now participate in the %symbol% IFO.",
-  "Team Ranks": "Team Ranks",
-  "Prizes": "Prizes",
-  "Rules": "Rules",
-  "Entry": "Entry"
+  "Successfully Enabled!": "Berhasil Diaktifkan!",
+  "You can now participate in the %symbol% IFO.": "Kini Anda dapat berpartisipasi dalam IFO %symbol%.",
+  "Team Ranks": "Peringkat Tim",
+  "Prizes": "Hadiah",
+  "Rules": "Aturan",
+  "Entry": "Entri"
 }
