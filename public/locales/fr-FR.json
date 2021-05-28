@@ -804,9 +804,9 @@
   "Initial Farm Offering": "Intitial Farm Offering",
   "An error occurred confirming transaction": "Une erreur s'est produite lors de la confirmation de la transaction",
   "Successfully Enabled!": "Activation réussie !",
-  "You can now participate in the %symbol% IFO.": "You can now participate in the %symbol% IFO.",
-  "Team Ranks": "Team Ranks",
-  "Prizes": "Prizes",
-  "Rules": "Rules",
-  "Entry": "Entry"
+  "You can now participate in the %symbol% IFO.": "Vous pouvez désormais participer à la vente IFO %symbol%.",
+  "Team Ranks": "Classement des équipes",
+  "Prizes": "Prix",
+  "Rules": "Règles",
+  "Entry": "Entrée"
 }
