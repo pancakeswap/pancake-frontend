@@ -5,7 +5,7 @@ import times from 'lodash/times'
 import { PROPOSALS_TO_SHOW } from '../../config'
 
 const Row = styled(Flex)`
-  border-bottom: 1px solid ${({ theme }) => theme.colors.borderColor};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.cardBorder};
 `
 
 const Wrapper = styled.div`
