@@ -101,9 +101,9 @@ const Pools: React.FC = () => {
   )
   const hasStakeInFinishedPools = stakedOnlyFinishedPools.length > 0
 
+  usePollFarmsData()
   useFetchCakeVault()
   useFetchPublicPoolsData()
-  usePollFarmsData()
 
   useEffect(() => {
     const showMorePools = (entries) => {
