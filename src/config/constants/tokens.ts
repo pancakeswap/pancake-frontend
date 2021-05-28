@@ -1425,6 +1425,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://easyfi.network/',
   },
+  vrt: {
+    symbol: 'VRT',
+    address: {
+      56: '0x5f84ce30dc3cf7909101c69086c50de191895883',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://venus.io/',
+  },
 }
 
 export default tokens
