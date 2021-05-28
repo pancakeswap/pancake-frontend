@@ -391,7 +391,7 @@
   "Everyone can only commit a limited amount, but may expect a higher return per token committed.": "Mọi người đều có thể cam kết một lượng giới hạn, nhưng có thể kỳ vọng lợi nhuận cao hơn cho mỗi token được cam kết.",
   "Unlimited Sale": "Bán không giới hạn",
   "No limits on the amount you can commit. Additional fee applies when claiming.": "Không giới hạn trên số tiền bạn có thể tiêu. Phí bổ sung áp dụng khi nhận.",
-  "Every person can only commit a limited amount, but may expect a higher return per token committed.": "Every person can only commit a limited amount, but may expect a higher return per token committed.",
+  "Every person can only commit a limited amount, but may expect a higher return per token committed.": "Mọi người đều có thể gán một lượng hạn chế, nhưng có thể mong chờ lợi nhuận cao hơn cho mỗi token được cam kết.",
   "You didn’t participate in this sale!": "Bạn không tham gia đợt bán này!",
   "Max. LP token entry": "Tối đa mục nhập token LP",
   "How to Take Part": "Cách tham gia",
@@ -803,10 +803,10 @@
   "Prediction": "Dự báo",
   "Initial Farm Offering": "Chào bán lần đầu qua trang trại",
   "An error occurred confirming transaction": "Đã có lỗi xảy ra khi xác nhận giao dịch",
-  "Successfully Enabled!": "Successfully Enabled!",
-  "You can now participate in the %symbol% IFO.": "You can now participate in the %symbol% IFO.",
-  "Team Ranks": "Team Ranks",
-  "Prizes": "Prizes",
-  "Rules": "Rules",
-  "Entry": "Entry"
+  "Successfully Enabled!": "Đã bật thành công!",
+  "You can now participate in the %symbol% IFO.": "Giờ đây bạn có thể tham gia thương vụ IFO %symbol%.",
+  "Team Ranks": "Xếp hạng đội",
+  "Prizes": "Giải thưởng",
+  "Rules": "Quy tắc",
+  "Entry": "Vào"
 }
