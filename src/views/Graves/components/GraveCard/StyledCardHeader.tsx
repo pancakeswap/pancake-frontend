@@ -16,16 +16,8 @@ const StyledCardHeader: React.FC<{
   isFinished?: boolean
 }> = ({ earningTokenSymbol, stakingTokenSymbol, stakingTokenImageUrl,isFinished = false, isAutoVault = false }) => {
   const { t } = useTranslation()
-  const isCakePool = earningTokenSymbol === 'CAKE' && stakingTokenSymbol === 'CAKE'
-
   const getSubHeading = () => {
-    if (isAutoVault) {
-      return `${t('Automatic restaking')}`
-    }
-    if (isCakePool) {
-      return `${t('Earn CAKE, stake CAKE')}`
-    }
-    return `${t('Stake')} ${stakingTokenSymbol} (example rug - MoonWalkers)`
+    return `${t('Stake')} ${stakingTokenSymbol}`
   }
 
   return (

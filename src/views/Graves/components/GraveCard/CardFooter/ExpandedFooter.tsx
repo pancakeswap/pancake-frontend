@@ -74,7 +74,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({
         <Flex mb="2px" justifyContent="space-between" alignItems="center">
           {tooltipVisible && tooltip}
           <TooltipText ref={targetRef} small>
-            Early withdrawal Fee
+            Early withdrawal Fee:
           </TooltipText>
           <Flex alignItems="center">
             <Text ml="4px" small>

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Flex, Text, IconButton, AddIcon, MinusIcon, Heading, useModal, Skeleton } from '@rug-zombie-libs/uikit'
 import BigNumber from 'bignumber.js'
-import { getBalanceNumber, formatNumber } from 'utils/formatBalance'
+import { getBalanceNumber, formatNumber, getFullDisplayBalance } from 'utils/formatBalance'
 import { Pool } from 'state/types'
 import { VaultFees } from 'hooks/cakeVault/useGetVaultFees'
 import { VaultUser } from 'views/Graves/types'
@@ -34,7 +34,7 @@ const IsRugDepositedActions: React.FC<HasStakeActionProps> = ({
   web3
 }) => {
 
-  const stakedDollarValue = zombiePrice.times(userData.zombieStaked)
+  const stakedDollarValue = getFullDisplayBalance(zombiePrice.times(userData.zombieStaked), tokens.zmbe.decimals)
 
   const [onPresentTokenRequired] = useModal(<NotEnoughTokensModal tokenSymbol={tokens.zmbe.symbol} />)
 

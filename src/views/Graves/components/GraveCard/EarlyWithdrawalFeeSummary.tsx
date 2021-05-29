@@ -39,7 +39,7 @@ const FeeSummary: React.FC<FeeSummaryProps> = ({ stakingTokenSymbol, userData, g
           {t('Early Withdrawal Fee')}
         </TooltipText>
         <Text fontSize="14px">
-          {getFullDisplayBalance(feeInZombie, tokens.zmbe.decimals)}
+          {getFullDisplayBalance(feeInZombie, tokens.zmbe.decimals)} ZMBE
         </Text>
       </Flex>
       <UnstakingFeeCountdownRow

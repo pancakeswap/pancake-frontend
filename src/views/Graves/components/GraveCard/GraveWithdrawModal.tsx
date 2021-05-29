@@ -122,7 +122,7 @@ const GraveWithdrawModal: React.FC<VaultStakeModalProps> = ({
   const zombieStaked = new BigNumber(userData.zombieStaked)
   const earlyWithdrawalFee = zombieStaked.times(0.05)
 
-  const usdValueStaked = formatNumber(zombieStaked.times(stakingTokenPrice).toNumber())
+  const usdValueStaked = getFullDisplayBalance(zombieStaked.times(stakingTokenPrice), tokens.zmbe.decimals)
 
   return (
     <Modal
@@ -143,7 +143,7 @@ const GraveWithdrawModal: React.FC<VaultStakeModalProps> = ({
       <Text>
         Zombie Staked: {getFullDisplayBalance(stakingMax, tokens.zmbe.decimals)}
       </Text>
-      <Text mt='8px' ml='auto' color='textSubtle' fontSize='12px' mb='8px'>
+      <Text mt='8px' color='textSubtle' fontSize='12px' mb='8px'>
         {`~${usdValueStaked || 0} USD`}
       </Text>
       <EarlyWithdrawalFeeSummary

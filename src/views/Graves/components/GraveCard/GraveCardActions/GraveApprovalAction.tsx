@@ -5,11 +5,11 @@ import { useTranslation } from 'contexts/Localization'
 import { useCake, useCakeVaultContract } from 'hooks/useContract'
 import useToast from 'hooks/useToast'
 import { Pool } from 'state/types'
+import Web3 from 'web3'
 import { GraveConfig, Token } from '../../../../../config/constants/types'
 import tokens from '../../../../../config/constants/tokens'
 import { getAddress, getRestorationChefAddress } from '../../../../../utils/addressHelpers'
 import { getBep20Contract, getContract } from '../../../../../utils/contractHelpers'
-import Web3 from 'web3'
 
 interface ApprovalActionProps {
   grave: GraveConfig
@@ -17,6 +17,7 @@ interface ApprovalActionProps {
   setLastUpdated: () => void
   isLoading?: boolean
   token: Token
+  setAllowance: () => void
   web3: Web3
 }
 

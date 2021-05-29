@@ -4,13 +4,14 @@ import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import { Flex, CardFooter, ExpandableLabel, HelpIcon, useTooltip, Box } from '@rug-zombie-libs/uikit'
 import { Pool } from 'state/types'
-import { CompoundingPoolTag, ManualPoolTag } from 'components/Tags'
+import { CompoundingPoolTag, CoreTag, LockedTag, ManualPoolTag, UnlockedTag } from 'components/Tags'
 import ExpandedFooter from './ExpandedFooter'
 import { GraveConfig } from '../../../../../config/constants/types'
 
 interface FooterProps {
   account: string
   grave: GraveConfig
+  userData: any
   totalZombieInGrave?: BigNumber
 }
 
@@ -25,6 +26,7 @@ const ExpandableButtonWrapper = styled(Flex)`
 const Footer: React.FC<FooterProps> = ({
   account,
   grave,
+  userData,
   totalZombieInGrave,
 }) => {
   const { t } = useTranslation()
@@ -41,7 +43,7 @@ const Footer: React.FC<FooterProps> = ({
     <CardFooter>
       <ExpandableButtonWrapper>
         <Flex alignItems="center">
-          <ManualPoolTag />
+          {userData.paidUnlockingFee ? <UnlockedTag /> : <LockedTag />}
           {tooltipVisible && tooltip}
           <Box ref={targetRef}>
             <HelpIcon ml="4px" width="20px" height="20px" color="textSubtle" />

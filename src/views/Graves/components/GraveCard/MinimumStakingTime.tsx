@@ -13,12 +13,12 @@ import { useTranslation } from 'contexts/Localization'
 import { Pool } from 'state/types'
 
 interface MinimumStakingTimeProps {
-  amount: number
+  period: string
 }
 
 // Minimum Staking Time
 const MinimumStakingTime: React.FC<MinimumStakingTimeProps> = ({
-    amount,
+    period,
   }) => {
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     'Funds staked in this grave are locked for a specified amount of time. Withdrawing your funds early results in a 5% fee.',
@@ -30,7 +30,7 @@ const MinimumStakingTime: React.FC<MinimumStakingTimeProps> = ({
       {tooltipVisible && tooltip}
       <TooltipText ref={targetRef}>Minimum Staking Time:</TooltipText>
       <Flex alignItems='center'>
-        {amount}
+        {period}
         <IconButton variant='text' scale='sm'>
           <TimerIcon color='textSubtle' width='18px' />
         </IconButton>

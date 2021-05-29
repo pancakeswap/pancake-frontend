@@ -1,7 +1,7 @@
 import React from 'react'
-import { Flex, Text, IconButton, AddIcon, MinusIcon, Heading, useModal, Skeleton } from '@rug-zombie-libs/uikit'
+import { Flex, Text, IconButton, AddIcon, MinusIcon, Heading, useModal, Skeleton, Button } from '@rug-zombie-libs/uikit'
 import BigNumber from 'bignumber.js'
-import { getBalanceNumber, formatNumber } from 'utils/formatBalance'
+import { getBalanceNumber, formatNumber, getFullDisplayBalance } from 'utils/formatBalance'
 import { Pool } from 'state/types'
 import { VaultFees } from 'hooks/cakeVault/useGetVaultFees'
 import { VaultUser } from 'views/Graves/types'
@@ -34,12 +34,12 @@ const WithdrawAction: React.FC<HasStakeActionProps> = ({
   web3
 }) => {
 
-  const stakedDollarValue = zombiePrice.times(userData.zombieStaked)
+  const stakedDollarValue = getFullDisplayBalance(zombiePrice.times(userData.zombieStaked), tokens.zmbe.decimals)
 
   const [onPresentTokenRequired] = useModal(<NotEnoughTokensModal tokenSymbol={tokens.zmbe.symbol} />)
 
   const zombieAsDisplayBalance = new BigNumber(userData.zombieStaked)
-
+  const doneStaking = (Date.now() / 1000) >= userData.withdrawalDate
   const [onPresentUnstake] = useModal(
     <GraveWithdrawModal
       account={account}
@@ -60,9 +60,7 @@ const WithdrawAction: React.FC<HasStakeActionProps> = ({
         } USD`}</Text>
       </Flex>
        <Flex>
-        <IconButton variant="secondary" onClick={onPresentUnstake} mr="6px">
-          <MinusIcon color="primary" width="24px" />
-        </IconButton>
+         <Button onClick={onPresentUnstake}> {doneStaking ? 'Withdraw' : 'Withdraw Early'}</Button>
        </Flex>
     </Flex>
   )

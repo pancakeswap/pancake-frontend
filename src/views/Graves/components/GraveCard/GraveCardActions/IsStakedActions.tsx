@@ -1,5 +1,5 @@
 import React from 'react'
-import { Flex, Text, IconButton, AddIcon, MinusIcon, Heading, useModal, Skeleton } from '@rug-zombie-libs/uikit'
+import { Flex, Text, IconButton, AddIcon, MinusIcon, Heading, useModal, Skeleton, Button } from '@rug-zombie-libs/uikit'
 import BigNumber from 'bignumber.js'
 import { getBalanceNumber, formatNumber } from 'utils/formatBalance'
 import { Pool } from 'state/types'
@@ -70,12 +70,7 @@ const IsStakedActions: React.FC<HasStakeActionProps> = ({
         } USD`}</Text>
       </Flex>
        <Flex>
-        <IconButton variant="secondary" onClick={onPresentUnstake} mr="6px">
-          <MinusIcon color="primary" width="24px" />
-        </IconButton>
-        <IconButton variant="secondary" onClick={stakingTokenBalance.gt(0) ? onPresentStake : onPresentTokenRequired}>
-          <AddIcon color="primary" width="24px" height="24px" />
-        </IconButton>
+         <Button onClick={stakingTokenBalance.gt(0) ? onPresentStake : onPresentTokenRequired}>Stake</Button>
        </Flex>
     </Flex>
   )

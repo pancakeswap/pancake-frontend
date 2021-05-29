@@ -43,7 +43,7 @@ const GraveCard: React.FC<{
           amount={grave.minimumStakingAmount}
           isFinished={false}
         />
-        <MinimumStakingTime amount={grave.minimumStakingTime} />
+        <MinimumStakingTime period={grave.displayMinimumStakingTime} />
         <br />
         <br />
         <Flex justifyContent='center'> {grave.nftName} </Flex>
@@ -83,7 +83,8 @@ const GraveCard: React.FC<{
       <CardFooter
         account={account}
         grave={grave}
-        totalZombieInGrave={BIG_TEN} // todo fix
+        userData={userData}
+        totalZombieInGrave={BIG_TEN.pow(18)} // todo fix
       />
     </StyledCard>
   )

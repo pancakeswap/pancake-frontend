@@ -1,4 +1,5 @@
-import BigNumber from 'bignumber.js'
+import { BigNumber as EthersBigNumber} from "@ethersproject/bignumber";
+import { BigNumber } from 'bignumber.js'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Flex, Text, Box } from '@rug-zombie-libs/uikit'
@@ -6,6 +7,7 @@ import { useTranslation } from 'contexts/Localization'
 import { useZombie } from 'hooks/useContract'
 
 import Web3 from 'web3'
+import { ethers } from 'ethers'
 import GraveApprovalAction from './GraveApprovalAction'
 import GraveStakeActions from './GraveStakeActions'
 import tokens from '../../../../../config/constants/tokens'
@@ -24,14 +26,13 @@ const InlineText = styled(Text)`
   display: inline;
 `
 let zombie
-let ruggedToken
-let unlockingToken
 let lastZombieAllowanceQuery = 0
 let lastRuggedTokenAllowanceQuery = 0
 let lastUnlockingTokenAllowanceQuery = 0
 const tenSeconds = 10000
 
 async function getZombieAllowance(account, setState) {
+
   zombie.methods.allowance(account, getRestorationChefAddress()).call()
     .then(amount => {
       lastZombieAllowanceQuery = Date.now()
@@ -43,15 +44,16 @@ async function getZombieAllowance(account, setState) {
     })
 }
 
-async function getTokenAllowance(account, tokenSymbol, setState, resetTimer) {
-  ruggedToken.methods.allowance(account, getRestorationChefAddress()).call()
+async function getTokenAllowance(account, token, setState, resetTimer, web3) {
+  const tokenContract = getBep20Contract(getAddress(token.address), web3)
+  tokenContract.methods.allowance(account, getRestorationChefAddress()).call()
     .then(amount => {
       resetTimer()
       const allowance = new BigNumber(amount)
       setState(allowance)
     })
     .catch(() => {
-      console.log(`Failed to get ${tokenSymbol} allowance`)
+      console.log(`Failed to get ${token.symbol} allowance`)
     })
 }
 
@@ -80,12 +82,11 @@ const GraveCardActions: React.FC<{
         isLoading,
         web3,
       }) => {
-  const [zombieAllowance, setZombieAllowance] = useState(BIG_ZERO)
-  const [ruggedTokenAllowance, setRuggedTokenAllowance] = useState(BIG_ZERO)
-  const [unlockingTokenAllowance, setUnlockingTokenAllowance] = useState(BIG_ZERO)
+  const Zero = (/* #__PURE__ */EthersBigNumber.from(0));
+  const [zombieAllowance, setZombieAllowance] = useState(Zero)
+  const [ruggedTokenAllowance, setRuggedTokenAllowance] = useState(Zero)
+  const [unlockingTokenAllowance, setUnlockingTokenAllowance] = useState(Zero)
   zombie = useZombie()
-  ruggedToken = getBep20Contract(getAddress(grave.ruggedToken.address), web3)
-  unlockingToken = getBep20Contract(getAddress(grave.unlockingToken.address), web3)
   const { lastUpdated, setLastUpdated } = useLastUpdated()
 
   if (!zombieAllowance.gt(0) && (Date.now() - lastZombieAllowanceQuery) >= tenSeconds) {
@@ -94,19 +95,22 @@ const GraveCardActions: React.FC<{
   if (!ruggedTokenAllowance.gt(0) && (Date.now() - lastRuggedTokenAllowanceQuery) >= tenSeconds) {
     getTokenAllowance(
       account,
-      grave.ruggedToken.symbol,
+      grave.ruggedToken,
       setRuggedTokenAllowance,
-      () => { lastRuggedTokenAllowanceQuery = Date.now() }
+      () => { lastRuggedTokenAllowanceQuery = Date.now() },
+      web3
     )
   }
   if (!unlockingTokenAllowance.gt(0) && (Date.now() - lastUnlockingTokenAllowanceQuery) >= tenSeconds) {
     getTokenAllowance(
       account,
-      grave.unlockingToken.symbol,
+      grave.unlockingToken,
       setUnlockingTokenAllowance,
-      () => { lastUnlockingTokenAllowanceQuery = Date.now() }
+      () => { lastUnlockingTokenAllowanceQuery = Date.now() },
+      web3
     )
   }
+
   const { t } = useTranslation()
 
   const zombieStakingMax = new BigNumber(balances.zombie)
@@ -114,26 +118,58 @@ const GraveCardActions: React.FC<{
 
   let currentAction
   if (!ruggedTokenAllowance.gt(0)) { // if rug is not approved
-    currentAction =
-      <GraveApprovalAction grave={grave} account={account} isLoading={isLoading} setLastUpdated={setLastUpdated} token={grave.ruggedToken} web3={web3} />
+    currentAction = <GraveApprovalAction
+        grave={grave}
+        account={account}
+        isLoading={isLoading}
+        setLastUpdated={setLastUpdated}
+        token={grave.ruggedToken}
+        setAllowance={()=>{setRuggedTokenAllowance(ethers.constants.MaxUint256)}}
+        web3={web3}
+      />
 
   } else if (!(userData.rugDeposited > 0)) { // if rug is not deposited
-    currentAction =
-      <GraveDepositRugAction grave={grave} userData={userData} ruggedTokenPrice={ruggedTokenPrice} stakingMax={ruggedTokenStakingMax} balances={balances} account={account}
-                             setLastUpdated={setLastUpdated} web3={web3} />
+    currentAction = <GraveDepositRugAction
+        grave={grave}
+        userData={userData}
+        ruggedTokenPrice={ruggedTokenPrice}
+        stakingMax={ruggedTokenStakingMax}
+        balances={balances}
+        account={account}
+                             setLastUpdated={setLastUpdated}
+        web3={web3}
+      />
 
   } else if (!unlockingTokenAllowance.gt(0)) { // if unlocking token is not approved
-    currentAction =
-      <GraveApprovalAction grave={grave} account={account} isLoading={isLoading} setLastUpdated={setLastUpdated} token={grave.unlockingToken} web3={web3} />
+    currentAction = <GraveApprovalAction
+        grave={grave}
+        account={account}
+        isLoading={isLoading}
+        setLastUpdated={setLastUpdated}
+        token={grave.unlockingToken}
+        setAllowance={()=>{setUnlockingTokenAllowance(ethers.constants.MaxUint256)}}
+        web3={web3}
+      />
 
   } else if (!userData.paidUnlockingFee) { // if grave has not been unlocked
-    currentAction =
-      <GraveUnlockingAction grave={grave} account={account} isLoading={isLoading} setLastUpdated={setLastUpdated}
-                            web3={web3} />
+    currentAction = <GraveUnlockingAction
+      grave={grave}
+      account={account}
+      isLoading={isLoading}
+      setLastUpdated={setLastUpdated}
+      web3={web3}
+    />
 
   } else if(!zombieAllowance.gt(0)) { // if zombie is not approved
-    currentAction =
-      <GraveApprovalAction grave={grave} account={account} isLoading={isLoading} setLastUpdated={setLastUpdated} token={tokens.zmbe} web3={web3} />
+    currentAction = <GraveApprovalAction
+      grave={grave}
+      account={account}
+      isLoading={isLoading}
+      setLastUpdated={setLastUpdated}
+      token={tokens.zmbe}
+      setAllowance={()=>{setZombieAllowance(ethers.constants.MaxUint256)}}
+      web3={web3}
+    />
 
   } else if (!(userData.zombieStaked > 0)) { // if zombie is not staked
     currentAction = <GraveStakeActions
