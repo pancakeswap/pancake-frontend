@@ -800,13 +800,13 @@
   "Earn %assets% in Pools": "Earn %assets% in Pools",
   "Activate PancakeSwap Profile to take part in next IFO‘s!": "Activate PancakeSwap Profile to take part in next IFO‘s!",
   "Trading Battle": "Trading Battle",
-  "Prediction": "Prediction",
-  "Initial Farm Offering": "Initial Farm Offering",
-  "An error occurred confirming transaction": "An error occurred confirming transaction",
-  "Successfully Enabled!": "Successfully Enabled!",
-  "You can now participate in the %symbol% IFO.": "You can now participate in the %symbol% IFO.",
-  "Team Ranks": "Team Ranks",
-  "Prizes": "Prizes",
-  "Rules": "Rules",
-  "Entry": "Entry"
+  "Prediction": "Predicción",
+  "Initial Farm Offering": "Oferta inicial de la granja",
+  "An error occurred confirming transaction": "Se produjo un error durante la confirmación de la transacción",
+  "Successfully Enabled!": "¡Activación exitosa!",
+  "You can now participate in the %symbol% IFO.": "Ahora podrá participar en la IFO %symbol%.",
+  "Team Ranks": "Clasificación del equipo",
+  "Prizes": "Premios",
+  "Rules": "Reglas",
+  "Entry": "Inscripción"
 }
