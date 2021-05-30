@@ -391,7 +391,7 @@
   "Everyone can only commit a limited amount, but may expect a higher return per token committed.": "每个人都可以仅参与有限金额，但是参与的每种代币可能获得较高的回报。",
   "Unlimited Sale": "无限出售",
   "No limits on the amount you can commit. Additional fee applies when claiming.": "您可以参与的金额没有限制。领取时需要支付其他费用。",
-  "Every person can only commit a limited amount, but may expect a higher return per token committed.": "Every person can only commit a limited amount, but may expect a higher return per token committed.",
+  "Every person can only commit a limited amount, but may expect a higher return per token committed.": "每个人都可以仅参与有限金额，但是参与的每种代币可能获得较高的回报。",
   "You didn’t participate in this sale!": "您未参与此销售！",
   "Max. LP token entry": "最大 LP 代币输入",
   "How to Take Part": "如何参与",
@@ -805,8 +805,8 @@
   "An error occurred confirming transaction": "确认交易时发生错误",
   "Successfully Enabled!": "已成功启用！",
   "You can now participate in the %symbol% IFO.": "您现在可以参与 %symbol% IFO 了。",
-  "Team Ranks": "Team Ranks",
-  "Prizes": "Prizes",
-  "Rules": "Rules",
-  "Entry": "Entry"
+  "Team Ranks": "团队排名",
+  "Prizes": "奖金",
+  "Rules": "规则",
+  "Entry": "输入"
 }
