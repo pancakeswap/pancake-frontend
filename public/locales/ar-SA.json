@@ -804,9 +804,9 @@
   "Initial Farm Offering": "العرض الأولي للمزرعة",
   "An error occurred confirming transaction": "حدث خطأ في أثناء تأكيد المعاملة",
   "Successfully Enabled!": "تم التمكين بنجاح!",
-  "You can now participate in the %symbol% IFO.": "You can now participate in the %symbol% IFO.",
-  "Team Ranks": "Team Ranks",
-  "Prizes": "Prizes",
-  "Rules": "Rules",
-  "Entry": "Entry"
+  "You can now participate in the %symbol% IFO.": "يمكنك الآن المشاركة في IFO للرمز %symbol%.",
+  "Team Ranks": "ترتيب الفرق",
+  "Prizes": "الجوائز",
+  "Rules": "القواعد",
+  "Entry": "الدخول"
 }
