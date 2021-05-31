@@ -40,7 +40,8 @@
   "Farming starts in %num% Blocks": "挖礦將在 %num% 個區塊後開始",
   "Finished": "已完成",
   "Farming ends in %num% Blocks": "挖礦將在 %num% 個區塊後結束",
-  "Project Site": "專案網站",
+  "Project site": "Project site",
+  "Info site": "Info site",
   "You can unstake at any time.": "您隨時可以取回。",
   "Rewards are calculated per block.": "獎勵將按各區塊計算。",
   "Total": "總共",
@@ -503,7 +504,7 @@
   "You can now stake in the %symbol% pool!": "您現在可以在 %symbol% 資金池中進行質押了！",
   "Please try again. Confirm the transaction and make sure you are paying enough gas!": "請再試一次。確認交易，並確保您支付足夠的 gas！",
   "Start earning": "開始賺取",
-  "Recent CAKE profit:": "最近的 CAKE 利潤：",
+  "Recent CAKE profit": "Recent CAKE profit",
   "Unstaked!": "已取消質押！",
   "Unstaked": "已取消質押",
   "Staked!": "已質押！",
@@ -808,5 +809,13 @@
   "Team Ranks": "Team Ranks",
   "Prizes": "Prizes",
   "Rules": "Rules",
-  "Entry": "Entry"
+  "Entry": "Entry",
+  "Enable pool": "Enable pool",
+  "Start staking": "Start staking",
+  "Search Pools": "Search Pools",
+  "Ends in": "Ends in",
+  "Starts in": "Starts in",
+  "Total amount of %symbol% staked in this pool": "Total amount of %symbol% staked in this pool",
+  "These pools are no longer distributing rewards. Please unstake your tokens.": "These pools are no longer distributing rewards. Please unstake your tokens.",
+  "Max. stake per user": "Max. stake per user"
 }
