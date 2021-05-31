@@ -40,7 +40,8 @@
   "Farming starts in %num% Blocks": "फार्मिंग %num% ब्लॉक में शुरू होगी",
   "Finished": "खत्म हुई",
   "Farming ends in %num% Blocks": "फार्मिंग %num% ब्लॉक में खत्म होगी",
-  "Project Site": "प्रोजेक्ट साइट",
+  "Project site": "Project site",
+  "Info site": "Info site",
   "You can unstake at any time.": "आप किसी भी समय अनस्टेक कर सकते हैं।",
   "Rewards are calculated per block.": "पुरस्कारों की गणना प्रति ब्लॉक के हिसाब से की जाती है।",
   "Total": "कुल",
@@ -503,7 +504,7 @@
   "You can now stake in the %symbol% pool!": "अब आप %symbol% पूल में स्टेक कर सकते हैं!",
   "Please try again. Confirm the transaction and make sure you are paying enough gas!": "Please try again. Confirm the transaction and make sure you are paying enough gas!",
   "Start earning": "जीतना शुरू करें",
-  "Recent CAKE profit:": "हालिया CAKE प्रोफिट:",
+  "Recent CAKE profit": "Recent CAKE profit",
   "Unstaked!": "अनस्टेक किए गए!",
   "Unstaked": "अनस्टेक किए गए",
   "Staked!": "स्टेक किए गए!",
@@ -808,5 +809,13 @@
   "Team Ranks": "Team Ranks",
   "Prizes": "पुरस्कार",
   "Rules": "नियम",
-  "Entry": "एंट्री"
+  "Entry": "एंट्री",
+  "Enable pool": "Enable pool",
+  "Start staking": "Start staking",
+  "Search Pools": "Search Pools",
+  "Ends in": "Ends in",
+  "Starts in": "Starts in",
+  "Total amount of %symbol% staked in this pool": "Total amount of %symbol% staked in this pool",
+  "These pools are no longer distributing rewards. Please unstake your tokens.": "These pools are no longer distributing rewards. Please unstake your tokens.",
+  "Max. stake per user": "Max. stake per user"
 }
