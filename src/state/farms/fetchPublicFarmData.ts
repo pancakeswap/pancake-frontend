@@ -15,6 +15,7 @@ type PublicFarmData = {
   lpTotalSupply?: SerializedBigNumber
   tokenPriceVsQuote?: SerializedBigNumber
   poolWeight?: SerializedBigNumber
+  multiplier?: string
 }
 
 const fetchFarm = async (farm: Farm): Promise<PublicFarmData> => {
