@@ -391,7 +391,7 @@
   "Everyone can only commit a limited amount, but may expect a higher return per token committed.": "ஒவ்வொருவரும் ஒரு குறிப்பிட்ட தொகையை மட்டுமே கமிட் செய்ய முடியும், ஆனால் கமிட் செய்த ஒவ்வொரு டோக்கனுக்கும் அதிக வருமானத்தை எதிர்பார்க்கலாம்.",
   "Unlimited Sale": "வரம்பில்லா விற்பனை",
   "No limits on the amount you can commit. Additional fee applies when claiming.": "நீங்கள் கமிட் செய்ய முடிகின்ற தொகையில் வரம்புகள் இல்லை. கிளைம் செய்யும்போது கூடுதல் கட்டணம் விதிக்கப்படுகிறது.",
-  "Every person can only commit a limited amount, but may expect a higher return per token committed.": "Every person can only commit a limited amount, but may expect a higher return per token committed.",
+  "Every person can only commit a limited amount, but may expect a higher return per token committed.": "ஒவ்வொருவரும் ஒரு குறிப்பிட்ட தொகையை மட்டுமே கமிட் செய்ய முடியும், ஆனால் கமிட் செய்த ஒவ்வொரு டோக்கனுக்கும் அதிக வருமானத்தை எதிர்பார்க்கலாம்.",
   "You didn’t participate in this sale!": "நீங்கள் இந்த விற்பனையில் பங்கேற்கவில்லை!",
   "Max. LP token entry": "அதிகபட்ச LP டோக்கன் உள்ளீடு",
   "How to Take Part": "எப்படிப் பங்கேற்பது",
@@ -805,8 +805,8 @@
   "An error occurred confirming transaction": "பரிவர்த்தனையை உறுதிசெய்வதில் பிழை நிகழ்ந்தது",
   "Successfully Enabled!": "வெற்றிகரமாக இயக்கப்பட்டது!",
   "You can now participate in the %symbol% IFO.": "நீங்கள் இப்போது %symbol% IFOல் பங்கேற்கலாம்.",
-  "Team Ranks": "Team Ranks",
-  "Prizes": "Prizes",
-  "Rules": "Rules",
-  "Entry": "Entry"
+  "Team Ranks": "குழுத் தரவரிசைகள்",
+  "Prizes": "பரிசுகள்",
+  "Rules": "விதிகள்",
+  "Entry": "நுழைவு"
 }
