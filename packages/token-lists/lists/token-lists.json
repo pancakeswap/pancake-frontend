@@ -1,0 +1,14 @@
+{
+  "https://tokens.pancakeswap.finance/pancakeswap-default.json": {
+    "name": "PancakeSwap Default Token List",
+    "homepage": "https://pancakeswap.finance"
+  },
+  "https://tokens.pancakeswap.finance/pancakeswap-extended.json": {
+    "name": "PancakeSwap Extended Token List",
+    "homepage": "https://pancakeswap.finance"
+  },
+  "https://tokens.coingecko.com/binance-smart-chain/all.json": {
+    "name": "CoinGecko",
+    "homepage": "https://www.coingecko.com"
+  }
+}
