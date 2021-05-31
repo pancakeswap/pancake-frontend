@@ -1,6 +1,7 @@
 import React from "react";
 import BoxComponent from "./Box";
 import FlexComponent from "./Flex";
+import GridComponent from "./Grid";
 import Text from "../Text/Text";
 import { Link } from "../Link";
 
@@ -38,5 +39,20 @@ export const Flex: React.FC = () => {
         <span>center</span>
       </FlexComponent>
     </div>
+  );
+};
+
+export const Grid: React.FC = () => {
+  return (
+    <GridComponent
+      justifyItems="center"
+      alignContent="center"
+      gridTemplateColumns="1fr 1fr"
+      gridColumnGap="16px"
+      style={{ backgroundColor: "#7645D9" }}
+    >
+      <BoxComponent style={{ backgroundColor: "#1fc7d4", width: "300px", height: "300px" }} />
+      <BoxComponent style={{ backgroundColor: "#1fc7d4", width: "300px", height: "300px" }} />
+    </GridComponent>
   );
 };
