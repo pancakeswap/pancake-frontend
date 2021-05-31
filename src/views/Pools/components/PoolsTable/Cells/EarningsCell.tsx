@@ -132,7 +132,7 @@ const EarningsCell: React.FC<EarningsCellProps> = ({ pool, account, userDataLoad
                   </Text>
                 )}
               </Box>
-              {isAutoVault && !isXs && !isSm && (
+              {isAutoVault && hasEarnings && !isXs && !isSm && (
                 <HelpIconWrapper ref={targetRef}>
                   <HelpIcon color="textSubtle" />
                 </HelpIconWrapper>
