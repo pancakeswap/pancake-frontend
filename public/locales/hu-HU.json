@@ -40,7 +40,8 @@
   "Farming starts in %num% Blocks": "A gazdálkodás indul %num% blokkon",
   "Finished": "Befejezve",
   "Farming ends in %num% Blocks": "A gazdálkodás befejeződik %num% blokkon",
-  "Project Site": "Projekt weboldal",
+  "Project site": "Project site",
+  "Info site": "Info site",
   "You can unstake at any time.": "Bármikor leveheti a tétet.",
   "Rewards are calculated per block.": "A jutalmat blokkokra számítja ki.",
   "Total": "Összesen",
@@ -503,7 +504,7 @@
   "You can now stake in the %symbol% pool!": "Mostantól tétjét lekötheti a %symbol% érdekközösségben!",
   "Please try again. Confirm the transaction and make sure you are paying enough gas!": "Kérjük próbálja újra. Erősítse meg a tranzakciót, és győződjön meg róla, hogy elegendő benzint fizet!",
   "Start earning": "Pénzkeresés indul",
-  "Recent CAKE profit:": "Legutóbbi CAKE nyereség:",
+  "Recent CAKE profit": "Recent CAKE profit",
   "Unstaked!": "Tétet visszavonta!",
   "Unstaked": "Tétet visszavonja",
   "Staked!": "Feltette!",
@@ -808,5 +809,13 @@
   "Team Ranks": "Team Ranks",
   "Prizes": "Prizes",
   "Rules": "Rules",
-  "Entry": "Entry"
+  "Entry": "Entry",
+  "Enable pool": "Enable pool",
+  "Start staking": "Start staking",
+  "Search Pools": "Search Pools",
+  "Ends in": "Ends in",
+  "Starts in": "Starts in",
+  "Total amount of %symbol% staked in this pool": "Total amount of %symbol% staked in this pool",
+  "These pools are no longer distributing rewards. Please unstake your tokens.": "These pools are no longer distributing rewards. Please unstake your tokens.",
+  "Max. stake per user": "Max. stake per user"
 }

@@ -40,7 +40,8 @@
   "Farming starts in %num% Blocks": "Ang farming ay magsisimula sa %num% na mga Block",
   "Finished": "Tapos na",
   "Farming ends in %num% Blocks": "Ang farming ay magtatapos sa %num% na mga block",
-  "Project Site": "Site ng Proyekto",
+  "Project site": "Project site",
+  "Info site": "Info site",
   "You can unstake at any time.": "Maaari mong ma-unstake sa anumang oras.",
   "Rewards are calculated per block.": "Ang mga gantimpala ay kinakalkula kada block.",
   "Total": "Kabuuan",
@@ -503,7 +504,7 @@
   "You can now stake in the %symbol% pool!": "Maaari ka na ngayong mag-stake sa %symbol% pool!",
   "Please try again. Confirm the transaction and make sure you are paying enough gas!": "Mangyaring pakiulit. Kumpirmahin ang transaksyon at tiyaking nagbabayad ka ng sapat na gas!",
   "Start earning": "Magsimulang kumita",
-  "Recent CAKE profit:": "Kamakailang kita sa CAKE:",
+  "Recent CAKE profit": "Recent CAKE profit",
   "Unstaked!": "I-unstake!",
   "Unstaked": "I-unstake",
   "Staked!": "Na-stake!",
@@ -808,5 +809,13 @@
   "Team Ranks": "Mga Ranggo ng Team",
   "Prizes": "Mga Premyo",
   "Rules": "Mga Rule",
-  "Entry": "Lahok"
+  "Entry": "Lahok",
+  "Enable pool": "Enable pool",
+  "Start staking": "Start staking",
+  "Search Pools": "Search Pools",
+  "Ends in": "Ends in",
+  "Starts in": "Starts in",
+  "Total amount of %symbol% staked in this pool": "Total amount of %symbol% staked in this pool",
+  "These pools are no longer distributing rewards. Please unstake your tokens.": "These pools are no longer distributing rewards. Please unstake your tokens.",
+  "Max. stake per user": "Max. stake per user"
 }

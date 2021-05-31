@@ -40,7 +40,8 @@
   "Farming starts in %num% Blocks": "ファーミングは%num%ブロックで始まります",
   "Finished": "終了",
   "Farming ends in %num% Blocks": "ファーミングは%num%ブロックで終了します",
-  "Project Site": "プロジェクトサイト",
+  "Project site": "Project site",
+  "Info site": "Info site",
   "You can unstake at any time.": "ステーキングはいつでも解除できます。",
   "Rewards are calculated per block.": "報酬はブロックごとに計算されます。",
   "Total": "合計",
@@ -503,7 +504,7 @@
   "You can now stake in the %symbol% pool!": "%symbol%のプールにステーキングできるようなりました！",
   "Please try again. Confirm the transaction and make sure you are paying enough gas!": "もう一度お試しください。取引を確認して、必ず十分なトークンを支払ってください！",
   "Start earning": "稼ぎ始めましょう",
-  "Recent CAKE profit:": "最近のCAKE利益：",
+  "Recent CAKE profit": "Recent CAKE profit",
   "Unstaked!": "ステーク解除！",
   "Unstaked": "ステーク解除",
   "Staked!": "ステーク済み！",
@@ -808,5 +809,13 @@
   "Team Ranks": "チームのランク",
   "Prizes": "賞金",
   "Rules": "ルール",
-  "Entry": "エントリー"
+  "Entry": "エントリー",
+  "Enable pool": "Enable pool",
+  "Start staking": "Start staking",
+  "Search Pools": "Search Pools",
+  "Ends in": "Ends in",
+  "Starts in": "Starts in",
+  "Total amount of %symbol% staked in this pool": "Total amount of %symbol% staked in this pool",
+  "These pools are no longer distributing rewards. Please unstake your tokens.": "These pools are no longer distributing rewards. Please unstake your tokens.",
+  "Max. stake per user": "Max. stake per user"
 }

@@ -40,7 +40,8 @@
   "Farming starts in %num% Blocks": "ستبدأ الزراعة بعد %num% من الكتل",
   "Finished": "انتهى",
   "Farming ends in %num% Blocks": "ستنتهي الزراعة بعد %num% من الكتل",
-  "Project Site": "موقع المشروع",
+  "Project site": "Project site",
+  "Info site": "Info site",
   "You can unstake at any time.": "يمكنك فك الرهن في أي وقت.",
   "Rewards are calculated per block.": "يتم حساب المكافآت لكل كتلة.",
   "Total": "الإجمالي",
@@ -503,7 +504,7 @@
   "You can now stake in the %symbol% pool!": "يمكن الآن الرهن في تجمُّع %symbol%!",
   "Please try again. Confirm the transaction and make sure you are paying enough gas!": "يُرجى إعادة المحاولة. قم بتأكيد المعاملة وتأكَّد أنك تدفع ما يكفي من الرموز المميزة!",
   "Start earning": "بدء الربح",
-  "Recent CAKE profit:": "الأرباح الأخيرة من CAKE:",
+  "Recent CAKE profit": "Recent CAKE profit",
   "Unstaked!": "تم فك الرهن!",
   "Unstaked": "تم فك الرهن",
   "Staked!": "تم الرهن!",
@@ -808,5 +809,13 @@
   "Team Ranks": "ترتيب الفرق",
   "Prizes": "الجوائز",
   "Rules": "القواعد",
-  "Entry": "الدخول"
+  "Entry": "الدخول",
+  "Enable pool": "Enable pool",
+  "Start staking": "Start staking",
+  "Search Pools": "Search Pools",
+  "Ends in": "Ends in",
+  "Starts in": "Starts in",
+  "Total amount of %symbol% staked in this pool": "Total amount of %symbol% staked in this pool",
+  "These pools are no longer distributing rewards. Please unstake your tokens.": "These pools are no longer distributing rewards. Please unstake your tokens.",
+  "Max. stake per user": "Max. stake per user"
 }

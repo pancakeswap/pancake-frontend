@@ -40,7 +40,8 @@
   "Farming starts in %num% Blocks": "விவசாயம் %num% ப்ளாக்கில் தொடங்குகிறது",
   "Finished": "முடிந்தது",
   "Farming ends in %num% Blocks": "விவசாயம் %num% ப்ளாக்கில் முடிகிறது",
-  "Project Site": "திட்ட தளம்",
+  "Project site": "Project site",
+  "Info site": "Info site",
   "You can unstake at any time.": "நீங்கள் எந்நேரத்தில் அன்ஸ்டேக் செய்யலாம்.",
   "Rewards are calculated per block.": "வெகுமதிகள், தலா ஒரு பிளாக்கிற்கு எனுமாறு கணக்கிடப்படுகின்றன.",
   "Total": "மொத்தம்",
@@ -503,7 +504,7 @@
   "You can now stake in the %symbol% pool!": "நீங்கள் இப்போது %symbol% குளத்தில் ஸ்டேக் செய்யலாம்!",
   "Please try again. Confirm the transaction and make sure you are paying enough gas!": "தயவுசெய்து மீண்டும் முயற்சித்திடுங்கள். பரிவர்த்தனையை உறுதிசெய்து, நீங்கள் போதுமான கேஸ் செலுத்துகிறீர்கள் என்பதை உறுதிப்படுத்திடுக!",
   "Start earning": "ஈட்டத் தொடங்குக",
-  "Recent CAKE profit:": "சமீபத்திய CAKE இலாபம்:",
+  "Recent CAKE profit": "Recent CAKE profit",
   "Unstaked!": "அன்ஸ்டேக்கானது!",
   "Unstaked": "அன்ஸ்டேக்கானது",
   "Staked!": "ஸ்டேக்கானது!",
@@ -808,5 +809,13 @@
   "Team Ranks": "குழுத் தரவரிசைகள்",
   "Prizes": "பரிசுகள்",
   "Rules": "விதிகள்",
-  "Entry": "நுழைவு"
+  "Entry": "நுழைவு",
+  "Enable pool": "Enable pool",
+  "Start staking": "Start staking",
+  "Search Pools": "Search Pools",
+  "Ends in": "Ends in",
+  "Starts in": "Starts in",
+  "Total amount of %symbol% staked in this pool": "Total amount of %symbol% staked in this pool",
+  "These pools are no longer distributing rewards. Please unstake your tokens.": "These pools are no longer distributing rewards. Please unstake your tokens.",
+  "Max. stake per user": "Max. stake per user"
 }
