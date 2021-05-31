@@ -40,7 +40,8 @@
   "Farming starts in %num% Blocks": "Canh tác diễn ra trong %num% khối",
   "Finished": "Kết thúc",
   "Farming ends in %num% Blocks": "Canh tác sẽ kết thúc trong %num% khối",
-  "Project Site": "Trang dự án",
+  "Project site": "Project site",
+  "Info site": "Info site",
   "You can unstake at any time.": "Bạn có thể huỷ đặt cọc bất cứ lúc nào.",
   "Rewards are calculated per block.": "Phần thưởng được tính cho từng khối.",
   "Total": "Tổng số",
@@ -503,7 +504,7 @@
   "You can now stake in the %symbol% pool!": "Giờ đây bạn có thể đặt cọc trong nhóm %symbol%!",
   "Please try again. Confirm the transaction and make sure you are paying enough gas!": "Vui lòng thử lại. Hãy xác nhận giao dịch và đảm bảo bạn chi đủ năng lượng!",
   "Start earning": "Bắt đầu kiếm tiền",
-  "Recent CAKE profit:": "Lợi nhuận gần đây từ CAKE:",
+  "Recent CAKE profit": "Recent CAKE profit",
   "Unstaked!": "Đã bỏ đặt cọc!",
   "Unstaked": "Đã bỏ đặt cọc",
   "Staked!": "Đã đặt cọc!",
@@ -808,5 +809,13 @@
   "Team Ranks": "Xếp hạng đội",
   "Prizes": "Giải thưởng",
   "Rules": "Quy tắc",
-  "Entry": "Vào"
+  "Entry": "Vào",
+  "Enable pool": "Enable pool",
+  "Start staking": "Start staking",
+  "Search Pools": "Search Pools",
+  "Ends in": "Ends in",
+  "Starts in": "Starts in",
+  "Total amount of %symbol% staked in this pool": "Total amount of %symbol% staked in this pool",
+  "These pools are no longer distributing rewards. Please unstake your tokens.": "These pools are no longer distributing rewards. Please unstake your tokens.",
+  "Max. stake per user": "Max. stake per user"
 }
