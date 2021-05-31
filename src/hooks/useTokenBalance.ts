@@ -7,8 +7,13 @@ import useWeb3 from './useWeb3'
 import useRefresh from './useRefresh'
 import useLastUpdated from './useLastUpdated'
 
+export type FetchStatus = 'notFetched' | 'fetching' | 'success' | 'failed'
+
 const useTokenBalance = (tokenAddress: string) => {
-  const [balanceState, setBalanceState] = useState({ balance: BIG_ZERO, hasFetchedBalance: false })
+  const [balanceState, setBalanceState] = useState({
+    balance: BIG_ZERO,
+    fetchStatus: 'notFetched' as FetchStatus,
+  })
   const { account } = useWeb3React()
   const web3 = useWeb3()
   const { fastRefresh } = useRefresh()
@@ -16,11 +21,19 @@ const useTokenBalance = (tokenAddress: string) => {
   useEffect(() => {
     const fetchBalance = async () => {
       const contract = getBep20Contract(tokenAddress, web3)
+      setBalanceState((prev) => ({
+        ...prev,
+        fetchStatus: 'fetching',
+      }))
       try {
         const res = await contract.methods.balanceOf(account).call()
-        setBalanceState({ balance: new BigNumber(res), hasFetchedBalance: true })
+        setBalanceState({ balance: new BigNumber(res), fetchStatus: 'success' })
       } catch (e) {
         console.error(e)
+        setBalanceState((prev) => ({
+          ...prev,
+          fetchStatus: 'failed',
+        }))
       }
     }
 
@@ -29,7 +42,7 @@ const useTokenBalance = (tokenAddress: string) => {
     }
   }, [account, tokenAddress, web3, fastRefresh])
 
-  return { ...balanceState }
+  return balanceState
 }
 
 export const useTotalSupply = () => {
