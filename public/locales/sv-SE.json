@@ -40,7 +40,8 @@
   "Farming starts in %num% Blocks": "Odling startar om %num% Block",
   "Finished": "Avslutad",
   "Farming ends in %num% Blocks": "Odling slutar om %num% Block",
-  "Project Site": "Projektwebbplats",
+  "Project site": "Project site",
+  "Info site": "Info site",
   "You can unstake at any time.": "Du kan ta ut när som helst.",
   "Rewards are calculated per block.": "Belöningarna beräknas per block.",
   "Total": "Totalt",
@@ -503,7 +504,7 @@
   "You can now stake in the %symbol% pool!": "Du kan nu satsa i poolen %symbol%!",
   "Please try again. Confirm the transaction and make sure you are paying enough gas!": "Försök igen. Bekräfta överföringen och se till att du betalar tillräckligt!",
   "Start earning": "Börja tjäna",
-  "Recent CAKE profit:": "Senaste CAKE-förtjänst:",
+  "Recent CAKE profit": "Recent CAKE profit",
   "Unstaked!": "Har dragits tillbaka!",
   "Unstaked": "Har dragits tillbaka",
   "Staked!": "Satsat!",
@@ -808,5 +809,13 @@
   "Team Ranks": "Team Ranks",
   "Prizes": "Prizes",
   "Rules": "Rules",
-  "Entry": "Entry"
+  "Entry": "Entry",
+  "Enable pool": "Enable pool",
+  "Start staking": "Start staking",
+  "Search Pools": "Search Pools",
+  "Ends in": "Ends in",
+  "Starts in": "Starts in",
+  "Total amount of %symbol% staked in this pool": "Total amount of %symbol% staked in this pool",
+  "These pools are no longer distributing rewards. Please unstake your tokens.": "These pools are no longer distributing rewards. Please unstake your tokens.",
+  "Max. stake per user": "Max. stake per user"
 }
