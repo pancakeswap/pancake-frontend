@@ -40,7 +40,8 @@
   "Farming starts in %num% Blocks": "Farming dimulai pada %num% Blok",
   "Finished": "Selesai",
   "Farming ends in %num% Blocks": "Farming berakhir pada %num% Blok",
-  "Project Site": "Situs Proyek",
+  "Project site": "Project site",
+  "Info site": "Info site",
   "You can unstake at any time.": "Anda dapat membongkar tumpukan kapan pun.",
   "Rewards are calculated per block.": "Hadiah dihitung per blok.",
   "Total": "Total",
@@ -503,7 +504,7 @@
   "You can now stake in the %symbol% pool!": "Kini Anda dapat menumpuk dalam pool %symbol%!",
   "Please try again. Confirm the transaction and make sure you are paying enough gas!": "Silakan coba lagi. Konfirmasi transaksi dan pastikan bahwa dana yang Anda miliki cukup!",
   "Start earning": "Mulai menghasilkan",
-  "Recent CAKE profit:": "Profit CAKE terbaru:",
+  "Recent CAKE profit": "Recent CAKE profit",
   "Unstaked!": "Dibongkar!",
   "Unstaked": "Dibongkar",
   "Staked!": "Ditumpuk!",
@@ -808,5 +809,13 @@
   "Team Ranks": "Peringkat Tim",
   "Prizes": "Hadiah",
   "Rules": "Aturan",
-  "Entry": "Entri"
+  "Entry": "Entri",
+  "Enable pool": "Enable pool",
+  "Start staking": "Start staking",
+  "Search Pools": "Search Pools",
+  "Ends in": "Ends in",
+  "Starts in": "Starts in",
+  "Total amount of %symbol% staked in this pool": "Total amount of %symbol% staked in this pool",
+  "These pools are no longer distributing rewards. Please unstake your tokens.": "These pools are no longer distributing rewards. Please unstake your tokens.",
+  "Max. stake per user": "Max. stake per user"
 }
