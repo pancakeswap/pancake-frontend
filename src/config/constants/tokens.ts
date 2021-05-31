@@ -1434,6 +1434,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://venus.io/',
   },
+  tusd: {
+    symbol: 'TUSD',
+    address: {
+      56: '0x14016e85a25aeb13065688cafb43044c2ef86784',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://www.trueusd.com/',
+  },
 }
 
 export default tokens
