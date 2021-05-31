@@ -42,8 +42,10 @@ const PoolTabButtons = ({ stakedOnly, setStakedOnly, hasStakeInFinishedPools, vi
   if (isXs || isSm) {
     return (
       <Flex flexDirection="column" alignItems="flex-start" mb="24px">
-        {viewModeToggle}
-        {liveOrFinishedSwitch}
+        <Flex width="100%" justifyContent="space-between">
+          {viewModeToggle}
+          {liveOrFinishedSwitch}
+        </Flex>
         {stakedOnlySwitch}
       </Flex>
     )

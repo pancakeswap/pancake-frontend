@@ -5,19 +5,21 @@ import { useTranslation } from 'contexts/Localization'
 
 const ButtonText = styled(Text)`
   display: none;
-  ${({ theme }) => theme.mediaQueries.lg} {
+  ${({ theme }) => theme.mediaQueries.xs} {
     display: block;
   }
 `
 
 const StyledLink = styled(Link)`
   margin-right: 16px;
-  flex: 1;
   display: flex;
   justify-content: flex-end;
 
   &:hover {
     text-decoration: none;
+  }
+  ${({ theme }) => theme.mediaQueries.sm} {
+    flex: 1;
   }
 `
 
