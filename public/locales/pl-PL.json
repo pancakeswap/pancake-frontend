@@ -40,7 +40,8 @@
   "Farming starts in %num% Blocks": "Farmienie zaczyna się za %num% Bloków",
   "Finished": "Zakończono",
   "Farming ends in %num% Blocks": "Farmienie kończy się za %num% Bloków",
-  "Project Site": "Strona Projektu",
+  "Project site": "Project site",
+  "Info site": "Info site",
   "You can unstake at any time.": "W każdej chwili możesz wycofać tokeny.",
   "Rewards are calculated per block.": "Nagrody są obliczane za każdy blok.",
   "Total": "Łącznie",
@@ -503,7 +504,7 @@
   "You can now stake in the %symbol% pool!": "Możesz teraz stakować w puli %symbol%!",
   "Please try again. Confirm the transaction and make sure you are paying enough gas!": "Spróbuj ponownie. Potwierdź transakcję i upewnij się, że płacisz wystarczająco dużo gazu!",
   "Start earning": "Zacznij zarabiać",
-  "Recent CAKE profit:": "Ostatni zysk w CAKE:",
+  "Recent CAKE profit": "Recent CAKE profit",
   "Unstaked!": "Odebrano!",
   "Unstaked": "Odebrano",
   "Staked!": "Stakowano!",
@@ -808,5 +809,13 @@
   "Team Ranks": "Team Ranks",
   "Prizes": "Prizes",
   "Rules": "Rules",
-  "Entry": "Entry"
+  "Entry": "Entry",
+  "Enable pool": "Enable pool",
+  "Start staking": "Start staking",
+  "Search Pools": "Search Pools",
+  "Ends in": "Ends in",
+  "Starts in": "Starts in",
+  "Total amount of %symbol% staked in this pool": "Total amount of %symbol% staked in this pool",
+  "These pools are no longer distributing rewards. Please unstake your tokens.": "These pools are no longer distributing rewards. Please unstake your tokens.",
+  "Max. stake per user": "Max. stake per user"
 }
