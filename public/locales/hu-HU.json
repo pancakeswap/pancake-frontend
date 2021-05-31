@@ -816,6 +816,6 @@
   "Ends in": "Vége ekkor:",
   "Starts in": "Kezdődik ekkor:",
   "Total amount of %symbol% staked in this pool": "Az ebben az érdekszövetségben lekötött %symbol% teljes mennyisége",
-  "These pools are no longer distributing rewards. Please unstake your tokens.": "These pools are no longer distributing rewards. Please unstake your tokens.",
-  "Max. stake per user": "Max. stake per user"
+  "These pools are no longer distributing rewards. Please unstake your tokens.": "Ezek az érdekszövetségek már nem osztanak jutalmat. Kérjük, vegye le zsetonjai tétjét.",
+  "Max. stake per user": "Maximális tét felhasználónként"
 }
