@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.36.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.35.0...@pancakeswap/uikit@0.36.0) (2021-05-31)
+
+
+### Features
+
+* Add a grid primitive ([#122](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/122)) ([15e8aad](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/15e8aad6bd87ed204a7ffcd14d434a009a0051ef))
+
+
+
+
+
 # [0.35.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.34.0...@pancakeswap/uikit@0.35.0) (2021-05-27)
 
 
