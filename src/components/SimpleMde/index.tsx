@@ -5,8 +5,9 @@ import merge from 'lodash/merge'
 
 import 'simplemde/dist/simplemde.min.css'
 
-interface SimpleMdeProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
+interface SimpleMdeProps extends Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'onChange'> {
   options?: SimpleMDE.Options
+  onTextChange: (value: string) => void
 }
 
 const Wrapper = styled.div`
@@ -46,11 +47,16 @@ const defaultOptions: SimpleMDE.Options = {
   styleSelectedText: false,
 }
 
-const SimpleMde: React.FC<SimpleMdeProps> = ({ options, ...props }) => {
+const SimpleMde: React.FC<SimpleMdeProps> = ({ options, onTextChange, ...props }) => {
   const ref = useRef()
+  const onTextChangeHandler = useRef(onTextChange)
 
   useEffect(() => {
     let simpleMde = new SimpleMDE(merge({ element: ref.current }, defaultOptions, options))
+
+    simpleMde.codemirror.on('change', () => {
+      onTextChangeHandler.current(simpleMde.value())
+    })
 
     return () => {
       if (simpleMde) {
@@ -58,7 +64,7 @@ const SimpleMde: React.FC<SimpleMdeProps> = ({ options, ...props }) => {
         simpleMde = null
       }
     }
-  }, [options, ref])
+  }, [options, onTextChangeHandler, ref])
 
   return (
     <Wrapper>

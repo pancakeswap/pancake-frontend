@@ -1,18 +1,29 @@
 import React, { ChangeEvent, FormEvent, lazy, useState } from 'react'
 import { Box, Card, CardBody, CardHeader, Heading, Input, Text } from '@pancakeswap/uikit'
+import times from 'lodash/times'
 import { useTranslation } from 'contexts/Localization'
 import Container from 'components/layout/Container'
 import Layout from '../components/Layout'
 import { Label } from './styles'
-import Choices from './Choices'
+import Choices, { Choice, makeChoice, MINIMUM_CHOICES } from './Choices'
+
+interface State {
+  name: string
+  body: string
+  choices: Choice[]
+  start: string
+  end: string
+  snapshot: string
+  metadata: Record<string, unknown>
+}
 
 const SimpleMde = lazy(() => import('components/SimpleMde'))
 
 const CreateProposal = () => {
-  const [state, setState] = useState({
+  const [state, setState] = useState<State>({
     name: '',
     body: '',
-    choices: [],
+    choices: times(MINIMUM_CHOICES).map(makeChoice),
     start: '',
     end: '',
     snapshot: '',
@@ -24,12 +35,24 @@ const CreateProposal = () => {
     evt.preventDefault()
   }
 
-  const handleChange = (evt: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = evt.currentTarget
+  const updateValue = (key: string, value: string | Choice[]) => {
     setState((prevState) => ({
       ...prevState,
-      [name]: value,
+      [key]: value,
     }))
+  }
+
+  const handleChange = (evt: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = evt.currentTarget
+    updateValue(name, value)
+  }
+
+  const handleSimpleMdeChange = (value: string) => {
+    updateValue('body', value)
+  }
+
+  const handleChoiceChange = (choices: Choice[]) => {
+    updateValue('choices', choices)
   }
 
   return (
@@ -46,9 +69,9 @@ const CreateProposal = () => {
               <Text color="textSubtle" mb="8px">
                 {t('Tip: write in Markdown!')}
               </Text>
-              <SimpleMde id="body" name="body" onChange={handleChange} />
+              <SimpleMde id="body" name="body" onTextChange={handleSimpleMdeChange} />
             </Box>
-            <Choices />
+            <Choices choices={state.choices} onChange={handleChoiceChange} />
           </Box>
           <Box>
             <Card>
