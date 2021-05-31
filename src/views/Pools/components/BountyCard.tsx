@@ -22,6 +22,7 @@ import BountyModal from './BountyModal'
 
 const StyledCard = styled(Card)`
   width: 100%;
+  flex: 1;
   ${({ theme }) => theme.mediaQueries.sm} {
     min-width: 240px;
   }
