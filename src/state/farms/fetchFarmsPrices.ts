@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js'
-import { BIG_ZERO } from 'utils/bigNumber'
+import { BIG_ONE, BIG_ZERO } from 'utils/bigNumber'
 import { filterFarmsByQuoteToken } from 'utils/farmsPriceHelpers'
 import { Farm } from 'state/types'
 
@@ -50,7 +50,7 @@ const getFarmBaseTokenPrice = (farm: Farm, quoteTokenFarm: Farm, bnbPriceBusd: B
 
 const getFarmQuoteTokenPrice = (farm: Farm, quoteTokenFarm: Farm, bnbPriceBusd: BigNumber): BigNumber => {
   if (farm.quoteToken.symbol === 'BUSD') {
-    return new BigNumber(1)
+    return BIG_ONE
   }
 
   if (farm.quoteToken.symbol === 'wBNB') {
@@ -74,7 +74,7 @@ const getFarmQuoteTokenPrice = (farm: Farm, quoteTokenFarm: Farm, bnbPriceBusd: 
 
 const fetchFarmsPrices = async (farms) => {
   const bnbBusdFarm = farms.find((farm: Farm) => farm.pid === 252)
-  const bnbPriceBusd = bnbBusdFarm.tokenPriceVsQuote ? new BigNumber(1).div(bnbBusdFarm.tokenPriceVsQuote) : BIG_ZERO
+  const bnbPriceBusd = bnbBusdFarm.tokenPriceVsQuote ? BIG_ONE.div(bnbBusdFarm.tokenPriceVsQuote) : BIG_ZERO
 
   const farmsWithPrices = farms.map((farm) => {
     const quoteTokenFarm = getFarmFromTokenSymbol(farms, farm.quoteToken.symbol)
