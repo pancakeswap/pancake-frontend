@@ -40,7 +40,8 @@
   "Farming starts in %num% Blocks": "Cultivarea începe în %num% blocuri",
   "Finished": "Terminat",
   "Farming ends in %num% Blocks": "Cultivarea se încheie în %num% blocuri",
-  "Project Site": "Site-ul proiectului",
+  "Project site": "Project site",
+  "Info site": "Info site",
   "You can unstake at any time.": "Poți retrage jetoanele oricând.",
   "Rewards are calculated per block.": "Recompensele sunt calculate pe bloc.",
   "Total": "Total",
@@ -503,7 +504,7 @@
   "You can now stake in the %symbol% pool!": "Acum poți investi în portofoliul %symbol%!",
   "Please try again. Confirm the transaction and make sure you are paying enough gas!": "Încearcă din nou. Confirmă tranzacția și asigură-te că plătești suficient combustibil!",
   "Start earning": "Începe să câștigi",
-  "Recent CAKE profit:": "Profit CAKE recent:",
+  "Recent CAKE profit": "Recent CAKE profit",
   "Unstaked!": "Retras!",
   "Unstaked": "Retras",
   "Staked!": "Investit!",
@@ -808,5 +809,13 @@
   "Team Ranks": "Clasamente ale echipelor",
   "Prizes": "Premii",
   "Rules": "Reguli",
-  "Entry": "Intrare"
+  "Entry": "Intrare",
+  "Enable pool": "Enable pool",
+  "Start staking": "Start staking",
+  "Search Pools": "Search Pools",
+  "Ends in": "Ends in",
+  "Starts in": "Starts in",
+  "Total amount of %symbol% staked in this pool": "Total amount of %symbol% staked in this pool",
+  "These pools are no longer distributing rewards. Please unstake your tokens.": "These pools are no longer distributing rewards. Please unstake your tokens.",
+  "Max. stake per user": "Max. stake per user"
 }
