@@ -40,7 +40,8 @@
   "Farming starts in %num% Blocks": "Tarım %num% Blok sonra başlar",
   "Finished": "Tamamlandı",
   "Farming ends in %num% Blocks": "Tarım %num% Bloktan sonra biter",
-  "Project Site": "Proje Web Sitesi",
+  "Project site": "Project site",
+  "Info site": "Info site",
   "You can unstake at any time.": "İstediğin zaman geri çekebilirsin.",
   "Rewards are calculated per block.": "Ödüller blok başına olacak şekilde hesaplanır.",
   "Total": "Toplam",
@@ -503,7 +504,7 @@
   "You can now stake in the %symbol% pool!": "Artık %symbol% havuzunda staking yapabilirsiniz!",
   "Please try again. Confirm the transaction and make sure you are paying enough gas!": "Lütfen tekrar deneyin. İşlemi onaylayın ve yeterince gas ödediğinizden emin olun!",
   "Start earning": "Kazanmaya başlayın",
-  "Recent CAKE profit:": "En son CAKE karı:",
+  "Recent CAKE profit": "Recent CAKE profit",
   "Unstaked!": "Yatırımdan vazgeçildi!",
   "Unstaked": "Yatırımdan vazgeçildi",
   "Staked!": "Yatırıldı!",
@@ -808,5 +809,13 @@
   "Team Ranks": "Takım Sıralamaları",
   "Prizes": "Ödüller",
   "Rules": "Kurallar",
-  "Entry": "Giriş"
+  "Entry": "Giriş",
+  "Enable pool": "Enable pool",
+  "Start staking": "Start staking",
+  "Search Pools": "Search Pools",
+  "Ends in": "Ends in",
+  "Starts in": "Starts in",
+  "Total amount of %symbol% staked in this pool": "Total amount of %symbol% staked in this pool",
+  "These pools are no longer distributing rewards. Please unstake your tokens.": "These pools are no longer distributing rewards. Please unstake your tokens.",
+  "Max. stake per user": "Max. stake per user"
 }
