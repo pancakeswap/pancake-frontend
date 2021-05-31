@@ -40,7 +40,8 @@
   "Farming starts in %num% Blocks": "Viljely alkaa %num% lohkossa",
   "Finished": "Loppunut",
   "Farming ends in %num% Blocks": "Viljely päättyy %num% lohkoihin",
-  "Project Site": "Projektisivusto",
+  "Project site": "Project site",
+  "Info site": "Info site",
   "You can unstake at any time.": "Voit perua panostamisen milloin tahansa.",
   "Rewards are calculated per block.": "Palkkiot lasketaan lohkoittain.",
   "Total": "Kokonaissumma",
@@ -503,7 +504,7 @@
   "You can now stake in the %symbol% pool!": "Nyt voit panostaa %symbol%-pooliin!",
   "Please try again. Confirm the transaction and make sure you are paying enough gas!": "Yritä uudelleen. Vahvista transaktio ja vahvista, että maksat tarpeeksi!",
   "Start earning": "Aloita ansaitseminen",
-  "Recent CAKE profit:": "Viimeisin CAKE-tuotto:",
+  "Recent CAKE profit": "Recent CAKE profit",
   "Unstaked!": "Panostus peruttu!",
   "Unstaked": "Panostus peruttu",
   "Staked!": "Panostettu!",
@@ -808,5 +809,13 @@
   "Team Ranks": "Tiimien sijoitukset",
   "Prizes": "Palkinnot",
   "Rules": "Säännöt",
-  "Entry": "Kirjaus"
+  "Entry": "Kirjaus",
+  "Enable pool": "Enable pool",
+  "Start staking": "Start staking",
+  "Search Pools": "Search Pools",
+  "Ends in": "Ends in",
+  "Starts in": "Starts in",
+  "Total amount of %symbol% staked in this pool": "Total amount of %symbol% staked in this pool",
+  "These pools are no longer distributing rewards. Please unstake your tokens.": "These pools are no longer distributing rewards. Please unstake your tokens.",
+  "Max. stake per user": "Max. stake per user"
 }
