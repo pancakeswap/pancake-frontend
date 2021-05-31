@@ -846,13 +846,5 @@
   "Have your say in the future of the PancakeSwap Ecosystem": "Have your say in the future of the PancakeSwap Ecosystem",
   "Got a suggestion?": "Got a suggestion?",
   "Community proposals are a great way to see how the community feels about your ideas.": "Community proposals are a great way to see how the community feels about your ideas.",
-  "They won't necessarily be implemented if the community votes successful, but suggestions with a lot of community support may be made into Core proposals.": "They won't necessarily be implemented if the community votes successful, but suggestions with a lot of community support may be made into Core proposals.",
-  "Enable pool": "Enable pool",
-  "Start staking": "Start staking",
-  "Search Pools": "Search Pools",
-  "Ends in": "Ends in",
-  "Starts in": "Starts in",
-  "Total amount of %symbol% staked in this pool": "Total amount of %symbol% staked in this pool",
-  "These pools are no longer distributing rewards. Please unstake your tokens.": "These pools are no longer distributing rewards. Please unstake your tokens.",
-  "Max. stake per user": "Max. stake per user"
+  "They won't necessarily be implemented if the community votes successful, but suggestions with a lot of community support may be made into Core proposals.": "They won't necessarily be implemented if the community votes successful, but suggestions with a lot of community support may be made into Core proposals."
 }
