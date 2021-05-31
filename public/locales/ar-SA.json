@@ -391,7 +391,7 @@
   "Everyone can only commit a limited amount, but may expect a higher return per token committed.": "يمكن للجميع تخصيص عدد محدود، وتوقُّع عائد أكبر لكل رمز مميز تم تخصيصه.",
   "Unlimited Sale": "بيع غير مقيَّد",
   "No limits on the amount you can commit. Additional fee applies when claiming.": "لا توجد قيود على العدد الذي يمكنك تخصيصه. يتم تطبيق رسم إضافي عند المطالبة.",
-  "Every person can only commit a limited amount, but may expect a higher return per token committed.": "Every person can only commit a limited amount, but may expect a higher return per token committed.",
+  "Every person can only commit a limited amount, but may expect a higher return per token committed.": "يمكن لأي شخص تخصيص عدد محدود، وتوقُّع عائد أكبر لكل رمز مميز تم تخصيصه.",
   "You didn’t participate in this sale!": "لم تشارك في عملية البيع هذه!",
   "Max. LP token entry": "أقصى عدد من رموز LP المميزة للدخول",
   "How to Take Part": "كيفية المشاركة",
@@ -803,10 +803,10 @@
   "Prediction": "التنبؤ",
   "Initial Farm Offering": "العرض الأولي للمزرعة",
   "An error occurred confirming transaction": "حدث خطأ في أثناء تأكيد المعاملة",
-  "Successfully Enabled!": "Successfully Enabled!",
-  "You can now participate in the %symbol% IFO.": "You can now participate in the %symbol% IFO.",
-  "Team Ranks": "Team Ranks",
-  "Prizes": "Prizes",
-  "Rules": "Rules",
-  "Entry": "Entry"
+  "Successfully Enabled!": "تم التمكين بنجاح!",
+  "You can now participate in the %symbol% IFO.": "يمكنك الآن المشاركة في IFO للرمز %symbol%.",
+  "Team Ranks": "ترتيب الفرق",
+  "Prizes": "الجوائز",
+  "Rules": "القواعد",
+  "Entry": "الدخول"
 }

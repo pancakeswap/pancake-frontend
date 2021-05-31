@@ -324,7 +324,7 @@
   "Start": "Начать",
   "Finish": "Завершить",
   "Connect wallet to view": "Подключите кошелек для просмотра",
-  "Sorry, you needed to register during the “entry” period!": "Сожалеем, вам нужно зарегистрироваться во время начального периода!",
+  "Sorry, you needed to register during the “entry” period!": "Извините, вам нужно было записаться в период регистрации на участие!",
   "Check your Rank": "Проверьте свой ранг",
   "You’re not participating this time.": "В этот раз вы не участвуете.",
   "Rank in team": "Ранг в команде",
@@ -391,7 +391,7 @@
   "Everyone can only commit a limited amount, but may expect a higher return per token committed.": "Сумма участия каждого ограничена, но участники могут рассчитывать на более высокий доход за каждый внесенный токен.",
   "Unlimited Sale": "Неограниченная продажа",
   "No limits on the amount you can commit. Additional fee applies when claiming.": "Сумма участия каждого человека не ограничена, однако при получении взимается дополнительная комиссия.",
-  "Every person can only commit a limited amount, but may expect a higher return per token committed.": "Every person can only commit a limited amount, but may expect a higher return per token committed.",
+  "Every person can only commit a limited amount, but may expect a higher return per token committed.": "Сумма участия каждого ограничена, но участники могут рассчитывать на более высокий доход за каждый внесенный токен.",
   "You didn’t participate in this sale!": "Вы не участвовали в этой продаже!",
   "Max. LP token entry": "Максимальная сумма входа (токенов пула ликвидности)",
   "How to Take Part": "Как принять участие",
@@ -808,5 +808,5 @@
   "Team Ranks": "Рейтинги команд",
   "Prizes": "Призы",
   "Rules": "Правила",
-  "Entry": "Entry"
+  "Entry": "Регистрация на участие"
 }

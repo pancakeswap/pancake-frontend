@@ -391,7 +391,7 @@
   "Everyone can only commit a limited amount, but may expect a higher return per token committed.": "कोई भी एक सीमित मात्रा में रकम लगा सकता है, मगर कमिट किए गए हर टोकन पर ज्यादा रिटर्न पाने की उम्मीद की जा सकती है।",
   "Unlimited Sale": "अनलिमिटेड सेल",
   "No limits on the amount you can commit. Additional fee applies when claiming.": "कितनी भी रकम लगाई जा सकती है। क्लेम करते समय कोई एक्सट्रा फ़ीस नहीं लगेगी।",
-  "Every person can only commit a limited amount, but may expect a higher return per token committed.": "Every person can only commit a limited amount, but may expect a higher return per token committed.",
+  "Every person can only commit a limited amount, but may expect a higher return per token committed.": "हर व्यक्ति एक सीमित मात्रा में रकम लगा सकता है, मगर कमिट किए गए हर टोकन पर ज्यादा रिटर्न पाने की उम्मीद की जा सकती है।",
   "You didn’t participate in this sale!": "आपने इस सेल में हिस्सा नहीं लिया!",
   "Max. LP token entry": "LP टोकन की अधिकतम एंट्री",
   "How to Take Part": "इसमें शामिल कैसे हों",
@@ -615,7 +615,7 @@
   "No NFTs Found": "कोई NFT नहीं मिला",
   "See all approved Pancake Collectibles": "मंज़ूर किए गए सभी Pancake कलेक्शन आइटम देखें",
   "Coming Soon!": "जल्द आ रहा है!",
-  "Profile created!": "प्रोफाइल बनाया गया!",
+  "Profile created!": "प्रोफ़ाइल बनाई गई!",
   "Submitting NFT to contract and confirming User Name and Team.": "NFT को कॉन्ट्रैक्ट में सबमिट किया जा रहा है और यूज़र नेम और टीम को कन्फ़र्म किया जा रहा है।",
   "Cost": "लागत",
   "Your Profile": "आपकी प्रोफ़ाइल",
@@ -806,7 +806,7 @@
   "Successfully Enabled!": "सफलतापूर्वक सक्षम किया गया!",
   "You can now participate in the %symbol% IFO.": "अब आप %symbol% IFO में शामिल हो सकते हैं।",
   "Team Ranks": "Team Ranks",
-  "Prizes": "Prizes",
-  "Rules": "Rules",
-  "Entry": "Entry"
+  "Prizes": "पुरस्कार",
+  "Rules": "नियम",
+  "Entry": "एंट्री"
 }

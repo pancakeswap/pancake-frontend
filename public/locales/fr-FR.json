@@ -391,7 +391,7 @@
   "Everyone can only commit a limited amount, but may expect a higher return per token committed.": "Chaque personne ne peut engager qu'un montant limité, mais peut s'attendre à un rendement plus élevé par jeton placé.",
   "Unlimited Sale": "Vente illimitée",
   "No limits on the amount you can commit. Additional fee applies when claiming.": "Aucune limite sur le montant que vous pouvez engager. Des frais supplémentaires s'appliquent lors de la récupération.",
-  "Every person can only commit a limited amount, but may expect a higher return per token committed.": "Every person can only commit a limited amount, but may expect a higher return per token committed.",
+  "Every person can only commit a limited amount, but may expect a higher return per token committed.": "Chaque personne ne peut engager qu'un montant limité, mais peut s'attendre à un rendement plus élevé par jeton engagé.",
   "You didn’t participate in this sale!": "Vous n'avez pas participé à cette vente !",
   "Max. LP token entry": "Entrée de jeton LP maximale",
   "How to Take Part": "Comment participer",
@@ -803,10 +803,10 @@
   "Prediction": "Prédiction",
   "Initial Farm Offering": "Intitial Farm Offering",
   "An error occurred confirming transaction": "Une erreur s'est produite lors de la confirmation de la transaction",
-  "Successfully Enabled!": "Successfully Enabled!",
-  "You can now participate in the %symbol% IFO.": "You can now participate in the %symbol% IFO.",
-  "Team Ranks": "Team Ranks",
-  "Prizes": "Prizes",
-  "Rules": "Rules",
-  "Entry": "Entry"
+  "Successfully Enabled!": "Activation réussie !",
+  "You can now participate in the %symbol% IFO.": "Vous pouvez désormais participer à la vente IFO %symbol%.",
+  "Team Ranks": "Classement des équipes",
+  "Prizes": "Prix",
+  "Rules": "Règles",
+  "Entry": "Entrée"
 }
