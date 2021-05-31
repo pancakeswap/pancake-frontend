@@ -1,6 +1,7 @@
 import { Language } from '@pancakeswap/uikit'
 
 export const AR: Language = { locale: 'ar-SA', language: 'العربية', code: 'ar' }
+export const BN: Language = { locale: 'bn-BD', language: 'বাংলা', code: 'bn' }
 export const EN: Language = { locale: 'en-US', language: 'English', code: 'en' }
 export const DE: Language = { locale: 'de-DE', language: 'Deutsch', code: 'de' }
 export const EL: Language = { locale: 'el-GR', language: 'Ελληνικά', code: 'el' }
@@ -15,7 +16,9 @@ export const IT: Language = { locale: 'it-IT', language: 'Italiano', code: 'it' 
 export const JA: Language = { locale: 'ja-JP', language: '日本語', code: 'ja' }
 export const KO: Language = { locale: 'ko-KR', language: '한국어', code: 'ko' }
 export const NL: Language = { locale: 'nl-NL', language: 'Nederlands', code: 'nl' }
+export const PL: Language = { locale: 'pl-PL', language: 'Polski', code: 'pl' }
 export const PTBR: Language = { locale: 'pt-BR', language: 'Português (Brazil)', code: 'pt-br' }
+export const PTPT: Language = { locale: 'pt-PT', language: 'Português', code: 'pt-pt' }
 export const RO: Language = { locale: 'ro-RO', language: 'Română', code: 'ro' }
 export const RU: Language = { locale: 'ru-RU', language: 'Русский', code: 'ru' }
 export const SVSE: Language = { locale: 'sv-SE', language: 'Svenska', code: 'sv' }
@@ -28,6 +31,7 @@ export const ZHTW: Language = { locale: 'zh-TW', language: '繁體中文', code:
 
 export const languages = {
   'ar-SA': AR,
+  'bn-BD': BN,
   'en-US': EN,
   'de-DE': DE,
   'el-GR': EL,
@@ -42,7 +46,9 @@ export const languages = {
   'ja-JP': JA,
   'ko-KR': KO,
   'nl-NL': NL,
+  'pl-PL': PL,
   'pt-BR': PTBR,
+  'pt-PT': PTPT,
   'ro-RO': RO,
   'ru-RU': RU,
   'sv-SE': SVSE,
