@@ -208,7 +208,7 @@ const Pools: React.FC = () => {
     <>
       <PageHeader>
         <Flex justifyContent="space-between" flexDirection={['column', null, 'row']}>
-          <Flex flexDirection="column" mr={['8px', 0]}>
+          <Flex flex="1" flexDirection="column" mr={['8px', 0]}>
             <Heading as="h1" scale="xxl" color="secondary" mb="24px">
               {t('Syrup Pools')}
             </Heading>
@@ -219,7 +219,7 @@ const Pools: React.FC = () => {
               {t('High APR, low risk.')}
             </Heading>
           </Flex>
-          <Flex height="fit-content" justifyContent="center" alignItems="center" mt={['24px', null, '0']}>
+          <Flex flex="1" height="fit-content" justifyContent="center" alignItems="center" mt={['24px', null, '0']}>
             <HelpButton />
             <BountyCard />
           </Flex>
