@@ -1,8 +1,12 @@
 /* eslint-disable no-param-reassign */
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import BigNumber from 'bignumber.js'
 import poolsConfig from 'config/constants/pools'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { PoolsState, Pool, CakeVault, VaultFees, VaultUser } from 'state/types'
+import { getPoolApr } from 'utils/apr'
+import { getBalanceNumber } from 'utils/formatBalance'
+import { getAddress } from 'utils/addressHelpers'
 import { fetchPoolsBlockLimits, fetchPoolsStakingLimits, fetchPoolsTotalStaking } from './fetchPools'
 import {
   fetchPoolsAllowance,
@@ -12,9 +16,11 @@ import {
 } from './fetchPoolsUser'
 import { fetchPublicVaultData, fetchVaultFees } from './fetchVaultPublic'
 import fetchVaultUser from './fetchVaultUser'
+import { getTokenPricesFromFarm } from './helpers'
 
 const initialState: PoolsState = {
   data: [...poolsConfig],
+  userDataLoaded: false,
   cakeVault: {
     totalShares: null,
     pricePerFullShare: null,
@@ -38,9 +44,11 @@ const initialState: PoolsState = {
 }
 
 // Thunks
-export const fetchPoolsPublicDataAsync = (currentBlock: number) => async (dispatch) => {
+export const fetchPoolsPublicDataAsync = (currentBlock: number) => async (dispatch, getState) => {
   const blockLimits = await fetchPoolsBlockLimits()
   const totalStakings = await fetchPoolsTotalStaking()
+
+  const prices = getTokenPricesFromFarm(getState().farms.data)
 
   const liveData = poolsConfig.map((pool) => {
     const blockLimit = blockLimits.find((entry) => entry.sousId === pool.sousId)
@@ -48,9 +56,26 @@ export const fetchPoolsPublicDataAsync = (currentBlock: number) => async (dispat
     const isPoolEndBlockExceeded = currentBlock > 0 && blockLimit ? currentBlock > Number(blockLimit.endBlock) : false
     const isPoolFinished = pool.isFinished || isPoolEndBlockExceeded
 
+    const stakingTokenAddress = pool.stakingToken.address ? getAddress(pool.stakingToken.address).toLowerCase() : null
+    const stakingTokenPrice = stakingTokenAddress ? prices[stakingTokenAddress] : 0
+
+    const earningTokenAddress = pool.earningToken.address ? getAddress(pool.earningToken.address).toLowerCase() : null
+    const earningTokenPrice = earningTokenAddress ? prices[earningTokenAddress] : 0
+    const apr = !isPoolFinished
+      ? getPoolApr(
+          stakingTokenPrice,
+          earningTokenPrice,
+          getBalanceNumber(new BigNumber(totalStaking.totalStaked), pool.stakingToken.decimals),
+          parseFloat(pool.tokenPerBlock),
+        )
+      : 0
+
     return {
       ...blockLimit,
       ...totalStaking,
+      stakingTokenPrice,
+      earningTokenPrice,
+      apr,
       isFinished: isPoolFinished,
     }
   })
@@ -151,6 +176,7 @@ export const PoolsSlice = createSlice({
         const userPoolData = userData.find((entry) => entry.sousId === pool.sousId)
         return { ...pool, userData: userPoolData }
       })
+      state.userDataLoaded = true
     },
     updatePoolsUserData: (state, action) => {
       const { field, value, sousId } = action.payload

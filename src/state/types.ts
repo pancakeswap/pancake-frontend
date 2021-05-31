@@ -34,6 +34,10 @@ export interface Pool extends PoolConfig {
   stakingLimit?: BigNumber
   startBlock?: number
   endBlock?: number
+  apr?: number
+  stakingTokenPrice?: number
+  earningTokenPrice?: number
+  isAutoVault?: boolean
   userData?: {
     allowance: BigNumber
     stakingTokenBalance: BigNumber
@@ -90,6 +94,7 @@ export interface CakeVault {
 export interface PoolsState {
   data: Pool[]
   cakeVault: CakeVault
+  userDataLoaded: boolean
 }
 
 export interface ProfileState {

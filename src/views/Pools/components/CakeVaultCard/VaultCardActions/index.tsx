@@ -1,11 +1,9 @@
 import BigNumber from 'bignumber.js'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { Flex, Text, Box } from '@pancakeswap/uikit'
-import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'contexts/Localization'
-import { useCake, useCakeVaultContract } from 'hooks/useContract'
-import useLastUpdated from 'hooks/useLastUpdated'
+import { useCheckVaultApprovalStatus } from 'hooks/useApprove'
 import { Pool } from 'state/types'
 import { BIG_ZERO } from 'utils/bigNumber'
 import VaultApprovalAction from './VaultApprovalAction'
@@ -20,28 +18,11 @@ const CakeVaultCardActions: React.FC<{
   accountHasSharesStaked: boolean
   isLoading: boolean
 }> = ({ pool, accountHasSharesStaked, isLoading }) => {
-  const { account } = useWeb3React()
   const { stakingToken, userData } = pool
-  const { lastUpdated, setLastUpdated } = useLastUpdated()
-  const [isVaultApproved, setIsVaultApproved] = useState(false)
-  const cakeContract = useCake()
-  const cakeVaultContract = useCakeVaultContract()
   const { t } = useTranslation()
   const stakingTokenBalance = userData?.stakingTokenBalance ? new BigNumber(userData.stakingTokenBalance) : BIG_ZERO
 
-  useEffect(() => {
-    const checkApprovalStatus = async () => {
-      try {
-        const response = await cakeContract.methods.allowance(account, cakeVaultContract.options.address).call()
-        const currentAllowance = new BigNumber(response)
-        setIsVaultApproved(currentAllowance.gt(0))
-      } catch (error) {
-        setIsVaultApproved(false)
-      }
-    }
-
-    checkApprovalStatus()
-  }, [account, cakeContract, cakeVaultContract, lastUpdated])
+  const { isVaultApproved, setLastUpdated } = useCheckVaultApprovalStatus()
 
   return (
     <Flex flexDirection="column">
@@ -72,7 +53,7 @@ const CakeVaultCardActions: React.FC<{
             accountHasSharesStaked={accountHasSharesStaked}
           />
         ) : (
-          <VaultApprovalAction pool={pool} isLoading={isLoading} setLastUpdated={setLastUpdated} />
+          <VaultApprovalAction isLoading={isLoading} setLastUpdated={setLastUpdated} />
         )}
       </Flex>
     </Flex>

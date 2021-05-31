@@ -40,7 +40,8 @@
   "Farming starts in %num% Blocks": "Farming starts in %num% Blocks",
   "Finished": "Finished",
   "Farming ends in %num% Blocks": "Farming ends in %num% Blocks",
-  "Project Site": "Project Site",
+  "Project site": "Project site",
+  "Info site": "Info site",
   "You can unstake at any time.": "You can unstake at any time.",
   "Rewards are calculated per block.": "Rewards are calculated per block.",
   "Total": "Total",
@@ -503,7 +504,7 @@
   "You can now stake in the %symbol% pool!": "You can now stake in the %symbol% pool!",
   "Please try again. Confirm the transaction and make sure you are paying enough gas!": "Please try again. Confirm the transaction and make sure you are paying enough gas!",
   "Start earning": "Start earning",
-  "Recent CAKE profit:": "Recent CAKE profit:",
+  "Recent CAKE profit": "Recent CAKE profit",
   "Unstaked!": "Unstaked!",
   "Unstaked": "Unstaked",
   "Staked!": "Staked!",
@@ -808,5 +809,13 @@
   "Team Ranks": "Team Ranks",
   "Prizes": "Prizes",
   "Rules": "Rules",
-  "Entry": "Entry"
+  "Entry": "Entry",
+  "Enable pool": "Enable pool",
+  "Start staking": "Start staking",
+  "Search Pools": "Search Pools",
+  "Ends in": "Ends in",
+  "Starts in": "Starts in",
+  "Total amount of %symbol% staked in this pool": "Total amount of %symbol% staked in this pool",
+  "These pools are no longer distributing rewards. Please unstake your tokens.": "These pools are no longer distributing rewards. Please unstake your tokens.",
+  "Max. stake per user": "Max. stake per user"
 }

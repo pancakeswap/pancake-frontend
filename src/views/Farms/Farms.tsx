@@ -16,11 +16,11 @@ import { orderBy } from 'lodash'
 import isArchivedPid from 'utils/farmHelpers'
 import { latinise } from 'utils/latinise'
 import PageHeader from 'components/PageHeader'
+import SearchInput from 'components/SearchInput'
 import Select, { OptionProps } from 'components/Select/Select'
 import FarmCard, { FarmWithStakedValue } from './components/FarmCard/FarmCard'
 import Table from './components/FarmTable/FarmTable'
 import FarmTabButtons from './components/FarmTabButtons'
-import SearchInput from './components/SearchInput'
 import { RowProps } from './components/FarmTable/Row'
 import ToggleView from './components/ToggleView/ToggleView'
 import { DesktopColumnSchema, ViewMode } from './components/types'
@@ -389,7 +389,7 @@ const Farms: React.FC = () => {
             </LabelWrapper>
             <LabelWrapper style={{ marginLeft: 16 }}>
               <Text textTransform="uppercase">{t('Search')}</Text>
-              <SearchInput onChange={handleChangeQuery} />
+              <SearchInput onChange={handleChangeQuery} placeholder="Search farms" />
             </LabelWrapper>
           </FilterContainer>
         </ControlContainer>

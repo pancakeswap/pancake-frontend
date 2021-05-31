@@ -6,7 +6,11 @@ import useWithdrawalFeeTimer from 'hooks/cakeVault/useWithdrawalFeeTimer'
 import { useCakeVault } from 'state/hooks'
 import WithdrawalFeeTimer from './WithdrawalFeeTimer'
 
-const UnstakingFeeCountdownRow = () => {
+interface UnstakingFeeCountdownRowProps {
+  isTableVariant?: boolean
+}
+
+const UnstakingFeeCountdownRow: React.FC<UnstakingFeeCountdownRowProps> = ({ isTableVariant }) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const {
@@ -51,7 +55,11 @@ const UnstakingFeeCountdownRow = () => {
   }
 
   return (
-    <Flex alignItems="center" justifyContent="space-between">
+    <Flex
+      alignItems={isTableVariant ? 'flex-start' : 'center'}
+      justifyContent="space-between"
+      flexDirection={isTableVariant ? 'column' : 'row'}
+    >
       {tooltipVisible && tooltip}
       <TooltipText ref={targetRef} small>
         {noFeeToPay ? '0' : feeAsDecimal}% {getRowText()}

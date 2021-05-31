@@ -161,7 +161,7 @@ export const useFetchPublicPoolsData = () => {
   }, [dispatch, slowRefresh, web3])
 }
 
-export const usePools = (account): Pool[] => {
+export const usePools = (account): { pools: Pool[]; userDataLoaded: boolean } => {
   const { fastRefresh } = useRefresh()
   const dispatch = useAppDispatch()
   useEffect(() => {
@@ -170,8 +170,11 @@ export const usePools = (account): Pool[] => {
     }
   }, [account, dispatch, fastRefresh])
 
-  const pools = useSelector((state: State) => state.pools.data)
-  return pools.map(transformPool)
+  const { pools, userDataLoaded } = useSelector((state: State) => ({
+    pools: state.pools.data,
+    userDataLoaded: state.pools.userDataLoaded,
+  }))
+  return { pools: pools.map(transformPool), userDataLoaded }
 }
 
 export const usePoolFromPid = (sousId: number): Pool => {

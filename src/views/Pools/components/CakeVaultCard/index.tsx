@@ -31,8 +31,7 @@ const CakeVaultCard: React.FC<CakeVaultProps> = ({ pool, showStakedOnly }) => {
     userData: { userShares, isLoading: isVaultUserDataLoading },
     fees: { performanceFee },
   } = useCakeVault()
-  //   Estimate & manual for now. 288 = once every 5 mins. We can change once we have a better sense of this
-  const timesCompoundedDaily = 288
+
   const accountHasSharesStaked = userShares && userShares.gt(0)
   const isLoading = !pool.userData || isVaultUserDataLoading
   const performanceFeeAsDecimal = performanceFee && performanceFee / 100
@@ -52,12 +51,7 @@ const CakeVaultCard: React.FC<CakeVaultProps> = ({ pool, showStakedOnly }) => {
           stakingTokenSymbol="CAKE"
         />
         <StyledCardBody isLoading={isLoading}>
-          <AprRow
-            pool={pool}
-            isAutoVault
-            compoundFrequency={timesCompoundedDaily}
-            performanceFee={performanceFeeAsDecimal}
-          />
+          <AprRow pool={pool} performanceFee={performanceFeeAsDecimal} />
           <Box mt="24px">
             <RecentCakeProfitRow />
           </Box>
@@ -77,7 +71,7 @@ const CakeVaultCard: React.FC<CakeVaultProps> = ({ pool, showStakedOnly }) => {
             )}
           </Flex>
         </StyledCardBody>
-        <CardFooter pool={pool} account={account} isAutoVault />
+        <CardFooter pool={pool} account={account} />
       </StyledCardInner>
     </StyledCard>
   )
