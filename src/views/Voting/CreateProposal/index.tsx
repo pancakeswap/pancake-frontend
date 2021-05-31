@@ -4,12 +4,19 @@ import { useTranslation } from 'contexts/Localization'
 import Container from 'components/layout/Container'
 import Layout from '../components/Layout'
 import { Label } from './styles'
+import Choices from './Choices'
 
 const SimpleMde = lazy(() => import('components/SimpleMde'))
 
 const CreateProposal = () => {
   const [state, setState] = useState({
-    title: '',
+    name: '',
+    body: '',
+    choices: [],
+    start: '',
+    end: '',
+    snapshot: '',
+    metadata: {},
   })
   const { t } = useTranslation()
 
@@ -31,16 +38,17 @@ const CreateProposal = () => {
         <Layout>
           <Box>
             <Box mb="24px">
-              <Label htmlFor="title">{t('Title')}</Label>
-              <Input id="title" name="title" value={state.title} scale="lg" onChange={handleChange} />
+              <Label htmlFor="name">{t('Title')}</Label>
+              <Input id="name" name="name" value={state.name} scale="lg" onChange={handleChange} />
             </Box>
             <Box mb="24px">
-              <Label htmlFor="content">{t('Content')}</Label>
+              <Label htmlFor="body">{t('Content')}</Label>
               <Text color="textSubtle" mb="8px">
                 {t('Tip: write in Markdown!')}
               </Text>
-              <SimpleMde />
+              <SimpleMde id="body" name="body" onChange={handleChange} />
             </Box>
+            <Choices />
           </Box>
           <Box>
             <Card>
