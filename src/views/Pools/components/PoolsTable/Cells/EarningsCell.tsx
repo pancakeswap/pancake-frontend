@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Skeleton, Text, useTooltip, HelpIcon, Flex, Box, useModal } from '@pancakeswap/uikit'
+import { Skeleton, Text, useTooltip, HelpIcon, Flex, Box, useModal, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { Pool } from 'state/types'
 import BigNumber from 'bignumber.js'
 import { PoolCategory } from 'config/constants/types'
@@ -32,6 +32,7 @@ const HelpIconWrapper = styled.div`
 
 const EarningsCell: React.FC<EarningsCellProps> = ({ pool, account, userDataLoaded }) => {
   const { t } = useTranslation()
+  const { isXs, isSm } = useMatchBreakpoints()
   const { sousId, earningToken, poolCategory, userData, earningTokenPrice, isAutoVault } = pool
   const isManualCakePool = sousId === 0
 
@@ -109,8 +110,8 @@ const EarningsCell: React.FC<EarningsCellProps> = ({ pool, account, userDataLoad
               <Box mr="8px" height="32px" onClick={!isAutoVault && hasEarnings ? handleEarningsClick : undefined}>
                 <Balance
                   mt="4px"
-                  bold
-                  fontSize="16px"
+                  bold={!isXs && !isSm}
+                  fontSize={isXs || isSm ? '14px' : '16px'}
                   color={hasEarnings ? 'primary' : 'textDisabled'}
                   decimals={hasEarnings ? 5 : 1}
                   value={hasEarnings ? earningTokenBalance : 0}
@@ -131,7 +132,7 @@ const EarningsCell: React.FC<EarningsCellProps> = ({ pool, account, userDataLoad
                   </Text>
                 )}
               </Box>
-              {isAutoVault && (
+              {isAutoVault && !isXs && !isSm && (
                 <HelpIconWrapper ref={targetRef}>
                   <HelpIcon color="textSubtle" />
                 </HelpIconWrapper>

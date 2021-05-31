@@ -34,13 +34,13 @@ const expandAnimation = keyframes`
     max-height: 0px;
   }
   to {
-    max-height: 500px;
+    max-height: 700px;
   }
 `
 
 const collapseAnimation = keyframes`
   from {
-    max-height: 500px;
+    max-height: 700px;
   }
   to {
     max-height: 0px;
@@ -61,7 +61,7 @@ const StyledActionPanel = styled.div<{ expanded: boolean }>`
   display: flex;
   flex-direction: column-reverse;
   justify-content: center;
-  padding: 24px;
+  padding: 12px;
 
   ${({ theme }) => theme.mediaQueries.lg} {
     flex-direction: row;
@@ -110,6 +110,7 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
   const { t } = useTranslation()
   const { currentBlock } = useBlock()
   const { isXs, isSm, isMd } = breakpoints
+  const showSubtitle = isXs || (isSm && sousId === 0)
 
   const { shouldShowBlockCountdown, blocksUntilStart, blocksRemaining, hasPoolStarted, blocksToDisplay } =
     getPoolBlockInfo(pool, currentBlock)
@@ -186,7 +187,7 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
   const aprRow = (
     <Flex justifyContent="space-between" alignItems="center" mb="8px">
       <Text>{isAutoVault ? t('APY') : t('APR')}</Text>
-      <Apr pool={pool} performanceFee={isAutoVault ? performanceFeeAsDecimal : 0} />
+      <Apr pool={pool} showIcon performanceFee={isAutoVault ? performanceFeeAsDecimal : 0} />
     </Flex>
   )
 
@@ -246,6 +247,11 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
         </span>
       </InfoSection>
       <ActionContainer>
+        {showSubtitle && (
+          <Text mt="4px" mb="16px" color="textSubtle">
+            {isAutoVault ? t('Automatic restaking') : `${t('Earn')} CAKE ${t('Stake').toLocaleLowerCase()} CAKE`}
+          </Text>
+        )}
         <Harvest {...pool} userDataLoaded={userDataLoaded} />
         <Stake pool={pool} userDataLoaded={userDataLoaded} />
       </ActionContainer>

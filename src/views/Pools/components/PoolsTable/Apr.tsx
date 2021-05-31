@@ -9,10 +9,11 @@ import { getAprData } from 'views/Pools/helpers'
 
 interface AprProps extends FlexProps {
   pool: Pool
+  showIcon: boolean
   performanceFee?: number
 }
 
-const Apr: React.FC<AprProps> = ({ pool, performanceFee = 0, ...props }) => {
+const Apr: React.FC<AprProps> = ({ pool, showIcon, performanceFee = 0, ...props }) => {
   const { stakingToken, earningToken, isFinished, earningTokenPrice, apr } = pool
   const { t } = useTranslation()
 
@@ -54,7 +55,7 @@ const Apr: React.FC<AprProps> = ({ pool, performanceFee = 0, ...props }) => {
               unit="%"
             />
           </Flex>
-          {!isFinished && (
+          {!isFinished && showIcon && (
             <Flex>
               <IconButton
                 onClick={openRoiModal}
