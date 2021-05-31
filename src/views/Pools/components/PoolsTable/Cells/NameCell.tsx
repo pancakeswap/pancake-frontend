@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
-import { Text, Image } from '@pancakeswap/uikit'
+import { Text, Image, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useCakeVault } from 'state/hooks'
 import { Pool } from 'state/types'
@@ -15,7 +15,7 @@ interface NameCellProps {
 const StyledCell = styled(BaseCell)`
   flex: 5;
   flex-direction: row;
-  padding-left: 16px;
+  padding-left: 12px;
   ${({ theme }) => theme.mediaQueries.sm} {
     flex: 1 0 150px;
     padding-left: 32px;
@@ -24,6 +24,7 @@ const StyledCell = styled(BaseCell)`
 
 const NameCell: React.FC<NameCellProps> = ({ pool }) => {
   const { t } = useTranslation()
+  const { isXs, isSm } = useMatchBreakpoints()
   const { sousId, stakingToken, earningToken, userData, isFinished, isAutoVault } = pool
   const {
     userData: { userShares },
@@ -42,6 +43,7 @@ const NameCell: React.FC<NameCellProps> = ({ pool }) => {
 
   let title = `${t('Earn')} ${earningTokenSymbol}`
   let subtitle = `${t('Stake')} ${stakingTokenSymbol}`
+  const showSubtitle = sousId !== 0 || (sousId === 0 && !isXs && !isSm)
 
   if (isAutoVault) {
     title = t('Auto CAKE')
@@ -60,10 +62,14 @@ const NameCell: React.FC<NameCellProps> = ({ pool }) => {
             {t('Staked')}
           </Text>
         )}
-        <Text bold>{title}</Text>
-        <Text fontSize="12px" color="textSubtle">
-          {subtitle}
+        <Text bold={!isXs && !isSm} small={isXs || isSm}>
+          {title}
         </Text>
+        {showSubtitle && (
+          <Text fontSize="12px" color="textSubtle">
+            {subtitle}
+          </Text>
+        )}
       </CellContent>
     </StyledCell>
   )

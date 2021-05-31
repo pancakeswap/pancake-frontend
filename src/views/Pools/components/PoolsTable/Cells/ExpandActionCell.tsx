@@ -14,7 +14,7 @@ const StyledCell = styled(BaseCell)`
   justify-content: flex-end;
   align-items: center;
   flex: 1;
-  padding-right: 16px;
+  padding-right: 12px;
   padding-left: 0px;
   ${({ theme }) => theme.mediaQueries.md} {
     flex: 0 0 120px;
