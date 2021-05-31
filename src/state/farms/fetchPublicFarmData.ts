@@ -15,6 +15,7 @@ type PublicFarmData = {
   lpTotalSupply?: SerializedBigNumber
   tokenPriceVsQuote?: SerializedBigNumber
   poolWeight?: SerializedBigNumber
+  multiplier?: string
 }
 
 const fetchFarm = async (farm: Farm): Promise<PublicFarmData> => {
@@ -111,7 +112,7 @@ const fetchFarm = async (farm: Farm): Promise<PublicFarmData> => {
     const id = setTimeout(() => {
       clearTimeout(id)
       resolve({})
-    }, 5000)
+    }, 9000)
   })
 
   return Promise.race([timeout, farmFetch()])
