@@ -40,7 +40,8 @@
   "Farming starts in %num% Blocks": "Η καλλιέργεια ξεκινάει σε %num% μπλοκ",
   "Finished": "Ανενεργή",
   "Farming ends in %num% Blocks": "Η καλλιέργεια τελειώνει σε %num% μπλοκ",
-  "Project Site": "Ιστοσελίδα πρότζεκτ",
+  "Project site": "Project site",
+  "Info site": "Info site",
   "You can unstake at any time.": "Μπορείτε να ακυρώσετε το stake ανά πάσα στιγμή.",
   "Rewards are calculated per block.": "Οι ανταμοιβές υπολογίζονται ανά μπλοκ.",
   "Total": "Σύνολο",
@@ -503,7 +504,7 @@
   "You can now stake in the %symbol% pool!": "Τώρα μπορείτε να κάνετε stake στη δεξαμενή %symbol%!",
   "Please try again. Confirm the transaction and make sure you are paying enough gas!": "Δοκιμάστε ξανά. Επιβεβαιώστε τη συναλλαγή και βεβαιωθείτε ότι πληρώνετε αρκετή βενζίνη!",
   "Start earning": "Ξεκινήστε να κερδίζετε",
-  "Recent CAKE profit:": "Πρόσφατο κέρδος CAKE:",
+  "Recent CAKE profit": "Recent CAKE profit",
   "Unstaked!": "Κατάργηση stake!",
   "Unstaked": "Κατάργηση stake",
   "Staked!": "Σε stake!",
@@ -808,5 +809,13 @@
   "Team Ranks": "Βαθμολογίες ομάδων",
   "Prizes": "Έπαθλα",
   "Rules": "Κανόνες",
-  "Entry": "Συμμετοχή"
+  "Entry": "Συμμετοχή",
+  "Enable pool": "Enable pool",
+  "Start staking": "Start staking",
+  "Search Pools": "Search Pools",
+  "Ends in": "Ends in",
+  "Starts in": "Starts in",
+  "Total amount of %symbol% staked in this pool": "Total amount of %symbol% staked in this pool",
+  "These pools are no longer distributing rewards. Please unstake your tokens.": "These pools are no longer distributing rewards. Please unstake your tokens.",
+  "Max. stake per user": "Max. stake per user"
 }
