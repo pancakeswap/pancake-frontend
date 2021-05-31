@@ -40,7 +40,8 @@
   "Farming starts in %num% Blocks": "Farming beginnt in %num% Blocks",
   "Finished": "Beendet",
   "Farming ends in %num% Blocks": "Farming endet in %num% Blocks",
-  "Project Site": "Projekt Seite",
+  "Project site": "Project site",
+  "Info site": "Info site",
   "You can unstake at any time.": "Sie können den Einsatz jederzeit aufheben.",
   "Rewards are calculated per block.": "Die Belohnungen werden pro Block berechnet.",
   "Total": "Gesamt",
@@ -503,7 +504,7 @@
   "You can now stake in the %symbol% pool!": "Sie können jetzt im %symbol% Pool einsetzen!",
   "Please try again. Confirm the transaction and make sure you are paying enough gas!": "Bitte versuchen Sie es erneut. Bestätigen Sie die Transaktion und stellen Sie sicher, dass Sie genug bezahlen!",
   "Start earning": "Beginnen Sie zu verdienen",
-  "Recent CAKE profit:": "Aktueller CAKE-Gewinn:",
+  "Recent CAKE profit": "Recent CAKE profit",
   "Unstaked!": "Einsatz aufgehoben!",
   "Unstaked": "Einsatz aufgehoben",
   "Staked!": "Eingesetzt!",
@@ -808,5 +809,13 @@
   "Team Ranks": "Team-Rang",
   "Prizes": "Preise",
   "Rules": "Regeln",
-  "Entry": "Registrierung"
+  "Entry": "Registrierung",
+  "Enable pool": "Enable pool",
+  "Start staking": "Start staking",
+  "Search Pools": "Search Pools",
+  "Ends in": "Ends in",
+  "Starts in": "Starts in",
+  "Total amount of %symbol% staked in this pool": "Total amount of %symbol% staked in this pool",
+  "These pools are no longer distributing rewards. Please unstake your tokens.": "These pools are no longer distributing rewards. Please unstake your tokens.",
+  "Max. stake per user": "Max. stake per user"
 }
