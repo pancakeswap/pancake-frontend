@@ -14,7 +14,7 @@ import ToggleView, { ViewMode } from './ToggleView/ToggleView'
 
 const PoolTabButtons = ({ stakedOnly, setStakedOnly, hasStakeInFinishedPools, viewMode, setViewMode }) => {
   const { url, isExact } = useRouteMatch()
-  const { isXs } = useMatchBreakpoints()
+  const { isXs, isSm } = useMatchBreakpoints()
   const { t } = useTranslation()
 
   const viewModeToggle = <ToggleView viewMode={viewMode} onToggle={(mode: ViewMode) => setViewMode(mode)} />
@@ -39,14 +39,12 @@ const PoolTabButtons = ({ stakedOnly, setStakedOnly, hasStakeInFinishedPools, vi
     </Flex>
   )
 
-  if (isXs) {
+  if (isXs || isSm) {
     return (
       <Flex flexDirection="column" alignItems="flex-start" mb="24px">
         {viewModeToggle}
-        <Flex width="100%" justifyContent="space-between">
-          {liveOrFinishedSwitch}
-          {stakedOnlySwitch}
-        </Flex>
+        {liveOrFinishedSwitch}
+        {stakedOnlySwitch}
       </Flex>
     )
   }

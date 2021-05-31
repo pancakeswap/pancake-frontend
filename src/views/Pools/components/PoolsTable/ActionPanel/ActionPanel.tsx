@@ -110,7 +110,7 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
   const { t } = useTranslation()
   const { currentBlock } = useBlock()
   const { isXs, isSm, isMd } = breakpoints
-  const showSubtitle = isXs || (isSm && sousId === 0)
+  const showSubtitle = (isXs || isSm) && sousId === 0
 
   const { shouldShowBlockCountdown, blocksUntilStart, blocksRemaining, hasPoolStarted, blocksToDisplay } =
     getPoolBlockInfo(pool, currentBlock)
