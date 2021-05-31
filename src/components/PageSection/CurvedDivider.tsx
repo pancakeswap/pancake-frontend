@@ -5,25 +5,21 @@ import { CurvedSvgTop, CurvedSvgBottom } from './svg/CurvedSvg'
 interface CurvedDividerProps extends WrapperProps {
   svgFill?: string
   dividerComponent?: React.ReactNode
+  curvePosition?: 'top' | 'bottom'
 }
 interface WrapperProps {
   index: number
-  curvePosition?: 'top' | 'bottom'
 }
 
 const Wrapper = styled.div<WrapperProps>`
+  z-index: ${({ index }) => index};
   position: relative;
   display: flex;
   align-items: center;
   width: 100%;
-  z-index: ${({ index }) => index};
-  margin: ${({ curvePosition }) => (curvePosition === 'top' ? '-32px' : '32px')} 0 0;
-  ${({ theme }) => theme.mediaQueries.sm} {
-    margin: ${({ curvePosition }) => (curvePosition === 'top' ? '-40px' : '40px')} 0 0;
-  }
 `
 
-const ComponentWrapper = styled.div<{ index: number }>`
+const ComponentWrapper = styled.div<WrapperProps>`
   z-index: ${({ index }) => index + 1};
   position: absolute;
   top: 50%;
@@ -33,7 +29,7 @@ const ComponentWrapper = styled.div<{ index: number }>`
 
 const CurvedDivider: React.FC<CurvedDividerProps> = ({ svgFill, index, curvePosition, dividerComponent }) => {
   return (
-    <Wrapper index={index} curvePosition={curvePosition}>
+    <Wrapper index={index}>
       {dividerComponent && <ComponentWrapper index={index}>{dividerComponent}</ComponentWrapper>}
       {curvePosition === 'top' ? (
         <CurvedSvgTop svgFill={svgFill} width="100%" />
