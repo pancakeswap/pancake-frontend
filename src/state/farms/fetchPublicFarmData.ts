@@ -111,7 +111,7 @@ const fetchFarm = async (farm: Farm): Promise<PublicFarmData> => {
     const id = setTimeout(() => {
       clearTimeout(id)
       resolve({})
-    }, 5000)
+    }, 9000)
   })
 
   return Promise.race([timeout, farmFetch()])
