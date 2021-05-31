@@ -26,7 +26,7 @@ import { ViewMode } from './components/ToggleView/ToggleView'
 import { getAprData, getCakeVaultEarnings } from './helpers'
 
 const CardLayout = styled(FlexLayout)`
-  justify-content: space-around;
+  justify-content: center;
 `
 
 const PoolControls = styled(Flex)`
