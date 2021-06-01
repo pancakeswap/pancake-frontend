@@ -1355,6 +1355,30 @@
       "chainId": 56,
       "decimals": 9,
       "logoURI": "https://exchange.pancakeswap.finance/images/coins/0x2cD1075682b0FCCaADd0Ca629e138E64015Ba11c.png"
+    },
+    {
+      "name": "True USD",
+      "symbol": "TUSD",
+      "address": "0x14016e85a25aeb13065688cafb43044c2ef86784",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://exchange.pancakeswap.finance/images/coins/0x14016e85a25aeb13065688cafb43044c2ef86784.png"
+    },
+    {
+      "name": "Meter",
+      "symbol": "MTRG",
+      "address": "0xbd2949f67dcdc549c6ebe98696449fa79d988a9f",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://exchange.pancakeswap.finance/images/coins/0xbd2949f67dcdc549c6ebe98696449fa79d988a9f.png"
+    },
+    {
+      "name": "SWGToken",
+      "symbol": "SWG",
+      "address": "0xe792f64c582698b8572aaf765bdc426ac3aefb6b",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://exchange.pancakeswap.finance/images/coins/0xe792f64c582698b8572aaf765bdc426ac3aefb6b.png"
     }
   ]
 }
