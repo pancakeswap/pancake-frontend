@@ -228,6 +228,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://swirgepay.com/',
   },
+  swg: {
+    symbol: 'SWG',
+    address: {
+      56: '0xe792f64c582698b8572aaf765bdc426ac3aefb6b',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://swirgepay.com/',
+  },
   sfp: {
     symbol: 'SFP',
     address: {

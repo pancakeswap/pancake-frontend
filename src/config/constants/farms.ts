@@ -39,6 +39,16 @@ const farms: FarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 398,
+    lpSymbol: 'SWG-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x226af4e918fcf3e62e5eeec867a3e78aaa7bb01d',
+    },
+    token: tokens.swg,
+    quoteToken: tokens.wbnb,
+  },
+  {
     pid: 397,
     lpSymbol: 'TUSD-BUSD LP',
     lpAddresses: {
