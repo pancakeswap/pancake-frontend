@@ -1,5 +1,5 @@
 import { request, gql } from 'graphql-request'
-import { SNAPSHOT_API } from 'config/constants/endpoints'
+import { SNAPSHOT_API, SNAPSHOT_HUB_API, SNAPSHOT_VOTING_API } from 'config/constants/endpoints'
 import { Proposal, ProposalState, ProposalType, Vote } from './types'
 import { ADMIN_ADDRESS } from './config'
 
@@ -76,6 +76,46 @@ export const getProposal = async (id: string): Promise<Proposal> => {
       { id },
     )
     return response.proposal
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
+export interface Message {
+  address: string
+  msg: string
+  sig: string
+}
+
+export const createProposal = async (message: Message) => {
+  try {
+    const response = await fetch(SNAPSHOT_HUB_API, {
+      method: 'post',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(message),
+    })
+    const data = await response.json()
+    return data
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
+export const saveVotingPower = async (account: string, proposal: string, power: number) => {
+  try {
+    const response = await fetch(SNAPSHOT_VOTING_API, {
+      method: 'post',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ account, proposal, power }),
+    })
+    const data = await response.json()
+    return data
   } catch (error) {
     throw new Error(error)
   }

@@ -59,7 +59,7 @@ const Choices: React.FC<ChoicesProps> = ({ choices, onChange }) => {
           )
         })}
 
-        <Button onClick={addChoice} disabled={!hasMinimumChoices}>
+        <Button type="button" onClick={addChoice} disabled={!hasMinimumChoices}>
           {t('Add Choice')}
         </Button>
       </CardBody>

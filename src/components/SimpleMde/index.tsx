@@ -68,7 +68,7 @@ const SimpleMde: React.FC<SimpleMdeProps> = ({ options, onTextChange, ...props }
 
   return (
     <Wrapper>
-      <textarea ref={ref} {...props} />
+      <textarea ref={ref} readOnly {...props} />
     </Wrapper>
   )
 }
