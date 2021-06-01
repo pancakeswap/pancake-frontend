@@ -243,19 +243,19 @@ const Pools: React.FC = () => {
                 <Select
                   options={[
                     {
-                      label: 'Hot',
+                      label: t('Hot'),
                       value: 'hot',
                     },
                     {
-                      label: 'APR',
+                      label: t('APR'),
                       value: 'apr',
                     },
                     {
-                      label: 'Earned',
+                      label: t('Earned'),
                       value: 'earned',
                     },
                     {
-                      label: 'Total staked',
+                      label: t('Total staked'),
                       value: 'totalStaked',
                     },
                   ]}
@@ -268,7 +268,7 @@ const Pools: React.FC = () => {
                 {t('Search')}
               </Text>
               <ControlStretch>
-                <SearchInput onChange={handleChangeSearchQuery} placeholder="Search pools" />
+                <SearchInput onChange={handleChangeSearchQuery} placeholder="Search Pools" />
               </ControlStretch>
             </Flex>
           </SearchSortContainer>
