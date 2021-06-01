@@ -52,5 +52,6 @@ export const CurvedSvgTop = styled(CurvedSvg)<StyledSvgProps>`
 
 export const CurvedSvgBottom = styled(CurvedSvg)<StyledSvgProps>`
   ${sharedStyles}
+  margin-top: -2px;
   fill: ${({ svgFill, theme }) => svgFill || theme.colors.background};
 `

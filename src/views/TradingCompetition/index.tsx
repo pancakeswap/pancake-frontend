@@ -57,6 +57,20 @@ const BannerFlex = styled(Flex)`
   }
 `
 
+const BattleBannerSection = styled(PageSection)`
+  margin-top: -32px;
+  ${({ theme }) => theme.mediaQueries.lg} {
+    margin-top: -64px;
+  }
+`
+
+const YourScoreSection = styled(PageSection)`
+  margin-top: -32px;
+  ${({ theme }) => theme.mediaQueries.lg} {
+    margin-top: -64px;
+  }
+`
+
 const PrizesSection = styled(PageSection)`
   margin: -32px 0;
   ${({ theme }) => theme.mediaQueries.lg} {
@@ -215,7 +229,7 @@ const TradingCompetition = () => {
 
   return (
     <CompetitionPage>
-      <PageSection
+      <BattleBannerSection
         background={DARKBG}
         svgFill={DARKFILL}
         index={5}
@@ -242,8 +256,8 @@ const TradingCompetition = () => {
           <Countdown currentPhase={currentPhase} hasCompetitionEnded={hasCompetitionEnded} />
           <BattleBanner />
         </BannerFlex>
-      </PageSection>
-      <PageSection
+      </BattleBannerSection>
+      <YourScoreSection
         background={isDark ? MIDBLUEBG_DARK : MIDBLUEBG}
         svgFill={isDark ? MIDBLUEFILL_DARK : MIDBLUEFILL}
         index={4}
@@ -273,7 +287,7 @@ const TradingCompetition = () => {
             />
           )}
         </Box>
-      </PageSection>
+      </YourScoreSection>
       <PageSection
         index={3}
         dividerComponent={
@@ -310,7 +324,9 @@ const TradingCompetition = () => {
           </RibbonWithImage>
         }
       >
-        <Rules />
+        <Box mt="32px">
+          <Rules />
+        </Box>
       </PageSection>
       <PageSection background={DARKBG} svgFill={DARKFILL} index={4} curvePosition="top">
         <Flex alignItems="center">

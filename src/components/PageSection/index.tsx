@@ -14,7 +14,6 @@ interface PageSectionProps extends BackgroundColorProps {
 interface BackgroundColorProps extends FlexProps {
   index: number
   background?: string
-  hasZeroMargin?: boolean
 }
 
 const BackgroundColor = styled(Flex)<BackgroundColorProps>`
@@ -22,14 +21,6 @@ const BackgroundColor = styled(Flex)<BackgroundColorProps>`
   flex-direction: column;
   z-index: ${({ index }) => index - 1};
   background: ${({ background, theme }) => background || theme.colors.background};
-  padding: 48px 0;
-  margin: ${({ hasZeroMargin }) => (hasZeroMargin ? '0' : '-32px')} 0;
-  ${({ theme }) => theme.mediaQueries.sm} {
-    margin: ${({ hasZeroMargin }) => (hasZeroMargin ? '0' : '-52px')} 0;
-  }
-  @media screen and (min-width: 1920px) {
-    margin: ${({ hasZeroMargin }) => (hasZeroMargin ? '0' : '-72px')} 0;
-  }
 `
 
 const ChildrenWrapper = styled(Container)`
@@ -58,7 +49,23 @@ const PageSection: React.FC<PageSectionProps> = ({
   hasCurvedDivider = true,
   ...props
 }) => {
-  const hasZeroMargin = !hasCurvedDivider || curvePosition === 'top'
+  const getPadding = () => {
+    // No curved divider
+    if (!hasCurvedDivider) {
+      return '48px 0'
+    }
+    // Bottom curved divider
+    // Less bottom padding, as the divider is present there
+    if (curvePosition === 'bottom') {
+      return '48px 0 14px'
+    }
+    // Top curved divider
+    // Less top padding, as the divider is present there
+    if (curvePosition === 'top') {
+      return '14px 0 48px'
+    }
+    return '48px 0'
+  }
 
   return (
     <>
@@ -70,7 +77,7 @@ const PageSection: React.FC<PageSectionProps> = ({
           dividerComponent={dividerComponent}
         />
       )}
-      <BackgroundColor background={background} index={index} hasZeroMargin={hasZeroMargin} {...props}>
+      <BackgroundColor background={background} index={index} p={getPadding()} {...props}>
         <ChildrenWrapper>{children}</ChildrenWrapper>
       </BackgroundColor>
       {hasCurvedDivider && curvePosition === 'bottom' && (
