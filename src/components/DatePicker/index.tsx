@@ -1,22 +1,3 @@
-import React from 'react'
-import ReactDatePicker, { ReactDatePickerProps } from 'react-datepicker'
-import { Input, InputProps } from '@pancakeswap/uikit'
-
-import 'react-datepicker/dist/react-datepicker.css'
-
-interface DatePickerProps extends ReactDatePickerProps {
-  inputProps?: InputProps
-}
-
-const DatePicker: React.FC<DatePickerProps> = ({ inputProps = {}, ...props }) => {
-  return (
-    <ReactDatePicker
-      customInput={<Input {...inputProps} />}
-      portalId="reactDatePicker"
-      dateFormat="yyyy-MM-dd"
-      {...props}
-    />
-  )
-}
-
-export default DatePicker
+export { default as DatePicker } from './DatePicker'
+export { default as DatePickerPortal } from './DatePickerPortal'
+export { default as TimePicker } from './TimePicker'
