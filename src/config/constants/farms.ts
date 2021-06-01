@@ -40,13 +40,13 @@ const farms: FarmConfig[] = [
    */
   {
     pid: 399,
-    lpSymbol: 'MTRG-BNB LP',
+    lpSymbol: 'MTRG-BUSD LP',
     lpAddresses: {
       97: '',
       56: '0x4dcA4D427511bC327639b222DA18FA5e334F686F',
     },
     token: tokens.mtrg,
-    quoteToken: tokens.wbnb,
+    quoteToken: tokens.busd,
   },
   {
     pid: 398,
