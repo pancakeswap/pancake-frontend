@@ -1452,6 +1452,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://www.trueusd.com/',
   },
+  mtrg: {
+    symbol: 'MTRG',
+    address: {
+      56: '0xbd2949f67dcdc549c6ebe98696449fa79d988a9f',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://www.meter.io/',
+  },
 }
 
 export default tokens
