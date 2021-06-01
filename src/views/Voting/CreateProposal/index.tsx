@@ -3,15 +3,16 @@ import { Box, Card, CardBody, CardHeader, Heading, Input, Text } from '@pancakes
 import times from 'lodash/times'
 import { useTranslation } from 'contexts/Localization'
 import Container from 'components/layout/Container'
+import DatePicker from 'components/DatePicker'
 import Layout from '../components/Layout'
-import { Label } from './styles'
+import { Label, SecondaryLabel } from './styles'
 import Choices, { Choice, makeChoice, MINIMUM_CHOICES } from './Choices'
 
 interface State {
   name: string
   body: string
   choices: Choice[]
-  start: string
+  start: Date
   end: string
   snapshot: string
   metadata: Record<string, unknown>
@@ -24,7 +25,7 @@ const CreateProposal = () => {
     name: '',
     body: '',
     choices: times(MINIMUM_CHOICES).map(makeChoice),
-    start: '',
+    start: null,
     end: '',
     snapshot: '',
     metadata: {},
@@ -35,7 +36,7 @@ const CreateProposal = () => {
     evt.preventDefault()
   }
 
-  const updateValue = (key: string, value: string | Choice[]) => {
+  const updateValue = (key: string, value: string | Choice[] | Date) => {
     setState((prevState) => ({
       ...prevState,
       [key]: value,
@@ -53,6 +54,10 @@ const CreateProposal = () => {
 
   const handleChoiceChange = (choices: Choice[]) => {
     updateValue('choices', choices)
+  }
+
+  const handleDateChange = (key: string) => (value: Date) => {
+    updateValue(key, value)
   }
 
   return (
@@ -80,7 +85,12 @@ const CreateProposal = () => {
                   {t('Actions')}
                 </Heading>
               </CardHeader>
-              <CardBody>body</CardBody>
+              <CardBody>
+                <Box>
+                  <SecondaryLabel>{t('Start Date')}</SecondaryLabel>
+                  <DatePicker name="startDate" onChange={handleDateChange('start')} selected={state.start} />
+                </Box>
+              </CardBody>
             </Card>
           </Box>
         </Layout>

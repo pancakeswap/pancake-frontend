@@ -1,11 +1,17 @@
 import styled from 'styled-components'
 
-export const Label = styled.label`
+const BaseLabel = styled.label`
   color: ${({ theme }) => theme.colors.text};
   display: block;
-  font-size: 20px;
   font-weight: 600;
   margin-bottom: 8px;
 `
 
-export default null
+export const Label = styled(BaseLabel)`
+  font-size: 20px;
+`
+
+export const SecondaryLabel = styled(BaseLabel)`
+  font-size: 12px;
+  text-transform: uppercase;
+`
