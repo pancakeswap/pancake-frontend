@@ -513,7 +513,7 @@
   "%error% - Please try again.": "%error% - Δοκιμάστε ξανά.",
   "Stake in Pool": "Stake στη δεξαμενή",
   "Balance: %balance%": "Υπόλοιπο: %balance%",
-  "%day%d : %hour%h : %minute%m": "%day%d : %hour%h : %minute%m",
+  "%day%d : %hour%h : %minute%m": "%day%η : %hour%ω : %minute%λ",
   "%day%d %hour%h %minute%m": "%day%d %hour%h %minute%m",
   "Subtracted automatically from each yield harvest and burned.": "Αφαιρούνται αυτόματα από κάθε συγκομιδή απόδοσης και καίγονται.",
   "Blocks": "Μπλοκ",
