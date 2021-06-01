@@ -15,4 +15,4 @@
     Access-Control-Allow-Origin = "*"
     Access-Control-Allow-Methods = "GET, HEAD, OPTIONS"
     Access-Control-Allow-Headers = "Accept, Content-Type, Origin"
-    Access-Control-Max-Age = 86400
+    Access-Control-Max-Age = "86400"
