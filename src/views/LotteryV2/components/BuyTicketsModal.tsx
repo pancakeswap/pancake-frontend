@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import BigNumber from 'bignumber.js'
+import { ethers } from 'ethers'
 import { Modal, Text, Flex, HelpIcon, Button, BalanceInput, Ticket, useTooltip, Skeleton } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
@@ -10,9 +11,10 @@ import useTheme from 'hooks/useTheme'
 import useTokenBalance, { FetchStatus } from 'hooks/useTokenBalance'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useCake } from 'hooks/useContract'
+import useToast from 'hooks/useToast'
 import { getLotteryV2Contract } from 'utils/contractHelpers'
 import UnlockButton from 'components/UnlockButton'
-import ApproveConfirmButtons from 'views/Profile/components/ApproveConfirmButtons'
+import ApproveConfirmButtons, { ButtonArrangement } from 'views/Profile/components/ApproveConfirmButtons'
 import TicketsNumberButton from './TicketsNumberButton'
 import { generateTicketNumbers } from '../helpers'
 
@@ -40,6 +42,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
   const [totalCost, setTotalCost] = useState('')
   const [possibleCakeExceeded, setPossibleCakeExceeded] = useState(false)
   const cakeContract = useCake()
+  const { toastSuccess } = useToast()
   const { balance: userCake, fetchStatus } = useTokenBalance(getCakeAddress())
   const hasFetchedBalance = fetchStatus === FetchStatus.SUCCESS
   const cakePriceBusd = usePriceCakeBusd()
@@ -146,41 +149,28 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
         try {
           const response = await cakeContract.methods.allowance(account, lotteryContract.options.address).call()
           const currentAllowance = new BigNumber(response)
-          return currentAllowance.gte(0)
+          return currentAllowance.gt(0)
         } catch (error) {
           return false
         }
       },
       onApprove: () => {
-        return cakeContract.methods.approve(lotteryContract.options.address).send({ from: account })
+        return cakeContract.methods
+          .approve(lotteryContract.options.address, ethers.constants.MaxUint256)
+          .send({ from: account })
+      },
+      onApproveSuccess: async () => {
+        toastSuccess(t('Contract approved - you can now purchase tickets'))
       },
       onConfirm: () => {
-        return null
+        const ticketNumArray = generateTicketNumbers(parseInt(ticketsToBuy, 10))
+        return lotteryContract.methods.buyTickets(currentLotteryId, ticketNumArray).send({ from: account })
       },
       onSuccess: async () => {
         onDismiss()
+        toastSuccess(t('Lottery tickets purchased!'))
       },
     })
-
-  const handleBuyTickets = async () => {
-    const ticketNumArray = generateTicketNumbers(parseInt(ticketsToBuy, 10))
-    try {
-      lotteryContract.methods
-        .buyTickets(currentLotteryId, ticketNumArray)
-        .send({ from: account })
-        .on('sending', () => {
-          console.log('sending')
-        })
-        .on('receipt', () => {
-          console.log('bought')
-        })
-        .on('error', (error) => {
-          console.error(error)
-        })
-    } catch (e) {
-      console.error(e)
-    }
-  }
 
   return (
     <>
@@ -273,17 +263,8 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
           </Flex>
 
           {account ? (
-            // <Button
-            //   // TODO: Condition could be cleaner
-            //   disabled={possibleCakeExceeded || !ticketsToBuy || new BigNumber(ticketsToBuy).lte(0)}
-            //   mb="24px"
-            //   onClick={() => handleBuyTickets()}
-            // >
-            //   {t('Confirm')}
-            // </Button>
-
             <ApproveConfirmButtons
-              isApproveDisabled={isConfirmed || isConfirming || isApproved}
+              isApproveDisabled={isApproved}
               isApproving={isApproving}
               isConfirmDisabled={
                 !isApproved ||
@@ -295,12 +276,13 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
               isConfirming={isConfirming}
               onApprove={handleApprove}
               onConfirm={handleConfirm}
+              buttonArrangement={ButtonArrangement.SEQUENTIAL}
             />
           ) : (
-            <UnlockButton mb="24px" />
+            <UnlockButton />
           )}
 
-          <Text fontSize="12px" color="textSubtle" maxWidth="280px">
+          <Text mt="24px" fontSize="12px" color="textSubtle" maxWidth="280px">
             {t(
               'The CAKE ticket price is set before each lottery round starts, equal to $1 at that time. Ticket purchases are final.',
             )}
