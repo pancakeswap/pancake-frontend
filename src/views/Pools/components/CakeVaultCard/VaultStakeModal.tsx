@@ -81,8 +81,6 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({ pool, stakingMax, isR
     const sharesRemaining = userShares.minus(shareStakeToWithdraw.sharesAsBigNumber)
     const isWithdrawingAll = sharesRemaining.lte(triggerWithdrawAllThreshold)
 
-    console.log(account)
-
     if (isWithdrawingAll) {
       const tx = await callWithEstimateGas(cakeVaultContract, 'withdrawAll')
       setPendingTx(true)
