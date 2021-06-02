@@ -12,6 +12,9 @@
     "checksum:pcs-extended": "yarn build && node ./dist checksum pancakeswap-extended",
     "generate:pcs-extended": "yarn test && yarn build && node ./dist generate pancakeswap-extended",
     "makelist:pcs-extended": "yarn checksum:pcs-extended && yarn generate:pcs-extended",
+    "checksum:pcs-top-100": "yarn build && node ./dist checksum pancakeswap-top-100",
+    "generate:pcs-top-100": "yarn test && yarn build && node ./dist generate pancakeswap-top-100",
+    "makelist:pcs-top-100": "yarn checksum:pcs-top-100 && yarn generate:pcs-top-100",
     "test": "jest"
   },
   "devDependencies": {

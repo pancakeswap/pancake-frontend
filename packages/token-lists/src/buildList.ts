@@ -4,6 +4,7 @@ import { TokenList } from "@uniswap/token-lists";
 import { version } from "../package.json";
 import pancakeswapDefault from "./tokens/pancakeswap-default.json";
 import pancakeswapExtended from "./tokens/pancakeswap-extended.json";
+import pancakeswapTop100 from "./tokens/pancakeswap-top-100.json";
 
 const lists = {
   "pancakeswap-default": {
@@ -18,6 +19,14 @@ const lists = {
     list: pancakeswapExtended,
     name: "PancakeSwap Extended",
     keywords: ["pancakeswap", "extended"],
+    logoURI:
+      "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
+    sort: true,
+  },
+  "pancakeswap-top-100": {
+    list: pancakeswapTop100,
+    name: "PancakeSwap Top 100",
+    keywords: ["pancakeswap", "top 100"],
     logoURI:
       "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
     sort: true,
