@@ -39,6 +39,16 @@ const farms: FarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 400,
+    lpSymbol: 'KTN-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x48028de4a9b0d3d91180333d796021ec7757ba1b',
+    },
+    token: tokens.ktn,
+    quoteToken: tokens.wbnb,
+  },
+  {
     pid: 399,
     lpSymbol: 'MTRG-BUSD LP',
     lpAddresses: {
