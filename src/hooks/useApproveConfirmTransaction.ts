@@ -88,6 +88,7 @@ interface ApproveConfirmTransaction {
   onConfirm: ContractHandler
   onRequiresApproval?: () => Promise<boolean>
   onSuccess: (state: State) => void
+  onApproveSuccess?: (state: State) => void
 }
 
 const useApproveConfirmTransaction = ({
@@ -95,6 +96,7 @@ const useApproveConfirmTransaction = ({
   onConfirm,
   onRequiresApproval,
   onSuccess = noop,
+  onApproveSuccess = noop,
 }: ApproveConfirmTransaction) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
@@ -129,6 +131,7 @@ const useApproveConfirmTransaction = ({
         })
         .on('receipt', (payload: Web3Payload) => {
           dispatch({ type: 'approve_receipt', payload })
+          onApproveSuccess(state)
         })
         .on('error', (error: Web3Payload) => {
           dispatch({ type: 'approve_error', payload: error })
