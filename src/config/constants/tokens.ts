@@ -1461,6 +1461,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://www.meter.io/',
   },
+  ktn: {
+    symbol: 'KTN',
+    address: {
+      56: '0xdae6c2a48bfaa66b43815c5548b10800919c993e',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://kattana.io/',
+  },
 }
 
 export default tokens
