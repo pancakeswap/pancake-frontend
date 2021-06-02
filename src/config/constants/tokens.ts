@@ -1470,6 +1470,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://kattana.io/',
   },
+  qkc: {
+    symbol: 'QKC',
+    address: {
+      56: '0xa1434f1fc3f437fa33f7a781e041961c0205b5da',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://quarkchain.io/',
+  },
 }
 
 export default tokens
