@@ -3,6 +3,11 @@ import styled from 'styled-components'
 import { ChevronRightIcon, Button as UIKitButton, AutoRenewIcon, ChevronDownIcon, Box, Flex } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 
+export enum ButtonArrangement {
+  ROW = 'row',
+  SEQUENTIAL = 'sequential',
+}
+
 interface ApproveConfirmButtonsProps {
   isApproveDisabled: boolean
   isApproving: boolean
@@ -10,9 +15,10 @@ interface ApproveConfirmButtonsProps {
   isConfirmDisabled: boolean
   onApprove: () => void
   onConfirm: () => void
+  buttonArrangement?: ButtonArrangement
 }
 
-const StyledApproveConfirmButtons = styled.div`
+const StyledApproveConfirmButtonRow = styled.div`
   align-items: center;
   display: grid;
   grid-template-columns: 1fr;
@@ -58,37 +64,67 @@ const ApproveConfirmButtons: React.FC<ApproveConfirmButtonsProps> = ({
   isConfirmDisabled,
   onApprove,
   onConfirm,
+  buttonArrangement = ButtonArrangement.ROW,
 }) => {
   const { t } = useTranslation()
 
-  return (
-    <StyledApproveConfirmButtons>
-      <Box>
-        <Button
-          disabled={isApproveDisabled}
-          onClick={onApprove}
-          endIcon={isApproving ? spinnerIcon : undefined}
-          isLoading={isApproving}
-        >
-          {isApproving ? t('Approving') : t('Approve')}
-        </Button>
-      </Box>
-      <Flex justifyContent="center">
-        <ChevronRight />
-        <ChevronBottom />
-      </Flex>
-      <Box>
-        <Button
-          onClick={onConfirm}
-          disabled={isConfirmDisabled}
-          isLoading={isConfirming}
-          endIcon={isConfirming ? spinnerIcon : undefined}
-        >
-          {isConfirming ? t('Confirming') : t('Confirm')}
-        </Button>
-      </Box>
-    </StyledApproveConfirmButtons>
-  )
+  const ApproveConfirmRow = () => {
+    return (
+      <StyledApproveConfirmButtonRow>
+        <Box>
+          <Button
+            disabled={isApproveDisabled}
+            onClick={onApprove}
+            endIcon={isApproving ? spinnerIcon : undefined}
+            isLoading={isApproving}
+          >
+            {isApproving ? t('Approving') : t('Approve')}
+          </Button>
+        </Box>
+        <Flex justifyContent="center">
+          <ChevronRight />
+          <ChevronBottom />
+        </Flex>
+        <Box>
+          <Button
+            onClick={onConfirm}
+            disabled={isConfirmDisabled}
+            isLoading={isConfirming}
+            endIcon={isConfirming ? spinnerIcon : undefined}
+          >
+            {isConfirming ? t('Confirming') : t('Confirm')}
+          </Button>
+        </Box>
+      </StyledApproveConfirmButtonRow>
+    )
+  }
+
+  const ApproveConfirmSequential = () => {
+    return (
+      <>
+        {isApproveDisabled ? (
+          <Box>
+            <Button
+              onClick={onConfirm}
+              disabled={isConfirmDisabled}
+              isLoading={isConfirming}
+              endIcon={isConfirming ? spinnerIcon : undefined}
+            >
+              {isConfirming ? t('Confirming') : t('Confirm')}
+            </Button>
+          </Box>
+        ) : (
+          <Box>
+            <Button onClick={onApprove} endIcon={isApproving ? spinnerIcon : undefined} isLoading={isApproving}>
+              {isApproving ? t('Approving') : t('Approve')}
+            </Button>
+          </Box>
+        )}
+      </>
+    )
+  }
+
+  return buttonArrangement === ButtonArrangement.ROW ? ApproveConfirmRow() : ApproveConfirmSequential()
 }
 
 export default ApproveConfirmButtons
