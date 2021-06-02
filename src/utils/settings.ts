@@ -1,3 +1,5 @@
+import { DEFAULT_GAS_PRICE } from 'config'
+
 export interface UserSettings {
   gasPrice: string
 }
@@ -5,9 +7,9 @@ export interface UserSettings {
 export const VERSION = 1
 
 export const GAS_SETTINGS = {
-  default: '5000000000', // 5
+  default: DEFAULT_GAS_PRICE, // 5
   fast: '10000000000', // 10
-  rapid: '15000000000', // 15
+  reallyfast: '15000000000', // 15
 }
 
 export const getDefaultSettings = (): UserSettings => ({
