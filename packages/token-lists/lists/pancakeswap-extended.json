@@ -1458,8 +1458,8 @@
       "logoURI": "https://tokens.pancakeswap.finance/images/0xb86abcb37c3a4b64f74f59301aff131a1becc787.png"
     },
     {
-      "name": "τDOGE",
-      "symbol": "τDOGE",
+      "name": "Tau DOGE",
+      "symbol": "tDOGE",
       "address": "0xe550a593d09FBC8DCD557b5C88Cea6946A8b404A",
       "chainId": 56,
       "decimals": 8,
@@ -1467,7 +1467,7 @@
     },
     {
       "name": "Tau Bitcoin",
-      "symbol": "𝜏BTC",
+      "symbol": "tBTC",
       "address": "0x2cD1075682b0FCCaADd0Ca629e138E64015Ba11c",
       "chainId": 56,
       "decimals": 9,
