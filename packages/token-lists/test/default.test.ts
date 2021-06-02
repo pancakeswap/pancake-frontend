@@ -1,8 +1,8 @@
 /* eslint-disable no-restricted-syntax */
 import Ajv from "ajv";
 import { getAddress } from "@ethersproject/address";
+import { schema } from "@uniswap/token-lists";
 import packageJson from "../package.json";
-import schema from "../src/schema";
 import { buildList } from "../src/buildList";
 
 declare global {

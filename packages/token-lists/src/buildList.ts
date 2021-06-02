@@ -8,7 +8,7 @@ import pancakeswapExtended from "./tokens/pancakeswap-extended.json";
 const lists = {
   "pancakeswap-default": {
     list: pancakeswapDefault,
-    name: "PancakeSwap Default Token List",
+    name: "PancakeSwap Default",
     keywords: ["pancakeswap", "default"],
     logoURI:
       "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
@@ -16,7 +16,7 @@ const lists = {
   },
   "pancakeswap-extended": {
     list: pancakeswapExtended,
-    name: "PancakeSwap Extended Token List",
+    name: "PancakeSwap Extended",
     keywords: ["pancakeswap", "extended"],
     logoURI:
       "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
@@ -41,6 +41,10 @@ export const buildList = (listName: string): TokenList => {
     tokens: sort
       ? list.sort((t1, t2) => {
           if (t1.chainId === t2.chainId) {
+            // CAKE first in extended list
+            if ((t1.symbol === "CAKE") !== (t2.symbol === "CAKE")) {
+              return t1.symbol === "CAKE" ? -1 : 1;
+            }
             return t1.symbol.toLowerCase() < t2.symbol.toLowerCase() ? -1 : 1;
           }
           return t1.chainId < t2.chainId ? -1 : 1;

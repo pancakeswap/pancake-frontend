@@ -1,6 +1,6 @@
 {
   "name": "PancakeSwap Default",
-  "timestamp": "2021-06-01T11:49:48.246Z",
+  "timestamp": "2021-06-02T08:15:37.203Z",
   "version": {
     "major": 2,
     "minor": 10,
@@ -117,7 +117,7 @@
       "logoURI": "https://tokens.pancakeswap.finance/images/0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3.png"
     },
     {
-      "name": "Binance-Peg USD Coin",
+      "name": "Binance Pegged USD Coin",
       "symbol": "USDC",
       "address": "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d",
       "chainId": 56,
@@ -127,7 +127,7 @@
     {
       "name": "Dopple Finance",
       "symbol": "DOP",
-      "address": "0x844fa82f1e54824655470970f7004dd90546bb28",
+      "address": "0x844FA82f1E54824655470970F7004Dd90546bB28",
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0x844fa82f1e54824655470970f7004dd90546bb28.png"
