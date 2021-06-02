@@ -110,7 +110,7 @@ const HistoryChart: React.FC<HistoryChartProps> = ({ showLast }) => {
           labelColor: (tooltipItem, chart) => {
             return {
               borderColor: chart.config.data.datasets[tooltipItem.datasetIndex].cardBorder,
-              backgroundColor: chart.config.data.datasets[tooltipItem.datasetIndex].cardBorder,
+              backgroundColor: chart.config.data.datasets[tooltipItem.datasetIndex].borderColor,
             }
           },
         },
