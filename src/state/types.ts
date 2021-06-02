@@ -340,15 +340,16 @@ export interface VotingState {
 }
 
 export interface LotteryRound {
-  status: LotteryStatus | string
+  status: LotteryStatus
   startTime: string
   endTime: string
-  priceTicketInCake: SerializedBigNumber
+  // Problematic? This is because the type is used within the application (where it is a BigNumber), and within redux (where it is SerializedBigNumber)
+  priceTicketInCake: SerializedBigNumber | BigNumber
   discountDivisor: string
   treasuryFee: string
   firstTicketId: string
   lastTicketId: string
-  amountCollectedInCake: SerializedBigNumber
+  amountCollectedInCake: SerializedBigNumber | BigNumber
   finalNumber: string
 }
 

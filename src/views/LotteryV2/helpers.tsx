@@ -1,3 +1,5 @@
+import { LotteryRound } from 'state/types'
+
 const generateRandomNumber = () => Math.floor(Math.random() * 1000000) + 1000000
 
 // TODO: Tests
@@ -13,6 +15,11 @@ export const generateTicketNumbers = (numberOfTickets: number): number[] => {
     ticketNumbers.push(randomNumber)
   }
   return ticketNumbers
+}
+
+export const getNextLotteryEvent = (currentLotteryRound: LotteryRound) => {
+  // TODO: This is effectively placeholder for where logic should go to fetch the next lottery timestamp
+  return currentLotteryRound.endTime
 }
 
 export default generateTicketNumbers

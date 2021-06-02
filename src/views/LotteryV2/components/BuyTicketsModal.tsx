@@ -1,22 +1,28 @@
 import React, { useEffect, useState } from 'react'
+import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
-import { Modal, Text, Flex, HelpIcon, Button, BalanceInput, Ticket, useTooltip, Skeleton } from '@pancakeswap/uikit'
+import { Modal, Text, Flex, HelpIcon, BalanceInput, Ticket, useTooltip, Skeleton } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
 import { getFullDisplayBalance } from 'utils/formatBalance'
 import { getCakeAddress } from 'utils/addressHelpers'
+import { BIG_ZERO } from 'utils/bigNumber'
 import { usePriceCakeBusd, useLottery } from 'state/hooks'
 import useTheme from 'hooks/useTheme'
 import useTokenBalance, { FetchStatus } from 'hooks/useTokenBalance'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
-import { useCake } from 'hooks/useContract'
+import { useCake, useLotteryV2Contract } from 'hooks/useContract'
 import useToast from 'hooks/useToast'
-import { getLotteryV2Contract } from 'utils/contractHelpers'
 import UnlockButton from 'components/UnlockButton'
 import ApproveConfirmButtons, { ButtonArrangement } from 'views/Profile/components/ApproveConfirmButtons'
 import TicketsNumberButton from './TicketsNumberButton'
 import { generateTicketNumbers } from '../helpers'
+
+const StyledModal = styled(Modal)`
+  min-width: 280px;
+  max-width: 320px;
+`
 
 interface BuyTicketsModalProps {
   onDismiss?: () => void
@@ -36,16 +42,18 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
     currentLotteryId,
     currentRound: { priceTicketInCake },
   } = useLottery()
-  const lotteryContract = getLotteryV2Contract()
   const [ticketsToBuy, setTicketsToBuy] = useState('')
   const [discountValue, setDiscountValue] = useState('')
   const [totalCost, setTotalCost] = useState('')
-  const [possibleCakeExceeded, setPossibleCakeExceeded] = useState(false)
+  const [maxPossibleTicketPurchase, setMaxPossibleTicketPurchase] = useState(BIG_ZERO)
+  const [maxTicketPurchaseExceeded, setMaxTicketPurchaseExceeded] = useState(false)
+  const [userNotEnoughCake, setUserNotEnoughCake] = useState(false)
+  const lotteryContract = useLotteryV2Contract()
   const cakeContract = useCake()
   const { toastSuccess } = useToast()
   const { balance: userCake, fetchStatus } = useTokenBalance(getCakeAddress())
-  const hasFetchedBalance = fetchStatus === FetchStatus.SUCCESS
   const cakePriceBusd = usePriceCakeBusd()
+  const hasFetchedBalance = fetchStatus === FetchStatus.SUCCESS
   const userCakeDisplayBalance = getFullDisplayBalance(userCake, 18, 3)
 
   const TooltipComponent = () => (
@@ -61,6 +69,15 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
     placement: 'bottom-end',
     tooltipOffset: [20, 10],
   })
+
+  useEffect(() => {
+    const getMaxPossiblePurchase = () => {
+      const maxBalancePurchase = userCake.div(priceTicketInCake)
+      const maxPurchase = maxBalancePurchase.gt(maxNumberTicketsPerBuy) ? maxNumberTicketsPerBuy : maxBalancePurchase
+      setMaxPossibleTicketPurchase(maxPurchase)
+    }
+    getMaxPossiblePurchase()
+  }, [maxNumberTicketsPerBuy, priceTicketInCake, userCake])
 
   useEffect(() => {
     const discounts: Discount[] = [
@@ -104,15 +121,10 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
     }
   }, [ticketsToBuy, priceTicketInCake])
 
-  const getMaxPossiblePurchase = (): BigNumber => {
-    const maxBalancePurchase = userCake.div(priceTicketInCake)
-    const maxPurchase = maxBalancePurchase.gt(maxNumberTicketsPerBuy) ? maxNumberTicketsPerBuy : maxBalancePurchase
-    return maxPurchase
-  }
-
   const getNumTicketsByPercentage = (percentage: number): number => {
-    const maxTickets = getMaxPossiblePurchase()
-    const percentageOfMaxTickets = maxTickets.div(new BigNumber(100)).times(new BigNumber(percentage))
+    const percentageOfMaxTickets = maxPossibleTicketPurchase.gt(0)
+      ? maxPossibleTicketPurchase.div(new BigNumber(100)).times(new BigNumber(percentage))
+      : BIG_ZERO
     return Math.floor(percentageOfMaxTickets.toNumber())
   }
 
@@ -127,20 +139,24 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
   }
 
   const handleInputChange = (input: string) => {
-    const inputAsInteger = parseInt(input, 10)
-    const cakeValueOfInput = getCakeValueOfTickets(new BigNumber(inputAsInteger))
+    const inputAsBN = new BigNumber(input)
+    const cakeValueOfInput = getCakeValueOfTickets(inputAsBN)
     // TODO: Make this responsive to max buy
     if (cakeValueOfInput.gt(userCake)) {
-      setPossibleCakeExceeded(true)
+      setUserNotEnoughCake(true)
+    } else if (inputAsBN.gt(maxPossibleTicketPurchase)) {
+      setMaxTicketPurchaseExceeded(true)
     } else {
-      setPossibleCakeExceeded(false)
+      setUserNotEnoughCake(false)
+      setMaxTicketPurchaseExceeded(false)
     }
-    setTicketsToBuy(inputAsInteger ? inputAsInteger.toFixed() : '0')
+    setTicketsToBuy(input || '0')
   }
 
   const handleNumberButtonClick = (number: number) => {
     setTicketsToBuy(number.toFixed())
-    setPossibleCakeExceeded(false)
+    setUserNotEnoughCake(false)
+    setMaxTicketPurchaseExceeded(false)
   }
 
   const { isApproving, isApproved, isConfirmed, isConfirming, handleApprove, handleConfirm } =
@@ -172,9 +188,16 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
       },
     })
 
+  const getErrorMessage = () => {
+    if (userNotEnoughCake) return t('Insufficient CAKE balance')
+    return t('The max number of tickets you can buy in one transaction is %maxTickets%', {
+      maxTickets: maxPossibleTicketPurchase.toString(),
+    })
+  }
+
   return (
     <>
-      <Modal title={t('Buy Tickets')} onDismiss={onDismiss} headerBackground={theme.colors.gradients.cardHeader}>
+      <StyledModal title={t('Buy Tickets')} onDismiss={onDismiss} headerBackground={theme.colors.gradients.cardHeader}>
         {tooltipVisible && tooltip}
         <Flex alignItems="center" justifyContent="space-between" mb="8px">
           <Text color="textSubtle">{t('Buy')}:</Text>
@@ -185,9 +208,8 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
             <Ticket />
           </Flex>
         </Flex>
-        {/* TODO: Error when value is over user's cake balance */}
         <BalanceInput
-          isWarning={possibleCakeExceeded}
+          isWarning={userNotEnoughCake || maxTicketPurchaseExceeded}
           value={ticketsToBuy}
           onUserInput={handleInputChange}
           currencyValue={
@@ -197,9 +219,9 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
         />
         <Flex alignItems="center" justifyContent="flex-end" mt="4px" mb="12px">
           <Flex justifyContent="flex-end" flexDirection="column">
-            {possibleCakeExceeded && (
+            {(userNotEnoughCake || maxTicketPurchaseExceeded) && (
               <Text fontSize="12px" color="failure">
-                {t('Insufficient CAKE balance')}
+                {getErrorMessage()}
               </Text>
             )}
             <Flex justifyContent="flex-end">
@@ -269,7 +291,8 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
               isConfirmDisabled={
                 !isApproved ||
                 isConfirmed ||
-                possibleCakeExceeded ||
+                userNotEnoughCake ||
+                maxTicketPurchaseExceeded ||
                 !ticketsToBuy ||
                 new BigNumber(ticketsToBuy).lte(0)
               }
@@ -282,13 +305,13 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
             <UnlockButton />
           )}
 
-          <Text mt="24px" fontSize="12px" color="textSubtle" maxWidth="280px">
+          <Text mt="24px" fontSize="12px" color="textSubtle">
             {t(
               'The CAKE ticket price is set before each lottery round starts, equal to $1 at that time. Ticket purchases are final.',
             )}
           </Text>
         </Flex>
-      </Modal>
+      </StyledModal>
     </>
   )
 }
