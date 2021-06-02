@@ -2,7 +2,7 @@ import BigNumber from 'bignumber.js'
 import masterchefABI from 'config/abi/masterchef.json'
 import erc20 from 'config/abi/erc20.json'
 import { getAddress, getMasterChefAddress } from 'utils/addressHelpers'
-import { BIG_TEN, BIG_ZERO } from 'utils/bigNumber'
+import { BIG_TEN, BIG_TWO, BIG_ZERO } from 'utils/bigNumber'
 import multicall from 'utils/multicall'
 import { Farm, SerializedBigNumber } from '../types'
 
@@ -72,7 +72,7 @@ const fetchFarm = async (farm: Farm): Promise<PublicFarmData> => {
   const quoteTokenAmountMc = quoteTokenAmountTotal.times(lpTokenRatio)
 
   // Total staked in LP, in quote token value
-  const lpTotalInQuoteToken = quoteTokenAmountMc.times(new BigNumber(2))
+  const lpTotalInQuoteToken = quoteTokenAmountMc.times(BIG_TWO)
 
   // Only make masterchef calls if farm has pid
   const [info, totalAllocPoint] =
