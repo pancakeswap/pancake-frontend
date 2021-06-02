@@ -26,10 +26,12 @@ describe('Check translations available', () => {
   throughDirectory('src/')
 
   it.each(files)('Translation key should exist in translations json', (file) => {
-    const regexWithoutCarriageReturn = /\bt\('([^']*)'/gm
-    const regexWithCarriageReturn = /\bt\([\r\n]\s+'([^']*)'/gm
     const data = fs.readFileSync(file, { encoding: 'utf8', flag: 'r' })
     let match
+
+    const regexWithoutCarriageReturn = /\bt\('([^']*?)'/gm
+    const regexWithCarriageReturn = /\bt\([\r\n]\s+'([^']*?)'/gm
+
     while (
       // eslint-disable-next-line no-cond-assign
       (match = regexWithoutCarriageReturn.exec(data)) !== null ||
@@ -42,6 +44,26 @@ describe('Check translations available', () => {
           expect(includes).toBe(true)
         } catch (e) {
           throw new Error(`Found unknown key ${match[1]} in ${file}`)
+        }
+      }
+    }
+
+    const regexWithSearchInput = /<SearchInput ([^']*?) \/>/gm
+    const regexWithSearchInputPlaceHolder = /placeholder="([^']*?)"/gm
+
+    while (
+      // eslint-disable-next-line no-cond-assign
+      (match = regexWithSearchInput.exec(data)) !== null
+    ) {
+      if (match[1].trim()) {
+        const placeHolderMatch = regexWithSearchInputPlaceHolder.exec(match[1])
+        if (placeHolderMatch[1]) {
+          const includes = translationKeys.includes(placeHolderMatch[1])
+          try {
+            expect(includes).toBe(true)
+          } catch (e) {
+            throw new Error(`Found unknown key ${placeHolderMatch[1]} in ${file}`)
+          }
         }
       }
     }
