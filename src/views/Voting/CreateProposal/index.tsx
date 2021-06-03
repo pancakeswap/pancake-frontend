@@ -23,10 +23,10 @@ const SimpleMde = lazy(() => import('components/SimpleMde'))
 
 const CreateProposal = () => {
   const [state, setState] = useState<FormState>({
-    name: 'PancakeSwap Expert Mode',
-    body: 'A site for experts. Faster and more tools.',
+    name: '',
+    body: '',
     choices: times(MINIMUM_CHOICES).map(makeChoice),
-    startDate: new Date(),
+    startDate: null,
     startTime: null,
     endDate: null,
     endTime: null,
