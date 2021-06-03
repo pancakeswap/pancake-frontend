@@ -1,3 +1,4 @@
+import Web3 from 'web3'
 import { AbiItem } from 'web3-utils'
 import { Interface } from '@ethersproject/abi'
 import { getWeb3NoAccount } from 'utils/web3'
@@ -10,13 +11,18 @@ interface Call {
   params?: any[] // Function params
 }
 
-const multicall = async (abi: any[], calls: Call[]) => {
-  const web3 = getWeb3NoAccount()
+interface MulticallOptions {
+  web3?: Web3
+  blockNumber?: number
+}
+
+const multicall = async (abi: any[], calls: Call[], options: MulticallOptions = {}) => {
+  const web3 = options.web3 || getWeb3NoAccount()
   const multi = new web3.eth.Contract(MultiCallAbi as unknown as AbiItem, getMulticallAddress())
   const itf = new Interface(abi)
 
   const calldata = calls.map((call) => [call.address.toLowerCase(), itf.encodeFunctionData(call.name, call.params)])
-  const { returnData } = await multi.methods.aggregate(calldata).call()
+  const { returnData } = await multi.methods.aggregate(calldata).call(undefined, options.blockNumber)
   const res = returnData.map((call, i) => itf.decodeFunctionResult(calls[i].name, call))
 
   return res
