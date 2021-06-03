@@ -1,4 +1,13 @@
 const tokens = {
+  rts: {
+    symbol: 'RTS',
+    address: {
+      97: '0x945BF3B66f1b307Fee3b5f34BF90AC478bbaBb62',
+      56: '0x945BF3B66f1b307Fee3b5f34BF90AC478bbaBb62',
+    },
+    decimals: 18,
+    projectLink: 'https://rootswap.finance/',
+  },
   bnb: {
     symbol: 'BNB',
     projectLink: 'https://www.binance.com/',
