@@ -26,7 +26,7 @@ const config = [
       {
         id: 999,
         fallback:
-          'You can choose one or both at the same time! If you’re only committing a small amount, we recommend the Basic Sale first. Just remember you need a PancakeSwap Profile in order to participate.',
+          'You can choose one or both at the same time! If you’re only committing a small amount, we recommend the Basic Sale first. Just remember you need a RootSwap Profile in order to participate.',
       },
     ],
   },

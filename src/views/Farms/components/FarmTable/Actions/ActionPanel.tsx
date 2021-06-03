@@ -105,21 +105,21 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({ details, apr, 
   const TranslateString = useI18n()
   const isActive = farm.multiplier !== '0X'
   const { quoteToken, token, dual } = farm
-  const lpLabel = farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('PANCAKE', '')
+  const lpLabel = farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('ROOT', '')
   const liquidityUrlPathParts = getLiquidityUrlPathParts({
     quoteTokenAddress: quoteToken.address,
     tokenAddress: token.address,
   })
   const lpAddress = farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]
   const bsc = `https://bscscan.com/address/${lpAddress}`
-  const info = `https://pancakeswap.info/pair/${lpAddress}`
+  const info = `https://rootswap.info/pair/${lpAddress}`
 
   return (
     <Container>
       <InfoContainer>
         {isActive && (
           <StakeContainer>
-            <StyledLinkExternal href={`https://exchange.pancakeswap.finance/#/add/${liquidityUrlPathParts}`}>
+            <StyledLinkExternal href={`https://exchange.rootswap.finance/#/add/${liquidityUrlPathParts}`}>
               {TranslateString(999, `Get ${lpLabel}`, { name: lpLabel })}
             </StyledLinkExternal>
           </StakeContainer>
