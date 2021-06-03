@@ -1,15 +1,21 @@
+import BigNumber from 'bignumber.js'
 import { DEFAULT_GAS_PRICE } from 'config'
+import { getDecimalAmount } from './formatBalance'
 
 export interface UserSettings {
-  gasPrice: string
+  gasPrice: number
 }
 
-export const VERSION = 1
+export const VERSION = 1.01
 
 export const GAS_SETTINGS = {
-  default: DEFAULT_GAS_PRICE, // 5
-  fast: '10000000000', // 10
-  reallyfast: '15000000000', // 15
+  default: DEFAULT_GAS_PRICE,
+  fast: 10,
+  reallyfast: 15,
+}
+
+export const getGasPriceInWei = (amountInGwei: number) => {
+  return getDecimalAmount(new BigNumber(amountInGwei), 9)
 }
 
 export const getDefaultSettings = (): UserSettings => ({
