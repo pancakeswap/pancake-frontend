@@ -1479,6 +1479,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://quarkchain.io/',
   },
+  bcfx: {
+    symbol: 'bCFX',
+    address: {
+      56: '0x045c4324039dA91c52C55DF5D785385Aab073DcF',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://www.confluxnetwork.org/ ',
+  },
 }
 
 export default tokens
