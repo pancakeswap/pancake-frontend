@@ -13,6 +13,9 @@ const CAKE_TOKEN = new Token(chainId, getCakeAddress(), 18)
 const WBNB_TOKEN = new Token(chainId, tokens.wbnb.address[chainId], 18)
 const CAKE_BNB_TOKEN = new Token(chainId, getAddress(cakeBnbFarm.lpAddresses), 18)
 
+/**
+ * Returns the total CAKE staked in the CAKE-BNB LP
+ */
 const getUserStakeInCakeBnbLp = async (account: string, block?: number) => {
   try {
     const masterContract = getMasterchefContract()
