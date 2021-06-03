@@ -9,7 +9,7 @@ import tokens from 'config/constants/tokens'
 import pools from 'config/constants/pools'
 import sousChefABI from 'config/abi/sousChef.json'
 import multicall from './multicall'
-import { getWeb3NoAccount } from './web3'
+import { getWeb3WithArchivedNodeProvider } from './web3'
 import { getBalanceAmount } from './formatBalance'
 import { BIG_TEN, BIG_ZERO } from './bigNumber'
 
@@ -186,25 +186,34 @@ export const getUserStakeInCakePool = async (account: string, block?: number) =>
 /**
  * Returns total staked value of active pools
  */
-export const getUserStakeInPools = async (account: string) => {
+export const getUserStakeInPools = async (account: string, block?: number) => {
   try {
-    const web3 = getWeb3NoAccount()
+    const multicallOptions = {
+      web3: getWeb3WithArchivedNodeProvider(),
+      blockNumber: block,
+    }
     const eligiblePools = pools
       .filter((pool) => pool.sousId !== 0)
       .filter((pool) => pool.isFinished === false || pool.isFinished === undefined)
 
     // Get the ending block is eligible pools
-    const calls = eligiblePools.map((eligiblePool) => ({
+    const endBlockCalls = eligiblePools.map((eligiblePool) => ({
       address: getAddress(eligiblePool.contractAddress),
       name: 'bonusEndBlock',
     }))
-    const currentBlock = await web3.eth.getBlockNumber()
-    const ends = await multicall(sousChefABI, calls)
+    const startBlockCalls = eligiblePools.map((eligiblePool) => ({
+      address: getAddress(eligiblePool.contractAddress),
+      name: 'startBlock',
+    }))
+    const endBlocks = await multicall(sousChefABI, endBlockCalls, multicallOptions)
+    const startBlocks = await multicall(sousChefABI, startBlockCalls, multicallOptions)
 
     // Filter out pools that have ended
     const activePools = eligiblePools.filter((eligiblePool, index) => {
-      const endBlock = new BigNumber(ends[index])
-      return endBlock.gt(currentBlock)
+      const endBlock = new BigNumber(endBlocks[index])
+      const startBlock = new BigNumber(startBlocks[index])
+
+      return startBlock.lte(block) && endBlock.gte(block)
     })
 
     // Get the user info of each pool
@@ -213,7 +222,7 @@ export const getUserStakeInPools = async (account: string) => {
       name: 'userInfo',
       params: [account],
     }))
-    const userInfos = await multicall(sousChefABI, userInfoCalls)
+    const userInfos = await multicall(sousChefABI, userInfoCalls, multicallOptions)
 
     return userInfos
       .reduce((accum: BigNumber, userInfo) => {
@@ -221,7 +230,7 @@ export const getUserStakeInPools = async (account: string) => {
       }, new BigNumber(0))
       .toNumber()
   } catch (error) {
-    console.error('Coult not fetch staked value in pools', error)
+    console.error('Error fetching staked values:', error)
     return 0
   }
 }
