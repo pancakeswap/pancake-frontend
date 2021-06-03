@@ -41,6 +41,8 @@ const Positions: React.FC = () => {
           freeMode
           freeModeSticky
           centeredSlides
+          freeModeMomentumRatio={0.25}
+          freeModeMomentumVelocityRatio={0.5}
           mousewheel
           keyboard
           resizeObserver
