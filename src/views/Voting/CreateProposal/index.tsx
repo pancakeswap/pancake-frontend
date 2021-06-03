@@ -4,7 +4,6 @@ import { useWeb3React } from '@web3-react/core'
 import times from 'lodash/times'
 import useWeb3 from 'hooks/useWeb3'
 import { useHistory } from 'react-router'
-import { format, parseISO, isValid } from 'date-fns'
 import { useInitialBlock } from 'state/hooks'
 import { getBscScanAddressUrl, getBscScanBlockNumberUrl } from 'utils/bscscan'
 import truncateWalletAddress from 'utils/truncateWalletAddress'
@@ -17,33 +16,13 @@ import { createProposal, Message, saveVotingPower } from '../helpers'
 import Layout from '../components/Layout'
 import { Label, SecondaryLabel } from './styles'
 import Choices, { Choice, makeChoice, MINIMUM_CHOICES } from './Choices'
-
-interface State {
-  name: string
-  body: string
-  choices: Choice[]
-  startDate: Date
-  startTime: Date
-  endDate: Date
-  endTime: Date
-  snapshot: number
-}
+import { combineDateAndTime, isFormValid } from './helpers'
+import { FormState } from './types'
 
 const SimpleMde = lazy(() => import('components/SimpleMde'))
 
-const combineDateAndTime = (date: Date, time: Date) => {
-  if (!isValid(date) || !isValid(time)) {
-    return null
-  }
-
-  const dateStr = format(date, 'yyyy-MM-dd')
-  const timeStr = format(time, 'HH:mm:ss')
-
-  return parseISO(`${dateStr}T${timeStr}`).getTime() / 1e3
-}
-
 const CreateProposal = () => {
-  const [state, setState] = useState<State>({
+  const [state, setState] = useState<FormState>({
     name: 'PancakeSwap Expert Mode',
     body: 'A site for experts. Faster and more tools.',
     choices: times(MINIMUM_CHOICES).map(makeChoice),
@@ -75,9 +54,11 @@ const CreateProposal = () => {
           snapshot,
           start: combineDateAndTime(startDate, startTime),
           end: combineDateAndTime(endDate, endTime),
-          choices: choices.map((choice) => {
-            return choice.value
-          }),
+          choices: choices
+            .filter((choice) => choice.value)
+            .map((choice) => {
+              return choice.value
+            }),
           metadata: { strategies: [{ name: PANCAKE_SPACE, params: { address: getCakeAddress(), chefAddresses: [] } }] },
         },
       })
@@ -186,7 +167,7 @@ const CreateProposal = () => {
                   </Text>
                   <LinkExternal href={getBscScanBlockNumberUrl(snapshot)}>{snapshot}</LinkExternal>
                 </Flex>
-                <Button type="submit" width="100%">
+                <Button type="submit" width="100%" disabled={!isFormValid(state)}>
                   {t('Publish')}
                 </Button>
               </CardBody>
