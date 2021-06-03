@@ -4,12 +4,12 @@ import { FarmConfig } from './types'
 const farms: FarmConfig[] = [
   {
     pid: 0,
-    lpSymbol: 'CAKE',
+    lpSymbol: 'RTS',
     lpAddresses: {
-      97: '0x9C21123D94b93361a29B2C2EFB3d5CD8B17e0A9e',
-      56: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
+      97: '0x945BF3B66f1b307Fee3b5f34BF90AC478bbaBb62',
+      56: '0x945BF3B66f1b307Fee3b5f34BF90AC478bbaBb62',
     },
-    token: tokens.syrup,
+    token: tokens.rts,
     quoteToken: tokens.wbnb,
   },
   {
