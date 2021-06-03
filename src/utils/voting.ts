@@ -3,6 +3,7 @@ import { getLpContract, getMasterchefContract } from 'utils/contractHelpers'
 import farms from 'config/constants/farms'
 import { getAddress, getCakeAddress } from 'utils/addressHelpers'
 import tokens from 'config/constants/tokens'
+import pools from 'config/constants/pools'
 
 const chainId = parseInt(process.env.REACT_APP_CHAIN_ID, 10)
 const cakeBnbPid = 251
@@ -15,7 +16,7 @@ const CAKE_BNB_TOKEN = new Token(chainId, getAddress(cakeBnbFarm.lpAddresses), 1
 /**
  * Returns the total CAKE staked in the CAKE-BNB LP
  */
-const getUserStakeInCakeBnbLp = async (account: string, block?: number) => {
+export const getUserStakeInCakeBnbLp = async (account: string, block?: number) => {
   try {
     const masterContract = getMasterchefContract()
     const cakeBnbContract = getLpContract(getAddress(cakeBnbFarm.lpAddresses))
@@ -40,5 +41,3 @@ const getUserStakeInCakeBnbLp = async (account: string, block?: number) => {
     return 0
   }
 }
-
-export default getUserStakeInCakeBnbLp
