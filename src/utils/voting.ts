@@ -1,9 +1,14 @@
 import { Pair, TokenAmount, Token } from '@pancakeswap-libs/sdk'
+import BigNumber from 'bignumber.js'
 import { getLpContract, getMasterchefContract } from 'utils/contractHelpers'
 import farms from 'config/constants/farms'
 import { getAddress, getCakeAddress } from 'utils/addressHelpers'
 import tokens from 'config/constants/tokens'
 import pools from 'config/constants/pools'
+import sousChefABI from 'config/abi/sousChef.json'
+import multicall from './multicall'
+import { getWeb3NoAccount } from './web3'
+import { getBalanceAmount } from './formatBalance'
 
 const chainId = parseInt(process.env.REACT_APP_CHAIN_ID, 10)
 const cakeBnbPid = 251
@@ -38,6 +43,64 @@ export const getUserStakeInCakeBnbLp = async (account: string, block?: number) =
     return cakeLPBalance.toSignificant(18)
   } catch (error) {
     console.error(`CAKE-BNB LP error: ${error}`)
+    return 0
+  }
+}
+
+/**
+ * Gets the cake staked in the main pool
+ */
+export const getUserStakeInCakePool = async (account: string, block?: number) => {
+  try {
+    const masterContract = getMasterchefContract()
+    const response = await masterContract.methods.userInfo(0, account).call(undefined, block)
+
+    return getBalanceAmount(new BigNumber(response.amount)).toNumber()
+  } catch (error) {
+    console.error('Error getting stake in CAKE pool', error)
+    return 0
+  }
+}
+
+/**
+ * Returns total staked value of active pools
+ */
+export const getUserStakeInPools = async (account: string) => {
+  try {
+    const web3 = getWeb3NoAccount()
+    const eligiblePools = pools
+      .filter((pool) => pool.sousId !== 0)
+      .filter((pool) => pool.isFinished === false || pool.isFinished === undefined)
+
+    // Get the ending block is eligible pools
+    const calls = eligiblePools.map((eligiblePool) => ({
+      address: getAddress(eligiblePool.contractAddress),
+      name: 'bonusEndBlock',
+    }))
+    const currentBlock = await web3.eth.getBlockNumber()
+    const ends = await multicall(sousChefABI, calls)
+
+    // Filter out pools that have ended
+    const activePools = eligiblePools.filter((eligiblePool, index) => {
+      const endBlock = new BigNumber(ends[index])
+      return endBlock.gt(currentBlock)
+    })
+
+    // Get the user info of each pool
+    const userInfoCalls = activePools.map((activePool) => ({
+      address: getAddress(activePool.contractAddress),
+      name: 'userInfo',
+      params: [account],
+    }))
+    const userInfos = await multicall(sousChefABI, userInfoCalls)
+
+    return userInfos
+      .reduce((accum: BigNumber, userInfo) => {
+        return accum.plus(new BigNumber(userInfo.amount._hex))
+      }, new BigNumber(0))
+      .toNumber()
+  } catch (error) {
+    console.error('Coult not fetch staked value in pools', error)
     return 0
   }
 }
