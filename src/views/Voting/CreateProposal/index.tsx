@@ -12,7 +12,6 @@ import {
   LinkExternal,
   Text,
 } from '@pancakeswap/uikit'
-import { Link } from 'react-router-dom'
 import { useWeb3React } from '@web3-react/core'
 import times from 'lodash/times'
 import useWeb3 from 'hooks/useWeb3'
@@ -25,6 +24,7 @@ import { useTranslation } from 'contexts/Localization'
 import Container from 'components/layout/Container'
 import { DatePicker, TimePicker } from 'components/DatePicker'
 import { PANCAKE_SPACE } from '../config'
+import BreadcrumbLink from '../components/BreadcrumbLink'
 import { createProposal, Message, saveVotingPower } from '../helpers'
 import Layout from '../components/Layout'
 import { Label, SecondaryLabel } from './styles'
@@ -128,8 +128,8 @@ const CreateProposal = () => {
     <Container py="40px">
       <Box mb="48px">
         <Breadcrumbs>
-          <Link to="/">{t('Home')}</Link>
-          <Link to="/voting">{t('Voting')}</Link>
+          <BreadcrumbLink to="/">{t('Home')}</BreadcrumbLink>
+          <BreadcrumbLink to="/voting">{t('Voting')}</BreadcrumbLink>
           <Text>{t('Make a Proposal')}</Text>
         </Breadcrumbs>
       </Box>

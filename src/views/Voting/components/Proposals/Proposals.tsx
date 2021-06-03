@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { Box, Breadcrumbs, Card, Flex, Heading, Text } from '@pancakeswap/uikit'
-import { Link } from 'react-router-dom'
 import { useTranslation } from 'contexts/Localization'
 import Container from 'components/layout/Container'
 import { Proposal, ProposalState, ProposalType } from '../../types'
 import { filterProposalsByType, getProposals } from '../../helpers'
+import BreadcrumbLink from '../BreadcrumbLink'
 import ProposalsLoading from './ProposalsLoading'
 import TabMenu from './TabMenu'
 import ProposalRow from './ProposalRow'
@@ -71,7 +71,7 @@ const Proposals = () => {
     <Container py="40px">
       <Box mb="48px">
         <Breadcrumbs>
-          <Link to="/">{t('Home')}</Link>
+          <BreadcrumbLink to="/">{t('Home')}</BreadcrumbLink>
           <Text>{t('Voting')}</Text>
         </Breadcrumbs>
       </Box>
