@@ -1,6 +1,5 @@
 import { Pair, TokenAmount, Token } from '@pancakeswap-libs/sdk-v2'
 import { getLpContract, getMasterchefContract } from 'utils/contractHelpers'
-import { BIG_ZERO } from 'utils/bigNumber'
 import farms from 'config/constants/farms'
 import { getAddress, getCakeAddress } from 'utils/addressHelpers'
 import tokens from 'config/constants/tokens'
@@ -38,7 +37,7 @@ const getUserStakeInCakeBnbLp = async (account: string, block?: number) => {
     return cakeLPBalance.toSignificant(18)
   } catch (error) {
     console.error(`CAKE-BNB LP error: ${error}`)
-    return BIG_ZERO
+    return 0
   }
 }
 
