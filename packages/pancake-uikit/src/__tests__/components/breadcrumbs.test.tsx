@@ -11,7 +11,6 @@ it("renders correctly", () => {
       -webkit-box-align: center;
       -ms-flex-align: center;
       align-items: center;
-      color: #BDC2C4;
       display: -webkit-box;
       display: -webkit-flex;
       display: -ms-flexbox;
