@@ -36,7 +36,7 @@ const TicketSvgWrapper = styled.div`
 
 const Hero = () => {
   const { t } = useTranslation()
-  const [onPresentBuyTicketModal] = useModal(<BuyTicketsModal />)
+  const [onPresentBuyTicketsModal] = useModal(<BuyTicketsModal />)
   const {
     currentRound: { amountCollectedInCake },
   } = useLottery()
@@ -63,7 +63,7 @@ const Hero = () => {
       </Heading>
       <Flex position="relative" width="288px" height="113px" alignItems="center" justifyContent="center">
         <ButtonWrapper>
-          <StyledTicketButton onClick={onPresentBuyTicketModal} width="240px">
+          <StyledTicketButton onClick={onPresentBuyTicketsModal} width="240px">
             {t('Buy Tickets')}
           </StyledTicketButton>
         </ButtonWrapper>

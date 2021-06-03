@@ -3,6 +3,9 @@ import { LotteryRound } from 'state/types'
 const generateRandomNumber = () => Math.floor(Math.random() * 1000000) + 1000000
 
 // TODO: Tests
+/**
+ * Generate a random number of unique, 7-digit lottery numbers between 1000000 & 1999999
+ */
 export const generateTicketNumbers = (numberOfTickets: number): number[] => {
   const ticketNumbers = []
   for (let count = 0; count < numberOfTickets; count++) {
@@ -15,6 +18,18 @@ export const generateTicketNumbers = (numberOfTickets: number): number[] => {
     ticketNumbers.push(randomNumber)
   }
   return ticketNumbers
+}
+
+/**
+ * Remove the '1' and reverse the digits in a lottery number retreived from the smart contract
+ */
+export const parseRetreivedNumber = (number: string): string => {
+  const numberAsArray = number.split('')
+  // remove the '1' from the number
+  numberAsArray.splice(0, 1)
+  // reverse it
+  numberAsArray.reverse()
+  return numberAsArray.join('')
 }
 
 export const getNextLotteryEvent = (currentLotteryRound: LotteryRound) => {

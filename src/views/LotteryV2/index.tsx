@@ -35,7 +35,7 @@ const LotteryV2 = () => {
       </PageSection>
       <TicketsSection background={GET_TICKETS_BG} hasCurvedDivider={false} index={2}>
         <Flex flexDirection="column">
-          <Heading scale="xl" color="#ffffff" mb="24px">
+          <Heading scale="xl" color="#ffffff" mb="24px" textAlign="center">
             {t('Get your tickets now!')}
           </Heading>
           {/* <Countdown nextEventTimestamp={getNextLotteryEvent(currentRound)} /> */}

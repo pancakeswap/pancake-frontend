@@ -153,3 +153,9 @@ export type PageMeta = {
   description?: string
   image?: string
 }
+
+export interface LotteryTicket {
+  id: string
+  number: string
+  status: boolean
+}
