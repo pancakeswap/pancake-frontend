@@ -1,4 +1,4 @@
-import { Pair, TokenAmount, Token } from '@pancakeswap-libs/sdk-v2'
+import { Pair, TokenAmount, Token } from '@pancakeswap-libs/sdk'
 import { getLpContract, getMasterchefContract } from 'utils/contractHelpers'
 import farms from 'config/constants/farms'
 import { getAddress, getCakeAddress } from 'utils/addressHelpers'
