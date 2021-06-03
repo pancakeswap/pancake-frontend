@@ -736,14 +736,6 @@
     "logoURI": "https://tokens.pancakeswap.finance/images/0x52ce071bd9b1c4b00a0b92d298c512478cad67e8.png"
   },
   {
-    "name": "Swirge Pay",
-    "symbol": "SWGb",
-    "address": "0xE40255C5d7fa7ceEc5120408C78C787CECB4cfdb",
-    "chainId": 56,
-    "decimals": 18,
-    "logoURI": "https://tokens.pancakeswap.finance/images/0xe40255c5d7fa7ceec5120408c78c787cecb4cfdb.png"
-  },
-  {
     "name": "renBTC",
     "symbol": "renBTC",
     "address": "0xfCe146bF3146100cfe5dB4129cf6C82b0eF4Ad8c",

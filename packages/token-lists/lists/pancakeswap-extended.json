@@ -1,6 +1,6 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2021-06-03T13:18:19.845Z",
+  "timestamp": "2021-06-03T17:43:16.447Z",
   "version": {
     "major": 2,
     "minor": 11,
@@ -1195,14 +1195,6 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0xe792f64c582698b8572aaf765bdc426ac3aefb6b.png"
-    },
-    {
-      "name": "Swirge Pay",
-      "symbol": "SWGb",
-      "address": "0xE40255C5d7fa7ceEc5120408C78C787CECB4cfdb",
-      "chainId": 56,
-      "decimals": 18,
-      "logoURI": "https://tokens.pancakeswap.finance/images/0xe40255c5d7fa7ceec5120408c78c787cecb4cfdb.png"
     },
     {
       "name": "Swingby",
