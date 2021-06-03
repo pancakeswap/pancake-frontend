@@ -1,5 +1,18 @@
 import React, { ChangeEvent, FormEvent, lazy, useEffect, useState } from 'react'
-import { Box, Button, Card, CardBody, CardHeader, Flex, Heading, Input, LinkExternal, Text } from '@pancakeswap/uikit'
+import {
+  Box,
+  Breadcrumbs,
+  Button,
+  Card,
+  CardBody,
+  CardHeader,
+  Flex,
+  Heading,
+  Input,
+  LinkExternal,
+  Text,
+} from '@pancakeswap/uikit'
+import { Link } from 'react-router-dom'
 import { useWeb3React } from '@web3-react/core'
 import times from 'lodash/times'
 import useWeb3 from 'hooks/useWeb3'
@@ -113,6 +126,13 @@ const CreateProposal = () => {
 
   return (
     <Container py="40px">
+      <Box mb="48px">
+        <Breadcrumbs>
+          <Link to="/">{t('Home')}</Link>
+          <Link to="/voting">{t('Voting')}</Link>
+          <Text>{t('Make a Proposal')}</Text>
+        </Breadcrumbs>
+      </Box>
       <form onSubmit={handleSubmit}>
         <Layout>
           <Box>

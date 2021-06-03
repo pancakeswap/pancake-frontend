@@ -2,6 +2,11 @@ import React from 'react'
 import styled from 'styled-components'
 
 const StyledDatePickerPortal = styled.div`
+  .react-datepicker-wrapper,
+  .react-datepicker__input-container {
+    display: block;
+  }
+
   .react-datepicker {
     background: ${({ theme }) => theme.card.background};
     border-color: ${({ theme }) => theme.colors.cardBorder};
