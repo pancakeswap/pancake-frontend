@@ -1,9 +1,9 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2021-06-02T08:19:14.660Z",
+  "timestamp": "2021-06-03T13:18:19.845Z",
   "version": {
     "major": 2,
-    "minor": 10,
+    "minor": 11,
     "patch": 0
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
@@ -163,6 +163,14 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0x1f7216fdb338247512ec99715587bb97bbf96eae.png"
+    },
+    {
+      "name": "Conflux",
+      "symbol": "bCFX",
+      "address": "0x045c4324039dA91c52C55DF5D785385Aab073DcF",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x045c4324039dA91c52C55DF5D785385Aab073DcF.png"
     },
     {
       "name": "Bitcoin Cash Token",
@@ -741,6 +749,14 @@
       "logoURI": "https://tokens.pancakeswap.finance/images/0x5F88AB06e8dfe89DF127B2430Bba4Af600866035.png"
     },
     {
+      "name": "Kattana",
+      "symbol": "KTN",
+      "address": "0xDAe6c2A48BFAA66b43815c5548b10800919c993E",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0xDAe6c2A48BFAA66b43815c5548b10800919c993E.png"
+    },
+    {
       "name": "Qian Governance Token",
       "symbol": "KUN",
       "address": "0x1A2fb0Af670D0234c2857FaD35b789F8Cb725584",
@@ -874,7 +890,7 @@
       "address": "0xBd2949F67DcdC549c6Ebe98696449Fa79D988A9F",
       "chainId": 56,
       "decimals": 18,
-      "logoURI": "https://exchange.pancakeswap.finance/images/coins/0xbd2949f67dcdc549c6ebe98696449fa79d988a9f.png"
+      "logoURI": "https://tokens.pancakeswap.finance/images/0xbd2949f67dcdc549c6ebe98696449fa79d988a9f.png"
     },
     {
       "name": "Mirror TSLA Token",
@@ -1037,6 +1053,14 @@
       "logoURI": "https://tokens.pancakeswap.finance/images/0xbc5609612b7c44bef426de600b5fd1379db2ecf1.png"
     },
     {
+      "name": "QuarkChain Token",
+      "symbol": "QKC",
+      "address": "0xA1434F1FC3F437fa33F7a781E041961C0205B5Da",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0xA1434F1FC3F437fa33F7a781E041961C0205B5Da.png"
+    },
+    {
       "name": "QIAN second generation dollar",
       "symbol": "QSD",
       "address": "0x07AaA29E63FFEB2EBf59B33eE61437E1a91A3bb2",
@@ -1170,7 +1194,7 @@
       "address": "0xe792f64C582698b8572AAF765bDC426AC3aEfb6B",
       "chainId": 56,
       "decimals": 18,
-      "logoURI": "https://exchange.pancakeswap.finance/images/coins/0xe792f64c582698b8572aaf765bdc426ac3aefb6b.png"
+      "logoURI": "https://tokens.pancakeswap.finance/images/0xe792f64c582698b8572aaf765bdc426ac3aefb6b.png"
     },
     {
       "name": "Swirge Pay",
@@ -1274,7 +1298,7 @@
       "address": "0x14016E85a25aeb13065688cAFB43044C2ef86784",
       "chainId": 56,
       "decimals": 18,
-      "logoURI": "https://exchange.pancakeswap.finance/images/coins/0x14016e85a25aeb13065688cafb43044c2ef86784.png"
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x14016e85a25aeb13065688cafb43044c2ef86784.png"
     },
     {
       "name": "Trust Wallet",

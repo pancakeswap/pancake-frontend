@@ -1477,7 +1477,7 @@
     "address": "0x14016E85a25aeb13065688cAFB43044C2ef86784",
     "chainId": 56,
     "decimals": 18,
-    "logoURI": "https://exchange.pancakeswap.finance/images/coins/0x14016e85a25aeb13065688cafb43044c2ef86784.png"
+    "logoURI": "https://tokens.pancakeswap.finance/images/0x14016e85a25aeb13065688cafb43044c2ef86784.png"
   },
   {
     "name": "Meter",
@@ -1485,7 +1485,31 @@
     "address": "0xBd2949F67DcdC549c6Ebe98696449Fa79D988A9F",
     "chainId": 56,
     "decimals": 18,
-    "logoURI": "https://exchange.pancakeswap.finance/images/coins/0xbd2949f67dcdc549c6ebe98696449fa79d988a9f.png"
+    "logoURI": "https://tokens.pancakeswap.finance/images/0xbd2949f67dcdc549c6ebe98696449fa79d988a9f.png"
+  },
+  {
+    "name": "Kattana",
+    "symbol": "KTN",
+    "address": "0xDAe6c2A48BFAA66b43815c5548b10800919c993E",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0xDAe6c2A48BFAA66b43815c5548b10800919c993E.png"
+  },
+  {
+    "name": "QuarkChain Token",
+    "symbol": "QKC",
+    "address": "0xA1434F1FC3F437fa33F7a781E041961C0205B5Da",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0xA1434F1FC3F437fa33F7a781E041961C0205B5Da.png"
+  },
+  {
+    "name": "Conflux",
+    "symbol": "bCFX",
+    "address": "0x045c4324039dA91c52C55DF5D785385Aab073DcF",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0x045c4324039dA91c52C55DF5D785385Aab073DcF.png"
   },
   {
     "name": "SWGToken",
@@ -1493,6 +1517,6 @@
     "address": "0xe792f64C582698b8572AAF765bDC426AC3aEfb6B",
     "chainId": 56,
     "decimals": 18,
-    "logoURI": "https://exchange.pancakeswap.finance/images/coins/0xe792f64c582698b8572aaf765bdc426ac3aefb6b.png"
+    "logoURI": "https://tokens.pancakeswap.finance/images/0xe792f64c582698b8572aaf765bdc426ac3aefb6b.png"
   }
 ]
