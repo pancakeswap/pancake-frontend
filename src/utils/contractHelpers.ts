@@ -50,10 +50,16 @@ import easterNftAbi from 'config/abi/easterNft.json'
 import cakeVaultAbi from 'config/abi/cakeVault.json'
 import predictionsAbi from 'config/abi/predictions.json'
 import chainlinkOracleAbi from 'config/abi/chainlinkOracle.json'
+import { DEFAULT_GAS_PRICE } from 'config'
+import { getSettings, getGasPriceInWei } from './settings'
 
-const getContract = (abi: any, address: string, web3?: Web3) => {
+const getContract = (abi: any, address: string, web3?: Web3, account?: string) => {
   const _web3 = web3 ?? web3NoAccount
-  return new _web3.eth.Contract(abi as unknown as AbiItem, address)
+  const gasPrice = account ? getSettings(account).gasPrice : DEFAULT_GAS_PRICE
+
+  return new _web3.eth.Contract(abi as unknown as AbiItem, address, {
+    gasPrice: getGasPriceInWei(gasPrice).toString(),
+  })
 }
 
 export const getBep20Contract = (address: string, web3?: Web3) => {
