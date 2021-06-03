@@ -24,6 +24,10 @@ const initialState: LotteryState = {
     lastTicketId: '',
     amountCollectedInCake: '',
     finalNumber: '',
+    userData: {
+      isLoading: true,
+      tickets: [],
+    },
   },
 }
 
@@ -93,6 +97,24 @@ export const fetchPublicData = async () => {
   }
 }
 
+export const fetchTickets = async (account, lotteryId, cursor) => {
+  try {
+    const userTickets = await lotteryContract.methods.viewUserTicketsForLottery(account, lotteryId, cursor, 1000).call()
+    const ticketIds = userTickets[0]
+    const ticketNumbersAndStatuses = await lotteryContract.methods.viewNumbersAndStatusesForTicketIds(ticketIds).call()
+    const completeTicketData = ticketIds.map((ticketId, index) => {
+      return {
+        id: ticketId,
+        number: ticketNumbersAndStatuses[0][index],
+        status: ticketNumbersAndStatuses[1][index],
+      }
+    })
+    return completeTicketData
+  } catch (error) {
+    return null
+  }
+}
+
 export const fetchLotteryById = createAsyncThunk<LotteryRound, { lotteryId: string }>(
   'lottery/fetchById',
   async ({ lotteryId }) => {
@@ -106,6 +128,15 @@ export const fetchPublicLotteryData = createAsyncThunk<PublicLotteryData>('lotte
   return publicData
 })
 
+export const fetchUserTickets = createAsyncThunk<any, { account: string; lotteryId: string }>(
+  'lottery/fetchUserTickets',
+  async ({ account, lotteryId }) => {
+    const cursor = 0
+    const userTickets = await fetchTickets(account, lotteryId, cursor)
+    return userTickets
+  },
+)
+
 export const LotterySlice = createSlice({
   name: 'Lottery',
   initialState,
@@ -116,11 +147,15 @@ export const LotterySlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(fetchLotteryById.fulfilled, (state, action: PayloadAction<LotteryRound>) => {
-      state.currentRound = action.payload
+      state.currentRound = { ...state.currentRound, ...action.payload }
     })
     builder.addCase(fetchPublicLotteryData.fulfilled, (state, action: PayloadAction<PublicLotteryData>) => {
       state.currentLotteryId = action.payload.currentLotteryId
       state.maxNumberTicketsPerBuy = action.payload.maxNumberTicketsPerBuy
+    })
+    builder.addCase(fetchUserTickets.fulfilled, (state, action: PayloadAction<any>) => {
+      state.currentRound.userData.isLoading = false
+      state.currentRound.userData.tickets = action.payload
     })
   },
 })
