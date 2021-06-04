@@ -52,10 +52,10 @@ const Hero = () => {
       <Heading mb="8px" scale="md" color="#ffffff">
         {t('The PancakeSwapLottery')}
       </Heading>
-      {prizeTotal ? (
-        <PrizeTotalBalance fontSize="64px" bold prefix="$" value={prizeTotal} mb="8px" decimals={0} />
-      ) : (
+      {prizeInBusd.isNaN() ? (
         <Skeleton my="7px" height={60} width={190} />
+      ) : (
+        <PrizeTotalBalance fontSize="64px" bold prefix="$" value={prizeTotal} mb="8px" decimals={0} />
       )}
 
       <Heading mb="32px" scale="lg" color="#ffffff">
