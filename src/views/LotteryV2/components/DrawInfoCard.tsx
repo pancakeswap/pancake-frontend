@@ -52,7 +52,9 @@ const DrawInfoCard = () => {
             <Heading>{t('Prize Pot')}</Heading>
           </Flex>
           <Flex flexDirection="column" mb="18px">
-            {prizeInBusd.gt(0) ? (
+            {prizeInBusd.isNaN() ? (
+              <Skeleton my="7px" height={40} width={160} />
+            ) : (
               <Balance
                 fontSize="40px"
                 color="secondary"
@@ -63,10 +65,10 @@ const DrawInfoCard = () => {
                 value={getBalanceNumber(prizeInBusd)}
                 decimals={0}
               />
-            ) : (
-              <Skeleton my="7px" height={40} width={160} />
             )}
-            {prizeInBusd.gt(0) ? (
+            {prizeInBusd.isNaN() ? (
+              <Skeleton my="2px" height={14} width={90} />
+            ) : (
               <Balance
                 fontSize="14px"
                 color="textSubtle"
@@ -75,8 +77,6 @@ const DrawInfoCard = () => {
                 value={getBalanceNumber(amountCollectedInCake)}
                 decimals={0}
               />
-            ) : (
-              <Skeleton my="2px" height={14} width={90} />
             )}
           </Flex>
           <Box display={['none', null, null, 'flex']}>

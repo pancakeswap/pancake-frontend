@@ -55,7 +55,7 @@ const ViewTicketsModal: React.FC<ViewTicketsModalProps> = ({ onDismiss, roundId 
             </Text>
             <ScrollBox>
               {currentRound.userData.tickets.map((ticket) => {
-                return <TicketNumber {...ticket} />
+                return <TicketNumber key={ticket.id} {...ticket} />
               })}
             </ScrollBox>
           </Flex>
