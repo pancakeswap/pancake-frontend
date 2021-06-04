@@ -1088,14 +1088,6 @@
     "logoURI": "https://tokens.pancakeswap.finance/images/0x03ff0ff224f904be3118461335064bb48df47938.png"
   },
   {
-    "name": "Easyfi Network",
-    "symbol": "EASY",
-    "address": "0x7C17c8bED8d14bAccE824D020f994F4880D6Ab3B",
-    "chainId": 56,
-    "decimals": 18,
-    "logoURI": "https://tokens.pancakeswap.finance/images/0x7c17c8bed8d14bacce824d020f994f4880d6ab3b.png"
-  },
-  {
     "name": "Easy V2",
     "symbol": "EZ",
     "address": "0x5512014efa6Cd57764Fa743756F7a6Ce3358cC83",
@@ -1293,7 +1285,7 @@
     "address": "0x49022089e78a8D46Ec87A3AF86a1Db6c189aFA6f",
     "chainId": 56,
     "decimals": 18,
-    "logoURI": "https://tokens.pancakeswap.finance/images/0x49022089e78a8d46ec87a3af86a1db6c189afa6f.png"
+    "logoURI": "https://tokens.pancakeswap.finance/images/0x49022089e78a8D46Ec87A3AF86a1Db6c189aFA6f.png"
   },
   {
     "name": "QIAN second generation dollar",
@@ -1312,8 +1304,8 @@
     "logoURI": "https://tokens.pancakeswap.finance/images/0x9a319b959e33369C5eaA494a770117eE3e585318.png"
   },
   {
-    "name": "DOGE",
-    "symbol": "Doge",
+    "name": "Dogecoin",
+    "symbol": "DOGE",
     "address": "0xbA2aE424d960c26247Dd6c32edC70B295c744C43",
     "chainId": 56,
     "decimals": 8,

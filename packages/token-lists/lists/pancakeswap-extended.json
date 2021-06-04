@@ -1,9 +1,9 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2021-06-03T17:43:16.447Z",
+  "timestamp": "2021-06-04T08:11:38.560Z",
   "version": {
     "major": 2,
-    "minor": 11,
+    "minor": 12,
     "patch": 0
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
@@ -493,8 +493,8 @@
       "logoURI": "https://tokens.pancakeswap.finance/images/0x67ee3cb086f8a16f34bee3ca72fad36f7db929e2.png"
     },
     {
-      "name": "DOGE",
-      "symbol": "Doge",
+      "name": "Dogecoin",
+      "symbol": "DOGE",
       "address": "0xbA2aE424d960c26247Dd6c32edC70B295c744C43",
       "chainId": 56,
       "decimals": 8,
@@ -523,14 +523,6 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0xb2bd0749dbe21f623d9baba856d3b0f0e1bfec9c.png"
-    },
-    {
-      "name": "Easyfi Network",
-      "symbol": "EASY",
-      "address": "0x7C17c8bED8d14bAccE824D020f994F4880D6Ab3B",
-      "chainId": 56,
-      "decimals": 18,
-      "logoURI": "https://tokens.pancakeswap.finance/images/0x7c17c8bed8d14bacce824d020f994f4880d6ab3b.png"
     },
     {
       "name": "Elrond",
@@ -850,7 +842,7 @@
       "address": "0x49022089e78a8D46Ec87A3AF86a1Db6c189aFA6f",
       "chainId": 56,
       "decimals": 18,
-      "logoURI": "https://tokens.pancakeswap.finance/images/0x49022089e78a8d46ec87a3af86a1db6c189afa6f.png"
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x49022089e78a8D46Ec87A3AF86a1Db6c189aFA6f.png"
     },
     {
       "name": "Mirror GOOGL Token",
