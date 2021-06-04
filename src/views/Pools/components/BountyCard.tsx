@@ -32,7 +32,6 @@ const BountyCard = () => {
   const { t } = useTranslation()
   const {
     estimatedCakeBountyReward,
-    totalPendingCakeHarvest,
     fees: { callFee },
   } = useCakeVault()
   const cakePriceBusd = usePriceCakeBusd()
@@ -46,7 +45,7 @@ const BountyCard = () => {
   const dollarBountyToDisplay = hasFetchedDollarBounty ? getBalanceNumber(estimatedDollarBountyReward, 18) : 0
   const cakeBountyToDisplay = hasFetchedCakeBounty ? getBalanceNumber(estimatedCakeBountyReward, 18) : 0
 
-  const TooltipComponent = () => (
+  const TooltipComponent = ({ fee }: { fee: number }) => (
     <>
       <Text mb="16px">{t('This bounty is given as a reward for providing a service to other users.')}</Text>
       <Text mb="16px">
@@ -55,22 +54,14 @@ const BountyCard = () => {
         )}
       </Text>
       <Text style={{ fontWeight: 'bold' }}>
-        {t('Auto-Compound Bounty: %fee%% of all Auto CAKE pool users pending yield', { fee: callFee / 100 })}
+        {t('Auto-Compound Bounty: %fee%% of all Auto CAKE pool users pending yield', { fee: fee / 100 })}
       </Text>
     </>
   )
 
-  const [onPresentBountyModal] = useModal(
-    <BountyModal
-      cakeBountyToDisplay={cakeBountyToDisplay}
-      dollarBountyToDisplay={dollarBountyToDisplay}
-      totalPendingCakeHarvest={totalPendingCakeHarvest}
-      callFee={callFee}
-      TooltipComponent={TooltipComponent}
-    />,
-  )
+  const [onPresentBountyModal] = useModal(<BountyModal TooltipComponent={TooltipComponent} />)
 
-  const { targetRef, tooltip, tooltipVisible } = useTooltip(<TooltipComponent />, {
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(<TooltipComponent fee={callFee} />, {
     placement: 'bottom-end',
     tooltipOffset: [20, 10],
   })
