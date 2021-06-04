@@ -14,6 +14,7 @@ interface Call {
 interface MulticallOptions {
   web3?: Web3
   blockNumber?: number
+  requireSuccess?: boolean
 }
 
 const multicall = async (abi: any[], calls: Call[], options: MulticallOptions = {}) => {
@@ -38,13 +39,15 @@ const multicall = async (abi: any[], calls: Call[], options: MulticallOptions = 
  * 1. If "requireSuccess" is false multicall will not bail out if one of the calls fails
  * 2. The return inclues a boolean whether the call was successful e.g. [wasSuccessfull, callResult]
  */
-export const multicallv2 = async (abi: any[], calls: Call[], requireSuccess = true) => {
-  const web3 = getWeb3NoAccount()
+export const multicallv2 = async (abi: any[], calls: Call[], options: MulticallOptions = {}) => {
+  const web3 = options.web3 || getWeb3NoAccount()
   const multi = new web3.eth.Contract(MultiCallAbi as unknown as AbiItem, getMulticallAddress())
   const itf = new Interface(abi)
 
   const calldata = calls.map((call) => [call.address.toLowerCase(), itf.encodeFunctionData(call.name, call.params)])
-  const returnData = await multi.methods.tryAggregate(requireSuccess, calldata).call()
+  const returnData = await multi.methods
+    .tryAggregate(options.requireSuccess === undefined ? true : options.requireSuccess, calldata)
+    .call(undefined, options.blockNumber)
   const res = returnData.map((call, i) => {
     const [result, data] = call
     return {

@@ -8,7 +8,7 @@ import { getAddress, getCakeAddress } from 'utils/addressHelpers'
 import tokens from 'config/constants/tokens'
 import pools from 'config/constants/pools'
 import sousChefABI from 'config/abi/sousChef.json'
-import multicall from './multicall'
+import { multicallv2 } from './multicall'
 import { getWeb3WithArchivedNodeProvider } from './web3'
 import { getBalanceAmount } from './formatBalance'
 import { BIG_TEN, BIG_ZERO } from './bigNumber'
@@ -191,6 +191,7 @@ export const getUserStakeInPools = async (account: string, block?: number) => {
     const multicallOptions = {
       web3: getWeb3WithArchivedNodeProvider(),
       blockNumber: block,
+      requireSuccess: false,
     }
     const eligiblePools = pools
       .filter((pool) => pool.sousId !== 0)
@@ -205,8 +206,8 @@ export const getUserStakeInPools = async (account: string, block?: number) => {
       address: getAddress(eligiblePool.contractAddress),
       name: 'startBlock',
     }))
-    const endBlocks = await multicall(sousChefABI, endBlockCalls, multicallOptions)
-    const startBlocks = await multicall(sousChefABI, startBlockCalls, multicallOptions)
+    const endBlocks = await multicallv2(sousChefABI, endBlockCalls, multicallOptions)
+    const startBlocks = await multicallv2(sousChefABI, startBlockCalls, multicallOptions)
 
     // Filter out pools that have ended
     const activePools = eligiblePools.filter((eligiblePool, index) => {
@@ -222,7 +223,7 @@ export const getUserStakeInPools = async (account: string, block?: number) => {
       name: 'userInfo',
       params: [account],
     }))
-    const userInfos = await multicall(sousChefABI, userInfoCalls, multicallOptions)
+    const userInfos = await multicallv2(sousChefABI, userInfoCalls, multicallOptions)
 
     return userInfos
       .reduce((accum: BigNumber, userInfo) => {
