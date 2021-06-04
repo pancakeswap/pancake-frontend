@@ -1502,5 +1502,13 @@
     "chainId": 56,
     "decimals": 18,
     "logoURI": "https://tokens.pancakeswap.finance/images/0xe792f64c582698b8572aaf765bdc426ac3aefb6b.png"
+  },
+  {
+    "name": "MX Token",
+    "symbol": "MX",
+    "address": "0x9F882567A62a5560d147d64871776EeA72Df41D3",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0x9F882567A62a5560d147d64871776EeA72Df41D3.png"
   }
 ]

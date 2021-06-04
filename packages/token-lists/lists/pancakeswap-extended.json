@@ -1,9 +1,9 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2021-06-04T08:11:38.560Z",
+  "timestamp": "2021-06-04T12:20:21.994Z",
   "version": {
     "major": 2,
-    "minor": 12,
+    "minor": 13,
     "patch": 0
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
@@ -891,6 +891,14 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0xF215A127A196e3988C09d052e16BcFD365Cd7AA3.png"
+    },
+    {
+      "name": "MX Token",
+      "symbol": "MX",
+      "address": "0x9F882567A62a5560d147d64871776EeA72Df41D3",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x9F882567A62a5560d147d64871776EeA72Df41D3.png"
     },
     {
       "name": "NAR Token",
