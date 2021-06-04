@@ -11,19 +11,15 @@ interface Call {
 }
 
 const multicall = async (abi: any[], calls: Call[]) => {
-  try {
-    const web3 = getWeb3NoAccount()
-    const multi = new web3.eth.Contract(MultiCallAbi as unknown as AbiItem, getMulticallAddress())
-    const itf = new Interface(abi)
+  const web3 = getWeb3NoAccount()
+  const multi = new web3.eth.Contract(MultiCallAbi as unknown as AbiItem, getMulticallAddress())
+  const itf = new Interface(abi)
 
-    const calldata = calls.map((call) => [call.address.toLowerCase(), itf.encodeFunctionData(call.name, call.params)])
-    const { returnData } = await multi.methods.aggregate(calldata).call()
-    const res = returnData.map((call, i) => itf.decodeFunctionResult(calls[i].name, call))
+  const calldata = calls.map((call) => [call.address.toLowerCase(), itf.encodeFunctionData(call.name, call.params)])
+  const { returnData } = await multi.methods.aggregate(calldata).call()
+  const res = returnData.map((call, i) => itf.decodeFunctionResult(calls[i].name, call))
 
-    return res
-  } catch (error) {
-    throw new Error(error)
-  }
+  return res
 }
 
 /**
@@ -33,24 +29,20 @@ const multicall = async (abi: any[], calls: Call[]) => {
  * 2. The return inclues a boolean whether the call was successful e.g. [wasSuccessfull, callResult]
  */
 export const multicallv2 = async (abi: any[], calls: Call[], requireSuccess = true) => {
-  try {
-    const web3 = getWeb3NoAccount()
-    const multi = new web3.eth.Contract(MultiCallAbi as unknown as AbiItem, getMulticallAddress())
-    const itf = new Interface(abi)
+  const web3 = getWeb3NoAccount()
+  const multi = new web3.eth.Contract(MultiCallAbi as unknown as AbiItem, getMulticallAddress())
+  const itf = new Interface(abi)
 
-    const calldata = calls.map((call) => [call.address.toLowerCase(), itf.encodeFunctionData(call.name, call.params)])
-    const returnData = await multi.methods.tryAggregate(requireSuccess, calldata).call()
-    const res = returnData.map((call, i) => {
-      const [result, data] = call
-      return {
-        result,
-        data: itf.decodeFunctionResult(calls[i].name, data),
-      }
-    })
+  const calldata = calls.map((call) => [call.address.toLowerCase(), itf.encodeFunctionData(call.name, call.params)])
+  const returnData = await multi.methods.tryAggregate(requireSuccess, calldata).call()
+  const res = returnData.map((call, i) => {
+    const [result, data] = call
+    return {
+      result,
+      data: itf.decodeFunctionResult(calls[i].name, data),
+    }
+  })
 
-    return res
-  } catch (error) {
-    throw new Error(error)
-  }
+  return res
 }
 export default multicall
