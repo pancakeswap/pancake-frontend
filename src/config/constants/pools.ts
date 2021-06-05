@@ -4,11 +4,11 @@ import { PoolConfig, PoolCategory } from './types'
 const pools: PoolConfig[] = [
   {
     sousId: 0,
-    stakingToken: tokens.cake,
-    earningToken: tokens.cake,
+    stakingToken: tokens.zmbe,
+    earningToken: tokens.zmbe,
     contractAddress: {
       97: '0x61dd856CF7eC5627083BD4EED64592B5796f0300',
-      56: '0x73feaa1eE314F8c655E354234017bE2193C9E24E', // MasterChef
+      56: '0x15960EdF8551e7f55a8410E82CdFfcEC82928F8c', // MasterChef
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,

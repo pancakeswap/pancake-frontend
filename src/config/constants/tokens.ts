@@ -15,8 +15,8 @@ const tokens = {
   zmbe: {
     symbol: 'ZMBE',
     address: {
-      56: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
-      97: '0xf3a3a31b90be814a45170cbc9df0678219c03656',
+      56: '0xAf75fBB5873a41C6733F5B118fDd78838c8D402a',
+      97: '0xf3A3a31b90BE814A45170CbC9df0678219c03656',
     },
     decimals: 18,
     projectLink: 'https://rugzombie.io/',
@@ -26,6 +26,15 @@ const tokens = {
     address: {
       56: '',
       97: '0x3F70d41e27a46C31f7304954306c7DCb1503e3A9',
+    },
+    decimals: 18,
+    projectLink: 'https://rugzombie.io/',
+  },
+  testzmbe: {
+    symbol: 'ZMBE',
+    address: {
+      56: '0xAf75fBB5873a41C6733F5B118fDd78838c8D402a',
+      97: '0xf3a3a31b90be814a45170cbc9df0678219c03656',
     },
     decimals: 18,
     projectLink: 'https://rugzombie.io/',
@@ -619,7 +628,7 @@ const tokens = {
     symbol: 'BUSD',
     address: {
       56: '0xe9e7cea3dedca5984780bafc599bd69add087d56',
-      97: '',
+      97: '0xed24fc36d5ee211ea25a80239fb8c4cfd80f12ee',
     },
     decimals: 18,
     projectLink: 'https://www.paxos.com/busd/',

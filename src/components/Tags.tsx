@@ -1,5 +1,13 @@
 import React from 'react'
-import { Tag, VerifiedIcon, CommunityIcon, BinanceIcon, RefreshIcon, AutoRenewIcon } from '@rug-zombie-libs/uikit'
+import {
+  Tag,
+  VerifiedIcon,
+  CommunityIcon,
+  BinanceIcon,
+  RefreshIcon,
+  AutoRenewIcon,
+  ErrorIcon,
+} from '@rug-zombie-libs/uikit'
 
 const CoreTag = (props) => (
   <Tag variant="secondary" outline startIcon={<VerifiedIcon width="18px" color="secondary" mr="4px" />} {...props}>
@@ -37,4 +45,16 @@ const CompoundingPoolTag = (props) => (
   </Tag>
 )
 
-export { CoreTag, CommunityTag, BinanceTag, DualTag, ManualPoolTag, CompoundingPoolTag }
+const UnlockedTag = (props) => (
+  <Tag variant="secondary" outline startIcon={<VerifiedIcon width="18px" color="secondary" mr="4px" />} {...props}>
+    Unlocked
+  </Tag>
+)
+
+const LockedTag = (props) => (
+  <Tag variant="success" outline startIcon={<ErrorIcon width="18px" color="success" mr="4px" />} {...props}>
+    Locked
+  </Tag>
+)
+
+export { CoreTag, CommunityTag, BinanceTag, DualTag, ManualPoolTag, CompoundingPoolTag, LockedTag, UnlockedTag }

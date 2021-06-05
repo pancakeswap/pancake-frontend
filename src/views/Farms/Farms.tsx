@@ -29,6 +29,7 @@ import SearchInput from './components/SearchInput'
 import { RowProps } from './components/FarmTable/Row'
 import ToggleView from './components/ToggleView/ToggleView'
 import { DesktopColumnSchema, ViewMode } from './components/types'
+import useWeb3 from '../../hooks/useWeb3'
 
 const ControlContainer = styled.div`
   display: flex;
@@ -113,9 +114,10 @@ const Farms: React.FC = () => {
   const [query, setQuery] = useState('')
   const [viewMode, setViewMode] = usePersistState(ViewMode.TABLE, 'pancake_farm_view')
   const { account } = useWeb3React()
+  const web3 = useWeb3()
   const [sortOption, setSortOption] = useState('hot')
   const prices = useGetApiPrices()
-
+  console.log(farmsLP)
   const dispatch = useAppDispatch()
   const { fastRefresh } = useRefresh()
   useEffect(() => {
@@ -153,17 +155,8 @@ const Farms: React.FC = () => {
 
   const activeFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X' && !isArchivedPid(farm.pid))
   const inactiveFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X' && !isArchivedPid(farm.pid))
-  const archivedFarms = farmsLP.filter((farm) => isArchivedPid(farm.pid))
-
-  const stakedOnlyFarms = activeFarms.filter(
-    (farm) => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0),
-  )
 
   const stakedInactiveFarms = inactiveFarms.filter(
-    (farm) => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0),
-  )
-
-  const stakedArchivedFarms = archivedFarms.filter(
     (farm) => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0),
   )
 
@@ -227,30 +220,20 @@ const Farms: React.FC = () => {
       }
     }
 
-    if (isActive) {
-      farmsStaked = stakedOnly ? farmsList(stakedOnlyFarms) : farmsList(activeFarms)
-    }
+
     if (isInactive) {
       farmsStaked = stakedOnly ? farmsList(stakedInactiveFarms) : farmsList(inactiveFarms)
     }
-    if (isArchived) {
-      farmsStaked = stakedOnly ? farmsList(stakedArchivedFarms) : farmsList(archivedFarms)
-    }
+
 
     return sortFarms(farmsStaked).slice(0, numberOfFarmsVisible)
   }, [
     sortOption,
-    activeFarms,
     farmsList,
     inactiveFarms,
-    archivedFarms,
-    isActive,
     isInactive,
-    isArchived,
-    stakedArchivedFarms,
     stakedInactiveFarms,
     stakedOnly,
-    stakedOnlyFarms,
     numberOfFarmsVisible,
   ])
 
@@ -369,10 +352,10 @@ const Farms: React.FC = () => {
   return (
     <>
       <PageHeader>
-        <Heading as="h1" size="xxl" color="secondary" mb="24px">
+        <Heading as='h1' size='xxl' color='secondary' mb='24px'>
           {t('Farms')}
         </Heading>
-        <Heading size="lg" color="text">
+        <Heading size='lg' color='text'>
           {t('Stake Liquidity Pool (LP) tokens to earn.')}
         </Heading>
       </PageHeader>
@@ -380,54 +363,23 @@ const Farms: React.FC = () => {
       <Page>
         <ControlContainer>
           <ViewControls>
-            <ToggleView viewMode={viewMode} onToggle={(mode: ViewMode) => setViewMode(mode)} />
             <ToggleWrapper>
-              <Toggle checked={stakedOnly} onChange={() => setStakedOnly(!stakedOnly)} scale="sm" />
+              <Toggle checked={stakedOnly} onChange={() => setStakedOnly(!stakedOnly)} scale='sm' />
               <Text> {t('Staked only')}</Text>
             </ToggleWrapper>
             <FarmTabButtons
               hasStakeInFinishedFarms={stakedInactiveFarms.length > 0}
-              hasStakeInArchivedFarms={stakedArchivedFarms.length > 0}
+              hasStakeInArchivedFarms={false}
             />
           </ViewControls>
-          <FilterContainer>
-            <LabelWrapper>
-              <Text>SORT BY</Text>
-              <Select
-                options={[
-                  {
-                    label: 'Hot',
-                    value: 'hot',
-                  },
-                  {
-                    label: 'APR',
-                    value: 'apr',
-                  },
-                  {
-                    label: 'Multiplier',
-                    value: 'multiplier',
-                  },
-                  {
-                    label: 'Earned',
-                    value: 'earned',
-                  },
-                  {
-                    label: 'Liquidity',
-                    value: 'liquidity',
-                  },
-                ]}
-                onChange={handleSortOptionChange}
-              />
-            </LabelWrapper>
-            <LabelWrapper style={{ marginLeft: 16 }}>
-              <Text>SEARCH</Text>
-              <SearchInput onChange={handleChangeQuery} />
-            </LabelWrapper>
-          </FilterContainer>
         </ControlContainer>
-        {renderContent()}
+        <FlexLayout>
+          {activeFarms.map((farm) => {
+            return <FarmCard farm={farm} removed={false} />
+          })}
+        </FlexLayout>
         <div ref={loadMoreRef} />
-        <StyledImage src="/images/3dpan.png" alt="Pancake illustration" width={120} height={103} />
+        <StyledImage src='/images/3dpan.png' alt='Pancake illustration' width={120} height={103} />
       </Page>
     </>
   )

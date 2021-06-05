@@ -116,7 +116,10 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed, cakePrice, account }
   const lpAddress = farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]
 
   return (
-    <FCard>
+    <FCard
+    style={{
+      maxWidth: "350px"
+    }}>
       {farm.token.symbol === 'CAKE' && <StyledCardAccent />}
       <CardHeading
         lpLabel={lpLabel}
