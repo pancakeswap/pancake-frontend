@@ -56,24 +56,30 @@ const App: React.FC = () => {
     <Router history={history}>
       <ResetCSS />
       <GlobalStyle />
-      <Menu>
-        <SuspenseWithChunkError fallback={<PageLoader />}>
-          <Switch>
-            <Route path='/' exact>
-              <Home />
-            </Route>
-            <Route path='/admin'>
-              <Admin />
-            </Route>
-             <Route path='/tombs'>
-              <Farms />
-             </Route>
-            <Route path='/graves'>
-              <Graves />
-            </Route>
-            <Route path='/crypts'>
-              <Crypts />
-            </Route>
+      <img src="https://storage.googleapis.com/rug-zombie/2021-06-05%2014.19.12.jpg" alt="coming soon" style={{
+        width: "100%"
+      }}/>
+
+      {/* <Menu> */}
+        {/* <SuspenseWithChunkError fallback={<PageLoader />}> */}
+          {/* <Switch> */}
+            {/* <Route path='/' exact> */}
+              {/* <Home /> */}
+              
+            {/* </Route> */}
+            {/* <Route path='/admin'> */}
+            {/*  <Admin /> */}
+            {/* </Route> */}
+            {/* <Route path='/tombs'> */}
+            {/*  <Farms /> */}
+            {/* </Route> */}
+            {/* <Route path='/graves'> */}
+            {/*  <Graves /> */}
+            {/* </Route> */}
+            {/* <Route path='/crypts'> */}
+            {/*  <Crypts /> */}
+            {/* </Route> */}
+
             {/* <Route path="/lottery"> */}
             {/*  <Lottery /> */}
             {/* </Route> */}
@@ -99,26 +105,27 @@ const App: React.FC = () => {
             {/*  <Predictions /> */}
             {/* </Route> */}
             {/* Redirect */}
-            <Route path='/staking'>
-              <Redirect to='/graves' />
-            </Route>
-            <Route path='/pools'>
-              <Redirect to='/crypts' />
-            </Route>
-             <Route path='/undead'>
-              <Redirect to='/crypts' />
-             </Route>
-            <Route path='/farms'>
-              <Redirect to='/tombs' />
-            </Route>
-            <Route path='/nft'>
-              <Redirect to='/collectibles' />
-            </Route>
+
+            {/* <Route path='/staking'> */}
+            {/*  <Redirect to='/graves' /> */}
+            {/* </Route> */}
+            {/* <Route path='/pools'> */}
+            {/*  <Redirect to='/crypts' /> */}
+            {/* </Route> */}
+            {/* <Route path='/undead'> */}
+            {/*  <Redirect to='/crypts' /> */}
+            {/* </Route> */}
+            {/* <Route path='/farms'> */}
+            {/*  <Redirect to='/tombs' /> */}
+            {/* </Route> */}
+            {/* <Route path='/nft'> */}
+            {/*  <Redirect to='/collectibles' /> */}
+            {/* </Route> */}
             {/* 404 */}
-            <Route component={NotFound} />
-          </Switch>
-        </SuspenseWithChunkError>
-      </Menu>
+            {/* <Route component={NotFound} /> */}
+          {/* </Switch> */}
+        {/* </SuspenseWithChunkError> */}
+      {/* </Menu> */}
       <EasterEgg iterations={2} />
       <ToastListener />
     </Router>
