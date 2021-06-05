@@ -222,7 +222,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
         <Flex alignItems="center" justifyContent="space-between" mb="16px">
           {percentShortcuts.map((percent) => {
             const handleClick = () => {
-              setValue(((percent / 100) * maxBalance).toString())
+              setValue(((percent / 100) * maxBalance).toLocaleString(undefined, { maximumFractionDigits: 18 }))
             }
 
             return (
