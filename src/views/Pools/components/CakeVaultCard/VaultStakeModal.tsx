@@ -200,7 +200,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({ pool, stakingMax, isR
           75%
         </StyledButton>
         <StyledButton scale="xs" mx="2px" p="4px 16px" variant="tertiary" onClick={() => handleChangePercent(100)}>
-          MAX
+          {t('Max')}
         </StyledButton>
       </Flex>
       {isRemovingStake && hasUnstakingFee && (
