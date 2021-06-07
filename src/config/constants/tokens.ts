@@ -1497,6 +1497,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://www.mxc.com/',
   },
+  ata: {
+    symbol: 'ATA',
+    address: {
+      56: '0xa2120b9e674d3fc3875f415a7df52e382f141225',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://www.ata.network/',
+  },
 }
 
 export default tokens
