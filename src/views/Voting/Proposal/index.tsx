@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { ArrowBackIcon, Box, Button, Flex, Heading } from '@pancakeswap/uikit'
+import { useWeb3React } from '@web3-react/core'
 import { Link, Redirect, useParams } from 'react-router-dom'
 import { useTranslation } from 'contexts/Localization'
 import Container from 'components/layout/Container'
@@ -19,7 +20,9 @@ const Proposal = () => {
   const [notFound, setNotFound] = useState(false)
   const { id }: { id: string } = useParams()
   const { t } = useTranslation()
+  const { account } = useWeb3React()
   const { votes, isFinished } = useGetVotes(id)
+  const accountHasVoted = votes.some((vote) => vote.voter.toLowerCase() === account.toLowerCase())
 
   useEffect(() => {
     const fetchData = async () => {
@@ -64,7 +67,7 @@ const Proposal = () => {
               <ReactMarkdown>{proposal.body}</ReactMarkdown>
             </Box>
           </Box>
-          <Vote proposal={proposal} mb="16px" />
+          {!accountHasVoted && <Vote proposal={proposal} mb="16px" />}
           <Votes votes={votes} isFinished={isFinished} />
         </Box>
         <Details proposal={proposal} />

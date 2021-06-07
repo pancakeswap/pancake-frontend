@@ -1,8 +1,9 @@
 import React, { ChangeEvent, useState } from 'react'
 import styled from 'styled-components'
-import { Button, Card, CardBody, CardHeader, CardProps, Heading, Radio, Text } from '@pancakeswap/uikit'
+import { Button, Card, CardBody, CardHeader, CardProps, Heading, Radio, Text, useModal } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { Proposal } from '../types'
+import CastVoteModal from '../components/Proposal/CastVoteModal'
 
 interface VoteProps extends CardProps {
   proposal: Proposal
@@ -10,7 +11,7 @@ interface VoteProps extends CardProps {
 
 const Choice = styled.label<{ isChecked: boolean }>`
   align-items: center;
-  border: 1px solid ${({ theme, isChecked }) => theme.colors[isChecked ? 'success' : 'borderColor']};
+  border: 1px solid ${({ theme, isChecked }) => theme.colors[isChecked ? 'success' : 'cardBorder']};
   border-radius: 16px;
   cursor: pointer;
   display: flex;
@@ -21,6 +22,7 @@ const Choice = styled.label<{ isChecked: boolean }>`
 const Vote: React.FC<VoteProps> = ({ proposal, ...props }) => {
   const [vote, setVote] = useState('')
   const { t } = useTranslation()
+  const [presentCastVoteModal] = useModal(<CastVoteModal block={Number(proposal.snapshot)} />)
 
   const handleChange = (evt: ChangeEvent<HTMLInputElement>) => {
     const { value } = evt.currentTarget
@@ -45,7 +47,9 @@ const Vote: React.FC<VoteProps> = ({ proposal, ...props }) => {
             </Choice>
           )
         })}
-        <Button disabled={!vote}>{t('Cast Vote')}</Button>
+        <Button onClick={presentCastVoteModal} disabled={!vote}>
+          {t('Cast Vote')}
+        </Button>
       </CardBody>
     </Card>
   )

@@ -144,7 +144,6 @@ export const getVotes = async (first: number, skip: number, where: VoteWhere): P
             id
             voter
             created
-            proposal
             choice
             space {
               id
@@ -156,6 +155,31 @@ export const getVotes = async (first: number, skip: number, where: VoteWhere): P
       { first, skip, where },
     )
     return response.votes
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
+interface VoteItem {
+  _id: string
+  address: string
+  power: number
+}
+
+interface VotingResponse {
+  code: number
+  message: string
+  data: VoteItem[]
+}
+
+export const getVoteCache = async (proposalId: string): Promise<{ [key: string]: number }> => {
+  try {
+    const response = await fetch(`${SNAPSHOT_VOTING_API}/${proposalId}`)
+    const data: VotingResponse = await response.json()
+
+    return data.data.reduce((accum, vote) => {
+      return { ...accum, [vote.address]: vote.power }
+    }, {})
   } catch (error) {
     throw new Error(error)
   }
