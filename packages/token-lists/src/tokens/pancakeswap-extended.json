@@ -1510,5 +1510,13 @@
     "chainId": 56,
     "decimals": 18,
     "logoURI": "https://tokens.pancakeswap.finance/images/0x9F882567A62a5560d147d64871776EeA72Df41D3.png"
+  },
+  {
+    "name": "Automata",
+    "symbol": "ATA",
+    "address": "0xA2120b9e674d3fC3875f415A7DF52e382F141225",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0xA2120b9e674d3fC3875f415A7DF52e382F141225.png"
   }
 ]

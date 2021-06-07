@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2021-06-04T12:20:21.994Z",
+  "timestamp": "2021-06-07T06:24:23.502Z",
   "version": {
     "major": 2,
     "minor": 13,
-    "patch": 0
+    "patch": 1
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [
@@ -99,6 +99,14 @@
       "chainId": 56,
       "decimals": 2,
       "logoURI": "https://tokens.pancakeswap.finance/images/0x80d5f92c2c8c682070c95495313ddb680b267320.png"
+    },
+    {
+      "name": "Automata",
+      "symbol": "ATA",
+      "address": "0xA2120b9e674d3fC3875f415A7DF52e382F141225",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0xA2120b9e674d3fC3875f415A7DF52e382F141225.png"
     },
     {
       "name": "Atletico de Madrid",
