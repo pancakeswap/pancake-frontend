@@ -5,7 +5,8 @@ import { useTranslation } from 'contexts/Localization'
 import { useAppDispatch } from 'state'
 import { fetchFarmUserDataAsync } from 'state/farms'
 import { useHarvest } from 'hooks/useHarvest'
-import { getBalanceNumber } from 'utils/formatBalance'
+import { getBalanceAmount } from 'utils/formatBalance'
+import { BIG_ZERO } from 'utils/bigNumber'
 import { useWeb3React } from '@web3-react/core'
 import { usePriceCakeBusd } from 'state/hooks'
 import CardBusdValue from '../../../Home/components/CardBusdValue'
@@ -22,18 +23,18 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({ earnings, pid }) => {
   const { onReward } = useHarvest(pid)
   const cakePrice = usePriceCakeBusd()
   const dispatch = useAppDispatch()
-  const rawEarningsBalance = account ? getBalanceNumber(earnings) : 0
-  const displayBalance = rawEarningsBalance.toLocaleString()
-  const earningsBusd = rawEarningsBalance ? new BigNumber(rawEarningsBalance).multipliedBy(cakePrice).toNumber() : 0
+  const rawEarningsBalance = account ? getBalanceAmount(earnings) : BIG_ZERO
+  const displayBalance = rawEarningsBalance.toFixed(3, BigNumber.ROUND_DOWN)
+  const earningsBusd = rawEarningsBalance ? rawEarningsBalance.multipliedBy(cakePrice).toNumber() : 0
 
   return (
     <Flex mb="8px" justifyContent="space-between" alignItems="center">
-      <Heading color={rawEarningsBalance === 0 ? 'textDisabled' : 'text'}>
+      <Heading color={rawEarningsBalance.eq(0) ? 'textDisabled' : 'text'}>
         {displayBalance}
         {earningsBusd > 0 && <CardBusdValue value={earningsBusd} />}
       </Heading>
       <Button
-        disabled={rawEarningsBalance === 0 || pendingTx}
+        disabled={rawEarningsBalance.eq(0) || pendingTx}
         onClick={async () => {
           setPendingTx(true)
           await onReward()

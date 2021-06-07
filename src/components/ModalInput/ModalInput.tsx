@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Text, Button, Input, InputProps, Flex, Link } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
+import { BigNumber } from 'bignumber.js'
 
 interface ModalInputProps {
   max: string
@@ -74,11 +75,11 @@ const ModalInput: React.FC<ModalInputProps> = ({
     if (isBalanceZero) {
       return '0'
     }
-    const balanceNumber = Number(balance)
-    if (balanceNumber > 0 && balanceNumber < 0.0001) {
-      return balanceNumber.toLocaleString(undefined, { maximumFractionDigits: 20 })
+    const balanceBigNumber = new BigNumber(balance)
+    if (balanceBigNumber.gt(0) && balanceBigNumber.lt(0.0001)) {
+      return balanceBigNumber.toLocaleString()
     }
-    return balanceNumber.toLocaleString()
+    return balanceBigNumber.toFixed(3, BigNumber.ROUND_DOWN)
   }
 
   return (
