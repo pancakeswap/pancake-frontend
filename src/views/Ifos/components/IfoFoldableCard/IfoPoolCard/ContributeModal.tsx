@@ -6,7 +6,7 @@ import { Modal, ModalBody, Text, Image, Button, BalanceInput, Flex } from '@panc
 import { PoolIds, Ifo } from 'config/constants/types'
 import { WalletIfoData, PublicIfoData } from 'hooks/ifo/types'
 import { useTranslation } from 'contexts/Localization'
-import { getBalanceNumber, formatNumber } from 'utils/formatBalance'
+import { getBalanceAmount } from 'utils/formatBalance'
 import { getAddress } from 'utils/addressHelpers'
 import ApproveConfirmButtons from 'views/Profile/components/ApproveConfirmButtons'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
@@ -93,7 +93,7 @@ const ContributeModal: React.FC<Props> = ({
         {limitPerUserInLP.isGreaterThan(0) && (
           <Flex justifyContent="space-between" mb="16px">
             <Text>{t('Max. LP token entry')}</Text>
-            <Text>{getBalanceNumber(limitPerUserInLP, currency.decimals)}</Text>
+            <Text>{getBalanceAmount(limitPerUserInLP, currency.decimals).toString()}</Text>
           </Flex>
         )}
         <Flex justifyContent="space-between" mb="8px">
@@ -116,7 +116,7 @@ const ContributeModal: React.FC<Props> = ({
         />
         <Text color="textSubtle" textAlign="right" fontSize="12px" mb="16px">
           {t('Balance: %balance%', {
-            balance: formatNumber(getBalanceNumber(userCurrencyBalance, currency.decimals), 2, 5),
+            balance: getBalanceAmount(userCurrencyBalance, currency.decimals).toString(),
           })}
         </Text>
         <Flex justifyContent="space-between" mb="16px">
@@ -125,7 +125,7 @@ const ContributeModal: React.FC<Props> = ({
               key={multiplierValue}
               scale="xs"
               variant="tertiary"
-              onClick={() => setValue(getBalanceNumber(maximumLpCommitable.times(multiplierValue)).toString())}
+              onClick={() => setValue(getBalanceAmount(maximumLpCommitable.times(multiplierValue)).toString())}
               mr={index < multiplierValues.length - 1 ? '8px' : 0}
             >
               {multiplierValue * 100}%
