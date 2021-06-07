@@ -144,8 +144,9 @@ const CAKE_BNB_TOKEN = new Token(chainId, getAddress(cakeBnbFarm.lpAddresses), 1
  */
 export const getUserStakeInCakeBnbLp = async (account: string, block?: number) => {
   try {
-    const masterContract = getMasterchefContract()
-    const cakeBnbContract = getLpContract(getAddress(cakeBnbFarm.lpAddresses))
+    const archivedWeb3 = getWeb3WithArchivedNodeProvider()
+    const masterContract = getMasterchefContract(archivedWeb3)
+    const cakeBnbContract = getLpContract(getAddress(cakeBnbFarm.lpAddresses), archivedWeb3)
     const totalSupplyLP = await cakeBnbContract.methods.totalSupply().call(undefined, block)
     const reservesLP = await cakeBnbContract.methods.getReserves().call(undefined, block)
     const cakeBnbBalance = await masterContract.methods.userInfo(cakeBnbPid, account).call(undefined, block)
@@ -173,7 +174,8 @@ export const getUserStakeInCakeBnbLp = async (account: string, block?: number) =
  */
 export const getUserStakeInCakePool = async (account: string, block?: number) => {
   try {
-    const masterContract = getMasterchefContract()
+    const archivedWeb3 = getWeb3WithArchivedNodeProvider()
+    const masterContract = getMasterchefContract(archivedWeb3)
     const response = await masterContract.methods.userInfo(0, account).call(undefined, block)
 
     return getBalanceAmount(new BigNumber(response.amount)).toNumber()
