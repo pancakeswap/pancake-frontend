@@ -26,15 +26,11 @@ const Balance: React.FC<BalanceProps> = ({
   useEffect(() => {
     previousValue.current = value
   }, [value])
-
-  const showPrefix = Boolean(value && prefix)
-  const showUnit = Boolean(value && unit)
-
   return (
     <Text color={isDisabled ? 'textDisabled' : color} onClick={onClick} {...props}>
-      {showPrefix && <span>{prefix}</span>}
+      {prefix && <span>{prefix}</span>}
       <CountUp start={previousValue.current} end={value} decimals={decimals} duration={1} separator="," />
-      {showUnit && <span>{unit}</span>}
+      {unit && <span>{unit}</span>}
     </Text>
   )
 }
