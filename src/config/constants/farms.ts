@@ -46,7 +46,7 @@ const farms: FarmConfig[] = [
       56: '0xef7767677867552cfa699148b96a03358a9be779',
     },
     token: tokens.ata,
-    quoteToken: tokens.bnb,
+    quoteToken: tokens.wbnb,
   },
   {
     pid: 403,
