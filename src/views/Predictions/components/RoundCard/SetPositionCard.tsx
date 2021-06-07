@@ -86,7 +86,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
   const { toastError } = useToast()
   const predictionsContract = usePredictionsContract()
 
-  const balanceDisplay = getBnbAmount(bnbBalance).toNumber()
+  const balanceDisplay = getBnbAmount(bnbBalance).toString()
   const maxBalance = getBnbAmount(bnbBalance.gt(dust) ? bnbBalance.minus(dust) : bnbBalance).toNumber()
   const valueAsBn = new BigNumber(value)
 
