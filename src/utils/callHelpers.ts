@@ -162,10 +162,10 @@ export const getUserStakeInCakeBnbLp = async (account: string, block?: number) =
       false,
     )
 
-    return cakeLPBalance.toSignificant(18)
+    return new BigNumber(cakeLPBalance.toSignificant(18))
   } catch (error) {
     console.error(`CAKE-BNB LP error: ${error}`)
-    return 0
+    return BIG_ZERO
   }
 }
 
@@ -178,10 +178,10 @@ export const getUserStakeInCakePool = async (account: string, block?: number) =>
     const masterContract = getMasterchefContract(archivedWeb3)
     const response = await masterContract.methods.userInfo(0, account).call(undefined, block)
 
-    return getBalanceAmount(new BigNumber(response.amount)).toNumber()
+    return getBalanceAmount(new BigNumber(response.amount))
   } catch (error) {
     console.error('Error getting stake in CAKE pool', error)
-    return 0
+    return BIG_ZERO
   }
 }
 
@@ -227,13 +227,11 @@ export const getUserStakeInPools = async (account: string, block?: number) => {
     }))
     const userInfos = await multicallv2(sousChefABI, userInfoCalls, multicallOptions)
 
-    return userInfos
-      .reduce((accum: BigNumber, userInfo) => {
-        return accum.plus(new BigNumber(userInfo.amount._hex))
-      }, new BigNumber(0))
-      .toNumber()
+    return userInfos.reduce((accum: BigNumber, userInfo) => {
+      return accum.plus(new BigNumber(userInfo.amount._hex))
+    }, new BigNumber(0))
   } catch (error) {
     console.error('Error fetching staked values:', error)
-    return 0
+    return BIG_ZERO
   }
 }
