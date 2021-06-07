@@ -174,7 +174,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
         <PercentageButton onClick={() => handleChangePercent(25)}>25%</PercentageButton>
         <PercentageButton onClick={() => handleChangePercent(50)}>50%</PercentageButton>
         <PercentageButton onClick={() => handleChangePercent(75)}>75%</PercentageButton>
-        <PercentageButton onClick={() => handleChangePercent(100)}>MAX</PercentageButton>
+        <PercentageButton onClick={() => handleChangePercent(100)}>{t('Max')}</PercentageButton>
       </Flex>
       <Button
         isLoading={pendingTx}
