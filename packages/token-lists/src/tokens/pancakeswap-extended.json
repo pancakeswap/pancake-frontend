@@ -808,14 +808,6 @@
     "logoURI": "https://tokens.pancakeswap.finance/images/0xF35262a9d427F96d2437379eF090db986eaE5d42.png"
   },
   {
-    "name": "BoringDAO",
-    "symbol": "BOR",
-    "address": "0x92D7756c60dcfD4c689290E8A9F4d263b3b32241",
-    "chainId": 56,
-    "decimals": 18,
-    "logoURI": "https://tokens.pancakeswap.finance/images/0x92d7756c60dcfd4c689290e8a9f4d263b3b32241.png"
-  },
-  {
     "name": "renZEC",
     "symbol": "renZEC",
     "address": "0x695FD30aF473F2960e81Dc9bA7cB67679d35EDb7",
@@ -1526,5 +1518,13 @@
     "chainId": 56,
     "decimals": 18,
     "logoURI": "https://tokens.pancakeswap.finance/images/0x3203c9E46cA618C8C1cE5dC67e7e9D75f5da2377.png"
+  },
+  {
+    "name": "BoringDAO",
+    "symbol": "BORING",
+    "address": "0xffEecbf8D7267757c2dc3d13D730E97E15BfdF7F",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0xffEecbf8D7267757c2dc3d13D730E97E15BfdF7F.png"
   }
 ]

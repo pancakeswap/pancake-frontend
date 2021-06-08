@@ -1,9 +1,9 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2021-06-07T13:36:43.324Z",
+  "timestamp": "2021-06-08T08:04:37.907Z",
   "version": {
     "major": 2,
-    "minor": 13,
+    "minor": 14,
     "patch": 2
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
@@ -278,11 +278,11 @@
     },
     {
       "name": "BoringDAO",
-      "symbol": "BOR",
-      "address": "0x92D7756c60dcfD4c689290E8A9F4d263b3b32241",
+      "symbol": "BORING",
+      "address": "0xffEecbf8D7267757c2dc3d13D730E97E15BfdF7F",
       "chainId": 56,
       "decimals": 18,
-      "logoURI": "https://tokens.pancakeswap.finance/images/0x92d7756c60dcfd4c689290e8a9f4d263b3b32241.png"
+      "logoURI": "https://tokens.pancakeswap.finance/images/0xffEecbf8D7267757c2dc3d13D730E97E15BfdF7F.png"
     },
     {
       "name": "ROOBEE",
