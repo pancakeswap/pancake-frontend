@@ -1,15 +1,18 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Box, Flex, Heading, TabMenu } from '@pancakeswap/uikit'
 import PageSection from 'components/PageSection'
 import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'
+import useRoundEndCountdown from 'hooks/lottery/v2/useRoundEndCountdown'
+import { useAppDispatch } from 'state'
 import { useFetchLottery, useLottery } from 'state/hooks'
+import { LotteryStatus } from 'state/types'
+import { fetchCurrentLottery } from 'state/lottery'
 import { TITLE_BG, GET_TICKETS_BG, FINISHED_ROUNDS_BG, FINISHED_ROUNDS_BG_DARK } from './pageSectionStyles'
 import Hero from './components/Hero'
 import DrawInfoCard from './components/DrawInfoCard'
 import Countdown from './components/Countdown'
-import { getNextLotteryEvent } from './helpers'
 import HistoryTabMenu from './components/HistoryTabMenu'
 import YourHistoryCard from './components/YourHistoryCard'
 
@@ -25,11 +28,25 @@ const TicketsSection = styled(PageSection)`
 `
 
 const LotteryV2 = () => {
-  const { t } = useTranslation()
-  const { isDark, theme } = useTheme()
   useFetchLottery()
-  const { currentRound } = useLottery()
+  const { t } = useTranslation()
+  const dispatch = useAppDispatch()
+  const { isDark, theme } = useTheme()
+  const {
+    currentLotteryId,
+    currentRound: { status, endTime },
+  } = useLottery()
+  const endTimeAsInt = parseInt(endTime, 10)
+  const secondsRemaining = useRoundEndCountdown(endTimeAsInt)
   const [historyTabMenuIndex, setHistoryTabMenuIndex] = useState(0)
+
+  // Re-fetch lottery data when round countdown reaches 0
+  useEffect(() => {
+    if (status === LotteryStatus.OPEN && secondsRemaining === 0) {
+      dispatch(fetchCurrentLottery({ currentLotteryId }))
+      console.log('fetching lottery')
+    }
+  }, [secondsRemaining, currentLotteryId, status, dispatch])
 
   return (
     <LotteryPage>
@@ -41,7 +58,11 @@ const LotteryV2 = () => {
           <Heading scale="xl" color="#ffffff" mb="24px" textAlign="center">
             {t('Get your tickets now!')}
           </Heading>
-          {/* <Countdown nextEventTimestamp={getNextLotteryEvent(currentRound)} /> */}
+          {status === LotteryStatus.OPEN && (
+            <Flex alignItems="center" justifyContent="center" mb="48px">
+              <Countdown secondsRemaining={secondsRemaining} />
+            </Flex>
+          )}
           <DrawInfoCard />
         </Flex>
       </TicketsSection>

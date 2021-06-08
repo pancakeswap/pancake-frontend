@@ -37,8 +37,8 @@ const HistoryGridRow: React.FC<HistoryGridRowProps> = ({
     return <BlockIcon color="disabled" />
   }
 
-  const endTimeInMs = new BigNumber(endTime).times(1000)
-  const endTimeAsDate = new Date(endTimeInMs.toNumber())
+  const endTimeInMs = parseInt(endTime, 10) * 1000
+  const endTimeAsDate = new Date(endTimeInMs)
 
   return (
     <Grid onClick={() => onClick(roundId)}>
