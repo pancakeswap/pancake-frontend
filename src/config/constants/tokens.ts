@@ -1515,6 +1515,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://www.mobox.io/#/',
   },
+  boring: {
+    symbol: 'BORING',
+    address: {
+      56: '0xffEecbf8D7267757c2dc3d13D730E97E15BfdF7F',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://www.boringdao.com/',
+  },
 }
 
 export default tokens
