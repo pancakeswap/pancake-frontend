@@ -50,15 +50,12 @@ export const useSousApprove = (lpContract: Contract, sousId, earningTokenSymbol)
         setRequestedApproval(false)
       } else {
         // user rejected tx or didn't go thru
-        toastError(
-          `${t('Error')}`,
-          `${t(`Please try again. Confirm the transaction and make sure you are paying enough gas!`)}`,
-        )
+        toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
         setRequestedApproval(false)
       }
     } catch (e) {
       console.error(e)
-      toastError('Error', e?.message)
+      toastError(t('Error'), e?.message)
     }
   }, [account, dispatch, lpContract, sousChefContract, sousId, earningTokenSymbol, t, toastError, toastSuccess])
 

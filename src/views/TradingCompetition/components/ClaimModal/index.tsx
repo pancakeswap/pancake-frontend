@@ -48,7 +48,7 @@ const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, use
         setIsConfirming(true)
       })
       .on('receipt', async () => {
-        toastSuccess('You have claimed your rewards!')
+        toastSuccess(t('You have claimed your rewards!'))
         onDismiss()
         onClaimSuccess()
       })
