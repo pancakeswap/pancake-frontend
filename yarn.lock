@@ -2079,10 +2079,10 @@
     eslint-plugin-react "^7.21.5"
     eslint-plugin-react-hooks "^4.0.0"
 
-"@pancakeswap/uikit@^0.33.1":
-  version "0.33.1"
-  resolved "https://registry.yarnpkg.com/@pancakeswap/uikit/-/uikit-0.33.1.tgz#ac35483f6548ad22a8ea6ed84c729ff3d86ceb32"
-  integrity sha512-5nqQ4a13PPWQSU0x/d6gl2g/Jj3kMfMAIEXu/dlGzAgnUUbgIUIyai/ATYx3pUwtn8dKGWwFtBz8mwWXEUE7TA==
+"@pancakeswap/uikit@^0.37.0":
+  version "0.37.0"
+  resolved "https://registry.yarnpkg.com/@pancakeswap/uikit/-/uikit-0.37.0.tgz#eb399e9a6f72444f824432f46e365cd07a763018"
+  integrity sha512-F8y7BjGQuxLLAAfsBMsMjRb+wFwHqLk2252JRPQ3tVsrJGCGWaeUCeVpl3nQoeDcj/cAQWquGf+qD79fFvE7+Q==
   dependencies:
     "@popperjs/core" "^2.9.2"
     "@types/lodash" "^4.14.168"
