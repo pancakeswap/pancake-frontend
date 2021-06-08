@@ -112,6 +112,7 @@ const ContributeModal: React.FC<Props> = ({
           currencyValue={publicIfoData.currencyPriceInUSD.times(value || 0).toFixed(2)}
           onUserInput={setValue}
           isWarning={valueWithTokenDecimals.isGreaterThan(maximumLpCommitable)}
+          decimals={currency.decimals}
           mb="8px"
         />
         <Text color="textSubtle" textAlign="right" fontSize="12px" mb="16px">
