@@ -22,7 +22,7 @@ const Choice = styled.label<{ isChecked: boolean }>`
 const Vote: React.FC<VoteProps> = ({ proposal, ...props }) => {
   const [vote, setVote] = useState('')
   const { t } = useTranslation()
-  const [presentCastVoteModal] = useModal(<CastVoteModal block={Number(proposal.snapshot)} />)
+  const [presentCastVoteModal] = useModal(<CastVoteModal vote={vote} block={Number(proposal.snapshot)} />)
 
   const handleChange = (evt: ChangeEvent<HTMLInputElement>) => {
     const { value } = evt.currentTarget
