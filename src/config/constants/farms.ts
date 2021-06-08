@@ -39,7 +39,7 @@ const farms: FarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
-    pid: 406,
+    pid: 405,
     lpSymbol: 'MBOX-BNB LP',
     lpAddresses: {
       97: '',
