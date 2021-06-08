@@ -39,6 +39,16 @@ const farms: FarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 406,
+    lpSymbol: 'BORING-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0xDfA808Da5CFB9ABA5Fb3748FF85888F79174F378',
+    },
+    token: tokens.boring,
+    quoteToken: tokens.wbnb,
+  },
+  {
     pid: 405,
     lpSymbol: 'MBOX-BNB LP',
     lpAddresses: {
