@@ -1506,6 +1506,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://www.ata.network/',
   },
+  mbox: {
+    symbol: 'MBOX',
+    address: {
+      56: '0x3203c9E46cA618C8C1cE5dC67e7e9D75f5da2377',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://www.mobox.io/#/',
+  },
 }
 
 export default tokens
