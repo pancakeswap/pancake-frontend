@@ -29,8 +29,12 @@ const FUTURE_ROUND_COUNT = 2 // the number of rounds in the future to show
 
 const Predictions = () => {
   const { isXl } = useMatchBreakpoints()
-  const [hasAcceptedRisk, setHasAcceptedRisk] = usePersistState(false, 'pancake_predictions_accepted_risk')
-  const [hasAcceptedChart, setHasAcceptedChart] = usePersistState(false, 'pancake_predictions_chart')
+  const [hasAcceptedRisk, setHasAcceptedRisk] = usePersistState(false, {
+    localStorageKey: 'pancake_predictions_accepted_risk',
+  })
+  const [hasAcceptedChart, setHasAcceptedChart] = usePersistState(false, {
+    localStorageKey: 'pancake_predictions_chart',
+  })
   const { account } = useWeb3React()
   const status = useGetPredictionsStatus()
   const isChartPaneOpen = useIsChartPaneOpen()

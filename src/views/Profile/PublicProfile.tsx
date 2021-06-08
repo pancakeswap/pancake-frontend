@@ -84,7 +84,9 @@ const Section = styled.div`
 const PublicProfile = () => {
   const { account } = useWeb3React()
   const { profile } = useProfile()
-  const [usernameVisibilityToggled, setUsernameVisibility] = usePersistState(false, 'username_visibility_toggled')
+  const [usernameVisibilityToggled, setUsernameVisibility] = usePersistState(false, {
+    localStorageKey: 'username_visibility_toggled',
+  })
   const { t } = useTranslation()
 
   if (!account) {
