@@ -77,10 +77,15 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
     const getMaxPossiblePurchase = () => {
       const maxBalancePurchase = userCake.div(priceTicketInCake)
       const maxPurchase = maxBalancePurchase.gt(maxNumberTicketsPerBuy) ? maxNumberTicketsPerBuy : maxBalancePurchase
+      if (hasFetchedBalance && maxPurchase.eq(0)) {
+        setUserNotEnoughCake(true)
+      } else {
+        setUserNotEnoughCake(false)
+      }
       setMaxPossibleTicketPurchase(maxPurchase)
     }
     getMaxPossiblePurchase()
-  }, [maxNumberTicketsPerBuy, priceTicketInCake, userCake])
+  }, [maxNumberTicketsPerBuy, priceTicketInCake, userCake, hasFetchedBalance])
 
   useEffect(() => {
     const discounts: Discount[] = [
@@ -194,7 +199,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
 
   const getErrorMessage = () => {
     if (userNotEnoughCake) return t('Insufficient CAKE balance')
-    return t('The max number of tickets you can buy in one transaction is %maxTickets%', {
+    return t('The maximum number of tickets you can buy in one transaction is %maxTickets%', {
       maxTickets: maxPossibleTicketPurchase.toString(),
     })
   }
@@ -243,23 +248,26 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
       </Flex>
 
       <Flex alignItems="center" justifyContent="space-between" mt="8px" mb="24px">
-        <TicketsNumberButton disabled={!hasFetchedBalance} onClick={() => handleNumberButtonClick(tenPercentOfBalance)}>
+        <TicketsNumberButton
+          disabled={!hasFetchedBalance || tenPercentOfBalance < 1}
+          onClick={() => handleNumberButtonClick(tenPercentOfBalance)}
+        >
           {hasFetchedBalance ? tenPercentOfBalance : ``}
         </TicketsNumberButton>
         <TicketsNumberButton
-          disabled={!hasFetchedBalance}
+          disabled={!hasFetchedBalance || twentyFivePercentOfBalance < 1}
           onClick={() => handleNumberButtonClick(twentyFivePercentOfBalance)}
         >
           {hasFetchedBalance ? twentyFivePercentOfBalance : ``}
         </TicketsNumberButton>
         <TicketsNumberButton
-          disabled={!hasFetchedBalance}
+          disabled={!hasFetchedBalance || fiftyPercentOfBalance < 1}
           onClick={() => handleNumberButtonClick(fiftyPercentOfBalance)}
         >
           {hasFetchedBalance ? fiftyPercentOfBalance : ``}
         </TicketsNumberButton>
         <TicketsNumberButton
-          disabled={!hasFetchedBalance}
+          disabled={!hasFetchedBalance || oneHundredPercentOfBalance < 1}
           onClick={() => handleNumberButtonClick(oneHundredPercentOfBalance)}
         >
           MAX
