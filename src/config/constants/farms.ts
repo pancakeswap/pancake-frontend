@@ -39,6 +39,16 @@ const farms: FarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 405,
+    lpSymbol: 'MBOX-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x8FA59693458289914dB0097F5F366d771B7a7C3F',
+    },
+    token: tokens.mbox,
+    quoteToken: tokens.wbnb,
+  },
+  {
     pid: 404,
     lpSymbol: 'ATA-BNB LP',
     lpAddresses: {
