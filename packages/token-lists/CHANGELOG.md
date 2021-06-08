@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.14.0](https://github.com/pancakeswap/pancake-toolkit/compare/@pancakeswap/token-lists@2.11.0...@pancakeswap/token-lists@2.14.0) (2021-06-08)
+
+
+### Bug Fixes
+
+* Add missing logos ([#144](https://github.com/pancakeswap/pancake-toolkit/issues/144)) ([7bad2fa](https://github.com/pancakeswap/pancake-toolkit/commit/7bad2faa6ab163e2883a0231961cffa6dbd9455d))
+
+
+### Features
+
+* Add ATA to extended token list ([#143](https://github.com/pancakeswap/pancake-toolkit/issues/143)) ([5360873](https://github.com/pancakeswap/pancake-toolkit/commit/5360873fa08d75ba34251f401a37dae28a7fc4c8))
+
+
+
+
+
 # 2.11.0 (2021-06-03)
 
 

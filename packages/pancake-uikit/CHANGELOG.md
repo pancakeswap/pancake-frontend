@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.37.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.36.1...@pancakeswap/uikit@0.37.0) (2021-06-08)
+
+
+### Features
+
+* (BalanceInput) Add decimal check support ([#142](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/142)) ([763e13f](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/763e13f836ac2cbb8a3b1132d98854e07a492ced))
+
+
+
+
+
 ## [0.36.1](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.36.0...@pancakeswap/uikit@0.36.1) (2021-06-03)
 
 **Note:** Version bump only for package @pancakeswap/uikit
