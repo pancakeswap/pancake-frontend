@@ -4,6 +4,7 @@
   "main": "dist/index.js",
   "type": "module",
   "license": "MIT",
+  "private": true,
   "scripts": {
     "build": "rm -rf ./dist && rollup -c",
     "checksum:pcs-default": "yarn build && node ./dist checksum pancakeswap-default",
