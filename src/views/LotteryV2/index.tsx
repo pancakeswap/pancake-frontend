@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { Box, Flex, Heading, TabMenu } from '@pancakeswap/uikit'
+import { Box, Flex, Heading } from '@pancakeswap/uikit'
 import PageSection from 'components/PageSection'
 import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'

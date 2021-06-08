@@ -8,6 +8,7 @@ import { fetchLottery } from 'state/lottery'
 import useTheme from 'hooks/useTheme'
 import BuyTicketsModal from './BuyTicketsModal'
 import TicketNumber from './TicketNumber'
+import BuyTicketsButton from './BuyTicketsButton'
 
 const StyledModal = styled(Modal)`
   min-width: 280px;
@@ -60,9 +61,7 @@ const ViewTicketsModal: React.FC<ViewTicketsModalProps> = ({ onDismiss, roundId 
             </ScrollBox>
           </Flex>
           <Flex borderTop={`1px solid ${theme.colors.cardBorder}`} alignItems="center" justifyContent="center">
-            <Button mt="24px" width="100%" onClick={onPresentBuyTicketModal}>
-              {t('Buy Tickets')}
-            </Button>
+            <BuyTicketsButton mt="24px" width="100%" />
           </Flex>
         </>
       )}
