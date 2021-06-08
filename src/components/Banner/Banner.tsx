@@ -25,7 +25,7 @@ const Content = styled.div<{ isVisible: boolean }>`
 
 const Banner: React.FC<Props> = ({ id, title, defaultVisible = true, children, ...props }) => {
   const { t } = useTranslation()
-  const [isVisible, setIsVisible] = usePersistState(defaultVisible, `banner-${id}`)
+  const [isVisible, setIsVisible] = usePersistState(defaultVisible, { localStorageKey: `banner-${id}` })
   return (
     <Wrapper isVisible={isVisible} {...props}>
       <Flex justifyContent="space-between" flexDirection={['column', 'row']}>
