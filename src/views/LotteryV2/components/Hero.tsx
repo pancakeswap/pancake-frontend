@@ -1,13 +1,14 @@
 import BigNumber from 'bignumber.js'
 import React from 'react'
 import styled from 'styled-components'
-import { Flex, Heading, Button, useModal, Ticket, Skeleton } from '@pancakeswap/uikit'
+import { Flex, Heading, Skeleton } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import { useLottery, usePriceCakeBusd } from 'state/hooks'
+import { useLottery } from 'state/hooks'
 import { getBalanceNumber } from 'utils/formatBalance'
 import Balance from 'components/Balance'
+import { LotteryStatus } from 'state/types'
 import { TicketPurchaseCard } from '../svgs'
-import BuyTicketsModal from './BuyTicketsModal'
+import BuyTicketsButton from './BuyTicketsButton'
 
 const PrizeTotalBalance = styled(Balance)`
   background: ${({ theme }) => theme.colors.gradients.gold};
@@ -15,8 +16,10 @@ const PrizeTotalBalance = styled(Balance)`
   -webkit-text-fill-color: transparent;
 `
 
-const StyledTicketButton = styled(Button)`
-  background: linear-gradient(180deg, #7645d9 0%, #452a7a 100%);
+const StyledBuyTicketButton = styled(BuyTicketsButton)<{ isLotteryOpen: boolean }>`
+  background: ${({ theme, isLotteryOpen }) =>
+    isLotteryOpen ? 'linear-gradient(180deg, #7645d9 0%, #452a7a 100%)' : theme.colors.disabled};
+  width: 240px;
 `
 
 const ButtonWrapper = styled.div`
@@ -36,9 +39,8 @@ const TicketSvgWrapper = styled.div`
 
 const Hero = () => {
   const { t } = useTranslation()
-  const [onPresentBuyTicketsModal] = useModal(<BuyTicketsModal />)
   const {
-    currentRound: { amountCollectedInCake },
+    currentRound: { amountCollectedInCake, status },
   } = useLottery()
 
   // TODO: Re-enebale in prod
@@ -46,6 +48,7 @@ const Hero = () => {
   const cakePriceBusd = new BigNumber(20.55)
   const prizeInBusd = amountCollectedInCake.times(cakePriceBusd)
   const prizeTotal = getBalanceNumber(prizeInBusd)
+  const isLotteryOpen = status === LotteryStatus.OPEN
 
   return (
     <Flex flexDirection="column" alignItems="center" justifyContent="center">
@@ -63,9 +66,7 @@ const Hero = () => {
       </Heading>
       <Flex position="relative" width="288px" height="113px" alignItems="center" justifyContent="center">
         <ButtonWrapper>
-          <StyledTicketButton onClick={onPresentBuyTicketsModal} width="240px">
-            {t('Buy Tickets')}
-          </StyledTicketButton>
+          <StyledBuyTicketButton isLotteryOpen={isLotteryOpen} />
         </ButtonWrapper>
         <TicketSvgWrapper>
           <TicketPurchaseCard width="288px" />

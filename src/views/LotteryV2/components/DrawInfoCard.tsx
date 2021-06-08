@@ -3,11 +3,12 @@ import styled from 'styled-components'
 import { Card, CardHeader, CardBody, Flex, Heading, Text, Skeleton, Button, useModal, Box } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
-import { useLottery, usePriceCakeBusd } from 'state/hooks'
-import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
+import { useLottery } from 'state/hooks'
+import { getBalanceNumber } from 'utils/formatBalance'
 import Balance from 'components/Balance'
-import BuyTicketsModal from './BuyTicketsModal'
+import { LotteryStatus } from 'state/types'
 import ViewTicketsModal from './ViewTicketsModal'
+import BuyTicketsButton from './BuyTicketsButton'
 
 const Grid = styled.div`
   display: grid;
@@ -23,9 +24,8 @@ const DrawInfoCard = () => {
   const { t } = useTranslation()
   const {
     currentLotteryId,
-    currentRound: { endTime, amountCollectedInCake, userData },
+    currentRound: { endTime, amountCollectedInCake, userData, status },
   } = useLottery()
-  const [onPresentBuyTicketsModal] = useModal(<BuyTicketsModal />)
   const [onPresentViewTicketsModal] = useModal(<ViewTicketsModal roundId={currentLotteryId} />)
 
   // TODO: Re-enebale in prod
@@ -34,7 +34,7 @@ const DrawInfoCard = () => {
   const prizeInBusd = amountCollectedInCake.times(cakePriceBusd)
   const endTimeMs = parseInt(endTime, 10) * 1000
   const endDate = new Date(endTimeMs)
-
+  const isLotteryOpen = status === LotteryStatus.OPEN
   const userTicketCount = userData?.tickets?.length || 0
 
   return (
@@ -84,37 +84,39 @@ const DrawInfoCard = () => {
             <Heading>{t('Your tickets')}</Heading>
           </Box>
           <Flex flexDirection={['column', null, null, 'row']}>
-            <Flex
-              flexDirection="column"
-              mr={[null, null, null, '24px']}
-              alignItems={['center', null, null, 'flex-start']}
-            >
-              <Flex justifyContent={['center', null, null, 'flex-start']}>
-                <Text display="inline">{t('You have')} </Text>
-                {!userData.isLoading ? (
-                  <Text display="inline" bold mx="4px">
-                    {userTicketCount} {t('tickets')}
-                  </Text>
-                ) : (
-                  <Skeleton mx="4px" height={20} width={40} />
+            {isLotteryOpen && (
+              <Flex
+                flexDirection="column"
+                mr={[null, null, null, '24px']}
+                alignItems={['center', null, null, 'flex-start']}
+              >
+                <Flex justifyContent={['center', null, null, 'flex-start']}>
+                  <Text display="inline">{t('You have')} </Text>
+                  {!userData.isLoading ? (
+                    <Text display="inline" bold mx="4px">
+                      {userTicketCount} {t('tickets')}
+                    </Text>
+                  ) : (
+                    <Skeleton mx="4px" height={20} width={40} />
+                  )}
+                  <Text display="inline"> {t('this round')}</Text>
+                </Flex>
+                {!userData.isLoading && userTicketCount > 0 && (
+                  <Button
+                    onClick={onPresentViewTicketsModal}
+                    height="auto"
+                    width="fit-content"
+                    p="0"
+                    mb={['32px', null, null, '0']}
+                    variant="text"
+                    scale="sm"
+                  >
+                    {t('View your tickets')}
+                  </Button>
                 )}
-                <Text display="inline"> {t('this round')}</Text>
               </Flex>
-              {!userData.isLoading && userTicketCount > 0 && (
-                <Button
-                  onClick={onPresentViewTicketsModal}
-                  height="auto"
-                  width="fit-content"
-                  p="0"
-                  mb={['32px', null, null, '0']}
-                  variant="text"
-                  scale="sm"
-                >
-                  {t('View your tickets')}
-                </Button>
-              )}
-            </Flex>
-            <Button onClick={onPresentBuyTicketsModal}>{t('Buy Tickets')}</Button>
+            )}
+            <BuyTicketsButton />
           </Flex>
         </Grid>
       </CardBody>
