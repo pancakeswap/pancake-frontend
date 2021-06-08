@@ -32,7 +32,8 @@ const DrawInfoCard = () => {
   //   const cakePriceBusd = usePriceCakeBusd()
   const cakePriceBusd = new BigNumber(20.55)
   const prizeInBusd = amountCollectedInCake.times(cakePriceBusd)
-  const endDate = new Date(parseInt(endTime, 10) * 1000)
+  const endTimeMs = parseInt(endTime, 10) * 1000
+  const endDate = new Date(endTimeMs)
 
   const userTicketCount = userData?.tickets?.length || 0
 
@@ -42,7 +43,7 @@ const DrawInfoCard = () => {
         <Flex justifyContent="space-between">
           <Heading>{t('Next Draw')}</Heading>
           <Text>
-            #{currentLotteryId} | {endDate.toLocaleString()}
+            {currentLotteryId && `# ${currentLotteryId} | `} {Boolean(endTime) && endDate.toLocaleString()}
           </Text>
         </Flex>
       </CardHeader>

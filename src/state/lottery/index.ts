@@ -14,6 +14,7 @@ const initialState: LotteryState = {
   currentLotteryId: null,
   maxNumberTicketsPerBuy: null,
   currentRound: {
+    isLoading: true,
     status: LotteryStatus.PENDING,
     startTime: '',
     endTime: '',
@@ -52,6 +53,7 @@ export const fetchLottery = async (lotteryId: string) => {
     const amountCollectedInCakeAsBN = new BigNumber(amountCollectedInCake as string)
     const statusKey = Object.keys(LotteryStatus)[status]
     return {
+      isLoading: false,
       status: LotteryStatus[statusKey],
       startTime,
       endTime,
@@ -65,6 +67,7 @@ export const fetchLottery = async (lotteryId: string) => {
     }
   } catch (error) {
     return {
+      isLoading: true,
       status: LotteryStatus.PENDING,
       startTime: '',
       endTime: '',
@@ -115,10 +118,10 @@ export const fetchTickets = async (account, lotteryId, cursor) => {
   }
 }
 
-export const fetchLotteryById = createAsyncThunk<LotteryRound, { lotteryId: string }>(
+export const fetchCurrentLottery = createAsyncThunk<LotteryRound, { currentLotteryId: string }>(
   'lottery/fetchById',
-  async ({ lotteryId }) => {
-    const lotteryInfo = await fetchLottery(lotteryId)
+  async ({ currentLotteryId }) => {
+    const lotteryInfo = await fetchLottery(currentLotteryId)
     return lotteryInfo
   },
 )
@@ -146,7 +149,7 @@ export const LotterySlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchLotteryById.fulfilled, (state, action: PayloadAction<LotteryRound>) => {
+    builder.addCase(fetchCurrentLottery.fulfilled, (state, action: PayloadAction<LotteryRound>) => {
       state.currentRound = { ...state.currentRound, ...action.payload }
     })
     builder.addCase(fetchPublicLotteryData.fulfilled, (state, action: PayloadAction<PublicLotteryData>) => {

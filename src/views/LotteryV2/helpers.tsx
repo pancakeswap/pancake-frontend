@@ -1,10 +1,11 @@
-import { LotteryRound } from 'state/types'
-
+/**
+ * Return a random number between 1000000 & 1999999
+ */
 const generateRandomNumber = () => Math.floor(Math.random() * 1000000) + 1000000
 
 // TODO: Tests
 /**
- * Generate a random number of unique, 7-digit lottery numbers between 1000000 & 1999999
+ * Generate a specific number of unique, 7-digit lottery numbers between 1000000 & 1999999
  */
 export const generateTicketNumbers = (numberOfTickets: number): number[] => {
   const ticketNumbers = []
@@ -30,11 +31,6 @@ export const parseRetreivedNumber = (number: string): string => {
   // reverse it
   numberAsArray.reverse()
   return numberAsArray.join('')
-}
-
-export const getNextLotteryEvent = (currentLotteryRound: LotteryRound) => {
-  // TODO: This is effectively placeholder for where logic should go to fetch the next lottery timestamp
-  return currentLotteryRound.endTime
 }
 
 export default generateTicketNumbers
