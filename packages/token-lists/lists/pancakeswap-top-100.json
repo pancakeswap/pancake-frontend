@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Top 100",
-  "timestamp": "2021-06-03T13:19:02.995Z",
+  "timestamp": "2021-06-07T13:09:55.141Z",
   "version": {
     "major": 2,
-    "minor": 11,
-    "patch": 0
+    "minor": 13,
+    "patch": 1
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [

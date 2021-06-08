@@ -1518,5 +1518,13 @@
     "chainId": 56,
     "decimals": 18,
     "logoURI": "https://tokens.pancakeswap.finance/images/0xA2120b9e674d3fC3875f415A7DF52e382F141225.png"
+  },
+  {
+    "name": "Mobox",
+    "symbol": "MBOX",
+    "address": "0x3203c9E46cA618C8C1cE5dC67e7e9D75f5da2377",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0x3203c9E46cA618C8C1cE5dC67e7e9D75f5da2377.png"
   }
 ]
