@@ -2,7 +2,6 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowForwardIcon, Box, IconButton, Flex, Text } from '@pancakeswap/uikit'
 import styled from 'styled-components'
-import { useTranslation } from 'contexts/Localization'
 import { Proposal } from '../../types'
 import { isCoreProposal } from '../../helpers'
 import TimeFrame from './TimeFrame'
@@ -24,7 +23,6 @@ const StyledProposalRow = styled(Link)`
 `
 
 const ProposalRow: React.FC<ProposalRowProps> = ({ proposal }) => {
-  const { t } = useTranslation()
   const votingLink = `/voting/proposal/${proposal.id}`
 
   return (
@@ -39,9 +37,6 @@ const ProposalRow: React.FC<ProposalRowProps> = ({ proposal }) => {
         <Flex alignItems="center">
           <ProposalStateTag proposalState={proposal.state} />
           <ProposalTypeTag isCoreProposal={isCoreProposal(proposal)} ml="8px" />
-          <Text fontSize="14px" color="textSubtle" ml="8px">
-            {`${t('Creator')}:`}
-          </Text>
         </Flex>
       </Box>
       <IconButton as={Link} to={votingLink}>
