@@ -31,7 +31,7 @@ const Message: React.FC<MessageProps> = ({ children, variant, ...props }) => {
   const Icon = Icons[variant];
   return (
     <MessageContainer variant={variant} {...props}>
-      <Icon color={variants[variant].borderColor} width="24px" mr="12px" />
+      <Icon color={variants[variant].borderColor} width="24px" mr="12px" style={{ alignSelf: "center" }} />
       {children}
     </MessageContainer>
   );

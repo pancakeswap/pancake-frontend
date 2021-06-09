@@ -1,2 +1,2 @@
-export { default as Mesage } from "./Message";
+export { default as Message } from "./Message";
 export type { MessageProps } from "./types";
