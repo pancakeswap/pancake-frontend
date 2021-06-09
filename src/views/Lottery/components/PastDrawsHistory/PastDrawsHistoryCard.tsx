@@ -60,7 +60,7 @@ const PastDrawsHistoryCard: React.FC = () => {
                   value: 200,
                 },
                 {
-                  label: 'Max',
+                  label: t('Max'),
                   value: 'max',
                 },
               ]}
