@@ -1,6 +1,12 @@
 import { useEffect, useRef } from 'react'
 import { useWeb3React } from '@web3-react/core'
-import { getCakeBalance, getUserStakeInCakeBnbLp, getUserStakeInCakePool, getUserStakeInPools } from 'utils/callHelpers'
+import {
+  getCakeBalance,
+  getUserCakeVaultBalance,
+  getUserStakeInCakeBnbLp,
+  getUserStakeInCakePool,
+  getUserStakeInPools,
+} from 'utils/callHelpers'
 import { BIG_ZERO } from 'utils/bigNumber'
 import usePersistState from 'hooks/usePersistState'
 import BigNumber from 'bignumber.js'
@@ -11,6 +17,7 @@ interface State {
   cakePool: BigNumber
   cakeBalance: BigNumber
   pools: BigNumber
+  cakeVaultBalance: BigNumber
 }
 
 interface VotingPowerHydrate {
@@ -19,6 +26,7 @@ interface VotingPowerHydrate {
   cakePool: string
   cakeBalance: string
   pools: string
+  cakeVaultBalance: string
 }
 
 const hydrateVotingPower = (value: VotingPowerHydrate): State => {
@@ -28,6 +36,7 @@ const hydrateVotingPower = (value: VotingPowerHydrate): State => {
     cakePool: new BigNumber(value.cakePool),
     cakeBalance: new BigNumber(value.cakeBalance),
     pools: new BigNumber(value.pools),
+    cakeVaultBalance: new BigNumber(value.cakeVaultBalance),
   }
 }
 
@@ -38,6 +47,7 @@ const dehydrateVotingPower = (state: State) => {
     cakePool: state.cakePool.toJSON(),
     cakeBalance: state.cakeBalance.toJSON(),
     pools: state.pools.toJSON(),
+    cakeVaultBalance: state.cakeVaultBalance.toJSON(),
   }
 }
 
@@ -47,6 +57,7 @@ const initialState: State = {
   cakePool: BIG_ZERO,
   cakeBalance: BIG_ZERO,
   pools: BIG_ZERO,
+  cakeVaultBalance: BIG_ZERO,
 }
 
 const useGetVotingPower = (block?: number) => {
@@ -65,12 +76,14 @@ const useGetVotingPower = (block?: number) => {
 
   useEffect(() => {
     const fetchVotingPower = async () => {
-      const [userSTakeInCakeBnbLp, userStakeInCakePool, userCakeBalance, userPools] = await Promise.all([
-        getUserStakeInCakeBnbLp(account, block),
-        getUserStakeInCakePool(account, block),
-        getCakeBalance(account, block),
-        getUserStakeInPools(account, block),
-      ])
+      const [userSTakeInCakeBnbLp, userStakeInCakePool, userCakeBalance, userPools, userCakeVaultBalance] =
+        await Promise.all([
+          getUserStakeInCakeBnbLp(account, block),
+          getUserStakeInCakePool(account, block),
+          getCakeBalance(account, block),
+          getUserStakeInPools(account, block),
+          getUserCakeVaultBalance(account, block),
+        ])
 
       if (!isCancelled.current) {
         setVotingPower({
@@ -79,6 +92,7 @@ const useGetVotingPower = (block?: number) => {
           cakeBnbLp: userSTakeInCakeBnbLp,
           cakePool: userStakeInCakePool,
           cakeBalance: userCakeBalance,
+          cakeVaultBalance: userCakeVaultBalance,
         })
       }
     }
