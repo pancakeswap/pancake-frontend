@@ -30,7 +30,14 @@ import { getCanClaim } from './predictions/helpers'
 import { transformPool } from './pools/helpers'
 import { fetchPoolsStakingLimitsAsync } from './pools'
 import { fetchFarmUserDataAsync, nonArchivedFarms } from './farms'
-import { fetchPublicLotteryData, fetchCurrentLottery, fetchUserTickets } from './lottery'
+import {
+  fetchPublicLotteryData,
+  fetchCurrentLottery,
+  fetchUserTickets,
+  fetchPastLotteries,
+  fetchUserLotteryHistory,
+} from './lottery'
+import { getPastLotteries, getUserPastLotteries } from './lottery/helpers'
 
 export const usePollFarmsData = (includeArchive = false) => {
   const dispatch = useAppDispatch()
@@ -507,18 +514,23 @@ export const useFetchLottery = () => {
   const dispatch = useAppDispatch()
   const currentLotteryId = useGetCurrentLotteryId()
 
+  // get current lottery ID, max tickets and historical lottery data
   useEffect(() => {
     dispatch(fetchPublicLotteryData())
+    dispatch(fetchPastLotteries())
   }, [dispatch])
 
-  // get user data for current lottery
+  // get user data for current and past lotteries
   useEffect(() => {
     if (account && currentLotteryId) {
       dispatch(fetchUserTickets({ account, lotteryId: currentLotteryId }))
     }
+    if (account) {
+      dispatch(fetchUserLotteryHistory({ account }))
+    }
   }, [dispatch, currentLotteryId, account])
 
-  // get public data for current lottery
+  // get data for current lottery
   useEffect(() => {
     if (currentLotteryId) {
       dispatch(fetchCurrentLottery({ currentLotteryId }))
@@ -535,6 +547,7 @@ export const useLottery = () => {
   const currentLotteryId = useGetCurrentLotteryId()
   const maxNumberTicketsPerBuyAsString = useSelector((state: State) => state.lottery.maxNumberTicketsPerBuy)
 
+  // TODO: Move some of this to helper function?
   const {
     isLoading,
     status,
