@@ -12,6 +12,7 @@ interface ModalInputProps {
   value: string
   addLiquidityUrl?: string
   inputTitle?: string
+  decimals?: number
 }
 
 const getBoxShadow = ({ isWarning = false, theme }) => {
@@ -64,6 +65,7 @@ const ModalInput: React.FC<ModalInputProps> = ({
   value,
   addLiquidityUrl,
   inputTitle,
+  decimals = 18,
 }) => {
   const { t } = useTranslation()
   const isBalanceZero = max === '0' || !max
@@ -88,7 +90,7 @@ const ModalInput: React.FC<ModalInputProps> = ({
         </Flex>
         <Flex alignItems="flex-end" justifyContent="space-around">
           <StyledInput
-            pattern="^[0-9]*[.,]?[0-9]*$"
+            pattern={`^[0-9]*[.,]?[0-9]{0,${decimals}}$`}
             inputMode="decimal"
             step="any"
             min="0"
