@@ -45,7 +45,7 @@ const Vote: React.FC<VoteProps> = ({ proposal, ...props }) => {
           const handleChange = () => {
             setVote({
               label: choice,
-              value: index,
+              value: index + 1,
             })
           }
 

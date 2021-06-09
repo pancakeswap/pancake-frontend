@@ -38,7 +38,9 @@ export interface Vote {
   voter: string
   created: number
   space: Space
-  proposal: string
+  proposal: {
+    choices: Proposal['choices']
+  }
   choice: number
   metadata?: {
     votingPower: string

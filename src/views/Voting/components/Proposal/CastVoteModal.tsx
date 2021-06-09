@@ -1,12 +1,12 @@
 import React from 'react'
 import { Box, Button, ChevronRightIcon, InjectedModalProps, Modal, Skeleton, Text } from '@pancakeswap/uikit'
-import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
 import useWeb3 from 'hooks/useWeb3'
 import useGetVotingPower from '../../hooks/useGetVotingPower'
 import { SnapshotCommand } from '../../types'
 import { generatePayloadData, Message, saveVotingPower, sendSnaphotData } from '../../helpers'
+import ModalBox from './ModalBox'
 
 interface CastVoteModalProps extends InjectedModalProps {
   proposalId: string
@@ -16,18 +16,6 @@ interface CastVoteModalProps extends InjectedModalProps {
   }
   block?: number
 }
-
-const VotingBox = styled.div`
-  align-items: center;
-  border: 1px solid ${({ theme }) => theme.colors.cardBorder};
-  border-radius: 12px;
-  cursor: pointer;
-  display: flex;
-  height: 64px;
-  justify-content: space-between;
-  margin-bottom: 24px;
-  padding: 0 16px;
-`
 
 const CastVoteModal: React.FC<CastVoteModalProps> = ({ proposalId, vote, block, onDismiss }) => {
   const { t } = useTranslation()
@@ -79,12 +67,12 @@ const CastVoteModal: React.FC<CastVoteModalProps> = ({ proposalId, vote, block, 
         {!isInitialized ? (
           <Skeleton height="64px" mb="24px" />
         ) : (
-          <VotingBox>
+          <ModalBox>
             <Text bold fontSize="20px">
               {total.toFixed(3)}
             </Text>
             <ChevronRightIcon width="24px" />
-          </VotingBox>
+          </ModalBox>
         )}
         <Text as="p" color="textSubtle" fontSize="14px">
           {t('Are you sure you want to vote for the above choice? This action cannot be undone.')}

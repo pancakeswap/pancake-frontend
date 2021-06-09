@@ -8,12 +8,14 @@ import {
   Heading,
   Button,
   ChevronUpIcon,
+  Text,
 } from '@pancakeswap/uikit'
 import orderBy from 'lodash/orderBy'
 import { useTranslation } from 'contexts/Localization'
 import VotesLoading from '../components/Proposal/VotesLoading'
 import { Vote } from '../types'
 import VoteRow from '../components/Proposal/VoteRow'
+import Row, { AddressColumn, ChoiceColumn, VotingPowerColumn } from '../components/Proposal/Row'
 
 const VOTES_PER_VIEW = 20
 
@@ -45,6 +47,23 @@ const Votes: React.FC<VotesProps> = ({ votes, isFinished }) => {
 
       {isFinished && displayVotes.length > 0 && (
         <>
+          <Row>
+            <AddressColumn>
+              <Text fontSize="12px" color="textSubtle" textTransform="uppercase" bold>
+                {t('Voter')}
+              </Text>
+            </AddressColumn>
+            <ChoiceColumn>
+              <Text fontSize="12px" color="textSubtle" textTransform="uppercase" bold>
+                {t('Decision')}
+              </Text>
+            </ChoiceColumn>
+            <VotingPowerColumn>
+              <Text fontSize="12px" color="textSubtle" textTransform="uppercase" bold>
+                {t('Vote Weight')}
+              </Text>
+            </VotingPowerColumn>
+          </Row>
           {orderBy(displayVotes, ['created'], ['desc']).map((vote) => {
             return <VoteRow key={vote.id} vote={vote} />
           })}
