@@ -40,7 +40,7 @@ const Vote: React.FC<VoteProps> = ({ proposal, ...props }) => {
       </CardHeader>
       <CardBody>
         {proposal.choices.map((choice, index) => {
-          const isChecked = index === vote?.value
+          const isChecked = index + 1 === vote?.value
 
           const handleChange = () => {
             setVote({
