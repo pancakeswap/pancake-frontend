@@ -20,12 +20,12 @@ const Spacer = styled.div<{ isPastSpacer?: boolean }>`
 `
 
 const ProgressStepper: React.FC<CountdownProps> = ({ steps, activeStepIndex }) => {
-  const { t } = useTranslation()
+  const { t, currentLanguage } = useTranslation()
   return (
     <Flex>
       {steps.map((step, index) => {
         const isPastSpacer = index < activeStepIndex
-        const stepText = t(step.text).toUpperCase()
+        const stepText = t(step.text).toLocaleUpperCase(currentLanguage.locale)
 
         return (
           <React.Fragment key={_uniqueId('ProgressStep-')}>

@@ -33,14 +33,14 @@ const Container = styled.div`
 
 const Farm: React.FunctionComponent<FarmProps> = ({ image, label, pid }) => {
   const { stakedBalance } = useFarmUser(pid)
-  const { t } = useTranslation()
+  const { t, currentLanguage } = useTranslation()
   const rawStakedBalance = getBalanceNumber(stakedBalance)
 
   const handleRenderFarming = (): JSX.Element => {
     if (rawStakedBalance) {
       return (
-        <Text color="secondary" fontSize="12px" bold textTransform="uppercase">
-          {t('Farming')}
+        <Text color="secondary" fontSize="12px" bold>
+          {t('Farming').toLocaleUpperCase(currentLanguage.locale)}
         </Text>
       )
     }

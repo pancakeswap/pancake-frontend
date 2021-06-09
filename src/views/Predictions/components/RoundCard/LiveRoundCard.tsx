@@ -42,7 +42,7 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
   bullMultiplier,
   bearMultiplier,
 }) => {
-  const { t } = useTranslation()
+  const { t, currentLanguage } = useTranslation()
   const { lockPrice, lockBlock, totalAmount } = round
   const { currentBlock } = useBlock()
   const totalInterval = useGetIntervalBlocks()
@@ -92,8 +92,8 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
             isActive={isBull}
           />
           <RoundResultBox betPosition={isBull ? BetPosition.BULL : BetPosition.BEAR}>
-            <Text color="textSubtle" fontSize="12px" bold textTransform="uppercase" mb="8px">
-              {t('Last Price')}
+            <Text color="textSubtle" fontSize="12px" bold mb="8px">
+              {t('Last Price').toLocaleUpperCase(currentLanguage.locale)}
             </Text>
             <Flex alignItems="center" justifyContent="space-between" mb="16px" height="36px">
               <div ref={targetRef}>
@@ -102,7 +102,7 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
                 </TooltipText>
               </div>
               <PositionTag betPosition={isBull ? BetPosition.BULL : BetPosition.BEAR}>
-                {formatUsd(priceDifference)}
+                {formatUsd(priceDifference).toUpperCase()}
               </PositionTag>
             </Flex>
             {lockPrice && <LockPriceRow lockPrice={lockPrice} />}

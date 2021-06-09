@@ -28,7 +28,7 @@ const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({
   isAutoVault,
   earningTokenPrice,
 }) => {
-  const { t } = useTranslation()
+  const { t, currentLanguage } = useTranslation()
   const { account } = useWeb3React()
 
   const earnings = userData?.pendingReward ? new BigNumber(userData.pendingReward) : BIG_ZERO
@@ -79,16 +79,16 @@ const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({
   )
 
   const actionTitle = isAutoVault ? (
-    <Text fontSize="12px" bold color="secondary" as="span" textTransform="uppercase">
-      {t('Recent CAKE profit')}
+    <Text fontSize="12px" bold color="secondary" as="span">
+      {t('Recent CAKE profit').toLocaleUpperCase(currentLanguage.locale)}
     </Text>
   ) : (
     <>
       <Text fontSize="12px" bold color="secondary" as="span" textTransform="uppercase">
         {earningToken.symbol}{' '}
       </Text>
-      <Text fontSize="12px" bold color="textSubtle" as="span" textTransform="uppercase">
-        {t('Earned')}
+      <Text fontSize="12px" bold color="textSubtle" as="span">
+        {t('Earned').toLocaleUpperCase(currentLanguage.locale)}
       </Text>
     </>
   )

@@ -10,7 +10,7 @@ interface Props {
 }
 
 const Timer: React.FC<Props> = ({ publicIfoData }) => {
-  const { t } = useTranslation()
+  const { t, currentLanguage } = useTranslation()
   const { status, secondsUntilStart, secondsUntilEnd, startBlockNum } = publicIfoData
   const countdownToUse = status === 'coming_soon' ? secondsUntilStart : secondsUntilEnd
   const timeUntil = getTimePeriods(countdownToUse)
@@ -33,14 +33,8 @@ const Timer: React.FC<Props> = ({ publicIfoData }) => {
                 minute: timeUntil.minutes,
               })}
             </Text>
-            <Link
-              href={getBscScanBlockCountdownUrl(startBlockNum)}
-              target="blank"
-              rel="noopener noreferrer"
-              ml="8px"
-              textTransform="lowercase"
-            >
-              {`(${t('Blocks')})`}
+            <Link href={getBscScanBlockCountdownUrl(startBlockNum)} target="blank" rel="noopener noreferrer" ml="8px">
+              {`(${t('Blocks').toLocaleLowerCase(currentLanguage.locale)})`}
             </Link>
           </Flex>
         </>

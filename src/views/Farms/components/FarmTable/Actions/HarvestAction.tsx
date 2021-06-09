@@ -33,7 +33,7 @@ const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({ pid, userD
 
   const [pendingTx, setPendingTx] = useState(false)
   const { onReward } = useHarvest(pid)
-  const { t } = useTranslation()
+  const { t, currentLanguage } = useTranslation()
   const dispatch = useAppDispatch()
   const { account } = useWeb3React()
   const { countUp, update } = useCountUp({
@@ -53,7 +53,7 @@ const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({ pid, userD
     <ActionContainer>
       <ActionTitles>
         <Title>CAKE </Title>
-        <Subtle>{t('Earned').toUpperCase()}</Subtle>
+        <Subtle>{t('Earned').toLocaleUpperCase(currentLanguage.locale)}</Subtle>
       </ActionTitles>
       <ActionContent>
         <div>

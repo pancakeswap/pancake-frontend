@@ -35,7 +35,7 @@ const ExpandedWrapper = styled(Flex)`
 `
 
 const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
-  const { t } = useTranslation()
+  const { t, currentLanguage } = useTranslation()
   const { currentBlock } = useBlock()
   const {
     totalCakeInVault,
@@ -96,8 +96,8 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
             ) : (
               <Skeleton width="54px" height="21px" />
             )}
-            <Text ml="4px" color="primary" small textTransform="lowercase">
-              {t('Blocks')}
+            <Text ml="4px" color="primary" small>
+              {t('Blocks').toLocaleLowerCase(currentLanguage.locale)}
             </Text>
             <TimerIcon ml="4px" color="primary" />
           </Flex>

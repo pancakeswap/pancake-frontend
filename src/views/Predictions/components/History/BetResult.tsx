@@ -27,7 +27,7 @@ const StyledBetResult = styled(Box)`
 `
 
 const BetResult: React.FC<BetResultProps> = ({ bet, result }) => {
-  const { t } = useTranslation()
+  const { t, currentLanguage } = useTranslation()
   const dispatch = useAppDispatch()
   const { account } = useWeb3React()
   const { isRefundable } = useIsRefundable(bet.round.epoch)
@@ -96,8 +96,8 @@ const BetResult: React.FC<BetResultProps> = ({ bet, result }) => {
       <Flex alignItems="center" justifyContent="space-between" mb="8px">
         <Heading>{t('Your History')}</Heading>
         <Flex alignItems="center">
-          <Heading as="h3" color={getHeaderColor()} textTransform="uppercase" bold mr="4px">
-            {getHeaderText()}
+          <Heading as="h3" color={getHeaderColor()} bold mr="4px">
+            {getHeaderText().toLocaleUpperCase(currentLanguage.locale)}
           </Heading>
           {getHeaderIcon()}
         </Flex>
@@ -122,7 +122,9 @@ const BetResult: React.FC<BetResultProps> = ({ bet, result }) => {
         <Flex alignItems="center" justifyContent="space-between" mb="16px">
           <Text>{t('Your direction')}</Text>
           <PositionTag betPosition={bet.position}>
-            {bet.position === BetPosition.BULL ? t('Up') : t('Down')}
+            {bet.position === BetPosition.BULL
+              ? t('Up').toLocaleUpperCase(currentLanguage.locale)
+              : t('Down').toLocaleUpperCase(currentLanguage.locale)}
           </PositionTag>
         </Flex>
         <Flex alignItems="center" justifyContent="space-between" mb="16px">

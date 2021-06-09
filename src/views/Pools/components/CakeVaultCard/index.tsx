@@ -24,7 +24,7 @@ interface CakeVaultProps {
 }
 
 const CakeVaultCard: React.FC<CakeVaultProps> = ({ pool, showStakedOnly }) => {
-  const { t } = useTranslation()
+  const { t, currentLanguage } = useTranslation()
   const { isXl } = useMatchBreakpoints()
   const { account } = useWeb3React()
   const {
@@ -63,8 +63,8 @@ const CakeVaultCard: React.FC<CakeVaultProps> = ({ pool, showStakedOnly }) => {
               <VaultCardActions pool={pool} accountHasSharesStaked={accountHasSharesStaked} isLoading={isLoading} />
             ) : (
               <>
-                <Text mb="10px" textTransform="uppercase" fontSize="12px" color="textSubtle" bold>
-                  {t('Start earning')}
+                <Text mb="10px" fontSize="12px" color="textSubtle" bold>
+                  {t('Start earning').toLocaleUpperCase(currentLanguage.locale)}
                 </Text>
                 <UnlockButton />
               </>

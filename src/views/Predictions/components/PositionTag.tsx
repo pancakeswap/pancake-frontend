@@ -29,7 +29,7 @@ export const Tag: React.FC<TagProps> = ({ bg = 'success', startIcon, children, o
       {...props}
     >
       {icon}
-      <Text textTransform="uppercase" color="white" ml="4px">
+      <Text color="white" ml="4px">
         {children}
       </Text>
     </StyledTag>

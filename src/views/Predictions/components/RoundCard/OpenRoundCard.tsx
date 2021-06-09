@@ -42,7 +42,7 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
     isSettingPosition: false,
     position: BetPosition.BULL,
   })
-  const { t } = useTranslation()
+  const { t, currentLanguage } = useTranslation()
   const interval = useGetIntervalBlocks()
   const { toastSuccess } = useToast()
   const { account } = useWeb3React()
@@ -50,7 +50,10 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
   const { currentBlock } = useBlock()
   const { isSettingPosition, position } = state
   const isBufferPhase = currentBlock >= round.startBlock + interval
-  const positionDisplay = position === BetPosition.BULL ? t('Up').toUpperCase() : t('Down').toUpperCase()
+  const positionDisplay =
+    position === BetPosition.BULL
+      ? t('Up').toLocaleUpperCase(currentLanguage.locale)
+      : t('Down').toLocaleUpperCase(currentLanguage.locale)
   const { targetRef, tooltipVisible, tooltip } = useTooltip(
     <div style={{ whiteSpace: 'nowrap' }}>{`${formatBnb(betAmount)} BNB`}</div>,
     { placement: 'top' },

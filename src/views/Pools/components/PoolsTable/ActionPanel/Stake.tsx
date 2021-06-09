@@ -41,7 +41,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
     stakingTokenPrice,
     isAutoVault,
   } = pool
-  const { t } = useTranslation()
+  const { t, currentLanguage } = useTranslation()
   const { account } = useWeb3React()
 
   const stakingTokenContract = useERC20(stakingToken.address ? getAddress(stakingToken.address) : '')
@@ -135,8 +135,8 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
     return (
       <ActionContainer>
         <ActionTitles>
-          <Text fontSize="12px" bold color="textSubtle" as="span" textTransform="uppercase">
-            {t('Start staking')}
+          <Text fontSize="12px" bold color="textSubtle" as="span">
+            {t('Start staking').toLocaleUpperCase(currentLanguage.locale)}
           </Text>
         </ActionTitles>
         <ActionContent>
@@ -150,8 +150,8 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
     return (
       <ActionContainer>
         <ActionTitles>
-          <Text fontSize="12px" bold color="textSubtle" as="span" textTransform="uppercase">
-            {t('Start staking')}
+          <Text fontSize="12px" bold color="textSubtle" as="span">
+            {t('Start staking').toLocaleUpperCase(currentLanguage.locale)}
           </Text>
         </ActionTitles>
         <ActionContent>
@@ -165,8 +165,8 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
     return (
       <ActionContainer>
         <ActionTitles>
-          <Text fontSize="12px" bold color="textSubtle" as="span" textTransform="uppercase">
-            {t('Enable pool')}
+          <Text fontSize="12px" bold color="textSubtle" as="span">
+            {t('Enable pool').toLocaleUpperCase(currentLanguage.locale)}
           </Text>
         </ActionTitles>
         <ActionContent>
@@ -186,8 +186,10 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
           <Text fontSize="12px" bold color="secondary" as="span" textTransform="uppercase">
             {stakingToken.symbol}{' '}
           </Text>
-          <Text fontSize="12px" bold color="textSubtle" as="span" textTransform="uppercase">
-            {isAutoVault ? t('Staked (compounding)') : t('Staked')}
+          <Text fontSize="12px" bold color="textSubtle" as="span">
+            {isAutoVault
+              ? t('Staked (compounding)').toLocaleUpperCase(currentLanguage.locale)
+              : t('Staked').toLocaleUpperCase(currentLanguage.locale)}
           </Text>
         </ActionTitles>
         <ActionContent>
@@ -238,8 +240,8 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
   return (
     <ActionContainer>
       <ActionTitles>
-        <Text fontSize="12px" bold color="secondary" as="span" textTransform="uppercase">
-          {t('Stake')}{' '}
+        <Text fontSize="12px" bold color="secondary" as="span">
+          {t('Stake').toLocaleUpperCase(currentLanguage.locale)}{' '}
         </Text>
         <Text fontSize="12px" bold color="textSubtle" as="span" textTransform="uppercase">
           {stakingToken.symbol}

@@ -40,7 +40,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
   compoundFrequency = 1,
   performanceFee = 0,
 }) => {
-  const { t } = useTranslation()
+  const { t, currentLanguage } = useTranslation()
   const oneThousandDollarsWorthOfToken = 1000 / tokenPrice
 
   const tokenEarnedPerThousand1D = tokenEarnedPerThousandDollarsCompounding({
@@ -80,18 +80,18 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
     <Modal title={t('ROI')} onDismiss={onDismiss}>
       <Grid>
         <GridHeaderItem>
-          <Text fontSize="12px" bold color="textSubtle" textTransform="uppercase" mb="12px">
-            {t('Timeframe')}
+          <Text fontSize="12px" bold color="textSubtle" mb="12px">
+            {t('Timeframe').toLocaleUpperCase(currentLanguage.locale)}
           </Text>
         </GridHeaderItem>
         <GridHeaderItem>
-          <Text fontSize="12px" bold color="textSubtle" textTransform="uppercase" mr="12px" ml="12px" mb="12px">
-            {t('ROI')}
+          <Text fontSize="12px" bold color="textSubtle" mr="12px" ml="12px" mb="12px">
+            {t('ROI').toLocaleUpperCase(currentLanguage.locale)}
           </Text>
         </GridHeaderItem>
         <GridHeaderItem>
-          <Text fontSize="12px" bold color="textSubtle" textTransform="uppercase" mb="12px">
-            {t('%symbol% per $1,000', { symbol: earningTokenSymbol })}
+          <Text fontSize="12px" bold color="textSubtle" mb="12px">
+            {t('%symbol% per $1,000', { symbol: earningTokenSymbol }).toLocaleUpperCase(currentLanguage.locale)}
           </Text>
         </GridHeaderItem>
         {/* 1 day row */}

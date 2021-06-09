@@ -22,7 +22,7 @@ const StyledThead = styled.thead`
 const UserPrizeGrid: React.FC<{ userTradingInformation?: UserTradingInformationProps }> = ({
   userTradingInformation,
 }) => {
-  const { t } = useTranslation()
+  const { t, currentLanguage } = useTranslation()
   const { userRewardGroup, userCakeRewards, userPointReward, canClaimNFT } = userTradingInformation
   const { cakeReward, dollarValueOfCakeReward } = useCompetitionCakeRewards(userCakeRewards)
   const { champion, teamPlayer } = getRewardGroupAchievements(userRewardGroup)
@@ -55,8 +55,8 @@ const UserPrizeGrid: React.FC<{ userTradingInformation?: UserTradingInformationP
               {champion && <CrownIcon mr={[0, '4px']} />}
               {teamPlayer && <TeamPlayerIcon mr={[0, '4px']} />}
               <TrophyGoldIcon mr={[0, '4px']} />
-              <Text fontSize="12px" color="textSubtle" textTransform="lowercase">
-                + {userPointReward} {t('Points')}
+              <Text fontSize="12px" color="textSubtle">
+                + {userPointReward.toLowerCase()} {t('Points').toLocaleLowerCase(currentLanguage.locale)}
               </Text>
             </Flex>
           </Td>

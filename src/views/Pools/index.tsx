@@ -52,7 +52,7 @@ const NUMBER_OF_POOLS_VISIBLE = 12
 
 const Pools: React.FC = () => {
   const location = useLocation()
-  const { t } = useTranslation()
+  const { t, currentLanguage } = useTranslation()
   const { account } = useWeb3React()
   const { pools: poolsWithoutAutoVault, userDataLoaded } = usePools(account)
   const [stakedOnly, setStakedOnly] = usePersistState(false, { localStorageKey: 'pancake_pool_staked' })
@@ -236,8 +236,8 @@ const Pools: React.FC = () => {
           />
           <SearchSortContainer>
             <Flex flexDirection="column" width="50%">
-              <Text fontSize="12px" bold color="textSubtle" textTransform="uppercase">
-                {t('Sort by')}
+              <Text fontSize="12px" bold color="textSubtle">
+                {t('Sort by').toLocaleUpperCase(currentLanguage.locale)}
               </Text>
               <ControlStretch>
                 <Select
@@ -264,8 +264,8 @@ const Pools: React.FC = () => {
               </ControlStretch>
             </Flex>
             <Flex flexDirection="column" width="50%">
-              <Text fontSize="12px" bold color="textSubtle" textTransform="uppercase">
-                {t('Search')}
+              <Text fontSize="12px" bold color="textSubtle">
+                {t('Search').toLocaleUpperCase(currentLanguage.locale)}
               </Text>
               <ControlStretch>
                 <SearchInput onChange={handleChangeSearchQuery} placeholder="Search Pools" />

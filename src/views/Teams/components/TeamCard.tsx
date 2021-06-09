@@ -74,7 +74,7 @@ const StatRow = styled.div`
 `
 
 const TeamCard: React.FC<TeamCardProps> = ({ team }) => {
-  const { t } = useTranslation()
+  const { t, currentLanguage } = useTranslation()
 
   return (
     <Wrapper>
@@ -90,8 +90,17 @@ const TeamCard: React.FC<TeamCardProps> = ({ team }) => {
         </StyledCardHeader>
         <CardBody>
           <StatRow>
-            <StatBox icon={CommunityIcon} title={team.users} subtitle={t('Active Members')} />
-            <StatBox icon={PrizeIcon} title={t('Coming Soon')} subtitle={t('Team Points')} isDisabled />
+            <StatBox
+              icon={CommunityIcon}
+              title={team.users}
+              subtitle={t('Active Members').toLocaleUpperCase(currentLanguage.locale)}
+            />
+            <StatBox
+              icon={PrizeIcon}
+              title={t('Coming Soon')}
+              subtitle={t('Team Points').toLocaleUpperCase(currentLanguage.locale)}
+              isDisabled
+            />
           </StatRow>
           <Heading as="h3">{t('Team Achievements')}</Heading>
           <ComingSoon />

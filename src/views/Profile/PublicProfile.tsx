@@ -87,7 +87,7 @@ const PublicProfile = () => {
   const [usernameVisibilityToggled, setUsernameVisibility] = usePersistState(false, {
     localStorageKey: 'username_visibility_toggled',
   })
-  const { t } = useTranslation()
+  const { t, currentLanguage } = useTranslation()
 
   if (!account) {
     return <WalletNotConnected />
@@ -136,7 +136,12 @@ const PublicProfile = () => {
             </Status>
           </CardHeader>
           <CardBody>
-            <StatBox icon={PrizeIcon} title={points} subtitle={t('Points')} mb="24px" />
+            <StatBox
+              icon={PrizeIcon}
+              title={points}
+              subtitle={t('Points').toLocaleUpperCase(currentLanguage.locale)}
+              mb="24px"
+            />
             <Section>
               <Heading as="h4" scale="md" mb="16px">
                 {t('Achievements')}

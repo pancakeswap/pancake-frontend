@@ -107,7 +107,7 @@ const InfoSection = styled(Box)`
 
 const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded, expanded, breakpoints }) => {
   const { sousId, stakingToken, earningToken, totalStaked, endBlock, stakingLimit, isAutoVault } = pool
-  const { t } = useTranslation()
+  const { t, currentLanguage } = useTranslation()
   const { currentBlock } = useBlock()
   const { isXs, isSm, isMd } = breakpoints
   const showSubtitle = (isXs || isSm) && sousId === 0
@@ -173,8 +173,8 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
         <Flex>
           <Link external href={getBscScanBlockCountdownUrl(endBlock)}>
             <Balance fontSize="16px" value={blocksToDisplay} decimals={0} color="primary" />
-            <Text ml="4px" color="primary" textTransform="lowercase">
-              {t('Blocks')}
+            <Text ml="4px" color="primary">
+              {t('Blocks').toLocaleLowerCase(currentLanguage.locale)}
             </Text>
             <TimerIcon ml="4px" color="primary" />
           </Link>

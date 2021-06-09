@@ -13,7 +13,7 @@ import CardActions from './CardActions'
 
 const PoolCard: React.FC<{ pool: Pool; account: string }> = ({ pool, account }) => {
   const { sousId, stakingToken, earningToken, isFinished, userData } = pool
-  const { t } = useTranslation()
+  const { t, currentLanguage } = useTranslation()
   const stakedBalance = userData?.stakedBalance ? new BigNumber(userData.stakedBalance) : BIG_ZERO
   const accountHasStakedBalance = stakedBalance.gt(0)
 
@@ -36,8 +36,8 @@ const PoolCard: React.FC<{ pool: Pool; account: string }> = ({ pool, account }) 
               <CardActions pool={pool} stakedBalance={stakedBalance} />
             ) : (
               <>
-                <Text mb="10px" textTransform="uppercase" fontSize="12px" color="textSubtle" bold>
-                  {t('Start earning')}
+                <Text mb="10px" fontSize="12px" color="textSubtle" bold>
+                  {t('Start earning').toLocaleUpperCase(currentLanguage.locale)}
                 </Text>
                 <UnlockButton />
               </>

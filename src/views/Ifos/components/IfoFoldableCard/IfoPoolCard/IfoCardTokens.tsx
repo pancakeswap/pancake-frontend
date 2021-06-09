@@ -33,7 +33,7 @@ const TokenSection: React.FC<TokenSectionProps> = ({ img, children, ...props }) 
   )
 }
 
-const Label = (props) => <Text bold fontSize="12px" color="secondary" textTransform="uppercase" {...props} />
+const Label = (props) => <Text bold fontSize="12px" color="secondary" {...props} />
 
 const Value = (props) => <Text bold fontSize="20px" style={{ wordBreak: 'break-all' }} {...props} />
 
@@ -59,7 +59,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
   enableStatus,
 }) => {
   const { account } = useWeb3React()
-  const { t } = useTranslation()
+  const { t, currentLanguage } = useTranslation()
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     t(
       'Sorry, you didn’t contribute enough LP tokens to meet the minimum threshold. You didn’t buy anything in this sale, but you can still reclaim your LP tokens.',
@@ -89,7 +89,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
       return (
         <>
           <TokenSection img="/images/bunny-placeholder.svg">
-            <Label>{t('On sale')}</Label>
+            <Label>{t('On sale').toLocaleUpperCase(currentLanguage.locale)}</Label>
             <Value>{ifo[poolId].saleAmount}</Value>
           </TokenSection>
           <Text fontSize="14px" color="textSubtle" pl="48px">
@@ -113,7 +113,9 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
       return (
         <>
           <TokenSection img="/images/farms/cake-bnb.svg" mb="24px">
-            <Label>{t('Your %symbol% committed', { symbol: currency.symbol })}</Label>
+            <Label>
+              {t('Your %symbol% committed', { symbol: currency.symbol }).toLocaleUpperCase(currentLanguage.locale)}
+            </Label>
             <Value>{getBalanceNumber(userPoolCharacteristics.amountTokenCommittedInLP, currency.decimals)}</Value>
             <PercentageOfTotal
               userAmount={userPoolCharacteristics.amountTokenCommittedInLP}
@@ -121,7 +123,9 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
             />
           </TokenSection>
           <TokenSection img={tokenImage}>
-            <Label>{t('%symbol% to receive', { symbol: token.symbol })}</Label>
+            <Label>
+              {t('%symbol% to receive', { symbol: token.symbol }).toLocaleUpperCase(currentLanguage.locale)}
+            </Label>
             <Value>{getBalanceNumber(userPoolCharacteristics.offeringAmountInToken, token.decimals)}</Value>
           </TokenSection>
         </>
@@ -137,7 +141,9 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
         <>
           <TokenSection img="/images/farms/cake-bnb.svg" mb="24px">
             <Label>
-              {t(hasClaimed ? 'Your %symbol% RECLAIMED' : 'Your %symbol% TO RECLAIM', { symbol: currency.symbol })}
+              {t(hasClaimed ? 'Your %symbol% RECLAIMED' : 'Your %symbol% TO RECLAIM', {
+                symbol: currency.symbol,
+              }).toLocaleUpperCase(currentLanguage.locale)}
             </Label>
             <Flex alignItems="center">
               <Value>{getBalanceNumber(userPoolCharacteristics.refundingAmountInLP, currency.decimals)}</Value>
@@ -149,7 +155,12 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
             />
           </TokenSection>
           <TokenSection img={tokenImage}>
-            <Label> {t(hasClaimed ? '%symbol% received' : '%symbol% to receive', { symbol: token.symbol })}</Label>
+            <Label>
+              {' '}
+              {t(hasClaimed ? '%symbol% received' : '%symbol% to receive', { symbol: token.symbol }).toLocaleUpperCase(
+                currentLanguage.locale,
+              )}
+            </Label>
             <Flex alignItems="center">
               <Value>{getBalanceNumber(userPoolCharacteristics.offeringAmountInToken, token.decimals)}</Value>
               {!hasClaimed && userPoolCharacteristics.offeringAmountInToken.isEqualTo(0) && (

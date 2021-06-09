@@ -38,7 +38,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
   token,
   userDataReady,
 }) => {
-  const { t } = useTranslation()
+  const { t, currentLanguage } = useTranslation()
   const { account } = useWeb3React()
   const [requestedApproval, setRequestedApproval] = useState(false)
   const { allowance, tokenBalance, stakedBalance } = useFarmUser(pid)
@@ -100,7 +100,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
     return (
       <ActionContainer>
         <ActionTitles>
-          <Subtle>{t('Start Farming').toUpperCase()}</Subtle>
+          <Subtle>{t('Start Farming').toLocaleUpperCase(currentLanguage.locale)}</Subtle>
         </ActionTitles>
         <ActionContent>
           <UnlockButton width="100%" />
@@ -115,7 +115,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
         <ActionContainer>
           <ActionTitles>
             <Title>{lpSymbol} </Title>
-            <Subtle>{t('Staked').toUpperCase()}</Subtle>
+            <Subtle>{t('Staked').toLocaleUpperCase(currentLanguage.locale)}</Subtle>
           </ActionTitles>
           <ActionContent>
             <div>
@@ -141,7 +141,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
     return (
       <ActionContainer>
         <ActionTitles>
-          <Subtle>{t('Stake').toUpperCase()} </Subtle>
+          <Subtle>{t('Stake').toLocaleUpperCase(currentLanguage.locale)} </Subtle>
           <Title>{lpSymbol}</Title>
         </ActionTitles>
         <ActionContent>
@@ -162,7 +162,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
     return (
       <ActionContainer>
         <ActionTitles>
-          <Subtle>{t('Start Farming').toUpperCase()}</Subtle>
+          <Subtle>{t('Start Farming').toLocaleUpperCase(currentLanguage.locale)}</Subtle>
         </ActionTitles>
         <ActionContent>
           <Skeleton width={180} marginBottom={28} marginTop={14} />
@@ -174,7 +174,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
   return (
     <ActionContainer>
       <ActionTitles>
-        <Subtle>{t('Enable Farm').toUpperCase()}</Subtle>
+        <Subtle>{t('Enable Farm').toLocaleUpperCase(currentLanguage.locale)}</Subtle>
       </ActionTitles>
       <ActionContent>
         <Button width="100%" disabled={requestedApproval} onClick={handleApprove} variant="secondary">

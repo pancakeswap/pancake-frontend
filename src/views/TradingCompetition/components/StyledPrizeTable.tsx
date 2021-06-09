@@ -24,7 +24,6 @@ export const StyledPrizeTable = styled.table`
   & > thead th {
     font-size: 12px;
     padding: 16px 0;
-    text-transform: uppercase;
 
     ${({ theme }) => theme.mediaQueries.xs} {
       padding: 16px 8px;

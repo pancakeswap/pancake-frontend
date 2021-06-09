@@ -79,7 +79,7 @@ const getTotalAchievementPoints = (achievements: Rank['achievements']) => {
 
 const PrizesGrid = () => {
   const [tab, setTab] = useState(0)
-  const { t } = useTranslation()
+  const { t, currentLanguage } = useTranslation()
   const rows = easterPrizes[tab + 1]
 
   const handleItemClick = (index: number) => setTab(index)
@@ -95,11 +95,11 @@ const PrizesGrid = () => {
         <StyledPrizeTable>
           <thead>
             <tr>
-              <th>{t('Rank in team')}</th>
-              <th>{t('Tier')}</th>
-              <th>{t('CAKE Prizes (Split)')}</th>
-              <th>{t('Achievements')}</th>
-              <th>{t('NFT')}</th>
+              <th>{t('Rank in team').toLocaleUpperCase(currentLanguage.locale)}</th>
+              <th>{t('Tier').toLocaleUpperCase(currentLanguage.locale)}</th>
+              <th>{t('CAKE Prizes (Split)').toLocaleUpperCase(currentLanguage.locale)}</th>
+              <th>{t('Achievements').toLocaleUpperCase(currentLanguage.locale)}</th>
+              <th>{t('NFT').toLocaleUpperCase(currentLanguage.locale)}</th>
             </tr>
           </thead>
           <tbody>
@@ -112,8 +112,8 @@ const PrizesGrid = () => {
                   <BoldTd>{row.rank}</BoldTd>
                   <Td>
                     <Icon />
-                    <Text color={color} fontSize="12px" bold textTransform="uppercase">
-                      {t(label.text)}
+                    <Text color={color} fontSize="12px" bold>
+                      {t(label.text).toLocaleUpperCase(currentLanguage.locale)}
                     </Text>
                   </Td>
                   <BoldTd>

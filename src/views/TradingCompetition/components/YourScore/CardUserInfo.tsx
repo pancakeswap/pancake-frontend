@@ -47,7 +47,7 @@ const CardUserInfo: React.FC<YourScoreProps> = ({
   userLeaderboardInformation,
   currentPhase,
 }) => {
-  const { t } = useTranslation()
+  const { t, currentLanguage } = useTranslation()
   const [onPresentShareModal] = useModal(
     <ShareImageModal profile={profile} userLeaderboardInformation={userLeaderboardInformation} />,
     false,
@@ -174,7 +174,7 @@ const CardUserInfo: React.FC<YourScoreProps> = ({
               {volume > 0 && (
                 <UserRankBox
                   flex="1"
-                  title={t('Rank in team').toUpperCase()}
+                  title={t('Rank in team').toLocaleUpperCase(currentLanguage.locale)}
                   footer={userLeaderboardInformation ? t('#%global% Overall', { global: global.toLocaleString() }) : ''}
                   mr={[0, '8px']}
                   mb={['8px', 0]}
@@ -193,7 +193,7 @@ const CardUserInfo: React.FC<YourScoreProps> = ({
               )}
               <UserRankBox
                 flex="1"
-                title={t('Your volume').toUpperCase()}
+                title={t('Your volume').toLocaleUpperCase(currentLanguage.locale)}
                 footer={t('Since start')}
                 // Add responsive mr if competition is LIVE
                 mr={currentPhase.state === LIVE ? [0, null, '8px'] : 0}
@@ -213,7 +213,7 @@ const CardUserInfo: React.FC<YourScoreProps> = ({
                 // If user is first
                 <NextRankBox
                   flex="2"
-                  title={t('Your tier: gold').toUpperCase()}
+                  title={t('Your tier: gold').toLocaleUpperCase(currentLanguage.locale)}
                   footer={t('Love, The Chefs x')}
                   currentMedal={medal.current}
                   hideArrow
@@ -223,7 +223,7 @@ const CardUserInfo: React.FC<YourScoreProps> = ({
               ) : (
                 <NextRankBox
                   flex="2"
-                  title={`${t('Next tier').toUpperCase()}: ${nextTier.color}`}
+                  title={`${t('Next tier').toLocaleUpperCase(currentLanguage.locale)}: ${nextTier.color}`}
                   footer={t('to become #%rank% in team', { rank: nextTier.rank })}
                   currentMedal={medal.current}
                   nextMedal={medal.next}

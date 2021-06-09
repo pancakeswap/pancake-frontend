@@ -31,7 +31,7 @@ const LabelWrapper = styled.div`
 `
 
 const PastDrawsHistoryCard: React.FC = () => {
-  const { t } = useTranslation()
+  const { t, currentLanguage } = useTranslation()
   const [showLast, setShowLast] = useState<'max' | number>(50)
   const handleShowLastChange = (option: OptionProps): void => {
     setShowLast(option.value)
@@ -44,7 +44,7 @@ const PastDrawsHistoryCard: React.FC = () => {
         <Wrapper>
           <Legend />
           <LabelWrapper>
-            <Text textTransform="uppercase">{t('Show Last')}</Text>
+            <Text>{t('Show Last').toLocaleUpperCase(currentLanguage.locale)}</Text>
             <Select
               options={[
                 {

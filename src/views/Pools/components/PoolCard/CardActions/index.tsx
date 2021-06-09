@@ -23,7 +23,7 @@ const CardActions: React.FC<CardActionsProps> = ({ pool, stakedBalance }) => {
   const { sousId, stakingToken, earningToken, harvest, poolCategory, userData, earningTokenPrice } = pool
   // Pools using native BNB behave differently than pools using a token
   const isBnbPool = poolCategory === PoolCategory.BINANCE
-  const { t } = useTranslation()
+  const { t, currentLanguage } = useTranslation()
   const allowance = userData?.allowance ? new BigNumber(userData.allowance) : BIG_ZERO
   const stakingTokenBalance = userData?.stakingTokenBalance ? new BigNumber(userData.stakingTokenBalance) : BIG_ZERO
   const earnings = userData?.pendingReward ? new BigNumber(userData.pendingReward) : BIG_ZERO
@@ -40,8 +40,8 @@ const CardActions: React.FC<CardActionsProps> = ({ pool, stakedBalance }) => {
               <InlineText color="secondary" textTransform="uppercase" bold fontSize="12px">
                 {`${earningToken.symbol} `}
               </InlineText>
-              <InlineText color="textSubtle" textTransform="uppercase" bold fontSize="12px">
-                {t('Earned')}
+              <InlineText color="textSubtle" bold fontSize="12px">
+                {t('Earned').toLocaleUpperCase(currentLanguage.locale)}
               </InlineText>
             </Box>
             <HarvestActions
@@ -55,11 +55,11 @@ const CardActions: React.FC<CardActionsProps> = ({ pool, stakedBalance }) => {
           </>
         )}
         <Box display="inline">
-          <InlineText color={isStaked ? 'secondary' : 'textSubtle'} textTransform="uppercase" bold fontSize="12px">
-            {isStaked ? stakingToken.symbol : t('Stake')}{' '}
+          <InlineText color={isStaked ? 'secondary' : 'textSubtle'} bold fontSize="12px">
+            {isStaked ? stakingToken.symbol.toUpperCase() : t('Stake').toLocaleUpperCase(currentLanguage.locale)}{' '}
           </InlineText>
-          <InlineText color={isStaked ? 'textSubtle' : 'secondary'} textTransform="uppercase" bold fontSize="12px">
-            {isStaked ? t('Staked') : `${stakingToken.symbol}`}
+          <InlineText color={isStaked ? 'textSubtle' : 'secondary'} bold fontSize="12px">
+            {isStaked ? t('Staked').toLocaleUpperCase(currentLanguage.locale) : `${stakingToken.symbol.toUpperCase()}`}
           </InlineText>
         </Box>
         {needsApproval ? (

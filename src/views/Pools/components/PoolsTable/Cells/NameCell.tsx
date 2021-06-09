@@ -23,7 +23,7 @@ const StyledCell = styled(BaseCell)`
 `
 
 const NameCell: React.FC<NameCellProps> = ({ pool }) => {
-  const { t } = useTranslation()
+  const { t, currentLanguage } = useTranslation()
   const { isXs, isSm } = useMatchBreakpoints()
   const { sousId, stakingToken, earningToken, userData, isFinished, isAutoVault } = pool
   const {
@@ -58,8 +58,8 @@ const NameCell: React.FC<NameCellProps> = ({ pool }) => {
       <Image src={`/images/pools/${iconFile}`} alt="icon" width={40} height={40} mr="8px" />
       <CellContent>
         {showStakedTag && (
-          <Text fontSize="12px" bold color={isFinished ? 'failure' : 'secondary'} textTransform="uppercase">
-            {t('Staked')}
+          <Text fontSize="12px" bold color={isFinished ? 'failure' : 'secondary'}>
+            {t('Staked').toLocaleUpperCase(currentLanguage.locale)}
           </Text>
         )}
         <Text bold={!isXs && !isSm} small={isXs || isSm}>

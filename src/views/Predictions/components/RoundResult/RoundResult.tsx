@@ -14,24 +14,24 @@ const RoundResult: React.FC<RoundResultProps> = ({ round, children, ...props }) 
   const { lockPrice, closePrice, totalAmount } = round
   const betPosition = closePrice > lockPrice ? BetPosition.BULL : BetPosition.BEAR
   const isPositionUp = betPosition === BetPosition.BULL
-  const { t } = useTranslation()
+  const { t, currentLanguage } = useTranslation()
   const priceDifference = closePrice - lockPrice
 
   return (
     <RoundResultBox betPosition={betPosition} {...props}>
-      <Text color="textSubtle" fontSize="12px" bold textTransform="uppercase" mb="8px">
-        {t('Closed Price')}
+      <Text color="textSubtle" fontSize="12px" bold mb="8px">
+        {t('Closed Price').toLocaleUpperCase(currentLanguage.locale)}
       </Text>
       {round.failed ? (
-        <Text bold textTransform="uppercase" color="textDisabled" mb="16px" fontSize="24px">
-          {t('Canceled')}
+        <Text bold color="textDisabled" mb="16px" fontSize="24px">
+          {t('Canceled').toLocaleUpperCase(currentLanguage.locale)}
         </Text>
       ) : (
         <Flex alignItems="center" justifyContent="space-between" mb="16px">
           <Text color={isPositionUp ? 'success' : 'failure'} bold fontSize="24px">
             {formatUsd(closePrice)}
           </Text>
-          <PositionTag betPosition={betPosition}>{formatUsd(priceDifference)}</PositionTag>
+          <PositionTag betPosition={betPosition}>{formatUsd(priceDifference).toUpperCase()}</PositionTag>
         </Flex>
       )}
       {lockPrice && <LockPriceRow lockPrice={lockPrice} />}

@@ -18,7 +18,7 @@ const StatBox: React.FC<StatBoxProps> = ({ icon: Icon, title, subtitle, isDisabl
           <Heading as="h3" scale="xl" color={isDisabled ? 'textDisabled' : 'text'}>
             {title}
           </Heading>
-          <Text textTransform="uppercase" color={isDisabled ? 'textDisabled' : 'textSubtle'} fontSize="12px" bold>
+          <Text color={isDisabled ? 'textDisabled' : 'textSubtle'} fontSize="12px" bold>
             {subtitle}
           </Text>
         </div>

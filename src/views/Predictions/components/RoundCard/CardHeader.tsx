@@ -1,4 +1,5 @@
 import React, { ReactElement } from 'react'
+import { useTranslation } from 'contexts/Localization'
 import { Flex, Text } from '@pancakeswap/uikit'
 import styled, { DefaultTheme } from 'styled-components'
 
@@ -62,6 +63,7 @@ const Round = styled.div`
 `
 
 const CardHeader: React.FC<CardHeaderProps> = ({ status, title, epoch, icon }) => {
+  const { currentLanguage } = useTranslation()
   const textColor = getTextColorByStatus(status, 'text')
   const isLive = status === 'live'
 
@@ -69,8 +71,10 @@ const CardHeader: React.FC<CardHeaderProps> = ({ status, title, epoch, icon }) =
     <StyledCardHeader status={status}>
       <Flex alignItems="center">
         {icon}
-        <Text color={textColor} bold={isLive} textTransform={isLive ? 'uppercase' : 'capitalize'} lineHeight="21px">
-          {title}
+        <Text color={textColor} bold={isLive} lineHeight="21px">
+          {isLive
+            ? title.toLocaleUpperCase(currentLanguage.locale)
+            : title.charAt(0).toLocaleUpperCase(currentLanguage.locale) + title.slice(1)}
         </Text>
       </Flex>
       <Round>

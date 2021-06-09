@@ -19,7 +19,7 @@ const CakeVaultCardActions: React.FC<{
   isLoading: boolean
 }> = ({ pool, accountHasSharesStaked, isLoading }) => {
   const { stakingToken, userData } = pool
-  const { t } = useTranslation()
+  const { t, currentLanguage } = useTranslation()
   const stakingTokenBalance = userData?.stakingTokenBalance ? new BigNumber(userData.stakingTokenBalance) : BIG_ZERO
 
   const { isVaultApproved, setLastUpdated } = useCheckVaultApprovalStatus()
@@ -28,21 +28,15 @@ const CakeVaultCardActions: React.FC<{
     <Flex flexDirection="column">
       <Flex flexDirection="column">
         <Box display="inline">
-          <InlineText
-            color={accountHasSharesStaked ? 'secondary' : 'textSubtle'}
-            textTransform="uppercase"
-            bold
-            fontSize="12px"
-          >
-            {accountHasSharesStaked ? stakingToken.symbol : t('Stake')}{' '}
+          <InlineText color={accountHasSharesStaked ? 'secondary' : 'textSubtle'} bold fontSize="12px">
+            {accountHasSharesStaked
+              ? stakingToken.symbol.toUpperCase()
+              : t('Stake').toLocaleUpperCase(currentLanguage.locale)}{' '}
           </InlineText>
-          <InlineText
-            color={accountHasSharesStaked ? 'textSubtle' : 'secondary'}
-            textTransform="uppercase"
-            bold
-            fontSize="12px"
-          >
-            {accountHasSharesStaked ? t('Staked (compounding)') : `${stakingToken.symbol}`}
+          <InlineText color={accountHasSharesStaked ? 'textSubtle' : 'secondary'} bold fontSize="12px">
+            {accountHasSharesStaked
+              ? t('Staked (compounding)').toLocaleUpperCase(currentLanguage.locale)
+              : `${stakingToken.symbol.toUpperCase()}`}
           </InlineText>
         </Box>
         {isVaultApproved ? (

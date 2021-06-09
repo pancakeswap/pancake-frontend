@@ -13,11 +13,10 @@ const StyledEnteredTag = styled(Tag).attrs({
   startIcon: <CheckmarkCircleIcon width="18px" />,
 })`
   font-weight: bold;
-  text-transform: uppercase;
 `
 
 const EnteredTag: React.FC<EnteredTagProps> = ({ amount }) => {
-  const { t } = useTranslation()
+  const { t, currentLanguage } = useTranslation()
   const { targetRef, tooltipVisible, tooltip } = useTooltip(
     <div style={{ whiteSpace: 'nowrap' }}>{`${formatBnb(amount)} BNB`}</div>,
     { placement: 'bottom' },
@@ -26,7 +25,7 @@ const EnteredTag: React.FC<EnteredTagProps> = ({ amount }) => {
   return (
     <>
       <span ref={targetRef}>
-        <StyledEnteredTag>{t('Entered')}</StyledEnteredTag>{' '}
+        <StyledEnteredTag>{t('Entered').toLocaleUpperCase(currentLanguage.locale)}</StyledEnteredTag>{' '}
       </span>{' '}
       {tooltipVisible && tooltip}
     </>

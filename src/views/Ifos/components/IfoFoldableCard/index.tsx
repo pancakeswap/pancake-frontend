@@ -10,6 +10,7 @@ import {
   Progress,
   Button,
   ChevronUpIcon,
+  Language,
 } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
@@ -19,6 +20,7 @@ import { useIfoApprove } from 'hooks/useApprove'
 import { useERC20 } from 'hooks/useContract'
 import useToast from 'hooks/useToast'
 import { useTranslation } from 'contexts/Localization'
+import { ContextApi } from 'contexts/Localization/types'
 import { getAddress } from 'utils/addressHelpers'
 import { EnableStatus } from './types'
 import IfoPoolCard from './IfoPoolCard'
@@ -32,7 +34,7 @@ interface IfoFoldableCardProps {
   isInitiallyVisible: boolean
 }
 
-const getRibbonComponent = (ifo: Ifo, status: IfoStatus, t: any) => {
+const getRibbonComponent = (ifo: Ifo, status: IfoStatus, t: ContextApi['t'], currentLanguage: Language) => {
   if (status === 'coming_soon') {
     return <CardRibbon variantColor="textDisabled" ribbonPosition="left" text={t('Coming Soon')} />
   }
@@ -42,8 +44,11 @@ const getRibbonComponent = (ifo: Ifo, status: IfoStatus, t: any) => {
       <CardRibbon
         variantColor="primary"
         ribbonPosition="left"
-        style={{ textTransform: 'uppercase' }}
-        text={status === 'live' ? `${t('Live')}!` : `${t('Finished')}!`}
+        text={
+          status === 'live'
+            ? `${t('Live').toLocaleUpperCase(currentLanguage.locale)}!`
+            : `${t('Finished').toLocaleUpperCase(currentLanguage.locale)}!`
+        }
       />
     )
   }
@@ -100,10 +105,10 @@ const StyledCardFooter = styled(CardFooter)`
 const IfoFoldableCard: React.FC<IfoFoldableCardProps> = ({ ifo, publicIfoData, walletIfoData, isInitiallyVisible }) => {
   const [isVisible, setIsVisible] = useState(isInitiallyVisible)
   const [enableStatus, setEnableStatus] = useState(EnableStatus.DISABLED)
-  const { t } = useTranslation()
+  const { t, currentLanguage } = useTranslation()
   const { account } = useWeb3React()
   const raisingTokenContract = useERC20(getAddress(ifo.currency.address))
-  const Ribbon = getRibbonComponent(ifo, publicIfoData.status, t)
+  const Ribbon = getRibbonComponent(ifo, publicIfoData.status, t, currentLanguage)
   const isActive = publicIfoData.status !== 'finished' && ifo.isActive
   const { contract } = walletIfoData
   const onApprove = useIfoApprove(raisingTokenContract, contract.options.address)

@@ -18,7 +18,7 @@ const BuyTicketModal: React.FC<BuyTicketModalProps> = ({ max, onDismiss }) => {
   const [val, setVal] = useState('1')
   const [pendingTx, setPendingTx] = useState(false)
   const [, setRequestedBuy] = useState(false)
-  const { t } = useTranslation()
+  const { t, currentLanguage } = useTranslation()
   const fullBalance = useMemo(() => {
     return getBalanceNumber(max)
   }, [max])
@@ -75,7 +75,7 @@ const BuyTicketModal: React.FC<BuyTicketModalProps> = ({ max, onDismiss }) => {
         onSelectMax={handleSelectMax}
         onChange={handleChange}
         max={fullBalance}
-        symbol={t('Ticket').toUpperCase()}
+        symbol={t('Ticket').toLocaleUpperCase(currentLanguage.locale)}
         availableSymbol="CAKE"
       />
       <div>

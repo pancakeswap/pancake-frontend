@@ -82,7 +82,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
   const { swiper } = useSwiper()
   const { balance: bnbBalance } = useGetBnbBalance()
   const minBetAmount = useGetMinBetAmount()
-  const { t } = useTranslation()
+  const { t, currentLanguage } = useTranslation()
   const { toastError } = useToast()
   const predictionsContract = usePredictionsContract()
 
@@ -178,7 +178,9 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
             <Heading scale="md">{t('Set Position')}</Heading>
           </FlexRow>
           <PositionTag betPosition={position} onClick={togglePosition}>
-            {position === BetPosition.BULL ? t('Up') : t('Down')}
+            {position === BetPosition.BULL
+              ? t('Up').toLocaleUpperCase(currentLanguage.locale)
+              : t('Down').toLocaleUpperCase(currentLanguage.locale)}
           </PositionTag>
         </Flex>
       </CardHeader>

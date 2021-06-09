@@ -60,7 +60,7 @@ const MultiplierArrow: React.FC<MultiplierArrowProps> = ({
   isDisabled = false,
   isActive = false,
 }) => {
-  const { t } = useTranslation()
+  const { t, currentLanguage } = useTranslation()
   const upColor = getTextColor('success')(isActive, isDisabled)
   const downColor = getTextColor('failure')(isActive, isDisabled)
   const textColor = getTextColor()(isActive, isDisabled)
@@ -97,8 +97,8 @@ const MultiplierArrow: React.FC<MultiplierArrowProps> = ({
           {getEnteredTag({ bottom: 0, right: 0 })}
           <Content>
             {!isDisabled && multiplierText}
-            <Text bold fontSize="20px" mb="8px" color={downColor} textTransform="uppercase">
-              {t('Down')}
+            <Text bold fontSize="20px" mb="8px" color={downColor}>
+              {t('Down').toLocaleUpperCase(currentLanguage.locale)}
             </Text>
           </Content>
         </ArrowWrapper>
@@ -112,8 +112,8 @@ const MultiplierArrow: React.FC<MultiplierArrowProps> = ({
         <RoundMultiplierUpArrow isActive={isActive} />
         {getEnteredTag({ top: 0, left: 0 })}
         <Content>
-          <Text bold fontSize="20px" lineHeight="21px" color={upColor} textTransform="uppercase">
-            {t('Up')}
+          <Text bold fontSize="20px" lineHeight="21px" color={upColor}>
+            {t('Up').toLocaleUpperCase(currentLanguage.locale)}
           </Text>
           {!isDisabled && multiplierText}
         </Content>

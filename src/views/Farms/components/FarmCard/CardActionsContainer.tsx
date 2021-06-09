@@ -30,7 +30,7 @@ interface FarmCardActionsProps {
 }
 
 const CardActions: React.FC<FarmCardActionsProps> = ({ farm, account, addLiquidityUrl }) => {
-  const { t } = useTranslation()
+  const { t, currentLanguage } = useTranslation()
   const [requestedApproval, setRequestedApproval] = useState(false)
   const { pid, lpAddresses } = farm
   const {
@@ -86,8 +86,8 @@ const CardActions: React.FC<FarmCardActionsProps> = ({ farm, account, addLiquidi
         <Text bold textTransform="uppercase" color="secondary" fontSize="12px" pr="3px">
           CAKE
         </Text>
-        <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px">
-          {t('Earned')}
+        <Text bold color="textSubtle" fontSize="12px">
+          {t('Earned').toLocaleUpperCase(currentLanguage.locale)}
         </Text>
       </Flex>
       <HarvestAction earnings={earnings} pid={pid} />
@@ -95,8 +95,8 @@ const CardActions: React.FC<FarmCardActionsProps> = ({ farm, account, addLiquidi
         <Text bold textTransform="uppercase" color="secondary" fontSize="12px" pr="3px">
           {lpName}
         </Text>
-        <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px">
-          {t('Staked')}
+        <Text bold color="textSubtle" fontSize="12px">
+          {t('Staked').toLocaleUpperCase(currentLanguage.locale)}
         </Text>
       </Flex>
       {!account ? <UnlockButton mt="8px" width="100%" /> : renderApprovalOrStakeButton()}
