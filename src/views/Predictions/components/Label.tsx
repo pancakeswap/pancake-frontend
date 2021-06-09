@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useCountUp } from 'react-countup'
 import styled from 'styled-components'
-import { BnbUsdtPairTokenIcon, Box, Card, PocketWatchIcon, Text } from '@pancakeswap/uikit'
+import { BnbUsdtPairTokenIcon, Box, Card, PocketWatchIcon, Text } from '@zoeswap/uikit'
 import { useGetLastOraclePrice } from 'state/hooks'
 import { useTranslation } from 'contexts/Localization'
 import { formatRoundTime } from '../helpers'

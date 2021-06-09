@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Heading, Card, CardBody, Text } from '@pancakeswap/uikit'
+import { Heading, Card, CardBody, Text } from '@zoeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import styled from 'styled-components'
 import Select, { OptionProps } from 'components/Select/Select'

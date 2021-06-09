@@ -1,5 +1,5 @@
 import React from 'react'
-import { ModalContainer, ModalBody, Text, Button, InjectedModalProps, LinkExternal, Flex } from '@pancakeswap/uikit'
+import { ModalContainer, ModalBody, Text, Button, InjectedModalProps, LinkExternal, Flex } from '@zoeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 
 interface ChartDisclaimerProps extends InjectedModalProps {

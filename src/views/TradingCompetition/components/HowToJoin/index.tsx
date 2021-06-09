@@ -1,5 +1,5 @@
 import React from 'react'
-import { Flex, Text, Heading, Link } from '@pancakeswap/uikit'
+import { Flex, Text, Heading, Link } from '@zoeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import HowToCard from './HowToCard'

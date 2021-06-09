@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, Flex, Box, Skeleton } from '@pancakeswap/uikit'
+import { Text, Flex, Box, Skeleton } from '@zoeswap/uikit'
 import { PublicIfoData } from 'hooks/ifo/types'
 import { useTranslation } from 'contexts/Localization'
 import { Ifo, PoolIds } from 'config/constants/types'

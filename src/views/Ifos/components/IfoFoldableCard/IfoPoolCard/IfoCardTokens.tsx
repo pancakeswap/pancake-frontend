@@ -10,7 +10,7 @@ import {
   useTooltip,
   Button,
   AutoRenewIcon,
-} from '@pancakeswap/uikit'
+} from '@zoeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { PublicIfoData, WalletIfoData } from 'hooks/ifo/types'

@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
-import { Text, Image, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Text, Image, useMatchBreakpoints } from '@zoeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useCakeVault } from 'state/hooks'
 import { Pool } from 'state/types'

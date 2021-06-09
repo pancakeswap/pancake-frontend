@@ -1,7 +1,7 @@
 import React from 'react'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { usePriceCakeBusd } from 'state/hooks'
-import { Text } from '@pancakeswap/uikit'
+import { Text } from '@zoeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { BigNumber } from 'bignumber.js'
 import styled from 'styled-components'

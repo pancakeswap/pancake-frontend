@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Text } from '@pancakeswap/uikit'
+import { Text } from '@zoeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 
 const Wrapper = styled.div`

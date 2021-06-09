@@ -13,7 +13,7 @@ import {
   Skeleton,
   useTooltip,
   Button,
-} from '@pancakeswap/uikit'
+} from '@zoeswap/uikit'
 import { BASE_BSC_SCAN_URL, BASE_URL } from 'config'
 import { useBlock, useCakeVault } from 'state/hooks'
 import { Pool } from 'state/types'

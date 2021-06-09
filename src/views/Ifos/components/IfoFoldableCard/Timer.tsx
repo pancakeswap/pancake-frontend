@@ -1,7 +1,7 @@
 import React from 'react'
 import { useTranslation } from 'contexts/Localization'
 import { getBscScanBlockCountdownUrl } from 'utils/bscscan'
-import { Flex, Link, PocketWatchIcon, Text, Skeleton } from '@pancakeswap/uikit'
+import { Flex, Link, PocketWatchIcon, Text, Skeleton } from '@zoeswap/uikit'
 import getTimePeriods from 'utils/getTimePeriods'
 import { PublicIfoData } from 'hooks/ifo/types'
 
