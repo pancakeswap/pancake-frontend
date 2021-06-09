@@ -153,19 +153,39 @@ const CreateProposal = () => {
               <CardBody>
                 <Box mb="24px">
                   <SecondaryLabel>{t('Start Date')}</SecondaryLabel>
-                  <DatePicker name="startDate" onChange={handleDateChange('startDate')} selected={startDate} />
+                  <DatePicker
+                    name="startDate"
+                    onChange={handleDateChange('startDate')}
+                    selected={startDate}
+                    placeholderText="YYYY/MM/DD"
+                  />
                 </Box>
                 <Box mb="24px">
                   <SecondaryLabel>{t('Start Time')}</SecondaryLabel>
-                  <TimePicker name="startTime" onChange={handleDateChange('startTime')} selected={startTime} />
+                  <TimePicker
+                    name="startTime"
+                    onChange={handleDateChange('startTime')}
+                    selected={startTime}
+                    placeholderText="00:00"
+                  />
                 </Box>
                 <Box mb="24px">
                   <SecondaryLabel>{t('End Date')}</SecondaryLabel>
-                  <DatePicker name="endDate" onChange={handleDateChange('endDate')} selected={endDate} />
+                  <DatePicker
+                    name="endDate"
+                    onChange={handleDateChange('endDate')}
+                    selected={endDate}
+                    placeholderText="YYYY/MM/DD"
+                  />
                 </Box>
                 <Box mb="24px">
                   <SecondaryLabel>{t('End Time')}</SecondaryLabel>
-                  <TimePicker name="endTime" onChange={handleDateChange('endTime')} selected={endTime} />
+                  <TimePicker
+                    name="endTime"
+                    onChange={handleDateChange('endTime')}
+                    selected={endTime}
+                    placeholderText="00:00"
+                  />
                 </Box>
                 {account && (
                   <Flex alignItems="center" mb="8px">
