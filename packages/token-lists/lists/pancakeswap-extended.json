@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2021-06-08T08:04:37.907Z",
+  "timestamp": "2021-06-09T02:56:17.953Z",
   "version": {
     "major": 2,
     "minor": 14,
-    "patch": 2
+    "patch": 3
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [
@@ -835,6 +835,14 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0x3947B992DC0147D2D89dF0392213781b04B25075.png"
+    },
+    {
+      "name": "Unmarshal",
+      "symbol": "MARSH",
+      "address": "0x2FA5dAF6Fe0708fBD63b1A7D1592577284f52256",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x2FA5dAF6Fe0708fBD63b1A7D1592577284f52256.png"
     },
     {
       "name": "Math",

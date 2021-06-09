@@ -1526,5 +1526,13 @@
     "chainId": 56,
     "decimals": 18,
     "logoURI": "https://tokens.pancakeswap.finance/images/0xffEecbf8D7267757c2dc3d13D730E97E15BfdF7F.png"
+  },
+  {
+    "name": "Unmarshal",
+    "symbol": "MARSH",
+    "address": "0x2FA5dAF6Fe0708fBD63b1A7D1592577284f52256",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0x2FA5dAF6Fe0708fBD63b1A7D1592577284f52256.png"
   }
 ]
