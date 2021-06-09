@@ -30,11 +30,6 @@ interface BuyTicketsModalProps {
   onDismiss?: () => void
 }
 
-interface Discount {
-  ticketThreshold: number
-  percentageDiscount: number
-}
-
 const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
   const { account } = useWeb3React()
   const { t } = useTranslation()
@@ -42,7 +37,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
   const {
     maxNumberTicketsPerBuy,
     currentLotteryId,
-    currentRound: { priceTicketInCake },
+    currentRound: { priceTicketInCake, discountDivisor },
   } = useLottery()
   const [ticketsToBuy, setTicketsToBuy] = useState('')
   const [discountValue, setDiscountValue] = useState('')
@@ -88,46 +83,20 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
   }, [maxNumberTicketsPerBuy, priceTicketInCake, userCake, hasFetchedBalance])
 
   useEffect(() => {
-    const discounts: Discount[] = [
-      { ticketThreshold: 100, percentageDiscount: 2 },
-      { ticketThreshold: 500, percentageDiscount: 5 },
-    ]
-    const ticketsAsInt = ticketsToBuy ? parseInt(ticketsToBuy, 10) : 0
-
-    const getDiscount = () => {
-      if (ticketsToBuy) {
-        // TODO: Improve func based on SC data structure
-        const eligibleDiscounts = discounts.filter((discount) => {
-          return ticketsAsInt > discount.ticketThreshold
-        })
-        if (eligibleDiscounts.length > 0) {
-          const discountToApply = eligibleDiscounts.reduce((accum, item) => {
-            return accum.percentageDiscount < item.percentageDiscount ? item : accum
-          })
-          return discountToApply
-        }
-      }
-      return null
+    const getCostAfterDiscount = () => {
+      const totalAfterDiscount = priceTicketInCake
+        .times(ticketsToBuy)
+        .times(discountDivisor.plus(1).minus(ticketsToBuy))
+        .div(discountDivisor)
+      return totalAfterDiscount
     }
-    const discountToApply = getDiscount()
-    // TODO: Reinstate logic when discount logic finalised
-    const shouldApplyDiscount = false
+    const costAfterDiscount = getCostAfterDiscount()
+    const costBeforeDiscount = priceTicketInCake.times(ticketsToBuy)
+    const discountBeingApplied = costBeforeDiscount.minus(costAfterDiscount)
 
-    const applyDiscount = () => {
-      const ticketsToDiscount = (ticketsAsInt / 100) * discountToApply.percentageDiscount
-      const valueToDiscount = priceTicketInCake.times(ticketsToDiscount)
-      const costOfTickets = priceTicketInCake.times(ticketsAsInt).minus(valueToDiscount)
-      setDiscountValue(getFullDisplayBalance(valueToDiscount, 18, 3))
-      setTotalCost(getFullDisplayBalance(costOfTickets))
-    }
-
-    if (shouldApplyDiscount) {
-      applyDiscount()
-    } else {
-      const costOfTickets = priceTicketInCake.times(ticketsAsInt)
-      setTotalCost(getFullDisplayBalance(costOfTickets))
-    }
-  }, [ticketsToBuy, priceTicketInCake])
+    setTotalCost(costAfterDiscount.gt(0) ? getFullDisplayBalance(costAfterDiscount) : '0')
+    setDiscountValue(discountBeingApplied.gt(0) ? getFullDisplayBalance(discountBeingApplied, 18, 5) : '0')
+  }, [ticketsToBuy, priceTicketInCake, discountDivisor])
 
   const getNumTicketsByPercentage = (percentage: number): number => {
     const percentageOfMaxTickets = maxPossibleTicketPurchase.gt(0)
@@ -147,6 +116,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
   }
 
   const handleInputChange = (input: string) => {
+    // Use BN for calcs
     const inputAsBN = new BigNumber(input)
     const cakeValueOfInput = getCakeValueOfTickets(inputAsBN)
     if (cakeValueOfInput.gt(userCake)) {
@@ -157,7 +127,9 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
       setUserNotEnoughCake(false)
       setMaxTicketPurchaseExceeded(false)
     }
-    setTicketsToBuy(input || '0')
+    // Prevent decimals in input
+    const inputAsInt = parseInt(input)
+    setTicketsToBuy(input ? inputAsInt.toString() : '0')
   }
 
   const handleNumberButtonClick = (number: number) => {
@@ -283,8 +255,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
             </Flex>
           </Flex>
           {/* TODO: re-implement discount when logic finalised */}
-          {/* <Text color="textSubtle">~{discountValue} CAKE</Text> */}
-          <Text color="textSubtle">~ CAKE</Text>
+          <Text color="textSubtle">~{discountValue} CAKE</Text>
         </Flex>
         <Flex mb="24px" justifyContent="space-between">
           <Text color="textSubtle">{t('Total cost')}</Text>
