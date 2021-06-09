@@ -7,7 +7,7 @@ import Container from 'components/layout/Container'
 import ReactMarkdown from 'components/ReactMarkdown'
 import PageLoader from 'components/PageLoader'
 import { getProposal, isCoreProposal } from '../helpers'
-import { Proposal as ProposalType } from '../types'
+import { Proposal as ProposalType, ProposalState } from '../types'
 import useGetVotes from '../hooks/useGetVotes'
 import { ProposalStateTag, ProposalTypeTag } from '../components/Proposals/tags'
 import Layout from '../components/Layout'
@@ -67,7 +67,9 @@ const Proposal = () => {
               <ReactMarkdown>{proposal.body}</ReactMarkdown>
             </Box>
           </Box>
-          {!accountHasVoted && account && <Vote proposal={proposal} mb="16px" />}
+          {!accountHasVoted && account && proposal.state === ProposalState.ACTIVE && (
+            <Vote proposal={proposal} mb="16px" />
+          )}
           <Votes votes={votes} isFinished={isFinished} />
         </Box>
         <Details proposal={proposal} />
