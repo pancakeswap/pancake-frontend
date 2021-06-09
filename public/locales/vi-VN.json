@@ -817,5 +817,6 @@
   "Starts in": "Bắt đầu trong",
   "Total amount of %symbol% staked in this pool": "Tổng số %symbol% đã đặt cọc trong nhóm này",
   "These pools are no longer distributing rewards. Please unstake your tokens.": "Các nhóm này không còn phân phối phần thưởng. Hãy hủy cọc token của bạn.",
-  "Max. stake per user": "Lượng đặt cọc tối đa cho mỗi người dùng"
+  "Max. stake per user": "Lượng đặt cọc tối đa cho mỗi người dùng",
+  "You have claimed your rewards!": "You have claimed your rewards!"
 }
