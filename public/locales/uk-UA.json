@@ -817,5 +817,6 @@
   "Starts in": "Починається через",
   "Total amount of %symbol% staked in this pool": "Загальна сума %symbol%, внесена в цей пул",
   "These pools are no longer distributing rewards. Please unstake your tokens.": "Ці пули більше не розподіляють винагороди. Виведіть свої токени.",
-  "Max. stake per user": "Максимальний внесок на користувача"
+  "Max. stake per user": "Максимальний внесок на користувача",
+  "You have claimed your rewards!": "You have claimed your rewards!"
 }
