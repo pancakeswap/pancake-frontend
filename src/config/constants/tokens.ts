@@ -1524,6 +1524,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://www.boringdao.com/',
   },
+  marsh: {
+    symbol: 'MARSH',
+    address: {
+      56: '0x2FA5dAF6Fe0708fBD63b1A7D1592577284f52256',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://unmarshal.io/',
+  },
 }
 
 export default tokens
