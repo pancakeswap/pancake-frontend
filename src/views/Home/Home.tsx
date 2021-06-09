@@ -10,10 +10,13 @@ import TotalValueLockedCard from 'views/Home/components/TotalValueLockedCard'
 import EarnAPRCard from 'views/Home/components/EarnAPRCard'
 import EarnAssetCard from 'views/Home/components/EarnAssetCard'
 import WinCard from 'views/Home/components/WinCard'
+import { Timeline } from 'react-twitter-widgets'
+import useTheme from 'hooks/useTheme'
+
 
 const Hero = styled.div`
   align-items: center;
-  background-image: url('/images/pan-bg-mobile.svg');
+  background-image: url('/images/cool-background.svg');
   background-repeat: no-repeat;
   background-position: top center;
   display: flex;
@@ -23,10 +26,11 @@ const Hero = styled.div`
   margin-bottom: 32px;
   padding-top: 116px;
   text-align: center;
+  border-radius:25px;
 
   ${({ theme }) => theme.mediaQueries.lg} {
-    background-image: url('/images/pan-bg2.svg'), url('/images/pan-bg.svg');
-    background-position: left center, right center;
+    background-image: url('/images/cool-background.svg');
+    background-position: right center;
     height: 165px;
     padding-top: 0;
   }
@@ -87,18 +91,32 @@ const CTACards = styled(BaseLayout)`
 const Home: React.FC = () => {
   const { t } = useTranslation()
 
+  const { isDark, toggleTheme } = useTheme()
+
+
   return (
     <Page>
       <Hero>
-        <Heading as="h1" scale="xl" mb="24px" color="secondary">
+        <Heading as="h1" scale="xl" mb="24px" color="white">
           ZOE Swap
         </Heading>
-        <Text>{t('The #1 AMM and yield farm on Binance Smart Chain.')}</Text>
+        <Text color={isDark?'#372f47':"white"}>{t('The #1 AMM and yield farm on Binance Smart Chain.')}</Text>
       </Hero>
       <div>
         <Cards>
           <FarmStakingCard />
-          <LotteryCard />
+          {/* <LotteryCard /> */}
+          <Timeline
+            dataSource={{
+              sourceType: 'profile',
+              screenName: 'Zoecashoficial'
+            }}
+            options={{
+              height: '400',
+              theme:isDark? 'dark':''
+            }}
+            
+          />
         </Cards>
         <CTACards>
           <EarnAPRCard />
