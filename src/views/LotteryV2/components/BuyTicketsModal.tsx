@@ -37,7 +37,11 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
   const {
     maxNumberTicketsPerBuy,
     currentLotteryId,
-    currentRound: { priceTicketInCake, discountDivisor },
+    currentRound: {
+      priceTicketInCake,
+      discountDivisor,
+      userData: { tickets: userCurrentTickets },
+    },
   } = useLottery()
   const [ticketsToBuy, setTicketsToBuy] = useState('')
   const [discountValue, setDiscountValue] = useState('')
@@ -158,7 +162,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
         toastSuccess(t('Contract approved - you can now purchase tickets'))
       },
       onConfirm: () => {
-        const ticketNumArray = generateTicketNumbers(parseInt(ticketsToBuy, 10))
+        const ticketNumArray = generateTicketNumbers(parseInt(ticketsToBuy, 10), userCurrentTickets)
         console.log(ticketNumArray)
         return lotteryContract.methods.buyTickets(currentLotteryId, ticketNumArray).send({ from: account })
       },
