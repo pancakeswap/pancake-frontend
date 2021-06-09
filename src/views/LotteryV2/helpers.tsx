@@ -11,9 +11,12 @@ const generateRandomNumber = () => Math.floor(Math.random() * 1000000) + 1000000
  */
 export const generateTicketNumbers = (numberOfTickets: number, userCurrentTickets?: LotteryTicket[]): number[] => {
   // Populate array with existing tickets (if they have them) to ensure no duplicates when generating new numbers
-  const existingTicketNumbers = userCurrentTickets.map((ticket) => {
-    return parseInt(ticket?.number)
-  })
+  const existingTicketNumbers =
+    userCurrentTickets?.length > 0
+      ? userCurrentTickets.map((ticket) => {
+          return parseInt(ticket?.number)
+        })
+      : []
   const generatedTicketNumbers = [...existingTicketNumbers]
 
   for (let count = 0; count < numberOfTickets; count++) {
@@ -27,7 +30,7 @@ export const generateTicketNumbers = (numberOfTickets: number, userCurrentTicket
 
   // Filter out the users' existing tickets
   const ticketsToBuy =
-    userCurrentTickets.length > 0
+    userCurrentTickets?.length > 0
       ? generatedTicketNumbers.filter((ticketNumber) => {
           return !existingTicketNumbers.includes(ticketNumber)
         })

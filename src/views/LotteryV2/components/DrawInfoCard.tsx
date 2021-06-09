@@ -30,7 +30,7 @@ const DrawInfoCard = () => {
 
   // TODO: Re-enebale in prod
   //   const cakePriceBusd = usePriceCakeBusd()
-  const cakePriceBusd = new BigNumber(20.55)
+  const cakePriceBusd = new BigNumber(20)
   const prizeInBusd = amountCollectedInCake.times(cakePriceBusd)
   const endTimeMs = parseInt(endTime, 10) * 1000
   const endDate = new Date(endTimeMs)
@@ -43,7 +43,7 @@ const DrawInfoCard = () => {
         <Flex justifyContent="space-between">
           <Heading>{t('Next Draw')}</Heading>
           <Text>
-            {currentLotteryId && `# ${currentLotteryId} | `} {Boolean(endTime) && endDate.toLocaleString()}
+            {currentLotteryId && `#${currentLotteryId} | `} {Boolean(endTime) && endDate.toLocaleString()}
           </Text>
         </Flex>
       </CardHeader>

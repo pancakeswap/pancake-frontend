@@ -45,7 +45,7 @@ const Hero = () => {
 
   // TODO: Re-enebale in prod
   // const cakePriceBusd = usePriceCakeBusd()
-  const cakePriceBusd = new BigNumber(20.55)
+  const cakePriceBusd = new BigNumber(20)
   const prizeInBusd = amountCollectedInCake.times(cakePriceBusd)
   const prizeTotal = getBalanceNumber(prizeInBusd)
   const isLotteryOpen = status === LotteryStatus.OPEN
