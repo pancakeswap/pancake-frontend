@@ -817,5 +817,6 @@
   "Starts in": "Commence dans",
   "Total amount of %symbol% staked in this pool": "Montant total de %symbol% placés en staking dans ce pool",
   "These pools are no longer distributing rewards. Please unstake your tokens.": "Ces pools ne distribuent plus de récompenses. Veuillez retirer vos jetons.",
-  "Max. stake per user": "Part maximale par utilisateur"
+  "Max. stake per user": "Part maximale par utilisateur",
+  "You have claimed your rewards!": "You have claimed your rewards!"
 }

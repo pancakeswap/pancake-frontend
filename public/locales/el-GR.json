@@ -817,5 +817,6 @@
   "Starts in": "Ξεκινάει σε",
   "Total amount of %symbol% staked in this pool": "Συνολικό ποσό %symbol% που γίνεται stake στη δεξαμενή",
   "These pools are no longer distributing rewards. Please unstake your tokens.": "Αυτές οι δεξαμενές δεν διανέμουν πλέον ανταμοιβές. Καταργήστε το stake των νομισμάτων σας.",
-  "Max. stake per user": "Μέγιστο stake ανά χρήστη"
+  "Max. stake per user": "Μέγιστο stake ανά χρήστη",
+  "You have claimed your rewards!": "You have claimed your rewards!"
 }

@@ -817,5 +817,6 @@
   "Starts in": "এতে শুরু হবে",
   "Total amount of %symbol% staked in this pool": "এই পুলে %symbol% এর মোট পরিমাণ স্টেক করা আছে",
   "These pools are no longer distributing rewards. Please unstake your tokens.": "এইসব পুল আর বিতরিত পুরস্কার নয়। অনুগ্রহ করে আপনার টোকেন আনস্টেক করুন।",
-  "Max. stake per user": "ব্যবহারকারী প্রতি সর্বোচ্চ স্টেক"
+  "Max. stake per user": "ব্যবহারকারী প্রতি সর্বোচ্চ স্টেক",
+  "You have claimed your rewards!": "You have claimed your rewards!"
 }

@@ -817,5 +817,6 @@
   "Starts in": "開始時間",
   "Total amount of %symbol% staked in this pool": "質押於此資金池中的 %symbol% 總計",
   "These pools are no longer distributing rewards. Please unstake your tokens.": "這些資金池已不再分發獎勵。請取回代幣。",
-  "Max. stake per user": "每位使用者的質押上限"
+  "Max. stake per user": "每位使用者的質押上限",
+  "You have claimed your rewards!": "You have claimed your rewards!"
 }

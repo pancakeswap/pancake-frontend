@@ -817,5 +817,6 @@
   "Starts in": "تبدأ بعد",
   "Total amount of %symbol% staked in this pool": "إجمالي عدد %symbol% المرهونة في هذا التجمُّع",
   "These pools are no longer distributing rewards. Please unstake your tokens.": "لقد توقفت هذه التجمُّعات عن توزيع المكافآت. يُرجى فك رهن رموزك المميزة.",
-  "Max. stake per user": "أقصى رهن لكل مستخدم"
+  "Max. stake per user": "أقصى رهن لكل مستخدم",
+  "You have claimed your rewards!": "You have claimed your rewards!"
 }

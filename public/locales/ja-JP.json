@@ -817,5 +817,6 @@
   "Starts in": "開始まで",
   "Total amount of %symbol% staked in this pool": "このプールでステーキングした%symbol%の合計額",
   "These pools are no longer distributing rewards. Please unstake your tokens.": "これらのプールは報酬を分配していません。トークンのステーキングを解除してください。",
-  "Max. stake per user": "ユーザー当たり最大ステーキング"
+  "Max. stake per user": "ユーザー当たり最大ステーキング",
+  "You have claimed your rewards!": "You have claimed your rewards!"
 }
