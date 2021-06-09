@@ -22,7 +22,7 @@ const Proposal = () => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const { votes, isFinished } = useGetVotes(id)
-  const accountHasVoted = votes.some((vote) => vote.voter.toLowerCase() === account.toLowerCase())
+  const accountHasVoted = account && votes.some((vote) => vote.voter.toLowerCase() === account.toLowerCase())
 
   useEffect(() => {
     const fetchData = async () => {
