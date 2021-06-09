@@ -1,3 +1,8 @@
+export enum SnapshotCommand {
+  PROPOSAL = 'proposal',
+  VOTE = 'vote',
+}
+
 export enum ProposalType {
   ALL = 'all',
   CORE = 'core',
@@ -35,5 +40,7 @@ export interface Vote {
   space: Space
   proposal: string
   choice: number
-  metadata: string
+  metadata?: {
+    votingPower: string
+  }
 }

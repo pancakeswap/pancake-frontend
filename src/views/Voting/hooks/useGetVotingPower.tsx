@@ -57,7 +57,11 @@ const useGetVotingPower = (block?: number) => {
     hydrate: hydrateVotingPower,
     dehydrate: dehydrateVotingPower,
   })
-  const { isInitialized } = votingPower
+  const { isInitialized, cakePool, cakeBnbLp, cakeBalance, pools }: State = votingPower
+
+  const getTotal = () => {
+    return cakePool.plus(cakeBnbLp).plus(cakeBalance).plus(pools)
+  }
 
   useEffect(() => {
     const fetchVotingPower = async () => {
@@ -88,7 +92,7 @@ const useGetVotingPower = (block?: number) => {
     }
   }, [account, block, isCancelled, isInitialized, setVotingPower])
 
-  return { isInitialized, votingPower }
+  return { isInitialized, votingPower, getTotal }
 }
 
 export default useGetVotingPower

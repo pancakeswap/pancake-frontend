@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Button, Card, CardBody, CardHeader, CardProps, Heading, Radio, Text, useModal } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
@@ -7,6 +7,11 @@ import CastVoteModal from '../components/Proposal/CastVoteModal'
 
 interface VoteProps extends CardProps {
   proposal: Proposal
+}
+
+interface State {
+  label: string
+  value: number
 }
 
 const Choice = styled.label<{ isChecked: boolean }>`
@@ -20,14 +25,11 @@ const Choice = styled.label<{ isChecked: boolean }>`
 `
 
 const Vote: React.FC<VoteProps> = ({ proposal, ...props }) => {
-  const [vote, setVote] = useState('')
+  const [vote, setVote] = useState<State>(null)
   const { t } = useTranslation()
-  const [presentCastVoteModal] = useModal(<CastVoteModal vote={vote} block={Number(proposal.snapshot)} />)
-
-  const handleChange = (evt: ChangeEvent<HTMLInputElement>) => {
-    const { value } = evt.currentTarget
-    setVote(value)
-  }
+  const [presentCastVoteModal] = useModal(
+    <CastVoteModal proposalId={proposal.id} vote={vote} block={Number(proposal.snapshot)} />,
+  )
 
   return (
     <Card {...props}>
@@ -37,8 +39,15 @@ const Vote: React.FC<VoteProps> = ({ proposal, ...props }) => {
         </Heading>
       </CardHeader>
       <CardBody>
-        {proposal.choices.map((choice) => {
-          const isChecked = choice === vote
+        {proposal.choices.map((choice, index) => {
+          const isChecked = index === vote?.value
+
+          const handleChange = () => {
+            setVote({
+              label: choice,
+              value: index,
+            })
+          }
 
           return (
             <Choice key={choice} isChecked={isChecked}>
@@ -47,7 +56,7 @@ const Vote: React.FC<VoteProps> = ({ proposal, ...props }) => {
             </Choice>
           )
         })}
-        <Button onClick={presentCastVoteModal} disabled={!vote}>
+        <Button onClick={presentCastVoteModal} disabled={vote === null}>
           {t('Cast Vote')}
         </Button>
       </CardBody>

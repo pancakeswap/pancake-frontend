@@ -19,18 +19,17 @@ import { useHistory } from 'react-router'
 import { useInitialBlock } from 'state/hooks'
 import { getBscScanAddressUrl, getBscScanBlockNumberUrl } from 'utils/bscscan'
 import truncateWalletAddress from 'utils/truncateWalletAddress'
-import { getCakeAddress } from 'utils/addressHelpers'
 import { useTranslation } from 'contexts/Localization'
 import Container from 'components/layout/Container'
 import { DatePicker, TimePicker } from 'components/DatePicker'
-import { PANCAKE_SPACE } from '../config'
 import BreadcrumbLink from '../components/BreadcrumbLink'
-import { createProposal, Message, saveVotingPower } from '../helpers'
+import { sendSnaphotData, Message, generateMetaData, generatePayloadData } from '../helpers'
 import Layout from '../components/Layout'
 import { Label, SecondaryLabel } from './styles'
 import Choices, { Choice, makeChoice, MINIMUM_CHOICES } from './Choices'
 import { combineDateAndTime, isFormValid } from './helpers'
 import { FormState } from './types'
+import { SnapshotCommand } from '../types'
 
 const SimpleMde = lazy(() => import('components/SimpleMde'))
 
@@ -57,10 +56,8 @@ const CreateProposal = () => {
 
     try {
       const proposal = JSON.stringify({
-        version: '0.1.3',
-        timestamp: (Date.now() / 1e3).toFixed(),
-        space: PANCAKE_SPACE,
-        type: 'proposal',
+        ...generatePayloadData(),
+        type: SnapshotCommand.PROPOSAL,
         payload: {
           name,
           body,
@@ -72,17 +69,14 @@ const CreateProposal = () => {
             .map((choice) => {
               return choice.value
             }),
-          metadata: { strategies: [{ name: PANCAKE_SPACE, params: { address: getCakeAddress(), chefAddresses: [] } }] },
+          metadata: generateMetaData(),
         },
       })
       const sig = await web3.eth.personal.sign(proposal, account, null)
       const msg: Message = { address: account, msg: proposal, sig }
 
       // Save proposal to snapshot
-      const data = await createProposal(msg)
-
-      // Cache the voting power
-      await saveVotingPower(account, data.ipfsHash, 1)
+      const data = await sendSnaphotData(msg)
 
       // Redirect user to newly created proposal page
       push(`/voting/proposal/${data.ipfsHash}`)

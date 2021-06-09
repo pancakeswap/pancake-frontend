@@ -1,7 +1,8 @@
 import { request, gql } from 'graphql-request'
+import { getCakeAddress } from 'utils/addressHelpers'
 import { SNAPSHOT_API, SNAPSHOT_HUB_API, SNAPSHOT_VOTING_API } from 'config/constants/endpoints'
 import { Proposal, ProposalState, ProposalType, Vote } from './types'
-import { ADMIN_ADDRESS } from './config'
+import { ADMIN_ADDRESS, PANCAKE_SPACE, SNAPSHOT_VERSION } from './config'
 
 export const isCoreProposal = (proposal: Proposal) => {
   return proposal.author.toLowerCase() === ADMIN_ADDRESS.toLowerCase()
@@ -20,65 +21,57 @@ export const filterProposalsByType = (proposals: Proposal[], proposalType: Propo
 }
 
 export const getProposals = async (first = 5, skip = 0, state = ProposalState.ACTIVE): Promise<Proposal[]> => {
-  try {
-    const response: { proposals: Proposal[] } = await request(
-      SNAPSHOT_API,
-      gql`
-        query getProposals($first: Int!, $skip: Int!, $state: String!) {
-          proposals(first: $first, skip: $skip, where: { space_in: "pancake", state: $state }) {
+  const response: { proposals: Proposal[] } = await request(
+    SNAPSHOT_API,
+    gql`
+      query getProposals($first: Int!, $skip: Int!, $state: String!) {
+        proposals(first: $first, skip: $skip, where: { space_in: "pancake", state: $state }) {
+          id
+          title
+          body
+          choices
+          start
+          end
+          snapshot
+          state
+          author
+          space {
             id
-            title
-            body
-            choices
-            start
-            end
-            snapshot
-            state
-            author
-            space {
-              id
-              name
-            }
+            name
           }
         }
-      `,
-      { first, skip, state },
-    )
-    return response.proposals
-  } catch (error) {
-    throw new Error(error)
-  }
+      }
+    `,
+    { first, skip, state },
+  )
+  return response.proposals
 }
 
 export const getProposal = async (id: string): Promise<Proposal> => {
-  try {
-    const response: { proposal: Proposal } = await request(
-      SNAPSHOT_API,
-      gql`
-        query getProposal($id: String) {
-          proposal(id: $id) {
+  const response: { proposal: Proposal } = await request(
+    SNAPSHOT_API,
+    gql`
+      query getProposal($id: String) {
+        proposal(id: $id) {
+          id
+          title
+          body
+          choices
+          start
+          end
+          snapshot
+          state
+          author
+          space {
             id
-            title
-            body
-            choices
-            start
-            end
-            snapshot
-            state
-            author
-            space {
-              id
-              name
-            }
+            name
           }
         }
-      `,
-      { id },
-    )
-    return response.proposal
-  } catch (error) {
-    throw new Error(error)
-  }
+      }
+    `,
+    { id },
+  )
+  return response.proposal
 }
 
 export interface Message {
@@ -87,38 +80,53 @@ export interface Message {
   sig: string
 }
 
-export const createProposal = async (message: Message) => {
-  try {
-    const response = await fetch(SNAPSHOT_HUB_API, {
-      method: 'post',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(message),
-    })
-    const data = await response.json()
-    return data
-  } catch (error) {
-    throw new Error(error)
+/**
+ * Generates metadata required by snapshot to validate payload
+ */
+export const generateMetaData = () => {
+  return {
+    strategies: [{ name: PANCAKE_SPACE, params: { address: getCakeAddress(), chefAddresses: [] } }],
   }
 }
 
-export const saveVotingPower = async (account: string, proposal: string, power: number) => {
-  try {
-    const response = await fetch(SNAPSHOT_VOTING_API, {
-      method: 'post',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ account, proposal, power }),
-    })
-    const data = await response.json()
-    return data
-  } catch (error) {
-    throw new Error(error)
+/**
+ * Returns data that is required on all snapshot payloads
+ */
+export const generatePayloadData = () => {
+  return {
+    version: SNAPSHOT_VERSION,
+    timestamp: (Date.now() / 1e3).toFixed(),
+    space: PANCAKE_SPACE,
   }
+}
+
+/**
+ * General function to send commands to the snapshot api
+ */
+export const sendSnaphotData = async (message: Message) => {
+  const response = await fetch(SNAPSHOT_HUB_API, {
+    method: 'post',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(message),
+  })
+  const data = await response.json()
+  return data
+}
+
+export const saveVotingPower = async (account: string, proposal: string, power: string) => {
+  const response = await fetch(SNAPSHOT_VOTING_API, {
+    method: 'post',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ account, proposal, power }),
+  })
+  const data = await response.json()
+  return data
 }
 
 /* eslint-disable camelcase */
@@ -135,29 +143,26 @@ export interface VoteWhere {
 }
 
 export const getVotes = async (first: number, skip: number, where: VoteWhere): Promise<Vote[]> => {
-  try {
-    const response: { votes: Vote[] } = await request(
-      SNAPSHOT_API,
-      gql`
-        query getVotes($first: Int, $skip: Int, $where: VoteWhere) {
-          votes(first: $first, skip: $skip, where: $where) {
+  const response: { votes: Vote[] } = await request(
+    SNAPSHOT_API,
+    gql`
+      query getVotes($first: Int, $skip: Int, $where: VoteWhere) {
+        votes(first: $first, skip: $skip, where: $where) {
+          id
+          voter
+          created
+          choice
+          space {
             id
-            voter
-            created
-            choice
-            space {
-              id
-              name
-            }
+            name
           }
+          metadata
         }
-      `,
-      { first, skip, where },
-    )
-    return response.votes
-  } catch (error) {
-    throw new Error(error)
-  }
+      }
+    `,
+    { first, skip, where },
+  )
+  return response.votes
 }
 
 interface VoteItem {
@@ -173,14 +178,10 @@ interface VotingResponse {
 }
 
 export const getVoteCache = async (proposalId: string): Promise<{ [key: string]: number }> => {
-  try {
-    const response = await fetch(`${SNAPSHOT_VOTING_API}/${proposalId}`)
-    const data: VotingResponse = await response.json()
+  const response = await fetch(`${SNAPSHOT_VOTING_API}/${proposalId}`)
+  const data: VotingResponse = await response.json()
 
-    return data.data.reduce((accum, vote) => {
-      return { ...accum, [vote.address]: vote.power }
-    }, {})
-  } catch (error) {
-    throw new Error(error)
-  }
+  return data.data.reduce((accum, vote) => {
+    return { ...accum, [vote.address]: vote.power }
+  }, {})
 }
