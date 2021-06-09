@@ -817,5 +817,6 @@
   "Starts in": "Mulai dalam",
   "Total amount of %symbol% staked in this pool": "Total jumlah %symbol% yang ditumpuk dalam pool ini",
   "These pools are no longer distributing rewards. Please unstake your tokens.": "Pool ini sudah tidak membagikan hadiah. Silakan bongkar tumpukan token Anda.",
-  "Max. stake per user": "Tumpukan maks. per pengguna"
+  "Max. stake per user": "Tumpukan maks. per pengguna",
+  "You have claimed your rewards!": "You have claimed your rewards!"
 }
