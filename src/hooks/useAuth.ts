@@ -61,6 +61,9 @@ const useAuth = () => {
   const logout = useCallback(() => {
     dispatch(profileClear())
     deactivate()
+    if (connectorsByName.walletconnect) {
+      connectorsByName.walletconnect.close()
+    }
   }, [deactivate, dispatch])
 
   return { login, logout }
