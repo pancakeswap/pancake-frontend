@@ -817,5 +817,6 @@
   "Starts in": "Comienza en",
   "Total amount of %symbol% staked in this pool": "Cantidad total de %symbol% invertido en este pool",
   "These pools are no longer distributing rewards. Please unstake your tokens.": "Estos pools ya no distribuyen recompensas. Retira tus tokens.",
-  "Max. stake per user": "Inversión máxima por usuario"
+  "Max. stake per user": "Inversión máxima por usuario",
+  "You have claimed your rewards!": "You have claimed your rewards!"
 }
