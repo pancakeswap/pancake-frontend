@@ -502,7 +502,7 @@
   "Contract Enabled": "Contratto abilitato",
   "You can now stake in the %symbol% vault!": "Ora puoi mettere in stake nel caveau %symbol%!",
   "You can now stake in the %symbol% pool!": "Ora puoi mettere in stake nel pool %symbol%!",
-  "Please try again. Confirm the transaction and make sure you are paying enough gas!": "Riprova. Conferma la transazione e verifica che stai pagando gas sufficiente!",
+  "Please try again. Confirm the transaction and make sure you are paying enough gas!": "Riprova. Conferma la transazione e verifica di aver pagato gas (token) sufficiente!",
   "Start earning": "Inizia a guadagnare",
   "Recent CAKE profit": "Profitti CAKE recenti",
   "Unstaked!": "Non in stake!",
