@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Button, ChevronRightIcon, InjectedModalProps, Modal, Skeleton, Text } from '@pancakeswap/uikit'
+import { Box, Button, InjectedModalProps, Modal, Skeleton, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
 import useWeb3 from 'hooks/useWeb3'
@@ -71,14 +71,13 @@ const CastVoteModal: React.FC<CastVoteModalProps> = ({ proposalId, vote, block, 
             <Text bold fontSize="20px">
               {total.toFixed(3)}
             </Text>
-            <ChevronRightIcon width="24px" />
           </ModalBox>
         )}
         <Text as="p" color="textSubtle" fontSize="14px">
           {t('Are you sure you want to vote for the above choice? This action cannot be undone.')}
         </Text>
       </Box>
-      <Button disabled={!isInitialized} width="100%" mb="8px" onClick={handleConfirmVote}>
+      <Button disabled={!isInitialized || total.eq(0)} width="100%" mb="8px" onClick={handleConfirmVote}>
         {t('Confirm Vote')}
       </Button>
       <Button variant="secondary" width="100%" onClick={onDismiss}>
