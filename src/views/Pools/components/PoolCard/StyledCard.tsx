@@ -48,9 +48,9 @@ export const StyledCard = styled(Card)<{ isPromoted?: PromotedStyleCardProps; is
   }
 `
 
-export const StyledCardInner = styled(Box)<{ isPromotedPool?: boolean }>`
+export const StyledCardInner = styled(Box)`
   background: ${({ theme }) => theme.card.background};
-  border-radius: ${({ isPromotedPool, theme }) => (isPromotedPool ? '31px' : theme.radii.card)};
+  border-radius: ${({ theme }) => theme.radii.card};
 `
 
 export default StyledCard
