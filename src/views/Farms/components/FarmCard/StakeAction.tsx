@@ -4,9 +4,11 @@ import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
 import { Button, Flex, Heading, IconButton, AddIcon, MinusIcon, useModal } from '@pancakeswap/uikit'
 import { useLocation } from 'react-router-dom'
+import Balance from 'components/Balance'
 import { useTranslation } from 'contexts/Localization'
 import { useAppDispatch } from 'state'
 import { fetchFarmUserDataAsync } from 'state/farms'
+import { useLpTokenPrice } from 'state/hooks'
 import useStake from 'hooks/useStake'
 import useUnstake from 'hooks/useUnstake'
 import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
@@ -41,6 +43,7 @@ const StakeAction: React.FC<FarmCardActionsProps> = ({
   const location = useLocation()
   const dispatch = useAppDispatch()
   const { account } = useWeb3React()
+  const lpPrice = useLpTokenPrice(tokenName)
 
   const handleStake = async (amount: string) => {
     await onStake(amount)
@@ -93,7 +96,19 @@ const StakeAction: React.FC<FarmCardActionsProps> = ({
 
   return (
     <Flex justifyContent="space-between" alignItems="center">
-      <Heading color={stakedBalance.eq(0) ? 'textDisabled' : 'text'}>{displayBalance()}</Heading>
+      <Flex flexDirection="column" alignItems="flex-start">
+        <Heading color={stakedBalance.eq(0) ? 'textDisabled' : 'text'}>{displayBalance()}</Heading>
+        {stakedBalance.gt(0) && lpPrice.gt(0) && (
+          <Balance
+            fontSize="12px"
+            color="textSubtle"
+            decimals={2}
+            value={getBalanceNumber(lpPrice.times(stakedBalance))}
+            unit=" USD"
+            prefix="~"
+          />
+        )}
+      </Flex>
       {renderStakingButtons()}
     </Flex>
   )
