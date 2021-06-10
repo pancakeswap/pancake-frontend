@@ -3,7 +3,7 @@ import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
 import { CardHeader, Card, CardBody, Text, CardFooter, ArrowBackIcon, Flex, Heading } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import { fetchLottery, fetchTickets } from 'state/lottery'
+import { fetchLottery, fetchTickets } from 'state/lottery/helpers'
 import FinishedRoundGrid from './FinishedRoundGrid'
 
 const StyledCard = styled(Card)`

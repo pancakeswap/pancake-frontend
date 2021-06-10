@@ -9,7 +9,7 @@ const useRoundEndCountdown = (endTime: number) => {
     setSecondsRemaining(secondsRemainingCalc)
 
     const tick = () => {
-      setSecondsRemaining((prevSeconds) => prevSeconds + 1)
+      setSecondsRemaining((prevSeconds) => prevSeconds - 1)
     }
     const timerInterval = setInterval(() => tick(), 1000)
     return () => clearInterval(timerInterval)

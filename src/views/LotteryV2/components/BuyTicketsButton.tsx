@@ -11,17 +11,29 @@ const BuyTicketsButton = ({ ...props }) => {
   const {
     currentRound: { status },
   } = useLottery()
-  const isLotteryOpen = status === LotteryStatus.OPEN
+  const canBuyTickets = status === LotteryStatus.OPEN
 
-  return (
-    <Button {...props} disabled={!isLotteryOpen} onClick={onPresentBuyTicketsModal}>
-      {isLotteryOpen ? (
-        t('Buy Tickets')
-      ) : (
+  const getBuyButtonText = () => {
+    if (status === LotteryStatus.PENDING || status === LotteryStatus.CLAIMABLE) {
+      return (
         <>
           <WaitIcon mr="4px" color="textDisabled" /> {t('On sale soon!')}
         </>
-      )}
+      )
+    }
+    if (status === LotteryStatus.CLOSE) {
+      return (
+        <>
+          <WaitIcon mr="4px" color="textDisabled" /> {t('Calculating rewards!')}
+        </>
+      )
+    }
+    return t('Buy Tickets')
+  }
+
+  return (
+    <Button {...props} disabled={!canBuyTickets} onClick={onPresentBuyTicketsModal}>
+      {getBuyButtonText()}
     </Button>
   )
 }

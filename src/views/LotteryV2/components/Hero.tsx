@@ -16,9 +16,9 @@ const PrizeTotalBalance = styled(Balance)`
   -webkit-text-fill-color: transparent;
 `
 
-const StyledBuyTicketButton = styled(BuyTicketsButton)<{ isLotteryOpen: boolean }>`
-  background: ${({ theme, isLotteryOpen }) =>
-    isLotteryOpen ? 'linear-gradient(180deg, #7645d9 0%, #452a7a 100%)' : theme.colors.disabled};
+const StyledBuyTicketButton = styled(BuyTicketsButton)<{ canBuyTickets: boolean }>`
+  background: ${({ theme, canBuyTickets }) =>
+    canBuyTickets ? 'linear-gradient(180deg, #7645d9 0%, #452a7a 100%)' : theme.colors.disabled};
   width: 240px;
 `
 
@@ -48,25 +48,32 @@ const Hero = () => {
   const cakePriceBusd = new BigNumber(20)
   const prizeInBusd = amountCollectedInCake.times(cakePriceBusd)
   const prizeTotal = getBalanceNumber(prizeInBusd)
-  const isLotteryOpen = status === LotteryStatus.OPEN
+  const canBuyTickets = status === LotteryStatus.OPEN
 
   return (
     <Flex flexDirection="column" alignItems="center" justifyContent="center">
       <Heading mb="8px" scale="md" color="#ffffff">
-        {t('The PancakeSwapLottery')}
+        {t('The PancakeSwap Lottery')}
       </Heading>
-      {prizeInBusd.isNaN() ? (
-        <Skeleton my="7px" height={60} width={190} />
+      {status === LotteryStatus.PENDING ? (
+        <Heading mb="24px" scale="xl" color="#ffffff">
+          {t('Tickets on sale soon')}
+        </Heading>
       ) : (
-        <PrizeTotalBalance fontSize="64px" bold prefix="$" value={prizeTotal} mb="8px" decimals={0} />
+        <>
+          {prizeInBusd.isNaN() ? (
+            <Skeleton my="7px" height={60} width={190} />
+          ) : (
+            <PrizeTotalBalance fontSize="64px" bold prefix="$" value={prizeTotal} mb="8px" decimals={0} />
+          )}
+          <Heading mb="32px" scale="lg" color="#ffffff">
+            {t('in prizes!')}
+          </Heading>
+        </>
       )}
-
-      <Heading mb="32px" scale="lg" color="#ffffff">
-        {t('in prizes!')}
-      </Heading>
       <Flex position="relative" width="288px" height="113px" alignItems="center" justifyContent="center">
         <ButtonWrapper>
-          <StyledBuyTicketButton isLotteryOpen={isLotteryOpen} />
+          <StyledBuyTicketButton canBuyTickets={canBuyTickets} />
         </ButtonWrapper>
         <TicketSvgWrapper>
           <TicketPurchaseCard width="288px" />
