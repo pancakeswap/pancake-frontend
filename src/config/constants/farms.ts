@@ -39,6 +39,16 @@ const farms: FarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 347,
+    lpSymbol: 'BONDLY-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0xb8b4383B49d451BBeA63BC4421466E1086da6f18',
+    },
+    token: tokens.bondly,
+    quoteToken: tokens.wbnb,
+  },
+  {
     pid: 407,
     lpSymbol: 'MARSH-BNB LP',
     lpAddresses: {
@@ -676,16 +686,6 @@ const farms: FarmConfig[] = [
       56: '0xd02DA76c813b9cd4516eD50442923E625f90228f',
     },
     token: tokens.itam,
-    quoteToken: tokens.wbnb,
-  },
-  {
-    pid: 347,
-    lpSymbol: 'BONDLY-BNB LP',
-    lpAddresses: {
-      97: '',
-      56: '0xb8b4383B49d451BBeA63BC4421466E1086da6f18',
-    },
-    token: tokens.bondly,
     quoteToken: tokens.wbnb,
   },
   {
