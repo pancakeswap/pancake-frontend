@@ -218,7 +218,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
           valueLabel={account ? percentageDisplay : ''}
           disabled={!account || isTxPending}
           mb="4px"
-          className="swiper-no-swiping"
+          className={!account || isTxPending ? '' : 'swiper-no-swiping'}
         />
         <Flex alignItems="center" justifyContent="space-between" mb="16px">
           {percentShortcuts.map((percent) => {
