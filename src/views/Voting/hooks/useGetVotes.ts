@@ -1,13 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
-import { getVoteCache, getVotes } from '../helpers'
+import { getVotes } from '../helpers'
 import { Vote } from '../types'
 
 interface State {
   isFinished: boolean
   votes: Vote[]
-  voteCache: {
-    [key: string]: number
-  }
 }
 
 const useGetVotes = (proposalId: string, votesPerCall = 1000) => {
@@ -15,7 +12,6 @@ const useGetVotes = (proposalId: string, votesPerCall = 1000) => {
   const [state, setState] = useState<State>({
     isFinished: false,
     votes: [],
-    voteCache: {},
   })
 
   useEffect(() => {
@@ -44,23 +40,6 @@ const useGetVotes = (proposalId: string, votesPerCall = 1000) => {
       isLooping.current = false
     }
   }, [proposalId, votesPerCall, setState, isLooping])
-
-  useEffect(() => {
-    const fetchVoteCache = async () => {
-      try {
-        const response = await getVoteCache(proposalId)
-
-        setState((prevState) => ({
-          ...prevState,
-          voteCache: response,
-        }))
-      } catch (error) {
-        console.error('Unable to fetch vote cache', error)
-      }
-    }
-
-    fetchVoteCache()
-  }, [proposalId, setState])
 
   return state
 }

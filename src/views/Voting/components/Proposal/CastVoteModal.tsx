@@ -19,8 +19,7 @@ interface CastVoteModalProps extends InjectedModalProps {
 
 const CastVoteModal: React.FC<CastVoteModalProps> = ({ proposalId, vote, block, onDismiss }) => {
   const { t } = useTranslation()
-  const { isInitialized, getTotal } = useGetVotingPower(block)
-  const total = getTotal()
+  const { isInitialized, total } = useGetVotingPower(block)
   const web3 = useWeb3()
   const { account } = useWeb3React()
 

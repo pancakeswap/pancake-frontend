@@ -188,3 +188,18 @@ export const getVoteCache = async (proposalId: string): Promise<{ [key: string]:
     return { ...accum, [vote.address]: vote.power }
   }, {})
 }
+
+export const getVotingPower = async (account: string, block?: number) => {
+  const response = await fetch(SNAPSHOT_VOTING_API, {
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      address: account,
+      block,
+    }),
+  })
+  const data = await response.json()
+  return data.data
+}
