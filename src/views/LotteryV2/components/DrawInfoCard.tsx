@@ -43,7 +43,8 @@ const DrawInfoCard = () => {
         <Flex justifyContent="space-between">
           <Heading>{t('Next Draw')}</Heading>
           <Text>
-            {currentLotteryId && `#${currentLotteryId} | `} {Boolean(endTime) && endDate.toLocaleString()}
+            {currentLotteryId && `#${currentLotteryId} | `}{' '}
+            {Boolean(endTime) && `${t('Draw')}: ${endDate.toLocaleString()}`}
           </Text>
         </Flex>
       </CardHeader>

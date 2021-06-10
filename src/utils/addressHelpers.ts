@@ -2,6 +2,7 @@ import { ChainId } from '@pancakeswap/sdk'
 import addresses from 'config/constants/contracts'
 import tokens from 'config/constants/tokens'
 import { Address } from 'config/constants/types'
+import { MAINNET_CHAIN_ID } from 'config'
 
 export const getAddress = (address: Address): string => {
   const chainId = process.env.REACT_APP_CHAIN_ID

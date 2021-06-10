@@ -55,13 +55,15 @@ const LotteryV2 = () => {
       </PageSection>
       <TicketsSection background={GET_TICKETS_BG} hasCurvedDivider={false} index={2}>
         <Flex flexDirection="column">
-          <Heading scale="xl" color="#ffffff" mb="24px" textAlign="center">
-            {t('Get your tickets now!')}
-          </Heading>
           {status === LotteryStatus.OPEN && (
-            <Flex alignItems="center" justifyContent="center" mb="48px">
-              <Countdown secondsRemaining={secondsRemaining} />
-            </Flex>
+            <>
+              <Heading scale="xl" color="#ffffff" mb="24px" textAlign="center">
+                {t('Get your tickets now!')}
+              </Heading>
+              <Flex alignItems="center" justifyContent="center" mb="48px">
+                <Countdown secondsRemaining={secondsRemaining} />
+              </Flex>
+            </>
           )}
           <DrawInfoCard />
         </Flex>

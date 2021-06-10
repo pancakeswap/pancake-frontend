@@ -60,10 +60,10 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
 
   const TooltipComponent = () => (
     <>
-      <Text mb="16px">{t('Bulk discount for buying multiple tickets in a single transaction.')}</Text>
-      <Text>{t('0-99 tickets: 0% discount')}</Text>
-      <Text>{t('100-499 tickets: 2% discount')}</Text>
-      <Text mb="16px">{t('500+ tickets: 5% discount')}</Text>
+      <Text mb="16px">
+        {t('[Placeholder text] Bulk discount for buying multiple tickets in a single transaction.')}
+      </Text>
+      <Text>{t('2-100 tickets: X% discount')}</Text>
       <Text>{t('Check the FAQs at the bottom of the page for more.')}</Text>
     </>
   )
@@ -290,7 +290,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
 
         <Text mt="24px" fontSize="12px" color="textSubtle">
           {t(
-            'The CAKE ticket price is set before each lottery round starts, equal to $1 at that time. Ticket purchases are final.',
+            'The CAKE ticket price is set before each lottery round starts, equal to $5 at that time. Ticket purchases are final.',
           )}
         </Text>
       </Flex>

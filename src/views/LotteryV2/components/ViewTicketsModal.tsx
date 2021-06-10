@@ -4,7 +4,7 @@ import { Modal, useModal, Flex, Button, Box, Ticket, useTooltip, Skeleton, Text 
 import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
 import { useLottery } from 'state/hooks'
-import { fetchLottery } from 'state/lottery'
+import { fetchLottery } from 'state/lottery/helpers'
 import useTheme from 'hooks/useTheme'
 import BuyTicketsModal from './BuyTicketsModal'
 import TicketNumber from './TicketNumber'
