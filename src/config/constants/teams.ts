@@ -20,7 +20,7 @@ const teams: Team[] = [
   {
     id: 2,
     name: 'Fearsome Flippers',
-    description: "The flippening is coming. Don't get in these bunnies' way, or you'll get flipped too!",
+    description: "The flippening is coming. Don't get in these bunnies' way, or you'll get flipped, too!",
     images: {
       lg: 'fearsome-flippers-lg.png',
       md: 'fearsome-flippers-md.png',
