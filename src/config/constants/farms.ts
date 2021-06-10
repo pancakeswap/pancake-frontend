@@ -39,6 +39,26 @@ const farms: FarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 409,
+    lpSymbol: 'ETH-USDC LP',
+    lpAddresses: {
+      97: '',
+      56: '0xEa26B78255Df2bBC31C1eBf60010D78670185bD0',
+    },
+    token: tokens.eth,
+    quoteToken: tokens.usdc,
+  },
+  {
+    pid: 408,
+    lpSymbol: 'BTCB-ETH LP',
+    lpAddresses: {
+      97: '',
+      56: '0xD171B26E4484402de70e3Ea256bE5A2630d7e88D',
+    },
+    token: tokens.btcb,
+    quoteToken: tokens.eth,
+  },
+  {
     pid: 347,
     lpSymbol: 'BONDLY-BNB LP',
     lpAddresses: {
