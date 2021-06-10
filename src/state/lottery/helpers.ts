@@ -1,10 +1,13 @@
 import BigNumber from 'bignumber.js'
 import { request, gql } from 'graphql-request'
+import { ethers } from 'ethers'
 import { GRAPH_API_LOTTERY } from 'config/constants/endpoints'
 import { LotteryStatus, LotteryTicket } from 'config/constants/types'
-import { UserLotteryHistory, PastLotteryRound, LotteryRound } from 'state/types'
+import lotteryV2Abi from 'config/abi/lotteryV2.json'
+import { getLotteryV2Address } from 'utils/addressHelpers'
+import { multicallv2 } from 'utils/multicall'
+import { UserLotteryHistory, PastLotteryRound, LotteryRound, UserTicketsResponse } from 'state/types'
 import { getLotteryV2Contract } from 'utils/contractHelpers'
-import makeBatchRequest from 'utils/makeBatchRequest'
 
 const lotteryContract = getLotteryV2Contract()
 
@@ -67,13 +70,18 @@ export const fetchLottery = async (lotteryId: string): Promise<LotteryRound> => 
 
 export const fetchPublicData = async () => {
   try {
-    const [currentLotteryId, maxNumberTicketsPerBuyOrClaim] = (await makeBatchRequest([
-      lotteryContract.methods.currentLotteryId().call,
-      lotteryContract.methods.maxNumberTicketsPerBuyOrClaim().call,
-    ])) as [string, string]
+    const calls = ['currentLotteryId', 'maxNumberTicketsPerBuyOrClaim'].map((method) => ({
+      address: getLotteryV2Address(),
+      name: method,
+    }))
+    const [[currentLotteryId], [maxNumberTicketsPerBuyOrClaim]] = (await multicallv2(
+      lotteryV2Abi,
+      calls,
+    )) as ethers.BigNumber[][]
+
     return {
-      currentLotteryId,
-      maxNumberTicketsPerBuyOrClaim,
+      currentLotteryId: currentLotteryId ? currentLotteryId.toString() : null,
+      maxNumberTicketsPerBuyOrClaim: maxNumberTicketsPerBuyOrClaim ? maxNumberTicketsPerBuyOrClaim.toString() : null,
     }
   } catch (error) {
     return {
@@ -83,15 +91,15 @@ export const fetchPublicData = async () => {
   }
 }
 
-export const processRawTicketData = (rawTicketResponse): LotteryTicket[] => {
-  const ticketIds = rawTicketResponse[0]
-  const ticketNumbers = rawTicketResponse[1]
-  const ticketStatuses = rawTicketResponse[2]
+export const processRawTicketsResponse = (ticketsResponse: UserTicketsResponse): LotteryTicket[] => {
+  const ticketIds = ticketsResponse[0]
+  const ticketNumbers = ticketsResponse[1]
+  const ticketStatuses = ticketsResponse[2]
 
   return ticketIds.map((ticketId, index) => {
     return {
-      id: ticketId,
-      number: ticketNumbers[index],
+      id: ticketId.toString(),
+      number: ticketNumbers[index].toString(),
       status: ticketStatuses[index],
     }
   })
@@ -102,7 +110,7 @@ export const fetchTickets = async (account: string, lotteryId: string, cursor: n
     const userTickets = await lotteryContract.methods
       .viewUserTicketNumbersAndStatusesForLottery(account, lotteryId, cursor, 1000)
       .call()
-    const completeTicketData = processRawTicketData(userTickets)
+    const completeTicketData = processRawTicketsResponse(userTickets)
     return completeTicketData
   } catch (error) {
     return null
