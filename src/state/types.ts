@@ -1,6 +1,7 @@
 import { ThunkAction } from 'redux-thunk'
 import { AnyAction } from '@reduxjs/toolkit'
 import BigNumber from 'bignumber.js'
+import { ethers } from 'ethers'
 import { CampaignType, FarmConfig, Nft, PoolConfig, Team, LotteryTicket, LotteryStatus } from 'config/constants/types'
 
 export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, State, unknown, AnyAction>
@@ -397,6 +398,8 @@ export interface UserRound {
   lotteryId: string
   totalTickets: string
 }
+
+export type UserTicketsResponse = [ethers.BigNumber[], number[], boolean[], ethers.BigNumber]
 
 // Global state
 

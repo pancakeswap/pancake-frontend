@@ -1,10 +1,12 @@
 import BigNumber from 'bignumber.js'
+import { ethers } from 'ethers'
 import { LotteryTicket, LotteryTicketClaimData } from 'config/constants/types'
-import { UserLotteryHistory, PastLotteryRound } from 'state/types'
-import { getLotteryV2Contract } from 'utils/contractHelpers'
-import makeBatchRequest from 'utils/makeBatchRequest'
+import { UserLotteryHistory, PastLotteryRound, UserTicketsResponse } from 'state/types'
+import { multicallv2 } from 'utils/multicall'
+import lotteryV2Abi from 'config/abi/lotteryV2.json'
+import { getLotteryV2Address } from 'utils/addressHelpers'
 import { BIG_ZERO } from 'utils/bigNumber'
-import { processRawTicketData } from './helpers'
+import { processRawTicketsResponse } from './helpers'
 
 interface RoundDataAndUserTickets {
   roundId: string
@@ -12,17 +14,24 @@ interface RoundDataAndUserTickets {
   finalNumber: string
 }
 
-const lotteryContract = getLotteryV2Contract()
+const lotteryAddress = getLotteryV2Address()
 
 const getCakeRewardsForTickets = async (
   winningTickets: LotteryTicket[],
 ): Promise<{ ticketsWithRewards: LotteryTicket[]; cakeTotal: BigNumber }> => {
   const calls = winningTickets.map((winningTicket) => {
     const { roundId, id, rewardBracket } = winningTicket
-    return lotteryContract.methods.viewRewardsForTicketId(roundId, id, rewardBracket).call
+    return {
+      name: 'viewRewardsForTicketId',
+      address: lotteryAddress,
+      params: [roundId, id, rewardBracket],
+    }
   })
-  const cakeRewards = (await makeBatchRequest(calls)) as string[]
-  const cakeTotal = cakeRewards.reduce((a, b) => new BigNumber(a).plus(new BigNumber(b)), BIG_ZERO)
+  const cakeRewards = await multicallv2(lotteryV2Abi, calls)
+
+  const cakeTotal = cakeRewards.reduce((a: BigNumber, b: ethers.BigNumber[]) => {
+    return a.plus(new BigNumber(b[0].toString()))
+  }, BIG_ZERO)
   const ticketsWithRewards = winningTickets.map((winningTicket, index) => {
     return { ...winningTicket, cakeReward: cakeRewards[index] }
   })
@@ -108,17 +117,18 @@ const fetchUnclaimedUserRewards = async (
 
   // If there are any rounds tickets haven't been claimed for, check user tickets for those rounds
   if (filteredForAlreadyClaimed.length > 0) {
-    const calls = filteredForAlreadyClaimed.map(
-      (round) =>
-        lotteryContract.methods.viewUserTicketNumbersAndStatusesForLottery(account, round.lotteryId, cursor, limit)
-          .call,
-    )
+    const calls = filteredForAlreadyClaimed.map((round) => ({
+      name: 'viewUserTicketNumbersAndStatusesForLottery',
+      address: lotteryAddress,
+      params: [account, round.lotteryId, cursor, limit],
+    }))
     const roundIds = filteredForAlreadyClaimed.map((round) => round.lotteryId)
-    const rawTicketData = await makeBatchRequest(calls)
+    const rawTicketData = (await multicallv2(lotteryV2Abi, calls)) as UserTicketsResponse[]
+
     const roundDataAndUserTickets = rawTicketData.map((roundTicketData, index) => {
       return {
         roundId: roundIds[index],
-        userTickets: processRawTicketData(roundTicketData),
+        userTickets: processRawTicketsResponse(roundTicketData),
         finalNumber: getWinningNumbersForRound(roundIds[index], pastLotteries),
       }
     })
