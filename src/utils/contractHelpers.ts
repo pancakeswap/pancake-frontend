@@ -50,15 +50,25 @@ import easterNftAbi from 'config/abi/easterNft.json'
 import cakeVaultAbi from 'config/abi/cakeVault.json'
 import predictionsAbi from 'config/abi/predictions.json'
 import chainlinkOracleAbi from 'config/abi/chainlinkOracle.json'
-import { DEFAULT_GAS_PRICE } from 'config'
+import { DEFAULT_GAS_PRICE, TESTNET_CHAIN_ID } from 'config'
 import { getSettings, getGasPriceInWei } from './settings'
+
+export const getGasPrice = (account?: string) => {
+  const chainId = process.env.REACT_APP_CHAIN_ID
+  if (chainId === TESTNET_CHAIN_ID) {
+    return 10
+  }
+  if (account) {
+    return getSettings(account).gasPrice
+  }
+  return DEFAULT_GAS_PRICE
+}
 
 const getContract = (abi: any, address: string, web3?: Web3, account?: string) => {
   const _web3 = web3 ?? web3NoAccount
-  const gasPrice = account ? getSettings(account).gasPrice : DEFAULT_GAS_PRICE
 
   return new _web3.eth.Contract(abi as unknown as AbiItem, address, {
-    gasPrice: getGasPriceInWei(gasPrice).toString(),
+    gasPrice: getGasPriceInWei(getGasPrice(account)).toString(),
   })
 }
 
