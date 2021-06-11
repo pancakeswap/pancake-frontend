@@ -11,7 +11,7 @@ import { fetchFarmUserDataAsync } from 'state/farms'
 import { useLpTokenPrice } from 'state/hooks'
 import useStake from 'hooks/useStake'
 import useUnstake from 'hooks/useUnstake'
-import { getBalanceAmount, getFullDisplayBalance } from 'utils/formatBalance'
+import { getBalanceAmount, getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
 import DepositModal from '../DepositModal'
 import WithdrawModal from '../WithdrawModal'
 
