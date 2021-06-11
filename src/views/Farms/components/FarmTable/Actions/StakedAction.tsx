@@ -3,8 +3,9 @@ import styled from 'styled-components'
 import { Button, useModal, IconButton, AddIcon, MinusIcon, Skeleton } from '@pancakeswap/uikit'
 import { useLocation } from 'react-router-dom'
 import UnlockButton from 'components/UnlockButton'
+import Balance from 'components/Balance'
 import { useWeb3React } from '@web3-react/core'
-import { useFarmUser } from 'state/hooks'
+import { useFarmUser, useLpTokenPrice } from 'state/hooks'
 import { fetchFarmUserDataAsync } from 'state/farms'
 import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
 import { useTranslation } from 'contexts/Localization'
@@ -46,6 +47,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
   const { onUnstake } = useUnstake(pid)
   const web3 = useWeb3()
   const location = useLocation()
+  const lpPrice = useLpTokenPrice(lpSymbol)
 
   const isApproved = account && allowance && allowance.isGreaterThan(0)
 
@@ -120,6 +122,16 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
           <ActionContent>
             <div>
               <Earned>{displayBalance()}</Earned>
+              {stakedBalance.gt(0) && lpPrice.gt(0) && (
+                <Balance
+                  fontSize="12px"
+                  color="textSubtle"
+                  decimals={2}
+                  value={getBalanceNumber(lpPrice.times(stakedBalance))}
+                  unit=" USD"
+                  prefix="~"
+                />
+              )}
             </div>
             <IconButtonWrapper>
               <IconButton variant="secondary" onClick={onPresentWithdraw} mr="6px">
