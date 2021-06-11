@@ -3,7 +3,8 @@ import { Button, Skeleton } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
-import { getBalanceNumber } from 'utils/formatBalance'
+import { BIG_ZERO } from 'utils/bigNumber'
+import { getBalanceAmount } from 'utils/formatBalance'
 import { useAppDispatch } from 'state'
 import { fetchFarmUserDataAsync } from 'state/farms'
 import { usePriceCakeBusd } from 'state/hooks'
@@ -20,15 +21,15 @@ interface HarvestActionProps extends FarmWithStakedValue {
 const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({ pid, userData, userDataReady }) => {
   const earningsBigNumber = new BigNumber(userData.earnings)
   const cakePrice = usePriceCakeBusd()
-  let earnings = 0
+  let earnings = BIG_ZERO
   let earningsBusd = 0
   let displayBalance = userDataReady ? earnings.toLocaleString() : <Skeleton width={60} />
 
   // If user didn't connect wallet default balance will be 0
   if (!earningsBigNumber.isZero()) {
-    earnings = getBalanceNumber(earningsBigNumber)
-    earningsBusd = new BigNumber(earnings).multipliedBy(cakePrice).toNumber()
-    displayBalance = earnings.toLocaleString()
+    earnings = getBalanceAmount(earningsBigNumber)
+    earningsBusd = earnings.multipliedBy(cakePrice).toNumber()
+    displayBalance = earnings.toFixed(3, BigNumber.ROUND_DOWN)
   }
 
   const [pendingTx, setPendingTx] = useState(false)

@@ -11,7 +11,7 @@ import { fetchFarmUserDataAsync } from 'state/farms'
 import { useLpTokenPrice } from 'state/hooks'
 import useStake from 'hooks/useStake'
 import useUnstake from 'hooks/useUnstake'
-import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
+import { getBalanceAmount, getFullDisplayBalance } from 'utils/formatBalance'
 import DepositModal from '../DepositModal'
 import WithdrawModal from '../WithdrawModal'
 
@@ -56,11 +56,11 @@ const StakeAction: React.FC<FarmCardActionsProps> = ({
   }
 
   const displayBalance = useCallback(() => {
-    const stakedBalanceNumber = getBalanceNumber(stakedBalance)
-    if (stakedBalanceNumber > 0 && stakedBalanceNumber < 0.0001) {
+    const stakedBalanceBigNumber = getBalanceAmount(stakedBalance)
+    if (stakedBalanceBigNumber.gt(0) && stakedBalanceBigNumber.lt(0.0001)) {
       return getFullDisplayBalance(stakedBalance).toLocaleString()
     }
-    return stakedBalanceNumber.toLocaleString()
+    return stakedBalanceBigNumber.toFixed(3, BigNumber.ROUND_DOWN)
   }, [stakedBalance])
 
   const [onPresentDeposit] = useModal(
