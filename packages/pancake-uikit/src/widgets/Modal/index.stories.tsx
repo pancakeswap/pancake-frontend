@@ -42,22 +42,35 @@ export const DisableOverlayClick: React.FC = () => {
   );
 };
 
-const BackButtonModal: React.FC<ModalProps> = ({ title, onDismiss }) => {
-  const handleOnBack = () => {
-    return 1;
+export const WithBackButton: React.FC = () => {
+  const BackButtonModal: React.FC<ModalProps> = ({ title, onDismiss }) => {
+    const handleOnBack = () => {
+      return 1;
+    };
+
+    return (
+      <Modal title={title} onDismiss={onDismiss} onBack={handleOnBack} hideCloseButton>
+        <Button onClick={onDismiss} variant="text">
+          Consumer can still close it.
+        </Button>
+      </Modal>
+    );
   };
 
-  return (
-    <Modal title={title} onDismiss={onDismiss} onBack={handleOnBack} hideCloseButton>
-      <Button onClick={onDismiss} variant="text">
-        Consumer can still close it.
-      </Button>
-    </Modal>
-  );
-};
-
-export const WithBackButton: React.FC = () => {
   const [onPresent1] = useModal(<BackButtonModal title="Modal with no X" />, false);
 
   return <Button onClick={onPresent1}>Only Back Button</Button>;
+};
+
+export const WithCustomHeader: React.FC = () => {
+  const CustomHeaderModal: React.FC<ModalProps> = ({ title, onDismiss }) => {
+    return (
+      <Modal title={title} headerBackground="primary" onDismiss={onDismiss}>
+        <Button>This button Does nothing</Button>
+      </Modal>
+    );
+  };
+
+  const [onPresent1] = useModal(<CustomHeaderModal title="Modal with custom header" />);
+  return <Button onClick={onPresent1}>Modal with custom header</Button>;
 };
