@@ -12,7 +12,7 @@ URLs to external lists are stored in `token-lists.json`, if you want your list t
 - Add `checksum:newlistname`, `generate:newlistname`, `makelist:newlistname` command to `package.json` analogous to PancakeSwap default and extended list scripts.
 - Modify `checksum.ts`, `buildList.ts` and `default.test.ts` to handle new list
 
-## How to add new tokens to pancakeswap (extended) token list
+## How to add new tokens to PancakeSwap (extended) token list
 
 Note - this is not something we expect pull requests for.  
 Unless you've been specifically asked by someone from PCS team please do no submit PRs to be listed on default PCS list. You can still trade your tokens on PCS exchange by pasting your address into the token field.
@@ -27,6 +27,18 @@ For list to be considered valid it need to satisfy the following criteria:
 - It passes [token list schema](https://github.com/Uniswap/token-lists/blob/master/src/tokenlist.schema.json) validation (schema is [slightly modified](src/schema.ts))
 - There are no duplicate addresses, symbols or token names in the list
 - All addresses are valid and checksummed (`yarn checksum:pcs` automatically converts addresses to checksummed versions, it is also part of `yarn makelist:pcs`)
+
+## How to update Top100 Token list
+
+Note - this is not something we expect pull requests for. 
+
+```shell script
+# Fetch the Top100 Tokens on PancakeSwap v2, and update list.
+$ yarn fetch:pcs-top-100
+
+# Build token list (pancakeswap-top-100.json)
+$ yarn makelist:pcs-top-100
+```
 
 ## Deploying
 
