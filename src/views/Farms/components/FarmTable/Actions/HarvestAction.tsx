@@ -62,7 +62,7 @@ const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({ pid, userD
           {countUp > 0 && <Staked>~{countUp}USD</Staked>}
         </div>
         <Button
-          disabled={!earnings || pendingTx || !userDataReady}
+          disabled={earnings.eq(0) || pendingTx || !userDataReady}
           onClick={async () => {
             setPendingTx(true)
             await onReward()
