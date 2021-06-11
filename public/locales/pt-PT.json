@@ -818,5 +818,6 @@
   "Total amount of %symbol% staked in this pool": "Montante total de %symbol% investidos neste pool",
   "These pools are no longer distributing rewards. Please unstake your tokens.": "Estes pools já não estão a distribuir recompensas. Liberte os seus tokens.",
   "Max. stake per user": "Investimento máximo por utilizador",
-  "You have claimed your rewards!": "You have claimed your rewards!"
+  "You have claimed your rewards!": "You have claimed your rewards!",
+  "Already Collected": "Already Collected"
 }
