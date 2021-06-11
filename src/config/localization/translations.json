@@ -846,5 +846,12 @@
   "Have your say in the future of the PancakeSwap Ecosystem": "Have your say in the future of the PancakeSwap Ecosystem",
   "Got a suggestion?": "Got a suggestion?",
   "Community proposals are a great way to see how the community feels about your ideas.": "Community proposals are a great way to see how the community feels about your ideas.",
-  "They won't necessarily be implemented if the community votes successful, but suggestions with a lot of community support may be made into Core proposals.": "They won't necessarily be implemented if the community votes successful, but suggestions with a lot of community support may be made into Core proposals."
+  "They won't necessarily be implemented if the community votes successful, but suggestions with a lot of community support may be made into Core proposals.": "They won't necessarily be implemented if the community votes successful, but suggestions with a lot of community support may be made into Core proposals.",
+  "%field% is required": "%field% is required",
+  "Please create a minimum of %num% choices": "Please create a minimum of %num% choices",
+  "Choices must not be empty": "Choices must not be empty",
+  "Please select a valid date": "Please select a valid date",
+  "Please select a valid time": "Please select a valid time",
+  "End date must be after the start date": "End date must be after the start date",
+  "Invalid snapshot": "Invalid snapshot"
 }

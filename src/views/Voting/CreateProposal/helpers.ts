@@ -1,3 +1,4 @@
+import { ContextApi } from 'contexts/Localization/types'
 import { format, parseISO, isValid } from 'date-fns'
 import { MINIMUM_CHOICES } from './Choices'
 import { FormState } from './types'
@@ -13,45 +14,57 @@ export const combineDateAndTime = (date: Date, time: Date) => {
   return parseISO(`${dateStr}T${timeStr}`).getTime() / 1e3
 }
 
-export const isFormValid = (formData: FormState) => {
+export const getFormErrors = (formData: FormState, t: ContextApi['t']) => {
   const { name, body, choices, startDate, startTime, endDate, endTime, snapshot } = formData
+  const errors: { [key: string]: string[] } = {}
 
   if (!name) {
-    return false
+    errors.name = [t('%field% is required', { field: 'Title' })]
   }
 
   if (!body) {
-    return false
+    errors.body = [t('%field% is required', { field: 'Body' })]
   }
 
   if (choices.length < MINIMUM_CHOICES) {
-    return false
+    errors.choices = [t('Please create a minimum of %num% choices', { num: MINIMUM_CHOICES })]
   }
 
   const hasEmptyChoice = choices.some((choice) => !choice.value)
   if (choices.length === MINIMUM_CHOICES && hasEmptyChoice) {
-    return false
+    errors.choices = Array.isArray(errors.choices)
+      ? [...errors.choices, t('Choices must not be empty')]
+      : (errors.choices = [t('Choices must not be empty')])
   }
 
   if (!isValid(startDate)) {
-    return false
+    errors.startDate = [t('Please select a valid date')]
   }
 
   if (!isValid(startTime)) {
-    return false
+    errors.startTime = [t('Please select a valid time')]
   }
 
   if (!isValid(endDate)) {
-    return false
+    errors.endDate = [t('Please select a valid date')]
   }
 
   if (!isValid(endTime)) {
-    return false
+    errors.endTime = [t('Please select a valid time')]
+  }
+
+  const startDateTimestamp = combineDateAndTime(startDate, startTime)
+  const endDateTimestamp = combineDateAndTime(endDate, endTime)
+
+  if (endDateTimestamp < startDateTimestamp) {
+    errors.endDate = Array.isArray(errors.endDate)
+      ? [...errors.endDate, t('End date must be after the start date')]
+      : (errors.endDate = [t('End date must be after the start date')])
   }
 
   if (snapshot === 0) {
-    return false
+    errors.snapshot = [t('Invalid snapshot')]
   }
 
-  return true
+  return errors
 }

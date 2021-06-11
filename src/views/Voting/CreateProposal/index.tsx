@@ -14,6 +14,7 @@ import {
 } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import times from 'lodash/times'
+import isEmpty from 'lodash/isEmpty'
 import useWeb3 from 'hooks/useWeb3'
 import { useHistory } from 'react-router'
 import { useInitialBlock } from 'state/hooks'
@@ -22,12 +23,13 @@ import truncateWalletAddress from 'utils/truncateWalletAddress'
 import { useTranslation } from 'contexts/Localization'
 import Container from 'components/layout/Container'
 import { DatePicker, TimePicker } from 'components/DatePicker'
+import UnlockButton from 'components/UnlockButton'
 import BreadcrumbLink from '../components/BreadcrumbLink'
 import { sendSnaphotData, Message, generateMetaData, generatePayloadData } from '../helpers'
 import Layout from '../components/Layout'
-import { Label, SecondaryLabel } from './styles'
+import { FormErrors, Label, SecondaryLabel } from './styles'
 import Choices, { Choice, makeChoice, MINIMUM_CHOICES } from './Choices'
-import { combineDateAndTime, isFormValid } from './helpers'
+import { combineDateAndTime, getFormErrors } from './helpers'
 import { FormState } from './types'
 import { SnapshotCommand } from '../types'
 
@@ -44,12 +46,14 @@ const CreateProposal = () => {
     endTime: null,
     snapshot: 0,
   })
+  const [fieldsState, setFieldsState] = useState<{ [key: string]: boolean }>({})
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const initialBlock = useInitialBlock()
   const { push } = useHistory()
   const web3 = useWeb3()
   const { name, body, choices, startDate, startTime, endDate, endTime, snapshot } = state
+  const formErrors = getFormErrors(state, t)
 
   const handleSubmit = async (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault()
@@ -89,6 +93,12 @@ const CreateProposal = () => {
     setState((prevState) => ({
       ...prevState,
       [key]: value,
+    }))
+
+    // Keep track of what fields the user has attempted to edit
+    setFieldsState((prevFieldsState) => ({
+      ...prevFieldsState,
+      [key]: true,
     }))
   }
 
@@ -133,6 +143,7 @@ const CreateProposal = () => {
             <Box mb="24px">
               <Label htmlFor="name">{t('Title')}</Label>
               <Input id="name" name="name" value={name} scale="lg" onChange={handleChange} required />
+              {formErrors.name && fieldsState.name && <FormErrors errors={formErrors.name} />}
             </Box>
             <Box mb="24px">
               <Label htmlFor="body">{t('Content')}</Label>
@@ -140,8 +151,10 @@ const CreateProposal = () => {
                 {t('Tip: write in Markdown!')}
               </Text>
               <SimpleMde id="body" name="body" onTextChange={handleSimpleMdeChange} value={body} required />
+              {formErrors.body && fieldsState.body && <FormErrors errors={formErrors.body} />}
             </Box>
             <Choices choices={choices} onChange={handleChoiceChange} />
+            {formErrors.choices && fieldsState.choices && <FormErrors errors={formErrors.choices} />}
           </Box>
           <Box>
             <Card>
@@ -159,6 +172,7 @@ const CreateProposal = () => {
                     selected={startDate}
                     placeholderText="YYYY/MM/DD"
                   />
+                  {formErrors.startDate && fieldsState.startDate && <FormErrors errors={formErrors.startDate} />}
                 </Box>
                 <Box mb="24px">
                   <SecondaryLabel>{t('Start Time')}</SecondaryLabel>
@@ -168,6 +182,7 @@ const CreateProposal = () => {
                     selected={startTime}
                     placeholderText="00:00"
                   />
+                  {formErrors.startTime && fieldsState.startTime && <FormErrors errors={formErrors.startTime} />}
                 </Box>
                 <Box mb="24px">
                   <SecondaryLabel>{t('End Date')}</SecondaryLabel>
@@ -177,6 +192,7 @@ const CreateProposal = () => {
                     selected={endDate}
                     placeholderText="YYYY/MM/DD"
                   />
+                  {formErrors.endDate && fieldsState.endDate && <FormErrors errors={formErrors.endDate} />}
                 </Box>
                 <Box mb="24px">
                   <SecondaryLabel>{t('End Time')}</SecondaryLabel>
@@ -186,6 +202,7 @@ const CreateProposal = () => {
                     selected={endTime}
                     placeholderText="00:00"
                   />
+                  {formErrors.endTime && fieldsState.endTime && <FormErrors errors={formErrors.endTime} />}
                 </Box>
                 {account && (
                   <Flex alignItems="center" mb="8px">
@@ -201,9 +218,13 @@ const CreateProposal = () => {
                   </Text>
                   <LinkExternal href={getBscScanBlockNumberUrl(snapshot)}>{snapshot}</LinkExternal>
                 </Flex>
-                <Button type="submit" width="100%" disabled={!isFormValid(state)}>
-                  {t('Publish')}
-                </Button>
+                {account ? (
+                  <Button type="submit" width="100%" disabled={!isEmpty(formErrors)}>
+                    {t('Publish')}
+                  </Button>
+                ) : (
+                  <UnlockButton width="100%" type="button" />
+                )}
               </CardBody>
             </Card>
           </Box>
