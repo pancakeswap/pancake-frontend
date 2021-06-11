@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.38.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.37.1...@pancakeswap/uikit@0.38.0) (2021-06-11)
+
+
+### Bug Fixes
+
+* (userblock) Rerender userblock when one of the props changes ([#148](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/148)) ([ba5e3ab](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/ba5e3ab25d558830a1af49e82943b53c5a5ab344))
+
+
+### Features
+
+* (connect) Change how to connect link with more accurate one ([#152](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/152)) ([bfbe506](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/bfbe506e63ef7a243d7425d07fb59c9da9d5a06b))
+
+
+
+
+
 ## [0.37.1](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.37.0...@pancakeswap/uikit@0.37.1) (2021-06-09)
 
 
