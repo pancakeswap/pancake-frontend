@@ -1,5 +1,6 @@
 import React from 'react'
-import { Box, Button, Text, Heading } from '@pancakeswap/uikit'
+import { Box, Button, Text, Heading, ProposalIcon } from '@pancakeswap/uikit'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import Container from 'components/layout/Container'
@@ -29,7 +30,9 @@ const Footer = () => {
             )}
           </Text>
 
-          <Button>{t('Make a Proposal')}</Button>
+          <Button startIcon={<ProposalIcon color="currentColor" width="24px" />} as={Link} to="/voting/proposal/create">
+            {t('Make a Proposal')}
+          </Button>
         </Box>
       </Container>
     </StyledFooter>
