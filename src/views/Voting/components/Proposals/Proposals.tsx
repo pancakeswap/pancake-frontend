@@ -2,54 +2,39 @@ import React, { useEffect, useState } from 'react'
 import { Box, Breadcrumbs, Card, Flex, Heading, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import Container from 'components/layout/Container'
-import { Proposal, ProposalState, ProposalType } from '../../types'
-import { filterProposalsByType, getProposals } from '../../helpers'
+import { useAppDispatch } from 'state'
+import { fetchProposals } from 'state/voting'
+import { useGetProposals, useGetVotingStatus } from 'state/hooks'
+import { ProposalState, ProposalType, VotingStatus } from 'state/types'
+import { filterProposalsByState, filterProposalsByType } from '../../helpers'
 import BreadcrumbLink from '../BreadcrumbLink'
 import ProposalsLoading from './ProposalsLoading'
 import TabMenu from './TabMenu'
 import ProposalRow from './ProposalRow'
 import Filters from './Filters'
 
-enum LoadingState {
-  IDLE = 'idle',
-  LOADING = 'loading',
-  ERROR = 'error',
-}
-
 interface State {
-  loadingState: LoadingState
   proposalType: ProposalType
   filterState: ProposalState
-  proposals: Proposal[]
 }
 
 const Proposals = () => {
   const { t } = useTranslation()
   const [state, setState] = useState<State>({
-    loadingState: LoadingState.LOADING,
     proposalType: ProposalType.CORE,
     filterState: ProposalState.ACTIVE,
-    proposals: [],
   })
-  const { loadingState, proposalType, filterState, proposals } = state
+  const votingStatus = useGetVotingStatus()
+  const proposals = useGetProposals()
+  const dispatch = useAppDispatch()
+
+  const { proposalType, filterState } = state
+  const isLoading = votingStatus === VotingStatus.LOADING
+  const isIdle = votingStatus === VotingStatus.IDLE
 
   useEffect(() => {
-    const fetchProposals = async () => {
-      setState((prevState) => ({
-        ...prevState,
-        loadingState: LoadingState.LOADING,
-      }))
-
-      const data = await getProposals(100, 0, filterState)
-      setState((prevState) => ({
-        ...prevState,
-        loadingState: LoadingState.IDLE,
-        proposals: data,
-      }))
-    }
-
-    fetchProposals()
-  }, [setState, filterState])
+    dispatch(fetchProposals({ first: 1000, state: filterState }))
+  }, [filterState, dispatch])
 
   const handleProposalTypeChange = (newProposalType: ProposalType) => {
     setState((prevState) => ({
@@ -65,7 +50,7 @@ const Proposals = () => {
     }))
   }
 
-  const filteredProposals = filterProposalsByType(proposals, proposalType)
+  const filteredProposals = filterProposalsByState(filterProposalsByType(proposals, proposalType), filterState)
 
   return (
     <Container py="40px">
@@ -80,18 +65,14 @@ const Proposals = () => {
       </Heading>
       <Card>
         <TabMenu proposalType={proposalType} onTypeChange={handleProposalTypeChange} />
-        <Filters
-          filterState={filterState}
-          onFilterChange={handleFilterChange}
-          isLoading={loadingState === LoadingState.LOADING}
-        />
-        {loadingState === LoadingState.LOADING && <ProposalsLoading />}
-        {loadingState === LoadingState.IDLE &&
+        <Filters filterState={filterState} onFilterChange={handleFilterChange} isLoading={isLoading} />
+        {isLoading && <ProposalsLoading />}
+        {isIdle &&
           filteredProposals.length > 0 &&
           filteredProposals.map((proposal) => {
             return <ProposalRow key={proposal.id} proposal={proposal} />
           })}
-        {loadingState === LoadingState.IDLE && filteredProposals.length === 0 && (
+        {isIdle && filteredProposals.length === 0 && (
           <Flex alignItems="center" justifyContent="center" p="32px">
             <Heading as="h5">{t('No proposals found')}</Heading>
           </Flex>

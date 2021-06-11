@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Button, Card, CardBody, CardHeader, CardProps, Heading, Radio, Text, useModal } from '@pancakeswap/uikit'
+import { Proposal } from 'state/types'
 import { useTranslation } from 'contexts/Localization'
-import { Proposal } from '../types'
 import CastVoteModal from '../components/Proposal/CastVoteModal'
 
 interface VoteProps extends CardProps {

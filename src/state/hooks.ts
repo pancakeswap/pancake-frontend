@@ -472,3 +472,14 @@ export const useGetCollectibles = () => {
     nftsInWallet: Nfts.filter((nft) => identifiers.includes(nft.identifier)),
   }
 }
+
+// Voting
+export const useGetProposals = () => {
+  const proposals = useSelector((state: State) => state.voting.proposals)
+  return Object.values(proposals)
+}
+
+export const useGetVotingStatus = () => {
+  const votingStatus = useSelector((state: State) => state.voting.status)
+  return votingStatus
+}

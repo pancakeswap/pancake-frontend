@@ -2,13 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { ArrowBackIcon, Box, Button, Flex, Heading } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { Link, Redirect, useParams } from 'react-router-dom'
+import { Proposal as ProposalType, ProposalState } from 'state/types'
 import { useTranslation } from 'contexts/Localization'
 import Container from 'components/layout/Container'
 import ReactMarkdown from 'components/ReactMarkdown'
 import PageLoader from 'components/PageLoader'
 import { getProposal, isCoreProposal } from '../helpers'
-import { Proposal as ProposalType, ProposalState } from '../types'
-import useGetVotes from '../hooks/useGetVotes'
 import { ProposalStateTag, ProposalTypeTag } from '../components/Proposals/tags'
 import Layout from '../components/Layout'
 import Details from './Details'
@@ -21,8 +20,8 @@ const Proposal = () => {
   const { id }: { id: string } = useParams()
   const { t } = useTranslation()
   const { account } = useWeb3React()
-  const { votes, isFinished } = useGetVotes(id)
-  const accountHasVoted = account && votes.some((vote) => vote.voter.toLowerCase() === account.toLowerCase())
+  // const accountHasVoted = account && votes.some((vote) => vote.voter.toLowerCase() === account.toLowerCase())
+  const accountHasVoted = false
 
   useEffect(() => {
     const fetchData = async () => {
@@ -70,7 +69,7 @@ const Proposal = () => {
           {!accountHasVoted && account && proposal.state === ProposalState.ACTIVE && (
             <Vote proposal={proposal} mb="16px" />
           )}
-          <Votes votes={votes} isFinished={isFinished} />
+          <Votes proposalId={id} />
         </Box>
         <Details proposal={proposal} />
       </Layout>

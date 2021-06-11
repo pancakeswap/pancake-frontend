@@ -1,9 +1,9 @@
 import React from 'react'
 import { Card, CardBody, CardHeader, Flex, Heading, LinkExternal, Text } from '@pancakeswap/uikit'
+import { Proposal } from 'state/types'
 import { useTranslation } from 'contexts/Localization'
 import { getBscScanAddressUrl, getBscScanBlockNumberUrl } from 'utils/bscscan'
 import truncateWalletAddress from 'utils/truncateWalletAddress'
-import { Proposal } from '../types'
 import { IPFS_GATEWAY } from '../config'
 
 interface DetailsProps {

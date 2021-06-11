@@ -4,7 +4,7 @@ import { Flex, LinkExternal, Text } from '@pancakeswap/uikit'
 import truncateWalletAddress from 'utils/truncateWalletAddress'
 import { formatNumber } from 'utils/formatBalance'
 import { getBscScanAddressUrl } from 'utils/bscscan'
-import { Vote } from '../../types'
+import { Vote } from 'state/types'
 import { IPFS_GATEWAY } from '../../config'
 import Row, { AddressColumn, ChoiceColumn, VotingPowerColumn } from './Row'
 

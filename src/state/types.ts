@@ -257,6 +257,71 @@ export interface PredictionsState {
   bets: BetData
 }
 
+// Voting
+export enum SnapshotCommand {
+  PROPOSAL = 'proposal',
+  VOTE = 'vote',
+}
+
+export enum ProposalType {
+  ALL = 'all',
+  CORE = 'core',
+  COMMUNITY = 'community',
+}
+
+export enum ProposalState {
+  ACTIVE = 'active',
+  PENDING = 'pending',
+  CLOSED = 'closed',
+}
+
+export interface Space {
+  id: string
+  name: string
+}
+
+export interface Proposal {
+  author: string
+  body: string
+  choices: string[]
+  end: number
+  id: string
+  snapshot: string
+  space: Space
+  start: number
+  state: ProposalState
+  title: string
+}
+
+export interface Vote {
+  id: string
+  voter: string
+  created: number
+  space: Space
+  proposal: {
+    choices: Proposal['choices']
+  }
+  choice: number
+  metadata?: {
+    votingPower: string
+  }
+}
+
+export enum VotingStatus {
+  IDLE = 'idle',
+  LOADING = 'loading',
+}
+
+export interface VotingState {
+  status: VotingStatus
+  proposals: {
+    [key: string]: Proposal
+  }
+  votes: {
+    [key: string]: Vote[]
+  }
+}
+
 // Global state
 
 export interface State {
@@ -268,4 +333,5 @@ export interface State {
   profile: ProfileState
   teams: TeamsState
   collectibles: CollectiblesState
+  voting: VotingState
 }

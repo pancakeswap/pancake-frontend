@@ -3,8 +3,8 @@ import { Box, Button, InjectedModalProps, Modal, Skeleton, Text } from '@pancake
 import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
 import useWeb3 from 'hooks/useWeb3'
+import { SnapshotCommand } from 'state/types'
 import useGetVotingPower from '../../hooks/useGetVotingPower'
-import { SnapshotCommand } from '../../types'
 import { generatePayloadData, Message, saveVotingPower, sendSnaphotData } from '../../helpers'
 import ModalBox from './ModalBox'
 

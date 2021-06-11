@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
+import { Vote } from 'state/types'
 import { getVotes } from '../helpers'
-import { Vote } from '../types'
 
 interface State {
   isFinished: boolean

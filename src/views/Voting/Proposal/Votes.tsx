@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   AutoRenewIcon,
   Card,
@@ -13,21 +13,21 @@ import {
 import orderBy from 'lodash/orderBy'
 import { useTranslation } from 'contexts/Localization'
 import VotesLoading from '../components/Proposal/VotesLoading'
-import { Vote } from '../types'
 import VoteRow from '../components/Proposal/VoteRow'
 import Row, { AddressColumn, ChoiceColumn, VotingPowerColumn } from '../components/Proposal/Row'
 
-const VOTES_PER_VIEW = 20
+// const VOTES_PER_VIEW = 20
 
 interface VotesProps {
-  votes: Vote[]
-  isFinished: boolean
+  proposalId: string
 }
 
-const Votes: React.FC<VotesProps> = ({ votes, isFinished }) => {
+const Votes: React.FC<VotesProps> = ({ proposalId }) => {
   const [showAll, setShowAll] = useState(false)
   const { t } = useTranslation()
-  const displayVotes = showAll ? votes : votes.slice(0, VOTES_PER_VIEW)
+  // const displayVotes = showAll ? votes : votes.slice(0, VOTES_PER_VIEW)
+  const displayVotes = []
+  const isFinished = true
 
   const handleClick = () => {
     setShowAll(!showAll)
@@ -38,7 +38,7 @@ const Votes: React.FC<VotesProps> = ({ votes, isFinished }) => {
       <CardHeader>
         <Flex alignItems="center" justifyContent="space-between">
           <Heading as="h3" scale="md">
-            {t('Votes (%count%)', { count: votes.length.toLocaleString() })}
+            {t('Votes (%count%)', { count: [].length.toLocaleString() })}
           </Heading>
           {!isFinished && <AutoRenewIcon spin width="22px" />}
         </Flex>

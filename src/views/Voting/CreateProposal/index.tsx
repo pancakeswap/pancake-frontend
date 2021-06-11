@@ -12,12 +12,13 @@ import {
   LinkExternal,
   Text,
 } from '@pancakeswap/uikit'
+import { useHistory } from 'react-router'
 import { useWeb3React } from '@web3-react/core'
 import times from 'lodash/times'
 import isEmpty from 'lodash/isEmpty'
 import useWeb3 from 'hooks/useWeb3'
-import { useHistory } from 'react-router'
 import { useInitialBlock } from 'state/hooks'
+import { SnapshotCommand } from 'state/types'
 import { getBscScanAddressUrl, getBscScanBlockNumberUrl } from 'utils/bscscan'
 import truncateWalletAddress from 'utils/truncateWalletAddress'
 import { useTranslation } from 'contexts/Localization'
@@ -31,7 +32,6 @@ import { FormErrors, Label, SecondaryLabel } from './styles'
 import Choices, { Choice, makeChoice, MINIMUM_CHOICES } from './Choices'
 import { combineDateAndTime, getFormErrors } from './helpers'
 import { FormState } from './types'
-import { SnapshotCommand } from '../types'
 
 const SimpleMde = lazy(() => import('components/SimpleMde'))
 

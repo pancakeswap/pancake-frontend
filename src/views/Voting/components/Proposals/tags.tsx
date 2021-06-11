@@ -1,7 +1,7 @@
 import React from 'react'
 import { TagProps } from '@pancakeswap/uikit'
 import { ClosedTag, CommunityTag, CoreTag, SoonTag, VoteNowTag } from 'components/Tags'
-import { ProposalState } from '../../types'
+import { ProposalState } from 'state/types'
 
 export const ProposalStateTag: React.FC<{ proposalState: ProposalState }> = ({ proposalState }) => {
   if (proposalState === ProposalState.ACTIVE) {
