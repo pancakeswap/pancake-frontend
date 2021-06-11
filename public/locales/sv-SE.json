@@ -818,5 +818,6 @@
   "Total amount of %symbol% staked in this pool": "Totalt belopp av %symbol% satsat i denna pool",
   "These pools are no longer distributing rewards. Please unstake your tokens.": "Dessa pooler distribuerar inte längre belöningar. Dra tillbaka dina satsade tokens.",
   "Max. stake per user": "Maximal insats per användare",
-  "You have claimed your rewards!": "You have claimed your rewards!"
+  "You have claimed your rewards!": "You have claimed your rewards!",
+  "Already Collected": "Already Collected"
 }
