@@ -205,6 +205,7 @@ export interface Bet {
   amount: number
   position: BetPosition
   claimed: boolean
+  claimedHash: string
   user?: PredictionUser
   round: Round
 }

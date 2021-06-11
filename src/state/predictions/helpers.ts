@@ -58,6 +58,7 @@ export const transformBetResponse = (betResponse: BetResponse): Bet => {
     amount: betResponse.amount ? parseFloat(betResponse.amount) : 0,
     position: betResponse.position === 'Bull' ? BetPosition.BULL : BetPosition.BEAR,
     claimed: betResponse.claimed,
+    claimedHash: betResponse.claimedHash,
     user: {
       id: betResponse.user.id,
       address: betResponse.user.address,

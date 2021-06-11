@@ -13,6 +13,7 @@ export interface BetResponse {
   amount: string
   position: string
   claimed: boolean
+  claimedHash: string
   user?: UserResponse
   round?: RoundResponse
 }
@@ -89,6 +90,7 @@ export const getBetBaseFields = () => `
   amount
   position
   claimed
+  claimedHash
 `
 
 export const getUserBaseFields = () => `
