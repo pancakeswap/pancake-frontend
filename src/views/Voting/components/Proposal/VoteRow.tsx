@@ -14,7 +14,7 @@ interface VoteRowProps {
 
 const VoteRow: React.FC<VoteRowProps> = ({ vote }) => {
   const hasVotingPower = !!vote.metadata?.votingPower
-  const votingPower = hasVotingPower ? formatNumber(new BigNumber(vote.metadata.votingPower).toNumber(), 0, 2) : '--'
+  const votingPower = hasVotingPower ? formatNumber(new BigNumber(vote.metadata.votingPower).toNumber(), 0, 4) : '--'
 
   return (
     <Row>

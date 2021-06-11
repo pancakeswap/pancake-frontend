@@ -7,6 +7,7 @@ import { getVotingPower } from '../helpers'
 
 interface State {
   isInitialized: boolean
+  verificationHash: string
   cakeBalance: BigNumber
   cakeVaultBalance: BigNumber
   cakePoolBalance: BigNumber
@@ -17,6 +18,7 @@ interface State {
 
 interface VotingPowerHydrate {
   isInitialized: boolean
+  verificationHash: string
   cakeBalance: string
   cakeVaultBalance: string
   cakePoolBalance: string
@@ -25,21 +27,32 @@ interface VotingPowerHydrate {
   total: string
 }
 
-const hydrateVotingPower = (value: Partial<VotingPowerHydrate>): State => {
+const hydrateVotingPower = ({
+  isInitialized,
+  verificationHash,
+  cakeBalance,
+  cakeVaultBalance,
+  cakePoolBalance,
+  poolsBalance,
+  cakeBnbLpBalance,
+  total,
+}: Partial<VotingPowerHydrate>): State => {
   return {
-    isInitialized: Boolean(value.isInitialized),
-    cakeBalance: new BigNumber(value.cakeBalance),
-    cakeVaultBalance: new BigNumber(value.cakeVaultBalance),
-    cakePoolBalance: new BigNumber(value.cakePoolBalance),
-    poolsBalance: new BigNumber(value.poolsBalance),
-    cakeBnbLpBalance: new BigNumber(value.cakeBnbLpBalance),
-    total: new BigNumber(value.total),
+    verificationHash,
+    isInitialized: Boolean(isInitialized),
+    cakeBalance: new BigNumber(cakeBalance),
+    cakeVaultBalance: new BigNumber(cakeVaultBalance),
+    cakePoolBalance: new BigNumber(cakePoolBalance),
+    poolsBalance: new BigNumber(poolsBalance),
+    cakeBnbLpBalance: new BigNumber(cakeBnbLpBalance),
+    total: new BigNumber(total),
   }
 }
 
 const dehydrateVotingPower = (state: State) => {
   return {
     isInitialized: state.isInitialized,
+    verificationHash: state.verificationHash,
     cakeBalance: state.cakeBalance.toJSON(),
     cakeVaultBalance: state.cakeVaultBalance.toJSON(),
     cakePoolBalance: state.cakePoolBalance.toJSON(),
@@ -51,6 +64,7 @@ const dehydrateVotingPower = (state: State) => {
 
 const initialState: State = {
   isInitialized: false,
+  verificationHash: null,
   cakeBalance: BIG_ZERO,
   cakeVaultBalance: BIG_ZERO,
   cakePoolBalance: BIG_ZERO,

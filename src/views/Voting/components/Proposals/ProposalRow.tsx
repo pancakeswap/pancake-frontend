@@ -39,7 +39,7 @@ const ProposalRow: React.FC<ProposalRowProps> = ({ proposal }) => {
           <ProposalTypeTag isCoreProposal={isCoreProposal(proposal)} ml="8px" />
         </Flex>
       </Box>
-      <IconButton as={Link} to={votingLink}>
+      <IconButton variant="text">
         <ArrowForwardIcon width="24px" />
       </IconButton>
     </StyledProposalRow>
