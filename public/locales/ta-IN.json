@@ -818,5 +818,6 @@
   "Total amount of %symbol% staked in this pool": "இக்குளத்தில் ஸ்டேக் செய்துள்ள %symbol% ன் மொத்த தொகை",
   "These pools are no longer distributing rewards. Please unstake your tokens.": "இக்குளங்கள் இனி வெகுமதிகளை விநியோகிக்காது. உங்கள் டோக்கன்களை அன்ஸ்டேக் செய்திடுங்கள்.",
   "Max. stake per user": "ஒரு பயனருக்கான அதிகபட்ச ஸ்டேக்",
-  "You have claimed your rewards!": "You have claimed your rewards!"
+  "You have claimed your rewards!": "You have claimed your rewards!",
+  "Already Collected": "Already Collected"
 }
