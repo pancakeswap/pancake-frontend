@@ -39,6 +39,16 @@ const farms: FarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 343,
+    lpSymbol: 'ODDZ-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x3c2c77353E2F6AC1578807b6b2336Bf3a3CbB014',
+    },
+    token: tokens.oddz,
+    quoteToken: tokens.wbnb,
+  },
+  {
     pid: 409,
     lpSymbol: 'ETH-USDC LP',
     lpAddresses: {
@@ -737,16 +747,6 @@ const farms: FarmConfig[] = [
     },
     token: tokens.hoo,
     quoteToken: tokens.busd,
-  },
-  {
-    pid: 343,
-    lpSymbol: 'ODDZ-BNB LP',
-    lpAddresses: {
-      97: '',
-      56: '0x3c2c77353E2F6AC1578807b6b2336Bf3a3CbB014',
-    },
-    token: tokens.oddz,
-    quoteToken: tokens.wbnb,
   },
   {
     pid: 342,
