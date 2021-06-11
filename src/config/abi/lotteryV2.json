@@ -752,6 +752,92 @@
   {
     "inputs": [
       {
+        "internalType": "uint256",
+        "name": "_lotteryId",
+        "type": "uint256"
+      }
+    ],
+    "name": "viewLottery",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "enum PancakeSwapLottery.Status",
+            "name": "status",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint256",
+            "name": "startTime",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "endTime",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "priceTicketInCake",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "discountDivisor",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256[6]",
+            "name": "rewardsBreakdown",
+            "type": "uint256[6]"
+          },
+          {
+            "internalType": "uint256",
+            "name": "treasuryFee",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256[6]",
+            "name": "cakePerBracket",
+            "type": "uint256[6]"
+          },
+          {
+            "internalType": "uint256[6]",
+            "name": "countWinnersPerBracket",
+            "type": "uint256[6]"
+          },
+          {
+            "internalType": "uint256",
+            "name": "firstTicketId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "firstTicketIdNextLottery",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amountCollectedInCake",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint32",
+            "name": "finalNumber",
+            "type": "uint32"
+          }
+        ],
+        "internalType": "struct PancakeSwapLottery.Lottery",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "uint256[]",
         "name": "_ticketIds",
         "type": "uint256[]"

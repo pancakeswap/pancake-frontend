@@ -1,4 +1,5 @@
-import { TranslatableText } from 'state/types'
+import BigNumber from 'bignumber.js'
+import { SerializedBigNumber, TranslatableText } from 'state/types'
 
 export interface Address {
   97?: string
@@ -154,8 +155,24 @@ export type PageMeta = {
   image?: string
 }
 
+export enum LotteryStatus {
+  PENDING = 'pending',
+  OPEN = 'open',
+  CLOSE = 'close',
+  CLAIMABLE = 'claimable',
+}
+
 export interface LotteryTicket {
   id: string
   number: string
-  status: boolean
+  status?: boolean
+  rewardBracket?: number
+  roundId?: string
+  cakeReward?: SerializedBigNumber
+}
+
+export interface LotteryTicketClaimData {
+  ticketsWithRewards: LotteryTicket[]
+  cakeTotal: BigNumber
+  roundId: string
 }

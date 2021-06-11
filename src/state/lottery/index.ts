@@ -1,9 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import BigNumber from 'bignumber.js'
-import { LotteryState, LotteryRound, LotteryStatus, PastLotteryRound, UserLotteryHistory } from 'state/types'
-import { getLotteryV2Contract } from 'utils/contractHelpers'
-import makeBatchRequest from 'utils/makeBatchRequest'
+import { LotteryTicket, LotteryStatus } from 'config/constants/types'
+import { LotteryState, LotteryRound, PastLotteryRound, UserLotteryHistory } from 'state/types'
 import { getPastLotteries, getUserPastLotteries, fetchLottery, fetchPublicData, fetchTickets } from './helpers'
 
 interface PublicLotteryData {
@@ -26,6 +24,9 @@ const initialState: LotteryState = {
     lastTicketId: '',
     amountCollectedInCake: '',
     finalNumber: '',
+    cakePerBracket: [],
+    countWinnersPerBracket: [],
+    rewardsBreakdown: [],
     userData: {
       isLoading: true,
       tickets: [],
@@ -48,8 +49,7 @@ export const fetchPublicLotteryData = createAsyncThunk<PublicLotteryData>('lotte
   return publicData
 })
 
-// TODO: Change any type
-export const fetchUserTickets = createAsyncThunk<any, { account: string; lotteryId: string }>(
+export const fetchUserTickets = createAsyncThunk<LotteryTicket[], { account: string; lotteryId: string }>(
   'lottery/fetchUserTickets',
   async ({ account, lotteryId }) => {
     const cursor = 0

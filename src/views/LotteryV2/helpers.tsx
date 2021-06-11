@@ -1,4 +1,4 @@
-import { LotteryTicket } from 'config/constants/types'
+import { LotteryTicket, LotteryTicketClaimData } from 'config/constants/types'
 
 /**
  * Return a random number between 1000000 & 1999999
@@ -49,6 +49,16 @@ export const parseRetreivedNumber = (number: string): string => {
   // reverse it
   numberAsArray.reverse()
   return numberAsArray.join('')
+}
+
+export const parseClaimDataForClaimTicketsCall = (claimData: LotteryTicketClaimData) => {
+  const ticketIds = claimData.ticketsWithRewards.map((ticket) => {
+    return ticket.id
+  })
+  const brackets = claimData.ticketsWithRewards.map((ticket) => {
+    return ticket.rewardBracket
+  })
+  return { lotteryId: claimData.roundId, ticketIds, brackets }
 }
 
 export default generateTicketNumbers

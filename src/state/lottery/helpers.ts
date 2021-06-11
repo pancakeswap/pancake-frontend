@@ -1,16 +1,16 @@
 import BigNumber from 'bignumber.js'
 import { request, gql } from 'graphql-request'
 import { GRAPH_API_LOTTERY } from 'config/constants/endpoints'
-import { UserLotteryHistory, PastLotteryRound, LotteryStatus } from 'state/types'
+import { LotteryStatus, LotteryTicket } from 'config/constants/types'
+import { UserLotteryHistory, PastLotteryRound, LotteryRound } from 'state/types'
 import { getLotteryV2Contract } from 'utils/contractHelpers'
 import makeBatchRequest from 'utils/makeBatchRequest'
 
 const lotteryContract = getLotteryV2Contract()
 
-// TODO: Move SC fetches into helper
-export const fetchLottery = async (lotteryId: string) => {
+export const fetchLottery = async (lotteryId: string): Promise<LotteryRound> => {
   try {
-    const lotteryData = await lotteryContract.methods.lotteries(lotteryId).call()
+    const lotteryData = await lotteryContract.methods.viewLottery(lotteryId).call()
     const {
       status,
       startTime,
@@ -22,6 +22,9 @@ export const fetchLottery = async (lotteryId: string) => {
       lastTicketId,
       amountCollectedInCake,
       finalNumber,
+      cakePerBracket,
+      countWinnersPerBracket,
+      rewardsBreakdown,
     } = lotteryData
     const priceTicketInCakeAsBN = new BigNumber(priceTicketInCake as string)
     const amountCollectedInCakeAsBN = new BigNumber(amountCollectedInCake as string)
@@ -38,6 +41,9 @@ export const fetchLottery = async (lotteryId: string) => {
       lastTicketId,
       amountCollectedInCake: amountCollectedInCakeAsBN.toJSON(),
       finalNumber,
+      cakePerBracket,
+      countWinnersPerBracket,
+      rewardsBreakdown,
     }
   } catch (error) {
     return {
@@ -52,6 +58,9 @@ export const fetchLottery = async (lotteryId: string) => {
       lastTicketId: '',
       amountCollectedInCake: '',
       finalNumber: '',
+      cakePerBracket: [],
+      countWinnersPerBracket: [],
+      rewardsBreakdown: [],
     }
   }
 }
@@ -74,22 +83,26 @@ export const fetchPublicData = async () => {
   }
 }
 
-export const fetchTickets = async (account, lotteryId, cursor) => {
+export const processRawTicketData = (rawTicketResponse): LotteryTicket[] => {
+  const ticketIds = rawTicketResponse[0]
+  const ticketNumbers = rawTicketResponse[1]
+  const ticketStatuses = rawTicketResponse[2]
+
+  return ticketIds.map((ticketId, index) => {
+    return {
+      id: ticketId,
+      number: ticketNumbers[index],
+      status: ticketStatuses[index],
+    }
+  })
+}
+
+export const fetchTickets = async (account: string, lotteryId: string, cursor: number): Promise<LotteryTicket[]> => {
   try {
     const userTickets = await lotteryContract.methods
       .viewUserTicketNumbersAndStatusesForLottery(account, lotteryId, cursor, 1000)
       .call()
-    const ticketIds = userTickets[0]
-    const ticketNumbers = userTickets[1]
-    const ticketStatuses = userTickets[2]
-
-    const completeTicketData = ticketIds.map((ticketId, index) => {
-      return {
-        id: ticketId,
-        number: ticketNumbers[index],
-        status: ticketStatuses[index],
-      }
-    })
+    const completeTicketData = processRawTicketData(userTickets)
     return completeTicketData
   } catch (error) {
     return null
@@ -106,7 +119,7 @@ export const getPastLotteries = async (): Promise<PastLotteryRound[]> => {
           totalUsers
           totalTickets
           status
-          winningNumbers
+          finalNumber
           winningTickets
           startTime
           endTime
