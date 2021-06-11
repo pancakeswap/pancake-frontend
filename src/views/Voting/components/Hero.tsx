@@ -1,22 +1,15 @@
 import React from 'react'
-import { Box, Button, Flex, Heading, ProposalIcon, Image } from '@pancakeswap/uikit'
+import { Box, Button, Flex, Heading, ProposalIcon } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'contexts/Localization'
 import Container from 'components/layout/Container'
+import DesktopImage from './DesktopImage'
 
 const StyledHero = styled(Box)`
   background: ${({ theme }) => theme.colors.gradients.bubblegum};
   padding-bottom: 32px;
   padding-top: 32px;
-`
-
-const DesktopImage = styled(Image)`
-  display: none;
-
-  ${({ theme }) => theme.mediaQueries.lg} {
-    display: block;
-  }
 `
 
 const Hero = () => {
@@ -25,8 +18,8 @@ const Hero = () => {
   return (
     <StyledHero>
       <Container>
-        <Flex justifyContent="space-between">
-          <Box>
+        <Flex alignItems="center" justifyContent="space-between">
+          <Box pr="32px">
             <Heading as="h1" scale="xxl" color="secondary" mb="16px">
               {t('Voting')}
             </Heading>
@@ -41,7 +34,7 @@ const Hero = () => {
               {t('Make a Proposal')}
             </Button>
           </Box>
-          <DesktopImage src="/images/voting/voting-presents.png" width={349} height={176} />
+          <DesktopImage src="/images/voting/voting-presents.png" width={361} height={214} />
         </Flex>
       </Container>
     </StyledHero>
