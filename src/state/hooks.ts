@@ -508,46 +508,59 @@ export const useGetProposalLoadingStatus = () => {
 }
 
 // Lottery
+export const useGetCurrentLotteryId = () => {
+  return useSelector((state: State) => state.lottery.currentLotteryId)
+}
+
+export const useGetUserLotteryHistory = () => {
+  return useSelector((state: State) => state.lottery.userLotteryHistory)
+}
+
+export const useGetPastLotteries = () => {
+  return useSelector((state: State) => state.lottery.pastLotteries)
+}
+
 export const useFetchLottery = () => {
   const { account } = useWeb3React()
   const { fastRefresh } = useRefresh()
   const dispatch = useAppDispatch()
   const currentLotteryId = useGetCurrentLotteryId()
 
-  // get current lottery ID, max tickets and historical lottery data
   useEffect(() => {
+    // get current lottery ID, max tickets and historical lottery subgraph data
     dispatch(fetchPublicLotteryData())
     dispatch(fetchPastLotteries())
   }, [dispatch])
 
-  // get user data for current and past lotteries
   useEffect(() => {
-    if (account && currentLotteryId) {
-      dispatch(fetchUserTickets({ account, lotteryId: currentLotteryId }))
-    }
-    if (account) {
-      dispatch(fetchUserLotteryHistory({ account }))
-    }
-  }, [dispatch, currentLotteryId, account])
-
-  // get data for current lottery
-  useEffect(() => {
+    // get public data for current lottery
     if (currentLotteryId) {
       dispatch(fetchCurrentLottery({ currentLotteryId }))
     }
-  }, [dispatch, currentLotteryId, fastRefresh, account])
-}
+  }, [dispatch, currentLotteryId, fastRefresh])
 
-export const useGetCurrentLotteryId = () => {
-  return useSelector((state: State) => state.lottery.currentLotteryId)
+  useEffect(() => {
+    // get user tickets for current lottery
+    if (account && currentLotteryId) {
+      dispatch(fetchUserTickets({ account, lotteryId: currentLotteryId }))
+    }
+  }, [dispatch, currentLotteryId, account])
+
+  useEffect(() => {
+    // get user past lotteries subgraph data
+    if (account) {
+      dispatch(fetchUserLotteryHistory({ account }))
+    }
+  }, [dispatch, account])
 }
 
 export const useLottery = () => {
   const currentRound = useSelector((state: State) => state.lottery.currentRound)
   const currentLotteryId = useGetCurrentLotteryId()
   const maxNumberTicketsPerBuyAsString = useSelector((state: State) => state.lottery.maxNumberTicketsPerBuy)
+  const userLotteryHistory = useGetUserLotteryHistory()
+  const pastLotteries = useGetPastLotteries()
 
-  // TODO: Move some of this to helper function?
   const {
     isLoading,
     status,
@@ -561,6 +574,9 @@ export const useLottery = () => {
     amountCollectedInCake: amountCollectedInCakeAsString,
     finalNumber,
     userData,
+    cakePerBracket,
+    countWinnersPerBracket,
+    rewardsBreakdown,
   } = currentRound
 
   const maxNumberTicketsPerBuy = useMemo(() => {
@@ -582,6 +598,8 @@ export const useLottery = () => {
   return {
     currentLotteryId,
     maxNumberTicketsPerBuy,
+    userLotteryHistory,
+    pastLotteries,
     currentRound: {
       isLoading,
       status,
@@ -595,6 +613,9 @@ export const useLottery = () => {
       amountCollectedInCake,
       finalNumber,
       userData,
+      cakePerBracket,
+      countWinnersPerBracket,
+      rewardsBreakdown,
     },
   }
 }

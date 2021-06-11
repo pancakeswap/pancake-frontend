@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Text, ChevronRightIcon, Box, Flex } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
+import { useGetUserLotteryHistory } from 'state/hooks'
 import HistoryGridRow from './HistoryGridRow'
 
 const Grid = styled(Box)`
@@ -15,6 +16,8 @@ interface FinishedRoundGridProps {
 
 const FinishedRoundGrid: React.FC<FinishedRoundGridProps> = ({ handleHistoryRowClick }) => {
   const { t } = useTranslation()
+  const userLotteryHistory = useGetUserLotteryHistory()
+  // TODO: Reverse rounds. Filter out current round
 
   return (
     <>
@@ -33,17 +36,18 @@ const FinishedRoundGrid: React.FC<FinishedRoundGridProps> = ({ handleHistoryRowC
         </Flex>
       </Grid>
       <Flex flexDirection="column">
-        {/* TODO: Populate with data */}
-        <HistoryGridRow roundId="4" numberTickets="12" endTime="1623252324" onClick={handleHistoryRowClick} />
-        <HistoryGridRow roundId="3" numberTickets="110" endTime="1623152325" hasWon onClick={handleHistoryRowClick} />
-        <HistoryGridRow
-          roundId="2"
-          numberTickets="5"
-          endTime="1623052326"
-          hasWon
-          hasClaimed
-          onClick={handleHistoryRowClick}
-        />
+        {/* TODO: Get endTime & claimed data */}
+        {userLotteryHistory &&
+          userLotteryHistory.pastRounds.map((pastRound) => (
+            <HistoryGridRow
+              roundId={pastRound.lotteryId}
+              hasWon={pastRound.claimed}
+              hasClaimed={pastRound.claimed}
+              numberTickets={pastRound.totalTickets}
+              endTime="1623252324"
+              onClick={handleHistoryRowClick}
+            />
+          ))}
       </Flex>
     </>
   )

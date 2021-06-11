@@ -2,7 +2,7 @@ import React from 'react'
 import { Button, useModal, WaitIcon } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useLottery } from 'state/hooks'
-import { LotteryStatus } from 'state/types'
+import { LotteryStatus } from 'config/constants/types'
 import BuyTicketsModal from './BuyTicketsModal'
 
 const BuyTicketsButton = ({ ...props }) => {

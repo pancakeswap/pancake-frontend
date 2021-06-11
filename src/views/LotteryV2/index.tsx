@@ -1,20 +1,23 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { Box, Flex, Heading } from '@pancakeswap/uikit'
+import { Box, Flex, Heading, useModal } from '@pancakeswap/uikit'
+import { useWeb3React } from '@web3-react/core'
+import { LotteryStatus } from 'config/constants/types'
 import PageSection from 'components/PageSection'
 import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'
 import useRoundEndCountdown from 'hooks/lottery/v2/useRoundEndCountdown'
 import { useAppDispatch } from 'state'
-import { useFetchLottery, useLottery } from 'state/hooks'
-import { LotteryStatus } from 'state/types'
+import { useFetchLottery, useGetPastLotteries, useGetUserLotteryHistory, useLottery } from 'state/hooks'
 import { fetchCurrentLottery } from 'state/lottery'
+import fetchUnclaimedUserRewards from 'state/lottery/fetchUnclaimedUserRewards'
 import { TITLE_BG, GET_TICKETS_BG, FINISHED_ROUNDS_BG, FINISHED_ROUNDS_BG_DARK } from './pageSectionStyles'
 import Hero from './components/Hero'
 import DrawInfoCard from './components/DrawInfoCard'
 import Countdown from './components/Countdown'
 import HistoryTabMenu from './components/HistoryTabMenu'
 import YourHistoryCard from './components/YourHistoryCard'
+import ClaimModal from './components/ClaimModal'
 
 const LotteryPage = styled.div`
   min-height: calc(100vh - 64px);
@@ -30,15 +33,45 @@ const TicketsSection = styled(PageSection)`
 const LotteryV2 = () => {
   useFetchLottery()
   const { t } = useTranslation()
+  const { account } = useWeb3React()
   const dispatch = useAppDispatch()
   const { isDark, theme } = useTheme()
   const {
     currentLotteryId,
     currentRound: { status, endTime },
   } = useLottery()
+  const [historyTabMenuIndex, setHistoryTabMenuIndex] = useState(0)
   const endTimeAsInt = parseInt(endTime, 10)
   const secondsRemaining = useRoundEndCountdown(endTimeAsInt)
-  const [historyTabMenuIndex, setHistoryTabMenuIndex] = useState(0)
+  const userLotteryHistory = useGetUserLotteryHistory()
+  const pastLotteries = useGetPastLotteries()
+  const [unclaimedRewards, setUnclaimedRewards] = useState([])
+  const [hasPoppedClaimModal, setHasPoppedClaimModal] = useState(false)
+  const [onPresentClaimModal] = useModal(<ClaimModal roundsToClaim={unclaimedRewards} />)
+
+  useEffect(() => {
+    const fetchRewards = async () => {
+      // TODO: Bug when switching accounts, old account userLotteryHistory is passed to new account.
+      // Causes problems if old account hasn't claimed for a round, and new account has winnings for that round
+      const unclaimedRewardsResponse = await fetchUnclaimedUserRewards(
+        account,
+        currentLotteryId,
+        userLotteryHistory,
+        pastLotteries,
+      )
+      setUnclaimedRewards(unclaimedRewardsResponse)
+    }
+    if (userLotteryHistory && account && currentLotteryId && pastLotteries) {
+      fetchRewards()
+    }
+  }, [account, userLotteryHistory, currentLotteryId, pastLotteries, setUnclaimedRewards])
+
+  useEffect(() => {
+    if (unclaimedRewards.length > 0 && !hasPoppedClaimModal) {
+      setHasPoppedClaimModal(true)
+      onPresentClaimModal()
+    }
+  }, [unclaimedRewards, hasPoppedClaimModal, onPresentClaimModal])
 
   // Re-fetch lottery data when round countdown reaches 0
   useEffect(() => {
