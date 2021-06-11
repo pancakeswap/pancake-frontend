@@ -9,7 +9,7 @@ import { getBalanceAmount } from 'utils/formatBalance'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { useWeb3React } from '@web3-react/core'
 import { usePriceCakeBusd } from 'state/hooks'
-import CardBusdValue from '../../../Home/components/CardBusdValue'
+import Balance from 'components/Balance'
 
 interface FarmCardActionsProps {
   earnings?: BigNumber
@@ -29,10 +29,12 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({ earnings, pid }) => {
 
   return (
     <Flex mb="8px" justifyContent="space-between" alignItems="center">
-      <Heading color={rawEarningsBalance.eq(0) ? 'textDisabled' : 'text'}>
-        {displayBalance}
-        {earningsBusd > 0 && <CardBusdValue value={earningsBusd} />}
-      </Heading>
+      <Flex flexDirection="column" alignItems="flex-start">
+        <Heading color={rawEarningsBalance.eq(0) ? 'textDisabled' : 'text'}>{displayBalance}</Heading>
+        {earningsBusd > 0 && (
+          <Balance fontSize="12px" color="textSubtle" decimals={2} value={earningsBusd} unit=" USD" prefix="~" />
+        )}
+      </Flex>
       <Button
         disabled={rawEarningsBalance.eq(0) || pendingTx}
         onClick={async () => {
