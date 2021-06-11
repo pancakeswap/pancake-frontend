@@ -27,7 +27,7 @@ const ProposalRow: React.FC<ProposalRowProps> = ({ proposal }) => {
 
   return (
     <StyledProposalRow to={votingLink}>
-      <Box style={{ flex: 1 }}>
+      <Box as="span" style={{ flex: 1 }}>
         <Text bold mb="8px">
           {proposal.title}
         </Text>
