@@ -107,6 +107,7 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
           position,
           amount: getBnbAmount(decimalValue).toNumber(),
           claimed: false,
+          claimedHash: null,
         },
       }),
     )
