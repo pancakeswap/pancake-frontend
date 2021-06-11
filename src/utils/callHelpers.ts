@@ -1,7 +1,12 @@
 import BigNumber from 'bignumber.js'
 import { DEFAULT_GAS_LIMIT, DEFAULT_TOKEN_DECIMAL } from 'config'
-import { ethers, Contract } from 'ethers'
-import { BIG_TEN, BIG_ZERO } from './bigNumber'
+import { Contract, ethers } from 'ethers'
+import { getAddress } from 'utils/addressHelpers'
+import pools from 'config/constants/pools'
+import sousChefABI from 'config/abi/sousChef.json'
+import { BIG_TEN } from './bigNumber'
+import { multicallv2 } from './multicall'
+import { archiveRpcProvider } from './providers'
 
 const options = {
   gasLimit: DEFAULT_GAS_LIMIT,
@@ -121,8 +126,49 @@ export const soushHarvest = async (sousChefContract) => {
   return receipt.status
 }
 
-export const soushHarvestBnb = async (sousChefContract) => {
-  const tx = await sousChefContract.deposit({ ...options, value: BIG_ZERO })
-  const receipt = await tx.wait()
-  return receipt.status
+export const getActivePools = async (block?: number) => {
+  const archiveProvider = archiveRpcProvider
+  const eligiblePools = pools
+    .filter((pool) => pool.sousId !== 0)
+    .filter((pool) => pool.isFinished === false || pool.isFinished === undefined)
+  const blockNumber = block || (await archiveProvider.getBlockNumber())
+  const multiCallOptions = {
+    web3: archiveProvider,
+    requireSuccess: false,
+    blockNumber,
+  }
+
+  const startBlocks = await multicallv2(
+    sousChefABI,
+    eligiblePools.map(({ contractAddress }) => {
+      return {
+        address: getAddress(contractAddress),
+        name: 'startBlock',
+      }
+    }),
+    multiCallOptions,
+  )
+  const endBlocks = await multicallv2(
+    sousChefABI,
+    eligiblePools.map(({ contractAddress }) => {
+      return {
+        address: getAddress(contractAddress),
+        name: 'bonusEndBlock',
+      }
+    }),
+    multiCallOptions,
+  )
+
+  return eligiblePools.reduce((accum, pool, index) => {
+    const { data: startBlockData } = startBlocks[index]
+    const { data: endBlockData } = endBlocks[index]
+    const startBlock = new BigNumber(startBlockData[0]._hex)
+    const endBlock = new BigNumber(endBlockData[0]._hex)
+
+    if (startBlock.gt(blockNumber) || endBlock.lt(blockNumber)) {
+      return accum
+    }
+
+    return [...accum, pool]
+  }, [])
 }
