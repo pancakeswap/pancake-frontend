@@ -818,5 +818,6 @@
   "Total amount of %symbol% staked in this pool": "이 풀에 예치된 %symbol%의 총액",
   "These pools are no longer distributing rewards. Please unstake your tokens.": "해당 풀은 더 이상 리워드를 배분하지 않습니다. 토큰을 예치 취소하세요.",
   "Max. stake per user": "사용자당 최대 예치",
-  "You have claimed your rewards!": "You have claimed your rewards!"
+  "You have claimed your rewards!": "You have claimed your rewards!",
+  "Already Collected": "Already Collected"
 }
