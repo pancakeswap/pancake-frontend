@@ -818,5 +818,6 @@
   "Total amount of %symbol% staked in this pool": "Totaal van %symbol% gestaket in deze pool",
   "These pools are no longer distributing rewards. Please unstake your tokens.": "Deze pools distribueren niet langer beloningen. Unstake je tokens.",
   "Max. stake per user": "Max. stake per gebruiker",
-  "You have claimed your rewards!": "You have claimed your rewards!"
+  "You have claimed your rewards!": "You have claimed your rewards!",
+  "Already Collected": "Already Collected"
 }
