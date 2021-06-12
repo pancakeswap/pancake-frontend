@@ -93,6 +93,11 @@ const fetchUnclaimedUserRewards = async (
   const cursor = 0
   const limit = 1000
 
+  // If the web3 provider account doesn't equal the userLotteryHistory account, return an empty array - this is effectively a loading state as the user switches accounts
+  if (userLotteryHistory.account.toLowerCase() !== account.toLowerCase()) {
+    return []
+  }
+
   const filteredForCurrentRound = pastRounds.filter((round) => {
     return round.lotteryId !== currentLotteryId
   })
