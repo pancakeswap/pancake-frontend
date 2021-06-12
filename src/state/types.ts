@@ -386,6 +386,7 @@ export interface PastLotteryRound {
 }
 
 export interface UserLotteryHistory {
+  account: string
   totalCake: string
   totalTickets: string
   pastRounds: PastUserRound[]

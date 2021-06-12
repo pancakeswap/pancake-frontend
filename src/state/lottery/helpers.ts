@@ -141,6 +141,7 @@ export const getUserPastLotteries = async (account: string): Promise<UserLottery
     gql`
       query getUserHistory($account: ID!) {
         user(id: $account) {
+          id
           totalTickets
           totalCake
           participation {
@@ -160,6 +161,7 @@ export const getUserPastLotteries = async (account: string): Promise<UserLottery
 
   // TODO: req should just match desired format rather than reformating
   const formattedUser = user && {
+    account: user.id,
     totalCake: user.totalCake,
     totalTickets: user.totalTickets,
     pastRounds: user.participation.map((round) => {

@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { CardHeader, Card, CardBody, Text, CardFooter, ArrowBackIcon, Flex, Heading } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { fetchLottery, fetchTickets } from 'state/lottery/helpers'
-import FinishedRoundGrid from './FinishedRoundGrid'
+import FinishedRoundTable from './FinishedRoundTable'
 
 const StyledCard = styled(Card)`
   ${({ theme }) => theme.mediaQueries.xs} {
@@ -20,8 +20,8 @@ const YourHistoryCard = () => {
 
   const handleHistoryRowClick = async (roundId) => {
     // TODO: Load in necessary lottery data. May not require fetch, as all this data is likely required for this component
-    const lottery = await fetchLottery(roundId)
-    const userTicketIds = await fetchTickets(roundId, account, 0)
+    // const lottery = await fetchLottery(roundId)
+    // const userTicketIds = await fetchTickets(roundId, account, 0)
     setViewFinishedRound(true)
   }
 
@@ -50,7 +50,7 @@ const YourHistoryCard = () => {
       ) : (
         <>
           <CardBody>
-            <FinishedRoundGrid handleHistoryRowClick={handleHistoryRowClick} />
+            <FinishedRoundTable handleHistoryRowClick={handleHistoryRowClick} />
           </CardBody>
           <CardFooter>
             <Flex flexDirection="column" justifyContent="center" alignItems="center">
