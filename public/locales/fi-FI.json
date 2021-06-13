@@ -818,5 +818,6 @@
   "Total amount of %symbol% staked in this pool": "Tähän pooliin panostetun %symbol%-poletin kokonaismäärä",
   "These pools are no longer distributing rewards. Please unstake your tokens.": "Nämä poolit eivät enää jaa palkintoja. Peru polettiesi panostus.",
   "Max. stake per user": "Enimmäispanos per käyttäjä",
-  "You have claimed your rewards!": "You have claimed your rewards!"
+  "You have claimed your rewards!": "You have claimed your rewards!",
+  "Already Collected": "Already Collected"
 }

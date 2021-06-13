@@ -818,5 +818,6 @@
   "Total amount of %symbol% staked in this pool": "Kabuuang halaga na %symbol% na-stake sa pool na ito",
   "These pools are no longer distributing rewards. Please unstake your tokens.": "Ang mga pool na ito ay hindi na namamahagi ng mga gantimpala. Mangyaring i-unstake ang iyong mga token.",
   "Max. stake per user": "Max. stake kada user",
-  "You have claimed your rewards!": "You have claimed your rewards!"
+  "You have claimed your rewards!": "You have claimed your rewards!",
+  "Already Collected": "Already Collected"
 }

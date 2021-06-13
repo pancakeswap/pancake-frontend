@@ -818,5 +818,6 @@
   "Total amount of %symbol% staked in this pool": "Az ebben az érdekszövetségben lekötött %symbol% teljes mennyisége",
   "These pools are no longer distributing rewards. Please unstake your tokens.": "Ezek az érdekszövetségek már nem osztanak jutalmat. Kérjük, vegye le zsetonjai tétjét.",
   "Max. stake per user": "Maximális tét felhasználónként",
-  "You have claimed your rewards!": "You have claimed your rewards!"
+  "You have claimed your rewards!": "You have claimed your rewards!",
+  "Already Collected": "Already Collected"
 }

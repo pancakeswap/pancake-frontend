@@ -818,5 +818,6 @@
   "Total amount of %symbol% staked in this pool": "Bu havuzda stake edilen toplam %symbol% miktarı",
   "These pools are no longer distributing rewards. Please unstake your tokens.": "Bu havuzlar artık ödül dağıtmıyor. Lütfen tokenlarınızı stake etmekten vazgeçin.",
   "Max. stake per user": "Kullanıcı başına maks. stake",
-  "You have claimed your rewards!": "You have claimed your rewards!"
+  "You have claimed your rewards!": "You have claimed your rewards!",
+  "Already Collected": "Already Collected"
 }

@@ -818,5 +818,6 @@
   "Total amount of %symbol% staked in this pool": "इस पूल में स्टेक किए गए %symbol% की कुल राशि",
   "These pools are no longer distributing rewards. Please unstake your tokens.": "ये पूल अब पुरस्कार नहीं बांट रहे हैं। कृपया अपने टोकन अनस्टेक करें।",
   "Max. stake per user": "प्रति यूज़र अधिकतम स्टेक",
-  "You have claimed your rewards!": "You have claimed your rewards!"
+  "You have claimed your rewards!": "You have claimed your rewards!",
+  "Already Collected": "Already Collected"
 }
