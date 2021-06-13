@@ -48,8 +48,3 @@ export const Earned = styled.div`
   font-size: 20px;
   color: ${({ theme }) => theme.colors.text};
 `
-
-export const Staked = styled.div`
-  font-size: 12px;
-  color: ${({ theme }) => theme.colors.textSubtle};
-`

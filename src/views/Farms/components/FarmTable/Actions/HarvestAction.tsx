@@ -1,8 +1,9 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Button, Skeleton } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
+import Balance from 'components/Balance'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { getBalanceAmount } from 'utils/formatBalance'
 import { useAppDispatch } from 'state'
@@ -10,9 +11,8 @@ import { fetchFarmUserDataAsync } from 'state/farms'
 import { usePriceCakeBusd } from 'state/hooks'
 import { useHarvest } from 'hooks/useHarvest'
 import { useTranslation } from 'contexts/Localization'
-import { useCountUp } from 'react-countup'
 
-import { ActionContainer, ActionTitles, Title, Subtle, ActionContent, Earned, Staked } from './styles'
+import { ActionContainer, ActionTitles, Title, Subtle, ActionContent, Earned } from './styles'
 
 interface HarvestActionProps extends FarmWithStakedValue {
   userDataReady: boolean
@@ -37,18 +37,6 @@ const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({ pid, userD
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const { account } = useWeb3React()
-  const { countUp, update } = useCountUp({
-    start: 0,
-    end: earningsBusd,
-    duration: 1,
-    separator: ',',
-    decimals: 3,
-  })
-  const updateValue = useRef(update)
-
-  useEffect(() => {
-    updateValue.current(earningsBusd)
-  }, [earningsBusd, updateValue])
 
   return (
     <ActionContainer>
@@ -59,7 +47,9 @@ const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({ pid, userD
       <ActionContent>
         <div>
           <Earned>{displayBalance}</Earned>
-          {countUp > 0 && <Staked>~{countUp}USD</Staked>}
+          {earningsBusd > 0 && (
+            <Balance fontSize="12px" color="textSubtle" decimals={2} value={earningsBusd} unit=" USD" prefix="~" />
+          )}
         </div>
         <Button
           disabled={earnings.eq(0) || pendingTx || !userDataReady}
