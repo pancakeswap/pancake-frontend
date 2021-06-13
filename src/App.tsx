@@ -1,36 +1,25 @@
-import React, { useEffect, lazy } from 'react'
-import { Router, Redirect, Route, Switch } from 'react-router-dom'
+import React, { useEffect, lazy, useState } from 'react'
+import { Router, Route, Switch, Redirect } from 'react-router-dom'
 import { ResetCSS } from '@rug-zombie-libs/uikit'
 import BigNumber from 'bignumber.js'
 import useEagerConnect from 'hooks/useEagerConnect'
 import { useFetchPriceList, useFetchProfile, useFetchPublicData } from 'state/hooks'
-import GlobalStyle from './style/Global'
-import Menu from './components/Menu'
+import { routes } from 'routes'
+import Menu from 'components/Menu'
+import Loader from 'components/Loader'
+import Farms from 'views/Farms/Farms';
+import Home from 'views/Home/Home';
 import SuspenseWithChunkError from './components/SuspenseWithChunkError'
-import ToastListener from './components/ToastListener'
-import PageLoader from './components/PageLoader'
-import EasterEgg from './components/EasterEgg'
 // import Graves from './views/Graves'
 import history from './routerHistory'
-import Crypts from './views/Crypts'
+import PrivateRoute from './PrivateRoute'
+import GlobalStyle from './style/Global'
+// import Crypts from './views/Crypts'
 
 // Route-based code splitting
 // Only pool is included in the main bundle because of it's the most visited page
-const Home = lazy(() => import('./views/Home'))
-const Farms = lazy(() => import('./views/Farms'))
-// const Lottery = lazy(() => import('./views/Lottery'))
-// const Ifos = lazy(() => import('./views/Ifos'))
-const NotFound = lazy(() => import('./views/NotFound'))
-// const Collectibles = lazy(() => import('./views/Collectibles'))
-const Graves = lazy(() => import('./views/Graves'))
-const Admin = lazy(() => import('./views/Admin'))
-// const Teams = lazy(() => import('./views/Teams'))
-// const Team = lazy(() => import('./views/Teams/Team'))
-// const Profile = lazy(() => import('./views/Profile'))
-// const TradingCompetition = lazy(() => import('./views/TradingCompetition'))
-// const Predictions = lazy(() => import('./views/Predictions'))
+const Landing = lazy(() => import('./components/Landing'));
 
-// This config is required for number formating
 BigNumber.config({
   EXPONENTIAL_AT: 1000,
   DECIMAL_PLACES: 80,
@@ -43,91 +32,39 @@ const App: React.FC = () => {
     console.warn = () => null
   }, [])
 
+  const [isAuthenticated, setAuthenticated] = useState(false);
+
   useEffect(() => {
-      document.title = 'RugZombie'
-    },
+    document.title = 'RugZombie'
+  },
   )
   useEagerConnect()
   useFetchPublicData()
   useFetchProfile()
   useFetchPriceList()
 
+  const handleAuthentication = () => {
+    setAuthenticated(!isAuthenticated);
+    history.push(routes.HOME);
+  }
+
+  const LandingProps = {
+    "handleAuthentication": handleAuthentication
+  }
+
   return (
     <Router history={history}>
       <ResetCSS />
       <GlobalStyle />
-      <img src="https://storage.googleapis.com/rug-zombie/2021-06-05%2014.19.12.jpg" alt="coming soon" style={{
-        width: "100%"
-      }}/>
-
-      {/* <Menu> */}
-        {/* <SuspenseWithChunkError fallback={<PageLoader />}> */}
-          {/* <Switch> */}
-            {/* <Route path='/' exact> */}
-              {/* <Home /> */}
-              
-            {/* </Route> */}
-            {/* <Route path='/admin'> */}
-            {/*  <Admin /> */}
-            {/* </Route> */}
-            {/* <Route path='/tombs'> */}
-            {/*  <Farms /> */}
-            {/* </Route> */}
-            {/* <Route path='/graves'> */}
-            {/*  <Graves /> */}
-            {/* </Route> */}
-            {/* <Route path='/crypts'> */}
-            {/*  <Crypts /> */}
-            {/* </Route> */}
-
-            {/* <Route path="/lottery"> */}
-            {/*  <Lottery /> */}
-            {/* </Route> */}
-            {/* <Route path="/ifo"> */}
-            {/*  <Ifos /> */}
-            {/* </Route> */}
-            {/* <Route path='/collectibles'> */}
-            {/*  <Collectibles /> */}
-            {/* </Route> */}
-            {/* <Route exact path='/teams'> */}
-            {/*  <Teams /> */}
-            {/* </Route> */}
-            {/* <Route path='/teams/:id'> */}
-            {/*  <Team /> */}
-            {/* </Route> */}
-            {/* <Route path='/profile'> */}
-            {/*  <Profile /> */}
-            {/* </Route> */}
-            {/* <Route path='/competition'> */}
-            {/*  <TradingCompetition /> */}
-            {/* </Route> */}
-            {/* <Route path='/prediction'> */}
-            {/*  <Predictions /> */}
-            {/* </Route> */}
-            {/* Redirect */}
-
-            {/* <Route path='/staking'> */}
-            {/*  <Redirect to='/graves' /> */}
-            {/* </Route> */}
-            {/* <Route path='/pools'> */}
-            {/*  <Redirect to='/crypts' /> */}
-            {/* </Route> */}
-            {/* <Route path='/undead'> */}
-            {/*  <Redirect to='/crypts' /> */}
-            {/* </Route> */}
-            {/* <Route path='/farms'> */}
-            {/*  <Redirect to='/tombs' /> */}
-            {/* </Route> */}
-            {/* <Route path='/nft'> */}
-            {/*  <Redirect to='/collectibles' /> */}
-            {/* </Route> */}
-            {/* 404 */}
-            {/* <Route component={NotFound} /> */}
-          {/* </Switch> */}
-        {/* </SuspenseWithChunkError> */}
-      {/* </Menu> */}
-      <EasterEgg iterations={2} />
-      <ToastListener />
+      <SuspenseWithChunkError fallback={<Loader />}>
+        <Switch>
+          <Route exact path={routes.LANDING}><Landing {...LandingProps} /></Route>
+          <Menu>
+          <Route exact path={routes.HOME}><Home /></Route>
+          <Route exact path={routes.FARMS}><Farms /></Route>
+          </Menu>
+        </Switch>
+      </SuspenseWithChunkError>
     </Router>
   )
 }

@@ -4,14 +4,14 @@ import { Text, Button, Input, InputProps, Flex, Link } from '@rug-zombie-libs/ui
 import { useTranslation } from 'contexts/Localization'
 
 interface ModalInputProps {
-  max: string
-  symbol: string
+  max?: string
+  symbol?: string
   onSelectMax?: () => void
-  onChange: (e: React.FormEvent<HTMLInputElement>) => void
+  onChange?: (e: React.FormEvent<HTMLInputElement>) => void
   placeholder?: string
-  value: string
+  value?: string
   addLiquidityUrl?: string
-  inputTitle?: string
+  inputTitle: string
 }
 
 const getBoxShadow = ({ isWarning = false, theme }) => {

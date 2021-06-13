@@ -1,12 +1,15 @@
 import React from 'react'
 import styled from 'styled-components'
+import { NavLink } from 'react-router-dom'
 import { Heading, Text, BaseLayout } from '@rug-zombie-libs/uikit'
 import { useTranslation } from 'contexts/Localization'
+import Menu from 'components/Menu'
 import Page from 'components/layout/Page'
 import AnnouncementCard from 'views/Home/components/AnnouncementCard'
 import ZmbeStats from 'views/Home/components/ZmbeStats'
 import TotalValueLockedCard from 'views/Home/components/TotalValueLockedCard'
 import GraveStakingCard from './components/GraveStakingCard'
+import HomeCopy from '../HomeCopy'
 
 const Hero = styled.div`
   align-items: center;
@@ -75,27 +78,29 @@ const CTACards = styled(BaseLayout)`
 `
 const ImageURL = "https://storage.googleapis.com/rug-zombie/rug-zombie-home.png"
 const Home: React.FC = () => {
-  const { t } = useTranslation()
 
+  const { t } = useTranslation()
+  console.log("hi")
   return (
-    <Page>
-      <Hero>
-        <Heading as="h1" size="xl" mb="24px" color="secondary">
-          <img alt="" src={ImageURL} style={{ width: "250px" }} />
-          <Text>{t('Bringing your rugged tokens back from the dead.')}</Text>
-        </Heading>
-      </Hero>
-      <div>
-        <Cards>
-          <GraveStakingCard />
-          <AnnouncementCard />
-        </Cards>
-        <Cards>
-          <ZmbeStats />
-          <TotalValueLockedCard />
-        </Cards>
-      </div>
-    </Page>
+      <Page>
+        {/* <Hero>
+          <Heading as="h1" size="xl" mb="24px" color="secondary">
+            <img alt="" src={ImageURL} style={{ width: "250px" }} />
+            <Text>{t('Bringing your rugged tokens back from the dead.')}</Text>
+          </Heading>
+        </Hero>
+        <div>
+          <Cards>
+            <GraveStakingCard />
+            <AnnouncementCard />
+          </Cards>
+          <Cards>
+            <ZmbeStats />
+            <TotalValueLockedCard />
+          </Cards>
+        </div> */}
+        <HomeCopy />
+      </Page>
   )
 }
 
