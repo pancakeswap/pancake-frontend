@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react'
 import styled from 'styled-components'
-import { Button, useModal, IconButton, AddIcon, MinusIcon, Skeleton } from '@pancakeswap/uikit'
+import { Button, useModal, IconButton, AddIcon, MinusIcon, Skeleton, Text } from '@pancakeswap/uikit'
 import { useLocation } from 'react-router-dom'
 import { BigNumber } from 'bignumber.js'
 import UnlockButton from 'components/UnlockButton'
@@ -22,7 +22,7 @@ import useWeb3 from 'hooks/useWeb3'
 
 import DepositModal from '../../DepositModal'
 import WithdrawModal from '../../WithdrawModal'
-import { ActionContainer, ActionTitles, ActionContent, Earned, Title, Subtle } from './styles'
+import { ActionContainer, ActionTitles, ActionContent, Earned } from './styles'
 
 const IconButtonWrapper = styled.div`
   display: flex;
@@ -103,7 +103,9 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
     return (
       <ActionContainer>
         <ActionTitles>
-          <Subtle>{t('Start Farming').toUpperCase()}</Subtle>
+          <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px">
+            {t('Start Farming')}
+          </Text>
         </ActionTitles>
         <ActionContent>
           <UnlockButton width="100%" />
@@ -117,8 +119,12 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
       return (
         <ActionContainer>
           <ActionTitles>
-            <Title>{lpSymbol} </Title>
-            <Subtle>{t('Staked').toUpperCase()}</Subtle>
+            <Text bold textTransform="uppercase" color="secondary" fontSize="12px" pr="4px">
+              {lpSymbol}
+            </Text>
+            <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px">
+              {t('Staked')}
+            </Text>
           </ActionTitles>
           <ActionContent>
             <div>
@@ -154,8 +160,12 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
     return (
       <ActionContainer>
         <ActionTitles>
-          <Subtle>{t('Stake').toUpperCase()} </Subtle>
-          <Title>{lpSymbol}</Title>
+          <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px" pr="4px">
+            {t('Stake').toUpperCase()}
+          </Text>
+          <Text bold textTransform="uppercase" color="secondary" fontSize="12px">
+            {lpSymbol}
+          </Text>
         </ActionTitles>
         <ActionContent>
           <Button
@@ -175,7 +185,9 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
     return (
       <ActionContainer>
         <ActionTitles>
-          <Subtle>{t('Start Farming').toUpperCase()}</Subtle>
+          <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px">
+            {t('Start Farming')}
+          </Text>
         </ActionTitles>
         <ActionContent>
           <Skeleton width={180} marginBottom={28} marginTop={14} />
@@ -187,7 +199,9 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
   return (
     <ActionContainer>
       <ActionTitles>
-        <Subtle>{t('Enable Farm').toUpperCase()}</Subtle>
+        <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px">
+          {t('Enable Farm')}
+        </Text>
       </ActionTitles>
       <ActionContent>
         <Button width="100%" disabled={requestedApproval} onClick={handleApprove} variant="secondary">
