@@ -189,14 +189,14 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
 
   const aprRow = (
     <Flex justifyContent="space-between" alignItems="center" mb="8px">
-      <Text>{isAutoVault ? t('APY') : t('APR')}</Text>
+      <Text>{isAutoVault ? t('APY') : t('APR')}:</Text>
       <Apr pool={pool} showIcon performanceFee={isAutoVault ? performanceFeeAsDecimal : 0} />
     </Flex>
   )
 
   const totalStakedRow = (
     <Flex justifyContent="space-between" alignItems="center" mb="8px">
-      <Text maxWidth={['50px', '100%']}>{t('Total staked')}</Text>
+      <Text maxWidth={['50px', '100%']}>{t('Total staked')}:</Text>
       <Flex alignItems="center">
         {totalStaked ? (
           <>
