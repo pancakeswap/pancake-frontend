@@ -13,12 +13,14 @@ import {
   Skeleton,
   useTooltip,
   Button,
+  Link,
 } from '@pancakeswap/uikit'
 import { BASE_BSC_SCAN_URL, BASE_URL } from 'config'
 import { useBlock, useCakeVault } from 'state/hooks'
 import { Pool } from 'state/types'
 import { getAddress, getCakeVaultAddress } from 'utils/addressHelpers'
 import { registerToken } from 'utils/wallet'
+import { getBscScanBlockCountdownUrl } from 'utils/bscscan'
 import Balance from 'components/Balance'
 import { getPoolBlockInfo } from 'views/Pools/helpers'
 
@@ -42,7 +44,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
     fees: { performanceFee },
   } = useCakeVault()
 
-  const { stakingToken, earningToken, totalStaked, contractAddress, sousId, isAutoVault } = pool
+  const { stakingToken, earningToken, totalStaked, endBlock, contractAddress, sousId, isAutoVault } = pool
 
   const tokenAddress = earningToken.address ? getAddress(earningToken.address) : ''
   const poolContractAddress = getAddress(contractAddress)
@@ -89,18 +91,20 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
       </Flex>
       {shouldShowBlockCountdown && (
         <Flex mb="2px" justifyContent="space-between" alignItems="center">
-          <Text small>{hasPoolStarted ? t('End') : t('Start')}:</Text>
-          <Flex alignItems="center">
-            {blocksRemaining || blocksUntilStart ? (
-              <Balance color="primary" fontSize="14px" value={blocksToDisplay} decimals={0} />
-            ) : (
-              <Skeleton width="54px" height="21px" />
-            )}
-            <Text ml="4px" color="primary" small textTransform="lowercase">
-              {t('Blocks')}
-            </Text>
-            <TimerIcon ml="4px" color="primary" />
-          </Flex>
+          <Text small>{hasPoolStarted ? t('Ends in') : t('Starts in')}:</Text>
+          {blocksRemaining || blocksUntilStart ? (
+            <Flex alignItems="center">
+              <Link external href={getBscScanBlockCountdownUrl(endBlock)}>
+                <Balance small value={blocksToDisplay} decimals={0} color="primary" />
+                <Text small ml="4px" color="primary" textTransform="lowercase">
+                  {t('Blocks')}
+                </Text>
+                <TimerIcon ml="4px" color="primary" />
+              </Link>
+            </Flex>
+          ) : (
+            <Skeleton width="54px" height="21px" />
+          )}
         </Flex>
       )}
       {isAutoVault && (
