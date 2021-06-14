@@ -80,24 +80,11 @@ const config: (t: ContextApi['t']) => MenuEntry[] = (t) => [
   {
     label: t('Info'),
     icon: 'InfoIcon',
-    items: [
-      {
-        label: t('Overview'),
-        href: 'https://pancakeswap.info',
-      },
-      {
-        label: t('Tokens'),
-        href: 'https://pancakeswap.info/tokens',
-      },
-      {
-        label: t('Pairs'),
-        href: 'https://pancakeswap.info/pairs',
-      },
-      {
-        label: t('Accounts'),
-        href: 'https://pancakeswap.info/accounts',
-      },
-    ],
+    href: 'https://pancakeswap.info',
+    status: {
+      text: 'NEW',
+      color: 'success',
+    },
   },
   {
     label: t('IFO'),
