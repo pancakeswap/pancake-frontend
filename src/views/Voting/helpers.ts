@@ -70,27 +70,6 @@ export const sendSnaphotData = async (message: Message) => {
   return data
 }
 
-interface VoteItem {
-  _id: string
-  address: string
-  power: number
-}
-
-interface VotingResponse {
-  code: number
-  message: string
-  data: VoteItem[]
-}
-
-export const getVoteCache = async (proposalId: string): Promise<{ [key: string]: number }> => {
-  const response = await fetch(`${SNAPSHOT_VOTING_API}/${proposalId}`)
-  const data: VotingResponse = await response.json()
-
-  return data.data.reduce((accum, vote) => {
-    return { ...accum, [vote.address]: vote.power }
-  }, {})
-}
-
 export const getVotingPower = async (account: string, poolAddresses: string[], block?: number) => {
   const response = await fetch(SNAPSHOT_VOTING_API, {
     method: 'post',
