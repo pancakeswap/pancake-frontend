@@ -1533,7 +1533,7 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://unmarshal.io/',
   },
-  ampl: {
+  'ampl-bsc-mp': {
     symbol: 'AMPL-BSC-mp',
     address: {
       56: '0xdb021b1b247fe2f1fa57e0a87c748cc1e321f07f',
