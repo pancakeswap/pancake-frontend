@@ -14,8 +14,8 @@ const Header = () => {
 					<a href="#Tokenomics" className="nav_link-2">Tokenomics</a>
 					{/* <a href="#Timeline" className="nav_link-2">Timeline</a> */}
 					<a href="#How-To-Buy" className="nav_link-2">How to buy</a>
-					<a href="#Token-Info" className="nav_link-2">Token Info</a>
-					<a href="#the-team" className="nav_link-2">Meet The Team</a>
+					<a rel="noreferrer" target="_blank" href="https://rugzombie-1.gitbook.io/docs/" className="nav_link-2">Gitbook Documents</a>
+					{/* <a href="#the-team" className="nav_link-2">Meet The Team</a> */}
 				</div>
 			</nav>
 		</header>

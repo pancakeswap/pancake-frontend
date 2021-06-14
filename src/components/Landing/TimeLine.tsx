@@ -101,8 +101,8 @@ const TimeLine = () => {
             <span className="text-span-5">
               <strong className="nummobile">2. </strong>
             </span>
-            <strong>Go to pancakeswap.finance and </strong>
-            <strong>make sure its set to v1 (old)</strong>
+            <strong>Go to pancakeswap.finance  </strong>
+            {/* <strong>make sure its set to v1 (old)</strong> */}
           </h3>
           <p className="paragraph-16">PancakeSwap is where you wll be performing the swap of your<br />current tokens to $Rug zombie.</p>
         </div>
@@ -120,13 +120,13 @@ const TimeLine = () => {
             <span className="text-span-7">
               <strong className="nummobile">4.</strong>
             </span>
-            <strong> Select the $Rug zombie token</strong>
+            <strong> Select the $ZMBE token</strong>
           </h3>
           <p className="paragraph-15">Click on the Select a Currency button, and enter the $Rug zombie token contract:<br />
-            <a href="/" target="_blank">0x5e90253fbae4dab78aa<br />351f4e6fed08a64ab5590</a>
+            <a href="/" target="_blank">0xa3473B7b44B63a577C<br />Fa56474dfb0b2E238D4baD</a>
           </p>
         </div>
-        <div className="card buymobile">
+        {/* <div className="card buymobile">
           <h3 className="heading-4">
             <span className="text-span-8">
               <strong className="nummobile">5. </strong>
@@ -134,15 +134,15 @@ const TimeLine = () => {
             <strong>Adjust your slippage to 12%</strong>
           </h3>
           <p className="paragraph-15">Click Settings at the top right, and adjust your slippage to 12%<br />(sometimes it may be a bit more, depending on how much demand there is).</p>
-        </div>
+        </div> */}
         <div className="card buymobile">
           <h3 className="heading-4">
             <span className="text-span-9">
-              <strong className="nummobile">6.</strong>
+              <strong className="nummobile">5.</strong>
             </span>
-            <strong> Swap away!</strong>
+            <strong> Zombine On!</strong>
           </h3>
-          <p className="paragraph-15">Enter the amount you want to buy and swap away!<br />Remember to have enough BNB for gas fees!</p>
+          <p className="paragraph-15">Enter the amount you want to buy and Zombie On!<br />Remember to have enough BNB for gas fees!</p>
         </div>
       </div>
     </div>

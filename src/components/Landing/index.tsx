@@ -23,9 +23,9 @@ const Landing: React.FC<LandingProps> = (props: LandingProps) =>{
     <div className="section hero-section">
       <div className="container w-container">
         <img  src='/images/rugZombie/loader.gif' width="350" alt="" className="image" />
-          <h1 className="heading">Stay Cozy <span className="text-span">with</span> Rug zombie</h1>
-          <p className="max_width_400">Rug zombie is a frictionless, yield-generating contract that allows you to seek shelter amidst the chaos of the market.<br />
-          </p>
+          <h1 className="heading">Bringing your rugged tokens<span className="text-span"> back from the dead with</span> Rug zombie</h1>
+          {/* <p className="max_width_400">Rug zombie is a frictionless, yield-generating contract that allows you to seek shelter amidst the chaos of the market.<br />
+          </p> */}
       </div>
       <div className="_40_percent_block">
         <div tabIndex={0} role="button" onClick={handleClick} onKeyDown ={handleClick} className="button-2 w-button">
@@ -38,7 +38,7 @@ const Landing: React.FC<LandingProps> = (props: LandingProps) =>{
         </a>
       </div>
       <div className="_40_percent_block-copy">
-        <a href="/" target="_blank" className="button-3 w-button">
+        <a href="https://rugzombie.gitbook.io/docs/security-and-team-information/basic-team-security-information/audits)" rel="noreferrer" target="_blank" className="button-3 w-button">
           View token info
         </a>
       </div>
