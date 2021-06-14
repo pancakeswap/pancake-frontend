@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.39.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.38.0...@pancakeswap/uikit@0.39.0) (2021-06-14)
+
+
+### Features
+
+* Menu variant without Connect button ([#155](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/155)) ([84b6f68](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/84b6f683693b426428c5445fc6891608e3943399))
+
+
+
+
+
 # [0.38.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.37.1...@pancakeswap/uikit@0.38.0) (2021-06-11)
 
 

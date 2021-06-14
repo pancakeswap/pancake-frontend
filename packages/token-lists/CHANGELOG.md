@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.15.0](https://github.com/pancakeswap/pancake-toolkit/compare/@pancakeswap/token-lists@2.14.4...@pancakeswap/token-lists@2.15.0) (2021-06-14)
+
+
+### Features
+
+* **token-lists:** Automated Top100 token list generation ([#134](https://github.com/pancakeswap/pancake-toolkit/issues/134)) ([c7e69a5](https://github.com/pancakeswap/pancake-toolkit/commit/c7e69a56c22911c6822632ecb267b4e0ecab8d14))
+
+
+
+
+
 ## [2.14.4](https://github.com/pancakeswap/pancake-toolkit/compare/@pancakeswap/token-lists@2.14.3...@pancakeswap/token-lists@2.14.4) (2021-06-11)
 
 **Note:** Version bump only for package @pancakeswap/token-lists
