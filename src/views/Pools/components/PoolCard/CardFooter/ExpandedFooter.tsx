@@ -1,7 +1,7 @@
 import React from 'react'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
-import { getBalanceNumber } from 'utils/formatBalance'
+import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
 import { useTranslation } from 'contexts/Localization'
 import {
   Flex,
@@ -44,7 +44,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
     fees: { performanceFee },
   } = useCakeVault()
 
-  const { stakingToken, earningToken, totalStaked, endBlock, contractAddress, sousId, isAutoVault } = pool
+  const { stakingToken, earningToken, totalStaked, endBlock, stakingLimit, contractAddress, sousId, isAutoVault } = pool
 
   const tokenAddress = earningToken.address ? getAddress(earningToken.address) : ''
   const poolContractAddress = getAddress(contractAddress)
@@ -79,8 +79,8 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
         <Flex alignItems="flex-start">
           {totalStaked ? (
             <>
-              <Balance fontSize="14px" value={getTotalStakedBalance()} />
-              <Text ml="4px" fontSize="14px">
+              <Balance small value={getTotalStakedBalance()} />
+              <Text small ml="4px">
                 {stakingToken.symbol}
               </Text>
             </>
@@ -89,6 +89,12 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
           )}
         </Flex>
       </Flex>
+      {stakingLimit && stakingLimit.gt(0) && (
+        <Flex mb="2px" justifyContent="space-between">
+          <Text small>{t('Max. stake per user')}:</Text>
+          <Text small>{`${getFullDisplayBalance(stakingLimit, stakingToken.decimals, 0)} ${stakingToken.symbol}`}</Text>
+        </Flex>
+      )}
       {shouldShowBlockCountdown && (
         <Flex mb="2px" justifyContent="space-between" alignItems="center">
           <Text small>{hasPoolStarted ? t('Ends in') : t('Starts in')}:</Text>
