@@ -24,18 +24,7 @@ export const ActionContainer = styled.div`
 `
 
 export const ActionTitles = styled.div`
-  font-weight: 600;
-  font-size: 12px;
-  margin-bottom: 8px;
-`
-
-export const Title = styled.span`
-  color: ${({ theme }) => theme.colors.secondary};
-`
-
-// TODO: Use `Text` instead
-export const Subtle = styled.span`
-  color: ${({ theme }) => theme.colors.textSubtle};
+  display: flex;
 `
 
 export const ActionContent = styled.div`

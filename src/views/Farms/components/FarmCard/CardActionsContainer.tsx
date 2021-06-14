@@ -82,7 +82,7 @@ const CardActions: React.FC<FarmCardActionsProps> = ({ farm, account, addLiquidi
   return (
     <Action>
       <Flex>
-        <Text bold textTransform="uppercase" color="secondary" fontSize="12px" pr="3px">
+        <Text bold textTransform="uppercase" color="secondary" fontSize="12px" pr="4px">
           CAKE
         </Text>
         <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px">
@@ -91,7 +91,7 @@ const CardActions: React.FC<FarmCardActionsProps> = ({ farm, account, addLiquidi
       </Flex>
       <HarvestAction earnings={earnings} pid={pid} />
       <Flex>
-        <Text bold textTransform="uppercase" color="secondary" fontSize="12px" pr="3px">
+        <Text bold textTransform="uppercase" color="secondary" fontSize="12px" pr="4px">
           {farm.lpSymbol}
         </Text>
         <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px">
