@@ -31,15 +31,15 @@ const TimeLine = () => {
                       <strong>2.</strong>
                     </span>
                     <span className="text-span-3">
-                      <strong className="bold-text">Go to pancakeswap.finance and</strong>
+                      <strong className="bold-text">Go to pancakeswap.finance</strong>
                     </span>
                   </p>
-                  <p className="paragraph-23">
+                  {/* <p className="paragraph-23">
                     <span className="text-span-3">
                       <strong className="bold-text-4">11make sure its set to v1 (old)</strong>
                     </span>
-                  </p>
-                  <p className="paragraph-18">PancakeSwap is where you wll be performing the swap of your<br />current tokens to $Rug zombie.</p>
+                  </p> */}
+                  <p className="paragraph-18">PancakeSwap is where you wll be performing the swap of your<br />current tokens to $ZMBE token.</p>
                   <p className="paragraph-17">
                     <span className="text-span-2">
                       <strong>3.</strong>
@@ -59,10 +59,10 @@ const TimeLine = () => {
                   </p>
                   <p className="paragraph-18">Click on the Select a Currency button, and enter the $Rug zombie token contract:<br />
                     <a href="/" target="_blank">
-                      0x5e90253fbae4dab78aa351f4e6fed08a64ab5590
+                    0xa3473B7b44B63a577CFa56474dfb0b2E238D4baD
                     </a>
                     </p>
-                  <p className="paragraph-17">
+                  {/* <p className="paragraph-17">
                     <span className="text-span-2">
                       <strong>5.</strong>
                     </span>
@@ -70,16 +70,16 @@ const TimeLine = () => {
                       <strong className="bold-text">Adjust your slippage to 12%</strong>
                       </span>
                     </p>
-                  <p className="paragraph-18">Click Settings at the top right, and adjust your slippage to 12%<br />(sometimes it may be a bit more, depending on how much demand there is).</p>
+                  <p className="paragraph-18">Click Settings at the top right, and adjust your slippage to 12%<br />(sometimes it may be a bit more, depending on how much demand there is).</p> */}
                   <p className="paragraph-17">
                     <span className="text-span-2">
-                      <strong>6.</strong>
+                      <strong>5.</strong>
                     </span>
                     <span className="text-span-3">
-                      <strong className="bold-text">Swap away!</strong>
+                      <strong className="bold-text">Zombie On!</strong>
                     </span>
                   </p>
-                  <p className="paragraph-18">Enter the amount you want to buy and swap away!<br />Remember to have enough BNB for gas fees!</p>
+                  <p className="paragraph-18">Enter the amount you want to buy and Zombie on!<br />Remember to have enough BNB for gas fees!</p>
                 </li>
               </ul>
             </div>

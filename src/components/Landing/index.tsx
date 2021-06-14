@@ -38,7 +38,7 @@ const Landing: React.FC<LandingProps> = (props: LandingProps) =>{
         </a>
       </div>
       <div className="_40_percent_block-copy">
-        <a href="https://rugzombie.gitbook.io/docs/security-and-team-information/basic-team-security-information/audits)" rel="noreferrer" target="_blank" className="button-3 w-button">
+        <a href="https://rugzombie.gitbook.io/docs/security-and-team-information/basic-team-security-information/audits" rel="noreferrer" target="_blank" className="button-3 w-button">
           View token info
         </a>
       </div>
