@@ -1534,5 +1534,13 @@
     "chainId": 56,
     "decimals": 18,
     "logoURI": "https://tokens.pancakeswap.finance/images/0x2FA5dAF6Fe0708fBD63b1A7D1592577284f52256.png"
+  },
+  {
+    "name": "Ampleforth",
+    "symbol": "AMPL",
+    "address": "0xDB021b1B247fe2F1fa57e0A87C748Cc1E321F07F",
+    "chainId": 56,
+    "decimals": 9,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0xDB021b1B247fe2F1fa57e0A87C748Cc1E321F07F.png"
   }
 ]

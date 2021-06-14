@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2021-06-09T02:56:17.953Z",
+  "timestamp": "2021-06-14T07:08:00.750Z",
   "version": {
     "major": 2,
     "minor": 14,
-    "patch": 3
+    "patch": 1
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [
@@ -59,6 +59,14 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0xa1faa113cbe53436df28ff0aee54275c13b40975.png"
+    },
+    {
+      "name": "Ampleforth",
+      "symbol": "AMPL",
+      "address": "0xDB021b1B247fe2F1fa57e0A87C748Cc1E321F07F",
+      "chainId": 56,
+      "decimals": 9,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0xDB021b1B247fe2F1fa57e0A87C748Cc1E321F07F.png"
     },
     {
       "name": "Ankr",
