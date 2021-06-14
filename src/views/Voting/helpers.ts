@@ -1,7 +1,6 @@
-import { request, gql } from 'graphql-request'
 import { getCakeAddress } from 'utils/addressHelpers'
-import { SNAPSHOT_API, SNAPSHOT_HUB_API, SNAPSHOT_VOTING_API } from 'config/constants/endpoints'
-import { Proposal, ProposalState, ProposalType, Vote } from 'state/types'
+import { SNAPSHOT_HUB_API, SNAPSHOT_VOTING_API } from 'config/constants/endpoints'
+import { Proposal, ProposalState, ProposalType } from 'state/types'
 import { ADMIN_ADDRESS, PANCAKE_SPACE, SNAPSHOT_VERSION } from './config'
 
 export const isCoreProposal = (proposal: Proposal) => {
@@ -22,33 +21,6 @@ export const filterProposalsByType = (proposals: Proposal[], proposalType: Propo
 
 export const filterProposalsByState = (proposals: Proposal[], state: ProposalState) => {
   return proposals.filter((proposal) => proposal.state === state)
-}
-
-export const getProposal = async (id: string): Promise<Proposal> => {
-  const response: { proposal: Proposal } = await request(
-    SNAPSHOT_API,
-    gql`
-      query getProposal($id: String) {
-        proposal(id: $id) {
-          id
-          title
-          body
-          choices
-          start
-          end
-          snapshot
-          state
-          author
-          space {
-            id
-            name
-          }
-        }
-      }
-    `,
-    { id },
-  )
-  return response.proposal
 }
 
 export interface Message {
@@ -104,45 +76,6 @@ export const saveVotingPower = async (account: string, proposal: string, power: 
   })
   const data = await response.json()
   return data
-}
-
-/* eslint-disable camelcase */
-/**
- * @see https://hub.snapshot.page/graphql
- */
-export interface VoteWhere {
-  id?: string
-  id_in?: string[]
-  voter?: string
-  voter_in?: string[]
-  proposal?: string
-  proposal_in?: string[]
-}
-
-export const getVotes = async (first: number, skip: number, where: VoteWhere): Promise<Vote[]> => {
-  const response: { votes: Vote[] } = await request(
-    SNAPSHOT_API,
-    gql`
-      query getVotes($first: Int, $skip: Int, $where: VoteWhere) {
-        votes(first: $first, skip: $skip, where: $where) {
-          id
-          voter
-          created
-          choice
-          space {
-            id
-            name
-          }
-          proposal {
-            choices
-          }
-          metadata
-        }
-      }
-    `,
-    { first, skip, where },
-  )
-  return response.votes
 }
 
 interface VoteItem {

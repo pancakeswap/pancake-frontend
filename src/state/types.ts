@@ -258,6 +258,20 @@ export interface PredictionsState {
 }
 
 // Voting
+
+/* eslint-disable camelcase */
+/**
+ * @see https://hub.snapshot.page/graphql
+ */
+export interface VoteWhere {
+  id?: string
+  id_in?: string[]
+  voter?: string
+  voter_in?: string[]
+  proposal?: string
+  proposal_in?: string[]
+}
+
 export enum SnapshotCommand {
   PROPOSAL = 'proposal',
   VOTE = 'vote',

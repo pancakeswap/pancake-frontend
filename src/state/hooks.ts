@@ -479,6 +479,16 @@ export const useGetProposals = () => {
   return Object.values(proposals)
 }
 
+export const useGetProposal = (proposalId: string) => {
+  const proposal = useSelector((state: State) => state.voting.proposals[proposalId])
+  return proposal
+}
+
+export const useGetVotes = (proposalId: string) => {
+  const votes = useSelector((state: State) => state.voting.votes[proposalId])
+  return votes || []
+}
+
 export const useGetVotingStatus = () => {
   const votingStatus = useSelector((state: State) => state.voting.status)
   return votingStatus

@@ -1,13 +1,16 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { ArrowBackIcon, Box, Button, Flex, Heading } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
-import { Link, Redirect, useParams } from 'react-router-dom'
-import { Proposal as ProposalType, ProposalState } from 'state/types'
+import { Link, useParams } from 'react-router-dom'
+import { useAppDispatch } from 'state'
+import { ProposalState } from 'state/types'
+import { useGetProposal, useGetVotes } from 'state/hooks'
+import { fetchProposal, fetchVotes } from 'state/voting'
 import { useTranslation } from 'contexts/Localization'
 import Container from 'components/layout/Container'
 import ReactMarkdown from 'components/ReactMarkdown'
 import PageLoader from 'components/PageLoader'
-import { getProposal, isCoreProposal } from '../helpers'
+import { isCoreProposal } from '../helpers'
 import { ProposalStateTag, ProposalTypeTag } from '../components/Proposals/tags'
 import Layout from '../components/Layout'
 import Details from './Details'
@@ -15,31 +18,18 @@ import Vote from './Vote'
 import Votes from './Votes'
 
 const Proposal = () => {
-  const [proposal, setProposal] = useState<ProposalType | null>(null)
-  const [notFound, setNotFound] = useState(false)
   const { id }: { id: string } = useParams()
+  const proposal = useGetProposal(id)
   const { t } = useTranslation()
   const { account } = useWeb3React()
-  // const accountHasVoted = account && votes.some((vote) => vote.voter.toLowerCase() === account.toLowerCase())
-  const accountHasVoted = false
+  const dispatch = useAppDispatch()
+  const votes = useGetVotes(id)
+  const accountHasVoted = account && votes.some((vote) => vote.voter.toLowerCase() === account.toLowerCase())
 
   useEffect(() => {
-    const fetchData = async () => {
-      const snapshotProposal = await getProposal(id)
-
-      if (snapshotProposal) {
-        setProposal(snapshotProposal)
-      } else {
-        setNotFound(true)
-      }
-    }
-
-    fetchData()
-  }, [id, setNotFound, setProposal])
-
-  if (notFound) {
-    return <Redirect to="/voting" />
-  }
+    dispatch(fetchProposal(id))
+    dispatch(fetchVotes(id))
+  }, [id, dispatch])
 
   if (!proposal) {
     return <PageLoader />
@@ -69,7 +59,7 @@ const Proposal = () => {
           {!accountHasVoted && account && proposal.state === ProposalState.ACTIVE && (
             <Vote proposal={proposal} mb="16px" />
           )}
-          <Votes proposalId={id} />
+          <Votes votes={votes} />
         </Box>
         <Details proposal={proposal} />
       </Layout>
