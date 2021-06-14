@@ -24,7 +24,7 @@ const Proposal = () => {
   const { account } = useWeb3React()
   const dispatch = useAppDispatch()
   const votes = useGetVotes(id)
-  const accountHasVoted = account && votes.some((vote) => vote.voter.toLowerCase() === account.toLowerCase())
+  const hasAccountVoted = account && votes.some((vote) => vote.voter.toLowerCase() === account.toLowerCase())
 
   useEffect(() => {
     dispatch(fetchProposal(id))
@@ -56,7 +56,7 @@ const Proposal = () => {
               <ReactMarkdown>{proposal.body}</ReactMarkdown>
             </Box>
           </Box>
-          {!accountHasVoted && account && proposal.state === ProposalState.ACTIVE && (
+          {!hasAccountVoted && account && proposal.state === ProposalState.ACTIVE && (
             <Vote proposal={proposal} mb="16px" />
           )}
           <Votes votes={votes} />

@@ -12,7 +12,8 @@ import {
 } from '@pancakeswap/uikit'
 import orderBy from 'lodash/orderBy'
 import { useTranslation } from 'contexts/Localization'
-import { Vote } from 'state/types'
+import { Vote, VotingStatus } from 'state/types'
+import { useGetVotingStatus } from 'state/hooks'
 import VotesLoading from '../components/Proposal/VotesLoading'
 import VoteRow from '../components/Proposal/VoteRow'
 import Row, { AddressColumn, ChoiceColumn, VotingPowerColumn } from '../components/Proposal/Row'
@@ -27,7 +28,8 @@ const Votes: React.FC<VotesProps> = ({ votes }) => {
   const [showAll, setShowAll] = useState(false)
   const { t } = useTranslation()
   const displayVotes = showAll ? votes : votes.slice(0, VOTES_PER_VIEW)
-  const isFinished = true
+  const voteStatus = useGetVotingStatus()
+  const isFinished = voteStatus === VotingStatus.IDLE
 
   const handleClick = () => {
     setShowAll(!showAll)
