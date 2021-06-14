@@ -490,6 +490,6 @@ export const useGetVotes = (proposalId: string) => {
 }
 
 export const useGetVotingStatus = () => {
-  const votingStatus = useSelector((state: State) => state.voting.status)
+  const votingStatus = useSelector((state: State) => state.voting.voteStatus)
   return votingStatus
 }

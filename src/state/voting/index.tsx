@@ -5,8 +5,8 @@ import { Proposal, ProposalState, VotingStatus, VotingState, Vote } from 'state/
 import { getAllVotes, getProposal, getProposals } from './helpers'
 
 const initialState: VotingState = {
-  status: VotingStatus.IDLE,
   proposals: {},
+  voteStatus: VotingStatus.INITIAL,
   votes: {},
 }
 
@@ -38,9 +38,6 @@ export const votingSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     // Fetch Proposals
-    builder.addCase(fetchProposals.pending, (state) => {
-      state.status = VotingStatus.LOADING
-    })
     builder.addCase(fetchProposals.fulfilled, (state, action) => {
       const proposals = action.payload.reduce((accum, proposal) => {
         return {
@@ -50,21 +47,16 @@ export const votingSlice = createSlice({
       }, {})
 
       state.proposals = merge({}, state.proposals, proposals)
-      state.status = VotingStatus.IDLE
     })
 
     // Fetch Proposal
-    builder.addCase(fetchProposal.pending, (state) => {
-      state.status = VotingStatus.LOADING
-    })
     builder.addCase(fetchProposal.fulfilled, (state, action) => {
       state.proposals[action.payload.id] = action.payload
-      state.status = VotingStatus.IDLE
     })
 
     // Fetch Votes
     builder.addCase(fetchVotes.pending, (state) => {
-      state.status = VotingStatus.LOADING
+      state.voteStatus = VotingStatus.LOADING
     })
     builder.addCase(fetchVotes.fulfilled, (state, action) => {
       const { votes, proposalId } = action.payload
@@ -73,7 +65,7 @@ export const votingSlice = createSlice({
         ...state.votes,
         [proposalId]: votes,
       }
-      state.status = VotingStatus.IDLE
+      state.voteStatus = VotingStatus.IDLE
     })
   },
 })

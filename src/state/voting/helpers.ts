@@ -1,5 +1,5 @@
 import request, { gql } from 'graphql-request'
-import { SNAPSHOT_API } from 'config/constants/endpoints'
+import { SNAPSHOT_API, SNAPSHOT_VOTING_API } from 'config/constants/endpoints'
 import { Proposal, ProposalState, Vote, VoteWhere } from 'state/types'
 
 export const getProposals = async (first = 5, skip = 0, state = ProposalState.ACTIVE): Promise<Proposal[]> => {
@@ -84,14 +84,39 @@ export const getVotes = async (first: number, skip: number, where: VoteWhere): P
 
 export const getAllVotes = async (proposalId: string, votesPerChunk = 1000): Promise<Vote[]> => {
   return new Promise((resolve, reject) => {
-    let votes = []
+    let votes: Vote[] = []
 
     const fetchVoteChunk = async (newSkip: number) => {
       try {
         const voteChunk = await getVotes(votesPerChunk, newSkip, { proposal: proposalId })
 
         if (voteChunk.length === 0) {
-          resolve(votes)
+          // Verify all the votes
+          const votesToVerify = votes.map((vote) => ({
+            address: vote.voter,
+            verificationHash: vote.metadata?.verificationHash,
+            total: vote.metadata?.votingPower,
+          }))
+          const response = await fetch(`${SNAPSHOT_VOTING_API}/verify-votes`, {
+            method: 'post',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              votes: votesToVerify,
+            }),
+          })
+
+          if (!response.ok) {
+            throw new Error(response.statusText)
+          }
+
+          const data = await response.json()
+          const verifiedVotes = votes.filter((vote) => {
+            return data.data[vote.voter]?.isValid === true
+          })
+
+          resolve(verifiedVotes)
         } else {
           votes = [...votes, ...voteChunk]
           fetchVoteChunk(newSkip + votesPerChunk)

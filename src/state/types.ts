@@ -318,19 +318,22 @@ export interface Vote {
   choice: number
   metadata?: {
     votingPower: string
+    verificationHash: string
   }
 }
 
 export enum VotingStatus {
+  INITIAL = 'initial',
   IDLE = 'idle',
   LOADING = 'loading',
+  ERROR = 'error',
 }
 
 export interface VotingState {
-  status: VotingStatus
   proposals: {
     [key: string]: Proposal
   }
+  voteStatus: VotingStatus
   votes: {
     [key: string]: Vote[]
   }
