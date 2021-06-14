@@ -45,7 +45,7 @@ const farms: FarmConfig[] = [
       97: '',
       56: '0x6e98beb694ff1cdb1ee130edd2b21b0298683d58',
     },
-    token: tokens.ampl,
+    token: tokens['ampl-bsc-mp'],
     quoteToken: tokens.busd,
   },
   {
