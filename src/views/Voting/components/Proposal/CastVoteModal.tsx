@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Box, Button, InjectedModalProps, Modal, Skeleton, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
@@ -19,9 +19,15 @@ interface CastVoteModalProps extends InjectedModalProps {
 
 const CastVoteModal: React.FC<CastVoteModalProps> = ({ proposalId, vote, block, onDismiss }) => {
   const { t } = useTranslation()
-  const { isInitialized, total, verificationHash } = useGetVotingPower(block)
+  const [modalIsOpen, setModalIsOpen] = useState(true)
+  const { isLoading, total, verificationHash } = useGetVotingPower(block, modalIsOpen)
   const web3 = useWeb3()
   const { account } = useWeb3React()
+
+  const handleDismiss = () => {
+    setModalIsOpen(false)
+    onDismiss()
+  }
 
   const handleConfirmVote = async () => {
     try {
@@ -46,14 +52,14 @@ const CastVoteModal: React.FC<CastVoteModalProps> = ({ proposalId, vote, block, 
       // Cache the voting power
       await saveVotingPower(account, data.ipfsHash, total.toString())
 
-      onDismiss()
+      handleDismiss()
     } catch (error) {
       console.error(error)
     }
   }
 
   return (
-    <Modal title={t('Confirm Vote')} onDismiss={onDismiss}>
+    <Modal title={t('Confirm Vote')} onDismiss={handleDismiss}>
       <Box mb="24px" width="320px">
         <Text color="secondary" mb="8px" textTransform="uppercase" fontSize="12px" bold>
           {t('Voting For')}
@@ -64,12 +70,12 @@ const CastVoteModal: React.FC<CastVoteModalProps> = ({ proposalId, vote, block, 
         <Text color="secondary" mb="8px" textTransform="uppercase" fontSize="12px" bold>
           {t('Your Voting Power')}
         </Text>
-        {!isInitialized ? (
+        {isLoading ? (
           <Skeleton height="64px" mb="24px" />
         ) : (
           <ModalBox>
             <Text bold fontSize="20px">
-              {total.toFixed(3)}
+              {total.toNumber().toLocaleString()}
             </Text>
           </ModalBox>
         )}
@@ -77,10 +83,10 @@ const CastVoteModal: React.FC<CastVoteModalProps> = ({ proposalId, vote, block, 
           {t('Are you sure you want to vote for the above choice? This action cannot be undone.')}
         </Text>
       </Box>
-      <Button disabled={!isInitialized || total.eq(0)} width="100%" mb="8px" onClick={handleConfirmVote}>
+      <Button disabled={isLoading || total.eq(0)} width="100%" mb="8px" onClick={handleConfirmVote}>
         {t('Confirm Vote')}
       </Button>
-      <Button variant="secondary" width="100%" onClick={onDismiss}>
+      <Button variant="secondary" width="100%" onClick={handleDismiss}>
         {t('Cancel')}
       </Button>
     </Modal>

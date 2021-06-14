@@ -1,12 +1,12 @@
-import { useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { BIG_ZERO } from 'utils/bigNumber'
-import usePersistState from 'hooks/usePersistState'
+import { getActivePools } from 'utils/callHelpers'
+import { getAddress } from 'utils/addressHelpers'
 import BigNumber from 'bignumber.js'
 import { getVotingPower } from '../helpers'
 
 interface State {
-  isInitialized: boolean
   verificationHash: string
   cakeBalance: BigNumber
   cakeVaultBalance: BigNumber
@@ -16,54 +16,7 @@ interface State {
   total: BigNumber
 }
 
-interface VotingPowerHydrate {
-  isInitialized: boolean
-  verificationHash: string
-  cakeBalance: string
-  cakeVaultBalance: string
-  cakePoolBalance: string
-  poolsBalance: string
-  cakeBnbLpBalance: string
-  total: string
-}
-
-const hydrateVotingPower = ({
-  isInitialized,
-  verificationHash,
-  cakeBalance,
-  cakeVaultBalance,
-  cakePoolBalance,
-  poolsBalance,
-  cakeBnbLpBalance,
-  total,
-}: Partial<VotingPowerHydrate>): State => {
-  return {
-    verificationHash,
-    isInitialized: Boolean(isInitialized),
-    cakeBalance: new BigNumber(cakeBalance),
-    cakeVaultBalance: new BigNumber(cakeVaultBalance),
-    cakePoolBalance: new BigNumber(cakePoolBalance),
-    poolsBalance: new BigNumber(poolsBalance),
-    cakeBnbLpBalance: new BigNumber(cakeBnbLpBalance),
-    total: new BigNumber(total),
-  }
-}
-
-const dehydrateVotingPower = (state: State) => {
-  return {
-    isInitialized: state.isInitialized,
-    verificationHash: state.verificationHash,
-    cakeBalance: state.cakeBalance.toJSON(),
-    cakeVaultBalance: state.cakeVaultBalance.toJSON(),
-    cakePoolBalance: state.cakePoolBalance.toJSON(),
-    poolsBalance: state.poolsBalance.toJSON(),
-    cakeBnbLpBalance: state.cakeBnbLpBalance.toJSON(),
-    total: state.total.toJSON(),
-  }
-}
-
 const initialState: State = {
-  isInitialized: false,
   verificationHash: null,
   cakeBalance: BIG_ZERO,
   cakeVaultBalance: BIG_ZERO,
@@ -73,35 +26,46 @@ const initialState: State = {
   total: BIG_ZERO,
 }
 
-const useGetVotingPower = (block?: number): State => {
+const useGetVotingPower = (block?: number, isActive = true): State & { isLoading: boolean } => {
   const { account } = useWeb3React()
-  const isCancelled = useRef(false)
-  const [votingPower, setVotingPower] = usePersistState(initialState, {
-    localStorageKey: `pcs_votepower_${block}_${account}`,
-    hydrate: hydrateVotingPower,
-    dehydrate: dehydrateVotingPower,
-  })
-  const { isInitialized }: State = votingPower
+  const [votingPower, setVotingPower] = useState(initialState)
+  const [isLoading, setIsLoading] = useState(!!account)
 
   useEffect(() => {
     const fetchVotingPower = async () => {
-      const response: Partial<VotingPowerHydrate> = await getVotingPower(account, block)
+      setIsLoading(true)
 
-      if (!isCancelled.current) {
-        setVotingPower(hydrateVotingPower({ isInitialized: true, ...response }))
+      try {
+        const eligiblePools = await getActivePools(block)
+        const poolAddresses = eligiblePools.map(({ contractAddress }) => getAddress(contractAddress))
+        const { cakeBalance, cakeBnbLpBalance, cakePoolBalance, total, poolsBalance, ...rest } = await getVotingPower(
+          account,
+          poolAddresses,
+          block,
+        )
+
+        if (isActive) {
+          setVotingPower((prevVotingPower) => ({
+            ...prevVotingPower,
+            ...rest,
+            cakeBalance: new BigNumber(cakeBalance),
+            cakeBnbLpBalance: new BigNumber(cakeBnbLpBalance),
+            cakePoolBalance: new BigNumber(cakePoolBalance),
+            poolsBalance: new BigNumber(poolsBalance),
+            total: new BigNumber(total),
+          }))
+        }
+      } finally {
+        setIsLoading(false)
       }
     }
 
-    if (account && !isInitialized) {
+    if (account && isActive) {
       fetchVotingPower()
     }
+  }, [account, block, setVotingPower, isActive, setIsLoading])
 
-    return () => {
-      isCancelled.current = true
-    }
-  }, [account, block, isCancelled, isInitialized, setVotingPower])
-
-  return votingPower
+  return { ...votingPower, isLoading }
 }
 
 export default useGetVotingPower

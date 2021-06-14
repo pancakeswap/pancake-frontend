@@ -99,7 +99,7 @@ export const getVoteCache = async (proposalId: string): Promise<{ [key: string]:
   }, {})
 }
 
-export const getVotingPower = async (account: string, block?: number) => {
+export const getVotingPower = async (account: string, poolAddresses: string[], block?: number) => {
   const response = await fetch(SNAPSHOT_VOTING_API, {
     method: 'post',
     headers: {
@@ -108,6 +108,7 @@ export const getVotingPower = async (account: string, block?: number) => {
     body: JSON.stringify({
       address: account,
       block,
+      poolAddresses,
     }),
   })
   const data = await response.json()

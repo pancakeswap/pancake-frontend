@@ -3,10 +3,11 @@ import { DEFAULT_GAS_LIMIT, DEFAULT_TOKEN_DECIMAL } from 'config'
 import { Contract, ethers } from 'ethers'
 import { getAddress } from 'utils/addressHelpers'
 import pools from 'config/constants/pools'
-import sousChefABI from 'config/abi/sousChef.json'
+import sousChefABI from 'config/abi/sousChefV2.json'
 import { BIG_TEN } from './bigNumber'
 import { multicallv2 } from './multicall'
 import { archiveRpcProvider } from './providers'
+import { getSouschefV2Contract } from './contractHelpers'
 
 const options = {
   gasLimit: DEFAULT_GAS_LIMIT,
@@ -126,6 +127,19 @@ export const soushHarvest = async (sousChefContract) => {
   return receipt.status
 }
 
+export const isPoolActive = async (sousId: number, block?: number) => {
+  const contract = getSouschefV2Contract(sousId, archiveRpcProvider)
+  const startBlockResp = await contract.methods.startBlock().call()
+  const endBlockResp = await contract.methods.bonusEndBlock().call()
+  const startBlock = new BigNumber(startBlockResp)
+  const endBlock = new BigNumber(endBlockResp)
+
+  return startBlock.lte(block) && endBlock.gte(block)
+}
+
+/**
+ * Returns the total number of pools that were active at a given block
+ */
 export const getActivePools = async (block?: number) => {
   const archiveProvider = archiveRpcProvider
   const eligiblePools = pools
@@ -169,6 +183,6 @@ export const getActivePools = async (block?: number) => {
       return accum
     }
 
-    return [...accum, pool]
+    return [...accum, eligiblePools[index]]
   }, [])
 }
