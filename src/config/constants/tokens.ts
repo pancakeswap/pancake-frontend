@@ -1539,7 +1539,7 @@ const tokens = {
       56: '0xdb021b1b247fe2f1fa57e0a87c748cc1e321f07f',
       97: '',
     },
-    decimals: 18,
+    decimals: 9,
     projectLink: 'https://www.ampleforth.org/',
   },
 }
