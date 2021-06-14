@@ -514,7 +514,7 @@
   "Stake in Pool": "Вложение в пул",
   "Balance: %balance%": "Баланс: %balance%",
   "%day%d : %hour%h : %minute%m": "%day%d : %hour%h : %minute%m",
-  "%day%d %hour%h %minute%m": "%day%d %hour%h %minute%m",
+  "%day%d %hour%h %minute%m": "%дней%d %часов%h %минут%m",
   "Subtracted automatically from each yield harvest and burned.": "Автоматически вычитается из каждого сбора выручки и сжигается.",
   "Blocks": "Блоки",
   "Add to Metamask": "Добавить в Metamask",
