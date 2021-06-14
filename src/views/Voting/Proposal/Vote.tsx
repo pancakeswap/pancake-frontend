@@ -1,7 +1,10 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Button, Card, CardBody, CardHeader, CardProps, Heading, Radio, Text, useModal } from '@pancakeswap/uikit'
+import { useAppDispatch } from 'state'
 import { Proposal } from 'state/types'
+import { fetchVotes } from 'state/voting'
+import useToast from 'hooks/useToast'
 import { useTranslation } from 'contexts/Localization'
 import CastVoteModal from '../components/Proposal/CastVoteModal'
 
@@ -27,8 +30,16 @@ const Choice = styled.label<{ isChecked: boolean }>`
 const Vote: React.FC<VoteProps> = ({ proposal, ...props }) => {
   const [vote, setVote] = useState<State>(null)
   const { t } = useTranslation()
+  const { toastSuccess } = useToast()
+  const dispatch = useAppDispatch()
+
+  const handleSuccess = async () => {
+    toastSuccess(t('Vote cast!'))
+    dispatch(fetchVotes(proposal.id))
+  }
+
   const [presentCastVoteModal] = useModal(
-    <CastVoteModal proposalId={proposal.id} vote={vote} block={Number(proposal.snapshot)} />,
+    <CastVoteModal onSuccess={handleSuccess} proposalId={proposal.id} vote={vote} block={Number(proposal.snapshot)} />,
   )
 
   return (

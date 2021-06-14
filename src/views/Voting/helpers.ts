@@ -61,19 +61,11 @@ export const sendSnaphotData = async (message: Message) => {
     },
     body: JSON.stringify(message),
   })
-  const data = await response.json()
-  return data
-}
 
-export const saveVotingPower = async (account: string, proposal: string, power: string) => {
-  const response = await fetch(SNAPSHOT_VOTING_API, {
-    method: 'post',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ account, proposal, power }),
-  })
+  if (!response.ok) {
+    throw new Error(response.statusText)
+  }
+
   const data = await response.json()
   return data
 }

@@ -1,14 +1,16 @@
 import React, { useState } from 'react'
-import { Box, Button, InjectedModalProps, Modal, Skeleton, Text } from '@pancakeswap/uikit'
+import { AutoRenewIcon, Box, Button, InjectedModalProps, Modal, Skeleton, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
+import useToast from 'hooks/useToast'
 import useWeb3 from 'hooks/useWeb3'
 import { SnapshotCommand } from 'state/types'
 import useGetVotingPower from '../../hooks/useGetVotingPower'
-import { generatePayloadData, Message, saveVotingPower, sendSnaphotData } from '../../helpers'
+import { generatePayloadData, Message, sendSnaphotData } from '../../helpers'
 import ModalBox from './ModalBox'
 
 interface CastVoteModalProps extends InjectedModalProps {
+  onSuccess: () => Promise<void>
   proposalId: string
   vote: {
     label: string
@@ -17,12 +19,14 @@ interface CastVoteModalProps extends InjectedModalProps {
   block?: number
 }
 
-const CastVoteModal: React.FC<CastVoteModalProps> = ({ proposalId, vote, block, onDismiss }) => {
+const CastVoteModal: React.FC<CastVoteModalProps> = ({ onSuccess, proposalId, vote, block, onDismiss }) => {
   const { t } = useTranslation()
   const [modalIsOpen, setModalIsOpen] = useState(true)
+  const [isPending, setIsPending] = useState(false)
   const { isLoading, total, verificationHash } = useGetVotingPower(block, modalIsOpen)
   const web3 = useWeb3()
   const { account } = useWeb3React()
+  const { toastError } = useToast()
 
   const handleDismiss = () => {
     setModalIsOpen(false)
@@ -31,6 +35,7 @@ const CastVoteModal: React.FC<CastVoteModalProps> = ({ proposalId, vote, block, 
 
   const handleConfirmVote = async () => {
     try {
+      setIsPending(true)
       const voteMsg = JSON.stringify({
         ...generatePayloadData(),
         type: SnapshotCommand.VOTE,
@@ -47,13 +52,15 @@ const CastVoteModal: React.FC<CastVoteModalProps> = ({ proposalId, vote, block, 
       const msg: Message = { address: account, msg: voteMsg, sig }
 
       // Save proposal to snapshot
-      const data = await sendSnaphotData(msg)
+      await sendSnaphotData(msg)
+      setIsPending(false)
 
-      // Cache the voting power
-      await saveVotingPower(account, data.ipfsHash, total.toString())
+      await onSuccess()
 
       handleDismiss()
     } catch (error) {
+      setIsPending(false)
+      toastError(t('Error'), error?.message)
       console.error(error)
     }
   }
@@ -83,7 +90,14 @@ const CastVoteModal: React.FC<CastVoteModalProps> = ({ proposalId, vote, block, 
           {t('Are you sure you want to vote for the above choice? This action cannot be undone.')}
         </Text>
       </Box>
-      <Button disabled={isLoading || total.eq(0)} width="100%" mb="8px" onClick={handleConfirmVote}>
+      <Button
+        isLoading={isPending}
+        endIcon={isPending ? <AutoRenewIcon spin color="currentColor" /> : null}
+        disabled={isLoading || total.eq(0)}
+        width="100%"
+        mb="8px"
+        onClick={handleConfirmVote}
+      >
         {t('Confirm Vote')}
       </Button>
       <Button variant="secondary" width="100%" onClick={handleDismiss}>
