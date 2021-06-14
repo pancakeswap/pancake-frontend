@@ -198,7 +198,7 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
     <Flex justifyContent="space-between" alignItems="center" mb="8px">
       <Text maxWidth={['50px', '100%']}>{t('Total staked')}:</Text>
       <Flex alignItems="center">
-        {totalStaked ? (
+        {totalStaked && totalStaked.gte(0) ? (
           <>
             <Balance fontSize="16px" value={getTotalStakedBalance()} decimals={0} unit={` ${stakingToken.symbol}`} />
             <span ref={totalStakedTargetRef}>
