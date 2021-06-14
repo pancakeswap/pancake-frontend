@@ -92,7 +92,7 @@ export const NotConnected: React.FC = () => {
         account={null}
         login={noop}
         logout={noop}
-        isDark
+        isDark={false}
         toggleTheme={noop}
         langs={langs}
         setLang={noop}
@@ -110,6 +110,19 @@ export const NotConnected: React.FC = () => {
           aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore
           eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
           mollit anim id est laborum.
+        </div>
+      </Menu>
+    </BrowserRouter>
+  );
+};
+
+export const WithoutConnectButton: React.FC = () => {
+  return (
+    <BrowserRouter>
+      <Menu isDark={false} toggleTheme={noop} langs={langs} setLang={noop} currentLang="EN" links={links}>
+        <div>
+          <h1>No connect button on top</h1>
+          This variant is needed for info site
         </div>
       </Menu>
     </BrowserRouter>
