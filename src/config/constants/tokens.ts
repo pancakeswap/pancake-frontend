@@ -987,7 +987,7 @@ const tokens = {
   easy: {
     symbol: 'EASY',
     address: {
-      56: '0x5512014efa6Cd57764Fa743756F7a6Ce3358cC83',
+      56: '0x7C17c8bED8d14bAccE824D020f994F4880D6Ab3B',
       97: '',
     },
     decimals: 18,
