@@ -1542,6 +1542,15 @@ const tokens = {
     decimals: 9,
     projectLink: 'https://www.ampleforth.org/',
   },
+  o3: {
+    symbol: 'O3',
+    address: {
+      56: '0xEe9801669C6138E84bD50dEB500827b776777d28',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://o3swap.com/',
+  },
 }
 
 export default tokens
