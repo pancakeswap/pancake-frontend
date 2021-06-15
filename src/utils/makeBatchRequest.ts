@@ -1,4 +1,4 @@
-import { getWeb3NoAccount } from './web3'
+import web3NoAccount from './web3'
 
 /**
  * Accepts an array of contract method calls and batches them
@@ -12,8 +12,7 @@ import { getWeb3NoAccount } from './web3'
  */
 const makeBatchRequest = (calls: any[]) => {
   try {
-    const web3 = getWeb3NoAccount()
-    const batch = new web3.BatchRequest()
+    const batch = new web3NoAccount.BatchRequest()
 
     const promises = calls.map((call) => {
       return new Promise((resolve, reject) => {

@@ -7,7 +7,7 @@ import { orderBy } from 'lodash'
 import { Team } from 'config/constants/types'
 import Nfts from 'config/constants/nfts'
 import { farmsConfig } from 'config/constants'
-import { getWeb3NoAccount } from 'utils/web3'
+import web3NoAccount from 'utils/web3'
 import { getBalanceAmount } from 'utils/formatBalance'
 import { BIG_ZERO } from 'utils/bigNumber'
 import useRefresh from 'hooks/useRefresh'
@@ -64,16 +64,15 @@ export const usePollCoreFarmData = () => {
 
 export const usePollBlockNumber = () => {
   const dispatch = useAppDispatch()
-  const web3 = getWeb3NoAccount()
 
   useEffect(() => {
     const interval = setInterval(async () => {
-      const blockNumber = await web3.eth.getBlockNumber()
+      const blockNumber = await web3NoAccount.eth.getBlockNumber()
       dispatch(setBlock(blockNumber))
     }, 6000)
 
     return () => clearInterval(interval)
-  }, [dispatch, web3])
+  }, [dispatch])
 }
 
 // Farms
@@ -146,17 +145,16 @@ export const useLpTokenPrice = (symbol: string) => {
 export const useFetchPublicPoolsData = () => {
   const dispatch = useAppDispatch()
   const { slowRefresh } = useRefresh()
-  const web3 = getWeb3NoAccount()
 
   useEffect(() => {
     const fetchPoolsPublicData = async () => {
-      const blockNumber = await web3.eth.getBlockNumber()
+      const blockNumber = await web3NoAccount.eth.getBlockNumber()
       dispatch(fetchPoolsPublicDataAsync(blockNumber))
     }
 
     fetchPoolsPublicData()
     dispatch(fetchPoolsStakingLimitsAsync())
-  }, [dispatch, slowRefresh, web3])
+  }, [dispatch, slowRefresh])
 }
 
 export const usePools = (account): { pools: Pool[]; userDataLoaded: boolean } => {

@@ -4,7 +4,7 @@ import erc20ABI from 'config/abi/erc20.json'
 import multicall from 'utils/multicall'
 import { getMasterchefContract } from 'utils/contractHelpers'
 import { getAddress } from 'utils/addressHelpers'
-import { getWeb3NoAccount } from 'utils/web3'
+import web3NoAccount from 'utils/web3'
 import BigNumber from 'bignumber.js'
 
 // Pool 0, Cake / Cake is a different kind of contract (master chef)
@@ -42,8 +42,7 @@ export const fetchUserBalances = async (account) => {
   )
 
   // BNB pools
-  const web3 = getWeb3NoAccount()
-  const bnbBalance = await web3.eth.getBalance(account)
+  const bnbBalance = await web3NoAccount.eth.getBalance(account)
   const bnbBalances = bnbPools.reduce(
     (acc, pool) => ({ ...acc, [pool.sousId]: new BigNumber(bnbBalance).toJSON() }),
     {},
