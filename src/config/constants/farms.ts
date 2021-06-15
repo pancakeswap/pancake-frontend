@@ -40,12 +40,12 @@ const farms: FarmConfig[] = [
    */
   {
     pid: 410,
-    lpSymbol: 'AMPL-BSC-mp-BUSD LP',
+    lpSymbol: 'AMPL-BUSD LP',
     lpAddresses: {
       97: '',
       56: '0x6e98beb694ff1cdb1ee130edd2b21b0298683d58',
     },
-    token: tokens['ampl-bsc-mp'],
+    token: tokens.ampl,
     quoteToken: tokens.busd,
   },
   {

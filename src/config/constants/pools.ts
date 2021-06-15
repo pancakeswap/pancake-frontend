@@ -19,7 +19,7 @@ const pools: PoolConfig[] = [
   {
     sousId: 175,
     stakingToken: tokens.cake,
-    earningToken: tokens['ampl-bsc-mp'],
+    earningToken: tokens.ampl,
     contractAddress: {
       97: '',
       56: '0x62dEc3A560D2e8A84D30752bA454f97b26757877',
