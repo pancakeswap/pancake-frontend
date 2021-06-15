@@ -4,17 +4,11 @@ import { ARCHIVED_NODE } from 'config/constants/endpoints'
 import getRpcUrl from 'utils/getRpcUrl'
 
 const RPC_URL = getRpcUrl()
+
 const httpProvider = new Web3.providers.HttpProvider(RPC_URL, { timeout: 10000 } as HttpProviderOptions)
 const web3NoAccount = new Web3(httpProvider)
 
-const getWeb3NoAccount = () => {
-  return web3NoAccount
-}
+const archivedHttpProvider = new Web3.providers.HttpProvider(ARCHIVED_NODE, { timeout: 10000 } as HttpProviderOptions)
+export const web3WithArchivedNodeProvider = new Web3(archivedHttpProvider)
 
-const getWeb3WithArchivedNodeProvider = () => {
-  const archivedHttpProvider = new Web3.providers.HttpProvider(ARCHIVED_NODE, { timeout: 10000 } as HttpProviderOptions)
-  return new Web3(archivedHttpProvider)
-}
-
-export { getWeb3NoAccount, getWeb3WithArchivedNodeProvider }
 export default web3NoAccount

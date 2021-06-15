@@ -1,6 +1,6 @@
 import Web3 from 'web3'
 import { Interface } from '@ethersproject/abi'
-import { getWeb3NoAccount } from 'utils/web3'
+import web3NoAccount from 'utils/web3'
 import { getMulticallContract } from 'utils/contractHelpers'
 
 interface Call {
@@ -17,7 +17,7 @@ interface MulticallOptions {
 
 const multicall = async (abi: any[], calls: Call[], options: MulticallOptions = {}) => {
   try {
-    const multi = getMulticallContract(options.web3 || getWeb3NoAccount())
+    const multi = getMulticallContract(options.web3 || web3NoAccount)
     const itf = new Interface(abi)
 
     const calldata = calls.map((call) => [call.address.toLowerCase(), itf.encodeFunctionData(call.name, call.params)])
@@ -37,7 +37,7 @@ const multicall = async (abi: any[], calls: Call[], options: MulticallOptions = 
  * 2. The return inclues a boolean whether the call was successful e.g. [wasSuccessfull, callResult]
  */
 export const multicallv2 = async (abi: any[], calls: Call[], options: MulticallOptions = {}) => {
-  const multi = getMulticallContract(options.web3 || getWeb3NoAccount())
+  const multi = getMulticallContract(options.web3 || web3NoAccount)
   const itf = new Interface(abi)
 
   const calldata = calls.map((call) => [call.address.toLowerCase(), itf.encodeFunctionData(call.name, call.params)])

@@ -9,7 +9,7 @@ import tokens from 'config/constants/tokens'
 import pools from 'config/constants/pools'
 import sousChefABI from 'config/abi/sousChef.json'
 import { multicallv2 } from './multicall'
-import { getWeb3WithArchivedNodeProvider } from './web3'
+import { web3WithArchivedNodeProvider } from './web3'
 import { getBalanceAmount } from './formatBalance'
 import { BIG_TEN, BIG_ZERO } from './bigNumber'
 
@@ -144,9 +144,8 @@ const CAKE_BNB_TOKEN = new Token(chainId, getAddress(cakeBnbFarm.lpAddresses), 1
  */
 export const getUserStakeInCakeBnbLp = async (account: string, block?: number) => {
   try {
-    const archivedWeb3 = getWeb3WithArchivedNodeProvider()
-    const masterContract = getMasterchefContract(archivedWeb3)
-    const cakeBnbContract = getLpContract(getAddress(cakeBnbFarm.lpAddresses), archivedWeb3)
+    const masterContract = getMasterchefContract(web3WithArchivedNodeProvider)
+    const cakeBnbContract = getLpContract(getAddress(cakeBnbFarm.lpAddresses), web3WithArchivedNodeProvider)
     const totalSupplyLP = await cakeBnbContract.methods.totalSupply().call(undefined, block)
     const reservesLP = await cakeBnbContract.methods.getReserves().call(undefined, block)
     const cakeBnbBalance = await masterContract.methods.userInfo(cakeBnbPid, account).call(undefined, block)
@@ -174,8 +173,7 @@ export const getUserStakeInCakeBnbLp = async (account: string, block?: number) =
  */
 export const getUserStakeInCakePool = async (account: string, block?: number) => {
   try {
-    const archivedWeb3 = getWeb3WithArchivedNodeProvider()
-    const masterContract = getMasterchefContract(archivedWeb3)
+    const masterContract = getMasterchefContract(web3WithArchivedNodeProvider)
     const response = await masterContract.methods.userInfo(0, account).call(undefined, block)
 
     return getBalanceAmount(new BigNumber(response.amount))
@@ -191,7 +189,7 @@ export const getUserStakeInCakePool = async (account: string, block?: number) =>
 export const getUserStakeInPools = async (account: string, block?: number) => {
   try {
     const multicallOptions = {
-      web3: getWeb3WithArchivedNodeProvider(),
+      web3: web3WithArchivedNodeProvider,
       blockNumber: block,
       requireSuccess: false,
     }
