@@ -14,7 +14,7 @@ const Details: React.FC<DetailsProps> = ({ proposal }) => {
   const { t } = useTranslation()
 
   return (
-    <Card>
+    <Card mb="16px">
       <CardHeader>
         <Heading as="h3" scale="md">
           {t('Details')}

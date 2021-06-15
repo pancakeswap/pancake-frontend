@@ -1,6 +1,8 @@
+import BigNumber from 'bignumber.js'
 import { getCakeAddress } from 'utils/addressHelpers'
 import { SNAPSHOT_HUB_API, SNAPSHOT_VOTING_API } from 'config/constants/endpoints'
-import { Proposal, ProposalState, ProposalType } from 'state/types'
+import { BIG_ZERO } from 'utils/bigNumber'
+import { Proposal, ProposalState, ProposalType, Vote } from 'state/types'
 import { ADMIN_ADDRESS, PANCAKE_SPACE, SNAPSHOT_VERSION } from './config'
 
 export const isCoreProposal = (proposal: Proposal) => {
@@ -84,4 +86,30 @@ export const getVotingPower = async (account: string, poolAddresses: string[], b
   })
   const data = await response.json()
   return data.data
+}
+
+export const calculateVoteResults = (votes: Vote[]) => {
+  // Separate each vote by its choice
+  const votesByChoice = votes.reduce((accum, vote) => {
+    const choiceText = vote.proposal.choices[vote.choice - 1]
+    const choiceVotes = accum[choiceText] || []
+
+    return {
+      ...accum,
+      [choiceText]: [...choiceVotes, vote],
+    }
+  }, {})
+
+  return Object.keys(votesByChoice).map((choiceText) => {
+    const choiceVotes = votesByChoice[choiceText] as Vote[]
+    const totalVotes = choiceVotes.reduce((accum, vote) => {
+      const votePower = new BigNumber(vote.metadata?.votingPower)
+      return accum.plus(votePower)
+    }, BIG_ZERO)
+
+    return {
+      label: choiceText,
+      total: totalVotes,
+    }
+  })
 }

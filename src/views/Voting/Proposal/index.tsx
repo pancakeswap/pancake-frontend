@@ -14,6 +14,7 @@ import { isCoreProposal } from '../helpers'
 import { ProposalStateTag, ProposalTypeTag } from '../components/Proposals/tags'
 import Layout from '../components/Layout'
 import Details from './Details'
+import Results from './Results'
 import Vote from './Vote'
 import Votes from './Votes'
 
@@ -61,7 +62,10 @@ const Proposal = () => {
           )}
           <Votes votes={votes} />
         </Box>
-        <Details proposal={proposal} />
+        <Box>
+          <Details proposal={proposal} />
+          <Results choiceCount={proposal.choices.length} votes={votes} />
+        </Box>
       </Layout>
     </Container>
   )
