@@ -23,6 +23,7 @@ import {
   getCakeVaultAddress,
   getPredictionsAddress,
   getChainlinkOracleAddress,
+  getMulticallAddress,
 } from 'utils/addressHelpers'
 
 // ABI
@@ -50,6 +51,7 @@ import easterNftAbi from 'config/abi/easterNft.json'
 import cakeVaultAbi from 'config/abi/cakeVault.json'
 import predictionsAbi from 'config/abi/predictions.json'
 import chainlinkOracleAbi from 'config/abi/chainlinkOracle.json'
+import MultiCallAbi from 'config/abi/Multicall.json'
 import { DEFAULT_GAS_PRICE, TESTNET_CHAIN_ID } from 'config'
 import { getSettings, getGasPriceInWei } from './settings'
 
@@ -141,4 +143,7 @@ export const getPredictionsContract = (web3?: Web3) => {
 }
 export const getChainlinkOracleContract = (web3?: Web3) => {
   return getContract(chainlinkOracleAbi, getChainlinkOracleAddress(), web3)
+}
+export const getMulticallContract = (web3?: Web3) => {
+  return getContract(MultiCallAbi, getMulticallAddress(), web3)
 }

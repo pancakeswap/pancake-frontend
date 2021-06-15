@@ -34,7 +34,6 @@ import { fetchFarmUserDataAsync, nonArchivedFarms } from './farms'
 export const usePollFarmsData = (includeArchive = false) => {
   const dispatch = useAppDispatch()
   const { slowRefresh } = useRefresh()
-  const web3 = getWeb3NoAccount()
   const { account } = useWeb3React()
 
   useEffect(() => {
@@ -46,7 +45,7 @@ export const usePollFarmsData = (includeArchive = false) => {
     if (account) {
       dispatch(fetchFarmUserDataAsync({ account, pids }))
     }
-  }, [includeArchive, dispatch, slowRefresh, web3, account])
+  }, [includeArchive, dispatch, slowRefresh, account])
 }
 
 /**
@@ -57,11 +56,10 @@ export const usePollFarmsData = (includeArchive = false) => {
 export const usePollCoreFarmData = () => {
   const dispatch = useAppDispatch()
   const { fastRefresh } = useRefresh()
-  const web3 = getWeb3NoAccount()
 
   useEffect(() => {
     dispatch(fetchFarmsPublicDataAsync([251, 252]))
-  }, [dispatch, fastRefresh, web3])
+  }, [dispatch, fastRefresh])
 }
 
 export const usePollBlockNumber = () => {
