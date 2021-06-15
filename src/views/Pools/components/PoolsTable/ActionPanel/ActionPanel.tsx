@@ -120,7 +120,7 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
 
   const isMetaMaskInScope = !!(window as WindowChain).ethereum?.isMetaMask
   const tokenAddress = earningToken.address ? getAddress(earningToken.address) : ''
-  const imageSrc = `${BASE_URL}/images/tokens/${earningToken.symbol.toLowerCase()}.png`
+  const imageSrc = `${BASE_URL}/images/tokens/${tokenAddress}.png`
 
   const {
     totalCakeInVault,

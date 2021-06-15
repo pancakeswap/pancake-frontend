@@ -6,7 +6,7 @@ const tokens = {
   cake: {
     symbol: 'CAKE',
     address: {
-      56: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
+      56: '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82',
       97: '0xa35062141Fa33BCA92Ce69FeD37D0E8908868AAe',
     },
     decimals: 18,
@@ -15,7 +15,7 @@ const tokens = {
   txl: {
     symbol: 'TXL',
     address: {
-      56: '0x1ffd0b47127fdd4097e54521c9e2c7f0d66aafc5',
+      56: '0x1FFD0b47127fdd4097E54521C9E2c7f0D66AafC5',
       97: '',
     },
     decimals: 18,
@@ -33,7 +33,7 @@ const tokens = {
   bunny: {
     symbol: 'BUNNY',
     address: {
-      56: '0xc9849e6fdb743d08faee3e34dd2d1bc69ea11a51',
+      56: '0xC9849E6fdB743d08fAeE3E34dd2D1bc69EA11a51',
       97: '',
     },
     decimals: 18,
@@ -42,7 +42,7 @@ const tokens = {
   alice: {
     symbol: 'ALICE',
     address: {
-      56: '0xac51066d7bec65dc4589368da368b212745d63e8',
+      56: '0xAC51066d7bEC65Dc4589368da368b212745d63E8',
       97: '',
     },
     decimals: 6,
@@ -60,7 +60,7 @@ const tokens = {
   bux: {
     symbol: 'BUX',
     address: {
-      56: '0x211ffbe424b90e25a15531ca322adf1559779e45',
+      56: '0x211FfbE424b90e25a15531ca322adF1559779E45',
       97: '',
     },
     decimals: 18,
@@ -69,7 +69,7 @@ const tokens = {
   nuls: {
     symbol: 'NULS',
     address: {
-      56: '0x8cd6e29d3686d24d3c2018cee54621ea0f89313b',
+      56: '0x8CD6e29d3686d24d3C2018CEe54621eA0f89313B',
       97: '',
     },
     decimals: 8,
@@ -87,7 +87,7 @@ const tokens = {
   ramp: {
     symbol: 'RAMP',
     address: {
-      56: '0x8519ea49c997f50ceffa444d240fb655e89248aa',
+      56: '0x8519EA49c997f50cefFa444d240fB655e89248Aa',
       97: '',
     },
     decimals: 18,
@@ -96,7 +96,7 @@ const tokens = {
   bfi: {
     symbol: 'BFI',
     address: {
-      56: '0x81859801b01764d4f0fa5e64729f5a6c3b91435b',
+      56: '0x81859801b01764D4f0Fa5E64729f5a6C3b91435b',
       97: '',
     },
     decimals: 18,
@@ -105,7 +105,7 @@ const tokens = {
   dexe: {
     symbol: 'DEXE',
     address: {
-      56: '0x039cb485212f996a9dbb85a9a75d898f94d38da6',
+      56: '0x039cB485212f996A9DBb85A9a75d898F94d38dA6',
       97: '',
     },
     decimals: 18,
@@ -114,7 +114,7 @@ const tokens = {
   bel: {
     symbol: 'BEL',
     address: {
-      56: '0x8443f091997f06a61670b735ed92734f5628692f',
+      56: '0x8443f091997f06a61670B735ED92734F5628692F',
       97: '',
     },
     decimals: 18,
@@ -123,7 +123,7 @@ const tokens = {
   tpt: {
     symbol: 'TPT',
     address: {
-      56: '0xeca41281c24451168a37211f0bc2b8645af45092',
+      56: '0xECa41281c24451168a37211F0bc2b8645AF45092',
       97: '',
     },
     decimals: 4,
@@ -132,7 +132,7 @@ const tokens = {
   watch: {
     symbol: 'WATCH',
     address: {
-      56: '0x7a9f28eb62c791422aa23ceae1da9c847cbec9b0',
+      56: '0x7A9f28EB62C791422Aa23CeAE1dA9C847cBeC9b0',
       97: '',
     },
     decimals: 18,
@@ -141,7 +141,7 @@ const tokens = {
   xmark: {
     symbol: 'xMARK',
     address: {
-      56: '0x26a5dfab467d4f58fb266648cae769503cec9580',
+      56: '0x26A5dFab467d4f58fB266648CAe769503CEC9580',
       97: '',
     },
     decimals: 9,
@@ -150,7 +150,7 @@ const tokens = {
   bmxx: {
     symbol: 'bMXX',
     address: {
-      56: '0x4131b87f74415190425ccd873048c708f8005823',
+      56: '0x4131b87F74415190425ccD873048C708F8005823',
       97: '',
     },
     decimals: 18,
@@ -159,7 +159,7 @@ const tokens = {
   iotx: {
     symbol: 'IOTX',
     address: {
-      56: '0x9678e42cebeb63f23197d726b29b1cb20d0064e5',
+      56: '0x9678E42ceBEb63F23197D726B29b1CB20d0064E5',
       97: '',
     },
     decimals: 18,
@@ -168,7 +168,7 @@ const tokens = {
   bor: {
     symbol: 'BOR',
     address: {
-      56: '0x92d7756c60dcfd4c689290e8a9f4d263b3b32241',
+      56: '0x92D7756c60dcfD4c689290E8A9F4d263b3b32241',
       97: '',
     },
     decimals: 18,
@@ -177,7 +177,7 @@ const tokens = {
   bopen: {
     symbol: 'bOPEN',
     address: {
-      56: '0xf35262a9d427f96d2437379ef090db986eae5d42',
+      56: '0xF35262a9d427F96d2437379eF090db986eaE5d42',
       97: '',
     },
     decimals: 18,
@@ -186,7 +186,7 @@ const tokens = {
   dodo: {
     symbol: 'DODO',
     address: {
-      56: '0x67ee3cb086f8a16f34bee3ca72fad36f7db929e2',
+      56: '0x67ee3Cb086F8a16f34beE3ca72FAD36F7Db929e2',
       97: '',
     },
     decimals: 18,
@@ -195,7 +195,7 @@ const tokens = {
   swingby: {
     symbol: 'SWINGBY',
     address: {
-      56: '0x71de20e0c4616e7fcbfdd3f875d568492cbe4739',
+      56: '0x71DE20e0C4616E7fcBfDD3f875d568492cBE4739',
       97: '',
     },
     decimals: 18,
@@ -204,7 +204,7 @@ const tokens = {
   bry: {
     symbol: 'BRY',
     address: {
-      56: '0xf859bf77cbe8699013d6dbc7c2b926aaf307f830',
+      56: '0xf859Bf77cBe8699013d6Dbc7C2b926Aaf307F830',
       97: '',
     },
     decimals: 18,
@@ -213,7 +213,7 @@ const tokens = {
   zee: {
     symbol: 'ZEE',
     address: {
-      56: '0x44754455564474a89358b2c2265883df993b12f0',
+      56: '0x44754455564474A89358B2C2265883DF993b12F0',
       97: '',
     },
     decimals: 18,
@@ -231,7 +231,7 @@ const tokens = {
   swg: {
     symbol: 'SWG',
     address: {
-      56: '0xe792f64c582698b8572aaf765bdc426ac3aefb6b',
+      56: '0xe792f64C582698b8572AAF765bDC426AC3aEfb6B',
       97: '',
     },
     decimals: 18,
@@ -240,7 +240,7 @@ const tokens = {
   sfp: {
     symbol: 'SFP',
     address: {
-      56: '0xd41fdb03ba84762dd66a0af1a6c8540ff1ba5dfb',
+      56: '0xD41FDb03Ba84762dD66a0af1a6C8540FF1ba5dfb',
       97: '',
     },
     decimals: 18,
@@ -249,7 +249,7 @@ const tokens = {
   lina: {
     symbol: 'LINA',
     address: {
-      56: '0x762539b45a1dcce3d36d080f74d1aed37844b878',
+      56: '0x762539b45A1dCcE3D36d080F74d1AED37844b878',
       97: '',
     },
     decimals: 18,
@@ -258,7 +258,7 @@ const tokens = {
   lit: {
     symbol: 'LIT',
     address: {
-      56: '0xb59490ab09a0f526cc7305822ac65f2ab12f9723',
+      56: '0xb59490aB09A0f526Cc7305822aC65f2Ab12f9723',
       97: '',
     },
     decimals: 18,
@@ -267,7 +267,7 @@ const tokens = {
   hget: {
     symbol: 'HGET',
     address: {
-      56: '0xc7d8d35eba58a0935ff2d5a33df105dd9f071731',
+      56: '0xC7d8D35EBA58a0935ff2D5a33Df105DD9f071731',
       97: '',
     },
     decimals: 6,
@@ -276,7 +276,7 @@ const tokens = {
   bdo: {
     symbol: 'BDO',
     address: {
-      56: '0x190b589cf9fb8ddeabbfeae36a813ffb2a702454',
+      56: '0x190b589cf9Fb8DDEabBFeae36a813FFb2A702454',
       97: '',
     },
     decimals: 18,
@@ -285,7 +285,7 @@ const tokens = {
   egld: {
     symbol: 'EGLD',
     address: {
-      56: '0xbf7c81fff98bbe61b40ed186e4afd6ddd01337fe',
+      56: '0xbF7c81FFF98BbE61B40Ed186e4AfD6DDd01337fe',
       97: '',
     },
     decimals: 18,
@@ -303,7 +303,7 @@ const tokens = {
   wsote: {
     symbol: 'wSOTE',
     address: {
-      56: '0x541e619858737031a1244a5d0cd47e5ef480342c',
+      56: '0x541E619858737031A1244A5d0Cd47E5ef480342c',
       97: '',
     },
     decimals: 18,
@@ -312,7 +312,7 @@ const tokens = {
   front: {
     symbol: 'FRONT',
     address: {
-      56: '0x928e55dab735aa8260af3cedada18b5f70c72f1b',
+      56: '0x928e55daB735aa8260AF3cEDadA18B5f70C72f1b',
       97: '',
     },
     decimals: 18,
@@ -321,7 +321,7 @@ const tokens = {
   helmet: {
     symbol: 'Helmet',
     address: {
-      56: '0x948d2a81086a075b3130bac19e4c6dee1d2e3fe8',
+      56: '0x948d2a81086A075b3130BAc19e4c6DEe1D2E3fE8',
       97: '',
     },
     decimals: 18,
@@ -330,7 +330,7 @@ const tokens = {
   btcst: {
     symbol: 'BTCST',
     address: {
-      56: '0x78650b139471520656b9e7aa7a5e9276814a38e9',
+      56: '0x78650B139471520656b9E7aA7A5e9276814a38e9',
       97: '',
     },
     decimals: 17,
@@ -339,7 +339,7 @@ const tokens = {
   bscx: {
     symbol: 'BSCX',
     address: {
-      56: '0x5ac52ee5b2a633895292ff6d8a89bb9190451587',
+      56: '0x5Ac52EE5b2a633895292Ff6d8A89bB9190451587',
       97: '',
     },
     decimals: 18,
@@ -348,7 +348,7 @@ const tokens = {
   ten: {
     symbol: 'TEN',
     address: {
-      56: '0xdff8cb622790b7f92686c722b02cab55592f152c',
+      56: '0xdFF8cb622790b7F92686c722b02CaB55592f152C',
       97: '',
     },
     decimals: 18,
@@ -357,7 +357,7 @@ const tokens = {
   balbt: {
     symbol: 'bALBT',
     address: {
-      56: '0x72faa679e1008ad8382959ff48e392042a8b06f7',
+      56: '0x72fAa679E1008Ad8382959FF48E392042A8b06f7',
       97: '',
     },
     decimals: 18,
@@ -366,7 +366,7 @@ const tokens = {
   asr: {
     symbol: 'ASR',
     address: {
-      56: '0x80d5f92c2c8c682070c95495313ddb680b267320',
+      56: '0x80D5f92C2c8C682070C95495313dDB680B267320',
       97: '',
     },
     decimals: 2,
@@ -375,7 +375,7 @@ const tokens = {
   atm: {
     symbol: 'ATM',
     address: {
-      56: '0x25e9d05365c867e59c1904e7463af9f312296f9e',
+      56: '0x25E9d05365c867E59C1904E7463Af9F312296f9E',
       97: '',
     },
     decimals: 2,
@@ -384,7 +384,7 @@ const tokens = {
   og: {
     symbol: 'OG',
     address: {
-      56: '0xf05e45ad22150677a017fbd94b84fbb63dc9b44c',
+      56: '0xf05E45aD22150677a017Fbd94b84fBB63dc9b44c',
       97: '',
     },
     decimals: 2,
@@ -393,7 +393,7 @@ const tokens = {
   reef: {
     symbol: 'REEF',
     address: {
-      56: '0xf21768ccbc73ea5b6fd3c687208a7c2def2d966e',
+      56: '0xF21768cCBC73Ea5B6fd3C687208a7c2def2d966e',
       97: '',
     },
     decimals: 18,
@@ -402,7 +402,7 @@ const tokens = {
   ditto: {
     symbol: 'DITTO',
     address: {
-      56: '0x233d91a0713155003fc4dce0afa871b508b3b715',
+      56: '0x233d91A0713155003fc4DcE0AFa871b508B3B715',
       97: '',
     },
     decimals: 9,
@@ -411,7 +411,7 @@ const tokens = {
   juv: {
     symbol: 'JUV',
     address: {
-      56: '0xc40c9a843e1c6d01b7578284a9028854f6683b1b',
+      56: '0xC40C9A843E1c6D01b7578284a9028854f6683b1B',
       97: '',
     },
     decimals: 2,
@@ -420,7 +420,7 @@ const tokens = {
   psg: {
     symbol: 'PSG',
     address: {
-      56: '0xbc5609612b7c44bef426de600b5fd1379db2ecf1',
+      56: '0xBc5609612b7C44BEf426De600B5fd1379DB2EcF1',
       97: '',
     },
     decimals: 2,
@@ -429,7 +429,7 @@ const tokens = {
   vai: {
     symbol: 'VAI',
     address: {
-      56: '0x4bd17003473389a42daf6a0a729f6fdb328bbbd7',
+      56: '0x4BD17003473389A42DAF6a0a729f6Fdb328BbBd7',
       97: '',
     },
     decimals: 18,
@@ -438,7 +438,7 @@ const tokens = {
   wbnb: {
     symbol: 'wBNB',
     address: {
-      56: '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c',
+      56: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
       97: '0xae13d989dac2f0debff460ac112a837c89baa7cd',
     },
     decimals: 18,
@@ -447,7 +447,7 @@ const tokens = {
   blink: {
     symbol: 'BLINK',
     address: {
-      56: '0x63870a18b6e42b01ef1ad8a2302ef50b7132054f',
+      56: '0x63870A18B6e42b01Ef1Ad8A2302ef50B7132054F',
       97: '',
     },
     decimals: 6,
@@ -456,7 +456,7 @@ const tokens = {
   unfi: {
     symbol: 'UNFI',
     address: {
-      56: '0x728c5bac3c3e370e372fc4671f9ef6916b814d8b',
+      56: '0x728C5baC3C3e370E372Fc4671f9ef6916b814d8B',
       97: '',
     },
     decimals: 18,
@@ -465,7 +465,7 @@ const tokens = {
   twt: {
     symbol: 'TWT',
     address: {
-      56: '0x4b0f1812e5df2a09796481ff14017e6005508003',
+      56: '0x4B0F1812e5Df2A09796481Ff14017e6005508003',
       97: '',
     },
     decimals: 18,
@@ -474,7 +474,7 @@ const tokens = {
   hard: {
     symbol: 'HARD',
     address: {
-      56: '0xf79037f6f6be66832de4e7516be52826bc3cbcc4',
+      56: '0xf79037F6f6bE66832DE4E7516be52826BC3cBcc4',
       97: '',
     },
     decimals: 6,
@@ -483,7 +483,7 @@ const tokens = {
   broobee: {
     symbol: 'bROOBEE',
     address: {
-      56: '0xe64f5cb844946c1f102bd25bbd87a5ab4ae89fbe',
+      56: '0xE64F5Cb844946C1F102Bd25bBD87a5aB4aE89Fbe',
       97: '',
     },
     decimals: 18,
@@ -492,7 +492,7 @@ const tokens = {
   stax: {
     symbol: 'STAX',
     address: {
-      56: '0x0da6ed8b13214ff28e9ca979dd37439e8a88f6c4',
+      56: '0x0Da6Ed8B13214Ff28e9Ca979Dd37439e8a88F6c4',
       97: '',
     },
     decimals: 18,
@@ -501,7 +501,7 @@ const tokens = {
   nar: {
     symbol: 'NAR',
     address: {
-      56: '0xa1303e6199b319a891b79685f0537d289af1fc83',
+      56: '0xA1303E6199b319a891b79685F0537D289af1FC83',
       97: '',
     },
     decimals: 18,
@@ -510,7 +510,7 @@ const tokens = {
   nya: {
     symbol: 'NYA',
     address: {
-      56: '0xbfa0841f7a90c4ce6643f651756ee340991f99d5',
+      56: '0xbFa0841F7a90c4CE6643f651756EE340991F99D5',
       97: '',
     },
     decimals: 18,
@@ -519,7 +519,7 @@ const tokens = {
   ctk: {
     symbol: 'CTK',
     address: {
-      56: '0xa8c2b8eec3d368c0253ad3dae65a5f2bbb89c929',
+      56: '0xA8c2B8eec3d368C0253ad3dae65a5F2BBB89c929',
       97: '',
     },
     decimals: 6,
@@ -528,7 +528,7 @@ const tokens = {
   inj: {
     symbol: 'INJ',
     address: {
-      56: '0xa2b726b1145a4773f68593cf171187d8ebe4d495',
+      56: '0xa2B726B1145A4773F68593CF171187d8EBe4d495',
       97: '',
     },
     decimals: 18,
@@ -537,7 +537,7 @@ const tokens = {
   sxp: {
     symbol: 'SXP',
     address: {
-      56: '0x47bead2563dcbf3bf2c9407fea4dc236faba485a',
+      56: '0x47BEAd2563dCBf3bF2c9407fEa4dC236fAbA485A',
       97: '',
     },
     decimals: 18,
@@ -546,7 +546,7 @@ const tokens = {
   alpha: {
     symbol: 'ALPHA',
     address: {
-      56: '0xa1faa113cbe53436df28ff0aee54275c13b40975',
+      56: '0xa1faa113cbE53436Df28FF0aEe54275c13B40975',
       97: '',
     },
     decimals: 18,
@@ -555,7 +555,7 @@ const tokens = {
   xvs: {
     symbol: 'XVS',
     address: {
-      56: '0xcf6bb5389c92bdda8a3747ddb454cb7a64626c63',
+      56: '0xcF6BB5389c92Bdda8a3747Ddb454cB7a64626C63',
       97: '',
     },
     decimals: 18,
@@ -564,7 +564,7 @@ const tokens = {
   sushi: {
     symbol: 'SUSHI',
     address: {
-      56: '0x947950bcc74888a40ffa2593c5798f11fc9124c4',
+      56: '0x947950BcC74888a40Ffa2593C5798F11Fc9124C4',
       97: '',
     },
     decimals: 18,
@@ -573,7 +573,7 @@ const tokens = {
   comp: {
     symbol: 'COMP',
     address: {
-      56: '0x52ce071bd9b1c4b00a0b92d298c512478cad67e8',
+      56: '0x52CE071Bd9b1C4B00A0b92D298c512478CaD67e8',
       97: '',
     },
     decimals: 18,
@@ -591,7 +591,7 @@ const tokens = {
   bifi: {
     symbol: 'BIFI',
     address: {
-      56: '0xca3f508b8e4dd382ee878a314789373d80a5190a',
+      56: '0xCa3F508B8e4Dd382eE878A314789373D80A5190A',
       97: '',
     },
     decimals: 18,
@@ -600,7 +600,7 @@ const tokens = {
   dusk: {
     symbol: 'DUSK',
     address: {
-      56: '0xb2bd0749dbe21f623d9baba856d3b0f0e1bfec9c',
+      56: '0xB2BD0749DBE21f623d9BABa856D3B0f0e1BFEc9C',
       97: '',
     },
     decimals: 18,
@@ -609,7 +609,7 @@ const tokens = {
   busd: {
     symbol: 'BUSD',
     address: {
-      56: '0xe9e7cea3dedca5984780bafc599bd69add087d56',
+      56: '0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56',
       97: '',
     },
     decimals: 18,
@@ -618,7 +618,7 @@ const tokens = {
   eth: {
     symbol: 'ETH',
     address: {
-      56: '0x2170ed0880ac9a755fd29b2688956bd959f933f8',
+      56: '0x2170Ed0880ac9A755fd29B2688956BD959F933F8',
       97: '',
     },
     decimals: 18,
@@ -627,7 +627,7 @@ const tokens = {
   beth: {
     symbol: 'BETH',
     address: {
-      56: '0x250632378e573c6be1ac2f97fcdf00515d0aa91b',
+      56: '0x250632378E573c6Be1AC2f97Fcdf00515d0Aa91B',
       97: '',
     },
     decimals: 18,
@@ -672,7 +672,7 @@ const tokens = {
   ltc: {
     symbol: 'LTC',
     address: {
-      56: '0x4338665cbb7b2485a8855a139b75d5e34ab0db94',
+      56: '0x4338665CBB7B2485A8855A139b75D5e34AB0DB94',
       97: '',
     },
     decimals: 18,
@@ -681,7 +681,7 @@ const tokens = {
   usdc: {
     symbol: 'USDC',
     address: {
-      56: '0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d',
+      56: '0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d',
       97: '',
     },
     decimals: 18,
@@ -690,7 +690,7 @@ const tokens = {
   dai: {
     symbol: 'DAI',
     address: {
-      56: '0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3',
+      56: '0x1AF3F329e8BE154074D8769D1FFa4eE058B1DBc3',
       97: '',
     },
     decimals: 18,
@@ -699,7 +699,7 @@ const tokens = {
   ada: {
     symbol: 'ADA',
     address: {
-      56: '0x3ee2200efb3400fabb9aacf31297cbdd1d435d47',
+      56: '0x3EE2200Efb3400fAbB9AacF31297cBdD1d435D47',
       97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
     },
     decimals: 18,
@@ -708,7 +708,7 @@ const tokens = {
   band: {
     symbol: 'BAND',
     address: {
-      56: '0xad6caeb32cd2c308980a548bd0bc5aa4306c6c18',
+      56: '0xAD6cAEb32CD2c308980a548bD0Bc5AA4306c6c18',
       97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
     },
     decimals: 18,
@@ -717,7 +717,7 @@ const tokens = {
   dot: {
     symbol: 'DOT',
     address: {
-      56: '0x7083609fce4d1d8dc0c979aab8c869ea2c873402',
+      56: '0x7083609fCE4d1d8Dc0C979AAb8c869Ea2C873402',
       97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
     },
     decimals: 18,
@@ -726,7 +726,7 @@ const tokens = {
   eos: {
     symbol: 'EOS',
     address: {
-      56: '0x56b6fb708fc5732dec1afc8d8556423a2edccbd6',
+      56: '0x56b6fB708fC5732DEC1Afc8D8556423A2EDcCbD6',
       97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
     },
     decimals: 18,
@@ -735,7 +735,7 @@ const tokens = {
   link: {
     symbol: 'LINK',
     address: {
-      56: '0xf8a0bf9cf54bb92f17374d9e9a321e6a111a51bd',
+      56: '0xF8A0BF9cF54Bb92F17374d9e9A321E6a111a51bD',
       97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
     },
     decimals: 18,
@@ -744,8 +744,8 @@ const tokens = {
   usdt: {
     symbol: 'USDT',
     address: {
+      56: '0x55d398326f99059fF775485246999027B3197955',
       97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
-      56: '0x55d398326f99059ff775485246999027b3197955',
     },
     decimals: 18,
     projectLink: 'https://tether.to/',
@@ -753,7 +753,7 @@ const tokens = {
   btcb: {
     symbol: 'BTCB',
     address: {
-      56: '0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c',
+      56: '0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c',
       97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
     },
     decimals: 18,
@@ -762,7 +762,7 @@ const tokens = {
   xrp: {
     symbol: 'XRP',
     address: {
-      56: '0x1d2f0da169ceb9fc7b3144628db156f3f6c60dbe',
+      56: '0x1D2F0da169ceB9fC7B3144628dB156f3F6c60dBE',
       97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
     },
     decimals: 18,
@@ -771,7 +771,7 @@ const tokens = {
   atom: {
     symbol: 'ATOM',
     address: {
-      56: '0x0eb3a705fc54725037cc9e008bdede697f62f335',
+      56: '0x0Eb3a705fc54725037CC9e008bDede697f62F335',
       97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
     },
     decimals: 18,
@@ -780,8 +780,8 @@ const tokens = {
   yfii: {
     symbol: 'YFII',
     address: {
+      56: '0x7F70642d88cf1C4a3a7abb072B53B929b653edA5',
       97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
-      56: '0x7f70642d88cf1c4a3a7abb072b53b929b653eda5',
     },
     decimals: 18,
     projectLink: 'https://dfi.money/#/',
@@ -789,8 +789,8 @@ const tokens = {
   xtz: {
     symbol: 'XTZ',
     address: {
+      56: '0x16939ef78684453bfDFb47825F8a5F714f12623a',
       97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
-      56: '0x16939ef78684453bfdfb47825f8a5f714f12623a',
     },
     decimals: 18,
     projectLink: 'https://www.tezos.com/',
@@ -798,7 +798,7 @@ const tokens = {
   bch: {
     symbol: 'BCH',
     address: {
-      56: '0x8ff795a6f4d97e7887c79bea79aba5cc76444adf',
+      56: '0x8fF795a6F4D97E7887C79beA79aba5cc76444aDf',
       97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
     },
     decimals: 18,
@@ -807,7 +807,7 @@ const tokens = {
   yfi: {
     symbol: 'YFI',
     address: {
-      56: '0x88f1a5ae2a3bf98aeaf342d26b30a79438c9142e',
+      56: '0x88f1A5ae2A3BF98AEAF342D26B30a79438c9142e',
       97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
     },
     decimals: 18,
@@ -816,7 +816,7 @@ const tokens = {
   uni: {
     symbol: 'UNI',
     address: {
-      56: '0xbf5140a22578168fd562dccf235e5d43a02ce9b1',
+      56: '0xBf5140A22578168FD562DCcF235E5D43A02ce9B1',
       97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
     },
     decimals: 18,
@@ -825,7 +825,7 @@ const tokens = {
   fil: {
     symbol: 'FIL',
     address: {
-      56: '0x0d8ce2a99bb6e3b7db580ed848240e4a0f9ae153',
+      56: '0x0D8Ce2A99Bb6e3B7Db580eD848240e4a0F9aE153',
       97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
     },
     decimals: 18,
@@ -835,7 +835,7 @@ const tokens = {
     symbol: 'BAKE',
     address: {
       56: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
-      97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
+      97: '',
     },
     decimals: 18,
     projectLink: 'https://www.bakeryswap.org/',
@@ -843,7 +843,7 @@ const tokens = {
   burger: {
     symbol: 'BURGER',
     address: {
-      56: '0xae9269f27437f0fcbc232d39ec814844a51d6b8f',
+      56: '0xAe9269f27437f0fcBC232d39Ec814844a51d6b8f',
       97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
     },
     decimals: 18,
@@ -852,7 +852,7 @@ const tokens = {
   bdigg: {
     symbol: 'bDIGG',
     address: {
-      56: '0x5986d5c77c65e5801a5caa4fae80089f870a71da',
+      56: '0x5986D5c77c65e5801a5cAa4fAE80089f870A71dA',
       97: '',
     },
     decimals: 18,
@@ -861,7 +861,7 @@ const tokens = {
   bbadger: {
     symbol: 'bBadger',
     address: {
-      56: '0x1f7216fdb338247512ec99715587bb97bbf96eae',
+      56: '0x1F7216fdB338247512Ec99715587bb97BBf96eae',
       97: '',
     },
     decimals: 18,
@@ -870,7 +870,7 @@ const tokens = {
   trade: {
     symbol: 'TRADE',
     address: {
-      56: '0x7af173f350d916358af3e218bdf2178494beb748',
+      56: '0x7af173F350D916358AF3e218Bdf2178494Beb748',
       97: '',
     },
     decimals: 18,
@@ -879,7 +879,7 @@ const tokens = {
   pnt: {
     symbol: 'PNT',
     address: {
-      56: '0xdaacb0ab6fb34d24e8a67bfa14bf4d95d4c7af92',
+      56: '0xdaacB0Ab6Fb34d24E8a67BfA14BF4D95D4C7aF92',
       97: '',
     },
     decimals: 18,
@@ -888,7 +888,7 @@ const tokens = {
   mir: {
     symbol: 'MIR',
     address: {
-      56: '0x5b6dcf557e2abe2323c48445e8cc948910d8c2c9',
+      56: '0x5B6DcF557E2aBE2323c48445E8CC948910d8c2c9',
       97: '',
     },
     decimals: 18,
@@ -897,7 +897,7 @@ const tokens = {
   pbtc: {
     symbol: 'pBTC',
     address: {
-      56: '0xed28a457a5a76596ac48d87c0f577020f6ea1c4c',
+      56: '0xeD28A457A5A76596ac48d87C0f577020F6Ea1c4C',
       97: '',
     },
     decimals: 18,
@@ -906,7 +906,7 @@ const tokens = {
   lto: {
     symbol: 'LTO',
     address: {
-      56: '0x857b222fc79e1cbbf8ca5f78cb133d1b7cf34bbd',
+      56: '0x857B222Fc79e1cBBf8Ca5f78CB133d1b7CF34BBd',
       97: '',
     },
     decimals: 18,
@@ -915,7 +915,7 @@ const tokens = {
   pcws: {
     symbol: 'pCWS',
     address: {
-      56: '0xbcf39f0edda668c58371e519af37ca705f2bfcbd',
+      56: '0xbcf39F0EDDa668C58371E519AF37CA705f2bFcbd',
       97: '',
     },
     decimals: 18,
@@ -924,7 +924,7 @@ const tokens = {
   zil: {
     symbol: 'ZIL',
     address: {
-      56: '0xb86abcb37c3a4b64f74f59301aff131a1becc787',
+      56: '0xb86AbCb37C3A4B64f74f59301AFF131a1BEcC787',
       97: '',
     },
     decimals: 12,
@@ -933,7 +933,7 @@ const tokens = {
   lien: {
     symbol: 'LIEN',
     address: {
-      56: '0x5d684adaf3fcfe9cfb5cede3abf02f0cdd1012e3',
+      56: '0x5d684ADaf3FcFe9CFb5ceDe3abf02F0Cdd1012E3',
       97: '',
     },
     decimals: 8,
@@ -969,7 +969,7 @@ const tokens = {
   dego: {
     symbol: 'DEGO',
     address: {
-      56: '0x3fda9383a84c05ec8f7630fe10adf1fac13241cc',
+      56: '0x3FdA9383A84C05eC8f7630Fe10AdF1fAC13241CC',
       97: '',
     },
     decimals: 18,
@@ -978,7 +978,7 @@ const tokens = {
   nrv: {
     symbol: 'NRV',
     address: {
-      56: '0x42f6f551ae042cbe50c739158b4f0cac0edb9096',
+      56: '0x42F6f551ae042cBe50C739158b4f0CAC0Edb9096',
       97: '',
     },
     decimals: 18,
@@ -987,7 +987,7 @@ const tokens = {
   easy: {
     symbol: 'EASY',
     address: {
-      56: '0x7c17c8bed8d14bacce824d020f994f4880d6ab3b',
+      56: '0x7C17c8bED8d14bAccE824D020f994F4880D6Ab3B',
       97: '',
     },
     decimals: 18,
@@ -996,7 +996,7 @@ const tokens = {
   oddz: {
     symbol: 'ODDZ',
     address: {
-      56: '0xcd40f2670cf58720b694968698a5514e924f742d',
+      56: '0xCD40F2670CF58720b694968698A5514e924F742d',
       97: '',
     },
     decimals: 18,
@@ -1005,7 +1005,7 @@ const tokens = {
   hoo: {
     symbol: 'HOO',
     address: {
-      56: '0xe1d1f66215998786110ba0102ef558b22224c016',
+      56: '0xE1d1F66215998786110Ba0102ef558b22224C016',
       97: '',
     },
     decimals: 8,
@@ -1023,7 +1023,7 @@ const tokens = {
   bondly: {
     symbol: 'BONDLY',
     address: {
-      56: '0x96058f8c3e16576d9bd68766f3836d9a33158f89',
+      56: '0x96058f8C3e16576D9BD68766f3836d9A33158f89',
       97: '',
     },
     decimals: 18,
@@ -1032,7 +1032,7 @@ const tokens = {
   tko: {
     symbol: 'TKO',
     address: {
-      56: '0x9f589e3eabe42ebc94a44727b3f3531c0c877809',
+      56: '0x9f589e3eabe42ebC94A44727b3f3531C0c877809',
       97: '',
     },
     decimals: 18,
@@ -1041,7 +1041,7 @@ const tokens = {
   itam: {
     symbol: 'ITAM',
     address: {
-      56: '0x04c747b40be4d535fc83d09939fb0f626f32800b',
+      56: '0x04C747b40Be4D535fC83D09939fb0f626F32800B',
       97: '',
     },
     decimals: 18,
@@ -1050,7 +1050,7 @@ const tokens = {
   arpa: {
     symbol: 'ARPA',
     address: {
-      56: '0x6f769e65c14ebd1f68817f5f1dcdb61cfa2d6f7e',
+      56: '0x6F769E65c14Ebd1f68817F5f1DcDb61Cfa2D6f7e',
       97: '',
     },
     decimals: 18,
@@ -1059,7 +1059,7 @@ const tokens = {
   eps: {
     symbol: 'EPS',
     address: {
-      56: '0xa7f552078dcc247c2684336020c03648500c6d9f',
+      56: '0xA7f552078dcC247C2684336020c03648500C6d9F',
       97: '',
     },
     decimals: 18,
@@ -1068,7 +1068,7 @@ const tokens = {
   jgn: {
     symbol: 'JGN',
     address: {
-      56: '0xc13b7a43223bb9bf4b69bd68ab20ca1b79d81c75',
+      56: '0xC13B7a43223BB9Bf4B69BD68Ab20ca1B79d81C75',
       97: '',
     },
     decimals: 18,
@@ -1077,7 +1077,7 @@ const tokens = {
   tlm: {
     symbol: 'TLM',
     address: {
-      56: '0x2222227e22102fe3322098e4cbfe18cfebd57c95',
+      56: '0x2222227E22102Fe3322098e4CBfE18cFebD57c95',
       97: '',
     },
     decimals: 4,
@@ -1086,7 +1086,7 @@ const tokens = {
   perl: {
     symbol: 'PERL',
     address: {
-      56: '0x0f9e4d49f25de22c2202af916b681fbb3790497b',
+      56: '0x0F9E4D49f25de22c2202aF916B681FBB3790497B',
       97: '',
     },
     decimals: 18,
@@ -1095,7 +1095,7 @@ const tokens = {
   alpa: {
     symbol: 'ALPA',
     address: {
-      56: '0xc5e6689c9c8b02be7c49912ef19e79cf24977f03',
+      56: '0xc5E6689C9c8B02be7C49912Ef19e79cF24977f03',
       97: '',
     },
     decimals: 18,
@@ -1104,7 +1104,7 @@ const tokens = {
   hzn: {
     symbol: 'HZN',
     address: {
-      56: '0xc0eff7749b125444953ef89682201fb8c6a917cd',
+      56: '0xC0eFf7749b125444953ef89682201Fb8c6A917CD',
       97: '',
     },
     decimals: 18,
@@ -1113,7 +1113,7 @@ const tokens = {
   suter: {
     symbol: 'SUTER',
     address: {
-      56: '0x4cfbbdfbd5bf0814472ff35c72717bd095ada055',
+      56: '0x4CfbBdfBd5BF0814472fF35C72717Bd095ADa055',
       97: '',
     },
     decimals: 18,
@@ -1122,7 +1122,7 @@ const tokens = {
   cgg: {
     symbol: 'CGG',
     address: {
-      56: '0x1613957159e9b0ac6c80e824f7eea748a32a0ae2',
+      56: '0x1613957159E9B0ac6c80e824F7Eea748a32a0AE2',
       97: '',
     },
     decimals: 18,
@@ -1140,7 +1140,7 @@ const tokens = {
   hakka: {
     symbol: 'HAKKA',
     address: {
-      56: '0x1d1eb8e8293222e1a29d2c0e4ce6c0acfd89aaac',
+      56: '0x1D1eb8E8293222e1a29d2C0E4cE6C0Acfd89AaaC',
       97: '',
     },
     decimals: 18,
@@ -1149,7 +1149,7 @@ const tokens = {
   xed: {
     symbol: 'XED',
     address: {
-      56: '0x5621b5a3f4a8008c4ccdd1b942b121c8b1944f1f',
+      56: '0x5621b5A3f4a8008c4CCDd1b942B121c8B1944F1f',
       97: '',
     },
     decimals: 18,
@@ -1158,7 +1158,7 @@ const tokens = {
   τbtc: {
     symbol: 'τBTC',
     address: {
-      56: '0x2cd1075682b0fccaadd0ca629e138e64015ba11c',
+      56: '0x2cD1075682b0FCCaADd0Ca629e138E64015Ba11c',
       97: '',
     },
     decimals: 9,
@@ -1167,7 +1167,7 @@ const tokens = {
   alpaca: {
     symbol: 'ALPACA',
     address: {
-      56: '0x8f0528ce5ef7b51152a59745befdd91d97091d2f',
+      56: '0x8F0528cE5eF7B51152A59745bEfDD91D97091d2F',
       97: '',
     },
     decimals: 18,
@@ -1176,7 +1176,7 @@ const tokens = {
   dfd: {
     symbol: 'DFD',
     address: {
-      56: '0x9899a98b222fcb2f3dbee7df45d943093a4ff9ff',
+      56: '0x9899a98b222fCb2f3dbee7dF45d943093a4ff9ff',
       97: '',
     },
     decimals: 18,
@@ -1185,7 +1185,7 @@ const tokens = {
   lmt: {
     symbol: 'LMT',
     address: {
-      56: '0x9617857e191354dbea0b714d78bc59e57c411087',
+      56: '0x9617857E191354dbEA0b714d78Bc59e57C411087',
       97: '',
     },
     decimals: 18,
@@ -1194,7 +1194,7 @@ const tokens = {
   btt: {
     symbol: 'BTT',
     address: {
-      56: '0x8595f9da7b868b1822194faed312235e43007b49',
+      56: '0x8595F9dA7b868b1822194fAEd312235E43007b49',
       97: '',
     },
     decimals: 18,
@@ -1203,7 +1203,7 @@ const tokens = {
   trx: {
     symbol: 'TRX',
     address: {
-      56: '0x85eac5ac2f758618dfa09bdbe0cf174e7d574d5b',
+      56: '0x85EAC5Ac2F758618dFa09bDbe0cf174e7d574D5B',
       97: '',
     },
     decimals: 18,
@@ -1212,7 +1212,7 @@ const tokens = {
   win: {
     symbol: 'WIN',
     address: {
-      56: '0xaef0d72a118ce24fee3cd1d43d383897d05b4e99',
+      56: '0xaeF0d72a118ce24feE3cD1d43d383897D05B4e99',
       97: '',
     },
     decimals: 18,
@@ -1221,7 +1221,7 @@ const tokens = {
   mcoin: {
     symbol: 'mCOIN',
     address: {
-      56: '0x49022089e78a8d46ec87a3af86a1db6c189afa6f',
+      56: '0x49022089e78a8D46Ec87A3AF86a1Db6c189aFA6f',
       97: '',
     },
     decimals: 18,
@@ -1230,7 +1230,7 @@ const tokens = {
   math: {
     symbol: 'MATH',
     address: {
-      56: '0xf218184af829cf2b0019f8e6f0b2423498a36983',
+      56: '0xF218184Af829Cf2b0019F8E6F0b2423498a36983',
       97: '',
     },
     decimals: 18,
@@ -1275,7 +1275,7 @@ const tokens = {
   doge: {
     symbol: 'DOGE',
     address: {
-      56: '0xba2ae424d960c26247dd6c32edc70b295c744c43',
+      56: '0xbA2aE424d960c26247Dd6c32edC70B295c744C43',
       97: '',
     },
     decimals: 8,
@@ -1284,7 +1284,7 @@ const tokens = {
   fine: {
     symbol: 'FINE',
     address: {
-      56: '0x4e6415a5727ea08aae4580057187923aec331227',
+      56: '0x4e6415a5727ea08aAE4580057187923aeC331227',
       97: '',
     },
     decimals: 18,
@@ -1293,7 +1293,7 @@ const tokens = {
   one: {
     symbol: 'ONE',
     address: {
-      56: '0x04baf95fd4c52fd09a56d840baee0ab8d7357bf0',
+      56: '0x04BAf95Fd4C52fd09a56D840bAEe0AB8D7357bf0',
       97: '',
     },
     decimals: 18,
@@ -1320,7 +1320,7 @@ const tokens = {
   τdoge: {
     symbol: 'τDOGE',
     address: {
-      56: '0xe550a593d09fbc8dcd557b5c88cea6946a8b404a',
+      56: '0xe550a593d09FBC8DCD557b5C88Cea6946A8b404A',
       97: '',
     },
     decimals: 8,
@@ -1338,7 +1338,7 @@ const tokens = {
   ubxt: {
     symbol: 'UBXT',
     address: {
-      56: '0xbbeb90cfb6fafa1f69aa130b7341089abeef5811',
+      56: '0xBbEB90cFb6FAFa1F69AA130B7341089AbeEF5811',
       97: '',
     },
     decimals: 18,
@@ -1347,7 +1347,7 @@ const tokens = {
   wmass: {
     symbol: 'WMASS',
     address: {
-      56: '0x7e396bfc8a2f84748701167c2d622f041a1d7a17',
+      56: '0x7e396BfC8a2f84748701167c2d622F041A1D7a17',
       97: '',
     },
     decimals: 8,
@@ -1356,7 +1356,7 @@ const tokens = {
   rfox: {
     symbol: 'RFOX',
     address: {
-      56: '0x0a3a21356793b49154fd3bbe91cbc2a16c0457f5',
+      56: '0x0a3A21356793B49154Fd3BbE91CBc2A16c0457f5',
       97: '',
     },
     decimals: 18,
@@ -1374,7 +1374,7 @@ const tokens = {
   cyc: {
     symbol: 'CYC',
     address: {
-      56: '0x810ee35443639348adbbc467b33310d2ab43c168',
+      56: '0x810EE35443639348aDbbC467b33310d2AB43c168',
       97: '',
     },
     decimals: 18,
@@ -1410,7 +1410,7 @@ const tokens = {
   well: {
     symbol: 'WELL',
     address: {
-      56: '0xf07a32eb035b786898c00bb1c64d8c6f8e7a46d5',
+      56: '0xf07a32Eb035b786898c00bB1C64d8c6F8E7a46D5',
       97: '',
     },
     decimals: 18,
@@ -1419,7 +1419,7 @@ const tokens = {
   popen: {
     symbol: 'pOPEN',
     address: {
-      56: '0xabae871b7e3b67aeec6b46ae9fe1a91660aadac5',
+      56: '0xaBaE871B7E3b67aEeC6B46AE9FE1A91660AadAC5',
       97: '',
     },
     decimals: 18,
@@ -1428,7 +1428,7 @@ const tokens = {
   ez: {
     symbol: 'EZ',
     address: {
-      56: '0x5512014efa6cd57764fa743756f7a6ce3358cc83',
+      56: '0x5512014efa6Cd57764Fa743756F7a6Ce3358cC83',
       97: '',
     },
     decimals: 18,
@@ -1437,7 +1437,7 @@ const tokens = {
   vrt: {
     symbol: 'VRT',
     address: {
-      56: '0x5f84ce30dc3cf7909101c69086c50de191895883',
+      56: '0x5F84ce30DC3cF7909101C69086c50De191895883',
       97: '',
     },
     decimals: 18,
@@ -1446,7 +1446,7 @@ const tokens = {
   tusd: {
     symbol: 'TUSD',
     address: {
-      56: '0x14016e85a25aeb13065688cafb43044c2ef86784',
+      56: '0x14016E85a25aeb13065688cAFB43044C2ef86784',
       97: '',
     },
     decimals: 18,
@@ -1455,7 +1455,7 @@ const tokens = {
   mtrg: {
     symbol: 'MTRG',
     address: {
-      56: '0xbd2949f67dcdc549c6ebe98696449fa79d988a9f',
+      56: '0xBd2949F67DcdC549c6Ebe98696449Fa79D988A9F',
       97: '',
     },
     decimals: 18,
@@ -1464,7 +1464,7 @@ const tokens = {
   ktn: {
     symbol: 'KTN',
     address: {
-      56: '0xdae6c2a48bfaa66b43815c5548b10800919c993e',
+      56: '0xDAe6c2A48BFAA66b43815c5548b10800919c993E',
       97: '',
     },
     decimals: 18,
@@ -1473,7 +1473,7 @@ const tokens = {
   qkc: {
     symbol: 'QKC',
     address: {
-      56: '0xa1434f1fc3f437fa33f7a781e041961c0205b5da',
+      56: '0xA1434F1FC3F437fa33F7a781E041961C0205B5Da',
       97: '',
     },
     decimals: 18,
@@ -1491,7 +1491,7 @@ const tokens = {
   mx: {
     symbol: 'MX',
     address: {
-      56: '0x9f882567a62a5560d147d64871776eea72df41d3',
+      56: '0x9F882567A62a5560d147d64871776EeA72Df41D3',
       97: '',
     },
     decimals: 18,
@@ -1500,7 +1500,7 @@ const tokens = {
   ata: {
     symbol: 'ATA',
     address: {
-      56: '0xa2120b9e674d3fc3875f415a7df52e382f141225',
+      56: '0xA2120b9e674d3fC3875f415A7DF52e382F141225',
       97: '',
     },
     decimals: 18,
@@ -1533,10 +1533,10 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://unmarshal.io/',
   },
-  'ampl-bsc-mp': {
-    symbol: 'AMPL-BSC-mp',
+  ampl: {
+    symbol: 'AMPL',
     address: {
-      56: '0xdb021b1b247fe2f1fa57e0a87c748cc1e321f07f',
+      56: '0xDB021b1B247fe2F1fa57e0A87C748Cc1E321F07F',
       97: '',
     },
     decimals: 9,
