@@ -16,6 +16,7 @@ import { Ifo, PoolIds } from 'config/constants/types'
 import { PublicIfoData, WalletIfoData } from 'hooks/ifo/types'
 import { useTranslation } from 'contexts/Localization'
 import { getBalanceNumber } from 'utils/formatBalance'
+import { getAddress } from 'utils/addressHelpers'
 import { EnableStatus } from '../types'
 import PercentageOfTotal from './PercentageOfTotal'
 import { SkeletonCardTokens } from './Skeletons'
@@ -73,7 +74,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
   const { currency, token } = ifo
   const { hasClaimed } = userPoolCharacteristics
   const distributionRatio = ifo[poolId].distributionRatio * 100
-  const tokenImage = `/images/tokens/${ifo.token.symbol.toLowerCase()}.png`
+  const tokenImage = `/images/tokens/${getAddress(ifo.token.address)}.png`
 
   const renderTokenSection = () => {
     if (isLoading) {
