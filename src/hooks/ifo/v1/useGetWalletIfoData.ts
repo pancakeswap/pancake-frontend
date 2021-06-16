@@ -4,7 +4,8 @@ import BigNumber from 'bignumber.js'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { useERC20, useIfoV1Contract } from 'hooks/useContract'
 import { useIfoAllowance } from 'hooks/useAllowance'
-import makeBatchRequest from 'utils/makeBatchRequest'
+import { multicallv2 } from 'utils/multicall'
+import ifoV1Abi from 'config/abi/ifoV1.json'
 import { getAddress } from 'utils/addressHelpers'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { WalletIfoState, WalletIfoData } from '../types'
@@ -55,22 +56,30 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
   }
 
   const fetchIfoData = useCallback(async () => {
-    const [offeringAmount, userInfoResponse, refundingAmount] = (await makeBatchRequest([
-      contract.methods.getOfferingAmount(account).call,
-      contract.methods.userInfo(account).call,
-      contract.methods.getRefundingAmount(account).call,
-    ])) as [string, UserInfo, string]
+    const ifoCalls = ['getOfferingAmount', 'userInfo', 'getRefundingAmount'].map((method) => ({
+      address,
+      name: method,
+      params: [account],
+    }))
+
+    const [offeringAmount, userInfoResponse, refundingAmount] = await multicallv2(ifoV1Abi, ifoCalls)
+    const parsedUserInfo: UserInfo = userInfoResponse
+      ? {
+          amount: new BigNumber(userInfoResponse.amount.toString()),
+          claimed: userInfoResponse.claimed,
+        }
+      : { amount: BIG_ZERO, claimed: false }
 
     setState((prevState) => ({
       [PoolIds.poolUnlimited]: {
         ...prevState.poolUnlimited,
-        amountTokenCommittedInLP: new BigNumber(userInfoResponse.amount),
-        hasClaimed: userInfoResponse.claimed,
-        offeringAmountInToken: new BigNumber(offeringAmount),
-        refundingAmountInLP: new BigNumber(refundingAmount),
+        amountTokenCommittedInLP: parsedUserInfo.amount,
+        hasClaimed: parsedUserInfo.claimed,
+        offeringAmountInToken: offeringAmount ? new BigNumber(offeringAmount[0].toString()) : BIG_ZERO,
+        refundingAmountInLP: refundingAmount ? new BigNumber(refundingAmount[0].toString()) : BIG_ZERO,
       },
     }))
-  }, [account, contract])
+  }, [account, address])
 
   useEffect(() => {
     if (account) {
