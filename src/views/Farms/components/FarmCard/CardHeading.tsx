@@ -27,6 +27,7 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({ lpLabel, multiplier, is
   return (
     <Wrapper justifyContent="space-between" alignItems="center" mb="12px">
       <TokenPairImage
+        variant="inverted"
         primaryTokenAddress={getAddress(token.address)}
         secondaryTokenAddress={getAddress(quoteToken.address)}
         width={64}
