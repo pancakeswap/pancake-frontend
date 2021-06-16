@@ -1556,7 +1556,7 @@
     "symbol": "HAI",
     "address": "0xaA9E582e5751d703F85912903bacADdFed26484C",
     "chainId": 56,
-    "decimals": 18,
+    "decimals": 8,
     "logoURI": "https://tokens.pancakeswap.finance/images/0xaA9E582e5751d703F85912903bacADdFed26484C.png"
   }
 ]

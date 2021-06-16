@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2021-06-16T03:36:42.908Z",
+  "timestamp": "2021-06-16T06:19:32.604Z",
   "version": {
     "major": 2,
     "minor": 15,
-    "patch": 2
+    "patch": 3
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [
@@ -641,7 +641,7 @@
       "symbol": "HAI",
       "address": "0xaA9E582e5751d703F85912903bacADdFed26484C",
       "chainId": 56,
-      "decimals": 18,
+      "decimals": 8,
       "logoURI": "https://tokens.pancakeswap.finance/images/0xaA9E582e5751d703F85912903bacADdFed26484C.png"
     },
     {
