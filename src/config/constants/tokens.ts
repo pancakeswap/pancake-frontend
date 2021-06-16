@@ -1551,6 +1551,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://o3swap.com/',
   },
+  hai: {
+    symbol: 'HAI',
+    address: {
+      56: '0xaA9E582e5751d703F85912903bacADdFed26484C',
+      97: '',
+    },
+    decimals: 8,
+    projectLink: 'https://hacken.io/',
+  },
 }
 
 export default tokens

@@ -39,6 +39,16 @@ const farms: FarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 412,
+    lpSymbol: 'HAI-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x289841bFb694767bCb56fBc7B741aB4B4D97D490',
+    },
+    token: tokens.hai,
+    quoteToken: tokens.wbnb,
+  },
+  {
     pid: 411,
     lpSymbol: 'O3-BUSD LP',
     lpAddresses: {
