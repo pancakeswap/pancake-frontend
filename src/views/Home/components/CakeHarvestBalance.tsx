@@ -3,7 +3,7 @@ import { Text } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
-import useAllEarnings from 'hooks/useAllEarnings'
+import { FarmWithBalance } from 'hooks/useFarmsWithBalance'
 import { usePriceCakeBusd } from 'state/hooks'
 import styled from 'styled-components'
 import { DEFAULT_TOKEN_DECIMAL } from 'config'
@@ -14,12 +14,15 @@ const Block = styled.div`
   margin-bottom: 24px;
 `
 
-const CakeHarvestBalance = () => {
+interface CakeHarvestBalanceProps {
+  farmsWithBalance: FarmWithBalance[]
+}
+
+const CakeHarvestBalance: React.FC<CakeHarvestBalanceProps> = ({ farmsWithBalance }) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
-  const allEarnings = useAllEarnings()
-  const earningsSum = allEarnings.reduce((accum, earning) => {
-    const earningNumber = new BigNumber(earning)
+  const earningsSum = farmsWithBalance.reduce((accum, earning) => {
+    const earningNumber = new BigNumber(earning.balance)
     if (earningNumber.eq(0)) {
       return accum
     }

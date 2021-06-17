@@ -6,6 +6,7 @@ import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'contexts/Localization'
 import useFarmsWithBalance from 'hooks/useFarmsWithBalance'
 import { useMasterchef } from 'hooks/useContract'
+import useToast from 'hooks/useToast'
 import UnlockButton from 'components/UnlockButton'
 import CakeHarvestBalance from './CakeHarvestBalance'
 import CakeWalletBalance from './CakeWalletBalance'
@@ -38,9 +39,10 @@ const FarmedStakingCard = () => {
   const [pendingTx, setPendingTx] = useState(false)
   const { account } = useWeb3React()
   const { t } = useTranslation()
+  const { toastError } = useToast()
   const farmsWithBalance = useFarmsWithBalance()
   const masterChefContract = useMasterchef()
-  const balancesWithValue = farmsWithBalance.filter((balanceType) => balanceType.balance.toNumber() > 0)
+  const balancesWithValue = farmsWithBalance.filter((balanceType) => balanceType.balance.gt(0))
 
   const harvestAllFarms = useCallback(async () => {
     setPendingTx(true)
@@ -50,11 +52,11 @@ const FarmedStakingCard = () => {
         // eslint-disable-next-line no-await-in-loop
         await harvest(masterChefContract, farmWithBalance.pid, account)
       } catch (error) {
-        // TODO: find a way to handle when the user rejects transaction or it fails
+        toastError(t('Error'), error?.message)
       }
     }
     setPendingTx(false)
-  }, [account, balancesWithValue, masterChefContract])
+  }, [account, balancesWithValue, masterChefContract, toastError, t])
 
   return (
     <StyledFarmStakingCard>
@@ -65,7 +67,7 @@ const FarmedStakingCard = () => {
         <CardImage src="/images/cake.svg" alt="cake logo" width={64} height={64} />
         <Block>
           <Label>{t('CAKE to Harvest')}:</Label>
-          <CakeHarvestBalance />
+          <CakeHarvestBalance farmsWithBalance={balancesWithValue} />
         </Block>
         <Block>
           <Label>{t('CAKE in Wallet')}:</Label>
