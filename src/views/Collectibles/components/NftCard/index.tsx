@@ -1,6 +1,4 @@
 import React, { useState } from 'react'
-import { PromiEvent } from 'web3-core'
-import { Contract } from 'web3-eth-contract'
 import styled from 'styled-components'
 import {
   Card,
@@ -26,7 +24,7 @@ export interface NftCardProps {
   nft: Nft
   canClaim?: boolean
   tokenIds?: number[]
-  onClaim?: () => PromiEvent<Contract>
+  onClaim?: () => any
   refresh: () => void
 }
 

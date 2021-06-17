@@ -6,7 +6,7 @@ import { getLpContract, getMasterchefContract } from 'utils/contractHelpers'
 import farms from 'config/constants/farms'
 import { getAddress, getCakeAddress } from 'utils/addressHelpers'
 import tokens from 'config/constants/tokens'
-import { web3WithArchivedNodeProvider } from './web3'
+import { archiveRpcProvider } from './web3'
 import { getBalanceAmount } from './formatBalance'
 import { BIG_TEN, BIG_ZERO } from './bigNumber'
 
@@ -141,8 +141,8 @@ const CAKE_BNB_TOKEN = new Token(chainId, getAddress(cakeBnbFarm.lpAddresses), 1
  */
 export const getUserStakeInCakeBnbLp = async (account: string, block?: number) => {
   try {
-    const masterContract = getMasterchefContract(web3WithArchivedNodeProvider)
-    const cakeBnbContract = getLpContract(getAddress(cakeBnbFarm.lpAddresses), web3WithArchivedNodeProvider)
+    const masterContract = getMasterchefContract(archiveRpcProvider)
+    const cakeBnbContract = getLpContract(getAddress(cakeBnbFarm.lpAddresses), archiveRpcProvider)
     const totalSupplyLP = await cakeBnbContract.methods.totalSupply().call(undefined, block)
     const reservesLP = await cakeBnbContract.methods.getReserves().call(undefined, block)
     const cakeBnbBalance = await masterContract.methods.userInfo(cakeBnbPid, account).call(undefined, block)
@@ -170,7 +170,7 @@ export const getUserStakeInCakeBnbLp = async (account: string, block?: number) =
  */
 export const getUserStakeInCakePool = async (account: string, block?: number) => {
   try {
-    const masterContract = getMasterchefContract(web3WithArchivedNodeProvider)
+    const masterContract = getMasterchefContract(archiveRpcProvider)
     const response = await masterContract.methods.userInfo(0, account).call(undefined, block)
 
     return getBalanceAmount(new BigNumber(response.amount))

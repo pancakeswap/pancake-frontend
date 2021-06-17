@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { PromiEvent } from 'web3-core'
-import { Contract } from 'web3-eth-contract'
+import { Contract } from 'ethers'
 import { useWeb3React } from '@web3-react/core'
 import { Button, InjectedModalProps, Modal, Text, Flex, AutoRenewIcon } from '@pancakeswap/uikit'
 import { Nft } from 'config/constants/types'

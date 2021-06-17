@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import Web3 from 'web3'
+import { ethers } from 'ethers'
 import { useWeb3React } from '@web3-react/core'
 import { Button, Input, Modal, Text } from '@pancakeswap/uikit'
 import { getAddressByType } from 'utils/collectibles'
@@ -49,7 +49,7 @@ const TransferNftModal: React.FC<TransferNftModalProps> = ({ nft, tokenIds, onSu
 
   const handleConfirm = async () => {
     try {
-      const isValidAddress = Web3.utils.isAddress(value)
+      const isValidAddress = ethers.utils.isAddress(value)
 
       if (!isValidAddress) {
         setError(t('Please enter a valid wallet address'))
