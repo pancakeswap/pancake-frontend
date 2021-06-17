@@ -1,5 +1,6 @@
 import React, { ChangeEvent, FormEvent, lazy, useEffect, useState } from 'react'
 import {
+  AutoRenewIcon,
   Box,
   Breadcrumbs,
   Button,
@@ -46,6 +47,7 @@ const CreateProposal = () => {
     endTime: null,
     snapshot: 0,
   })
+  const [isLoading, setIsLoading] = useState(false)
   const [fieldsState, setFieldsState] = useState<{ [key: string]: boolean }>({})
   const { t } = useTranslation()
   const { account } = useWeb3React()
@@ -59,6 +61,7 @@ const CreateProposal = () => {
     evt.preventDefault()
 
     try {
+      setIsLoading(true)
       const proposal = JSON.stringify({
         ...generatePayloadData(),
         type: SnapshotCommand.PROPOSAL,
@@ -86,6 +89,7 @@ const CreateProposal = () => {
       push(`/voting/proposal/${data.ipfsHash}`)
     } catch (error) {
       console.error(error)
+      setIsLoading(false)
     }
   }
 
@@ -219,7 +223,13 @@ const CreateProposal = () => {
                   <LinkExternal href={getBscScanBlockNumberUrl(snapshot)}>{snapshot}</LinkExternal>
                 </Flex>
                 {account ? (
-                  <Button type="submit" width="100%" disabled={!isEmpty(formErrors)}>
+                  <Button
+                    type="submit"
+                    width="100%"
+                    isLoading={isLoading}
+                    endIcon={isLoading ? <AutoRenewIcon spin color="currentColor" /> : null}
+                    disabled={!isEmpty(formErrors)}
+                  >
                     {t('Publish')}
                   </Button>
                 ) : (
