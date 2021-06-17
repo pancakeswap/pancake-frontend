@@ -2,8 +2,10 @@ import merge from 'lodash/merge'
 import teamsList from 'config/constants/teams'
 import { getProfileContract } from 'utils/contractHelpers'
 import { Team } from 'config/constants/types'
-import makeBatchRequest from 'utils/makeBatchRequest'
-import { TeamsById, TeamResponse } from 'state/types'
+import { multicallv2 } from 'utils/multicall'
+import { TeamsById } from 'state/types'
+import profileABI from 'config/abi/pancakeProfile.json'
+import { getPancakeProfileAddress } from 'utils/addressHelpers'
 
 const profileContract = getProfileContract()
 
@@ -40,13 +42,17 @@ export const getTeams = async (): Promise<TeamsById> => {
       }
     }, {})
     const nbTeams = await profileContract.methods.numberTeams().call()
+
     const calls = []
-
     for (let i = 1; i <= nbTeams; i++) {
-      calls.push(profileContract.methods.getTeamProfile(i).call)
+      calls.push({
+        address: getPancakeProfileAddress(),
+        name: 'getTeamProfile',
+        params: [i],
+      })
     }
+    const teamData = await multicallv2(profileABI, calls)
 
-    const teamData = (await makeBatchRequest(calls)) as TeamResponse[]
     const onChainTeamData = teamData.reduce((accum, team, index) => {
       const { 0: teamName, 2: numberUsers, 3: numberPoints, 4: isJoinable } = team
 
@@ -54,8 +60,8 @@ export const getTeams = async (): Promise<TeamsById> => {
         ...accum,
         [index + 1]: {
           name: teamName,
-          users: Number(numberUsers),
-          points: Number(numberPoints),
+          users: numberUsers.toNumber(),
+          points: numberPoints.toNumber(),
           isJoinable,
         },
       }

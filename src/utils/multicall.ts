@@ -36,7 +36,7 @@ const multicall = async (abi: any[], calls: Call[], options: MulticallOptions = 
  * 1. If "requireSuccess" is false multicall will not bail out if one of the calls fails
  * 2. The return inclues a boolean whether the call was successful e.g. [wasSuccessfull, callResult]
  */
-export const multicallv2 = async (abi: any[], calls: Call[], options: MulticallOptions = {}) => {
+export const multicallv2 = async (abi: any[], calls: Call[], options: MulticallOptions = {}): Promise<any> => {
   const multi = getMulticallContract(options.web3 || web3NoAccount)
   const itf = new Interface(abi)
 
@@ -46,12 +46,10 @@ export const multicallv2 = async (abi: any[], calls: Call[], options: MulticallO
     .call(undefined, options.blockNumber)
   const res = returnData.map((call, i) => {
     const [result, data] = call
-    return {
-      result,
-      data: itf.decodeFunctionResult(calls[i].name, data),
-    }
+    return result ? itf.decodeFunctionResult(calls[i].name, data) : null
   })
 
   return res
 }
+
 export default multicall
