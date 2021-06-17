@@ -14,6 +14,7 @@ import {
   useTooltip,
   Button,
   Link,
+  HelpIcon,
 } from '@pancakeswap/uikit'
 import { BASE_BSC_SCAN_URL, BASE_URL } from 'config'
 import { useBlock, useCakeVault } from 'state/hooks'
@@ -82,21 +83,30 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
     return getBalanceNumber(totalStaked, stakingToken.decimals)
   }
 
+  const {
+    targetRef: totalStakedTargetRef,
+    tooltip: totalStakedTooltip,
+    tooltipVisible: totalStakedTooltipVisible,
+  } = useTooltip(t('Total amount of %symbol% staked in this pool', { symbol: stakingToken.symbol }), {
+    placement: 'bottom',
+  })
+
   return (
     <ExpandedWrapper flexDirection="column">
       <Flex mb="2px" justifyContent="space-between" alignItems="center">
         <Text small>{t('Total staked')}:</Text>
         <Flex alignItems="flex-start">
-          {totalStaked ? (
+          {totalStaked && totalStaked.gte(0) ? (
             <>
-              <Balance small value={getTotalStakedBalance()} />
-              <Text small ml="4px">
-                {stakingToken.symbol}
-              </Text>
+              <Balance small value={getTotalStakedBalance()} decimals={0} unit={` ${stakingToken.symbol}`} />
+              <span ref={totalStakedTargetRef}>
+                <HelpIcon color="textSubtle" width="20px" ml="6px" mt="4px" />
+              </span>
             </>
           ) : (
             <Skeleton width="90px" height="21px" />
           )}
+          {totalStakedTooltipVisible && totalStakedTooltip}
         </Flex>
       </Flex>
       {stakingLimit && stakingLimit.gt(0) && (
