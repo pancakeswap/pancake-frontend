@@ -68,12 +68,24 @@ const EarningsCell: React.FC<EarningsCellProps> = ({ pool, account, userDataLoad
   hasEarnings = isAutoVault ? hasAutoEarnings : hasEarnings
   earningTokenDollarBalance = isAutoVault ? autoUsdToDisplay : earningTokenDollarBalance
 
+  const timeDiffSinceLastAction = (Date.now() - lastActionInMs) / 1000 / 60 / 60
+  const earnedCakePerHour = earningTokenBalance / timeDiffSinceLastAction
+  const earnedUsdPerHour = earningTokenDollarBalance / timeDiffSinceLastAction
+
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <>
       <Balance fontSize="16px" value={autoCakeToDisplay} decimals={3} bold unit=" CAKE" />
       <Balance fontSize="16px" value={autoUsdToDisplay} decimals={2} bold prefix="~$" />
       {t('Earned since your last action')}
       <Text>{dateStringToDisplay}</Text>
+      {t('Your average per hour:')}
+      <Balance fontSize="16px" value={earnedCakePerHour} decimals={2} bold prefix="CAKE per hour: " />
+      <Balance fontSize="16px" value={earnedUsdPerHour} decimals={2} bold prefix="per hour: ~$" />
+      {t('At this rate, you would earn:')}
+      <Balance fontSize="16px" value={earnedUsdPerHour * 24} decimals={2} bold prefix="per 1d: ~$" />
+      <Balance fontSize="16px" value={earnedUsdPerHour * 24 * 7} decimals={2} bold prefix="per 7d: ~$" />
+      <Balance fontSize="16px" value={earnedUsdPerHour * 24 * 30} decimals={2} bold prefix="per 30d: ~$" />
+      <Balance fontSize="16px" value={earnedUsdPerHour * 24 * 365} decimals={2} bold prefix="per 365d: ~$" />
     </>,
     { placement: 'bottom' },
   )
