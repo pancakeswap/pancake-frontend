@@ -39,6 +39,16 @@ const farms: FarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 351,
+    lpSymbol: 'JGN-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x7275278C94b5e20708380561C4Af98F38dDC6374',
+    },
+    token: tokens.jgn,
+    quoteToken: tokens.wbnb,
+  },
+  {
     pid: 337,
     lpSymbol: 'DFT-BNB LP',
     lpAddresses: {
@@ -716,16 +726,6 @@ const farms: FarmConfig[] = [
       56: '0xE6b421a4408c82381b226Ab5B6F8C4b639044359',
     },
     token: tokens.tlm,
-    quoteToken: tokens.wbnb,
-  },
-  {
-    pid: 351,
-    lpSymbol: 'JGN-BNB LP',
-    lpAddresses: {
-      97: '',
-      56: '0x7275278C94b5e20708380561C4Af98F38dDC6374',
-    },
-    token: tokens.jgn,
     quoteToken: tokens.wbnb,
   },
   {
