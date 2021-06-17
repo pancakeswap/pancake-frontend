@@ -51,9 +51,12 @@ export const getClaimableIfoData = async (account: string): Promise<Achievement[
   const pointCenterContract = getPointCenterIfoContract()
 
   // Returns the claim status of every IFO with a campaign ID
-  const claimStatuses = (await pointCenterContract.methods
-    .checkClaimStatuses(account, ifoCampaignAddresses)
-    .call()) as boolean[]
+  let claimStatuses = []
+  try {
+    claimStatuses = (await pointCenterContract.checkClaimStatuses(account, ifoCampaignAddresses)) as boolean[]
+  } catch (error) {
+    console.error(error)
+  }
 
   // Get IFO data for all IFO's that are eligible to claim
   const claimableIfoData = (await multicallv2(

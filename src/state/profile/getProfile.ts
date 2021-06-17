@@ -32,13 +32,13 @@ const getUsername = async (address: string): Promise<string> => {
 
 const getProfile = async (address: string): Promise<GetProfileResponse> => {
   try {
-    const hasRegistered = (await profileContract.methods.hasRegistered(address).call()) as boolean
+    const hasRegistered = (await profileContract.hasRegistered(address)) as boolean
 
     if (!hasRegistered) {
       return { hasRegistered, profile: null }
     }
 
-    const profileResponse = await profileContract.methods.getUserProfile(address).call()
+    const profileResponse = await profileContract.getUserProfile(address)
     const { userId, points, teamId, tokenId, nftAddress, isActive } = transformProfileResponse(profileResponse)
     const team = await getTeam(teamId)
     const username = await getUsername(address)

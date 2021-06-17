@@ -31,8 +31,8 @@ const useTokenBalance = (tokenAddress: string) => {
     const fetchBalance = async () => {
       const contract = getBep20Contract(tokenAddress)
       try {
-        const res = await contract.methods.balanceOf(account).call()
-        setBalanceState({ balance: new BigNumber(res), fetchStatus: SUCCESS })
+        const res = await contract.balanceOf(account)
+        setBalanceState({ balance: new BigNumber(res.toString()), fetchStatus: SUCCESS })
       } catch (e) {
         console.error(e)
         setBalanceState((prev) => ({
@@ -57,8 +57,8 @@ export const useTotalSupply = () => {
   useEffect(() => {
     async function fetchTotalSupply() {
       const cakeContract = getCakeContract()
-      const supply = await cakeContract.methods.totalSupply().call()
-      setTotalSupply(new BigNumber(supply))
+      const supply = await cakeContract.totalSupply()
+      setTotalSupply(new BigNumber(supply.toString()))
     }
 
     fetchTotalSupply()
@@ -74,8 +74,8 @@ export const useBurnedBalance = (tokenAddress: string) => {
   useEffect(() => {
     const fetchBalance = async () => {
       const contract = getBep20Contract(tokenAddress)
-      const res = await contract.methods.balanceOf('0x000000000000000000000000000000000000dEaD').call()
-      setBalance(new BigNumber(res))
+      const res = await contract.balanceOf('0x000000000000000000000000000000000000dEaD')
+      setBalance(new BigNumber(res.toString()))
     }
 
     fetchBalance()

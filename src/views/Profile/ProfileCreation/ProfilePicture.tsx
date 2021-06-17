@@ -2,7 +2,6 @@ import React, { useContext, useState } from 'react'
 import styled from 'styled-components'
 import { AutoRenewIcon, Button, Card, CardBody, Heading, Skeleton, Text } from '@pancakeswap/uikit'
 import { Link as RouterLink } from 'react-router-dom'
-import { useWeb3React } from '@web3-react/core'
 import { getAddressByType } from 'utils/collectibles'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import { useTranslation } from 'contexts/Localization'
@@ -28,24 +27,19 @@ const ProfilePicture: React.FC = () => {
   const { t } = useTranslation()
   const { isLoading, nftsInWallet, tokenIds } = useGetCollectibles()
   const contract = useERC721(selectedNft.nftAddress)
-  const { account } = useWeb3React()
   const { toastError } = useToast()
 
-  const handleApprove = () => {
-    contract.methods
-      .approve(getPancakeProfileAddress(), selectedNft.tokenId)
-      .send({ from: account })
-      .once('sending', () => {
-        setIsApproving(true)
-      })
-      .once('receipt', () => {
-        setIsApproving(false)
-        setIsApproved(true)
-      })
-      .once('error', (error) => {
-        toastError(t('Error'), error?.message)
-        setIsApproving(false)
-      })
+  const handleApprove = async () => {
+    const tx = await contract.approve(getPancakeProfileAddress(), selectedNft.tokenId)
+    setIsApproving(true)
+    const receipt = await tx.wait()
+    if (receipt.status) {
+      setIsApproving(false)
+      setIsApproved(true)
+    } else {
+      toastError(t('Error'))
+      setIsApproving(false)
+    }
   }
 
   if (!isLoading && nftsInWallet.length === 0) {

@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
 import { AutoRenewIcon, Button, Flex } from '@pancakeswap/uikit'
 import { Achievement } from 'state/types'
@@ -42,25 +41,20 @@ const AchievementRow: React.FC<AchievementRowProps> = ({ achievement, onCollectS
   const [isCollecting, setIsCollecting] = useState(false)
   const { t } = useTranslation()
   const pointCenterContract = usePointCenterIfoContract()
-  const { account } = useWeb3React()
   const { toastError, toastSuccess } = useToast()
 
-  const handleCollectPoints = () => {
-    pointCenterContract.methods
-      .getPoints(achievement.address)
-      .send({ from: account })
-      .on('sending', () => {
-        setIsCollecting(true)
-      })
-      .on('receipt', () => {
-        setIsCollecting(false)
-        onCollectSuccess(achievement)
-        toastSuccess(t('Points Collected!'))
-      })
-      .on('error', (error) => {
-        toastError(t('Error'), error?.message)
-        setIsCollecting(false)
-      })
+  const handleCollectPoints = async () => {
+    const tx = await pointCenterContract.getPoints(achievement.address)
+    setIsCollecting(true)
+    const receipt = await tx.wait()
+    if (receipt.status) {
+      setIsCollecting(false)
+      onCollectSuccess(achievement)
+      toastSuccess(t('Points Collected!'))
+    } else {
+      toastError(t('Error'))
+      setIsCollecting(false)
+    }
   }
 
   return (

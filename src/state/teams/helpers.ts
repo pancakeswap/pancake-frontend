@@ -11,19 +11,14 @@ const profileContract = getProfileContract()
 
 export const getTeam = async (teamId: number): Promise<Team> => {
   try {
-    const {
-      0: teamName,
-      2: numberUsers,
-      3: numberPoints,
-      4: isJoinable,
-    } = await profileContract.methods.getTeamProfile(teamId).call()
+    const { 0: teamName, 2: numberUsers, 3: numberPoints, 4: isJoinable } = await profileContract.getTeamProfile(teamId)
     const staticTeamInfo = teamsList.find((staticTeam) => staticTeam.id === teamId)
 
     return merge({}, staticTeamInfo, {
       isJoinable,
       name: teamName,
-      users: numberUsers,
-      points: numberPoints,
+      users: numberUsers.toNumber(),
+      points: numberPoints.toNumber(),
     })
   } catch (error) {
     return null
@@ -41,7 +36,7 @@ export const getTeams = async (): Promise<TeamsById> => {
         [team.id]: team,
       }
     }, {})
-    const nbTeams = await profileContract.methods.numberTeams().call()
+    const nbTeams = await profileContract.numberTeams()
 
     const calls = []
     for (let i = 1; i <= nbTeams; i++) {

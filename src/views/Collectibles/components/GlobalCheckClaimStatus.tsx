@@ -28,7 +28,7 @@ const GlobalCheckClaimStatus: React.FC<GlobalCheckClaimStatusProps> = ({ exclude
   // Check claim status
   useEffect(() => {
     const fetchClaimStatus = async () => {
-      const canClaim = await easterNftContract.methods.canClaim(account).call()
+      const canClaim = await easterNftContract.canClaim(account)
       setIsClaimable(canClaim)
     }
 

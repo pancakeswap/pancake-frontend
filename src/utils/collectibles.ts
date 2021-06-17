@@ -34,7 +34,7 @@ export const getAddressByType = (type: NftType) => {
 export const getTokenUriData = async (nftAddress: string, tokenId: number) => {
   try {
     const contract = getErc721Contract(nftAddress)
-    const tokenUri = await contract.methods.tokenURI(tokenId).call()
+    const tokenUri = await contract.tokenURI(tokenId)
     const uriDataResponse = await fetch(getTokenUrl(tokenUri))
 
     if (!uriDataResponse.ok) {

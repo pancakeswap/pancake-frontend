@@ -30,114 +30,114 @@ import {
  */
 
 export const useIfoV1Contract = (address: string) => {
-  const web3 = useWeb3Provider()
-  return useMemo(() => getIfoV1Contract(address, web3), [address, web3])
+  const provider = useWeb3Provider()
+  return useMemo(() => getIfoV1Contract(address, provider.getSigner()), [address, provider])
 }
 
 export const useIfoV2Contract = (address: string) => {
-  const web3 = useWeb3Provider()
-  return useMemo(() => getIfoV2Contract(address, web3), [address, web3])
+  const provider = useWeb3Provider()
+  return useMemo(() => getIfoV2Contract(address, provider.getSigner()), [address, provider])
 }
 
 export const useERC20 = (address: string) => {
-  const web3 = useWeb3Provider()
-  return useMemo(() => getBep20Contract(address, web3), [address, web3])
+  const provider = useWeb3Provider()
+  return useMemo(() => getBep20Contract(address, provider.getSigner()), [address, provider])
 }
 
 /**
  * @see https://docs.openzeppelin.com/contracts/3.x/api/token/erc721
  */
 export const useERC721 = (address: string) => {
-  const web3 = useWeb3Provider()
-  return useMemo(() => getErc721Contract(address, web3), [address, web3])
+  const provider = useWeb3Provider()
+  return useMemo(() => getErc721Contract(address, provider.getSigner()), [address, provider])
 }
 
 export const useCake = () => {
-  const web3 = useWeb3Provider()
-  return useMemo(() => getCakeContract(web3), [web3])
+  const provider = useWeb3Provider()
+  return useMemo(() => getCakeContract(provider.getSigner()), [provider])
 }
 
 export const useBunnyFactory = () => {
-  const web3 = useWeb3Provider()
-  return useMemo(() => getBunnyFactoryContract(web3), [web3])
+  const provider = useWeb3Provider()
+  return useMemo(() => getBunnyFactoryContract(provider.getSigner()), [provider])
 }
 
 export const usePancakeRabbits = () => {
-  const web3 = useWeb3Provider()
-  return useMemo(() => getPancakeRabbitContract(web3), [web3])
+  const provider = useWeb3Provider()
+  return useMemo(() => getPancakeRabbitContract(provider.getSigner()), [provider])
 }
 
 export const useProfile = () => {
-  const web3 = useWeb3Provider()
-  return useMemo(() => getProfileContract(web3), [web3])
+  const provider = useWeb3Provider()
+  return useMemo(() => getProfileContract(provider.getSigner()), [provider])
 }
 
 export const useLottery = () => {
-  const web3 = useWeb3Provider()
-  return useMemo(() => getLotteryContract(web3), [web3])
+  const provider = useWeb3Provider()
+  return useMemo(() => getLotteryContract(provider.getSigner()), [provider])
 }
 
 export const useLotteryTicket = () => {
-  const web3 = useWeb3Provider()
-  return useMemo(() => getLotteryTicketContract(web3), [web3])
+  const provider = useWeb3Provider()
+  return useMemo(() => getLotteryTicketContract(provider.getSigner()), [provider])
 }
 
 export const useLotteryV2Contract = () => {
-  const web3 = useWeb3Provider()
-  return useMemo(() => getLotteryV2Contract(web3), [web3])
+  const provider = useWeb3Provider()
+  return useMemo(() => getLotteryV2Contract(provider.getSigner()), [provider])
 }
 
 export const useMasterchef = () => {
-  const web3 = useWeb3Provider()
-  return useMemo(() => getMasterchefContract(web3), [web3])
+  const provider = useWeb3Provider()
+  return useMemo(() => getMasterchefContract(provider.getSigner()), [provider])
 }
 
 export const useSousChef = (id) => {
-  const web3 = useWeb3Provider()
-  return useMemo(() => getSouschefContract(id, web3), [id, web3])
+  const provider = useWeb3Provider()
+  return useMemo(() => getSouschefContract(id, provider.getSigner()), [id, provider])
 }
 
 export const useSousChefV2 = (id) => {
-  const web3 = useWeb3Provider()
-  return useMemo(() => getSouschefV2Contract(id, web3), [id, web3])
+  const provider = useWeb3Provider()
+  return useMemo(() => getSouschefV2Contract(id, provider.getSigner()), [id, provider])
 }
 
 export const usePointCenterIfoContract = () => {
-  const web3 = useWeb3Provider()
-  return useMemo(() => getPointCenterIfoContract(web3), [web3])
+  const provider = useWeb3Provider()
+  return useMemo(() => getPointCenterIfoContract(provider.getSigner()), [provider])
 }
 
 export const useBunnySpecialContract = () => {
-  const web3 = useWeb3Provider()
-  return useMemo(() => getBunnySpecialContract(web3), [web3])
+  const provider = useWeb3Provider()
+  return useMemo(() => getBunnySpecialContract(provider.getSigner()), [provider])
 }
 
 export const useClaimRefundContract = () => {
-  const web3 = useWeb3Provider()
-  return useMemo(() => getClaimRefundContract(web3), [web3])
+  const provider = useWeb3Provider()
+  return useMemo(() => getClaimRefundContract(provider.getSigner()), [provider])
 }
 
 export const useTradingCompetitionContract = () => {
-  const web3 = useWeb3Provider()
-  return useMemo(() => getTradingCompetitionContract(web3), [web3])
+  const provider = useWeb3Provider()
+  return useMemo(() => getTradingCompetitionContract(provider.getSigner()), [provider])
 }
 
 export const useEasterNftContract = () => {
-  const web3 = useWeb3Provider()
-  return useMemo(() => getEasterNftContract(web3), [web3])
+  const provider = useWeb3Provider()
+  return useMemo(() => getEasterNftContract(provider.getSigner()), [provider])
 }
 
 export const useCakeVaultContract = () => {
-  const web3 = useWeb3Provider()
-  return useMemo(() => getCakeVaultContract(web3), [web3])
+  const provider = useWeb3Provider()
+  return useMemo(() => getCakeVaultContract(provider.getSigner()), [provider])
 }
 
 export const usePredictionsContract = () => {
-  const web3 = useWeb3Provider()
-  return useMemo(() => getPredictionsContract(web3), [web3])
+  const provider = useWeb3Provider()
+  return useMemo(() => getPredictionsContract(provider.getSigner()), [provider])
 }
 
 export const useChainlinkOracleContract = () => {
-  const web3 = useWeb3Provider()
-  return useMemo(() => getChainlinkOracleContract(web3), [web3])
+  const provider = useWeb3Provider()
+  return useMemo(() => getChainlinkOracleContract(provider.getSigner()), [provider])
 }

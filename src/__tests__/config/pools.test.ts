@@ -22,7 +22,7 @@ describe('Config pools', () => {
     'Pool %p has the correct earning token',
     async (pool) => {
       const contract = getSouschefContract(pool.sousId)
-      const rewardTokenAddress = await contract.methods.rewardToken().call()
+      const rewardTokenAddress = await contract.rewardToken()
       expect(rewardTokenAddress.toLowerCase()).toBe(pool.earningToken.address[56].toLowerCase())
     },
   )
@@ -32,10 +32,10 @@ describe('Config pools', () => {
       let stakingTokenAddress = null
       try {
         const contract = getSouschefV2Contract(pool.sousId)
-        stakingTokenAddress = await contract.methods.stakedToken().call()
+        stakingTokenAddress = await contract.stakedToken()
       } catch (error) {
         const contract = getSouschefContract(pool.sousId)
-        stakingTokenAddress = await contract.methods.syrup().call()
+        stakingTokenAddress = await contract.syrup()
       }
 
       expect(stakingTokenAddress.toLowerCase()).toBe(pool.stakingToken.address[56].toLowerCase())

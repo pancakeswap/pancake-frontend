@@ -70,7 +70,7 @@ const ProfileCreationProvider: React.FC = ({ children }) => {
 
     const fetchData = async () => {
       const bunnyFactoryContract = getBunnyFactoryContract()
-      const canMint = await bunnyFactoryContract.methods.canMint(account).call()
+      const canMint = await bunnyFactoryContract.canMint(account)
       dispatch({ type: 'initialize', step: canMint ? 0 : 1 })
 
       // When changing wallets quickly unmounting before the hasClaim finished causes a React error

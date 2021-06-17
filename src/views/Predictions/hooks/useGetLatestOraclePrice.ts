@@ -12,8 +12,8 @@ const useGetLatestOraclePrice = () => {
 
   useEffect(() => {
     const fetchPrice = async () => {
-      const response = await chainlinkOracleContract.methods.latestAnswer().call()
-      setPrice(getBalanceAmount(new BigNumber(response), 8))
+      const response = await chainlinkOracleContract.latestAnswer()
+      setPrice(getBalanceAmount(new BigNumber(response.toString()), 8))
     }
 
     fetchPrice()
