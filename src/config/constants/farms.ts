@@ -39,6 +39,16 @@ const farms: FarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 337,
+    lpSymbol: 'DFT-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x24d3B0eD4C444A4f6882d527cBF67aDc8c026582',
+    },
+    token: tokens.dft,
+    quoteToken: tokens.wbnb,
+  },
+  {
     pid: 412,
     lpSymbol: 'HAI-BNB LP',
     lpAddresses: {
@@ -826,16 +836,6 @@ const farms: FarmConfig[] = [
       56: '0x0362ba706DFE8ED12Ec1470aB171d8Dcb1C72B8D',
     },
     token: tokens.pbtc,
-    quoteToken: tokens.wbnb,
-  },
-  {
-    pid: 337,
-    lpSymbol: 'DFT-BNB LP',
-    lpAddresses: {
-      97: '',
-      56: '0x24d3B0eD4C444A4f6882d527cBF67aDc8c026582',
-    },
-    token: tokens.dft,
     quoteToken: tokens.wbnb,
   },
   {
