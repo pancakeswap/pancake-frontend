@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { PromiEvent } from 'web3-core'
 import { useWeb3React } from '@web3-react/core'
-import { Contract } from 'web3-eth-contract'
+import { Contract } from 'ethers'
 import { useBunnySpecialContract } from 'hooks/useContract'
 import NftCard, { NftCardProps } from './index'
 
