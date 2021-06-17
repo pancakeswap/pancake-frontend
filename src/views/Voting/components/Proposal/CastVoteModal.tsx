@@ -78,7 +78,12 @@ const CastVoteModal: React.FC<CastVoteModalProps> = ({ onSuccess, proposalId, vo
           {t('Your Voting Power')}
         </Text>
         {isLoading ? (
-          <Skeleton height="64px" mb="24px" />
+          <>
+            <Text fontSize="14px" color="textSubtle" mb="8px">
+              {t('Please wait while we calculate your voting power')}
+            </Text>
+            <Skeleton height="64px" mb="24px" />
+          </>
         ) : (
           <ModalBox>
             <Text bold fontSize="20px">
