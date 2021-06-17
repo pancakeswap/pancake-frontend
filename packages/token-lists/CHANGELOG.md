@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.15.4](https://github.com/pancakeswap/pancake-toolkit/compare/@pancakeswap/token-lists@2.15.0...@pancakeswap/token-lists@2.15.4) (2021-06-17)
+
+
+### Bug Fixes
+
+* Decimals on Hai ([#163](https://github.com/pancakeswap/pancake-toolkit/issues/163)) ([46bb8e9](https://github.com/pancakeswap/pancake-toolkit/commit/46bb8e9eab419cea641d46e635e217442e026486))
+
+
+
+
+
 # [2.15.0](https://github.com/pancakeswap/pancake-toolkit/compare/@pancakeswap/token-lists@2.14.4...@pancakeswap/token-lists@2.15.0) (2021-06-14)
 
 

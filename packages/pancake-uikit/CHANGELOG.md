@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.39.1](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.39.0...@pancakeswap/uikit@0.39.1) (2021-06-17)
+
+
+### Bug Fixes
+
+* (userblock) Check Props properties seperately to not cause rerender each time ([#151](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/151)) ([e6f90d7](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/e6f90d7b41a1b3a1d373560dd29e06f10c324639))
+
+
+
+
+
 # [0.39.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.38.0...@pancakeswap/uikit@0.39.0) (2021-06-14)
 
 
