@@ -35,6 +35,7 @@ const Results: React.FC<ResultsProps> = ({ choiceCount, votes }) => {
 
             return (
               <Box key={result.label} mt={index > 0 ? '24px' : '0px'}>
+                <Text mb="4px">{result.label}</Text>
                 <Box mb="4px">
                   <Progress primaryStep={progress} scale="sm" />
                 </Box>
