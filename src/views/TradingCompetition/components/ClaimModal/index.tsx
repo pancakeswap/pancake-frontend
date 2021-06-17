@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
 import {
   Modal,
@@ -32,7 +31,6 @@ const ImageWrapper = styled(Flex)`
 const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, userTradingInformation }) => {
   const [isConfirming, setIsConfirming] = useState(false)
   const tradingCompetitionContract = useTradingCompetitionContract()
-  const { account } = useWeb3React()
   const { toastSuccess, toastError } = useToast()
   const { t } = useTranslation()
 
@@ -40,22 +38,18 @@ const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, use
   const { cakeReward } = useCompetitionCakeRewards(userCakeRewards)
   const { champion, teamPlayer } = getRewardGroupAchievements(userRewardGroup)
 
-  const handleClaimClick = () => {
-    tradingCompetitionContract.methods
-      .claimReward()
-      .send({ from: account })
-      .on('sending', () => {
-        setIsConfirming(true)
-      })
-      .on('receipt', async () => {
-        toastSuccess(t('You have claimed your rewards!'))
-        onDismiss()
-        onClaimSuccess()
-      })
-      .on('error', (error) => {
-        toastError(t('Error'), error?.message)
-        setIsConfirming(false)
-      })
+  const handleClaimClick = async () => {
+    const tx = await tradingCompetitionContract.claimReward()
+    setIsConfirming(true)
+    const receipt = await tx.wait()
+    if (receipt.status) {
+      toastSuccess(t('You have claimed your rewards!'))
+      onDismiss()
+      onClaimSuccess()
+    } else {
+      toastError(t('Error'))
+      setIsConfirming(false)
+    }
   }
 
   return (

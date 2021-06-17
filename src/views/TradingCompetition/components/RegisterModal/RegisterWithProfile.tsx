@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
 import { Button, Heading, Text, Flex, Checkbox, AutoRenewIcon } from '@pancakeswap/uikit'
 import { useTradingCompetitionContract } from 'hooks/useContract'
@@ -19,26 +18,21 @@ const RegisterWithProfile: React.FC<CompetitionProps> = ({ profile, onDismiss, o
   const [isAcknowledged, setIsAcknowledged] = useState(false)
   const [isConfirming, setIsConfirming] = useState(false)
   const tradingCompetitionContract = useTradingCompetitionContract()
-  const { account } = useWeb3React()
   const { toastSuccess, toastError } = useToast()
   const { t } = useTranslation()
 
-  const handleConfirmClick = () => {
-    tradingCompetitionContract.methods
-      .register()
-      .send({ from: account })
-      .on('sending', () => {
-        setIsConfirming(true)
-      })
-      .on('receipt', async () => {
-        toastSuccess(t('You have registered for the competition!'))
-        onDismiss()
-        onRegisterSuccess()
-      })
-      .on('error', (error) => {
-        toastError(t('Error'), error?.message)
-        setIsConfirming(false)
-      })
+  const handleConfirmClick = async () => {
+    const tx = await tradingCompetitionContract.register()
+    setIsConfirming(true)
+    const receipt = await tx.wait()
+    if (receipt.status) {
+      toastSuccess(t('You have registered for the competition!'))
+      onDismiss()
+      onRegisterSuccess()
+    } else {
+      toastError(t('Error'))
+      setIsConfirming(false)
+    }
   }
 
   return (

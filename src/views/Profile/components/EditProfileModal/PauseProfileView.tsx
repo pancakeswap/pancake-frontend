@@ -25,24 +25,19 @@ const PauseProfilePage: React.FC<PauseProfilePageProps> = ({ onDismiss }) => {
 
   const handleChange = () => setIsAcknowledged(!isAcknowledged)
 
-  const handleDeactivateProfile = () => {
-    pancakeProfileContract.methods
-      .pauseProfile()
-      .send({ from: account })
-      .on('sending', () => {
-        setIsConfirming(true)
-      })
-      .on('receipt', async () => {
-        // Re-fetch profile
-        await dispatch(fetchProfile(account))
-        toastSuccess(t('Profile Paused!'))
-
-        onDismiss()
-      })
-      .on('error', (error) => {
-        toastError(t('Error'), error?.message)
-        setIsConfirming(false)
-      })
+  const handleDeactivateProfile = async () => {
+    const tx = await pancakeProfileContract.pauseProfile()
+    setIsConfirming(true)
+    const receipt = await tx.wait()
+    if (receipt.status) {
+      // Re-fetch profile
+      await dispatch(fetchProfile(account))
+      toastSuccess(t('Profile Paused!'))
+      onDismiss()
+    } else {
+      toastError(t('Error'))
+      setIsConfirming(false)
+    }
   }
 
   if (!profile) {

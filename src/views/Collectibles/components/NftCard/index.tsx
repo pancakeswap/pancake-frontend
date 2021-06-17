@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
+import { ethers } from 'ethers'
 import {
   Card,
   CardBody,
@@ -24,7 +25,7 @@ export interface NftCardProps {
   nft: Nft
   canClaim?: boolean
   tokenIds?: number[]
-  onClaim?: () => any
+  onClaim?: () => ethers.providers.TransactionResponse
   refresh: () => void
 }
 

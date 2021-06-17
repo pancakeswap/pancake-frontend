@@ -20,8 +20,8 @@ describe('Config farms', () => {
     const quoteTokenAddress = farm.quoteToken.address[56]
     const lpContract = getLpContract(farm.lpAddresses[56])
 
-    const token0Address = (await lpContract.methods.token0().call()).toLowerCase()
-    const token1Address = (await lpContract.methods.token1().call()).toLowerCase()
+    const token0Address = (await lpContract.token0()).toLowerCase()
+    const token1Address = (await lpContract.token1()).toLowerCase()
 
     expect(
       token0Address === tokenAddress.toLowerCase() || token0Address === quoteTokenAddress.toLowerCase(),
@@ -35,11 +35,11 @@ describe('Config farms', () => {
     const tokenContract = getBep20Contract(farm.token.address[56])
     const quoteTokenContract = getBep20Contract(farm.quoteToken.address[56])
 
-    const tokenAmount = await tokenContract.methods.balanceOf(farm.lpAddresses[56]).call()
-    const quoteTokenAmount = await quoteTokenContract.methods.balanceOf(farm.lpAddresses[56]).call()
+    const tokenAmount = await tokenContract.balanceOf(farm.lpAddresses[56])
+    const quoteTokenAmount = await quoteTokenContract.balanceOf(farm.lpAddresses[56])
 
-    expect(parseInt(tokenAmount, 10)).toBeGreaterThan(0)
-    expect(parseInt(quoteTokenAmount, 10)).toBeGreaterThan(0)
+    expect(tokenAmount.toNumber()).toBeGreaterThan(0)
+    expect(quoteTokenAmount.toNumber()).toBeGreaterThan(0)
   })
 
   // The first pid using the new factory
@@ -49,7 +49,7 @@ describe('Config farms', () => {
 
   it.each(newFarmsToTest)('farm %d is using correct factory address', async (pid, farm) => {
     const lpContract = getLpContract(farm.lpAddresses[56])
-    const factory = await lpContract.methods.factory().call()
+    const factory = await lpContract.factory()
     expect(factory.toLowerCase()).toEqual(FACTORY_ADDRESS)
   })
 })

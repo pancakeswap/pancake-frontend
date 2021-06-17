@@ -54,22 +54,17 @@ const TransferNftModal: React.FC<TransferNftModalProps> = ({ nft, tokenIds, onSu
       if (!isValidAddress) {
         setError(t('Please enter a valid wallet address'))
       } else {
-        await contract.methods
-          .transferFrom(account, value, tokenIds[0])
-          .send({ from: account })
-          .on('sending', () => {
-            setIsLoading(true)
-          })
-          .on('receipt', () => {
-            onDismiss()
-            onSuccess()
-            toastSuccess(t('NFT successfully transferred!'))
-          })
-          .on('error', () => {
-            console.error(error)
-            setError(t('Unable to transfer NFT'))
-            setIsLoading(false)
-          })
+        const tx = await contract.transferFrom(account, value, tokenIds[0])
+        setIsLoading(true)
+        const receipt = await tx.wait()
+        if (receipt.status) {
+          onDismiss()
+          onSuccess()
+          toastSuccess(t('NFT successfully transferred!'))
+        } else {
+          setError(t('Unable to transfer NFT'))
+          setIsLoading(false)
+        }
       }
     } catch (err) {
       console.error('Unable to transfer NFT:', err)

@@ -57,8 +57,8 @@ const StartPage: React.FC<StartPageProps> = ({ goToApprove, goToChange, goToRemo
    */
   useEffect(() => {
     const checkApprovalStatus = async () => {
-      const response = await cakeContract.methods.allowance(account, getPancakeProfileAddress()).call()
-      const currentAllowance = new BigNumber(response)
+      const response = await cakeContract.allowance(account, getPancakeProfileAddress())
+      const currentAllowance = new BigNumber(response.toString())
       setNeedsApproval(currentAllowance.lt(cost))
     }
 

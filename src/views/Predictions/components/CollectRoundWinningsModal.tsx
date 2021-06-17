@@ -60,40 +60,33 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
   const bnbBusdPrice = usePriceBnbBusd()
   const dispatch = useAppDispatch()
 
-  const handleClick = () => {
-    predictionsContract.methods
-      .claim(epoch)
-      .send({ from: account })
-      .once('sending', () => {
-        setIsPendingTx(true)
-      })
-      .once('receipt', async (result) => {
-        if (onSuccess) {
-          await onSuccess()
-        }
+  const handleClick = async () => {
+    const tx = await predictionsContract.claim(epoch)
+    setIsPendingTx(true)
+    const receipt = await tx.wait()
+    if (receipt.status) {
+      if (onSuccess) {
+        await onSuccess()
+      }
 
-        dispatch(markBetAsCollected({ account, roundId }))
-        onDismiss()
-        setIsPendingTx(false)
-        toastSuccess(
-          t('Winnings collected!'),
-          <Box>
-            <Text as="p" mb="8px">
-              {t('Your prizes have been sent to your wallet')}
-            </Text>
-            {result.transactionHash && (
-              <LinkExternal href={getBscScanTransactionUrl(result.transactionHash)}>
-                {t('View on BscScan')}
-              </LinkExternal>
-            )}
-          </Box>,
-        )
-      })
-      .once('error', (error) => {
-        setIsPendingTx(false)
-        toastError(t('Error'), error?.message)
-        console.error(error)
-      })
+      dispatch(markBetAsCollected({ account, roundId }))
+      onDismiss()
+      setIsPendingTx(false)
+      toastSuccess(
+        t('Winnings collected!'),
+        <Box>
+          <Text as="p" mb="8px">
+            {t('Your prizes have been sent to your wallet')}
+          </Text>
+          {receipt.transactionHash && (
+            <LinkExternal href={getBscScanTransactionUrl(receipt.transactionHash)}>{t('View on BscScan')}</LinkExternal>
+          )}
+        </Box>,
+      )
+    } else {
+      setIsPendingTx(false)
+      toastError(t('Error'))
+    }
   }
 
   return (

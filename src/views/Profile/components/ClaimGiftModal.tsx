@@ -22,7 +22,7 @@ export const useCanClaim = () => {
   useEffect(() => {
     const fetchClaimStatus = async () => {
       const claimRefundContract = getClaimRefundContract()
-      const walletCanClaim = await claimRefundContract.methods.canClaim(account).call()
+      const walletCanClaim = await claimRefundContract.canClaim(account)
       setCanClaim(walletCanClaim)
     }
 
@@ -36,28 +36,23 @@ export const useCanClaim = () => {
 
 const ClaimGift: React.FC<ClaimGiftProps> = ({ onSuccess, onDismiss }) => {
   const [isConfirming, setIsConfirming] = useState(false)
-  const { account } = useWeb3React()
   const { t } = useTranslation()
   const { canClaim } = useCanClaim()
   const claimRefundContract = useClaimRefundContract()
   const { toastSuccess, toastError } = useToast()
 
-  const handleClick = () => {
-    claimRefundContract.methods
-      .getCakeBack()
-      .send({ from: account })
-      .on('sending', () => {
-        setIsConfirming(true)
-      })
-      .on('receipt', () => {
-        toastSuccess(t('Success!'))
-        onSuccess()
-        onDismiss()
-      })
-      .on('error', (error) => {
-        setIsConfirming(false)
-        toastError(t('Error'), error?.message)
-      })
+  const handleClick = async () => {
+    const tx = await claimRefundContract.getCakeBack()
+    setIsConfirming(true)
+    const receipt = await tx.wait()
+    if (receipt.status) {
+      toastSuccess(t('Success!'))
+      onSuccess()
+      onDismiss()
+    } else {
+      setIsConfirming(false)
+      toastError(t('Error'))
+    }
   }
 
   return (

@@ -1,5 +1,4 @@
 import React from 'react'
-import { useWeb3React } from '@web3-react/core'
 import { AutoRenewIcon, Button } from '@pancakeswap/uikit'
 import { PoolIds } from 'config/constants/types'
 import { WalletIfoData } from 'hooks/ifo/types'
@@ -15,7 +14,6 @@ interface Props {
 const ClaimButton: React.FC<Props> = ({ poolId, ifoVersion, walletIfoData }) => {
   const userPoolCharacteristics = walletIfoData[poolId]
   const { t } = useTranslation()
-  const { account } = useWeb3React()
   const { toastError, toastSuccess } = useToast()
 
   const setPendingTx = (isPending: boolean) => walletIfoData.setPendingTx(isPending, poolId)
@@ -25,9 +23,11 @@ const ClaimButton: React.FC<Props> = ({ poolId, ifoVersion, walletIfoData }) => 
       setPendingTx(true)
 
       if (ifoVersion === 1) {
-        await walletIfoData.contract.methods.harvest().send({ from: account })
+        const tx = await walletIfoData.contract.harvest()
+        await tx.wait()
       } else {
-        await walletIfoData.contract.methods.harvestPool(poolId === PoolIds.poolBasic ? 0 : 1).send({ from: account })
+        const tx = await walletIfoData.contract.harvestPool(poolId === PoolIds.poolBasic ? 0 : 1)
+        await tx.wait()
       }
 
       walletIfoData.setIsClaimed(poolId)

@@ -31,18 +31,14 @@ const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss }
   const { isApproving, isApproved, isConfirmed, isConfirming, handleApprove, handleConfirm } =
     useApproveConfirmTransaction({
       onApprove: () => {
-        return contract.methods.approve(getPancakeProfileAddress(), selectedNft.tokenId).send({ from: account })
+        return contract.approve(getPancakeProfileAddress(), selectedNft.tokenId)
       },
       onConfirm: () => {
         if (!profile.isActive) {
-          return profileContract.methods
-            .reactivateProfile(selectedNft.nftAddress, selectedNft.tokenId)
-            .send({ from: account })
+          return profileContract.reactivateProfile(selectedNft.nftAddress, selectedNft.tokenId)
         }
 
-        return profileContract.methods
-          .updateProfile(selectedNft.nftAddress, selectedNft.tokenId)
-          .send({ from: account })
+        return profileContract.updateProfile(selectedNft.nftAddress, selectedNft.tokenId)
       },
       onSuccess: async () => {
         // Re-fetch profile
