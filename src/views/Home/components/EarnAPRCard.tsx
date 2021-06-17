@@ -9,6 +9,7 @@ import { useAppDispatch } from 'state'
 import { useFarms, usePriceCakeBusd } from 'state/hooks'
 import { fetchFarmsPublicDataAsync, nonArchivedFarms } from 'state/farms'
 import { getFarmApr } from 'utils/apr'
+import useIntersectionObserver from 'hooks/useIntersectionObserver'
 
 const StyledFarmStakingCard = styled(Card)`
   margin-left: auto;
@@ -34,6 +35,7 @@ const EarnAPRCard = () => {
   const { data: farmsLP } = useFarms()
   const cakePrice = usePriceCakeBusd()
   const dispatch = useAppDispatch()
+  const { observerRef, isIntersecting } = useIntersectionObserver()
 
   // Fetch farm data once to get the max APR
   useEffect(() => {
@@ -45,8 +47,10 @@ const EarnAPRCard = () => {
       }
     }
 
-    fetchFarmData()
-  }, [dispatch, setIsFetchingFarmData])
+    if (isIntersecting) {
+      fetchFarmData()
+    }
+  }, [dispatch, setIsFetchingFarmData, isIntersecting])
 
   const highestApr = useMemo(() => {
     if (cakePrice.gt(0)) {
@@ -80,7 +84,10 @@ const EarnAPRCard = () => {
             {highestApr && !isFetchingFarmData ? (
               `${highestApr}%`
             ) : (
-              <Skeleton animation="pulse" variant="rect" height="44px" />
+              <>
+                <Skeleton animation="pulse" variant="rect" height="44px" />
+                <div ref={observerRef} />
+              </>
             )}
           </CardMidContent>
           <Flex justifyContent="space-between">
