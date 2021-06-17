@@ -34,7 +34,7 @@ const PrizesText = () => {
         )}
       </Text>
       <ImageWrapper>
-        <Image src={FlipperBunny} alt="Flipper bunny" responsive width={499} height={400} />
+        <Image src={FlipperBunny} alt="Flipper bunny" width={499} height={400} />
       </ImageWrapper>
     </StyledFlex>
   )
