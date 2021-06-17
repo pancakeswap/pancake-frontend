@@ -24,6 +24,15 @@ const Container = styled.div`
   }
 `
 
+const TokenWrapper = styled.div`
+  padding-right: 8px;
+  width: 24px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    width: 40px;
+  }
+`
+
 const Farm: React.FunctionComponent<FarmProps> = ({ token, quoteToken, label, pid }) => {
   const { stakedBalance } = useFarmUser(pid)
   const { t } = useTranslation()
@@ -43,14 +52,15 @@ const Farm: React.FunctionComponent<FarmProps> = ({ token, quoteToken, label, pi
 
   return (
     <Container>
-      <TokenPairImage
-        variant="inverted"
-        primaryTokenAddress={getAddress(token.address)}
-        secondaryTokenAddress={getAddress(quoteToken.address)}
-        width={40}
-        height={40}
-        mr="8px"
-      />
+      <TokenWrapper>
+        <TokenPairImage
+          variant="inverted"
+          primaryTokenAddress={getAddress(token.address)}
+          secondaryTokenAddress={getAddress(quoteToken.address)}
+          width={40}
+          height={40}
+        />
+      </TokenWrapper>
       <div>
         {handleRenderFarming()}
         <Text bold>{label}</Text>
