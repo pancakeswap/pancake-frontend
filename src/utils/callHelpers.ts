@@ -127,16 +127,6 @@ export const soushHarvest = async (sousChefContract) => {
   return receipt.status
 }
 
-export const isPoolActive = async (sousId: number, block?: number) => {
-  const contract = getSouschefV2Contract(sousId, archiveRpcProvider)
-  const startBlockResp = await contract.methods.startBlock().call()
-  const endBlockResp = await contract.methods.bonusEndBlock().call()
-  const startBlock = new BigNumber(startBlockResp)
-  const endBlock = new BigNumber(endBlockResp)
-
-  return startBlock.lte(block) && endBlock.gte(block)
-}
-
 /**
  * Returns the total number of pools that were active at a given block
  */
@@ -173,7 +163,7 @@ export const getActivePools = async (block?: number) => {
     multiCallOptions,
   )
 
-  return eligiblePools.reduce((accum, pool, index) => {
+  return eligiblePools.reduce((accum, poolCheck, index) => {
     const { data: startBlockData } = startBlocks[index]
     const { data: endBlockData } = endBlocks[index]
     const startBlock = new BigNumber(startBlockData[0]._hex)
@@ -183,6 +173,6 @@ export const getActivePools = async (block?: number) => {
       return accum
     }
 
-    return [...accum, eligiblePools[index]]
+    return [...accum, poolCheck]
   }, [])
 }
