@@ -17,6 +17,19 @@ const pools: PoolConfig[] = [
     isFinished: false,
   },
   {
+    sousId: 178,
+    stakingToken: tokens.cake,
+    earningToken: tokens.dft,
+    contractAddress: {
+      97: '',
+      56: '0x2666e2494e742301ffc8026e476acc1710a775ed',
+    },
+    poolCategory: PoolCategory.CORE,
+    harvest: true,
+    sortOrder: 999,
+    tokenPerBlock: '1.7361',
+  },
+  {
     sousId: 177,
     stakingToken: tokens.cake,
     earningToken: tokens.hai,
