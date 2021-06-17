@@ -2,24 +2,17 @@ import React from 'react'
 import styled from 'styled-components'
 import { useFarmUser } from 'state/hooks'
 import { useTranslation } from 'contexts/Localization'
-import { Text, Image } from '@pancakeswap/uikit'
+import { Text, TokenPairImage } from '@pancakeswap/uikit'
 import { getBalanceNumber } from 'utils/formatBalance'
+import { getAddress } from 'utils/addressHelpers'
+import { Token } from 'config/constants/types'
 
 export interface FarmProps {
   label: string
   pid: number
-  image: string
+  token: Token
+  quoteToken: Token
 }
-
-const IconImage = styled(Image)`
-  width: 24px;
-  height: 24px;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    width: 40px;
-    height: 40px;
-  }
-`
 
 const Container = styled.div`
   padding-left: 16px;
@@ -31,7 +24,16 @@ const Container = styled.div`
   }
 `
 
-const Farm: React.FunctionComponent<FarmProps> = ({ image, label, pid }) => {
+const TokenWrapper = styled.div`
+  padding-right: 8px;
+  width: 24px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    width: 40px;
+  }
+`
+
+const Farm: React.FunctionComponent<FarmProps> = ({ token, quoteToken, label, pid }) => {
   const { stakedBalance } = useFarmUser(pid)
   const { t } = useTranslation()
   const rawStakedBalance = getBalanceNumber(stakedBalance)
@@ -50,7 +52,15 @@ const Farm: React.FunctionComponent<FarmProps> = ({ image, label, pid }) => {
 
   return (
     <Container>
-      <IconImage src={`/images/farms/${image}.svg`} alt="icon" width={40} height={40} mr="8px" />
+      <TokenWrapper>
+        <TokenPairImage
+          variant="inverted"
+          primaryTokenAddress={getAddress(token.address)}
+          secondaryTokenAddress={getAddress(quoteToken.address)}
+          width={40}
+          height={40}
+        />
+      </TokenWrapper>
       <div>
         {handleRenderFarming()}
         <Text bold>{label}</Text>
