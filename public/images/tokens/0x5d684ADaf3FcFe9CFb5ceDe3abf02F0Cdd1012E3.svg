@@ -1,6 +1,1 @@
-<svg width="97" height="97" viewBox="0 0 97 97" fill="none" xmlns="http://www.w3.org/2000/svg">
-<ellipse cx="48.0008" cy="48.0008" rx="48.0008" ry="48.0008" fill="#49FFE7"/>
-<path d="M81.9425 81.9425C100.688 63.197 100.688 32.8046 81.9425 14.0591L14.0591 81.9425C32.8046 100.688 63.197 100.688 81.9425 81.9425Z" fill="#12B2AD"/>
-<rect x="28.2578" y="28" width="40" height="40" transform="rotate(0.369063 28.2578 28)" fill="white"/>
-<path fill-rule="evenodd" clip-rule="evenodd" d="M37 58.9999L37 1.29605C52.5672 -2.41085 69.6293 1.83399 81.7725 14.0306L37 58.9999Z" fill="#0DF2D4"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="97" height="97" fill="none" viewBox="0 0 97 97"><ellipse cx="48.001" cy="48.001" fill="#49FFE7" rx="48.001" ry="48.001"/><path fill="#12B2AD" d="M81.9425 81.9425C100.688 63.197 100.688 32.8046 81.9425 14.0591L14.0591 81.9425C32.8046 100.688 63.197 100.688 81.9425 81.9425Z"/><rect width="40" height="40" x="28.258" y="28" fill="#fff" transform="rotate(0.369063 28.2578 28)"/><path fill="#0DF2D4" fill-rule="evenodd" d="M37 58.9999L37 1.29605C52.5672 -2.41085 69.6293 1.83399 81.7725 14.0306L37 58.9999Z" clip-rule="evenodd"/></svg>
