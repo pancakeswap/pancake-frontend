@@ -7,6 +7,7 @@ import { getAddress } from 'utils/addressHelpers'
 import { useCakeVault } from 'state/hooks'
 import { Pool } from 'state/types'
 import { BIG_ZERO } from 'utils/bigNumber'
+import CakeVaultTokenPairImage from '../../CakeVaultCard/CakeVaultTokenPairImage'
 import BaseCell, { CellContent } from './BaseCell'
 
 interface NameCellProps {
@@ -55,13 +56,17 @@ const NameCell: React.FC<NameCellProps> = ({ pool }) => {
 
   return (
     <StyledCell role="cell">
-      <TokenPairImage
-        primaryTokenAddress={getAddress(earningToken.address)}
-        secondaryTokenAddress={getAddress(stakingToken.address)}
-        width={40}
-        height={40}
-        mr="8px"
-      />
+      {isAutoVault ? (
+        <CakeVaultTokenPairImage mr="8px" width={40} height={40} />
+      ) : (
+        <TokenPairImage
+          primaryTokenAddress={getAddress(earningToken.address)}
+          secondaryTokenAddress={getAddress(stakingToken.address)}
+          mr="8px"
+          width={40}
+          height={40}
+        />
+      )}
       <CellContent>
         {showStakedTag && (
           <Text fontSize="12px" bold color={isFinished ? 'failure' : 'secondary'} textTransform="uppercase">
