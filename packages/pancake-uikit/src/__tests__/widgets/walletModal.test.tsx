@@ -308,6 +308,8 @@ it("renders ConnectModal correctly", () => {
       -webkit-flex-direction: column;
       -ms-flex-direction: column;
       flex-direction: column;
+      max-height: 90vh;
+      overflow-y: auto;
     }
 
     .c1 {
@@ -317,6 +319,7 @@ it("renders ConnectModal correctly", () => {
       border: 1px solid #E7E3EB;
       border-radius: 32px;
       width: 100%;
+      max-height: 100vh;
       z-index: 100;
     }
 

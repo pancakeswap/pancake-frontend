@@ -21,6 +21,8 @@ export const ModalTitle = styled(Flex)`
 
 export const ModalBody = styled(Flex)`
   flex-direction: column;
+  max-height: 90vh;
+  overflow-y: auto;
 `;
 
 export const ModalCloseButton: React.FC<{ onDismiss: ModalProps["onDismiss"] }> = ({ onDismiss }) => {
@@ -46,6 +48,7 @@ export const ModalContainer = styled(Box)<{ minWidth: string }>`
   border: 1px solid ${({ theme }) => theme.colors.cardBorder};
   border-radius: 32px;
   width: 100%;
+  max-height: 100vh;
   z-index: ${({ theme }) => theme.zIndices.modal};
 
   ${({ theme }) => theme.mediaQueries.xs} {
