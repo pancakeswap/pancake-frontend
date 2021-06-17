@@ -1,18 +1,26 @@
+import React, { forwardRef } from "react";
 import styled from "styled-components";
 import { space } from "styled-system";
-import { ContainerProps } from "./types";
+import { WrapperProps } from "./types";
 
-const Wrapper = styled.div<ContainerProps>`
+const StyledWrapper = styled.div<{ $width: number; $height: number }>`
+  align-self: start;
+  max-height: ${({ $height }) => $height}px;
+  max-width: ${({ $width }) => $width}px;
   position: relative;
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  height: ${({ height, responsive }) => (responsive ? 0 : height)}px;
-  max-width: ${({ width }) => width}px;
-  max-height: ${({ height }) => height}px;
   width: 100%;
-  padding-top: ${({ width, height, responsive }) => (responsive ? (height / width) * 100 : 0)}%;
+
+  &:after {
+    content: "";
+    display: block;
+    padding-top: ${({ $width, $height }) => ($height / $width) * 100}%;
+  }
+
   ${space}
 `;
+
+const Wrapper = forwardRef<HTMLDivElement, WrapperProps>(({ width, height, ...props }, ref) => {
+  return <StyledWrapper ref={ref} $width={width} $height={height} {...props} />;
+});
 
 export default Wrapper;

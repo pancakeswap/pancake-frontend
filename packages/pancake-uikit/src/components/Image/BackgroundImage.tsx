@@ -1,30 +1,42 @@
 import React, { useEffect, useRef } from "react";
+import styled from "styled-components";
 import observerOptions from "./options";
 import Wrapper from "./Wrapper";
 import { ImageProps } from "./types";
 
-const BackgroundImage: React.FC<ImageProps> = ({ src, ...otherProps }) => {
-  const imgRef = useRef(null);
+const StyledBackgroundImage = styled(Wrapper)`
+  background-repeat: no-repeat;
+  background-size: contain;
+`;
+
+const BackgroundImage: React.FC<ImageProps> = ({ src, width, height, ...props }) => {
+  const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const img = imgRef.current as unknown as HTMLElement;
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        const { isIntersecting } = entry;
-        if (isIntersecting) {
-          img.style.backgroundImage = `url("${src}")`;
-          observer.disconnect();
-        }
-      });
-    }, observerOptions);
-    observer.observe(img);
+    let observer: IntersectionObserver;
 
+    if (ref.current) {
+      const div = ref.current;
+
+      observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          const { isIntersecting } = entry;
+          if (isIntersecting) {
+            div.style.backgroundImage = `url("${src}")`;
+            observer.disconnect();
+          }
+        });
+      }, observerOptions);
+      observer.observe(div);
+    }
     return () => {
-      observer.disconnect();
+      if (observer) {
+        observer.disconnect();
+      }
     };
   }, [src]);
 
-  return <Wrapper ref={imgRef} {...otherProps} />;
+  return <StyledBackgroundImage ref={ref} width={width} height={height} {...props} />;
 };
 
 export default BackgroundImage;
