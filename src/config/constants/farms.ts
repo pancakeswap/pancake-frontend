@@ -2602,6 +2602,26 @@ const farms: FarmConfig[] = [
     quoteToken: tokens.wbnb,
   },
   {
+    pid: 155,
+    lpSymbol: 'YFII-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x237E7016Ff50D3B704A7e07571aE08628909A116',
+    },
+    token: tokens.yfii,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 154,
+    lpSymbol: 'ATOM-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x7DD05eF533b1eBCE7815c90678D4B7344E32b8c9',
+    },
+    token: tokens.atom,
+    quoteToken: tokens.wbnb,
+  },
+  {
     pid: 153,
     lpSymbol: 'XRP-BNB LP',
     lpAddresses: {
