@@ -78,7 +78,7 @@ const EarningsCell: React.FC<EarningsCellProps> = ({ pool, account, userDataLoad
       <Balance fontSize="16px" value={autoUsdToDisplay} decimals={2} bold prefix="~$" />
       {t('Earned since your last action')}
       <Text>{dateStringToDisplay}</Text>
-      {t('Your average per hour:')}
+      {t('Average earned per hour:')}
       <Balance fontSize="16px" value={earnedCakePerHour} decimals={2} bold prefix="CAKE per hour: " />
       <Balance fontSize="16px" value={earnedUsdPerHour} decimals={2} bold prefix="per hour: ~$" />
       {t('At this rate, you would earn:')}

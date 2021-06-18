@@ -442,6 +442,8 @@
   "Additional fee:": "Additional fee:",
   "Learn more about %symbol%": "Learn more about %symbol%",
   "Earned since your last action": "Earned since your last action",
+  "Average earned per hour:": "Average earned per hour:",
+  "At this rate, you would earn:": "At this rate, you would earn:",
   "Commit ~%amount% LP in total to earn!": "Commit ~%amount% LP in total to earn!",
   "Learn more about %title%": "Learn more about %title%",
   "365d(APY)": "365d(APY)",
