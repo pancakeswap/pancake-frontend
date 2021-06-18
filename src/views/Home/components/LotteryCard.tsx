@@ -39,10 +39,7 @@ const LotteryCard = () => {
         <StyledText bold mb="24px" color="#7645d9">
           {t('Coming Soon...')}
         </StyledText>
-        <Link
-          external
-          href="https://voting.pancakeswap.finance/#/pancake/proposal/QmU8pcbmBrfbfVQXMMxmkExDq3mYq4s5cbBuFe6uCZzdmX"
-        >
+        <Link external href="https://pancakeswap.medium.com/pancakeswap-april-may-recap-a4e7cf990f72">
           <Button px={['14px', null, null, null, '20px']}>
             <Text color="backgroundAlt" bold fontSize="16px">
               {t('Learn More')}
