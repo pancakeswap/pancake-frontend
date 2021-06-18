@@ -1558,5 +1558,13 @@
     "chainId": 56,
     "decimals": 8,
     "logoURI": "https://tokens.pancakeswap.finance/images/0xaA9E582e5751d703F85912903bacADdFed26484C.png"
+  },
+  {
+    "name": "Hotbit",
+    "symbol": "HTB",
+    "address": "0x4e840AADD28DA189B9906674B4Afcb77C128d9ea",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0x4e840AADD28DA189B9906674B4Afcb77C128d9ea.png"
   }
 ]

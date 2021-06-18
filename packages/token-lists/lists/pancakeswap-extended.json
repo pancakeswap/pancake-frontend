@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2021-06-16T06:19:32.604Z",
+  "timestamp": "2021-06-18T07:20:10.270Z",
   "version": {
     "major": 2,
     "minor": 15,
-    "patch": 3
+    "patch": 5
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [
@@ -691,6 +691,14 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0x4FA7163E153419E0E1064e418dd7A99314Ed27b6.png"
+    },
+    {
+      "name": "Hotbit",
+      "symbol": "HTB",
+      "address": "0x4e840AADD28DA189B9906674B4Afcb77C128d9ea",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x4e840AADD28DA189B9906674B4Afcb77C128d9ea.png"
     },
     {
       "name": "HYFI",
