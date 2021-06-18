@@ -1560,6 +1560,15 @@ const tokens = {
     decimals: 8,
     projectLink: 'https://hacken.io/',
   },
+  htb: {
+    symbol: 'HTB',
+    address: {
+      56: '0x4e840AADD28DA189B9906674B4Afcb77C128d9ea',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://www.hotbit.io/',
+  },
 }
 
 export default tokens
