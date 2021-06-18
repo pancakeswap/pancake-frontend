@@ -1,14 +1,10 @@
 import React from "react";
-import { SvgProps } from "../../../components/Svg";
 import Text from "../../../components/Text/Text";
 import Dropdown from "../../../components/Dropdown/Dropdown";
 import Button from "../../../components/Button/Button";
-import * as IconModule from "../icons";
+import LanguageIcon from "../../../components/Svg/Icons/Language";
 import { Language } from "../types";
 import MenuButton from "./MenuButton";
-
-const Icons = IconModule as unknown as { [key: string]: React.FC<SvgProps> };
-const { LanguageIcon } = Icons;
 
 interface Props {
   currentLang: string;

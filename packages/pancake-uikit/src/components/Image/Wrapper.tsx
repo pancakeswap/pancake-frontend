@@ -4,7 +4,6 @@ import { space } from "styled-system";
 import { WrapperProps } from "./types";
 
 const StyledWrapper = styled.div<{ $width: number; $height: number }>`
-  align-self: start;
   max-height: ${({ $height }) => $height}px;
   max-width: ${({ $width }) => $width}px;
   position: relative;

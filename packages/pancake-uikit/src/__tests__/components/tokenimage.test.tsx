@@ -10,9 +10,6 @@ it("renders correctly", () => {
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
       .c0 {
-      -webkit-align-self: start;
-      -ms-flex-item-align: start;
-      align-self: start;
       max-height: 48px;
       max-width: 48px;
       position: relative;
