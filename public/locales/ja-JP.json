@@ -819,5 +819,8 @@
   "These pools are no longer distributing rewards. Please unstake your tokens.": "これらのプールは報酬を分配していません。トークンのステーキングを解除してください。",
   "Max. stake per user": "ユーザー当たり最大ステーキング",
   "You have claimed your rewards!": "You have claimed your rewards!",
-  "Already Collected": "Already Collected"
+  "Already Collected": "Already Collected",
+  "Prediction Markets": "Prediction Markets",
+  "Now Live": "Now Live",
+  "in Beta": "in Beta"
 }
