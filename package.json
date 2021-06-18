@@ -1,7 +1,8 @@
 {
-  "name": "pancake-frontend",
+  "name": "nezumi-frontend",
   "version": "0.1.0",
   "private": true,
+  "license": "UNLICENSED",
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "start": "react-scripts start",
