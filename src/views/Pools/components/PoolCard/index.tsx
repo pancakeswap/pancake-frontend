@@ -25,8 +25,8 @@ const PoolCard: React.FC<{ pool: Pool; account: string }> = ({ pool, account }) 
       <StyledCardInner>
         <StyledCardHeader
           isStaking={accountHasStakedBalance}
-          earningTokenSymbol={earningToken.symbol}
-          stakingTokenSymbol={stakingToken.symbol}
+          earningToken={earningToken}
+          stakingToken={stakingToken}
           isFinished={isFinished && sousId !== 0}
         />
         <CardBody>

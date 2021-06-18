@@ -1,7 +1,10 @@
 import React from 'react'
-import { CardHeader, Heading, Text, Flex, Image } from '@pancakeswap/uikit'
+import { CardHeader, Heading, Text, Flex, TokenPairImage } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
+import { Token } from 'config/constants/types'
+import { getAddress } from 'utils/addressHelpers'
+import CakeVaultTokenPairImage from '../CakeVaultCard/CakeVaultTokenPairImage'
 
 const Wrapper = styled(CardHeader)<{ isFinished?: boolean; background?: string }>`
   background: ${({ isFinished, background, theme }) =>
@@ -10,17 +13,14 @@ const Wrapper = styled(CardHeader)<{ isFinished?: boolean; background?: string }
 `
 
 const StyledCardHeader: React.FC<{
-  earningTokenSymbol: string
-  stakingTokenSymbol: string
+  earningToken: Token
+  stakingToken: Token
   isAutoVault?: boolean
   isFinished?: boolean
   isStaking?: boolean
-}> = ({ earningTokenSymbol, stakingTokenSymbol, isFinished = false, isAutoVault = false, isStaking = false }) => {
+}> = ({ earningToken, stakingToken, isFinished = false, isAutoVault = false, isStaking = false }) => {
   const { t } = useTranslation()
-  const poolImageSrc = isAutoVault
-    ? `cake-cakevault.svg`
-    : `${earningTokenSymbol}-${stakingTokenSymbol}.svg`.toLocaleLowerCase()
-  const isCakePool = earningTokenSymbol === 'CAKE' && stakingTokenSymbol === 'CAKE'
+  const isCakePool = earningToken.symbol === 'CAKE' && stakingToken.symbol === 'CAKE'
   const background = isStaking ? 'bubblegum' : 'cardHeader'
 
   const getHeadingPrefix = () => {
@@ -43,7 +43,7 @@ const StyledCardHeader: React.FC<{
     if (isCakePool) {
       return t('Earn CAKE, stake CAKE')
     }
-    return t('Stake %symbol%', { symbol: stakingTokenSymbol })
+    return t('Stake %symbol%', { symbol: stakingToken.symbol })
   }
 
   return (
@@ -51,11 +51,20 @@ const StyledCardHeader: React.FC<{
       <Flex alignItems="center" justifyContent="space-between">
         <Flex flexDirection="column">
           <Heading color={isFinished ? 'textDisabled' : 'body'} scale="lg">
-            {`${getHeadingPrefix()} ${earningTokenSymbol}`}
+            {`${getHeadingPrefix()} ${earningToken.symbol}`}
           </Heading>
           <Text color={isFinished ? 'textDisabled' : 'textSubtle'}>{getSubHeading()}</Text>
         </Flex>
-        <Image src={`/images/pools/${poolImageSrc}`} alt={earningTokenSymbol} width={64} height={64} />
+        {isAutoVault ? (
+          <CakeVaultTokenPairImage width={64} height={64} />
+        ) : (
+          <TokenPairImage
+            primaryTokenAddress={getAddress(earningToken.address)}
+            secondaryTokenAddress={getAddress(stakingToken.address)}
+            width={64}
+            height={64}
+          />
+        )}
       </Flex>
     </Wrapper>
   )

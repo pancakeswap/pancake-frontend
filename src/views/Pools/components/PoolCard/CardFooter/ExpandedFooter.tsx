@@ -14,6 +14,7 @@ import {
   useTooltip,
   Button,
   Link,
+  HelpIcon,
 } from '@pancakeswap/uikit'
 import { BASE_BSC_SCAN_URL, BASE_URL } from 'config'
 import { useBlock, useCakeVault } from 'state/hooks'
@@ -44,7 +45,17 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
     fees: { performanceFee },
   } = useCakeVault()
 
-  const { stakingToken, earningToken, totalStaked, endBlock, stakingLimit, contractAddress, sousId, isAutoVault } = pool
+  const {
+    stakingToken,
+    earningToken,
+    totalStaked,
+    startBlock,
+    endBlock,
+    stakingLimit,
+    contractAddress,
+    sousId,
+    isAutoVault,
+  } = pool
 
   const tokenAddress = earningToken.address ? getAddress(earningToken.address) : ''
   const poolContractAddress = getAddress(contractAddress)
@@ -72,21 +83,30 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
     return getBalanceNumber(totalStaked, stakingToken.decimals)
   }
 
+  const {
+    targetRef: totalStakedTargetRef,
+    tooltip: totalStakedTooltip,
+    tooltipVisible: totalStakedTooltipVisible,
+  } = useTooltip(t('Total amount of %symbol% staked in this pool', { symbol: stakingToken.symbol }), {
+    placement: 'bottom',
+  })
+
   return (
     <ExpandedWrapper flexDirection="column">
       <Flex mb="2px" justifyContent="space-between" alignItems="center">
         <Text small>{t('Total staked')}:</Text>
         <Flex alignItems="flex-start">
-          {totalStaked ? (
+          {totalStaked && totalStaked.gte(0) ? (
             <>
-              <Balance small value={getTotalStakedBalance()} />
-              <Text small ml="4px">
-                {stakingToken.symbol}
-              </Text>
+              <Balance small value={getTotalStakedBalance()} decimals={0} unit={` ${stakingToken.symbol}`} />
+              <span ref={totalStakedTargetRef}>
+                <HelpIcon color="textSubtle" width="20px" ml="6px" mt="4px" />
+              </span>
             </>
           ) : (
             <Skeleton width="90px" height="21px" />
           )}
+          {totalStakedTooltipVisible && totalStakedTooltip}
         </Flex>
       </Flex>
       {stakingLimit && stakingLimit.gt(0) && (
@@ -100,7 +120,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
           <Text small>{hasPoolStarted ? t('Ends in') : t('Starts in')}:</Text>
           {blocksRemaining || blocksUntilStart ? (
             <Flex alignItems="center">
-              <Link external href={getBscScanBlockCountdownUrl(endBlock)}>
+              <Link external href={getBscScanBlockCountdownUrl(hasPoolStarted ? endBlock : startBlock)}>
                 <Balance small value={blocksToDisplay} decimals={0} color="primary" />
                 <Text small ml="4px" color="primary" textTransform="lowercase">
                   {t('Blocks')}

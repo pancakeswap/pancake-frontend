@@ -819,5 +819,8 @@
   "These pools are no longer distributing rewards. Please unstake your tokens.": "لقد توقفت هذه التجمُّعات عن توزيع المكافآت. يُرجى فك رهن رموزك المميزة.",
   "Max. stake per user": "أقصى رهن لكل مستخدم",
   "You have claimed your rewards!": "You have claimed your rewards!",
-  "Already Collected": "Already Collected"
+  "Already Collected": "Already Collected",
+  "Prediction Markets": "Prediction Markets",
+  "Now Live": "Now Live",
+  "in Beta": "in Beta"
 }

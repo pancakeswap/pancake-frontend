@@ -819,5 +819,8 @@
   "These pools are no longer distributing rewards. Please unstake your tokens.": "এইসব পুল আর বিতরিত পুরস্কার নয়। অনুগ্রহ করে আপনার টোকেন আনস্টেক করুন।",
   "Max. stake per user": "ব্যবহারকারী প্রতি সর্বোচ্চ স্টেক",
   "You have claimed your rewards!": "আপনি আপনার পুরস্কারের দাবি করেছেন!",
-  "Already Collected": "ইতিমধ্যেই সংগৃহীত"
+  "Already Collected": "ইতিমধ্যেই সংগৃহীত",
+  "Prediction Markets": "Prediction Markets",
+  "Now Live": "Now Live",
+  "in Beta": "in Beta"
 }

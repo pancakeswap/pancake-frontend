@@ -1,27 +1,36 @@
 import BigNumber from 'bignumber.js'
 import { convertSharesToCake } from 'views/Pools/helpers'
-import { getCakeVaultContract } from 'utils/contractHelpers'
-import makeBatchRequest from 'utils/makeBatchRequest'
-
-const cakeVaultContract = getCakeVaultContract()
+import { multicallv2 } from 'utils/multicall'
+import cakeVaultAbi from 'config/abi/cakeVault.json'
+import { getCakeVaultAddress } from 'utils/addressHelpers'
+import { BIG_ZERO } from 'utils/bigNumber'
 
 export const fetchPublicVaultData = async () => {
   try {
-    const [sharePrice, shares, estimatedCakeBountyReward, totalPendingCakeHarvest] = await makeBatchRequest([
-      cakeVaultContract.methods.getPricePerFullShare().call,
-      cakeVaultContract.methods.totalShares().call,
-      cakeVaultContract.methods.calculateHarvestCakeRewards().call,
-      cakeVaultContract.methods.calculateTotalPendingCakeRewards().call,
-    ])
-    const totalSharesAsBigNumber = new BigNumber(shares as string)
-    const sharePriceAsBigNumber = new BigNumber(sharePrice as string)
+    const calls = [
+      'getPricePerFullShare',
+      'totalShares',
+      'calculateHarvestCakeRewards',
+      'calculateTotalPendingCakeRewards',
+    ].map((method) => ({
+      address: getCakeVaultAddress(),
+      name: method,
+    }))
+
+    const [[sharePrice], [shares], [estimatedCakeBountyReward], [totalPendingCakeHarvest]] = await multicallv2(
+      cakeVaultAbi,
+      calls,
+    )
+
+    const totalSharesAsBigNumber = shares ? new BigNumber(shares.toString()) : BIG_ZERO
+    const sharePriceAsBigNumber = sharePrice ? new BigNumber(sharePrice.toString()) : BIG_ZERO
     const totalCakeInVaultEstimate = convertSharesToCake(totalSharesAsBigNumber, sharePriceAsBigNumber)
     return {
       totalShares: totalSharesAsBigNumber.toJSON(),
       pricePerFullShare: sharePriceAsBigNumber.toJSON(),
       totalCakeInVault: totalCakeInVaultEstimate.cakeAsBigNumber.toJSON(),
-      estimatedCakeBountyReward: new BigNumber(estimatedCakeBountyReward as string).toJSON(),
-      totalPendingCakeHarvest: new BigNumber(totalPendingCakeHarvest as string).toJSON(),
+      estimatedCakeBountyReward: new BigNumber(estimatedCakeBountyReward.toString()).toJSON(),
+      totalPendingCakeHarvest: new BigNumber(totalPendingCakeHarvest.toString()).toJSON(),
     }
   } catch (error) {
     return {
@@ -36,17 +45,18 @@ export const fetchPublicVaultData = async () => {
 
 export const fetchVaultFees = async () => {
   try {
-    const [performanceFee, callFee, withdrawalFee, withdrawalFeePeriod] = await makeBatchRequest([
-      cakeVaultContract.methods.performanceFee().call,
-      cakeVaultContract.methods.callFee().call,
-      cakeVaultContract.methods.withdrawFee().call,
-      cakeVaultContract.methods.withdrawFeePeriod().call,
-    ])
+    const calls = ['performanceFee', 'callFee', 'withdrawFee', 'withdrawFeePeriod'].map((method) => ({
+      address: getCakeVaultAddress(),
+      name: method,
+    }))
+
+    const [[performanceFee], [callFee], [withdrawalFee], [withdrawalFeePeriod]] = await multicallv2(cakeVaultAbi, calls)
+
     return {
-      performanceFee: parseInt(performanceFee as string, 10),
-      callFee: parseInt(callFee as string, 10),
-      withdrawalFee: parseInt(withdrawalFee as string, 10),
-      withdrawalFeePeriod: parseInt(withdrawalFeePeriod as string, 10),
+      performanceFee: performanceFee.toNumber(),
+      callFee: callFee.toNumber(),
+      withdrawalFee: withdrawalFee.toNumber(),
+      withdrawalFeePeriod: withdrawalFeePeriod.toNumber(),
     }
   } catch (error) {
     return {

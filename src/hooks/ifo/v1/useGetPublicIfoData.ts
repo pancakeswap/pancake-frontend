@@ -3,9 +3,9 @@ import BigNumber from 'bignumber.js'
 import { BSC_BLOCK_TIME } from 'config'
 import { Ifo, IfoStatus, PoolIds } from 'config/constants/types'
 import { useBlock, useLpTokenPrice } from 'state/hooks'
-import { useIfoV1Contract } from 'hooks/useContract'
-import makeBatchRequest from 'utils/makeBatchRequest'
 import { BIG_ZERO } from 'utils/bigNumber'
+import { multicallv2 } from 'utils/multicall'
+import ifoV1Abi from 'config/abi/ifoV1.json'
 import { PublicIfoData } from '../types'
 import { getStatus } from '../helpers'
 
@@ -34,18 +34,16 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
     },
   })
   const { currentBlock } = useBlock()
-  const contract = useIfoV1Contract(address)
-
   const fetchIfoData = useCallback(async () => {
-    const [startBlock, endBlock, raisingAmount, totalAmount] = (await makeBatchRequest([
-      contract.methods.startBlock().call,
-      contract.methods.endBlock().call,
-      contract.methods.raisingAmount().call,
-      contract.methods.totalAmount().call,
-    ])) as [string, string, string, string]
+    const ifoCalls = ['startBlock', 'endBlock', 'raisingAmount', 'totalAmount'].map((method) => ({
+      address,
+      name: method,
+    }))
 
-    const startBlockNum = parseInt(startBlock, 10)
-    const endBlockNum = parseInt(endBlock, 10)
+    const [startBlock, endBlock, raisingAmount, totalAmount] = await multicallv2(ifoV1Abi, ifoCalls)
+
+    const startBlockNum = startBlock ? startBlock[0].toNumber() : 0
+    const endBlockNum = endBlock ? endBlock[0].toNumber() : 0
 
     const status = getStatus(currentBlock, startBlockNum, endBlockNum)
     const totalBlocks = endBlockNum - startBlockNum
@@ -69,11 +67,11 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
       numberPoints: null,
       [PoolIds.poolUnlimited]: {
         ...prev.poolUnlimited,
-        raisingAmountPool: new BigNumber(raisingAmount),
-        totalAmountPool: new BigNumber(totalAmount),
+        raisingAmountPool: raisingAmount ? new BigNumber(raisingAmount[0].toString()) : BIG_ZERO,
+        totalAmountPool: totalAmount ? new BigNumber(totalAmount[0].toString()) : BIG_ZERO,
       },
     }))
-  }, [contract, currentBlock, releaseBlockNumber])
+  }, [address, currentBlock, releaseBlockNumber])
 
   useEffect(() => {
     fetchIfoData()

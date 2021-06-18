@@ -261,9 +261,10 @@ const Farms: React.FC = () => {
         originalValue: farm.apr,
       },
       farm: {
-        image: farm.lpSymbol.split(' ')[0].toLocaleLowerCase(),
         label: lpLabel,
         pid: farm.pid,
+        token: farm.token,
+        quoteToken: farm.quoteToken,
       },
       earned: {
         earnings: getBalanceNumber(new BigNumber(farm.userData.earnings)),
