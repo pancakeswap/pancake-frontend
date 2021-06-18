@@ -18,7 +18,7 @@ const StyledCell = styled(BaseCell)`
 `
 
 const EndsInCell: React.FC<FinishCellProps> = ({ pool }) => {
-  const { sousId, totalStaked, endBlock, isFinished } = pool
+  const { sousId, totalStaked, startBlock, endBlock, isFinished } = pool
   const { currentBlock } = useBlock()
   const { t } = useTranslation()
 
@@ -36,7 +36,11 @@ const EndsInCell: React.FC<FinishCellProps> = ({ pool }) => {
         </Text>
       </Flex>
       <Flex flex="1">
-        <Link external href={getBscScanBlockCountdownUrl(endBlock)} onClick={(e) => e.stopPropagation()}>
+        <Link
+          external
+          href={getBscScanBlockCountdownUrl(hasPoolStarted ? endBlock : startBlock)}
+          onClick={(e) => e.stopPropagation()}
+        >
           <TimerIcon ml="4px" />
         </Link>
       </Flex>

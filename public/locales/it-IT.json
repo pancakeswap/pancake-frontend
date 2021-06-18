@@ -819,5 +819,8 @@
   "These pools are no longer distributing rewards. Please unstake your tokens.": "Questi pool non distribuiscono più ricompense. Rimuovi i token messi in stake in essi.",
   "Max. stake per user": "Staking max. per utente",
   "You have claimed your rewards!": "You have claimed your rewards!",
-  "Already Collected": "Already Collected"
+  "Already Collected": "Already Collected",
+  "Prediction Markets": "Prediction Markets",
+  "Now Live": "Now Live",
+  "in Beta": "in Beta"
 }

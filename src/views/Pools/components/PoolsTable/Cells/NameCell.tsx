@@ -1,11 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
-import { Text, Image, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Text, TokenPairImage, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
+import { getAddress } from 'utils/addressHelpers'
 import { useCakeVault } from 'state/hooks'
 import { Pool } from 'state/types'
 import { BIG_ZERO } from 'utils/bigNumber'
+import CakeVaultTokenPairImage from '../../CakeVaultCard/CakeVaultTokenPairImage'
 import BaseCell, { CellContent } from './BaseCell'
 
 interface NameCellProps {
@@ -33,7 +35,6 @@ const NameCell: React.FC<NameCellProps> = ({ pool }) => {
 
   const stakingTokenSymbol = stakingToken.symbol
   const earningTokenSymbol = earningToken.symbol
-  const iconFile = `${earningTokenSymbol}-${stakingTokenSymbol}.svg`.toLocaleLowerCase()
 
   const stakedBalance = userData?.stakedBalance ? new BigNumber(userData.stakedBalance) : BIG_ZERO
   const isStaked = stakedBalance.gt(0)
@@ -55,7 +56,17 @@ const NameCell: React.FC<NameCellProps> = ({ pool }) => {
 
   return (
     <StyledCell role="cell">
-      <Image src={`/images/pools/${iconFile}`} alt="icon" width={40} height={40} mr="8px" />
+      {isAutoVault ? (
+        <CakeVaultTokenPairImage mr="8px" width={40} height={40} />
+      ) : (
+        <TokenPairImage
+          primaryTokenAddress={getAddress(earningToken.address)}
+          secondaryTokenAddress={getAddress(stakingToken.address)}
+          mr="8px"
+          width={40}
+          height={40}
+        />
+      )}
       <CellContent>
         {showStakedTag && (
           <Text fontSize="12px" bold color={isFinished ? 'failure' : 'secondary'} textTransform="uppercase">

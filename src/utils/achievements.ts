@@ -1,14 +1,17 @@
+import { ethers } from 'ethers'
 import { Campaign } from 'config/constants/types'
 import { getPointCenterIfoContract } from 'utils/contractHelpers'
 import ifosList from 'config/constants/ifo'
 import { campaignMap } from 'config/constants/campaigns'
 import { Achievement, TranslatableText } from 'state/types'
-import makeBatchRequest from './makeBatchRequest'
+import { multicallv2 } from 'utils/multicall'
+import { getPointCenterIfoAddress } from 'utils/addressHelpers'
+import pointCenterIfoABI from 'config/abi/pointCenterIfo.json'
 
 interface IfoMapResponse {
   thresholdToClaim: string
   campaignId: string
-  numberPoints: string
+  numberPoints: ethers.BigNumber
 }
 
 export const getAchievementTitle = (campaign: Campaign): TranslatableText => {
@@ -53,12 +56,12 @@ export const getClaimableIfoData = async (account: string): Promise<Achievement[
     .call()) as boolean[]
 
   // Get IFO data for all IFO's that are eligible to claim
-  const claimableIfoData = (await makeBatchRequest(
+  const claimableIfoData = (await multicallv2(
+    pointCenterIfoABI,
     claimStatuses.reduce((accum, claimStatus, index) => {
       if (claimStatus === true) {
-        return [...accum, pointCenterContract.methods.ifos(ifoCampaignAddresses[index]).call]
+        return [...accum, { address: getPointCenterIfoAddress(), name: 'ifos', params: [index] }]
       }
-
       return accum
     }, []),
   )) as IfoMapResponse[]
@@ -81,7 +84,7 @@ export const getClaimableIfoData = async (account: string): Promise<Achievement[
         title: getAchievementTitle(campaignMeta),
         description: getAchievementDescription(campaignMeta),
         badge: campaignMeta.badge,
-        points: Number(claimableIfoDataItem.numberPoints),
+        points: claimableIfoDataItem.numberPoints.toNumber(),
       },
     ]
   }, [])

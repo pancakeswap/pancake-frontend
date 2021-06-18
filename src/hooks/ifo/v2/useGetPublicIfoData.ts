@@ -3,11 +3,11 @@ import BigNumber from 'bignumber.js'
 import { BSC_BLOCK_TIME } from 'config'
 import { Ifo, IfoStatus } from 'config/constants/types'
 import { useBlock, useLpTokenPrice } from 'state/hooks'
-import { useIfoV2Contract } from 'hooks/useContract'
 import useRefresh from 'hooks/useRefresh'
-import makeBatchRequest from 'utils/makeBatchRequest'
+import { multicallv2 } from 'utils/multicall'
+import ifoV2Abi from 'config/abi/ifoV2.json'
 import { BIG_ZERO } from 'utils/bigNumber'
-import { PublicIfoData, PoolCharacteristics } from '../types'
+import { PublicIfoData } from '../types'
 import { getStatus } from '../helpers'
 
 // https://github.com/pancakeswap/pancake-contracts/blob/master/projects/ifo/contracts/IFOV2.sol#L431
@@ -15,12 +15,12 @@ import { getStatus } from '../helpers'
 const TAX_PRECISION = 10000000000
 
 const formatPool = (pool) => ({
-  raisingAmountPool: new BigNumber(pool[0]),
-  offeringAmountPool: new BigNumber(pool[1]),
-  limitPerUserInLP: new BigNumber(pool[2]),
-  hasTax: pool[3],
-  totalAmountPool: new BigNumber(pool[4]),
-  sumTaxesOverflow: new BigNumber(pool[5]),
+  raisingAmountPool: pool ? new BigNumber(pool[0].toString()) : BIG_ZERO,
+  offeringAmountPool: pool ? new BigNumber(pool[1].toString()) : BIG_ZERO,
+  limitPerUserInLP: pool ? new BigNumber(pool[2].toString()) : BIG_ZERO,
+  hasTax: pool ? pool[3] : false,
+  totalAmountPool: pool ? new BigNumber(pool[4].toString()) : BIG_ZERO,
+  sumTaxesOverflow: pool ? new BigNumber(pool[5].toString()) : BIG_ZERO,
 })
 
 /**
@@ -58,23 +58,49 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
     numberPoints: 0,
   })
   const { currentBlock } = useBlock()
-  const contract = useIfoV2Contract(address)
 
   const fetchIfoData = useCallback(async () => {
-    const [startBlock, endBlock, poolBasic, poolUnlimited, taxRate, numberPoints] = (await makeBatchRequest([
-      contract.methods.startBlock().call,
-      contract.methods.endBlock().call,
-      contract.methods.viewPoolInformation(0).call,
-      contract.methods.viewPoolInformation(1).call,
-      contract.methods.viewPoolTaxRateOverflow(1).call,
-      contract.methods.numberPoints().call,
-    ])) as [string, string, PoolCharacteristics, PoolCharacteristics, number, number]
+    const ifoCalls = [
+      {
+        address,
+        name: 'startBlock',
+      },
+      {
+        address,
+        name: 'endBlock',
+      },
+      {
+        address,
+        name: 'viewPoolInformation',
+        params: [0],
+      },
+      {
+        address,
+        name: 'viewPoolInformation',
+        params: [1],
+      },
+      {
+        address,
+        name: 'viewPoolTaxRateOverflow',
+        params: [1],
+      },
+      {
+        address,
+        name: 'numberPoints',
+      },
+    ]
+
+    const [startBlock, endBlock, poolBasic, poolUnlimited, taxRate, numberPoints] = await multicallv2(
+      ifoV2Abi,
+      ifoCalls,
+    )
 
     const poolBasicFormatted = formatPool(poolBasic)
     const poolUnlimitedFormatted = formatPool(poolUnlimited)
 
-    const startBlockNum = parseInt(startBlock, 10)
-    const endBlockNum = parseInt(endBlock, 10)
+    const startBlockNum = startBlock ? startBlock[0].toNumber() : 0
+    const endBlockNum = endBlock ? endBlock[0].toNumber() : 0
+    const taxRateNum = taxRate ? taxRate[0].div(TAX_PRECISION).toNumber() : 0
 
     const status = getStatus(currentBlock, startBlockNum, endBlockNum)
     const totalBlocks = endBlockNum - startBlockNum
@@ -91,15 +117,15 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
       secondsUntilEnd: blocksRemaining * BSC_BLOCK_TIME,
       secondsUntilStart: (startBlockNum - currentBlock) * BSC_BLOCK_TIME,
       poolBasic: { ...poolBasicFormatted, taxRate: 0 },
-      poolUnlimited: { ...poolUnlimitedFormatted, taxRate: taxRate / TAX_PRECISION },
+      poolUnlimited: { ...poolUnlimitedFormatted, taxRate: taxRateNum },
       status,
       progress,
       blocksRemaining,
       startBlockNum,
       endBlockNum,
-      numberPoints,
+      numberPoints: numberPoints ? numberPoints[0].toNumber() : 0,
     }))
-  }, [contract, currentBlock, releaseBlockNumber])
+  }, [address, currentBlock, releaseBlockNumber])
 
   useEffect(() => {
     fetchIfoData()

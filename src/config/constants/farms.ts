@@ -39,6 +39,46 @@ const farms: FarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 413,
+    lpSymbol: 'HTB-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x2a995d355d5df641e878c0f366685741fd18d004',
+    },
+    token: tokens.htb,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 351,
+    lpSymbol: 'JGN-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x7275278C94b5e20708380561C4Af98F38dDC6374',
+    },
+    token: tokens.jgn,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 337,
+    lpSymbol: 'DFT-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x24d3B0eD4C444A4f6882d527cBF67aDc8c026582',
+    },
+    token: tokens.dft,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 412,
+    lpSymbol: 'HAI-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x289841bFb694767bCb56fBc7B741aB4B4D97D490',
+    },
+    token: tokens.hai,
+    quoteToken: tokens.wbnb,
+  },
+  {
     pid: 411,
     lpSymbol: 'O3-BUSD LP',
     lpAddresses: {
@@ -699,16 +739,6 @@ const farms: FarmConfig[] = [
     quoteToken: tokens.wbnb,
   },
   {
-    pid: 351,
-    lpSymbol: 'JGN-BNB LP',
-    lpAddresses: {
-      97: '',
-      56: '0x7275278C94b5e20708380561C4Af98F38dDC6374',
-    },
-    token: tokens.jgn,
-    quoteToken: tokens.wbnb,
-  },
-  {
     pid: 350,
     lpSymbol: 'EPS-BNB LP',
     lpAddresses: {
@@ -816,16 +846,6 @@ const farms: FarmConfig[] = [
       56: '0x0362ba706DFE8ED12Ec1470aB171d8Dcb1C72B8D',
     },
     token: tokens.pbtc,
-    quoteToken: tokens.wbnb,
-  },
-  {
-    pid: 337,
-    lpSymbol: 'DFT-BNB LP',
-    lpAddresses: {
-      97: '',
-      56: '0x24d3B0eD4C444A4f6882d527cBF67aDc8c026582',
-    },
-    token: tokens.dft,
     quoteToken: tokens.wbnb,
   },
   {
