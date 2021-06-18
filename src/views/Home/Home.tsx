@@ -13,7 +13,7 @@ import PredictionBetaCard from './components/PredictionBetaCard'
 
 const Hero = styled.div`
   align-items: center;
-  background-image: url('/images/pan-bg-mobile.svg');
+  background-image: url('/images/tom-rright.png');
   background-repeat: no-repeat;
   background-position: top center;
   display: flex;
@@ -21,13 +21,14 @@ const Hero = styled.div`
   flex-direction: column;
   margin: auto;
   margin-bottom: 32px;
-  padding-top: 116px;
+  padding-top: 50px;
   text-align: center;
 
   ${({ theme }) => theme.mediaQueries.lg} {
-    background-image: url('/images/pan-bg2.svg'), url('/images/pan-bg.svg');
+    background-image: url('/images/jerry-left.png'), url('/images/tom-right.png');
     background-position: left center, right center;
-    height: 165px;
+    background-size: 280px, 200px;
+    height: 200px;
     padding-top: 0;
   }
 `
@@ -90,17 +91,18 @@ const Home: React.FC = () => {
   return (
     <Page>
       <Hero>
-        <Heading as="h1" scale="xl" mb="24px" color="secondary">
-          {t('PancakeSwap')}
+        <Heading as="h1" scale="xl" mb="24px">
+          {t('Tom & Jerry Swap')}
         </Heading>
-        <Text>{t('The #1 AMM and yield farm on Binance Smart Chain.')}</Text>
+        <Text>{t('The meme yield farming on Binance Smart Chain. ')}</Text>
       </Hero>
       <div>
         <Cards>
           <FarmStakingCard />
-          <LotteryCard />
+          <CakeStats />
+          <TotalValueLockedCard />
         </Cards>
-        <CTACards>
+        {/* <CTACards>
           <EarnAPRCard />
           <EarnAssetCard />
           <PredictionBetaCard />
@@ -108,7 +110,7 @@ const Home: React.FC = () => {
         <Cards>
           <CakeStats />
           <TotalValueLockedCard />
-        </Cards>
+        </Cards> */}
       </div>
     </Page>
   )
