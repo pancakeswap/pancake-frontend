@@ -2,32 +2,38 @@
 export const tableData = [
   {
     id: 1,
-    path: 'images/rugZombie/img1.png',
+    name: 'Basic Zombie',
+    path: 'images/rugZombie/BasicZombie.png',
     type: 'image',
   },
   {
     id: 2,
-    path: 'images/rugZombie/img2.png',
+    name: 'Viking Brains',
+    path: 'images/rugZombie/VikingBrains.jpeg',
     type: 'image',
   },
   {
     id: 3,
-    path: 'images/rugZombie/img3.png',
+    name: 'Zomburger',
+    path: 'images/rugZombie/Zomburger.jpeg',
     type: 'image',
   },
   {
     id: 4,
-    path: 'images/rugZombie/video1.webm',
-    type: 'vide',
+    name: 'Basic Fairmoon',
+    path: 'images/rugZombie/BasicFairmoon.mp4',
+    type: 'video',
   },
   {
     id: 5,
-    path: 'images/rugZombie/img1.png',
-    type: 'image',
+    name: 'Uncommon Fairmooon',
+    path: 'images/rugZombie/UncommonFairmoon.mp4',
+    type: 'video',
   },
   {
     id: 6,
-    path: 'images/rugZombie/img2.png',
+    name: 'Raremoon',
+    path: 'images/rugZombie/Raremoon.jpeg',
     type: 'image',
   },
   {
