@@ -40,10 +40,10 @@
     -ms-flex-direction: column;
     flex-direction: column;
     background-color: #000;
-    background-image: -webkit-gradient(linear, left top, left bottom, from(#0e1216), to(#0e1216));
+    /* background-image: -webkit-gradient(linear, left top, left bottom, from(#0e1216), to(#0e1216));
     background-image: linear-gradient(
 180deg
-, #0e1216, #0e1216);
+, #0e1216, #0e1216); */
 }
 .section-3 {
     display: -webkit-box;
@@ -77,7 +77,7 @@
     padding-bottom: 32px;
     border-radius: 0px;
     background-color: #0e1216;
-    background-image: url('https://uploads-ssl.webflow.com/60847fea0f393c67d6cd5297/608b30ef8c3a6df06df5ff8d_bac2c.jpg');
+    background-image: url('../../images/rugZombieBg.png');
     background-position: 0px 0px;
     background-size: cover;
     opacity: 1;

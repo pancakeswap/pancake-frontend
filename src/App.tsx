@@ -7,8 +7,8 @@ import { useFetchPriceList, useFetchProfile, useFetchPublicData } from 'state/ho
 import { routes } from 'routes'
 import Menu from 'components/Menu'
 import Loader from 'components/Loader'
-import Farms from 'views/Farms/Farms';
 import Home from 'views/Home/Home';
+import Tombs from 'views/Tombs/Tombs'
 import SuspenseWithChunkError from './components/SuspenseWithChunkError'
 // import Graves from './views/Graves'
 import history from './routerHistory'
@@ -44,7 +44,7 @@ const App: React.FC = () => {
 
   const handleAuthentication = () => {
     setAuthenticated(!isAuthenticated);
-    history.push(routes.HOME);
+    history.push(routes.GRAVES);
   }
 
   const LandingProps = {
@@ -59,8 +59,8 @@ const App: React.FC = () => {
         <Switch>
           <Route exact path={routes.LANDING}><Landing {...LandingProps} /></Route>
           <Menu>
-          <Route exact path={routes.HOME}><Home /></Route>
-          <Route exact path={routes.FARMS}><Home /></Route>
+          <Route exact path={routes.GRAVES}><Home /></Route>
+          <Route exact path={routes.TOMBS}><Tombs /></Route>
           </Menu>
         </Switch>
       </SuspenseWithChunkError>

@@ -369,3 +369,11 @@ table td {
   height: 360px;
   width: 360px;
 } */
+
+.innerHeader{
+  background: none !important;
+}
+
+.innnerContainer{
+  padding: 0 32px !important;
+}
