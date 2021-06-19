@@ -1,5 +1,5 @@
 import React, { useEffect, lazy, useState } from 'react'
-import { Router, Route, Switch, Redirect } from 'react-router-dom'
+import { Router, Route, Switch } from 'react-router-dom'
 import { ResetCSS } from '@rug-zombie-libs/uikit'
 import BigNumber from 'bignumber.js'
 import useEagerConnect from 'hooks/useEagerConnect'
@@ -12,7 +12,6 @@ import Home from 'views/Home/Home';
 import SuspenseWithChunkError from './components/SuspenseWithChunkError'
 // import Graves from './views/Graves'
 import history from './routerHistory'
-import PrivateRoute from './PrivateRoute'
 import GlobalStyle from './style/Global'
 // import Crypts from './views/Crypts'
 
@@ -61,7 +60,7 @@ const App: React.FC = () => {
           <Route exact path={routes.LANDING}><Landing {...LandingProps} /></Route>
           <Menu>
           <Route exact path={routes.HOME}><Home /></Route>
-          <Route exact path={routes.FARMS}><Farms /></Route>
+          <Route exact path={routes.FARMS}><Home /></Route>
           </Menu>
         </Switch>
       </SuspenseWithChunkError>

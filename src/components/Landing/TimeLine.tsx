@@ -54,7 +54,7 @@ const TimeLine = () => {
                       <strong>4.</strong>
                     </span>
                     <span className="text-span-3">
-                      <strong className="bold-text">Select the $Rug zombie token</strong>
+                      <strong className="bold-text">Select the $ZMBE token</strong>
                     </span>
                   </p>
                   <p className="paragraph-18">Click on the Select a Currency button, and enter the $Rug zombie token contract:<br />

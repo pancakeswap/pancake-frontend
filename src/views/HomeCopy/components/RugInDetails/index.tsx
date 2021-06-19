@@ -1,54 +1,51 @@
 import React from 'react'
 
-
-const RugInDetails: React.FC = () => {
+interface RugInDetailsProps {
+  details: {
+    id: number,
+    path: string,
+    type: string
+  }
+}
+const RugInDetails: React.FC<RugInDetailsProps> = ({ details: { id, path, type } }) => {
   return (
-    <div className="rug-indetails">
-        <div className="direction-column">
-          <span className="indetails-type">Yearly</span>
-          <span className="indetails-title">FRANK APR:
-            <span className="indetails-value">693.08%</span>
-          </span>
-          <span className="indetails-title">Total Returns:
-            <span className="indetails-value">693.08%</span>
-          </span>
-          <span className="indetails-type mt-3">Daily</span>
-          <span className="indetails-title">FRANK Daily:
-            <span className="indetails-value">1.9%</span>
-          </span>
-          <span className="indetails-title">Total Returns:
-            <span className="indetails-value">1.9%</span>
-          </span>
+    <div key={id} className="rug-indetails">
+      <div className="direction-column imageColumn">
+        <div className="sc-iwajpm dcRUtg">
+          {type === 'image' ?
+            <img src={path} alt="CAKE" className="sc-cxNHIi bjMxQn" /> : 
+            <video width="100%" autoPlay>
+                <source src={path} type="video/mp4" />
+            </video>
+          }
         </div>
-        <div className="direction-column">
-          <span className="indetails-type">Farm</span>
-          <span className="indetails-title">Weight:
+      </div>
+      <div className="direction-column">
+        <span className="indetails-type">Farm</span>
+        <span className="indetails-title">Weight:
             <span className="indetails-value">120X</span>
-          </span>
-          <span className="indetails-title">FRANK TVL:
+        </span>
+        <span className="indetails-title">FRANK TVL:
             <span className="indetails-value">$37.01K</span>
-          </span>
-        </div>
-        <div className="direction-column">
-          <span className="indetails-type">Fees</span>
-          <span className="indetails-title">Entrance Fee:
-            <span className="indetails-value">0.1%</span>
-          </span>
-          <span className="indetails-title">Buyback:
-            <span className="indetails-value">0.0% (on profits)</span>
-          </span>
-          <span className="indetails-title">Network Fee:
-            <span className="indetails-value">0.0% (on profits)</span>
-          </span>
-          <span className="indetails-title">Operational Fee:
-            <span className="indetails-value">0.0% (on profits)</span>
-          </span>
-        </div>
-        <div className="direction-column">
-          <a href="/" target="_blank" className="indetails-link">Tutorials</a>
-          <a href="/" target="_blank" className="indetails-link">Fees &amp; Tokenomics</a>
-          <a href="/" target="_blank" className="indetails-link">View Contract</a>
-        </div>
+        </span>
+      </div>
+      <div className="direction-column">
+        <span className="indetails-type">Deposit Fees:(dynamic price in BNB equivalent to BUSD 4 dollars)</span>
+        <span className="indetails-title">Early Withdrawal:
+            <span className="indetails-value">5%</span>
+        </span>
+        <span className="indetails-title">Withdrawal Cooldown:
+            <span className="indetails-value">(timer)</span>
+        </span>
+        <span className="indetails-title">NFT Mint competion:
+            <span className="indetails-value">(timer)</span>
+        </span>
+      </div>
+      {/* <div className="direction-column">
+          <a href="/" target="_blank" className="indetails-link">Tutorials goes to gitbook</a>
+          <a href="/" target="_blank" className="indetails-link">Fees &amp; Tokenomics goes to gitbook page</a>
+          <a href="/" target="_blank" className="indetails-link">View Contract goes to BSC Scan (wait for address)</a>
+        </div> */}
     </div>
   )
 }

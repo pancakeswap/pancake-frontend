@@ -31,7 +31,7 @@ const ArrowIcon = styled(BaseLayout)`
   height: 50px;
   background-color: rgb(29, 47, 59);
   margin-right: 0.3em;
-`;
+`
 interface TableListProps {
   handler: any
 }

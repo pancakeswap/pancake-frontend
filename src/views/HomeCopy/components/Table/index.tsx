@@ -17,7 +17,18 @@ const TableCards = styled(BaseLayout)`
     width: 100%;
   }
 `
-const Table: React.FC = () => {
+
+interface TableData {
+  id: number,
+  path: string,
+  type: string
+}
+
+interface TableProps {
+  details: TableData
+}
+
+const Table: React.FC<TableProps> = ({ details }: TableProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const openInDetails = (data) => {
@@ -42,7 +53,7 @@ const Table: React.FC = () => {
                 <StartFarming />
                 <BuyFrank />
               </div>
-              <RugInDetails />
+              <RugInDetails details={details} />
             </div>
           </div>
         ) : null}

@@ -9,7 +9,7 @@ declare module 'styled-components' {
 
 const GlobalStyle = createGlobalStyle`
   * {
-    font-family: 'Kanit', sans-serif;
+    font-family: 'Century Gothic', sans-serif;
   }
   body {
     background-color: ${({ theme }) => theme.colors.background};
@@ -18,6 +18,11 @@ const GlobalStyle = createGlobalStyle`
       height: auto;
       max-width: 100%;
     }
+  }
+  .hHItVm {
+    background-image: url('/images/rug_zombie_bg.jpeg');
+    background-repeat: no-repeat;
+    background-size: cover;
   }
 `
 

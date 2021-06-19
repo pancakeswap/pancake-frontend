@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components'
-import { NavLink } from 'react-router-dom';
-import { Heading, Text, BaseLayout } from '@rug-zombie-libs/uikit'
+import { Heading, Text } from '@rug-zombie-libs/uikit'
 import { useTranslation } from '../../contexts/Localization'
 import Page from '../../components/layout/Page'
 import Table from './components/Table'
@@ -10,7 +9,7 @@ import { tableData } from './data';
 
 const Hero = styled.div`
   align-items: center;
-  background-image: url('/images/pan-bg-mobile.svg');
+  /* background-image: url('/images/pan-bg-mobile.svg'); */
   background-repeat: no-repeat;
   background-position: top center;
   display: flex;
@@ -22,7 +21,8 @@ const Hero = styled.div`
   text-align: center;
 
   ${({ theme }) => theme.mediaQueries.lg} {
-    background-image: url('https://storage.googleapis.com/rug-zombie/running-zombie-2.png'), url('https://storage.googleapis.com/rug-zombie/running-zombie-1.png');
+    background-image: none;
+    /* background-image: url('https://storage.googleapis.com/rug-zombie/running-zombie-2.png'), url('https://storage.googleapis.com/rug-zombie/running-zombie-1.png'); */
     background-position: left center, right center;
     background-size: 207px 142px, 207px 142px;
     height: 165px;
@@ -30,7 +30,8 @@ const Hero = styled.div`
   }
 `
 
-const ImageURL = "https://storage.googleapis.com/rug-zombie/rug-zombie-home.png"
+const ImageURL = "https://storage.googleapis.com/rug-zombie/rug-zombie-home.png";
+
 const Home: React.FC = () => {
   const { t } = useTranslation()
 
@@ -44,7 +45,7 @@ const Home: React.FC = () => {
       </Hero>
       <div>
         {tableData.map((data) => {
-          return <Table key={data.id} />
+          return <Table details={data} key={data.id} />
         })}
       </div>
     </Page>
