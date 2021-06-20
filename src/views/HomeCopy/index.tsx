@@ -5,7 +5,7 @@ import { useTranslation } from '../../contexts/Localization'
 import Page from '../../components/layout/Page'
 import Table from './components/Table'
 import './HomeCopy.Styles.css'
-import { tableData } from './data';
+import tableData from './data';
 
 const Hero = styled.div`
   align-items: center;
