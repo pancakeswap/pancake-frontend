@@ -30,7 +30,7 @@ const WinCard = () => {
       <NavLink exact activeClassName="active" to="/lottery" id="lottery-pot-cta">
         <CardBody>
           <Heading color="contrast" scale="lg">
-            {t('Lottery')}
+            {t('Lottery')} V2
           </Heading>
           <CardMidContent color="#7645d9">{t('Coming Soon')}</CardMidContent>
           <Flex justifyContent="space-between">

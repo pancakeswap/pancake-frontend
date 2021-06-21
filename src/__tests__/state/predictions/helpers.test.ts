@@ -3,6 +3,7 @@ import {
   numberOrNull,
   transformBetResponse,
   transformMarketResponse,
+  transformTotalWonResponse,
 } from 'state/predictions/helpers'
 
 describe('numberOrNull', () => {
@@ -157,5 +158,16 @@ describe('transformMarketResponse', () => {
       paused: true,
       epoch: 200,
     })
+  })
+})
+
+describe('transformTotalWonResponse', () => {
+  it('returns a correctly transformed total won response', () => {
+    const totalWonMarketResponse = {
+      totalBNB: '200',
+      totalBNBTreasury: '100',
+    }
+    const roundResponse = [{ totalAmount: '5' }, { totalAmount: '2' }]
+    expect(transformTotalWonResponse(totalWonMarketResponse, roundResponse)).toEqual(93)
   })
 })
