@@ -1569,6 +1569,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://www.hotbit.io/',
   },
+  woo: {
+    symbol: 'WOO',
+    address: {
+      56: '0x4691937a7508860F876c9c0a2a617E7d9E945D4B',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://woo.network/',
+  },
 }
 
 export default tokens
