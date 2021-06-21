@@ -2,10 +2,10 @@ import React from 'react'
 import styled from 'styled-components'
 import { useFarmUser } from 'state/hooks'
 import { useTranslation } from 'contexts/Localization'
-import { Text, TokenPairImage } from '@pancakeswap/uikit'
+import { Text } from '@pancakeswap/uikit'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { getAddress } from 'utils/addressHelpers'
 import { Token } from 'config/constants/types'
+import TokenPairImage from 'components/TokenPairImage'
 
 export interface FarmProps {
   label: string
@@ -53,13 +53,7 @@ const Farm: React.FunctionComponent<FarmProps> = ({ token, quoteToken, label, pi
   return (
     <Container>
       <TokenWrapper>
-        <TokenPairImage
-          variant="inverted"
-          primaryTokenAddress={getAddress(token.address)}
-          secondaryTokenAddress={getAddress(quoteToken.address)}
-          width={40}
-          height={40}
-        />
+        <TokenPairImage variant="inverted" primaryToken={token} secondaryToken={quoteToken} width={40} height={40} />
       </TokenWrapper>
       <div>
         {handleRenderFarming()}

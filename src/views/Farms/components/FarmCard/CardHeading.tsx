@@ -1,9 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Tag, Flex, Heading, TokenPairImage } from '@pancakeswap/uikit'
+import { Tag, Flex, Heading } from '@pancakeswap/uikit'
 import { CommunityTag, CoreTag } from 'components/Tags'
 import { Token } from 'config/constants/types'
-import { getAddress } from 'utils/addressHelpers'
+import TokenPairImage from 'components/TokenPairImage'
 
 export interface ExpandableSectionProps {
   lpLabel?: string
@@ -26,13 +26,7 @@ const MultiplierTag = styled(Tag)`
 const CardHeading: React.FC<ExpandableSectionProps> = ({ lpLabel, multiplier, isCommunityFarm, token, quoteToken }) => {
   return (
     <Wrapper justifyContent="space-between" alignItems="center" mb="12px">
-      <TokenPairImage
-        variant="inverted"
-        primaryTokenAddress={getAddress(token.address)}
-        secondaryTokenAddress={getAddress(quoteToken.address)}
-        width={64}
-        height={64}
-      />
+      <TokenPairImage variant="inverted" primaryToken={token} secondaryToken={quoteToken} width={64} height={64} />
       <Flex flexDirection="column" alignItems="flex-end">
         <Heading mb="4px">{lpLabel.split(' ')[0]}</Heading>
         <Flex justifyContent="center">
