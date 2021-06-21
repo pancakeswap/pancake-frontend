@@ -13,7 +13,7 @@ import {
   TimerIcon,
   useTooltip,
 } from '@pancakeswap/uikit'
-import { BASE_URL } from 'config'
+import { BASE_BSC_SCAN_URL, BASE_URL } from 'config'
 import { getBscScanBlockCountdownUrl } from 'utils/bscscan'
 import { useBlock, useCakeVault } from 'state/hooks'
 import BigNumber from 'bignumber.js'
@@ -21,7 +21,7 @@ import { Pool } from 'state/types'
 import { useTranslation } from 'contexts/Localization'
 import Balance from 'components/Balance'
 import { CompoundingPoolTag, ManualPoolTag } from 'components/Tags'
-import { getAddress } from 'utils/addressHelpers'
+import { getAddress, getCakeVaultAddress } from 'utils/addressHelpers'
 import { registerToken } from 'utils/wallet'
 import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
 import { getPoolBlockInfo } from 'views/Pools/helpers'
@@ -109,8 +109,20 @@ const InfoSection = styled(Box)`
 `
 
 const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded, expanded, breakpoints }) => {
-  const { sousId, stakingToken, earningToken, totalStaked, startBlock, endBlock, stakingLimit, isAutoVault } = pool
+  const {
+    sousId,
+    stakingToken,
+    earningToken,
+    totalStaked,
+    startBlock,
+    endBlock,
+    stakingLimit,
+    contractAddress,
+    isAutoVault,
+  } = pool
   const { t } = useTranslation()
+  const poolContractAddress = getAddress(contractAddress)
+  const cakeVaultContractAddress = getCakeVaultAddress()
   const { currentBlock } = useBlock()
   const { isXs, isSm, isMd } = breakpoints
   const showSubtitle = (isXs || isSm) && sousId === 0
@@ -227,9 +239,19 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
         </Flex>
         <Flex mb="8px" justifyContent={['flex-end', 'flex-end', 'flex-start']}>
           <LinkExternal href={earningToken.projectLink} bold={false}>
-            {t('Project site')}
+            {t('View Project Site')}
           </LinkExternal>
         </Flex>
+        {poolContractAddress && (
+          <Flex mb="8px" justifyContent={['flex-end', 'flex-end', 'flex-start']}>
+            <LinkExternal
+              href={`${BASE_BSC_SCAN_URL}/address/${isAutoVault ? cakeVaultContractAddress : poolContractAddress}`}
+              bold={false}
+            >
+              {t('View Contract')}
+            </LinkExternal>
+          </Flex>
+        )}
         {account && isMetaMaskInScope && tokenAddress && (
           <Flex mb="8px" justifyContent={['flex-end', 'flex-end', 'flex-start']}>
             <Button
