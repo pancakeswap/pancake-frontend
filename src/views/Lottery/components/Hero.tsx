@@ -89,7 +89,7 @@ const Hero = () => {
             bold
             mt={20}
             external
-            href="https://voting.pancakeswap.finance/#/pancake/proposal/QmU8pcbmBrfbfVQXMMxmkExDq3mYq4s5cbBuFe6uCZzdmX"
+            href="https://pancakeswap.medium.com/pancakeswap-april-may-recap-a4e7cf990f72"
           >
             {t('Learn more')}
           </LinkExternal>
