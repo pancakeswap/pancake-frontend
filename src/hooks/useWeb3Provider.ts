@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react'
 import { ethers } from 'ethers'
 import { useWeb3React } from '@web3-react/core'
-import { simpleRpcProvider } from 'utils/web3'
+import { simpleRpcProvider } from 'utils/providers'
 
 /**
  * Provides a web3 provider with or without user's signer

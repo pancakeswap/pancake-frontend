@@ -1,5 +1,5 @@
 import { ethers } from 'ethers'
-import { simpleRpcProvider } from 'utils/web3'
+import { simpleRpcProvider } from 'utils/providers'
 import { poolsConfig } from 'config/constants'
 import { PoolCategory } from 'config/constants/types'
 
