@@ -1578,6 +1578,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://woo.network/',
   },
+  $dg: {
+    symbol: '$DG',
+    address: {
+      56: '0x9Fdc3ae5c814b79dcA2556564047C5e7e5449C19',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://decentral.games/',
+  },
 }
 
 export default tokens
