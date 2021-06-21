@@ -35,7 +35,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
   const { t } = useTranslation()
   const { theme } = useTheme()
   const {
-    maxNumberTicketsPerBuy,
+    maxNumberTicketsPerBuyOrClaim,
     currentLotteryId,
     currentRound: {
       priceTicketInCake,
@@ -43,7 +43,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
       userData: { tickets: userCurrentTickets },
     },
   } = useLottery()
-  const [ticketsToBuy, setTicketsToBuy] = useState('')
+  const [ticketsToBuy, setTicketsToBuy] = useState('0')
   const [discountValue, setDiscountValue] = useState('')
   const [totalCost, setTotalCost] = useState('')
   const [maxPossibleTicketPurchase, setMaxPossibleTicketPurchase] = useState(BIG_ZERO)
@@ -75,7 +75,9 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
   useEffect(() => {
     const getMaxPossiblePurchase = () => {
       const maxBalancePurchase = userCake.div(priceTicketInCake)
-      const maxPurchase = maxBalancePurchase.gt(maxNumberTicketsPerBuy) ? maxNumberTicketsPerBuy : maxBalancePurchase
+      const maxPurchase = maxBalancePurchase.gt(maxNumberTicketsPerBuyOrClaim)
+        ? maxNumberTicketsPerBuyOrClaim
+        : maxBalancePurchase
       if (hasFetchedBalance && maxPurchase.eq(0)) {
         setUserNotEnoughCake(true)
       } else {
@@ -84,7 +86,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
       setMaxPossibleTicketPurchase(maxPurchase)
     }
     getMaxPossiblePurchase()
-  }, [maxNumberTicketsPerBuy, priceTicketInCake, userCake, hasFetchedBalance])
+  }, [maxNumberTicketsPerBuyOrClaim, priceTicketInCake, userCake, hasFetchedBalance])
 
   useEffect(() => {
     const getCostAfterDiscount = () => {
@@ -290,7 +292,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
 
         <Text mt="24px" fontSize="12px" color="textSubtle">
           {t(
-            'The CAKE ticket price is set before each lottery round starts, equal to $5 at that time. Ticket purchases are final.',
+            'The CAKE ticket price is set before each lottery round starts, equal to [PLACEHOLDER] $5 at that time. Ticket purchases are final.',
           )}
         </Text>
       </Flex>

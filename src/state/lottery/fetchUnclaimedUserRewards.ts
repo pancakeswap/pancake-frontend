@@ -89,7 +89,7 @@ const fetchUnclaimedUserRewards = async (
   userLotteryHistory: UserLotteryHistory,
   pastLotteries: PastLotteryRound[],
 ): Promise<LotteryTicketClaimData[]> => {
-  const { pastRounds } = userLotteryHistory
+  const { rounds } = userLotteryHistory
   const cursor = 0
   const limit = 1000
 
@@ -98,7 +98,7 @@ const fetchUnclaimedUserRewards = async (
     return []
   }
 
-  const filteredForCurrentRound = pastRounds.filter((round) => {
+  const filteredForCurrentRound = rounds.filter((round) => {
     return round.lotteryId !== currentLotteryId
   })
 
