@@ -13,11 +13,6 @@ export interface ImageProps extends ImgHTMLAttributes<HTMLImageElement>, SpacePr
   wrapperProps?: WrapperProps;
 }
 
-export interface TokenImageBaseProps extends Omit<ImageProps, "src"> {
-  baseUrl?: string;
-  imageFormat?: string;
-}
-
 export const variants = {
   DEFAULT: "default",
   INVERTED: "inverted",
@@ -26,15 +21,11 @@ export const variants = {
 export type Variant = typeof variants[keyof typeof variants];
 
 export interface TokenPairImageProps extends BoxProps {
-  primaryTokenAddress: string;
-  secondaryTokenAddress: string;
+  primarySrc: string;
+  secondarySrc: string;
   variant?: Variant;
   height: number;
   width: number;
-  primaryImageProps?: Omit<TokenImageBaseProps, "width" | "height">;
-  secondaryImageProps?: Omit<TokenImageBaseProps, "width" | "height">;
-}
-
-export interface TokenImageProps extends TokenImageBaseProps {
-  tokenAddress: string;
+  primaryImageProps?: Omit<ImageProps, "width" | "height">;
+  secondaryImageProps?: Omit<ImageProps, "width" | "height">;
 }

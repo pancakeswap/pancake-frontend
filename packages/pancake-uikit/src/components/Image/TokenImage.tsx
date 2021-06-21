@@ -1,9 +1,7 @@
-import React from "react";
 import styled from "styled-components";
-import { TokenImageProps } from "./types";
 import Image from "./Image";
 
-const StyledTokenImage = styled(Image)`
+const TokenImage = styled(Image)`
   &:before {
     border-radius: 50%;
     border: 1px solid rgba(0, 0, 0, 0.25);
@@ -16,14 +14,5 @@ const StyledTokenImage = styled(Image)`
     z-index: 7;
   }
 `;
-
-const TokenImage: React.FC<TokenImageProps> = ({
-  tokenAddress,
-  baseUrl = "/images/tokens",
-  imageFormat = "svg",
-  ...props
-}) => {
-  return <StyledTokenImage src={`${baseUrl}/${tokenAddress}.${imageFormat}`} {...props} />;
-};
 
 export default TokenImage;

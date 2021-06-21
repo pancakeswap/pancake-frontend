@@ -4,8 +4,8 @@ import { StyledPrimaryImage, StyledSecondaryImage } from "./styles";
 import Wrapper from "./Wrapper";
 
 const TokenPairImage: React.FC<TokenPairImageProps> = ({
-  secondaryTokenAddress,
-  primaryTokenAddress,
+  primarySrc,
+  secondarySrc,
   width,
   height,
   variant = variants.DEFAULT,
@@ -17,16 +17,10 @@ const TokenPairImage: React.FC<TokenPairImageProps> = ({
 
   return (
     <Wrapper position="relative" width={width} height={height} {...props}>
-      <StyledPrimaryImage
-        variant={variant}
-        tokenAddress={primaryTokenAddress}
-        width={width}
-        height={height}
-        {...primaryImageProps}
-      />
+      <StyledPrimaryImage variant={variant} src={primarySrc} width={width} height={height} {...primaryImageProps} />
       <StyledSecondaryImage
         variant={variant}
-        tokenAddress={secondaryTokenAddress}
+        src={secondarySrc}
         width={secondaryImageSize}
         height={secondaryImageSize}
         {...secondaryImageProps}
