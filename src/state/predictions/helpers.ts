@@ -11,6 +11,8 @@ import {
   getUserBaseFields,
   RoundResponse,
   MarketResponse,
+  TotalWonMarketResponse,
+  TotalWonRoundResponse,
 } from './queries'
 
 export enum Result {
@@ -140,6 +142,20 @@ export const transformMarketResponse = (marketResponse: MarketResponse): Market 
   }
 }
 
+export const transformTotalWonResponse = (
+  marketResponse: TotalWonMarketResponse,
+  roundResponse: TotalWonRoundResponse[],
+): number => {
+  const houseRounds = roundResponse.reduce((accum, round) => {
+    return accum + (round.totalAmount ? parseFloat(round.totalAmount) : 0)
+  }, 0)
+
+  const totalBNB = marketResponse.totalBNB ? parseFloat(marketResponse.totalBNB) : 0
+  const totalBNBTreasury = marketResponse.totalBNBTreasury ? parseFloat(marketResponse.totalBNBTreasury) : 0
+
+  return Math.max(totalBNB - (totalBNBTreasury + houseRounds), 0)
+}
+
 export const makeRoundData = (rounds: Round[]): RoundData => {
   return rounds.reduce((accum, round) => {
     return {
@@ -226,6 +242,26 @@ export const getMarketData = async (): Promise<{
     rounds: response.rounds.map(transformRoundResponse),
     market: transformMarketResponse(response.market),
   }
+}
+
+export const getTotalWon = async (): Promise<number> => {
+  const response = (await request(
+    GRAPH_API_PREDICTION,
+    gql`
+      query getTotalWonData($position: String) {
+        market(id: 1) {
+          totalBNB
+          totalBNBTreasury
+        }
+        rounds(where: { position: $position }) {
+          totalAmount
+        }
+      }
+    `,
+    { position: BetPosition.HOUSE },
+  )) as { market: TotalWonMarketResponse; rounds: TotalWonRoundResponse[] }
+
+  return transformTotalWonResponse(response.market, response.rounds)
 }
 
 export const getRound = async (id: string) => {
