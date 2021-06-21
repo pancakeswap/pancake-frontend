@@ -4,11 +4,13 @@ import { getAddress } from "@ethersproject/address";
 import pancakeswapDefault from "./tokens/pancakeswap-default.json";
 import pancakeswapExtended from "./tokens/pancakeswap-extended.json";
 import pancakeswapTop100 from "./tokens/pancakeswap-top-100.json";
+import pancakeswapTop15 from "./tokens/pancakeswap-top-15.json";
 
 const lists = {
   "pancakeswap-default": pancakeswapDefault,
   "pancakeswap-extended": pancakeswapExtended,
-  "pancakeswap-top-100": pancakeswapTop100
+  "pancakeswap-top-100": pancakeswapTop100,
+  "pancakeswap-top-15": pancakeswapTop15
 };
 
 const checksumAddresses = (listName: string): void => {

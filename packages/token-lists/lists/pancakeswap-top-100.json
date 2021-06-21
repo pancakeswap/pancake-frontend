@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Top 100",
-  "timestamp": "2021-06-11T09:20:16.963Z",
+  "timestamp": "2021-06-21T01:44:15.440Z",
   "version": {
     "major": 2,
-    "minor": 14,
-    "patch": 5
+    "minor": 16,
+    "patch": 0
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [
@@ -29,6 +29,14 @@
       "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0xAC51066d7bEC65Dc4589368da368b212745d63E8/logo.png"
     },
     {
+      "name": "AlpacaToken",
+      "symbol": "ALPACA",
+      "address": "0x8F0528cE5eF7B51152A59745bEfDD91D97091d2F",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x8F0528cE5eF7B51152A59745bEfDD91D97091d2F/logo.png"
+    },
+    {
       "name": "AlphaToken",
       "symbol": "ALPHA",
       "address": "0xa1faa113cbE53436Df28FF0aEe54275c13B40975",
@@ -37,20 +45,12 @@
       "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0xa1faa113cbE53436Df28FF0aEe54275c13B40975/logo.png"
     },
     {
-      "name": "Aquagoat",
-      "symbol": "AQUAGOAT",
-      "address": "0x07af67b392B7A202fAD8E0FBc64C34F33102165B",
+      "name": "Automata",
+      "symbol": "ATA",
+      "address": "0xA2120b9e674d3fC3875f415A7DF52e382F141225",
       "chainId": 56,
-      "decimals": 9,
-      "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x07af67b392B7A202fAD8E0FBc64C34F33102165B/logo.png"
-    },
-    {
-      "name": "Australian Shepherd Token",
-      "symbol": "ASS",
-      "address": "0x7c63F96fEAFACD84e75a594C00faC3693386FBf0",
-      "chainId": 56,
-      "decimals": 9,
-      "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x7c63F96fEAFACD84e75a594C00faC3693386FBf0/logo.png"
+      "decimals": 18,
+      "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0xA2120b9e674d3fC3875f415A7DF52e382F141225/logo.png"
     },
     {
       "name": "Baby Doge Coin",
@@ -77,6 +77,22 @@
       "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x2C80bC9bFa4EC680EfB949C51806bDDEE5Ac8299/logo.png"
     },
     {
+      "name": "BitBook",
+      "symbol": "BBT",
+      "address": "0xD48474E7444727bF500a32D5AbE01943f3A59A64",
+      "chainId": 56,
+      "decimals": 8,
+      "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0xD48474E7444727bF500a32D5AbE01943f3A59A64/logo.png"
+    },
+    {
+      "name": "BELT Token",
+      "symbol": "BELT",
+      "address": "0xE0e514c71282b6f4e823703a39374Cf58dc3eA4f",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0xE0e514c71282b6f4e823703a39374Cf58dc3eA4f/logo.png"
+    },
+    {
       "name": "beefy.finance",
       "symbol": "BIFI",
       "address": "0xCa3F508B8e4Dd382eE878A314789373D80A5190A",
@@ -85,7 +101,7 @@
       "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0xCa3F508B8e4Dd382eE878A314789373D80A5190A/logo.png"
     },
     {
-      "name": "Bogged Finance NEW",
+      "name": "Bogged Finance",
       "symbol": "BOG",
       "address": "0xB09FE1613fE03E7361319d2a43eDc17422f36B09",
       "chainId": 56,
@@ -93,20 +109,12 @@
       "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0xB09FE1613fE03E7361319d2a43eDc17422f36B09/logo.png"
     },
     {
-      "name": "Bogged Finance OLD",
+      "name": "Bogged Finance - OLD",
       "symbol": "BOGOLD",
       "address": "0xD7B729ef857Aa773f47D37088A1181bB3fbF0099",
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0xD7B729ef857Aa773f47D37088A1181bB3fbF0099/logo.png"
-    },
-    {
-      "name": "Bonfire",
-      "symbol": "BONFIRE",
-      "address": "0x5e90253fbae4Dab78aa351f4E6fed08A64AB5590",
-      "chainId": 56,
-      "decimals": 9,
-      "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x5e90253fbae4Dab78aa351f4E6fed08A64AB5590/logo.png"
     },
     {
       "name": "BunnyPark",
@@ -133,6 +141,14 @@
       "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0xbcb24AFb019BE7E93EA9C43B7E22Bb55D5B7f45D/logo.png"
     },
     {
+      "name": "B-LAUNCH",
+      "symbol": "BSL",
+      "address": "0xB60501346240FCdE1615de56eA9FFf1AC1da5673",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0xB60501346240FCdE1615de56eA9FFf1AC1da5673/logo.png"
+    },
+    {
       "name": "StandardBTCHashrateToken",
       "symbol": "BTCST",
       "address": "0x78650B139471520656b9E7aA7A5e9276814a38e9",
@@ -149,12 +165,28 @@
       "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x8595F9dA7b868b1822194fAEd312235E43007b49/logo.png"
     },
     {
-      "name": "CateCoin",
-      "symbol": "CATE",
-      "address": "0x118F073796821DA3E9901061B05c0b36377B877e",
+      "name": "Bunny Token",
+      "symbol": "BUNNY",
+      "address": "0xC9849E6fdB743d08fAeE3E34dd2D1bc69EA11a51",
       "chainId": 56,
-      "decimals": 8,
-      "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x118F073796821DA3E9901061B05c0b36377B877e/logo.png"
+      "decimals": 18,
+      "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0xC9849E6fdB743d08fAeE3E34dd2D1bc69EA11a51/logo.png"
+    },
+    {
+      "name": "Cerberus Token",
+      "symbol": "CERBERUS",
+      "address": "0x8B3268a23131DAFBd77165690767F285C1AAC6C5",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x8B3268a23131DAFBd77165690767F285C1AAC6C5/logo.png"
+    },
+    {
+      "name": "Chroma",
+      "symbol": "CHR",
+      "address": "0xf9CeC8d50f6c8ad3Fb6dcCEC577e05aA32B224FE",
+      "chainId": 56,
+      "decimals": 6,
+      "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0xf9CeC8d50f6c8ad3Fb6dcCEC577e05aA32B224FE/logo.png"
     },
     {
       "name": "CluCoin",
@@ -163,14 +195,6 @@
       "chainId": 56,
       "decimals": 9,
       "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x1162E2EfCE13f99Ed259fFc24d99108aAA0ce935/logo.png"
-    },
-    {
-      "name": "Compound Coin",
-      "symbol": "COMP",
-      "address": "0x52CE071Bd9b1C4B00A0b92D298c512478CaD67e8",
-      "chainId": 56,
-      "decimals": 18,
-      "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x52CE071Bd9b1C4B00A0b92D298c512478CaD67e8/logo.png"
     },
     {
       "name": "CumRocket",
@@ -189,12 +213,12 @@
       "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x1AF3F329e8BE154074D8769D1FFa4eE058B1DBc3/logo.png"
     },
     {
-      "name": "DeChart",
-      "symbol": "DCH",
-      "address": "0x14ACe3d3429408bFA8562099A253172913AD71bd",
+      "name": "DIAMOND",
+      "symbol": "DND",
+      "address": "0x34EA3F7162E6f6Ed16bD171267eC180fD5c848da",
       "chainId": 56,
       "decimals": 18,
-      "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x14ACe3d3429408bFA8562099A253172913AD71bd/logo.png"
+      "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x34EA3F7162E6f6Ed16bD171267eC180fD5c848da/logo.png"
     },
     {
       "name": "DODO bird",
@@ -213,14 +237,6 @@
       "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0xbA2aE424d960c26247Dd6c32edC70B295c744C43/logo.png"
     },
     {
-      "name": "DOGGY",
-      "symbol": "DOGGY",
-      "address": "0x74926B3d118a63F6958922d3DC05eB9C6E6E00c6",
-      "chainId": 56,
-      "decimals": 18,
-      "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x74926B3d118a63F6958922d3DC05eB9C6E6E00c6/logo.png"
-    },
-    {
       "name": "Dopple Token",
       "symbol": "DOP",
       "address": "0x844FA82f1E54824655470970F7004Dd90546bB28",
@@ -237,20 +253,12 @@
       "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x7083609fCE4d1d8Dc0C979AAb8c869Ea2C873402/logo.png"
     },
     {
-      "name": "ElonGate",
-      "symbol": "ELONGATE",
-      "address": "0x2A9718defF471f3Bb91FA0ECEAB14154F150a385",
-      "chainId": 56,
-      "decimals": 9,
-      "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x2A9718defF471f3Bb91FA0ECEAB14154F150a385/logo.png"
-    },
-    {
-      "name": "EOS Token",
-      "symbol": "EOS",
-      "address": "0x56b6fB708fC5732DEC1Afc8D8556423A2EDcCbD6",
+      "name": "Ellipsis",
+      "symbol": "EPS",
+      "address": "0xA7f552078dcC247C2684336020c03648500C6d9F",
       "chainId": 56,
       "decimals": 18,
-      "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x56b6fB708fC5732DEC1Afc8D8556423A2EDcCbD6/logo.png"
+      "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0xA7f552078dcC247C2684336020c03648500C6d9F/logo.png"
     },
     {
       "name": "FEGtoken",
@@ -259,14 +267,6 @@
       "chainId": 56,
       "decimals": 9,
       "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0xacFC95585D80Ab62f67A14C566C1b7a49Fe91167/logo.png"
-    },
-    {
-      "name": "Refinable",
-      "symbol": "FINE",
-      "address": "0x4e6415a5727ea08aAE4580057187923aeC331227",
-      "chainId": 56,
-      "decimals": 18,
-      "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x4e6415a5727ea08aAE4580057187923aeC331227/logo.png"
     },
     {
       "name": "FTS",
@@ -333,12 +333,12 @@
       "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x4FA7163E153419E0E1064e418dd7A99314Ed27b6/logo.png"
     },
     {
-      "name": "HYFI",
-      "symbol": "HYFI",
-      "address": "0x9a319b959e33369C5eaA494a770117eE3e585318",
+      "name": "Hunny Token",
+      "symbol": "HUNNY",
+      "address": "0x565b72163f17849832A692A3c5928cc502f46D69",
       "chainId": 56,
       "decimals": 18,
-      "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x9a319b959e33369C5eaA494a770117eE3e585318/logo.png"
+      "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x565b72163f17849832A692A3c5928cc502f46D69/logo.png"
     },
     {
       "name": "Injective Protocol",
@@ -357,20 +357,20 @@
       "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x9678E42ceBEb63F23197D726B29b1CB20d0064E5/logo.png"
     },
     {
+      "name": "IRON Stablecoin",
+      "symbol": "IRON",
+      "address": "0x7b65B489fE53fCE1F6548Db886C08aD73111DDd8",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x7b65B489fE53fCE1F6548Db886C08aD73111DDd8/logo.png"
+    },
+    {
       "name": "Juggernaut DeFi",
       "symbol": "JGN",
       "address": "0xC13B7a43223BB9Bf4B69BD68Ab20ca1B79d81C75",
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0xC13B7a43223BB9Bf4B69BD68Ab20ca1B79d81C75/logo.png"
-    },
-    {
-      "name": "Kabosu",
-      "symbol": "KABOSU",
-      "address": "0x4A824eE819955A7D769e03fe36f9E0C3Bd3Aa60b",
-      "chainId": 56,
-      "decimals": 9,
-      "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x4A824eE819955A7D769e03fe36f9E0C3Bd3Aa60b/logo.png"
     },
     {
       "name": "Kalmar Token",
@@ -403,14 +403,6 @@
       "chainId": 56,
       "decimals": 8,
       "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0xfCb520B47f5601031E0Eb316F553A3641FF4B13C/logo.png"
-    },
-    {
-      "name": "loser coin",
-      "symbol": "LOWB",
-      "address": "0x843D4a358471547f51534e3e51fae91cb4Dc3F28",
-      "chainId": 56,
-      "decimals": 18,
-      "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x843D4a358471547f51534e3e51fae91cb4Dc3F28/logo.png"
     },
     {
       "name": "Litecoin Token",
@@ -453,12 +445,20 @@
       "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0xD7730681B1DC8f6F969166B29D8A5EA8568616a3/logo.png"
     },
     {
-      "name": "NFTArt.Finance",
-      "symbol": "NFTART",
-      "address": "0xF7844CB890F4C339c497aeAb599aBDc3c874B67A",
+      "name": "Nerve",
+      "symbol": "NRV",
+      "address": "0x42F6f551ae042cBe50C739158b4f0CAC0Edb9096",
       "chainId": 56,
-      "decimals": 9,
-      "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0xF7844CB890F4C339c497aeAb599aBDc3c874B67A/logo.png"
+      "decimals": 18,
+      "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x42F6f551ae042cBe50C739158b4f0CAC0Edb9096/logo.png"
+    },
+    {
+      "name": "O3 Swap Token",
+      "symbol": "O3",
+      "address": "0xEe9801669C6138E84bD50dEB500827b776777d28",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0xEe9801669C6138E84bD50dEB500827b776777d28/logo.png"
     },
     {
       "name": "Paralink Network",
@@ -477,28 +477,12 @@
       "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x19B60612F9A93359bca835A788A334D4157E675B/logo.png"
     },
     {
-      "name": "pTokens BTC",
-      "symbol": "PBTC",
-      "address": "0xeD28A457A5A76596ac48d87C0f577020F6Ea1c4C",
-      "chainId": 56,
-      "decimals": 18,
-      "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0xeD28A457A5A76596ac48d87C0f577020F6Ea1c4C/logo.png"
-    },
-    {
-      "name": "Pig Token",
-      "symbol": "PIG",
-      "address": "0x8850D2c68c632E3B258e612abAA8FadA7E6958E5",
+      "name": "Piggy Bank Token",
+      "symbol": "PIGGY",
+      "address": "0xCd2eCd5e06b1a330789B30e8AdA3D11c51503a71",
       "chainId": 56,
       "decimals": 9,
-      "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x8850D2c68c632E3B258e612abAA8FadA7E6958E5/logo.png"
-    },
-    {
-      "name": "PooCoin",
-      "symbol": "POOCOIN",
-      "address": "0xB27ADAfFB9fEa1801459a1a81B17218288c097cc",
-      "chainId": 56,
-      "decimals": 8,
-      "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0xB27ADAfFB9fEa1801459a1a81B17218288c097cc/logo.png"
+      "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0xCd2eCd5e06b1a330789B30e8AdA3D11c51503a71/logo.png"
     },
     {
       "name": "PORNROCKET",
@@ -533,28 +517,28 @@
       "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0a3A21356793B49154Fd3BbE91CBc2A16c0457f5/logo.png"
     },
     {
-      "name": "Sabaka Inu",
-      "symbol": "SABAKAINU",
-      "address": "0xC30F12CD65f61ded24db6C415C84F999C9704eBC",
+      "name": "EverRise",
+      "symbol": "RISE",
+      "address": "0xC7D43F2B51F44f09fBB8a691a0451E8FFCF36c0a",
       "chainId": 56,
       "decimals": 9,
-      "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0xC30F12CD65f61ded24db6C415C84F999C9704eBC/logo.png"
+      "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0xC7D43F2B51F44f09fBB8a691a0451E8FFCF36c0a/logo.png"
     },
     {
-      "name": "Saturna",
-      "symbol": "SAT",
-      "address": "0x1e446CbEa52BAdeB614FBe4Ab7610F737995fB44",
+      "name": "SafeHamsters",
+      "symbol": "SAFEHAMSTERS",
+      "address": "0xa016F295A5957cB80D03d8E5464A429007555124",
       "chainId": 56,
       "decimals": 9,
-      "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x1e446CbEa52BAdeB614FBe4Ab7610F737995fB44/logo.png"
+      "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0xa016F295A5957cB80D03d8E5464A429007555124/logo.png"
     },
     {
-      "name": "Savetheworld",
-      "symbol": "SAVE",
-      "address": "0x159802FBE16Aa6a0863a56a18DD41Afce546c93E",
+      "name": "SafeMoon",
+      "symbol": "SAFEMOON",
+      "address": "0x8076C74C5e3F5852037F31Ff0093Eeb8c8ADd8D3",
       "chainId": 56,
       "decimals": 9,
-      "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x159802FBE16Aa6a0863a56a18DD41Afce546c93E/logo.png"
+      "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x8076C74C5e3F5852037F31Ff0093Eeb8c8ADd8D3/logo.png"
     },
     {
       "name": "SafePal Token",
@@ -581,20 +565,12 @@
       "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0xe5D46cC0Fd592804B36F9dc6D2ed7D4D149EBd6F/logo.png"
     },
     {
-      "name": "SHIBA BSC",
-      "symbol": "SHIBSC",
-      "address": "0xdF0816CC717216c8B0863aF8d4f0fC20Bc65d643",
+      "name": "IRON Share V2",
+      "symbol": "STEEL",
+      "address": "0x9001eE054F1692feF3A48330cB543b6FEc6287eb",
       "chainId": 56,
       "decimals": 18,
-      "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0xdF0816CC717216c8B0863aF8d4f0fC20Bc65d643/logo.png"
-    },
-    {
-      "name": "SafeMars",
-      "symbol": "SMARS",
-      "address": "0xC0366a104b429f0806BfA98d0008DAA9555b2BEd",
-      "chainId": 56,
-      "decimals": 9,
-      "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0xC0366a104b429f0806BfA98d0008DAA9555b2BEd/logo.png"
+      "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x9001eE054F1692feF3A48330cB543b6FEc6287eb/logo.png"
     },
     {
       "name": "SushiToken",
@@ -621,12 +597,28 @@
       "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x47BEAd2563dCBf3bF2c9407fEa4dC236fAbA485A/logo.png"
     },
     {
-      "name": "tDogecoin",
-      "symbol": "tDOGE",
-      "address": "0xe550a593d09FBC8DCD557b5C88Cea6946A8b404A",
+      "name": "TendieSwapFinance Tendie",
+      "symbol": "TENDIE",
+      "address": "0x9853A30C69474BeD37595F9B149ad634b5c323d9",
       "chainId": 56,
-      "decimals": 8,
-      "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0xe550a593d09FBC8DCD557b5C88Cea6946A8b404A/logo.png"
+      "decimals": 18,
+      "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x9853A30C69474BeD37595F9B149ad634b5c323d9/logo.png"
+    },
+    {
+      "name": "TIKI",
+      "symbol": "TIKI",
+      "address": "0x9b76D1B12Ff738c113200EB043350022EBf12Ff0",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x9b76D1B12Ff738c113200EB043350022EBf12Ff0/logo.png"
+    },
+    {
+      "name": "Tokocrypto Token",
+      "symbol": "TKO",
+      "address": "0x9f589e3eabe42ebC94A44727b3f3531C0c877809",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x9f589e3eabe42ebC94A44727b3f3531C0c877809/logo.png"
     },
     {
       "name": "Alien Worlds Trilium",
@@ -669,20 +661,20 @@
       "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x85EAC5Ac2F758618dFa09bDbe0cf174e7d574D5B/logo.png"
     },
     {
+      "name": "TrueUSD",
+      "symbol": "TUSD",
+      "address": "0x14016E85a25aeb13065688cAFB43044C2ef86784",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x14016E85a25aeb13065688cAFB43044C2ef86784/logo.png"
+    },
+    {
       "name": "Trust Wallet",
       "symbol": "TWT",
       "address": "0x4B0F1812e5Df2A09796481Ff14017e6005508003",
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x4B0F1812e5Df2A09796481Ff14017e6005508003/logo.png"
-    },
-    {
-      "name": "UltraSafe",
-      "symbol": "ULTRA",
-      "address": "0x0b3f42481C228F70756DbFA0309d3ddC2a5e0F6a",
-      "chainId": 56,
-      "decimals": 9,
-      "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0b3f42481C228F70756DbFA0309d3ddC2a5e0F6a/logo.png"
     },
     {
       "name": "UNCL on xDai on BSC",
@@ -723,6 +715,14 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x23396cF899Ca06c4472205fC903bDB4de249D6fC/logo.png"
+    },
+    {
+      "name": "VAI Stablecoin",
+      "symbol": "VAI",
+      "address": "0x4BD17003473389A42DAF6a0a729f6Fdb328BbBd7",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x4BD17003473389A42DAF6a0a729f6Fdb328BbBd7/logo.png"
     },
     {
       "name": "Venus Reward Token",
@@ -773,12 +773,12 @@
       "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x22168882276e5D5e1da694343b41DD7726eeb288/logo.png"
     },
     {
-      "name": "XDOGE",
-      "symbol": "XDOGE",
-      "address": "0x4c0415A6e340eCCebff58131799C6c4127cc39FA",
+      "name": "Xpose",
+      "symbol": "XPOSE",
+      "address": "0xcc10c8AfD683c5AA86B1d170d75B555bce5a2C37",
       "chainId": 56,
-      "decimals": 18,
-      "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x4c0415A6e340eCCebff58131799C6c4127cc39FA/logo.png"
+      "decimals": 9,
+      "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0xcc10c8AfD683c5AA86B1d170d75B555bce5a2C37/logo.png"
     },
     {
       "name": "XRP Token",
@@ -789,12 +789,12 @@
       "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x1D2F0da169ceB9fC7B3144628dB156f3F6c60dBE/logo.png"
     },
     {
-      "name": "yearn.finance",
-      "symbol": "YFI",
-      "address": "0x88f1A5ae2A3BF98AEAF342D26B30a79438c9142e",
+      "name": "Venus",
+      "symbol": "XVS",
+      "address": "0xcF6BB5389c92Bdda8a3747Ddb454cB7a64626C63",
       "chainId": 56,
       "decimals": 18,
-      "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x88f1A5ae2A3BF98AEAF342D26B30a79438c9142e/logo.png"
+      "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0xcF6BB5389c92Bdda8a3747Ddb454cB7a64626C63/logo.png"
     },
     {
       "name": "YUMMY",

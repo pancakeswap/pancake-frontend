@@ -1,6 +1,6 @@
 {
   "name": "@pancakeswap/token-lists",
-  "version": "2.15.5",
+  "version": "2.16.0",
   "main": "dist/index.js",
   "type": "module",
   "license": "MIT",
@@ -16,6 +16,9 @@
     "checksum:pcs-top-100": "yarn build && node ./dist checksum pancakeswap-top-100",
     "generate:pcs-top-100": "yarn test && yarn build && node ./dist generate pancakeswap-top-100",
     "makelist:pcs-top-100": "yarn checksum:pcs-top-100 && yarn generate:pcs-top-100",
+    "checksum:pcs-top-15": "yarn build && node ./dist checksum pancakeswap-top-15",
+    "generate:pcs-top-15": "yarn test && yarn build && node ./dist generate pancakeswap-top-15",
+    "makelist:pcs-top-15": "yarn checksum:pcs-top-15 && yarn generate:pcs-top-15",
     "fetch:pcs-top-100": "yarn build && node ./dist fetch",
     "test": "jest"
   },
