@@ -17,9 +17,9 @@ const pools: PoolConfig[] = [
     isFinished: false,
   },
   {
-    sousId: 182,
+    sousId: 183,
     stakingToken: tokens.cake,
-    earningToken: tokens.dg,
+    earningToken: tokens.$dg,
     contractAddress: {
       97: '',
       56: '0xa07a91da6d10173f33c294803684bceede325957',
