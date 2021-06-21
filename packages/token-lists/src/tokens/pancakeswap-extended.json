@@ -1566,5 +1566,21 @@
     "chainId": 56,
     "decimals": 18,
     "logoURI": "https://tokens.pancakeswap.finance/images/0x4e840AADD28DA189B9906674B4Afcb77C128d9ea.png"
+  },
+  {
+    "name": "Decentral Games",
+    "symbol": "DG",
+    "address": "0x9Fdc3ae5c814b79dcA2556564047C5e7e5449C19",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0x9Fdc3ae5c814b79dcA2556564047C5e7e5449C19.png"
+  },
+  {
+    "name": "Wootrade",
+    "symbol": "WOO",
+    "address": "0x4691937a7508860F876c9c0a2a617E7d9E945D4B",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0x4691937a7508860F876c9c0a2a617E7d9E945D4B.png"
   }
 ]
