@@ -820,7 +820,9 @@
   "Max. stake per user": "Max. stake per user",
   "You have claimed your rewards!": "You have claimed your rewards!",
   "Already Collected": "Already Collected",
-  "Prediction Markets": "Prediction Markets",
-  "Now Live": "Now Live",
-  "in Beta": "in Beta"
+  "Up or Down?": "Up or Down?",
+  "Predictions Now Live": "Predictions Now Live",
+  "Beta Version": "Beta Version",
+  "Over %amount% in BNB won so far": "Over %amount% in BNB won so far",
+  "Try Now": "Try Now"
 }
