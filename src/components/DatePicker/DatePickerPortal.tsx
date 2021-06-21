@@ -74,7 +74,16 @@ const StyledDatePickerPortal = styled.div`
   .react-datepicker__month-text--keyboard-selected,
   .react-datepicker__quarter-text--keyboard-selected,
   .react-datepicker__year-text--keyboard-selected {
-    background-color: ${({ theme }) => theme.colors.primary};
+    background-color: ${({ theme }) => theme.colors.secondary};
+    color: #ffffff;
+  }
+
+  .react-datepicker__day--keyboard-selected:hover,
+  .react-datepicker__month-text--keyboard-selected:hover,
+  .react-datepicker__quarter-text--keyboard-selected:hover,
+  .react-datepicker__year-text--keyboard-selected:hover {
+    background-color: ${({ theme }) => theme.colors.secondary};
+    color: #ffffff;
   }
 
   .react-datepicker__time-container,
