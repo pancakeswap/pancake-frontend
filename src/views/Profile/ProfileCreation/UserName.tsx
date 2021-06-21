@@ -1,4 +1,5 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
+import { ethers } from 'ethers'
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
 import {
@@ -63,7 +64,7 @@ const UserName: React.FC = () => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const { toastError } = useToast()
-  const web3 = useWeb3Provider()
+  const provider = useWeb3Provider()
   const [existingUserState, setExistingUserState] = useState<ExistingUserState>(ExistingUserState.IDLE)
   const [isValid, setIsValid] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -110,14 +111,7 @@ const UserName: React.FC = () => {
     try {
       setIsLoading(true)
 
-      const signature = ''
-      // const signature = web3?.bnbSign
-      //   ? (await web3.bnbSign(account, userName))?.signature
-      //   : // web3.utils.utf8ToHex("...") will not be called here on username if hex like string
-      //     // https://github.com/ChainSafe/web3.js/blob/5d027191c5cb7ffbcd44083528bdab19b4e14744/packages/web3-core-helpers/src/formatters.js#L225
-      //     // Last param is the password, and is null to request a signature in the wallet
-      //     await web3.eth.personal.sign(web3.utils.utf8ToHex(userName), account, null)
-
+      const signature = await provider.getSigner().signMessage(ethers.utils.formatBytes32String(userName))
       const response = await fetch(`${profileApiUrl}/api/users/register`, {
         method: 'POST',
         headers: {
