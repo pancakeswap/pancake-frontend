@@ -6,12 +6,12 @@ import { getPastLotteries, getUserPastLotteries, fetchLottery, fetchPublicData, 
 
 interface PublicLotteryData {
   currentLotteryId: string
-  maxNumberTicketsPerBuy: string
+  maxNumberTicketsPerBuyOrClaim: string
 }
 
 const initialState: LotteryState = {
   currentLotteryId: null,
-  maxNumberTicketsPerBuy: null,
+  maxNumberTicketsPerBuyOrClaim: null,
   currentRound: {
     isLoading: true,
     status: LotteryStatus.PENDING,
@@ -85,7 +85,7 @@ export const LotterySlice = createSlice({
     })
     builder.addCase(fetchPublicLotteryData.fulfilled, (state, action: PayloadAction<PublicLotteryData>) => {
       state.currentLotteryId = action.payload.currentLotteryId
-      state.maxNumberTicketsPerBuy = action.payload.maxNumberTicketsPerBuy
+      state.maxNumberTicketsPerBuyOrClaim = action.payload.maxNumberTicketsPerBuyOrClaim
     })
     builder.addCase(fetchUserTickets.fulfilled, (state, action: PayloadAction<any>) => {
       state.currentRound.userData.isLoading = false

@@ -37,7 +37,6 @@ import {
   fetchPastLotteries,
   fetchUserLotteryHistory,
 } from './lottery'
-import { getPastLotteries, getUserPastLotteries } from './lottery/helpers'
 
 export const usePollFarmsData = (includeArchive = false) => {
   const dispatch = useAppDispatch()
@@ -557,7 +556,9 @@ export const useFetchLottery = () => {
 export const useLottery = () => {
   const currentRound = useSelector((state: State) => state.lottery.currentRound)
   const currentLotteryId = useGetCurrentLotteryId()
-  const maxNumberTicketsPerBuyAsString = useSelector((state: State) => state.lottery.maxNumberTicketsPerBuy)
+  const maxNumberTicketsPerBuyOrClaimAsString = useSelector(
+    (state: State) => state.lottery.maxNumberTicketsPerBuyOrClaim,
+  )
   const userLotteryHistory = useGetUserLotteryHistory()
   const pastLotteries = useGetPastLotteries()
 
@@ -579,9 +580,9 @@ export const useLottery = () => {
     rewardsBreakdown,
   } = currentRound
 
-  const maxNumberTicketsPerBuy = useMemo(() => {
-    return new BigNumber(maxNumberTicketsPerBuyAsString)
-  }, [maxNumberTicketsPerBuyAsString])
+  const maxNumberTicketsPerBuyOrClaim = useMemo(() => {
+    return new BigNumber(maxNumberTicketsPerBuyOrClaimAsString)
+  }, [maxNumberTicketsPerBuyOrClaimAsString])
 
   const discountDivisor = useMemo(() => {
     return new BigNumber(discountDivisorAsString)
@@ -597,7 +598,7 @@ export const useLottery = () => {
 
   return {
     currentLotteryId,
-    maxNumberTicketsPerBuy,
+    maxNumberTicketsPerBuyOrClaim,
     userLotteryHistory,
     pastLotteries,
     currentRound: {
