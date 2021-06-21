@@ -52,7 +52,6 @@ import predictionsAbi from 'config/abi/predictions.json'
 import chainlinkOracleAbi from 'config/abi/chainlinkOracle.json'
 import MultiCallAbi from 'config/abi/Multicall.json'
 import { DEFAULT_GAS_PRICE, TESTNET_CHAIN_ID } from 'config'
-import { getSettings, getGasPriceInWei } from './settings'
 
 export const getDefaultGasPrice = () => {
   const chainId = process.env.REACT_APP_CHAIN_ID
