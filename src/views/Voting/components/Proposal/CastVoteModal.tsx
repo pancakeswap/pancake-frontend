@@ -87,7 +87,7 @@ const CastVoteModal: React.FC<CastVoteModalProps> = ({ onSuccess, proposalId, vo
         ) : (
           <ModalBox>
             <Text bold fontSize="20px">
-              {total.toFixed(2)}
+              {total.toFormat(3)}
             </Text>
           </ModalBox>
         )}

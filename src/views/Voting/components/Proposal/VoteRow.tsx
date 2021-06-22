@@ -2,7 +2,6 @@ import React from 'react'
 import BigNumber from 'bignumber.js'
 import { Flex, LinkExternal, Text } from '@pancakeswap/uikit'
 import truncateWalletAddress from 'utils/truncateWalletAddress'
-import { formatNumber } from 'utils/formatBalance'
 import { getBscScanAddressUrl } from 'utils/bscscan'
 import { Vote } from 'state/types'
 import { IPFS_GATEWAY } from '../../config'
@@ -14,7 +13,7 @@ interface VoteRowProps {
 
 const VoteRow: React.FC<VoteRowProps> = ({ vote }) => {
   const hasVotingPower = !!vote.metadata?.votingPower
-  const votingPower = hasVotingPower ? formatNumber(new BigNumber(vote.metadata.votingPower).toNumber(), 0, 2) : '--'
+  const votingPower = hasVotingPower ? new BigNumber(vote.metadata.votingPower).toFormat(3) : '--'
 
   return (
     <Row>
