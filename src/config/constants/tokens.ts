@@ -12,6 +12,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://pancakeswap.finance/',
   },
+  form: {
+    symbol: 'FORM',
+    address: {
+      56: '0x25A528af62e56512A19ce8c3cAB427807c28CC19',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://formation.fi/',
+  },
   txl: {
     symbol: 'TXL',
     address: {
