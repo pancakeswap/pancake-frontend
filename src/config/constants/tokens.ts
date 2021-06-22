@@ -21,6 +21,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://tixl.org/',
   },
+  orbs: {
+    symbol: 'ORBS',
+    address: {
+      56: '0xeBd49b26169e1b52c04cFd19FCf289405dF55F80',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://www.orbs.com/',
+  },
   cos: {
     symbol: 'COS',
     address: {
