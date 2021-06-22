@@ -32,14 +32,23 @@ const initialState: LotteryState = {
       tickets: [],
     },
   },
+  nextRound: null,
   pastLotteries: null,
   userLotteryHistory: null,
 }
 
 export const fetchCurrentLottery = createAsyncThunk<LotteryRound, { currentLotteryId: string }>(
-  'lottery/fetchById',
+  'lottery/fetchCurrentLottery',
   async ({ currentLotteryId }) => {
     const lotteryInfo = await fetchLottery(currentLotteryId)
+    return lotteryInfo
+  },
+)
+
+export const fetchNextLottery = createAsyncThunk<LotteryRound, { nextLotteryId: string }>(
+  'lottery/fetchNextLottery',
+  async ({ nextLotteryId }) => {
+    const lotteryInfo = await fetchLottery(nextLotteryId)
     return lotteryInfo
   },
 )
@@ -82,6 +91,9 @@ export const LotterySlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(fetchCurrentLottery.fulfilled, (state, action: PayloadAction<LotteryRound>) => {
       state.currentRound = { ...state.currentRound, ...action.payload }
+    })
+    builder.addCase(fetchNextLottery.fulfilled, (state, action: PayloadAction<LotteryRound>) => {
+      state.nextRound = { ...state.nextRound, ...action.payload }
     })
     builder.addCase(fetchPublicLotteryData.fulfilled, (state, action: PayloadAction<PublicLotteryData>) => {
       state.currentLotteryId = action.payload.currentLotteryId

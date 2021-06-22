@@ -9,6 +9,7 @@ import { getBalanceNumber } from 'utils/formatBalance'
 import Balance from 'components/Balance'
 import ViewTicketsModal from './ViewTicketsModal'
 import BuyTicketsButton from './BuyTicketsButton'
+import { dateTimeOptions } from '../helpers'
 
 const Grid = styled.div`
   display: grid;
@@ -37,6 +38,46 @@ const DrawInfoCard = () => {
   const isLotteryOpen = status === LotteryStatus.OPEN
   const userTicketCount = userData?.tickets?.length || 0
 
+  const getBalances = () => {
+    if (status === LotteryStatus.CLOSE) {
+      return (
+        <Heading scale="xl" color="secondary" textAlign={['center', null, null, 'left']}>
+          {t('Calculating')}...
+        </Heading>
+      )
+    }
+    return (
+      <>
+        {prizeInBusd.isNaN() ? (
+          <Skeleton my="7px" height={40} width={160} />
+        ) : (
+          <Balance
+            fontSize="40px"
+            color="secondary"
+            textAlign={['center', null, null, 'left']}
+            lineHeight="1"
+            bold
+            prefix="~$"
+            value={getBalanceNumber(prizeInBusd)}
+            decimals={0}
+          />
+        )}
+        {prizeInBusd.isNaN() ? (
+          <Skeleton my="2px" height={14} width={90} />
+        ) : (
+          <Balance
+            fontSize="14px"
+            color="textSubtle"
+            textAlign={['center', null, null, 'left']}
+            unit=" CAKE"
+            value={getBalanceNumber(amountCollectedInCake)}
+            decimals={0}
+          />
+        )}
+      </>
+    )
+  }
+
   return (
     <Card>
       <CardHeader p="16px 24px">
@@ -44,7 +85,7 @@ const DrawInfoCard = () => {
           <Heading>{t('Next Draw')}</Heading>
           <Text>
             {currentLotteryId && `#${currentLotteryId} | `}{' '}
-            {Boolean(endTime) && `${t('Draw')}: ${endDate.toLocaleString()}`}
+            {Boolean(endTime) && `${t('Draw')}: ${endDate.toLocaleString(undefined, dateTimeOptions)}`}
           </Text>
         </Flex>
       </CardHeader>
@@ -54,32 +95,7 @@ const DrawInfoCard = () => {
             <Heading>{t('Prize Pot')}</Heading>
           </Flex>
           <Flex flexDirection="column" mb="18px">
-            {prizeInBusd.isNaN() ? (
-              <Skeleton my="7px" height={40} width={160} />
-            ) : (
-              <Balance
-                fontSize="40px"
-                color="secondary"
-                textAlign={['center', null, null, 'left']}
-                lineHeight="1"
-                bold
-                prefix="~$"
-                value={getBalanceNumber(prizeInBusd)}
-                decimals={0}
-              />
-            )}
-            {prizeInBusd.isNaN() ? (
-              <Skeleton my="2px" height={14} width={90} />
-            ) : (
-              <Balance
-                fontSize="14px"
-                color="textSubtle"
-                textAlign={['center', null, null, 'left']}
-                unit=" CAKE"
-                value={getBalanceNumber(amountCollectedInCake)}
-                decimals={0}
-              />
-            )}
+            {getBalances()}
           </Flex>
           <Box display={['none', null, null, 'flex']}>
             <Heading>{t('Your tickets')}</Heading>

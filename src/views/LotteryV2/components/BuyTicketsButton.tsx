@@ -14,21 +14,14 @@ const BuyTicketsButton = ({ ...props }) => {
   const canBuyTickets = status === LotteryStatus.OPEN
 
   const getBuyButtonText = () => {
-    if (status === LotteryStatus.PENDING || status === LotteryStatus.CLAIMABLE) {
-      return (
-        <>
-          <WaitIcon mr="4px" color="textDisabled" /> {t('On sale soon!')}
-        </>
-      )
+    if (status === LotteryStatus.OPEN) {
+      return t('Buy Tickets')
     }
-    if (status === LotteryStatus.CLOSE) {
-      return (
-        <>
-          <WaitIcon mr="4px" color="textDisabled" /> {t('Calculating rewards!')}
-        </>
-      )
-    }
-    return t('Buy Tickets')
+    return (
+      <>
+        <WaitIcon mr="4px" color="textDisabled" /> {t('On sale soon!')}
+      </>
+    )
   }
 
   return (

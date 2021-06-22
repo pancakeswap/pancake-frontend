@@ -49,11 +49,10 @@ const getRewardBracket = (ticketNumber: string, finalNumber: string): number => 
 
   // The number at index 6 in all tickets is 1 and will always match, so finish at index 5
   for (let index = 0; index < winningNumsAsArray.length - 1; index++) {
-    if (ticketNumAsArray[index] === winningNumsAsArray[index]) {
-      matchingNumbers.push(ticketNumAsArray[index])
-    } else {
+    if (ticketNumAsArray[index] !== winningNumsAsArray[index]) {
       break
     }
+    matchingNumbers.push(ticketNumAsArray[index])
   }
 
   // Reward brackets refer to indexes, 0 = 1 match, 5 = 6 matches. Deduct 1 from matchingNumbers' length to get the reward bracket

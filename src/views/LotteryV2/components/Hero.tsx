@@ -50,16 +50,9 @@ const Hero = () => {
   const prizeTotal = getBalanceNumber(prizeInBusd)
   const canBuyTickets = status === LotteryStatus.OPEN
 
-  return (
-    <Flex flexDirection="column" alignItems="center" justifyContent="center">
-      <Heading mb="8px" scale="md" color="#ffffff">
-        {t('The PancakeSwap Lottery')}
-      </Heading>
-      {status === LotteryStatus.PENDING ? (
-        <Heading mb="24px" scale="xl" color="#ffffff">
-          {t('Tickets on sale soon')}
-        </Heading>
-      ) : (
+  const getHeroHeading = () => {
+    if (status === LotteryStatus.OPEN) {
+      return (
         <>
           {prizeInBusd.isNaN() ? (
             <Skeleton my="7px" height={60} width={190} />
@@ -70,7 +63,21 @@ const Hero = () => {
             {t('in prizes!')}
           </Heading>
         </>
-      )}
+      )
+    }
+    return (
+      <Heading mb="24px" scale="xl" color="#ffffff">
+        {t('Tickets on sale soon')}
+      </Heading>
+    )
+  }
+
+  return (
+    <Flex flexDirection="column" alignItems="center" justifyContent="center">
+      <Heading mb="8px" scale="md" color="#ffffff">
+        {t('The PancakeSwap Lottery')}
+      </Heading>
+      {getHeroHeading()}
       <Flex position="relative" width="288px" height="113px" alignItems="center" justifyContent="center">
         <ButtonWrapper>
           <StyledBuyTicketButton canBuyTickets={canBuyTickets} />
