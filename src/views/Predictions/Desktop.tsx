@@ -176,9 +176,7 @@ const Desktop: React.FC = () => {
             )}
           </PositionPane>
           <Gutter ref={gutterRef} />
-          <ChartPane ref={chartRef}>
-            <TradingView />
-          </ChartPane>
+          <ChartPane ref={chartRef}>{isChartPaneOpen && <TradingView />}</ChartPane>
         </SplitWrapper>
         <HistoryPane isHistoryPaneOpen={isHistoryPaneOpen}>
           <History />
