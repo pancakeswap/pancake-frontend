@@ -4,8 +4,8 @@ import { useTranslation } from 'contexts/Localization'
 import Container from 'components/layout/Container'
 import { useAppDispatch } from 'state'
 import { fetchProposals } from 'state/voting'
-import { useGetProposals, useGetVotingStatus } from 'state/hooks'
-import { ProposalState, ProposalType, VotingStatus } from 'state/types'
+import { useGetProposals, useGetProposalLoadingStatus } from 'state/hooks'
+import { ProposalState, ProposalType, VotingStateLoadingStatus } from 'state/types'
 import { filterProposalsByState, filterProposalsByType } from '../../helpers'
 import BreadcrumbLink from '../BreadcrumbLink'
 import ProposalsLoading from './ProposalsLoading'
@@ -29,8 +29,8 @@ const Proposals = () => {
   const dispatch = useAppDispatch()
 
   const { proposalType, filterState } = state
-  const isLoading = votingStatus === VotingStatus.LOADING
-  const isIdle = votingStatus === VotingStatus.IDLE
+  const isLoading = proposalStatus === VotingStateLoadingStatus.LOADING
+  const isIdle = proposalStatus === VotingStateLoadingStatus.IDLE
 
   useEffect(() => {
     dispatch(fetchProposals({ first: 1000, state: filterState }))

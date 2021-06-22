@@ -1,12 +1,13 @@
 /* eslint-disable no-param-reassign */
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { merge } from 'lodash'
-import { Proposal, ProposalState, VotingStatus, VotingState, Vote } from 'state/types'
+import { Proposal, ProposalState, VotingStateLoadingStatus, VotingState, Vote } from 'state/types'
 import { getAllVotes, getProposal, getProposals } from './helpers'
 
 const initialState: VotingState = {
+  proposalLoadingStatus: VotingStateLoadingStatus.INITIAL,
   proposals: {},
-  voteStatus: VotingStatus.INITIAL,
+  voteLoadingStatus: VotingStateLoadingStatus.INITIAL,
   votes: {},
 }
 
@@ -38,6 +39,9 @@ export const votingSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     // Fetch Proposals
+    builder.addCase(fetchProposals.pending, (state) => {
+      state.proposalLoadingStatus = VotingStateLoadingStatus.LOADING
+    })
     builder.addCase(fetchProposals.fulfilled, (state, action) => {
       const proposals = action.payload.reduce((accum, proposal) => {
         return {
@@ -47,16 +51,21 @@ export const votingSlice = createSlice({
       }, {})
 
       state.proposals = merge({}, state.proposals, proposals)
+      state.proposalLoadingStatus = VotingStateLoadingStatus.IDLE
     })
 
     // Fetch Proposal
+    builder.addCase(fetchProposal.pending, (state) => {
+      state.proposalLoadingStatus = VotingStateLoadingStatus.LOADING
+    })
     builder.addCase(fetchProposal.fulfilled, (state, action) => {
       state.proposals[action.payload.id] = action.payload
+      state.proposalLoadingStatus = VotingStateLoadingStatus.IDLE
     })
 
     // Fetch Votes
     builder.addCase(fetchVotes.pending, (state) => {
-      state.voteStatus = VotingStatus.LOADING
+      state.voteLoadingStatus = VotingStateLoadingStatus.LOADING
     })
     builder.addCase(fetchVotes.fulfilled, (state, action) => {
       const { votes, proposalId } = action.payload
@@ -65,7 +74,7 @@ export const votingSlice = createSlice({
         ...state.votes,
         [proposalId]: votes,
       }
-      state.voteStatus = VotingStatus.IDLE
+      state.voteLoadingStatus = VotingStateLoadingStatus.IDLE
     })
   },
 })
