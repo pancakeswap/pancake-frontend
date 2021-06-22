@@ -26,11 +26,18 @@ const Proposal = () => {
   const dispatch = useAppDispatch()
   const votes = useGetVotes(id)
   const hasAccountVoted = account && votes.some((vote) => vote.voter.toLowerCase() === account.toLowerCase())
+  const { id: proposalId = null, snapshot = null } = proposal ?? {}
 
   useEffect(() => {
     dispatch(fetchProposal(id))
-    dispatch(fetchVotes(id))
   }, [id, dispatch])
+
+  // We have to wait for the proposal to load before fetching the votes because we need to include the snapshot
+  useEffect(() => {
+    if (proposalId && snapshot) {
+      dispatch(fetchVotes({ proposalId, block: Number(snapshot) }))
+    }
+  }, [proposalId, snapshot, dispatch])
 
   if (!proposal) {
     return <PageLoader />

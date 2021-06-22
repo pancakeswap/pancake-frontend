@@ -24,13 +24,13 @@ export const fetchProposal = createAsyncThunk<Proposal, string>('voting/fetchPro
   return response
 })
 
-export const fetchVotes = createAsyncThunk<{ votes: Vote[]; proposalId: string }, string>(
-  'voting/fetchVotes',
-  async (proposalId) => {
-    const response = await getAllVotes(proposalId)
-    return { votes: response, proposalId }
-  },
-)
+export const fetchVotes = createAsyncThunk<
+  { votes: Vote[]; proposalId: string },
+  { proposalId: string; block?: number }
+>('voting/fetchVotes', async ({ proposalId, block }) => {
+  const response = await getAllVotes(proposalId, block)
+  return { votes: response, proposalId }
+})
 
 export const votingSlice = createSlice({
   name: 'voting',

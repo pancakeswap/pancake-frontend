@@ -35,7 +35,7 @@ const Vote: React.FC<VoteProps> = ({ proposal, ...props }) => {
 
   const handleSuccess = async () => {
     toastSuccess(t('Vote cast!'))
-    dispatch(fetchVotes(proposal.id))
+    dispatch(fetchVotes({ proposalId: proposal.id, block: Number(proposal.snapshot) }))
   }
 
   const [presentCastVoteModal] = useModal(

@@ -1,6 +1,7 @@
 import request, { gql } from 'graphql-request'
 import { SNAPSHOT_API, SNAPSHOT_VOTING_API } from 'config/constants/endpoints'
 import { Proposal, ProposalState, Vote, VoteWhere } from 'state/types'
+import { web3WithArchivedNodeProvider } from 'utils/web3'
 
 export const getProposals = async (first = 5, skip = 0, state = ProposalState.ACTIVE): Promise<Proposal[]> => {
   const response: { proposals: Proposal[] } = await request(
@@ -82,7 +83,8 @@ export const getVotes = async (first: number, skip: number, where: VoteWhere): P
   return response.votes
 }
 
-export const getAllVotes = async (proposalId: string, votesPerChunk = 1000): Promise<Vote[]> => {
+export const getAllVotes = async (proposalId: string, block?: number, votesPerChunk = 1000): Promise<Vote[]> => {
+  const blockNumber = block || (await web3WithArchivedNodeProvider.eth.getBlockNumber())
   return new Promise((resolve, reject) => {
     let votes: Vote[] = []
 
@@ -103,6 +105,7 @@ export const getAllVotes = async (proposalId: string, votesPerChunk = 1000): Pro
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
+              block: blockNumber,
               votes: votesToVerify,
             }),
           })
