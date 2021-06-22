@@ -108,7 +108,10 @@ const Select: React.FunctionComponent<SelectProps> = ({ options, onChange }) => 
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(0)
   const [containerSize, setContainerSize] = useState({ width: 0, height: 0 })
 
-  const toggling = () => setIsOpen(!isOpen)
+  const toggling = (event: React.MouseEvent<HTMLDivElement>) => {
+    setIsOpen(!isOpen)
+    event.stopPropagation()
+  }
 
   const onOptionClicked = (selectedIndex: number) => () => {
     setSelectedOptionIndex(selectedIndex)
@@ -124,6 +127,15 @@ const Select: React.FunctionComponent<SelectProps> = ({ options, onChange }) => 
       width: dropdownRef.current.offsetWidth, // Consider border
       height: dropdownRef.current.offsetHeight,
     })
+
+    const handleClickOutside = () => {
+      setIsOpen(false)
+    }
+
+    document.addEventListener('click', handleClickOutside)
+    return () => {
+      document.removeEventListener('click', handleClickOutside)
+    }
   }, [])
 
   return (
