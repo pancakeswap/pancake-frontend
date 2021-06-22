@@ -82,7 +82,7 @@ const config: (t: ContextApi['t']) => MenuEntry[] = (t) => [
     icon: 'InfoIcon',
     href: 'https://pancakeswap.info',
     status: {
-      text: 'NEW',
+      text: t('New').toLocaleUpperCase(),
       color: 'success',
     },
   },
