@@ -1,3 +1,6 @@
-export const GRAPH_API_PROFILE = process.env.REACT_APP_GRAPH_API_PROFILE
-export const GRAPH_API_PREDICTION = process.env.REACT_APP_GRAPH_API_PREDICTION
+import { BASE_SUBGRAPH_URL } from 'config'
+
+export const GRAPH_API_PROFILE = `${BASE_SUBGRAPH_URL}/profile`
+export const GRAPH_API_PREDICTION = `${BASE_SUBGRAPH_URL}/prediction`
+export const GRAPH_API_LOTTERY = `${BASE_SUBGRAPH_URL}/lottery`
 export const ARCHIVED_NODE = process.env.REACT_APP_ARCHIVED_NODE
