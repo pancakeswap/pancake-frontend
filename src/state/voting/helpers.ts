@@ -97,7 +97,7 @@ export const getAllVotes = async (proposalId: string, votesPerChunk = 1000): Pro
             verificationHash: vote.metadata?.verificationHash,
             total: vote.metadata?.votingPower,
           }))
-          const response = await fetch(`${SNAPSHOT_VOTING_API}/verify-votes`, {
+          const response = await fetch(`${SNAPSHOT_VOTING_API}/verify`, {
             method: 'post',
             headers: {
               'Content-Type': 'application/json',
@@ -113,7 +113,7 @@ export const getAllVotes = async (proposalId: string, votesPerChunk = 1000): Pro
 
           const data = await response.json()
           const verifiedVotes = votes.filter((vote) => {
-            return data.data[vote.voter]?.isValid === true
+            return data.data[vote.voter.toLowerCase()]?.isValid === true
           })
 
           resolve(verifiedVotes)
