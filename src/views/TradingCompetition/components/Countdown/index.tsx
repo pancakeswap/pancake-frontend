@@ -87,7 +87,7 @@ const Countdown: React.FC<{ currentPhase: CompetitionPhaseProps; hasCompetitionE
     }
     return (
       <Timer
-        timerStage={currentPhase.state === LIVE ? `${t('End')}:` : `${t('Start')}:`}
+        prefix={currentPhase.state === LIVE ? `${t('End')}:` : `${t('Start')}:`}
         minutes={minutes}
         hours={hours}
         days={days}
