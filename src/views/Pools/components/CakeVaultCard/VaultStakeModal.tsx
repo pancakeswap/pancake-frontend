@@ -91,7 +91,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({ pool, stakingMax, isR
         dispatch(fetchCakeVaultUserData({ account }))
       } else {
         // Remove message from toast before prod
-        toastError(t('Error'), t('error - Please try again.'))
+        toastError(t('Error'), t('%error% - Please try again.', { error: 'Transaction reverted' }))
         setPendingTx(false)
       }
     } else {
@@ -106,7 +106,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({ pool, stakingMax, isR
         onDismiss()
         dispatch(fetchCakeVaultUserData({ account }))
       } else {
-        toastError(t('Error'), t('error - Please try again.'))
+        toastError(t('Error'), t('%error% - Please try again.', { error: 'Transaction reverted' }))
         setPendingTx(false)
       }
     }
@@ -125,7 +125,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({ pool, stakingMax, isR
       dispatch(fetchCakeVaultUserData({ account }))
     } else {
       // Remove message from toast before prod
-      toastError(t('Error'), t('error - Please try again.'))
+      toastError(t('Error'), t('%error% - Please try again.', { error: 'Transaction reverted' }))
       setPendingTx(false)
     }
   }

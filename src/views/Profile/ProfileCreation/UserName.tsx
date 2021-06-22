@@ -1,5 +1,4 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
-import { ethers } from 'ethers'
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
 import {
@@ -111,7 +110,7 @@ const UserName: React.FC = () => {
     try {
       setIsLoading(true)
 
-      const signature = await provider.getSigner().signMessage(ethers.utils.formatBytes32String(userName))
+      const signature = await provider.getSigner().signMessage(userName)
       const response = await fetch(`${profileApiUrl}/api/users/register`, {
         method: 'POST',
         headers: {
