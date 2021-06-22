@@ -73,7 +73,7 @@ export const sendSnaphotData = async (message: Message) => {
 }
 
 export const getVotingPower = async (account: string, poolAddresses: string[], block?: number) => {
-  const response = await fetch(`${SNAPSHOT_VOTING_API}/voting-power`, {
+  const response = await fetch(`${SNAPSHOT_VOTING_API}/power`, {
     method: 'post',
     headers: {
       'Content-Type': 'application/json',
