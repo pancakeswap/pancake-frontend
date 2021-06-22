@@ -3,8 +3,8 @@ import { ArrowBackIcon, Box, Button, Flex, Heading } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { Link, useParams } from 'react-router-dom'
 import { useAppDispatch } from 'state'
-import { ProposalState } from 'state/types'
-import { useGetProposal, useGetVotes } from 'state/hooks'
+import { ProposalState, VoteLoadingStatus } from 'state/types'
+import { useGetProposal, useGetProposalLoadingStatus, useGetVoteLoadingStatus, useGetVotes } from 'state/hooks'
 import { fetchProposal, fetchVotes } from 'state/voting'
 import { useTranslation } from 'contexts/Localization'
 import Container from 'components/layout/Container'
@@ -25,8 +25,12 @@ const Proposal = () => {
   const { account } = useWeb3React()
   const dispatch = useAppDispatch()
   const votes = useGetVotes(id)
+  const voteLoadingStatus = useGetVoteLoadingStatus()
+  const proposalLoadingStatus = useGetProposalLoadingStatus()
   const hasAccountVoted = account && votes.some((vote) => vote.voter.toLowerCase() === account.toLowerCase())
   const { id: proposalId = null, snapshot = null } = proposal ?? {}
+  const isPageLoading =
+    voteLoadingStatus === VoteLoadingStatus.LOADING || proposalLoadingStatus === VoteLoadingStatus.LOADING
 
   useEffect(() => {
     dispatch(fetchProposal(id))
@@ -64,7 +68,7 @@ const Proposal = () => {
               <ReactMarkdown>{proposal.body}</ReactMarkdown>
             </Box>
           </Box>
-          {!hasAccountVoted && account && proposal.state === ProposalState.ACTIVE && (
+          {!isPageLoading && !hasAccountVoted && account && proposal.state === ProposalState.ACTIVE && (
             <Vote proposal={proposal} mb="16px" />
           )}
           <Votes votes={votes} />
