@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { Box, Flex, Heading, useModal } from '@pancakeswap/uikit'
+import { Box, Flex, Heading, Skeleton, useModal } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { LotteryStatus } from 'config/constants/types'
 import PageSection from 'components/PageSection'
 import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'
-import useRoundEndCountdown from 'hooks/lottery/v2/useRoundEndCountdown'
+import useNextEventCountdown from 'hooks/lottery/v2/useNextEventCountdown'
+import useGetNextLotteryEvent from 'hooks/lottery/v2/useGetNextLotteryEvent'
 import { useAppDispatch } from 'state'
 import { useFetchLottery, useGetPastLotteries, useGetUserLotteryHistory, useLottery } from 'state/hooks'
-import { fetchCurrentLottery } from 'state/lottery'
+import { fetchCurrentLottery, fetchNextLottery, fetchPublicLotteryData } from 'state/lottery'
 import fetchUnclaimedUserRewards from 'state/lottery/fetchUnclaimedUserRewards'
 import { TITLE_BG, GET_TICKETS_BG, FINISHED_ROUNDS_BG, FINISHED_ROUNDS_BG_DARK } from './pageSectionStyles'
 import Hero from './components/Hero'
@@ -42,7 +43,8 @@ const LotteryV2 = () => {
   } = useLottery()
   const [historyTabMenuIndex, setHistoryTabMenuIndex] = useState(0)
   const endTimeAsInt = parseInt(endTime, 10)
-  const secondsRemaining = useRoundEndCountdown(endTimeAsInt)
+  const { nextEventTime, postCountdownText, preCountdownText } = useGetNextLotteryEvent(endTimeAsInt, status)
+  const secondsRemaining = useNextEventCountdown(nextEventTime)
   const userLotteryHistory = useGetUserLotteryHistory()
   const pastLotteries = useGetPastLotteries()
   const [unclaimedRewards, setUnclaimedRewards] = useState([])
@@ -50,9 +52,8 @@ const LotteryV2 = () => {
   const [onPresentClaimModal] = useModal(<ClaimModal roundsToClaim={unclaimedRewards} />)
 
   useEffect(() => {
+    // Check if user has rewards on page load and account change
     const fetchRewards = async () => {
-      // TODO: Bug when switching accounts, old account userLotteryHistory is passed to new account.
-      // Causes problems if old account hasn't claimed for a round, and new account has winnings for that round
       const unclaimedRewardsResponse = await fetchUnclaimedUserRewards(
         account,
         currentLotteryId,
@@ -67,19 +68,36 @@ const LotteryV2 = () => {
   }, [account, userLotteryHistory, currentLotteryId, pastLotteries, setUnclaimedRewards])
 
   useEffect(() => {
+    // Manage showing unclaimed rewards modal
     if (unclaimedRewards.length > 0 && !hasPoppedClaimModal) {
       setHasPoppedClaimModal(true)
       onPresentClaimModal()
     }
   }, [unclaimedRewards, hasPoppedClaimModal, onPresentClaimModal])
 
-  // Re-fetch lottery data when round countdown reaches 0
+  // Data fetches for lottery phase transitions
   useEffect(() => {
-    if (status === LotteryStatus.OPEN && secondsRemaining === 0) {
+    const nextLotteryId = parseInt(currentLotteryId, 10) + 1
+    // Current lottery transitions from open > closed, or closed > claimable
+    if ((status === LotteryStatus.OPEN || status === LotteryStatus.CLOSE) && secondsRemaining === 0) {
       dispatch(fetchCurrentLottery({ currentLotteryId }))
-      console.log('fetching lottery')
+      dispatch(fetchNextLottery({ nextLotteryId: nextLotteryId.toString() }))
+      console.log('fetching current & next lottery')
+    }
+
+    // Next lottery starting
+    if (status === LotteryStatus.CLAIMABLE && secondsRemaining === 0) {
+      // Populate current lottery state with next lottery data
+      dispatch(fetchCurrentLottery({ currentLotteryId: nextLotteryId.toString() }))
+      // Get new 'currentLotteryId' from SC
+      dispatch(fetchPublicLotteryData())
+      console.log('currentLotteryId >', currentLotteryId)
+      console.log('nextLotteryId >', nextLotteryId)
+      console.log('fetching next lottery & updating currentLotteryId')
     }
   }, [secondsRemaining, currentLotteryId, status, dispatch])
+
+  console.log('status~', status)
 
   return (
     <LotteryPage>
@@ -89,15 +107,21 @@ const LotteryV2 = () => {
       <TicketsSection background={GET_TICKETS_BG} hasCurvedDivider={false} index={2}>
         <Flex flexDirection="column">
           {status === LotteryStatus.OPEN && (
-            <>
-              <Heading scale="xl" color="#ffffff" mb="24px" textAlign="center">
-                {t('Get your tickets now!')}
-              </Heading>
-              <Flex alignItems="center" justifyContent="center" mb="48px">
-                <Countdown secondsRemaining={secondsRemaining} />
-              </Flex>
-            </>
+            <Heading scale="xl" color="#ffffff" mb="24px" textAlign="center">
+              {t('Get your tickets now!')}
+            </Heading>
           )}
+          <Flex alignItems="center" justifyContent="center" mb="48px">
+            {secondsRemaining && (postCountdownText || preCountdownText) ? (
+              <Countdown
+                secondsRemaining={secondsRemaining}
+                postCountdownText={postCountdownText}
+                preCountdownText={preCountdownText}
+              />
+            ) : (
+              <Skeleton height="41px" width="250px" />
+            )}
+          </Flex>
           <DrawInfoCard />
         </Flex>
       </TicketsSection>

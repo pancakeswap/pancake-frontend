@@ -1,4 +1,4 @@
-import { LotteryTicket, LotteryTicketClaimData } from 'config/constants/types'
+import { LotteryStatus, LotteryTicket, LotteryTicketClaimData } from 'config/constants/types'
 
 /**
  * Return a random number between 1000000 & 1999999
@@ -59,6 +59,15 @@ export const parseClaimDataForClaimTicketsCall = (claimData: LotteryTicketClaimD
     return ticket.rewardBracket
   })
   return { lotteryId: claimData.roundId, ticketIds, brackets }
+}
+
+export const dateTimeOptions: Intl.DateTimeFormatOptions = {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric',
+  timeZoneName: 'short',
+  hour: 'numeric',
+  minute: 'numeric',
 }
 
 export default generateTicketNumbers
