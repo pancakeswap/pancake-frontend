@@ -3,8 +3,8 @@ import { ArrowBackIcon, Box, Button, Flex, Heading } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { Link, useParams } from 'react-router-dom'
 import { useAppDispatch } from 'state'
-import { ProposalState, VoteLoadingStatus } from 'state/types'
-import { useGetProposal, useGetProposalLoadingStatus, useGetVoteLoadingStatus, useGetVotes } from 'state/hooks'
+import { ProposalState, VotingStateLoadingStatus } from 'state/types'
+import { useGetProposal, useGetProposalLoadingStatus, useGetVotingStateLoadingStatus, useGetVotes } from 'state/hooks'
 import { fetchProposal, fetchVotes } from 'state/voting'
 import { useTranslation } from 'contexts/Localization'
 import Container from 'components/layout/Container'
@@ -25,12 +25,12 @@ const Proposal = () => {
   const { account } = useWeb3React()
   const dispatch = useAppDispatch()
   const votes = useGetVotes(id)
-  const voteLoadingStatus = useGetVoteLoadingStatus()
+  const voteLoadingStatus = useGetVotingStateLoadingStatus()
   const proposalLoadingStatus = useGetProposalLoadingStatus()
   const hasAccountVoted = account && votes.some((vote) => vote.voter.toLowerCase() === account.toLowerCase())
   const { id: proposalId = null, snapshot = null } = proposal ?? {}
   const isPageLoading =
-    voteLoadingStatus === VoteLoadingStatus.LOADING || proposalLoadingStatus === VoteLoadingStatus.LOADING
+    voteLoadingStatus === VotingStateLoadingStatus.LOADING || proposalLoadingStatus === VotingStateLoadingStatus.LOADING
 
   useEffect(() => {
     dispatch(fetchProposal(id))
