@@ -11,7 +11,7 @@ export interface DeBankTvlResponse {
   tvl: number
 }
 
-export const useGetStats = () => {
+export const useGetStats = (loadData = true) => {
   const [data, setData] = useState<DeBankTvlResponse | null>(null)
 
   useEffect(() => {
@@ -26,8 +26,10 @@ export const useGetStats = () => {
       }
     }
 
-    fetchData()
-  }, [setData])
+    if (loadData) {
+      fetchData()
+    }
+  }, [setData, loadData])
 
   return data
 }

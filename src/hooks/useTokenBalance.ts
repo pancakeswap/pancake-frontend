@@ -50,7 +50,7 @@ const useTokenBalance = (tokenAddress: string) => {
   return balanceState
 }
 
-export const useTotalSupply = () => {
+export const useTotalSupply = (loadData = true) => {
   const { slowRefresh } = useRefresh()
   const [totalSupply, setTotalSupply] = useState<BigNumber>()
 
@@ -61,13 +61,15 @@ export const useTotalSupply = () => {
       setTotalSupply(new BigNumber(supply))
     }
 
-    fetchTotalSupply()
-  }, [slowRefresh])
+    if (loadData) {
+      fetchTotalSupply()
+    }
+  }, [slowRefresh, loadData])
 
   return totalSupply
 }
 
-export const useBurnedBalance = (tokenAddress: string) => {
+export const useBurnedBalance = (tokenAddress: string, loadData = true) => {
   const [balance, setBalance] = useState(BIG_ZERO)
   const { slowRefresh } = useRefresh()
 
@@ -78,8 +80,10 @@ export const useBurnedBalance = (tokenAddress: string) => {
       setBalance(new BigNumber(res))
     }
 
-    fetchBalance()
-  }, [tokenAddress, slowRefresh])
+    if (loadData) {
+      fetchBalance()
+    }
+  }, [tokenAddress, slowRefresh, loadData])
 
   return balance
 }
