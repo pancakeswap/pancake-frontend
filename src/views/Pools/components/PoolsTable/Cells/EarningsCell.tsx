@@ -43,7 +43,6 @@ const EarningsCell: React.FC<EarningsCellProps> = ({ pool, account, userDataLoad
   let hasEarnings = account && earnings.gt(0)
   const fullBalance = getFullDisplayBalance(earnings, earningToken.decimals)
   const formattedBalance = formatNumber(earningTokenBalance, 3, 3)
-  const earningsDollarValue = formatNumber(earningTokenDollarBalance)
   const isBnbPool = poolCategory === PoolCategory.BINANCE
 
   // Auto CAKE vault calculations
@@ -83,7 +82,7 @@ const EarningsCell: React.FC<EarningsCellProps> = ({ pool, account, userDataLoad
       formattedBalance={formattedBalance}
       fullBalance={fullBalance}
       earningToken={earningToken}
-      earningsDollarValue={earningsDollarValue}
+      earningsDollarValue={earningTokenDollarBalance}
       sousId={sousId}
       isBnbPool={isBnbPool}
       isCompoundPool={isManualCakePool}

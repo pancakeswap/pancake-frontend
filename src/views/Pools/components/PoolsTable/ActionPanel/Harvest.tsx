@@ -38,7 +38,6 @@ const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({
   let hasEarnings = earnings.gt(0)
   const fullBalance = getFullDisplayBalance(earnings, earningToken.decimals)
   const formattedBalance = formatNumber(earningTokenBalance, 3, 3)
-  const earningsDollarValue = formatNumber(earningTokenDollarBalance)
   const isCompoundPool = sousId === 0
   const isBnbPool = poolCategory === PoolCategory.BINANCE
 
@@ -66,7 +65,7 @@ const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({
       formattedBalance={formattedBalance}
       fullBalance={fullBalance}
       earningToken={earningToken}
-      earningsDollarValue={earningsDollarValue}
+      earningsDollarValue={earningTokenDollarBalance}
       sousId={sousId}
       isBnbPool={isBnbPool}
       isCompoundPool={isCompoundPool}

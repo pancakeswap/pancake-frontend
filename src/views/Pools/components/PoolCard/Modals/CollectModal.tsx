@@ -17,12 +17,13 @@ import { useSousHarvest } from 'hooks/useHarvest'
 import { useSousStake } from 'hooks/useStake'
 import useToast from 'hooks/useToast'
 import { Token } from 'config/constants/types'
+import { formatNumber } from 'utils/formatBalance'
 
 interface CollectModalProps {
   formattedBalance: string
   fullBalance: string
   earningToken: Token
-  earningsDollarValue: string
+  earningsDollarValue: number
   sousId: number
   isBnbPool: boolean
   isCompoundPool?: boolean
@@ -117,7 +118,9 @@ const CollectModal: React.FC<CollectModalProps> = ({
           <Heading>
             {formattedBalance} {earningToken.symbol}
           </Heading>
-          <Text fontSize="12px" color="textSubtle">{`~${earningsDollarValue || 0} USD`}</Text>
+          {earningsDollarValue > 0 && (
+            <Text fontSize="12px" color="textSubtle">{`~${formatNumber(earningsDollarValue)} USD`}</Text>
+          )}
         </Flex>
       </Flex>
 
