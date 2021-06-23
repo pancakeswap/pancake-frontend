@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, lazy, useEffect, useState } from 'react'
+import React, { ChangeEvent, FormEvent, lazy, useEffect, useState, useMemo } from 'react'
 import {
   AutoRenewIcon,
   Box,
@@ -126,6 +126,13 @@ const CreateProposal = () => {
     updateValue(key, value)
   }
 
+  const options = useMemo(
+    () => ({
+      hideIcons: account === ADMIN_ADDRESS ? [] : ['guide', 'fullscreen', 'preview', 'side-by-side', 'image'],
+    }),
+    [account],
+  )
+
   useEffect(() => {
     if (initialBlock > 0) {
       setState((prevState) => ({
@@ -162,10 +169,7 @@ const CreateProposal = () => {
                 name="body"
                 onTextChange={handleEasyMdeChange}
                 value={body}
-                options={{
-                  hideIcons:
-                    account === ADMIN_ADDRESS ? [] : ['guide', 'fullscreen', 'preview', 'side-by-side', 'image'],
-                }}
+                options={options}
                 required
               />
               {formErrors.body && fieldsState.body && <FormErrors errors={formErrors.body} />}
