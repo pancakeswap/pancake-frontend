@@ -34,6 +34,12 @@ const Wrapper = styled.div`
     a,
     button {
       color: ${({ theme }) => theme.colors.text};
+
+      &:hover,
+      &.active {
+        background: ${({ theme }) => theme.colors.background};
+        border: 0;
+      }
     }
   }
 `

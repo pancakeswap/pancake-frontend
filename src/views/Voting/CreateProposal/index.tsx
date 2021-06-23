@@ -26,6 +26,7 @@ import { useTranslation } from 'contexts/Localization'
 import Container from 'components/layout/Container'
 import { DatePicker, TimePicker } from 'components/DatePicker'
 import UnlockButton from 'components/UnlockButton'
+import ReactMarkdown from 'components/ReactMarkdown'
 import BreadcrumbLink from '../components/BreadcrumbLink'
 import { sendSnaphotData, Message, generateMetaData, generatePayloadData } from '../helpers'
 import Layout from '../components/Layout'
@@ -158,6 +159,20 @@ const CreateProposal = () => {
               <EasyMde id="body" name="body" onTextChange={handleEasyMdeChange} value={body} required />
               {formErrors.body && fieldsState.body && <FormErrors errors={formErrors.body} />}
             </Box>
+            {body && (
+              <Box mb="24px">
+                <Card>
+                  <CardHeader>
+                    <Heading as="h3" scale="md">
+                      {t('Preview')}
+                    </Heading>
+                  </CardHeader>
+                  <CardBody p="0" px="24px">
+                    <ReactMarkdown>{body}</ReactMarkdown>
+                  </CardBody>
+                </Card>
+              </Box>
+            )}
             <Choices choices={choices} onChange={handleChoiceChange} />
             {formErrors.choices && fieldsState.choices && <FormErrors errors={formErrors.choices} />}
           </Box>
