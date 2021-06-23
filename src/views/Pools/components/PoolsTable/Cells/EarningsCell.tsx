@@ -7,6 +7,7 @@ import { PoolCategory } from 'config/constants/types'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { formatNumber, getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
 import Balance from 'components/Balance'
+import BalanceWithFiat from 'components/BalanceWithFiat'
 import { useCakeVault } from 'state/hooks'
 import { useTranslation } from 'contexts/Localization'
 import { getCakeVaultEarnings } from 'views/Pools/helpers'
@@ -73,18 +74,14 @@ const EarningsCell: React.FC<EarningsCellProps> = ({ pool, account, userDataLoad
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <>
-      <Balance fontSize="16px" value={autoCakeToDisplay} decimals={3} bold unit=" CAKE" />
-      <Balance fontSize="16px" value={autoUsdToDisplay} decimals={2} bold prefix="~$" />
+      <BalanceWithFiat cakeValue={autoCakeToDisplay} fiatValue={autoUsdToDisplay} bold currencySymbol="$" />
       {t('Earned since your last action')}
-      <Text>{dateStringToDisplay}</Text>
-      {t('Average earned per hour:')}
-      <Balance fontSize="16px" value={earnedCakePerHour} decimals={2} bold prefix="CAKE per hour: " />
-      <Balance fontSize="16px" value={earnedUsdPerHour} decimals={2} bold prefix="per hour: ~$" />
-      {t('At this rate, you would earn:')}
-      <Balance fontSize="16px" value={earnedUsdPerHour * 24} decimals={2} bold prefix="per 1d: ~$" />
-      <Balance fontSize="16px" value={earnedUsdPerHour * 24 * 7} decimals={2} bold prefix="per 7d: ~$" />
-      <Balance fontSize="16px" value={earnedUsdPerHour * 24 * 30} decimals={2} bold prefix="per 30d: ~$" />
-      <Balance fontSize="16px" value={earnedUsdPerHour * 24 * 365} decimals={2} bold prefix="per 365d: ~$" />
+      <Text mb="16px">{dateStringToDisplay}</Text>
+      <Text mb="16px">
+        {t('Average per hour:')}
+        <BalanceWithFiat cakeValue={earnedCakePerHour} fiatValue={earnedUsdPerHour} currencySymbol="$" />
+      </Text>
+      {t('Tap the APR/APY Calculator icon for more.')}
     </>,
     { placement: 'bottom' },
   )
