@@ -19,6 +19,7 @@ const ApyButton: React.FC<ApyButtonProps> = ({ lpLabel, cakePrice, apr, addLiqui
       tokenPrice={cakePrice.toNumber()}
       apr={apr}
       linkHref={addLiquidityUrl}
+      isFarm
     />,
   )
 

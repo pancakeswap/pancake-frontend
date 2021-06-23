@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { Heading, Card, CardBody, Flex, ArrowForwardIcon, Skeleton } from '@pancakeswap/uikit'
+import { ChainId } from '@pancakeswap-libs/sdk'
 import max from 'lodash/max'
 import { NavLink } from 'react-router-dom'
 import BigNumber from 'bignumber.js'
@@ -58,7 +59,12 @@ const EarnAPRCard = () => {
         // Filter inactive farms, because their theoretical APR is super high. In practice, it's 0.
         if (farm.pid !== 0 && farm.multiplier !== '0X' && farm.lpTotalInQuoteToken && farm.quoteToken.busdPrice) {
           const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(farm.quoteToken.busdPrice)
-          return getFarmApr(new BigNumber(farm.poolWeight), cakePrice, totalLiquidity)
+          return getFarmApr(
+            new BigNumber(farm.poolWeight),
+            cakePrice,
+            totalLiquidity,
+            farm.lpAddresses[ChainId.MAINNET],
+          )
         }
         return null
       })
