@@ -5,7 +5,7 @@ const FrankEarned: React.FC = () => {
   return (
     <div className="frank-card">
       <div className="small-text">
-        <span className="green-color">Frank </span>
+        <span className="green-color">Zombie </span>
         <span className="white-color">EARNED</span>
       </div>
       <div className="space-between">

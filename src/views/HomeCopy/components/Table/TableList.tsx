@@ -49,7 +49,7 @@ interface TableListProps {
 
 const TableList: React.FC<TableListProps> = (props: TableListProps) => {
 
-  const { details: { name, type, path }, handler } = props;
+  const { details: { name, type, path, rug }, handler } = props;
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -67,21 +67,21 @@ const TableList: React.FC<TableListProps> = (props: TableListProps) => {
               <div className="into-two-td">
                 <div className="info-1">
                   <div className="info-icon">
-                    {type === 'image' ? (
+                  <img src="images/rugZombie/BasicZombie.png" alt="icon" className="icon" />
+                    {type === 'image' && rug !=='' ? (
                       <img src={path} alt="icon" className="icon" />
                     ) : (
                         <video className='icon' width="100%" autoPlay>
                           <source src={path} type="video/mp4" />
                         </video>
-                      )}
-                    {/* <img src="https://storage.googleapis.com/rug-zombie/running-zombie-1.png" alt="icon" className="icon" />
-                    <img src="https://storage.googleapis.com/rug-zombie/TheMoon.png" alt="icon" className="icon" /> */}
+                    )}
+                    {/* <img src="https://storage.googleapis.com/rug-zombie/TheMoon.png" alt="icon" className="icon" /> */}
                   </div>
                   <div>
                     <div className="titel">{name}</div>
                     <div className="small-lable">
                       <div className="con-info">50X</div>
-                      <div className="small-titel">{name}</div>
+                      <div className="small-titel">ZMBE</div>
                     </div>
                   </div>
                 </div>

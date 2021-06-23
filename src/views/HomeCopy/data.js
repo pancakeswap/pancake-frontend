@@ -9,7 +9,7 @@ export const tableData = [
     type: 'image',
     withdrawalCooldown: '2 days',
     nftRevivalTime: '30 days',
-    rug: tokens,
+    rug: '',
     artist: 'https://twitter.com/baes_zom',
     stakingToken: undefined,
   },

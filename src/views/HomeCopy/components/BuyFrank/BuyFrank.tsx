@@ -8,7 +8,7 @@ const [onPresent1] = useModal(<ModalInput inputTitle="Stake $ZMBE" />);
   return (
     <div className="frank-card">
       <div className="small-text">
-        <span className="white-color">Buy FRANK</span>
+        <span className="white-color">Buy Zombie</span>
       </div>
       <div className="space-between">
         <button  onKeyDown={onPresent1} onClick={onPresent1}  className="btn w-100" type="button">Buy with FTM</button>

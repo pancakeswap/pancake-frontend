@@ -24,21 +24,25 @@ const RugInDetails: React.FC<RugInDetailsProps> = ({
           {type === 'image' ? (
             <img src={path} alt="CAKE" className="sc-cxNHIi bjMxQn" />
           ) : (
-            <video width="100%" autoPlay>
-              <source src={path} type="video/mp4" />
-            </video>
-          )}
+              <video width="100%" autoPlay>
+                <source src={path} type="video/mp4" />
+              </video>
+            )}
         </div>
       </div>
       <div className="direction-column">
-        <span className="indetails-type">Farm</span>
+        <span className="indetails-type">Grave</span>
         <span className="indetails-title">
           Weight:
           <span className="indetails-value">120X</span>
         </span>
         <span className="indetails-title">
-          FRANK TVL:
+          Zombie TVL:
           <span className="indetails-value">$37.01K</span>
+        </span>
+        <span className="indetails-title">
+          Artist:
+          <span className="indetails-value">{artist}</span>
         </span>
       </div>
       <div className="direction-column">
@@ -49,11 +53,11 @@ const RugInDetails: React.FC<RugInDetailsProps> = ({
         </span>
         <span className="indetails-title">
           Withdrawal Cooldown:
-          <span className="indetails-value">(timer)</span>
+          <span className="indetails-value">{withdrawalCooldown}</span>
         </span>
         <span className="indetails-title">
           NFT Mint competion:
-          <span className="indetails-value">(timer)</span>
+          <span className="indetails-value">{nftRevivalTime}</span>
         </span>
       </div>
       {/* <div className="direction-column">
