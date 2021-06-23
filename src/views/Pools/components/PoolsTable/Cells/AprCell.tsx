@@ -28,12 +28,7 @@ const AprCell: React.FC<AprCellProps> = ({ pool, performanceFee }) => {
         <Text fontSize="12px" color="textSubtle" textAlign="left">
           {isAutoVault ? t('APY') : t('APR')}
         </Text>
-        <Apr
-          pool={pool}
-          performanceFee={isAutoVault ? performanceFee : 0}
-          showIcon={!isXs && !isSm}
-          alignItems="flex-start"
-        />
+        <Apr pool={pool} performanceFee={isAutoVault ? performanceFee : 0} showIcon={!isXs && !isSm} />
       </CellContent>
     </StyledCell>
   )
