@@ -26,6 +26,7 @@ const Balance: React.FC<BalanceProps> = ({
   useEffect(() => {
     previousValue.current = value
   }, [value])
+
   return (
     <Text color={isDisabled ? 'textDisabled' : color} onClick={onClick} {...props}>
       {prefix && <span>{prefix}</span>}
