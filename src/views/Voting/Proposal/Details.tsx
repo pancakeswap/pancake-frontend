@@ -1,17 +1,28 @@
 import React from 'react'
-import { Card, CardBody, CardHeader, Flex, Heading, LinkExternal, Text } from '@pancakeswap/uikit'
+import { Box, Card, CardBody, CardHeader, Flex, Heading, LinkExternal, Text } from '@pancakeswap/uikit'
+import styled from 'styled-components'
+import { format } from 'date-fns'
 import { Proposal } from 'state/types'
 import { useTranslation } from 'contexts/Localization'
 import { getBscScanAddressUrl, getBscScanBlockNumberUrl } from 'utils/bscscan'
 import truncateWalletAddress from 'utils/truncateWalletAddress'
 import { IPFS_GATEWAY } from '../config'
+import { ProposalStateTag } from '../components/Proposals/tags'
 
 interface DetailsProps {
   proposal: Proposal
 }
 
+const DetailBox = styled(Box)`
+  background-color: ${({ theme }) => theme.colors.background};
+  border: 1px solid ${({ theme }) => theme.colors.cardBorder};
+  border-radius: 16px;
+`
+
 const Details: React.FC<DetailsProps> = ({ proposal }) => {
   const { t } = useTranslation()
+  const startDate = new Date(proposal.start * 1000)
+  const endDate = new Date(proposal.end * 1000)
 
   return (
     <Card mb="16px">
@@ -33,12 +44,27 @@ const Details: React.FC<DetailsProps> = ({ proposal }) => {
             {truncateWalletAddress(proposal.author)}
           </LinkExternal>
         </Flex>
-        <Flex alignItems="center">
+        <Flex alignItems="center" mb="16px">
           <Text color="textSubtle">{t('Snaphot')}</Text>
           <LinkExternal href={getBscScanBlockNumberUrl(proposal.snapshot)} ml="8px">
             {proposal.snapshot}
           </LinkExternal>
         </Flex>
+        <DetailBox p="16px">
+          <ProposalStateTag proposalState={proposal.state} mb="8px" />
+          <Flex alignItems="center">
+            <Text color="textSubtle" fontSize="14px">
+              {t('Start Date')}
+            </Text>
+            <Text ml="8px">{format(startDate, 'yyyy-MM-dd HH:mm')}</Text>
+          </Flex>
+          <Flex alignItems="center">
+            <Text color="textSubtle" fontSize="14px">
+              {t('End Date')}
+            </Text>
+            <Text ml="8px">{format(endDate, 'yyyy-MM-dd HH:mm')}</Text>
+          </Flex>
+        </DetailBox>
       </CardBody>
     </Card>
   )

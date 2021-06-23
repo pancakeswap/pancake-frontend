@@ -37,6 +37,8 @@ export interface Message {
  */
 export const generateMetaData = () => {
   return {
+    plugins: {},
+    network: 56,
     strategies: [{ name: PANCAKE_SPACE, params: { address: getCakeAddress(), chefAddresses: [] } }],
   }
 }

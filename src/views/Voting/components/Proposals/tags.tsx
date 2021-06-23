@@ -3,16 +3,20 @@ import { TagProps } from '@pancakeswap/uikit'
 import { ClosedTag, CommunityTag, CoreTag, SoonTag, VoteNowTag } from 'components/Tags'
 import { ProposalState } from 'state/types'
 
-export const ProposalStateTag: React.FC<{ proposalState: ProposalState }> = ({ proposalState }) => {
+interface ProposalStateTagProps extends TagProps {
+  proposalState: ProposalState
+}
+
+export const ProposalStateTag: React.FC<ProposalStateTagProps> = ({ proposalState, ...props }) => {
   if (proposalState === ProposalState.ACTIVE) {
-    return <VoteNowTag />
+    return <VoteNowTag {...props} />
   }
 
   if (proposalState === ProposalState.PENDING) {
-    return <SoonTag />
+    return <SoonTag {...props} />
   }
 
-  return <ClosedTag />
+  return <ClosedTag {...props} />
 }
 
 interface ProposalTypeTagProps extends TagProps {
@@ -23,5 +27,6 @@ export const ProposalTypeTag: React.FC<ProposalTypeTagProps> = ({ isCoreProposal
   if (isCoreProposal) {
     return <CoreTag {...props} />
   }
+
   return <CommunityTag {...props} />
 }

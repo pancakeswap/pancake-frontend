@@ -77,6 +77,7 @@ const CreateProposal = () => {
               return choice.value
             }),
           metadata: generateMetaData(),
+          type: 'single-choice',
         },
       })
       const sig = await web3.eth.personal.sign(proposal, account, null)
