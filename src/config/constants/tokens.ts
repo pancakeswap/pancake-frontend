@@ -1434,6 +1434,24 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://www.bitwellex.com/',
   },
+  wex: {
+    symbol: 'WEX',
+    address: {
+      56: '0xa9c41A46a6B3531d28d5c32F6633dd2fF05dFB90',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://wault.finance/',
+  },
+  waultx: {
+    symbol: 'WAULTx',
+    address: {
+      56: '0xB64E638E60D154B43f660a6BF8fD8a3b249a6a21',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://wault.finance/',
+  },
   popen: {
     symbol: 'pOPEN',
     address: {

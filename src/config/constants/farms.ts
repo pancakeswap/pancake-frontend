@@ -39,6 +39,26 @@ const farms: FarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 419,
+    lpSymbol: 'WAULTx-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x3e4370204f598205998143F07ebCC486E441b456',
+    },
+    token: tokens.waultx,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 418,
+    lpSymbol: 'WEX-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x547A355E70cd1F8CAF531B950905aF751dBEF5E6',
+    },
+    token: tokens.wex,
+    quoteToken: tokens.wbnb,
+  },
+  {
     pid: 417,
     lpSymbol: 'FORM-BUSD LP',
     lpAddresses: {
