@@ -1443,7 +1443,7 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://wault.finance/',
   },
-  wault: {
+  waultx: {
     symbol: 'WAULTx',
     address: {
       56: '0xB64E638E60D154B43f660a6BF8fD8a3b249a6a21',

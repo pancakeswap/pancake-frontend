@@ -19,7 +19,7 @@ const pools: PoolConfig[] = [
   {
     sousId: 187,
     stakingToken: tokens.cake,
-    earningToken: tokens.wault,
+    earningToken: tokens.waultx,
     contractAddress: {
       97: '',
       56: '',
