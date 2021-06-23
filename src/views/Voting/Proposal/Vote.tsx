@@ -27,6 +27,15 @@ const Choice = styled.label<{ isChecked: boolean }>`
   padding: 16px;
 `
 
+const ChoiceText = styled.div`
+  flex: 1;
+  padding-left: 16px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 0;
+`
+
 const Vote: React.FC<VoteProps> = ({ proposal, ...props }) => {
   const [vote, setVote] = useState<State>(null)
   const { t } = useTranslation()
@@ -62,10 +71,14 @@ const Vote: React.FC<VoteProps> = ({ proposal, ...props }) => {
 
           return (
             <Choice key={choice} isChecked={isChecked}>
-              <div style={{ flex: 'none' }}>
+              <div style={{ flexShrink: 0 }}>
                 <Radio scale="sm" value={choice} checked={isChecked} onChange={handleChange} />
               </div>
-              <Text ml="16px">{choice}</Text>
+              <ChoiceText>
+                <Text as="span" title={choice}>
+                  {choice}
+                </Text>
+              </ChoiceText>
             </Choice>
           )
         })}

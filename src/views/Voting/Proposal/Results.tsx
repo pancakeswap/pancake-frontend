@@ -6,6 +6,7 @@ import { useGetVotingStatus } from 'state/hooks'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { useTranslation } from 'contexts/Localization'
 import { calculateVoteResults } from '../helpers'
+import TextEllipsis from '../components/TextEllipsis'
 
 interface ResultsProps {
   choiceCount: number
@@ -35,7 +36,9 @@ const Results: React.FC<ResultsProps> = ({ choiceCount, votes }) => {
 
             return (
               <Box key={result.label} mt={index > 0 ? '24px' : '0px'}>
-                <Text mb="4px">{result.label}</Text>
+                <TextEllipsis mb="4px" title={result.label}>
+                  {result.label}
+                </TextEllipsis>
                 <Box mb="4px">
                   <Progress primaryStep={progress} scale="sm" />
                 </Box>

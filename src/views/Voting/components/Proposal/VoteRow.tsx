@@ -5,6 +5,7 @@ import truncateWalletAddress from 'utils/truncateWalletAddress'
 import { getBscScanAddressUrl } from 'utils/bscscan'
 import { Vote } from 'state/types'
 import { IPFS_GATEWAY } from '../../config'
+import TextEllipsis from '../TextEllipsis'
 import Row, { AddressColumn, ChoiceColumn, VotingPowerColumn } from './Row'
 
 interface VoteRowProps {
@@ -21,7 +22,9 @@ const VoteRow: React.FC<VoteRowProps> = ({ vote }) => {
         <LinkExternal href={getBscScanAddressUrl(vote.voter)}>{truncateWalletAddress(vote.voter)}</LinkExternal>
       </AddressColumn>
       <ChoiceColumn>
-        <Text>{vote.proposal.choices[vote.choice - 1]}</Text>
+        <TextEllipsis title={vote.proposal.choices[vote.choice - 1]}>
+          {vote.proposal.choices[vote.choice - 1]}
+        </TextEllipsis>
       </ChoiceColumn>
       <VotingPowerColumn>
         <Flex alignItems="center" justifyContent="end">

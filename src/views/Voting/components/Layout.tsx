@@ -7,7 +7,7 @@ const Layout = styled.div`
   grid-template-columns: 1fr;
 
   ${({ theme }) => theme.mediaQueries.lg} {
-    grid-template-columns: 1fr minmax(auto, 332px);
+    grid-template-columns: 1fr 332px;
   }
 `
 

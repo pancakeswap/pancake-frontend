@@ -7,6 +7,7 @@ import useWeb3 from 'hooks/useWeb3'
 import { SnapshotCommand } from 'state/types'
 import useGetVotingPower from '../../hooks/useGetVotingPower'
 import { generatePayloadData, Message, sendSnaphotData } from '../../helpers'
+import TextEllipsis from '../TextEllipsis'
 import ModalBox from './ModalBox'
 
 interface CastVoteModalProps extends InjectedModalProps {
@@ -71,9 +72,9 @@ const CastVoteModal: React.FC<CastVoteModalProps> = ({ onSuccess, proposalId, vo
         <Text color="secondary" mb="8px" textTransform="uppercase" fontSize="12px" bold>
           {t('Voting For')}
         </Text>
-        <Text bold fontSize="20px" mb="8px">
+        <TextEllipsis bold fontSize="20px" mb="8px" title={vote.label}>
           {vote.label}
-        </Text>
+        </TextEllipsis>
         <Text color="secondary" mb="8px" textTransform="uppercase" fontSize="12px" bold>
           {t('Your Voting Power')}
         </Text>

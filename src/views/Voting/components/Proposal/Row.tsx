@@ -7,6 +7,7 @@ export const AddressColumn = styled(Flex).attrs({ alignItems: 'center' })`
 
 export const ChoiceColumn = styled(Flex).attrs({ alignItems: 'center' })`
   flex: 1;
+  width: 0;
   padding-left: 32px;
   padding-right: 32px;
 `
