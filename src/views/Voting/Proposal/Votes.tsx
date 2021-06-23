@@ -31,9 +31,10 @@ const parseVotePower = (incomingVote: Vote) => {
 const Votes: React.FC<VotesProps> = ({ votes }) => {
   const [showAll, setShowAll] = useState(false)
   const { t } = useTranslation()
-  const displayVotes = showAll ? votes : votes.slice(0, VOTES_PER_VIEW)
-  const voteStatus = useGetVotingStatus()
-  const isFinished = voteStatus === VotingStatus.IDLE
+  const orderedVotes = orderBy(votes, [parseVotePower, 'created'], ['desc', 'desc'])
+  const displayVotes = showAll ? orderedVotes : orderedVotes.slice(0, VOTES_PER_VIEW)
+  const voteStatus = useGetVotingStateLoadingStatus()
+  const isFinished = voteStatus === VotingStateLoadingStatus.IDLE
 
   const handleClick = () => {
     setShowAll(!showAll)
@@ -70,7 +71,7 @@ const Votes: React.FC<VotesProps> = ({ votes }) => {
               </Text>
             </VotingPowerColumn>
           </Row>
-          {orderBy(displayVotes, [parseVotePower, 'created'], ['desc', 'desc']).map((vote) => {
+          {displayVotes.map((vote) => {
             return <VoteRow key={vote.id} vote={vote} />
           })}
           <Flex alignItems="center" justifyContent="center" py="8px" px="24px">
