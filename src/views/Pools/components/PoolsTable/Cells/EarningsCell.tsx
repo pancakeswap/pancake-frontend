@@ -7,6 +7,7 @@ import { PoolCategory } from 'config/constants/types'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { formatNumber, getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
 import Balance from 'components/Balance'
+import BalanceWithFiat from 'components/BalanceWithFiat'
 import { useCakeVault } from 'state/hooks'
 import { useTranslation } from 'contexts/Localization'
 import { getCakeVaultEarnings } from 'views/Pools/helpers'
@@ -67,12 +68,20 @@ const EarningsCell: React.FC<EarningsCellProps> = ({ pool, account, userDataLoad
   hasEarnings = isAutoVault ? hasAutoEarnings : hasEarnings
   earningTokenDollarBalance = isAutoVault ? autoUsdToDisplay : earningTokenDollarBalance
 
+  const timeDiffSinceLastAction = (Date.now() - lastActionInMs) / 1000 / 60 / 60
+  const earnedCakePerHour = earningTokenBalance / timeDiffSinceLastAction
+  const earnedUsdPerHour = earningTokenDollarBalance / timeDiffSinceLastAction
+
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <>
-      <Balance fontSize="16px" value={autoCakeToDisplay} decimals={3} bold unit=" CAKE" />
-      <Balance fontSize="16px" value={autoUsdToDisplay} decimals={2} bold prefix="~$" />
+      <BalanceWithFiat cakeValue={autoCakeToDisplay} fiatValue={autoUsdToDisplay} bold currencySymbol="$" />
       {t('Earned since your last action')}
-      <Text>{dateStringToDisplay}</Text>
+      <Text mb="16px">{dateStringToDisplay}</Text>
+      <Text mb="16px">
+        {t('Average per hour:')}
+        <BalanceWithFiat cakeValue={earnedCakePerHour} fiatValue={earnedUsdPerHour} currencySymbol="$" />
+      </Text>
+      {t('Tap the APR/APY Calculator icon for more.')}
     </>,
     { placement: 'bottom' },
   )
