@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Box, Flex, Heading, Skeleton, useModal } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
@@ -10,7 +10,7 @@ import useNextEventCountdown from 'hooks/lottery/v2/useNextEventCountdown'
 import useGetNextLotteryEvent from 'hooks/lottery/v2/useGetNextLotteryEvent'
 import { useAppDispatch } from 'state'
 import { useFetchLottery, useGetPastLotteries, useGetUserLotteryHistory, useLottery } from 'state/hooks'
-import { fetchCurrentLottery, fetchNextLottery, fetchPublicLotteryData } from 'state/lottery'
+import { fetchCurrentLottery, fetchNextLottery, fetchPublicLotteryData, fetchUserLotteryHistory } from 'state/lottery'
 import fetchUnclaimedUserRewards from 'state/lottery/fetchUnclaimedUserRewards'
 import { TITLE_BG, GET_TICKETS_BG, FINISHED_ROUNDS_BG, FINISHED_ROUNDS_BG_DARK } from './pageSectionStyles'
 import Hero from './components/Hero'
@@ -18,7 +18,8 @@ import DrawInfoCard from './components/DrawInfoCard'
 import Countdown from './components/Countdown'
 import HistoryTabMenu from './components/HistoryTabMenu'
 import YourHistoryCard from './components/YourHistoryCard'
-import ClaimModal from './components/ClaimModal'
+import ClaimPrizesModal from './components/ClaimPrizesModal'
+import PrizeCollectionCard from './components/PrizeCollectionCard'
 
 const LotteryPage = styled.div`
   min-height: calc(100vh - 64px);
@@ -47,29 +48,31 @@ const LotteryV2 = () => {
   const secondsRemaining = useNextEventCountdown(nextEventTime)
   const userLotteryHistory = useGetUserLotteryHistory()
   const pastLotteries = useGetPastLotteries()
-  const [unclaimedRewards, setUnclaimedRewards] = useState([])
+  const [unclaimedRewards, setUnclaimedRewards] = useState({ isFetchingRewards: true, rewards: [] })
   const [hasPoppedClaimModal, setHasPoppedClaimModal] = useState(false)
-  const [onPresentClaimModal] = useModal(<ClaimModal roundsToClaim={unclaimedRewards} />)
+  const [onPresentClaimModal] = useModal(<ClaimPrizesModal roundsToClaim={unclaimedRewards.rewards} />)
+
+  const fetchRewards = useCallback(async () => {
+    console.log('fetching rewards')
+    const unclaimedRewardsResponse = await fetchUnclaimedUserRewards(
+      account,
+      currentLotteryId,
+      userLotteryHistory,
+      pastLotteries,
+    )
+    setUnclaimedRewards({ isFetchingRewards: false, rewards: unclaimedRewardsResponse })
+  }, [account, userLotteryHistory, currentLotteryId, pastLotteries])
 
   useEffect(() => {
     // Check if user has rewards on page load and account change
-    const fetchRewards = async () => {
-      const unclaimedRewardsResponse = await fetchUnclaimedUserRewards(
-        account,
-        currentLotteryId,
-        userLotteryHistory,
-        pastLotteries,
-      )
-      setUnclaimedRewards(unclaimedRewardsResponse)
-    }
     if (userLotteryHistory && account && currentLotteryId && pastLotteries) {
       fetchRewards()
     }
-  }, [account, userLotteryHistory, currentLotteryId, pastLotteries, setUnclaimedRewards])
+  }, [account, userLotteryHistory, currentLotteryId, pastLotteries, setUnclaimedRewards, fetchRewards])
 
   useEffect(() => {
     // Manage showing unclaimed rewards modal
-    if (unclaimedRewards.length > 0 && !hasPoppedClaimModal) {
+    if (unclaimedRewards.rewards.length > 0 && !hasPoppedClaimModal) {
       setHasPoppedClaimModal(true)
       onPresentClaimModal()
     }
@@ -141,6 +144,14 @@ const LotteryV2 = () => {
             />
           </Box>
           {historyTabMenuIndex === 0 ? <YourHistoryCard /> : <span>😢</span>}
+          <PrizeCollectionCard
+            unclaimedRewards={unclaimedRewards}
+            onSuccess={() => {
+              setUnclaimedRewards({ isFetchingRewards: false, rewards: [] })
+              dispatch(fetchUserLotteryHistory({ account }))
+            }}
+            fetchRewards={fetchRewards}
+          />
         </Flex>
       </PageSection>
       <PageSection hasCurvedDivider={false} index={0}>

@@ -13,14 +13,18 @@ const StyledNumberWrapper = styled(Flex)`
   justify-content: space-between;
 `
 
-const TicketNumber: React.FC<LotteryTicket> = ({ id, number }) => {
+interface TicketNumberProps extends LotteryTicket {
+  localId?: number
+}
+
+const TicketNumber: React.FC<TicketNumberProps> = ({ localId, id, number, ...props }) => {
   const reversedNumber = parseRetreivedNumber(number)
   const numberAsArray = reversedNumber.split('')
 
   return (
-    <Flex flexDirection="column" mb="12px">
+    <Flex flexDirection="column" mb="12px" {...props}>
       <Text fontSize="12px" color="textSubtle">
-        #{id}
+        #{localId || id}
       </Text>
       <StyledNumberWrapper>
         {numberAsArray.map((digit) => (

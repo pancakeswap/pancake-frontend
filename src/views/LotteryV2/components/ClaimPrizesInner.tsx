@@ -1,10 +1,8 @@
 import React, { useState } from 'react'
-import styled from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
-import { Modal, Flex, Button, Text, AutoRenewIcon } from '@pancakeswap/uikit'
+import { Flex, Button, Text, AutoRenewIcon, Won } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
-import useTheme from 'hooks/useTheme'
 import { LotteryTicketClaimData } from 'config/constants/types'
 import { getBalanceAmount } from 'utils/formatBalance'
 import { usePriceCakeBusd } from 'state/hooks'
@@ -13,24 +11,14 @@ import useToast from 'hooks/useToast'
 import { useLotteryV2Contract } from 'hooks/useContract'
 import { parseClaimDataForClaimTicketsCall } from '../helpers'
 
-const StyledModal = styled(Modal)`
-  min-width: 280px;
-  /* max-width: 320px; */
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    min-width: 380px;
-  }
-`
-
-interface ViewTicketsModalProps {
+interface ClaimInnerProps {
   roundsToClaim: LotteryTicketClaimData[]
-  onDismiss?: () => void
+  onSuccess?: () => void
 }
 
-const ClaimModal: React.FC<ViewTicketsModalProps> = ({ onDismiss, roundsToClaim }) => {
+const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToClaim }) => {
   const { account } = useWeb3React()
   const { t } = useTranslation()
-  const { theme } = useTheme()
   const { toastSuccess, toastError } = useToast()
   const [activeClaimIndex, setActiveClaimIndex] = useState(0)
   const [pendingTx, setPendingTx] = useState(false)
@@ -49,12 +37,8 @@ const ClaimModal: React.FC<ViewTicketsModalProps> = ({ onDismiss, roundsToClaim 
     if (roundsToClaim.length > activeClaimIndex + 1) {
       // If there are still rounds to claim, move onto the next claim
       setActiveClaimIndex(activeClaimIndex + 1)
-    } else if (roundsToClaim.length === 1) {
-      // If there was only one round to claim, don't show additional 'No more rewards to claim!' toast
-      onDismiss()
     } else {
-      onDismiss()
-      toastSuccess(t('No more rewards to claim!'))
+      onSuccess()
     }
   }
 
@@ -67,7 +51,7 @@ const ClaimModal: React.FC<ViewTicketsModalProps> = ({ onDismiss, roundsToClaim 
         setPendingTx(true)
       })
       .on('receipt', () => {
-        toastSuccess(t('Claimed!'), t(`You have claimed rewards for round ${lotteryId}`))
+        toastSuccess(t('Prizes Collected!'), t(`Your CAKE prizes for round ${lotteryId} have been sent to your wallet`))
         setPendingTx(false)
         handleProgressToNextClaim()
       })
@@ -79,16 +63,38 @@ const ClaimModal: React.FC<ViewTicketsModalProps> = ({ onDismiss, roundsToClaim 
   }
 
   return (
-    <StyledModal
-      title={`${t('Collect winnings')}`}
-      onDismiss={onDismiss}
-      headerBackground={theme.colors.gradients.cardHeader}
-    >
+    <>
       <Flex flexDirection="column">
-        <Text mb="4px">{t('You won')}</Text>
-        <Balance lineHeight="1.1" value={rewardAsBalance} fontSize="44px" bold color="secondary" unit=" CAKE!" />
-        <Balance value={dollarRewardAsBalance} fontSize="12px" color="textSubtle" unit=" USD" prefix="~" />
+        <Text mb="4px" textAlign={['center', null, 'left']}>
+          {t('You won')}
+        </Text>
+        <Flex
+          alignItems={['flex-start', null, 'center']}
+          justifyContent={['flex-start', null, 'center']}
+          flexDirection={['column', null, 'row']}
+        >
+          <Balance
+            textAlign={['center', null, 'left']}
+            lineHeight="1.1"
+            value={rewardAsBalance}
+            fontSize="44px"
+            bold
+            color="secondary"
+            unit=" CAKE!"
+          />
+          <Won ml={['0', null, '12px']} width="64px" />
+        </Flex>
+        <Balance
+          mt={['12px', null, '0']}
+          textAlign={['center', null, 'left']}
+          value={dollarRewardAsBalance}
+          fontSize="12px"
+          color="textSubtle"
+          unit=" USD"
+          prefix="~"
+        />
       </Flex>
+
       <Flex alignItems="center" justifyContent="center">
         <Text mt="8px" fontSize="12px" color="textSubtle">
           {t('Round')} #{round}
@@ -105,8 +111,8 @@ const ClaimModal: React.FC<ViewTicketsModalProps> = ({ onDismiss, roundsToClaim 
           {pendingTx ? t('Claiming') : t('Claim')}
         </Button>
       </Flex>
-    </StyledModal>
+    </>
   )
 }
 
-export default ClaimModal
+export default ClaimInnerContainer
