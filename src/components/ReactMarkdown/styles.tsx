@@ -14,6 +14,11 @@ const Table = styled.table`
   }
 `
 
+const Ul = styled.ul`
+  margin-bottom: 16px;
+  margin-top: 16px;
+`
+
 const Title = (props) => {
   return <Heading as="h4" scale="lg" my="16px" {...props} />
 }
@@ -26,9 +31,10 @@ const markdownComponents: Partial<NormalComponents & SpecialComponents> = {
   h5: Title,
   h6: Title,
   p: (props) => {
-    return <Text as="p" {...props} />
+    return <Text as="p" my="16px" {...props} />
   },
   table: Table,
+  ul: Ul,
 }
 
 export default markdownComponents

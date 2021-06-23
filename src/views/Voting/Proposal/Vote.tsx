@@ -62,7 +62,9 @@ const Vote: React.FC<VoteProps> = ({ proposal, ...props }) => {
 
           return (
             <Choice key={choice} isChecked={isChecked}>
-              <Radio scale="sm" value={choice} checked={isChecked} onChange={handleChange} />
+              <div style={{ flex: 'none' }}>
+                <Radio scale="sm" value={choice} checked={isChecked} onChange={handleChange} />
+              </div>
               <Text ml="16px">{choice}</Text>
             </Choice>
           )
