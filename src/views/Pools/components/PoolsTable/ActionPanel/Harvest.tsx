@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Text, useModal, Flex, TooltipText, useTooltip, Skeleton } from '@pancakeswap/uikit'
+import { Button, Text, useModal, Flex, TooltipText, useTooltip, Skeleton, Heading } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import { getCakeVaultEarnings } from 'views/Pools/helpers'
@@ -59,7 +59,6 @@ const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({
   hasEarnings = isAutoVault ? hasAutoEarnings : hasEarnings
   earningTokenDollarBalance = isAutoVault ? autoUsdToDisplay : earningTokenDollarBalance
 
-  const displayBalance = hasEarnings ? earningTokenBalance : 0
   const [onPresentCollect] = useModal(
     <CollectModal
       formattedBalance={formattedBalance}
@@ -120,22 +119,31 @@ const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({
       <ActionTitles>{actionTitle}</ActionTitles>
       <ActionContent>
         <Flex flex="1" pt="16px" flexDirection="column" alignSelf="flex-start">
-          <Balance lineHeight="1" bold fontSize="20px" decimals={5} value={displayBalance} />
-          {hasEarnings ? (
-            <Balance
-              display="inline"
-              fontSize="12px"
-              color={hasEarnings ? 'textSubtle' : 'textDisabled'}
-              decimals={2}
-              value={earningTokenDollarBalance}
-              unit=" USD"
-              prefix="~"
-            />
-          ) : (
-            <Text fontSize="12px" color={hasEarnings ? 'textSubtle' : 'textDisabled'}>
-              0 USD
-            </Text>
-          )}
+          <>
+            {hasEarnings ? (
+              <>
+                <Balance lineHeight="1" bold fontSize="20px" decimals={5} value={earningTokenBalance} />
+                {earningTokenPrice > 0 && (
+                  <Balance
+                    display="inline"
+                    fontSize="12px"
+                    color="textSubtle"
+                    decimals={2}
+                    prefix="~"
+                    value={earningTokenDollarBalance}
+                    unit=" USD"
+                  />
+                )}
+              </>
+            ) : (
+              <>
+                <Heading color="textDisabled">0</Heading>
+                <Text fontSize="12px" color="textDisabled">
+                  0 USD
+                </Text>
+              </>
+            )}
+          </>
         </Flex>
         {isAutoVault ? (
           <Flex flex="1.3" flexDirection="column" alignSelf="flex-start" alignItems="flex-start">

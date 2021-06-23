@@ -55,26 +55,27 @@ const HarvestActions: React.FC<HarvestActionsProps> = ({
           ) : (
             <>
               {hasEarnings ? (
-                <Balance bold fontSize="20px" decimals={5} value={earningTokenBalance} />
-              ) : (
-                <Heading color="textDisabled">0</Heading>
-              )}
-              {earningTokenPrice !== 0 && (
-                <Text fontSize="12px" color={hasEarnings ? 'textSubtle' : 'textDisabled'}>
-                  ~
-                  {hasEarnings ? (
+                <>
+                  <Balance bold fontSize="20px" decimals={5} value={earningTokenBalance} />
+                  {earningTokenPrice > 0 && (
                     <Balance
                       display="inline"
                       fontSize="12px"
                       color="textSubtle"
                       decimals={2}
+                      prefix="~"
                       value={earningTokenDollarBalance}
                       unit=" USD"
                     />
-                  ) : (
-                    '0 USD'
                   )}
-                </Text>
+                </>
+              ) : (
+                <>
+                  <Heading color="textDisabled">0</Heading>
+                  <Text fontSize="12px" color="textDisabled">
+                    0 USD
+                  </Text>
+                </>
               )}
             </>
           )}

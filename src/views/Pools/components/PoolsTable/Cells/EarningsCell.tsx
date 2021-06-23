@@ -116,17 +116,21 @@ const EarningsCell: React.FC<EarningsCellProps> = ({ pool, account, userDataLoad
                   value={hasEarnings ? earningTokenBalance : 0}
                 />
                 {hasEarnings ? (
-                  <Balance
-                    display="inline"
-                    fontSize="12px"
-                    color={hasEarnings ? 'textSubtle' : 'textDisabled'}
-                    decimals={2}
-                    value={earningTokenDollarBalance}
-                    unit=" USD"
-                    prefix="~"
-                  />
+                  <>
+                    {earningTokenPrice > 0 && (
+                      <Balance
+                        display="inline"
+                        fontSize="12px"
+                        color="textSubtle"
+                        decimals={2}
+                        prefix="~"
+                        value={earningTokenDollarBalance}
+                        unit=" USD"
+                      />
+                    )}
+                  </>
                 ) : (
-                  <Text mt="4px" fontSize="12px" color={hasEarnings ? 'textSubtle' : 'textDisabled'}>
+                  <Text mt="4px" fontSize="12px" color="textDisabled">
                     0 USD
                   </Text>
                 )}
