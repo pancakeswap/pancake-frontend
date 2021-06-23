@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Card, CardHeader, CardBody, Flex, Heading, Text, Skeleton, Button, useModal, Box } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
+import { useWeb3React } from '@web3-react/core'
 import { LotteryStatus } from 'config/constants/types'
 import { useTranslation } from 'contexts/Localization'
 import { useLottery } from 'state/hooks'
@@ -23,6 +24,7 @@ const Grid = styled.div`
 
 const DrawInfoCard = () => {
   const { t } = useTranslation()
+  const { account } = useWeb3React()
   const {
     currentLotteryId,
     currentRound: { endTime, amountCollectedInCake, userData, status },
@@ -82,7 +84,7 @@ const DrawInfoCard = () => {
     <Card>
       <CardHeader p="16px 24px">
         <Flex justifyContent="space-between">
-          <Heading>{t('Next Draw')}</Heading>
+          <Heading mr="12px">{t('Next Draw')}</Heading>
           <Text>
             {currentLotteryId && `#${currentLotteryId} | `}{' '}
             {Boolean(endTime) && `${t('Draw')}: ${endDate.toLocaleString(undefined, dateTimeOptions)}`}
@@ -107,17 +109,19 @@ const DrawInfoCard = () => {
                 mr={[null, null, null, '24px']}
                 alignItems={['center', null, null, 'flex-start']}
               >
-                <Flex justifyContent={['center', null, null, 'flex-start']}>
-                  <Text display="inline">{t('You have')} </Text>
-                  {!userData.isLoading ? (
-                    <Text display="inline" bold mx="4px">
-                      {userTicketCount} {t('tickets')}
-                    </Text>
-                  ) : (
-                    <Skeleton mx="4px" height={20} width={40} />
-                  )}
-                  <Text display="inline"> {t('this round')}</Text>
-                </Flex>
+                {account && (
+                  <Flex justifyContent={['center', null, null, 'flex-start']}>
+                    <Text display="inline">{t('You have')} </Text>
+                    {!userData.isLoading ? (
+                      <Text display="inline" bold mx="4px">
+                        {userTicketCount} {t('tickets')}
+                      </Text>
+                    ) : (
+                      <Skeleton mx="4px" height={20} width={40} />
+                    )}
+                    <Text display="inline"> {t('this round')}</Text>
+                  </Flex>
+                )}
                 {!userData.isLoading && userTicketCount > 0 && (
                   <Button
                     onClick={onPresentViewTicketsModal}

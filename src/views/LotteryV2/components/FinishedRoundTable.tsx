@@ -22,7 +22,10 @@ const FinishedRoundTable: React.FC<FinishedRoundTableProps> = ({ handleHistoryRo
   const filteredForCurrentRound = userLotteryHistory?.rounds.filter((round) => {
     return round.lotteryId !== currentLotteryId
   })
-  const mostRecentRoundsFirst = filteredForCurrentRound?.reverse()
+
+  const sortedByRoundId = filteredForCurrentRound?.sort((roundA, roundB) => {
+    return parseInt(roundA.lotteryId, 10) + parseInt(roundB.lotteryId, 10)
+  })
 
   return (
     <>
@@ -43,7 +46,7 @@ const FinishedRoundTable: React.FC<FinishedRoundTableProps> = ({ handleHistoryRo
       <Flex flexDirection="column">
         {/* TODO: Get endTime & claimed data */}
         {userLotteryHistory &&
-          mostRecentRoundsFirst.map((pastRound) => (
+          sortedByRoundId.map((pastRound) => (
             <HistoryGridRow
               key={pastRound.lotteryId}
               roundId={pastRound.lotteryId}
