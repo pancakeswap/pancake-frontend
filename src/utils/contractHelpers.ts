@@ -1,6 +1,7 @@
 import Web3 from 'web3'
 import { AbiItem } from 'web3-utils'
 import web3NoAccount from 'utils/web3'
+import { ChainId } from '@pancakeswap-libs/sdk'
 import { poolsConfig } from 'config/constants'
 import { PoolCategory } from 'config/constants/types'
 
@@ -52,12 +53,12 @@ import cakeVaultAbi from 'config/abi/cakeVault.json'
 import predictionsAbi from 'config/abi/predictions.json'
 import chainlinkOracleAbi from 'config/abi/chainlinkOracle.json'
 import MultiCallAbi from 'config/abi/Multicall.json'
-import { DEFAULT_GAS_PRICE, TESTNET_CHAIN_ID } from 'config'
+import { DEFAULT_GAS_PRICE } from 'config'
 import { getSettings, getGasPriceInWei } from './settings'
 
 export const getDefaultGasPrice = () => {
-  const chainId = process.env.REACT_APP_CHAIN_ID
-  if (chainId === TESTNET_CHAIN_ID) {
+  const chainId = parseInt(process.env.REACT_APP_CHAIN_ID, 10)
+  if (chainId === ChainId.BSCTESTNET) {
     return 10
   }
   return DEFAULT_GAS_PRICE
