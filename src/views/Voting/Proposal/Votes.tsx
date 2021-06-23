@@ -24,6 +24,10 @@ interface VotesProps {
   votes: Vote[]
 }
 
+const parseVotePower = (incomingVote: Vote) => {
+  return parseFloat(incomingVote?.metadata?.votingPower)
+}
+
 const Votes: React.FC<VotesProps> = ({ votes }) => {
   const [showAll, setShowAll] = useState(false)
   const { t } = useTranslation()
@@ -66,7 +70,7 @@ const Votes: React.FC<VotesProps> = ({ votes }) => {
               </Text>
             </VotingPowerColumn>
           </Row>
-          {orderBy(displayVotes, ['created'], ['desc']).map((vote) => {
+          {orderBy(displayVotes, [parseVotePower, 'created'], ['desc', 'desc']).map((vote) => {
             return <VoteRow key={vote.id} vote={vote} />
           })}
           <Flex alignItems="center" justifyContent="center" py="8px" px="24px">
