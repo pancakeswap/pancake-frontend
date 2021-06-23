@@ -6,7 +6,13 @@ import Page from '../../components/layout/Page'
 import Table from './components/Table'
 import './HomeCopy.Styles.css'
 import tableData from './data';
+import { getDrFrankensteinContract } from '../../utils/contractHelpers'
+import { useDrFrankenstein } from '../../hooks/useContract'
+import useWeb3 from '../../hooks/useWeb3'
+import { useWeb3React } from '@web3-react/core'
 
+let web3
+let accountAddress
 const Hero = styled.div`
   align-items: center;
   /* background-image: url('/images/pan-bg-mobile.svg'); */
@@ -32,7 +38,19 @@ const Hero = styled.div`
 
 const ImageURL = "https://storage.googleapis.com/rug-zombie/rug-zombie-home.png";
 
-const Home: React.FC = () => {
+async function initWeb3() {
+  const { account } = useWeb3React()
+  accountAddress = account
+}
+
+const HomeC: React.FC = () => {
+  initWeb3()
+  const drFrankenstein = useDrFrankenstein()
+  drFrankenstein.methods.userInfo(0, accountAddress).call()
+    .then(res => {
+      console.log(res)
+    })
+
   const { t } = useTranslation()
 
   return (
@@ -52,4 +70,4 @@ const Home: React.FC = () => {
   )
 }
 
-export default Home
+export default HomeC

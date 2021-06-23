@@ -1,6 +1,6 @@
 import React from 'react'
 import Page from 'components/layout/Page'
-import HomeCopy from '../HomeCopy'
+import HomeC from '../HomeCopy'
 
 
 const Home: React.FC = () => {
@@ -23,7 +23,7 @@ const Home: React.FC = () => {
             <TotalValueLockedCard />
           </Cards>
         </div> */}
-        <HomeCopy />
+        <HomeC />
       </Page>
   )
 }

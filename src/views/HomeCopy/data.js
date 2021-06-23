@@ -5,7 +5,7 @@ const tableData = [
   {
     id: 1,
     name: 'Basic Zombie',
-    path: 'images/rugZombie/BasicZombie.png',
+    path: 'images/rugZombie/frank-transparent.gif',
     type: 'image',
     withdrawalCooldown: '2 days',
     nftRevivalTime: '30 days',

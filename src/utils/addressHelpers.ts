@@ -19,11 +19,12 @@ export const getZombieAddress = () => {
 export const getMasterChefAddress = () => {
   return getAddress(addresses.masterChef)
 }
-
+export const getDrFrankensteinAddress = () => {
+  return getAddress(addresses.drFrankenstein)
+}
 export const getRestorationChefAddress = () => {
   return getAddress(addresses.restorationChef)
 }
-
 export const getMulticallAddress = () => {
   return getAddress(addresses.multiCall)
 }
