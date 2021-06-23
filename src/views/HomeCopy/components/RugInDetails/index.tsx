@@ -1,3 +1,4 @@
+import { LinkExternal } from '@rug-zombie-libs/uikit'
 import React from 'react'
 
 interface RugInDetailsProps {
@@ -41,8 +42,9 @@ const RugInDetails: React.FC<RugInDetailsProps> = ({
           <span className="indetails-value">$37.01K</span>
         </span>
         <span className="indetails-title">
-          Artist:
-          <span className="indetails-value">{artist}</span>
+          <LinkExternal bold={false} small href={artist}>
+          View NFT Artist
+        </LinkExternal>
         </span>
       </div>
       <div className="direction-column">
