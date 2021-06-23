@@ -34,7 +34,7 @@ import Choices, { Choice, makeChoice, MINIMUM_CHOICES } from './Choices'
 import { combineDateAndTime, getFormErrors } from './helpers'
 import { FormState } from './types'
 
-const SimpleMde = lazy(() => import('components/SimpleMde'))
+const EasyMde = lazy(() => import('components/EasyMde'))
 
 const CreateProposal = () => {
   const [state, setState] = useState<FormState>({
@@ -112,7 +112,7 @@ const CreateProposal = () => {
     updateValue(inputName, value)
   }
 
-  const handleSimpleMdeChange = (value: string) => {
+  const handleEasyMdeChange = (value: string) => {
     updateValue('body', value)
   }
 
@@ -155,7 +155,7 @@ const CreateProposal = () => {
               <Text color="textSubtle" mb="8px">
                 {t('Tip: write in Markdown!')}
               </Text>
-              <SimpleMde id="body" name="body" onTextChange={handleSimpleMdeChange} value={body} required />
+              <EasyMde id="body" name="body" onTextChange={handleEasyMdeChange} value={body} required />
               {formErrors.body && fieldsState.body && <FormErrors errors={formErrors.body} />}
             </Box>
             <Choices choices={choices} onChange={handleChoiceChange} />
