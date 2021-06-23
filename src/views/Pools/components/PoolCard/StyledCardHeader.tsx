@@ -1,9 +1,9 @@
 import React from 'react'
-import { CardHeader, Heading, Text, Flex, TokenPairImage } from '@pancakeswap/uikit'
+import { CardHeader, Heading, Text, Flex } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import { Token } from 'config/constants/types'
-import { getAddress } from 'utils/addressHelpers'
+import TokenPairImage from 'components/TokenPairImage'
 import CakeVaultTokenPairImage from '../CakeVaultCard/CakeVaultTokenPairImage'
 
 const Wrapper = styled(CardHeader)<{ isFinished?: boolean; background?: string }>`
@@ -58,12 +58,7 @@ const StyledCardHeader: React.FC<{
         {isAutoVault ? (
           <CakeVaultTokenPairImage width={64} height={64} />
         ) : (
-          <TokenPairImage
-            primaryTokenAddress={getAddress(earningToken.address)}
-            secondaryTokenAddress={getAddress(stakingToken.address)}
-            width={64}
-            height={64}
-          />
+          <TokenPairImage primaryToken={earningToken} secondaryToken={stakingToken} width={64} height={64} />
         )}
       </Flex>
     </Wrapper>

@@ -39,6 +39,46 @@ const farms: FarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 417,
+    lpSymbol: 'FORM-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0x3E19C18Fe3458A6065D8F0844cB7Eae52C9DAE07',
+    },
+    token: tokens.form,
+    quoteToken: tokens.busd,
+  },
+  {
+    pid: 416,
+    lpSymbol: 'ORBS-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0xB87b857670A44356f2b70337E0F218713D2378e8',
+    },
+    token: tokens.orbs,
+    quoteToken: tokens.busd,
+  },
+  {
+    pid: 415,
+    lpSymbol: 'DG-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x8b2824d57eebf07f5aff5c91fa67ed7c501a9f43',
+    },
+    token: tokens.$dg,
+    quoteToken: tokens.wbnb,
+  },
+  {
+    pid: 414,
+    lpSymbol: 'WOO-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x89eE0491CE55d2f7472A97602a95426216167189',
+    },
+    token: tokens.woo,
+    quoteToken: tokens.wbnb,
+  },
+  {
     pid: 413,
     lpSymbol: 'HTB-BNB LP',
     lpAddresses: {

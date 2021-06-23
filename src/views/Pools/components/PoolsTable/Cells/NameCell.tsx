@@ -1,12 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
-import { Text, TokenPairImage, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import { getAddress } from 'utils/addressHelpers'
 import { useCakeVault } from 'state/hooks'
 import { Pool } from 'state/types'
 import { BIG_ZERO } from 'utils/bigNumber'
+import TokenPairImage from 'components/TokenPairImage'
 import CakeVaultTokenPairImage from '../../CakeVaultCard/CakeVaultTokenPairImage'
 import BaseCell, { CellContent } from './BaseCell'
 
@@ -59,13 +59,7 @@ const NameCell: React.FC<NameCellProps> = ({ pool }) => {
       {isAutoVault ? (
         <CakeVaultTokenPairImage mr="8px" width={40} height={40} />
       ) : (
-        <TokenPairImage
-          primaryTokenAddress={getAddress(earningToken.address)}
-          secondaryTokenAddress={getAddress(stakingToken.address)}
-          mr="8px"
-          width={40}
-          height={40}
-        />
+        <TokenPairImage primaryToken={earningToken} secondaryToken={stakingToken} mr="8px" width={40} height={40} />
       )}
       <CellContent>
         {showStakedTag && (

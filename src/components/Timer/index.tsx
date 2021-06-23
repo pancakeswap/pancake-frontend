@@ -6,7 +6,8 @@ import { ContextApi } from 'contexts/Localization/types'
 import { getBscScanBlockNumberUrl } from 'utils/bscscan'
 
 export interface TimerProps {
-  timerStage?: string
+  prefix?: string
+  suffix?: string
   minutes?: number
   hours?: number
   days?: number
@@ -28,12 +29,24 @@ const Timer = ({ minutes, hours, days, showTooltip, HeadingTextComponent, BodyTe
 
   return (
     <StyledTimerFlex alignItems="flex-end" showTooltip={showTooltip}>
-      <HeadingTextComponent mr="2px">{days}</HeadingTextComponent>
-      <BodyTextComponent mr="16px">{t('d')}</BodyTextComponent>
-      <HeadingTextComponent mr="2px">{hours}</HeadingTextComponent>
-      <BodyTextComponent mr="16px">{t('h')}</BodyTextComponent>
-      <HeadingTextComponent mr="2px">{minutes}</HeadingTextComponent>
-      <BodyTextComponent>{t('m')}</BodyTextComponent>
+      {Boolean(days) && (
+        <>
+          <HeadingTextComponent mr="2px">{days}</HeadingTextComponent>
+          <BodyTextComponent mr="16px">{t('d')}</BodyTextComponent>
+        </>
+      )}
+      {Boolean(hours) && (
+        <>
+          <HeadingTextComponent mr="2px">{hours}</HeadingTextComponent>
+          <BodyTextComponent mr="16px">{t('h')}</BodyTextComponent>
+        </>
+      )}
+      {Boolean(minutes) && (
+        <>
+          <HeadingTextComponent mr="2px">{minutes}</HeadingTextComponent>
+          <BodyTextComponent>{t('m')}</BodyTextComponent>
+        </>
+      )}
     </StyledTimerFlex>
   )
 }
@@ -61,7 +74,8 @@ const TooltipContent = ({ blockNumber, t }: { blockNumber: number; t: ContextApi
 )
 
 const Wrapper: React.FC<TimerProps> = ({
-  timerStage,
+  prefix,
+  suffix,
   minutes,
   hours,
   days,
@@ -77,7 +91,7 @@ const Wrapper: React.FC<TimerProps> = ({
   const shouldDisplayTooltip = showTooltip && tooltipVisible
   return (
     <Flex alignItems="flex-end" position="relative">
-      <BodyTextComponent mr="16px">{timerStage}</BodyTextComponent>
+      {prefix && <BodyTextComponent mr="16px">{prefix}</BodyTextComponent>}
       <div ref={targetRef}>
         <Timer
           minutes={minutes}
@@ -89,6 +103,7 @@ const Wrapper: React.FC<TimerProps> = ({
         />
         {shouldDisplayTooltip && tooltip}
       </div>
+      {suffix && <BodyTextComponent ml="16px">{suffix}</BodyTextComponent>}
     </Flex>
   )
 }

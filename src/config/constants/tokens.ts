@@ -12,6 +12,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://pancakeswap.finance/',
   },
+  form: {
+    symbol: 'FORM',
+    address: {
+      56: '0x25A528af62e56512A19ce8c3cAB427807c28CC19',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://formation.fi/',
+  },
   txl: {
     symbol: 'TXL',
     address: {
@@ -20,6 +29,15 @@ const tokens = {
     },
     decimals: 18,
     projectLink: 'https://tixl.org/',
+  },
+  orbs: {
+    symbol: 'ORBS',
+    address: {
+      56: '0xeBd49b26169e1b52c04cFd19FCf289405dF55F80',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://www.orbs.com/',
   },
   cos: {
     symbol: 'COS',
@@ -496,7 +514,7 @@ const tokens = {
       97: '',
     },
     decimals: 18,
-    projectLink: 'http://stablexswap.com/',
+    projectLink: 'https://stablexswap.com/',
   },
   nar: {
     symbol: 'NAR',
@@ -694,7 +712,7 @@ const tokens = {
       97: '',
     },
     decimals: 18,
-    projectLink: 'http://www.makerdao.com/',
+    projectLink: 'https://www.makerdao.com/',
   },
   ada: {
     symbol: 'ADA',
@@ -802,7 +820,7 @@ const tokens = {
       97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
     },
     decimals: 18,
-    projectLink: 'http://bch.info/',
+    projectLink: 'https://bch.info/',
   },
   yfi: {
     symbol: 'YFI',
@@ -1568,6 +1586,24 @@ const tokens = {
     },
     decimals: 18,
     projectLink: 'https://www.hotbit.io/',
+  },
+  woo: {
+    symbol: 'WOO',
+    address: {
+      56: '0x4691937a7508860F876c9c0a2a617E7d9E945D4B',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://woo.network/',
+  },
+  $dg: {
+    symbol: '$DG',
+    address: {
+      56: '0x9Fdc3ae5c814b79dcA2556564047C5e7e5449C19',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://decentral.games/',
   },
 }
 

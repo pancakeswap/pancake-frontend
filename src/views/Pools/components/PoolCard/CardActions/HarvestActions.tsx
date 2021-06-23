@@ -29,7 +29,6 @@ const HarvestActions: React.FC<HarvestActionsProps> = ({
   const formattedBalance = formatNumber(earningTokenBalance, 3, 3)
 
   const earningTokenDollarBalance = getBalanceNumber(earnings.multipliedBy(earningTokenPrice), earningToken.decimals)
-  const earningsDollarValue = formatNumber(earningTokenDollarBalance)
 
   const fullBalance = getFullDisplayBalance(earnings, earningToken.decimals)
   const hasEarnings = earnings.toNumber() > 0
@@ -40,7 +39,7 @@ const HarvestActions: React.FC<HarvestActionsProps> = ({
       formattedBalance={formattedBalance}
       fullBalance={fullBalance}
       earningToken={earningToken}
-      earningsDollarValue={earningsDollarValue}
+      earningsDollarValue={earningTokenDollarBalance}
       sousId={sousId}
       isBnbPool={isBnbPool}
       isCompoundPool={isCompoundPool}
