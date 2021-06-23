@@ -55,7 +55,7 @@ const getBlockAtTimestamp = async (timestamp: string) => {
   }
 }
 
-const getChunkApr = async (addresses: string[], blockWeekAgo: number): Promise<AprMap> => {
+const getAprsForFarmGroup = async (addresses: string[], blockWeekAgo: number): Promise<AprMap> => {
   try {
     const { farmsAtLatestBlock, farmsOneWeekAgo } = await request<FarmsResponse>(
       STREAMING_FAST_ENDPOINT,
@@ -101,29 +101,22 @@ const getChunkApr = async (addresses: string[], blockWeekAgo: number): Promise<A
 }
 
 const fetchAndUpdateLPsAPR = async () => {
-  // pids before 250 are inactive farms from v1 and failed v2
+  // pids before 250 are inactive farms from v1 and failed v2 migration
   const lowerCaseAddresses = farmsConfig
     .filter((farm) => farm.pid > 250)
     .map((farm) => farm.lpAddresses[ChainId.MAINNET].toLowerCase())
   console.info(`Fetching farm data for ${lowerCaseAddresses.length} addresses`)
-  // Split it into chunks to avoid gateway timeout
-  const groupsOf30 = chunk(lowerCaseAddresses, 30)
+  // Split it into chunks of 30 addresses to avoid gateway timeout
+  const addressesInGroups = chunk(lowerCaseAddresses, 30)
   const weekAgoTimestamp = getWeekAgoTimestamp()
   const blockWeekAgo = await getBlockAtTimestamp(weekAgoTimestamp)
-  console.log(blockWeekAgo, typeof blockWeekAgo)
 
   let allAprs: AprMap = {}
   // eslint-disable-next-line no-restricted-syntax
-  for (const group of groupsOf30) {
+  for (const groupOfAddresses of addressesInGroups) {
     // eslint-disable-next-line no-await-in-loop
-    const aprs = await getChunkApr(group, blockWeekAgo)
+    const aprs = await getAprsForFarmGroup(groupOfAddresses, blockWeekAgo)
     allAprs = { ...allAprs, ...aprs }
-  }
-  const aprsCount = Object.keys(allAprs).length
-  if (aprsCount !== lowerCaseAddresses.length) {
-    throw new Error(
-      `Amount of LP APR results doesn't match amount of active farms (${aprsCount} out of ${lowerCaseAddresses.length}`,
-    )
   }
 
   fs.writeFile(`src/config/constants/lpAprs.json`, JSON.stringify(allAprs, null, 2), (err) => {
