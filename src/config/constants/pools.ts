@@ -22,7 +22,7 @@ const pools: PoolConfig[] = [
     earningToken: tokens.waultx,
     contractAddress: {
       97: '',
-      56: '',
+      56: '0x017DEa5C58c2Bcf57FA73945073dF7AD4052a71C',
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
@@ -35,7 +35,7 @@ const pools: PoolConfig[] = [
     earningToken: tokens.wex,
     contractAddress: {
       97: '',
-      56: '',
+      56: '0x6Bd94783caCef3fb7eAa9284f1631c464479829f',
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
