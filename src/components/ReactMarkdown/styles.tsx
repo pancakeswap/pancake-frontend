@@ -32,6 +32,11 @@ const Pre = styled.pre`
   overflow-x: auto;
 `
 
+const Pre = styled.pre`
+  max-width: 100%;
+  overflow-x: auto;
+`
+
 const Title = (props) => {
   return <Heading as="h4" scale="lg" my="16px" {...props} />
 }
