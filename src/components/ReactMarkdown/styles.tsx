@@ -19,6 +19,11 @@ const Ul = styled.ul`
   margin-top: 16px;
 `
 
+const Pre = styled.pre`
+  max-width: 100%;
+  overflow-x: auto;
+`
+
 const Title = (props) => {
   return <Heading as="h4" scale="lg" my="16px" {...props} />
 }
@@ -35,6 +40,7 @@ const markdownComponents: Partial<NormalComponents & SpecialComponents> = {
   },
   table: Table,
   ul: Ul,
+  pre: Pre,
 }
 
 export default markdownComponents
