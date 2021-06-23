@@ -34,6 +34,7 @@ import { FormErrors, Label, SecondaryLabel } from './styles'
 import Choices, { Choice, makeChoice, MINIMUM_CHOICES } from './Choices'
 import { combineDateAndTime, getFormErrors } from './helpers'
 import { FormState } from './types'
+import { ADMIN_ADDRESS } from '../config'
 
 const EasyMde = lazy(() => import('components/EasyMde'))
 
@@ -156,7 +157,17 @@ const CreateProposal = () => {
               <Text color="textSubtle" mb="8px">
                 {t('Tip: write in Markdown!')}
               </Text>
-              <EasyMde id="body" name="body" onTextChange={handleEasyMdeChange} value={body} required />
+              <EasyMde
+                id="body"
+                name="body"
+                onTextChange={handleEasyMdeChange}
+                value={body}
+                options={{
+                  hideIcons:
+                    account === ADMIN_ADDRESS ? [] : ['guide', 'fullscreen', 'preview', 'side-by-side', 'image'],
+                }}
+                required
+              />
               {formErrors.body && fieldsState.body && <FormErrors errors={formErrors.body} />}
             </Box>
             {body && (
