@@ -10,17 +10,17 @@ const Home: React.FC = () => {
 
   return (
     <Page className="innnerContainer">
-      <PageHeader className="innerHeader">
-        <Heading as="h1" scale="xxl" color="secondary" mb="24px">
+      <PageHeader background="none">
+        <Heading color="secondary" mb="24px">
           Graves
         </Heading>
-        <Heading scale="lg" color="text">
+        <Heading color="text">
           Stake Liquidity Pool (LP) tokens to earn.
         </Heading>
       </PageHeader>
       <div>
         {tableData.map((data) => {
-          return <Table details={data} key={data.id} />
+          return <Table details={data} key={data.id}/>
         })}
       </div>
     </Page>

@@ -20,8 +20,14 @@ const TableCards = styled(BaseLayout)`
 
 interface TableData {
   id: number,
+  name: string,
   path: string,
-  type: string
+  type: string,
+  withdrawalCooldown: string,
+  nftRevivalTime: string,
+  rug: string,
+  artist?: any,
+  stakingToken: any
 }
 
 interface TableProps {
@@ -36,7 +42,8 @@ const Table: React.FC<TableProps> = ({ details }: TableProps) => {
   }
 
   const TableListProps = {
-    "handler": openInDetails
+    "handler": openInDetails,
+    details
   }
 
   return (
