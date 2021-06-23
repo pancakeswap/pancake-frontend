@@ -3,45 +3,15 @@ import { request, gql } from 'graphql-request'
 import BigNumber from 'bignumber.js'
 import { ChainId } from '@pancakeswap-libs/sdk'
 import chunk from 'lodash/chunk'
+import { sub, getUnixTime } from 'date-fns'
 import farmsConfig from '../../src/config/constants/farms'
 
-const BLOCK_SUBGRAPH = 'https://api.thegraph.com/subgraphs/name/pancakeswap/blocks'
-const STREAMING_FAST = 'https://bsc.streamingfast.io/subgraphs/name/pancakeswap/exchange-v2'
-
-const GET_BLOCK = (timestamp: string) => {
-  return gql`query getBlock {
-        blocks(first: 1, where: { timestamp_gt: ${timestamp}, timestamp_lt: ${timestamp + 600} }) {
-          number
-        }
-    }`
-}
-
-const FARMS_AT_BLOCK = (block: number | null, farms: string[]) => {
-  const blockString = block ? `block: {number: ${block}}` : ``
-  const addressesString = `["${farms.join('","')}"]`
-  return `pairs(
-      first: 30,
-      where: { id_in: ${addressesString} }
-      ${blockString}
-    ) {
-      id
-      volumeUSD
-      reserveUSD
-    }`
-}
-
-const FARMS_BULK = (blockWeekAgo: number, farms: string[]) => {
-  return gql`
-      query farmsBulk {
-        now: ${FARMS_AT_BLOCK(null, farms)}
-        oneWeekAgo: ${FARMS_AT_BLOCK(blockWeekAgo, farms)}
-      }
-    `
-}
+const BLOCK_SUBGRAPH_ENDPOINT = 'https://api.thegraph.com/subgraphs/name/pancakeswap/blocks'
+const STREAMING_FAST_ENDPOINT = 'https://bsc.streamingfast.io/subgraphs/name/pancakeswap/exchange-v2'
 
 interface BlockResponse {
   blocks: {
-    number: number
+    number: string
   }[]
 }
 
@@ -52,8 +22,8 @@ interface SingleFarmResponse {
 }
 
 interface FarmsResponse {
-  now: SingleFarmResponse[]
-  oneWeekAgo: SingleFarmResponse[]
+  farmsAtLatestBlock: SingleFarmResponse[]
+  farmsOneWeekAgo: SingleFarmResponse[]
 }
 
 interface AprMap {
@@ -61,37 +31,63 @@ interface AprMap {
 }
 
 const getWeekAgoTimestamp = () => {
-  const weekAgoMs = new Date().getTime() - 7 * 24 * 60 * 60 * 1000
-  const weekAgoUnix = new Date(weekAgoMs).getTime() / 1000
-  return Math.floor(weekAgoUnix).toString()
+  const weekAgo = sub(new Date(), { weeks: 1 })
+  return getUnixTime(weekAgo).toString()
 }
 
 const LP_HOLDERS_FEE = 0.0017
 const WEEKS_IN_A_YEAR = 52.1429
 
-const get7dBlock = async () => {
-  const weekAgoTimestamp = getWeekAgoTimestamp()
+const getBlockAtTimestamp = async (timestamp: string) => {
   try {
-    const { blocks } = await request<BlockResponse>(BLOCK_SUBGRAPH, GET_BLOCK(weekAgoTimestamp))
-    return blocks[0].number
+    const { blocks } = await request<BlockResponse>(
+      BLOCK_SUBGRAPH_ENDPOINT,
+      `query getBlock($timestampGreater: String!, $timestampLess: String!) {
+        blocks(first: 1, where: { timestamp_gt: $timestampGreater, timestamp_lt: $timestampLess }) {
+          number
+        }
+      }`,
+      { timestampGreater: timestamp, timestampLess: timestamp + 600 },
+    )
+    return parseInt(blocks[0].number, 10)
   } catch (error) {
-    throw new Error(`Failed to fetch block number for ${weekAgoTimestamp}\n${error}`)
+    throw new Error(`Failed to fetch block number for ${timestamp}\n${error}`)
   }
 }
 
 const getChunkApr = async (addresses: string[], blockWeekAgo: number): Promise<AprMap> => {
   try {
-    const { now, oneWeekAgo } = await request<FarmsResponse>(STREAMING_FAST, FARMS_BULK(blockWeekAgo, addresses))
-    const aprs: AprMap = now.reduce((aprMap, farm) => {
-      const farmWeekAgo = oneWeekAgo.find((oldFarm) => oldFarm.id === farm.id)
-      // In case farm is too new to estimate LP APR (i.e. not returned in oneWeekAgo query) - return 0
+    const { farmsAtLatestBlock, farmsOneWeekAgo } = await request<FarmsResponse>(
+      STREAMING_FAST_ENDPOINT,
+      gql`
+        query farmsBulk($addresses: [String]!, $blockWeekAgo: Int!) {
+          farmsAtLatestBlock: pairs(first: 30, where: { id_in: $addresses }) {
+            id
+            volumeUSD
+            reserveUSD
+          }
+          farmsOneWeekAgo: pairs(first: 30, where: { id_in: $addresses }, block: { number: $blockWeekAgo }) {
+            id
+            volumeUSD
+            reserveUSD
+          }
+        }
+      `,
+      { addresses, blockWeekAgo },
+    )
+    const aprs: AprMap = farmsAtLatestBlock.reduce((aprMap, farm) => {
+      const farmWeekAgo = farmsOneWeekAgo.find((oldFarm) => oldFarm.id === farm.id)
+      // In case farm is too new to estimate LP APR (i.e. not returned in farmsOneWeekAgo query) - return 0
       let lpApr = new BigNumber(0)
       if (farmWeekAgo) {
         const volume7d = new BigNumber(farm.volumeUSD).minus(new BigNumber(farmWeekAgo.volumeUSD))
         const lpFees7d = volume7d.times(LP_HOLDERS_FEE)
         const lpFeesInAYear = lpFees7d.times(WEEKS_IN_A_YEAR)
-        const liquidity = new BigNumber(farm.reserveUSD)
-        lpApr = liquidity.dividedBy(lpFeesInAYear)
+        // Some untracked pairs like KUN-QSD will report 0 volume
+        if (lpFeesInAYear.gt(0)) {
+          const liquidity = new BigNumber(farm.reserveUSD)
+          lpApr = liquidity.dividedBy(lpFeesInAYear)
+        }
       }
       return {
         ...aprMap,
@@ -105,13 +101,16 @@ const getChunkApr = async (addresses: string[], blockWeekAgo: number): Promise<A
 }
 
 const fetchAndUpdateLPsAPR = async () => {
+  // pids before 250 are inactive farms from v1 and failed v2
   const lowerCaseAddresses = farmsConfig
     .filter((farm) => farm.pid > 250)
     .map((farm) => farm.lpAddresses[ChainId.MAINNET].toLowerCase())
   console.info(`Fetching farm data for ${lowerCaseAddresses.length} addresses`)
   // Split it into chunks to avoid gateway timeout
   const groupsOf30 = chunk(lowerCaseAddresses, 30)
-  const blockWeekAgo = await get7dBlock()
+  const weekAgoTimestamp = getWeekAgoTimestamp()
+  const blockWeekAgo = await getBlockAtTimestamp(weekAgoTimestamp)
+  console.log(blockWeekAgo, typeof blockWeekAgo)
 
   let allAprs: AprMap = {}
   // eslint-disable-next-line no-restricted-syntax
