@@ -26,7 +26,7 @@ const CastVoteModal: React.FC<CastVoteModalProps> = ({ onSuccess, proposalId, vo
   const [isPending, setIsPending] = useState(false)
   const { isLoading, total, verificationHash } = useGetVotingPower(block, modalIsOpen)
   const web3 = useWeb3()
-  const { account } = useWeb3React()
+  const { account, library } = useWeb3React()
   const { toastError } = useToast()
 
   const handleDismiss = () => {
@@ -49,7 +49,9 @@ const CastVoteModal: React.FC<CastVoteModalProps> = ({ onSuccess, proposalId, vo
           },
         },
       })
-      const sig = await web3.eth.personal.sign(voteMsg, account, null)
+      const sig = library?.bnbSign
+        ? (await library.bnbSign(account, voteMsg))?.signature
+        : await web3.eth.personal.sign(voteMsg, account, null)
       const msg: Message = { address: account, msg: voteMsg, sig }
 
       // Save proposal to snapshot

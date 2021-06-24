@@ -20,6 +20,7 @@ import isEmpty from 'lodash/isEmpty'
 import useWeb3 from 'hooks/useWeb3'
 import { useInitialBlock } from 'state/hooks'
 import { SnapshotCommand } from 'state/types'
+import useToast from 'hooks/useToast'
 import { getBscScanAddressUrl, getBscScanBlockNumberUrl } from 'utils/bscscan'
 import truncateWalletAddress from 'utils/truncateWalletAddress'
 import { useTranslation } from 'contexts/Localization'
@@ -52,10 +53,12 @@ const CreateProposal = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [fieldsState, setFieldsState] = useState<{ [key: string]: boolean }>({})
   const { t } = useTranslation()
-  const { account } = useWeb3React()
+  const { account, library } = useWeb3React()
   const initialBlock = useInitialBlock()
   const { push } = useHistory()
   const web3 = useWeb3()
+  const { toastSuccess, toastError } = useToast()
+
   const { name, body, choices, startDate, startTime, endDate, endTime, snapshot } = state
   const formErrors = getFormErrors(state, t)
 
@@ -82,15 +85,25 @@ const CreateProposal = () => {
           type: 'single-choice',
         },
       })
-      const sig = await web3.eth.personal.sign(proposal, account, null)
-      const msg: Message = { address: account, msg: proposal, sig }
+      const sig = library?.bnbSign
+        ? (await library.bnbSign(account, proposal))?.signature
+        : await web3.eth.personal.sign(proposal, account, null)
 
-      // Save proposal to snapshot
-      const data = await sendSnaphotData(msg)
+      if (sig) {
+        const msg: Message = { address: account, msg: proposal, sig }
 
-      // Redirect user to newly created proposal page
-      push(`/voting/proposal/${data.ipfsHash}`)
+        // Save proposal to snapshot
+        const data = await sendSnaphotData(msg)
+
+        // Redirect user to newly created proposal page
+        push(`/voting/proposal/${data.ipfsHash}`)
+
+        toastSuccess(t('Proposal created!'))
+      } else {
+        toastError(t('Error'), t('Unable to sign payload'))
+      }
     } catch (error) {
+      toastError(t('Error'), error?.message || error?.error)
       console.error(error)
       setIsLoading(false)
     }

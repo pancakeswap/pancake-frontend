@@ -853,5 +853,6 @@
   "Please select a valid date": "Please select a valid date",
   "Please select a valid time": "Please select a valid time",
   "End date must be after the start date": "End date must be after the start date",
-  "Invalid snapshot": "Invalid snapshot"
+  "Invalid snapshot": "Invalid snapshot",
+  "Proposal created!": "Proposal created!"
 }
