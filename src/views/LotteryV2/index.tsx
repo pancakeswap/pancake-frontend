@@ -10,7 +10,7 @@ import useNextEventCountdown from 'hooks/lottery/v2/useNextEventCountdown'
 import useGetNextLotteryEvent from 'hooks/lottery/v2/useGetNextLotteryEvent'
 import { useAppDispatch } from 'state'
 import { useFetchLottery, useGetPastLotteries, useGetUserLotteryHistory, useLottery } from 'state/hooks'
-import { fetchCurrentLottery, fetchNextLottery, fetchPublicLotteryData, fetchUserLotteryHistory } from 'state/lottery'
+import { fetchCurrentLottery, fetchPublicLotteryData, fetchUserLotteryHistory } from 'state/lottery'
 import fetchUnclaimedUserRewards from 'state/lottery/fetchUnclaimedUserRewards'
 import { TITLE_BG, GET_TICKETS_BG, FINISHED_ROUNDS_BG, FINISHED_ROUNDS_BG_DARK } from './pageSectionStyles'
 import Hero from './components/Hero'
@@ -80,23 +80,17 @@ const LotteryV2 = () => {
 
   // Data fetches for lottery phase transitions
   useEffect(() => {
-    const nextLotteryId = parseInt(currentLotteryId, 10) + 1
     // Current lottery transitions from open > closed, or closed > claimable
     if ((status === LotteryStatus.OPEN || status === LotteryStatus.CLOSE) && secondsRemaining === 0) {
       dispatch(fetchCurrentLottery({ currentLotteryId }))
-      dispatch(fetchNextLottery({ nextLotteryId: nextLotteryId.toString() }))
-      console.log('fetching current & next lottery')
+      console.log('fetching current lottery')
     }
 
     // Next lottery starting
     if (status === LotteryStatus.CLAIMABLE && secondsRemaining === 0) {
-      // Populate current lottery state with next lottery data
-      dispatch(fetchCurrentLottery({ currentLotteryId: nextLotteryId.toString() }))
       // Get new 'currentLotteryId' from SC
       dispatch(fetchPublicLotteryData())
-      console.log('currentLotteryId >', currentLotteryId)
-      console.log('nextLotteryId >', nextLotteryId)
-      console.log('fetching next lottery & updating currentLotteryId')
+      console.log('updating currentLotteryId')
     }
   }, [secondsRemaining, currentLotteryId, status, dispatch])
 
