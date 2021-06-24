@@ -33,9 +33,8 @@ import { fetchFarmUserDataAsync, nonArchivedFarms } from './farms'
 import {
   fetchPublicLotteryData,
   fetchCurrentLottery,
-  fetchUserTickets,
+  fetchUserTicketsAndLotteries,
   fetchPastLotteries,
-  fetchUserLotteries,
 } from './lottery'
 
 export const usePollFarmsData = (includeArchive = false) => {
@@ -539,18 +538,11 @@ export const useFetchLottery = () => {
   }, [dispatch, currentLotteryId, fastRefresh])
 
   useEffect(() => {
-    // get user tickets for current lottery
+    // get user tickets for current lottery, and user lottery subgraph data
     if (account && currentLotteryId) {
-      dispatch(fetchUserTickets({ account, lotteryId: currentLotteryId }))
+      dispatch(fetchUserTicketsAndLotteries({ account, lotteryId: currentLotteryId }))
     }
   }, [dispatch, currentLotteryId, account])
-
-  useEffect(() => {
-    // get user past lotteries subgraph data
-    if (account) {
-      dispatch(fetchUserLotteries({ account }))
-    }
-  }, [dispatch, account])
 }
 
 export const useLottery = () => {

@@ -49,13 +49,14 @@ export const fetchPublicLotteryData = createAsyncThunk<PublicLotteryData>('lotte
   return publicData
 })
 
-export const fetchUserTickets = createAsyncThunk<LotteryTicket[], { account: string; lotteryId: string }>(
-  'lottery/fetchUserTickets',
-  async ({ account, lotteryId }) => {
-    const userTickets = await fetchTickets(account, lotteryId)
-    return userTickets
-  },
-)
+export const fetchUserTicketsAndLotteries = createAsyncThunk<
+  { userTickets: LotteryTicket[]; userLotteries: UserLotteryData },
+  { account: string; lotteryId: string }
+>('lottery/fetchUserTicketsAndLotteries', async ({ account, lotteryId }) => {
+  const userLotteries = await getUserLotteries(account)
+  const userTickets = await fetchTickets(account, lotteryId, userLotteries)
+  return { userTickets, userLotteries }
+})
 
 export const fetchPastLotteries = createAsyncThunk<PastLotteryRound[]>('lottery/fetchPastLotteries', async () => {
   const lotteries = await getPastLotteries()
@@ -86,10 +87,14 @@ export const LotterySlice = createSlice({
       state.currentLotteryId = action.payload.currentLotteryId
       state.maxNumberTicketsPerBuyOrClaim = action.payload.maxNumberTicketsPerBuyOrClaim
     })
-    builder.addCase(fetchUserTickets.fulfilled, (state, action: PayloadAction<any>) => {
-      state.currentRound.userData.isLoading = false
-      state.currentRound.userData.tickets = action.payload
-    })
+    builder.addCase(
+      fetchUserTicketsAndLotteries.fulfilled,
+      (state, action: PayloadAction<{ userTickets: LotteryTicket[]; userLotteries: UserLotteryData }>) => {
+        state.currentRound.userData.isLoading = false
+        state.currentRound.userData.tickets = action.payload.userTickets
+        state.userLotteryData = action.payload.userLotteries
+      },
+    )
     builder.addCase(fetchPastLotteries.fulfilled, (state, action: PayloadAction<PastLotteryRound[]>) => {
       state.pastLotteries = action.payload
     })

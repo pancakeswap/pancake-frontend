@@ -10,7 +10,7 @@ import { getCakeAddress } from 'utils/addressHelpers'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { useAppDispatch } from 'state'
 import { usePriceCakeBusd, useLottery } from 'state/hooks'
-import { fetchUserTickets } from 'state/lottery'
+import { fetchUserTicketsAndLotteries } from 'state/lottery'
 import useTheme from 'hooks/useTheme'
 import useTokenBalance, { FetchStatus } from 'hooks/useTokenBalance'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
@@ -170,7 +170,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
       },
       onSuccess: async () => {
         onDismiss()
-        dispatch(fetchUserTickets({ account, lotteryId: currentLotteryId }))
+        dispatch(fetchUserTicketsAndLotteries({ account, lotteryId: currentLotteryId }))
         toastSuccess(t('Lottery tickets purchased!'))
       },
     })
