@@ -214,7 +214,7 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
           <>
             <Balance fontSize="16px" value={getTotalStakedBalance()} decimals={0} unit={` ${stakingToken.symbol}`} />
             <span ref={totalStakedTargetRef}>
-              <HelpIcon color="textSubtle" width="20px" ml="6px" />
+              <HelpIcon color="textSubtle" width="20px" ml="4px" />
             </span>
           </>
         ) : (

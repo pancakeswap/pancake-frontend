@@ -1,5 +1,5 @@
 import React from 'react'
-import { Flex, useModal, CalculateIcon, IconButton, Skeleton, FlexProps } from '@pancakeswap/uikit'
+import { Flex, useModal, CalculateIcon, Skeleton, FlexProps, Button } from '@pancakeswap/uikit'
 import { BASE_EXCHANGE_URL } from 'config'
 import ApyCalculatorModal from 'components/ApyCalculatorModal'
 import Balance from 'components/Balance'
@@ -45,28 +45,18 @@ const Apr: React.FC<AprProps> = ({ pool, showIcon, performanceFee = 0, ...props 
     <Flex alignItems="center" justifyContent="space-between" {...props}>
       {earningsPercentageToDisplay || isFinished ? (
         <>
-          <Flex>
-            <Balance
-              onClick={openRoiModal}
-              fontSize="16px"
-              isDisabled={isFinished}
-              value={isFinished ? 0 : earningsPercentageToDisplay}
-              decimals={2}
-              unit="%"
-            />
-          </Flex>
+          <Balance
+            onClick={openRoiModal}
+            fontSize="16px"
+            isDisabled={isFinished}
+            value={isFinished ? 0 : earningsPercentageToDisplay}
+            decimals={2}
+            unit="%"
+          />
           {!isFinished && showIcon && (
-            <Flex>
-              <IconButton
-                onClick={openRoiModal}
-                variant="text"
-                width="20px"
-                height="20px"
-                mr={['-14px', '-14px', '0px']}
-              >
-                <CalculateIcon color="textSubtle" width="20px" />
-              </IconButton>
-            </Flex>
+            <Button onClick={openRoiModal} variant="text" width="20px" height="20px" padding="0px" marginLeft="4px">
+              <CalculateIcon color="textSubtle" width="20px" />
+            </Button>
           )}
         </>
       ) : (
