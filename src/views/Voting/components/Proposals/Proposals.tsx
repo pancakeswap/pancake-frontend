@@ -4,7 +4,7 @@ import { useTranslation } from 'contexts/Localization'
 import Container from 'components/layout/Container'
 import { useAppDispatch } from 'state'
 import { fetchProposals } from 'state/voting'
-import { useGetProposals, useGetProposalLoadingStatus } from 'state/hooks'
+import { useGetProposalLoadingStatus, useGetProposals } from 'state/hooks'
 import { ProposalState, ProposalType, VotingStateLoadingStatus } from 'state/types'
 import { filterProposalsByState, filterProposalsByType } from '../../helpers'
 import BreadcrumbLink from '../BreadcrumbLink'
@@ -24,7 +24,7 @@ const Proposals = () => {
     proposalType: ProposalType.CORE,
     filterState: ProposalState.ACTIVE,
   })
-  const votingStatus = useGetVotingStatus()
+  const proposalStatus = useGetProposalLoadingStatus()
   const proposals = useGetProposals()
   const dispatch = useAppDispatch()
 
