@@ -39,6 +39,16 @@ const farms: FarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 420,
+    lpSymbol: 'RABBIT-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x04b56A5B3f45CFeaFbfDCFc999c14be5434f2146',
+    },
+    token: tokens.rabbit,
+    quoteToken: tokens.wbnb,
+  },
+  {
     pid: 419,
     lpSymbol: 'WAULTx-BNB LP',
     lpAddresses: {
