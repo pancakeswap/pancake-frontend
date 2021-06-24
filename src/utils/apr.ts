@@ -1,5 +1,6 @@
 import BigNumber from 'bignumber.js'
 import { BLOCKS_PER_YEAR, CAKE_PER_YEAR } from 'config'
+import lpAprs from 'config/constants/lpAprs.json'
 
 /**
  * Get the APR value in %
@@ -28,10 +29,20 @@ export const getPoolApr = (
  * @param poolLiquidityUsd Total pool liquidity in USD
  * @returns
  */
-export const getFarmApr = (poolWeight: BigNumber, cakePriceUsd: BigNumber, poolLiquidityUsd: BigNumber): number => {
+export const getFarmApr = (
+  poolWeight: BigNumber,
+  cakePriceUsd: BigNumber,
+  poolLiquidityUsd: BigNumber,
+  farmAddress: string,
+): number => {
   const yearlyCakeRewardAllocation = CAKE_PER_YEAR.times(poolWeight)
-  const apr = yearlyCakeRewardAllocation.times(cakePriceUsd).div(poolLiquidityUsd).times(100)
-  return apr.isNaN() || !apr.isFinite() ? null : apr.toNumber()
+  const cakeRewardsApr = yearlyCakeRewardAllocation.times(cakePriceUsd).div(poolLiquidityUsd).times(100)
+  if (cakeRewardsApr.isNaN() || !cakeRewardsApr.isFinite()) {
+    return null
+  }
+  const lpRewardsApr = lpAprs[farmAddress.toLocaleLowerCase()] ?? 0
+  const combinedApr = cakeRewardsApr.plus(lpRewardsApr)
+  return combinedApr.toNumber()
 }
 
 export default null
