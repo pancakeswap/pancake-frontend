@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/prefer-default-export
 import tokens from '../../config/constants/tokens'
 
-export const tableData = [
+const tableData = [
   {
     id: 1,
     name: 'Basic Zombie',
@@ -100,6 +100,6 @@ export const tableData = [
     artist: '/',
     stakingToken: undefined,
   },
-]
+];
 
-export default tableData
+export default tableData;

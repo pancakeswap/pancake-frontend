@@ -25,7 +25,7 @@ interface TableData {
   type: string,
   withdrawalCooldown: string,
   nftRevivalTime: string,
-  rug: string,
+  rug: any,
   artist?: any,
   stakingToken: any
 }

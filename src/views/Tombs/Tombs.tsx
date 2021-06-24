@@ -1,7 +1,7 @@
 import React from 'react'
 import PageHeader from 'components/PageHeader'
 import { Heading } from '@rug-zombie-libs/uikit'
-import { tableData } from 'views/HomeCopy/data'
+import tableData from 'views/HomeCopy/data'
 import Page from '../../components/layout/Page'
 import Table from '../HomeCopy/components/Table'
 import '../HomeCopy/HomeCopy.Styles.css'

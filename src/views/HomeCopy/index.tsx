@@ -1,12 +1,32 @@
 import React from 'react';
 import PageHeader from 'components/PageHeader';
-import { Heading } from '@rug-zombie-libs/uikit'
+import { Heading } from '@rug-zombie-libs/uikit';
+import { useWeb3React } from '@web3-react/core';
 import Page from '../../components/layout/Page'
 import Table from './components/Table'
 import './HomeCopy.Styles.css'
-import { tableData } from './data';
+import { getDrFrankensteinContract } from '../../utils/contractHelpers'
+import { useDrFrankenstein } from '../../hooks/useContract'
+import useWeb3 from '../../hooks/useWeb3'
+import tableData from './data';
 
-const Home: React.FC = () => {
+let web3;
+let accountAddress;
+
+
+  
+
+const HomeC: React.FC = () => {
+
+  const { account } = useWeb3React()
+  accountAddress = account
+  const drFrankenstein = useDrFrankenstein()
+  if(accountAddress){
+    drFrankenstein.methods.userInfo(0, accountAddress).call()
+    .then(res => {
+      console.log(res)
+    })
+  }
 
   return (
     <Page className="innnerContainer">
@@ -27,4 +47,4 @@ const Home: React.FC = () => {
   )
 }
 
-export default Home
+export default HomeC
