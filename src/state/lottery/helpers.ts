@@ -6,7 +6,7 @@ import { LotteryStatus, LotteryTicket } from 'config/constants/types'
 import lotteryV2Abi from 'config/abi/lotteryV2.json'
 import { getLotteryV2Address } from 'utils/addressHelpers'
 import { multicallv2 } from 'utils/multicall'
-import { UserLotteryHistory, PastLotteryRound, LotteryRound, UserTicketsResponse } from 'state/types'
+import { UserLotteryData, PastLotteryRound, LotteryRound, UserTicketsResponse } from 'state/types'
 import { getLotteryV2Contract } from 'utils/contractHelpers'
 
 const lotteryContract = getLotteryV2Contract()
@@ -105,11 +105,14 @@ export const processRawTicketsResponse = (ticketsResponse: UserTicketsResponse):
   })
 }
 
-export const fetchTickets = async (account: string, lotteryId: string, cursor: number): Promise<LotteryTicket[]> => {
+export const fetchTickets = async (account: string, lotteryId: string): Promise<LotteryTicket[]> => {
+  const cursor = 0
+  const requestMax = 1000
   try {
     const userTickets = await lotteryContract.methods
-      .viewUserTicketNumbersAndStatusesForLottery(account, lotteryId, cursor, 1000)
+      .viewUserTicketNumbersAndStatusesForLottery(account, lotteryId, cursor, requestMax)
       .call()
+
     const completeTicketData = processRawTicketsResponse(userTickets)
     return completeTicketData
   } catch (error) {
@@ -143,7 +146,7 @@ export const getPastLotteries = async (): Promise<PastLotteryRound[]> => {
   return lotteries
 }
 
-export const getUserPastLotteries = async (account: string): Promise<UserLotteryHistory> => {
+export const getUserLotteries = async (account: string): Promise<UserLotteryData> => {
   const response = await request(
     GRAPH_API_LOTTERY,
     gql`

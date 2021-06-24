@@ -21,7 +21,7 @@ const YourHistoryCard = () => {
   const handleHistoryRowClick = async (roundId) => {
     // TODO: Load in necessary lottery data. May not require fetch, as all this data is likely required for this component
     // const lottery = await fetchLottery(roundId)
-    // const userTicketIds = await fetchTickets(roundId, account, 0)
+    // const userTicketIds = await fetchTickets(roundId, account)
     setViewFinishedRound(true)
   }
 

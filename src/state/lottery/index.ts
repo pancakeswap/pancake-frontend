@@ -1,8 +1,8 @@
 /* eslint-disable no-param-reassign */
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { LotteryTicket, LotteryStatus } from 'config/constants/types'
-import { LotteryState, LotteryRound, PastLotteryRound, UserLotteryHistory } from 'state/types'
-import { getPastLotteries, getUserPastLotteries, fetchLottery, fetchPublicData, fetchTickets } from './helpers'
+import { LotteryState, LotteryRound, PastLotteryRound, UserLotteryData } from 'state/types'
+import { getPastLotteries, getUserLotteries, fetchLottery, fetchPublicData, fetchTickets } from './helpers'
 
 interface PublicLotteryData {
   currentLotteryId: string
@@ -33,7 +33,7 @@ const initialState: LotteryState = {
     },
   },
   pastLotteries: null,
-  userLotteryHistory: null,
+  userLotteryData: null,
 }
 
 export const fetchCurrentLottery = createAsyncThunk<LotteryRound, { currentLotteryId: string }>(
@@ -52,8 +52,7 @@ export const fetchPublicLotteryData = createAsyncThunk<PublicLotteryData>('lotte
 export const fetchUserTickets = createAsyncThunk<LotteryTicket[], { account: string; lotteryId: string }>(
   'lottery/fetchUserTickets',
   async ({ account, lotteryId }) => {
-    const cursor = 0
-    const userTickets = await fetchTickets(account, lotteryId, cursor)
+    const userTickets = await fetchTickets(account, lotteryId)
     return userTickets
   },
 )
@@ -63,11 +62,11 @@ export const fetchPastLotteries = createAsyncThunk<PastLotteryRound[]>('lottery/
   return lotteries
 })
 
-export const fetchUserLotteryHistory = createAsyncThunk<UserLotteryHistory, { account: string }>(
-  'lottery/fetchUserLotteryHistory',
+export const fetchUserLotteries = createAsyncThunk<UserLotteryData, { account: string }>(
+  'lottery/fetchUserLotteries',
   async ({ account }) => {
-    const userPastLotteries = await getUserPastLotteries(account)
-    return userPastLotteries
+    const userLotteries = await getUserLotteries(account)
+    return userLotteries
   },
 )
 
@@ -94,8 +93,8 @@ export const LotterySlice = createSlice({
     builder.addCase(fetchPastLotteries.fulfilled, (state, action: PayloadAction<PastLotteryRound[]>) => {
       state.pastLotteries = action.payload
     })
-    builder.addCase(fetchUserLotteryHistory.fulfilled, (state, action: PayloadAction<UserLotteryHistory>) => {
-      state.userLotteryHistory = action.payload
+    builder.addCase(fetchUserLotteries.fulfilled, (state, action: PayloadAction<UserLotteryData>) => {
+      state.userLotteryData = action.payload
     })
   },
 })

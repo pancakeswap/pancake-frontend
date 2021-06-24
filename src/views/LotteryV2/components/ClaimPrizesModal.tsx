@@ -8,7 +8,7 @@ import useTheme from 'hooks/useTheme'
 import { LotteryTicketClaimData } from 'config/constants/types'
 import { getBalanceAmount } from 'utils/formatBalance'
 import { useAppDispatch } from 'state'
-import { fetchUserLotteryHistory } from 'state/lottery'
+import { fetchUserLotteries } from 'state/lottery'
 import { usePriceCakeBusd } from 'state/hooks'
 import Balance from 'components/Balance'
 import useToast from 'hooks/useToast'
@@ -45,7 +45,7 @@ const ClaimPrizesModal: React.FC<ClaimPrizesModalModalProps> = ({ onDismiss, rou
       <ClaimPrizesInner
         onSuccess={() => {
           onDismiss()
-          dispatch(fetchUserLotteryHistory({ account }))
+          dispatch(fetchUserLotteries({ account }))
         }}
         roundsToClaim={roundsToClaim}
       />

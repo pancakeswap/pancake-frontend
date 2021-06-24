@@ -35,7 +35,7 @@ import {
   fetchCurrentLottery,
   fetchUserTickets,
   fetchPastLotteries,
-  fetchUserLotteryHistory,
+  fetchUserLotteries,
 } from './lottery'
 
 export const usePollFarmsData = (includeArchive = false) => {
@@ -511,8 +511,8 @@ export const useGetCurrentLotteryId = () => {
   return useSelector((state: State) => state.lottery.currentLotteryId)
 }
 
-export const useGetUserLotteryHistory = () => {
-  return useSelector((state: State) => state.lottery.userLotteryHistory)
+export const useGetUserLotteryData = () => {
+  return useSelector((state: State) => state.lottery.userLotteryData)
 }
 
 export const useGetPastLotteries = () => {
@@ -548,7 +548,7 @@ export const useFetchLottery = () => {
   useEffect(() => {
     // get user past lotteries subgraph data
     if (account) {
-      dispatch(fetchUserLotteryHistory({ account }))
+      dispatch(fetchUserLotteries({ account }))
     }
   }, [dispatch, account])
 }
@@ -559,7 +559,7 @@ export const useLottery = () => {
   const maxNumberTicketsPerBuyOrClaimAsString = useSelector(
     (state: State) => state.lottery.maxNumberTicketsPerBuyOrClaim,
   )
-  const userLotteryHistory = useGetUserLotteryHistory()
+  const userLotteryData = useGetUserLotteryData()
   const pastLotteries = useGetPastLotteries()
 
   const {
@@ -599,7 +599,7 @@ export const useLottery = () => {
   return {
     currentLotteryId,
     maxNumberTicketsPerBuyOrClaim,
-    userLotteryHistory,
+    userLotteryData,
     pastLotteries,
     currentRound: {
       isLoading,

@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
 import { LotteryTicket, LotteryTicketClaimData } from 'config/constants/types'
-import { UserLotteryHistory, PastLotteryRound, UserTicketsResponse } from 'state/types'
+import { UserLotteryData, PastLotteryRound, UserTicketsResponse } from 'state/types'
 import { multicallv2 } from 'utils/multicall'
 import lotteryV2Abi from 'config/abi/lotteryV2.json'
 import { getLotteryV2Address } from 'utils/addressHelpers'
@@ -94,15 +94,15 @@ const getWinningNumbersForRound = (targetRoundId: string, pastLotteries: PastLot
 const fetchUnclaimedUserRewards = async (
   account: string,
   currentLotteryId: string,
-  userLotteryHistory: UserLotteryHistory,
+  userLotteryData: UserLotteryData,
   pastLotteries: PastLotteryRound[],
 ): Promise<LotteryTicketClaimData[]> => {
-  const { rounds } = userLotteryHistory
+  const { rounds } = userLotteryData
   const cursor = 0
   const limit = 1000
 
-  // If the web3 provider account doesn't equal the userLotteryHistory account, return an empty array - this is effectively a loading state as the user switches accounts
-  if (userLotteryHistory.account.toLowerCase() !== account.toLowerCase()) {
+  // If the web3 provider account doesn't equal the userLotteryData account, return an empty array - this is effectively a loading state as the user switches accounts
+  if (userLotteryData.account.toLowerCase() !== account.toLowerCase()) {
     return []
   }
 
