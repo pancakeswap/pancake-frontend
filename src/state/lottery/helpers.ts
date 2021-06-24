@@ -105,9 +105,14 @@ export const processRawTicketsResponse = (ticketsResponse: UserTicketsResponse):
   })
 }
 
-export const fetchTickets = async (account: string, lotteryId: string): Promise<LotteryTicket[]> => {
+export const fetchTickets = async (
+  account: string,
+  lotteryId: string,
+  userLotteries?: UserLotteryData,
+): Promise<LotteryTicket[]> => {
   const cursor = 0
   const requestMax = 1000
+
   try {
     const userTickets = await lotteryContract.methods
       .viewUserTicketNumbersAndStatusesForLottery(account, lotteryId, cursor, requestMax)
@@ -125,7 +130,7 @@ export const getPastLotteries = async (): Promise<PastLotteryRound[]> => {
     GRAPH_API_LOTTERY,
     gql`
       query getLotteries {
-        lotteries(first: 1000) {
+        lotteries(first: 100, orderDirection: desc, orderBy: block) {
           id
           totalUsers
           totalTickets
@@ -155,7 +160,8 @@ export const getUserLotteries = async (account: string): Promise<UserLotteryData
           id
           totalTickets
           totalCake
-          rounds {
+          rounds(first: 100, orderDirection: desc, orderBy: block) {
+            id
             lottery {
               id
             }
