@@ -32,17 +32,17 @@ interface AprMap {
 
 const getWeekAgoTimestamp = () => {
   const weekAgo = sub(new Date(), { weeks: 1 })
-  return getUnixTime(weekAgo).toString()
+  return getUnixTime(weekAgo)
 }
 
 const LP_HOLDERS_FEE = 0.0017
 const WEEKS_IN_A_YEAR = 52.1429
 
-const getBlockAtTimestamp = async (timestamp: string) => {
+const getBlockAtTimestamp = async (timestamp: number) => {
   try {
     const { blocks } = await request<BlockResponse>(
       BLOCK_SUBGRAPH_ENDPOINT,
-      `query getBlock($timestampGreater: String!, $timestampLess: String!) {
+      `query getBlock($timestampGreater: Int!, $timestampLess: Int!) {
         blocks(first: 1, where: { timestamp_gt: $timestampGreater, timestamp_lt: $timestampLess }) {
           number
         }
@@ -86,7 +86,7 @@ const getAprsForFarmGroup = async (addresses: string[], blockWeekAgo: number): P
         // Some untracked pairs like KUN-QSD will report 0 volume
         if (lpFeesInAYear.gt(0)) {
           const liquidity = new BigNumber(farm.reserveUSD)
-          lpApr = liquidity.dividedBy(lpFeesInAYear)
+          lpApr = lpFeesInAYear.times(100).dividedBy(liquidity)
         }
       }
       return {
