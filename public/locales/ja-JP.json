@@ -206,6 +206,7 @@
   "Next IFO": "次のIFO",
   "Past IFOs": "過去のIFO",
   "APR": "年率",
+  "APR (incl. LP rewards)": "APR (incl. LP rewards)",
   "Select lottery number:": "宝くじ番号を選択する:",
   "Search": "検索",
   "History": "履歴",
@@ -269,7 +270,9 @@
   "ROI": "投資効率",
   "Timeframe": "期間",
   "CAKE per $1000": "$1000当たりのCAKE",
-  "Calculated based on current rates. Compounding %freq%x daily. Rates are estimates provided for your convenience only, and by no means represent guaranteed returns.": "現在のレートで計算されています。複利計算は1日%freq%x回。レートは便宜的に推定されており、利益を保証するものではありません。",
+  "Calculated based on current rates.": "Calculated based on current rates.",
+  "Compounding %freq%x daily.": "Compounding %freq%x daily.",
+  "All figures are estimates provided for your convenience only, and by no means represent guaranteed returns.": "All figures are estimates provided for your convenience only, and by no means represent guaranteed returns.",
   "You can't change this once you click Confirm.": "確定をクリックすると、以降で変更することはできません。",
   "Until ticket sale": "宝くじ券販売開始までの時間",
   "To burn:": "バーン:",
@@ -444,7 +447,7 @@
   "Earned since your last action": "最近のアクション以後に獲得した額",
   "Commit ~%amount% LP in total to earn!": "獲得するには、合計~%amount%LPを投資しましょう！",
   "Learn more about %title%": "%title%についてより詳しく",
-  "365d(APY)": "365日（年利）",
+  "365d (APY)": "365d (APY)",
   "%num%d": "%num%d",
   "d": "日",
   "h": "時間",
@@ -824,5 +827,6 @@
   "Beta Version": "Beta Version",
   "Over %amount% in BNB won so far": "Over %amount% in BNB won so far",
   "Try Now": "Try Now",
-  "New": "New"
+  "New": "New",
+  "LP rewards: 0.17% trading fees, distributed proportionally among LP token holders.": "LP rewards: 0.17% trading fees, distributed proportionally among LP token holders."
 }
