@@ -31,7 +31,7 @@ const DrawInfoCard = () => {
   } = useLottery()
   const [onPresentViewTicketsModal] = useModal(<ViewTicketsModal roundId={currentLotteryId} />)
 
-  // TODO: Re-enebale in prod
+  // TODO: Re-enable in prod
   //   const cakePriceBusd = usePriceCakeBusd()
   const cakePriceBusd = new BigNumber(20)
   const prizeInBusd = amountCollectedInCake.times(cakePriceBusd)
@@ -41,7 +41,7 @@ const DrawInfoCard = () => {
   const userTicketCount = userData?.tickets?.length || 0
 
   const getBalances = () => {
-    if (status === LotteryStatus.CLOSE) {
+    if (status === LotteryStatus.CLOSE || status === LotteryStatus.CLAIMABLE) {
       return (
         <Heading scale="xl" color="secondary" textAlign={['center', null, null, 'left']}>
           {t('Calculating')}...
@@ -80,14 +80,30 @@ const DrawInfoCard = () => {
     )
   }
 
+  const getNextDrawId = () => {
+    if (status === LotteryStatus.OPEN) {
+      return `${currentLotteryId} |`
+    }
+    if (status === LotteryStatus.PENDING) {
+      return ''
+    }
+    return parseInt(currentLotteryId) + 1
+  }
+
+  const getNextDrawDateTime = () => {
+    if (status === LotteryStatus.OPEN) {
+      return `${t('Draw')}: ${endDate.toLocaleString(undefined, dateTimeOptions)}`
+    }
+    return ''
+  }
+
   return (
     <Card>
       <CardHeader p="16px 24px">
         <Flex justifyContent="space-between">
           <Heading mr="12px">{t('Next Draw')}</Heading>
           <Text>
-            {currentLotteryId && `#${currentLotteryId} | `}{' '}
-            {Boolean(endTime) && `${t('Draw')}: ${endDate.toLocaleString(undefined, dateTimeOptions)}`}
+            {currentLotteryId && `#${getNextDrawId()}`} {Boolean(endTime) && getNextDrawDateTime()}
           </Text>
         </Flex>
       </CardHeader>

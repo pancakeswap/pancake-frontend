@@ -53,9 +53,27 @@ export const fetchUserTicketsAndLotteries = createAsyncThunk<
   { userTickets: LotteryTicket[]; userLotteries: UserLotteryData },
   { account: string; lotteryId: string }
 >('lottery/fetchUserTicketsAndLotteries', async ({ account, lotteryId }) => {
-  const userLotteries = await getUserLotteries(account)
-  const userTickets = await fetchTickets(account, lotteryId, userLotteries)
-  return { userTickets, userLotteries }
+  const userLotteriesRes = await getUserLotteries(account)
+  // user has not bought any tickets for any lottery
+  if (!userLotteriesRes) {
+    return { userTickets: null, userLotteries: null }
+  }
+
+  const userRoundData = userLotteriesRes.rounds.find((round) => round.lotteryId === lotteryId)
+  // user has not bought tickets for the current lottery
+  if (!userRoundData) {
+    return { userTickets: null, userLotteries: userLotteriesRes }
+  }
+
+  const userTickets = await fetchTickets(account, lotteryId, userRoundData)
+  const roundsWithTickets = userLotteriesRes.rounds.map((round) => {
+    if (round.lotteryId === lotteryId) {
+      return { ...round, tickets: userTickets }
+    }
+    return round
+  })
+  const lotteriesWithTicketData = { ...userLotteriesRes, rounds: roundsWithTickets }
+  return { userTickets, userLotteries: lotteriesWithTicketData }
 })
 
 export const fetchPastLotteries = createAsyncThunk<PastLotteryRound[]>('lottery/fetchPastLotteries', async () => {
