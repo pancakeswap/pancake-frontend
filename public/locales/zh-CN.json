@@ -206,6 +206,7 @@
   "Next IFO": "下次 IFO",
   "Past IFOs": "往期 IFO",
   "APR": "年化利率",
+  "APR (incl. LP rewards)": "APR (incl. LP rewards)",
   "Select lottery number:": "选择彩票号码：",
   "Search": "搜索",
   "History": "历史记录",
@@ -269,7 +270,9 @@
   "ROI": "投资回报率",
   "Timeframe": "时长",
   "CAKE per $1000": "CAKE/1000 美元",
-  "Calculated based on current rates. Compounding %freq%x daily. Rates are estimates provided for your convenience only, and by no means represent guaranteed returns.": "根据最新汇率计算。每天混合 %freq%x 次。汇率是仅为方便您而提供的估计值，不代表保证的回报。",
+  "Calculated based on current rates.": "Calculated based on current rates.",
+  "Compounding %freq%x daily.": "Compounding %freq%x daily.",
+  "All figures are estimates provided for your convenience only, and by no means represent guaranteed returns.": "All figures are estimates provided for your convenience only, and by no means represent guaranteed returns.",
   "You can't change this once you click Confirm.": "点击“确认”后，您将无法更改此设置。",
   "Until ticket sale": "离彩票销售还有",
   "To burn:": "要焚毁：",
@@ -444,7 +447,7 @@
   "Earned since your last action": "自上次操作以来赚取",
   "Commit ~%amount% LP in total to earn!": "提交总计 ~%amount% LP 即可赚取！",
   "Learn more about %title%": "详细了解 %title%",
-  "365d(APY)": "365 天（年利率）",
+  "365d (APY)": "365d (APY)",
   "%num%d": "%num%d",
   "d": "天",
   "h": "小时",
@@ -824,5 +827,6 @@
   "Beta Version": "Beta Version",
   "Over %amount% in BNB won so far": "Over %amount% in BNB won so far",
   "Try Now": "Try Now",
-  "New": "New"
+  "New": "New",
+  "LP rewards: 0.17% trading fees, distributed proportionally among LP token holders.": "LP rewards: 0.17% trading fees, distributed proportionally among LP token holders."
 }
