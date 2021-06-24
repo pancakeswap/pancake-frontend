@@ -68,7 +68,8 @@ export const sendSnaphotData = async (message: Message) => {
   })
 
   if (!response.ok) {
-    throw new Error(response.statusText)
+    const error = await response.json()
+    throw new Error(error?.error_description)
   }
 
   const data = await response.json()
