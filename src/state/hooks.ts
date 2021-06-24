@@ -17,7 +17,7 @@ import { fetchProfile } from './profile'
 import { fetchTeam, fetchTeams } from './teams'
 import { fetchAchievements } from './achievements'
 import { fetchPrices } from './prices'
-import { fetchWalletNfts } from './collectibles'
+// import { fetchWalletNfts } from './collectibles'
 
 export const useFetchPublicData = () => {
   const dispatch = useAppDispatch()
@@ -303,24 +303,3 @@ export const useGetBetByRoundId = (account: string, roundId: string) => {
   return bets[account][roundId]
 }
 
-// Collectibles
-export const useGetCollectibles = () => {
-  const { account } = useWeb3React()
-  const dispatch = useAppDispatch()
-  const { isInitialized, isLoading, data } = useSelector((state: State) => state.collectibles)
-  const identifiers = Object.keys(data)
-
-  useEffect(() => {
-    // Fetch nfts only if we have not done so already
-    if (!isInitialized) {
-      dispatch(fetchWalletNfts(account))
-    }
-  }, [isInitialized, account, dispatch])
-
-  return {
-    isInitialized,
-    isLoading,
-    tokenIds: data,
-    nftsInWallet: Nfts.filter((nft) => identifiers.includes(nft.identifier)),
-  }
-}

@@ -82,7 +82,7 @@ const tableData = [
   },
   {
     id: 8,
-    name: 'Common Dragon Farm Finance',
+    name: 'Dragon Farm Finance Common',
     path: 'images/rugZombie/CommonDragonFarmFinance.mp4',
     type: 'video',
     withdrawalCooldown: '3 days',
