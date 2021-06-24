@@ -71,7 +71,7 @@ const LotteryV2 = () => {
   }, [account, userLotteryData, currentLotteryId, pastLotteries, setUnclaimedRewards, fetchRewards])
 
   useEffect(() => {
-    // Manage showing unclaimed rewards modal
+    // Manage showing unclaimed rewards modal once per visit
     if (unclaimedRewards.rewards.length > 0 && !hasPoppedClaimModal) {
       setHasPoppedClaimModal(true)
       onPresentClaimModal()
@@ -81,9 +81,15 @@ const LotteryV2 = () => {
   // Data fetches for lottery phase transitions
   useEffect(() => {
     // Current lottery transitions from open > closed, or closed > claimable
-    if ((status === LotteryStatus.OPEN || status === LotteryStatus.CLOSE) && secondsRemaining === 0) {
+    if (status === LotteryStatus.OPEN && secondsRemaining === 0) {
       dispatch(fetchCurrentLottery({ currentLotteryId }))
       console.log('fetching current lottery')
+    }
+    // Current lottery transitions from closed > claimable
+    if (status === LotteryStatus.CLOSE && secondsRemaining === 0) {
+      dispatch(fetchCurrentLottery({ currentLotteryId }))
+      fetchRewards()
+      console.log('fetching current lottery & user rewards')
     }
 
     // Next lottery starting
@@ -94,7 +100,7 @@ const LotteryV2 = () => {
       dispatch(fetchPastLotteries())
       console.log('updating currentLotteryId')
     }
-  }, [secondsRemaining, currentLotteryId, status, dispatch])
+  }, [secondsRemaining, currentLotteryId, status, fetchRewards, dispatch])
 
   console.log('status~', status)
 

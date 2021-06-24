@@ -397,6 +397,7 @@ export interface UserRound {
   claimed: boolean
   lotteryId: string
   totalTickets: string
+  tickets?: LotteryTicket[]
 }
 
 export type UserTicketsResponse = [ethers.BigNumber[], number[], boolean[], ethers.BigNumber]

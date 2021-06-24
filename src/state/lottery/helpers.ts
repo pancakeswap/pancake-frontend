@@ -6,7 +6,7 @@ import { LotteryStatus, LotteryTicket } from 'config/constants/types'
 import lotteryV2Abi from 'config/abi/lotteryV2.json'
 import { getLotteryV2Address } from 'utils/addressHelpers'
 import { multicallv2 } from 'utils/multicall'
-import { UserLotteryData, PastLotteryRound, LotteryRound, UserTicketsResponse } from 'state/types'
+import { UserLotteryData, PastLotteryRound, LotteryRound, UserTicketsResponse, UserRound } from 'state/types'
 import { getLotteryV2Contract } from 'utils/contractHelpers'
 
 const lotteryContract = getLotteryV2Contract()
@@ -108,14 +108,37 @@ export const processRawTicketsResponse = (ticketsResponse: UserTicketsResponse):
 export const fetchTickets = async (
   account: string,
   lotteryId: string,
-  userLotteries?: UserLotteryData,
+  userRoundData?: UserRound,
 ): Promise<LotteryTicket[]> => {
   const cursor = 0
-  const requestMax = 1000
+  const totalTicketsToRequest = parseInt(userRoundData.totalTickets, 10)
+  const perRequestLimit = 1000
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const calls = []
+
+  // TODO: Implement cursor here
+
+  // for (let i = 0; i > totalTicketsToRequest; i + 100) {
+  //   calls.push({
+  //     name: 'viewUserTicketNumbersAndStatusesForLottery',
+  //     address: getLotteryV2Address(),
+  //     params: [account, lotteryId, cursor, perRequestLimit],
+  //   })
+  // }
+
+  // const calls = winningTickets.map((winningTicket) => {
+  //   const { roundId, id, rewardBracket } = winningTicket
+  //   return {
+  //     name: 'viewRewardsForTicketId',
+  //     address: lotteryAddress,
+  //     params: [roundId, id, rewardBracket],
+  //   }
+  // })
+  // const cakeRewards = await multicallv2(lotteryV2Abi, calls)
 
   try {
     const userTickets = await lotteryContract.methods
-      .viewUserTicketNumbersAndStatusesForLottery(account, lotteryId, cursor, requestMax)
+      .viewUserTicketNumbersAndStatusesForLottery(account, lotteryId, cursor, perRequestLimit)
       .call()
 
     const completeTicketData = processRawTicketsResponse(userTickets)
@@ -155,7 +178,7 @@ export const getUserLotteries = async (account: string): Promise<UserLotteryData
   const response = await request(
     GRAPH_API_LOTTERY,
     gql`
-      query getUserHistory($account: ID!) {
+      query getUserLotteries($account: ID!) {
         user(id: $account) {
           id
           totalTickets
