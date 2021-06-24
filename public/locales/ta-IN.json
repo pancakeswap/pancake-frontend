@@ -206,6 +206,7 @@
   "Next IFO": "அடுத்த IFO",
   "Past IFOs": "முந்தைய IFOகள்",
   "APR": "APR",
+  "APR (incl. LP rewards)": "APR (incl. LP rewards)",
   "Select lottery number:": "தேர்ந்தெடுத்த லாட்டரி எண்:",
   "Search": "தேடு",
   "History": "வரலாறு",
@@ -269,7 +270,9 @@
   "ROI": "ROI",
   "Timeframe": "காலக்கெடு",
   "CAKE per $1000": "$1000க்கான CAKE",
-  "Calculated based on current rates. Compounding %freq%x daily. Rates are estimates provided for your convenience only, and by no means represent guaranteed returns.": "தற்போதைய விகிதங்களின் அடிப்படையில் கணக்கிடப்படுகிறது. தினமும் %freq%x கூட்டப்படுகிறது. விகிதங்கள் உங்கள் வசதிக்காக மட்டுமே வழங்கப்படுகிற மதிப்பீடுகளாகும், எந்த வகையிலும் உத்தரவாதமான வருவாயைக் குறிப்பிடுவதில்லை.",
+  "Calculated based on current rates.": "Calculated based on current rates.",
+  "Compounding %freq%x daily.": "Compounding %freq%x daily.",
+  "All figures are estimates provided for your convenience only, and by no means represent guaranteed returns.": "All figures are estimates provided for your convenience only, and by no means represent guaranteed returns.",
   "You can't change this once you click Confirm.": "உறுதிசெய் என்பதை கிளிக் செய்த பிறகு இதை மாற்ற முடியாது.",
   "Until ticket sale": "டிக்கெட் விற்பனை வரை",
   "To burn:": "செலவழிக்க:",
@@ -444,7 +447,7 @@
   "Earned since your last action": "உங்கள் கடைசி செயலிலிருந்து ஈட்டியது",
   "Commit ~%amount% LP in total to earn!": "ஈட்டுவதற்கு மொத்த ~%amount% LP கமிட் செய்க!",
   "Learn more about %title%": "%title% பற்றி மேலும் அறிக",
-  "365d(APY)": "365நா(APY)",
+  "365d (APY)": "365d (APY)",
   "%num%d": "%num%d",
   "d": "நா",
   "h": "ம",
@@ -824,5 +827,6 @@
   "Beta Version": "Beta Version",
   "Over %amount% in BNB won so far": "Over %amount% in BNB won so far",
   "Try Now": "Try Now",
-  "New": "New"
+  "New": "New",
+  "LP rewards: 0.17% trading fees, distributed proportionally among LP token holders.": "LP rewards: 0.17% trading fees, distributed proportionally among LP token holders."
 }
