@@ -24,7 +24,7 @@ const FinishedRoundTable: React.FC<FinishedRoundTableProps> = ({ handleHistoryRo
   })
 
   const sortedByRoundId = filteredForCurrentRound?.sort((roundA, roundB) => {
-    return parseInt(roundA.lotteryId, 10) + parseInt(roundB.lotteryId, 10)
+    return parseInt(roundB.lotteryId) - parseInt(roundA.lotteryId)
   })
 
   return (
