@@ -9,8 +9,8 @@ import useTheme from 'hooks/useTheme'
 import useNextEventCountdown from 'hooks/lottery/v2/useNextEventCountdown'
 import useGetNextLotteryEvent from 'hooks/lottery/v2/useGetNextLotteryEvent'
 import { useAppDispatch } from 'state'
-import { useFetchLottery, useGetPastLotteries, useGetUserLotteryHistory, useLottery } from 'state/hooks'
-import { fetchCurrentLottery, fetchPublicLotteryData, fetchUserLotteryHistory } from 'state/lottery'
+import { useFetchLottery, useGetPastLotteries, useGetUserLotteryData, useLottery } from 'state/hooks'
+import { fetchCurrentLottery, fetchPastLotteries, fetchPublicLotteryData, fetchUserLotteries } from 'state/lottery'
 import fetchUnclaimedUserRewards from 'state/lottery/fetchUnclaimedUserRewards'
 import { TITLE_BG, GET_TICKETS_BG, FINISHED_ROUNDS_BG, FINISHED_ROUNDS_BG_DARK } from './pageSectionStyles'
 import Hero from './components/Hero'
@@ -46,7 +46,7 @@ const LotteryV2 = () => {
   const endTimeAsInt = parseInt(endTime, 10)
   const { nextEventTime, postCountdownText, preCountdownText } = useGetNextLotteryEvent(endTimeAsInt, status)
   const secondsRemaining = useNextEventCountdown(nextEventTime)
-  const userLotteryHistory = useGetUserLotteryHistory()
+  const userLotteryData = useGetUserLotteryData()
   const pastLotteries = useGetPastLotteries()
   const [unclaimedRewards, setUnclaimedRewards] = useState({ isFetchingRewards: true, rewards: [] })
   const [hasPoppedClaimModal, setHasPoppedClaimModal] = useState(false)
@@ -57,18 +57,18 @@ const LotteryV2 = () => {
     const unclaimedRewardsResponse = await fetchUnclaimedUserRewards(
       account,
       currentLotteryId,
-      userLotteryHistory,
+      userLotteryData,
       pastLotteries,
     )
     setUnclaimedRewards({ isFetchingRewards: false, rewards: unclaimedRewardsResponse })
-  }, [account, userLotteryHistory, currentLotteryId, pastLotteries])
+  }, [account, userLotteryData, currentLotteryId, pastLotteries])
 
   useEffect(() => {
     // Check if user has rewards on page load and account change
-    if (userLotteryHistory && account && currentLotteryId && pastLotteries) {
+    if (userLotteryData && account && currentLotteryId && pastLotteries) {
       fetchRewards()
     }
-  }, [account, userLotteryHistory, currentLotteryId, pastLotteries, setUnclaimedRewards, fetchRewards])
+  }, [account, userLotteryData, currentLotteryId, pastLotteries, setUnclaimedRewards, fetchRewards])
 
   useEffect(() => {
     // Manage showing unclaimed rewards modal
@@ -90,6 +90,8 @@ const LotteryV2 = () => {
     if (status === LotteryStatus.CLAIMABLE && secondsRemaining === 0) {
       // Get new 'currentLotteryId' from SC
       dispatch(fetchPublicLotteryData())
+      // Update lottery history
+      dispatch(fetchPastLotteries())
       console.log('updating currentLotteryId')
     }
   }, [secondsRemaining, currentLotteryId, status, dispatch])
@@ -142,7 +144,7 @@ const LotteryV2 = () => {
             unclaimedRewards={unclaimedRewards}
             onSuccess={() => {
               setUnclaimedRewards({ isFetchingRewards: false, rewards: [] })
-              dispatch(fetchUserLotteryHistory({ account }))
+              dispatch(fetchUserLotteries({ account }))
             }}
             fetchRewards={fetchRewards}
           />
