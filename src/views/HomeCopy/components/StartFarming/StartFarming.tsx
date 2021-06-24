@@ -48,7 +48,7 @@ const StartFarming: React.FC = () => {
         <span className="white-color">START GRAVING</span>
       </div>
       <div className="space-between">
-        <button className="btn btn-disabled w-100" type="button">Unlock Wallet</button>
+        <button className="btn btn-disabled w-100" type="button">Approve ZMBE</button>
       </div>
     </div>
   )
