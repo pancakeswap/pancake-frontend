@@ -12,6 +12,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://pancakeswap.finance/',
   },
+  rabbit: {
+    symbol: 'RABBIT',
+    address: {
+      56: '0x95a1199EBA84ac5f19546519e287d43D2F0E1b41',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://rabbitfinance.io/earn',
+  },
   form: {
     symbol: 'FORM',
     address: {
