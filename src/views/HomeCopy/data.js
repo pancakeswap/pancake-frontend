@@ -1,16 +1,17 @@
 // eslint-disable-next-line import/prefer-default-export
 import tokens from '../../config/constants/tokens'
+import artists from '../../config/constants/artists'
 
 const tableData = [
   {
     id: 1,
     name: 'Basic Zombie',
-    path: 'images/rugZombie/BasicZombie.png',
+    path: 'images/rugZombie/BasicZombie.gif',
     type: 'image',
     withdrawalCooldown: '2 days',
     nftRevivalTime: '30 days',
-    rug: tokens,
-    artist: 'https://twitter.com/baes_zom',
+    rug: '',
+    artist: artists.RugZombie,
     stakingToken: undefined,
   },
   {
@@ -21,7 +22,7 @@ const tableData = [
     withdrawalCooldown: '3 days',
     nftRevivalTime: '30 days',
     rug: tokens.viking,
-    artist: 'https://twitter.com/TLeap3d',
+    artist: artists.TheLeap3d,
     stakingToken: undefined,
   },
   {
@@ -32,6 +33,7 @@ const tableData = [
     withdrawalCooldown: '3 days',
     nftRevivalTime: '30 days',
     rug: tokens.msc,
+    artist: artists.ZomBaes,
     stakingToken: undefined,
   },
   {
@@ -42,7 +44,7 @@ const tableData = [
     withdrawalCooldown: '3 days',
     nftRevivalTime: '30 days',
     rug: tokens.fairmoon,
-    artist: 'https://twitter.com/TLeap3d',
+    artist: artists.TheLeap3d,
     stakingToken: undefined,
   },
   {

@@ -21,10 +21,10 @@ import { useProfile } from 'state/hooks'
 import usePersistState from 'hooks/usePersistState'
 import Menu from './components/Menu'
 import CardHeader from './components/CardHeader'
-import Collectibles from './components/Collectibles'
+// import Collectibles from './components/Collectibles'
 import WalletNotConnected from './components/WalletNotConnected'
 import StatBox from './components/StatBox'
-import EditProfileAvatar from './components/EditProfileAvatar'
+// import EditProfileAvatar from './components/EditProfileAvatar'
 import AchievementsList from './components/AchievementsList'
 
 const Content = styled.div`
@@ -105,7 +105,7 @@ const PublicProfile = () => {
         <Card>
           <CardHeader>
             <Flex alignItems={['start', null, 'center']} flexDirection={['column', null, 'row']}>
-              <EditProfileAvatar profile={profile} />
+              {/* <EditProfileAvatar profile={profile} /> */}
               <Content>
                 <Flex alignItems="center">
                   <Username>@{usernameVisibilityToggled ? username : username.replace(/./g, '*')}</Username>
@@ -140,7 +140,7 @@ const PublicProfile = () => {
               </Heading>
               <AchievementsList />
             </Section>
-            <Collectibles />
+            {/* <Collectibles /> */}
           </CardBody>
         </Card>
       </div>
