@@ -5,6 +5,7 @@ import artists from '../../config/constants/artists'
 const tableData = [
   {
     id: 1,
+    pid: 0,
     name: 'Basic Zombie',
     path: 'images/rugZombie/BasicZombie.gif',
     type: 'image',
@@ -16,6 +17,7 @@ const tableData = [
   },
   {
     id: 2,
+    pid: 1,
     name: 'Viking Brains',
     path: 'images/rugZombie/VikingBrains.jpeg',
     type: 'image',
@@ -27,6 +29,7 @@ const tableData = [
   },
   {
     id: 3,
+    pid: 2,
     name: 'ZombieSlayer',
     path: 'images/rugZombie/ZombieSlayer.gif',
     type: 'image',
@@ -38,6 +41,7 @@ const tableData = [
   },
   {
     id: 4,
+    pid: 3,
     name: 'Raremoon',
     path: 'images/rugZombie/Raremoon.jpeg',
     type: 'image',
@@ -49,6 +53,7 @@ const tableData = [
   },
   {
     id: 5,
+    pid: 4,
     name: 'Fairmoon Uncommon',
     path: 'images/rugZombie/FairmoonUncommon.mp4',
     type: 'video',
@@ -60,6 +65,7 @@ const tableData = [
   },
   {
     id: 6,
+    pid: 5,
     name: 'Fairmoon Common',
     path: 'images/rugZombie/FairmoonCommon.mp4',
     type: 'video',
@@ -71,6 +77,7 @@ const tableData = [
   },
   {
     id: 7,
+    pid: 6,
     name: 'yApe Common',
     path: 'images/rugZombie/yApeCommon.jpeg',
     type: 'image',
@@ -82,6 +89,7 @@ const tableData = [
   },
   {
     id: 8,
+    pid: 7,
     name: 'Dragon Farm Finance Common',
     path: 'images/rugZombie/CommonDragonFarmFinance.mp4',
     type: 'video',
@@ -93,6 +101,7 @@ const tableData = [
   },
   {
     id: 9,
+    pid: 8,
     name: 'yPanda Common',
     path: 'images/rugZombie/yPandaCommon.jpeg',
     type: 'image',
