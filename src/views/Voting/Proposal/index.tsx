@@ -68,7 +68,7 @@ const Proposal = () => {
               <ReactMarkdown>{proposal.body}</ReactMarkdown>
             </Box>
           </Box>
-          {!isPageLoading && !hasAccountVoted && account && proposal.state === ProposalState.ACTIVE && (
+          {!isPageLoading && !hasAccountVoted && proposal.state === ProposalState.ACTIVE && (
             <Vote proposal={proposal} mb="16px" />
           )}
           <Votes votes={votes} />

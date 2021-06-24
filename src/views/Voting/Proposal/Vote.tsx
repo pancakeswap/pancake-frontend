@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Button, Card, CardBody, CardHeader, CardProps, Heading, Radio, Text, useModal } from '@pancakeswap/uikit'
+import { useWeb3React } from '@web3-react/core'
 import { useAppDispatch } from 'state'
 import { Proposal } from 'state/types'
 import { fetchVotes } from 'state/voting'
 import useToast from 'hooks/useToast'
 import { useTranslation } from 'contexts/Localization'
+import UnlockButton from 'components/UnlockButton'
 import CastVoteModal from '../components/Proposal/CastVoteModal'
 
 interface VoteProps extends CardProps {
@@ -17,11 +19,11 @@ interface State {
   value: number
 }
 
-const Choice = styled.label<{ isChecked: boolean }>`
+const Choice = styled.label<{ isChecked: boolean; isDisabled: boolean }>`
   align-items: center;
   border: 1px solid ${({ theme, isChecked }) => theme.colors[isChecked ? 'success' : 'cardBorder']};
   border-radius: 16px;
-  cursor: pointer;
+  cursor: ${({ isDisabled }) => (isDisabled ? 'not-allowed' : 'pointer')};
   display: flex;
   margin-bottom: 16px;
   padding: 16px;
@@ -41,6 +43,7 @@ const Vote: React.FC<VoteProps> = ({ proposal, ...props }) => {
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
   const dispatch = useAppDispatch()
+  const { account } = useWeb3React()
 
   const handleSuccess = async () => {
     toastSuccess(t('Vote cast!'))
@@ -70,9 +73,9 @@ const Vote: React.FC<VoteProps> = ({ proposal, ...props }) => {
           }
 
           return (
-            <Choice key={choice} isChecked={isChecked}>
+            <Choice key={choice} isChecked={isChecked} isDisabled={!account}>
               <div style={{ flexShrink: 0 }}>
-                <Radio scale="sm" value={choice} checked={isChecked} onChange={handleChange} />
+                <Radio scale="sm" value={choice} checked={isChecked} onChange={handleChange} disabled={!account} />
               </div>
               <ChoiceText>
                 <Text as="span" title={choice}>
@@ -82,9 +85,13 @@ const Vote: React.FC<VoteProps> = ({ proposal, ...props }) => {
             </Choice>
           )
         })}
-        <Button onClick={presentCastVoteModal} disabled={vote === null}>
-          {t('Cast Vote')}
-        </Button>
+        {account ? (
+          <Button onClick={presentCastVoteModal} disabled={vote === null}>
+            {t('Cast Vote')}
+          </Button>
+        ) : (
+          <UnlockButton />
+        )}
       </CardBody>
     </Card>
   )
