@@ -14,12 +14,20 @@ const Table = styled.table`
   }
 `
 
-const Ul = styled.ul`
+const ThemedComponent = styled.div`
+  color: ${({ theme }) => theme.colors.text};
   margin-bottom: 16px;
   margin-top: 16px;
+
+  li {
+    margin-bottom: 8px;
+  }
 `
 
 const Pre = styled.pre`
+  color: ${({ theme }) => theme.colors.text};
+  margin-bottom: 16px;
+  margin-top: 16px;
   max-width: 100%;
   overflow-x: auto;
 `
@@ -39,7 +47,12 @@ const markdownComponents: Partial<NormalComponents & SpecialComponents> = {
     return <Text as="p" my="16px" {...props} />
   },
   table: Table,
-  ul: Ul,
+  ol: (props) => {
+    return <ThemedComponent as="ol" {...props} />
+  },
+  ul: (props) => {
+    return <ThemedComponent as="ul" {...props} />
+  },
   pre: Pre,
 }
 
