@@ -206,6 +206,7 @@
   "Next IFO": "IFO التالي",
   "Past IFOs": "عروض IFO السابقة",
   "APR": "APR (معدل الفائدة السنوية المئوية)",
+  "APR (incl. LP rewards)": "APR (incl. LP rewards)",
   "Select lottery number:": "اختيار رقم اليانصيب:",
   "Search": "البحث",
   "History": "السجل",
@@ -269,7 +270,9 @@
   "ROI": "ROI (العائد على الاستثمار)",
   "Timeframe": "الفترة الزمنية",
   "CAKE per $1000": "CAKE لكل 1000 دولار",
-  "Calculated based on current rates. Compounding %freq%x daily. Rates are estimates provided for your convenience only, and by no means represent guaranteed returns.": "يتم حسابه بناءً على الأسعار الحالية. التجميع %freq%x يوميًا. الأسعار عبارة تقديرات مقدَّمة للتسهيل عليك فقط، ولا تمثِّل بأي شكلٍ من الأشكال عائدات مضمونة.",
+  "Calculated based on current rates.": "Calculated based on current rates.",
+  "Compounding %freq%x daily.": "Compounding %freq%x daily.",
+  "All figures are estimates provided for your convenience only, and by no means represent guaranteed returns.": "All figures are estimates provided for your convenience only, and by no means represent guaranteed returns.",
   "You can't change this once you click Confirm.": "لا يمكنك تغيير ذلك بعد النقر على \"تأكيد\".",
   "Until ticket sale": "حتى بيع التذاكر",
   "To burn:": "للحرق:",
@@ -444,7 +447,7 @@
   "Earned since your last action": "الربح منذ آخر إجراء",
   "Commit ~%amount% LP in total to earn!": "خصِّص ~%amount% من LP إجمالًا لتربح!",
   "Learn more about %title%": "معرفة المزيد عن %title%",
-  "365d(APY)": "365 ي (النسبة المئوية للعائد السنوي)",
+  "365d (APY)": "365d (APY)",
   "%num%d": "%num%d",
   "d": "ي",
   "h": "س",
@@ -824,5 +827,6 @@
   "Beta Version": "Beta Version",
   "Over %amount% in BNB won so far": "Over %amount% in BNB won so far",
   "Try Now": "Try Now",
-  "New": "New"
+  "New": "New",
+  "LP rewards: 0.17% trading fees, distributed proportionally among LP token holders.": "LP rewards: 0.17% trading fees, distributed proportionally among LP token holders."
 }
