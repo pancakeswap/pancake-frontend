@@ -206,6 +206,7 @@
   "Next IFO": "Próxima IFO",
   "Past IFOs": "IFOs Anteriores",
   "APR": "ABR",
+  "APR (incl. LP rewards)": "APR (incl. LP rewards)",
   "Select lottery number:": "Selecione o número para a lotaria:",
   "Search": "Pesquisar",
   "History": "Histórico",
@@ -269,7 +270,9 @@
   "ROI": "ROI",
   "Timeframe": "Período",
   "CAKE per $1000": "CAKE por 1000 dólares",
-  "Calculated based on current rates. Compounding %freq%x daily. Rates are estimates provided for your convenience only, and by no means represent guaranteed returns.": "Calculado com base nas taxas atuais. %freq%x de acumulação diária. As taxas são estimativas fornecidas apenas para sua conveniência, e não representam, de forma alguma, retornos garantidos.",
+  "Calculated based on current rates.": "Calculated based on current rates.",
+  "Compounding %freq%x daily.": "Compounding %freq%x daily.",
+  "All figures are estimates provided for your convenience only, and by no means represent guaranteed returns.": "All figures are estimates provided for your convenience only, and by no means represent guaranteed returns.",
   "You can't change this once you click Confirm.": "Não é possível alterar estes dados depois de clicar em Confirmar.",
   "Until ticket sale": "Até à venda de bilhetes",
   "To burn:": "A queimar:",
@@ -444,7 +447,7 @@
   "Earned since your last action": "Ganho desde a sua última ação",
   "Commit ~%amount% LP in total to earn!": "Afete um total de ~%amount% a LP para ganhar!",
   "Learn more about %title%": "Saiba mais sobre %title%",
-  "365d(APY)": "365d(APY)",
+  "365d (APY)": "365d (APY)",
   "%num%d": "%num%d",
   "d": "d",
   "h": "h",
@@ -824,5 +827,6 @@
   "Beta Version": "Beta Version",
   "Over %amount% in BNB won so far": "Over %amount% in BNB won so far",
   "Try Now": "Try Now",
-  "New": "New"
+  "New": "New",
+  "LP rewards: 0.17% trading fees, distributed proportionally among LP token holders.": "LP rewards: 0.17% trading fees, distributed proportionally among LP token holders."
 }
