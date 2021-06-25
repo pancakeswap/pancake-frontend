@@ -62,14 +62,7 @@ export const fetchUserTicketsAndLotteries = createAsyncThunk<
     return { userTickets: null, userLotteries: userLotteriesRes }
   }
 
-  const roundsWithTickets = userLotteriesRes.rounds.map((round) => {
-    if (round.lotteryId === lotteryId) {
-      return { ...round, tickets: userTickets }
-    }
-    return round
-  })
-  const lotteriesWithTicketData = { ...userLotteriesRes, rounds: roundsWithTickets }
-  return { userTickets, userLotteries: lotteriesWithTicketData }
+  return { userTickets, userLotteries: userLotteriesRes }
 })
 
 export const fetchPastLotteries = createAsyncThunk<LotteryRoundGraphEntity[]>(

@@ -44,16 +44,14 @@ const FinishedRoundTable: React.FC<FinishedRoundTableProps> = ({ handleHistoryRo
         </Flex>
       </Grid>
       <Flex flexDirection="column">
-        {/* TODO: Get endTime & claimed data */}
         {userLotteryData &&
           sortedByRoundId.map((pastRound) => (
             <HistoryGridRow
               key={pastRound.lotteryId}
               roundId={pastRound.lotteryId}
               hasWon={pastRound.claimed}
-              hasClaimed={pastRound.claimed}
               numberTickets={pastRound.totalTickets}
-              endTime="1623252324"
+              endTime={pastRound.endTime}
               onClick={handleHistoryRowClick}
             />
           ))}

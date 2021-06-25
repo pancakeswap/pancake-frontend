@@ -61,13 +61,21 @@ export const parseClaimDataForClaimTicketsCall = (claimData: LotteryTicketClaimD
   return { lotteryId: claimData.roundId, ticketIds, brackets }
 }
 
-export const dateTimeOptions: Intl.DateTimeFormatOptions = {
+export const dateOptions: Intl.DateTimeFormatOptions = {
   year: 'numeric',
   month: 'short',
   day: 'numeric',
+}
+
+export const timeOptions: Intl.DateTimeFormatOptions = {
   timeZoneName: 'short',
   hour: 'numeric',
   minute: 'numeric',
+}
+
+export const dateTimeOptions: Intl.DateTimeFormatOptions = {
+  ...dateOptions,
+  ...timeOptions,
 }
 
 export default generateTicketNumbers
