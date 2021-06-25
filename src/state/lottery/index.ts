@@ -33,7 +33,7 @@ const initialState: LotteryState = {
     },
   },
   lotteriesData: null,
-  userLotteryData: null,
+  userLotteryData: { account: '', totalCake: '', totalTickets: '', rounds: [] },
 }
 
 export const fetchCurrentLottery = createAsyncThunk<LotteryRound, { currentLotteryId: string }>(
