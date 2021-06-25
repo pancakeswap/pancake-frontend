@@ -121,7 +121,7 @@ export const fetchTickets = async (
 ): Promise<LotteryTicket[]> => {
   const cursor = 0
   const totalTicketsToRequest = userRoundData && parseInt(userRoundData?.totalTickets, 10)
-  const perRequestLimit = 5000
+  const perRequestLimit = 5205
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const calls = []
 
@@ -152,6 +152,7 @@ export const fetchTickets = async (
     const completeTicketData = processRawTicketsResponse(userTickets)
     return completeTicketData
   } catch (error) {
+    console.error(error)
     return null
   }
 }
