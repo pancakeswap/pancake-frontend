@@ -3,3 +3,5 @@
 # @global-owner1 and @global-owner2 will be requested for
 # review when someone opens a pull request.
 *       @RabbitDoge @hachiojidev @Chef-Chungus
+
+packages/token-lists/ @ChefKai
