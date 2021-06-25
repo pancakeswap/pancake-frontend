@@ -12,6 +12,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://pancakeswap.finance/',
   },
+  bscpad: {
+    symbol: 'BSCPAD',
+    address: {
+      56: '0x5A3010d4d8D3B5fB49f8B6E57FB9E48063f16700',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://bscpad.com/',
+  },
   rabbit: {
     symbol: 'RABBIT',
     address: {
