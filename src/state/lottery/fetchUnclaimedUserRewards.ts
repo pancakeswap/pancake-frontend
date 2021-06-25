@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
 import { LotteryTicket, LotteryTicketClaimData } from 'config/constants/types'
-import { UserLotteryData, PastLotteryRound, UserTicketsResponse } from 'state/types'
+import { LotteryUserGraphEntity, LotteryRoundGraphEntity, UserTicketsResponse } from 'state/types'
 import { multicallv2 } from 'utils/multicall'
 import lotteryV2Abi from 'config/abi/lotteryV2.json'
 import { getLotteryV2Address } from 'utils/addressHelpers'
@@ -86,16 +86,16 @@ const getWinningTickets = async (roundDataAndUserTickets: RoundDataAndUserTicket
   return null
 }
 
-const getWinningNumbersForRound = (targetRoundId: string, pastLotteries: PastLotteryRound[]) => {
-  const targetRound = pastLotteries.find((pastLottery) => pastLottery.id === targetRoundId)
+const getWinningNumbersForRound = (targetRoundId: string, lotteriesData: LotteryRoundGraphEntity[]) => {
+  const targetRound = lotteriesData.find((pastLottery) => pastLottery.id === targetRoundId)
   return targetRound?.finalNumber
 }
 
 const fetchUnclaimedUserRewards = async (
   account: string,
   currentLotteryId: string,
-  userLotteryData: UserLotteryData,
-  pastLotteries: PastLotteryRound[],
+  userLotteryData: LotteryUserGraphEntity,
+  lotteriesData: LotteryRoundGraphEntity[],
 ): Promise<LotteryTicketClaimData[]> => {
   const { rounds } = userLotteryData
   const cursor = 0
@@ -128,7 +128,7 @@ const fetchUnclaimedUserRewards = async (
       return {
         roundId: roundIds[index],
         userTickets: processRawTicketsResponse(roundTicketData),
-        finalNumber: getWinningNumbersForRound(roundIds[index], pastLotteries),
+        finalNumber: getWinningNumbersForRound(roundIds[index], lotteriesData),
       }
     })
 

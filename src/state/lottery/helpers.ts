@@ -6,7 +6,13 @@ import { LotteryStatus, LotteryTicket } from 'config/constants/types'
 import lotteryV2Abi from 'config/abi/lotteryV2.json'
 import { getLotteryV2Address } from 'utils/addressHelpers'
 import { multicallv2 } from 'utils/multicall'
-import { UserLotteryData, PastLotteryRound, LotteryRound, UserTicketsResponse, UserRound } from 'state/types'
+import {
+  LotteryUserGraphEntity,
+  LotteryRoundGraphEntity,
+  LotteryRound,
+  UserTicketsResponse,
+  UserRound,
+} from 'state/types'
 import { getLotteryV2Contract } from 'utils/contractHelpers'
 
 const lotteryContract = getLotteryV2Contract()
@@ -96,13 +102,16 @@ export const processRawTicketsResponse = (ticketsResponse: UserTicketsResponse):
   const ticketNumbers = ticketsResponse[1]
   const ticketStatuses = ticketsResponse[2]
 
-  return ticketIds.map((ticketId, index) => {
-    return {
-      id: ticketId.toString(),
-      number: ticketNumbers[index].toString(),
-      status: ticketStatuses[index],
-    }
-  })
+  if (ticketIds.length > 0) {
+    return ticketIds.map((ticketId, index) => {
+      return {
+        id: ticketId.toString(),
+        number: ticketNumbers[index].toString(),
+        status: ticketStatuses[index],
+      }
+    })
+  }
+  return []
 }
 
 export const fetchTickets = async (
@@ -111,8 +120,8 @@ export const fetchTickets = async (
   userRoundData?: UserRound,
 ): Promise<LotteryTicket[]> => {
   const cursor = 0
-  const totalTicketsToRequest = parseInt(userRoundData.totalTickets, 10)
-  const perRequestLimit = 1000
+  const totalTicketsToRequest = userRoundData && parseInt(userRoundData?.totalTickets, 10)
+  const perRequestLimit = 10
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const calls = []
 
@@ -140,7 +149,6 @@ export const fetchTickets = async (
     const userTickets = await lotteryContract.methods
       .viewUserTicketNumbersAndStatusesForLottery(account, lotteryId, cursor, perRequestLimit)
       .call()
-
     const completeTicketData = processRawTicketsResponse(userTickets)
     return completeTicketData
   } catch (error) {
@@ -148,7 +156,7 @@ export const fetchTickets = async (
   }
 }
 
-export const getPastLotteries = async (): Promise<PastLotteryRound[]> => {
+export const getGraphLotteries = async (): Promise<LotteryRoundGraphEntity[]> => {
   const response = await request(
     GRAPH_API_LOTTERY,
     gql`
@@ -174,11 +182,11 @@ export const getPastLotteries = async (): Promise<PastLotteryRound[]> => {
   return lotteries
 }
 
-export const getUserLotteries = async (account: string): Promise<UserLotteryData> => {
+export const getGraphLotteryUser = async (account: string): Promise<LotteryUserGraphEntity> => {
   const response = await request(
     GRAPH_API_LOTTERY,
     gql`
-      query getUserLotteries($account: ID!) {
+      query getUserLotteryData($account: ID!) {
         user(id: $account) {
           id
           totalTickets
@@ -211,5 +219,6 @@ export const getUserLotteries = async (account: string): Promise<UserLotteryData
       }
     }),
   }
+
   return formattedUser
 }

@@ -1,8 +1,8 @@
 /* eslint-disable no-param-reassign */
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { LotteryTicket, LotteryStatus } from 'config/constants/types'
-import { LotteryState, LotteryRound, PastLotteryRound, UserLotteryData } from 'state/types'
-import { getPastLotteries, getUserLotteries, fetchLottery, fetchPublicData, fetchTickets } from './helpers'
+import { LotteryState, LotteryRound, LotteryRoundGraphEntity, LotteryUserGraphEntity } from 'state/types'
+import { getGraphLotteries, getGraphLotteryUser, fetchLottery, fetchPublicData, fetchTickets } from './helpers'
 
 interface PublicLotteryData {
   currentLotteryId: string
@@ -27,12 +27,12 @@ const initialState: LotteryState = {
     cakePerBracket: [],
     countWinnersPerBracket: [],
     rewardsBreakdown: [],
-    userData: {
+    userTickets: {
       isLoading: true,
       tickets: [],
     },
   },
-  pastLotteries: null,
+  lotteriesData: null,
   userLotteryData: null,
 }
 
@@ -50,22 +50,18 @@ export const fetchPublicLotteryData = createAsyncThunk<PublicLotteryData>('lotte
 })
 
 export const fetchUserTicketsAndLotteries = createAsyncThunk<
-  { userTickets: LotteryTicket[]; userLotteries: UserLotteryData },
+  { userTickets: LotteryTicket[]; userLotteries: LotteryUserGraphEntity },
   { account: string; lotteryId: string }
 >('lottery/fetchUserTicketsAndLotteries', async ({ account, lotteryId }) => {
-  const userLotteriesRes = await getUserLotteries(account)
-  // user has not bought any tickets for any lottery
-  if (!userLotteriesRes) {
-    return { userTickets: null, userLotteries: null }
-  }
+  const userLotteriesRes = await getGraphLotteryUser(account)
+  const userRoundData = userLotteriesRes?.rounds?.find((round) => round.lotteryId === lotteryId)
+  const userTickets = await fetchTickets(account, lotteryId, userRoundData)
 
-  const userRoundData = userLotteriesRes.rounds.find((round) => round.lotteryId === lotteryId)
   // user has not bought tickets for the current lottery
-  if (!userRoundData) {
+  if (userTickets.length === 0) {
     return { userTickets: null, userLotteries: userLotteriesRes }
   }
 
-  const userTickets = await fetchTickets(account, lotteryId, userRoundData)
   const roundsWithTickets = userLotteriesRes.rounds.map((round) => {
     if (round.lotteryId === lotteryId) {
       return { ...round, tickets: userTickets }
@@ -76,15 +72,18 @@ export const fetchUserTicketsAndLotteries = createAsyncThunk<
   return { userTickets, userLotteries: lotteriesWithTicketData }
 })
 
-export const fetchPastLotteries = createAsyncThunk<PastLotteryRound[]>('lottery/fetchPastLotteries', async () => {
-  const lotteries = await getPastLotteries()
-  return lotteries
-})
+export const fetchPastLotteries = createAsyncThunk<LotteryRoundGraphEntity[]>(
+  'lottery/fetchPastLotteries',
+  async () => {
+    const lotteries = await getGraphLotteries()
+    return lotteries
+  },
+)
 
-export const fetchUserLotteries = createAsyncThunk<UserLotteryData, { account: string }>(
+export const fetchUserLotteries = createAsyncThunk<LotteryUserGraphEntity, { account: string }>(
   'lottery/fetchUserLotteries',
   async ({ account }) => {
-    const userLotteries = await getUserLotteries(account)
+    const userLotteries = await getGraphLotteryUser(account)
     return userLotteries
   },
 )
@@ -107,16 +106,16 @@ export const LotterySlice = createSlice({
     })
     builder.addCase(
       fetchUserTicketsAndLotteries.fulfilled,
-      (state, action: PayloadAction<{ userTickets: LotteryTicket[]; userLotteries: UserLotteryData }>) => {
-        state.currentRound.userData.isLoading = false
-        state.currentRound.userData.tickets = action.payload.userTickets
+      (state, action: PayloadAction<{ userTickets: LotteryTicket[]; userLotteries: LotteryUserGraphEntity }>) => {
+        state.currentRound.userTickets.isLoading = false
+        state.currentRound.userTickets.tickets = action.payload.userTickets
         state.userLotteryData = action.payload.userLotteries
       },
     )
-    builder.addCase(fetchPastLotteries.fulfilled, (state, action: PayloadAction<PastLotteryRound[]>) => {
-      state.pastLotteries = action.payload
+    builder.addCase(fetchPastLotteries.fulfilled, (state, action: PayloadAction<LotteryRoundGraphEntity[]>) => {
+      state.lotteriesData = action.payload
     })
-    builder.addCase(fetchUserLotteries.fulfilled, (state, action: PayloadAction<UserLotteryData>) => {
+    builder.addCase(fetchUserLotteries.fulfilled, (state, action: PayloadAction<LotteryUserGraphEntity>) => {
       state.userLotteryData = action.payload
     })
   },
