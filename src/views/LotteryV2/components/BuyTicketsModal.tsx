@@ -40,7 +40,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
     currentRound: {
       priceTicketInCake,
       discountDivisor,
-      userData: { tickets: userCurrentTickets },
+      userTickets: { tickets: userCurrentTickets },
     },
   } = useLottery()
   const [ticketsToBuy, setTicketsToBuy] = useState('0')

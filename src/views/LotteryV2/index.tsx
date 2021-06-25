@@ -9,7 +9,7 @@ import useTheme from 'hooks/useTheme'
 import useNextEventCountdown from 'hooks/lottery/v2/useNextEventCountdown'
 import useGetNextLotteryEvent from 'hooks/lottery/v2/useGetNextLotteryEvent'
 import { useAppDispatch } from 'state'
-import { useFetchLottery, useGetPastLotteries, useGetUserLotteryData, useLottery } from 'state/hooks'
+import { useFetchLottery, useGetLotteriesGraphData, useGetUserLotteriesGraphData, useLottery } from 'state/hooks'
 import { fetchCurrentLottery, fetchPastLotteries, fetchPublicLotteryData, fetchUserLotteries } from 'state/lottery'
 import fetchUnclaimedUserRewards from 'state/lottery/fetchUnclaimedUserRewards'
 import { TITLE_BG, GET_TICKETS_BG, FINISHED_ROUNDS_BG, FINISHED_ROUNDS_BG_DARK } from './pageSectionStyles'
@@ -46,8 +46,8 @@ const LotteryV2 = () => {
   const endTimeAsInt = parseInt(endTime, 10)
   const { nextEventTime, postCountdownText, preCountdownText } = useGetNextLotteryEvent(endTimeAsInt, status)
   const secondsRemaining = useNextEventCountdown(nextEventTime)
-  const userLotteryData = useGetUserLotteryData()
-  const pastLotteries = useGetPastLotteries()
+  const userLotteryData = useGetUserLotteriesGraphData()
+  const lotteriesData = useGetLotteriesGraphData()
   const [unclaimedRewards, setUnclaimedRewards] = useState({ isFetchingRewards: true, rewards: [] })
   const [hasPoppedClaimModal, setHasPoppedClaimModal] = useState(false)
   const [onPresentClaimModal] = useModal(<ClaimPrizesModal roundsToClaim={unclaimedRewards.rewards} />)
@@ -58,17 +58,17 @@ const LotteryV2 = () => {
       account,
       currentLotteryId,
       userLotteryData,
-      pastLotteries,
+      lotteriesData,
     )
     setUnclaimedRewards({ isFetchingRewards: false, rewards: unclaimedRewardsResponse })
-  }, [account, userLotteryData, currentLotteryId, pastLotteries])
+  }, [account, userLotteryData, currentLotteryId, lotteriesData])
 
   useEffect(() => {
     // Check if user has rewards on page load and account change
-    if (userLotteryData && account && currentLotteryId && pastLotteries) {
+    if (userLotteryData && account && currentLotteryId && lotteriesData) {
       fetchRewards()
     }
-  }, [account, userLotteryData, currentLotteryId, pastLotteries, setUnclaimedRewards, fetchRewards])
+  }, [account, userLotteryData, currentLotteryId, lotteriesData, setUnclaimedRewards, fetchRewards])
 
   useEffect(() => {
     // Manage showing unclaimed rewards modal once per visit

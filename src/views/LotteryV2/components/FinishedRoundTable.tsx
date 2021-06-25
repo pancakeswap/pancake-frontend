@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Text, ChevronRightIcon, Box, Flex } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import { useGetUserLotteryData, useLottery } from 'state/hooks'
+import { useGetUserLotteriesGraphData, useLottery } from 'state/hooks'
 import HistoryGridRow from './HistoryGridRow'
 
 const Grid = styled(Box)`
@@ -16,7 +16,7 @@ interface FinishedRoundTableProps {
 
 const FinishedRoundTable: React.FC<FinishedRoundTableProps> = ({ handleHistoryRowClick }) => {
   const { t } = useTranslation()
-  const userLotteryData = useGetUserLotteryData()
+  const userLotteryData = useGetUserLotteriesGraphData()
   const { currentLotteryId } = useLottery()
 
   const filteredForCurrentRound = userLotteryData?.rounds.filter((round) => {

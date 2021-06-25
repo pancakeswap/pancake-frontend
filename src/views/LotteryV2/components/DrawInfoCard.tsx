@@ -27,7 +27,7 @@ const DrawInfoCard = () => {
   const { account } = useWeb3React()
   const {
     currentLotteryId,
-    currentRound: { endTime, amountCollectedInCake, userData, status },
+    currentRound: { endTime, amountCollectedInCake, userTickets, status },
   } = useLottery()
   const [onPresentViewTicketsModal] = useModal(<ViewTicketsModal roundId={currentLotteryId} />)
 
@@ -38,7 +38,7 @@ const DrawInfoCard = () => {
   const endTimeMs = parseInt(endTime, 10) * 1000
   const endDate = new Date(endTimeMs)
   const isLotteryOpen = status === LotteryStatus.OPEN
-  const userTicketCount = userData?.tickets?.length || 0
+  const userTicketCount = userTickets?.tickets?.length || 0
 
   const getBalances = () => {
     if (status === LotteryStatus.CLOSE || status === LotteryStatus.CLAIMABLE) {
@@ -128,7 +128,7 @@ const DrawInfoCard = () => {
                 {account && (
                   <Flex justifyContent={['center', null, null, 'flex-start']}>
                     <Text display="inline">{t('You have')} </Text>
-                    {!userData.isLoading ? (
+                    {!userTickets.isLoading ? (
                       <Text display="inline" bold mx="4px">
                         {userTicketCount} {t('tickets')}
                       </Text>
@@ -138,7 +138,7 @@ const DrawInfoCard = () => {
                     <Text display="inline"> {t('this round')}</Text>
                   </Flex>
                 )}
-                {!userData.isLoading && userTicketCount > 0 && (
+                {!userTickets.isLoading && userTicketCount > 0 && (
                   <Button
                     onClick={onPresentViewTicketsModal}
                     height="auto"
