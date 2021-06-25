@@ -47,45 +47,41 @@ const HarvestActions: React.FC<HarvestActionsProps> = ({
   )
 
   return (
-    <Flex flexDirection="column" mb="16px">
-      <Flex justifyContent="space-between" alignItems="center">
-        <Flex flexDirection="column">
-          {isLoading ? (
-            <Skeleton width="80px" height="48px" />
-          ) : (
-            <>
-              {hasEarnings ? (
-                <>
-                  <Balance bold fontSize="20px" decimals={5} value={earningTokenBalance} />
-                  {earningTokenPrice > 0 && (
-                    <Balance
-                      display="inline"
-                      fontSize="12px"
-                      color="textSubtle"
-                      decimals={2}
-                      prefix="~"
-                      value={earningTokenDollarBalance}
-                      unit=" USD"
-                    />
-                  )}
-                </>
-              ) : (
-                <>
-                  <Heading color="textDisabled">0</Heading>
-                  <Text fontSize="12px" color="textDisabled">
-                    0 USD
-                  </Text>
-                </>
-              )}
-            </>
-          )}
-        </Flex>
-        <Flex>
-          <Button disabled={!hasEarnings} onClick={onPresentCollect}>
-            {isCompoundPool ? t('Collect') : t('Harvest')}
-          </Button>
-        </Flex>
+    <Flex justifyContent="space-between" alignItems="center" mb="16px">
+      <Flex flexDirection="column">
+        {isLoading ? (
+          <Skeleton width="80px" height="48px" />
+        ) : (
+          <>
+            {hasEarnings ? (
+              <>
+                <Balance bold fontSize="20px" decimals={5} value={earningTokenBalance} />
+                {earningTokenPrice > 0 && (
+                  <Balance
+                    display="inline"
+                    fontSize="12px"
+                    color="textSubtle"
+                    decimals={2}
+                    prefix="~"
+                    value={earningTokenDollarBalance}
+                    unit=" USD"
+                  />
+                )}
+              </>
+            ) : (
+              <>
+                <Heading color="textDisabled">0</Heading>
+                <Text fontSize="12px" color="textDisabled">
+                  0 USD
+                </Text>
+              </>
+            )}
+          </>
+        )}
       </Flex>
+      <Button disabled={!hasEarnings} onClick={onPresentCollect}>
+        {isCompoundPool ? t('Collect') : t('Harvest')}
+      </Button>
     </Flex>
   )
 }
