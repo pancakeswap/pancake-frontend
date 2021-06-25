@@ -18,6 +18,32 @@ const GlobalStyle = createGlobalStyle`
       height: auto;
       max-width: 100%;
     }
+
+    button, button div {
+      background-color: #f3931a !important;
+      color: white !important;
+    }
+
+    button[aria-label="Toggle menu"] {
+      background-color: transparent !important;
+    }
+
+    button[class="sc-hKFxyN gdqowW sc-hOPeYd fYHEgG"],
+    button[class="sc-hKFxyN mMaLf sc-hOPeYd gzoAWh"] {
+      background-color: transparent !important;
+    }
+
+    button[class="sc-hKFxyN gdqowW sc-hOPeYd fYHEgG"]{
+      color: black !important;
+    }
+
+    button[class="sc-hKFxyN mMaLf sc-hOPeYd gzoAWh"] {
+      color: white !important;
+    }
+
+    div[class="sc-eGJWMs jrRmPQ"] > button[class="sc-hKFxyN gkDeJu"] {
+      display: none;
+    }
   }
 `
 

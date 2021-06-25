@@ -21,7 +21,7 @@ const ThemeContextProvider = ({ children }) => {
 
   return (
     <ThemeContext.Provider value={{ isDark, toggleTheme }}>
-      <SCThemeProvider theme={isDark ? dark : light}>{children}</SCThemeProvider>
+      <SCThemeProvider theme={isDark ? dark : dark}>{children}</SCThemeProvider>
     </ThemeContext.Provider>
   )
 }

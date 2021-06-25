@@ -2052,6 +2052,19 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
+"@pancakeswap-libs/uikit@^0.29.4":
+  version "0.29.4"
+  resolved "https://registry.yarnpkg.com/@pancakeswap-libs/uikit/-/uikit-0.29.4.tgz#3c28d1c8ced84feb87ebf3c8a64ab32d97b3f148"
+  integrity sha512-imXRUtv2RHR6vI+KMA4vTyBecznN0hIh45T4dn48MzqdFsLXJLEg06R4A8ba/1wF8P+ntpvCDEfvjYORBkL6bg==
+  dependencies:
+    "@popperjs/core" "^2.9.2"
+    "@types/lodash" "^4.14.168"
+    "@types/styled-system" "^5.1.10"
+    lodash "^4.17.20"
+    react-popper "^2.2.5"
+    react-transition-group "^4.4.1"
+    styled-system "^5.1.5"
+
 "@pancakeswap/eslint-config-pancake@^1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@pancakeswap/eslint-config-pancake/-/eslint-config-pancake-1.1.0.tgz#ddb916af3726359095207306cfc87098cec43f41"
