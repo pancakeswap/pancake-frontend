@@ -1,6 +1,19 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
-import { Card, CardHeader, CardBody, Flex, Heading, Text, Skeleton, Button, useModal, Box } from '@pancakeswap/uikit'
+import {
+  Card,
+  CardHeader,
+  CardBody,
+  Flex,
+  Heading,
+  Text,
+  Skeleton,
+  Button,
+  useModal,
+  Box,
+  CardFooter,
+  ExpandableLabel,
+} from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import { LotteryStatus } from 'config/constants/types'
@@ -11,6 +24,7 @@ import Balance from 'components/Balance'
 import ViewTicketsModal from './ViewTicketsModal'
 import BuyTicketsButton from './BuyTicketsButton'
 import { dateTimeOptions } from '../helpers'
+import NextDrawDetails from './NextDrawDetails'
 
 const Grid = styled.div`
   display: grid;
@@ -22,7 +36,7 @@ const Grid = styled.div`
   }
 `
 
-const DrawInfoCard = () => {
+const NextDrawCard = () => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const {
@@ -30,6 +44,7 @@ const DrawInfoCard = () => {
     currentRound: { endTime, amountCollectedInCake, userTickets, status },
   } = useLottery()
   const [onPresentViewTicketsModal] = useModal(<ViewTicketsModal roundId={currentLotteryId} />)
+  const [isExpanded, setIsExpanded] = useState(false)
 
   // TODO: Re-enable in prod
   //   const cakePriceBusd = usePriceCakeBusd()
@@ -157,8 +172,16 @@ const DrawInfoCard = () => {
           </Flex>
         </Grid>
       </CardBody>
+      <CardFooter p="0">
+        {isExpanded && <NextDrawDetails />}
+        <Flex p="8px 24px" alignItems="center" justifyContent="center">
+          <ExpandableLabel expanded={isExpanded} onClick={() => setIsExpanded(!isExpanded)}>
+            {isExpanded ? t('Hide') : t('Details')}
+          </ExpandableLabel>
+        </Flex>
+      </CardFooter>
     </Card>
   )
 }
 
-export default DrawInfoCard
+export default NextDrawCard
