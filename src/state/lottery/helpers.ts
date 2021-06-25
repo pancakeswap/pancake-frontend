@@ -195,6 +195,7 @@ export const getGraphLotteryUser = async (account: string): Promise<LotteryUserG
             id
             lottery {
               id
+              endTime
             }
             claimed
             totalTickets
@@ -225,6 +226,7 @@ export const getGraphLotteryUser = async (account: string): Promise<LotteryUserG
     rounds: user.rounds.map((round) => {
       return {
         lotteryId: round?.lottery?.id,
+        endTime: round?.lottery?.endTime,
         claimed: round?.claimed,
         totalTickets: round?.totalTickets,
       }

@@ -397,6 +397,7 @@ export interface UserRound {
   claimed: boolean
   lotteryId: string
   totalTickets: string
+  endTime: string
   tickets?: LotteryTicket[]
 }
 

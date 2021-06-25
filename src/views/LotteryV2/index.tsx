@@ -14,7 +14,7 @@ import { fetchCurrentLottery, fetchPastLotteries, fetchPublicLotteryData, fetchU
 import fetchUnclaimedUserRewards from 'state/lottery/fetchUnclaimedUserRewards'
 import { TITLE_BG, GET_TICKETS_BG, FINISHED_ROUNDS_BG, FINISHED_ROUNDS_BG_DARK } from './pageSectionStyles'
 import Hero from './components/Hero'
-import DrawInfoCard from './components/DrawInfoCard'
+import NextDrawCard from './components/NextDrawCard'
 import Countdown from './components/Countdown'
 import HistoryTabMenu from './components/HistoryTabMenu'
 import YourHistoryCard from './components/YourHistoryCard'
@@ -131,7 +131,7 @@ const LotteryV2 = () => {
               <Skeleton height="41px" width="250px" />
             )}
           </Flex>
-          <DrawInfoCard />
+          <NextDrawCard />
         </Flex>
       </TicketsSection>
       <PageSection
