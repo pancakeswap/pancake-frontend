@@ -1598,5 +1598,37 @@
     "chainId": 56,
     "decimals": 18,
     "logoURI": "https://tokens.pancakeswap.finance/images/0xeBd49b26169e1b52c04cFd19FCf289405dF55F80.png"
+  },
+  {
+    "name": "WaultSwap",
+    "symbol": "WEX",
+    "address": "0xa9c41A46a6B3531d28d5c32F6633dd2fF05dFB90",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0xa9c41A46a6B3531d28d5c32F6633dd2fF05dFB90.png"
+  },
+  {
+    "name": "Wault",
+    "symbol": "WAULTx",
+    "address": "0xB64E638E60D154B43f660a6BF8fD8a3b249a6a21",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0xB64E638E60D154B43f660a6BF8fD8a3b249a6a21.png"
+  },
+  {
+    "name": "Rabbit Finance",
+    "symbol": "RABBIT",
+    "address": "0x95a1199EBA84ac5f19546519e287d43D2F0E1b41",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0x95a1199EBA84ac5f19546519e287d43D2F0E1b41.png"
+  },
+  {
+    "name": "BSCPad",
+    "symbol": "BSCPAD",
+    "address": "0x5A3010d4d8D3B5fB49f8B6E57FB9E48063f16700",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0x5A3010d4d8D3B5fB49f8B6E57FB9E48063f16700.png"
   }
 ]

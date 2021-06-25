@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2021-06-22T08:32:15.697Z",
+  "timestamp": "2021-06-25T03:12:28.548Z",
   "version": {
     "major": 2,
     "minor": 16,
-    "patch": 2
+    "patch": 3
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [
@@ -307,6 +307,14 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0xf859Bf77cBe8699013d6Dbc7C2b926Aaf307F830.png"
+    },
+    {
+      "name": "BSCPad",
+      "symbol": "BSCPAD",
+      "address": "0x5A3010d4d8D3B5fB49f8B6E57FB9E48063f16700",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x5A3010d4d8D3B5fB49f8B6E57FB9E48063f16700.png"
     },
     {
       "name": "BSCEX",
@@ -1157,6 +1165,14 @@
       "logoURI": "https://tokens.pancakeswap.finance/images/0xb8C540d00dd0Bf76ea12E4B4B95eFC90804f924E.png"
     },
     {
+      "name": "Rabbit Finance",
+      "symbol": "RABBIT",
+      "address": "0x95a1199EBA84ac5f19546519e287d43D2F0E1b41",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x95a1199EBA84ac5f19546519e287d43D2F0E1b41.png"
+    },
+    {
       "name": "Ramp DEFI",
       "symbol": "RAMP",
       "address": "0x8519EA49c997f50cefFa444d240fB655e89248Aa",
@@ -1469,6 +1485,14 @@
       "logoURI": "https://tokens.pancakeswap.finance/images/0x7a9f28eb62c791422aa23ceae1da9c847cbec9b0.png"
     },
     {
+      "name": "Wault",
+      "symbol": "WAULTx",
+      "address": "0xB64E638E60D154B43f660a6BF8fD8a3b249a6a21",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0xB64E638E60D154B43f660a6BF8fD8a3b249a6a21.png"
+    },
+    {
       "name": "WBNB Token",
       "symbol": "WBNB",
       "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
@@ -1483,6 +1507,14 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0xf07a32Eb035b786898c00bB1C64d8c6F8E7a46D5.png"
+    },
+    {
+      "name": "WaultSwap",
+      "symbol": "WEX",
+      "address": "0xa9c41A46a6B3531d28d5c32F6633dd2fF05dFB90",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0xa9c41A46a6B3531d28d5c32F6633dd2fF05dFB90.png"
     },
     {
       "name": "WINk",
