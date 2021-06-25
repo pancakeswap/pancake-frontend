@@ -206,6 +206,7 @@
   "Next IFO": "Επόμενο IFO",
   "Past IFOs": "Περασμένα IFO",
   "APR": "APR",
+  "APR (incl. LP rewards)": "APR (incl. LP rewards)",
   "Select lottery number:": "Επιλέξτε αριθμό λοταρίας:",
   "Search": "Αναζήτηση",
   "History": "Ιστορικό",
@@ -269,7 +270,9 @@
   "ROI": "ROI",
   "Timeframe": "Χρονικό διάστημα",
   "CAKE per $1000": "CAKE ανά $1000",
-  "Calculated based on current rates. Compounding %freq%x daily. Rates are estimates provided for your convenience only, and by no means represent guaranteed returns.": "Υπολογίζεται με βάση τις τρέχουσες τιμές. Ανατοκίζεται %freq%x την ημέρα. Οι τιμές είναι εκτιμήσεις που παρέχονται μόνο για την εξυπηρέτησή σας, και σε καμία περίπτωση δεν αντιπροσωπεύουν εγγυημένες αποδόσεις.",
+  "Calculated based on current rates.": "Calculated based on current rates.",
+  "Compounding %freq%x daily.": "Compounding %freq%x daily.",
+  "All figures are estimates provided for your convenience only, and by no means represent guaranteed returns.": "All figures are estimates provided for your convenience only, and by no means represent guaranteed returns.",
   "You can't change this once you click Confirm.": "Δεν μπορείτε να το αλλάξετε όταν κάνετε κλικ στην επιλογή Επιβεβαίωση.",
   "Until ticket sale": "Η πώληση λαχείων ξεκινάει σε",
   "To burn:": "Για κάψιμο:",
@@ -444,7 +447,7 @@
   "Earned since your last action": "Κέρδη από την τελευταία σας ενέργεια",
   "Commit ~%amount% LP in total to earn!": "Δεσμεύστε συνολικά ~%amount% LP για να κερδίσετε!",
   "Learn more about %title%": "Μάθετε περισσότερα για το %title%",
-  "365d(APY)": "365d(APY)",
+  "365d (APY)": "365d (APY)",
   "%num%d": "%num%η",
   "d": "η",
   "h": "ω",
@@ -824,5 +827,6 @@
   "Beta Version": "Beta Version",
   "Over %amount% in BNB won so far": "Over %amount% in BNB won so far",
   "Try Now": "Try Now",
-  "New": "New"
+  "New": "New",
+  "LP rewards: 0.17% trading fees, distributed proportionally among LP token holders.": "LP rewards: 0.17% trading fees, distributed proportionally among LP token holders."
 }
