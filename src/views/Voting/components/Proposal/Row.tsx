@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { Flex } from '@pancakeswap/uikit'
 
 export const AddressColumn = styled(Flex).attrs({ alignItems: 'center' })`
-  width: 120px;
+  width: 192px;
 `
 
 export const ChoiceColumn = styled(Flex).attrs({ alignItems: 'center' })`

@@ -1,25 +1,36 @@
 import React from 'react'
-import { Box, Text, Flex, Card, CardBody, CardHeader, Heading, Progress, Skeleton } from '@pancakeswap/uikit'
+import {
+  Box,
+  Text,
+  Flex,
+  Card,
+  CardBody,
+  CardHeader,
+  Heading,
+  Progress,
+  Skeleton,
+  Tag,
+  CheckmarkCircleIcon,
+} from '@pancakeswap/uikit'
+import { useWeb3React } from '@web3-react/core'
 import times from 'lodash/times'
 import { Vote, VotingStateLoadingStatus } from 'state/types'
 import { useGetVotingStateLoadingStatus } from 'state/hooks'
-import { BIG_ZERO } from 'utils/bigNumber'
 import { useTranslation } from 'contexts/Localization'
-import { calculateVoteResults } from '../helpers'
+import { calculateVoteResults, getTotalFromVotes } from '../helpers'
 import TextEllipsis from '../components/TextEllipsis'
 
 interface ResultsProps {
-  choiceCount: number
+  choices: string[]
   votes: Vote[]
 }
 
-const Results: React.FC<ResultsProps> = ({ choiceCount, votes }) => {
+const Results: React.FC<ResultsProps> = ({ choices, votes }) => {
   const { t } = useTranslation()
   const results = calculateVoteResults(votes)
   const votingStatus = useGetVotingStateLoadingStatus()
-  const totalVotes = results.reduce((accum, result) => {
-    return accum.plus(result.total)
-  }, BIG_ZERO)
+  const { account } = useWeb3React()
+  const totalVotes = getTotalFromVotes(votes)
 
   return (
     <Card>
@@ -30,36 +41,42 @@ const Results: React.FC<ResultsProps> = ({ choiceCount, votes }) => {
       </CardHeader>
       <CardBody>
         {votingStatus === VotingStateLoadingStatus.IDLE &&
-          results.length > 0 &&
-          results.map((result, index) => {
-            const progress = result.total.div(totalVotes).times(100).toNumber()
+          choices.map((choice, index) => {
+            const choiceVotes = results[choice] || []
+            const totalChoiceVote = getTotalFromVotes(choiceVotes)
+
+            const progress = totalVotes.eq(0) ? 0 : totalChoiceVote.div(totalVotes).times(100).toNumber()
+            const hasVoted = choiceVotes.some((vote) => {
+              return vote.voter.toLowerCase() === account.toLowerCase()
+            })
 
             return (
-              <Box key={result.label} mt={index > 0 ? '24px' : '0px'}>
-                <TextEllipsis mb="4px" title={result.label}>
-                  {result.label}
-                </TextEllipsis>
+              <Box key={choice} mt={index > 0 ? '24px' : '0px'}>
+                <Flex alignItems="center" mb="8px">
+                  <TextEllipsis mb="4px" title={choice}>
+                    {choice}
+                  </TextEllipsis>
+                  {hasVoted && (
+                    <Tag variant="success" outline ml="8px">
+                      <CheckmarkCircleIcon mr="4px" /> {t('Voted')}
+                    </Tag>
+                  )}
+                </Flex>
                 <Box mb="4px">
                   <Progress primaryStep={progress} scale="sm" />
                 </Box>
                 <Flex alignItems="center" justifyContent="space-between">
-                  <Text color="textSubtle">{t('%total% Votes', { total: result.total.toFormat(3) })}</Text>
+                  <Text color="textSubtle">{t('%total% Votes', { total: totalVotes.toFormat(3) })}</Text>
                   <Text>
-                    {progress.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 4 })}%
+                    {progress.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%
                   </Text>
                 </Flex>
               </Box>
             )
           })}
-        {votingStatus === VotingStateLoadingStatus.IDLE && results.length === 0 && (
-          <Flex alignItems="center">
-            <Text fontSize="14px" bold>
-              {t('No votes cast yet')}
-            </Text>
-          </Flex>
-        )}
+
         {votingStatus === VotingStateLoadingStatus.LOADING &&
-          times(choiceCount).map((count, index) => {
+          times(choices.length).map((count, index) => {
             return (
               <Box key={count} mt={index > 0 ? '24px' : '0px'}>
                 <Skeleton height="36px" mb="4px" />

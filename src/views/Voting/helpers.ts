@@ -93,28 +93,20 @@ export const getVotingPower = async (account: string, poolAddresses: string[], b
   return data.data
 }
 
-export const calculateVoteResults = (votes: Vote[]) => {
-  // Separate each vote by its choice
-  const votesByChoice = votes.reduce((accum, vote) => {
+export const calculateVoteResults = (votes: Vote[]): { [key: string]: Vote[] } => {
+  return votes.reduce((accum, vote) => {
     const choiceText = vote.proposal.choices[vote.choice - 1]
-    const choiceVotes = accum[choiceText] || []
 
     return {
       ...accum,
-      [choiceText]: [...choiceVotes, vote],
+      [choiceText]: accum[choiceText] ? [...accum[choiceText], vote] : [vote],
     }
   }, {})
+}
 
-  return Object.keys(votesByChoice).map((choiceText) => {
-    const choiceVotes = votesByChoice[choiceText] as Vote[]
-    const totalVotes = choiceVotes.reduce((accum, vote) => {
-      const votePower = new BigNumber(vote.metadata?.votingPower)
-      return accum.plus(votePower)
-    }, BIG_ZERO)
-
-    return {
-      label: choiceText,
-      total: totalVotes,
-    }
-  })
+export const getTotalFromVotes = (votes: Vote[]) => {
+  return votes.reduce((accum, vote) => {
+    const power = new BigNumber(vote.metadata?.votingPower)
+    return accum.plus(power)
+  }, BIG_ZERO)
 }

@@ -75,7 +75,7 @@ const Proposal = () => {
         </Box>
         <Box>
           <Details proposal={proposal} />
-          <Results choiceCount={proposal.choices.length} votes={votes} />
+          <Results choices={proposal.choices} votes={votes} />
         </Box>
       </Layout>
     </Container>
