@@ -97,9 +97,15 @@ const fetchUnclaimedUserRewards = async (
   userLotteryData: LotteryUserGraphEntity,
   lotteriesData: LotteryRoundGraphEntity[],
 ): Promise<LotteryTicketClaimData[]> => {
+  // eslint-disable-next-line no-param-reassign
   const { rounds } = userLotteryData
   const cursor = 0
   const limit = 1000
+
+  // If there is no user round history - return an empty array
+  if (rounds.length === 0) {
+    return []
+  }
 
   // If the web3 provider account doesn't equal the userLotteryData account, return an empty array - this is effectively a loading state as the user switches accounts
   if (userLotteryData.account.toLowerCase() !== account.toLowerCase()) {

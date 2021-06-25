@@ -20,6 +20,7 @@ import HistoryTabMenu from './components/HistoryTabMenu'
 import YourHistoryCard from './components/YourHistoryCard'
 import ClaimPrizesModal from './components/ClaimPrizesModal'
 import PrizeCollectionCard from './components/PrizeCollectionCard'
+import AllHistoryCard from './components/AllHistoryCard'
 
 const LotteryPage = styled.div`
   min-height: calc(100vh - 64px);
@@ -60,6 +61,7 @@ const LotteryV2 = () => {
       userLotteryData,
       lotteriesData,
     )
+
     setUnclaimedRewards({ isFetchingRewards: false, rewards: unclaimedRewardsResponse })
   }, [account, userLotteryData, currentLotteryId, lotteriesData])
 
@@ -80,6 +82,8 @@ const LotteryV2 = () => {
 
   // Data fetches for lottery phase transitions
   useEffect(() => {
+    // TODO: could set timeouts be used here? Especially 'Next lottery starting - seemed to create a loop'.
+
     // Current lottery transitions from open > closed, or closed > claimable
     if (status === LotteryStatus.OPEN && secondsRemaining === 0) {
       dispatch(fetchCurrentLottery({ currentLotteryId }))
@@ -145,7 +149,7 @@ const LotteryV2 = () => {
               setActiveIndex={(index) => setHistoryTabMenuIndex(index)}
             />
           </Box>
-          {historyTabMenuIndex === 0 ? <YourHistoryCard /> : <span>😢</span>}
+          {historyTabMenuIndex === 0 ? <YourHistoryCard /> : <AllHistoryCard />}
           <PrizeCollectionCard
             unclaimedRewards={unclaimedRewards}
             onSuccess={() => {

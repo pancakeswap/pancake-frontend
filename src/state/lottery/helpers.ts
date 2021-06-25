@@ -121,7 +121,7 @@ export const fetchTickets = async (
 ): Promise<LotteryTicket[]> => {
   const cursor = 0
   const totalTicketsToRequest = userRoundData && parseInt(userRoundData?.totalTickets, 10)
-  const perRequestLimit = 10
+  const perRequestLimit = 5000
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const calls = []
 
@@ -204,8 +204,19 @@ export const getGraphLotteryUser = async (account: string): Promise<LotteryUserG
     `,
     { account: account.toLowerCase() },
   )
-
   const { user } = response
+
+  // If no subgraph response - return blank user
+  if (!response || !user) {
+    const blankUser = {
+      account,
+      totalCake: '',
+      totalTickets: '',
+      rounds: [],
+    }
+
+    return blankUser
+  }
 
   const formattedUser = user && {
     account: user.id,
