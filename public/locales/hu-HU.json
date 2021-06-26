@@ -825,9 +825,9 @@
   "Already Collected": "Már begyűjtve",
   "Predictions Now Live": "Az előrejelzések most élőben",
   "Beta Version": "Béta verzió",
-  "Over %amount% in BNB won so far": "Over %amount% in BNB won so far",
-  "Try Now": "Try Now",
-  "New": "New",
-  "LP rewards: 0.17% trading fees, distributed proportionally among LP token holders.": "LP rewards: 0.17% trading fees, distributed proportionally among LP token holders.",
-  "CAKE + Fees": "CAKE + Fees"
+  "Over %amount% in BNB won so far": "Eddig több mint %amount% összeget nyert BNB-ben",
+  "Try Now": "Próbálja ki most",
+  "New": "Új",
+  "LP rewards: 0.17% trading fees, distributed proportionally among LP token holders.": "LP jutalom: 0,17% kereskedési díj, arányosan elosztva az LP zsetonok birtokosai között.",
+  "CAKE + Fees": "CAKE + Díjak"
 }
