@@ -18,6 +18,10 @@ const TableCards = styled(BaseLayout)`
   }
 `
 
+interface Result {
+  paidUnlockFee: boolean
+}
+
 interface TableData {
   id: number,
   name: string,
@@ -27,7 +31,8 @@ interface TableData {
   nftRevivalTime: string,
   rug: any,
   artist?: any,
-  stakingToken: any
+  stakingToken: any,
+  result : Result
 }
 
 interface TableProps {
@@ -57,7 +62,7 @@ const Table: React.FC<TableProps> = ({ details }: TableProps) => {
             <div className="w-95 mx-auto mt-3">
               <div className="flex-grow">
                 <FrankEarned />
-                <StartFarming />
+                <StartFarming disabled={details.result.paidUnlockFee} />
                 <BuyFrank />
               </div>
               <RugInDetails details={details} />

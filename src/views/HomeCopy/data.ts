@@ -1,52 +1,71 @@
 // eslint-disable-next-line import/prefer-default-export
 import tokens from '../../config/constants/tokens'
+import artists from '../../config/constants/artists'
 
 const tableData = [
   {
     id: 1,
+    pid: 0,
     name: 'Basic Zombie',
-    path: 'images/rugZombie/BasicZombie.png',
+    path: 'images/rugZombie/BasicZombie.gif',
     type: 'image',
     withdrawalCooldown: '2 days',
     nftRevivalTime: '30 days',
     rug: '',
-    artist: 'https://twitter.com/baes_zom',
+    artist: artists.RugZombie,
     stakingToken: undefined,
+    result: {
+      paidUnlockFee: false,
+    },
   },
   {
     id: 2,
+    pid: 1,
     name: 'Viking Brains',
     path: 'images/rugZombie/VikingBrains.jpeg',
     type: 'image',
     withdrawalCooldown: '3 days',
     nftRevivalTime: '30 days',
     rug: tokens.viking,
-    artist: 'https://twitter.com/TLeap3d',
+    artist: artists.TheLeap3d,
     stakingToken: undefined,
+    result: {
+      paidUnlockFee: false,
+    },
   },
   {
     id: 3,
+    pid: 2,
     name: 'ZombieSlayer',
     path: 'images/rugZombie/ZombieSlayer.gif',
     type: 'image',
     withdrawalCooldown: '3 days',
     nftRevivalTime: '30 days',
     rug: tokens.msc,
+    artist: artists.ZomBaes,
     stakingToken: undefined,
+    result: {
+      paidUnlockFee: false,
+    },
   },
   {
     id: 4,
+    pid: 3,
     name: 'Raremoon',
     path: 'images/rugZombie/Raremoon.jpeg',
     type: 'image',
     withdrawalCooldown: '3 days',
     nftRevivalTime: '30 days',
     rug: tokens.fairmoon,
-    artist: 'https://twitter.com/TLeap3d',
+    artist: artists.TheLeap3d,
     stakingToken: undefined,
+    result: {
+      paidUnlockFee: false,
+    },
   },
   {
     id: 5,
+    pid: 4,
     name: 'Fairmoon Uncommon',
     path: 'images/rugZombie/FairmoonUncommon.mp4',
     type: 'video',
@@ -55,9 +74,13 @@ const tableData = [
     rug: tokens.fairmoon,
     artist: '/',
     stakingToken: undefined,
+    result: {
+      paidUnlockFee: false,
+    },
   },
   {
     id: 6,
+    pid: 5,
     name: 'Fairmoon Common',
     path: 'images/rugZombie/FairmoonCommon.mp4',
     type: 'video',
@@ -66,9 +89,13 @@ const tableData = [
     rug: tokens.fairmoon,
     artist: '/',
     stakingToken: undefined,
+    result: {
+      paidUnlockFee: false,
+    },
   },
   {
     id: 7,
+    pid: 6,
     name: 'yApe Common',
     path: 'images/rugZombie/yApeCommon.jpeg',
     type: 'image',
@@ -77,10 +104,14 @@ const tableData = [
     rug: tokens.yape,
     artist: '/',
     stakingToken: undefined,
+    result: {
+      paidUnlockFee: false,
+    },
   },
   {
     id: 8,
-    name: 'Common Dragon Farm Finance',
+    pid: 7,
+    name: 'Dragon Farm Finance Common',
     path: 'images/rugZombie/CommonDragonFarmFinance.mp4',
     type: 'video',
     withdrawalCooldown: '3 days',
@@ -88,9 +119,13 @@ const tableData = [
     rug: tokens.dragon,
     artist: '/',
     stakingToken: undefined,
+    result: {
+      paidUnlockFee: false,
+    },
   },
   {
     id: 9,
+    pid: 8,
     name: 'yPanda Common',
     path: 'images/rugZombie/yPandaCommon.jpeg',
     type: 'image',
@@ -99,7 +134,10 @@ const tableData = [
     rug: tokens.ypanda,
     artist: '/',
     stakingToken: undefined,
+    result: {
+      paidUnlockFee: false,
+    },
   },
-];
+]
 
-export default tableData;
+export default tableData

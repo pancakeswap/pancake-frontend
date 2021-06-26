@@ -41,7 +41,7 @@ interface TableListProps {
     type: string,
     withdrawalCooldown: string,
     nftRevivalTime: string,
-    rug: string,
+    rug: any,
     artist?: any,
     stakingToken: any
   }
@@ -67,15 +67,10 @@ const TableList: React.FC<TableListProps> = (props: TableListProps) => {
               <div className="into-two-td">
                 <div className="info-1">
                   <div className="info-icon">
-                  <img src="images/rugZombie/BasicZombie.png" alt="icon" className="icon" />
-                    {type === 'image' && rug !=='' ? (
-                      <img src={path} alt="icon" className="icon" />
-                    ) : (
-                        <video className='icon' width="100%" autoPlay>
-                          <source src={path} type="video/mp4" />
-                        </video>
-                    )}
-                    {/* <img src="https://storage.googleapis.com/rug-zombie/TheMoon.png" alt="icon" className="icon" /> */}
+                    <img src="images/rugZombie/BasicZombie.png" alt="icon" className="icon" />
+                    {rug !== '' ? (
+                      <img src={`images/rugZombie/${rug.symbol}.jpeg`} alt="icon" className="icon" />
+                    ) : null}
                   </div>
                   <div>
                     <div className="titel">{name}</div>
