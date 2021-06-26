@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PageHeader from 'components/PageHeader'
 import { Heading } from '@rug-zombie-libs/uikit'
 import tableData from 'views/HomeCopy/data'
@@ -7,6 +7,7 @@ import Table from '../HomeCopy/components/Table'
 import '../HomeCopy/HomeCopy.Styles.css'
 
 const Tombs: React.FC = () => {
+  const [isAllowance, seiIsAllowance] = useState(false);
   return (
     <Page className="innnerContainer">
       <PageHeader background="none">
@@ -19,7 +20,7 @@ const Tombs: React.FC = () => {
       </PageHeader>
       <div>
         {tableData.map((data) => {
-          return <Table details={data} key={data.id} />
+          return <Table isAllowance={isAllowance} details={data} key={data.id} />
         })}
       </div>
     </Page>

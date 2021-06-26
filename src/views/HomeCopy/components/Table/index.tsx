@@ -32,14 +32,16 @@ interface TableData {
   rug: any,
   artist?: any,
   stakingToken: any,
+  pid: number,
   result : Result
 }
 
 interface TableProps {
-  details: TableData
+  details: TableData,
+  isAllowance: boolean
 }
 
-const Table: React.FC<TableProps> = ({ details }: TableProps) => {
+const Table: React.FC<TableProps> = ({ details, isAllowance }: TableProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const openInDetails = (data) => {
@@ -62,7 +64,7 @@ const Table: React.FC<TableProps> = ({ details }: TableProps) => {
             <div className="w-95 mx-auto mt-3">
               <div className="flex-grow">
                 <FrankEarned />
-                <StartFarming disabled={details.result.paidUnlockFee} />
+                <StartFarming pid={details.pid} isAllowance={isAllowance} paidUnlockFee={details.result.paidUnlockFee} />
                 <BuyFrank />
               </div>
               <RugInDetails details={details} />

@@ -16,7 +16,7 @@ const tokens = {
     symbol: 'ZMBE',
     address: {
       56: '0x9f6472a033a0e36eD19Ab1AcA87600C600244b87',
-      97: '0xf3A3a31b90BE814A45170CbC9df0678219c03656',
+      97: '0xbc5099619C654cff63C02298E0f79dDEC6464F1c',
     },
     decimals: 18,
     projectLink: 'https://rugzombie.io/',

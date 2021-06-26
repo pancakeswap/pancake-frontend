@@ -69,7 +69,7 @@ const TableList: React.FC<TableListProps> = (props: TableListProps) => {
                   <div className="info-icon">
                     <img src="images/rugZombie/BasicZombie.png" alt="icon" className="icon" />
                     {rug !== '' ? (
-                      <img src={`images/rugZombie/${rug.symbol}.jpeg`} alt="icon" className="icon" />
+                      <img src={`images/tokens/${rug.symbol}.png`} alt="icon" className="icon" />
                     ) : null}
                   </div>
                   <div>

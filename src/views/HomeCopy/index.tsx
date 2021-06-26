@@ -9,7 +9,7 @@ import { getDrFrankensteinContract } from '../../utils/contractHelpers';
 import { useDrFrankenstein, useERC20 } from '../../hooks/useContract'
 import useWeb3 from '../../hooks/useWeb3'
 import Page from '../../components/layout/Page'
-import Table from './components/Table'
+import Table from './components/Table';
 import './HomeCopy.Styles.css'
 import tableData from './data';
 
@@ -25,6 +25,7 @@ const HomeC: React.FC = () => {
 
   const { account } = useWeb3React();
   const [showZmbeBtn, setShowZmbeBtn] = useState(true);
+  const [ isAllowance, setIsAllowance] = useState(false);
   const [farmData, setFormData] = useState(tableData);
   accountAddress = account
   const drFrankenstein = useDrFrankenstein();
@@ -36,7 +37,7 @@ const HomeC: React.FC = () => {
 
   useEffect(() => {
     // eslint-disable-next-line eqeqeq
-    if (accountAddress && parseInt(allowance.toString()) === 0) {
+    if (accountAddress && parseInt(allowance.toString()) !== 0) {
       const newFarmData = tableData.map((tokenInfo) => {
         drFrankenstein.methods.userInfo(tokenInfo.pid, accountAddress).call()
           .then(res => {
@@ -47,7 +48,15 @@ const HomeC: React.FC = () => {
       })
       setFormData(newFarmData);
     }
+
+    if(parseInt(allowance.toString()) !== 0){
+      setIsAllowance(true);
+    }
+    
   }, [allowance, drFrankenstein.methods])
+
+  console.log(farmData)
+
 
 
   return (
@@ -62,7 +71,7 @@ const HomeC: React.FC = () => {
       </PageHeader>
       <div>
         {farmData.map((data) => {
-          return <Table details={data} key={data.id} />
+          return <Table isAllowance={isAllowance} details={data} key={data.id} />
         })}
       </div>
     </Page>
