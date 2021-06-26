@@ -1317,6 +1317,24 @@ const tokens = {
     decimals: 8,
     projectLink: 'https://www.btcst.finance/',
   },
-}
+  SafeSwap: {
+    symbol: 'SWAP', 
+    address: {
+      56: '0xe56a473043eaab7947c0a2408cea623074500ee3', 
+      97: '', 
+    }, 
+    decimals: 18,
+    projectLink: 'https://safeswap.online/#/swap',
+  },
+  Muxe: {
+    symbol: 'MUXE', 
+    address: {
+      56: '0x6021742ffc3a1f1f9f7fc795e631c6bf06e3d60e', 
+      97: '', 
+    }, 
+    decimals: 18,
+    projectLink: 'https://muxe.io',
+  }, 
+} 
 
 export default tokens
