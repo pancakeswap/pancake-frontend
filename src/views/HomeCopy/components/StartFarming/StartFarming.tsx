@@ -1,18 +1,39 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable no-nested-ternary */
-import { useModal } from '@rug-zombie-libs/uikit';
+import { useModal, BaseLayout } from '@rug-zombie-libs/uikit';
+import styled from 'styled-components'
 import { useWeb3React } from '@web3-react/core';
 import tokens from 'config/constants/tokens';
 import { ethers } from 'ethers';
 import { useIfoAllowance } from 'hooks/useAllowance';
+import useTokenBalance from 'hooks/useTokenBalance';
+import { getFullDisplayBalance } from 'utils/formatBalance'
 import React, { useEffect, useState } from 'react';
+import BigNumber from 'bignumber.js'
 import { getAddress, getDrFrankensteinAddress } from 'utils/addressHelpers';
+import { BIG_ZERO } from 'utils/bigNumber';
 import { useDrFrankenstein, useERC20 } from '../../../../hooks/useContract';
 import StakeModal from '../StakeModal';
+import StakeZombieModal from '../StakeZombieModal';
+import WithdrawZombieModal from '../WithdrawZombieModal';
+
+
+const DisplayFlex = styled(BaseLayout)`
+  display: flex;
+  flex-direction: row;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  grid-gap: 0px;
+}`
+
 
 interface Result {
   paidUnlockFee: boolean,
-  rugDeposited: number
+  rugDeposited: number,
+  tokenWithdrawalDate: any,
+  amount: BigNumber,
 }
 
 interface StartFarmingProps {
@@ -27,21 +48,41 @@ interface StartFarmingProps {
     rug: any,
     artist?: any,
     stakingToken: any,
-    result: Result
+    result: Result,
+    poolInfo: any
+
   },
-  isAllowance: boolean
+  isAllowance: boolean,
 }
 
-const StartFarming: React.FC<StartFarmingProps> = ({ details, details: { pid, rug, result: { paidUnlockFee, rugDeposited }, result }, isAllowance }) => {
+const StartFarming: React.FC<StartFarmingProps> = ({ details, details: { pid, rug, result: { paidUnlockFee, rugDeposited }, poolInfo, result }, isAllowance }) => {
 
   const [isAllowanceForRugToken, setIsAllowanceForRugToken] = useState(false);
 
-  const [ rugTokenAmount, setRugTokenAmount ] = useState(0);
+  const [rugTokenAmount, setRugTokenAmount] = useState(0);
+
+  const [zombieBalance, setZombieBalance] = useState(BIG_ZERO);
 
   const [onPresentStake] = useModal(
     <StakeModal
-    details = {details}
-     />,
+      details={details}
+    />,
+  );
+
+  const [onPresentZombieStake] = useModal(
+    <StakeZombieModal
+      details={details}
+      zombieBalance={zombieBalance}
+      poolInfo={poolInfo}
+    />,
+  )
+
+  const [onPresentWithdrawStake] = useModal(
+    <WithdrawZombieModal 
+    details={details}
+      zombieBalance={zombieBalance}
+      poolInfo={poolInfo}
+    />
   )
 
 
@@ -52,11 +93,12 @@ const StartFarming: React.FC<StartFarmingProps> = ({ details, details: { pid, ru
   let allowance;
   let rugContract;
 
-  if(pid !== 0){
+  if (pid !== 0) {
     rugContract = useERC20(getAddress(rug.address));
     allowance = useIfoAllowance(rugContract, getDrFrankensteinAddress());
   }
 
+  const zmbeBalance = useTokenBalance(getAddress(tokens.zmbe.address))
 
   useEffect(() => {
     if (pid !== 0) {
@@ -64,7 +106,8 @@ const StartFarming: React.FC<StartFarmingProps> = ({ details, details: { pid, ru
         setIsAllowanceForRugToken(true);
       }
     }
-  }, [allowance, pid, rug.address])
+    setZombieBalance(zmbeBalance);
+  }, [allowance, drFrankenstein.methods, pid, rug.address, zmbeBalance])
 
   const handleUnlock = () => {
     drFrankenstein.methods.unlockFeeInBnb(pid).call().then((res) => {
@@ -81,7 +124,7 @@ const StartFarming: React.FC<StartFarmingProps> = ({ details, details: { pid, ru
 
   const handleDepositRug = () => {
     drFrankenstein.methods.depositRug(pid, rugTokenAmount)
-    .send({ from: account });
+      .send({ from: account });
   }
 
   const handleModal = () => {
@@ -90,7 +133,7 @@ const StartFarming: React.FC<StartFarmingProps> = ({ details, details: { pid, ru
     // handleDepositRug()
   }
 
-  
+
 
   const handleApproveRug = () => {
     rugContract.methods.approve(getDrFrankensteinAddress(), ethers.constants.MaxUint256)
@@ -104,8 +147,14 @@ const StartFarming: React.FC<StartFarmingProps> = ({ details, details: { pid, ru
           <button onClick={handleUnlock} className="btn btn-disabled w-100" type="button">Unlock Grave</button> :
           <button onClick={handleApprove} className="btn btn-disabled w-100" type="button">Approve ZMBE</button>
         :
-        pid === 0 ? <button onClick={onPresentStake} className="btn btn-disabled w-100" type="button">Stake ZMBE</button> :
-          <button disabled className="btn btn-disabled w-100" type="button">Disabled</button>}
+        <div>
+          <DisplayFlex>
+          <span style={{ paddingRight : '50px'}} className="total-earned text-shadow">{getFullDisplayBalance(new BigNumber(result.amount), tokens.zmbe.decimals, 4)}</span>
+          <button onClick={onPresentWithdrawStake} style={{ marginRight : '10px'}} className="btn w-100" type="button">-</button>
+          <button onClick={onPresentZombieStake} className="btn w-100" type="button">+</button>
+          </DisplayFlex>
+        </div>
+      }
     </div>
   }
 
@@ -121,7 +170,7 @@ const StartFarming: React.FC<StartFarmingProps> = ({ details, details: { pid, ru
   return (
     <div className="frank-card">
       <div className="small-text">
-        <span className="white-color">START GRAVING</span>
+        <span className="white-color">STAKING</span>
       </div>
       {pid === 0 ? renderButtonsForGrave() : renderButtonsForTraditionalGraves()}
     </div>

@@ -17,7 +17,11 @@ const tableData = [
     result: {
       paidUnlockFee: false,
       rugDeposited: 0,
+      tokenWithdrawalDate: "0",
+      amount: '0',
     },
+    poolInfo: {},
+pendingZombie: '0'
   },
   {
     id: 2,
@@ -33,7 +37,11 @@ const tableData = [
     result: {
       paidUnlockFee: false,
       rugDeposited: 0,
+      tokenWithdrawalDate: "0",
+      amount: '0',
     },
+    poolInfo: {},
+pendingZombie: '0'
   },
   {
     id: 3,
@@ -49,7 +57,11 @@ const tableData = [
     result: {
       paidUnlockFee: false,
       rugDeposited: 0,
+      tokenWithdrawalDate: "0",
+      amount: '0',
     },
+    poolInfo: {},
+pendingZombie: '0'
   },
   {
     id: 4,
@@ -65,7 +77,11 @@ const tableData = [
     result: {
       paidUnlockFee: false,
       rugDeposited: 0,
+      tokenWithdrawalDate: "0",
+      amount: '0',
     },
+    poolInfo: {},
+pendingZombie: '0'
   },
   {
     id: 5,
@@ -81,7 +97,11 @@ const tableData = [
     result: {
       paidUnlockFee: false,
       rugDeposited: 0,
+      tokenWithdrawalDate: "0",
+      amount: '0',
     },
+    poolInfo: {},
+pendingZombie: '0'
   },
   {
     id: 6,
@@ -97,7 +117,11 @@ const tableData = [
     result: {
       paidUnlockFee: false,
       rugDeposited: 0,
+      tokenWithdrawalDate: "0",
+      amount: '0',
     },
+    poolInfo: {},
+pendingZombie: '0'
   },
   {
     id: 7,
@@ -113,7 +137,11 @@ const tableData = [
     result: {
       paidUnlockFee: false,
       rugDeposited: 0,
+      tokenWithdrawalDate: "0",
+      amount: '0',
     },
+    poolInfo: {},
+pendingZombie: '0'
   },
   {
     id: 8,
@@ -129,7 +157,11 @@ const tableData = [
     result: {
       paidUnlockFee: false,
       rugDeposited: 0,
+      tokenWithdrawalDate: "0",
+      amount: '0',
     },
+    poolInfo: {},
+pendingZombie: '0'
   },
   {
     id: 9,
@@ -145,7 +177,11 @@ const tableData = [
     result: {
       paidUnlockFee: false,
       rugDeposited: 0,
+      tokenWithdrawalDate: "0",
+      amount: '0',
     },
+    poolInfo: {},
+pendingZombie: '0'
   },
 ]
 

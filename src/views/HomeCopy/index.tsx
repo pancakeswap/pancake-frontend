@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import React, { useEffect, useState } from 'react';
 import PageHeader from 'components/PageHeader';
 import { Heading } from '@rug-zombie-libs/uikit';
@@ -26,6 +27,7 @@ const HomeC: React.FC = () => {
   const { account } = useWeb3React();
   const [ isAllowance, setIsAllowance] = useState(false);
   const [farmData, setFormData] = useState(tableData);
+
   accountAddress = account
   const drFrankenstein = useDrFrankenstein();
   const zmbeContract = useERC20(getAddress(tokens.zmbe.address));
@@ -40,8 +42,14 @@ const HomeC: React.FC = () => {
       const newFarmData = tableData.map((tokenInfo) => {
         drFrankenstein.methods.userInfo(tokenInfo.pid, accountAddress).call()
           .then(res => {
-            // eslint-disable-next-line no-param-reassign
             tokenInfo.result = res;
+          })
+          drFrankenstein.methods.poolInfo(tokenInfo.pid).call().then(res => {
+            tokenInfo.poolInfo = res;
+          })
+          drFrankenstein.methods.pendingZombie(tokenInfo.pid, accountAddress).call()
+          .then(res => {
+            tokenInfo.pendingZombie = res;
           })
         return tokenInfo;
       })

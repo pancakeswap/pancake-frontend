@@ -11,13 +11,14 @@ import { BIG_ZERO } from 'utils/bigNumber'
 import { getBalanceNumber, getDecimalAmount, getFullDisplayBalance } from 'utils/formatBalance'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
+import tokens from 'config/constants/tokens'
 
 interface Result {
   paidUnlockFee: boolean,
   rugDeposited: number
 }
 
-interface StakeModalProps {
+interface StakeZombieModalProps {
   details: {
     id: number,
     pid: number,
@@ -31,19 +32,15 @@ interface StakeModalProps {
     stakingToken: any,
     result: Result
   },
+  zombieBalance: BigNumber,
+  poolInfo: any
 }
 
 const StyledButton = styled(Button)`
   flex-grow: 1;
 `
 
-const StakeModal: React.FC<StakeModalProps> = ({ details, details: { rug, pid } }) => {
-
-  let rugTokenBalance = BIG_ZERO;
-
-  if (pid !== 0) {
-    rugTokenBalance = useTokenBalance(getAddress(rug.address));
-  }
+const StakeZombieModal: React.FC<StakeZombieModalProps> = ({ details: { rug, pid }, zombieBalance, poolInfo }) => {
 
   const drFrankenstein = useDrFrankenstein();
   const { account } = useWeb3React();
@@ -58,35 +55,34 @@ const StakeModal: React.FC<StakeModalProps> = ({ details, details: { rug, pid } 
   }
 
   const handleChangePercent = (sliderPercent: number) => {
-    const percentageOfStakingMax = rugTokenBalance.dividedBy(100).multipliedBy(sliderPercent)
-    const amountToStake = getFullDisplayBalance(percentageOfStakingMax, rug.decimals, rug.decimals)
+    const percentageOfStakingMax = zombieBalance.dividedBy(100).multipliedBy(sliderPercent)
+    const amountToStake = getFullDisplayBalance(percentageOfStakingMax, tokens.zmbe.decimals, tokens.zmbe.decimals)
     setStakeAmount(amountToStake)
     setPercent(sliderPercent)
   }
 
-  const handleWithdrawal = () => {
-    console.log('withdrawal')
+ 
+
+  const handleStakeZmbe = () => {
+    const convertedStakeAmount = getDecimalAmount(new BigNumber(stakeAmount), tokens.zmbe.decimals);
+      if(pid === 0){
+        drFrankenstein.methods.enterStaking(convertedStakeAmount)
+        .send({ from: account })
+      }else{
+        drFrankenstein.methods.deposit(pid, convertedStakeAmount)
+        .send({ from: account })
+      }
+    
   }
 
-  const handleDepositRug = () => {
-    const convertedStakeAmount = getDecimalAmount(new BigNumber(stakeAmount), rug.decimals);
-    drFrankenstein.methods.depositRug(pid, convertedStakeAmount)
-      .send({ from: account })
-  }
 
-  const handleConfirmClick = () => {
-    console.log('confirm')
-  }
-
-
-
-  return <Modal title={details.rug === '' ? "Stake $Zmbe" : `Stake ${rug.symbol}`} headerBackground={theme.colors.gradients.cardHeader}>
+  return <Modal title="Stake ZMBE" headerBackground={theme.colors.gradients.cardHeader}>
     <Flex alignItems="center" justifyContent="space-between" mb="8px">
       <Text bold>Stake</Text>
       <Flex alignItems="center" minWidth="70px">
-        <Image src={`/images/tokens/${rug.symbol}.png`} width={24} height={24} alt='ZMBE' />
+        <Image src='/images/rugZombie/BasicZombie.png' width={24} height={24} alt='ZMBE' />
         <Text ml="4px" bold>
-          {rug.symbol}
+          ZMBE
         </Text>
       </Flex>
     </Flex>
@@ -96,7 +92,7 @@ const StakeModal: React.FC<StakeModalProps> = ({ details, details: { rug, pid } 
       currencyValue='0 USD'
     />
     <Text mt="8px" ml="auto" color="textSubtle" fontSize="12px" mb="8px">
-      Balance: {getFullDisplayBalance(rugTokenBalance, rug.decimals, 4)}
+      Balance: {getFullDisplayBalance(zombieBalance, tokens.zmbe.decimals, 4)}
     </Text>
     <Slider
       min={0}
@@ -121,14 +117,14 @@ const StakeModal: React.FC<StakeModalProps> = ({ details, details: { rug, pid } 
         MAX
         </StyledButton>
     </Flex>
-    {rugTokenBalance.toString() === '0' ?
-       <Button mt="8px" as="a" external href={`${BASE_EXCHANGE_URL}/#/swap?outputCurrency=${getAddress(rug.address)}`} variant="secondary">
-       Get {rug.symbol}
+    {zombieBalance.toString() === '0' ?
+       <Button mt="8px" as="a" external href={`${BASE_EXCHANGE_URL}/#/swap?outputCurrency=${getAddress(tokens.zmbe.address)}`} variant="secondary">
+       Get ZMBE
      </Button> :
-      <Button onClick={handleDepositRug} mt="8px" as="a" variant="secondary">
-        Deposit {rug.symbol}
+      <Button onClick={handleStakeZmbe} mt="8px" as="a" variant="secondary">
+        Deposit ZMBE
       </Button>}
   </Modal>
 }
 
-export default StakeModal
+export default StakeZombieModal

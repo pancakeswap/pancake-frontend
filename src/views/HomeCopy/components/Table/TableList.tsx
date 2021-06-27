@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 import styled from 'styled-components'
 import { BaseLayout } from '@rug-zombie-libs/uikit'
+import { BIG_ZERO } from 'utils/bigNumber';
+import BigNumber from 'bignumber.js';
+import { getFullDisplayBalance } from 'utils/formatBalance'
+import tokens from 'config/constants/tokens';
+
 
 
 const DisplayFlex = styled(BaseLayout)`
@@ -32,6 +37,12 @@ const ArrowIcon = styled(BaseLayout)`
   background-color: rgb(29, 47, 59);
   margin-right: 0.3em;
 `
+
+interface Result {
+  paidUnlockFee: boolean,
+  rugDeposited: number
+}
+
 interface TableListProps {
   handler: any
   details: {
@@ -43,13 +54,23 @@ interface TableListProps {
     nftRevivalTime: string,
     rug: any,
     artist?: any,
-    stakingToken: any
+    stakingToken: any,
+    pid: number,
+    result: Result,
+    poolInfo: any,
+    pendingZombie: any
   }
 }
 
 const TableList: React.FC<TableListProps> = (props: TableListProps) => {
 
-  const { details: { name, type, path, rug }, handler } = props;
+  const { details: { name, type, path, rug, poolInfo, pendingZombie } , handler } = props;
+
+  let allocPoint = BIG_ZERO;
+  
+  if(poolInfo.allocPoint){
+     allocPoint = new BigNumber(poolInfo.allocPoint)
+  }
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -75,7 +96,7 @@ const TableList: React.FC<TableListProps> = (props: TableListProps) => {
                   <div>
                     <div className="titel">{name}</div>
                     <div className="small-lable">
-                      <div className="con-info">50X</div>
+                      <div className="con-info">{allocPoint ? allocPoint.div(100).toString() : null}X</div>
                       <div className="small-titel">ZMBE</div>
                     </div>
                   </div>
@@ -85,7 +106,7 @@ const TableList: React.FC<TableListProps> = (props: TableListProps) => {
           </td>
           <td className="td-width-25">
             <DisplayFlex>
-              <span className="total-earned">0.00000</span>
+              <span className="total-earned">{getFullDisplayBalance(new BigNumber(pendingZombie), tokens.zmbe.decimals, 4)}</span>
               <div className="earned">Earned</div>
             </DisplayFlex>
           </td>

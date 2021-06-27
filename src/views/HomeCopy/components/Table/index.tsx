@@ -18,11 +18,6 @@ const TableCards = styled(BaseLayout)`
   }
 `
 
-interface Result {
-  paidUnlockFee: boolean,
-  rugDeposited: number
-}
-
 interface TableData {
   id: number,
   name: string,
@@ -34,7 +29,9 @@ interface TableData {
   artist?: any,
   stakingToken: any,
   pid: number,
-  result : Result
+  result : any,
+  poolInfo: any,
+  pendingZombie: any
 }
 
 interface TableProps {
@@ -51,7 +48,7 @@ const Table: React.FC<TableProps> = ({ details, isAllowance }: TableProps) => {
 
   const TableListProps = {
     "handler": openInDetails,
-    details
+    details,
   }
 
   return (
@@ -64,7 +61,7 @@ const Table: React.FC<TableProps> = ({ details, isAllowance }: TableProps) => {
           <div className="table-bottom">
             <div className="w-95 mx-auto mt-3">
               <div className="flex-grow">
-                <FrankEarned />
+                <FrankEarned pid={details.pid} pendingZombie={details.pendingZombie}/>
                 <StartFarming details={details} isAllowance={isAllowance}  />
                 <BuyFrank />
               </div>
