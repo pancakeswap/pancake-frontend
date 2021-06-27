@@ -16,6 +16,7 @@ const tableData = [
     stakingToken: undefined,
     result: {
       paidUnlockFee: false,
+      rugDeposited: 0,
     },
   },
   {
@@ -31,6 +32,7 @@ const tableData = [
     stakingToken: undefined,
     result: {
       paidUnlockFee: false,
+      rugDeposited: 0,
     },
   },
   {
@@ -46,6 +48,7 @@ const tableData = [
     stakingToken: undefined,
     result: {
       paidUnlockFee: false,
+      rugDeposited: 0,
     },
   },
   {
@@ -61,6 +64,7 @@ const tableData = [
     stakingToken: undefined,
     result: {
       paidUnlockFee: false,
+      rugDeposited: 0,
     },
   },
   {
@@ -76,6 +80,7 @@ const tableData = [
     stakingToken: undefined,
     result: {
       paidUnlockFee: false,
+      rugDeposited: 0,
     },
   },
   {
@@ -91,6 +96,7 @@ const tableData = [
     stakingToken: undefined,
     result: {
       paidUnlockFee: false,
+      rugDeposited: 0,
     },
   },
   {
@@ -106,6 +112,7 @@ const tableData = [
     stakingToken: undefined,
     result: {
       paidUnlockFee: false,
+      rugDeposited: 0,
     },
   },
   {
@@ -121,6 +128,7 @@ const tableData = [
     stakingToken: undefined,
     result: {
       paidUnlockFee: false,
+      rugDeposited: 0,
     },
   },
   {
@@ -136,6 +144,7 @@ const tableData = [
     stakingToken: undefined,
     result: {
       paidUnlockFee: false,
+      rugDeposited: 0,
     },
   },
 ]

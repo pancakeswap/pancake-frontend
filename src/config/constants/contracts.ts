@@ -5,7 +5,7 @@ export default {
   },
   drFrankenstein: {
     97: '',
-    56: '0xC00793d027af5190D1d1889312C0dD68d3e5522f',
+    56: '0x576676fFaad3E344A71d85B9a296017De787c1f5',
   },
   restorationChef: {
     97: '0x25559ff9cb2D6f5cC9BB6057c67c02D69e62E9b3',

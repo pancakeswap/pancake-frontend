@@ -16,7 +16,7 @@ const tokens = {
     symbol: 'ZMBE',
     address: {
       56: '0x9f6472a033a0e36eD19Ab1AcA87600C600244b87',
-      97: '0xbc5099619C654cff63C02298E0f79dDEC6464F1c',
+      97: '0xbf5Af975e31Ab1ef4460A8878A379A2C9132C81C',
     },
     decimals: 18,
     projectLink: 'https://rugzombie.io/',
@@ -33,8 +33,8 @@ const tokens = {
   rug100: {
     symbol: 'RUG100',
     address: {
-      56: '',
-      97: '0x3F70d41e27a46C31f7304954306c7DCb1503e3A9',
+      56: '0x3F70d41e27a46C31f7304954306c7DCb1503e3A9',
+      97: '',
     },
     decimals: 18,
     projectLink: 'https://rugzombie.io/',
@@ -42,8 +42,8 @@ const tokens = {
   fairmoon: {
     symbol: 'FAIRMOON',
     address: {
-      56: '',
-      97: '0xfe75cD11E283813eC44B4592476109Ba3706cef6',
+      56: '0xfe75cD11E283813eC44B4592476109Ba3706cef6',
+      97: '',
     },
     decimals: 9,
     projectLink: 'https://fairmoon.org/',
@@ -51,8 +51,8 @@ const tokens = {
   dragon: {
     symbol: 'DRAGON',
     address: {
-      56: '',
-      97: '0x251a3184857488dc90fa9c9a52fd2d8df473d92c',
+      56: '0x251a3184857488dc90fa9c9a52fd2d8df473d92c',
+      97: '',
     },
     decimals: 8,
     projectLink: 'https://dragonfarm.finance/',
@@ -60,8 +60,8 @@ const tokens = {
   yape: {
     symbol: 'yAPE',
     address: {
-      56: '',
-      97: '0x64b783a80d0c05bed0e2f1a638465a7ba3f4a6fb',
+      56: '0x64b783a80d0c05bed0e2f1a638465a7ba3f4a6fb',
+      97: '',
     },
     decimals: 8,
     projectLink: 'https://gorillayield.finance/',
@@ -69,8 +69,8 @@ const tokens = {
   ypanda: {
     symbol: 'yPANDA',
     address: {
-      56: '',
-      97: '0x9806aec346064183b5cE441313231DFf89811f7A',
+      56: '0x9806aec346064183b5cE441313231DFf89811f7A',
+      97: '',
     },
     decimals: 8,
     projectLink: 'https://pandayield.com/#/',
@@ -78,8 +78,8 @@ const tokens = {
   viking: {
     symbol: 'VIKING',
     address: {
-      56: '',
-      97: '0x896eDE222D3f7f3414e136a2791BDB08AAa25Ce0',
+      56: '0x896eDE222D3f7f3414e136a2791BDB08AAa25Ce0',
+      97: '',
     },
     decimals: 18,
     projectLink: 'https://www.vikingswap.finance/',
@@ -87,8 +87,8 @@ const tokens = {
   d100: {
     symbol: 'D100',
     address: {
-      56: '',
-      97: '0x9d8aac497a4b8fe697dd63101d793f0c6a6eebb6',
+      56: '0x9d8aac497a4b8fe697dd63101d793f0c6a6eebb6',
+      97: '',
     },
     decimals: 18,
     projectLink: 'https://defi100.org/',
@@ -96,8 +96,8 @@ const tokens = {
   msc: {
     symbol: 'MSC',
     address: {
-      56: '',
-      97: '0x8c784c49097dcc637b93232e15810d53871992bf',
+      56: '0x8c784c49097dcc637b93232e15810d53871992bf',
+      97: '',
     },
     decimals: 18,
     projectLink: 'https://monsterslayer.finance/',

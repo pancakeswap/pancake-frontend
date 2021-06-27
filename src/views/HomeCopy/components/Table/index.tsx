@@ -19,7 +19,8 @@ const TableCards = styled(BaseLayout)`
 `
 
 interface Result {
-  paidUnlockFee: boolean
+  paidUnlockFee: boolean,
+  rugDeposited: number
 }
 
 interface TableData {
@@ -64,7 +65,7 @@ const Table: React.FC<TableProps> = ({ details, isAllowance }: TableProps) => {
             <div className="w-95 mx-auto mt-3">
               <div className="flex-grow">
                 <FrankEarned />
-                <StartFarming pid={details.pid} isAllowance={isAllowance} paidUnlockFee={details.result.paidUnlockFee} />
+                <StartFarming details={details} isAllowance={isAllowance}  />
                 <BuyFrank />
               </div>
               <RugInDetails details={details} />

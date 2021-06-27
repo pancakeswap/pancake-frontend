@@ -24,7 +24,6 @@ let accountAddress;
 const HomeC: React.FC = () => {
 
   const { account } = useWeb3React();
-  const [showZmbeBtn, setShowZmbeBtn] = useState(true);
   const [ isAllowance, setIsAllowance] = useState(false);
   const [farmData, setFormData] = useState(tableData);
   accountAddress = account
@@ -54,10 +53,6 @@ const HomeC: React.FC = () => {
     }
     
   }, [allowance, drFrankenstein.methods])
-
-  console.log(farmData)
-
-
 
   return (
     <Page className="innnerContainer">
