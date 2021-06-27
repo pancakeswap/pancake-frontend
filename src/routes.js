@@ -1,8 +1,8 @@
 // eslint-disable-next-line import/prefer-default-export
 export const routes = { 
-    HOME : '/home',
+    HOME : '/homee',
     LANDING: '/',
-    FARMS:'/farms',
-    TOMBS:'/tombs',
-    GRAVES:'/graves'
+    FARMS:'/farmss',
+    TOMBS:'/tombss',
+    GRAVES:'/gravess'
 }

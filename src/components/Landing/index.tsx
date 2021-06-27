@@ -14,7 +14,7 @@ const Landing: React.FC<LandingProps> = (props: LandingProps) =>{
   const { handleAuthentication } = props;
 
   const handleClick = () =>{
-    handleAuthentication();
+    // handleAuthentication();
   }
 
   return (
