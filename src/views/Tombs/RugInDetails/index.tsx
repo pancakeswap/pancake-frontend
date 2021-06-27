@@ -13,11 +13,7 @@ interface RugInDetailsProps {
     id: number,
     pid: number,
     name: string,
-    path: string,
-    type: string,
     withdrawalCooldown: string,
-    nftRevivalTime: string,
-    rug: string,
     artist?: any,
     stakingToken: any
   },
@@ -25,7 +21,7 @@ interface RugInDetailsProps {
 }
 
 const RugInDetails: React.FC<RugInDetailsProps> = ({
-  details: { id, name, pid, path, type, withdrawalCooldown, nftRevivalTime, rug, artist, stakingToken,  }, bnbInBusd,
+  details: { id, pid, withdrawalCooldown, artist,  }, bnbInBusd,
 }) => {
 
   const drFrankenstein = useDrFrankenstein();
@@ -41,17 +37,6 @@ const RugInDetails: React.FC<RugInDetailsProps> = ({
 
   return (
     <div key={id} className="rug-indetails">
-      <div className="direction-column imageColumn">
-        <div className="sc-iwajpm dcRUtg">
-          {type === 'image' ? (
-            <img src={path} alt="CAKE" className="sc-cxNHIi bjMxQn" />
-          ) : (
-              <video width="100%" autoPlay>
-                <source src={path} type="video/mp4" />
-              </video>
-            )}
-        </div>
-      </div>
       <div className="direction-column">
         <span className="indetails-type">Grave</span>
         <span className="indetails-title">
@@ -78,10 +63,6 @@ const RugInDetails: React.FC<RugInDetailsProps> = ({
         <span className="indetails-title">
           Withdrawal Cooldown:
           <span className="indetails-value">{withdrawalCooldown}</span>
-        </span>
-        <span className="indetails-title">
-          NFT Mint competion:
-          <span className="indetails-value">{nftRevivalTime}</span>
         </span>
       </div>
       {/* <div className="direction-column">

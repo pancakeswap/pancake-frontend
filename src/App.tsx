@@ -38,9 +38,9 @@ const App: React.FC = () => {
   },
   )
   useEagerConnect()
-  useFetchPublicData()
+  // useFetchPublicData()
   useFetchProfile()
-  useFetchPriceList()
+  // useFetchPriceList()
 
   const handleAuthentication = () => {
     setAuthenticated(!isAuthenticated);

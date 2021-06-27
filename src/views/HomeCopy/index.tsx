@@ -6,6 +6,7 @@ import { useWeb3React } from '@web3-react/core';
 import { getAddress, getDrFrankensteinAddress } from 'utils/addressHelpers';
 import tokens from 'config/constants/tokens';
 import { useIfoAllowance } from 'hooks/useAllowance';
+import { getBnbPriceinBusd } from 'state/hooks';
 import { getDrFrankensteinContract } from '../../utils/contractHelpers';
 import { useDrFrankenstein, useERC20 } from '../../hooks/useContract'
 import useWeb3 from '../../hooks/useWeb3'
@@ -32,6 +33,7 @@ const HomeC: React.FC = () => {
   const drFrankenstein = useDrFrankenstein();
   const zmbeContract = useERC20(getAddress(tokens.zmbe.address));
   const allowance = useIfoAllowance(zmbeContract, getDrFrankensteinAddress());
+  const [bnbInBusd, setBnbInBusd] = useState(0);
 
   // if allowance === 0 show the approve zombie don't call drFrankenstain
   // if allowance > 0 if(grave) paidUnlockFee === true amount 
@@ -54,6 +56,9 @@ const HomeC: React.FC = () => {
         return tokenInfo;
       })
       setFormData(newFarmData);
+      getBnbPriceinBusd().then((res) => {
+        setBnbInBusd(res.data.price)
+      })
     }
 
     if(parseInt(allowance.toString()) !== 0){
@@ -74,7 +79,7 @@ const HomeC: React.FC = () => {
       </PageHeader>
       <div>
         {farmData.map((data) => {
-          return <Table isAllowance={isAllowance} details={data} key={data.id} />
+          return <Table bnbInBusd={bnbInBusd} isAllowance={isAllowance} details={data} key={data.id} />
         })}
       </div>
     </Page>

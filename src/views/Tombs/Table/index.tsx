@@ -21,17 +21,14 @@ const TableCards = styled(BaseLayout)`
 interface TableData {
   id: number,
   name: string,
-  path: string,
-  type: string,
   withdrawalCooldown: string,
-  nftRevivalTime: string,
-  rug: any,
   artist?: any,
   stakingToken: any,
   pid: number,
   result : any,
   poolInfo: any,
   pendingZombie: any
+  lpAddresses:any
 }
 
 interface TableProps {

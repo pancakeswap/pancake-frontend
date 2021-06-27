@@ -11,6 +11,7 @@ import { getAddress } from 'utils/addressHelpers'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { BIG_ZERO } from 'utils/bigNumber'
 import useRefresh from 'hooks/useRefresh'
+import axios from 'axios'
 import { fetchFarmsPublicDataAsync, fetchPoolsPublicDataAsync, fetchPoolsUserDataAsync, setBlock } from './actions'
 import { State, Farm, Pool, ProfileState, TeamsState, AchievementState, PriceState, FarmsState } from './types'
 import { fetchProfile } from './profile'
@@ -42,7 +43,7 @@ export const useFetchPublicData = () => {
 
 export const useFarms = (): FarmsState => {
   const farms = useSelector((state: State) => state.farms)
-  console.log((farms))
+  console.log(farms)
   return farms
 }
 
@@ -180,8 +181,11 @@ export const useGetApiPrice = (address: string) => {
 }
 
 export const usePriceBnbBusd = (): BigNumber => {
-  // const bnbBusdFarm = useFarmFromPid(2)
   return BIG_ZERO // bnbBusdFarm.tokenPriceVsQuote ? new BigNumber(1).div(bnbBusdFarm.tokenPriceVsQuote) : BIG_ZERO
+}
+
+export const getBnbPriceinBusd = () => {
+  return axios.get('https://api.binance.com/api/v3/avgPrice?symbol=BNBBUSD')
 }
 
 export const usePriceCakeBusd = (): BigNumber => {
@@ -197,7 +201,9 @@ export const usePriceZombieBusd = (): BigNumber => {
   const zombieBnbFarm = useFarmFromPid(252)
   const bnbBusdPrice = usePriceBnbBusd()
 
-  const zombieBusdPrice = zombieBnbFarm.tokenPriceVsQuote ? bnbBusdPrice.times(zombieBnbFarm.tokenPriceVsQuote) : BIG_ZERO
+  const zombieBusdPrice = zombieBnbFarm.tokenPriceVsQuote
+    ? bnbBusdPrice.times(zombieBnbFarm.tokenPriceVsQuote)
+    : BIG_ZERO
 
   // return zombieBusdPrice
   return new BigNumber(5) // todo replace once we have zombie pool
@@ -302,4 +308,3 @@ export const useGetBetByRoundId = (account: string, roundId: string) => {
 
   return bets[account][roundId]
 }
-

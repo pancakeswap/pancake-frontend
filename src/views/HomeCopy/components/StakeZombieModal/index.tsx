@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { BalanceInput, Button, Flex, Image, Modal, Slider, Text } from '@rug-zombie-libs/uikit'
 import useTheme from 'hooks/useTheme'
@@ -23,11 +23,11 @@ interface StakeZombieModalProps {
     id: number,
     pid: number,
     name: string,
-    path: string,
-    type: string,
+    path?: string,
+    type?: string,
     withdrawalCooldown: string,
-    nftRevivalTime: string,
-    rug: any,
+    nftRevivalTime?: string,
+    rug?: any,
     artist?: any,
     stakingToken: any,
     result: Result
@@ -45,13 +45,24 @@ const StakeZombieModal: React.FC<StakeZombieModalProps> = ({ details: { rug, pid
   const drFrankenstein = useDrFrankenstein();
   const { account } = useWeb3React();
 
+  console.log(poolInfo)
+
   const { theme } = useTheme();
-  const [stakeAmount, setStakeAmount] = useState('');
-  const [percent, setPercent] = useState(0)
+  const [minStake, setMinStake] = useState(getFullDisplayBalance(new BigNumber(poolInfo.minimumStake), tokens.zmbe.decimals, 4));
+  const [maxZombieBal, setMaxZombieBal] = useState(getFullDisplayBalance(zombieBalance, tokens.zmbe.decimals, 4));
+  const [minPercentage, setMinPercentage] = useState(Math.round((parseFloat(minStake)/parseFloat(maxZombieBal))*100))
+  const [percent, setPercent] = useState(minPercentage);
+  const [stakeAmount, setStakeAmount] = useState(minStake);
+
+  console.log(minPercentage)
 
   const handleStakeInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = event.target.value || '0'
     setStakeAmount(inputValue);
+    // const convertedInput = new BigNumber(inputValue).multipliedBy(new BigNumber(10).pow(tokens.zmbe.decimals))
+    // const percentage = Math.floor(convertedInput.dividedBy().multipliedBy(100).toNumber())
+    setStakeAmount(inputValue)
+    // setPercent(percentage > 100 ? 100 : percentage)
   }
 
   const handleChangePercent = (sliderPercent: number) => {
@@ -72,7 +83,6 @@ const StakeZombieModal: React.FC<StakeZombieModalProps> = ({ details: { rug, pid
         drFrankenstein.methods.deposit(pid, convertedStakeAmount)
         .send({ from: account })
       }
-    
   }
 
 
@@ -95,7 +105,7 @@ const StakeZombieModal: React.FC<StakeZombieModalProps> = ({ details: { rug, pid
       Balance: {getFullDisplayBalance(zombieBalance, tokens.zmbe.decimals, 4)}
     </Text>
     <Slider
-      min={0}
+      min={minPercentage}
       max={100}
       value={percent}
       onValueChanged={handleChangePercent}

@@ -3,57 +3,48 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { BalanceInput, Button, Flex, Image, Modal, Slider, Text } from '@rug-zombie-libs/uikit'
 import useTheme from 'hooks/useTheme'
-import { useDrFrankenstein, useERC20 } from 'hooks/useContract'
+import { useDrFrankenstein } from 'hooks/useContract'
 import { BASE_EXCHANGE_URL } from 'config'
 import { getAddress } from 'utils/addressHelpers'
 import useTokenBalance from 'hooks/useTokenBalance'
 import { BIG_ZERO } from 'utils/bigNumber'
-import { getBalanceNumber, getDecimalAmount, getFullDisplayBalance } from 'utils/formatBalance'
+import { getDecimalAmount, getFullDisplayBalance } from 'utils/formatBalance'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
-import tokens from 'config/constants/tokens'
 
 interface Result {
     paidUnlockFee: boolean,
-    rugDeposited: number,
-    tokenWithdrawalDate: any,
-    amount: any
+    rugDeposited: number
 }
 
-interface WithdrawZombieModalProps {
+interface StakeLpTokenModalProps {
     details: {
         id: number,
         pid: number,
         name: string,
-        path?: string,
-        type?: string,
         withdrawalCooldown: string,
-        nftRevivalTime?: string,
-        rug?: any,
         artist?: any,
         stakingToken: any,
-        result: Result
+        result: Result,
+        lpAddresses:any
     },
-    zombieBalance: BigNumber,
-    poolInfo: any
+    lpTokenBalance:any
 }
 
 const StyledButton = styled(Button)`
   flex-grow: 1;
 `
 
-const WithdrawZombieModal: React.FC<WithdrawZombieModalProps> = ({ details: { rug, pid, result }, poolInfo }) => {
+const StakeLpTokenModal: React.FC<StakeLpTokenModalProps> = ({ details: { name, pid, lpAddresses }, lpTokenBalance }) => {
 
-    const currentDate = Math.floor(Date.now() / 1000);
 
     const drFrankenstein = useDrFrankenstein();
     const { account } = useWeb3React();
 
-    const zombieStaked =  new BigNumber(result.amount);
-
     const { theme } = useTheme();
     const [stakeAmount, setStakeAmount] = useState('');
     const [percent, setPercent] = useState(0)
+
 
     const handleStakeInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const inputValue = event.target.value || '0'
@@ -61,42 +52,35 @@ const WithdrawZombieModal: React.FC<WithdrawZombieModalProps> = ({ details: { ru
     }
 
     const handleChangePercent = (sliderPercent: number) => {
-        const percentageOfStakingMax = zombieStaked.dividedBy(100).multipliedBy(sliderPercent)
-        const amountToStake = getFullDisplayBalance(percentageOfStakingMax, tokens.zmbe.decimals, tokens.zmbe.decimals)
+        const percentageOfStakingMax = lpTokenBalance.dividedBy(100).multipliedBy(sliderPercent)
+        const amountToStake = getFullDisplayBalance(percentageOfStakingMax, 18, 4)
         setStakeAmount(amountToStake)
         setPercent(sliderPercent)
     }
 
-    const handleWithDrawEarly = () => {
-        const convertedStakeAmount = getDecimalAmount(new BigNumber(stakeAmount), tokens.zmbe.decimals);
-        if (pid === 0) {
-            drFrankenstein.methods.leaveStakingEarly(convertedStakeAmount)
-                .send({ from: account })
-        } else {
-            drFrankenstein.methods.withdrawEarly(pid, convertedStakeAmount)
-                .send({ from: account })
-        }
+    const handleWithdrawal = () => {
+        console.log('withdrawal')
     }
 
-    const handleWithDraw = () => {
-        const convertedStakeAmount = getDecimalAmount(new BigNumber(stakeAmount), tokens.zmbe.decimals);
-        if (pid === 0) {
-            drFrankenstein.methods.leaveStaking(convertedStakeAmount)
-                .send({ from: account })
-        } else {
-            drFrankenstein.methods.withdraw(pid, convertedStakeAmount)
-                .send({ from: account })
-        }
+    const handleDepositLP = () => {
+        const convertedStakeAmount = getDecimalAmount(new BigNumber(stakeAmount), 18);
+        drFrankenstein.methods.deposit(pid, convertedStakeAmount)
+          .send({ from: account })
     }
 
-    return <Modal title="Withdraw ZMBE" headerBackground={theme.colors.gradients.cardHeader}>
+    const handleConfirmClick = () => {
+        console.log('confirm')
+    }
+
+
+
+    return <Modal title='Stake LP Tokens' headerBackground={theme.colors.gradients.cardHeader}>
         <Flex alignItems="center" justifyContent="space-between" mb="8px">
             <Text bold>Stake</Text>
             <Flex alignItems="center" minWidth="70px">
-                <Image src='/images/rugZombie/BasicZombie.png' width={24} height={24} alt='ZMBE' />
                 <Text ml="4px" bold>
-                    ZMBE
-        </Text>
+                    {name}
+                </Text>
             </Flex>
         </Flex>
         <BalanceInput
@@ -105,7 +89,7 @@ const WithdrawZombieModal: React.FC<WithdrawZombieModalProps> = ({ details: { ru
             currencyValue='0 USD'
         />
         <Text mt="8px" ml="auto" color="textSubtle" fontSize="12px" mb="8px">
-            Balance: {getFullDisplayBalance(zombieStaked, tokens.zmbe.decimals, 4)}
+            Balance: {getFullDisplayBalance(lpTokenBalance, 18, 4)}
         </Text>
         <Slider
             min={0}
@@ -130,15 +114,14 @@ const WithdrawZombieModal: React.FC<WithdrawZombieModalProps> = ({ details: { ru
                 MAX
         </StyledButton>
         </Flex>
-        {currentDate >= parseInt(result.tokenWithdrawalDate) ?
-            <Button mt="8px" as="a" onClick={handleWithDraw}  variant="secondary">
-                Withdraw ZMBE
+        {lpTokenBalance.toString() === '0' ?
+            <Button mt="8px" as="a" external href={`${BASE_EXCHANGE_URL}/#/swap?outputCurrency=${getAddress(lpAddresses)}`} variant="secondary">
+                Get {name}
             </Button> :
-            <Button onClick={handleWithDrawEarly} mt="8px" as="a" variant="secondary">
-                Withdraw Early
-            </Button>
-        }
+            <Button onClick={handleDepositLP} mt="8px" as="a" variant="secondary">
+                Deposit {name}
+            </Button>}
     </Modal>
 }
 
-export default WithdrawZombieModal
+export default StakeLpTokenModal

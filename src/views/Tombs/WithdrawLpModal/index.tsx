@@ -20,21 +20,17 @@ interface Result {
     amount: any
 }
 
-interface WithdrawZombieModalProps {
+interface WithdrawLpModalProps {
     details: {
         id: number,
         pid: number,
         name: string,
-        path?: string,
-        type?: string,
         withdrawalCooldown: string,
-        nftRevivalTime?: string,
-        rug?: any,
         artist?: any,
         stakingToken: any,
         result: Result
     },
-    zombieBalance: BigNumber,
+    lpTokenBalance: BigNumber,
     poolInfo: any
 }
 
@@ -42,14 +38,14 @@ const StyledButton = styled(Button)`
   flex-grow: 1;
 `
 
-const WithdrawZombieModal: React.FC<WithdrawZombieModalProps> = ({ details: { rug, pid, result }, poolInfo }) => {
+const WithdrawLpModal: React.FC<WithdrawLpModalProps> = ({ details: { pid, result, name }, poolInfo }) => {
 
     const currentDate = Math.floor(Date.now() / 1000);
 
     const drFrankenstein = useDrFrankenstein();
     const { account } = useWeb3React();
 
-    const zombieStaked =  new BigNumber(result.amount);
+    const lpStaked = new BigNumber(result.amount);
 
     const { theme } = useTheme();
     const [stakeAmount, setStakeAmount] = useState('');
@@ -61,42 +57,32 @@ const WithdrawZombieModal: React.FC<WithdrawZombieModalProps> = ({ details: { ru
     }
 
     const handleChangePercent = (sliderPercent: number) => {
-        const percentageOfStakingMax = zombieStaked.dividedBy(100).multipliedBy(sliderPercent)
-        const amountToStake = getFullDisplayBalance(percentageOfStakingMax, tokens.zmbe.decimals, tokens.zmbe.decimals)
+        const percentageOfStakingMax = lpStaked.dividedBy(100).multipliedBy(sliderPercent)
+        const amountToStake = getFullDisplayBalance(percentageOfStakingMax, 18, 18)
         setStakeAmount(amountToStake)
         setPercent(sliderPercent)
     }
 
     const handleWithDrawEarly = () => {
-        const convertedStakeAmount = getDecimalAmount(new BigNumber(stakeAmount), tokens.zmbe.decimals);
-        if (pid === 0) {
-            drFrankenstein.methods.leaveStakingEarly(convertedStakeAmount)
-                .send({ from: account })
-        } else {
-            drFrankenstein.methods.withdrawEarly(pid, convertedStakeAmount)
-                .send({ from: account })
-        }
+        const convertedStakeAmount = getDecimalAmount(new BigNumber(stakeAmount), 18);
+
+        drFrankenstein.methods.withdrawEarly(pid, convertedStakeAmount)
+            .send({ from: account })
     }
 
     const handleWithDraw = () => {
-        const convertedStakeAmount = getDecimalAmount(new BigNumber(stakeAmount), tokens.zmbe.decimals);
-        if (pid === 0) {
-            drFrankenstein.methods.leaveStaking(convertedStakeAmount)
-                .send({ from: account })
-        } else {
-            drFrankenstein.methods.withdraw(pid, convertedStakeAmount)
-                .send({ from: account })
-        }
+        const convertedStakeAmount = getDecimalAmount(new BigNumber(stakeAmount), 18);
+        drFrankenstein.methods.withdraw(pid, convertedStakeAmount)
+            .send({ from: account })
     }
 
-    return <Modal title="Withdraw ZMBE" headerBackground={theme.colors.gradients.cardHeader}>
+    return <Modal title='Withdraw LP Tokens' headerBackground={theme.colors.gradients.cardHeader}>
         <Flex alignItems="center" justifyContent="space-between" mb="8px">
             <Text bold>Stake</Text>
             <Flex alignItems="center" minWidth="70px">
-                <Image src='/images/rugZombie/BasicZombie.png' width={24} height={24} alt='ZMBE' />
                 <Text ml="4px" bold>
-                    ZMBE
-        </Text>
+                    {name}
+                </Text>
             </Flex>
         </Flex>
         <BalanceInput
@@ -105,7 +91,7 @@ const WithdrawZombieModal: React.FC<WithdrawZombieModalProps> = ({ details: { ru
             currencyValue='0 USD'
         />
         <Text mt="8px" ml="auto" color="textSubtle" fontSize="12px" mb="8px">
-            Balance: {getFullDisplayBalance(zombieStaked, tokens.zmbe.decimals, 4)}
+            Balance: {getFullDisplayBalance(lpStaked, 18, 4)}
         </Text>
         <Slider
             min={0}
@@ -131,8 +117,8 @@ const WithdrawZombieModal: React.FC<WithdrawZombieModalProps> = ({ details: { ru
         </StyledButton>
         </Flex>
         {currentDate >= parseInt(result.tokenWithdrawalDate) ?
-            <Button mt="8px" as="a" onClick={handleWithDraw}  variant="secondary">
-                Withdraw ZMBE
+            <Button mt="8px" as="a" onClick={handleWithDraw} variant="secondary">
+                Withdraw {name}
             </Button> :
             <Button onClick={handleWithDrawEarly} mt="8px" as="a" variant="secondary">
                 Withdraw Early
@@ -141,4 +127,4 @@ const WithdrawZombieModal: React.FC<WithdrawZombieModalProps> = ({ details: { ru
     </Modal>
 }
 
-export default WithdrawZombieModal
+export default WithdrawLpModal
