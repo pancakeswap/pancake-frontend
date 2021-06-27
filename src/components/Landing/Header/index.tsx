@@ -11,6 +11,7 @@ const Header = () => {
 					</a>
 				</div>
 				<div role="navigation" className="nav-menu w-nav-menu jsxqFW">
+				    <a href="/graves" className="nav_link-2">Launch App</a>
 					<a href="#Tokenomics" className="nav_link-2">Tokenomics</a>
 					{/* <a href="#Timeline" className="nav_link-2">Timeline</a> */}
 					<a href="#How-To-Buy" className="nav_link-2">How to buy</a>
