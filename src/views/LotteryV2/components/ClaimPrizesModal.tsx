@@ -1,19 +1,9 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
-import { useWeb3React } from '@web3-react/core'
-import { Modal, Flex, Button, Text, AutoRenewIcon } from '@pancakeswap/uikit'
-import BigNumber from 'bignumber.js'
+import { Modal } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'
 import { LotteryTicketClaimData } from 'config/constants/types'
-import { getBalanceAmount } from 'utils/formatBalance'
-import { useAppDispatch } from 'state'
-import { fetchUserLotteries } from 'state/lottery'
-import { usePriceCakeBusd } from 'state/hooks'
-import Balance from 'components/Balance'
-import useToast from 'hooks/useToast'
-import { useLotteryV2Contract } from 'hooks/useContract'
-import { parseClaimDataForClaimTicketsCall } from '../helpers'
 import ClaimPrizesInner from './ClaimPrizesInner'
 
 const StyledModal = styled(Modal)`
@@ -33,8 +23,6 @@ interface ClaimPrizesModalModalProps {
 const ClaimPrizesModal: React.FC<ClaimPrizesModalModalProps> = ({ onDismiss, roundsToClaim }) => {
   const { t } = useTranslation()
   const { theme } = useTheme()
-  const { account } = useWeb3React()
-  const dispatch = useAppDispatch()
 
   return (
     <StyledModal
@@ -45,7 +33,6 @@ const ClaimPrizesModal: React.FC<ClaimPrizesModalModalProps> = ({ onDismiss, rou
       <ClaimPrizesInner
         onSuccess={() => {
           onDismiss()
-          dispatch(fetchUserLotteries({ account }))
         }}
         roundsToClaim={roundsToClaim}
       />
