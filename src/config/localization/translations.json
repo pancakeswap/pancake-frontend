@@ -889,5 +889,6 @@
   "Preview": "Preview",
   "%total% Votes": "%total% Votes",
   "Cast Vote": "Cast Vote",
-  "See All": "See All"
+  "See All": "See All",
+  "SafePal users may be temporarily unable to vote: Please connect directly via WalletConnect instead.": "SafePal users may be temporarily unable to vote: Please connect directly via WalletConnect instead."
 }

@@ -1,5 +1,14 @@
 import React, { useState } from 'react'
-import { AutoRenewIcon, Box, Button, InjectedModalProps, Modal, Skeleton, Text } from '@pancakeswap/uikit'
+import {
+  AutoRenewIcon,
+  Box,
+  Button,
+  InjectedModalProps,
+  Modal,
+  Skeleton,
+  Text,
+  Message as UIKitMessage,
+} from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
 import useToast from 'hooks/useToast'
@@ -110,6 +119,11 @@ const CastVoteModal: React.FC<CastVoteModalProps> = ({ onSuccess, proposalId, vo
       <Button variant="secondary" width="100%" onClick={handleDismiss}>
         {t('Cancel')}
       </Button>
+      <Box mt="24px" maxWidth="320px">
+        <UIKitMessage variant="warning">
+          {t('SafePal users may be temporarily unable to vote: Please connect directly via WalletConnect instead.')}
+        </UIKitMessage>
+      </Box>
     </Modal>
   )
 }
