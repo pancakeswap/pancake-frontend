@@ -39,6 +39,26 @@ const farms: FarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 423,
+    lpSymbol: 'USDC-USDT LP',
+    lpAddresses: {
+      97: '',
+      56: '0xec6557348085aa57c72514d67070dc863c0a5a8c',
+    },
+    token: tokens.usdc,
+    quoteToken: tokens.usdt,
+  },
+  {
+    pid: 422,
+    lpSymbol: 'CAKE-USDT LP',
+    lpAddresses: {
+      97: '',
+      56: '0xA39Af17CE4a8eb807E076805Da1e2B8EA7D0755b',
+    },
+    token: tokens.cake,
+    quoteToken: tokens.usdt,
+  },
+  {
     pid: 357,
     lpSymbol: 'SUTER-BNB LP',
     lpAddresses: {
