@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 
 const useNextEventCountdown = (nextEventTime: number): number => {
   const [secondsRemaining, setSecondsRemaining] = useState(null)
-  const blockBuffer = 3 // Delay countdown by 3s to ensure contract transactions have resolved when countdown finishes
 
   useEffect(() => {
     const currentSeconds = Math.floor(Date.now() / 1000)

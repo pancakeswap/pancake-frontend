@@ -5,7 +5,8 @@ import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
 import { LotteryTicketClaimData } from 'config/constants/types'
 import { getBalanceAmount } from 'utils/formatBalance'
-import { usePriceCakeBusd } from 'state/hooks'
+import { BIG_ZERO } from 'utils/bigNumber'
+import { useLottery, usePriceCakeBusd } from 'state/hooks'
 import Balance from 'components/Balance'
 import useToast from 'hooks/useToast'
 import { useLotteryV2Contract } from 'hooks/useContract'
@@ -19,6 +20,7 @@ interface ClaimInnerProps {
 const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToClaim }) => {
   const { account } = useWeb3React()
   const { t } = useTranslation()
+  const { maxNumberTicketsPerBuyOrClaim } = useLottery()
   const { toastSuccess, toastError } = useToast()
   const [activeClaimIndex, setActiveClaimIndex] = useState(0)
   const [pendingTx, setPendingTx] = useState(false)
@@ -26,12 +28,19 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
   //   const cakePriceBusd = usePriceCakeBusd()
   const lotteryContract = useLotteryV2Contract()
   const cakePriceBusd = new BigNumber(20)
+
   const cakeReward = roundsToClaim[activeClaimIndex].cakeTotal
   const dollarReward = cakeReward.times(cakePriceBusd)
   const rewardAsBalance = getBalanceAmount(cakeReward).toNumber()
   const dollarRewardAsBalance = getBalanceAmount(dollarReward).toNumber()
   const round = roundsToClaim[activeClaimIndex].roundId
   const claimTicketsCallData = parseClaimDataForClaimTicketsCall(roundsToClaim[activeClaimIndex])
+
+  const shouldBatchRequest = claimTicketsCallData.ticketIds.length > maxNumberTicketsPerBuyOrClaim.toNumber()
+
+  const totalNumClaims = roundsToClaim.slice(activeClaimIndex).reduce((accum, _round) => {
+    return accum + Math.ceil(_round.ticketsWithRewards.length / maxNumberTicketsPerBuyOrClaim.toNumber())
+  }, 0)
 
   const handleProgressToNextClaim = () => {
     if (roundsToClaim.length > activeClaimIndex + 1) {
@@ -42,24 +51,64 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
     }
   }
 
-  const handleClaim = () => {
+  const getTicketBatches = (ticketIds: string[], brackets: number[]): { ticketIds: string[]; brackets: number[] }[] => {
+    const requests = []
+    const maxAsNumber = maxNumberTicketsPerBuyOrClaim.toNumber()
+
+    for (let i = 0; i < ticketIds.length; i += maxAsNumber) {
+      const ticketIdsSlice = ticketIds.slice(i, maxAsNumber + i)
+      const bracketsSlice = brackets.slice(i, maxAsNumber + i)
+      requests.push({ ticketIds: ticketIdsSlice, brackets: bracketsSlice })
+    }
+
+    return requests
+  }
+
+  const handleClaim = async () => {
     const { lotteryId, ticketIds, brackets } = claimTicketsCallData
-    lotteryContract.methods
-      .claimTickets(lotteryId, ticketIds, brackets)
-      .send({ from: account })
-      .on('sending', () => {
-        setPendingTx(true)
-      })
-      .on('receipt', () => {
+    setPendingTx(true)
+    try {
+      const tx = await lotteryContract.claimTickets(lotteryId, ticketIds, brackets)
+      const receipt = await tx.wait()
+      if (receipt.status) {
         toastSuccess(t('Prizes Collected!'), t(`Your CAKE prizes for round ${lotteryId} have been sent to your wallet`))
         setPendingTx(false)
         handleProgressToNextClaim()
-      })
-      .on('error', (error) => {
+      }
+    } catch (error) {
+      console.error(error)
+      toastError(t('Error'), t('%error% - Please try again.', { error: error.message }))
+      setPendingTx(false)
+    }
+  }
+
+  const handleBatchClaim = async () => {
+    const { lotteryId, ticketIds, brackets } = claimTicketsCallData
+    const ticketBatches = getTicketBatches(ticketIds, brackets)
+    const transactionsToFire = ticketBatches.length
+    const receipts = []
+
+    setPendingTx(true)
+    // eslint-disable-next-line no-restricted-syntax
+    for (const ticketBatch of ticketBatches) {
+      try {
+        /* eslint-disable no-await-in-loop */
+        const tx = await lotteryContract.claimTickets(lotteryId, ticketBatch.ticketIds, ticketBatch.brackets)
+        const receipt = await tx.wait()
+        /* eslint-enable no-await-in-loop */
+        if (receipt.status) {
+          receipts.push(receipt)
+        }
+      } catch (error) {
         console.error(error)
         toastError(t('Error'), t('%error% - Please try again.', { error: error.message }))
-        setPendingTx(false)
-      })
+      }
+    }
+    if (receipts.length === transactionsToFire) {
+      setPendingTx(false)
+      handleProgressToNextClaim()
+      toastSuccess(t('Prizes Collected!'), t(`Your CAKE prizes for round ${lotteryId} have been sent to your wallet`))
+    }
   }
 
   return (
@@ -106,9 +155,9 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
           endIcon={pendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
           mt="20px"
           width="100%"
-          onClick={() => handleClaim()}
+          onClick={() => (shouldBatchRequest ? handleBatchClaim() : handleClaim())}
         >
-          {pendingTx ? t('Claiming') : t('Claim')}
+          {pendingTx ? t('Claiming') : `${t('Claim')} (${totalNumClaims > 1 && totalNumClaims})`}
         </Button>
       </Flex>
     </>

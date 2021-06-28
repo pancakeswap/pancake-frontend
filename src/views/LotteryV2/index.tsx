@@ -51,7 +51,8 @@ const LotteryV2 = () => {
   const lotteriesData = useGetLotteriesGraphData()
   const [unclaimedRewards, setUnclaimedRewards] = useState({ isFetchingRewards: true, rewards: [] })
   const [hasPoppedClaimModal, setHasPoppedClaimModal] = useState(false)
-  const [onPresentClaimModal] = useModal(<ClaimPrizesModal roundsToClaim={unclaimedRewards.rewards} />)
+  // TODO: 'false' value here is having no impact
+  const [onPresentClaimModal] = useModal(<ClaimPrizesModal roundsToClaim={unclaimedRewards.rewards} />, false)
 
   const fetchRewards = useCallback(async () => {
     console.log('fetching rewards')
@@ -82,7 +83,8 @@ const LotteryV2 = () => {
 
   // Data fetches for lottery phase transitions
   useEffect(() => {
-    // TODO: could set timeouts be used here? Especially 'Next lottery starting - seemed to create a loop'.
+    // TODO: countdown impact buyTickets only
+    // TODO: change in state to trigger some fetches, not countdown
 
     // Current lottery transitions from open > closed, or closed > claimable
     if (status === LotteryStatus.OPEN && secondsRemaining === 0) {
@@ -92,12 +94,14 @@ const LotteryV2 = () => {
     // Current lottery transitions from closed > claimable
     if (status === LotteryStatus.CLOSE && secondsRemaining === 0) {
       dispatch(fetchCurrentLottery({ currentLotteryId }))
+      // TODO: This may also need to fetch user lottery history first, to trigger rewards fetch
       fetchRewards()
       console.log('fetching current lottery & user rewards')
     }
 
     // Next lottery starting
     if (status === LotteryStatus.CLAIMABLE && secondsRemaining === 0) {
+      // TODO: This loops until the next round has started. Should be improved.
       // Get new 'currentLotteryId' from SC
       dispatch(fetchPublicLotteryData())
       // Update lottery history
