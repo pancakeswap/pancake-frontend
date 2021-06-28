@@ -41,7 +41,7 @@
   "Finished": "Завершено",
   "Farming ends in %num% Blocks": "Фармінг завершиться через стільки блоків: %num%",
   "Project site": "Сайт проєкту",
-  "Info site": "Інформаційний сайт",
+  "See Token Info": "See Token Info",
   "You can unstake at any time.": "Вивести внесок можна будь-коли.",
   "Rewards are calculated per block.": "Винагороди обчислюються поблоково.",
   "Total": "Усього",
@@ -206,7 +206,7 @@
   "Next IFO": "Наступний IFO",
   "Past IFOs": "Минулі IFO",
   "APR": "РВС",
-  "APR (incl. LP rewards)": "APR (incl. LP rewards)",
+  "APR (incl. LP rewards)": "РВС (вкл. з нагородами ПЛ)",
   "Select lottery number:": "Виберіть лотерейний номер:",
   "Search": "Пошук",
   "History": "Історія",
@@ -270,7 +270,7 @@
   "ROI": "ROI",
   "Timeframe": "Часові рамки",
   "CAKE per $1000": "CAKE на $1000",
-  "Calculated based on current rates.": "Calculated based on current rates.",
+  "Calculated based on current rates.": "Обчислено на основі поточних ставок.",
   "Compounding %freq%x daily.": "Compounding %freq%x daily.",
   "All figures are estimates provided for your convenience only, and by no means represent guaranteed returns.": "All figures are estimates provided for your convenience only, and by no means represent guaranteed returns.",
   "You can't change this once you click Confirm.": "Якщо натиснути кнопку \"Підтвердити\", це значення вже не можна буде змінити.",
@@ -390,7 +390,7 @@
   "Total staked": "Усього внесено",
   "Just stake some tokens to earn.": "Просто внесіть токени та заробляйте.",
   "High APR, low risk.": "Високий РВС, низький ризик.",
-  "Stake Liquidity Pool (LP) tokens to earn.": "Вносьте токени пулу ліквідності (ПЛ) та заробляйте.",
+  "Stake LP tokens to earn.": "Stake LP tokens to earn.",
   "Basic Sale": "Базовий продаж",
   "Everyone can only commit a limited amount, but may expect a higher return per token committed.": "Кожен може виділити обмежену суму, але дохід із кожного виділеного токена може бути вище.",
   "Unlimited Sale": "Необмежений продаж",
@@ -828,5 +828,6 @@
   "Over %amount% in BNB won so far": "Over %amount% in BNB won so far",
   "Try Now": "Try Now",
   "New": "New",
-  "LP rewards: 0.17% trading fees, distributed proportionally among LP token holders.": "LP rewards: 0.17% trading fees, distributed proportionally among LP token holders."
+  "LP rewards: 0.17% trading fees, distributed proportionally among LP token holders.": "LP rewards: 0.17% trading fees, distributed proportionally among LP token holders.",
+  "CAKE + Fees": "CAKE + Fees"
 }

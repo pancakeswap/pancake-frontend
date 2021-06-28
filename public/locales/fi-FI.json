@@ -41,7 +41,7 @@
   "Finished": "Loppunut",
   "Farming ends in %num% Blocks": "Viljely päättyy %num% lohkoihin",
   "Project site": "Projektisivusto",
-  "Info site": "Tietosivusto",
+  "See Token Info": "See Token Info",
   "You can unstake at any time.": "Voit perua panostamisen milloin tahansa.",
   "Rewards are calculated per block.": "Palkkiot lasketaan lohkoittain.",
   "Total": "Kokonaissumma",
@@ -390,7 +390,7 @@
   "Total staked": "Panostettu yhteensä",
   "Just stake some tokens to earn.": "Panosta poletteja ansaitaksesi.",
   "High APR, low risk.": "Korkea APR, matala riski.",
-  "Stake Liquidity Pool (LP) tokens to earn.": "Ansaitse panostamalla likviditeettipoolipoletteja (LP).",
+  "Stake LP tokens to earn.": "Stake LP tokens to earn.",
   "Basic Sale": "Peruskauppa",
   "Everyone can only commit a limited amount, but may expect a higher return per token committed.": "Jokainen voi luovuttaa vain rajoitetun summan, mutta voi odottaa korkeamman tuoton luovutettua polettia kohden.",
   "Unlimited Sale": "Rajoittamaton kauppa",
@@ -828,5 +828,6 @@
   "Over %amount% in BNB won so far": "Over %amount% in BNB won so far",
   "Try Now": "Try Now",
   "New": "New",
-  "LP rewards: 0.17% trading fees, distributed proportionally among LP token holders.": "LP rewards: 0.17% trading fees, distributed proportionally among LP token holders."
+  "LP rewards: 0.17% trading fees, distributed proportionally among LP token holders.": "LP rewards: 0.17% trading fees, distributed proportionally among LP token holders.",
+  "CAKE + Fees": "CAKE + Fees"
 }

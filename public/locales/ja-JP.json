@@ -41,7 +41,7 @@
   "Finished": "終了",
   "Farming ends in %num% Blocks": "ファーミングは%num%ブロックで終了します",
   "Project site": "プロジェクトサイト",
-  "Info site": "情報サイト",
+  "See Token Info": "See Token Info",
   "You can unstake at any time.": "ステーキングはいつでも解除できます。",
   "Rewards are calculated per block.": "報酬はブロックごとに計算されます。",
   "Total": "合計",
@@ -390,7 +390,7 @@
   "Total staked": "合計ステーキング額",
   "Just stake some tokens to earn.": "トークンをステーキングするだけで簡単に稼ぐことができます。",
   "High APR, low risk.": "高APR、低リスク",
-  "Stake Liquidity Pool (LP) tokens to earn.": "稼ぐには流動性プール（LP）をステーキングしましょう。",
+  "Stake LP tokens to earn.": "Stake LP tokens to earn.",
   "Basic Sale": "基本販売",
   "Everyone can only commit a limited amount, but may expect a higher return per token committed.": "各ユーザーが限られた金額しか投資できませんが、投資したトークンごとにより高い利益が期待できます。",
   "Unlimited Sale": "無制限販売",
@@ -828,5 +828,6 @@
   "Over %amount% in BNB won so far": "Over %amount% in BNB won so far",
   "Try Now": "Try Now",
   "New": "New",
-  "LP rewards: 0.17% trading fees, distributed proportionally among LP token holders.": "LP rewards: 0.17% trading fees, distributed proportionally among LP token holders."
+  "LP rewards: 0.17% trading fees, distributed proportionally among LP token holders.": "LP rewards: 0.17% trading fees, distributed proportionally among LP token holders.",
+  "CAKE + Fees": "CAKE + Fees"
 }

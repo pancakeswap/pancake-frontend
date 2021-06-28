@@ -41,7 +41,7 @@
   "Finished": "Terminado",
   "Farming ends in %num% Blocks": "Colheita termina em %num% Blocos",
   "Project site": "Site do projeto",
-  "Info site": "Site de Informações",
+  "See Token Info": "See Token Info",
   "You can unstake at any time.": "Pode anular a sua participação a qualquer momento.",
   "Rewards are calculated per block.": "As recompensas são calculadas por bloco.",
   "Total": "Total",
@@ -390,7 +390,7 @@
   "Total staked": "Staking total",
   "Just stake some tokens to earn.": "Basta colocar alguns tokens para ganhar.",
   "High APR, low risk.": "APR elevado, baixo risco.",
-  "Stake Liquidity Pool (LP) tokens to earn.": "Para obter ganhos, coloque tokens do Pool de Liquidez (LP).",
+  "Stake LP tokens to earn.": "Stake LP tokens to earn.",
   "Basic Sale": "Venda de base",
   "Everyone can only commit a limited amount, but may expect a higher return per token committed.": "Todos podem autorizar apenas um montante limitado, mas podem esperar um retorno mais elevado por cada token autorizado.",
   "Unlimited Sale": "Venda ilimitada",
@@ -828,5 +828,6 @@
   "Over %amount% in BNB won so far": "Over %amount% in BNB won so far",
   "Try Now": "Try Now",
   "New": "New",
-  "LP rewards: 0.17% trading fees, distributed proportionally among LP token holders.": "LP rewards: 0.17% trading fees, distributed proportionally among LP token holders."
+  "LP rewards: 0.17% trading fees, distributed proportionally among LP token holders.": "LP rewards: 0.17% trading fees, distributed proportionally among LP token holders.",
+  "CAKE + Fees": "CAKE + Fees"
 }

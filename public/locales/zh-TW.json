@@ -41,7 +41,7 @@
   "Finished": "已完成",
   "Farming ends in %num% Blocks": "挖礦將在 %num% 個區塊後結束",
   "Project site": "專案網站",
-  "Info site": "資訊網站",
+  "See Token Info": "See Token Info",
   "You can unstake at any time.": "您隨時可以取回。",
   "Rewards are calculated per block.": "獎勵將按各區塊計算。",
   "Total": "總共",
@@ -390,7 +390,7 @@
   "Total staked": "質押總計",
   "Just stake some tokens to earn.": "只需質押代幣即有機會賺取利潤。",
   "High APR, low risk.": "高年化利率，低風險。",
-  "Stake Liquidity Pool (LP) tokens to earn.": "質押要賺取的流動性資金池 (LP) 代幣。",
+  "Stake LP tokens to earn.": "Stake LP tokens to earn.",
   "Basic Sale": "基礎銷售",
   "Everyone can only commit a limited amount, but may expect a higher return per token committed.": "每個人都可以僅參與有限金額，但是每多一種代幣參與，都可能使報酬率變高。",
   "Unlimited Sale": "無限銷售",
@@ -828,5 +828,6 @@
   "Over %amount% in BNB won so far": "Over %amount% in BNB won so far",
   "Try Now": "Try Now",
   "New": "New",
-  "LP rewards: 0.17% trading fees, distributed proportionally among LP token holders.": "LP rewards: 0.17% trading fees, distributed proportionally among LP token holders."
+  "LP rewards: 0.17% trading fees, distributed proportionally among LP token holders.": "LP rewards: 0.17% trading fees, distributed proportionally among LP token holders.",
+  "CAKE + Fees": "CAKE + Fees"
 }

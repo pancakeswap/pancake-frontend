@@ -41,7 +41,7 @@
   "Finished": "Terminat",
   "Farming ends in %num% Blocks": "Cultivarea se încheie în %num% blocuri",
   "Project site": "Project site",
-  "Info site": "Info site",
+  "See Token Info": "See Token Info",
   "You can unstake at any time.": "Poți retrage jetoanele oricând.",
   "Rewards are calculated per block.": "Recompensele sunt calculate pe bloc.",
   "Total": "Total",
@@ -390,7 +390,7 @@
   "Total staked": "Total investit",
   "Just stake some tokens to earn.": "Investește niște jetoane pentru a câștiga.",
   "High APR, low risk.": "APR ridicat, risc scăzut.",
-  "Stake Liquidity Pool (LP) tokens to earn.": "Investește jetoane din Portofoliul de Lichidități (LP) pentru a câștiga.",
+  "Stake LP tokens to earn.": "Stake LP tokens to earn.",
   "Basic Sale": "Vânzare de bază",
   "Everyone can only commit a limited amount, but may expect a higher return per token committed.": "Fiecare poate depune doar o sumă limitată, dar se poate aștepta la un randament mai ridicat per jeton depus.",
   "Unlimited Sale": "Vânzare nelimitată",
@@ -828,5 +828,6 @@
   "Over %amount% in BNB won so far": "Over %amount% in BNB won so far",
   "Try Now": "Try Now",
   "New": "New",
-  "LP rewards: 0.17% trading fees, distributed proportionally among LP token holders.": "LP rewards: 0.17% trading fees, distributed proportionally among LP token holders."
+  "LP rewards: 0.17% trading fees, distributed proportionally among LP token holders.": "LP rewards: 0.17% trading fees, distributed proportionally among LP token holders.",
+  "CAKE + Fees": "CAKE + Fees"
 }

@@ -41,7 +41,7 @@
   "Finished": "সমাপ্ত",
   "Farming ends in %num% Blocks": "কৃষিকাজ শেষ হয় %num% ব্লক",
   "Project site": "প্রোজেক্ট এলাকা",
-  "Info site": "তথ্যের সাইট",
+  "See Token Info": "See Token Info",
   "You can unstake at any time.": "আপনি যে কোনও সময় পণ মুক্ত করতে পারেন.",
   "Rewards are calculated per block.": "পুরষ্কারগুলি প্রতি ব্লক এই গণনা করা হয়.",
   "Total": "মোট",
@@ -390,7 +390,7 @@
   "Total staked": "মোট স্টেক করা",
   "Just stake some tokens to earn.": "উপার্জন করতে কেবল কিছু টোকেন স্টেক করুন।",
   "High APR, low risk.": "উচ্চ APR, কম ঝুঁকি।",
-  "Stake Liquidity Pool (LP) tokens to earn.": "উপার্জন করতে স্টেক লিকুইডিটি পুল (LP) টোকেন",
+  "Stake LP tokens to earn.": "Stake LP tokens to earn.",
   "Basic Sale": "বেসিক সেল",
   "Everyone can only commit a limited amount, but may expect a higher return per token committed.": "সকলেই কেবল সীমিত পরিমাণ সমর্পণ করতে পারে, কিন্তু সমর্পিত প্রতিটি টোকেনের জন্য বেশি রিটার্ন প্রত্যাশা করতে পারে।",
   "Unlimited Sale": "আনলিমিটেড সেল",
@@ -828,5 +828,6 @@
   "Over %amount% in BNB won so far": "Over %amount% in BNB won so far",
   "Try Now": "Try Now",
   "New": "New",
-  "LP rewards: 0.17% trading fees, distributed proportionally among LP token holders.": "LP rewards: 0.17% trading fees, distributed proportionally among LP token holders."
+  "LP rewards: 0.17% trading fees, distributed proportionally among LP token holders.": "LP rewards: 0.17% trading fees, distributed proportionally among LP token holders.",
+  "CAKE + Fees": "CAKE + Fees"
 }
