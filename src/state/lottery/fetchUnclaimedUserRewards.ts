@@ -68,6 +68,7 @@ const getWinningTickets = async (roundDataAndUserTickets: RoundDataAndUserTicket
       roundId,
       id: ticket.id,
       number: ticket.number,
+      status: ticket.status,
       rewardBracket: getRewardBracket(ticket.number, finalNumber),
     }
   })
@@ -75,8 +76,9 @@ const getWinningTickets = async (roundDataAndUserTickets: RoundDataAndUserTicket
   console.log(`all tickets round #${roundId}`, ticketsWithRewardBrackets)
 
   // A rewardBracket of -1 means no matches. 0 and above means there has been a match
+  // If ticket.status is true, the ticket has already been claimed
   const winningTickets = ticketsWithRewardBrackets.filter((ticket) => {
-    return ticket.rewardBracket >= 0
+    return ticket.rewardBracket >= 0 && !ticket.status
   })
 
   if (winningTickets.length > 0) {
@@ -97,7 +99,6 @@ const fetchUnclaimedUserRewards = async (
   userLotteryData: LotteryUserGraphEntity,
   lotteriesData: LotteryRoundGraphEntity[],
 ): Promise<LotteryTicketClaimData[]> => {
-  // eslint-disable-next-line no-param-reassign
   const { rounds } = userLotteryData
   const cursor = 0
   const limit = 1000
@@ -116,18 +117,18 @@ const fetchUnclaimedUserRewards = async (
     return round.lotteryId !== currentLotteryId
   })
 
-  const filteredForAlreadyClaimed = filteredForCurrentRound.filter((round) => {
-    return !round.claimed
+  // If there are any rounds tickets haven't been claimed for, OR a user has over 100 tickets in a round - check user tickets for those rounds
+  const roundsToCheck = filteredForCurrentRound.filter((round) => {
+    return !round.claimed || parseInt(round.totalTickets, 10) > 100
   })
 
-  // If there are any rounds tickets haven't been claimed for, check user tickets for those rounds
-  if (filteredForAlreadyClaimed.length > 0) {
-    const calls = filteredForAlreadyClaimed.map((round) => ({
+  if (roundsToCheck.length > 0) {
+    const calls = roundsToCheck.map((round) => ({
       name: 'viewUserTicketNumbersAndStatusesForLottery',
       address: lotteryAddress,
       params: [account, round.lotteryId, cursor, limit],
     }))
-    const roundIds = filteredForAlreadyClaimed.map((round) => round.lotteryId)
+    const roundIds = roundsToCheck.map((round) => round.lotteryId)
     const rawTicketData = (await multicallv2(lotteryV2Abi, calls)) as UserTicketsResponse[]
 
     const roundDataAndUserTickets = rawTicketData.map((rawRoundTicketData, index) => {
