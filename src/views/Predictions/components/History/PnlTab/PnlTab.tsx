@@ -4,6 +4,7 @@ import { useWeb3React } from '@web3-react/core'
 import { Box, Flex, Heading, Text, Button, Link, OpenNewIcon } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { getBscScanAddressUrl } from 'utils/bscscan'
+import store from 'state'
 import { useGetCurrentEpoch, usePriceBnbBusd } from 'state/hooks'
 import { Bet, BetPosition } from 'state/types'
 import { formatBnb, getMultiplier, getPayout } from 'views/Predictions/helpers'
@@ -27,12 +28,12 @@ interface PnlSummary {
   entered: PnlCategory
 }
 
-const TREASURY_FEE = 0.03
-
 const getNetPayout = (bet: Bet) => {
-  const rawPayout = getPayout(bet)
-  const fee = rawPayout * TREASURY_FEE
-  return rawPayout - fee - bet.amount
+  const state = store.getState()
+  const rewardRate = state.predictions.rewardRate / 100
+  const rawPayout = getPayout(bet, rewardRate)
+
+  return rawPayout - bet.amount
 }
 
 const Divider = styled.div`

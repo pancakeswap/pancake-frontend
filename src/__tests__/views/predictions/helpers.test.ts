@@ -91,6 +91,8 @@ describe('getPayout', () => {
     amount: 500,
     position: BetPosition.BULL,
     claimed: false,
+    claimedHash: 'hash',
+
     user: {
       id: 'bet1user',
       address: 'bet1address',
@@ -125,6 +127,8 @@ describe('getPayout', () => {
     amount: 500,
     position: BetPosition.BEAR,
     claimed: false,
+    claimedHash: 'hash',
+
     user: {
       id: 'bet1user',
       address: 'bet1address',
@@ -159,6 +163,7 @@ describe('getPayout', () => {
     amount: 688,
     position: BetPosition.BULL,
     claimed: false,
+    claimedHash: 'hash',
     user: {
       id: 'bet2user',
       address: 'bet2address',
@@ -193,6 +198,7 @@ describe('getPayout', () => {
     amount: 688,
     position: BetPosition.BEAR,
     claimed: false,
+    claimedHash: 'hash',
     user: {
       id: 'bet2user',
       address: 'bet2address',
@@ -228,5 +234,14 @@ describe('getPayout', () => {
     [bet2Bear, 1548],
   ])('correctly calculates payout', (value, expected) => {
     expect(getPayout(value)).toEqual(expected)
+  })
+
+  it.each([
+    [bet1Bull, 0.97, 727.5],
+    [bet1Bear, 0.97, 1455],
+    [bet2Bull, 0.97, 1201.248],
+    [bet2Bear, 0.97, 1501.56],
+  ])('correctly calculates payout including reward rate', (value, rewardRate, expected) => {
+    expect(getPayout(value, rewardRate)).toEqual(expected)
   })
 })
