@@ -39,6 +39,16 @@ const farms: FarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 357,
+    lpSymbol: 'SUTER-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x2d5DB889392Bc3c8B023A8631ca230A033eEA1B8',
+    },
+    token: tokens.suter,
+    quoteToken: tokens.wbnb,
+  },
+  {
     pid: 421,
     lpSymbol: 'BSCPAD-BNB LP',
     lpAddresses: {
@@ -756,16 +766,6 @@ const farms: FarmConfig[] = [
       56: '0x0604471c532F9fEBAD3E37190B667f44BD0894b3',
     },
     token: tokens.cgg,
-    quoteToken: tokens.wbnb,
-  },
-  {
-    pid: 357,
-    lpSymbol: 'SUTER-BNB LP',
-    lpAddresses: {
-      97: '',
-      56: '0x2d5DB889392Bc3c8B023A8631ca230A033eEA1B8',
-    },
-    token: tokens.suter,
     quoteToken: tokens.wbnb,
   },
   {
