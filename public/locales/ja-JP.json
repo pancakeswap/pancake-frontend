@@ -823,11 +823,11 @@
   "Max. stake per user": "ユーザー当たり最大ステーキング",
   "You have claimed your rewards!": "報酬を請求しました！",
   "Already Collected": "すでに回収済み",
-  "Predictions Now Live": "Predictions Now Live",
-  "Beta Version": "Beta Version",
-  "Over %amount% in BNB won so far": "Over %amount% in BNB won so far",
-  "Try Now": "Try Now",
-  "New": "New",
-  "LP rewards: 0.17% trading fees, distributed proportionally among LP token holders.": "LP rewards: 0.17% trading fees, distributed proportionally among LP token holders.",
-  "CAKE + Fees": "CAKE + Fees"
+  "Predictions Now Live": "予測が現在ライブ中",
+  "Beta Version": "Betaバージョン（ベータ版）",
+  "Over %amount% in BNB won so far": "これまでのところBNBで%amount%以上を獲得",
+  "Try Now": "今すぐ試す",
+  "New": "新規",
+  "LP rewards: 0.17% trading fees, distributed proportionally among LP token holders.": "LPの報酬：LPトークン保有者の間で比例分配される、0.17%の取引手数料。",
+  "CAKE + Fees": "CAKEと手数料"
 }
