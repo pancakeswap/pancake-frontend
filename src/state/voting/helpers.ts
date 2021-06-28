@@ -8,7 +8,7 @@ export const getProposals = async (first = 5, skip = 0, state = ProposalState.AC
     SNAPSHOT_API,
     gql`
       query getProposals($first: Int!, $skip: Int!, $state: String!) {
-        proposals(first: $first, skip: $skip, where: { space_in: "pancake", state: $state }) {
+        proposals(first: $first, skip: $skip, where: { space_in: "cake.eth", state: $state }) {
           id
           title
           body
