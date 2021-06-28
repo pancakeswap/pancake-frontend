@@ -19,7 +19,7 @@ const lotteryContract = getLotteryV2Contract()
 
 export const fetchLottery = async (lotteryId: string): Promise<LotteryRound> => {
   try {
-    const lotteryData = await lotteryContract.methods.viewLottery(lotteryId).call()
+    const lotteryData = await lotteryContract.viewLottery(lotteryId)
     const {
       status,
       startTime,
@@ -35,24 +35,33 @@ export const fetchLottery = async (lotteryId: string): Promise<LotteryRound> => 
       countWinnersPerBracket,
       rewardsBreakdown,
     } = lotteryData
-    const priceTicketInCakeAsBN = new BigNumber(priceTicketInCake as string)
-    const amountCollectedInCakeAsBN = new BigNumber(amountCollectedInCake as string)
+
     const statusKey = Object.keys(LotteryStatus)[status]
+    const serializedCakePerBracket = cakePerBracket.map((cakeInBracket) => {
+      return new BigNumber(cakeInBracket.toString()).toJSON()
+    })
+    const serializedCountWinnersPerBracket = countWinnersPerBracket.map((winnersInBracket) => {
+      return new BigNumber(winnersInBracket.toString()).toJSON()
+    })
+    const serializedRewardsBreakdown = rewardsBreakdown.map((reward) => {
+      return new BigNumber(reward.toString()).toJSON()
+    })
+
     return {
       isLoading: false,
       status: LotteryStatus[statusKey],
-      startTime,
-      endTime,
-      priceTicketInCake: priceTicketInCakeAsBN.toJSON(),
-      discountDivisor,
-      treasuryFee,
-      firstTicketId,
-      lastTicketId,
-      amountCollectedInCake: amountCollectedInCakeAsBN.toJSON(),
+      startTime: startTime?.toString(),
+      endTime: endTime?.toString(),
+      priceTicketInCake: new BigNumber(priceTicketInCake.toString()).toJSON(),
+      discountDivisor: discountDivisor?.toString(),
+      treasuryFee: treasuryFee?.toString(),
+      firstTicketId: firstTicketId?.toString(),
+      lastTicketId: lastTicketId?.toString(),
+      amountCollectedInCake: new BigNumber(amountCollectedInCake.toString()).toJSON(),
       finalNumber,
-      cakePerBracket,
-      countWinnersPerBracket,
-      rewardsBreakdown,
+      cakePerBracket: serializedCakePerBracket,
+      countWinnersPerBracket: serializedCountWinnersPerBracket,
+      rewardsBreakdown: serializedRewardsBreakdown,
     }
   } catch (error) {
     return {
@@ -146,9 +155,13 @@ export const fetchTickets = async (
   // const cakeRewards = await multicallv2(lotteryV2Abi, calls)
 
   try {
-    const userTickets = await lotteryContract.methods
-      .viewUserTicketNumbersAndStatusesForLottery(account, lotteryId, cursor, perRequestLimit)
-      .call()
+    const userTickets = await lotteryContract.viewUserTicketNumbersAndStatusesForLottery(
+      account,
+      lotteryId,
+      cursor,
+      perRequestLimit,
+    )
+
     const completeTicketData = processRawTicketsResponse(userTickets)
     return completeTicketData
   } catch (error) {

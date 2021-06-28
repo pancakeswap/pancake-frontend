@@ -17,12 +17,12 @@ interface TicketNumberProps extends LotteryTicket {
   localId?: number
 }
 
-const TicketNumber: React.FC<TicketNumberProps> = ({ localId, id, number, ...props }) => {
+const TicketNumber: React.FC<TicketNumberProps> = ({ localId, id, number }) => {
   const reversedNumber = parseRetreivedNumber(number)
   const numberAsArray = reversedNumber.split('')
 
   return (
-    <Flex flexDirection="column" mb="12px" {...props}>
+    <Flex flexDirection="column" mb="12px">
       <Text fontSize="12px" color="textSubtle">
         #{localId || id}
       </Text>

@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { CardHeader, Card, CardBody, Text, CardFooter, ArrowBackIcon, Flex, Heading, Box } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { fetchLottery, fetchTickets } from 'state/lottery/helpers'
-import { useGetUserLotteriesGraphData } from 'state/hooks'
+import { useGetUserLotteriesGraphData, useLottery } from 'state/hooks'
 import UnlockButton from 'components/UnlockButton'
 import FinishedRoundTable from './FinishedRoundTable'
 import { WhiteBunny } from '../svgs'
@@ -25,6 +25,7 @@ const YourHistoryCard = () => {
   const { account } = useWeb3React()
   const [viewFinishedRound, setViewFinishedRound] = useState(false)
   const [roundDetails, setRoundDetails] = useState(null)
+  const { currentLotteryId } = useLottery()
   const userLotteryData = useGetUserLotteriesGraphData()
 
   const handleHistoryRowClick = async (roundId) => {
@@ -51,6 +52,10 @@ const YourHistoryCard = () => {
   }
 
   const getBody = () => {
+    const pastUserRounds = userLotteryData?.rounds.filter((round) => {
+      return round.lotteryId !== currentLotteryId
+    })
+
     if (!account) {
       return (
         <Flex minHeight="inherit" flexDirection="column" alignItems="center" justifyContent="center">
@@ -61,7 +66,7 @@ const YourHistoryCard = () => {
         </Flex>
       )
     }
-    if (userLotteryData.rounds.length === 0) {
+    if (pastUserRounds.length === 0) {
       return (
         <Flex minHeight="inherit" flexDirection="column" alignItems="center" justifyContent="center">
           <Flex alignItems="center" justifyContent="center" mb="16px">

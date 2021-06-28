@@ -148,17 +148,15 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
     useApproveConfirmTransaction({
       onRequiresApproval: async () => {
         try {
-          const response = await cakeContract.methods.allowance(account, lotteryContract.options.address).call()
-          const currentAllowance = new BigNumber(response)
+          const response = await cakeContract.allowance(account, lotteryContract.address)
+          const currentAllowance = new BigNumber(response.toString())
           return currentAllowance.gt(0)
         } catch (error) {
           return false
         }
       },
       onApprove: () => {
-        return cakeContract.methods
-          .approve(lotteryContract.options.address, ethers.constants.MaxUint256)
-          .send({ from: account })
+        return cakeContract.approve(lotteryContract.address, ethers.constants.MaxUint256)
       },
       onApproveSuccess: async () => {
         toastSuccess(t('Contract approved - you can now purchase tickets'))
@@ -166,7 +164,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
       onConfirm: () => {
         const ticketNumArray = generateTicketNumbers(parseInt(ticketsToBuy, 10), userCurrentTickets)
         console.log(ticketNumArray)
-        return lotteryContract.methods.buyTickets(currentLotteryId, ticketNumArray).send({ from: account })
+        return lotteryContract.buyTickets(currentLotteryId, ticketNumArray)
       },
       onSuccess: async () => {
         onDismiss()
