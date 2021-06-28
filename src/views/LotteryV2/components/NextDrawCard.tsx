@@ -36,6 +36,12 @@ const Grid = styled.div`
   }
 `
 
+const StyledCard = styled(Card)`
+  ${({ theme }) => theme.mediaQueries.md} {
+    width: 756px;
+  }
+`
+
 const NextDrawCard = () => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
@@ -44,7 +50,7 @@ const NextDrawCard = () => {
     currentRound: { endTime, amountCollectedInCake, userTickets, status },
   } = useLottery()
   const [onPresentViewTicketsModal] = useModal(<ViewTicketsModal roundId={currentLotteryId} />)
-  const [isExpanded, setIsExpanded] = useState(false)
+  const [isExpanded, setIsExpanded] = useState(true)
 
   // TODO: Re-enable in prod
   //   const cakePriceBusd = usePriceCakeBusd()
@@ -113,7 +119,7 @@ const NextDrawCard = () => {
   }
 
   return (
-    <Card>
+    <StyledCard>
       <CardHeader p="16px 24px">
         <Flex justifyContent="space-between">
           <Heading mr="12px">{t('Next Draw')}</Heading>
@@ -180,7 +186,7 @@ const NextDrawCard = () => {
           </ExpandableLabel>
         </Flex>
       </CardFooter>
-    </Card>
+    </StyledCard>
   )
 }
 
