@@ -105,8 +105,8 @@ const StyledDatePickerPortal = styled.div`
   }
 `
 
-const DatePickerPoral = () => {
+const DatePickerPortal = () => {
   return <StyledDatePickerPortal id="reactDatePicker" />
 }
 
-export default DatePickerPoral
+export default DatePickerPortal
