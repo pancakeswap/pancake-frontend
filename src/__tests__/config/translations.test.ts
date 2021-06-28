@@ -27,6 +27,7 @@ describe('Check translations available', () => {
 
   it.each(files)('Translation key should exist in translations json', (file) => {
     const data = fs.readFileSync(file, { encoding: 'utf8', flag: 'r' })
+
     let match
 
     const regexWithoutCarriageReturn = /\bt\('([^']*?)'/gm
@@ -43,6 +44,7 @@ describe('Check translations available', () => {
         try {
           expect(includes).toBe(true)
         } catch (e) {
+          console.info(`Found unknown key "${match[1]}" in ${file}`)
           throw new Error(`Found unknown key ${match[1]} in ${file}`)
         }
       }
@@ -62,6 +64,7 @@ describe('Check translations available', () => {
           try {
             expect(includes).toBe(true)
           } catch (e) {
+            console.info(`Found unknown key "${placeHolderMatch[1]}" in ${file}`)
             throw new Error(`Found unknown key ${placeHolderMatch[1]} in ${file}`)
           }
         }
