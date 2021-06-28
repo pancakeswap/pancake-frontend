@@ -271,7 +271,7 @@
   "Timeframe": "Interval de timp",
   "CAKE per $1000": "CAKE la 1.000 $",
   "Calculated based on current rates.": "Calculat pe baza ratelor curente.",
-  "Compounding %freq%x daily.": "Cumulat o dată %fpe zi%x",
+  "Compounding %freq%x daily.": "Cumulat o dată %fpe zi%x.",
   "All figures are estimates provided for your convenience only, and by no means represent guaranteed returns.": "Toate cifrele sunt estimări furnizate exclusiv pentru uzul tău și nu reprezintă în niciun caz randamente garantate.",
   "You can't change this once you click Confirm.": "Nu mai poți schimba acest lucru după ce faci clic pe Confirmă.",
   "Until ticket sale": "Până la vânzarea biletelor",
@@ -829,5 +829,5 @@
   "Try Now": "Încearcă acum",
   "New": "Nou",
   "LP rewards: 0.17% trading fees, distributed proportionally among LP token holders.": "Recompense LP: 0,17% comisioane de tranzacționare, distribuite proporțional între deținătorii de jetoane LP.",
-  "CAKE + Fees": "CAKE + Fees"
+  "CAKE + Fees": "CAKE + comisioane"
 }
