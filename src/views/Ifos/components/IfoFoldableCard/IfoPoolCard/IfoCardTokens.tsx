@@ -10,6 +10,7 @@ import {
   useTooltip,
   Button,
   AutoRenewIcon,
+  BunnyPlaceholderIcon,
 } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { Ifo, PoolIds } from 'config/constants/types'
@@ -22,13 +23,13 @@ import PercentageOfTotal from './PercentageOfTotal'
 import { SkeletonCardTokens } from './Skeletons'
 
 interface TokenSectionProps extends FlexProps {
-  img: string
+  img?: string
 }
 
 const TokenSection: React.FC<TokenSectionProps> = ({ img, children, ...props }) => {
   return (
     <Flex {...props}>
-      <Image src={img} width={32} height={32} mr="16px" />
+      {img ? <Image src={img} width={32} height={32} mr="16px" /> : <BunnyPlaceholderIcon width={32} mr="16px" />}
       <div>{children}</div>
     </Flex>
   )
@@ -89,7 +90,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
     if (publicIfoData.status === 'coming_soon') {
       return (
         <>
-          <TokenSection img="/images/bunny-placeholder.svg">
+          <TokenSection>
             <Label>{t('On sale')}</Label>
             <Value>{ifo[poolId].saleAmount}</Value>
           </TokenSection>
@@ -131,7 +132,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
     if (publicIfoData.status === 'finished') {
       return userPoolCharacteristics.amountTokenCommittedInLP.isEqualTo(0) ? (
         <Flex flexDirection="column" alignItems="center">
-          <Image src="/images/bunny-placeholder.svg" width={80} height={80} mb="16px" />
+          <BunnyPlaceholderIcon width={80} mb="16px" />
           <Text>{t('You didn’t participate in this sale!')}</Text>
         </Flex>
       ) : (
