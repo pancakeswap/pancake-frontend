@@ -1,6 +1,6 @@
 import React from 'react'
 import { Text, Flex, Box, Skeleton } from '@pancakeswap/uikit'
-import { PublicIfoData } from 'hooks/ifo/types'
+import { PublicIfoData } from 'views/Ifos/types'
 import { useTranslation } from 'contexts/Localization'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { getBalanceNumber, formatNumber } from 'utils/formatBalance'
