@@ -3,7 +3,7 @@ import { AutoRenewIcon, Box, Button, InjectedModalProps, Modal, Skeleton, Text }
 import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
 import useToast from 'hooks/useToast'
-import useWeb3 from 'hooks/useWeb3'
+import useWeb3Provider from 'hooks/useWeb3Provider'
 import { SnapshotCommand } from 'state/types'
 import useGetVotingPower from '../../hooks/useGetVotingPower'
 import { generatePayloadData, Message, sendSnaphotData } from '../../helpers'
@@ -25,8 +25,8 @@ const CastVoteModal: React.FC<CastVoteModalProps> = ({ onSuccess, proposalId, vo
   const [modalIsOpen, setModalIsOpen] = useState(true)
   const [isPending, setIsPending] = useState(false)
   const { isLoading, total, verificationHash } = useGetVotingPower(block, modalIsOpen)
-  const web3 = useWeb3()
-  const { account, library } = useWeb3React()
+  const provider = useWeb3Provider()
+  const { account } = useWeb3React()
   const { toastError } = useToast()
 
   const handleDismiss = () => {
@@ -49,9 +49,8 @@ const CastVoteModal: React.FC<CastVoteModalProps> = ({ onSuccess, proposalId, vo
           },
         },
       })
-      const sig = library?.bnbSign
-        ? (await library.bnbSign(account, voteMsg))?.signature
-        : await web3.eth.personal.sign(voteMsg, account, null)
+
+      const sig = await provider.getSigner().signMessage(voteMsg)
       const msg: Message = { address: account, msg: voteMsg, sig }
 
       // Save proposal to snapshot

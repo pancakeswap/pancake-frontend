@@ -17,10 +17,10 @@ import { useHistory } from 'react-router'
 import { useWeb3React } from '@web3-react/core'
 import times from 'lodash/times'
 import isEmpty from 'lodash/isEmpty'
-import useWeb3 from 'hooks/useWeb3'
 import { useInitialBlock } from 'state/hooks'
 import { SnapshotCommand } from 'state/types'
 import useToast from 'hooks/useToast'
+import useWeb3Provider from 'hooks/useWeb3Provider'
 import { getBscScanAddressUrl, getBscScanBlockNumberUrl } from 'utils/bscscan'
 import truncateWalletAddress from 'utils/truncateWalletAddress'
 import { useTranslation } from 'contexts/Localization'
@@ -53,10 +53,10 @@ const CreateProposal = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [fieldsState, setFieldsState] = useState<{ [key: string]: boolean }>({})
   const { t } = useTranslation()
-  const { account, library } = useWeb3React()
+  const { account } = useWeb3React()
   const initialBlock = useInitialBlock()
   const { push } = useHistory()
-  const web3 = useWeb3()
+  const provider = useWeb3Provider()
   const { toastSuccess, toastError } = useToast()
 
   const { name, body, choices, startDate, startTime, endDate, endTime, snapshot } = state
@@ -85,9 +85,8 @@ const CreateProposal = () => {
           type: 'single-choice',
         },
       })
-      const sig = library?.bnbSign
-        ? (await library.bnbSign(account, proposal))?.signature
-        : await web3.eth.personal.sign(proposal, account, null)
+
+      const sig = await provider.getSigner().signMessage(proposal)
 
       if (sig) {
         const msg: Message = { address: account, msg: proposal, sig }
