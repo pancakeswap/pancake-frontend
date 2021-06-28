@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
-import { Contract } from 'web3-eth-contract'
-import { ethers } from 'ethers'
+import { ethers, Contract } from 'ethers'
 import BigNumber from 'bignumber.js'
 import { useAppDispatch } from 'state'
 import { updateUserAllowance } from 'state/actions'
@@ -13,17 +12,15 @@ import useLastUpdated from './useLastUpdated'
 
 // Approve a Farm
 export const useApprove = (lpContract: Contract) => {
-  const { account } = useWeb3React()
   const masterChefContract = useMasterchef()
-
   const handleApprove = useCallback(async () => {
     try {
-      const tx = await approve(lpContract, masterChefContract, account)
-      return tx
+      const receipt = await approve(lpContract, masterChefContract)
+      return receipt.status
     } catch (e) {
       return false
     }
-  }, [account, lpContract, masterChefContract])
+  }, [lpContract, masterChefContract])
 
   return { onApprove: handleApprove }
 }
@@ -40,9 +37,10 @@ export const useSousApprove = (lpContract: Contract, sousId, earningTokenSymbol)
   const handleApprove = useCallback(async () => {
     try {
       setRequestedApproval(true)
-      const tx = await approve(lpContract, sousChefContract, account)
+      const receipt = await approve(lpContract, sousChefContract)
+
       dispatch(updateUserAllowance(sousId, account))
-      if (tx) {
+      if (receipt.status) {
         toastSuccess(
           t('Contract Enabled'),
           t('You can now stake in the %symbol% pool!', { symbol: earningTokenSymbol }),
@@ -64,30 +62,24 @@ export const useSousApprove = (lpContract: Contract, sousId, earningTokenSymbol)
 
 // Approve CAKE auto pool
 export const useVaultApprove = (setLastUpdated: () => void) => {
-  const { account } = useWeb3React()
   const [requestedApproval, setRequestedApproval] = useState(false)
   const { t } = useTranslation()
   const { toastSuccess, toastError } = useToast()
   const cakeVaultContract = useCakeVaultContract()
   const cakeContract = useCake()
 
-  const handleApprove = () => {
-    cakeContract.methods
-      .approve(cakeVaultContract.options.address, ethers.constants.MaxUint256)
-      .send({ from: account })
-      .on('sending', () => {
-        setRequestedApproval(true)
-      })
-      .on('receipt', () => {
-        toastSuccess(t('Contract Enabled'), t('You can now stake in the %symbol% vault!', { symbol: 'CAKE' }))
-        setLastUpdated()
-        setRequestedApproval(false)
-      })
-      .on('error', (error) => {
-        console.error(error)
-        toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
-        setRequestedApproval(false)
-      })
+  const handleApprove = async () => {
+    const tx = await cakeContract.approve(cakeVaultContract.address, ethers.constants.MaxUint256)
+    setRequestedApproval(true)
+    const receipt = await tx.wait()
+    if (receipt.status) {
+      toastSuccess(t('Contract Enabled'), t('You can now stake in the %symbol% vault!', { symbol: 'CAKE' }))
+      setLastUpdated()
+      setRequestedApproval(false)
+    } else {
+      toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
+      setRequestedApproval(false)
+    }
   }
 
   return { handleApprove, requestedApproval }
@@ -102,8 +94,8 @@ export const useCheckVaultApprovalStatus = () => {
   useEffect(() => {
     const checkApprovalStatus = async () => {
       try {
-        const response = await cakeContract.methods.allowance(account, cakeVaultContract.options.address).call()
-        const currentAllowance = new BigNumber(response)
+        const response = await cakeContract.allowance(account, cakeVaultContract.address)
+        const currentAllowance = new BigNumber(response.toString())
         setIsVaultApproved(currentAllowance.gt(0))
       } catch (error) {
         setIsVaultApproved(false)
@@ -118,29 +110,27 @@ export const useCheckVaultApprovalStatus = () => {
 
 // Approve the lottery
 export const useLotteryApprove = () => {
-  const { account } = useWeb3React()
   const cakeContract = useCake()
   const lotteryContract = useLottery()
 
   const handleApprove = useCallback(async () => {
     try {
-      const tx = await approve(cakeContract, lotteryContract, account)
+      const tx = await approve(cakeContract, lotteryContract)
       return tx
     } catch (e) {
       return false
     }
-  }, [account, cakeContract, lotteryContract])
+  }, [cakeContract, lotteryContract])
 
   return { onApprove: handleApprove }
 }
 
 // Approve an IFO
 export const useIfoApprove = (tokenContract: Contract, spenderAddress: string) => {
-  const { account } = useWeb3React()
   const onApprove = useCallback(async () => {
-    const tx = await tokenContract.methods.approve(spenderAddress, ethers.constants.MaxUint256).send({ from: account })
-    return tx
-  }, [account, spenderAddress, tokenContract])
+    const tx = await tokenContract.approve(spenderAddress, ethers.constants.MaxUint256)
+    await tx.wait()
+  }, [spenderAddress, tokenContract])
 
   return onApprove
 }

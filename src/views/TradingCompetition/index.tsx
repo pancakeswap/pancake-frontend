@@ -144,18 +144,18 @@ const TradingCompetition = () => {
 
   useEffect(() => {
     const fetchCompetitionInfoContract = async () => {
-      const competitionStatus = await tradingCompetitionContract.methods.currentStatus().call()
+      const competitionStatus = await tradingCompetitionContract.currentStatus()
       setCurrentPhase(SmartContractPhases[competitionStatus])
     }
 
     const fetchUserContract = async () => {
-      const user = await tradingCompetitionContract.methods.claimInformation(account).call()
+      const user = await tradingCompetitionContract.claimInformation(account)
       const userObject = {
         hasRegistered: user[0],
         hasUserClaimed: user[1],
-        userRewardGroup: user[2],
-        userCakeRewards: user[3],
-        userPointReward: user[4],
+        userRewardGroup: user[2].toString(),
+        userCakeRewards: user[3].toString(),
+        userPointReward: user[4].toString(),
         canClaimNFT: user[5],
       }
       setUserTradingInformation(userObject)

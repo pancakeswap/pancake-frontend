@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { PromiEvent } from 'web3-core'
 import { useWeb3React } from '@web3-react/core'
-import { Contract } from 'web3-eth-contract'
+import { ethers } from 'ethers'
 import { useProfile } from 'state/hooks'
 import { useEasterNftContract } from 'hooks/useContract'
 import NftCard, { NftCardProps } from './index'
@@ -24,13 +23,13 @@ const EasterNftCard: React.FC<NftCardProps> = ({ nft, ...props }) => {
   const { team } = profile ?? {}
   const easterNftContract = useEasterNftContract()
 
-  const handleClaim = (): PromiEvent<Contract> => {
-    return easterNftContract.methods.mintNFT().send({ from: account })
+  const handleClaim = (): ethers.providers.TransactionResponse => {
+    return easterNftContract.mintNFT()
   }
 
   useEffect(() => {
     const fetchClaimStatus = async () => {
-      const canClaim = await easterNftContract.methods.canClaim(account).call()
+      const canClaim = await easterNftContract.canClaim(account)
 
       // Wallet can claim if it is claimable and the nft being displayed is mapped to the wallet's team
       setIsClaimable(canClaim ? team.id === teamNftMap[identifier] : false)

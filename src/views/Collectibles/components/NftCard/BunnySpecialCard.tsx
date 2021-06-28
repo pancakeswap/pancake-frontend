@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { PromiEvent } from 'web3-core'
 import { useWeb3React } from '@web3-react/core'
-import { Contract } from 'web3-eth-contract'
+import { ethers } from 'ethers'
 import { useBunnySpecialContract } from 'hooks/useContract'
 import NftCard, { NftCardProps } from './index'
 
@@ -11,13 +10,13 @@ const BunnySpecialCard: React.FC<NftCardProps> = ({ nft, ...props }) => {
   const bunnySpecialContract = useBunnySpecialContract()
   const { variationId } = nft
 
-  const handleClaim = (): PromiEvent<Contract> => {
-    return bunnySpecialContract.methods.mintNFT(variationId).send({ from: account })
+  const handleClaim = (): ethers.providers.TransactionResponse => {
+    return bunnySpecialContract.mintNFT(variationId)
   }
 
   useEffect(() => {
     const fetchClaimStatus = async () => {
-      const canClaimSingle = await bunnySpecialContract.methods.canClaimSingle(account, variationId).call()
+      const canClaimSingle = await bunnySpecialContract.canClaimSingle(account, variationId)
       setIsClaimable(canClaimSingle)
     }
 

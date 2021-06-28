@@ -50,13 +50,13 @@ const FarmedStakingCard = () => {
     for (const farmWithBalance of balancesWithValue) {
       try {
         // eslint-disable-next-line no-await-in-loop
-        await harvest(masterChefContract, farmWithBalance.pid, account)
+        await harvest(masterChefContract, farmWithBalance.pid)
       } catch (error) {
         toastError(t('Error'), error?.message)
       }
     }
     setPendingTx(false)
-  }, [account, balancesWithValue, masterChefContract, toastError, t])
+  }, [balancesWithValue, masterChefContract, toastError, t])
 
   return (
     <StyledFarmStakingCard>

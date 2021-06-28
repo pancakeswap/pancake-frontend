@@ -7,7 +7,7 @@ import { orderBy } from 'lodash'
 import { Team } from 'config/constants/types'
 import Nfts from 'config/constants/nfts'
 import { farmsConfig } from 'config/constants'
-import web3NoAccount from 'utils/web3'
+import { simpleRpcProvider } from 'utils/providers'
 import { getBalanceAmount } from 'utils/formatBalance'
 import { BIG_ZERO } from 'utils/bigNumber'
 import useRefresh from 'hooks/useRefresh'
@@ -67,7 +67,7 @@ export const usePollBlockNumber = () => {
 
   useEffect(() => {
     const interval = setInterval(async () => {
-      const blockNumber = await web3NoAccount.eth.getBlockNumber()
+      const blockNumber = await simpleRpcProvider.getBlockNumber()
       dispatch(setBlock(blockNumber))
     }, 6000)
 
@@ -148,7 +148,7 @@ export const useFetchPublicPoolsData = () => {
 
   useEffect(() => {
     const fetchPoolsPublicData = async () => {
-      const blockNumber = await web3NoAccount.eth.getBlockNumber()
+      const blockNumber = await simpleRpcProvider.getBlockNumber()
       dispatch(fetchPoolsPublicDataAsync(blockNumber))
     }
 

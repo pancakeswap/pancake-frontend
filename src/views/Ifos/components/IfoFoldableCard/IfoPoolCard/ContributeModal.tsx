@@ -55,22 +55,20 @@ const ContributeModal: React.FC<Props> = ({
     useApproveConfirmTransaction({
       onRequiresApproval: async () => {
         try {
-          const response = await raisingTokenContract.methods.allowance(account, contract.options.address).call()
-          const currentAllowance = new BigNumber(response)
+          const response = await raisingTokenContract.allowance(account, contract.address)
+          const currentAllowance = new BigNumber(response.toString())
           return currentAllowance.gt(0)
         } catch (error) {
           return false
         }
       },
       onApprove: () => {
-        return raisingTokenContract.methods
-          .approve(contract.options.address, ethers.constants.MaxUint256)
-          .send({ from: account, gasPrice })
+        return raisingTokenContract.approve(contract.address, ethers.constants.MaxUint256, { gasPrice })
       },
       onConfirm: () => {
-        return contract.methods
-          .depositPool(valueWithTokenDecimals.toString(), poolId === PoolIds.poolBasic ? 0 : 1)
-          .send({ from: account, gasPrice })
+        return contract.depositPool(valueWithTokenDecimals.toString(), poolId === PoolIds.poolBasic ? 0 : 1, {
+          gasPrice,
+        })
       },
       onSuccess: async () => {
         await onSuccess(valueWithTokenDecimals)

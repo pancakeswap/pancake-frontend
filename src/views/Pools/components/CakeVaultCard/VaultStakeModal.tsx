@@ -81,69 +81,53 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({ pool, stakingMax, isR
     const isWithdrawingAll = sharesRemaining.lte(triggerWithdrawAllThreshold)
 
     if (isWithdrawingAll) {
-      cakeVaultContract.methods
-        .withdrawAll()
-        .send({ from: account })
-        .on('sending', () => {
-          setPendingTx(true)
-        })
-        .on('receipt', () => {
-          toastSuccess(t('Unstaked!'), t('Your earnings have also been harvested to your wallet'))
-          setPendingTx(false)
-          onDismiss()
-          dispatch(fetchCakeVaultUserData({ account }))
-        })
-        .on('error', (error) => {
-          console.error(error)
-          // Remove message from toast before prod
-          toastError(t('Error'), t('%error% - Please try again.', { error: error.message }))
-          setPendingTx(false)
-        })
+      const tx = await cakeVaultContract.withdrawAll()
+      setPendingTx(true)
+      const receipt = await tx.wait()
+      if (receipt.status) {
+        toastSuccess(t('Unstaked!'), t('Your earnings have also been harvested to your wallet'))
+        setPendingTx(false)
+        onDismiss()
+        dispatch(fetchCakeVaultUserData({ account }))
+      } else {
+        // Remove message from toast before prod
+        toastError(t('Error'), t('%error% - Please try again.', { error: 'Transaction reverted' }))
+        setPendingTx(false)
+      }
     } else {
-      cakeVaultContract.methods
-        .withdraw(shareStakeToWithdraw.sharesAsBigNumber.toString())
-        // .toString() being called to fix a BigNumber error in prod
-        // as suggested here https://github.com/ChainSafe/web3.js/issues/2077
-        .send({ from: account })
-        .on('sending', () => {
-          setPendingTx(true)
-        })
-        .on('receipt', () => {
-          toastSuccess(t('Unstaked!'), t('Your earnings have also been harvested to your wallet'))
-          setPendingTx(false)
-          onDismiss()
-          dispatch(fetchCakeVaultUserData({ account }))
-        })
-        .on('error', (error) => {
-          console.error(error)
-          // Remove message from toast before prod
-          toastError(t('Error'), t('%error% - Please try again.', { error: error.message }))
-          setPendingTx(false)
-        })
+      // .toString() being called to fix a BigNumber error in prod
+      // as suggested here https://github.com/ChainSafe/web3.js/issues/2077
+      const tx = await cakeVaultContract.withdraw(shareStakeToWithdraw.sharesAsBigNumber.toString())
+      setPendingTx(true)
+      const receipt = await tx.wait()
+      if (receipt.status) {
+        toastSuccess(t('Unstaked!'), t('Your earnings have also been harvested to your wallet'))
+        setPendingTx(false)
+        onDismiss()
+        dispatch(fetchCakeVaultUserData({ account }))
+      } else {
+        toastError(t('Error'), t('%error% - Please try again.', { error: 'Transaction reverted' }))
+        setPendingTx(false)
+      }
     }
   }
 
   const handleDeposit = async (convertedStakeAmount: BigNumber) => {
-    cakeVaultContract.methods
-      .deposit(convertedStakeAmount.toString())
-      // .toString() being called to fix a BigNumber error in prod
-      // as suggested here https://github.com/ChainSafe/web3.js/issues/2077
-      .send({ from: account })
-      .on('sending', () => {
-        setPendingTx(true)
-      })
-      .on('receipt', () => {
-        toastSuccess(t('Staked!'), t('Your funds have been staked in the pool'))
-        setPendingTx(false)
-        onDismiss()
-        dispatch(fetchCakeVaultUserData({ account }))
-      })
-      .on('error', (error) => {
-        console.error(error)
-        // Remove message from toast before prod
-        toastError(t('Error'), t('%error% - Please try again.', { error: error.message }))
-        setPendingTx(false)
-      })
+    // .toString() being called to fix a BigNumber error in prod
+    // as suggested here https://github.com/ChainSafe/web3.js/issues/2077
+    const tx = await cakeVaultContract.deposit(convertedStakeAmount.toString())
+    setPendingTx(true)
+    const receipt = await tx.wait()
+    if (receipt.status) {
+      toastSuccess(t('Staked!'), t('Your funds have been staked in the pool'))
+      setPendingTx(false)
+      onDismiss()
+      dispatch(fetchCakeVaultUserData({ account }))
+    } else {
+      // Remove message from toast before prod
+      toastError(t('Error'), t('%error% - Please try again.', { error: 'Transaction reverted' }))
+      setPendingTx(false)
+    }
   }
 
   const handleConfirmClick = async () => {

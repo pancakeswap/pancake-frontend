@@ -135,26 +135,20 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
 
   const { key, disabled } = getButtonProps(valueAsBn, maxBalance, minBetAmountBalance)
 
-  const handleEnterPosition = () => {
+  const handleEnterPosition = async () => {
     const betMethod = position === BetPosition.BULL ? 'betBull' : 'betBear'
     const decimalValue = getDecimalAmount(valueAsBn)
 
-    predictionsContract.methods[betMethod]()
-      .send({ from: account, value: decimalValue, gasPrice })
-      .once('sending', () => {
-        setIsTxPending(true)
-      })
-      .once('receipt', async (result) => {
-        setIsTxPending(false)
-        onSuccess(decimalValue, result.transactionHash as string)
-      })
-      .once('error', (error) => {
-        const errorMsg = t('An error occurred, unable to enter your position')
-
-        toastError(t('Error'), error?.message)
-        setIsTxPending(false)
-        console.error(errorMsg, error)
-      })
+    const tx = await predictionsContract[betMethod]({ value: decimalValue.toString(), gasPrice })
+    setIsTxPending(true)
+    const receipt = await tx.wait()
+    if (receipt.status) {
+      setIsTxPending(false)
+      onSuccess(decimalValue, receipt.transactionHash as string)
+    } else {
+      toastError(t('An error occurred, unable to enter your position'))
+      setIsTxPending(false)
+    }
   }
 
   // Warnings

@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { useWeb3React } from '@web3-react/core'
 import { AutoRenewIcon, Button, Flex, InjectedModalProps, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useCake } from 'hooks/useContract'
@@ -18,26 +17,21 @@ const ApproveCakePage: React.FC<ApproveCakePageProps> = ({ goToChange, onDismiss
   const [isApproving, setIsApproving] = useState(false)
   const { profile } = useProfile()
   const { t } = useTranslation()
-  const { account } = useWeb3React()
   const { numberCakeToUpdate, numberCakeToReactivate } = useGetProfileCosts()
   const cakeContract = useCake()
   const { toastError } = useToast()
   const cost = profile.isActive ? numberCakeToUpdate : numberCakeToReactivate
 
-  const handleApprove = () => {
-    cakeContract.methods
-      .approve(getPancakeProfileAddress(), cost.times(2).toJSON())
-      .send({ from: account })
-      .on('sending', () => {
-        setIsApproving(true)
-      })
-      .on('receipt', () => {
-        goToChange()
-      })
-      .on('error', (error) => {
-        toastError(t('Error'), error?.message)
-        setIsApproving(false)
-      })
+  const handleApprove = async () => {
+    const tx = await cakeContract.approve(getPancakeProfileAddress(), cost.times(2).toJSON())
+    setIsApproving(true)
+    const receipt = await tx.wait()
+    if (receipt.status) {
+      goToChange()
+    } else {
+      toastError(t('Error'))
+      setIsApproving(false)
+    }
   }
 
   if (!profile) {

@@ -106,7 +106,7 @@ const IfoFoldableCard: React.FC<IfoFoldableCardProps> = ({ ifo, publicIfoData, w
   const Ribbon = getRibbonComponent(ifo, publicIfoData.status, t)
   const isActive = publicIfoData.status !== 'finished' && ifo.isActive
   const { contract } = walletIfoData
-  const onApprove = useIfoApprove(raisingTokenContract, contract.options.address)
+  const onApprove = useIfoApprove(raisingTokenContract, contract.address)
   const { toastSuccess } = useToast()
 
   const handleApprove = async () => {
@@ -128,8 +128,8 @@ const IfoFoldableCard: React.FC<IfoFoldableCardProps> = ({ ifo, publicIfoData, w
   useEffect(() => {
     const checkAllowance = async () => {
       try {
-        const response = await raisingTokenContract.methods.allowance(account, contract.options.address).call()
-        const currentAllowance = new BigNumber(response)
+        const response = await raisingTokenContract.allowance(account, contract.address)
+        const currentAllowance = new BigNumber(response.toString())
         setEnableStatus(currentAllowance.lte(0) ? EnableStatus.DISABLED : EnableStatus.ENABLED)
       } catch (error) {
         setEnableStatus(EnableStatus.DISABLED)

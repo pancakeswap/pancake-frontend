@@ -21,19 +21,18 @@ export const useMultiClaimLottery = () => {
 }
 
 export const useMultiBuyLottery = () => {
-  const { account } = useWeb3React()
   const lotteryContract = useLottery()
 
   const handleBuy = useCallback(
     async (amount: string, numbers: Array<any>) => {
       try {
-        const txHash = await multiBuy(lotteryContract, amount, numbers, account)
+        const txHash = await multiBuy(lotteryContract, amount, numbers)
         return txHash
       } catch (e) {
         return false
       }
     },
-    [account, lotteryContract],
+    [lotteryContract],
   )
 
   return { onMultiBuy: handleBuy }

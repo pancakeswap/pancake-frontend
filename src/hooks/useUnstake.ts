@@ -6,15 +6,13 @@ import { unstake, sousUnstake, sousEmergencyUnstake } from 'utils/callHelpers'
 import { useMasterchef, useSousChef } from './useContract'
 
 const useUnstake = (pid: number) => {
-  const { account } = useWeb3React()
   const masterChefContract = useMasterchef()
 
   const handleUnstake = useCallback(
     async (amount: string) => {
-      const txHash = await unstake(masterChefContract, pid, amount, account)
-      console.info(txHash)
+      await unstake(masterChefContract, pid, amount)
     },
-    [account, masterChefContract, pid],
+    [masterChefContract, pid],
   )
 
   return { onUnstake: handleUnstake }
@@ -29,14 +27,11 @@ export const useSousUnstake = (sousId, enableEmergencyWithdraw = false) => {
   const handleUnstake = useCallback(
     async (amount: string, decimals: number) => {
       if (sousId === 0) {
-        const txHash = await unstake(masterChefContract, 0, amount, account)
-        console.info(txHash)
+        await unstake(masterChefContract, 0, amount)
       } else if (enableEmergencyWithdraw) {
-        const txHash = await sousEmergencyUnstake(sousChefContract, account)
-        console.info(txHash)
+        await sousEmergencyUnstake(sousChefContract)
       } else {
-        const txHash = await sousUnstake(sousChefContract, amount, decimals, account)
-        console.info(txHash)
+        await sousUnstake(sousChefContract, amount, decimals)
       }
       dispatch(updateUserStakedBalance(sousId, account))
       dispatch(updateUserBalance(sousId, account))
