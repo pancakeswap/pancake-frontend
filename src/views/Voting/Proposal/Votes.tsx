@@ -74,7 +74,7 @@ const Votes: React.FC<VotesProps> = ({ votes }) => {
             </VotingPowerColumn>
           </Row>
           {displayVotes.map((vote) => {
-            const isVoter = vote.voter.toLowerCase() === account.toLowerCase()
+            const isVoter = account && vote.voter.toLowerCase() === account.toLowerCase()
             return <VoteRow key={vote.id} vote={vote} isVoter={isVoter} />
           })}
           <Flex alignItems="center" justifyContent="center" py="8px" px="24px">
