@@ -27,7 +27,7 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
         with:
-          commit-message: Update LP APRs for Farms
+          commit-message: 'chore: Update LP APRs for Farms'
           title: Update LP APRs for Farms
           body: |
             - Update LP APRs for Farms
