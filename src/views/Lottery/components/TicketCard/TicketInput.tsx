@@ -12,29 +12,6 @@ interface TokenInputProps extends InputProps {
   onChange: (evt: React.FormEvent<HTMLInputElement>) => void
 }
 
-const TicketInput: React.FC<TokenInputProps> = ({ max, symbol, availableSymbol, onChange, onSelectMax, value }) => {
-  const { t } = useTranslation()
-
-  return (
-    <>
-      <Flex alignItems="center">
-        <Input type="number" inputMode="numeric" min="0" onChange={onChange} placeholder="0" value={value} />
-        <StyledTokenAdornmentWrapper>
-          <StyledSpacer />
-          <StyledTokenSymbol>{symbol}</StyledTokenSymbol>
-          <StyledSpacer />
-          <Button scale="sm" onClick={onSelectMax}>
-            {t('Max')}
-          </Button>
-        </StyledTokenAdornmentWrapper>
-      </Flex>
-      <StyledMaxText>
-        {t('%num% %symbol% Available', { num: max.toLocaleString(), symbol: availableSymbol })}
-      </StyledMaxText>
-    </>
-  )
-}
-
 const StyledSpacer = styled.div`
   width: ${(props) => props.theme.spacing[3]}px;
 `
@@ -58,5 +35,28 @@ const StyledTokenSymbol = styled.span`
   color: ${(props) => props.theme.colors.primary};
   font-weight: 700;
 `
+
+const TicketInput: React.FC<TokenInputProps> = ({ max, symbol, availableSymbol, onChange, onSelectMax, value }) => {
+  const { t } = useTranslation()
+
+  return (
+    <>
+      <Flex alignItems="center">
+        <Input type="number" inputMode="numeric" min="0" onChange={onChange} placeholder="0" value={value} />
+        <StyledTokenAdornmentWrapper>
+          <StyledSpacer />
+          <StyledTokenSymbol>{symbol}</StyledTokenSymbol>
+          <StyledSpacer />
+          <Button scale="sm" onClick={onSelectMax}>
+            {t('Max')}
+          </Button>
+        </StyledTokenAdornmentWrapper>
+      </Flex>
+      <StyledMaxText>
+        {t('%num% %symbol% Available', { num: max.toLocaleString(), symbol: availableSymbol })}
+      </StyledMaxText>
+    </>
+  )
+}
 
 export default TicketInput

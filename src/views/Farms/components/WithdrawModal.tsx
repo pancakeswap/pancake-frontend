@@ -1,8 +1,7 @@
 import BigNumber from 'bignumber.js'
 import React, { useCallback, useMemo, useState } from 'react'
 import { Button, Modal } from '@pancakeswap/uikit'
-import ModalActions from 'components/ModalActions'
-import ModalInput from 'components/ModalInput'
+import { ModalActions, ModalInput } from 'components/Modal'
 import { useTranslation } from 'contexts/Localization'
 import { getFullDisplayBalance } from 'utils/formatBalance'
 

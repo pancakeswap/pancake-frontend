@@ -7,7 +7,7 @@ import { usePollCoreFarmData, useFetchProfile, usePollBlockNumber } from 'state/
 import GlobalStyle from './style/Global'
 import Menu from './components/Menu'
 import SuspenseWithChunkError from './components/SuspenseWithChunkError'
-import ToastListener from './components/ToastListener'
+import { ToastListener } from './contexts/ToastsContext'
 import PageLoader from './components/PageLoader'
 import EasterEgg from './components/EasterEgg'
 import Pools from './views/Pools'

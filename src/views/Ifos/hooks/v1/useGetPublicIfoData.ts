@@ -6,7 +6,7 @@ import { useBlock, useLpTokenPrice } from 'state/hooks'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { multicallv2 } from 'utils/multicall'
 import ifoV1Abi from 'config/abi/ifoV1.json'
-import { PublicIfoData } from '../types'
+import { PublicIfoData } from '../../types'
 import { getStatus } from '../helpers'
 
 /**

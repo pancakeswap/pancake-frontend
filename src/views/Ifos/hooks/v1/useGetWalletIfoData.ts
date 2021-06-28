@@ -8,7 +8,7 @@ import { multicallv2 } from 'utils/multicall'
 import ifoV1Abi from 'config/abi/ifoV1.json'
 import { getAddress } from 'utils/addressHelpers'
 import { BIG_ZERO } from 'utils/bigNumber'
-import { WalletIfoState, WalletIfoData } from '../types'
+import { WalletIfoState, WalletIfoData } from '../../types'
 
 interface UserInfo {
   amount: BigNumber

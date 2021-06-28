@@ -1,5 +1,5 @@
 import React from 'react'
-import { Tag, VerifiedIcon, CommunityIcon, BinanceIcon, RefreshIcon, AutoRenewIcon, TagProps } from '@pancakeswap/uikit'
+import { Tag, VerifiedIcon, CommunityIcon, RefreshIcon, AutoRenewIcon, TagProps } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 
 const CoreTag: React.FC<TagProps> = (props) => {
@@ -16,14 +16,6 @@ const CommunityTag: React.FC<TagProps> = (props) => {
   return (
     <Tag variant="failure" outline startIcon={<CommunityIcon width="18px" color="failure" mr="4px" />} {...props}>
       {t('Community')}
-    </Tag>
-  )
-}
-
-const BinanceTag: React.FC<TagProps> = (props) => {
-  return (
-    <Tag variant="binance" outline startIcon={<BinanceIcon width="18px" color="secondary" mr="4px" />} {...props}>
-      Binance
     </Tag>
   )
 }
@@ -55,4 +47,4 @@ const CompoundingPoolTag: React.FC<TagProps> = (props) => {
   )
 }
 
-export { CoreTag, CommunityTag, BinanceTag, DualTag, ManualPoolTag, CompoundingPoolTag }
+export { CoreTag, CommunityTag, DualTag, ManualPoolTag, CompoundingPoolTag }
