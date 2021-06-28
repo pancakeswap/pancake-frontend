@@ -878,5 +878,16 @@
   "Voter": "Voter",
   "Votes (%count%)": "Votes (%count%)",
   "Snapshot": "Snapshot",
+  "Choices": "Choices",
+  "Unable to sign payload": "Unable to sign payload",
+  "Identifier": "Identifier",
+  "Current Results": "Current Results",
+  "Vote cast!": "Vote cast!",
+  "Are you sure you want to vote for the above choice? This action cannot be undone.": "Are you sure you want to vote for the above choice? This action cannot be undone.",
+  "Tip: write in Markdown!": "Tip: write in Markdown!",
+  "Cast your vote": "Cast your vote",
+  "Preview": "Preview",
+  "%total% Votes": "%total% Votes",
+  "Cast Vote": "Cast Vote",
   "See All": "See All"
 }

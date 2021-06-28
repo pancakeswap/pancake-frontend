@@ -45,7 +45,7 @@ const Details: React.FC<DetailsProps> = ({ proposal }) => {
           </LinkExternal>
         </Flex>
         <Flex alignItems="center" mb="16px">
-          <Text color="textSubtle">{t('Snaphot')}</Text>
+          <Text color="textSubtle">{t('Snapshot')}</Text>
           <LinkExternal href={getBscScanBlockNumberUrl(proposal.snapshot)} ml="8px">
             {proposal.snapshot}
           </LinkExternal>
