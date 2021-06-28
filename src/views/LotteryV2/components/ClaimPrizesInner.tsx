@@ -7,6 +7,8 @@ import { LotteryTicketClaimData } from 'config/constants/types'
 import { getBalanceAmount } from 'utils/formatBalance'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { useLottery, usePriceCakeBusd } from 'state/hooks'
+import { fetchUserLotteries } from 'state/lottery'
+import { useAppDispatch } from 'state'
 import Balance from 'components/Balance'
 import useToast from 'hooks/useToast'
 import { useLotteryV2Contract } from 'hooks/useContract'
@@ -20,6 +22,7 @@ interface ClaimInnerProps {
 const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToClaim }) => {
   const { account } = useWeb3React()
   const { t } = useTranslation()
+  const dispatch = useAppDispatch()
   const { maxNumberTicketsPerBuyOrClaim } = useLottery()
   const { toastSuccess, toastError } = useToast()
   const [activeClaimIndex, setActiveClaimIndex] = useState(0)
@@ -38,9 +41,12 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
 
   const shouldBatchRequest = claimTicketsCallData.ticketIds.length > maxNumberTicketsPerBuyOrClaim.toNumber()
 
-  const totalNumClaims = roundsToClaim.slice(activeClaimIndex).reduce((accum, _round) => {
-    return accum + Math.ceil(_round.ticketsWithRewards.length / maxNumberTicketsPerBuyOrClaim.toNumber())
-  }, 0)
+  // const totalNumClaims = roundsToClaim.slice(activeClaimIndex).reduce((accum, _round) => {
+  //   return accum + Math.ceil(_round.ticketsWithRewards.length / maxNumberTicketsPerBuyOrClaim.toNumber())
+  // }, 0)
+
+  const totalNumClaimsForRound = () =>
+    Math.ceil(roundsToClaim[activeClaimIndex].ticketsWithRewards.length / maxNumberTicketsPerBuyOrClaim.toNumber())
 
   const handleProgressToNextClaim = () => {
     if (roundsToClaim.length > activeClaimIndex + 1) {
@@ -73,6 +79,7 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
       if (receipt.status) {
         toastSuccess(t('Prizes Collected!'), t(`Your CAKE prizes for round ${lotteryId} have been sent to your wallet`))
         setPendingTx(false)
+        dispatch(fetchUserLotteries({ account }))
         handleProgressToNextClaim()
       }
     } catch (error) {
@@ -87,7 +94,6 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
     const ticketBatches = getTicketBatches(ticketIds, brackets)
     const transactionsToFire = ticketBatches.length
     const receipts = []
-
     setPendingTx(true)
     // eslint-disable-next-line no-restricted-syntax
     for (const ticketBatch of ticketBatches) {
@@ -97,17 +103,39 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
         const receipt = await tx.wait()
         /* eslint-enable no-await-in-loop */
         if (receipt.status) {
+          // One transaction within batch has succeeded
           receipts.push(receipt)
+
+          // More transactions are to be done within the batch. Issue toast to give user feedback.
+          if (receipts.length !== transactionsToFire) {
+            toastSuccess(
+              t('Prizes Collected!'),
+              t(
+                `Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transation`,
+                {
+                  claimNum: receipts.length,
+                  claimTotal: transactionsToFire,
+                  lotteryId,
+                },
+              ),
+            )
+          }
         }
       } catch (error) {
         console.error(error)
         toastError(t('Error'), t('%error% - Please try again.', { error: error.message }))
       }
     }
+
+    // Batch is finished
     if (receipts.length === transactionsToFire) {
       setPendingTx(false)
+      toastSuccess(
+        t('Prizes Collected!'),
+        t(`Your CAKE prizes for round %lotteryId& have been sent to your wallet`, { lotteryId }),
+      )
+      dispatch(fetchUserLotteries({ account }))
       handleProgressToNextClaim()
-      toastSuccess(t('Prizes Collected!'), t(`Your CAKE prizes for round ${lotteryId} have been sent to your wallet`))
     }
   }
 
@@ -157,7 +185,7 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
           width="100%"
           onClick={() => (shouldBatchRequest ? handleBatchClaim() : handleClaim())}
         >
-          {pendingTx ? t('Claiming') : `${t('Claim')} (${totalNumClaims > 1 && totalNumClaims})`}
+          {pendingTx ? t('Claiming') : t('Claim')} {totalNumClaimsForRound() > 1 ? `(${totalNumClaimsForRound()})` : ''}
         </Button>
       </Flex>
     </>
