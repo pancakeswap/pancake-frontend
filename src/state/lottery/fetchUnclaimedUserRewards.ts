@@ -130,10 +130,10 @@ const fetchUnclaimedUserRewards = async (
     const roundIds = filteredForAlreadyClaimed.map((round) => round.lotteryId)
     const rawTicketData = (await multicallv2(lotteryV2Abi, calls)) as UserTicketsResponse[]
 
-    const roundDataAndUserTickets = rawTicketData.map((roundTicketData, index) => {
+    const roundDataAndUserTickets = rawTicketData.map((rawRoundTicketData, index) => {
       return {
         roundId: roundIds[index],
-        userTickets: processRawTicketsResponse(roundTicketData),
+        userTickets: processRawTicketsResponse(rawRoundTicketData),
         finalNumber: getWinningNumbersForRound(roundIds[index], lotteriesData),
       }
     })
