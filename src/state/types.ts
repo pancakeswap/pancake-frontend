@@ -250,6 +250,7 @@ export interface PredictionsState {
   intervalBlocks: number
   bufferBlocks: number
   minBetAmount: string
+  rewardRate: number
   lastOraclePrice: string
   rounds: RoundData
   history: HistoryData

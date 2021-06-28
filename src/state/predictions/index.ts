@@ -25,6 +25,7 @@ const initialState: PredictionsState = {
   intervalBlocks: 100,
   bufferBlocks: 2,
   minBetAmount: '1000000000000000',
+  rewardRate: 97,
   lastOraclePrice: BIG_ZERO.toJSON(),
   rounds: {},
   history: {},
@@ -105,7 +106,7 @@ export const predictionsSlice = createSlice({
     setHistoryFilter: (state, action: PayloadAction<HistoryFilter>) => {
       state.historyFilter = action.payload
     },
-    initialize: (state, action: PayloadAction<PredictionsState>) => {
+    initialize: (state, action: PayloadAction<Partial<PredictionsState>>) => {
       return {
         ...state,
         ...action.payload,
