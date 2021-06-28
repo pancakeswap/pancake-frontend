@@ -7,7 +7,7 @@ import { getBscScanAddressUrl } from 'utils/bscscan'
 import store from 'state'
 import { useGetCurrentEpoch, usePriceBnbBusd } from 'state/hooks'
 import { Bet, BetPosition } from 'state/types'
-import { formatBnb, getMultiplier, getPayout } from 'views/Predictions/helpers'
+import { formatBnb, getMultiplier, getNetPayout } from 'views/Predictions/helpers'
 import { getRoundResult, Result } from 'state/predictions/helpers'
 import PnlChart from './PnlChart'
 import SummaryRow from './SummaryRow'
@@ -26,14 +26,6 @@ interface PnlSummary {
   won: PnlCategory & { payout: number; bestRound: { id: string; payout: number; multiplier: number } }
   lost: PnlCategory
   entered: PnlCategory
-}
-
-const getNetPayout = (bet: Bet) => {
-  const state = store.getState()
-  const rewardRate = state.predictions.rewardRate / 100
-  const rawPayout = getPayout(bet, rewardRate)
-
-  return rawPayout - bet.amount
 }
 
 const Divider = styled.div`
@@ -65,10 +57,13 @@ const initialPnlSummary: PnlSummary = {
 }
 
 const getPnlSummary = (bets: Bet[], currentEpoch: number): PnlSummary => {
+  const state = store.getState()
+  const rewardRate = state.predictions.rewardRate / 100
+
   return bets.reduce((summary: PnlSummary, bet) => {
     const roundResult = getRoundResult(bet, currentEpoch)
     if (roundResult === Result.WIN) {
-      const payout = getNetPayout(bet)
+      const payout = getNetPayout(bet, rewardRate)
       let { bestRound } = summary.won
       if (payout > bestRound.payout) {
         const { bullAmount, bearAmount, totalAmount } = bet.round

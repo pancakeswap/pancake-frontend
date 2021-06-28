@@ -54,6 +54,15 @@ export const getPayout = (bet: Bet, rewardRate = 1) => {
   return bet.amount * multiplier * rewardRate
 }
 
+export const getNetPayout = (bet: Bet, rewardRate = 1): number => {
+  if (!bet || !bet.round) {
+    return 0
+  }
+
+  const payout = getPayout(bet, rewardRate)
+  return payout - bet.amount
+}
+
 // TODO: Move this to the UI Kit
 export const getBubbleGumBackground = (theme: DefaultTheme) => {
   if (theme.isDark) {

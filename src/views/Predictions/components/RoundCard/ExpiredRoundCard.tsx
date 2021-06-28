@@ -6,7 +6,7 @@ import { useTranslation } from 'contexts/Localization'
 import { Round, BetPosition } from 'state/types'
 import { useGetBetByRoundId, useGetRewardRate } from 'state/hooks'
 import { RoundResult } from '../RoundResult'
-import { getPayout } from '../../helpers'
+import { getNetPayout } from '../../helpers'
 import MultiplierArrow from './MultiplierArrow'
 import Card from './Card'
 import CardHeader from './CardHeader'
@@ -45,7 +45,7 @@ const ExpiredRoundCard: React.FC<ExpiredRoundCardProps> = ({
   const betPosition = closePrice > lockPrice ? BetPosition.BULL : BetPosition.BEAR
   const bet = useGetBetByRoundId(account, round.id)
   const rewardRate = useGetRewardRate()
-  const payout = getPayout(bet, rewardRate)
+  const payout = getNetPayout(bet, rewardRate)
 
   if (round.failed) {
     return <CanceledRoundCard round={round} />

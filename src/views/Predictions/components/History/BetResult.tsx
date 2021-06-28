@@ -10,7 +10,7 @@ import { fetchBet } from 'state/predictions'
 import { Result } from 'state/predictions/helpers'
 import { getBscScanTransactionUrl } from 'utils/bscscan'
 import useIsRefundable from '../../hooks/useIsRefundable'
-import { formatBnb, getPayout } from '../../helpers'
+import { formatBnb, getNetPayout } from '../../helpers'
 import CollectWinningsButton from '../CollectWinningsButton'
 import PositionTag from '../PositionTag'
 import ReclaimPositionButton from '../ReclaimPositionButton'
@@ -37,7 +37,7 @@ const BetResult: React.FC<BetResultProps> = ({ bet, result }) => {
   const rewardRate = useGetRewardRate()
 
   // Winners get the payout, otherwise the claim what they put it if it was canceled
-  const payout = result === Result.WIN ? getPayout(bet, rewardRate) : bet.amount
+  const payout = result === Result.WIN ? getNetPayout(bet, rewardRate) : bet.amount
 
   const getHeaderColor = () => {
     switch (result) {
