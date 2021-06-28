@@ -40,7 +40,7 @@ const HomeC: React.FC = () => {
 
   useEffect(() => {
     // eslint-disable-next-line eqeqeq
-    if (accountAddress && parseInt(allowance.toString()) !== 0) {
+    if (accountAddress) {
       const newFarmData = tableData.map((tokenInfo) => {
         drFrankenstein.methods.userInfo(tokenInfo.pid, accountAddress).call()
           .then(res => {
