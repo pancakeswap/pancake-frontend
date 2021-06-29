@@ -7,7 +7,7 @@ const useNextEventCountdown = (nextEventTime: number): number => {
   const [secondsRemaining, setSecondsRemaining] = useState(null)
 
   useEffect(() => {
-    console.log('xxxx EFFECT FIRING xxxx')
+    console.log('xxxx COUNTDOWN EFFECT FIRING xxxx')
     dispatch(setLotteryIsTransitioning({ isTransitioning: false }))
     const currentSeconds = Math.floor(Date.now() / 1000)
     const secondsRemainingCalc = nextEventTime - currentSeconds

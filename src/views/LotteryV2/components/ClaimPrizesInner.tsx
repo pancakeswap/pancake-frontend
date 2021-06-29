@@ -52,6 +52,7 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
     if (roundsToClaim.length > activeClaimIndex + 1) {
       // If there are still rounds to claim, move onto the next claim
       setActiveClaimIndex(activeClaimIndex + 1)
+      dispatch(fetchUserLotteries({ account }))
     } else {
       onSuccess()
     }
@@ -79,7 +80,6 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
       if (receipt.status) {
         toastSuccess(t('Prizes Collected!'), t(`Your CAKE prizes for round ${lotteryId} have been sent to your wallet`))
         setPendingTx(false)
-        dispatch(fetchUserLotteries({ account }))
         handleProgressToNextClaim()
       }
     } catch (error) {
@@ -138,7 +138,6 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
         t('Prizes Collected!'),
         t(`Your CAKE prizes for round %lotteryId& have been sent to your wallet`, { lotteryId }),
       )
-      dispatch(fetchUserLotteries({ account }))
       handleProgressToNextClaim()
     }
   }
