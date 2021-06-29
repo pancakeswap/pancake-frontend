@@ -9,6 +9,7 @@ import NftCard from './NftCard'
 import NftGrid from './NftGrid'
 import BunnySpecialCard from './NftCard/BunnySpecialCard'
 import EasterNftCard from './NftCard/EasterNftCard'
+import BunnySpecialCakeVaultCard from './NftCard/BunnySpecialCakeVaultCard'
 
 /**
  * A map of bunnyIds to special campaigns (NFT distribution)
@@ -21,6 +22,7 @@ const nftComponents = {
   'easter-storm': EasterNftCard,
   'easter-flipper': EasterNftCard,
   'easter-caker': EasterNftCard,
+  'syrup-soak': BunnySpecialCakeVaultCard,
 }
 
 const NftList = () => {
