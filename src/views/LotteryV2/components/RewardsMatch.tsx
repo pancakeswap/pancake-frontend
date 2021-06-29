@@ -14,6 +14,7 @@ interface RewardsMatchProps {
 
 const RewardsMatch: React.FC<RewardsMatchProps> = ({ rewardBracket, cakeAmount, isBurn }) => {
   const { t } = useTranslation()
+  //   TODO: Reeneable in prod
   //    const cakePriceBusd = usePriceCakeBusd()
   const cakePriceBusd = new BigNumber(20)
   const prizeInBusd = cakeAmount.times(cakePriceBusd)
@@ -30,7 +31,7 @@ const RewardsMatch: React.FC<RewardsMatchProps> = ({ rewardBracket, cakeAmount, 
   }
 
   return (
-    <Flex flexDirection="column" mr="12px" width="150px" mb="12px">
+    <Flex flexDirection="column">
       <Text fontSize="12px" bold textTransform="uppercase" color={isBurn ? 'failure' : 'secondary'}>
         {getRewardText()}
       </Text>

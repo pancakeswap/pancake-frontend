@@ -1,11 +1,11 @@
 import React from 'react'
-import { Button, useModal, WaitIcon } from '@pancakeswap/uikit'
+import { Button, useModal, WaitIcon, ButtonProps } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useLottery } from 'state/hooks'
 import { LotteryStatus } from 'config/constants/types'
 import BuyTicketsModal from './BuyTicketsModal'
 
-const BuyTicketsButton = ({ ...props }) => {
+const BuyTicketsButton: React.FC<ButtonProps> = ({ ...props }) => {
   const { t } = useTranslation()
   const [onPresentBuyTicketsModal] = useModal(<BuyTicketsModal />)
   const {

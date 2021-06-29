@@ -37,6 +37,10 @@ const Grid = styled.div`
 `
 
 const StyledCard = styled(Card)`
+  ${({ theme }) => theme.mediaQueries.sm} {
+    width: 520px;
+  }
+
   ${({ theme }) => theme.mediaQueries.md} {
     width: 756px;
   }
@@ -139,7 +143,7 @@ const NextDrawCard = () => {
           <Box display={['none', null, null, 'flex']}>
             <Heading>{t('Your tickets')}</Heading>
           </Box>
-          <Flex flexDirection={['column', null, null, 'row']}>
+          <Flex flexDirection={['column', null, null, 'row']} alignItems={['center', null, null, 'flex-start']}>
             {isLotteryOpen && (
               <Flex
                 flexDirection="column"
@@ -174,7 +178,7 @@ const NextDrawCard = () => {
                 )}
               </Flex>
             )}
-            <BuyTicketsButton />
+            <BuyTicketsButton maxWidth="280px" />
           </Flex>
         </Grid>
       </CardBody>
