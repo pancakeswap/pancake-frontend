@@ -16,6 +16,7 @@ import useToast from 'hooks/useToast'
 import { fetchCakeVaultUserData } from 'state/pools'
 import { Pool } from 'state/types'
 import { getAddress } from 'utils/addressHelpers'
+import { callWithEstimateGas } from 'utils/callHelpers'
 import { convertCakeToShares } from '../../helpers'
 import FeeSummary from './FeeSummary'
 
@@ -81,7 +82,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({ pool, stakingMax, isR
     const isWithdrawingAll = sharesRemaining.lte(triggerWithdrawAllThreshold)
 
     if (isWithdrawingAll) {
-      const tx = await cakeVaultContract.withdrawAll()
+      const tx = await callWithEstimateGas(cakeVaultContract, 'withdrawAll')
       setPendingTx(true)
       const receipt = await tx.wait()
       if (receipt.status) {
@@ -97,7 +98,9 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({ pool, stakingMax, isR
     } else {
       // .toString() being called to fix a BigNumber error in prod
       // as suggested here https://github.com/ChainSafe/web3.js/issues/2077
-      const tx = await cakeVaultContract.withdraw(shareStakeToWithdraw.sharesAsBigNumber.toString())
+      const tx = await callWithEstimateGas(cakeVaultContract, 'withdraw', [
+        shareStakeToWithdraw.sharesAsBigNumber.toString(),
+      ])
       setPendingTx(true)
       const receipt = await tx.wait()
       if (receipt.status) {
@@ -115,7 +118,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({ pool, stakingMax, isR
   const handleDeposit = async (convertedStakeAmount: BigNumber) => {
     // .toString() being called to fix a BigNumber error in prod
     // as suggested here https://github.com/ChainSafe/web3.js/issues/2077
-    const tx = await cakeVaultContract.deposit(convertedStakeAmount.toString())
+    const tx = await callWithEstimateGas(cakeVaultContract, 'deposit', [convertedStakeAmount.toString()])
     setPendingTx(true)
     const receipt = await tx.wait()
     if (receipt.status) {
