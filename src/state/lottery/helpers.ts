@@ -12,6 +12,7 @@ import {
   LotteryRound,
   UserTicketsResponse,
   UserRound,
+  LotteryRoundUserTickets,
 } from 'state/types'
 import { getLotteryV2Contract } from 'utils/contractHelpers'
 
@@ -123,46 +124,49 @@ export const processRawTicketsResponse = (ticketsResponse: UserTicketsResponse):
   return []
 }
 
+export const getViewUserTicketNumbersAndStatusesCalls = (
+  totalTicketsToRequest: number,
+  account: string,
+  lotteryId: string,
+) => {
+  let cursor = 0
+  const perRequestLimit = 1000
+  const calls = []
+
+  for (let i = 0; i < totalTicketsToRequest; i += perRequestLimit) {
+    cursor = i
+    calls.push({
+      name: 'viewUserTicketNumbersAndStatusesForLottery',
+      address: getLotteryV2Address(),
+      params: [account, lotteryId, cursor, perRequestLimit],
+    })
+  }
+  return calls
+}
+
+export const mergeViewUserTicketNumbersMulticallResponse = (response) => {
+  const mergedMulticallResponse: UserTicketsResponse = [[], [], []]
+
+  response.forEach((ticketResponse) => {
+    mergedMulticallResponse[0].push(...ticketResponse[0])
+    mergedMulticallResponse[1].push(...ticketResponse[1])
+    mergedMulticallResponse[2].push(...ticketResponse[2])
+  })
+
+  return mergedMulticallResponse
+}
+
 export const fetchTickets = async (
   account: string,
   lotteryId: string,
   userRoundData?: UserRound,
 ): Promise<LotteryTicket[]> => {
-  const cursor = 0
-  const totalTicketsToRequest = userRoundData && parseInt(userRoundData?.totalTickets, 10)
-  const perRequestLimit = 5205
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const calls = []
-
-  // TODO: Implement cursor here
-
-  // for (let i = 0; i > totalTicketsToRequest; i + 100) {
-  //   calls.push({
-  //     name: 'viewUserTicketNumbersAndStatusesForLottery',
-  //     address: getLotteryV2Address(),
-  //     params: [account, lotteryId, cursor, perRequestLimit],
-  //   })
-  // }
-
-  // const calls = winningTickets.map((winningTicket) => {
-  //   const { roundId, id, rewardBracket } = winningTicket
-  //   return {
-  //     name: 'viewRewardsForTicketId',
-  //     address: lotteryAddress,
-  //     params: [roundId, id, rewardBracket],
-  //   }
-  // })
-  // const cakeRewards = await multicallv2(lotteryV2Abi, calls)
-
+  const totalTicketsToRequest = userRoundData ? parseInt(userRoundData?.totalTickets, 10) : 5000
+  const calls = getViewUserTicketNumbersAndStatusesCalls(totalTicketsToRequest, account, lotteryId)
   try {
-    const userTickets = await lotteryContract.viewUserTicketNumbersAndStatusesForLottery(
-      account,
-      lotteryId,
-      cursor,
-      perRequestLimit,
-    )
-
-    const completeTicketData = processRawTicketsResponse(userTickets)
+    const multicallRes = await multicallv2(lotteryV2Abi, calls)
+    const mergedMulticallResponse = mergeViewUserTicketNumbersMulticallResponse(multicallRes)
+    const completeTicketData = processRawTicketsResponse(mergedMulticallResponse)
     return completeTicketData
   } catch (error) {
     console.error(error)

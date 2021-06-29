@@ -4,7 +4,6 @@ import styled from 'styled-components'
 import { CardHeader, Card, CardBody, Text, CardFooter, ArrowBackIcon, Flex, Heading } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { LotteryStatus } from 'config/constants/types'
-import { fetchLottery, fetchTickets } from 'state/lottery/helpers'
 import { useGetUserLotteriesGraphData, useLottery } from 'state/hooks'
 import UnlockButton from 'components/UnlockButton'
 import FinishedRoundTable from './FinishedRoundTable'
@@ -36,8 +35,6 @@ const YourHistoryCard = () => {
 
   const handleHistoryRowClick = async (roundId) => {
     // TODO: Load in necessary lottery data. May not require fetch, as all this data is likely required for this component
-    // const lottery = await fetchLottery(roundId)
-    // const userTicketIds = await fetchTickets(roundId, account)
     setViewFinishedRound(true)
   }
 
