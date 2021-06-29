@@ -23,7 +23,7 @@ const StyledPredictionCard = styled(Card)`
   }
 `
 
-const StyledHeaderText = styled(Text)`
+const PredictionLive = styled(Text)`
   font-size: 28px;
   line-height: 1.1;
   font-weight: 600;
@@ -32,16 +32,17 @@ const StyledHeaderText = styled(Text)`
   }
 `
 
-const StyledText = styled(Text)`
+const PredictionOver = styled(Text)`
   font-size: 36px;
   line-height: 1.1;
   font-weight: 600;
+  max-width: 380px;
   ${({ theme }) => theme.mediaQueries.lg} {
     font-size: 50px;
   }
 `
 
-const StyledBalance = styled(Balance)`
+const PredictionWon = styled(Balance)`
   font-size: 36px;
   line-height: 1.1;
   font-weight: 600;
@@ -57,12 +58,22 @@ const StyledSkeleton = styled(Skeleton)`
   }
 `
 
-const StyledBNBSoFarText = styled(Text)`
+const PredictionBNBSoFar = styled(Text)`
   font-size: 22px;
   line-height: 1.1;
   font-weight: 600;
-  ${({ theme }) => theme.mediaQueries.lg} {
+  max-width: 160px;
+  ${({ theme }) => theme.mediaQueries.sm} {
     font-size: 24px;
+    max-width: 320px;
+  }
+`
+
+const PredictionTryNow = styled(Flex)`
+  align-items: center;
+  max-width: 120px;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    max-width: none;
   }
 `
 
@@ -106,32 +117,32 @@ const PredictionPromotionCard = () => {
   return (
     <StyledPredictionCard>
       <CardBody>
-        <StyledHeaderText mb="24px">{t('Predictions Now Live')}</StyledHeaderText>
-        <StyledText bold color="#7645d9">
+        <PredictionLive mb="24px">{t('Predictions Now Live')}</PredictionLive>
+        <PredictionOver bold color="#7645d9">
           {over}
-        </StyledText>
+        </PredictionOver>
         {bnbWonInUsd ? (
-          <StyledBalance mb="24px" color="#7645d9" bold prefix="$" decimals={0} value={bnbWonInUsd} />
+          <PredictionWon mb="24px" color="#7645d9" bold prefix="$" decimals={0} value={bnbWonInUsd} />
         ) : (
           <>
             <StyledSkeleton animation="pulse" variant="rect" mb="24px" width={180} />
             <div ref={observerRef} />
           </>
         )}
-        <StyledBNBSoFarText bold mb="24px">
+        <PredictionBNBSoFar bold mb="24px">
           {bnbSoFar}
-        </StyledBNBSoFarText>
+        </PredictionBNBSoFar>
         <Text color="textSubtle" mb="24px">
           *{t('Beta Version')}
         </Text>
         <Link href="https://pancakeswap.finance/prediction" id="homepage-prediction-cta">
           <Button px={['14px', null, null, null, '20px']}>
-            <Flex alignItems="center">
+            <PredictionTryNow>
               <Text color="white" bold fontSize="16px">
                 {t('Try Now')}
               </Text>
               <ArrowForwardIcon color="white" />
-            </Flex>
+            </PredictionTryNow>
           </Button>
         </Link>
       </CardBody>
