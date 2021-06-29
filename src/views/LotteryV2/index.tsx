@@ -1,16 +1,18 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
-import { Box, Flex, Heading, Skeleton, useModal } from '@pancakeswap/uikit'
-import { useWeb3React } from '@web3-react/core'
+import { Box, Flex, Heading, Skeleton } from '@pancakeswap/uikit'
 import { LotteryStatus } from 'config/constants/types'
 import PageSection from 'components/PageSection'
 import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'
-import { useAppDispatch } from 'state'
-import { useFetchLottery, useGetLotteriesGraphData, useGetUserLotteriesGraphData, useLottery } from 'state/hooks'
-import { fetchCurrentLottery, fetchPastLotteries, fetchPublicLotteryData, fetchUserLotteries } from 'state/lottery'
-import fetchUnclaimedUserRewards from 'state/lottery/fetchUnclaimedUserRewards'
-import { TITLE_BG, GET_TICKETS_BG, FINISHED_ROUNDS_BG, FINISHED_ROUNDS_BG_DARK } from './pageSectionStyles'
+import { useFetchLottery, useLottery } from 'state/hooks'
+import {
+  TITLE_BG,
+  GET_TICKETS_BG,
+  FINISHED_ROUNDS_BG,
+  FINISHED_ROUNDS_BG_DARK,
+  CHECK_PRIZES_BG,
+} from './pageSectionStyles'
 import useNextEventCountdown from './hooks/useNextEventCountdown'
 import useGetNextLotteryEvent from './hooks/useGetNextLotteryEvent'
 import useStatusTransitions from './hooks/useStatusTransitions'
@@ -19,9 +21,8 @@ import NextDrawCard from './components/NextDrawCard'
 import Countdown from './components/Countdown'
 import HistoryTabMenu from './components/HistoryTabMenu'
 import YourHistoryCard from './components/YourHistoryCard'
-import ClaimPrizesModal from './components/ClaimPrizesModal'
-import PrizeCollectionCard from './components/PrizeCollectionCard'
 import AllHistoryCard from './components/AllHistoryCard'
+import CheckPrizes from './components/CheckPrizes'
 
 const LotteryPage = styled.div`
   min-height: calc(100vh - 64px);
@@ -38,59 +39,21 @@ const LotteryV2 = () => {
   useFetchLottery()
   useStatusTransitions()
   const { t } = useTranslation()
-  const { account } = useWeb3React()
-  const dispatch = useAppDispatch()
   const { isDark, theme } = useTheme()
   const {
-    currentLotteryId,
     currentRound: { status, endTime },
   } = useLottery()
   const [historyTabMenuIndex, setHistoryTabMenuIndex] = useState(0)
   const endTimeAsInt = parseInt(endTime, 10)
   const { nextEventTime, postCountdownText, preCountdownText } = useGetNextLotteryEvent(endTimeAsInt, status)
   const secondsRemaining = useNextEventCountdown(nextEventTime)
-  const userLotteryData = useGetUserLotteriesGraphData()
-  const lotteriesData = useGetLotteriesGraphData()
-  const [unclaimedRewards, setUnclaimedRewards] = useState({ isFetchingRewards: true, rewards: [] })
-  const [hasPoppedClaimModal, setHasPoppedClaimModal] = useState(false)
-  // TODO: 'false' value here is having no impact
-  const [onPresentClaimModal] = useModal(<ClaimPrizesModal roundsToClaim={unclaimedRewards.rewards} />, false)
-
-  const fetchRewards = useCallback(async () => {
-    console.log('fetching rewards')
-    const unclaimedRewardsResponse = await fetchUnclaimedUserRewards(
-      account,
-      currentLotteryId,
-      userLotteryData,
-      lotteriesData,
-    )
-
-    setUnclaimedRewards({ isFetchingRewards: false, rewards: unclaimedRewardsResponse })
-  }, [account, userLotteryData, currentLotteryId, lotteriesData])
-
-  useEffect(() => {
-    // Check if user has rewards on page load and account change
-    if (userLotteryData && account && currentLotteryId && lotteriesData) {
-      fetchRewards()
-    }
-  }, [account, userLotteryData, currentLotteryId, lotteriesData, setUnclaimedRewards, fetchRewards])
-
-  useEffect(() => {
-    // Manage showing unclaimed rewards modal once per visit
-    if (unclaimedRewards.rewards.length > 0 && !hasPoppedClaimModal) {
-      setHasPoppedClaimModal(true)
-      onPresentClaimModal()
-    }
-  }, [unclaimedRewards, hasPoppedClaimModal, onPresentClaimModal])
-
-  // Data fetches for lottery phase transitions
 
   return (
     <LotteryPage>
-      <PageSection background={TITLE_BG} svgFill={theme.colors.overlay} index={3}>
+      <PageSection background={TITLE_BG} svgFill={theme.colors.overlay} index={4}>
         <Hero />
       </PageSection>
-      <TicketsSection background={GET_TICKETS_BG} hasCurvedDivider={false} index={2}>
+      <TicketsSection background={GET_TICKETS_BG} hasCurvedDivider={false} index={3}>
         <Flex flexDirection="column">
           {status === LotteryStatus.OPEN && (
             <Heading scale="xl" color="#ffffff" mb="24px" textAlign="center">
@@ -111,6 +74,9 @@ const LotteryV2 = () => {
           <NextDrawCard />
         </Flex>
       </TicketsSection>
+      <PageSection background={CHECK_PRIZES_BG} hasCurvedDivider={false} index={2}>
+        <CheckPrizes />
+      </PageSection>
       <PageSection
         background={isDark ? FINISHED_ROUNDS_BG_DARK : FINISHED_ROUNDS_BG}
         hasCurvedDivider={false}
@@ -127,16 +93,9 @@ const LotteryV2 = () => {
             />
           </Box>
           {historyTabMenuIndex === 0 ? <YourHistoryCard /> : <AllHistoryCard />}
-          <PrizeCollectionCard
-            unclaimedRewards={unclaimedRewards}
-            onSuccess={() => {
-              setUnclaimedRewards({ isFetchingRewards: false, rewards: [] })
-              dispatch(fetchUserLotteries({ account }))
-            }}
-            fetchRewards={fetchRewards}
-          />
         </Flex>
       </PageSection>
+
       <PageSection hasCurvedDivider={false} index={0}>
         <Flex>
           <img src="/images/lottery/tombola.png" alt="tombola bunny" height="auto" width="240px" />
