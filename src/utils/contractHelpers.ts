@@ -23,6 +23,8 @@ import {
   getPredictionsAddress,
   getChainlinkOracleAddress,
   getMulticallAddress,
+  getBunnySpecialCakeVaultAddress,
+  getBunnySpecialPredictionAddress,
 } from 'utils/addressHelpers'
 
 // ABI
@@ -51,6 +53,8 @@ import cakeVaultAbi from 'config/abi/cakeVault.json'
 import predictionsAbi from 'config/abi/predictions.json'
 import chainlinkOracleAbi from 'config/abi/chainlinkOracle.json'
 import MultiCallAbi from 'config/abi/Multicall.json'
+import bunnySpecialCakeVaultAbi from 'config/abi/bunnySpecialCakeVault.json'
+import bunnySpecialPredictionAbi from 'config/abi/bunnySpecialPrediction.json'
 
 const getContract = (abi: any, address: string, signer?: ethers.Signer | ethers.providers.Provider) => {
   const signerOrProvider = signer ?? simpleRpcProvider
@@ -131,4 +135,10 @@ export const getChainlinkOracleContract = (signer?: ethers.Signer | ethers.provi
 }
 export const getMulticallContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
   return getContract(MultiCallAbi, getMulticallAddress(), signer)
+}
+export const getBunnySpecialCakeVaultContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
+  return getContract(bunnySpecialCakeVaultAbi, getBunnySpecialCakeVaultAddress(), signer)
+}
+export const getBunnySpecialPredictionContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
+  return getContract(bunnySpecialPredictionAbi, getBunnySpecialPredictionAddress(), signer)
 }

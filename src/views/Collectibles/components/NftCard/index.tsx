@@ -25,7 +25,7 @@ export interface NftCardProps {
   nft: Nft
   canClaim?: boolean
   tokenIds?: number[]
-  onClaim?: () => ethers.providers.TransactionResponse
+  onClaim?: () => Promise<ethers.providers.TransactionResponse>
   refresh: () => void
 }
 

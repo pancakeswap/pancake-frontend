@@ -7,8 +7,9 @@ import { fetchWalletNfts } from 'state/collectibles'
 import { useGetCollectibles } from 'state/hooks'
 import NftCard from './NftCard'
 import NftGrid from './NftGrid'
-import BunnySpecialCard from './NftCard/BunnySpecialCard'
 import EasterNftCard from './NftCard/EasterNftCard'
+import BunnySpecialCakeVaultCard from './NftCard/BunnySpecialCakeVaultCard'
+import BunnySpecialPredictionCard from './NftCard/BunnySpeciaPredictionCard'
 
 /**
  * A map of bunnyIds to special campaigns (NFT distribution)
@@ -16,11 +17,11 @@ import EasterNftCard from './NftCard/EasterNftCard'
  *
  */
 const nftComponents = {
-  hiccup: BunnySpecialCard,
-  bullish: BunnySpecialCard,
   'easter-storm': EasterNftCard,
   'easter-flipper': EasterNftCard,
   'easter-caker': EasterNftCard,
+  'syrup-soak': BunnySpecialCakeVaultCard,
+  claire: BunnySpecialPredictionCard,
 }
 
 const NftList = () => {
@@ -35,7 +36,7 @@ const NftList = () => {
   return (
     <NftGrid>
       {orderBy(nfts, 'sortOrder').map((nft) => {
-        const Card = nftComponents[nft.identifier] ?? NftCard
+        const Card = nftComponents[nft.identifier] || NftCard
 
         return (
           <div key={nft.name}>

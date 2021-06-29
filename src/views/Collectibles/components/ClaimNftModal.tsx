@@ -10,7 +10,7 @@ import useToast from 'hooks/useToast'
 interface ClaimNftModalProps extends InjectedModalProps {
   nft: Nft
   onSuccess: () => void
-  onClaim: () => ethers.providers.TransactionResponse
+  onClaim: () => Promise<ethers.providers.TransactionResponse>
 }
 
 const ModalContent = styled.div`

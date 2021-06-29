@@ -21,6 +21,38 @@ export const nftSources: NftSource = {
 
 const Nfts: Nft[] = [
   {
+    name: 'Claire',
+    description: 'Can Claire the clairvoyant see what’s in the cards for you?',
+    images: {
+      lg: 'claire-lg.png',
+      md: 'claire-md.png',
+      sm: 'claire-sm.png',
+      ipfs: 'https://gateway.pinata.cloud/ipfs/QmRa2WbGnqdgUzrYXxZWv549BDxq3heYridJeoWGcebcU8/claire.png',
+    },
+    sortOrder: 999,
+    identifier: 'claire',
+    type: NftType.PANCAKE,
+    variationId: 17,
+  },
+  {
+    name: 'Syrup Soak',
+    description: 'Ahh... what could be sweeter than a syrupy soak?',
+    images: {
+      lg: 'soak-lg.png',
+      md: 'soak-md.png',
+      sm: 'soak-sm.png',
+      ipfs: 'https://gateway.pinata.cloud/ipfs/QmW3zLfdQpw9vWpgcDyR2WM9A34tTWvvYyjKc3JjhtL68z/syrup-soak.png',
+    },
+    video: {
+      webm: 'https://gateway.pinata.cloud/ipfs/QmW3zLfdQpw9vWpgcDyR2WM9A34tTWvvYyjKc3JjhtL68z/syrup-soak.webm',
+      mp4: 'https://gateway.pinata.cloud/ipfs/QmW3zLfdQpw9vWpgcDyR2WM9A34tTWvvYyjKc3JjhtL68z/syrup-soak.mp4',
+    },
+    sortOrder: 999,
+    identifier: 'syrup-soak',
+    type: NftType.PANCAKE,
+    variationId: 16,
+  },
+  {
     name: 'Mixie v1',
     description: 'Stories were told, and songs were sung, about Chef Mixie’s pancakes and her big Syrup gun.',
     images: {

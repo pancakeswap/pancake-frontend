@@ -23,8 +23,10 @@ const EasterNftCard: React.FC<NftCardProps> = ({ nft, ...props }) => {
   const { team } = profile ?? {}
   const easterNftContract = useEasterNftContract()
 
-  const handleClaim = (): ethers.providers.TransactionResponse => {
-    return easterNftContract.mintNFT()
+  const handleClaim = async () => {
+    const response: ethers.providers.TransactionResponse = await easterNftContract.mintNFT()
+    await response.wait()
+    return response
   }
 
   useEffect(() => {

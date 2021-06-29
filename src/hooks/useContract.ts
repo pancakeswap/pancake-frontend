@@ -23,6 +23,8 @@ import {
   getChainlinkOracleContract,
   getSouschefV2Contract,
   getLotteryV2Contract,
+  getBunnySpecialCakeVaultContract,
+  getBunnySpecialPredictionContract,
 } from 'utils/contractHelpers'
 
 /**
@@ -140,4 +142,14 @@ export const usePredictionsContract = () => {
 export const useChainlinkOracleContract = () => {
   const provider = useWeb3Provider()
   return useMemo(() => getChainlinkOracleContract(provider.getSigner()), [provider])
+}
+
+export const useSpecialBunnyCakeVaultContract = () => {
+  const provider = useWeb3Provider()
+  return useMemo(() => getBunnySpecialCakeVaultContract(provider.getSigner()), [provider])
+}
+
+export const useSpecialBunnyPredictionContract = () => {
+  const provider = useWeb3Provider()
+  return useMemo(() => getBunnySpecialPredictionContract(provider.getSigner()), [provider])
 }
