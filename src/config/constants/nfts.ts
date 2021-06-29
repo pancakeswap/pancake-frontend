@@ -19,6 +19,11 @@ export const nftSources: NftSource = {
   },
 }
 
+/**
+ * NOTE: https://cloudflare-ipfs.com does not support video streaming so for the video URLS we need to use
+ * https://gateway.pinata.cloud
+ */
+
 const Nfts: Nft[] = [
   {
     name: 'Claire',
@@ -44,8 +49,8 @@ const Nfts: Nft[] = [
       ipfs: 'https://cloudflare-ipfs.com/ipfs/QmW3zLfdQpw9vWpgcDyR2WM9A34tTWvvYyjKc3JjhtL68z/syrup-soak.png',
     },
     video: {
-      webm: 'https://cloudflare-ipfs.com/ipfs/QmW3zLfdQpw9vWpgcDyR2WM9A34tTWvvYyjKc3JjhtL68z/syrup-soak.webm',
-      mp4: 'https://cloudflare-ipfs.com/ipfs/QmW3zLfdQpw9vWpgcDyR2WM9A34tTWvvYyjKc3JjhtL68z/syrup-soak.mp4',
+      webm: 'https://gateway.pinata.cloud/ipfs/QmW3zLfdQpw9vWpgcDyR2WM9A34tTWvvYyjKc3JjhtL68z/syrup-soak.webm',
+      mp4: 'https://gateway.pinata.cloud/ipfs/QmW3zLfdQpw9vWpgcDyR2WM9A34tTWvvYyjKc3JjhtL68z/syrup-soak.mp4',
     },
     sortOrder: 999,
     identifier: 'syrup-soak',
@@ -104,8 +109,8 @@ const Nfts: Nft[] = [
       ipfs: 'https://cloudflare-ipfs.com/ipfs/QmWFQdggxnAkgFNBWixT6v7nrgEnYfYDxG5A9u42aHhU6U/easter-champion-storm.png',
     },
     video: {
-      webm: 'https://cloudflare-ipfs.com/ipfs/QmWFQdggxnAkgFNBWixT6v7nrgEnYfYDxG5A9u42aHhU6U/easter-champion-storm.webm',
-      mp4: 'https://cloudflare-ipfs.com/ipfs/QmWFQdggxnAkgFNBWixT6v7nrgEnYfYDxG5A9u42aHhU6U/easter-champion-storm.mp4',
+      webm: 'https://gateway.pinata.cloud/ipfs/QmWFQdggxnAkgFNBWixT6v7nrgEnYfYDxG5A9u42aHhU6U/easter-champion-storm.webm',
+      mp4: 'https://gateway.pinata.cloud/ipfs/QmWFQdggxnAkgFNBWixT6v7nrgEnYfYDxG5A9u42aHhU6U/easter-champion-storm.mp4',
     },
     sortOrder: 999,
     identifier: 'easter-champion-storm',
