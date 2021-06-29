@@ -11,13 +11,13 @@ const BunnySpecialCakeVaultCard: React.FC<NftCardProps> = ({ nft, ...props }) =>
   const { variationId } = nft
 
   const handleClaim = (): ethers.providers.TransactionResponse => {
-    return bunnySpecialCakeVaultContract.mintNFT(variationId)
+    return bunnySpecialCakeVaultContract.mintNFT()
   }
 
   useEffect(() => {
     const fetchClaimStatus = async () => {
-      const canClaimSingle = await bunnySpecialCakeVaultContract.canClaim(account)
-      setIsClaimable(canClaimSingle)
+      const canClaim = await bunnySpecialCakeVaultContract.canClaim(account)
+      setIsClaimable(canClaim)
     }
 
     if (account) {
