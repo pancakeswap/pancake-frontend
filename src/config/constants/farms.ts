@@ -43,7 +43,7 @@ const farms: FarmConfig[] = [
     lpSymbol: 'ADX-BUSD LP',
     lpAddresses: {
       97: '',
-      56: '0xec6557348085aa57c72514d67070dc863c0a5a8c',
+      56: '0x0648ff5de80adf54aac07ece2490f50a418dde23',
     },
     token: tokens.adx,
     quoteToken: tokens.busd,
