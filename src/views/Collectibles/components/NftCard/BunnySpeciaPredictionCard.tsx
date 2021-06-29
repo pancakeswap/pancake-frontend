@@ -11,8 +11,11 @@ const BunnySpecialPredictionCard: React.FC<NftCardProps> = ({ nft, ...props }) =
   const bunnySpecialPredictionContract = useSpecialBunnyPredictionContract()
   const { variationId } = nft
 
-  const handleClaim = (): ethers.providers.TransactionResponse => {
-    return bunnySpecialPredictionContract.mintNFT()
+  const handleClaim = async () => {
+    const response: ethers.providers.TransactionResponse = await bunnySpecialPredictionContract.mintNFT()
+    await response.wait()
+    setIsClaimable(false)
+    return response
   }
 
   useEffect(() => {
