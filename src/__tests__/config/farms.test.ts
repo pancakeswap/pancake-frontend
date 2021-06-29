@@ -3,7 +3,11 @@ import farms from 'config/constants/farms'
 import { Farm } from 'state/types'
 import { getBep20Contract, getLpContract } from 'utils/contractHelpers'
 
-const farmsToTest: [number, Farm][] = farms.filter((farm) => farm.pid !== 0).map((farm) => [farm.pid, farm])
+// Test only against the last 10 farms, for performance concern
+const farmsToTest: [number, Farm][] = farms
+  .filter((farm) => farm.pid !== 0)
+  .slice(0, 10)
+  .map((farm) => [farm.pid, farm])
 
 describe('Config farms', () => {
   it.each(farmsToTest)('Farm #%d has an unique pid', (pid) => {
