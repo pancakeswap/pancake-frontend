@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2021-06-25T03:12:28.548Z",
+  "timestamp": "2021-06-29T07:59:03.558Z",
   "version": {
     "major": 2,
     "minor": 16,
-    "patch": 3
+    "patch": 4
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [
@@ -27,6 +27,14 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0x3ee2200efb3400fabb9aacf31297cbdd1d435d47.png"
+    },
+    {
+      "name": "AdEx Network",
+      "symbol": "ADX",
+      "address": "0x6bfF4Fb161347ad7de4A625AE5aa3A1CA7077819",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x6bfF4Fb161347ad7de4A625AE5aa3A1CA7077819.png"
     },
     {
       "name": "My Neigbor Alice",

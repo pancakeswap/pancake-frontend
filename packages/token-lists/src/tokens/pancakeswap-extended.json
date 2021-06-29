@@ -1630,5 +1630,13 @@
     "chainId": 56,
     "decimals": 18,
     "logoURI": "https://tokens.pancakeswap.finance/images/0x5A3010d4d8D3B5fB49f8B6E57FB9E48063f16700.png"
+  },
+  {
+    "name": "AdEx Network",
+    "symbol": "ADX",
+    "address": "0x6bfF4Fb161347ad7de4A625AE5aa3A1CA7077819",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0x6bfF4Fb161347ad7de4A625AE5aa3A1CA7077819.png"
   }
 ]
