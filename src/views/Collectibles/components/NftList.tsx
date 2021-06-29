@@ -7,7 +7,6 @@ import { fetchWalletNfts } from 'state/collectibles'
 import { useGetCollectibles } from 'state/hooks'
 import NftCard from './NftCard'
 import NftGrid from './NftGrid'
-import BunnySpecialCard from './NftCard/BunnySpecialCard'
 import EasterNftCard from './NftCard/EasterNftCard'
 import BunnySpecialCakeVaultCard from './NftCard/BunnySpecialCakeVaultCard'
 import BunnySpecialPredictionCard from './NftCard/BunnySpeciaPredictionCard'
@@ -18,8 +17,6 @@ import BunnySpecialPredictionCard from './NftCard/BunnySpeciaPredictionCard'
  *
  */
 const nftComponents = {
-  hiccup: BunnySpecialCard,
-  bullish: BunnySpecialCard,
   'easter-storm': EasterNftCard,
   'easter-flipper': EasterNftCard,
   'easter-caker': EasterNftCard,
