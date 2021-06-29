@@ -4178,6 +4178,16 @@ const farms: FarmConfig[] = [
     token: tokens.bake,
     quoteToken: tokens.wbnb,
   },
+   {
+    pid: 11,
+    lpSymbol: 'PADI-BNB LP',
+    lpAddresses: {
+      97: '0xe68d443bde2ec6aa61d23b12eb401e13a5b77386',
+      56: '0x3Da30727ed0626b78C212e81B37B97A8eF8A25bB',
+    },
+    token: tokens.PADI,
+    quoteToken: tokens.wbnb,
+  },
 ]
 
 export default farms
