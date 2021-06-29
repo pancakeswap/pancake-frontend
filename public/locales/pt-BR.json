@@ -878,7 +878,7 @@
   "Votes (%count%)": "Votos (%count%)",
   "Snapshot": "Snapshot",
   "Choices": "Escolhas",
-  "Unable to sign payload": "Unable to sign payload",
+  "Unable to sign payload": "Não é possível assinar a carga",
   "Identifier": "Identificador",
   "Current Results": "Resultados atuais",
   "Vote cast!": "Voto expresso!",
