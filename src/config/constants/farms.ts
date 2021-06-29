@@ -39,6 +39,16 @@ const farms: FarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 424,
+    lpSymbol: 'ADX-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0xec6557348085aa57c72514d67070dc863c0a5a8c',
+    },
+    token: tokens.adx,
+    quoteToken: tokens.busd,
+  },
+  {
     pid: 423,
     lpSymbol: 'USDC-USDT LP',
     lpAddresses: {
