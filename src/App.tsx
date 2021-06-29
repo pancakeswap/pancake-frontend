@@ -60,7 +60,6 @@ const App: React.FC = () => {
         <Switch>
           <Route exact path={routes.LANDING}><Landing {...LandingProps} /></Route>
           <Menu>
-            <Route exact path={routes.HOME}><Home/></Route>
             <Route exact path={routes.GRAVES}><HomeC /></Route>
             <Route exact path={routes.TOMBS}><Tombs /></Route>
           </Menu>
