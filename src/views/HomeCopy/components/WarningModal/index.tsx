@@ -9,11 +9,11 @@ const WarningModal: React.FC<{ url, onDismiss?: () => void }> = ({ url, onDismis
   return (
     <Modal title="WarningModalWarning" onDismiss={onDismiss}>
       <TicketsList>
-        WarningModalLottery ticket purchases are final.
+      We do not recommend buying known scammed tokens, 
         <br />
-        WarningModalYour CAKE will not be returned to you after you spend it to buy tickets.
+        this is highly risky and may result in financial lost and even rewarding the scammers. Trade cautiously.
         <br />
-        WarningModalTickets are only valid for one lottery draw, and will be burned after the draw.
+        You can always wait for our secondary market to buy these NFTs from others.
         <br />
       </TicketsList>
       <ModalActions>
