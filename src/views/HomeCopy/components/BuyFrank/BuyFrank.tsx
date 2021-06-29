@@ -24,17 +24,28 @@ interface BuyFrankProps {
   details: Details
 }
 
-const BuyFrank: React.FC<BuyFrankProps> = ({ details: { result: { tokenWithdrawalDate, nftRevivalDate, amount } }, details }) => {
-
+const BuyFrank: React.FC<BuyFrankProps> = ({ details: { result: { tokenWithdrawalDate, nftRevivalDate, amount, paidUnlockFee } }, details }) => {
   const currentDate = Math.floor(Date.now() / 1000);
-  const [nftTimer, setNftTimer] = useState(parseInt(nftRevivalDate) - currentDate);
-  const [tokenTimer, setTokenTimer] = useState(parseInt(tokenWithdrawalDate) - currentDate);
+  const initialNftTime = nftRevivalDate - currentDate;
+  const nftTimeObj = new Date(0);
+  nftTimeObj.setSeconds(initialNftTime); // specify value for SECONDS here
+  const displayNftTime = nftTimeObj.toISOString().substr(11, 8);
+
+  const initialWithdrawCooldownTime = parseInt(tokenWithdrawalDate) - currentDate;
+  const withdrawCooldownTimeObj = new Date(0);
+  withdrawCooldownTimeObj.setSeconds(initialWithdrawCooldownTime); // specify value for SECONDS here
+  const displayWithdrawCooldownTime = withdrawCooldownTimeObj.toISOString().substr(11, 8);
 
   const [onPresent1] = useModal(<ModalInput inputTitle="Stake $ZMBE" />);
   return (
-
-
-    amount !== "0" ?
+    // eslint-disable-next-line no-nested-ternary
+    paidUnlockFee ?
+      amount === '0' ?
+        <div className="frank-card">
+        <span className="total-earned text-shadow">
+                Unlocked
+        </span>
+        </div> :
       <div className="frank-card">
         <div className="space-between">
           {currentDate >= parseInt(nftRevivalDate) ?
@@ -43,7 +54,7 @@ const BuyFrank: React.FC<BuyFrankProps> = ({ details: { result: { tokenWithdrawa
               <div className="small-text">
                 <span className="white-color">NFT Timer</span>
               </div>
-              <span className="total-earned text-shadow">{format(nftTimer, 'HH:mm:ss')}</span>
+              <span className="total-earned text-shadow">{displayNftTime}</span>
             </div>}
           {currentDate >= parseInt(tokenWithdrawalDate) ?
             <span className="total-earned text-shadow">No Withdraw Fees</span> :
@@ -52,15 +63,14 @@ const BuyFrank: React.FC<BuyFrankProps> = ({ details: { result: { tokenWithdrawa
                 <span className="white-color">5% Withdraw fee is active:</span>
               </div>
               <span className="total-earned text-shadow">
-                {format(tokenTimer, 'HH:mm:ss')}</span>
+                {displayWithdrawCooldownTime}</span>
             </div>}
         </div>
       </div> :
       <div className="frank-card">
-        <div className="small-text">
-          <span className="white-color">Buy Zombie</span>
-        </div>
-        <button onKeyDown={onPresent1} onClick={onPresent1} className="btn w-100" type="button">Buy with FTM</button>
+        <span className="total-earned text-shadow">
+                Locked
+        </span>
       </div>
   )
 }

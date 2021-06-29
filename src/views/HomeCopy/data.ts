@@ -145,7 +145,7 @@ pendingZombie: '0'
   },
   {
     id: 8,
-    pid: 7,
+    pid: 8,
     name: 'Dragon Farm Finance Common',
     path: 'images/rugZombie/CommonDragonFarmFinance.mp4',
     type: 'video',
@@ -165,7 +165,7 @@ pendingZombie: '0'
   },
   {
     id: 9,
-    pid: 8,
+    pid: 7,
     name: 'yPanda Common',
     path: 'images/rugZombie/yPandaCommon.jpeg',
     type: 'image',

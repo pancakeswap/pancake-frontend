@@ -53,7 +53,6 @@ const HomeC: React.FC = () => {
           .then(res => {
             tokenInfo.pendingZombie = res;
           })
-        console.log(tokenInfo)
 
         return tokenInfo;
       })
