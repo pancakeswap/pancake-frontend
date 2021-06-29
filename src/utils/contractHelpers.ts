@@ -23,6 +23,8 @@ import {
   getPredictionsAddress,
   getChainlinkOracleAddress,
   getMulticallAddress,
+  getBunnySpecialCakeVaultAddress,
+  getBunnySpecialPredictionAddress,
 } from 'utils/addressHelpers'
 
 // ABI
@@ -131,4 +133,10 @@ export const getChainlinkOracleContract = (signer?: ethers.Signer | ethers.provi
 }
 export const getMulticallContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
   return getContract(MultiCallAbi, getMulticallAddress(), signer)
+}
+export const getBunnySpecialCakeVaultContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
+  return getErc721Contract(getBunnySpecialCakeVaultAddress(), signer)
+}
+export const getBunnySpecialPredictionContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
+  return getErc721Contract(getBunnySpecialPredictionAddress(), signer)
 }
