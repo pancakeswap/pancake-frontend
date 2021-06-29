@@ -8,7 +8,7 @@ import { fetchVotes } from 'state/voting'
 import useToast from 'hooks/useToast'
 import { useTranslation } from 'contexts/Localization'
 import UnlockButton from 'components/UnlockButton'
-import CastVoteModal from '../components/Proposal/CastVoteModal'
+import CastVoteModal from '../components/CastVoteModal'
 
 interface VoteProps extends CardProps {
   proposal: Proposal

@@ -38,20 +38,17 @@ const useGetVotingPower = (block?: number, isActive = true): State & { isLoading
       try {
         const eligiblePools = await getActivePools(block)
         const poolAddresses = eligiblePools.map(({ contractAddress }) => getAddress(contractAddress))
-        const { cakeBalance, cakeBnbLpBalance, cakePoolBalance, total, poolsBalance, ...rest } = await getVotingPower(
-          account,
-          poolAddresses,
-          block,
-        )
+        const { cakeBalance, cakeBnbLpBalance, cakePoolBalance, total, poolsBalance, cakeVaultBalance } =
+          await getVotingPower(account, poolAddresses, block)
 
         if (isActive) {
           setVotingPower((prevVotingPower) => ({
             ...prevVotingPower,
-            ...rest,
             cakeBalance: new BigNumber(cakeBalance),
             cakeBnbLpBalance: new BigNumber(cakeBnbLpBalance),
             cakePoolBalance: new BigNumber(cakePoolBalance),
             poolsBalance: new BigNumber(poolsBalance),
+            cakeVaultBalance: new BigNumber(cakeVaultBalance),
             total: new BigNumber(total),
           }))
         }
