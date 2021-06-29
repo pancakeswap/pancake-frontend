@@ -13,6 +13,7 @@ import SuspenseWithChunkError from './components/SuspenseWithChunkError'
 // import Graves from './views/Graves'
 import history from './routerHistory'
 import GlobalStyle from './style/Global'
+import HomeC from './views/HomeCopy'
 // import Crypts from './views/Crypts'
 
 // Route-based code splitting
@@ -59,8 +60,9 @@ const App: React.FC = () => {
         <Switch>
           <Route exact path={routes.LANDING}><Landing {...LandingProps} /></Route>
           <Menu>
-          <Route exact path={routes.GRAVES}><Home /></Route>
-          <Route exact path={routes.TOMBS}><Tombs /></Route>
+            <Route exact path={routes.HOME}><Home/></Route>
+            <Route exact path={routes.GRAVES}><HomeC /></Route>
+            <Route exact path={routes.TOMBS}><Tombs /></Route>
           </Menu>
         </Switch>
       </SuspenseWithChunkError>

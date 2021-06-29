@@ -15,13 +15,8 @@ import Table from './components/Table';
 import './HomeCopy.Styles.css'
 import tableData from './data';
 
-
-
 let web3;
 let accountAddress;
-
-
-
 
 const HomeC: React.FC = () => {
 
@@ -36,7 +31,7 @@ const HomeC: React.FC = () => {
   const [bnbInBusd, setBnbInBusd] = useState(0);
 
   // if allowance === 0 show the approve zombie don't call drFrankenstain
-  // if allowance > 0 if(grave) paidUnlockFee === true amount 
+  // if allowance > 0 if(grave) paidUnlockFee === true amount
 
   useEffect(() => {
     // eslint-disable-next-line eqeqeq

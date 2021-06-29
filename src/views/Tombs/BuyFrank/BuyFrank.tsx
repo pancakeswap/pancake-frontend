@@ -21,9 +21,11 @@ interface BuyFrankProps {
 }
 
 const BuyFrank: React.FC<BuyFrankProps> = ({ details: { result: { tokenWithdrawalDate, nftRevivalDate, amount } }, details }) => {
-
   const currentDate = Math.floor(Date.now() / 1000);
-  const [tokenTimer, setTokenTimer] = useState(parseInt(tokenWithdrawalDate) - currentDate);
+  const initialWithdrawCooldownTime = parseInt(tokenWithdrawalDate) - currentDate;
+  const withdrawCooldownTimeObj = new Date(0);
+  withdrawCooldownTimeObj.setSeconds(initialWithdrawCooldownTime); // specify value for SECONDS here
+  const displayWithdrawCooldownTime = withdrawCooldownTimeObj.toISOString().substr(11, 8);
 
   const [onPresent1] = useModal(<ModalInput inputTitle="Stake $ZMBE" />);
   return (
@@ -39,7 +41,7 @@ const BuyFrank: React.FC<BuyFrankProps> = ({ details: { result: { tokenWithdrawa
                 <span className="white-color">5% Withdraw fee is active:</span>
               </div>
               <span className="total-earned text-shadow">
-                {format(tokenTimer, 'HH:mm:ss')}</span>
+                {displayWithdrawCooldownTime}</span>
             </div>}
         </div>
       </div> :
@@ -47,8 +49,8 @@ const BuyFrank: React.FC<BuyFrankProps> = ({ details: { result: { tokenWithdrawa
         <div className="small-text">
           <span className="white-color">Buy Zombie</span>
         </div>
-        <button onKeyDown={onPresent1} onClick={onPresent1} className="btn w-100" type="button">Buy with FTM</button>
-      </div>
+        <span className="total-earned text-shadow">
+                Pair LP</span>      </div>
   )
 }
 

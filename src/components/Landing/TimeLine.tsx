@@ -59,7 +59,7 @@ const TimeLine = () => {
                   </p>
                   <p className="paragraph-18">Click on the Select a Currency button, and enter the $ZMBE token contract:<br />
                     <a href="/" target="_blank">
-                    0xa3473B7b44B63a577CFa56474dfb0b2E238D4baD
+                    N/A
                     </a>
                     </p>
                   {/* <p className="paragraph-17">
