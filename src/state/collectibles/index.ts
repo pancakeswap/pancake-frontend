@@ -6,6 +6,7 @@ import { NftType } from 'config/constants/types'
 import { getAddress } from 'utils/addressHelpers'
 import { getErc721Contract } from 'utils/contractHelpers'
 import { getNftByTokenId } from 'utils/collectibles'
+import { ethers } from 'ethers'
 
 const initialState: CollectiblesState = {
   isInitialized: false,
@@ -27,9 +28,11 @@ export const fetchWalletNfts = createAsyncThunk<NftSourceItem[], string>(
 
       const getTokenIdAndData = async (index: number) => {
         try {
-          const tokenId = await contract.tokenOfOwnerByIndex(account, index)
+          const tokenIdBn: ethers.BigNumber = await contract.tokenOfOwnerByIndex(account, index)
+          const tokenId = tokenIdBn.toNumber()
+
           const walletNft = await getNftByTokenId(address, tokenId)
-          return [Number(tokenId), walletNft.identifier]
+          return [tokenId, walletNft.identifier]
         } catch (error) {
           console.error('getTokenIdAndData', error)
           return null

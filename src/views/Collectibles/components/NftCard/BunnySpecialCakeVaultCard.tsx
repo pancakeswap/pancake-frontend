@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { ethers } from 'ethers'
 import { useSpecialBunnyCakeVaultContract } from 'hooks/useContract'
+import { getBunnySpecialCakeVaultContract } from 'utils/contractHelpers'
 import NftCard, { NftCardProps } from './index'
 
 const BunnySpecialCakeVaultCard: React.FC<NftCardProps> = ({ nft, ...props }) => {
@@ -16,7 +17,8 @@ const BunnySpecialCakeVaultCard: React.FC<NftCardProps> = ({ nft, ...props }) =>
 
   useEffect(() => {
     const fetchClaimStatus = async () => {
-      const canClaim = await bunnySpecialCakeVaultContract.canClaim(account)
+      const contract = getBunnySpecialCakeVaultContract()
+      const canClaim = await contract.canClaim(account)
       setIsClaimable(canClaim)
     }
 
