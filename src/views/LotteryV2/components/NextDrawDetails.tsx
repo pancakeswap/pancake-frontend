@@ -13,6 +13,16 @@ const Wrapper = styled(Flex)`
   padding: 24px;
 `
 
+const RewardsInner = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  row-gap: 16px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    grid-template-columns: repeat(4, 1fr);
+  }
+`
+
 const NextDrawDetails = () => {
   const { t } = useTranslation()
   const {
@@ -32,7 +42,7 @@ const NextDrawDetails = () => {
       <Text fontSize="14px" mb="12px">
         {t('Match the winning number in the same order to share prizes. Current prizes up for grabs:')}
       </Text>
-      <Flex flexWrap="wrap">
+      <RewardsInner>
         <RewardsMatch rewardBracket={5} cakeAmount={getCakeRewards(5)} />
         <RewardsMatch rewardBracket={4} cakeAmount={getCakeRewards(4)} />
         <RewardsMatch rewardBracket={3} cakeAmount={getCakeRewards(3)} />
@@ -40,7 +50,7 @@ const NextDrawDetails = () => {
         <RewardsMatch rewardBracket={1} cakeAmount={getCakeRewards(1)} />
         <RewardsMatch rewardBracket={0} cakeAmount={getCakeRewards(0)} />
         <RewardsMatch rewardBracket={0} cakeAmount={cakeToBurn} isBurn />
-      </Flex>
+      </RewardsInner>
     </Wrapper>
   )
 }
