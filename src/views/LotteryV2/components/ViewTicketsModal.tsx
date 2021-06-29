@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { Modal, useModal, Flex, Button, Box, Ticket, useTooltip, Skeleton, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
+import { LotteryStatus } from 'config/constants/types'
 import { useLottery } from 'state/hooks'
 import { fetchLottery } from 'state/lottery/helpers'
 import useTheme from 'hooks/useTheme'
@@ -29,9 +30,14 @@ const ViewTicketsModal: React.FC<ViewTicketsModalProps> = ({ onDismiss, roundId 
   const { account } = useWeb3React()
   const { t } = useTranslation()
   const { theme } = useTheme()
-  const { currentLotteryId, currentRound } = useLottery()
+  const {
+    currentLotteryId,
+    isTransitioning,
+    currentRound: { status, userTickets },
+  } = useLottery()
   const [onPresentBuyTicketModal] = useModal(<BuyTicketsModal />)
   const isPreviousRound = roundId !== currentLotteryId
+  const ticketBuyIsDisabled = status !== LotteryStatus.OPEN || isTransitioning
 
   useEffect(() => {
     if (isPreviousRound) {
@@ -55,13 +61,13 @@ const ViewTicketsModal: React.FC<ViewTicketsModalProps> = ({ onDismiss, roundId 
               {t('Your tickets')}
             </Text>
             <ScrollBox>
-              {currentRound.userTickets.tickets.map((ticket, index) => {
+              {userTickets.tickets.map((ticket, index) => {
                 return <TicketNumber key={ticket.id} localId={index + 1} {...ticket} />
               })}
             </ScrollBox>
           </Flex>
           <Flex borderTop={`1px solid ${theme.colors.cardBorder}`} alignItems="center" justifyContent="center">
-            <BuyTicketsButton mt="24px" width="100%" />
+            <BuyTicketsButton disabled={ticketBuyIsDisabled} mt="24px" width="100%" />
           </Flex>
         </>
       )}

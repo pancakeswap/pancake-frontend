@@ -5,13 +5,16 @@ import { useLottery } from 'state/hooks'
 import { LotteryStatus } from 'config/constants/types'
 import BuyTicketsModal from './BuyTicketsModal'
 
-const BuyTicketsButton: React.FC<ButtonProps> = ({ ...props }) => {
+interface BuyTicketsButtonProps extends ButtonProps {
+  disabled?: boolean
+}
+
+const BuyTicketsButton: React.FC<BuyTicketsButtonProps> = ({ disabled, ...props }) => {
   const { t } = useTranslation()
   const [onPresentBuyTicketsModal] = useModal(<BuyTicketsModal />)
   const {
     currentRound: { status },
   } = useLottery()
-  const canBuyTickets = status === LotteryStatus.OPEN
 
   const getBuyButtonText = () => {
     if (status === LotteryStatus.OPEN) {
@@ -25,7 +28,7 @@ const BuyTicketsButton: React.FC<ButtonProps> = ({ ...props }) => {
   }
 
   return (
-    <Button {...props} disabled={!canBuyTickets} onClick={onPresentBuyTicketsModal}>
+    <Button {...props} disabled={disabled} onClick={onPresentBuyTicketsModal}>
       {getBuyButtonText()}
     </Button>
   )

@@ -11,6 +11,7 @@ interface PublicLotteryData {
 
 const initialState: LotteryState = {
   currentLotteryId: null,
+  isTransitioning: false,
   maxNumberTicketsPerBuyOrClaim: null,
   currentRound: {
     isLoading: true,
@@ -81,6 +82,13 @@ export const fetchUserLotteries = createAsyncThunk<LotteryUserGraphEntity, { acc
   },
 )
 
+export const setLotteryIsTransitioning = createAsyncThunk<{ isTransitioning: boolean }, { isTransitioning: boolean }>(
+  `lottery/setIsTransitioning`,
+  async ({ isTransitioning }) => {
+    return { isTransitioning }
+  },
+)
+
 export const LotterySlice = createSlice({
   name: 'Lottery',
   initialState,
@@ -111,6 +119,12 @@ export const LotterySlice = createSlice({
     builder.addCase(fetchUserLotteries.fulfilled, (state, action: PayloadAction<LotteryUserGraphEntity>) => {
       state.userLotteryData = action.payload
     })
+    builder.addCase(
+      setLotteryIsTransitioning.fulfilled,
+      (state, action: PayloadAction<{ isTransitioning: boolean }>) => {
+        state.isTransitioning = action.payload.isTransitioning
+      },
+    )
   },
 })
 

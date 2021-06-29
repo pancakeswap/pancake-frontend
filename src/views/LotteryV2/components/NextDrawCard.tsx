@@ -51,10 +51,12 @@ const NextDrawCard = () => {
   const { account } = useWeb3React()
   const {
     currentLotteryId,
+    isTransitioning,
     currentRound: { endTime, amountCollectedInCake, userTickets, status },
   } = useLottery()
   const [onPresentViewTicketsModal] = useModal(<ViewTicketsModal roundId={currentLotteryId} />)
   const [isExpanded, setIsExpanded] = useState(true)
+  const ticketBuyIsDisabled = status !== LotteryStatus.OPEN || isTransitioning
 
   // TODO: Re-enable in prod
   //   const cakePriceBusd = usePriceCakeBusd()
@@ -178,7 +180,7 @@ const NextDrawCard = () => {
                 )}
               </Flex>
             )}
-            <BuyTicketsButton maxWidth="280px" />
+            <BuyTicketsButton disabled={ticketBuyIsDisabled} maxWidth="280px" />
           </Flex>
         </Grid>
       </CardBody>
