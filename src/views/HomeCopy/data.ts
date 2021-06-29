@@ -6,7 +6,7 @@ const tableData = [
   {
     id: 1,
     pid: 0,
-    name: 'Basic Zombie',
+    name: 'RugZombie Common',
     path: 'images/rugZombie/BasicZombie.gif',
     type: 'image',
     withdrawalCooldown: '2 days',
@@ -26,7 +26,7 @@ pendingZombie: '0'
   {
     id: 2,
     pid: 1,
-    name: 'Viking Brains',
+    name: 'VikingSwap Common',
     path: 'images/rugZombie/VikingBrains.jpeg',
     type: 'image',
     withdrawalCooldown: '3 days',
@@ -46,7 +46,7 @@ pendingZombie: '0'
   {
     id: 3,
     pid: 2,
-    name: 'ZombieSlayer',
+    name: 'MonsterSlayer Rare',
     path: 'images/rugZombie/ZombieSlayer.gif',
     type: 'image',
     withdrawalCooldown: '3 days',
@@ -66,7 +66,7 @@ pendingZombie: '0'
   {
     id: 4,
     pid: 3,
-    name: 'Raremoon',
+    name: 'Fairmoon Rare',
     path: 'images/rugZombie/Raremoon.jpeg',
     type: 'image',
     withdrawalCooldown: '3 days',
@@ -126,7 +126,7 @@ pendingZombie: '0'
   {
     id: 7,
     pid: 6,
-    name: 'yApe Common',
+    name: 'Gorilla Yield Common',
     path: 'images/rugZombie/yApeCommon.jpeg',
     type: 'image',
     withdrawalCooldown: '3 days',
@@ -166,7 +166,7 @@ pendingZombie: '0'
   {
     id: 9,
     pid: 8,
-    name: 'yPanda Common',
+    name: 'Yield Panda Common',
     path: 'images/rugZombie/yPandaCommon.jpeg',
     type: 'image',
     withdrawalCooldown: '3 days',

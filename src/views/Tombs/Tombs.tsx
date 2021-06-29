@@ -55,7 +55,7 @@ const Tombs: React.FC = () => {
           Tombs
         </Heading>
         <Heading color="text"> 
-          Stake Liquidity Pool (LP) tokens to earn.
+          Stake $ZMBE to Earn NFTs
         </Heading>
       </PageHeader>
       <div>

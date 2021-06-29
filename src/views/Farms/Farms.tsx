@@ -356,7 +356,7 @@ const Farms: React.FC = () => {
           {t('Farms')}
         </Heading>
         <Heading size='lg' color='text'>
-          {t('Stake Liquidity Pool (LP) tokens to earn.')}
+          {t('Stake $ZMBE to Earn NFTs')}
         </Heading>
       </PageHeader>
       <MigrationV2 />

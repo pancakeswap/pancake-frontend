@@ -11,8 +11,7 @@ import { getFullDisplayBalance } from 'utils/formatBalance'
 import React from 'react';
 import BigNumber from 'bignumber.js'
 import { getAddress, getDrFrankensteinAddress } from 'utils/addressHelpers';
-import { useDrFrankenstein, useERC20 } from '../../../hooks/useContract';
-import StakeModal from '../../HomeCopy/components/StakeModal';
+import { useERC20 } from '../../../hooks/useContract';
 import StakeLpTokenModal from '../StakeLpTokenModal';
 import WithdrawLpModal from '../WithdrawLpModal';
 
@@ -50,20 +49,13 @@ interface StartFarmingProps {
   isAllowance: boolean,
 }
 
-const StartFarming: React.FC<StartFarmingProps> = ({ details, details: { name, pid, result: { paidUnlockFee, rugDeposited }, lpAddresses, poolInfo, result }, isAllowance }) => {
+const StartFarming: React.FC<StartFarmingProps> = ({ details, details: { name, pid, lpAddresses, poolInfo, result } }) => {
 
   const lpTokenContract = useERC20(getAddress(lpAddresses));
   const { account } = useWeb3React();
-  const drFrankenstein = useDrFrankenstein();
   const lpTokenAllowance = useIfoAllowance(lpTokenContract, getDrFrankensteinAddress())
 
   const lpTokenBalance = useTokenBalance(getAddress(lpAddresses));
-
-  const [onPresentStake] = useModal(
-    <StakeModal
-      details={details}
-    />,
-  );
 
   const [onPresentZombieStake] = useModal(
     <StakeLpTokenModal
@@ -79,33 +71,6 @@ const StartFarming: React.FC<StartFarmingProps> = ({ details, details: { name, p
       poolInfo={poolInfo}
     />
   )
-
-
-
-
-  const handleUnlock = () => {
-    // drFrankenstein.methods.unlockFeeInBnb(pid).call().then((res) => {
-    //   drFrankenstein.methods.unlock(pid)
-    //     .send({ from: account, value: res });
-    // });
-  }
-
-  const handleApprove = () => {
-    // zmbeContract.methods.approve(getDrFrankensteinAddress(), ethers.constants.MaxUint256)
-    //   .send({ from: account });
-  }
-
-
-  const handleDepositRug = () => {
-    // drFrankenstein.methods.depositRug(pid, rugTokenAmount)
-    //   .send({ from: account });
-  }
-
-  const handleModal = () => {
-    console.log("stake zombie")
-    // todo : open modal then on submit call handleDepositRug
-    // handleDepositRug()
-  }
 
   const handleApproveLPToken = () => {
     lpTokenContract.methods.approve(getDrFrankensteinAddress(), ethers.constants.MaxUint256)

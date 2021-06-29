@@ -1,16 +1,17 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { BalanceInput, Button, Flex, Image, Modal, Slider, Text } from '@rug-zombie-libs/uikit'
+import { BalanceInput, Button, Flex, Image, Modal, Slider, Text, useModal } from '@rug-zombie-libs/uikit'
 import useTheme from 'hooks/useTheme'
-import { useDrFrankenstein, useERC20 } from 'hooks/useContract'
+import { useDrFrankenstein } from 'hooks/useContract'
 import { BASE_EXCHANGE_URL } from 'config'
 import { getAddress } from 'utils/addressHelpers'
 import useTokenBalance from 'hooks/useTokenBalance'
 import { BIG_ZERO } from 'utils/bigNumber'
-import { getBalanceNumber, getDecimalAmount, getFullDisplayBalance } from 'utils/formatBalance'
+import { getDecimalAmount, getFullDisplayBalance } from 'utils/formatBalance'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
+import WarningModal from '../WarningModal'
 
 interface Result {
   paidUnlockFee: boolean,
@@ -63,6 +64,11 @@ const StakeModal: React.FC<StakeModalProps> = ({ details, details: { rug, pid } 
     setStakeAmount(amountToStake)
     setPercent(sliderPercent)
   }
+
+  const [onGetTokenClick] = useModal(
+    <WarningModal
+    url={`${BASE_EXCHANGE_URL}/#/swap?outputCurrency=${getAddress(rug.address)}`} />,
+  )
 
   const handleWithdrawal = () => {
     console.log('withdrawal')
@@ -122,8 +128,9 @@ const StakeModal: React.FC<StakeModalProps> = ({ details, details: { rug, pid } 
         </StyledButton>
     </Flex>
     {rugTokenBalance.toString() === '0' ?
-       <Button mt="8px" as="a" external href={`${BASE_EXCHANGE_URL}/#/swap?outputCurrency=${getAddress(rug.address)}`} variant="secondary">
+       <Button mt="8px" as="a" onClick={onGetTokenClick} variant="secondary">
        Get {rug.symbol}
+       {/* external href={`${BASE_EXCHANGE_URL}/#/swap?outputCurrency=${getAddress(rug.address)}`} */}
      </Button> :
       <Button onClick={handleDepositRug} mt="8px" as="a" variant="secondary">
         Deposit {rug.symbol}

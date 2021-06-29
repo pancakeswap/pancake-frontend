@@ -1,17 +1,12 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import React, { useState } from 'react'
-import styled from 'styled-components'
-import { BalanceInput, Button, Flex, Image, Modal, Slider, Text } from '@rug-zombie-libs/uikit'
-import useTheme from 'hooks/useTheme'
-import { useDrFrankenstein, useERC20 } from 'hooks/useContract'
-import { BASE_EXCHANGE_URL } from 'config'
-import { getAddress } from 'utils/addressHelpers'
-import useTokenBalance from 'hooks/useTokenBalance'
-import { BIG_ZERO } from 'utils/bigNumber'
-import { getBalanceNumber, getDecimalAmount, getFullDisplayBalance } from 'utils/formatBalance'
-import BigNumber from 'bignumber.js'
-import { useWeb3React } from '@web3-react/core'
-import tokens from 'config/constants/tokens'
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import { BalanceInput, Button, Flex, Modal, Slider, Text } from '@rug-zombie-libs/uikit';
+import useTheme from 'hooks/useTheme';
+import { useDrFrankenstein } from 'hooks/useContract';
+import { getDecimalAmount, getFullDisplayBalance } from 'utils/formatBalance';
+import BigNumber from 'bignumber.js';
+import { useWeb3React } from '@web3-react/core';
 
 interface Result {
     paidUnlockFee: boolean,
@@ -38,7 +33,7 @@ const StyledButton = styled(Button)`
   flex-grow: 1;
 `
 
-const WithdrawLpModal: React.FC<WithdrawLpModalProps> = ({ details: { pid, result, name }, poolInfo }) => {
+const WithdrawLpModal: React.FC<WithdrawLpModalProps> = ({ details: { pid, result, name } }) => {
 
     const currentDate = Math.floor(Date.now() / 1000);
 

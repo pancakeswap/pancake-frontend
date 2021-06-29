@@ -3,12 +3,8 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { BalanceInput, Button, Flex, Image, Modal, Slider, Text } from '@rug-zombie-libs/uikit'
 import useTheme from 'hooks/useTheme'
-import { useDrFrankenstein, useERC20 } from 'hooks/useContract'
-import { BASE_EXCHANGE_URL } from 'config'
-import { getAddress } from 'utils/addressHelpers'
-import useTokenBalance from 'hooks/useTokenBalance'
-import { BIG_ZERO } from 'utils/bigNumber'
-import { getBalanceNumber, getDecimalAmount, getFullDisplayBalance } from 'utils/formatBalance'
+import { useDrFrankenstein } from 'hooks/useContract'
+import { getDecimalAmount, getFullDisplayBalance } from 'utils/formatBalance'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import tokens from 'config/constants/tokens'
@@ -42,7 +38,7 @@ const StyledButton = styled(Button)`
   flex-grow: 1;
 `
 
-const WithdrawZombieModal: React.FC<WithdrawZombieModalProps> = ({ details: { rug, pid, result }, poolInfo }) => {
+const WithdrawZombieModal: React.FC<WithdrawZombieModalProps> = ({ details: { pid, result } }) => {
 
     const currentDate = Math.floor(Date.now() / 1000);
 

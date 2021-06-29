@@ -9,7 +9,7 @@ const Tokenomics = () => {
         <div className="w-layout-grid _3_col_grid">
           <div className="card">
             <h3 className="heading-4">Original Supply</h3>
-            <p className="paragraph-14">100,000,000 <br />Emission: 20 ZMBE per block </p>
+            <p className="paragraph-14">100,000,000 <br />Emission: 10 ZMBE per block </p>
           </div>
           <div className="card">
             <h3 className="heading-4">Manual + Automated Buy-Back and Burns </h3>

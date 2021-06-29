@@ -60,7 +60,7 @@ const BuyFrank: React.FC<BuyFrankProps> = ({ details: { result: { tokenWithdrawa
         <div className="small-text">
           <span className="white-color">Buy Zombie</span>
         </div>
-        <button onKeyDown={onPresent1} onClick={onPresent1} className="btn w-100" type="button">Buy with FTM</button>
+        <button onKeyDown={onPresent1} onClick={onPresent1} className="btn w-100" type="button">Buy with BNB</button>
       </div>
   )
 }

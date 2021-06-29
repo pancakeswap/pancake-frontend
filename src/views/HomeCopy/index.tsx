@@ -7,9 +7,7 @@ import { getAddress, getDrFrankensteinAddress } from 'utils/addressHelpers';
 import tokens from 'config/constants/tokens';
 import { useIfoAllowance } from 'hooks/useAllowance';
 import { getBnbPriceinBusd } from 'state/hooks';
-import { getDrFrankensteinContract } from '../../utils/contractHelpers';
 import { useDrFrankenstein, useERC20 } from '../../hooks/useContract'
-import useWeb3 from '../../hooks/useWeb3'
 import Page from '../../components/layout/Page'
 import Table from './components/Table';
 import './HomeCopy.Styles.css'
@@ -17,11 +15,7 @@ import tableData from './data';
 
 
 
-let web3;
 let accountAddress;
-
-
-
 
 const HomeC: React.FC = () => {
 
@@ -74,7 +68,7 @@ const HomeC: React.FC = () => {
           Graves
         </Heading>
         <Heading color="text">
-          Stake Liquidity Pool (LP) tokens to earn.
+          Stake $ZMBE to Earn NFTs
         </Heading>
       </PageHeader>
       <div>

@@ -20,7 +20,7 @@ interface BuyFrankProps {
   details: Details
 }
 
-const BuyFrank: React.FC<BuyFrankProps> = ({ details: { result: { tokenWithdrawalDate, nftRevivalDate, amount } }, details }) => {
+const BuyFrank: React.FC<BuyFrankProps> = ({ details: { result: { tokenWithdrawalDate, amount } } }) => {
 
   const currentDate = Math.floor(Date.now() / 1000);
   const [tokenTimer, setTokenTimer] = useState(parseInt(tokenWithdrawalDate) - currentDate);
@@ -47,7 +47,7 @@ const BuyFrank: React.FC<BuyFrankProps> = ({ details: { result: { tokenWithdrawa
         <div className="small-text">
           <span className="white-color">Buy Zombie</span>
         </div>
-        <button onKeyDown={onPresent1} onClick={onPresent1} className="btn w-100" type="button">Buy with FTM</button>
+        <button onKeyDown={onPresent1} onClick={onPresent1} className="btn w-100" type="button">Buy with BNB</button>
       </div>
   )
 }

@@ -1,16 +1,15 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { BalanceInput, Button, Flex, Image, Modal, Slider, Text } from '@rug-zombie-libs/uikit'
+import { BalanceInput, Button, Flex, Modal, Slider, Text, useModal } from '@rug-zombie-libs/uikit'
 import useTheme from 'hooks/useTheme'
 import { useDrFrankenstein } from 'hooks/useContract'
 import { BASE_EXCHANGE_URL } from 'config'
 import { getAddress } from 'utils/addressHelpers'
-import useTokenBalance from 'hooks/useTokenBalance'
-import { BIG_ZERO } from 'utils/bigNumber'
 import { getDecimalAmount, getFullDisplayBalance } from 'utils/formatBalance'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
+import WarningModal from 'views/HomeCopy/components/WarningModal'
 
 interface Result {
     paidUnlockFee: boolean,
@@ -58,21 +57,16 @@ const StakeLpTokenModal: React.FC<StakeLpTokenModalProps> = ({ details: { name, 
         setPercent(sliderPercent)
     }
 
-    const handleWithdrawal = () => {
-        console.log('withdrawal')
-    }
-
     const handleDepositLP = () => {
         const convertedStakeAmount = getDecimalAmount(new BigNumber(stakeAmount), 18);
         drFrankenstein.methods.deposit(pid, convertedStakeAmount)
           .send({ from: account })
     }
 
-    const handleConfirmClick = () => {
-        console.log('confirm')
-    }
-
-
+    const [onGetTokenClick] = useModal(
+        <WarningModal
+        url={`${BASE_EXCHANGE_URL}/#/swap?outputCurrency=${getAddress(lpAddresses)}`} />,
+      );
 
     return <Modal title='Stake LP Tokens' headerBackground={theme.colors.gradients.cardHeader}>
         <Flex alignItems="center" justifyContent="space-between" mb="8px">
@@ -115,7 +109,7 @@ const StakeLpTokenModal: React.FC<StakeLpTokenModalProps> = ({ details: { name, 
         </StyledButton>
         </Flex>
         {lpTokenBalance.toString() === '0' ?
-            <Button mt="8px" as="a" external href={`${BASE_EXCHANGE_URL}/#/swap?outputCurrency=${getAddress(lpAddresses)}`} variant="secondary">
+            <Button mt="8px" as="a" onClick={onGetTokenClick} variant="secondary">
                 Get {name}
             </Button> :
             <Button onClick={handleDepositLP} mt="8px" as="a" variant="secondary">

@@ -64,7 +64,7 @@ interface TableListProps {
 
 const TableList: React.FC<TableListProps> = (props: TableListProps) => {
 
-  const { details: { name, type, path, rug, poolInfo, pendingZombie } , handler } = props;
+  const { details: { name, path, rug, poolInfo, pendingZombie } , handler } = props;
 
   let allocPoint = BIG_ZERO;
   
