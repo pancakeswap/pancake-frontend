@@ -5,7 +5,7 @@ import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
 import { LotteryTicketClaimData } from 'config/constants/types'
 import { getBalanceAmount } from 'utils/formatBalance'
-import { BIG_ZERO } from 'utils/bigNumber'
+import { callWithEstimateGas } from 'utils/callHelpers'
 import { useLottery, usePriceCakeBusd } from 'state/hooks'
 import { fetchUserLotteries } from 'state/lottery'
 import { useAppDispatch } from 'state'
@@ -74,7 +74,7 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
     const { lotteryId, ticketIds, brackets } = claimTicketsCallData
     setPendingTx(true)
     try {
-      const tx = await lotteryContract.claimTickets(lotteryId, ticketIds, brackets)
+      const tx = await callWithEstimateGas(lotteryContract, 'claimTickets', [lotteryId, ticketIds, brackets])
       const receipt = await tx.wait()
       if (receipt.status) {
         toastSuccess(t('Prizes Collected!'), t(`Your CAKE prizes for round ${lotteryId} have been sent to your wallet`))
@@ -99,7 +99,11 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
     for (const ticketBatch of ticketBatches) {
       try {
         /* eslint-disable no-await-in-loop */
-        const tx = await lotteryContract.claimTickets(lotteryId, ticketBatch.ticketIds, ticketBatch.brackets)
+        const tx = await callWithEstimateGas(lotteryContract, 'claimTickets', [
+          lotteryId,
+          ticketBatch.ticketIds,
+          ticketBatch.brackets,
+        ])
         const receipt = await tx.wait()
         /* eslint-enable no-await-in-loop */
         if (receipt.status) {
