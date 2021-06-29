@@ -82,7 +82,9 @@ const MainView: React.FC<MainViewProps> = ({
       </Button>
       <Box mt="24px" maxWidth="320px">
         <UIKitMessage variant="warning">
-          {t('SafePal users may be temporarily unable to vote: Please connect directly via WalletConnect instead.')}
+          <Text as="p">
+            {t('SafePal users may be temporarily unable to vote: Please connect directly via WalletConnect instead.')}
+          </Text>
         </UIKitMessage>
       </Box>
     </>
