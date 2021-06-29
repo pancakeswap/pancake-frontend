@@ -65,7 +65,7 @@
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "amount",
+        "name": "injectedAmount",
         "type": "uint256"
       }
     ],
@@ -128,6 +128,12 @@
         "indexed": false,
         "internalType": "uint256",
         "name": "firstTicketId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "injectedAmount",
         "type": "uint256"
       }
     ],
@@ -434,6 +440,11 @@
         "internalType": "uint256",
         "name": "_lotteryId",
         "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "_autoInjection",
+        "type": "bool"
       }
     ],
     "name": "drawFinalNumberAndMakeLotteryClaimable",
@@ -493,6 +504,19 @@
         "internalType": "address",
         "name": "",
         "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "pendingInjectionNextLottery",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
