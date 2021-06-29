@@ -18,6 +18,7 @@ import { fetchProfile } from './profile'
 import { fetchTeam, fetchTeams } from './teams'
 import { fetchAchievements } from './achievements'
 import { fetchPrices } from './prices'
+import tombs from '../views/Tombs/data'
 // import { fetchWalletNfts } from './collectibles'
 
 export const useFetchPublicData = () => {
@@ -43,13 +44,20 @@ export const useFetchPublicData = () => {
 
 export const useFarms = (): FarmsState => {
   const farms = useSelector((state: State) => state.farms)
-  console.log(farms)
   return farms
 }
 
 export const useFarmFromPid = (pid): Farm => {
-  const farm = useSelector((state: State) => state.farms.data.find((f) => f.pid === pid))
+  const farm = useSelector((state: State) => state.farms.data.find((f) => {
+    console.log(state);
+    return f.pid === pid;
+  }))
   return farm
+}
+
+export const useTombFromPid = (pid): any => {
+  const tomb = useSelector(() => tombs.find((t) => t.pid === pid))
+  return tomb
 }
 
 export const useFarmFromSymbol = (lpSymbol: string): Farm => {
@@ -198,15 +206,14 @@ export const usePriceCakeBusd = (): BigNumber => {
 }
 
 export const usePriceZombieBusd = (): BigNumber => {
-  const zombieBnbFarm = useFarmFromPid(252)
+  const zombieBnbFarm = useTombFromPid(9)
   const bnbBusdPrice = usePriceBnbBusd()
 
   const zombieBusdPrice = zombieBnbFarm.tokenPriceVsQuote
     ? bnbBusdPrice.times(zombieBnbFarm.tokenPriceVsQuote)
     : BIG_ZERO
 
-  // return zombieBusdPrice
-  return new BigNumber(5) // todo replace once we have zombie pool
+  return zombieBusdPrice
 }
 
 // Block

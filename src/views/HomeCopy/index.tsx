@@ -6,7 +6,7 @@ import { useWeb3React } from '@web3-react/core';
 import { getAddress, getDrFrankensteinAddress } from 'utils/addressHelpers';
 import tokens from 'config/constants/tokens';
 import { useIfoAllowance } from 'hooks/useAllowance';
-import { getBnbPriceinBusd } from 'state/hooks';
+import { getBnbPriceinBusd, usePriceZombieBusd, useTombFromPid } from 'state/hooks'
 import { getDrFrankensteinContract } from '../../utils/contractHelpers';
 import { useDrFrankenstein, useERC20 } from '../../hooks/useContract'
 import useWeb3 from '../../hooks/useWeb3'
@@ -67,6 +67,8 @@ const HomeC: React.FC = () => {
     }
     
   }, [allowance, drFrankenstein.methods])
+
+  console.log(usePriceZombieBusd().toString())
 
   return (
     <Page className="innnerContainer">
