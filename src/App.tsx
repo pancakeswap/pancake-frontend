@@ -4,6 +4,7 @@ import { ResetCSS } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import useEagerConnect from 'hooks/useEagerConnect'
 import { usePollCoreFarmData, useFetchProfile, usePollBlockNumber } from 'state/hooks'
+import { DatePickerPortal } from 'components/DatePicker'
 import GlobalStyle from './style/Global'
 import Menu from './components/Menu'
 import SuspenseWithChunkError from './components/SuspenseWithChunkError'
@@ -26,6 +27,9 @@ const Team = lazy(() => import('./views/Teams/Team'))
 const Profile = lazy(() => import('./views/Profile'))
 const TradingCompetition = lazy(() => import('./views/TradingCompetition'))
 const Predictions = lazy(() => import('./views/Predictions'))
+const Voting = lazy(() => import('./views/Voting'))
+const Proposal = lazy(() => import('./views/Voting/Proposal'))
+const CreateProposal = lazy(() => import('./views/Voting/CreateProposal'))
 
 // This config is required for number formatting
 BigNumber.config({
@@ -79,6 +83,15 @@ const App: React.FC = () => {
             <Route path="/prediction">
               <Predictions />
             </Route>
+            <Route exact path="/voting">
+              <Voting />
+            </Route>
+            <Route exact path="/voting/proposal/create">
+              <CreateProposal />
+            </Route>
+            <Route path="/voting/proposal/:id">
+              <Proposal />
+            </Route>
             {/* Redirect */}
             <Route path="/staking">
               <Redirect to="/pools" />
@@ -89,6 +102,7 @@ const App: React.FC = () => {
             <Route path="/nft">
               <Redirect to="/collectibles" />
             </Route>
+
             {/* 404 */}
             <Route component={NotFound} />
           </Switch>
@@ -96,6 +110,7 @@ const App: React.FC = () => {
       </Menu>
       <EasterEgg iterations={2} />
       <ToastListener />
+      <DatePickerPortal />
     </Router>
   )
 }

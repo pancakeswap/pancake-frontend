@@ -1,7 +1,7 @@
 import { ethers } from 'ethers'
 import { getMulticallContract } from 'utils/contractHelpers'
 
-interface Call {
+export interface Call {
   address: string // Address of the contract
   name: string // Function name on the contract (example: balanceOf)
   params?: any[] // Function params
