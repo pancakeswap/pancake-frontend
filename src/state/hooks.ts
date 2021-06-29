@@ -404,6 +404,11 @@ export const useGetMinBetAmount = () => {
   return useMemo(() => new BigNumber(minBetAmount), [minBetAmount])
 }
 
+export const useGetRewardRate = () => {
+  const rewardRate = useSelector((state: State) => state.predictions.rewardRate)
+  return rewardRate / 100
+}
+
 export const useGetIsFetchingHistory = () => {
   return useSelector((state: State) => state.predictions.isFetchingHistory)
 }

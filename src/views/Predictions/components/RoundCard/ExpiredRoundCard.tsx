@@ -4,9 +4,9 @@ import { useWeb3React } from '@web3-react/core'
 import { Box, BlockIcon, CardBody } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { Round, BetPosition } from 'state/types'
-import { useGetBetByRoundId } from 'state/hooks'
+import { useGetBetByRoundId, useGetRewardRate } from 'state/hooks'
 import { RoundResult } from '../RoundResult'
-import { getPayout } from '../../helpers'
+import { getNetPayout } from '../../helpers'
 import MultiplierArrow from './MultiplierArrow'
 import Card from './Card'
 import CardHeader from './CardHeader'
@@ -44,7 +44,8 @@ const ExpiredRoundCard: React.FC<ExpiredRoundCardProps> = ({
   const { id, epoch, endBlock, lockPrice, closePrice } = round
   const betPosition = closePrice > lockPrice ? BetPosition.BULL : BetPosition.BEAR
   const bet = useGetBetByRoundId(account, round.id)
-  const payout = getPayout(bet)
+  const rewardRate = useGetRewardRate()
+  const payout = getNetPayout(bet, rewardRate)
 
   if (round.failed) {
     return <CanceledRoundCard round={round} />

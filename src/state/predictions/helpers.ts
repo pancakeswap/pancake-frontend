@@ -1,6 +1,6 @@
 import { request, gql } from 'graphql-request'
 import { GRAPH_API_PREDICTION } from 'config/constants/endpoints'
-import { Bet, BetPosition, Market, PredictionStatus, Round, RoundData } from 'state/types'
+import { Bet, BetPosition, Market, PredictionsState, PredictionStatus, Round, RoundData } from 'state/types'
 import { multicallv2 } from 'utils/multicall'
 import predictionsAbi from 'config/abi/predictions.json'
 import { getPredictionsAddress } from 'utils/addressHelpers'
@@ -194,25 +194,31 @@ export const getUnclaimedWinningBets = (bets: Bet[]): Bet[] => {
   return bets.filter(getCanClaim)
 }
 
+type StaticPredictionsData = Pick<
+  PredictionsState,
+  'status' | 'currentEpoch' | 'intervalBlocks' | 'bufferBlocks' | 'minBetAmount' | 'rewardRate'
+>
+
 /**
  * Gets static data from the contract
  */
-export const getStaticPredictionsData = async () => {
-  const calls = ['currentEpoch', 'intervalBlocks', 'minBetAmount', 'paused', 'bufferBlocks'].map((method) => ({
-    address: getPredictionsAddress(),
-    name: method,
-  }))
-  const [[currentEpoch], [intervalBlocks], [minBetAmount], [isPaused], [bufferBlocks]] = await multicallv2(
-    predictionsAbi,
-    calls,
+export const getStaticPredictionsData = async (): Promise<StaticPredictionsData> => {
+  const calls = ['currentEpoch', 'intervalBlocks', 'minBetAmount', 'paused', 'bufferBlocks', 'rewardRate'].map(
+    (method) => ({
+      address: getPredictionsAddress(),
+      name: method,
+    }),
   )
+  const [[currentEpoch], [intervalBlocks], [minBetAmount], [isPaused], [bufferBlocks], [rewardRate]] =
+    await multicallv2(predictionsAbi, calls)
 
   return {
     status: isPaused ? PredictionStatus.PAUSED : PredictionStatus.LIVE,
     currentEpoch: currentEpoch.toNumber(),
     intervalBlocks: intervalBlocks.toNumber(),
     bufferBlocks: bufferBlocks.toNumber(),
-    minBetAmount: minBetAmount.toNumber(),
+    minBetAmount: minBetAmount.toString(),
+    rewardRate: rewardRate.toNumber(),
   }
 }
 

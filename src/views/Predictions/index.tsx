@@ -12,7 +12,7 @@ import {
   transformRoundResponse,
 } from 'state/predictions/helpers'
 import { fetchCurrentBets, initialize, setPredictionStatus } from 'state/predictions'
-import { HistoryFilter, PredictionsState, PredictionStatus } from 'state/types'
+import { HistoryFilter, PredictionStatus } from 'state/types'
 import usePersistState from 'hooks/usePersistState'
 import PageLoader from 'components/PageLoader'
 import usePollOraclePrice from './hooks/usePollOraclePrice'
@@ -88,7 +88,7 @@ const Predictions = () => {
 
         dispatch(
           initialize({
-            ...(staticPredictionsData as Omit<PredictionsState, 'rounds'>),
+            ...staticPredictionsData,
             historyFilter: HistoryFilter.ALL,
             currentRoundStartBlockNumber: currentRoundStartBlock,
             rounds: roundData,

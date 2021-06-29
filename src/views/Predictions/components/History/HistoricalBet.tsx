@@ -12,10 +12,10 @@ import {
 } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { Bet, PredictionStatus } from 'state/types'
-import { useBetCanClaim, useGetCurrentEpoch, useGetPredictionsStatus } from 'state/hooks'
+import { useBetCanClaim, useGetCurrentEpoch, useGetPredictionsStatus, useGetRewardRate } from 'state/hooks'
 import { getRoundResult, Result } from 'state/predictions/helpers'
 import { useTranslation } from 'contexts/Localization'
-import { formatBnb, getPayout } from '../../helpers'
+import { formatBnb, getNetPayout } from '../../helpers'
 import CollectWinningsButton from '../CollectWinningsButton'
 import ReclaimPositionButton from '../ReclaimPositionButton'
 import BetDetails from './BetDetails'
@@ -42,6 +42,7 @@ const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
   const { account } = useWeb3React()
   const currentEpoch = useGetCurrentEpoch()
   const status = useGetPredictionsStatus()
+  const rewardRate = useGetRewardRate()
 
   const toggleOpen = () => setIsOpen(!isOpen)
 
@@ -78,7 +79,7 @@ const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
   const canClaim = useBetCanClaim(account, bet.round.id)
 
   // Winners get the payout, otherwise the claim what they put it if it was canceled
-  const payout = roundResult === Result.WIN ? getPayout(bet) : amount
+  const payout = roundResult === Result.WIN ? getNetPayout(bet, rewardRate) : amount
 
   const renderBetLabel = () => {
     if (isOpenRound) {
