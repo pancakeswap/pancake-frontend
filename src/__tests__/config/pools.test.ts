@@ -4,7 +4,8 @@ import { getSouschefContract, getSouschefV2Contract } from 'utils/contractHelper
 // Pool 0 is special (cake pool)
 // Pool 78 is a broken pool, not used, and break the tests
 const idsToRemove = [0, 78]
-const poolsToTest = pools.filter((pool) => !idsToRemove.includes(pool.sousId))
+// Test only against the last 10 farms, for performance concern
+const poolsToTest = pools.filter((pool) => !idsToRemove.includes(pool.sousId)).slice(0, 10)
 
 describe('Config pools', () => {
   it.each(pools.map((pool) => pool.sousId))('Pool #%d has an unique sousId', (sousId) => {
