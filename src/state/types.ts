@@ -367,6 +367,7 @@ export interface LotteryRound {
 export interface LotteryState {
   currentLotteryId: string
   maxNumberTicketsPerBuyOrClaim: string
+  isTransitioning: boolean
   currentRound: LotteryRound
   lotteriesData?: LotteryRoundGraphEntity[]
   userLotteryData?: LotteryUserGraphEntity

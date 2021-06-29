@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
-import { CardHeader, Card, CardBody, Text, CardFooter, ArrowBackIcon, Flex, Heading, Box } from '@pancakeswap/uikit'
+import { CardHeader, Card, CardBody, Text, CardFooter, ArrowBackIcon, Flex, Heading } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
+import { LotteryStatus } from 'config/constants/types'
 import { fetchLottery, fetchTickets } from 'state/lottery/helpers'
 import { useGetUserLotteriesGraphData, useLottery } from 'state/hooks'
 import UnlockButton from 'components/UnlockButton'
@@ -25,8 +26,13 @@ const YourHistoryCard = () => {
   const { account } = useWeb3React()
   const [viewFinishedRound, setViewFinishedRound] = useState(false)
   const [roundDetails, setRoundDetails] = useState(null)
-  const { currentLotteryId } = useLottery()
+  const {
+    currentLotteryId,
+    isTransitioning,
+    currentRound: { status },
+  } = useLottery()
   const userLotteryData = useGetUserLotteriesGraphData()
+  const ticketBuyIsDisabled = status !== LotteryStatus.OPEN || isTransitioning
 
   const handleHistoryRowClick = async (roundId) => {
     // TODO: Load in necessary lottery data. May not require fetch, as all this data is likely required for this component
@@ -75,7 +81,7 @@ const YourHistoryCard = () => {
           <Text textAlign="center" color="textSubtle" mb="16px">
             {t('Buy tickets for the next round!')}
           </Text>
-          <BuyTicketsButton width="100%" />
+          <BuyTicketsButton disabled={ticketBuyIsDisabled} width="100%" />
         </Flex>
       )
     }

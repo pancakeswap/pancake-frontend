@@ -547,10 +547,11 @@ export const useFetchLottery = () => {
 
 export const useLottery = () => {
   const currentRound = useSelector((state: State) => state.lottery.currentRound)
-  const currentLotteryId = useGetCurrentLotteryId()
   const maxNumberTicketsPerBuyOrClaimAsString = useSelector(
     (state: State) => state.lottery.maxNumberTicketsPerBuyOrClaim,
   )
+  const isTransitioning = useSelector((state: State) => state.lottery.isTransitioning)
+  const currentLotteryId = useGetCurrentLotteryId()
   const userLotteryData = useGetUserLotteriesGraphData()
   const lotteriesData = useGetLotteriesGraphData()
 
@@ -591,6 +592,7 @@ export const useLottery = () => {
   return {
     currentLotteryId,
     maxNumberTicketsPerBuyOrClaim,
+    isTransitioning,
     userLotteryData,
     lotteriesData,
     currentRound: {

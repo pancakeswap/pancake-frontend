@@ -16,9 +16,9 @@ const PrizeTotalBalance = styled(Balance)`
   -webkit-text-fill-color: transparent;
 `
 
-const StyledBuyTicketButton = styled(BuyTicketsButton)<{ canBuyTickets: boolean }>`
-  background: ${({ theme, canBuyTickets }) =>
-    canBuyTickets ? 'linear-gradient(180deg, #7645d9 0%, #452a7a 100%)' : theme.colors.disabled};
+const StyledBuyTicketButton = styled(BuyTicketsButton)<{ disabled: boolean }>`
+  background: ${({ theme, disabled }) =>
+    disabled ? theme.colors.disabled : 'linear-gradient(180deg, #7645d9 0%, #452a7a 100%)'};
   width: 240px;
 `
 
@@ -41,6 +41,7 @@ const Hero = () => {
   const { t } = useTranslation()
   const {
     currentRound: { amountCollectedInCake, status },
+    isTransitioning,
   } = useLottery()
 
   // TODO: Re-enebale in prod
@@ -48,7 +49,7 @@ const Hero = () => {
   const cakePriceBusd = new BigNumber(20)
   const prizeInBusd = amountCollectedInCake.times(cakePriceBusd)
   const prizeTotal = getBalanceNumber(prizeInBusd)
-  const canBuyTickets = status === LotteryStatus.OPEN
+  const ticketBuyIsDisabled = status !== LotteryStatus.OPEN || isTransitioning
 
   const getHeroHeading = () => {
     if (status === LotteryStatus.OPEN) {
@@ -80,7 +81,7 @@ const Hero = () => {
       {getHeroHeading()}
       <Flex position="relative" width="288px" height="113px" alignItems="center" justifyContent="center">
         <ButtonWrapper>
-          <StyledBuyTicketButton canBuyTickets={canBuyTickets} />
+          <StyledBuyTicketButton disabled={ticketBuyIsDisabled} />
         </ButtonWrapper>
         <TicketSvgWrapper>
           <TicketPurchaseCard width="288px" />
