@@ -3,6 +3,7 @@ import { useWeb3React } from '@web3-react/core'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { getActivePools } from 'utils/callHelpers'
 import { getAddress } from 'utils/addressHelpers'
+import { simpleRpcProvider } from 'utils/providers'
 import BigNumber from 'bignumber.js'
 import { getVotingPower } from '../helpers'
 
@@ -36,10 +37,11 @@ const useGetVotingPower = (block?: number, isActive = true): State & { isLoading
       setIsLoading(true)
 
       try {
-        const eligiblePools = await getActivePools(block)
+        const blockNumber = block || (await simpleRpcProvider.getBlockNumber())
+        const eligiblePools = await getActivePools(blockNumber)
         const poolAddresses = eligiblePools.map(({ contractAddress }) => getAddress(contractAddress))
         const { cakeBalance, cakeBnbLpBalance, cakePoolBalance, total, poolsBalance, cakeVaultBalance } =
-          await getVotingPower(account, poolAddresses, block)
+          await getVotingPower(account, poolAddresses, blockNumber)
 
         if (isActive) {
           setVotingPower((prevVotingPower) => ({

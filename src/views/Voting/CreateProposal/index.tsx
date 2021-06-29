@@ -12,6 +12,7 @@ import {
   Input,
   LinkExternal,
   Text,
+  useModal,
 } from '@pancakeswap/uikit'
 import { useHistory } from 'react-router'
 import { useWeb3React } from '@web3-react/core'
@@ -35,7 +36,8 @@ import { FormErrors, Label, SecondaryLabel } from './styles'
 import Choices, { Choice, makeChoice, MINIMUM_CHOICES } from './Choices'
 import { combineDateAndTime, getFormErrors } from './helpers'
 import { FormState } from './types'
-import { ADMIN_ADDRESS } from '../config'
+import { ADMIN_ADDRESS, VOTE_THRESHOLD } from '../config'
+import VoteDetailsModal from '../components/VoteDetailsModal'
 
 const EasyMde = lazy(() => import('components/EasyMde'))
 
@@ -58,7 +60,7 @@ const CreateProposal = () => {
   const { push } = useHistory()
   const provider = useWeb3Provider()
   const { toastSuccess, toastError } = useToast()
-
+  const [onPresentVoteDetailsModal] = useModal(<VoteDetailsModal block={state.snapshot} />)
   const { name, body, choices, startDate, startTime, endDate, endTime, snapshot } = state
   const formErrors = getFormErrors(state, t)
 
@@ -266,15 +268,24 @@ const CreateProposal = () => {
                   <LinkExternal href={getBscScanBlockNumberUrl(snapshot)}>{snapshot}</LinkExternal>
                 </Flex>
                 {account ? (
-                  <Button
-                    type="submit"
-                    width="100%"
-                    isLoading={isLoading}
-                    endIcon={isLoading ? <AutoRenewIcon spin color="currentColor" /> : null}
-                    disabled={!isEmpty(formErrors)}
-                  >
-                    {t('Publish')}
-                  </Button>
+                  <>
+                    <Button
+                      type="submit"
+                      width="100%"
+                      isLoading={isLoading}
+                      endIcon={isLoading ? <AutoRenewIcon spin color="currentColor" /> : null}
+                      disabled={!isEmpty(formErrors)}
+                      mb="16px"
+                    >
+                      {t('Publish')}
+                    </Button>
+                    <Text color="failure" as="p" mb="4px">
+                      {t('You need at least %count% voting power to publish a proposal.', { count: VOTE_THRESHOLD })}{' '}
+                    </Text>
+                    <Button scale="sm" type="button" variant="text" onClick={onPresentVoteDetailsModal} p={0}>
+                      {t('Check voting power')}
+                    </Button>
+                  </>
                 ) : (
                   <UnlockButton width="100%" type="button" />
                 )}
