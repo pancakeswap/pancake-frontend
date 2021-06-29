@@ -891,13 +891,13 @@
   "See All": "すべてを表示",
   "SafePal users may be temporarily unable to vote: Please connect directly via WalletConnect instead.": "SafePalユーザーは、一時的に投票できない可能性があります。代わりにWalletConnectで直接接続してください。",
   "Your voting power is determined by the amount of CAKE you held at the block detailed below. CAKE held in other places does not contribute to your voting power.": "投票権は、以下の詳細のブロックで保持しているCAKE数によって決まります。他の場所で保持されているCAKEは投票権に寄与しません。",
-  "Your Cake Held Now": "Your Cake Held Now",
+  "Your Cake Held Now": "現在のCAKE",
   "Wallet": "ウォレット",
   "Manual CAKE Pool": "手動CAKEプール",
   "Auto CAKE Pool": "自動CAKEプール",
   "CAKE BNB LP": "CAKE BNB LP",
   "Other Syrup Pools": "他のSYRUPプール",
   "Voting Power": "投票権",
-  "You need at least %count% voting power to publish a proposal.": "You need at least %count% voting power to publish a proposal.",
-  "Check voting power": "Check voting power"
+  "You need at least %count% voting power to publish a proposal.": "提案を公開するには、少なくとも%count%の投票権が必要です。",
+  "Check voting power": "投票権を確認"
 }
