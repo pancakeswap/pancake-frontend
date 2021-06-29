@@ -4185,7 +4185,7 @@ const farms: FarmConfig[] = [
       97: '',
       56: '0x43c6b3ea5873543a0ba106f8e57ed97658f25f2a',
     },
-    token: tokens.bake,
+    token: tokens.padi,
     quoteToken: tokens.wbnb,
   },
 ]
