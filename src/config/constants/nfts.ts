@@ -21,6 +21,20 @@ export const nftSources: NftSource = {
 
 const Nfts: Nft[] = [
   {
+    name: 'Claire',
+    description: 'Can Claire the clairvoyant see what’s in the cards for you?',
+    images: {
+      lg: 'claire-lg.png',
+      md: 'claire-md.png',
+      sm: 'claire-sm.png',
+      ipfs: 'https://gateway.pinata.cloud/ipfs/QmRa2WbGnqdgUzrYXxZWv549BDxq3heYridJeoWGcebcU8/claire.png',
+    },
+    sortOrder: 999,
+    identifier: 'claire',
+    type: NftType.PANCAKE,
+    variationId: 17,
+  },
+  {
     name: 'Syrup Soak',
     description: 'Ahh... what could be sweeter than a syrupy soak?',
     images: {

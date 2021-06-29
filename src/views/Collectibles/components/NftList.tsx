@@ -10,6 +10,7 @@ import NftGrid from './NftGrid'
 import BunnySpecialCard from './NftCard/BunnySpecialCard'
 import EasterNftCard from './NftCard/EasterNftCard'
 import BunnySpecialCakeVaultCard from './NftCard/BunnySpecialCakeVaultCard'
+import BunnySpecialPredictionCard from './NftCard/BunnySpeciaPredictionCard'
 
 /**
  * A map of bunnyIds to special campaigns (NFT distribution)
@@ -23,6 +24,7 @@ const nftComponents = {
   'easter-flipper': EasterNftCard,
   'easter-caker': EasterNftCard,
   'syrup-soak': BunnySpecialCakeVaultCard,
+  claire: BunnySpecialPredictionCard,
 }
 
 const NftList = () => {
@@ -37,7 +39,7 @@ const NftList = () => {
   return (
     <NftGrid>
       {orderBy(nfts, 'sortOrder').map((nft) => {
-        const Card = nftComponents[nft.identifier] ?? NftCard
+        const Card = nftComponents[nft.identifier] || NftCard
 
         return (
           <div key={nft.name}>
