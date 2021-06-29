@@ -101,7 +101,8 @@ const fetchUnclaimedUserRewards = async (
 ): Promise<LotteryTicketClaimData[]> => {
   const { rounds } = userLotteryData
   const cursor = 0
-  const limit = 1000
+  // TODO: Introduce cursor
+  const limit = 5000
 
   // If there is no user round history - return an empty array
   if (rounds.length === 0) {
