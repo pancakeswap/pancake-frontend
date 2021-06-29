@@ -156,9 +156,14 @@ const NextDrawCard = () => {
                   <Flex justifyContent={['center', null, null, 'flex-start']}>
                     <Text display="inline">{t('You have')} </Text>
                     {!userTickets.isLoading ? (
-                      <Text display="inline" bold mx="4px">
-                        {userTicketCount} {t('tickets')}
-                      </Text>
+                      <Balance
+                        value={userTicketCount}
+                        decimals={0}
+                        unit={` ${t('tickets')}`}
+                        display="inline"
+                        bold
+                        mx="4px"
+                      />
                     ) : (
                       <Skeleton mx="4px" height={20} width={40} />
                     )}
