@@ -896,5 +896,8 @@
   "Manual CAKE Pool": "Manual CAKE Pool",
   "Auto CAKE Pool": "Auto CAKE Pool",
   "CAKE BNB LP": "CAKE BNB LP",
-  "Other Syrup Pools": "Other Syrup Pools"
+  "Other Syrup Pools": "Other Syrup Pools",
+  "Voting Power": "Voting Power",
+  "You need at least %count% voting power to publish a proposal.": "You need at least %count% voting power to publish a proposal.",
+  "Check voting power": "Check voting power"
 }
