@@ -258,12 +258,10 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
               <HelpIcon ml="4px" width="14px" height="14px" color="textSubtle" />
             </Flex>
           </Flex>
-          {/* TODO: re-implement discount when logic finalised */}
           <Text color="textSubtle">~{discountValue} CAKE</Text>
         </Flex>
         <Flex mb="24px" justifyContent="space-between">
           <Text color="textSubtle">{t('Total cost')}</Text>
-          {/* TODO: Calculate total cost when discount logic added */}
           <Text color="textSubtle">~{totalCost} CAKE</Text>
         </Flex>
 
