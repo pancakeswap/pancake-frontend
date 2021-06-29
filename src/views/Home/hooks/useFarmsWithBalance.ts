@@ -6,7 +6,7 @@ import { getMasterChefAddress } from 'utils/addressHelpers'
 import masterChefABI from 'config/abi/masterchef.json'
 import { farmsConfig } from 'config/constants'
 import { FarmConfig } from 'config/constants/types'
-import useRefresh from './useRefresh'
+import useRefresh from 'hooks/useRefresh'
 
 export interface FarmWithBalance extends FarmConfig {
   balance: BigNumber

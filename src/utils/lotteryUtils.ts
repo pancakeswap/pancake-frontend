@@ -2,7 +2,7 @@
 import BigNumber from 'bignumber.js'
 import ticketAbi from 'config/abi/lotteryNft.json'
 import lotteryAbi from 'config/abi/lottery.json'
-import { DEFAULT_TOKEN_DECIMAL, LOTTERY_TICKET_PRICE } from 'config'
+import { DEFAULT_TOKEN_DECIMAL } from 'config'
 import multicall from './multicall'
 import { BIG_ZERO } from './bigNumber'
 
@@ -162,22 +162,6 @@ export const getLotteryIssueIndex = async (lotteryContract) => {
 
 export const getLotteryStatus = async (lotteryContract) => {
   return lotteryContract.drawed()
-}
-
-export const getMatchingRewardLength = async (lotteryContract, matchNumber) => {
-  let issueIndex = await lotteryContract.issueIndex()
-  const drawed = await lotteryContract.drawed()
-  if (!drawed) {
-    issueIndex -= 1
-  }
-  try {
-    const amount = await lotteryContract.historyAmount(issueIndex, 5 - matchNumber)
-
-    return new BigNumber(amount.toString()).div(DEFAULT_TOKEN_DECIMAL).div(LOTTERY_TICKET_PRICE).toNumber()
-  } catch (err) {
-    console.error(err)
-  }
-  return 0
 }
 
 export const getWinningNumbers = async (lotteryContract) => {

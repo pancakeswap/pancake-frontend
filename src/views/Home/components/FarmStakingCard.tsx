@@ -1,10 +1,10 @@
 import React, { useState, useCallback } from 'react'
 import styled from 'styled-components'
 import { Heading, Card, CardBody, Button } from '@pancakeswap/uikit'
-import { harvest } from 'utils/callHelpers'
+import { harvestFarm } from 'utils/calls'
 import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'contexts/Localization'
-import useFarmsWithBalance from 'hooks/useFarmsWithBalance'
+import useFarmsWithBalance from 'views/Home/hooks/useFarmsWithBalance'
 import { useMasterchef } from 'hooks/useContract'
 import useToast from 'hooks/useToast'
 import UnlockButton from 'components/UnlockButton'
@@ -50,7 +50,7 @@ const FarmedStakingCard = () => {
     for (const farmWithBalance of balancesWithValue) {
       try {
         // eslint-disable-next-line no-await-in-loop
-        await harvest(masterChefContract, farmWithBalance.pid)
+        await harvestFarm(masterChefContract, farmWithBalance.pid)
       } catch (error) {
         toastError(t('Error'), error?.message)
       }

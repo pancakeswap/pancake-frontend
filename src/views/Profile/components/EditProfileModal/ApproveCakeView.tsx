@@ -6,7 +6,7 @@ import useToast from 'hooks/useToast'
 import { useProfile } from 'state/hooks'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import { getFullDisplayBalance } from 'utils/formatBalance'
-import useGetProfileCosts from 'hooks/useGetProfileCosts'
+import useGetProfileCosts from 'views/Profile/hooks/useGetProfileCosts'
 import { UseEditProfileResponse } from './reducer'
 
 interface ApproveCakePageProps extends InjectedModalProps {

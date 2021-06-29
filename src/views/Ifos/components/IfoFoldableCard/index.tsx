@@ -15,7 +15,6 @@ import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import { Ifo, IfoStatus, PoolIds } from 'config/constants/types'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
-import { useIfoApprove } from 'hooks/useApprove'
 import { useERC20 } from 'hooks/useContract'
 import useToast from 'hooks/useToast'
 import { useTranslation } from 'contexts/Localization'
@@ -24,6 +23,7 @@ import { EnableStatus } from './types'
 import IfoPoolCard from './IfoPoolCard'
 import Timer from './Timer'
 import Achievement from './Achievement'
+import useIfoApprove from '../../hooks/useIfoApprove'
 
 interface IfoFoldableCardProps {
   ifo: Ifo

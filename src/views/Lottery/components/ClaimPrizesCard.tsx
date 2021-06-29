@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import { Box } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
-import { useTotalClaim } from 'hooks/useTickets'
+import { useTotalClaim } from 'views/Lottery/hooks/useTickets'
 import { getBalanceNumber } from 'utils/formatBalance'
 import YourPrizesCard from './YourPrizesCard'
 import UnlockWalletCard from './UnlockWalletCard'

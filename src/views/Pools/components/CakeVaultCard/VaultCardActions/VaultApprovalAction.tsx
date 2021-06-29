@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button, AutoRenewIcon, Skeleton } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import { useVaultApprove } from 'hooks/useApprove'
+import { useVaultApprove } from '../../../hooks/useApprove'
 
 interface ApprovalActionProps {
   setLastUpdated: () => void
