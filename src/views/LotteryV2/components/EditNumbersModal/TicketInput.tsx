@@ -101,11 +101,15 @@ const TicketContaier: React.FC<{
   }
 
   const onChangeHandler = (event: React.KeyboardEvent, digitId: number) => {
-    event.preventDefault()
     const currentKey = parseInt(event.key, 10)
+
+    if (event.key === 'e' || event.key === 'E' || event.key === '.') {
+      event.preventDefault()
+    }
 
     // Handling numberic inputs
     if (currentKey >= 0 && currentKey <= 9) {
+      event.preventDefault()
       const newNumbers = [...ticket.numbers]
       newNumbers[digitId] = `${currentKey}`
       updateTicket(ticket.id, newNumbers)
@@ -119,6 +123,7 @@ const TicketContaier: React.FC<{
 
     // Backsapce key
     if (event.key === 'Backspace') {
+      event.preventDefault()
       // If some number is there - delete the number
       if (ticket.numbers[digitId]) {
         const newNumbers = [...ticket.numbers]
@@ -139,6 +144,7 @@ const TicketContaier: React.FC<{
     }
     // Delete key
     if (event.key === 'Delete') {
+      event.preventDefault()
       if (ticket.numbers[digitId]) {
         const newNumbers = [...ticket.numbers]
         newNumbers[digitId] = ''
@@ -158,6 +164,7 @@ const TicketContaier: React.FC<{
     }
 
     if (event.key === 'ArrowLeft') {
+      event.preventDefault()
       const prevDigitId = digitId - 1
       const nextInput = digitRefs[prevDigitId]
       // prevent focusing on non-existent input
@@ -167,6 +174,7 @@ const TicketContaier: React.FC<{
     }
 
     if (event.key === 'ArrowRight') {
+      event.preventDefault()
       const nextDigitId = digitId + 1
       const nextInput = digitRefs[nextDigitId]
       // prevent focusing on non-existent input
