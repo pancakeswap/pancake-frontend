@@ -50,6 +50,10 @@ export const getAchievements = async (account: string): Promise<Achievement[]> =
   }
 
   return pointIncreaseEvents.reduce((accum, userPoint) => {
+    if (!campaignMap.has(userPoint.campaignId)) {
+      return accum
+    }
+
     const campaignMeta = campaignMap.get(userPoint.campaignId)
 
     return [
