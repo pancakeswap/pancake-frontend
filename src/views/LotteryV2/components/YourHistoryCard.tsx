@@ -11,6 +11,7 @@ import {
   Flex,
   Heading,
   Skeleton,
+  ExpandableLabel,
 } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { LotteryStatus } from 'config/constants/types'
@@ -23,10 +24,15 @@ import { WhiteBunny } from '../svgs'
 import BuyTicketsButton from './BuyTicketsButton'
 import LotteryHistoryCardBody from './LotteryHistoryCardBody'
 import { dateOptions, dateTimeOptions } from '../helpers'
+import LotteryHistoryCardFooter from './LotteryHistoryCardFooter'
 
 const StyledCard = styled(Card)`
-  ${({ theme }) => theme.mediaQueries.xs} {
-    min-width: 320px;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    width: 520px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    width: 756px;
   }
 `
 
@@ -94,7 +100,7 @@ const YourHistoryCard = () => {
 
   const getBody = () => {
     if (shouldShowRoundDetail) {
-      return <LotteryHistoryCardBody lotteryData={selectedLotteryInfo} />
+      return <LotteryHistoryCardBody lotteryData={selectedLotteryInfo} lotteryId={selectedLotteryId} />
     }
 
     const pastUserRounds = userLotteryData?.rounds.filter((round) => {
@@ -131,10 +137,11 @@ const YourHistoryCard = () => {
     return <FinishedRoundTable handleHistoryRowClick={handleHistoryRowClick} />
   }
 
-  return (
-    <StyledCard>
-      <CardHeader>{getHeader()}</CardHeader>
-      {getBody()}
+  const getFooter = () => {
+    if (selectedLotteryInfo) {
+      return <LotteryHistoryCardFooter lotteryData={selectedLotteryInfo} />
+    }
+    return (
       <CardFooter>
         <Flex flexDirection="column" justifyContent="center" alignItems="center">
           <Text fontSize="12px" color="textSubtle">
@@ -142,6 +149,14 @@ const YourHistoryCard = () => {
           </Text>
         </Flex>
       </CardFooter>
+    )
+  }
+
+  return (
+    <StyledCard>
+      <CardHeader>{getHeader()}</CardHeader>
+      {getBody()}
+      {getFooter()}
     </StyledCard>
   )
 }

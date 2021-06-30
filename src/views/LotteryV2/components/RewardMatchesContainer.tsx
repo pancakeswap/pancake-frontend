@@ -1,16 +1,13 @@
 import React from 'react'
 import BigNumber from 'bignumber.js'
-import { BIG_ZERO } from 'utils/bigNumber'
 import { Flex, Text } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
-import { useLottery } from 'state/hooks'
+import { LotteryRound } from 'state/types'
 import RewardsMatch from './RewardsMatch'
 
 const Wrapper = styled(Flex)`
   flex-direction: column;
-  background: ${({ theme }) => theme.colors.background};
-  padding: 24px;
 `
 
 const RewardsInner = styled.div`
@@ -23,14 +20,13 @@ const RewardsInner = styled.div`
   }
 `
 
-const NextDrawDetails = () => {
+const RewardMatchesContainer: React.FC<{ lotteryData: LotteryRound }> = ({ lotteryData }) => {
   const { t } = useTranslation()
-  const {
-    currentRound: { rewardsBreakdown, amountCollectedInCake, treasuryFee },
-  } = useLottery()
+  const { treasuryFee, amountCollectedInCake, rewardsBreakdown } = lotteryData
+
   const feeAsPercentage = new BigNumber(treasuryFee).div(100)
-  const cakeToBurn = feeAsPercentage.div(100).times(amountCollectedInCake)
-  const amountLessTreasuryFee = amountCollectedInCake.minus(cakeToBurn)
+  const cakeToBurn = feeAsPercentage.div(100).times(new BigNumber(amountCollectedInCake))
+  const amountLessTreasuryFee = new BigNumber(amountCollectedInCake).minus(cakeToBurn)
 
   const getCakeRewards = (bracket: number) => {
     const shareAsPercentage = new BigNumber(rewardsBreakdown[bracket]).div(100)
@@ -55,4 +51,4 @@ const NextDrawDetails = () => {
   )
 }
 
-export default NextDrawDetails
+export default RewardMatchesContainer

@@ -24,7 +24,7 @@ import Balance from 'components/Balance'
 import ViewTicketsModal from './ViewTicketsModal'
 import BuyTicketsButton from './BuyTicketsButton'
 import { dateTimeOptions } from '../helpers'
-import NextDrawDetails from './NextDrawDetails'
+import RewardMatchesContainer from './RewardMatchesContainer'
 
 const Grid = styled.div`
   display: grid;
@@ -46,14 +46,17 @@ const StyledCard = styled(Card)`
   }
 `
 
+const NextDrawWrapper = styled.div`
+  background: ${({ theme }) => theme.colors.background};
+  padding: 24px;
+`
+
 const NextDrawCard = () => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
-  const {
-    currentLotteryId,
-    isTransitioning,
-    currentRound: { endTime, amountCollectedInCake, userTickets, status },
-  } = useLottery()
+  const { currentLotteryId, isTransitioning, currentRound } = useLottery()
+  const { endTime, amountCollectedInCake, userTickets, status } = currentRound
+
   const [onPresentViewTicketsModal] = useModal(<ViewTicketsModal roundId={currentLotteryId} />)
   const [isExpanded, setIsExpanded] = useState(true)
   const ticketBuyIsDisabled = status !== LotteryStatus.OPEN || isTransitioning
@@ -190,7 +193,11 @@ const NextDrawCard = () => {
         </Grid>
       </CardBody>
       <CardFooter p="0">
-        {isExpanded && <NextDrawDetails />}
+        {isExpanded && (
+          <NextDrawWrapper>
+            <RewardMatchesContainer lotteryData={currentRound} />
+          </NextDrawWrapper>
+        )}
         <Flex p="8px 24px" alignItems="center" justifyContent="center">
           <ExpandableLabel expanded={isExpanded} onClick={() => setIsExpanded(!isExpanded)}>
             {isExpanded ? t('Hide') : t('Details')}
