@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
-import { Flex, Button, Text, AutoRenewIcon, Won } from '@pancakeswap/uikit'
+import { Flex, Button, Text, AutoRenewIcon, PresentWonIcon } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
 import { LotteryTicketClaimData } from 'config/constants/types'
 import { getBalanceAmount } from 'utils/formatBalance'
-import { callWithEstimateGas } from 'utils/callHelpers'
+import { callWithEstimateGas } from 'utils/calls'
 import { useLottery, usePriceCakeBusd } from 'state/hooks'
 import { fetchUserLotteries } from 'state/lottery'
 import { useAppDispatch } from 'state'
@@ -162,7 +162,7 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
             color="secondary"
             unit=" CAKE!"
           />
-          <Won ml={['0', null, '12px']} width="64px" />
+          <PresentWonIcon ml={['0', null, '12px']} width="64px" />
         </Flex>
         <Balance
           mt={['12px', null, '0']}
