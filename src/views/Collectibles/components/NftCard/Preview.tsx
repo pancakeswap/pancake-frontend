@@ -23,7 +23,7 @@ const StyledImage = styled.img`
   transition: opacity 1s linear;
   height: 100%;
   object-fit: cover;
-  border-radius: 32px 32px 0 0;
+  border-radius: 24px 24px 0 0;
 `
 
 const StyledVideo = styled.video`
