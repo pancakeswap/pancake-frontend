@@ -116,12 +116,12 @@ const fetchUserTicketsForMultipleRounds = async (roundsToCheck: UserRound[], acc
     let resCount = 0
     for (let i = 0; i < callsWithRoundData.length; i += 1) {
       const callOptions = callsWithRoundData[i]
-      multicallResPerRound.push(multicallRes.slice(resCount, callOptions.count))
+
+      multicallResPerRound.push(multicallRes.slice(resCount, resCount + callOptions.count))
       resCount += callOptions.count
     }
-
-    // Merge the fragmented multicall responses per round
     const mergedMulticallResponse = multicallResPerRound.map((res) => mergeViewUserTicketInfoMulticallResponse(res))
+
     return mergedMulticallResponse
   } catch (error) {
     console.error(error)

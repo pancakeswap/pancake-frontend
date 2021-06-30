@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { Button, Heading, Flex, useModal, AutoRenewIcon } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'contexts/Localization'
+import { useGetUserLotteriesGraphData } from 'state/hooks'
 import UnlockButton from 'components/UnlockButton'
 import ClaimPrizesModal from './ClaimPrizesModal'
 import useGetUnclaimedRewards, { FetchStatus } from '../hooks/useGetUnclaimedRewards'
@@ -19,10 +20,12 @@ const CheckPrizes = () => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const { fetchAllRewards, unclaimedRewards, fetchStatus } = useGetUnclaimedRewards()
+  const userLotteryData = useGetUserLotteriesGraphData()
   const [hasCheckedForRewards, setHasCheckedForRewards] = useState(false)
   const [hasRewardsToClaim, setHasRewardsToClaim] = useState(false)
   const [onPresentClaimModal] = useModal(<ClaimPrizesModal roundsToClaim={unclaimedRewards} />, false)
   const isFetchingRewards = fetchStatus === FetchStatus.IN_PROGRESS
+  const isCheckNowDisabled = !userLotteryData.account
 
   useEffect(() => {
     if (fetchStatus === FetchStatus.SUCCESS) {
@@ -104,6 +107,7 @@ const CheckPrizes = () => {
             {t('Are you a winner?')}
           </Heading>
           <Button
+            disabled={isCheckNowDisabled}
             onClick={() => fetchAllRewards()}
             isLoading={isFetchingRewards}
             endIcon={isFetchingRewards ? <AutoRenewIcon color="currentColor" spin /> : null}
