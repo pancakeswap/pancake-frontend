@@ -9,8 +9,8 @@ import { getBalanceAmount } from 'utils/formatBalance'
 import { useAppDispatch } from 'state'
 import { fetchFarmUserDataAsync } from 'state/farms'
 import { usePriceCakeBusd } from 'state/hooks'
-import { useHarvest } from 'hooks/useHarvest'
 import { useTranslation } from 'contexts/Localization'
+import useHarvestFarm from '../../../hooks/useHarvestFarm'
 
 import { ActionContainer, ActionTitles, ActionContent, Earned } from './styles'
 
@@ -33,7 +33,7 @@ const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({ pid, userD
   }
 
   const [pendingTx, setPendingTx] = useState(false)
-  const { onReward } = useHarvest(pid)
+  const { onReward } = useHarvestFarm(pid)
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const { account } = useWeb3React()

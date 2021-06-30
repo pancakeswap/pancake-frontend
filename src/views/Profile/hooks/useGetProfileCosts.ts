@@ -5,7 +5,7 @@ import { BIG_ZERO } from 'utils/bigNumber'
 import { multicallv2 } from 'utils/multicall'
 import profileABI from 'config/abi/pancakeProfile.json'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
-import useToast from './useToast'
+import useToast from '../../../hooks/useToast'
 
 const useGetProfileCosts = () => {
   const { t } = useTranslation()

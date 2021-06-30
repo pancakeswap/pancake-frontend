@@ -1,24 +1,25 @@
 import { useCallback } from 'react'
 import { useWeb3React } from '@web3-react/core'
+import BigNumber from 'bignumber.js'
 import { useAppDispatch } from 'state'
 import { updateUserStakedBalance, updateUserBalance, updateUserPendingReward } from 'state/actions'
-import { unstake, sousUnstake, sousEmergencyUnstake } from 'utils/callHelpers'
-import { useMasterchef, useSousChef } from './useContract'
+import { unstakeFarm } from 'utils/calls'
+import { useMasterchef, useSousChef } from 'hooks/useContract'
+import { BIG_TEN } from 'utils/bigNumber'
 
-const useUnstake = (pid: number) => {
-  const masterChefContract = useMasterchef()
-
-  const handleUnstake = useCallback(
-    async (amount: string) => {
-      await unstake(masterChefContract, pid, amount)
-    },
-    [masterChefContract, pid],
-  )
-
-  return { onUnstake: handleUnstake }
+const sousUnstake = async (sousChefContract, amount, decimals) => {
+  const tx = await sousChefContract.withdraw(new BigNumber(amount).times(BIG_TEN.pow(decimals)).toString())
+  const receipt = await tx.wait()
+  return receipt.status
 }
 
-export const useSousUnstake = (sousId, enableEmergencyWithdraw = false) => {
+const sousEmergencyUnstake = async (sousChefContract) => {
+  const tx = await sousChefContract.emergencyWithdraw()
+  const receipt = await tx.wait()
+  return receipt.status
+}
+
+const useUnstakePool = (sousId, enableEmergencyWithdraw = false) => {
   const dispatch = useAppDispatch()
   const { account } = useWeb3React()
   const masterChefContract = useMasterchef()
@@ -27,7 +28,7 @@ export const useSousUnstake = (sousId, enableEmergencyWithdraw = false) => {
   const handleUnstake = useCallback(
     async (amount: string, decimals: number) => {
       if (sousId === 0) {
-        await unstake(masterChefContract, 0, amount)
+        await unstakeFarm(masterChefContract, 0, amount)
       } else if (enableEmergencyWithdraw) {
         await sousEmergencyUnstake(sousChefContract)
       } else {
@@ -43,4 +44,4 @@ export const useSousUnstake = (sousId, enableEmergencyWithdraw = false) => {
   return { onUnstake: handleUnstake }
 }
 
-export default useUnstake
+export default useUnstakePool

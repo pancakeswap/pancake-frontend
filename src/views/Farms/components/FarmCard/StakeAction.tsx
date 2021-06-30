@@ -9,11 +9,11 @@ import { useTranslation } from 'contexts/Localization'
 import { useAppDispatch } from 'state'
 import { fetchFarmUserDataAsync } from 'state/farms'
 import { useLpTokenPrice } from 'state/hooks'
-import useStake from 'hooks/useStake'
-import useUnstake from 'hooks/useUnstake'
 import { getBalanceAmount, getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
 import DepositModal from '../DepositModal'
 import WithdrawModal from '../WithdrawModal'
+import useUnstakeFarms from '../../hooks/useUnstakeFarms'
+import useStakeFarms from '../../hooks/useStakeFarms'
 
 interface FarmCardActionsProps {
   stakedBalance?: BigNumber
@@ -38,8 +38,8 @@ const StakeAction: React.FC<FarmCardActionsProps> = ({
   addLiquidityUrl,
 }) => {
   const { t } = useTranslation()
-  const { onStake } = useStake(pid)
-  const { onUnstake } = useUnstake(pid)
+  const { onStake } = useStakeFarms(pid)
+  const { onUnstake } = useUnstakeFarms(pid)
   const location = useLocation()
   const dispatch = useAppDispatch()
   const { account } = useWeb3React()

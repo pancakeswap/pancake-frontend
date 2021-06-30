@@ -3,10 +3,10 @@ import styled from 'styled-components'
 import { Card, CardBody } from '@pancakeswap/uikit'
 import getLotteryRoundData from 'utils/getLotteryRoundData'
 import { useTranslation } from 'contexts/Localization'
-import useGetRecentLotteryRoundData from 'hooks/useGetRecentLotteryRoundData'
 import PastLotterySearcher from './PastLotterySearcher'
 import PastRoundCard from './PastRoundCard'
 import Loading from '../Loading'
+import useGetRecentLotteryRoundData from '../../hooks/useGetRecentLotteryRoundData'
 
 const Wrapper = styled.div`
   display: flex;

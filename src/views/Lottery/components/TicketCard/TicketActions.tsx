@@ -2,14 +2,14 @@ import React from 'react'
 import styled from 'styled-components'
 import { Button, useModal } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import useGetLotteryHasDrawn from 'hooks/useGetLotteryHasDrawn'
-import { useLotteryAllowance } from 'hooks/useAllowance'
-import useTickets from 'hooks/useTickets'
+import useGetLotteryHasDrawn from 'views/Lottery/hooks/useGetLotteryHasDrawn'
+import useTickets from 'views/Lottery/hooks/useTickets'
 import useTokenBalance from 'hooks/useTokenBalance'
 import { getCakeAddress } from 'utils/addressHelpers'
-import { useApproval } from 'hooks/useApproval'
 import BuyTicketModal from './BuyTicketModal'
 import MyTicketsModal from './UserTicketsModal'
+import useAllowance from '../../hooks/useAllowance'
+import useApproval from '../../hooks/useApproval'
 import PurchaseWarningModal from './PurchaseWarningModal'
 
 const CardActions = styled.div`
@@ -24,7 +24,7 @@ const CardActions = styled.div`
 
 const TicketCard: React.FC = () => {
   const { t } = useTranslation()
-  const allowance = useLotteryAllowance()
+  const allowance = useAllowance()
   const lotteryHasDrawn = useGetLotteryHasDrawn()
   const { balance: cakeBalance } = useTokenBalance(getCakeAddress())
   const tickets = useTickets()

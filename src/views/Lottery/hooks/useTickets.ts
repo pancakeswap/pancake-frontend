@@ -3,15 +3,9 @@ import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
 import { useLottery, useLotteryTicket } from 'hooks/useContract'
 import { BIG_ZERO } from 'utils/bigNumber'
-import useRefresh from './useRefresh'
-import {
-  getTotalRewards,
-  getTotalClaim,
-  getMatchingRewardLength,
-  getWinningNumbers,
-  getTickets,
-} from '../utils/lotteryUtils'
-import useLastUpdated from './useLastUpdated'
+import useRefresh from 'hooks/useRefresh'
+import { getTotalRewards, getTotalClaim, getWinningNumbers, getTickets } from 'utils/lotteryUtils'
+import useLastUpdated from 'hooks/useLastUpdated'
 
 const useTickets = (lotteryNumber = null) => {
   const [tickets, setTickets] = useState([])
@@ -94,25 +88,6 @@ export const useWinningNumbers = () => {
   }, [fastRefresh, lotteryContract, setWinningNumbers])
 
   return winningNumbers
-}
-
-export const useMatchingRewardLength = (numbers) => {
-  const [matchingNumbers, setMatchingNumbers] = useState(0)
-  const lotteryContract = useLottery()
-  const { fastRefresh } = useRefresh()
-
-  useEffect(() => {
-    const fetchBalance = async () => {
-      const matchedNumbers = await getMatchingRewardLength(lotteryContract, numbers)
-      setMatchingNumbers(matchedNumbers)
-    }
-
-    if (lotteryContract) {
-      fetchBalance()
-    }
-  }, [lotteryContract, numbers, fastRefresh])
-
-  return matchingNumbers
 }
 
 export default useTickets

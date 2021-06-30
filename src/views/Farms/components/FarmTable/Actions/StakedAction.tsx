@@ -10,16 +10,16 @@ import { useFarmUser, useLpTokenPrice } from 'state/hooks'
 import { fetchFarmUserDataAsync } from 'state/farms'
 import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
 import { useTranslation } from 'contexts/Localization'
-import { useApprove } from 'hooks/useApprove'
 import { useERC20 } from 'hooks/useContract'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
 import { useAppDispatch } from 'state'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import { getBalanceAmount, getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
-import useStake from 'hooks/useStake'
-import useUnstake from 'hooks/useUnstake'
+import useUnstakeFarms from '../../../hooks/useUnstakeFarms'
 import DepositModal from '../../DepositModal'
 import WithdrawModal from '../../WithdrawModal'
+import useStakeFarms from '../../../hooks/useStakeFarms'
+import useApproveFarm from '../../../hooks/useApproveFarm'
 import { ActionContainer, ActionTitles, ActionContent, Earned } from './styles'
 
 const IconButtonWrapper = styled.div`
@@ -42,8 +42,8 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
   const { account } = useWeb3React()
   const [requestedApproval, setRequestedApproval] = useState(false)
   const { allowance, tokenBalance, stakedBalance } = useFarmUser(pid)
-  const { onStake } = useStake(pid)
-  const { onUnstake } = useUnstake(pid)
+  const { onStake } = useStakeFarms(pid)
+  const { onUnstake } = useUnstakeFarms(pid)
   const location = useLocation()
   const lpPrice = useLpTokenPrice(lpSymbol)
 
@@ -82,7 +82,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
   )
   const lpContract = useERC20(lpAddress)
   const dispatch = useAppDispatch()
-  const { onApprove } = useApprove(lpContract)
+  const { onApprove } = useApproveFarm(lpContract)
 
   const handleApprove = useCallback(async () => {
     try {

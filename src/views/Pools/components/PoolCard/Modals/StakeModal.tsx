@@ -3,8 +3,6 @@ import styled from 'styled-components'
 import { Modal, Text, Flex, Image, Button, Slider, BalanceInput, AutoRenewIcon, Link } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { BASE_EXCHANGE_URL } from 'config'
-import { useSousStake } from 'hooks/useStake'
-import { useSousUnstake } from 'hooks/useUnstake'
 import useTheme from 'hooks/useTheme'
 import useToast from 'hooks/useToast'
 import BigNumber from 'bignumber.js'
@@ -12,6 +10,8 @@ import { getFullDisplayBalance, formatNumber, getDecimalAmount } from 'utils/for
 import { Pool } from 'state/types'
 import { getAddress } from 'utils/addressHelpers'
 import PercentageButton from './PercentageButton'
+import useStakePool from '../../../hooks/useStakePool'
+import useUnstakePool from '../../../hooks/useUnstakePool'
 
 interface StakeModalProps {
   isBnbPool: boolean
@@ -37,8 +37,8 @@ const StakeModal: React.FC<StakeModalProps> = ({
   const { sousId, stakingToken, userData, stakingLimit, earningToken } = pool
   const { t } = useTranslation()
   const { theme } = useTheme()
-  const { onStake } = useSousStake(sousId, isBnbPool)
-  const { onUnstake } = useSousUnstake(sousId, pool.enableEmergencyWithdraw)
+  const { onStake } = useStakePool(sousId, isBnbPool)
+  const { onUnstake } = useUnstakePool(sousId, pool.enableEmergencyWithdraw)
   const { toastSuccess, toastError } = useToast()
   const [pendingTx, setPendingTx] = useState(false)
   const [stakeAmount, setStakeAmount] = useState('')

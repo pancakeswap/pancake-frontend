@@ -4,29 +4,12 @@ import { ethers, Contract } from 'ethers'
 import BigNumber from 'bignumber.js'
 import { useAppDispatch } from 'state'
 import { updateUserAllowance } from 'state/actions'
-import { approve } from 'utils/callHelpers'
 import { useTranslation } from 'contexts/Localization'
-import { useMasterchef, useCake, useSousChef, useLottery, useCakeVaultContract } from './useContract'
-import useToast from './useToast'
-import useLastUpdated from './useLastUpdated'
+import { useCake, useSousChef, useCakeVaultContract } from 'hooks/useContract'
+import useToast from 'hooks/useToast'
+import useLastUpdated from 'hooks/useLastUpdated'
 
-// Approve a Farm
-export const useApprove = (lpContract: Contract) => {
-  const masterChefContract = useMasterchef()
-  const handleApprove = useCallback(async () => {
-    try {
-      const receipt = await approve(lpContract, masterChefContract)
-      return receipt.status
-    } catch (e) {
-      return false
-    }
-  }, [lpContract, masterChefContract])
-
-  return { onApprove: handleApprove }
-}
-
-// Approve a Pool
-export const useSousApprove = (lpContract: Contract, sousId, earningTokenSymbol) => {
+export const useApprovePool = (lpContract: Contract, sousId, earningTokenSymbol) => {
   const [requestedApproval, setRequestedApproval] = useState(false)
   const { toastSuccess, toastError } = useToast()
   const { t } = useTranslation()
@@ -37,7 +20,8 @@ export const useSousApprove = (lpContract: Contract, sousId, earningTokenSymbol)
   const handleApprove = useCallback(async () => {
     try {
       setRequestedApproval(true)
-      const receipt = await approve(lpContract, sousChefContract)
+      const tx = await lpContract.approve(sousChefContract.address, ethers.constants.MaxUint256)
+      const receipt = await tx.wait()
 
       dispatch(updateUserAllowance(sousId, account))
       if (receipt.status) {
@@ -106,31 +90,4 @@ export const useCheckVaultApprovalStatus = () => {
   }, [account, cakeContract, cakeVaultContract, lastUpdated])
 
   return { isVaultApproved, setLastUpdated }
-}
-
-// Approve the lottery
-export const useLotteryApprove = () => {
-  const cakeContract = useCake()
-  const lotteryContract = useLottery()
-
-  const handleApprove = useCallback(async () => {
-    try {
-      const tx = await approve(cakeContract, lotteryContract)
-      return tx
-    } catch (e) {
-      return false
-    }
-  }, [cakeContract, lotteryContract])
-
-  return { onApprove: handleApprove }
-}
-
-// Approve an IFO
-export const useIfoApprove = (tokenContract: Contract, spenderAddress: string) => {
-  const onApprove = useCallback(async () => {
-    const tx = await tokenContract.approve(spenderAddress, ethers.constants.MaxUint256)
-    await tx.wait()
-  }, [spenderAddress, tokenContract])
-
-  return onApprove
 }

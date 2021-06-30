@@ -13,11 +13,11 @@ import {
 } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'
-import { useSousHarvest } from 'hooks/useHarvest'
-import { useSousStake } from 'hooks/useStake'
 import useToast from 'hooks/useToast'
 import { Token } from 'config/constants/types'
 import { formatNumber } from 'utils/formatBalance'
+import useHarvestPool from '../../../hooks/useHarvestPool'
+import useStakePool from '../../../hooks/useStakePool'
 
 interface CollectModalProps {
   formattedBalance: string
@@ -43,8 +43,8 @@ const CollectModal: React.FC<CollectModalProps> = ({
   const { t } = useTranslation()
   const { theme } = useTheme()
   const { toastSuccess, toastError } = useToast()
-  const { onReward } = useSousHarvest(sousId, isBnbPool)
-  const { onStake } = useSousStake(sousId, isBnbPool)
+  const { onReward } = useHarvestPool(sousId, isBnbPool)
+  const { onStake } = useStakePool(sousId, isBnbPool)
   const [pendingTx, setPendingTx] = useState(false)
   const [shouldCompound, setShouldCompound] = useState(isCompoundPool)
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
