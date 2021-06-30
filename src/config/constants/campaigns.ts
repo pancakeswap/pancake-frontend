@@ -170,14 +170,14 @@ const campaigns: Campaign[] = [
     id: '513010001',
     type: 'participation',
     title: 'Syrup Soaker',
-    description: 'Played a round of Prediction before round 12,120',
+    description: 'Took a dip in the early days of the Auto CAKE Pool',
     badge: 'syrup-soaker.svg',
   },
   {
     id: '514010001',
     type: 'participation',
     title: 'Clairvoyant',
-    description: 'Took a dip in the early days of the Auto CAKE Pool',
+    description: 'Played a round of Prediction before round 12,120',
     badge: 'clairvoyant.svg',
   },
 ]
