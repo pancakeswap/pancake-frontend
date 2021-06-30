@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
-import { LotteryTicket, LotteryTicketClaimData } from 'config/constants/types'
+import { LotteryStatus, LotteryTicket, LotteryTicketClaimData } from 'config/constants/types'
 import { LotteryUserGraphEntity, LotteryRoundGraphEntity, UserTicketsResponse, UserRound } from 'state/types'
 import { multicallv2 } from 'utils/multicall'
 import lotteryV2Abi from 'config/abi/lotteryV2.json'
@@ -136,9 +136,6 @@ const fetchUnclaimedUserRewards = async (
   lotteriesData: LotteryRoundGraphEntity[],
 ): Promise<LotteryTicketClaimData[]> => {
   const { rounds } = userLotteryData
-  const cursor = 0
-  // TODO: Introduce cursor
-  const limit = 5000
 
   // If there is no user round history - return an empty array
   if (rounds.length === 0) {
@@ -150,12 +147,16 @@ const fetchUnclaimedUserRewards = async (
     return []
   }
 
-  const filteredForCurrentRound = rounds.filter((round) => {
+  // Filter out the current round unless it's claimable
+  const filteredForLiveRound = rounds.filter((round) => {
+    if (round.lotteryId === currentLotteryId) {
+      return round.status === LotteryStatus.CLAIMABLE
+    }
     return round.lotteryId !== currentLotteryId
   })
 
   // If there are any rounds tickets haven't been claimed for, OR a user has over 100 tickets in a round - check user tickets for those rounds
-  const roundsToCheck = filteredForCurrentRound.filter((round) => {
+  const roundsToCheck = filteredForLiveRound.filter((round) => {
     return !round.claimed || parseInt(round.totalTickets, 10) > 100
   })
 

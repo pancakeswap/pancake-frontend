@@ -1,9 +1,10 @@
+import { useWeb3React } from '@web3-react/core'
 import { LotteryStatus } from 'config/constants/types'
 import usePreviousValue from 'hooks/usePreviousValue'
 import { useEffect } from 'react'
 import { useAppDispatch } from 'state'
 import { useLottery } from 'state/hooks'
-import { fetchCurrentLottery, fetchPastLotteries, fetchPublicLotteryData } from 'state/lottery'
+import { fetchCurrentLottery, fetchPastLotteries, fetchPublicLotteryData, fetchUserLotteries } from 'state/lottery'
 
 const useStatusTransitions = () => {
   const {
@@ -12,6 +13,7 @@ const useStatusTransitions = () => {
     currentRound: { status },
   } = useLottery()
 
+  const { account } = useWeb3React()
   const dispatch = useAppDispatch()
   const previousStatus = usePreviousValue(status)
 
@@ -34,9 +36,12 @@ const useStatusTransitions = () => {
       if (previousStatus === LotteryStatus.CLOSE && status === LotteryStatus.CLAIMABLE) {
         console.log('|| CLOSE > CLAIMABLE')
         dispatch(fetchCurrentLottery({ currentLotteryId }))
+        if (account) {
+          dispatch(fetchUserLotteries({ account }))
+        }
       }
     }
-  }, [currentLotteryId, status, previousStatus, dispatch])
+  }, [currentLotteryId, status, previousStatus, account, dispatch])
 
   useEffect(() => {
     // Current lottery is CLAIMABLE and the round is transitioning - fetch current lottery ID every 10s.
@@ -44,9 +49,11 @@ const useStatusTransitions = () => {
     if (previousStatus === LotteryStatus.CLAIMABLE && status === LotteryStatus.CLAIMABLE && isTransitioning) {
       console.log('|| TRANSITIONING && CLAIMABLE - FIRST FETCH')
       dispatch(fetchPublicLotteryData())
+      dispatch(fetchPastLotteries())
       const interval = setInterval(async () => {
-        console.log('|| FETCHING NEW LOTTERY ROUND')
+        console.log('|| FETCHING NEW LOTTERY ROUND ON TIMEOUT')
         dispatch(fetchPublicLotteryData())
+        dispatch(fetchPastLotteries())
       }, 10000)
       return () => clearInterval(interval)
     }
