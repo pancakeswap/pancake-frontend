@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.17.0](https://github.com/pancakeswap/pancake-toolkit/compare/@pancakeswap/token-lists@2.16.1...@pancakeswap/token-lists@2.17.0) (2021-06-30)
+
+
+### Features
+
+* **token-lists:** ORBS & FORM ([#173](https://github.com/pancakeswap/pancake-toolkit/issues/173)) ([465ff3b](https://github.com/pancakeswap/pancake-toolkit/commit/465ff3bcf025dc53e06366ef841b643b2dc84341))
+
+
+
+
+
 ## [2.16.1](https://github.com/pancakeswap/pancake-toolkit/compare/@pancakeswap/token-lists@2.15.4...@pancakeswap/token-lists@2.16.1) (2021-06-21)
 
 **Note:** Version bump only for package @pancakeswap/token-lists
