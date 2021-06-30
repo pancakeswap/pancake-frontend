@@ -899,5 +899,8 @@
   "Other Syrup Pools": "Outras reservas de Syrup",
   "Voting Power": "Poder de voto",
   "You need at least %count% voting power to publish a proposal.": "Você precisa de pelo menos %count% de poder de voto para publicar uma proposta.",
-  "Check voting power": "Confira o poder de voto"
+  "Check voting power": "Confira o poder de voto",
+  "Amount to collect": "Amount to collect",
+  "Your winnings": "Your winnings",
+  "Includes your original position and your winnings, minus the %fee% fee.": "Includes your original position and your winnings, minus the %fee% fee."
 }

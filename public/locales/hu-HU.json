@@ -899,5 +899,8 @@
   "Other Syrup Pools": "Egyéb SYRUP érdekszövetségek",
   "Voting Power": "Szavazati erő",
   "You need at least %count% voting power to publish a proposal.": "Egy javaslat közzétételéhez legalább %count% szavazati erőre van szüksége.",
-  "Check voting power": "Ellenőrizze szavazati erejét"
+  "Check voting power": "Ellenőrizze szavazati erejét",
+  "Amount to collect": "Amount to collect",
+  "Your winnings": "Your winnings",
+  "Includes your original position and your winnings, minus the %fee% fee.": "Includes your original position and your winnings, minus the %fee% fee."
 }

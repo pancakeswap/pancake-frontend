@@ -899,5 +899,8 @@
   "Other Syrup Pools": "Diğer Syrup Havuzları",
   "Voting Power": "Oy Gücü",
   "You need at least %count% voting power to publish a proposal.": "Bir teklif yayınlamak için en az %count% oy hakkınız olmalıdır.",
-  "Check voting power": "Oy Gücünüzü Kontrol Edin"
+  "Check voting power": "Oy Gücünüzü Kontrol Edin",
+  "Amount to collect": "Amount to collect",
+  "Your winnings": "Your winnings",
+  "Includes your original position and your winnings, minus the %fee% fee.": "Includes your original position and your winnings, minus the %fee% fee."
 }
