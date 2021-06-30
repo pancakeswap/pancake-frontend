@@ -899,5 +899,8 @@
   "Other Syrup Pools": "他のSYRUPプール",
   "Voting Power": "投票権",
   "You need at least %count% voting power to publish a proposal.": "提案を公開するには、少なくとも%count%の投票権が必要です。",
-  "Check voting power": "投票権を確認"
+  "Check voting power": "投票権を確認",
+  "Amount to collect": "Amount to collect",
+  "Your winnings": "Your winnings",
+  "Includes your original position and your winnings, minus the %fee% fee.": "Includes your original position and your winnings, minus the %fee% fee."
 }
