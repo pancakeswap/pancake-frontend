@@ -2,11 +2,8 @@ import { LinkExternal } from '@rug-zombie-libs/uikit'
 import tokens from 'config/constants/tokens';
 import { useDrFrankenstein } from 'hooks/useContract'
 import React, { useEffect, useState } from 'react'
-import { BIG_ZERO } from 'utils/bigNumber';
 import { getFullDisplayBalance } from 'utils/formatBalance';
 import BigNumber from 'bignumber.js';
-import axios from 'axios';
-import { getBnbPriceinBusd } from 'state/hooks';
 
 interface RugInDetailsProps {
   details: {
@@ -38,7 +35,7 @@ const RugInDetails: React.FC<RugInDetailsProps> = ({
   return (
     <div key={id} className="rug-indetails">
       <div className="direction-column">
-        <span className="indetails-type">Grave</span>
+        <span className="indetails-type">Tomb</span>
         <span className="indetails-title">
           Weight:
           <span className="indetails-value">120X</span>

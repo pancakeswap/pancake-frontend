@@ -20,7 +20,7 @@ interface BuyFrankProps {
   details: Details
 }
 
-const BuyFrank: React.FC<BuyFrankProps> = ({ details: { result: { tokenWithdrawalDate, nftRevivalDate, amount } }, details }) => {
+const BuyFrank: React.FC<BuyFrankProps> = ({ details: { result: { tokenWithdrawalDate, amount } } }) => {
   const currentDate = Math.floor(Date.now() / 1000);
   const initialWithdrawCooldownTime = parseInt(tokenWithdrawalDate) - currentDate;
   const withdrawCooldownTimeObj = new Date(0);

@@ -1,12 +1,10 @@
-import tokens from './tokens'
-import farms from './farms'
-import { Ifo, Token } from './types'
+import { Ifo } from './types'
 
-const cakeBnbLpToken: Token = {
-  symbol: undefined, // farms[1].lpSymbol,
-  address: undefined, // farms[1].lpAddresses,
-  decimals: 18,
-}
+// const cakeBnbLpToken: Token = {
+//   symbol: undefined, // farms[1].lpSymbol,
+//   address: undefined, // farms[1].lpAddresses,
+//   decimals: 18,
+// }
 
 const ifos: Ifo[] = [
   // {
