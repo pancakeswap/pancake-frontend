@@ -161,7 +161,7 @@ export const fetchTickets = async (
   lotteryId: string,
   userRoundData?: UserRound,
 ): Promise<LotteryTicket[]> => {
-  const totalTicketsToRequest = userRoundData ? parseInt(userRoundData?.totalTickets, 10) : 5000
+  const totalTicketsToRequest = userRoundData ? parseInt(userRoundData?.totalTickets, 10) : 1000
   const calls = getViewUserTicketNumbersAndStatusesCalls(totalTicketsToRequest, account, lotteryId)
   try {
     const multicallRes = await multicallv2(lotteryV2Abi, calls)
