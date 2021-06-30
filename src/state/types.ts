@@ -352,7 +352,7 @@ export interface LotteryRound {
   endTime: string
   // Problematic? This is because the type is used within the application (where it is a BigNumber), and within redux (where it is SerializedBigNumber)
   priceTicketInCake: SerializedBigNumber | BigNumber
-  discountDivisor: string
+  discountDivisor: SerializedBigNumber | BigNumber
   treasuryFee: string
   firstTicketId: string
   lastTicketId: string
@@ -366,7 +366,7 @@ export interface LotteryRound {
 
 export interface LotteryState {
   currentLotteryId: string
-  maxNumberTicketsPerBuyOrClaim: string
+  maxNumberTicketsPerBuyOrClaim: SerializedBigNumber | BigNumber
   isTransitioning: boolean
   currentRound: LotteryRound
   lotteriesData?: LotteryRoundGraphEntity[]

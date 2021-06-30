@@ -1,15 +1,22 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import styled from 'styled-components'
-import { CardBody, Heading, Flex, Skeleton } from '@pancakeswap/uikit'
-import { fetchLottery } from 'state/lottery/helpers'
+import { CardBody, Heading, Flex, Skeleton, Text, Box, Button, useModal } from '@pancakeswap/uikit'
 import { LotteryRound } from 'state/types'
+import { useGetUserLotteriesGraphData } from 'state/hooks'
 import { useTranslation } from 'contexts/Localization'
 import WinningNumbers from './WinningNumbers'
+import ViewTicketsModal from './ViewTicketsModal'
 
 const StyledCardBody = styled(CardBody)``
 
-const LotteryHistoryCardBody: React.FC<{ lotteryData: LotteryRound }> = ({ lotteryData }) => {
+const LotteryHistoryCardBody: React.FC<{ lotteryData: LotteryRound; lotteryId: string }> = ({
+  lotteryData,
+  lotteryId,
+}) => {
   const { t } = useTranslation()
+  const [onPresentViewTicketsModal] = useModal(<ViewTicketsModal roundId={lotteryId} />)
+  const userLotteryData = useGetUserLotteriesGraphData()
+  const userDataForRound = userLotteryData.rounds.find((userLotteryRound) => userLotteryRound.lotteryId === lotteryId)
 
   return (
     <StyledCardBody>
@@ -19,6 +26,28 @@ const LotteryHistoryCardBody: React.FC<{ lotteryData: LotteryRound }> = ({ lotte
           <WinningNumbers number={lotteryData?.finalNumber.toString()} />
         ) : (
           <Skeleton width="240px" height="34px" />
+        )}
+        {userDataForRound && (
+          <>
+            <Box mt="32px">
+              <Text display="inline">{t('You had ')}</Text>
+              <Text display="inline" bold>
+                {userDataForRound.totalTickets} {t('tickets')}{' '}
+              </Text>
+              <Text display="inline">{t('this round')}</Text>
+            </Box>
+            <Button
+              onClick={onPresentViewTicketsModal}
+              height="auto"
+              width="fit-content"
+              p="0"
+              mb={['32px', null, null, '0']}
+              variant="text"
+              scale="sm"
+            >
+              {t('View your tickets')}
+            </Button>
+          </>
         )}
       </Flex>
     </StyledCardBody>
