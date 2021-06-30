@@ -1,25 +1,31 @@
 import styled from 'styled-components'
-import { Flex } from '@pancakeswap/uikit'
+import { Grid, Box } from '@pancakeswap/uikit'
 
-export const AddressColumn = styled(Flex).attrs({ alignItems: 'center' })`
-  width: 192px;
+export const AddressColumn = styled(Box).attrs({ alignItems: 'center' })`
+  grid-area: address;
 `
 
-export const ChoiceColumn = styled(Flex).attrs({ alignItems: 'center' })`
-  flex: 1;
-  width: 0;
-  padding-left: 32px;
-  padding-right: 32px;
+export const ChoiceColumn = styled(Box)`
+  grid-area: choice;
+  overflow: hidden;
 `
 
-export const VotingPowerColumn = styled(Flex).attrs({ alignItems: 'center' })`
-  justify-content: end;
-  width: 80px;
+export const VotingPowerColumn = styled(Box)`
+  justify-self: end;
+  grid-area: vote;
 `
 
-const Row = styled(Flex)`
+const Row = styled(Grid)`
   border-bottom: 1px solid ${({ theme }) => theme.colors.cardBorder};
-  padding: 16px 24px;
+  grid-gap: 8px;
+  grid-template-areas: 'address choice vote';
+  grid-template-columns: 110px 1fr 1fr;
+  padding: 8px 16px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    grid-gap: 16px;
+    padding: 16px 24px;
+  }
 `
 
 export default Row
