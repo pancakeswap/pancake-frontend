@@ -20,7 +20,8 @@
     "generate:pcs-top-15": "yarn test && yarn build && node ./dist generate pancakeswap-top-15",
     "makelist:pcs-top-15": "yarn checksum:pcs-top-15 && yarn generate:pcs-top-15",
     "fetch:pcs-top-100": "yarn build && node ./dist fetch",
-    "test": "jest"
+    "test": "jest",
+    "ci-check": "yarn build && node ./dist ci-check"
   },
   "dependencies": {
     "@ethersproject/address": "^5.1.0",

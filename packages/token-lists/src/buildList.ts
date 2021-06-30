@@ -1,11 +1,26 @@
 import fs from "fs";
 import path from "path";
 import { TokenList } from "@uniswap/token-lists";
-import { version } from "../package.json";
+import { version as pancakeswapDefaultVersion } from "../lists/pancakeswap-default.json";
+import { version as pancakeswapExtendedVersion } from "../lists/pancakeswap-extended.json";
+import { version as pancakeswapTop15Version } from "../lists/pancakeswap-top-15.json";
+import { version as pancakeswapTop100Version } from "../lists/pancakeswap-top-100.json";
 import pancakeswapDefault from "./tokens/pancakeswap-default.json";
 import pancakeswapExtended from "./tokens/pancakeswap-extended.json";
 import pancakeswapTop100 from "./tokens/pancakeswap-top-100.json";
 import pancakeswapTop15 from "./tokens/pancakeswap-top-15.json";
+
+export enum VersionBump {
+  "major" = "major",
+  "minor" = "minor",
+  "patch" = "patch",
+}
+
+type Version = {
+  major: number;
+  minor: number;
+  patch: number;
+};
 
 const lists = {
   "pancakeswap-default": {
@@ -15,6 +30,7 @@ const lists = {
     logoURI:
       "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
     sort: false,
+    currentVersion: pancakeswapDefaultVersion,
   },
   "pancakeswap-extended": {
     list: pancakeswapExtended,
@@ -23,6 +39,7 @@ const lists = {
     logoURI:
       "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
     sort: true,
+    currentVersion: pancakeswapExtendedVersion,
   },
   "pancakeswap-top-100": {
     list: pancakeswapTop100,
@@ -31,6 +48,7 @@ const lists = {
     logoURI:
       "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
     sort: true,
+    currentVersion: pancakeswapTop100Version,
   },
   "pancakeswap-top-15": {
     list: pancakeswapTop15,
@@ -39,20 +57,30 @@ const lists = {
     logoURI:
       "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
     sort: true,
+    currentVersion: pancakeswapTop15Version,
   },
 };
 
-export const buildList = (listName: string): TokenList => {
-  const [major, minor, patch] = version.split(".").map((versionNumber) => parseInt(versionNumber, 10));
-  const { list, name, keywords, logoURI, sort } = lists[listName];
+const getNextVersion = (currentVersion: Version, versionBump?: VersionBump) => {
+  const { major, minor, patch } = currentVersion;
+  switch (versionBump) {
+    case VersionBump.major:
+      return { major: major + 1, minor, patch };
+    case VersionBump.minor:
+      return { major, minor: minor + 1, patch };
+    case VersionBump.patch:
+    default:
+      return { major, minor, patch: patch + 1 };
+  }
+};
+
+export const buildList = (listName: string, versionBump?: VersionBump): TokenList => {
+  const { list, name, keywords, logoURI, sort, currentVersion } = lists[listName];
+  const version = getNextVersion(currentVersion, versionBump);
   return {
     name,
     timestamp: new Date().toISOString(),
-    version: {
-      major,
-      minor,
-      patch,
-    },
+    version,
     logoURI,
     keywords,
     // sort them by symbol for easy readability (not applied to default list)
