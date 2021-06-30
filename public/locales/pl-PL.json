@@ -899,8 +899,8 @@
   "Other Syrup Pools": "Inne pule Syrup",
   "Voting Power": "Siła głosu",
   "You need at least %count% voting power to publish a proposal.": "Musisz mieć siłę głosu co najmniej %count%, aby móc opublikować propozycję.",
-  "Check voting power": "Check voting power",
-  "Amount to collect": "Amount to collect",
-  "Your winnings": "Your winnings",
-  "Includes your original position and your winnings, minus the %fee% fee.": "Includes your original position and your winnings, minus the %fee% fee."
+  "Check voting power": "Sprawdź siłę głosu",
+  "Amount to collect": "Kwota do odebrania",
+  "Your winnings": "Twoje wygrane",
+  "Includes your original position and your winnings, minus the %fee% fee.": "Obejmuje Twoją pierwotną pozycję i wygrane minus prowizja w wysokości %fee%."
 }
