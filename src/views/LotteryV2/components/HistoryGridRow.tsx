@@ -15,6 +15,7 @@ const Grid = styled(Box)`
   display: grid;
   grid-template-columns: repeat(3, 1fr) auto;
   row-gap: 8px;
+  cursor: pointer;
 `
 
 const HistoryGridRow: React.FC<HistoryGridRowProps> = ({

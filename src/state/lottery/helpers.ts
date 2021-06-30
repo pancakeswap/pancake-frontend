@@ -213,6 +213,7 @@ export const getGraphLotteryUser = async (account: string): Promise<LotteryUserG
             lottery {
               id
               endTime
+              status
             }
             claimed
             totalTickets
@@ -246,6 +247,7 @@ export const getGraphLotteryUser = async (account: string): Promise<LotteryUserG
         endTime: round?.lottery?.endTime,
         claimed: round?.claimed,
         totalTickets: round?.totalTickets,
+        status: round?.lottery?.status,
       }
     }),
   }
