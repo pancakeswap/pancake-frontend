@@ -1,6 +1,6 @@
 import React from 'react'
 import { useWeb3React } from '@web3-react/core'
-import { Box, Flex, Heading, Text, PrizeIcon, BlockIcon, LinkExternal } from '@pancakeswap/uikit'
+import { Box, Flex, Heading, Text, PrizeIcon, BlockIcon, LinkExternal, useTooltip, InfoIcon } from '@pancakeswap/uikit'
 import { useAppDispatch } from 'state'
 import { useTranslation } from 'contexts/Localization'
 import { useBetCanClaim, useGetRewardRate, usePriceBnbBusd } from 'state/hooks'
@@ -27,6 +27,10 @@ const StyledBetResult = styled(Box)`
   padding: 16px;
 `
 
+const Divider = styled.hr`
+  border: 1px solid ${({ theme }) => theme.colors.cardBorder};
+`
+
 const BetResult: React.FC<BetResultProps> = ({ bet, result }) => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
@@ -35,9 +39,16 @@ const BetResult: React.FC<BetResultProps> = ({ bet, result }) => {
   const bnbBusdPrice = usePriceBnbBusd()
   const canClaim = useBetCanClaim(account, bet.round.id)
   const rewardRate = useGetRewardRate()
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(
+    <Text as="p">{t('Includes your original position and your winnings, minus the %fee% fee.', { fee: '3%' })}</Text>,
+    { placement: 'auto' },
+  )
+
+  const isWinner = result === Result.WIN
 
   // Winners get the payout, otherwise the claim what they put it if it was canceled
-  const payout = result === Result.WIN ? getNetPayout(bet, rewardRate) : bet.amount
+  const payout = isWinner ? getNetPayout(bet, rewardRate) : bet.amount
+  const returned = payout + bet.amount
 
   const getHeaderColor = () => {
     switch (result) {
@@ -129,7 +140,7 @@ const BetResult: React.FC<BetResultProps> = ({ bet, result }) => {
           <ReclaimPositionButton epoch={bet.round.epoch} width="100%" mb="16px" />
         )}
         <Flex alignItems="center" justifyContent="space-between" mb="16px">
-          <Text>{t('Your direction')}</Text>
+          <Text>{t('Your direction')}:</Text>
           <PositionTag betPosition={bet.position}>
             {bet.position === BetPosition.BULL ? t('Up') : t('Down')}
           </PositionTag>
@@ -139,14 +150,31 @@ const BetResult: React.FC<BetResultProps> = ({ bet, result }) => {
           <Text>{`${formatBnb(bet.amount)} BNB`}</Text>
         </Flex>
         <Flex alignItems="start" justifyContent="space-between">
-          <Text bold>{t('Your Result')}</Text>
+          <Text bold>{isWinner ? t('Your winnings') : t('Your Result')}:</Text>
           <Box style={{ textAlign: 'right' }}>
-            <Text bold color={getResultColor()}>{`${result === Result.LOSE ? '-' : '+'}${formatBnb(payout)} BNB`}</Text>
+            <Text bold color={getResultColor()}>{`${isWinner ? '+' : '-'}${formatBnb(payout)} BNB`}</Text>
             <Text fontSize="12px" color="textSubtle">
               {`~$${formatBnb(bnbBusdPrice.times(payout).toNumber())}`}
             </Text>
           </Box>
         </Flex>
+        {isWinner && (
+          <>
+            <Divider />
+            <Flex alignItems="start" justifyContent="space-between">
+              <Text fontSize="14px" color="textSubtle">
+                {t('Amount to collect')}:
+              </Text>
+              <Flex justifyContent="end">
+                <Text fontSize="14px" color="textSubtle">{`${formatBnb(returned)} BNB`}</Text>
+                <span ref={targetRef}>
+                  <InfoIcon color="textSubtle" ml="4px" />
+                </span>
+              </Flex>
+              {tooltipVisible && tooltip}
+            </Flex>
+          </>
+        )}
       </StyledBetResult>
     </>
   )
