@@ -17,7 +17,6 @@ const NoBadgePlaceholder = styled(BunnyPlaceholderIcon)`
 `
 
 const StyledAchievementAvatar = styled.img`
-  border-radius: 50%;
   height: 48px;
   width: 48px;
 
