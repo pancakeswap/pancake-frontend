@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
-import { Button, Heading, Won, useModal } from '@pancakeswap/uikit'
+import { Button, Heading, PresentWonIcon, useModal } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useMultiClaimLottery } from 'views/Lottery/hooks/useBuyLottery'
@@ -69,7 +69,7 @@ const PrizesWonContent: React.FC<PrizesWonContentProps> = ({ onSuccess }) => {
   return (
     <StyledCardContentInner>
       <IconWrapper>
-        <Won />
+        <PresentWonIcon />
       </IconWrapper>
       <Heading as="h3" scale="lg" color="secondary">
         {t('You won!')}
