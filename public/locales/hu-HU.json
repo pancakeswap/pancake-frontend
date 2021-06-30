@@ -900,7 +900,7 @@
   "Voting Power": "Szavazati erő",
   "You need at least %count% voting power to publish a proposal.": "Egy javaslat közzétételéhez legalább %count% szavazati erőre van szüksége.",
   "Check voting power": "Ellenőrizze szavazati erejét",
-  "Amount to collect": "Amount to collect",
-  "Your winnings": "Your winnings",
-  "Includes your original position and your winnings, minus the %fee% fee.": "Includes your original position and your winnings, minus the %fee% fee."
+  "Amount to collect": "Begyűjtendő összeg",
+  "Your winnings": "Az Ön nyereménye",
+  "Includes your original position and your winnings, minus the %fee% fee.": "Tartalmazza az eredeti pozícióját és a nyereményét, a %fee% díj levonásával."
 }
