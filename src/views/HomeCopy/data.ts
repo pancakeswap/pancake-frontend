@@ -26,7 +26,7 @@ pendingZombie: '0'
   {
     id: 2,
     pid: 1,
-    name: 'VikingSwap Common',
+    name: 'VikingSwap Rare',
     path: 'images/rugZombie/VikingBrains.jpeg',
     type: 'image',
     withdrawalCooldown: '3 days',
