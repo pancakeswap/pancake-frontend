@@ -39,6 +39,16 @@ const farms: FarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
+    pid: 339,
+    lpSymbol: 'GUM-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x28Ea5894D4DBbE90bB58eE3BAB2869387d711c87',
+    },
+    token: tokens.gum,
+    quoteToken: tokens.wbnb,
+  },
+  {
     pid: 424,
     lpSymbol: 'ADX-BUSD LP',
     lpAddresses: {
@@ -936,16 +946,6 @@ const farms: FarmConfig[] = [
       56: '0xF1Ec67fA1881796BFf63Db3E1A301cE9cb787Fad',
     },
     token: tokens.dego,
-    quoteToken: tokens.wbnb,
-  },
-  {
-    pid: 339,
-    lpSymbol: 'GUM-BNB LP',
-    lpAddresses: {
-      97: '',
-      56: '0x28Ea5894D4DBbE90bB58eE3BAB2869387d711c87',
-    },
-    token: tokens.gum,
     quoteToken: tokens.wbnb,
   },
   {
