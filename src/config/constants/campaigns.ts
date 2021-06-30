@@ -166,6 +166,20 @@ const campaigns: Campaign[] = [
     title: 'Easter Participant: Bronze',
     badge: 'easter-participant-bronze.svg',
   },
+  {
+    id: '513010001',
+    type: 'participation',
+    title: 'Syrup Soaker',
+    description: 'Took a dip in the early days of the Auto CAKE Pool',
+    badge: 'syrup-soaker.svg',
+  },
+  {
+    id: '514010001',
+    type: 'participation',
+    title: 'Clairvoyant',
+    description: 'Played a round of Prediction before round 12,120',
+    badge: 'clairvoyant.svg',
+  },
 ]
 
 /**

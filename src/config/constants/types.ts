@@ -138,7 +138,7 @@ export type Team = {
   textColor: string
 }
 
-export type CampaignType = 'ifo' | 'teambattle'
+export type CampaignType = 'ifo' | 'teambattle' | 'participation'
 
 export type Campaign = {
   id: string
