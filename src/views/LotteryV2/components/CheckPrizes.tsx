@@ -86,7 +86,10 @@ const CheckPrizes = () => {
           <TicketImage src="/images/lottery/ticket-l.png" alt="lottery ticket" />
           <Flex mx="16px" flexDirection="column">
             <Heading textAlign="center" color="#F4EEFF">
-              {t('Congratulations on winning')}
+              {t('Congratulations!')}
+            </Heading>
+            <Heading textAlign="center" color="#F4EEFF">
+              {t('Why not play again')}
             </Heading>
           </Flex>
           <TicketImage src="/images/lottery/ticket-r.png" alt="lottery ticket" />
