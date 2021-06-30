@@ -124,11 +124,7 @@ export const processRawTicketsResponse = (ticketsResponse: UserTicketsResponse):
   return []
 }
 
-export const getViewUserTicketNumbersAndStatusesCalls = (
-  totalTicketsToRequest: number,
-  account: string,
-  lotteryId: string,
-) => {
+export const getViewUserTicketInfoCalls = (totalTicketsToRequest: number, account: string, lotteryId: string) => {
   let cursor = 0
   const perRequestLimit = 1000
   const calls = []
@@ -144,7 +140,7 @@ export const getViewUserTicketNumbersAndStatusesCalls = (
   return calls
 }
 
-export const mergeViewUserTicketNumbersMulticallResponse = (response) => {
+export const mergeViewUserTicketInfoMulticallResponse = (response) => {
   const mergedMulticallResponse: UserTicketsResponse = [[], [], []]
 
   response.forEach((ticketResponse) => {
@@ -163,12 +159,12 @@ export const fetchTickets = async (
 ): Promise<LotteryTicket[]> => {
   // If the subgraph is returning user totalTickets data for the round - use those totalTickets, if not - batch request up to 5000
   const totalTicketsToRequest = userRoundData ? parseInt(userRoundData?.totalTickets, 10) : 5000
-  const calls = getViewUserTicketNumbersAndStatusesCalls(totalTicketsToRequest, account, lotteryId)
+  const calls = getViewUserTicketInfoCalls(totalTicketsToRequest, account, lotteryId)
   try {
     const multicallRes = await multicallv2(lotteryV2Abi, calls, { requireSuccess: false })
     // When using a static totalTicketsToRequest value - null responses may be returned
     const filteredForNullResponses = multicallRes.filter((res) => res)
-    const mergedMulticallResponse = mergeViewUserTicketNumbersMulticallResponse(filteredForNullResponses)
+    const mergedMulticallResponse = mergeViewUserTicketInfoMulticallResponse(filteredForNullResponses)
     const completeTicketData = processRawTicketsResponse(mergedMulticallResponse)
     return completeTicketData
   } catch (error) {
