@@ -29,7 +29,7 @@ const FinishedRoundTable: React.FC<FinishedRoundTableProps> = ({ handleHistoryRo
 
   return (
     <>
-      <Grid mb="8px">
+      <Grid px="24px" pt="24px" mb="8px">
         <Text bold fontSize="12px" color="secondary">
           #
         </Text>
@@ -43,7 +43,7 @@ const FinishedRoundTable: React.FC<FinishedRoundTableProps> = ({ handleHistoryRo
           <ChevronRightIcon color="background" />
         </Flex>
       </Grid>
-      <Flex flexDirection="column">
+      <Flex px="24px" pb="24px" flexDirection="column" overflowY="scroll" height="240px">
         {userLotteryData &&
           sortedByRoundId.map((pastRound) => (
             <HistoryGridRow
