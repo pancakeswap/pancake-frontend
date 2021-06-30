@@ -1,12 +1,16 @@
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
 import { LotteryTicket, LotteryTicketClaimData } from 'config/constants/types'
-import { LotteryUserGraphEntity, LotteryRoundGraphEntity, UserTicketsResponse } from 'state/types'
+import { LotteryUserGraphEntity, LotteryRoundGraphEntity, UserTicketsResponse, UserRound } from 'state/types'
 import { multicallv2 } from 'utils/multicall'
 import lotteryV2Abi from 'config/abi/lotteryV2.json'
 import { getLotteryV2Address } from 'utils/addressHelpers'
 import { BIG_ZERO } from 'utils/bigNumber'
-import { processRawTicketsResponse } from './helpers'
+import {
+  getViewUserTicketInfoCalls,
+  mergeViewUserTicketInfoMulticallResponse,
+  processRawTicketsResponse,
+} from './helpers'
 
 interface RoundDataAndUserTickets {
   roundId: string
@@ -16,7 +20,7 @@ interface RoundDataAndUserTickets {
 
 const lotteryAddress = getLotteryV2Address()
 
-const getCakeRewardsForTickets = async (
+const fetchCakeRewardsForTickets = async (
   winningTickets: LotteryTicket[],
 ): Promise<{ ticketsWithRewards: LotteryTicket[]; cakeTotal: BigNumber }> => {
   const calls = winningTickets.map((winningTicket) => {
@@ -82,7 +86,7 @@ const getWinningTickets = async (roundDataAndUserTickets: RoundDataAndUserTicket
   })
 
   if (winningTickets.length > 0) {
-    const { ticketsWithRewards, cakeTotal } = await getCakeRewardsForTickets(winningTickets)
+    const { ticketsWithRewards, cakeTotal } = await fetchCakeRewardsForTickets(winningTickets)
     return { ticketsWithRewards, cakeTotal, roundId }
   }
   return null
@@ -91,6 +95,38 @@ const getWinningTickets = async (roundDataAndUserTickets: RoundDataAndUserTicket
 const getWinningNumbersForRound = (targetRoundId: string, lotteriesData: LotteryRoundGraphEntity[]) => {
   const targetRound = lotteriesData.find((pastLottery) => pastLottery.id === targetRoundId)
   return targetRound?.finalNumber
+}
+
+const fetchUserTicketsForMultipleRounds = async (roundsToCheck: UserRound[], account: string) => {
+  // Build calls with data to help with merging multicall responses
+  const callsWithRoundData = roundsToCheck.map((round) => {
+    const totalTickets = parseInt(round.totalTickets, 10)
+    const calls = getViewUserTicketInfoCalls(totalTickets, account, round.lotteryId)
+    return { calls, lotteryId: round.lotteryId, count: calls.length }
+  })
+
+  // Batch all calls across all rounds
+  const multicalls = [].concat(...callsWithRoundData.map((callWithRoundData) => callWithRoundData.calls))
+
+  try {
+    const multicallRes = await multicallv2(lotteryV2Abi, multicalls, { requireSuccess: false })
+
+    // Use callsWithRoundData to slice multicall responses by round
+    const multicallResPerRound = []
+    let resCount = 0
+    for (let i = 0; i < callsWithRoundData.length; i += 1) {
+      const callOptions = callsWithRoundData[i]
+      multicallResPerRound.push(multicallRes.slice(resCount, callOptions.count))
+      resCount += callOptions.count
+    }
+
+    // Merge the fragmented multicall responses per round
+    const mergedMulticallResponse = multicallResPerRound.map((res) => mergeViewUserTicketInfoMulticallResponse(res))
+    return mergedMulticallResponse
+  } catch (error) {
+    console.error(error)
+    return []
+  }
 }
 
 const fetchUnclaimedUserRewards = async (
@@ -124,15 +160,15 @@ const fetchUnclaimedUserRewards = async (
   })
 
   if (roundsToCheck.length > 0) {
-    const calls = roundsToCheck.map((round) => ({
-      name: 'viewUserTicketNumbersAndStatusesForLottery',
-      address: lotteryAddress,
-      params: [account, round.lotteryId, cursor, limit],
-    }))
-    const roundIds = roundsToCheck.map((round) => round.lotteryId)
-    const rawTicketData = (await multicallv2(lotteryV2Abi, calls)) as UserTicketsResponse[]
+    const rawUserTicketData = await fetchUserTicketsForMultipleRounds(roundsToCheck, account)
 
-    const roundDataAndUserTickets = rawTicketData.map((rawRoundTicketData, index) => {
+    if (rawUserTicketData.length === 0) {
+      // In case of error with ticket calls, return empty array
+      return []
+    }
+
+    const roundIds = roundsToCheck.map((round) => round.lotteryId)
+    const roundDataAndUserTickets = rawUserTicketData.map((rawRoundTicketData, index) => {
       return {
         roundId: roundIds[index],
         userTickets: processRawTicketsResponse(rawRoundTicketData),
