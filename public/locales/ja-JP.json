@@ -900,7 +900,7 @@
   "Voting Power": "投票権",
   "You need at least %count% voting power to publish a proposal.": "提案を公開するには、少なくとも%count%の投票権が必要です。",
   "Check voting power": "投票権を確認",
-  "Amount to collect": "Amount to collect",
-  "Your winnings": "Your winnings",
-  "Includes your original position and your winnings, minus the %fee% fee.": "Includes your original position and your winnings, minus the %fee% fee."
+  "Amount to collect": "回収額",
+  "Your winnings": "賞金",
+  "Includes your original position and your winnings, minus the %fee% fee.": "%fee%手数料を差し引いた、元のポジションと賞金を含む。"
 }
