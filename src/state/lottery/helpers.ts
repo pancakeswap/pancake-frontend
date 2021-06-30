@@ -161,11 +161,14 @@ export const fetchTickets = async (
   lotteryId: string,
   userRoundData?: UserRound,
 ): Promise<LotteryTicket[]> => {
-  const totalTicketsToRequest = userRoundData ? parseInt(userRoundData?.totalTickets, 10) : 1000
+  // If the subgraph is returning user totalTickets data for the round - use those totalTickets, if not - batch request up to 5000
+  const totalTicketsToRequest = userRoundData ? parseInt(userRoundData?.totalTickets, 10) : 5000
   const calls = getViewUserTicketNumbersAndStatusesCalls(totalTicketsToRequest, account, lotteryId)
   try {
-    const multicallRes = await multicallv2(lotteryV2Abi, calls)
-    const mergedMulticallResponse = mergeViewUserTicketNumbersMulticallResponse(multicallRes)
+    const multicallRes = await multicallv2(lotteryV2Abi, calls, { requireSuccess: false })
+    // When using a static totalTicketsToRequest value - null responses may be returned
+    const filteredForNullResponses = multicallRes.filter((res) => res)
+    const mergedMulticallResponse = mergeViewUserTicketNumbersMulticallResponse(filteredForNullResponses)
     const completeTicketData = processRawTicketsResponse(mergedMulticallResponse)
     return completeTicketData
   } catch (error) {
