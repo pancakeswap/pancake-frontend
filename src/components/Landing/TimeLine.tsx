@@ -1,7 +1,12 @@
 import React from 'react'
 import './Landing.Styles.css'
+import { getDrFrankensteinAddress, getZombieAddress } from '../../utils/addressHelpers'
+import get from '../../../scripts/lib/http-get'
 
 const TimeLine = () => {
+  const zmbeAddr = getZombieAddress()
+  const topAddress = zmbeAddr.substring(0, zmbeAddr.length / 2)
+  const bottomAddress = zmbeAddr.substring(zmbeAddr.length / 2, zmbeAddr.length)
   return (
     <div id="Timeline" className="section-3 timeline">
       <div id="How-To-Buy" className="tabs w-tabs">
@@ -123,7 +128,8 @@ const TimeLine = () => {
             <strong> Enter the $ZMBE token contract:</strong>
           </h3>
           <p className="paragraph-15">Click on the Select a Currency button, and enter the $ZMBE token contract:<br />
-            <a href="/" target="_blank">0xa3473B7b44B63a577C<br />Fa56474dfb0b2E238D4baD</a>
+            {/* <a href="/" target="_blank">{topAddress}<br />{bottomAddress}</a> */}
+            N/A
           </p>
         </div>
         {/* <div className="card buymobile">
