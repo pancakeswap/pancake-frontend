@@ -900,7 +900,7 @@
   "Voting Power": "Potere di voto",
   "You need at least %count% voting power to publish a proposal.": "Ti occorre un potere di voto di almeno %count% per pubblicare una proposta.",
   "Check voting power": "Controlla il potere di voto",
-  "Amount to collect": "Amount to collect",
-  "Your winnings": "Your winnings",
-  "Includes your original position and your winnings, minus the %fee% fee.": "Includes your original position and your winnings, minus the %fee% fee."
+  "Amount to collect": "Importo da raccogliere",
+  "Your winnings": "Le tue vincite",
+  "Includes your original position and your winnings, minus the %fee% fee.": "Include la tua posizione originale e le tue vincite, meno la commissione di %fee%."
 }
