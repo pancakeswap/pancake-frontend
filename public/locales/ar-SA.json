@@ -902,5 +902,6 @@
   "Check voting power": "التحقُّق من قوة التصويت",
   "Amount to collect": "الكمية الذي سيتم تحصيلها",
   "Your winnings": "أرباحك",
-  "Includes your original position and your winnings, minus the %fee% fee.": "تتضمَّن مبلغ الرهان الأصلي وأرباحك مطروحًا منها الرسوم بقيمة %fee%."
+  "Includes your original position and your winnings, minus the %fee% fee.": "تتضمَّن مبلغ الرهان الأصلي وأرباحك مطروحًا منها الرسوم بقيمة %fee%.",
+  "Your funds have been staked in the farm": "Your funds have been staked in the farm"
 }
