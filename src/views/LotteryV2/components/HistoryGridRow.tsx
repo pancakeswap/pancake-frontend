@@ -14,7 +14,7 @@ interface HistoryGridRowProps {
 const Grid = styled(Box)`
   display: grid;
   grid-template-columns: repeat(3, 1fr) auto;
-  row-gap: 8px;
+  margin-bottom: 8px;
   cursor: pointer;
 `
 
@@ -35,13 +35,20 @@ const HistoryGridRow: React.FC<HistoryGridRowProps> = ({
           {roundId}
         </Text>
       </Flex>
-      <Flex justifyContent="center" flexDirection="column">
-        <Text fontSize="12px">{endTimeAsDate.toLocaleDateString(undefined, dateOptions)}</Text>
+      <Flex
+        mx="6px"
+        alignItems={['flex-start', null, 'center']}
+        justifyContent={['center', null, 'flex-start']}
+        flexDirection={['column', null, 'row']}
+      >
+        <Text fontSize="12px" mr={['0', null, '6px']}>
+          {endTimeAsDate.toLocaleDateString(undefined, dateOptions)}
+        </Text>
         <Text fontSize="12px" color="textSubtle">
           {endTimeAsDate.toLocaleTimeString(undefined, timeOptions)}
         </Text>
       </Flex>
-      <Flex mx="12px" alignItems="center" justifyContent="space-between">
+      <Flex mx="6px" alignItems="center" justifyContent="space-between">
         <Text>{numberTickets}</Text>
         {hasWon ? <PrizeIcon color="warning" /> : <BlockIcon color="disabled" />}
       </Flex>

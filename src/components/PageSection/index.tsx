@@ -69,10 +69,6 @@ const PageSection: React.FC<PageSectionProps> = ({
     return '48px 0'
   }
 
-  // if (containerProps) {
-  //   debugger // eslint-disable-line
-  // }
-
   return (
     <>
       {hasCurvedDivider && curvePosition === 'top' && (
