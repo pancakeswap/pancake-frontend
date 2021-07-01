@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2021-06-29T07:59:03.558Z",
+  "timestamp": "2021-07-01T06:54:38.316Z",
   "version": {
     "major": 2,
     "minor": 16,
-    "patch": 4
+    "patch": 5
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [
@@ -563,6 +563,14 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0xb2bd0749dbe21f623d9baba856d3b0f0e1bfec9c.png"
+    },
+    {
+      "name": "Dvision Network",
+      "symbol": "DVI",
+      "address": "0x758FB037A375F17c7e195CC634D77dA4F554255B",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x758FB037A375F17c7e195CC634D77dA4F554255B.png"
     },
     {
       "name": "Elrond",

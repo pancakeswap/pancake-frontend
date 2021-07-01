@@ -1638,5 +1638,13 @@
     "chainId": 56,
     "decimals": 18,
     "logoURI": "https://tokens.pancakeswap.finance/images/0x6bfF4Fb161347ad7de4A625AE5aa3A1CA7077819.png"
+  },
+  {
+    "name": "Dvision Network",
+    "symbol": "DVI",
+    "address": "0x758FB037A375F17c7e195CC634D77dA4F554255B",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0x758FB037A375F17c7e195CC634D77dA4F554255B.png"
   }
 ]
