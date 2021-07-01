@@ -36,7 +36,7 @@ import {
   fetchUserTicketsAndLotteries,
   fetchPastLotteries,
 } from './lottery'
-import { ProcessLotteryResponse } from './lottery/helpers'
+import { useProcessLotteryResponse } from './lottery/helpers'
 
 export const usePollFarmsData = (includeArchive = false) => {
   const dispatch = useAppDispatch()
@@ -553,7 +553,7 @@ export const useFetchLottery = () => {
 
 export const useLottery = () => {
   const currentRound = useSelector((state: State) => state.lottery.currentRound)
-  const processedCurrentRound = ProcessLotteryResponse(currentRound)
+  const processedCurrentRound = useProcessLotteryResponse(currentRound)
 
   const isTransitioning = useSelector((state: State) => state.lottery.isTransitioning)
 

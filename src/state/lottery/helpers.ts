@@ -86,47 +86,6 @@ export const fetchLottery = async (lotteryId: string): Promise<LotteryResponse> 
   }
 }
 
-// React component to allow use of useMemo & prevent new BigNumber instances being created
-export const ProcessLotteryResponse = (
-  lotteryData: LotteryResponse & { userTickets?: LotteryRoundUserTickets },
-): LotteryRound => {
-  const {
-    priceTicketInCake: priceTicketInCakeAsString,
-    discountDivisor: discountDivisorAsString,
-    amountCollectedInCake: amountCollectedInCakeAsString,
-  } = lotteryData
-
-  const discountDivisor = useMemo(() => {
-    return new BigNumber(discountDivisorAsString)
-  }, [discountDivisorAsString])
-
-  const priceTicketInCake = useMemo(() => {
-    return new BigNumber(priceTicketInCakeAsString)
-  }, [priceTicketInCakeAsString])
-
-  const amountCollectedInCake = useMemo(() => {
-    return new BigNumber(amountCollectedInCakeAsString)
-  }, [amountCollectedInCakeAsString])
-
-  return {
-    isLoading: lotteryData.isLoading,
-    userTickets: lotteryData.userTickets,
-    status: lotteryData.status,
-    startTime: lotteryData.startTime,
-    endTime: lotteryData.endTime,
-    priceTicketInCake,
-    discountDivisor,
-    treasuryFee: lotteryData.treasuryFee,
-    firstTicketId: lotteryData.firstTicketId,
-    lastTicketId: lotteryData.lastTicketId,
-    amountCollectedInCake,
-    finalNumber: lotteryData.finalNumber,
-    cakePerBracket: lotteryData.cakePerBracket,
-    countWinnersPerBracket: lotteryData.countWinnersPerBracket,
-    rewardsBreakdown: lotteryData.rewardsBreakdown,
-  }
-}
-
 export const fetchPublicData = async () => {
   try {
     const calls = ['currentLotteryId', 'maxNumberTicketsPerBuyOrClaim'].map((method) => ({
@@ -296,4 +255,44 @@ export const getGraphLotteryUser = async (account: string): Promise<LotteryUserG
   }
 
   return formattedUser
+}
+
+export const useProcessLotteryResponse = (
+  lotteryData: LotteryResponse & { userTickets?: LotteryRoundUserTickets },
+): LotteryRound => {
+  const {
+    priceTicketInCake: priceTicketInCakeAsString,
+    discountDivisor: discountDivisorAsString,
+    amountCollectedInCake: amountCollectedInCakeAsString,
+  } = lotteryData
+
+  const discountDivisor = useMemo(() => {
+    return new BigNumber(discountDivisorAsString)
+  }, [discountDivisorAsString])
+
+  const priceTicketInCake = useMemo(() => {
+    return new BigNumber(priceTicketInCakeAsString)
+  }, [priceTicketInCakeAsString])
+
+  const amountCollectedInCake = useMemo(() => {
+    return new BigNumber(amountCollectedInCakeAsString)
+  }, [amountCollectedInCakeAsString])
+
+  return {
+    isLoading: lotteryData.isLoading,
+    userTickets: lotteryData.userTickets,
+    status: lotteryData.status,
+    startTime: lotteryData.startTime,
+    endTime: lotteryData.endTime,
+    priceTicketInCake,
+    discountDivisor,
+    treasuryFee: lotteryData.treasuryFee,
+    firstTicketId: lotteryData.firstTicketId,
+    lastTicketId: lotteryData.lastTicketId,
+    amountCollectedInCake,
+    finalNumber: lotteryData.finalNumber,
+    cakePerBracket: lotteryData.cakePerBracket,
+    countWinnersPerBracket: lotteryData.countWinnersPerBracket,
+    rewardsBreakdown: lotteryData.rewardsBreakdown,
+  }
 }
