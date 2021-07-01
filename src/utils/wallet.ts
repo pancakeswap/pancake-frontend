@@ -8,7 +8,7 @@ import { nodes } from './getRpcUrl'
  * @returns {boolean} true if the setup succeeded, false otherwise
  */
 export const setupNetwork = async () => {
-  const provider = (window as WindowChain).ethereum
+  const provider = window.ethereum
   if (provider) {
     const chainId = parseInt(process.env.REACT_APP_CHAIN_ID, 10)
     try {
@@ -53,7 +53,7 @@ export const registerToken = async (
   tokenDecimals: number,
   tokenImage: string,
 ) => {
-  const tokenAdded = await (window as WindowChain).ethereum.request({
+  const tokenAdded = await window.ethereum.request({
     method: 'wallet_watchAsset',
     params: {
       type: 'ERC20',

@@ -24,6 +24,7 @@ import useToast from 'hooks/useToast'
 import useWeb3Provider from 'hooks/useWeb3Provider'
 import { getBscScanAddressUrl, getBscScanBlockNumberUrl } from 'utils/bscscan'
 import truncateWalletAddress from 'utils/truncateWalletAddress'
+import { signMessage } from 'utils/web3React'
 import { useTranslation } from 'contexts/Localization'
 import Container from 'components/layout/Container'
 import { DatePicker, TimePicker } from 'components/DatePicker'
@@ -88,7 +89,7 @@ const CreateProposal = () => {
         },
       })
 
-      const sig = await provider.getSigner().signMessage(proposal)
+      const sig = await signMessage(provider, account, proposal)
 
       if (sig) {
         const msg: Message = { address: account, msg: proposal, sig }

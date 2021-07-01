@@ -19,6 +19,7 @@ import {
 import { parseISO, formatDistance } from 'date-fns'
 import { useWeb3React } from '@web3-react/core'
 import useToast from 'hooks/useToast'
+import { signMessage } from 'utils/web3React'
 import useWeb3Provider from 'hooks/useWeb3Provider'
 import { useTranslation } from 'contexts/Localization'
 import useHasCakeBalance from 'hooks/useHasCakeBalance'
@@ -110,7 +111,7 @@ const UserName: React.FC = () => {
     try {
       setIsLoading(true)
 
-      const signature = await provider.getSigner().signMessage(userName)
+      const signature = await signMessage(provider, account, userName)
       const response = await fetch(`${profileApiUrl}/api/users/register`, {
         method: 'POST',
         headers: {
