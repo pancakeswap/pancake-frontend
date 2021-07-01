@@ -53,8 +53,13 @@ const LotteryV2 = () => {
       <PageSection background={TITLE_BG} svgFill={theme.colors.overlay} index={4}>
         <Hero />
       </PageSection>
-      <TicketsSection background={GET_TICKETS_BG} hasCurvedDivider={false} index={3}>
-        <Flex flexDirection="column">
+      <TicketsSection
+        containerProps={{ style: { margin: '0' } }}
+        background={GET_TICKETS_BG}
+        hasCurvedDivider={false}
+        index={3}
+      >
+        <Flex alignItems="center" justifyContent="center" flexDirection="column">
           {status === LotteryStatus.OPEN && (
             <Heading scale="xl" color="#ffffff" mb="24px" textAlign="center">
               {t('Get your tickets now!')}
