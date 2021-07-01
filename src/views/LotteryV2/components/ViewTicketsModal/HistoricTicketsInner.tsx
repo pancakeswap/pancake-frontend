@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Box, Text, Flex, Button, Skeleton } from '@pancakeswap/uikit'
 import styled from 'styled-components'
-import { fetchLottery, processLotteryResponse } from 'state/lottery/helpers'
+import { fetchLottery, ProcessLotteryResponse } from 'state/lottery/helpers'
 import { LotteryRound } from 'state/types'
 import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'
@@ -21,7 +21,7 @@ const HistoricTicketsInner: React.FC<{ roundId: string }> = ({ roundId }) => {
   useEffect(() => {
     const fetchData = async () => {
       const lotteryData = await fetchLottery(roundId)
-      const processedLotteryData = processLotteryResponse(lotteryData)
+      const processedLotteryData = ProcessLotteryResponse(lotteryData)
       setLotteryInfo(processedLotteryData)
     }
 

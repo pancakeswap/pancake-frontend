@@ -86,7 +86,8 @@ export const fetchLottery = async (lotteryId: string): Promise<LotteryResponse> 
   }
 }
 
-export const processLotteryResponse = (
+// React component to allow use of useMemo & prevent new BigNumber instances being created
+export const ProcessLotteryResponse = (
   lotteryData: LotteryResponse & { userTickets?: LotteryRoundUserTickets },
 ): LotteryRound => {
   const {
@@ -95,9 +96,17 @@ export const processLotteryResponse = (
     amountCollectedInCake: amountCollectedInCakeAsString,
   } = lotteryData
 
-  const discountDivisor = new BigNumber(discountDivisorAsString)
-  const priceTicketInCake = new BigNumber(priceTicketInCakeAsString)
-  const amountCollectedInCake = new BigNumber(amountCollectedInCakeAsString)
+  const discountDivisor = useMemo(() => {
+    return new BigNumber(discountDivisorAsString)
+  }, [discountDivisorAsString])
+
+  const priceTicketInCake = useMemo(() => {
+    return new BigNumber(priceTicketInCakeAsString)
+  }, [priceTicketInCakeAsString])
+
+  const amountCollectedInCake = useMemo(() => {
+    return new BigNumber(amountCollectedInCakeAsString)
+  }, [amountCollectedInCakeAsString])
 
   return {
     isLoading: lotteryData.isLoading,

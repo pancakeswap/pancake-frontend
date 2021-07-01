@@ -19,7 +19,10 @@ const PrizeTotalBalance = styled(Balance)`
 const StyledBuyTicketButton = styled(BuyTicketsButton)<{ disabled: boolean }>`
   background: ${({ theme, disabled }) =>
     disabled ? theme.colors.disabled : 'linear-gradient(180deg, #7645d9 0%, #452a7a 100%)'};
-  width: 240px;
+  width: 200px;
+  ${({ theme }) => theme.mediaQueries.xs} {
+    width: 240px;
+  }
 `
 
 const ButtonWrapper = styled.div`
@@ -79,12 +82,18 @@ const Hero = () => {
         {t('The PancakeSwap Lottery')}
       </Heading>
       {getHeroHeading()}
-      <Flex position="relative" width="288px" height="113px" alignItems="center" justifyContent="center">
+      <Flex
+        position="relative"
+        width={['240px', '288px']}
+        height={['94px', '113px']}
+        alignItems="center"
+        justifyContent="center"
+      >
         <ButtonWrapper>
           <StyledBuyTicketButton disabled={ticketBuyIsDisabled} />
         </ButtonWrapper>
         <TicketSvgWrapper>
-          <TicketPurchaseCard width="288px" />
+          <TicketPurchaseCard width="100%" />
         </TicketSvgWrapper>
       </Flex>
     </Flex>
