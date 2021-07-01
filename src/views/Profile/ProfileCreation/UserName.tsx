@@ -110,7 +110,11 @@ const UserName: React.FC = () => {
     try {
       setIsLoading(true)
 
-      const signature = await provider.getSigner().signMessage(userName)
+      const injectedProvider = (window as any).ethereum
+      const signature = injectedProvider?.bnbSign
+        ? (await injectedProvider.bnbSign(account, userName))?.signature
+        : await provider.getSigner().signMessage(userName)
+
       const response = await fetch(`${profileApiUrl}/api/users/register`, {
         method: 'POST',
         headers: {
