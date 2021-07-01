@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.40.0](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.39.4...@pancakeswap/uikit@0.40.0) (2021-07-01)
+
+
+### Features
+
+* Reactive modals ([#183](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/183)) ([7644124](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/7644124b0205379019eba9aebcab30d163144fae))
+
+
+
+
+
 ## [0.39.4](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/compare/@pancakeswap/uikit@0.39.3...@pancakeswap/uikit@0.39.4) (2021-06-30)
 
 **Note:** Version bump only for package @pancakeswap/uikit
