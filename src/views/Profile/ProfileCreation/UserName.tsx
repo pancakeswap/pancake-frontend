@@ -111,7 +111,7 @@ const UserName: React.FC = () => {
     try {
       setIsLoading(true)
 
-      const signature = await signMessage({ provider, account, message: userName })
+      const signature = await signMessage(provider, account, userName)
       const response = await fetch(`${profileApiUrl}/api/users/register`, {
         method: 'POST',
         headers: {

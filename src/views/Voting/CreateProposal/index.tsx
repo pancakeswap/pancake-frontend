@@ -89,7 +89,7 @@ const CreateProposal = () => {
         },
       })
 
-      const sig = await signMessage({ provider, account, message: proposal })
+      const sig = await signMessage(provider, account, proposal)
 
       if (sig) {
         const msg: Message = { address: account, msg: proposal, sig }
