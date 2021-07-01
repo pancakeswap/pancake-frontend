@@ -146,7 +146,7 @@ const TimeLine = () => {
             <span className="text-span-9">
               <strong className="nummobile">5.</strong>
             </span>
-            <strong> Zombine On!</strong>
+            <strong> Zombie On!</strong>
           </h3>
           <p className="paragraph-15">Enter the amount you want to buy and Zombie On!<br />Remember to have enough BNB for gas fees!</p>
         </div>
