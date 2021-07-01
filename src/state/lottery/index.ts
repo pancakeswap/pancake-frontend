@@ -1,7 +1,13 @@
 /* eslint-disable no-param-reassign */
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { LotteryTicket, LotteryStatus } from 'config/constants/types'
-import { LotteryState, LotteryRound, LotteryRoundGraphEntity, LotteryUserGraphEntity } from 'state/types'
+import {
+  LotteryState,
+  LotteryRound,
+  LotteryRoundGraphEntity,
+  LotteryUserGraphEntity,
+  LotteryResponse,
+} from 'state/types'
 import { getGraphLotteries, getGraphLotteryUser, fetchLottery, fetchPublicData, fetchTickets } from './helpers'
 
 interface PublicLotteryData {
@@ -37,7 +43,7 @@ const initialState: LotteryState = {
   userLotteryData: { account: '', totalCake: '', totalTickets: '', rounds: [] },
 }
 
-export const fetchCurrentLottery = createAsyncThunk<LotteryRound, { currentLotteryId: string }>(
+export const fetchCurrentLottery = createAsyncThunk<LotteryResponse, { currentLotteryId: string }>(
   'lottery/fetchCurrentLottery',
   async ({ currentLotteryId }) => {
     const lotteryInfo = await fetchLottery(currentLotteryId)
@@ -98,7 +104,7 @@ export const LotterySlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchCurrentLottery.fulfilled, (state, action: PayloadAction<LotteryRound>) => {
+    builder.addCase(fetchCurrentLottery.fulfilled, (state, action: PayloadAction<LotteryResponse>) => {
       state.currentRound = { ...state.currentRound, ...action.payload }
     })
     builder.addCase(fetchPublicLotteryData.fulfilled, (state, action: PayloadAction<PublicLotteryData>) => {

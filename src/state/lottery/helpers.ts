@@ -13,12 +13,14 @@ import {
   UserTicketsResponse,
   UserRound,
   LotteryRoundUserTickets,
+  LotteryResponse,
 } from 'state/types'
 import { getLotteryV2Contract } from 'utils/contractHelpers'
+import { useMemo } from 'react'
 
 const lotteryContract = getLotteryV2Contract()
 
-export const fetchLottery = async (lotteryId: string): Promise<LotteryRound> => {
+export const fetchLottery = async (lotteryId: string): Promise<LotteryResponse> => {
   try {
     const lotteryData = await lotteryContract.viewLottery(lotteryId)
     const {
@@ -81,6 +83,38 @@ export const fetchLottery = async (lotteryId: string): Promise<LotteryRound> => 
       countWinnersPerBracket: [],
       rewardsBreakdown: [],
     }
+  }
+}
+
+export const processLotteryResponse = (
+  lotteryData: LotteryResponse & { userTickets?: LotteryRoundUserTickets },
+): LotteryRound => {
+  const {
+    priceTicketInCake: priceTicketInCakeAsString,
+    discountDivisor: discountDivisorAsString,
+    amountCollectedInCake: amountCollectedInCakeAsString,
+  } = lotteryData
+
+  const discountDivisor = new BigNumber(discountDivisorAsString)
+  const priceTicketInCake = new BigNumber(priceTicketInCakeAsString)
+  const amountCollectedInCake = new BigNumber(amountCollectedInCakeAsString)
+
+  return {
+    isLoading: lotteryData.isLoading,
+    userTickets: lotteryData.userTickets,
+    status: lotteryData.status,
+    startTime: lotteryData.startTime,
+    endTime: lotteryData.endTime,
+    priceTicketInCake,
+    discountDivisor,
+    treasuryFee: lotteryData.treasuryFee,
+    firstTicketId: lotteryData.firstTicketId,
+    lastTicketId: lotteryData.lastTicketId,
+    amountCollectedInCake,
+    finalNumber: lotteryData.finalNumber,
+    cakePerBracket: lotteryData.cakePerBracket,
+    countWinnersPerBracket: lotteryData.countWinnersPerBracket,
+    rewardsBreakdown: lotteryData.rewardsBreakdown,
   }
 }
 

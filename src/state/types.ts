@@ -347,28 +347,44 @@ export interface LotteryRoundUserTickets {
 
 export interface LotteryRound {
   isLoading?: boolean
+  userTickets?: LotteryRoundUserTickets
   status: LotteryStatus
   startTime: string
   endTime: string
-  // Problematic? This is because the type is used within the application (where it is a BigNumber), and within redux (where it is SerializedBigNumber)
-  priceTicketInCake: SerializedBigNumber | BigNumber
-  discountDivisor: SerializedBigNumber | BigNumber
+  priceTicketInCake: BigNumber
+  discountDivisor: BigNumber
   treasuryFee: string
   firstTicketId: string
   lastTicketId: string
-  amountCollectedInCake: SerializedBigNumber | BigNumber
+  amountCollectedInCake: BigNumber
   finalNumber: string
   cakePerBracket: string[]
   countWinnersPerBracket: string[]
   rewardsBreakdown: string[]
-  userTickets?: LotteryRoundUserTickets
+}
+
+export interface LotteryResponse {
+  isLoading?: boolean
+  status: LotteryStatus
+  startTime: string
+  endTime: string
+  priceTicketInCake: SerializedBigNumber
+  discountDivisor: SerializedBigNumber
+  treasuryFee: string
+  firstTicketId: string
+  lastTicketId: string
+  amountCollectedInCake: SerializedBigNumber
+  finalNumber: string
+  cakePerBracket: SerializedBigNumber[]
+  countWinnersPerBracket: SerializedBigNumber[]
+  rewardsBreakdown: SerializedBigNumber[]
 }
 
 export interface LotteryState {
   currentLotteryId: string
   maxNumberTicketsPerBuyOrClaim: SerializedBigNumber | BigNumber
   isTransitioning: boolean
-  currentRound: LotteryRound
+  currentRound: LotteryResponse & { userTickets?: LotteryRoundUserTickets }
   lotteriesData?: LotteryRoundGraphEntity[]
   userLotteryData?: LotteryUserGraphEntity
 }

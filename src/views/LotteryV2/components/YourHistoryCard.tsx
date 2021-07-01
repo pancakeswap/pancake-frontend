@@ -16,8 +16,8 @@ import {
 import { useTranslation } from 'contexts/Localization'
 import { LotteryStatus } from 'config/constants/types'
 import { useGetUserLotteriesGraphData, useLottery } from 'state/hooks'
-import { fetchLottery } from 'state/lottery/helpers'
-import { LotteryRound } from 'state/types'
+import { processLotteryResponse, fetchLottery } from 'state/lottery/helpers'
+import { LotteryResponse, LotteryRound } from 'state/types'
 import UnlockButton from 'components/UnlockButton'
 import FinishedRoundTable from './FinishedRoundTable'
 import { WhiteBunny } from '../svgs'
@@ -59,7 +59,8 @@ const YourHistoryCard = () => {
     setShouldShowRoundDetail(true)
     setSelectedLotteryId(lotteryId)
     const lotteryData = await fetchLottery(lotteryId)
-    setSelectedLotteryInfo(lotteryData)
+    const processedLotteryData = processLotteryResponse(lotteryData)
+    setSelectedLotteryInfo(processedLotteryData)
   }
 
   const clearState = () => {

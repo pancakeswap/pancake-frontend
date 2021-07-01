@@ -7,6 +7,7 @@ import { LotteryRound } from 'state/types'
 import RewardsMatch from './RewardsMatch'
 
 const Wrapper = styled(Flex)`
+  width: 100%;
   flex-direction: column;
 `
 

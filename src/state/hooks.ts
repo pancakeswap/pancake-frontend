@@ -36,6 +36,7 @@ import {
   fetchUserTicketsAndLotteries,
   fetchPastLotteries,
 } from './lottery'
+import { processLotteryResponse } from './lottery/helpers'
 
 export const usePollFarmsData = (includeArchive = false) => {
   const dispatch = useAppDispatch()
@@ -547,47 +548,20 @@ export const useFetchLottery = () => {
 
 export const useLottery = () => {
   const currentRound = useSelector((state: State) => state.lottery.currentRound)
-  const maxNumberTicketsPerBuyOrClaimAsString = useSelector(
-    (state: State) => state.lottery.maxNumberTicketsPerBuyOrClaim,
-  )
+  const processedCurrentRound = processLotteryResponse(currentRound)
+
   const isTransitioning = useSelector((state: State) => state.lottery.isTransitioning)
+
   const currentLotteryId = useGetCurrentLotteryId()
   const userLotteryData = useGetUserLotteriesGraphData()
   const lotteriesData = useGetLotteriesGraphData()
 
-  const {
-    isLoading,
-    status,
-    startTime,
-    endTime,
-    priceTicketInCake: priceTicketInCakeAsString,
-    discountDivisor: discountDivisorAsString,
-    treasuryFee,
-    firstTicketId,
-    lastTicketId,
-    amountCollectedInCake: amountCollectedInCakeAsString,
-    finalNumber,
-    userTickets,
-    cakePerBracket,
-    countWinnersPerBracket,
-    rewardsBreakdown,
-  } = currentRound
-
+  const maxNumberTicketsPerBuyOrClaimAsString = useSelector(
+    (state: State) => state.lottery.maxNumberTicketsPerBuyOrClaim,
+  )
   const maxNumberTicketsPerBuyOrClaim = useMemo(() => {
     return new BigNumber(maxNumberTicketsPerBuyOrClaimAsString)
   }, [maxNumberTicketsPerBuyOrClaimAsString])
-
-  const discountDivisor = useMemo(() => {
-    return new BigNumber(discountDivisorAsString)
-  }, [discountDivisorAsString])
-
-  const priceTicketInCake = useMemo(() => {
-    return new BigNumber(priceTicketInCakeAsString)
-  }, [priceTicketInCakeAsString])
-
-  const amountCollectedInCake = useMemo(() => {
-    return new BigNumber(amountCollectedInCakeAsString)
-  }, [amountCollectedInCakeAsString])
 
   return {
     currentLotteryId,
@@ -595,22 +569,6 @@ export const useLottery = () => {
     isTransitioning,
     userLotteryData,
     lotteriesData,
-    currentRound: {
-      isLoading,
-      status,
-      startTime,
-      endTime,
-      priceTicketInCake,
-      discountDivisor,
-      treasuryFee,
-      firstTicketId,
-      lastTicketId,
-      amountCollectedInCake,
-      finalNumber,
-      userTickets,
-      cakePerBracket,
-      countWinnersPerBracket,
-      rewardsBreakdown,
-    },
+    currentRound: processedCurrentRound,
   }
 }
