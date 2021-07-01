@@ -81,8 +81,9 @@ const LotteryV2 = () => {
         background={isDark ? FINISHED_ROUNDS_BG_DARK : FINISHED_ROUNDS_BG}
         hasCurvedDivider={false}
         index={1}
+        containerProps={{ style: { margin: '0' } }}
       >
-        <Flex flexDirection="column" alignItems="center" justifyContent="center">
+        <Flex width="100%" flexDirection="column" alignItems="center" justifyContent="center">
           <Heading mb="24px" scale="xl">
             {t('Finished Rounds')}
           </Heading>

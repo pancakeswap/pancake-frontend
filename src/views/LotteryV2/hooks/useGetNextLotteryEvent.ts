@@ -12,14 +12,14 @@ const useGetNextLotteryEvent = (endTime: number, status: LotteryStatus): Lottery
   const { t } = useTranslation()
   const vrfRequestTime = 180 // 3 mins
   const secondsBetweenRounds = 300 // 5 mins
-  const blockBuffer = 3 // Delay countdown by 3s to ensure contract transactions have resolved when countdown finishes
+  const transactionResolvingBuffer = 30 // Delay countdown by 30s to ensure contract transactions have been calculated and broadcast
   const [nextEvent, setNextEvent] = useState({ nextEventTime: null, preCountdownText: null, postCountdownText: null })
 
   useEffect(() => {
     // Current lottery is active
     if (status === LotteryStatus.OPEN) {
       setNextEvent({
-        nextEventTime: endTime + blockBuffer,
+        nextEventTime: endTime + transactionResolvingBuffer,
         preCountdownText: null,
         postCountdownText: t('until the draw'),
       })
@@ -27,7 +27,7 @@ const useGetNextLotteryEvent = (endTime: number, status: LotteryStatus): Lottery
     // Current lottery has finished but not yet claimable
     if (status === LotteryStatus.CLOSE) {
       setNextEvent({
-        nextEventTime: endTime + blockBuffer + vrfRequestTime,
+        nextEventTime: endTime + transactionResolvingBuffer + vrfRequestTime,
         preCountdownText: t('Winners announced in'),
         postCountdownText: null,
       })
@@ -35,7 +35,7 @@ const useGetNextLotteryEvent = (endTime: number, status: LotteryStatus): Lottery
     // Current lottery claimable. Next lottery has not yet started
     if (status === LotteryStatus.CLAIMABLE) {
       setNextEvent({
-        nextEventTime: endTime + blockBuffer + secondsBetweenRounds,
+        nextEventTime: endTime + transactionResolvingBuffer + secondsBetweenRounds,
         preCountdownText: t('Tickets on sale in'),
         postCountdownText: null,
       })

@@ -70,7 +70,7 @@ const NextDrawCard = () => {
   const isLotteryOpen = status === LotteryStatus.OPEN
   const userTicketCount = userTickets?.tickets?.length || 0
 
-  const getBalances = () => {
+  const getPrizeBalances = () => {
     if (status === LotteryStatus.CLOSE || status === LotteryStatus.CLAIMABLE) {
       return (
         <Heading scale="xl" color="secondary" textAlign={['center', null, null, 'left']}>
@@ -143,7 +143,7 @@ const NextDrawCard = () => {
             <Heading>{t('Prize Pot')}</Heading>
           </Flex>
           <Flex flexDirection="column" mb="18px">
-            {getBalances()}
+            {getPrizeBalances()}
           </Flex>
           <Box display={['none', null, null, 'flex']}>
             <Heading>{t('Your tickets')}</Heading>

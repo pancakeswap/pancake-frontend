@@ -4,15 +4,23 @@ import { Flex, Skeleton, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { usePriceCakeBusd } from 'state/hooks'
 import Balance from 'components/Balance'
-import { getBalanceNumber } from 'utils/formatBalance'
+import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
 
 interface RewardsMatchProps {
   cakeAmount: BigNumber
   rewardBracket?: number
+  numberWinners?: string
   isBurn?: boolean
+  isHistoricRound?: boolean
 }
 
-const RewardsMatch: React.FC<RewardsMatchProps> = ({ rewardBracket, cakeAmount, isBurn }) => {
+const RewardsMatch: React.FC<RewardsMatchProps> = ({
+  rewardBracket,
+  cakeAmount,
+  numberWinners,
+  isHistoricRound,
+  isBurn,
+}) => {
   const { t } = useTranslation()
   //   TODO: Reeneable in prod
   //    const cakePriceBusd = usePriceCakeBusd()
@@ -45,6 +53,18 @@ const RewardsMatch: React.FC<RewardsMatchProps> = ({ rewardBracket, cakeAmount, 
           <Skeleton my="2px" height={12} width={70} />
         ) : (
           <Balance fontSize="12px" color="textSubtle" prefix="~$" value={getBalanceNumber(prizeInBusd)} decimals={0} />
+        )}
+        {isHistoricRound && cakeAmount && (
+          <>
+            {numberWinners !== '0' && (
+              <Text fontSize="12px" color="textSubtle">
+                {getFullDisplayBalance(cakeAmount.times(parseInt(numberWinners, 10)), 18, 0)} CAKE {t('each')}
+              </Text>
+            )}
+            <Text fontSize="12px" color="textSubtle">
+              {numberWinners} {t('Winners')}
+            </Text>
+          </>
         )}
       </>
     </Flex>
