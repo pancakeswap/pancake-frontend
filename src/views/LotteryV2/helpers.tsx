@@ -68,7 +68,6 @@ export const dateOptions: Intl.DateTimeFormatOptions = {
 }
 
 export const timeOptions: Intl.DateTimeFormatOptions = {
-  timeZoneName: 'short',
   hour: 'numeric',
   minute: 'numeric',
 }

@@ -9,11 +9,17 @@ import ClaimPrizesModal from './ClaimPrizesModal'
 import useGetUnclaimedRewards, { FetchStatus } from '../hooks/useGetUnclaimedRewards'
 
 const TicketImage = styled.img`
-  height: 100px;
+  height: 60px;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    height: 100px;
+  }
 `
 
 const TornTicketImage = styled.img`
-  height: 84px;
+  height: 54px;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    height: 84px;
+  }
 `
 
 const CheckPrizes = () => {
@@ -54,7 +60,7 @@ const CheckPrizes = () => {
       return (
         <Flex alignItems="center" justifyContent="center">
           <TicketImage src="/images/lottery/ticket-l.png" alt="lottery ticket" />
-          <Flex mx="16px" flexDirection="column" alignItems="center">
+          <Flex mx={['4px', null, '16px']} flexDirection="column" alignItems="center">
             <Heading textAlign="center" color="#F4EEFF">
               {t('Connect your wallet')}
             </Heading>
@@ -71,7 +77,7 @@ const CheckPrizes = () => {
       return (
         <Flex alignItems="center" justifyContent="center">
           <TornTicketImage src="/images/lottery/torn-ticket-l.png" alt="torn lottery ticket" />
-          <Flex mx="16px" flexDirection="column">
+          <Flex mx={['4px', null, '16px']} flexDirection="column">
             <Heading textAlign="center" color="#F4EEFF">
               {t('No prizes to collect')}...
             </Heading>
@@ -87,7 +93,7 @@ const CheckPrizes = () => {
       return (
         <Flex alignItems="center" justifyContent="center">
           <TicketImage src="/images/lottery/ticket-l.png" alt="lottery ticket" />
-          <Flex mx="16px" flexDirection="column">
+          <Flex mx={['4px', null, '16px']} flexDirection="column">
             <Heading textAlign="center" color="#F4EEFF">
               {t('Congratulations!')}
             </Heading>
@@ -102,7 +108,7 @@ const CheckPrizes = () => {
     return (
       <Flex alignItems="center" justifyContent="center">
         <TicketImage src="/images/lottery/ticket-l.png" alt="lottery ticket" />
-        <Flex mx="16px" flexDirection="column">
+        <Flex mx={['4px', null, '16px']} flexDirection="column">
           <Heading textAlign="center" color="#F4EEFF" mb="24px">
             {t('Are you a winner?')}
           </Heading>

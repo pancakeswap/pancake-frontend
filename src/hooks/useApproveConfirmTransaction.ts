@@ -106,25 +106,29 @@ const useApproveConfirmTransaction = ({
     isConfirming: state.confirmState === 'loading',
     isConfirmed: state.confirmState === 'success',
     handleApprove: async () => {
-      const tx = await onApprove()
-      dispatch({ type: 'approve_sending' })
-      const receipt = await tx.wait()
-      if (receipt.status) {
-        dispatch({ type: 'approve_receipt' })
-        onApproveSuccess(state)
-      } else {
+      try {
+        const tx = await onApprove()
+        dispatch({ type: 'approve_sending' })
+        const receipt = await tx.wait()
+        if (receipt.status) {
+          dispatch({ type: 'approve_receipt' })
+          onApproveSuccess(state)
+        }
+      } catch (error) {
         dispatch({ type: 'approve_error' })
         toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
       }
     },
     handleConfirm: async () => {
       dispatch({ type: 'confirm_sending' })
-      const tx = await onConfirm()
-      const receipt = await tx.wait()
-      if (receipt.status) {
-        dispatch({ type: 'confirm_receipt' })
-        onSuccess(state)
-      } else {
+      try {
+        const tx = await onConfirm()
+        const receipt = await tx.wait()
+        if (receipt.status) {
+          dispatch({ type: 'confirm_receipt' })
+          onSuccess(state)
+        }
+      } catch (error) {
         dispatch({ type: 'confirm_error' })
         toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
       }
