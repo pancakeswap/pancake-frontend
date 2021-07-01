@@ -902,5 +902,6 @@
   "Check voting power": "வாக்களிப்புச் சக்தியைச் சோதித்திடுக",
   "Amount to collect": "சேகரிப்பதற்கான தொகை",
   "Your winnings": "உங்கள் வெற்றிகள்",
-  "Includes your original position and your winnings, minus the %fee% fee.": "உங்கள் அசல் நிலை மற்றும் உங்கள் வெற்றிகள், கழிப்பு %fee% கட்டணம் என்பது உள்ளடங்குகிறது."
+  "Includes your original position and your winnings, minus the %fee% fee.": "உங்கள் அசல் நிலை மற்றும் உங்கள் வெற்றிகள், கழிப்பு %fee% கட்டணம் என்பது உள்ளடங்குகிறது.",
+  "Your funds have been staked in the farm": "Your funds have been staked in the farm"
 }
