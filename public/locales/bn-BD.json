@@ -902,5 +902,6 @@
   "Check voting power": "ভোটদান ক্ষমতা পরীক্ষা করুন",
   "Amount to collect": " যে পরিমাণ সংগ্রহ করতে হবে",
   "Your winnings": "আপনার বিজয়সমূহ",
-  "Includes your original position and your winnings, minus the %fee% fee.": "আপনার আসল অবস্থান এবং আপনার বিজয়সমূহ অন্তর্ভুক্ত করে, তা থেকে %fee% বিয়োগ করে। "
+  "Includes your original position and your winnings, minus the %fee% fee.": "আপনার আসল অবস্থান এবং আপনার বিজয়সমূহ অন্তর্ভুক্ত করে, তা থেকে %fee% বিয়োগ করে। ",
+  "Your funds have been staked in the farm": "Your funds have been staked in the farm"
 }
