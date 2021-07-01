@@ -2,7 +2,18 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
-import { Modal, Text, Flex, HelpIcon, BalanceInput, Ticket, useTooltip, Skeleton } from '@pancakeswap/uikit'
+import {
+  Modal,
+  Text,
+  Flex,
+  HelpIcon,
+  BalanceInput,
+  Ticket,
+  useTooltip,
+  Skeleton,
+  Button,
+  ArrowForwardIcon,
+} from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
 import { getFullDisplayBalance } from 'utils/formatBalance'
@@ -19,6 +30,7 @@ import useToast from 'hooks/useToast'
 import UnlockButton from 'components/UnlockButton'
 import ApproveConfirmButtons, { ButtonArrangement } from 'views/Profile/components/ApproveConfirmButtons'
 import TicketsNumberButton from './TicketsNumberButton'
+import { EditNumbersModal, useTicketsReducer } from './EditNumbersModal'
 import { generateTicketNumbers } from '../helpers'
 
 const StyledModal = styled(Modal)`
@@ -28,6 +40,11 @@ const StyledModal = styled(Modal)`
 
 interface BuyTicketsModalProps {
   onDismiss?: () => void
+}
+
+enum BuyingStage {
+  BUY = 'Buy',
+  EDIT = 'Edit',
 }
 
 const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
@@ -46,6 +63,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
   const [ticketsToBuy, setTicketsToBuy] = useState('0')
   const [discountValue, setDiscountValue] = useState('')
   const [totalCost, setTotalCost] = useState('')
+  const [buyingStage, setBuyingStage] = useState(BuyingStage.BUY)
   const [maxPossibleTicketPurchase, setMaxPossibleTicketPurchase] = useState(BIG_ZERO)
   const [maxTicketPurchaseExceeded, setMaxTicketPurchaseExceeded] = useState(false)
   const [userNotEnoughCake, setUserNotEnoughCake] = useState(false)
@@ -146,6 +164,11 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
     setMaxTicketPurchaseExceeded(false)
   }
 
+  const [updateTicket, randomize, tickets, allComplete, getTicketsForPurchase] = useTicketsReducer(
+    parseInt(ticketsToBuy, 10),
+    userCurrentTickets,
+  )
+
   const { isApproving, isApproved, isConfirmed, isConfirming, handleApprove, handleConfirm } =
     useApproveConfirmTransaction({
       onRequiresApproval: async () => {
@@ -164,9 +187,9 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
         toastSuccess(t('Contract approved - you can now purchase tickets'))
       },
       onConfirm: () => {
-        const ticketNumArray = generateTicketNumbers(parseInt(ticketsToBuy, 10), userCurrentTickets)
-        console.log(ticketNumArray)
-        return lotteryContract.buyTickets(currentLotteryId, ticketNumArray)
+        const ticketsForPurchase = getTicketsForPurchase()
+        console.log('Buying these tickets:', ticketsForPurchase)
+        return lotteryContract.buyTickets(currentLotteryId, ticketsForPurchase)
       },
       onSuccess: async () => {
         onDismiss()
@@ -180,6 +203,30 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
     return t('The maximum number of tickets you can buy in one transaction is %maxTickets%', {
       maxTickets: maxPossibleTicketPurchase.toString(),
     })
+  }
+
+  const disableBuying =
+    !isApproved ||
+    isConfirmed ||
+    userNotEnoughCake ||
+    maxTicketPurchaseExceeded ||
+    !ticketsToBuy ||
+    new BigNumber(ticketsToBuy).lte(0) ||
+    getTicketsForPurchase().length !== parseInt(ticketsToBuy, 10)
+
+  if (buyingStage === BuyingStage.EDIT) {
+    return (
+      <EditNumbersModal
+        totalCost={totalCost}
+        updateTicket={updateTicket}
+        randomize={randomize}
+        tickets={tickets}
+        allComplete={allComplete}
+        onConfirm={handleConfirm}
+        isConfirming={isConfirming}
+        onDismiss={() => setBuyingStage(BuyingStage.BUY)}
+      />
+    )
   }
 
   return (
@@ -268,29 +315,43 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
         </Flex>
 
         {account ? (
-          <ApproveConfirmButtons
-            isApproveDisabled={isApproved}
-            isApproving={isApproving}
-            isConfirmDisabled={
-              !isApproved ||
-              isConfirmed ||
-              userNotEnoughCake ||
-              maxTicketPurchaseExceeded ||
-              !ticketsToBuy ||
-              new BigNumber(ticketsToBuy).lte(0)
-            }
-            isConfirming={isConfirming}
-            onApprove={handleApprove}
-            onConfirm={handleConfirm}
-            buttonArrangement={ButtonArrangement.SEQUENTIAL}
-          />
+          <>
+            <ApproveConfirmButtons
+              isApproveDisabled={isApproved}
+              isApproving={isApproving}
+              isConfirmDisabled={disableBuying}
+              isConfirming={isConfirming}
+              onApprove={handleApprove}
+              onConfirm={handleConfirm}
+              buttonArrangement={ButtonArrangement.SEQUENTIAL}
+              confirmLabel={t('Buy Instantly')}
+            />
+            <Button
+              variant="secondary"
+              mt="8px"
+              disabled={disableBuying || isConfirming}
+              onClick={() => {
+                setBuyingStage(BuyingStage.EDIT)
+              }}
+            >
+              <Flex alignItems="center">
+                {t('View/Edit Numbers')}{' '}
+                <ArrowForwardIcon
+                  mt="2px"
+                  color={disableBuying || isConfirming ? 'disabled' : 'primary'}
+                  height="24px"
+                  width="24px"
+                />
+              </Flex>
+            </Button>
+          </>
         ) : (
           <UnlockButton />
         )}
 
         <Text mt="24px" fontSize="12px" color="textSubtle">
           {t(
-            'The CAKE ticket price is set before each lottery round starts, equal to [PLACEHOLDER] $5 at that time. Ticket purchases are final.',
+            '"Buy Instantly" chooses random numbers, with no duplicates among your tickets. Prices are set before each round starts, equal to $1 at that time. Purchases are final.',
           )}
         </Text>
       </Flex>
