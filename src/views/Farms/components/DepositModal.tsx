@@ -4,6 +4,7 @@ import { Button, Modal, LinkExternal } from '@pancakeswap/uikit'
 import { ModalActions, ModalInput } from 'components/Modal'
 import { useTranslation } from 'contexts/Localization'
 import { getFullDisplayBalance } from 'utils/formatBalance'
+import useToast from 'hooks/useToast'
 
 interface DepositModalProps {
   max: BigNumber
@@ -15,6 +16,7 @@ interface DepositModalProps {
 
 const DepositModal: React.FC<DepositModalProps> = ({ max, onConfirm, onDismiss, tokenName = '', addLiquidityUrl }) => {
   const [val, setVal] = useState('')
+  const { toastSuccess, toastError } = useToast()
   const [pendingTx, setPendingTx] = useState(false)
   const { t } = useTranslation()
   const fullBalance = useMemo(() => {
@@ -57,9 +59,16 @@ const DepositModal: React.FC<DepositModalProps> = ({ max, onConfirm, onDismiss, 
           disabled={pendingTx || !valNumber.isFinite() || valNumber.eq(0) || valNumber.gt(fullBalanceNumber)}
           onClick={async () => {
             setPendingTx(true)
-            await onConfirm(val)
-            setPendingTx(false)
-            onDismiss()
+            try {
+              await onConfirm(val)
+              toastSuccess(t('Staked!'), t('Your funds have been staked in the farm'))
+              onDismiss()
+            } catch (e) {
+              toastError(t('Canceled'), t('Please try again and confirm the transaction.'))
+              console.error(e)
+            } finally {
+              setPendingTx(false)
+            }
           }}
         >
           {pendingTx ? t('Pending Confirmation') : t('Confirm')}

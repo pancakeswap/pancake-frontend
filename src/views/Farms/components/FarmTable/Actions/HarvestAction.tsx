@@ -9,6 +9,7 @@ import { getBalanceAmount } from 'utils/formatBalance'
 import { useAppDispatch } from 'state'
 import { fetchFarmUserDataAsync } from 'state/farms'
 import { usePriceCakeBusd } from 'state/hooks'
+import useToast from 'hooks/useToast'
 import { useTranslation } from 'contexts/Localization'
 import useHarvestFarm from '../../../hooks/useHarvestFarm'
 
@@ -19,6 +20,7 @@ interface HarvestActionProps extends FarmWithStakedValue {
 }
 
 const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({ pid, userData, userDataReady }) => {
+  const { toastSuccess, toastError } = useToast()
   const earningsBigNumber = new BigNumber(userData.earnings)
   const cakePrice = usePriceCakeBusd()
   let earnings = BIG_ZERO
@@ -59,10 +61,19 @@ const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({ pid, userD
           disabled={earnings.eq(0) || pendingTx || !userDataReady}
           onClick={async () => {
             setPendingTx(true)
-            await onReward()
+            try {
+              await onReward()
+              toastSuccess(
+                `${t('Harvested')}!`,
+                t('Your %symbol% earnings have been sent to your wallet!', { symbol: 'CAKE' }),
+              )
+            } catch (e) {
+              toastError(t('Canceled'), t('Please try again and confirm the transaction.'))
+              console.error(e)
+            } finally {
+              setPendingTx(false)
+            }
             dispatch(fetchFarmUserDataAsync({ account, pids: [pid] }))
-
-            setPendingTx(false)
           }}
           ml="4px"
         >
