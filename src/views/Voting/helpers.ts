@@ -3,7 +3,7 @@ import { getCakeAddress } from 'utils/addressHelpers'
 import { SNAPSHOT_HUB_API, SNAPSHOT_VOTING_API } from 'config/constants/endpoints'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { Proposal, ProposalState, ProposalType, Vote } from 'state/types'
-import { archiveRpcProvider } from 'utils/providers'
+import { simpleRpcProvider } from 'utils/providers'
 import { ADMIN_ADDRESS, PANCAKE_SPACE, SNAPSHOT_VERSION } from './config'
 
 export const isCoreProposal = (proposal: Proposal) => {
@@ -77,7 +77,7 @@ export const sendSnaphotData = async (message: Message) => {
 }
 
 export const getVotingPower = async (account: string, poolAddresses: string[], block?: number) => {
-  const blockNumber = block || (await archiveRpcProvider.getBlockNumber())
+  const blockNumber = block || (await simpleRpcProvider.getBlockNumber())
   const response = await fetch(`${SNAPSHOT_VOTING_API}/power`, {
     method: 'post',
     headers: {

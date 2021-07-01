@@ -1,7 +1,7 @@
 import request, { gql } from 'graphql-request'
 import { SNAPSHOT_API, SNAPSHOT_VOTING_API } from 'config/constants/endpoints'
 import { Proposal, ProposalState, Vote, VoteWhere } from 'state/types'
-import { archiveRpcProvider } from 'utils/providers'
+import { simpleRpcProvider } from 'utils/providers'
 
 export const getProposals = async (first = 5, skip = 0, state = ProposalState.ACTIVE): Promise<Proposal[]> => {
   const response: { proposals: Proposal[] } = await request(
@@ -84,7 +84,7 @@ export const getVotes = async (first: number, skip: number, where: VoteWhere): P
 }
 
 export const getAllVotes = async (proposalId: string, block?: number, votesPerChunk = 1000): Promise<Vote[]> => {
-  const blockNumber = block || (await archiveRpcProvider.getBlockNumber())
+  const blockNumber = block || (await simpleRpcProvider.getBlockNumber())
   return new Promise((resolve, reject) => {
     let votes: Vote[] = []
 
