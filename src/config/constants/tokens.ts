@@ -12,6 +12,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://pancakeswap.finance/',
   },
+  dvi: {
+    symbol: 'DVI',
+    address: {
+      56: '0x758FB037A375F17c7e195CC634D77dA4F554255B',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://dvision.network/',
+  },
   adx: {
     symbol: 'ADX',
     address: {
