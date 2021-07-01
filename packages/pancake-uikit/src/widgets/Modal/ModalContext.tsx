@@ -4,7 +4,11 @@ import Overlay from "../../components/Overlay/Overlay";
 import { Handler } from "./types";
 
 interface ModalsContext {
-  onPresent: (node: React.ReactNode, key?: string) => void;
+  isOpen: boolean;
+  nodeId: string;
+  modalNode: React.ReactNode;
+  setModalNode: React.Dispatch<React.SetStateAction<React.ReactNode>>;
+  onPresent: (node: React.ReactNode, newNodeId: string) => void;
   onDismiss: Handler;
   setCloseOnOverlayClick: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -23,6 +27,10 @@ const ModalWrapper = styled.div`
 `;
 
 export const Context = createContext<ModalsContext>({
+  isOpen: false,
+  nodeId: "",
+  modalNode: null,
+  setModalNode: () => null,
   onPresent: () => null,
   onDismiss: () => null,
   setCloseOnOverlayClick: () => true,
@@ -31,16 +39,19 @@ export const Context = createContext<ModalsContext>({
 const ModalProvider: React.FC = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [modalNode, setModalNode] = useState<React.ReactNode>();
+  const [nodeId, setNodeId] = useState("");
   const [closeOnOverlayClick, setCloseOnOverlayClick] = useState(true);
 
-  const handlePresent = (node: React.ReactNode) => {
+  const handlePresent = (node: React.ReactNode, newNodeId: string) => {
     setModalNode(node);
     setIsOpen(true);
+    setNodeId(newNodeId);
   };
 
   const handleDismiss = () => {
     setModalNode(undefined);
     setIsOpen(false);
+    setNodeId("");
   };
 
   const handleOverlayDismiss = () => {
@@ -52,6 +63,10 @@ const ModalProvider: React.FC = ({ children }) => {
   return (
     <Context.Provider
       value={{
+        isOpen,
+        nodeId,
+        modalNode,
+        setModalNode,
         onPresent: handlePresent,
         onDismiss: handleDismiss,
         setCloseOnOverlayClick,

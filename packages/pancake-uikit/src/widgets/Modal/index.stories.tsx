@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useTheme } from "styled-components";
 import { Modal, useModal } from ".";
 import { ModalProps } from "./types";
@@ -94,4 +94,44 @@ export const WithCustomHeader: React.FC = () => {
 
   const [onPresent1] = useModal(<CustomHeaderModal title="Modal with custom header" />);
   return <Button onClick={onPresent1}>Modal with custom header</Button>;
+};
+
+export const ReactingToOusideChanges: React.FC = () => {
+  const [counter, setCounter] = useState(0);
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setCounter((prev) => prev + 1);
+    }, 500);
+    return () => clearInterval(intervalId);
+  }, []);
+  const ReactiveModal: React.FC<ModalProps & { count: number }> = ({ title, count, onDismiss }) => {
+    return (
+      <Modal title={title} onDismiss={onDismiss}>
+        <h2>Counter: {count}</h2>
+        <Button mt="8px" onClick={onDismiss}>
+          Close
+        </Button>
+      </Modal>
+    );
+  };
+
+  const [onPresent1] = useModal(
+    <ReactiveModal title={`[${counter}] Modal that reacts to outside change`} count={counter} />,
+    true,
+    true,
+    "reactiveModal"
+  );
+
+  const [onPresent2] = useModal(
+    <ReactiveModal title={`[${counter}] Modal that does NOT react to outside change`} count={counter} />
+  );
+  return (
+    <div>
+      <h2>Counter: {counter}</h2>
+      <Button onClick={onPresent1}>Reactive modal</Button>
+      <Button ml="16px" onClick={onPresent2}>
+        Non-reactive modal
+      </Button>
+    </div>
+  );
 };
