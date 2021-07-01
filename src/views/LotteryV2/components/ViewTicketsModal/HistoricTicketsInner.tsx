@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { Box, Text, Flex, Button, Skeleton } from '@pancakeswap/uikit'
 import styled from 'styled-components'
-import { fetchLottery, ProcessLotteryResponse } from 'state/lottery/helpers'
+import { fetchLottery } from 'state/lottery/helpers'
 import { LotteryRound } from 'state/types'
 import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'
 import WinningNumbers from '../WinningNumbers'
+import { processLotteryResponse } from '../../helpers'
 
 const ScrollBox = styled(Box)`
   /* max-height: 300px; */
@@ -21,7 +22,7 @@ const HistoricTicketsInner: React.FC<{ roundId: string }> = ({ roundId }) => {
   useEffect(() => {
     const fetchData = async () => {
       const lotteryData = await fetchLottery(roundId)
-      const processedLotteryData = ProcessLotteryResponse(lotteryData)
+      const processedLotteryData = processLotteryResponse(lotteryData)
       setLotteryInfo(processedLotteryData)
     }
 

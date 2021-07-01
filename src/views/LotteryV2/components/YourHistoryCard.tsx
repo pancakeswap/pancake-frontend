@@ -17,14 +17,14 @@ import {
 import { useTranslation } from 'contexts/Localization'
 import { LotteryStatus } from 'config/constants/types'
 import { useGetUserLotteriesGraphData, useLottery } from 'state/hooks'
-import { ProcessLotteryResponse, fetchLottery } from 'state/lottery/helpers'
+import { fetchLottery } from 'state/lottery/helpers'
 import { LotteryResponse, LotteryRound } from 'state/types'
 import UnlockButton from 'components/UnlockButton'
 import FinishedRoundTable from './FinishedRoundTable'
 import { WhiteBunny } from '../svgs'
 import BuyTicketsButton from './BuyTicketsButton'
 import LotteryHistoryCardBody from './LotteryHistoryCardBody'
-import { dateOptions, dateTimeOptions } from '../helpers'
+import { dateOptions, dateTimeOptions, processLotteryResponse } from '../helpers'
 import LotteryHistoryCardFooter from './LotteryHistoryCardFooter'
 
 const StyledCard = styled(Card)`
@@ -62,7 +62,7 @@ const YourHistoryCard = () => {
     setShouldShowRoundDetail(true)
     setSelectedLotteryId(lotteryId)
     const lotteryData = await fetchLottery(lotteryId)
-    const processedLotteryData = ProcessLotteryResponse(lotteryData)
+    const processedLotteryData = processLotteryResponse(lotteryData)
     setSelectedLotteryInfo(processedLotteryData)
   }
 
