@@ -12,7 +12,7 @@ import { useAppDispatch } from 'state'
 import Balance from 'components/Balance'
 import useToast from 'hooks/useToast'
 import { useLotteryV2Contract } from 'hooks/useContract'
-import { parseClaimDataForClaimTicketsCall } from '../helpers'
+import { parseClaimDataForClaimTicketsCall } from '../../helpers'
 
 interface ClaimInnerProps {
   roundsToClaim: LotteryTicketClaimData[]

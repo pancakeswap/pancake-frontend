@@ -30,7 +30,7 @@ const initialState: LotteryState = {
     firstTicketId: '',
     lastTicketId: '',
     amountCollectedInCake: '',
-    finalNumber: '',
+    finalNumber: null,
     cakePerBracket: [],
     countWinnersPerBracket: [],
     rewardsBreakdown: [],

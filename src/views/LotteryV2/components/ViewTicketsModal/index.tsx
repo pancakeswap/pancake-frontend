@@ -7,8 +7,9 @@ import { LotteryStatus } from 'config/constants/types'
 import { useLottery } from 'state/hooks'
 import { fetchLottery } from 'state/lottery/helpers'
 import useTheme from 'hooks/useTheme'
-import TicketNumber from './TicketNumber'
-import BuyTicketsButton from './BuyTicketsButton'
+import TicketNumber from '../TicketNumber'
+import BuyTicketsButton from '../BuyTicketsButton'
+import HistoricTicketsInner from './HistoricTicketsInner'
 
 const StyledModal = styled(Modal)`
   min-width: 280px;
@@ -25,7 +26,6 @@ interface ViewTicketsModalProps {
 }
 
 const ViewTicketsModal: React.FC<ViewTicketsModalProps> = ({ onDismiss, roundId }) => {
-  const [inactiveLotteryData, setInactiveLotteryData] = useState(null)
   const { account } = useWeb3React()
   const { t } = useTranslation()
   const { theme } = useTheme()
@@ -37,13 +37,6 @@ const ViewTicketsModal: React.FC<ViewTicketsModalProps> = ({ onDismiss, roundId 
   const isPreviousRound = roundId !== currentLotteryId
   const ticketBuyIsDisabled = status !== LotteryStatus.OPEN || isTransitioning
 
-  useEffect(() => {
-    if (isPreviousRound) {
-      const fetchedLotteryData = fetchLottery(roundId)
-      setInactiveLotteryData(fetchedLotteryData)
-    }
-  }, [roundId, isPreviousRound])
-
   return (
     <StyledModal
       title={`${t('Round')} ${roundId}`}
@@ -51,16 +44,16 @@ const ViewTicketsModal: React.FC<ViewTicketsModalProps> = ({ onDismiss, roundId 
       headerBackground={theme.colors.gradients.cardHeader}
     >
       {isPreviousRound ? (
-        <span>Previous round</span>
+        <HistoricTicketsInner roundId={roundId} />
       ) : (
         <>
           <Flex flexDirection="column">
-            <Text textTransform="uppercase" color="secondary" fontSize="12px" mb="16px">
+            <Text bold textTransform="uppercase" color="secondary" fontSize="12px" mb="16px">
               {t('Your tickets')}
             </Text>
             <ScrollBox>
               {userTickets.tickets.map((ticket, index) => {
-                return <TicketNumber key={ticket.id} localId={index + 1} {...ticket} />
+                return <TicketNumber key={ticket.id} localId={index + 1} id={ticket.id} number={ticket.number} />
               })}
             </ScrollBox>
           </Flex>
