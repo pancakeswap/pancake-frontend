@@ -4,6 +4,7 @@ import { Button, Flex, Heading } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useAppDispatch } from 'state'
 import { fetchFarmUserDataAsync } from 'state/farms'
+import useToast from 'hooks/useToast'
 import { getBalanceAmount } from 'utils/formatBalance'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { useWeb3React } from '@web3-react/core'
@@ -18,6 +19,7 @@ interface FarmCardActionsProps {
 
 const HarvestAction: React.FC<FarmCardActionsProps> = ({ earnings, pid }) => {
   const { account } = useWeb3React()
+  const { toastSuccess, toastError } = useToast()
   const { t } = useTranslation()
   const [pendingTx, setPendingTx] = useState(false)
   const { onReward } = useHarvestFarm(pid)
@@ -39,10 +41,19 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({ earnings, pid }) => {
         disabled={rawEarningsBalance.eq(0) || pendingTx}
         onClick={async () => {
           setPendingTx(true)
-          await onReward()
+          try {
+            await onReward()
+            toastSuccess(
+              `${t('Harvested')}!`,
+              t('Your %symbol% earnings have been sent to your wallet!', { symbol: 'CAKE' }),
+            )
+          } catch (e) {
+            toastError(t('Canceled'), t('Please try again and confirm the transaction.'))
+            console.error(e)
+          } finally {
+            setPendingTx(false)
+          }
           dispatch(fetchFarmUserDataAsync({ account, pids: [pid] }))
-
-          setPendingTx(false)
         }}
       >
         {t('Harvest')}

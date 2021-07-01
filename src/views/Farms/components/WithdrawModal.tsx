@@ -4,6 +4,7 @@ import { Button, Modal } from '@pancakeswap/uikit'
 import { ModalActions, ModalInput } from 'components/Modal'
 import { useTranslation } from 'contexts/Localization'
 import { getFullDisplayBalance } from 'utils/formatBalance'
+import useToast from 'hooks/useToast'
 
 interface WithdrawModalProps {
   max: BigNumber
@@ -14,6 +15,7 @@ interface WithdrawModalProps {
 
 const WithdrawModal: React.FC<WithdrawModalProps> = ({ onConfirm, onDismiss, max, tokenName = '' }) => {
   const [val, setVal] = useState('')
+  const { toastSuccess, toastError } = useToast()
   const [pendingTx, setPendingTx] = useState(false)
   const { t } = useTranslation()
   const fullBalance = useMemo(() => {
@@ -54,9 +56,16 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ onConfirm, onDismiss, max
           disabled={pendingTx || !valNumber.isFinite() || valNumber.eq(0) || valNumber.gt(fullBalanceNumber)}
           onClick={async () => {
             setPendingTx(true)
-            await onConfirm(val)
-            setPendingTx(false)
-            onDismiss()
+            try {
+              await onConfirm(val)
+              toastSuccess(t('Unstaked!'), t('Your earnings have also been harvested to your wallet'))
+              onDismiss()
+            } catch (e) {
+              toastError(t('Canceled'), t('Please try again and confirm the transaction.'))
+              console.error(e)
+            } finally {
+              setPendingTx(false)
+            }
           }}
           width="100%"
         >
