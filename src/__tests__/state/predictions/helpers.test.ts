@@ -2,7 +2,6 @@ import {
   makeFutureRoundResponse,
   numberOrNull,
   transformBetResponse,
-  transformMarketResponse,
   transformTotalWonResponse,
 } from 'state/predictions/helpers'
 
@@ -140,23 +139,6 @@ describe('transformBetResponse', () => {
         totalBets: 20,
         totalBNB: 43,
       },
-    })
-  })
-})
-
-describe('transformMarketResponse', () => {
-  it('returns a correctly transformed market response', () => {
-    const marketResponse = {
-      id: '1',
-      paused: true,
-      epoch: {
-        epoch: '200',
-      },
-    }
-    expect(transformMarketResponse(marketResponse)).toEqual({
-      id: '1',
-      paused: true,
-      epoch: 200,
     })
   })
 })

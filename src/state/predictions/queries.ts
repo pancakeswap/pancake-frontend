@@ -52,14 +52,6 @@ export interface RoundResponse {
   bets: BetResponse[]
 }
 
-export interface MarketResponse {
-  id: string
-  paused: boolean
-  epoch: {
-    epoch: string
-  }
-}
-
 export interface TotalWonMarketResponse {
   totalBNB: string
   totalBNBTreasury: string

@@ -194,7 +194,6 @@ export interface Round {
 }
 
 export interface Market {
-  id: string
   paused: boolean
   epoch: number
 }
