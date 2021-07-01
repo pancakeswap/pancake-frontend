@@ -78,7 +78,7 @@ export const fetchLottery = async (lotteryId: string): Promise<LotteryResponse> 
       firstTicketId: '',
       lastTicketId: '',
       amountCollectedInCake: '',
-      finalNumber: '',
+      finalNumber: null,
       cakePerBracket: [],
       countWinnersPerBracket: [],
       rewardsBreakdown: [],
