@@ -902,5 +902,6 @@
   "Check voting power": "Ellenőrizze szavazati erejét",
   "Amount to collect": "Begyűjtendő összeg",
   "Your winnings": "Az Ön nyereménye",
-  "Includes your original position and your winnings, minus the %fee% fee.": "Tartalmazza az eredeti pozícióját és a nyereményét, a %fee% díj levonásával."
+  "Includes your original position and your winnings, minus the %fee% fee.": "Tartalmazza az eredeti pozícióját és a nyereményét, a %fee% díj levonásával.",
+  "Your funds have been staked in the farm": "Your funds have been staked in the farm"
 }
