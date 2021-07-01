@@ -12,6 +12,7 @@ import {
   Heading,
   Skeleton,
   ExpandableLabel,
+  Box,
 } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { LotteryStatus } from 'config/constants/types'
@@ -27,6 +28,8 @@ import { dateOptions, dateTimeOptions } from '../helpers'
 import LotteryHistoryCardFooter from './LotteryHistoryCardFooter'
 
 const StyledCard = styled(Card)`
+  width: 100%;
+
   ${({ theme }) => theme.mediaQueries.sm} {
     width: 520px;
   }
@@ -37,6 +40,10 @@ const StyledCard = styled(Card)`
 `
 
 const StyledCardBody = styled(CardBody)`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   min-height: 240px;
 `
 
@@ -111,19 +118,17 @@ const YourHistoryCard = () => {
     if (!account) {
       return (
         <StyledCardBody>
-          <Flex minHeight="inherit" flexDirection="column" alignItems="center" justifyContent="center">
-            <Text maxWidth="180px" textAlign="center" color="textSubtle" mb="16px">
-              {t('Connect your wallet to check your history')}
-            </Text>
-            <UnlockButton />
-          </Flex>
+          <Text textAlign="center" color="textSubtle" mb="16px">
+            {t('Connect your wallet to check your history')}
+          </Text>
+          <UnlockButton />
         </StyledCardBody>
       )
     }
     if (pastUserRounds.length === 0) {
       return (
         <StyledCardBody>
-          <Flex minHeight="inherit" flexDirection="column" alignItems="center" justifyContent="center">
+          <Box maxWidth="280px">
             <Flex alignItems="center" justifyContent="center" mb="16px">
               <WhiteBunny height="24px" mr="8px" /> <Text textAlign="left">{t('No lottery history found')}</Text>
             </Flex>
@@ -131,7 +136,7 @@ const YourHistoryCard = () => {
               {t('Buy tickets for the next round!')}
             </Text>
             <BuyTicketsButton disabled={ticketBuyIsDisabled} width="100%" />
-          </Flex>
+          </Box>
         </StyledCardBody>
       )
     }
@@ -140,7 +145,7 @@ const YourHistoryCard = () => {
 
   const getFooter = () => {
     if (selectedLotteryInfo) {
-      return <LotteryHistoryCardFooter lotteryData={selectedLotteryInfo} />
+      return <LotteryHistoryCardFooter lotteryData={selectedLotteryInfo} lotteryId={selectedLotteryId} />
     }
     return (
       <CardFooter>

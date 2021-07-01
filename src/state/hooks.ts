@@ -519,6 +519,11 @@ export const useGetLotteriesGraphData = () => {
   return useSelector((state: State) => state.lottery.lotteriesData)
 }
 
+export const useGetLotteryGraphDataById = (lotteryId: string) => {
+  const lotteriesData = useSelector((state: State) => state.lottery.lotteriesData)
+  return lotteriesData.find((lottery) => lottery.id === lotteryId)
+}
+
 export const useFetchLottery = () => {
   const { account } = useWeb3React()
   const { fastRefresh } = useRefresh()

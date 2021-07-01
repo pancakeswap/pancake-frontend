@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Text, ChevronRightIcon, Box, Flex } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
+import { LotteryStatus } from 'config/constants/types'
 import { useGetUserLotteriesGraphData, useLottery } from 'state/hooks'
 import HistoryGridRow from './HistoryGridRow'
 
@@ -19,11 +20,14 @@ const FinishedRoundTable: React.FC<FinishedRoundTableProps> = ({ handleHistoryRo
   const userLotteryData = useGetUserLotteriesGraphData()
   const { currentLotteryId } = useLottery()
 
-  const filteredForCurrentRound = userLotteryData?.rounds.filter((round) => {
+  const filteredForLiveRound = userLotteryData?.rounds.filter((round) => {
+    if (round.lotteryId === currentLotteryId) {
+      return round.status === LotteryStatus.CLAIMABLE
+    }
     return round.lotteryId !== currentLotteryId
   })
 
-  const sortedByRoundId = filteredForCurrentRound?.sort((roundA, roundB) => {
+  const sortedByRoundId = filteredForLiveRound?.sort((roundA, roundB) => {
     return parseInt(roundB.lotteryId) - parseInt(roundA.lotteryId)
   })
 

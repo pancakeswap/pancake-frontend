@@ -345,36 +345,31 @@ export interface LotteryRoundUserTickets {
   tickets?: LotteryTicket[]
 }
 
-export interface LotteryRound {
+interface LotteryRoundGenerics {
   isLoading?: boolean
-  userTickets?: LotteryRoundUserTickets
   status: LotteryStatus
   startTime: string
   endTime: string
-  priceTicketInCake: BigNumber
-  discountDivisor: BigNumber
   treasuryFee: string
   firstTicketId: string
   lastTicketId: string
-  amountCollectedInCake: BigNumber
   finalNumber: string
+}
+
+export interface LotteryRound extends LotteryRoundGenerics {
+  userTickets?: LotteryRoundUserTickets
+  priceTicketInCake: BigNumber
+  discountDivisor: BigNumber
+  amountCollectedInCake: BigNumber
   cakePerBracket: string[]
   countWinnersPerBracket: string[]
   rewardsBreakdown: string[]
 }
 
-export interface LotteryResponse {
-  isLoading?: boolean
-  status: LotteryStatus
-  startTime: string
-  endTime: string
+export interface LotteryResponse extends LotteryRoundGenerics {
   priceTicketInCake: SerializedBigNumber
   discountDivisor: SerializedBigNumber
-  treasuryFee: string
-  firstTicketId: string
-  lastTicketId: string
   amountCollectedInCake: SerializedBigNumber
-  finalNumber: string
   cakePerBracket: SerializedBigNumber[]
   countWinnersPerBracket: SerializedBigNumber[]
   rewardsBreakdown: SerializedBigNumber[]
@@ -382,7 +377,7 @@ export interface LotteryResponse {
 
 export interface LotteryState {
   currentLotteryId: string
-  maxNumberTicketsPerBuyOrClaim: SerializedBigNumber | BigNumber
+  maxNumberTicketsPerBuyOrClaim: string
   isTransitioning: boolean
   currentRound: LotteryResponse & { userTickets?: LotteryRoundUserTickets }
   lotteriesData?: LotteryRoundGraphEntity[]

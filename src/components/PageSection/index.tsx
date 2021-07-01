@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Flex, FlexProps } from '@pancakeswap/uikit'
+import { BoxProps, Flex, FlexProps } from '@pancakeswap/uikit'
 import Container from 'components/layout/Container'
 import CurvedDivider from './CurvedDivider'
 
@@ -9,6 +9,7 @@ interface PageSectionProps extends BackgroundColorProps {
   dividerComponent?: React.ReactNode
   hasCurvedDivider?: boolean
   curvePosition?: 'top' | 'bottom'
+  containerProps?: BoxProps
 }
 
 interface BackgroundColorProps extends FlexProps {
@@ -47,6 +48,7 @@ const PageSection: React.FC<PageSectionProps> = ({
   dividerComponent,
   curvePosition = 'bottom',
   hasCurvedDivider = true,
+  containerProps,
   ...props
 }) => {
   const getPadding = () => {
@@ -67,6 +69,10 @@ const PageSection: React.FC<PageSectionProps> = ({
     return '48px 0'
   }
 
+  // if (containerProps) {
+  //   debugger // eslint-disable-line
+  // }
+
   return (
     <>
       {hasCurvedDivider && curvePosition === 'top' && (
@@ -78,7 +84,7 @@ const PageSection: React.FC<PageSectionProps> = ({
         />
       )}
       <BackgroundColor background={background} index={index} p={getPadding()} {...props}>
-        <ChildrenWrapper>{children}</ChildrenWrapper>
+        <ChildrenWrapper {...containerProps}>{children}</ChildrenWrapper>
       </BackgroundColor>
       {hasCurvedDivider && curvePosition === 'bottom' && (
         <CurvedDivider
