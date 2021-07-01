@@ -902,5 +902,6 @@
   "Check voting power": "投票権を確認",
   "Amount to collect": "回収額",
   "Your winnings": "賞金",
-  "Includes your original position and your winnings, minus the %fee% fee.": "%fee%手数料を差し引いた、元のポジションと賞金を含む。"
+  "Includes your original position and your winnings, minus the %fee% fee.": "%fee%手数料を差し引いた、元のポジションと賞金を含む。",
+  "Your funds have been staked in the farm": "Your funds have been staked in the farm"
 }
