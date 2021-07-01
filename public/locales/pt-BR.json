@@ -900,8 +900,8 @@
   "Voting Power": "Poder de voto",
   "You need at least %count% voting power to publish a proposal.": "Você precisa de pelo menos %count% de poder de voto para publicar uma proposta.",
   "Check voting power": "Confira o poder de voto",
-  "Amount to collect": "Amount to collect",
-  "Your winnings": "Your winnings",
-  "Includes your original position and your winnings, minus the %fee% fee.": "Includes your original position and your winnings, minus the %fee% fee.",
-  "Your funds have been staked in the farm": "Your funds have been staked in the farm"
+  "Amount to collect": "Quantia a coletar",
+  "Your winnings": "Seus ganhos",
+  "Includes your original position and your winnings, minus the %fee% fee.": "Inclui a sua posição original e seus ganhos, menos a taxa de %fee%.",
+  "Your funds have been staked in the farm": "Seus fundos foram colocados em stake na fazenda"
 }
