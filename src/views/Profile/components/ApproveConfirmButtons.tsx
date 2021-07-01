@@ -16,6 +16,7 @@ interface ApproveConfirmButtonsProps {
   onApprove: () => void
   onConfirm: () => void
   buttonArrangement?: ButtonArrangement
+  confirmLabel?: string
 }
 
 const StyledApproveConfirmButtonRow = styled.div`
@@ -65,8 +66,10 @@ const ApproveConfirmButtons: React.FC<ApproveConfirmButtonsProps> = ({
   onApprove,
   onConfirm,
   buttonArrangement = ButtonArrangement.ROW,
+  confirmLabel,
 }) => {
   const { t } = useTranslation()
+  const confirmButtonText = confirmLabel ?? t('Confirm')
 
   const ApproveConfirmRow = () => {
     return (
@@ -92,7 +95,7 @@ const ApproveConfirmButtons: React.FC<ApproveConfirmButtonsProps> = ({
             isLoading={isConfirming}
             endIcon={isConfirming ? spinnerIcon : undefined}
           >
-            {isConfirming ? t('Confirming') : t('Confirm')}
+            {isConfirming ? t('Confirming') : confirmButtonText}
           </Button>
         </Box>
       </StyledApproveConfirmButtonRow>
@@ -110,7 +113,7 @@ const ApproveConfirmButtons: React.FC<ApproveConfirmButtonsProps> = ({
               isLoading={isConfirming}
               endIcon={isConfirming ? spinnerIcon : undefined}
             >
-              {isConfirming ? t('Confirming') : t('Confirm')}
+              {isConfirming ? t('Confirming') : confirmButtonText}
             </Button>
           </Box>
         ) : (
