@@ -46,7 +46,6 @@ const LotteryV2 = () => {
   const [historyTabMenuIndex, setHistoryTabMenuIndex] = useState(0)
   const endTimeAsInt = parseInt(endTime, 10)
   const { nextEventTime, postCountdownText, preCountdownText } = useGetNextLotteryEvent(endTimeAsInt, status)
-  const secondsRemaining = useNextEventCountdown(nextEventTime)
 
   return (
     <LotteryPage>
@@ -66,9 +65,9 @@ const LotteryV2 = () => {
             </Heading>
           )}
           <Flex alignItems="center" justifyContent="center" mb="48px">
-            {secondsRemaining && (postCountdownText || preCountdownText) ? (
+            {nextEventTime && (postCountdownText || preCountdownText) ? (
               <Countdown
-                secondsRemaining={secondsRemaining}
+                nextEventTime={nextEventTime}
                 postCountdownText={postCountdownText}
                 preCountdownText={preCountdownText}
               />
