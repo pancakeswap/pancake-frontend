@@ -61,7 +61,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
   const poolContractAddress = getAddress(contractAddress)
   const cakeVaultContractAddress = getCakeVaultAddress()
   const imageSrc = `${BASE_URL}/images/tokens/${tokenAddress}.png`
-  const isMetaMaskInScope = !!(window as WindowChain).ethereum?.isMetaMask
+  const isMetaMaskInScope = !!window.ethereum?.isMetaMask
   const isManualCakePool = sousId === 0
 
   const { shouldShowBlockCountdown, blocksUntilStart, blocksRemaining, hasPoolStarted, blocksToDisplay } =

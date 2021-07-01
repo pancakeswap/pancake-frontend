@@ -130,7 +130,7 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
   const { shouldShowBlockCountdown, blocksUntilStart, blocksRemaining, hasPoolStarted, blocksToDisplay } =
     getPoolBlockInfo(pool, currentBlock)
 
-  const isMetaMaskInScope = !!(window as WindowChain).ethereum?.isMetaMask
+  const isMetaMaskInScope = !!window.ethereum?.isMetaMask
   const tokenAddress = earningToken.address ? getAddress(earningToken.address) : ''
   const imageSrc = `${BASE_URL}/images/tokens/${tokenAddress}.png`
 
