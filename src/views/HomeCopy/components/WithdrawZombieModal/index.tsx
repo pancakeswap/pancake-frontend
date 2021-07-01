@@ -38,7 +38,7 @@ const StyledButton = styled(Button)`
   flex-grow: 1;
 `
 
-const WithdrawZombieModal: React.FC<WithdrawZombieModalProps> = ({ details: { pid, result } }) => {
+const WithdrawZombieModal: React.FC<WithdrawZombieModalProps> = ({ details: { pid, result }, poolInfo }) => {
 
     const currentDate = Math.floor(Date.now() / 1000);
 
@@ -58,7 +58,16 @@ const WithdrawZombieModal: React.FC<WithdrawZombieModalProps> = ({ details: { pi
 
     const handleChangePercent = (sliderPercent: number) => {
         const percentageOfStakingMax = zombieStaked.dividedBy(100).multipliedBy(sliderPercent)
-        const amountToStake = getFullDisplayBalance(percentageOfStakingMax, tokens.zmbe.decimals, tokens.zmbe.decimals)
+        let amountToStake
+        if(sliderPercent !== 100) {
+            if(zombieStaked.minus(percentageOfStakingMax).lt(poolInfo.minimumStake)) {
+                amountToStake = getFullDisplayBalance(zombieStaked.minus(poolInfo.minimumStake), tokens.zmbe.decimals, 4)
+            } else {
+              amountToStake = getFullDisplayBalance(percentageOfStakingMax, tokens.zmbe.decimals, 4)
+          }
+        } else {
+            amountToStake = getFullDisplayBalance(new BigNumber(zombieStaked), tokens.zmbe.decimals, 4)
+        }
         setStakeAmount(amountToStake)
         setPercent(sliderPercent)
     }

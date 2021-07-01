@@ -13,7 +13,8 @@ import tokens from 'config/constants/tokens'
 
 interface Result {
   paidUnlockFee: boolean,
-  rugDeposited: number
+  rugDeposited: number,
+  amount: BigNumber
 }
 
 interface StakeZombieModalProps {
@@ -38,39 +39,36 @@ const StyledButton = styled(Button)`
   flex-grow: 1;
 `
 
-const StakeZombieModal: React.FC<StakeZombieModalProps> = ({ details: { rug, pid }, zombieBalance, poolInfo }) => {
+const StakeZombieModal: React.FC<StakeZombieModalProps> = ({ details: { rug, pid, result: { amount } }, zombieBalance, poolInfo }) => {
 
   const drFrankenstein = useDrFrankenstein();
   const { account } = useWeb3React();
 
-  console.log(poolInfo)
-
   const { theme } = useTheme();
-  const [minStake, setMinStake] = useState(getFullDisplayBalance(new BigNumber(poolInfo.minimumStake), tokens.zmbe.decimals, 4));
-  const [maxZombieBal, setMaxZombieBal] = useState(getFullDisplayBalance(zombieBalance, tokens.zmbe.decimals, 4));
-  const [minPercentage, setMinPercentage] = useState(Math.round((parseFloat(minStake)/parseFloat(maxZombieBal))*100))
-  const [percent, setPercent] = useState(minPercentage);
-  const [stakeAmount, setStakeAmount] = useState(minStake);
-
-  console.log(minPercentage)
+  const [percent, setPercent] = useState(0);
+  const [stakeAmount, setStakeAmount] = useState(
+    amount.toString() === '0' ? getFullDisplayBalance(new BigNumber(poolInfo.minimumStake), tokens.zmbe.decimals, 4) : '0')
+  ;
 
   const handleStakeInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = event.target.value || '0'
     setStakeAmount(inputValue);
-    // const convertedInput = new BigNumber(inputValue).multipliedBy(new BigNumber(10).pow(tokens.zmbe.decimals))
-    // const percentage = Math.floor(convertedInput.dividedBy().multipliedBy(100).toNumber())
-    setStakeAmount(inputValue)
-    // setPercent(percentage > 100 ? 100 : percentage)
   }
 
   const handleChangePercent = (sliderPercent: number) => {
-    const percentageOfStakingMax = zombieBalance.dividedBy(100).multipliedBy(sliderPercent)
-    const amountToStake = getFullDisplayBalance(percentageOfStakingMax, tokens.zmbe.decimals, tokens.zmbe.decimals)
+    let percentageOfStakingMax
+    let amountToStake
+    if(amount.toString() === '0') {
+      percentageOfStakingMax = zombieBalance.minus(poolInfo.minimumStake).dividedBy(100).multipliedBy(sliderPercent)
+      amountToStake = getFullDisplayBalance(percentageOfStakingMax.plus(poolInfo.minimumStake), tokens.zmbe.decimals, 4)
+    } else {
+      percentageOfStakingMax = zombieBalance.dividedBy(100).multipliedBy(sliderPercent)
+      amountToStake = getFullDisplayBalance(percentageOfStakingMax, tokens.zmbe.decimals, 4)
+    }
+
     setStakeAmount(amountToStake)
     setPercent(sliderPercent)
   }
-
- 
 
   const handleStakeZmbe = () => {
     const convertedStakeAmount = getDecimalAmount(new BigNumber(stakeAmount), tokens.zmbe.decimals);
@@ -103,7 +101,7 @@ const StakeZombieModal: React.FC<StakeZombieModalProps> = ({ details: { rug, pid
       Balance: {getFullDisplayBalance(zombieBalance, tokens.zmbe.decimals, 4)}
     </Text>
     <Slider
-      min={minPercentage}
+      min={0}
       max={100}
       value={percent}
       onValueChanged={handleChangePercent}
