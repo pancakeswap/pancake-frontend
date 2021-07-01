@@ -902,5 +902,6 @@
   "Check voting power": "Verifică puterea votului",
   "Amount to collect": "Sumă de colectat",
   "Your winnings": "Câștigurile tale",
-  "Includes your original position and your winnings, minus the %fee% fee.": "Include poziția ta inițială și câștigurile tale, mai puțin comisionul %fee%."
+  "Includes your original position and your winnings, minus the %fee% fee.": "Include poziția ta inițială și câștigurile tale, mai puțin comisionul %fee%.",
+  "Your funds have been staked in the farm": "Your funds have been staked in the farm"
 }

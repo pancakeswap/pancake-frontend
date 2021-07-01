@@ -889,7 +889,7 @@
   "%total% Votes": "Голосів: %total%",
   "Cast Vote": "Проголосувати",
   "See All": "Переглянути все",
-  "SafePal users may be temporarily unable to vote: Please connect directly via WalletConnect instead.": "Можливо, користувачі SafePal тимчасово не можуть проголосувати. Підключіться безпосередньо через WalletConnect.",
+  "SafePal users may be temporarily unable to vote: Please connect directly via WalletConnect instead.": "Можливо, користувачі SafePal тимчасово не можуть голосувати. Підключіться безпосередньо через WalletConnect.",
   "Your voting power is determined by the amount of CAKE you held at the block detailed below. CAKE held in other places does not contribute to your voting power.": "Ваша сила голосу залежить від суми CAKE, яку ви тримали в наведеному нижче блоці. CAKE, що утримується деінде, не впливає на силу вашого голосу.",
   "Your Cake Held Now": "Cake, що ви утримуєте наразі",
   "Wallet": "Гаманець",
@@ -902,5 +902,6 @@
   "Check voting power": "Перевірити силу голосу",
   "Amount to collect": "Сума, яку можна забрати",
   "Your winnings": "Ваші виграші",
-  "Includes your original position and your winnings, minus the %fee% fee.": "Включає вашу початкову позицію та ваші виграші за виключенням комісії в розмірі %fee%."
+  "Includes your original position and your winnings, minus the %fee% fee.": "Включає вашу початкову позицію та ваші виграші за виключенням комісії в розмірі %fee%.",
+  "Your funds have been staked in the farm": "Your funds have been staked in the farm"
 }

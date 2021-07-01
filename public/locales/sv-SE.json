@@ -902,5 +902,6 @@
   "Check voting power": "Kontrollera rösträtt",
   "Amount to collect": " Belopp att samla in",
   "Your winnings": "Dina vinster",
-  "Includes your original position and your winnings, minus the %fee% fee.": "Inkluderar din originalposition och dina vinster minus %fee%avgiften."
+  "Includes your original position and your winnings, minus the %fee% fee.": "Inkluderar din originalposition och dina vinster minus %fee%avgiften.",
+  "Your funds have been staked in the farm": "Your funds have been staked in the farm"
 }

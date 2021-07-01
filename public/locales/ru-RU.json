@@ -902,5 +902,6 @@
   "Check voting power": "Проверить влияние в голосовании",
   "Amount to collect": "Сумма для сбора",
   "Your winnings": "Ваши выигрыши",
-  "Includes your original position and your winnings, minus the %fee% fee.": "Включает вашу начальную позицию и ваши выигрыши за вычетом комиссии %fee%."
+  "Includes your original position and your winnings, minus the %fee% fee.": "Включает вашу начальную позицию и ваши выигрыши за вычетом комиссии %fee%.",
+  "Your funds have been staked in the farm": "Your funds have been staked in the farm"
 }

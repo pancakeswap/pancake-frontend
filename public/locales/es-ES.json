@@ -902,5 +902,6 @@
   "Check voting power": "Consultar el derecho a votar",
   "Amount to collect": "Cantidad por recaudar",
   "Your winnings": "Tus ganancias",
-  "Includes your original position and your winnings, minus the %fee% fee.": "Incluye tu posición original y tus ganancias, menos el %fee% de comisiones."
+  "Includes your original position and your winnings, minus the %fee% fee.": "Incluye tu posición original y tus ganancias, menos el %fee% de comisiones.",
+  "Your funds have been staked in the farm": "Your funds have been staked in the farm"
 }

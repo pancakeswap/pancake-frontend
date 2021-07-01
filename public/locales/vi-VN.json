@@ -902,5 +902,6 @@
   "Check voting power": "Kiểm tra quyền bình chọn",
   "Amount to collect": "Số để thu thập",
   "Your winnings": "Khoản thắng của bạn",
-  "Includes your original position and your winnings, minus the %fee% fee.": "Bao gồm vị thế ban đầu và khoản thắng của bạn, trừ phí %fee%."
+  "Includes your original position and your winnings, minus the %fee% fee.": "Bao gồm vị thế ban đầu và khoản thắng của bạn, trừ phí %fee%.",
+  "Your funds have been staked in the farm": "Your funds have been staked in the farm"
 }

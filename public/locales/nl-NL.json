@@ -902,5 +902,6 @@
   "Check voting power": "Stemkracht bekijken",
   "Amount to collect": "Te verzamelen hoeveelheid",
   "Your winnings": "Je winst",
-  "Includes your original position and your winnings, minus the %fee% fee.": "Omvat je oorspronkelijke positie en je winst, min %fee% vergoeding."
+  "Includes your original position and your winnings, minus the %fee% fee.": "Omvat je oorspronkelijke positie en je winst, min %fee% vergoeding.",
+  "Your funds have been staked in the farm": "Your funds have been staked in the farm"
 }

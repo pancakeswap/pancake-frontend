@@ -902,5 +902,6 @@
   "Check voting power": "Controlla il potere di voto",
   "Amount to collect": "Importo da raccogliere",
   "Your winnings": "Le tue vincite",
-  "Includes your original position and your winnings, minus the %fee% fee.": "Include la tua posizione originale e le tue vincite, meno la commissione di %fee%."
+  "Includes your original position and your winnings, minus the %fee% fee.": "Include la tua posizione originale e le tue vincite, meno la commissione di %fee%.",
+  "Your funds have been staked in the farm": "Your funds have been staked in the farm"
 }

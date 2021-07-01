@@ -902,5 +902,6 @@
   "Check voting power": "Tarkista äänestysvalta",
   "Amount to collect": "Kerättävä määrä",
   "Your winnings": "Voittosi",
-  "Includes your original position and your winnings, minus the %fee% fee.": "Sisältää alkuperäisen positiosi ja voittosi vähennettynä %fee% maksulla."
+  "Includes your original position and your winnings, minus the %fee% fee.": "Sisältää alkuperäisen positiosi ja voittosi vähennettynä %fee% maksulla.",
+  "Your funds have been staked in the farm": "Your funds have been staked in the farm"
 }

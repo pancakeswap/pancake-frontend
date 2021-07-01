@@ -902,5 +902,6 @@
   "Check voting power": "Oy Gücünüzü Kontrol Edin",
   "Amount to collect": "Toplanacak miktar",
   "Your winnings": "Kazançlarınız",
-  "Includes your original position and your winnings, minus the %fee% fee.": "İlk pozisyonunuz ile kazançlarınızın toplamından %fee% ücretin düşülmesi ile hesaplanır."
+  "Includes your original position and your winnings, minus the %fee% fee.": "İlk pozisyonunuz ile kazançlarınızın toplamından %fee% ücretin düşülmesi ile hesaplanır.",
+  "Your funds have been staked in the farm": "Your funds have been staked in the farm"
 }

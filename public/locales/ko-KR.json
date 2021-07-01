@@ -902,5 +902,6 @@
   "Check voting power": "투표권 확인",
   "Amount to collect": "수집할 액수",
   "Your winnings": "내 당첨",
-  "Includes your original position and your winnings, minus the %fee% fee.": "원래 포지션과 당첨액을 포함하고 %fee% 수수료를 뺍니다."
+  "Includes your original position and your winnings, minus the %fee% fee.": "원래 포지션과 당첨액을 포함하고 %fee% 수수료를 뺍니다.",
+  "Your funds have been staked in the farm": "Your funds have been staked in the farm"
 }
