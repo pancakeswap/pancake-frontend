@@ -1,16 +1,17 @@
 import { request, gql } from 'graphql-request'
 import { GRAPH_API_PREDICTION } from 'config/constants/endpoints'
+import { ethers } from 'ethers'
 import { Bet, BetPosition, Market, PredictionsState, PredictionStatus, Round, RoundData } from 'state/types'
 import { multicallv2 } from 'utils/multicall'
 import predictionsAbi from 'config/abi/predictions.json'
 import { getPredictionsAddress } from 'utils/addressHelpers'
+
 import {
   BetResponse,
   getRoundBaseFields,
   getBetBaseFields,
   getUserBaseFields,
   RoundResponse,
-  MarketResponse,
   TotalWonMarketResponse,
   TotalWonRoundResponse,
 } from './queries'
@@ -134,14 +135,6 @@ export const transformRoundResponse = (roundResponse: RoundResponse): Round => {
   }
 }
 
-export const transformMarketResponse = (marketResponse: MarketResponse): Market => {
-  return {
-    id: marketResponse.id,
-    paused: marketResponse.paused,
-    epoch: Number(marketResponse.epoch.epoch),
-  }
-}
-
 export const transformTotalWonResponse = (
   marketResponse: TotalWonMarketResponse,
   roundResponse: TotalWonRoundResponse[],
@@ -226,6 +219,14 @@ export const getMarketData = async (): Promise<{
   rounds: Round[]
   market: Market
 }> => {
+  const [[paused], [currentEpoch]] = (await multicallv2(
+    predictionsAbi,
+    ['paused', 'currentEpoch'].map((name) => ({
+      address: getPredictionsAddress(),
+      name,
+    })),
+  )) as [[boolean], [ethers.BigNumber]]
+
   const response = (await request(
     GRAPH_API_PREDICTION,
     gql`
@@ -233,20 +234,16 @@ export const getMarketData = async (): Promise<{
         rounds(first: 5, orderBy: epoch, orderDirection: desc) {
           ${getRoundBaseFields()}
         }
-        market(id: 1) {
-          id
-          paused
-          epoch {
-            epoch
-          }
-        }
       }
     `,
-  )) as { rounds: RoundResponse[]; market: MarketResponse }
+  )) as { rounds: RoundResponse[] }
 
   return {
     rounds: response.rounds.map(transformRoundResponse),
-    market: transformMarketResponse(response.market),
+    market: {
+      epoch: currentEpoch.toNumber(),
+      paused,
+    },
   }
 }
 
