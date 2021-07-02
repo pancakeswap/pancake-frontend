@@ -3,8 +3,8 @@ import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import { getLotteryAddress } from 'utils/addressHelpers'
 import { BIG_ZERO } from 'utils/bigNumber'
-import { useCake } from '../../../hooks/useContract'
-import useRefresh from '../../../hooks/useRefresh'
+import { useCake } from 'hooks/useContract'
+import useRefresh from 'hooks/useRefresh'
 
 // Retrieve lottery allowance
 const useAllowance = () => {
