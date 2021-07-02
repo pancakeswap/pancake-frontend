@@ -156,7 +156,7 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
         </Text>
         <Flex
           alignItems={['flex-start', null, 'center']}
-          justifyContent={['flex-start', null, 'center']}
+          justifyContent={['flex-start', null, 'space-between']}
           flexDirection={['column', null, 'row']}
         >
           <Balance

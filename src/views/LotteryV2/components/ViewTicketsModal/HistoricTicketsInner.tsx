@@ -151,10 +151,12 @@ const HistoricTicketsInner: React.FC<{ roundId: string }> = ({ roundId }) => {
     }
     if (!userWinningTickets.allWinningTickets) {
       return (
-        <Flex ref={targetRef} alignItems="center" justifyContent="center" mt="20px">
-          <InfoIcon height="20px" width="20px" color="textSubtle" mr="8px" />
-          <TooltipText color="textSubtle">{t("Why didn't I win?")}</TooltipText>
-        </Flex>
+        <div ref={targetRef}>
+          <Flex alignItems="center" justifyContent="center" mt="20px">
+            <InfoIcon height="20px" width="20px" color="textSubtle" mr="8px" />
+            <TooltipText color="textSubtle">{t("Why didn't I win?")}</TooltipText>
+          </Flex>
+        </div>
       )
     }
     return null
@@ -173,7 +175,7 @@ const HistoricTicketsInner: React.FC<{ roundId: string }> = ({ roundId }) => {
           <Skeleton width="230px" height="34px" />
         )}
       </TopBox>
-      <ScrollBox ref={targetRef}>
+      <ScrollBox>
         <Text bold textTransform="uppercase" color="secondary" fontSize="12px" my="16px">
           {t('Your tickets')}
         </Text>
