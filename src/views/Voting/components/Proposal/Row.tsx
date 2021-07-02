@@ -19,7 +19,7 @@ const Row = styled(Grid)`
   border-bottom: 1px solid ${({ theme }) => theme.colors.cardBorder};
   grid-gap: 8px;
   grid-template-areas: 'address choice vote';
-  grid-template-columns: 110px 1fr 1fr;
+  grid-template-columns: minmax(110px, 200px) 1fr 1fr;
   padding: 8px 16px;
 
   ${({ theme }) => theme.mediaQueries.sm} {
