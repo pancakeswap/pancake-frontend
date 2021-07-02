@@ -51,7 +51,7 @@ const ClaimGift: React.FC<ClaimGiftProps> = ({ onSuccess, onDismiss }) => {
       onDismiss()
     } else {
       setIsConfirming(false)
-      toastError(t('Error'))
+      toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
     }
   }
 

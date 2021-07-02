@@ -29,7 +29,7 @@ const ReclaimPositionButton: React.FC<ReclaimPositionButtonProps> = ({ epoch, on
       toastSuccess(t('Position reclaimed!'))
     } else {
       setIsPendingTx(false)
-      toastError(t('Error'))
+      toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
     }
   }
 

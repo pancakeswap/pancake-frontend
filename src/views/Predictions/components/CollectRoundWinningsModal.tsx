@@ -85,7 +85,7 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
       )
     } else {
       setIsPendingTx(false)
-      toastError(t('Error'))
+      toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
     }
   }
 

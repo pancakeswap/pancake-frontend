@@ -61,7 +61,10 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ onConfirm, onDismiss, max
               toastSuccess(t('Unstaked!'), t('Your earnings have also been harvested to your wallet'))
               onDismiss()
             } catch (e) {
-              toastError(t('Canceled'), t('Please try again and confirm the transaction.'))
+              toastError(
+                t('Error'),
+                t('Please try again. Confirm the transaction and make sure you are paying enough gas!'),
+              )
               console.error(e)
             } finally {
               setPendingTx(false)

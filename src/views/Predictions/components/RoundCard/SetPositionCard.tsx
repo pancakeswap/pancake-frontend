@@ -146,7 +146,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
       setIsTxPending(false)
       onSuccess(decimalValue, receipt.transactionHash as string)
     } else {
-      toastError(t('An error occurred, unable to enter your position'))
+      toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
       setIsTxPending(false)
     }
   }

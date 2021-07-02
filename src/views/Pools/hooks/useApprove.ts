@@ -37,7 +37,7 @@ export const useApprovePool = (lpContract: Contract, sousId, earningTokenSymbol)
       }
     } catch (e) {
       console.error(e)
-      toastError(t('Error'), e?.message)
+      toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
     }
   }, [account, dispatch, lpContract, sousChefContract, sousId, earningTokenSymbol, t, toastError, toastSuccess])
 

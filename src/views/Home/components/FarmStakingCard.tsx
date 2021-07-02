@@ -52,7 +52,7 @@ const FarmedStakingCard = () => {
         // eslint-disable-next-line no-await-in-loop
         await harvestFarm(masterChefContract, farmWithBalance.pid)
       } catch (error) {
-        toastError(t('Error'), error?.message)
+        toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
       }
     }
     setPendingTx(false)

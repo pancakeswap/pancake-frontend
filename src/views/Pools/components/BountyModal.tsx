@@ -64,10 +64,8 @@ const BountyModal: React.FC<BountyModalProps> = ({ onDismiss, TooltipComponent }
       setPendingTx(false)
       onDismiss()
     } else {
-      toastError(
-        t('Could not be collected'),
-        t('There may be an issue with your transaction, or another user claimed the bounty first.'),
-      )
+      toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
+
       setPendingTx(false)
       onDismiss()
     }

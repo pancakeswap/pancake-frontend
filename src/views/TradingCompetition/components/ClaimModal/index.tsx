@@ -47,7 +47,7 @@ const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, use
       onDismiss()
       onClaimSuccess()
     } else {
-      toastError(t('Error'))
+      toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
       setIsConfirming(false)
     }
   }
