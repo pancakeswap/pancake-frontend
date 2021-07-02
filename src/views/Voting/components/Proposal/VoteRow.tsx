@@ -22,12 +22,14 @@ const VoteRow: React.FC<VoteRowProps> = ({ vote, isVoter }) => {
   return (
     <Row>
       <AddressColumn>
-        <LinkExternal href={getBscScanAddressUrl(vote.voter)}>{truncateWalletAddress(vote.voter)}</LinkExternal>
-        {isVoter && (
-          <Tag variant="success" outline ml="8px">
-            <CheckmarkCircleIcon mr="4px" /> {t('Voted')}
-          </Tag>
-        )}
+        <Flex alignItems="center">
+          <LinkExternal href={getBscScanAddressUrl(vote.voter)}>{truncateWalletAddress(vote.voter)}</LinkExternal>
+          {isVoter && (
+            <Tag variant="success" outline ml="8px">
+              <CheckmarkCircleIcon mr="4px" /> {t('Voted')}
+            </Tag>
+          )}
+        </Flex>
       </AddressColumn>
       <ChoiceColumn>
         <TextEllipsis title={vote.proposal.choices[vote.choice - 1]}>

@@ -36,11 +36,7 @@ export const getLibrary = (provider): ethers.providers.Web3Provider => {
  * BSC Wallet requires a different sign method
  * @see https://docs.binance.org/smart-chain/wallet/wallet_api.html#binancechainbnbsignaddress-string-message-string-promisepublickey-string-signature-string
  */
-export const signMessage = async (
-  provider: ethers.providers.JsonRpcProvider | ethers.providers.Web3Provider,
-  account: string,
-  message: string,
-): Promise<string> => {
+export const signMessage = async (provider: any, account: string, message: string): Promise<string> => {
   if (window.BinanceChain) {
     const { signature } = await window.BinanceChain.bnbSign(account, message)
     return signature
@@ -52,9 +48,9 @@ export const signMessage = async (
    */
   if (provider.provider?.wc) {
     const wcMessage = ethers.utils.hexlify(ethers.utils.toUtf8Bytes(message))
-    const signature = await provider.provider?.wc.signPersonalMessage([wcMessage, account.toLowerCase()])
+    const signature = await provider.provider?.wc.signPersonalMessage([wcMessage, account])
     return signature
   }
 
-  return provider.getSigner(account.toLowerCase()).signMessage(message)
+  return provider.getSigner(account).signMessage(message)
 }
