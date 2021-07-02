@@ -903,5 +903,6 @@
   "Amount to collect": "Quantia a coletar",
   "Your winnings": "Seus ganhos",
   "Includes your original position and your winnings, minus the %fee% fee.": "Inclui a sua posição original e seus ganhos, menos a taxa de %fee%.",
-  "Your funds have been staked in the farm": "Seus fundos foram colocados em stake na fazenda"
+  "Your funds have been staked in the farm": "Seus fundos foram colocados em stake na fazenda",
+  "Base APR (yield only)": "Base APR (yield only)"
 }
