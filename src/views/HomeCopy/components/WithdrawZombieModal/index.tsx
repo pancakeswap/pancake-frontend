@@ -71,7 +71,6 @@ const WithdrawZombieModal: React.FC<WithdrawZombieModalProps> = ({ details: { pi
         } else {
             amountToStake = getFullDisplayBalance(new BigNumber(zombieStaked), tokens.zmbe.decimals, 4)
             setExactStakeAmount(zombieStaked)
-
         }
         setStakeAmount(amountToStake)
         setPercent(sliderPercent)

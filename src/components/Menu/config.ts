@@ -16,6 +16,34 @@ const config: MenuEntry[] = [
     icon: 'FarmIcon',
     href: '/tombs',
   },
+  {
+    label: 'Spawning Pools',
+    icon: 'PoolIcon',
+    items: [
+      {
+        label: 'Coming Tomorrow!',
+        href: '/',
+      },
+    ],
+  },
+  {
+    label: 'More',
+    icon: 'MoreIcon',
+    items: [
+      {
+        label: 'Contact',
+        href: 'https://rugzombie.gitbook.io/docs/feedback-suggestions-and-bug-bounty',
+      },
+      {
+        label: 'Github',
+        href: 'https://github.com/Rug-Zombie',
+      },
+      {
+        label: 'Docs',
+        href: 'https://rugzombie.gitbook.io/docs/',
+      },
+    ],
+  },
 ]
 
 export default config
