@@ -1,8 +1,20 @@
 import React, { useEffect, useState } from 'react'
-import { Box, Text, Flex, Button, Skeleton, Ticket, PresentWonIcon } from '@pancakeswap/uikit'
+import {
+  Box,
+  Text,
+  Flex,
+  Button,
+  Skeleton,
+  Ticket,
+  PresentWonIcon,
+  TooltipText,
+  InfoIcon,
+  useTooltip,
+  useModal,
+} from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
-import { LotteryTicket } from 'config/constants/types'
+import { LotteryTicket, LotteryTicketClaimData } from 'config/constants/types'
 import { fetchLottery, fetchTickets, processRawTicketsResponse } from 'state/lottery/helpers'
 import { fetchUserTicketsForMultipleRounds, getWinningTickets } from 'state/lottery/fetchUnclaimedUserRewards'
 import { LotteryRound } from 'state/types'
@@ -12,8 +24,19 @@ import useTheme from 'hooks/useTheme'
 import WinningNumbers from '../WinningNumbers'
 import { processLotteryResponse } from '../../helpers'
 import TicketNumber from '../TicketNumber'
+import ClaimPrizesModal from '../ClaimPrizesModal'
+
+const TopBox = styled(Flex)`
+  flex-direction: column;
+  margin: -24px;
+  padding: 24px;
+  background-color: ${({ theme }) => theme.colors.dropdown};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.cardBorder};
+`
 
 const ScrollBox = styled(Box)`
+  margin-right: -20px;
+  padding-right: 24px;
   max-height: 300px;
   overflow-y: scroll;
   margin-top: 24px;
@@ -35,11 +58,31 @@ const HistoricTicketsInner: React.FC<{ roundId: string }> = ({ roundId }) => {
     allWinningTickets: LotteryTicket[]
     ticketsWithUnclaimedRewards: LotteryTicket[]
     isFetched: boolean
-  }>({ allWinningTickets: null, ticketsWithUnclaimedRewards: null, isFetched: false })
+    claimData: LotteryTicketClaimData
+  }>({ allWinningTickets: null, ticketsWithUnclaimedRewards: null, isFetched: false, claimData: null })
   const { t } = useTranslation()
   const { theme } = useTheme()
   const { account } = useWeb3React()
   const userLotteryRoundData = useGetUserLotteryGraphRoundById(roundId)
+  const [onPresentClaimModal] = useModal(<ClaimPrizesModal roundsToClaim={[userWinningTickets.claimData]} />, false)
+
+  const TooltipComponent = () => (
+    <>
+      <Text mb="16px">
+        {t('Tickets must match the winning number in the exact same order, starting from the first digit.')}
+      </Text>
+      <Text mb="16px">{t('If the winning number is “123456”:')}</Text>
+      <Text mb="4px">{t('“120000” matches the first 2 digits.')}</Text>
+      <Text>
+        {t('“000006” matches the last digit, but since the first five digits are wrong, it doesn’t win any prizes.')}
+      </Text>
+    </>
+  )
+
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(<TooltipComponent />, {
+    placement: 'bottom-end',
+    tooltipOffset: [20, 10],
+  })
 
   useEffect(() => {
     const addWinningTicketInfoToAllTickets = (
@@ -78,6 +121,7 @@ const HistoricTicketsInner: React.FC<{ roundId: string }> = ({ roundId }) => {
         isFetched: true,
         allWinningTickets: winningTickets?.allWinningTickets,
         ticketsWithUnclaimedRewards: winningTickets?.ticketsWithUnclaimedRewards,
+        claimData: winningTickets,
       })
       setLotteryInfo(processedLotteryData)
 
@@ -97,9 +141,29 @@ const HistoricTicketsInner: React.FC<{ roundId: string }> = ({ roundId }) => {
     fetchData()
   }, [roundId, account, userLotteryRoundData])
 
+  const getFooter = () => {
+    if (userWinningTickets?.ticketsWithUnclaimedRewards?.length > 0) {
+      return (
+        <Button onClick={onPresentClaimModal} mt="24px" width="100%">
+          {t('Collect Prizes')}
+        </Button>
+      )
+    }
+    if (!userWinningTickets.allWinningTickets) {
+      return (
+        <Flex ref={targetRef} alignItems="center" justifyContent="center" mt="20px">
+          <InfoIcon height="20px" width="20px" color="textSubtle" mr="8px" />
+          <TooltipText color="textSubtle">{t("Why didn't I win?")}</TooltipText>
+        </Flex>
+      )
+    }
+    return null
+  }
+
   return (
     <>
-      <Flex pb="16px" borderBottom={`1px solid ${theme.colors.cardBorder}`} flexDirection="column">
+      {tooltipVisible && tooltip}
+      <TopBox>
         <Text bold textTransform="uppercase" color="secondary" fontSize="12px" mb="4px">
           {t('Winning number')}
         </Text>
@@ -108,9 +172,9 @@ const HistoricTicketsInner: React.FC<{ roundId: string }> = ({ roundId }) => {
         ) : (
           <Skeleton width="230px" height="34px" />
         )}
-      </Flex>
-      <ScrollBox>
-        <Text bold textTransform="uppercase" color="secondary" fontSize="12px" mb="16px">
+      </TopBox>
+      <ScrollBox ref={targetRef}>
+        <Text bold textTransform="uppercase" color="secondary" fontSize="12px" my="16px">
           {t('Your tickets')}
         </Text>
         <Flex mb="8px" justifyContent="space-between">
@@ -160,9 +224,7 @@ const HistoricTicketsInner: React.FC<{ roundId: string }> = ({ roundId }) => {
         )}
       </ScrollBox>
       <Flex borderTop={`1px solid ${theme.colors.cardBorder}`} alignItems="center" justifyContent="center">
-        <Button mt="24px" width="100%">
-          Test
-        </Button>
+        {userWinningTickets.isFetched && getFooter()}
       </Flex>
     </>
   )

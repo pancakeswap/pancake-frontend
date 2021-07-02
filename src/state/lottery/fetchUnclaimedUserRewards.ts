@@ -158,16 +158,13 @@ const fetchUnclaimedUserRewards = async (
     return []
   }
 
-  // Filter out the current round unless it's claimable
-  const filteredForLiveRound = rounds.filter((round) => {
-    if (round.lotteryId === currentLotteryId) {
-      return round.status === LotteryStatus.CLAIMABLE
-    }
-    return round.lotteryId !== currentLotteryId
+  // Filter out non-claimable rounds
+  const claimableRounds = rounds.filter((round) => {
+    return round.status === LotteryStatus.CLAIMABLE
   })
 
   // If there are any rounds tickets haven't been claimed for, OR a user has over 100 tickets in a round - check user tickets for those rounds
-  const roundsToCheck = filteredForLiveRound.filter((round) => {
+  const roundsToCheck = claimableRounds.filter((round) => {
     return !round.claimed || parseInt(round.totalTickets, 10) > 100
   })
 

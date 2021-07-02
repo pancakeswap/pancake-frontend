@@ -91,7 +91,6 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
   })
 
   useEffect(() => {
-    console.log(maxNumberTicketsPerBuyOrClaim)
     const getMaxPossiblePurchase = () => {
       const maxBalancePurchase = userCake.div(priceTicketInCake)
       const maxPurchase = maxBalancePurchase.gt(maxNumberTicketsPerBuyOrClaim)
@@ -108,7 +107,6 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
   }, [maxNumberTicketsPerBuyOrClaim, priceTicketInCake, userCake, hasFetchedBalance])
 
   useEffect(() => {
-    console.log(2)
     const getCostAfterDiscount = () => {
       const totalAfterDiscount = priceTicketInCake
         .times(ticketsToBuy)
