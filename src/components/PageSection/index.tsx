@@ -9,6 +9,7 @@ interface PageSectionProps extends BackgroundColorProps {
   dividerComponent?: React.ReactNode
   hasCurvedDivider?: boolean
   curvePosition?: 'top' | 'bottom'
+  concaveDivider?: boolean
   containerProps?: BoxProps
 }
 
@@ -49,6 +50,7 @@ const PageSection: React.FC<PageSectionProps> = ({
   dividerComponent,
   curvePosition = 'bottom',
   hasCurvedDivider = true,
+  concaveDivider = false,
   containerProps,
   ...props
 }) => {
@@ -87,6 +89,7 @@ const PageSection: React.FC<PageSectionProps> = ({
         <CurvedDivider
           svgFill={svgFill}
           index={index}
+          concave={concaveDivider}
           curvePosition={curvePosition}
           dividerComponent={dividerComponent}
         />

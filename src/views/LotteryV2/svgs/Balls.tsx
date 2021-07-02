@@ -1,5 +1,6 @@
 import React from 'react'
-import { Svg, SvgProps } from '@pancakeswap/uikit'
+import styled from 'styled-components'
+import { Svg, SvgProps, Text, Box } from '@pancakeswap/uikit'
 
 export const PinkBall: React.FC<SvgProps> = (props) => {
   return (
@@ -241,4 +242,46 @@ export const YellowBall: React.FC<SvgProps> = (props) => {
   )
 }
 
-export default PinkBall
+export const BallTextWrapper = styled.div`
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  position: absolute;
+`
+
+export const BallText = styled(Text)`
+  color: ${({ theme }) => theme.colors.text};
+  text-shadow: -0.75px -0.75px 0 white, 0.75px -0.75px 0 white, -0.75px 0.75px 0 white, 0.75px 0.75px 0 white;
+`
+
+type BallColor = 'pink' | 'lilac' | 'teal' | 'aqua' | 'green' | 'yellow'
+
+interface BallWithNumberProps {
+  color: BallColor
+  number: string
+  size?: string
+  fontSize?: string
+}
+
+const ballsMap = {
+  pink: PinkBall,
+  lilac: LilacBall,
+  teal: TealBall,
+  aqua: AquaBall,
+  green: GreenBall,
+  yellow: YellowBall,
+}
+
+export const BallWithNumber: React.FC<BallWithNumberProps> = ({ color, number, size, fontSize }) => {
+  const BallComponent = ballsMap[color]
+  return (
+    <Box position="relative" mr="4px">
+      <BallComponent width={size ?? '32px'} height={size ?? '32px'} />
+      <BallTextWrapper>
+        <BallText bold fontSize={fontSize ?? '16px'}>
+          {number}
+        </BallText>
+      </BallTextWrapper>
+    </Box>
+  )
+}

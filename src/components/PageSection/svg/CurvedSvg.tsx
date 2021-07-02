@@ -12,6 +12,41 @@ svg {
   }
 `
 
+// Only used on lottery page
+export const ConcaveSvg: React.FC<SvgProps> = (props) => {
+  return (
+    <Svg viewBox="0 0 1440 17" {...props}>
+      <svg width="1440" height="17" viewBox="0 0 1440 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g filter="url(#intersect_filter_concave_divider)">
+          <path
+            d="M0 0.284669V16.2847C179.359 7.07895 435.559 1.31847 720 1.31847C1004.44 1.31847 1260.64 7.07895 1440 16.2847V0.284669H0Z"
+            fill="#9BA0D0"
+          />
+        </g>
+        <defs>
+          <filter
+            id="intersect_filter_concave_divider"
+            x="0"
+            y="0"
+            width="1440"
+            height="17"
+            filterUnits="userSpaceOnUse"
+            colorInterpolationFilters="sRGB"
+          >
+            <feFlood floodOpacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" />
+            <feOffset dy="0" />
+            <feGaussianBlur stdDeviation="6" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+          </filter>
+        </defs>
+      </svg>
+    </Svg>
+  )
+}
+
 const CurvedSvg: React.FC<SvgProps> = (props) => {
   return (
     <Svg viewBox="0 0 1200 66" {...props}>
@@ -54,4 +89,11 @@ export const CurvedSvgBottom = styled(CurvedSvg)<StyledSvgProps>`
   ${sharedStyles}
   margin-top: -2px;
   fill: ${({ svgFill, theme }) => svgFill || theme.colors.background};
+`
+
+// scale(1.001) is needed to prevent tiny half a pixel blank space on the edges
+export const ConcaveSvgBottom = styled(ConcaveSvg)<StyledSvgProps>`
+  ${sharedStyles}
+  margin-top: -2px;
+  transform: scale(1.001);
 `
