@@ -26,9 +26,16 @@ interface BuyFrankProps {
 
 const BuyFrank: React.FC<BuyFrankProps> = ({ details: { result: { tokenWithdrawalDate, nftRevivalDate, amount, paidUnlockFee } }, details }) => {
   const currentDate = Math.floor(Date.now() / 1000);
-  const initialNftTime = nftRevivalDate - currentDate;
+  let nftRevivalDateFixed = nftRevivalDate
+  if(typeof nftRevivalDate === undefined) {
+    nftRevivalDateFixed = 0
+  }
+  const initialNftTime = nftRevivalDateFixed - currentDate;
+  console.log(initialNftTime)
+  console.log(nftRevivalDateFixed)
+  console.log(currentDate)
   const nftTimeObj = new Date(0);
-  nftTimeObj.setSeconds(initialNftTime); // specify value for SECONDS here
+  nftTimeObj.setSeconds(initialNftTime);
   const displayNftTime = nftTimeObj.toISOString().substr(11, 8);
 
   const initialWithdrawCooldownTime = parseInt(tokenWithdrawalDate) - currentDate;
