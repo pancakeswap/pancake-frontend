@@ -903,5 +903,6 @@
   "Amount to collect": "Сума, яку можна забрати",
   "Your winnings": "Ваші виграші",
   "Includes your original position and your winnings, minus the %fee% fee.": "Включає вашу початкову позицію та ваші виграші за виключенням комісії в розмірі %fee%.",
-  "Your funds have been staked in the farm": "Your funds have been staked in the farm"
+  "Your funds have been staked in the farm": "Your funds have been staked in the farm",
+  "Base APR (yield only)": "Base APR (yield only)"
 }
