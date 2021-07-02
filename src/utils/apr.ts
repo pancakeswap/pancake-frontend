@@ -34,15 +34,15 @@ export const getFarmApr = (
   cakePriceUsd: BigNumber,
   poolLiquidityUsd: BigNumber,
   farmAddress: string,
-): number => {
+): { cakeRewardsApr: number; lpRewardsApr: number } => {
   const yearlyCakeRewardAllocation = CAKE_PER_YEAR.times(poolWeight)
   const cakeRewardsApr = yearlyCakeRewardAllocation.times(cakePriceUsd).div(poolLiquidityUsd).times(100)
-  if (cakeRewardsApr.isNaN() || !cakeRewardsApr.isFinite()) {
-    return null
+  let cakeRewardsAprAsNumber = null
+  if (!cakeRewardsApr.isNaN() && cakeRewardsApr.isFinite()) {
+    cakeRewardsAprAsNumber = cakeRewardsApr.toNumber()
   }
-  const lpRewardsApr = lpAprs[farmAddress.toLocaleLowerCase()] ?? 0
-  const combinedApr = cakeRewardsApr.plus(lpRewardsApr)
-  return combinedApr.toNumber()
+  const lpRewardsApr = lpAprs[farmAddress?.toLocaleLowerCase()] ?? 0
+  return { cakeRewardsApr: cakeRewardsAprAsNumber, lpRewardsApr }
 }
 
 export default null

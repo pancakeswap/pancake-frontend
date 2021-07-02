@@ -100,6 +100,16 @@ const StyledImage = styled(Image)`
 `
 const NUMBER_OF_FARMS_VISIBLE = 12
 
+const getDisplayApr = (cakeRewardsApr?: number, lpRewardsApr?: number) => {
+  if (cakeRewardsApr && lpRewardsApr) {
+    return (cakeRewardsApr + lpRewardsApr).toLocaleString('en-US', { maximumFractionDigits: 2 })
+  }
+  if (cakeRewardsApr) {
+    return cakeRewardsApr.toLocaleString('en-US', { maximumFractionDigits: 2 })
+  }
+  return null
+}
+
 const Farms: React.FC = () => {
   const { path } = useRouteMatch()
   const { pathname } = useLocation()
@@ -149,11 +159,11 @@ const Farms: React.FC = () => {
           return farm
         }
         const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(farm.quoteToken.busdPrice)
-        const apr = isActive
+        const { cakeRewardsApr, lpRewardsApr } = isActive
           ? getFarmApr(new BigNumber(farm.poolWeight), cakePrice, totalLiquidity, farm.lpAddresses[ChainId.MAINNET])
-          : 0
+          : { cakeRewardsApr: 0, lpRewardsApr: 0 }
 
-        return { ...farm, apr, liquidity: totalLiquidity }
+        return { ...farm, apr: cakeRewardsApr, lpRewardsApr, liquidity: totalLiquidity }
       })
 
       if (query) {
@@ -182,7 +192,7 @@ const Farms: React.FC = () => {
     const sortFarms = (farms: FarmWithStakedValue[]): FarmWithStakedValue[] => {
       switch (sortOption) {
         case 'apr':
-          return orderBy(farms, (farm: FarmWithStakedValue) => farm.apr, 'desc')
+          return orderBy(farms, (farm: FarmWithStakedValue) => farm.apr + farm.lpRewardsApr, 'desc')
         case 'multiplier':
           return orderBy(
             farms,
@@ -255,7 +265,7 @@ const Farms: React.FC = () => {
 
     const row: RowProps = {
       apr: {
-        value: farm.apr && farm.apr.toLocaleString('en-US', { maximumFractionDigits: 2 }),
+        value: getDisplayApr(farm.apr, farm.lpRewardsApr),
         multiplier: farm.multiplier,
         lpLabel,
         tokenAddress,
@@ -320,17 +330,38 @@ const Farms: React.FC = () => {
         <FlexLayout>
           <Route exact path={`${path}`}>
             {farmsStakedMemoized.map((farm) => (
-              <FarmCard key={farm.pid} farm={farm} cakePrice={cakePrice} account={account} removed={false} />
+              <FarmCard
+                key={farm.pid}
+                farm={farm}
+                displayApr={getDisplayApr(farm.apr, farm.lpRewardsApr)}
+                cakePrice={cakePrice}
+                account={account}
+                removed={false}
+              />
             ))}
           </Route>
           <Route exact path={`${path}/history`}>
             {farmsStakedMemoized.map((farm) => (
-              <FarmCard key={farm.pid} farm={farm} cakePrice={cakePrice} account={account} removed />
+              <FarmCard
+                key={farm.pid}
+                farm={farm}
+                displayApr={getDisplayApr(farm.apr, farm.lpRewardsApr)}
+                cakePrice={cakePrice}
+                account={account}
+                removed
+              />
             ))}
           </Route>
           <Route exact path={`${path}/archived`}>
             {farmsStakedMemoized.map((farm) => (
-              <FarmCard key={farm.pid} farm={farm} cakePrice={cakePrice} account={account} removed />
+              <FarmCard
+                key={farm.pid}
+                farm={farm}
+                displayApr={getDisplayApr(farm.apr, farm.lpRewardsApr)}
+                cakePrice={cakePrice}
+                account={account}
+                removed
+              />
             ))}
           </Route>
         </FlexLayout>
