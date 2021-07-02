@@ -14,14 +14,17 @@ export const parseRetreivedNumber = (number: string): string => {
   return numberAsArray.join('')
 }
 
-export const parseClaimDataForClaimTicketsCall = (claimData: LotteryTicketClaimData) => {
-  const ticketIds = claimData.ticketsWithRewards.map((ticket) => {
+export const parseUnclaimedTicketDataForClaimCall = (
+  ticketsWithUnclaimedRewards: LotteryTicket[],
+  lotteryId: string,
+) => {
+  const ticketIds = ticketsWithUnclaimedRewards.map((ticket) => {
     return ticket.id
   })
-  const brackets = claimData.ticketsWithRewards.map((ticket) => {
+  const brackets = ticketsWithUnclaimedRewards.map((ticket) => {
     return ticket.rewardBracket
   })
-  return { lotteryId: claimData.roundId, ticketIds, brackets }
+  return { lotteryId, ticketIds, brackets }
 }
 
 export const dateOptions: Intl.DateTimeFormatOptions = {
