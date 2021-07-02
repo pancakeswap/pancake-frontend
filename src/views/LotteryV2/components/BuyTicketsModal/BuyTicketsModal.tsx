@@ -32,7 +32,6 @@ import ApproveConfirmButtons, { ButtonArrangement } from 'views/Profile/componen
 import TicketsNumberButton from '../TicketsNumberButton'
 import EditNumbersModal from './EditNumbersModal'
 import { useTicketsReducer } from './useTicketsReducer'
-import { generateTicketNumbers } from '../../helpers'
 
 const StyledModal = styled(Modal)`
   min-width: 280px;
