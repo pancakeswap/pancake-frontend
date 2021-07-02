@@ -17,8 +17,7 @@ const TwitterContainer = () => {
             height: '100%',
             theme: 'dark',
           }}
-          tweetId='1384305958373892103'
-
+          tweetId='1410229586089156610'
         />
       </div>
     </section>
