@@ -8,7 +8,7 @@ interface ApyCalculatorModalProps {
   onDismiss?: () => void
   tokenPrice: number
   apr: number
-  combinedApr?: string
+  displayApr?: string
   linkLabel: string
   linkHref: string
   earningTokenSymbol?: string
@@ -56,7 +56,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
   onDismiss,
   tokenPrice,
   apr,
-  combinedApr,
+  displayApr,
   linkLabel,
   linkHref,
   earningTokenSymbol = 'CAKE',
@@ -109,7 +109,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
             <Text small color="textSubtle">
               {t('APR (incl. LP rewards)')}
             </Text>
-            <Text small>{combinedApr}%</Text>
+            <Text small>{displayApr}%</Text>
           </Flex>
           <Flex mb="24px" justifyContent="space-between">
             <Text small color="textSubtle">

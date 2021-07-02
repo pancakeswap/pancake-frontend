@@ -333,7 +333,7 @@ const Farms: React.FC = () => {
               <FarmCard
                 key={farm.pid}
                 farm={farm}
-                combinedApr={getDisplayApr(farm.apr, farm.lpRewardsApr)}
+                displayApr={getDisplayApr(farm.apr, farm.lpRewardsApr)}
                 cakePrice={cakePrice}
                 account={account}
                 removed={false}
@@ -345,7 +345,7 @@ const Farms: React.FC = () => {
               <FarmCard
                 key={farm.pid}
                 farm={farm}
-                combinedApr={getDisplayApr(farm.apr, farm.lpRewardsApr)}
+                displayApr={getDisplayApr(farm.apr, farm.lpRewardsApr)}
                 cakePrice={cakePrice}
                 account={account}
                 removed
@@ -357,7 +357,7 @@ const Farms: React.FC = () => {
               <FarmCard
                 key={farm.pid}
                 farm={farm}
-                combinedApr={getDisplayApr(farm.apr, farm.lpRewardsApr)}
+                displayApr={getDisplayApr(farm.apr, farm.lpRewardsApr)}
                 cakePrice={cakePrice}
                 account={account}
                 removed

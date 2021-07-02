@@ -71,13 +71,13 @@ const ExpandingWrapper = styled.div<{ expanded: boolean }>`
 
 interface FarmCardProps {
   farm: FarmWithStakedValue
-  combinedApr: string
+  displayApr: string
   removed: boolean
   cakePrice?: BigNumber
   account?: string
 }
 
-const FarmCard: React.FC<FarmCardProps> = ({ farm, combinedApr, removed, cakePrice, account }) => {
+const FarmCard: React.FC<FarmCardProps> = ({ farm, displayApr, removed, cakePrice, account }) => {
   const { t } = useTranslation()
 
   const [showExpandableSection, setShowExpandableSection] = useState(false)
@@ -119,9 +119,9 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, combinedApr, removed, cakePri
                   addLiquidityUrl={addLiquidityUrl}
                   cakePrice={cakePrice}
                   apr={farm.apr}
-                  combinedApr={combinedApr}
+                  displayApr={displayApr}
                 />
-                {combinedApr}%
+                {displayApr}%
               </>
             ) : (
               <Skeleton height={24} width={80} />

@@ -62,7 +62,7 @@ const Apr: React.FC<AprProps> = ({
               lpLabel={lpLabel}
               cakePrice={cakePrice}
               apr={originalValue}
-              combinedApr={value}
+              displayApr={value}
               addLiquidityUrl={addLiquidityUrl}
             />
           )}
