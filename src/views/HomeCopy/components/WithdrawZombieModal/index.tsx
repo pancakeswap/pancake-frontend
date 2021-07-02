@@ -8,6 +8,7 @@ import { getDecimalAmount, getFullDisplayBalance } from 'utils/formatBalance'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import tokens from 'config/constants/tokens'
+import { BIG_ZERO } from '../../../../utils/bigNumber'
 
 interface Result {
     paidUnlockFee: boolean,
@@ -49,6 +50,7 @@ const WithdrawZombieModal: React.FC<WithdrawZombieModalProps> = ({ details: { pi
 
     const { theme } = useTheme();
     const [stakeAmount, setStakeAmount] = useState('');
+    const [exactStakeAmount, setExactStakeAmount] = useState(BIG_ZERO);
     const [percent, setPercent] = useState(0)
 
     const handleStakeInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -63,33 +65,34 @@ const WithdrawZombieModal: React.FC<WithdrawZombieModalProps> = ({ details: { pi
             if(zombieStaked.minus(percentageOfStakingMax).lt(poolInfo.minimumStake)) {
                 amountToStake = getFullDisplayBalance(zombieStaked.minus(poolInfo.minimumStake), tokens.zmbe.decimals, 4)
             } else {
-              amountToStake = getFullDisplayBalance(percentageOfStakingMax, tokens.zmbe.decimals, 4)
-          }
+                amountToStake = getFullDisplayBalance(percentageOfStakingMax, tokens.zmbe.decimals, 4)
+            }
+            setExactStakeAmount(getDecimalAmount(amountToStake, tokens.zmbe.decimals))
         } else {
             amountToStake = getFullDisplayBalance(new BigNumber(zombieStaked), tokens.zmbe.decimals, 4)
+            setExactStakeAmount(zombieStaked)
+
         }
         setStakeAmount(amountToStake)
         setPercent(sliderPercent)
     }
 
     const handleWithDrawEarly = () => {
-        const convertedStakeAmount = getDecimalAmount(new BigNumber(stakeAmount), tokens.zmbe.decimals);
         if (pid === 0) {
-            drFrankenstein.methods.leaveStakingEarly(convertedStakeAmount)
+            drFrankenstein.methods.leaveStakingEarly(exactStakeAmount)
                 .send({ from: account })
         } else {
-            drFrankenstein.methods.withdrawEarly(pid, convertedStakeAmount)
+            drFrankenstein.methods.withdrawEarly(pid, exactStakeAmount)
                 .send({ from: account })
         }
     }
 
     const handleWithDraw = () => {
-        const convertedStakeAmount = getDecimalAmount(new BigNumber(stakeAmount), tokens.zmbe.decimals);
         if (pid === 0) {
-            drFrankenstein.methods.leaveStaking(convertedStakeAmount)
+            drFrankenstein.methods.leaveStaking(exactStakeAmount)
                 .send({ from: account })
         } else {
-            drFrankenstein.methods.withdraw(pid, convertedStakeAmount)
+            drFrankenstein.methods.withdraw(pid, exactStakeAmount)
                 .send({ from: account })
         }
     }
