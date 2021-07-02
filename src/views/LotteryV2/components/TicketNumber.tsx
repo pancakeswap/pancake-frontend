@@ -16,7 +16,7 @@ const StyledNumberWrapper = styled(Flex)`
 
 const RewardHighlighter = styled.div<{ numberMatches: number }>`
   z-index: 1;
-  width: ${({ numberMatches }) => `${numberMatches * 16.66}%`};
+  width: ${({ numberMatches }) => `${numberMatches < 6 ? numberMatches * 17.66 : 100}%`};
   height: 34px;
   border-radius: ${({ theme }) => theme.radii.default};
   top: 0;

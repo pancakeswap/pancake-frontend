@@ -200,11 +200,13 @@ const NextDrawCard = () => {
             <RewardMatchesContainer lotteryData={currentRound} />
           </NextDrawWrapper>
         )}
-        <Flex p="8px 24px" alignItems="center" justifyContent="center">
-          <ExpandableLabel expanded={isExpanded} onClick={() => setIsExpanded(!isExpanded)}>
-            {isExpanded ? t('Hide') : t('Details')}
-          </ExpandableLabel>
-        </Flex>
+        {(status === LotteryStatus.OPEN || status === LotteryStatus.CLOSE) && (
+          <Flex p="8px 24px" alignItems="center" justifyContent="center">
+            <ExpandableLabel expanded={isExpanded} onClick={() => setIsExpanded(!isExpanded)}>
+              {isExpanded ? t('Hide') : t('Details')}
+            </ExpandableLabel>
+          </Flex>
+        )}
       </CardFooter>
     </StyledCard>
   )
