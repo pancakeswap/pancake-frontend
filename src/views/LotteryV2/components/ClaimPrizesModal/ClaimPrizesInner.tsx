@@ -12,7 +12,7 @@ import { useAppDispatch } from 'state'
 import Balance from 'components/Balance'
 import useToast from 'hooks/useToast'
 import { useLotteryV2Contract } from 'hooks/useContract'
-import { parseClaimDataForClaimTicketsCall } from '../../helpers'
+import { parseUnclaimedTicketDataForClaimCall } from '../../helpers'
 
 interface ClaimInnerProps {
   roundsToClaim: LotteryTicketClaimData[]
@@ -32,21 +32,27 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
   const lotteryContract = useLotteryV2Contract()
   const cakePriceBusd = new BigNumber(20)
 
-  const cakeReward = roundsToClaim[activeClaimIndex].cakeTotal
+  const activeClaimData = roundsToClaim[activeClaimIndex]
+
+  const cakeReward = activeClaimData.cakeTotal
   const dollarReward = cakeReward.times(cakePriceBusd)
   const rewardAsBalance = getBalanceAmount(cakeReward).toNumber()
   const dollarRewardAsBalance = getBalanceAmount(dollarReward).toNumber()
-  const round = roundsToClaim[activeClaimIndex].roundId
-  const claimTicketsCallData = parseClaimDataForClaimTicketsCall(roundsToClaim[activeClaimIndex])
+  const claimTicketsCallData = parseUnclaimedTicketDataForClaimCall(
+    activeClaimData.ticketsWithUnclaimedRewards,
+    activeClaimData.roundId,
+  )
 
   const shouldBatchRequest = claimTicketsCallData.ticketIds.length > maxNumberTicketsPerBuyOrClaim.toNumber()
 
   // const totalNumClaims = roundsToClaim.slice(activeClaimIndex).reduce((accum, _round) => {
-  //   return accum + Math.ceil(_round.ticketsWithRewards.length / maxNumberTicketsPerBuyOrClaim.toNumber())
+  //   return accum + Math.ceil(_round.ticketsWithUnclaimedRewards.length / maxNumberTicketsPerBuyOrClaim.toNumber())
   // }, 0)
 
   const totalNumClaimsForRound = () =>
-    Math.ceil(roundsToClaim[activeClaimIndex].ticketsWithRewards.length / maxNumberTicketsPerBuyOrClaim.toNumber())
+    Math.ceil(
+      roundsToClaim[activeClaimIndex].ticketsWithUnclaimedRewards.length / maxNumberTicketsPerBuyOrClaim.toNumber(),
+    )
 
   const handleProgressToNextClaim = () => {
     if (roundsToClaim.length > activeClaimIndex + 1) {
@@ -177,7 +183,7 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
 
       <Flex alignItems="center" justifyContent="center">
         <Text mt="8px" fontSize="12px" color="textSubtle">
-          {t('Round')} #{round}
+          {t('Round')} #{activeClaimData.roundId}
         </Text>
       </Flex>
       <Flex alignItems="center" justifyContent="center">

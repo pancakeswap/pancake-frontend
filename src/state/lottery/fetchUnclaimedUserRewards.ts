@@ -22,7 +22,7 @@ const lotteryAddress = getLotteryV2Address()
 
 const fetchCakeRewardsForTickets = async (
   winningTickets: LotteryTicket[],
-): Promise<{ ticketsWithRewards: LotteryTicket[]; cakeTotal: BigNumber }> => {
+): Promise<{ ticketsWithUnclaimedRewards: LotteryTicket[]; cakeTotal: BigNumber }> => {
   const calls = winningTickets.map((winningTicket) => {
     const { roundId, id, rewardBracket } = winningTicket
     return {
@@ -36,12 +36,12 @@ const fetchCakeRewardsForTickets = async (
   const cakeTotal = cakeRewards.reduce((a: BigNumber, b: ethers.BigNumber[]) => {
     return a.plus(new BigNumber(b[0].toString()))
   }, BIG_ZERO)
-  const ticketsWithRewards = winningTickets.map((winningTicket, index) => {
+  const ticketsWithUnclaimedRewards = winningTickets.map((winningTicket, index) => {
     return { ...winningTicket, cakeReward: cakeRewards[index] }
   })
   // TODO: Remove log. To help in testing when verifying winning tickets.
-  console.log('winning tickets: ', ticketsWithRewards)
-  return { ticketsWithRewards, cakeTotal }
+  console.log('winning tickets: ', ticketsWithUnclaimedRewards)
+  return { ticketsWithUnclaimedRewards, cakeTotal }
 }
 
 const getRewardBracket = (ticketNumber: string, finalNumber: string): number => {
@@ -64,7 +64,9 @@ const getRewardBracket = (ticketNumber: string, finalNumber: string): number => 
   return rewardBracket
 }
 
-const getWinningTickets = async (roundDataAndUserTickets: RoundDataAndUserTickets): Promise<LotteryTicketClaimData> => {
+export const getWinningTickets = async (
+  roundDataAndUserTickets: RoundDataAndUserTickets,
+): Promise<LotteryTicketClaimData> => {
   const { roundId, userTickets, finalNumber } = roundDataAndUserTickets
 
   const ticketsWithRewardBrackets = userTickets.map((ticket) => {
@@ -80,15 +82,24 @@ const getWinningTickets = async (roundDataAndUserTickets: RoundDataAndUserTicket
   console.log(`all tickets round #${roundId}`, ticketsWithRewardBrackets)
 
   // A rewardBracket of -1 means no matches. 0 and above means there has been a match
-  // If ticket.status is true, the ticket has already been claimed
-  const winningTickets = ticketsWithRewardBrackets.filter((ticket) => {
-    return ticket.rewardBracket >= 0 && !ticket.status
+  const allWinningTickets = ticketsWithRewardBrackets.filter((ticket) => {
+    return ticket.rewardBracket >= 0
   })
 
-  if (winningTickets.length > 0) {
-    const { ticketsWithRewards, cakeTotal } = await fetchCakeRewardsForTickets(winningTickets)
-    return { ticketsWithRewards, cakeTotal, roundId }
+  // If ticket.status is true, the ticket has already been claimed
+  const unclaimedWinningTickets = allWinningTickets.filter((ticket) => {
+    return !ticket.status
+  })
+
+  if (unclaimedWinningTickets.length > 0) {
+    const { ticketsWithUnclaimedRewards, cakeTotal } = await fetchCakeRewardsForTickets(unclaimedWinningTickets)
+    return { ticketsWithUnclaimedRewards, allWinningTickets, cakeTotal, roundId }
   }
+
+  if (allWinningTickets.length > 0) {
+    return { ticketsWithUnclaimedRewards: null, allWinningTickets, cakeTotal: null, roundId }
+  }
+
   return null
 }
 
@@ -97,7 +108,7 @@ const getWinningNumbersForRound = (targetRoundId: string, lotteriesData: Lottery
   return targetRound?.finalNumber
 }
 
-const fetchUserTicketsForMultipleRounds = async (roundsToCheck: UserRound[], account: string) => {
+export const fetchUserTicketsForMultipleRounds = async (roundsToCheck: UserRound[], account: string) => {
   // Build calls with data to help with merging multicall responses
   const callsWithRoundData = roundsToCheck.map((round) => {
     const totalTickets = parseInt(round.totalTickets, 10)
@@ -180,8 +191,18 @@ const fetchUnclaimedUserRewards = async (
     const winningTicketsForPastRounds = await Promise.all(
       roundDataAndUserTickets.map((roundData) => getWinningTickets(roundData)),
     )
-    // Remove null values (returned when no winning tickets found for past round)
-    return winningTicketsForPastRounds.filter((winningTicketData) => winningTicketData !== null)
+
+    // Filter out null values (returned when no winning tickets found for past round)
+    const roundsWithWinningTickets = winningTicketsForPastRounds.filter(
+      (winningTicketData) => winningTicketData !== null,
+    )
+
+    // Filter to only rounds with unclaimed tickets
+    const roundsWithUnclaimedWinningTickets = roundsWithWinningTickets.filter(
+      (winningTicketData) => winningTicketData.ticketsWithUnclaimedRewards,
+    )
+
+    return roundsWithUnclaimedWinningTickets
   }
   // All rounds claimed, return empty array
   return []
