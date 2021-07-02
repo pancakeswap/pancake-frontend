@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import { parseRetreivedNumber } from '../helpers'
 
 const StyledNumberWrapper = styled(Flex)`
-  position: absolute;
+  position: relative;
   padding: 4px 16px;
   border: 1px solid ${({ theme }) => theme.colors.cardBorder};
   border-radius: ${({ theme }) => theme.radii.default};
@@ -15,8 +15,14 @@ const StyledNumberWrapper = styled(Flex)`
 `
 
 const RewardHighlighter = styled.div<{ numberMatches: number }>`
+  z-index: 1;
+  width: ${({ numberMatches }) => `${numberMatches * 16.66}%`};
+  height: 34px;
+  border-radius: ${({ theme }) => theme.radii.default};
+  top: 0;
+  left: 0;
   position: absolute;
-  border: 2px red;
+  border: 2px ${({ theme }) => theme.colors.primary} solid;
 `
 
 interface TicketNumberProps extends LotteryTicket {
@@ -36,14 +42,14 @@ const TicketNumber: React.FC<TicketNumberProps> = ({ localId, id, number, reward
         <Text fontSize="12px" color="textSubtle">
           #{localId || id}
         </Text>
-        {numberMatches && (
+        {rewardBracket >= 0 && (
           <Text fontSize="12px">
             {t('Matched first')} {numberMatches}
           </Text>
         )}
       </Flex>
       <StyledNumberWrapper>
-        {numberMatches && <RewardHighlighter numberMatches={numberMatches} />}
+        {rewardBracket >= 0 && <RewardHighlighter numberMatches={numberMatches} />}
         {numberAsArray.map((digit) => (
           <Text fontSize="16px">{digit}</Text>
         ))}
