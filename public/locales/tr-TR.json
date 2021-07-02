@@ -903,5 +903,6 @@
   "Amount to collect": "Toplanacak miktar",
   "Your winnings": "Kazançlarınız",
   "Includes your original position and your winnings, minus the %fee% fee.": "İlk pozisyonunuz ile kazançlarınızın toplamından %fee% ücretin düşülmesi ile hesaplanır.",
-  "Your funds have been staked in the farm": "Your funds have been staked in the farm"
+  "Your funds have been staked in the farm": "Your funds have been staked in the farm",
+  "Base APR (yield only)": "Base APR (yield only)"
 }
