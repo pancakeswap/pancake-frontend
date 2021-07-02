@@ -29,9 +29,10 @@ import { useCake, useLotteryV2Contract } from 'hooks/useContract'
 import useToast from 'hooks/useToast'
 import UnlockButton from 'components/UnlockButton'
 import ApproveConfirmButtons, { ButtonArrangement } from 'views/Profile/components/ApproveConfirmButtons'
-import TicketsNumberButton from './TicketsNumberButton'
-import { EditNumbersModal, useTicketsReducer } from './EditNumbersModal'
-import { generateTicketNumbers } from '../helpers'
+import TicketsNumberButton from '../TicketsNumberButton'
+import EditNumbersModal from './EditNumbersModal'
+import { useTicketsReducer } from './useTicketsReducer'
+import { generateTicketNumbers } from '../../helpers'
 
 const StyledModal = styled(Modal)`
   min-width: 280px;
