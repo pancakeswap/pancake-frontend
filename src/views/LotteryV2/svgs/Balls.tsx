@@ -250,7 +250,7 @@ export const BallTextWrapper = styled.div`
 `
 
 export const BallText = styled(Text)`
-  color: ${({ theme }) => theme.colors.text};
+  color: #000000;
   text-shadow: -0.75px -0.75px 0 white, 0.75px -0.75px 0 white, -0.75px 0.75px 0 white, 0.75px 0.75px 0 white;
 `
 
