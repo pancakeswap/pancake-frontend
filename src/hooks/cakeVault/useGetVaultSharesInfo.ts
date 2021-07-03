@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import BigNumber from 'bignumber.js'
-import { convertSharesToCake } from 'views/Graves/helpers'
 import { useCakeVaultContract } from 'hooks/useContract'
 import makeBatchRequest from 'utils/makeBatchRequest'
+import { convertSharesToCake } from '../../views/Crypts/helpers'
 
 const useGetVaultSharesInfo = (lastUpdated?: number) => {
   const cakeVaultContract = useCakeVaultContract()
