@@ -231,7 +231,7 @@ const HowToPlay: React.FC = () => {
     <Box width="100%">
       <Flex mb="40px" alignItems="center" flexDirection="column">
         <Heading mb="24px" scale="xl" color="secondary">
-          {t('How To Play')}
+          {t('How to Play')}
         </Heading>
         <Text>
           {t(
