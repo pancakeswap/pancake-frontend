@@ -81,7 +81,7 @@ const ConcaveContainer = styled(Box)`
 `
 
 export const ConcaveTop = () => (
-  <ConcaveContainer mb="-2px">
+  <ConcaveContainer mb="-4px">
     <LotteryConcaveTop width="100%" />
   </ConcaveContainer>
 )
