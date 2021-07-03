@@ -233,7 +233,7 @@ const HowToPlay: React.FC = () => {
         <Heading mb="24px" scale="xl" color="secondary">
           {t('How to Play')}
         </Heading>
-        <Text>
+        <Text textAlign="center">
           {t(
             'If the digits on your tickets match the winning numbers in the correct order, you win a portion of the prize pool.',
           )}
