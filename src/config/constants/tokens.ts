@@ -21,24 +21,6 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://rugzombie.io/',
   },
-  testzmbe: {
-    symbol: 'ZMBE',
-    address: {
-      56: '0xAf75fBB5873a41C6733F5B118fDd78838c8D402a',
-      97: '0xf3a3a31b90be814a45170cbc9df0678219c03656',
-    },
-    decimals: 18,
-    projectLink: 'https://rugzombie.io/',
-  },
-  rug100: {
-    symbol: 'RUG100',
-    address: {
-      56: '0x3F70d41e27a46C31f7304954306c7DCb1503e3A9',
-      97: '',
-    },
-    decimals: 18,
-    projectLink: 'https://rugzombie.io/',
-  },
   fairmoon: {
     symbol: 'FAIRMOON',
     address: {

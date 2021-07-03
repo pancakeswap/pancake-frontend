@@ -17,11 +17,11 @@ const tableData = [
     result: {
       paidUnlockFee: false,
       rugDeposited: 0,
-      tokenWithdrawalDate: "0",
+      tokenWithdrawalDate: '0',
       amount: '0',
     },
     poolInfo: {},
-pendingZombie: '0'
+    pendingZombie: '0',
   },
   {
     id: 2,
@@ -37,11 +37,11 @@ pendingZombie: '0'
     result: {
       paidUnlockFee: false,
       rugDeposited: 0,
-      tokenWithdrawalDate: "0",
+      tokenWithdrawalDate: '0',
       amount: '0',
     },
     poolInfo: {},
-pendingZombie: '0'
+    pendingZombie: '0',
   },
   {
     id: 3,
@@ -57,12 +57,32 @@ pendingZombie: '0'
     result: {
       paidUnlockFee: false,
       rugDeposited: 0,
-      tokenWithdrawalDate: "0",
+      tokenWithdrawalDate: '0',
       amount: '0',
     },
     poolInfo: {},
-pendingZombie: '0'
+    pendingZombie: '0',
   },
+  // {
+  //   id: 4,
+  //   pid: 3,
+  //   name: 'Defi100 Rare',
+  //   path: 'images/rugZombie/Defi100 Rare.gif',
+  //   type: 'image',
+  //   withdrawalCooldown: '3 days',
+  //   nftRevivalTime: '30 days',
+  //   rug: tokens.d100,
+  //   artist: artists.ZomBaes,
+  //   stakingToken: undefined,
+  //   result: {
+  //     paidUnlockFee: false,
+  //     rugDeposited: 0,
+  // //     tokenWithdrawalDate: "0",
+  // //     amount: '0',
+  // //   },
+  //   poolInfo: {},
+  //   pendingZombie: '0'
+  // },
   {
     id: 4,
     pid: 3,
@@ -77,11 +97,11 @@ pendingZombie: '0'
     result: {
       paidUnlockFee: false,
       rugDeposited: 0,
-      tokenWithdrawalDate: "0",
+      tokenWithdrawalDate: '0',
       amount: '0',
     },
     poolInfo: {},
-pendingZombie: '0'
+    pendingZombie: '0',
   },
   {
     id: 5,
@@ -97,11 +117,11 @@ pendingZombie: '0'
     result: {
       paidUnlockFee: false,
       rugDeposited: 0,
-      tokenWithdrawalDate: "0",
+      tokenWithdrawalDate: '0',
       amount: '0',
     },
     poolInfo: {},
-pendingZombie: '0'
+    pendingZombie: '0',
   },
   {
     id: 6,
@@ -117,11 +137,11 @@ pendingZombie: '0'
     result: {
       paidUnlockFee: false,
       rugDeposited: 0,
-      tokenWithdrawalDate: "0",
+      tokenWithdrawalDate: '0',
       amount: '0',
     },
     poolInfo: {},
-pendingZombie: '0'
+    pendingZombie: '0',
   },
   {
     id: 7,
@@ -137,11 +157,11 @@ pendingZombie: '0'
     result: {
       paidUnlockFee: false,
       rugDeposited: 0,
-      tokenWithdrawalDate: "0",
+      tokenWithdrawalDate: '0',
       amount: '0',
     },
     poolInfo: {},
-pendingZombie: '0'
+    pendingZombie: '0',
   },
   {
     id: 8,
@@ -157,11 +177,11 @@ pendingZombie: '0'
     result: {
       paidUnlockFee: false,
       rugDeposited: 0,
-      tokenWithdrawalDate: "0",
+      tokenWithdrawalDate: '0',
       amount: '0',
     },
     poolInfo: {},
-pendingZombie: '0'
+    pendingZombie: '0',
   },
   {
     id: 9,
@@ -177,11 +197,11 @@ pendingZombie: '0'
     result: {
       paidUnlockFee: false,
       rugDeposited: 0,
-      tokenWithdrawalDate: "0",
+      tokenWithdrawalDate: '0',
       amount: '0',
     },
     poolInfo: {},
-pendingZombie: '0'
+    pendingZombie: '0',
   },
 ]
 

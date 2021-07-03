@@ -2,27 +2,7 @@ import tokens from './tokens'
 import { PoolConfig, PoolCategory, GraveConfig } from './types'
 
 const graves: GraveConfig[] = [
-  {
-    gid: 0,
-    nftName: 'UndeadMoon',
-    ruggedToken: tokens.rug100,
-    unlockingToken: tokens.busd,
-    nftSrc: 'https://storage.googleapis.com/rug-zombie/running-zombie-1.png',
-    rugSrc: 'https://storage.googleapis.com/rug-zombie/TheMoon.png',
-    unlockingFee: 10,
-    contractAddress: {
-      97: '0xF224Cf8b779794d2857105f6c4BCb416251C5500',
-      56: '0x73feaa1eE314F8c655E354234017bE2193C9E24E',
-    },
-    minimumStakingTime: 2592000, // 30 days
-    displayMinimumStakingTime: "30 days", // 30 days
-    minimumStakingAmount: 10, // BUSD
-    earlyWithdrawalFee: 0.05,
-    artistUrl: "/",
-    harvest: true,
-    sortOrder: 1,
-    isFinished: false,
-  },
+
 
   // {
   //   sousId: 116,
