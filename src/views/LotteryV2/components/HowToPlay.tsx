@@ -284,7 +284,7 @@ const HowToPlay: React.FC = () => {
           <Heading mb="24px" scale="lg" color="secondary">
             {t('Prize Funds')}
           </Heading>
-          <Text color="textSubtle">{t('The prizes for each lottery round comes from three sources:')}</Text>
+          <Text color="textSubtle">{t('The prizes for each lottery round come from three sources:')}</Text>
           <Heading my="16px" scale="md">
             {t('Ticket Purchases')}
           </Heading>
