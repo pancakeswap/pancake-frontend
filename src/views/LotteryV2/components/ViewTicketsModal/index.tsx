@@ -32,10 +32,11 @@ const ViewTicketsModal: React.FC<ViewTicketsModalProps> = ({ onDismiss, roundId,
   const { t } = useTranslation()
   const { theme } = useTheme()
   const {
+    currentLotteryId,
     isTransitioning,
     currentRound: { status, userTickets },
   } = useLottery()
-  const isPreviousRound = roundStatus.toLowerCase() === LotteryStatus.CLAIMABLE
+  const isPreviousRound = roundStatus?.toLowerCase() === LotteryStatus.CLAIMABLE || roundId !== currentLotteryId
   const ticketBuyIsDisabled = status !== LotteryStatus.OPEN || isTransitioning
 
   return (
