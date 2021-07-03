@@ -34,7 +34,7 @@ const BuyFrank: React.FC<BuyFrankProps> = ({ details: { result: { tokenWithdrawa
 
   const nftTimeObj = new Date(0);
   nftTimeObj.setSeconds(initialNftTime);
-  const displayNftTime = nftTimeObj.toISOString().substr(11, 8);
+  const displayNftTime = '';
 
   const initialWithdrawCooldownTime = parseInt(tokenWithdrawalDate) - currentDate;
   const withdrawCooldownTimeObj = new Date(0);

@@ -53,10 +53,11 @@ interface StartFarmingProps {
 
   },
   isAllowance: boolean,
-  updateAllowance: any
+  updateAllowance: any,
+  updateResult: any
 }
 
-const StartFarming: React.FC<StartFarmingProps> = ({ details, details: { pid, rug, result: { paidUnlockFee, rugDeposited }, poolInfo, result }, isAllowance, updateAllowance }) => {
+const StartFarming: React.FC<StartFarmingProps> = ({ details, details: { pid, rug, result: { paidUnlockFee, rugDeposited }, poolInfo, result }, isAllowance, updateAllowance, updateResult }) => {
 
   const [isAllowanceForRugToken, setIsAllowanceForRugToken] = useState(false);
 
@@ -67,6 +68,7 @@ const StartFarming: React.FC<StartFarmingProps> = ({ details, details: { pid, ru
   const [onPresentStake] = useModal(
     <StakeModal
       details={details}
+      updateResult={updateResult}
     />,
   );
 
@@ -75,6 +77,7 @@ const StartFarming: React.FC<StartFarmingProps> = ({ details, details: { pid, ru
       details={details}
       zombieBalance={zombieBalance}
       poolInfo={poolInfo}
+      updateResult={updateResult}
     />,
   )
 
@@ -83,6 +86,7 @@ const StartFarming: React.FC<StartFarmingProps> = ({ details, details: { pid, ru
       details={details}
       zombieBalance={zombieBalance}
       poolInfo={poolInfo}
+      updateResult={updateResult}
     />
   )
 
@@ -113,14 +117,15 @@ const StartFarming: React.FC<StartFarmingProps> = ({ details, details: { pid, ru
   const handleUnlock = () => {
     drFrankenstein.methods.unlockFeeInBnb(pid).call().then((res) => {
       drFrankenstein.methods.unlock(pid)
-        .send({ from: account, value: res });
+        .send({ from: account, value: res }).then(() => {
+          updateResult(pid);
+        })
     });
   }
 
   const handleApprove = () => {
     zmbeContract.methods.approve(getDrFrankensteinAddress(), ethers.constants.MaxUint256)
       .send({ from: account }).then((res) => {
-        console.log(res)
         updateAllowance(zmbeContract, pid);
       })
   }
@@ -141,9 +146,12 @@ const StartFarming: React.FC<StartFarmingProps> = ({ details, details: { pid, ru
 
   const handleApproveRug = () => {
     rugContract.methods.approve(getDrFrankensteinAddress(), ethers.constants.MaxUint256)
-      .send({ from: account }).then((res)=>{
-        console.log(res)
-        updateAllowance(rugContract, pid);
+      .send({ from: account }).then((res) => {
+        if (parseInt(res.toString()) !== 0) {
+          setIsAllowanceForRugToken(true);
+        } else {
+          setIsAllowanceForRugToken(false);
+        }
       })
   }
 

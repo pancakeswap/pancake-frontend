@@ -32,14 +32,16 @@ interface StakeZombieModalProps {
     result: Result
   },
   zombieBalance: BigNumber,
-  poolInfo: any
+  poolInfo: any,
+  updateResult: any,
+  onDismiss?: () => void
 }
 
 const StyledButton = styled(Button)`
   flex-grow: 1;
 `
 
-const StakeZombieModal: React.FC<StakeZombieModalProps> = ({ details: { rug, pid, result: { amount } }, zombieBalance, poolInfo }) => {
+const StakeZombieModal: React.FC<StakeZombieModalProps> = ({ details: { rug, pid, result: { amount } }, zombieBalance, poolInfo, updateResult, onDismiss }) => {
 
   const drFrankenstein = useDrFrankenstein();
   const { account } = useWeb3React();
@@ -74,15 +76,21 @@ const StakeZombieModal: React.FC<StakeZombieModalProps> = ({ details: { rug, pid
     const convertedStakeAmount = getDecimalAmount(new BigNumber(stakeAmount), tokens.zmbe.decimals);
       if(pid === 0){
         drFrankenstein.methods.enterStaking(convertedStakeAmount)
-        .send({ from: account })
+        .send({ from: account }).then(()=>{
+          updateResult(pid);
+          onDismiss();
+        })
       }else{
         drFrankenstein.methods.deposit(pid, convertedStakeAmount)
-        .send({ from: account })
+        .send({ from: account }).then(()=>{
+          updateResult(pid)
+          onDismiss();
+        })
       }
   }
 
 
-  return <Modal title="Stake ZMBE" headerBackground={theme.colors.gradients.cardHeader}>
+  return <Modal  onDismiss={onDismiss} title="Stake ZMBE" headerBackground={theme.colors.gradients.cardHeader}>
     <Flex alignItems="center" justifyContent="space-between" mb="8px">
       <Text bold>Stake</Text>
       <Flex alignItems="center" minWidth="70px">

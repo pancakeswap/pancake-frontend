@@ -71,7 +71,6 @@ const HomeC: React.FC = () => {
         });
         setFarmData(newFarmData);
       })
-      console.log(farmData)
   }
 
   const updateAllowance = (tokenContact, pid) => {
@@ -82,7 +81,6 @@ const HomeC: React.FC = () => {
         } else {
           setIsAllowance(false);
         }
-        console.log(res)
         updateResult(pid)
       });
   }
@@ -100,7 +98,7 @@ const HomeC: React.FC = () => {
       </PageHeader>
       <div>
         {farmData.map((data) => {
-          return <Table updateAllowance={updateAllowance} bnbInBusd={bnbInBusd} isAllowance={isAllowance} details={data} key={data.id} />
+          return <Table updateResult={updateResult} updateAllowance={updateAllowance} bnbInBusd={bnbInBusd} isAllowance={isAllowance} details={data} key={data.id} />
         })}
       </div>
     </Page>
