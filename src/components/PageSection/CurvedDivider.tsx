@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { CurvedSvgTop, CurvedSvgBottom, ConcaveSvgBottom } from './svg/CurvedSvg'
+import { CurvedSvgTop, CurvedSvgBottom, ConcaveTop } from './svg/CurvedSvg'
 
 interface CurvedDividerProps extends WrapperProps {
   svgFill?: string
@@ -31,10 +31,11 @@ const ComponentWrapper = styled.div<WrapperProps>`
 const CurvedDivider: React.FC<CurvedDividerProps> = ({ svgFill, index, curvePosition, dividerComponent, concave }) => {
   const showTopDivider = curvePosition === 'top' && !concave
   const showBottomDivider = curvePosition === 'bottom' && !concave
+  const showConcaveTopDivider = curvePosition === 'top' && concave
   return (
     <Wrapper index={index}>
       {dividerComponent && <ComponentWrapper index={index}>{dividerComponent}</ComponentWrapper>}
-      {concave && <ConcaveSvgBottom width="100%" />}
+      {showConcaveTopDivider && <ConcaveTop />}
       {showTopDivider && <CurvedSvgTop svgFill={svgFill} width="100%" />}
       {showBottomDivider && <CurvedSvgBottom svgFill={svgFill} width="100%" />}
     </Wrapper>

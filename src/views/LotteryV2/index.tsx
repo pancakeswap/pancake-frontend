@@ -28,13 +28,6 @@ const LotteryPage = styled.div`
   min-height: calc(100vh - 64px);
 `
 
-const TicketsSection = styled(PageSection)`
-  margin-top: -32px;
-  ${({ theme }) => theme.mediaQueries.lg} {
-    margin-top: -64px;
-  }
-`
-
 const LotteryV2 = () => {
   useFetchLottery()
   useStatusTransitions()
@@ -49,14 +42,15 @@ const LotteryV2 = () => {
 
   return (
     <LotteryPage>
-      <PageSection background={TITLE_BG} svgFill={theme.colors.overlay} index={4}>
+      <PageSection background={TITLE_BG} svgFill={theme.colors.overlay} index={3} hasCurvedDivider={false}>
         <Hero />
       </PageSection>
-      <TicketsSection
-        containerProps={{ style: { margin: '0' } }}
+      <PageSection
+        containerProps={{ style: { marginTop: '-30px' } }}
         background={GET_TICKETS_BG}
-        hasCurvedDivider={false}
-        index={3}
+        concaveDivider
+        curvePosition="top"
+        index={4}
       >
         <Flex alignItems="center" justifyContent="center" flexDirection="column">
           {status === LotteryStatus.OPEN && (
@@ -77,16 +71,14 @@ const LotteryV2 = () => {
           </Flex>
           <NextDrawCard />
         </Flex>
-      </TicketsSection>
-      <PageSection background={CHECK_PRIZES_BG} hasCurvedDivider={false} index={2}>
+      </PageSection>
+      <PageSection background={CHECK_PRIZES_BG} hasCurvedDivider={false} index={4}>
         <CheckPrizesSection />
       </PageSection>
       <PageSection
         background={isDark ? FINISHED_ROUNDS_BG_DARK : FINISHED_ROUNDS_BG}
-        hasCurvedDivider
-        concaveDivider
-        index={1}
-        containerProps={{ style: { margin: '0' } }}
+        hasCurvedDivider={false}
+        index={4}
       >
         <Flex width="100%" flexDirection="column" alignItems="center" justifyContent="center">
           <Heading mb="24px" scale="xl">
@@ -102,7 +94,7 @@ const LotteryV2 = () => {
         </Flex>
       </PageSection>
 
-      <PageSection hasCurvedDivider={false} index={1}>
+      <PageSection hasCurvedDivider={false} index={1} containerProps={{ style: { marginTop: '-32px' } }}>
         <HowToPlay />
       </PageSection>
     </LotteryPage>

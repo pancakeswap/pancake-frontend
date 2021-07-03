@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Flex, Heading, Skeleton } from '@pancakeswap/uikit'
+import { Box, Flex, Heading, Skeleton } from '@pancakeswap/uikit'
 import { LotteryStatus } from 'config/constants/types'
 import { useTranslation } from 'contexts/Localization'
 import { useLottery, usePriceCakeBusd } from 'state/hooks'
@@ -39,6 +39,94 @@ const TicketSvgWrapper = styled.div`
   transform: rotate(-4deg);
 `
 
+const Decorations = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: url(/images/lottery/bg-star.svg);
+  background-repeat: no-repeat;
+  background-position: center 0;
+`
+
+const StarsDecorations = styled(Box)`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+
+  & img {
+    position: absolute;
+  }
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    & :nth-child(1) {
+      left: 3%;
+      top: 42%;
+    }
+    & :nth-child(2) {
+      left: 9%;
+      top: 23%;
+    }
+    & :nth-child(3) {
+      right: 2%;
+      top: 24%;
+    }
+    & :nth-child(4) {
+      left: 8%;
+      top: 67%;
+    }
+    & :nth-child(5) {
+      right: 8%;
+      top: 67%;
+    }
+  }
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    & :nth-child(1) {
+      left: 10%;
+      top: 42%;
+    }
+    & :nth-child(2) {
+      left: 17%;
+      top: 23%;
+    }
+    & :nth-child(3) {
+      right: 10%;
+      top: 24%;
+    }
+    & :nth-child(4) {
+      left: 17%;
+      top: 67%;
+    }
+    & :nth-child(5) {
+      right: 17%;
+      top: 67%;
+    }
+  }
+
+  ${({ theme }) => theme.mediaQueries.xl} {
+    & :nth-child(1) {
+      left: 19%;
+      top: 42%;
+    }
+    & :nth-child(2) {
+      left: 25%;
+      top: 23%;
+    }
+    & :nth-child(3) {
+      right: 19%;
+      top: 24%;
+    }
+    & :nth-child(4) {
+      left: 24%;
+      top: 67%;
+    }
+    & :nth-child(5) {
+      right: 24%;
+      top: 67%;
+    }
+  }
+`
+
 const Hero = () => {
   const { t } = useTranslation()
   const {
@@ -75,6 +163,14 @@ const Hero = () => {
 
   return (
     <Flex flexDirection="column" alignItems="center" justifyContent="center">
+      <Decorations />
+      <StarsDecorations display={['none', 'none', 'block']}>
+        <img src="/images/lottery/star-big.png" width="124px" height="109px" alt="" />
+        <img src="/images/lottery/star-small.png" width="70px" height="62px" alt="" />
+        <img src="/images/lottery/three-stars.png" width="130px" height="144px" alt="" />
+        <img src="/images/lottery/ticket-l.png" width="123px" height="83px" alt="" />
+        <img src="/images/lottery/ticket-r.png" width="121px" height="72px" alt="" />
+      </StarsDecorations>
       <Heading mb="8px" scale="md" color="#ffffff">
         {t('The PancakeSwap Lottery')}
       </Heading>
