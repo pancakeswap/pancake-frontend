@@ -24,18 +24,18 @@ const ScrollBox = styled(Box)`
 
 interface ViewTicketsModalProps {
   roundId: string
+  roundStatus?: LotteryStatus
   onDismiss?: () => void
 }
 
-const ViewTicketsModal: React.FC<ViewTicketsModalProps> = ({ onDismiss, roundId }) => {
+const ViewTicketsModal: React.FC<ViewTicketsModalProps> = ({ onDismiss, roundId, roundStatus }) => {
   const { t } = useTranslation()
   const { theme } = useTheme()
   const {
-    currentLotteryId,
     isTransitioning,
     currentRound: { status, userTickets },
   } = useLottery()
-  const isPreviousRound = roundId !== currentLotteryId
+  const isPreviousRound = roundStatus.toLowerCase() === LotteryStatus.CLAIMABLE
   const ticketBuyIsDisabled = status !== LotteryStatus.OPEN || isTransitioning
 
   return (

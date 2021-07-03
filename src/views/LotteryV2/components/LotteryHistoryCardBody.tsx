@@ -14,7 +14,9 @@ const LotteryHistoryCardBody: React.FC<{ lotteryData: LotteryRound; lotteryId: s
   lotteryId,
 }) => {
   const { t } = useTranslation()
-  const [onPresentViewTicketsModal] = useModal(<ViewTicketsModal roundId={lotteryId} />)
+  const [onPresentViewTicketsModal] = useModal(
+    <ViewTicketsModal roundId={lotteryId} roundStatus={lotteryData.status} />,
+  )
   const userLotteryData = useGetUserLotteriesGraphData()
   const userDataForRound = userLotteryData.rounds.find((userLotteryRound) => userLotteryRound.lotteryId === lotteryId)
 
