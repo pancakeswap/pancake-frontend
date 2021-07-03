@@ -13,7 +13,6 @@ import {
   FINISHED_ROUNDS_BG_DARK,
   CHECK_PRIZES_BG,
 } from './pageSectionStyles'
-import useNextEventCountdown from './hooks/useNextEventCountdown'
 import useGetNextLotteryEvent from './hooks/useGetNextLotteryEvent'
 import useStatusTransitions from './hooks/useStatusTransitions'
 import Hero from './components/Hero'

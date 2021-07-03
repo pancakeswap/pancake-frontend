@@ -30,7 +30,7 @@ const LotteryHistoryCardBody: React.FC<{ lotteryData: LotteryRound; lotteryId: s
         {userDataForRound && (
           <>
             <Box mt="32px">
-              <Text display="inline">{t('You had ')}</Text>
+              <Text display="inline">{t('You had')} </Text>
               <Text display="inline" bold>
                 {userDataForRound.totalTickets} {t('tickets')}{' '}
               </Text>

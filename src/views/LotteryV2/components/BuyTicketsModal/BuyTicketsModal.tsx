@@ -79,9 +79,10 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
   const TooltipComponent = () => (
     <>
       <Text mb="16px">
-        {t('[Placeholder text] Bulk discount for buying multiple tickets in a single transaction.')}
+        {t(
+          'There is a bulk discount for buying 2-100 tickets in a single transaction. This discount scales with the number of tickets you buy.',
+        )}
       </Text>
-      <Text>{t('2-100 tickets: X% discount')}</Text>
       <Text>{t('Check the FAQs at the bottom of the page for more.')}</Text>
     </>
   )
@@ -186,7 +187,6 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
       },
       onConfirm: () => {
         const ticketsForPurchase = getTicketsForPurchase()
-        console.log('Buying these tickets:', ticketsForPurchase)
         return lotteryContract.buyTickets(currentLotteryId, ticketsForPurchase)
       },
       onSuccess: async () => {

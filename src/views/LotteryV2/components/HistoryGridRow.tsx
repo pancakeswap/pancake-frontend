@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Text, Flex, ChevronRightIcon, Box, BlockIcon, PrizeIcon, NotificationDot } from '@pancakeswap/uikit'
+import { Text, Flex, ChevronRightIcon, Box, BlockIcon, PrizeIcon } from '@pancakeswap/uikit'
 import { dateOptions, timeOptions } from '../helpers'
 
 interface HistoryGridRowProps {
