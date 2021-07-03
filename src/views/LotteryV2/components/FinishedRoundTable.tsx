@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { Text, ChevronRightIcon, Box, Flex } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { LotteryStatus } from 'config/constants/types'
-import { useGetUserLotteriesGraphData, useLottery } from 'state/hooks'
+import { useGetUserLotteriesGraphData } from 'state/hooks'
 import HistoryGridRow from './HistoryGridRow'
 
 const Grid = styled(Box)`
@@ -18,16 +18,12 @@ interface FinishedRoundTableProps {
 const FinishedRoundTable: React.FC<FinishedRoundTableProps> = ({ handleHistoryRowClick }) => {
   const { t } = useTranslation()
   const userLotteryData = useGetUserLotteriesGraphData()
-  const { currentLotteryId } = useLottery()
 
-  const filteredForLiveRound = userLotteryData?.rounds.filter((round) => {
-    if (round.lotteryId === currentLotteryId) {
-      return round.status === LotteryStatus.CLAIMABLE
-    }
-    return round.lotteryId !== currentLotteryId
+  const filteredForClaimable = userLotteryData?.rounds.filter((round) => {
+    return round.status.toLowerCase() === LotteryStatus.CLAIMABLE
   })
 
-  const sortedByRoundId = filteredForLiveRound?.sort((roundA, roundB) => {
+  const sortedByRoundId = filteredForClaimable?.sort((roundA, roundB) => {
     return parseInt(roundB.lotteryId) - parseInt(roundA.lotteryId)
   })
 
@@ -49,13 +45,13 @@ const FinishedRoundTable: React.FC<FinishedRoundTableProps> = ({ handleHistoryRo
       </Grid>
       <Flex px="24px" pb="24px" flexDirection="column" overflowY="scroll" height="240px">
         {userLotteryData &&
-          sortedByRoundId.map((pastRound) => (
+          sortedByRoundId.map((finishedRound) => (
             <HistoryGridRow
-              key={pastRound.lotteryId}
-              roundId={pastRound.lotteryId}
-              hasWon={pastRound.claimed}
-              numberTickets={pastRound.totalTickets}
-              endTime={pastRound.endTime}
+              key={finishedRound.lotteryId}
+              roundId={finishedRound.lotteryId}
+              hasWon={finishedRound.claimed}
+              numberTickets={finishedRound.totalTickets}
+              endTime={finishedRound.endTime}
               onClick={handleHistoryRowClick}
             />
           ))}
