@@ -37,10 +37,12 @@ interface TableData {
 interface TableProps {
   details: TableData,
   isAllowance: boolean,
-  bnbInBusd: number
+  bnbInBusd: number,
+  updateAllowance: any,
+  updateResult:any
 }
 
-const Table: React.FC<TableProps> = ({ details, isAllowance, bnbInBusd }: TableProps) => {
+const Table: React.FC<TableProps> = ({ details, isAllowance, bnbInBusd, updateAllowance, updateResult }: TableProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const openInDetails = (data) => {
@@ -63,7 +65,7 @@ const Table: React.FC<TableProps> = ({ details, isAllowance, bnbInBusd }: TableP
             <div className="w-95 mx-auto mt-3">
               <div className="flex-grow">
                 <FrankEarned pid={details.pid} pendingZombie={details.pendingZombie}/>
-                <StartFarming details={details} isAllowance={isAllowance}  />
+                <StartFarming updateResult={updateResult} updateAllowance={updateAllowance} details={details} isAllowance={isAllowance}  />
                 <BuyFrank details={details} />
               </div>
               <RugInDetails bnbInBusd={bnbInBusd} details={details} />

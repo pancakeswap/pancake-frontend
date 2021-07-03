@@ -32,13 +32,15 @@ interface StakeModalProps {
     stakingToken: any,
     result: Result
   },
+  updateResult:any,
+  onDismiss?: () => void
 }
 
 const StyledButton = styled(Button)`
   flex-grow: 1;
 `
 
-const StakeModal: React.FC<StakeModalProps> = ({ details, details: { rug, pid } }) => {
+const StakeModal: React.FC<StakeModalProps> = ({ details, details: { rug, pid }, updateResult, onDismiss }) => {
 
   let rugTokenBalance = BIG_ZERO;
 
@@ -77,16 +79,15 @@ const StakeModal: React.FC<StakeModalProps> = ({ details, details: { rug, pid } 
   const handleDepositRug = () => {
     const convertedStakeAmount = getDecimalAmount(new BigNumber(stakeAmount), rug.decimals);
     drFrankenstein.methods.depositRug(pid, convertedStakeAmount)
-      .send({ from: account })
+      .send({ from: account }).then(()=>{
+        updateResult(pid);
+        onDismiss();
+      })
   }
 
-  const handleConfirmClick = () => {
-    console.log('confirm')
-  }
 
 
-
-  return <Modal title={details.rug === '' ? "Stake $Zmbe" : `Stake ${rug.symbol}`} headerBackground={theme.colors.gradients.cardHeader}>
+  return <Modal  onDismiss={onDismiss} title={details.rug === '' ? "Stake $Zmbe" : `Stake ${rug.symbol}`} headerBackground={theme.colors.gradients.cardHeader}>
     <Flex alignItems="center" justifyContent="space-between" mb="8px">
       <Text bold>Stake</Text>
       <Flex alignItems="center" minWidth="70px">

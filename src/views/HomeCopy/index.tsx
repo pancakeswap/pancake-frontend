@@ -18,8 +18,8 @@ let accountAddress;
 const HomeC: React.FC = () => {
 
   const { account } = useWeb3React();
-  const [ isAllowance, setIsAllowance] = useState(false);
-  const [farmData, setFormData] = useState(tableData);
+  const [isAllowance, setIsAllowance] = useState(false);
+  const [farmData, setFarmData] = useState(tableData);
 
   accountAddress = account
   const drFrankenstein = useDrFrankenstein();
@@ -38,27 +38,52 @@ const HomeC: React.FC = () => {
           .then(res => {
             tokenInfo.result = res;
           })
-          drFrankenstein.methods.poolInfo(tokenInfo.pid).call().then(res => {
-            tokenInfo.poolInfo = res;
-          })
-          drFrankenstein.methods.pendingZombie(tokenInfo.pid, accountAddress).call()
+        drFrankenstein.methods.poolInfo(tokenInfo.pid).call().then(res => {
+          tokenInfo.poolInfo = res;
+        })
+        drFrankenstein.methods.pendingZombie(tokenInfo.pid, accountAddress).call()
           .then(res => {
             tokenInfo.pendingZombie = res;
           })
 
         return tokenInfo;
       })
-      setFormData(newFarmData);
+      setFarmData(newFarmData);
       getBnbPriceinBusd().then((res) => {
         setBnbInBusd(res.data.price)
       })
     }
 
-    if(parseInt(allowance.toString()) !== 0){
+    if (parseInt(allowance.toString()) !== 0) {
       setIsAllowance(true);
     }
-    
+
   }, [allowance, drFrankenstein.methods])
+
+  const updateResult = (pid) => {
+    drFrankenstein.methods.userInfo(pid, accountAddress).call()
+      .then(res => {
+        const newFarmData = farmData.map((data) => {
+          if (data.pid === pid) {
+            data.result = res;
+          }
+          return data
+        });
+        setFarmData(newFarmData);
+      })
+  }
+
+  const updateAllowance = (tokenContact, pid) => {
+    tokenContact.methods.allowance(accountAddress, getDrFrankensteinAddress()).call()
+      .then(res => {
+        if (parseInt(res.toString()) !== 0) {
+          setIsAllowance(true);
+        } else {
+          setIsAllowance(false);
+        }
+        updateResult(pid)
+      });
+  }
 
 
   return (
@@ -73,7 +98,7 @@ const HomeC: React.FC = () => {
       </PageHeader>
       <div>
         {farmData.map((data) => {
-          return <Table bnbInBusd={bnbInBusd} isAllowance={isAllowance} details={data} key={data.id} />
+          return <Table updateResult={updateResult} updateAllowance={updateAllowance} bnbInBusd={bnbInBusd} isAllowance={isAllowance} details={data} key={data.id} />
         })}
       </div>
     </Page>
