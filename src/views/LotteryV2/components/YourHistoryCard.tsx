@@ -11,20 +11,19 @@ import {
   Flex,
   Heading,
   Skeleton,
-  ExpandableLabel,
   Box,
 } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { LotteryStatus } from 'config/constants/types'
 import { useGetUserLotteriesGraphData, useLottery } from 'state/hooks'
 import { fetchLottery } from 'state/lottery/helpers'
-import { LotteryResponse, LotteryRound } from 'state/types'
+import { LotteryRound } from 'state/types'
 import UnlockButton from 'components/UnlockButton'
 import FinishedRoundTable from './FinishedRoundTable'
 import { WhiteBunny } from '../svgs'
 import BuyTicketsButton from './BuyTicketsButton'
 import LotteryHistoryCardBody from './LotteryHistoryCardBody'
-import { dateOptions, dateTimeOptions, processLotteryResponse } from '../helpers'
+import { dateTimeOptions, processLotteryResponse } from '../helpers'
 import LotteryHistoryCardFooter from './LotteryHistoryCardFooter'
 
 const StyledCard = styled(Card)`

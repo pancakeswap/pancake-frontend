@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js'
-import { LotteryStatus, LotteryTicket, LotteryTicketClaimData } from 'config/constants/types'
+import { LotteryTicket } from 'config/constants/types'
 import { LotteryResponse, LotteryRound, LotteryRoundUserTickets } from 'state/types'
 
 /**

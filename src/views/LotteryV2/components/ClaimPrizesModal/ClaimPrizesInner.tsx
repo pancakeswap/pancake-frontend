@@ -84,7 +84,10 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
       const tx = await callWithEstimateGas(lotteryContract, 'claimTickets', [lotteryId, ticketIds, brackets])
       const receipt = await tx.wait()
       if (receipt.status) {
-        toastSuccess(t('Prizes Collected!'), t(`Your CAKE prizes for round ${lotteryId} have been sent to your wallet`))
+        toastSuccess(
+          t('Prizes Collected!'),
+          t('Your CAKE prizes for round %lotteryId% have been sent to your wallet', { lotteryId }),
+        )
         setPendingTx(false)
         handleProgressToNextClaim()
       }
@@ -121,7 +124,7 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
             toastSuccess(
               t('Prizes Collected!'),
               t(
-                `Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transation`,
+                'Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transation',
                 {
                   claimNum: receipts.length,
                   claimTotal: transactionsToFire,
@@ -142,7 +145,7 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
       setPendingTx(false)
       toastSuccess(
         t('Prizes Collected!'),
-        t(`Your CAKE prizes for round %lotteryId& have been sent to your wallet`, { lotteryId }),
+        t('Your CAKE prizes for round %lotteryId& have been sent to your wallet', { lotteryId }),
       )
       handleProgressToNextClaim()
     }

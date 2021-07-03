@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
-import { Modal, Flex, Button, Box, Ticket, useTooltip, Skeleton, Text } from '@pancakeswap/uikit'
+import { Modal, Flex, Box, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import { useWeb3React } from '@web3-react/core'
 import { LotteryStatus } from 'config/constants/types'
 import { useLottery } from 'state/hooks'
-import { fetchLottery } from 'state/lottery/helpers'
 import useTheme from 'hooks/useTheme'
 import TicketNumber from '../TicketNumber'
 import BuyTicketsButton from '../BuyTicketsButton'
@@ -30,7 +28,6 @@ interface ViewTicketsModalProps {
 }
 
 const ViewTicketsModal: React.FC<ViewTicketsModalProps> = ({ onDismiss, roundId }) => {
-  const { account } = useWeb3React()
   const { t } = useTranslation()
   const { theme } = useTheme()
   const {
