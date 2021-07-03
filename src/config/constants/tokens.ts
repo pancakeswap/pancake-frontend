@@ -15,7 +15,7 @@ const tokens = {
   zmbe: {
     symbol: 'ZMBE',
     address: {
-      56: '0x5528D6B23b1DFa8f0C6C1bBdDD413572FA31B93d',
+      56: '0x265b109bD80b95AAF39A122F5c6EC595e48D5109',
       97: '0x85537ef782bab72e65704aa59e5C71131561D422',
     },
     decimals: 18,

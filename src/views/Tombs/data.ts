@@ -3,11 +3,11 @@ import tokens from "config/constants/tokens";
 const tableData = [
   {
     id: 1,
-    pid: 9,
+    pid: 10,
     name: 'ZMBE-BNB',
     lpAddresses: {
       97: '',
-      56: '0x5DB353e774655E76b52EcDE1e938011F60D7d3F3',
+      56: '0xd32727c43aa18939179dfc2f3d32e90502898159',
     },
     token: tokens.zmbe,
     quoteToken: tokens.wbnb,
