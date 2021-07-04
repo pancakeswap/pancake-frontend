@@ -6,7 +6,7 @@ import { stakeFarm } from 'utils/calls'
 import BigNumber from 'bignumber.js'
 import { DEFAULT_TOKEN_DECIMAL, DEFAULT_GAS_LIMIT } from 'config'
 import { BIG_TEN } from 'utils/bigNumber'
-import { useMasterchef, useSousChef } from '../../../hooks/useContract'
+import { useMasterchef, useSousChef } from 'hooks/useContract'
 
 const options = {
   gasLimit: DEFAULT_GAS_LIMIT,
