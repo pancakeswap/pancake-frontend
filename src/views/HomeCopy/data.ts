@@ -165,7 +165,7 @@ const tableData = [
   },
   {
     id: 9,
-    pid: 9,
+    pid: 8,
     name: 'Dragon Farm Finance Common',
     path: 'images/rugZombie/CommonDragonFarmFinance.mp4',
     type: 'video',
@@ -185,7 +185,7 @@ const tableData = [
   },
   {
     id: 10,
-    pid: 8,
+    pid: 9,
     name: 'yPanda Common',
     path: 'images/rugZombie/yPandaCommon.jpeg',
     type: 'image',
