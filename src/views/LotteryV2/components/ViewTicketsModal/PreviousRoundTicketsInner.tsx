@@ -51,7 +51,7 @@ const TicketSkeleton = () => {
   )
 }
 
-const HistoricTicketsInner: React.FC<{ roundId: string }> = ({ roundId }) => {
+const PreviousRoundTicketsInner: React.FC<{ roundId: string }> = ({ roundId }) => {
   const [lotteryInfo, setLotteryInfo] = useState<LotteryRound>(null)
   const [allUserTickets, setAllUserTickets] = useState<LotteryTicket[]>(null)
   const [userWinningTickets, setUserWinningTickets] = useState<{
@@ -232,4 +232,4 @@ const HistoricTicketsInner: React.FC<{ roundId: string }> = ({ roundId }) => {
   )
 }
 
-export default HistoricTicketsInner
+export default PreviousRoundTicketsInner

@@ -22,7 +22,7 @@ const TornTicketImage = styled.img`
   }
 `
 
-const CheckPrizes = () => {
+const CheckPrizesSection = () => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const { fetchAllRewards, unclaimedRewards, fetchStatus } = useGetUnclaimedRewards()
@@ -129,4 +129,4 @@ const CheckPrizes = () => {
   return <Flex>{getBody()}</Flex>
 }
 
-export default CheckPrizes
+export default CheckPrizesSection

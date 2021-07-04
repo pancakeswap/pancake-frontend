@@ -154,9 +154,15 @@
         "internalType": "address",
         "name": "treasury",
         "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "injector",
+        "type": "address"
       }
     ],
-    "name": "NewOperatorAndTreasuryAddresses",
+    "name": "NewOperatorAndTreasuryAndInjectorAddresses",
     "type": "event"
   },
   {
@@ -472,7 +478,46 @@
   },
   {
     "inputs": [],
+    "name": "injectorAddress",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "maxNumberTicketsPerBuyOrClaim",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "maxPriceTicketInCake",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "minPriceTicketInCake",
     "outputs": [
       {
         "internalType": "uint256",
@@ -576,6 +621,24 @@
   {
     "inputs": [
       {
+        "internalType": "uint256",
+        "name": "_minPriceTicketInCake",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_maxPriceTicketInCake",
+        "type": "uint256"
+      }
+    ],
+    "name": "setMinAndMaxTicketPriceInCake",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "address",
         "name": "_operatorAddress",
         "type": "address"
@@ -584,9 +647,14 @@
         "internalType": "address",
         "name": "_treasuryAddress",
         "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_injectorAddress",
+        "type": "address"
       }
     ],
-    "name": "setOperatorAndTreasuryAddresses",
+    "name": "setOperatorAndTreasuryAndInjectorAddresses",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -825,7 +893,7 @@
         "type": "uint256"
       }
     ],
-    "name": "viewUserTicketNumbersAndStatusesForLottery",
+    "name": "viewUserInfoForLotteryId",
     "outputs": [
       {
         "internalType": "uint256[]",

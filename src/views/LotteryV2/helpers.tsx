@@ -1,5 +1,4 @@
 import BigNumber from 'bignumber.js'
-import { LotteryTicket } from 'config/constants/types'
 import { LotteryResponse, LotteryRound, LotteryRoundUserTickets } from 'state/types'
 
 /**
@@ -7,24 +6,9 @@ import { LotteryResponse, LotteryRound, LotteryRoundUserTickets } from 'state/ty
  */
 export const parseRetreivedNumber = (number: string): string => {
   const numberAsArray = number.split('')
-  // remove the '1' from the number
   numberAsArray.splice(0, 1)
-  // reverse it
   numberAsArray.reverse()
   return numberAsArray.join('')
-}
-
-export const parseUnclaimedTicketDataForClaimCall = (
-  ticketsWithUnclaimedRewards: LotteryTicket[],
-  lotteryId: string,
-) => {
-  const ticketIds = ticketsWithUnclaimedRewards.map((ticket) => {
-    return ticket.id
-  })
-  const brackets = ticketsWithUnclaimedRewards.map((ticket) => {
-    return ticket.rewardBracket
-  })
-  return { lotteryId, ticketIds, brackets }
 }
 
 export const dateOptions: Intl.DateTimeFormatOptions = {

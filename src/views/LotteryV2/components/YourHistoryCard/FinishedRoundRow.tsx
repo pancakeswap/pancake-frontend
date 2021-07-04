@@ -1,9 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Text, Flex, ChevronRightIcon, Box, BlockIcon, PrizeIcon } from '@pancakeswap/uikit'
-import { dateOptions, timeOptions } from '../helpers'
+import { dateOptions, timeOptions } from '../../helpers'
 
-interface HistoryGridRowProps {
+interface FinishedRoundRowProps {
   roundId: string
   numberTickets: string
   endTime: string
@@ -18,7 +18,7 @@ const Grid = styled(Box)`
   cursor: pointer;
 `
 
-const HistoryGridRow: React.FC<HistoryGridRowProps> = ({
+const FinishedRoundRow: React.FC<FinishedRoundRowProps> = ({
   roundId,
   numberTickets,
   endTime,
@@ -59,4 +59,4 @@ const HistoryGridRow: React.FC<HistoryGridRowProps> = ({
   )
 }
 
-export default HistoryGridRow
+export default FinishedRoundRow

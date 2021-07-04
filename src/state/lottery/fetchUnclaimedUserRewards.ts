@@ -33,9 +33,10 @@ const fetchCakeRewardsForTickets = async (
   })
   const cakeRewards = await multicallv2(lotteryV2Abi, calls)
 
-  const cakeTotal = cakeRewards.reduce((a: BigNumber, b: ethers.BigNumber[]) => {
-    return a.plus(new BigNumber(b[0].toString()))
+  const cakeTotal = cakeRewards.reduce((accum: BigNumber, cakeReward: ethers.BigNumber[]) => {
+    return accum.plus(new BigNumber(cakeReward[0].toString()))
   }, BIG_ZERO)
+
   const ticketsWithUnclaimedRewards = winningTickets.map((winningTicket, index) => {
     return { ...winningTicket, cakeReward: cakeRewards[index] }
   })
@@ -44,7 +45,7 @@ const fetchCakeRewardsForTickets = async (
   return { ticketsWithUnclaimedRewards, cakeTotal }
 }
 
-const getRewardBracket = (ticketNumber: string, finalNumber: string): number => {
+const getRewardBracketByNumber = (ticketNumber: string, finalNumber: string): number => {
   // Winning numbers are evaluated right-to-left in the smart contract, so we reverse their order for validation here:
   // i.e. '1123456' should be evaluated as '6543211'
   const ticketNumAsArray = ticketNumber.split('').reverse()
@@ -75,7 +76,7 @@ export const getWinningTickets = async (
       id: ticket.id,
       number: ticket.number,
       status: ticket.status,
-      rewardBracket: getRewardBracket(ticket.number, finalNumber),
+      rewardBracket: getRewardBracketByNumber(ticket.number, finalNumber),
     }
   })
   // TODO: Remove log. To help in testing when verifying winning tickets.
