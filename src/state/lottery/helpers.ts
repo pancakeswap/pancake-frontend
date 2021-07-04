@@ -17,6 +17,7 @@ import {
 } from 'state/types'
 import { getLotteryV2Contract } from 'utils/contractHelpers'
 import { useMemo } from 'react'
+import { ethersToSerializedBigNumber } from 'utils/bigNumber'
 
 const lotteryContract = getLotteryV2Contract()
 
@@ -40,27 +41,23 @@ export const fetchLottery = async (lotteryId: string): Promise<LotteryResponse> 
     } = lotteryData
 
     const statusKey = Object.keys(LotteryStatus)[status]
-    const serializedCakePerBracket = cakePerBracket.map((cakeInBracket) => {
-      return new BigNumber(cakeInBracket.toString()).toJSON()
-    })
-    const serializedCountWinnersPerBracket = countWinnersPerBracket.map((winnersInBracket) => {
-      return new BigNumber(winnersInBracket.toString()).toJSON()
-    })
-    const serializedRewardsBreakdown = rewardsBreakdown.map((reward) => {
-      return new BigNumber(reward.toString()).toJSON()
-    })
+    const serializedCakePerBracket = cakePerBracket.map((cakeInBracket) => ethersToSerializedBigNumber(cakeInBracket))
+    const serializedCountWinnersPerBracket = countWinnersPerBracket.map((winnersInBracket) =>
+      ethersToSerializedBigNumber(winnersInBracket),
+    )
+    const serializedRewardsBreakdown = rewardsBreakdown.map((reward) => ethersToSerializedBigNumber(reward))
 
     return {
       isLoading: false,
       status: LotteryStatus[statusKey],
       startTime: startTime?.toString(),
       endTime: endTime?.toString(),
-      priceTicketInCake: new BigNumber(priceTicketInCake.toString()).toJSON(),
+      priceTicketInCake: ethersToSerializedBigNumber(priceTicketInCake),
       discountDivisor: discountDivisor?.toString(),
       treasuryFee: treasuryFee?.toString(),
       firstTicketId: firstTicketId?.toString(),
       lastTicketId: lastTicketId?.toString(),
-      amountCollectedInCake: new BigNumber(amountCollectedInCake.toString()).toJSON(),
+      amountCollectedInCake: ethersToSerializedBigNumber(amountCollectedInCake),
       finalNumber,
       cakePerBracket: serializedCakePerBracket,
       countWinnersPerBracket: serializedCountWinnersPerBracket,
@@ -86,7 +83,7 @@ export const fetchLottery = async (lotteryId: string): Promise<LotteryResponse> 
   }
 }
 
-export const fetchPublicData = async () => {
+export const fetchCurrentLotteryIdAndMaxBuy = async () => {
   try {
     const calls = ['currentLotteryId', 'maxNumberTicketsPerBuyOrClaim'].map((method) => ({
       address: getLotteryV2Address(),
@@ -134,7 +131,7 @@ export const getViewUserTicketInfoCalls = (totalTicketsToRequest: number, accoun
   for (let i = 0; i < totalTicketsToRequest; i += perRequestLimit) {
     cursor = i
     calls.push({
-      name: 'viewUserTicketNumbersAndStatusesForLottery',
+      name: 'viewUserInfoForLotteryId',
       address: getLotteryV2Address(),
       params: [account, lotteryId, cursor, perRequestLimit],
     })

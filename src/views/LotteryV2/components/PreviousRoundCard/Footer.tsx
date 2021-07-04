@@ -7,7 +7,7 @@ import { LotteryRound } from 'state/types'
 import { useGetLotteryGraphDataById } from 'state/hooks'
 import { formatNumber, getBalanceNumber } from 'utils/formatBalance'
 import Balance from 'components/Balance'
-import RewardMatchesContainer from './RewardMatchesContainer'
+import RewardBrackets from '../RewardBrackets'
 
 const NextDrawWrapper = styled(Flex)`
   background: ${({ theme }) => theme.colors.background};
@@ -19,7 +19,7 @@ const NextDrawWrapper = styled(Flex)`
   }
 `
 
-const LotteryHistoryCardFooter: React.FC<{ lotteryData: LotteryRound; lotteryId: string }> = ({
+const PreviousRoundCardFooter: React.FC<{ lotteryData: LotteryRound; lotteryId: string }> = ({
   lotteryData,
   lotteryId,
 }) => {
@@ -70,7 +70,7 @@ const LotteryHistoryCardFooter: React.FC<{ lotteryData: LotteryRound; lotteryId:
               </Text>
             </Box>
           </Flex>
-          <RewardMatchesContainer lotteryData={lotteryData} isHistoricRound />
+          <RewardBrackets lotteryData={lotteryData} isHistoricRound />
         </NextDrawWrapper>
       )}
       <Flex p="8px 24px" alignItems="center" justifyContent="center">
@@ -82,4 +82,4 @@ const LotteryHistoryCardFooter: React.FC<{ lotteryData: LotteryRound; lotteryId:
   )
 }
 
-export default LotteryHistoryCardFooter
+export default PreviousRoundCardFooter

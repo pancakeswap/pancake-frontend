@@ -3,7 +3,7 @@ import { useWeb3React } from '@web3-react/core'
 import { Flex, Button, Text, AutoRenewIcon, PresentWonIcon } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
-import { LotteryTicketClaimData } from 'config/constants/types'
+import { LotteryTicket, LotteryTicketClaimData } from 'config/constants/types'
 import { getBalanceAmount } from 'utils/formatBalance'
 import { callWithEstimateGas } from 'utils/calls'
 import { useLottery, usePriceCakeBusd } from 'state/hooks'
@@ -12,7 +12,6 @@ import { useAppDispatch } from 'state'
 import Balance from 'components/Balance'
 import useToast from 'hooks/useToast'
 import { useLotteryV2Contract } from 'hooks/useContract'
-import { parseUnclaimedTicketDataForClaimCall } from '../../helpers'
 
 interface ClaimInnerProps {
   roundsToClaim: LotteryTicketClaimData[]
@@ -27,27 +26,33 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
   const { toastSuccess, toastError } = useToast()
   const [activeClaimIndex, setActiveClaimIndex] = useState(0)
   const [pendingTx, setPendingTx] = useState(false)
-  // TODO: Re-enebale in prod
-  //   const cakePriceBusd = usePriceCakeBusd()
   const lotteryContract = useLotteryV2Contract()
-  const cakePriceBusd = new BigNumber(20)
-
   const activeClaimData = roundsToClaim[activeClaimIndex]
 
+  // TODO: Re-enable in prod
+  // const cakePriceBusd = usePriceCakeBusd()
+  const cakePriceBusd = new BigNumber(20)
   const cakeReward = activeClaimData.cakeTotal
   const dollarReward = cakeReward.times(cakePriceBusd)
   const rewardAsBalance = getBalanceAmount(cakeReward).toNumber()
   const dollarRewardAsBalance = getBalanceAmount(dollarReward).toNumber()
+
+  const parseUnclaimedTicketDataForClaimCall = (ticketsWithUnclaimedRewards: LotteryTicket[], lotteryId: string) => {
+    const ticketIds = ticketsWithUnclaimedRewards.map((ticket) => {
+      return ticket.id
+    })
+    const brackets = ticketsWithUnclaimedRewards.map((ticket) => {
+      return ticket.rewardBracket
+    })
+    return { lotteryId, ticketIds, brackets }
+  }
+
   const claimTicketsCallData = parseUnclaimedTicketDataForClaimCall(
     activeClaimData.ticketsWithUnclaimedRewards,
     activeClaimData.roundId,
   )
 
-  const shouldBatchRequest = claimTicketsCallData.ticketIds.length > maxNumberTicketsPerBuyOrClaim.toNumber()
-
-  // const totalNumClaims = roundsToClaim.slice(activeClaimIndex).reduce((accum, _round) => {
-  //   return accum + Math.ceil(_round.ticketsWithUnclaimedRewards.length / maxNumberTicketsPerBuyOrClaim.toNumber())
-  // }, 0)
+  const shouldBatchRequest = maxNumberTicketsPerBuyOrClaim.lt(claimTicketsCallData.ticketIds.length)
 
   const totalNumClaimsForRound = () =>
     Math.ceil(

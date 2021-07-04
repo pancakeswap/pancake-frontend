@@ -30,12 +30,7 @@ import { getCanClaim } from './predictions/helpers'
 import { transformPool } from './pools/helpers'
 import { fetchPoolsStakingLimitsAsync } from './pools'
 import { fetchFarmUserDataAsync, nonArchivedFarms } from './farms'
-import {
-  fetchPublicLotteryData,
-  fetchCurrentLottery,
-  fetchUserTicketsAndLotteries,
-  fetchPastLotteries,
-} from './lottery'
+import { fetchCurrentLotteryId, fetchCurrentLottery, fetchUserTicketsAndLotteries, fetchPastLotteries } from './lottery'
 import { useProcessLotteryResponse } from './lottery/helpers'
 
 export const usePollFarmsData = (includeArchive = false) => {
@@ -537,7 +532,7 @@ export const useFetchLottery = () => {
 
   useEffect(() => {
     // get current lottery ID, max tickets and historical lottery subgraph data
-    dispatch(fetchPublicLotteryData())
+    dispatch(fetchCurrentLotteryId())
     dispatch(fetchPastLotteries())
   }, [dispatch])
 

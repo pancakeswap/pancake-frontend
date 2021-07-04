@@ -20,11 +20,11 @@ import { fetchLottery } from 'state/lottery/helpers'
 import { LotteryRound } from 'state/types'
 import UnlockButton from 'components/UnlockButton'
 import FinishedRoundTable from './FinishedRoundTable'
-import { WhiteBunny } from '../svgs'
-import BuyTicketsButton from './BuyTicketsButton'
-import LotteryHistoryCardBody from './LotteryHistoryCardBody'
-import { dateTimeOptions, processLotteryResponse } from '../helpers'
-import LotteryHistoryCardFooter from './LotteryHistoryCardFooter'
+import { WhiteBunny } from '../../svgs'
+import BuyTicketsButton from '../BuyTicketsButton'
+import PreviousRoundCardBody from '../PreviousRoundCard/Body'
+import { dateTimeOptions, processLotteryResponse } from '../../helpers'
+import PreviousRoundCardFooter from '../PreviousRoundCard/Footer'
 
 const StyledCard = styled(Card)`
   width: 100%;
@@ -103,7 +103,7 @@ const YourHistoryCard = () => {
 
   const getBody = () => {
     if (shouldShowRoundDetail) {
-      return <LotteryHistoryCardBody lotteryData={selectedLotteryInfo} lotteryId={selectedLotteryId} />
+      return <PreviousRoundCardBody lotteryData={selectedLotteryInfo} lotteryId={selectedLotteryId} />
     }
 
     const pastUserRounds = userLotteryData?.rounds.filter((round) => {
@@ -140,7 +140,7 @@ const YourHistoryCard = () => {
 
   const getFooter = () => {
     if (selectedLotteryInfo) {
-      return <LotteryHistoryCardFooter lotteryData={selectedLotteryInfo} lotteryId={selectedLotteryId} />
+      return <PreviousRoundCardFooter lotteryData={selectedLotteryInfo} lotteryId={selectedLotteryId} />
     }
     return (
       <CardFooter>

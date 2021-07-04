@@ -4,12 +4,12 @@ import { CardBody, Heading, Flex, Skeleton, Text, Box, Button, useModal } from '
 import { LotteryRound } from 'state/types'
 import { useGetUserLotteriesGraphData } from 'state/hooks'
 import { useTranslation } from 'contexts/Localization'
-import WinningNumbers from './WinningNumbers'
-import ViewTicketsModal from './ViewTicketsModal'
+import WinningNumbers from '../WinningNumbers'
+import ViewTicketsModal from '../ViewTicketsModal'
 
 const StyledCardBody = styled(CardBody)``
 
-const LotteryHistoryCardBody: React.FC<{ lotteryData: LotteryRound; lotteryId: string }> = ({
+const PreviousRoundCardBody: React.FC<{ lotteryData: LotteryRound; lotteryId: string }> = ({
   lotteryData,
   lotteryId,
 }) => {
@@ -56,4 +56,4 @@ const LotteryHistoryCardBody: React.FC<{ lotteryData: LotteryRound; lotteryId: s
   )
 }
 
-export default LotteryHistoryCardBody
+export default PreviousRoundCardBody

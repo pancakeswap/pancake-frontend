@@ -24,7 +24,7 @@ import Balance from 'components/Balance'
 import ViewTicketsModal from './ViewTicketsModal'
 import BuyTicketsButton from './BuyTicketsButton'
 import { dateTimeOptions } from '../helpers'
-import RewardMatchesContainer from './RewardMatchesContainer'
+import RewardBrackets from './RewardBrackets'
 
 const Grid = styled.div`
   display: grid;
@@ -119,7 +119,7 @@ const NextDrawCard = () => {
     if (status === LotteryStatus.PENDING) {
       return ''
     }
-    return parseInt(currentLotteryId) + 1
+    return parseInt(currentLotteryId, 10) + 1
   }
 
   const getNextDrawDateTime = () => {
@@ -197,7 +197,7 @@ const NextDrawCard = () => {
       <CardFooter p="0">
         {isExpanded && (
           <NextDrawWrapper>
-            <RewardMatchesContainer lotteryData={currentRound} />
+            <RewardBrackets lotteryData={currentRound} />
           </NextDrawWrapper>
         )}
         {(status === LotteryStatus.OPEN || status === LotteryStatus.CLOSE) && (

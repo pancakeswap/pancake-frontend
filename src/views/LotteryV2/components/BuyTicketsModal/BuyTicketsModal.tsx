@@ -18,7 +18,7 @@ import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
 import { getFullDisplayBalance } from 'utils/formatBalance'
 import { getCakeAddress } from 'utils/addressHelpers'
-import { BIG_ZERO } from 'utils/bigNumber'
+import { BIG_ZERO, ethersToBigNumber } from 'utils/bigNumber'
 import { useAppDispatch } from 'state'
 import { usePriceCakeBusd, useLottery } from 'state/hooks'
 import { fetchUserTicketsAndLotteries } from 'state/lottery'
@@ -29,7 +29,7 @@ import { useCake, useLotteryV2Contract } from 'hooks/useContract'
 import useToast from 'hooks/useToast'
 import UnlockButton from 'components/UnlockButton'
 import ApproveConfirmButtons, { ButtonArrangement } from 'views/Profile/components/ApproveConfirmButtons'
-import TicketsNumberButton from '../TicketsNumberButton'
+import NumTicketsToBuyButton from './NumTicketsToBuyButton'
 import EditNumbersModal from './EditNumbersModal'
 import { useTicketsReducer } from './useTicketsReducer'
 
@@ -153,7 +153,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
       setMaxTicketPurchaseExceeded(false)
     }
     // Prevent decimals in input
-    const inputAsInt = parseInt(input)
+    const inputAsInt = parseInt(input, 10)
     setTicketsToBuy(input ? inputAsInt.toString() : '0')
   }
 
@@ -173,7 +173,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
       onRequiresApproval: async () => {
         try {
           const response = await cakeContract.allowance(account, lotteryContract.address)
-          const currentAllowance = new BigNumber(response.toString())
+          const currentAllowance = ethersToBigNumber(response)
           return currentAllowance.gt(0)
         } catch (error) {
           return false
@@ -271,30 +271,30 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
       </Flex>
 
       <Flex alignItems="center" justifyContent="space-between" mt="8px" mb="24px">
-        <TicketsNumberButton
+        <NumTicketsToBuyButton
           disabled={!hasFetchedBalance || tenPercentOfBalance < 1}
           onClick={() => handleNumberButtonClick(tenPercentOfBalance)}
         >
           {hasFetchedBalance ? tenPercentOfBalance : ``}
-        </TicketsNumberButton>
-        <TicketsNumberButton
+        </NumTicketsToBuyButton>
+        <NumTicketsToBuyButton
           disabled={!hasFetchedBalance || twentyFivePercentOfBalance < 1}
           onClick={() => handleNumberButtonClick(twentyFivePercentOfBalance)}
         >
           {hasFetchedBalance ? twentyFivePercentOfBalance : ``}
-        </TicketsNumberButton>
-        <TicketsNumberButton
+        </NumTicketsToBuyButton>
+        <NumTicketsToBuyButton
           disabled={!hasFetchedBalance || fiftyPercentOfBalance < 1}
           onClick={() => handleNumberButtonClick(fiftyPercentOfBalance)}
         >
           {hasFetchedBalance ? fiftyPercentOfBalance : ``}
-        </TicketsNumberButton>
-        <TicketsNumberButton
+        </NumTicketsToBuyButton>
+        <NumTicketsToBuyButton
           disabled={!hasFetchedBalance || oneHundredPercentOfBalance < 1}
           onClick={() => handleNumberButtonClick(oneHundredPercentOfBalance)}
         >
           MAX
-        </TicketsNumberButton>
+        </NumTicketsToBuyButton>
       </Flex>
 
       <Flex flexDirection="column">
@@ -349,7 +349,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
 
         <Text mt="24px" fontSize="12px" color="textSubtle">
           {t(
-            '"Buy Instantly" chooses random numbers, with no duplicates among your tickets. Prices are set before each round starts, equal to $1 at that time. Purchases are final.',
+            '"Buy Instantly" chooses random numbers, with no duplicates among your tickets. Prices are set before each round starts, equal to $5 at that time. Purchases are final.',
           )}
         </Text>
       </Flex>

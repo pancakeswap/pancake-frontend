@@ -4,7 +4,7 @@ import { Text, ChevronRightIcon, Box, Flex } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { LotteryStatus } from 'config/constants/types'
 import { useGetUserLotteriesGraphData } from 'state/hooks'
-import HistoryGridRow from './HistoryGridRow'
+import FinishedRoundRow from './FinishedRoundRow'
 
 const Grid = styled(Box)`
   display: grid;
@@ -24,7 +24,7 @@ const FinishedRoundTable: React.FC<FinishedRoundTableProps> = ({ handleHistoryRo
   })
 
   const sortedByRoundId = filteredForClaimable?.sort((roundA, roundB) => {
-    return parseInt(roundB.lotteryId) - parseInt(roundA.lotteryId)
+    return parseInt(roundB.lotteryId, 10) - parseInt(roundA.lotteryId, 10)
   })
 
   return (
@@ -46,7 +46,7 @@ const FinishedRoundTable: React.FC<FinishedRoundTableProps> = ({ handleHistoryRo
       <Flex px="24px" pb="24px" flexDirection="column" overflowY="scroll" height="240px">
         {userLotteryData &&
           sortedByRoundId.map((finishedRound) => (
-            <HistoryGridRow
+            <FinishedRoundRow
               key={finishedRound.lotteryId}
               roundId={finishedRound.lotteryId}
               hasWon={finishedRound.claimed}

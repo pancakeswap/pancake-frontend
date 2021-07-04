@@ -6,7 +6,7 @@ import { usePriceCakeBusd } from 'state/hooks'
 import Balance from 'components/Balance'
 import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
 
-interface RewardsMatchProps {
+interface RewardBracketDetailProps {
   cakeAmount: BigNumber
   rewardBracket?: number
   numberWinners?: string
@@ -14,7 +14,7 @@ interface RewardsMatchProps {
   isHistoricRound?: boolean
 }
 
-const RewardsMatch: React.FC<RewardsMatchProps> = ({
+const RewardBracketDetail: React.FC<RewardBracketDetailProps> = ({
   rewardBracket,
   cakeAmount,
   numberWinners,
@@ -71,4 +71,4 @@ const RewardsMatch: React.FC<RewardsMatchProps> = ({
   )
 }
 
-export default RewardsMatch
+export default RewardBracketDetail

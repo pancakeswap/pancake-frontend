@@ -21,7 +21,7 @@ import Countdown from './components/Countdown'
 import HistoryTabMenu from './components/HistoryTabMenu'
 import YourHistoryCard from './components/YourHistoryCard'
 import AllHistoryCard from './components/AllHistoryCard'
-import CheckPrizes from './components/CheckPrizes'
+import CheckPrizesSection from './components/CheckPrizesSection'
 
 const LotteryPage = styled.div`
   min-height: calc(100vh - 64px);
@@ -78,7 +78,7 @@ const LotteryV2 = () => {
         </Flex>
       </TicketsSection>
       <PageSection background={CHECK_PRIZES_BG} hasCurvedDivider={false} index={2}>
-        <CheckPrizes />
+        <CheckPrizesSection />
       </PageSection>
       <PageSection
         background={isDark ? FINISHED_ROUNDS_BG_DARK : FINISHED_ROUNDS_BG}

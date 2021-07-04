@@ -4,7 +4,7 @@ import { Flex, Text } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import { LotteryRound } from 'state/types'
-import RewardsMatch from './RewardsMatch'
+import RewardBracketDetail from './RewardBracketDetail'
 
 const Wrapper = styled(Flex)`
   width: 100%;
@@ -26,7 +26,7 @@ interface RewardMatchesProps {
   isHistoricRound?: boolean
 }
 
-const RewardMatchesContainer: React.FC<RewardMatchesProps> = ({ lotteryData, isHistoricRound }) => {
+const RewardBrackets: React.FC<RewardMatchesProps> = ({ lotteryData, isHistoricRound }) => {
   const { t } = useTranslation()
   const { treasuryFee, amountCollectedInCake, rewardsBreakdown, countWinnersPerBracket } = lotteryData
 
@@ -45,46 +45,46 @@ const RewardMatchesContainer: React.FC<RewardMatchesProps> = ({ lotteryData, isH
         {t('Match the winning number in the same order to share prizes. Current prizes up for grabs:')}
       </Text>
       <RewardsInner>
-        <RewardsMatch
+        <RewardBracketDetail
           rewardBracket={5}
           cakeAmount={getCakeRewards(5)}
           numberWinners={countWinnersPerBracket[5]}
           isHistoricRound={isHistoricRound}
         />
-        <RewardsMatch
+        <RewardBracketDetail
           rewardBracket={4}
           cakeAmount={getCakeRewards(4)}
           numberWinners={countWinnersPerBracket[4]}
           isHistoricRound={isHistoricRound}
         />
-        <RewardsMatch
+        <RewardBracketDetail
           rewardBracket={3}
           cakeAmount={getCakeRewards(3)}
           numberWinners={countWinnersPerBracket[3]}
           isHistoricRound={isHistoricRound}
         />
-        <RewardsMatch
+        <RewardBracketDetail
           rewardBracket={2}
           cakeAmount={getCakeRewards(2)}
           numberWinners={countWinnersPerBracket[2]}
           isHistoricRound={isHistoricRound}
         />
-        <RewardsMatch
+        <RewardBracketDetail
           rewardBracket={1}
           cakeAmount={getCakeRewards(1)}
           numberWinners={countWinnersPerBracket[1]}
           isHistoricRound={isHistoricRound}
         />
-        <RewardsMatch
+        <RewardBracketDetail
           rewardBracket={0}
           cakeAmount={getCakeRewards(0)}
           numberWinners={countWinnersPerBracket[0]}
           isHistoricRound={isHistoricRound}
         />
-        <RewardsMatch rewardBracket={0} cakeAmount={cakeToBurn} isBurn />
+        <RewardBracketDetail rewardBracket={0} cakeAmount={cakeToBurn} isBurn />
       </RewardsInner>
     </Wrapper>
   )
 }
 
-export default RewardMatchesContainer
+export default RewardBrackets

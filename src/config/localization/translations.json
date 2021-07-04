@@ -957,7 +957,7 @@
   "The maximum number of tickets you can buy in one transaction is %maxTickets%": "The maximum number of tickets you can buy in one transaction is %maxTickets%",
   "Bulk discount": "Bulk discount",
   "Buy Instantly": "Buy Instantly",
-  "\"Buy Instantly\" chooses random numbers, with no duplicates among your tickets. Prices are set before each round starts, equal to $1 at that time. Purchases are final.": "\"Buy Instantly\" chooses random numbers, with no duplicates among your tickets. Prices are set before each round starts, equal to $1 at that time. Purchases are final.",
+  "\"Buy Instantly\" chooses random numbers, with no duplicates among your tickets. Prices are set before each round starts, equal to $5 at that time. Purchases are final.": "\"Buy Instantly\" chooses random numbers, with no duplicates among your tickets. Prices are set before each round starts, equal to $5 at that time. Purchases are final.",
   "Prizes Collected!": "Prizes Collected!",
   "Your CAKE prizes for round %lotteryId% have been sent to your wallet": "Your CAKE prizes for round %lotteryId% have been sent to your wallet",
   "Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transation": "Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transation",
