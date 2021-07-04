@@ -106,8 +106,8 @@ const YourHistoryCard = () => {
       return <PreviousRoundCardBody lotteryData={selectedLotteryInfo} lotteryId={selectedLotteryId} />
     }
 
-    const pastUserRounds = userLotteryData?.rounds.filter((round) => {
-      return round.lotteryId !== currentLotteryId
+    const claimableRounds = userLotteryData?.rounds.filter((round) => {
+      return round.status.toLowerCase() === LotteryStatus.CLAIMABLE
     })
 
     if (!account) {
@@ -120,7 +120,7 @@ const YourHistoryCard = () => {
         </StyledCardBody>
       )
     }
-    if (pastUserRounds.length === 0) {
+    if (claimableRounds.length === 0) {
       return (
         <StyledCardBody>
           <Box maxWidth="280px">
