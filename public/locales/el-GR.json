@@ -903,5 +903,6 @@
   "Amount to collect": "Ποσό συλλογής",
   "Your winnings": "Τα κέρδη σας",
   "Includes your original position and your winnings, minus the %fee% fee.": "Περιλαμβάνει την αρχική σας θέση και τα κέρδη σας, μείον τα τέλη %fee%.",
-  "Your funds have been staked in the farm": "Your funds have been staked in the farm"
+  "Your funds have been staked in the farm": "Your funds have been staked in the farm",
+  "Base APR (yield only)": "Base APR (yield only)"
 }

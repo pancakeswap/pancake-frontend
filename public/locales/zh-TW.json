@@ -903,5 +903,6 @@
   "Amount to collect": "要收集的金額",
   "Your winnings": "您的彩金",
   "Includes your original position and your winnings, minus the %fee% fee.": "包括您的原始部位和您的彩金，減去 %fee% 費用。",
-  "Your funds have been staked in the farm": "Your funds have been staked in the farm"
+  "Your funds have been staked in the farm": "Your funds have been staked in the farm",
+  "Base APR (yield only)": "Base APR (yield only)"
 }

@@ -903,5 +903,6 @@
   "Amount to collect": "कलेक्ट करने के लिए राशि",
   "Your winnings": "आपके जीते गए पुरस्कार",
   "Includes your original position and your winnings, minus the %fee% fee.": "इसमें %fee% फीस घटाकर, आपकी मूल पोजीशन और आपके जीते गए पुरस्कार शामिल होते हैं।",
-  "Your funds have been staked in the farm": "Your funds have been staked in the farm"
+  "Your funds have been staked in the farm": "Your funds have been staked in the farm",
+  "Base APR (yield only)": "Base APR (yield only)"
 }

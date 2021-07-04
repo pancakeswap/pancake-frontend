@@ -903,5 +903,6 @@
   "Amount to collect": "Kwota do odebrania",
   "Your winnings": "Twoje wygrane",
   "Includes your original position and your winnings, minus the %fee% fee.": "Obejmuje Twoją pierwotną pozycję i wygrane minus prowizja w wysokości %fee%.",
-  "Your funds have been staked in the farm": "Your funds have been staked in the farm"
+  "Your funds have been staked in the farm": "Your funds have been staked in the farm",
+  "Base APR (yield only)": "Base APR (yield only)"
 }
