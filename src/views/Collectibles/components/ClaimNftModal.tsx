@@ -38,7 +38,7 @@ const ClaimNftModal: React.FC<ClaimNftModalProps> = ({ nft, onSuccess, onClaim, 
       onDismiss()
       onSuccess()
     } else {
-      toastError(t('Error'), t('Unable to claim NFT, please try again.'))
+      toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
       setIsConfirming(false)
     }
   }

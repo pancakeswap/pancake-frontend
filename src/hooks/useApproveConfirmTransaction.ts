@@ -114,7 +114,7 @@ const useApproveConfirmTransaction = ({
         onApproveSuccess(state)
       } else {
         dispatch({ type: 'approve_error' })
-        toastError(t('An error occurred approving transaction'))
+        toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
       }
     },
     handleConfirm: async () => {
@@ -126,7 +126,7 @@ const useApproveConfirmTransaction = ({
         onSuccess(state)
       } else {
         dispatch({ type: 'confirm_error' })
-        toastError(t('An error occurred confirming transaction'))
+        toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
       }
     },
   }

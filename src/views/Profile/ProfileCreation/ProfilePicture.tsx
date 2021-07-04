@@ -40,7 +40,7 @@ const ProfilePicture: React.FC = () => {
       setIsApproving(false)
       setIsApproved(true)
     } else {
-      toastError(t('Error'))
+      toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
       setIsApproving(false)
     }
   }

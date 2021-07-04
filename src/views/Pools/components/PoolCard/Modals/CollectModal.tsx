@@ -68,7 +68,7 @@ const CollectModal: React.FC<CollectModalProps> = ({
         setPendingTx(false)
         onDismiss()
       } catch (e) {
-        toastError(t('Canceled'), t('Please try again and confirm the transaction.'))
+        toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
         console.error(e)
         setPendingTx(false)
       }
@@ -83,7 +83,7 @@ const CollectModal: React.FC<CollectModalProps> = ({
         setPendingTx(false)
         onDismiss()
       } catch (e) {
-        toastError(t('Canceled'), t('Please try again and confirm the transaction.'))
+        toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
         console.error(e)
         setPendingTx(false)
       }

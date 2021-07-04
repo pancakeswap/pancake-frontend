@@ -68,7 +68,10 @@ const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({ pid, userD
                 t('Your %symbol% earnings have been sent to your wallet!', { symbol: 'CAKE' }),
               )
             } catch (e) {
-              toastError(t('Canceled'), t('Please try again and confirm the transaction.'))
+              toastError(
+                t('Error'),
+                t('Please try again. Confirm the transaction and make sure you are paying enough gas!'),
+              )
               console.error(e)
             } finally {
               setPendingTx(false)

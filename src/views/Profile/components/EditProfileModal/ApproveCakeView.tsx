@@ -29,7 +29,7 @@ const ApproveCakePage: React.FC<ApproveCakePageProps> = ({ goToChange, onDismiss
     if (receipt.status) {
       goToChange()
     } else {
-      toastError(t('Error'))
+      toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
       setIsApproving(false)
     }
   }

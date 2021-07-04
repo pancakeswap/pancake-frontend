@@ -64,7 +64,10 @@ const DepositModal: React.FC<DepositModalProps> = ({ max, onConfirm, onDismiss, 
               toastSuccess(t('Staked!'), t('Your funds have been staked in the farm'))
               onDismiss()
             } catch (e) {
-              toastError(t('Canceled'), t('Please try again and confirm the transaction.'))
+              toastError(
+                t('Error'),
+                t('Please try again. Confirm the transaction and make sure you are paying enough gas!'),
+              )
               console.error(e)
             } finally {
               setPendingTx(false)

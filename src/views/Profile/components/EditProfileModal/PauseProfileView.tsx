@@ -35,7 +35,7 @@ const PauseProfilePage: React.FC<PauseProfilePageProps> = ({ onDismiss }) => {
       toastSuccess(t('Profile Paused!'))
       onDismiss()
     } else {
-      toastError(t('Error'))
+      toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
       setIsConfirming(false)
     }
   }
