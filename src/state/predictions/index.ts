@@ -31,6 +31,8 @@ import {
   makeFutureRoundResponsev2,
   makeRoundDataV2,
   getRoundsData,
+  getPredictionData,
+  MarketData,
 } from './helpers'
 
 const PAST_ROUND_COUNT = 5
@@ -56,6 +58,7 @@ const initialState: PredictionsState = {
 }
 
 // Thunks
+// V2 REFACTOR
 type PredictionInitialization = Pick<
   PredictionsState,
   'status' | 'currentEpoch' | 'intervalBlocks' | 'bufferBlocks' | 'minBetAmount' | 'rewardRate' | 'roundsv2' | 'betsv2'
@@ -66,15 +69,8 @@ export const initializePredictions = createAsyncThunk<PredictionInitialization, 
     const address = getPredictionsAddress()
 
     // Static values
-    const staticCalls = ['currentEpoch', 'intervalBlocks', 'minBetAmount', 'paused', 'bufferBlocks', 'rewardRate'].map(
-      (method) => ({
-        address,
-        name: method,
-      }),
-    )
-    const [[currentEpoch], [intervalBlocks], [minBetAmount], [paused], [bufferBlocks], [rewardRate]] =
-      await multicallv2(predictionsAbi, staticCalls)
-    const epochs = range(currentEpoch, currentEpoch.sub(PAST_ROUND_COUNT).toNumber())
+    const marketData = await getPredictionData()
+    const epochs = range(marketData.currentEpoch, marketData.currentEpoch - PAST_ROUND_COUNT)
 
     // Round data
     const roundsResponse = await getRoundsData(epochs)
@@ -88,12 +84,7 @@ export const initializePredictions = createAsyncThunk<PredictionInitialization, 
     }, {})
 
     const initializedData = {
-      status: paused ? PredictionStatus.PAUSED : PredictionStatus.LIVE,
-      currentEpoch: currentEpoch.toNumber(),
-      intervalBlocks: intervalBlocks.toNumber(),
-      bufferBlocks: bufferBlocks.toNumber(),
-      minBetAmount: minBetAmount.toString(),
-      rewardRate: rewardRate.toNumber(),
+      ...marketData,
       roundsv2: initialRoundData,
       betsv2: {},
     }
@@ -161,6 +152,12 @@ export const fetchRounds = createAsyncThunk<{ [key: string]: ReduxNodeRound }, n
     }, {})
   },
 )
+
+export const fetchMarketData = createAsyncThunk<MarketData>('predictions/fetchMarketData', async () => {
+  const marketData = await getPredictionData()
+  return marketData
+})
+// END V2 REFACTOR
 
 export const fetchBet = createAsyncThunk<{ account: string; bet: Bet }, { account: string; id: string }>(
   'predictions/fetchBet',
@@ -288,6 +285,11 @@ export const predictionsSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    // Get static market data
+    builder.addCase(fetchMarketData.fulfilled, (state, action) => {
+      return merge({}, state, action.payload)
+    })
+
     // Initialize predictions
     builder.addCase(initializePredictions.fulfilled, (state, action) => {
       const { status, currentEpoch, bufferBlocks, intervalBlocks, roundsv2, rewardRate, betsv2 } = action.payload

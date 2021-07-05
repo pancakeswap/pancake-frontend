@@ -352,6 +352,32 @@ export const getBet = async (betId: string): Promise<BetResponse> => {
 }
 
 // V2 REFACTOR
+export type MarketData = Pick<
+  PredictionsState,
+  'status' | 'currentEpoch' | 'intervalBlocks' | 'bufferBlocks' | 'minBetAmount' | 'rewardRate'
+>
+export const getPredictionData = async (): Promise<MarketData> => {
+  const address = getPredictionsAddress()
+  const staticCalls = ['currentEpoch', 'intervalBlocks', 'minBetAmount', 'paused', 'bufferBlocks', 'rewardRate'].map(
+    (method) => ({
+      address,
+      name: method,
+    }),
+  )
+  const [[currentEpoch], [intervalBlocks], [minBetAmount], [paused], [bufferBlocks], [rewardRate]] = await multicallv2(
+    predictionsAbi,
+    staticCalls,
+  )
+
+  return {
+    status: paused ? PredictionStatus.PAUSED : PredictionStatus.LIVE,
+    currentEpoch: currentEpoch.toNumber(),
+    intervalBlocks: intervalBlocks.toNumber(),
+    bufferBlocks: bufferBlocks.toNumber(),
+    minBetAmount: minBetAmount.toString(),
+    rewardRate: rewardRate.toNumber(),
+  }
+}
 
 export const getRoundsData = async (epochs: number[]): Promise<NodeRound[]> => {
   const address = getPredictionsAddress()
