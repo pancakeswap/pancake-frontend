@@ -5,6 +5,7 @@ import { getBnbPriceinBusd } from 'state/hooks'
 import { Heading } from '@rug-zombie-libs/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { useDrFrankenstein } from 'hooks/useContract'
+import { getDrFrankensteinAddress } from 'utils/addressHelpers'
 import Page from '../../components/layout/Page'
 import Table from './Table'
 import '../HomeCopy/HomeCopy.Styles.css'
@@ -29,10 +30,10 @@ const Tombs: React.FC = () => {
           .then(res => {
             tokenInfo.result = res;
           })
-          drFrankenstein.methods.poolInfo(tokenInfo.pid).call().then(res => {
-            tokenInfo.poolInfo = res;
-          })
-          drFrankenstein.methods.pendingZombie(tokenInfo.pid, accountAddress).call()
+        drFrankenstein.methods.poolInfo(tokenInfo.pid).call().then(res => {
+          tokenInfo.poolInfo = res;
+        })
+        drFrankenstein.methods.pendingZombie(tokenInfo.pid, accountAddress).call()
           .then(res => {
             tokenInfo.pendingZombie = res;
           })
@@ -46,21 +47,47 @@ const Tombs: React.FC = () => {
 
   }, [drFrankenstein.methods])
 
-  
-  const [isAllowance, seiIsAllowance] = useState(false);
+
+  const [isAllowance, setIsAllowance] = useState(false);
+
+  const updateResult = (pid) => {
+    drFrankenstein.methods.userInfo(pid, accountAddress).call()
+      .then(res => {
+        const newTombsData = tombsData.map((data) => {
+          if (data.pid === pid) {
+            data.result = res;
+          }
+          return data
+        });
+        setTombsData(newTombsData);
+      })
+  }
+
+  const updateAllowance = (tokenContact, pid) => {
+    tokenContact.methods.allowance(accountAddress, getDrFrankensteinAddress()).call()
+      .then(res => {
+        if (parseInt(res.toString()) !== 0) {
+          setIsAllowance(true);
+        } else {
+          setIsAllowance(false);
+        }
+        updateResult(pid)
+      });
+  }
+
   return (
     <Page className="innnerContainer">
       <PageHeader background="none">
         <Heading color="secondary" mb="24px">
           Tombs
         </Heading>
-        <Heading color="text"> 
+        <Heading color="text">
           Stake $ZMBE to Earn NFTs
         </Heading>
       </PageHeader>
       <div>
         {tombsData.map((data) => {
-          return <Table bnbInBusd={0} isAllowance={isAllowance} details={data} key={data.id} />
+          return <Table updateResult={updateResult} updateAllowance={updateAllowance} bnbInBusd={0} isAllowance={isAllowance} details={data} key={data.id} />
         })}
       </div>
     </Page>

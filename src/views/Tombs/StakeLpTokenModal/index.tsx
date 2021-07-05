@@ -8,8 +8,7 @@ import { BASE_EXCHANGE_URL } from 'config'
 import { getAddress } from 'utils/addressHelpers'
 import { getDecimalAmount, getFullDisplayBalance } from 'utils/formatBalance'
 import BigNumber from 'bignumber.js'
-import { useWeb3React } from '@web3-react/core'
-import WarningModal from 'views/HomeCopy/components/WarningModal'
+import { useWeb3React } from '@web3-react/core';
 
 interface Result {
     paidUnlockFee: boolean,
@@ -25,16 +24,20 @@ interface StakeLpTokenModalProps {
         artist?: any,
         stakingToken: any,
         result: Result,
-        lpAddresses:any
+        lpAddresses:any,
+        quoteToken:any,
+        token:any
     },
-    lpTokenBalance:any
+    lpTokenBalance:any,
+    updateResult:any,
+    onDismiss?: () => void
 }
 
 const StyledButton = styled(Button)`
   flex-grow: 1;
 `
 
-const StakeLpTokenModal: React.FC<StakeLpTokenModalProps> = ({ details: { name, pid, lpAddresses }, lpTokenBalance }) => {
+const StakeLpTokenModal: React.FC<StakeLpTokenModalProps> = ({ details: { name, pid, lpAddresses, quoteToken, token }, lpTokenBalance, updateResult, onDismiss }) => {
 
 
     const drFrankenstein = useDrFrankenstein();
@@ -42,7 +45,8 @@ const StakeLpTokenModal: React.FC<StakeLpTokenModalProps> = ({ details: { name, 
 
     const { theme } = useTheme();
     const [stakeAmount, setStakeAmount] = useState('');
-    const [percent, setPercent] = useState(0)
+    const [percent, setPercent] = useState(0);
+
 
 
     const handleStakeInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -60,15 +64,13 @@ const StakeLpTokenModal: React.FC<StakeLpTokenModalProps> = ({ details: { name, 
     const handleDepositLP = () => {
         const convertedStakeAmount = getDecimalAmount(new BigNumber(stakeAmount), 18);
         drFrankenstein.methods.deposit(pid, convertedStakeAmount)
-          .send({ from: account })
+          .send({ from: account }).then(()=>{
+              updateResult(pid);
+              onDismiss();
+          })
     }
 
-    const [onGetTokenClick] = useModal(
-        <WarningModal
-        url={`${BASE_EXCHANGE_URL}/#/swap?outputCurrency=${getAddress(lpAddresses)}`} />,
-      );
-
-    return <Modal title='Stake LP Tokens' headerBackground={theme.colors.gradients.cardHeader}>
+    return <Modal onDismiss={onDismiss} title='Stake LP Tokens' headerBackground={theme.colors.gradients.cardHeader}>
         <Flex alignItems="center" justifyContent="space-between" mb="8px">
             <Text bold>Stake</Text>
             <Flex alignItems="center" minWidth="70px">
@@ -109,7 +111,7 @@ const StakeLpTokenModal: React.FC<StakeLpTokenModalProps> = ({ details: { name, 
         </StyledButton>
         </Flex>
         {lpTokenBalance.toString() === '0' ?
-            <Button mt="8px" as="a" onClick={onGetTokenClick} variant="secondary">
+            <Button mt="8px" as="a" external href={`${BASE_EXCHANGE_URL}/#/add/${getAddress(quoteToken.address)}/${getAddress(token.address)}`}  variant="secondary">
                 Get {name}
             </Button> :
             <Button onClick={handleDepositLP} mt="8px" as="a" variant="secondary">

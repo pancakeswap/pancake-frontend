@@ -26,14 +26,16 @@ interface WithdrawLpModalProps {
         result: Result
     },
     lpTokenBalance: BigNumber,
-    poolInfo: any
+    poolInfo: any,
+    updateResult:any,
+    onDismiss?: () => void
 }
 
 const StyledButton = styled(Button)`
   flex-grow: 1;
 `
 
-const WithdrawLpModal: React.FC<WithdrawLpModalProps> = ({ details: { pid, result, name } }) => {
+const WithdrawLpModal: React.FC<WithdrawLpModalProps> = ({ details: { pid, result, name }, updateResult, onDismiss }) => {
 
     const currentDate = Math.floor(Date.now() / 1000);
 
@@ -62,16 +64,22 @@ const WithdrawLpModal: React.FC<WithdrawLpModalProps> = ({ details: { pid, resul
         const convertedStakeAmount = getDecimalAmount(new BigNumber(stakeAmount), 18);
 
         drFrankenstein.methods.withdrawEarly(pid, convertedStakeAmount)
-            .send({ from: account })
+            .send({ from: account }).then(()=>{
+                updateResult(pid);
+                onDismiss()
+            })
     }
 
     const handleWithDraw = () => {
         const convertedStakeAmount = getDecimalAmount(new BigNumber(stakeAmount), 18);
         drFrankenstein.methods.withdraw(pid, convertedStakeAmount)
-            .send({ from: account })
+            .send({ from: account }).then(()=>{
+                updateResult(pid);
+                onDismiss()
+            })
     }
 
-    return <Modal title='Withdraw LP Tokens' headerBackground={theme.colors.gradients.cardHeader}>
+    return <Modal onDismiss={onDismiss} title='Withdraw LP Tokens' headerBackground={theme.colors.gradients.cardHeader}>
         <Flex alignItems="center" justifyContent="space-between" mb="8px">
             <Text bold>Stake</Text>
             <Flex alignItems="center" minWidth="70px">

@@ -8,7 +8,7 @@ import { ethers } from 'ethers';
 import { useIfoAllowance } from 'hooks/useAllowance';
 import useTokenBalance from 'hooks/useTokenBalance';
 import { getFullDisplayBalance } from 'utils/formatBalance'
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import BigNumber from 'bignumber.js'
 import { getAddress, getDrFrankensteinAddress } from 'utils/addressHelpers';
 import { useERC20 } from '../../../hooks/useContract';
@@ -31,7 +31,7 @@ interface Result {
   paidUnlockFee: boolean,
   rugDeposited: number,
   tokenWithdrawalDate: any,
-  amount: BigNumber,
+  amount: BigNumber
 }
 
 interface StartFarmingProps {
@@ -44,22 +44,34 @@ interface StartFarmingProps {
     stakingToken: any,
     result: Result,
     poolInfo: any,
-    lpAddresses: any
+    lpAddresses: any,
+    quoteToken:any,
+    token:any
   },
   isAllowance: boolean,
+  updateAllowance: any,
+  updateResult: any
 }
 
-const StartFarming: React.FC<StartFarmingProps> = ({ details, details: { name, pid, lpAddresses, poolInfo, result } }) => {
+const StartFarming: React.FC<StartFarmingProps> = ({ details, details: { name, pid, lpAddresses, poolInfo, result }, updateResult, updateAllowance }) => {
 
   const lpTokenContract = useERC20(getAddress(lpAddresses));
   const { account } = useWeb3React();
-  const lpTokenAllowance = useIfoAllowance(lpTokenContract, getDrFrankensteinAddress())
+  const [isLpTokenAllowance, setIsLpTokenAllowance] = useState(false);
+  const lpTokenAllowance = useIfoAllowance(lpTokenContract, getDrFrankensteinAddress());
 
   const lpTokenBalance = useTokenBalance(getAddress(lpAddresses));
+
+  useEffect(() => {
+    if (lpTokenAllowance.toString() !== "0") {
+      setIsLpTokenAllowance(true);
+    }
+  }, [lpTokenAllowance, details]);
 
   const [onPresentZombieStake] = useModal(
     <StakeLpTokenModal
       details={details}
+      updateResult={updateResult}
       lpTokenBalance={lpTokenBalance}
     />,
   )
@@ -67,6 +79,7 @@ const StartFarming: React.FC<StartFarmingProps> = ({ details, details: { name, p
   const [onPresentWithdrawStake] = useModal(
     <WithdrawLpModal
       details={details}
+      updateResult={updateResult}
       lpTokenBalance={lpTokenBalance}
       poolInfo={poolInfo}
     />
@@ -74,7 +87,15 @@ const StartFarming: React.FC<StartFarmingProps> = ({ details, details: { name, p
 
   const handleApproveLPToken = () => {
     lpTokenContract.methods.approve(getDrFrankensteinAddress(), ethers.constants.MaxUint256)
-      .send({ from: account });
+      .send({ from: account }).then(() => {
+        lpTokenContract.methods.allowance(account, getDrFrankensteinAddress()).call().then((res) => {
+          if(res.toString() !== "0") {
+            setIsLpTokenAllowance(true);
+          } else {
+            setIsLpTokenAllowance(false);
+          }
+        })
+      })
   }
 
   const renderButtonsForGrave = () => {
@@ -89,7 +110,7 @@ const StartFarming: React.FC<StartFarmingProps> = ({ details, details: { name, p
 
   const renderButtonsForTraditionalGraves = () => {
     return <div className="space-between">
-      {lpTokenAllowance.toString() !== "0" ?
+      {isLpTokenAllowance ?
         renderButtonsForGrave()
         : <button onClick={handleApproveLPToken} className="btn btn-disabled w-100" type="button">Approve {name} LP</button>}</div>
   }
