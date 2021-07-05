@@ -64,12 +64,12 @@ interface TableListProps {
 
 const TableList: React.FC<TableListProps> = (props: TableListProps) => {
 
-  const { details: { name, path, rug, poolInfo, pendingZombie } , handler } = props;
+  const { details: { name, path, rug, poolInfo, pendingZombie }, handler } = props;
 
   let allocPoint = BIG_ZERO;
-  
-  if(poolInfo.allocPoint){
-     allocPoint = new BigNumber(poolInfo.allocPoint)
+
+  if (poolInfo.allocPoint) {
+    allocPoint = new BigNumber(poolInfo.allocPoint)
   }
 
   const [isOpen, setIsOpen] = useState(false);
@@ -88,10 +88,13 @@ const TableList: React.FC<TableListProps> = (props: TableListProps) => {
               <div className="into-two-td">
                 <div className="info-1">
                   <div className="info-icon">
-                    <img src="images/rugZombie/BasicZombie.png" alt="icon" className="icon" />
-                    {rug !== '' ? (
-                      <img src={`images/tokens/${rug.symbol}.png`} alt="icon" className="icon" />
-                    ) : null}
+                    {rug !== '' ?
+                      <>
+                        <img src="images/rugZombie/BasicZombie.png" alt="basicicon" className="icon" />
+                        <img src={`images/tokens/${rug.symbol}.png`} alt="rugicon" className="icon" />
+                      </>
+                      : <><img src="images/tokens/clear.png" alt="clearicon" className="icon" />
+                        <img src="images/rugZombie/BasicZombie.png" alt="rugicon" className="icon" /></>}
                   </div>
                   <div>
                     <div className="titel">{name}</div>
