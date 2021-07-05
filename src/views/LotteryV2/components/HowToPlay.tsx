@@ -245,7 +245,7 @@ const HowToPlay: React.FC = () => {
       </Flex>
       <StepContainer>
         {steps.map((step) => (
-          <StepCard step={step} />
+          <StepCard key={step.label} step={step} />
         ))}
       </StepContainer>
       <Divider />
