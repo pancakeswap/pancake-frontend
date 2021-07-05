@@ -70,7 +70,7 @@ const RugInDetails: React.FC<RugInDetailsProps> = ({
           <span className="indetails-value">{numeral(totalStakingTokenSupply.times(zombieUsdPrice)).format('($ 0.00 a)')}</span>
         </span>
         <span className="indetails-title">
-          <LinkExternal bold={false} small href={artist}>
+          <LinkExternal bold={false} small href={artist.twitter}>
             View NFT Artist
         </LinkExternal>
         </span>

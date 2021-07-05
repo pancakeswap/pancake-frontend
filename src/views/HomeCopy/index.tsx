@@ -32,7 +32,6 @@ const HomeC: React.FC<HomeC> = ({ zombieUsdPrice }: HomeC) => {
 
   // if allowance === 0 show the approve zombie don't call drFrankenstain
   // if allowance > 0 if(grave) paidUnlockFee === true amount
-
   useEffect(() => {
     // eslint-disable-next-line eqeqeq
     if (accountAddress) {

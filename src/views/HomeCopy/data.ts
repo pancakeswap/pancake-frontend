@@ -72,7 +72,7 @@ const tableData = [
     pid: 3,
     name: 'Defi100 Rare',
     subtitle: 'Zombie100',
-    path: 'images/rugZombie/Defi100 Rare.gif',
+    path: 'images/rugZombie/Zombie100.gif',
     type: 'image',
     withdrawalCooldown: '3 days',
     nftRevivalTime: '30 days',

@@ -62,7 +62,7 @@ const Table: React.FC<TableProps> = ({ details, isAllowance, bnbInBusd, updateAl
       .then(res => {
         setTotalStakingTokenSupply(getBalanceAmount(res))
       })
-  })
+  }, [stakingTokenContract.methods])
 
   const TableListProps = {
     "handler": openInDetails,

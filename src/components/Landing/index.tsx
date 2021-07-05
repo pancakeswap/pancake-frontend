@@ -4,6 +4,9 @@ import Header from './Header';
 import TimeLine from './TimeLine';
 import Tokenomics from './Tokenomics';
 import Footer from './Footer';
+import { BASE_EXCHANGE_URL } from '../../config'
+import tokens from '../../config/constants/tokens'
+import { getAddress } from '../../utils/addressHelpers'
 
 interface LandingProps {
   handleAuthentication: any
@@ -33,7 +36,7 @@ const Landing: React.FC<LandingProps> = (props: LandingProps) =>{
         </div>
       </div>
       <div className="_40_percent_block">
-        <a href="/" target="_blank" className="button-2 w-button">
+        <a href={`${BASE_EXCHANGE_URL}/#/swap?outputCurrency=`} className="button-2 w-button">
           Buy on Pancakeswap
         </a>
       </div>
