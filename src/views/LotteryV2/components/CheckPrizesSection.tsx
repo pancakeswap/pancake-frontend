@@ -115,7 +115,7 @@ const CheckPrizesSection = () => {
           </Heading>
           <Button
             disabled={isCheckNowDisabled}
-            onClick={() => fetchAllRewards()}
+            onClick={fetchAllRewards}
             isLoading={isFetchingRewards}
             endIcon={isFetchingRewards ? <AutoRenewIcon color="currentColor" spin /> : null}
           >

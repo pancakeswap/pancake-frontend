@@ -139,7 +139,6 @@ export const fetchUserTicketsForMultipleRounds = async (roundsToCheck: UserRound
 
 const fetchUnclaimedUserRewards = async (
   account: string,
-  currentLotteryId: string,
   userLotteryData: LotteryUserGraphEntity,
   lotteriesData: LotteryRoundGraphEntity[],
 ): Promise<LotteryTicketClaimData[]> => {

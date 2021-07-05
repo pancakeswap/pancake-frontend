@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
@@ -71,6 +71,10 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
   const cakeContract = useCake()
   const { toastSuccess } = useToast()
   const { balance: userCake, fetchStatus } = useTokenBalance(getCakeAddress())
+  // balance from useTokenBalance causes rerenders in effects as a new BigNumber is instanciated on each render, hence memoising it.
+  const stringifiedUserCake = userCake.toString()
+  const memoisedUserCake = useMemo(() => new BigNumber(stringifiedUserCake), [stringifiedUserCake])
+
   const cakePriceBusd = usePriceCakeBusd()
   const dispatch = useAppDispatch()
   const hasFetchedBalance = fetchStatus === FetchStatus.SUCCESS
@@ -93,7 +97,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
 
   useEffect(() => {
     const getMaxPossiblePurchase = () => {
-      const maxBalancePurchase = userCake.div(priceTicketInCake)
+      const maxBalancePurchase = memoisedUserCake.div(priceTicketInCake)
       const maxPurchase = maxBalancePurchase.gt(maxNumberTicketsPerBuyOrClaim)
         ? maxNumberTicketsPerBuyOrClaim
         : maxBalancePurchase
@@ -105,20 +109,21 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
       setMaxPossibleTicketPurchase(maxPurchase)
     }
     getMaxPossiblePurchase()
-  }, [maxNumberTicketsPerBuyOrClaim, priceTicketInCake, userCake, hasFetchedBalance])
+  }, [maxNumberTicketsPerBuyOrClaim, priceTicketInCake, memoisedUserCake, hasFetchedBalance])
 
   useEffect(() => {
+    const numberOfTicketsToBuy = new BigNumber(ticketsToBuy)
     const getCostAfterDiscount = () => {
       const totalAfterDiscount = priceTicketInCake
-        .times(ticketsToBuy)
-        .times(discountDivisor.plus(1).minus(ticketsToBuy))
+        .times(numberOfTicketsToBuy)
+        .times(discountDivisor.plus(1).minus(numberOfTicketsToBuy))
         .div(discountDivisor)
       return totalAfterDiscount
     }
     const costAfterDiscount = getCostAfterDiscount()
-    const costBeforeDiscount = priceTicketInCake.times(ticketsToBuy)
+    const costBeforeDiscount = priceTicketInCake.times(numberOfTicketsToBuy)
     const discountBeingApplied = costBeforeDiscount.minus(costAfterDiscount)
-
+    // TODO: Max this at 100 tickets
     setTotalCost(costAfterDiscount.gt(0) ? getFullDisplayBalance(costAfterDiscount) : '0')
     setDiscountValue(discountBeingApplied.gt(0) ? getFullDisplayBalance(discountBeingApplied, 18, 5) : '0')
   }, [ticketsToBuy, priceTicketInCake, discountDivisor])

@@ -147,7 +147,7 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
       setPendingTx(false)
       toastSuccess(
         t('Prizes Collected!'),
-        t('Your CAKE prizes for round %lotteryId& have been sent to your wallet', { lotteryId }),
+        t('Your CAKE prizes for round %lotteryId% have been sent to your wallet', { lotteryId }),
       )
       handleProgressToNextClaim()
     }

@@ -38,7 +38,7 @@ const useStatusTransitions = () => {
   }, [currentLotteryId, status, previousStatus, account, dispatch])
 
   useEffect(() => {
-    // Current lottery is CLAIMABLE and the round is transitioning - fetch current lottery ID every 10s.
+    // Current lottery is CLAIMABLE and the lottery is transitioning to a NEW round - fetch current lottery ID every 10s.
     // The isTransitioning condition will no longer be true when fetchCurrentLotteryId returns the next lottery ID
     if (previousStatus === LotteryStatus.CLAIMABLE && status === LotteryStatus.CLAIMABLE && isTransitioning) {
       dispatch(fetchCurrentLotteryId())

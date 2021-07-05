@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { useGetLotteriesGraphData, useGetUserLotteriesGraphData, useLottery } from 'state/hooks'
 import fetchUnclaimedUserRewards from 'state/lottery/fetchUnclaimedUserRewards'
@@ -11,28 +11,23 @@ export enum FetchStatus {
 
 const useGetUnclaimedRewards = () => {
   const { account } = useWeb3React()
-  const { currentLotteryId } = useLottery()
+  const { isTransitioning } = useLottery()
   const userLotteryData = useGetUserLotteriesGraphData()
   const lotteriesData = useGetLotteriesGraphData()
   const [unclaimedRewards, setUnclaimedRewards] = useState([])
   const [fetchStatus, setFetchStatus] = useState(FetchStatus.NOT_FETCHED)
 
   useEffect(() => {
-    // Reset on account change
+    // Reset on account change and round transition
     setFetchStatus(FetchStatus.NOT_FETCHED)
-  }, [account])
+  }, [account, isTransitioning])
 
-  const fetchAllRewards = useCallback(async () => {
+  const fetchAllRewards = async () => {
     setFetchStatus(FetchStatus.IN_PROGRESS)
-    const unclaimedRewardsResponse = await fetchUnclaimedUserRewards(
-      account,
-      currentLotteryId,
-      userLotteryData,
-      lotteriesData,
-    )
+    const unclaimedRewardsResponse = await fetchUnclaimedUserRewards(account, userLotteryData, lotteriesData)
     setUnclaimedRewards(unclaimedRewardsResponse)
     setFetchStatus(FetchStatus.SUCCESS)
-  }, [account, userLotteryData, currentLotteryId, lotteriesData])
+  }
 
   return { fetchAllRewards, unclaimedRewards, fetchStatus }
 }
