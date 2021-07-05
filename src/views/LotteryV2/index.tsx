@@ -42,7 +42,7 @@ const LotteryV2 = () => {
 
   return (
     <LotteryPage>
-      <PageSection background={TITLE_BG} svgFill={theme.colors.overlay} index={3} hasCurvedDivider={false}>
+      <PageSection background={TITLE_BG} svgFill={theme.colors.overlay} index={1} hasCurvedDivider={false}>
         <Hero />
       </PageSection>
       <PageSection
@@ -50,9 +50,9 @@ const LotteryV2 = () => {
         background={GET_TICKETS_BG}
         concaveDivider
         curvePosition="top"
-        index={4}
+        index={2}
       >
-        <Flex alignItems="center" justifyContent="center" flexDirection="column">
+        <Flex alignItems="center" justifyContent="center" flexDirection="column" pt="24px">
           {status === LotteryStatus.OPEN && (
             <Heading scale="xl" color="#ffffff" mb="24px" textAlign="center">
               {t('Get your tickets now!')}
@@ -72,13 +72,13 @@ const LotteryV2 = () => {
           <NextDrawCard />
         </Flex>
       </PageSection>
-      <PageSection background={CHECK_PRIZES_BG} hasCurvedDivider={false} index={4}>
+      <PageSection background={CHECK_PRIZES_BG} hasCurvedDivider={false} index={2}>
         <CheckPrizesSection />
       </PageSection>
       <PageSection
         background={isDark ? FINISHED_ROUNDS_BG_DARK : FINISHED_ROUNDS_BG}
         hasCurvedDivider={false}
-        index={4}
+        index={2}
       >
         <Flex width="100%" flexDirection="column" alignItems="center" justifyContent="center">
           <Heading mb="24px" scale="xl">
@@ -94,7 +94,7 @@ const LotteryV2 = () => {
         </Flex>
       </PageSection>
 
-      <PageSection hasCurvedDivider={false} index={1} containerProps={{ style: { marginTop: '-32px' } }}>
+      <PageSection hasCurvedDivider={false} index={2} containerProps={{ style: { marginTop: '-32px' } }}>
         <HowToPlay />
       </PageSection>
     </LotteryPage>
