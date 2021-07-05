@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useCountUp } from 'react-countup'
 import styled from 'styled-components'
 import { BnbUsdtPairTokenIcon, Box, Card, PocketWatchIcon, Text } from '@pancakeswap/uikit'
+import { formatBigNumber } from 'utils/formatBalance'
 import { useGetLastOraclePrice } from 'state/hooks'
 import { useTranslation } from 'contexts/Localization'
 import { formatRoundTime } from '../helpers'
@@ -79,10 +80,12 @@ export const PricePairLabel: React.FC = () => {
     duration: 1,
     decimals: 3,
   })
+  const priceAsNumber = parseFloat(formatBigNumber(price, 3, 8))
+  const updateRef = useRef(update)
 
   useEffect(() => {
-    update(price.toNumber())
-  }, [price, update])
+    updateRef.current(priceAsNumber)
+  }, [priceAsNumber, updateRef])
 
   return (
     <Box pl="24px" position="relative" display="inline-block">

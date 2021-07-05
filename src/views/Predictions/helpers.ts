@@ -14,7 +14,7 @@ export const formatUsd = (usd: number) => {
 }
 
 export const formatUsdv2 = (usd: ethers.BigNumber) => {
-  return `$${formatBigNumber(usd, 3, 3)}`
+  return `$${formatBigNumber(usd, 3, 8)}`
 }
 
 export const formatBnb = (bnb: number) => {
