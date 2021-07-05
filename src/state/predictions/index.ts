@@ -147,25 +147,6 @@ export const fetchBet = createAsyncThunk<{ account: string; bet: Bet }, { accoun
   },
 )
 
-export const fetchRoundBet = createAsyncThunk<
-  { account: string; roundId: string; bet: Bet },
-  { account: string; roundId: string }
->('predictions/fetchRoundBet', async ({ account, roundId }) => {
-  const betResponses = await getBetHistory({
-    user: account.toLowerCase(),
-    round: roundId,
-  })
-
-  // This should always return 0 or 1 bet because a user can only place
-  // one bet per round
-  if (betResponses && betResponses.length === 1) {
-    const [betResponse] = betResponses
-    return { account, roundId, bet: transformBetResponse(betResponse) }
-  }
-
-  return { account, roundId, bet: null }
-})
-
 export const fetchHistory = createAsyncThunk<{ account: string; bets: Bet[] }, { account: string; claimed?: boolean }>(
   'predictions/fetchHistory',
   async ({ account, claimed }) => {
@@ -310,21 +291,6 @@ export const predictionsSlice = createSlice({
     // Get multiple rounds
     builder.addCase(fetchRounds.fulfilled, (state, action) => {
       state.roundsv2 = merge({}, state.rounds, action.payload)
-    })
-
-    // Get round bet
-    builder.addCase(fetchRoundBet.fulfilled, (state, action) => {
-      const { account, roundId, bet } = action.payload
-
-      if (bet) {
-        state.bets = {
-          ...state.bets,
-          [account]: {
-            ...state.bets[account],
-            [roundId]: bet,
-          },
-        }
-      }
     })
 
     // Update Bet
