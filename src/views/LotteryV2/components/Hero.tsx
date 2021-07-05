@@ -1,5 +1,5 @@
 import React from 'react'
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 import { Box, Flex, Heading, Skeleton } from '@pancakeswap/uikit'
 import { LotteryStatus } from 'config/constants/types'
 import { useTranslation } from 'contexts/Localization'
@@ -8,6 +8,70 @@ import { getBalanceNumber } from 'utils/formatBalance'
 import Balance from 'components/Balance'
 import { TicketPurchaseCard } from '../svgs'
 import BuyTicketsButton from './BuyTicketsButton'
+
+const floatingStarsLeft = keyframes`
+  from {
+    transform: translate(0,  0px);
+  }
+  50% {
+    transform: translate(10px, 10px);
+  }
+  to {
+    transform: translate(0, -0px);
+  }  
+`
+
+const floatingStarsRight = keyframes`
+  from {
+    transform: translate(0,  0px);
+  }
+  50% {
+    transform: translate(-10px, 10px);
+  }
+  to {
+    transform: translate(0, -0px);
+  }  
+`
+
+const floatingTicketLeft = keyframes`
+  from {
+    transform: translate(0,  0px);
+  }
+  50% {
+    transform: translate(-10px, 15px);
+  }
+  to {
+    transform: translate(0, -0px);
+  }  
+`
+
+const floatingTickeRight = keyframes`
+  from {
+    transform: translate(0,  0px);
+  }
+  50% {
+    transform: translate(10px, 15px);
+  }
+  to {
+    transform: translate(0, -0px);
+  }  
+`
+
+const mainTicketAnimation = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(6deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }  
+`
+
+const TicketContainer = styled(Flex)`
+  animation: ${mainTicketAnimation} 3s ease-in-out infinite;
+`
 
 const PrizeTotalBalance = styled(Balance)`
   background: ${({ theme }) => theme.colors.gradients.gold};
@@ -55,6 +119,26 @@ const StarsDecorations = styled(Box)`
 
   & img {
     position: absolute;
+  }
+
+  & :nth-child(1) {
+    animation: ${floatingStarsLeft} 3s ease-in-out infinite;
+    animation-delay: 0.25s;
+  }
+  & :nth-child(2) {
+    animation: ${floatingStarsLeft} 3.5s ease-in-out infinite;
+    animation-delay: 0.5s;
+  }
+  & :nth-child(3) {
+    animation: ${floatingStarsRight} 4s ease-in-out infinite;
+    animation-delay: 0.75s;
+  }
+  & :nth-child(4) {
+    animation: ${floatingTicketLeft} 6s ease-in-out infinite;
+    animation-delay: 0.2s;
+  }
+  & :nth-child(5) {
+    animation: ${floatingTickeRight} 6s ease-in-out infinite;
   }
 
   ${({ theme }) => theme.mediaQueries.sm} {
@@ -175,7 +259,7 @@ const Hero = () => {
         {t('The PancakeSwap Lottery')}
       </Heading>
       {getHeroHeading()}
-      <Flex
+      <TicketContainer
         position="relative"
         width={['240px', '288px']}
         height={['94px', '113px']}
@@ -188,7 +272,7 @@ const Hero = () => {
         <TicketSvgWrapper>
           <TicketPurchaseCard width="100%" />
         </TicketSvgWrapper>
-      </Flex>
+      </TicketContainer>
     </Flex>
   )
 }
