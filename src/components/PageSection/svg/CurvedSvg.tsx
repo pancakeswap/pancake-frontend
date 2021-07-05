@@ -11,19 +11,6 @@ svg {
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
   }
 `
-// Only used on lottery page
-const LotteryConcaveTopSvg: React.FC<SvgProps> = (props) => {
-  return (
-    <Svg viewBox="0 0 1440 17" {...props}>
-      <svg width="1440" height="17" viewBox="0 0 1440 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path
-          d="M0 16.8146V0.814575C179.359 10.0203 435.559 15.7808 720 15.7808C1004.44 15.7808 1260.64 10.0203 1440 0.814575V16.8146H0Z"
-          fill="#7645D9"
-        />
-      </svg>
-    </Svg>
-  )
-}
 
 const CurvedSvg: React.FC<SvgProps> = (props) => {
   return (
@@ -69,19 +56,25 @@ export const CurvedSvgBottom = styled(CurvedSvg)<StyledSvgProps>`
   fill: ${({ svgFill, theme }) => svgFill || theme.colors.background};
 `
 
-// scale(1.05) is needed to prevent tiny half a pixel blank space on the edges
-const LotteryConcaveTop = styled(LotteryConcaveTopSvg)<StyledSvgProps>`
-  transform: scale(1.05);
-`
-
 const ConcaveContainer = styled(Box)`
   width: 100%;
-  position: relative;
-  overflow: hidden;
+  height: 20px;
+  background-color: #7645d9;
+  clip-path: url(#topConcaveCurve);
+
+  & svg {
+    display: block;
+  }
 `
 
 export const ConcaveTop = () => (
-  <ConcaveContainer mb="-4px">
-    <LotteryConcaveTop width="100%" />
+  <ConcaveContainer>
+    <svg width="0" height="0">
+      <defs>
+        <clipPath id="topConcaveCurve" clipPathUnits="objectBoundingBox">
+          <path d="M 0,0 L 0,1 L 1,1 L 1,0 C .75 1, .25 1, 0 0 Z" />
+        </clipPath>
+      </defs>
+    </svg>
   </ConcaveContainer>
 )
