@@ -3,6 +3,7 @@ import { GRAPH_API_PREDICTION } from 'config/constants/endpoints'
 import { ethers } from 'ethers'
 import {
   Bet,
+  BetDatav2,
   BetPosition,
   Market,
   NodeLedgerResponse,
@@ -352,6 +353,17 @@ export const getBet = async (betId: string): Promise<BetResponse> => {
 }
 
 // V2 REFACTOR
+export const getLedgerData = async (account: string, epochs: number[]): Promise<NodeLedgerResponse[]> => {
+  const address = getPredictionsAddress()
+  const ledgerCalls = epochs.map((epoch) => ({
+    address,
+    name: 'ledger',
+    params: [epoch, account],
+  }))
+  const response = await multicallv2(predictionsAbi, ledgerCalls)
+  return response
+}
+
 export type MarketData = Pick<
   PredictionsState,
   'status' | 'currentEpoch' | 'intervalBlocks' | 'bufferBlocks' | 'minBetAmount' | 'rewardRate'
@@ -436,4 +448,27 @@ export const transformNodeLedgerResponseToReduxLedger = (ledgerResponse: NodeLed
   amount: ledgerResponse.amount.toJSON(),
   claimed: ledgerResponse.claimed,
 })
+
+export const makeLedgerData = (account: string, ledgers: NodeLedgerResponse[], epochs: number[]): BetDatav2 => {
+  return ledgers.reduce((accum, ledgerResponse, index) => {
+    if (!ledgerResponse) {
+      return accum
+    }
+
+    // If the amount is zero that means the user did not bet
+    if (ledgerResponse.amount.eq(0)) {
+      return accum
+    }
+
+    const epoch = epochs[index].toString()
+
+    return {
+      ...accum,
+      [account]: {
+        ...accum[account],
+        [epoch]: transformNodeLedgerResponseToReduxLedger(ledgerResponse),
+      },
+    }
+  }, {})
+}
 // END V2 REFACTOR

@@ -3,15 +3,12 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import maxBy from 'lodash/maxBy'
 import merge from 'lodash/merge'
 import range from 'lodash/range'
-import predictionsAbi from 'config/abi/predictions.json'
 import { BIG_ZERO } from 'utils/bigNumber'
-import { getPredictionsAddress } from 'utils/addressHelpers'
-import { multicallv2 } from 'utils/multicall'
 import {
   Bet,
+  BetDatav2,
   HistoryFilter,
   Market,
-  NodeLedgerResponse,
   NodeRound,
   PredictionsState,
   PredictionStatus,
@@ -27,12 +24,13 @@ import {
   getBet,
   makeRoundData,
   transformNodeRoundToReduxNodeRound,
-  transformNodeLedgerResponseToReduxLedger,
   makeFutureRoundResponsev2,
   makeRoundDataV2,
   getRoundsData,
   getPredictionData,
   MarketData,
+  getLedgerData,
+  makeLedgerData,
 } from './helpers'
 
 const PAST_ROUND_COUNT = 5
@@ -66,8 +64,6 @@ type PredictionInitialization = Pick<
 export const initializePredictions = createAsyncThunk<PredictionInitialization, string>(
   'predictions/intialize',
   async (account = null) => {
-    const address = getPredictionsAddress()
-
     // Static values
     const marketData = await getPredictionData()
     const epochs = range(marketData.currentEpoch, marketData.currentEpoch - PAST_ROUND_COUNT)
@@ -94,34 +90,10 @@ export const initializePredictions = createAsyncThunk<PredictionInitialization, 
     }
 
     // Bet data
-    const ledgerCalls = epochs.map((roundEpoch) => ({
-      address,
-      name: 'ledger',
-      params: [roundEpoch, account],
-    }))
-    const ledgerResponses = (await multicallv2(predictionsAbi, ledgerCalls)) as NodeLedgerResponse[]
+    const ledgerResponses = await getLedgerData(account, epochs)
 
     return merge({}, initializedData, {
-      betsv2: ledgerResponses.reduce((accum, ledgerResponse, index) => {
-        if (!ledgerResponse) {
-          return accum
-        }
-
-        // If the amount is zero that means the user did not bet
-        if (ledgerResponse.amount.eq(0)) {
-          return accum
-        }
-
-        const epoch = epochs[index].toString()
-
-        return {
-          ...accum,
-          [account]: {
-            ...accum[account],
-            [epoch]: transformNodeLedgerResponseToReduxLedger(ledgerResponse),
-          },
-        }
-      }, {}),
+      betsv2: makeLedgerData(account, ledgerResponses, epochs),
     })
   },
 )
@@ -157,6 +129,14 @@ export const fetchMarketData = createAsyncThunk<MarketData>('predictions/fetchMa
   const marketData = await getPredictionData()
   return marketData
 })
+
+export const fetchLedgerData = createAsyncThunk<BetDatav2, { account: string; epochs: number[] }>(
+  'predictions/fetchLedgerData',
+  async ({ account, epochs }) => {
+    const ledgers = await getLedgerData(account, epochs)
+    return makeLedgerData(account, ledgers, epochs)
+  },
+)
 // END V2 REFACTOR
 
 export const fetchBet = createAsyncThunk<{ account: string; bet: Bet }, { account: string; id: string }>(
@@ -285,6 +265,11 @@ export const predictionsSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    // Ledger (bet) records
+    builder.addCase(fetchLedgerData.fulfilled, (state, action) => {
+      state.betsv2 = merge({}, state.betsv2, action.payload)
+    })
+
     // Get static market data
     builder.addCase(fetchMarketData.fulfilled, (state, action) => {
       return merge({}, state, action.payload)
