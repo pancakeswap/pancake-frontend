@@ -1,4 +1,4 @@
-import { ChainId } from '@pancakeswap-libs/sdk'
+import { ChainId } from '@pancakeswap/sdk'
 import addresses from 'config/constants/contracts'
 import tokens from 'config/constants/tokens'
 import { Address } from 'config/constants/types'
