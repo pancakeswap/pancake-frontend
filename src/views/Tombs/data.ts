@@ -7,7 +7,7 @@ const tableData = [
     name: 'ZMBE-BNB',
     lpAddresses: {
       97: '',
-      56: '0x5DB353e774655E76b52EcDE1e938011F60D7d3F3',
+      56: '0x2c8c6f56267baae303bbbeaf99557293dddc85e0',
     },
     token: tokens.zmbe,
     quoteToken: tokens.wbnb,
