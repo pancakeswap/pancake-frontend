@@ -110,6 +110,7 @@ const MatchExampleContainer = styled.div`
 const MatchExampleCard = () => {
   const { isDark } = useTheme()
   const { isXs } = useMatchBreakpoints()
+  const { t } = useTranslation()
   const exampleWidth = isXs ? '210px' : '258px'
   return (
     <StyledStepCard width={['280px', '330px', '380px']}>
@@ -118,11 +119,11 @@ const MatchExampleCard = () => {
           <Box />
           <ExampleBalls />
           <Text lineHeight="72px" textAlign="right" color="secondary" bold mr="20px">
-            A
+            {t('A')}
           </Text>
           <MatchExampleA width={exampleWidth} height="46px" isDark={isDark} />
           <Text lineHeight="72px" textAlign="right" color="secondary" bold mr="20px">
-            B
+            {t('B')}
           </Text>
           <MatchExampleB width={exampleWidth} height="46px" isDark={isDark} />
         </MatchExampleContainer>
