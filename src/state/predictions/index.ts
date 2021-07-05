@@ -101,7 +101,6 @@ export const initializePredictions = createAsyncThunk<PredictionInitialization, 
 export const fetchRound = createAsyncThunk<ReduxNodeRound, number>('predictions/fetchRound', async (epoch) => {
   const predictionContract = getPredictionsContract()
   const response: NodeRound = await predictionContract.rounds(epoch)
-
   return transformNodeRoundToReduxNodeRound(response)
 })
 
@@ -318,7 +317,7 @@ export const predictionsSlice = createSlice({
 
     // Get single round
     builder.addCase(fetchRound.fulfilled, (state, action) => {
-      state.rounds = merge({}, state.rounds, {
+      state.roundsv2 = merge({}, state.rounds, {
         [action.payload.epoch.toString()]: action.payload,
       })
     })
