@@ -21,7 +21,6 @@ import {
   transformRoundResponse,
   getBetHistory,
   transformBetResponse,
-  getBet,
   makeRoundData,
   transformNodeRoundToReduxNodeRound,
   makeFutureRoundResponsev2,
@@ -137,15 +136,6 @@ export const fetchLedgerData = createAsyncThunk<BetDatav2, { account: string; ep
   },
 )
 // END V2 REFACTOR
-
-export const fetchBet = createAsyncThunk<{ account: string; bet: Bet }, { account: string; id: string }>(
-  'predictions/fetchBet',
-  async ({ account, id }) => {
-    const response = await getBet(id)
-    const bet = transformBetResponse(response)
-    return { account, bet }
-  },
-)
 
 export const fetchHistory = createAsyncThunk<{ account: string; bets: Bet[] }, { account: string; claimed?: boolean }>(
   'predictions/fetchHistory',
@@ -291,12 +281,6 @@ export const predictionsSlice = createSlice({
     // Get multiple rounds
     builder.addCase(fetchRounds.fulfilled, (state, action) => {
       state.roundsv2 = merge({}, state.rounds, action.payload)
-    })
-
-    // Update Bet
-    builder.addCase(fetchBet.fulfilled, (state, action) => {
-      const { account, bet } = action.payload
-      state.history[account] = [...state.history[account].filter((currentBet) => currentBet.id !== bet.id), bet]
     })
 
     // Show History

@@ -6,7 +6,7 @@ import { useTranslation } from 'contexts/Localization'
 import { useBetCanClaim, useGetRewardRate, usePriceBnbBusd } from 'state/hooks'
 import styled from 'styled-components'
 import { Bet, BetPosition } from 'state/types'
-import { fetchBet } from 'state/predictions'
+import { fetchLedgerData } from 'state/predictions'
 import { Result } from 'state/predictions/helpers'
 import { getBscScanTransactionUrl } from 'utils/bscscan'
 import useIsRefundable from '../../hooks/useIsRefundable'
@@ -101,7 +101,7 @@ const BetResult: React.FC<BetResultProps> = ({ bet, result }) => {
   }
 
   const handleSuccess = async () => {
-    await dispatch(fetchBet({ account, id: bet.id }))
+    await dispatch(fetchLedgerData({ account, epochs: [bet.round.epoch] }))
   }
 
   return (
