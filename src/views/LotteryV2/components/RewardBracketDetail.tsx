@@ -22,7 +22,7 @@ const RewardBracketDetail: React.FC<RewardBracketDetailProps> = ({
   isBurn,
 }) => {
   const { t } = useTranslation()
-  const cakePriceBusd = usePriceCakeBusd()
+  const cakePriceBusd = new BigNumber(20)
   const prizeInBusd = cakeAmount.times(cakePriceBusd)
 
   const getRewardText = () => {

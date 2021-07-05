@@ -71,7 +71,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
   const cakeContract = useCake()
   const { toastSuccess } = useToast()
   const { balance: userCake, fetchStatus } = useTokenBalance(getCakeAddress())
-  const cakePriceBusd = usePriceCakeBusd()
+  const cakePriceBusd = new BigNumber(20)
   const dispatch = useAppDispatch()
   const hasFetchedBalance = fetchStatus === FetchStatus.SUCCESS
   const userCakeDisplayBalance = getFullDisplayBalance(userCake, 18, 3)
