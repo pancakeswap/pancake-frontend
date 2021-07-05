@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Box, Flex, Text, Heading, useMatchBreakpoints, Link } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
+import useTheme from 'hooks/useTheme'
 import { BallWithNumber, MatchExampleA, MatchExampleB, PoolAllocationChart } from '../svgs'
 
 const Divider = styled.div`
@@ -107,6 +108,7 @@ const MatchExampleContainer = styled.div`
 `
 
 const MatchExampleCard = () => {
+  const { isDark } = useTheme()
   const { isXs } = useMatchBreakpoints()
   const exampleWidth = isXs ? '210px' : '258px'
   return (
@@ -118,11 +120,11 @@ const MatchExampleCard = () => {
           <Text lineHeight="72px" textAlign="right" color="secondary" bold mr="20px">
             A
           </Text>
-          <MatchExampleA width={exampleWidth} height="46px" />
+          <MatchExampleA width={exampleWidth} height="46px" isDark={isDark} />
           <Text lineHeight="72px" textAlign="right" color="secondary" bold mr="20px">
             B
           </Text>
-          <MatchExampleB width={exampleWidth} height="46px" />
+          <MatchExampleB width={exampleWidth} height="46px" isDark={isDark} />
         </MatchExampleContainer>
       </StepCardInner>
     </StyledStepCard>
