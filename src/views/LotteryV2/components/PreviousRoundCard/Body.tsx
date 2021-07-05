@@ -1,13 +1,10 @@
 import React from 'react'
-import styled from 'styled-components'
 import { CardBody, Heading, Flex, Skeleton, Text, Box, Button, useModal } from '@pancakeswap/uikit'
 import { LotteryRound } from 'state/types'
 import { useGetUserLotteriesGraphData } from 'state/hooks'
 import { useTranslation } from 'contexts/Localization'
 import WinningNumbers from '../WinningNumbers'
 import ViewTicketsModal from '../ViewTicketsModal'
-
-const StyledCardBody = styled(CardBody)``
 
 const PreviousRoundCardBody: React.FC<{ lotteryData: LotteryRound; lotteryId: string }> = ({
   lotteryData,
@@ -21,7 +18,7 @@ const PreviousRoundCardBody: React.FC<{ lotteryData: LotteryRound; lotteryId: st
   const userDataForRound = userLotteryData.rounds.find((userLotteryRound) => userLotteryRound.lotteryId === lotteryId)
 
   return (
-    <StyledCardBody>
+    <CardBody>
       <Flex flexDirection="column" alignItems="center" justifyContent="center">
         <Heading mb="24px">{t('Winning Number')}</Heading>
         {lotteryData ? (
@@ -52,7 +49,7 @@ const PreviousRoundCardBody: React.FC<{ lotteryData: LotteryRound; lotteryId: st
           </>
         )}
       </Flex>
-    </StyledCardBody>
+    </CardBody>
   )
 }
 

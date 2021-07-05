@@ -213,6 +213,7 @@ const PreviousRoundTicketsInner: React.FC<{ roundId: string }> = ({ roundId }) =
                 id={ticket.id}
                 number={ticket.number}
                 rewardBracket={ticket.rewardBracket}
+                status={ticket.status}
               />
             )
           })

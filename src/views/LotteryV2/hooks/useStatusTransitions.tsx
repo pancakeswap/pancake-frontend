@@ -20,18 +20,15 @@ const useStatusTransitions = () => {
   useEffect(() => {
     // Only run if there is a status state change
     if (previousStatus !== status) {
-      console.log('|| STATUS CHANGE')
       // Current lottery transitions from CLOSE > CLAIMABLE
       if (previousStatus === LotteryStatus.CLOSE && status === LotteryStatus.CLAIMABLE) {
-        console.log('|| CLOSE > CLAIMABLE')
         dispatch(fetchPastLotteries())
         if (account) {
           dispatch(fetchUserLotteries({ account }))
         }
       }
-      // Previous lottery to new lottery transition. From CLAIMABLE > OPEN
+      // Previous lottery to new lottery. From CLAIMABLE (previous round) > OPEN (new round)
       if (previousStatus === LotteryStatus.CLAIMABLE && status === LotteryStatus.OPEN) {
-        console.log('|| CLAIMABLE > OPEN')
         dispatch(fetchPastLotteries())
         if (account) {
           dispatch(fetchUserLotteries({ account }))
@@ -44,11 +41,9 @@ const useStatusTransitions = () => {
     // Current lottery is CLAIMABLE and the round is transitioning - fetch current lottery ID every 10s.
     // The isTransitioning condition will no longer be true when fetchCurrentLotteryId returns the next lottery ID
     if (previousStatus === LotteryStatus.CLAIMABLE && status === LotteryStatus.CLAIMABLE && isTransitioning) {
-      console.log('|| TRANSITIONING && CLAIMABLE - FIRST FETCH')
       dispatch(fetchCurrentLotteryId())
       dispatch(fetchPastLotteries())
       const interval = setInterval(async () => {
-        console.log('|| FETCHING NEW LOTTERY ROUND ON TIMEOUT')
         dispatch(fetchCurrentLotteryId())
         dispatch(fetchPastLotteries())
       }, 10000)

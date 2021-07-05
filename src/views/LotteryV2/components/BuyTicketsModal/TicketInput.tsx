@@ -52,7 +52,6 @@ const DigitInput = styled.input`
     outline: none;
   }
 
-  /* TODO check other browsers */
   &::-webkit-outer-spin-button,
   &::-webkit-inner-spin-button {
     /* display: none; <- Crashes Chrome on hover */
@@ -125,7 +124,6 @@ const TicketContaier: React.FC<{
       }
     }
 
-    // Backsapce key
     if (event.key === 'Backspace') {
       event.preventDefault()
       // If some number is there - delete the number
@@ -146,7 +144,7 @@ const TicketContaier: React.FC<{
         }
       }
     }
-    // Delete key
+
     if (event.key === 'Delete') {
       event.preventDefault()
       if (ticket.numbers[digitId]) {

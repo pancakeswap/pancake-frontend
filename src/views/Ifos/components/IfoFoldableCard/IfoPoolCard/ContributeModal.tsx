@@ -65,7 +65,6 @@ const ContributeModal: React.FC<Props> = ({
       onApprove: () => {
         return raisingTokenContract.approve(contract.address, ethers.constants.MaxUint256, { gasPrice })
       },
-
       onConfirm: () => {
         return contract.depositPool(valueWithTokenDecimals.toString(), poolId === PoolIds.poolBasic ? 0 : 1, {
           gasPrice,

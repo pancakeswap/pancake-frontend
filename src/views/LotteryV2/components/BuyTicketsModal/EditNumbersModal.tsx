@@ -37,7 +37,7 @@ const EditNumbersModal: React.FC<{
   const { t } = useTranslation()
   return (
     <StyledModal
-      title="Edit numbers"
+      title={t('Edit numbers')}
       onDismiss={onDismiss}
       headerBackground={theme.colors.gradients.cardHeader}
       onBack={onDismiss}

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { Button, Heading, Flex, useModal, AutoRenewIcon } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'contexts/Localization'
-import { useGetUserLotteriesGraphData } from 'state/hooks'
+import { useGetUserLotteriesGraphData, useLottery } from 'state/hooks'
 import UnlockButton from 'components/UnlockButton'
 import ClaimPrizesModal from './ClaimPrizesModal'
 import useGetUnclaimedRewards, { FetchStatus } from '../hooks/useGetUnclaimedRewards'
@@ -25,6 +25,7 @@ const TornTicketImage = styled.img`
 const CheckPrizesSection = () => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
+  const { isTransitioning } = useLottery()
   const { fetchAllRewards, unclaimedRewards, fetchStatus } = useGetUnclaimedRewards()
   const userLotteryData = useGetUserLotteriesGraphData()
   const [hasCheckedForRewards, setHasCheckedForRewards] = useState(false)
@@ -50,10 +51,10 @@ const CheckPrizesSection = () => {
   }, [unclaimedRewards, hasCheckedForRewards, fetchStatus, onPresentClaimModal])
 
   useEffect(() => {
-    // Clear local state on account change
+    // Clear local state on account change, or when lottery isTransitioning state changes
     setHasRewardsToClaim(false)
     setHasCheckedForRewards(false)
-  }, [account])
+  }, [account, isTransitioning])
 
   const getBody = () => {
     if (!account) {

@@ -165,7 +165,7 @@ export enum LotteryStatus {
 export interface LotteryTicket {
   id: string
   number: string
-  status?: boolean
+  status: boolean
   rewardBracket?: number
   roundId?: string
   cakeReward?: SerializedBigNumber

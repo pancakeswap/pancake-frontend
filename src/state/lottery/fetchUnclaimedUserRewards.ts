@@ -40,8 +40,6 @@ const fetchCakeRewardsForTickets = async (
   const ticketsWithUnclaimedRewards = winningTickets.map((winningTicket, index) => {
     return { ...winningTicket, cakeReward: cakeRewards[index] }
   })
-  // TODO: Remove log. To help in testing when verifying winning tickets.
-  console.log('winning tickets: ', ticketsWithUnclaimedRewards)
   return { ticketsWithUnclaimedRewards, cakeTotal }
 }
 
@@ -79,8 +77,6 @@ export const getWinningTickets = async (
       rewardBracket: getRewardBracketByNumber(ticket.number, finalNumber),
     }
   })
-  // TODO: Remove log. To help in testing when verifying winning tickets.
-  console.log(`all tickets round #${roundId}`, ticketsWithRewardBrackets)
 
   // A rewardBracket of -1 means no matches. 0 and above means there has been a match
   const allWinningTickets = ticketsWithRewardBrackets.filter((ticket) => {

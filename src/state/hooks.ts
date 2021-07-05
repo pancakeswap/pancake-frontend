@@ -511,7 +511,7 @@ export const useGetUserLotteriesGraphData = () => {
 }
 
 export const useGetUserLotteryGraphRoundById = (lotteryId: string) => {
-  const userLotteriesData = useSelector((state: State) => state.lottery.userLotteryData)
+  const userLotteriesData = useGetUserLotteriesGraphData()
   return userLotteriesData.rounds.find((userRound) => userRound.lotteryId === lotteryId)
 }
 
@@ -520,7 +520,7 @@ export const useGetLotteriesGraphData = () => {
 }
 
 export const useGetLotteryGraphDataById = (lotteryId: string) => {
-  const lotteriesData = useSelector((state: State) => state.lottery.lotteriesData)
+  const lotteriesData = useGetLotteriesGraphData()
   return lotteriesData.find((lottery) => lottery.id === lotteryId)
 }
 

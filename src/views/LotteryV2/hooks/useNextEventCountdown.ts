@@ -10,7 +10,6 @@ const useNextEventCountdown = (nextEventTime: number): number => {
   const { currentLotteryId } = useLottery()
 
   useEffect(() => {
-    console.log('xxxx COUNTDOWN EFFECT FIRING xxxx')
     dispatch(setLotteryIsTransitioning({ isTransitioning: false }))
     const currentSeconds = Math.floor(Date.now() / 1000)
     const secondsRemainingCalc = nextEventTime - currentSeconds
@@ -20,7 +19,6 @@ const useNextEventCountdown = (nextEventTime: number): number => {
       setSecondsRemaining((prevSecondsRemaining) => {
         // Clear current interval at end of countdown and fetch current lottery to get updated state
         if (prevSecondsRemaining <= 1) {
-          console.log('yyyy COUNTDOWN FINISHED yyyy')
           clearInterval(timer.current)
           dispatch(setLotteryIsTransitioning({ isTransitioning: true }))
           dispatch(fetchCurrentLottery({ currentLotteryId }))
@@ -32,7 +30,6 @@ const useNextEventCountdown = (nextEventTime: number): number => {
     return () => clearInterval(timer.current)
   }, [setSecondsRemaining, nextEventTime, currentLotteryId, timer, dispatch])
 
-  console.log('countdown |', secondsRemaining)
   return secondsRemaining
 }
 

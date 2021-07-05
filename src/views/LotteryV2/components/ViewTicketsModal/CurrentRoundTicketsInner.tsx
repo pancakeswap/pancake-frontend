@@ -34,7 +34,15 @@ const CurrentRoundTicketsInner = () => {
         </Text>
         <ScrollBox>
           {userTickets.tickets.map((ticket, index) => {
-            return <TicketNumber key={ticket.id} localId={index + 1} id={ticket.id} number={ticket.number} />
+            return (
+              <TicketNumber
+                key={ticket.id}
+                localId={index + 1}
+                id={ticket.id}
+                number={ticket.number}
+                status={ticket.status}
+              />
+            )
           })}
         </ScrollBox>
       </Flex>

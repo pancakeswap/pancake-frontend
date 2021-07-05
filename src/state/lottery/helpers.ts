@@ -107,11 +107,9 @@ export const fetchCurrentLotteryIdAndMaxBuy = async () => {
 }
 
 export const processRawTicketsResponse = (ticketsResponse: UserTicketsResponse): LotteryTicket[] => {
-  const ticketIds = ticketsResponse[0]
-  const ticketNumbers = ticketsResponse[1]
-  const ticketStatuses = ticketsResponse[2]
+  const [ticketIds, ticketNumbers, ticketStatuses] = ticketsResponse
 
-  if (ticketIds.length > 0) {
+  if (ticketIds?.length > 0) {
     return ticketIds.map((ticketId, index) => {
       return {
         id: ticketId.toString(),

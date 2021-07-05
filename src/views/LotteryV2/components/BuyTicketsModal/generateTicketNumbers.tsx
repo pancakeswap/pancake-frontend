@@ -1,16 +1,8 @@
 import { LotteryTicket } from 'config/constants/types'
+import { random } from 'lodash'
 
 /**
- * Return a random number between (and inclusive of) minNumber & maxNumber.
- */
-function generateRandomNumber(minNumber: number, maxNumber: number): number {
-  const minInt = Math.ceil(minNumber)
-  const maxInt = Math.floor(maxNumber)
-  return Math.floor(Math.random() * (maxInt - minInt + 1) + minInt) // The maximum is inclusive and the minimum is inclusive
-}
-
-/**
- * Generate a specific number of unique, 7-digit lottery numbers between 1000000 & 1999999
+ * Generate a specific number of unique, randomised 7-digit lottery numbers between 1000000 & 1999999
  */
 const generateTicketNumbers = (
   numberOfTickets: number,
@@ -28,10 +20,10 @@ const generateTicketNumbers = (
   const generatedTicketNumbers = [...existingTicketNumbers]
 
   for (let count = 0; count < numberOfTickets; count++) {
-    let randomNumber = generateRandomNumber(minNumber, maxNumber)
+    let randomNumber = random(minNumber, maxNumber)
     while (generatedTicketNumbers.includes(randomNumber)) {
       // Catch for duplicates - generate a new number until the array doesn't include the random number generated
-      randomNumber = generateRandomNumber(minNumber, maxNumber)
+      randomNumber = random(minNumber, maxNumber)
     }
     generatedTicketNumbers.push(randomNumber)
   }
