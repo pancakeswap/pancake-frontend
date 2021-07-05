@@ -2,8 +2,23 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import maxBy from 'lodash/maxBy'
 import merge from 'lodash/merge'
+import range from 'lodash/range'
+import predictionsAbi from 'config/abi/predictions.json'
 import { BIG_ZERO } from 'utils/bigNumber'
-import { Bet, HistoryFilter, Market, PredictionsState, PredictionStatus, Round } from 'state/types'
+import { getPredictionsAddress } from 'utils/addressHelpers'
+import { multicallv2 } from 'utils/multicall'
+import {
+  Bet,
+  HistoryFilter,
+  Market,
+  NodeLedgerResponse,
+  NodeRound,
+  PredictionsState,
+  PredictionStatus,
+  ReduxNodeRound,
+  Round,
+} from 'state/types'
+import { getPredictionsContract } from 'utils/contractHelpers'
 import {
   makeFutureRoundResponse,
   transformRoundResponse,
@@ -11,7 +26,14 @@ import {
   transformBetResponse,
   getBet,
   makeRoundData,
+  transformNodeRoundToReduxNodeRound,
+  transformNodeLedgerResponseToReduxLedger,
+  makeFutureRoundResponsev2,
+  makeRoundDataV2,
 } from './helpers'
+
+const PAST_ROUND_COUNT = 5
+const FUTURE_ROUND_COUNT = 2
 
 const initialState: PredictionsState = {
   status: PredictionStatus.INITIAL,
@@ -33,6 +55,125 @@ const initialState: PredictionsState = {
 }
 
 // Thunks
+type PredictionInitialization = Pick<
+  PredictionsState,
+  'status' | 'currentEpoch' | 'intervalBlocks' | 'bufferBlocks' | 'minBetAmount' | 'rewardRate' | 'roundsv2' | 'betsv2'
+>
+export const initializePredictions = createAsyncThunk<PredictionInitialization, string>(
+  'predictions/intialize',
+  async (account = null) => {
+    const address = getPredictionsAddress()
+
+    // Static values
+    const staticCalls = ['currentEpoch', 'intervalBlocks', 'minBetAmount', 'paused', 'bufferBlocks', 'rewardRate'].map(
+      (method) => ({
+        address,
+        name: method,
+      }),
+    )
+    const [[currentEpoch], [intervalBlocks], [minBetAmount], [paused], [bufferBlocks], [rewardRate]] =
+      await multicallv2(predictionsAbi, staticCalls)
+    const epochs = range(currentEpoch, currentEpoch.sub(PAST_ROUND_COUNT).toNumber())
+
+    // Round data
+    const roundCalls = epochs.map((roundEpoch) => ({
+      address,
+      name: 'rounds',
+      params: [roundEpoch],
+    }))
+    const roundsResponse = (await multicallv2(predictionsAbi, roundCalls)) as NodeRound[]
+    const initialRoundData: { [key: string]: ReduxNodeRound } = roundsResponse.reduce((accum, roundResponse) => {
+      const reduxNodeRound = transformNodeRoundToReduxNodeRound(roundResponse)
+
+      return {
+        ...accum,
+        [reduxNodeRound.epoch.toString()]: reduxNodeRound,
+      }
+    }, {})
+
+    const initializedData = {
+      status: paused ? PredictionStatus.PAUSED : PredictionStatus.LIVE,
+      currentEpoch: currentEpoch.toNumber(),
+      intervalBlocks: intervalBlocks.toNumber(),
+      bufferBlocks: bufferBlocks.toNumber(),
+      minBetAmount: minBetAmount.toString(),
+      rewardRate: rewardRate.toNumber(),
+      roundsv2: initialRoundData,
+      betsv2: {},
+    }
+
+    if (!account) {
+      return initializedData
+    }
+
+    // Bet data
+    const ledgerCalls = epochs.map((roundEpoch) => ({
+      address,
+      name: 'ledger',
+      params: [roundEpoch, account],
+    }))
+    const ledgerResponses = (await multicallv2(predictionsAbi, ledgerCalls)) as NodeLedgerResponse[]
+
+    return merge({}, initializedData, {
+      betsv2: ledgerResponses.reduce((accum, ledgerResponse, index) => {
+        if (!ledgerResponse) {
+          return accum
+        }
+
+        // If the amount is zero that means the user did not bet
+        if (ledgerResponse.amount.eq(0)) {
+          return accum
+        }
+
+        const epoch = epochs[index].toString()
+
+        return {
+          ...accum,
+          [account]: {
+            ...accum[account],
+            [epoch]: transformNodeLedgerResponseToReduxLedger(ledgerResponse),
+          },
+        }
+      }, {}),
+    })
+  },
+)
+
+export const fetchRound = createAsyncThunk<ReduxNodeRound, number>('predictions/fetchRound', async (epoch) => {
+  const predictionContract = getPredictionsContract()
+  const response: NodeRound = await predictionContract.rounds(epoch)
+
+  return transformNodeRoundToReduxNodeRound(response)
+})
+
+export const fetchRounds = createAsyncThunk<{ [key: string]: ReduxNodeRound }, number[]>(
+  'predictions/fetchRounds',
+  async (epochs) => {
+    const rounds = (await multicallv2(
+      predictionsAbi,
+      epochs.map((roundEpoch) => ({
+        address: getPredictionsAddress(),
+        name: 'rounds',
+        params: [roundEpoch],
+      })),
+      { requireSuccess: false },
+    )) as NodeRound[]
+
+    return rounds.reduce((accum, round) => {
+      if (!round) {
+        return accum
+      }
+
+      const reduxNodeRound = transformNodeRoundToReduxNodeRound(round)
+
+      return {
+        ...accum,
+        [reduxNodeRound.epoch.toString()]: reduxNodeRound,
+      }
+    }, {})
+  },
+)
+
 export const fetchBet = createAsyncThunk<{ account: string; bet: Bet }, { account: string; id: string }>(
   'predictions/fetchBet',
   async ({ account, id }) => {
@@ -159,6 +300,43 @@ export const predictionsSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    // Initialize predictions
+    builder.addCase(initializePredictions.fulfilled, (state, action) => {
+      const { status, currentEpoch, bufferBlocks, intervalBlocks, roundsv2, rewardRate, betsv2 } = action.payload
+      const currentRoundStartBlockNumber = action.payload.roundsv2[currentEpoch].startBlock
+      const futureRounds: ReduxNodeRound[] = []
+      const halfInterval = (intervalBlocks + bufferBlocks) / 2
+
+      for (let i = 1; i <= FUTURE_ROUND_COUNT; i++) {
+        futureRounds.push(
+          makeFutureRoundResponsev2(currentEpoch + i, (currentRoundStartBlockNumber + halfInterval) * i),
+        )
+      }
+
+      return {
+        ...state,
+        status,
+        currentEpoch,
+        bufferBlocks,
+        intervalBlocks,
+        rewardRate,
+        betsv2,
+        roundsv2: merge({}, roundsv2, makeRoundDataV2(futureRounds)),
+      }
+    })
+
+    // Get single round
+    builder.addCase(fetchRound.fulfilled, (state, action) => {
+      state.rounds = merge({}, state.rounds, {
+        [action.payload.epoch.toString()]: action.payload,
+      })
+    })
+
+    // Get multiple rounds
+    builder.addCase(fetchRounds.fulfilled, (state, action) => {
+      state.rounds = merge({}, state.rounds, action.payload)
+    })
+
     // Get unclaimed bets
     builder.addCase(fetchCurrentBets.fulfilled, (state, action) => {
       const { account, bets } = action.payload

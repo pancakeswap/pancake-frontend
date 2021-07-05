@@ -1,7 +1,20 @@
 import { request, gql } from 'graphql-request'
 import { GRAPH_API_PREDICTION } from 'config/constants/endpoints'
 import { ethers } from 'ethers'
-import { Bet, BetPosition, Market, PredictionsState, PredictionStatus, Round, RoundData } from 'state/types'
+import {
+  Bet,
+  BetPosition,
+  Market,
+  NodeLedgerResponse,
+  NodeRound,
+  PredictionsState,
+  PredictionStatus,
+  ReduxNodeLedger,
+  ReduxNodeRound,
+  Round,
+  RoundData,
+  RoundDataV2,
+} from 'state/types'
 import { multicallv2 } from 'utils/multicall'
 import predictionsAbi from 'config/abi/predictions.json'
 import { getPredictionsAddress } from 'utils/addressHelpers'
@@ -337,3 +350,52 @@ export const getBet = async (betId: string): Promise<BetResponse> => {
   )
   return response.bet
 }
+
+// V2 REFACTOR
+export const makeFutureRoundResponsev2 = (epoch: number, startBlock: number): ReduxNodeRound => {
+  return {
+    epoch,
+    startBlock,
+    lockBlock: null,
+    endBlock: null,
+    lockPrice: null,
+    closePrice: null,
+    totalAmount: ethers.BigNumber.from(0).toJSON(),
+    bullAmount: ethers.BigNumber.from(0).toJSON(),
+    bearAmount: ethers.BigNumber.from(0).toJSON(),
+    rewardBaseCalAmount: ethers.BigNumber.from(0).toJSON(),
+    rewardAmount: ethers.BigNumber.from(0).toJSON(),
+    oracleCalled: false,
+  }
+}
+
+export const makeRoundDataV2 = (rounds: ReduxNodeRound[]): RoundDataV2 => {
+  return rounds.reduce((accum, round) => {
+    return {
+      ...accum,
+      [round.epoch.toString()]: round,
+    }
+  }, {})
+}
+
+export const transformNodeRoundToReduxNodeRound = (roundsResponse: NodeRound): ReduxNodeRound => ({
+  epoch: roundsResponse.epoch.toNumber(),
+  startBlock: roundsResponse.startBlock.toNumber(),
+  lockBlock: roundsResponse.lockBlock.toNumber(),
+  endBlock: roundsResponse.endBlock.toNumber(),
+  lockPrice: roundsResponse.lockPrice.eq(0) ? null : roundsResponse.lockPrice.toJSON(),
+  closePrice: roundsResponse.closePrice.eq(0) ? null : roundsResponse.lockPrice.toJSON(),
+  totalAmount: roundsResponse.totalAmount.toJSON(),
+  bullAmount: roundsResponse.bullAmount.toJSON(),
+  bearAmount: roundsResponse.bearAmount.toJSON(),
+  rewardBaseCalAmount: roundsResponse.rewardBaseCalAmount.toJSON(),
+  rewardAmount: roundsResponse.rewardAmount.toJSON(),
+  oracleCalled: roundsResponse.oracleCalled,
+})
+
+export const transformNodeLedgerResponseToReduxLedger = (ledgerResponse: NodeLedgerResponse): ReduxNodeLedger => ({
+  position: ledgerResponse.position === 0 ? BetPosition.BEAR : BetPosition.BEAR,
+  amount: ledgerResponse.amount.toJSON(),
+  claimed: ledgerResponse.claimed,
+})
+// END V2 REFACTOR
