@@ -30,6 +30,7 @@ import {
   transformNodeLedgerResponseToReduxLedger,
   makeFutureRoundResponsev2,
   makeRoundDataV2,
+  getRoundsData,
 } from './helpers'
 
 const PAST_ROUND_COUNT = 5
@@ -76,12 +77,7 @@ export const initializePredictions = createAsyncThunk<PredictionInitialization, 
     const epochs = range(currentEpoch, currentEpoch.sub(PAST_ROUND_COUNT).toNumber())
 
     // Round data
-    const roundCalls = epochs.map((roundEpoch) => ({
-      address,
-      name: 'rounds',
-      params: [roundEpoch],
-    }))
-    const roundsResponse = (await multicallv2(predictionsAbi, roundCalls)) as NodeRound[]
+    const roundsResponse = await getRoundsData(epochs)
     const initialRoundData: { [key: string]: ReduxNodeRound } = roundsResponse.reduce((accum, roundResponse) => {
       const reduxNodeRound = transformNodeRoundToReduxNodeRound(roundResponse)
 
@@ -149,15 +145,7 @@ export const fetchRound = createAsyncThunk<ReduxNodeRound, number>('predictions/
 export const fetchRounds = createAsyncThunk<{ [key: string]: ReduxNodeRound }, number[]>(
   'predictions/fetchRounds',
   async (epochs) => {
-    const rounds = (await multicallv2(
-      predictionsAbi,
-      epochs.map((roundEpoch) => ({
-        address: getPredictionsAddress(),
-        name: 'rounds',
-        params: [roundEpoch],
-      })),
-      { requireSuccess: false },
-    )) as NodeRound[]
+    const rounds = await getRoundsData(epochs)
 
     return rounds.reduce((accum, round) => {
       if (!round) {
@@ -334,7 +322,7 @@ export const predictionsSlice = createSlice({
 
     // Get multiple rounds
     builder.addCase(fetchRounds.fulfilled, (state, action) => {
-      state.rounds = merge({}, state.rounds, action.payload)
+      state.roundsv2 = merge({}, state.rounds, action.payload)
     })
 
     // Get unclaimed bets

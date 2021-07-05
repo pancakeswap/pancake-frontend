@@ -343,6 +343,14 @@ export const useInitialBlock = () => {
 }
 
 // Predictions
+
+// V2 REFACTOR
+export const useGetRoundsv2 = () => {
+  return useSelector((state: State) => state.predictions.rounds)
+}
+
+// END V2 REFACTOR
+
 export const useIsHistoryPaneOpen = () => {
   return useSelector((state: State) => state.predictions.isHistoryPaneOpen)
 }

@@ -352,6 +352,18 @@ export const getBet = async (betId: string): Promise<BetResponse> => {
 }
 
 // V2 REFACTOR
+
+export const getRoundsData = async (epochs: number[]): Promise<NodeRound[]> => {
+  const address = getPredictionsAddress()
+  const calls = epochs.map((epoch) => ({
+    address,
+    name: 'rounds',
+    params: [epoch],
+  }))
+  const response = (await multicallv2(predictionsAbi, calls)) as NodeRound[]
+  return response
+}
+
 export const makeFutureRoundResponsev2 = (epoch: number, startBlock: number): ReduxNodeRound => {
   return {
     epoch,
