@@ -90,6 +90,7 @@ const PageSection: React.FC<PageSectionProps> = ({
         <CurvedDivider
           svgFill={svgFill}
           index={index}
+          concave={concaveDivider}
           curvePosition={curvePosition}
           dividerComponent={dividerComponent}
         />

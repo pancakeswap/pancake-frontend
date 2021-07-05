@@ -75,11 +75,7 @@ const LotteryV2 = () => {
       <PageSection background={CHECK_PRIZES_BG} hasCurvedDivider={false} index={2}>
         <CheckPrizesSection />
       </PageSection>
-      <PageSection
-        background={isDark ? FINISHED_ROUNDS_BG_DARK : FINISHED_ROUNDS_BG}
-        hasCurvedDivider={false}
-        index={2}
-      >
+      <PageSection background={isDark ? FINISHED_ROUNDS_BG_DARK : FINISHED_ROUNDS_BG} concaveDivider index={2}>
         <Flex width="100%" flexDirection="column" alignItems="center" justifyContent="center">
           <Heading mb="24px" scale="xl">
             {t('Finished Rounds')}
