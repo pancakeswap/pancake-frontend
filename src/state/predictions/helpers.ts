@@ -505,7 +505,7 @@ export const serializePredictionsRoundsResponse = (response: PredictionsRoundsRe
     lockBlock: lockBlock.toNumber(),
     endBlock: endBlock.toNumber(),
     lockPrice: lockPrice.eq(0) ? null : lockPrice.toJSON(),
-    closePrice: closePrice.eq(0) ? null : lockPrice.toJSON(),
+    closePrice: closePrice.eq(0) ? null : closePrice.toJSON(),
     totalAmount: totalAmount.toJSON(),
     bullAmount: bullAmount.toJSON(),
     bearAmount: bearAmount.toJSON(),
