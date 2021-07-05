@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import { useCountUp } from 'react-countup'
 import { CardBody, Flex, PlayCircleOutlineIcon, Skeleton, Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
+import { formatBigNumber } from 'utils/formatBalance'
 import { NodeRound, NodeLedger, BetPosition } from 'state/types'
 import { useBlock, useGetIntervalBlocks, useGetLastOraclePrice } from 'state/hooks'
 import BlockProgress from 'components/BlockProgress'
@@ -52,9 +53,11 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
   const estimatedEndBlock = lockBlock + totalInterval
   const priceDifference = price.sub(lockPrice)
   const hasRoundFailed = getHasRoundFailed(round, currentBlock)
+  const priceAsNumber = parseFloat(formatBigNumber(price, 3, 8))
+
   const { countUp, update } = useCountUp({
     start: 0,
-    end: price.toNumber(),
+    end: priceAsNumber,
     duration: 1,
     decimals: 3,
   })
@@ -62,9 +65,11 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
     placement: 'bottom',
   })
 
+  const updateRef = useRef(update)
+
   useEffect(() => {
-    update(price.toNumber())
-  }, [price, update])
+    updateRef.current(priceAsNumber)
+  }, [priceAsNumber, updateRef])
 
   if (hasRoundFailed) {
     return <CanceledRoundCard round={round} />
