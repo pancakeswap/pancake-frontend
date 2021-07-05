@@ -1,10 +1,9 @@
-import BigNumber from 'bignumber.js'
 import React from 'react'
 import styled from 'styled-components'
 import { Flex, Heading, Skeleton } from '@pancakeswap/uikit'
 import { LotteryStatus } from 'config/constants/types'
 import { useTranslation } from 'contexts/Localization'
-import { useLottery } from 'state/hooks'
+import { useLottery, usePriceCakeBusd } from 'state/hooks'
 import { getBalanceNumber } from 'utils/formatBalance'
 import Balance from 'components/Balance'
 import { TicketPurchaseCard } from '../svgs'
@@ -47,9 +46,7 @@ const Hero = () => {
     isTransitioning,
   } = useLottery()
 
-  // TODO: Re-enebale in prod
-  // const cakePriceBusd = usePriceCakeBusd()
-  const cakePriceBusd = new BigNumber(20)
+  const cakePriceBusd = usePriceCakeBusd()
   const prizeInBusd = amountCollectedInCake.times(cakePriceBusd)
   const prizeTotal = getBalanceNumber(prizeInBusd)
   const ticketBuyIsDisabled = status !== LotteryStatus.OPEN || isTransitioning

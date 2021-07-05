@@ -50,7 +50,6 @@ const YourHistoryCard = () => {
   const [selectedLotteryId, setSelectedLotteryId] = useState<string>(null)
 
   const {
-    currentLotteryId,
     isTransitioning,
     currentRound: { status },
   } = useLottery()

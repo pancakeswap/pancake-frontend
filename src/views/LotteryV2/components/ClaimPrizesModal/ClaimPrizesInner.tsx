@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { Flex, Button, Text, AutoRenewIcon, PresentWonIcon } from '@pancakeswap/uikit'
-import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
 import { LotteryTicket, LotteryTicketClaimData } from 'config/constants/types'
 import { getBalanceAmount } from 'utils/formatBalance'
@@ -29,9 +28,7 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
   const lotteryContract = useLotteryV2Contract()
   const activeClaimData = roundsToClaim[activeClaimIndex]
 
-  // TODO: Re-enable in prod
-  // const cakePriceBusd = usePriceCakeBusd()
-  const cakePriceBusd = new BigNumber(20)
+  const cakePriceBusd = usePriceCakeBusd()
   const cakeReward = activeClaimData.cakeTotal
   const dollarReward = cakeReward.times(cakePriceBusd)
   const rewardAsBalance = getBalanceAmount(cakeReward).toNumber()
