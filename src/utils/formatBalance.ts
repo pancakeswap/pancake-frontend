@@ -41,3 +41,12 @@ export const formatBigNumber = (number: ethers.BigNumber, displayDecimals = 18, 
   const remainder = number.mod(ethers.BigNumber.from(10).pow(decimals - displayDecimals))
   return formatUnits(number.sub(remainder), decimals)
 }
+
+/**
+ * Method to format the display of wei given an ethers.BigNumber object with toFixed
+ * Note: rounds
+ */
+export const formatBigNumberToFixed = (number: ethers.BigNumber, displayDecimals = 18, decimals = 18) => {
+  const formattedString = formatUnits(number, decimals)
+  return (+formattedString).toFixed(displayDecimals)
+}

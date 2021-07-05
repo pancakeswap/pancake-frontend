@@ -1,5 +1,5 @@
 import { BigNumber } from 'ethers'
-import { formatBigNumber } from 'utils/formatBalance'
+import { formatBigNumber, formatBigNumberToFixed } from 'utils/formatBalance'
 
 describe('formatBigNumber', () => {
   it.each([
@@ -37,5 +37,18 @@ describe('formatBigNumber', () => {
   ])('correctly formats %s (%d, %d) correctly to %s', (value, displayDecimals, decimals, expected) => {
     const ethersBn = BigNumber.from(value)
     expect(formatBigNumber(ethersBn, displayDecimals, decimals)).toBe(expected)
+  })
+})
+
+describe('formatBigNumberToFixed', () => {
+  it.each([
+    ['1000000000000000000', 2, 18, '1.00'],
+    ['1000000000000000000', 6, 18, '1.000000'],
+    ['1200000000000000000', 3, 18, '1.200'],
+    ['1020100000000000000', 6, 18, '1.020100'],
+    ['1000000000000000000', 0, 18, '1'],
+  ])('correctly formats %s (%d, %d) correctly to %s', (value, displayDecimals, decimals, expected) => {
+    const ethersBn = BigNumber.from(value)
+    expect(formatBigNumberToFixed(ethersBn, displayDecimals, decimals)).toBe(expected)
   })
 })
