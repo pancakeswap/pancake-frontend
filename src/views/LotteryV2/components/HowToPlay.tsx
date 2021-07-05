@@ -273,6 +273,11 @@ const HowToPlay: React.FC = () => {
               </Text>
             </li>
           </BulletList>
+          <Text mt="16px" color="textSubtle">
+            {t(
+              'Prize brackets don’t ‘stack’: if you match the first 3 digits in order, you’ll only win prizes from the ‘Match 3’ bracket, and not from ‘Match 1’ and ‘Match 2’.',
+            )}
+          </Text>
         </Flex>
         <Flex flex="1" justifyContent="center">
           <MatchExampleCard />
