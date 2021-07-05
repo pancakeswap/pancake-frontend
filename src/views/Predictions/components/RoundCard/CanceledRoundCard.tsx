@@ -1,7 +1,7 @@
 import React from 'react'
 import { CardBody, Text, Flex, BlockIcon, LinkExternal } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import { Round, BetPosition } from 'state/types'
+import { NodeRound, BetPosition } from 'state/types'
 import { useGetTotalIntervalBlocks } from 'state/hooks'
 import ReclaimPositionButton from '../ReclaimPositionButton'
 import useIsRefundable from '../../hooks/useIsRefundable'
@@ -11,7 +11,7 @@ import Card from './Card'
 import CardHeader from './CardHeader'
 
 interface CanceledRoundCardProps {
-  round: Round
+  round: NodeRound
 }
 
 const CanceledRoundCard: React.FC<CanceledRoundCardProps> = ({ round }) => {

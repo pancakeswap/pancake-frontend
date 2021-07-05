@@ -1,7 +1,8 @@
 import BigNumber from 'bignumber.js'
-import { Bet, BetPosition, NodeRound } from 'state/types'
+import { ethers } from 'ethers'
+import { Bet, BetPosition, NodeLedger, NodeRound } from 'state/types'
 import { DefaultTheme } from 'styled-components'
-import { formatNumber, getBalanceAmount } from 'utils/formatBalance'
+import { formatBigNumber, formatNumber, getBalanceAmount } from 'utils/formatBalance'
 import getTimePeriods from 'utils/getTimePeriods'
 
 export const getBnbAmount = (bnbBn: BigNumber) => {
@@ -12,8 +13,17 @@ export const formatUsd = (usd: number) => {
   return `$${formatNumber(usd || 0, 3, 3)}`
 }
 
+export const formatUsdv2 = (usd: ethers.BigNumber) => {
+  return `$${formatBigNumber(usd, 3, 3)}`
+}
+
 export const formatBnb = (bnb: number) => {
   return bnb ? bnb.toLocaleString(undefined, { minimumFractionDigits: 3, maximumFractionDigits: 3 }) : '0'
+}
+
+export const formatBnbv2 = (bnb: ethers.BigNumber) => {
+  const value = bnb || ethers.BigNumber.from(0)
+  return formatBigNumber(value, 3)
 }
 
 export const formatBnbFromBigNumber = (bnbBn: BigNumber) => {
@@ -65,7 +75,7 @@ export const getNetPayout = (bet: Bet, rewardRate = 1): number => {
 
 export const getHasRoundFailed = (round: NodeRound, blockNumber: number) => {
   // Round hasn't finished yet
-  if (round.endBlock.gte(blockNumber)) {
+  if (round.endBlock >= blockNumber) {
     return false
   }
 
@@ -80,4 +90,36 @@ export const getBubbleGumBackground = (theme: DefaultTheme) => {
   }
 
   return 'linear-gradient(139.73deg, #E6FDFF 0%, #EFF4F5 46.87%, #F3EFFF 100%)'
+}
+
+export const getMultiplierv2 = (total: NodeRound['totalAmount'], amount: ethers.BigNumber) => {
+  if (!total) {
+    return 0
+  }
+
+  if (total.eq(0) || amount.eq(0)) {
+    return 0
+  }
+
+  return total.div(amount).toNumber()
+}
+
+export const getPayoutv2 = (ledger: NodeLedger, round: NodeRound, rewardRate = 1) => {
+  if (!ledger) {
+    return ethers.BigNumber.from(0)
+  }
+
+  const { bullAmount, bearAmount, totalAmount } = round
+  const multiplier = getMultiplierv2(totalAmount, ledger.position === BetPosition.BULL ? bullAmount : bearAmount)
+
+  return bearAmount.mul(multiplier).mul(rewardRate)
+}
+
+export const getNetPayoutv2 = (ledger: NodeLedger, round: NodeRound, rewardRate = 1) => {
+  if (!ledger) {
+    return ethers.BigNumber.from(0)
+  }
+
+  const payout = getPayoutv2(ledger, round, rewardRate)
+  return payout.sub(ledger.amount)
 }

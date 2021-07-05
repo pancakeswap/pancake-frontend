@@ -2,8 +2,9 @@ import { useEffect, useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import { useSelector } from 'react-redux'
-import { useAppDispatch } from 'state'
+import { ethers } from 'ethers'
 import { orderBy } from 'lodash'
+import { useAppDispatch } from 'state'
 import { Team } from 'config/constants/types'
 import Nfts from 'config/constants/nfts'
 import { farmsConfig } from 'config/constants'
@@ -21,12 +22,24 @@ import {
   fetchCakeVaultFees,
   setBlock,
 } from './actions'
-import { State, Farm, Pool, ProfileState, TeamsState, AchievementState, FarmsState } from './types'
+import {
+  State,
+  Farm,
+  Pool,
+  ProfileState,
+  TeamsState,
+  AchievementState,
+  FarmsState,
+  NodeRound,
+  ReduxNodeLedger,
+  NodeLedger,
+  ReduxNodeRound,
+} from './types'
 import { fetchProfile } from './profile'
 import { fetchTeam, fetchTeams } from './teams'
 import { fetchAchievements } from './achievements'
 import { fetchWalletNfts } from './collectibles'
-import { getCanClaim } from './predictions/helpers'
+import { getCanClaim, parseBigNumberObj } from './predictions/helpers'
 import { transformPool } from './pools/helpers'
 import { fetchPoolsStakingLimitsAsync } from './pools'
 import { fetchFarmUserDataAsync, nonArchivedFarms } from './farms'
@@ -346,13 +359,43 @@ export const useInitialBlock = () => {
 
 // V2 REFACTOR
 export const useGetRoundsv2 = () => {
-  return useSelector((state: State) => state.predictions.roundsv2)
+  const rounds = useSelector((state: State) => state.predictions.roundsv2)
+  return Object.keys(rounds).reduce((accum, epoch) => {
+    return {
+      ...accum,
+      [epoch]: parseBigNumberObj<ReduxNodeRound, NodeRound>(rounds[epoch]),
+    }
+  }, {}) as { [key: string]: NodeRound }
 }
 
 export const useGetRoundv2 = (epoch: number) => {
-  return useSelector((state: State) => state.predictions.roundsv2[epoch])
+  const round = useSelector((state: State) => state.predictions.roundsv2[epoch])
+  return parseBigNumberObj<ReduxNodeRound, NodeRound>(round)
 }
 
+export const useGetSortedRoundsv2 = () => {
+  const roundData = useGetRoundsv2()
+  return orderBy(Object.values(roundData), ['epoch'], ['asc'])
+}
+
+export const useGetBetByEpoch = (account: string, epoch: number) => {
+  const bets = useSelector((state: State) => state.predictions.betsv2)
+
+  if (!bets[account]) {
+    return null
+  }
+
+  if (!bets[account][epoch]) {
+    return null
+  }
+
+  return parseBigNumberObj<ReduxNodeLedger, NodeLedger>(bets[account][epoch])
+}
+
+export const useGetIsClaimable = (epoch) => {
+  const claimableStatuses = useSelector((state: State) => state.predictions.claimableStatuses)
+  return claimableStatuses[epoch] || false
+}
 // END V2 REFACTOR
 
 export const useIsHistoryPaneOpen = () => {
@@ -460,9 +503,9 @@ export const useBetCanClaim = (account: string, roundId: string) => {
   return getCanClaim(bet)
 }
 
-export const useGetLastOraclePrice = (): BigNumber => {
+export const useGetLastOraclePrice = () => {
   const lastOraclePrice = useSelector((state: State) => state.predictions.lastOraclePrice)
-  return new BigNumber(lastOraclePrice)
+  return ethers.BigNumber.from(lastOraclePrice)
 }
 
 // Collectibles
