@@ -1,5 +1,6 @@
 import { ethers } from 'ethers'
 import { getMulticallContract } from 'utils/contractHelpers'
+import { MultiCallResponse } from './types'
 
 export interface Call {
   address: string // Address of the contract
@@ -11,7 +12,7 @@ interface MulticallOptions {
   requireSuccess?: boolean
 }
 
-const multicall = async (abi: any[], calls: Call[]) => {
+const multicall = async <T = any>(abi: any[], calls: Call[]): Promise<T> => {
   try {
     const multi = getMulticallContract()
     const itf = new ethers.utils.Interface(abi)
@@ -33,11 +34,11 @@ const multicall = async (abi: any[], calls: Call[]) => {
  * 1. If "requireSuccess" is false multicall will not bail out if one of the calls fails
  * 2. The return inclues a boolean whether the call was successful e.g. [wasSuccessfull, callResult]
  */
-export const multicallv2 = async (
+export const multicallv2 = async <T = any>(
   abi: any[],
   calls: Call[],
   options: MulticallOptions = { requireSuccess: true },
-): Promise<any> => {
+): Promise<MultiCallResponse<T>> => {
   const { requireSuccess } = options
   const multi = getMulticallContract()
   const itf = new ethers.utils.Interface(abi)
