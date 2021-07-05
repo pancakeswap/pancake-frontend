@@ -2,9 +2,14 @@ import { ThunkAction } from 'redux-thunk'
 import { AnyAction } from '@reduxjs/toolkit'
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
-import { CampaignType, FarmConfig, Nft, PoolConfig, Team, LotteryTicket, LotteryStatus } from 'config/constants/types'
+import { CampaignType, FarmConfig, Nft, PoolConfig, Team } from 'config/constants/types'
 
 export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, State, unknown, AnyAction>
+
+export interface BigNumberToJson {
+  type: 'BigNumber'
+  hex: string
+}
 
 export type TranslatableText =
   | string
@@ -238,6 +243,66 @@ export enum HistoryFilter {
   UNCOLLECTED = 'uncollected',
 }
 
+// V2 REFACTOR
+export interface BetDatav2 {
+  [key: string]: {
+    [key: string]: ReduxNodeLedger
+  }
+}
+
+export interface RoundDataV2 {
+  [key: string]: ReduxNodeRound
+}
+
+export interface NodeLedgerResponse {
+  position: 0 | 1
+  amount: ethers.BigNumber
+  claimed: boolean
+}
+
+export interface ReduxNodeLedger {
+  position: BetPosition
+  amount: BigNumberToJson
+  claimed: boolean
+}
+
+export interface NodeLedger {
+  position: BetPosition
+  amount: ethers.BigNumber
+  claimed: boolean
+}
+
+export interface ReduxNodeRound {
+  epoch: number
+  startBlock: number
+  lockBlock: number | null
+  endBlock: number | null
+  lockPrice: BigNumberToJson | null
+  closePrice: BigNumberToJson | null
+  totalAmount: BigNumberToJson
+  bullAmount: BigNumberToJson
+  bearAmount: BigNumberToJson
+  rewardBaseCalAmount: BigNumberToJson
+  rewardAmount: BigNumberToJson
+  oracleCalled: boolean
+}
+
+export interface NodeRound {
+  epoch: ethers.BigNumber
+  startBlock: ethers.BigNumber
+  lockBlock: ethers.BigNumber
+  endBlock: ethers.BigNumber
+  lockPrice: ethers.BigNumber
+  closePrice: ethers.BigNumber
+  totalAmount: ethers.BigNumber
+  bullAmount: ethers.BigNumber
+  bearAmount: ethers.BigNumber
+  rewardBaseCalAmount: ethers.BigNumber
+  rewardAmount: ethers.BigNumber
+  oracleCalled: boolean
+}
+// END V2 REFACTOR
+
 export interface PredictionsState {
   status: PredictionStatus
   isLoading: boolean
@@ -255,6 +320,8 @@ export interface PredictionsState {
   rounds: RoundData
   history: HistoryData
   bets: BetData
+  roundsv2?: RoundDataV2
+  betsv2?: BetDatav2
 }
 
 // Voting
