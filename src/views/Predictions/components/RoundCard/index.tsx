@@ -3,6 +3,7 @@ import { useWeb3React } from '@web3-react/core'
 import { useGetBetByRoundId, useGetCurrentEpoch } from 'state/hooks'
 import { BetPosition, Round } from 'state/types'
 import { getMultiplier } from '../../helpers'
+import useIsRoundClaimable from '../../hooks/useIsRoundClaimable'
 import ExpiredRoundCard from './ExpiredRoundCard'
 import LiveRoundCard from './LiveRoundCard'
 import OpenRoundCard from './OpenRoundCard'
@@ -22,6 +23,8 @@ const RoundCard: React.FC<RoundCardProps> = ({ round }) => {
   const hasEnteredDown = hasEntered && bet.position === BetPosition.BEAR
   const bullMultiplier = getMultiplier(totalAmount, bullAmount)
   const bearMultiplier = getMultiplier(totalAmount, bearAmount)
+
+  useIsRoundClaimable(round.epoch)
 
   // Next (open) round
   if (epoch === currentEpoch && lockPrice === null) {
