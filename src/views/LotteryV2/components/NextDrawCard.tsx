@@ -14,11 +14,10 @@ import {
   CardFooter,
   ExpandableLabel,
 } from '@pancakeswap/uikit'
-import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import { LotteryStatus } from 'config/constants/types'
 import { useTranslation } from 'contexts/Localization'
-import { useLottery } from 'state/hooks'
+import { useLottery, usePriceCakeBusd } from 'state/hooks'
 import { getBalanceNumber } from 'utils/formatBalance'
 import Balance from 'components/Balance'
 import ViewTicketsModal from './ViewTicketsModal'
@@ -63,9 +62,7 @@ const NextDrawCard = () => {
   const [isExpanded, setIsExpanded] = useState(false)
   const ticketBuyIsDisabled = status !== LotteryStatus.OPEN || isTransitioning
 
-  // TODO: Re-enable in prod
-  //   const cakePriceBusd = usePriceCakeBusd()
-  const cakePriceBusd = new BigNumber(20)
+  const cakePriceBusd = usePriceCakeBusd()
   const prizeInBusd = amountCollectedInCake.times(cakePriceBusd)
   const endTimeMs = parseInt(endTime, 10) * 1000
   const endDate = new Date(endTimeMs)
