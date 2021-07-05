@@ -54,10 +54,6 @@ const RugInDetails: React.FC<RugInDetailsProps> = ({
         <span className="indetails-type">Unlock Fees: {unlockFee} BNB
         ({(unlockFee * bnbInBusd).toFixed(2)} in USD)</span>
         <span className="indetails-title">
-          Early Withdrawal:
-          <span className="indetails-value">5%</span>
-        </span>
-        <span className="indetails-title">
           Withdrawal Cooldown:
           <span className="indetails-value">{withdrawalCooldown}</span>
         </span>

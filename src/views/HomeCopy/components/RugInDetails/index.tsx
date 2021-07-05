@@ -5,29 +5,31 @@ import React, { useEffect, useState } from 'react'
 import { BIG_ZERO } from 'utils/bigNumber';
 import { getFullDisplayBalance } from 'utils/formatBalance';
 import BigNumber from 'bignumber.js';
-import axios from 'axios';
-import { getBnbPriceinBusd } from 'state/hooks';
+import numeral from 'numeral';
+
 
 interface RugInDetailsProps {
   details: {
     id: number,
     pid: number,
-    name: string,
+    subtitle: string,
     path: string,
     type: string,
     withdrawalCooldown: string,
     nftRevivalTime: string,
     rug: string,
     artist?: any,
-    stakingToken: any
+    stakingToken: any,
+    poolInfo: any
   },
-  bnbInBusd: number
+  bnbInBusd: number,
+  totalStakingTokenSupply: BigNumber,
+  zombieUsdPrice: number
 }
 
 const RugInDetails: React.FC<RugInDetailsProps> = ({
-  details: { id, name, pid, path, type, withdrawalCooldown, nftRevivalTime, rug, artist, stakingToken,  }, bnbInBusd,
+  details: { id, subtitle, pid, path, type, withdrawalCooldown, nftRevivalTime, poolInfo, artist, stakingToken }, totalStakingTokenSupply, zombieUsdPrice, bnbInBusd,
 }) => {
-
   const drFrankenstein = useDrFrankenstein();
 
   const [unlockFee, setUnlockFee] = useState(0);
@@ -38,6 +40,11 @@ const RugInDetails: React.FC<RugInDetailsProps> = ({
         setUnlockFee(parseFloat(getFullDisplayBalance(new BigNumber(res), tokens.zmbe.decimals, 4)));
       })
   })
+
+  let allocPoint = BIG_ZERO;
+  if(poolInfo.allocPoint) {
+    allocPoint = new BigNumber(poolInfo.allocPoint)
+  }
 
   return (
     <div key={id} className="rug-indetails">
@@ -53,14 +60,14 @@ const RugInDetails: React.FC<RugInDetailsProps> = ({
         </div>
       </div>
       <div className="direction-column">
-        <span className="indetails-type">Grave</span>
+        <span className="indetails-type">{subtitle}</span>
         <span className="indetails-title">
           Weight:
-          <span className="indetails-value">120X</span>
+          <span className="indetails-value">{allocPoint.div(100).toString()}X</span>
         </span>
         <span className="indetails-title">
           Zombie TVL:
-          <span className="indetails-value">$37.01K</span>
+          <span className="indetails-value">{numeral(totalStakingTokenSupply.times(zombieUsdPrice)).format('($ 0.00 a)')}</span>
         </span>
         <span className="indetails-title">
           <LinkExternal bold={false} small href={artist}>
@@ -72,7 +79,7 @@ const RugInDetails: React.FC<RugInDetailsProps> = ({
         <span className="indetails-type">Unlock Fees: {unlockFee} BNB
         ({(unlockFee * bnbInBusd).toFixed(2)} in USD)</span>
         <span className="indetails-title">
-          Early Withdrawal:
+          Early Withdrawal Fee:
           <span className="indetails-value">5%</span>
         </span>
         <span className="indetails-title">
@@ -80,7 +87,7 @@ const RugInDetails: React.FC<RugInDetailsProps> = ({
           <span className="indetails-value">{withdrawalCooldown}</span>
         </span>
         <span className="indetails-title">
-          NFT Mint competion:
+          NFT Minting Time:
           <span className="indetails-value">{nftRevivalTime}</span>
         </span>
       </div>

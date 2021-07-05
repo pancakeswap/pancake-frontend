@@ -3,7 +3,7 @@ import { Router, Route, Switch } from 'react-router-dom'
 import { ResetCSS } from '@rug-zombie-libs/uikit'
 import BigNumber from 'bignumber.js'
 import useEagerConnect from 'hooks/useEagerConnect'
-import { useFetchProfile } from 'state/hooks'
+import { fetchZmbeBnbReserves, getBnbPriceinBusd, useFetchProfile } from 'state/hooks'
 import { routes } from 'routes'
 import Menu from 'components/Menu'
 import Loader from 'components/Loader'
@@ -45,12 +45,21 @@ const App: React.FC = () => {
 
   const handleAuthentication = () => {
     setAuthenticated(!isAuthenticated);
-    history.push(routes.GRAVES);
+    history.push(routes.HOME);
   }
 
   const LandingProps = {
     "handleAuthentication": handleAuthentication
   }
+
+  const [zombieUsdPrice, setZombieUsdPrice] = useState(0)
+  fetchZmbeBnbReserves().then((reserves) => {
+    const zombieBnbPrice = reserves[1] / reserves[0]
+    getBnbPriceinBusd().then((res) => {
+      const bnbPrice = res.data.price
+      setZombieUsdPrice(zombieBnbPrice * bnbPrice)
+    })
+  })
 
   return (
     <Router history={history}>
@@ -59,9 +68,9 @@ const App: React.FC = () => {
       <SuspenseWithChunkError fallback={<Loader />}>
         <Switch>
           <Route exact path={routes.LANDING}><Landing {...LandingProps} /></Route>
-          <Menu>
-            <Route exact path={routes.HOME}><Home/></Route>
-            <Route exact path={routes.GRAVES}><HomeC /></Route>
+          <Menu zombieUsdPrice={zombieUsdPrice}>
+            <Route exact path={routes.HOME}><Home zombieUsdPrice={zombieUsdPrice}/></Route>
+            <Route exact path={routes.GRAVES}><HomeC zombieUsdPrice={zombieUsdPrice}/></Route>
             <Route exact path={routes.TOMBS}><Tombs /></Route>
           </Menu>
         </Switch>

@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useTotalSupply, useBurnedBalance } from 'hooks/useTokenBalance'
 import { useTranslation } from 'contexts/Localization'
-import { getCakeAddress } from 'utils/addressHelpers'
+import { getCakeAddress, getZombieAddress } from 'utils/addressHelpers'
 import CardValue from './CardValue'
 
 const StyledCakeStats = styled(Card)`
@@ -23,8 +23,8 @@ const Row = styled.div`
 const ZmbeStats = () => {
   const { t } = useTranslation()
   const totalSupply = useTotalSupply()
-  const burnedBalance = getBalanceNumber(useBurnedBalance(getCakeAddress()))
-  const cakeSupply = totalSupply ? getBalanceNumber(totalSupply) - burnedBalance : 0
+  const burnedBalance = getBalanceNumber(useBurnedBalance(getZombieAddress()))
+  const zmbeSupply = totalSupply ? getBalanceNumber(totalSupply) - burnedBalance : 0
 
   return ( // TODO Set proper values for these cards
     <StyledCakeStats>
@@ -34,7 +34,7 @@ const ZmbeStats = () => {
         </Heading>
         <Row>
           <Text fontSize="14px">{t('Total ZMBE Supply')}</Text>
-          {cakeSupply && <CardValue fontSize="14px" value={cakeSupply} />}
+          {zmbeSupply && <CardValue fontSize="14px" value={zmbeSupply} />}
         </Row>
         <Row>
           <Text fontSize="14px">{t('Total ZMBE Burned')}</Text>
@@ -42,7 +42,7 @@ const ZmbeStats = () => {
         </Row>
         <Row>
           <Text fontSize="14px">{t('New ZMBE/block')}</Text>
-          <CardValue fontSize="14px" decimals={0} value={22} />
+          <CardValue fontSize="14px" decimals={0} value={10} />
         </Row>
         <Row>
           <Text fontSize="14px">{t('Total NFT\'s Minted')}</Text>

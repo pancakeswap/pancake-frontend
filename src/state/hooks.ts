@@ -19,6 +19,8 @@ import { fetchTeam, fetchTeams } from './teams'
 import { fetchAchievements } from './achievements'
 import { fetchPrices } from './prices'
 import tombs from '../views/Tombs/data'
+import { useDrFrankenstein } from '../hooks/useContract'
+import { getPancakePair } from '../utils/contractHelpers'
 // import { fetchWalletNfts } from './collectibles'
 
 export const useFetchPublicData = () => {
@@ -192,6 +194,8 @@ export const usePriceBnbBusd = (): BigNumber => {
   return BIG_ZERO // bnbBusdFarm.tokenPriceVsQuote ? new BigNumber(1).div(bnbBusdFarm.tokenPriceVsQuote) : BIG_ZERO
 }
 
+
+
 export const getBnbPriceinBusd = () => {
   return axios.get('https://api.binance.com/api/v3/avgPrice?symbol=BNBBUSD')
 }
@@ -203,6 +207,12 @@ export const usePriceCakeBusd = (): BigNumber => {
   const cakeBusdPrice = BIG_ZERO // cakeBnbFarm.tokenPriceVsQuote ? bnbBusdPrice.times(cakeBnbFarm.tokenPriceVsQuote) : BIG_ZERO
 
   return cakeBusdPrice
+}
+
+export const fetchZmbeBnbReserves = (): Promise<void> => {
+  const bnbTomb = tombs[0]
+  const address = getAddress(bnbTomb.lpAddresses)
+  return getPancakePair(address).methods.getReserves().call()
 }
 
 export const usePriceZombieBusd = (): BigNumber => {

@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { BaseLayout } from '@rug-zombie-libs/uikit'
-import { BIG_ZERO } from 'utils/bigNumber';
+import { BIG_TEN, BIG_ZERO } from 'utils/bigNumber'
 import BigNumber from 'bignumber.js';
-import { getFullDisplayBalance } from 'utils/formatBalance'
+import { getBalanceAmount, getDecimalAmount, getFullDisplayBalance } from 'utils/formatBalance'
 import tokens from 'config/constants/tokens';
-
+import numeral from 'numeral';
+import { getGraveApr } from '../../../../utils/apr'
 
 
 const DisplayFlex = styled(BaseLayout)`
@@ -45,6 +46,8 @@ interface Result {
 
 interface TableListProps {
   handler: any
+  zombieUsdPrice: number,
+  totalStakingTokenSupply: BigNumber,
   details: {
     id: number,
     name: string,
@@ -63,16 +66,19 @@ interface TableListProps {
 }
 
 const TableList: React.FC<TableListProps> = (props: TableListProps) => {
-
-  const { details: { name, path, rug, poolInfo, pendingZombie } , handler } = props;
-
+  const { details: { pid, name, path, rug, poolInfo, stakingToken, pendingZombie }, zombieUsdPrice, totalStakingTokenSupply, handler } = props;
   let allocPoint = BIG_ZERO;
-  
-  if(poolInfo.allocPoint){
+  if(poolInfo.allocPoint) {
      allocPoint = new BigNumber(poolInfo.allocPoint)
   }
 
+  const poolWeight = allocPoint ? allocPoint.div(100) : null
+
   const [isOpen, setIsOpen] = useState(false);
+
+  const bigZombieUsdPrice = new BigNumber(zombieUsdPrice).times(BIG_TEN.pow(18))
+  const apr = getGraveApr(poolWeight, bigZombieUsdPrice, totalStakingTokenSupply.times(zombieUsdPrice))
+
 
   const toggleOpen = () => {
     setIsOpen(!isOpen);
@@ -96,7 +102,7 @@ const TableList: React.FC<TableListProps> = (props: TableListProps) => {
                   <div>
                     <div className="titel">{name}</div>
                     <div className="small-lable">
-                      <div className="con-info">{allocPoint ? allocPoint.div(100).toString() : null}X</div>
+                      <div className="con-info">{poolWeight.toString()}X</div>
                       <div className="small-titel">ZMBE</div>
                     </div>
                   </div>
@@ -112,19 +118,19 @@ const TableList: React.FC<TableListProps> = (props: TableListProps) => {
           </td>
           <td className="td-width-17 desktop-view">
             <DisplayFlex>
-              <span className="total-earned text-shadow">411.57%</span>
+              <span className="total-earned text-shadow">{apr ? numeral(apr).format('(0,00 a)') : "NAN"}%</span>
               <div className="earned">Yearly</div>
             </DisplayFlex>
           </td>
           <td className="td-width-17 desktop-view">
             <DisplayFlex>
-              <span className="total-earned">1.13%</span>
+              <span className="total-earned">{apr ? numeral(apr / 365).format('(0,00 a)') : "NAN"}%</span>
               <div className="earned">Daily</div>
             </DisplayFlex>
           </td>
           <td className="td-width-25">
             <DisplayFlex>
-              <span className="total-earned">$26.41K</span>
+              <span className="total-earned">{numeral(totalStakingTokenSupply.times(zombieUsdPrice)).format('($ 0.00 a)')}</span>
               <div className="earned">TVL</div>
             </DisplayFlex>
           </td>

@@ -2,7 +2,7 @@
 export const routes = { 
     HOME : '/home',
     LANDING: '/',
-    FARMS:'/farmss',
+    FARMS:'/farms',
     TOMBS:'/tombss',
     GRAVES:'/gravess'
 }

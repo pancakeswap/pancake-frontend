@@ -21,7 +21,7 @@ const config: MenuEntry[] = [
     icon: 'PoolIcon',
     items: [
       {
-        label: 'Coming Tomorrow!',
+        label: 'Coming This Week!',
         href: '/',
       },
     ],

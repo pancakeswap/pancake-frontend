@@ -15,8 +15,11 @@ import tableData from './data';
 
 let accountAddress;
 
-const HomeC: React.FC = () => {
+interface HomeC {
+  zombieUsdPrice: number,
+}
 
+const HomeC: React.FC<HomeC> = ({ zombieUsdPrice }: HomeC) => {
   const { account } = useWeb3React();
   const [isAllowance, setIsAllowance] = useState(false);
   const [farmData, setFarmData] = useState(tableData);
@@ -67,6 +70,7 @@ const HomeC: React.FC = () => {
           if (data.pid === pid) {
             data.result = res;
           }
+
           return data
         });
         setFarmData(newFarmData);
@@ -98,7 +102,7 @@ const HomeC: React.FC = () => {
       </PageHeader>
       <div>
         {farmData.map((data) => {
-          return <Table updateResult={updateResult} updateAllowance={updateAllowance} bnbInBusd={bnbInBusd} isAllowance={isAllowance} details={data} key={data.id} />
+          return <Table zombieUsdPrice={zombieUsdPrice} updateResult={updateResult} updateAllowance={updateAllowance} bnbInBusd={bnbInBusd} isAllowance={isAllowance} details={data} key={data.id} />
         })}
       </div>
     </Page>

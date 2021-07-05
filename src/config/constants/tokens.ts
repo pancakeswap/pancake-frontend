@@ -21,6 +21,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://rugzombie.io/',
   },
+  undead: {
+    symbol: 'UNDEAD',
+    address: {
+      56: '0xa2394aff511de6661b8178dfc9cecfd04cc614e8',
+      97: '0x85537ef782bab72e65704aa59e5C71131561D422',
+    },
+    decimals: 18,
+    projectLink: 'https://rugzombie.io/',
+  },
   fairmoon: {
     symbol: 'FAIRMOON',
     address: {

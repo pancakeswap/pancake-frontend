@@ -128,8 +128,7 @@ const TimeLine = () => {
             <strong> Enter the $ZMBE token contract:</strong>
           </h3>
           <p className="paragraph-15">Click on the Select a Currency button, and enter the $ZMBE token contract:<br />
-            {/* <a href="/" target="_blank">{topAddress}<br />{bottomAddress}</a> */}
-            N/A
+             <a href="/" target="_blank">{topAddress}<br />{bottomAddress}</a>
           </p>
         </div>
         {/* <div className="card buymobile">

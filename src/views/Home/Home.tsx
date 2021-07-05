@@ -67,9 +67,13 @@ const CTACards = styled(BaseLayout)`
   }
 `
 const ImageURL = "https://storage.googleapis.com/rug-zombie/rug-zombie-home.png"
-const Home: React.FC = () => {
-  const { t } = useTranslation()
 
+interface HomeProps {
+  zombieUsdPrice: number,
+}
+
+const Home: React.FC<HomeProps> = ({ zombieUsdPrice }: HomeProps) => {
+  const { t } = useTranslation()
   return (
     <Page>
       <div>
