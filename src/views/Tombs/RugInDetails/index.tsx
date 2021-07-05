@@ -4,6 +4,8 @@ import { useDrFrankenstein } from 'hooks/useContract'
 import React, { useEffect, useState } from 'react'
 import { getFullDisplayBalance } from 'utils/formatBalance';
 import BigNumber from 'bignumber.js';
+import numeral from 'numeral'
+import { BIG_ZERO } from '../../../utils/bigNumber'
 
 interface RugInDetailsProps {
   details: {
@@ -12,15 +14,17 @@ interface RugInDetailsProps {
     name: string,
     withdrawalCooldown: string,
     artist?: any,
-    stakingToken: any
+    stakingToken: any,
+    poolInfo: any
   },
-  bnbInBusd: number
+  bnbInBusd: number,
+  totalLpTokensStaked: BigNumber,
+  lpTokenPrice: number
 }
 
 const RugInDetails: React.FC<RugInDetailsProps> = ({
-  details: { id, pid, withdrawalCooldown, artist,  }, bnbInBusd,
+  details: { id, name, pid, withdrawalCooldown, artist, poolInfo }, bnbInBusd, totalLpTokensStaked, lpTokenPrice,
 }) => {
-
   const drFrankenstein = useDrFrankenstein();
 
   const [unlockFee, setUnlockFee] = useState(0);
@@ -32,27 +36,25 @@ const RugInDetails: React.FC<RugInDetailsProps> = ({
       })
   })
 
+  let allocPoint = BIG_ZERO;
+  if(poolInfo.allocPoint) {
+    allocPoint = new BigNumber(poolInfo.allocPoint)
+  }
+
   return (
     <div key={id} className="rug-indetails">
       <div className="direction-column">
-        <span className="indetails-type">Tomb</span>
+        <span className="indetails-type">{name} Tomb</span>
         <span className="indetails-title">
           Weight:
-          <span className="indetails-value">120X</span>
+          <span className="indetails-value">{allocPoint.div(100).toString()}X</span>
         </span>
         <span className="indetails-title">
           Zombie TVL:
-          <span className="indetails-value">$37.01K</span>
-        </span>
-        <span className="indetails-title">
-          <LinkExternal bold={false} small href={artist}>
-            View NFT Artist
-        </LinkExternal>
+          <span className="indetails-value">{numeral(totalLpTokensStaked.times(lpTokenPrice)).format('($ 0.00 a)')}</span>
         </span>
       </div>
       <div className="direction-column">
-        <span className="indetails-type">Unlock Fees: {unlockFee} BNB
-        ({(unlockFee * bnbInBusd).toFixed(2)} in USD)</span>
         <span className="indetails-title">
           Withdrawal Cooldown:
           <span className="indetails-value">{withdrawalCooldown}</span>

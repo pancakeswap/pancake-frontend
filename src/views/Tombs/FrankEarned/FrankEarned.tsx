@@ -7,7 +7,9 @@ import { useWeb3React } from '@web3-react/core';
 
 interface FrankEarnedProps {
   pid: number,
-  pendingZombie: any
+  pendingZombie: any,
+  lpTokenPrice: number,
+  totalLpTokenStaked: BigNumber
 }
 
 const FrankEarned: React.FC<FrankEarnedProps> = ({ pendingZombie, pid }) => {

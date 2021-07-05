@@ -34,7 +34,7 @@ export const getFarmApr = (poolWeight: BigNumber, cakePriceUsd: BigNumber, poolL
   return apr.isNaN() || !apr.isFinite() ? null : apr.toNumber()
 }
 
-export const getGraveApr = (poolWeight: BigNumber, cakePriceUsd: BigNumber, poolLiquidityUsd: BigNumber): number => {
+export const getGraveTombApr = (poolWeight: BigNumber, cakePriceUsd: BigNumber, poolLiquidityUsd: BigNumber): number => {
   const yearlyCakeRewardAllocation = ZMBE_PER_BLOCK.times(BLOCKS_PER_YEAR).times(poolWeight)
   const apr = yearlyCakeRewardAllocation.times(cakePriceUsd).div(poolLiquidityUsd).times(100)
   return apr.isNaN() || !apr.isFinite() ? null : apr.toNumber()

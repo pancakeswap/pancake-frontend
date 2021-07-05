@@ -124,10 +124,12 @@ const StartFarming: React.FC<StartFarmingProps> = ({ details, details: { pid, ru
   }
 
   const handleApprove = () => {
-    zmbeContract.methods.approve(getDrFrankensteinAddress(), ethers.constants.MaxUint256)
-      .send({ from: account }).then((res) => {
+    // if(account) {
+      zmbeContract.methods.approve(getDrFrankensteinAddress(), ethers.constants.MaxUint256)
+        .send({ from: account }).then((res) => {
         updateAllowance(zmbeContract, pid);
       })
+    // }
   }
 
 

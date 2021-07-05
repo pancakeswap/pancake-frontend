@@ -71,7 +71,7 @@ const App: React.FC = () => {
           <Menu zombieUsdPrice={zombieUsdPrice}>
             <Route exact path={routes.HOME}><Home zombieUsdPrice={zombieUsdPrice}/></Route>
             <Route exact path={routes.GRAVES}><HomeC zombieUsdPrice={zombieUsdPrice}/></Route>
-            <Route exact path={routes.TOMBS}><Tombs /></Route>
+            <Route exact path={routes.TOMBS}><Tombs zombieUsdPrice={zombieUsdPrice}/></Route>
           </Menu>
         </Switch>
       </SuspenseWithChunkError>

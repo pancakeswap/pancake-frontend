@@ -6,7 +6,7 @@ import BigNumber from 'bignumber.js';
 import { getBalanceAmount, getDecimalAmount, getFullDisplayBalance } from 'utils/formatBalance'
 import tokens from 'config/constants/tokens';
 import numeral from 'numeral';
-import { getGraveApr } from '../../../../utils/apr'
+import { getGraveTombApr } from '../../../../utils/apr'
 
 
 const DisplayFlex = styled(BaseLayout)`
@@ -77,7 +77,7 @@ const TableList: React.FC<TableListProps> = (props: TableListProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const bigZombieUsdPrice = new BigNumber(zombieUsdPrice).times(BIG_TEN.pow(18))
-  const apr = getGraveApr(poolWeight, bigZombieUsdPrice, totalStakingTokenSupply.times(zombieUsdPrice))
+  const apr = getGraveTombApr(poolWeight, bigZombieUsdPrice, totalStakingTokenSupply.times(zombieUsdPrice))
 
 
   const toggleOpen = () => {
