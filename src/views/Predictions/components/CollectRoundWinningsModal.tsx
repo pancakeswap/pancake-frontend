@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { ethers } from 'ethers'
 import styled from 'styled-components'
 import {
   ModalContainer,
@@ -20,15 +21,14 @@ import { useWeb3React } from '@web3-react/core'
 import { getBscScanTransactionUrl } from 'utils/bscscan'
 import { useAppDispatch } from 'state'
 import { usePriceBnbBusd } from 'state/hooks'
-import { markBetAsCollected } from 'state/predictions'
+import { fetchLedgerData } from 'state/predictions'
 import { useTranslation } from 'contexts/Localization'
 import useToast from 'hooks/useToast'
 import { usePredictionsContract } from 'hooks/useContract'
-import { formatBnb } from '../helpers'
+import { formatBnbv2 } from '../helpers'
 
 interface CollectRoundWinningsModalProps extends InjectedModalProps {
-  payout: number
-  roundId: string
+  payout: ethers.BigNumber
   epoch: number
   onSuccess?: () => Promise<void>
 }
@@ -47,7 +47,6 @@ const BunnyDecoration = styled.div`
 
 const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
   payout,
-  roundId,
   epoch,
   onDismiss,
   onSuccess,
@@ -60,6 +59,9 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
   const bnbBusdPrice = usePriceBnbBusd()
   const dispatch = useAppDispatch()
 
+  // Some trickery while we have 2 big numbers
+  const bnbBusdPriceAsEthBn = ethers.BigNumber.from(bnbBusdPrice.toString())
+
   const handleClick = async () => {
     const tx = await predictionsContract.claim(epoch)
     setIsPendingTx(true)
@@ -69,7 +71,7 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
         await onSuccess()
       }
 
-      dispatch(markBetAsCollected({ account, roundId }))
+      await dispatch(fetchLedgerData({ account, epochs: [epoch] }))
       onDismiss()
       setIsPendingTx(false)
       toastSuccess(
@@ -105,9 +107,9 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
         <Flex alignItems="start" justifyContent="space-between" mb="24px">
           <Text>{t('Collecting')}</Text>
           <Box style={{ textAlign: 'right' }}>
-            <Text>{`${formatBnb(payout)} BNB`}</Text>
+            <Text>{`${formatBnbv2(payout)} BNB`}</Text>
             <Text fontSize="12px" color="textSubtle">
-              {`~$${formatBnb(bnbBusdPrice.times(payout).toNumber())}`}
+              {`~$${formatBnbv2(bnbBusdPriceAsEthBn.mul(payout))}`}
             </Text>
           </Box>
         </Flex>

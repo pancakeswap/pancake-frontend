@@ -1,42 +1,41 @@
 import React from 'react'
 import { BoxProps, Flex, Text } from '@pancakeswap/uikit'
-import { BetPosition, NodeRound } from 'state/types'
+import { BetPosition, Round } from 'state/types'
 import { useTranslation } from 'contexts/Localization'
-import { formatUsdv2 } from '../../helpers'
+import { formatUsd } from '../../helpers'
 import PositionTag from '../PositionTag'
-import { LockPriceRow, PrizePoolRow, RoundResultBox } from './styles'
+import { LockPriceHistoryRow, PrizePoolHistoryRow, RoundResultBox } from './styles'
 
 interface RoundResultProps extends BoxProps {
-  round: NodeRound
-  hasFailed?: boolean
+  round: Round
 }
 
-const RoundResult: React.FC<RoundResultProps> = ({ round, hasFailed = false, children, ...props }) => {
+const RoundResult: React.FC<RoundResultProps> = ({ round, children, ...props }) => {
   const { lockPrice, closePrice, totalAmount } = round
-  const betPosition = closePrice.gt(lockPrice) ? BetPosition.BULL : BetPosition.BEAR
+  const betPosition = closePrice > lockPrice ? BetPosition.BULL : BetPosition.BEAR
   const isPositionUp = betPosition === BetPosition.BULL
   const { t } = useTranslation()
-  const priceDifference = closePrice.sub(lockPrice)
+  const priceDifference = closePrice - lockPrice
 
   return (
     <RoundResultBox betPosition={betPosition} {...props}>
       <Text color="textSubtle" fontSize="12px" bold textTransform="uppercase" mb="8px">
         {t('Closed Price')}
       </Text>
-      {hasFailed ? (
+      {round.failed ? (
         <Text bold textTransform="uppercase" color="textDisabled" mb="16px" fontSize="24px">
           {t('Canceled')}
         </Text>
       ) : (
         <Flex alignItems="center" justifyContent="space-between" mb="16px">
           <Text color={isPositionUp ? 'success' : 'failure'} bold fontSize="24px">
-            {formatUsdv2(closePrice)}
+            {formatUsd(closePrice)}
           </Text>
-          <PositionTag betPosition={betPosition}>{formatUsdv2(priceDifference)}</PositionTag>
+          <PositionTag betPosition={betPosition}>{formatUsd(priceDifference)}</PositionTag>
         </Flex>
       )}
-      {lockPrice && <LockPriceRow lockPrice={lockPrice} />}
-      <PrizePoolRow totalAmount={totalAmount} />
+      {lockPrice && <LockPriceHistoryRow lockPrice={lockPrice} />}
+      <PrizePoolHistoryRow totalAmount={totalAmount} />
       {children}
     </RoundResultBox>
   )

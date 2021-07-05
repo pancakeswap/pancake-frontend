@@ -9,7 +9,6 @@ import {
   BetDatav2,
   HistoryFilter,
   Market,
-  NodeRound,
   PredictionsState,
   PredictionStatus,
   ReduxNodeRound,
@@ -22,7 +21,6 @@ import {
   getBetHistory,
   transformBetResponse,
   makeRoundData,
-  transformNodeRoundToReduxNodeRound,
   makeFutureRoundResponsev2,
   makeRoundDataV2,
   getRoundsData,
@@ -30,6 +28,8 @@ import {
   MarketData,
   getLedgerData,
   makeLedgerData,
+  serializePredictionsRoundsResponse,
+  getClaimStatuses,
 } from './helpers'
 
 const PAST_ROUND_COUNT = 5
@@ -45,20 +45,31 @@ const initialState: PredictionsState = {
   currentEpoch: 0,
   currentRoundStartBlockNumber: 0,
   intervalBlocks: 100,
-  bufferBlocks: 2,
+  bufferBlocks: 20,
   minBetAmount: '1000000000000000',
   rewardRate: 97,
   lastOraclePrice: BIG_ZERO.toJSON(),
   rounds: {},
   history: {},
   bets: {},
+  betsv2: {},
+  roundsv2: {},
+  claimableStatuses: {},
 }
 
 // Thunks
 // V2 REFACTOR
 type PredictionInitialization = Pick<
   PredictionsState,
-  'status' | 'currentEpoch' | 'intervalBlocks' | 'bufferBlocks' | 'minBetAmount' | 'rewardRate' | 'roundsv2' | 'betsv2'
+  | 'status'
+  | 'currentEpoch'
+  | 'intervalBlocks'
+  | 'bufferBlocks'
+  | 'minBetAmount'
+  | 'rewardRate'
+  | 'roundsv2'
+  | 'betsv2'
+  | 'claimableStatuses'
 >
 export const initializePredictions = createAsyncThunk<PredictionInitialization, string>(
   'predictions/intialize',
@@ -70,7 +81,7 @@ export const initializePredictions = createAsyncThunk<PredictionInitialization, 
     // Round data
     const roundsResponse = await getRoundsData(epochs)
     const initialRoundData: { [key: string]: ReduxNodeRound } = roundsResponse.reduce((accum, roundResponse) => {
-      const reduxNodeRound = transformNodeRoundToReduxNodeRound(roundResponse)
+      const reduxNodeRound = serializePredictionsRoundsResponse(roundResponse)
 
       return {
         ...accum,
@@ -78,8 +89,12 @@ export const initializePredictions = createAsyncThunk<PredictionInitialization, 
       }
     }, {})
 
+    // Claim statuses
+    const claimableStatuses = await getClaimStatuses(account, epochs)
+
     const initializedData = {
       ...marketData,
+      claimableStatuses,
       roundsv2: initialRoundData,
       betsv2: {},
     }
@@ -99,21 +114,20 @@ export const initializePredictions = createAsyncThunk<PredictionInitialization, 
 
 export const fetchRound = createAsyncThunk<ReduxNodeRound, number>('predictions/fetchRound', async (epoch) => {
   const predictionContract = getPredictionsContract()
-  const response: NodeRound = await predictionContract.rounds(epoch)
-  return transformNodeRoundToReduxNodeRound(response)
+  const response = await predictionContract.rounds(epoch)
+  return serializePredictionsRoundsResponse(response)
 })
 
 export const fetchRounds = createAsyncThunk<{ [key: string]: ReduxNodeRound }, number[]>(
   'predictions/fetchRounds',
   async (epochs) => {
     const rounds = await getRoundsData(epochs)
-
     return rounds.reduce((accum, round) => {
       if (!round) {
         return accum
       }
 
-      const reduxNodeRound = transformNodeRoundToReduxNodeRound(round)
+      const reduxNodeRound = serializePredictionsRoundsResponse(round)
 
       return {
         ...accum,
@@ -135,6 +149,14 @@ export const fetchLedgerData = createAsyncThunk<BetDatav2, { account: string; ep
     return makeLedgerData(account, ledgers, epochs)
   },
 )
+
+export const fetchClaimableStatuses = createAsyncThunk<
+  PredictionsState['claimableStatuses'],
+  { account: string; epochs: number[] }
+>('predictions/fetchClaimableStatuses', async ({ account, epochs }) => {
+  const ledgers = await getClaimStatuses(account, epochs)
+  return ledgers
+})
 // END V2 REFACTOR
 
 export const fetchHistory = createAsyncThunk<{ account: string; bets: Bet[] }, { account: string; claimed?: boolean }>(
@@ -196,46 +218,20 @@ export const predictionsSlice = createSlice({
     setCurrentEpoch: (state, action: PayloadAction<number>) => {
       state.currentEpoch = action.payload
     },
-    markBetAsCollected: (state, action: PayloadAction<{ account: string; roundId: string }>) => {
-      const { account, roundId } = action.payload
-      const accountBets = state.bets[account]
-
-      if (accountBets && accountBets[roundId]) {
-        accountBets[roundId].claimed = true
-      }
-    },
-    markPositionAsEntered: (state, action: PayloadAction<{ account: string; roundId: string; bet: Bet }>) => {
-      const { account, roundId, bet } = action.payload
-
-      state.bets = {
-        ...state.bets,
-        [account]: {
-          ...state.bets[account],
-          [roundId]: bet,
-        },
-      }
-    },
     setLastOraclePrice: (state, action: PayloadAction<string>) => {
       state.lastOraclePrice = action.payload
     },
 
     // V2 REFACTOR
-    markLedgerClaimStatus: (state, action: PayloadAction<{ account: string; epoch: number; claimed: boolean }>) => {
-      const { account, epoch, claimed } = action.payload
-      const currentBet = (state.betsv2[account] && state.betsv2[account][epoch]) || {}
 
-      state.betsv2 = merge({}, state.betsv2, {
-        [account]: {
-          [epoch]: {
-            ...currentBet,
-            claimed,
-          },
-        },
-      })
-    },
     // END V2 REFACTOR
   },
   extraReducers: (builder) => {
+    // Claimable statuses
+    builder.addCase(fetchClaimableStatuses.fulfilled, (state, action) => {
+      state.claimableStatuses = merge({}, state.claimableStatuses, action.payload)
+    })
+
     // Ledger (bet) records
     builder.addCase(fetchLedgerData.fulfilled, (state, action) => {
       state.betsv2 = merge({}, state.betsv2, action.payload)
@@ -248,7 +244,8 @@ export const predictionsSlice = createSlice({
 
     // Initialize predictions
     builder.addCase(initializePredictions.fulfilled, (state, action) => {
-      const { status, currentEpoch, bufferBlocks, intervalBlocks, roundsv2, rewardRate, betsv2 } = action.payload
+      const { status, currentEpoch, bufferBlocks, intervalBlocks, roundsv2, claimableStatuses, rewardRate, betsv2 } =
+        action.payload
       const currentRoundStartBlockNumber = action.payload.roundsv2[currentEpoch].startBlock
       const futureRounds: ReduxNodeRound[] = []
       const halfInterval = (intervalBlocks + bufferBlocks) / 2
@@ -266,6 +263,7 @@ export const predictionsSlice = createSlice({
         bufferBlocks,
         intervalBlocks,
         rewardRate,
+        claimableStatuses,
         betsv2,
         roundsv2: merge({}, roundsv2, makeRoundDataV2(futureRounds)),
       }
@@ -280,7 +278,7 @@ export const predictionsSlice = createSlice({
 
     // Get multiple rounds
     builder.addCase(fetchRounds.fulfilled, (state, action) => {
-      state.roundsv2 = merge({}, state.rounds, action.payload)
+      state.roundsv2 = merge({}, state.roundsv2, action.payload)
     })
 
     // Show History
@@ -321,11 +319,8 @@ export const {
   setHistoryFilter,
   setHistoryPaneState,
   updateMarketData,
-  markBetAsCollected,
   setPredictionStatus,
-  markPositionAsEntered,
   setLastOraclePrice,
-  markLedgerClaimStatus,
 } = predictionsSlice.actions
 
 export default predictionsSlice.reducer

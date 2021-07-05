@@ -3,10 +3,10 @@ import styled from 'styled-components'
 import { useCountUp } from 'react-countup'
 import { CardBody, Flex, PlayCircleOutlineIcon, Skeleton, Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import { Round, BetPosition } from 'state/types'
+import { NodeRound, NodeLedger, BetPosition } from 'state/types'
 import { useBlock, useGetIntervalBlocks, useGetLastOraclePrice } from 'state/hooks'
 import BlockProgress from 'components/BlockProgress'
-import { formatUsd, getBubbleGumBackground } from '../../helpers'
+import { formatUsdv2, getBubbleGumBackground, getHasRoundFailed } from '../../helpers'
 import PositionTag from '../PositionTag'
 import { RoundResultBox, LockPriceRow, PrizePoolRow } from '../RoundResult'
 import MultiplierArrow from './MultiplierArrow'
@@ -16,8 +16,8 @@ import CanceledRoundCard from './CanceledRoundCard'
 import CalculatingCard from './CalculatingCard'
 
 interface LiveRoundCardProps {
-  round: Round
-  betAmount?: number
+  round: NodeRound
+  betAmount?: NodeLedger['amount']
   hasEnteredUp: boolean
   hasEnteredDown: boolean
   bullMultiplier: number
@@ -50,7 +50,8 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
   const isBull = price.gt(lockPrice)
   const priceColor = isBull ? 'success' : 'failure'
   const estimatedEndBlock = lockBlock + totalInterval
-  const priceDifference = price.minus(lockPrice).toNumber()
+  const priceDifference = price.sub(lockPrice)
+  const hasRoundFailed = getHasRoundFailed(round, currentBlock)
   const { countUp, update } = useCountUp({
     start: 0,
     end: price.toNumber(),
@@ -65,7 +66,7 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
     update(price.toNumber())
   }, [price, update])
 
-  if (round.failed) {
+  if (hasRoundFailed) {
     return <CanceledRoundCard round={round} />
   }
 
@@ -102,7 +103,7 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
                 </TooltipText>
               </div>
               <PositionTag betPosition={isBull ? BetPosition.BULL : BetPosition.BEAR}>
-                {formatUsd(priceDifference)}
+                {formatUsdv2(priceDifference)}
               </PositionTag>
             </Flex>
             {lockPrice && <LockPriceRow lockPrice={lockPrice} />}

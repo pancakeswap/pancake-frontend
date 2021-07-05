@@ -6,8 +6,6 @@ import {
   BetDatav2,
   BetPosition,
   Market,
-  NodeLedgerResponse,
-  NodeRound,
   PredictionsState,
   PredictionStatus,
   ReduxNodeLedger,
@@ -19,7 +17,7 @@ import {
 import { multicallv2 } from 'utils/multicall'
 import predictionsAbi from 'config/abi/predictions.json'
 import { getPredictionsAddress } from 'utils/addressHelpers'
-
+import { PredictionsClaimableResponse, PredictionsLedgerResponse, PredictionsRoundsResponse } from 'utils/types'
 import {
   BetResponse,
   getRoundBaseFields,
@@ -353,15 +351,44 @@ export const getBet = async (betId: string): Promise<BetResponse> => {
 }
 
 // V2 REFACTOR
-export const getLedgerData = async (account: string, epochs: number[]): Promise<NodeLedgerResponse[]> => {
+export const getLedgerData = async (account: string, epochs: number[]) => {
   const address = getPredictionsAddress()
   const ledgerCalls = epochs.map((epoch) => ({
     address,
     name: 'ledger',
     params: [epoch, account],
   }))
-  const response = await multicallv2(predictionsAbi, ledgerCalls)
+  const response = await multicallv2<PredictionsLedgerResponse[]>(predictionsAbi, ledgerCalls)
   return response
+}
+
+export const getClaimStatuses = async (
+  account: string,
+  epochs: number[],
+): Promise<PredictionsState['claimableStatuses']> => {
+  const address = getPredictionsAddress()
+  const claimableCalls = epochs.map((epoch) => ({
+    address,
+    name: 'claimable',
+    params: [epoch, account],
+  }))
+  const claimableResponses = await multicallv2<[PredictionsClaimableResponse][]>(predictionsAbi, claimableCalls)
+
+  // "claimable" currently has a bug where it returns true on Bull bets even if the wallet did not interact with the round
+  // To get around this temporarily we check the ledger status as well to confirm that it is claimable
+  // This can be removed in Predictions V2
+  const ledgerResponses = await getLedgerData(account, epochs)
+
+  return claimableResponses.reduce((accum, claimableResponse, index) => {
+    const { amount } = ledgerResponses[index]
+    const epoch = epochs[index]
+    const [claimable] = claimableResponse
+
+    return {
+      ...accum,
+      [epoch]: claimable && amount.gt(0),
+    }
+  }, {})
 }
 
 export type MarketData = Pick<
@@ -391,14 +418,14 @@ export const getPredictionData = async (): Promise<MarketData> => {
   }
 }
 
-export const getRoundsData = async (epochs: number[]): Promise<NodeRound[]> => {
+export const getRoundsData = async (epochs: number[]): Promise<PredictionsRoundsResponse[]> => {
   const address = getPredictionsAddress()
   const calls = epochs.map((epoch) => ({
     address,
     name: 'rounds',
     params: [epoch],
   }))
-  const response = (await multicallv2(predictionsAbi, calls)) as NodeRound[]
+  const response = await multicallv2<PredictionsRoundsResponse[]>(predictionsAbi, calls)
   return response
 }
 
@@ -428,28 +455,13 @@ export const makeRoundDataV2 = (rounds: ReduxNodeRound[]): RoundDataV2 => {
   }, {})
 }
 
-export const transformNodeRoundToReduxNodeRound = (roundsResponse: NodeRound): ReduxNodeRound => ({
-  epoch: roundsResponse.epoch.toNumber(),
-  startBlock: roundsResponse.startBlock.toNumber(),
-  lockBlock: roundsResponse.lockBlock.toNumber(),
-  endBlock: roundsResponse.endBlock.toNumber(),
-  lockPrice: roundsResponse.lockPrice.eq(0) ? null : roundsResponse.lockPrice.toJSON(),
-  closePrice: roundsResponse.closePrice.eq(0) ? null : roundsResponse.lockPrice.toJSON(),
-  totalAmount: roundsResponse.totalAmount.toJSON(),
-  bullAmount: roundsResponse.bullAmount.toJSON(),
-  bearAmount: roundsResponse.bearAmount.toJSON(),
-  rewardBaseCalAmount: roundsResponse.rewardBaseCalAmount.toJSON(),
-  rewardAmount: roundsResponse.rewardAmount.toJSON(),
-  oracleCalled: roundsResponse.oracleCalled,
-})
-
-export const transformNodeLedgerResponseToReduxLedger = (ledgerResponse: NodeLedgerResponse): ReduxNodeLedger => ({
+export const serializePredictionsLedgerResponse = (ledgerResponse: PredictionsLedgerResponse): ReduxNodeLedger => ({
   position: ledgerResponse.position === 0 ? BetPosition.BEAR : BetPosition.BEAR,
   amount: ledgerResponse.amount.toJSON(),
   claimed: ledgerResponse.claimed,
 })
 
-export const makeLedgerData = (account: string, ledgers: NodeLedgerResponse[], epochs: number[]): BetDatav2 => {
+export const makeLedgerData = (account: string, ledgers: PredictionsLedgerResponse[], epochs: number[]): BetDatav2 => {
   return ledgers.reduce((accum, ledgerResponse, index) => {
     if (!ledgerResponse) {
       return accum
@@ -466,9 +478,62 @@ export const makeLedgerData = (account: string, ledgers: NodeLedgerResponse[], e
       ...accum,
       [account]: {
         ...accum[account],
-        [epoch]: transformNodeLedgerResponseToReduxLedger(ledgerResponse),
+        [epoch]: serializePredictionsLedgerResponse(ledgerResponse),
       },
     }
   }, {})
 }
+
+export const serializePredictionsRoundsResponse = (response: PredictionsRoundsResponse) => {
+  const {
+    epoch,
+    startBlock,
+    lockBlock,
+    endBlock,
+    lockPrice,
+    closePrice,
+    totalAmount,
+    bullAmount,
+    bearAmount,
+    rewardAmount,
+    oracleCalled,
+  } = response
+
+  return {
+    epoch: epoch.toNumber(),
+    startBlock: startBlock.toNumber(),
+    lockBlock: lockBlock.toNumber(),
+    endBlock: endBlock.toNumber(),
+    lockPrice: lockPrice.eq(0) ? null : lockPrice.toJSON(),
+    closePrice: closePrice.eq(0) ? null : lockPrice.toJSON(),
+    totalAmount: totalAmount.toJSON(),
+    bullAmount: bullAmount.toJSON(),
+    bearAmount: bearAmount.toJSON(),
+    rewardAmount: rewardAmount.toJSON(),
+    oracleCalled,
+  } as ReduxNodeRound
+}
+
+/**
+ * Parse serialized values back into ethers.BigNumber
+ * ethers.BigNumber values are stored with the "toJSJON()" method, e.g  { type: "BigNumber", hex: string }
+ */
+export const parseBigNumberObj = <T = Record<string, any>, K = Record<string, any>>(data: T): K => {
+  return Object.keys(data).reduce((accum, key) => {
+    const value = data[key]
+
+    if (value && value?.type === 'BigNumber') {
+      return {
+        ...accum,
+        [key]: ethers.BigNumber.from(value),
+      }
+    }
+
+    return {
+      ...accum,
+      [key]: value,
+    }
+  }, {}) as K
+}
+
 // END V2 REFACTOR

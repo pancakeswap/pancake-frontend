@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
+import { ethers } from 'ethers'
 import {
   Box,
   ChevronDownIcon,
@@ -80,6 +81,8 @@ const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
 
   // Winners get the payout, otherwise the claim what they put it if it was canceled
   const payout = roundResult === Result.WIN ? getNetPayout(bet, rewardRate) : amount
+  // TODO: remove this when we don't have to convert
+  const payoutAsEthBn = ethers.BigNumber.from(payout)
 
   const renderBetLabel = () => {
     if (isOpenRound) {
@@ -133,9 +136,8 @@ const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
         {roundResult === Result.WIN && canClaim && (
           <CollectWinningsButton
             hasClaimed={!canClaim}
-            roundId={bet.round.id}
             epoch={bet.round.epoch}
-            payout={payout}
+            payout={payoutAsEthBn}
             scale="sm"
             mr="8px"
           >

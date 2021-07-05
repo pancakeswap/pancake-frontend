@@ -9,7 +9,6 @@ import { PredictionStatus } from 'state/types'
 import usePersistState from 'hooks/usePersistState'
 import PageLoader from 'components/PageLoader'
 import usePollOraclePrice from './hooks/usePollOraclePrice'
-import usePollRoundData from './hooks/usePollRoundData'
 import usePollPredictions from './hooks/usePollPredictions'
 import Container from './components/Container'
 import CollectWinningsPopup from './components/CollectWinningsPopup'
@@ -57,11 +56,12 @@ const Predictions = () => {
   }, [onPresentChartDisclaimerRef, hasAcceptedChart, isChartPaneOpen])
 
   useEffect(() => {
-    // Do not start initialization until the first block has been retrieved
-    dispatch(initializePredictions(account))
+    if (initialBlock > 0) {
+      // Do not start initialization until the first block has been retrieved
+      dispatch(initializePredictions(account))
+    }
   }, [initialBlock, dispatch, account])
 
-  usePollRoundData()
   usePollPredictions()
   usePollOraclePrice()
 

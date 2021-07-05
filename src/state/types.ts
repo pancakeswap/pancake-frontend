@@ -254,12 +254,6 @@ export interface RoundDataV2 {
   [key: string]: ReduxNodeRound
 }
 
-export interface NodeLedgerResponse {
-  position: 0 | 1
-  amount: ethers.BigNumber
-  claimed: boolean
-}
-
 export interface ReduxNodeLedger {
   position: BetPosition
   amount: BigNumberToJson
@@ -288,10 +282,10 @@ export interface ReduxNodeRound {
 }
 
 export interface NodeRound {
-  epoch: ethers.BigNumber
-  startBlock: ethers.BigNumber
-  lockBlock: ethers.BigNumber
-  endBlock: ethers.BigNumber
+  epoch: number
+  startBlock: number
+  lockBlock: number
+  endBlock: number
   lockPrice: ethers.BigNumber
   closePrice: ethers.BigNumber
   totalAmount: ethers.BigNumber
@@ -322,6 +316,9 @@ export interface PredictionsState {
   bets: BetData
   roundsv2?: RoundDataV2
   betsv2?: BetDatav2
+  claimableStatuses: {
+    [key: string]: boolean
+  }
 }
 
 // Voting

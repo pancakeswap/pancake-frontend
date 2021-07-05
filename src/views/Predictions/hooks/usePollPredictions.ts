@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { useAppDispatch } from 'state'
 import { useGetCurrentEpoch, useGetPredictionsStatus } from 'state/hooks'
-import { fetchLedgerData, fetchMarketData, fetchRounds } from 'state/predictions'
+import { fetchClaimableStatuses, fetchLedgerData, fetchMarketData, fetchRounds } from 'state/predictions'
 import { PredictionStatus } from 'state/types'
 
 const POLL_TIME_IN_SECONDS = 10
@@ -28,6 +28,7 @@ const usePollPredictions = () => {
 
         if (account) {
           dispatch(fetchLedgerData({ account, epochs: liveAndCurrent }))
+          dispatch(fetchClaimableStatuses({ account, epochs: liveAndCurrent }))
         }
       }, POLL_TIME_IN_SECONDS * 1000)
     }
