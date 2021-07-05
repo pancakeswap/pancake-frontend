@@ -166,21 +166,6 @@ export const fetchRoundBet = createAsyncThunk<
   return { account, roundId, bet: null }
 })
 
-/**
- * Used to poll the user bets of the current round cards
- */
-export const fetchCurrentBets = createAsyncThunk<
-  { account: string; bets: Bet[] },
-  { account: string; roundIds: string[] }
->('predictions/fetchCurrentBets', async ({ account, roundIds }) => {
-  const betResponses = await getBetHistory({
-    user: account.toLowerCase(),
-    round_in: roundIds,
-  })
-
-  return { account, bets: betResponses.map(transformBetResponse) }
-})
-
 export const fetchHistory = createAsyncThunk<{ account: string; bets: Bet[] }, { account: string; claimed?: boolean }>(
   'predictions/fetchHistory',
   async ({ account, claimed }) => {
@@ -325,21 +310,6 @@ export const predictionsSlice = createSlice({
     // Get multiple rounds
     builder.addCase(fetchRounds.fulfilled, (state, action) => {
       state.roundsv2 = merge({}, state.rounds, action.payload)
-    })
-
-    // Get unclaimed bets
-    builder.addCase(fetchCurrentBets.fulfilled, (state, action) => {
-      const { account, bets } = action.payload
-      const betData = bets.reduce((accum, bet) => {
-        return {
-          ...accum,
-          [bet.round.id]: bet,
-        }
-      }, {})
-
-      state.bets = merge({}, state.bets, {
-        [account]: betData,
-      })
     })
 
     // Get round bet
