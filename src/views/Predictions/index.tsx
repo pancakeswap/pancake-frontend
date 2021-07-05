@@ -10,7 +10,7 @@ import usePersistState from 'hooks/usePersistState'
 import PageLoader from 'components/PageLoader'
 import usePollOraclePrice from './hooks/usePollOraclePrice'
 import usePollRoundData from './hooks/usePollRoundData'
-import usePollRounds from './hooks/usePollRounds'
+import usePollPredictions from './hooks/usePollPredictions'
 import Container from './components/Container'
 import CollectWinningsPopup from './components/CollectWinningsPopup'
 import SwiperProvider from './context/SwiperProvider'
@@ -62,7 +62,7 @@ const Predictions = () => {
   }, [initialBlock, dispatch, account])
 
   usePollRoundData()
-  usePollRounds()
+  usePollPredictions()
   usePollOraclePrice()
 
   if (status === PredictionStatus.INITIAL) {
