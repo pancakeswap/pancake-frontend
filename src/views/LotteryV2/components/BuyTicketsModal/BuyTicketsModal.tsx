@@ -63,7 +63,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
   const [ticketsToBuy, setTicketsToBuy] = useState('0')
   const [discountValue, setDiscountValue] = useState('')
   const [totalCost, setTotalCost] = useState('')
-  const [buyingStage, setBuyingStage] = useState(BuyingStage.BUY)
+  const [buyingStage, setBuyingStage] = useState<BuyingStage>(BuyingStage.BUY)
   const [maxPossibleTicketPurchase, setMaxPossibleTicketPurchase] = useState(BIG_ZERO)
   const [maxTicketPurchaseExceeded, setMaxTicketPurchaseExceeded] = useState(false)
   const [userNotEnoughCake, setUserNotEnoughCake] = useState(false)
@@ -325,6 +325,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
               confirmLabel={t('Buy Instantly')}
             />
             <Button
+              id={`lottery_buy_ins_${ticketsToBuy}`}
               variant="secondary"
               mt="8px"
               disabled={disableBuying || isConfirming}

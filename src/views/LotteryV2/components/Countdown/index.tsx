@@ -17,7 +17,7 @@ const Countdown: React.FC<CountdownProps> = ({ nextEventTime, preCountdownText, 
   return (
     <>
       {secondsRemaining ? (
-        <Flex display="inline-flex" justifyContent="flex-end" alignItems="flex-end" borderBottom="1px dotted white">
+        <Flex display="inline-flex" justifyContent="flex-end" alignItems="flex-end">
           {preCountdownText && (
             <Heading mr="12px" color="#ffff">
               {preCountdownText}

@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Text, ChevronRightIcon, Box, Flex } from '@pancakeswap/uikit'
+import { Text, Box, Flex } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { LotteryStatus } from 'config/constants/types'
 import { useGetUserLotteriesGraphData } from 'state/hooks'
@@ -39,9 +39,7 @@ const FinishedRoundTable: React.FC<FinishedRoundTableProps> = ({ handleHistoryRo
         <Text bold fontSize="12px" color="secondary" textTransform="uppercase">
           {t('Your Tickets')}
         </Text>
-        <Flex>
-          <ChevronRightIcon color="background" />
-        </Flex>
+        <Box width="20px" />
       </Grid>
       <Flex px="24px" pb="24px" flexDirection="column" overflowY="scroll" height="240px">
         {userLotteryData &&
