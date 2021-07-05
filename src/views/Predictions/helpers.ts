@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js'
-import { Bet, BetPosition } from 'state/types'
+import { Bet, BetPosition, NodeRound } from 'state/types'
 import { DefaultTheme } from 'styled-components'
 import { formatNumber, getBalanceAmount } from 'utils/formatBalance'
 import getTimePeriods from 'utils/getTimePeriods'
@@ -61,6 +61,16 @@ export const getNetPayout = (bet: Bet, rewardRate = 1): number => {
 
   const payout = getPayout(bet, rewardRate)
   return payout - bet.amount
+}
+
+export const getHasRoundFailed = (round: NodeRound, blockNumber: number) => {
+  // Round hasn't finished yet
+  if (round.endBlock.gte(blockNumber)) {
+    return false
+  }
+
+  // If the round is finished and the oracle has not been called we know it has failed
+  return round.oracleCalled === false
 }
 
 // TODO: Move this to the UI Kit

@@ -346,7 +346,11 @@ export const useInitialBlock = () => {
 
 // V2 REFACTOR
 export const useGetRoundsv2 = () => {
-  return useSelector((state: State) => state.predictions.rounds)
+  return useSelector((state: State) => state.predictions.roundsv2)
+}
+
+export const useGetRoundv2 = (epoch: number) => {
+  return useSelector((state: State) => state.predictions.roundsv2[epoch])
 }
 
 // END V2 REFACTOR
