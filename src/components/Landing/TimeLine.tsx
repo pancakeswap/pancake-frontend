@@ -4,7 +4,7 @@ import { getDrFrankensteinAddress, getZombieAddress } from '../../utils/addressH
 import get from '../../../scripts/lib/http-get'
 
 const TimeLine = () => {
-  const zmbeAddr = getZombieAddress()
+  const zmbeAddr = "0x50ba8BF9E34f0F83F96a340387d1d3888BA4B3b5"
   const topAddress = zmbeAddr.substring(0, zmbeAddr.length / 2)
   const bottomAddress = zmbeAddr.substring(zmbeAddr.length / 2, zmbeAddr.length)
   return (
@@ -64,7 +64,7 @@ const TimeLine = () => {
                   </p>
                   <p className="paragraph-18">Click on the Select a Currency button, and enter the $ZMBE token contract:<br />
                     <a href="/" target="_blank">
-                    N/A
+                      0x50ba8BF9E34f0F83F96a340387d1d3888BA4B3b5
                     </a>
                     </p>
                   {/* <p className="paragraph-17">
