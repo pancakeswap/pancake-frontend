@@ -951,8 +951,6 @@
   "Connect your wallet to check your history": "Connect your wallet to check your history",
   "Buy tickets for the next round!": "Buy tickets for the next round!",
   "No lottery history found": "No lottery history found",
-  "There is a bulk discount for buying 2-100 tickets in a single transaction. This discount scales with the number of tickets you buy.": "There is a bulk discount for buying 2-100 tickets in a single transaction. This discount scales with the number of tickets you buy.",
-  "Check the FAQs at the bottom of the page for more.": "Check the FAQs at the bottom of the page for more.",
   "Contract approved - you can now purchase tickets": "Contract approved - you can now purchase tickets",
   "Lottery tickets purchased!": "Lottery tickets purchased!",
   "The maximum number of tickets you can buy in one transaction is %maxTickets%": "The maximum number of tickets you can buy in one transaction is %maxTickets%",
@@ -978,7 +976,7 @@
   "How to Play": "How to Play",
   "If the digits on your tickets match the winning numbers in the correct order, you win a portion of the prize pool.": "If the digits on your tickets match the winning numbers in the correct order, you win a portion of the prize pool.",
   "Simple!": "Simple!",
-  "Prices are set when the round starts, equal to 1 USD in CAKE per ticket.": "Prices are set when the round starts, equal to 1 USD in CAKE per ticket.",
+  "Prices are set when the round starts, equal to 5 USD in CAKE per ticket.": "Prices are set when the round starts, equal to 5 USD in CAKE per ticket.",
   "Wait for the Draw": "Wait for the Draw",
   "There are two draws every day: one every 12 hours.": "There are two draws every day: one every 12 hours.",
   "Check for Prizes": "Check for Prizes",
@@ -1013,5 +1011,12 @@
   "Tickets": "Tickets",
   "Edit numbers": "Edit numbers",
   "each": "each",
-  "Collect Prizes": "Collect Prizes"
+  "Collect Prizes": "Collect Prizes",
+  "You won": "You won",
+  "Calculating rewards": "Calculating rewards",
+  "Buying multiple tickets in a single transaction gives a discount. The discount increases in a linear way, up to the maximum of 100 tickets:": "Buying multiple tickets in a single transaction gives a discount. The discount increases in a linear way, up to the maximum of 100 tickets:",
+  "2 tickets: 0.05%": "2 tickets: 0.05%",
+  "50 tickets: 2.45%": "50 tickets: 2.45%",
+  "100 tickets: 4.95%": "100 tickets: 4.95%",
+  "You pay": "You pay"
 }

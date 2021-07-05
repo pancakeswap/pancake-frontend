@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Button, Heading, Flex, useModal, AutoRenewIcon } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
+import { LotteryStatus } from 'config/constants/types'
 import { useTranslation } from 'contexts/Localization'
 import { useGetUserLotteriesGraphData, useLottery } from 'state/hooks'
 import UnlockButton from 'components/UnlockButton'
@@ -25,18 +26,22 @@ const TornTicketImage = styled.img`
 const CheckPrizesSection = () => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
-  const { isTransitioning } = useLottery()
+  const {
+    isTransitioning,
+    currentRound: { status },
+  } = useLottery()
   const { fetchAllRewards, unclaimedRewards, fetchStatus } = useGetUnclaimedRewards()
   const userLotteryData = useGetUserLotteriesGraphData()
   const [hasCheckedForRewards, setHasCheckedForRewards] = useState(false)
   const [hasRewardsToClaim, setHasRewardsToClaim] = useState(false)
   const [onPresentClaimModal] = useModal(<ClaimPrizesModal roundsToClaim={unclaimedRewards} />, false)
   const isFetchingRewards = fetchStatus === FetchStatus.IN_PROGRESS
-  const isCheckNowDisabled = !userLotteryData.account
+  const lotteryIsNotClaimable = status === LotteryStatus.CLOSE
+  const isCheckNowDisabled = !userLotteryData.account || lotteryIsNotClaimable
 
   useEffect(() => {
     if (fetchStatus === FetchStatus.SUCCESS) {
-      // Manage showing unclaimed rewards modal once per visit
+      // Manage showing unclaimed rewards modal once per page load / once per lottery state change
       if (unclaimedRewards.length > 0 && !hasCheckedForRewards) {
         setHasRewardsToClaim(true)
         setHasCheckedForRewards(true)
@@ -106,6 +111,15 @@ const CheckPrizesSection = () => {
         </Flex>
       )
     }
+    const checkNowText = () => {
+      if (lotteryIsNotClaimable) {
+        return `${t('Calculating rewards')}...`
+      }
+      if (isFetchingRewards) {
+        return t('Checking')
+      }
+      return t('Check Now')
+    }
     return (
       <Flex alignItems="center" justifyContent="center">
         <TicketImage src="/images/lottery/ticket-l.png" alt="lottery ticket" />
@@ -119,7 +133,7 @@ const CheckPrizesSection = () => {
             isLoading={isFetchingRewards}
             endIcon={isFetchingRewards ? <AutoRenewIcon color="currentColor" spin /> : null}
           >
-            {isFetchingRewards ? t('Checking') : t('Check Now')}
+            {checkNowText()}
           </Button>
         </Flex>
         <TicketImage src="/images/lottery/ticket-r.png" alt="lottery ticket" />

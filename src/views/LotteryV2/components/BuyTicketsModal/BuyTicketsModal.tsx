@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react'
+import React, { useEffect, useState, useMemo, useCallback } from 'react'
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
@@ -63,6 +63,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
   const [ticketsToBuy, setTicketsToBuy] = useState('0')
   const [discountValue, setDiscountValue] = useState('')
   const [totalCost, setTotalCost] = useState('')
+  const [ticketCostBeforeDiscount, setTicketCostBeforeDiscount] = useState('')
   const [buyingStage, setBuyingStage] = useState<BuyingStage>(BuyingStage.BUY)
   const [maxPossibleTicketPurchase, setMaxPossibleTicketPurchase] = useState(BIG_ZERO)
   const [maxTicketPurchaseExceeded, setMaxTicketPurchaseExceeded] = useState(false)
@@ -71,8 +72,8 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
   const cakeContract = useCake()
   const { toastSuccess } = useToast()
   const { balance: userCake, fetchStatus } = useTokenBalance(getCakeAddress())
-  // balance from useTokenBalance causes rerenders in effects as a new BigNumber is instanciated on each render, hence memoising it.
-  const stringifiedUserCake = userCake.toString()
+  // balance from useTokenBalance causes rerenders in effects as a new BigNumber is instanciated on each render, hence memoising it using the stringified value below.
+  const stringifiedUserCake = userCake.toJSON()
   const memoisedUserCake = useMemo(() => new BigNumber(stringifiedUserCake), [stringifiedUserCake])
 
   const cakePriceBusd = usePriceCakeBusd()
@@ -84,10 +85,12 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
     <>
       <Text mb="16px">
         {t(
-          'There is a bulk discount for buying 2-100 tickets in a single transaction. This discount scales with the number of tickets you buy.',
+          'Buying multiple tickets in a single transaction gives a discount. The discount increases in a linear way, up to the maximum of 100 tickets:',
         )}
       </Text>
-      <Text>{t('Check the FAQs at the bottom of the page for more.')}</Text>
+      <Text>{t('2 tickets: 0.05%')}</Text>
+      <Text>{t('50 tickets: 2.45%')}</Text>
+      <Text>{t('100 tickets: 4.95%')}</Text>
     </>
   )
   const { targetRef, tooltip, tooltipVisible } = useTooltip(<TooltipComponent />, {
@@ -95,12 +98,17 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
     tooltipOffset: [20, 10],
   })
 
+  const limitNumberByMaxTicketsPerBuy = useCallback(
+    (number: BigNumber) => {
+      return number.gt(maxNumberTicketsPerBuyOrClaim) ? maxNumberTicketsPerBuyOrClaim : number
+    },
+    [maxNumberTicketsPerBuyOrClaim],
+  )
+
   useEffect(() => {
     const getMaxPossiblePurchase = () => {
       const maxBalancePurchase = memoisedUserCake.div(priceTicketInCake)
-      const maxPurchase = maxBalancePurchase.gt(maxNumberTicketsPerBuyOrClaim)
-        ? maxNumberTicketsPerBuyOrClaim
-        : maxBalancePurchase
+      const maxPurchase = limitNumberByMaxTicketsPerBuy(maxBalancePurchase)
       if (hasFetchedBalance && maxPurchase.eq(0)) {
         setUserNotEnoughCake(true)
       } else {
@@ -109,7 +117,13 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
       setMaxPossibleTicketPurchase(maxPurchase)
     }
     getMaxPossiblePurchase()
-  }, [maxNumberTicketsPerBuyOrClaim, priceTicketInCake, memoisedUserCake, hasFetchedBalance])
+  }, [
+    maxNumberTicketsPerBuyOrClaim,
+    priceTicketInCake,
+    memoisedUserCake,
+    limitNumberByMaxTicketsPerBuy,
+    hasFetchedBalance,
+  ])
 
   useEffect(() => {
     const numberOfTicketsToBuy = new BigNumber(ticketsToBuy)
@@ -123,7 +137,8 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
     const costAfterDiscount = getCostAfterDiscount()
     const costBeforeDiscount = priceTicketInCake.times(numberOfTicketsToBuy)
     const discountBeingApplied = costBeforeDiscount.minus(costAfterDiscount)
-    // TODO: Max this at 100 tickets
+
+    setTicketCostBeforeDiscount(costBeforeDiscount.gt(0) ? getFullDisplayBalance(costBeforeDiscount) : '0')
     setTotalCost(costAfterDiscount.gt(0) ? getFullDisplayBalance(costAfterDiscount) : '0')
     setDiscountValue(discountBeingApplied.gt(0) ? getFullDisplayBalance(discountBeingApplied, 18, 5) : '0')
   }, [ticketsToBuy, priceTicketInCake, discountDivisor])
@@ -146,20 +161,21 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
   }
 
   const handleInputChange = (input: string) => {
-    // Use BN for calcs
-    const inputAsBN = new BigNumber(input)
-    const cakeValueOfInput = getCakeValueOfTickets(inputAsBN)
+    // Force input to integer
+    const inputAsInt = parseInt(input, 10)
+    const inputAsBN = new BigNumber(inputAsInt)
+    const limitedNumberTickets = limitNumberByMaxTicketsPerBuy(inputAsBN)
+    const cakeValueOfInput = getCakeValueOfTickets(limitedNumberTickets)
+
     if (cakeValueOfInput.gt(userCake)) {
       setUserNotEnoughCake(true)
-    } else if (inputAsBN.gt(maxPossibleTicketPurchase)) {
+    } else if (limitedNumberTickets.eq(maxPossibleTicketPurchase)) {
       setMaxTicketPurchaseExceeded(true)
     } else {
       setUserNotEnoughCake(false)
       setMaxTicketPurchaseExceeded(false)
     }
-    // Prevent decimals in input
-    const inputAsInt = parseInt(input, 10)
-    setTicketsToBuy(input ? inputAsInt.toString() : '0')
+    setTicketsToBuy(inputAsInt ? limitedNumberTickets.toString() : '0')
   }
 
   const handleNumberButtonClick = (number: number) => {
@@ -208,11 +224,19 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
     })
   }
 
+  const costInCake = () => getFullDisplayBalance(priceTicketInCake.times(ticketsToBuy))
+  const percentageDiscount = () => {
+    const percentageAsBn = new BigNumber(discountValue).div(new BigNumber(ticketCostBeforeDiscount)).times(100)
+    if (percentageAsBn.isNaN() || percentageAsBn.eq(0)) {
+      return 0
+    }
+    return percentageAsBn.toNumber().toFixed(2)
+  }
+
   const disableBuying =
     !isApproved ||
     isConfirmed ||
     userNotEnoughCake ||
-    maxTicketPurchaseExceeded ||
     !ticketsToBuy ||
     new BigNumber(ticketsToBuy).lte(0) ||
     getTicketsForPurchase().length !== parseInt(ticketsToBuy, 10)
@@ -304,17 +328,36 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
 
       <Flex flexDirection="column">
         <Flex mb="8px" justifyContent="space-between">
+          <Text color="textSubtle" fontSize="14px">
+            {t('Cost')} (CAKE)
+          </Text>
+          <Text color="textSubtle" fontSize="14px">
+            {priceTicketInCake && costInCake()} CAKE
+          </Text>
+        </Flex>
+        <Flex mb="8px" justifyContent="space-between">
           <Flex>
-            <Text color="textSubtle">{t('Bulk discount')}</Text>
+            <Text display="inline" bold fontSize="14px" mr="4px">
+              {discountValue && totalCost ? percentageDiscount() : 0}%
+            </Text>
+            <Text display="inline" color="textSubtle" fontSize="14px">
+              {t('Bulk discount')}
+            </Text>
             <Flex alignItems="center" justifyContent="center" ref={targetRef}>
               <HelpIcon ml="4px" width="14px" height="14px" color="textSubtle" />
             </Flex>
           </Flex>
-          <Text color="textSubtle">~{discountValue} CAKE</Text>
+          <Text fontSize="14px" color="textSubtle">
+            ~{discountValue} CAKE
+          </Text>
         </Flex>
-        <Flex mb="24px" justifyContent="space-between">
-          <Text color="textSubtle">{t('Total cost')}</Text>
-          <Text color="textSubtle">~{totalCost} CAKE</Text>
+        <Flex borderTop={`1px solid ${theme.colors.cardBorder}`} pt="8px" mb="24px" justifyContent="space-between">
+          <Text color="textSubtle" fontSize="16px">
+            {t('You pay')}
+          </Text>
+          <Text fontSize="16px" bold>
+            ~{totalCost} CAKE
+          </Text>
         </Flex>
 
         {account ? (

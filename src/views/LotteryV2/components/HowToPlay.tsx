@@ -217,7 +217,7 @@ const HowToPlay: React.FC = () => {
     {
       label: t('Step %number%', { number: 1 }),
       title: t('Buy Tickets'),
-      subtitle: t('Prices are set when the round starts, equal to 1 USD in CAKE per ticket.'),
+      subtitle: t('Prices are set when the round starts, equal to 5 USD in CAKE per ticket.'),
     },
     {
       label: t('Step %number%', { number: 2 }),
