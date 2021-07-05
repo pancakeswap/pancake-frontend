@@ -13,6 +13,7 @@ import { useTranslation } from 'contexts/Localization'
 import { useERC20 } from 'hooks/useContract'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
 import { useAppDispatch } from 'state'
+import { getAddress } from 'utils/addressHelpers'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import { getBalanceAmount, getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
 import useUnstakeFarms from '../../../hooks/useUnstakeFarms'
@@ -49,7 +50,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
 
   const isApproved = account && allowance && allowance.isGreaterThan(0)
 
-  const lpAddress = lpAddresses[process.env.REACT_APP_CHAIN_ID]
+  const lpAddress = getAddress(lpAddresses)
   const liquidityUrlPathParts = getLiquidityUrlPathParts({
     quoteTokenAddress: quoteToken.address,
     tokenAddress: token.address,
