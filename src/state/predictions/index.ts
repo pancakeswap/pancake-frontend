@@ -263,6 +263,22 @@ export const predictionsSlice = createSlice({
     setLastOraclePrice: (state, action: PayloadAction<string>) => {
       state.lastOraclePrice = action.payload
     },
+
+    // V2 REFACTOR
+    markLedgerClaimStatus: (state, action: PayloadAction<{ account: string; epoch: number; claimed: boolean }>) => {
+      const { account, epoch, claimed } = action.payload
+      const currentBet = (state.betsv2[account] && state.betsv2[account][epoch]) || {}
+
+      state.betsv2 = merge({}, state.betsv2, {
+        [account]: {
+          [epoch]: {
+            ...currentBet,
+            claimed,
+          },
+        },
+      })
+    },
+    // END V2 REFACTOR
   },
   extraReducers: (builder) => {
     // Ledger (bet) records
@@ -390,6 +406,7 @@ export const {
   setPredictionStatus,
   markPositionAsEntered,
   setLastOraclePrice,
+  markLedgerClaimStatus,
 } = predictionsSlice.actions
 
 export default predictionsSlice.reducer
