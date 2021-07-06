@@ -505,7 +505,9 @@ export const useBetCanClaim = (account: string, roundId: string) => {
 
 export const useGetLastOraclePrice = () => {
   const lastOraclePrice = useSelector((state: State) => state.predictions.lastOraclePrice)
-  return useMemo(() => ethers.BigNumber.from(lastOraclePrice), [lastOraclePrice])
+  return useMemo(() => {
+    return ethers.BigNumber.from(lastOraclePrice)
+  }, [lastOraclePrice])
 }
 
 // Collectibles

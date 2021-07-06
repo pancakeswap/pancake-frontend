@@ -3,8 +3,8 @@ import styled from 'styled-components'
 import { useCountUp } from 'react-countup'
 import { CardBody, Flex, PlayCircleOutlineIcon, Skeleton, Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import { formatBigNumber } from 'utils/formatBalance'
 import { NodeRound, NodeLedger, BetPosition } from 'state/types'
+import { formatBigNumberToFixed } from 'utils/formatBalance'
 import { useBlock, useGetIntervalBlocks, useGetLastOraclePrice } from 'state/hooks'
 import BlockProgress from 'components/BlockProgress'
 import { formatUsdv2, getBubbleGumBackground, getHasRoundFailed } from '../../helpers'
@@ -53,7 +53,7 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
   const estimatedEndBlock = lockBlock + totalInterval
   const priceDifference = price.sub(lockPrice)
   const hasRoundFailed = getHasRoundFailed(round, currentBlock)
-  const priceAsNumber = parseFloat(formatBigNumber(price, 3, 8))
+  const priceAsNumber = parseFloat(formatBigNumberToFixed(price, 3, 8))
 
   const { countUp, update } = useCountUp({
     start: 0,

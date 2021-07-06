@@ -2,7 +2,7 @@ import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
 import { Bet, BetPosition, NodeLedger, NodeRound } from 'state/types'
 import { DefaultTheme } from 'styled-components'
-import { formatBigNumber, formatNumber, getBalanceAmount } from 'utils/formatBalance'
+import { formatBigNumberToFixed, formatNumber, getBalanceAmount } from 'utils/formatBalance'
 import getTimePeriods from 'utils/getTimePeriods'
 
 export const getBnbAmount = (bnbBn: BigNumber) => {
@@ -14,7 +14,7 @@ export const formatUsd = (usd: number) => {
 }
 
 export const formatUsdv2 = (usd: ethers.BigNumber) => {
-  return `$${formatBigNumber(usd, 3, 8)}`
+  return `$${formatBigNumberToFixed(usd, 3, 8)}`
 }
 
 export const formatBnb = (bnb: number) => {
@@ -23,7 +23,7 @@ export const formatBnb = (bnb: number) => {
 
 export const formatBnbv2 = (bnb: ethers.BigNumber) => {
   const value = bnb || ethers.BigNumber.from(0)
-  return formatBigNumber(value, 3)
+  return formatBigNumberToFixed(value, 4)
 }
 
 export const formatBnbFromBigNumber = (bnbBn: BigNumber) => {
@@ -74,6 +74,10 @@ export const getNetPayout = (bet: Bet, rewardRate = 1): number => {
 }
 
 export const getHasRoundFailed = (round: NodeRound, blockNumber: number) => {
+  if (!round.endBlock) {
+    return false
+  }
+
   // Round hasn't finished yet
   if (round.endBlock >= blockNumber) {
     return false
@@ -101,7 +105,10 @@ export const getMultiplierv2 = (total: NodeRound['totalAmount'], amount: ethers.
     return 0
   }
 
-  return total.div(amount).toNumber()
+  const fixedTotal = ethers.FixedNumber.from(total)
+  const fixedAmount = ethers.FixedNumber.from(amount)
+
+  return fixedTotal.divUnsafe(fixedAmount).toUnsafeFloat()
 }
 
 export const getPayoutv2 = (ledger: NodeLedger, round: NodeRound, rewardRate = 1) => {
