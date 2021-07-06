@@ -24,7 +24,7 @@ const tokens = {
   merl: {
     symbol: 'MERL',
     address: {
-      56: '',
+      56: '0xda360309c59cb8c434b28a91b823344a96444278',
       97: '0xda360309c59cb8c434b28a91b823344a96444278',
     },
     decimals: 18,
