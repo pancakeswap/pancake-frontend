@@ -1,104 +1,279 @@
 import React from 'react'
-import styled from 'styled-components'
-import { Heading, Text, LinkExternal } from '@pancakeswap/uikit'
+import styled, { keyframes } from 'styled-components'
+import { Box, Flex, Heading, Skeleton } from '@pancakeswap/uikit'
+import { LotteryStatus } from 'config/constants/types'
 import { useTranslation } from 'contexts/Localization'
-import Container from 'components/Layout/Container'
+import { useLottery, usePriceCakeBusd } from 'state/hooks'
+import { getBalanceNumber } from 'utils/formatBalance'
+import Balance from 'components/Balance'
+import { TicketPurchaseCard } from '../svgs'
+import BuyTicketsButton from './BuyTicketsButton'
 
-const Title = styled(Heading).attrs({ as: 'h1', scale: 'xl' })`
-  color: #ffffff;
-  margin-bottom: 24px;
-  text-shadow: 2px 2px 2px #00000040;
+const floatingStarsLeft = keyframes`
+  from {
+    transform: translate(0,  0px);
+  }
+  50% {
+    transform: translate(10px, 10px);
+  }
+  to {
+    transform: translate(0, -0px);
+  }  
 `
 
-const ComeBack = styled(Text)`
-  background: -webkit-linear-gradient(#ffd800, #eb8c00);
-  font-size: 24px;
-  font-weight: 600;
+const floatingStarsRight = keyframes`
+  from {
+    transform: translate(0,  0px);
+  }
+  50% {
+    transform: translate(-10px, 10px);
+  }
+  to {
+    transform: translate(0, -0px);
+  }  
+`
+
+const floatingTicketLeft = keyframes`
+  from {
+    transform: translate(0,  0px);
+  }
+  50% {
+    transform: translate(-10px, 15px);
+  }
+  to {
+    transform: translate(0, -0px);
+  }  
+`
+
+const floatingTickeRight = keyframes`
+  from {
+    transform: translate(0,  0px);
+  }
+  50% {
+    transform: translate(10px, 15px);
+  }
+  to {
+    transform: translate(0, -0px);
+  }  
+`
+
+const mainTicketAnimation = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(6deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }  
+`
+
+const TicketContainer = styled(Flex)`
+  animation: ${mainTicketAnimation} 3s ease-in-out infinite;
+`
+
+const PrizeTotalBalance = styled(Balance)`
+  background: ${({ theme }) => theme.colors.gradients.gold};
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 `
 
-const StyledHero = styled.div`
-  background-image: linear-gradient(#7645d9, #452a7a);
-  max-height: max-content;
-  overflow: hidden;
-  ${({ theme }) => theme.mediaQueries.sm} {
-    max-height: 256px;
+const StyledBuyTicketButton = styled(BuyTicketsButton)<{ disabled: boolean }>`
+  background: ${({ theme, disabled }) =>
+    disabled ? theme.colors.disabled : 'linear-gradient(180deg, #7645d9 0%, #452a7a 100%)'};
+  width: 200px;
+  ${({ theme }) => theme.mediaQueries.xs} {
+    width: 240px;
   }
 `
 
-const StyledContainer = styled(Container)`
-  display: flex;
-
-  flex-direction: column-reverse;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    flex-direction: row;
-  }
+const ButtonWrapper = styled.div`
+  z-index: 1;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-4deg);
 `
 
-const LeftWrapper = styled.div`
-  flex: 1;
-  padding-right: 0;
-  padding-bottom: 40px;
-  padding-top: 40px;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    padding-right: 24px;
-  }
-
-  ${({ theme }) => theme.mediaQueries.lg} {
-    padding-right: 32px;
-  }
+const TicketSvgWrapper = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: rotate(-4deg);
 `
 
-const RightWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 1;
-  padding-left: 0;
+const Decorations = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: url(/images/lottery/bg-star.svg);
+  background-repeat: no-repeat;
+  background-position: center 0;
+`
+
+const StarsDecorations = styled(Box)`
+  position: absolute;
+  width: 100%;
+  height: 100%;
 
   & img {
-    width: 80%;
+    position: absolute;
+  }
+
+  & :nth-child(1) {
+    animation: ${floatingStarsLeft} 3s ease-in-out infinite;
+    animation-delay: 0.25s;
+  }
+  & :nth-child(2) {
+    animation: ${floatingStarsLeft} 3.5s ease-in-out infinite;
+    animation-delay: 0.5s;
+  }
+  & :nth-child(3) {
+    animation: ${floatingStarsRight} 4s ease-in-out infinite;
+    animation-delay: 0.75s;
+  }
+  & :nth-child(4) {
+    animation: ${floatingTicketLeft} 6s ease-in-out infinite;
+    animation-delay: 0.2s;
+  }
+  & :nth-child(5) {
+    animation: ${floatingTickeRight} 6s ease-in-out infinite;
   }
 
   ${({ theme }) => theme.mediaQueries.sm} {
-    margin-top: 0;
-    padding-left: 24px;
+    & :nth-child(1) {
+      left: 3%;
+      top: 42%;
+    }
+    & :nth-child(2) {
+      left: 9%;
+      top: 23%;
+    }
+    & :nth-child(3) {
+      right: 2%;
+      top: 24%;
+    }
+    & :nth-child(4) {
+      left: 8%;
+      top: 67%;
+    }
+    & :nth-child(5) {
+      right: 8%;
+      top: 67%;
+    }
   }
 
-  ${({ theme }) => theme.mediaQueries.lg} {
-    padding-left: 32px;
-    & img {
-      margin-top: -25px;
+  ${({ theme }) => theme.mediaQueries.md} {
+    & :nth-child(1) {
+      left: 10%;
+      top: 42%;
+    }
+    & :nth-child(2) {
+      left: 17%;
+      top: 23%;
+    }
+    & :nth-child(3) {
+      right: 10%;
+      top: 24%;
+    }
+    & :nth-child(4) {
+      left: 17%;
+      top: 67%;
+    }
+    & :nth-child(5) {
+      right: 17%;
+      top: 67%;
+    }
+  }
+
+  ${({ theme }) => theme.mediaQueries.xl} {
+    & :nth-child(1) {
+      left: 19%;
+      top: 42%;
+    }
+    & :nth-child(2) {
+      left: 25%;
+      top: 23%;
+    }
+    & :nth-child(3) {
+      right: 19%;
+      top: 24%;
+    }
+    & :nth-child(4) {
+      left: 24%;
+      top: 67%;
+    }
+    & :nth-child(5) {
+      right: 24%;
+      top: 67%;
     }
   }
 `
 
 const Hero = () => {
   const { t } = useTranslation()
+  const {
+    currentRound: { amountCollectedInCake, status },
+    isTransitioning,
+  } = useLottery()
+
+  const cakePriceBusd = usePriceCakeBusd()
+  const prizeInBusd = amountCollectedInCake.times(cakePriceBusd)
+  const prizeTotal = getBalanceNumber(prizeInBusd)
+  const ticketBuyIsDisabled = status !== LotteryStatus.OPEN || isTransitioning
+
+  const getHeroHeading = () => {
+    if (status === LotteryStatus.OPEN) {
+      return (
+        <>
+          {prizeInBusd.isNaN() ? (
+            <Skeleton my="7px" height={60} width={190} />
+          ) : (
+            <PrizeTotalBalance fontSize="64px" bold prefix="$" value={prizeTotal} mb="8px" decimals={0} />
+          )}
+          <Heading mb="32px" scale="lg" color="#ffffff">
+            {t('in prizes!')}
+          </Heading>
+        </>
+      )
+    }
+    return (
+      <Heading mb="24px" scale="xl" color="#ffffff">
+        {t('Tickets on sale soon')}
+      </Heading>
+    )
+  }
 
   return (
-    <StyledHero>
-      <StyledContainer>
-        <LeftWrapper>
-          <Title>{t('The Lottery Is Changing!')}</Title>
-          <ComeBack>{t('Come back soon!')}</ComeBack>
-          <LinkExternal
-            bold
-            mt={20}
-            external
-            href="https://pancakeswap.medium.com/pancakeswap-april-may-recap-a4e7cf990f72"
-          >
-            {t('Learn more')}
-          </LinkExternal>
-        </LeftWrapper>
-        <RightWrapper>
-          <img src="/images/tombola.png" alt="lottery bunny" />
-        </RightWrapper>
-      </StyledContainer>
-    </StyledHero>
+    <Flex flexDirection="column" alignItems="center" justifyContent="center">
+      <Decorations />
+      <StarsDecorations display={['none', 'none', 'block']}>
+        <img src="/images/lottery/star-big.png" width="124px" height="109px" alt="" />
+        <img src="/images/lottery/star-small.png" width="70px" height="62px" alt="" />
+        <img src="/images/lottery/three-stars.png" width="130px" height="144px" alt="" />
+        <img src="/images/lottery/ticket-l.png" width="123px" height="83px" alt="" />
+        <img src="/images/lottery/ticket-r.png" width="121px" height="72px" alt="" />
+      </StarsDecorations>
+      <Heading mb="8px" scale="md" color="#ffffff">
+        {t('The PancakeSwap Lottery')}
+      </Heading>
+      {getHeroHeading()}
+      <TicketContainer
+        position="relative"
+        width={['240px', '288px']}
+        height={['94px', '113px']}
+        alignItems="center"
+        justifyContent="center"
+      >
+        <ButtonWrapper>
+          <StyledBuyTicketButton disabled={ticketBuyIsDisabled} />
+        </ButtonWrapper>
+        <TicketSvgWrapper>
+          <TicketPurchaseCard width="100%" />
+        </TicketSvgWrapper>
+      </TicketContainer>
+    </Flex>
   )
 }
 

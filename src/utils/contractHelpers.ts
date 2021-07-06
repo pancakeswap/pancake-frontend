@@ -11,8 +11,6 @@ import {
   getBunnyFactoryAddress,
   getBunnySpecialAddress,
   getCakeAddress,
-  getLotteryAddress,
-  getLotteryTicketAddress,
   getLotteryV2Address,
   getMasterChefAddress,
   getPointCenterIfoAddress,

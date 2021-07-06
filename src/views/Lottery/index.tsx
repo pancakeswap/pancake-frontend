@@ -28,7 +28,7 @@ const LotteryPage = styled.div`
   min-height: calc(100vh - 64px);
 `
 
-const LotteryV2 = () => {
+const Lottery = () => {
   useFetchLottery()
   useStatusTransitions()
   const { t } = useTranslation()
@@ -97,4 +97,4 @@ const LotteryV2 = () => {
   )
 }
 
-export default LotteryV2
+export default Lottery
