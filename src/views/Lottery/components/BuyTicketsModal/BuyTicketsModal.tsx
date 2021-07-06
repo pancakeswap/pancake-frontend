@@ -116,6 +116,35 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
     [discountDivisor, priceTicketInCake],
   )
 
+  const getMaxTicketBuyWithDiscount = useCallback(
+    (numberTickets: BigNumber) => {
+      const costAfterDiscount = getTicketCostAfterDiscount(numberTickets)
+      const costBeforeDiscount = priceTicketInCake.times(numberTickets)
+      const discountAmount = costBeforeDiscount.minus(costAfterDiscount)
+      const ticketsBoughtWithDiscount = discountAmount.div(priceTicketInCake)
+      const overallTicketBuy = numberTickets.plus(ticketsBoughtWithDiscount)
+      return { overallTicketBuy, ticketsBoughtWithDiscount }
+    },
+    [getTicketCostAfterDiscount, priceTicketInCake],
+  )
+
+  const validateInput = useCallback(
+    (inputNumber: BigNumber) => {
+      const limitedNumberTickets = limitNumberByMaxTicketsPerBuy(inputNumber)
+      const cakeCostAfterDiscount = getTicketCostAfterDiscount(limitedNumberTickets)
+
+      if (cakeCostAfterDiscount.gt(userCake)) {
+        setUserNotEnoughCake(true)
+      } else if (limitedNumberTickets.eq(maxNumberTicketsPerBuyOrClaim)) {
+        setMaxTicketPurchaseExceeded(true)
+      } else {
+        setUserNotEnoughCake(false)
+        setMaxTicketPurchaseExceeded(false)
+      }
+    },
+    [limitNumberByMaxTicketsPerBuy, getTicketCostAfterDiscount, maxNumberTicketsPerBuyOrClaim, userCake],
+  )
+
   useEffect(() => {
     const getMaxPossiblePurchase = () => {
       const maxBalancePurchase = memoisedUserCake.div(priceTicketInCake)
@@ -124,11 +153,15 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
 
       // If the max ticket purchase is less than the SC limit - factor the ticket discount into the max possible purchase
       if (limitedMaxPurchase.lt(maxNumberTicketsPerBuyOrClaim)) {
-        const costAfterDiscount = getTicketCostAfterDiscount(limitedMaxPurchase)
-        const costBeforeDiscount = priceTicketInCake.times(limitedMaxPurchase)
-        const discountAmount = costBeforeDiscount.minus(costAfterDiscount)
-        const discountTicketValue = discountAmount.div(priceTicketInCake)
-        maxPurchase = maxBalancePurchase.plus(discountTicketValue)
+        // Get details of the discount available for the users' max ticket purchase with their CAKE balance
+        const { overallTicketBuy: maxPlusDiscountTickets } = getMaxTicketBuyWithDiscount(limitedMaxPurchase)
+
+        // Knowing how many tickets they can buy with the discount - plug that in, and see how much that total will get discounted
+        const { ticketsBoughtWithDiscount: secondTicketDiscountBuy } =
+          getMaxTicketBuyWithDiscount(maxPlusDiscountTickets)
+
+        // Add the additional tickets that can be bought with the discount, to the original max purchase
+        maxPurchase = limitedMaxPurchase.plus(secondTicketDiscountBuy)
       } else {
         maxPurchase = limitedMaxPurchase
       }
@@ -138,6 +171,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
       } else {
         setUserNotEnoughCake(false)
       }
+
       setMaxPossibleTicketPurchase(maxPurchase)
     }
     getMaxPossiblePurchase()
@@ -147,6 +181,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
     memoisedUserCake,
     limitNumberByMaxTicketsPerBuy,
     getTicketCostAfterDiscount,
+    getMaxTicketBuyWithDiscount,
     hasFetchedBalance,
   ])
 
@@ -182,16 +217,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
     const inputAsInt = parseInt(input, 10)
     const inputAsBN = new BigNumber(inputAsInt)
     const limitedNumberTickets = limitNumberByMaxTicketsPerBuy(inputAsBN)
-    const cakeValueOfInput = getCakeValueOfTickets(limitedNumberTickets)
-
-    if (cakeValueOfInput.gt(userCake)) {
-      setUserNotEnoughCake(true)
-    } else if (limitedNumberTickets.eq(maxPossibleTicketPurchase)) {
-      setMaxTicketPurchaseExceeded(true)
-    } else {
-      setUserNotEnoughCake(false)
-      setMaxTicketPurchaseExceeded(false)
-    }
+    validateInput(inputAsBN)
     setTicketsToBuy(inputAsInt ? limitedNumberTickets.toString() : '0')
   }
 
@@ -237,7 +263,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
   const getErrorMessage = () => {
     if (userNotEnoughCake) return t('Insufficient CAKE balance')
     return t('The maximum number of tickets you can buy in one transaction is %maxTickets%', {
-      maxTickets: maxPossibleTicketPurchase.toString(),
+      maxTickets: maxNumberTicketsPerBuyOrClaim.toString(),
     })
   }
 
