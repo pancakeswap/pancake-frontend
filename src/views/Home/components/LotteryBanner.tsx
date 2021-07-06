@@ -86,7 +86,7 @@ const LotteryBanner: React.FC<{ currentLotteryPrize: string }> = ({ currentLotte
                 color="#ffffff"
                 bold
                 prefix={`${t('Over')} $`}
-                unit={` ${t('in Prizes')}`}
+                unit={` ${t('in Prizes!')}`}
                 decimals={0}
                 value={prizeTotal}
               />
