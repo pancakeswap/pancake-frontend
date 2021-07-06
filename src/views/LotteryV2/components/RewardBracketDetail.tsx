@@ -38,14 +38,14 @@ const RewardBracketDetail: React.FC<RewardBracketDetailProps> = ({
 
   return (
     <Flex flexDirection="column">
-      <Text fontSize="12px" bold textTransform="uppercase" color={isBurn ? 'failure' : 'secondary'}>
+      <Text bold color={isBurn ? 'failure' : 'secondary'}>
         {getRewardText()}
       </Text>
       <>
         {prizeInBusd.isNaN() ? (
           <Skeleton my="2px" height={12} width={90} />
         ) : (
-          <Balance fontSize="12px" bold unit=" CAKE" value={getBalanceNumber(cakeAmount)} decimals={0} />
+          <Balance fontSize="20px" bold unit=" CAKE" value={getBalanceNumber(cakeAmount)} decimals={0} />
         )}
         {prizeInBusd.isNaN() ? (
           <Skeleton my="2px" height={12} width={70} />
