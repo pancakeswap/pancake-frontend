@@ -1,16 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Heading, Text, Flex, Button, ArrowForwardIcon, Skeleton } from '@pancakeswap/uikit'
+import { Text, Flex, Button, ArrowForwardIcon, Skeleton } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import Container from 'components/layout/Container'
 import { NavLink } from 'react-router-dom'
 import Balance from 'components/Balance'
-
-const Title = styled(Heading).attrs({ as: 'h1', scale: 'xl' })`
-  color: #ffffff;
-  margin-bottom: 16px;
-  display: inline;
-`
 
 const NowLive = styled(Text)`
   background: -webkit-linear-gradient(#ffd800, #eb8c00);
@@ -24,7 +18,7 @@ const Wrapper = styled.div`
   background-image: linear-gradient(#7645d9, #452a7a);
   max-height: max-content;
   overflow: hidden;
-  ${({ theme }) => theme.mediaQueries.sm} {
+  ${({ theme }) => theme.mediaQueries.md} {
     max-height: 256px;
   }
 `
@@ -38,9 +32,9 @@ const Inner = styled(Container)`
   }
 `
 
-const LeftWrapper = styled.div`
+const LeftWrapper = styled(Flex)`
+  flex-direction: column;
   flex: 1;
-  padding-right: 0;
   padding-bottom: 40px;
   padding-top: 40px;
 `
@@ -50,18 +44,13 @@ const RightWrapper = styled.div`
   align-items: center;
   justify-content: center;
   flex: 0.5;
-  padding-left: 0;
 
   & img {
     width: 80%;
   }
 
-  ${({ theme }) => theme.mediaQueries.sm} {
-    margin-top: 0;
-  }
-
   ${({ theme }) => theme.mediaQueries.md} {
-    flex: 0.6;
+    flex: 0.8;
   }
 
   ${({ theme }) => theme.mediaQueries.lg} {
@@ -69,16 +58,9 @@ const RightWrapper = styled.div`
       margin-top: -25px;
     }
   }
-
-  ${({ theme }) => theme.mediaQueries.xl} {
-    flex: 0.8;
-  }
 `
 
-const LotteryBanner: React.FC<{ totalPrize: number; observerRef: React.MutableRefObject<HTMLDivElement> }> = ({
-  totalPrize,
-  observerRef,
-}) => {
+const LotteryBanner: React.FC<{ totalPrize: number }> = ({ totalPrize }) => {
   const { t } = useTranslation()
 
   return (
@@ -86,31 +68,25 @@ const LotteryBanner: React.FC<{ totalPrize: number; observerRef: React.MutableRe
       <Inner>
         <LeftWrapper>
           <NowLive>{t('Lottery Now Live')}</NowLive>
-          <Flex flexDirection={['column', 'row']}>
-            <Flex alignItems="flex-end">
-              <Title mr="8px">{t('Over')}</Title>
-              {!totalPrize ? (
-                <>
-                  <div ref={observerRef} />
-                  <Skeleton height={40} mb={20} mt={10} width={170} />
-                </>
-              ) : (
-                <Balance
-                  display="inline"
-                  mb="8px"
-                  fontSize="40px"
-                  color="#ffffff"
-                  bold
-                  prefix="$"
-                  decimals={0}
-                  value={totalPrize}
-                />
-              )}
-            </Flex>
-            <Flex alignItems="flex-end">
-              <Title ml={[null, '8px']}>{t('in Prizes')}</Title>
-            </Flex>
-          </Flex>
+          <>
+            {!totalPrize ? (
+              <>
+                <Skeleton height={40} mb={20} mt={10} width={280} />
+              </>
+            ) : (
+              <Balance
+                display="inline"
+                mb="8px"
+                fontSize="40px"
+                color="#ffffff"
+                bold
+                prefix={`${t('Over')} $`}
+                unit={` ${t('in Prizes')}`}
+                decimals={0}
+                value={totalPrize}
+              />
+            )}
+          </>
           <NavLink exact activeClassName="active" to="/lottery" id="lottery-pot-banner">
             <Button>
               <Text color="white" bold fontSize="16px" mr="4px">

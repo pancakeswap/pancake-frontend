@@ -1,20 +1,11 @@
 import { useState, useEffect } from 'react'
 import { fetchCurrentLotteryIdAndMaxBuy, fetchLottery } from 'state/lottery/helpers'
 import useRefresh from 'hooks/useRefresh'
-import useIntersectionObserver from 'hooks/useIntersectionObserver'
 
 const useFetchLotteryForPromos = () => {
   const { slowRefresh } = useRefresh()
-  const { observerRef, isIntersecting } = useIntersectionObserver()
-  const [loadData, setLoadData] = useState(false)
   const [lotteryId, setLotteryId] = useState<string>(null)
   const [currentLotteryPrize, setCurrentLotteryPrize] = useState<string>(null)
-
-  useEffect(() => {
-    if (isIntersecting) {
-      setLoadData(true)
-    }
-  }, [isIntersecting])
 
   useEffect(() => {
     // get current lottery ID
@@ -23,10 +14,8 @@ const useFetchLotteryForPromos = () => {
       setLotteryId(currentLotteryId)
     }
 
-    if (loadData) {
-      fetchCurrentID()
-    }
-  }, [setLotteryId, loadData])
+    fetchCurrentID()
+  }, [setLotteryId])
 
   useEffect(() => {
     // get public data for current lottery
@@ -40,7 +29,7 @@ const useFetchLotteryForPromos = () => {
     }
   }, [lotteryId, slowRefresh, setCurrentLotteryPrize])
 
-  return { currentLotteryPrize, observerRef }
+  return { currentLotteryPrize }
 }
 
 export default useFetchLotteryForPromos
