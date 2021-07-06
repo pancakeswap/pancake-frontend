@@ -26,7 +26,11 @@
     "@typescript-eslint/no-explicit-any": 0,
     "radix": 0,
     "import/no-extraneous-dependencies": 0,
-    "jsx-a11y/media-has-caption": 0
+    "jsx-a11y/media-has-caption": 0,
+    "no-param-reassign": ["error", { "props": true, "ignorePropertyModificationsFor": ["state"] }],
+    "react/require-default-props": 0,
+    "no-nested-ternary": 0,
+    "max-classes-per-file": 0
     // End temporary rules
   }
 }
