@@ -316,13 +316,13 @@ const HowToPlay: React.FC = () => {
             </li>
           </BulletList>
           <Heading my="16px" scale="md">
-            {t('Daily CAKE Injections')}
+            {t('CAKE Injections')}
           </Heading>
           <BulletList>
             <li>
               <Text display="inline" color="textSubtle">
                 {t(
-                  '10,000 CAKE from the treasury is added to a lottery round every two days. This CAKE is of course also included in rollovers! Read more in our guide to ',
+                  '10,000 CAKE from the treasury is added to a lottery round every other day. This CAKE is of course also included in rollovers! Read more in our guide to ',
                 )}
                 <InlineLink href="https://docs.pancakeswap.finance/tokenomics/cake/cake-tokenomics">
                   {t('CAKE Tokenomics')}
