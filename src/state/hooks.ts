@@ -3,7 +3,7 @@ import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import { useSelector } from 'react-redux'
 import { ethers } from 'ethers'
-import { orderBy } from 'lodash'
+import { minBy, orderBy } from 'lodash'
 import { useAppDispatch } from 'state'
 import { Team } from 'config/constants/types'
 import Nfts from 'config/constants/nfts'
@@ -396,6 +396,16 @@ export const useGetIsClaimable = (epoch) => {
   const claimableStatuses = useSelector((state: State) => state.predictions.claimableStatuses)
   return claimableStatuses[epoch] || false
 }
+
+/**
+ * Used to get the range of rounds to poll for
+ */
+export const useGetEarliestEpoch = () => {
+  return useSelector((state: State) => {
+    const earliestRound = minBy(Object.values(state.predictions.roundsv2), 'epoch')
+    return earliestRound?.epoch
+  })
+}
 // END V2 REFACTOR
 
 export const useIsHistoryPaneOpen = () => {
@@ -457,8 +467,8 @@ export const useGetCurrentRoundBlockNumber = () => {
 }
 
 export const useGetMinBetAmount = () => {
-  const minBetAmount = useSelector((state: State) => state.predictions.minBetAmount)
-  return useMemo(() => new BigNumber(minBetAmount), [minBetAmount])
+  const minByBetAmount = useSelector((state: State) => state.predictions.minBetAmount)
+  return useMemo(() => new BigNumber(minByBetAmount), [minByBetAmount])
 }
 
 export const useGetRewardRate = () => {
