@@ -26,6 +26,7 @@ import { useTranslation } from 'contexts/Localization'
 import useToast from 'hooks/useToast'
 import { usePredictionsContract } from 'hooks/useContract'
 import { formatBnbv2 } from '../helpers'
+import { formatBnbFromBigNumber } from './History/helpers'
 
 interface CollectRoundWinningsModalProps extends InjectedModalProps {
   payout: ethers.BigNumber
@@ -59,8 +60,8 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
   const bnbBusdPrice = usePriceBnbBusd()
   const dispatch = useAppDispatch()
 
-  // Some trickery while we have 2 big numbers
-  const bnbBusdPriceAsEthBn = ethers.BigNumber.from(bnbBusdPrice.toString())
+  // Convert payout to number for compatibility
+  const payoutAsFloat = parseFloat(payout.toString())
 
   const handleClick = async () => {
     const tx = await predictionsContract.claim(epoch)
@@ -109,7 +110,7 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
           <Box style={{ textAlign: 'right' }}>
             <Text>{`${formatBnbv2(payout)} BNB`}</Text>
             <Text fontSize="12px" color="textSubtle">
-              {`~$${formatBnbv2(bnbBusdPriceAsEthBn.mul(payout))}`}
+              {`~$${formatBnbFromBigNumber(bnbBusdPrice.times(payoutAsFloat))}`}
             </Text>
           </Box>
         </Flex>
