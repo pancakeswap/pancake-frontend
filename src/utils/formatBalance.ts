@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js'
-import { ethers, FixedNumber } from 'ethers'
+import { ethers } from 'ethers'
 import { formatUnits } from 'ethers/lib/utils'
 import { BIG_TEN } from './bigNumber'
 
