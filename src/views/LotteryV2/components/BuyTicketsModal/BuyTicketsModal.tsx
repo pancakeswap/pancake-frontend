@@ -372,25 +372,27 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
               buttonArrangement={ButtonArrangement.SEQUENTIAL}
               confirmLabel={t('Buy Instantly')}
             />
-            <Button
-              id={`lottery_buy_ins_${ticketsToBuy}`}
-              variant="secondary"
-              mt="8px"
-              disabled={disableBuying || isConfirming}
-              onClick={() => {
-                setBuyingStage(BuyingStage.EDIT)
-              }}
-            >
-              <Flex alignItems="center">
-                {t('View/Edit Numbers')}{' '}
-                <ArrowForwardIcon
-                  mt="2px"
-                  color={disableBuying || isConfirming ? 'disabled' : 'primary'}
-                  height="24px"
-                  width="24px"
-                />
-              </Flex>
-            </Button>
+            {isApproved && (
+              <Button
+                id={`lottery_buy_ins_${ticketsToBuy}`}
+                variant="secondary"
+                mt="8px"
+                disabled={disableBuying || isConfirming}
+                onClick={() => {
+                  setBuyingStage(BuyingStage.EDIT)
+                }}
+              >
+                <Flex alignItems="center">
+                  {t('View/Edit Numbers')}{' '}
+                  <ArrowForwardIcon
+                    mt="2px"
+                    color={disableBuying || isConfirming ? 'disabled' : 'primary'}
+                    height="24px"
+                    width="24px"
+                  />
+                </Flex>
+              </Button>
+            )}
           </>
         ) : (
           <UnlockButton />
