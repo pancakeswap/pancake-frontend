@@ -3,26 +3,21 @@ import { ChainId } from '@pancakeswap/sdk'
 import { TokenList } from '@uniswap/token-lists'
 import { useCallback } from 'react'
 import { useDispatch } from 'react-redux'
-import { getNetworkLibrary } from '../connectors'
+import { useWeb3React } from '@web3-react/core'
 import { AppDispatch } from '../state'
 import { fetchTokenList } from '../state/lists/actions'
 import getTokenList from '../utils/getTokenList'
 import resolveENSContentHash from '../utils/ENS/resolveENSContentHash'
-import { useActiveWeb3React } from './Auth'
+import useWeb3Provider from './useActiveWeb3React'
 
 function useFetchListCallback(): (listUrl: string, sendDispatch?: boolean) => Promise<TokenList> {
-  const { chainId, library } = useActiveWeb3React()
+  const { library } = useWeb3Provider()
+  const { chainId } = useWeb3React()
   const dispatch = useDispatch<AppDispatch>()
 
   const ensResolver = useCallback(
     (ensName: string) => {
-      if (!library || chainId !== ChainId.MAINNET) {
-        if (chainId === ChainId.MAINNET) {
-          const networkLibrary = getNetworkLibrary()
-          if (networkLibrary) {
-            return resolveENSContentHash(ensName, networkLibrary)
-          }
-        }
+      if (chainId !== ChainId.MAINNET) {
         throw new Error('Could not construct mainnet ENS resolver')
       }
       return resolveENSContentHash(ensName, library)

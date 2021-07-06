@@ -20,7 +20,7 @@ import { parseISO, formatDistance } from 'date-fns'
 import { useWeb3React } from '@web3-react/core'
 import useToast from 'hooks/useToast'
 import { signMessage } from 'utils/web3React'
-import useWeb3Provider from 'hooks/useWeb3Provider'
+import useWeb3Provider from 'hooks/useActiveWeb3React'
 import { useTranslation } from 'contexts/Localization'
 import useHasCakeBalance from 'hooks/useHasCakeBalance'
 import { DEFAULT_TOKEN_DECIMAL } from 'config'
@@ -64,7 +64,7 @@ const UserName: React.FC = () => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const { toastError } = useToast()
-  const provider = useWeb3Provider()
+  const { library } = useWeb3Provider()
   const [existingUserState, setExistingUserState] = useState<ExistingUserState>(ExistingUserState.IDLE)
   const [isValid, setIsValid] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -111,7 +111,7 @@ const UserName: React.FC = () => {
     try {
       setIsLoading(true)
 
-      const signature = await signMessage(provider, account, userName)
+      const signature = await signMessage(library, account, userName)
       const response = await fetch(`${profileApiUrl}/api/users/register`, {
         method: 'POST',
         headers: {

@@ -21,7 +21,7 @@ import isEmpty from 'lodash/isEmpty'
 import { useInitialBlock } from 'state/hooks'
 import { SnapshotCommand } from 'state/types'
 import useToast from 'hooks/useToast'
-import useWeb3Provider from 'hooks/useWeb3Provider'
+import useWeb3Provider from 'hooks/useActiveWeb3React'
 import { getBscScanAddressUrl, getBscScanBlockNumberUrl } from 'utils/bscscan'
 import truncateWalletAddress from 'utils/truncateWalletAddress'
 import { signMessage } from 'utils/web3React'
@@ -59,7 +59,7 @@ const CreateProposal = () => {
   const { account } = useWeb3React()
   const initialBlock = useInitialBlock()
   const { push } = useHistory()
-  const provider = useWeb3Provider()
+  const { library } = useWeb3Provider()
   const { toastSuccess, toastError } = useToast()
   const [onPresentVoteDetailsModal] = useModal(<VoteDetailsModal block={state.snapshot} />)
   const { name, body, choices, startDate, startTime, endDate, endTime, snapshot } = state
@@ -89,7 +89,7 @@ const CreateProposal = () => {
         },
       })
 
-      const sig = await signMessage(provider, account, proposal)
+      const sig = await signMessage(library, account, proposal)
 
       if (sig) {
         const msg: Message = { address: account, msg: proposal, sig }

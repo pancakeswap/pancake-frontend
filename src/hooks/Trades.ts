@@ -3,6 +3,7 @@ import { isTradeBetter } from 'utils/trades'
 import { Currency, CurrencyAmount, Pair, Token, Trade } from '@pancakeswap/sdk'
 import flatMap from 'lodash/flatMap'
 import { useMemo } from 'react'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 
 import { useUserSingleHopOnly } from 'state/user/hooks'
 import {
@@ -14,7 +15,6 @@ import {
 import { PairState, usePairs } from './usePairs'
 import { wrappedCurrency } from '../utils/wrappedCurrency'
 
-import { useActiveWeb3React } from './Auth'
 import { useUnsupportedTokens } from './Tokens'
 
 function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency): Pair[] {
