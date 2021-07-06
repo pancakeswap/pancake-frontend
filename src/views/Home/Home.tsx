@@ -3,13 +3,17 @@ import styled from 'styled-components'
 import { Heading, Text, BaseLayout } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import Page from 'components/layout/Page'
+import { getBalanceNumber } from 'utils/formatBalance'
+import { usePriceCakeBusd } from 'state/hooks'
 import FarmStakingCard from 'views/Home/components/FarmStakingCard'
 import CakeStats from 'views/Home/components/CakeStats'
 import TotalValueLockedCard from 'views/Home/components/TotalValueLockedCard'
 import EarnAPRCard from 'views/Home/components/EarnAPRCard'
 import EarnAssetCard from 'views/Home/components/EarnAssetCard'
-import PredictionPromotionCard from './components/PredictionPromotionCard'
-import WinCard from './components/WinCard'
+import PredictionPromotionCard from 'views/Home/components/PredictionPromotionCard'
+import LotteryPromotionCard from 'views/Home/components/LotteryPromotionCard'
+import LotteryBanner from 'views/Home/components/LotteryBanner'
+import useFetchLotteryForPromos from 'views/Home/hooks/useFetchLotteryForPromos'
 
 const Hero = styled.div`
   align-items: center;
@@ -86,31 +90,38 @@ const CTACards = styled(BaseLayout)`
 
 const Home: React.FC = () => {
   const { t } = useTranslation()
+  const { currentLotteryPrize, observerRef } = useFetchLotteryForPromos()
+  const cakePriceBusd = usePriceCakeBusd()
+  const prizeInBusd = cakePriceBusd.times(currentLotteryPrize)
+  const totalLotteryPrize = getBalanceNumber(prizeInBusd)
 
   return (
-    <Page>
-      <Hero>
-        <Heading as="h1" scale="xl" mb="24px" color="secondary">
-          {t('PancakeSwap')}
-        </Heading>
-        <Text>{t('The #1 AMM and yield farm on Binance Smart Chain.')}</Text>
-      </Hero>
-      <div>
-        <Cards>
-          <FarmStakingCard />
-          <PredictionPromotionCard />
-        </Cards>
-        <CTACards>
-          <EarnAPRCard />
-          <EarnAssetCard />
-          <WinCard />
-        </CTACards>
-        <Cards>
-          <CakeStats />
-          <TotalValueLockedCard />
-        </Cards>
-      </div>
-    </Page>
+    <>
+      <LotteryBanner totalPrize={totalLotteryPrize} observerRef={observerRef} />
+      <Page>
+        <Hero>
+          <Heading as="h1" scale="xl" mb="24px" color="secondary">
+            {t('PancakeSwap')}
+          </Heading>
+          <Text>{t('The #1 AMM and yield farm on Binance Smart Chain.')}</Text>
+        </Hero>
+        <div>
+          <Cards>
+            <FarmStakingCard />
+            <PredictionPromotionCard />
+          </Cards>
+          <CTACards>
+            <EarnAPRCard />
+            <EarnAssetCard />
+            <LotteryPromotionCard totalPrize={totalLotteryPrize} />
+          </CTACards>
+          <Cards>
+            <CakeStats />
+            <TotalValueLockedCard />
+          </Cards>
+        </div>
+      </Page>
+    </>
   )
 }
 
