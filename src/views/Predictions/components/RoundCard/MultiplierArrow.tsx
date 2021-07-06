@@ -4,12 +4,13 @@ import styled, { CSSProperties } from 'styled-components'
 import { Box, Flex, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { BetPosition } from 'state/types'
+import { formatMultiplierv2 } from '../../helpers'
 import { RoundMultiplierDownArrow, RoundMultiplierUpArrow } from '../../RoundMultiplierArrows'
 import EnteredTag from './EnteredTag'
 
 interface MultiplierArrowProps {
   betAmount?: ethers.BigNumber
-  multiplier?: number
+  multiplier?: string
   hasEntered?: boolean
   betPosition?: BetPosition
   isDisabled?: boolean
@@ -69,7 +70,7 @@ const MultiplierArrow: React.FC<MultiplierArrowProps> = ({
     <Box>
       <Flex justifyContent="center" height="14px">
         <Text fontSize="14px" color={textColor} bold lineHeight="14x">
-          {multiplier !== undefined ? `${multiplier.toLocaleString(undefined, { maximumFractionDigits: 2 })}x` : '-'}
+          {multiplier !== undefined ? `${formatMultiplierv2(multiplier)}x` : '-'}
         </Text>
         <Text fontSize="14px" color={textColor} lineHeight="14x" ml="4px">
           {t('Payout')}

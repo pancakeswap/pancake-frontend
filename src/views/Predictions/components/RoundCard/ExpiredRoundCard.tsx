@@ -18,8 +18,8 @@ interface ExpiredRoundCardProps {
   betAmount?: NodeLedger['amount']
   hasEnteredUp: boolean
   hasEnteredDown: boolean
-  bullMultiplier: number
-  bearMultiplier: number
+  bullMultiplier: string
+  bearMultiplier: string
 }
 
 const StyledExpiredRoundCard = styled(Card)`

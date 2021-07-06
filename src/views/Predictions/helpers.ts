@@ -1,8 +1,7 @@
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
 import { Bet, BetPosition, NodeLedger, NodeRound } from 'state/types'
-import { DefaultTheme } from 'styled-components'
-import { formatBigNumberToFixed, formatNumber, getBalanceAmount } from 'utils/formatBalance'
+import { formatBigNumber, formatBigNumberToFixed, formatNumber, getBalanceAmount } from 'utils/formatBalance'
 import getTimePeriods from 'utils/getTimePeriods'
 
 export const getBnbAmount = (bnbBn: BigNumber) => {
@@ -87,30 +86,38 @@ export const getHasRoundFailed = (round: NodeRound, blockNumber: number) => {
   return round.oracleCalled === false
 }
 
-export const getMultiplierv2 = (total: NodeRound['totalAmount'], amount: ethers.BigNumber) => {
+export const getMultiplierv2 = (total: ethers.BigNumber, amount: ethers.BigNumber) => {
   if (!total) {
-    return 0
+    return '0'
   }
 
   if (total.eq(0) || amount.eq(0)) {
-    return 0
+    return '0'
   }
 
   const fixedTotal = ethers.FixedNumber.from(total)
   const fixedAmount = ethers.FixedNumber.from(amount)
 
-  return fixedTotal.divUnsafe(fixedAmount).toUnsafeFloat()
+  return fixedTotal.divUnsafe(fixedAmount).toString()
+}
+
+export const formatMultiplierv2 = (value: string) => {
+  const valueUnit = ethers.utils.parseUnits(value, 18)
+  return formatBigNumber(valueUnit, 2, 18)
 }
 
 export const getPayoutv2 = (ledger: NodeLedger, round: NodeRound, rewardRate = 1) => {
-  if (!ledger) {
+  if (!ledger || !round) {
     return ethers.BigNumber.from(0)
   }
 
   const { bullAmount, bearAmount, totalAmount } = round
   const multiplier = getMultiplierv2(totalAmount, ledger.position === BetPosition.BULL ? bullAmount : bearAmount)
 
-  return bearAmount.mul(multiplier).mul(rewardRate)
+  const multiplierUnits = ethers.utils.parseUnits(multiplier)
+  const rewardRateUnits = ethers.utils.parseUnits(rewardRate.toString())
+
+  return bearAmount.mul(multiplierUnits).mul(rewardRateUnits)
 }
 
 export const getNetPayoutv2 = (ledger: NodeLedger, round: NodeRound, rewardRate = 1) => {
