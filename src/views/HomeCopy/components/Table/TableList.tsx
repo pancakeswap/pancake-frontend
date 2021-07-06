@@ -76,8 +76,9 @@ const TableList: React.FC<TableListProps> = (props: TableListProps) => {
 
   const [isOpen, setIsOpen] = useState(false);
 
-  const bigZombieUsdPrice = new BigNumber(zombieUsdPrice).times(BIG_TEN.pow(18))
-  const apr = getGraveTombApr(poolWeight, bigZombieUsdPrice, totalStakingTokenSupply.times(zombieUsdPrice))
+  const bigZombiePrice = getDecimalAmount(new BigNumber(zombieUsdPrice))
+  console.log(totalStakingTokenSupply.toString())
+  const apr = getGraveTombApr(poolWeight, bigZombiePrice, getDecimalAmount(totalStakingTokenSupply).times(zombieUsdPrice))
 
 
   const toggleOpen = () => {
