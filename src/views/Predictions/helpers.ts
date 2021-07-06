@@ -48,10 +48,10 @@ export const getMultiplierv2 = (total: ethers.BigNumber, amount: ethers.BigNumbe
     return '0'
   }
 
-  const fixedTotal = ethers.FixedNumber.from(total)
-  const fixedAmount = ethers.FixedNumber.from(amount)
+  const rewardAmountFixed = ethers.FixedNumber.from(total)
+  const multiplierAmountFixed = ethers.FixedNumber.from(amount)
 
-  return fixedTotal.divUnsafe(fixedAmount).toString()
+  return rewardAmountFixed.divUnsafe(multiplierAmountFixed).toString()
 }
 
 export const formatMultiplierv2 = (value: string) => {
@@ -59,26 +59,18 @@ export const formatMultiplierv2 = (value: string) => {
   return formatBigNumber(valueUnit, 2, 18)
 }
 
-export const getPayoutv2 = (ledger: NodeLedger, round: NodeRound, rewardRate = 1) => {
+export const getPayoutv2 = (ledger: NodeLedger, round: NodeRound) => {
   if (!ledger || !round) {
-    return ethers.BigNumber.from(0)
+    return '0'
   }
 
   const { bullAmount, bearAmount, rewardAmount } = round
   const { amount, position } = ledger
-  const multiplier = getMultiplierv2(rewardAmount, position === BetPosition.BULL ? bullAmount : bearAmount)
 
-  const multiplierUnits = ethers.utils.parseUnits(multiplier)
-  const rewardRateUnits = ethers.utils.parseUnits(rewardRate.toString())
+  const amountFixed = ethers.FixedNumber.from(formatBigNumber(amount))
+  const multiplier = ethers.FixedNumber.fromString(
+    getMultiplierv2(rewardAmount, position === BetPosition.BULL ? bullAmount : bearAmount),
+  )
 
-  return amount.mul(multiplierUnits).mul(rewardRateUnits)
-}
-
-export const getNetPayoutv2 = (ledger: NodeLedger, round: NodeRound, rewardRate = 1) => {
-  if (!ledger) {
-    return ethers.BigNumber.from(0)
-  }
-
-  const payout = getPayoutv2(ledger, round, rewardRate)
-  return payout.sub(ledger.amount)
+  return amountFixed.mulUnsafe(multiplier).toString()
 }

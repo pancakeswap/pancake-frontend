@@ -1,7 +1,6 @@
 import React from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { Box, Flex, Heading, Text, PrizeIcon, BlockIcon, LinkExternal, useTooltip, InfoIcon } from '@pancakeswap/uikit'
-import { ethers } from 'ethers'
 import { useAppDispatch } from 'state'
 import { useTranslation } from 'contexts/Localization'
 import { useBetCanClaim, useGetRewardRate, usePriceBnbBusd } from 'state/hooks'
@@ -50,9 +49,6 @@ const BetResult: React.FC<BetResultProps> = ({ bet, result }) => {
   // Winners get the payout, otherwise the claim what they put it if it was canceled
   const payout = isWinner ? getNetPayout(bet, rewardRate) : bet.amount
   const returned = payout + bet.amount
-
-  // TODO: remove this when we don't have to convert
-  const payoutAsEthBn = ethers.BigNumber.from(payout)
 
   const getHeaderColor = () => {
     switch (result) {
@@ -122,7 +118,7 @@ const BetResult: React.FC<BetResultProps> = ({ bet, result }) => {
       <StyledBetResult>
         {result === Result.WIN && !canClaim && (
           <CollectWinningsButton
-            payout={payoutAsEthBn}
+            payout={payout.toString()}
             epoch={bet.round.epoch}
             hasClaimed={!canClaim}
             width="100%"

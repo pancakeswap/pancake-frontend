@@ -1,5 +1,4 @@
 import React from 'react'
-import { ethers } from 'ethers'
 import styled from 'styled-components'
 import { Flex, TrophyGoldIcon } from '@pancakeswap/uikit'
 import { useGetIsClaimable } from 'state/hooks'
@@ -8,7 +7,7 @@ import CollectWinningsButton from '../CollectWinningsButton'
 
 interface CollectWinningsOverlayProps {
   epoch: number
-  payout: ethers.BigNumber
+  payout: string
   isBottom?: boolean
 }
 

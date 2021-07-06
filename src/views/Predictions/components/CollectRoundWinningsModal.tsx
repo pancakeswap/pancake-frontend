@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { ethers } from 'ethers'
 import styled from 'styled-components'
 import {
   ModalContainer,
@@ -21,15 +20,14 @@ import { useWeb3React } from '@web3-react/core'
 import { getBscScanTransactionUrl } from 'utils/bscscan'
 import { useAppDispatch } from 'state'
 import { usePriceBnbBusd } from 'state/hooks'
-import { fetchLedgerData } from 'state/predictions'
+import { fetchClaimableStatuses } from 'state/predictions'
 import { useTranslation } from 'contexts/Localization'
 import useToast from 'hooks/useToast'
 import { usePredictionsContract } from 'hooks/useContract'
-import { formatBnbv2 } from '../helpers'
 import { formatBnbFromBigNumber } from './History/helpers'
 
 interface CollectRoundWinningsModalProps extends InjectedModalProps {
-  payout: ethers.BigNumber
+  payout: string
   epoch: number
   onSuccess?: () => Promise<void>
 }
@@ -72,7 +70,7 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
         await onSuccess()
       }
 
-      await dispatch(fetchLedgerData({ account, epochs: [epoch] }))
+      await dispatch(fetchClaimableStatuses({ account, epochs: [epoch] }))
       onDismiss()
       setIsPendingTx(false)
       toastSuccess(
@@ -108,7 +106,7 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
         <Flex alignItems="start" justifyContent="space-between" mb="24px">
           <Text>{t('Collecting')}</Text>
           <Box style={{ textAlign: 'right' }}>
-            <Text>{`${formatBnbv2(payout)} BNB`}</Text>
+            <Text>{`${payout} BNB`}</Text>
             <Text fontSize="12px" color="textSubtle">
               {`~$${formatBnbFromBigNumber(bnbBusdPrice.times(payoutAsFloat))}`}
             </Text>
