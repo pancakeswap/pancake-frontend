@@ -380,13 +380,13 @@ export const getClaimStatuses = async (
   const ledgerResponses = await getLedgerData(account, epochs)
 
   return claimableResponses.reduce((accum, claimableResponse, index) => {
-    const { amount } = ledgerResponses[index]
+    const { amount, claimed } = ledgerResponses[index]
     const epoch = epochs[index]
     const [claimable] = claimableResponse
 
     return {
       ...accum,
-      [epoch]: claimable && amount.gt(0),
+      [epoch]: claimable && amount.gt(0) && !claimed,
     }
   }, {})
 }
