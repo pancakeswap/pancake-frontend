@@ -55,6 +55,7 @@ import chainlinkOracleAbi from 'config/abi/chainlinkOracle.json'
 import MultiCallAbi from 'config/abi/Multicall.json'
 import bunnySpecialCakeVaultAbi from 'config/abi/bunnySpecialCakeVault.json'
 import bunnySpecialPredictionAbi from 'config/abi/bunnySpecialPrediction.json'
+import { PredictionsContract } from './types'
 
 const getContract = (abi: any, address: string, signer?: ethers.Signer | ethers.providers.Provider) => {
   const signerOrProvider = signer ?? simpleRpcProvider
@@ -127,9 +128,11 @@ export const getEasterNftContract = (signer?: ethers.Signer | ethers.providers.P
 export const getCakeVaultContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
   return getContract(cakeVaultAbi, getCakeVaultAddress(), signer)
 }
+
 export const getPredictionsContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
-  return getContract(predictionsAbi, getPredictionsAddress(), signer)
+  return getContract(predictionsAbi, getPredictionsAddress(), signer) as PredictionsContract
 }
+
 export const getChainlinkOracleContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
   return getContract(chainlinkOracleAbi, getChainlinkOracleAddress(), signer)
 }
