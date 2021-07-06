@@ -27,10 +27,10 @@ import { getDecimalAmount } from 'utils/formatBalance'
 import UnlockButton from 'components/UnlockButton'
 import { BIG_NINE, BIG_TEN } from 'utils/bigNumber'
 import PositionTag from '../PositionTag'
-import { getBnbAmount } from '../../helpers'
 import useSwiper from '../../hooks/useSwiper'
 import FlexRow from '../FlexRow'
 import Card from './Card'
+import { getBnbAmount } from '../History/helpers'
 
 interface SetPositionCardProps {
   position: BetPosition

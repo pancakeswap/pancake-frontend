@@ -5,9 +5,9 @@ import { useTranslation } from 'contexts/Localization'
 import { getBscScanBlockNumberUrl } from 'utils/bscscan'
 import { Flex, Text, Link, Heading } from '@pancakeswap/uikit'
 import { Result } from 'state/predictions/helpers'
-import { getMultiplier } from '../../helpers'
 import { PayoutRow, RoundResultHistory } from '../RoundResult'
 import BetResult from './BetResult'
+import { getMultiplier } from './helpers'
 
 interface BetDetailsProps {
   bet: Bet

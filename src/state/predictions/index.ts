@@ -67,7 +67,6 @@ type PredictionInitialization = Pick<
   | 'bufferBlocks'
   | 'minBetAmount'
   | 'rewardRate'
-  | 'currentRoundStartBlockNumber'
   | 'roundsv2'
   | 'betsv2'
   | 'claimableStatuses'
@@ -92,7 +91,6 @@ export const initializePredictions = createAsyncThunk<PredictionInitialization, 
 
     const initializedData = {
       ...marketData,
-      currentRoundStartBlockNumber: initialRoundData[marketData.currentEpoch].startBlock,
       roundsv2: initialRoundData,
       betsv2: {},
       claimableStatuses: {},
@@ -266,6 +264,7 @@ export const predictionsSlice = createSlice({
         bufferBlocks,
         intervalBlocks,
         rewardRate,
+        currentRoundStartBlockNumber,
         claimableStatuses,
         betsv2,
         roundsv2: merge({}, roundsv2, makeRoundDataV2(futureRounds)),
