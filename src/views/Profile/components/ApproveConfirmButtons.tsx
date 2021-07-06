@@ -81,7 +81,7 @@ const ApproveConfirmButtons: React.FC<ApproveConfirmButtonsProps> = ({
             endIcon={isApproving ? spinnerIcon : undefined}
             isLoading={isApproving}
           >
-            {isApproving ? t('Approving') : t('Approve')}
+            {isApproving ? t('Enabling') : t('Enable')}
           </Button>
         </Box>
         <Flex justifyContent="center">
@@ -119,7 +119,7 @@ const ApproveConfirmButtons: React.FC<ApproveConfirmButtonsProps> = ({
         ) : (
           <Box>
             <Button onClick={onApprove} endIcon={isApproving ? spinnerIcon : undefined} isLoading={isApproving}>
-              {isApproving ? t('Approving') : t('Approve')}
+              {isApproving ? t('Enabling') : t('Enable')}
             </Button>
           </Box>
         )}
