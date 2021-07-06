@@ -69,7 +69,7 @@ const ConcaveContainer = styled(Box)<{ clipPath: string }>`
     return '#9A9FD0'
   }};
   clip-path: ${({ clipPath }) => `url(${clipPath})`};
-  transform: ${({ clipPath }) => (clipPath === '#bottomConcaveCurve' ? 'translate(0, -20px)' : 'none')};
+  transform: ${({ clipPath }) => (clipPath === '#bottomConcaveCurve' ? 'translate(0, -13px)' : 'translate(0, 1px)')};
 
   & svg {
     display: block;
