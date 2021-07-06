@@ -1,10 +1,9 @@
 import React from 'react'
-import { ethers } from 'ethers'
 import { Button, ButtonProps, useModal } from '@pancakeswap/uikit'
 import CollectRoundWinningsModal from './CollectRoundWinningsModal'
 
 interface CollectWinningsButtonProps extends ButtonProps {
-  payout: ethers.BigNumber
+  payout: string
   epoch: number
   hasClaimed: boolean
   onSuccess?: () => Promise<void>

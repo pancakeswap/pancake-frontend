@@ -1,6 +1,6 @@
 import React from 'react'
 import { ethers } from 'ethers'
-import { BoxProps, Flex, Text } from '@pancakeswap/uikit'
+import { BoxProps, Flex, Skeleton, Text } from '@pancakeswap/uikit'
 import { BetPosition, NodeRound } from 'state/types'
 import { useTranslation } from 'contexts/Localization'
 import { formatUsdv2 } from '../../helpers'
@@ -42,9 +42,13 @@ const RoundResult: React.FC<RoundResultProps> = ({ round, hasFailed = false, chi
         </Text>
       ) : (
         <Flex alignItems="center" justifyContent="space-between" mb="16px">
-          <Text color={isPositionUp ? 'success' : 'failure'} bold fontSize="24px">
-            {formatUsdv2(closePrice)}
-          </Text>
+          {closePrice ? (
+            <Text color={isPositionUp ? 'success' : 'failure'} bold fontSize="24px">
+              {formatUsdv2(closePrice)}
+            </Text>
+          ) : (
+            <Skeleton height="34px" my="1px" />
+          )}
           <PositionTag betPosition={betPosition}>{formatUsdv2(priceDifference)}</PositionTag>
         </Flex>
       )}

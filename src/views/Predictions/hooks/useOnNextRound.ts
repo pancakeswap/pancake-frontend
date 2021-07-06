@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import usePreviousValue from 'hooks/usePreviousValue'
 import { useAppDispatch } from 'state'
-import { useGetCurrentEpoch, useGetSortedRounds } from 'state/hooks'
+import { useGetCurrentEpoch, useGetSortedRoundsv2 } from 'state/hooks'
 import useSwiper from './useSwiper'
 
 /**
@@ -10,7 +10,7 @@ import useSwiper from './useSwiper'
  */
 const useOnNextRound = () => {
   const currentEpoch = useGetCurrentEpoch()
-  const rounds = useGetSortedRounds()
+  const rounds = useGetSortedRoundsv2()
   const { account } = useWeb3React()
   const previousEpoch = usePreviousValue(currentEpoch)
   const { swiper } = useSwiper()
