@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useModal } from '@rug-zombie-libs/uikit';
 import ModalInput from 'components/ModalInput/ModalInput';
 import { format } from 'date-fns';
+import { formatDuration } from '../../../utils/timerHelpers'
 
 
 interface Details {
@@ -23,9 +24,6 @@ interface BuyFrankProps {
 const BuyFrank: React.FC<BuyFrankProps> = ({ details: { result: { tokenWithdrawalDate, amount } } }) => {
   const currentDate = Math.floor(Date.now() / 1000);
   const initialWithdrawCooldownTime = parseInt(tokenWithdrawalDate) - currentDate;
-  const withdrawCooldownTimeObj = new Date(0);
-  withdrawCooldownTimeObj.setSeconds(initialWithdrawCooldownTime); // specify value for SECONDS here
-  const displayWithdrawCooldownTime = withdrawCooldownTimeObj.toISOString().substr(11, 8);
 
   const [onPresent1] = useModal(<ModalInput inputTitle="Stake $ZMBE" />);
   return (
@@ -41,7 +39,7 @@ const BuyFrank: React.FC<BuyFrankProps> = ({ details: { result: { tokenWithdrawa
                 <span className="white-color">5% Withdraw fee is active:</span>
               </div>
               <span className="total-earned text-shadow">
-                {displayWithdrawCooldownTime}</span>
+                {formatDuration(initialWithdrawCooldownTime)}</span>
             </div>}
         </div>
       </div> :
