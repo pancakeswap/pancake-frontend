@@ -4,6 +4,7 @@ import { useTranslation } from 'contexts/Localization'
 import { LinkExternal, Text } from '@pancakeswap/uikit'
 import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
+import { getAddress } from 'utils/addressHelpers'
 import { getBscScanAddressUrl } from 'utils/bscscan'
 import { CommunityTag, CoreTag, DualTag } from 'components/Tags'
 
@@ -147,7 +148,7 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({
     quoteTokenAddress: quoteToken.address,
     tokenAddress: token.address,
   })
-  const lpAddress = farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]
+  const lpAddress = getAddress(farm.lpAddresses)
   const bsc = getBscScanAddressUrl(lpAddress)
   const info = `https://pancakeswap.info/pool/${lpAddress}`
 

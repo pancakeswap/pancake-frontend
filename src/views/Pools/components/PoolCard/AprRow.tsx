@@ -6,6 +6,7 @@ import ApyCalculatorModal from 'components/ApyCalculatorModal'
 import { Pool } from 'state/types'
 import { BASE_EXCHANGE_URL } from 'config'
 import { getAprData } from 'views/Pools/helpers'
+import { getAddress } from 'utils/addressHelpers'
 
 interface AprRowProps {
   pool: Pool
@@ -25,8 +26,7 @@ const AprRow: React.FC<AprRowProps> = ({ pool, performanceFee = 0 }) => {
   const { apr: earningsPercentageToDisplay, roundingDecimals, compoundFrequency } = getAprData(pool, performanceFee)
 
   const apyModalLink =
-    stakingToken.address &&
-    `${BASE_EXCHANGE_URL}/#/swap?outputCurrency=${stakingToken.address[process.env.REACT_APP_CHAIN_ID]}`
+    stakingToken.address && `${BASE_EXCHANGE_URL}/#/swap?outputCurrency=${getAddress(stakingToken.address)}`
 
   const [onPresentApyModal] = useModal(
     <ApyCalculatorModal

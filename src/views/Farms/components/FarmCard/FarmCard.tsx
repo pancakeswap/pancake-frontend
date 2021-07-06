@@ -7,6 +7,7 @@ import { getBscScanAddressUrl } from 'utils/bscscan'
 import { useTranslation } from 'contexts/Localization'
 import ExpandableSectionButton from 'components/ExpandableSectionButton'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
+import { getAddress } from 'utils/addressHelpers'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import DetailsSection from './DetailsSection'
 import CardHeading from './CardHeading'
@@ -95,7 +96,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, displayApr, removed, cakePric
     tokenAddress: farm.token.address,
   })
   const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
-  const lpAddress = farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]
+  const lpAddress = getAddress(farm.lpAddresses)
   const isPromotedFarm = farm.token.symbol === 'CAKE'
 
   return (
@@ -142,7 +143,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, displayApr, removed, cakePric
       <ExpandingWrapper expanded={showExpandableSection}>
         <DetailsSection
           removed={removed}
-          bscScanAddress={getBscScanAddressUrl(farm.lpAddresses[process.env.REACT_APP_CHAIN_ID])}
+          bscScanAddress={getBscScanAddressUrl(lpAddress)}
           infoAddress={`https://pancakeswap.info/pool/${lpAddress}`}
           totalValueFormatted={totalValueFormatted}
           lpLabel={lpLabel}
