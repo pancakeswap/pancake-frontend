@@ -41,36 +41,39 @@ export const getHasRoundFailed = (round: NodeRound, blockNumber: number) => {
 
 export const getMultiplierv2 = (total: ethers.BigNumber, amount: ethers.BigNumber) => {
   if (!total) {
-    return '0'
+    return ethers.FixedNumber.from(0)
   }
 
   if (total.eq(0) || amount.eq(0)) {
-    return '0'
+    return ethers.FixedNumber.from(0)
   }
 
   const rewardAmountFixed = ethers.FixedNumber.from(total)
   const multiplierAmountFixed = ethers.FixedNumber.from(amount)
 
-  return rewardAmountFixed.divUnsafe(multiplierAmountFixed).toString()
-}
-
-export const formatMultiplierv2 = (value: string) => {
-  const valueUnit = ethers.utils.parseUnits(value, 18)
-  return formatBigNumber(valueUnit, 2, 18)
+  return rewardAmountFixed.divUnsafe(multiplierAmountFixed)
 }
 
 export const getPayoutv2 = (ledger: NodeLedger, round: NodeRound) => {
   if (!ledger || !round) {
-    return '0'
+    return ethers.FixedNumber.from(0)
   }
 
   const { bullAmount, bearAmount, rewardAmount } = round
   const { amount, position } = ledger
 
   const amountFixed = ethers.FixedNumber.from(formatBigNumber(amount))
-  const multiplier = ethers.FixedNumber.fromString(
-    getMultiplierv2(rewardAmount, position === BetPosition.BULL ? bullAmount : bearAmount),
-  )
+  const multiplier = getMultiplierv2(rewardAmount, position === BetPosition.BULL ? bullAmount : bearAmount)
+  return amountFixed.mulUnsafe(multiplier)
+}
 
-  return amountFixed.mulUnsafe(multiplier).toString()
+export const getNetPayoutv2 = (ledger: NodeLedger, round: NodeRound) => {
+  if (!ledger || !round) {
+    return ethers.FixedNumber.from(0)
+  }
+
+  const payout = getPayoutv2(ledger, round)
+  const amount = ethers.FixedNumber.from(formatBigNumber(ledger.amount))
+
+  return payout.subUnsafe(amount)
 }

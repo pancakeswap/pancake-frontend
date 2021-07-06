@@ -4,7 +4,6 @@ import styled, { CSSProperties } from 'styled-components'
 import { Box, Flex, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { BetPosition } from 'state/types'
-import { formatMultiplierv2 } from '../../helpers'
 import { RoundMultiplierDownArrow, RoundMultiplierUpArrow } from '../../RoundMultiplierArrows'
 import EnteredTag from './EnteredTag'
 
@@ -70,7 +69,7 @@ const MultiplierArrow: React.FC<MultiplierArrowProps> = ({
     <Box>
       <Flex justifyContent="center" height="14px">
         <Text fontSize="14px" color={textColor} bold lineHeight="14x">
-          {multiplier !== undefined ? `${formatMultiplierv2(multiplier)}x` : '-'}
+          {multiplier !== undefined ? `${multiplier}x` : '-'}
         </Text>
         <Text fontSize="14px" color={textColor} lineHeight="14x" ml="4px">
           {t('Payout')}
