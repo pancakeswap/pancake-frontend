@@ -3,7 +3,7 @@ import { Router, Route, Switch } from 'react-router-dom'
 import { ResetCSS } from '@rug-zombie-libs/uikit'
 import BigNumber from 'bignumber.js'
 import useEagerConnect from 'hooks/useEagerConnect'
-import { fetchZmbeBnbReserves, getBnbPriceinBusd, useFetchProfile } from 'state/hooks'
+import { fetchLpReserves, fetchZmbeBnbAddress, getBnbPriceinBusd, useFetchProfile } from 'state/hooks'
 import { routes } from 'routes'
 import Menu from 'components/Menu'
 import Loader from 'components/Loader'
@@ -53,11 +53,15 @@ const App: React.FC = () => {
   }
 
   const [zombieUsdPrice, setZombieUsdPrice] = useState(0)
-  fetchZmbeBnbReserves().then((reserves) => {
-    const zombieBnbPrice = reserves[1] / reserves[0]
-    getBnbPriceinBusd().then((res) => {
-      const bnbPrice = res.data.price
-      setZombieUsdPrice(zombieBnbPrice * bnbPrice)
+  const [zmbeBnbAddress, setZmbeBnbAddress] = useState("0x0000000000000000000000000000000000000000")
+  fetchZmbeBnbAddress().then(address => {
+    fetchLpReserves(address).then((reserves) => {
+      const zombieBnbPrice = reserves[1] / reserves[0]
+      getBnbPriceinBusd().then((res) => {
+        const bnbPrice = res.data.price
+        setZombieUsdPrice(zombieBnbPrice * bnbPrice)
+        setZmbeBnbAddress(address)
+      })
     })
   })
 
@@ -71,7 +75,7 @@ const App: React.FC = () => {
           <Menu zombieUsdPrice={zombieUsdPrice}>
             <Route exact path={routes.HOME}><Home zombieUsdPrice={zombieUsdPrice}/></Route>
             <Route exact path={routes.GRAVES}><HomeC zombieUsdPrice={zombieUsdPrice}/></Route>
-            <Route exact path={routes.TOMBS}><Tombs zombieUsdPrice={zombieUsdPrice}/></Route>
+            <Route exact path={routes.TOMBS}><Tombs zombieUsdPrice={zombieUsdPrice} zmbeBnbAddress={zmbeBnbAddress} /></Route>
           </Menu>
         </Switch>
       </SuspenseWithChunkError>

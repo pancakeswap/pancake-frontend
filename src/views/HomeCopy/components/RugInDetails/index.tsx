@@ -66,7 +66,7 @@ const RugInDetails: React.FC<RugInDetailsProps> = ({
           <span className="indetails-value">{allocPoint.div(100).toString()}X</span>
         </span>
         <span className="indetails-title">
-          Zombie TVL:
+          Grave TVL:
           <span className="indetails-value">{numeral(totalStakingTokenSupply.times(zombieUsdPrice)).format('($ 0.00 a)')}</span>
         </span>
         <span className="indetails-title">

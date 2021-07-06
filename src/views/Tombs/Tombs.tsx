@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import React, { useEffect, useState } from 'react'
 import PageHeader from 'components/PageHeader'
-import { fetchZmbeBnbReserves, getBnbPriceinBusd } from 'state/hooks'
+import { fetchLpReserves, getBnbPriceinBusd } from 'state/hooks'
 import { Heading } from '@rug-zombie-libs/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { useDrFrankenstein } from 'hooks/useContract'
@@ -20,9 +20,10 @@ let accountAddress
 
 interface Tombs {
   zombieUsdPrice: number,
+  zmbeBnbAddress: string,
 }
 
-const Tombs: React.FC<Tombs> = ({ zombieUsdPrice }: Tombs) => {
+const Tombs: React.FC<Tombs> = ({ zombieUsdPrice, zmbeBnbAddress }: Tombs) => {
 
   const { account } = useWeb3React()
   const [tombsData, setTombsData] = useState(tableData)
@@ -84,11 +85,11 @@ const Tombs: React.FC<Tombs> = ({ zombieUsdPrice }: Tombs) => {
       })
   }
 
-  useEffect(() => {
-    fetchZmbeBnbReserves().then((reserves) => {
-      setReservesUsd([getBalanceAmount(new BigNumber(reserves[0] * zombieUsdPrice)), getBalanceAmount(new BigNumber(reserves[1] * bnbInBusd))])
-    })
-  }, [zombieUsdPrice, bnbInBusd])
+  // useEffect(() => {
+  //   fetchLpReserves().then((reserves) => {
+  //     setReservesUsd([getBalanceAmount(new BigNumber(reserves[0] * zombieUsdPrice)), getBalanceAmount(new BigNumber(reserves[1] * bnbInBusd))])
+  //   })
+  // }, [zombieUsdPrice, bnbInBusd])
 
 
   return (
@@ -104,7 +105,7 @@ const Tombs: React.FC<Tombs> = ({ zombieUsdPrice }: Tombs) => {
       <div>
         {tombsData.map((data) => {
           return <Table updateResult={updateResult} updateAllowance={updateAllowance} bnbInBusd={0}
-                        isAllowance={isAllowance} details={data} key={data.id} reservesUsd={reservesUsd} />
+                        isAllowance={isAllowance} details={data} key={data.id} reservesUsd={reservesUsd}  zmbeBnbAddress={zmbeBnbAddress}/>
         })}
       </div>
     </Page>

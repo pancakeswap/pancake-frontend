@@ -24,12 +24,12 @@ interface StakeLpTokenModalProps {
         artist?: any,
         stakingToken: any,
         result: Result,
-        lpAddresses:any,
         quoteToken:any,
         token:any
     },
     lpTokenBalance:any,
     updateResult:any,
+    lpAddress: string,
     onDismiss?: () => void
 }
 
@@ -37,7 +37,7 @@ const StyledButton = styled(Button)`
   flex-grow: 1;
 `
 
-const StakeLpTokenModal: React.FC<StakeLpTokenModalProps> = ({ details: { name, pid, lpAddresses, quoteToken, token }, lpTokenBalance, updateResult, onDismiss }) => {
+const StakeLpTokenModal: React.FC<StakeLpTokenModalProps> = ({ details: { name, pid, quoteToken, token }, lpAddress, lpTokenBalance, updateResult, onDismiss }) => {
 
 
     const drFrankenstein = useDrFrankenstein();

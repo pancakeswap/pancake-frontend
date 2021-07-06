@@ -20,7 +20,10 @@ import { fetchAchievements } from './achievements'
 import { fetchPrices } from './prices'
 import tombs from '../views/Tombs/data'
 import { useDrFrankenstein } from '../hooks/useContract'
-import { getPancakePair } from '../utils/contractHelpers'
+import { getContract, getPancakePair } from '../utils/contractHelpers'
+import pancakeFactoryAbi from '../config/abi/pancakeFactoryAbi.json'
+import tokens from '../config/constants/tokens'
+import contracts from '../config/constants/contracts'
 // import { fetchWalletNfts } from './collectibles'
 
 export const useFetchPublicData = () => {
@@ -209,9 +212,11 @@ export const usePriceCakeBusd = (): BigNumber => {
   return cakeBusdPrice
 }
 
-export const fetchZmbeBnbReserves = (): Promise<void> => {
-  const bnbTomb = tombs[0]
-  const address = getAddress(bnbTomb.lpAddresses)
+export const fetchZmbeBnbAddress = (): Promise<string> => {
+  return getContract(pancakeFactoryAbi, getAddress(contracts.pancakeFactory)).methods.getPair(getAddress(tokens.zmbe.address), getAddress(tokens.wbnb.address)).call()
+}
+
+export const fetchLpReserves = (address): Promise<void> => {
   return getPancakePair(address).methods.getReserves().call()
 }
 

@@ -11,6 +11,10 @@ export default {
     97: '0x25559ff9cb2D6f5cC9BB6057c67c02D69e62E9b3',
     56: '0xD61c71382f9Ccf88dF44923003C96137f62C71cb',
   },
+  pancakeFactory: {
+    97: '',
+    56: '0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73',
+  },
   sousChef: {
     97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
     56: '0x6ab8463a4185b80905e05a9ff80a2d6b714b9e95',

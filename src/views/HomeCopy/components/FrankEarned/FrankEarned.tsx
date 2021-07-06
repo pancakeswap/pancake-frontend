@@ -11,7 +11,6 @@ interface FrankEarnedProps {
 }
 
 const FrankEarned: React.FC<FrankEarnedProps> = ({ pendingZombie, pid }) => {
-
   const drFrankenstein = useDrFrankenstein();
   const { account } = useWeb3React();
 

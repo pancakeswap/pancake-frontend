@@ -16,6 +16,7 @@ import { useDrFrankenstein, useERC20 } from '../../../../hooks/useContract';
 import StakeModal from '../StakeModal';
 import StakeZombieModal from '../StakeZombieModal';
 import WithdrawZombieModal from '../WithdrawZombieModal';
+import useAuth from '../../../../hooks/useAuth'
 
 
 const DisplayFlex = styled(BaseLayout)`
@@ -50,15 +51,14 @@ interface StartFarmingProps {
     stakingToken: any,
     result: Result,
     poolInfo: any
-
+    // login: any
   },
   isAllowance: boolean,
   updateAllowance: any,
   updateResult: any
 }
 
-const StartFarming: React.FC<StartFarmingProps> = ({ details, details: { pid, rug, result: { paidUnlockFee, rugDeposited }, poolInfo, result }, isAllowance, updateAllowance, updateResult }) => {
-
+const StartFarming: React.FC<StartFarmingProps> = ({ details, details: { pid, rug, result: { paidUnlockFee, rugDeposited }, poolInfo, result },  isAllowance, updateAllowance, updateResult }) => {
   const [isAllowanceForRugToken, setIsAllowanceForRugToken] = useState(false);
 
   const [rugTokenAmount, setRugTokenAmount] = useState(0);
@@ -144,8 +144,6 @@ const StartFarming: React.FC<StartFarmingProps> = ({ details, details: { pid, ru
     // handleDepositRug()
   }
 
-
-
   const handleApproveRug = () => {
     rugContract.methods.approve(getDrFrankensteinAddress(), ethers.constants.MaxUint256)
       .send({ from: account }).then((res) => {
@@ -159,7 +157,8 @@ const StartFarming: React.FC<StartFarmingProps> = ({ details, details: { pid, ru
 
   const renderButtonsForGrave = () => {
     return <div className="space-between">
-      {!paidUnlockFee ?
+      {account ?
+        !paidUnlockFee ?
         isAllowance ?
           <button onClick={handleUnlock} className="btn btn-disabled w-100" type="button">Unlock Grave</button> :
           <button onClick={handleApprove} className="btn btn-disabled w-100" type="button">Approve ZMBE</button>
@@ -171,17 +170,19 @@ const StartFarming: React.FC<StartFarmingProps> = ({ details, details: { pid, ru
             <button onClick={onPresentZombieStake} className="btn w-100" type="button">+</button>
           </DisplayFlex>
         </div>
-      }
+        :  <span className="total-earned text-shadow">Connect Wallet</span>}
     </div>
   }
 
   const renderButtonsForTraditionalGraves = () => {
     return <div className="space-between">
-      {isAllowanceForRugToken ?
+      {account ?
+        isAllowanceForRugToken ?
         rugDeposited.toString() === '0' ?
           <button onClick={onPresentStake} className="btn btn-disabled w-100" type="button">Deposit {rug.symbol}</button> :
           renderButtonsForGrave()
-        : <button onClick={handleApproveRug} className="btn btn-disabled w-100" type="button">Approve {rug.symbol}</button>}</div>
+        : <button onClick={handleApproveRug} className="btn btn-disabled w-100" type="button">Approve {rug.symbol}</button>
+      :  <span className="total-earned text-shadow">Connect Wallet</span>}</div>
   }
 
   return (
