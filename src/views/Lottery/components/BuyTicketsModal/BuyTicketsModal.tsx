@@ -105,10 +105,34 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
     [maxNumberTicketsPerBuyOrClaim],
   )
 
+  const getTicketCostAfterDiscount = useCallback(
+    (numberTickets: BigNumber) => {
+      const totalAfterDiscount = priceTicketInCake
+        .times(numberTickets)
+        .times(discountDivisor.plus(1).minus(numberTickets))
+        .div(discountDivisor)
+      return totalAfterDiscount
+    },
+    [discountDivisor, priceTicketInCake],
+  )
+
   useEffect(() => {
     const getMaxPossiblePurchase = () => {
       const maxBalancePurchase = memoisedUserCake.div(priceTicketInCake)
-      const maxPurchase = limitNumberByMaxTicketsPerBuy(maxBalancePurchase)
+      const limitedMaxPurchase = limitNumberByMaxTicketsPerBuy(maxBalancePurchase)
+      let maxPurchase
+
+      // If the max ticket purchase is less than the SC limit - factor the ticket discount into the max possible purchase
+      if (limitedMaxPurchase.lt(maxNumberTicketsPerBuyOrClaim)) {
+        const costAfterDiscount = getTicketCostAfterDiscount(limitedMaxPurchase)
+        const costBeforeDiscount = priceTicketInCake.times(limitedMaxPurchase)
+        const discountAmount = costBeforeDiscount.minus(costAfterDiscount)
+        const discountTicketValue = discountAmount.div(priceTicketInCake)
+        maxPurchase = maxBalancePurchase.plus(discountTicketValue)
+      } else {
+        maxPurchase = limitedMaxPurchase
+      }
+
       if (hasFetchedBalance && maxPurchase.eq(0)) {
         setUserNotEnoughCake(true)
       } else {
@@ -122,26 +146,19 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
     priceTicketInCake,
     memoisedUserCake,
     limitNumberByMaxTicketsPerBuy,
+    getTicketCostAfterDiscount,
     hasFetchedBalance,
   ])
 
   useEffect(() => {
     const numberOfTicketsToBuy = new BigNumber(ticketsToBuy)
-    const getCostAfterDiscount = () => {
-      const totalAfterDiscount = priceTicketInCake
-        .times(numberOfTicketsToBuy)
-        .times(discountDivisor.plus(1).minus(numberOfTicketsToBuy))
-        .div(discountDivisor)
-      return totalAfterDiscount
-    }
-    const costAfterDiscount = getCostAfterDiscount()
+    const costAfterDiscount = getTicketCostAfterDiscount(numberOfTicketsToBuy)
     const costBeforeDiscount = priceTicketInCake.times(numberOfTicketsToBuy)
     const discountBeingApplied = costBeforeDiscount.minus(costAfterDiscount)
-
     setTicketCostBeforeDiscount(costBeforeDiscount.gt(0) ? getFullDisplayBalance(costBeforeDiscount) : '0')
     setTotalCost(costAfterDiscount.gt(0) ? getFullDisplayBalance(costAfterDiscount) : '0')
     setDiscountValue(discountBeingApplied.gt(0) ? getFullDisplayBalance(discountBeingApplied, 18, 5) : '0')
-  }, [ticketsToBuy, priceTicketInCake, discountDivisor])
+  }, [ticketsToBuy, priceTicketInCake, discountDivisor, getTicketCostAfterDiscount])
 
   const getNumTicketsByPercentage = (percentage: number): number => {
     const percentageOfMaxTickets = maxPossibleTicketPurchase.gt(0)
