@@ -66,6 +66,7 @@
     "react-scripts": "^4.0.1",
     "react-transition-group": "^4.4.1",
     "react-twitter-widgets": "^1.10.0",
+    "react-youtube": "^7.13.1",
     "styled-components": "^5.1.1",
     "swiper": "^6.5.0",
     "typescript": "^4.1.5",

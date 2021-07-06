@@ -83,7 +83,7 @@ const Home: React.FC<HomeProps> = ({ zombieUsdPrice }: HomeProps) => {
         </Cards>
         <Cards>
           <ZmbeStats />
-          <TotalValueLockedCard />
+          <TotalValueLockedCard zombieUsdPrice={zombieUsdPrice}/>
         </Cards>
       </div>
     </Page>

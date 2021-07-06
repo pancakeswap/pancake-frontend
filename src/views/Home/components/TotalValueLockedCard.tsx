@@ -1,8 +1,14 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Card, CardBody, Heading, Skeleton, Text } from '@rug-zombie-libs/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useGetStats } from 'hooks/api'
+import { BigNumber } from 'bignumber.js'
+import numeral from 'numeral'
+import { useZombie } from '../../../hooks/useContract'
+import { getDrFrankensteinAddress } from '../../../utils/addressHelpers'
+import { BIG_ZERO } from '../../../utils/bigNumber'
+import { getBalanceAmount } from '../../../utils/formatBalance'
 
 const StyledTotalValueLockedCard = styled(Card)`
   align-items: center;
@@ -10,25 +16,33 @@ const StyledTotalValueLockedCard = styled(Card)`
   flex: 1;
 `
 
-const TotalValueLockedCard = () => {
+interface TotalValueLockedCardReactProps {
+  zombieUsdPrice: number,
+}
+
+const TotalValueLockedCard:  React.FC<TotalValueLockedCardReactProps> = ({ zombieUsdPrice }: TotalValueLockedCardReactProps) => {
   const { t } = useTranslation()
-  const data = useGetStats()
-  const tvl = data ? data.total_value_locked_all.toLocaleString('en-US', { maximumFractionDigits: 0 }) : null
+  const zombie = useZombie()
+  const [balance, setBalance] = useState(BIG_ZERO)
+  useEffect(()=> {
+    zombie.methods.balanceOf(getDrFrankensteinAddress()).call()
+      .then(res => {
+        setBalance(getBalanceAmount(res).times(zombieUsdPrice))
+      })
+  }, [zombie.methods, zombieUsdPrice])
+  console.log(balance.toString())
 
   return (
     <StyledTotalValueLockedCard>
       <CardBody>
         <Heading size="lg" mb="24px">
-          {t('Total Value Locked (TVL)')}
+          {t('Total Value Locked In Graves')}
         </Heading>
-        {data ? (
           <>
-            <Heading size="xl">{`$${tvl}`}</Heading>
-            <Text color="textSubtle">{t('Buried in the Graves')}</Text>
+            <Heading size="xl">{`$${numeral(balance).format('(0.00 a)') }`}</Heading>
+            <Text color="textSubtle">{t('Tomb stats coming soon!')}</Text>
           </>
-        ) : (
-          <Skeleton height={66} />
-        )}
+
       </CardBody>
     </StyledTotalValueLockedCard>
   )

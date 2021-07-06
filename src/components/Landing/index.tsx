@@ -16,8 +16,8 @@ const Landing: React.FC<LandingProps> = (props: LandingProps) =>{
 
   const { handleAuthentication } = props;
 
-  const handleClick = () =>{
-    // handleAuthentication();
+  const handleClick = () => {
+    handleAuthentication();
   }
 
   return (
@@ -36,7 +36,7 @@ const Landing: React.FC<LandingProps> = (props: LandingProps) =>{
         </div>
       </div>
       <div className="_40_percent_block">
-        <a href={`${BASE_EXCHANGE_URL}/#/swap?outputCurrency=`} className="button-2 w-button">
+        <a href={`${BASE_EXCHANGE_URL}/#/swap?outputCurrency=${getAddress(tokens.zmbe.address)}`} className="button-2 w-button">
           Buy on Pancakeswap
         </a>
       </div>

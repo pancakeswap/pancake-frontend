@@ -15,11 +15,20 @@ const tokens = {
   zmbe: {
     symbol: 'ZMBE',
     address: {
-      56: '0x265b109bD80b95AAF39A122F5c6EC595e48D5109',
+      56: '0x50ba8BF9E34f0F83F96a340387d1d3888BA4B3b5',
       97: '0x85537ef782bab72e65704aa59e5C71131561D422',
     },
     decimals: 18,
     projectLink: 'https://rugzombie.io/',
+  },
+  merl: {
+    symbol: 'MERL',
+    address: {
+      56: '',
+      97: '0xda360309c59cb8c434b28a91b823344a96444278',
+    },
+    decimals: 18,
+    projectLink: ''
   },
   undead: {
     symbol: 'UNDEAD',

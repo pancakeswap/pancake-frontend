@@ -6,6 +6,7 @@ import { useTranslation } from 'contexts/Localization'
 import { useAllHarvest } from 'hooks/useHarvest'
 import useFarmsWithBalance from 'hooks/useFarmsWithBalance'
 import UnlockButton from 'components/UnlockButton'
+import YouTube from 'react-youtube';
 import CakeHarvestBalance from './CakeHarvestBalance'
 import CakeWalletBalance from './CakeWalletBalance'
 
@@ -55,39 +56,24 @@ const GraveStakingCard = () => {
     }
   }, [onReward])
 
+  const _onReady = (event) => {
+    // access to player in all event handlers via event.target
+    event.target.pauseVideo();
+  }
+
+  const opts = {
+    width: '100%',
+
+  };
   return (
     <StyledFarmStakingCard>
       <CardBody>
         <Heading size="xl" mb="24px">
           {t('Stake for NFT Rewards')}
         </Heading>
-        <CardImage src="/images/low-def-logo.png" alt="zombie logo" width={64} height={64} />
-        <Block>
-          <Label>{t('NFT\'s ready Harvest')}:</Label>
-          <CakeHarvestBalance />
-        </Block>
-        <Block>
-          <Label>{t('ZMBE in Wallet')}:</Label>
-          <CakeWalletBalance />
-        </Block>
-        <Actions>
-          {account ? (
-            <Button
-              id="harvest-all"
-              disabled={balancesWithValue.length <= 0 || pendingTx}
-              onClick={harvestAllFarms}
-              width="100%"
-            >
-              {pendingTx
-                ? t('Collecting CAKE')
-                : t('Harvest all (%count%)', {
-                  count: balancesWithValue.length,
-                })}
-            </Button>
-          ) : (
-            <UnlockButton width="100%" />
-          )}
-        </Actions>
+
+
+        <YouTube videoId="6Ejga4kJUts" opts={opts} onReady={_onReady} />
       </CardBody>
     </StyledFarmStakingCard>
   )

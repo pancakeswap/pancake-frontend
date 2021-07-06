@@ -3,6 +3,6 @@ export const routes = {
     HOME : '/home',
     LANDING: '/',
     FARMS:'/farms',
-    TOMBS:'/tombss',
-    GRAVES:'/gravess'
+    TOMBS:'/tombs',
+    GRAVES:'/graves'
 }

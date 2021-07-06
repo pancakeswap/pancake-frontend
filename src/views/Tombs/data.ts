@@ -3,7 +3,7 @@ import tokens from "config/constants/tokens";
 const tableData = [
   {
     id: 1,
-    pid: 10,
+    pid: 11,
     name: 'ZMBE-BNB',
     lpAddresses: {
       97: '',

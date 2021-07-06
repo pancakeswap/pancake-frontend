@@ -12,6 +12,7 @@ import { getDecimalAmount, getFullDisplayBalance } from 'utils/formatBalance'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import WarningModal from '../WarningModal'
+import WarningDepositRugModal from '../WarningDepositRugModal'
 
 interface Result {
   paidUnlockFee: boolean,
@@ -85,6 +86,11 @@ const StakeModal: React.FC<StakeModalProps> = ({ details, details: { rug, pid },
       })
   }
 
+  const [onGetDepositRugClick] = useModal(
+    <WarningDepositRugModal
+      onClick={handleDepositRug}
+  />
+  )
 
 
   return <Modal  onDismiss={onDismiss} title={details.rug === '' ? "Stake $Zmbe" : `Stake ${rug.symbol}`} headerBackground={theme.colors.gradients.cardHeader}>
@@ -133,7 +139,7 @@ const StakeModal: React.FC<StakeModalProps> = ({ details, details: { rug, pid },
        Get {rug.symbol}
        {/* external href={`${BASE_EXCHANGE_URL}/#/swap?outputCurrency=${getAddress(rug.address)}`} */}
      </Button> :
-      <Button onClick={handleDepositRug} mt="8px" as="a" variant="secondary">
+      <Button onClick={onGetDepositRugClick} mt="8px" as="a" variant="secondary">
         Deposit {rug.symbol}
       </Button>}
   </Modal>
