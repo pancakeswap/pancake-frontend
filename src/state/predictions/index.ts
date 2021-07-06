@@ -89,14 +89,11 @@ export const initializePredictions = createAsyncThunk<PredictionInitialization, 
       }
     }, {})
 
-    // Claim statuses
-    const claimableStatuses = await getClaimStatuses(account, epochs)
-
     const initializedData = {
       ...marketData,
-      claimableStatuses,
       roundsv2: initialRoundData,
       betsv2: {},
+      claimableStatuses: {},
     }
 
     if (!account) {
@@ -106,8 +103,12 @@ export const initializePredictions = createAsyncThunk<PredictionInitialization, 
     // Bet data
     const ledgerResponses = await getLedgerData(account, epochs)
 
+    // Claim statuses
+    const claimableStatuses = await getClaimStatuses(account, epochs)
+
     return merge({}, initializedData, {
       betsv2: makeLedgerData(account, ledgerResponses, epochs),
+      claimableStatuses,
     })
   },
 )
