@@ -1,14 +1,6 @@
 import BigNumber from 'bignumber.js'
 import { BetPosition } from 'state/types'
-import {
-  formatBnb,
-  formatRoundTime,
-  formatUsd,
-  getBnbAmount,
-  getMultiplier,
-  getPayout,
-  padTime,
-} from 'views/Predictions/helpers'
+import { formatBnb, formatRoundTime, formatUsd, getBnbAmount, getPayout, padTime } from 'views/Predictions/helpers'
 
 describe('getBnbAmount', () => {
   it.each([
@@ -73,16 +65,16 @@ describe('formatRoundTime', () => {
   })
 })
 
-describe('getMultiplier', () => {
-  it.each([
-    [100, 400, 0.25],
-    [50000, 2500, 20],
-    [0, 2500, 0],
-    [10, 0, 0],
-  ])('correctly calculates multiplier', (value, value2, expected) => {
-    expect(getMultiplier(value, value2)).toEqual(expected)
-  })
-})
+// describe('getMultiplier', () => {
+//   it.each([
+//     [100, 400, 0.25],
+//     [50000, 2500, 20],
+//     [0, 2500, 0],
+//     [10, 0, 0],
+//   ])('correctly calculates multiplier', (value, value2, expected) => {
+//     expect(getMultiplier(value, value2)).toEqual(expected)
+//   })
+// })
 
 describe('getPayout', () => {
   const bet1Bull = {

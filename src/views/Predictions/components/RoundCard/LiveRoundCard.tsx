@@ -7,7 +7,7 @@ import { NodeRound, NodeLedger, BetPosition } from 'state/types'
 import { formatBigNumberToFixed } from 'utils/formatBalance'
 import { useBlock, useGetIntervalBlocks, useGetLastOraclePrice } from 'state/hooks'
 import BlockProgress from 'components/BlockProgress'
-import { formatUsdv2, getBubbleGumBackground, getHasRoundFailed } from '../../helpers'
+import { formatUsdv2, getHasRoundFailed } from '../../helpers'
 import PositionTag from '../PositionTag'
 import { RoundResultBox, LockPriceRow, PrizePoolRow } from '../RoundResult'
 import MultiplierArrow from './MultiplierArrow'
@@ -32,7 +32,7 @@ const GradientBorder = styled.div`
 `
 
 const GradientCard = styled(Card)`
-  background: ${({ theme }) => getBubbleGumBackground(theme)};
+  background: ${({ theme }) => theme.colors.gradients.bubblegum};
 `
 
 const LiveRoundCard: React.FC<LiveRoundCardProps> = ({

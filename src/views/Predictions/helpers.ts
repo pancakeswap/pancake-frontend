@@ -87,15 +87,6 @@ export const getHasRoundFailed = (round: NodeRound, blockNumber: number) => {
   return round.oracleCalled === false
 }
 
-// TODO: Move this to the UI Kit
-export const getBubbleGumBackground = (theme: DefaultTheme) => {
-  if (theme.isDark) {
-    return 'linear-gradient(139.73deg, #142339 0%, #24243D 47.4%, #37273F 100%)'
-  }
-
-  return 'linear-gradient(139.73deg, #E6FDFF 0%, #EFF4F5 46.87%, #F3EFFF 100%)'
-}
-
 export const getMultiplierv2 = (total: NodeRound['totalAmount'], amount: ethers.BigNumber) => {
   if (!total) {
     return 0
