@@ -30,7 +30,7 @@ export const setupNetwork = async () => {
       })
       return true
     } catch (error) {
-      console.error(error)
+      console.error('Failed to setup the network in Metamask:', error)
       return false
     }
   } else {
