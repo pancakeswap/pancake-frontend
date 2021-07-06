@@ -456,7 +456,7 @@ export const makeRoundDataV2 = (rounds: ReduxNodeRound[]): RoundDataV2 => {
 }
 
 export const serializePredictionsLedgerResponse = (ledgerResponse: PredictionsLedgerResponse): ReduxNodeLedger => ({
-  position: ledgerResponse.position === 0 ? BetPosition.BEAR : BetPosition.BEAR,
+  position: ledgerResponse.position === 0 ? BetPosition.BULL : BetPosition.BEAR,
   amount: ledgerResponse.amount.toJSON(),
   claimed: ledgerResponse.claimed,
 })
