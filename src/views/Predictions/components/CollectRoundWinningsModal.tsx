@@ -24,7 +24,6 @@ import { fetchClaimableStatuses } from 'state/predictions'
 import { useTranslation } from 'contexts/Localization'
 import useToast from 'hooks/useToast'
 import { usePredictionsContract } from 'hooks/useContract'
-import { formatBnbFromBigNumber } from './History/helpers'
 
 interface CollectRoundWinningsModalProps extends InjectedModalProps {
   payout: string
@@ -59,7 +58,7 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
   const dispatch = useAppDispatch()
 
   // Convert payout to number for compatibility
-  const payoutAsFloat = parseFloat(payout.toString())
+  const payoutAsFloat = parseFloat(payout)
 
   const handleClick = async () => {
     const tx = await predictionsContract.claim(epoch)
@@ -108,7 +107,7 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
           <Box style={{ textAlign: 'right' }}>
             <Text>{`${payout} BNB`}</Text>
             <Text fontSize="12px" color="textSubtle">
-              {`~$${formatBnbFromBigNumber(bnbBusdPrice.times(payoutAsFloat))}`}
+              {`~$${bnbBusdPrice.times(payoutAsFloat).toFormat(2)}`}
             </Text>
           </Box>
         </Flex>

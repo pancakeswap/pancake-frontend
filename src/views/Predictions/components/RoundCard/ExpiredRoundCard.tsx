@@ -5,8 +5,9 @@ import { Box, BlockIcon, CardBody } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { NodeRound, BetPosition, NodeLedger } from 'state/types'
 import { useBlock, useGetBetByEpoch } from 'state/hooks'
+import { formatFixedNumber } from 'utils/formatBalance'
+import { getHasRoundFailed, getNetPayoutv2 } from '../../helpers'
 import { RoundResult } from '../RoundResult'
-import { getHasRoundFailed, getPayoutv2 } from '../../helpers'
 import MultiplierArrow from './MultiplierArrow'
 import Card from './Card'
 import CardHeader from './CardHeader'
@@ -46,7 +47,8 @@ const ExpiredRoundCard: React.FC<ExpiredRoundCardProps> = ({
 
   const betPosition = closePrice > lockPrice ? BetPosition.BULL : BetPosition.BEAR
   const ledger = useGetBetByEpoch(account, epoch)
-  const payout = getPayoutv2(ledger, round)
+  const payout = getNetPayoutv2(ledger, round)
+  const formattedPayout = formatFixedNumber(payout, 2)
   const hasRoundFailed = getHasRoundFailed(round, initialBlock)
 
   if (hasRoundFailed) {
@@ -80,7 +82,7 @@ const ExpiredRoundCard: React.FC<ExpiredRoundCardProps> = ({
           />
         </CardBody>
       </StyledExpiredRoundCard>
-      <CollectWinningsOverlay epoch={epoch} payout={payout} isBottom={hasEnteredDown} />
+      <CollectWinningsOverlay epoch={epoch} payout={formattedPayout} isBottom={hasEnteredDown} />
     </Box>
   )
 }
