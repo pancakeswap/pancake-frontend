@@ -151,12 +151,12 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
       const limitedMaxPurchase = limitNumberByMaxTicketsPerBuy(maxBalancePurchase)
       let maxPurchase
 
-      // If the max ticket purchase is less than the SC limit - factor the ticket discount into the max possible purchase
+      // If the users' max possible ticket purchase is less than the limit - factor the ticket discount into the max possible purchase
       if (limitedMaxPurchase.lt(maxNumberTicketsPerBuyOrClaim)) {
         // Get details of the discount available for the users' max ticket purchase with their CAKE balance
         const { overallTicketBuy: maxPlusDiscountTickets } = getMaxTicketBuyWithDiscount(limitedMaxPurchase)
 
-        // Knowing how many tickets they can buy with the discount - plug that in, and see how much that total will get discounted
+        // Knowing how many tickets they can buy when counting the discount - plug that total in, and see how much that total will get discounted
         const { ticketsBoughtWithDiscount: secondTicketDiscountBuy } =
           getMaxTicketBuyWithDiscount(maxPlusDiscountTickets)
 
@@ -206,11 +206,6 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
   const twentyFivePercentOfBalance = getNumTicketsByPercentage(25)
   const fiftyPercentOfBalance = getNumTicketsByPercentage(50)
   const oneHundredPercentOfBalance = getNumTicketsByPercentage(100)
-
-  const getCakeValueOfTickets = (numberOfTickets: BigNumber): BigNumber => {
-    const totalTicketsCakeValue = priceTicketInCake.times(numberOfTickets)
-    return totalTicketsCakeValue
-  }
 
   const handleInputChange = (input: string) => {
     // Force input to integer
@@ -267,7 +262,6 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
     })
   }
 
-  const costInCake = () => getFullDisplayBalance(priceTicketInCake.times(ticketsToBuy))
   const percentageDiscount = () => {
     const percentageAsBn = new BigNumber(discountValue).div(new BigNumber(ticketCostBeforeDiscount)).times(100)
     if (percentageAsBn.isNaN() || percentageAsBn.eq(0)) {
@@ -317,7 +311,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
         onUserInput={handleInputChange}
         currencyValue={
           cakePriceBusd.gt(0) &&
-          `~${ticketsToBuy ? getFullDisplayBalance(getCakeValueOfTickets(new BigNumber(ticketsToBuy))) : '0.00'} CAKE`
+          `~${ticketsToBuy ? getFullDisplayBalance(priceTicketInCake.times(new BigNumber(ticketsToBuy))) : '0.00'} CAKE`
         }
       />
       <Flex alignItems="center" justifyContent="flex-end" mt="4px" mb="12px">
@@ -375,7 +369,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
             {t('Cost')} (CAKE)
           </Text>
           <Text color="textSubtle" fontSize="14px">
-            {priceTicketInCake && costInCake()} CAKE
+            {priceTicketInCake && getFullDisplayBalance(priceTicketInCake.times(ticketsToBuy))} CAKE
           </Text>
         </Flex>
         <Flex mb="8px" justifyContent="space-between">
