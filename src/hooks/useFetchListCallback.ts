@@ -45,7 +45,7 @@ function useFetchListCallback(): (listUrl: string, sendDispatch?: boolean) => Pr
           return tokenList
         })
         .catch((error) => {
-          console.debug(`Failed to get list at url ${listUrl}`, error)
+          console.error(`Failed to get list at url ${listUrl}`, error)
           if (sendDispatch) {
             dispatch(fetchTokenList.rejected({ url: listUrl, requestId, errorMessage: error.message }))
           }
