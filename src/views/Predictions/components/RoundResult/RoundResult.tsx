@@ -29,7 +29,7 @@ const RoundResult: React.FC<RoundResultProps> = ({ round, hasFailed = false, chi
   const betPosition = getBetPosition(closePrice, lockPrice)
   const isPositionUp = betPosition === BetPosition.BULL
   const { t } = useTranslation()
-  const priceDifference = closePrice.sub(lockPrice)
+  const priceDifference = closePrice ? closePrice.sub(lockPrice) : ethers.BigNumber.from(0)
 
   return (
     <RoundResultBox betPosition={betPosition} {...props}>
