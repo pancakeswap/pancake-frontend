@@ -5,6 +5,8 @@ import { useTranslation } from 'contexts/Localization'
 import Container from 'components/layout/Container'
 import { NavLink } from 'react-router-dom'
 import Balance from 'components/Balance'
+import { usePriceCakeBusd } from 'state/hooks'
+import { getBalanceNumber } from 'utils/formatBalance'
 
 const NowLive = styled(Text)`
   background: -webkit-linear-gradient(#ffd800, #eb8c00);
@@ -60,8 +62,11 @@ const RightWrapper = styled.div`
   }
 `
 
-const LotteryBanner: React.FC<{ totalPrize: number }> = ({ totalPrize }) => {
+const LotteryBanner: React.FC<{ currentLotteryPrize: string }> = ({ currentLotteryPrize }) => {
   const { t } = useTranslation()
+  const cakePriceBusd = usePriceCakeBusd()
+  const prizeInBusd = cakePriceBusd.times(currentLotteryPrize)
+  const prizeTotal = getBalanceNumber(prizeInBusd)
 
   return (
     <Wrapper>
@@ -69,7 +74,7 @@ const LotteryBanner: React.FC<{ totalPrize: number }> = ({ totalPrize }) => {
         <LeftWrapper>
           <NowLive>{t('Lottery Now Live')}</NowLive>
           <>
-            {!totalPrize ? (
+            {prizeInBusd.isNaN() ? (
               <>
                 <Skeleton height={40} mb={20} mt={10} width={280} />
               </>
@@ -83,7 +88,7 @@ const LotteryBanner: React.FC<{ totalPrize: number }> = ({ totalPrize }) => {
                 prefix={`${t('Over')} $`}
                 unit={` ${t('in Prizes')}`}
                 decimals={0}
-                value={totalPrize}
+                value={prizeTotal}
               />
             )}
           </>

@@ -3,6 +3,8 @@ import styled from 'styled-components'
 import { Heading, Card, CardBody, Flex, ArrowForwardIcon, Skeleton } from '@pancakeswap/uikit'
 import { NavLink } from 'react-router-dom'
 import { useTranslation } from 'contexts/Localization'
+import { usePriceCakeBusd } from 'state/hooks'
+import { getBalanceNumber } from 'utils/formatBalance'
 import Balance from 'components/Balance'
 
 const StyledFarmStakingCard = styled(Card)`
@@ -21,8 +23,11 @@ const StyledFarmStakingCard = styled(Card)`
   }
 `
 
-const LotteryPromotionCard: React.FC<{ totalPrize: number }> = ({ totalPrize }) => {
+const LotteryPromotionCard: React.FC<{ currentLotteryPrize: string }> = ({ currentLotteryPrize }) => {
   const { t } = useTranslation()
+  const cakePriceBusd = usePriceCakeBusd()
+  const prizeInBusd = cakePriceBusd.times(currentLotteryPrize)
+  const prizeTotal = getBalanceNumber(prizeInBusd)
 
   return (
     <StyledFarmStakingCard>
@@ -31,16 +36,16 @@ const LotteryPromotionCard: React.FC<{ totalPrize: number }> = ({ totalPrize }) 
           <Heading color="contrast" scale="lg">
             {t('Lottery')} V2
           </Heading>
-          {!totalPrize ? (
+          {prizeInBusd.isNaN() ? (
             <>
               <Skeleton height={60} width={210} />
             </>
           ) : (
-            <Balance fontSize="40px" color="#7645d9" bold prefix={`${t('Over')} $`} decimals={0} value={totalPrize} />
+            <Balance fontSize="40px" color="#7645d9" bold prefix={`${t('Over')} $`} decimals={0} value={prizeTotal} />
           )}
           <Flex justifyContent="space-between">
             <Heading color="contrast" scale="lg">
-              {t('in Lottery Prizes!')}
+              {t('in Prizes!')}
             </Heading>
             <ArrowForwardIcon mt={30} color="primary" />
           </Flex>

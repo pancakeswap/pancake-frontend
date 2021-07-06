@@ -3,8 +3,6 @@ import styled from 'styled-components'
 import { Heading, Text, BaseLayout } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import Page from 'components/layout/Page'
-import { getBalanceNumber } from 'utils/formatBalance'
-import { usePriceCakeBusd } from 'state/hooks'
 import FarmStakingCard from 'views/Home/components/FarmStakingCard'
 import CakeStats from 'views/Home/components/CakeStats'
 import TotalValueLockedCard from 'views/Home/components/TotalValueLockedCard'
@@ -91,13 +89,10 @@ const CTACards = styled(BaseLayout)`
 const Home: React.FC = () => {
   const { t } = useTranslation()
   const { currentLotteryPrize } = useFetchLotteryForPromos()
-  const cakePriceBusd = usePriceCakeBusd()
-  const prizeInBusd = cakePriceBusd.times(currentLotteryPrize)
-  const totalLotteryPrize = getBalanceNumber(prizeInBusd)
 
   return (
     <>
-      <LotteryBanner totalPrize={totalLotteryPrize} />
+      <LotteryBanner currentLotteryPrize={currentLotteryPrize} />
       <Page>
         <Hero>
           <Heading as="h1" scale="xl" mb="24px" color="secondary">
@@ -113,7 +108,7 @@ const Home: React.FC = () => {
           <CTACards>
             <EarnAPRCard />
             <EarnAssetCard />
-            <LotteryPromotionCard totalPrize={totalLotteryPrize} />
+            <LotteryPromotionCard currentLotteryPrize={currentLotteryPrize} />
           </CTACards>
           <Cards>
             <CakeStats />
