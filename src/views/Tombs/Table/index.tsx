@@ -76,11 +76,12 @@ const Table: React.FC<TableProps> = ({ details, isAllowance, bnbInBusd, zombieUs
        })
   },[bnbInBusd, details.lpAddresses, zombieUsdPrice])
 
-
+// console.log(lpTokenPrice.toString())
 
   const TableListProps = {
     "handler": openInDetails,
     lpTokenPrice,
+    zombieUsdPrice,
     totalLpTokenStaked,
     details,
   }

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { BaseLayout } from '@rug-zombie-libs/uikit'
 import { BIG_TEN, BIG_ZERO } from 'utils/bigNumber'
 import BigNumber from 'bignumber.js';
-import { getFullDisplayBalance } from 'utils/formatBalance'
+import { getBalanceAmount, getDecimalAmount, getFullDisplayBalance } from 'utils/formatBalance'
 import tokens from 'config/constants/tokens';
 import numeral from 'numeral'
 import { getGraveTombApr } from '../../../utils/apr'
@@ -48,6 +48,7 @@ interface TableListProps {
   handler: any
   totalLpTokenStaked: any,
   lpTokenPrice: BigNumber,
+  zombieUsdPrice: number,
   details: {
     id: number,
     name: string,
@@ -62,7 +63,7 @@ interface TableListProps {
 }
 
 const TableList: React.FC<TableListProps> = (props: TableListProps) => {
-  const { details: { name, poolInfo, pendingZombie }, lpTokenPrice, totalLpTokenStaked, handler } = props;
+  const { details: { name, poolInfo, pendingZombie }, lpTokenPrice, zombieUsdPrice, totalLpTokenStaked, handler } = props;
   let allocPoint = BIG_ZERO;
   if(poolInfo.allocPoint) {
     allocPoint = new BigNumber(poolInfo.allocPoint)
@@ -72,8 +73,9 @@ const TableList: React.FC<TableListProps> = (props: TableListProps) => {
 
   const [isOpen, setIsOpen] = useState(false);
 
-  const bigZombieUsdPrice = new BigNumber(lpTokenPrice).times(BIG_TEN.pow(18))
-  const apr = getGraveTombApr(poolWeight, bigZombieUsdPrice, totalLpTokenStaked.times(lpTokenPrice))
+  console.log(poolWeight.toString())
+  const bigZombiePrice = getDecimalAmount(new BigNumber(zombieUsdPrice))
+  const apr = getGraveTombApr(poolWeight, bigZombiePrice, getDecimalAmount(totalLpTokenStaked).times(lpTokenPrice))
 
   const toggleOpen = () => {
     setIsOpen(!isOpen);
