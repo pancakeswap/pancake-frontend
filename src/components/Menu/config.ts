@@ -44,6 +44,10 @@ const config: (t: ContextApi['t']) => MenuEntry[] = (t) => [
     label: t('Lottery'),
     icon: 'TicketIcon',
     href: '/lottery',
+    status: {
+      text: t('Win').toLocaleUpperCase(),
+      color: 'success',
+    },
   },
   {
     label: t('Collectibles'),
@@ -77,10 +81,6 @@ const config: (t: ContextApi['t']) => MenuEntry[] = (t) => [
     label: t('Info'),
     icon: 'InfoIcon',
     href: 'https://pancakeswap.info',
-    status: {
-      text: t('New').toLocaleUpperCase(),
-      color: 'success',
-    },
   },
   {
     label: t('IFO'),
