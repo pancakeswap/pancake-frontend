@@ -1,7 +1,6 @@
 import React, { useMemo, useState } from 'react'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
-import { DEFAULT_GAS_LIMIT } from 'config'
 import styled from 'styled-components'
 import { Modal, Text, Flex, Button, HelpIcon, AutoRenewIcon, useTooltip } from '@pancakeswap/uikit'
 import { getBalanceNumber } from 'utils/formatBalance'
@@ -12,6 +11,7 @@ import { useTranslation } from 'contexts/Localization'
 import UnlockButton from 'components/UnlockButton'
 import Balance from 'components/Balance'
 import { useCakeVault, usePriceCakeBusd } from 'state/hooks'
+import { callWithEstimateGas } from 'utils/calls'
 
 interface BountyModalProps {
   onDismiss?: () => void
@@ -56,7 +56,7 @@ const BountyModal: React.FC<BountyModalProps> = ({ onDismiss, TooltipComponent }
   })
 
   const handleConfirmClick = async () => {
-    const tx = await cakeVaultContract.harvest({ gasLimit: DEFAULT_GAS_LIMIT })
+    const tx = await callWithEstimateGas(cakeVaultContract, 'harvest')
     setPendingTx(true)
     const receipt = await tx.wait()
     if (receipt.status) {
