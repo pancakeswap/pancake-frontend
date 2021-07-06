@@ -1,11 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
-import { CurvedSvgTop, CurvedSvgBottom } from './svg/CurvedSvg'
+import { CurvedSvgTop, CurvedSvgBottom, ConcaveTop, ConcaveBottom } from './svg/CurvedSvg'
 
 interface CurvedDividerProps extends WrapperProps {
   svgFill?: string
   dividerComponent?: React.ReactNode
   curvePosition?: 'top' | 'bottom'
+  concave?: boolean
 }
 interface WrapperProps {
   index: number
@@ -27,15 +28,18 @@ const ComponentWrapper = styled.div<WrapperProps>`
   transform: translate(-50%, -50%);
 `
 
-const CurvedDivider: React.FC<CurvedDividerProps> = ({ svgFill, index, curvePosition, dividerComponent }) => {
+const CurvedDivider: React.FC<CurvedDividerProps> = ({ svgFill, index, curvePosition, dividerComponent, concave }) => {
+  const showTopDivider = curvePosition === 'top' && !concave
+  const showBottomDivider = curvePosition === 'bottom' && !concave
+  const showConcaveTopDivider = curvePosition === 'top' && concave
+  const showConcaveBottomDivider = curvePosition === 'bottom' && concave
   return (
     <Wrapper index={index}>
       {dividerComponent && <ComponentWrapper index={index}>{dividerComponent}</ComponentWrapper>}
-      {curvePosition === 'top' ? (
-        <CurvedSvgTop svgFill={svgFill} width="100%" />
-      ) : (
-        <CurvedSvgBottom svgFill={svgFill} width="100%" />
-      )}
+      {showConcaveTopDivider && <ConcaveTop />}
+      {showConcaveBottomDivider && <ConcaveBottom />}
+      {showTopDivider && <CurvedSvgTop svgFill={svgFill} width="100%" />}
+      {showBottomDivider && <CurvedSvgBottom svgFill={svgFill} width="100%" />}
     </Wrapper>
   )
 }
