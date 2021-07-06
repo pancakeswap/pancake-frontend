@@ -8,7 +8,7 @@ import { useWeb3React } from '@web3-react/core';
 interface FrankEarnedProps {
   pid: number,
   pendingZombie: any,
-  lpTokenPrice: number,
+  lpTokenPrice: BigNumber,
   totalLpTokenStaked: BigNumber
 }
 

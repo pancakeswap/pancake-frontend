@@ -50,17 +50,17 @@ interface StartFarmingProps {
   isAllowance: boolean,
   updateAllowance: any,
   updateResult: any,
-  zmbeBnbAddress: string,
+  lpTokenAddress: string,
 }
 
-const StartFarming: React.FC<StartFarmingProps> = ({ details, details: { name, pid, poolInfo, result }, updateResult, zmbeBnbAddress }) => {
+const StartFarming: React.FC<StartFarmingProps> = ({ details, details: { name, pid, poolInfo, result }, updateResult, lpTokenAddress }) => {
 
-  const lpTokenContract = useERC20(zmbeBnbAddress);
+  const lpTokenContract = useERC20(lpTokenAddress);
   const { account } = useWeb3React();
   const [isLpTokenAllowance, setIsLpTokenAllowance] = useState(false);
   const lpTokenAllowance = useIfoAllowance(lpTokenContract, getDrFrankensteinAddress());
 
-  const lpTokenBalance = useTokenBalance(zmbeBnbAddress);
+  const lpTokenBalance = useTokenBalance(lpTokenAddress);
 
   useEffect(() => {
     if (lpTokenAllowance.toString() !== "0") {
@@ -71,7 +71,7 @@ const StartFarming: React.FC<StartFarmingProps> = ({ details, details: { name, p
   const [onPresentZombieStake] = useModal(
     <StakeLpTokenModal
       details={details}
-      lpAddress={zmbeBnbAddress}
+      lpAddress={lpTokenAddress}
       updateResult={updateResult}
       lpTokenBalance={lpTokenBalance}
     />,

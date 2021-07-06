@@ -14,8 +14,9 @@ import SuspenseWithChunkError from './components/SuspenseWithChunkError'
 import history from './routerHistory'
 import GlobalStyle from './style/Global'
 import HomeC from './views/HomeCopy'
-// import Crypts from './views/Crypts'
-
+import tombs from './views/Tombs/data'
+import { getAddress } from './utils/addressHelpers'
+import { BIG_ZERO } from './utils/bigNumber'
 // Route-based code splitting
 // Only pool is included in the main bundle because of it's the most visited page
 const Landing = lazy(() => import('./components/Landing'));
@@ -53,17 +54,15 @@ const App: React.FC = () => {
   }
 
   const [zombieUsdPrice, setZombieUsdPrice] = useState(0)
-  const [zmbeBnbAddress, setZmbeBnbAddress] = useState("0x0000000000000000000000000000000000000000")
-  fetchZmbeBnbAddress().then(address => {
-    fetchLpReserves(address).then((reserves) => {
+  const [zmbeBnbReserves, setZmbeBnbReserves] = useState([BIG_ZERO, BIG_ZERO])
+  const zmbeBnbAddress = getAddress(tombs[0].lpAddresses)
+    fetchLpReserves(zmbeBnbAddress).then((reserves) => {
       const zombieBnbPrice = reserves[1] / reserves[0]
       getBnbPriceinBusd().then((res) => {
         const bnbPrice = res.data.price
         setZombieUsdPrice(zombieBnbPrice * bnbPrice)
-        setZmbeBnbAddress(address)
       })
     })
-  })
 
   return (
     <Router history={history}>
@@ -75,7 +74,7 @@ const App: React.FC = () => {
           <Menu zombieUsdPrice={zombieUsdPrice}>
             <Route exact path={routes.HOME}><Home zombieUsdPrice={zombieUsdPrice}/></Route>
             <Route exact path={routes.GRAVES}><HomeC zombieUsdPrice={zombieUsdPrice}/></Route>
-            <Route exact path={routes.TOMBS}><Tombs zombieUsdPrice={zombieUsdPrice} zmbeBnbAddress={zmbeBnbAddress} /></Route>
+            <Route exact path={routes.TOMBS}><Tombs zombieUsdPrice={zombieUsdPrice} /></Route>
           </Menu>
         </Switch>
       </SuspenseWithChunkError>

@@ -11,7 +11,7 @@ import { useERC20 } from '../../../hooks/useContract'
 import { getAddress, getDrFrankensteinAddress } from '../../../utils/addressHelpers'
 import { getBalanceAmount } from '../../../utils/formatBalance'
 import { BIG_ZERO } from '../../../utils/bigNumber'
-import { getContract, getLpContract } from '../../../utils/contractHelpers'
+import { getContract, getLpContract, getPancakePair } from '../../../utils/contractHelpers'
 import pancakeFactoryAbi from '../../../config/abi/pancakeFactoryAbi.json'
 import erc20Abi from '../../../config/abi/erc20.json'
 import tokens from '../../../config/constants/tokens'
@@ -36,8 +36,9 @@ interface TableData {
   result : any,
   poolInfo: any,
   pendingZombie: any
-  quoteToken:any,
-  token:any
+  quoteToken: any,
+  token: any,
+  lpAddresses: any,
 }
 
 interface TableProps {
@@ -46,32 +47,36 @@ interface TableProps {
   bnbInBusd: number,
   updateAllowance:any,
   updateResult:any,
-  reservesUsd: any,
-  zmbeBnbAddress: any
+  zombieUsdPrice: number
 }
 
-const Table: React.FC<TableProps> = ({ details, isAllowance, bnbInBusd, updateResult, updateAllowance, reservesUsd, zmbeBnbAddress }: TableProps) => {
+const Table: React.FC<TableProps> = ({ details, isAllowance, bnbInBusd, zombieUsdPrice, updateResult, updateAllowance }: TableProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [lpTokenPrice, setLpTokenPrice] = useState(0)
+  const [lpTokenPrice, setLpTokenPrice] = useState(BIG_ZERO)
   const [totalLpTokenStaked, setTotalLpTokenStaked] = useState(BIG_ZERO)
-  const [lpAddress, setLpAddress] = useState("")
 
   const openInDetails = (data) => {
     setIsOpen(data);
   }
 
   useEffect(() => {
-     const lpTokenContract = getContract(erc20Abi, zmbeBnbAddress)
+     const lpTokenContract = getPancakePair(getAddress(details.lpAddresses))
      lpTokenContract.methods.totalSupply().call()
        .then((resSupply) => {
          const lpSupply = getBalanceAmount(resSupply)
          lpTokenContract.methods.balanceOf(getDrFrankensteinAddress()).call()
            .then((resStaked) => {
-             setLpTokenPrice((reservesUsd[0].plus(reservesUsd[1])).div(lpSupply))
-             setTotalLpTokenStaked(getBalanceAmount(resStaked))
+             lpTokenContract.methods.getReserves().call()
+               .then(reserves => {
+                 const reservesUsd = [getBalanceAmount(reserves[0]).times(zombieUsdPrice), getBalanceAmount(reserves[1]).times(bnbInBusd)]
+                 setTotalLpTokenStaked(getBalanceAmount(resStaked))
+                 setLpTokenPrice((reservesUsd[0].plus(reservesUsd[1])).div(lpSupply))
+               })
            })
        })
-  },[reservesUsd, zmbeBnbAddress])
+  },[bnbInBusd, details.lpAddresses, zombieUsdPrice])
+
+
 
   const TableListProps = {
     "handler": openInDetails,
@@ -91,7 +96,7 @@ const Table: React.FC<TableProps> = ({ details, isAllowance, bnbInBusd, updateRe
             <div className="w-95 mx-auto mt-3">
               <div className="flex-grow">
                 <FrankEarned pid={details.pid} pendingZombie={details.pendingZombie} lpTokenPrice={lpTokenPrice} totalLpTokenStaked={totalLpTokenStaked}/>
-                <StartFarming updateAllowance={updateAllowance} updateResult={updateResult} zmbeBnbAddress={zmbeBnbAddress} details={details} isAllowance={isAllowance} />
+                <StartFarming updateAllowance={updateAllowance} updateResult={updateResult} lpTokenAddress={getAddress(details.lpAddresses)} details={details} isAllowance={isAllowance} />
                 <BuyFrank details={details}/>
               </div>
               <RugInDetails bnbInBusd={bnbInBusd} details={details} totalLpTokensStaked={totalLpTokenStaked} lpTokenPrice={lpTokenPrice}/>

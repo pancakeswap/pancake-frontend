@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import React, { useEffect, useState } from 'react'
 import PageHeader from 'components/PageHeader'
-import { fetchLpReserves, getBnbPriceinBusd } from 'state/hooks'
+import { fetchLpReserves, getBnbPriceinBusd, useLpTokenPrice } from 'state/hooks'
 import { Heading } from '@rug-zombie-libs/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { useDrFrankenstein } from 'hooks/useContract'
@@ -12,7 +12,6 @@ import Table from './Table'
 import '../HomeCopy/HomeCopy.Styles.css'
 import tableData from './data'
 import { getBalanceAmount, getDecimalAmount } from '../../utils/formatBalance'
-import HomeC from '../HomeCopy'
 import { BIG_ZERO } from '../../utils/bigNumber'
 
 
@@ -20,10 +19,9 @@ let accountAddress
 
 interface Tombs {
   zombieUsdPrice: number,
-  zmbeBnbAddress: string,
 }
 
-const Tombs: React.FC<Tombs> = ({ zombieUsdPrice, zmbeBnbAddress }: Tombs) => {
+const Tombs: React.FC<Tombs> = ({ zombieUsdPrice }: Tombs) => {
 
   const { account } = useWeb3React()
   const [tombsData, setTombsData] = useState(tableData)
@@ -60,6 +58,8 @@ const Tombs: React.FC<Tombs> = ({ zombieUsdPrice, zmbeBnbAddress }: Tombs) => {
   const [isAllowance, setIsAllowance] = useState(false)
   const [reservesUsd, setReservesUsd] = useState([BIG_ZERO, BIG_ZERO])
 
+
+
   const updateResult = (pid) => {
     drFrankenstein.methods.userInfo(pid, accountAddress).call()
       .then(res => {
@@ -71,6 +71,7 @@ const Tombs: React.FC<Tombs> = ({ zombieUsdPrice, zmbeBnbAddress }: Tombs) => {
         })
         setTombsData(newTombsData)
       })
+
   }
 
   const updateAllowance = (tokenContact, pid) => {
@@ -85,13 +86,6 @@ const Tombs: React.FC<Tombs> = ({ zombieUsdPrice, zmbeBnbAddress }: Tombs) => {
       })
   }
 
-  // useEffect(() => {
-  //   fetchLpReserves().then((reserves) => {
-  //     setReservesUsd([getBalanceAmount(new BigNumber(reserves[0] * zombieUsdPrice)), getBalanceAmount(new BigNumber(reserves[1] * bnbInBusd))])
-  //   })
-  // }, [zombieUsdPrice, bnbInBusd])
-
-
   return (
     <Page className='innnerContainer'>
       <PageHeader background='none'>
@@ -104,8 +98,8 @@ const Tombs: React.FC<Tombs> = ({ zombieUsdPrice, zmbeBnbAddress }: Tombs) => {
       </PageHeader>
       <div>
         {tombsData.map((data) => {
-          return <Table updateResult={updateResult} updateAllowance={updateAllowance} bnbInBusd={0}
-                        isAllowance={isAllowance} details={data} key={data.id} reservesUsd={reservesUsd}  zmbeBnbAddress={zmbeBnbAddress}/>
+          return <Table updateResult={updateResult} updateAllowance={updateAllowance} zombieUsdPrice={zombieUsdPrice} bnbInBusd={bnbInBusd}
+                        isAllowance={isAllowance} details={data} key={data.id} />
         })}
       </div>
     </Page>

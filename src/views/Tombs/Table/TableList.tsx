@@ -47,7 +47,7 @@ interface Result {
 interface TableListProps {
   handler: any
   totalLpTokenStaked: any,
-  lpTokenPrice: number,
+  lpTokenPrice: BigNumber,
   details: {
     id: number,
     name: string,
@@ -63,7 +63,6 @@ interface TableListProps {
 
 const TableList: React.FC<TableListProps> = (props: TableListProps) => {
   const { details: { name, poolInfo, pendingZombie }, lpTokenPrice, totalLpTokenStaked, handler } = props;
-
   let allocPoint = BIG_ZERO;
   if(poolInfo.allocPoint) {
     allocPoint = new BigNumber(poolInfo.allocPoint)

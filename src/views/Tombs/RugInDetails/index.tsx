@@ -19,7 +19,7 @@ interface RugInDetailsProps {
   },
   bnbInBusd: number,
   totalLpTokensStaked: BigNumber,
-  lpTokenPrice: number
+  lpTokenPrice: BigNumber
 }
 
 const RugInDetails: React.FC<RugInDetailsProps> = ({
@@ -50,7 +50,7 @@ const RugInDetails: React.FC<RugInDetailsProps> = ({
           <span className="indetails-value">{allocPoint.div(100).toString()}X</span>
         </span>
         <span className="indetails-title">
-          Zombie TVL:
+          Tomb TVL:
           <span className="indetails-value">{numeral(totalLpTokensStaked.times(lpTokenPrice)).format('($ 0.00 a)')}</span>
         </span>
       </div>
