@@ -92,7 +92,7 @@ const LotteryBanner: React.FC<{ totalPrize: number; observerRef: React.MutableRe
               {!totalPrize ? (
                 <>
                   <div ref={observerRef} />
-                  <Skeleton height={40} my={20} width={170} />
+                  <Skeleton height={40} mb={20} mt={10} width={170} />
                 </>
               ) : (
                 <Balance
