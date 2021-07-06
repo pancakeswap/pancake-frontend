@@ -1,7 +1,7 @@
 import { Token, TokenAmount } from '@pancakeswap/sdk'
 import { useMemo } from 'react'
 
-import { useTokenContract } from './useContract'
+import { useTokenContract } from './useContractExchange'
 import { useSingleCallResult } from '../state/multicall/hooks'
 
 function useTokenAllowance(token?: Token, owner?: string, spender?: string): TokenAmount | undefined {

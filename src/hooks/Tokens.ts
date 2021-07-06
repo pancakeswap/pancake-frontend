@@ -16,7 +16,7 @@ import useUserAddedTokens from '../state/user/hooks/useUserAddedTokens'
 import { isAddress } from '../utils'
 
 import { useActiveWeb3React } from './Auth'
-import { useBytes32TokenContract, useTokenContract } from './useContract'
+import { useBytes32TokenContract, useTokenContract } from './useContractExchange'
 import { filterTokens } from '../components/SearchModal/filtering'
 
 // reduce token map into standard address <-> Token mapping, optionally include user added tokens
