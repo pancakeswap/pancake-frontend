@@ -1,10 +1,9 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import BigNumber from 'bignumber.js'
 import { Flex, ExpandableLabel, CardFooter, Skeleton, Heading, Box, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { LotteryRound } from 'state/types'
-import { useGetLotteryGraphDataById } from 'state/hooks'
+import { useGetLotteryGraphDataById, usePriceCakeBusd } from 'state/hooks'
 import { formatNumber, getBalanceNumber } from 'utils/formatBalance'
 import Balance from 'components/Balance'
 import RewardBrackets from '../RewardBrackets'
@@ -27,7 +26,7 @@ const PreviousRoundCardFooter: React.FC<{ lotteryData: LotteryRound; lotteryId: 
   const { t } = useTranslation()
   const { amountCollectedInCake } = lotteryData
   const lotteryGraphData = useGetLotteryGraphDataById(lotteryId)
-  const cakePriceBusd = new BigNumber(20)
+  const cakePriceBusd = usePriceCakeBusd()
   const prizeInBusd = amountCollectedInCake.times(cakePriceBusd)
 
   const getPrizeBalances = () => {
