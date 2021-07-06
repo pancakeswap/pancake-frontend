@@ -1,4 +1,5 @@
 import React from 'react'
+import { ethers } from 'ethers'
 import { BoxProps, Flex, Text } from '@pancakeswap/uikit'
 import { BetPosition, NodeRound } from 'state/types'
 import { useTranslation } from 'contexts/Localization'
@@ -11,9 +12,21 @@ interface RoundResultProps extends BoxProps {
   hasFailed?: boolean
 }
 
+const getBetPosition = (closePrice: ethers.BigNumber, lockPrice: ethers.BigNumber) => {
+  if (!closePrice) {
+    return null
+  }
+
+  if (closePrice.eq(lockPrice)) {
+    return BetPosition.HOUSE
+  }
+
+  return closePrice.gt(lockPrice) ? BetPosition.BULL : BetPosition.BEAR
+}
+
 const RoundResult: React.FC<RoundResultProps> = ({ round, hasFailed = false, children, ...props }) => {
   const { lockPrice, closePrice, totalAmount } = round
-  const betPosition = closePrice.gt(lockPrice) ? BetPosition.BULL : BetPosition.BEAR
+  const betPosition = getBetPosition(closePrice, lockPrice)
   const isPositionUp = betPosition === BetPosition.BULL
   const { t } = useTranslation()
   const priceDifference = closePrice.sub(lockPrice)
