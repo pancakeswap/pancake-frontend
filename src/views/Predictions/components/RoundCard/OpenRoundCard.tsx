@@ -20,8 +20,8 @@ interface OpenRoundCardProps {
   betAmount?: NodeLedger['amount']
   hasEnteredUp: boolean
   hasEnteredDown: boolean
-  bullMultiplier: number
-  bearMultiplier: number
+  bullMultiplier: string
+  bearMultiplier: string
 }
 
 interface State {

@@ -21,8 +21,8 @@ interface LiveRoundCardProps {
   betAmount?: NodeLedger['amount']
   hasEnteredUp: boolean
   hasEnteredDown: boolean
-  bullMultiplier: number
-  bearMultiplier: number
+  bullMultiplier: string
+  bearMultiplier: string
 }
 
 const GradientBorder = styled.div`
