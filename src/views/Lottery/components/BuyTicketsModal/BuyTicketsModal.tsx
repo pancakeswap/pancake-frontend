@@ -343,34 +343,22 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
         ) : (
           <>
             {tenPercentOfBalance >= 1 && (
-              <NumTicketsToBuyButton
-                disabled={!hasFetchedBalance}
-                onClick={() => handleNumberButtonClick(tenPercentOfBalance)}
-              >
+              <NumTicketsToBuyButton onClick={() => handleNumberButtonClick(tenPercentOfBalance)}>
                 {hasFetchedBalance ? tenPercentOfBalance : ``}
               </NumTicketsToBuyButton>
             )}
             {twentyFivePercentOfBalance >= 1 && (
-              <NumTicketsToBuyButton
-                disabled={!hasFetchedBalance}
-                onClick={() => handleNumberButtonClick(twentyFivePercentOfBalance)}
-              >
+              <NumTicketsToBuyButton onClick={() => handleNumberButtonClick(twentyFivePercentOfBalance)}>
                 {hasFetchedBalance ? twentyFivePercentOfBalance : ``}
               </NumTicketsToBuyButton>
             )}
             {fiftyPercentOfBalance >= 1 && (
-              <NumTicketsToBuyButton
-                disabled={!hasFetchedBalance}
-                onClick={() => handleNumberButtonClick(fiftyPercentOfBalance)}
-              >
+              <NumTicketsToBuyButton onClick={() => handleNumberButtonClick(fiftyPercentOfBalance)}>
                 {hasFetchedBalance ? fiftyPercentOfBalance : ``}
               </NumTicketsToBuyButton>
             )}
             {oneHundredPercentOfBalance >= 1 && (
-              <NumTicketsToBuyButton
-                disabled={!hasFetchedBalance}
-                onClick={() => handleNumberButtonClick(oneHundredPercentOfBalance)}
-              >
+              <NumTicketsToBuyButton onClick={() => handleNumberButtonClick(oneHundredPercentOfBalance)}>
                 MAX
               </NumTicketsToBuyButton>
             )}
