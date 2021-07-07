@@ -63,8 +63,8 @@ const TimeLine = () => {
                     </span>
                   </p>
                   <p className="paragraph-18">Click on the Select a Currency button, and enter the $ZMBE token contract:<br />
-                    <a href="/" target="_blank">
-                      0x50ba8BF9E34f0F83F96a340387d1d3888BA4B3b5
+                    <a href="https://bscscan.com/token/0x50ba8bf9e34f0f83f96a340387d1d3888ba4b3b5" target="_blank" rel="noreferrer">
+                      {getZombieAddress()}
                     </a>
                     </p>
                   {/* <p className="paragraph-17">

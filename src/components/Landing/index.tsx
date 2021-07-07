@@ -41,7 +41,12 @@ const Landing: React.FC<LandingProps> = (props: LandingProps) =>{
         </a>
       </div>
       <div className="_40_percent_block-copy">
-        <a href="https://app.gitbook.com/@rugzombie/s/docs/tokenomics/untitled" rel="noreferrer" target="_blank" className="button-3 w-button">
+        <a href="https://dex.guru/token/0x50ba8bf9e34f0f83f96a340387d1d3888ba4b3b5-bsc" rel="noreferrer" target="_blank" className="button-3 w-button">
+          View Chart
+        </a>
+      </div>
+      <div className="_40_percent_block-copy">
+        <a href="https://app.gitbook.com/@rugzombie/s/docs/tokenomics" rel="noreferrer" target="_blank" className="button-3 w-button">
           View token info
         </a>
       </div>
