@@ -15,7 +15,7 @@ const tableData = [
     rug: '',
     artist: artists.RugZombie,
     stakingToken: '',
-    pcsVersion: '',
+    pcsVersion: 'v2',
     result: {
       paidUnlockFee: false,
       rugDeposited: 0,
