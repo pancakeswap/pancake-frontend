@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { useWeb3React } from '@web3-react/core'
 import {
   Box,
   ChevronDownIcon,
@@ -12,7 +11,7 @@ import {
 } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { Bet, PredictionStatus } from 'state/types'
-import { useBetCanClaim, useGetCurrentEpoch, useGetPredictionsStatus, useGetRewardRate } from 'state/hooks'
+import { useGetCurrentEpoch, useGetPredictionsStatus, useGetRewardRate } from 'state/hooks'
 import { getRoundResult, Result } from 'state/predictions/helpers'
 import { useTranslation } from 'contexts/Localization'
 import { formatBnb, getNetPayout } from './helpers'
@@ -39,7 +38,6 @@ const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
   const { amount, round } = bet
 
   const { t } = useTranslation()
-  const { account } = useWeb3React()
   const currentEpoch = useGetCurrentEpoch()
   const status = useGetPredictionsStatus()
   const rewardRate = useGetRewardRate()
@@ -76,7 +74,7 @@ const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
   const resultTextPrefix = getRoundPrefix(roundResult)
   const isOpenRound = round.epoch === currentEpoch
   const isLiveRound = status === PredictionStatus.LIVE && round.epoch === currentEpoch - 1
-  const canClaim = useBetCanClaim(account, bet.round.id)
+  const canClaim = !bet.claimed && bet.position === bet.round.position
 
   // Winners get the payout, otherwise the claim what they put it if it was canceled
   const payout = roundResult === Result.WIN ? getNetPayout(bet, rewardRate) : amount
@@ -134,7 +132,7 @@ const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
           <CollectWinningsButton
             hasClaimed={!canClaim}
             epoch={bet.round.epoch}
-            payout={payout.toString()}
+            payout={formatBnb(payout)}
             scale="sm"
             mr="8px"
           >
