@@ -19,24 +19,18 @@ describe('numberOrNull', () => {
 describe('makeFutureRoundResponse', () => {
   it('returns a correctly transformed future round response', () => {
     expect(makeFutureRoundResponse(200, 500)).toEqual({
-      id: '200',
-      epoch: '200',
-      failed: null,
-      startBlock: '500',
-      startAt: null,
-      lockAt: null,
+      epoch: 200,
+      startBlock: 500,
       lockBlock: null,
-      lockPrice: null,
       endBlock: null,
+      lockPrice: null,
       closePrice: null,
-      totalBets: '0',
-      totalAmount: '0',
-      bearBets: '0',
-      bullBets: '0',
-      bearAmount: '0',
-      bullAmount: '0',
-      position: null,
-      bets: [],
+      totalAmount: { hex: '0x00', type: 'BigNumber' },
+      bullAmount: { hex: '0x00', type: 'BigNumber' },
+      bearAmount: { hex: '0x00', type: 'BigNumber' },
+      rewardBaseCalAmount: { hex: '0x00', type: 'BigNumber' },
+      rewardAmount: { hex: '0x00', type: 'BigNumber' },
+      oracleCalled: false,
     })
   })
 })
