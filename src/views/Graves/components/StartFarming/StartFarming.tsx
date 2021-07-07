@@ -69,6 +69,7 @@ const StartFarming: React.FC<StartFarmingProps> = ({ details, details: { pid, ru
     <StakeModal
       details={details}
       updateResult={updateResult}
+      updateAllowance={updateAllowance}
     />,
   );
 

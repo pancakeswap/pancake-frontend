@@ -13,7 +13,7 @@ import SuspenseWithChunkError from './components/SuspenseWithChunkError'
 // import Graves from './views/Graves'
 import history from './routerHistory'
 import GlobalStyle from './style/Global'
-import HomeC from './views/HomeCopy'
+import Graves from './views/Graves'
 import tombs from './views/Tombs/data'
 import { getAddress } from './utils/addressHelpers'
 import { BIG_ZERO } from './utils/bigNumber'
@@ -73,7 +73,7 @@ const App: React.FC = () => {
           <Route exact path={routes.LANDING}><Landing {...LandingProps} /></Route>
           <Menu zombieUsdPrice={zombieUsdPrice}>
             <Route exact path={routes.HOME}><Home zombieUsdPrice={zombieUsdPrice}/></Route>
-            <Route exact path={routes.GRAVES}><HomeC zombieUsdPrice={zombieUsdPrice}/></Route>
+            <Route exact path={routes.GRAVES}><Graves zombieUsdPrice={zombieUsdPrice}/></Route>
             <Route exact path={routes.TOMBS}><Tombs zombieUsdPrice={zombieUsdPrice} /></Route>
           </Menu>
         </Switch>

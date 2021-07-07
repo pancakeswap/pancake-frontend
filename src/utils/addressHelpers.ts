@@ -1,5 +1,6 @@
 import addresses from 'config/constants/contracts'
 import tokens from 'config/constants/tokens'
+import tombs from 'views/Tombs/data'
 import { Address } from 'config/constants/types'
 
 export const getAddress = (address: Address): string => {
@@ -14,6 +15,10 @@ export const getCakeAddress = () => {
 
 export const getZombieAddress = () => {
   return getAddress(tokens.zmbe.address)
+}
+
+export const getTombLpAddress = (pid) => {
+  return getAddress(tombs[pid].lpAddresses)
 }
 
 export const getMasterChefAddress = () => {

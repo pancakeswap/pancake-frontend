@@ -66,7 +66,6 @@ const CTACards = styled(BaseLayout)`
     }
   }
 `
-const ImageURL = "https://storage.googleapis.com/rug-zombie/rug-zombie-home.png"
 
 interface HomeProps {
   zombieUsdPrice: number,

@@ -49,8 +49,7 @@ const StakeZombieModal: React.FC<StakeZombieModalProps> = ({ details: { rug, pid
   const { theme } = useTheme();
   const [percent, setPercent] = useState(0);
   const [stakeAmount, setStakeAmount] = useState(
-    amount.toString() === '0' ? getFullDisplayBalance(new BigNumber(poolInfo.minimumStake), tokens.zmbe.decimals, 4) : '0')
-  ;
+    amount.toString() === '0' ? getFullDisplayBalance(new BigNumber(poolInfo.minimumStake), tokens.zmbe.decimals, 4) : '0');
 
   const handleStakeInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = event.target.value || '0'

@@ -33,16 +33,16 @@ interface StakeModalProps {
     stakingToken: any,
     result: Result
   },
-  updateResult:any,
-  onDismiss?: () => void
+  updateResult: any,
+  onDismiss?: () => void,
+  updateAllowance: any
 }
 
 const StyledButton = styled(Button)`
   flex-grow: 1;
 `
 
-const StakeModal: React.FC<StakeModalProps> = ({ details, details: { rug, pid }, updateResult, onDismiss }) => {
-
+const StakeModal: React.FC<StakeModalProps> = ({ details, details: { rug, pid }, updateResult, onDismiss, updateAllowance }) => {
   let rugTokenBalance = BIG_ZERO;
 
   if (pid !== 0) {

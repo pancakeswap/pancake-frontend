@@ -14,16 +14,15 @@ import Table from './components/Table'
 import './HomeCopy.Styles.css'
 import tableData from './data'
 import { getBep20Contract, getZombieContract } from '../../utils/contractHelpers'
-import { getBalanceAmount } from '../../utils/formatBalance'
 import { BIG_ZERO } from '../../utils/bigNumber'
 
 let accountAddress
 
-interface HomeC {
+interface Graves {
   zombieUsdPrice: number,
 }
 
-const HomeC: React.FC<HomeC> = ({ zombieUsdPrice }: HomeC) => {
+const Graves: React.FC<Graves> = ({ zombieUsdPrice }: Graves) => {
   const { account } = useWeb3React()
   const [isAllowance, setIsAllowance] = useState(false)
   const [farmData, setFarmData] = useState(tableData)
@@ -126,4 +125,4 @@ const HomeC: React.FC<HomeC> = ({ zombieUsdPrice }: HomeC) => {
   )
 }
 
-export default HomeC
+export default Graves

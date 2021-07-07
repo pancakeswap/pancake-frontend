@@ -1,7 +1,6 @@
 // eslint-disable-next-line import/prefer-default-export
 import tokens from '../../config/constants/tokens'
 import artists from '../../config/constants/artists'
-import { getAddress } from '../../utils/addressHelpers'
 
 const tableData = [
   {
@@ -74,7 +73,7 @@ const tableData = [
     id: 2,
     pid: 12,
     name: 'Autoshark Legendary',
-    subtitle: 'zSHARK',
+    subtitle: 'Chompers',
     path: 'images/rugZombie/Autoshark Legendary.mp4',
     type: 'video',
     withdrawalCooldown: '3 days',
