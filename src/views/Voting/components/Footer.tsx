@@ -3,7 +3,7 @@ import { Box, Button, Text, Heading, ProposalIcon, Flex } from '@pancakeswap/uik
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
-import Container from 'components/layout/Container'
+import Container from 'components/Layout/Container'
 import DesktopImage from './DesktopImage'
 
 const StyledFooter = styled(Box)`

@@ -1,5 +1,5 @@
 import React from 'react'
-import Page from 'components/layout/Page'
+import Page from 'components/Layout/Page'
 import { Link, Redirect, useParams } from 'react-router-dom'
 import { ChevronLeftIcon, Flex, Text } from '@pancakeswap/uikit'
 import PageLoader from 'components/PageLoader'

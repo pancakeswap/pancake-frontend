@@ -1,7 +1,7 @@
 import React from 'react'
 import { Route } from 'react-router-dom'
 import { useWeb3React } from '@web3-react/core'
-import Page from 'components/layout/Page'
+import Page from 'components/Layout/Page'
 import PageLoader from 'components/PageLoader'
 import { useFetchAchievements, useProfile } from 'state/hooks'
 import ProfileCreation from './ProfileCreation'

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import PastLotteryDataContext from 'contexts/PastLotteryDataContext'
 import { getLotteryIssueIndex } from 'utils/lotteryUtils'
 import { useLottery } from 'hooks/useContract'
-import Page from 'components/layout/Page'
+import Page from 'components/Layout/Page'
 import Hero from './components/Hero'
 import PastDrawsPage from './PastDrawsPage'
 
