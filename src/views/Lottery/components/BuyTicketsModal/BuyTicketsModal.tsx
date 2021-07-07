@@ -338,30 +338,44 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
       </Flex>
 
       <Flex alignItems="center" justifyContent="space-between" mt="8px" mb="24px">
-        <NumTicketsToBuyButton
-          disabled={!hasFetchedBalance || tenPercentOfBalance < 1}
-          onClick={() => handleNumberButtonClick(tenPercentOfBalance)}
-        >
-          {hasFetchedBalance ? tenPercentOfBalance : ``}
-        </NumTicketsToBuyButton>
-        <NumTicketsToBuyButton
-          disabled={!hasFetchedBalance || twentyFivePercentOfBalance < 1}
-          onClick={() => handleNumberButtonClick(twentyFivePercentOfBalance)}
-        >
-          {hasFetchedBalance ? twentyFivePercentOfBalance : ``}
-        </NumTicketsToBuyButton>
-        <NumTicketsToBuyButton
-          disabled={!hasFetchedBalance || fiftyPercentOfBalance < 1}
-          onClick={() => handleNumberButtonClick(fiftyPercentOfBalance)}
-        >
-          {hasFetchedBalance ? fiftyPercentOfBalance : ``}
-        </NumTicketsToBuyButton>
-        <NumTicketsToBuyButton
-          disabled={!hasFetchedBalance || oneHundredPercentOfBalance < 1}
-          onClick={() => handleNumberButtonClick(oneHundredPercentOfBalance)}
-        >
-          MAX
-        </NumTicketsToBuyButton>
+        {!hasFetchedBalance ? (
+          <Skeleton width="100%" height={20} />
+        ) : (
+          <>
+            {tenPercentOfBalance >= 1 && (
+              <NumTicketsToBuyButton
+                disabled={!hasFetchedBalance}
+                onClick={() => handleNumberButtonClick(tenPercentOfBalance)}
+              >
+                {hasFetchedBalance ? tenPercentOfBalance : ``}
+              </NumTicketsToBuyButton>
+            )}
+            {twentyFivePercentOfBalance >= 1 && (
+              <NumTicketsToBuyButton
+                disabled={!hasFetchedBalance}
+                onClick={() => handleNumberButtonClick(twentyFivePercentOfBalance)}
+              >
+                {hasFetchedBalance ? twentyFivePercentOfBalance : ``}
+              </NumTicketsToBuyButton>
+            )}
+            {fiftyPercentOfBalance >= 1 && (
+              <NumTicketsToBuyButton
+                disabled={!hasFetchedBalance}
+                onClick={() => handleNumberButtonClick(fiftyPercentOfBalance)}
+              >
+                {hasFetchedBalance ? fiftyPercentOfBalance : ``}
+              </NumTicketsToBuyButton>
+            )}
+            {oneHundredPercentOfBalance >= 1 && (
+              <NumTicketsToBuyButton
+                disabled={!hasFetchedBalance}
+                onClick={() => handleNumberButtonClick(oneHundredPercentOfBalance)}
+              >
+                MAX
+              </NumTicketsToBuyButton>
+            )}
+          </>
+        )}
       </Flex>
 
       <Flex flexDirection="column">
