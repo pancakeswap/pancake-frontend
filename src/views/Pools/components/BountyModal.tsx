@@ -56,7 +56,7 @@ const BountyModal: React.FC<BountyModalProps> = ({ onDismiss, TooltipComponent }
   })
 
   const handleConfirmClick = async () => {
-    const tx = await callWithEstimateGas(cakeVaultContract, 'harvest')
+    const tx = await callWithEstimateGas(cakeVaultContract, 'harvest', [], 5000)
     setPendingTx(true)
     const receipt = await tx.wait()
     if (receipt.status) {

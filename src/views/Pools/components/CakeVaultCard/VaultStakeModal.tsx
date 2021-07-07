@@ -82,7 +82,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({ pool, stakingMax, isR
     const isWithdrawingAll = sharesRemaining.lte(triggerWithdrawAllThreshold)
 
     if (isWithdrawingAll) {
-      const tx = await callWithEstimateGas(cakeVaultContract, 'withdrawAll')
+      const tx = await callWithEstimateGas(cakeVaultContract, 'withdrawAll', [], 5000)
       const receipt = await tx.wait()
       if (receipt.status) {
         toastSuccess(t('Unstaked!'), t('Your earnings have also been harvested to your wallet'))
@@ -97,9 +97,12 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({ pool, stakingMax, isR
     } else {
       // .toString() being called to fix a BigNumber error in prod
       // as suggested here https://github.com/ChainSafe/web3.js/issues/2077
-      const tx = await callWithEstimateGas(cakeVaultContract, 'withdraw', [
-        shareStakeToWithdraw.sharesAsBigNumber.toString(),
-      ])
+      const tx = await callWithEstimateGas(
+        cakeVaultContract,
+        'withdraw',
+        [shareStakeToWithdraw.sharesAsBigNumber.toString()],
+        5000,
+      )
       const receipt = await tx.wait()
       if (receipt.status) {
         toastSuccess(t('Unstaked!'), t('Your earnings have also been harvested to your wallet'))
@@ -116,7 +119,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({ pool, stakingMax, isR
   const handleDeposit = async (convertedStakeAmount: BigNumber) => {
     // .toString() being called to fix a BigNumber error in prod
     // as suggested here https://github.com/ChainSafe/web3.js/issues/2077
-    const tx = await callWithEstimateGas(cakeVaultContract, 'deposit', [convertedStakeAmount.toString()])
+    const tx = await callWithEstimateGas(cakeVaultContract, 'deposit', [convertedStakeAmount.toString()], 5000)
     setPendingTx(true)
     const receipt = await tx.wait()
     if (receipt.status) {
