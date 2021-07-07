@@ -30,13 +30,7 @@ export const getHasRoundFailed = (round: NodeRound, blockNumber: number) => {
     return false
   }
 
-  // Round hasn't finished yet
-  if (round.endBlock >= blockNumber) {
-    return false
-  }
-
-  // If the round is finished and the oracle has not been called we know it has failed
-  return round.oracleCalled === false
+  return blockNumber > round.endBlock && round.oracleCalled === false
 }
 
 export const getMultiplierv2 = (total: ethers.BigNumber, amount: ethers.BigNumber) => {

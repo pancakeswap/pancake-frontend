@@ -23,6 +23,9 @@ import {
 const PAST_ROUND_COUNT = 5
 const FUTURE_ROUND_COUNT = 2
 
+// The estimated time it takes to broadcast
+export const BLOCK_PADDING = 3
+
 const initialState: PredictionsState = {
   status: PredictionStatus.INITIAL,
   isLoading: false,
@@ -214,11 +217,10 @@ export const predictionsSlice = createSlice({
         const newestRound = maxBy(Object.values(state.rounds), 'epoch')
         const futureRound = makeFutureRoundResponse(
           newestRound.epoch + 2,
-          newestRound.startBlock + state.intervalBlocks,
+          newestRound.startBlock + (state.intervalBlocks + BLOCK_PADDING),
         )
 
         state.rounds[futureRound.epoch] = futureRound
-        state.currentRoundStartBlockNumber = state.rounds[currentEpoch].startBlock
       }
 
       state.status = status
@@ -235,10 +237,14 @@ export const predictionsSlice = createSlice({
         action.payload
       const currentRoundStartBlockNumber = action.payload.rounds[currentEpoch].startBlock
       const futureRounds: ReduxNodeRound[] = []
-      const halfInterval = (intervalBlocks + bufferBlocks) / 2
 
       for (let i = 1; i <= FUTURE_ROUND_COUNT; i++) {
-        futureRounds.push(makeFutureRoundResponse(currentEpoch + i, currentRoundStartBlockNumber + halfInterval * i))
+        futureRounds.push(
+          makeFutureRoundResponse(
+            currentEpoch + i,
+            currentRoundStartBlockNumber + (intervalBlocks + BLOCK_PADDING) * i,
+          ),
+        )
       }
 
       return {
@@ -264,7 +270,10 @@ export const predictionsSlice = createSlice({
 
     // Get multiple rounds
     builder.addCase(fetchRounds.fulfilled, (state, action) => {
+      const currentRound = state.rounds[state.currentEpoch]
+
       state.rounds = merge({}, state.rounds, action.payload)
+      state.currentRoundStartBlockNumber = currentRound.startBlock
     })
 
     // Show History

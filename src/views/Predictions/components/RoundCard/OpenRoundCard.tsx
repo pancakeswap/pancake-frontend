@@ -5,7 +5,7 @@ import { useTranslation } from 'contexts/Localization'
 import { useAppDispatch } from 'state'
 import { BetPosition, NodeLedger, NodeRound } from 'state/types'
 import { useBlock, useGetIntervalBlocks } from 'state/hooks'
-import { fetchLedgerData } from 'state/predictions'
+import { BLOCK_PADDING, fetchLedgerData } from 'state/predictions'
 import useToast from 'hooks/useToast'
 import CardFlip from '../CardFlip'
 import { formatBnbv2 } from '../../helpers'
@@ -48,7 +48,7 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
   const dispatch = useAppDispatch()
   const { currentBlock } = useBlock()
   const { isSettingPosition, position } = state
-  const isBufferPhase = currentBlock >= round.startBlock + interval
+  const isBufferPhase = currentBlock >= round.startBlock + (interval + BLOCK_PADDING)
   const positionDisplay = position === BetPosition.BULL ? t('Up').toUpperCase() : t('Down').toUpperCase()
   const { targetRef, tooltipVisible, tooltip } = useTooltip(
     <div style={{ whiteSpace: 'nowrap' }}>{`${formatBnbv2(betAmount)} BNB`}</div>,
@@ -57,7 +57,7 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
 
   // Bettable rounds do not have an lockBlock set so we approximate it by adding the block interval
   // to the start block
-  const estimatedLockBlock = round.startBlock + interval
+  const estimatedLockBlock = round.startBlock + (interval + BLOCK_PADDING)
 
   const getCanEnterPosition = () => {
     if (hasEnteredUp || hasEnteredDown) {
