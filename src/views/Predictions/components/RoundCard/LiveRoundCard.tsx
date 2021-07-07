@@ -47,7 +47,8 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
   const { lockPrice, lockBlock, endBlock, totalAmount } = round
   const { currentBlock } = useBlock()
   const price = useGetLastOraclePrice()
-  const isBull = price.gt(lockPrice)
+
+  const isBull = lockPrice && price.gt(lockPrice)
   const priceColor = isBull ? 'success' : 'failure'
   const estimatedEndBlockPlusPadding = endBlock + BLOCK_PADDING
 
