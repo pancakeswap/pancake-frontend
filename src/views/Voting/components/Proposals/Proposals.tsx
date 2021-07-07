@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Box, Breadcrumbs, Card, Flex, Heading, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import Container from 'components/layout/Container'
+import Container from 'components/Layout/Container'
 import { useAppDispatch } from 'state'
 import { fetchProposals } from 'state/voting'
 import { useGetProposalLoadingStatus, useGetProposals } from 'state/hooks'

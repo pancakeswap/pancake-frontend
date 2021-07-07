@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Heading, Text, LinkExternal } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import Container from 'components/layout/Container'
+import Container from 'components/Layout/Container'
 
 const Title = styled(Heading).attrs({ as: 'h1', scale: 'xl' })`
   color: #ffffff;

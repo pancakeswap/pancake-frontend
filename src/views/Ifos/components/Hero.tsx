@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Box, Heading, Text } from '@pancakeswap/uikit'
-import Container from 'components/layout/Container'
+import Container from 'components/Layout/Container'
 import { useTranslation } from 'contexts/Localization'
 
 const getGradient = (isDark: boolean) => {
