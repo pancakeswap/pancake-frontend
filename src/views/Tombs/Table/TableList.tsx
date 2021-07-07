@@ -78,7 +78,9 @@ const TableList: React.FC<TableListProps> = (props: TableListProps) => {
 
   const bigZombiePrice = getDecimalAmount(new BigNumber(zombieUsdPrice))
   const apr = getGraveTombApr(poolWeight, bigZombiePrice, getDecimalAmount(totalLpTokenStaked).times(lpTokenPrice))
-
+  const dailyApr = apr / 365
+  const displayApr = apr > 10 ? numeral(apr).format('(0.00 a)') : numeral(apr).format('(0.0000 a)')
+  const displayDailyApr = dailyApr > 100 ? numeral(dailyApr).format('(0.00 a)') : numeral(dailyApr).format('(0.00000 a)')
   const toggleOpen = () => {
     setIsOpen(!isOpen);
     handler(!isOpen);
@@ -116,13 +118,13 @@ const TableList: React.FC<TableListProps> = (props: TableListProps) => {
           </td>
           <td className="td-width-17 desktop-view">
             <DisplayFlex>
-              <span className="total-earned text-shadow">{apr ? numeral(apr).format('(0,00 a)') : "NAN"}%</span>
+              <span className="total-earned text-shadow">{apr ? displayApr : "NAN"}%</span>
               <div className="earned">Yearly</div>
             </DisplayFlex>
           </td>
           <td className="td-width-17 desktop-view">
             <DisplayFlex>
-              <span className="total-earned">{apr ? numeral(apr / 365).format('(0,00 a)') : "NAN"}%</span>
+              <span className="total-earned">{apr ? displayDailyApr : "NAN"}%</span>
               <div className="earned">Daily</div>
             </DisplayFlex>
           </td>
