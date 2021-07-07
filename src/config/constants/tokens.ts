@@ -12,6 +12,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://pancakeswap.finance/',
   },
+  mask: {
+    symbol: 'MASK',
+    address: {
+      56: '0x2eD9a5C8C13b93955103B9a7C167B67Ef4d568a3',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://mask.io/',
+  },
   dvi: {
     symbol: 'DVI',
     address: {
