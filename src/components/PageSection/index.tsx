@@ -11,6 +11,7 @@ interface PageSectionProps extends BackgroundColorProps {
   curvePosition?: 'top' | 'bottom'
   concaveDivider?: boolean
   containerProps?: BoxProps
+  innerProps?: BoxProps
 }
 
 interface BackgroundColorProps extends FlexProps {
@@ -52,6 +53,7 @@ const PageSection: React.FC<PageSectionProps> = ({
   hasCurvedDivider = true,
   concaveDivider = false,
   containerProps,
+  innerProps,
   ...props
 }) => {
   const getPadding = () => {
@@ -84,7 +86,7 @@ const PageSection: React.FC<PageSectionProps> = ({
         />
       )}
       <BackgroundColor background={background} index={index} p={getPadding()} {...props}>
-        <ChildrenWrapper>{children}</ChildrenWrapper>
+        <ChildrenWrapper {...innerProps}>{children}</ChildrenWrapper>
       </BackgroundColor>
       {hasCurvedDivider && curvePosition === 'bottom' && (
         <CurvedDivider
