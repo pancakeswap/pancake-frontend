@@ -51,14 +51,15 @@ interface StartFarmingProps {
     stakingToken: any,
     result: Result,
     poolInfo: any,
-    pcsVersion: string
+    pcsVersion: string,
   },
   isAllowance: boolean,
   updateAllowance: any,
-  updateResult: any
+  updateResult: any,
+  zombieUsdPrice: number,
 }
 
-const StartFarming: React.FC<StartFarmingProps> = ({ details, details: { pid, rug, result: { paidUnlockFee, rugDeposited }, poolInfo, result },  isAllowance, updateAllowance, updateResult }) => {
+const StartFarming: React.FC<StartFarmingProps> = ({ details, details: { pid, rug, result: { paidUnlockFee, rugDeposited }, poolInfo, result }, zombieUsdPrice, isAllowance, updateAllowance, updateResult }) => {
   const [isAllowanceForRugToken, setIsAllowanceForRugToken] = useState(false);
 
   const [rugTokenAmount, setRugTokenAmount] = useState(0);
@@ -77,6 +78,7 @@ const StartFarming: React.FC<StartFarmingProps> = ({ details, details: { pid, ru
     <StakeZombieModal
       details={details}
       zombieBalance={zombieBalance}
+      zombieUsdPrice={zombieUsdPrice}
       poolInfo={poolInfo}
       updateResult={updateResult}
     />,
@@ -86,6 +88,7 @@ const StartFarming: React.FC<StartFarmingProps> = ({ details, details: { pid, ru
     <WithdrawZombieModal
       details={details}
       zombieBalance={zombieBalance}
+      zombieUsdPrice={zombieUsdPrice}
       poolInfo={poolInfo}
       updateResult={updateResult}
     />

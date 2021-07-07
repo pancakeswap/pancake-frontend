@@ -82,7 +82,6 @@ const StakeLpTokenModal: React.FC<StakeLpTokenModalProps> = ({ details: { name, 
         <BalanceInput
             value={stakeAmount}
             onChange={handleStakeInputChange}
-            currencyValue='0 USD'
         />
         <Text mt="8px" ml="auto" color="textSubtle" fontSize="12px" mb="8px">
             Balance: {getFullDisplayBalance(lpTokenBalance, 18, 4)}

@@ -32,6 +32,7 @@ interface WithdrawZombieModalProps {
         result: Result
     },
     zombieBalance: BigNumber,
+    zombieUsdPrice: number,
     poolInfo: any,
     updateResult: any,
     onDismiss?: () => void
@@ -41,7 +42,7 @@ const StyledButton = styled(Button)`
   flex-grow: 1;
 `
 
-const WithdrawZombieModal: React.FC<WithdrawZombieModalProps> = ({ details: { pid, result }, poolInfo, updateResult, onDismiss }) => {
+const WithdrawZombieModal: React.FC<WithdrawZombieModalProps> = ({ details: { pid, result }, poolInfo, zombieUsdPrice, updateResult, onDismiss }) => {
 
     const currentDate = Math.floor(Date.now() / 1000);
 
@@ -123,7 +124,7 @@ const WithdrawZombieModal: React.FC<WithdrawZombieModalProps> = ({ details: { pi
         <BalanceInput
             value={stakeAmount}
             onChange={handleStakeInputChange}
-            currencyValue='0 USD'
+            currencyValue={`${Math.round(parseFloat(stakeAmount) * zombieUsdPrice * 100) / 100} USD`}
         />
         <Text mt="8px" ml="auto" color="textSubtle" fontSize="12px" mb="8px">
             Balance: {getFullDisplayBalance(zombieStaked, tokens.zmbe.decimals, 4)}

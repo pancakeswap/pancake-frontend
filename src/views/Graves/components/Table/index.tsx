@@ -69,7 +69,7 @@ const Table: React.FC<TableProps> = ({ details, isAllowance, bnbInBusd, updateAl
             <div className="w-95 mx-auto mt-3">
               <div className="flex-grow">
                 <FrankEarned pid={details.pid} pendingZombie={details.pendingZombie}/>
-                <StartFarming updateResult={updateResult} updateAllowance={updateAllowance} details={details} isAllowance={isAllowance}  />
+                <StartFarming updateResult={updateResult} zombieUsdPrice={zombieUsdPrice} updateAllowance={updateAllowance} details={details} isAllowance={isAllowance}  />
                 <BuyFrank details={details} />
               </div>
               <RugInDetails bnbInBusd={bnbInBusd} details={details} zombieUsdPrice={zombieUsdPrice} />

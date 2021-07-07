@@ -91,7 +91,6 @@ const WithdrawLpModal: React.FC<WithdrawLpModalProps> = ({ details: { pid, resul
         <BalanceInput
             value={stakeAmount}
             onChange={handleStakeInputChange}
-            currencyValue='0 USD'
         />
         <Text mt="8px" ml="auto" color="textSubtle" fontSize="12px" mb="8px">
             Balance: {getFullDisplayBalance(lpStaked, 18, 4)}

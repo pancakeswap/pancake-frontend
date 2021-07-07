@@ -6,7 +6,7 @@ import useTheme from 'hooks/useTheme'
 import { useDrFrankenstein } from 'hooks/useContract'
 import { BASE_EXCHANGE_URL } from 'config'
 import { getAddress } from 'utils/addressHelpers'
-import { getDecimalAmount, getFullDisplayBalance } from 'utils/formatBalance'
+import { getBalanceAmount, getDecimalAmount, getFullDisplayBalance } from 'utils/formatBalance'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import tokens from 'config/constants/tokens'
@@ -29,9 +29,10 @@ interface StakeZombieModalProps {
     rug?: any,
     artist?: any,
     stakingToken: any,
-    result: Result
+    result: Result,
   },
   zombieBalance: BigNumber,
+  zombieUsdPrice: number,
   poolInfo: any,
   updateResult: any,
   onDismiss?: () => void
@@ -41,7 +42,7 @@ const StyledButton = styled(Button)`
   flex-grow: 1;
 `
 
-const StakeZombieModal: React.FC<StakeZombieModalProps> = ({ details: { rug, pid, result: { amount } }, zombieBalance, poolInfo, updateResult, onDismiss }) => {
+const StakeZombieModal: React.FC<StakeZombieModalProps> = ({ details: { rug, pid, result: { amount } }, zombieUsdPrice, zombieBalance, poolInfo, updateResult, onDismiss }) => {
 
   const drFrankenstein = useDrFrankenstein();
   const { account } = useWeb3React();
@@ -79,7 +80,7 @@ const StakeZombieModal: React.FC<StakeZombieModalProps> = ({ details: { rug, pid
           updateResult(pid);
           onDismiss();
         })
-      }else{
+      } else {
         drFrankenstein.methods.deposit(pid, convertedStakeAmount)
         .send({ from: account }).then(()=>{
           updateResult(pid)
@@ -102,7 +103,7 @@ const StakeZombieModal: React.FC<StakeZombieModalProps> = ({ details: { rug, pid
     <BalanceInput
       value={stakeAmount}
       onChange={handleStakeInputChange}
-      currencyValue='0 USD'
+      currencyValue={`${Math.round(parseFloat(stakeAmount) * zombieUsdPrice * 100) / 100} USD`}
     />
     <Text mt="8px" ml="auto" color="textSubtle" fontSize="12px" mb="8px">
       Balance: {getFullDisplayBalance(zombieBalance, tokens.zmbe.decimals, 4)}

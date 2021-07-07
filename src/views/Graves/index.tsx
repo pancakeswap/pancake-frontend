@@ -75,8 +75,6 @@ const Graves: React.FC<Graves> = ({ zombieUsdPrice }: Graves) => {
       })
   }, [account, drFrankenstein.methods, zombieGraveBalance])
 
-  console.log("here")
-
   const updateResult = (pid) => {
     drFrankenstein.methods.userInfo(pid, accountAddress).call()
       .then(res => {
