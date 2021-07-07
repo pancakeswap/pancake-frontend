@@ -356,10 +356,8 @@ export const useInitialBlock = () => {
 }
 
 // Predictions
-
-// V2 REFACTOR
-export const useGetRoundsv2 = () => {
-  const rounds = useSelector((state: State) => state.predictions.roundsv2)
+export const useGetRounds = () => {
+  const rounds = useSelector((state: State) => state.predictions.rounds)
   return Object.keys(rounds).reduce((accum, epoch) => {
     return {
       ...accum,
@@ -368,13 +366,13 @@ export const useGetRoundsv2 = () => {
   }, {}) as { [key: string]: NodeRound }
 }
 
-export const useGetRoundv2 = (epoch: number) => {
-  const round = useSelector((state: State) => state.predictions.roundsv2[epoch])
+export const useGetRound = (epoch: number) => {
+  const round = useSelector((state: State) => state.predictions.rounds[epoch])
   return parseBigNumberObj<ReduxNodeRound, NodeRound>(round)
 }
 
-export const useGetSortedRoundsv2 = () => {
-  const roundData = useGetRoundsv2()
+export const useGetSortedRounds = () => {
+  const roundData = useGetRounds()
   return orderBy(Object.values(roundData), ['epoch'], ['asc'])
 }
 
@@ -402,11 +400,10 @@ export const useGetIsClaimable = (epoch) => {
  */
 export const useGetEarliestEpoch = () => {
   return useSelector((state: State) => {
-    const earliestRound = minBy(Object.values(state.predictions.roundsv2), 'epoch')
+    const earliestRound = minBy(Object.values(state.predictions.rounds), 'epoch')
     return earliestRound?.epoch
   })
 }
-// END V2 REFACTOR
 
 export const useIsHistoryPaneOpen = () => {
   return useSelector((state: State) => state.predictions.isHistoryPaneOpen)
@@ -414,15 +411,6 @@ export const useIsHistoryPaneOpen = () => {
 
 export const useIsChartPaneOpen = () => {
   return useSelector((state: State) => state.predictions.isChartPaneOpen)
-}
-
-export const useGetRounds = () => {
-  return useSelector((state: State) => state.predictions.rounds)
-}
-
-export const useGetSortedRounds = () => {
-  const roundData = useGetRounds()
-  return orderBy(Object.values(roundData), ['epoch'], ['asc'])
 }
 
 export const useGetCurrentEpoch = () => {
@@ -441,11 +429,6 @@ export const useGetTotalIntervalBlocks = () => {
   const intervalBlocks = useGetIntervalBlocks()
   const bufferBlocks = useGetBufferBlocks()
   return intervalBlocks + bufferBlocks
-}
-
-export const useGetRound = (id: string) => {
-  const rounds = useGetRounds()
-  return rounds[id]
 }
 
 export const useGetCurrentRound = () => {

@@ -311,10 +311,9 @@ export interface PredictionsState {
   minBetAmount: string
   rewardRate: number
   lastOraclePrice: string
-  rounds: RoundData
   history: HistoryData
   bets: BetData
-  roundsv2?: RoundDataV2
+  rounds?: RoundDataV2
   betsv2?: BetDatav2
   claimableStatuses: {
     [key: string]: boolean

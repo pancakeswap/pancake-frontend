@@ -4,23 +4,11 @@ import maxBy from 'lodash/maxBy'
 import merge from 'lodash/merge'
 import range from 'lodash/range'
 import { BIG_ZERO } from 'utils/bigNumber'
-import {
-  Bet,
-  BetDatav2,
-  HistoryFilter,
-  Market,
-  PredictionsState,
-  PredictionStatus,
-  ReduxNodeRound,
-  Round,
-} from 'state/types'
+import { Bet, BetDatav2, HistoryFilter, PredictionsState, PredictionStatus, ReduxNodeRound } from 'state/types'
 import { getPredictionsContract } from 'utils/contractHelpers'
 import {
-  makeFutureRoundResponse,
-  transformRoundResponse,
   getBetHistory,
   transformBetResponse,
-  makeRoundData,
   makeFutureRoundResponsev2,
   makeRoundDataV2,
   getRoundsData,
@@ -53,7 +41,6 @@ const initialState: PredictionsState = {
   history: {},
   bets: {},
   betsv2: {},
-  roundsv2: {},
   claimableStatuses: {},
 }
 
@@ -67,7 +54,7 @@ type PredictionInitialization = Pick<
   | 'bufferBlocks'
   | 'minBetAmount'
   | 'rewardRate'
-  | 'roundsv2'
+  | 'rounds'
   | 'betsv2'
   | 'claimableStatuses'
 >
@@ -91,7 +78,7 @@ export const initializePredictions = createAsyncThunk<PredictionInitialization, 
 
     const initializedData = {
       ...marketData,
-      roundsv2: initialRoundData,
+      rounds: initialRoundData,
       betsv2: {},
       claimableStatuses: {},
     }
@@ -190,32 +177,6 @@ export const predictionsSlice = createSlice({
     setHistoryFilter: (state, action: PayloadAction<HistoryFilter>) => {
       state.historyFilter = action.payload
     },
-    initialize: (state, action: PayloadAction<Partial<PredictionsState>>) => {
-      return {
-        ...state,
-        ...action.payload,
-      }
-    },
-    updateMarketData: (state, action: PayloadAction<{ rounds: Round[]; market: Market }>) => {
-      const { rounds, market } = action.payload
-      const newRoundData = makeRoundData(rounds)
-      const incomingCurrentRound = maxBy(rounds, 'epoch')
-
-      if (state.currentEpoch !== incomingCurrentRound.epoch) {
-        // Add new round
-        const newestRound = maxBy(rounds, 'epoch') as Round
-        const futureRound = transformRoundResponse(
-          makeFutureRoundResponse(newestRound.epoch + 2, newestRound.startBlock + state.intervalBlocks),
-        )
-
-        newRoundData[futureRound.id] = futureRound
-      }
-
-      state.currentEpoch = incomingCurrentRound.epoch
-      state.currentRoundStartBlockNumber = incomingCurrentRound.startBlock
-      state.status = market.paused ? PredictionStatus.PAUSED : PredictionStatus.LIVE
-      state.rounds = { ...state.rounds, ...newRoundData }
-    },
     setCurrentEpoch: (state, action: PayloadAction<number>) => {
       state.currentEpoch = action.payload
     },
@@ -240,21 +201,38 @@ export const predictionsSlice = createSlice({
 
     // Get static market data
     builder.addCase(fetchMarketData.fulfilled, (state, action) => {
-      return merge({}, state, action.payload)
+      const { status, currentEpoch, intervalBlocks, bufferBlocks, minBetAmount, rewardRate } = action.payload
+
+      // If the round has change add a new future round
+      if (state.currentEpoch !== currentEpoch) {
+        const newestRound = maxBy(Object.values(state.rounds), 'epoch')
+        const futureRound = makeFutureRoundResponsev2(
+          newestRound.epoch + 2,
+          newestRound.startBlock + state.intervalBlocks,
+        )
+
+        state.rounds[futureRound.epoch] = futureRound
+        state.currentRoundStartBlockNumber = state.rounds[currentEpoch].startBlock
+      }
+
+      state.status = status
+      state.currentEpoch = currentEpoch
+      state.intervalBlocks = intervalBlocks
+      state.bufferBlocks = bufferBlocks
+      state.minBetAmount = minBetAmount
+      state.rewardRate = rewardRate
     })
 
     // Initialize predictions
     builder.addCase(initializePredictions.fulfilled, (state, action) => {
-      const { status, currentEpoch, bufferBlocks, intervalBlocks, roundsv2, claimableStatuses, rewardRate, betsv2 } =
+      const { status, currentEpoch, bufferBlocks, intervalBlocks, rounds, claimableStatuses, rewardRate, betsv2 } =
         action.payload
-      const currentRoundStartBlockNumber = action.payload.roundsv2[currentEpoch].startBlock
+      const currentRoundStartBlockNumber = action.payload.rounds[currentEpoch].startBlock
       const futureRounds: ReduxNodeRound[] = []
       const halfInterval = (intervalBlocks + bufferBlocks) / 2
 
       for (let i = 1; i <= FUTURE_ROUND_COUNT; i++) {
-        futureRounds.push(
-          makeFutureRoundResponsev2(currentEpoch + i, (currentRoundStartBlockNumber + halfInterval) * i),
-        )
+        futureRounds.push(makeFutureRoundResponsev2(currentEpoch + i, currentRoundStartBlockNumber + halfInterval * i))
       }
 
       return {
@@ -267,20 +245,20 @@ export const predictionsSlice = createSlice({
         currentRoundStartBlockNumber,
         claimableStatuses,
         betsv2,
-        roundsv2: merge({}, roundsv2, makeRoundDataV2(futureRounds)),
+        rounds: merge({}, rounds, makeRoundDataV2(futureRounds)),
       }
     })
 
     // Get single round
     builder.addCase(fetchRound.fulfilled, (state, action) => {
-      state.roundsv2 = merge({}, state.rounds, {
+      state.rounds = merge({}, state.rounds, {
         [action.payload.epoch.toString()]: action.payload,
       })
     })
 
     // Get multiple rounds
     builder.addCase(fetchRounds.fulfilled, (state, action) => {
-      state.roundsv2 = merge({}, state.roundsv2, action.payload)
+      state.rounds = merge({}, state.rounds, action.payload)
     })
 
     // Show History
@@ -315,12 +293,10 @@ export const predictionsSlice = createSlice({
 
 // Actions
 export const {
-  initialize,
   setChartPaneState,
   setCurrentEpoch,
   setHistoryFilter,
   setHistoryPaneState,
-  updateMarketData,
   setPredictionStatus,
   setLastOraclePrice,
 } = predictionsSlice.actions
