@@ -33,7 +33,8 @@ interface TableData {
   poolInfo: any,
   pendingZombie: any,
   totalGraveAmount: any,
-  pcsVersion: any
+  pcsVersion: any,
+  liquidityDetails: any
 }
 
 interface TableProps {

@@ -24,14 +24,15 @@ interface RugInDetailsProps {
     stakingToken: any,
     poolInfo: any,
     totalGraveAmount: any,
-    pcsVersion: any
+    pcsVersion: any,
+    liquidityDetails: string
   },
   bnbInBusd: number,
   zombieUsdPrice: number
 }
 
 const RugInDetails: React.FC<RugInDetailsProps> = ({
-  details: { id, subtitle, rug, pcsVersion, pid, path, type, withdrawalCooldown, nftRevivalTime, poolInfo, artist, totalGraveAmount }, zombieUsdPrice, bnbInBusd,
+  details: { id, subtitle, rug, pcsVersion, liquidityDetails,pid, path, type, withdrawalCooldown, nftRevivalTime, poolInfo, artist, totalGraveAmount }, zombieUsdPrice, bnbInBusd,
 }) => {
   const drFrankenstein = useDrFrankenstein();
 
@@ -55,7 +56,7 @@ const RugInDetails: React.FC<RugInDetailsProps> = ({
   } else if(pcsVersion === 'v2') {
     liquidity = 'Pancakeswap V2'
   } else {
-    liquidity = 'None! This grave is exclusive to the victims who were rugged by the project.'
+    liquidity = liquidityDetails
   }
 
   return (
