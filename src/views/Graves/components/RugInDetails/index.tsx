@@ -6,6 +6,8 @@ import { BIG_ZERO } from 'utils/bigNumber';
 import { getBalanceAmount, getDecimalAmount, getFullDisplayBalance } from 'utils/formatBalance'
 import BigNumber from 'bignumber.js';
 import numeral from 'numeral';
+import { Token } from '../../../../config/constants/types'
+import { BASE_V1_EXCHANGE_URL } from '../../../../config'
 
 
 interface RugInDetailsProps {
@@ -17,18 +19,19 @@ interface RugInDetailsProps {
     type: string,
     withdrawalCooldown: string,
     nftRevivalTime: string,
-    rug: string,
+    rug: Token,
     artist?: any,
     stakingToken: any,
     poolInfo: any,
-    totalGraveAmount: any
+    totalGraveAmount: any,
+    pcsVersion: any
   },
   bnbInBusd: number,
   zombieUsdPrice: number
 }
 
 const RugInDetails: React.FC<RugInDetailsProps> = ({
-  details: { id, subtitle, pid, path, type, withdrawalCooldown, nftRevivalTime, poolInfo, artist, totalGraveAmount }, zombieUsdPrice, bnbInBusd,
+  details: { id, subtitle, rug, pcsVersion, pid, path, type, withdrawalCooldown, nftRevivalTime, poolInfo, artist, totalGraveAmount }, zombieUsdPrice, bnbInBusd,
 }) => {
   const drFrankenstein = useDrFrankenstein();
 
@@ -44,6 +47,15 @@ const RugInDetails: React.FC<RugInDetailsProps> = ({
   let allocPoint = BIG_ZERO;
   if(poolInfo.allocPoint) {
     allocPoint = new BigNumber(poolInfo.allocPoint)
+  }
+
+  let liquidity
+  if(pcsVersion === 'v1') {
+    liquidity = 'Pancakeswap V1'
+  } else if(pcsVersion === 'v2') {
+    liquidity = 'Pancakeswap V2'
+  } else {
+    liquidity = 'None! This grave is exclusive to the victims who were rugged by the project.'
   }
 
   return (
@@ -73,6 +85,12 @@ const RugInDetails: React.FC<RugInDetailsProps> = ({
           <LinkExternal bold={false} small href={artist.twitter}>
             View NFT Artist
         </LinkExternal>
+        </span>
+        <br/>
+        <span className="indetails-type">{rug.symbol}</span>
+        <span className="indetails-title">
+          Liquidity:
+          <span className="indetails-value">{liquidity}</span>
         </span>
       </div>
       <div className="direction-column">

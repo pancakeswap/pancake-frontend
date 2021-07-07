@@ -32,7 +32,8 @@ interface TableData {
   result : any,
   poolInfo: any,
   pendingZombie: any,
-  totalGraveAmount: any
+  totalGraveAmount: any,
+  pcsVersion: any
 }
 
 interface TableProps {
@@ -41,7 +42,7 @@ interface TableProps {
   bnbInBusd: number,
   updateAllowance: any,
   updateResult: any,
-  zombieUsdPrice: number
+  zombieUsdPrice: number,
 }
 
 const Table: React.FC<TableProps> = ({ details, isAllowance, bnbInBusd, updateAllowance, updateResult, zombieUsdPrice }: TableProps) => {

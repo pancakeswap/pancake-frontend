@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { BalanceInput, Button, Flex, Image, Modal, Slider, Text, useModal } from '@rug-zombie-libs/uikit'
 import useTheme from 'hooks/useTheme'
 import { useDrFrankenstein } from 'hooks/useContract'
-import { BASE_EXCHANGE_URL } from 'config'
+import { BASE_EXCHANGE_URL, BASE_V1_EXCHANGE_URL } from 'config'
 import { getAddress } from 'utils/addressHelpers'
 import useTokenBalance from 'hooks/useTokenBalance'
 import { BIG_ZERO } from 'utils/bigNumber'
@@ -31,6 +31,7 @@ interface StakeModalProps {
     rug?: any,
     artist?: any,
     stakingToken: any,
+    pcsVersion: string,
     result: Result
   },
   updateResult: any,
@@ -42,7 +43,7 @@ const StyledButton = styled(Button)`
   flex-grow: 1;
 `
 
-const StakeModal: React.FC<StakeModalProps> = ({ details, details: { rug, pid }, updateResult, onDismiss, updateAllowance }) => {
+const StakeModal: React.FC<StakeModalProps> = ({ details, details: { rug, pid, pcsVersion }, updateResult, onDismiss, updateAllowance }) => {
   let rugTokenBalance = BIG_ZERO;
 
   if (pid !== 0) {
@@ -68,9 +69,11 @@ const StakeModal: React.FC<StakeModalProps> = ({ details, details: { rug, pid },
     setPercent(sliderPercent)
   }
 
+
+
   const [onGetTokenClick] = useModal(
     <WarningModal
-    url={`${BASE_EXCHANGE_URL}/#/swap?outputCurrency=${getAddress(rug.address)}`} />,
+    url={`${pcsVersion === 'v1' ? BASE_V1_EXCHANGE_URL : BASE_EXCHANGE_URL}/#/swap?outputCurrency=${getAddress(rug.address)}`} />,
   )
 
   const handleWithdrawal = () => {

@@ -50,8 +50,8 @@ interface StartFarmingProps {
     artist?: any,
     stakingToken: any,
     result: Result,
-    poolInfo: any
-    // login: any
+    poolInfo: any,
+    pcsVersion: string
   },
   isAllowance: boolean,
   updateAllowance: any,

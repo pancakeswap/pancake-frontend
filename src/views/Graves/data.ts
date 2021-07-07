@@ -15,6 +15,7 @@ const tableData = [
     rug: '',
     artist: artists.RugZombie,
     stakingToken: '',
+    pcsVersion: '',
     result: {
       paidUnlockFee: false,
       rugDeposited: 0,
@@ -37,6 +38,7 @@ const tableData = [
     rug: tokens.viking,
     artist: artists.TheLeap3d,
     stakingToken: '0x909e59fFFcF1481Df184831eEea6680Cd437A340',
+    pcsVersion: 'v1',
     result: {
       paidUnlockFee: false,
       rugDeposited: 0,
@@ -59,6 +61,7 @@ const tableData = [
     rug: tokens.msc,
     artist: artists.ZomBaes,
     stakingToken: '0xD4Ced04fB7129CDB43ffef1cf3DE3Ac701c6cE33',
+    pcsVersion: 'v1',
     result: {
       paidUnlockFee: false,
       rugDeposited: 0,
@@ -81,6 +84,7 @@ const tableData = [
     rug: tokens.zshark,
     artist: artists.deadtunnelrat,
     stakingToken: '0x8fab22cB7C58b193Fd498ed0EF3B574d70E4f759',
+    pcsVersion: 'none',
     result: {
       paidUnlockFee: false,
       rugDeposited: 0,
@@ -103,6 +107,7 @@ const tableData = [
     rug: tokens.msc,
     artist: artists.ZomBaes,
     stakingToken: '0xD4Ced04fB7129CDB43ffef1cf3DE3Ac701c6cE33',
+    pcsVersion: 'v1',
     result: {
       paidUnlockFee: false,
       rugDeposited: 0,
@@ -125,6 +130,7 @@ const tableData = [
     rug: tokens.d100,
     artist: artists.ZomBaes,
     stakingToken: '0xfB33d25b41F1b0fa95AEa52486C3F05f2aDEE396',
+    pcsVersion: 'v1',
     result: {
       paidUnlockFee: false,
       rugDeposited: 0,
@@ -146,6 +152,7 @@ const tableData = [
     nftRevivalTime: '7 days',
     rug: tokens.merl,
     artist: '/',
+    pcsVersion: 'v2',
     stakingToken: '0xD1e00C08E938B808F2d65dd108aE50948a9Ca1b4',
     result: {
       paidUnlockFee: false,
@@ -170,6 +177,7 @@ const tableData = [
     rug: tokens.fairmoon,
     artist: artists.TheLeap3d,
     stakingToken: '0x26dF9e0fbd5624941767516BbF218554CfA3A110',
+    pcsVersion: 'v1',
     result: {
       paidUnlockFee: false,
       rugDeposited: 0,
@@ -191,6 +199,7 @@ const tableData = [
     nftRevivalTime: '14 days',
     rug: tokens.fairmoon,
     artist: '/',
+    pcsVersion: 'v1',
     stakingToken: '0x645ad805c464133Eba5c4152Ce14547a01F821f7',
     result: {
       paidUnlockFee: false,
@@ -213,6 +222,7 @@ const tableData = [
     nftRevivalTime: '7 days',
     rug: tokens.fairmoon,
     artist: '/',
+    pcsVersion: 'v1',
     stakingToken: '0x02F6DE73919aE9d43A1E0520dBCBF81bCda5B514',
     result: {
       paidUnlockFee: false,
@@ -235,6 +245,7 @@ const tableData = [
     nftRevivalTime: '7 days',
     rug: tokens.yape,
     artist: '/',
+    pcsVersion: 'v1',
     stakingToken: '0x9EbD27Bd3957F13f8E7fef988E96B8EE1998bc80',
     result: {
       paidUnlockFee: false,
@@ -257,6 +268,7 @@ const tableData = [
     nftRevivalTime: '7 days',
     rug: tokens.dragon,
     artist: '/',
+    pcsVersion: 'v1',
     stakingToken: '0x634A554d2FF1609d50740240140B452dF60D035c',
     result: {
       paidUnlockFee: false,
@@ -279,6 +291,7 @@ const tableData = [
     nftRevivalTime: '7 days',
     rug: tokens.ypanda,
     artist: '/',
+    pcsVersion: 'v1',
     stakingToken: '0xFceB2967AB8EcC29589E9232f78f8441832d2aD6',
     result: {
       paidUnlockFee: false,
