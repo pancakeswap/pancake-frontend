@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import SwiperCore, { Keyboard, Mousewheel } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Box } from '@pancakeswap/uikit'
-import { useGetSortedRoundsv2 } from 'state/hooks'
+import { useGetSortedRounds } from 'state/hooks'
 import 'swiper/swiper.min.css'
 import RoundCard from './components/RoundCard'
 import Menu from './components/Menu'
@@ -24,7 +24,7 @@ const StyledSwiper = styled.div`
 `
 const Positions: React.FC = () => {
   const { setSwiper } = useSwiper()
-  const rounds = useGetSortedRoundsv2()
+  const rounds = useGetSortedRounds()
   const initialIndex = Math.floor(rounds.length / 2)
 
   useOnNextRound()
