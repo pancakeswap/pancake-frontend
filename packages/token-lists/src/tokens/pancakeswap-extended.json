@@ -1646,5 +1646,13 @@
     "chainId": 56,
     "decimals": 18,
     "logoURI": "https://tokens.pancakeswap.finance/images/0x758FB037A375F17c7e195CC634D77dA4F554255B.png"
+  },
+  {
+    "name": "Mask Network",
+    "symbol": "MASK",
+    "address": "0x2eD9a5C8C13b93955103B9a7C167B67Ef4d568a3",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0x2eD9a5C8C13b93955103B9a7C167B67Ef4d568a3.png"
   }
 ]
