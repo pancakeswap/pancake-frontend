@@ -75,6 +75,7 @@ const TicketContaier: React.FC<{
   disabled: boolean
 }> = ({ ticket, duplicateWith, updateTicket, disabled }) => {
   const [focused, setFocused] = useState(false)
+  const containerRef = useRef<HTMLDivElement>(null)
   const digit1 = useRef<HTMLInputElement>(null)
   const digit2 = useRef<HTMLInputElement>(null)
   const digit3 = useRef<HTMLInputElement>(null)
@@ -86,6 +87,12 @@ const TicketContaier: React.FC<{
 
   const digitRefs = [digit1, digit2, digit3, digit4, digit5, digit6]
 
+  const scrollInputIntoView = () => {
+    if (containerRef.current) {
+      containerRef.current.scrollIntoView({ block: 'center', behavior: 'smooth' })
+    }
+  }
+
   const onPasteHandler = (e: React.ClipboardEvent) => {
     e.preventDefault()
     const pasteContent = e.clipboardData.getData('Text')
@@ -96,6 +103,7 @@ const TicketContaier: React.FC<{
   }
 
   const onFocusHandler = () => {
+    scrollInputIntoView()
     setFocused(true)
   }
 
@@ -195,7 +203,12 @@ const TicketContaier: React.FC<{
           {duplicateWith.length !== 0 && t('Duplicate')}
         </Text>
       </Flex>
-      <InputsContainer focused={focused} isDuplicate={duplicateWith.length !== 0}>
+      <InputsContainer
+        ref={containerRef}
+        onClick={scrollInputIntoView}
+        focused={focused}
+        isDuplicate={duplicateWith.length !== 0}
+      >
         <DigitInput
           ref={digit1}
           type="number"
@@ -207,6 +220,7 @@ const TicketContaier: React.FC<{
           onFocus={onFocusHandler}
           onBlur={onBlurHandler}
           onPaste={onPasteHandler}
+          inputMode="numeric"
         />
         <DigitInput
           ref={digit2}
@@ -219,6 +233,7 @@ const TicketContaier: React.FC<{
           onFocus={onFocusHandler}
           onBlur={onBlurHandler}
           onPaste={onPasteHandler}
+          inputMode="numeric"
         />
         <DigitInput
           ref={digit3}
@@ -231,6 +246,7 @@ const TicketContaier: React.FC<{
           onFocus={onFocusHandler}
           onBlur={onBlurHandler}
           onPaste={onPasteHandler}
+          inputMode="numeric"
         />
         <DigitInput
           ref={digit4}
@@ -243,6 +259,7 @@ const TicketContaier: React.FC<{
           onFocus={onFocusHandler}
           onBlur={onBlurHandler}
           onPaste={onPasteHandler}
+          inputMode="numeric"
         />
         <DigitInput
           ref={digit5}
@@ -255,6 +272,7 @@ const TicketContaier: React.FC<{
           onFocus={onFocusHandler}
           onBlur={onBlurHandler}
           onPaste={onPasteHandler}
+          inputMode="numeric"
         />
         <DigitInput
           ref={digit6}
@@ -267,6 +285,7 @@ const TicketContaier: React.FC<{
           onFocus={onFocusHandler}
           onBlur={onBlurHandler}
           onPaste={onPasteHandler}
+          inputMode="numeric"
         />
       </InputsContainer>
     </>
