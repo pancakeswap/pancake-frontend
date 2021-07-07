@@ -60,7 +60,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
       userTickets: { tickets: userCurrentTickets },
     },
   } = useLottery()
-  const [ticketsToBuy, setTicketsToBuy] = useState('0')
+  const [ticketsToBuy, setTicketsToBuy] = useState('')
   const [discountValue, setDiscountValue] = useState('')
   const [totalCost, setTotalCost] = useState('')
   const [ticketCostBeforeDiscount, setTicketCostBeforeDiscount] = useState('')
@@ -151,9 +151,9 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
       const limitedMaxPurchase = limitNumberByMaxTicketsPerBuy(maxBalancePurchase)
       let maxPurchase
 
-      // If the users' max possible ticket purchase is less than the limit - factor the ticket discount into the max possible purchase
+      // If the users' max CAKE balance purchase is less than the contract limit - factor the discount logic into the max number of tickets they can purchase
       if (limitedMaxPurchase.lt(maxNumberTicketsPerBuyOrClaim)) {
-        // Get details of the discount available for the users' max ticket purchase with their CAKE balance
+        // Get max tickets purchaseble with the users' balance, as well as using the discount to buy tickets
         const { overallTicketBuy: maxPlusDiscountTickets } = getMaxTicketBuyWithDiscount(limitedMaxPurchase)
 
         // Knowing how many tickets they can buy when counting the discount - plug that total in, and see how much that total will get discounted
@@ -213,7 +213,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
     const inputAsBN = new BigNumber(inputAsInt)
     const limitedNumberTickets = limitNumberByMaxTicketsPerBuy(inputAsBN)
     validateInput(inputAsBN)
-    setTicketsToBuy(inputAsInt ? limitedNumberTickets.toString() : '0')
+    setTicketsToBuy(inputAsInt ? limitedNumberTickets.toString() : '')
   }
 
   const handleNumberButtonClick = (number: number) => {
@@ -369,7 +369,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
             {t('Cost')} (CAKE)
           </Text>
           <Text color="textSubtle" fontSize="14px">
-            {priceTicketInCake && getFullDisplayBalance(priceTicketInCake.times(ticketsToBuy))} CAKE
+            {priceTicketInCake && getFullDisplayBalance(priceTicketInCake.times(ticketsToBuy || 0))} CAKE
           </Text>
         </Flex>
         <Flex mb="8px" justifyContent="space-between">
