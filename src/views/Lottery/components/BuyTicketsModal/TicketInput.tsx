@@ -114,8 +114,9 @@ const TicketContaier: React.FC<{
   const onChangeHandler = (event: React.KeyboardEvent, digitId: number) => {
     const currentKey = parseInt(event.key, 10)
 
-    if (event.key === 'e' || event.key === 'E' || event.key === '.') {
+    if (['e', 'E', '.', ',', '-', 'Unidentified'].includes(event.key)) {
       event.preventDefault()
+      return
     }
 
     // Handling numberic inputs
