@@ -4,13 +4,13 @@ import maxBy from 'lodash/maxBy'
 import merge from 'lodash/merge'
 import range from 'lodash/range'
 import { BIG_ZERO } from 'utils/bigNumber'
-import { Bet, BetDatav2, HistoryFilter, PredictionsState, PredictionStatus, ReduxNodeRound } from 'state/types'
+import { Bet, LedgerData, HistoryFilter, PredictionsState, PredictionStatus, ReduxNodeRound } from 'state/types'
 import { getPredictionsContract } from 'utils/contractHelpers'
 import {
   getBetHistory,
   transformBetResponse,
-  makeFutureRoundResponsev2,
-  makeRoundDataV2,
+  makeFutureRoundResponse,
+  makeRoundData,
   getRoundsData,
   getPredictionData,
   MarketData,
@@ -39,8 +39,7 @@ const initialState: PredictionsState = {
   lastOraclePrice: BIG_ZERO.toJSON(),
   rounds: {},
   history: {},
-  bets: {},
-  betsv2: {},
+  ledgers: {},
   claimableStatuses: {},
 }
 
@@ -55,7 +54,7 @@ type PredictionInitialization = Pick<
   | 'minBetAmount'
   | 'rewardRate'
   | 'rounds'
-  | 'betsv2'
+  | 'ledgers'
   | 'claimableStatuses'
 >
 export const initializePredictions = createAsyncThunk<PredictionInitialization, string>(
@@ -79,7 +78,7 @@ export const initializePredictions = createAsyncThunk<PredictionInitialization, 
     const initializedData = {
       ...marketData,
       rounds: initialRoundData,
-      betsv2: {},
+      ledgers: {},
       claimableStatuses: {},
     }
 
@@ -94,7 +93,7 @@ export const initializePredictions = createAsyncThunk<PredictionInitialization, 
     const claimableStatuses = await getClaimStatuses(account, epochs)
 
     return merge({}, initializedData, {
-      betsv2: makeLedgerData(account, ledgerResponses, epochs),
+      ledgers: makeLedgerData(account, ledgerResponses, epochs),
       claimableStatuses,
     })
   },
@@ -130,7 +129,7 @@ export const fetchMarketData = createAsyncThunk<MarketData>('predictions/fetchMa
   return marketData
 })
 
-export const fetchLedgerData = createAsyncThunk<BetDatav2, { account: string; epochs: number[] }>(
+export const fetchLedgerData = createAsyncThunk<LedgerData, { account: string; epochs: number[] }>(
   'predictions/fetchLedgerData',
   async ({ account, epochs }) => {
     const ledgers = await getLedgerData(account, epochs)
@@ -196,7 +195,7 @@ export const predictionsSlice = createSlice({
 
     // Ledger (bet) records
     builder.addCase(fetchLedgerData.fulfilled, (state, action) => {
-      state.betsv2 = merge({}, state.betsv2, action.payload)
+      state.ledgers = merge({}, state.ledgers, action.payload)
     })
 
     // Get static market data
@@ -206,7 +205,7 @@ export const predictionsSlice = createSlice({
       // If the round has change add a new future round
       if (state.currentEpoch !== currentEpoch) {
         const newestRound = maxBy(Object.values(state.rounds), 'epoch')
-        const futureRound = makeFutureRoundResponsev2(
+        const futureRound = makeFutureRoundResponse(
           newestRound.epoch + 2,
           newestRound.startBlock + state.intervalBlocks,
         )
@@ -225,14 +224,14 @@ export const predictionsSlice = createSlice({
 
     // Initialize predictions
     builder.addCase(initializePredictions.fulfilled, (state, action) => {
-      const { status, currentEpoch, bufferBlocks, intervalBlocks, rounds, claimableStatuses, rewardRate, betsv2 } =
+      const { status, currentEpoch, bufferBlocks, intervalBlocks, rounds, claimableStatuses, rewardRate, ledgers } =
         action.payload
       const currentRoundStartBlockNumber = action.payload.rounds[currentEpoch].startBlock
       const futureRounds: ReduxNodeRound[] = []
       const halfInterval = (intervalBlocks + bufferBlocks) / 2
 
       for (let i = 1; i <= FUTURE_ROUND_COUNT; i++) {
-        futureRounds.push(makeFutureRoundResponsev2(currentEpoch + i, currentRoundStartBlockNumber + halfInterval * i))
+        futureRounds.push(makeFutureRoundResponse(currentEpoch + i, currentRoundStartBlockNumber + halfInterval * i))
       }
 
       return {
@@ -244,8 +243,8 @@ export const predictionsSlice = createSlice({
         rewardRate,
         currentRoundStartBlockNumber,
         claimableStatuses,
-        betsv2,
-        rounds: merge({}, rounds, makeRoundDataV2(futureRounds)),
+        ledgers,
+        rounds: merge({}, rounds, makeRoundData(futureRounds)),
       }
     })
 
@@ -275,18 +274,6 @@ export const predictionsSlice = createSlice({
       state.isFetchingHistory = false
       state.isHistoryPaneOpen = true
       state.history[account] = bets
-
-      // Save any fetched bets in the "bets" namespace
-      const betData = bets.reduce((accum, bet) => {
-        return {
-          ...accum,
-          [bet.round.id]: bet,
-        }
-      }, {})
-
-      state.bets = merge({}, state.bets, {
-        [account]: betData,
-      })
     })
   },
 })

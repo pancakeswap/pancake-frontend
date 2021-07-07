@@ -223,18 +223,8 @@ export interface PredictionUser {
   totalBNB: number
 }
 
-export interface RoundData {
-  [key: string]: Round
-}
-
 export interface HistoryData {
   [key: string]: Bet[]
-}
-
-export interface BetData {
-  [key: string]: {
-    [key: string]: Bet
-  }
 }
 
 export enum HistoryFilter {
@@ -243,14 +233,13 @@ export enum HistoryFilter {
   UNCOLLECTED = 'uncollected',
 }
 
-// V2 REFACTOR
-export interface BetDatav2 {
+export interface LedgerData {
   [key: string]: {
     [key: string]: ReduxNodeLedger
   }
 }
 
-export interface RoundDataV2 {
+export interface RoundData {
   [key: string]: ReduxNodeRound
 }
 
@@ -295,7 +284,6 @@ export interface NodeRound {
   rewardAmount: ethers.BigNumber
   oracleCalled: boolean
 }
-// END V2 REFACTOR
 
 export interface PredictionsState {
   status: PredictionStatus
@@ -312,9 +300,8 @@ export interface PredictionsState {
   rewardRate: number
   lastOraclePrice: string
   history: HistoryData
-  bets: BetData
-  rounds?: RoundDataV2
-  betsv2?: BetDatav2
+  rounds?: RoundData
+  ledgers?: LedgerData
   claimableStatuses: {
     [key: string]: boolean
   }

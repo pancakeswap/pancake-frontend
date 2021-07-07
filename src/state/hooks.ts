@@ -39,7 +39,7 @@ import { fetchProfile } from './profile'
 import { fetchTeam, fetchTeams } from './teams'
 import { fetchAchievements } from './achievements'
 import { fetchWalletNfts } from './collectibles'
-import { getCanClaim, parseBigNumberObj } from './predictions/helpers'
+import { parseBigNumberObj } from './predictions/helpers'
 import { transformPool } from './pools/helpers'
 import { fetchPoolsStakingLimitsAsync } from './pools'
 import { fetchFarmUserDataAsync, nonArchivedFarms } from './farms'
@@ -377,7 +377,7 @@ export const useGetSortedRounds = () => {
 }
 
 export const useGetBetByEpoch = (account: string, epoch: number) => {
-  const bets = useSelector((state: State) => state.predictions.betsv2)
+  const bets = useSelector((state: State) => state.predictions.ledgers)
 
   if (!bets[account]) {
     return null
@@ -472,28 +472,18 @@ export const useGetHistoryByAccount = (account: string) => {
   return bets ? bets[account] : []
 }
 
-export const useGetBetByRoundId = (account: string, roundId: string) => {
-  const bets = useSelector((state: State) => state.predictions.bets)
+export const useGetLedgerByRoundId = (account: string, roundId: string) => {
+  const ledgers = useSelector((state: State) => state.predictions.ledgers)
 
-  if (!bets[account]) {
+  if (!ledgers[account]) {
     return null
   }
 
-  if (!bets[account][roundId]) {
+  if (!ledgers[account][roundId]) {
     return null
   }
 
-  return bets[account][roundId]
-}
-
-export const useBetCanClaim = (account: string, roundId: string) => {
-  const bet = useGetBetByRoundId(account, roundId)
-
-  if (!bet) {
-    return false
-  }
-
-  return getCanClaim(bet)
+  return ledgers[account][roundId]
 }
 
 export const useGetLastOraclePrice = () => {

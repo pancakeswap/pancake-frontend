@@ -3,7 +3,7 @@ import { useWeb3React } from '@web3-react/core'
 import { Box, Flex, Heading, Text, PrizeIcon, BlockIcon, LinkExternal, useTooltip, InfoIcon } from '@pancakeswap/uikit'
 import { useAppDispatch } from 'state'
 import { useTranslation } from 'contexts/Localization'
-import { useBetCanClaim, useGetRewardRate, usePriceBnbBusd } from 'state/hooks'
+import { useGetRewardRate, usePriceBnbBusd } from 'state/hooks'
 import styled from 'styled-components'
 import { Bet, BetPosition } from 'state/types'
 import { fetchLedgerData } from 'state/predictions'
@@ -37,7 +37,7 @@ const BetResult: React.FC<BetResultProps> = ({ bet, result }) => {
   const { account } = useWeb3React()
   const { isRefundable } = useIsRefundable(bet.round.epoch)
   const bnbBusdPrice = usePriceBnbBusd()
-  const canClaim = useBetCanClaim(account, bet.round.id)
+  const canClaim = !bet.claimed && bet.position === bet.round.position
   const rewardRate = useGetRewardRate()
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <Text as="p">{t('Includes your original position and your winnings, minus the %fee% fee.', { fee: '3%' })}</Text>,
@@ -118,7 +118,7 @@ const BetResult: React.FC<BetResultProps> = ({ bet, result }) => {
       <StyledBetResult>
         {result === Result.WIN && !canClaim && (
           <CollectWinningsButton
-            payout={payout.toString()}
+            payout={formatBnb(payout)}
             epoch={bet.round.epoch}
             hasClaimed={!canClaim}
             width="100%"

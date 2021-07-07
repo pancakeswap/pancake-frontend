@@ -3,16 +3,14 @@ import { GRAPH_API_PREDICTION } from 'config/constants/endpoints'
 import { ethers } from 'ethers'
 import {
   Bet,
-  BetDatav2,
+  LedgerData,
   BetPosition,
-  Market,
   PredictionsState,
   PredictionStatus,
   ReduxNodeLedger,
   ReduxNodeRound,
   Round,
   RoundData,
-  RoundDataV2,
 } from 'state/types'
 import { multicallv2 } from 'utils/multicall'
 import predictionsAbi from 'config/abi/predictions.json'
@@ -42,29 +40,6 @@ export const numberOrNull = (value: string) => {
 
   const valueNum = Number(value)
   return Number.isNaN(valueNum) ? null : valueNum
-}
-
-export const makeFutureRoundResponse = (epoch: number, startBlock: number): RoundResponse => {
-  return {
-    id: epoch.toString(),
-    epoch: epoch.toString(),
-    startBlock: startBlock.toString(),
-    failed: null,
-    startAt: null,
-    lockAt: null,
-    lockBlock: null,
-    lockPrice: null,
-    endBlock: null,
-    closePrice: null,
-    totalBets: '0',
-    totalAmount: '0',
-    bearBets: '0',
-    bullBets: '0',
-    bearAmount: '0',
-    bullAmount: '0',
-    position: null,
-    bets: [],
-  }
 }
 
 export const transformBetResponse = (betResponse: BetResponse): Bet => {
@@ -161,15 +136,6 @@ export const transformTotalWonResponse = (
   return Math.max(totalBNB - (totalBNBTreasury + houseRounds), 0)
 }
 
-export const makeRoundData = (rounds: Round[]): RoundData => {
-  return rounds.reduce((accum, round) => {
-    return {
-      ...accum,
-      [round.id]: round,
-    }
-  }, {})
-}
-
 export const getRoundResult = (bet: Bet, currentEpoch: number): Result => {
   const { round } = bet
   if (round.failed) {
@@ -199,66 +165,6 @@ export const getUnclaimedWinningBets = (bets: Bet[]): Bet[] => {
   return bets.filter(getCanClaim)
 }
 
-type StaticPredictionsData = Pick<
-  PredictionsState,
-  'status' | 'currentEpoch' | 'intervalBlocks' | 'bufferBlocks' | 'minBetAmount' | 'rewardRate'
->
-
-/**
- * Gets static data from the contract
- */
-export const getStaticPredictionsData = async (): Promise<StaticPredictionsData> => {
-  const calls = ['currentEpoch', 'intervalBlocks', 'minBetAmount', 'paused', 'bufferBlocks', 'rewardRate'].map(
-    (method) => ({
-      address: getPredictionsAddress(),
-      name: method,
-    }),
-  )
-  const [[currentEpoch], [intervalBlocks], [minBetAmount], [isPaused], [bufferBlocks], [rewardRate]] =
-    await multicallv2(predictionsAbi, calls)
-
-  return {
-    status: isPaused ? PredictionStatus.PAUSED : PredictionStatus.LIVE,
-    currentEpoch: currentEpoch.toNumber(),
-    intervalBlocks: intervalBlocks.toNumber(),
-    bufferBlocks: bufferBlocks.toNumber(),
-    minBetAmount: minBetAmount.toString(),
-    rewardRate: rewardRate.toNumber(),
-  }
-}
-
-export const getMarketData = async (): Promise<{
-  rounds: Round[]
-  market: Market
-}> => {
-  const [[paused], [currentEpoch]] = (await multicallv2(
-    predictionsAbi,
-    ['paused', 'currentEpoch'].map((name) => ({
-      address: getPredictionsAddress(),
-      name,
-    })),
-  )) as [[boolean], [ethers.BigNumber]]
-
-  const response = (await request(
-    GRAPH_API_PREDICTION,
-    gql`
-      query getMarketData {
-        rounds(first: 5, orderBy: epoch, orderDirection: desc) {
-          ${getRoundBaseFields()}
-        }
-      }
-    `,
-  )) as { rounds: RoundResponse[] }
-
-  return {
-    rounds: response.rounds.map(transformRoundResponse),
-    market: {
-      epoch: currentEpoch.toNumber(),
-      paused,
-    },
-  }
-}
-
 export const getTotalWon = async (): Promise<number> => {
   const response = (await request(
     GRAPH_API_PREDICTION,
@@ -277,27 +183,6 @@ export const getTotalWon = async (): Promise<number> => {
   )) as { market: TotalWonMarketResponse; rounds: TotalWonRoundResponse[] }
 
   return transformTotalWonResponse(response.market, response.rounds)
-}
-
-export const getRound = async (id: string) => {
-  const response = await request(
-    GRAPH_API_PREDICTION,
-    gql`
-      query getRound($id: ID!) {
-        round(id: $id) {
-          ${getRoundBaseFields()}
-          bets {
-           ${getBetBaseFields()}
-            user {
-             ${getUserBaseFields()}
-            }
-          }
-        }
-      }
-  `,
-    { id },
-  )
-  return response.round
 }
 
 type BetHistoryWhereClause = Record<string, string | number | boolean | string[]>
@@ -429,7 +314,7 @@ export const getRoundsData = async (epochs: number[]): Promise<PredictionsRounds
   return response
 }
 
-export const makeFutureRoundResponsev2 = (epoch: number, startBlock: number): ReduxNodeRound => {
+export const makeFutureRoundResponse = (epoch: number, startBlock: number): ReduxNodeRound => {
   return {
     epoch,
     startBlock,
@@ -446,7 +331,7 @@ export const makeFutureRoundResponsev2 = (epoch: number, startBlock: number): Re
   }
 }
 
-export const makeRoundDataV2 = (rounds: ReduxNodeRound[]): RoundDataV2 => {
+export const makeRoundData = (rounds: ReduxNodeRound[]): RoundData => {
   return rounds.reduce((accum, round) => {
     return {
       ...accum,
@@ -461,7 +346,7 @@ export const serializePredictionsLedgerResponse = (ledgerResponse: PredictionsLe
   claimed: ledgerResponse.claimed,
 })
 
-export const makeLedgerData = (account: string, ledgers: PredictionsLedgerResponse[], epochs: number[]): BetDatav2 => {
+export const makeLedgerData = (account: string, ledgers: PredictionsLedgerResponse[], epochs: number[]): LedgerData => {
   return ledgers.reduce((accum, ledgerResponse, index) => {
     if (!ledgerResponse) {
       return accum
@@ -484,7 +369,10 @@ export const makeLedgerData = (account: string, ledgers: PredictionsLedgerRespon
   }, {})
 }
 
-export const serializePredictionsRoundsResponse = (response: PredictionsRoundsResponse) => {
+/**
+ * Serializes the return from the "rounds" call for redux
+ */
+export const serializePredictionsRoundsResponse = (response: PredictionsRoundsResponse): ReduxNodeRound => {
   const {
     epoch,
     startBlock,
@@ -496,6 +384,7 @@ export const serializePredictionsRoundsResponse = (response: PredictionsRoundsRe
     bullAmount,
     bearAmount,
     rewardAmount,
+    rewardBaseCalAmount,
     oracleCalled,
   } = response
 
@@ -510,8 +399,9 @@ export const serializePredictionsRoundsResponse = (response: PredictionsRoundsRe
     bullAmount: bullAmount.toJSON(),
     bearAmount: bearAmount.toJSON(),
     rewardAmount: rewardAmount.toJSON(),
+    rewardBaseCalAmount: rewardBaseCalAmount.toJSON(),
     oracleCalled,
-  } as ReduxNodeRound
+  }
 }
 
 /**
@@ -535,5 +425,3 @@ export const parseBigNumberObj = <T = Record<string, any>, K = Record<string, an
     }
   }, {}) as K
 }
-
-// END V2 REFACTOR
