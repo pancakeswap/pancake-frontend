@@ -216,7 +216,7 @@ const TicketContaier: React.FC<{
           value={ticket.numbers[0]}
           onKeyDown={(e: React.KeyboardEvent) => onChangeHandler(e, 0)}
           placeholder="_"
-          onChange={() => null}
+          onChange={(e) => e.preventDefault()}
           disabled={disabled}
           onFocus={onFocusHandler}
           onBlur={onBlurHandler}
@@ -229,7 +229,7 @@ const TicketContaier: React.FC<{
           value={ticket.numbers[1]}
           onKeyDown={(e: React.KeyboardEvent) => onChangeHandler(e, 1)}
           placeholder="_"
-          onChange={() => null}
+          onChange={(e) => e.preventDefault()}
           disabled={disabled}
           onFocus={onFocusHandler}
           onBlur={onBlurHandler}
@@ -242,7 +242,7 @@ const TicketContaier: React.FC<{
           value={ticket.numbers[2]}
           onKeyDown={(e: React.KeyboardEvent) => onChangeHandler(e, 2)}
           placeholder="_"
-          onChange={() => null}
+          onChange={(e) => e.preventDefault()}
           disabled={disabled}
           onFocus={onFocusHandler}
           onBlur={onBlurHandler}
@@ -255,7 +255,7 @@ const TicketContaier: React.FC<{
           value={ticket.numbers[3]}
           onKeyDown={(e: React.KeyboardEvent) => onChangeHandler(e, 3)}
           placeholder="_"
-          onChange={() => null}
+          onChange={(e) => e.preventDefault()}
           disabled={disabled}
           onFocus={onFocusHandler}
           onBlur={onBlurHandler}
@@ -268,7 +268,7 @@ const TicketContaier: React.FC<{
           value={ticket.numbers[4]}
           onKeyDown={(e: React.KeyboardEvent) => onChangeHandler(e, 4)}
           placeholder="_"
-          onChange={() => null}
+          onChange={(e) => e.preventDefault()}
           disabled={disabled}
           onFocus={onFocusHandler}
           onBlur={onBlurHandler}
@@ -281,7 +281,7 @@ const TicketContaier: React.FC<{
           value={ticket.numbers[5]}
           onKeyDown={(e: React.KeyboardEvent) => onChangeHandler(e, 5)}
           placeholder="_"
-          onChange={() => null}
+          onChange={(e) => e.preventDefault()}
           disabled={disabled}
           onFocus={onFocusHandler}
           onBlur={onBlurHandler}
