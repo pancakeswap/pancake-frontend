@@ -4,6 +4,7 @@ import CollectRoundWinningsModal from './CollectRoundWinningsModal'
 
 interface CollectWinningsButtonProps extends ButtonProps {
   payout: string
+  betAmount: string
   epoch: number
   hasClaimed: boolean
   onSuccess?: () => Promise<void>
@@ -11,6 +12,7 @@ interface CollectWinningsButtonProps extends ButtonProps {
 
 const CollectWinningsButton: React.FC<CollectWinningsButtonProps> = ({
   payout,
+  betAmount,
   epoch,
   hasClaimed,
   onSuccess,
@@ -18,7 +20,7 @@ const CollectWinningsButton: React.FC<CollectWinningsButtonProps> = ({
   ...props
 }) => {
   const [onPresentCollectWinningsModal] = useModal(
-    <CollectRoundWinningsModal payout={payout} epoch={epoch} onSuccess={onSuccess} />,
+    <CollectRoundWinningsModal payout={payout} betAmount={betAmount} epoch={epoch} onSuccess={onSuccess} />,
     false,
   )
 
