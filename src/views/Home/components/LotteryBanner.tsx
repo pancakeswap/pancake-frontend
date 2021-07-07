@@ -38,7 +38,10 @@ const LeftWrapper = styled(Flex)`
   flex-direction: column;
   flex: 1;
   padding-bottom: 40px;
-  padding-top: 40px;
+  padding-top: 24px;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    padding-top: 40px;
+  }
 `
 
 const RightWrapper = styled.div`
@@ -49,6 +52,13 @@ const RightWrapper = styled.div`
 
   & img {
     width: 80%;
+    margin-top: 24px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    & img {
+      margin-top: 0;
+    }
   }
 
   ${({ theme }) => theme.mediaQueries.md} {
@@ -62,36 +72,54 @@ const RightWrapper = styled.div`
   }
 `
 
+const PrizeFlex = styled(Flex)`
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    max-width: 640px;
+  }
+`
+
+const Over = styled(Text)`
+  :empty {
+    margin-right: 0;
+  }
+`
+
 const LotteryBanner: React.FC<{ currentLotteryPrize: string }> = ({ currentLotteryPrize }) => {
   const { t } = useTranslation()
   const cakePriceBusd = usePriceCakeBusd()
   const prizeInBusd = cakePriceBusd.times(currentLotteryPrize)
   const prizeTotal = getBalanceNumber(prizeInBusd)
 
+  const prizeTotalText = prizeInBusd.isNaN() ? prizeTotal.toString() : '-'
+  const prizeText = t('Over %amount% in Prizes!', { amount: prizeTotalText })
+  const [over, inPrizes] = prizeText.split(prizeTotalText)
+
   return (
     <Wrapper>
       <Inner>
         <LeftWrapper>
           <NowLive>{t('Lottery Now Live')}</NowLive>
-          <>
-            {prizeInBusd.isNaN() ? (
-              <>
-                <Skeleton height={40} mb={20} mt={10} width={280} />
-              </>
-            ) : (
-              <Balance
-                display="inline"
-                mb="8px"
-                fontSize="40px"
-                color="#ffffff"
-                bold
-                prefix={`${t('Over')} $`}
-                unit={` ${t('in Prizes!')}`}
-                decimals={0}
-                value={prizeTotal}
-              />
-            )}
-          </>
+          <PrizeFlex>
+            <Over fontSize="40px" color="#ffffff" bold mr="8px">
+              {over}
+            </Over>
+            <>
+              {prizeInBusd.isNaN() ? (
+                <>
+                  <Skeleton height={40} width={120} mb="10px" mt="10px" mr="8px" />
+                </>
+              ) : (
+                <Balance fontSize="40px" color="#ffffff" bold prefix="$" mr="8px" decimals={0} value={prizeTotal} />
+              )}
+            </>
+            <Text fontSize="40px" color="#ffffff" bold>
+              {inPrizes}
+            </Text>
+          </PrizeFlex>
           <NavLink exact activeClassName="active" to="/lottery" id="lottery-pot-banner">
             <Button>
               <Text color="white" bold fontSize="16px" mr="4px">
