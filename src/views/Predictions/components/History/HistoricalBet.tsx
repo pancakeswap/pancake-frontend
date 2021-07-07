@@ -9,9 +9,12 @@ import {
   Text,
   WaitIcon,
 } from '@pancakeswap/uikit'
+import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
+import { useAppDispatch } from 'state'
 import { Bet, PredictionStatus } from 'state/types'
 import { useGetCurrentEpoch, useGetPredictionsStatus, useGetRewardRate } from 'state/hooks'
+import { fetchLedgerData, markBetHistoryAsCollected } from 'state/predictions'
 import { getRoundResult, Result } from 'state/predictions/helpers'
 import { useTranslation } from 'contexts/Localization'
 import { formatBnb, getNetPayout } from './helpers'
@@ -41,6 +44,8 @@ const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
   const currentEpoch = useGetCurrentEpoch()
   const status = useGetPredictionsStatus()
   const rewardRate = useGetRewardRate()
+  const dispatch = useAppDispatch()
+  const { account } = useWeb3React()
 
   const toggleOpen = () => setIsOpen(!isOpen)
 
@@ -114,6 +119,12 @@ const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
     )
   }
 
+  const handleSuccess = async () => {
+    // We have to mark the bet as claimed immediately because it does not update fast enough
+    dispatch(markBetHistoryAsCollected({ account, betId: bet.id }))
+    dispatch(fetchLedgerData({ account, epochs: [bet.round.epoch] }))
+  }
+
   return (
     <>
       <StyledBet onClick={toggleOpen} role="button">
@@ -133,6 +144,8 @@ const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
             hasClaimed={!canClaim}
             epoch={bet.round.epoch}
             payout={formatBnb(payout)}
+            onSuccess={handleSuccess}
+            betAmount={bet.amount.toString()}
             scale="sm"
             mr="8px"
           >

@@ -27,6 +27,7 @@ import { usePredictionsContract } from 'hooks/useContract'
 
 interface CollectRoundWinningsModalProps extends InjectedModalProps {
   payout: string
+  betAmount: string
   epoch: number
   onSuccess?: () => Promise<void>
 }
@@ -45,6 +46,7 @@ const BunnyDecoration = styled.div`
 
 const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
   payout,
+  betAmount,
   epoch,
   onDismiss,
   onSuccess,
@@ -59,6 +61,7 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
 
   // Convert payout to number for compatibility
   const payoutAsFloat = parseFloat(payout)
+  const betAmountAsFloat = parseFloat(betAmount)
 
   const handleClick = async () => {
     const tx = await predictionsContract.claim(epoch)
@@ -102,8 +105,17 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
       </ModalHeader>
       <ModalBody p="24px">
         <TrophyGoldIcon width="96px" mx="auto" mb="24px" />
+        <Flex alignItems="start" justifyContent="space-between" mb="8px">
+          <Text>{t('Your Position')}</Text>
+          <Box style={{ textAlign: 'right' }}>
+            <Text>{`${betAmount} BNB`}</Text>
+            <Text fontSize="12px" color="textSubtle">
+              {`~$${bnbBusdPrice.times(betAmountAsFloat).toFormat(2)}`}
+            </Text>
+          </Box>
+        </Flex>
         <Flex alignItems="start" justifyContent="space-between" mb="24px">
-          <Text>{t('Collecting')}</Text>
+          <Text>{t('Your Winnings')}</Text>
           <Box style={{ textAlign: 'right' }}>
             <Text>{`${payout} BNB`}</Text>
             <Text fontSize="12px" color="textSubtle">

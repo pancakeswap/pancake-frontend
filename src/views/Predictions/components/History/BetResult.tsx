@@ -6,7 +6,7 @@ import { useTranslation } from 'contexts/Localization'
 import { useGetRewardRate, usePriceBnbBusd } from 'state/hooks'
 import styled from 'styled-components'
 import { Bet, BetPosition } from 'state/types'
-import { fetchLedgerData } from 'state/predictions'
+import { fetchLedgerData, markBetHistoryAsCollected } from 'state/predictions'
 import { Result } from 'state/predictions/helpers'
 import { getBscScanTransactionUrl } from 'utils/bscscan'
 import useIsRefundable from '../../hooks/useIsRefundable'
@@ -101,7 +101,9 @@ const BetResult: React.FC<BetResultProps> = ({ bet, result }) => {
   }
 
   const handleSuccess = async () => {
-    await dispatch(fetchLedgerData({ account, epochs: [bet.round.epoch] }))
+    // We have to mark the bet as claimed immediately because it does not update fast enough
+    dispatch(markBetHistoryAsCollected({ account, betId: bet.id }))
+    dispatch(fetchLedgerData({ account, epochs: [bet.round.epoch] }))
   }
 
   return (
@@ -119,6 +121,7 @@ const BetResult: React.FC<BetResultProps> = ({ bet, result }) => {
         {result === Result.WIN && !canClaim && (
           <CollectWinningsButton
             payout={formatBnb(payout)}
+            betAmount={bet.amount.toString()}
             epoch={bet.round.epoch}
             hasClaimed={!canClaim}
             width="100%"
