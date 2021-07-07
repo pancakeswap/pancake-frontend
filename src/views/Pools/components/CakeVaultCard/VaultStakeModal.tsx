@@ -83,7 +83,6 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({ pool, stakingMax, isR
 
     if (isWithdrawingAll) {
       const tx = await callWithEstimateGas(cakeVaultContract, 'withdrawAll')
-      setPendingTx(true)
       const receipt = await tx.wait()
       if (receipt.status) {
         toastSuccess(t('Unstaked!'), t('Your earnings have also been harvested to your wallet'))
@@ -101,7 +100,6 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({ pool, stakingMax, isR
       const tx = await callWithEstimateGas(cakeVaultContract, 'withdraw', [
         shareStakeToWithdraw.sharesAsBigNumber.toString(),
       ])
-      setPendingTx(true)
       const receipt = await tx.wait()
       if (receipt.status) {
         toastSuccess(t('Unstaked!'), t('Your earnings have also been harvested to your wallet'))
@@ -135,12 +133,11 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({ pool, stakingMax, isR
 
   const handleConfirmClick = async () => {
     const convertedStakeAmount = getDecimalAmount(new BigNumber(stakeAmount), stakingToken.decimals)
-    setPendingTx(true)
-    // unstaking
     if (isRemovingStake) {
+      // unstaking
       handleWithdrawal(convertedStakeAmount)
-      // staking
     } else {
+      // staking
       handleDeposit(convertedStakeAmount)
     }
   }
