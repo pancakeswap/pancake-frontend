@@ -166,7 +166,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
         maxPurchase = limitedMaxPurchase
       }
 
-      if (hasFetchedBalance && maxPurchase.eq(0)) {
+      if (hasFetchedBalance && maxPurchase.lt(1)) {
         setUserNotEnoughCake(true)
       } else {
         setUserNotEnoughCake(false)
