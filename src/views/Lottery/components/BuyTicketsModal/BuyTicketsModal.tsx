@@ -38,6 +38,13 @@ const StyledModal = styled(Modal)`
   max-width: 320px;
 `
 
+const ShortcutButtonsWrapper = styled(Flex)<{ isVisible: boolean }>`
+  justify-content: space-between;
+  margin-top: 8px;
+  margin-bottom: 24px;
+  display: ${({ isVisible }) => (isVisible ? 'flex' : 'none')};
+`
+
 interface BuyTicketsModalProps {
   onDismiss?: () => void
 }
@@ -337,35 +344,32 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
         </Flex>
       </Flex>
 
-      <Flex alignItems="center" justifyContent="space-between" mt="8px" mb="24px">
-        {!hasFetchedBalance ? (
-          <Skeleton width="100%" height={20} />
-        ) : (
-          <>
-            {tenPercentOfBalance >= 1 && (
-              <NumTicketsToBuyButton onClick={() => handleNumberButtonClick(tenPercentOfBalance)}>
-                {hasFetchedBalance ? tenPercentOfBalance : ``}
-              </NumTicketsToBuyButton>
-            )}
-            {twentyFivePercentOfBalance >= 1 && (
-              <NumTicketsToBuyButton onClick={() => handleNumberButtonClick(twentyFivePercentOfBalance)}>
-                {hasFetchedBalance ? twentyFivePercentOfBalance : ``}
-              </NumTicketsToBuyButton>
-            )}
-            {fiftyPercentOfBalance >= 1 && (
-              <NumTicketsToBuyButton onClick={() => handleNumberButtonClick(fiftyPercentOfBalance)}>
-                {hasFetchedBalance ? fiftyPercentOfBalance : ``}
-              </NumTicketsToBuyButton>
-            )}
-            {oneHundredPercentOfBalance >= 1 && (
-              <NumTicketsToBuyButton onClick={() => handleNumberButtonClick(oneHundredPercentOfBalance)}>
-                MAX
-              </NumTicketsToBuyButton>
-            )}
-          </>
-        )}
-      </Flex>
-
+      {!hasFetchedBalance ? (
+        <Skeleton width="100%" height={20} mt="8px" mb="24px" />
+      ) : (
+        <ShortcutButtonsWrapper isVisible={hasFetchedBalance && oneHundredPercentOfBalance >= 1}>
+          {tenPercentOfBalance >= 1 && (
+            <NumTicketsToBuyButton onClick={() => handleNumberButtonClick(tenPercentOfBalance)}>
+              {hasFetchedBalance ? tenPercentOfBalance : ``}
+            </NumTicketsToBuyButton>
+          )}
+          {twentyFivePercentOfBalance >= 1 && (
+            <NumTicketsToBuyButton onClick={() => handleNumberButtonClick(twentyFivePercentOfBalance)}>
+              {hasFetchedBalance ? twentyFivePercentOfBalance : ``}
+            </NumTicketsToBuyButton>
+          )}
+          {fiftyPercentOfBalance >= 1 && (
+            <NumTicketsToBuyButton onClick={() => handleNumberButtonClick(fiftyPercentOfBalance)}>
+              {hasFetchedBalance ? fiftyPercentOfBalance : ``}
+            </NumTicketsToBuyButton>
+          )}
+          {oneHundredPercentOfBalance >= 1 && (
+            <NumTicketsToBuyButton onClick={() => handleNumberButtonClick(oneHundredPercentOfBalance)}>
+              MAX
+            </NumTicketsToBuyButton>
+          )}
+        </ShortcutButtonsWrapper>
+      )}
       <Flex flexDirection="column">
         <Flex mb="8px" justifyContent="space-between">
           <Text color="textSubtle" fontSize="14px">
