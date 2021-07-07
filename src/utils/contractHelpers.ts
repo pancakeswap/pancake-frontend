@@ -11,8 +11,6 @@ import {
   getBunnyFactoryAddress,
   getBunnySpecialAddress,
   getCakeAddress,
-  getLotteryAddress,
-  getLotteryTicketAddress,
   getLotteryV2Address,
   getMasterChefAddress,
   getPointCenterIfoAddress,
@@ -39,8 +37,6 @@ import cakeAbi from 'config/abi/cake.json'
 import ifoV1Abi from 'config/abi/ifoV1.json'
 import ifoV2Abi from 'config/abi/ifoV2.json'
 import pointCenterIfo from 'config/abi/pointCenterIfo.json'
-import lotteryAbi from 'config/abi/lottery.json'
-import lotteryTicketAbi from 'config/abi/lotteryNft.json'
 import lotteryV2Abi from 'config/abi/lotteryV2.json'
 import masterChef from 'config/abi/masterchef.json'
 import sousChef from 'config/abi/sousChef.json'
@@ -103,12 +99,6 @@ export const getBunnyFactoryContract = (signer?: ethers.Signer | ethers.provider
 }
 export const getBunnySpecialContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
   return getContract(bunnySpecialAbi, getBunnySpecialAddress(), signer)
-}
-export const getLotteryContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
-  return getContract(lotteryAbi, getLotteryAddress(), signer)
-}
-export const getLotteryTicketContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
-  return getContract(lotteryTicketAbi, getLotteryTicketAddress(), signer)
 }
 export const getLotteryV2Contract = (signer?: ethers.Signer | ethers.providers.Provider) => {
   return getContract(lotteryV2Abi, getLotteryV2Address(), signer)

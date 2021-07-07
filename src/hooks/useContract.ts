@@ -9,8 +9,6 @@ import {
   getProfileContract,
   getIfoV1Contract,
   getIfoV2Contract,
-  getLotteryContract,
-  getLotteryTicketContract,
   getMasterchefContract,
   getPointCenterIfoContract,
   getSouschefContract,
@@ -72,16 +70,6 @@ export const usePancakeRabbits = () => {
 export const useProfile = () => {
   const provider = useWeb3Provider()
   return useMemo(() => getProfileContract(provider.getSigner()), [provider])
-}
-
-export const useLottery = () => {
-  const provider = useWeb3Provider()
-  return useMemo(() => getLotteryContract(provider.getSigner()), [provider])
-}
-
-export const useLotteryTicket = () => {
-  const provider = useWeb3Provider()
-  return useMemo(() => getLotteryTicketContract(provider.getSigner()), [provider])
 }
 
 export const useLotteryV2Contract = () => {
