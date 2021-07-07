@@ -1,14 +1,16 @@
 import { useEffect, useState, useRef } from 'react'
-import { ethers } from 'ethers'
 import { useWeb3React } from '@web3-react/core'
+import { Web3Provider } from '@ethersproject/providers'
 import { simpleRpcProvider } from 'utils/providers'
+// eslint-disable-next-line import/no-unresolved
+import { Web3ReactContextInterface } from '@web3-react/core/dist/types'
 
 /**
  * Provides a web3 provider with or without user's signer
  * Recreate web3 instance only if the provider change
  */
-const useWeb3Provider = (): ethers.providers.JsonRpcProvider | ethers.providers.Web3Provider => {
-  const { library } = useWeb3React()
+const useActiveWeb3React = (): Web3ReactContextInterface<Web3Provider> => {
+  const { library, ...web3React } = useWeb3React()
   const refEth = useRef(library)
   const [provider, setprovider] = useState(library || simpleRpcProvider)
 
@@ -19,7 +21,7 @@ const useWeb3Provider = (): ethers.providers.JsonRpcProvider | ethers.providers.
     }
   }, [library])
 
-  return provider
+  return { library: provider, ...web3React }
 }
 
-export default useWeb3Provider
+export default useActiveWeb3React

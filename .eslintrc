@@ -13,7 +13,7 @@
   },
   "extends": "@pancakeswap/eslint-config-pancake",
   "rules": {
-    "no-console": ["warn", { "allow": ["info", "warn", "error"] }],
+    "no-console": ["warn", { "allow": ["info", "warn", "error", "debug"] }],
     "no-plusplus": 0,
     "prefer-destructuring": ["warn", { "object": true, "array": false }],
     "no-underscore-dangle": 0,
@@ -27,7 +27,8 @@
     "radix": 0,
     "import/no-extraneous-dependencies": 0,
     "jsx-a11y/media-has-caption": 0,
-    "no-param-reassign": ["error", { "props": true, "ignorePropertyModificationsFor": ["state"] }],
+    // Exchange
+    "no-param-reassign": ["error", { "props": true, "ignorePropertyModificationsFor": ["state", "memo"] }],
     "react/require-default-props": 0,
     "no-nested-ternary": 0,
     "max-classes-per-file": 0

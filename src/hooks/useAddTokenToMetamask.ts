@@ -2,7 +2,7 @@ import getTokenLogoURL from 'utils/getTokenLogoURL'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
 import { Currency, Token } from '@pancakeswap/sdk'
 import { useCallback, useState } from 'react'
-import { useActiveWeb3React } from 'hooks/Auth'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 
 export default function useAddTokenToMetamask(currencyToAdd: Currency | undefined): {
   addToken: () => void
