@@ -7,6 +7,7 @@ const TimeLine = () => {
   const zmbeAddr = "0x50ba8BF9E34f0F83F96a340387d1d3888BA4B3b5"
   const topAddress = zmbeAddr.substring(0, zmbeAddr.length / 2)
   const bottomAddress = zmbeAddr.substring(zmbeAddr.length / 2, zmbeAddr.length)
+  const bscscanLink = "https://bscscan.com/token/0x50ba8bf9e34f0f83f96a340387d1d3888ba4b3b5"
   return (
     <div id="Timeline" className="section-3 timeline">
       <div id="How-To-Buy" className="tabs w-tabs">
@@ -63,7 +64,7 @@ const TimeLine = () => {
                     </span>
                   </p>
                   <p className="paragraph-18">Click on the Select a Currency button, and enter the $ZMBE token contract:<br />
-                    <a href="https://bscscan.com/token/0x50ba8bf9e34f0f83f96a340387d1d3888ba4b3b5" target="_blank" rel="noreferrer">
+                    <a href={bscscanLink} target="_blank" rel="noreferrer">
                       {getZombieAddress()}
                     </a>
                     </p>
@@ -128,7 +129,7 @@ const TimeLine = () => {
             <strong> Enter the $ZMBE token contract:</strong>
           </h3>
           <p className="paragraph-15">Click on the Select a Currency button, and enter the $ZMBE token contract:<br />
-             <a href="/" target="_blank">{topAddress}<br />{bottomAddress}</a>
+             <a href={bscscanLink} target="_blank" rel="noreferrer">{topAddress}<br />{bottomAddress}</a>
           </p>
         </div>
         {/* <div className="card buymobile">

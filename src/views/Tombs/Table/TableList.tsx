@@ -7,6 +7,7 @@ import { getBalanceAmount, getDecimalAmount, getFullDisplayBalance } from 'utils
 import tokens from 'config/constants/tokens';
 import numeral from 'numeral'
 import { getGraveTombApr } from '../../../utils/apr'
+import { Token } from '../../../config/constants/types'
 
 
 const DisplayFlex = styled(BaseLayout)`
@@ -58,12 +59,14 @@ interface TableListProps {
     pid: number,
     result: Result,
     poolInfo: any,
-    pendingZombie: any
+    pendingZombie: any,
+    token: Token,
+    quoteToken: Token
   }
 }
 
 const TableList: React.FC<TableListProps> = (props: TableListProps) => {
-  const { details: { name, poolInfo, pendingZombie }, lpTokenPrice, zombieUsdPrice, totalLpTokenStaked, handler } = props;
+  const { details: { name, poolInfo, pendingZombie, quoteToken, token }, lpTokenPrice, zombieUsdPrice, totalLpTokenStaked, handler } = props;
   let allocPoint = BIG_ZERO;
   if(poolInfo.allocPoint) {
     allocPoint = new BigNumber(poolInfo.allocPoint)
@@ -89,7 +92,12 @@ const TableList: React.FC<TableListProps> = (props: TableListProps) => {
             <div className="info-td-one">
               <div className="into-two-td">
                 <div className="info-1">
-                  <div>
+                  <div className="info-icon">
+                      <>
+                        <img src="images/rugZombie/BasicZombie.png" alt="basicicon" className="icon" />
+                        <img src={`images/tokens/${quoteToken.symbol}.png`} alt="rugicon" className="icon" />
+                      </>
+
                     <div className="titel">{name}</div>
                     <div className="small-lable">
                       <div className="con-info">{poolWeight.toString()}X</div>
