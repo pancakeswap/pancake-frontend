@@ -1,24 +1,5 @@
-import BigNumber from 'bignumber.js'
 import { BetPosition } from 'state/types'
-import {
-  formatBnb,
-  formatUsd,
-  getBnbAmount,
-  getMultiplier,
-  getPayout,
-} from 'views/Predictions/components/History/helpers'
-
-describe('getBnbAmount', () => {
-  it.each([
-    [2000000000000000000, 2],
-    [500000000000000000, 0.5],
-    [1658594666560000000, 1.65859466656],
-    [1123456789000000000, 1.123456789],
-  ])('format %i BNB correctly', (value, expected) => {
-    const bnValue = getBnbAmount(new BigNumber(value))
-    expect(bnValue.eq(expected)).toEqual(true)
-  })
-})
+import { formatBnb, formatUsd, getMultiplier, getPayout } from 'views/Predictions/components/History/helpers'
 
 describe('formatUsd', () => {
   it.each([

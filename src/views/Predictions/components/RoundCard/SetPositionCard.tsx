@@ -23,14 +23,13 @@ import { usePredictionsContract } from 'hooks/useContract'
 import { useGetBnbBalance } from 'hooks/useTokenBalance'
 import useToast from 'hooks/useToast'
 import { BetPosition } from 'state/types'
-import { getDecimalAmount } from 'utils/formatBalance'
+import { getBalanceAmount, getDecimalAmount } from 'utils/formatBalance'
 import UnlockButton from 'components/UnlockButton'
 import { BIG_NINE, BIG_TEN } from 'utils/bigNumber'
 import PositionTag from '../PositionTag'
 import useSwiper from '../../hooks/useSwiper'
 import FlexRow from '../FlexRow'
 import Card from './Card'
-import { getBnbAmount } from '../History/helpers'
 
 interface SetPositionCardProps {
   position: BetPosition
@@ -78,13 +77,13 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
   const predictionsContract = usePredictionsContract()
 
   const balanceDisplay = useMemo(() => {
-    return getBnbAmount(bnbBalance).toString()
+    return getBalanceAmount(bnbBalance).toString()
   }, [bnbBalance])
   const maxBalance = useMemo(() => {
-    return getBnbAmount(bnbBalance.gt(dust) ? bnbBalance.minus(dust) : bnbBalance)
+    return getBalanceAmount(bnbBalance.gt(dust) ? bnbBalance.minus(dust) : bnbBalance)
   }, [bnbBalance])
   const minBetAmountBalance = useMemo(() => {
-    return getBnbAmount(minBetAmount)
+    return getBalanceAmount(minBetAmount)
   }, [minBetAmount])
 
   const valueAsBn = new BigNumber(value)
