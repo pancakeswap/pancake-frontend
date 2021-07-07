@@ -307,6 +307,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
       </Flex>
       <BalanceInput
         isWarning={userNotEnoughCake || maxTicketPurchaseExceeded}
+        placeholder="0"
         value={ticketsToBuy}
         onUserInput={handleInputChange}
         currencyValue={
