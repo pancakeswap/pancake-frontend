@@ -11,6 +11,16 @@ import collectiblesReducer from './collectibles'
 import votingReducer from './voting'
 import lotteryReducer from './lottery'
 
+import application from './application/reducer'
+import { updateVersion } from './global/actions'
+import user from './user/reducer'
+import transactions from './transactions/reducer'
+import swap from './swap/reducer'
+import mint from './mint/reducer'
+import lists from './lists/reducer'
+import burn from './burn/reducer'
+import multicall from './multicall/reducer'
+
 const store = configureStore({
   devTools: process.env.NODE_ENV !== 'production',
   reducer: {
@@ -24,13 +34,26 @@ const store = configureStore({
     collectibles: collectiblesReducer,
     voting: votingReducer,
     lottery: lotteryReducer,
+
+    // Exchange
+    application,
+    user,
+    transactions,
+    swap,
+    mint,
+    burn,
+    multicall,
+    lists,
   },
 })
+
+store.dispatch(updateVersion())
 
 /**
  * @see https://redux-toolkit.js.org/usage/usage-with-typescript#getting-the-dispatch-type
  */
 export type AppDispatch = typeof store.dispatch
+export type AppState = ReturnType<typeof store.getState>
 export const useAppDispatch = () => useDispatch<AppDispatch>()
 
 export default store

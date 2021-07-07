@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { merge } from 'lodash'
 import { Proposal, ProposalState, VotingStateLoadingStatus, VotingState, Vote, State } from 'state/types'
