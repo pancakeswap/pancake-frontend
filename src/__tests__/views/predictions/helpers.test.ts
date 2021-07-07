@@ -23,7 +23,7 @@ describe('formatRoundTime', () => {
   })
 })
 
-describe('getPayoutv2', () => {
+describe('getPayout', () => {
   it.each([
     [
       '28602547725553480077',
@@ -102,7 +102,7 @@ describe('getPayoutv2', () => {
   )
 })
 
-describe('getNetPayoutv2', () => {
+describe('getNetPayout', () => {
   it.each([
     [
       '28602547725553480077',
