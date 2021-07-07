@@ -5,7 +5,7 @@ import { useTranslation } from 'contexts/Localization'
 import { SnapshotCommand } from 'state/types'
 import { signMessage } from 'utils/web3React'
 import useToast from 'hooks/useToast'
-import useWeb3Provider from 'hooks/useWeb3Provider'
+import useWeb3Provider from 'hooks/useActiveWeb3React'
 import useTheme from 'hooks/useTheme'
 import { CastVoteModalProps, ConfirmVoteView } from './types'
 import MainView from './MainView'
@@ -20,7 +20,7 @@ const CastVoteModal: React.FC<CastVoteModalProps> = ({ onSuccess, proposalId, vo
   const { account } = useWeb3React()
   const { t } = useTranslation()
   const { toastError } = useToast()
-  const provider = useWeb3Provider()
+  const { library } = useWeb3Provider()
   const { theme } = useTheme()
   const {
     isLoading,
@@ -63,7 +63,7 @@ const CastVoteModal: React.FC<CastVoteModalProps> = ({ onSuccess, proposalId, vo
         },
       })
 
-      const sig = await signMessage(provider, account, voteMsg)
+      const sig = await signMessage(library, account, voteMsg)
       const msg: Message = { address: account, msg: voteMsg, sig }
 
       // Save proposal to snapshot

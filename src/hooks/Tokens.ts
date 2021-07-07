@@ -3,6 +3,7 @@ import { parseBytes32String } from '@ethersproject/strings'
 import { Currency, ETHER, Token, currencyEquals } from '@pancakeswap/sdk'
 import { useMemo } from 'react'
 import { arrayify } from 'ethers/lib/utils'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import {
   TokenAddressMap,
   useDefaultTokenList,
@@ -15,7 +16,6 @@ import { NEVER_RELOAD, useSingleCallResult } from '../state/multicall/hooks'
 import useUserAddedTokens from '../state/user/hooks/useUserAddedTokens'
 import { isAddress } from '../utils'
 
-import { useActiveWeb3React } from './Auth'
 import { useBytes32TokenContract, useTokenContract } from './useContract'
 import { filterTokens } from '../components/SearchModal/filtering'
 
