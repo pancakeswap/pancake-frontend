@@ -1,78 +1,94 @@
 /* eslint-disable no-param-reassign */
-import React, { useEffect, useState } from 'react';
-import PageHeader from 'components/PageHeader';
-import { Heading } from '@rug-zombie-libs/uikit';
-import { useWeb3React } from '@web3-react/core';
-import { getAddress, getDrFrankensteinAddress } from 'utils/addressHelpers';
-import tokens from 'config/constants/tokens';
-import { useIfoAllowance } from 'hooks/useAllowance';
-import { getBnbPriceinBusd } from 'state/hooks';
+import React, { useEffect, useState } from 'react'
+import PageHeader from 'components/PageHeader'
+import { Heading } from '@rug-zombie-libs/uikit'
+import { useWeb3React } from '@web3-react/core'
+import { getAddress, getDrFrankensteinAddress } from 'utils/addressHelpers'
+import tokens from 'config/constants/tokens'
+import { useIfoAllowance } from 'hooks/useAllowance'
+import { getBnbPriceinBusd } from 'state/hooks'
+import { BigNumber } from 'bignumber.js'
 import { useDrFrankenstein, useERC20 } from '../../hooks/useContract'
 import Page from '../../components/layout/Page'
-import Table from './components/Table';
+import Table from './components/Table'
 import './HomeCopy.Styles.css'
-import tableData from './data';
+import tableData from './data'
+import { getBep20Contract, getZombieContract } from '../../utils/contractHelpers'
+import { getBalanceAmount } from '../../utils/formatBalance'
+import { BIG_ZERO } from '../../utils/bigNumber'
 
-let accountAddress;
+let accountAddress
 
 interface HomeC {
   zombieUsdPrice: number,
 }
 
 const HomeC: React.FC<HomeC> = ({ zombieUsdPrice }: HomeC) => {
-  const { account } = useWeb3React();
-  const [isAllowance, setIsAllowance] = useState(false);
-  const [farmData, setFarmData] = useState(tableData);
+  const { account } = useWeb3React()
+  const [isAllowance, setIsAllowance] = useState(false)
+  const [farmData, setFarmData] = useState(tableData)
 
   accountAddress = account
-  const drFrankenstein = useDrFrankenstein();
-  const zmbeContract = useERC20(getAddress(tokens.zmbe.address));
-  const allowance = useIfoAllowance(zmbeContract, getDrFrankensteinAddress());
-  const [bnbInBusd, setBnbInBusd] = useState(0);
+  const drFrankenstein = useDrFrankenstein()
+  const zmbeContract = useERC20(getAddress(tokens.zmbe.address))
+  const allowance = useIfoAllowance(zmbeContract, getDrFrankensteinAddress())
+  const [bnbInBusd, setBnbInBusd] = useState(0)
+  const [zombieGraveBalance, setZombieGraveBalance] = useState(BIG_ZERO)
 
-  // if allowance === 0 show the approve zombie don't call drFrankenstain
-  // if allowance > 0 if(grave) paidUnlockFee === true amount
   useEffect(() => {
     // eslint-disable-next-line eqeqeq
-    if (accountAddress) {
-      const newFarmData = tableData.map((tokenInfo) => {
-        drFrankenstein.methods.userInfo(tokenInfo.pid, accountAddress).call()
+    const newFarmData = tableData.map((graveInfo) => {
+      if (account) {
+        drFrankenstein.methods.userInfo(graveInfo.pid, account).call()
           .then(res => {
-            tokenInfo.result = res;
+            graveInfo.result = res
           })
-        drFrankenstein.methods.poolInfo(tokenInfo.pid).call().then(res => {
-          tokenInfo.poolInfo = res;
+      }
+      drFrankenstein.methods.poolInfo(graveInfo.pid).call().then(res => {
+        graveInfo.poolInfo = res
+      })
+      if (account) {
+        drFrankenstein.methods.pendingZombie(graveInfo.pid, account).call()
+          .then(res => {
+            graveInfo.pendingZombie = res
+          })
+      }
+      if (graveInfo.pid !== 0) {
+        getBep20Contract(graveInfo.stakingToken).methods.balanceOf(getDrFrankensteinAddress()).call()
+          .then(res => {
+            graveInfo.totalGraveAmount = res
+          })
+      }
+      return graveInfo
+    })
+
+    getZombieContract().methods.balanceOf(getDrFrankensteinAddress()).call()
+      .then(totalZombieBalance => {
+        let temp = new BigNumber(totalZombieBalance)
+        tableData.forEach(table => {
+          temp = temp.minus(table.totalGraveAmount)
         })
-        drFrankenstein.methods.pendingZombie(tokenInfo.pid, accountAddress).call()
-          .then(res => {
-            tokenInfo.pendingZombie = res;
-          })
-
-        return tokenInfo;
+        newFarmData[0].totalGraveAmount = temp.toString()
+        setFarmData(newFarmData)
+        getBnbPriceinBusd().then((res) => {
+          setBnbInBusd(res.data.price)
+        })
       })
-      setFarmData(newFarmData);
-      getBnbPriceinBusd().then((res) => {
-        setBnbInBusd(res.data.price)
-      })
-    }
+  }, [account, drFrankenstein.methods, zombieGraveBalance])
 
-    if (parseInt(allowance.toString()) !== 0) {
-      setIsAllowance(true);
-    }
-
-  }, [allowance, drFrankenstein.methods])
+  console.log("here")
 
   const updateResult = (pid) => {
     drFrankenstein.methods.userInfo(pid, accountAddress).call()
       .then(res => {
         const newFarmData = farmData.map((data) => {
           if (data.pid === pid) {
-            data.result = res;
+            data.result = res
           }
 
           return data
-        });
-        setFarmData(newFarmData);
+        })
+        setFarmData(newFarmData)
       })
   }
 
@@ -80,28 +96,30 @@ const HomeC: React.FC<HomeC> = ({ zombieUsdPrice }: HomeC) => {
     tokenContact.methods.allowance(accountAddress, getDrFrankensteinAddress()).call()
       .then(res => {
         if (parseInt(res.toString()) !== 0) {
-          setIsAllowance(true);
+          setIsAllowance(true)
         } else {
-          setIsAllowance(false);
+          setIsAllowance(false)
         }
         updateResult(pid)
-      });
+      })
   }
 
 
   return (
-    <Page className="innnerContainer">
-      <PageHeader background="none">
-        <Heading color="secondary" mb="24px">
+    <Page className='innnerContainer'>
+      <PageHeader background='none'>
+        <Heading color='secondary' mb='24px'>
           Graves
         </Heading>
-        <Heading color="text">
+        <Heading color='text'>
           Stake $ZMBE to Earn NFTs
         </Heading>
       </PageHeader>
       <div>
         {farmData.map((data) => {
-          return <Table zombieUsdPrice={zombieUsdPrice} updateResult={updateResult} updateAllowance={updateAllowance} bnbInBusd={bnbInBusd} isAllowance={isAllowance} details={data} key={data.id} />
+          return <Table zombieUsdPrice={zombieUsdPrice}
+                        updateResult={updateResult} updateAllowance={updateAllowance} bnbInBusd={bnbInBusd}
+                        isAllowance={isAllowance} details={data} key={data.id} />
         })}
       </div>
     </Page>

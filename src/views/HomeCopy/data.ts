@@ -15,7 +15,7 @@ const tableData = [
     nftRevivalTime: '30 days',
     rug: '',
     artist: artists.RugZombie,
-    stakingToken: getAddress(tokens.undead.address),
+    stakingToken: '',
     result: {
       paidUnlockFee: false,
       rugDeposited: 0,
@@ -24,6 +24,7 @@ const tableData = [
     },
     poolInfo: {},
     pendingZombie: '0',
+    totalGraveAmount: '0',
   },
   {
     id: 2,
@@ -45,6 +46,7 @@ const tableData = [
     },
     poolInfo: {},
     pendingZombie: '0',
+    totalGraveAmount: '0',
   },
   {
     id: 3,
@@ -66,6 +68,51 @@ const tableData = [
     },
     poolInfo: {},
     pendingZombie: '0',
+    totalGraveAmount: '0',
+  },
+  {
+    id: 2,
+    pid: 12,
+    name: 'Autoshark Legendary',
+    subtitle: 'zSHARK',
+    path: 'images/rugZombie/Autoshark Legendary.mp4',
+    type: 'video',
+    withdrawalCooldown: '3 days',
+    nftRevivalTime: '30 days',
+    rug: tokens.zshark,
+    artist: artists.deadtunnelrat,
+    stakingToken: '0x8fab22cB7C58b193Fd498ed0EF3B574d70E4f759',
+    result: {
+      paidUnlockFee: false,
+      rugDeposited: 0,
+      tokenWithdrawalDate: '0',
+      amount: '0',
+    },
+    poolInfo: {},
+    pendingZombie: '0',
+    totalGraveAmount: '0',
+  },
+  {
+    id: 3,
+    pid: 2,
+    name: 'MonsterSlayer Rare',
+    subtitle: 'ZombieSlayer',
+    path: 'images/rugZombie/ZombieSlayer.gif',
+    type: 'image',
+    withdrawalCooldown: '3 days',
+    nftRevivalTime: '30 days',
+    rug: tokens.msc,
+    artist: artists.ZomBaes,
+    stakingToken: '0xD4Ced04fB7129CDB43ffef1cf3DE3Ac701c6cE33',
+    result: {
+      paidUnlockFee: false,
+      rugDeposited: 0,
+      tokenWithdrawalDate: '0',
+      amount: '0',
+    },
+    poolInfo: {},
+    pendingZombie: '0',
+    totalGraveAmount: '0',
   },
   {
     id: 4,
@@ -87,6 +134,7 @@ const tableData = [
     },
     poolInfo: {},
     pendingZombie: '0',
+    totalGraveAmount: '0',
   },
   {
     id: 5,
@@ -109,6 +157,7 @@ const tableData = [
     poolInfo: {},
     pendingZombie: '0',
     stakingTokenStaked: '0',
+    totalGraveAmount: '0',
   },
   {
     id: 6,
@@ -130,6 +179,7 @@ const tableData = [
     },
     poolInfo: {},
     pendingZombie: '0',
+    totalGraveAmount: '0',
   },
   {
     id: 7,
@@ -151,6 +201,7 @@ const tableData = [
     },
     poolInfo: {},
     pendingZombie: '0',
+    totalGraveAmount: '0',
   },
   {
     id: 8,
@@ -172,6 +223,7 @@ const tableData = [
     },
     poolInfo: {},
     pendingZombie: '0',
+    totalGraveAmount: '0',
   },
   {
     id: 9,
@@ -193,6 +245,7 @@ const tableData = [
     },
     poolInfo: {},
     pendingZombie: '0',
+    totalGraveAmount: '0',
   },
   {
     id: 10,
@@ -214,6 +267,7 @@ const tableData = [
     },
     poolInfo: {},
     pendingZombie: '0',
+    totalGraveAmount: '0',
   },
   {
     id: 11,
@@ -236,6 +290,7 @@ const tableData = [
     poolInfo: {},
     pendingZombie: '0',
     stakingTokenStaked: '0',
+    totalGraveAmount: '0',
   },
 ]
 

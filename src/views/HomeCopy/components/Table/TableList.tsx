@@ -47,7 +47,6 @@ interface Result {
 interface TableListProps {
   handler: any
   zombieUsdPrice: number,
-  totalStakingTokenSupply: BigNumber,
   details: {
     id: number,
     name: string,
@@ -61,12 +60,13 @@ interface TableListProps {
     pid: number,
     result: Result,
     poolInfo: any,
-    pendingZombie: any
+    pendingZombie: any,
+    totalGraveAmount: any
   }
 }
 
 const TableList: React.FC<TableListProps> = (props: TableListProps) => {
-  const { details: { pid, name, path, rug, poolInfo, stakingToken, pendingZombie }, zombieUsdPrice, totalStakingTokenSupply, handler } = props;
+  const { details: { pid, name, path, rug, poolInfo, pendingZombie, totalGraveAmount }, zombieUsdPrice, handler } = props;
   let allocPoint = BIG_ZERO;
   if(poolInfo.allocPoint) {
      allocPoint = new BigNumber(poolInfo.allocPoint)
@@ -77,14 +77,13 @@ const TableList: React.FC<TableListProps> = (props: TableListProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const bigZombiePrice = getDecimalAmount(new BigNumber(zombieUsdPrice))
-  const apr = getGraveTombApr(poolWeight, bigZombiePrice, getDecimalAmount(totalStakingTokenSupply).times(zombieUsdPrice))
+  const apr = getGraveTombApr(poolWeight, bigZombiePrice, new BigNumber(totalGraveAmount).times(zombieUsdPrice))
 
 
   const toggleOpen = () => {
     setIsOpen(!isOpen);
     handler(!isOpen);
   };
-
   return (
     <table className="table">
       <tbody>
@@ -133,7 +132,7 @@ const TableList: React.FC<TableListProps> = (props: TableListProps) => {
           </td>
           <td className="td-width-25">
             <DisplayFlex>
-              <span className="total-earned">{numeral(totalStakingTokenSupply.times(zombieUsdPrice)).format('($ 0.00 a)')}</span>
+              <span className="total-earned">{numeral(getBalanceAmount(totalGraveAmount).times(zombieUsdPrice)).format('($ 0.00 a)')}</span>
               <div className="earned">TVL</div>
             </DisplayFlex>
           </td>

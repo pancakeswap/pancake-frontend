@@ -11,6 +11,11 @@ const artists = {
     name: 'TheLeap3d',
     twitter: 'https://twitter.com/TLeap3d',
   },
+  deadtunnelrat: {
+    name: 'TUNNEL RAT',
+    twitter: 'https://twitter.com/deadtunnelrat'
+
+  }
 }
 
 export default artists

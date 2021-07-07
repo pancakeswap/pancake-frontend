@@ -6,10 +6,6 @@ import StartFarming from '../StartFarming/StartFarming'
 import BuyFrank from '../BuyFrank/BuyFrank'
 import RugInDetails from '../RugInDetails'
 import TableList from './TableList'
-import { useERC20 } from '../../../../hooks/useContract'
-import { BIG_ZERO } from '../../../../utils/bigNumber'
-import { getBalanceAmount } from '../../../../utils/formatBalance'
-
 
 const TableCards = styled(BaseLayout)`
   align-items: stretch;
@@ -35,7 +31,8 @@ interface TableData {
   pid: number,
   result : any,
   poolInfo: any,
-  pendingZombie: any
+  pendingZombie: any,
+  totalGraveAmount: any
 }
 
 interface TableProps {
@@ -49,25 +46,13 @@ interface TableProps {
 
 const Table: React.FC<TableProps> = ({ details, isAllowance, bnbInBusd, updateAllowance, updateResult, zombieUsdPrice }: TableProps) => {
   const [isOpen, setIsOpen] = useState(false);
-
   const openInDetails = (data) => {
     setIsOpen(data);
   }
 
-  const stakingTokenContract = useERC20(details.stakingToken)
-  const [totalStakingTokenSupply, setTotalStakingTokenSupply] = useState(BIG_ZERO)
-
-  useEffect(() => {
-    stakingTokenContract.methods.totalSupply().call()
-      .then(res => {
-        setTotalStakingTokenSupply(getBalanceAmount(res))
-      })
-  }, [stakingTokenContract.methods])
-
   const TableListProps = {
     "handler": openInDetails,
     zombieUsdPrice,
-    totalStakingTokenSupply,
     details,
   }
 
@@ -85,7 +70,7 @@ const Table: React.FC<TableProps> = ({ details, isAllowance, bnbInBusd, updateAl
                 <StartFarming updateResult={updateResult} updateAllowance={updateAllowance} details={details} isAllowance={isAllowance}  />
                 <BuyFrank details={details} />
               </div>
-              <RugInDetails bnbInBusd={bnbInBusd} details={details} totalStakingTokenSupply={totalStakingTokenSupply} zombieUsdPrice={zombieUsdPrice} />
+              <RugInDetails bnbInBusd={bnbInBusd} details={details} zombieUsdPrice={zombieUsdPrice} />
             </div>
           </div>
         ) : null}

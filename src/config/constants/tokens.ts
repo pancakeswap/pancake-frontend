@@ -21,6 +21,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://rugzombie.io/',
   },
+  zshark: {
+    symbol: 'ZSHARK',
+    address: {
+      56: '0x40ab94f28fbf07ae45b9e50132da643a720e0e32',
+      97: '0x40ab94f28fbf07ae45b9e50132da643a720e0e32',
+    },
+    decimals: 18,
+    projectLink: ''
+  },
   merl: {
     symbol: 'MERL',
     address: {

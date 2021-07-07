@@ -3,7 +3,7 @@ import tokens from 'config/constants/tokens';
 import { useDrFrankenstein } from 'hooks/useContract'
 import React, { useEffect, useState } from 'react'
 import { BIG_ZERO } from 'utils/bigNumber';
-import { getFullDisplayBalance } from 'utils/formatBalance';
+import { getBalanceAmount, getDecimalAmount, getFullDisplayBalance } from 'utils/formatBalance'
 import BigNumber from 'bignumber.js';
 import numeral from 'numeral';
 
@@ -20,15 +20,15 @@ interface RugInDetailsProps {
     rug: string,
     artist?: any,
     stakingToken: any,
-    poolInfo: any
+    poolInfo: any,
+    totalGraveAmount: any
   },
   bnbInBusd: number,
-  totalStakingTokenSupply: BigNumber,
   zombieUsdPrice: number
 }
 
 const RugInDetails: React.FC<RugInDetailsProps> = ({
-  details: { id, subtitle, pid, path, type, withdrawalCooldown, nftRevivalTime, poolInfo, artist, stakingToken }, totalStakingTokenSupply, zombieUsdPrice, bnbInBusd,
+  details: { id, subtitle, pid, path, type, withdrawalCooldown, nftRevivalTime, poolInfo, artist, totalGraveAmount }, zombieUsdPrice, bnbInBusd,
 }) => {
   const drFrankenstein = useDrFrankenstein();
 
@@ -67,7 +67,7 @@ const RugInDetails: React.FC<RugInDetailsProps> = ({
         </span>
         <span className="indetails-title">
           Grave TVL:
-          <span className="indetails-value">{numeral(totalStakingTokenSupply.times(zombieUsdPrice)).format('($ 0.00 a)')}</span>
+          <span className="indetails-value">{numeral(getBalanceAmount(totalGraveAmount).times(zombieUsdPrice)).format('($ 0.00 a)')}</span>
         </span>
         <span className="indetails-title">
           <LinkExternal bold={false} small href={artist.twitter}>
