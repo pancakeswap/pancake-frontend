@@ -1,10 +1,5 @@
-import BigNumber from 'bignumber.js'
 import { Bet, BetPosition } from 'state/types'
-import { formatNumber, getBalanceAmount } from 'utils/formatBalance'
-
-export const getBnbAmount = (bnbBn: BigNumber) => {
-  return getBalanceAmount(bnbBn, 18)
-}
+import { formatNumber } from 'utils/formatBalance'
 
 export const formatUsd = (usd: number) => {
   return `$${formatNumber(usd || 0, 3, 3)}`
@@ -12,10 +7,6 @@ export const formatUsd = (usd: number) => {
 
 export const formatBnb = (bnb: number) => {
   return bnb ? bnb.toLocaleString(undefined, { minimumFractionDigits: 3, maximumFractionDigits: 3 }) : '0'
-}
-
-export const formatBnbFromBigNumber = (bnbBn: BigNumber) => {
-  return formatBnb(getBnbAmount(bnbBn).toNumber())
 }
 
 export const getMultiplier = (total: number, amount: number) => {
