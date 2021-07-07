@@ -83,6 +83,23 @@ export const fetchLottery = async (lotteryId: string): Promise<LotteryResponse> 
   }
 }
 
+export const fetchMultipleLotteries = async (lotteryIds: string[]): Promise<LotteryResponse[]> => {
+  const calls = lotteryIds.map((id) => ({
+    name: 'viewLottery',
+    address: getLotteryV2Address(),
+    params: [id],
+  }))
+
+  try {
+    // TODO: Process response
+    const multicallRes = await multicallv2(lotteryV2Abi, calls, { requireSuccess: false })
+    return multicallRes
+  } catch (error) {
+    console.error(error)
+    return null
+  }
+}
+
 export const fetchCurrentLotteryIdAndMaxBuy = async () => {
   try {
     const calls = ['currentLotteryId', 'maxNumberTicketsPerBuyOrClaim'].map((method) => ({

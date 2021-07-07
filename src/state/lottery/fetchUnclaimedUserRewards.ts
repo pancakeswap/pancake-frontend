@@ -7,6 +7,7 @@ import lotteryV2Abi from 'config/abi/lotteryV2.json'
 import { getLotteryV2Address } from 'utils/addressHelpers'
 import { BIG_ZERO } from 'utils/bigNumber'
 import {
+  fetchMultipleLotteries,
   getViewUserTicketInfoCalls,
   mergeViewUserTicketInfoMulticallResponse,
   processRawTicketsResponse,
@@ -124,10 +125,12 @@ export const fetchUserTicketsForMultipleRounds = async (roundsToCheck: UserRound
     let resCount = 0
     for (let i = 0; i < callsWithRoundData.length; i += 1) {
       const callOptions = callsWithRoundData[i]
-
-      multicallResPerRound.push(multicallRes.slice(resCount, resCount + callOptions.count))
+      const singleRoundResponse = multicallRes.slice(resCount, resCount + callOptions.count)
+      // Don't push null responses values - can happen when the check is using fallback behaviour because it has no subgraph past rounds
+      multicallResPerRound.push(singleRoundResponse.filter((res) => res))
       resCount += callOptions.count
     }
+
     const mergedMulticallResponse = multicallResPerRound.map((res) => mergeViewUserTicketInfoMulticallResponse(res))
 
     return mergedMulticallResponse
@@ -141,39 +144,66 @@ const fetchUnclaimedUserRewards = async (
   account: string,
   userLotteryData: LotteryUserGraphEntity,
   lotteriesData: LotteryRoundGraphEntity[],
+  currentLotteryId: string,
 ): Promise<LotteryTicketClaimData[]> => {
-  const { rounds } = userLotteryData
+  // const { rounds } = userLotteryData
 
-  // If there is no user round history - return an empty array
-  if (rounds.length === 0) {
-    return []
-  }
+  const rounds = []
+  let userRoundsToCheck
 
   // If the web3 provider account doesn't equal the userLotteryData account, return an empty array - this is effectively a loading state as the user switches accounts
   if (userLotteryData.account.toLowerCase() !== account.toLowerCase()) {
     return []
   }
 
-  // Filter out non-claimable rounds
-  const claimableRounds = rounds.filter((round) => {
-    return round.status.toLowerCase() === LotteryStatus.CLAIMABLE
-  })
+  // Fallback behaviour if there is no user subgraph rounds history - check current and previous three rounds
+  if (rounds.length === 0) {
+    const currentIdAsInt = parseInt(currentLotteryId, 10)
+    const ticketsToRequest = 5000
+    const numRoundsToCheck = 4
+    const roundIds = []
 
-  // If there are any rounds tickets haven't been claimed for, OR a user has over 100 tickets in a round - check user tickets for those rounds
-  const roundsToCheck = claimableRounds.filter((round) => {
-    return !round.claimed || parseInt(round.totalTickets, 10) > 100
-  })
+    for (let i = 0; i < numRoundsToCheck; i++) {
+      roundIds.push(currentIdAsInt - i)
+    }
 
-  if (roundsToCheck.length > 0) {
-    const rawUserTicketData = await fetchUserTicketsForMultipleRounds(roundsToCheck, account)
+    // TODO: type
+    const fallbackRoundData = roundIds.map((roundId) => {
+      return {
+        totalTickets: ticketsToRequest,
+        lotteryId: roundId,
+      }
+    })
+    userRoundsToCheck = fallbackRoundData
+  } else {
+    // Filter out open rounds. We still check 'close' rounds due to a potential delay in the subgraph data returning 'close' when that round is in fact now 'claimable'
+    const claimableRounds = rounds.filter((round) => {
+      return round.status.toLowerCase() !== LotteryStatus.OPEN
+    })
+
+    // If there are any rounds tickets haven't been claimed for, OR a user has over 100 tickets in a round - check user tickets for those rounds
+    userRoundsToCheck = claimableRounds.filter((round) => {
+      return !round.claimed || parseInt(round.totalTickets, 10) > 100
+    })
+  }
+
+  if (userRoundsToCheck.length > 0) {
+    const idsToCheck = userRoundsToCheck.map((round) => round.lotteryId)
+    // TODO: Use node call instead of subgraph for winning number
+    const publicRoundData = fetchMultipleLotteries(idsToCheck)
+
+    const rawUserTicketData = await fetchUserTicketsForMultipleRounds(userRoundsToCheck, account)
 
     if (rawUserTicketData.length === 0) {
       // In case of error with ticket calls, return empty array
       return []
     }
 
-    const roundIds = roundsToCheck.map((round) => round.lotteryId)
+    const roundIds = userRoundsToCheck.map((round) => round.lotteryId)
     const roundDataAndUserTickets = rawUserTicketData.map((rawRoundTicketData, index) => {
+      console.log(lotteriesData)
+
+      debugger // eslint-disable-line
       return {
         roundId: roundIds[index],
         userTickets: processRawTicketsResponse(rawRoundTicketData),
