@@ -52,13 +52,14 @@ const WithdrawZombieModal: React.FC<WithdrawZombieModalProps> = ({ details: { pi
     const zombieStaked = new BigNumber(result.amount);
 
     const { theme } = useTheme();
-    const [stakeAmount, setStakeAmount] = useState('');
+    const [stakeAmount, setStakeAmount] = useState('0');
     const [exactStakeAmount, setExactStakeAmount] = useState(BIG_ZERO);
     const [percent, setPercent] = useState(0)
 
     const handleStakeInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const inputValue = event.target.value || '0'
         setStakeAmount(inputValue);
+        setExactStakeAmount(getDecimalAmount(new BigNumber(inputValue)))
     }
 
     const handleChangePercent = (sliderPercent: number) => {
@@ -80,6 +81,8 @@ const WithdrawZombieModal: React.FC<WithdrawZombieModalProps> = ({ details: { pi
     }
 
     const handleWithDrawEarly = () => {
+        console.count(exactStakeAmount.toString())
+
         if (pid === 0) {
             drFrankenstein.methods.leaveStakingEarly(exactStakeAmount)
                 .send({ from: account }).then(() => {
