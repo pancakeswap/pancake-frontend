@@ -49,12 +49,11 @@ const StakeZombieModal: React.FC<StakeZombieModalProps> = ({ details: { rug, pid
 
   const { theme } = useTheme();
   const [percent, setPercent] = useState(0);
-  const [stakeAmount, setStakeAmount] = useState(
-    amount.toString() === '0' ? getFullDisplayBalance(new BigNumber(poolInfo.minimumStake), tokens.zmbe.decimals, 4) : '0');
+  const [stakeAmount, setStakeAmount] = useState(new BigNumber(poolInfo.minimumStake));
 
   const handleStakeInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = event.target.value || '0'
-    setStakeAmount(inputValue);
+    setStakeAmount(getDecimalAmount(new BigNumber(inputValue)));
   }
 
   const handleChangePercent = (sliderPercent: number) => {
@@ -62,10 +61,10 @@ const StakeZombieModal: React.FC<StakeZombieModalProps> = ({ details: { rug, pid
     let amountToStake
     if(amount.toString() === '0') {
       percentageOfStakingMax = zombieBalance.minus(poolInfo.minimumStake).dividedBy(100).multipliedBy(sliderPercent)
-      amountToStake = getFullDisplayBalance(percentageOfStakingMax.plus(poolInfo.minimumStake), tokens.zmbe.decimals, 4)
+      amountToStake = percentageOfStakingMax.plus(poolInfo.minimumStake).toString()
     } else {
-      percentageOfStakingMax = zombieBalance.dividedBy(100).multipliedBy(sliderPercent)
-      amountToStake = getFullDisplayBalance(percentageOfStakingMax, tokens.zmbe.decimals, 4)
+      percentageOfStakingMax = zombieBalance.multipliedBy(sliderPercent).dividedBy(100)
+      amountToStake = percentageOfStakingMax.toString()
     }
 
     setStakeAmount(amountToStake)
@@ -73,20 +72,30 @@ const StakeZombieModal: React.FC<StakeZombieModalProps> = ({ details: { rug, pid
   }
 
   const handleStakeZmbe = () => {
-    const convertedStakeAmount = getDecimalAmount(new BigNumber(stakeAmount), tokens.zmbe.decimals);
       if(pid === 0){
-        drFrankenstein.methods.enterStaking(convertedStakeAmount)
+        drFrankenstein.methods.enterStaking(stakeAmount)
         .send({ from: account }).then(()=>{
           updateResult(pid);
           onDismiss();
         })
       } else {
-        drFrankenstein.methods.deposit(pid, convertedStakeAmount)
+        drFrankenstein.methods.deposit(pid, stakeAmount)
         .send({ from: account }).then(()=>{
           updateResult(pid)
           onDismiss();
         })
       }
+  }
+
+  let stakingDetails = ''
+  let isDisabled = false
+  const bigStakeAmount = new BigNumber(stakeAmount)
+  if(bigStakeAmount.gt(zombieBalance)) {
+    isDisabled = true
+    stakingDetails = "Invalid Stake: Insufficient ZMBE Balance"
+  } else if(bigStakeAmount.plus(amount).lt(poolInfo.minimumStake)) {
+    isDisabled = true
+    stakingDetails = `Invalid Stake: Minimum ${getBalanceAmount(poolInfo.minimumStake).toString()} ZMBE`
   }
 
 
@@ -101,12 +110,15 @@ const StakeZombieModal: React.FC<StakeZombieModalProps> = ({ details: { rug, pid
       </Flex>
     </Flex>
     <BalanceInput
-      value={stakeAmount}
+      value={Math.round(getBalanceAmount(stakeAmount).times(100).toNumber()) / 100}
       onChange={handleStakeInputChange}
-      currencyValue={`${Math.round(parseFloat(stakeAmount) * zombieUsdPrice * 100) / 100} USD`}
+      currencyValue={`${Math.round(getBalanceAmount(stakeAmount).times(zombieUsdPrice).times(100).toNumber()) / 100} USD`}
     />
     <Text mt="8px" ml="auto" color="textSubtle" fontSize="12px" mb="8px">
       Balance: {getFullDisplayBalance(zombieBalance, tokens.zmbe.decimals, 4)}
+    </Text>
+    <Text mt="8px" ml="auto" color="tertiary" fontSize="12px" mb="8px">
+      {stakingDetails}
     </Text>
     <Slider
       min={0}
@@ -135,7 +147,7 @@ const StakeZombieModal: React.FC<StakeZombieModalProps> = ({ details: { rug, pid
        <Button mt="8px" as="a" external href={`${BASE_EXCHANGE_URL}/#/swap?outputCurrency=${getAddress(tokens.zmbe.address)}`} variant="secondary">
        Get ZMBE
      </Button> :
-      <Button onClick={handleStakeZmbe} mt="8px" as="a" variant="secondary">
+      <Button onClick={handleStakeZmbe} disabled={isDisabled} mt="8px" as="a" variant="secondary">
         Deposit ZMBE
       </Button>}
   </Modal>
