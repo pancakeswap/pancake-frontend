@@ -2,13 +2,9 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { LotteryTicket, LotteryStatus } from 'config/constants/types'
 import { LotteryState, LotteryRoundGraphEntity, LotteryUserGraphEntity, LotteryResponse } from 'state/types'
-import {
-  fetchLottery,
-  fetchCurrentLotteryIdAndMaxBuy,
-  fetchTickets,
-  getUserLotteryData,
-  getLotteriesData,
-} from './helpers'
+import { fetchLottery, fetchCurrentLotteryIdAndMaxBuy, fetchTickets } from './helpers'
+import getLotteriesData from './getLotteriesData'
+import getUserLotteryData from './getUserLotteryData'
 
 interface PublicLotteryData {
   currentLotteryId: string

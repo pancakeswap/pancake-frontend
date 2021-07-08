@@ -105,7 +105,10 @@ const getWinningNumbersForRound = (targetRoundId: string, lotteriesData: Lottery
   return targetRound?.finalNumber
 }
 
-export const fetchUserTicketsForMultipleRounds = async (roundsToCheck: UserRound[], account: string) => {
+export const fetchUserTicketsForMultipleRounds = async (
+  roundsToCheck: { totalTickets: string; lotteryId: string }[],
+  account: string,
+) => {
   // Build calls with data to help with merging multicall responses
   const callsWithRoundData = roundsToCheck.map((round) => {
     const totalTickets = parseInt(round.totalTickets, 10)
@@ -125,7 +128,9 @@ export const fetchUserTicketsForMultipleRounds = async (roundsToCheck: UserRound
     for (let i = 0; i < callsWithRoundData.length; i += 1) {
       const callOptions = callsWithRoundData[i]
 
-      multicallResPerRound.push(multicallRes.slice(resCount, resCount + callOptions.count))
+      const singleRoundResponse = multicallRes.slice(resCount, resCount + callOptions.count)
+      // Don't push null responses values - can happen when the check is using fallback behaviour because it has no subgraph past rounds
+      multicallResPerRound.push(singleRoundResponse.filter((res) => res))
       resCount += callOptions.count
     }
     const mergedMulticallResponse = multicallResPerRound.map((res) => mergeViewUserTicketInfoMulticallResponse(res))

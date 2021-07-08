@@ -1,20 +1,10 @@
 import BigNumber from 'bignumber.js'
-import { request, gql } from 'graphql-request'
 import { ethers } from 'ethers'
-import { GRAPH_API_LOTTERY } from 'config/constants/endpoints'
 import { LotteryStatus, LotteryTicket } from 'config/constants/types'
 import lotteryV2Abi from 'config/abi/lotteryV2.json'
 import { getLotteryV2Address } from 'utils/addressHelpers'
 import { multicallv2 } from 'utils/multicall'
-import {
-  LotteryUserGraphEntity,
-  LotteryRoundGraphEntity,
-  LotteryRound,
-  UserTicketsResponse,
-  UserRound,
-  LotteryRoundUserTickets,
-  LotteryResponse,
-} from 'state/types'
+import { LotteryRound, UserTicketsResponse, LotteryRoundUserTickets, LotteryResponse } from 'state/types'
 import { getLotteryV2Contract } from 'utils/contractHelpers'
 import { useMemo } from 'react'
 import { ethersToSerializedBigNumber } from 'utils/bigNumber'
@@ -196,153 +186,13 @@ export const fetchTickets = async (
   }
 }
 
-const getRoundIdsArray = (currentLotteryId: string): string[] => {
+export const getRoundIdsArray = (currentLotteryId: string): string[] => {
   const currentIdAsInt = parseInt(currentLotteryId, 10)
   const roundIds = []
   for (let i = 0; i < NUM_ROUNDS_TO_FETCH_FROM_NODES; i++) {
     roundIds.push(currentIdAsInt - i)
   }
   return roundIds
-}
-
-const applyNodeDataToLotteriesGraphResponse = (
-  nodeData: LotteryResponse[],
-  graphRespose: LotteryRoundGraphEntity[],
-): LotteryRoundGraphEntity[] => {
-  const mergedResponse = graphRespose.map((graphRound, index) => {
-    const nodeRound = nodeData[index]
-    if (nodeRound) {
-      // if isLoading === true, there has been an error - return graphRound
-      if (!nodeRound.isLoading) {
-        return {
-          endTime: nodeRound.endTime,
-          finalNumber: nodeRound.finalNumber.toString(),
-          startTime: nodeRound.startTime,
-          status: nodeRound.status,
-          id: graphRound.id,
-          ticketPrice: graphRound.ticketPrice,
-          totalTickets: graphRound.totalTickets,
-          totalUsers: graphRound.totalTickets,
-          winningTickets: graphRound.totalTickets,
-        }
-      }
-      return graphRound
-    }
-    return graphRound
-  })
-  return mergedResponse
-}
-
-export const getLotteriesData = async (currentLotteryId: string): Promise<LotteryRoundGraphEntity[]> => {
-  const idsForNodesCall = getRoundIdsArray(currentLotteryId)
-  const nodeData = await fetchMultipleLotteries(idsForNodesCall)
-  const graphResponse = await getGraphLotteries()
-  const mergedData = applyNodeDataToLotteriesGraphResponse(nodeData, graphResponse)
-  return mergedData
-}
-
-const getGraphLotteries = async (): Promise<LotteryRoundGraphEntity[]> => {
-  const response = await request(
-    GRAPH_API_LOTTERY,
-    gql`
-      query getLotteries {
-        lotteries(first: 100, orderDirection: desc, orderBy: block) {
-          id
-          totalUsers
-          totalTickets
-          winningTickets
-          status
-          finalNumber
-          startTime
-          endTime
-          ticketPrice
-        }
-      }
-    `,
-  )
-
-  const { lotteries } = response
-  return lotteries
-}
-
-export const getUserLotteryData = async (
-  account: string,
-  currentLotteryId: string,
-): Promise<LotteryUserGraphEntity> => {
-  const idsForNodeCall = getRoundIdsArray(currentLotteryId)
-  // Find out if user has any tickets in any of these lotteries
-  // See if they have claimed any of those tickets
-  // Get status of that lottery from node
-
-  const graphResponse = await getGraphLotteryUser(account)
-
-  // graphResponse.rounds {
-  // claimed: null
-  // status: "Open"
-  // endTime: "1625767200"
-  // lotteryId: "12"
-  // totalTickets: "10"
-  // }
-
-  debugger // eslint-disable-line
-
-  return graphResponse
-}
-
-const getGraphLotteryUser = async (account: string): Promise<LotteryUserGraphEntity> => {
-  const response = await request(
-    GRAPH_API_LOTTERY,
-    gql`
-      query getUserLotteries($account: ID!) {
-        user(id: $account) {
-          id
-          totalTickets
-          totalCake
-          rounds(first: 100, orderDirection: desc, orderBy: block) {
-            id
-            lottery {
-              id
-              endTime
-              status
-            }
-            claimed
-            totalTickets
-          }
-        }
-      }
-    `,
-    { account: account.toLowerCase() },
-  )
-  const { user } = response
-
-  // If no subgraph response - return blank user
-  if (!response || !user) {
-    const blankUser = {
-      account,
-      totalCake: '',
-      totalTickets: '',
-      rounds: [],
-    }
-
-    return blankUser
-  }
-
-  const formattedUser = user && {
-    account: user.id,
-    totalCake: user.totalCake,
-    totalTickets: user.totalTickets,
-    rounds: user.rounds.map((round) => {
-      return {
-        lotteryId: round?.lottery?.id,
-        endTime: round?.lottery?.endTime,
-        claimed: round?.claimed,
-        totalTickets: round?.totalTickets,
-        status: round?.lottery?.status,
-      }
-    }),
-  }
-
-  return formattedUser
 }
 
 export const useProcessLotteryResponse = (
