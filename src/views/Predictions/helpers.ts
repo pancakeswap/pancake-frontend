@@ -71,3 +71,11 @@ export const getNetPayoutv2 = (ledger: NodeLedger, round: NodeRound) => {
 
   return payout.subUnsafe(amount)
 }
+
+export const getPriceDifference = (price: ethers.BigNumber, lockPrice: ethers.BigNumber) => {
+  if (!price || !lockPrice) {
+    return ethers.BigNumber.from(0)
+  }
+
+  return price.sub(lockPrice)
+}

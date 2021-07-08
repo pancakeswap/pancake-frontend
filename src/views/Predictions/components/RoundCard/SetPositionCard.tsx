@@ -138,14 +138,14 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
     const betMethod = position === BetPosition.BULL ? 'betBull' : 'betBear'
     const decimalValue = getDecimalAmount(valueAsBn)
 
-    const tx = await predictionsContract[betMethod]({ value: decimalValue.toString(), gasPrice })
-    setIsTxPending(true)
-    const receipt = await tx.wait()
-    if (receipt.status) {
-      setIsTxPending(false)
+    try {
+      const tx = await predictionsContract[betMethod]({ value: decimalValue.toString(), gasPrice })
+      setIsTxPending(true)
+      const receipt = await tx.wait()
       onSuccess(decimalValue, receipt.transactionHash as string)
-    } else {
+    } catch {
       toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
+    } finally {
       setIsTxPending(false)
     }
   }

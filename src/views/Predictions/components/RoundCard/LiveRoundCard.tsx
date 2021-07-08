@@ -8,7 +8,7 @@ import { BLOCK_PADDING } from 'state/predictions'
 import { formatBigNumberToFixed } from 'utils/formatBalance'
 import { useBlock, useGetLastOraclePrice } from 'state/hooks'
 import BlockProgress from 'components/BlockProgress'
-import { formatUsdv2 } from '../../helpers'
+import { formatUsdv2, getPriceDifference } from '../../helpers'
 import PositionTag from '../PositionTag'
 import { RoundResultBox, LockPriceRow, PrizePoolRow } from '../RoundResult'
 import MultiplierArrow from './MultiplierArrow'
@@ -52,7 +52,7 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
   const priceColor = isBull ? 'success' : 'failure'
   const estimatedEndBlockPlusPadding = endBlock + BLOCK_PADDING
 
-  const priceDifference = price.sub(lockPrice)
+  const priceDifference = getPriceDifference(price, lockPrice)
   const priceAsNumber = parseFloat(formatBigNumberToFixed(price, 3, 8))
 
   const { countUp, update } = useCountUp({

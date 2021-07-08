@@ -3,7 +3,7 @@ import { ethers } from 'ethers'
 import { BoxProps, Flex, Skeleton, Text } from '@pancakeswap/uikit'
 import { BetPosition, NodeRound } from 'state/types'
 import { useTranslation } from 'contexts/Localization'
-import { formatUsdv2 } from '../../helpers'
+import { formatUsdv2, getPriceDifference } from '../../helpers'
 import PositionTag from '../PositionTag'
 import { LockPriceRow, PrizePoolRow, RoundResultBox } from './styles'
 
@@ -29,7 +29,7 @@ const RoundResult: React.FC<RoundResultProps> = ({ round, hasFailed = false, chi
   const betPosition = getBetPosition(closePrice, lockPrice)
   const isPositionUp = betPosition === BetPosition.BULL
   const { t } = useTranslation()
-  const priceDifference = closePrice ? closePrice.sub(lockPrice) : ethers.BigNumber.from(0)
+  const priceDifference = getPriceDifference(closePrice, lockPrice)
 
   return (
     <RoundResultBox betPosition={betPosition} {...props}>
