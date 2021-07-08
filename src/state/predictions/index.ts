@@ -221,6 +221,7 @@ export const predictionsSlice = createSlice({
         )
 
         state.rounds[futureRound.epoch] = futureRound
+        state.currentRoundStartBlockNumber = state.currentRoundStartBlockNumber + state.intervalBlocks + BLOCK_PADDING
       }
 
       state.status = status
@@ -271,9 +272,6 @@ export const predictionsSlice = createSlice({
     // Get multiple rounds
     builder.addCase(fetchRounds.fulfilled, (state, action) => {
       state.rounds = merge({}, state.rounds, action.payload)
-
-      const currentRound = state.rounds[state.currentEpoch]
-      state.currentRoundStartBlockNumber = currentRound.startBlock
     })
 
     // Show History

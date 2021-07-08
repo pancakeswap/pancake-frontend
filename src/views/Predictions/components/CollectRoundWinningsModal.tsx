@@ -64,10 +64,11 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
   const betAmountAsFloat = parseFloat(betAmount)
 
   const handleClick = async () => {
-    const tx = await predictionsContract.claim(epoch)
-    setIsPendingTx(true)
-    const receipt = await tx.wait()
-    if (receipt.status) {
+    try {
+      const tx = await predictionsContract.claim(epoch)
+      setIsPendingTx(true)
+      const receipt = await tx.wait()
+
       if (onSuccess) {
         await onSuccess()
       }
@@ -86,9 +87,10 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
           )}
         </Box>,
       )
-    } else {
-      setIsPendingTx(false)
+    } catch {
       toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
+    } finally {
+      setIsPendingTx(false)
     }
   }
 
