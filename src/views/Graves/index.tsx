@@ -8,7 +8,7 @@ import tokens from 'config/constants/tokens'
 import { useIfoAllowance } from 'hooks/useAllowance'
 import { getBnbPriceinBusd } from 'state/hooks'
 import { BigNumber } from 'bignumber.js'
-import { useDrFrankenstein, useERC20 } from '../../hooks/useContract'
+import { useDrFrankenstein, useERC20, useZombie } from '../../hooks/useContract'
 import Page from '../../components/layout/Page'
 import Table from './components/Table'
 import './Graves.Styles.css'
@@ -33,8 +33,17 @@ const Graves: React.FC<Graves> = ({ zombieUsdPrice }: Graves) => {
   const allowance = useIfoAllowance(zmbeContract, getDrFrankensteinAddress())
   const [bnbInBusd, setBnbInBusd] = useState(0)
   const [zombieGraveBalance, setZombieGraveBalance] = useState(BIG_ZERO)
+  const [zombieAllowance, setZombieAllowance] = useState(0)
 
   useEffect(() => {
+    if(account){
+      getZombieContract().methods.allowance(accountAddress, getDrFrankensteinAddress()).call()
+        .then(res => {
+          console.log("here")
+          console.log(res.toString())
+          setZombieAllowance(res)
+        })
+    }
     // eslint-disable-next-line eqeqeq
     const newFarmData = tableData.map((graveInfo) => {
       if (account) {
@@ -76,30 +85,37 @@ const Graves: React.FC<Graves> = ({ zombieUsdPrice }: Graves) => {
   }, [account, drFrankenstein.methods, zombieGraveBalance])
 
   const updateResult = (pid) => {
+    getZombieContract().methods.allowance(accountAddress, getDrFrankensteinAddress()).call()
+      .then(res => {
+        console.log("here")
+        console.log(res.toString())
+        setZombieAllowance(res)
+      })
     drFrankenstein.methods.userInfo(pid, accountAddress).call()
       .then(res => {
         const newFarmData = farmData.map((data) => {
           if (data.pid === pid) {
             data.result = res
           }
-
           return data
         })
+
         setFarmData(newFarmData)
       })
   }
 
-  const updateAllowance = (tokenContact, pid) => {
-    tokenContact.methods.allowance(accountAddress, getDrFrankensteinAddress()).call()
-      .then(res => {
-        if (parseInt(res.toString()) !== 0) {
-          setIsAllowance(true)
-        } else {
-          setIsAllowance(false)
-        }
-        updateResult(pid)
-      })
-  }
+    const updateAllowance = (tokenContact, pid) => {
+      tokenContact.methods.allowance(accountAddress, getDrFrankensteinAddress()).call()
+        .then(res => {
+          if (parseInt(res.toString()) !== 0) {
+            setIsAllowance(true)
+          } else {
+            setIsAllowance(false)
+          }
+          updateResult(pid)
+        })
+    }
+
 
 
   return (
@@ -115,7 +131,7 @@ const Graves: React.FC<Graves> = ({ zombieUsdPrice }: Graves) => {
       <div>
         {farmData.map((data) => {
           return <Table zombieUsdPrice={zombieUsdPrice}
-                        updateResult={updateResult} updateAllowance={updateAllowance} bnbInBusd={bnbInBusd}
+                        updateResult={updateResult} updateAllowance={updateAllowance} zombieAllowance={zombieAllowance} bnbInBusd={bnbInBusd}
                         isAllowance={isAllowance} details={data} key={data.id} />
         })}
       </div>

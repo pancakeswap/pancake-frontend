@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { BaseLayout } from '@rug-zombie-libs/uikit'
+import { BigNumber } from 'bignumber.js'
 import FrankEarned from '../FrankEarned/FrankEarned'
 import StartFarming from '../StartFarming/StartFarming'
 import BuyFrank from '../BuyFrank/BuyFrank'
@@ -44,9 +45,10 @@ interface TableProps {
   updateAllowance: any,
   updateResult: any,
   zombieUsdPrice: number,
+  zombieAllowance: number,
 }
 
-const Table: React.FC<TableProps> = ({ details, isAllowance, bnbInBusd, updateAllowance, updateResult, zombieUsdPrice }: TableProps) => {
+const Table: React.FC<TableProps> = ({ details, isAllowance, bnbInBusd, updateAllowance, updateResult, zombieUsdPrice, zombieAllowance }: TableProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const openInDetails = (data) => {
     setIsOpen(data);
@@ -69,7 +71,7 @@ const Table: React.FC<TableProps> = ({ details, isAllowance, bnbInBusd, updateAl
             <div className="w-95 mx-auto mt-3">
               <div className="flex-grow">
                 <FrankEarned pid={details.pid} pendingZombie={details.pendingZombie}/>
-                <StartFarming updateResult={updateResult} zombieUsdPrice={zombieUsdPrice} updateAllowance={updateAllowance} details={details} isAllowance={isAllowance}  />
+                <StartFarming updateResult={updateResult} zombieUsdPrice={zombieUsdPrice} zombieAllowance={zombieAllowance} updateAllowance={updateAllowance} details={details} isAllowance={isAllowance}  />
                 <BuyFrank details={details} />
               </div>
               <RugInDetails bnbInBusd={bnbInBusd} details={details} zombieUsdPrice={zombieUsdPrice} />

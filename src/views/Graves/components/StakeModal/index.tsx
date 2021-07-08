@@ -36,14 +36,14 @@ interface StakeModalProps {
   },
   updateResult: any,
   onDismiss?: () => void,
-  updateAllowance: any
+  updateAllowance: any,
 }
 
 const StyledButton = styled(Button)`
   flex-grow: 1;
 `
 
-const StakeModal: React.FC<StakeModalProps> = ({ details, details: { rug, pid, pcsVersion }, updateResult, onDismiss, updateAllowance }) => {
+const StakeModal: React.FC<StakeModalProps> = ({ details, details: { rug, pid, pcsVersion }, updateResult, onDismiss }) => {
   let rugTokenBalance = BIG_ZERO;
 
   if (pid !== 0) {
@@ -68,8 +68,6 @@ const StakeModal: React.FC<StakeModalProps> = ({ details, details: { rug, pid, p
     setStakeAmount(amountToStake)
     setPercent(sliderPercent)
   }
-
-
 
   const [onGetTokenClick] = useModal(
     <WarningModal

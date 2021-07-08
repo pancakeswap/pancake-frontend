@@ -8,7 +8,7 @@ import { ethers } from 'ethers';
 import { useIfoAllowance } from 'hooks/useAllowance';
 import useTokenBalance from 'hooks/useTokenBalance';
 import { getFullDisplayBalance } from 'utils/formatBalance'
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import BigNumber from 'bignumber.js'
 import { getAddress, getDrFrankensteinAddress } from 'utils/addressHelpers';
 import { BIG_ZERO } from 'utils/bigNumber';
@@ -17,6 +17,7 @@ import StakeModal from '../StakeModal';
 import StakeZombieModal from '../StakeZombieModal';
 import WithdrawZombieModal from '../WithdrawZombieModal';
 import useAuth from '../../../../hooks/useAuth'
+import { getZombieContract } from '../../../../utils/contractHelpers'
 
 
 const DisplayFlex = styled(BaseLayout)`
@@ -57,14 +58,16 @@ interface StartFarmingProps {
   updateAllowance: any,
   updateResult: any,
   zombieUsdPrice: number,
+  zombieAllowance: number,
 }
 
-const StartFarming: React.FC<StartFarmingProps> = ({ details, details: { pid, rug, result: { paidUnlockFee, rugDeposited }, poolInfo, result }, zombieUsdPrice, isAllowance, updateAllowance, updateResult }) => {
+const StartFarming: React.FC<StartFarmingProps> = ({ details, details: { pid, rug, result: { paidUnlockFee, rugDeposited }, poolInfo, result },zombieAllowance, zombieUsdPrice, isAllowance, updateAllowance, updateResult }) => {
   const [isAllowanceForRugToken, setIsAllowanceForRugToken] = useState(false);
 
   const [rugTokenAmount, setRugTokenAmount] = useState(0);
 
   const [zombieBalance, setZombieBalance] = useState(BIG_ZERO);
+
 
   const [onPresentStake] = useModal(
     <StakeModal
@@ -158,12 +161,11 @@ const StartFarming: React.FC<StartFarmingProps> = ({ details, details: { pid, ru
         }
       })
   }
-
   const renderButtonsForGrave = () => {
     return <div className="space-between">
       {account ?
         !paidUnlockFee ?
-        isAllowance ?
+        zombieAllowance > 0 ?
           <button onClick={handleUnlock} className="btn btn-disabled w-100" type="button">Unlock Grave</button> :
           <button onClick={handleApprove} className="btn btn-disabled w-100" type="button">Approve ZMBE</button>
         :
