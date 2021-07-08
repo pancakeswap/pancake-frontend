@@ -85,59 +85,67 @@ const getUserLotteryData = async (account: string, currentLotteryId: string): Pr
 }
 
 const getGraphLotteryUser = async (account: string): Promise<LotteryUserGraphEntity> => {
-  const response = await request(
-    GRAPH_API_LOTTERY,
-    gql`
-      query getUserLotteries($account: ID!) {
-        user(id: $account) {
-          id
-          totalTickets
-          totalCake
-          rounds(first: 100, orderDirection: desc, orderBy: block) {
+  let user
+  const blankUser = {
+    account,
+    totalCake: '',
+    totalTickets: '',
+    rounds: [],
+  }
+
+  try {
+    const response = await request(
+      GRAPH_API_LOTTERY,
+      gql`
+        query getUserLotteries($account: ID!) {
+          user(id: $account) {
             id
-            lottery {
-              id
-              endTime
-              status
-            }
-            claimed
             totalTickets
+            totalCake
+            rounds(first: 100, orderDirection: desc, orderBy: block) {
+              id
+              lottery {
+                id
+                endTime
+                status
+              }
+              claimed
+              totalTickets
+            }
           }
         }
-      }
-    `,
-    { account: account.toLowerCase() },
-  )
-  const { user } = response
+      `,
+      { account: account.toLowerCase() },
+    )
+    const userRes = response.user
 
-  // If no subgraph response - return blank user
-  if (!response || !user) {
-    const blankUser = {
-      account,
-      totalCake: '',
-      totalTickets: '',
-      rounds: [],
+    // If no user returned - return blank user
+    if (!userRes) {
+      user = blankUser
+    } else {
+      const formattedUser = userRes && {
+        account: userRes.id,
+        totalCake: userRes.totalCake,
+        totalTickets: userRes.totalTickets,
+        rounds: userRes.rounds.map((round) => {
+          return {
+            lotteryId: round?.lottery?.id,
+            endTime: round?.lottery?.endTime,
+            claimed: round?.claimed,
+            totalTickets: round?.totalTickets,
+            status: round?.lottery?.status,
+          }
+        }),
+      }
+
+      user = formattedUser
     }
-
-    return blankUser
+  } catch (error) {
+    console.error(error)
+    user = blankUser
   }
 
-  const formattedUser = user && {
-    account: user.id,
-    totalCake: user.totalCake,
-    totalTickets: user.totalTickets,
-    rounds: user.rounds.map((round) => {
-      return {
-        lotteryId: round?.lottery?.id,
-        endTime: round?.lottery?.endTime,
-        claimed: round?.claimed,
-        totalTickets: round?.totalTickets,
-        status: round?.lottery?.status,
-      }
-    }),
-  }
-
-  return formattedUser
+  return user
 }
 
 export default getUserLotteryData
