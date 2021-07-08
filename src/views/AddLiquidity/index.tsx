@@ -298,6 +298,8 @@ export default function AddLiquidity({
       currencyToAdd={pair?.liquidityToken}
     />,
     true,
+    true,
+    'addLiquidityModal',
   )
 
   return (

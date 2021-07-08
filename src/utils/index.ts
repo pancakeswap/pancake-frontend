@@ -6,7 +6,7 @@ import { BigNumber } from '@ethersproject/bignumber'
 import { abi as IUniswapV2Router02ABI } from '@uniswap/v2-periphery/build/IUniswapV2Router02.json'
 import { ChainId, JSBI, Percent, Token, CurrencyAmount, Currency, ETHER } from '@pancakeswap/sdk'
 import { ROUTER_ADDRESS } from '../config/constants'
-import { BASE_BSC_SCAN_URL } from '../config/constants/urls'
+import { BASE_BSC_SCAN_URLS } from '../config'
 import { TokenAddressMap } from '../state/lists/hooks'
 
 // returns the checksummed address if the address is valid, otherwise returns false
@@ -25,17 +25,17 @@ export function getBscScanLink(
 ): string {
   switch (type) {
     case 'transaction': {
-      return `${BASE_BSC_SCAN_URL[chainId]}/tx/${data}`
+      return `${BASE_BSC_SCAN_URLS[chainId]}/tx/${data}`
     }
     case 'token': {
-      return `${BASE_BSC_SCAN_URL[chainId]}/token/${data}`
+      return `${BASE_BSC_SCAN_URLS[chainId]}/token/${data}`
     }
     case 'block': {
-      return `${BASE_BSC_SCAN_URL[chainId]}/block/${data}`
+      return `${BASE_BSC_SCAN_URLS[chainId]}/block/${data}`
     }
     case 'address':
     default: {
-      return `${BASE_BSC_SCAN_URL[chainId]}/address/${data}`
+      return `${BASE_BSC_SCAN_URLS[chainId]}/address/${data}`
     }
   }
 }
