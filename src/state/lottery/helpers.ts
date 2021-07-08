@@ -187,7 +187,12 @@ export const fetchTickets = async (
   }
 }
 
-export const getGraphLotteries = async (): Promise<LotteryRoundGraphEntity[]> => {
+export const getLotteriesData = async (currentLotteryId: string): Promise<LotteryRoundGraphEntity[]> => {
+  const graphResponse = getGraphLotteries()
+  return graphResponse
+}
+
+const getGraphLotteries = async (): Promise<LotteryRoundGraphEntity[]> => {
   const response = await request(
     GRAPH_API_LOTTERY,
     gql`
@@ -213,11 +218,16 @@ export const getGraphLotteries = async (): Promise<LotteryRoundGraphEntity[]> =>
   return lotteries
 }
 
-export const getUserLotteryData = async (account: string): Promise<LotteryUserGraphEntity> => {
-  return getGraphLotteryUser(account)
+export const getUserLotteryData = async (
+  account: string,
+  currentLotteryId: string,
+): Promise<LotteryUserGraphEntity> => {
+  const graphResponse = getGraphLotteryUser(account)
+
+  return graphResponse
 }
 
-export const getGraphLotteryUser = async (account: string): Promise<LotteryUserGraphEntity> => {
+const getGraphLotteryUser = async (account: string): Promise<LotteryUserGraphEntity> => {
   const response = await request(
     GRAPH_API_LOTTERY,
     gql`

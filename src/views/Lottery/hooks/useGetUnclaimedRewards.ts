@@ -24,12 +24,7 @@ const useGetUnclaimedRewards = () => {
 
   const fetchAllRewards = async () => {
     setFetchStatus(FetchStatus.IN_PROGRESS)
-    const unclaimedRewardsResponse = await fetchUnclaimedUserRewards(
-      account,
-      userLotteryData,
-      lotteriesData,
-      currentLotteryId,
-    )
+    const unclaimedRewardsResponse = await fetchUnclaimedUserRewards(account, userLotteryData, lotteriesData)
     setUnclaimedRewards(unclaimedRewardsResponse)
     setFetchStatus(FetchStatus.SUCCESS)
   }

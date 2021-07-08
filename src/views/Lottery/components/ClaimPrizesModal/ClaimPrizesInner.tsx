@@ -21,7 +21,7 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
   const { account } = useWeb3React()
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
-  const { maxNumberTicketsPerBuyOrClaim } = useLottery()
+  const { maxNumberTicketsPerBuyOrClaim, currentLotteryId } = useLottery()
   const { toastSuccess, toastError } = useToast()
   const [activeClaimIndex, setActiveClaimIndex] = useState(0)
   const [pendingTx, setPendingTx] = useState(false)
@@ -60,7 +60,7 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
     if (roundsToClaim.length > activeClaimIndex + 1) {
       // If there are still rounds to claim, move onto the next claim
       setActiveClaimIndex(activeClaimIndex + 1)
-      dispatch(fetchUserLotteries({ account }))
+      dispatch(fetchUserLotteries({ account, currentLotteryId }))
     } else {
       onSuccess()
     }

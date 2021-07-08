@@ -257,7 +257,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
       },
       onSuccess: async () => {
         onDismiss()
-        dispatch(fetchUserTicketsAndLotteries({ account, lotteryId: currentLotteryId }))
+        dispatch(fetchUserTicketsAndLotteries({ account, currentLotteryId }))
         toastSuccess(t('Lottery tickets purchased!'))
       },
     })
