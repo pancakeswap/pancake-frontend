@@ -6,7 +6,11 @@ import { Token } from 'config/constants/types'
 import multicall from 'utils/multicall'
 
 // remove BNB because it's not a Bep20 token
-const tokensToTest = omitBy(tokens, (token) => token.symbol.toLowerCase() === 'bnb')
+// remove ONE because there are two tokens with the symbol ONE (Harmony ONE and BigONE)
+const tokensToTest = omitBy(
+  tokens,
+  (token) => token.symbol.toLowerCase() === 'bnb' || token.symbol.toLowerCase() === 'one',
+)
 
 describe('Config tokens', () => {
   it.each(map(tokensToTest, (token, key) => [key, token]))(
