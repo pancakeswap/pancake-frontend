@@ -11,9 +11,11 @@ import AuctionDetail from './components/AuctionDetail'
 
 const StyledHeader = styled(PageHeader)`
   max-height: max-content;
+  margin-bottom: -40px;
+  padding-bottom: 20px;
   overflow: hidden;
   ${({ theme }) => theme.mediaQueries.md} {
-    max-height: 352px;
+    max-height: 392px;
   }
 `
 
@@ -49,7 +51,7 @@ const FarmAuction = () => {
   return (
     <>
       <StyledHeader>
-        <Flex>
+        <Flex flexDirection={['column-reverse', 'row']}>
           <Left>
             <Heading as="h1" scale="xxl" mb="24px">
               {t('Community Farm Auction')}
@@ -74,12 +76,14 @@ const FarmAuction = () => {
         <PageSection
           innerProps={{ style: { margin: '0', width: '100%' } }}
           background={theme.colors.background}
-          index={1}
-          hasCurvedDivider={false}
+          index={2}
+          concaveDivider
+          concaveBackgroundLight={theme.colors.background}
+          curvePosition="top"
         >
           <AuctionDetail />
         </PageSection>
-        <PageSection background={FAQS_BG} index={2} hasCurvedDivider={false}>
+        <PageSection background={FAQS_BG} index={3} hasCurvedDivider={false}>
           <FAQs />
         </PageSection>
       </>

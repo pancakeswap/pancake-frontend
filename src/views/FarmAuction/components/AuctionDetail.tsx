@@ -50,7 +50,7 @@ const AuctionDetail = () => {
       </LeftCard>
       <RightCard>
         <CardHeader variant="bubblegum">
-          <Heading>{t('Auction Leaderboard')}</Heading>
+          <Heading color="#280D5F">{t('Auction Leaderboard')}</Heading>
         </CardHeader>
         <CardBody>
           <Flex minHeight="152px" flexDirection="column" alignItems="center" justifyContent="center">

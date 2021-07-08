@@ -49,6 +49,7 @@ const Lottery = () => {
         containerProps={{ style: { marginTop: '-30px' } }}
         background={GET_TICKETS_BG}
         concaveDivider
+        concaveBackgroundLight="#7645D9"
         curvePosition="top"
         index={2}
       >
