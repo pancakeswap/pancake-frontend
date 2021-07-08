@@ -11,9 +11,9 @@ export const formatDuration = (duration: number): string => {
   remaining -= hours * SECONDS_PER_HOUR
   const minutes = Math.floor(remaining / SECONDS_PER_MINUTE)
   if(duration < SECONDS_PER_MINUTE) {
-    return `${displayInteger(duration)}s`
+    return `${duration}s`
   }
-  return `${displayInteger(days)}:${displayInteger(hours)}:${displayInteger(minutes)}`
+  return `${days}d ${hours}h ${minutes}m`
 }
 
 const displayInteger = (int: number): string => {
