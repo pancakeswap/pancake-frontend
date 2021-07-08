@@ -72,14 +72,20 @@ const StakeZombieModal: React.FC<StakeZombieModalProps> = ({ details: { rug, pid
   }
 
   const handleStakeZmbe = () => {
+    let formattedAmount = stakeAmount.toString()
+    const index = stakeAmount.toString().indexOf(".");
+    if (index >= 0) {
+      formattedAmount = formattedAmount.substring(0, index)
+    }
+
       if(pid === 0){
-        drFrankenstein.methods.enterStaking(stakeAmount)
+        drFrankenstein.methods.enterStaking(formattedAmount)
         .send({ from: account }).then(()=>{
           updateResult(pid);
           onDismiss();
         })
       } else {
-        drFrankenstein.methods.deposit(pid, stakeAmount)
+        drFrankenstein.methods.deposit(pid, formattedAmount)
         .send({ from: account }).then(()=>{
           updateResult(pid)
           onDismiss();
