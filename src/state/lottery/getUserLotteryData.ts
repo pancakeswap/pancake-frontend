@@ -1,22 +1,42 @@
-import BigNumber from 'bignumber.js'
 import { request, gql } from 'graphql-request'
 import { GRAPH_API_LOTTERY } from 'config/constants/endpoints'
+import { LotteryTicket } from 'config/constants/types'
 import { LotteryUserGraphEntity, LotteryResponse, UserRound } from 'state/types'
 import { getRoundIdsArray, fetchMultipleLotteries, hasRoundBeenClaimed, processRawTicketsResponse } from './helpers'
 import { fetchUserTicketsForMultipleRounds } from './fetchUnclaimedUserRewards'
 
-const applyNodeDataToUserGraphResponse = (nodeData: LotteryResponse[], graphData: UserRound[]): UserRound[] => {
+const applyNodeDataToUserGraphResponse = (
+  nodeData: LotteryResponse[],
+  graphData: UserRound[],
+  ticketData: { roundId: string; userTickets: LotteryTicket[] }[],
+): UserRound[] => {
+  //   If no graph rounds response - return node data
+  if (graphData.length === 0) {
+    return nodeData.map((nodeRound) => {
+      const ticketDataForRound = ticketData.find((roundTickets) => roundTickets.roundId === nodeRound.lotteryId)
+      return {
+        endTime: nodeRound.endTime,
+        status: nodeRound.status,
+        lotteryId: nodeRound.lotteryId.toString(),
+        claimed: hasRoundBeenClaimed(ticketDataForRound.userTickets),
+        totalTickets: null,
+      }
+    })
+  }
+
+  //   Else if there is a graph response - merge with node data where node data is more accurate
   const mergedResponse = graphData.map((graphRound, index) => {
     const nodeRound = nodeData[index]
-
+    // if there is node data for this index, overwrite graph data. Otherwise - return graph data.
     if (nodeRound) {
+      const ticketDataForRound = ticketData.find((roundTickets) => roundTickets.roundId === nodeRound.lotteryId)
       // if isLoading === true, there has been a node error - return graphRound
       if (!nodeRound.isLoading) {
         return {
           endTime: nodeRound.endTime,
           status: nodeRound.status,
           lotteryId: nodeRound.lotteryId.toString(),
-          claimed: hasRoundBeenClaimed(),
+          claimed: hasRoundBeenClaimed(ticketDataForRound.userTickets),
           totalTickets: graphRound.totalTickets,
         }
       }
@@ -50,30 +70,12 @@ const getUserLotteryData = async (account: string, currentLotteryId: string): Pr
 
   const lotteriesNodeData = await fetchMultipleLotteries(idsForLotteriesNodeCall)
   const graphResponse = await getGraphLotteryUser(account)
-  const mergedRoundData = applyNodeDataToUserGraphResponse(lotteriesNodeData, graphResponse.rounds)
+  const mergedRoundData = applyNodeDataToUserGraphResponse(
+    lotteriesNodeData,
+    graphResponse.rounds,
+    roundsWithUserParticipation,
+  )
   const graphResponseWithNodeRounds = { ...graphResponse, rounds: mergedRoundData }
-
-  // uses - TOTAL TICKETS,
-  //  account (but as an 'isloaded')
-  // status - filtering on FinishedRoundTable, whether to show FinishedRoundTable
-  // round id - display & sort
-  // endTime - display
-  // claimed - for a visual on the histories chart
-  //
-
-  // Find out if user has any tickets in any of these lotteries
-  // See if they have claimed any of those tickets
-  // Get status of that lottery from node
-
-  //   debugger // eslint-disable-line
-  // graphResponse.rounds {
-  // claimed: null
-  // status: "Open"
-  // endTime: "1625767200"
-  // lotteryId: "12"
-  // totalTickets: "10"
-  // }
-
   return graphResponseWithNodeRounds
 }
 

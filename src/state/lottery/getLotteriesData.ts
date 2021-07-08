@@ -16,7 +16,7 @@ const applyNodeDataToLotteriesGraphResponse = (
         startTime: nodeRound.startTime,
         status: nodeRound.status,
         id: nodeRound.lotteryId,
-        // TODO: To be fully self-sufficient without the graph, this null & BN data needs handling in the FE
+        // TODO: To be fully self-sufficient when the graph goes down, this null & BN data needs handling in the FE
         ticketPrice: nodeRound.priceTicketInCake,
         totalTickets: null,
         totalUsers: null,
@@ -28,6 +28,7 @@ const applyNodeDataToLotteriesGraphResponse = (
   //   Else if there is a graph response - merge with node data where node data is more accurate
   const mergedResponse = graphResponse.map((graphRound, index) => {
     const nodeRound = nodeData[index]
+    // if there is node data for this index, overwrite graph data. Otherwise - return graph data.
     if (nodeRound) {
       // if isLoading === true, there has been a node error - return graphRound
       if (!nodeRound.isLoading) {
