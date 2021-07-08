@@ -131,7 +131,7 @@ const tableData = [
     path: 'images/rugZombie/My Name Is MERL.png',
     type: 'image',
     withdrawalCooldown: '3 days',
-    nftRevivalTime: '7 days',
+    nftRevivalTime: '30 days',
     rug: tokens.merl,
     artist: '/',
     pcsVersion: 'v2',
