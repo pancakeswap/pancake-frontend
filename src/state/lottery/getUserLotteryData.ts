@@ -70,6 +70,7 @@ const getUserLotteryData = async (account: string, currentLotteryId: string): Pr
 
   const lotteriesNodeData = await fetchMultipleLotteries(idsForLotteriesNodeCall)
   const graphResponse = await getGraphLotteryUser(account)
+
   const mergedRoundData = applyNodeDataToUserGraphResponse(
     lotteriesNodeData,
     graphResponse.rounds,
