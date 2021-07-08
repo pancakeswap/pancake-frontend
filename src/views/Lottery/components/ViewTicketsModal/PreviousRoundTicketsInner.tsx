@@ -63,7 +63,7 @@ const PreviousRoundTicketsInner: React.FC<{ roundId: string }> = ({ roundId }) =
   const { t } = useTranslation()
   const { theme } = useTheme()
   const { account } = useWeb3React()
-  const userLotteryRoundData = useGetUserLotteryGraphRoundById(roundId)
+  const { totalTickets } = useGetUserLotteryGraphRoundById(roundId)
   const [onPresentClaimModal] = useModal(<ClaimPrizesModal roundsToClaim={[userWinningTickets.claimData]} />, false)
 
   const TooltipComponent = () => (
@@ -108,7 +108,7 @@ const PreviousRoundTicketsInner: React.FC<{ roundId: string }> = ({ roundId }) =
     }
 
     const fetchData = async () => {
-      const userTickets = await fetchTickets(account, roundId, userLotteryRoundData)
+      const userTickets = await fetchTickets(account, roundId, totalTickets)
       const lotteryData = await fetchLottery(roundId)
       const processedLotteryData = processLotteryResponse(lotteryData)
       const winningTickets = await getWinningTickets({
@@ -139,7 +139,7 @@ const PreviousRoundTicketsInner: React.FC<{ roundId: string }> = ({ roundId }) =
     }
 
     fetchData()
-  }, [roundId, account, userLotteryRoundData])
+  }, [roundId, account, totalTickets])
 
   const getFooter = () => {
     if (userWinningTickets?.ticketsWithUnclaimedRewards?.length > 0) {

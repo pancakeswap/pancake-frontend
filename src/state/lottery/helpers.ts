@@ -20,66 +20,76 @@ import { useMemo } from 'react'
 import { ethersToSerializedBigNumber } from 'utils/bigNumber'
 
 const lotteryContract = getLotteryV2Contract()
+// Variable used to determine how many past rounds should be populated by node data rather than subgraph
+export const NUM_ROUNDS_TO_FETCH_FROM_NODES = 8
+
+const processViewLotterySuccessResponse = (response): LotteryResponse => {
+  const {
+    status,
+    startTime,
+    endTime,
+    priceTicketInCake,
+    discountDivisor,
+    treasuryFee,
+    firstTicketId,
+    lastTicketId,
+    amountCollectedInCake,
+    finalNumber,
+    cakePerBracket,
+    countWinnersPerBracket,
+    rewardsBreakdown,
+  } = response
+
+  const statusKey = Object.keys(LotteryStatus)[status]
+  const serializedCakePerBracket = cakePerBracket.map((cakeInBracket) => ethersToSerializedBigNumber(cakeInBracket))
+  const serializedCountWinnersPerBracket = countWinnersPerBracket.map((winnersInBracket) =>
+    ethersToSerializedBigNumber(winnersInBracket),
+  )
+  const serializedRewardsBreakdown = rewardsBreakdown.map((reward) => ethersToSerializedBigNumber(reward))
+
+  return {
+    isLoading: false,
+    status: LotteryStatus[statusKey],
+    startTime: startTime?.toString(),
+    endTime: endTime?.toString(),
+    priceTicketInCake: ethersToSerializedBigNumber(priceTicketInCake),
+    discountDivisor: discountDivisor?.toString(),
+    treasuryFee: treasuryFee?.toString(),
+    firstTicketId: firstTicketId?.toString(),
+    lastTicketId: lastTicketId?.toString(),
+    amountCollectedInCake: ethersToSerializedBigNumber(amountCollectedInCake),
+    finalNumber,
+    cakePerBracket: serializedCakePerBracket,
+    countWinnersPerBracket: serializedCountWinnersPerBracket,
+    rewardsBreakdown: serializedRewardsBreakdown,
+  }
+}
+
+const processViewLotteryErrorResponse = () => {
+  return {
+    isLoading: true,
+    status: LotteryStatus.PENDING,
+    startTime: '',
+    endTime: '',
+    priceTicketInCake: '',
+    discountDivisor: '',
+    treasuryFee: '',
+    firstTicketId: '',
+    lastTicketId: '',
+    amountCollectedInCake: '',
+    finalNumber: null,
+    cakePerBracket: [],
+    countWinnersPerBracket: [],
+    rewardsBreakdown: [],
+  }
+}
 
 export const fetchLottery = async (lotteryId: string): Promise<LotteryResponse> => {
   try {
     const lotteryData = await lotteryContract.viewLottery(lotteryId)
-    const {
-      status,
-      startTime,
-      endTime,
-      priceTicketInCake,
-      discountDivisor,
-      treasuryFee,
-      firstTicketId,
-      lastTicketId,
-      amountCollectedInCake,
-      finalNumber,
-      cakePerBracket,
-      countWinnersPerBracket,
-      rewardsBreakdown,
-    } = lotteryData
-
-    const statusKey = Object.keys(LotteryStatus)[status]
-    const serializedCakePerBracket = cakePerBracket.map((cakeInBracket) => ethersToSerializedBigNumber(cakeInBracket))
-    const serializedCountWinnersPerBracket = countWinnersPerBracket.map((winnersInBracket) =>
-      ethersToSerializedBigNumber(winnersInBracket),
-    )
-    const serializedRewardsBreakdown = rewardsBreakdown.map((reward) => ethersToSerializedBigNumber(reward))
-
-    return {
-      isLoading: false,
-      status: LotteryStatus[statusKey],
-      startTime: startTime?.toString(),
-      endTime: endTime?.toString(),
-      priceTicketInCake: ethersToSerializedBigNumber(priceTicketInCake),
-      discountDivisor: discountDivisor?.toString(),
-      treasuryFee: treasuryFee?.toString(),
-      firstTicketId: firstTicketId?.toString(),
-      lastTicketId: lastTicketId?.toString(),
-      amountCollectedInCake: ethersToSerializedBigNumber(amountCollectedInCake),
-      finalNumber,
-      cakePerBracket: serializedCakePerBracket,
-      countWinnersPerBracket: serializedCountWinnersPerBracket,
-      rewardsBreakdown: serializedRewardsBreakdown,
-    }
+    return processViewLotterySuccessResponse(lotteryData)
   } catch (error) {
-    return {
-      isLoading: true,
-      status: LotteryStatus.PENDING,
-      startTime: '',
-      endTime: '',
-      priceTicketInCake: '',
-      discountDivisor: '',
-      treasuryFee: '',
-      firstTicketId: '',
-      lastTicketId: '',
-      amountCollectedInCake: '',
-      finalNumber: null,
-      cakePerBracket: [],
-      countWinnersPerBracket: [],
-      rewardsBreakdown: [],
-    }
+    return processViewLotteryErrorResponse()
   }
 }
 
@@ -89,14 +99,13 @@ export const fetchMultipleLotteries = async (lotteryIds: string[]): Promise<Lott
     address: getLotteryV2Address(),
     params: [id],
   }))
-
   try {
-    // TODO: Process response
     const multicallRes = await multicallv2(lotteryV2Abi, calls, { requireSuccess: false })
-    return multicallRes
+    const processedResponses = multicallRes.map((res) => processViewLotterySuccessResponse(res[0]))
+    return processedResponses
   } catch (error) {
     console.error(error)
-    return null
+    return calls.map(() => processViewLotteryErrorResponse())
   }
 }
 
@@ -169,10 +178,10 @@ export const mergeViewUserTicketInfoMulticallResponse = (response) => {
 export const fetchTickets = async (
   account: string,
   lotteryId: string,
-  userRoundData?: UserRound,
+  userTotalTickets?: string,
 ): Promise<LotteryTicket[]> => {
   // If the subgraph is returning user totalTickets data for the round - use those totalTickets, if not - batch request up to 5000
-  const totalTicketsToRequest = userRoundData ? parseInt(userRoundData?.totalTickets, 10) : 5000
+  const totalTicketsToRequest = userTotalTickets ? parseInt(userTotalTickets, 10) : 5000
   const calls = getViewUserTicketInfoCalls(totalTicketsToRequest, account, lotteryId)
   try {
     const multicallRes = await multicallv2(lotteryV2Abi, calls, { requireSuccess: false })
@@ -187,9 +196,49 @@ export const fetchTickets = async (
   }
 }
 
+const getRoundIdsArray = (currentLotteryId: string): string[] => {
+  const currentIdAsInt = parseInt(currentLotteryId, 10)
+  const roundIds = []
+  for (let i = 0; i < NUM_ROUNDS_TO_FETCH_FROM_NODES; i++) {
+    roundIds.push(currentIdAsInt - i)
+  }
+  return roundIds
+}
+
+const applyNodeDataToLotteriesGraphResponse = (
+  nodeData: LotteryResponse[],
+  graphRespose: LotteryRoundGraphEntity[],
+): LotteryRoundGraphEntity[] => {
+  const mergedResponse = graphRespose.map((graphRound, index) => {
+    const nodeRound = nodeData[index]
+    if (nodeRound) {
+      // if isLoading === true, there has been an error - return graphRound
+      if (!nodeRound.isLoading) {
+        return {
+          endTime: nodeRound.endTime,
+          finalNumber: nodeRound.finalNumber.toString(),
+          startTime: nodeRound.startTime,
+          status: nodeRound.status,
+          id: graphRound.id,
+          ticketPrice: graphRound.ticketPrice,
+          totalTickets: graphRound.totalTickets,
+          totalUsers: graphRound.totalTickets,
+          winningTickets: graphRound.totalTickets,
+        }
+      }
+      return graphRound
+    }
+    return graphRound
+  })
+  return mergedResponse
+}
+
 export const getLotteriesData = async (currentLotteryId: string): Promise<LotteryRoundGraphEntity[]> => {
-  const graphResponse = getGraphLotteries()
-  return graphResponse
+  const idsForNodesCall = getRoundIdsArray(currentLotteryId)
+  const nodeData = await fetchMultipleLotteries(idsForNodesCall)
+  const graphResponse = await getGraphLotteries()
+  const mergedData = applyNodeDataToLotteriesGraphResponse(nodeData, graphResponse)
+  return mergedData
 }
 
 const getGraphLotteries = async (): Promise<LotteryRoundGraphEntity[]> => {
@@ -201,14 +250,12 @@ const getGraphLotteries = async (): Promise<LotteryRoundGraphEntity[]> => {
           id
           totalUsers
           totalTickets
+          winningTickets
           status
           finalNumber
-          winningTickets
           startTime
           endTime
           ticketPrice
-          firstTicket
-          lastTicket
         }
       }
     `,
@@ -222,7 +269,22 @@ export const getUserLotteryData = async (
   account: string,
   currentLotteryId: string,
 ): Promise<LotteryUserGraphEntity> => {
-  const graphResponse = getGraphLotteryUser(account)
+  const idsForNodeCall = getRoundIdsArray(currentLotteryId)
+  // Find out if user has any tickets in any of these lotteries
+  // See if they have claimed any of those tickets
+  // Get status of that lottery from node
+
+  const graphResponse = await getGraphLotteryUser(account)
+
+  // graphResponse.rounds {
+  // claimed: null
+  // status: "Open"
+  // endTime: "1625767200"
+  // lotteryId: "12"
+  // totalTickets: "10"
+  // }
+
+  debugger // eslint-disable-line
 
   return graphResponse
 }

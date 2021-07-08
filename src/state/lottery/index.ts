@@ -61,8 +61,9 @@ export const fetchUserTicketsAndLotteries = createAsyncThunk<
   { account: string; currentLotteryId: string }
 >('lottery/fetchUserTicketsAndLotteries', async ({ account, currentLotteryId }) => {
   const userLotteriesRes = await getUserLotteryData(account, currentLotteryId)
-  const userRoundData = userLotteriesRes.rounds?.find((round) => round.lotteryId === currentLotteryId)
-  const userTickets = await fetchTickets(account, currentLotteryId, userRoundData)
+  const { totalTickets } = userLotteriesRes.rounds?.find((round) => round.lotteryId === currentLotteryId)
+  // Get user tickets for current round
+  const userTickets = await fetchTickets(account, currentLotteryId, totalTickets)
 
   // user has not bought tickets for the current lottery
   if (userTickets.length === 0) {

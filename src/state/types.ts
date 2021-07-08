@@ -389,14 +389,12 @@ export interface LotteryRoundGraphEntity {
   id: string
   totalUsers: string
   totalTickets: string
+  winningTickets: string
   status: LotteryStatus
   finalNumber: string
-  winningTickets: string
   startTime: string
   endTime: string
   ticketPrice: SerializedBigNumber
-  firstTicket: string
-  lastTicket: string
 }
 
 export interface LotteryUserGraphEntity {
