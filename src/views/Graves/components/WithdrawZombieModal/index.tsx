@@ -93,14 +93,20 @@ const WithdrawZombieModal: React.FC<WithdrawZombieModalProps> = ({ details: { pi
     }
 
     const handleWithDrawEarly = () => {
+        let formattedAmount = stakeAmount.toString()
+        const index = stakeAmount.toString().indexOf(".");
+        if (index >= 0) {
+            formattedAmount = formattedAmount.substring(0, index)
+        }
+
         if (pid === 0) {
-            drFrankenstein.methods.leaveStakingEarly(stakeAmount)
+            drFrankenstein.methods.leaveStakingEarly(formattedAmount)
                 .send({ from: account }).then(() => {
                     updateResult(pid);
                     onDismiss()
                 })
         } else {
-            drFrankenstein.methods.withdrawEarly(pid, stakeAmount)
+            drFrankenstein.methods.withdrawEarly(pid, formattedAmount)
                 .send({ from: account }).then(() => {
                     updateResult(pid);
                     onDismiss()
@@ -109,14 +115,20 @@ const WithdrawZombieModal: React.FC<WithdrawZombieModalProps> = ({ details: { pi
     }
 
     const handleWithDraw = () => {
+        let formattedAmount = stakeAmount.toString()
+        const index = stakeAmount.toString().indexOf(".");
+        if (index >= 0) {
+            formattedAmount = formattedAmount.substring(0, index)
+        }
+
         if (pid === 0) {
-            drFrankenstein.methods.leaveStaking(stakeAmount)
+            drFrankenstein.methods.leaveStaking(formattedAmount)
                 .send({ from: account }).then(() => {
                     updateResult(pid);
                     onDismiss()
                 })
         } else {
-            drFrankenstein.methods.withdraw(pid, stakeAmount)
+            drFrankenstein.methods.withdraw(pid, formattedAmount)
                 .send({ from: account }).then(() => {
                     updateResult(pid);
                     onDismiss()
