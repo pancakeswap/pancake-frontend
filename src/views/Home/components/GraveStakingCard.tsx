@@ -73,7 +73,7 @@ const GraveStakingCard = () => {
         </Heading>
 
 
-        <YouTube videoId="6Ejga4kJUts" opts={opts} onReady={_onReady} />
+        <YouTube videoId="WFHuSIvC6cg" opts={opts} onReady={_onReady} />
       </CardBody>
     </StyledFarmStakingCard>
   )
