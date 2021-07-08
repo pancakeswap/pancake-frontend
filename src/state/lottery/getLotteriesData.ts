@@ -5,12 +5,31 @@ import { getRoundIdsArray, fetchMultipleLotteries } from './helpers'
 
 const applyNodeDataToLotteriesGraphResponse = (
   nodeData: LotteryResponse[],
-  graphRespose: LotteryRoundGraphEntity[],
+  graphResponse: LotteryRoundGraphEntity[],
 ): LotteryRoundGraphEntity[] => {
-  const mergedResponse = graphRespose.map((graphRound, index) => {
+  //   If no graph response - return node data
+  if (graphResponse.length === 0) {
+    return nodeData.map((nodeRound) => {
+      return {
+        endTime: nodeRound.endTime,
+        finalNumber: nodeRound.finalNumber.toString(),
+        startTime: nodeRound.startTime,
+        status: nodeRound.status,
+        id: nodeRound.lotteryId,
+        // TODO: To be fully self-sufficient without the graph, this null & BN data needs handling in the FE
+        ticketPrice: nodeRound.priceTicketInCake,
+        totalTickets: null,
+        totalUsers: null,
+        winningTickets: null,
+      }
+    })
+  }
+
+  //   Else if there is a graph response - merge with node data where node data is more accurate
+  const mergedResponse = graphResponse.map((graphRound, index) => {
     const nodeRound = nodeData[index]
     if (nodeRound) {
-      // if isLoading === true, there has been an error - return graphRound
+      // if isLoading === true, there has been a node error - return graphRound
       if (!nodeRound.isLoading) {
         return {
           endTime: nodeRound.endTime,
@@ -40,26 +59,31 @@ const getLotteriesData = async (currentLotteryId: string): Promise<LotteryRoundG
 }
 
 const getGraphLotteries = async (): Promise<LotteryRoundGraphEntity[]> => {
-  const response = await request(
-    GRAPH_API_LOTTERY,
-    gql`
-      query getLotteries {
-        lotteries(first: 100, orderDirection: desc, orderBy: block) {
-          id
-          totalUsers
-          totalTickets
-          winningTickets
-          status
-          finalNumber
-          startTime
-          endTime
-          ticketPrice
+  let lotteries
+  try {
+    const response = await request(
+      GRAPH_API_LOTTERY,
+      gql`
+        query getLotteries {
+          lotteries(first: 100, orderDirection: desc, orderBy: block) {
+            id
+            totalUsers
+            totalTickets
+            winningTickets
+            status
+            finalNumber
+            startTime
+            endTime
+            ticketPrice
+          }
         }
-      }
-    `,
-  )
-
-  const { lotteries } = response
+      `,
+    )
+    ;({ lotteries } = response)
+  } catch (error) {
+    lotteries = []
+    console.error(error)
+  }
   return lotteries
 }
 

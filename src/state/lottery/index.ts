@@ -17,6 +17,7 @@ const initialState: LotteryState = {
   maxNumberTicketsPerBuyOrClaim: null,
   currentRound: {
     isLoading: true,
+    lotteryId: null,
     status: LotteryStatus.PENDING,
     startTime: '',
     endTime: '',

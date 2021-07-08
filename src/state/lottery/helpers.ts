@@ -13,7 +13,7 @@ const lotteryContract = getLotteryV2Contract()
 // Variable used to determine how many past rounds should be populated by node data rather than subgraph
 export const NUM_ROUNDS_TO_FETCH_FROM_NODES = 8
 
-const processViewLotterySuccessResponse = (response): LotteryResponse => {
+const processViewLotterySuccessResponse = (response, lotteryId: string): LotteryResponse => {
   const {
     status,
     startTime,
@@ -39,6 +39,7 @@ const processViewLotterySuccessResponse = (response): LotteryResponse => {
 
   return {
     isLoading: false,
+    lotteryId,
     status: LotteryStatus[statusKey],
     startTime: startTime?.toString(),
     endTime: endTime?.toString(),
@@ -55,9 +56,10 @@ const processViewLotterySuccessResponse = (response): LotteryResponse => {
   }
 }
 
-const processViewLotteryErrorResponse = () => {
+const processViewLotteryErrorResponse = (lotteryId: string) => {
   return {
     isLoading: true,
+    lotteryId,
     status: LotteryStatus.PENDING,
     startTime: '',
     endTime: '',
@@ -77,9 +79,9 @@ const processViewLotteryErrorResponse = () => {
 export const fetchLottery = async (lotteryId: string): Promise<LotteryResponse> => {
   try {
     const lotteryData = await lotteryContract.viewLottery(lotteryId)
-    return processViewLotterySuccessResponse(lotteryData)
+    return processViewLotterySuccessResponse(lotteryData, lotteryId)
   } catch (error) {
-    return processViewLotteryErrorResponse()
+    return processViewLotteryErrorResponse(lotteryId)
   }
 }
 
@@ -91,11 +93,13 @@ export const fetchMultipleLotteries = async (lotteryIds: string[]): Promise<Lott
   }))
   try {
     const multicallRes = await multicallv2(lotteryV2Abi, calls, { requireSuccess: false })
-    const processedResponses = multicallRes.map((res) => processViewLotterySuccessResponse(res[0]))
+    const processedResponses = multicallRes.map((res, index) =>
+      processViewLotterySuccessResponse(res[0], lotteryIds[index]),
+    )
     return processedResponses
   } catch (error) {
     console.error(error)
-    return calls.map(() => processViewLotteryErrorResponse())
+    return calls.map((call, index) => processViewLotteryErrorResponse(lotteryIds[index]))
   }
 }
 
@@ -218,6 +222,7 @@ export const useProcessLotteryResponse = (
 
   return {
     isLoading: lotteryData.isLoading,
+    lotteryId: lotteryData.lotteryId,
     userTickets: lotteryData.userTickets,
     status: lotteryData.status,
     startTime: lotteryData.startTime,

@@ -348,6 +348,7 @@ export interface LotteryRoundUserTickets {
 
 interface LotteryRoundGenerics {
   isLoading?: boolean
+  lotteryId: string
   status: LotteryStatus
   startTime: string
   endTime: string

@@ -42,6 +42,7 @@ export const processLotteryResponse = (
 
   return {
     isLoading: lotteryData.isLoading,
+    lotteryId: lotteryData.lotteryId,
     userTickets: lotteryData.userTickets,
     status: lotteryData.status,
     startTime: lotteryData.startTime,
