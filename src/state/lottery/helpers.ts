@@ -11,7 +11,7 @@ import { ethersToSerializedBigNumber } from 'utils/bigNumber'
 
 const lotteryContract = getLotteryV2Contract()
 // Variable used to determine how many past rounds should be populated by node data rather than subgraph
-export const NUM_ROUNDS_TO_FETCH_FROM_NODES = 8
+export const NUM_ROUNDS_TO_FETCH_FROM_NODES = 4
 
 const processViewLotterySuccessResponse = (response, lotteryId: string): LotteryResponse => {
   const {
