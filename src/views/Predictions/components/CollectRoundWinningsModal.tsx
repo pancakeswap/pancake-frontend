@@ -106,7 +106,7 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
       <ModalBody p="24px">
         <TrophyGoldIcon width="96px" mx="auto" mb="24px" />
         <Flex alignItems="start" justifyContent="space-between" mb="8px">
-          <Text>{t('Your Position')}</Text>
+          <Text>{t('Your position')}</Text>
           <Box style={{ textAlign: 'right' }}>
             <Text>{`${betAmount} BNB`}</Text>
             <Text fontSize="12px" color="textSubtle">
@@ -115,7 +115,7 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
           </Box>
         </Flex>
         <Flex alignItems="start" justifyContent="space-between" mb="24px">
-          <Text>{t('Your Winnings')}</Text>
+          <Text>{t('Your winnings')}</Text>
           <Box style={{ textAlign: 'right' }}>
             <Text>{`${payout} BNB`}</Text>
             <Text fontSize="12px" color="textSubtle">
