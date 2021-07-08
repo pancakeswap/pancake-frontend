@@ -270,9 +270,9 @@ export const predictionsSlice = createSlice({
 
     // Get multiple rounds
     builder.addCase(fetchRounds.fulfilled, (state, action) => {
-      const currentRound = state.rounds[state.currentEpoch]
-
       state.rounds = merge({}, state.rounds, action.payload)
+
+      const currentRound = state.rounds[state.currentEpoch]
       state.currentRoundStartBlockNumber = currentRound.startBlock
     })
 
