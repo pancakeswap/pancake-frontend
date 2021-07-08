@@ -96,10 +96,11 @@ const TableList: React.FC<TableListProps> = (props: TableListProps) => {
                 <div className="info-1">
                   <div className="info-icon">
                       <>
-                        <img src="images/rugZombie/BasicZombie.png" alt="basicicon" className="icon" />
-                        <img src={`images/tokens/${quoteToken.symbol}.png`} alt="rugicon" className="icon" />
+                        <img src="images/rugZombie/BasicZombie.png" alt="token" className="icon" />
+                        <img src={`images/tokens/${quoteToken.symbol}.png`} alt="quote token" className="icon" />
                       </>
-
+                  </div>
+                  <div>
                     <div className="titel">{name}</div>
                     <div className="small-lable">
                       <div className="con-info">{poolWeight.toString()}X</div>

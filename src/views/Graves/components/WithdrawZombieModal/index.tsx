@@ -43,7 +43,6 @@ const StyledButton = styled(Button)`
 `
 
 const WithdrawZombieModal: React.FC<WithdrawZombieModalProps> = ({ details: { pid, result }, poolInfo, zombieUsdPrice, updateResult, onDismiss }) => {
-
     const currentDate = Math.floor(Date.now() / 1000);
 
     const drFrankenstein = useDrFrankenstein();
@@ -81,8 +80,6 @@ const WithdrawZombieModal: React.FC<WithdrawZombieModalProps> = ({ details: { pi
     }
 
     const handleWithDrawEarly = () => {
-        console.count(exactStakeAmount.toString())
-
         if (pid === 0) {
             drFrankenstein.methods.leaveStakingEarly(exactStakeAmount)
                 .send({ from: account }).then(() => {
