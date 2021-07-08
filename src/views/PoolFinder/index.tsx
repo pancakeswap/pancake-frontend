@@ -85,6 +85,8 @@ export default function PoolFinder() {
       selectedCurrency={(activeField === Fields.TOKEN0 ? currency1 : currency0) ?? undefined}
     />,
     true,
+    true,
+    'selectCurrencyModal',
   )
 
   return (

@@ -260,6 +260,8 @@ export default function Swap({ history }: RouteComponentProps) {
       customOnDismiss={handleConfirmDismiss}
     />,
     true,
+    true,
+    'confirmSwapModal',
   )
 
   return (
