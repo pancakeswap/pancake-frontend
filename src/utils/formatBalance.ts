@@ -50,10 +50,3 @@ export const formatBigNumberToFixed = (number: ethers.BigNumber, displayDecimals
   const formattedString = formatUnits(number, decimals)
   return (+formattedString).toFixed(displayDecimals)
 }
-
-/**
- * Formats a FixedNumber like BigNumber
- */
-export const formatFixedNumber = (number: ethers.FixedNumber, displayDecimals = 18, decimals = 18) => {
-  return formatBigNumber(ethers.BigNumber.from(number), displayDecimals, decimals)
-}
