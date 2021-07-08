@@ -12,6 +12,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://pancakeswap.finance/',
   },
+  harmony: {
+    symbol: 'ONE',
+    address: {
+      56: '0x03fF0ff224f904be3118461335064bB48Df47938',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://www.harmony.one/',
+  },
   mask: {
     symbol: 'MASK',
     address: {
