@@ -27,10 +27,23 @@ const Left = styled(Flex)`
 const Right = styled(Flex)`
   align-items: center;
   justify-content: center;
+  padding-left: 24px;
   flex: 0.5;
+  & img {
+    height: 50%;
+    width: 50%;
+  }
+
+  ${({ theme }) => theme.mediaQueries.xs} {
+    & img {
+      height: auto;
+      width: auto;
+    }
+  }
 
   ${({ theme }) => theme.mediaQueries.lg} {
     & img {
+      height: 90%;
       margin-top: -15%;
     }
   }
