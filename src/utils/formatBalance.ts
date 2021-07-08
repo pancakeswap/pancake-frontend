@@ -53,7 +53,10 @@ export const formatBigNumberToFixed = (number: ethers.BigNumber, displayDecimals
 
 /**
  * Formats a FixedNumber like BigNumber
+ * i.e. Formats 9763410526137450427.1196 into 9.763 (3 display decimals)
  */
 export const formatFixedNumber = (number: ethers.FixedNumber, displayDecimals = 18, decimals = 18) => {
-  return formatBigNumber(ethers.BigNumber.from(number), displayDecimals, decimals)
+  // Remove decimal
+  const [leftSide] = number.toString().split('.')
+  return formatBigNumber(ethers.BigNumber.from(leftSide), displayDecimals, decimals)
 }
