@@ -121,7 +121,6 @@ export const fetchUserTicketsForMultipleRounds = async (
 
   try {
     const multicallRes = await multicallv2(lotteryV2Abi, multicalls, { requireSuccess: false })
-
     // Use callsWithRoundData to slice multicall responses by round
     const multicallResPerRound = []
     let resCount = 0

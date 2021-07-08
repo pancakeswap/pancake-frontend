@@ -60,6 +60,7 @@ export const fetchUserTicketsAndLotteries = createAsyncThunk<
   const userLotteriesRes = await getUserLotteryData(account, currentLotteryId)
   const { totalTickets } = userLotteriesRes.rounds?.find((round) => round.lotteryId === currentLotteryId)
   // Get user tickets for current round
+  // TODO: This can come from the getUserLotteryData function instead
   const userTickets = await fetchTickets(account, currentLotteryId, totalTickets)
 
   // user has not bought tickets for the current lottery

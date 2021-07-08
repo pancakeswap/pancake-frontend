@@ -191,6 +191,7 @@ export const fetchTickets = async (
 }
 
 export const getRoundIdsArray = (currentLotteryId: string): string[] => {
+  // TODO: This returns a number, but the currentId being typed as a string is deep in the logic and needs untangling
   const currentIdAsInt = parseInt(currentLotteryId, 10)
   const roundIds = []
   for (let i = 0; i < NUM_ROUNDS_TO_FETCH_FROM_NODES; i++) {
@@ -238,4 +239,8 @@ export const useProcessLotteryResponse = (
     countWinnersPerBracket: lotteryData.countWinnersPerBracket,
     rewardsBreakdown: lotteryData.rewardsBreakdown,
   }
+}
+
+export const hasRoundBeenClaimed = (): boolean => {
+  return true
 }
