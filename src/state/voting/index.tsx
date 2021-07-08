@@ -1,8 +1,8 @@
 /* eslint-disable no-param-reassign */
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { merge } from 'lodash'
-import { Proposal, ProposalState, VotingStateLoadingStatus, VotingState, Vote } from 'state/types'
-import { getAllVotes, getProposal, getProposals } from './helpers'
+import { Proposal, ProposalState, VotingStateLoadingStatus, VotingState, Vote, State } from 'state/types'
+import { getAllVotes, getProposal, getProposals, getVoteVerificationStatuses } from './helpers'
 
 const initialState: VotingState = {
   proposalLoadingStatus: VotingStateLoadingStatus.INITIAL,
@@ -33,11 +33,36 @@ export const fetchVotes = createAsyncThunk<
   return { votes: response, proposalId }
 })
 
+export const verifyVotes = createAsyncThunk<
+  { results: { [key: string]: boolean }; proposalId: string },
+  { proposalId: string; snapshot?: string },
+  { state: State }
+>('voting/verifyVotes', async ({ proposalId, snapshot }, { getState }) => {
+  const state = getState()
+  const proposalVotes = state.voting.votes[proposalId]
+  const response = await getVoteVerificationStatuses(proposalVotes, Number(snapshot))
+  return { results: response, proposalId }
+})
+
 export const votingSlice = createSlice({
   name: 'voting',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
+    // Verify Votes
+    builder.addCase(verifyVotes.fulfilled, (state, action) => {
+      const { proposalId, results } = action.payload
+
+      if (state.votes[proposalId]) {
+        state.votes[proposalId] = state.votes[proposalId].map((vote) => {
+          return {
+            ...vote,
+            _inValid: results[vote.id] === false,
+          }
+        })
+      }
+    })
+
     // Fetch Proposals
     builder.addCase(fetchProposals.pending, (state) => {
       state.proposalLoadingStatus = VotingStateLoadingStatus.LOADING

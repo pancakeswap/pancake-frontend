@@ -8,7 +8,13 @@ export const getProposals = async (first = 5, skip = 0, state = ProposalState.AC
     SNAPSHOT_API,
     gql`
       query getProposals($first: Int!, $skip: Int!, $state: String!) {
-        proposals(first: $first, skip: $skip, where: { space_in: "cake.eth", state: $state }) {
+        proposals(
+          first: $first
+          skip: $skip
+          orderBy: "end"
+          orderDirection: desc
+          where: { space_in: "cake.eth", state: $state }
+        ) {
           id
           title
           body
@@ -83,8 +89,43 @@ export const getVotes = async (first: number, skip: number, where: VoteWhere): P
   return response.votes
 }
 
-export const getAllVotes = async (proposalId: string, block?: number, votesPerChunk = 1000): Promise<Vote[]> => {
+export const getVoteVerificationStatuses = async (
+  votes: Vote[],
+  block?: number,
+): Promise<{ [key: string]: boolean }> => {
   const blockNumber = block || (await simpleRpcProvider.getBlockNumber())
+
+  const votesToVerify = votes.map((vote) => ({
+    address: vote.voter,
+    verificationHash: vote.metadata?.verificationHash,
+    total: vote.metadata?.votingPower,
+  }))
+  const response = await fetch(`${SNAPSHOT_VOTING_API}/verify`, {
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      block: blockNumber,
+      votes: votesToVerify,
+    }),
+  })
+
+  if (!response.ok) {
+    throw new Error(response.statusText)
+  }
+
+  const data = await response.json()
+  return votes.reduce((accum, vote) => {
+    return {
+      ...accum,
+      [vote.id]: data.data[vote.voter.toLowerCase()]?.isValid === true,
+    }
+  }, {})
+}
+
+export const getAllVotes = async (proposalId: string, block?: number, votesPerChunk = 1000): Promise<Vote[]> => {
+  // const blockNumber = block || (await simpleRpcProvider.getBlockNumber())
   return new Promise((resolve, reject) => {
     let votes: Vote[] = []
 
@@ -93,33 +134,7 @@ export const getAllVotes = async (proposalId: string, block?: number, votesPerCh
         const voteChunk = await getVotes(votesPerChunk, newSkip, { proposal: proposalId })
 
         if (voteChunk.length === 0) {
-          // Verify all the votes
-          const votesToVerify = votes.map((vote) => ({
-            address: vote.voter,
-            verificationHash: vote.metadata?.verificationHash,
-            total: vote.metadata?.votingPower,
-          }))
-          const response = await fetch(`${SNAPSHOT_VOTING_API}/verify`, {
-            method: 'post',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              block: blockNumber,
-              votes: votesToVerify,
-            }),
-          })
-
-          if (!response.ok) {
-            throw new Error(response.statusText)
-          }
-
-          const data = await response.json()
-          const verifiedVotes = votes.filter((vote) => {
-            return data.data[vote.voter.toLowerCase()]?.isValid === true
-          })
-
-          resolve(verifiedVotes)
+          resolve(votes)
         } else {
           votes = [...votes, ...voteChunk]
           fetchVoteChunk(newSkip + votesPerChunk)

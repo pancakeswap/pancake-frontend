@@ -5,7 +5,7 @@ import { Link, useParams } from 'react-router-dom'
 import { useAppDispatch } from 'state'
 import { ProposalState, VotingStateLoadingStatus } from 'state/types'
 import { useGetProposal, useGetVotingStateLoadingStatus, useGetVotes, useGetProposalLoadingStatus } from 'state/hooks'
-import { fetchProposal, fetchVotes } from 'state/voting'
+import { fetchProposal, fetchVotes, verifyVotes } from 'state/voting'
 import { useTranslation } from 'contexts/Localization'
 import Container from 'components/Layout/Container'
 import ReactMarkdown from 'components/ReactMarkdown'
@@ -38,10 +38,17 @@ const Proposal = () => {
 
   // We have to wait for the proposal to load before fetching the votes because we need to include the snapshot
   useEffect(() => {
-    if (proposalId && snapshot) {
+    if (proposalId && snapshot && votes.length === 0) {
       dispatch(fetchVotes({ proposalId, block: Number(snapshot) }))
     }
-  }, [proposalId, snapshot, dispatch])
+  }, [proposalId, snapshot, votes, dispatch])
+
+  // After the votes have been loaded verify
+  useEffect(() => {
+    if (voteLoadingStatus === VotingStateLoadingStatus.IDLE) {
+      dispatch(verifyVotes({ proposalId, snapshot }))
+    }
+  }, [voteLoadingStatus, proposalId, snapshot, dispatch])
 
   if (!proposal) {
     return <PageLoader />
