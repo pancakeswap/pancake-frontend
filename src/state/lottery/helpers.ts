@@ -213,11 +213,15 @@ export const getGraphLotteries = async (): Promise<LotteryRoundGraphEntity[]> =>
   return lotteries
 }
 
+export const getUserLotteryData = async (account: string): Promise<LotteryUserGraphEntity> => {
+  return getGraphLotteryUser(account)
+}
+
 export const getGraphLotteryUser = async (account: string): Promise<LotteryUserGraphEntity> => {
   const response = await request(
     GRAPH_API_LOTTERY,
     gql`
-      query getUserLotteryData($account: ID!) {
+      query getUserLotteries($account: ID!) {
         user(id: $account) {
           id
           totalTickets

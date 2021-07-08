@@ -8,6 +8,7 @@ import {
   fetchLottery,
   fetchCurrentLotteryIdAndMaxBuy,
   fetchTickets,
+  getUserLotteryData,
 } from './helpers'
 
 interface PublicLotteryData {
@@ -60,7 +61,7 @@ export const fetchUserTicketsAndLotteries = createAsyncThunk<
   { userTickets: LotteryTicket[]; userLotteries: LotteryUserGraphEntity },
   { account: string; lotteryId: string }
 >('lottery/fetchUserTicketsAndLotteries', async ({ account, lotteryId }) => {
-  const userLotteriesRes = await getGraphLotteryUser(account)
+  const userLotteriesRes = await getUserLotteryData(account)
   const userRoundData = userLotteriesRes.rounds?.find((round) => round.lotteryId === lotteryId)
   const userTickets = await fetchTickets(account, lotteryId, userRoundData)
 
@@ -83,7 +84,7 @@ export const fetchPastLotteries = createAsyncThunk<LotteryRoundGraphEntity[]>(
 export const fetchUserLotteries = createAsyncThunk<LotteryUserGraphEntity, { account: string }>(
   'lottery/fetchUserLotteries',
   async ({ account }) => {
-    const userLotteries = await getGraphLotteryUser(account)
+    const userLotteries = await getUserLotteryData(account)
     return userLotteries
   },
 )
