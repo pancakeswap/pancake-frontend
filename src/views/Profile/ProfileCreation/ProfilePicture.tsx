@@ -121,6 +121,7 @@ const ProfilePicture: React.FC = () => {
             disabled={isApproved || isApproving || selectedNft.tokenId === null}
             onClick={handleApprove}
             endIcon={isApproving ? <AutoRenewIcon spin color="currentColor" /> : undefined}
+            id="approveStarterCollectible"
           >
             {t('Approve')}
           </Button>

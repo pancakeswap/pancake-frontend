@@ -229,7 +229,11 @@ const UserName: React.FC = () => {
           </Button>
         </CardBody>
       </Card>
-      <Button onClick={onPresentConfirmProfileCreation} disabled={!isValid || !isUserCreated}>
+      <Button
+        onClick={onPresentConfirmProfileCreation}
+        disabled={!isValid || !isUserCreated}
+        id="completeProfileCreation"
+      >
         {t('Complete Profile')}
       </Button>
       {!hasMinimumCakeRequired && (

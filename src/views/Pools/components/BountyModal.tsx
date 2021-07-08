@@ -112,6 +112,7 @@ const BountyModal: React.FC<BountyModalProps> = ({ onDismiss, TooltipComponent }
           endIcon={pendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
           onClick={handleConfirmClick}
           mb="28px"
+          id="autoCakeConfirmBounty"
         >
           {pendingTx ? t('Confirming') : t('Confirm')}
         </Button>
