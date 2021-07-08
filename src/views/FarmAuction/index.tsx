@@ -76,6 +76,7 @@ const FarmAuction = () => {
         <PageSection
           innerProps={{ style: { margin: '0', width: '100%' } }}
           background={theme.colors.background}
+          p="24px 0"
           index={2}
           concaveDivider
           concaveBackgroundLight={theme.colors.background}
@@ -83,7 +84,7 @@ const FarmAuction = () => {
         >
           <AuctionDetail />
         </PageSection>
-        <PageSection background={FAQS_BG} index={3} hasCurvedDivider={false}>
+        <PageSection p="24px 0" background={FAQS_BG} index={3} hasCurvedDivider={false}>
           <FAQs />
         </PageSection>
       </>
