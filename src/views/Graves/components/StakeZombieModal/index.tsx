@@ -98,7 +98,6 @@ const StakeZombieModal: React.FC<StakeZombieModalProps> = ({ details: { rug, pid
     stakingDetails = `Invalid Stake: Minimum ${getBalanceAmount(poolInfo.minimumStake).toString()} ZMBE`
   }
 
-
   return <Modal  onDismiss={onDismiss} title="Stake ZMBE" headerBackground={theme.colors.gradients.cardHeader}>
     <Flex alignItems="center" justifyContent="space-between" mb="8px">
       <Text bold>Stake</Text>
