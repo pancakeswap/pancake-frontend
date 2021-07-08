@@ -2,7 +2,6 @@ import React from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { useGetBetByEpoch, useGetCurrentEpoch } from 'state/hooks'
 import { BetPosition, NodeRound } from 'state/types'
-import { formatFixedNumber } from 'utils/formatBalance'
 import { getMultiplierv2 } from '../../helpers'
 import ExpiredRoundCard from './ExpiredRoundCard'
 import LiveRoundCard from './LiveRoundCard'
@@ -24,8 +23,8 @@ const RoundCard: React.FC<RoundCardProps> = ({ round }) => {
   const bullMultiplier = getMultiplierv2(totalAmount, bullAmount)
   const bearMultiplier = getMultiplierv2(totalAmount, bearAmount)
 
-  const formattedBullMultiplier = formatFixedNumber(bullMultiplier, 2)
-  const formattedbearMultiplier = formatFixedNumber(bearMultiplier, 2)
+  const formattedBullMultiplier = bullMultiplier.toUnsafeFloat().toFixed(bullMultiplier.isZero() ? 0 : 2)
+  const formattedbearMultiplier = bearMultiplier.toUnsafeFloat().toFixed(bearMultiplier.isZero() ? 0 : 2)
 
   // Next (open) round
   if (epoch === currentEpoch && lockPrice === null) {
