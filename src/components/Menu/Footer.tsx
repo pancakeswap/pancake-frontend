@@ -38,9 +38,7 @@ const Footer = () => {
     <Wrapper>
       <Flex flexDirection={['column', 'column', 'row']} alignItems="center">
         <ButtonMenu variant="subtle" scale="sm" activeIndex={0}>
-          <ButtonMenuItem as="a" href="https://exchange.pancakeswap.finance/">
-            V2
-          </ButtonMenuItem>
+          <ButtonMenuItem>V2</ButtonMenuItem>
           <ButtonMenuItem as="a" href="https://v1exchange.pancakeswap.finance/#/">
             V1 (old)
           </ButtonMenuItem>

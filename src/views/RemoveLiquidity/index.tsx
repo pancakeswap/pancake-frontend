@@ -444,6 +444,8 @@ export default function RemoveLiquidity({
       pendingText={pendingText}
     />,
     true,
+    true,
+    'removeLiquidityModal',
   )
 
   return (

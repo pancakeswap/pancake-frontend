@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import { Modal, Text, Flex, Image, Button, Slider, BalanceInput, AutoRenewIcon } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
-import { BASE_EXCHANGE_URL } from 'config'
 import { useAppDispatch } from 'state'
 import { BIG_TEN } from 'utils/bigNumber'
 import { useCakeVault, usePriceCakeBusd } from 'state/hooks'
@@ -212,7 +211,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({ pool, stakingMax, isR
         {pendingTx ? t('Confirming') : t('Confirm')}
       </Button>
       {!isRemovingStake && (
-        <Button mt="8px" as="a" external href={BASE_EXCHANGE_URL} variant="secondary">
+        <Button mt="8px" as="a" external href="/swap" variant="secondary">
           {t('Get %symbol%', { symbol: stakingToken.symbol })}
         </Button>
       )}

@@ -11,6 +11,7 @@ import {
   useWalletModal,
   useModal,
 } from '@pancakeswap/uikit'
+import { useHistory } from 'react-router-dom'
 import useAuth from 'hooks/useAuth'
 import { useTranslation } from 'contexts/Localization'
 import { FINISHED, OVER } from 'config/constants/trading-competition/easterPhases'
@@ -61,6 +62,7 @@ const BattleCta: React.FC<CompetitionProps> = ({
   onRegisterSuccess,
   onClaimSuccess,
 }) => {
+  const history = useHistory()
   const { t } = useTranslation()
   const { login, logout } = useAuth()
   const { onPresentConnectModal } = useWalletModal(login, logout)
@@ -162,7 +164,7 @@ const BattleCta: React.FC<CompetitionProps> = ({
     }
     // Registered and competition is live
     if (hasRegistered && isCompetitionLive) {
-      window.location.href = 'https://exchange.pancakeswap.finance/#/swap'
+      history.push('/swap')
     }
     // Registered and competition has finished
     if (hasRegistered && hasCompetitionEnded) {
