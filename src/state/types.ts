@@ -320,6 +320,7 @@ export interface Vote {
     votingPower: string
     verificationHash: string
   }
+  _inValid?: boolean
 }
 
 export enum VotingStateLoadingStatus {
