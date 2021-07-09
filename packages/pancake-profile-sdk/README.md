@@ -2,8 +2,6 @@
 
 This package provides some handy functions to retrieve data for Pancakeswap Profile system.
 
-If you're looking for React-ready solution - take a look at the [profile-hook](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-profile-hook).
-
 ##### Table of Contents
 
 - [Installation](#installation)
@@ -29,13 +27,13 @@ or yarn:
 yarn add @pancakeswap/profile-sdk
 ```
 
-This package requires `web3` to be installed in your project. If you're using TypeScript you also should install `web3-eth-contract` and `web3-utils` to avoid type errors, although depending on your TypeScript and ESlint configuration you might skip installing those (since they are sub-packages of web3).
+This package requires `web3`, `graphql` and `graphql-request` to be installed in your project. If you're using TypeScript you also should install `web3-eth-contract` and `web3-utils` to avoid type errors, although depending on your TypeScript and ESlint configuration you might skip installing those (since they are sub-packages of web3).
 
 ```bash
 # npm
-npm install web3 --save
+npm install web3 graphql graphql-request --save
 # yarn
-yarn add web3
+yarn add web3 graphql graphql-request
 ```
 
 ## Usage
@@ -213,11 +211,25 @@ console.log(achievements);
 // ];
 ```
 
+### Using images
+
+This package bundles some images within itself, it exports `achievementBadges` and `teamImages` which are javascript objects with keys matching the image names returned by the API (e.g. `"syrup-storm-md.png"`) and values are Base64 encoded images:
+
+```JSX
+import { Team, teamImages } from "@pancakeswap/profile-sdk";
+
+const team = pancakeSdk.getTeam(1);
+// ...
+return <img src={teamImages[team.images.md]} alt={team.name} width="96px" height="96px" />
+```
+
+Also `bunnyPlaceholder` image is exported to provide fallback for e.g. unregistered users.
+
 ## Roadmap
 
 Current version of this SDK is 90% copy of existing from [pancake-frontend](https://github.com/pancakeswap/pancake-frontend) repo. There are several improvements to be made in the future versions of this SDK:
 
 - [ ] Better error handling (common bad status codes or broken internet connection)
 - [ ] Allow username & avatar cookie to be configurable or optional
-- [ ] Validate addresses with regex and don't attempt to fetch data if address is not valid
+- [ ] Validate addresses and don't attempt to fetch data if address is not valid
 - [ ] NodeJS support. Currently it works out of the box only in browser. Need to research different options for cross-fetch and choose the one that provides less friction and increases bundle size the least.

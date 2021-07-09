@@ -22,7 +22,10 @@ export const transformProfileResponse = (profileResponse: ProfileResponse): Part
   };
 };
 
-export const getAchievementTitle = (campaign: Campaign): TranslatableText => {
+export const getAchievementTitle = (campaign?: Campaign, campaignId?: string): TranslatableText => {
+  if (!campaign) {
+    return `Unidentified campaign ${campaignId}`;
+  }
   switch (campaign.type) {
     case "ifo":
       return {
@@ -37,7 +40,10 @@ export const getAchievementTitle = (campaign: Campaign): TranslatableText => {
   }
 };
 
-export const getAchievementDescription = (campaign: Campaign): TranslatableText => {
+export const getAchievementDescription = (campaign?: Campaign): TranslatableText => {
+  if (!campaign) {
+    return "Achievement metadata is not found";
+  }
   switch (campaign.type) {
     case "ifo":
       return {

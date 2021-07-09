@@ -52,6 +52,10 @@ describe("transformHelpers", () => {
       const title = getAchievementTitle(campaign);
       expect(title).toBe("Easter Gold");
     });
+    it("returns 'Unidentified campaign <campaignId>' title if campaign is not found in config", () => {
+      const title = getAchievementTitle(undefined, "1234");
+      expect(title).toBe("Unidentified campaign 1234");
+    });
   });
 
   describe("getAchievementDescription", () => {
@@ -79,6 +83,10 @@ describe("transformHelpers", () => {
       };
       const description = getAchievementDescription(campaign);
       expect(description).toBe("Random description");
+    });
+    it("returns 'Achievement metadata is not found' description if campaign is not found in config", () => {
+      const description = getAchievementDescription(undefined);
+      expect(description).toBe("Achievement metadata is not found");
     });
   });
 });

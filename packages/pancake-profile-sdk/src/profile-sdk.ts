@@ -75,11 +75,11 @@ class PancakeProfileSdk {
           ...accum,
           {
             id: userPoint.campaignId,
-            type: campaignMeta.type,
+            type: campaignMeta?.type ?? "Unknown",
             address: userPoint.id,
-            title: getAchievementTitle(campaignMeta),
+            title: getAchievementTitle(campaignMeta, userPoint.campaignId),
             description: getAchievementDescription(campaignMeta),
-            badge: campaignMeta.badge,
+            badge: campaignMeta?.badge ?? "unknown",
             points: Number(userPoint.points),
           },
         ];
