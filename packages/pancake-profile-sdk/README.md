@@ -27,13 +27,13 @@ or yarn:
 yarn add @pancakeswap/profile-sdk
 ```
 
-This package requires `web3`, `graphql` and `graphql-request` to be installed in your project. If you're using TypeScript you also should install `web3-eth-contract` and `web3-utils` to avoid type errors, although depending on your TypeScript and ESlint configuration you might skip installing those (since they are sub-packages of web3).
+This package requires `ethers`, `graphql` and `graphql-request` to be installed in your project.
 
 ```bash
 # npm
-npm install web3 graphql graphql-request --save
+npm install ethers graphql graphql-request --save
 # yarn
-yarn add web3 graphql graphql-request
+yarn add ethers graphql graphql-request
 ```
 
 ## Usage
@@ -50,22 +50,16 @@ const pancakeSdk = new PancakeProfileSdk();
 
 You can pass optional arguments to the constructor:
 
-- `web3` - custom web3 instance if you want to use web3 instance with custom configuration, if not provided defaults to the following configuration:
-  - HTTP provider with timeout of 10 seconds
-  - a random node is chosen on initialization from the [list of RPC nodes](src/utils/getRpcUrl.ts)
-  - the rest of the configuration is default Web3
+- `provider` - custom RPC Provider instance if you want to use custom configuration, if not provided defaults to provider with random node from the [list of RPC nodes](src/utils/getRpcUrl.ts)
 - `chainId` - what chain ID to use, if not provided defaults to `56`
 
 ```js
 import PancakeProfileSdk from "@pancakeswap/profile-sdk";
-import Web3 from "web3";
+import { ethers } from "ethers";
 
-const httpProvider = new Web3.providers.HttpProvider("https://mycustomnode.com", {
-  timeout: 5000,
-});
-const myWeb3 = new Web3(httpProvider);
+const customProvider = new ethers.providers.JsonRpcProvider("https://example.com");
 
-const pancakeSdk = new PancakeProfileSdk(myWeb3, 97);
+const pancakeSdk = new PancakeProfileSdk(customProvider, 97);
 ```
 
 ### getUsername

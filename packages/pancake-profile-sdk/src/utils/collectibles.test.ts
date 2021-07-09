@@ -1,5 +1,5 @@
 import { MAINNET_CHAIN_ID, IPFS_GATEWAY } from "../constants/common";
-import web3NoAccount from "./web3";
+import simpleRpcProvider from "./providers";
 import { getIdentifierKeyFromAddress, getTokenUrl, getTokenUriData, getNftByTokenId } from "./collectibles";
 import nfts from "../constants/nfts";
 import { server, rest } from "../mocks/server";
@@ -38,7 +38,7 @@ describe("collectibles", () => {
   });
 
   it("getTokenUriData returns proper response", async () => {
-    const uriData = await getTokenUriData(PANCAKE_NFT_ADDRESS, MOCK_TOKEN_ID, web3NoAccount);
+    const uriData = await getTokenUriData(PANCAKE_NFT_ADDRESS, MOCK_TOKEN_ID, simpleRpcProvider);
     expect(uriData).toEqual({
       name: "Sleepy",
       description: "Aww, looks like eating pancakes all day is tough work. Sweet dreams!",
@@ -58,13 +58,13 @@ describe("collectibles", () => {
         }
       )
     );
-    const uriData = await getTokenUriData(PANCAKE_NFT_ADDRESS, MOCK_TOKEN_ID, web3NoAccount);
+    const uriData = await getTokenUriData(PANCAKE_NFT_ADDRESS, MOCK_TOKEN_ID, simpleRpcProvider);
     expect(uriData).toBeNull();
   });
 
   it("getNftByTokenId returns proper nft", async () => {
     const sleepyNft = nfts.find((nft) => nft.identifier === "sleepy");
-    const nft = await getNftByTokenId(PANCAKE_NFT_ADDRESS, MOCK_TOKEN_ID, web3NoAccount, MAINNET_CHAIN_ID);
+    const nft = await getNftByTokenId(PANCAKE_NFT_ADDRESS, MOCK_TOKEN_ID, simpleRpcProvider, MAINNET_CHAIN_ID);
     expect(nft).toBe(sleepyNft);
   });
 
@@ -77,18 +77,18 @@ describe("collectibles", () => {
         }
       )
     );
-    const nft = await getNftByTokenId(PANCAKE_NFT_ADDRESS, MOCK_TOKEN_ID, web3NoAccount, MAINNET_CHAIN_ID);
+    const nft = await getNftByTokenId(PANCAKE_NFT_ADDRESS, MOCK_TOKEN_ID, simpleRpcProvider, MAINNET_CHAIN_ID);
     expect(nft).toBe(null);
   });
 
   it("getNftByTokenId returns null if identifierKey is null", async () => {
-    const nft = await getNftByTokenId(UNKNOWN_NFT_ADDRESS, MOCK_TOKEN_ID, web3NoAccount, MAINNET_CHAIN_ID);
+    const nft = await getNftByTokenId(UNKNOWN_NFT_ADDRESS, MOCK_TOKEN_ID, simpleRpcProvider, MAINNET_CHAIN_ID);
     expect(nft).toBe(null);
   });
 
   it("getNftByTokenId returns null if uriData does not contain indentifierKey", async () => {
     // In the NFT constant mocks MIXIE NFT type is intentionally given wrong identifier
-    const nft = await getNftByTokenId(MIXIE_NFT_ADDRESS, MOCK_TOKEN_ID, web3NoAccount, MAINNET_CHAIN_ID);
+    const nft = await getNftByTokenId(MIXIE_NFT_ADDRESS, MOCK_TOKEN_ID, simpleRpcProvider, MAINNET_CHAIN_ID);
     expect(nft).toBe(null);
   });
 });

@@ -1,8 +1,7 @@
-import Web3 from "web3";
-import { Contract } from "web3-eth-contract";
 import { request, gql } from "graphql-request";
 import Cookies from "js-cookie";
-import web3NoAccount from "./utils/web3";
+import { ethers, Contract } from "ethers";
+import simpleRpcProvider from "./utils/providers";
 import { getProfileContract } from "./utils/contractHelpers";
 import { profileApi, profileSubgraphApi, MAINNET_CHAIN_ID } from "./constants/common";
 import { campaignMap } from "./constants/campaigns";
@@ -12,21 +11,21 @@ import { getAchievementDescription, getAchievementTitle, transformProfileRespons
 import { getNftByTokenId } from "./utils/collectibles";
 
 type SdkConstructorArguments = {
-  web3?: Web3;
+  provider?: ethers.providers.JsonRpcProvider;
   chainId?: number;
 };
 
 class PancakeProfileSdk {
-  web3 = web3NoAccount;
+  provider = simpleRpcProvider;
 
   chainId = MAINNET_CHAIN_ID;
 
   profileContract: Contract;
 
   constructor(args?: SdkConstructorArguments) {
-    if (args?.web3) this.web3 = args.web3;
+    if (args?.provider) this.provider = args.provider;
     if (args?.chainId) this.chainId = args.chainId;
-    this.profileContract = getProfileContract(this.web3, this.chainId);
+    this.profileContract = getProfileContract(this.provider, this.chainId);
   }
 
   /**
@@ -102,11 +101,12 @@ class PancakeProfileSdk {
         2: numberUsers,
         3: numberPoints,
         4: isJoinable,
-      } = await this.profileContract.methods.getTeamProfile(teamId).call();
+      } = await this.profileContract.getTeamProfile(teamId);
       const staticTeamInfo = teamsList.find((staticTeam) => staticTeam.id === teamId);
 
       return { ...staticTeamInfo, isJoinable, name: teamName, users: numberUsers, points: numberPoints };
     } catch (error) {
+      console.error("getTeam error:", error);
       return null;
     }
   };
@@ -120,13 +120,13 @@ class PancakeProfileSdk {
    */
   getProfile = async (address: string): Promise<GetProfileResponse> => {
     try {
-      const hasRegistered = (await this.profileContract.methods.hasRegistered(address).call()) as boolean;
+      const hasRegistered = (await this.profileContract.hasRegistered(address)) as boolean;
 
       if (!hasRegistered) {
         return { hasRegistered, profile: null };
       }
 
-      const profileResponse = await this.profileContract.methods.getUserProfile(address).call();
+      const profileResponse = await this.profileContract.getUserProfile(address);
       const { userId, points, teamId, tokenId, nftAddress, isActive } = transformProfileResponse(profileResponse);
       const team = await this.getTeam(teamId);
       const username = await this.getUsername(address);
@@ -135,7 +135,7 @@ class PancakeProfileSdk {
       // so only fetch the nft data if active
       let nft: Nft;
       if (isActive) {
-        nft = await getNftByTokenId(nftAddress, tokenId, this.web3, this.chainId);
+        nft = await getNftByTokenId(nftAddress, tokenId, this.provider, this.chainId);
         const avatar = nft ? `https://pancakeswap.finance/images/nfts/${nft.images.sm}` : undefined;
         // Save the preview image in a cookie so it can be used on the exchange
         // TODO v2: optional (and configurable) Cookies.set

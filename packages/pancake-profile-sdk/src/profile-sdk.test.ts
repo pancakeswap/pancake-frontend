@@ -1,7 +1,7 @@
-import Web3 from "web3";
 import Cookies from "js-cookie";
+import { ethers } from "ethers";
 import PancakeProfileSdk from "./profile-sdk";
-import web3NoAccount from "./utils/web3";
+import simpleRpcProvider from "./utils/providers";
 import { MAINNET_CHAIN_ID, TESTNET_CHAIN_ID, profileApi } from "./constants/common";
 import nfts from "./constants/nfts";
 import teamsList from "./constants/teams";
@@ -15,21 +15,18 @@ jest.mock("js-cookie", () => ({
 
 describe("PancakeProfileSdk", () => {
   describe("constructor", () => {
-    it("uses default web3 instance if no web3 is provided", () => {
+    it("uses default provider instance if no provider is specified", () => {
       const sdk = new PancakeProfileSdk();
-      expect(sdk.web3).toBe(web3NoAccount);
+      expect(sdk.provider).toBe(simpleRpcProvider);
     });
     it("uses mainnet chainId if no chainId is provided", () => {
       const sdk = new PancakeProfileSdk();
       expect(sdk.chainId).toBe(MAINNET_CHAIN_ID);
     });
-    it("uses custom web3 instance if provided", () => {
-      const httpProvider = new Web3.providers.HttpProvider("http://customrpc.com", {
-        timeout: 10000,
-      });
-      const customWeb3 = new Web3(httpProvider);
-      const sdk = new PancakeProfileSdk({ web3: customWeb3 });
-      expect(sdk.web3).toBe(customWeb3);
+    it("uses custom provider instance if specified", () => {
+      const customProvider = new ethers.providers.JsonRpcProvider("https://example.com");
+      const sdk = new PancakeProfileSdk({ provider: customProvider });
+      expect(sdk.provider).toBe(customProvider);
     });
     it("uses specific chainId if chainId is provided", () => {
       const sdk = new PancakeProfileSdk({ chainId: TESTNET_CHAIN_ID });

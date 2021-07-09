@@ -1,18 +1,16 @@
-import Web3 from "web3";
-import { AbiItem } from "web3-utils";
-import { Contract } from "web3-eth-contract";
+import { ethers, Contract } from "ethers";
 import erc721Abi from "../abi/erc721.json";
 import profileABI from "../abi/pancakeProfile.json";
 import { getPancakeProfileAddress } from "./addressHelpers";
 
-const getContract = (abi: AbiItem, address: string, web3: Web3): Contract => {
-  return new web3.eth.Contract(abi, address);
+const getContract = (abi: string, address: string, provider: ethers.providers.Provider): Contract => {
+  return new ethers.Contract(address, abi, provider);
 };
 
-export const getErc721Contract = (address: string, web3?: Web3): Contract => {
-  return getContract(erc721Abi as unknown as AbiItem, address, web3);
+export const getErc721Contract = (address: string, provider: ethers.providers.Provider): Contract => {
+  return getContract(erc721Abi as unknown as string, address, provider);
 };
 
-export const getProfileContract = (web3: Web3, chainId: number): Contract => {
-  return getContract(profileABI as unknown as AbiItem, getPancakeProfileAddress(chainId), web3);
+export const getProfileContract = (provider: ethers.providers.Provider, chainId: number): Contract => {
+  return getContract(profileABI as unknown as string, getPancakeProfileAddress(chainId), provider);
 };

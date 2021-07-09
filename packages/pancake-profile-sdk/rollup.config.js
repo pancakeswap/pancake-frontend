@@ -12,5 +12,5 @@ export default {
     { file: pkg.module, format: "es" },
   ],
   plugins: [json(), commonjs(), nodeResolve(), typescript(), image()],
-  external: ["web3", "web3-eth-contract", "web3-utils", "graphql", "graphql-request"],
+  external: ["ethers", "graphql", "graphql-request"],
 };

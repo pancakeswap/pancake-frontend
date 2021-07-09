@@ -1,4 +1,4 @@
-import Web3 from "web3";
+import { ethers } from "ethers";
 import Nfts, { nftSources } from "../constants/nfts";
 import { IPFS_GATEWAY } from "../constants/common";
 import { Nft, NftUriData } from "../types";
@@ -29,10 +29,14 @@ export const getTokenUrl = (tokenUri: string): string => {
   return tokenUri;
 };
 
-export const getTokenUriData = async (nftAddress: string, tokenId: number, web3: Web3): Promise<NftUriData | null> => {
+export const getTokenUriData = async (
+  nftAddress: string,
+  tokenId: number,
+  provider: ethers.providers.JsonRpcProvider
+): Promise<NftUriData | null> => {
   try {
-    const contract = getErc721Contract(nftAddress, web3);
-    const tokenUri = await contract.methods.tokenURI(tokenId).call();
+    const contract = getErc721Contract(nftAddress, provider);
+    const tokenUri = await contract.tokenURI(tokenId);
     const uriDataResponse = await fetch(getTokenUrl(tokenUri));
 
     if (!uriDataResponse.ok) {
@@ -50,10 +54,10 @@ export const getTokenUriData = async (nftAddress: string, tokenId: number, web3:
 export const getNftByTokenId = async (
   nftAddress: string,
   tokenId: number,
-  web3: Web3,
+  provider: ethers.providers.JsonRpcProvider,
   chainId: number
 ): Promise<Nft | null> => {
-  const uriData = await getTokenUriData(nftAddress, tokenId, web3);
+  const uriData = await getTokenUriData(nftAddress, tokenId, provider);
   const identifierKey = getIdentifierKeyFromAddress(nftAddress, chainId);
 
   // Bail out early if we have no uriData, identifierKey, or the value does not
