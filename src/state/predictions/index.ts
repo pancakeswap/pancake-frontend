@@ -216,7 +216,7 @@ export const predictionsSlice = createSlice({
       if (state.currentEpoch !== currentEpoch) {
         const newestRound = maxBy(Object.values(state.rounds), 'epoch')
         const futureRound = makeFutureRoundResponse(
-          newestRound.epoch + 2,
+          newestRound.epoch + 1,
           newestRound.startBlock + (state.intervalBlocks + BLOCK_PADDING),
         )
 
