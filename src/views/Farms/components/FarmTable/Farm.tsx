@@ -5,7 +5,7 @@ import { useTranslation } from 'contexts/Localization'
 import { Text } from '@pancakeswap/uikit'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { Token } from 'config/constants/types'
-import TokenPairImage from 'components/TokenPairImage'
+import { TokenPairImage } from 'components/TokenImage'
 
 export interface FarmProps {
   label: string
