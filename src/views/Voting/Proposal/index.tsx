@@ -38,17 +38,15 @@ const Proposal = () => {
 
   // We have to wait for the proposal to load before fetching the votes because we need to include the snapshot
   useEffect(() => {
-    if (proposalId && snapshot && votes.length === 0) {
-      dispatch(fetchVotes({ proposalId, block: Number(snapshot) }))
+    const getVotes = async () => {
+      await dispatch(fetchVotes({ proposalId, block: Number(snapshot) }))
+      dispatch(verifyVotes({ proposalId }))
     }
-  }, [proposalId, snapshot, votes, dispatch])
 
-  // After the votes have been loaded verify
-  useEffect(() => {
-    if (voteLoadingStatus === VotingStateLoadingStatus.IDLE) {
-      dispatch(verifyVotes({ proposalId, snapshot }))
+    if (proposalId && snapshot) {
+      getVotes()
     }
-  }, [voteLoadingStatus, proposalId, snapshot, dispatch])
+  }, [proposalId, snapshot, dispatch])
 
   if (!proposal) {
     return <PageLoader />
