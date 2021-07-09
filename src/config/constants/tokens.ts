@@ -12,6 +12,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://pancakeswap.finance/',
   },
+  titan: {
+    symbol: 'TITAN',
+    address: {
+      56: '0xe898EDc43920F357A93083F1d4460437dE6dAeC2',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://titanswap.org',
+  },
   harmony: {
     symbol: 'ONE',
     address: {
