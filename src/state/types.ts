@@ -408,9 +408,9 @@ export interface LotteryUserGraphEntity {
 export interface UserRound {
   claimed: boolean
   lotteryId: string
-  totalTickets: string
   status: LotteryStatus
   endTime: string
+  totalTickets: string
   tickets?: LotteryTicket[]
 }
 

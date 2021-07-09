@@ -15,17 +15,16 @@ const applyNodeDataToLotteriesGraphResponse = (
         finalNumber: nodeRound.finalNumber.toString(),
         startTime: nodeRound.startTime,
         status: nodeRound.status,
-        id: nodeRound.lotteryId,
-        // TODO: To be fully self-sufficient when the graph goes down, this null & BN data needs handling in the FE
+        id: nodeRound.lotteryId.toString(),
         ticketPrice: nodeRound.priceTicketInCake,
-        totalTickets: null,
-        totalUsers: null,
-        winningTickets: null,
+        totalTickets: '',
+        totalUsers: '',
+        winningTickets: '',
       }
     })
   }
 
-  //   Else if there is a graph response - merge with node data where node data is more accurate
+  //   Else if there is a graph response - merge with node data where node data is more reliable
   const mergedResponse = graphResponse.map((graphRound, index) => {
     const nodeRound = nodeData[index]
     // if there is node data for this index, overwrite graph data. Otherwise - return graph data.
@@ -49,14 +48,6 @@ const applyNodeDataToLotteriesGraphResponse = (
     return graphRound
   })
   return mergedResponse
-}
-
-const getLotteriesData = async (currentLotteryId: string): Promise<LotteryRoundGraphEntity[]> => {
-  const idsForNodesCall = getRoundIdsArray(currentLotteryId)
-  const nodeData = await fetchMultipleLotteries(idsForNodesCall)
-  const graphResponse = await getGraphLotteries()
-  const mergedData = applyNodeDataToLotteriesGraphResponse(nodeData, graphResponse)
-  return mergedData
 }
 
 const getGraphLotteries = async (): Promise<LotteryRoundGraphEntity[]> => {
@@ -86,6 +77,14 @@ const getGraphLotteries = async (): Promise<LotteryRoundGraphEntity[]> => {
     console.error(error)
   }
   return lotteries
+}
+
+const getLotteriesData = async (currentLotteryId: string): Promise<LotteryRoundGraphEntity[]> => {
+  const idsForNodesCall = getRoundIdsArray(currentLotteryId)
+  const nodeData = await fetchMultipleLotteries(idsForNodesCall)
+  const graphResponse = await getGraphLotteries()
+  const mergedData = applyNodeDataToLotteriesGraphResponse(nodeData, graphResponse)
+  return mergedData
 }
 
 export default getLotteriesData

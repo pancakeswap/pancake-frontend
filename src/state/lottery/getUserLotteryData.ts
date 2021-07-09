@@ -19,7 +19,7 @@ const applyNodeDataToUserGraphResponse = (
         status: nodeRound.status,
         lotteryId: nodeRound.lotteryId.toString(),
         claimed: hasRoundBeenClaimed(ticketDataForRound.userTickets),
-        totalTickets: null,
+        totalTickets: `${ticketDataForRound.userTickets.length}`,
       }
     })
   }
@@ -45,39 +45,6 @@ const applyNodeDataToUserGraphResponse = (
     return graphRound
   })
   return mergedResponse
-}
-
-const getUserLotteryData = async (account: string, currentLotteryId: string): Promise<LotteryUserGraphEntity> => {
-  const idsForTicketsNodeCall = getRoundIdsArray(currentLotteryId)
-  const ticketsToRequestPerRound = '5000'
-  const blindRoundData = idsForTicketsNodeCall.map((roundId) => {
-    return {
-      totalTickets: ticketsToRequestPerRound,
-      lotteryId: roundId.toString(),
-    }
-  })
-
-  const rawUserTicketNodeData = await fetchUserTicketsForMultipleRounds(blindRoundData, account)
-
-  const roundDataAndUserTickets = rawUserTicketNodeData.map((rawRoundTicketData, index) => {
-    return {
-      roundId: idsForTicketsNodeCall[index],
-      userTickets: processRawTicketsResponse(rawRoundTicketData),
-    }
-  })
-  const roundsWithUserParticipation = roundDataAndUserTickets.filter((round) => round.userTickets.length > 0)
-  const idsForLotteriesNodeCall = roundsWithUserParticipation.map((round) => round.roundId)
-
-  const lotteriesNodeData = await fetchMultipleLotteries(idsForLotteriesNodeCall)
-  const graphResponse = await getGraphLotteryUser(account)
-
-  const mergedRoundData = applyNodeDataToUserGraphResponse(
-    lotteriesNodeData,
-    graphResponse.rounds,
-    roundsWithUserParticipation,
-  )
-  const graphResponseWithNodeRounds = { ...graphResponse, rounds: mergedRoundData }
-  return graphResponseWithNodeRounds
 }
 
 const getGraphLotteryUser = async (account: string): Promise<LotteryUserGraphEntity> => {
@@ -142,6 +109,37 @@ const getGraphLotteryUser = async (account: string): Promise<LotteryUserGraphEnt
   }
 
   return user
+}
+
+const getUserLotteryData = async (account: string, currentLotteryId: string): Promise<LotteryUserGraphEntity> => {
+  const idsForTicketsNodeCall = getRoundIdsArray(currentLotteryId)
+  const ticketsToRequestPerRound = '5000'
+  const blindRoundData = idsForTicketsNodeCall.map((roundId) => {
+    return {
+      totalTickets: ticketsToRequestPerRound,
+      lotteryId: roundId.toString(),
+    }
+  })
+
+  const rawUserTicketNodeData = await fetchUserTicketsForMultipleRounds(blindRoundData, account)
+  const roundDataAndUserTickets = rawUserTicketNodeData.map((rawRoundTicketData, index) => {
+    return {
+      roundId: idsForTicketsNodeCall[index],
+      userTickets: processRawTicketsResponse(rawRoundTicketData),
+    }
+  })
+  const roundsWithUserParticipation = roundDataAndUserTickets.filter((round) => round.userTickets.length > 0)
+  const idsForLotteriesNodeCall = roundsWithUserParticipation.map((round) => round.roundId)
+
+  const lotteriesNodeData = await fetchMultipleLotteries(idsForLotteriesNodeCall)
+  const graphResponse = await getGraphLotteryUser(account)
+  const mergedRoundData = applyNodeDataToUserGraphResponse(
+    lotteriesNodeData,
+    graphResponse.rounds,
+    roundsWithUserParticipation,
+  )
+  const graphResponseWithNodeRounds = { ...graphResponse, rounds: mergedRoundData }
+  return graphResponseWithNodeRounds
 }
 
 export default getUserLotteryData

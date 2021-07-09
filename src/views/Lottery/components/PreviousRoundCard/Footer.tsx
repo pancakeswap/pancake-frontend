@@ -65,7 +65,7 @@ const PreviousRoundCardFooter: React.FC<{ lotteryData: LotteryRound; lotteryId: 
             </Box>
             <Box mb="24px">
               <Text fontSize="14px">
-                {t('Total players this round')}: {lotteryGraphData.totalUsers.toLocaleString()}
+                {t('Total players this round')}: {lotteryGraphData.totalUsers?.toLocaleString()}
               </Text>
             </Box>
           </Flex>
