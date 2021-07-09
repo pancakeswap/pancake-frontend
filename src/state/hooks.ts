@@ -450,8 +450,8 @@ export const useGetCurrentRoundBlockNumber = () => {
 }
 
 export const useGetMinBetAmount = () => {
-  const minByBetAmount = useSelector((state: State) => state.predictions.minBetAmount)
-  return useMemo(() => new BigNumber(minByBetAmount), [minByBetAmount])
+  const minBetAmount = useSelector((state: State) => state.predictions.minBetAmount)
+  return useMemo(() => ethers.BigNumber.from(minBetAmount), [minBetAmount])
 }
 
 export const useGetRewardRate = () => {
