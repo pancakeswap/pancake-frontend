@@ -40,7 +40,7 @@ const Proposal = () => {
   useEffect(() => {
     const getVotes = async () => {
       await dispatch(fetchVotes({ proposalId, block: Number(snapshot) }))
-      dispatch(verifyVotes({ proposalId }))
+      dispatch(verifyVotes({ proposalId, snapshot }))
     }
 
     if (proposalId && snapshot) {
