@@ -35,7 +35,7 @@ const AuctionDetail = () => {
           <ScheduleInner>
             <Flex justifyContent="space-between" mb="8px">
               <Text color="textSubtle">{t('Auction duration')}</Text>
-              <Text> {t('%numHours% hours', { numHours: '~12' })}</Text>
+              <Text> {t('%numHours% hours', { numHours: '~24' })}</Text>
             </Flex>
             <Flex justifyContent="space-between" mb="8px">
               <Text color="textSubtle">{t('Start')}</Text>
