@@ -24,7 +24,6 @@ const TwitterContainer = () => {
   )
 }
 
-
 const StyledAnnouncementCard = styled(Card)`
   background-size: 300px 300px;
   background-position-x: 100px;

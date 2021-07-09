@@ -6,7 +6,11 @@ import Page from 'components/layout/Page'
 import AnnouncementCard from 'views/Home/components/AnnouncementCard'
 import ZmbeStats from 'views/Home/components/ZmbeStats'
 import TotalValueLockedCard from 'views/Home/components/TotalValueLockedCard'
+import { useWeb3React } from '@web3-react/core'
 import GraveStakingCard from './components/GraveStakingCard'
+import * as fetch from '../../redux/fetch'
+import store from '../../redux/store'
+import { zombiePriceUsd } from '../../redux/get'
 
 const Hero = styled.div`
   align-items: center;
@@ -67,12 +71,7 @@ const CTACards = styled(BaseLayout)`
   }
 `
 
-interface HomeProps {
-  zombieUsdPrice: number,
-}
-
-const Home: React.FC<HomeProps> = ({ zombieUsdPrice }: HomeProps) => {
-  const { t } = useTranslation()
+const Home: React.FC = () => {
   return (
     <Page>
       <div>
@@ -82,7 +81,7 @@ const Home: React.FC<HomeProps> = ({ zombieUsdPrice }: HomeProps) => {
         </Cards>
         <Cards>
           <ZmbeStats />
-          <TotalValueLockedCard zombieUsdPrice={zombieUsdPrice}/>
+          <TotalValueLockedCard/>
         </Cards>
       </div>
     </Page>

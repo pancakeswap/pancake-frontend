@@ -11,15 +11,12 @@ import Table from './Table'
 import '../Graves/Graves.Styles.css'
 import tableData from './data'
 import { BIG_ZERO } from '../../utils/bigNumber'
+import { zombiePriceUsd } from '../../redux/get'
 
 
 let accountAddress
 
-interface Tombs {
-  zombieUsdPrice: number,
-}
-
-const Tombs: React.FC<Tombs> = ({ zombieUsdPrice }: Tombs) => {
+const Tombs: React.FC = ( ) => {
 
   const { account } = useWeb3React()
   const [tombsData, setTombsData] = useState(tableData)
@@ -96,7 +93,7 @@ const Tombs: React.FC<Tombs> = ({ zombieUsdPrice }: Tombs) => {
       </PageHeader>
       <div>
         {tombsData.map((data) => {
-          return <Table updateResult={updateResult} updateAllowance={updateAllowance} zombieUsdPrice={zombieUsdPrice} bnbInBusd={bnbInBusd}
+          return <Table updateResult={updateResult} updateAllowance={updateAllowance} zombieUsdPrice={zombiePriceUsd()} bnbInBusd={bnbInBusd}
                         isAllowance={isAllowance} details={data} key={data.id} />
         })}
       </div>

@@ -15,14 +15,11 @@ import './Graves.Styles.css'
 import tableData from './data'
 import { getBep20Contract, getZombieContract } from '../../utils/contractHelpers'
 import { BIG_ZERO } from '../../utils/bigNumber'
+import { zombiePriceUsd } from '../../redux/get'
 
 let accountAddress
 
-interface Graves {
-  zombieUsdPrice: number,
-}
-
-const Graves: React.FC<Graves> = ({ zombieUsdPrice }: Graves) => {
+const Graves: React.FC = () => {
   const { account } = useWeb3React()
   const [isAllowance, setIsAllowance] = useState(false)
   const [farmData, setFarmData] = useState(tableData)
@@ -116,8 +113,6 @@ const Graves: React.FC<Graves> = ({ zombieUsdPrice }: Graves) => {
         })
     }
 
-
-
   return (
     <Page className='innnerContainer'>
       <PageHeader background='none'>
@@ -130,7 +125,7 @@ const Graves: React.FC<Graves> = ({ zombieUsdPrice }: Graves) => {
       </PageHeader>
       <div>
         {farmData.map((data) => {
-          return <Table zombieUsdPrice={zombieUsdPrice}
+          return <Table zombieUsdPrice={zombiePriceUsd()}
                         updateResult={updateResult} updateAllowance={updateAllowance} zombieAllowance={zombieAllowance} bnbInBusd={bnbInBusd}
                         isAllowance={isAllowance} details={data} key={data.id} />
         })}

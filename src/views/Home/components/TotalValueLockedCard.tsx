@@ -1,17 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Card, CardBody, Heading, Skeleton, Text } from '@rug-zombie-libs/uikit'
-import { useTranslation } from 'contexts/Localization'
-import { useGetStats } from 'hooks/api'
 import { BigNumber } from 'bignumber.js'
 import numeral from 'numeral'
-import { useZombie } from '../../../hooks/useContract'
-import { getAddress, getDrFrankensteinAddress, getTombLpAddress } from '../../../utils/addressHelpers'
-import { BIG_ZERO } from '../../../utils/bigNumber'
 import { getBalanceAmount } from '../../../utils/formatBalance'
-import { getPancakePair } from '../../../utils/contractHelpers'
-import { getBnbPriceinBusd } from '../../../state/hooks'
-import CardValue from './CardValue'
+import { bnbPriceUsd, drFrankensteinZombieBalance, zmbeBnbTomb, zombiePriceUsd } from '../../../redux/get'
+import store from '../../../redux/store'
+import tombs from '../../../redux/tombs'
+import { tomb } from '../../../redux/fetch'
 
 const StyledTotalValueLockedCard = styled(Card)`
   align-items: center;
@@ -26,64 +22,39 @@ const Row = styled.div`
   margin-bottom: 8px;
 `
 
-interface TotalValueLockedCardReactProps {
-  zombieUsdPrice: number,
-}
+const TotalValueLockedCard: React.FC = () => {
+  const zombiePrice = zombiePriceUsd()
 
-const TotalValueLockedCard:  React.FC<TotalValueLockedCardReactProps> = ({ zombieUsdPrice }: TotalValueLockedCardReactProps) => {
-  const { t } = useTranslation()
-  const zombie = useZombie()
-  const [tvl, setTvl] = useState(BIG_ZERO)
-  const [zombiePrice, setZombiePrice] = useState(0)
+  const reserves = zmbeBnbTomb().result.reserves
+  const lpTotalSupply = zmbeBnbTomb().result.totalSupply
+  const reservesUsd = [getBalanceAmount(reserves[0]).times(zombiePrice), getBalanceAmount(reserves[1]).times(bnbPriceUsd())]
+  const bnbLpTokenPrice = reservesUsd[0].plus(reservesUsd[1]).div(lpTotalSupply)
+  const bnbTombTvl = new BigNumber(zmbeBnbTomb().result.totalStaked).times(bnbLpTokenPrice)
+  const zombieBalance = getBalanceAmount(drFrankensteinZombieBalance()).times(zombiePrice)
 
+  const [tvl, setTvl] = useState(bnbTombTvl.plus(zombieBalance))
+
+  const newTvl = bnbTombTvl.plus(zombieBalance)
   useEffect(() => {
-    if(zombiePrice === 0) {
-      setZombiePrice(zombieUsdPrice)
+    if (!tvl.eq(newTvl) || tvl.isNaN() ) {
+      setTvl(bnbTombTvl.plus(zombieBalance))
     }
-  },[zombiePrice, zombieUsdPrice])
+  }, [bnbTombTvl, newTvl, tvl, zombieBalance])
 
-  useEffect(()=> {
-    zombie.methods.balanceOf(getDrFrankensteinAddress()).call()
-      .then(zombieBalanceRes => {
-        const lpTokenContract = getPancakePair(getTombLpAddress(0))
-        lpTokenContract.methods.totalSupply().call()
-          .then((resSupply) => {
-            const lpSupply = getBalanceAmount(resSupply)
-            lpTokenContract.methods.balanceOf(getDrFrankensteinAddress()).call()
-              .then((resStaked) => {
-                lpTokenContract.methods.getReserves().call()
-                  .then(reserves => {
-                    getBnbPriceinBusd().then(bnbPriceRes => {
-                      const reservesUsd = [getBalanceAmount(reserves[0]).times(zombiePrice), getBalanceAmount(reserves[1]).times(bnbPriceRes.data.price)]
-                      const bnbLpTokenPrice = reservesUsd[0].plus(reservesUsd[1]).div(lpSupply)
-                      const bnbLpTokensStaked = getBalanceAmount(resStaked)
-                      const bnbTombTvl = bnbLpTokensStaked.times(bnbLpTokenPrice)
-                      const zombieBalance = getBalanceAmount(zombieBalanceRes).times(zombiePrice)
-
-                      if(tvl === BIG_ZERO) {
-                        setTvl(bnbTombTvl.plus(zombieBalance))
-                      }
-                    })
-                  })
-              })
-          })
-      })
-
-  }, [tvl, zombie.methods, zombiePrice])
-
+  console.count('rendered')
   return (
     <StyledTotalValueLockedCard>
       <CardBody>
-        <Heading size="lg" mb="24px">
-          {t('Total Value Locked (TVL)')}
+        <Heading size='lg' mb='24px'>
+          Total Value Locked (TVL)
         </Heading>
-          <>
-            <Heading size="xl">{`$${numeral(tvl).format('(0.00 a)') }`}</Heading>
-            <Row>
+        <>
+          <Heading size='xl'>{`$${numeral(tvl).format('(0.00 a)')}`}</Heading>
+          <Row>
 
-            <Text fontSize="14px">{t('Across all Tombs and Graves')}</Text>
-            </Row>
-          </>
+            <Text fontSize='14px'>Across all Tombs and Graves</Text>
+          </Row>
+        </>
 
       </CardBody>
     </StyledTotalValueLockedCard>

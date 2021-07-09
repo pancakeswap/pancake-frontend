@@ -9,7 +9,7 @@ import Menu from 'components/Menu'
 import Loader from 'components/Loader'
 import Home from 'views/Home/Home';
 import Tombs from 'views/Tombs/Tombs'
-import * as actions from 'redux/actionTypes'
+import { useWeb3React } from '@web3-react/core'
 import SuspenseWithChunkError from './components/SuspenseWithChunkError'
 // import Graves from './views/Graves'
 import history from './routerHistory'
@@ -19,6 +19,7 @@ import tombs from './views/Tombs/data'
 import { getAddress } from './utils/addressHelpers'
 import { BIG_ZERO } from './utils/bigNumber'
 import store from './redux/store'
+import * as fetch from './redux/fetch'
 // Route-based code splitting
 // Only pool is included in the main bundle because of it's the most visited page
 const Landing = lazy(() => import('./components/Landing'));
@@ -29,15 +30,6 @@ BigNumber.config({
 })
 
 const App: React.FC = () => {
-
-  console.log(store.getState())
-  store.dispatch({
-    type: actions.UPDATE_ZOMBIE_ALLOWANCE,
-    payload: {
-      allowance: new BigNumber(5)
-    }
-  })
-
   // Monkey patch warn() because of web3 flood
   // To be removed when web3 1.3.5 is released
   useEffect(() => {
@@ -48,12 +40,12 @@ const App: React.FC = () => {
 
   useEffect(() => {
     document.title = 'RugZombie'
-  },
-  )
+  })
+
   useEagerConnect()
-  // useFetchPublicData()
-  // useFetchProfile()
-  // useFetchPriceList()
+
+  const {account} = useWeb3React()
+  fetch.initialData(account)
 
   const handleAuthentication = () => {
     setAuthenticated(!isAuthenticated);
@@ -64,17 +56,6 @@ const App: React.FC = () => {
     "handleAuthentication": handleAuthentication
   }
 
-  const [zombieUsdPrice, setZombieUsdPrice] = useState(0)
-  const [zmbeBnbReserves, setZmbeBnbReserves] = useState([BIG_ZERO, BIG_ZERO])
-  const zmbeBnbAddress = getAddress(tombs[0].lpAddresses)
-    fetchLpReserves(zmbeBnbAddress).then((reserves) => {
-      const zombieBnbPrice = reserves[1] / reserves[0]
-      getBnbPriceinBusd().then((res) => {
-        const bnbPrice = res.data.price
-        setZombieUsdPrice(zombieBnbPrice * bnbPrice)
-      })
-    })
-
   return (
     <Router history={history}>
       <ResetCSS />
@@ -82,10 +63,10 @@ const App: React.FC = () => {
       <SuspenseWithChunkError fallback={<Loader />}>
         <Switch>
           <Route exact path={routes.LANDING}><Landing {...LandingProps} /></Route>
-          <Menu zombieUsdPrice={zombieUsdPrice}>
-            <Route exact path={routes.HOME}><Home zombieUsdPrice={zombieUsdPrice}/></Route>
-            <Route exact path={routes.GRAVES}><Graves zombieUsdPrice={zombieUsdPrice}/></Route>
-            <Route exact path={routes.TOMBS}><Tombs zombieUsdPrice={zombieUsdPrice} /></Route>
+          <Menu>
+            <Route exact path={routes.HOME}><Home/></Route>
+            <Route exact path={routes.GRAVES}><Graves/></Route>
+            <Route exact path={routes.TOMBS}><Tombs/></Route>
           </Menu>
         </Switch>
       </SuspenseWithChunkError>

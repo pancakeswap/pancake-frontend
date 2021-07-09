@@ -5,12 +5,12 @@ import { languageList, Language } from 'config/localization/languages'
 import { useTranslation } from 'contexts/Localization'
 import useAuth from 'hooks/useAuth'
 import config from './config'
+import { zombiePriceUsd } from '../../redux/get'
 
 const Menu = (props) => {
   const { account } = useWeb3React()
   const { login, logout } = useAuth()
   const { currentLanguage, setLanguage } = useTranslation()
-  const {zombieUsdPrice} = props
   return (
     <UikitMenu
       account={account}
@@ -22,7 +22,7 @@ const Menu = (props) => {
       setLang={(langType) => {
         setLanguage(langType as Language)
       }}
-      cakePriceUsd={zombieUsdPrice}
+      cakePriceUsd={zombiePriceUsd()}
       links={config}
       profile={{
         username: undefined,
