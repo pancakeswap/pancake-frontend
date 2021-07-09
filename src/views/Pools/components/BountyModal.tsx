@@ -57,7 +57,7 @@ const BountyModal: React.FC<BountyModalProps> = ({ onDismiss, TooltipComponent }
   const handleConfirmClick = async () => {
     setPendingTx(true)
     try {
-      const tx = await cakeVaultContract.harvest({ gasLimit: 285000 })
+      const tx = await cakeVaultContract.harvest({ gasLimit: 210000 })
       const receipt = await tx.wait()
       if (receipt.status) {
         toastSuccess(t('Bounty collected!'), t('CAKE bounty has been sent to your wallet.'))
