@@ -1,10 +1,10 @@
 {
   "name": "PancakeSwap Extended",
-  "timestamp": "2021-07-07T08:21:53.585Z",
+  "timestamp": "2021-07-09T08:02:06.456Z",
   "version": {
     "major": 2,
     "minor": 16,
-    "patch": 6
+    "patch": 7
   },
   "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png",
   "keywords": [
@@ -1363,6 +1363,14 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "https://tokens.pancakeswap.finance/images/0xdff8cb622790b7f92686c722b02cab55592f152c.png"
+    },
+    {
+      "name": "TitanSwap",
+      "symbol": "TITAN",
+      "address": "0xe898EDc43920F357A93083F1d4460437dE6dAeC2",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0xe898EDc43920F357A93083F1d4460437dE6dAeC2.png"
     },
     {
       "name": "TokoCrypto",

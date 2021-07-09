@@ -1654,5 +1654,13 @@
     "chainId": 56,
     "decimals": 18,
     "logoURI": "https://tokens.pancakeswap.finance/images/0x2eD9a5C8C13b93955103B9a7C167B67Ef4d568a3.png"
+  },
+  {
+    "name": "TitanSwap",
+    "symbol": "TITAN",
+    "address": "0xe898EDc43920F357A93083F1d4460437dE6dAeC2",
+    "chainId": 56,
+    "decimals": 18,
+    "logoURI": "https://tokens.pancakeswap.finance/images/0xe898EDc43920F357A93083F1d4460437dE6dAeC2.png"
   }
 ]
