@@ -6,6 +6,11 @@ interface StyledSvgProps {
   svgFill?: string
 }
 
+export interface ConcaveProps {
+  concaveBackgroundLight?: string
+  concaveBackgroundDark?: string
+}
+
 const sharedStyles = `
 svg {
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
@@ -56,17 +61,18 @@ export const CurvedSvgBottom = styled(CurvedSvg)<StyledSvgProps>`
   fill: ${({ svgFill, theme }) => svgFill || theme.colors.background};
 `
 
-const ConcaveContainer = styled(Box)<{ clipPath: string }>`
+const ConcaveContainer = styled(Box)<{
+  clipPath: string
+  concaveBackgroundLight?: string
+  concaveBackgroundDark?: string
+}>`
   width: 100%;
   height: 20px;
-  background-color: ${({ clipPath, theme }) => {
-    if (clipPath === '#topConcaveCurve') {
-      return '#7645d9'
-    }
+  background-color: ${({ theme, concaveBackgroundLight, concaveBackgroundDark }) => {
     if (theme.isDark) {
-      return '#66578D'
+      return concaveBackgroundDark || concaveBackgroundLight || '#66578D'
     }
-    return '#9A9FD0'
+    return concaveBackgroundLight || concaveBackgroundDark || '#9A9FD0'
   }};
   clip-path: ${({ clipPath }) => `url(${clipPath})`};
   transform: ${({ clipPath }) => (clipPath === '#bottomConcaveCurve' ? 'translate(0, -13px)' : 'translate(0, 1px)')};
@@ -76,8 +82,12 @@ const ConcaveContainer = styled(Box)<{ clipPath: string }>`
   }
 `
 
-export const ConcaveTop = () => (
-  <ConcaveContainer clipPath="#topConcaveCurve">
+export const ConcaveTop: React.FC<ConcaveProps> = ({ concaveBackgroundLight, concaveBackgroundDark }) => (
+  <ConcaveContainer
+    concaveBackgroundLight={concaveBackgroundLight}
+    concaveBackgroundDark={concaveBackgroundDark}
+    clipPath="#topConcaveCurve"
+  >
     <svg width="0" height="0">
       <defs>
         <clipPath id="topConcaveCurve" clipPathUnits="objectBoundingBox">
@@ -88,8 +98,12 @@ export const ConcaveTop = () => (
   </ConcaveContainer>
 )
 
-export const ConcaveBottom = () => (
-  <ConcaveContainer clipPath="#bottomConcaveCurve">
+export const ConcaveBottom: React.FC<ConcaveProps> = ({ concaveBackgroundLight, concaveBackgroundDark }) => (
+  <ConcaveContainer
+    concaveBackgroundLight={concaveBackgroundLight}
+    concaveBackgroundDark={concaveBackgroundDark}
+    clipPath="#bottomConcaveCurve"
+  >
     <svg width="0" height="0">
       <defs>
         <clipPath id="bottomConcaveCurve" clipPathUnits="objectBoundingBox">
