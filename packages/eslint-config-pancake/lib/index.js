@@ -34,6 +34,10 @@ module.exports = {
     "@typescript-eslint/no-use-before-define": ["warn"],
     "no-shadow": "off",
     "@typescript-eslint/no-shadow": ["error"],
+    "no-console": ["warn", { allow: ["info", "warn", "error"] }],
+    "no-plusplus": 0,
+    "prefer-destructuring": ["warn", { object: true, array: false }],
+    "no-underscore-dangle": 0,
     // React
     "react/jsx-filename-extension": ["error", { extensions: [".tsx"] }],
     "react/prop-types": 0,
