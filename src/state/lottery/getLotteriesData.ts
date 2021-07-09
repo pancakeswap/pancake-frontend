@@ -51,7 +51,6 @@ const applyNodeDataToLotteriesGraphResponse = (
 }
 
 const getGraphLotteries = async (): Promise<LotteryRoundGraphEntity[]> => {
-  let lotteries
   try {
     const response = await request(
       GRAPH_API_LOTTERY,
@@ -71,12 +70,11 @@ const getGraphLotteries = async (): Promise<LotteryRoundGraphEntity[]> => {
         }
       `,
     )
-    ;({ lotteries } = response)
+    return response.lotteries
   } catch (error) {
-    lotteries = []
     console.error(error)
+    return []
   }
-  return lotteries
 }
 
 const getLotteriesData = async (currentLotteryId: string): Promise<LotteryRoundGraphEntity[]> => {

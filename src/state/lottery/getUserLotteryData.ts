@@ -86,7 +86,7 @@ const getGraphLotteryUser = async (account: string): Promise<LotteryUserGraphEnt
     if (!userRes) {
       user = blankUser
     } else {
-      const formattedUser = userRes && {
+      user = {
         account: userRes.id,
         totalCake: userRes.totalCake,
         totalTickets: userRes.totalTickets,
@@ -100,8 +100,6 @@ const getGraphLotteryUser = async (account: string): Promise<LotteryUserGraphEnt
           }
         }),
       }
-
-      user = formattedUser
     }
   } catch (error) {
     console.error(error)
