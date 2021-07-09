@@ -43,7 +43,7 @@ const farms: FarmConfig[] = [
     lpSymbol: 'TITAN-BUSD LP',
     lpAddresses: {
       97: '',
-      56: '0x9d2296e2fe3cdbf2eb3e3e2ca8811bafa42eedff',
+      56: '0x9392a1f471d9aa14c0b8eb28bd7a3f4a814727be',
     },
     token: tokens.titan,
     quoteToken: tokens.busd,
