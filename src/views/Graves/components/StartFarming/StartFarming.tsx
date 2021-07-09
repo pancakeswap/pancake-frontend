@@ -68,7 +68,6 @@ const StartFarming: React.FC<StartFarmingProps> = ({ details, details: { pid, ru
 
   const [zombieBalance, setZombieBalance] = useState(BIG_ZERO);
 
-
   const [onPresentStake] = useModal(
     <StakeModal
       details={details}

@@ -4,9 +4,10 @@ import styled from 'styled-components';
 import { BalanceInput, Button, Flex, Modal, Slider, Text } from '@rug-zombie-libs/uikit';
 import useTheme from 'hooks/useTheme';
 import { useDrFrankenstein } from 'hooks/useContract';
-import { getDecimalAmount, getFullDisplayBalance } from 'utils/formatBalance';
+import { getBalanceAmount, getDecimalAmount, getFullDisplayBalance } from 'utils/formatBalance'
 import BigNumber from 'bignumber.js';
 import { useWeb3React } from '@web3-react/core';
+import { BIG_ZERO } from '../../../utils/bigNumber'
 
 interface Result {
     paidUnlockFee: boolean,
@@ -36,7 +37,6 @@ const StyledButton = styled(Button)`
 `
 
 const WithdrawLpModal: React.FC<WithdrawLpModalProps> = ({ details: { pid, result, name }, updateResult, onDismiss }) => {
-
     const currentDate = Math.floor(Date.now() / 1000);
 
     const drFrankenstein = useDrFrankenstein();
@@ -45,38 +45,48 @@ const WithdrawLpModal: React.FC<WithdrawLpModalProps> = ({ details: { pid, resul
     const lpStaked = new BigNumber(result.amount);
 
     const { theme } = useTheme();
-    const [stakeAmount, setStakeAmount] = useState('');
+    const [stakeAmount, setStakeAmount] = useState(BIG_ZERO);
     const [percent, setPercent] = useState(0)
 
     const handleStakeInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const inputValue = event.target.value || '0'
-        setStakeAmount(inputValue);
+        setStakeAmount(getDecimalAmount(new BigNumber(inputValue)));
     }
 
     const handleChangePercent = (sliderPercent: number) => {
-        const percentageOfStakingMax = lpStaked.dividedBy(100).multipliedBy(sliderPercent)
-        const amountToStake = getFullDisplayBalance(percentageOfStakingMax, 18, 18)
+        const percentageOfStakingMax = lpStaked.multipliedBy(sliderPercent).dividedBy(100)
+        const amountToStake = percentageOfStakingMax
         setStakeAmount(amountToStake)
         setPercent(sliderPercent)
     }
 
-    const handleWithDrawEarly = () => {
-        const convertedStakeAmount = getDecimalAmount(new BigNumber(stakeAmount), 18);
+    let formattedAmount = stakeAmount.toString()
+    const index = stakeAmount.toString().indexOf(".");
+    if (index >= 0) {
+        formattedAmount = formattedAmount.substring(0, index)
+    }
 
-        drFrankenstein.methods.withdrawEarly(pid, convertedStakeAmount)
-            .send({ from: account }).then(()=>{
+    const handleWithDrawEarly = () => {
+        drFrankenstein.methods.withdrawEarly(pid, formattedAmount)
+            .send({ from: account }).then(() => {
                 updateResult(pid);
                 onDismiss()
             })
     }
 
     const handleWithDraw = () => {
-        const convertedStakeAmount = getDecimalAmount(new BigNumber(stakeAmount), 18);
-        drFrankenstein.methods.withdraw(pid, convertedStakeAmount)
+        drFrankenstein.methods.withdraw(pid, formattedAmount)
             .send({ from: account }).then(()=>{
                 updateResult(pid);
                 onDismiss()
             })
+    }
+
+    let isDisabled = false
+    let withdrawDetails = ''
+    if(new BigNumber(formattedAmount).gt(result.amount)) {
+        isDisabled = true
+        withdrawDetails = "Invalid Withdrawal: Insufficient ZMBE Staked"
     }
 
     return <Modal onDismiss={onDismiss} title='Withdraw LP Tokens' headerBackground={theme.colors.gradients.cardHeader}>
@@ -89,11 +99,14 @@ const WithdrawLpModal: React.FC<WithdrawLpModalProps> = ({ details: { pid, resul
             </Flex>
         </Flex>
         <BalanceInput
-            value={stakeAmount}
+            value={Math.round(getBalanceAmount(stakeAmount).times(10000).toNumber()) / 10000}
             onChange={handleStakeInputChange}
         />
         <Text mt="8px" ml="auto" color="textSubtle" fontSize="12px" mb="8px">
             Balance: {getFullDisplayBalance(lpStaked, 18, 4)}
+        </Text>
+        <Text mt="8px" ml="auto" color="tertiary" fontSize="12px" mb="8px">
+            {withdrawDetails}
         </Text>
         <Slider
             min={0}
@@ -119,10 +132,10 @@ const WithdrawLpModal: React.FC<WithdrawLpModalProps> = ({ details: { pid, resul
         </StyledButton>
         </Flex>
         {currentDate >= parseInt(result.tokenWithdrawalDate) ?
-            <Button mt="8px" as="a" onClick={handleWithDraw} variant="secondary">
+            <Button mt="8px" as="a" onClick={handleWithDraw} disabled={isDisabled} variant="secondary">
                 Withdraw {name}
             </Button> :
-            <Button onClick={handleWithDrawEarly} mt="8px" as="a" variant="secondary">
+            <Button onClick={handleWithDrawEarly} disabled={isDisabled} mt="8px" as="a" variant="secondary">
                 Withdraw Early
             </Button>
         }
