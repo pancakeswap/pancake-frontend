@@ -1,17 +1,15 @@
 /* eslint-disable no-param-reassign */
 import React, { useEffect, useState } from 'react'
 import PageHeader from 'components/PageHeader'
-import { fetchLpReserves, getBnbPriceinBusd, useLpTokenPrice } from 'state/hooks'
+import { getBnbPriceinBusd } from 'state/hooks'
 import { Heading } from '@rug-zombie-libs/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { useDrFrankenstein } from 'hooks/useContract'
 import { getDrFrankensteinAddress } from 'utils/addressHelpers'
-import { BigNumber } from 'bignumber.js'
 import Page from '../../components/layout/Page'
 import Table from './Table'
 import '../Graves/Graves.Styles.css'
 import tableData from './data'
-import { getBalanceAmount, getDecimalAmount } from '../../utils/formatBalance'
 import { BIG_ZERO } from '../../utils/bigNumber'
 
 

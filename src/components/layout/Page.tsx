@@ -3,8 +3,8 @@ import styled from 'styled-components'
 import { Helmet } from 'react-helmet-async'
 import { useLocation } from 'react-router'
 import { customMeta, DEFAULT_META } from 'config/constants/meta'
-import { usePriceCakeBusd } from 'state/hooks'
 import Container from './Container'
+import { BIG_ZERO } from '../../utils/bigNumber'
 
 const StyledPage = styled(Container)`
   min-height: calc(100vh - 64px);
@@ -24,7 +24,7 @@ const StyledPage = styled(Container)`
 
 const PageMeta = () => {
   const { pathname } = useLocation()
-  const cakePriceUsd = usePriceCakeBusd()
+  const cakePriceUsd = BIG_ZERO // todo fix
   const cakePriceUsdDisplay = cakePriceUsd.eq(0)
     ? ''
     : `$${cakePriceUsd.toNumber().toLocaleString(undefined, {

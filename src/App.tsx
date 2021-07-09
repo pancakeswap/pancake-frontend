@@ -3,12 +3,13 @@ import { Router, Route, Switch } from 'react-router-dom'
 import { ResetCSS } from '@rug-zombie-libs/uikit'
 import BigNumber from 'bignumber.js'
 import useEagerConnect from 'hooks/useEagerConnect'
-import { fetchLpReserves, fetchZmbeBnbAddress, getBnbPriceinBusd, useFetchProfile } from 'state/hooks'
+import { fetchLpReserves, fetchZmbeBnbAddress, getBnbPriceinBusd } from 'state/hooks'
 import { routes } from 'routes'
 import Menu from 'components/Menu'
 import Loader from 'components/Loader'
 import Home from 'views/Home/Home';
 import Tombs from 'views/Tombs/Tombs'
+import * as actions from 'redux/actionTypes'
 import SuspenseWithChunkError from './components/SuspenseWithChunkError'
 // import Graves from './views/Graves'
 import history from './routerHistory'
@@ -17,6 +18,7 @@ import Graves from './views/Graves'
 import tombs from './views/Tombs/data'
 import { getAddress } from './utils/addressHelpers'
 import { BIG_ZERO } from './utils/bigNumber'
+import store from './redux/store'
 // Route-based code splitting
 // Only pool is included in the main bundle because of it's the most visited page
 const Landing = lazy(() => import('./components/Landing'));
@@ -27,6 +29,15 @@ BigNumber.config({
 })
 
 const App: React.FC = () => {
+
+  console.log(store.getState())
+  store.dispatch({
+    type: actions.UPDATE_ZOMBIE_ALLOWANCE,
+    payload: {
+      allowance: new BigNumber(5)
+    }
+  })
+
   // Monkey patch warn() because of web3 flood
   // To be removed when web3 1.3.5 is released
   useEffect(() => {
@@ -41,7 +52,7 @@ const App: React.FC = () => {
   )
   useEagerConnect()
   // useFetchPublicData()
-  useFetchProfile()
+  // useFetchProfile()
   // useFetchPriceList()
 
   const handleAuthentication = () => {

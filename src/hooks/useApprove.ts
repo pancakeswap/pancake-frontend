@@ -16,6 +16,7 @@ export const useApprove = (lpContract: Contract) => {
   const handleApprove = useCallback(async () => {
     try {
       const tx = await approve(lpContract, masterChefContract, account)
+      // @ts-ignore
       dispatch(fetchFarmUserDataAsync(account))
       return tx
     } catch (e) {
@@ -35,6 +36,7 @@ export const useSousApprove = (lpContract: Contract, sousId) => {
   const handleApprove = useCallback(async () => {
     try {
       const tx = await approve(lpContract, sousChefContract, account)
+      // @ts-ignore
       dispatch(updateUserAllowance(sousId, account))
       return tx
     } catch (e) {

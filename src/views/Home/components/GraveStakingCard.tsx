@@ -5,10 +5,8 @@ import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'contexts/Localization'
 import { useAllHarvest } from 'hooks/useHarvest'
 import useFarmsWithBalance from 'hooks/useFarmsWithBalance'
-import UnlockButton from 'components/UnlockButton'
 import YouTube from 'react-youtube';
-import CakeHarvestBalance from './CakeHarvestBalance'
-import CakeWalletBalance from './CakeWalletBalance'
+
 
 const StyledFarmStakingCard = styled(Card)`
   background-image: url('/images/zmbe-bg.png');

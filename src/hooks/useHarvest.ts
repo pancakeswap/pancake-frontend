@@ -12,6 +12,7 @@ export const useHarvest = (farmPid: number) => {
 
   const handleHarvest = useCallback(async () => {
     const txHash = await harvest(masterChefContract, farmPid, account)
+    // @ts-ignore
     dispatch(fetchFarmUserDataAsync(account))
     return txHash
   }, [account, dispatch, farmPid, masterChefContract])
@@ -48,7 +49,9 @@ export const useSousHarvest = (sousId, isUsingBnb = false) => {
     } else {
       await soushHarvest(sousChefContract, account)
     }
+    // @ts-ignore
     dispatch(updateUserPendingReward(sousId, account))
+    // @ts-ignore
     dispatch(updateUserBalance(sousId, account))
   }, [account, dispatch, isUsingBnb, masterChefContract, sousChefContract, sousId])
 
