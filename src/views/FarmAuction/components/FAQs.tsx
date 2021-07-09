@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { Text, Heading, Card, CardHeader, CardBody, Flex, Link, Box } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import FoldableText from 'components/FoldableText'
+import { FORM_ADDRESS } from '../helpers'
 
 const StyledCard = styled(Card)`
   flex: 1;
@@ -50,7 +51,7 @@ const FAQs = () => {
                 <Text display="inline" color="textSubtle">
                   {t('Projects can submit an application to sponsor a yield farm and/or pool on PancakeSwap via the ')}
                 </Text>
-                <InlineLink href="http://www.google.com" external>
+                <InlineLink href={FORM_ADDRESS} external>
                   {t('Application Form')}
                 </InlineLink>
               </Box>

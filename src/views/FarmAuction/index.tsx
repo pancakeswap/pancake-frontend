@@ -1,13 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Button, Heading, Text, Flex } from '@pancakeswap/uikit'
+import { Button, Heading, Text, Flex, Link } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import { NavLink } from 'react-router-dom'
 import PageHeader from 'components/PageHeader'
 import PageSection from 'components/PageSection'
 import useTheme from 'hooks/useTheme'
 import FAQs from './components/FAQs'
 import AuctionDetail from './components/AuctionDetail'
+import { FORM_ADDRESS } from './helpers'
 
 const StyledHeader = styled(PageHeader)`
   max-height: max-content;
@@ -72,13 +72,13 @@ const FarmAuction = () => {
             <Text bold fontSize="16px" color="textSubtle" mb="24px">
               {t('Each week, qualifying projects can bid CAKE for the right to host a 7-day Farm on PancakeSwap.')}
             </Text>
-            <NavLink exact activeClassName="active" to="/farms/auction" id="lottery-pot-banner">
+            <Link external href={FORM_ADDRESS}>
               <Button>
                 <Text color="white" bold fontSize="16px" mr="4px">
                   {t('Apply for a Farm/Pool')}
                 </Text>
               </Button>
-            </NavLink>
+            </Link>
           </Left>
           <Right>
             <img src="/images/decorations/auction-bunny.png" alt="auction bunny" />
