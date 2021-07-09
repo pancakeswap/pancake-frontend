@@ -5,6 +5,7 @@ import { getAddress } from "@ethersproject/address";
 
 // Interface for Bitquery GraphQL response.
 interface BitqueryEntity {
+  // eslint-disable-next-line camelcase
   Total_USD: number;
   baseCurrency: {
     address: string;
@@ -28,7 +29,7 @@ const blacklist: string[] = [
 
 /**
  * Return today / 1 month ago ISO-8601 DateTime.
- * 
+ *
  * @returns string[]
  */
 const getDateRange = (): string[] => {
@@ -43,10 +44,10 @@ const getDateRange = (): string[] => {
 /**
  * Fetch Top100 Tokens traded on PancakeSwap v2, ordered by trading volume,
  * for the past 30 days, filtered to remove default / broken tokens.
- * 
+ *
  * @returns BitqueryEntity[]]
  */
-const getTokens = async () => {
+const getTokens = async (): Promise<BitqueryEntity[]> => {
   try {
     const [today, monthAgo] = getDateRange();
 
@@ -75,13 +76,13 @@ const getTokens = async () => {
       {
         from: monthAgo,
         till: today,
-        blacklist: blacklist,
+        blacklist,
       }
     );
 
     return ethereum.dexTrades;
   } catch (error) {
-    console.error(`Error when fetching Top100 Tokens by volume for the past 30 days, error: ${error.message}`);
+    return error;
   }
 };
 
@@ -89,27 +90,31 @@ const getTokens = async () => {
  * Main function.
  * Fetch tokems, build list, save list.
  */
-const main = async () => {
-  const tokens = await getTokens();
+const main = async (): Promise<void> => {
+  try {
+    const tokens = await getTokens();
 
-  const sanitizedTokens = tokens.reduce((list, item: BitqueryEntity) => {
-    const checksummedAddress = getAddress(item.baseCurrency.address);
+    const sanitizedTokens = tokens.reduce((list, item: BitqueryEntity) => {
+      const checksummedAddress = getAddress(item.baseCurrency.address);
 
-    const updatedToken = {
-      name: item.baseCurrency.name,
-      symbol: item.baseCurrency.symbol.toUpperCase(),
-      address: checksummedAddress,
-      chainId: 56,
-      decimals: item.baseCurrency.decimals,
-      logoURI: `https://assets.trustwalletapp.com/blockchains/smartchain/assets/${checksummedAddress}/logo.png`,
-    };
-    return [...list, updatedToken];
-  }, []);
+      const updatedToken = {
+        name: item.baseCurrency.name,
+        symbol: item.baseCurrency.symbol.toUpperCase(),
+        address: checksummedAddress,
+        chainId: 56,
+        decimals: item.baseCurrency.decimals,
+        logoURI: `https://assets.trustwalletapp.com/blockchains/smartchain/assets/${checksummedAddress}/logo.png`,
+      };
+      return [...list, updatedToken];
+    }, []);
 
-  const tokenListPath = `${path.resolve()}/src/tokens/pancakeswap-top-100.json`;
-  console.info("Saving updated list to ", tokenListPath);
-  const stringifiedList = JSON.stringify(sanitizedTokens, null, 2);
-  fs.writeFileSync(tokenListPath, stringifiedList);
+    const tokenListPath = `${path.resolve()}/src/tokens/pancakeswap-top-100.json`;
+    console.info("Saving updated list to ", tokenListPath);
+    const stringifiedList = JSON.stringify(sanitizedTokens, null, 2);
+    fs.writeFileSync(tokenListPath, stringifiedList);
+  } catch (error) {
+    console.error(`Error when fetching Top100 Tokens by volume for the past 30 days, error: ${error.message}`);
+  }
 };
 
 export default main;

@@ -9,7 +9,7 @@ Pancake Eslint config with:
 ## Usage
 
 ```
-npx install-peerdeps --dev @pancakeswap-libs/eslint-config-pancake
+npx install-peerdeps --dev @pancakeswap/eslint-config-pancake
 ```
 
-Add `"extends": "@pancakeswap-libs/eslint-config-pancake"` to your eslint config file.
+Add `"extends": "@pancakeswap/eslint-config-pancake"` to your eslint config file.

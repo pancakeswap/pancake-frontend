@@ -19,6 +19,7 @@
     "checksum:pcs-top-15": "yarn build && node ./dist checksum pancakeswap-top-15",
     "generate:pcs-top-15": "yarn test && yarn build && node ./dist generate pancakeswap-top-15",
     "makelist:pcs-top-15": "yarn checksum:pcs-top-15 && yarn generate:pcs-top-15",
+    "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
     "fetch:pcs-top-100": "yarn build && node ./dist fetch",
     "test": "jest",
     "ci-check": "yarn build && node ./dist ci-check"
@@ -33,7 +34,6 @@
   "devDependencies": {
     "@babel/preset-env": "^7.14.1",
     "@babel/preset-typescript": "^7.13.0",
-    "@pancakeswap-libs/eslint-config-pancake": "^1.0.1",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-typescript": "^8.2.1",
     "@types/jest": "^26.0.23",
