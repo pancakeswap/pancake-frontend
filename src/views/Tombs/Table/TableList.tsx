@@ -8,6 +8,7 @@ import tokens from 'config/constants/tokens';
 import numeral from 'numeral'
 import { getGraveTombApr } from '../../../utils/apr'
 import { Token } from '../../../config/constants/types'
+import { zombiePriceUsd } from '../../../redux/get'
 
 
 const DisplayFlex = styled(BaseLayout)`
@@ -49,7 +50,7 @@ interface TableListProps {
   handler: any
   totalLpTokenStaked: any,
   lpTokenPrice: BigNumber,
-  zombieUsdPrice: number,
+  tvl: BigNumber,
   details: {
     id: number,
     name: string,
@@ -66,7 +67,7 @@ interface TableListProps {
 }
 
 const TableList: React.FC<TableListProps> = (props: TableListProps) => {
-  const { details: { name, poolInfo, pendingZombie, quoteToken, token }, lpTokenPrice, zombieUsdPrice, totalLpTokenStaked, handler } = props;
+  const { details: { name, poolInfo, pendingZombie, quoteToken, token },tvl, lpTokenPrice, totalLpTokenStaked, handler } = props;
   let allocPoint = BIG_ZERO;
   if(poolInfo.allocPoint) {
     allocPoint = new BigNumber(poolInfo.allocPoint)
@@ -76,7 +77,7 @@ const TableList: React.FC<TableListProps> = (props: TableListProps) => {
 
   const [isOpen, setIsOpen] = useState(false);
 
-  const bigZombiePrice = getDecimalAmount(new BigNumber(zombieUsdPrice))
+  const bigZombiePrice = getDecimalAmount(new BigNumber(zombiePriceUsd()))
   const apr = getGraveTombApr(poolWeight, bigZombiePrice, getDecimalAmount(totalLpTokenStaked).times(lpTokenPrice))
   const dailyApr = apr / 365
   const displayApr = apr > 10 ? numeral(apr).format('(0.00 a)') : numeral(apr).format('(0.0000 a)')
@@ -131,7 +132,7 @@ const TableList: React.FC<TableListProps> = (props: TableListProps) => {
           </td>
           <td className="td-width-25">
             <DisplayFlex>
-              <span className="total-earned">{numeral(totalLpTokenStaked.times(lpTokenPrice)).format('($ 0.00 a)')}</span>
+              <span className="total-earned">{numeral(tvl).format('($ 0.00 a)')}</span>
               <div className="earned">TVL</div>
             </DisplayFlex>
           </td>

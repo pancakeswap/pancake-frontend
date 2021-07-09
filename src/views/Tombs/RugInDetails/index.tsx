@@ -19,11 +19,12 @@ interface RugInDetailsProps {
   },
   bnbInBusd: number,
   totalLpTokensStaked: BigNumber,
-  lpTokenPrice: BigNumber
+  lpTokenPrice: BigNumber,
+  tvl: BigNumber
 }
 
 const RugInDetails: React.FC<RugInDetailsProps> = ({
-  details: { id, name, pid, withdrawalCooldown, artist, poolInfo }, bnbInBusd, totalLpTokensStaked, lpTokenPrice,
+  details: { id, name, pid, withdrawalCooldown, artist, poolInfo }, tvl, totalLpTokensStaked, lpTokenPrice,
 }) => {
   const drFrankenstein = useDrFrankenstein();
 
@@ -41,6 +42,8 @@ const RugInDetails: React.FC<RugInDetailsProps> = ({
     allocPoint = new BigNumber(poolInfo.allocPoint)
   }
 
+  console.log("tvl")
+  console.log(tvl.toString())
   return (
     <div key={id} className="rug-indetails">
       <div className="direction-column">
@@ -51,7 +54,7 @@ const RugInDetails: React.FC<RugInDetailsProps> = ({
         </span>
         <span className="indetails-title">
           Tomb TVL:
-          <span className="indetails-value">{numeral(totalLpTokensStaked.times(lpTokenPrice)).format('($ 0.00 a)')}</span>
+          <span className="indetails-value">{numeral(tvl).format('($ 0.00 a)')}</span>
         </span>
       </div>
       <div className="direction-column">

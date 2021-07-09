@@ -51,7 +51,6 @@ const Tombs: React.FC = ( ) => {
 
 
   const [isAllowance, setIsAllowance] = useState(false)
-  const [reservesUsd, setReservesUsd] = useState([BIG_ZERO, BIG_ZERO])
 
 
 
@@ -93,7 +92,7 @@ const Tombs: React.FC = ( ) => {
       </PageHeader>
       <div>
         {tombsData.map((data) => {
-          return <Table updateResult={updateResult} updateAllowance={updateAllowance} zombieUsdPrice={zombiePriceUsd()} bnbInBusd={bnbInBusd}
+          return <Table updateResult={updateResult} updateAllowance={updateAllowance} bnbInBusd={bnbInBusd}
                         isAllowance={isAllowance} details={data} key={data.id} />
         })}
       </div>

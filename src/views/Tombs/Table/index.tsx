@@ -15,6 +15,7 @@ import { getContract, getLpContract, getPancakePair } from '../../../utils/contr
 import pancakeFactoryAbi from '../../../config/abi/pancakeFactoryAbi.json'
 import erc20Abi from '../../../config/abi/erc20.json'
 import tokens from '../../../config/constants/tokens'
+import { bnbPriceUsd, zmbeBnbTomb, zombiePriceUsd } from '../../../redux/get'
 
 const TableCards = styled(BaseLayout)`
   align-items: stretch;
@@ -47,41 +48,25 @@ interface TableProps {
   bnbInBusd: number,
   updateAllowance:any,
   updateResult:any,
-  zombieUsdPrice: number
 }
 
-const Table: React.FC<TableProps> = ({ details, isAllowance, bnbInBusd, zombieUsdPrice, updateResult, updateAllowance }: TableProps) => {
+const Table: React.FC<TableProps> = ({ details, isAllowance, bnbInBusd, updateResult, updateAllowance }: TableProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [lpTokenPrice, setLpTokenPrice] = useState(BIG_ZERO)
-  const [totalLpTokenStaked, setTotalLpTokenStaked] = useState(BIG_ZERO)
 
   const openInDetails = (data) => {
     setIsOpen(data);
   }
-
-  useEffect(() => {
-     const lpTokenContract = getPancakePair(getAddress(details.lpAddresses))
-     lpTokenContract.methods.totalSupply().call()
-       .then((resSupply) => {
-         const lpSupply = getBalanceAmount(resSupply)
-         lpTokenContract.methods.balanceOf(getDrFrankensteinAddress()).call()
-           .then((resStaked) => {
-             lpTokenContract.methods.getReserves().call()
-               .then(reserves => {
-                 const reservesUsd = [getBalanceAmount(reserves[0]).times(zombieUsdPrice), getBalanceAmount(reserves[1]).times(bnbInBusd)]
-                 setTotalLpTokenStaked(getBalanceAmount(resStaked))
-                 setLpTokenPrice((reservesUsd[0].plus(reservesUsd[1])).div(lpSupply))
-               })
-           })
-       })
-  },[bnbInBusd, details.lpAddresses, zombieUsdPrice])
-
-// console.log(lpTokenPrice.toString())
+  const reserves = zmbeBnbTomb().result.reserves
+  const lpTotalSupply = zmbeBnbTomb().result.totalSupply
+  const reservesUsd = [getBalanceAmount(reserves[0]).times(zombiePriceUsd()), getBalanceAmount(reserves[1]).times(bnbPriceUsd())]
+  const lpTokenPrice = reservesUsd[0].plus(reservesUsd[1]).div(lpTotalSupply)
+  const totalLpTokenStaked = new BigNumber(zmbeBnbTomb().result.totalStaked)
+  const tvl = totalLpTokenStaked.times(lpTokenPrice)
 
   const TableListProps = {
     "handler": openInDetails,
     lpTokenPrice,
-    zombieUsdPrice,
+    tvl,
     totalLpTokenStaked,
     details,
   }
@@ -100,7 +85,7 @@ const Table: React.FC<TableProps> = ({ details, isAllowance, bnbInBusd, zombieUs
                 <StartFarming updateAllowance={updateAllowance} updateResult={updateResult} lpTokenAddress={getAddress(details.lpAddresses)} details={details} isAllowance={isAllowance} />
                 <BuyFrank details={details}/>
               </div>
-              <RugInDetails bnbInBusd={bnbInBusd} details={details} totalLpTokensStaked={totalLpTokenStaked} lpTokenPrice={lpTokenPrice}/>
+              <RugInDetails bnbInBusd={bnbInBusd} details={details} tvl={tvl} totalLpTokensStaked={totalLpTokenStaked} lpTokenPrice={lpTokenPrice}/>
             </div>
           </div>
         ) : null}
