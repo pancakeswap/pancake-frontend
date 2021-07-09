@@ -11,7 +11,6 @@ import { useTranslation } from 'contexts/Localization'
 import UnlockButton from 'components/UnlockButton'
 import Balance from 'components/Balance'
 import { useCakeVault, usePriceCakeBusd } from 'state/hooks'
-import { callWithEstimateGas } from 'utils/calls'
 
 interface BountyModalProps {
   onDismiss?: () => void
@@ -56,18 +55,18 @@ const BountyModal: React.FC<BountyModalProps> = ({ onDismiss, TooltipComponent }
   })
 
   const handleConfirmClick = async () => {
-    const tx = await callWithEstimateGas(cakeVaultContract, 'harvest', [], 5000)
     setPendingTx(true)
-    const receipt = await tx.wait()
-    if (receipt.status) {
-      toastSuccess(t('Bounty collected!'), t('CAKE bounty has been sent to your wallet.'))
-      setPendingTx(false)
-      onDismiss()
-    } else {
+    try {
+      const tx = await cakeVaultContract.harvest({ gasLimit: 210000 })
+      const receipt = await tx.wait()
+      if (receipt.status) {
+        toastSuccess(t('Bounty collected!'), t('CAKE bounty has been sent to your wallet.'))
+        setPendingTx(false)
+        onDismiss()
+      }
+    } catch (error) {
       toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
-
       setPendingTx(false)
-      onDismiss()
     }
   }
 
