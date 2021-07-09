@@ -1,7 +1,7 @@
 import React from 'react'
 import { CardBody, Text, WaitIcon } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import { Round, BetPosition } from 'state/types'
+import { NodeRound, BetPosition } from 'state/types'
 import { useGetCurrentEpoch, useGetTotalIntervalBlocks } from 'state/hooks'
 import { formatRoundTime } from '../../helpers'
 import useRoundCountdown from '../../hooks/useRoundCountdown'
@@ -11,7 +11,7 @@ import Card from './Card'
 import CardHeader from './CardHeader'
 
 interface SoonRoundCardProps {
-  round: Round
+  round: NodeRound
 }
 
 const SoonRoundCard: React.FC<SoonRoundCardProps> = ({ round }) => {

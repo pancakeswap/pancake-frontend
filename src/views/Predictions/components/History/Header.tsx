@@ -17,7 +17,6 @@ import { setHistoryFilter, setHistoryPaneState, fetchHistory } from 'state/predi
 import { useGetHistoryFilter, useGetIsFetchingHistory } from 'state/hooks'
 import { useTranslation } from 'contexts/Localization'
 import styled from 'styled-components'
-import { getBubbleGumBackground } from '../../helpers'
 
 const Filter = styled.label`
   align-items: center;
@@ -27,7 +26,7 @@ const Filter = styled.label`
 `
 
 const StyledHeader = styled(Box)`
-  background: ${({ theme }) => getBubbleGumBackground(theme)};
+  background: ${({ theme }) => theme.colors.gradients.bubblegum};
   flex: none;
   padding: 16px;
 `

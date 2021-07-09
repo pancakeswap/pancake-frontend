@@ -23,11 +23,10 @@ import { usePredictionsContract } from 'hooks/useContract'
 import { useGetBnbBalance } from 'hooks/useTokenBalance'
 import useToast from 'hooks/useToast'
 import { BetPosition } from 'state/types'
-import { getDecimalAmount } from 'utils/formatBalance'
+import { getBalanceAmount, getDecimalAmount } from 'utils/formatBalance'
 import UnlockButton from 'components/UnlockButton'
 import { BIG_NINE, BIG_TEN } from 'utils/bigNumber'
 import PositionTag from '../PositionTag'
-import { getBnbAmount } from '../../helpers'
 import useSwiper from '../../hooks/useSwiper'
 import FlexRow from '../FlexRow'
 import Card from './Card'
@@ -78,13 +77,13 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
   const predictionsContract = usePredictionsContract()
 
   const balanceDisplay = useMemo(() => {
-    return getBnbAmount(bnbBalance).toString()
+    return getBalanceAmount(bnbBalance).toString()
   }, [bnbBalance])
   const maxBalance = useMemo(() => {
-    return getBnbAmount(bnbBalance.gt(dust) ? bnbBalance.minus(dust) : bnbBalance)
+    return getBalanceAmount(bnbBalance.gt(dust) ? bnbBalance.minus(dust) : bnbBalance)
   }, [bnbBalance])
   const minBetAmountBalance = useMemo(() => {
-    return getBnbAmount(minBetAmount)
+    return getBalanceAmount(minBetAmount)
   }, [minBetAmount])
 
   const valueAsBn = new BigNumber(value)
@@ -139,14 +138,14 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
     const betMethod = position === BetPosition.BULL ? 'betBull' : 'betBear'
     const decimalValue = getDecimalAmount(valueAsBn)
 
-    const tx = await predictionsContract[betMethod]({ value: decimalValue.toString(), gasPrice })
-    setIsTxPending(true)
-    const receipt = await tx.wait()
-    if (receipt.status) {
-      setIsTxPending(false)
+    try {
+      const tx = await predictionsContract[betMethod]({ value: decimalValue.toString(), gasPrice })
+      setIsTxPending(true)
+      const receipt = await tx.wait()
       onSuccess(decimalValue, receipt.transactionHash as string)
-    } else {
+    } catch {
       toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
+    } finally {
       setIsTxPending(false)
     }
   }

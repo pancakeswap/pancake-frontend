@@ -1,13 +1,14 @@
 import React from 'react'
 import styled, { DefaultTheme } from 'styled-components'
 import { Box, Flex, FlexProps, Text } from '@pancakeswap/uikit'
-import { formatBnb, formatUsd } from 'views/Predictions/helpers'
 import { useTranslation } from 'contexts/Localization'
-import { BetPosition, Round } from 'state/types'
+import { BetPosition, NodeRound, Round } from 'state/types'
+import { formatUsdv2, formatBnbv2 } from '../../helpers'
+import { formatBnb, formatUsd } from '../History/helpers'
 
 // PrizePoolRow
 interface PrizePoolRowProps extends FlexProps {
-  totalAmount: Round['totalAmount']
+  totalAmount: NodeRound['totalAmount']
 }
 
 const getPrizePoolAmount = (totalAmount: PrizePoolRowProps['totalAmount']) => {
@@ -15,7 +16,7 @@ const getPrizePoolAmount = (totalAmount: PrizePoolRowProps['totalAmount']) => {
     return '0'
   }
 
-  return formatBnb(totalAmount)
+  return formatBnbv2(totalAmount)
 }
 
 const Row = ({ children, ...props }) => {
@@ -64,9 +65,8 @@ export const PayoutRow: React.FC<PayoutRowProps> = ({ positionLabel, multiplier,
   )
 }
 
-// LockPriceRow
 interface LockPriceRowProps extends FlexProps {
-  lockPrice: Round['lockPrice']
+  lockPrice: NodeRound['lockPrice']
 }
 
 export const LockPriceRow: React.FC<LockPriceRowProps> = ({ lockPrice, ...props }) => {
@@ -75,7 +75,7 @@ export const LockPriceRow: React.FC<LockPriceRowProps> = ({ lockPrice, ...props 
   return (
     <Row {...props}>
       <Text fontSize="14px">{t('Locked Price')}:</Text>
-      <Text fontSize="14px">{formatUsd(lockPrice)}</Text>
+      <Text fontSize="14px">{formatUsdv2(lockPrice)}</Text>
     </Row>
   )
 }
@@ -139,3 +139,49 @@ export const RoundResultBox: React.FC<RoundResultBoxProps> = ({
     </Background>
   )
 }
+
+/**
+ * TODO: Remove
+ *
+ * This is a temporary function until we consolidate the data coming from the graph versus the node
+ */
+interface PrizePoolHistoryRowProps extends FlexProps {
+  totalAmount: number
+}
+
+const getPrizePoolAmountHistory = (totalAmount: PrizePoolHistoryRowProps['totalAmount']) => {
+  if (!totalAmount) {
+    return '0'
+  }
+
+  return formatBnb(totalAmount)
+}
+
+export const PrizePoolHistoryRow: React.FC<PrizePoolHistoryRowProps> = ({ totalAmount, ...props }) => {
+  const { t } = useTranslation()
+
+  return (
+    <Row {...props}>
+      <Text bold>{t('Prize Pool')}:</Text>
+      <Text bold>{`${getPrizePoolAmountHistory(totalAmount)} BNB`}</Text>
+    </Row>
+  )
+}
+
+interface LockPriceHistoryRowProps extends FlexProps {
+  lockPrice: Round['lockPrice']
+}
+
+export const LockPriceHistoryRow: React.FC<LockPriceHistoryRowProps> = ({ lockPrice, ...props }) => {
+  const { t } = useTranslation()
+
+  return (
+    <Row {...props}>
+      <Text fontSize="14px">{t('Locked Price')}:</Text>
+      <Text fontSize="14px">{formatUsd(lockPrice)}</Text>
+    </Row>
+  )
+}
+/**
+ * END TEMPORARY COMPONENTS
+ */

@@ -1,15 +1,14 @@
 import React, { useState } from 'react'
-import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import { CardBody, PlayCircleOutlineIcon, Button, useTooltip, ArrowUpIcon, ArrowDownIcon } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useAppDispatch } from 'state'
-import { BetPosition, Round } from 'state/types'
+import { BetPosition, NodeLedger, NodeRound } from 'state/types'
 import { useBlock, useGetIntervalBlocks } from 'state/hooks'
-import { markPositionAsEntered } from 'state/predictions'
+import { BLOCK_PADDING, fetchLedgerData } from 'state/predictions'
 import useToast from 'hooks/useToast'
 import CardFlip from '../CardFlip'
-import { formatBnb, getBnbAmount } from '../../helpers'
+import { formatBnbv2 } from '../../helpers'
 import { RoundResultBox, PrizePoolRow } from '../RoundResult'
 import MultiplierArrow from './MultiplierArrow'
 import Card from './Card'
@@ -17,12 +16,12 @@ import CardHeader from './CardHeader'
 import SetPositionCard from './SetPositionCard'
 
 interface OpenRoundCardProps {
-  round: Round
-  betAmount?: number
+  round: NodeRound
+  betAmount?: NodeLedger['amount']
   hasEnteredUp: boolean
   hasEnteredDown: boolean
-  bullMultiplier: number
-  bearMultiplier: number
+  bullMultiplier: string
+  bearMultiplier: string
 }
 
 interface State {
@@ -49,16 +48,16 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
   const dispatch = useAppDispatch()
   const { currentBlock } = useBlock()
   const { isSettingPosition, position } = state
-  const isBufferPhase = currentBlock >= round.startBlock + interval
+  const isBufferPhase = currentBlock >= round.startBlock + (interval + BLOCK_PADDING)
   const positionDisplay = position === BetPosition.BULL ? t('Up').toUpperCase() : t('Down').toUpperCase()
   const { targetRef, tooltipVisible, tooltip } = useTooltip(
-    <div style={{ whiteSpace: 'nowrap' }}>{`${formatBnb(betAmount)} BNB`}</div>,
+    <div style={{ whiteSpace: 'nowrap' }}>{`${formatBnbv2(betAmount)} BNB`}</div>,
     { placement: 'top' },
   )
 
   // Bettable rounds do not have an lockBlock set so we approximate it by adding the block interval
   // to the start block
-  const estimatedLockBlock = round.startBlock + interval
+  const estimatedLockBlock = round.startBlock + (interval + BLOCK_PADDING)
 
   const getCanEnterPosition = () => {
     if (hasEnteredUp || hasEnteredDown) {
@@ -95,22 +94,8 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
     }))
   }
 
-  const handleSuccess = async (decimalValue: BigNumber, hash: string) => {
-    // Optimistically set the user bet so we see the entered position immediately.
-    dispatch(
-      markPositionAsEntered({
-        account,
-        roundId: round.id,
-        bet: {
-          hash,
-          round,
-          position,
-          amount: getBnbAmount(decimalValue).toNumber(),
-          claimed: false,
-          claimedHash: null,
-        },
-      }),
-    )
+  const handleSuccess = async () => {
+    await dispatch(fetchLedgerData({ account, epochs: [round.epoch] }))
 
     handleBack()
 

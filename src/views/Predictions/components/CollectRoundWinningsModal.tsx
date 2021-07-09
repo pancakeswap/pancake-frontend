@@ -20,15 +20,14 @@ import { useWeb3React } from '@web3-react/core'
 import { getBscScanTransactionUrl } from 'utils/bscscan'
 import { useAppDispatch } from 'state'
 import { usePriceBnbBusd } from 'state/hooks'
-import { markBetAsCollected } from 'state/predictions'
+import { fetchClaimableStatuses } from 'state/predictions'
 import { useTranslation } from 'contexts/Localization'
 import useToast from 'hooks/useToast'
 import { usePredictionsContract } from 'hooks/useContract'
-import { formatBnb } from '../helpers'
 
 interface CollectRoundWinningsModalProps extends InjectedModalProps {
-  payout: number
-  roundId: string
+  payout: string
+  betAmount: string
   epoch: number
   onSuccess?: () => Promise<void>
 }
@@ -47,7 +46,7 @@ const BunnyDecoration = styled.div`
 
 const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
   payout,
-  roundId,
+  betAmount,
   epoch,
   onDismiss,
   onSuccess,
@@ -60,16 +59,21 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
   const bnbBusdPrice = usePriceBnbBusd()
   const dispatch = useAppDispatch()
 
+  // Convert payout to number for compatibility
+  const payoutAsFloat = parseFloat(payout)
+  const betAmountAsFloat = parseFloat(betAmount)
+
   const handleClick = async () => {
-    const tx = await predictionsContract.claim(epoch)
-    setIsPendingTx(true)
-    const receipt = await tx.wait()
-    if (receipt.status) {
+    try {
+      const tx = await predictionsContract.claim(epoch)
+      setIsPendingTx(true)
+      const receipt = await tx.wait()
+
       if (onSuccess) {
         await onSuccess()
       }
 
-      dispatch(markBetAsCollected({ account, roundId }))
+      await dispatch(fetchClaimableStatuses({ account, epochs: [epoch] }))
       onDismiss()
       setIsPendingTx(false)
       toastSuccess(
@@ -83,9 +87,10 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
           )}
         </Box>,
       )
-    } else {
-      setIsPendingTx(false)
+    } catch {
       toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
+    } finally {
+      setIsPendingTx(false)
     }
   }
 
@@ -102,12 +107,21 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
       </ModalHeader>
       <ModalBody p="24px">
         <TrophyGoldIcon width="96px" mx="auto" mb="24px" />
-        <Flex alignItems="start" justifyContent="space-between" mb="24px">
-          <Text>{t('Collecting')}</Text>
+        <Flex alignItems="start" justifyContent="space-between" mb="8px">
+          <Text>{t('Your position')}</Text>
           <Box style={{ textAlign: 'right' }}>
-            <Text>{`${formatBnb(payout)} BNB`}</Text>
+            <Text>{`${betAmount} BNB`}</Text>
             <Text fontSize="12px" color="textSubtle">
-              {`~$${formatBnb(bnbBusdPrice.times(payout).toNumber())}`}
+              {`~$${bnbBusdPrice.times(betAmountAsFloat).toFormat(2)}`}
+            </Text>
+          </Box>
+        </Flex>
+        <Flex alignItems="start" justifyContent="space-between" mb="24px">
+          <Text>{t('Your winnings')}</Text>
+          <Box style={{ textAlign: 'right' }}>
+            <Text>{`${payout} BNB`}</Text>
+            <Text fontSize="12px" color="textSubtle">
+              {`~$${bnbBusdPrice.times(payoutAsFloat).toFormat(2)}`}
             </Text>
           </Box>
         </Flex>

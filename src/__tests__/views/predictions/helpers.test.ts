@@ -1,56 +1,6 @@
-import BigNumber from 'bignumber.js'
+import { ethers } from 'ethers'
 import { BetPosition } from 'state/types'
-import {
-  formatBnb,
-  formatRoundTime,
-  formatUsd,
-  getBnbAmount,
-  getMultiplier,
-  getPayout,
-  padTime,
-} from 'views/Predictions/helpers'
-
-describe('getBnbAmount', () => {
-  it.each([
-    [2000000000000000000, 2],
-    [500000000000000000, 0.5],
-    [1658594666560000000, 1.65859466656],
-    [1123456789000000000, 1.123456789],
-  ])('format %i BNB correctly', (value, expected) => {
-    const bnValue = getBnbAmount(new BigNumber(value))
-    expect(bnValue.eq(expected)).toEqual(true)
-  })
-})
-
-describe('formatUsd', () => {
-  it.each([
-    [500, '$500.000'],
-    [265.22, '$265.220'],
-    [689.889, '$689.889'],
-    [10.8829, '$10.883'],
-  ])('format %i USD correctly with 3 decimals', (value, expected) => {
-    expect(formatUsd(value)).toEqual(expected)
-  })
-
-  it('returns 0 if USD is undefined', () => {
-    expect(formatUsd(undefined)).toEqual('$0.000')
-  })
-})
-
-describe('formatBnb', () => {
-  it.each([
-    [20, '20.000'],
-    [265.22, '265.220'],
-    [689.889, '689.889'],
-    [10.8829, '10.883'],
-  ])('format %i BNB correctly with 3 decimals', (value, expected) => {
-    expect(formatBnb(value)).toEqual(expected)
-  })
-
-  it('returns 0 if BNB is undefined', () => {
-    expect(formatBnb(undefined)).toEqual('0')
-  })
-})
+import { formatRoundTime, getNetPayoutv2, getPayoutv2, padTime } from 'views/Predictions/helpers'
 
 describe('padTime', () => {
   it.each([
@@ -73,175 +23,160 @@ describe('formatRoundTime', () => {
   })
 })
 
-describe('getMultiplier', () => {
+describe('getPayout', () => {
   it.each([
-    [100, 400, 0.25],
-    [50000, 2500, 20],
-    [0, 2500, 0],
-    [10, 0, 0],
-  ])('correctly calculates multiplier', (value, value2, expected) => {
-    expect(getMultiplier(value, value2)).toEqual(expected)
-  })
+    [
+      '28602547725553480077',
+      '26278587683044618393',
+      '3208574920618763130',
+      '200000000000000000',
+      BetPosition.BEAR,
+      '1.782',
+    ],
+    [
+      '28602547725553480077',
+      '26278587683044618393',
+      '3208574920618763130',
+      '200000000000000000',
+      BetPosition.BULL,
+      '0.217',
+    ],
+    [
+      '24687803148488403426',
+      '7616553565521982679',
+      '17834789886527917761',
+      '500000000000000000',
+      BetPosition.BEAR,
+      '0.692',
+    ],
+    [
+      '24687803148488403426',
+      '7616553565521982679',
+      '17834789886527917761',
+      '500000000000000000',
+      BetPosition.BULL,
+      '1.620',
+    ],
+    [
+      '22468153765446914542',
+      '7914500466722029957',
+      '15248544652295407716',
+      '100000000000000000',
+      BetPosition.BEAR,
+      '0.147',
+    ],
+    [
+      '22468153765446914542',
+      '7914500466722029957',
+      '15248544652295407716',
+      '100000000000000000',
+      BetPosition.BULL,
+      '0.283',
+    ],
+  ])(
+    'calculates payout correctly within 3 decimals',
+    (rewardAmountStr, bullAmountStr, bearAmountStr, betAmountStr, position, expected) => {
+      const ledger = {
+        position,
+        amount: ethers.BigNumber.from(betAmountStr),
+        claimed: false,
+      }
+      const round = {
+        epoch: 1,
+        startBlock: 0,
+        lockBlock: 0,
+        endBlock: 0,
+        lockPrice: ethers.BigNumber.from(0),
+        closePrice: ethers.BigNumber.from(0),
+        totalAmount: ethers.BigNumber.from(0),
+        bullAmount: ethers.BigNumber.from(bullAmountStr),
+        bearAmount: ethers.BigNumber.from(bearAmountStr),
+        rewardAmount: ethers.BigNumber.from(rewardAmountStr),
+        rewardBaseCalAmount: ethers.BigNumber.from(0),
+        oracleCalled: true,
+      }
+
+      const payout = getPayoutv2(ledger, round)
+      expect(payout.toString()).toContain(expected)
+    },
+  )
 })
 
-describe('getPayout', () => {
-  const bet1Bull = {
-    id: 'bet1',
-    hash: 'bet1hash',
-    amount: 500,
-    position: BetPosition.BULL,
-    claimed: false,
-    claimedHash: 'hash',
-
-    user: {
-      id: 'bet1user',
-      address: 'bet1address',
-      block: 1000,
-      totalBets: 0,
-      totalBNB: 0,
-    },
-    round: {
-      id: 'round',
-      epoch: 4,
-      startAt: 0,
-      position: BetPosition.BEAR,
-      startBlock: 1000,
-      endBlock: 1000,
-      bullAmount: 400,
-      bearAmount: 200,
-      totalAmount: 600,
-      totalBets: 1,
-      bets: [],
-      closePrice: 250,
-      lockPrice: 251,
-      bullBets: 1,
-      bearBets: 1,
-      lockAt: 0,
-      lockBlock: 1,
-    },
-  }
-
-  const bet1Bear = {
-    id: 'bet1',
-    hash: 'bet1hash',
-    amount: 500,
-    position: BetPosition.BEAR,
-    claimed: false,
-    claimedHash: 'hash',
-
-    user: {
-      id: 'bet1user',
-      address: 'bet1address',
-      block: 1000,
-      totalBets: 0,
-      totalBNB: 0,
-    },
-    round: {
-      id: 'round',
-      epoch: 4,
-      startAt: 0,
-      position: BetPosition.BEAR,
-      startBlock: 1000,
-      endBlock: 1000,
-      bullAmount: 400,
-      bearAmount: 200,
-      totalAmount: 600,
-      totalBets: 1,
-      bets: [],
-      closePrice: 250,
-      lockPrice: 251,
-      bullBets: 1,
-      bearBets: 1,
-      lockAt: 0,
-      lockBlock: 1,
-    },
-  }
-
-  const bet2Bull = {
-    id: 'bet2',
-    hash: 'bet2hash',
-    amount: 688,
-    position: BetPosition.BULL,
-    claimed: false,
-    claimedHash: 'hash',
-    user: {
-      id: 'bet2user',
-      address: 'bet2address',
-      block: 1000,
-      totalBets: 0,
-      totalBNB: 0,
-    },
-    round: {
-      id: 'round',
-      epoch: 4,
-      startAt: 0,
-      position: BetPosition.BEAR,
-      startBlock: 1000,
-      endBlock: 1000,
-      bullAmount: 2000,
-      bearAmount: 1600,
-      totalAmount: 3600,
-      totalBets: 1,
-      bets: [],
-      closePrice: 250,
-      lockPrice: 251,
-      bullBets: 1,
-      bearBets: 1,
-      lockAt: 0,
-      lockBlock: 1,
-    },
-  }
-
-  const bet2Bear = {
-    id: 'bet2',
-    hash: 'bet2hash',
-    amount: 688,
-    position: BetPosition.BEAR,
-    claimed: false,
-    claimedHash: 'hash',
-    user: {
-      id: 'bet2user',
-      address: 'bet2address',
-      block: 1000,
-      totalBets: 0,
-      totalBNB: 0,
-    },
-    round: {
-      id: 'round',
-      epoch: 4,
-      startAt: 0,
-      position: BetPosition.BEAR,
-      startBlock: 1000,
-      endBlock: 1000,
-      bullAmount: 2000,
-      bearAmount: 1600,
-      totalAmount: 3600,
-      totalBets: 1,
-      bets: [],
-      closePrice: 250,
-      lockPrice: 251,
-      bullBets: 1,
-      bearBets: 1,
-      lockAt: 0,
-      lockBlock: 1,
-    },
-  }
-
+describe('getNetPayout', () => {
   it.each([
-    [bet1Bull, 750],
-    [bet1Bear, 1500],
-    [bet2Bull, 1238.4],
-    [bet2Bear, 1548],
-  ])('correctly calculates payout', (value, expected) => {
-    expect(getPayout(value)).toEqual(expected)
-  })
+    [
+      '28602547725553480077',
+      '26278587683044618393',
+      '3208574920618763130',
+      '200000000000000000',
+      BetPosition.BEAR,
+      '1.582',
+    ],
+    [
+      '28602547725553480077',
+      '26278587683044618393',
+      '3208574920618763130',
+      '200000000000000000',
+      BetPosition.BULL,
+      '0.017',
+    ],
+    [
+      '24687803148488403426',
+      '7616553565521982679',
+      '17834789886527917761',
+      '500000000000000000',
+      BetPosition.BEAR,
+      '0.192',
+    ],
+    [
+      '24687803148488403426',
+      '7616553565521982679',
+      '17834789886527917761',
+      '500000000000000000',
+      BetPosition.BULL,
+      '1.120',
+    ],
+    [
+      '22468153765446914542',
+      '7914500466722029957',
+      '15248544652295407716',
+      '100000000000000000',
+      BetPosition.BEAR,
+      '0.047',
+    ],
+    [
+      '22468153765446914542',
+      '7914500466722029957',
+      '15248544652295407716',
+      '100000000000000000',
+      BetPosition.BULL,
+      '0.183',
+    ],
+  ])(
+    'calculates payout correctly within 3 decimals',
+    (rewardAmountStr, bullAmountStr, bearAmountStr, betAmountStr, position, expected) => {
+      const ledger = {
+        position,
+        amount: ethers.BigNumber.from(betAmountStr),
+        claimed: false,
+      }
+      const round = {
+        epoch: 1,
+        startBlock: 0,
+        lockBlock: 0,
+        endBlock: 0,
+        lockPrice: ethers.BigNumber.from(0),
+        closePrice: ethers.BigNumber.from(0),
+        totalAmount: ethers.BigNumber.from(0),
+        bullAmount: ethers.BigNumber.from(bullAmountStr),
+        bearAmount: ethers.BigNumber.from(bearAmountStr),
+        rewardAmount: ethers.BigNumber.from(rewardAmountStr),
+        rewardBaseCalAmount: ethers.BigNumber.from(0),
+        oracleCalled: true,
+      }
 
-  it.each([
-    [bet1Bull, 0.97, 727.5],
-    [bet1Bear, 0.97, 1455],
-    [bet2Bull, 0.97, 1201.248],
-    [bet2Bear, 0.97, 1501.56],
-  ])('correctly calculates payout including reward rate', (value, rewardRate, expected) => {
-    expect(getPayout(value, rewardRate)).toEqual(expected)
-  })
+      const payout = getNetPayoutv2(ledger, round)
+      expect(payout.toString()).toContain(expected)
+    },
+  )
 })

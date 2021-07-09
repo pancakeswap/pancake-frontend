@@ -3,14 +3,14 @@ import { useWeb3React } from '@web3-react/core'
 import { Box, Flex, Heading, Text, PrizeIcon, BlockIcon, LinkExternal, useTooltip, InfoIcon } from '@pancakeswap/uikit'
 import { useAppDispatch } from 'state'
 import { useTranslation } from 'contexts/Localization'
-import { useBetCanClaim, useGetRewardRate, usePriceBnbBusd } from 'state/hooks'
+import { useGetRewardRate, usePriceBnbBusd } from 'state/hooks'
 import styled from 'styled-components'
 import { Bet, BetPosition } from 'state/types'
-import { fetchBet } from 'state/predictions'
+import { fetchLedgerData, markBetHistoryAsCollected } from 'state/predictions'
 import { Result } from 'state/predictions/helpers'
 import { getBscScanTransactionUrl } from 'utils/bscscan'
 import useIsRefundable from '../../hooks/useIsRefundable'
-import { formatBnb, getNetPayout } from '../../helpers'
+import { formatBnb, getNetPayout } from './helpers'
 import CollectWinningsButton from '../CollectWinningsButton'
 import PositionTag from '../PositionTag'
 import ReclaimPositionButton from '../ReclaimPositionButton'
@@ -37,7 +37,7 @@ const BetResult: React.FC<BetResultProps> = ({ bet, result }) => {
   const { account } = useWeb3React()
   const { isRefundable } = useIsRefundable(bet.round.epoch)
   const bnbBusdPrice = usePriceBnbBusd()
-  const canClaim = useBetCanClaim(account, bet.round.id)
+  const canClaim = !bet.claimed && bet.position === bet.round.position
   const rewardRate = useGetRewardRate()
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <Text as="p">{t('Includes your original position and your winnings, minus the %fee% fee.', { fee: '3%' })}</Text>,
@@ -101,7 +101,9 @@ const BetResult: React.FC<BetResultProps> = ({ bet, result }) => {
   }
 
   const handleSuccess = async () => {
-    await dispatch(fetchBet({ account, id: bet.id }))
+    // We have to mark the bet as claimed immediately because it does not update fast enough
+    dispatch(markBetHistoryAsCollected({ account, betId: bet.id }))
+    dispatch(fetchLedgerData({ account, epochs: [bet.round.epoch] }))
   }
 
   return (
@@ -118,8 +120,8 @@ const BetResult: React.FC<BetResultProps> = ({ bet, result }) => {
       <StyledBetResult>
         {result === Result.WIN && !canClaim && (
           <CollectWinningsButton
-            payout={payout}
-            roundId={bet.round.id}
+            payout={formatBnb(payout)}
+            betAmount={bet.amount.toString()}
             epoch={bet.round.epoch}
             hasClaimed={!canClaim}
             width="100%"

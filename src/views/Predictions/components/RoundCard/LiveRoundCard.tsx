@@ -1,27 +1,28 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import { useCountUp } from 'react-countup'
 import { CardBody, Flex, PlayCircleOutlineIcon, Skeleton, Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import { Round, BetPosition } from 'state/types'
-import { useBlock, useGetIntervalBlocks, useGetLastOraclePrice } from 'state/hooks'
+import { NodeRound, NodeLedger, BetPosition } from 'state/types'
+import { BLOCK_PADDING } from 'state/predictions'
+import { formatBigNumberToFixed } from 'utils/formatBalance'
+import { useBlock, useGetLastOraclePrice } from 'state/hooks'
 import BlockProgress from 'components/BlockProgress'
-import { formatUsd, getBubbleGumBackground } from '../../helpers'
+import { formatUsdv2, getPriceDifference } from '../../helpers'
 import PositionTag from '../PositionTag'
 import { RoundResultBox, LockPriceRow, PrizePoolRow } from '../RoundResult'
 import MultiplierArrow from './MultiplierArrow'
 import Card from './Card'
 import CardHeader from './CardHeader'
-import CanceledRoundCard from './CanceledRoundCard'
 import CalculatingCard from './CalculatingCard'
 
 interface LiveRoundCardProps {
-  round: Round
-  betAmount?: number
+  round: NodeRound
+  betAmount?: NodeLedger['amount']
   hasEnteredUp: boolean
   hasEnteredDown: boolean
-  bullMultiplier: number
-  bearMultiplier: number
+  bullMultiplier: string
+  bearMultiplier: string
 }
 
 const GradientBorder = styled.div`
@@ -31,7 +32,7 @@ const GradientBorder = styled.div`
 `
 
 const GradientCard = styled(Card)`
-  background: ${({ theme }) => getBubbleGumBackground(theme)};
+  background: ${({ theme }) => theme.colors.gradients.bubblegum};
 `
 
 const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
@@ -43,17 +44,20 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
   bearMultiplier,
 }) => {
   const { t } = useTranslation()
-  const { lockPrice, lockBlock, totalAmount } = round
+  const { lockPrice, lockBlock, endBlock, totalAmount } = round
   const { currentBlock } = useBlock()
-  const totalInterval = useGetIntervalBlocks()
   const price = useGetLastOraclePrice()
-  const isBull = price.gt(lockPrice)
+
+  const isBull = lockPrice && price.gt(lockPrice)
   const priceColor = isBull ? 'success' : 'failure'
-  const estimatedEndBlock = lockBlock + totalInterval
-  const priceDifference = price.minus(lockPrice).toNumber()
+  const estimatedEndBlockPlusPadding = endBlock + BLOCK_PADDING
+
+  const priceDifference = getPriceDifference(price, lockPrice)
+  const priceAsNumber = parseFloat(formatBigNumberToFixed(price, 3, 8))
+
   const { countUp, update } = useCountUp({
     start: 0,
-    end: price.toNumber(),
+    end: priceAsNumber,
     duration: 1,
     decimals: 3,
   })
@@ -61,15 +65,13 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
     placement: 'bottom',
   })
 
+  const updateRef = useRef(update)
+
   useEffect(() => {
-    update(price.toNumber())
-  }, [price, update])
+    updateRef.current(priceAsNumber)
+  }, [priceAsNumber, updateRef])
 
-  if (round.failed) {
-    return <CanceledRoundCard round={round} />
-  }
-
-  if (currentBlock > estimatedEndBlock) {
+  if (currentBlock > estimatedEndBlockPlusPadding) {
     return <CalculatingCard round={round} />
   }
 
@@ -81,9 +83,9 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
           icon={<PlayCircleOutlineIcon mr="4px" width="24px" color="secondary" />}
           title={t('Live')}
           epoch={round.epoch}
-          blockNumber={estimatedEndBlock}
+          blockNumber={estimatedEndBlockPlusPadding}
         />
-        <BlockProgress variant="flat" scale="sm" startBlock={lockBlock} endBlock={estimatedEndBlock} />
+        <BlockProgress variant="flat" scale="sm" startBlock={lockBlock} endBlock={estimatedEndBlockPlusPadding} />
         <CardBody p="16px">
           <MultiplierArrow
             betAmount={betAmount}
@@ -102,7 +104,7 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
                 </TooltipText>
               </div>
               <PositionTag betPosition={isBull ? BetPosition.BULL : BetPosition.BEAR}>
-                {formatUsd(priceDifference)}
+                {formatUsdv2(priceDifference)}
               </PositionTag>
             </Flex>
             {lockPrice && <LockPriceRow lockPrice={lockPrice} />}

@@ -3,10 +3,11 @@ import styled from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
 import { Box, BlockIcon, CardBody } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import { Round, BetPosition } from 'state/types'
-import { useGetBetByRoundId, useGetRewardRate } from 'state/hooks'
+import { NodeRound, BetPosition, NodeLedger } from 'state/types'
+import { useBlock, useGetBetByEpoch } from 'state/hooks'
+import { formatBigNumberToFixed } from 'utils/formatBalance'
+import { getHasRoundFailed, getNetPayoutv2 } from '../../helpers'
 import { RoundResult } from '../RoundResult'
-import { getNetPayout } from '../../helpers'
 import MultiplierArrow from './MultiplierArrow'
 import Card from './Card'
 import CardHeader from './CardHeader'
@@ -14,12 +15,12 @@ import CollectWinningsOverlay from './CollectWinningsOverlay'
 import CanceledRoundCard from './CanceledRoundCard'
 
 interface ExpiredRoundCardProps {
-  round: Round
-  betAmount?: number
+  round: NodeRound
+  betAmount?: NodeLedger['amount']
   hasEnteredUp: boolean
   hasEnteredDown: boolean
-  bullMultiplier: number
-  bearMultiplier: number
+  bullMultiplier: string
+  bearMultiplier: string
 }
 
 const StyledExpiredRoundCard = styled(Card)`
@@ -41,13 +42,16 @@ const ExpiredRoundCard: React.FC<ExpiredRoundCardProps> = ({
 }) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
-  const { id, epoch, endBlock, lockPrice, closePrice } = round
-  const betPosition = closePrice > lockPrice ? BetPosition.BULL : BetPosition.BEAR
-  const bet = useGetBetByRoundId(account, round.id)
-  const rewardRate = useGetRewardRate()
-  const payout = getNetPayout(bet, rewardRate)
+  const { initialBlock } = useBlock()
+  const { epoch, endBlock, lockPrice, closePrice } = round
 
-  if (round.failed) {
+  const betPosition = closePrice > lockPrice ? BetPosition.BULL : BetPosition.BEAR
+  const ledger = useGetBetByEpoch(account, epoch)
+  const payout = getNetPayoutv2(ledger, round)
+  const formattedPayout = payout.toUnsafeFloat().toFixed(4)
+  const hasRoundFailed = getHasRoundFailed(round, initialBlock)
+
+  if (hasRoundFailed) {
     return <CanceledRoundCard round={round} />
   }
 
@@ -68,7 +72,7 @@ const ExpiredRoundCard: React.FC<ExpiredRoundCardProps> = ({
             isActive={betPosition === BetPosition.BULL}
             hasEntered={hasEnteredUp}
           />
-          <RoundResult round={round} />
+          <RoundResult round={round} hasFailed={hasRoundFailed} />
           <MultiplierArrow
             betAmount={betAmount}
             multiplier={bearMultiplier}
@@ -78,7 +82,12 @@ const ExpiredRoundCard: React.FC<ExpiredRoundCardProps> = ({
           />
         </CardBody>
       </StyledExpiredRoundCard>
-      <CollectWinningsOverlay roundId={id} epoch={epoch} payout={payout} isBottom={hasEnteredDown} />
+      <CollectWinningsOverlay
+        epoch={epoch}
+        payout={formattedPayout}
+        betAmount={betAmount ? formatBigNumberToFixed(betAmount, 4) : '0'}
+        isBottom={hasEnteredDown}
+      />
     </Box>
   )
 }

@@ -1,23 +1,15 @@
-import BigNumber from 'bignumber.js'
-import { Bet, BetPosition } from 'state/types'
-import { DefaultTheme } from 'styled-components'
-import { formatNumber, getBalanceAmount } from 'utils/formatBalance'
+import { ethers } from 'ethers'
+import { BetPosition, NodeLedger, NodeRound } from 'state/types'
+import { formatBigNumber, formatBigNumberToFixed } from 'utils/formatBalance'
 import getTimePeriods from 'utils/getTimePeriods'
 
-export const getBnbAmount = (bnbBn: BigNumber) => {
-  return getBalanceAmount(bnbBn, 18)
+export const formatUsdv2 = (usd: ethers.BigNumber) => {
+  return `$${formatBigNumberToFixed(usd, 3, 8)}`
 }
 
-export const formatUsd = (usd: number) => {
-  return `$${formatNumber(usd || 0, 3, 3)}`
-}
-
-export const formatBnb = (bnb: number) => {
-  return bnb ? bnb.toLocaleString(undefined, { minimumFractionDigits: 3, maximumFractionDigits: 3 }) : '0'
-}
-
-export const formatBnbFromBigNumber = (bnbBn: BigNumber) => {
-  return formatBnb(getBnbAmount(bnbBn).toNumber())
+export const formatBnbv2 = (bnb: ethers.BigNumber) => {
+  const value = bnb || ethers.BigNumber.from(0)
+  return formatBigNumberToFixed(value, 4)
 }
 
 export const padTime = (num: number) => num.toString().padStart(2, '0')
@@ -33,41 +25,57 @@ export const formatRoundTime = (secondsBetweenBlocks: number) => {
   return minutesSeconds
 }
 
-export const getMultiplier = (total: number, amount: number) => {
-  if (total === 0 || amount === 0) {
-    return 0
+export const getHasRoundFailed = (round: NodeRound, blockNumber: number) => {
+  if (!round.endBlock) {
+    return false
   }
 
-  return total / amount
+  return blockNumber > round.endBlock && round.oracleCalled === false
 }
 
-/**
- * Calculates the total payout given a bet
- */
-export const getPayout = (bet: Bet, rewardRate = 1) => {
-  if (!bet || !bet.round) {
-    return 0
+export const getMultiplierv2 = (total: ethers.BigNumber, amount: ethers.BigNumber) => {
+  if (!total) {
+    return ethers.FixedNumber.from(0)
   }
 
-  const { bullAmount, bearAmount, totalAmount } = bet.round
-  const multiplier = getMultiplier(totalAmount, bet.position === BetPosition.BULL ? bullAmount : bearAmount)
-  return bet.amount * multiplier * rewardRate
+  if (total.eq(0) || amount.eq(0)) {
+    return ethers.FixedNumber.from(0)
+  }
+
+  const rewardAmountFixed = ethers.FixedNumber.from(total)
+  const multiplierAmountFixed = ethers.FixedNumber.from(amount)
+
+  return rewardAmountFixed.divUnsafe(multiplierAmountFixed)
 }
 
-export const getNetPayout = (bet: Bet, rewardRate = 1): number => {
-  if (!bet || !bet.round) {
-    return 0
+export const getPayoutv2 = (ledger: NodeLedger, round: NodeRound) => {
+  if (!ledger || !round) {
+    return ethers.FixedNumber.from(0)
   }
 
-  const payout = getPayout(bet, rewardRate)
-  return payout - bet.amount
+  const { bullAmount, bearAmount, rewardAmount } = round
+  const { amount, position } = ledger
+
+  const amountFixed = ethers.FixedNumber.from(formatBigNumber(amount))
+  const multiplier = getMultiplierv2(rewardAmount, position === BetPosition.BULL ? bullAmount : bearAmount)
+  return amountFixed.mulUnsafe(multiplier)
 }
 
-// TODO: Move this to the UI Kit
-export const getBubbleGumBackground = (theme: DefaultTheme) => {
-  if (theme.isDark) {
-    return 'linear-gradient(139.73deg, #142339 0%, #24243D 47.4%, #37273F 100%)'
+export const getNetPayoutv2 = (ledger: NodeLedger, round: NodeRound) => {
+  if (!ledger || !round) {
+    return ethers.FixedNumber.from(0)
   }
 
-  return 'linear-gradient(139.73deg, #E6FDFF 0%, #EFF4F5 46.87%, #F3EFFF 100%)'
+  const payout = getPayoutv2(ledger, round)
+  const amount = ethers.FixedNumber.from(formatBigNumber(ledger.amount))
+
+  return payout.subUnsafe(amount)
+}
+
+export const getPriceDifference = (price: ethers.BigNumber, lockPrice: ethers.BigNumber) => {
+  if (!price || !lockPrice) {
+    return ethers.BigNumber.from(0)
+  }
+
+  return price.sub(lockPrice)
 }

@@ -2,8 +2,9 @@ import { useEffect, useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import { useSelector } from 'react-redux'
+import { ethers } from 'ethers'
+import { minBy, orderBy } from 'lodash'
 import { useAppDispatch } from 'state'
-import { orderBy } from 'lodash'
 import { Team } from 'config/constants/types'
 import Nfts from 'config/constants/nfts'
 import { farmsConfig } from 'config/constants'
@@ -21,12 +22,24 @@ import {
   fetchCakeVaultFees,
   setBlock,
 } from './actions'
-import { State, Farm, Pool, ProfileState, TeamsState, AchievementState, FarmsState } from './types'
+import {
+  State,
+  Farm,
+  Pool,
+  ProfileState,
+  TeamsState,
+  AchievementState,
+  FarmsState,
+  NodeRound,
+  ReduxNodeLedger,
+  NodeLedger,
+  ReduxNodeRound,
+} from './types'
 import { fetchProfile } from './profile'
 import { fetchTeam, fetchTeams } from './teams'
 import { fetchAchievements } from './achievements'
 import { fetchWalletNfts } from './collectibles'
-import { getCanClaim } from './predictions/helpers'
+import { parseBigNumberObj } from './predictions/helpers'
 import { transformPool } from './pools/helpers'
 import { fetchPoolsStakingLimitsAsync } from './pools'
 import { fetchFarmUserDataAsync, nonArchivedFarms } from './farms'
@@ -343,21 +356,61 @@ export const useInitialBlock = () => {
 }
 
 // Predictions
+export const useGetRounds = () => {
+  const rounds = useSelector((state: State) => state.predictions.rounds)
+  return Object.keys(rounds).reduce((accum, epoch) => {
+    return {
+      ...accum,
+      [epoch]: parseBigNumberObj<ReduxNodeRound, NodeRound>(rounds[epoch]),
+    }
+  }, {}) as { [key: string]: NodeRound }
+}
+
+export const useGetRound = (epoch: number) => {
+  const round = useSelector((state: State) => state.predictions.rounds[epoch])
+  return parseBigNumberObj<ReduxNodeRound, NodeRound>(round)
+}
+
+export const useGetSortedRounds = () => {
+  const roundData = useGetRounds()
+  return orderBy(Object.values(roundData), ['epoch'], ['asc'])
+}
+
+export const useGetBetByEpoch = (account: string, epoch: number) => {
+  const bets = useSelector((state: State) => state.predictions.ledgers)
+
+  if (!bets[account]) {
+    return null
+  }
+
+  if (!bets[account][epoch]) {
+    return null
+  }
+
+  return parseBigNumberObj<ReduxNodeLedger, NodeLedger>(bets[account][epoch])
+}
+
+export const useGetIsClaimable = (epoch) => {
+  const claimableStatuses = useSelector((state: State) => state.predictions.claimableStatuses)
+  return claimableStatuses[epoch] || false
+}
+
+/**
+ * Used to get the range of rounds to poll for
+ */
+export const useGetEarliestEpoch = () => {
+  return useSelector((state: State) => {
+    const earliestRound = minBy(Object.values(state.predictions.rounds), 'epoch')
+    return earliestRound?.epoch
+  })
+}
+
 export const useIsHistoryPaneOpen = () => {
   return useSelector((state: State) => state.predictions.isHistoryPaneOpen)
 }
 
 export const useIsChartPaneOpen = () => {
   return useSelector((state: State) => state.predictions.isChartPaneOpen)
-}
-
-export const useGetRounds = () => {
-  return useSelector((state: State) => state.predictions.rounds)
-}
-
-export const useGetSortedRounds = () => {
-  const roundData = useGetRounds()
-  return orderBy(Object.values(roundData), ['epoch'], ['asc'])
 }
 
 export const useGetCurrentEpoch = () => {
@@ -376,11 +429,6 @@ export const useGetTotalIntervalBlocks = () => {
   const intervalBlocks = useGetIntervalBlocks()
   const bufferBlocks = useGetBufferBlocks()
   return intervalBlocks + bufferBlocks
-}
-
-export const useGetRound = (id: string) => {
-  const rounds = useGetRounds()
-  return rounds[id]
 }
 
 export const useGetCurrentRound = () => {
@@ -402,8 +450,8 @@ export const useGetCurrentRoundBlockNumber = () => {
 }
 
 export const useGetMinBetAmount = () => {
-  const minBetAmount = useSelector((state: State) => state.predictions.minBetAmount)
-  return useMemo(() => new BigNumber(minBetAmount), [minBetAmount])
+  const minByBetAmount = useSelector((state: State) => state.predictions.minBetAmount)
+  return useMemo(() => new BigNumber(minByBetAmount), [minByBetAmount])
 }
 
 export const useGetRewardRate = () => {
@@ -424,33 +472,25 @@ export const useGetHistoryByAccount = (account: string) => {
   return bets ? bets[account] : []
 }
 
-export const useGetBetByRoundId = (account: string, roundId: string) => {
-  const bets = useSelector((state: State) => state.predictions.bets)
+export const useGetLedgerByRoundId = (account: string, roundId: string) => {
+  const ledgers = useSelector((state: State) => state.predictions.ledgers)
 
-  if (!bets[account]) {
+  if (!ledgers[account]) {
     return null
   }
 
-  if (!bets[account][roundId]) {
+  if (!ledgers[account][roundId]) {
     return null
   }
 
-  return bets[account][roundId]
+  return ledgers[account][roundId]
 }
 
-export const useBetCanClaim = (account: string, roundId: string) => {
-  const bet = useGetBetByRoundId(account, roundId)
-
-  if (!bet) {
-    return false
-  }
-
-  return getCanClaim(bet)
-}
-
-export const useGetLastOraclePrice = (): BigNumber => {
+export const useGetLastOraclePrice = () => {
   const lastOraclePrice = useSelector((state: State) => state.predictions.lastOraclePrice)
-  return new BigNumber(lastOraclePrice)
+  return useMemo(() => {
+    return ethers.BigNumber.from(lastOraclePrice)
+  }, [lastOraclePrice])
 }
 
 // Collectibles

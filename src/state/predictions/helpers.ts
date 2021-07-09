@@ -1,11 +1,21 @@
 import { request, gql } from 'graphql-request'
 import { GRAPH_API_PREDICTION } from 'config/constants/endpoints'
 import { ethers } from 'ethers'
-import { Bet, BetPosition, Market, PredictionsState, PredictionStatus, Round, RoundData } from 'state/types'
+import {
+  Bet,
+  LedgerData,
+  BetPosition,
+  PredictionsState,
+  PredictionStatus,
+  ReduxNodeLedger,
+  ReduxNodeRound,
+  Round,
+  RoundData,
+} from 'state/types'
 import { multicallv2 } from 'utils/multicall'
 import predictionsAbi from 'config/abi/predictions.json'
 import { getPredictionsAddress } from 'utils/addressHelpers'
-
+import { PredictionsClaimableResponse, PredictionsLedgerResponse, PredictionsRoundsResponse } from 'utils/types'
 import {
   BetResponse,
   getRoundBaseFields,
@@ -30,29 +40,6 @@ export const numberOrNull = (value: string) => {
 
   const valueNum = Number(value)
   return Number.isNaN(valueNum) ? null : valueNum
-}
-
-export const makeFutureRoundResponse = (epoch: number, startBlock: number): RoundResponse => {
-  return {
-    id: epoch.toString(),
-    epoch: epoch.toString(),
-    startBlock: startBlock.toString(),
-    failed: null,
-    startAt: null,
-    lockAt: null,
-    lockBlock: null,
-    lockPrice: null,
-    endBlock: null,
-    closePrice: null,
-    totalBets: '0',
-    totalAmount: '0',
-    bearBets: '0',
-    bullBets: '0',
-    bearAmount: '0',
-    bullAmount: '0',
-    position: null,
-    bets: [],
-  }
 }
 
 export const transformBetResponse = (betResponse: BetResponse): Bet => {
@@ -149,15 +136,6 @@ export const transformTotalWonResponse = (
   return Math.max(totalBNB - (totalBNBTreasury + houseRounds), 0)
 }
 
-export const makeRoundData = (rounds: Round[]): RoundData => {
-  return rounds.reduce((accum, round) => {
-    return {
-      ...accum,
-      [round.id]: round,
-    }
-  }, {})
-}
-
 export const getRoundResult = (bet: Bet, currentEpoch: number): Result => {
   const { round } = bet
   if (round.failed) {
@@ -187,66 +165,6 @@ export const getUnclaimedWinningBets = (bets: Bet[]): Bet[] => {
   return bets.filter(getCanClaim)
 }
 
-type StaticPredictionsData = Pick<
-  PredictionsState,
-  'status' | 'currentEpoch' | 'intervalBlocks' | 'bufferBlocks' | 'minBetAmount' | 'rewardRate'
->
-
-/**
- * Gets static data from the contract
- */
-export const getStaticPredictionsData = async (): Promise<StaticPredictionsData> => {
-  const calls = ['currentEpoch', 'intervalBlocks', 'minBetAmount', 'paused', 'bufferBlocks', 'rewardRate'].map(
-    (method) => ({
-      address: getPredictionsAddress(),
-      name: method,
-    }),
-  )
-  const [[currentEpoch], [intervalBlocks], [minBetAmount], [isPaused], [bufferBlocks], [rewardRate]] =
-    await multicallv2(predictionsAbi, calls)
-
-  return {
-    status: isPaused ? PredictionStatus.PAUSED : PredictionStatus.LIVE,
-    currentEpoch: currentEpoch.toNumber(),
-    intervalBlocks: intervalBlocks.toNumber(),
-    bufferBlocks: bufferBlocks.toNumber(),
-    minBetAmount: minBetAmount.toString(),
-    rewardRate: rewardRate.toNumber(),
-  }
-}
-
-export const getMarketData = async (): Promise<{
-  rounds: Round[]
-  market: Market
-}> => {
-  const [[paused], [currentEpoch]] = (await multicallv2(
-    predictionsAbi,
-    ['paused', 'currentEpoch'].map((name) => ({
-      address: getPredictionsAddress(),
-      name,
-    })),
-  )) as [[boolean], [ethers.BigNumber]]
-
-  const response = (await request(
-    GRAPH_API_PREDICTION,
-    gql`
-      query getMarketData {
-        rounds(first: 5, orderBy: epoch, orderDirection: desc) {
-          ${getRoundBaseFields()}
-        }
-      }
-    `,
-  )) as { rounds: RoundResponse[] }
-
-  return {
-    rounds: response.rounds.map(transformRoundResponse),
-    market: {
-      epoch: currentEpoch.toNumber(),
-      paused,
-    },
-  }
-}
-
 export const getTotalWon = async (): Promise<number> => {
   const response = (await request(
     GRAPH_API_PREDICTION,
@@ -265,27 +183,6 @@ export const getTotalWon = async (): Promise<number> => {
   )) as { market: TotalWonMarketResponse; rounds: TotalWonRoundResponse[] }
 
   return transformTotalWonResponse(response.market, response.rounds)
-}
-
-export const getRound = async (id: string) => {
-  const response = await request(
-    GRAPH_API_PREDICTION,
-    gql`
-      query getRound($id: ID!) {
-        round(id: $id) {
-          ${getRoundBaseFields()}
-          bets {
-           ${getBetBaseFields()}
-            user {
-             ${getUserBaseFields()}
-            }
-          }
-        }
-      }
-  `,
-    { id },
-  )
-  return response.round
 }
 
 type BetHistoryWhereClause = Record<string, string | number | boolean | string[]>
@@ -336,4 +233,195 @@ export const getBet = async (betId: string): Promise<BetResponse> => {
     },
   )
   return response.bet
+}
+
+// V2 REFACTOR
+export const getLedgerData = async (account: string, epochs: number[]) => {
+  const address = getPredictionsAddress()
+  const ledgerCalls = epochs.map((epoch) => ({
+    address,
+    name: 'ledger',
+    params: [epoch, account],
+  }))
+  const response = await multicallv2<PredictionsLedgerResponse[]>(predictionsAbi, ledgerCalls)
+  return response
+}
+
+export const getClaimStatuses = async (
+  account: string,
+  epochs: number[],
+): Promise<PredictionsState['claimableStatuses']> => {
+  const address = getPredictionsAddress()
+  const claimableCalls = epochs.map((epoch) => ({
+    address,
+    name: 'claimable',
+    params: [epoch, account],
+  }))
+  const claimableResponses = await multicallv2<[PredictionsClaimableResponse][]>(predictionsAbi, claimableCalls)
+
+  // "claimable" currently has a bug where it returns true on Bull bets even if the wallet did not interact with the round
+  // To get around this temporarily we check the ledger status as well to confirm that it is claimable
+  // This can be removed in Predictions V2
+  const ledgerResponses = await getLedgerData(account, epochs)
+
+  return claimableResponses.reduce((accum, claimableResponse, index) => {
+    const { amount, claimed } = ledgerResponses[index]
+    const epoch = epochs[index]
+    const [claimable] = claimableResponse
+
+    return {
+      ...accum,
+      [epoch]: claimable && amount.gt(0) && !claimed,
+    }
+  }, {})
+}
+
+export type MarketData = Pick<
+  PredictionsState,
+  'status' | 'currentEpoch' | 'intervalBlocks' | 'bufferBlocks' | 'minBetAmount' | 'rewardRate'
+>
+export const getPredictionData = async (): Promise<MarketData> => {
+  const address = getPredictionsAddress()
+  const staticCalls = ['currentEpoch', 'intervalBlocks', 'minBetAmount', 'paused', 'bufferBlocks', 'rewardRate'].map(
+    (method) => ({
+      address,
+      name: method,
+    }),
+  )
+  const [[currentEpoch], [intervalBlocks], [minBetAmount], [paused], [bufferBlocks], [rewardRate]] = await multicallv2(
+    predictionsAbi,
+    staticCalls,
+  )
+
+  return {
+    status: paused ? PredictionStatus.PAUSED : PredictionStatus.LIVE,
+    currentEpoch: currentEpoch.toNumber(),
+    intervalBlocks: intervalBlocks.toNumber(),
+    bufferBlocks: bufferBlocks.toNumber(),
+    minBetAmount: minBetAmount.toString(),
+    rewardRate: rewardRate.toNumber(),
+  }
+}
+
+export const getRoundsData = async (epochs: number[]): Promise<PredictionsRoundsResponse[]> => {
+  const address = getPredictionsAddress()
+  const calls = epochs.map((epoch) => ({
+    address,
+    name: 'rounds',
+    params: [epoch],
+  }))
+  const response = await multicallv2<PredictionsRoundsResponse[]>(predictionsAbi, calls)
+  return response
+}
+
+export const makeFutureRoundResponse = (epoch: number, startBlock: number): ReduxNodeRound => {
+  return {
+    epoch,
+    startBlock,
+    lockBlock: null,
+    endBlock: null,
+    lockPrice: null,
+    closePrice: null,
+    totalAmount: ethers.BigNumber.from(0).toJSON(),
+    bullAmount: ethers.BigNumber.from(0).toJSON(),
+    bearAmount: ethers.BigNumber.from(0).toJSON(),
+    rewardBaseCalAmount: ethers.BigNumber.from(0).toJSON(),
+    rewardAmount: ethers.BigNumber.from(0).toJSON(),
+    oracleCalled: false,
+  }
+}
+
+export const makeRoundData = (rounds: ReduxNodeRound[]): RoundData => {
+  return rounds.reduce((accum, round) => {
+    return {
+      ...accum,
+      [round.epoch.toString()]: round,
+    }
+  }, {})
+}
+
+export const serializePredictionsLedgerResponse = (ledgerResponse: PredictionsLedgerResponse): ReduxNodeLedger => ({
+  position: ledgerResponse.position === 0 ? BetPosition.BULL : BetPosition.BEAR,
+  amount: ledgerResponse.amount.toJSON(),
+  claimed: ledgerResponse.claimed,
+})
+
+export const makeLedgerData = (account: string, ledgers: PredictionsLedgerResponse[], epochs: number[]): LedgerData => {
+  return ledgers.reduce((accum, ledgerResponse, index) => {
+    if (!ledgerResponse) {
+      return accum
+    }
+
+    // If the amount is zero that means the user did not bet
+    if (ledgerResponse.amount.eq(0)) {
+      return accum
+    }
+
+    const epoch = epochs[index].toString()
+
+    return {
+      ...accum,
+      [account]: {
+        ...accum[account],
+        [epoch]: serializePredictionsLedgerResponse(ledgerResponse),
+      },
+    }
+  }, {})
+}
+
+/**
+ * Serializes the return from the "rounds" call for redux
+ */
+export const serializePredictionsRoundsResponse = (response: PredictionsRoundsResponse): ReduxNodeRound => {
+  const {
+    epoch,
+    startBlock,
+    lockBlock,
+    endBlock,
+    lockPrice,
+    closePrice,
+    totalAmount,
+    bullAmount,
+    bearAmount,
+    rewardAmount,
+    rewardBaseCalAmount,
+    oracleCalled,
+  } = response
+
+  return {
+    epoch: epoch.toNumber(),
+    startBlock: startBlock.toNumber(),
+    lockBlock: lockBlock.toNumber(),
+    endBlock: endBlock.toNumber(),
+    lockPrice: lockPrice.eq(0) ? null : lockPrice.toJSON(),
+    closePrice: closePrice.eq(0) ? null : closePrice.toJSON(),
+    totalAmount: totalAmount.toJSON(),
+    bullAmount: bullAmount.toJSON(),
+    bearAmount: bearAmount.toJSON(),
+    rewardAmount: rewardAmount.toJSON(),
+    rewardBaseCalAmount: rewardBaseCalAmount.toJSON(),
+    oracleCalled,
+  }
+}
+
+/**
+ * Parse serialized values back into ethers.BigNumber
+ * ethers.BigNumber values are stored with the "toJSJON()" method, e.g  { type: "BigNumber", hex: string }
+ */
+export const parseBigNumberObj = <T = Record<string, any>, K = Record<string, any>>(data: T): K => {
+  return Object.keys(data).reduce((accum, key) => {
+    const value = data[key]
+
+    if (value && value?.type === 'BigNumber') {
+      return {
+        ...accum,
+        [key]: ethers.BigNumber.from(value),
+      }
+    }
+
+    return {
+      ...accum,
+      [key]: value,
+    }
+  }, {}) as K
 }

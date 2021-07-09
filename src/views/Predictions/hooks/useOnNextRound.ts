@@ -3,7 +3,6 @@ import { useWeb3React } from '@web3-react/core'
 import usePreviousValue from 'hooks/usePreviousValue'
 import { useAppDispatch } from 'state'
 import { useGetCurrentEpoch, useGetSortedRounds } from 'state/hooks'
-import { fetchCurrentBets } from 'state/predictions'
 import useSwiper from './useSwiper'
 
 /**
@@ -20,9 +19,6 @@ const useOnNextRound = () => {
   useEffect(() => {
     if (swiper && currentEpoch !== undefined && previousEpoch !== undefined && currentEpoch !== previousEpoch) {
       const currentEpochIndex = rounds.findIndex((round) => round.epoch === currentEpoch)
-
-      // Fetch data on current unclaimed bets
-      dispatch(fetchCurrentBets({ account, roundIds: rounds.map((round) => round.id) }))
 
       // Slide to the current LIVE round which is always the one before the current round
       swiper.slideTo(currentEpochIndex - 1)

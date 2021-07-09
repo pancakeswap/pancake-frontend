@@ -2,9 +2,14 @@ import { ThunkAction } from 'redux-thunk'
 import { AnyAction } from '@reduxjs/toolkit'
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
-import { CampaignType, FarmConfig, Nft, PoolConfig, Team, LotteryTicket, LotteryStatus } from 'config/constants/types'
+import { CampaignType, FarmConfig, LotteryStatus, LotteryTicket, Nft, PoolConfig, Team } from 'config/constants/types'
 
 export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, State, unknown, AnyAction>
+
+export interface BigNumberToJson {
+  type: 'BigNumber'
+  hex: string
+}
 
 export type TranslatableText =
   | string
@@ -218,24 +223,66 @@ export interface PredictionUser {
   totalBNB: number
 }
 
-export interface RoundData {
-  [key: string]: Round
-}
-
 export interface HistoryData {
   [key: string]: Bet[]
-}
-
-export interface BetData {
-  [key: string]: {
-    [key: string]: Bet
-  }
 }
 
 export enum HistoryFilter {
   ALL = 'all',
   COLLECTED = 'collected',
   UNCOLLECTED = 'uncollected',
+}
+
+export interface LedgerData {
+  [key: string]: {
+    [key: string]: ReduxNodeLedger
+  }
+}
+
+export interface RoundData {
+  [key: string]: ReduxNodeRound
+}
+
+export interface ReduxNodeLedger {
+  position: BetPosition
+  amount: BigNumberToJson
+  claimed: boolean
+}
+
+export interface NodeLedger {
+  position: BetPosition
+  amount: ethers.BigNumber
+  claimed: boolean
+}
+
+export interface ReduxNodeRound {
+  epoch: number
+  startBlock: number
+  lockBlock: number | null
+  endBlock: number | null
+  lockPrice: BigNumberToJson | null
+  closePrice: BigNumberToJson | null
+  totalAmount: BigNumberToJson
+  bullAmount: BigNumberToJson
+  bearAmount: BigNumberToJson
+  rewardBaseCalAmount: BigNumberToJson
+  rewardAmount: BigNumberToJson
+  oracleCalled: boolean
+}
+
+export interface NodeRound {
+  epoch: number
+  startBlock: number
+  lockBlock: number
+  endBlock: number
+  lockPrice: ethers.BigNumber
+  closePrice: ethers.BigNumber
+  totalAmount: ethers.BigNumber
+  bullAmount: ethers.BigNumber
+  bearAmount: ethers.BigNumber
+  rewardBaseCalAmount: ethers.BigNumber
+  rewardAmount: ethers.BigNumber
+  oracleCalled: boolean
 }
 
 export interface PredictionsState {
@@ -252,9 +299,12 @@ export interface PredictionsState {
   minBetAmount: string
   rewardRate: number
   lastOraclePrice: string
-  rounds: RoundData
   history: HistoryData
-  bets: BetData
+  rounds?: RoundData
+  ledgers?: LedgerData
+  claimableStatuses: {
+    [key: string]: boolean
+  }
 }
 
 // Voting

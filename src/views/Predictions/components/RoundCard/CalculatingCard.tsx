@@ -1,7 +1,7 @@
 import React from 'react'
 import { CardBody, Flex, Spinner, WaitIcon, TooltipText, useTooltip, InfoIcon } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import { Round, BetPosition } from 'state/types'
+import { NodeRound, BetPosition } from 'state/types'
 import { useGetTotalIntervalBlocks } from 'state/hooks'
 import { RoundResultBox } from '../RoundResult'
 import MultiplierArrow from './MultiplierArrow'
@@ -9,7 +9,7 @@ import Card from './Card'
 import CardHeader from './CardHeader'
 
 interface CalculatingCardProps {
-  round: Round
+  round: NodeRound
 }
 
 const CalculatingCard: React.FC<CalculatingCardProps> = ({ round }) => {

@@ -48,7 +48,7 @@ const Positions: React.FC = () => {
           resizeObserver
         >
           {rounds.map((round) => (
-            <SwiperSlide key={round.id}>
+            <SwiperSlide key={round.epoch}>
               <RoundCard round={round} />
             </SwiperSlide>
           ))}
